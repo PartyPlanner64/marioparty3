@@ -284,7 +284,7 @@ s16 m257_SetSprite(u16 prio, s32 dir, s32 file, u16 arg3, s32 attr) {
             if (arg3 == 0) {
                 sprite->unk04 = 99;
             } else {
-                sprite->unk04 = temp_v0_2->unk_84->patNum;
+                sprite->unk04 = temp_v0_2->data->patNum;
             }
             sprite->state = SPRITE_STATE_VISIBLE;
             m257_SetSpriteDispOff(i);
@@ -322,7 +322,7 @@ void m257_UpdateSprites(void) {
     for (i = 0; i < SPRITES_MAX; i++, sprite++) {
         switch (sprite->state) {
             case SPRITE_STATE_VISIBLE:
-                if (HuSprGet(sprite->groupId, 0)->unk_90 + 1 >= sprite->unk04) {
+                if (HuSprGet(sprite->groupId, 0)->patNo + 1 >= sprite->unk04) {
                     HuSprDispOff(sprite->groupId, 0);
                     func_80054FF8_main(sprite->groupId, 0, 0);
                 }

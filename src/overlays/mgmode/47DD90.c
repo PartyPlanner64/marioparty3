@@ -43,7 +43,7 @@ s16 func_80116B20_mgmode(void) {
     for (i = 0; i < ARRAY_COUNT(D_8011B654_mgmode); i++) {
         D_8011B654_mgmode[i] = HuMemAllocTag(0x6000, TAG_OVERLAY);
     }
-    D_8011B660_mgmode = HuSprGet(D_800CD1DC_main[sprGrp].unk04, 0)->unk_84->pat->data;
+    D_8011B660_mgmode = HuSprGet(D_800CD1DC_main[sprGrp].unk04, 0)->data->pat->data;
     D_8011B652_mgmode = 0;
     espDispOff(sprGrp);
     return sprGrp;
@@ -63,7 +63,7 @@ void func_80116C18_mgmode(s16 arg0) {
     HuMemMemoryFreePerm(workBuffer);
     DataClose(imageData);
     DataClose(decodeData);
-    HuSprGet(D_800CD1DC_main[D_8011B650_mgmode].unk04, 0)->unk_84->pat->data =
+    HuSprGet(D_800CD1DC_main[D_8011B650_mgmode].unk04, 0)->data->pat->data =
         D_8011B654_mgmode[D_8011B652_mgmode];
     D_8011B652_mgmode++;
     if (D_8011B652_mgmode >= ARRAY_COUNT(D_8011B654_mgmode)) {
@@ -76,7 +76,7 @@ void func_80116D4C_mgmode(void) {
     s16 i;
 
     if (D_8011A3E0_mgmode != -1) {
-        HuSprGet(D_800CD1DC_main[D_8011B650_mgmode].unk04, 0)->unk_84->pat->data =
+        HuSprGet(D_800CD1DC_main[D_8011B650_mgmode].unk04, 0)->data->pat->data =
             D_8011B660_mgmode;
         espKill(D_8011B650_mgmode);
         HuSprAnimKill(D_8011A3E0_mgmode);

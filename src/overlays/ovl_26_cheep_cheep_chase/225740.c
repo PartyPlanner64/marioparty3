@@ -2394,7 +2394,7 @@ s16 func_8010DA74_cheep_cheep_chase(s32 dir, s32 file, u16 arg2, s32 attr) {
             if (arg2 == 0) {
                 sprite->unk04 = 99;
             } else {
-                sprite->unk04 = spr->unk_84->patNum;
+                sprite->unk04 = spr->data->patNum;
             }
             sprite->state = SPRITE_STATE_INVISIBLE;
             break;
@@ -2431,7 +2431,7 @@ void func_8010DB80_cheep_cheep_chase(void) {
     for (i = 0; i < SPRITES_MAX; i++, sprite++) {
         switch (sprite->state) {
             case SPRITE_STATE_VISIBLE:
-                if (HuSprGet(sprite->groupId, 0)->unk_90 + 1 >= sprite->unk04) {
+                if (HuSprGet(sprite->groupId, 0)->patNo + 1 >= sprite->unk04) {
                     HuSprDispOff(sprite->groupId, 0);
                     func_80054FF8_main(sprite->groupId, 0, 0);
                 }

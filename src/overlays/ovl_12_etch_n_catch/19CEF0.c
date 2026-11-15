@@ -1976,10 +1976,10 @@ void func_8010BE84_etch_n_catch(omObjData *object) {
     D_8010C87C_etch_n_catch[0] = HuMemAlloc(0xFA0);
     D_8010C87C_etch_n_catch[1] = HuMemAlloc(0xFA0);
     sprite = HuSprGet(D_8010C844_etch_n_catch, 0);
-    D_8010C84C_etch_n_catch = grid = sprite->unk_84->pat->data;
-    palette = sprite->unk_84->pal;
-    D_8010C846_etch_n_catch = sprite->unk_84->sizeX;
-    D_8010C848_etch_n_catch = sprite->unk_84->sizeY;
+    D_8010C84C_etch_n_catch = grid = sprite->data->pat->data;
+    palette = sprite->data->pal;
+    D_8010C846_etch_n_catch = sprite->data->sizeX;
+    D_8010C848_etch_n_catch = sprite->data->sizeY;
     palette[0] = 0;
     palette[1] = 0xF801;
     palette[2] = 0xFC21;

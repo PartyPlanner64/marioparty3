@@ -67,10 +67,10 @@ s32 func_80057400_main(HuSprite *sprite) {
     f32 right;
     f32 bottom;
 
-    cel = &sprite->unk_84->pat[sprite->unk_90];
+    cel = &sprite->data->pat[sprite->patNo];
     sin = sindf(sprite->unk_20);
     cos = cosdf(sprite->unk_20);
-    if (!(sprite->unk_24 & 0x10000)) {
+    if (!(sprite->dispAttr & 0x10000)) {
         left = -(u16)cel->centerX * sprite->unk_18;
         top = -(u16)cel->centerY * sprite->unk_1C;
         right = (cel->sizeX - (u16)cel->centerX) * sprite->unk_18;
@@ -185,21 +185,21 @@ void func_800579E4_main(Gfx **gfx, HuSprite *sprite, s32 arg2) {
     gdl = *gfx;
     scaleX = sprite->unk_18;
     scaleY = sprite->unk_1C;
-    if (sprite->unk_84 == NULL) {
+    if (sprite->data == NULL) {
         return;
     }
-    cel = &sprite->unk_84->pat[sprite->unk_90];
+    cel = &sprite->data->pat[sprite->patNo];
     if ((scaleX <= 0.0f) | (scaleY <= 0.0f)) {
         return;
     }
     if (!func_80057400_main(sprite)) {
         return;
     }
-    gDPSetScissor(gdl++, G_SC_NON_INTERLACE, sprite->unk_204, sprite->unk_206, sprite->unk_208, sprite->unk_20A);
-    switch (sprite->unk_84->pixelBits) {
+    gDPSetScissor(gdl++, G_SC_NON_INTERLACE, sprite->scissorX, sprite->scissorY, sprite->scissorX2, sprite->scissorY2);
+    switch (sprite->data->pixelBits) {
         case 4:
             D_800BD834_main = G_IM_SIZ_4b;
-            if (sprite->unk_84->palNum == 1) {
+            if (sprite->data->palNum == 1) {
                 D_800BD830_main = G_IM_FMT_IA;
                 gDPSetTextureLUT(gdl++, G_TT_NONE);
             } else {
@@ -207,7 +207,7 @@ void func_800579E4_main(Gfx **gfx, HuSprite *sprite, s32 arg2) {
                 if (sprite->unk_98.unk00 != NULL) {
                     gDPLoadTLUT_pal16(gdl++, 0, sprite->unk_98.unk6C);
                 } else {
-                    gDPLoadTLUT_pal16(gdl++, 0, sprite->unk_84->pal);
+                    gDPLoadTLUT_pal16(gdl++, 0, sprite->data->pal);
                 }
                 gDPSetTextureLUT(gdl++, G_TT_RGBA16);
                 D_800A1EB0_main = 128;
@@ -216,7 +216,7 @@ void func_800579E4_main(Gfx **gfx, HuSprite *sprite, s32 arg2) {
             break;
         case 8:
             D_800BD834_main = G_IM_SIZ_8b;
-            if (sprite->unk_84->palNum == 1) {
+            if (sprite->data->palNum == 1) {
                 D_800BD830_main = G_IM_FMT_IA;
                 gDPSetTextureLUT(gdl++, G_TT_NONE);
                 D_800BD838_main = 2;
@@ -225,7 +225,7 @@ void func_800579E4_main(Gfx **gfx, HuSprite *sprite, s32 arg2) {
                 if (sprite->unk_98.unk00 != NULL) {
                     gDPLoadTLUT_pal256(gdl++, sprite->unk_98.unk6C);
                 } else {
-                    gDPLoadTLUT_pal256(gdl++, sprite->unk_84->pal);
+                    gDPLoadTLUT_pal256(gdl++, sprite->data->pal);
                 }
                 gDPSetTextureLUT(gdl++, G_TT_RGBA16);
                 D_800A1EB0_main = 128;
@@ -234,7 +234,7 @@ void func_800579E4_main(Gfx **gfx, HuSprite *sprite, s32 arg2) {
             break;
         case 16:
             D_800BD834_main = G_IM_SIZ_16b;
-            if (sprite->unk_84->palNum == 1) {
+            if (sprite->data->palNum == 1) {
                 D_800BD830_main = G_IM_FMT_IA;
             } else {
                 D_800BD830_main = G_IM_FMT_RGBA;
@@ -306,23 +306,23 @@ void func_800579E4_main(Gfx **gfx, HuSprite *sprite, s32 arg2) {
     }
     gDPPipeSync(gdl++);
     gSPSetOtherMode(gdl++, G_SETOTHERMODE_H, D_800A1EB4_main[0], 2,
-                    (((u32)sprite->unk_24 >> 2) & 3) << D_800A1EB4_main[0]);
+                    (((u32)sprite->dispAttr >> 2) & 3) << D_800A1EB4_main[0]);
     gSPSetOtherMode(gdl++, G_SETOTHERMODE_H, D_800A1EB4_main[1], 2,
-                    ((((u32)sprite->unk_24 >> 4) ^ 3) & 3) << D_800A1EB4_main[1]);
+                    ((((u32)sprite->dispAttr >> 4) ^ 3) & 3) << D_800A1EB4_main[1]);
     gSPSetOtherMode(gdl++, G_SETOTHERMODE_H, D_800A1EB4_main[2], 2,
-                    (((u32)sprite->unk_24 >> 6) & 3) << D_800A1EB4_main[2]);
+                    (((u32)sprite->dispAttr >> 6) & 3) << D_800A1EB4_main[2]);
     gSPSetOtherMode(gdl++, G_SETOTHERMODE_L, D_800A1EB4_main[3], 2,
-                    D_800A1EC4_main[((u32)sprite->unk_24 >> 22) & 3]);
-    if (((u32)sprite->unk_24 >> 6) & 2) {
+                    D_800A1EC4_main[((u32)sprite->dispAttr >> 22) & 3]);
+    if (((u32)sprite->dispAttr >> 6) & 2) {
         gDPSetRenderMode(gdl++, G_RM_NOOP, G_RM_NOOP2);
         gDPSetCombineMode(gdl++, G_CC_DECALRGBA, G_CC_DECALRGBA);
         D_800BD83C_main = 4;
     } else {
-        intensity = sprite->unk_84->pixelBits >> 15;
-        renderMode = (sprite->unk_24 & 0x4000000) ? Z_CMP | Z_UPD : 0;
-        switch (((u32)sprite->unk_24 >> 10) & 3) {
+        intensity = sprite->data->pixelBits >> 15;
+        renderMode = (sprite->dispAttr & 0x4000000) ? Z_CMP | Z_UPD : 0;
+        switch (((u32)sprite->dispAttr >> 10) & 3) {
             case 0:
-                if (sprite->unk_24 & 0x1000) {
+                if (sprite->dispAttr & 0x1000) {
                     if ((sprite->tpLvl == 256) & (intensity == 0)) {
                         renderMode |= G_RM_TEX_EDGE;
                     } else {
@@ -333,7 +333,7 @@ void func_800579E4_main(Gfx **gfx, HuSprite *sprite, s32 arg2) {
                 }
                 break;
             case 1:
-                if (sprite->unk_24 & 0x1000) {
+                if (sprite->dispAttr & 0x1000) {
                     if ((sprite->tpLvl == 256) & (intensity == 0)) {
                         renderMode |= G_RM_AA_TEX_EDGE;
                     } else {
@@ -344,7 +344,7 @@ void func_800579E4_main(Gfx **gfx, HuSprite *sprite, s32 arg2) {
                 }
                 break;
             case 2:
-                if (sprite->unk_24 & 0x1000) {
+                if (sprite->dispAttr & 0x1000) {
                     if ((sprite->tpLvl == 256) & (intensity == 0)) {
                         renderMode |= G_RM_AA_TEX_EDGE;
                     } else {
@@ -364,13 +364,13 @@ void func_800579E4_main(Gfx **gfx, HuSprite *sprite, s32 arg2) {
             }
         } else {
             if (sprite->tpLvl == 256) {
-                if (sprite->unk_24 & 0x2000000) {
+                if (sprite->dispAttr & 0x2000000) {
                     gDPSetCombineMode(gdl++, SPRPUT_CC_BLEND_DECALA, SPRPUT_CC_BLEND_DECALA);
                 } else {
                     gDPSetCombineMode(gdl++, G_CC_DECALRGBA, G_CC_DECALRGBA);
                 }
             } else {
-                if (sprite->unk_24 & 0x2000000) {
+                if (sprite->dispAttr & 0x2000000) {
                     gDPSetCombineMode(gdl++, SPRPUT_CC_BLEND_MODULATEA, SPRPUT_CC_BLEND_MODULATEA);
                 } else {
                     gDPSetCombineMode(gdl++, SPRPUT_CC_TEX_MODULATEA, SPRPUT_CC_TEX_MODULATEA);
@@ -380,10 +380,10 @@ void func_800579E4_main(Gfx **gfx, HuSprite *sprite, s32 arg2) {
         gDPSetPrimColor(gdl++, 0, 0, sprite->color[0], sprite->color[1], sprite->color[2], (u8)sprite->tpLvl);
         D_800BD83C_main = 1;
     }
-    D_800BD850_main = ((u32)sprite->unk_24 >> 30) & 1;
+    D_800BD850_main = ((u32)sprite->dispAttr >> 30) & 1;
     gSPSegment(gdl++, 2, osVirtualToPhysical(cel->data));
     if (D_800BD850_main) {
-        if (sprite->unk_24 & 0x10000) {
+        if (sprite->dispAttr & 0x10000) {
             originX = ((s16)sprite->unk_3C - (s16)sprite->unk_40) * (u16)cel->centerX / cel->sizeX;
             originY = ((s16)sprite->unk_42 - (s16)sprite->unk_3E) * (u16)cel->centerY / cel->sizeY;
             sprite->unk_04 = (s16)sprite->unk_3C + ((s16)sprite->unk_40 - (s16)sprite->unk_3C) * (u16)cel->centerX / cel->sizeX;
@@ -401,8 +401,8 @@ void func_800579E4_main(Gfx **gfx, HuSprite *sprite, s32 arg2) {
         func_800898F0_main(transform, &sprite->unk_140[D_800D2008_main]);
         gSPMatrix(gdl++, osVirtualToPhysical(&sprite->unk_140[D_800D2008_main]), G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH);
     }
-    if (sprite->unk_24 & 0x8000000) {
-        if (sprite->unk_24 & 0x10000000) {
+    if (sprite->dispAttr & 0x8000000) {
+        if (sprite->dispAttr & 0x10000000) {
             if (D_800BD850_main) {
                 cached = func_800589F4_main(D_800CCF30_main, sprite, sprite->unk_134[sprite->unk_120],
                                             &sprite->unk_140[D_800D2008_main], arg2);
@@ -418,14 +418,14 @@ void func_800579E4_main(Gfx **gfx, HuSprite *sprite, s32 arg2) {
             if (sprite->unk_120 >= 3) {
                 sprite->unk_120 = 0;
             }
-            sprite->unk_24 &= ~0x10000000;
+            sprite->dispAttr &= ~0x10000000;
         }
         gSPDisplayList(gdl++, sprite->unk_124);
     } else {
         if (D_800BD850_main) {
             vertices = D_800D59F4_main;
             gdl = func_800589F4_main(gdl, sprite, vertices, &sprite->unk_140[D_800D2008_main], arg2);
-            if (!(sprite->unk_24 & 0x2000)) {
+            if (!(sprite->dispAttr & 0x2000)) {
                 D_800D59F4_main = vertices + (D_800BD840_main + 2) * 2;
             } else {
                 D_800D59F4_main = vertices + (D_800BD840_main + 2) * 4;
@@ -462,13 +462,13 @@ Gfx *func_800589F4_main(Gfx *gfx, HuSprite *sprite, Vtx *vertices, Mtx *matrix, 
     s32 maskt;
     Vtx *vertexBase;
 
-    cel = &sprite->unk_84->pat[sprite->unk_90];
+    cel = &sprite->data->pat[sprite->patNo];
     scaleX = sprite->unk_18;
     scaleY = sprite->unk_1C;
     drawY = 0.0f;
     drawStep = drawY;
     vertexBase = NULL;
-    if (sprite->unk_24 & 0x2000) {
+    if (sprite->dispAttr & 0x2000) {
         gDPSetCycleType(gfx++, G_CYC_2CYCLE);
         gDPPipeSync(gfx++);
         gDPSetCombineLERP(gfx++, TEXEL1, TEXEL0, PRIMITIVE_ALPHA, TEXEL0, TEXEL1, TEXEL0, PRIMITIVE, TEXEL0,
@@ -478,11 +478,11 @@ Gfx *func_800589F4_main(Gfx *gfx, HuSprite *sprite, Vtx *vertices, Mtx *matrix, 
         D_800BD840_main <<= 1;
         D_800BD844_main >>= 1;
     }
-    if ((sprite->unk_24 & 0x30000) == 0x30000) {
+    if ((sprite->dispAttr & 0x30000) == 0x30000) {
         sprite->unk_30.f = ((s16)sprite->unk_40 - (s16)sprite->unk_3C) / (cel->sizeX * scaleX);
         sprite->unk_34.f = ((s16)sprite->unk_42 - (s16)sprite->unk_3E) / (cel->sizeY * scaleY);
     }
-    if (sprite->unk_24 & 0x4000000) {
+    if (sprite->dispAttr & 0x4000000) {
         gDPSetDepthSource(gfx++, G_ZS_PRIM);
         gDPSetPrimDepth(gfx++, (u16)sprite->unk_44, 0);
     }
@@ -494,7 +494,7 @@ Gfx *func_800589F4_main(Gfx *gfx, HuSprite *sprite, Vtx *vertices, Mtx *matrix, 
     if (D_800BD850_main) {
         vertexBase = vertices;
         flipX = 0;
-        if (sprite->unk_24 & 1) {
+        if (sprite->dispAttr & 1) {
             left = cel->sizeX * 63.999;
             right = 0.0f;
         } else {
@@ -502,8 +502,8 @@ Gfx *func_800589F4_main(Gfx *gfx, HuSprite *sprite, Vtx *vertices, Mtx *matrix, 
             right = cel->sizeX * 63.999;
             flipX = 1;
         }
-        if (sprite->unk_24 & 2) {
-            if (sprite->unk_24 & 0x10000) {
+        if (sprite->dispAttr & 2) {
+            if (sprite->dispAttr & 0x10000) {
                 top = ((s16)sprite->unk_3E - (s16)sprite->unk_42) / sprite->unk_34.f;
             } else {
                 top = -cel->sizeY;
@@ -522,7 +522,7 @@ Gfx *func_800589F4_main(Gfx *gfx, HuSprite *sprite, Vtx *vertices, Mtx *matrix, 
                 height = D_800BD844_main;
             }
             remaining -= D_800BD844_main;
-            if (sprite->unk_24 & 0x10000) {
+            if (sprite->dispAttr & 0x10000) {
                 vertices[0].v.ob[0] = 0;
                 vertices[1].v.ob[0] = ((s16)sprite->unk_40 - (s16)sprite->unk_3C) / sprite->unk_30.f;
             } else {
@@ -540,18 +540,18 @@ Gfx *func_800589F4_main(Gfx *gfx, HuSprite *sprite, Vtx *vertices, Mtx *matrix, 
                 vertices[i].v.cn[2] = 0;
                 vertices[i].v.cn[3] = 255;
             }
-            if ((sprite->unk_24 & 0xC0000) && sprite->unk_38) {
+            if ((sprite->dispAttr & 0xC0000) && sprite->unk_38) {
                 vertices[1].v.ob[0] *= sprite->unk_30.f;
                 vertices[0].v.tc[0] *= sprite->unk_30.f;
                 vertices[1].v.tc[0] *= sprite->unk_30.f;
             }
-            if ((sprite->unk_24 & 0x300000) && sprite->unk_3A) {
+            if ((sprite->dispAttr & 0x300000) && sprite->unk_3A) {
                 vertices[0].v.ob[1] *= sprite->unk_34.f;
                 vertices[1].v.ob[1] *= sprite->unk_34.f;
                 vertices[0].v.tc[1] *= sprite->unk_34.f;
                 vertices[1].v.tc[1] *= sprite->unk_34.f;
             }
-            if (sprite->unk_24 & 0x10000) {
+            if (sprite->dispAttr & 0x10000) {
                 if (flipY < 0) {
                     top += (f32)(((s16)sprite->unk_42 - (s16)sprite->unk_3E) * height / D_800BD844_main) / sprite->unk_34.f;
                 } else {
@@ -564,7 +564,7 @@ Gfx *func_800589F4_main(Gfx *gfx, HuSprite *sprite, Vtx *vertices, Mtx *matrix, 
             texT += height;
         }
     } else {
-        if (sprite->unk_24 & 0x10000) {
+        if (sprite->dispAttr & 0x10000) {
             left = (s16)sprite->unk_3C;
             right = (s16)sprite->unk_40;
             top = (s16)sprite->unk_3E;
@@ -577,14 +577,14 @@ Gfx *func_800589F4_main(Gfx *gfx, HuSprite *sprite, Vtx *vertices, Mtx *matrix, 
             top = sprite->unk_08 - (u16)cel->centerY * scaleY;
             stripHeight = D_800BD844_main * scaleY;
         }
-        if (sprite->unk_24 & 1) {
+        if (sprite->dispAttr & 1) {
             texS = cel->sizeX - 1;
             flipX = -1;
         } else {
             texS = 0;
             flipX = 1;
         }
-        if (sprite->unk_24 & 2) {
+        if (sprite->dispAttr & 2) {
             flipY = -1;
             drawY = top + stripHeight * (D_800BD840_main - 1);
             drawY += D_800BD848_main * scaleY;
@@ -598,17 +598,17 @@ Gfx *func_800589F4_main(Gfx *gfx, HuSprite *sprite, Vtx *vertices, Mtx *matrix, 
         }
         texStep = stripHeight / scaleY;
     }
-    if (sprite->unk_24 & 0xC0000) {
+    if (sprite->dispAttr & 0xC0000) {
         masks = sprite->unk_38;
-        cms = (u32)sprite->unk_24 >> 18;
+        cms = (u32)sprite->dispAttr >> 18;
         cms--;
     } else {
         masks = 0;
         cms = 0;
     }
-    if (sprite->unk_24 & 0x300000) {
+    if (sprite->dispAttr & 0x300000) {
         maskt = sprite->unk_3A;
-        cmt = (u32)sprite->unk_24 >> 20;
+        cmt = (u32)sprite->dispAttr >> 20;
         cmt--;
     } else {
         maskt = 0;
@@ -650,7 +650,7 @@ void func_8005988C_main(Gfx **gfx, HuSprite *sprite, u16 height, u16 uls, u16 ul
     HuSprAnimPat *cel;
     Gfx *gdl;
 
-    cel = &sprite->unk_84->pat[sprite->unk_90];
+    cel = &sprite->data->pat[sprite->patNo];
     gdl = *gfx;
     switch (D_800BD838_main) {
         case 0:
@@ -671,7 +671,7 @@ void func_8005988C_main(Gfx **gfx, HuSprite *sprite, u16 height, u16 uls, u16 ul
                                cel->sizeX, height, uls, ult, lrs, lrt, 0, cms, cmt, masks, maskt, 0, 0);
             break;
     }
-    if (sprite->unk_24 & 0x2000) {
+    if (sprite->dispAttr & 0x2000) {
         func_80059CDC_main(&gdl, sprite, height, uls, ult, lrs, lrt, cms, cmt, masks, maskt);
     }
     *gfx = gdl;
@@ -682,7 +682,7 @@ void func_80059CDC_main(Gfx **gfx, HuSprite *sprite, u16 height, u16 uls, u16 ul
     HuSprAnimPat *cel;
     Gfx *gdl;
 
-    cel = &sprite->unk_84->pat[sprite->unk_90];
+    cel = &sprite->data->pat[sprite->patNo];
     gdl = *gfx;
     switch (D_800BD838_main) {
         case 0:

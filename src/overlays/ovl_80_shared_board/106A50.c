@@ -1501,7 +1501,7 @@ void func_800F6A88_shared_board(s16 arg0, u16 arg1) {
 }
 
 void MBStatusSprBmpClear(s16 arg0, s16 arg1) {
-    HuSprGrpData[arg0]->members[arg1]->unk_84 = NULL;
+    HuSprGrpData[arg0]->members[arg1]->data = NULL;
 }
 
 void MBStatusScaleSet(s32 arg0, f32 xScale, f32 yScale) {

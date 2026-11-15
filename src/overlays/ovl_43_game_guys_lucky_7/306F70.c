@@ -99,7 +99,7 @@ void func_8010BAFC_game_guys_lucky_7(void) {
     HuSprTPLvlSet(D_8010D8E8_game_guys_lucky_7.group, 0, 0);
     HuSprAttrReset(D_8010D8E8_game_guys_lucky_7.group, 0, 0xFFFF);
     HuSprAttrSet(D_8010D8E8_game_guys_lucky_7.group, 0, 0x1000);
-    D_8010D8E8_game_guys_lucky_7.sprite->unk_84->pat->data =
+    D_8010D8E8_game_guys_lucky_7.sprite->data->pat->data =
         D_8010D8E8_game_guys_lucky_7.unk_04[D_8010D8E4_game_guys_lucky_7];
 }
 
@@ -211,8 +211,8 @@ s16 func_8010BB88_game_guys_lucky_7(void) {
     } else {
         func_8010CD0C_game_guys_lucky_7(D_8010D810_game_guys_lucky_7[0].active, D_8010D810_game_guys_lucky_7[0].x, D_8010D810_game_guys_lucky_7[0].y, D_8010D810_game_guys_lucky_7[0].radius, D_8010D810_game_guys_lucky_7[0].color);
     }
-    D_8010D8E8_game_guys_lucky_7.sprite->unk_84->pat->data = D_8010D8E8_game_guys_lucky_7.unk_04[D_8010D8E4_game_guys_lucky_7];
-    D_8010D8D0_game_guys_lucky_7.sprite->unk_84->pat->data = D_8010D8D0_game_guys_lucky_7.unk_04[D_8010D8E4_game_guys_lucky_7];
+    D_8010D8E8_game_guys_lucky_7.sprite->data->pat->data = D_8010D8E8_game_guys_lucky_7.unk_04[D_8010D8E4_game_guys_lucky_7];
+    D_8010D8D0_game_guys_lucky_7.sprite->data->pat->data = D_8010D8D0_game_guys_lucky_7.unk_04[D_8010D8E4_game_guys_lucky_7];
     D_8010D8E4_game_guys_lucky_7 = (s16)(D_8010D8E4_game_guys_lucky_7 + 1) % 3;
     D_8010D300_game_guys_lucky_7++;
     return 0;
@@ -221,7 +221,7 @@ s16 func_8010BB88_game_guys_lucky_7(void) {
 s32 func_8010C670_game_guys_lucky_7(s32 x) {
     s16 i;
 
-    D_8010D8E8_game_guys_lucky_7.sprite->unk_84->pat->data = D_8010D8E8_game_guys_lucky_7.unk_04[0];
+    D_8010D8E8_game_guys_lucky_7.sprite->data->pat->data = D_8010D8E8_game_guys_lucky_7.unk_04[0];
     if (D_8010D304_game_guys_lucky_7++ < 10) {
         D_8010D8E8_game_guys_lucky_7.timer = 0;
     } else if (D_8010D304_game_guys_lucky_7 < 30) {
@@ -244,9 +244,9 @@ s32 func_8010C670_game_guys_lucky_7(s32 x) {
 void func_8010C824_game_guys_lucky_7(void) {
     HuSprDispOff(D_8010D8E8_game_guys_lucky_7.group, 0);
     HuSprDispOff(D_8010D8D0_game_guys_lucky_7.group, 0);
-    D_8010D8E8_game_guys_lucky_7.sprite->unk_84->pat->data =
+    D_8010D8E8_game_guys_lucky_7.sprite->data->pat->data =
         D_8010D8E8_game_guys_lucky_7.unk_04[0];
-    D_8010D8D0_game_guys_lucky_7.sprite->unk_84->pat->data =
+    D_8010D8D0_game_guys_lucky_7.sprite->data->pat->data =
         D_8010D8D0_game_guys_lucky_7.unk_04[0];
 }
 
@@ -270,8 +270,8 @@ void func_8010C97C_game_guys_lucky_7(void) {
 
     D_8010D8E8_game_guys_lucky_7.group = func_8010C8A8_game_guys_lucky_7(0x64000A, 0, 10, 128);
     D_8010D8E8_game_guys_lucky_7.sprite = HuSprGet(D_8010D8E8_game_guys_lucky_7.group, 0);
-    D_8010D8E8_game_guys_lucky_7.unk_04[0] = D_8010D8E8_game_guys_lucky_7.sprite->unk_84->pat->data;
-    pal = D_8010D8E8_game_guys_lucky_7.sprite->unk_84->pal;
+    D_8010D8E8_game_guys_lucky_7.unk_04[0] = D_8010D8E8_game_guys_lucky_7.sprite->data->pat->data;
+    pal = D_8010D8E8_game_guys_lucky_7.sprite->data->pal;
     D_8010D8E8_game_guys_lucky_7.unk_04[1] = HuMemAllocTag(0x9600, 0x7918);
     D_8010D8E8_game_guys_lucky_7.unk_04[2] = HuMemAllocTag(0x9600, 0x7918);
     pal[0] = 0x0001;
@@ -285,8 +285,8 @@ void func_8010C97C_game_guys_lucky_7(void) {
 
     D_8010D8D0_game_guys_lucky_7.group = func_8010C8A8_game_guys_lucky_7(0x64000A, 0, 10, 256);
     D_8010D8D0_game_guys_lucky_7.sprite = HuSprGet(D_8010D8D0_game_guys_lucky_7.group, 0);
-    D_8010D8D0_game_guys_lucky_7.unk_04[0] = D_8010D8D0_game_guys_lucky_7.sprite->unk_84->pat->data;
-    pal = D_8010D8D0_game_guys_lucky_7.sprite->unk_84->pal;
+    D_8010D8D0_game_guys_lucky_7.unk_04[0] = D_8010D8D0_game_guys_lucky_7.sprite->data->pat->data;
+    pal = D_8010D8D0_game_guys_lucky_7.sprite->data->pal;
     D_8010D8D0_game_guys_lucky_7.unk_04[1] = HuMemAllocTag(0x9600, 0x7918);
     D_8010D8D0_game_guys_lucky_7.unk_04[2] = HuMemAllocTag(0x9600, 0x7918);
     pal[0] = 0x0001;

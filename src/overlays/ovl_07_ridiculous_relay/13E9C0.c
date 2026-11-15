@@ -504,16 +504,16 @@ void func_80106D4C_ridiculous_relay(omObjData *object) {
     gDPSetBlendColor(gMainGfxPos++, 0, 0, 0, 224);
     idx = 0;
     sprite = HuSprGet(D_800CD1DC_main[D_80111A58_ridiculous_relay[idx]].unk04, 0);
-    frame = &sprite->unk_84->pat[sprite->unk_90];
+    frame = &sprite->data->pat[sprite->patNo];
     for (layer = 0; layer < 3; layer++) {
         if (layer == 0) {
             idx = 0;
             sprite = HuSprGet(D_800CD1DC_main[D_80111A58_ridiculous_relay[idx]].unk04, 0);
-            frame = &sprite->unk_84->pat[sprite->unk_90];
+            frame = &sprite->data->pat[sprite->patNo];
             if (is8Bit[idx]) {
-                gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->pal);
+                gDPLoadTLUT_pal256(gMainGfxPos++, sprite->data->pal);
             } else {
-                gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->unk_84->pal);
+                gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->data->pal);
             }
         }
         if (layer == 1) {
@@ -542,8 +542,8 @@ void func_80106D4C_ridiculous_relay(omObjData *object) {
                             }
                             idx = (k < 3) ? 1 : 5;
                             sprite = HuSprGet(D_800CD1DC_main[D_80111A58_ridiculous_relay[idx]].unk04, 0);
-                            frame = &sprite->unk_84->pat[sprite->unk_90];
-                            gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->pal);
+                            frame = &sprite->data->pat[sprite->patNo];
+                            gDPLoadTLUT_pal256(gMainGfxPos++, sprite->data->pal);
                             gDPLoadTextureTile(gMainGfxPos++, frame->data, G_IM_FMT_CI, G_IM_SIZ_8b, 112, 0, (s32)x,
                                                (s32)(y - 31.0f), (s32)x2, (s32)(y2 - 31.0f), 0,
                                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
@@ -564,11 +564,11 @@ void func_80106D4C_ridiculous_relay(omObjData *object) {
                     if (layer != 0 && layer != 1) {
                         idx = (layer == 2) ? signSprites[j] : 0;
                         sprite = HuSprGet(D_800CD1DC_main[D_80111A58_ridiculous_relay[idx]].unk04, 0);
-                        frame = &sprite->unk_84->pat[sprite->unk_90];
+                        frame = &sprite->data->pat[sprite->patNo];
                         if (is8Bit[idx]) {
-                            gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->pal);
+                            gDPLoadTLUT_pal256(gMainGfxPos++, sprite->data->pal);
                         } else {
-                            gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->unk_84->pal);
+                            gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->data->pal);
                         }
                     }
                     for (k = 0; k < 8; k++) {
@@ -623,8 +623,8 @@ void func_80106D4C_ridiculous_relay(omObjData *object) {
                                                                                            : 17]]
                                         .unk04,
                                     0);
-                                frame = &sprite->unk_84->pat[sprite->unk_90];
-                                gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->unk_84->pal);
+                                frame = &sprite->data->pat[sprite->patNo];
+                                gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->data->pal);
                                 gDPLoadTextureTile_4b(gMainGfxPos++, frame->data, G_IM_FMT_CI, 10, 14, 0, 0, 10, 14,
                                                       0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                                                       G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
@@ -658,8 +658,8 @@ void func_80106D4C_ridiculous_relay(omObjData *object) {
                               PRIMITIVE, 0);
         }
         sprite = HuSprGet(D_800CD1DC_main[D_80111A58_ridiculous_relay[(i == 0) ? 6 : 7]].unk04, 0);
-        frame = &sprite->unk_84->pat[sprite->unk_90];
-        gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->unk_84->pal);
+        frame = &sprite->data->pat[sprite->patNo];
+        gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->data->pal);
         for (j = 0; j < 2; j++) {
             f32 scroll = D_8011199C_ridiculous_relay[i] + D_80111A50_ridiculous_relay + 640.0f;
 
@@ -724,8 +724,8 @@ void func_80108DE8_ridiculous_relay(Gfx **gfxPos, s32 arg1, s32 arg2) {
                               PRIMITIVE, 0);
         }
         sprite = HuSprGet(D_800CD1DC_main[D_80111A58_ridiculous_relay[(i == 0) ? 6 : 7]].unk04, 0);
-        frame = &sprite->unk_84->pat[sprite->unk_90];
-        gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->unk_84->pal);
+        frame = &sprite->data->pat[sprite->patNo];
+        gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->data->pal);
         for (j = 0; j < 2; j++) {
             scroll = D_801119D0_ridiculous_relay * 16.0f + D_8011199C_ridiculous_relay[i] + 640.0f;
             offset = -(scroll - (s32)(scroll / 320.0f) * 320) + j * 320;
@@ -783,12 +783,12 @@ void func_80108DE8_ridiculous_relay(Gfx **gfxPos, s32 arg1, s32 arg2) {
             continue;
         }
         sprite = HuSprGet(D_800CD1DC_main[D_80111A58_ridiculous_relay[23 + i]].unk04, 0);
-        frame = &sprite->unk_84->pat[sprite->unk_90];
+        frame = &sprite->data->pat[sprite->patNo];
         if (!(i >= 2 && i < 6)) {
             gDPLoadTextureTile_4b(gMainGfxPos++, frame->data, G_IM_FMT_CI, width, height, 0, 0, width, height, 0,
                                   G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                                   G_TX_NOLOD, G_TX_NOLOD);
-            gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->unk_84->pal);
+            gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->data->pal);
             if (i >= 6) {
                 y = sindf((D_801119C8_ridiculous_relay % 30) / 30.0 * 360.0) * 4.0f + 159.0f;
             } else {
@@ -810,7 +810,7 @@ void func_80108DE8_ridiculous_relay(Gfx **gfxPos, s32 arg1, s32 arg2) {
                 gDPLoadTextureTile(gMainGfxPos++, frame->data, G_IM_FMT_CI, G_IM_SIZ_8b, 80, 0, 0, (s32)y, 80, (s32)y2,
                                    0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                                    G_TX_NOLOD, G_TX_NOLOD);
-                gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->pal);
+                gDPLoadTLUT_pal256(gMainGfxPos++, sprite->data->pal);
                 xl = x * 4.0f;
                 yl = (y * scales[i] + 134.0f + (1.0f - scales[i]) * 25.0f) * 4.0f;
                 xh = x2 * 4.0f;
@@ -824,8 +824,8 @@ void func_80108DE8_ridiculous_relay(Gfx **gfxPos, s32 arg1, s32 arg2) {
         }
     }
     sprite = HuSprGet(D_800CD1DC_main[D_80111A58_ridiculous_relay[8]].unk04, 0);
-    frame = &sprite->unk_84->pat[sprite->unk_90];
-    gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->pal);
+    frame = &sprite->data->pat[sprite->patNo];
+    gDPLoadTLUT_pal256(gMainGfxPos++, sprite->data->pal);
     gDPSetRenderMode(gMainGfxPos++, G_RM_AA_OPA_SURF, G_RM_AA_OPA_SURF2);
     gDPSetAlphaCompare(gMainGfxPos++, G_AC_NONE);
     gDPSetBlendColor(gMainGfxPos++, 0, 0, 0, 0);
@@ -836,7 +836,7 @@ void func_80108DE8_ridiculous_relay(Gfx **gfxPos, s32 arg1, s32 arg2) {
         x = k * 59;
         x2 = k * 59 + 60;
         x2 = MIN(320.0f, x2);
-        gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->unk_84->pal);
+        gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->data->pal);
         gSPScisTextureRectangle(gMainGfxPos++, (s32)(x * 4.0f), 106 * 4, (s32)(x2 * 4.0f), 134 * 4, G_TX_RENDERTILE,
                                 (s32)(x * 32.0f), 0, 1024, 1024);
     }
@@ -846,11 +846,11 @@ void func_80108DE8_ridiculous_relay(Gfx **gfxPos, s32 arg1, s32 arg2) {
     gDPSetBlendColor(gMainGfxPos++, 0, 0, 0, 224);
     for (i = 0; i < 4; i++) {
         sprite = HuSprGet(D_800CD1DC_main[D_80111A58_ridiculous_relay[9 + D_80111970_ridiculous_relay[i]->chr]].unk04, 0);
-        frame = &sprite->unk_84->pat[sprite->unk_90];
+        frame = &sprite->data->pat[sprite->patNo];
         if (D_80111970_ridiculous_relay[i]->chr == 7) {
-            gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->pal);
+            gDPLoadTLUT_pal256(gMainGfxPos++, sprite->data->pal);
         } else {
-            gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->unk_84->pal);
+            gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->data->pal);
         }
         if (D_80111970_ridiculous_relay[i]->chr == 7) {
             gDPLoadTextureTile(gMainGfxPos++, frame->data, G_IM_FMT_CI, G_IM_SIZ_8b, 18, 18, 0, 0, 18, 18, 0,

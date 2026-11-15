@@ -1864,10 +1864,10 @@ void func_8010AE08_hyper_hydrants(omObjData *object) {
             HuSprPosSet(D_8010BF8A_hyper_hydrants[i], 0, 240, 120);
         }
         sprites[i] = HuSprGet(D_8010BF8A_hyper_hydrants[i], 0);
-        D_8010BF94_hyper_hydrants[i] = sprites[i]->unk_84->pat->data;
+        D_8010BF94_hyper_hydrants[i] = sprites[i]->data->pat->data;
     }
-    D_8010BF8E_hyper_hydrants = sprites[0]->unk_84->sizeX;
-    D_8010BF90_hyper_hydrants = sprites[0]->unk_84->sizeY;
+    D_8010BF8E_hyper_hydrants = sprites[0]->data->sizeX;
+    D_8010BF90_hyper_hydrants = sprites[0]->data->sizeY;
     D_8010BF9C_hyper_hydrants = 35;
     step = 35.0f / 255.0f;
     first = D_8010BF94_hyper_hydrants[0];

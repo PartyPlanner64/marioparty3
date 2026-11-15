@@ -739,7 +739,7 @@ void func_801071B8_game_guys_magic_boxes(void) {
                                             50);
         func_8010A1B0_game_guys_magic_boxes(D_8010C5F0_game_guys_magic_boxes[1].x, D_8010C5F0_game_guys_magic_boxes[1].y,
                                             50);
-        D_8010C9EC_game_guys_magic_boxes->unk_84->pat->data =
+        D_8010C9EC_game_guys_magic_boxes->data->pat->data =
             D_8010C9F4_game_guys_magic_boxes[D_8010CA00_game_guys_magic_boxes];
         D_8010CA00_game_guys_magic_boxes = (u8)(D_8010CA00_game_guys_magic_boxes + 1) % 3;
     }
@@ -1034,7 +1034,7 @@ void func_80108498_game_guys_magic_boxes(void) {
             }
             D_8010CA00_game_guys_magic_boxes = 0;
             func_8010A1B0_game_guys_magic_boxes(D_8010C214_game_guys_magic_boxes, D_8010C216_game_guys_magic_boxes, 50);
-            D_8010C9EC_game_guys_magic_boxes->unk_84->pat->data = D_8010C9F4_game_guys_magic_boxes[0];
+            D_8010C9EC_game_guys_magic_boxes->data->pat->data = D_8010C9F4_game_guys_magic_boxes[0];
             D_8010C210_game_guys_magic_boxes = 1;
             break;
         case 1:
@@ -1592,8 +1592,8 @@ void func_8010A000_game_guys_magic_boxes(void) {
     HuSprTPLvlSet(D_8010C9F0_game_guys_magic_boxes, 0, 0);
     HuSprPriSet(D_8010C9F0_game_guys_magic_boxes, 0, 10);
     D_8010C9EC_game_guys_magic_boxes = HuSprGet(D_8010C9F0_game_guys_magic_boxes, 0);
-    D_8010C9F4_game_guys_magic_boxes[0] = D_8010C9EC_game_guys_magic_boxes->unk_84->pat->data;
-    pal = D_8010C9EC_game_guys_magic_boxes->unk_84->pal;
+    D_8010C9F4_game_guys_magic_boxes[0] = D_8010C9EC_game_guys_magic_boxes->data->pat->data;
+    pal = D_8010C9EC_game_guys_magic_boxes->data->pal;
     D_8010C9F4_game_guys_magic_boxes[1] = HuMemAllocTag(0x9600, 0x7918);
     D_8010C9F4_game_guys_magic_boxes[2] = HuMemAllocTag(0x9600, 0x7918);
     pal[0] = 0x0001;
@@ -1656,7 +1656,7 @@ void func_8010A388_game_guys_magic_boxes(s16 x, s16 y, s16 radius) {
 }
 
 void func_8010A4CC_game_guys_magic_boxes(void) {
-    D_8010C9EC_game_guys_magic_boxes->unk_84->pat->data =
+    D_8010C9EC_game_guys_magic_boxes->data->pat->data =
         D_8010C9F4_game_guys_magic_boxes[0];
 }
 

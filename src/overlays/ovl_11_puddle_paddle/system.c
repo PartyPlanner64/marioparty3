@@ -315,7 +315,7 @@ s16 func_8010BEE8_puddle_paddle(s16 priority, s32 directory, s32 file, u16 bank,
             if (bank == 0) {
                 sprite->unk_04 = 99;
             } else {
-                sprite->unk_04 = data->unk_84->patNum;
+                sprite->unk_04 = data->data->patNum;
             }
             sprite->unk_00 = 2;
             func_8010C11C_puddle_paddle(i);
@@ -351,7 +351,7 @@ void func_8010C16C_puddle_paddle(void) {
 
     for (i = 0; i < 20; i++, sprite++) {
         if (sprite->unk_00 == 2) {
-            if (HuSprGet(sprite->unk_01, 0)->unk_90 + 1 >= (u16)sprite->unk_04) {
+            if (HuSprGet(sprite->unk_01, 0)->patNo + 1 >= (u16)sprite->unk_04) {
                 HuSprDispOff(sprite->unk_01, 0);
                 func_80054FF8_main(sprite->unk_01, 0, 0);
             }

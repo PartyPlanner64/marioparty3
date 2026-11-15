@@ -266,7 +266,7 @@ s16 func_8010A598_baby_bowser_broadside(s16 priority, s32 directory, s32 file, s
             if (animation == 0) {
                 sprite->unk_04 = 99;
             } else {
-                sprite->unk_04 = data->unk_84->patNum;
+                sprite->unk_04 = data->data->patNum;
             }
             sprite->unk_00 = 2;
             func_8010A7CC_baby_bowser_broadside(i);
@@ -302,7 +302,7 @@ void func_8010A81C_baby_bowser_broadside(void) {
 
     for (i = 0; i < 14; i++, sprite++) {
         if (sprite->unk_00 == 2) {
-            if (HuSprGet(sprite->unk_01, 0)->unk_90 + 1 >= (u16)sprite->unk_04) {
+            if (HuSprGet(sprite->unk_01, 0)->patNo + 1 >= (u16)sprite->unk_04) {
                 HuSprDispOff(sprite->unk_01, 0);
                 func_80054FF8_main(sprite->unk_01, 0, 0);
             }

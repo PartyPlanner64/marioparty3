@@ -1368,8 +1368,8 @@ void func_8010AD8C_toadstool_titan(s16 left, s16 top, s16 right, s16 bottom) {
     gSPDisplayList(gMainGfxPos++, D_8010EDF0_toadstool_titan);
     gDPSetTextureLUT(gMainGfxPos++, G_TT_RGBA16);
     sprite = HuSprGet(D_800CD1DC_main[D_8010F588_toadstool_titan[0]].unk04, 0);
-    frame = &sprite->unk_84->pat[sprite->unk_90];
-    gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->pal);
+    frame = &sprite->data->pat[sprite->patNo];
+    gDPLoadTLUT_pal256(gMainGfxPos++, sprite->data->pal);
     for (i = 0; i < 6; i++) {
         t0 = i * 40;
         t1 = t0 + 40.0f + ((i == 5) ? -0.75 : 1.0);

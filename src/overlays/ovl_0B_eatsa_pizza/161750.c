@@ -1215,7 +1215,7 @@ void func_80108C50_eatsa_pizza(omObjData *object) {
         }
         sprite = HuSprGet(group, i);
         func_800551AC_main(group, i);
-        if (sprite->unk_8A < sprite->unk_84->patNum - 1) {
+        if (sprite->animNo < sprite->data->patNum - 1) {
             continue;
         }
         HuSprDispOff(group, i);

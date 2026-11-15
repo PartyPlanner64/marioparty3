@@ -54,20 +54,20 @@ typedef struct HuSprAnimData {
     /* 0x1A */ u16 palNum;
 } HuSprAnimData; // Size 0x1C
 
-// Cel-animation playback state. Embedded in HuSprite at offset 0x68 (unk_68);
+// Animation playback state. Embedded in HuSprite at offset 0x68 (anim);
 // the animation functions receive a pointer to this region.
 typedef struct HuSprAnm {
-    /* 0x00 */ HuSprAnimData *unk00; // texture descriptor
-    /* 0x04 */ u8 unk04;                     // flags
-    /* 0x06 */ s16 unk06;                    // playback mode
-    /* 0x08 */ s16 unk08;                    // cel index
-    /* 0x0A */ s16 unk0A;                    // frame counter
-    /* 0x0C */ f32 unk0C;                    // time accumulator
-    /* 0x10 */ f32 unk10;                    // frame step
-    /* 0x14 */ s16 unk14;                    // current cel output
-    /* 0x16 */ u8 unk16;
-    /* 0x17 */ u8 unk17;
-    /* 0x18 */ u8 unk18;
+    /* 0x00 */ HuSprAnimData *data;
+    /* 0x04 */ u8 animStat;  // HUSPR_ANIM_STAT_* flags
+    /* 0x06 */ s16 animMode; // HUSPR_ANIM_MODE_*
+    /* 0x08 */ s16 bank;
+    /* 0x0A */ s16 animNo;   // frame within the bank, or pattern for the pattern modes
+    /* 0x0C */ f32 time;
+    /* 0x10 */ f32 speed;
+    /* 0x14 */ s16 patNo;    // current pattern
+    /* 0x16 */ u8 flip;
+    /* 0x17 */ u8 shiftX;
+    /* 0x18 */ u8 shiftY;
 } HuSprAnm; // Size 0x1C
 
 // Palette animation data (built by the palette-animation loader, stored in
@@ -118,13 +118,13 @@ typedef struct HuSprite {
     /* 0x04 */ f32 unk_04;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ s16 bank;
-    /* 0x0E */ s16 unk_0E;
+    /* 0x0E */ s16 animMode;
     /* 0x10 */ f32 speed;
     /* 0x14 */ u16 prio;
     /* 0x18 */ f32 unk_18;
     /* 0x1C */ f32 unk_1C;
     /* 0x20 */ f32 unk_20;
-    /* 0x24 */ s32 unk_24;
+    /* 0x24 */ s32 dispAttr; // attr with the current frame's flip applied
     /* 0x28 */ u8 color[4];
     /* 0x2C */ u16 tpLvl;
     /* 0x2E */ s16 unk_2E;
@@ -149,15 +149,15 @@ typedef struct HuSprite {
     /* 0x5C */ s32 attr;
     /* 0x60 */ f32 unk_60;
     /* 0x64 */ f32 unk_64;
-    /* 0x68 */ HuSprAnm unk_68;
-    /* 0x84 */ HuSprAnimData *unk_84;
-    /* 0x88 */ s8 unk_88;
-    /* 0x8A */ s16 unk_8A;
-    /* 0x8C */ f32 unk_8C;
-    /* 0x90 */ s16 unk_90;
-    /* 0x92 */ u8 unk_92;
-    /* 0x93 */ u8 unk_93;
-    /* 0x94 */ u8 unk_94;
+    /* 0x68 */ HuSprAnm anim;
+    /* 0x84 */ HuSprAnimData *data;
+    /* 0x88 */ s8 animStat;
+    /* 0x8A */ s16 animNo;
+    /* 0x8C */ f32 time;
+    /* 0x90 */ s16 patNo;
+    /* 0x92 */ u8 flip;
+    /* 0x93 */ u8 shiftX;
+    /* 0x94 */ u8 shiftY;
     /* 0x95 */ char unk_95_pad[0x3];
     /* 0x98 */ HuSprPalAnm unk_98;
     /* 0x114 */ s16 unk_114;
@@ -169,11 +169,11 @@ typedef struct HuSprite {
     /* 0x128 */ Gfx *unk_128[3];
     /* 0x134 */ Vtx *unk_134[3];
     /* 0x140 */ Mtx unk_140[3];
-    /* 0x200 */ s32 unk_200; // attributes from the previous frame
-    /* 0x204 */ u16 unk_204;
-    /* 0x206 */ u16 unk_206;
-    /* 0x208 */ u16 unk_208;
-    /* 0x20A */ u16 unk_20A;
+    /* 0x200 */ s32 prevAttr; // attributes from the previous frame
+    /* 0x204 */ u16 scissorX;
+    /* 0x206 */ u16 scissorY;
+    /* 0x208 */ u16 scissorX2;
+    /* 0x20A */ u16 scissorY2;
     /* 0x20C */ char unk_20C_pad[0x4];
 } HuSprite; // Size 0x210
 

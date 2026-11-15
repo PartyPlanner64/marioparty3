@@ -106,7 +106,7 @@ void func_8010F810_marios_puzzle_party(omObjData *object) {
     if (omPauseChk() + D_800D6A90_main == 0) {
         for (i = 0; i < D_801168B4_marios_puzzle_party; i++, block++) {
             sprite = block->sprites;
-            anim = HuSprGet(block->groupHandle, 0)->unk_84;
+            anim = HuSprGet(block->groupHandle, 0)->data;
             image = anim->pat->data;
             width = anim->sizeX;
             height = anim->sizeY;

@@ -271,9 +271,9 @@ void func_8010BDA4_duelresult(s16 model, s32 dataNum) {
 
     HuSprGrpMemberSet(group, 0, anim, 0);
     sprite = HuSprGet(group, 0);
-    pixels = sprite->unk_84->pat->data;
-    width = sprite->unk_84->pat->sizeX;
-    height = sprite->unk_84->pat->sizeY;
+    pixels = sprite->data->pat->data;
+    width = sprite->data->pat->sizeX;
+    height = sprite->data->pat->sizeY;
     // Counts the white pixels, but the result goes unused.
     white = 0;
     for (i = 0; i < width * height; i++) {
@@ -283,7 +283,7 @@ void func_8010BDA4_duelresult(s16 model, s32 dataNum) {
     }
     (void)white;
 
-    pixels = sprite->unk_84->pat->data;
+    pixels = sprite->data->pat->data;
     effect = Hu3DData[model].unkBC;
     count = Hu3DData[model].hmf->unk1A;
     particle = effect->unk58;

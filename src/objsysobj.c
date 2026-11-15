@@ -320,10 +320,10 @@ void func_8004BCE4_main(CameraViewData *data) {
     s32 row;
 
     sprite = HuSprGet(data->spriteGroup, 0);
-    width = sprite->unk_84->sizeX;
-    height = sprite->unk_84->sizeY;
+    width = sprite->data->sizeX;
+    height = sprite->data->sizeY;
     gDPSetTextureLUT(gMainGfxPos++, G_TT_RGBA16);
-    gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->pal);
+    gDPLoadTLUT_pal256(gMainGfxPos++, sprite->data->pal);
     left = data->camera->screenLeft;
     top = data->camera->screenTop;
     right = data->camera->screenRight;
@@ -348,7 +348,7 @@ void func_8004BCE4_main(CameraViewData *data) {
             if (y1 + stripHeight > y2) {
                 stripHeight = y2 - y1;
             }
-            gDPLoadTextureTile(gMainGfxPos++, sprite->unk_84->data, G_IM_FMT_CI, G_IM_SIZ_8b,
+            gDPLoadTextureTile(gMainGfxPos++, sprite->data->data, G_IM_FMT_CI, G_IM_SIZ_8b,
                                width, height, 0, row, width, row + rows, 0,
                                G_TX_WRAP, G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             gSPScisTextureRectangle(gMainGfxPos++, (s32)(x1 * 4.0f), (s32)(y1 * 4.0f),

@@ -669,8 +669,8 @@ void func_80107FF4_thwomp_pull(s16 *left, s16 *top, s16 *right, s16 *bottom) {
     gSPDisplayList(gMainGfxPos++, D_8010ED90_thwomp_pull);
     gDPSetTextureLUT(gMainGfxPos++, G_TT_RGBA16);
     sprite = HuSprGet(D_800CD1DC_main[D_8010F590_thwomp_pull[0]].unk04, 0);
-    frame = &sprite->unk_84->pat[sprite->unk_90];
-    gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->pal);
+    frame = &sprite->data->pat[sprite->patNo];
+    gDPLoadTLUT_pal256(gMainGfxPos++, sprite->data->pal);
     for (j = 0; j < 3; j++) {
         t0 = j * 40;
         t1 = t0 + 40.0f + ((j == 2) ? -0.75 : 1.0);
@@ -732,8 +732,8 @@ void func_801089B4_thwomp_pull(Gfx **gfxPos, s32 arg1, s32 arg2) {
     gSPDisplayList(gMainGfxPos++, D_8010ED90_thwomp_pull);
     gDPSetTextureLUT(gMainGfxPos++, G_TT_RGBA16);
     sprite = HuSprGet(D_800CD1DC_main[D_8010F590_thwomp_pull[1]].unk04, 0);
-    frame = &sprite->unk_84->pat[sprite->unk_90];
-    gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->unk_84->pal);
+    frame = &sprite->data->pat[sprite->patNo];
+    gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->data->pal);
     gDPSetRenderMode(gMainGfxPos++, G_RM_AA_OPA_SURF, G_RM_AA_OPA_SURF2);
     gDPSetAlphaCompare(gMainGfxPos++, G_AC_NONE);
     gDPSetBlendColor(gMainGfxPos++, 0, 0, 0, 0);
@@ -744,7 +744,7 @@ void func_801089B4_thwomp_pull(Gfx **gfxPos, s32 arg1, s32 arg2) {
         y = j * 60;
         y2 = j * 60 + 61;
         y2 = MIN(240.0f, y2);
-        gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->unk_84->pal);
+        gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->data->pal);
         gSPScisTextureRectangle(gMainGfxPos++, offset + 140 * 4, (s32)(y * 4.0f), offset + 180 * 4, (s32)(y2 * 4.0f),
                                 G_TX_RENDERTILE, 0, j * 60 * 32, 1024, 1024);
     }
@@ -757,11 +757,11 @@ void func_801089B4_thwomp_pull(Gfx **gfxPos, s32 arg1, s32 arg2) {
 
         group = order[i];
         sprite = HuSprGet(D_800CD1DC_main[D_8010F590_thwomp_pull[2 + D_8010F4F8_thwomp_pull[group]->chr]].unk04, 0);
-        frame = &sprite->unk_84->pat[sprite->unk_90];
+        frame = &sprite->data->pat[sprite->patNo];
         if (D_8010F4F8_thwomp_pull[group]->chr == 7) {
-            gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->pal);
+            gDPLoadTLUT_pal256(gMainGfxPos++, sprite->data->pal);
         } else {
-            gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->unk_84->pal);
+            gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->data->pal);
         }
         if (D_8010F4F8_thwomp_pull[group]->chr == 7) {
             gDPLoadTextureTile(gMainGfxPos++, frame->data, G_IM_FMT_CI, G_IM_SIZ_8b, 18, 18, 0, 0, 18, 18, 0,

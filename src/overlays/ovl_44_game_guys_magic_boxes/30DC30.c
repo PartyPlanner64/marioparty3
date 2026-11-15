@@ -100,7 +100,7 @@ void func_8010AB8C_game_guys_magic_boxes(void) {
     HuSprTPLvlSet(D_8010CAF8_game_guys_magic_boxes.group, 0, 0);
     HuSprAttrReset(D_8010CAF8_game_guys_magic_boxes.group, 0, 0xFFFF);
     HuSprAttrSet(D_8010CAF8_game_guys_magic_boxes.group, 0, 0x1000);
-    D_8010CAF8_game_guys_magic_boxes.sprite->unk_84->pat->data =
+    D_8010CAF8_game_guys_magic_boxes.sprite->data->pat->data =
         D_8010CAF8_game_guys_magic_boxes.unk_04[D_8010CB0C_game_guys_magic_boxes];
 }
 
@@ -212,8 +212,8 @@ s16 func_8010AC18_game_guys_magic_boxes(void) {
     } else {
         func_8010BD9C_game_guys_magic_boxes(D_8010CA20_game_guys_magic_boxes[0].active, D_8010CA20_game_guys_magic_boxes[0].x, D_8010CA20_game_guys_magic_boxes[0].y, D_8010CA20_game_guys_magic_boxes[0].radius, D_8010CA20_game_guys_magic_boxes[0].color);
     }
-    D_8010CAF8_game_guys_magic_boxes.sprite->unk_84->pat->data = D_8010CAF8_game_guys_magic_boxes.unk_04[D_8010CB0C_game_guys_magic_boxes];
-    D_8010CAE0_game_guys_magic_boxes.sprite->unk_84->pat->data = D_8010CAE0_game_guys_magic_boxes.unk_04[D_8010CB0C_game_guys_magic_boxes];
+    D_8010CAF8_game_guys_magic_boxes.sprite->data->pat->data = D_8010CAF8_game_guys_magic_boxes.unk_04[D_8010CB0C_game_guys_magic_boxes];
+    D_8010CAE0_game_guys_magic_boxes.sprite->data->pat->data = D_8010CAE0_game_guys_magic_boxes.unk_04[D_8010CB0C_game_guys_magic_boxes];
     D_8010CB0C_game_guys_magic_boxes = (s16)(D_8010CB0C_game_guys_magic_boxes + 1) % 3;
     D_8010C260_game_guys_magic_boxes++;
     return 0;
@@ -222,7 +222,7 @@ s16 func_8010AC18_game_guys_magic_boxes(void) {
 s32 func_8010B700_game_guys_magic_boxes(s32 x) {
     s16 i;
 
-    D_8010CAF8_game_guys_magic_boxes.sprite->unk_84->pat->data = D_8010CAF8_game_guys_magic_boxes.unk_04[0];
+    D_8010CAF8_game_guys_magic_boxes.sprite->data->pat->data = D_8010CAF8_game_guys_magic_boxes.unk_04[0];
     if (D_8010C264_game_guys_magic_boxes++ < 10) {
         D_8010CAF8_game_guys_magic_boxes.timer = 0;
     } else if (D_8010C264_game_guys_magic_boxes < 30) {
@@ -245,9 +245,9 @@ s32 func_8010B700_game_guys_magic_boxes(s32 x) {
 void func_8010B8B4_game_guys_magic_boxes(void) {
     HuSprDispOff(D_8010CAF8_game_guys_magic_boxes.group, 0);
     HuSprDispOff(D_8010CAE0_game_guys_magic_boxes.group, 0);
-    D_8010CAF8_game_guys_magic_boxes.sprite->unk_84->pat->data =
+    D_8010CAF8_game_guys_magic_boxes.sprite->data->pat->data =
         D_8010CAF8_game_guys_magic_boxes.unk_04[0];
-    D_8010CAE0_game_guys_magic_boxes.sprite->unk_84->pat->data =
+    D_8010CAE0_game_guys_magic_boxes.sprite->data->pat->data =
         D_8010CAE0_game_guys_magic_boxes.unk_04[0];
 }
 
@@ -271,8 +271,8 @@ void func_8010BA0C_game_guys_magic_boxes(void) {
 
     D_8010CAF8_game_guys_magic_boxes.group = func_8010B938_game_guys_magic_boxes(0x650005, 0, 10, 128);
     D_8010CAF8_game_guys_magic_boxes.sprite = HuSprGet(D_8010CAF8_game_guys_magic_boxes.group, 0);
-    D_8010CAF8_game_guys_magic_boxes.unk_04[0] = D_8010CAF8_game_guys_magic_boxes.sprite->unk_84->pat->data;
-    pal = D_8010CAF8_game_guys_magic_boxes.sprite->unk_84->pal;
+    D_8010CAF8_game_guys_magic_boxes.unk_04[0] = D_8010CAF8_game_guys_magic_boxes.sprite->data->pat->data;
+    pal = D_8010CAF8_game_guys_magic_boxes.sprite->data->pal;
     D_8010CAF8_game_guys_magic_boxes.unk_04[1] = HuMemAllocTag(0x9600, 0x7918);
     D_8010CAF8_game_guys_magic_boxes.unk_04[2] = HuMemAllocTag(0x9600, 0x7918);
     pal[0] = 0x0001;
@@ -286,8 +286,8 @@ void func_8010BA0C_game_guys_magic_boxes(void) {
 
     D_8010CAE0_game_guys_magic_boxes.group = func_8010B938_game_guys_magic_boxes(0x650005, 0, 10, 256);
     D_8010CAE0_game_guys_magic_boxes.sprite = HuSprGet(D_8010CAE0_game_guys_magic_boxes.group, 0);
-    D_8010CAE0_game_guys_magic_boxes.unk_04[0] = D_8010CAE0_game_guys_magic_boxes.sprite->unk_84->pat->data;
-    pal = D_8010CAE0_game_guys_magic_boxes.sprite->unk_84->pal;
+    D_8010CAE0_game_guys_magic_boxes.unk_04[0] = D_8010CAE0_game_guys_magic_boxes.sprite->data->pat->data;
+    pal = D_8010CAE0_game_guys_magic_boxes.sprite->data->pal;
     D_8010CAE0_game_guys_magic_boxes.unk_04[1] = HuMemAllocTag(0x9600, 0x7918);
     D_8010CAE0_game_guys_magic_boxes.unk_04[2] = HuMemAllocTag(0x9600, 0x7918);
     pal[0] = 0x0001;

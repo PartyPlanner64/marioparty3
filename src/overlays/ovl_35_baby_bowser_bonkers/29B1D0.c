@@ -109,50 +109,109 @@ typedef union BabyBowserBonkersBytes { // packs the top byte of each work word
 } BabyBowserBonkersBytes;
 
 extern const s16 D_8010B950_baby_bowser_bonkers[];
-extern BabyBowserBonkersActor *D_8010BC00_baby_bowser_bonkers[14];
 extern const s16 D_8010B95C_baby_bowser_bonkers[];
-extern omObjData *D_8010BC38_baby_bowser_bonkers;
-extern s32 D_8010BC3C_baby_bowser_bonkers;
-extern s32 D_8010BC40_baby_bowser_bonkers;
-extern s32 D_8010BC44_baby_bowser_bonkers;
-extern s32 D_8010BC48_baby_bowser_bonkers;
-extern s32 D_8010BC4C_baby_bowser_bonkers;
-extern s32 D_8010BC50_baby_bowser_bonkers;
-extern s32 D_8010BC54_baby_bowser_bonkers;
-extern s16 D_8010BC5C_baby_bowser_bonkers;
-extern BabyBowserBonkersPattern *D_8010BC68_baby_bowser_bonkers[4][4];
-extern BabyBowserBonkersPattern *D_8010B888_baby_bowser_bonkers;
-extern s16 D_8010B88C_baby_bowser_bonkers;
-extern s32 D_8010B890_baby_bowser_bonkers;
-extern s32 D_8010B894_baby_bowser_bonkers[4];
-extern Vec D_8010B8A4_baby_bowser_bonkers[];
-extern f32 D_8010B8EC_baby_bowser_bonkers;
-extern f32 D_8010B8F0_baby_bowser_bonkers;
-extern f32 D_8010B8F4_baby_bowser_bonkers;
-extern s32 D_8010B8BC_baby_bowser_bonkers[];
-extern s32 D_8010B8DC_baby_bowser_bonkers[];
-extern s32 D_8010B8E4_baby_bowser_bonkers[];
-extern s32 D_8010B848_baby_bowser_bonkers[];
-extern s32 D_8010B868_baby_bowser_bonkers[];
-extern BabyBowserBonkersPlayer *D_8010BC58_baby_bowser_bonkers;
 extern s32 D_800A178C_main[][6];
 extern u8 D_800D6A90_main;
-extern D_80111B50_vine_with_me_Struct D_8010BD08_baby_bowser_bonkers;
-extern s16 *D_8010BCA8_baby_bowser_bonkers;
-extern UnkBabyBowserBonkers *D_8010BCAC_baby_bowser_bonkers;
-extern BabyBowserBonkersActor *D_8010BC60_baby_bowser_bonkers;
-extern Vec D_8010B400_baby_bowser_bonkers[14];
 extern f32 D_800EB760_minigame;
-extern BabyBowserBonkersPattern **D_8010B8F8_baby_bowser_bonkers[4];
-extern s32 D_8010B908_baby_bowser_bonkers[4];
-extern s32 D_8010B918_baby_bowser_bonkers[];
-extern s32 D_8010B938_baby_bowser_bonkers;
-extern s32 D_8010B93C_baby_bowser_bonkers;
-extern s32 D_8010B940_baby_bowser_bonkers;
-extern BabyBowserBonkersCamera D_8010BCB0_baby_bowser_bonkers[2]; // target, origin
-extern s32 D_8010BCF8_baby_bowser_bonkers;
-extern s32 D_8010BCFC_baby_bowser_bonkers;
-extern s32 D_8010BD00_baby_bowser_bonkers;
+
+Vec D_8010B400_baby_bowser_bonkers[14] = {
+    { -312.25f, 39.1f, -276.95f },
+    { -105.35f, 39.1f, -276.95f },
+    { 105.35f, 39.1f, -276.95f },
+    { 312.25f, 39.1f, -276.95f },
+    { -202.8f, 39.1f, -75.6f },
+    { 3.05f, 39.1f, -75.6f },
+    { 208.8f, 39.1f, -75.6f },
+    { -302.8f, 39.1f, 127.8f },
+    { -104.7f, 39.1f, 127.8f },
+    { 104.7f, 39.1f, 127.8f },
+    { 302.8f, 39.1f, 127.8f },
+    { -202.8f, 39.1f, 321.5f },
+    { 3.05f, 39.1f, 321.5f },
+    { 208.8f, 39.1f, 321.5f }
+};
+
+BabyBowserBonkersSpawn D_8010B4A8_baby_bowser_bonkers[6] = { { 6, 4 }, { 12, 5 }, { 18, 6 }, { 6, 13 }, { 12, 12 }, { 18, 11 } };
+BabyBowserBonkersPattern D_8010B4C0_baby_bowser_bonkers = { 30, 60, 1, 6, D_8010B4A8_baby_bowser_bonkers };
+BabyBowserBonkersSpawn D_8010B4CC_baby_bowser_bonkers[6] = { { 6, 0 }, { 12, 4 }, { 18, 1 }, { 6, 10 }, { 12, 13 }, { 18, 9 } };
+BabyBowserBonkersPattern D_8010B4E4_baby_bowser_bonkers = { 30, 60, 1, 6, D_8010B4CC_baby_bowser_bonkers };
+BabyBowserBonkersSpawn D_8010B4F0_baby_bowser_bonkers[6] = { { 6, 3 }, { 12, 6 }, { 18, 2 }, { 6, 7 }, { 12, 11 }, { 18, 8 } };
+BabyBowserBonkersPattern D_8010B508_baby_bowser_bonkers = { 30, 60, 1, 6, D_8010B4F0_baby_bowser_bonkers };
+BabyBowserBonkersSpawn D_8010B514_baby_bowser_bonkers[6] = { { 6, 1 }, { 12, 5 }, { 18, 2 }, { 6, 9 }, { 12, 12 }, { 18, 8 } };
+BabyBowserBonkersPattern D_8010B52C_baby_bowser_bonkers = { 30, 60, 1, 6, D_8010B514_baby_bowser_bonkers };
+BabyBowserBonkersSpawn D_8010B538_baby_bowser_bonkers[8] = { { 6, 0 }, { 12, 2 }, { 18, 1 }, { 24, 3 }, { 6, 10 }, { 12, 8 }, { 18, 9 }, { 24, 7 } };
+BabyBowserBonkersPattern D_8010B558_baby_bowser_bonkers = { 60, 54, 1, 14, D_8010B538_baby_bowser_bonkers };
+BabyBowserBonkersSpawn D_8010B564_baby_bowser_bonkers[8] = { { 6, 3 }, { 12, 1 }, { 18, 2 }, { 24, 0 }, { 6, 7 }, { 12, 9 }, { 18, 8 }, { 24, 10 } };
+BabyBowserBonkersPattern D_8010B584_baby_bowser_bonkers = { 60, 54, 1, 14, D_8010B564_baby_bowser_bonkers };
+BabyBowserBonkersSpawn D_8010B590_baby_bowser_bonkers[8] = { { 6, 0 }, { 12, 4 }, { 18, 8 }, { 24, 12 }, { 6, 13 }, { 12, 9 }, { 18, 5 }, { 24, 1 } };
+BabyBowserBonkersPattern D_8010B5B0_baby_bowser_bonkers = { 60, 54, 1, 14, D_8010B590_baby_bowser_bonkers };
+BabyBowserBonkersSpawn D_8010B5BC_baby_bowser_bonkers[8] = { { 6, 3 }, { 12, 6 }, { 18, 10 }, { 24, 13 }, { 6, 11 }, { 12, 7 }, { 18, 4 }, { 24, 0 } };
+BabyBowserBonkersPattern D_8010B5DC_baby_bowser_bonkers = { 60, 54, 1, 14, D_8010B5BC_baby_bowser_bonkers };
+BabyBowserBonkersSpawn D_8010B5E8_baby_bowser_bonkers[14] = { { 6, 0 }, { 12, 1 }, { 18, 2 }, { 24, 3 }, { 30, 6 }, { 36, 5 }, { 42, 4 }, { 6, 13 }, { 12, 12 }, { 18, 11 }, { 24, 7 }, { 30, 8 }, { 36, 9 }, { 42, 10 } };
+BabyBowserBonkersPattern D_8010B620_baby_bowser_bonkers = { 60, 45, 1, 14, D_8010B5E8_baby_bowser_bonkers };
+BabyBowserBonkersSpawn D_8010B62C_baby_bowser_bonkers[14] = { { 6, 0 }, { 12, 1 }, { 18, 2 }, { 24, 3 }, { 30, 6 }, { 36, 10 }, { 42, 13 }, { 42, 12 }, { 36, 11 }, { 30, 7 }, { 24, 4 }, { 18, 5 }, { 12, 9 }, { 6, 8 } };
+BabyBowserBonkersPattern D_8010B664_baby_bowser_bonkers = { 60, 45, 1, 14, D_8010B62C_baby_bowser_bonkers };
+BabyBowserBonkersSpawn D_8010B670_baby_bowser_bonkers[14] = { { 6, 0 }, { 12, 4 }, { 18, 1 }, { 24, 5 }, { 30, 2 }, { 36, 6 }, { 42, 3 }, { 6, 10 }, { 12, 13 }, { 18, 9 }, { 24, 12 }, { 30, 8 }, { 36, 11 }, { 42, 7 } };
+BabyBowserBonkersPattern D_8010B6A8_baby_bowser_bonkers = { 60, 45, 1, 14, D_8010B670_baby_bowser_bonkers };
+BabyBowserBonkersSpawn D_8010B6B4_baby_bowser_bonkers[14] = { { 6, 13 }, { 12, 12 }, { 18, 11 }, { 24, 7 }, { 30, 4 }, { 36, 2 }, { 42, 1 }, { 42, 12 }, { 36, 3 }, { 30, 6 }, { 24, 10 }, { 18, 9 }, { 12, 8 }, { 6, 5 } };
+BabyBowserBonkersPattern D_8010B6EC_baby_bowser_bonkers = { 60, 45, 1, 14, D_8010B6B4_baby_bowser_bonkers };
+BabyBowserBonkersSpawn D_8010B6F8_baby_bowser_bonkers[14] = { { 6, 13 }, { 12, 12 }, { 18, 11 }, { 6, 7 }, { 12, 4 }, { 18, 2 }, { 6, 1 }, { 12, 12 }, { 18, 3 }, { 6, 6 }, { 12, 10 }, { 18, 9 }, { 6, 8 }, { 12, 5 } };
+BabyBowserBonkersPattern D_8010B730_baby_bowser_bonkers = { 21, 45, 0, 14, D_8010B6F8_baby_bowser_bonkers };
+BabyBowserBonkersSpawn D_8010B73C_baby_bowser_bonkers[14] = { { 6, 0 }, { 12, 1 }, { 18, 2 }, { 6, 3 }, { 12, 4 }, { 18, 5 }, { 6, 6 }, { 12, 7 }, { 18, 8 }, { 6, 9 }, { 12, 10 }, { 18, 11 }, { 6, 12 }, { 12, 13 } };
+BabyBowserBonkersPattern D_8010B774_baby_bowser_bonkers = { 21, 45, 0, 14, D_8010B73C_baby_bowser_bonkers };
+BabyBowserBonkersSpawn D_8010B780_baby_bowser_bonkers[14] = { { 18, 0 }, { 12, 1 }, { 6, 2 }, { 18, 3 }, { 12, 4 }, { 6, 5 }, { 18, 6 }, { 12, 7 }, { 6, 8 }, { 18, 9 }, { 12, 10 }, { 6, 11 }, { 18, 12 }, { 12, 13 } };
+BabyBowserBonkersPattern D_8010B7B8_baby_bowser_bonkers = { 27, 45, 0, 14, D_8010B780_baby_bowser_bonkers };
+BabyBowserBonkersSpawn D_8010B7C4_baby_bowser_bonkers[14] = { { 18, 13 }, { 12, 12 }, { 6, 11 }, { 18, 7 }, { 12, 4 }, { 6, 2 }, { 18, 1 }, { 12, 12 }, { 6, 3 }, { 6, 6 }, { 12, 10 }, { 6, 9 }, { 18, 8 }, { 12, 5 } };
+BabyBowserBonkersPattern D_8010B7FC_baby_bowser_bonkers = { 27, 45, 0, 14, D_8010B7C4_baby_bowser_bonkers };
+BabyBowserBonkersPattern *D_8010B808_baby_bowser_bonkers[4] = { &D_8010B4C0_baby_bowser_bonkers, &D_8010B4E4_baby_bowser_bonkers, &D_8010B508_baby_bowser_bonkers, &D_8010B52C_baby_bowser_bonkers };
+BabyBowserBonkersPattern *D_8010B818_baby_bowser_bonkers[4] = { &D_8010B558_baby_bowser_bonkers, &D_8010B584_baby_bowser_bonkers, &D_8010B5B0_baby_bowser_bonkers, &D_8010B5DC_baby_bowser_bonkers };
+BabyBowserBonkersPattern *D_8010B828_baby_bowser_bonkers[4] = { &D_8010B620_baby_bowser_bonkers, &D_8010B664_baby_bowser_bonkers, &D_8010B6A8_baby_bowser_bonkers, &D_8010B6EC_baby_bowser_bonkers };
+BabyBowserBonkersPattern *D_8010B838_baby_bowser_bonkers[4] = { &D_8010B730_baby_bowser_bonkers, &D_8010B774_baby_bowser_bonkers, &D_8010B7B8_baby_bowser_bonkers, &D_8010B7FC_baby_bowser_bonkers };
+s32 D_8010B848_baby_bowser_bonkers[8] = { 0x000200A5, 0x000300A5, 0x000700A5, 0x000400A5, 0x000500A5, 0x000600A5, 0x000800A5, 0x0009001C };
+s32 D_8010B868_baby_bowser_bonkers[8] = { 0x000200A6, 0x000300A6, 0x000700A6, 0x000400A6, 0x000500A6, 0x000600A6, 0x000800A6, 0x0009001D };
+BabyBowserBonkersPattern *D_8010B888_baby_bowser_bonkers = NULL;
+s16 D_8010B88C_baby_bowser_bonkers = 0;
+s32 D_8010B890_baby_bowser_bonkers = 0;
+s32 D_8010B894_baby_bowser_bonkers[4] = { 0, 1, 2, 3 };
+Vec D_8010B8A4_baby_bowser_bonkers[2] = {
+    { -352.8f, 39.1f, -75.6f },
+    { 352.8f, 39.1f, -75.6f }
+};
+s32 D_8010B8BC_baby_bowser_bonkers[8] = { 0x00020000, 0x00030000, 0x00070000, 0x00040000, 0x00050000, 0x00060000, 0x00080000, 0x00090000 };
+s32 D_8010B8DC_baby_bowser_bonkers[2] = { 0x2F, 0x30 };
+s32 D_8010B8E4_baby_bowser_bonkers[2] = { 0x36, 0x37 };
+f32 D_8010B8EC_baby_bowser_bonkers = 0.0f;
+f32 D_8010B8F0_baby_bowser_bonkers = 0.0f;
+f32 D_8010B8F4_baby_bowser_bonkers = 180.0f;
+BabyBowserBonkersPattern **D_8010B8F8_baby_bowser_bonkers[4] = { D_8010B808_baby_bowser_bonkers, D_8010B818_baby_bowser_bonkers, D_8010B828_baby_bowser_bonkers, D_8010B838_baby_bowser_bonkers };
+s32 D_8010B908_baby_bowser_bonkers[4] = { 4, 4, 4, 4 };
+s32 D_8010B918_baby_bowser_bonkers[8] = { 0x00210008, 0x00210009, 0x0021000A, 0x0021000B, 0x0021000C, 0x0021000D, 0x0021000E, 0x0021000F };
+s32 D_8010B938_baby_bowser_bonkers = 0;
+s32 D_8010B93C_baby_bowser_bonkers = 0;
+s32 D_8010B940_baby_bowser_bonkers = 0;
+
+BabyBowserBonkersActor *D_8010BC00_baby_bowser_bonkers[14] BSS;
+omObjData *D_8010BC38_baby_bowser_bonkers BSS;
+s32 D_8010BC3C_baby_bowser_bonkers BSS;
+s32 D_8010BC40_baby_bowser_bonkers BSS;
+s32 D_8010BC44_baby_bowser_bonkers BSS;
+s32 D_8010BC48_baby_bowser_bonkers BSS;
+s32 D_8010BC4C_baby_bowser_bonkers BSS;
+s32 D_8010BC50_baby_bowser_bonkers BSS;
+s32 D_8010BC54_baby_bowser_bonkers BSS;
+BabyBowserBonkersPlayer *D_8010BC58_baby_bowser_bonkers BSS;
+s16 D_8010BC5C_baby_bowser_bonkers BSS;
+BabyBowserBonkersActor *D_8010BC60_baby_bowser_bonkers BSS;
+u8 D_8010BC64_baby_bowser_bonkers[4] BSS; /* Unreferenced. */
+BabyBowserBonkersPattern *D_8010BC68_baby_bowser_bonkers[4][4] BSS;
+s16 *D_8010BCA8_baby_bowser_bonkers BSS;
+UnkBabyBowserBonkers *D_8010BCAC_baby_bowser_bonkers BSS;
+BabyBowserBonkersCamera D_8010BCB0_baby_bowser_bonkers[2] BSS; // target, origin
+s32 D_8010BCF8_baby_bowser_bonkers BSS;
+s32 D_8010BCFC_baby_bowser_bonkers BSS;
+s32 D_8010BD00_baby_bowser_bonkers BSS;
+u8 D_8010BD04_baby_bowser_bonkers[4] BSS; /* Unreferenced. */
+D_80111B50_vine_with_me_Struct D_8010BD08_baby_bowser_bonkers BSS;
 
 BabyBowserBonkersPlayer *func_8010B3AC_baby_bowser_bonkers(omObjData *object);
 void func_80109E98_baby_bowser_bonkers(s32, s16);
@@ -251,9 +310,9 @@ void func_80105BB0_baby_bowser_bonkers(omObjData *object) {
     }
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", D_8010B950_baby_bowser_bonkers);
+const s16 D_8010B950_baby_bowser_bonkers[] = { 0x8272, 0x8273, 0x8260, 0x8271, 0x8273, 0 };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", D_8010B95C_baby_bowser_bonkers);
+const s16 D_8010B95C_baby_bowser_bonkers[] = { 0x8265, 0x8268, 0x826D, 0x8268, 0x8272, 0x8267, 0 };
 
 void func_80105C0C_baby_bowser_bonkers(omObjData *object) {
     BabyBowserBonkersPlayer *player1;

@@ -2,7 +2,7 @@
 #include "game/vibrator.h"
 #include "game/mallocblock.h"
 #include "game/hmfmath.h"
-#include "game/lightdebug.h"
+#include "game/menuflag.h"
 #include "game/overlays/minigame.h"
 #include "math.h"
 
@@ -926,7 +926,7 @@ void func_80107CEC_modesel(void) {
     func_80108FC4_modesel();
     func_8010E984_modesel();
     func_8010EBF8_modesel();
-    if (GwStory.unk0 == 12 && func_800465D0_main() == 0) {
+    if (GwStory.unk0 == 12 && FileSelEnteredGet() == 0) {
         HuAudSeqPlay(0x29);
     } else {
         HuAudSeqPlay(4);
@@ -955,7 +955,7 @@ void func_80107CEC_modesel(void) {
         Hu3DCameraMotionSet(modelId, 0);
         func_8010EBF8_modesel();
     }
-    if (func_800465D0_main() == 1) {
+    if (FileSelEnteredGet() == 1) {
         if (_CheckFlag(0x16) || _CheckFlag(0x17)) {
             func_801068AC_modesel(5, 0);
             func_80106830_modesel(5, 1);
@@ -966,7 +966,7 @@ void func_80107CEC_modesel(void) {
         func_80106830_modesel(5, 1);
         func_80106910_modesel(5);
     }
-    if (GwStory.unk0 == 12 && func_800465D0_main() == 0) {
+    if (GwStory.unk0 == 12 && FileSelEnteredGet() == 0) {
         omDelPrcObj(D_80110BE0_modesel);
         D_80110BE0_modesel = func_8010899C_modesel();
         D_80110BD0_modesel = func_8010AA48_modesel(10);
@@ -977,8 +977,8 @@ void func_80107CEC_modesel(void) {
     HuPrcSleep(0x28);
     func_801067C0_modesel(10, 0x13, 8, 8, 2);
     HuAudFXPlay(0x159);
-    if (func_800465D0_main() == 1) {
-        if (func_800465E8_main() == 0) {
+    if (FileSelEnteredGet() == 1) {
+        if (ModeSelIntroShownGet() == 0) {
             func_80106BA0_modesel(0, 0x3100, 0xA0, D_8010F296_modesel + 4, 0, 0, 3);
             HuPrcSleep(0x1E);
             func_8010788C_modesel(0);
@@ -1022,7 +1022,7 @@ void func_80107CEC_modesel(void) {
                     func_80106BA0_modesel(0, (u32)D_8010F454_modesel, 0xA0, D_8010F296_modesel + 4, 0, 0, 3);
                 }
             }
-            func_800465F4_main(1);
+            ModeSelIntroShownSet(1);
             func_80107730_modesel(0, 0x3101);
         } else {
             func_80106BA0_modesel(0, 0x3101, 0xA0, D_8010F296_modesel + 4, 0, 0, 3);
@@ -1183,7 +1183,7 @@ void func_80107CEC_modesel(void) {
         case 12:
             break;
         case 13:
-            if (func_800465D0_main() == 1) {
+            if (FileSelEnteredGet() == 1) {
                 omOvlCallEx(0x78, 5, 0x91);
             } else {
                 omOvlCallEx(0x78, 6, 0x91);
@@ -2118,7 +2118,7 @@ void func_8010AF90_modesel(void) {
     func_8010B75C_modesel(9, 0.0f, 0.0f, 16.0f, 20.0f);
 
     func_80106280_modesel(10, 0xA0122, 0xAA9);
-    if (GwStory.unk0 == 12 && func_800465D0_main() == 0) {
+    if (GwStory.unk0 == 12 && FileSelEnteredGet() == 0) {
         func_8010653C_modesel(10, -300.0f, 225.0f, 300.0f);
         func_8010673C_modesel(10);
     } else {
@@ -2226,7 +2226,7 @@ s32 func_8010BA70_modesel(void) {
     s32 confirm;
     s16 modelId;
 
-    if (func_800465D0_main() == 1) {
+    if (FileSelEnteredGet() == 1) {
         if (_CheckFlag(0x16) || _CheckFlag(0x17)) {
             cur = 5;
             func_80107730_modesel(0, 0x3106);
@@ -2280,7 +2280,7 @@ s32 func_8010BA70_modesel(void) {
                 func_8010788C_modesel(0);
                 break;
             }
-            if (func_800465D0_main() == 1) {
+            if (FileSelEnteredGet() == 1) {
                 HuWinComKeyWait(-0x8000, 0, 0, 0, 1);
                 func_80107730_modesel(0, 0x3101);
             } else if (GwStory.unk0 == 12) {
@@ -2309,7 +2309,7 @@ s32 func_8010BA70_modesel(void) {
             func_8010EC40_modesel();
             func_80109188_modesel(-1, 20);
             func_80109E90_modesel(9);
-            if (GwStory.unk0 != 12 || func_800465D0_main() != 0) {
+            if (GwStory.unk0 != 12 || FileSelEnteredGet() != 0) {
                 func_8010ABB4_modesel(10);
             }
             HuPrcSleep(20);
@@ -2337,7 +2337,7 @@ s32 func_8010BA70_modesel(void) {
             func_8010A62C_modesel(cur);
             func_80109188_modesel(-1, 20);
             omDelObj(D_80110BD0_modesel);
-            if (GwStory.unk0 != 12 || func_800465D0_main() != 0) {
+            if (GwStory.unk0 != 12 || FileSelEnteredGet() != 0) {
                 D_80110BD0_modesel = func_8010ABB4_modesel(10);
             }
             HuPrcSleep(20);
@@ -2753,7 +2753,7 @@ s32 func_8010CD00_modesel(s32 cur, s32 buttons) {
         case 5:
             HuAudFXPlay(3);
             func_801067C0_modesel(10, 0x13, 8, 8, 2);
-            if (func_800465D0_main() == 1) {
+            if (FileSelEnteredGet() == 1) {
                 if (_CheckFlag(0x16) && _CheckFlag(0x17)) {
                     func_80107730_modesel(0, 0x3112);
                     pick = func_8010CC38_modesel();
@@ -2787,11 +2787,11 @@ s32 func_8010CD00_modesel(s32 cur, s32 buttons) {
             HuAudFXPlay(3);
             func_801067C0_modesel(10, 0x13, 8, 8, 2);
             func_80105FB4_modesel(1);
-            if (func_800465D0_main() == 0 && GwStory.unk0 == 12) {
+            if (FileSelEnteredGet() == 0 && GwStory.unk0 == 12) {
                 func_80107730_modesel(0, 0x3118);
                 func_8010788C_modesel(0);
                 func_80107730_modesel(0, 0x3104);
-            } else if (func_800465D0_main() == 0 && !(GwSystem.playMode & 2)) {
+            } else if (FileSelEnteredGet() == 0 && !(GwSystem.playMode & 2)) {
                 func_80107730_modesel(0, 0x3118);
                 func_8010788C_modesel(0);
                 func_80107730_modesel(0, 0x3104);
@@ -2803,7 +2803,7 @@ s32 func_8010CD00_modesel(s32 cur, s32 buttons) {
                         result = 6;
                         break;
                     case 1:
-                        if (func_800465D0_main() == 1) {
+                        if (FileSelEnteredGet() == 1) {
                             if (_CheckFlag(0x17)) {
                                 func_80107730_modesel(0, 0x310B);
                                 func_8010788C_modesel(0);
@@ -2868,11 +2868,11 @@ s32 func_8010CD00_modesel(s32 cur, s32 buttons) {
             HuAudFXPlay(3);
             func_801067C0_modesel(10, 0x13, 8, 8, 2);
             func_80105FB4_modesel(1);
-            if (func_800465D0_main() == 0 && GwStory.unk0 == 12) {
+            if (FileSelEnteredGet() == 0 && GwStory.unk0 == 12) {
                 func_80107730_modesel(0, 0x3118);
                 func_8010788C_modesel(0);
                 func_80107730_modesel(0, 0x3103);
-            } else if (func_800465D0_main() == 0 && (GwSystem.playMode & 2)) {
+            } else if (FileSelEnteredGet() == 0 && (GwSystem.playMode & 2)) {
                 func_80107730_modesel(0, 0x3118);
                 func_8010788C_modesel(0);
                 func_80107730_modesel(0, 0x3103);
@@ -2884,7 +2884,7 @@ s32 func_8010CD00_modesel(s32 cur, s32 buttons) {
                         result = 9;
                         break;
                     case 1:
-                        if (func_800465D0_main() == 1) {
+                        if (FileSelEnteredGet() == 1) {
                             if (_CheckFlag(0x16)) {
                                 func_80107730_modesel(0, 0x310B);
                                 func_8010788C_modesel(0);
@@ -2948,7 +2948,7 @@ s32 func_8010CD00_modesel(s32 cur, s32 buttons) {
                     break;
                 }
             }
-            if (func_800465D0_main() == 0) {
+            if (FileSelEnteredGet() == 0) {
                 func_80107730_modesel(0, 0x3118);
                 func_8010788C_modesel(0);
                 func_80107730_modesel(0, 0x313E);
@@ -2963,7 +2963,7 @@ s32 func_8010CD00_modesel(s32 cur, s32 buttons) {
                     result = 13;
                     goto confirmed;
                 }
-                if (func_800465D0_main() == 0) {
+                if (FileSelEnteredGet() == 0) {
                     func_80107730_modesel(0, 0x313E);
                 } else {
                     func_80107730_modesel(0, 0x3105);
@@ -2975,7 +2975,7 @@ s32 func_8010CD00_modesel(s32 cur, s32 buttons) {
         case 10:
             HuAudFXPlay(3);
             func_801067C0_modesel(10, 0x13, 8, 8, 2);
-            if (func_800465D0_main() == 0 && GwStory.unk0 == 12) {
+            if (FileSelEnteredGet() == 0 && GwStory.unk0 == 12) {
                 func_80106000_modesel(1);
                 func_80107730_modesel(0, 0x313C);
                 func_8010788C_modesel(0);
@@ -2990,7 +2990,7 @@ s32 func_8010CD00_modesel(s32 cur, s32 buttons) {
                 }
             } else {
                 func_80106000_modesel(1);
-                if (func_800465D0_main() == 0) {
+                if (FileSelEnteredGet() == 0) {
                     func_80107730_modesel(0, 0x3137);
                     func_8010788C_modesel(0);
                     choice = func_80107838_modesel(0, 1, 0);
@@ -3076,7 +3076,7 @@ s32 func_8010D8DC_modesel(s32 cur, s32 buttons) {
     s32 unlocked;
     s32 i;
 
-    if (func_800465D0_main() == 1) {
+    if (FileSelEnteredGet() == 1) {
         unlocked = 0;
         if (_CheckFlag(0x16) || _CheckFlag(0x17)) {
             unlocked = 1;
@@ -3109,7 +3109,7 @@ s32 func_8010D8DC_modesel(s32 cur, s32 buttons) {
                 }
             } else if (buttons & 0x200) {
                 next = 8;
-                if (func_800465D0_main() == 0) {
+                if (FileSelEnteredGet() == 0) {
                     next = (GwStory.unk0 == 12) ? 10 : 8;
                 }
             } else if (buttons & 0x100) {
@@ -3134,7 +3134,7 @@ s32 func_8010D8DC_modesel(s32 cur, s32 buttons) {
                 next = unlocked ? 5 : 9;
             } else if (buttons & 0x200) {
                 next = 10;
-                if (func_800465D0_main() == 0) {
+                if (FileSelEnteredGet() == 0) {
                     next = (GwStory.unk0 != 12) ? 10 : 8;
                 }
             }
@@ -3142,12 +3142,12 @@ s32 func_8010D8DC_modesel(s32 cur, s32 buttons) {
         case 8:
             if (buttons & 0x800) {
                 next = 9;
-                if (func_800465D0_main() == 0 && GwStory.unk0 == 12) {
+                if (FileSelEnteredGet() == 0 && GwStory.unk0 == 12) {
                     next = 10;
                 }
             } else if (buttons & 0x100) {
                 next = 10;
-                if (func_800465D0_main() == 0 && GwStory.unk0 == 12) {
+                if (FileSelEnteredGet() == 0 && GwStory.unk0 == 12) {
                     next = 7;
                 }
             }
@@ -3157,12 +3157,12 @@ s32 func_8010D8DC_modesel(s32 cur, s32 buttons) {
                 next = 3;
             } else if (buttons & 0x200) {
                 next = 8;
-                if (func_800465D0_main() == 0) {
+                if (FileSelEnteredGet() == 0) {
                     next = (GwStory.unk0 == 12) ? 10 : 8;
                 }
             } else if (buttons & 0x400) {
                 next = 10;
-                if (func_800465D0_main() == 0) {
+                if (FileSelEnteredGet() == 0) {
                     next = (GwStory.unk0 != 12) ? 10 : 8;
                 }
             } else if (buttons & 0x100) {
@@ -3170,7 +3170,7 @@ s32 func_8010D8DC_modesel(s32 cur, s32 buttons) {
             }
             break;
         case 10:
-            if (func_800465D0_main() == 0 && GwStory.unk0 == 12) {
+            if (FileSelEnteredGet() == 0 && GwStory.unk0 == 12) {
                 if (buttons & 0x800) {
                     next = 9;
                 } else if (buttons & 0x200) {
@@ -3218,7 +3218,7 @@ void func_8010DC6C_modesel(s32 arg0) {
             func_80107730_modesel(0, 0x3106);
             break;
         case 7:
-            if (func_800465D0_main() == 1) {
+            if (FileSelEnteredGet() == 1) {
                 func_80107730_modesel(0, 0x3104);
             } else if ((GwSystem.playMode & 2) && GwStory.unk0 != 12) {
                 func_801077FC_modesel(0, 0, func_8010F204_modesel(GwStory.unk0) + 0x3127);
@@ -3228,7 +3228,7 @@ void func_8010DC6C_modesel(s32 arg0) {
             }
             break;
         case 8:
-            if (func_800465D0_main() == 1) {
+            if (FileSelEnteredGet() == 1) {
                 func_80107730_modesel(0, 0x3103);
             } else if ((GwSystem.playMode & 1) && GwStory.unk0 != 12) {
                 func_801077FC_modesel(0, 0, func_8010F204_modesel(GwStory.unk0) + 0x3127);
@@ -3238,16 +3238,16 @@ void func_8010DC6C_modesel(s32 arg0) {
             }
             break;
         case 9:
-            if (func_800465D0_main() == 0) {
+            if (FileSelEnteredGet() == 0) {
                 func_80107730_modesel(0, 0x313E);
             } else {
                 func_80107730_modesel(0, 0x3105);
             }
             break;
         case 10:
-            if (func_800465D0_main() == 0 && GwStory.unk0 == 12) {
+            if (FileSelEnteredGet() == 0 && GwStory.unk0 == 12) {
                 func_80107730_modesel(0, 0x3119);
-            } else if (func_800465D0_main() == 0) {
+            } else if (FileSelEnteredGet() == 0) {
                 func_80107730_modesel(0, 0x3122);
             } else {
                 func_80107730_modesel(0, 0x3124);
@@ -3286,7 +3286,7 @@ void func_8010DE88_modesel(s32 arg0) {
             func_8010E280_modesel(1, 9);
             break;
         case 10:
-            func_800465D0_main();
+            FileSelEnteredGet();
             func_80109188_modesel(10, 8);
             func_8010E280_modesel(1, 10);
             break;
@@ -3341,7 +3341,7 @@ void func_8010E000_modesel(s32 arg0, s32 *x, s32 *y) {
             index = 2;
             break;
         case 10:
-            if (func_800465D0_main() == 0 && GwStory.unk0 == 12) {
+            if (FileSelEnteredGet() == 0 && GwStory.unk0 == 12) {
                 index = 7;
             } else {
                 index = 6;
@@ -3391,7 +3391,7 @@ void func_8010E138_modesel(s32 arg0, f32 *x, f32 *y, f32 *z) {
             index = 2;
             break;
         case 10:
-            if (func_800465D0_main() == 0 && GwStory.unk0 == 12) {
+            if (FileSelEnteredGet() == 0 && GwStory.unk0 == 12) {
                 index = 7;
             } else {
                 index = 2;
@@ -3549,7 +3549,7 @@ void func_8010E7B4_modesel(void) {
 
     D_80110B70_modesel[0] = D_80110B70_modesel[1] = D_80110B70_modesel[2] = D_80110B70_modesel[3] =
         D_80110B70_modesel[4] = D_80110B70_modesel[5] = 0;
-    if (func_800465D0_main() == 1) {
+    if (FileSelEnteredGet() == 1) {
         SLLoadBoard();
         for (i = 0; i < 4; i++) {
             D_80110B88_modesel.chr[i] = GwPlayer[i].chr;
@@ -3573,7 +3573,7 @@ void func_8010E984_modesel(void) {
     s32 x;
     s32 y;
 
-    if (func_800465D0_main() == 1) {
+    if (FileSelEnteredGet() == 1) {
         func_80105EA8_modesel(6, 0xD0011);
         func_8010601C_modesel(6, 0x40, 0x1C);
         func_80105FB4_modesel(6);
@@ -3636,7 +3636,7 @@ void func_8010EBC4_modesel(void) {
 void func_8010EBF8_modesel(void) {
     func_80105FE4_modesel(6);
     func_80105FE4_modesel(7);
-    if (func_800465D0_main() != 1) {
+    if (FileSelEnteredGet() != 1) {
         func_80105FE4_modesel(8);
         func_80105FE4_modesel(9);
     }

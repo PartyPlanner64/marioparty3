@@ -109,7 +109,8 @@ segments:
       - [0x37210, c, game/gamemes]
       - [0x45F50, c, game/pause]
       - [0x46C30, c, game/aura]
-      - [0x471D0, c, game/lightdebug]
+      - [0x471D0, c, game/menuflag]
+      - [0x47200, c, game/lightdebug]
       - [0x47D60, c, game/objmain]
       - [0x4B120, c, game/audio]
       - [0x4BF40, c, game/objsysobj]
@@ -634,7 +635,7 @@ segments:
       - { start: 0xA96F0, type: .bss, vram: 0x800B1A50, name: game/gamemes }
       - { start: 0xA96F0, type: .bss, vram: 0x800B2340, name: game/pause }
       - { start: 0xA96F0, type: .bss, vram: 0x800B23A0, name: game/aura }
-      - { start: 0xA96F0, type: .bss, vram: 0x800B23B0, name: game/lightdebug }
+      - { start: 0xA96F0, type: .bss, vram: 0x800B23B0, name: game/menuflag }
       - { start: 0xA96F0, type: .bss, vram: 0x800B23C0, name: game/objmain }
       - { start: 0xA96F0, type: .bss, vram: 0x800B23D0, name: game/audio }
       - { start: 0xA96F0, type: .bss, vram: 0x800B23E0, name: game/profiler }

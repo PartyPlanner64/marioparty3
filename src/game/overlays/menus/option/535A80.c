@@ -700,8 +700,8 @@ s32 func_80109504_option(void) {
     Vec at;
     s32 x, y;
 
-    if (func_800465E8_main()) {
-        func_800465F4_main(1);
+    if (ModeSelIntroShownGet()) {
+        ModeSelIntroShownSet(1);
         func_801133BC_option(0, 0x4E00);
         func_80113490_option(0);
         func_80113408_option(0, 0x4E02);

@@ -1006,7 +1006,7 @@ void func_80107CF8_filesel(void) {
         HuPrcVSleep();
     }
     D_800D09A8_main.boxNo = fileIndex;
-    func_800465F4_main(0);
+    ModeSelIntroShownSet(0);
     D_800D09A8_main.boxNo = fileIndex;
     SLSaveCommon();
     HuAudFXPlay(0x155);
@@ -1029,12 +1029,12 @@ void func_80107CF8_filesel(void) {
     omOvlKill();
     switch (result) {
         case 0:
-            func_800465DC_main(1);
+            FileSelEnteredSet(1);
             omOvlCallEx(0x77, 1, 0x91);
             func_80112758_filesel();
             break;
         case 1:
-            func_800465DC_main(0);
+            FileSelEnteredSet(0);
             func_80112758_filesel();
             if (_CheckFlag(0x28)) {
                 omOvlCallEx(0x77, 0, 0x81);
@@ -1060,7 +1060,7 @@ void func_80107CF8_filesel(void) {
             omOvlHisData *history;
 
             func_80112758_filesel();
-            func_800465DC_main(0);
+            FileSelEnteredSet(0);
             history = &omovlhis[++omovlhisidx];
             history->overlayID = 0x7A;
             history->event = 0;

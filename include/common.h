@@ -38,6 +38,7 @@
 #include "game/malloc.h"
 #include "game/mallocblock.h"
 #include "game/mapspace.h"
+#include "game/menuflag.h"
 #include "game/messdata.h"
 #include "game/mgdata.h"
 #include "game/msm.h"

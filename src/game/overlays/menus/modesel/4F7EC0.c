@@ -26,7 +26,7 @@ void func_801059D0_modesel(void) {
     Hu3DCameraPerspectiveSet(0, 41.0f, 80.0f, 8000.0f);
     Hu3DCameraPosSetV(0, &position, &target, &up);
     Hu3DMotionGlobalSpeedSet(1.0f);
-    if (func_800465D0_main()) {
+    if (FileSelEnteredGet()) {
         HuAudSeqStop();
     }
     pfInit();

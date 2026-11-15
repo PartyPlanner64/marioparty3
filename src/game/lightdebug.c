@@ -24,26 +24,7 @@ static s16 D_800A1674_main[] = { 16, 72, 224, 88, 152, 232 };
 static s16 D_800A1680_main[] = { 16, 16, 16, 24, 24, 24 };
 static s16 D_800A168C_main[] = { 56, 96, 256, 112, 192, 264 };
 static s16 D_800A1698_main[] = { 24, 24, 24, 32, 32, 32 };
-static s8 D_800B23B0_main;
-static s8 D_800B23B1_main;
 extern UnkLightData *D_800CE1D4_main;
-
-
-s32 func_800465D0_main(void) {
-    return D_800B23B0_main;
-}
-
-void func_800465DC_main(s8 arg0) {
-    D_800B23B0_main = arg0;
-}
-
-s32 func_800465E8_main(void) {
-    return D_800B23B1_main;
-}
-
-void func_800465F4_main(s8 arg0) {
-    D_800B23B1_main = arg0;
-}
 
 void LightDebugCreate(void) {
     LightObjWork *work;

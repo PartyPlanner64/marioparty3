@@ -2944,6 +2944,11 @@ AuraCreate = 0x800461B4; //rom:0x46DB4
 AuraProc = 0x800461D8; //rom:0x46DD8
 AuraKill = 0x80046558; //rom:0x47158
 AuraParamSet = 0x800465A8; //rom:0x471A8
+// menuflag.c
+FileSelEnteredGet = 0x800465D0; //rom:0x471D0
+FileSelEnteredSet = 0x800465DC; //rom:0x471DC
+ModeSelIntroShownGet = 0x800465E8; //rom:0x471E8
+ModeSelIntroShownSet = 0x800465F4; //rom:0x471F4
 // lightdebug.c
 LightDebugCreate = 0x80046600; //rom:0x47200
 LightDebugKill = 0x800466D8; //rom:0x472D8

@@ -733,50 +733,6 @@ void func_8010E40C_mgmode(void) {
     }
 }
 
-#ifdef NON_MATCHING
-// Matches except for one register copy: target emits `move t3,a2` for rank = 0,
-// but GCC propagates the constant (`move t3,zero`) whenever `slot = 0` and
-// `rank = 0` share a basic block, regardless of how the initializer is written.
-// An empty `if (count) {}` between `slot = 0;` and `rank = slot;` does not keep
-// the copy (it moves `move t3,zero` into a delay slot, 3 diffs).
-// Compiler analysis (gcc 2.7.2 sources, -O1): cse.c always swaps a pseudo copy
-// for a known constant (const_int costs 0, a pseudo costs 1), so the copy can
-// only survive if `slot = 0` and `rank = slot` land in different CSE blocks
-// (a used label or a NOTE_INSN_LOOP_END between them). The target's outer-loop
-// pretest is still folded to `count != 0`, though, which needs CSE to know that
-// rank and slot are both 0, or needs combine to fold it (see below). A LOOP_END
-// boundary (`slot = 0; do {} while (0); for (rank = slot; ...)`) keeps the copy
-// but the pretest turns into `slot < count` (score 495). The `move a1,v0` next
-// to the pretest is a copy inserted by cse_around_loop. Also brute-forced
-// every s16/int/u16/s8/u8/u32 combination for slot/rank with each initializer
-// spelling, `slot` initialized in its declaration, before `count`, before or
-// in the init of the order loop, `rank`/`slot` aliased onto `arg0`, `for` vs
-// `while` vs guarded `do`/`while`, and `for (;;)` with a `break`. None keep
-// the copy and the folded pretest. No other function in asm/nonmatchings
-// (besides func_8010E6F0_mgmode) and no matched build output shows a
-// zero-then-copy between two pseudos, so there's no reference pattern.
-// Later passes can't create the copy either: cse_set_around_loop only copies
-// into exit-test temporaries (none of which end up in t3), combine has no
-// LOG_LINK from the pretest to `slot = 0` (only the first use gets one) and
-// cannot split the resulting two-set PARALLEL, and loop.c only emits
-// reg-reg copies for STRICT_LOW_PART partial movables. Also tried the
-// `count` if/else and `==` spellings, swapped `order[i] == rank`, and
-// alternate `pos[i].x` arithmetic; all stay at the same single diff.
-// What does work: an initial slot value that CSE can't see is 0 but combine
-// can prove is 0 (from nonzero_bits, since count is only ever 2 or 4).
-// `for (slot = (count & 1) * 2, rank = slot; ...)` (also `* 40`) gives a
-// full ROM match for both this function and func_8010E6F0_mgmode. CSE keeps
-// the copy, CSE substitutes the SImode temporary into the pretest, and
-// combine folds both to 0. It isn't used because the expression is
-// meaningless. `count & 1`, `count % 2`, `count >> 3`, `count / 8`,
-// `(4 - count) & 1`, `(4 - count) % 2`, and `(count & 1) << 1` leave the
-// computation in place, as do `count == 1`, `count > 6`, `count % 2 * 2`,
-// `(count & 1) * 80`, `((4 - count) & 1) * 2`, and `(count & 1) ? 1 : 0`
-// (`* 4` also matches). Combine only applies nonzero_bits when it merges a
-// second insn into the `and`, so a lone test of count is never folded.
-// The start really is 0 at runtime (`move a2,zero`), count is only 2 or 4 by
-// construction, so no centering offset like `(4 - count) / 2` fits, and no
-// similar ranking loop was found in marioparty2 or marioparty4.
 void func_8010E494_mgmode(s16 arg0) {
     Vec pos[4];
     s16 order[4];
@@ -789,7 +745,8 @@ void func_8010E494_mgmode(s16 arg0) {
     for (i = 0; i < count; i++) {
         order[i] = D_800D1F20_main[i];
     }
-    for (slot = 0, rank = 0; rank < count || slot < count; rank++) {
+    // count is 2 or 4, so slot starts at 0; this form keeps rank's copy of slot (matches).
+    for (slot = (count & 1) * 2, rank = slot; rank < count || slot < count; rank++) {
         for (i = 0; i < count; i++) {
             if (rank == order[i]) {
                 pos[i].x = slot * 80 - 122;
@@ -807,32 +764,7 @@ void func_8010E494_mgmode(s16 arg0) {
         Hu3DModelPosSet(D_8011B8E8_mgmode[i], pos[i].x, pos[i].y, pos[i].z);
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_8010E494_mgmode);
-#endif
 
-#ifdef NON_MATCHING
-// Matches except for one register copy, the same issue as func_8010E494_mgmode:
-// target emits `move t2,a2` for rank = 0 (copying slot), but GCC propagates the
-// constant (`move t2,zero`). Tried `rank = slot = 0`, a while loop, moving
-// `slot = 0` before the order loop or to the top of the function, `|` instead
-// of `||`, and the `if (count) {}` workaround from func_8010E494_mgmode; none
-// produce the copy without other diffs. See func_8010E494_mgmode for the CSE
-// analysis and the list of other loop shapes and types tried; the
-// `do {} while (0);` boundary keeps the copy here too but unfolds the pretest
-// (score 1204). The empty `if (count) {}` trick does not keep the copy here
-// (score 210). The `(count & 1) * 2` initializer described at
-// func_8010E494_mgmode gives a full match here too. The folded pretest `beqz count<<16` comes from combine using
-// nonzero_bits (count is only ever 2 or 4) on the jump.c-duplicated exit test,
-// and the `move a1,v0` next to it is cse_around_loop reusing count<<16 for the
-// exit test, so the loop must stay a rotated for/while: an explicit
-// `if (count > 0)`/`if (count != 0)` guard around a do/while (with the copy
-// split off by `do {} while (0);`) keeps the copy but loses both (score 4190).
-// Notes for the rest of the function:
-// the second Hu3DModelPosSet z coordinate really uses delta[i].x (original
-// bug), model ids must come from the shared D_8011B8A8_mgmode table in the
-// first setup loop to get both table bases hoisted, and `count` must be
-// declared before `node` for the stack slots to match.
 void func_8010E6F0_mgmode(s16 arg0) {
     Vec pos[4];
     Vec delta[4];
@@ -853,7 +785,8 @@ void func_8010E6F0_mgmode(s16 arg0) {
     for (i = 0; i < count; i++) {
         order[i] = D_800D1F20_main[i];
     }
-    for (slot = 0, rank = 0; rank < count || slot < count; rank++) {
+    // count is 2 or 4, so slot starts at 0; this form keeps rank's copy of slot (matches).
+    for (slot = (count & 1) * 2, rank = slot; rank < count || slot < count; rank++) {
         for (i = 0; i < count; i++) {
             if (rank == order[i]) {
                 pos[i].x = slot * 80 - 122;
@@ -917,9 +850,6 @@ void func_8010E6F0_mgmode(s16 arg0) {
         HuPrcVSleep();
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_8010E6F0_mgmode);
-#endif
 
 void func_8010EE84_mgmode(s16 arg0) {
     Vec pos[4];

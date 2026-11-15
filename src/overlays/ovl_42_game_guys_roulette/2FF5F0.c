@@ -32,19 +32,22 @@ typedef struct GameGuysRouletteRingFreq {
     /* 0x02 */ s16 y;
 } GameGuysRouletteRingFreq;
 
-extern s16 D_8010A6B0_game_guys_roulette; // intro timer
-extern s16 D_8010A6B2_game_guys_roulette; // intro start y
-extern s16 D_8010A6B4_game_guys_roulette; // outro timer
-extern GameGuysRouletteRing D_8010AB60_game_guys_roulette[3];
-extern s16 D_8010ABA8_game_guys_roulette;                            // center x
-extern s16 D_8010ABAA_game_guys_roulette;                            // center y
-extern s16 D_8010ABAC_game_guys_roulette;                            // radius
-extern s16 D_8010ABAE_game_guys_roulette;                            // target x
-extern s16 D_8010ABB0_game_guys_roulette;                            // target y
-extern GameGuysRouletteRingHistory D_8010ABB8_game_guys_roulette[3]; // per-buffer ring state
-extern GameGuysRouletteBanner D_8010AC20_game_guys_roulette;
-extern s16 D_8010AC34_game_guys_roulette; // current buffer index
-extern GameGuysRouletteBanner D_8010AC38_game_guys_roulette;
+s16 D_8010A6B0_game_guys_roulette = 0;   // intro timer
+s16 D_8010A6B2_game_guys_roulette = 120; // intro start y
+s16 D_8010A6B4_game_guys_roulette = 0;   // outro timer
+
+GameGuysRouletteRing D_8010AB60_game_guys_roulette[3] BSS;
+s16 D_8010ABA8_game_guys_roulette BSS;                            // center x
+s16 D_8010ABAA_game_guys_roulette BSS;                            // center y
+s16 D_8010ABAC_game_guys_roulette BSS;                            // radius
+s16 D_8010ABAE_game_guys_roulette BSS;                            // target x
+s16 D_8010ABB0_game_guys_roulette BSS;                            // target y
+u8 D_8010ABB4_game_guys_roulette[4] BSS;                          /* Unreferenced. */
+GameGuysRouletteRingHistory D_8010ABB8_game_guys_roulette[3] BSS; // per-buffer ring state
+u8 D_8010AC18_game_guys_roulette[8] BSS;                          /* Unreferenced. */
+GameGuysRouletteBanner D_8010AC20_game_guys_roulette BSS;
+s16 D_8010AC34_game_guys_roulette BSS; // current buffer index
+GameGuysRouletteBanner D_8010AC38_game_guys_roulette BSS;
 
 void func_80109E6C_game_guys_roulette(void);
 void func_80109FD0_game_guys_roulette(void);

@@ -29,76 +29,81 @@ typedef struct GameGuysRouletteCharFiles { // 0x20 bytes
     /* 0x00 */ s32 ids[8];                 // per-character sprite index (low half)
 } GameGuysRouletteCharFiles;
 
-extern s16 D_8010A640_game_guys_roulette[]; // COM key wait frames, indexed by CPU difficulty
-extern u8 D_8010A646_game_guys_roulette;
-extern u8 D_8010A647_game_guys_roulette;   // selection moved left
-extern u8 D_8010A648_game_guys_roulette;   // cursor step
-extern f32 D_8010A64C_game_guys_roulette;  // selected prize scale
-extern f32 D_8010A650_game_guys_roulette;  // selected prize scale step
-extern u8 D_8010A654_game_guys_roulette;   // cursor move frames
-extern u8 D_8010A655_game_guys_roulette;   // COM decision timer
-extern u8 D_8010A656_game_guys_roulette;   // countdown frame timer
-extern u8 D_8010A657_game_guys_roulette;   // countdown
-extern f32 D_8010A658_game_guys_roulette;  // portrait scale
-extern u8 D_8010A6A0_game_guys_roulette;   // banner blink timer
-extern u8 D_8010A6A1_game_guys_roulette;   // banner blink frame
-extern u8 D_8010A6A4_game_guys_roulette[]; // prize multipliers
-extern s16 D_8010A65C_game_guys_roulette;
-extern u8 D_8010A65E_game_guys_roulette;  // spin start timer
-extern u8 D_8010A65F_game_guys_roulette;  // spin start state
-extern u8 D_8010A660_game_guys_roulette;  // spinning
-extern u8 D_8010A661_game_guys_roulette;  // spin state
-extern f32 D_8010A664_game_guys_roulette; // wheel speed
-extern f32 D_8010A668_game_guys_roulette; // wheel angle
-extern f32 D_8010A66C_game_guys_roulette; // ball rotation
-extern s16 D_8010A670_game_guys_roulette; // spin sound
-extern u8 D_8010A672_game_guys_roulette;  // current slot
-extern s16 D_8010A674_game_guys_roulette; // spin sound pitch
-extern u8 D_8010A676_game_guys_roulette;  // previous slot
-extern GameGuysRoulettePrizeFiles D_8010A6C0_game_guys_roulette;
-extern GameGuysRouletteCharFiles D_8010A6D8_game_guys_roulette;
-extern GameGuysRoulettePrizeFiles D_8010A6F8_game_guys_roulette;
-extern GameGuysRouletteCharFiles D_8010A710_game_guys_roulette;
-extern s16 D_8010A678_game_guys_roulette;
-extern u8 D_8010A67A_game_guys_roulette;      // result timer
-extern u8 D_8010A67B_game_guys_roulette;      // result state
-extern s16 D_8010A67C_game_guys_roulette;     // result message
-extern char *D_8010A680_game_guys_roulette[]; // character names
-extern char D_8010A810_game_guys_roulette[];
-extern omObjData *D_8010A910_game_guys_roulette;
-extern omObjData *D_8010A914_game_guys_roulette;
-extern omObjData *D_8010A918_game_guys_roulette;
-extern omObjData *D_8010A91C_game_guys_roulette;
-extern omObjData *D_8010A920_game_guys_roulette;
-extern Process *D_8010A924_game_guys_roulette;
-extern Process *D_8010A928_game_guys_roulette;
-extern GameGuysRouletteSprite D_8010A930_game_guys_roulette; // background
-extern GameGuysRouletteSprite D_8010A950_game_guys_roulette;
-extern GameGuysRouletteSprite D_8010A970_game_guys_roulette;
-extern GameGuysRouletteSprite D_8010A990_game_guys_roulette;    // prize panel
-extern GameGuysRouletteSprite D_8010A9B0_game_guys_roulette[6]; // prize icons
-extern GameGuysRouletteSprite D_8010AA70_game_guys_roulette;    // character portrait
-extern GameGuysRouletteSprite D_8010AA90_game_guys_roulette;
-extern GameGuysRouletteSprite D_8010AAB0_game_guys_roulette;
-extern u16 D_8010AAD0_game_guys_roulette[3]; // coin digits
-extern GameGuysRoulettePlayerInfo D_8010AAD6_game_guys_roulette;
-extern u16 D_8010AADE_game_guys_roulette; // window
-extern u16 D_8010AAE0_game_guys_roulette;
-extern u16 D_8010AAE2_game_guys_roulette;
-extern f32 D_8010AAE4_game_guys_roulette;
-extern f32 D_8010AAE8_game_guys_roulette;
-extern f32 D_8010AAEC_game_guys_roulette;
-extern u16 D_8010AAF0_game_guys_roulette[21]; // wheel slot angles
-extern f32 D_8010AB20_game_guys_roulette[6];
-extern f32 D_8010AB38_game_guys_roulette[6];
-extern u8 D_8010AB50_game_guys_roulette;
-extern u8 D_8010AB51_game_guys_roulette;
-extern s16 D_8010AB52_game_guys_roulette;
-extern s16 D_8010AB54_game_guys_roulette; // message window
-extern u8 D_8010AB56_game_guys_roulette;  // winning slot
-extern u8 D_8010AB57_game_guys_roulette;  // winning prize
-extern u8 D_8010AB58_game_guys_roulette;
-extern s16 D_8010AB5A_game_guys_roulette; // CPU difficulty
+typedef struct GameGuysRouletteBssAAD0 { // 0xE bytes
+    /* 0x00 */ u16 coinDigits[3];
+    /* 0x06 */ GameGuysRoulettePlayerInfo playerInfo;
+} GameGuysRouletteBssAAD0;
+
+s16 D_8010A640_game_guys_roulette[3] = { 5, 25, 60 }; // COM key wait frames, indexed by CPU difficulty
+u8 D_8010A646_game_guys_roulette = 0;
+u8 D_8010A647_game_guys_roulette = 0;     // selection moved left
+u8 D_8010A648_game_guys_roulette = 2;     // cursor step
+f32 D_8010A64C_game_guys_roulette = 1.1f; // selected prize scale
+f32 D_8010A650_game_guys_roulette = 0.1f; // selected prize scale step
+u8 D_8010A654_game_guys_roulette = 0;     // cursor move frames
+u8 D_8010A655_game_guys_roulette = 0;     // COM decision timer
+u8 D_8010A656_game_guys_roulette = 0;     // countdown frame timer
+u8 D_8010A657_game_guys_roulette = 10;    // countdown
+f32 D_8010A658_game_guys_roulette = 0.0f; // portrait scale
+s16 D_8010A65C_game_guys_roulette = 0;
+u8 D_8010A65E_game_guys_roulette = 0;       // spin start timer
+u8 D_8010A65F_game_guys_roulette = 0;       // spin start state
+u8 D_8010A660_game_guys_roulette = 0;       // spinning
+u8 D_8010A661_game_guys_roulette = 0;       // spin state
+f32 D_8010A664_game_guys_roulette = 0.0f;   // wheel speed
+f32 D_8010A668_game_guys_roulette = 270.0f; // wheel angle
+f32 D_8010A66C_game_guys_roulette = 0.0f;   // ball rotation
+s16 D_8010A670_game_guys_roulette = 0;      // spin sound
+u8 D_8010A672_game_guys_roulette = 0;       // current slot
+s16 D_8010A674_game_guys_roulette = 900;    // spin sound pitch
+u8 D_8010A676_game_guys_roulette = 0;       // previous slot
+s16 D_8010A678_game_guys_roulette = 0;
+u8 D_8010A67A_game_guys_roulette = 0;  // result timer
+u8 D_8010A67B_game_guys_roulette = 0;  // result state
+s16 D_8010A67C_game_guys_roulette = 0; // result message
+
+const GameGuysRoulettePrizeFiles D_8010A6C0_game_guys_roulette = { { 4, 5, 6, 7, 8, 9 } };
+const GameGuysRouletteCharFiles D_8010A6D8_game_guys_roulette = { { 16, 17, 18, 19, 20, 21, 22, 23 } };
+const GameGuysRoulettePrizeFiles D_8010A6F8_game_guys_roulette = { { 16, 17, 18, 15, 19, 14 } };
+const GameGuysRouletteCharFiles D_8010A710_game_guys_roulette = { { 28, 29, 30, 31, 32, 33, 34, 35 } };
+
+char D_8010A810_game_guys_roulette[0x100] BSS;
+omObjData *D_8010A910_game_guys_roulette BSS;
+omObjData *D_8010A914_game_guys_roulette BSS;
+omObjData *D_8010A918_game_guys_roulette BSS;
+omObjData *D_8010A91C_game_guys_roulette BSS;
+omObjData *D_8010A920_game_guys_roulette BSS;
+Process *D_8010A924_game_guys_roulette BSS;
+Process *D_8010A928_game_guys_roulette BSS;
+u8 D_8010A92C_game_guys_roulette[4] BSS;                  /* Unreferenced. */
+GameGuysRouletteSprite D_8010A930_game_guys_roulette BSS; // background
+GameGuysRouletteSprite D_8010A950_game_guys_roulette BSS;
+GameGuysRouletteSprite D_8010A970_game_guys_roulette BSS;
+GameGuysRouletteSprite D_8010A990_game_guys_roulette BSS;    // prize panel
+GameGuysRouletteSprite D_8010A9B0_game_guys_roulette[6] BSS; // prize icons
+GameGuysRouletteSprite D_8010AA70_game_guys_roulette BSS;    // character portrait
+GameGuysRouletteSprite D_8010AA90_game_guys_roulette BSS;
+GameGuysRouletteSprite D_8010AAB0_game_guys_roulette BSS;
+GameGuysRouletteBssAAD0 gameGuysRouletteBssAAD0 BSS;
+extern u16 D_8010AAD0_game_guys_roulette[3];                     // gameGuysRouletteBssAAD0.coinDigits
+extern GameGuysRoulettePlayerInfo D_8010AAD6_game_guys_roulette; // gameGuysRouletteBssAAD0.playerInfo
+u16 D_8010AADE_game_guys_roulette BSS;                           // window
+u16 D_8010AAE0_game_guys_roulette BSS;
+u16 D_8010AAE2_game_guys_roulette BSS;
+f32 D_8010AAE4_game_guys_roulette BSS;
+f32 D_8010AAE8_game_guys_roulette BSS;
+f32 D_8010AAEC_game_guys_roulette BSS;
+u16 D_8010AAF0_game_guys_roulette[24] BSS; // wheel slot angles
+f32 D_8010AB20_game_guys_roulette[6] BSS;
+f32 D_8010AB38_game_guys_roulette[6] BSS;
+u8 D_8010AB50_game_guys_roulette BSS;
+u8 D_8010AB51_game_guys_roulette BSS;
+s16 D_8010AB52_game_guys_roulette BSS;
+s16 D_8010AB54_game_guys_roulette BSS; // message window
+u8 D_8010AB56_game_guys_roulette BSS;  // winning slot
+u8 D_8010AB57_game_guys_roulette BSS;  // winning prize
+u8 D_8010AB58_game_guys_roulette BSS;
+s16 D_8010AB5A_game_guys_roulette BSS; // CPU difficulty
 
 void func_80105A28_game_guys_roulette(void);
 void func_80105A78_game_guys_roulette(void);
@@ -815,21 +820,20 @@ void func_80108414_game_guys_roulette(void) {
     }
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_42_game_guys_roulette/2FC270", D_8010A770_game_guys_roulette);
+char *D_8010A680_game_guys_roulette[] = {
+    "\x82\x6C\x82\x60\x82\x71\x82\x68\x82\x6E",                 // ＭＡＲＩＯ
+    "\x82\x6B\x82\x74\x82\x68\x82\x66\x82\x68",                 // ＬＵＩＧＩ
+    "\x82\x6F\x82\x64\x82\x60\x82\x62\x82\x67",                 // ＰＥＡＣＨ
+    "\x82\x78\x82\x6E\x82\x72\x82\x67\x82\x68",                 // ＹＯＳＨＩ
+    "\x82\x76\x82\x60\x82\x71\x82\x68\x82\x6E",                 // ＷＡＲＩＯ
+    "\x82\x63\x82\x6A",                                         // ＤＫ
+    "\x82\x76\x82\x60\x82\x6B\x82\x74\x82\x68\x82\x66\x82\x68", // ＷＡＬＵＩＧＩ
+    "\x82\x63\x82\x60\x82\x68\x82\x72\x82\x78",                 // ＤＡＩＳＹ
+};
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_42_game_guys_roulette/2FC270", D_8010A77C_game_guys_roulette);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_42_game_guys_roulette/2FC270", D_8010A78C_game_guys_roulette);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_42_game_guys_roulette/2FC270", D_8010A794_game_guys_roulette);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_42_game_guys_roulette/2FC270", D_8010A7A0_game_guys_roulette);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_42_game_guys_roulette/2FC270", D_8010A7AC_game_guys_roulette);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_42_game_guys_roulette/2FC270", D_8010A7B8_game_guys_roulette);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_42_game_guys_roulette/2FC270", D_8010A7C4_game_guys_roulette);
+u8 D_8010A6A0_game_guys_roulette = 0;                                              // banner blink timer
+u8 D_8010A6A1_game_guys_roulette = 1;                                              // banner blink frame
+u8 D_8010A6A4_game_guys_roulette[6] = { 2, 4, 8, 16, 32, 64 }; // prize multipliers
 
 void func_80108480_game_guys_roulette(void) {
     if (D_8010A67B_game_guys_roulette == 0) {

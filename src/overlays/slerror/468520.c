@@ -7,8 +7,8 @@
 #include "game/wipe.h"
 #include "variables.h"
 
-extern s16 D_80105F40_slerror[4];
-extern s16 D_80105F48_slerror[4];
+s16 D_80105F40_slerror[4] BSS;
+s16 D_80105F48_slerror[4] BSS;
 
 void func_801059D0_slerror(void);
 

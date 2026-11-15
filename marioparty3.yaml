@@ -2287,8 +2287,8 @@ segments:
     subsegments:
       - [0x4684F0, c]
       - [0x468520, c]
-      - [0x468A70, data, 4684F0] #80105F20
-      - {0x468A90, type: bss, vram: 0x80105F40, name: slerror_bss}
+      - [0x468A70, .data, 4684F0] #80105F20
+      - {0x468A90, type: .bss, vram: 0x80105F40, name: 468520}
 
   - type: code
     start: 0x468A90

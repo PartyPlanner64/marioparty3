@@ -5,16 +5,8 @@
 extern f32 D_800CB890_main;
 extern f32 D_800D5210_main;
 
-extern Vec D_8011B920_mstory2;
-extern Vec D_8011B92C_mstory2;
-extern Vec D_8011B938_mstory2;
-
-extern s16 D_8011B944_mstory2;
 extern void (*const D_8011BDE0_mstory2[])(void);
 extern const s32 D_8011BDF4_mstory2[];
-extern s16 D_8011B946_mstory2;
-extern s16 D_8011B948_mstory2;
-extern s32 D_8011B94C_mstory2;
 extern s16 D_8011C640_mstory2;
 extern s16 D_8011C642_mstory2;
 extern s16 D_8011C644_mstory2;
@@ -44,6 +36,19 @@ void func_801076DC_mstory2(omObjData *obj, omObjData *target);
 void func_801064AC_mstory2(void);
 void func_80106D50_mstory2(void);
 void func_80107824_mstory2(omObjData *obj, Vec *target, s32 frames, s32 faceDir);
+void func_8011AAE0_mstory2(void);
+void func_8010876C_mstory2(void);
+void func_8010D0EC_mstory2(void);
+void func_80111D7C_mstory2(void);
+void func_80116A3C_mstory2(void);
+
+Vec D_8011B920_mstory2 = { 14.0f, 193.0f, 1400.0f };
+Vec D_8011B92C_mstory2 = { -25.0f, 0.0f, -650.0f };
+Vec D_8011B938_mstory2 = { 0.0f, 1.0f, -0.0001f };
+s16 D_8011B944_mstory2 = 0;
+s16 D_8011B946_mstory2 = 0;
+s16 D_8011B948_mstory2 = 0;
+s32 D_8011B94C_mstory2 = 0;
 
 void func_801059A0_mstory2(void) {
     func_80105C1C_mstory2();
@@ -133,9 +138,9 @@ void func_80105C1C_mstory2(void) {
     WipeCreateIn(2, 16);
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory2/49BD40", D_8011BDE0_mstory2);
+void (*const D_8011BDE0_mstory2[])(void) = { func_8011AAE0_mstory2, func_8010876C_mstory2, func_8010D0EC_mstory2, func_80111D7C_mstory2, func_80116A3C_mstory2 };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory2/49BD40", D_8011BDF4_mstory2);
+const s32 D_8011BDF4_mstory2[] = { -1, 0x33, 0x35, 0x37, 0x39 };
 
 void func_80105DB4_mstory2(omObjData *obj) {
     s16 state = D_8011B946_mstory2;
@@ -661,6 +666,14 @@ void func_80107824_mstory2(omObjData *obj, Vec *target, s32 frames, s32 faceDir)
     HuPrcVSleep();
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory2/49BD40", D_8011BE2C_mstory2);
+const s32 D_8011BE2C_mstory2[7] = { 0x1D000B, 0x1D000C, 0x1D000D, 0x1D000E, 0x1D000F, 0x1D0010, 0x1D0011 };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory2/49BD40", D_8011BE48_mstory2);
+const s16 D_8011BE48_mstory2[7][2] = {
+    { 57, 20 },
+    { 129, 36 },
+    { 200, 22 },
+    { 215, 91 },
+    { 150, 124 },
+    { 81, 105 },
+    { 12, 122 },
+};

@@ -1,14 +1,7 @@
 #include "common.h"
 #include "game/hmfmath.h"
 #include "overlays/minigame.h"
-
-typedef struct UnkMstory2Obj {
-    /* 0x00 */ omObjData *obj;
-    /* 0x04 */ void (*func)(omObjData *);
-    /* 0x08 */ s32 unk_08;
-    /* 0x0C */ s32 unk_0C;
-    /* 0x10 */ s32 unk_10;
-} UnkMstory2Obj; // sizeof 0x14
+#include "mstory2.h"
 
 extern void (*const D_8011BDE0_mstory2[])(void);
 extern UnkMstory2Obj D_8011CA10_mstory2[3];
@@ -17,11 +10,8 @@ extern Vec D_8011CA50_mstory2;
 extern const Vec D_8011C60C_mstory2;
 extern s16 D_8011CA7A_mstory2;
 extern s16 D_8011CA4C_mstory2;
-extern f32 D_8011BDD0_mstory2;
 extern Vec D_8011CA5C_mstory2;
 extern const Vec D_8011C618_mstory2;
-extern f32 D_8011BDD4_mstory2;
-extern f32 D_8011BDD8_mstory2;
 extern f32 D_8011CA04_mstory2;
 
 void func_80105FBC_mstory2(void);
@@ -44,6 +34,10 @@ void func_801060A4_mstory2(void);
 void func_801060D4_mstory2(void);
 void func_801060F8_mstory2(s32 mess);
 s16 func_801061BC_mstory2(void);
+
+f32 D_8011BDD0_mstory2 = -1.5f;
+f32 D_8011BDD4_mstory2 = 0.0f;
+f32 D_8011BDD8_mstory2 = 0.0f;
 
 void func_8011AAE0_mstory2(void) {
     func_80105FBC_mstory2();
@@ -153,9 +147,10 @@ void func_8011B080_mstory2(omObjData *obj) {
     D_8011CA10_mstory2[2].func = func_8011AB7C_mstory2;
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory2/4B0E80", D_8011C60C_mstory2);
+const Vec D_8011C60C_mstory2 = { 138.0f, 100.0f, 514.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory2/4B0E80", D_8011C618_mstory2);
+const Vec D_8011C618_mstory2 = { 0.0f, 225.0f, 400.0f };
+const Vec D_8011C624_mstory2 = { 0.0f, 0.0f, 0.0f }; /* Unreferenced. */
 
 const char D_8011C630_mstory2[] = "c204n_0_DEF";
 

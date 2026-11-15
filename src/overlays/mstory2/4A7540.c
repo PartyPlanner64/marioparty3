@@ -1,14 +1,7 @@
 #include "common.h"
 #include "game/hmfmath.h"
 #include "overlays/minigame.h"
-
-typedef struct UnkMstory2Obj {
-    /* 0x00 */ omObjData *obj;
-    /* 0x04 */ void (*func)(omObjData *);
-    /* 0x08 */ s32 unk_08;
-    /* 0x0C */ s32 unk_0C;
-    /* 0x10 */ s32 unk_10;
-} UnkMstory2Obj; // sizeof 0x14
+#include "mstory2.h"
 
 typedef struct MstoryPath {
     /* 0x00 */ s16 count;
@@ -44,22 +37,11 @@ extern s16 D_8011C908_mstory2;
 extern s16 D_8011C91A_mstory2;
 extern s16 D_8011C91C_mstory2;
 extern s16 D_8011C91E_mstory2;
-extern Vec D_8011BB90_mstory2[];
-extern Vec D_8011BBC0_mstory2[];
-extern Vec D_8011BC08_mstory2;
-extern Vec D_8011BC14_mstory2;
-extern Vec D_8011BC20_mstory2;
-extern Vec D_8011BC2C_mstory2;
-extern Vec D_8011BC5C_mstory2;
-extern Vec D_8011BC68_mstory2;
-extern Vec D_8011BC74_mstory2;
 extern s16 D_8011C912_mstory2[3];
 extern const Vec D_8011C3D8_mstory2;
 extern s16 D_8011C90A_mstory2[3];
 extern const Vec D_8011C3C0_mstory2;
-extern s16 D_8011C90E_mstory2;
 extern s16 D_8011C910_mstory2;
-extern s16 D_8011C916_mstory2;
 extern s16 D_8011C918_mstory2;
 
 void func_80105FBC_mstory2(void);
@@ -112,6 +94,31 @@ void func_8010614C_mstory2(s32 mess);
 void func_8010622C_mstory2(void);
 void func_80106E2C_mstory2(omObjData *obj, Vec *pos, s32 frames);
 void func_801072AC_mstory2(s16 model);
+
+Vec D_8011BB90_mstory2[4] = {
+    { 0.0f, 200.0f, 100.0f },
+    { -200.0f, 100.0f, -100.0f },
+    { -100.0f, 300.0f, 300.0f },
+    { 9999.0f, 9999.0f, 9999.0f },
+};
+Vec D_8011BBC0_mstory2[4] = {
+    { -100.0f, 300.0f, 300.0f },
+    { -200.0f, 400.0f, -100.0f },
+    { 0.0f, 200.0f, 100.0f },
+    { 9999.0f, 9999.0f, 9999.0f },
+};
+Vec D_8011BBF0_mstory2 = { 0.0f, 158.73f, 0.0f }; /* Unreferenced. */
+Vec D_8011BBFC_mstory2 = { 0.0f, 167.01f, 0.0f }; /* Unreferenced. */
+Vec D_8011BC08_mstory2 = { 0.0f, 158.46f, 0.0f };
+Vec D_8011BC14_mstory2 = { 0.0f, -70.43f, 0.0f };
+Vec D_8011BC20_mstory2 = { 0.0f, -77.13f, 0.0f };
+Vec D_8011BC2C_mstory2 = { 0.0f, -135.0f, 0.0f };
+Vec D_8011BC38_mstory2 = { 0.0f, 162.4f, 0.0f };   /* Unreferenced. */
+Vec D_8011BC44_mstory2 = { 0.0f, -147.34f, 0.0f }; /* Unreferenced. */
+Vec D_8011BC50_mstory2 = { 0.0f, 306.61f, 0.0f };  /* Unreferenced. */
+Vec D_8011BC5C_mstory2 = { 0.0f, 90.0f, 0.0f };
+Vec D_8011BC68_mstory2 = { 0.0f, 50.19f, 0.0f };
+Vec D_8011BC74_mstory2 = { 0.0f, 100.78f, 0.0f };
 
 const Vec D_8011C234_mstory2 = { -120.0f, 0.0f, 480.0f };
 
@@ -388,13 +395,14 @@ void func_8011204C_mstory2(void) {
     }
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory2/4A7540", D_8011C240_mstory2);
+const Vec D_8011C240_mstory2 = { 608.1f, -85.8f, -1390.3f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory2/4A7540", D_8011C24C_mstory2);
+const Vec D_8011C24C_mstory2 = { 238.0f, 100.0f, 214.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory2/4A7540", D_8011C258_mstory2);
+const Vec D_8011C258_mstory2 = { 0.0f, 200.0f, 150.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory2/4A7540", D_8011C264_mstory2);
+const Vec D_8011C264_mstory2 = { 0.0f, 200.0f, 100.0f };
+const Vec D_8011C270_mstory2 = { 0.0f, 0.0f, 0.0f }; /* Unreferenced. */
 
 void func_801120C0_mstory2(omObjData *obj) {
     Vec pos[4] = {
@@ -718,21 +726,8 @@ void func_80113670_mstory2(void) {
 void func_80113BFC_mstory2(void) {
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory2/4A7540", D_8011C354_mstory2);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory2/4A7540", D_8011C360_mstory2);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory2/4A7540", D_8011C36C_mstory2);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory2/4A7540", D_8011C378_mstory2);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory2/4A7540", D_8011C384_mstory2);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory2/4A7540", D_8011C390_mstory2);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory2/4A7540", D_8011C39C_mstory2);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory2/4A7540", D_8011C3A8_mstory2);
+char *D_8011BC80_mstory2[] = { "c000l_0_DEF", "c001l_0_DEF", "c002l_0_DEF", "c003l_0_DEF", "c004l_0_DEF", "c005l_0_DEF", "c300l_0_DEF", "c301l_0_DEF" };
+char *D_8011BCA0_mstory2[] = { "c005l_0_DEF", "c001l_0_DEF" };
 
 const char D_8011C3B4_mstory2[] = "item_hook";
 
@@ -786,8 +781,8 @@ void func_80113F88_mstory2(omObjData *obj) {
     D_8011C840_mstory2[0].unk_0C = 1;
     D_8011C840_mstory2[0].unk_10 = 31;
     func_801073A4_mstory2(obj, 3.5f, 15);
-    func_80106D58_mstory2(obj->model[1], D_8011C910_mstory2, D_8011C90E_mstory2);
-    func_80106D58_mstory2(D_8011C840_mstory2[1].obj->model[1], D_8011C918_mstory2, D_8011C916_mstory2);
+    func_80106D58_mstory2(obj->model[1], D_8011C910_mstory2, D_8011C90A_mstory2[2]);
+    func_80106D58_mstory2(D_8011C840_mstory2[1].obj->model[1], D_8011C918_mstory2, D_8011C912_mstory2[2]);
     D_8011C840_mstory2[0].unk_0C = 0;
     Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[5]].motId, 0, 10, 2);
     Hu3DMotionShiftSet(D_8011C840_mstory2[1].obj->model[1], Hu3DData[D_8011C840_mstory2[1].obj->motion[4]].motId, 0, 10, 2);
@@ -987,11 +982,11 @@ void func_8011501C_mstory2(omObjData *obj) {
     D_8011C840_mstory2[1].func = func_80111EAC_mstory2;
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory2/4A7540", D_8011C3C0_mstory2);
+const Vec D_8011C3C0_mstory2 = { 0.0f, 180.0f, 0.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory2/4A7540", D_8011C3CC_mstory2);
+const Vec D_8011C3CC_mstory2 = { 0.0f, 0.0f, 0.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory2/4A7540", D_8011C3D8_mstory2);
+const Vec D_8011C3D8_mstory2 = { 0.0f, -180.0f, 0.0f };
 
 const char D_8011C3E4_mstory2[] = "c204n_0_DEF";
 
@@ -1217,10 +1212,10 @@ void func_80115CDC_mstory2(void) {
 void func_80115E4C_mstory2(void) {
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory2/4A7540", D_8011C3F0_mstory2);
+const Vec D_8011C3F0_mstory2 = { 0.0f, 167.0f, 0.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory2/4A7540", D_8011C3FC_mstory2);
+const Vec D_8011C3FC_mstory2 = { 0.0f, -135.0f, 0.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory2/4A7540", D_8011C408_mstory2);
+const Vec D_8011C408_mstory2 = { 0.0f, -53.39f, 0.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory2/4A7540", D_8011C414_mstory2);
+const Vec D_8011C414_mstory2 = { 0.0f, -53.390015f, 0.0f };

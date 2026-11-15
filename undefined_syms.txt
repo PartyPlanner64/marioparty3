@@ -231,3 +231,17 @@ D_801149F4_duel10 = D_801149F3_duel10 + 0x1;
 
 /* duel10: s32 partner space table whose low halfwords splat labeled. */
 D_80114A6C_duel10 = D_80114A6E_duel10 - 0x2;
+/* crazy_cogs field aliases: CrazyCogsBssB990, CrazyCogsBssB9B0, CrazyCogsBssDE68. */
+D_8010B990_crazy_cogs = crazyCogsBssB990;
+D_8010B991_crazy_cogs = crazyCogsBssB990 + 0x1;
+D_8010B9B0_crazy_cogs = crazyCogsBssB9B0;
+D_8010B9E2_crazy_cogs = crazyCogsBssB9B0 + 0x32;
+D_8010B9E3_crazy_cogs = crazyCogsBssB9B0 + 0x33;
+D_8010DE68_crazy_cogs = crazyCogsBssDE68;
+D_8010DE69_crazy_cogs = crazyCogsBssDE68 + 0x1;
+D_8010DE6A_crazy_cogs = crazyCogsBssDE68 + 0x2;
+/* crazy_cogs UnkCrazyCogsCog fields within D_8010B9F0_crazy_cogs[70]. */
+D_8010BA30_crazy_cogs = D_8010B9F0_crazy_cogs + 0x40; /* [0].unk_40 */
+D_8010BA32_crazy_cogs = D_8010B9F0_crazy_cogs + 0x42; /* [0].unk_42 */
+D_8010BA34_crazy_cogs = D_8010B9F0_crazy_cogs + 0x44; /* [0].unk_44.x */
+D_8010BA38_crazy_cogs = D_8010B9F0_crazy_cogs + 0x48; /* [0].unk_44.y */

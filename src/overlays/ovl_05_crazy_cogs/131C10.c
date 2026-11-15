@@ -75,65 +75,89 @@ typedef struct {
     f32 fov;
 } CrazyCogsCamera;
 
-extern CrazyCogsMovement D_8010DE28_crazy_cogs[7];
-extern CrazyCogsCpuMovement D_8010DE70_crazy_cogs[3];
-extern CrazyCogsCamera D_8010B898_crazy_cogs[2];
+typedef struct {
+    /* 0x00 */ s8 unk00;
+    /* 0x01 */ s8 unk01[3];
+} CrazyCogsBssB990;
 
-extern s16 D_8010B858_crazy_cogs[4];
-extern u16 D_8010B860_crazy_cogs[5];
+typedef struct {
+    /* 0x00 */ s8 unk00[50];
+    /* 0x32 */ s8 unk32;
+    /* 0x33 */ s8 unk33[13];
+} CrazyCogsBssB9B0;
+
+typedef struct {
+    /* 0x00 */ s8 unk00;
+    /* 0x01 */ u8 unk01;
+    /* 0x02 */ s8 unk02[4];
+} CrazyCogsBssDE68;
+
+extern s32 D_800A178C_main[][6];
+extern s32 D_800A1790_main[][6];
+
+s32 D_8010B810_crazy_cogs[8] = { 2, 3, 7, 4, 5, 6, 8, 9 };
+D_80111B50_vine_with_me_Struct D_8010B830_crazy_cogs = { 0, 0, 1, 2, 0, 0, 0, 0, { 90.0f, 900.0f, 0.0f, 30.0f }, { 150, 0, 0, 0 }, 0, 0, 0, 0, 0 };
+s16 D_8010B858_crazy_cogs[4] = { 9, 11, 10, 12 };
+u16 D_8010B860_crazy_cogs[5] = { 10, 20, 25, 30, 40 };
+s16 D_8010B86C_crazy_cogs[8][2] = { { 0, 55 }, { 0, 55 }, { 0, 55 }, { 0, 55 }, { 0, 55 }, { 0, 56 }, { 0, 54 }, { 0, 54 } };
+f32 D_8010B88C_crazy_cogs[3] = { 90.0f, 225.0f, 315.0f };
+CrazyCogsCamera D_8010B898_crazy_cogs[2] = {
+    { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 45.0f },
+    { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 45.0f },
+};
+
+CrazyCogsBssB990 crazyCogsBssB990 BSS;
+s16 D_8010B994_crazy_cogs BSS;
+s8 D_8010B996_crazy_cogs BSS;
+s8 D_8010B997_crazy_cogs BSS;
+f32 D_8010B998_crazy_cogs BSS;
+s8 D_8010B99C_crazy_cogs BSS;
+s16 D_8010B99E_crazy_cogs BSS;
+s8 D_8010B9A0_crazy_cogs BSS;
+s8 D_8010B9A1_crazy_cogs BSS;
+s8 D_8010B9A2_crazy_cogs BSS;
+u16 D_8010B9A4_crazy_cogs BSS;
+s8 D_8010B9A6_crazy_cogs BSS;
+f32 D_8010B9A8_crazy_cogs BSS;
+u8 D_8010B9AC_crazy_cogs[4] BSS; /* Unreferenced. */
+CrazyCogsBssB9B0 crazyCogsBssB9B0 BSS;
+UnkCrazyCogsCog D_8010B9F0_crazy_cogs[70] BSS;
+s16 D_8010DE08_crazy_cogs[3] BSS;
+s16 D_8010DE0E_crazy_cogs BSS;
+s8 D_8010DE10_crazy_cogs[3] BSS;
+f32 D_8010DE14_crazy_cogs BSS;
+s32 D_8010DE18_crazy_cogs[2] BSS;
+s16 D_8010DE20_crazy_cogs BSS;
+s16 D_8010DE22_crazy_cogs BSS;
+u8 D_8010DE24_crazy_cogs[4] BSS; /* Unreferenced. */
+CrazyCogsMovement D_8010DE28_crazy_cogs[7] BSS;
+s8 D_8010DE60_crazy_cogs BSS;
+s16 D_8010DE62_crazy_cogs BSS;
+u8 D_8010DE64_crazy_cogs BSS;
+s16 D_8010DE66_crazy_cogs BSS;
+CrazyCogsBssDE68 crazyCogsBssDE68 BSS;
+CrazyCogsCpuMovement D_8010DE70_crazy_cogs[4] BSS;
+f32 D_8010DE88_crazy_cogs[10] BSS;
+UnkCrazyCogsCog *D_8010DEB0_crazy_cogs BSS;
+s8 D_8010DEB4_crazy_cogs BSS;
+
+/* Fields of the grouped BSS structs above, aliased in undefined_syms.txt. */
+extern s8 D_8010B990_crazy_cogs;
+extern s8 D_8010B991_crazy_cogs[3];
+extern s8 D_8010B9B0_crazy_cogs[50];
+extern s8 D_8010B9E2_crazy_cogs;
+extern s8 D_8010B9E3_crazy_cogs[13];
+extern s8 D_8010DE68_crazy_cogs;
+extern u8 D_8010DE69_crazy_cogs;
+extern s8 D_8010DE6A_crazy_cogs[4];
+
+/* Fields of D_8010B9F0_crazy_cogs[0], aliased in undefined_syms.txt. */
 extern s16 D_8010BA30_crazy_cogs;
 extern u16 D_8010BA32_crazy_cogs;
 extern f32 D_8010BA34_crazy_cogs;
 extern f32 D_8010BA38_crazy_cogs;
 
-extern s32 D_800A178C_main[][6];
-extern s32 D_800A1790_main[][6];
-extern s16 D_8010B86E_crazy_cogs[8][2];
-extern f32 D_8010B88C_crazy_cogs[3];
-extern s8 D_8010B9A1_crazy_cogs;
-extern s32 D_8010B810_crazy_cogs[8];
-extern s8 D_8010B99C_crazy_cogs;
-extern s8 D_8010B9A0_crazy_cogs;
-extern s8 D_8010B9A2_crazy_cogs;
-extern s8 D_8010B9A6_crazy_cogs;
-extern s16 D_8010DE08_crazy_cogs[3];
-extern s16 D_8010DE0E_crazy_cogs;
-extern u8 D_8010DE64_crazy_cogs;
-extern u8 D_8010DE69_crazy_cogs;
-extern s8 D_8010DE68_crazy_cogs;
-extern s8 D_8010DEB4_crazy_cogs;
-extern s8 D_8010B996_crazy_cogs;
-extern D_80111B50_vine_with_me_Struct D_8010B830_crazy_cogs;
 extern const s16 D_8010B97C_crazy_cogs[];
-extern s8 D_8010B997_crazy_cogs;
-extern s16 D_8010DE62_crazy_cogs;
-extern s16 D_8010DE66_crazy_cogs;
-extern UnkCrazyCogsCog *D_8010DEB0_crazy_cogs;
-extern f32 D_8010DE88_crazy_cogs[10];
-extern f32 D_8010B998_crazy_cogs;
-extern u16 D_8010B9A4_crazy_cogs;
-extern s8 D_8010B990_crazy_cogs;
-extern s16 D_8010B994_crazy_cogs;
-extern s16 D_8010B99E_crazy_cogs;
-extern f32 D_8010B9A8_crazy_cogs;
-extern s8 D_8010B9B0_crazy_cogs[50];
-extern s8 D_8010B9E2_crazy_cogs;
-extern s8 D_8010B9E3_crazy_cogs[13];
-extern UnkCrazyCogsCog D_8010B9F0_crazy_cogs[70];
-extern omObjData *D_8010BA74_crazy_cogs;
-extern omObjData *D_8010BAF8_crazy_cogs;
-extern omObjData *D_8010BB7C_crazy_cogs;
-extern UnkCrazyCogsCog D_8010C8E4_crazy_cogs[];
-extern omObjData *D_8010C5CC_crazy_cogs;
-extern omObjData *D_8010C650_crazy_cogs;
-extern f32 D_8010DE14_crazy_cogs;
-extern s32 D_8010DE18_crazy_cogs[2];
-extern s16 D_8010DE22_crazy_cogs;
-extern s16 D_8010DE20_crazy_cogs;
-extern s8 D_8010B991_crazy_cogs[3];
-extern s8 D_8010DE10_crazy_cogs[3];
-extern s8 D_8010DE60_crazy_cogs;
-extern s8 D_8010DE6A_crazy_cogs[4];
 
 void func_80107778_crazy_cogs(void);
 void func_80107AB8_crazy_cogs(void);
@@ -388,7 +412,7 @@ void func_801063DC_crazy_cogs(void) {
 
 void func_80106418_crazy_cogs(omObjData *arg0) {
     s8 cogIdx = ((s8 *)arg0->work)[3];
-    UnkCrazyCogsCog *cog = &D_8010C8E4_crazy_cogs[cogIdx];
+    UnkCrazyCogsCog *cog = &D_8010B9F0_crazy_cogs[29 + cogIdx];
 
     if (D_8010DE6A_crazy_cogs[cogIdx] != 0) {
         if (cog->timer & 1) {
@@ -424,7 +448,7 @@ void func_8010654C_crazy_cogs(void) {
     UnkCrazyCogsCog *cog;
 
     for (i = 0; i < 4; i++) {
-        cog = &D_8010C8E4_crazy_cogs[i];
+        cog = &D_8010B9F0_crazy_cogs[29 + i];
         cog->obj = omAddObj(0x6A4, 1, 0, -1, func_801064AC_crazy_cogs);
         cog->obj->work[0] = i;
     }
@@ -458,7 +482,7 @@ void func_80106688_crazy_cogs(omObjData *arg0) {
 }
 
 void func_80106770_crazy_cogs(void) {
-    D_8010BA74_crazy_cogs = omAddObj(0x3E8, 2, 0, -1, func_80106688_crazy_cogs);
+    D_8010B9F0_crazy_cogs[1].obj = omAddObj(0x3E8, 2, 0, -1, func_80106688_crazy_cogs);
 }
 
 void func_801067AC_crazy_cogs(omObjData *arg0) {
@@ -490,7 +514,7 @@ void func_8010683C_crazy_cogs(omObjData *arg0) {
 }
 
 void func_80106910_crazy_cogs(void) {
-    D_8010BAF8_crazy_cogs = omAddObj(0x44C, 2, 0, -1, func_8010683C_crazy_cogs);
+    D_8010B9F0_crazy_cogs[2].obj = omAddObj(0x44C, 2, 0, -1, func_8010683C_crazy_cogs);
 }
 
 void func_8010694C_crazy_cogs(omObjData *arg0) {
@@ -522,7 +546,7 @@ void func_801069DC_crazy_cogs(omObjData *arg0) {
 }
 
 void func_80106AB0_crazy_cogs(void) {
-    D_8010BB7C_crazy_cogs = omAddObj(0x4B0, 2, 0, -1, func_801069DC_crazy_cogs);
+    D_8010B9F0_crazy_cogs[3].obj = omAddObj(0x4B0, 2, 0, -1, func_801069DC_crazy_cogs);
 }
 
 void func_80106AEC_crazy_cogs(s8 direction) {
@@ -759,7 +783,7 @@ void func_801074A0_crazy_cogs(omObjData *arg0) {
     arg0->model[0] = func_8000B108_main(D_800A178C_main[character][0] | D_800A1790_main[character][0], 0x2B9);
     func_8000B460_main(arg0, 0, func_80017BB8_main(character, 0x3F));
     func_8000B460_main(arg0, 3, func_80017BB8_main(character, 0x30));
-    func_8000B460_main(arg0, 4, func_80017BB8_main(character, D_8010B86E_crazy_cogs[character][0]));
+    func_8000B460_main(arg0, 4, func_80017BB8_main(character, D_8010B86C_crazy_cogs[character][1]));
     func_80106034_crazy_cogs(arg0, 0, 1);
     Hu3DMotionTimeSet(arg0->model[0], 30.0f);
     Hu3DMotionSpeedSet(arg0->model[0], 1.0f);
@@ -1801,7 +1825,7 @@ void func_8010AA10_crazy_cogs(omObjData *arg0) {
 }
 
 void func_8010AAA4_crazy_cogs(void) {
-    D_8010C5CC_crazy_cogs = omAddObj(0x514, 1, 1, -1, func_8010AA10_crazy_cogs);
+    D_8010B9F0_crazy_cogs[23].obj = omAddObj(0x514, 1, 1, -1, func_8010AA10_crazy_cogs);
 }
 
 void func_8010AAE0_crazy_cogs(omObjData *arg0) {
@@ -1887,7 +1911,7 @@ void func_8010AE08_crazy_cogs(omObjData *arg0) {
 }
 
 void func_8010AF58_crazy_cogs(void) {
-    D_8010C650_crazy_cogs = omAddObj(0x640, 1, 1, -1, func_8010AE08_crazy_cogs);
+    D_8010B9F0_crazy_cogs[24].obj = omAddObj(0x640, 1, 1, -1, func_8010AE08_crazy_cogs);
 }
 
 void func_8010AF94_crazy_cogs(void) {

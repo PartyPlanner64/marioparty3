@@ -1198,11 +1198,11 @@ void func_8011611C_mgmode(void) {
     HuSprPriSet(D_8011B61E_mgmode, 0, 15);
     HuSprScaleSet(D_8011B61E_mgmode, 0, 1.0f, 2.0f);
     sprite = HuSprGet(D_8011B61E_mgmode, 0);
-    HuMemFree(sprite->unk_84->unk00->unk00);
+    HuMemFree(sprite->unk_84->pat->data);
     D_8011B610_mgmode[0] = HuMemAllocTag(0x4B00, 0x7918);
     D_8011B610_mgmode[1] = HuMemAllocTag(0x4B00, 0x7918);
     D_8011B610_mgmode[2] = HuMemAllocTag(0x4B00, 0x7918);
-    sprite->unk_84->unk00->unk00 = D_8011B610_mgmode[0];
+    sprite->unk_84->pat->data = D_8011B610_mgmode[0];
     func_80116260_mgmode();
 }
 
@@ -1251,5 +1251,5 @@ void func_801162B4_mgmode(f32 centerX, f32 angle) {
         *p &= (right & 1) ? 0xF0 : 0xF;
         *p |= (right & 1) ? 0x4 : 0x40;
     }
-    HuSprGet(D_8011B61E_mgmode, 0)->unk_84->unk00->unk00 = D_8011B610_mgmode[D_800D2008_main];
+    HuSprGet(D_8011B61E_mgmode, 0)->unk_84->pat->data = D_8011B610_mgmode[D_800D2008_main];
 }

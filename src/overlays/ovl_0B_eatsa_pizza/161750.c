@@ -1215,7 +1215,7 @@ void func_80108C50_eatsa_pizza(omObjData *object) {
         }
         sprite = HuSprGet(group, i);
         func_800551AC_main(group, i);
-        if (sprite->unk_8A < sprite->unk_84->unk10 - 1) {
+        if (sprite->unk_8A < sprite->unk_84->patNum - 1) {
             continue;
         }
         HuSprDispOff(group, i);
@@ -1304,7 +1304,7 @@ s16 func_80108FEC_eatsa_pizza(s16 arg0, s16 arg1) {
 }
 
 void *func_801090B4_eatsa_pizza(s16 arg0, s16 arg1) {
-    HuSprite_Unk84_Unk00_Struct *entry = &func_80055194_main(arg0)->unk00[arg1];
+    HuSprAnimPat *entry = &func_80055194_main(arg0)->pat[arg1];
 
-    return entry->unk00;
+    return entry->data;
 }

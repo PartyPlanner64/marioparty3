@@ -343,15 +343,15 @@ void func_8010A17C_bowser_toss(omObjData *object);
 void func_8010A908_bowser_toss(omObjData *object);
 void func_8010AF38_bowser_toss(s16 camera, Vec *pos, Vec *rot);
 u16 func_8010AD54_bowser_toss(s32 dirAndFile);
-s32 func_8010DDFC_bowser_toss(HuSprite_Unk84_Struct *sprite, u8 *color, u8 antialias);
-s32 func_8010EA0C_bowser_toss(HuSprite_Unk84_Struct *sprite, u16 model, u8 *color);
-s32 func_8010ED44_bowser_toss(HuSprite_Unk84_Struct *sprite, HmfData *data, f32 scale, s16 xOffset, s16 yOffset);
+s32 func_8010DDFC_bowser_toss(HuSprAnimData *sprite, u8 *color, u8 antialias);
+s32 func_8010EA0C_bowser_toss(HuSprAnimData *sprite, u16 model, u8 *color);
+s32 func_8010ED44_bowser_toss(HuSprAnimData *sprite, HmfData *data, f32 scale, s16 xOffset, s16 yOffset);
 void func_80107E84_bowser_toss(omObjData *object);
 void func_80109DB8_bowser_toss(omObjData *object, f32 angle, HuMtx4F mtx);
 void func_80109E4C_bowser_toss(UnkBowser *bowser, f32 *out, f32 time);
 s16 func_80109F68_bowser_toss(f32 x, f32 y, f32 velX, f32 velY);
 s32 func_8010A2D4_bowser_toss(Vec *pos, Vec *vel, Vec *scale, f32 speed, s16 camera);
-void func_8010EC10_bowser_toss(u16 model, HuSprite_Unk84_Struct *sprite, u16 frame, u8 *color);
+void func_8010EC10_bowser_toss(u16 model, HuSprAnimData *sprite, u16 frame, u8 *color);
 BowserTossPlayer *func_8010D98C_bowser_toss(omObjData *object);
 
 void func_801059A0_bowser_toss(void) {
@@ -1643,7 +1643,7 @@ s16 func_80109F68_bowser_toss(f32 x, f32 y, f32 velX, f32 velY) {
 }
 
 void func_8010A028_bowser_toss(void) {
-    HuSprite_Unk84_Struct *sprite;
+    HuSprAnimData *sprite;
     BowserTossEffect *effect;
     HmfModel *model;
     s32 i;
@@ -1670,7 +1670,7 @@ void func_8010A028_bowser_toss(void) {
 }
 
 void func_8010A17C_bowser_toss(omObjData *object) {
-    HuSprite_Unk84_Struct *sprite;
+    HuSprAnimData *sprite;
     BowserTossEffect *effect;
     HmfModel *model;
     s32 i;
@@ -1695,7 +1695,7 @@ void func_8010A17C_bowser_toss(omObjData *object) {
         model->scale.z = effect->unk_24.z;
         func_8010EC10_bowser_toss(effect->unk_02, sprite, (s32)effect->unk_04, D_8010F150_bowser_toss);
         effect->unk_04 += effect->unk_08;
-        if ((s32)effect->unk_04 >= sprite->unk10) {
+        if ((s32)effect->unk_04 >= sprite->patNum) {
             effect->unk_00 = 0;
             effect->unk_04 = 0.0f;
             model->attr |= 4;
@@ -1704,7 +1704,7 @@ void func_8010A17C_bowser_toss(omObjData *object) {
 }
 
 s32 func_8010A2D4_bowser_toss(Vec *pos, Vec *vel, Vec *scale, f32 speed, s16 camera) {
-    HuSprite_Unk84_Struct *sprite;
+    HuSprAnimData *sprite;
     BowserTossEffect *effect;
     HmfModel *model;
     s32 i;
@@ -1764,7 +1764,7 @@ void func_8010A4A8_bowser_toss(void) {
 }
 
 void func_8010A500_bowser_toss(omObjData *object) {
-    HuSprite_Unk84_Struct *sprite;
+    HuSprAnimData *sprite;
     s32 i;
     s32 j;
     s32 k;
@@ -1827,7 +1827,7 @@ void func_8010A500_bowser_toss(omObjData *object) {
 }
 
 void func_8010A908_bowser_toss(omObjData *object) {
-    HuSprite_Unk84_Struct *sprite;
+    HuSprAnimData *sprite;
     s32 i;
     s32 j;
     s32 k;
@@ -1993,7 +1993,7 @@ void func_8010AF38_bowser_toss(s16 camera, Vec *pos, Vec *rot) {
 }
 
 void func_8010B41C_bowser_toss(void) {
-    HuSprite_Unk84_Struct *anim;
+    HuSprAnimData *anim;
     BowserTossBowser *bowser;
     s32 i;
     s32 j;
@@ -2002,16 +2002,16 @@ void func_8010B41C_bowser_toss(void) {
     D_8010FB98_bowser_toss[7] = func_8010AD54_bowser_toss(0x55000B);
     D_8010FB98_bowser_toss[8] = func_8010AD54_bowser_toss(0x55000C);
     anim = func_80055194_main(D_8010FB98_bowser_toss[8]);
-    for (i = 0; i < anim->unk10; i++) {
-        anim->unk00[i].unk08 = 8;
-        anim->unk00[i].unk0A = 8;
+    for (i = 0; i < anim->patNum; i++) {
+        anim->pat[i].centerX = 8;
+        anim->pat[i].centerY = 8;
     }
     D_8010FB98_bowser_toss[9] = func_8010AD54_bowser_toss(0x32);
     D_8010FB98_bowser_toss[10] = func_8010AD54_bowser_toss(0x55000D);
     anim = func_80055194_main(D_8010FB98_bowser_toss[10]);
-    for (i = 0; i < anim->unk10; i++) {
-        anim->unk00[i].unk08 = 8;
-        anim->unk00[i].unk0A = 8;
+    for (i = 0; i < anim->patNum; i++) {
+        anim->pat[i].centerX = 8;
+        anim->pat[i].centerY = 8;
     }
 
     D_8010FBA0_bowser_toss = HuMemAllocTag(sizeof(BowserTossBowser) * 3, TAG_OVERLAY);
@@ -2773,7 +2773,7 @@ void func_8010DDC4_bowser_toss(BowserTossItem *item) {
     HuMemFree(item);
 }
 
-s32 func_8010DDFC_bowser_toss(HuSprite_Unk84_Struct *sprite, u8 *color, u8 antialias) {
+s32 func_8010DDFC_bowser_toss(HuSprAnimData *sprite, u8 *color, u8 antialias) {
     u8 *buffer;
     Gfx *gfx;
     Gfx *header;
@@ -2812,7 +2812,7 @@ s32 func_8010DDFC_bowser_toss(HuSprite_Unk84_Struct *sprite, u8 *color, u8 antia
     } else {
         gDPSetRenderMode(gfx++, G_RM_ZB_CLD_SURF, G_RM_NOOP2);
     }
-    if (sprite->unk18 & 0x8000) {
+    if (sprite->pixelBits & 0x8000) {
         gDPSetCombineLERP(gfx++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0);
     } else {
         gDPSetCombineLERP(gfx++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
@@ -2831,32 +2831,32 @@ s32 func_8010DDFC_bowser_toss(HuSprite_Unk84_Struct *sprite, u8 *color, u8 antia
         gSPTexture(textureHeader, 0x8000, 0x8000, 0, G_TX_RENDERTILE, G_ON);
     }
     gDPSetTexturePersp(gfx++, G_TP_PERSP);
-    if (sprite->unk1A >= 2) {
+    if (sprite->palNum >= 2) {
         gDPSetTextureLUT(gfx++, G_TT_RGBA16);
-        if (sprite->unk18 == 4) {
-            gDPLoadTLUT_pal16(gfx++, 0, sprite->unk0C);
+        if (sprite->pixelBits == 4) {
+            gDPLoadTLUT_pal16(gfx++, 0, sprite->pal);
         } else {
-            gDPLoadTLUT_pal256(gfx++, sprite->unk0C);
+            gDPLoadTLUT_pal256(gfx++, sprite->pal);
         }
         gDPPipeSync(gfx++);
         format = G_IM_FMT_CI;
     } else {
         gDPSetTextureLUT(gfx++, G_TT_NONE);
         gDPPipeSync(gfx++);
-        format = sprite->unk18;
+        format = sprite->pixelBits;
         format = ((u32)format / 0x8000) * 4;
     }
-    switch (sprite->unk18 & 0xFFF) {
+    switch (sprite->pixelBits & 0xFFF) {
         case 4:
-            gDPLoadTextureBlock_4b(gfx++, 0x02000000, format, sprite->unk00->unk04, sprite->unk00->unk06, 0,
+            gDPLoadTextureBlock_4b(gfx++, 0x02000000, format, sprite->pat->sizeX, sprite->pat->sizeY, 0,
                                    G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
             break;
         case 8:
-            gDPLoadTextureBlock(gfx++, 0x02000000, format, G_IM_SIZ_8b, sprite->unk00->unk04, sprite->unk00->unk06, 0,
+            gDPLoadTextureBlock(gfx++, 0x02000000, format, G_IM_SIZ_8b, sprite->pat->sizeX, sprite->pat->sizeY, 0,
                                 G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
             break;
         case 16:
-            gDPLoadTextureBlock(gfx++, 0x02000000, format, G_IM_SIZ_16b, sprite->unk00->unk04, sprite->unk00->unk06, 0,
+            gDPLoadTextureBlock(gfx++, 0x02000000, format, G_IM_SIZ_16b, sprite->pat->sizeX, sprite->pat->sizeY, 0,
                                 G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
             break;
     }
@@ -2875,7 +2875,7 @@ s32 func_8010DDFC_bowser_toss(HuSprite_Unk84_Struct *sprite, u8 *color, u8 antia
     for (i = 0; i < D_800D1FF0_main; i++) {
         gfx = (data->unk3C->unk00 + 1)[i] = HuMemAllocTag(0x100, data->unk0E);
         gDPPipeSync(gfx++);
-        gSPSegment(gfx++, 2, osVirtualToPhysical(sprite->unk00->unk00));
+        gSPSegment(gfx++, 2, osVirtualToPhysical(sprite->pat->data));
         gSPDisplayList(gfx++, osVirtualToPhysical(data->unk3C->unk10));
         gDPSetPrimColor(gfx++, 0, 0, color[0], color[1], color[2], color[3]);
         gDPPipeSync(gfx++);
@@ -2887,7 +2887,7 @@ s32 func_8010DDFC_bowser_toss(HuSprite_Unk84_Struct *sprite, u8 *color, u8 antia
     return model;
 }
 
-s32 func_8010EA0C_bowser_toss(HuSprite_Unk84_Struct *sprite, u16 model, u8 *color) {
+s32 func_8010EA0C_bowser_toss(HuSprAnimData *sprite, u16 model, u8 *color) {
     HmfModel *srcModel = Hu3DData + model;
     HmfData *srcData = srcModel->hmf;
     HmfData *data;
@@ -2905,7 +2905,7 @@ s32 func_8010EA0C_bowser_toss(HuSprite_Unk84_Struct *sprite, u16 model, u8 *colo
     for (i = 0; i < D_800D1FF0_main; i++) {
         gfx = (data->unk3C->unk00 + 1)[i] = HuMemAllocTag(0x100, data->unk0E);
         gDPPipeSync(gfx++);
-        gSPSegment(gfx++, 2, osVirtualToPhysical(sprite->unk00->unk00));
+        gSPSegment(gfx++, 2, osVirtualToPhysical(sprite->pat->data));
         gSPDisplayList(gfx++, osVirtualToPhysical(data->unk3C->unk10));
         gDPSetPrimColor(gfx++, 0, 0, color[0], color[1], color[2], color[3]);
         gDPPipeSync(gfx++);
@@ -2917,14 +2917,14 @@ s32 func_8010EA0C_bowser_toss(HuSprite_Unk84_Struct *sprite, u16 model, u8 *colo
     return newModel;
 }
 
-void func_8010EC10_bowser_toss(u16 model, HuSprite_Unk84_Struct *sprite, u16 frame, u8 *color) {
+void func_8010EC10_bowser_toss(u16 model, HuSprAnimData *sprite, u16 frame, u8 *color) {
     HmfModel *modelData = Hu3DData + model;
     HmfData *data = modelData->hmf;
     Gfx *gfx = data->unk3C->unk00[D_800D2008_main + 1];
 
     data->unk3C->unk00[0] = gfx;
     gDPPipeSync(gfx);
-    gSPSegment(gfx + 1, 2, osVirtualToPhysical(sprite->unk00[frame].unk00));
+    gSPSegment(gfx + 1, 2, osVirtualToPhysical(sprite->pat[frame].data));
     gSPDisplayList(gfx + 2, osVirtualToPhysical(data->unk3C->unk10));
     gDPSetPrimColor(gfx + 3, 0, 0, color[0], color[1], color[2], color[3]);
     gDPPipeSync(gfx + 4);
@@ -2933,24 +2933,24 @@ void func_8010EC10_bowser_toss(u16 model, HuSprite_Unk84_Struct *sprite, u16 fra
     gSPEndDisplayList(gfx + 7);
 }
 
-s32 func_8010ED44_bowser_toss(HuSprite_Unk84_Struct *sprite, HmfData *data, f32 scale, s16 xOffset, s16 yOffset) {
+s32 func_8010ED44_bowser_toss(HuSprAnimData *sprite, HmfData *data, f32 scale, s16 xOffset, s16 yOffset) {
     s32 capacity = 0x1000;
     s32 width, height, scaledWidth, scaledHeight;
     s32 size, slices, textureHeight, sliceHeight, vertexCount;
     s32 i, j;
     Vtx_t *vertices, *start;
 
-    if (sprite->unk1A >= 2) {
+    if (sprite->palNum >= 2) {
         capacity = 0x800;
     }
-    width = sprite->unk00->unk04;
-    height = sprite->unk00->unk06;
+    width = sprite->pat->sizeX;
+    height = sprite->pat->sizeY;
     scaledWidth = width * 100.0 * scale / 32.0;
     scaledHeight = height * 100.0 * scale / 32.0;
-    if ((sprite->unk18 & 0xFFF) == 4) {
+    if ((sprite->pixelBits & 0xFFF) == 4) {
         size = ((width + 1) & 0xFFFE) * height * 4;
     } else {
-        size = width * height * sprite->unk18;
+        size = width * height * sprite->pixelBits;
     }
     size /= 8;
     slices = size / capacity;

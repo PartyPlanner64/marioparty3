@@ -99,7 +99,7 @@ s16 D_8010D232_three_door_monty BSS;
 u16 D_8010D234_three_door_monty[2] BSS;
 void *D_8010D238_three_door_monty[3] BSS;
 s16 D_8010D244_three_door_monty[4] BSS;
-HuSprite_Unk84_Struct *D_8010D24C_three_door_monty BSS;
+HuSprAnimData *D_8010D24C_three_door_monty BSS;
 s16 D_8010D250_three_door_monty BSS;
 s16 D_8010D252_three_door_monty BSS;
 s16 D_8010D254_three_door_monty BSS;
@@ -107,10 +107,10 @@ s16 D_8010D256_three_door_monty BSS;
 s16 D_8010D258_three_door_monty BSS;
 u8 D_8010D25C_three_door_monty[4] BSS; /* Unreferenced. */
 ThreeDoorMontyEntry D_8010D260_three_door_monty[50] BSS;
-HuSprite_Unk84_Struct *D_8010EC28_three_door_monty[2] BSS;
+HuSprAnimData *D_8010EC28_three_door_monty[2] BSS;
 u8 D_8010EC30_three_door_monty BSS;
 s16 D_8010EC32_three_door_monty BSS;
-HuSprite_Unk84_Struct *D_8010EC34_three_door_monty BSS;
+HuSprAnimData *D_8010EC34_three_door_monty BSS;
 u16 D_8010EC38_three_door_monty BSS;
 s16 D_8010EC3A_three_door_monty BSS;
 s16 D_8010EC3C_three_door_monty BSS;
@@ -458,12 +458,12 @@ void func_80106868_three_door_monty(Gfx **gfxP, s32 arg1, s32 arg2) {
     gDPSetPrimColor(gfx++, 0, 0, 0, 0, 0, 255);
     gDPSetRenderMode(gfx++, G_RM_AA_TEX_EDGE, G_RM_AA_TEX_EDGE2);
     gDPSetTextureLUT(gfx++, G_TT_RGBA16);
-    gDPLoadTLUT_pal256(gfx++, D_8010D24C_three_door_monty->unk0C);
+    gDPLoadTLUT_pal256(gfx++, D_8010D24C_three_door_monty->pal);
     x = 0;
     // j is never incremented here, unlike in func_80106B98_three_door_monty.
     for (i = 0, y = 49, j = 0; i < 191; i += 4) {
         i -= (j >= 12);
-        gDPLoadTextureTile(gfx++, D_8010D24C_three_door_monty->unk08, G_IM_FMT_CI, G_IM_SIZ_8b, 320, 0, 0, i, 320, i + 4,
+        gDPLoadTextureTile(gfx++, D_8010D24C_three_door_monty->data, G_IM_FMT_CI, G_IM_SIZ_8b, 320, 0, 0, i, 320, i + 4,
                            0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                            G_TX_NOLOD);
         gDPSetTileSize(gfx++, G_TX_RENDERTILE, 0, 0, 320 << 2, 4 << 2);
@@ -490,11 +490,11 @@ void func_80106B98_three_door_monty(Gfx **gfxP, s32 arg1, s32 arg2) {
     gDPSetPrimColor(gfx++, 0, 0, 0, 0, 0, 255);
     gDPSetRenderMode(gfx++, G_RM_AA_TEX_EDGE, G_RM_AA_TEX_EDGE2);
     gDPSetTextureLUT(gfx++, G_TT_RGBA16);
-    gDPLoadTLUT_pal256(gfx++, D_8010EC34_three_door_monty->unk0C);
+    gDPLoadTLUT_pal256(gfx++, D_8010EC34_three_door_monty->pal);
     x = 0;
     for (i = 0, y = 0, j = 0; i < 51; i += 4, j++) {
         i -= (j >= 12);
-        gDPLoadTextureTile(gfx++, D_8010EC34_three_door_monty->unk08, G_IM_FMT_CI, G_IM_SIZ_8b, 320, 0, 0, i, 320, i + 4,
+        gDPLoadTextureTile(gfx++, D_8010EC34_three_door_monty->data, G_IM_FMT_CI, G_IM_SIZ_8b, 320, 0, 0, i, 320, i + 4,
                            0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                            G_TX_NOLOD);
         gDPSetTileSize(gfx++, G_TX_RENDERTILE, 0, 0, 320 << 2, 4 << 2);
@@ -519,8 +519,8 @@ void func_80106EDC_three_door_monty(Gfx **gfxP, s32 arg1, s32 arg2) {
     gDPSetRenderMode(gfx++, G_RM_AA_TEX_EDGE, G_RM_AA_TEX_EDGE2);
     gDPSetTextureLUT(gfx++, G_TT_RGBA16);
     for (i = 0; i < 2; i++) {
-        gDPLoadTLUT_pal16(gfx++, 0, D_8010EC28_three_door_monty[i]->unk0C);
-        gDPLoadTextureTile_4b(gfx++, D_8010EC28_three_door_monty[i]->unk08, G_IM_FMT_CI, 8, 32, 0, 0, 8, 32, 0,
+        gDPLoadTLUT_pal16(gfx++, 0, D_8010EC28_three_door_monty[i]->pal);
+        gDPLoadTextureTile_4b(gfx++, D_8010EC28_three_door_monty[i]->data, G_IM_FMT_CI, 8, 32, 0, 0, 8, 32, 0,
                               G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                               G_TX_NOLOD);
         gDPSetTileSize(gfx++, G_TX_RENDERTILE, 0, 0, 8 << 2, 32 << 2);

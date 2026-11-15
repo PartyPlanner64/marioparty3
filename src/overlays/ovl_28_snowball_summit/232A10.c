@@ -24,9 +24,9 @@ typedef struct SnowballSummitBackdrop {
     /* 0x00 */ s32 state; // -1 when not drawn
     /* 0x04 */ s32 unk_04;
     /* 0x08 */ s32 hookId;
-    /* 0x0C */ HuSprite_Unk84_Struct *leftSprite;
+    /* 0x0C */ HuSprAnimData *leftSprite;
     /* 0x10 */ s32 unk_10;
-    /* 0x14 */ HuSprite_Unk84_Struct *rightSprite;
+    /* 0x14 */ HuSprAnimData *rightSprite;
 } SnowballSummitBackdrop; // sizeof 0x18
 
 typedef struct UnkSnowballSummitSnowball {
@@ -168,8 +168,8 @@ SnowballSummitBackdrop snowballSummitBackdrop BSS;
 extern s32 D_8010F8C0_snowball_summit;                    // snowballSummitBackdrop.state
 extern s32 D_8010F8C8_snowball_summit;                    // snowballSummitBackdrop.hookId
 extern s16 D_8010F8CA_snowball_summit;                    // snowballSummitBackdrop.hookId (low half)
-extern HuSprite_Unk84_Struct *D_8010F8CC_snowball_summit; // snowballSummitBackdrop.leftSprite
-extern HuSprite_Unk84_Struct *D_8010F8D4_snowball_summit; // snowballSummitBackdrop.rightSprite
+extern HuSprAnimData *D_8010F8CC_snowball_summit; // snowballSummitBackdrop.leftSprite
+extern HuSprAnimData *D_8010F8D4_snowball_summit; // snowballSummitBackdrop.rightSprite
 UnkSnowballSummitSnowball D_8010F8D8_snowball_summit[8] BSS;
 UnkSnowballSummitMover D_8010F9B8_snowball_summit[4] BSS;
 u8 D_8010FC28_snowball_summit[8] BSS; /* Unreferenced. */
@@ -407,17 +407,17 @@ void func_801062E0_snowball_summit(Gfx **gfxPos, s32 arg1, s32 arg2) {
     gfxPos = func_801059BC_snowball_summit(gfxPos);
     gfx = *gfxPos;
     gDPSetTextureLUT(gfx++, G_TT_RGBA16);
-    gDPLoadTLUT_pal256(gfx++, backdrop->leftSprite->unk0C);
+    gDPLoadTLUT_pal256(gfx++, backdrop->leftSprite->pal);
     for (y = 0; y < 110; y += 10) {
-        gDPLoadTextureTile(gfx++, backdrop->leftSprite->unk08, G_IM_FMT_CI, G_IM_SIZ_8b, 104, 110,
+        gDPLoadTextureTile(gfx++, backdrop->leftSprite->data, G_IM_FMT_CI, G_IM_SIZ_8b, 104, 110,
                            0, y, 104, y + 10, 0, G_TX_WRAP, G_TX_WRAP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
         gDPSetTileSize(gfx++, G_TX_RENDERTILE, 0, 0, 104 << 2, 10 << 2);
         gSPTextureRectangle(gfx++, 0 << 2, (y + 66) << 2, 104 << 2, (y + 76) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
     }
     gDPSetTextureLUT(gfx++, G_TT_RGBA16);
-    gDPLoadTLUT_pal256(gfx++, backdrop->rightSprite->unk0C);
+    gDPLoadTLUT_pal256(gfx++, backdrop->rightSprite->pal);
     for (y = 0; y < 110; y += 10) {
-        gDPLoadTextureTile(gfx++, backdrop->rightSprite->unk08, G_IM_FMT_CI, G_IM_SIZ_8b, 104, 110,
+        gDPLoadTextureTile(gfx++, backdrop->rightSprite->data, G_IM_FMT_CI, G_IM_SIZ_8b, 104, 110,
                            0, y, 104, y + 10, 0, G_TX_WRAP, G_TX_WRAP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
         gDPSetTileSize(gfx++, G_TX_RENDERTILE, 0, 0, 104 << 2, 10 << 2);
         gSPTextureRectangle(gfx++, 216 << 2, (y + 66) << 2, 320 << 2, (y + 76) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);

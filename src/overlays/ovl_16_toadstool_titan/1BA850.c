@@ -1339,7 +1339,7 @@ void func_80107360_toadstool_titan(omObjData *object) {
 }
 
 void func_8010AD8C_toadstool_titan(s16 left, s16 top, s16 right, s16 bottom) {
-    HuSprite_Unk84_Unk00_Struct *frame;
+    HuSprAnimPat *frame;
     HuSprite *sprite;
     f32 scaleX;
     f32 scaleY;
@@ -1368,8 +1368,8 @@ void func_8010AD8C_toadstool_titan(s16 left, s16 top, s16 right, s16 bottom) {
     gSPDisplayList(gMainGfxPos++, D_8010EDF0_toadstool_titan);
     gDPSetTextureLUT(gMainGfxPos++, G_TT_RGBA16);
     sprite = HuSprGet(D_800CD1DC_main[D_8010F588_toadstool_titan[0]].unk04, 0);
-    frame = &sprite->unk_84->unk00[sprite->unk_90];
-    gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->unk0C);
+    frame = &sprite->unk_84->pat[sprite->unk_90];
+    gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->pal);
     for (i = 0; i < 6; i++) {
         t0 = i * 40;
         t1 = t0 + 40.0f + ((i == 5) ? -0.75 : 1.0);
@@ -1386,7 +1386,7 @@ void func_8010AD8C_toadstool_titan(s16 left, s16 top, s16 right, s16 bottom) {
             if (xh < 0 || yh < 0) {
                 continue;
             }
-            gDPLoadTextureTile(gMainGfxPos++, frame->unk00, G_IM_FMT_CI, G_IM_SIZ_8b, 320, 240, (s32)s0, (s32)t0, (s32)s1,
+            gDPLoadTextureTile(gMainGfxPos++, frame->data, G_IM_FMT_CI, G_IM_SIZ_8b, 320, 240, (s32)s0, (s32)t0, (s32)s1,
                                (s32)t1, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                                G_TX_NOLOD, G_TX_NOLOD);
             gSPScisTextureRectangle(gMainGfxPos++, xl, yl, xh, yh, G_TX_RENDERTILE, s0 * 32.0f, t0 * 32.0f, dsdx, dtdy);

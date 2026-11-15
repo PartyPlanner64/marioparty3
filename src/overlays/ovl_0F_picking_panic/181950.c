@@ -567,7 +567,7 @@ void func_80106E84_picking_panic(omObjData *object) {
 
 void func_80107A48_picking_panic(void) {
     f32 progress[2];
-    HuSprite_Unk84_Unk00_Struct *frame;
+    HuSprAnimPat *frame;
     HuSprite *sprite;
     f32 scissorBottom;
     f32 scissorTop;
@@ -591,13 +591,13 @@ void func_80107A48_picking_panic(void) {
     gDPSetTextureLUT(gMainGfxPos++, G_TT_RGBA16);
     for (i = 0; i < 2; i++) {
         sprite = HuSprGet(D_800CD1DC_main[D_8010EFD0_picking_panic[(i == 0) ? 0 : 1]].unk04, 0);
-        frame = &sprite->unk_84->unk00[sprite->unk_90];
-        gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->unk0C);
+        frame = &sprite->unk_84->pat[sprite->unk_90];
+        gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->pal);
         for (j = 0; j < 4; j++) {
             for (k = 0; k < 3; k++) {
                 w = (i == 1 && j == 3) ? 40 : 41;
                 h = (k == 2) ? 40 : 41;
-                gDPLoadTextureTile(gMainGfxPos++, frame->unk00, G_IM_FMT_CI, G_IM_SIZ_8b, (i == 0) ? 161 : 160, 0,
+                gDPLoadTextureTile(gMainGfxPos++, frame->data, G_IM_FMT_CI, G_IM_SIZ_8b, (i == 0) ? 161 : 160, 0,
                                    j * 40, k * 40, j * 40 + w, k * 40 + h, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                                    G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
                 for (view = 0; view < 2; view++) {
@@ -669,10 +669,10 @@ void func_80107A48_picking_panic(void) {
 
     if (progress[0] != 0.0f || progress[1] != 0.0f) {
         sprite = HuSprGet(D_800CD1DC_main[D_8010EFD0_picking_panic[4]].unk04, 0);
-        frame = &sprite->unk_84->unk00[sprite->unk_90];
-        gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->unk0C);
+        frame = &sprite->unk_84->pat[sprite->unk_90];
+        gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->pal);
         for (k = 0; k < 4; k++) {
-            gDPLoadTextureTile(gMainGfxPos++, frame->unk00, G_IM_FMT_CI, G_IM_SIZ_8b, 64, 0, 0, k * 24, 64,
+            gDPLoadTextureTile(gMainGfxPos++, frame->data, G_IM_FMT_CI, G_IM_SIZ_8b, 64, 0, 0, k * 24, 64,
                                k * 24 + 24 + (k < 3), 0, G_TX_NOMIRROR | G_TX_CLAMP,
                                G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             view = 0;
@@ -706,18 +706,18 @@ void func_80107A48_picking_panic(void) {
 
     for (i = 0; i < 2; i++) {
         sprite = HuSprGet(D_800CD1DC_main[D_8010EFD0_picking_panic[(i == 0) ? 2 : 3]].unk04, 0);
-        frame = &sprite->unk_84->unk00[sprite->unk_90];
+        frame = &sprite->unk_84->pat[sprite->unk_90];
         if (i == 0) {
-            gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->unk0C);
+            gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->pal);
         }
         for (j = 0; j < 3; j++) {
             w = (i == 1 && j == 2) ? 32 : 39;
             if (i == 0) {
-                gDPLoadTextureTile(gMainGfxPos++, frame->unk00, G_IM_FMT_CI, G_IM_SIZ_8b, (i == 0) ? 115 : 108, 0,
+                gDPLoadTextureTile(gMainGfxPos++, frame->data, G_IM_FMT_CI, G_IM_SIZ_8b, (i == 0) ? 115 : 108, 0,
                                    j * 38, 0, j * 38 + w, 48, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                                    G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             } else {
-                gDPLoadTextureTile(gMainGfxPos++, frame->unk00, G_IM_FMT_RGBA, G_IM_SIZ_16b, (i == 0) ? 115 : 108, 0,
+                gDPLoadTextureTile(gMainGfxPos++, frame->data, G_IM_FMT_RGBA, G_IM_SIZ_16b, (i == 0) ? 115 : 108, 0,
                                    j * 38, 0, j * 38 + w, 48, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                                    G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             }
@@ -755,7 +755,7 @@ void func_80109C00_picking_panic(Gfx **arg0, s32 arg1, s32 arg2) {
         { 23, 39, 25, 36, 20, 42, 1024 },
         { 129, 145, 131, 142, 126, 148, 1024 },
     };
-    HuSprite_Unk84_Unk00_Struct *frame;
+    HuSprAnimPat *frame;
     HuSprite *sprite;
     f32 scissorBottom;
     f32 scissorTop;
@@ -798,14 +798,14 @@ void func_80109C00_picking_panic(Gfx **arg0, s32 arg1, s32 arg2) {
     gDPSetCombineLERP(gMainGfxPos++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0,
                       PRIMITIVE, 0);
     sprite = HuSprGet(D_800CD1DC_main[D_8010EFD0_picking_panic[9]].unk04, 0);
-    frame = &sprite->unk_84->unk00[sprite->unk_90];
+    frame = &sprite->unk_84->pat[sprite->unk_90];
     for (view = 0; view < 2; view++) {
         if (view == 0) {
             gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, 0, 320, scissorBottom);
         } else {
             gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, scissorTop, 320, 240);
         }
-        gDPLoadTextureTile(gMainGfxPos++, frame->unk00, G_IM_FMT_I, G_IM_SIZ_8b, 60, 0, 0, 0, 60, 22, 0,
+        gDPLoadTextureTile(gMainGfxPos++, frame->data, G_IM_FMT_I, G_IM_SIZ_8b, 60, 0, 0, 0, 60, 22, 0,
                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
                            G_TX_NOLOD, G_TX_NOLOD);
         gSPScisTextureRectangle(gMainGfxPos++, 239 * 4, (rects[view][4] << 2), 299 * 4, (rects[view][5] << 2),
@@ -830,11 +830,11 @@ void func_80109C00_picking_panic(Gfx **arg0, s32 arg1, s32 arg2) {
                                                                                            : 5]]
                               .unk04,
                           0);
-        frame = &sprite->unk_84->unk00[sprite->unk_90];
+        frame = &sprite->unk_84->pat[sprite->unk_90];
         if (i < 2) {
-            gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->unk_84->unk0C);
+            gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->unk_84->pal);
         } else {
-            gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->unk0C);
+            gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->pal);
         }
         for (view = 0; view < 2; view++) {
             if (view == 0) {
@@ -855,16 +855,16 @@ void func_80109C00_picking_panic(Gfx **arg0, s32 arg1, s32 arg2) {
                 } else {
                     size = D_8010EF15_picking_panic[view] % 10;
                 }
-                frame = &sprite->unk_84->unk00[size];
+                frame = &sprite->unk_84->pat[size];
             } else {
                 size = (i == 0) ? 16 : 12;
             }
             if (i < 2) {
-                gDPLoadTextureTile_4b(gMainGfxPos++, frame->unk00, G_IM_FMT_CI, size, 0, 0, 0, size, size, 0,
+                gDPLoadTextureTile_4b(gMainGfxPos++, frame->data, G_IM_FMT_CI, size, 0, 0, 0, size, size, 0,
                                       G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK,
                                       G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             } else {
-                gDPLoadTextureTile(gMainGfxPos++, frame->unk00, G_IM_FMT_CI, G_IM_SIZ_8b, 12, 0, 0, 0, 12, 12, 0,
+                gDPLoadTextureTile(gMainGfxPos++, frame->data, G_IM_FMT_CI, G_IM_SIZ_8b, 12, 0, 0, 0, 12, 12, 0,
                                    G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
                                    G_TX_NOLOD, G_TX_NOLOD);
             }
@@ -884,11 +884,11 @@ void func_80109C00_picking_panic(Gfx **arg0, s32 arg1, s32 arg2) {
     gDPSetBlendColor(gMainGfxPos++, 0x00, 0x00, 0x00, 0xD0);
     gDPSetCombineMode(gMainGfxPos++, G_CC_DECALRGBA, G_CC_DECALRGBA);
     sprite = HuSprGet(D_800CD1DC_main[D_8010EFD0_picking_panic[8]].unk04, 0);
-    frame = &sprite->unk_84->unk00[sprite->unk_90];
+    frame = &sprite->unk_84->pat[sprite->unk_90];
     gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, 0, 320, 240);
-    gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->unk_84->unk0C);
+    gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->unk_84->pal);
     gDPPipeSync(gMainGfxPos++);
-    gDPLoadTextureTile_4b(gMainGfxPos++, frame->unk00, G_IM_FMT_CI, 320, 0, 0, 0, 320, 6, 0,
+    gDPLoadTextureTile_4b(gMainGfxPos++, frame->data, G_IM_FMT_CI, 320, 0, 0, 0, 320, 6, 0,
                           G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
                           G_TX_NOLOD, G_TX_NOLOD);
     if (D_8010EF78_picking_panic > 0.0f) {

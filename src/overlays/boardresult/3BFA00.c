@@ -272,9 +272,9 @@ void func_8010CEF4_boardresult(s16 model, s32 dataNum) {
 
     HuSprGrpMemberSet(group, 0, anim, 0);
     sprite = HuSprGet(group, 0);
-    pixels = sprite->unk_84->unk00->unk00;
-    width = sprite->unk_84->unk00->unk04;
-    height = sprite->unk_84->unk00->unk06;
+    pixels = sprite->unk_84->pat->data;
+    width = sprite->unk_84->pat->sizeX;
+    height = sprite->unk_84->pat->sizeY;
     // Counts the white pixels, but the result goes unused.
     white = 0;
     for (i = 0; i < width * height; i++) {
@@ -284,7 +284,7 @@ void func_8010CEF4_boardresult(s16 model, s32 dataNum) {
     }
     (void)white;
 
-    pixels = sprite->unk_84->unk00->unk00;
+    pixels = sprite->unk_84->pat->data;
     effect = Hu3DData[model].unkBC;
     count = Hu3DData[model].hmf->unk1A;
     particle = effect->unk58;

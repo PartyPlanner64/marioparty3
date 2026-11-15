@@ -100,7 +100,7 @@ void func_8010B51C_game_guys_sweet_surprise(void) {
     HuSprTPLvlSet(D_8010D0E8_game_guys_sweet_surprise.group, 0, 0);
     HuSprAttrReset(D_8010D0E8_game_guys_sweet_surprise.group, 0, 0xFFFF);
     HuSprAttrSet(D_8010D0E8_game_guys_sweet_surprise.group, 0, 0x1000);
-    D_8010D0E8_game_guys_sweet_surprise.sprite->unk_84->unk00->unk00 =
+    D_8010D0E8_game_guys_sweet_surprise.sprite->unk_84->pat->data =
         D_8010D0E8_game_guys_sweet_surprise.unk_04[D_8010D0FC_game_guys_sweet_surprise];
 }
 
@@ -212,8 +212,8 @@ s16 func_8010B5A8_game_guys_sweet_surprise(void) {
     } else {
         func_8010C72C_game_guys_sweet_surprise(D_8010D010_game_guys_sweet_surprise[0].active, D_8010D010_game_guys_sweet_surprise[0].x, D_8010D010_game_guys_sweet_surprise[0].y, D_8010D010_game_guys_sweet_surprise[0].radius, D_8010D010_game_guys_sweet_surprise[0].color);
     }
-    D_8010D0E8_game_guys_sweet_surprise.sprite->unk_84->unk00->unk00 = D_8010D0E8_game_guys_sweet_surprise.unk_04[D_8010D0FC_game_guys_sweet_surprise];
-    D_8010D0D0_game_guys_sweet_surprise.sprite->unk_84->unk00->unk00 = D_8010D0D0_game_guys_sweet_surprise.unk_04[D_8010D0FC_game_guys_sweet_surprise];
+    D_8010D0E8_game_guys_sweet_surprise.sprite->unk_84->pat->data = D_8010D0E8_game_guys_sweet_surprise.unk_04[D_8010D0FC_game_guys_sweet_surprise];
+    D_8010D0D0_game_guys_sweet_surprise.sprite->unk_84->pat->data = D_8010D0D0_game_guys_sweet_surprise.unk_04[D_8010D0FC_game_guys_sweet_surprise];
     D_8010D0FC_game_guys_sweet_surprise = (s16)(D_8010D0FC_game_guys_sweet_surprise + 1) % 3;
     D_8010CC60_game_guys_sweet_surprise++;
     return 0;
@@ -222,7 +222,7 @@ s16 func_8010B5A8_game_guys_sweet_surprise(void) {
 s32 func_8010C090_game_guys_sweet_surprise(s32 x) {
     s16 i;
 
-    D_8010D0E8_game_guys_sweet_surprise.sprite->unk_84->unk00->unk00 = D_8010D0E8_game_guys_sweet_surprise.unk_04[0];
+    D_8010D0E8_game_guys_sweet_surprise.sprite->unk_84->pat->data = D_8010D0E8_game_guys_sweet_surprise.unk_04[0];
     if (D_8010CC64_game_guys_sweet_surprise++ < 10) {
         D_8010D0E8_game_guys_sweet_surprise.timer = 0;
     } else if (D_8010CC64_game_guys_sweet_surprise < 30) {
@@ -245,9 +245,9 @@ s32 func_8010C090_game_guys_sweet_surprise(s32 x) {
 void func_8010C244_game_guys_sweet_surprise(void) {
     HuSprDispOff(D_8010D0E8_game_guys_sweet_surprise.group, 0);
     HuSprDispOff(D_8010D0D0_game_guys_sweet_surprise.group, 0);
-    D_8010D0E8_game_guys_sweet_surprise.sprite->unk_84->unk00->unk00 =
+    D_8010D0E8_game_guys_sweet_surprise.sprite->unk_84->pat->data =
         D_8010D0E8_game_guys_sweet_surprise.unk_04[0];
-    D_8010D0D0_game_guys_sweet_surprise.sprite->unk_84->unk00->unk00 =
+    D_8010D0D0_game_guys_sweet_surprise.sprite->unk_84->pat->data =
         D_8010D0D0_game_guys_sweet_surprise.unk_04[0];
 }
 
@@ -271,8 +271,8 @@ void func_8010C39C_game_guys_sweet_surprise(void) {
 
     D_8010D0E8_game_guys_sweet_surprise.group = func_8010C2C8_game_guys_sweet_surprise(0x66000C, 0, 10, 128);
     D_8010D0E8_game_guys_sweet_surprise.sprite = HuSprGet(D_8010D0E8_game_guys_sweet_surprise.group, 0);
-    D_8010D0E8_game_guys_sweet_surprise.unk_04[0] = D_8010D0E8_game_guys_sweet_surprise.sprite->unk_84->unk00->unk00;
-    pal = D_8010D0E8_game_guys_sweet_surprise.sprite->unk_84->unk0C;
+    D_8010D0E8_game_guys_sweet_surprise.unk_04[0] = D_8010D0E8_game_guys_sweet_surprise.sprite->unk_84->pat->data;
+    pal = D_8010D0E8_game_guys_sweet_surprise.sprite->unk_84->pal;
     D_8010D0E8_game_guys_sweet_surprise.unk_04[1] = HuMemAllocTag(0x9600, 0x7918);
     D_8010D0E8_game_guys_sweet_surprise.unk_04[2] = HuMemAllocTag(0x9600, 0x7918);
     pal[0] = 0x0001;
@@ -286,8 +286,8 @@ void func_8010C39C_game_guys_sweet_surprise(void) {
 
     D_8010D0D0_game_guys_sweet_surprise.group = func_8010C2C8_game_guys_sweet_surprise(0x66000C, 0, 10, 256);
     D_8010D0D0_game_guys_sweet_surprise.sprite = HuSprGet(D_8010D0D0_game_guys_sweet_surprise.group, 0);
-    D_8010D0D0_game_guys_sweet_surprise.unk_04[0] = D_8010D0D0_game_guys_sweet_surprise.sprite->unk_84->unk00->unk00;
-    pal = D_8010D0D0_game_guys_sweet_surprise.sprite->unk_84->unk0C;
+    D_8010D0D0_game_guys_sweet_surprise.unk_04[0] = D_8010D0D0_game_guys_sweet_surprise.sprite->unk_84->pat->data;
+    pal = D_8010D0D0_game_guys_sweet_surprise.sprite->unk_84->pal;
     D_8010D0D0_game_guys_sweet_surprise.unk_04[1] = HuMemAllocTag(0x9600, 0x7918);
     D_8010D0D0_game_guys_sweet_surprise.unk_04[2] = HuMemAllocTag(0x9600, 0x7918);
     pal[0] = 0x0001;

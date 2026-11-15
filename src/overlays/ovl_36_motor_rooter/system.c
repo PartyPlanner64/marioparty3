@@ -57,7 +57,7 @@ typedef struct {
 
 void m254_InitFuncGroup(FuncGroup *group, s16 maxFuncs);
 void m254_SortFuncGroup(FuncGroup *group);
-s16 func_80110A00_motor_rooter(HuSprite_Unk84_Struct *arg0, HmfData *arg1, f32 arg2, u16 arg3, u16 arg4);
+s16 func_80110A00_motor_rooter(HuSprAnimData *arg0, HmfData *arg1, f32 arg2, u16 arg3, u16 arg4);
 
 SpriteData *m254_sprites BSS;
 AnimModelData *m254_animModels BSS;
@@ -215,7 +215,7 @@ s16 m254_SetSprite(u16 prio, s32 dir, s32 file, u16 arg3, s32 attr) {
             if (arg3 == 0) {
                 sprite->unk04 = 99;
             } else {
-                sprite->unk04 = temp_v0_2->unk_84->unk10;
+                sprite->unk04 = temp_v0_2->unk_84->patNum;
             }
             sprite->state = SPRITE_STATE_VISIBLE;
             m254_SetSpriteDispOff(i);
@@ -357,7 +357,7 @@ void m254_UpdateAnimModels(void) {
 }
 
 // Similar to func_8010AD60_tick_tock_hop (ovl_39/M257)
-s16 func_8010E888_motor_rooter(HuSprite_Unk84_Struct *arg0, f32 arg1) {
+s16 func_8010E888_motor_rooter(HuSprAnimData *arg0, f32 arg1) {
     HmfData *temp_s6;
     Gfx *temp_v0_0;
     Gfx *temp_v0;
@@ -392,13 +392,13 @@ s16 func_8010E888_motor_rooter(HuSprite_Unk84_Struct *arg0, f32 arg1) {
     gDPPipeSync(temp_v0++);
     gSPTexture(temp_v0++, 0x8000, 0x8000, 0, G_TX_RENDERTILE, G_ON);
     gDPSetTexturePersp(temp_v0++, G_TP_PERSP);
-    if (arg0->unk1A >= 2) {
+    if (arg0->palNum >= 2) {
         gDPSetTextureLUT(temp_v0++, G_TT_RGBA16);
         var_s7 = 0x800;
-        if (arg0->unk18 == 4) {
-            gDPLoadTLUT_pal16(temp_v0++, 0, arg0->unk0C);
+        if (arg0->pixelBits == 4) {
+            gDPLoadTLUT_pal16(temp_v0++, 0, arg0->pal);
         } else {
-            gDPLoadTLUT_pal256(temp_v0++, arg0->unk0C);
+            gDPLoadTLUT_pal256(temp_v0++, arg0->pal);
         }
     } else {
         gDPSetTextureLUT(temp_v0++, G_TT_NONE);
@@ -406,9 +406,9 @@ s16 func_8010E888_motor_rooter(HuSprite_Unk84_Struct *arg0, f32 arg1) {
     }
     gDPPipeSync(temp_v0++);
     for (var_s4 = 0; var_s4 < temp_s5; var_s4++) {
-        gSPSegment(temp_v0++, 0x02, osVirtualToPhysical(arg0->unk08 + var_s7 * var_s4));
+        gSPSegment(temp_v0++, 0x02, osVirtualToPhysical(arg0->data + var_s7 * var_s4));
         gDPLoadTextureBlock(temp_v0++, 0x02000000, G_IM_FMT_CI, G_IM_SIZ_8b,
-                            arg0->unk00->unk04, arg0->unk00->unk06 / temp_s5, 0,
+                            arg0->pat->sizeX, arg0->pat->sizeY / temp_s5, 0,
                             G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                             G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
         gDPPipeSync(temp_v0++);
@@ -428,7 +428,7 @@ s16 func_8010E888_motor_rooter(HuSprite_Unk84_Struct *arg0, f32 arg1) {
 }
 
 // Similar to func_8010B4D0_tick_tock_hop (ovl_39/M257)
-s16 func_8010EFF8_motor_rooter(HuSprite_Unk84_Struct *arg0, f32 arg1) {
+s16 func_8010EFF8_motor_rooter(HuSprAnimData *arg0, f32 arg1) {
     HmfData *temp_s4;
     Gfx *temp_v0_0;
     Gfx *temp_v0;
@@ -459,11 +459,11 @@ s16 func_8010EFF8_motor_rooter(HuSprite_Unk84_Struct *arg0, f32 arg1) {
     gDPSetBlendColor(temp_v0++, 0x01, 0x01, 0x01, 0x01);
     gDPPipeSync(temp_v0++);
     gDPSetRenderMode(temp_v0++, G_RM_ZB_XLU_SURF, G_RM_NOOP2);
-    if (arg0->unk1A >= 2) {
+    if (arg0->palNum >= 2) {
         gDPSetCombineLERP(temp_v0++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
         gDPSetPrimColor(temp_v0++, 0, 0, 0xFF, 0xFF, 0xFF, arg1 * 255.0f);
     } else {
-        if (arg0->unk18 & 0x8000) {
+        if (arg0->pixelBits & 0x8000) {
             gDPSetCombineLERP(temp_v0++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0);
         } else {
             gDPSetCombineLERP(temp_v0++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
@@ -473,36 +473,36 @@ s16 func_8010EFF8_motor_rooter(HuSprite_Unk84_Struct *arg0, f32 arg1) {
     gDPPipeSync(temp_v0++);
     gSPTexture(temp_v0++, 0x8000, 0x8000, 0, G_TX_RENDERTILE, G_ON);
     gDPSetTexturePersp(temp_v0++, G_TP_PERSP);
-    if (arg0->unk1A >= 2) {
+    if (arg0->palNum >= 2) {
         gDPSetTextureLUT(temp_v0++, G_TT_RGBA16);
-        if (arg0->unk18 == 4) {
-            gDPLoadTLUT_pal16(temp_v0++, 0, arg0->unk0C);
+        if (arg0->pixelBits == 4) {
+            gDPLoadTLUT_pal16(temp_v0++, 0, arg0->pal);
         } else {
-            gDPLoadTLUT_pal256(temp_v0++, arg0->unk0C);
+            gDPLoadTLUT_pal256(temp_v0++, arg0->pal);
         }
         gDPPipeSync(temp_v0++);
         var_a2 = 2;
     } else {
         gDPSetTextureLUT(temp_v0++, G_TT_NONE);
         gDPPipeSync(temp_v0++);
-        var_a2 = (arg0->unk18 & 0x8000) ? 4 : 0;
+        var_a2 = (arg0->pixelBits & 0x8000) ? 4 : 0;
     }
-    switch (arg0->unk18 & 0xFFF) {
+    switch (arg0->pixelBits & 0xFFF) {
         case 4:
             gDPLoadTextureBlock_4b(temp_v0++, 0x02000000, var_a2,
-                                   arg0->unk00->unk04, arg0->unk00->unk06, 0,
+                                   arg0->pat->sizeX, arg0->pat->sizeY, 0,
                                    G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                                    G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             break;
         case 8:
             gDPLoadTextureBlock(temp_v0++, 0x02000000, var_a2, G_IM_SIZ_8b,
-                                arg0->unk00->unk04, arg0->unk00->unk06, 0,
+                                arg0->pat->sizeX, arg0->pat->sizeY, 0,
                                 G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                                 G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             break;
         case 16:
             gDPLoadTextureBlock(temp_v0++, 0x02000000, var_a2, G_IM_SIZ_16b,
-                                arg0->unk00->unk04, arg0->unk00->unk06, 0,
+                                arg0->pat->sizeX, arg0->pat->sizeY, 0,
                                 G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                                 G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             break;
@@ -522,7 +522,7 @@ s16 func_8010EFF8_motor_rooter(HuSprite_Unk84_Struct *arg0, f32 arg1) {
     for (var_s1 = 0; var_s1 < D_800D1FF0_main; var_s1++) {
         temp_v0 = *(temp_s4->unk3C->unk00 + (var_s1 + 1)) = HuMemAllocTag(0x100, temp_s4->unk0E);
         gDPPipeSync(temp_v0++);
-        gSPSegment(temp_v0++, 0x02, osVirtualToPhysical(arg0->unk00->unk00));
+        gSPSegment(temp_v0++, 0x02, osVirtualToPhysical(arg0->pat->data));
         gSPDisplayList(temp_v0++, osVirtualToPhysical(temp_s4->unk3C->unk10));
         gSPEndDisplayList(temp_v0++);
     }
@@ -531,7 +531,7 @@ s16 func_8010EFF8_motor_rooter(HuSprite_Unk84_Struct *arg0, f32 arg1) {
 }
 
 // Identical to func_8010C0E8_tick_tock_hop (ovl_39/M257)
-s16 func_8010FC10_motor_rooter(HuSprite_Unk84_Struct *arg0, RGBA *arg1) {
+s16 func_8010FC10_motor_rooter(HuSprAnimData *arg0, RGBA *arg1) {
     HmfData *temp_s4;
     Gfx *temp_v0_0;
     Gfx *temp_v0_2;
@@ -562,7 +562,7 @@ s16 func_8010FC10_motor_rooter(HuSprite_Unk84_Struct *arg0, RGBA *arg1) {
     gDPSetBlendColor(temp_v0_2++, 0x01, 0x01, 0x01, 0x01);
     gDPPipeSync(temp_v0_2++);
     gDPSetRenderMode(temp_v0_2++, G_RM_ZB_XLU_SURF, G_RM_NOOP2);
-    if (arg0->unk18 & 0x8000) {
+    if (arg0->pixelBits & 0x8000) {
         gDPSetCombineLERP(temp_v0_2++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0);
     } else {
         gDPSetCombineLERP(temp_v0_2++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
@@ -576,36 +576,36 @@ s16 func_8010FC10_motor_rooter(HuSprite_Unk84_Struct *arg0, RGBA *arg1) {
     temp_v0_0 = temp_v0_2 = HuMemAlloc(0x10000);
     gSPTexture(temp_v0_2++, 0x8000, 0x8000, 0, G_TX_RENDERTILE, G_ON);
     gDPSetTexturePersp(temp_v0_2++, G_TP_PERSP);
-    if (arg0->unk1A >= 2) {
+    if (arg0->palNum >= 2) {
         gDPSetTextureLUT(temp_v0_2++, G_TT_RGBA16);
-        if (arg0->unk18 == 4) {
-            gDPLoadTLUT_pal16(temp_v0_2++, 0, arg0->unk0C);
+        if (arg0->pixelBits == 4) {
+            gDPLoadTLUT_pal16(temp_v0_2++, 0, arg0->pal);
         } else {
-            gDPLoadTLUT_pal256(temp_v0_2++, arg0->unk0C);
+            gDPLoadTLUT_pal256(temp_v0_2++, arg0->pal);
         }
         gDPPipeSync(temp_v0_2++);
         var_a2 = 2;
     } else {
         gDPSetTextureLUT(temp_v0_2++, G_TT_NONE);
         gDPPipeSync(temp_v0_2++);
-        var_a2 = (arg0->unk18 & 0x8000) ? 4 : 0;
+        var_a2 = (arg0->pixelBits & 0x8000) ? 4 : 0;
     }
-    switch (arg0->unk18 & 0xFFF) {
+    switch (arg0->pixelBits & 0xFFF) {
         case 4:
             gDPLoadTextureBlock_4b(temp_v0_2++, 0x02000000, var_a2,
-                                   arg0->unk00->unk04, arg0->unk00->unk06, 0,
+                                   arg0->pat->sizeX, arg0->pat->sizeY, 0,
                                    G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                                    G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             break;
         case 8:
             gDPLoadTextureBlock(temp_v0_2++, 0x02000000, var_a2, G_IM_SIZ_8b,
-                                arg0->unk00->unk04, arg0->unk00->unk06, 0,
+                                arg0->pat->sizeX, arg0->pat->sizeY, 0,
                                 G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                                 G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             break;
         case 16:
             gDPLoadTextureBlock(temp_v0_2++, 0x02000000, var_a2, G_IM_SIZ_16b,
-                                arg0->unk00->unk04, arg0->unk00->unk06, 0,
+                                arg0->pat->sizeX, arg0->pat->sizeY, 0,
                                 G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                                 G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             break;
@@ -625,7 +625,7 @@ s16 func_8010FC10_motor_rooter(HuSprite_Unk84_Struct *arg0, RGBA *arg1) {
     for (var_s1 = 0; var_s1 < D_800D1FF0_main; var_s1++) {
         temp_v0_2 = temp_s4->unk3C->unk00[var_s1 + 1] = HuMemAllocTag(0x100, temp_s4->unk0E);
         gDPPipeSync(temp_v0_2++);
-        gSPSegment(temp_v0_2++, 0x02, osVirtualToPhysical(arg0->unk00->unk00));
+        gSPSegment(temp_v0_2++, 0x02, osVirtualToPhysical(arg0->pat->data));
         gSPDisplayList(temp_v0_2++, osVirtualToPhysical(temp_s4->unk3C->unk10));
         gDPSetPrimColor(temp_v0_2++, 0, 0, arg1->r, arg1->g, arg1->b, arg1->a);
         gDPPipeSync(temp_v0_2++);
@@ -638,21 +638,21 @@ s16 func_8010FC10_motor_rooter(HuSprite_Unk84_Struct *arg0, RGBA *arg1) {
 }
 
 // Identical to func_8010CCD4_tick_tock_hop (ovl_39/M257)
-void func_801107FC_motor_rooter(u16 modelId, HuSprite_Unk84_Struct *arg1, u16 arg2) {
+void func_801107FC_motor_rooter(u16 modelId, HuSprAnimData *arg1, u16 arg2) {
     HmfModel *model = &Hu3DData[modelId];
     HmfData *temp_s2 = model->hmf;
     Gfx *temp_s0 = temp_s2->unk3C->unk00[D_800D2008_main + 1];
 
     temp_s2->unk3C->unk00[0] = temp_s0;
     gDPPipeSync(&temp_s0[0]);
-    gSPSegment(&temp_s0[1], 0x02, osVirtualToPhysical(arg1->unk00[arg2].unk00));
+    gSPSegment(&temp_s0[1], 0x02, osVirtualToPhysical(arg1->pat[arg2].data));
     gSPDisplayList(&temp_s0[2], osVirtualToPhysical(temp_s2->unk3C->unk10));
     gDPPipeSync(&temp_s0[3]);
     gSPEndDisplayList(&temp_s0[4]);
 }
 
 // Identical to func_801108CC_motor_rooter (ovl_39/M257)
-void func_801108CC_motor_rooter(u16 modelId, HuSprite_Unk84_Struct *arg1, u16 arg2, RGBA *arg3) {
+void func_801108CC_motor_rooter(u16 modelId, HuSprAnimData *arg1, u16 arg2, RGBA *arg3) {
     HmfModel *model = &Hu3DData[modelId];
     HmfData *temp_s3 = model->hmf;
     HmfModelData_Unk64_Unk3C_Struct *temp_v1 = temp_s3->unk3C;
@@ -660,7 +660,7 @@ void func_801108CC_motor_rooter(u16 modelId, HuSprite_Unk84_Struct *arg1, u16 ar
 
     temp_v1->unk00[0] = temp_s0;
     gDPPipeSync(&temp_s0[0]);
-    gSPSegment(&temp_s0[1], 0x02, osVirtualToPhysical(arg1->unk00[arg2].unk00));
+    gSPSegment(&temp_s0[1], 0x02, osVirtualToPhysical(arg1->pat[arg2].data));
     gSPDisplayList(&temp_s0[2], osVirtualToPhysical(temp_s3->unk3C->unk10));
     gDPSetPrimColor(&temp_s0[3], 0, 0, arg3->r, arg3->g, arg3->b, arg3->a);
     gDPPipeSync(&temp_s0[4]);
@@ -670,7 +670,7 @@ void func_801108CC_motor_rooter(u16 modelId, HuSprite_Unk84_Struct *arg1, u16 ar
 }
 
 // Similar to func_8010CED8_tick_tock_hop (ovl_39/M257)
-s16 func_80110A00_motor_rooter(HuSprite_Unk84_Struct *arg0, HmfData *arg1, f32 arg2, u16 arg3, u16 arg4) {
+s16 func_80110A00_motor_rooter(HuSprAnimData *arg0, HmfData *arg1, f32 arg2, u16 arg3, u16 arg4) {
     Vtx *temp_s7;
     Vtx *var_s1;
     Vtx_t *var_t0;
@@ -688,19 +688,19 @@ s16 func_80110A00_motor_rooter(HuSprite_Unk84_Struct *arg0, HmfData *arg1, f32 a
     s32 var_s0_2;
     s32 var_a2_2;
 
-    if (arg0->unk1A >= 2) {
+    if (arg0->palNum >= 2) {
         var_a2 = 0x800;
     } else {
         var_a2 = 0x1000;
     }
-    temp_s4 = arg0->unk00->unk04;
-    temp_a1 = arg0->unk00->unk06;
+    temp_s4 = arg0->pat->sizeX;
+    temp_a1 = arg0->pat->sizeY;
     sp24 = temp_s4 * 20.0 * arg2 / 32.0;
     temp_f2 = temp_a1 * 20.0 * arg2 / 32.0;
-    if ((arg0->unk18 & 0xFFF) == 4) {
+    if ((arg0->pixelBits & 0xFFF) == 4) {
         var_s0 = ((temp_s4 + 1) & 0xFFFE) * temp_a1 * 4;
     } else {
-        var_s0 = temp_s4 * temp_a1 * arg0->unk18;
+        var_s0 = temp_s4 * temp_a1 * arg0->pixelBits;
     }
     var_s0 = (var_s0 < 0) ? (var_s0 + 7) : var_s0;
     var_s0 >>= 3;

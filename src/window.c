@@ -289,13 +289,13 @@ s16 HuWinCreate(s16 x, s16 y, s16 width, s16 height, s32 arg4, s16 flags) {
     HuSprColorSet(window->group, 0, 64, 32, 176);
     sprite = HuSprGet(group, 0);
     if (!(flags & 8)) {
-        sprite->unk_84->unk00->unk04 = width;
-        sprite->unk_84->unk00->unk06 = height;
-        HuMemFree(sprite->unk_84->unk00->unk00);
+        sprite->unk_84->pat->sizeX = width;
+        sprite->unk_84->pat->sizeY = height;
+        HuMemFree(sprite->unk_84->pat->data);
         pixelWidth = width;
         pixelHeight = height;
         size = pixelWidth * pixelHeight / 2;
-        sprite->unk_84->unk00->unk00 = window->pixels = HuMemAlloc(size);
+        sprite->unk_84->pat->data = window->pixels = HuMemAlloc(size);
         memset(window->pixels, 0xFF, size);
         if (!(flags & 1)) {
             if (flags & 16) {
@@ -575,12 +575,12 @@ void HuWinCenterPosSet(s16 arg0, s16 arg1, s16 arg2) {
     window->unk48 = arg1;
     window->unk4A = arg2;
     spr = HuSprGet(window->group, 0);
-    spr->unk_84->unk00->unk08 = arg1;
-    spr->unk_84->unk00->unk0A = arg2;
+    spr->unk_84->pat->centerX = arg1;
+    spr->unk_84->pat->centerY = arg2;
     spr = HuSprGet(window->group, 1);
-    for (i = 0; i < spr->unk_84->unk12; i++) {
-        spr->unk_84->unk00[i].unk08 = arg1;
-        spr->unk_84->unk00[i].unk0A = arg2;
+    for (i = 0; i < spr->unk_84->bankNum; i++) {
+        spr->unk_84->pat[i].centerX = arg1;
+        spr->unk_84->pat[i].centerY = arg2;
     }
 }
 
@@ -654,8 +654,8 @@ void HuWinMesPalSet(s16 winId, u8 index, u8 red, u8 green, u8 blue) {
     window->palette[index + 1] = ((red << 8) & 0xF800) | ((green << 3) & 0x7C0) | (u8)((blue >> 2) & 0x3E) | 1;
     palette = HuMemAlloc(sizeof(window->palette));
     bcopy(window, palette, sizeof(window->palette));
-    func_80019C00_main(sprite->unk_84->unk0C);
-    sprite->unk_84->unk0C = palette;
+    func_80019C00_main(sprite->unk_84->pal);
+    sprite->unk_84->pal = palette;
 }
 
 void func_8005C154_main(s16 winId, s32 red, s32 green, s32 blue) {
@@ -1143,26 +1143,26 @@ void *func_8005DAA4_main(s16 winId) {
     HuSprite *sprite;
 
     if (window->unk_E0[0] != NULL) {
-        return HuSprGet(group, 1)->unk_84->unk00[window->unk_24].unk00;
+        return HuSprGet(group, 1)->unk_84->pat[window->unk_24].data;
     } else {
         width = window->unk44;
         height = window->unk46;
         sprite = HuSprGet(group, 1);
         for (i = 0; i < 3; i++) {
-            HuMemFree(sprite->unk_84->unk00[i].unk00);
-            sprite->unk_84->unk00[i].unk04 = width;
-            sprite->unk_84->unk00[i].unk06 = window->h;
-            sprite->unk_84->unk00[i].unk00 = window->unk_E0[i] = HuMemAlloc(width * height / 2);
+            HuMemFree(sprite->unk_84->pat[i].data);
+            sprite->unk_84->pat[i].sizeX = width;
+            sprite->unk_84->pat[i].sizeY = window->h;
+            sprite->unk_84->pat[i].data = window->unk_E0[i] = HuMemAlloc(width * height / 2);
             memset(window->unk_E0[i], 0, width * height / 2);
         }
-        HuMemFree(sprite->unk_84->unk0C);
-        sprite->unk_84->unk0C = HuMemAlloc(0x20);
-        bcopy(window, sprite->unk_84->unk0C, 0x20);
+        HuMemFree(sprite->unk_84->pal);
+        sprite->unk_84->pal = HuMemAlloc(0x20);
+        bcopy(window, sprite->unk_84->pal, 0x20);
         if (!(window->attr & HUWIN_ATTR_DISPOFF)) {
             HuSprDispOn(group, 1);
         }
     }
-    return sprite->unk_84->unk00[window->unk_24].unk00;
+    return sprite->unk_84->pat[window->unk_24].data;
 }
 
 void func_8005DC94_main(s16 winId) {
@@ -1869,8 +1869,8 @@ void HuWinBGColSet(s16 winId, s32 red, s32 green, s32 blue) {
     }
     palette = HuMemAlloc(sizeof(window->palette));
     bcopy(window, palette, sizeof(window->palette));
-    func_80019C00_main(sprite->unk_84->unk0C);
-    sprite->unk_84->unk0C = palette;
+    func_80019C00_main(sprite->unk_84->pal);
+    sprite->unk_84->pal = palette;
 }
 
 void HuWinActivePlayerSet(s16 winId, s16 arg1) {
@@ -2281,8 +2281,8 @@ s32 func_80060880_main(s32 x, s32 y, s32 frameIndex) {
     HuSprScaleSet(window->group, member, 0, 0);
     HuSprAttrSet(window->group, member, frame->attributes);
     sprite = HuSprGet(window->group, member);
-    sprite->unk_84->unk00->unk08 = frame->spriteWidth;
-    sprite->unk_84->unk00->unk0A = frame->spriteHeight;
+    sprite->unk_84->pat->centerX = frame->spriteWidth;
+    sprite->unk_84->pat->centerY = frame->spriteHeight;
     if (frame->shadowFile != 0) {
         member = HuWinAnimSet(winId, frame->shadowFile, 0, 0, 0);
         window->unk276 = member;
@@ -2293,8 +2293,8 @@ s32 func_80060880_main(s32 x, s32 y, s32 frameIndex) {
         HuSprColorSet(window->group, member, 27, 27, 255);
         HuSprAttrSet(window->group, member, frame->attributes | 0x1000);
         sprite = HuSprGet(window->group, member);
-        sprite->unk_84->unk00->unk08 = frame->spriteWidth;
-        sprite->unk_84->unk00->unk0A = frame->spriteHeight;
+        sprite->unk_84->pat->centerX = frame->spriteWidth;
+        sprite->unk_84->pat->centerY = frame->spriteHeight;
     } else {
         window->unk276 = 0;
     }
@@ -2488,14 +2488,14 @@ void func_800615B8_main(s16 winId, s32 opening) {
     f32 radius;
 
     sprite = HuSprGet(window->group, window->unk274);
-    original = sprite->unk_84->unk00->unk00;
+    original = sprite->unk_84->pat->data;
     for (i = 0; i < 3; i++) {
         buffers[i] = HuMemAllocTag(0x640, TAG_OVERLAY);
         memset(buffers[i], 0, 0x640);
     }
-    source = sprite->unk_84->unk0C;
+    source = sprite->unk_84->pal;
     source++;
-    for (transparent = 0; transparent < sprite->unk_84->unk1A; transparent++, source += 2) {
+    for (transparent = 0; transparent < sprite->unk_84->palNum; transparent++, source += 2) {
         if (!(*source & 1)) {
             break;
         }
@@ -2527,13 +2527,13 @@ void func_800615B8_main(s16 winId, s32 opening) {
                 }
             }
         }
-        sprite->unk_84->unk00->unk00 = buffers[D_800D2008_main];
+        sprite->unk_84->pat->data = buffers[D_800D2008_main];
         HuPrcVSleep();
     }
     for (i = 0; i < 3; i++) {
         func_80019C00_main(buffers[i]);
     }
-    sprite->unk_84->unk00->unk00 = original;
+    sprite->unk_84->pat->data = original;
 }
 
 void HuWinExAnimPopIn(s16 winId, s16 arg1) {

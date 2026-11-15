@@ -39,7 +39,7 @@ typedef struct StormChaserBackdrop {
     /* 0x00 */ s32 state; // -1 when unused
     /* 0x04 */ s32 spriteData;
     /* 0x08 */ s32 hookId;
-    /* 0x0C */ HuSprite_Unk84_Struct *sprite;
+    /* 0x0C */ HuSprAnimData *sprite;
 } StormChaserBackdrop; // sizeof 0x10
 
 typedef struct StormChaserCloud {
@@ -179,7 +179,7 @@ StormChaserEntry D_8010CF38_storm_chasers[4] BSS;
 s32 D_8010CF68_storm_chasers BSS;
 s32 D_8010CF6C_storm_chasers BSS;
 s32 D_8010CF70_storm_chasers BSS;
-HuSprite_Unk84_Struct *D_8010CF74_storm_chasers BSS;
+HuSprAnimData *D_8010CF74_storm_chasers BSS;
 
 void func_801061C0_storm_chasers(omObjData *);
 void func_80106218_storm_chasers(omObjData *);
@@ -435,9 +435,9 @@ void func_801063B0_storm_chasers(Gfx **gfxPos, s32 arg1, s32 arg2) {
     gfxPos = func_801059BC_storm_chasers(gfxPos);
     gfx = *gfxPos;
     gDPSetTextureLUT(gfx++, G_TT_RGBA16);
-    gDPLoadTLUT_pal256(gfx++, backdrop->sprite->unk0C);
+    gDPLoadTLUT_pal256(gfx++, backdrop->sprite->pal);
     for (y = 0; y < 106; y += 2) {
-        gDPLoadTextureTile(gfx++, backdrop->sprite->unk08, G_IM_FMT_CI, G_IM_SIZ_8b, 320, 106,
+        gDPLoadTextureTile(gfx++, backdrop->sprite->data, G_IM_FMT_CI, G_IM_SIZ_8b, 320, 106,
                            0, y, 320, y + 2, 0, G_TX_WRAP, G_TX_WRAP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
         gDPSetTileSize(gfx++, G_TX_RENDERTILE, 0, 0, 320 << 2, 2 << 2);
         gSPTextureRectangle(gfx++, 0 << 2, (y + 134) << 2, 320 << 2, (y + 136) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);

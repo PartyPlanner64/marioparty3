@@ -63,7 +63,7 @@ extern HuSprAnmDesc *D_800D0A50_main[0x100];
 extern u16 D_800D554E_main;
 extern u16 D_800CC3E6_main;
 extern u16 D_800CB8A0_main;
-extern HuSprite_Unk84_Struct *D_800C9530_main[];
+extern HuSprAnimData *D_800C9530_main[];
 extern void *D_800CE1B8_main[3];
 extern u8 D_800D2008_main;
 extern s32 D_800D1FDC_main;
@@ -1013,7 +1013,7 @@ void HuSprGrpMemberSet(s16 group, s16 member, s16 arg2, u16 arg3) {
     HuSprite *sprite_ptr = HuSprGrpData[group]->members[member];
 
     sprite_ptr->unk_84 = D_800C9530_main[arg2];
-    if (D_800C9530_main[arg2]->unk04 != 0) {
+    if (D_800C9530_main[arg2]->bank != 0) {
         sprite_ptr->unk_0E = 1;
     }
     sprite_ptr->bank = arg3;
@@ -1050,7 +1050,7 @@ void HuSprBankSet(s16 group, s16 member, u16 arg2, s32 arg3) {
     func_80052E14_main(sprite);
 }
 
-HuSprite_Unk84_Struct *func_80055194_main(s16 arg0) {
+HuSprAnimData *func_80055194_main(s16 arg0) {
     return D_800C9530_main[arg0];
 }
 
@@ -1196,29 +1196,29 @@ void func_80055628_main(void) {
 }
 
 void HuSprAnimKill(s16 arg0) {
-    HuSprite_Unk84_Struct *desc = D_800C9530_main[arg0];
+    HuSprAnimData *desc = D_800C9530_main[arg0];
     s16 i;
 
-    if (desc->unk04 != NULL) {
-        HuSprCelAnm *cel = *desc->unk04;
+    if (desc->bank != NULL) {
+        HuSprAnimBank *cel = *desc->bank;
         if (cel != NULL) {
-            for (i = 0; i < desc->unk12; i++) {
-                HuMemFree(cel->unk04);
+            for (i = 0; i < desc->bankNum; i++) {
+                HuMemFree(cel->frame);
                 cel++;
             }
         }
-        HuMemFree(*desc->unk04);
-        HuMemFree(desc->unk04);
+        HuMemFree(*desc->bank);
+        HuMemFree(desc->bank);
     }
-    func_80019C00_main(desc->unk0C);
+    func_80019C00_main(desc->pal);
     {
-        HuSprite_Unk84_Unk00_Struct *cel = desc->unk00;
-        for (i = 0; i < desc->unk10; i++) {
-            func_80019C00_main(cel->unk00);
+        HuSprAnimPat *cel = desc->pat;
+        for (i = 0; i < desc->patNum; i++) {
+            func_80019C00_main(cel->data);
             cel++;
         }
     }
-    HuMemFree(desc->unk00);
+    HuMemFree(desc->pat);
     HuMemFree(desc);
     D_800C9530_main[arg0] = NULL;
     D_800CC3E6_main--;
@@ -1235,12 +1235,12 @@ void HuSprAnimAllKill(void) {
 }
 
 s16 HuSprAnimRead(void *arg0) {
-    HuSprCelFrame *frames[0x100];
-    HuSprite_Unk84_Struct *desc;
-    HuSprite_Unk84_Unk00_Struct *image;
-    HuSprCelAnm **animations;
-    HuSprCelAnm *animation;
-    HuSprCelFrame *frame;
+    HuSprAnimFrame *frames[0x100];
+    HuSprAnimData *desc;
+    HuSprAnimPat *image;
+    HuSprAnimBank **animations;
+    HuSprAnimBank *animation;
+    HuSprAnimFrame *frame;
     HuSprFileHeader *header = arg0;
     HuSprFileImage *fileImage;
     u8(*animationOffsets)[4];
@@ -1268,100 +1268,100 @@ s16 HuSprAnimRead(void *arg0) {
     animationOffsets = (u8(*)[4])((u8 *)header + HUSPR_READ32(header->animations));
     pixels = (u8 *)header + HUSPR_READ32(header->pixels);
     palette = (u8 *)header + HUSPR_READ32(header->palette);
-    desc->unk10 = HUSPR_READ16(header->imageCount);
-    desc->unk12 = HUSPR_READ16(header->animationCount);
-    desc->unk14 = HUSPR_READ16(header->width);
-    desc->unk16 = HUSPR_READ16(header->height);
-    desc->unk18 = HUSPR_READ16(header->pixelBits);
-    desc->unk1A = header->paletteCount;
+    desc->patNum = HUSPR_READ16(header->imageCount);
+    desc->bankNum = HUSPR_READ16(header->animationCount);
+    desc->sizeX = HUSPR_READ16(header->width);
+    desc->sizeY = HUSPR_READ16(header->height);
+    desc->pixelBits = HUSPR_READ16(header->pixelBits);
+    desc->palNum = header->paletteCount;
     // A zero palette count represents 256 colors for 8-bit images.
-    if (desc->unk18 == 8 && desc->unk1A == 0) {
-        desc->unk1A = 0x100;
+    if (desc->pixelBits == 8 && desc->palNum == 0) {
+        desc->palNum = 0x100;
     }
-    desc->unk00 = NULL;
-    desc->unk04 = NULL;
-    desc->unk08 = NULL;
-    desc->unk0C = NULL;
+    desc->pat = NULL;
+    desc->bank = NULL;
+    desc->data = NULL;
+    desc->pal = NULL;
     D_800C9530_main[slot] = desc;
     D_800CC3E6_main++;
-    image = HuMemAlloc(desc->unk10 * sizeof(*image));
+    image = HuMemAlloc(desc->patNum * sizeof(*image));
     if (image != NULL) {
-        desc->unk00 = image;
+        desc->pat = image;
     } else {
         HuSprAnimKill(slot);
         return -1;
     }
-    for (i = 0; i < desc->unk10; i++) {
-        image->unk04 = HUSPR_READ16(fileImage->width);
-        image->unk06 = HUSPR_READ16(fileImage->height);
-        image->unk08 = HUSPR_READ16(fileImage->centerX);
-        image->unk0A = HUSPR_READ16(fileImage->centerY);
-        size = image->unk04 * image->unk06 * (desc->unk18 & 0x7FFF) / 8;
-        image->unk00 = HuMemAlloc(size);
-        if (image->unk00 == NULL) {
-            desc->unk10 = i;
+    for (i = 0; i < desc->patNum; i++) {
+        image->sizeX = HUSPR_READ16(fileImage->width);
+        image->sizeY = HUSPR_READ16(fileImage->height);
+        image->centerX = HUSPR_READ16(fileImage->centerX);
+        image->centerY = HUSPR_READ16(fileImage->centerY);
+        size = image->sizeX * image->sizeY * (desc->pixelBits & 0x7FFF) / 8;
+        image->data = HuMemAlloc(size);
+        if (image->data == NULL) {
+            desc->patNum = i;
             HuSprAnimKill(slot);
             return -1;
         }
         for (j = 0; j < size; j++) {
-            ((u8 *)image->unk00)[j] = *pixels++;
+            ((u8 *)image->data)[j] = *pixels++;
         }
         fileImage++;
         if (i == 0) {
-            desc->unk08 = image->unk00;
+            desc->data = image->data;
         }
         image++;
     }
-    if (desc->unk1A != 0) {
-        dest = HuMemAlloc(desc->unk1A * 2);
+    if (desc->palNum != 0) {
+        dest = HuMemAlloc(desc->palNum * 2);
         if (dest != NULL) {
-            desc->unk0C = dest;
+            desc->pal = dest;
         } else {
             HuSprAnimKill(slot);
             return -1;
         }
-        for (i = 0; i < desc->unk1A; i++) {
+        for (i = 0; i < desc->palNum; i++) {
             *dest++ = palette[i * 2];
             *dest++ = palette[i * 2 + 1];
         }
     }
-    if (desc->unk12 == 0) {
+    if (desc->bankNum == 0) {
         return slot;
     }
-    animations = HuMemAlloc(desc->unk12 * (s32)sizeof(*animations));
+    animations = HuMemAlloc(desc->bankNum * (s32)sizeof(*animations));
     if (animations != NULL) {
-        desc->unk04 = animations;
+        desc->bank = animations;
     } else {
         HuSprAnimKill(slot);
         return -1;
     }
-    animation = HuMemAlloc(desc->unk12 * (s32)sizeof(*animation));
+    animation = HuMemAlloc(desc->bankNum * (s32)sizeof(*animation));
     if (animation == NULL) {
         HuSprAnimKill(slot);
         return -1;
     }
-    for (i = 0; i < desc->unk12; i++) {
+    for (i = 0; i < desc->bankNum; i++) {
         // The original loader scales this index by the record size twice.
         animations[i] = &animation[i * sizeof(*animation)];
     }
-    for (k = 0; k < desc->unk12; k++) {
+    for (k = 0; k < desc->bankNum; k++) {
         src = (u8 *)header + HUSPR_READ32(animationOffsets[k]);
-        animation->unk00 = HUSPR_READ16(src);
+        animation->timeNum = HUSPR_READ16(src);
         src += 2;
-        frames[k] = HuMemAlloc(animation->unk00 * sizeof(*frame));
+        frames[k] = HuMemAlloc(animation->timeNum * sizeof(*frame));
         if (frames[k] == NULL) {
-            desc->unk12 = k;
+            desc->bankNum = k;
             HuSprAnimKill(slot);
             return -1;
         }
-        animation->unk04 = frames[k];
+        animation->frame = frames[k];
         frame = frames[k];
-        for (i = 0; i < animation->unk00; i++) {
-            frame->unk00 = HUSPR_READ16(((HuSprFileFrame *)src)->image);
-            frame->unk02 = HUSPR_READ16(((HuSprFileFrame *)src)->duration);
-            frame->unk04 = ((HuSprFileFrame *)src)->unk04;
-            frame->unk05 = ((HuSprFileFrame *)src)->unk05;
-            frame->unk06 = ((HuSprFileFrame *)src)->unk06;
+        for (i = 0; i < animation->timeNum; i++) {
+            frame->pat = HUSPR_READ16(((HuSprFileFrame *)src)->image);
+            frame->time = HUSPR_READ16(((HuSprFileFrame *)src)->duration);
+            frame->shiftX = ((HuSprFileFrame *)src)->unk04;
+            frame->shiftY = ((HuSprFileFrame *)src)->unk05;
+            frame->flip = ((HuSprFileFrame *)src)->unk06;
             src += sizeof(HuSprFileFrame);
             frame++;
         }
@@ -1371,8 +1371,8 @@ s16 HuSprAnimRead(void *arg0) {
 }
 
 s32 func_80055DBC_main(u16 arg0, u16 arg1, u16 arg2, u16 arg3, u16 arg4) {
-    HuSprite_Unk84_Struct *desc;
-    HuSprite_Unk84_Unk00_Struct *cel;
+    HuSprAnimData *desc;
+    HuSprAnimPat *cel;
     s16 i;
     s16 slot;
 
@@ -1386,49 +1386,49 @@ s32 func_80055DBC_main(u16 arg0, u16 arg1, u16 arg2, u16 arg3, u16 arg4) {
     if (desc == NULL) {
         return -1;
     }
-    desc->unk10 = arg4;
-    desc->unk12 = 0;
-    desc->unk14 = arg0;
-    desc->unk16 = arg1 * arg4;
-    desc->unk18 = arg2;
-    desc->unk1A = arg3;
-    desc->unk00 = NULL;
-    desc->unk04 = 0;
-    desc->unk08 = NULL;
-    desc->unk0C = NULL;
+    desc->patNum = arg4;
+    desc->bankNum = 0;
+    desc->sizeX = arg0;
+    desc->sizeY = arg1 * arg4;
+    desc->pixelBits = arg2;
+    desc->palNum = arg3;
+    desc->pat = NULL;
+    desc->bank = 0;
+    desc->data = NULL;
+    desc->pal = NULL;
     D_800C9530_main[slot] = desc;
     D_800CC3E6_main++;
-    cel = HuMemAlloc(desc->unk10 * 0xC);
+    cel = HuMemAlloc(desc->patNum * 0xC);
     if (cel != NULL) {
-        desc->unk00 = cel;
+        desc->pat = cel;
     } else {
         HuSprAnimKill(slot);
         return -1;
     }
-    for (i = 0; i < desc->unk10; i++) {
+    for (i = 0; i < desc->patNum; i++) {
         s32 size;
 
-        cel->unk04 = arg0;
-        cel->unk06 = arg1;
-        cel->unk08 = arg0 >> 1;
-        cel->unk0A = arg1 >> 1;
-        size = cel->unk04 * cel->unk06 * (desc->unk18 & 0x7FFF);
-        cel->unk00 = HuMemAlloc(size / 8);
-        if (cel->unk00 == NULL) {
-            desc->unk10 = i;
+        cel->sizeX = arg0;
+        cel->sizeY = arg1;
+        cel->centerX = arg0 >> 1;
+        cel->centerY = arg1 >> 1;
+        size = cel->sizeX * cel->sizeY * (desc->pixelBits & 0x7FFF);
+        cel->data = HuMemAlloc(size / 8);
+        if (cel->data == NULL) {
+            desc->patNum = i;
             HuSprAnimKill(slot);
             return -1;
         }
         if (i == 0) {
-            desc->unk08 = cel->unk00;
+            desc->data = cel->data;
         }
         cel++;
     }
-    if (desc->unk1A != 0) {
-        void *pal = HuMemAlloc(desc->unk1A * 2);
+    if (desc->palNum != 0) {
+        void *pal = HuMemAlloc(desc->palNum * 2);
 
         if (pal != NULL) {
-            desc->unk0C = pal;
+            desc->pal = pal;
         } else {
             HuSprAnimKill(slot);
             return -1;
@@ -1451,87 +1451,87 @@ s16 func_80056054_main(void *arg0, HuSprAnm *arg1, u16 arg2, u16 arg3) {
     return temp;
 }
 
-HuSprite_Unk84_Unk00_Struct *func_800560B8_main(HuSprite_Unk84_Struct **arg0, u16 arg1) {
-    return &(*arg0)->unk00[arg1];
+HuSprAnimPat *func_800560B8_main(HuSprAnimData **arg0, u16 arg1) {
+    return &(*arg0)->pat[arg1];
 }
 
-HuSprite_Unk84_Unk00_Struct *func_800560D8_main(s16 arg0, u16 arg1) {
-    return &D_800C9530_main[arg0]->unk00[arg1];
+HuSprAnimPat *func_800560D8_main(s16 arg0, u16 arg1) {
+    return &D_800C9530_main[arg0]->pat[arg1];
 }
 
-HuSprite_Unk84_Unk00_Struct *func_80056108_main(HuSprAnm *arg0) {
-    return &arg0->unk00->unk00[arg0->unk14];
+HuSprAnimPat *func_80056108_main(HuSprAnm *arg0) {
+    return &arg0->unk00->pat[arg0->unk14];
 }
 
-void *func_80056128_main(HuSprite_Unk84_Struct **arg0, u16 arg1) {
-    HuSprite_Unk84_Unk00_Struct *entry = &(*arg0)->unk00[arg1];
+void *func_80056128_main(HuSprAnimData **arg0, u16 arg1) {
+    HuSprAnimPat *entry = &(*arg0)->pat[arg1];
 
-    return entry->unk00;
+    return entry->data;
 }
 
 void *func_8005614C_main(s16 arg0, u16 arg1) {
-    HuSprite_Unk84_Unk00_Struct *entry = &D_800C9530_main[arg0]->unk00[arg1];
+    HuSprAnimPat *entry = &D_800C9530_main[arg0]->pat[arg1];
 
-    return entry->unk00;
+    return entry->data;
 }
 
-void func_80056180_main(HuSprite_Unk84_Struct **arg0, u16 arg1, void *arg2) {
-    HuSprite_Unk84_Unk00_Struct *entry = &(*arg0)->unk00[arg1];
+void func_80056180_main(HuSprAnimData **arg0, u16 arg1, void *arg2) {
+    HuSprAnimPat *entry = &(*arg0)->pat[arg1];
 
-    func_80019C00_main(entry->unk00);
-    entry->unk00 = arg2;
+    func_80019C00_main(entry->data);
+    entry->data = arg2;
 }
 
 void func_800561D0_main(s16 arg0, u16 arg1, void *arg2) {
-    HuSprite_Unk84_Unk00_Struct *entry = &D_800C9530_main[arg0]->unk00[arg1];
+    HuSprAnimPat *entry = &D_800C9530_main[arg0]->pat[arg1];
 
-    func_80019C00_main(entry->unk00);
-    entry->unk00 = arg2;
+    func_80019C00_main(entry->data);
+    entry->data = arg2;
 }
 
 void *func_80056230_main(HuSprAnm *arg0) {
-    HuSprite_Unk84_Unk00_Struct *entry = &arg0->unk00->unk00[arg0->unk14];
+    HuSprAnimPat *entry = &arg0->unk00->pat[arg0->unk14];
 
-    return entry->unk00;
+    return entry->data;
 }
 
-void *func_80056254_main(HuSprite_Unk84_Struct **arg0) {
-    return (*arg0)->unk0C;
+void *func_80056254_main(HuSprAnimData **arg0) {
+    return (*arg0)->pal;
 }
 
 void *func_80056260_main(s16 arg0) {
-    return D_800C9530_main[arg0]->unk0C;
+    return D_800C9530_main[arg0]->pal;
 }
 
-void func_8005627C_main(HuSprite_Unk84_Struct **arg0, void *arg1) {
-    func_80019C00_main((*arg0)->unk0C);
-    (*arg0)->unk0C = arg1;
+void func_8005627C_main(HuSprAnimData **arg0, void *arg1) {
+    func_80019C00_main((*arg0)->pal);
+    (*arg0)->pal = arg1;
 }
 
 void func_800562BC_main(s16 arg0, void *arg1) {
-    func_80019C00_main(D_800C9530_main[arg0]->unk0C);
-    D_800C9530_main[arg0]->unk0C = arg1;
+    func_80019C00_main(D_800C9530_main[arg0]->pal);
+    D_800C9530_main[arg0]->pal = arg1;
 }
 
 s16 func_8005630C_main(HuSprAnm *arg0) {
-    HuSprite_Unk84_Struct *desc = arg0->unk00;
+    HuSprAnimData *desc = arg0->unk00;
 
     if (desc == NULL) {
         return -1;
     }
     if (arg0->unk06 == 1) {
-        HuSprCelAnm *cel;
-        HuSprCelFrame *frame;
+        HuSprAnimBank *cel;
+        HuSprAnimFrame *frame;
 
-        if (desc->unk04 == NULL) {
+        if (desc->bank == NULL) {
             return 0;
         }
-        cel = &(*desc->unk04)[arg0->unk08];
-        frame = &cel->unk04[arg0->unk0A];
-        arg0->unk14 = frame->unk00;
-        arg0->unk17 = frame->unk04;
-        arg0->unk18 = frame->unk05;
-        arg0->unk16 = frame->unk06;
+        cel = &(*desc->bank)[arg0->unk08];
+        frame = &cel->frame[arg0->unk0A];
+        arg0->unk14 = frame->pat;
+        arg0->unk17 = frame->shiftX;
+        arg0->unk18 = frame->shiftY;
+        arg0->unk16 = frame->flip;
     } else if (arg0->unk06 >= 2) {
         if (arg0->unk06 < 4) {
             arg0->unk14 = arg0->unk0A;
@@ -1541,9 +1541,9 @@ s16 func_8005630C_main(HuSprAnm *arg0) {
 }
 
 void func_800563A4_main(HuSprAnm *arg0) {
-    HuSprite_Unk84_Struct *desc = arg0->unk00;
-    HuSprCelAnm *cel;
-    HuSprCelFrame *frame;
+    HuSprAnimData *desc = arg0->unk00;
+    HuSprAnimBank *cel;
+    HuSprAnimFrame *frame;
     s16 prev;
 
     if (desc == NULL) {
@@ -1554,28 +1554,28 @@ void func_800563A4_main(HuSprAnm *arg0) {
         case 0:
             return;
         case 1:
-            if (desc->unk04 == NULL) {
+            if (desc->bank == NULL) {
                 return;
             }
-            cel = &(*desc->unk04)[arg0->unk08];
-            frame = &cel->unk04[arg0->unk0A];
+            cel = &(*desc->bank)[arg0->unk08];
+            frame = &cel->frame[arg0->unk0A];
             arg0->unk0C += arg0->unk10;
-            if ((s16)arg0->unk0C > frame->unk02) {
+            if ((s16)arg0->unk0C > frame->time) {
                 arg0->unk0C = 0.0f;
                 arg0->unk0A++;
                 arg0->unk04 |= 4;
-                if (arg0->unk0A >= cel->unk00) {
+                if (arg0->unk0A >= cel->timeNum) {
                     arg0->unk06 = 0;
                     arg0->unk04 |= 2;
-                } else if (cel->unk04[arg0->unk0A].unk02 < 0) {
+                } else if (cel->frame[arg0->unk0A].time < 0) {
                     arg0->unk0A = 0;
                     arg0->unk04 |= 8;
                 }
             }
-            arg0->unk14 = frame->unk00;
-            arg0->unk17 = frame->unk04;
-            arg0->unk18 = frame->unk05;
-            arg0->unk16 = frame->unk06;
+            arg0->unk14 = frame->pat;
+            arg0->unk17 = frame->shiftX;
+            arg0->unk18 = frame->shiftY;
+            arg0->unk16 = frame->flip;
             break;
         case 2:
             prev = arg0->unk0A;
@@ -1585,7 +1585,7 @@ void func_800563A4_main(HuSprAnm *arg0) {
                 arg0->unk0C -= arg0->unk0A - prev;
                 arg0->unk04 |= 4;
             }
-            if (arg0->unk0A >= arg0->unk00->unk10) {
+            if (arg0->unk0A >= arg0->unk00->patNum) {
                 arg0->unk0A = 0;
                 arg0->unk0C = 0.0f;
                 arg0->unk04 |= 8;
@@ -1600,8 +1600,8 @@ void func_800563A4_main(HuSprAnm *arg0) {
                 arg0->unk0C -= arg0->unk0A - prev;
                 arg0->unk04 |= 8;
             }
-            if (arg0->unk0A < 0 || arg0->unk0A >= arg0->unk00->unk10) {
-                arg0->unk0A = (arg0->unk10 < 0.0f) ? 1 : arg0->unk00->unk10 - 2;
+            if (arg0->unk0A < 0 || arg0->unk0A >= arg0->unk00->patNum) {
+                arg0->unk0A = (arg0->unk10 < 0.0f) ? 1 : arg0->unk00->patNum - 2;
                 arg0->unk0C = 0.0f;
                 arg0->unk10 = -arg0->unk10;
                 arg0->unk04 |= 8;
@@ -1645,7 +1645,7 @@ void func_80056650_main(HuSprite *sprite) {
 
 // Computes the texture tiling of a sprite and reserves display list space.
 void func_80056758_main(HuSprite *sprite) {
-    HuSprite_Unk84_Unk00_Struct *image;
+    HuSprAnimPat *image;
     s32 fmt = G_IM_FMT_RGBA;
     s32 siz = G_IM_SIZ_4b;
     s32 width;
@@ -1659,8 +1659,8 @@ void func_80056758_main(HuSprite *sprite) {
     }
     if (fabs(fmod(sprite->unk_20, 360.0)) > 0.1f || (sprite->unk_24 & 0x3C0C00) ||
         (sprite->unk_24 & 0x30000) == 0x30000 || (sprite->unk_24 & 0x20000000)) {
-        image = &sprite->unk_84->unk00[sprite->unk_90];
-        switch (sprite->unk_84->unk18 & 0x7FFF) {
+        image = &sprite->unk_84->pat[sprite->unk_90];
+        switch (sprite->unk_84->pixelBits & 0x7FFF) {
             case 4:
                 fmt = G_IM_FMT_CI;
                 siz = G_IM_SIZ_4b;
@@ -1678,34 +1678,34 @@ void func_80056758_main(HuSprite *sprite) {
                 siz = G_IM_SIZ_32b;
                 break;
         }
-        width = ((image->unk04 << siz) >> 4 << 4) >> siz;
-        if (width < image->unk04) {
+        width = ((image->sizeX << siz) >> 4 << 4) >> siz;
+        if (width < image->sizeX) {
             width += 16 >> siz;
         }
         switch (fmt) {
             case G_IM_FMT_CI:
-                if ((0x1000 >> siz) >= image->unk06 * width) {
-                    lines = image->unk06;
+                if ((0x1000 >> siz) >= image->sizeY * width) {
+                    lines = image->sizeY;
                 } else {
                     lines = (0x1000 >> siz) / width;
                 }
                 break;
             case G_IM_FMT_I:
-                if (image->unk06 * width <= 0x1000) {
-                    lines = image->unk06;
+                if (image->sizeY * width <= 0x1000) {
+                    lines = image->sizeY;
                 } else {
                     lines = 0x1000 / width;
                 }
                 break;
             default:
-                if ((0x2000 >> siz) >= image->unk06 * width) {
-                    lines = image->unk06;
+                if ((0x2000 >> siz) >= image->sizeY * width) {
+                    lines = image->sizeY;
                 } else {
                     lines = (0x2000 >> siz) / width;
                 }
                 break;
         }
-        tiles = image->unk06 / lines;
+        tiles = image->sizeY / lines;
         sprite->unk_24 |= 0x40000000;
         if (!(sprite->unk_24 & 0x8000000)) {
             D_800D1FDC_main += !(sprite->unk_24 & 0x2000) ? (tiles + 2) << 5 : (tiles + 2) << 6;

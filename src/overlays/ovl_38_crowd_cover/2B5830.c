@@ -18,7 +18,7 @@
 typedef struct UnkCrowdCover {
     /* 0x00 */ Gfx *displayList;
     /* 0x04 */ Vtx_t *vtx;
-    /* 0x08 */ HuSprite_Unk84_Struct *sprite;
+    /* 0x08 */ HuSprAnimData *sprite;
     /* 0x0C */ struct UnkCrowdCover *prev;
     /* 0x10 */ struct UnkCrowdCover *next;
     /* 0x14 */ void (*callback)(struct UnkCrowdCover *);
@@ -99,7 +99,7 @@ typedef struct {
 } CrowdCoverMember; // sizeof 0x44
 
 extern s32 D_800A178C_main[][6];
-extern HuSprite_Unk84_Struct *D_800C9530_main[];
+extern HuSprAnimData *D_800C9530_main[];
 extern u8 D_800CE20A_main;
 
 s16 D_8010C6C0_crowd_cover = 2700;
@@ -1250,8 +1250,8 @@ s16 func_80109244_crowd_cover(s16 spriteId, s16 count) {
     return groupId;
 }
 
-HuSprite_Unk84_Unk00_Struct *func_8010930C_crowd_cover(s16 groupId, s16 member) {
-    return &func_80055194_main(groupId)->unk00[member];
+HuSprAnimPat *func_8010930C_crowd_cover(s16 groupId, s16 member) {
+    return &func_80055194_main(groupId)->pat[member];
 }
 
 void func_80109354_crowd_cover(u16 count) {
@@ -1284,25 +1284,25 @@ void func_80109354_crowd_cover(u16 count) {
     }
 }
 
-void func_8010949C_crowd_cover(Gfx **gfx, HuSprite_Unk84_Unk00_Struct *cel, u8 fmt, u8 siz, u16 height, u16 uls,
+void func_8010949C_crowd_cover(Gfx **gfx, HuSprAnimPat *cel, u8 fmt, u8 siz, u16 height, u16 uls,
                                u16 ult, u16 lrs, u16 lrt, u16 cms, u16 cmt, u16 masks, u16 maskt, s32 mode) {
     Gfx *gdl = *gfx;
 
     switch (mode) {
         case 0:
-            gDPLoadTextureTile_4b(gdl++, (void *)0x0C000000, fmt, cel->unk04, height, uls, ult, lrs, lrt, 0, cms,
+            gDPLoadTextureTile_4b(gdl++, (void *)0x0C000000, fmt, cel->sizeX, height, uls, ult, lrs, lrt, 0, cms,
                                   cmt, masks, maskt, 0, 0);
             break;
         case 1:
-            func_80034998_main(&gdl, (void *)0x0C000000, fmt, cel->unk04, height, uls, ult, lrs, lrt, 0, cms, cmt,
+            func_80034998_main(&gdl, (void *)0x0C000000, fmt, cel->sizeX, height, uls, ult, lrs, lrt, 0, cms, cmt,
                                masks, maskt, 0, 0);
             break;
         case 2:
-            func_800341D0_main(&gdl, (u16 *)0x0C000000, fmt, siz, cel->unk04, cel->unk06, uls, ult, lrs, lrt, 0,
+            func_800341D0_main(&gdl, (u16 *)0x0C000000, fmt, siz, cel->sizeX, cel->sizeY, uls, ult, lrs, lrt, 0,
                                cms, cmt, masks, maskt, 0, 0);
             break;
         case 3:
-            func_8003465C_main(&gdl, (void *)0x0C000000, fmt, siz, cel->unk04, height, uls, ult, lrs, lrt, 0, cms,
+            func_8003465C_main(&gdl, (void *)0x0C000000, fmt, siz, cel->sizeX, height, uls, ult, lrs, lrt, 0, cms,
                                cmt, masks, maskt, 0, 0);
             break;
     }
@@ -1310,11 +1310,11 @@ void func_8010949C_crowd_cover(Gfx **gfx, HuSprite_Unk84_Unk00_Struct *cel, u8 f
 }
 
 s16 func_8010980C_crowd_cover(UnkCrowdCover *crowd) {
-    HuSprite_Unk84_Unk00_Struct segCel;
+    HuSprAnimPat segCel;
     Gfx *gfx;
     Gfx *buf;
     Gfx *start;
-    HuSprite_Unk84_Unk00_Struct *cel;
+    HuSprAnimPat *cel;
     s32 fmt;
     s32 mode;
     s32 alignedWidth;
@@ -1328,41 +1328,41 @@ s16 func_8010980C_crowd_cover(UnkCrowdCover *crowd) {
     s32 maskt;
     u32 i;
 
-    cel = crowd->sprite->unk00;
+    cel = crowd->sprite->pat;
     buf = HuMemAlloc(0x1000);
     gfx = buf;
-    gSPSegment(gfx++, 0x0C, cel->unk00);
+    gSPSegment(gfx++, 0x0C, cel->data);
     gSPSegment(gfx++, 0x0E, crowd->vtx);
     start = gfx;
     gDPPipeSync(gfx++);
-    switch (crowd->sprite->unk18) {
+    switch (crowd->sprite->pixelBits) {
         case 4:
             siz = G_IM_SIZ_4b;
-            if (crowd->sprite->unk1A == 1) {
+            if (crowd->sprite->palNum == 1) {
                 fmt = G_IM_FMT_IA;
                 gDPSetTextureLUT(gfx++, G_TT_NONE);
             } else {
                 fmt = G_IM_FMT_CI;
-                gDPLoadTLUT_pal16(gfx++, 0, crowd->sprite->unk0C);
+                gDPLoadTLUT_pal16(gfx++, 0, crowd->sprite->pal);
                 gDPSetTextureLUT(gfx++, G_TT_RGBA16);
             }
             mode = 0;
             break;
         case 8:
             siz = G_IM_SIZ_8b;
-            if (crowd->sprite->unk1A == 1) {
+            if (crowd->sprite->palNum == 1) {
                 fmt = G_IM_FMT_IA;
                 gDPSetTextureLUT(gfx++, G_TT_NONE);
             } else {
                 fmt = G_IM_FMT_CI;
-                gDPLoadTLUT_pal256(gfx++, crowd->sprite->unk0C);
+                gDPLoadTLUT_pal256(gfx++, crowd->sprite->pal);
                 gDPSetTextureLUT(gfx++, G_TT_RGBA16);
             }
             mode = 2;
             break;
         case 16:
             siz = G_IM_SIZ_16b;
-            if (crowd->sprite->unk1A == 1) {
+            if (crowd->sprite->palNum == 1) {
                 fmt = G_IM_FMT_IA;
             } else {
                 fmt = G_IM_FMT_RGBA;
@@ -1389,40 +1389,40 @@ s16 func_8010980C_crowd_cover(UnkCrowdCover *crowd) {
             mode = 2;
             break;
     }
-    alignedWidth = (((cel->unk04 << siz) >> 4) << 4) >> siz;
-    if (alignedWidth < cel->unk04) {
+    alignedWidth = (((cel->sizeX << siz) >> 4) << 4) >> siz;
+    if (alignedWidth < cel->sizeX) {
         alignedWidth += 16 >> siz;
     }
     switch (fmt) {
         case G_IM_FMT_CI:
-            if ((4096 >> siz) >= cel->unk06 * alignedWidth) {
-                rows = cel->unk06;
+            if ((4096 >> siz) >= cel->sizeY * alignedWidth) {
+                rows = cel->sizeY;
             } else {
                 rows = (4096 >> siz) / alignedWidth;
             }
             break;
         case G_IM_FMT_I:
-            if (4096 >= cel->unk06 * alignedWidth) {
-                rows = cel->unk06;
+            if (4096 >= cel->sizeY * alignedWidth) {
+                rows = cel->sizeY;
             } else {
                 rows = 4096 / alignedWidth;
             }
             break;
         default:
-            if ((8192 >> siz) >= cel->unk06 * alignedWidth) {
-                rows = cel->unk06;
+            if ((8192 >> siz) >= cel->sizeY * alignedWidth) {
+                rows = cel->sizeY;
             } else {
                 rows = (8192 >> siz) / alignedWidth;
             }
             break;
     }
-    count = cel->unk06 / rows;
-    remainder = cel->unk06 - count * rows;
+    count = cel->sizeY / rows;
+    remainder = cel->sizeY - count * rows;
     // Aligned strips can use the block loader when its DXT rounding is exact.
-    if (cel->unk04 % (16 >> siz) == 0) {
-        if (((rows * cel->unk04) << siz) <= 4096) {
-            if (D_8010C814_crowd_cover[cel->unk04 >> D_8010C804_crowd_cover[siz]] >= rows ||
-                rows == D_8010C94C_crowd_cover[cel->unk04 >> D_8010C804_crowd_cover[siz]]) {
+    if (cel->sizeX % (16 >> siz) == 0) {
+        if (((rows * cel->sizeX) << siz) <= 4096) {
+            if (D_8010C814_crowd_cover[cel->sizeX >> D_8010C804_crowd_cover[siz]] >= rows ||
+                rows == D_8010C94C_crowd_cover[cel->sizeX >> D_8010C804_crowd_cover[siz]]) {
                 mode++;
             }
         }
@@ -1444,23 +1444,23 @@ s16 func_8010980C_crowd_cover(UnkCrowdCover *crowd) {
     }
     gDPPipeSync(gfx++);
     segCel = *cel;
-    segCel.unk00 = (void *)0x0C000000;
+    segCel.data = (void *)0x0C000000;
     if ((u32)crowd->unk_28 >= 0x80000000 && count == 1 && remainder == 0) {
-        func_8010949C_crowd_cover(&gfx, &segCel, fmt, siz, rows, 0, 0, cel->unk04 - 1, cel->unk06 - 1, cms, cmt, masks,
+        func_8010949C_crowd_cover(&gfx, &segCel, fmt, siz, rows, 0, 0, cel->sizeX - 1, cel->sizeY - 1, cms, cmt, masks,
                                   maskt, mode);
         gSPVertex(gfx++, (Vtx *)0x0E000000, 5, 0);
         gSP2Triangles(gfx++, 0, 2, 4, 0, 2, 3, 4, 0);
         gSP2Triangles(gfx++, 0, 4, 1, 0, 4, 3, 1, 0);
     } else {
         for (i = 0; i < count; i++) {
-            func_8010949C_crowd_cover(&gfx, &segCel, fmt, siz, rows, 0, i * rows, cel->unk04 - 1, (i + 1) * rows - 1,
+            func_8010949C_crowd_cover(&gfx, &segCel, fmt, siz, rows, 0, i * rows, cel->sizeX - 1, (i + 1) * rows - 1,
                                       cms, cmt, masks, maskt, mode);
             gSPVertex(gfx++, (Vtx *)0x0E000000 + i * 2, 4, 0);
             gSP2Triangles(gfx++, 0, 2, 3, 0, 0, 3, 1, 0);
         }
         if (remainder != 0) {
-            func_8010949C_crowd_cover(&gfx, &segCel, fmt, siz, remainder, 0, i * rows, cel->unk04 - 1,
-                                      cel->unk06 - 1, cms, cmt, masks, maskt, mode);
+            func_8010949C_crowd_cover(&gfx, &segCel, fmt, siz, remainder, 0, i * rows, cel->sizeX - 1,
+                                      cel->sizeY - 1, cms, cmt, masks, maskt, mode);
             gSPVertex(gfx++, (Vtx *)0x0E000000 + i * 2, 4, 0);
             gSP2Triangles(gfx++, 0, 2, 3, 0, 0, 3, 1, 0);
         }
@@ -1476,7 +1476,7 @@ s16 func_8010980C_crowd_cover(UnkCrowdCover *crowd) {
 
 s16 func_8010A12C_crowd_cover(s16 spriteId, s32 flags) {
     UnkCrowdCover *crowd;
-    HuSprite_Unk84_Unk00_Struct *cel;
+    HuSprAnimPat *cel;
     s32 index;
     s32 siz;
     s32 fmt;
@@ -1499,19 +1499,19 @@ s16 func_8010A12C_crowd_cover(s16 spriteId, s32 flags) {
     crowd->sprite = D_800C9530_main[spriteId];
     crowd->unk_28 = flags;
     crowd->unk_1A = 7;
-    cel = crowd->sprite->unk00;
-    switch (crowd->sprite->unk18) {
+    cel = crowd->sprite->pat;
+    switch (crowd->sprite->pixelBits) {
         case 4:
             siz = G_IM_SIZ_4b;
-            fmt = (crowd->sprite->unk1A == 1) ? G_IM_FMT_IA : G_IM_FMT_CI;
+            fmt = (crowd->sprite->palNum == 1) ? G_IM_FMT_IA : G_IM_FMT_CI;
             break;
         case 8:
             siz = G_IM_SIZ_8b;
-            fmt = (crowd->sprite->unk1A == 1) ? G_IM_FMT_IA : G_IM_FMT_CI;
+            fmt = (crowd->sprite->palNum == 1) ? G_IM_FMT_IA : G_IM_FMT_CI;
             break;
         case 16:
             siz = G_IM_SIZ_16b;
-            fmt = (crowd->sprite->unk1A == 1) ? G_IM_FMT_IA : G_IM_FMT_RGBA;
+            fmt = (crowd->sprite->palNum == 1) ? G_IM_FMT_IA : G_IM_FMT_RGBA;
             break;
         case 32:
             siz = G_IM_SIZ_32b;
@@ -1526,44 +1526,44 @@ s16 func_8010A12C_crowd_cover(s16 spriteId, s32 flags) {
             fmt = G_IM_FMT_I;
             break;
     }
-    alignedWidth = (((cel->unk04 << siz) >> 4) << 4) >> siz;
-    if (alignedWidth < cel->unk04) {
+    alignedWidth = (((cel->sizeX << siz) >> 4) << 4) >> siz;
+    if (alignedWidth < cel->sizeX) {
         alignedWidth += 16 >> siz;
     }
     switch (fmt) {
         case G_IM_FMT_CI:
-            if ((4096 >> siz) >= cel->unk06 * alignedWidth) {
-                rows = cel->unk06;
+            if ((4096 >> siz) >= cel->sizeY * alignedWidth) {
+                rows = cel->sizeY;
             } else {
                 rows = (4096 >> siz) / alignedWidth;
             }
             break;
         case G_IM_FMT_I:
-            if (4096 >= cel->unk06 * alignedWidth) {
-                rows = cel->unk06;
+            if (4096 >= cel->sizeY * alignedWidth) {
+                rows = cel->sizeY;
             } else {
                 rows = 4096 / alignedWidth;
             }
             break;
         default:
-            if ((8192 >> siz) >= cel->unk06 * alignedWidth) {
-                rows = cel->unk06;
+            if ((8192 >> siz) >= cel->sizeY * alignedWidth) {
+                rows = cel->sizeY;
             } else {
                 rows = (8192 >> siz) / alignedWidth;
             }
             break;
     }
-    count = cel->unk06 / rows;
-    remainder = cel->unk06 - count * rows;
+    count = cel->sizeY / rows;
+    remainder = cel->sizeY - count * rows;
     crowd->unk_18 = count + 2;
     crowd->unk_19 = rows;
     crowd->vtx = HuMemAlloc((count + 2) * 2 * sizeof(Vtx));
     for (i = 0; i < count + 1; i++) {
         crowd->vtx[i * 2].ob[0] = 0;
-        crowd->vtx[i * 2 + 1].ob[0] = cel->unk04;
+        crowd->vtx[i * 2 + 1].ob[0] = cel->sizeX;
         crowd->vtx[i * 2].ob[1] = crowd->vtx[i * 2 + 1].ob[1] = -i * rows;
         crowd->vtx[i * 2].tc[0] = 0;
-        crowd->vtx[i * 2 + 1].tc[0] = cel->unk04 << 6;
+        crowd->vtx[i * 2 + 1].tc[0] = cel->sizeX << 6;
         crowd->vtx[i * 2].tc[1] = (i * rows) << 6;
         crowd->vtx[i * 2 + 1].tc[1] = (i * rows) << 6;
         for (j = 0; j < 2; j++) {
@@ -1576,11 +1576,11 @@ s16 func_8010A12C_crowd_cover(s16 spriteId, s32 flags) {
     }
     if (remainder != 0) {
         crowd->vtx[i * 2].ob[0] = 0;
-        crowd->vtx[i * 2 + 1].ob[0] = cel->unk04;
-        crowd->vtx[i * 2].ob[1] = crowd->vtx[i * 2 + 1].ob[1] = cel->unk06;
+        crowd->vtx[i * 2 + 1].ob[0] = cel->sizeX;
+        crowd->vtx[i * 2].ob[1] = crowd->vtx[i * 2 + 1].ob[1] = cel->sizeY;
         crowd->vtx[i * 2].tc[0] = 0;
-        crowd->vtx[i * 2 + 1].tc[0] = cel->unk04 << 6;
-        crowd->vtx[i * 2].tc[1] = crowd->vtx[i * 2 + 1].tc[1] = cel->unk06 << 6;
+        crowd->vtx[i * 2 + 1].tc[0] = cel->sizeX << 6;
+        crowd->vtx[i * 2].tc[1] = crowd->vtx[i * 2 + 1].tc[1] = cel->sizeY << 6;
         for (j = 0; j < 2; j++) {
             crowd->vtx[i * 2 + j].ob[2] = 0;
             crowd->vtx[i * 2 + j].cn[0] = 0xFF;
@@ -1589,11 +1589,11 @@ s16 func_8010A12C_crowd_cover(s16 spriteId, s32 flags) {
             crowd->vtx[i * 2 + j].cn[3] = 0xFF;
         }
     } else if (count == 1) {
-        crowd->vtx[4].ob[0] = cel->unk04 * 0.5;
-        crowd->vtx[4].ob[1] = -cel->unk06 * 0.5;
+        crowd->vtx[4].ob[0] = cel->sizeX * 0.5;
+        crowd->vtx[4].ob[1] = -cel->sizeY * 0.5;
         crowd->vtx[4].ob[2] = 0;
-        crowd->vtx[4].tc[0] = cel->unk04 * 0.5 * 64.0;
-        crowd->vtx[4].tc[1] = cel->unk06 * 0.5 * 64.0;
+        crowd->vtx[4].tc[0] = cel->sizeX * 0.5 * 64.0;
+        crowd->vtx[4].tc[1] = cel->sizeY * 0.5 * 64.0;
         crowd->vtx[4].cn[0] = 0xFF;
         crowd->vtx[4].cn[1] = 0xFF;
         crowd->vtx[4].cn[2] = 0xFF;
@@ -1608,7 +1608,7 @@ s16 func_8010A12C_crowd_cover(s16 spriteId, s32 flags) {
 
 void func_8010A734_crowd_cover(s16 index, s16 spriteId) {
     UnkCrowdCover *crowd;
-    HuSprite_Unk84_Unk00_Struct *cel;
+    HuSprAnimPat *cel;
     s32 siz;
     s32 fmt;
     s32 alignedWidth;
@@ -1620,21 +1620,21 @@ void func_8010A734_crowd_cover(s16 index, s16 spriteId) {
 
     crowd = &D_8010D8EC_crowd_cover[index];
     crowd->sprite = D_800C9530_main[spriteId];
-    cel = crowd->sprite->unk00;
+    cel = crowd->sprite->pat;
     HuMemFree(crowd->vtx);
     HuMemFree(crowd->displayList);
-    switch (crowd->sprite->unk18) {
+    switch (crowd->sprite->pixelBits) {
         case 4:
             siz = G_IM_SIZ_4b;
-            fmt = (crowd->sprite->unk1A == 1) ? G_IM_FMT_IA : G_IM_FMT_CI;
+            fmt = (crowd->sprite->palNum == 1) ? G_IM_FMT_IA : G_IM_FMT_CI;
             break;
         case 8:
             siz = G_IM_SIZ_8b;
-            fmt = (crowd->sprite->unk1A == 1) ? G_IM_FMT_IA : G_IM_FMT_CI;
+            fmt = (crowd->sprite->palNum == 1) ? G_IM_FMT_IA : G_IM_FMT_CI;
             break;
         case 16:
             siz = G_IM_SIZ_16b;
-            fmt = (crowd->sprite->unk1A == 1) ? G_IM_FMT_IA : G_IM_FMT_RGBA;
+            fmt = (crowd->sprite->palNum == 1) ? G_IM_FMT_IA : G_IM_FMT_RGBA;
             break;
         case 32:
             siz = G_IM_SIZ_32b;
@@ -1649,44 +1649,44 @@ void func_8010A734_crowd_cover(s16 index, s16 spriteId) {
             fmt = G_IM_FMT_I;
             break;
     }
-    alignedWidth = (((cel->unk04 << siz) >> 4) << 4) >> siz;
-    if (alignedWidth < cel->unk04) {
+    alignedWidth = (((cel->sizeX << siz) >> 4) << 4) >> siz;
+    if (alignedWidth < cel->sizeX) {
         alignedWidth += 16 >> siz;
     }
     switch (fmt) {
         case G_IM_FMT_CI:
-            if ((4096 >> siz) >= cel->unk06 * alignedWidth) {
-                rows = cel->unk06;
+            if ((4096 >> siz) >= cel->sizeY * alignedWidth) {
+                rows = cel->sizeY;
             } else {
                 rows = (4096 >> siz) / alignedWidth;
             }
             break;
         case G_IM_FMT_I:
-            if (4096 >= cel->unk06 * alignedWidth) {
-                rows = cel->unk06;
+            if (4096 >= cel->sizeY * alignedWidth) {
+                rows = cel->sizeY;
             } else {
                 rows = 4096 / alignedWidth;
             }
             break;
         default:
-            if ((8192 >> siz) >= cel->unk06 * alignedWidth) {
-                rows = cel->unk06;
+            if ((8192 >> siz) >= cel->sizeY * alignedWidth) {
+                rows = cel->sizeY;
             } else {
                 rows = (8192 >> siz) / alignedWidth;
             }
             break;
     }
-    count = cel->unk06 / rows;
-    remainder = cel->unk06 - count * rows;
+    count = cel->sizeY / rows;
+    remainder = cel->sizeY - count * rows;
     crowd->unk_18 = count + 2;
     crowd->unk_19 = rows;
     crowd->vtx = HuMemAlloc((count + 2) * 2 * sizeof(Vtx));
     for (i = 0; i < count + 1; i++) {
         crowd->vtx[i * 2].ob[0] = 0;
-        crowd->vtx[i * 2 + 1].ob[0] = cel->unk04;
+        crowd->vtx[i * 2 + 1].ob[0] = cel->sizeX;
         crowd->vtx[i * 2].ob[1] = crowd->vtx[i * 2 + 1].ob[1] = -i * rows;
         crowd->vtx[i * 2].tc[0] = 0;
-        crowd->vtx[i * 2 + 1].tc[0] = cel->unk04 << 6;
+        crowd->vtx[i * 2 + 1].tc[0] = cel->sizeX << 6;
         crowd->vtx[i * 2].tc[1] = (i * rows) << 6;
         crowd->vtx[i * 2 + 1].tc[1] = (i * rows) << 6;
         for (j = 0; j < 2; j++) {
@@ -1699,11 +1699,11 @@ void func_8010A734_crowd_cover(s16 index, s16 spriteId) {
     }
     if (remainder != 0) {
         crowd->vtx[i * 2].ob[0] = 0;
-        crowd->vtx[i * 2 + 1].ob[0] = cel->unk04;
-        crowd->vtx[i * 2].ob[1] = crowd->vtx[i * 2 + 1].ob[1] = cel->unk06;
+        crowd->vtx[i * 2 + 1].ob[0] = cel->sizeX;
+        crowd->vtx[i * 2].ob[1] = crowd->vtx[i * 2 + 1].ob[1] = cel->sizeY;
         crowd->vtx[i * 2].tc[0] = 0;
-        crowd->vtx[i * 2 + 1].tc[0] = cel->unk04 << 6;
-        crowd->vtx[i * 2].tc[1] = crowd->vtx[i * 2 + 1].tc[1] = cel->unk06 << 6;
+        crowd->vtx[i * 2 + 1].tc[0] = cel->sizeX << 6;
+        crowd->vtx[i * 2].tc[1] = crowd->vtx[i * 2 + 1].tc[1] = cel->sizeY << 6;
         for (j = 0; j < 2; j++) {
             crowd->vtx[i * 2 + j].ob[2] = 0;
             crowd->vtx[i * 2 + j].cn[0] = 0xFF;
@@ -1712,11 +1712,11 @@ void func_8010A734_crowd_cover(s16 index, s16 spriteId) {
             crowd->vtx[i * 2 + j].cn[3] = 0xFF;
         }
     } else if (count == 1) {
-        crowd->vtx[4].ob[0] = cel->unk04 * 0.5;
-        crowd->vtx[4].ob[1] = -cel->unk06 * 0.5;
+        crowd->vtx[4].ob[0] = cel->sizeX * 0.5;
+        crowd->vtx[4].ob[1] = -cel->sizeY * 0.5;
         crowd->vtx[4].ob[2] = 0;
-        crowd->vtx[4].tc[0] = cel->unk04 * 0.5 * 64.0;
-        crowd->vtx[4].tc[1] = cel->unk06 * 0.5 * 64.0;
+        crowd->vtx[4].tc[0] = cel->sizeX * 0.5 * 64.0;
+        crowd->vtx[4].tc[1] = cel->sizeY * 0.5 * 64.0;
         crowd->vtx[4].cn[0] = 0xFF;
         crowd->vtx[4].cn[1] = 0xFF;
         crowd->vtx[4].cn[2] = 0xFF;
@@ -1973,26 +1973,26 @@ void func_8010B408_crowd_cover(s32 index, s32 flip) {
 
     if (flip) {
         for (i = 0; i < crowd->unk_18; i++) {
-            crowd->vtx[i * 2].tc[0] = crowd->sprite->unk00->unk04 << 6;
+            crowd->vtx[i * 2].tc[0] = crowd->sprite->pat->sizeX << 6;
             crowd->vtx[i * 2 + 1].tc[0] = 0;
         }
     } else {
         for (i = 0; i < crowd->unk_18; i++) {
             crowd->vtx[i * 2].tc[0] = 0;
-            crowd->vtx[i * 2 + 1].tc[0] = crowd->sprite->unk00->unk04 << 6;
+            crowd->vtx[i * 2 + 1].tc[0] = crowd->sprite->pat->sizeX << 6;
         }
     }
 }
 
 void func_8010B4D8_crowd_cover(s32 index, s32 flip) {
     UnkCrowdCover *crowd = &D_8010D8EC_crowd_cover[index];
-    s32 remainder = crowd->sprite->unk00->unk06 - (crowd->unk_18 - 2) * crowd->unk_19;
+    s32 remainder = crowd->sprite->pat->sizeY - (crowd->unk_18 - 2) * crowd->unk_19;
     s32 i;
 
     if (flip) {
         for (i = 0; i < crowd->unk_18 - 1; i++) {
             crowd->vtx[i * 2].tc[1] = crowd->vtx[i * 2 + 1].tc[1] =
-                crowd->sprite->unk00->unk06 - i * crowd->unk_19;
+                crowd->sprite->pat->sizeY - i * crowd->unk_19;
         }
         if (remainder != 0) {
             crowd->vtx[i * 2].tc[1] = crowd->vtx[i * 2 + 1].tc[1] = 0;
@@ -2002,7 +2002,7 @@ void func_8010B4D8_crowd_cover(s32 index, s32 flip) {
             crowd->vtx[i * 2].ob[1] = crowd->vtx[i * 2 + 1].ob[1] = i * crowd->unk_19;
         }
         if (remainder != 0) {
-            crowd->vtx[i * 2].ob[1] = crowd->vtx[i * 2 + 1].ob[1] = crowd->sprite->unk00->unk06;
+            crowd->vtx[i * 2].ob[1] = crowd->vtx[i * 2 + 1].ob[1] = crowd->sprite->pat->sizeY;
         }
     }
 }
@@ -2181,7 +2181,7 @@ Gfx *func_8010BD74_crowd_cover(Gfx *gfx, UnkCrowdCover *crowd, HuMtx4F lookAt, V
     HuMtx4F mtx;
     HuMtx4F billboard;
     HuMtx4F inverse;
-    HuSprite_Unk84_Unk00_Struct *cel;
+    HuSprAnimPat *cel;
     u16 format;
     u32 blend;
     u32 mode;
@@ -2189,7 +2189,7 @@ Gfx *func_8010BD74_crowd_cover(Gfx *gfx, UnkCrowdCover *crowd, HuMtx4F lookAt, V
     Mtx *mtxL;
     Gfx *dl;
 
-    cel = &crowd->sprite->unk00[crowd->unk_24];
+    cel = &crowd->sprite->pat[crowd->unk_24];
     gDPPipeSync(gfx++);
     gDPSetTextureFilter(gfx++, D_8010CA8C_crowd_cover[(crowd->unk_28 >> 2) & 3]);
     gDPSetColorDither(gfx++, D_8010CA84_crowd_cover[(crowd->unk_28 >> 4) & 3]);
@@ -2199,7 +2199,7 @@ Gfx *func_8010BD74_crowd_cover(Gfx *gfx, UnkCrowdCover *crowd, HuMtx4F lookAt, V
     } else {
         gSPClearGeometryMode(gfx++, G_LIGHTING);
     }
-    format = crowd->sprite->unk18;
+    format = crowd->sprite->pixelBits;
     blend = 0x110000;
     if (crowd->unk_28 & 0x8000000) {
         blend = 0xC8004000;
@@ -2270,8 +2270,8 @@ Gfx *func_8010BD74_crowd_cover(Gfx *gfx, UnkCrowdCover *crowd, HuMtx4F lookAt, V
         billboard[3][0] = -crowd->unk_30.y;
         billboard[3][1] = crowd->unk_30.z;
     } else {
-        billboard[3][0] = -(u16)cel->unk08;
-        billboard[3][1] = (u16)cel->unk0A;
+        billboard[3][0] = -(u16)cel->centerX;
+        billboard[3][1] = (u16)cel->centerY;
     }
     billboard[3][2] = crowd->unk_3C;
     func_8002367C_main(mtx, lookAt);
@@ -2303,7 +2303,7 @@ Gfx *func_8010BD74_crowd_cover(Gfx *gfx, UnkCrowdCover *crowd, HuMtx4F lookAt, V
     gDPPipeSync(gfx++);
     gSPMatrix(gfx++, osVirtualToPhysical(mtxL), G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH);
     gDPPipeSync(gfx++);
-    gSPSegment(gfx++, 0x0C, cel->unk00);
+    gSPSegment(gfx++, 0x0C, cel->data);
     gSPSegment(gfx++, 0x0E, vtx);
     gDPPipeSync(gfx++);
     memcpy(vtx, crowd->vtx, crowd->unk_18 * 2 * sizeof(Vtx));
@@ -2333,7 +2333,7 @@ void func_8010C45C_crowd_cover(void) {
         if (crowd->unk_28 & 0x10000000) {
             continue;
         }
-        frameCount = crowd->sprite->unk10;
+        frameCount = crowd->sprite->patNum;
         crowd->unk_2C += crowd->unk_30.x;
         while (crowd->unk_2C >= 1.0) {
             crowd->unk_24++;

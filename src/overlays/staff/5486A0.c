@@ -1357,7 +1357,7 @@ void func_8010F04C_staff(s16 model, s32 dataNum) {
     s16 anim;
     s16 grp;
     HuSprite *sprite;
-    HuSprite_Unk84_Unk00_Struct *img;
+    HuSprAnimPat *img;
     u16 *pixels;
     s16 count;
     HmfModelData_UnkBC_Struct *bc;
@@ -1373,17 +1373,17 @@ void func_8010F04C_staff(s16 model, s32 dataNum) {
     grp = HuSprGrpCreate(1, 0);
     HuSprGrpMemberSet(grp, 0, anim, 0);
     sprite = HuSprGet(grp, 0);
-    img = sprite->unk_84->unk00;
-    pixels = img->unk00;
+    img = sprite->unk_84->pat;
+    pixels = img->data;
     used = 0;
-    width = img->unk04;
-    height = img->unk06;
+    width = img->sizeX;
+    height = img->sizeY;
     for (i = 0; i < width * height; i++) {
         if (*pixels++ == 0xFFFF) {
             used++;
         }
     }
-    pixels = sprite->unk_84->unk00->unk00;
+    pixels = sprite->unk_84->pat->data;
     bc = Hu3DData[model].unkBC;
     count = Hu3DData[model].hmf->unk1A;
     particle = bc->unk58;

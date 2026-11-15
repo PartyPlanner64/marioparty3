@@ -141,7 +141,7 @@ typedef struct PumpPumpAwayFade {
     /* 0x00 */ s32 state;
     /* 0x04 */ s32 spriteId; // 0x06 is also read as an s16
     /* 0x08 */ s32 modelId;  // 0x0A is also read as an s16
-    /* 0x0C */ HuSprite_Unk84_Struct *sprite;
+    /* 0x0C */ HuSprAnimData *sprite;
     /* 0x10 */ s32 alpha;
     /* 0x14 */ s32 timer;
 } PumpPumpAwayFade; // sizeof 0x18
@@ -335,13 +335,13 @@ extern s32 D_8011175C_pump_pump_away; // D_80111758_pump_pump_away[0].unk_04
 extern s16 D_8011175E_pump_pump_away; // D_80111758_pump_pump_away[0].unk_04 (low half)
 extern s32 D_80111760_pump_pump_away; // D_80111758_pump_pump_away[0].unk_08
 extern s16 D_80111762_pump_pump_away; // D_80111758_pump_pump_away[0].unk_08 (low half)
-extern HuSprite_Unk84_Struct *D_80111764_pump_pump_away; // D_80111758_pump_pump_away[0].unk_0C
+extern HuSprAnimData *D_80111764_pump_pump_away; // D_80111758_pump_pump_away[0].unk_0C
 extern s32 D_80111788_pump_pump_away; // D_80111758_pump_pump_away[0].unk_30
 extern s32 D_80111790_pump_pump_away; // D_80111758_pump_pump_away[1].unk_04
 extern s16 D_80111792_pump_pump_away; // D_80111758_pump_pump_away[1].unk_04 (low half)
 extern s32 D_80111794_pump_pump_away; // D_80111758_pump_pump_away[1].unk_08
 extern s16 D_80111796_pump_pump_away; // D_80111758_pump_pump_away[1].unk_08 (low half)
-extern HuSprite_Unk84_Struct *D_80111798_pump_pump_away; // D_80111758_pump_pump_away[1].unk_0C
+extern HuSprAnimData *D_80111798_pump_pump_away; // D_80111758_pump_pump_away[1].unk_0C
 extern s32 D_801117BC_pump_pump_away; // D_80111758_pump_pump_away[1].unk_30
 extern f32 D_80111990_pump_pump_away; // D_80111978_pump_pump_away[0].unk_18
 extern s32 D_8011351C_pump_pump_away; // D_80113518_pump_pump_away.player
@@ -350,7 +350,7 @@ extern s32 D_80113534_pump_pump_away; // D_80113530_pump_pump_away.spriteId
 extern s16 D_80113536_pump_pump_away; // D_80113530_pump_pump_away.spriteId (low half)
 extern s32 D_80113538_pump_pump_away; // D_80113530_pump_pump_away.modelId
 extern s16 D_8011353A_pump_pump_away; // D_80113530_pump_pump_away.modelId (low half)
-extern HuSprite_Unk84_Struct *D_8011353C_pump_pump_away; // D_80113530_pump_pump_away.sprite
+extern HuSprAnimData *D_8011353C_pump_pump_away; // D_80113530_pump_pump_away.sprite
 extern s32 D_80113540_pump_pump_away; // D_80113530_pump_pump_away.alpha
 extern s32 D_80113544_pump_pump_away; // D_80113530_pump_pump_away.timer
 extern s16 D_801135B4_pump_pump_away; // D_801135B0_pump_pump_away.spriteData
@@ -925,10 +925,10 @@ void func_8010749C_pump_pump_away(Gfx **gfxPos, s32 arg1, s32 arg2) {
     }
     gfx = *gfxPos;
     gDPSetTextureLUT(gfx++, G_TT_RGBA16);
-    gDPLoadTLUT_pal16(gfx++, 0, fade->sprite->unk0C);
+    gDPLoadTLUT_pal16(gfx++, 0, fade->sprite->pal);
     for (x = 0; x < 5; x++) {
         for (y = 0; y < 5; y++) {
-            gDPLoadTextureTile_4b(gfx++, fade->sprite->unk08, G_IM_FMT_CI, 64, 16,
+            gDPLoadTextureTile_4b(gfx++, fade->sprite->data, G_IM_FMT_CI, 64, 16,
                                   0, 0, 64, 48, 0, G_TX_WRAP, G_TX_WRAP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
             gDPSetTileSize(gfx++, G_TX_RENDERTILE, 0, 0, 64 << 2, 48 << 2);
             {
@@ -1271,9 +1271,9 @@ void func_80108560_pump_pump_away(Gfx **gfxPos, s32 arg1, s32 arg2) {
     }
     gfx = *gfxPos;
     gDPSetTextureLUT(gfx++, G_TT_RGBA16);
-    gDPLoadTLUT_pal16(gfx++, 0, ((HuSprite_Unk84_Struct *)node->unk_0C)->unk0C);
+    gDPLoadTLUT_pal16(gfx++, 0, ((HuSprAnimData *)node->unk_0C)->pal);
     for (i = 0; i < 2; i++) {
-        gDPLoadTextureTile_4b(gfx++, ((HuSprite_Unk84_Struct *)node->unk_0C)->unk08, G_IM_FMT_CI, 64, 16,
+        gDPLoadTextureTile_4b(gfx++, ((HuSprAnimData *)node->unk_0C)->data, G_IM_FMT_CI, 64, 16,
                               0, 0, 64, 16, 0, G_TX_WRAP, G_TX_WRAP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
         gDPSetTileSize(gfx++, G_TX_RENDERTILE, 0, 0, 64 << 2, 16 << 2);
         x = D_80110FDC_pump_pump_away[i][0];
@@ -1320,11 +1320,11 @@ void func_80108810_pump_pump_away(Gfx **gfxPos, s32 arg1, s32 arg2) {
     }
     gfx = *gfxPos;
     gDPSetTextureLUT(gfx++, G_TT_RGBA16);
-    gDPLoadTLUT_pal16(gfx++, 0, ((HuSprite_Unk84_Struct *)node->unk_0C)->unk0C);
+    gDPLoadTLUT_pal16(gfx++, 0, ((HuSprAnimData *)node->unk_0C)->pal);
     for (i = 0; i < 8; i++) {
         if ((i != 0) & (i != 4)) {
             // Explicit command words and staged coordinate packing preserve GCC 2.7.2's loop hoisting.
-            gDPSetTextureImage(gfx++, G_IM_FMT_CI, G_IM_SIZ_8b, 4, ((HuSprite_Unk84_Struct *)node->unk_0C)->unk08);
+            gDPSetTextureImage(gfx++, G_IM_FMT_CI, G_IM_SIZ_8b, 4, ((HuSprAnimData *)node->unk_0C)->data);
             gDPSetTile(gfx++, G_IM_FMT_CI, G_IM_SIZ_8b, 1, 0, G_TX_LOADTILE, 0, G_TX_WRAP, 0, G_TX_NOLOD, G_TX_WRAP, 0, G_TX_NOLOD);
             gDPLoadSync(gfx++);
             gDPLoadTile(gfx++, G_TX_LOADTILE, 0, node->unk_10[i] << 2, 8 << 1, (node->unk_10[i] + 10) << 2);

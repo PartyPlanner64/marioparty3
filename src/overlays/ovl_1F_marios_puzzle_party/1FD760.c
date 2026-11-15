@@ -86,7 +86,7 @@ void func_8010F810_marios_puzzle_party(omObjData *object) {
     Gfx *gfx;
     MarioPuzzlePartySpriteBlock *block;
     MarioPuzzlePartySprite *sprite;
-    HuSprite_Unk84_Struct *anim;
+    HuSprAnimData *anim;
     void *image;
     s16 width;
     s16 height;
@@ -107,9 +107,9 @@ void func_8010F810_marios_puzzle_party(omObjData *object) {
         for (i = 0; i < D_801168B4_marios_puzzle_party; i++, block++) {
             sprite = block->sprites;
             anim = HuSprGet(block->groupHandle, 0)->unk_84;
-            image = anim->unk00->unk00;
-            width = anim->unk14;
-            height = anim->unk16;
+            image = anim->pat->data;
+            width = anim->sizeX;
+            height = anim->sizeY;
             gDPLoadTextureTile(gfx++, image, G_IM_FMT_RGBA, G_IM_SIZ_16b, width, 0, 0, 0, width, height, 0,
                                G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
                                G_TX_NOLOD, G_TX_NOLOD);

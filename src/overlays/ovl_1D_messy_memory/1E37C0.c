@@ -313,10 +313,10 @@ u8 D_8011163B_messy_memory BSS;
 s32 D_8011163C_messy_memory BSS;
 s32 D_80111640_messy_memory[4] BSS;
 s16 D_80111650_messy_memory BSS;
-HuSprite_Unk84_Struct *D_80111654_messy_memory BSS;
+HuSprAnimData *D_80111654_messy_memory BSS;
 u8 D_80111658_messy_memory[4] BSS;
 f32 D_8011165C_messy_memory BSS;
-HuSprite_Unk84_Struct *D_80111660_messy_memory[4] BSS;
+HuSprAnimData *D_80111660_messy_memory[4] BSS;
 u8 D_80111670_messy_memory[4] BSS;
 u8 D_80111674_messy_memory BSS;
 u8 D_80111675_messy_memory BSS;
@@ -324,7 +324,7 @@ u8 D_80111678_messy_memory[4][10] BSS;
 f32 D_801116A0_messy_memory BSS;
 u8 D_801116A4_messy_memory[10] BSS;
 u8 D_801116B0_messy_memory[40] BSS;
-HuSprite_Unk84_Struct *D_801116D8_messy_memory BSS;
+HuSprAnimData *D_801116D8_messy_memory BSS;
 u8 D_801116DC_messy_memory[4] BSS; /* Unreferenced. */
 u8 D_801116E0_messy_memory[20] BSS;
 u8 D_801116F4_messy_memory[12] BSS; /* Unreferenced. */
@@ -424,9 +424,9 @@ void func_80105B88_messy_memory(Gfx **gfxPos, s32 arg1, s32 arg2) {
     gDPSetRenderMode(gfx++, G_RM_AA_TEX_EDGE, G_RM_AA_TEX_EDGE2);
 
     gDPSetTextureLUT(gfx++, G_TT_RGBA16);
-    gDPLoadTLUT_pal16(gfx++, 0, D_80111654_messy_memory->unk0C);
+    gDPLoadTLUT_pal16(gfx++, 0, D_80111654_messy_memory->pal);
     for (i = 0, x = 0, y = 108; i < 24; i += 6) {
-        gDPLoadTextureTile_4b(gfx++, D_80111654_messy_memory->unk08, G_IM_FMT_CI, 320, 24, 0, i, 320, i + 6, 0,
+        gDPLoadTextureTile_4b(gfx++, D_80111654_messy_memory->data, G_IM_FMT_CI, 320, 24, 0, i, 320, i + 6, 0,
                               G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                               G_TX_NOLOD, G_TX_NOLOD);
         gDPSetTileSize(gfx++, G_TX_RENDERTILE, 0, 0, 320 << G_TEXTURE_IMAGE_FRAC, 6 << G_TEXTURE_IMAGE_FRAC);
@@ -435,9 +435,9 @@ void func_80105B88_messy_memory(Gfx **gfxPos, s32 arg1, s32 arg2) {
     }
 
     gDPSetTextureLUT(gfx++, G_TT_RGBA16);
-    gDPLoadTLUT_pal16(gfx++, 0, D_801116D8_messy_memory->unk0C);
+    gDPLoadTLUT_pal16(gfx++, 0, D_801116D8_messy_memory->pal);
     for (i = 0, x = 148, y = 0; i < 240; i += 16) {
-        gDPLoadTextureTile_4b(gfx++, D_801116D8_messy_memory->unk08, G_IM_FMT_CI, 24, 240, 0, i, 24, i + 16, 0,
+        gDPLoadTextureTile_4b(gfx++, D_801116D8_messy_memory->data, G_IM_FMT_CI, 24, 240, 0, i, 24, i + 16, 0,
                               G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                               G_TX_NOLOD, G_TX_NOLOD);
         gDPSetTileSize(gfx++, G_TX_RENDERTILE, 0, 0, 24 << G_TEXTURE_IMAGE_FRAC, 16 << G_TEXTURE_IMAGE_FRAC);
@@ -594,7 +594,7 @@ Gfx **func_801067D0_messy_memory(Gfx **gfx, u8 alpha) {
 void func_80106800_messy_memory(Gfx **gfxPos, s32 arg1, s32 arg2) {
     MessyMemoryWork *work;
     omObjData *obj;
-    HuSprite_Unk84_Unk00_Struct *frame;
+    HuSprAnimPat *frame;
     Gfx *gfx;
     s32 height;
     s32 i;
@@ -623,9 +623,9 @@ void func_80106800_messy_memory(Gfx **gfxPos, s32 arg1, s32 arg2) {
         }
         gfx = *gfxPos;
         gDPSetTextureLUT(gfx++, G_TT_RGBA16);
-        gDPLoadTLUT_pal16(gfx++, 0, D_80111660_messy_memory[obj->work[0]]->unk0C);
-        frame = &D_80111660_messy_memory[obj->work[0]]->unk00[D_80111640_messy_memory[obj->work[0]]];
-        gDPLoadTextureTile_4b(gfx++, frame->unk00, G_IM_FMT_CI, 32, 32, 0, 0, 32, 32 - height, 0, G_TX_NOMIRROR | G_TX_WRAP,
+        gDPLoadTLUT_pal16(gfx++, 0, D_80111660_messy_memory[obj->work[0]]->pal);
+        frame = &D_80111660_messy_memory[obj->work[0]]->pat[D_80111640_messy_memory[obj->work[0]]];
+        gDPLoadTextureTile_4b(gfx++, frame->data, G_IM_FMT_CI, 32, 32, 0, 0, 32, 32 - height, 0, G_TX_NOMIRROR | G_TX_WRAP,
                               G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
         gDPSetTileSize(gfx++, G_TX_RENDERTILE, 0, 0, 32 << G_TEXTURE_IMAGE_FRAC, (32 - height) << G_TEXTURE_IMAGE_FRAC);
         gSPTextureRectangle(gfx++, (s32)(work->unk44.x - 8.0f + 16.0f - work->unk18 * 16.0f) << 2,

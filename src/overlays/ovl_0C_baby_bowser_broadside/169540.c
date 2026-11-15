@@ -75,13 +75,13 @@ BabyBowserBroadsideModel *D_8011001C_baby_bowser_broadside BSS;
 BabyBowserBroadsideBoat *D_80110020_baby_bowser_broadside BSS;
 
 
-s16 func_8010B54C_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, f32 scale);
-s16 func_8010C8D4_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, u8 *color);
+s16 func_8010B54C_baby_bowser_broadside(HuSprAnimData *sprite, f32 scale);
+s16 func_8010C8D4_baby_bowser_broadside(HuSprAnimData *sprite, u8 *color);
 
 void func_8010F878_baby_bowser_broadside(f32 *matrix);
-void func_8010D590_baby_bowser_broadside(u16 model, HuSprite_Unk84_Struct *sprite, u16 frame, u8 *color);
+void func_8010D590_baby_bowser_broadside(u16 model, HuSprAnimData *sprite, u16 frame, u8 *color);
 
-s16 func_8010D6C4_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, HmfData *data, f32 scale, s16 arg3, s16 arg4);
+s16 func_8010D6C4_baby_bowser_broadside(HuSprAnimData *sprite, HmfData *data, f32 scale, s16 arg3, s16 arg4);
 
 void func_8010A3C8_baby_bowser_broadside(BabyBowserBroadsideGroup *group);
 
@@ -266,7 +266,7 @@ s16 func_8010A598_baby_bowser_broadside(s16 priority, s32 directory, s32 file, s
             if (animation == 0) {
                 sprite->unk_04 = 99;
             } else {
-                sprite->unk_04 = data->unk_84->unk10;
+                sprite->unk_04 = data->unk_84->patNum;
             }
             sprite->unk_00 = 2;
             func_8010A7CC_baby_bowser_broadside(i);
@@ -469,7 +469,7 @@ s16 func_8010AE60_baby_bowser_broadside(s32 directory, s32 file, s16 type, s32 f
             work->unk_1C = &Hu3DData[work->unk_0C].pos.z;
             work->unk_08 = type;
             work->unk_04 = flags;
-            work->unk_0E = func_80055194_main(frame)->unk10;
+            work->unk_0E = func_80055194_main(frame)->patNum;
             work->unk_10 = 0;
             work->unk_00 = 1;
             break;
@@ -595,7 +595,7 @@ void func_8010B3B4_baby_bowser_broadside(void) {
     }
 }
 
-s16 func_8010B54C_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, f32 alpha) {
+s16 func_8010B54C_baby_bowser_broadside(HuSprAnimData *sprite, f32 alpha) {
     Gfx *buffer;
     Gfx *gfx;
     HmfData *data;
@@ -631,13 +631,13 @@ s16 func_8010B54C_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, f32 alpha
     gDPPipeSync(gfx++);
     gSPTexture(gfx++, 0x8000, 0x8000, 0, G_TX_RENDERTILE, G_ON);
     gDPSetTexturePersp(gfx++, G_TP_PERSP);
-    if (sprite->unk1A >= 2) {
+    if (sprite->palNum >= 2) {
         gDPSetTextureLUT(gfx++, G_TT_RGBA16);
         stride = 0x800;
-        if (sprite->unk18 == 4) {
-            gDPLoadTLUT_pal16(gfx++, 0, sprite->unk0C);
+        if (sprite->pixelBits == 4) {
+            gDPLoadTLUT_pal16(gfx++, 0, sprite->pal);
         } else {
-            gDPLoadTLUT_pal256(gfx++, sprite->unk0C);
+            gDPLoadTLUT_pal256(gfx++, sprite->pal);
         }
     } else {
         gDPSetTextureLUT(gfx++, G_TT_NONE);
@@ -645,8 +645,8 @@ s16 func_8010B54C_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, f32 alpha
     }
     gDPPipeSync(gfx++);
     for (i = 0; i < count; i++) {
-        gSPSegment(gfx++, 2, osVirtualToPhysical((u8 *)sprite->unk08 + stride * i));
-        gDPLoadTextureBlock(gfx++, 0x02000000, G_IM_FMT_CI, G_IM_SIZ_8b, sprite->unk00->unk04, sprite->unk00->unk06 / count, 0,
+        gSPSegment(gfx++, 2, osVirtualToPhysical((u8 *)sprite->data + stride * i));
+        gDPLoadTextureBlock(gfx++, 0x02000000, G_IM_FMT_CI, G_IM_SIZ_8b, sprite->pat->sizeX, sprite->pat->sizeY / count, 0,
                             G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
         gDPPipeSync(gfx++);
         gSPSegment(gfx++, 1, osVirtualToPhysical(&data->unk44[0][i * 4]));
@@ -664,7 +664,7 @@ s16 func_8010B54C_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, f32 alpha
     return model;
 }
 
-s16 func_8010BCBC_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, f32 alpha) {
+s16 func_8010BCBC_baby_bowser_broadside(HuSprAnimData *sprite, f32 alpha) {
     u8 *buffer;
     Gfx *gfx;
     Gfx *header;
@@ -699,11 +699,11 @@ s16 func_8010BCBC_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, f32 alpha
     gDPSetBlendColor(gfx++, 1, 1, 1, 1);
     gDPPipeSync(gfx++);
     gDPSetRenderMode(gfx++, G_RM_ZB_XLU_SURF, G_RM_NOOP2);
-    if (sprite->unk1A >= 2) {
+    if (sprite->palNum >= 2) {
         gDPSetCombineLERP(gfx++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
         gDPSetPrimColor(gfx++, 0, 0, 255, 255, 255, (u32)(alpha * 255.0f));
     } else {
-        if (sprite->unk18 & 0x8000) {
+        if (sprite->pixelBits & 0x8000) {
             gDPSetCombineLERP(gfx++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0);
         } else {
             gDPSetCombineLERP(gfx++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
@@ -713,31 +713,31 @@ s16 func_8010BCBC_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, f32 alpha
     gDPPipeSync(gfx++);
     gSPTexture(gfx++, 0x8000, 0x8000, 0, G_TX_RENDERTILE, G_ON);
     gDPSetTexturePersp(gfx++, G_TP_PERSP);
-    if (sprite->unk1A >= 2) {
+    if (sprite->palNum >= 2) {
         gDPSetTextureLUT(gfx++, G_TT_RGBA16);
-        if (sprite->unk18 == 4) {
-            gDPLoadTLUT_pal16(gfx++, 0, sprite->unk0C);
+        if (sprite->pixelBits == 4) {
+            gDPLoadTLUT_pal16(gfx++, 0, sprite->pal);
         } else {
-            gDPLoadTLUT_pal256(gfx++, sprite->unk0C);
+            gDPLoadTLUT_pal256(gfx++, sprite->pal);
         }
         gDPPipeSync(gfx++);
         format = G_IM_FMT_CI;
     } else {
         gDPSetTextureLUT(gfx++, G_TT_NONE);
         gDPPipeSync(gfx++);
-        format = ((u32)sprite->unk18 >> 15) * 4;
+        format = ((u32)sprite->pixelBits >> 15) * 4;
     }
-    switch (sprite->unk18 & 0xFFF) {
+    switch (sprite->pixelBits & 0xFFF) {
         case 4:
-            gDPLoadTextureBlock_4b(gfx++, 0x02000000, format, sprite->unk00->unk04, sprite->unk00->unk06, 0,
+            gDPLoadTextureBlock_4b(gfx++, 0x02000000, format, sprite->pat->sizeX, sprite->pat->sizeY, 0,
                                    G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
             break;
         case 8:
-            gDPLoadTextureBlock(gfx++, 0x02000000, format, G_IM_SIZ_8b, sprite->unk00->unk04, sprite->unk00->unk06, 0,
+            gDPLoadTextureBlock(gfx++, 0x02000000, format, G_IM_SIZ_8b, sprite->pat->sizeX, sprite->pat->sizeY, 0,
                                 G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
             break;
         case 16:
-            gDPLoadTextureBlock(gfx++, 0x02000000, format, G_IM_SIZ_16b, sprite->unk00->unk04, sprite->unk00->unk06, 0,
+            gDPLoadTextureBlock(gfx++, 0x02000000, format, G_IM_SIZ_16b, sprite->pat->sizeX, sprite->pat->sizeY, 0,
                                 G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
             break;
     }
@@ -756,7 +756,7 @@ s16 func_8010BCBC_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, f32 alpha
     for (i = 0; i < D_800D1FF0_main; i++) {
         gfx = (data->unk3C->unk00 + 1)[i] = HuMemAllocTag(0x100, data->unk0E);
         gDPPipeSync(gfx++);
-        gSPSegment(gfx++, 2, osVirtualToPhysical(sprite->unk00->unk00));
+        gSPSegment(gfx++, 2, osVirtualToPhysical(sprite->pat->data));
         gSPDisplayList(gfx++, osVirtualToPhysical(data->unk3C->unk10));
         gSPEndDisplayList(gfx++);
     }
@@ -764,7 +764,7 @@ s16 func_8010BCBC_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, f32 alpha
     return model;
 }
 
-s16 func_8010C8D4_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, u8 *color) {
+s16 func_8010C8D4_baby_bowser_broadside(HuSprAnimData *sprite, u8 *color) {
     u8 *buffer;
     Gfx *gfx;
     Gfx *header;
@@ -799,7 +799,7 @@ s16 func_8010C8D4_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, u8 *color
     gDPSetBlendColor(gfx++, 1, 1, 1, 1);
     gDPPipeSync(gfx++);
     gDPSetRenderMode(gfx++, G_RM_ZB_XLU_SURF, G_RM_NOOP2);
-    if (sprite->unk18 & 0x8000) {
+    if (sprite->pixelBits & 0x8000) {
         gDPSetCombineLERP(gfx++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0);
     } else {
         gDPSetCombineLERP(gfx++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
@@ -818,32 +818,32 @@ s16 func_8010C8D4_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, u8 *color
         gSPTexture(textureHeader, 0x8000, 0x8000, 0, G_TX_RENDERTILE, G_ON);
     }
     gDPSetTexturePersp(gfx++, G_TP_PERSP);
-    if (sprite->unk1A >= 2) {
+    if (sprite->palNum >= 2) {
         gDPSetTextureLUT(gfx++, G_TT_RGBA16);
-        if (sprite->unk18 == 4) {
-            gDPLoadTLUT_pal16(gfx++, 0, sprite->unk0C);
+        if (sprite->pixelBits == 4) {
+            gDPLoadTLUT_pal16(gfx++, 0, sprite->pal);
         } else {
-            gDPLoadTLUT_pal256(gfx++, sprite->unk0C);
+            gDPLoadTLUT_pal256(gfx++, sprite->pal);
         }
         gDPPipeSync(gfx++);
         format = G_IM_FMT_CI;
     } else {
         gDPSetTextureLUT(gfx++, G_TT_NONE);
         gDPPipeSync(gfx++);
-        format = sprite->unk18;
+        format = sprite->pixelBits;
         format = ((u32)format / 0x8000) * 4;
     }
-    switch (sprite->unk18 & 0xFFF) {
+    switch (sprite->pixelBits & 0xFFF) {
         case 4:
-            gDPLoadTextureBlock_4b(gfx++, 0x02000000, format, sprite->unk00->unk04, sprite->unk00->unk06, 0,
+            gDPLoadTextureBlock_4b(gfx++, 0x02000000, format, sprite->pat->sizeX, sprite->pat->sizeY, 0,
                                    G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
             break;
         case 8:
-            gDPLoadTextureBlock(gfx++, 0x02000000, format, G_IM_SIZ_8b, sprite->unk00->unk04, sprite->unk00->unk06, 0,
+            gDPLoadTextureBlock(gfx++, 0x02000000, format, G_IM_SIZ_8b, sprite->pat->sizeX, sprite->pat->sizeY, 0,
                                 G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
             break;
         case 16:
-            gDPLoadTextureBlock(gfx++, 0x02000000, format, G_IM_SIZ_16b, sprite->unk00->unk04, sprite->unk00->unk06, 0,
+            gDPLoadTextureBlock(gfx++, 0x02000000, format, G_IM_SIZ_16b, sprite->pat->sizeX, sprite->pat->sizeY, 0,
                                 G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
             break;
     }
@@ -862,7 +862,7 @@ s16 func_8010C8D4_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, u8 *color
     for (i = 0; i < D_800D1FF0_main; i++) {
         gfx = (data->unk3C->unk00 + 1)[i] = HuMemAllocTag(0x100, data->unk0E);
         gDPPipeSync(gfx++);
-        gSPSegment(gfx++, 2, osVirtualToPhysical(sprite->unk00->unk00));
+        gSPSegment(gfx++, 2, osVirtualToPhysical(sprite->pat->data));
         gSPDisplayList(gfx++, osVirtualToPhysical(data->unk3C->unk10));
         gDPSetPrimColor(gfx++, 0, 0, color[0], color[1], color[2], color[3]);
         gDPPipeSync(gfx++);
@@ -874,27 +874,27 @@ s16 func_8010C8D4_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, u8 *color
     return model;
 }
 
-void func_8010D4C0_baby_bowser_broadside(u16 model, HuSprite_Unk84_Struct *sprite, u16 frame) {
+void func_8010D4C0_baby_bowser_broadside(u16 model, HuSprAnimData *sprite, u16 frame) {
     HmfModel *modelData = Hu3DData + model;
     HmfData *data = modelData->hmf;
     Gfx *gfx = data->unk3C->unk00[D_800D2008_main + 1];
 
     data->unk3C->unk00[0] = gfx;
     gDPPipeSync(gfx);
-    gSPSegment(gfx + 1, 2, osVirtualToPhysical(sprite->unk00[frame].unk00));
+    gSPSegment(gfx + 1, 2, osVirtualToPhysical(sprite->pat[frame].data));
     gSPDisplayList(gfx + 2, osVirtualToPhysical(data->unk3C->unk10));
     gDPPipeSync(gfx + 3);
     gSPEndDisplayList(gfx + 4);
 }
 
-void func_8010D590_baby_bowser_broadside(u16 model, HuSprite_Unk84_Struct *sprite, u16 frame, u8 *color) {
+void func_8010D590_baby_bowser_broadside(u16 model, HuSprAnimData *sprite, u16 frame, u8 *color) {
     HmfModel *modelData = Hu3DData + model;
     HmfData *data = modelData->hmf;
     Gfx *gfx = data->unk3C->unk00[D_800D2008_main + 1];
 
     data->unk3C->unk00[0] = gfx;
     gDPPipeSync(gfx);
-    gSPSegment(gfx + 1, 2, osVirtualToPhysical(sprite->unk00[frame].unk00));
+    gSPSegment(gfx + 1, 2, osVirtualToPhysical(sprite->pat[frame].data));
     gSPDisplayList(gfx + 2, osVirtualToPhysical(data->unk3C->unk10));
     gDPSetPrimColor(gfx + 3, 0, 0, color[0], color[1], color[2], color[3]);
     gDPPipeSync(gfx + 4);
@@ -903,24 +903,24 @@ void func_8010D590_baby_bowser_broadside(u16 model, HuSprite_Unk84_Struct *sprit
     gSPEndDisplayList(gfx + 7);
 }
 
-s16 func_8010D6C4_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, HmfData *data, f32 scale, s16 xOffset, s16 yOffset) {
+s16 func_8010D6C4_baby_bowser_broadside(HuSprAnimData *sprite, HmfData *data, f32 scale, s16 xOffset, s16 yOffset) {
     s32 capacity = 0x1000;
     s32 width, height, scaledWidth, scaledHeight;
     s32 size, slices, textureHeight, sliceHeight, vertexCount;
     s32 i, j;
     Vtx_t *vertices, *start;
 
-    if (sprite->unk1A >= 2) {
+    if (sprite->palNum >= 2) {
         capacity = 0x800;
     }
-    width = sprite->unk00->unk04;
-    height = sprite->unk00->unk06;
+    width = sprite->pat->sizeX;
+    height = sprite->pat->sizeY;
     scaledWidth = width * 100 * (f64)scale / D_8010FFE8_baby_bowser_broadside;
     scaledHeight = height * 100 * (f64)scale / D_8010FFE8_baby_bowser_broadside;
-    if ((sprite->unk18 & 0xFFF) == 4) {
+    if ((sprite->pixelBits & 0xFFF) == 4) {
         size = ((width + 1) & 0xFFFE) * height * 4;
     } else {
-        size = width * height * sprite->unk18;
+        size = width * height * sprite->pixelBits;
     }
     size /= 8;
     slices = size / capacity;

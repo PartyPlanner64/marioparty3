@@ -789,7 +789,7 @@ void func_801087BC_vine_with_me(void) {
     f32 xPos[2][4] = { { 0.0f, 0.0f, 0.0f, 12.0f }, { 0.0f, 0.0f, 0.0f, 12.0f } };
     f32 scales[4] = { 0.05f, 0.05f, 0.1f, 0.16f };
     s32 sprites[4] = { 2, 4, 1, 0 };
-    HuSprite_Unk84_Unk00_Struct *frame;
+    HuSprAnimPat *frame;
     HuSprite *sprite;
     s16 i;
     s16 pass;
@@ -822,20 +822,20 @@ void func_801087BC_vine_with_me(void) {
     gDPSetTextureLUT(gMainGfxPos++, G_TT_RGBA16);
     for (i = 0, pass = 0; i < 4; i++) {
         sprite = HuSprGet(D_800CD1DC_main[D_80115640_vine_with_me.unk00[(i != 0 || pass != 1) ? sprites[i] : 3]].unk04, 0);
-        frame = &sprite->unk_84->unk00[sprite->unk_90];
+        frame = &sprite->unk_84->pat[sprite->unk_90];
         if (i != 20) {
-            gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->unk0C);
+            gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->pal);
         } else {
-            gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->unk_84->unk0C);
+            gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->unk_84->pal);
         }
         for (row = 0; row < rowCounts[i]; row++) {
             if (i != 20) {
-                gDPLoadTextureTile(gMainGfxPos++, frame->unk00, G_IM_FMT_CI, G_IM_SIZ_8b, widths[i], 0, 0,
+                gDPLoadTextureTile(gMainGfxPos++, frame->data, G_IM_FMT_CI, G_IM_SIZ_8b, widths[i], 0, 0,
                                    row * rowHeights[i], widths[i], row * rowHeights[i] + rowHeights[i], 0,
                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                                    G_TX_NOLOD, G_TX_NOLOD);
             } else {
-                gDPLoadTextureTile_4b(gMainGfxPos++, frame->unk00, G_IM_FMT_CI, widths[i], 0, 0, row * rowHeights[i],
+                gDPLoadTextureTile_4b(gMainGfxPos++, frame->data, G_IM_FMT_CI, widths[i], 0, 0, row * rowHeights[i],
                                       widths[i], row * rowHeights[i] + rowHeights[i], 0, G_TX_NOMIRROR | G_TX_WRAP,
                                       G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             }
@@ -896,10 +896,10 @@ void func_801087BC_vine_with_me(void) {
     if (goalSide[0] != 0 || goalSide[1] != 0) {
         i = 3;
         sprite = HuSprGet(D_800CD1DC_main[D_80115640_vine_with_me.unk00[14]].unk04, 0);
-        frame = &sprite->unk_84->unk00[sprite->unk_90];
-        gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->unk0C);
+        frame = &sprite->unk_84->pat[sprite->unk_90];
+        gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->pal);
         for (row = 0; row < rowCounts[i]; row++) {
-            gDPLoadTextureTile(gMainGfxPos++, frame->unk00, G_IM_FMT_CI, G_IM_SIZ_8b, 54, 0, 0, row * rowHeights[i], 54,
+            gDPLoadTextureTile(gMainGfxPos++, frame->data, G_IM_FMT_CI, G_IM_SIZ_8b, 54, 0, 0, row * rowHeights[i], 54,
                                row * rowHeights[i] + rowHeights[i], 0, G_TX_MIRROR | G_TX_WRAP,
                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             for (j = 0; j < 2; j++) {
@@ -937,10 +937,10 @@ void func_801087BC_vine_with_me(void) {
         s16 layer = 3;
 
         sprite = HuSprGet(D_800CD1DC_main[D_80115640_vine_with_me.unk00[15]].unk04, 0);
-        frame = &sprite->unk_84->unk00[sprite->unk_90];
+        frame = &sprite->unk_84->pat[sprite->unk_90];
         gDPSetTextureLUT(gMainGfxPos++, G_TT_NONE);
         for (row = 0; row < 4; row++) {
-            gDPLoadTextureTile(gMainGfxPos++, frame->unk00, G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, 0, 0, row * 8, 64,
+            gDPLoadTextureTile(gMainGfxPos++, frame->data, G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, 0, 0, row * 8, 64,
                                row * 8 + 8 + (row != 3), 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                                G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             for (j = 0; j < 2; j++) {
@@ -978,8 +978,8 @@ void func_8010ADB0_vine_with_me(Gfx **arg0, s32 arg1, s32 arg2) {
     s32 y2;
     s32 n;
     s32 x2;
-    HuSprite_Unk84_Unk00_Struct *frame;
-    HuSprite_Unk84_Unk00_Struct *iconFrame;
+    HuSprAnimPat *frame;
+    HuSprAnimPat *iconFrame;
     HuSprite *sprite;
     s32 x;
 
@@ -990,8 +990,8 @@ void func_8010ADB0_vine_with_me(Gfx **arg0, s32 arg1, s32 arg2) {
     gSPDisplayList(gMainGfxPos++, D_80111BE0_vine_with_me);
     gDPSetTextureLUT(gMainGfxPos++, G_TT_RGBA16);
     sprite = HuSprGet(D_800CD1DC_main[D_80115640_vine_with_me.unk00[16]].unk04, 0);
-    frame = &sprite->unk_84->unk00[sprite->unk_90];
-    gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->unk_84->unk0C);
+    frame = &sprite->unk_84->pat[sprite->unk_90];
+    gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->unk_84->pal);
     gDPSetRenderMode(gMainGfxPos++, G_RM_AA_TEX_EDGE, G_RM_AA_TEX_EDGE2);
     gDPSetAlphaCompare(gMainGfxPos++, G_AC_THRESHOLD);
     gDPSetBlendColor(gMainGfxPos++, 0, 0, 0, 224);
@@ -1007,7 +1007,7 @@ void func_8010ADB0_vine_with_me(Gfx **arg0, s32 arg1, s32 arg2) {
     for (row = 0; row < 3; row++) {
         s32 rowHeight = 15;
 
-        gDPLoadTextureTile_4b(gMainGfxPos++, frame->unk00, G_IM_FMT_CI, 124, 0, 0, row * rowHeight, 124, row * rowHeight + 15, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        gDPLoadTextureTile_4b(gMainGfxPos++, frame->data, G_IM_FMT_CI, 124, 0, 0, row * rowHeight, 124, row * rowHeight + 15, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
         for (j = 0; j < 2; j++) {
             s32 y1 = row * rowHeight;
 
@@ -1032,13 +1032,13 @@ void func_8010ADB0_vine_with_me(Gfx **arg0, s32 arg1, s32 arg2) {
         }
     }
     sprite = HuSprGet(D_800CD1DC_main[D_80115640_vine_with_me.unk00[5]].unk04, 0);
-    frame = &sprite->unk_84->unk00[sprite->unk_90];
-    gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->unk_84->unk0C);
+    frame = &sprite->unk_84->pat[sprite->unk_90];
+    gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->unk_84->pal);
     gDPSetRenderMode(gMainGfxPos++, G_RM_AA_OPA_SURF, G_RM_AA_OPA_SURF2);
     gDPSetAlphaCompare(gMainGfxPos++, G_AC_NONE);
     gDPSetBlendColor(gMainGfxPos++, 0, 0, 0, 0);
     for (k = 0; k < 6; k++) {
-        gDPLoadTextureTile_4b(gMainGfxPos++, frame->unk00, G_IM_FMT_CI, 320, 0,
+        gDPLoadTextureTile_4b(gMainGfxPos++, frame->data, G_IM_FMT_CI, 320, 0,
                               k * 59, 0, k * 59 + 60, 34, 0,
                               G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
         x = k * 59;
@@ -1050,7 +1050,7 @@ void func_8010ADB0_vine_with_me(Gfx **arg0, s32 arg1, s32 arg2) {
         if ((s32)(D_80115604_vine_with_me * 412.0f + D_80115638_vine_with_me) >= 0x780) {
             continue;
         }
-        gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->unk_84->unk0C);
+        gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->unk_84->pal);
         gSPScisTextureRectangle(gMainGfxPos++,
                                 (s32)(x * 4 * D_80115604_vine_with_me + D_80115608_vine_with_me),
                                 (s32)(D_80115604_vine_with_me * 412.0f + D_80115638_vine_with_me),
@@ -1066,11 +1066,11 @@ void func_8010ADB0_vine_with_me(Gfx **arg0, s32 arg1, s32 arg2) {
         xPos = (D_80115540_vine_with_me[i] * (1.0 - D_80115548_vine_with_me[i] / 20.0) + D_801155FC_vine_with_me[i] * (D_80115548_vine_with_me[i] / 20.0)) * 14.0 + 32.0;
         sprite = HuSprGet(D_800CD1DC_main[D_80115640_vine_with_me.unk00[6 + D_80115530_vine_with_me[i]->unk03]].unk04, 0);
         // The extra alias is needed for matching register allocation.
-        frame = iconFrame = &sprite->unk_84->unk00[sprite->unk_90];
+        frame = iconFrame = &sprite->unk_84->pat[sprite->unk_90];
         if (D_80115530_vine_with_me[i]->unk03 == 7) {
-            gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->unk0C);
+            gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->pal);
         } else {
-            gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->unk_84->unk0C);
+            gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->unk_84->pal);
         }
         if ((s32)(xPos * 4 * D_80115604_vine_with_me + D_80115608_vine_with_me) >= 0xA00) {
             continue;
@@ -1079,9 +1079,9 @@ void func_8010ADB0_vine_with_me(Gfx **arg0, s32 arg1, s32 arg2) {
             continue;
         }
         if (D_80115530_vine_with_me[i]->unk03 == 7) {
-            gDPLoadTextureTile(gMainGfxPos++, frame->unk00, G_IM_FMT_CI, G_IM_SIZ_8b, 18, 0, 0, 0, 18, 18, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            gDPLoadTextureTile(gMainGfxPos++, frame->data, G_IM_FMT_CI, G_IM_SIZ_8b, 18, 0, 0, 0, 18, 18, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
         } else {
-            gDPLoadTextureTile_4b(gMainGfxPos++, frame->unk00, G_IM_FMT_CI, 18, 0, 0, 0, 18, 18, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            gDPLoadTextureTile_4b(gMainGfxPos++, frame->data, G_IM_FMT_CI, 18, 0, 0, 0, 18, 18, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
         }
         gSPScisTextureRectangle(gMainGfxPos++,
                                 (s32)(xPos * 4 * D_80115604_vine_with_me + D_80115608_vine_with_me),
@@ -1093,10 +1093,10 @@ void func_8010ADB0_vine_with_me(Gfx **arg0, s32 arg1, s32 arg2) {
     gDPSetTextureLUT(gMainGfxPos++, G_TT_NONE);
     if (D_8011563C_vine_with_me >= 3 && D_8011558C_vine_with_me < 2) {
         sprite = HuSprGet(D_800CD1DC_main[D_80115640_vine_with_me.unk00[15]].unk04, 0);
-        frame = &sprite->unk_84->unk00[sprite->unk_90];
+        frame = &sprite->unk_84->pat[sprite->unk_90];
         gDPSetTextureLUT(gMainGfxPos++, G_TT_NONE);
         for (row = 0; row < 4; row++) {
-            gDPLoadTextureTile(gMainGfxPos++, frame->unk00, G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, 0,
+            gDPLoadTextureTile(gMainGfxPos++, frame->data, G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, 0,
                                0, row * 8, 64, row * 8 + 8 + (row != 3), 0,
                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             for (n = 0; n < 2; n++) {

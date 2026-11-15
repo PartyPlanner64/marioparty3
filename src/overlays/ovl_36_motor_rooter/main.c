@@ -191,8 +191,8 @@ void func_8010B394_motor_rooter(FuncContext *ctx);
 void func_8010B970_motor_rooter(FuncContext *ctx);
 void func_80109134_motor_rooter(FuncContext *ctx);
 void func_80108FDC_motor_rooter(FuncContext *ctx);
-void func_801107FC_motor_rooter(u16 modelId, HuSprite_Unk84_Struct *sprite, u16 frame);
-void func_801108CC_motor_rooter(u16 modelId, HuSprite_Unk84_Struct *sprite, u16 frame, RGBA *color);
+void func_801107FC_motor_rooter(u16 modelId, HuSprAnimData *sprite, u16 frame);
+void func_801108CC_motor_rooter(u16 modelId, HuSprAnimData *sprite, u16 frame, RGBA *color);
 void func_8010CB2C_motor_rooter(omObjData *object, s16 item, s16 modelIndex);
 void func_8010CD84_motor_rooter(Vec *, s16);
 s16 func_8010D03C_motor_rooter(f32);
@@ -1424,7 +1424,7 @@ void func_801079E8_motor_rooter(omObjData *object) {
     s16 i;
     s16 cameraMask;
     s16 spriteId;
-    HuSprite_Unk84_Struct *sprite;
+    HuSprAnimData *sprite;
 
     object->work[0] = m254_minigame->runtime.counters.initialization.itemViewCount;
     for (i = 0; i < 4; i++) {

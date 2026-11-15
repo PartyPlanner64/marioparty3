@@ -10,7 +10,7 @@
 extern u16 D_800C951C_main;
 extern u16 D_800CB8BC_main;
 extern s16 D_800D5438_main;
-extern HuSprite_Unk84_Struct *D_800C9530_main[];
+extern HuSprAnimData *D_800C9530_main[];
 
 void espInit(void) {
     u16 var_a0;
@@ -42,12 +42,12 @@ s16 func_8000B838_main(s32 arg0) {
 }
 
 void func_8000B880_main(s16 arg0, f32 r, f32 g, f32 b) {
-    HuSprite_Unk84_Struct *tex = D_800C9530_main[arg0];
-    u16 *pal = tex->unk0C;
+    HuSprAnimData *tex = D_800C9530_main[arg0];
+    u16 *pal = tex->pal;
     s32 i;
     u16 red, green, blue, alpha;
 
-    for (i = 0; i < tex->unk1A; i++, pal++) {
+    for (i = 0; i < tex->palNum; i++, pal++) {
         red = *pal >> 11;
         green = (*pal >> 6) & 0x1F;
         blue = (*pal >> 1) & 0x1F;

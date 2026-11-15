@@ -135,10 +135,10 @@ UnkPuddlePaddleObj *D_8011166C_puddle_paddle BSS;
 PuddlePaddleBoat *D_80111670_puddle_paddle BSS;
 
 void func_8010BD18_puddle_paddle(UnkPuddlePaddleObj *group);
-s16 func_8010CE74_puddle_paddle(HuSprite_Unk84_Struct *sprite, f32 alpha);
-s16 func_8010D5E4_puddle_paddle(HuSprite_Unk84_Struct *sprite, f32 alpha);
-s16 func_8010EFEC_puddle_paddle(HuSprite_Unk84_Struct *sprite, HmfData *hmf, f32 scale, u16 arg3, u16 arg4);
-void func_8010EDE8_puddle_paddle(u16 model, HuSprite_Unk84_Struct *sprite, u16 frame);
+s16 func_8010CE74_puddle_paddle(HuSprAnimData *sprite, f32 alpha);
+s16 func_8010D5E4_puddle_paddle(HuSprAnimData *sprite, f32 alpha);
+s16 func_8010EFEC_puddle_paddle(HuSprAnimData *sprite, HmfData *hmf, f32 scale, u16 arg3, u16 arg4);
+void func_8010EDE8_puddle_paddle(u16 model, HuSprAnimData *sprite, u16 frame);
 s32 func_8010F80C_puddle_paddle(PuddlePaddleBoat *boat, PuddlePaddleShip *ship);
 s32 func_8010F9FC_puddle_paddle(PuddlePaddleBoat *boat, PuddlePaddleShip *ship);
 s32 func_8010FBD4_puddle_paddle(PuddlePaddleBoat *boat, PuddlePaddleShip *ship);
@@ -315,7 +315,7 @@ s16 func_8010BEE8_puddle_paddle(s16 priority, s32 directory, s32 file, u16 bank,
             if (bank == 0) {
                 sprite->unk_04 = 99;
             } else {
-                sprite->unk_04 = data->unk_84->unk10;
+                sprite->unk_04 = data->unk_84->patNum;
             }
             sprite->unk_00 = 2;
             func_8010C11C_puddle_paddle(i);
@@ -518,7 +518,7 @@ s16 func_8010C804_puddle_paddle(s32 directory, s32 file, s16 interval, s16 type,
             work->unk_20 = &Hu3DData[work->unk_0C].pos.z;
             work->unk_08 = type;
             work->unk_04 = flags;
-            work->unk_0E = func_80055194_main(frame)->unk10;
+            work->unk_0E = func_80055194_main(frame)->patNum;
             work->unk_10 = 0;
             work->unk_12 = 0;
             work->unk_14 = interval;
@@ -644,7 +644,7 @@ void func_8010CCF0_puddle_paddle(void) {
     }
 }
 
-s16 func_8010CE74_puddle_paddle(HuSprite_Unk84_Struct *sprite, f32 alpha) {
+s16 func_8010CE74_puddle_paddle(HuSprAnimData *sprite, f32 alpha) {
     HmfData *hmf;
     Gfx *dlBuf;
     Gfx *gfx;
@@ -679,13 +679,13 @@ s16 func_8010CE74_puddle_paddle(HuSprite_Unk84_Struct *sprite, f32 alpha) {
     gDPPipeSync(gfx++);
     gSPTexture(gfx++, 0x8000, 0x8000, 0, G_TX_RENDERTILE, G_ON);
     gDPSetTexturePersp(gfx++, G_TP_PERSP);
-    if (sprite->unk1A >= 2) {
+    if (sprite->palNum >= 2) {
         gDPSetTextureLUT(gfx++, G_TT_RGBA16);
         frameSize = 0x800;
-        if (sprite->unk18 == 4) {
-            gDPLoadTLUT_pal16(gfx++, 0, sprite->unk0C);
+        if (sprite->pixelBits == 4) {
+            gDPLoadTLUT_pal16(gfx++, 0, sprite->pal);
         } else {
-            gDPLoadTLUT_pal256(gfx++, sprite->unk0C);
+            gDPLoadTLUT_pal256(gfx++, sprite->pal);
         }
     } else {
         gDPSetTextureLUT(gfx++, G_TT_NONE);
@@ -693,9 +693,9 @@ s16 func_8010CE74_puddle_paddle(HuSprite_Unk84_Struct *sprite, f32 alpha) {
     }
     gDPPipeSync(gfx++);
     for (i = 0; i < frameCount; i++) {
-        gSPSegment(gfx++, 0x02, osVirtualToPhysical(sprite->unk08 + frameSize * i));
+        gSPSegment(gfx++, 0x02, osVirtualToPhysical(sprite->data + frameSize * i));
         gDPLoadTextureBlock(gfx++, 0x02000000, G_IM_FMT_CI, G_IM_SIZ_8b,
-                            sprite->unk00->unk04, sprite->unk00->unk06 / frameCount, 0,
+                            sprite->pat->sizeX, sprite->pat->sizeY / frameCount, 0,
                             G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                             G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
         gDPPipeSync(gfx++);
@@ -714,7 +714,7 @@ s16 func_8010CE74_puddle_paddle(HuSprite_Unk84_Struct *sprite, f32 alpha) {
     return model;
 }
 
-s16 func_8010D5E4_puddle_paddle(HuSprite_Unk84_Struct *sprite, f32 alpha) {
+s16 func_8010D5E4_puddle_paddle(HuSprAnimData *sprite, f32 alpha) {
     HmfData *hmf;
     Gfx *dlBuf;
     Gfx *gfx;
@@ -745,11 +745,11 @@ s16 func_8010D5E4_puddle_paddle(HuSprite_Unk84_Struct *sprite, f32 alpha) {
     gDPSetBlendColor(gfx++, 0x01, 0x01, 0x01, 0x01);
     gDPPipeSync(gfx++);
     gDPSetRenderMode(gfx++, G_RM_ZB_XLU_SURF, G_RM_NOOP2);
-    if (sprite->unk1A >= 2) {
+    if (sprite->palNum >= 2) {
         gDPSetCombineLERP(gfx++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
         gDPSetPrimColor(gfx++, 0, 0, 0xFF, 0xFF, 0xFF, alpha * 255.0f);
     } else {
-        if (sprite->unk18 & 0x8000) {
+        if (sprite->pixelBits & 0x8000) {
             gDPSetCombineLERP(gfx++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0);
         } else {
             gDPSetCombineLERP(gfx++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
@@ -759,36 +759,36 @@ s16 func_8010D5E4_puddle_paddle(HuSprite_Unk84_Struct *sprite, f32 alpha) {
     gDPPipeSync(gfx++);
     gSPTexture(gfx++, 0x8000, 0x8000, 0, G_TX_RENDERTILE, G_ON);
     gDPSetTexturePersp(gfx++, G_TP_PERSP);
-    if (sprite->unk1A >= 2) {
+    if (sprite->palNum >= 2) {
         gDPSetTextureLUT(gfx++, G_TT_RGBA16);
-        if (sprite->unk18 == 4) {
-            gDPLoadTLUT_pal16(gfx++, 0, sprite->unk0C);
+        if (sprite->pixelBits == 4) {
+            gDPLoadTLUT_pal16(gfx++, 0, sprite->pal);
         } else {
-            gDPLoadTLUT_pal256(gfx++, sprite->unk0C);
+            gDPLoadTLUT_pal256(gfx++, sprite->pal);
         }
         gDPPipeSync(gfx++);
         format = 2;
     } else {
         gDPSetTextureLUT(gfx++, G_TT_NONE);
         gDPPipeSync(gfx++);
-        format = (sprite->unk18 & 0x8000) ? 4 : 0;
+        format = (sprite->pixelBits & 0x8000) ? 4 : 0;
     }
-    switch (sprite->unk18 & 0xFFF) {
+    switch (sprite->pixelBits & 0xFFF) {
         case 4:
             gDPLoadTextureBlock_4b(gfx++, 0x02000000, format,
-                                   sprite->unk00->unk04, sprite->unk00->unk06, 0,
+                                   sprite->pat->sizeX, sprite->pat->sizeY, 0,
                                    G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                                    G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             break;
         case 8:
             gDPLoadTextureBlock(gfx++, 0x02000000, format, G_IM_SIZ_8b,
-                                sprite->unk00->unk04, sprite->unk00->unk06, 0,
+                                sprite->pat->sizeX, sprite->pat->sizeY, 0,
                                 G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                                 G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             break;
         case 16:
             gDPLoadTextureBlock(gfx++, 0x02000000, format, G_IM_SIZ_16b,
-                                sprite->unk00->unk04, sprite->unk00->unk06, 0,
+                                sprite->pat->sizeX, sprite->pat->sizeY, 0,
                                 G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                                 G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             break;
@@ -808,7 +808,7 @@ s16 func_8010D5E4_puddle_paddle(HuSprite_Unk84_Struct *sprite, f32 alpha) {
     for (i = 0; i < D_800D1FF0_main; i++) {
         gfx = *(hmf->unk3C->unk00 + (i + 1)) = HuMemAllocTag(0x100, hmf->unk0E);
         gDPPipeSync(gfx++);
-        gSPSegment(gfx++, 0x02, osVirtualToPhysical(sprite->unk00->unk00));
+        gSPSegment(gfx++, 0x02, osVirtualToPhysical(sprite->pat->data));
         gSPDisplayList(gfx++, osVirtualToPhysical(hmf->unk3C->unk10));
         gSPEndDisplayList(gfx++);
     }
@@ -816,7 +816,7 @@ s16 func_8010D5E4_puddle_paddle(HuSprite_Unk84_Struct *sprite, f32 alpha) {
     return model;
 }
 
-s16 func_8010E1FC_puddle_paddle(HuSprite_Unk84_Struct *sprite, RGBA *color) {
+s16 func_8010E1FC_puddle_paddle(HuSprAnimData *sprite, RGBA *color) {
     HmfData *hmf;
     Gfx *dlBuf;
     Gfx *gfx;
@@ -847,7 +847,7 @@ s16 func_8010E1FC_puddle_paddle(HuSprite_Unk84_Struct *sprite, RGBA *color) {
     gDPSetBlendColor(gfx++, 0x01, 0x01, 0x01, 0x01);
     gDPPipeSync(gfx++);
     gDPSetRenderMode(gfx++, G_RM_ZB_XLU_SURF, G_RM_NOOP2);
-    if (sprite->unk18 & 0x8000) {
+    if (sprite->pixelBits & 0x8000) {
         gDPSetCombineLERP(gfx++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0);
     } else {
         gDPSetCombineLERP(gfx++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
@@ -861,36 +861,36 @@ s16 func_8010E1FC_puddle_paddle(HuSprite_Unk84_Struct *sprite, RGBA *color) {
     dlBuf = gfx = HuMemAlloc(0x10000);
     gSPTexture(gfx++, 0x8000, 0x8000, 0, G_TX_RENDERTILE, G_ON);
     gDPSetTexturePersp(gfx++, G_TP_PERSP);
-    if (sprite->unk1A >= 2) {
+    if (sprite->palNum >= 2) {
         gDPSetTextureLUT(gfx++, G_TT_RGBA16);
-        if (sprite->unk18 == 4) {
-            gDPLoadTLUT_pal16(gfx++, 0, sprite->unk0C);
+        if (sprite->pixelBits == 4) {
+            gDPLoadTLUT_pal16(gfx++, 0, sprite->pal);
         } else {
-            gDPLoadTLUT_pal256(gfx++, sprite->unk0C);
+            gDPLoadTLUT_pal256(gfx++, sprite->pal);
         }
         gDPPipeSync(gfx++);
         format = 2;
     } else {
         gDPSetTextureLUT(gfx++, G_TT_NONE);
         gDPPipeSync(gfx++);
-        format = (sprite->unk18 & 0x8000) ? 4 : 0;
+        format = (sprite->pixelBits & 0x8000) ? 4 : 0;
     }
-    switch (sprite->unk18 & 0xFFF) {
+    switch (sprite->pixelBits & 0xFFF) {
         case 4:
             gDPLoadTextureBlock_4b(gfx++, 0x02000000, format,
-                                   sprite->unk00->unk04, sprite->unk00->unk06, 0,
+                                   sprite->pat->sizeX, sprite->pat->sizeY, 0,
                                    G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                                    G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             break;
         case 8:
             gDPLoadTextureBlock(gfx++, 0x02000000, format, G_IM_SIZ_8b,
-                                sprite->unk00->unk04, sprite->unk00->unk06, 0,
+                                sprite->pat->sizeX, sprite->pat->sizeY, 0,
                                 G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                                 G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             break;
         case 16:
             gDPLoadTextureBlock(gfx++, 0x02000000, format, G_IM_SIZ_16b,
-                                sprite->unk00->unk04, sprite->unk00->unk06, 0,
+                                sprite->pat->sizeX, sprite->pat->sizeY, 0,
                                 G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                                 G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             break;
@@ -910,7 +910,7 @@ s16 func_8010E1FC_puddle_paddle(HuSprite_Unk84_Struct *sprite, RGBA *color) {
     for (i = 0; i < D_800D1FF0_main; i++) {
         gfx = hmf->unk3C->unk00[i + 1] = HuMemAllocTag(0x100, hmf->unk0E);
         gDPPipeSync(gfx++);
-        gSPSegment(gfx++, 0x02, osVirtualToPhysical(sprite->unk00->unk00));
+        gSPSegment(gfx++, 0x02, osVirtualToPhysical(sprite->pat->data));
         gSPDisplayList(gfx++, osVirtualToPhysical(hmf->unk3C->unk10));
         gDPSetPrimColor(gfx++, 0, 0, color->r, color->g, color->b, color->a);
         gDPPipeSync(gfx++);
@@ -922,27 +922,27 @@ s16 func_8010E1FC_puddle_paddle(HuSprite_Unk84_Struct *sprite, RGBA *color) {
     return model;
 }
 
-void func_8010EDE8_puddle_paddle(u16 model, HuSprite_Unk84_Struct *sprite, u16 frame) {
+void func_8010EDE8_puddle_paddle(u16 model, HuSprAnimData *sprite, u16 frame) {
     HmfModel *modelData = Hu3DData + model;
     HmfData *data = modelData->hmf;
     Gfx *gfx = data->unk3C->unk00[D_800D2008_main + 1];
 
     data->unk3C->unk00[0] = gfx;
     gDPPipeSync(gfx);
-    gSPSegment(gfx + 1, 2, osVirtualToPhysical(sprite->unk00[frame].unk00));
+    gSPSegment(gfx + 1, 2, osVirtualToPhysical(sprite->pat[frame].data));
     gSPDisplayList(gfx + 2, osVirtualToPhysical(data->unk3C->unk10));
     gDPPipeSync(gfx + 3);
     gSPEndDisplayList(gfx + 4);
 }
 
-void func_8010EEB8_puddle_paddle(u16 model, HuSprite_Unk84_Struct *sprite, u16 frame, u8 *color) {
+void func_8010EEB8_puddle_paddle(u16 model, HuSprAnimData *sprite, u16 frame, u8 *color) {
     HmfModel *modelData = Hu3DData + model;
     HmfData *data = modelData->hmf;
     Gfx *gfx = data->unk3C->unk00[D_800D2008_main + 1];
 
     data->unk3C->unk00[0] = gfx;
     gDPPipeSync(gfx);
-    gSPSegment(gfx + 1, 2, osVirtualToPhysical(sprite->unk00[frame].unk00));
+    gSPSegment(gfx + 1, 2, osVirtualToPhysical(sprite->pat[frame].data));
     gSPDisplayList(gfx + 2, osVirtualToPhysical(data->unk3C->unk10));
     gDPSetPrimColor(gfx + 3, 0, 0, color[0], color[1], color[2], color[3]);
     gDPPipeSync(gfx + 4);
@@ -951,7 +951,7 @@ void func_8010EEB8_puddle_paddle(u16 model, HuSprite_Unk84_Struct *sprite, u16 f
     gSPEndDisplayList(gfx + 7);
 }
 
-s16 func_8010EFEC_puddle_paddle(HuSprite_Unk84_Struct *arg0, HmfData *arg1, f32 arg2, u16 arg3, u16 arg4) {
+s16 func_8010EFEC_puddle_paddle(HuSprAnimData *arg0, HmfData *arg1, f32 arg2, u16 arg3, u16 arg4) {
     Vtx *temp_s7;
     Vtx *var_s1;
     Vtx_t *var_t0;
@@ -969,19 +969,19 @@ s16 func_8010EFEC_puddle_paddle(HuSprite_Unk84_Struct *arg0, HmfData *arg1, f32 
     s32 var_s0_2;
     s32 var_a2_2;
 
-    if (arg0->unk1A >= 2) {
+    if (arg0->palNum >= 2) {
         var_a2 = 0x800;
     } else {
         var_a2 = 0x1000;
     }
-    temp_s4 = arg0->unk00->unk04;
-    temp_a1 = arg0->unk00->unk06;
+    temp_s4 = arg0->pat->sizeX;
+    temp_a1 = arg0->pat->sizeY;
     sp24 = (f64)(temp_s4 * 0x64) * arg2 / 32.0;
     temp_f2 = (f64)(temp_a1 * 0x64) * arg2 / 32.0;
-    if ((arg0->unk18 & 0xFFF) == 4) {
+    if ((arg0->pixelBits & 0xFFF) == 4) {
         var_s0 = ((temp_s4 + 1) & 0xFFFE) * temp_a1 * 4;
     } else {
-        var_s0 = temp_s4 * temp_a1 * arg0->unk18;
+        var_s0 = temp_s4 * temp_a1 * arg0->pixelBits;
     }
     var_s0 = (var_s0 < 0) ? (var_s0 + 7) : var_s0;
     var_s0 >>= 3;

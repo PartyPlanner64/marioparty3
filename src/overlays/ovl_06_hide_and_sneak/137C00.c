@@ -248,7 +248,7 @@ s8 D_8010E170_hide_and_sneak BSS;
 s16 D_8010E172_hide_and_sneak BSS;
 HideAndSneakBssE174 hideAndSneakBssE174 BSS;
 HideAndSneakSpot D_8010E188_hide_and_sneak[4] BSS;
-HuSprite_Unk84_Struct *D_8010E198_hide_and_sneak[4] BSS;
+HuSprAnimData *D_8010E198_hide_and_sneak[4] BSS;
 HideAndSneakBssE1A8 hideAndSneakBssE1A8 BSS;
 
 void func_801059A0_hide_and_sneak(void) {
@@ -2124,8 +2124,8 @@ void func_8010ACC4_hide_and_sneak(Gfx **gfxPos, s32 arg1, s32 arg2) {
     gDPSetTextureLUT(gfx++, G_TT_RGBA16);
     for (i = 0; i < 4; i++) {
         if (D_8010C760_hide_and_sneak[i].unk_06 == 0) {
-            gDPLoadTLUT_pal16(gfx++, 0, D_8010E198_hide_and_sneak[i]->unk0C);
-            gDPLoadTextureTile_4b(gfx++, D_8010E198_hide_and_sneak[i]->unk08, G_IM_FMT_CI, 32, 32, 0, 0, 32, 32, 0, G_TX_WRAP, G_TX_WRAP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
+            gDPLoadTLUT_pal16(gfx++, 0, D_8010E198_hide_and_sneak[i]->pal);
+            gDPLoadTextureTile_4b(gfx++, D_8010E198_hide_and_sneak[i]->data, G_IM_FMT_CI, 32, 32, 0, 0, 32, 32, 0, G_TX_WRAP, G_TX_WRAP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
             gDPSetTileSize(gfx++, G_TX_RENDERTILE, 0, 0, 32 << 2, 32 << 2);
             gSPTextureRectangle(gfx++, D_8010C760_hide_and_sneak[i].x << 2, D_8010C760_hide_and_sneak[i].y << 2, (D_8010C760_hide_and_sneak[i].x + 32) << 2, (D_8010C760_hide_and_sneak[i].y + 32) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
         }

@@ -1468,6 +1468,6 @@ s16 func_80109FF4_locked_out(s16 spriteId, s16 count) {
     return groupId;
 }
 
-HuSprite_Unk84_Unk00_Struct *func_8010A0BC_locked_out(s16 groupId, s16 member) {
-    return &func_80055194_main(groupId)->unk00[member];
+HuSprAnimPat *func_8010A0BC_locked_out(s16 groupId, s16 member) {
+    return &func_80055194_main(groupId)->pat[member];
 }

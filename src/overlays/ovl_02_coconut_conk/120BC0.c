@@ -119,7 +119,7 @@ CoconutConkCamera D_8010B018_coconut_conk[2] = {
 
 s16 D_8010B1C0_coconut_conk BSS;
 s16 D_8010B1C2_coconut_conk BSS;
-HuSprite_Unk84_Struct *D_8010B1C4_coconut_conk BSS;
+HuSprAnimData *D_8010B1C4_coconut_conk BSS;
 CoconutConkBssB1C8 coconutConkBssB1C8 BSS;
 u8 D_8010B1CC_coconut_conk BSS;
 void *D_8010B1D0_coconut_conk[3] BSS;
@@ -310,10 +310,10 @@ void func_80105D98_coconut_conk(Gfx **arg0, s32 arg1, s32 arg2) {
     gDPSetPrimColor(gfx++, 0, 0, 0, 0, 0, 255);
     gDPSetRenderMode(gfx++, G_RM_AA_TEX_EDGE, G_RM_AA_TEX_EDGE2);
     gDPSetTextureLUT(gfx++, G_TT_RGBA16);
-    gDPLoadTLUT_pal256(gfx++, D_8010B1C4_coconut_conk->unk0C);
+    gDPLoadTLUT_pal256(gfx++, D_8010B1C4_coconut_conk->pal);
     x = 0;
     for (y = 0, top = 128; y < 112; y += 4) {
-        gDPLoadTextureTile(gfx++, D_8010B1C4_coconut_conk->unk08, G_IM_FMT_CI, G_IM_SIZ_8b, 320, 0, 0, y, 320, y + 4,
+        gDPLoadTextureTile(gfx++, D_8010B1C4_coconut_conk->data, G_IM_FMT_CI, G_IM_SIZ_8b, 320, 0, 0, y, 320, y + 4,
                            0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                            G_TX_NOLOD, G_TX_NOLOD);
         gDPSetTileSize(gfx++, G_TX_RENDERTILE, 0, 0, 320 << 2, 4 << 2);

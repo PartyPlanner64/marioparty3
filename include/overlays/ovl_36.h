@@ -56,8 +56,8 @@ void m254_SetSpriteDispOn(s16 spriteId, s32 posX, s32 posY);
 void m254_SetSpriteDispOff(s16 spriteId);
 void m254_UpdateSprites(void);
 
-s16 func_8010EFF8_motor_rooter(HuSprite_Unk84_Struct *sprite, f32 scale);
-s16 func_8010FC10_motor_rooter(HuSprite_Unk84_Struct *sprite, RGBA *color);
+s16 func_8010EFF8_motor_rooter(HuSprAnimData *sprite, f32 scale);
+s16 func_8010FC10_motor_rooter(HuSprAnimData *sprite, RGBA *color);
 
 s32 m254_SetAnimModel(s32 dir, s32 file, f32 freq, s32 attr, s32 arg4);
 s32 m254_SetAnimModelDispOn(s16 animModelId, f32 posX, f32 posY, f32 posZ, f32 rotX, f32 rotY, f32 rotZ, f32 scale, f32 animStart);

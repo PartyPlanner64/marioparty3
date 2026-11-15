@@ -402,10 +402,10 @@ void func_8010F580_stardust_battle(s16 index);
 void func_8010F5B0_stardust_battle(s16 index);
 void func_8010F73C_stardust_battle(omObjData *object);
 u16 func_8010EE38_stardust_battle(s32 dirAndFile);
-s32 func_80112980_stardust_battle(HuSprite_Unk84_Struct *sprite, u8 *color);
-s32 func_80113568_stardust_battle(HuSprite_Unk84_Struct *sprite, u16 model, u8 *color);
-s32 func_801138A0_stardust_battle(HuSprite_Unk84_Struct *sprite, HmfData *data, f32 scale, s16 xOffset, s16 yOffset);
-void func_8011376C_stardust_battle(u16 model, HuSprite_Unk84_Struct *sprite, u16 frame, u8 *color);
+s32 func_80112980_stardust_battle(HuSprAnimData *sprite, u8 *color);
+s32 func_80113568_stardust_battle(HuSprAnimData *sprite, u16 model, u8 *color);
+s32 func_801138A0_stardust_battle(HuSprAnimData *sprite, HmfData *data, f32 scale, s16 xOffset, s16 yOffset);
+void func_8011376C_stardust_battle(u16 model, HuSprAnimData *sprite, u16 frame, u8 *color);
 void func_80108404_stardust_battle(omObjData *object);
 void func_80108444_stardust_battle(omObjData *object);
 void func_8010844C_stardust_battle(omObjData *object);
@@ -3760,7 +3760,7 @@ void func_8010F5B0_stardust_battle(s16 index) {
 }
 
 void func_8010F5E0_stardust_battle(void) {
-    HuSprite_Unk84_Struct *sprite;
+    HuSprAnimData *sprite;
     UnkStardustBattleEffect *effect;
     HmfModel *model;
     s32 i;
@@ -3789,7 +3789,7 @@ void func_8010F5E0_stardust_battle(void) {
 }
 
 void func_8010F73C_stardust_battle(omObjData *object) {
-    HuSprite_Unk84_Struct *sprite = func_80055194_main(D_80114B30_stardust_battle[1]);
+    HuSprAnimData *sprite = func_80055194_main(D_80114B30_stardust_battle[1]);
     UnkStardustBattleEffect *effect;
     HmfModel *model;
     s32 i;
@@ -3813,7 +3813,7 @@ void func_8010F73C_stardust_battle(omObjData *object) {
         model->scale.z = effect->scale.z;
         func_8011376C_stardust_battle(effect->model, sprite, (s32)effect->frame, effect->color.rgba);
         effect->frame += effect->speed;
-        if ((s32)effect->frame >= sprite->unk10) {
+        if ((s32)effect->frame >= sprite->patNum) {
             effect->active = 0;
             effect->frame = 0.0f;
             model->attr |= 4;
@@ -3822,7 +3822,7 @@ void func_8010F73C_stardust_battle(omObjData *object) {
 }
 
 s32 func_8010F890_stardust_battle(Vec *pos, Vec *vel, Vec *scale, f32 speed, u8 *color) {
-    HuSprite_Unk84_Struct *sprite = func_80055194_main(D_80114B30_stardust_battle[1]);
+    HuSprAnimData *sprite = func_80055194_main(D_80114B30_stardust_battle[1]);
     UnkStardustBattleEffect *effect;
     HmfModel *model;
     s32 i;
@@ -4720,7 +4720,7 @@ void func_801127B8_stardust_battle(s16 model, s16 count, s16 buffer) {
     hmf->unk3C->unk00[0] = hmf->unk3C->unk00[index + 1];
 }
 
-s32 func_80112980_stardust_battle(HuSprite_Unk84_Struct *sprite, u8 *color) {
+s32 func_80112980_stardust_battle(HuSprAnimData *sprite, u8 *color) {
     u8 *buffer;
     Gfx *gfx;
     Gfx *header;
@@ -4755,7 +4755,7 @@ s32 func_80112980_stardust_battle(HuSprite_Unk84_Struct *sprite, u8 *color) {
     gDPSetBlendColor(gfx++, 1, 1, 1, 1);
     gDPPipeSync(gfx++);
     gDPSetRenderMode(gfx++, G_RM_ZB_CLD_SURF, G_RM_NOOP2);
-    if (sprite->unk18 & 0x8000) {
+    if (sprite->pixelBits & 0x8000) {
         gDPSetCombineLERP(gfx++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0);
     } else {
         gDPSetCombineLERP(gfx++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
@@ -4774,32 +4774,32 @@ s32 func_80112980_stardust_battle(HuSprite_Unk84_Struct *sprite, u8 *color) {
         gSPTexture(textureHeader, 0x8000, 0x8000, 0, G_TX_RENDERTILE, G_ON);
     }
     gDPSetTexturePersp(gfx++, G_TP_PERSP);
-    if (sprite->unk1A >= 2) {
+    if (sprite->palNum >= 2) {
         gDPSetTextureLUT(gfx++, G_TT_RGBA16);
-        if (sprite->unk18 == 4) {
-            gDPLoadTLUT_pal16(gfx++, 0, sprite->unk0C);
+        if (sprite->pixelBits == 4) {
+            gDPLoadTLUT_pal16(gfx++, 0, sprite->pal);
         } else {
-            gDPLoadTLUT_pal256(gfx++, sprite->unk0C);
+            gDPLoadTLUT_pal256(gfx++, sprite->pal);
         }
         gDPPipeSync(gfx++);
         format = G_IM_FMT_CI;
     } else {
         gDPSetTextureLUT(gfx++, G_TT_NONE);
         gDPPipeSync(gfx++);
-        format = sprite->unk18;
+        format = sprite->pixelBits;
         format = ((u32)format / 0x8000) * 4;
     }
-    switch (sprite->unk18 & 0xFFF) {
+    switch (sprite->pixelBits & 0xFFF) {
         case 4:
-            gDPLoadTextureBlock_4b(gfx++, 0x02000000, format, sprite->unk00->unk04, sprite->unk00->unk06, 0,
+            gDPLoadTextureBlock_4b(gfx++, 0x02000000, format, sprite->pat->sizeX, sprite->pat->sizeY, 0,
                                    G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
             break;
         case 8:
-            gDPLoadTextureBlock(gfx++, 0x02000000, format, G_IM_SIZ_8b, sprite->unk00->unk04, sprite->unk00->unk06, 0,
+            gDPLoadTextureBlock(gfx++, 0x02000000, format, G_IM_SIZ_8b, sprite->pat->sizeX, sprite->pat->sizeY, 0,
                                 G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
             break;
         case 16:
-            gDPLoadTextureBlock(gfx++, 0x02000000, format, G_IM_SIZ_16b, sprite->unk00->unk04, sprite->unk00->unk06, 0,
+            gDPLoadTextureBlock(gfx++, 0x02000000, format, G_IM_SIZ_16b, sprite->pat->sizeX, sprite->pat->sizeY, 0,
                                 G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
             break;
     }
@@ -4818,7 +4818,7 @@ s32 func_80112980_stardust_battle(HuSprite_Unk84_Struct *sprite, u8 *color) {
     for (i = 0; i < D_800D1FF0_main; i++) {
         gfx = (data->unk3C->unk00 + 1)[i] = HuMemAllocTag(0x100, data->unk0E);
         gDPPipeSync(gfx++);
-        gSPSegment(gfx++, 2, osVirtualToPhysical(sprite->unk00->unk00));
+        gSPSegment(gfx++, 2, osVirtualToPhysical(sprite->pat->data));
         gSPDisplayList(gfx++, osVirtualToPhysical(data->unk3C->unk10));
         gDPSetPrimColor(gfx++, 0, 0, color[0], color[1], color[2], color[3]);
         gDPPipeSync(gfx++);
@@ -4830,7 +4830,7 @@ s32 func_80112980_stardust_battle(HuSprite_Unk84_Struct *sprite, u8 *color) {
     return model;
 }
 
-s32 func_80113568_stardust_battle(HuSprite_Unk84_Struct *sprite, u16 model, u8 *color) {
+s32 func_80113568_stardust_battle(HuSprAnimData *sprite, u16 model, u8 *color) {
     HmfModel *srcModel = Hu3DData + model;
     HmfData *srcData = srcModel->hmf;
     HmfData *data;
@@ -4848,7 +4848,7 @@ s32 func_80113568_stardust_battle(HuSprite_Unk84_Struct *sprite, u16 model, u8 *
     for (i = 0; i < D_800D1FF0_main; i++) {
         gfx = (data->unk3C->unk00 + 1)[i] = HuMemAllocTag(0x100, data->unk0E);
         gDPPipeSync(gfx++);
-        gSPSegment(gfx++, 2, osVirtualToPhysical(sprite->unk00->unk00));
+        gSPSegment(gfx++, 2, osVirtualToPhysical(sprite->pat->data));
         gSPDisplayList(gfx++, osVirtualToPhysical(data->unk3C->unk10));
         gDPSetPrimColor(gfx++, 0, 0, color[0], color[1], color[2], color[3]);
         gDPPipeSync(gfx++);
@@ -4860,14 +4860,14 @@ s32 func_80113568_stardust_battle(HuSprite_Unk84_Struct *sprite, u16 model, u8 *
     return newModel;
 }
 
-void func_8011376C_stardust_battle(u16 model, HuSprite_Unk84_Struct *sprite, u16 frame, u8 *color) {
+void func_8011376C_stardust_battle(u16 model, HuSprAnimData *sprite, u16 frame, u8 *color) {
     HmfModel *modelData = Hu3DData + model;
     HmfData *data = modelData->hmf;
     Gfx *gfx = data->unk3C->unk00[D_800D2008_main + 1];
 
     data->unk3C->unk00[0] = gfx;
     gDPPipeSync(gfx);
-    gSPSegment(gfx + 1, 2, osVirtualToPhysical(sprite->unk00[frame].unk00));
+    gSPSegment(gfx + 1, 2, osVirtualToPhysical(sprite->pat[frame].data));
     gSPDisplayList(gfx + 2, osVirtualToPhysical(data->unk3C->unk10));
     gDPSetPrimColor(gfx + 3, 0, 0, color[0], color[1], color[2], color[3]);
     gDPPipeSync(gfx + 4);
@@ -4876,24 +4876,24 @@ void func_8011376C_stardust_battle(u16 model, HuSprite_Unk84_Struct *sprite, u16
     gSPEndDisplayList(gfx + 7);
 }
 
-s32 func_801138A0_stardust_battle(HuSprite_Unk84_Struct *sprite, HmfData *data, f32 scale, s16 xOffset, s16 yOffset) {
+s32 func_801138A0_stardust_battle(HuSprAnimData *sprite, HmfData *data, f32 scale, s16 xOffset, s16 yOffset) {
     s32 capacity = 0x1000;
     s32 width, height, scaledWidth, scaledHeight;
     s32 size, slices, textureHeight, sliceHeight, vertexCount;
     s32 i, j;
     Vtx_t *vertices, *start;
 
-    if (sprite->unk1A >= 2) {
+    if (sprite->palNum >= 2) {
         capacity = 0x800;
     }
-    width = sprite->unk00->unk04;
-    height = sprite->unk00->unk06;
+    width = sprite->pat->sizeX;
+    height = sprite->pat->sizeY;
     scaledWidth = width * 100.0 * scale / 32.0;
     scaledHeight = height * 100.0 * scale / 32.0;
-    if ((sprite->unk18 & 0xFFF) == 4) {
+    if ((sprite->pixelBits & 0xFFF) == 4) {
         size = ((width + 1) & 0xFFFE) * height * 4;
     } else {
-        size = width * height * sprite->unk18;
+        size = width * height * sprite->pixelBits;
     }
     size /= 8;
     slices = size / capacity;

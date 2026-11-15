@@ -94,7 +94,7 @@ typedef struct {
 typedef struct Fowl {
     /* 0x00 */ Gfx *displayList;
     /* 0x04 */ Vtx_t *vtx;
-    /* 0x08 */ HuSprite_Unk84_Struct *sprite;
+    /* 0x08 */ HuSprAnimData *sprite;
     /* 0x0C */ struct Fowl *prev;
     /* 0x10 */ struct Fowl *next;
     /* 0x14 */ void (*callback)(struct Fowl *);
@@ -120,7 +120,7 @@ typedef struct Fowl {
     /* 0x64 */ f32 unk_64;
 } Fowl; // sizeof 0x68
 
-extern HuSprite_Unk84_Struct *D_800C9530_main[];
+extern HuSprAnimData *D_800C9530_main[];
 extern s32 D_800A178C_main[][6];
 
 u8 D_8010E7A0_fowl_play = 1; /* Unreferenced. */
@@ -1854,8 +1854,8 @@ s16 func_8010B30C_fowl_play(s16 spriteId, s16 count) {
     return groupId;
 }
 
-HuSprite_Unk84_Unk00_Struct *func_8010B3D4_fowl_play(s16 arg0, s16 arg1) {
-    return &func_80055194_main(arg0)->unk00[arg1];
+HuSprAnimPat *func_8010B3D4_fowl_play(s16 arg0, s16 arg1) {
+    return &func_80055194_main(arg0)->pat[arg1];
 }
 
 void func_8010B41C_fowl_play(u16 count) {
@@ -1888,25 +1888,25 @@ void func_8010B41C_fowl_play(u16 count) {
     }
 }
 
-void func_8010B564_fowl_play(Gfx **gfx, HuSprite_Unk84_Unk00_Struct *cel, u8 fmt, u8 siz, u16 height, u16 uls,
+void func_8010B564_fowl_play(Gfx **gfx, HuSprAnimPat *cel, u8 fmt, u8 siz, u16 height, u16 uls,
                              u16 ult, u16 lrs, u16 lrt, u16 cms, u16 cmt, u16 masks, u16 maskt, s32 mode) {
     Gfx *gdl = *gfx;
 
     switch (mode) {
         case 0:
-            gDPLoadTextureTile_4b(gdl++, (void *)0x0C000000, fmt, cel->unk04, height, uls, ult, lrs, lrt, 0, cms,
+            gDPLoadTextureTile_4b(gdl++, (void *)0x0C000000, fmt, cel->sizeX, height, uls, ult, lrs, lrt, 0, cms,
                                   cmt, masks, maskt, 0, 0);
             break;
         case 1:
-            func_80034998_main(&gdl, (void *)0x0C000000, fmt, cel->unk04, height, uls, ult, lrs, lrt, 0, cms, cmt,
+            func_80034998_main(&gdl, (void *)0x0C000000, fmt, cel->sizeX, height, uls, ult, lrs, lrt, 0, cms, cmt,
                                masks, maskt, 0, 0);
             break;
         case 2:
-            func_800341D0_main(&gdl, (u16 *)0x0C000000, fmt, siz, cel->unk04, cel->unk06, uls, ult, lrs, lrt, 0,
+            func_800341D0_main(&gdl, (u16 *)0x0C000000, fmt, siz, cel->sizeX, cel->sizeY, uls, ult, lrs, lrt, 0,
                                cms, cmt, masks, maskt, 0, 0);
             break;
         case 3:
-            func_8003465C_main(&gdl, (void *)0x0C000000, fmt, siz, cel->unk04, height, uls, ult, lrs, lrt, 0, cms,
+            func_8003465C_main(&gdl, (void *)0x0C000000, fmt, siz, cel->sizeX, height, uls, ult, lrs, lrt, 0, cms,
                                cmt, masks, maskt, 0, 0);
             break;
     }
@@ -1914,11 +1914,11 @@ void func_8010B564_fowl_play(Gfx **gfx, HuSprite_Unk84_Unk00_Struct *cel, u8 fmt
 }
 
 s16 func_8010B8D4_fowl_play(Fowl *fowl) {
-    HuSprite_Unk84_Unk00_Struct segCel;
+    HuSprAnimPat segCel;
     Gfx *gfx;
     Gfx *buf;
     Gfx *start;
-    HuSprite_Unk84_Unk00_Struct *cel;
+    HuSprAnimPat *cel;
     s32 fmt;
     s32 mode;
     s32 alignedWidth;
@@ -1932,42 +1932,42 @@ s16 func_8010B8D4_fowl_play(Fowl *fowl) {
     s32 maskt;
     u32 i;
 
-    cel = fowl->sprite->unk00;
+    cel = fowl->sprite->pat;
     buf = HuMemAlloc(0x1000);
     gfx = buf;
-    gSPSegment(gfx++, 0x0C, cel->unk00);
+    gSPSegment(gfx++, 0x0C, cel->data);
     gSPSegment(gfx++, 0x0E, fowl->vtx);
     start = gfx;
     gDPPipeSync(gfx++);
-    switch (fowl->sprite->unk18) {
+    switch (fowl->sprite->pixelBits) {
         case 4:
             siz = G_IM_SIZ_4b;
-            if (fowl->sprite->unk1A == 1) {
+            if (fowl->sprite->palNum == 1) {
                 fmt = G_IM_FMT_IA;
                 gDPSetTextureLUT(gfx++, G_TT_NONE);
             } else {
                 fmt = G_IM_FMT_CI;
-                gDPLoadTLUT_pal16(gfx++, 0, fowl->sprite->unk0C);
+                gDPLoadTLUT_pal16(gfx++, 0, fowl->sprite->pal);
                 gDPSetTextureLUT(gfx++, G_TT_RGBA16);
             }
             mode = 0;
             break;
         case 8:
             siz = G_IM_SIZ_8b;
-            if (fowl->sprite->unk1A == 1) {
+            if (fowl->sprite->palNum == 1) {
                 fmt = G_IM_FMT_IA;
                 gDPSetTextureLUT(gfx++, G_TT_NONE);
                 mode = 2;
             } else {
                 fmt = G_IM_FMT_CI;
-                gDPLoadTLUT_pal256(gfx++, fowl->sprite->unk0C);
+                gDPLoadTLUT_pal256(gfx++, fowl->sprite->pal);
                 gDPSetTextureLUT(gfx++, G_TT_RGBA16);
                 mode = 2;
             }
             break;
         case 16:
             siz = G_IM_SIZ_16b;
-            if (fowl->sprite->unk1A == 1) {
+            if (fowl->sprite->palNum == 1) {
                 fmt = G_IM_FMT_IA;
             } else {
                 fmt = G_IM_FMT_RGBA;
@@ -1994,40 +1994,40 @@ s16 func_8010B8D4_fowl_play(Fowl *fowl) {
             mode = 2;
             break;
     }
-    alignedWidth = (((cel->unk04 << siz) >> 4) << 4) >> siz;
-    if (alignedWidth < cel->unk04) {
+    alignedWidth = (((cel->sizeX << siz) >> 4) << 4) >> siz;
+    if (alignedWidth < cel->sizeX) {
         alignedWidth += 16 >> siz;
     }
     switch (fmt) {
         case G_IM_FMT_CI:
-            if ((4096 >> siz) >= cel->unk06 * alignedWidth) {
-                rows = cel->unk06;
+            if ((4096 >> siz) >= cel->sizeY * alignedWidth) {
+                rows = cel->sizeY;
             } else {
                 rows = (4096 >> siz) / alignedWidth;
             }
             break;
         case G_IM_FMT_I:
-            if (4096 >= cel->unk06 * alignedWidth) {
-                rows = cel->unk06;
+            if (4096 >= cel->sizeY * alignedWidth) {
+                rows = cel->sizeY;
             } else {
                 rows = 4096 / alignedWidth;
             }
             break;
         default:
-            if ((8192 >> siz) >= cel->unk06 * alignedWidth) {
-                rows = cel->unk06;
+            if ((8192 >> siz) >= cel->sizeY * alignedWidth) {
+                rows = cel->sizeY;
             } else {
                 rows = (8192 >> siz) / alignedWidth;
             }
             break;
     }
-    count = cel->unk06 / rows;
-    remainder = cel->unk06 - count * rows;
+    count = cel->sizeY / rows;
+    remainder = cel->sizeY - count * rows;
     // Aligned strips can use the block loader when its DXT rounding is exact.
-    if (cel->unk04 % (16 >> siz) == 0) {
-        if (((rows * cel->unk04) << siz) <= 4096) {
-            if (D_8010E8DC_fowl_play[cel->unk04 >> D_8010E8CC_fowl_play[siz]] >= rows ||
-                rows == D_8010EA14_fowl_play[cel->unk04 >> D_8010E8CC_fowl_play[siz]]) {
+    if (cel->sizeX % (16 >> siz) == 0) {
+        if (((rows * cel->sizeX) << siz) <= 4096) {
+            if (D_8010E8DC_fowl_play[cel->sizeX >> D_8010E8CC_fowl_play[siz]] >= rows ||
+                rows == D_8010EA14_fowl_play[cel->sizeX >> D_8010E8CC_fowl_play[siz]]) {
                 mode++;
             }
         }
@@ -2049,23 +2049,23 @@ s16 func_8010B8D4_fowl_play(Fowl *fowl) {
     }
     gDPPipeSync(gfx++);
     segCel = *cel;
-    segCel.unk00 = (void *)0x0C000000;
+    segCel.data = (void *)0x0C000000;
     if ((u32)fowl->unk_28 >= 0x80000000 && count == 1 && remainder == 0) {
-        func_8010B564_fowl_play(&gfx, &segCel, fmt, siz, rows, 0, 0, cel->unk04 - 1, cel->unk06 - 1, cms, cmt, masks,
+        func_8010B564_fowl_play(&gfx, &segCel, fmt, siz, rows, 0, 0, cel->sizeX - 1, cel->sizeY - 1, cms, cmt, masks,
                                 maskt, mode);
         gSPVertex(gfx++, (Vtx *)0x0E000000, 5, 0);
         gSP2Triangles(gfx++, 0, 2, 4, 0, 2, 3, 4, 0);
         gSP2Triangles(gfx++, 0, 4, 1, 0, 4, 3, 1, 0);
     } else {
         for (i = 0; i < count; i++) {
-            func_8010B564_fowl_play(&gfx, &segCel, fmt, siz, rows, 0, i * rows, cel->unk04 - 1, (i + 1) * rows - 1,
+            func_8010B564_fowl_play(&gfx, &segCel, fmt, siz, rows, 0, i * rows, cel->sizeX - 1, (i + 1) * rows - 1,
                                     cms, cmt, masks, maskt, mode);
             gSPVertex(gfx++, (Vtx *)0x0E000000 + i * 2, 4, 0);
             gSP2Triangles(gfx++, 0, 2, 3, 0, 0, 3, 1, 0);
         }
         if (remainder != 0) {
-            func_8010B564_fowl_play(&gfx, &segCel, fmt, siz, remainder, 0, i * rows, cel->unk04 - 1,
-                                    cel->unk06 - 1, cms, cmt, masks, maskt, mode);
+            func_8010B564_fowl_play(&gfx, &segCel, fmt, siz, remainder, 0, i * rows, cel->sizeX - 1,
+                                    cel->sizeY - 1, cms, cmt, masks, maskt, mode);
             gSPVertex(gfx++, (Vtx *)0x0E000000 + i * 2, 4, 0);
             gSP2Triangles(gfx++, 0, 2, 3, 0, 0, 3, 1, 0);
         }
@@ -2081,7 +2081,7 @@ s16 func_8010B8D4_fowl_play(Fowl *fowl) {
 
 s16 func_8010C1F4_fowl_play(s16 spriteId, s32 flags) {
     Fowl *fowl;
-    HuSprite_Unk84_Unk00_Struct *cel;
+    HuSprAnimPat *cel;
     s32 index;
     s32 siz;
     s32 fmt;
@@ -2104,19 +2104,19 @@ s16 func_8010C1F4_fowl_play(s16 spriteId, s32 flags) {
     fowl->sprite = D_800C9530_main[spriteId];
     fowl->unk_28 = flags;
     fowl->unk_1A = 7;
-    cel = fowl->sprite->unk00;
-    switch (fowl->sprite->unk18) {
+    cel = fowl->sprite->pat;
+    switch (fowl->sprite->pixelBits) {
         case 4:
             siz = G_IM_SIZ_4b;
-            fmt = (fowl->sprite->unk1A == 1) ? G_IM_FMT_IA : G_IM_FMT_CI;
+            fmt = (fowl->sprite->palNum == 1) ? G_IM_FMT_IA : G_IM_FMT_CI;
             break;
         case 8:
             siz = G_IM_SIZ_8b;
-            fmt = (fowl->sprite->unk1A == 1) ? G_IM_FMT_IA : G_IM_FMT_CI;
+            fmt = (fowl->sprite->palNum == 1) ? G_IM_FMT_IA : G_IM_FMT_CI;
             break;
         case 16:
             siz = G_IM_SIZ_16b;
-            fmt = (fowl->sprite->unk1A == 1) ? G_IM_FMT_IA : G_IM_FMT_RGBA;
+            fmt = (fowl->sprite->palNum == 1) ? G_IM_FMT_IA : G_IM_FMT_RGBA;
             break;
         case 32:
             siz = G_IM_SIZ_32b;
@@ -2131,44 +2131,44 @@ s16 func_8010C1F4_fowl_play(s16 spriteId, s32 flags) {
             fmt = G_IM_FMT_I;
             break;
     }
-    alignedWidth = (((cel->unk04 << siz) >> 4) << 4) >> siz;
-    if (alignedWidth < cel->unk04) {
+    alignedWidth = (((cel->sizeX << siz) >> 4) << 4) >> siz;
+    if (alignedWidth < cel->sizeX) {
         alignedWidth += 16 >> siz;
     }
     switch (fmt) {
         case G_IM_FMT_CI:
-            if ((4096 >> siz) >= cel->unk06 * alignedWidth) {
-                rows = cel->unk06;
+            if ((4096 >> siz) >= cel->sizeY * alignedWidth) {
+                rows = cel->sizeY;
             } else {
                 rows = (4096 >> siz) / alignedWidth;
             }
             break;
         case G_IM_FMT_I:
-            if (4096 >= cel->unk06 * alignedWidth) {
-                rows = cel->unk06;
+            if (4096 >= cel->sizeY * alignedWidth) {
+                rows = cel->sizeY;
             } else {
                 rows = 4096 / alignedWidth;
             }
             break;
         default:
-            if ((8192 >> siz) >= cel->unk06 * alignedWidth) {
-                rows = cel->unk06;
+            if ((8192 >> siz) >= cel->sizeY * alignedWidth) {
+                rows = cel->sizeY;
             } else {
                 rows = (8192 >> siz) / alignedWidth;
             }
             break;
     }
-    count = cel->unk06 / rows;
-    remainder = cel->unk06 - count * rows;
+    count = cel->sizeY / rows;
+    remainder = cel->sizeY - count * rows;
     fowl->unk_18 = count + 2;
     fowl->unk_19 = rows;
     fowl->vtx = HuMemAlloc((count + 2) * 2 * sizeof(Vtx));
     for (i = 0; i < count + 1; i++) {
         fowl->vtx[i * 2].ob[0] = 0;
-        fowl->vtx[i * 2 + 1].ob[0] = cel->unk04;
+        fowl->vtx[i * 2 + 1].ob[0] = cel->sizeX;
         fowl->vtx[i * 2].ob[1] = fowl->vtx[i * 2 + 1].ob[1] = -i * rows;
         fowl->vtx[i * 2].tc[0] = 0;
-        fowl->vtx[i * 2 + 1].tc[0] = cel->unk04 << 6;
+        fowl->vtx[i * 2 + 1].tc[0] = cel->sizeX << 6;
         fowl->vtx[i * 2].tc[1] = (i * rows) << 6;
         fowl->vtx[i * 2 + 1].tc[1] = (i * rows) << 6;
         for (j = 0; j < 2; j++) {
@@ -2181,11 +2181,11 @@ s16 func_8010C1F4_fowl_play(s16 spriteId, s32 flags) {
     }
     if (remainder != 0) {
         fowl->vtx[i * 2].ob[0] = 0;
-        fowl->vtx[i * 2 + 1].ob[0] = cel->unk04;
-        fowl->vtx[i * 2].ob[1] = fowl->vtx[i * 2 + 1].ob[1] = cel->unk06;
+        fowl->vtx[i * 2 + 1].ob[0] = cel->sizeX;
+        fowl->vtx[i * 2].ob[1] = fowl->vtx[i * 2 + 1].ob[1] = cel->sizeY;
         fowl->vtx[i * 2].tc[0] = 0;
-        fowl->vtx[i * 2 + 1].tc[0] = cel->unk04 << 6;
-        fowl->vtx[i * 2].tc[1] = fowl->vtx[i * 2 + 1].tc[1] = cel->unk06 << 6;
+        fowl->vtx[i * 2 + 1].tc[0] = cel->sizeX << 6;
+        fowl->vtx[i * 2].tc[1] = fowl->vtx[i * 2 + 1].tc[1] = cel->sizeY << 6;
         for (j = 0; j < 2; j++) {
             fowl->vtx[i * 2 + j].ob[2] = 0;
             fowl->vtx[i * 2 + j].cn[0] = 0xFF;
@@ -2194,11 +2194,11 @@ s16 func_8010C1F4_fowl_play(s16 spriteId, s32 flags) {
             fowl->vtx[i * 2 + j].cn[3] = 0xFF;
         }
     } else if (count == 1) {
-        fowl->vtx[4].ob[0] = cel->unk04 * 0.5;
-        fowl->vtx[4].ob[1] = -cel->unk06 * 0.5;
+        fowl->vtx[4].ob[0] = cel->sizeX * 0.5;
+        fowl->vtx[4].ob[1] = -cel->sizeY * 0.5;
         fowl->vtx[4].ob[2] = 0;
-        fowl->vtx[4].tc[0] = cel->unk04 * 0.5 * 64.0;
-        fowl->vtx[4].tc[1] = cel->unk06 * 0.5 * 64.0;
+        fowl->vtx[4].tc[0] = cel->sizeX * 0.5 * 64.0;
+        fowl->vtx[4].tc[1] = cel->sizeY * 0.5 * 64.0;
         fowl->vtx[4].cn[0] = 0xFF;
         fowl->vtx[4].cn[1] = 0xFF;
         fowl->vtx[4].cn[2] = 0xFF;
@@ -2213,7 +2213,7 @@ s16 func_8010C1F4_fowl_play(s16 spriteId, s32 flags) {
 
 void func_8010C7FC_fowl_play(s16 index, s16 spriteId) {
     Fowl *fowl;
-    HuSprite_Unk84_Unk00_Struct *cel;
+    HuSprAnimPat *cel;
     s32 siz;
     s32 fmt;
     s32 alignedWidth;
@@ -2225,21 +2225,21 @@ void func_8010C7FC_fowl_play(s16 index, s16 spriteId) {
 
     fowl = &D_8010F32C_fowl_play[index];
     fowl->sprite = D_800C9530_main[spriteId];
-    cel = fowl->sprite->unk00;
+    cel = fowl->sprite->pat;
     HuMemFree(fowl->vtx);
     HuMemFree(fowl->displayList);
-    switch (fowl->sprite->unk18) {
+    switch (fowl->sprite->pixelBits) {
         case 4:
             siz = G_IM_SIZ_4b;
-            fmt = (fowl->sprite->unk1A == 1) ? G_IM_FMT_IA : G_IM_FMT_CI;
+            fmt = (fowl->sprite->palNum == 1) ? G_IM_FMT_IA : G_IM_FMT_CI;
             break;
         case 8:
             siz = G_IM_SIZ_8b;
-            fmt = (fowl->sprite->unk1A == 1) ? G_IM_FMT_IA : G_IM_FMT_CI;
+            fmt = (fowl->sprite->palNum == 1) ? G_IM_FMT_IA : G_IM_FMT_CI;
             break;
         case 16:
             siz = G_IM_SIZ_16b;
-            fmt = (fowl->sprite->unk1A == 1) ? G_IM_FMT_IA : G_IM_FMT_RGBA;
+            fmt = (fowl->sprite->palNum == 1) ? G_IM_FMT_IA : G_IM_FMT_RGBA;
             break;
         case 32:
             siz = G_IM_SIZ_32b;
@@ -2254,44 +2254,44 @@ void func_8010C7FC_fowl_play(s16 index, s16 spriteId) {
             fmt = G_IM_FMT_I;
             break;
     }
-    alignedWidth = (((cel->unk04 << siz) >> 4) << 4) >> siz;
-    if (alignedWidth < cel->unk04) {
+    alignedWidth = (((cel->sizeX << siz) >> 4) << 4) >> siz;
+    if (alignedWidth < cel->sizeX) {
         alignedWidth += 16 >> siz;
     }
     switch (fmt) {
         case G_IM_FMT_CI:
-            if ((4096 >> siz) >= cel->unk06 * alignedWidth) {
-                rows = cel->unk06;
+            if ((4096 >> siz) >= cel->sizeY * alignedWidth) {
+                rows = cel->sizeY;
             } else {
                 rows = (4096 >> siz) / alignedWidth;
             }
             break;
         case G_IM_FMT_I:
-            if (4096 >= cel->unk06 * alignedWidth) {
-                rows = cel->unk06;
+            if (4096 >= cel->sizeY * alignedWidth) {
+                rows = cel->sizeY;
             } else {
                 rows = 4096 / alignedWidth;
             }
             break;
         default:
-            if ((8192 >> siz) >= cel->unk06 * alignedWidth) {
-                rows = cel->unk06;
+            if ((8192 >> siz) >= cel->sizeY * alignedWidth) {
+                rows = cel->sizeY;
             } else {
                 rows = (8192 >> siz) / alignedWidth;
             }
             break;
     }
-    count = cel->unk06 / rows;
-    remainder = cel->unk06 - count * rows;
+    count = cel->sizeY / rows;
+    remainder = cel->sizeY - count * rows;
     fowl->unk_18 = count + 2;
     fowl->unk_19 = rows;
     fowl->vtx = HuMemAlloc((count + 2) * 2 * sizeof(Vtx));
     for (i = 0; i < count + 1; i++) {
         fowl->vtx[i * 2].ob[0] = 0;
-        fowl->vtx[i * 2 + 1].ob[0] = cel->unk04;
+        fowl->vtx[i * 2 + 1].ob[0] = cel->sizeX;
         fowl->vtx[i * 2].ob[1] = fowl->vtx[i * 2 + 1].ob[1] = -i * rows;
         fowl->vtx[i * 2].tc[0] = 0;
-        fowl->vtx[i * 2 + 1].tc[0] = cel->unk04 << 6;
+        fowl->vtx[i * 2 + 1].tc[0] = cel->sizeX << 6;
         fowl->vtx[i * 2].tc[1] = (i * rows) << 6;
         fowl->vtx[i * 2 + 1].tc[1] = (i * rows) << 6;
         for (j = 0; j < 2; j++) {
@@ -2304,11 +2304,11 @@ void func_8010C7FC_fowl_play(s16 index, s16 spriteId) {
     }
     if (remainder != 0) {
         fowl->vtx[i * 2].ob[0] = 0;
-        fowl->vtx[i * 2 + 1].ob[0] = cel->unk04;
-        fowl->vtx[i * 2].ob[1] = fowl->vtx[i * 2 + 1].ob[1] = cel->unk06;
+        fowl->vtx[i * 2 + 1].ob[0] = cel->sizeX;
+        fowl->vtx[i * 2].ob[1] = fowl->vtx[i * 2 + 1].ob[1] = cel->sizeY;
         fowl->vtx[i * 2].tc[0] = 0;
-        fowl->vtx[i * 2 + 1].tc[0] = cel->unk04 << 6;
-        fowl->vtx[i * 2].tc[1] = fowl->vtx[i * 2 + 1].tc[1] = cel->unk06 << 6;
+        fowl->vtx[i * 2 + 1].tc[0] = cel->sizeX << 6;
+        fowl->vtx[i * 2].tc[1] = fowl->vtx[i * 2 + 1].tc[1] = cel->sizeY << 6;
         for (j = 0; j < 2; j++) {
             fowl->vtx[i * 2 + j].ob[2] = 0;
             fowl->vtx[i * 2 + j].cn[0] = 0xFF;
@@ -2317,11 +2317,11 @@ void func_8010C7FC_fowl_play(s16 index, s16 spriteId) {
             fowl->vtx[i * 2 + j].cn[3] = 0xFF;
         }
     } else if (count == 1) {
-        fowl->vtx[4].ob[0] = cel->unk04 * 0.5;
-        fowl->vtx[4].ob[1] = -cel->unk06 * 0.5;
+        fowl->vtx[4].ob[0] = cel->sizeX * 0.5;
+        fowl->vtx[4].ob[1] = -cel->sizeY * 0.5;
         fowl->vtx[4].ob[2] = 0;
-        fowl->vtx[4].tc[0] = cel->unk04 * 0.5 * 64.0;
-        fowl->vtx[4].tc[1] = cel->unk06 * 0.5 * 64.0;
+        fowl->vtx[4].tc[0] = cel->sizeX * 0.5 * 64.0;
+        fowl->vtx[4].tc[1] = cel->sizeY * 0.5 * 64.0;
         fowl->vtx[4].cn[0] = 0xFF;
         fowl->vtx[4].cn[1] = 0xFF;
         fowl->vtx[4].cn[2] = 0xFF;
@@ -2556,26 +2556,26 @@ void func_8010D4D0_fowl_play(s32 index, s32 flip) {
 
     if (flip) {
         for (i = 0; i < fowl->unk_18; i++) {
-            fowl->vtx[i * 2].tc[0] = fowl->sprite->unk00->unk04 << 6;
+            fowl->vtx[i * 2].tc[0] = fowl->sprite->pat->sizeX << 6;
             fowl->vtx[i * 2 + 1].tc[0] = 0;
         }
     } else {
         for (i = 0; i < fowl->unk_18; i++) {
             fowl->vtx[i * 2].tc[0] = 0;
-            fowl->vtx[i * 2 + 1].tc[0] = fowl->sprite->unk00->unk04 << 6;
+            fowl->vtx[i * 2 + 1].tc[0] = fowl->sprite->pat->sizeX << 6;
         }
     }
 }
 
 void func_8010D5A0_fowl_play(s32 index, s32 flip) {
     Fowl *fowl = &D_8010F32C_fowl_play[index];
-    s32 remainder = fowl->sprite->unk00->unk06 - (fowl->unk_18 - 2) * fowl->unk_19;
+    s32 remainder = fowl->sprite->pat->sizeY - (fowl->unk_18 - 2) * fowl->unk_19;
     s32 i;
 
     if (flip) {
         for (i = 0; i < fowl->unk_18 - 1; i++) {
             fowl->vtx[i * 2].tc[1] = fowl->vtx[i * 2 + 1].tc[1] =
-                fowl->sprite->unk00->unk06 - i * fowl->unk_19;
+                fowl->sprite->pat->sizeY - i * fowl->unk_19;
         }
         if (remainder != 0) {
             fowl->vtx[i * 2].tc[1] = fowl->vtx[i * 2 + 1].tc[1] = 0;
@@ -2585,7 +2585,7 @@ void func_8010D5A0_fowl_play(s32 index, s32 flip) {
             fowl->vtx[i * 2].ob[1] = fowl->vtx[i * 2 + 1].ob[1] = i * fowl->unk_19;
         }
         if (remainder != 0) {
-            fowl->vtx[i * 2].ob[1] = fowl->vtx[i * 2 + 1].ob[1] = fowl->sprite->unk00->unk06;
+            fowl->vtx[i * 2].ob[1] = fowl->vtx[i * 2 + 1].ob[1] = fowl->sprite->pat->sizeY;
         }
     }
 }
@@ -2765,7 +2765,7 @@ Gfx *func_8010DE4C_fowl_play(Gfx *gfx, Fowl *fowl, HuMtx4F lookAt, Vec *rot) {
     HuMtx4F mtx;
     HuMtx4F billboard;
     HuMtx4F inverse;
-    HuSprite_Unk84_Unk00_Struct *cel;
+    HuSprAnimPat *cel;
     u16 format;
     u32 blend;
     u32 mode;
@@ -2773,7 +2773,7 @@ Gfx *func_8010DE4C_fowl_play(Gfx *gfx, Fowl *fowl, HuMtx4F lookAt, Vec *rot) {
     Mtx *mtxL;
     Gfx *dl;
 
-    cel = &fowl->sprite->unk00[fowl->unk_24];
+    cel = &fowl->sprite->pat[fowl->unk_24];
     gDPPipeSync(gfx++);
     gDPSetTextureFilter(gfx++, D_8010EB54_fowl_play[(fowl->unk_28 >> 2) & 3]);
     gDPSetColorDither(gfx++, D_8010EB4C_fowl_play[(fowl->unk_28 >> 4) & 3]);
@@ -2783,7 +2783,7 @@ Gfx *func_8010DE4C_fowl_play(Gfx *gfx, Fowl *fowl, HuMtx4F lookAt, Vec *rot) {
     } else {
         gSPClearGeometryMode(gfx++, G_LIGHTING);
     }
-    format = fowl->sprite->unk18;
+    format = fowl->sprite->pixelBits;
     blend = 0x110000;
     if (fowl->unk_28 & 0x8000000) {
         blend = 0xC8004000;
@@ -2854,8 +2854,8 @@ Gfx *func_8010DE4C_fowl_play(Gfx *gfx, Fowl *fowl, HuMtx4F lookAt, Vec *rot) {
         billboard[3][0] = -fowl->unk_30.y;
         billboard[3][1] = fowl->unk_30.z;
     } else {
-        billboard[3][0] = -(u16)cel->unk08;
-        billboard[3][1] = (u16)cel->unk0A;
+        billboard[3][0] = -(u16)cel->centerX;
+        billboard[3][1] = (u16)cel->centerY;
     }
     billboard[3][2] = fowl->unk_3C;
     func_8002367C_main(mtx, lookAt);
@@ -2890,7 +2890,7 @@ Gfx *func_8010DE4C_fowl_play(Gfx *gfx, Fowl *fowl, HuMtx4F lookAt, Vec *rot) {
     gDPPipeSync(gfx++);
     gSPMatrix(gfx++, osVirtualToPhysical(mtxL), G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH);
     gDPPipeSync(gfx++);
-    gSPSegment(gfx++, 0x0C, cel->unk00);
+    gSPSegment(gfx++, 0x0C, cel->data);
     gSPSegment(gfx++, 0x0E, vtx);
     gDPPipeSync(gfx++);
     memcpy(vtx, fowl->vtx, fowl->unk_18 * 2 * sizeof(Vtx));
@@ -2920,7 +2920,7 @@ void func_8010E544_fowl_play(void) {
         if (fowl->unk_28 & 0x10000000) {
             continue;
         }
-        frameCount = fowl->sprite->unk10;
+        frameCount = fowl->sprite->patNum;
         fowl->unk_2C += fowl->unk_30.x;
         while (fowl->unk_2C >= 1.0) {
             fowl->unk_24++;

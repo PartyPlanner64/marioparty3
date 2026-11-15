@@ -163,10 +163,10 @@ void func_8010BF80_chancetime(void) {
     HuSprAttrSet(grp, 0, HUSPR_ATTR_DISPOFF);
     HuSprGrpMemberSet(grp, 0, spriteId, 0);
     D_8010FE9C_chancetime = spr = HuSprGet(grp, 0);
-    D_8010FEA0_chancetime = spr->unk_84->unk08;
-    D_8010FEA4_chancetime = spr->unk_84->unk0C;
-    D_8010FEA8_chancetime[0] = spr->unk_84->unk14;
-    D_8010FEA8_chancetime[1] = spr->unk_84->unk16;
+    D_8010FEA0_chancetime = spr->unk_84->data;
+    D_8010FEA4_chancetime = spr->unk_84->pal;
+    D_8010FEA8_chancetime[0] = spr->unk_84->sizeX;
+    D_8010FEA8_chancetime[1] = spr->unk_84->sizeY;
     D_8010FE90_chancetime = Hu3DHookFuncCreate(0, func_8010C994_chancetime, 2);
     Hu3DModelCameraSet(D_8010FE90_chancetime, 1);
 

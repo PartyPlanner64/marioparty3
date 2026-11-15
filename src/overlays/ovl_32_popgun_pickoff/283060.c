@@ -17,7 +17,7 @@
 typedef struct PopgunPickoffPlayer {
     /* 0x00 */ Gfx *displayList;
     /* 0x04 */ Vtx_t *vtx;
-    /* 0x08 */ HuSprite_Unk84_Struct *sprite;
+    /* 0x08 */ HuSprAnimData *sprite;
     /* 0x0C */ struct PopgunPickoffPlayer *prev;
     /* 0x10 */ struct PopgunPickoffPlayer *next;
     /* 0x14 */ void (*callback)(struct PopgunPickoffPlayer *);
@@ -109,7 +109,7 @@ typedef struct {
     /* 0x02 */ s16 unk02[2];
 } PopgunPickoffBssCC20; // Size 0x6
 
-extern HuSprite_Unk84_Struct *D_800C9530_main[];
+extern HuSprAnimData *D_800C9530_main[];
 extern s32 D_800A178C_main[][6];
 
 s32 D_8010C590_popgun_pickoff = 0;
@@ -213,7 +213,7 @@ u8 func_80108A78_popgun_pickoff(omObjData *object, s32 targetIndex);
 void func_80108FE4_popgun_pickoff(s16 model, char *hook, s16 time, Vec *pos);
 s16 func_80109108_popgun_pickoff(s32 dataNum);
 s16 func_80109150_popgun_pickoff(s16 spriteId, s16 count);
-HuSprite_Unk84_Unk00_Struct *func_80109218_popgun_pickoff(s16 groupId, s16 member);
+HuSprAnimPat *func_80109218_popgun_pickoff(s16 groupId, s16 member);
 s16 func_80109718_popgun_pickoff(PopgunPickoffPlayer *player);
 void func_80108F5C_popgun_pickoff(Vec *dir, f32 *rot);
 void func_8010B64C_popgun_pickoff(void);
@@ -382,7 +382,7 @@ void func_801060E8_popgun_pickoff(omObjData *object) {
     u16 characterSprites[8] = { 8, 9, 10, 11, 12, 13, 14, 15 };
     f32 pos[3];
     f32 screen[3];
-    HuSprite_Unk84_Unk00_Struct *spr;
+    HuSprAnimPat *spr;
     PopgunPickoffTarget *target;
     PopgunPickoffShot *shot;
     s32 attr;
@@ -397,14 +397,14 @@ void func_801060E8_popgun_pickoff(omObjData *object) {
     D_8010CBF0_popgun_pickoff[1] = func_8010A024_popgun_pickoff(D_8010CBD0_popgun_pickoff[1], 0x1808);
     func_8010AD54_popgun_pickoff(D_8010CBF0_popgun_pickoff[1], 0.0f, -70.0f, -400.0f);
     func_8010AE0C_popgun_pickoff(D_8010CBF0_popgun_pickoff[1], 3.0f, 3.0f, 1.0f);
-    func_8010ACB4_popgun_pickoff(D_8010CBF0_popgun_pickoff[1], spr->unk04 * 0.5, spr->unk06, 0.0f);
+    func_8010ACB4_popgun_pickoff(D_8010CBF0_popgun_pickoff[1], spr->sizeX * 0.5, spr->sizeY, 0.0f);
     func_8010AF78_popgun_pickoff(D_8010CBF0_popgun_pickoff[1], 0);
     D_8010CBD0_popgun_pickoff[4] = func_80109108_popgun_pickoff(0x530004);
     D_8010CBD0_popgun_pickoff[5] = func_80109108_popgun_pickoff(0x530005);
     for (i = 0; i < 9; i++) {
         target = &D_8010CC28_popgun_pickoff[i];
-        pos[0] = target->pos.x = (positions[i][0] - spr->unk04 * 0.5) * 3.0;
-        pos[1] = target->pos.y = (spr->unk06 - positions[i][1]) * 3.0 + -70.0;
+        pos[0] = target->pos.x = (positions[i][0] - spr->sizeX * 0.5) * 3.0;
+        pos[1] = target->pos.y = (spr->sizeY - positions[i][1]) * 3.0 + -70.0;
         pos[2] = target->pos.z = -400.0f;
         func_80105E68_popgun_pickoff(pos, screen);
         target->screenX = screen[0];
@@ -1254,8 +1254,8 @@ s16 func_80109150_popgun_pickoff(s16 spriteId, s16 count) {
     return groupId;
 }
 
-HuSprite_Unk84_Unk00_Struct *func_80109218_popgun_pickoff(s16 groupId, s16 member) {
-    return &func_80055194_main(groupId)->unk00[member];
+HuSprAnimPat *func_80109218_popgun_pickoff(s16 groupId, s16 member) {
+    return &func_80055194_main(groupId)->pat[member];
 }
 
 void func_80109260_popgun_pickoff(u16 count) {
@@ -1288,25 +1288,25 @@ void func_80109260_popgun_pickoff(u16 count) {
     }
 }
 
-void func_801093A8_popgun_pickoff(Gfx **gfx, HuSprite_Unk84_Unk00_Struct *cel, u8 fmt, u8 siz, u16 height, u16 uls,
+void func_801093A8_popgun_pickoff(Gfx **gfx, HuSprAnimPat *cel, u8 fmt, u8 siz, u16 height, u16 uls,
                                   u16 ult, u16 lrs, u16 lrt, u16 cms, u16 cmt, u16 masks, u16 maskt, s32 mode) {
     Gfx *gdl = *gfx;
 
     switch (mode) {
         case 0:
-            gDPLoadTextureTile_4b(gdl++, (void *)0x0C000000, fmt, cel->unk04, height, uls, ult, lrs, lrt, 0, cms,
+            gDPLoadTextureTile_4b(gdl++, (void *)0x0C000000, fmt, cel->sizeX, height, uls, ult, lrs, lrt, 0, cms,
                                   cmt, masks, maskt, 0, 0);
             break;
         case 1:
-            func_80034998_main(&gdl, (void *)0x0C000000, fmt, cel->unk04, height, uls, ult, lrs, lrt, 0, cms, cmt,
+            func_80034998_main(&gdl, (void *)0x0C000000, fmt, cel->sizeX, height, uls, ult, lrs, lrt, 0, cms, cmt,
                                masks, maskt, 0, 0);
             break;
         case 2:
-            func_800341D0_main(&gdl, (u16 *)0x0C000000, fmt, siz, cel->unk04, cel->unk06, uls, ult, lrs, lrt, 0,
+            func_800341D0_main(&gdl, (u16 *)0x0C000000, fmt, siz, cel->sizeX, cel->sizeY, uls, ult, lrs, lrt, 0,
                                cms, cmt, masks, maskt, 0, 0);
             break;
         case 3:
-            func_8003465C_main(&gdl, (void *)0x0C000000, fmt, siz, cel->unk04, height, uls, ult, lrs, lrt, 0, cms,
+            func_8003465C_main(&gdl, (void *)0x0C000000, fmt, siz, cel->sizeX, height, uls, ult, lrs, lrt, 0, cms,
                                cmt, masks, maskt, 0, 0);
             break;
     }
@@ -1314,11 +1314,11 @@ void func_801093A8_popgun_pickoff(Gfx **gfx, HuSprite_Unk84_Unk00_Struct *cel, u
 }
 
 s16 func_80109718_popgun_pickoff(PopgunPickoffPlayer *player) {
-    HuSprite_Unk84_Unk00_Struct segCel;
+    HuSprAnimPat segCel;
     Gfx *gfx;
     Gfx *buf;
     Gfx *start;
-    HuSprite_Unk84_Unk00_Struct *cel;
+    HuSprAnimPat *cel;
     s32 fmt;
     s32 mode;
     s32 alignedWidth;
@@ -1332,41 +1332,41 @@ s16 func_80109718_popgun_pickoff(PopgunPickoffPlayer *player) {
     s32 maskt;
     u32 i;
 
-    cel = player->sprite->unk00;
+    cel = player->sprite->pat;
     buf = HuMemAlloc(0x1000);
     gfx = buf;
-    gSPSegment(gfx++, 0x0C, cel->unk00);
+    gSPSegment(gfx++, 0x0C, cel->data);
     gSPSegment(gfx++, 0x0E, player->vtx);
     start = gfx;
     gDPPipeSync(gfx++);
-    switch (player->sprite->unk18) {
+    switch (player->sprite->pixelBits) {
         case 4:
             siz = G_IM_SIZ_4b;
-            if (player->sprite->unk1A == 1) {
+            if (player->sprite->palNum == 1) {
                 fmt = G_IM_FMT_IA;
                 gDPSetTextureLUT(gfx++, G_TT_NONE);
             } else {
                 fmt = G_IM_FMT_CI;
-                gDPLoadTLUT_pal16(gfx++, 0, player->sprite->unk0C);
+                gDPLoadTLUT_pal16(gfx++, 0, player->sprite->pal);
                 gDPSetTextureLUT(gfx++, G_TT_RGBA16);
             }
             mode = 0;
             break;
         case 8:
             siz = G_IM_SIZ_8b;
-            if (player->sprite->unk1A == 1) {
+            if (player->sprite->palNum == 1) {
                 fmt = G_IM_FMT_IA;
                 gDPSetTextureLUT(gfx++, G_TT_NONE);
             } else {
                 fmt = G_IM_FMT_CI;
-                gDPLoadTLUT_pal256(gfx++, player->sprite->unk0C);
+                gDPLoadTLUT_pal256(gfx++, player->sprite->pal);
                 gDPSetTextureLUT(gfx++, G_TT_RGBA16);
             }
             mode = 2;
             break;
         case 16:
             siz = G_IM_SIZ_16b;
-            if (player->sprite->unk1A == 1) {
+            if (player->sprite->palNum == 1) {
                 fmt = G_IM_FMT_IA;
             } else {
                 fmt = G_IM_FMT_RGBA;
@@ -1393,40 +1393,40 @@ s16 func_80109718_popgun_pickoff(PopgunPickoffPlayer *player) {
             mode = 2;
             break;
     }
-    alignedWidth = (((cel->unk04 << siz) >> 4) << 4) >> siz;
-    if (alignedWidth < cel->unk04) {
+    alignedWidth = (((cel->sizeX << siz) >> 4) << 4) >> siz;
+    if (alignedWidth < cel->sizeX) {
         alignedWidth += 16 >> siz;
     }
     switch (fmt) {
         case G_IM_FMT_CI:
-            if ((4096 >> siz) >= cel->unk06 * alignedWidth) {
-                rows = cel->unk06;
+            if ((4096 >> siz) >= cel->sizeY * alignedWidth) {
+                rows = cel->sizeY;
             } else {
                 rows = (4096 >> siz) / alignedWidth;
             }
             break;
         case G_IM_FMT_I:
-            if (4096 >= cel->unk06 * alignedWidth) {
-                rows = cel->unk06;
+            if (4096 >= cel->sizeY * alignedWidth) {
+                rows = cel->sizeY;
             } else {
                 rows = 4096 / alignedWidth;
             }
             break;
         default:
-            if ((8192 >> siz) >= cel->unk06 * alignedWidth) {
-                rows = cel->unk06;
+            if ((8192 >> siz) >= cel->sizeY * alignedWidth) {
+                rows = cel->sizeY;
             } else {
                 rows = (8192 >> siz) / alignedWidth;
             }
             break;
     }
-    count = cel->unk06 / rows;
-    remainder = cel->unk06 - count * rows;
+    count = cel->sizeY / rows;
+    remainder = cel->sizeY - count * rows;
     // Aligned strips can use the block loader when its DXT rounding is exact.
-    if (cel->unk04 % (16 >> siz) == 0) {
-        if (((rows * cel->unk04) << siz) <= 4096) {
-            if (D_8010C608_popgun_pickoff[cel->unk04 >> D_8010C5F8_popgun_pickoff[siz]] >= rows ||
-                rows == D_8010C740_popgun_pickoff[cel->unk04 >> D_8010C5F8_popgun_pickoff[siz]]) {
+    if (cel->sizeX % (16 >> siz) == 0) {
+        if (((rows * cel->sizeX) << siz) <= 4096) {
+            if (D_8010C608_popgun_pickoff[cel->sizeX >> D_8010C5F8_popgun_pickoff[siz]] >= rows ||
+                rows == D_8010C740_popgun_pickoff[cel->sizeX >> D_8010C5F8_popgun_pickoff[siz]]) {
                 mode++;
             }
         }
@@ -1448,23 +1448,23 @@ s16 func_80109718_popgun_pickoff(PopgunPickoffPlayer *player) {
     }
     gDPPipeSync(gfx++);
     segCel = *cel;
-    segCel.unk00 = (void *)0x0C000000;
+    segCel.data = (void *)0x0C000000;
     if ((u32)player->unk_28 >= 0x80000000 && count == 1 && remainder == 0) {
-        func_801093A8_popgun_pickoff(&gfx, &segCel, fmt, siz, rows, 0, 0, cel->unk04 - 1, cel->unk06 - 1, cms, cmt, masks,
+        func_801093A8_popgun_pickoff(&gfx, &segCel, fmt, siz, rows, 0, 0, cel->sizeX - 1, cel->sizeY - 1, cms, cmt, masks,
                                      maskt, mode);
         gSPVertex(gfx++, (Vtx *)0x0E000000, 5, 0);
         gSP2Triangles(gfx++, 0, 2, 4, 0, 2, 3, 4, 0);
         gSP2Triangles(gfx++, 0, 4, 1, 0, 4, 3, 1, 0);
     } else {
         for (i = 0; i < count; i++) {
-            func_801093A8_popgun_pickoff(&gfx, &segCel, fmt, siz, rows, 0, i * rows, cel->unk04 - 1, (i + 1) * rows - 1,
+            func_801093A8_popgun_pickoff(&gfx, &segCel, fmt, siz, rows, 0, i * rows, cel->sizeX - 1, (i + 1) * rows - 1,
                                          cms, cmt, masks, maskt, mode);
             gSPVertex(gfx++, (Vtx *)0x0E000000 + i * 2, 4, 0);
             gSP2Triangles(gfx++, 0, 2, 3, 0, 0, 3, 1, 0);
         }
         if (remainder != 0) {
-            func_801093A8_popgun_pickoff(&gfx, &segCel, fmt, siz, remainder, 0, i * rows, cel->unk04 - 1,
-                                         cel->unk06 - 1, cms, cmt, masks, maskt, mode);
+            func_801093A8_popgun_pickoff(&gfx, &segCel, fmt, siz, remainder, 0, i * rows, cel->sizeX - 1,
+                                         cel->sizeY - 1, cms, cmt, masks, maskt, mode);
             gSPVertex(gfx++, (Vtx *)0x0E000000 + i * 2, 4, 0);
             gSP2Triangles(gfx++, 0, 2, 3, 0, 0, 3, 1, 0);
         }
@@ -1479,7 +1479,7 @@ s16 func_80109718_popgun_pickoff(PopgunPickoffPlayer *player) {
 
 s16 func_8010A024_popgun_pickoff(s16 spriteId, s32 flags) {
     PopgunPickoffPlayer *player;
-    HuSprite_Unk84_Unk00_Struct *cel;
+    HuSprAnimPat *cel;
     s32 index;
     s32 siz;
     s32 fmt;
@@ -1502,19 +1502,19 @@ s16 func_8010A024_popgun_pickoff(s16 spriteId, s32 flags) {
     player->sprite = D_800C9530_main[spriteId];
     player->unk_28 = flags;
     player->unk_1A = 7;
-    cel = player->sprite->unk00;
-    switch (player->sprite->unk18) {
+    cel = player->sprite->pat;
+    switch (player->sprite->pixelBits) {
         case 4:
             siz = G_IM_SIZ_4b;
-            fmt = (player->sprite->unk1A == 1) ? G_IM_FMT_IA : G_IM_FMT_CI;
+            fmt = (player->sprite->palNum == 1) ? G_IM_FMT_IA : G_IM_FMT_CI;
             break;
         case 8:
             siz = G_IM_SIZ_8b;
-            fmt = (player->sprite->unk1A == 1) ? G_IM_FMT_IA : G_IM_FMT_CI;
+            fmt = (player->sprite->palNum == 1) ? G_IM_FMT_IA : G_IM_FMT_CI;
             break;
         case 16:
             siz = G_IM_SIZ_16b;
-            fmt = (player->sprite->unk1A == 1) ? G_IM_FMT_IA : G_IM_FMT_RGBA;
+            fmt = (player->sprite->palNum == 1) ? G_IM_FMT_IA : G_IM_FMT_RGBA;
             break;
         case 32:
             siz = G_IM_SIZ_32b;
@@ -1529,44 +1529,44 @@ s16 func_8010A024_popgun_pickoff(s16 spriteId, s32 flags) {
             fmt = G_IM_FMT_I;
             break;
     }
-    alignedWidth = (((cel->unk04 << siz) >> 4) << 4) >> siz;
-    if (alignedWidth < cel->unk04) {
+    alignedWidth = (((cel->sizeX << siz) >> 4) << 4) >> siz;
+    if (alignedWidth < cel->sizeX) {
         alignedWidth += 16 >> siz;
     }
     switch (fmt) {
         case G_IM_FMT_CI:
-            if ((4096 >> siz) >= cel->unk06 * alignedWidth) {
-                rows = cel->unk06;
+            if ((4096 >> siz) >= cel->sizeY * alignedWidth) {
+                rows = cel->sizeY;
             } else {
                 rows = (4096 >> siz) / alignedWidth;
             }
             break;
         case G_IM_FMT_I:
-            if (4096 >= cel->unk06 * alignedWidth) {
-                rows = cel->unk06;
+            if (4096 >= cel->sizeY * alignedWidth) {
+                rows = cel->sizeY;
             } else {
                 rows = 4096 / alignedWidth;
             }
             break;
         default:
-            if ((8192 >> siz) >= cel->unk06 * alignedWidth) {
-                rows = cel->unk06;
+            if ((8192 >> siz) >= cel->sizeY * alignedWidth) {
+                rows = cel->sizeY;
             } else {
                 rows = (8192 >> siz) / alignedWidth;
             }
             break;
     }
-    count = cel->unk06 / rows;
-    remainder = cel->unk06 - count * rows;
+    count = cel->sizeY / rows;
+    remainder = cel->sizeY - count * rows;
     player->unk_18 = count + 2;
     player->unk_19 = rows;
     player->vtx = HuMemAlloc((count + 2) * 2 * sizeof(Vtx));
     for (i = 0; i < count + 1; i++) {
         player->vtx[i * 2].ob[0] = 0;
-        player->vtx[i * 2 + 1].ob[0] = cel->unk04;
+        player->vtx[i * 2 + 1].ob[0] = cel->sizeX;
         player->vtx[i * 2].ob[1] = player->vtx[i * 2 + 1].ob[1] = -i * rows;
         player->vtx[i * 2].tc[0] = 0;
-        player->vtx[i * 2 + 1].tc[0] = cel->unk04 << 6;
+        player->vtx[i * 2 + 1].tc[0] = cel->sizeX << 6;
         player->vtx[i * 2].tc[1] = (i * rows) << 6;
         player->vtx[i * 2 + 1].tc[1] = (i * rows) << 6;
         for (j = 0; j < 2; j++) {
@@ -1579,11 +1579,11 @@ s16 func_8010A024_popgun_pickoff(s16 spriteId, s32 flags) {
     }
     if (remainder != 0) {
         player->vtx[i * 2].ob[0] = 0;
-        player->vtx[i * 2 + 1].ob[0] = cel->unk04;
-        player->vtx[i * 2].ob[1] = player->vtx[i * 2 + 1].ob[1] = cel->unk06;
+        player->vtx[i * 2 + 1].ob[0] = cel->sizeX;
+        player->vtx[i * 2].ob[1] = player->vtx[i * 2 + 1].ob[1] = cel->sizeY;
         player->vtx[i * 2].tc[0] = 0;
-        player->vtx[i * 2 + 1].tc[0] = cel->unk04 << 6;
-        player->vtx[i * 2].tc[1] = player->vtx[i * 2 + 1].tc[1] = cel->unk06 << 6;
+        player->vtx[i * 2 + 1].tc[0] = cel->sizeX << 6;
+        player->vtx[i * 2].tc[1] = player->vtx[i * 2 + 1].tc[1] = cel->sizeY << 6;
         for (j = 0; j < 2; j++) {
             player->vtx[i * 2 + j].ob[2] = 0;
             player->vtx[i * 2 + j].cn[0] = 0xFF;
@@ -1592,11 +1592,11 @@ s16 func_8010A024_popgun_pickoff(s16 spriteId, s32 flags) {
             player->vtx[i * 2 + j].cn[3] = 0xFF;
         }
     } else if (count == 1) {
-        player->vtx[4].ob[0] = cel->unk04 * 0.5;
-        player->vtx[4].ob[1] = -cel->unk06 * 0.5;
+        player->vtx[4].ob[0] = cel->sizeX * 0.5;
+        player->vtx[4].ob[1] = -cel->sizeY * 0.5;
         player->vtx[4].ob[2] = 0;
-        player->vtx[4].tc[0] = cel->unk04 * 0.5 * 64.0;
-        player->vtx[4].tc[1] = cel->unk06 * 0.5 * 64.0;
+        player->vtx[4].tc[0] = cel->sizeX * 0.5 * 64.0;
+        player->vtx[4].tc[1] = cel->sizeY * 0.5 * 64.0;
         player->vtx[4].cn[0] = 0xFF;
         player->vtx[4].cn[1] = 0xFF;
         player->vtx[4].cn[2] = 0xFF;
@@ -1611,7 +1611,7 @@ s16 func_8010A024_popgun_pickoff(s16 spriteId, s32 flags) {
 
 void func_8010A62C_popgun_pickoff(s16 index, s16 spriteId) {
     PopgunPickoffPlayer *player;
-    HuSprite_Unk84_Unk00_Struct *cel;
+    HuSprAnimPat *cel;
     s32 siz;
     s32 fmt;
     s32 alignedWidth;
@@ -1623,21 +1623,21 @@ void func_8010A62C_popgun_pickoff(s16 index, s16 spriteId) {
 
     player = &D_8010DDD8_popgun_pickoff[index];
     player->sprite = D_800C9530_main[spriteId];
-    cel = player->sprite->unk00;
+    cel = player->sprite->pat;
     HuMemFree(player->vtx);
     HuMemFree(player->displayList);
-    switch (player->sprite->unk18) {
+    switch (player->sprite->pixelBits) {
         case 4:
             siz = G_IM_SIZ_4b;
-            fmt = (player->sprite->unk1A == 1) ? G_IM_FMT_IA : G_IM_FMT_CI;
+            fmt = (player->sprite->palNum == 1) ? G_IM_FMT_IA : G_IM_FMT_CI;
             break;
         case 8:
             siz = G_IM_SIZ_8b;
-            fmt = (player->sprite->unk1A == 1) ? G_IM_FMT_IA : G_IM_FMT_CI;
+            fmt = (player->sprite->palNum == 1) ? G_IM_FMT_IA : G_IM_FMT_CI;
             break;
         case 16:
             siz = G_IM_SIZ_16b;
-            fmt = (player->sprite->unk1A == 1) ? G_IM_FMT_IA : G_IM_FMT_RGBA;
+            fmt = (player->sprite->palNum == 1) ? G_IM_FMT_IA : G_IM_FMT_RGBA;
             break;
         case 32:
             siz = G_IM_SIZ_32b;
@@ -1652,44 +1652,44 @@ void func_8010A62C_popgun_pickoff(s16 index, s16 spriteId) {
             fmt = G_IM_FMT_I;
             break;
     }
-    alignedWidth = (((cel->unk04 << siz) >> 4) << 4) >> siz;
-    if (alignedWidth < cel->unk04) {
+    alignedWidth = (((cel->sizeX << siz) >> 4) << 4) >> siz;
+    if (alignedWidth < cel->sizeX) {
         alignedWidth += 16 >> siz;
     }
     switch (fmt) {
         case G_IM_FMT_CI:
-            if ((4096 >> siz) >= cel->unk06 * alignedWidth) {
-                rows = cel->unk06;
+            if ((4096 >> siz) >= cel->sizeY * alignedWidth) {
+                rows = cel->sizeY;
             } else {
                 rows = (4096 >> siz) / alignedWidth;
             }
             break;
         case G_IM_FMT_I:
-            if (4096 >= cel->unk06 * alignedWidth) {
-                rows = cel->unk06;
+            if (4096 >= cel->sizeY * alignedWidth) {
+                rows = cel->sizeY;
             } else {
                 rows = 4096 / alignedWidth;
             }
             break;
         default:
-            if ((8192 >> siz) >= cel->unk06 * alignedWidth) {
-                rows = cel->unk06;
+            if ((8192 >> siz) >= cel->sizeY * alignedWidth) {
+                rows = cel->sizeY;
             } else {
                 rows = (8192 >> siz) / alignedWidth;
             }
             break;
     }
-    count = cel->unk06 / rows;
-    remainder = cel->unk06 - count * rows;
+    count = cel->sizeY / rows;
+    remainder = cel->sizeY - count * rows;
     player->unk_18 = count + 2;
     player->unk_19 = rows;
     player->vtx = HuMemAlloc((count + 2) * 2 * sizeof(Vtx));
     for (i = 0; i < count + 1; i++) {
         player->vtx[i * 2].ob[0] = 0;
-        player->vtx[i * 2 + 1].ob[0] = cel->unk04;
+        player->vtx[i * 2 + 1].ob[0] = cel->sizeX;
         player->vtx[i * 2].ob[1] = player->vtx[i * 2 + 1].ob[1] = -i * rows;
         player->vtx[i * 2].tc[0] = 0;
-        player->vtx[i * 2 + 1].tc[0] = cel->unk04 << 6;
+        player->vtx[i * 2 + 1].tc[0] = cel->sizeX << 6;
         player->vtx[i * 2].tc[1] = (i * rows) << 6;
         player->vtx[i * 2 + 1].tc[1] = (i * rows) << 6;
         for (j = 0; j < 2; j++) {
@@ -1702,11 +1702,11 @@ void func_8010A62C_popgun_pickoff(s16 index, s16 spriteId) {
     }
     if (remainder != 0) {
         player->vtx[i * 2].ob[0] = 0;
-        player->vtx[i * 2 + 1].ob[0] = cel->unk04;
-        player->vtx[i * 2].ob[1] = player->vtx[i * 2 + 1].ob[1] = cel->unk06;
+        player->vtx[i * 2 + 1].ob[0] = cel->sizeX;
+        player->vtx[i * 2].ob[1] = player->vtx[i * 2 + 1].ob[1] = cel->sizeY;
         player->vtx[i * 2].tc[0] = 0;
-        player->vtx[i * 2 + 1].tc[0] = cel->unk04 << 6;
-        player->vtx[i * 2].tc[1] = player->vtx[i * 2 + 1].tc[1] = cel->unk06 << 6;
+        player->vtx[i * 2 + 1].tc[0] = cel->sizeX << 6;
+        player->vtx[i * 2].tc[1] = player->vtx[i * 2 + 1].tc[1] = cel->sizeY << 6;
         for (j = 0; j < 2; j++) {
             player->vtx[i * 2 + j].ob[2] = 0;
             player->vtx[i * 2 + j].cn[0] = 0xFF;
@@ -1715,11 +1715,11 @@ void func_8010A62C_popgun_pickoff(s16 index, s16 spriteId) {
             player->vtx[i * 2 + j].cn[3] = 0xFF;
         }
     } else if (count == 1) {
-        player->vtx[4].ob[0] = cel->unk04 * 0.5;
-        player->vtx[4].ob[1] = -cel->unk06 * 0.5;
+        player->vtx[4].ob[0] = cel->sizeX * 0.5;
+        player->vtx[4].ob[1] = -cel->sizeY * 0.5;
         player->vtx[4].ob[2] = 0;
-        player->vtx[4].tc[0] = cel->unk04 * 0.5 * 64.0;
-        player->vtx[4].tc[1] = cel->unk06 * 0.5 * 64.0;
+        player->vtx[4].tc[0] = cel->sizeX * 0.5 * 64.0;
+        player->vtx[4].tc[1] = cel->sizeY * 0.5 * 64.0;
         player->vtx[4].cn[0] = 0xFF;
         player->vtx[4].cn[1] = 0xFF;
         player->vtx[4].cn[2] = 0xFF;
@@ -1972,26 +1972,26 @@ void func_8010B300_popgun_pickoff(s32 index, s32 flip) {
 
     if (flip) {
         for (i = 0; i < player->unk_18; i++) {
-            player->vtx[i * 2].tc[0] = player->sprite->unk00->unk04 << 6;
+            player->vtx[i * 2].tc[0] = player->sprite->pat->sizeX << 6;
             player->vtx[i * 2 + 1].tc[0] = 0;
         }
     } else {
         for (i = 0; i < player->unk_18; i++) {
             player->vtx[i * 2].tc[0] = 0;
-            player->vtx[i * 2 + 1].tc[0] = player->sprite->unk00->unk04 << 6;
+            player->vtx[i * 2 + 1].tc[0] = player->sprite->pat->sizeX << 6;
         }
     }
 }
 
 void func_8010B3D0_popgun_pickoff(s32 index, s32 flip) {
     PopgunPickoffPlayer *player = &D_8010DDD8_popgun_pickoff[index];
-    s32 remainder = player->sprite->unk00->unk06 - (player->unk_18 - 2) * player->unk_19;
+    s32 remainder = player->sprite->pat->sizeY - (player->unk_18 - 2) * player->unk_19;
     s32 i;
 
     if (flip) {
         for (i = 0; i < player->unk_18 - 1; i++) {
             player->vtx[i * 2].tc[1] = player->vtx[i * 2 + 1].tc[1] =
-                player->sprite->unk00->unk06 - i * player->unk_19;
+                player->sprite->pat->sizeY - i * player->unk_19;
         }
         if (remainder != 0) {
             player->vtx[i * 2].tc[1] = player->vtx[i * 2 + 1].tc[1] = 0;
@@ -2001,7 +2001,7 @@ void func_8010B3D0_popgun_pickoff(s32 index, s32 flip) {
             player->vtx[i * 2].ob[1] = player->vtx[i * 2 + 1].ob[1] = i * player->unk_19;
         }
         if (remainder != 0) {
-            player->vtx[i * 2].ob[1] = player->vtx[i * 2 + 1].ob[1] = player->sprite->unk00->unk06;
+            player->vtx[i * 2].ob[1] = player->vtx[i * 2 + 1].ob[1] = player->sprite->pat->sizeY;
         }
     }
 }
@@ -2180,7 +2180,7 @@ Gfx *func_8010BC6C_popgun_pickoff(Gfx *gfx, PopgunPickoffPlayer *player, HuMtx4F
     HuMtx4F mtx;
     HuMtx4F billboard;
     HuMtx4F inverse;
-    HuSprite_Unk84_Unk00_Struct *cel;
+    HuSprAnimPat *cel;
     u16 format;
     u32 blend;
     u32 mode;
@@ -2188,7 +2188,7 @@ Gfx *func_8010BC6C_popgun_pickoff(Gfx *gfx, PopgunPickoffPlayer *player, HuMtx4F
     Mtx *mtxL;
     Gfx *dl;
 
-    cel = &player->sprite->unk00[player->unk_24];
+    cel = &player->sprite->pat[player->unk_24];
     gDPPipeSync(gfx++);
     gDPSetTextureFilter(gfx++, D_8010C880_popgun_pickoff[(player->unk_28 >> 2) & 3]);
     gDPSetColorDither(gfx++, D_8010C878_popgun_pickoff[(player->unk_28 >> 4) & 3]);
@@ -2198,7 +2198,7 @@ Gfx *func_8010BC6C_popgun_pickoff(Gfx *gfx, PopgunPickoffPlayer *player, HuMtx4F
     } else {
         gSPClearGeometryMode(gfx++, G_LIGHTING);
     }
-    format = player->sprite->unk18;
+    format = player->sprite->pixelBits;
     blend = 0x110000;
     if (player->unk_28 & 0x8000000) {
         blend = 0xC8004000;
@@ -2269,8 +2269,8 @@ Gfx *func_8010BC6C_popgun_pickoff(Gfx *gfx, PopgunPickoffPlayer *player, HuMtx4F
         billboard[3][0] = -player->unk_30.y;
         billboard[3][1] = player->unk_30.z;
     } else {
-        billboard[3][0] = -(u16)cel->unk08;
-        billboard[3][1] = (u16)cel->unk0A;
+        billboard[3][0] = -(u16)cel->centerX;
+        billboard[3][1] = (u16)cel->centerY;
     }
     billboard[3][2] = player->unk_3C;
     func_8002367C_main(mtx, lookAt);
@@ -2300,7 +2300,7 @@ Gfx *func_8010BC6C_popgun_pickoff(Gfx *gfx, PopgunPickoffPlayer *player, HuMtx4F
     guMtxCatF(billboard, mtx, mtx);
     guMtxF2L(mtx, mtxL);
     gSPMatrix(gfx++, osVirtualToPhysical(mtxL), G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH);
-    gSPSegment(gfx++, 0x0C, cel->unk00);
+    gSPSegment(gfx++, 0x0C, cel->data);
     gSPSegment(gfx++, 0x0E, vtx);
     memcpy(vtx, player->vtx, player->unk_18 * 2 * sizeof(Vtx));
     memcpy(dl, player->displayList, player->unk_22 * sizeof(Gfx));
@@ -2329,7 +2329,7 @@ void func_8010C32C_popgun_pickoff(void) {
         if (player->unk_28 & 0x10000000) {
             continue;
         }
-        frameCount = player->sprite->unk10;
+        frameCount = player->sprite->patNum;
         player->unk_2C += player->unk_30.x;
         while (player->unk_2C >= 1.0) {
             player->unk_24++;

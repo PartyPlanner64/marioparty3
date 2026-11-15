@@ -13,48 +13,51 @@
 #define HuSprDispOff(grpId, memberNo) HuSprAttrSet(grpId, memberNo, HUSPR_ATTR_DISPOFF)
 #define HuSprDispOn(grpId, memberNo) HuSprAttrReset(grpId, memberNo, HUSPR_ATTR_DISPOFF)
 
-typedef struct {
-    /* 0x00 */ void *unk00;
-    /* 0x04 */ u16 unk04;
-    /* 0x06 */ u16 unk06;
-    /* 0x08 */ s16 unk08;
-    /* 0x0A */ s16 unk0A;
-} HuSprite_Unk84_Unk00_Struct; // Size 0xC
+// One image (pattern) of sprite animation data. Frames select a pattern by
+// index, and the pattern is drawn relative to its center point.
+typedef struct HuSprAnimPat {
+    /* 0x00 */ void *data;
+    /* 0x04 */ u16 sizeX;
+    /* 0x06 */ u16 sizeY;
+    /* 0x08 */ s16 centerX;
+    /* 0x0A */ s16 centerY;
+} HuSprAnimPat; // Size 0xC
 
-// One frame of a cel animation (built by the cel-anm loader).
-typedef struct HuSprCelFrame {
-    /* 0x00 */ u16 unk00;
-    /* 0x02 */ s16 unk02; // duration; negative loops back to the first frame
-    /* 0x04 */ u8 unk04;
-    /* 0x05 */ u8 unk05;
-    /* 0x06 */ u8 unk06;
+// One frame of an animation bank.
+typedef struct HuSprAnimFrame {
+    /* 0x00 */ u16 pat;
+    /* 0x02 */ s16 time; // negative loops back to the first frame
+    /* 0x04 */ u8 shiftX;
+    /* 0x05 */ u8 shiftY;
+    /* 0x06 */ u8 flip; // XORed into the sprite attributes
     /* 0x07 */ u8 unk07;
-} HuSprCelFrame; // Size 0x8
+} HuSprAnimFrame; // Size 0x8
 
-// A cel within a cel animation: a count plus its frame table.
-typedef struct HuSprCelAnm {
-    /* 0x00 */ u16 unk00;
+// An animation sequence: a frame count plus its frame table.
+typedef struct HuSprAnimBank {
+    /* 0x00 */ u16 timeNum;
     /* 0x02 */ u16 unk02;
-    /* 0x04 */ HuSprCelFrame *unk04;
-} HuSprCelAnm; // Size 0x8
+    /* 0x04 */ HuSprAnimFrame *frame;
+} HuSprAnimBank; // Size 0x8
 
-typedef struct {
-    /* 0x00 */ HuSprite_Unk84_Unk00_Struct *unk00;
-    /* 0x04 */ HuSprCelAnm **unk04;
-    /* 0x08 */ void *unk08;
-    /* 0x0C */ void *unk0C; // pal data?
-    /* 0x10 */ u16 unk10;
-    /* 0x12 */ u16 unk12;
-    /* 0x14 */ s16 unk14;
-    /* 0x16 */ s16 unk16;
-    /* 0x18 */ u16 unk18;
-    /* 0x1A */ u16 unk1A;
-} HuSprite_Unk84_Struct; // Size 0x1C
+// Sprite animation data, as produced by HuSprAnimRead or HuSprAnimMake.
+typedef struct HuSprAnimData {
+    /* 0x00 */ HuSprAnimPat *pat;
+    /* 0x04 */ HuSprAnimBank **bank;
+    /* 0x08 */ void *data; // pixel data of the first pattern
+    /* 0x0C */ void *pal;
+    /* 0x10 */ u16 patNum;
+    /* 0x12 */ u16 bankNum;
+    /* 0x14 */ s16 sizeX;
+    /* 0x16 */ s16 sizeY;
+    /* 0x18 */ u16 pixelBits; // low 15 bits: bits per pixel; bit 15 selects the intensity draw path
+    /* 0x1A */ u16 palNum;
+} HuSprAnimData; // Size 0x1C
 
 // Cel-animation playback state. Embedded in HuSprite at offset 0x68 (unk_68);
 // the animation functions receive a pointer to this region.
 typedef struct HuSprAnm {
-    /* 0x00 */ HuSprite_Unk84_Struct *unk00; // texture descriptor
+    /* 0x00 */ HuSprAnimData *unk00; // texture descriptor
     /* 0x04 */ u8 unk04;                     // flags
     /* 0x06 */ s16 unk06;                    // playback mode
     /* 0x08 */ s16 unk08;                    // cel index
@@ -147,7 +150,7 @@ typedef struct HuSprite {
     /* 0x60 */ f32 unk_60;
     /* 0x64 */ f32 unk_64;
     /* 0x68 */ HuSprAnm unk_68;
-    /* 0x84 */ HuSprite_Unk84_Struct *unk_84;
+    /* 0x84 */ HuSprAnimData *unk_84;
     /* 0x88 */ s8 unk_88;
     /* 0x8A */ s16 unk_8A;
     /* 0x8C */ f32 unk_8C;
@@ -199,7 +202,7 @@ void HuSprSpeedSet(s16 group, s16 member, f32 arg2);
 void func_800550F4_main(s16, s16, s32);
 void HuSprBankSet(s16, s16, u16, s32);
 u8 func_800551AC_main(s16 group, s16 member);
-HuSprite_Unk84_Struct *func_80055194_main(s16 arg0);
+HuSprAnimData *func_80055194_main(s16 arg0);
 void HuSprScaleSet(s16 group, s16 member, f32 x, f32 y);
 void HuSprPriSet(s16 group, s16 member, u16 prio);
 void HuSprZRotSet(s16, s16, f32);
@@ -243,17 +246,17 @@ void HuSprAnimAllKill(void);
 s32 func_80055DBC_main(u16 arg0, u16 arg1, u16 arg2, u16 arg3, u16 arg4);
 void func_80055FF4_main(HuSprAnm *arg0, s16 arg1, u16 arg2, u16 arg3);
 s16 func_80056054_main(void *arg0, HuSprAnm *arg1, u16 arg2, u16 arg3);
-HuSprite_Unk84_Unk00_Struct *func_800560B8_main(HuSprite_Unk84_Struct **arg0, u16 arg1);
-HuSprite_Unk84_Unk00_Struct *func_800560D8_main(s16 arg0, u16 arg1);
-HuSprite_Unk84_Unk00_Struct *func_80056108_main(HuSprAnm *arg0);
-void *func_80056128_main(HuSprite_Unk84_Struct **arg0, u16 arg1);
+HuSprAnimPat *func_800560B8_main(HuSprAnimData **arg0, u16 arg1);
+HuSprAnimPat *func_800560D8_main(s16 arg0, u16 arg1);
+HuSprAnimPat *func_80056108_main(HuSprAnm *arg0);
+void *func_80056128_main(HuSprAnimData **arg0, u16 arg1);
 void *func_8005614C_main(s16 arg0, u16 arg1);
-void func_80056180_main(HuSprite_Unk84_Struct **arg0, u16 arg1, void *arg2);
+void func_80056180_main(HuSprAnimData **arg0, u16 arg1, void *arg2);
 void func_800561D0_main(s16 arg0, u16 arg1, void *arg2);
 void *func_80056230_main(HuSprAnm *arg0);
-void *func_80056254_main(HuSprite_Unk84_Struct **arg0);
+void *func_80056254_main(HuSprAnimData **arg0);
 void *func_80056260_main(s16 arg0);
-void func_8005627C_main(HuSprite_Unk84_Struct **arg0, void *arg1);
+void func_8005627C_main(HuSprAnimData **arg0, void *arg1);
 void func_800562BC_main(s16 arg0, void *arg1);
 s16 func_8005630C_main(HuSprAnm *arg0);
 void func_800563A4_main(HuSprAnm *arg0);

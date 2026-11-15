@@ -258,7 +258,7 @@ void func_80108040_mgresultdealer(void) {
     HuSprAttrSet(group, 0, 0x8000);
     HuSprGrpMemberSet(group, 0, sprite, 0);
     D_8010A208_mgresultdealer = HuSprGet(group, 0);
-    D_8010A20C_mgresultdealer = D_8010A208_mgresultdealer->unk_84->unk00->unk00;
+    D_8010A20C_mgresultdealer = D_8010A208_mgresultdealer->unk_84->pat->data;
     D_8010A200_mgresultdealer = Hu3DHookFuncCreate(0, func_801082A8_mgresultdealer, 2);
     Hu3DModelCameraSet(D_8010A200_mgresultdealer, 1);
     D_80109930_mgresultdealer = 0;

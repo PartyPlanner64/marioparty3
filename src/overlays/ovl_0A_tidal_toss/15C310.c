@@ -150,7 +150,7 @@ void func_8010A7E4_tidal_toss(omObjData *, func_800E1BA8_minigame_ObjData **, Ti
 void func_80105C80_tidal_toss(HuMtx4F, HuMtx4F);
 s16 func_8010A90C_tidal_toss(s32);
 s16 func_8010A954_tidal_toss(s16, s16);
-HuSprite_Unk84_Unk00_Struct *func_8010AA1C_tidal_toss(s16 arg0, s16 arg1);
+HuSprAnimPat *func_8010AA1C_tidal_toss(s16 arg0, s16 arg1);
 void func_8010961C_tidal_toss(omObjData *);
 u16 func_8010A490_tidal_toss(omObjData *arg0, f32 arg1);
 f32 func_8010A850_tidal_toss(Vec *arg0, Vec *arg1);
@@ -564,8 +564,8 @@ void func_80106D24_tidal_toss(Gfx **gfxPos, s32 arg1, s32 arg2) {
     TidalTossSortEntry *other;
     TidalTossFace *face;
     TidalTossStruct *wave;
-    HuSprite_Unk84_Unk00_Struct *frame;
-    HuSprite_Unk84_Struct *anim;
+    HuSprAnimPat *frame;
+    HuSprAnimData *anim;
     Gfx *gfx;
     Gfx *gfxStart;
     Vtx *vertex;
@@ -811,18 +811,18 @@ void func_80106D24_tidal_toss(Gfx **gfxPos, s32 arg1, s32 arg2) {
 
     frame = func_8010AA1C_tidal_toss(D_8010AF3A_tidal_toss, 0);
     anim = func_80055194_main(D_8010AF3A_tidal_toss);
-    gDPLoadTLUT_pal16(gfx++, 0, anim->unk0C);
+    gDPLoadTLUT_pal16(gfx++, 0, anim->pal);
     gDPSetTextureLUT(gfx++, G_TT_RGBA16);
-    gDPLoadTextureBlock_4b(gfx++, frame->unk00, G_IM_FMT_CI, frame->unk04, frame->unk06, 0, G_TX_NOMIRROR | G_TX_WRAP,
+    gDPLoadTextureBlock_4b(gfx++, frame->data, G_IM_FMT_CI, frame->sizeX, frame->sizeY, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
-    gDPLoadMultiBlock_4b(gfx++, frame->unk00, 0, 1, G_IM_FMT_CI, frame->unk04, frame->unk06, 0,
+    gDPLoadMultiBlock_4b(gfx++, frame->data, 0, 1, G_IM_FMT_CI, frame->sizeX, frame->sizeY, 0,
                          G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
     if (Hu3DPauseF == 0) {
         D_8010AAAC_tidal_toss += 1.0;
     }
-    gDPSetTileSize(gfx++, 0, 0, (s32)(D_8010AAAC_tidal_toss * 1.5 + 7.25) & 0x1FF, (frame->unk04 - 1) << 2,
-                   (frame->unk06 - 1) << 2);
-    gDPSetTileSize(gfx++, 1, 16, (s32)D_8010AAAC_tidal_toss & 0x1FF, (frame->unk04 - 1) << 2, (frame->unk06 - 1) << 2);
+    gDPSetTileSize(gfx++, 0, 0, (s32)(D_8010AAAC_tidal_toss * 1.5 + 7.25) & 0x1FF, (frame->sizeX - 1) << 2,
+                   (frame->sizeY - 1) << 2);
+    gDPSetTileSize(gfx++, 1, 16, (s32)D_8010AAAC_tidal_toss & 0x1FF, (frame->sizeX - 1) << 2, (frame->sizeY - 1) << 2);
     gDPSetRenderMode(gfx++, G_RM_PASS, G_RM_AA_ZB_XLU_SURF2);
     gDPSetCombineLERP(gfx++, TEXEL0, TEXEL1, PRIMITIVE, TEXEL1, 0, 0, 0, SHADE, COMBINED, 0, SHADE, 0, 0, 0, 0,
                       COMBINED);
@@ -1684,6 +1684,6 @@ s16 func_8010A954_tidal_toss(s16 arg0, s16 arg1) {
     return spriteId;
 }
 
-HuSprite_Unk84_Unk00_Struct *func_8010AA1C_tidal_toss(s16 arg0, s16 arg1) {
-    return &func_80055194_main(arg0)->unk00[arg1];
+HuSprAnimPat *func_8010AA1C_tidal_toss(s16 arg0, s16 arg1) {
+    return &func_80055194_main(arg0)->pat[arg1];
 }

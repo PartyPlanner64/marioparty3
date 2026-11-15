@@ -91,7 +91,7 @@ MerryGoChompCamera D_8010C258_merry_go_chomp[2] = {
 };
 
 s16 D_8010C410_merry_go_chomp BSS;
-HuSprite_Unk84_Struct *D_8010C414_merry_go_chomp BSS;
+HuSprAnimData *D_8010C414_merry_go_chomp BSS;
 s8 D_8010C418_merry_go_chomp BSS;
 u8 D_8010C41C_merry_go_chomp[4] BSS; /* Unreferenced. */
 D_8010C420_merry_go_chomp_Entry D_8010C420_merry_go_chomp[4] BSS;
@@ -322,10 +322,10 @@ void func_80106054_merry_go_chomp(Gfx **gfxP, s32 arg1, s32 arg2) {
     gDPSetPrimColor(gfx++, 0, 0, 0, 0, 0, 255);
     gDPSetRenderMode(gfx++, G_RM_AA_TEX_EDGE, G_RM_AA_TEX_EDGE2);
     gDPSetTextureLUT(gfx++, G_TT_RGBA16);
-    gDPLoadTLUT_pal256(gfx++, D_8010C414_merry_go_chomp->unk0C);
+    gDPLoadTLUT_pal256(gfx++, D_8010C414_merry_go_chomp->pal);
     x = 0;
     for (i = 0, y = 180; i < 60; i += 4) {
-        gDPLoadTextureTile(gfx++, D_8010C414_merry_go_chomp->unk08, G_IM_FMT_CI, G_IM_SIZ_8b, 320, 0, 0, i, 320, i + 4,
+        gDPLoadTextureTile(gfx++, D_8010C414_merry_go_chomp->data, G_IM_FMT_CI, G_IM_SIZ_8b, 320, 0, 0, i, 320, i + 4,
                            0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                            G_TX_NOLOD);
         gDPSetTileSize(gfx++, G_TX_RENDERTILE, 0, 0, 320 << 2, 4 << 2);

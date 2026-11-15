@@ -65,7 +65,7 @@ void func_801059D0_ChillyWaters(s16 arg0, s16 arg1) {
 
 void func_80105A64_ChillyWaters(void) {
     HuSprite *spr;
-    HuSprite_Unk84_Unk00_Struct *img;
+    HuSprAnimPat *img;
     u8 *src;
     u8 *dst;
     u8 *srcBase;
@@ -96,14 +96,14 @@ void func_80105A64_ChillyWaters(void) {
     HuSprScissorSet(grpId, 0, 0x10, 0xC, 0x130, 0xE4);
 
     spr = HuSprGet(grpId, 0);
-    img = spr->unk_84->unk00;
-    width = img->unk04;
-    height = img->unk06;
-    srcBase = (work->unk10 = img->unk00);
+    img = spr->unk_84->pat;
+    width = img->sizeX;
+    height = img->sizeY;
+    srcBase = (work->unk10 = img->data);
 
     work->imgData = HuMemAlloc((width * height) / 2);
     memset(work->imgData, 0, (width * height) / 2);
-    spr->unk_84->unk00->unk00 = work->imgData;
+    spr->unk_84->pat->data = work->imgData;
 
     radius = 0;
     frame = 0;
@@ -136,7 +136,7 @@ void func_80105A64_ChillyWaters(void) {
 const s32 pad4[] = {0,0};
 
 void func_80105DB8_ChillyWaters(IceWork* arg0) {
-    HuSprGet(arg0->unkA, 0)->unk_84->unk00->unk00 = arg0->unk10;
+    HuSprGet(arg0->unkA, 0)->unk_84->pat->data = arg0->unk10;
     HuSprGrpKill(arg0->unkA);
     HuSprAnimKill(arg0->unk8);
     HuMemFree(arg0->imgData);

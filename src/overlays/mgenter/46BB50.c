@@ -189,7 +189,7 @@ s16 func_801095F4_mgenter(void) {
     for (i = 0; i < ARRAY_COUNT(D_80109B48_mgenter); i++) {
         D_80109B48_mgenter[i] = HuMemAllocTag(0x6000, TAG_OVERLAY);
     }
-    D_80109B54_mgenter = HuSprGet(D_800CD1DC_main[sprGrp].unk04, 0)->unk_84->unk00->unk00;
+    D_80109B54_mgenter = HuSprGet(D_800CD1DC_main[sprGrp].unk04, 0)->unk_84->pat->data;
     D_80109B44_mgenter = 0;
     espDispOff(sprGrp);
     return sprGrp;
@@ -209,7 +209,7 @@ void func_801096EC_mgenter(s16 arg0) {
     HuMemMemoryFreePerm(buf);
     DataClose(sprData);
     DataClose(palData);
-    HuSprGet(D_800CD1DC_main[D_80109B42_mgenter].unk04, 0)->unk_84->unk00->unk00 =
+    HuSprGet(D_800CD1DC_main[D_80109B42_mgenter].unk04, 0)->unk_84->pat->data =
         D_80109B48_mgenter[D_80109B44_mgenter];
     D_80109B44_mgenter++;
     if (D_80109B44_mgenter >= ARRAY_COUNT(D_80109B48_mgenter)) {
@@ -221,7 +221,7 @@ void func_801096EC_mgenter(s16 arg0) {
 void func_80109820_mgenter(void) {
     s16 i;
 
-    HuSprGet(D_800CD1DC_main[D_80109B42_mgenter].unk04, 0)->unk_84->unk00->unk00 = D_80109B54_mgenter;
+    HuSprGet(D_800CD1DC_main[D_80109B42_mgenter].unk04, 0)->unk_84->pat->data = D_80109B54_mgenter;
     espKill(D_80109B42_mgenter);
     HuSprAnimKill(D_80109B40_mgenter);
     for (i = 0; i < ARRAY_COUNT(D_80109B48_mgenter); i++) {

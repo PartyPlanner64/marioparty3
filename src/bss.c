@@ -36,7 +36,7 @@ u16 D_800C951C_main BSS; // esprite.c
 u16 D_800C9520_main[4] BSS; // input.c, pause.c, window.c
 u16 D_800C9528_main BSS; // hmfdraw.c
 u32 D_800C952C_main BSS; // hmfdraw.c
-HuSprite_Unk84_Struct *D_800C9530_main[256] BSS; // esprite.c, sprman.c
+HuSprAnimData *D_800C9530_main[256] BSS; // esprite.c, sprman.c
 s16 D_800C9930_main BSS; // overlays only
 s16 D_800C9932_main BSS; // camera.c, hmfdraw.c, hmfman.c
 HuSprGrp *HuSprGrpLast BSS; // sprman.c

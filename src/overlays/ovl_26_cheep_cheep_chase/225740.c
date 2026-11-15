@@ -2394,7 +2394,7 @@ s16 func_8010DA74_cheep_cheep_chase(s32 dir, s32 file, u16 arg2, s32 attr) {
             if (arg2 == 0) {
                 sprite->unk04 = 99;
             } else {
-                sprite->unk04 = spr->unk_84->unk10;
+                sprite->unk04 = spr->unk_84->patNum;
             }
             sprite->state = SPRITE_STATE_INVISIBLE;
             break;

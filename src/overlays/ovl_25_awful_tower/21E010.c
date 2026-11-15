@@ -613,7 +613,7 @@ void func_80107858_awful_tower(void) {
     s32 curLefts[4] = { 0, 93, 161, 229 };
     s32 curRights[4] = { 92, 160, 228, 320 };
     HuSprite *sprite;
-    HuSprite_Unk84_Unk00_Struct *frame;
+    HuSprAnimPat *frame;
     f32 t = 0.0f;
     f32 a;
     f32 b;
@@ -678,20 +678,20 @@ void func_80107858_awful_tower(void) {
     gDPSetTextureLUT(gMainGfxPos++, G_TT_RGBA16);
     for (i = 3; i >= 0; i--) {
         sprite = HuSprGet(D_800CD1DC_main[D_8010D3D0_awful_tower[groups[i]]].unk04, 0);
-        frame = &sprite->unk_84->unk00[sprite->unk_90];
+        frame = &sprite->unk_84->pat[sprite->unk_90];
         for (j = 0; j < 9; j++) {
             y = j * 16;
             yEnd = (y + 17 > 130) ? 130 : y + 17;
             if (i != 0) {
-                gDPLoadTextureTile(gMainGfxPos++, (u8 *)frame->unk00 + y * 114, G_IM_FMT_CI, G_IM_SIZ_8b, 114, 0, 0, 0,
+                gDPLoadTextureTile(gMainGfxPos++, (u8 *)frame->data + y * 114, G_IM_FMT_CI, G_IM_SIZ_8b, 114, 0, 0, 0,
                                    114, yEnd - y, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                                    G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-                gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->unk0C);
+                gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->pal);
             } else {
-                gDPLoadTextureTile_4b(gMainGfxPos++, (u8 *)frame->unk00 + y * 57, G_IM_FMT_CI, 114, 0, 0, 0, 114,
+                gDPLoadTextureTile_4b(gMainGfxPos++, (u8 *)frame->data + y * 57, G_IM_FMT_CI, 114, 0, 0, 0, 114,
                                       yEnd - y, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                                       G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-                gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->unk_84->unk0C);
+                gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->unk_84->pal);
             }
             for (k = 0; k < 4; k++) {
                 player = order[k];

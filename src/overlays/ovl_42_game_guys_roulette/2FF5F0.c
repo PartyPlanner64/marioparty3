@@ -99,7 +99,7 @@ void func_80108FEC_game_guys_roulette(void) {
     HuSprTPLvlSet(D_8010AC38_game_guys_roulette.group, 0, 0);
     HuSprAttrReset(D_8010AC38_game_guys_roulette.group, 0, 0xFFFF);
     HuSprAttrSet(D_8010AC38_game_guys_roulette.group, 0, 0x1000);
-    D_8010AC38_game_guys_roulette.sprite->unk_84->unk00->unk00 =
+    D_8010AC38_game_guys_roulette.sprite->unk_84->pat->data =
         D_8010AC38_game_guys_roulette.unk_04[D_8010AC34_game_guys_roulette];
 }
 
@@ -211,8 +211,8 @@ s16 func_80109078_game_guys_roulette(void) {
     } else {
         func_8010A1FC_game_guys_roulette(D_8010AB60_game_guys_roulette[0].active, D_8010AB60_game_guys_roulette[0].x, D_8010AB60_game_guys_roulette[0].y, D_8010AB60_game_guys_roulette[0].radius, D_8010AB60_game_guys_roulette[0].color);
     }
-    D_8010AC38_game_guys_roulette.sprite->unk_84->unk00->unk00 = D_8010AC38_game_guys_roulette.unk_04[D_8010AC34_game_guys_roulette];
-    D_8010AC20_game_guys_roulette.sprite->unk_84->unk00->unk00 = D_8010AC20_game_guys_roulette.unk_04[D_8010AC34_game_guys_roulette];
+    D_8010AC38_game_guys_roulette.sprite->unk_84->pat->data = D_8010AC38_game_guys_roulette.unk_04[D_8010AC34_game_guys_roulette];
+    D_8010AC20_game_guys_roulette.sprite->unk_84->pat->data = D_8010AC20_game_guys_roulette.unk_04[D_8010AC34_game_guys_roulette];
     D_8010AC34_game_guys_roulette = (s16)(D_8010AC34_game_guys_roulette + 1) % 3;
     D_8010A6B0_game_guys_roulette++;
     return 0;
@@ -221,7 +221,7 @@ s16 func_80109078_game_guys_roulette(void) {
 s32 func_80109B60_game_guys_roulette(s32 x) {
     s16 i;
 
-    D_8010AC38_game_guys_roulette.sprite->unk_84->unk00->unk00 = D_8010AC38_game_guys_roulette.unk_04[0];
+    D_8010AC38_game_guys_roulette.sprite->unk_84->pat->data = D_8010AC38_game_guys_roulette.unk_04[0];
     if (D_8010A6B4_game_guys_roulette++ < 10) {
         D_8010AC38_game_guys_roulette.timer = 0;
     } else if (D_8010A6B4_game_guys_roulette < 30) {
@@ -244,9 +244,9 @@ s32 func_80109B60_game_guys_roulette(s32 x) {
 void func_80109D14_game_guys_roulette(void) {
     HuSprDispOff(D_8010AC38_game_guys_roulette.group, 0);
     HuSprDispOff(D_8010AC20_game_guys_roulette.group, 0);
-    D_8010AC38_game_guys_roulette.sprite->unk_84->unk00->unk00 =
+    D_8010AC38_game_guys_roulette.sprite->unk_84->pat->data =
         D_8010AC38_game_guys_roulette.unk_04[0];
-    D_8010AC20_game_guys_roulette.sprite->unk_84->unk00->unk00 =
+    D_8010AC20_game_guys_roulette.sprite->unk_84->pat->data =
         D_8010AC20_game_guys_roulette.unk_04[0];
 }
 
@@ -270,8 +270,8 @@ void func_80109E6C_game_guys_roulette(void) {
 
     D_8010AC38_game_guys_roulette.group = func_80109D98_game_guys_roulette(0x63000A, 0, 10, 128);
     D_8010AC38_game_guys_roulette.sprite = HuSprGet(D_8010AC38_game_guys_roulette.group, 0);
-    D_8010AC38_game_guys_roulette.unk_04[0] = D_8010AC38_game_guys_roulette.sprite->unk_84->unk00->unk00;
-    pal = D_8010AC38_game_guys_roulette.sprite->unk_84->unk0C;
+    D_8010AC38_game_guys_roulette.unk_04[0] = D_8010AC38_game_guys_roulette.sprite->unk_84->pat->data;
+    pal = D_8010AC38_game_guys_roulette.sprite->unk_84->pal;
     D_8010AC38_game_guys_roulette.unk_04[1] = HuMemAllocTag(0x9600, 0x7918);
     D_8010AC38_game_guys_roulette.unk_04[2] = HuMemAllocTag(0x9600, 0x7918);
     pal[0] = 0x0001;
@@ -285,8 +285,8 @@ void func_80109E6C_game_guys_roulette(void) {
 
     D_8010AC20_game_guys_roulette.group = func_80109D98_game_guys_roulette(0x63000A, 0, 10, 256);
     D_8010AC20_game_guys_roulette.sprite = HuSprGet(D_8010AC20_game_guys_roulette.group, 0);
-    D_8010AC20_game_guys_roulette.unk_04[0] = D_8010AC20_game_guys_roulette.sprite->unk_84->unk00->unk00;
-    pal = D_8010AC20_game_guys_roulette.sprite->unk_84->unk0C;
+    D_8010AC20_game_guys_roulette.unk_04[0] = D_8010AC20_game_guys_roulette.sprite->unk_84->pat->data;
+    pal = D_8010AC20_game_guys_roulette.sprite->unk_84->pal;
     D_8010AC20_game_guys_roulette.unk_04[1] = HuMemAllocTag(0x9600, 0x7918);
     D_8010AC20_game_guys_roulette.unk_04[2] = HuMemAllocTag(0x9600, 0x7918);
     pal[0] = 0x0001;

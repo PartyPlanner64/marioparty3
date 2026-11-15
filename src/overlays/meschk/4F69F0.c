@@ -119,6 +119,7 @@ MessageCheckEntry D_80106518_meschk[] = {
     { (u8 *)"", 0xFFFF, 0xFFFF },
 };
 
+u8 D_80106E40_meschk[0x1D0] BSS; /* Unreferenced. */
 
 extern void func_80105B50_meschk(void);
 extern void func_80105B8C_meschk(void);

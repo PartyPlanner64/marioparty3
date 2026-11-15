@@ -123,45 +123,92 @@ typedef struct Fowl {
 extern HuSprite_Unk84_Struct *D_800C9530_main[];
 extern s32 D_800A178C_main[][6];
 
-extern s32 D_8010E7A4_fowl_play;
-extern s32 D_8010E7AC_fowl_play;
-extern s16 D_8010E7B2_fowl_play;
-extern FowlWall D_8010E7B4_fowl_play[8];
-extern u8 D_8010E87C_fowl_play;
-extern Vec D_8010E884_fowl_play[];
-extern f32 D_8010E8B4_fowl_play[];
-extern s32 D_8010E8C4_fowl_play;
-extern u32 D_8010E8C8_fowl_play;
-extern s32 D_8010E8CC_fowl_play[];
-extern s16 D_8010E8DC_fowl_play[];
-extern s16 D_8010EA14_fowl_play[];
-extern s16 D_8010EB4C_fowl_play[];
-extern s16 D_8010EB54_fowl_play[];
-extern s16 D_8010EB5C_fowl_play[];
-extern s32 D_8010EB64_fowl_play;
-extern s16 D_8010F200_fowl_play;
-extern s16 D_8010F202_fowl_play;
-extern D_80111B50_vine_with_me_Struct D_8010F208_fowl_play;
-extern s16 D_8010F230_fowl_play[];
-extern s16 D_8010F234_fowl_play;
-extern s16 D_8010F238_fowl_play;
-extern s16 D_8010F240_fowl_play[];
-extern omObjData *D_8010F290_fowl_play[1];
-extern omObjData *D_8010F294_fowl_play[2];
-extern s16 D_8010F29C_fowl_play;
-extern s16 D_8010F29E_fowl_play;
-extern s16 D_8010F2A0_fowl_play;
-extern f32 D_8010F2A8_fowl_play[4][4];
-extern f32 D_8010F2E0_fowl_play;
-extern f32 D_8010F2E8_fowl_play[4][4];
-extern f32 D_8010F328_fowl_play;
-extern Fowl *D_8010F32C_fowl_play;
-extern void *D_8010F330_fowl_play[6];
-extern void *D_8010F348_fowl_play;
-extern s32 D_8010F34C_fowl_play;
-extern s32 D_8010F350_fowl_play;
-extern Fowl D_8010F360_fowl_play; // List head of opaque entries
-extern Fowl D_8010F3C8_fowl_play; // List head of translucent entries
+u8 D_8010E7A0_fowl_play = 1; /* Unreferenced. */
+s32 D_8010E7A4_fowl_play = 0;
+s32 D_8010E7A8_fowl_play = 0; /* Unreferenced. */
+s32 D_8010E7AC_fowl_play = -1;
+s16 D_8010E7B0_fowl_play = 180; /* Unreferenced. */
+s16 D_8010E7B2_fowl_play = 0;
+FowlWall D_8010E7B4_fowl_play[8] = {
+    { { -1250.0f, 0.0f, -200.0f }, { -800.0f, 0.0f, -200.0f } },
+    { { -800.0f, 0.0f, -200.0f }, { -587.5f, 0.0f, 12.0f } },
+    { { 200.0f, 0.0f, -1250.0f }, { 200.0f, 0.0f, -800.0f } },
+    { { 200.0f, 0.0f, -800.0f }, { -12.0f, 0.0f, -587.5f } },
+    { { 1250.0f, 0.0f, 200.0f }, { 800.0f, 0.0f, 200.0f } },
+    { { 800.0f, 0.0f, 200.0f }, { 587.5f, 0.0f, -12.0f } },
+    { { -200.0f, 0.0f, 1250.0f }, { -200.0f, 0.0f, 800.0f } },
+    { { -200.0f, 0.0f, 800.0f }, { 12.0f, 0.0f, 587.5f } }
+};
+s16 D_8010E874_fowl_play[4] = { 0, 1, 2, 3 }; /* Unreferenced. */
+u8 D_8010E87C_fowl_play = 0;
+s32 D_8010E880_fowl_play = 0; /* Unreferenced. */
+Vec D_8010E884_fowl_play[4] = {
+    { 1000.0f, 0.0f, 0.0f },
+    { -1000.0f, 0.0f, 0.0f },
+    { 100.0f, 0.0f, 400.0f },
+    { 300.0f, 0.0f, 400.0f }
+};
+f32 D_8010E8B4_fowl_play[4] = { -90.0f, 90.0f, 180.0f, 180.0f };
+s32 D_8010E8C4_fowl_play = 3;
+u32 D_8010E8C8_fowl_play = 0x41C64E6D;
+s32 D_8010E8CC_fowl_play[] = { 4, 3, 2, 1 };
+s16 D_8010E8DC_fowl_play[] = {
+    0, 512, 256, 170, 128, 102, 85, 73, 64, 56, 51, 20, 42, 26, 14, 19,
+    32, 13, 28, 26, 8, 9, 4, 4, 5, 20, 13, 18, 3, 6, 3, 2,
+    16, 2, 2, 3, 14, 2, 13, 2, 1, 12, 4, 2, 2, 2, 2, 2,
+    2, 4, 10, 0, 1, 2, 9, 0, 1, 8, 0, 2, 0, 1, 0, 1,
+    8, 0, 0, 1, 0, 1, 0, 2, 0, 0, 1, 0, 6, 0, 0, 4,
+    0, 0, 6, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0,
+    0, 0, 2, 0, 0, 0, 0, 1, 0, 0, 0, 0, 4, 0, 0, 0,
+    0, 0, 1, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0,
+    0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0
+};
+s16 D_8010EA14_fowl_play[] = {
+    0, 512, 256, 170, 128, 102, 85, 73, 64, 56, 51, 46, 42, 39, 36, 34,
+    32, 30, 28, 26, 25, 24, 23, 22, 21, 20, 19, 19, 18, 18, 17, 17,
+    16, 16, 15, 15, 14, 14, 13, 13, 13, 12, 12, 12, 11, 11, 11, 10,
+    10, 10, 10, 10, 9, 9, 9, 9, 9, 8, 8, 8, 8, 8, 8, 8,
+    8, 7, 7, 7, 7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 6,
+    6, 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+    5, 5, 5, 5, 5, 5, 5, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3,
+    3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+    3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0
+};
+s16 D_8010EB4C_fowl_play[] = { G_CD_DISABLE, G_CD_NOISE, G_CD_BAYER, G_CD_MAGICSQ };
+s16 D_8010EB54_fowl_play[] = { G_TF_POINT, G_TF_POINT, G_TF_BILERP, G_TF_AVERAGE };
+s16 D_8010EB5C_fowl_play[] = { G_AC_THRESHOLD, G_AC_NONE, G_AC_DITHER, G_AC_NONE };
+s32 D_8010EB64_fowl_play = 0;
+
+s16 D_8010F200_fowl_play BSS;
+s16 D_8010F202_fowl_play BSS;
+u8 D_8010F204_fowl_play[4] BSS; /* Unreferenced. */
+D_80111B50_vine_with_me_Struct D_8010F208_fowl_play BSS;
+s16 D_8010F230_fowl_play[2] BSS;
+s16 D_8010F234_fowl_play BSS;
+s16 D_8010F236_fowl_play BSS; /* Unreferenced. */
+s16 D_8010F238_fowl_play BSS;
+u8 D_8010F23C_fowl_play[4] BSS; /* Unreferenced. */
+s16 D_8010F240_fowl_play[40] BSS;
+omObjData *D_8010F290_fowl_play[1] BSS;
+omObjData *D_8010F294_fowl_play[2] BSS;
+s16 D_8010F29C_fowl_play BSS;
+s16 D_8010F29E_fowl_play BSS;
+s16 D_8010F2A0_fowl_play BSS;
+u8 D_8010F2A4_fowl_play[4] BSS; /* Unreferenced. */
+f32 D_8010F2A8_fowl_play[4][4] BSS;
+f32 D_8010F2E8_fowl_play[4][4] BSS;
+f32 D_8010F328_fowl_play BSS;
+Fowl *D_8010F32C_fowl_play BSS;
+void *D_8010F330_fowl_play[6] BSS;
+void *D_8010F348_fowl_play BSS;
+s32 D_8010F34C_fowl_play BSS;
+s32 D_8010F350_fowl_play BSS;
+u8 D_8010F354_fowl_play[0xC] BSS;  /* Unreferenced. */
+Fowl D_8010F360_fowl_play BSS;     // List head of opaque entries
+Fowl D_8010F3C8_fowl_play BSS;     // List head of translucent entries
+u8 D_8010F430_fowl_play[0x10] BSS; /* Unreferenced. */
 
 void func_80105BEC_fowl_play(omObjData *object);
 void func_80105E4C_fowl_play(omObjData *object);
@@ -440,7 +487,7 @@ void func_80106718_fowl_play(f32 *pos, f32 *dst) {
 }
 
 void func_80106824_fowl_play(f32 x, f32 y, f32 z, f32 *dst) {
-    f32 depth = z + D_8010F2E0_fowl_play;
+    f32 depth = z + D_8010F2A8_fowl_play[3][2];
     f32 scale = fabsf(depth * D_8010F328_fowl_play);
     f32 mtx[4][4];
 

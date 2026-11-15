@@ -1628,9 +1628,9 @@ segments:
     bss_size: 0x240
     subsegments:
       - [0x2C5B50, c]
-      - [0x2CE950, data, 2C5B50] #8010E7A0
+      - [0x2CE950, .data, 2C5B50] #8010E7A0
       - [0x2CED20, .rodata, 2C5B50] #8010EB70
-      - {0x2CF3B0, type: bss, vram: 0x8010F200, name: ovl_3A_bss}
+      - {0x2CF3B0, type: .bss, vram: 0x8010F200, name: 2C5B50}
 
   - type: code
     start: 0x2CF3B0

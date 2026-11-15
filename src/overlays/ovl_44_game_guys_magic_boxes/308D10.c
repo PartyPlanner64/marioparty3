@@ -37,8 +37,56 @@ typedef struct GameGuysMagicBoxesCharSprites { // 0x20 bytes
     s32 ids[8];                                // per-character sprite index (low half)
 } GameGuysMagicBoxesCharSprites;
 
-extern u8 D_8010C1FA_game_guys_magic_boxes;
-extern u8 D_8010C220_game_guys_magic_boxes;
+typedef struct GameGuysMagicBoxesPlayerInfo { // 0x8 bytes
+    /* 0x00 */ u8 player;
+    /* 0x01 */ u8 pad;
+    /* 0x02 */ u8 chr;
+    /* 0x03 */ u8 cpu;
+    /* 0x04 */ u8 difficulty;
+    /* 0x06 */ s16 coins;
+} GameGuysMagicBoxesPlayerInfo;
+
+typedef struct GameGuysMagicBoxesBssC9D8 { // 0x10 bytes
+    /* 0x00 */ u8 unk_00;
+    /* 0x01 */ u8 unk_01;
+    /* 0x02 */ u8 unk_02;
+    /* 0x03 */ u8 unk_03[3][2];
+    /* 0x09 */ u8 unk_09;
+    /* 0x0A */ u8 unk_0A;
+    /* 0x0B */ u8 unk_0B[3];
+    /* 0x0E */ u8 unk_0E;
+    /* 0x0F */ u8 unk_0F;
+} GameGuysMagicBoxesBssC9D8;
+
+f32 D_8010C1E0_game_guys_magic_boxes = 1.0f;
+f32 D_8010C1E4_game_guys_magic_boxes = 1.0f;
+s16 D_8010C1E8_game_guys_magic_boxes[3] = { 5, 25, 60 }; // COM key wait frames, indexed by CPU difficulty
+u8 D_8010C1EE_game_guys_magic_boxes = 0;
+u8 D_8010C1EF_game_guys_magic_boxes = 0; // drop state
+u16 D_8010C1F0_game_guys_magic_boxes = 0;
+f32 D_8010C1F4_game_guys_magic_boxes = 0.0f;
+u16 D_8010C1F8_game_guys_magic_boxes = 0;
+u8 D_8010C1FA_game_guys_magic_boxes = 0;
+u8 D_8010C1FB_game_guys_magic_boxes = 0;
+u8 D_8010C1FC_game_guys_magic_boxes = 0;   // choice state
+s16 D_8010C1FE_game_guys_magic_boxes = 0;  // countdown tick timer
+s16 D_8010C200_game_guys_magic_boxes = 10; // countdown seconds
+s16 D_8010C202_game_guys_magic_boxes = 0;  // CPU decision timer
+f32 D_8010C204_game_guys_magic_boxes = 0.0f;
+u16 D_8010C208_game_guys_magic_boxes = 0;
+u8 D_8010C20A_game_guys_magic_boxes = 0;
+f32 D_8010C20C_game_guys_magic_boxes = 1.0f;
+u8 D_8010C210_game_guys_magic_boxes = 0;
+u16 D_8010C212_game_guys_magic_boxes = 0;
+s16 D_8010C214_game_guys_magic_boxes = 0;
+s16 D_8010C216_game_guys_magic_boxes = 0;
+u8 D_8010C218_game_guys_magic_boxes = 0;
+u16 D_8010C21A_game_guys_magic_boxes = 0;
+u8 D_8010C21C_game_guys_magic_boxes = 0;     // state
+u16 D_8010C21E_game_guys_magic_boxes = 0x80; // sprite alpha timer
+u8 D_8010C220_game_guys_magic_boxes = 0;
+s16 D_8010C222_game_guys_magic_boxes = -1;
+s16 D_8010C224_game_guys_magic_boxes = 0;
 extern s16 D_8010C248_game_guys_magic_boxes;
 extern u8 D_8010C24A_game_guys_magic_boxes;
 extern f32 D_8010C24C_game_guys_magic_boxes; // box scale
@@ -47,103 +95,85 @@ extern u8 D_8010C251_game_guys_magic_boxes;  // current motion
 extern u8 D_8010C252_game_guys_magic_boxes;  // scale
 extern u8 D_8010C253_game_guys_magic_boxes;  // current motion
 extern u8 D_8010C254_game_guys_magic_boxes;  // scale
-extern s16 D_8010C222_game_guys_magic_boxes;
-extern s16 D_8010C224_game_guys_magic_boxes;
-extern char *D_8010C228_game_guys_magic_boxes[]; // character names
-extern char D_8010C630_game_guys_magic_boxes[];
-extern u8 D_8010C1FB_game_guys_magic_boxes;
-extern u8 D_8010C21C_game_guys_magic_boxes;  // state
-extern u16 D_8010C21E_game_guys_magic_boxes; // sprite alpha timer
-extern f32 D_8010C1E0_game_guys_magic_boxes;
-extern f32 D_8010C1E4_game_guys_magic_boxes;
-extern s16 D_8010C1E8_game_guys_magic_boxes[]; // COM key wait frames, indexed by CPU difficulty
-extern u8 D_8010C5D0_game_guys_magic_boxes[];
-extern u8 D_8010C1EE_game_guys_magic_boxes;
-extern u8 D_8010C1EF_game_guys_magic_boxes; // drop state
-extern u16 D_8010C1F0_game_guys_magic_boxes;
-extern f32 D_8010C1F4_game_guys_magic_boxes;
-extern u16 D_8010C1F8_game_guys_magic_boxes;
-extern u8 D_8010C1FC_game_guys_magic_boxes;  // choice state
-extern s16 D_8010C1FE_game_guys_magic_boxes; // countdown tick timer
-extern s16 D_8010C200_game_guys_magic_boxes; // countdown seconds
-extern s16 D_8010C202_game_guys_magic_boxes; // CPU decision timer
-extern f32 D_8010C204_game_guys_magic_boxes;
-extern u16 D_8010C208_game_guys_magic_boxes;
-extern u8 D_8010C20A_game_guys_magic_boxes;
-extern f32 D_8010C20C_game_guys_magic_boxes;
-extern u8 D_8010C210_game_guys_magic_boxes;
-extern u16 D_8010C212_game_guys_magic_boxes;
-extern s16 D_8010C214_game_guys_magic_boxes;
-extern s16 D_8010C216_game_guys_magic_boxes;
-extern u8 D_8010C218_game_guys_magic_boxes;
-extern u16 D_8010C21A_game_guys_magic_boxes;
-extern s16 D_8010C5D4_game_guys_magic_boxes;
-extern s16 D_8010C7FE_game_guys_magic_boxes; // sprite x
-extern s16 D_8010C81E_game_guys_magic_boxes; // sprite x
-extern u16 D_8010C5D6_game_guys_magic_boxes;
-extern Vec D_8010C5D8_game_guys_magic_boxes[2];
-extern Vec2f D_8010C5F0_game_guys_magic_boxes[2];
-extern Vec2f D_8010C600_game_guys_magic_boxes[3][2];
-extern u8 D_8010CA00_game_guys_magic_boxes;
+
+const GameGuysMagicBoxesCharSprites D_8010C270_game_guys_magic_boxes = { { 16, 17, 18, 19, 20, 21, 22, 23 } };
+extern const GameGuysMagicBoxesBonus D_8010C5A0_game_guys_magic_boxes;
+extern const GameGuysMagicBoxesPadValues D_8010C5A8_game_guys_magic_boxes; // COM keys
+extern const GameGuysMagicBoxesPadValues D_8010C5B0_game_guys_magic_boxes; // active players
+
+u8 D_8010C5D0_game_guys_magic_boxes[4] BSS;
+s16 D_8010C5D4_game_guys_magic_boxes BSS;
+u16 D_8010C5D6_game_guys_magic_boxes BSS;
+Vec D_8010C5D8_game_guys_magic_boxes[2] BSS;
+Vec2f D_8010C5F0_game_guys_magic_boxes[2] BSS;
+Vec2f D_8010C600_game_guys_magic_boxes[3][2] BSS;
+char D_8010C630_game_guys_magic_boxes[0x100] BSS;
+GameGuysMagicBoxesCamera D_8010C730_game_guys_magic_boxes BSS;
+GameGuysMagicBoxesPlayerInfo gameGuysMagicBoxesBssC750 BSS;
 extern u8 D_8010C750_game_guys_magic_boxes[5]; // [0] player index, [1] pad, [2] chr, [3] cpu, [4] difficulty
 extern u8 D_8010C751_game_guys_magic_boxes[3]; // [0] pad, [1] chr, [2] cpu flag (mode for the window helpers)
-extern Process *D_8010C774_game_guys_magic_boxes;
-extern Process *D_8010C778_game_guys_magic_boxes;
-extern Process *D_8010C77C_game_guys_magic_boxes;
-extern s16 D_8010CA0E_game_guys_magic_boxes;
 extern u8 D_8010C753_game_guys_magic_boxes[2]; // [0] cpu flag, [1] cpu difficulty
 extern s16 D_8010C756_game_guys_magic_boxes[]; // [0] coins
-extern f32 D_8010C9D0_game_guys_magic_boxes;
-extern f32 D_8010C9D4_game_guys_magic_boxes;
-extern u8 D_8010C9C8_game_guys_magic_boxes;
-extern u8 D_8010C9C9_game_guys_magic_boxes;
-extern u8 D_8010C9CA_game_guys_magic_boxes;
-extern s16 D_8010C9CC_game_guys_magic_boxes;
-extern s16 D_8010CA10_game_guys_magic_boxes;
-extern s16 D_8010CA12_game_guys_magic_boxes;
-extern u8 D_8010C9D8_game_guys_magic_boxes;
-extern u8 D_8010C9D9_game_guys_magic_boxes;
-extern u8 D_8010C9DA_game_guys_magic_boxes;
-extern u8 D_8010C9DB_game_guys_magic_boxes[3][2];
-extern u8 D_8010C9E3_game_guys_magic_boxes[];
-extern u8 D_8010C9E6_game_guys_magic_boxes;
-extern s16 D_8010CA02_game_guys_magic_boxes;
-extern s16 D_8010CA04_game_guys_magic_boxes;
-extern u8 D_8010CA06_game_guys_magic_boxes;
-extern u8 D_8010C9E1_game_guys_magic_boxes;
-extern u8 D_8010C9E2_game_guys_magic_boxes;
-extern u8 D_8010C9E7_game_guys_magic_boxes;
-extern s32 D_8010CA08_game_guys_magic_boxes;
-extern u16 D_8010CA0A_game_guys_magic_boxes;
-extern s16 D_8010CA14_game_guys_magic_boxes;
-extern GameGuysMagicBoxesBonus D_8010C5A0_game_guys_magic_boxes;
-extern GameGuysMagicBoxesPadValues D_8010C5A8_game_guys_magic_boxes; // COM keys
-extern GameGuysMagicBoxesPadValues D_8010C5B0_game_guys_magic_boxes; // active players
-extern Vec D_8010C9B0_game_guys_magic_boxes[2];
-extern u8 D_8010C9E8_game_guys_magic_boxes;
-extern HuSprite *D_8010C9EC_game_guys_magic_boxes;
-extern s16 D_8010C9F0_game_guys_magic_boxes;
-extern u8 *D_8010C9F4_game_guys_magic_boxes[3];
-extern s16 D_8010CA0C_game_guys_magic_boxes;
-extern GameGuysMagicBoxesCamera D_8010C730_game_guys_magic_boxes;
-extern omObjData *D_8010C758_game_guys_magic_boxes;
-extern omObjData *D_8010C75C_game_guys_magic_boxes;
-extern omObjData *D_8010C760_game_guys_magic_boxes;
-extern omObjData *D_8010C764_game_guys_magic_boxes;
-extern omObjData *D_8010C768_game_guys_magic_boxes;
-extern omObjData *D_8010C76C_game_guys_magic_boxes;
-extern omObjData *D_8010C770_game_guys_magic_boxes;
-extern GameGuysMagicBoxesCharSprites D_8010C270_game_guys_magic_boxes;
-extern GameGuysMagicBoxesSprite D_8010C780_game_guys_magic_boxes;
-extern GameGuysMagicBoxesSprite D_8010C7A0_game_guys_magic_boxes;
-extern GameGuysMagicBoxesSprite D_8010C7BC_game_guys_magic_boxes;
-extern GameGuysMagicBoxesSprite D_8010C7D8_game_guys_magic_boxes;
-extern GameGuysMagicBoxesSprite D_8010C838_game_guys_magic_boxes;
-extern GameGuysMagicBoxesSprite D_8010C858_game_guys_magic_boxes[3][2];
-extern GameGuysMagicBoxesSprite D_8010C900_game_guys_magic_boxes;
-extern GameGuysMagicBoxesSprite D_8010C91C_game_guys_magic_boxes;
-extern GameGuysMagicBoxesSprite D_8010C938_game_guys_magic_boxes[3];
-extern GameGuysMagicBoxesSprite D_8010C990_game_guys_magic_boxes;
+omObjData *D_8010C758_game_guys_magic_boxes BSS;
+omObjData *D_8010C75C_game_guys_magic_boxes BSS;
+omObjData *D_8010C760_game_guys_magic_boxes BSS;
+omObjData *D_8010C764_game_guys_magic_boxes BSS;
+omObjData *D_8010C768_game_guys_magic_boxes BSS;
+omObjData *D_8010C76C_game_guys_magic_boxes BSS;
+omObjData *D_8010C770_game_guys_magic_boxes BSS;
+Process *D_8010C774_game_guys_magic_boxes BSS;
+Process *D_8010C778_game_guys_magic_boxes BSS;
+Process *D_8010C77C_game_guys_magic_boxes BSS;
+GameGuysMagicBoxesSprite D_8010C780_game_guys_magic_boxes BSS;
+u8 D_8010C79C_game_guys_magic_boxes[4] BSS; /* Unreferenced. */
+GameGuysMagicBoxesSprite D_8010C7A0_game_guys_magic_boxes BSS;
+GameGuysMagicBoxesSprite D_8010C7BC_game_guys_magic_boxes BSS;
+GameGuysMagicBoxesSprite D_8010C7D8_game_guys_magic_boxes BSS;
+u8 D_8010C7F4_game_guys_magic_boxes[4] BSS; /* Unreferenced. */
+GameGuysMagicBoxesSprite D_8010C7F8_game_guys_magic_boxes BSS;
+u8 D_8010C814_game_guys_magic_boxes[4] BSS; /* Unreferenced. */
+GameGuysMagicBoxesSprite D_8010C818_game_guys_magic_boxes BSS;
+u8 D_8010C834_game_guys_magic_boxes[4] BSS; /* Unreferenced. */
+GameGuysMagicBoxesSprite D_8010C838_game_guys_magic_boxes BSS;
+u8 D_8010C854_game_guys_magic_boxes[4] BSS; /* Unreferenced. */
+GameGuysMagicBoxesSprite D_8010C858_game_guys_magic_boxes[3][2] BSS;
+GameGuysMagicBoxesSprite D_8010C900_game_guys_magic_boxes BSS;
+GameGuysMagicBoxesSprite D_8010C91C_game_guys_magic_boxes BSS;
+GameGuysMagicBoxesSprite D_8010C938_game_guys_magic_boxes[3] BSS;
+u8 D_8010C98C_game_guys_magic_boxes[4] BSS; /* Unreferenced. */
+GameGuysMagicBoxesSprite D_8010C990_game_guys_magic_boxes BSS;
+u8 D_8010C9AC_game_guys_magic_boxes[4] BSS; /* Unreferenced. */
+Vec D_8010C9B0_game_guys_magic_boxes[2] BSS;
+u8 D_8010C9C8_game_guys_magic_boxes BSS;
+u8 D_8010C9C9_game_guys_magic_boxes BSS;
+u8 D_8010C9CA_game_guys_magic_boxes BSS;
+s16 D_8010C9CC_game_guys_magic_boxes BSS;
+f32 D_8010C9D0_game_guys_magic_boxes BSS;
+f32 D_8010C9D4_game_guys_magic_boxes BSS;
+GameGuysMagicBoxesBssC9D8 gameGuysMagicBoxesBssC9D8 BSS;
+extern u8 D_8010C9D8_game_guys_magic_boxes;       // gameGuysMagicBoxesBssC9D8
+extern u8 D_8010C9D9_game_guys_magic_boxes;       // gameGuysMagicBoxesBssC9D8
+extern u8 D_8010C9DA_game_guys_magic_boxes;       // gameGuysMagicBoxesBssC9D8
+extern u8 D_8010C9DB_game_guys_magic_boxes[3][2]; // gameGuysMagicBoxesBssC9D8
+extern u8 D_8010C9E1_game_guys_magic_boxes;       // gameGuysMagicBoxesBssC9D8
+extern u8 D_8010C9E2_game_guys_magic_boxes;       // gameGuysMagicBoxesBssC9D8
+extern u8 D_8010C9E3_game_guys_magic_boxes[];     // gameGuysMagicBoxesBssC9D8
+extern u8 D_8010C9E6_game_guys_magic_boxes;       // gameGuysMagicBoxesBssC9D8
+extern u8 D_8010C9E7_game_guys_magic_boxes;       // gameGuysMagicBoxesBssC9D8
+u8 D_8010C9E8_game_guys_magic_boxes BSS;
+HuSprite *D_8010C9EC_game_guys_magic_boxes BSS;
+s16 D_8010C9F0_game_guys_magic_boxes BSS;
+u8 *D_8010C9F4_game_guys_magic_boxes[3] BSS;
+u8 D_8010CA00_game_guys_magic_boxes BSS;
+s16 D_8010CA02_game_guys_magic_boxes BSS;
+s16 D_8010CA04_game_guys_magic_boxes BSS;
+u8 D_8010CA06_game_guys_magic_boxes BSS;
+s32 D_8010CA08_game_guys_magic_boxes BSS;
+s16 D_8010CA0C_game_guys_magic_boxes BSS;
+s16 D_8010CA0E_game_guys_magic_boxes BSS;
+s16 D_8010CA10_game_guys_magic_boxes BSS;
+s16 D_8010CA12_game_guys_magic_boxes BSS;
+s16 D_8010CA14_game_guys_magic_boxes BSS;
 
 void func_80105A28_game_guys_magic_boxes(void);
 void func_80105AC0_game_guys_magic_boxes(void);
@@ -761,8 +791,8 @@ void func_80107834_game_guys_magic_boxes(void) {
             break;
         case 140:
             Hu3DMotionSpeedSet(D_8010C760_game_guys_magic_boxes->model[0], 1.0f);
-            D_8010C7FE_game_guys_magic_boxes = -58;
-            D_8010C81E_game_guys_magic_boxes = 250;
+            D_8010C7F8_game_guys_magic_boxes.x = -58;
+            D_8010C818_game_guys_magic_boxes.x = 250;
             D_8010C1F8_game_guys_magic_boxes = 0;
             D_8010C9E8_game_guys_magic_boxes = 5;
             break;
@@ -1165,21 +1195,25 @@ void func_80108AF8_game_guys_magic_boxes(void) {
     }
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/308D10", D_8010C514_game_guys_magic_boxes);
+char *D_8010C228_game_guys_magic_boxes[] = {
+    "\x82\x6C\x82\x60\x82\x71\x82\x68\x82\x6E",                 // ＭＡＲＩＯ
+    "\x82\x6B\x82\x74\x82\x68\x82\x66\x82\x68",                 // ＬＵＩＧＩ
+    "\x82\x6F\x82\x64\x82\x60\x82\x62\x82\x67",                 // ＰＥＡＣＨ
+    "\x82\x78\x82\x6E\x82\x72\x82\x67\x82\x68",                 // ＹＯＳＨＩ
+    "\x82\x76\x82\x60\x82\x71\x82\x68\x82\x6E",                 // ＷＡＲＩＯ
+    "\x82\x63\x82\x6A",                                         // ＤＫ
+    "\x82\x76\x82\x60\x82\x6B\x82\x74\x82\x68\x82\x66\x82\x68", // ＷＡＬＵＩＧＩ
+    "\x82\x63\x82\x60\x82\x68\x82\x72\x82\x78",                 // ＤＡＩＳＹ
+}; // character names
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/308D10", D_8010C520_game_guys_magic_boxes);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/308D10", D_8010C530_game_guys_magic_boxes);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/308D10", D_8010C538_game_guys_magic_boxes);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/308D10", D_8010C544_game_guys_magic_boxes);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/308D10", D_8010C550_game_guys_magic_boxes);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/308D10", D_8010C55C_game_guys_magic_boxes);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/308D10", D_8010C568_game_guys_magic_boxes);
+s16 D_8010C248_game_guys_magic_boxes = 0;
+u8 D_8010C24A_game_guys_magic_boxes = 0;
+f32 D_8010C24C_game_guys_magic_boxes = 0.0f; // box scale
+u8 D_8010C250_game_guys_magic_boxes = 0xFF;  // current motion
+u8 D_8010C251_game_guys_magic_boxes = 0xFF;  // current motion
+u8 D_8010C252_game_guys_magic_boxes = 1;     // scale
+u8 D_8010C253_game_guys_magic_boxes = 0xFF;  // current motion
+u8 D_8010C254_game_guys_magic_boxes = 1;     // scale
 
 void func_80108C04_game_guys_magic_boxes(void) {
     if (D_8010C222_game_guys_magic_boxes == -1) {
@@ -1377,7 +1411,7 @@ void func_80109884_game_guys_magic_boxes(omObjData *object) {
 
     bonus = D_8010C5A0_game_guys_magic_boxes;
     playerIdx = &D_8010C750_game_guys_magic_boxes[0];
-    GwPlayer[*playerIdx].gameCoin = D_8010CA0A_game_guys_magic_boxes;
+    GwPlayer[*playerIdx].gameCoin = D_8010CA08_game_guys_magic_boxes;
     if (D_8010C9E2_game_guys_magic_boxes == 1) {
         GwPlayer[*playerIdx].bonusCoin = bonus.amount[D_8010C9E7_game_guys_magic_boxes];
     } else {
@@ -1698,3 +1732,7 @@ void func_8010A878_game_guys_magic_boxes(s16 win) {
     func_80060EA8_main(win, 1);
     HuWinExCleanup(win);
 }
+
+const GameGuysMagicBoxesBonus D_8010C5A0_game_guys_magic_boxes = { { 2, 4, 8 } };
+const GameGuysMagicBoxesPadValues D_8010C5A8_game_guys_magic_boxes = { { 0, 0, 0, 0 } }; // COM keys
+const GameGuysMagicBoxesPadValues D_8010C5B0_game_guys_magic_boxes = { { 1, 2, 4, 8 } }; // active players

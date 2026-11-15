@@ -1,12 +1,11 @@
 #include "common.h"
 #include "game_guys_magic_boxes.h"
 
-typedef struct GameGuysMagicBoxesBanner { // 0x18 bytes
+typedef struct GameGuysMagicBoxesBanner { // 0x14 bytes
     /* 0x00 */ HuSprite *sprite;
     /* 0x04 */ void *unk_04[3];
     /* 0x10 */ s16 group;
     /* 0x12 */ s16 timer;
-    /* 0x14 */ s16 unk_14;
 } GameGuysMagicBoxesBanner;
 
 typedef struct GameGuysMagicBoxesRing { // 0x18 bytes
@@ -33,19 +32,23 @@ typedef struct GameGuysMagicBoxesRingFreq {
     /* 0x02 */ s16 y;
 } GameGuysMagicBoxesRingFreq;
 
-extern s16 D_8010C260_game_guys_magic_boxes; // intro timer
-extern s16 D_8010C262_game_guys_magic_boxes; // intro start y
-extern s16 D_8010C264_game_guys_magic_boxes; // outro timer
-extern GameGuysMagicBoxesRing D_8010CA20_game_guys_magic_boxes[3];
-extern s16 D_8010CA68_game_guys_magic_boxes;                              // center x
-extern s16 D_8010CA6A_game_guys_magic_boxes;                              // center y
-extern s16 D_8010CA6C_game_guys_magic_boxes;                              // radius
-extern s16 D_8010CA6E_game_guys_magic_boxes;                              // target x
-extern s16 D_8010CA70_game_guys_magic_boxes;                              // target y
-extern GameGuysMagicBoxesRingHistory D_8010CA78_game_guys_magic_boxes[3]; // per-buffer ring state
-extern GameGuysMagicBoxesBanner D_8010CAE0_game_guys_magic_boxes;
-extern s16 D_8010CB0C_game_guys_magic_boxes; // current buffer index
-extern GameGuysMagicBoxesBanner D_8010CAF8_game_guys_magic_boxes;
+s16 D_8010C260_game_guys_magic_boxes = 0;   // intro timer
+s16 D_8010C262_game_guys_magic_boxes = 120; // intro start y
+s16 D_8010C264_game_guys_magic_boxes = 0;   // outro timer
+
+GameGuysMagicBoxesRing D_8010CA20_game_guys_magic_boxes[3] BSS;
+s16 D_8010CA68_game_guys_magic_boxes BSS;                              // center x
+s16 D_8010CA6A_game_guys_magic_boxes BSS;                              // center y
+s16 D_8010CA6C_game_guys_magic_boxes BSS;                              // radius
+s16 D_8010CA6E_game_guys_magic_boxes BSS;                              // target x
+s16 D_8010CA70_game_guys_magic_boxes BSS;                              // target y
+u8 D_8010CA74_game_guys_magic_boxes[4] BSS;                            /* Unreferenced. */
+GameGuysMagicBoxesRingHistory D_8010CA78_game_guys_magic_boxes[3] BSS; // per-buffer ring state
+u8 D_8010CAD8_game_guys_magic_boxes[8] BSS;                            /* Unreferenced. */
+GameGuysMagicBoxesBanner D_8010CAE0_game_guys_magic_boxes BSS;
+u8 D_8010CAF4_game_guys_magic_boxes[4] BSS; /* Unreferenced. */
+GameGuysMagicBoxesBanner D_8010CAF8_game_guys_magic_boxes BSS;
+s16 D_8010CB0C_game_guys_magic_boxes BSS; // current buffer index
 
 void func_8010BA0C_game_guys_magic_boxes(void);
 void func_8010BB70_game_guys_magic_boxes(void);
@@ -53,12 +56,6 @@ void func_8010BC00_game_guys_magic_boxes(s16 active, s16 x, s16 y, s16 radius);
 void func_8010BD5C_game_guys_magic_boxes(s16 active, s16 x, s16 y, s16 color);
 void func_8010BD9C_game_guys_magic_boxes(s16 active, s16 x, s16 y, s16 radius, s16 color);
 void func_8010BF94_game_guys_magic_boxes(s16 x0, s16 y0, s16 x1, s16 y1);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/30DC30", D_8010C5A0_game_guys_magic_boxes);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/30DC30", D_8010C5A8_game_guys_magic_boxes);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/30DC30", D_8010C5B0_game_guys_magic_boxes);
 
 void func_8010A8C0_game_guys_magic_boxes(s16 x, s16 y) {
     s16 i;

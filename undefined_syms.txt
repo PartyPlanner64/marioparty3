@@ -150,17 +150,20 @@ D_8010C75C_end_of_the_line = endOfTheLineBssC75C;
 D_8010C75E_end_of_the_line = endOfTheLineBssC75C + 0x2;
 D_8010C780_end_of_the_line = endOfTheLineBssC780;
 D_8010C782_end_of_the_line = endOfTheLineBssC780 + 0x2;
-/* game_guys_magic_boxes: state bytes and timer halfwords packed after the preceding data symbol. */
-D_8010C1EF_game_guys_magic_boxes = D_8010C1EE_game_guys_magic_boxes + 0x1;
-D_8010C1FE_game_guys_magic_boxes = D_8010C1FC_game_guys_magic_boxes + 0x2;
-D_8010C202_game_guys_magic_boxes = D_8010C200_game_guys_magic_boxes + 0x2;
-D_8010C20A_game_guys_magic_boxes = D_8010C208_game_guys_magic_boxes + 0x2;
-D_8010C212_game_guys_magic_boxes = D_8010C210_game_guys_magic_boxes + 0x2;
-D_8010C21A_game_guys_magic_boxes = D_8010C218_game_guys_magic_boxes + 0x2;
-D_8010C24A_game_guys_magic_boxes = D_8010C248_game_guys_magic_boxes + 0x2;
-D_8010C251_game_guys_magic_boxes = D_8010C250_game_guys_magic_boxes + 0x1;
-D_8010C252_game_guys_magic_boxes = D_8010C250_game_guys_magic_boxes + 0x2;
-D_8010C253_game_guys_magic_boxes = D_8010C250_game_guys_magic_boxes + 0x3;
+/* game_guys_magic_boxes field aliases: GameGuysMagicBoxesPlayerInfo, GameGuysMagicBoxesBssC9D8. */
+D_8010C750_game_guys_magic_boxes = gameGuysMagicBoxesBssC750;
+D_8010C751_game_guys_magic_boxes = gameGuysMagicBoxesBssC750 + 0x1;
+D_8010C753_game_guys_magic_boxes = gameGuysMagicBoxesBssC750 + 0x3;
+D_8010C756_game_guys_magic_boxes = gameGuysMagicBoxesBssC750 + 0x6;
+D_8010C9D8_game_guys_magic_boxes = gameGuysMagicBoxesBssC9D8;
+D_8010C9D9_game_guys_magic_boxes = gameGuysMagicBoxesBssC9D8 + 0x1;
+D_8010C9DA_game_guys_magic_boxes = gameGuysMagicBoxesBssC9D8 + 0x2;
+D_8010C9DB_game_guys_magic_boxes = gameGuysMagicBoxesBssC9D8 + 0x3;
+D_8010C9E1_game_guys_magic_boxes = gameGuysMagicBoxesBssC9D8 + 0x9;
+D_8010C9E2_game_guys_magic_boxes = gameGuysMagicBoxesBssC9D8 + 0xA;
+D_8010C9E3_game_guys_magic_boxes = gameGuysMagicBoxesBssC9D8 + 0xB;
+D_8010C9E6_game_guys_magic_boxes = gameGuysMagicBoxesBssC9D8 + 0xE;
+D_8010C9E7_game_guys_magic_boxes = gameGuysMagicBoxesBssC9D8 + 0xF;
 /* game_guys_lucky_7 field aliases: GameGuysLucky7BssD6DC. */
 D_8010D6DC_game_guys_lucky_7 = gameGuysLucky7BssD6DC;
 D_8010D6EA_game_guys_lucky_7 = gameGuysLucky7BssD6DC + 0xE;

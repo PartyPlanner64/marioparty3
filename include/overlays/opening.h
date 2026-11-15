@@ -98,13 +98,9 @@ typedef struct {
     /* 0x08 */ s32 unk_08;
 } OpSlot; // sizeof 0xC
 
-extern Gfx D_80114BE8_opening[];
-extern u32 D_80114BE0_opening;
+#ifndef NO_EXTERN_VARIABLES
 extern Vec D_80117378_opening;
 extern s32 D_80117384_opening;
-extern Vec D_80114BB8_opening;
-extern Vec D_80114BC4_opening;
-extern RectF D_80114BD0_opening;
 extern Process *D_80114EA0_opening;
 extern s32 D_80114EA4_opening;
 extern OpModel D_80115630_opening[0xA0];
@@ -130,6 +126,7 @@ extern f32 D_801173B8_opening[0x10][15];
 
 extern HmfMotionNode *D_801173BC_opening[0x10][15];
 extern HmfMotionNode *D_801173C0_opening[0x10][15];
+#endif
 
 s16 func_801117D4_opening(s32 arg0, s32 arg1);
 s32 func_80111984_opening(s32 resourceId, s32 arg1);

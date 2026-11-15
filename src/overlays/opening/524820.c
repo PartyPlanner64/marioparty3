@@ -22,9 +22,29 @@ typedef struct {
 
 extern const Vec D_80114D84_opening;
 extern const Vec D_80114D90_opening;
-extern Vec D_80114B70_opening[2], D_80114B88_opening[2], D_80114BA0_opening, D_80114BAC_opening;
 extern const Vec D_80114D9C_opening, D_80114DA8_opening;
 
+Vec D_80114B70_opening[2] = { { 350.0f, 190.0f, 3770.0f }, { -1000.0f, 130.0f, 450.0f } };
+Vec D_80114B88_opening[2] = { { 220.0f, 963.0f, 1900.0f }, { 4340.0f, 4720.0f, 5925.0f } };
+Vec D_80114BA0_opening = { 0.0f, 700.0f, 1500.0f };
+Vec D_80114BAC_opening = { 0.0f, 0.0f, -500.0f };
+Vec D_80114BB8_opening = { 640.0f, 480.0f, 511.0f };
+Vec D_80114BC4_opening = { 640.0f, 480.0f, 511.0f };
+RectF D_80114BD0_opening = { 8.0f, 8.0f, 312.0f, 232.0f };
+u32 D_80114BE0_opening = 0;
+
+Gfx D_80114BE8_opening[] = {
+    gsDPPipeSync(),
+    gsDPSetCycleType(G_CYC_1CYCLE),
+    gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_DECALRGBA),
+    gsDPSetRenderMode(G_RM_AA_OPA_SURF, G_RM_AA_OPA_SURF2),
+    gsDPSetPrimColor(0, 0, 0, 0, 0, 192),
+    gsDPSetTexturePersp(G_TP_NONE),
+    gsDPSetTextureFilter(G_TF_POINT),
+    gsDPSetTextureLUT(G_TT_NONE),
+    gsDPSetAlphaDither(G_AD_DISABLE),
+    gsSPEndDisplayList(),
+};
 
 void opDemoEndSet(s32);
 f32 func_8011124C_opening(f32 x1, f32 z1, f32 x2, f32 z2, f32 weight);

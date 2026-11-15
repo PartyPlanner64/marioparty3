@@ -313,3 +313,17 @@ D_8010A1FE_dorrie_dip = D_8010A1FC_dorrie_dip + 0x2;
 /* koopa: under-aligned u8 array after the s16 window table. */
 D_80109518_koopa = koopaBss9518;
 D_8010954A_koopa = koopaBss9518 + 0x32;
+
+/* opening: per-field views into the OpObj array (stride 0x3C). */
+D_8011738C_opening = D_80117388_opening + 0x4;
+D_80117390_opening = D_80117388_opening + 0x8;
+D_80117394_opening = D_80117388_opening + 0xC;
+D_80117398_opening = D_80117388_opening + 0x10;
+D_8011739C_opening = D_80117388_opening + 0x14;
+D_801173A4_opening = D_80117388_opening + 0x1C;
+D_801173A8_opening = D_80117388_opening + 0x20;
+D_801173B0_opening = D_80117388_opening + 0x28;
+D_801173B4_opening = D_80117388_opening + 0x2C;
+D_801173B8_opening = D_80117388_opening + 0x30;
+D_801173BC_opening = D_80117388_opening + 0x34;
+D_801173C0_opening = D_80117388_opening + 0x38;

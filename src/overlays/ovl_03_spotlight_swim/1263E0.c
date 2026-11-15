@@ -100,70 +100,136 @@ typedef struct {
     /* 0x0C */ f32 z[2];
 } SpotlightSwimRipple; // sizeof 0x14
 
-extern s8 D_8010CCC0_spotlight_swim[][3];
-extern s32 D_8010CCD4_spotlight_swim[8];
-extern s16 D_8010CCF4_spotlight_swim[4];
-extern u8 D_8010CDA8_spotlight_swim[];
-extern u8 D_8010CDAC_spotlight_swim[4][2];
-extern s8 D_8010CDB4_spotlight_swim;
-extern u8 D_8010CCFC_spotlight_swim[][2];
-extern s16 D_8010CD0C_spotlight_swim[];
-extern s16 D_8010CD2C_spotlight_swim[];
-extern u8 D_8010CD4C_spotlight_swim[];
-extern s16 D_8010CDB8_spotlight_swim[];
-extern s16 D_8010CDC0_spotlight_swim[];
-extern s8 D_8010CD50_spotlight_swim[][9];
-extern s8 D_8010CD98_spotlight_swim[][2];
-extern SpotlightSwimCamera D_8010D1D4_spotlight_swim[1];
-extern const s16 D_8010D2E0_spotlight_swim[];
-extern s32 D_8010D1C8_spotlight_swim[3];
-extern u32 D_8010D2F0_spotlight_swim;
-extern u8 D_8010CDC8_spotlight_swim[32][32];
-extern s8 D_8010D2F4_spotlight_swim;
-extern u32 *D_8010D2F8_spotlight_swim[3];
-extern s8 D_8010D304_spotlight_swim;
-extern s16 D_8010D306_spotlight_swim;
-extern SpotlightSwimUnk308 D_8010D308_spotlight_swim[];
-extern s8 D_8010D320_spotlight_swim[3];
-extern SpotlightSwimState D_8010D328_spotlight_swim;
-extern s8 D_8010D340_spotlight_swim[3];
-extern s8 D_8010D343_spotlight_swim;
-extern SpotlightSwimRipple D_8010D350_spotlight_swim;
-extern f32 D_8010D344_spotlight_swim;
-extern s16 D_8010D364_spotlight_swim;
-extern s8 D_8010D366_spotlight_swim;
-extern s8 D_8010D367_spotlight_swim;
-extern omObjData *D_8010D348_spotlight_swim;
-extern s16 D_8010D34C_spotlight_swim;
-extern s8 D_8010D34E_spotlight_swim;
-extern s16 D_8010D368_spotlight_swim[4];
-extern f32 D_8010D370_spotlight_swim[2];
-extern s8 D_8010D378_spotlight_swim;
-extern s8 D_8010D379_spotlight_swim;
-extern f32 D_8010D380_spotlight_swim[3];
-extern f32 D_8010D38C_spotlight_swim[3];
-extern s8 D_8010D398_spotlight_swim[3];
-extern s8 D_8010D39B_spotlight_swim[3];
-extern s8 D_8010D3CC_spotlight_swim;
-extern s8 D_8010D3CD_spotlight_swim;
-extern s8 D_8010D3AC_spotlight_swim;
-extern f32 D_8010D3A0_spotlight_swim[3];
-extern s8 D_8010D323_spotlight_swim[3];
+typedef struct {
+    /* 0x00 */ s8 unk00[3];
+    /* 0x03 */ s8 unk03[3];
+} SpotlightSwimBss320; // sizeof 0x6
+
+typedef struct {
+    /* 0x00 */ s8 unk00[3];
+    /* 0x03 */ s8 unk03[3];
+} SpotlightSwimBss398; // sizeof 0x6
+
 extern s32 D_800A178C_main[][6];
 extern s32 D_800A1790_main[][6];
-extern f32 D_8010D3C0_spotlight_swim[3];
-extern s16 D_8010D3B0_spotlight_swim[8];
-extern SpotlightSwimLight D_8010D3D0_spotlight_swim[6];
-extern u32 D_8010D448_spotlight_swim;
-extern s8 D_8010D44C_spotlight_swim;
-extern SpotlightSwimPos2D D_8010D450_spotlight_swim[5];
-extern s8 D_8010D478_spotlight_swim;
-extern u32 D_8010D47C_spotlight_swim;
-
-extern SpotlightSwimData D_8010D480_spotlight_swim[50];
 extern s16 D_800D418E_main;
-extern s8 D_8010EE48_spotlight_swim;
-extern SpotlightSwimUnk8 D_8010EE50_spotlight_swim[];
+
+s8 D_8010CCC0_spotlight_swim[][3] = {
+    { 0, 1, 2 }, { 0, 2, 1 }, { 1, 0, 2 }, { 1, 2, 0 }, { 2, 0, 1 }, { 2, 1, 0 }
+};
+s32 D_8010CCD4_spotlight_swim[8] = { 2, 3, 7, 4, 5, 6, 8, 9 };
+s16 D_8010CCF4_spotlight_swim[4] = { 0x70, 0x79, 0x82, 0x8B };
+u8 D_8010CCFC_spotlight_swim[][2] = {
+    { 1, 0 }, { 2, 1 }, { 1, 1 }, { 2, 0 }, { 0, 1 }, { 3, 0 }, { 0, 0 }, { 3, 1 }
+};
+s16 D_8010CD0C_spotlight_swim[15] = {
+    -450, 450, -450, 450, 0, 0, -450, 450, -150, 150, -150, 150, -225, 225, 0
+};
+s16 D_8010CD2C_spotlight_swim[15] = {
+    -450, -450, 260, 260, -450, 260, -95, -95, -278, -278, 88, 88, -95, -95, -95
+};
+u8 D_8010CD4C_spotlight_swim[4] = { 80, 100, 140, 170 };
+s8 D_8010CD50_spotlight_swim[8][9] = {
+    { -45, -80, -80, -45, -40, -55, -60, -70, -65 },
+    { -30, -30, -30, -45, -35, -55, -65, -45, -65 },
+    { -70, -65, -65, -40, -20, -30, -65, -65, -85 },
+    { -40, -35, -35, -40, -45, -50, -45, -55, -55 },
+    { -50, -45, -45, -55, -45, -75, -60, -55, -65 },
+    { -20, -35, -35, -35, -30, -95, -95, -128, -85 },
+    { -30, -30, -30, -45, -35, -55, -100, -120, -100 },
+    { -70, -65, -65, -45, -20, -30, -65, -65, -85 },
+};
+s8 D_8010CD98_spotlight_swim[8][2] = {
+    { 0, 60 }, { 20, 75 }, { 30, 90 }, { 20, 75 }, { 20, 75 }, { 70, 120 }, { 0, 0 }, { 0, 0 }
+};
+u8 D_8010CDA8_spotlight_swim[4] = { 6, 5, 3, 0 };
+u8 D_8010CDAC_spotlight_swim[4][2] = { { 60, 25 }, { 55, 20 }, { 50, 15 }, { 45, 10 } };
+s8 D_8010CDB4_spotlight_swim = 0;
+s16 D_8010CDB8_spotlight_swim[4] = { 8, 9, 10, 0 };
+s16 D_8010CDC0_spotlight_swim[4] = { 11, 12, 13, 0 };
+u8 D_8010CDC8_spotlight_swim[32][32] = {
+    { 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15 },
+    { 15, 15, 15, 15, 15, 15, 15, 15, 15, 14, 14, 14, 13, 13, 13, 12, 12, 13, 13, 13, 14, 14, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15 },
+    { 15, 15, 15, 15, 15, 15, 15, 14, 14, 13, 12, 12, 11, 10, 10, 10, 10, 10, 10, 11, 12, 12, 13, 14, 14, 15, 15, 15, 15, 15, 15, 15 },
+    { 15, 15, 15, 15, 15, 15, 14, 13, 12, 11, 10, 9, 8, 7, 7, 6, 6, 7, 7, 8, 9, 10, 11, 12, 13, 14, 15, 15, 15, 15, 15, 15 },
+    { 15, 15, 15, 15, 15, 14, 13, 12, 10, 9, 7, 6, 5, 4, 4, 3, 3, 4, 4, 5, 6, 7, 9, 10, 12, 13, 14, 15, 15, 15, 15, 15 },
+    { 15, 15, 15, 15, 14, 13, 11, 10, 8, 6, 4, 3, 2, 2, 1, 1, 1, 1, 2, 2, 3, 4, 6, 8, 10, 11, 13, 14, 15, 15, 15, 15 },
+    { 15, 15, 15, 14, 13, 11, 9, 7, 5, 3, 2, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 2, 3, 5, 7, 9, 11, 13, 14, 15, 15, 15 },
+    { 15, 15, 14, 13, 12, 10, 7, 5, 3, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 5, 7, 10, 12, 13, 14, 15, 15 },
+    { 15, 15, 14, 12, 10, 8, 5, 3, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 3, 5, 8, 10, 12, 14, 15, 15 },
+    { 15, 14, 13, 11, 9, 6, 3, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 6, 9, 11, 13, 14, 15 },
+    { 15, 14, 12, 10, 7, 4, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 4, 7, 10, 12, 14, 15 },
+    { 14, 14, 12, 9, 6, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 6, 9, 12, 14, 14 },
+    { 14, 13, 11, 8, 5, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 5, 8, 11, 13, 14 },
+    { 14, 13, 10, 7, 4, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 4, 7, 10, 13, 14 },
+    { 14, 13, 10, 7, 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 4, 7, 10, 13, 14 },
+    { 14, 12, 10, 6, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 6, 10, 12, 14 },
+    { 14, 12, 10, 6, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 6, 10, 12, 14 },
+    { 14, 13, 10, 7, 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 4, 7, 10, 13, 14 },
+    { 14, 13, 10, 7, 4, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 4, 7, 10, 13, 14 },
+    { 14, 13, 11, 8, 5, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 5, 8, 11, 13, 14 },
+    { 14, 14, 12, 9, 6, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 6, 9, 12, 14, 14 },
+    { 15, 14, 12, 10, 7, 4, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 4, 7, 10, 12, 14, 15 },
+    { 15, 14, 13, 11, 9, 6, 3, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 6, 9, 11, 13, 14, 15 },
+    { 15, 15, 14, 12, 10, 8, 5, 3, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 3, 5, 8, 10, 12, 14, 15, 15 },
+    { 15, 15, 14, 13, 12, 10, 7, 5, 3, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 5, 7, 10, 12, 13, 14, 15, 15 },
+    { 15, 15, 15, 14, 13, 11, 9, 7, 5, 3, 2, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 2, 3, 5, 7, 9, 11, 13, 14, 15, 15, 15 },
+    { 15, 15, 15, 15, 14, 13, 11, 10, 8, 6, 4, 3, 2, 2, 1, 1, 1, 1, 2, 2, 3, 4, 6, 8, 10, 11, 13, 14, 15, 15, 15, 15 },
+    { 15, 15, 15, 15, 15, 14, 13, 12, 10, 9, 7, 6, 5, 4, 4, 3, 3, 4, 4, 5, 6, 7, 9, 10, 12, 13, 14, 15, 15, 15, 15, 15 },
+    { 15, 15, 15, 15, 15, 15, 14, 13, 12, 11, 10, 9, 8, 7, 7, 6, 6, 7, 7, 8, 9, 10, 11, 12, 13, 14, 15, 15, 15, 15, 15, 15 },
+    { 15, 15, 15, 15, 15, 15, 15, 14, 14, 13, 12, 12, 11, 10, 10, 10, 10, 10, 10, 11, 12, 12, 13, 14, 14, 15, 15, 15, 15, 15, 15, 15 },
+    { 15, 15, 15, 15, 15, 15, 15, 15, 15, 14, 14, 14, 13, 13, 13, 12, 12, 13, 13, 13, 14, 14, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15 },
+    { 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15 },
+};
+s32 D_8010D1C8_spotlight_swim[3] = { 28, 128, 228 };
+SpotlightSwimCamera D_8010D1D4_spotlight_swim[1] = {
+    { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 30.0f },
+};
+
+extern const s16 D_8010D2E0_spotlight_swim[];
+
+u32 D_8010D2F0_spotlight_swim BSS;
+s8 D_8010D2F4_spotlight_swim BSS;
+u32 *D_8010D2F8_spotlight_swim[3] BSS;
+s8 D_8010D304_spotlight_swim BSS;
+s16 D_8010D306_spotlight_swim BSS;
+SpotlightSwimUnk308 D_8010D308_spotlight_swim[3] BSS;
+SpotlightSwimBss320 spotlightSwimBss320 BSS;
+SpotlightSwimState D_8010D328_spotlight_swim BSS;
+s8 D_8010D340_spotlight_swim[3] BSS;
+s8 D_8010D343_spotlight_swim BSS;
+f32 D_8010D344_spotlight_swim BSS;
+omObjData *D_8010D348_spotlight_swim BSS;
+s16 D_8010D34C_spotlight_swim BSS;
+s8 D_8010D34E_spotlight_swim BSS;
+SpotlightSwimRipple D_8010D350_spotlight_swim BSS;
+s16 D_8010D364_spotlight_swim BSS;
+s8 D_8010D366_spotlight_swim BSS;
+s8 D_8010D367_spotlight_swim BSS;
+s16 D_8010D368_spotlight_swim[4] BSS;
+f32 D_8010D370_spotlight_swim[2] BSS;
+s8 D_8010D378_spotlight_swim BSS;
+s8 D_8010D379_spotlight_swim BSS;
+u8 D_8010D37C_spotlight_swim[4] BSS; /* Unreferenced. */
+f32 D_8010D380_spotlight_swim[3] BSS;
+f32 D_8010D38C_spotlight_swim[3] BSS;
+SpotlightSwimBss398 spotlightSwimBss398 BSS;
+f32 D_8010D3A0_spotlight_swim[3] BSS;
+s8 D_8010D3AC_spotlight_swim BSS;
+s16 D_8010D3B0_spotlight_swim[8] BSS;
+f32 D_8010D3C0_spotlight_swim[3] BSS;
+s8 D_8010D3CC_spotlight_swim BSS;
+s8 D_8010D3CD_spotlight_swim BSS;
+SpotlightSwimLight D_8010D3D0_spotlight_swim[6] BSS;
+u32 D_8010D448_spotlight_swim BSS;
+s8 D_8010D44C_spotlight_swim BSS;
+SpotlightSwimPos2D D_8010D450_spotlight_swim[5] BSS;
+s8 D_8010D478_spotlight_swim BSS;
+u32 D_8010D47C_spotlight_swim BSS;
+SpotlightSwimData D_8010D480_spotlight_swim[50] BSS;
+s8 D_8010EE48_spotlight_swim BSS;
+u8 D_8010EE4C_spotlight_swim[4] BSS; /* Unreferenced. */
+SpotlightSwimUnk8 D_8010EE50_spotlight_swim[4] BSS;
 
 void func_80105E9C_spotlight_swim(s16, f32, f32, f32, f32 *);
 void func_8007E040_main(Mtx *m, Mtx *n, Mtx *res);
@@ -400,21 +466,21 @@ void func_80106420_spotlight_swim(omObjData *obj) {
     f32 *zs;
 
     for (i = 0; i < 3; i++) {
-        switch (D_8010D39B_spotlight_swim[i]) {
+        switch (spotlightSwimBss398.unk03[i]) {
             case 0:
                 break;
             case 1:
-                D_8010D398_spotlight_swim[i]++;
-                if (D_8010D398_spotlight_swim[i] >= i * 7) {
-                    D_8010D39B_spotlight_swim[i] = 2;
-                    D_8010D398_spotlight_swim[i] = 0;
+                spotlightSwimBss398.unk00[i]++;
+                if (spotlightSwimBss398.unk00[i] >= i * 7) {
+                    spotlightSwimBss398.unk03[i] = 2;
+                    spotlightSwimBss398.unk00[i] = 0;
                 }
                 break;
             case 2:
-                D_8010D398_spotlight_swim[i]++;
-                if (D_8010D398_spotlight_swim[i] >= 10) {
-                    D_8010D398_spotlight_swim[i] = 0;
-                    D_8010D39B_spotlight_swim[i] = 0;
+                spotlightSwimBss398.unk00[i]++;
+                if (spotlightSwimBss398.unk00[i] >= 10) {
+                    spotlightSwimBss398.unk00[i] = 0;
+                    spotlightSwimBss398.unk03[i] = 0;
                     D_8010D380_spotlight_swim[i] = 1000.0f;
                 }
                 zs = D_8010D38C_spotlight_swim;
@@ -440,8 +506,8 @@ void func_801065C4_spotlight_swim(omObjData *obj) {
         xs[i] = 1000.0f;
         zs[i] = 0.0f;
         Hu3DModelPosSet(obj->model[i + 1], xs[i], -200.0f, zs[i]);
-        D_8010D398_spotlight_swim[i] = 0;
-        D_8010D39B_spotlight_swim[i] = 0;
+        spotlightSwimBss398.unk00[i] = 0;
+        spotlightSwimBss398.unk03[i] = 0;
     }
     DataClose(data);
     obj->func = func_80106420_spotlight_swim;
@@ -684,7 +750,7 @@ void func_8010755C_spotlight_swim(omObjData *obj) {
         }
         D_8010D380_spotlight_swim[i] = x + obj->trans.x;
         D_8010D38C_spotlight_swim[i] = z + obj->trans.z;
-        D_8010D39B_spotlight_swim[i] = 1;
+        spotlightSwimBss398.unk03[i] = 1;
     }
 }
 
@@ -1485,7 +1551,7 @@ void func_80109E08_spotlight_swim(void) {
             obj->work[0] = playerIndex;
             data->obj = obj;
             obj->work[1] = data->unk04 = count;
-            D_8010D320_spotlight_swim[count] = obj->work[0];
+            spotlightSwimBss320.unk00[count] = obj->work[0];
             D_8010D340_spotlight_swim[count] = GwPlayer[obj->work[0]].chr;
             count++;
         }
@@ -1508,7 +1574,7 @@ void func_80109F60_spotlight_swim(omObjData *obj) {
             break;
         case 3:
         case 4:
-            if (D_8010D323_spotlight_swim[obj->work[1]] == 0) {
+            if (spotlightSwimBss320.unk03[obj->work[1]] == 0) {
                 func_80105CE0_spotlight_swim(obj, 5, 2);
                 Hu3DMotionSpeedSet(obj->model[0], 1.0f);
                 angle = func_801059BC_spotlight_swim(obj->rot.y, 180.0f);
@@ -1516,9 +1582,9 @@ void func_80109F60_spotlight_swim(omObjData *obj) {
                 obj->trans.z = cosdf(angle) * 80.0f + obj->trans.z;
                 Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
                 if (D_8010D2F4_spotlight_swim == 7) {
-                    D_8010D323_spotlight_swim[obj->work[1]] = 1;
+                    spotlightSwimBss320.unk03[obj->work[1]] = 1;
                 } else {
-                    D_8010D323_spotlight_swim[obj->work[1]] = 2;
+                    spotlightSwimBss320.unk03[obj->work[1]] = 2;
                 }
             }
             Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
@@ -1536,16 +1602,16 @@ void func_80109F60_spotlight_swim(omObjData *obj) {
             }
             break;
         case 6:
-            if (D_8010EE48_spotlight_swim == 6 && D_8010D323_spotlight_swim[obj->work[1]] == 1) {
+            if (D_8010EE48_spotlight_swim == 6 && spotlightSwimBss320.unk03[obj->work[1]] == 1) {
                 func_80105CE0_spotlight_swim(obj, 3, 0);
                 func_80045ED0_main((D_8010CCD4_spotlight_swim[chr] << 16) | 0x2F);
-                D_8010D323_spotlight_swim[obj->work[1]] = 10;
+                spotlightSwimBss320.unk03[obj->work[1]] = 10;
             }
             break;
         case 5:
-            if (D_8010D323_spotlight_swim[obj->work[1]] == 2) {
+            if (spotlightSwimBss320.unk03[obj->work[1]] == 2) {
                 func_80105CE0_spotlight_swim(obj, 4, 0);
-                D_8010D323_spotlight_swim[obj->work[1]] = 10;
+                spotlightSwimBss320.unk03[obj->work[1]] = 10;
             }
             break;
         case 7:
@@ -1597,7 +1663,7 @@ void func_8010A328_spotlight_swim(omObjData *obj) {
     obj->rot.x = obj->rot.z = 0.0f;
     obj->rot.y = 180.0f;
     Hu3DModelRotSet(obj->model[0], obj->rot.x, obj->rot.y, obj->rot.z);
-    D_8010D323_spotlight_swim[index] = 0;
+    spotlightSwimBss320.unk03[index] = 0;
     obj->func = func_80109F60_spotlight_swim;
 }
 
@@ -2225,9 +2291,9 @@ void func_8010C5E0_spotlight_swim(omObjData *obj) {
             break;
         case 6:
             GMesCreate(0x22, D_8010D340_spotlight_swim[0], D_8010D340_spotlight_swim[1], D_8010D340_spotlight_swim[2]);
-            GwPlayer[D_8010D320_spotlight_swim[0]].bonusCoin = 10;
-            GwPlayer[D_8010D320_spotlight_swim[1]].bonusCoin = 10;
-            GwPlayer[D_8010D320_spotlight_swim[2]].bonusCoin = 10;
+            GwPlayer[spotlightSwimBss320.unk00[0]].bonusCoin = 10;
+            GwPlayer[spotlightSwimBss320.unk00[1]].bonusCoin = 10;
+            GwPlayer[spotlightSwimBss320.unk00[2]].bonusCoin = 10;
             HuAudSeqPlay(0x66);
             D_8010D364_spotlight_swim = 15;
             D_8010EE48_spotlight_swim = 7;

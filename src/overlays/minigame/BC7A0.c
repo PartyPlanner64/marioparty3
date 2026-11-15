@@ -1,17 +1,6 @@
 #include "common.h"
 #include "overlays/minigame.h"
 
-// Per-minigame-field work allocated in func_800E9C20_minigame, stored at D_800EBDF4_minigame
-typedef struct D_800EBDF4_minigame_Entry {
-    /* 0x00 */ s16 *unk_00;
-    /* 0x04 */ s16 *unk_04;
-    /* 0x08 */ f32 unk_08;
-    /* 0x0C */ f32 unk_0C;
-    /* 0x10 */ f32 unk_10;
-    /* 0x14 */ u16 unk_14;
-    /* 0x16 */ u16 unk_16;
-} D_800EBDF4_minigame_Entry; // Size 0x18
-
 extern s16 D_800EBDF0_minigame;
 extern D_800EBDF4_minigame_Entry *D_800EBDF4_minigame;
 extern s16 D_800EBDF8_minigame;

@@ -6,28 +6,40 @@
 #include "game/mapspace.h"
 #include "math.h"
 
+s32 D_800EB730_minigame = 0;
+u8 D_800EB734_minigame = 0;
+u8 D_800EB735_minigame = 1;
+s16 D_800EB736_minigame = 0;
+s8 D_800EB738_minigame = -1;
+u8 D_800EB739_minigame = 0;
+u8 D_800EB73A_minigame = 0;
+u8 D_800EB73B_minigame = 0;
+f32 D_800EB73C_minigame = 15.0f;
+f32 D_800EB740_minigame = 0.5f;
+f32 D_800EB744_minigame = 1.47f;
+f32 D_800EB748_minigame = 0.15f;
+f32 D_800EB74C_minigame = 7.0f;
+f32 D_800EB750_minigame = 30.0f;
+f32 D_800EB754_minigame = 60.0f;
+f32 D_800EB758_minigame = 20.0f;
+f32 D_800EB75C_minigame = 3.3333333f;
+f32 D_800EB760_minigame = 18.0f;
+f32 D_800EB764_minigame = 13.5f;
+f32 D_800EB768_minigame = 9.0f;
+f32 D_800EB76C_minigame = 4.5f;
+f32 D_800EB770_minigame = 0.0f;
+f32 D_800EB774_minigame = 1.7f;
+f32 D_800EB778_minigame = 0.5f;
+f32 D_800EB77C_minigame = 0.147f;
+s8 D_800EB780_minigame = 0;
+s16 D_800EB784_minigame[4][14] = { 0 };
+
 extern Vec D_800EBDD0_minigame;
-extern u8 D_800EB73B_minigame;
-extern f32 D_800EB740_minigame;
-extern f32 D_800EB74C_minigame;
-extern f32 D_800EB750_minigame;
-extern f32 D_800EB754_minigame;
-extern f32 D_800EB758_minigame;
-extern f32 D_800EB75C_minigame;
-extern f32 D_800EB760_minigame;
-extern f32 D_800EB764_minigame;
-extern f32 D_800EB768_minigame;
-extern f32 D_800EB76C_minigame;
-extern f32 D_800EB770_minigame;
 extern Vec D_800EC298_minigame[];
 extern omObjData *D_800EBE70_minigame[];
 extern s8 D_800EC286_minigame;
 extern u16 D_800EC288_minigame;
-extern u8 D_800EB734_minigame;
 extern Vec D_800EC28C_minigame[];
-extern s8 D_800EB738_minigame;
-extern f32 D_800EB778_minigame;
-extern s8 D_800EB780_minigame;
 
 f32 func_800D8640_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg1, f32 arg2) {
     D_800EC1C0_minigame_ObjData *data = arg0->data;

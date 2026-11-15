@@ -26,6 +26,15 @@ D_8010BF84_silly_screws = 0x8010BF84;
 
 D_800EC1BC_minigame = 0x800EC1BC;
 
+/* minigame field aliases: MinigameBssC1B8, MinigameBssC280. */
+D_800EC1B8_minigame = minigameBssC1B8;
+D_800EC1BA_minigame = minigameBssC1B8 + 0x2;
+D_800EC280_minigame = minigameBssC280;
+D_800EC282_minigame = minigameBssC280 + 0x2;
+D_800EC286_minigame = minigameBssC280 + 0x6;
+D_800EC288_minigame = minigameBssC280 + 0x8;
+D_800EC28A_minigame = minigameBssC280 + 0xA;
+
 /* Minigame table field aliases: MinigameTable (mgdata.c). */
 D_800A6D44_main = D_800A6D40_main + 0x4; /* minigameType */
 D_800A6D46_main = D_800A6D40_main + 0x6; /* flags */

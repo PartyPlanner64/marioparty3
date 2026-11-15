@@ -689,14 +689,19 @@ segments:
       - [0xBA4B0, c]
       - [0xBC7A0, c]
       - [0xBD210, c]
-      - [0xBE2A0, data, A96F0] #800EB720
+      - [0xBE2A0, .data, A96F0] #800EB720
+      - [0xBE2B0, .data, AB1C0] #800EB730
+      - [0xBE380, .data, B3CE0] #800EB800
+      - [0xBE480, .data, B88C0] #800EB900
+      - [0xBE490, .data, B8A20] #800EB910
+      - [0xBE4D0, .data, BA4B0] #800EB950
       - [0xBE690, .rodata, A96F0] #800EBB10
       - [0xBE6B0, .rodata, AB1C0] #800EBB30
       - [0xBE750, .rodata, B3CE0] #800EBBD0
       - [0xBE760, .rodata, B63A0] #800EBBE0
       - [0xBE770, .rodata, B7600] #800EBBF0
       - [0xBE860, .rodata, B8A20] #800EBCE0
-      - {0xBE940, type: bss, vram: 0x800EBDC0, name: minigame_bss}
+      - {0xBE940, type: .bss, vram: 0x800EBDC0, name: bss}
 
   - type: code
     start: 0xBE940

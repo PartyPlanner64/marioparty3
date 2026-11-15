@@ -1,7 +1,7 @@
 #include "common.h"
 #include "overlays/minigame.h"
 
-extern u32 D_800EB900_minigame;
+u32 D_800EB900_minigame = 0;
 
 u32 func_800E5D40_minigame(u32 seed) {
     u32 quotient;

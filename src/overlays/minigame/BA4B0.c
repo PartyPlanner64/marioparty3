@@ -51,25 +51,78 @@ typedef struct {
     /* 0x142 */ char unk142[0x2];
 } BA4B0_Work; // Size 0x144
 
-extern BA4B0_SprDef D_800EB950_minigame[15];
-extern s32 D_800EB9C8_minigame[];
-extern s32 D_800EB9E4_minigame[];
-extern u32 D_800EB9FC_minigame[];
-extern u32 D_800EBA14_minigame[];
-extern u32 D_800EBA24_minigame[];
-extern u8 D_800EBA40_minigame[];
-extern u8 D_800EBA4C_minigame[];
-extern u8 D_800EBA58_minigame[][3];
-extern BA4B0_WinDef D_800EBA70_minigame[6];
-extern BA4B0_Pos D_800EBAA0_minigame[];
-extern u32 D_800EBABC_minigame[];
-extern u8 D_800EBACC_minigame[];
-extern u8 D_800EBAD4_minigame[];
-extern u8 D_800EBADC_minigame[];
-extern u8 D_800EBAE4_minigame[];
-extern u8 D_800EBAEC_minigame[];
-extern s16 D_800EBAF0_minigame;
-extern u8 D_800EBAF4_minigame[];
+BA4B0_SprDef D_800EB950_minigame[15] = {
+    { 0x00150000, { 0, -75 } },
+    { 0x00150002, { 0, 8 } },
+    { 0x00150011, { -86, -22 } },
+    { 0x00150012, { 0, -22 } },
+    { 0x00150013, { 86, -22 } },
+    { 0x00150014, { -86, 24 } },
+    { 0x00150015, { 0, 24 } },
+    { 0x00150016, { 86, 24 } },
+    { 0x00150017, { -86, -22 } },
+    { 0x00150018, { 0, -22 } },
+    { 0x00150019, { 86, -22 } },
+    { 0x0015001A, { -86, 24 } },
+    { 0x0015001B, { 0, 24 } },
+    { 0x0015001C, { 86, 24 } },
+    { 0x0015001E, { 0, 1 } },
+};
+
+s32 D_800EB9C8_minigame[] = {
+    0x0015000D, 0x0015000C, 0x0015000B, 0x0015000A, 0x0015000A, 0x0015000A, 0x0015000A,
+};
+
+s32 D_800EB9E4_minigame[] = {
+    0x00150004, 0x00150005, 0x00150006, 0x00150007, 0x00150008, 0x00150009,
+};
+
+u32 D_800EB9FC_minigame[] = {
+    0x1C00, 0x1C01, 0x1C02, 0x1C03, 0x1C04, 0x1C05,
+};
+
+u32 D_800EBA14_minigame[] = {
+    0x6102, 0x6103, 0x6104, 0x6105,
+};
+
+u32 D_800EBA24_minigame[] = {
+    0x6112, 0x6113, 0x6116, 0x6117, 0x6118, 0x6118, 0x6118,
+};
+
+u8 D_800EBA40_minigame[] = {
+    0xFF, 0x50, 0x50, 0x50, 0xFF, 0x50, 0xFF, 0xFF, 0x50,
+};
+
+u8 D_800EBA4C_minigame[] = {
+    0xFF, 0x50, 0x50, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00,
+};
+
+u8 D_800EBA58_minigame[][3] = {
+    { 0x8C, 0x87, 0x87 }, { 0x7B, 0x2A, 0xBF }, { 0xF0, 0xD9, 0x12 }, { 0xFF, 0xFF, 0xFF },
+    { 0xFF, 0xFF, 0xFF }, { 0xFF, 0xFF, 0xFF }, { 0xFF, 0xFF, 0xFF },
+};
+
+BA4B0_WinDef D_800EBA70_minigame[6] = {
+    { -72, -98, 80, 48 },  { 6, -98, 112, 20 },  { 6, -84, 112, 20 },
+    { 6, -70, 112, 20 },   { -120, -50, 240, 20 }, { -104, -18, 112, 105 },
+};
+
+BA4B0_Pos D_800EBAA0_minigame[] = {
+    { -86, -3 }, { 0, -3 }, { 86, -3 }, { -86, 43 }, { 0, 43 }, { 86, 43 }, { 0, 20 },
+};
+
+u32 D_800EBABC_minigame[] = {
+    0x6106, 0x6107, 0x6108, 0x6109,
+};
+
+u8 D_800EBACC_minigame[] = { 0, 2, 4, 6, 8, 11 };
+u8 D_800EBAD4_minigame[] = { 1, 3, 5, 7, 9, 10 };
+u8 D_800EBADC_minigame[] = { 0, 0, 1, 2, 3 };
+u8 D_800EBAE4_minigame[] = { 0, 0, 1, 2, 3 };
+u8 D_800EBAEC_minigame[] = { 13, 26, 30, 34 };
+s16 D_800EBAF0_minigame = 0;
+u8 D_800EBAF4_minigame[] = { 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 2 };
+
 extern s16 winPrio;
 
 s16 func_800E7BCC_minigame(BA4B0_Work *work);

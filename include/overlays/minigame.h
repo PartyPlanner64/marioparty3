@@ -158,6 +158,17 @@ typedef struct {
     /* 0x08 */ f32 unk08;
 } D_800EBEB8_minigame_Entry; // Size 0xC
 
+// Per-minigame-field work allocated in func_800E9C20_minigame, stored at D_800EBDF4_minigame
+typedef struct D_800EBDF4_minigame_Entry {
+    /* 0x00 */ s16 *unk_00;
+    /* 0x04 */ s16 *unk_04;
+    /* 0x08 */ f32 unk_08;
+    /* 0x0C */ f32 unk_0C;
+    /* 0x10 */ f32 unk_10;
+    /* 0x14 */ u16 unk_14;
+    /* 0x16 */ u16 unk_16;
+} D_800EBDF4_minigame_Entry; // Size 0x18
+
 typedef struct {
     /* 0x00 */ u8 unk00;
     /* 0x01 */ u8 unk01;
@@ -425,6 +436,7 @@ s32 func_800EAE7C_minigame(omObjData *obj);
 void func_800EB3CC_minigame(omObjData *obj);
 void func_800EB5E4_minigame(omObjData *obj);
 
+#ifndef NO_EXTERN_VARIABLES
 extern f32 D_800EB720_minigame;
 extern f32 D_800EB72C_minigame;
 extern u8 D_800EB735_minigame;
@@ -460,5 +472,6 @@ extern HuMtx4F D_800EC240_minigame;
 extern u16 D_800EC280_minigame;
 extern omObjData *D_800EC598_minigame[];
 extern f32 D_800EC5D8_minigame;
+#endif
 
 #endif

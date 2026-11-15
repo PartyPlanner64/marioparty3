@@ -5,22 +5,30 @@
 #include "game/sprite.h"
 #include "math.h"
 
-extern u16 D_800EB91A_minigame;
-extern s32 D_800EB91C_minigame;
-extern s32 D_800EB920_minigame;
-extern s32 D_800EB924_minigame;
-extern u16 D_800EB926_minigame;
-extern s16 D_800EB92A_minigame;
-extern s32 D_800EB92C_minigame;
+u16 D_800EB910_minigame = 0;
+u16 D_800EB912_minigame = 0;
+u16 D_800EB914_minigame = 0;
+u16 D_800EB916_minigame = 0;
+u16 D_800EB918_minigame = 0;
+u16 D_800EB91A_minigame = 0;
+s32 D_800EB91C_minigame = 0x90;
+s32 D_800EB920_minigame = 0xD0;
+s32 D_800EB924_minigame = 1;
+s16 D_800EB928_minigame = 0; /* Unreferenced. */
+s16 D_800EB92A_minigame = -1;
+s32 D_800EB92C_minigame = -1;
+s16 D_800EB930_minigame = -1;
+s16 D_800EB932_minigame = 75;
+s16 D_800EB934_minigame = 0;
+f32 D_800EB938_minigame = 0.0f;
+s32 D_800EB93C_minigame = 0;
+s32 D_800EB940_minigame = 0;
+
 extern s32 omovl;
 extern u8 D_800CE20A_main;
 extern s16 D_800EBDE4_minigame;
 extern s16 D_800EBDE6_minigame;
 extern s16 D_800EBDE8_minigame[];
-extern f32 D_800EB938_minigame;
-extern s16 D_800EB92E_minigame;
-extern s32 D_800EB93C_minigame;
-extern s32 D_800EB940_minigame;
 
 void func_800E5EA0_minigame(D_80111B50_vine_with_me_Struct *arg0) {
     arg0->unk00 = 0;
@@ -129,11 +137,11 @@ s16 func_800E6300_minigame(s32 x, s32 y) {
     HuSprAttrReset(group, 0, 0xFFFF);
     HuSprDispOff(group, 0);
     HuSprPosSet(group, 0, x - 16, y);
-    HuSprPriSet(group, 0, D_800EB926_minigame);
+    HuSprPriSet(group, 0, (u16)D_800EB924_minigame);
 
     memberX = 4;
     for (member = 1; member < 7; member++) {
-        HuSprPriSet(group, member, D_800EB926_minigame);
+        HuSprPriSet(group, member, (u16)D_800EB924_minigame);
         HuSprGrpMemberSet(group, member, D_800EBDE4_minigame, 0);
         HuSprPosSet(group, member, memberX, 0);
         HuSprAttrReset(group, member, 0xFFFF);
@@ -160,11 +168,11 @@ s16 func_800E64B8_minigame(s32 x, s32 y) {
     HuSprAttrReset(group, 0, 0xFFFF);
     HuSprDispOff(group, 0);
     HuSprPosSet(group, 0, x - 16, y);
-    HuSprPriSet(group, 0, D_800EB926_minigame);
+    HuSprPriSet(group, 0, (u16)D_800EB924_minigame);
 
     memberX = 4;
     for (member = 1; member < 7; member++) {
-        HuSprPriSet(group, member, D_800EB926_minigame);
+        HuSprPriSet(group, member, (u16)D_800EB924_minigame);
         HuSprGrpMemberSet(group, member, D_800EBDE6_minigame, 0);
         HuSprPosSet(group, member, memberX, 0);
         HuSprAttrReset(group, member, 0xFFFF);
@@ -447,7 +455,7 @@ u8 func_800E6F40_minigame(void) {
                 D_800EB914_minigame--;
                 if (D_800EB914_minigame * 2 < D_800EB92A_minigame) {
                     D_800EBDE0_minigame->unk04 = 1;
-                    GWMgRecordSet(D_800EB92E_minigame, (u16)(D_800EB914_minigame * 2));
+                    GWMgRecordSet((s16)D_800EB92C_minigame, (u16)(D_800EB914_minigame * 2));
                     D_800EBDE0_minigame->unk24 += 75.0;
                     D_800EB940_minigame = 1;
                 }

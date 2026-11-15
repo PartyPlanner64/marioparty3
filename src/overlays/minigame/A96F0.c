@@ -8,8 +8,11 @@
 #include "game/mallocblock.h"
 #include "game/util.h"
 
-extern f32 D_800EB724_minigame;
-extern f32 D_800EB728_minigame;
+f32 D_800EB720_minigame = 1.0f;
+f32 D_800EB724_minigame = 20.0f;
+f32 D_800EB728_minigame = 4.0f;
+f32 D_800EB72C_minigame = 0.06f;
+
 extern f32 D_800EB740_minigame;
 extern f32 D_800EB760_minigame;
 extern f32 D_800EB770_minigame;

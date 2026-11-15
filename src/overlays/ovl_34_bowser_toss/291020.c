@@ -148,74 +148,155 @@ typedef union BowserTossWorkBytes { // packs the low byte of each work word
     } bytes;
 } BowserTossWorkBytes;
 
-extern u8 D_8010F150_bowser_toss[];  // RGBA
-extern s32 D_8010F154_bowser_toss[]; // per-character
-extern s32 D_8010F174_bowser_toss[]; // per-character
-extern s32 D_8010F194_bowser_toss;
-extern Vec D_8010F198_bowser_toss[2];
 extern s32 D_800A178C_main[][6];
-extern s32 D_8010F1B0_bowser_toss[4];
-extern s32 D_8010F1C0_bowser_toss[];
-extern f32 D_8010F1E0_bowser_toss[];
-extern f32 D_8010F200_bowser_toss[];
-extern s32 D_8010F220_bowser_toss[];
-extern s32 D_8010F228_bowser_toss[];
-extern f32 D_8010F230_bowser_toss[];
-extern f32 D_8010F240_bowser_toss[];
-extern f32 D_8010F250_bowser_toss[];
-extern f32 D_8010F260_bowser_toss[];
-extern f32 D_8010F270_bowser_toss[2];
-extern Vec D_8010F278_bowser_toss[14];
-extern u8 D_8010F320_bowser_toss[4]; // RGBA
-extern s16 D_8010F324_bowser_toss[2][5];
-extern u8 D_8010F338_bowser_toss[4]; // RGBA
-extern BowserTossScissor D_8010F33C_bowser_toss[2];
-extern f32 D_8010F34C_bowser_toss;
-extern s32 D_8010F3EC_bowser_toss; // camera test mode
-extern s32 D_8010F3F0_bowser_toss; // camera test mode camera index
-extern s32 D_8010F3F4_bowser_toss; // camera test mode text x offset
-extern s32 D_8010F3F8_bowser_toss; // camera test mode text y offset
-extern BowserTossScrollFrame D_8010F350_bowser_toss[];
-extern BowserTossSprPos D_8010F378_bowser_toss[3][8]; // score sprite positions per counter
-extern s32 D_8010F3D8_bowser_toss[5];                 // decimal place divisors
 extern s8 D_800D20A1_main[];
 extern u16 D_800D5558_main[];
 extern s16 D_800CDA7C_main[];
-extern omObjData *D_8010FB50_bowser_toss;
-extern s32 D_8010FB54_bowser_toss;
-extern s32 D_8010FB58_bowser_toss;
-extern s32 D_8010FB5C_bowser_toss;
-extern s32 D_8010FB60_bowser_toss;
-extern s32 D_8010FB64_bowser_toss;
-extern s32 D_8010FB68_bowser_toss;
-extern s32 D_8010FB6C_bowser_toss;
-extern s16 D_8010FB70_bowser_toss;
-extern s16 D_8010FB72_bowser_toss;
-extern BowserTossPlayer *D_8010FB74_bowser_toss;
-extern s16 D_8010FB78_bowser_toss;
-extern s32 D_8010FB7C_bowser_toss;
-extern s32 D_8010FB80_bowser_toss;
-extern s32 D_8010FB84_bowser_toss;
-extern omObjData *D_8010FB90_bowser_toss;
-extern BowserTossEffect *D_8010FB94_bowser_toss;
-extern s16 *D_8010FB98_bowser_toss;
-extern s16 D_8010FB9C_bowser_toss[2];
-extern D_80111B50_vine_with_me_Struct D_8010FBB8_bowser_toss;
 extern const s16 D_8010F530_bowser_toss[];
 extern const s16 D_8010F53C_bowser_toss[];
-extern omObjData *D_8010FB88_bowser_toss;
-extern UnkBowser *D_8010FB8C_bowser_toss;
-extern BowserTossBowser *D_8010FBA0_bowser_toss;
 extern s16 D_800CDD6A_main;
-extern Gfx D_8010F4F0_bowser_toss[];
 extern s16 D_800CD1B0_main;
 extern u8 D_800D2008_main;
 extern s16 *D_800D04B4_main;
 extern HuMtx4F *D_800D1358_main;
 extern s16 D_800D138A_main;
 extern HuMtx4F D_800D5A00_main[];
-extern BowserTossCamera *D_8010FBA4_bowser_toss;
-extern Vec D_8010FBA8_bowser_toss;
+
+u8 D_8010F150_bowser_toss[4] = { 0xE9, 0xDD, 0xA1, 0x80 };                                                                          // RGBA
+s32 D_8010F154_bowser_toss[8] = { 0x000200A5, 0x000300A5, 0x000700A5, 0x000400A5, 0x000500A5, 0x000600A5, 0x000800A5, 0x0009001C }; // per-character
+s32 D_8010F174_bowser_toss[8] = { 0x000200A6, 0x000300A6, 0x000700A6, 0x000400A6, 0x000500A6, 0x000600A6, 0x000800A6, 0x0009001D }; // per-character
+s32 D_8010F194_bowser_toss = 0;
+Vec D_8010F198_bowser_toss[2] = {
+    { -0.0f, 100.0f, 0.0f },
+    { 0.0f, 100.0f, 0.0f }
+};
+s32 D_8010F1B0_bowser_toss[4] = { 0, 1, 2, 3 };
+s32 D_8010F1C0_bowser_toss[8] = { 0x00020000, 0x00030000, 0x00070000, 0x00040000, 0x00050000, 0x00060000, 0x00080000, 0x00090000 };
+f32 D_8010F1E0_bowser_toss[8] = { 10.0f, 10.0f, 10.0f, 10.0f, 10.0f, 10.0f, 10.0f, 10.0f };
+f32 D_8010F200_bowser_toss[8] = { 23.0f, 23.0f, 23.0f, 23.0f, 23.0f, 23.0f, 23.0f, 23.0f };
+s32 D_8010F220_bowser_toss[2] = { 0x2F, 0x30 };
+s32 D_8010F228_bowser_toss[2] = { 0x36, 0x37 };
+f32 D_8010F230_bowser_toss[4] = { 0.4f, 0.55f, 0.45f, 0.5f };
+f32 D_8010F240_bowser_toss[4] = { 0.1f, 0.2f, 0.2f, 0.2f };
+f32 D_8010F250_bowser_toss[4] = { 0.5f, 0.6f, 0.7f, 0.8f };
+f32 D_8010F260_bowser_toss[4] = { 2000.0f, 4000.0f, 5500.0f, 7000.0f };
+f32 D_8010F270_bowser_toss[2] = { 0.0f, 200.0f };
+Vec D_8010F278_bowser_toss[14] = {
+    { 0.0f, 0.0f, 0.0f },
+    { 955.69507f, 0.0f, 0.0f },
+    { 1660.1975f, 0.0f, 0.0f },
+    { 2364.7f, 0.0f, 0.0f },
+    { 3069.2024f, 0.0f, 0.0f },
+    { 100.0f, 0.0f, 0.0f },
+    { 200.0f, 0.0f, 0.0f },
+    { 300.0f, 0.0f, 0.0f },
+    { 400.0f, 0.0f, 0.0f },
+    { 100.0f, 0.0f, 0.0f },
+    { 200.0f, 0.0f, 0.0f },
+    { 300.0f, 0.0f, 0.0f },
+    { 400.0f, 0.0f, 0.0f },
+    { 0.0f, 0.0f, 0.0f }
+};
+u8 D_8010F320_bowser_toss[4] = { 0xFF, 0xFF, 0xFF, 0xFF }; // RGBA
+s16 D_8010F324_bowser_toss[2][5] = {
+    { 0, 1, 2, 3, 4 },
+    { 1, 2, 3, 4, 0 }
+};
+u8 D_8010F338_bowser_toss[4] = { 0xFF, 0xFF, 0xFF, 0xFF }; // RGBA
+BowserTossScissor D_8010F33C_bowser_toss[2] = {
+    { 0, 0, 320, 120 },
+    { 0, 120, 320, 240 }
+};
+f32 D_8010F34C_bowser_toss = 10.0f;
+BowserTossScrollFrame D_8010F350_bowser_toss[10] = {
+    { 1, 1 }, { 1, 0 }, { 2, 1 }, { 2, 0 }, { 3, 1 }, { 3, 0 }, { 3, 1 }, { 3, 0 }, { 3, 1 }, { 3, 0 }
+};
+BowserTossSprPos D_8010F378_bowser_toss[3][8] = { // score sprite positions per counter
+                                                  { { 136, 60 }, { 148, 60 }, { 168, 60 }, { 180, 60 }, { 160, 60 }, { 196, 60 }, { 160, 60 }, { 124, 60 } },
+                                                  { { 136, 180 }, { 148, 180 }, { 168, 180 }, { 180, 180 }, { 160, 180 }, { 196, 180 }, { 160, 180 }, { 124, 180 } },
+                                                  { { 56, 25 }, { 68, 25 }, { 88, 25 }, { 100, 25 }, { 80, 24 }, { 116, 24 }, { 80, 25 }, { 44, 25 } }
+};
+s32 D_8010F3D8_bowser_toss[5] = { 10000, 1000, 100, 10, 1 }; // decimal place divisors
+s32 D_8010F3EC_bowser_toss = 0;                              // camera test mode
+s32 D_8010F3F0_bowser_toss = 0;                              // camera test mode camera index
+s32 D_8010F3F4_bowser_toss = 0;                              // camera test mode text x offset
+s32 D_8010F3F8_bowser_toss = 0;                              // camera test mode text y offset
+
+Gfx D_8010F400_bowser_toss[] = {
+    gsSPSegment(0x00, 0x00000000),
+    gsDPPipeSync(),
+    gsDPSetCycleType(G_CYC_1CYCLE),
+    gsDPPipelineMode(G_PM_1PRIMITIVE),
+    gsDPSetTextureLOD(G_TL_TILE),
+    gsDPSetTextureLUT(G_TT_NONE),
+    gsDPSetTextureDetail(G_TD_CLAMP),
+    gsDPSetTexturePersp(G_TP_NONE),
+    gsDPSetTileSize(G_TX_RENDERTILE, 0, 0, 0, 0),
+    gsDPSetTileSize(1, 0, 0, 0, 0),
+    gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_4b, 0, 0x0000, G_TX_RENDERTILE, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
+                G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD),
+    gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_4b, 0, 0x0000, 1, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD,
+                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD),
+    gsDPSetTextureFilter(G_TF_BILERP),
+    gsDPSetTextureConvert(G_TC_FILT),
+    gsDPSetCombineMode(G_CC_SHADE, G_CC_SHADE),
+    gsDPSetCombineKey(G_CK_NONE),
+    gsDPSetAlphaCompare(G_AC_NONE),
+    gsDPSetDepthSource(G_ZS_PIXEL),
+    gsDPSetRenderMode(G_RM_OPA_SURF, G_RM_OPA_SURF2),
+    gsDPNoOp(),
+    gsDPSetColorDither(G_CD_DISABLE),
+    gsDPPipeSync(),
+    gsSPEndDisplayList(),
+};
+Gfx D_8010F4B8_bowser_toss[] = {
+    gsSPClearGeometryMode(0xFFFFFFFF),
+    gsSPTexture(0, 0, 0, G_TX_RENDERTILE, G_OFF),
+    gsSPSetGeometryMode(G_SHADE | G_SHADING_SMOOTH),
+    gsSPEndDisplayList(),
+};
+Gfx D_8010F4D8_bowser_toss[] = {
+    gsSPDisplayList(D_8010F4B8_bowser_toss),
+    gsSPDisplayList(D_8010F400_bowser_toss),
+    gsSPEndDisplayList(),
+};
+Gfx D_8010F4F0_bowser_toss[] = {
+    gsDPPipeSync(),
+    gsSPDisplayList(D_8010F4D8_bowser_toss),
+    gsDPSetCycleType(G_CYC_1CYCLE),
+    gsSPSetGeometryMode(G_ZBUFFER | G_CULL_BACK | G_LIGHTING | G_SHADING_SMOOTH),
+    gsDPSetBlendColor(0x00, 0x00, 0x00, 0x00),
+    gsDPSetPrimColor(0, 0, 0x00, 0x00, 0x00, 0xFF),
+    gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
+    gsSPEndDisplayList(),
+};
+
+omObjData *D_8010FB50_bowser_toss BSS;
+s32 D_8010FB54_bowser_toss BSS;
+s32 D_8010FB58_bowser_toss BSS;
+s32 D_8010FB5C_bowser_toss BSS;
+s32 D_8010FB60_bowser_toss BSS;
+s32 D_8010FB64_bowser_toss BSS;
+s32 D_8010FB68_bowser_toss BSS;
+s32 D_8010FB6C_bowser_toss BSS;
+s16 D_8010FB70_bowser_toss BSS;
+s16 D_8010FB72_bowser_toss BSS;
+BowserTossPlayer *D_8010FB74_bowser_toss BSS;
+s16 D_8010FB78_bowser_toss BSS;
+s32 D_8010FB7C_bowser_toss BSS;
+s32 D_8010FB80_bowser_toss BSS;
+s32 D_8010FB84_bowser_toss BSS;
+omObjData *D_8010FB88_bowser_toss BSS;
+UnkBowser *D_8010FB8C_bowser_toss BSS;
+omObjData *D_8010FB90_bowser_toss BSS;
+BowserTossEffect *D_8010FB94_bowser_toss BSS;
+s16 *D_8010FB98_bowser_toss BSS;
+s16 D_8010FB9C_bowser_toss[2] BSS;
+BowserTossBowser *D_8010FBA0_bowser_toss BSS;
+BowserTossCamera *D_8010FBA4_bowser_toss BSS;
+Vec D_8010FBA8_bowser_toss BSS;
+u8 D_8010FBB4_bowser_toss[4] BSS; /* Unreferenced. */
+D_80111B50_vine_with_me_Struct D_8010FBB8_bowser_toss BSS;
 
 void func_80105C80_bowser_toss(omObjData *object);
 void func_80105CEC_bowser_toss(omObjData *object);
@@ -335,9 +416,9 @@ void func_80105C80_bowser_toss(omObjData *object) {
     }
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", D_8010F530_bowser_toss);
+const s16 D_8010F530_bowser_toss[] = { 0x8272, 0x8273, 0x8260, 0x8271, 0x8273, 0 };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", D_8010F53C_bowser_toss);
+const s16 D_8010F53C_bowser_toss[] = { 0x8265, 0x8268, 0x826D, 0x8268, 0x8272, 0x8267, 0 };
 
 void func_80105CEC_bowser_toss(omObjData *object) {
     BowserTossPlayer *player1;

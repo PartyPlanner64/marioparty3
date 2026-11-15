@@ -351,3 +351,6 @@ D_80109282_eatsa_pizza = D_80109278_eatsa_pizza + 0xA;
 D_80109284_eatsa_pizza = D_80109278_eatsa_pizza + 0xC;
 D_8010928A_eatsa_pizza = D_80109288_eatsa_pizza + 0x2;
 D_8010928E_eatsa_pizza = D_80109288_eatsa_pizza + 0x6;
+
+/* ice_rink_risk: unk04 of the first puck hit entry, referenced by the INCLUDE_ASM function func_80107F58_ice_rink_risk. */
+D_801085B4_ice_rink_risk = D_801085B0_ice_rink_risk + 0x4;

@@ -42,31 +42,41 @@ extern f32 D_800EB760_minigame;
 extern omObjData *D_800EBE70_minigame[];
 extern Vec D_800EC298_minigame[];
 
-extern Vec D_80108550_ice_rink_risk;
-extern Vec D_8010855C_ice_rink_risk;
-extern Vec D_80108568_ice_rink_risk;
-extern Vec D_80108574_ice_rink_risk;
-extern f32 D_80108584_ice_rink_risk[][3];
-extern IceRinkRiskPuckHit D_801085B0_ice_rink_risk[];
-extern s32 D_801085EC_ice_rink_risk[];
-extern s32 D_801085F8_ice_rink_risk;
-extern s32 D_801085FC_ice_rink_risk[4];
-extern D_80111B50_vine_with_me_Struct D_8010860C_ice_rink_risk;
-extern s32 D_80108634_ice_rink_risk;
-extern s32 D_80108638_ice_rink_risk;
-extern s32 D_8010863C_ice_rink_risk[4];
-extern s32 D_8010864C_ice_rink_risk[4];
-extern s8 D_8010865C_ice_rink_risk[4][2];
-extern f32 D_80108664_ice_rink_risk[4];
-extern f32 D_80108674_ice_rink_risk[4];
-extern s32 D_80108684_ice_rink_risk;
-extern f32 D_80108688_ice_rink_risk[];
-extern Vec D_801086D0_ice_rink_risk;
-extern Vec D_801086DC_ice_rink_risk;
-extern s32 D_801086E8_ice_rink_risk;
-extern s32 D_801086EC_ice_rink_risk;
-extern s32 D_801086F0_ice_rink_risk;
-extern s32 D_801086F4_ice_rink_risk;
+Vec D_80108550_ice_rink_risk = { -150.0f, 100.0f, -150.0f };
+Vec D_8010855C_ice_rink_risk = { -150.0f, 100.0f, 150.0f };
+Vec D_80108568_ice_rink_risk = { 150.0f, 100.0f, -150.0f };
+Vec D_80108574_ice_rink_risk = { 150.0f, 100.0f, 150.0f };
+f32 D_80108580_ice_rink_risk[4][3] = {
+    { 40.0f, 900.0f, 10.0f },
+    { 30.0f, 900.0f, 20.0f },
+    { 20.0f, 900.0f, 30.0f },
+    { 10.0f, 900.0f, 40.0f },
+};
+IceRinkRiskPuckHit D_801085B0_ice_rink_risk[3] = {
+    { -1, 20, { 0.0f, 0.0f, 0.0f } },
+    { -1, 20, { 0.0f, 0.0f, 0.0f } },
+    { -1, 20, { 0.0f, 0.0f, 0.0f } },
+};
+s32 D_801085EC_ice_rink_risk[3] = { 0, 0, 0 };
+s32 D_801085F8_ice_rink_risk = 0;
+s32 D_801085FC_ice_rink_risk[4] = { 1, 1, 1, 1 };
+D_80111B50_vine_with_me_Struct D_8010860C_ice_rink_risk = { 0, 0, 1, 2, 0, 0, 0, 0, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0, 0, 0, 0 }, 60, 900, -1, 75, 135 };
+s32 D_80108634_ice_rink_risk = 1;
+s32 D_80108638_ice_rink_risk = 0;
+s32 D_8010863C_ice_rink_risk[4] = { 0, 0, 0, 0 };
+s32 D_8010864C_ice_rink_risk[4] = { 0, 0, 0, 0 };
+s8 D_8010865C_ice_rink_risk[4][2] = { { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 } };
+f32 D_80108664_ice_rink_risk[4] = { 0.75f, 0.8f, 0.9f, 1.0f };
+f32 D_80108674_ice_rink_risk[4] = { 30.0f, 20.0f, 10.0f, 0.0f };
+s32 D_80108684_ice_rink_risk = 0;
+f32 D_80108688_ice_rink_risk[10] = { 0 };
+
+Vec D_801086D0_ice_rink_risk BSS;
+Vec D_801086DC_ice_rink_risk BSS;
+s32 D_801086E8_ice_rink_risk BSS;
+s32 D_801086EC_ice_rink_risk BSS;
+s32 D_801086F0_ice_rink_risk BSS;
+s32 D_801086F4_ice_rink_risk BSS;
 
 void func_80105E34_ice_rink_risk(omObjData *object);
 void func_80105E60_ice_rink_risk(void);
@@ -610,7 +620,7 @@ void func_80107760_ice_rink_risk(omObjData *object) {
     }
     func_800E149C_minigame(object, 0, 2);
     object->trans.x = rand8() / 4;
-    object->trans.y = D_80108584_ice_rink_risk[D_80108684_ice_rink_risk][0];
+    object->trans.y = D_80108580_ice_rink_risk[D_80108684_ice_rink_risk][1];
     object->trans.z = rand8() / 4;
     object->scale.x = object->scale.y = object->scale.z = 1.2f;
     D_80108684_ice_rink_risk++;

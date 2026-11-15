@@ -19,72 +19,191 @@ extern u8 D_800D2008_main;
 extern f32 D_800D5210_main;
 extern u8 D_800D6A90_main;
 
-extern Vec D_80109740_dizzy_dinghies[];
-extern f32 D_80109768_dizzy_dinghies;
-extern Vec D_80109788_dizzy_dinghies;
-extern f32 D_801097B0_dizzy_dinghies;
-extern f32 D_801097B4_dizzy_dinghies;
-extern f32 D_801097B8_dizzy_dinghies;
-extern f32 D_801097BC_dizzy_dinghies;
-extern f32 D_801097C0_dizzy_dinghies;
-extern f32 D_801097C4_dizzy_dinghies;
-extern f32 D_801097C8_dizzy_dinghies;
-extern f32 D_801097CC_dizzy_dinghies;
-extern f32 D_801097D0_dizzy_dinghies;
-extern s32 D_801097D4_dizzy_dinghies;
-extern f32 D_801097D8_dizzy_dinghies;
-extern f32 D_801097DC_dizzy_dinghies;
-extern f32 D_801097E0_dizzy_dinghies;
-extern f32 D_801097E4_dizzy_dinghies;
-extern s32 D_801097E8_dizzy_dinghies;
-extern f32 D_80109770_dizzy_dinghies;
-extern f32 D_80109774_dizzy_dinghies;
-extern f32 D_80109778_dizzy_dinghies;
-extern f32 D_80109780_dizzy_dinghies;
-extern f32 D_80109784_dizzy_dinghies;
-extern Vec D_801097A0_dizzy_dinghies;
-extern f32 D_801097AC_dizzy_dinghies;
-extern Vec D_80109794_dizzy_dinghies;
-extern s32 D_80109E3C_dizzy_dinghies;
-extern s32 D_80109E40_dizzy_dinghies;
-extern Vec D_80109E44_dizzy_dinghies[][3];
-extern s32 D_801097EC_dizzy_dinghies;
-extern Vec D_801097F0_dizzy_dinghies[];
-extern Vec D_801098BC_dizzy_dinghies[];
-extern s8 D_80109988_dizzy_dinghies[];
-extern Vec D_8010999C_dizzy_dinghies[];
-extern Vec D_80109A80_dizzy_dinghies[];
-extern s8 D_80109B64_dizzy_dinghies[];
-extern Vec D_80109B78_dizzy_dinghies[];
-extern Vec D_80109C50_dizzy_dinghies[];
-extern s8 D_80109D28_dizzy_dinghies[];
-extern D_80111B50_vine_with_me_Struct D_80109D3C_dizzy_dinghies;
-extern f32 D_80109D70_dizzy_dinghies;
-extern f32 D_80109D74_dizzy_dinghies;
-extern f32 D_80109D78_dizzy_dinghies;
-extern f32 D_80109D7C_dizzy_dinghies;
-extern f32 D_80109D80_dizzy_dinghies;
-extern s32 D_80109D84_dizzy_dinghies[][3];
-extern s32 D_80109DA8_dizzy_dinghies[][3];
-extern char *D_80109DCC_dizzy_dinghies[];
-extern s8 D_80109DF8_dizzy_dinghies[4];
-extern s16 D_80109DFC_dizzy_dinghies;
-extern s16 D_80109DFE_dizzy_dinghies;
-extern s16 D_80109E00_dizzy_dinghies;
-extern s16 D_80109E08_dizzy_dinghies[20];
-extern s32 D_80109E04_dizzy_dinghies;
-extern s32 D_80109E30_dizzy_dinghies;
-extern s32 D_80109E34_dizzy_dinghies;
-extern Vec D_80109F60_dizzy_dinghies[6];
-extern f32 D_80109FA8_dizzy_dinghies[6];
-extern Vec D_80109FC0_dizzy_dinghies[6];
-extern f32 D_8010A008_dizzy_dinghies[6];
-extern s32 D_8010A020_dizzy_dinghies;
-extern Vec D_8010A028_dizzy_dinghies[20];
-extern s32 D_8010A118_dizzy_dinghies;
-extern s32 D_8010A11C_dizzy_dinghies;
+Vec D_80109740_dizzy_dinghies[3] = {
+    { 4500.0f, 0.0f, 7300.0f },
+    { 6500.0f, 0.0f, 2300.0f },
+    { 5500.0f, 0.0f, 6300.0f },
+};
+f32 D_80109764_dizzy_dinghies = 180.0f; /* Unreferenced. */
+f32 D_80109768_dizzy_dinghies = 180.0f;
+f32 D_8010976C_dizzy_dinghies = 0.0f; /* Unreferenced. */
+f32 D_80109770_dizzy_dinghies = 80.0f;
+f32 D_80109774_dizzy_dinghies = 1.1f;
+f32 D_80109778_dizzy_dinghies = 0.975f;
+f32 D_8010977C_dizzy_dinghies = 0.925f; /* Unreferenced. */
+f32 D_80109780_dizzy_dinghies = 0.925f;
+f32 D_80109784_dizzy_dinghies = 0.775f;
+Vec D_80109788_dizzy_dinghies = { 0.0f, 0.0f, 0.0f };
+Vec D_80109794_dizzy_dinghies = { 0.0f, 0.0f, 0.0f };
+Vec D_801097A0_dizzy_dinghies = { 0.0f, 0.0f, 0.0f };
+f32 D_801097AC_dizzy_dinghies = 0.0f;
+f32 D_801097B0_dizzy_dinghies = 0.1f;
+f32 D_801097B4_dizzy_dinghies = 0.0f;
+f32 D_801097B8_dizzy_dinghies = 0.2f;
+f32 D_801097BC_dizzy_dinghies = 50.0f;
+f32 D_801097C0_dizzy_dinghies = 55.0f;
+f32 D_801097C4_dizzy_dinghies = 0.0f;
+f32 D_801097C8_dizzy_dinghies = 0.13f;
+f32 D_801097CC_dizzy_dinghies = 40.0f;
+f32 D_801097D0_dizzy_dinghies = 40.0f;
+s32 D_801097D4_dizzy_dinghies = 0;
+f32 D_801097D8_dizzy_dinghies = 0.0f;
+f32 D_801097DC_dizzy_dinghies = 0.0f;
+f32 D_801097E0_dizzy_dinghies = 300.0f;
+f32 D_801097E4_dizzy_dinghies = 2.0f;
+s32 D_801097E8_dizzy_dinghies = -1;
+s32 D_801097EC_dizzy_dinghies = 0;
+Vec D_801097F0_dizzy_dinghies[17] = {
+    { 3800.0f, 112.5f, 7200.0f },
+    { 5200.0f, 112.5f, 7200.0f },
+    { 5200.0f, 112.5f, 4600.0f },
+    { 3700.0f, 112.5f, 2700.0f },
+    { 4600.0f, 112.5f, -900.0f },
+    { 3500.0f, 112.5f, -2800.0f },
+    { 5900.0f, 112.5f, -7100.0f },
+    { 1600.0f, 112.5f, -8400.0f },
+    { -1100.0f, 112.5f, -9100.0f },
+    { -3400.0f, 112.5f, -8400.0f },
+    { -5200.0f, 112.5f, -9400.0f },
+    { -4500.0f, 112.5f, -3600.0f },
+    { -3600.0f, 112.5f, -1300.0f },
+    { -4700.0f, 112.5f, 600.0f },
+    { -3700.0f, 112.5f, 3100.0f },
+    { -5200.0f, 112.5f, 7300.0f },
+    { -3800.0f, 112.5f, 7200.0f },
+};
+Vec D_801098BC_dizzy_dinghies[17] = {
+    { 0.0f, 45.0f, 0.0f },
+    { 0.0f, 320.0f, 0.0f },
+    { 0.0f, 320.0f, 0.0f },
+    { 0.0f, 45.0f, 0.0f },
+    { 0.0f, 320.0f, 0.0f },
+    { 0.0f, 45.0f, 0.0f },
+    { 0.0f, 320.0f, 0.0f },
+    { 0.0f, 0.0f, 0.0f },
+    { 0.0f, 0.0f, 0.0f },
+    { 0.0f, 225.0f, 0.0f },
+    { 0.0f, 45.0f, 0.0f },
+    { 0.0f, 45.0f, 0.0f },
+    { 0.0f, 320.0f, 0.0f },
+    { 0.0f, 45.0f, 0.0f },
+    { 0.0f, 320.0f, 0.0f },
+    { 0.0f, 45.0f, 0.0f },
+    { 0.0f, 320.0f, 0.0f },
+};
+s8 D_80109988_dizzy_dinghies[18] = { 0, 0, 1, 2, 1, 1, 0, 1, 2, 1, 0, 1, 2, 1, 2, 0, 0, -1 };
+Vec D_8010999C_dizzy_dinghies[19] = {
+    { 5800.0f, 112.5f, 2100.0f },
+    { 7200.0f, 112.5f, 2100.0f },
+    { 5700.0f, 112.5f, -1000.0f },
+    { 7200.0f, 112.5f, -3500.0f },
+    { 6600.0f, 112.5f, -7000.0f },
+    { 1900.0f, 112.5f, -6200.0f },
+    { 4500.0f, 112.5f, -5700.0f },
+    { 3200.0f, 112.5f, -900.0f },
+    { 1500.0f, 112.5f, 3700.0f },
+    { 200.0f, 112.5f, 0.0f },
+    { 900.0f, 112.5f, -2100.0f },
+    { 1300.0f, 112.5f, -7400.0f },
+    { -2700.0f, 112.5f, -9200.0f },
+    { -5400.0f, 112.5f, -7900.0f },
+    { -3300.0f, 112.5f, -4200.0f },
+    { -3500.0f, 112.5f, -2000.0f },
+    { -1900.0f, 112.5f, 300.0f },
+    { -3200.0f, 112.5f, 5300.0f },
+    { -1800.0f, 112.5f, 5200.0f },
+};
+Vec D_80109A80_dizzy_dinghies[19] = {
+    { 0.0f, 0.0f, 0.0f },
+    { 0.0f, 0.0f, 0.0f },
+    { 0.0f, 45.0f, 0.0f },
+    { 0.0f, 320.0f, 0.0f },
+    { 0.0f, 320.0f, 0.0f },
+    { 0.0f, 45.0f, 0.0f },
+    { 0.0f, 180.0f, 0.0f },
+    { 0.0f, 0.0f, 0.0f },
+    { 0.0f, 320.0f, 0.0f },
+    { 0.0f, 0.0f, 0.0f },
+    { 0.0f, 320.0f, 0.0f },
+    { 0.0f, 320.0f, 0.0f },
+    { 0.0f, 0.0f, 0.0f },
+    { 0.0f, 0.0f, 0.0f },
+    { 0.0f, 320.0f, 0.0f },
+    { 0.0f, 0.0f, 0.0f },
+    { 0.0f, 320.0f, 0.0f },
+    { 0.0f, 0.0f, 0.0f },
+    { 0.0f, 0.0f, 0.0f },
+};
+s8 D_80109B64_dizzy_dinghies[20] = { 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 2, 1, 0, 2, 0, 1, 0, 0, -1 };
+Vec D_80109B78_dizzy_dinghies[18] = {
+    { 4600.0f, -150.0f, 6200.0f },
+    { 6400.0f, -150.0f, 6200.0f },
+    { 5300.0f, -150.0f, 1000.0f },
+    { 7200.0f, 0.0f, -4000.0f },
+    { 3000.0f, -150.0f, -6800.0f },
+    { 2100.0f, -150.0f, -1700.0f },
+    { 2600.0f, -150.0f, 2300.0f },
+    { 2100.0f, 0.0f, 7200.0f },
+    { -300.0f, -150.0f, 8200.0f },
+    { -2800.0f, -150.0f, 8000.0f },
+    { -3600.0f, -150.0f, 4600.0f },
+    { -4600.0f, 0.0f, 200.0f },
+    { -800.0f, 0.0f, -3800.0f },
+    { -1500.0f, -150.0f, -7000.0f },
+    { -6200.0f, -150.0f, -3600.0f },
+    { -5400.0f, -150.0f, -200.0f },
+    { -7500.0f, -150.0f, 3900.0f },
+    { -5500.0f, -150.0f, 3900.0f },
+};
+Vec D_80109C50_dizzy_dinghies[18] = {
+    { 0.0f, 45.0f, 0.0f },
+    { 0.0f, 320.0f, 0.0f },
+    { 0.0f, 45.0f, 0.0f },
+    { -40.0f, 320.0f, 0.0f },
+    { 0.0f, 0.0f, 0.0f },
+    { 0.0f, 45.0f, 0.0f },
+    { 0.0f, 320.0f, 0.0f },
+    { -40.0f, 320.0f, 0.0f },
+    { 0.0f, 0.0f, 0.0f },
+    { 0.0f, 320.0f, 0.0f },
+    { 0.0f, 45.0f, 0.0f },
+    { -40.0f, 45.0f, 0.0f },
+    { -40.0f, 45.0f, 0.0f },
+    { 0.0f, 320.0f, 0.0f },
+    { 0.0f, 45.0f, 0.0f },
+    { 0.0f, 320.0f, 0.0f },
+    { 0.0f, 45.0f, 0.0f },
+    { 0.0f, 320.0f, 0.0f },
+};
+s8 D_80109D28_dizzy_dinghies[19] = { 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, -1 };
+D_80111B50_vine_with_me_Struct D_80109D3C_dizzy_dinghies = { 0, 7, 1, 1, 0, 0, 0, 0, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0, 0, 0, 0 }, 75, -1, 5400, 90, 135 };
+Vec D_80109D64_dizzy_dinghies = { 101.0f, -51.0f, 38.0f }; /* Unreferenced. */
+f32 D_80109D70_dizzy_dinghies = -2000.0f;
+f32 D_80109D74_dizzy_dinghies = -20.0f;
+f32 D_80109D78_dizzy_dinghies = -90.0f;
+f32 D_80109D7C_dizzy_dinghies = 20.0f;
+f32 D_80109D80_dizzy_dinghies = 5.0f;
+s32 D_80109D84_dizzy_dinghies[3][3] = {
+    { 0x000A0000, 0x000A008E, 0x000A00A5 },
+    { 0x000A00C3, 0x000A00E7, 0x000A00CE },
+    { 0x000A0086, 0x000A0059, 0x000A0154 },
+};
+s32 D_80109DA8_dizzy_dinghies[3][3] = {
+    { 0x000A0017, 0x000A0095, 0x000A00B2 },
+    { 0x000A00BC, 0x000A00ED, 0x000A00D0 },
+    { 0x000A0088, 0x000A005A, 0x000A0154 },
+};
 
-extern char D_80109F50_dizzy_dinghies[]; // "atama_2"
+Vec D_80109F60_dizzy_dinghies[6] BSS;
+f32 D_80109FA8_dizzy_dinghies[6] BSS;
+Vec D_80109FC0_dizzy_dinghies[6] BSS;
+f32 D_8010A008_dizzy_dinghies[6] BSS;
+s32 D_8010A020_dizzy_dinghies BSS;
+u8 D_8010A024_dizzy_dinghies[4] BSS; /* Unreferenced. */
+Vec D_8010A028_dizzy_dinghies[20] BSS;
+s32 D_8010A118_dizzy_dinghies BSS;
+s32 D_8010A11C_dizzy_dinghies BSS;
+u8 D_8010A120_dizzy_dinghies[0x30] BSS; /* Unreferenced. */
 
 void func_80105CAC_dizzy_dinghies(omObjData *object);
 void func_80105EB4_dizzy_dinghies(omObjData *object);
@@ -546,6 +665,38 @@ void func_80107098_dizzy_dinghies(omObjData *object) {
     func_8001C814_main(object->model[3], 2, 2);
 }
 
+// Defined here (not at the top) so that the initialiser strings are emitted into
+// .rodata after the preceding functions' constants, matching the original layout.
+char *D_80109DCC_dizzy_dinghies[11] = {
+    "atama_2",
+    "c001_000-atama_2",
+    "C002_000b-bmerge10_1",
+    "c003_000-head_1",
+    "Luigi1-atama_1",
+    "c005_000-bmerge1",
+    "c001_000-atama_2",
+    "C002_000b-bmerge10_1",
+    "atama_2",
+    "atama_2",
+    "atama_2",
+};
+s8 D_80109DF8_dizzy_dinghies[4] = { -1, -1, -1, -1 };
+s16 D_80109DFC_dizzy_dinghies = -1;
+s16 D_80109DFE_dizzy_dinghies = -1;
+s16 D_80109E00_dizzy_dinghies = -1;
+s32 D_80109E04_dizzy_dinghies = 0;
+s16 D_80109E08_dizzy_dinghies[20] = { 0 };
+s32 D_80109E30_dizzy_dinghies = 0;
+s32 D_80109E34_dizzy_dinghies = 0;
+f32 D_80109E38_dizzy_dinghies = 1.0f; /* Unreferenced. */
+s32 D_80109E3C_dizzy_dinghies = 0;
+s32 D_80109E40_dizzy_dinghies = -1;
+Vec D_80109E44_dizzy_dinghies[3][3] = {
+    { { -4000.0f, 100.0f, 7000.0f }, { -5000.0f, 100.0f, 7000.0f }, { 0.0f, -500.0f, 7000.0f } },
+    { { -2000.0f, 100.0f, 5000.0f }, { -3000.0f, 100.0f, 5000.0f }, { 0.0f, -500.0f, 5000.0f } },
+    { { -5800.0f, 100.0f, 4000.0f }, { -7200.0f, 100.0f, 4000.0f }, { 0.0f, -500.0f, 4000.0f } },
+};
+
 void func_80107738_dizzy_dinghies(omObjData *object, u16 player) {
     func_800E1BA8_minigame_ObjData *work;
     s32 tag;
@@ -568,7 +719,7 @@ void func_80107738_dizzy_dinghies(omObjData *object, u16 player) {
     D_8010A020_dizzy_dinghies = boatType = D_800CB894_main;
     object->model[0] = func_8000B108_main(boatType | 0x670000, tag);
     func_80017358_main(charModel, D_80109DCC_dizzy_dinghies[GwPlayer[player].chr], object->model[0],
-                       D_80109F50_dizzy_dinghies);
+                       "atama_2");
     switch (boatType) {
         case 0:
             D_80109770_dizzy_dinghies = 80.0f;
@@ -931,7 +1082,7 @@ void func_801085F4_dizzy_dinghies(omObjData *object) {
     func_801095D4_dizzy_dinghies(object);
     D_800CDA7C_main[pad] = D_8010A118_dizzy_dinghies;
     D_800CBB6E_main[pad] = D_8010A11C_dizzy_dinghies;
-    node = func_8001D33C_main(object->model[0], D_80109F50_dizzy_dinghies);
+    node = func_8001D33C_main(object->model[0], "atama_2");
     if (node != (HmfMotionNode *)-1) {
         node->scale.x = node->scale.y = node->scale.z = node->baseScale.x = node->baseScale.y = node->baseScale.z =
             D_801097E4_dizzy_dinghies;
@@ -1103,15 +1254,3 @@ void func_801095D4_dizzy_dinghies(omObjData *object) {
         D_80109E40_dizzy_dinghies = HuAudFXPlay(0x425);
     }
 }
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_46_dizzy_dinghies/316DF0", D_80109EF0_dizzy_dinghies);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_46_dizzy_dinghies/316DF0", D_80109F04_dizzy_dinghies);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_46_dizzy_dinghies/316DF0", D_80109F14_dizzy_dinghies);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_46_dizzy_dinghies/316DF0", D_80109F24_dizzy_dinghies);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_46_dizzy_dinghies/316DF0", D_80109F3C_dizzy_dinghies);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_46_dizzy_dinghies/316DF0", D_80109F50_dizzy_dinghies);

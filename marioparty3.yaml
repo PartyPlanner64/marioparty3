@@ -2232,9 +2232,10 @@ segments:
     subsegments:
       - [0x4461B0, c]
       - [0x4461E0, c]
-      - [0x4551C0, data, 4461B0] #801149B0
+      - [0x4551C0, .data, 4461B0] #801149B0
+      - [0x4551E0, .data, 4461E0]
       - [0x4552D0, .rodata, 4461E0] #80114AC0
-      - {0x4554C0, type: bss, vram: 0x80114CB0, name: duel10_bss}
+      - {0x4554C0, type: .bss, vram: 0x80114CB0, name: 4461E0}
 
   - type: code
     start: 0x4554C0

@@ -2065,7 +2065,7 @@ segments:
   - type: code
     start: 0x3D3C80
     vram: 0x801059A0
-    dir: game/overlays/menus/mchar
+    dir: game/overlays/frontend/mchar
     name: mchar
     exclusive_ram_id: minigame # ovl_56
     bss_size: 0x190
@@ -2078,7 +2078,7 @@ segments:
   - type: code
     start: 0x3D5C30
     vram: 0x801059A0
-    dir: game/overlays/menus/mchar2
+    dir: game/overlays/frontend/mchar2
     name: mchar2
     exclusive_ram_id: minigame # ovl_57
     bss_size: 0x1A0
@@ -2091,7 +2091,7 @@ segments:
   - type: code
     start: 0x3D7150
     vram: 0x801059A0
-    dir: game/overlays/menus/boot
+    dir: game/overlays/frontend/boot
     name: ovl_boot
     exclusive_ram_id: minigame # ovl_58
     bss_size: 0x10
@@ -2311,7 +2311,7 @@ segments:
   - type: code
     start: 0x4684F0
     vram: 0x801059A0
-    dir: game/overlays/menus/slerror
+    dir: game/overlays/frontend/slerror
     name: slerror
     exclusive_ram_id: minigame # ovl_67
     bss_size: 0x10
@@ -2342,7 +2342,7 @@ segments:
   - type: code
     start: 0x46CC10
     vram: 0x801059A0
-    dir: game/overlays/menus/mgmode
+    dir: game/overlays/mgmode
     name: mgmode
     exclusive_ram_id: minigame # ovl_69
     bss_size: 0x1260
@@ -2625,7 +2625,7 @@ segments:
   - type: code
     start: 0x4F7E90
     vram: 0x801059A0
-    dir: game/overlays/menus/modesel
+    dir: game/overlays/frontend/modesel
     name: modesel
     exclusive_ram_id: minigame # ovl_77
     bss_size: 0x16E0
@@ -2642,7 +2642,7 @@ segments:
   - type: code
     start: 0x501C00
     vram: 0x801059A0
-    dir: game/overlays/menus/msetup
+    dir: game/overlays/frontend/msetup
     name: msetup
     exclusive_ram_id: minigame # ovl_78
     bss_size: 0x1D0
@@ -2665,7 +2665,7 @@ segments:
   - type: code
     start: 0x516AE0
     vram: 0x801059A0
-    dir: game/overlays/menus/filesel
+    dir: game/overlays/frontend/filesel
     name: filesel
     exclusive_ram_id: minigame # ovl_79
     bss_size: 0x1850
@@ -2683,7 +2683,7 @@ segments:
   - type: code
     start: 0x523FD0
     vram: 0x801059A0
-    dir: game/overlays/menus/opening
+    dir: game/overlays/frontend/opening
     name: opening
     subalign: 16
     exclusive_ram_id: minigame # ovl_7A
@@ -2702,7 +2702,7 @@ segments:
   - type: code
     start: 0x5334D0
     vram: 0x801059A0
-    dir: game/overlays/menus/option
+    dir: game/overlays/frontend/option
     name: option
     exclusive_ram_id: minigame # ovl_7B
     bss_size: 0x1510
@@ -2724,22 +2724,22 @@ segments:
   - type: code
     start: 0x542220
     vram: 0x801059A0
-    dir: game/overlays/menus/staff
+    dir: game/overlays/frontend/staff
     name: staff
     exclusive_ram_id: minigame # ovl_7C
     bss_size: 0xE0
     subsegments:
-      - [0x542220, c]
+      - [0x542220, c, main]
       - [0x5436A0, c]
       - [0x543FC0, c]
       - [0x544E70, c]
       - [0x5486A0, c]
-      - [0x54CDB0, .data, 542220] #80110530
+      - [0x54CDB0, .data, main] #80110530
       - [0x54CDC0, .data, 5436A0] #80110540
       - [0x54CE00, .data, 543FC0] #80110580
       - [0x54CE70, .data, 544E70] #801105F0
       - [0x54D400, .data, 5486A0] #80110B80
-      - [0x54DA70, .rodata, 542220] #801111F0
+      - [0x54DA70, .rodata, main] #801111F0
       - [0x54DA88, .rodata, 5436A0] #80111208
       - [0x54DAA0, .rodata, 543FC0] #80111220
       - [0x54DAB0, .rodata, 544E70] #80111230

@@ -21,7 +21,10 @@ As more matching C code is written in `src`, the MIPS code under `asm/nonmatchin
   - `minigames` minigames (named `<overlay index>_<name>`), the shared minigame library (`common`), instructions, and minigame result screens (`results`).
   - `party` party boards (`boards/w01_chilly_waters`, ...), the shared board library (`common`), board events, intros, and results.
   - `duel` duel boards (`boards/duel01_gate_guy`, ...), the shared duel board library (`common`), intros, and results.
-  - `story`, `menus`, `debug` story mode, front-end screens, and debug tools.
+  - `story` story mode.
+  - `mgmode` Mini-Game mode.
+  - `frontend` boot, opening, file/mode/character select, game setup, options, error screens, and staff credits.
+  - `debug` debug tools.
 - `src/2.0L`, `src/libhmath`, `src/libkmc`, `src/libleo`, `src/libm`, `src/lib` libultra and other library code.
 
 Overlay directories are set with `dir:` in `marioparty3.yaml`; the segment `name:` is independent and determines symbol suffixes (e.g. `_shared_board`), so moving a directory does not rename symbols.

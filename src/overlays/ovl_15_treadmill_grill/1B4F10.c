@@ -9,55 +9,81 @@ extern f32 D_800D51FC_main;
 extern f32 D_800D5410_main;
 extern omObjData *D_800EBE70_minigame[];
 
-extern f32 D_8010AF8C_treadmill_grill[4];
-extern f32 D_8010AF9C_treadmill_grill[4];
-extern f32 D_8010B1A4_treadmill_grill[4];
-extern f32 D_8010B1B4_treadmill_grill[4];
-extern f32 D_8010B1C4_treadmill_grill[4];
-extern Vec D_8010AFB0_treadmill_grill[4];
-extern D_80111B50_vine_with_me_Struct D_8010B03C_treadmill_grill;
-extern f32 D_8010B064_treadmill_grill[];
-extern s32 D_8010B098_treadmill_grill[];
-extern Vec D_8010B330_treadmill_grill[6];
-extern Vec D_8010B378_treadmill_grill[];
-extern s32 D_8010AF80_treadmill_grill;
-extern u8 D_8010AF84_treadmill_grill[4];
-extern f32 D_8010AF88_treadmill_grill;
-extern Vec D_8010B000_treadmill_grill[3];
-extern s32 D_8010B030_treadmill_grill[3];
-extern s16 D_8010B0D4_treadmill_grill;
-extern u32 D_8010B0D8_treadmill_grill[4];
-extern f32 D_8010B0E8_treadmill_grill[4];
-extern s32 D_8010B0F8_treadmill_grill[4];
-extern s32 D_8010B108_treadmill_grill[4];
-extern s32 D_8010B118_treadmill_grill[4];
-extern Vec2f D_8010AFE0_treadmill_grill[4];
-extern f32 D_8010B1E0_treadmill_grill[4];
-extern f32 D_8010B1F0_treadmill_grill[4];
-extern f32 D_8010B200_treadmill_grill[4];
-extern s32 D_8010B210_treadmill_grill[4];
-extern f32 D_8010AFAC_treadmill_grill;
-extern s32 D_8010B128_treadmill_grill[4][4];
-extern f32 D_8010B168_treadmill_grill[4];
-extern s32 D_8010B178_treadmill_grill;
-extern f32 D_8010B17C_treadmill_grill[4];
-extern s32 D_8010B19C_treadmill_grill;
-extern s32 D_8010B1D4_treadmill_grill;
-extern s32 D_8010B1D8_treadmill_grill;
-extern s32 D_8010B1DC_treadmill_grill;
-extern f32 D_8010B220_treadmill_grill;
-extern s32 D_8010B224_treadmill_grill[4];
-extern f32 D_8010B234_treadmill_grill[6];
-extern s16 D_8010B24C_treadmill_grill[6];
-extern s32 D_8010B258_treadmill_grill;
-extern f32 D_8010B25C_treadmill_grill;
-extern f32 D_8010B260_treadmill_grill;
-extern s32 D_8010B2E0_treadmill_grill[4][2];
-extern s32 D_8010B300_treadmill_grill;
-extern s32 D_8010B304_treadmill_grill;
-extern s32 D_8010B308_treadmill_grill;
-extern s32 D_8010B30C_treadmill_grill;
-extern s16 D_8010B310_treadmill_grill[16];
+s32 D_8010AF80_treadmill_grill = 0;
+u8 D_8010AF84_treadmill_grill[4] = { 0, 0, 0, 0 };
+f32 D_8010AF88_treadmill_grill = 1.0f;
+f32 D_8010AF8C_treadmill_grill[4] = { 1000.0f, 1000.0f, 1000.0f, 1000.0f };
+f32 D_8010AF9C_treadmill_grill[4] = { 1000.0f, 1000.0f, 1000.0f, 1000.0f };
+f32 D_8010AFAC_treadmill_grill = 0.0f;
+Vec D_8010AFB0_treadmill_grill[4] = {
+    { -200.0f, 250.0f, -250.0f },
+    { 200.0f, 250.0f, -250.0f },
+    { 200.0f, 250.0f, -650.0f },
+    { -200.0f, 250.0f, -650.0f }
+};
+Vec2f D_8010AFE0_treadmill_grill[4] = {
+    { 0.0f, -200.0f },
+    { 0.0f, -800.0f },
+    { 0.0f, -600.0f },
+    { 0.0f, -900.0f }
+};
+Vec D_8010B000_treadmill_grill[4] = { 0 };
+s32 D_8010B030_treadmill_grill[3] = { 1, 1, 1 };
+D_80111B50_vine_with_me_Struct D_8010B03C_treadmill_grill = {
+    0, 0, 1, 2, 0, 0, 0, 0,
+    { 0.0f, 0.0f, 0.0f, 0.0f },
+    { 0, 0, 0, 0 },
+    0x69, 0x384, -1, 0x4B, 0x87
+};
+f32 D_8010B064_treadmill_grill[13] = {
+    0.0f, -0.5f, -1.0f, -1.5f, -2.0f, -2.5f, -3.0f, -3.5f, -4.0f, -4.5f, -5.0f, -5.5f, -6.0f
+};
+s32 D_8010B098_treadmill_grill[13] = { 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0 };
+f32 D_8010B0CC_treadmill_grill[2] = { 1.3f, 2.0f }; /* Unreferenced. */
+s16 D_8010B0D4_treadmill_grill = -1;
+u32 D_8010B0D8_treadmill_grill[4] = { 0, 0, 0, 0 };
+f32 D_8010B0E8_treadmill_grill[4] = { 0.75f, 0.8f, 0.9f, 1.0f };
+s32 D_8010B0F8_treadmill_grill[4] = { 0, 0, 0, 0 };
+s32 D_8010B108_treadmill_grill[4] = { 0xA0, 0xC0, 0xE0, 0xFF };
+s32 D_8010B118_treadmill_grill[4] = { 0, 0, 0, 0 };
+s32 D_8010B128_treadmill_grill[4][4] = {
+    { 0, -2, -4, -6 },
+    { 0, -2, -4, -6 },
+    { 0, -2, -4, -6 },
+    { 0, -2, -4, -6 }
+};
+f32 D_8010B168_treadmill_grill[4] = { 0.5f, 1.0f, 1.5f, 2.0f };
+s32 D_8010B178_treadmill_grill = 0;
+f32 D_8010B17C_treadmill_grill[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+f32 D_8010B18C_treadmill_grill[4] = { 0.0f, 0.0f, 0.0f, 0.0f }; /* Unreferenced. */
+s32 D_8010B19C_treadmill_grill = -1;
+s32 D_8010B1A0_treadmill_grill = 0; /* Unreferenced. */
+f32 D_8010B1A4_treadmill_grill[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+f32 D_8010B1B4_treadmill_grill[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+f32 D_8010B1C4_treadmill_grill[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+s32 D_8010B1D4_treadmill_grill = 0;
+s32 D_8010B1D8_treadmill_grill = 20;
+s32 D_8010B1DC_treadmill_grill = 0;
+f32 D_8010B1E0_treadmill_grill[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+f32 D_8010B1F0_treadmill_grill[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+f32 D_8010B200_treadmill_grill[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+s32 D_8010B210_treadmill_grill[4] = { 90, 90, 90, 90 };
+f32 D_8010B220_treadmill_grill = 0.0f;
+s32 D_8010B224_treadmill_grill[4] = { -1, -1, -1, -1 };
+f32 D_8010B234_treadmill_grill[6] = { -3.0f, -2.0f, -1.25f, 1.25f, 2.0f, 3.0f };
+s16 D_8010B24C_treadmill_grill[6] = { 200, 0, -200, -200, 0, 200 };
+s32 D_8010B258_treadmill_grill = 0;
+f32 D_8010B25C_treadmill_grill = -480.0f;
+f32 D_8010B260_treadmill_grill = 480.0f;
+
+s32 D_8010B2E0_treadmill_grill[4][2] BSS;
+s32 D_8010B300_treadmill_grill BSS;
+s32 D_8010B304_treadmill_grill BSS;
+s32 D_8010B308_treadmill_grill BSS;
+s32 D_8010B30C_treadmill_grill BSS;
+s16 D_8010B310_treadmill_grill[16] BSS;
+Vec D_8010B330_treadmill_grill[6] BSS;
+Vec D_8010B378_treadmill_grill[20] BSS;
 
 void func_80106008_treadmill_grill(omObjData *object);
 void func_801062DC_treadmill_grill(omObjData *object);

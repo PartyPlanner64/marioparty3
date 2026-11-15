@@ -9,9 +9,6 @@ VERBOSE      ?= 0
 QUIET        ?= 0
 MOD 		 ?= 0
 
-# Patches
-# PATCHES_ASFLAGS := --defsym MP_SAVETYPE_PATCH=1
-
 # Fail early if baserom does not exist
 ifeq ($(wildcard $(BASEROM)),)
 $(error Baserom `$(BASEROM)' not found.)

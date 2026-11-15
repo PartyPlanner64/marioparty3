@@ -50,6 +50,9 @@ s32 _InitEeprom(u8 **arg0) {
         ASSERT(i != 4);
     }
 
+    // Save type check: the game hangs here unless a 16K EEPROM is present.
+    // Removing this assertion lets the game boot even when the save type
+    // is reported incorrectly, e.g. by a misconfigured emulator.
     ASSERT(eepromProbeResult == EEPROM_TYPE_16K);
 
     if (osEepromLongRead(&siMesgQueue, 0, eepBoxBuf, EEPROM_BLOCK_SIZE) != 0) {

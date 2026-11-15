@@ -7,7 +7,6 @@ NON_MATCHING ?= 0
 CHECK        ?= 1
 VERBOSE      ?= 0
 QUIET        ?= 0
-MOD 		 ?= 0
 
 # Fail early if baserom does not exist
 ifeq ($(wildcard $(BASEROM)),)
@@ -61,11 +60,7 @@ LD_MAP    := $(BUILD_DIR)/$(TARGET).map
 PYTHON		:= venv/bin/python3  # Ensure we're using the Python from the virtual environment
 N64CKSUM	:= $(PYTHON) tools/n64cksum.py
 SPLAT_YAML	:= marioparty3.yaml
-MOD_YAML	:= marioparty3_mod.yaml
 SPLAT	:= $(PYTHON) -m splat split $(SPLAT_YAML)  # Use splat from the virtual environment
-MOD_SPLAT	:= $(PYTHON) -m splat split $(MOD_YAML)  # Use splat from the virtual environment
-MOD_LINKER_INJECT := $(PYTHON) ./tools/append_mod_to_linker_script.py
-MOD_OVL_TABLE_INJECT := $(PYTHON) ./tools/gen_new_overlay_table_file.py
 EMULATOR   := mupen64plus
 DIFF       := diff
 
@@ -107,11 +102,6 @@ ifneq ($(CHECK),1)
 CFLAGS_CHECK += -w
 endif
 
-ifeq ($(MOD),1)
-CFLAGS += -DMOD
-CPPFLAGS += -DMOD
-endif
-
 OPTFLAGS := -O1
 
 ### Sources ###
@@ -144,14 +134,6 @@ distclean: clean
 	$(V)rm -f include/ld_addrs.h
 
 setup: distclean split
-
-modsetup: distclean modsplit
-
-modsplit:
-	$(V)rm -rf asm
-	$(V)$(MOD_OVL_TABLE_INJECT)
-	$(V)$(MOD_SPLAT)$(SPLAT_REDIRECT)
-	$(V)$(MOD_LINKER_INJECT)
 
 split:
 	$(V)rm -rf asm

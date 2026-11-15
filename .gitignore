@@ -4,7 +4,6 @@ undefined_syms_auto.txt
 asm/
 build/
 assets/
-mod/
 expected/
 rsp/
 ignore_funcs.local.txt

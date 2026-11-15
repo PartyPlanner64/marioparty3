@@ -29,7 +29,12 @@ typedef struct BoardResultWork {
     /* 0x48 */ f32 unk_48;
 } BoardResultWork; // sizeof 0x4C
 
-extern u8 D_8010E950_boardresult[][4];
+u8 D_8010E950_boardresult[4][4] = {
+    { 0, 255, 255, 0 },
+    { 255, 160, 40, 0 },
+    { 255, 255, 0, 0 },
+    { 0, 255, 0, 0 }
+};
 
 void func_8010BE14_boardresult(void); /* extern */
 void func_8010CEF4_boardresult(s16 model, s32 dataNum);

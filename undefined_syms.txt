@@ -311,3 +311,6 @@ D_80109EE4_hey_batter_batter = heyBatterBatterBssEE4;
 D_80109EE6_hey_batter_batter = heyBatterBatterBssEE4 + 0x2;
 D_80109EEA_hey_batter_batter = heyBatterBatterBssEE4 + 0x6;
 D_80109EEE_hey_batter_batter = heyBatterBatterBssEE4 + 0xA;
+
+/* dorrie_dip: low halfword of the s32 player index at D_8010A1FC. */
+D_8010A1FE_dorrie_dip = D_8010A1FC_dorrie_dip + 0x2;

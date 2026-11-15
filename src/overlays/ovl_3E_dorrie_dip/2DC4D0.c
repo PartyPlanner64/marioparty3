@@ -69,41 +69,39 @@ typedef struct {
     s32 playerIdx[5];
 } DorrieDipSplashes; // sizeof 0xC8
 
-extern s32 D_8010A1FC_dorrie_dip;
-
-extern omObjData *D_8010A230_dorrie_dip;
-
-extern omObjData *D_8010A234_dorrie_dip;
-
-extern omObjData *D_8010A238_dorrie_dip;
-
-extern omObjData *D_8010A23C_dorrie_dip;
-
-extern D_80111B50_vine_with_me_Struct D_8010A040_dorrie_dip;
-extern s32 D_8010A1F4_dorrie_dip;
-extern u8 D_8010A1F8_dorrie_dip;
-
 extern u16 D_800A11D0_main[];
 extern u16 D_800A11DC_main[];
 extern s32 D_800A178C_main[][6];
-extern s32 D_8010A240_dorrie_dip;
-extern f32 D_8010A244_dorrie_dip;
-extern omObjData *D_8010A248_dorrie_dip;
-extern omObjData *D_8010A24C_dorrie_dip;
-extern s32 D_8010A250_dorrie_dip;
-extern f32 D_8010A1F0_dorrie_dip;
-extern s16 D_8010A1FA_dorrie_dip;
+
+D_80111B50_vine_with_me_Struct D_8010A040_dorrie_dip = { 0, 3, 2, 0, 0, 0, 5, 0, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0, 0, 0, 0 }, 210, 300, -1, 90, 135 };
+s32 D_8010A068_dorrie_dip = 1;
+s32 D_8010A06C_dorrie_dip = 30;
+
+f32 D_8010A1F0_dorrie_dip BSS;
+s32 D_8010A1F4_dorrie_dip BSS;
+u8 D_8010A1F8_dorrie_dip BSS;
+s16 D_8010A1FA_dorrie_dip BSS;
+s32 D_8010A1FC_dorrie_dip BSS;
+s32 D_8010A200_dorrie_dip BSS;
+u8 D_8010A204_dorrie_dip[4] BSS; /* Unreferenced. */
+s32 D_8010A208_dorrie_dip[6] BSS;
+s32 D_8010A220_dorrie_dip BSS;
+omObjData *D_8010A224_dorrie_dip[2] BSS;
+f32 D_8010A22C_dorrie_dip BSS;
+omObjData *D_8010A230_dorrie_dip BSS;
+omObjData *D_8010A234_dorrie_dip BSS;
+omObjData *D_8010A238_dorrie_dip BSS;
+omObjData *D_8010A23C_dorrie_dip BSS;
+s32 D_8010A240_dorrie_dip BSS;
+f32 D_8010A244_dorrie_dip BSS;
+omObjData *D_8010A248_dorrie_dip BSS;
+omObjData *D_8010A24C_dorrie_dip BSS;
+s32 D_8010A250_dorrie_dip BSS;
+DorrieDipCpu D_8010A254_dorrie_dip BSS;
+omObjData *D_8010A260_dorrie_dip BSS;
+
+/* Low halfword of D_8010A1FC_dorrie_dip. */
 extern s16 D_8010A1FE_dorrie_dip;
-extern s32 D_8010A200_dorrie_dip;
-extern omObjData *D_8010A224_dorrie_dip[2];
-extern f32 D_8010A22C_dorrie_dip;
-extern s32 D_8010A068_dorrie_dip;
-extern s32 D_8010A06C_dorrie_dip;
-extern s32 D_8010A208_dorrie_dip[6];
-extern s32 D_8010A220_dorrie_dip;
-extern u8 D_8010A046_dorrie_dip;
-extern omObjData *D_8010A260_dorrie_dip;
-extern DorrieDipCpu D_8010A254_dorrie_dip;
 
 void func_80105FD0_dorrie_dip(omObjData *);
 void func_80106210_dorrie_dip(omObjData *);
@@ -265,9 +263,9 @@ void func_80105C7C_dorrie_dip(omObjData *obj) {
                     }
                 }
                 if (D_8010A220_dorrie_dip == -1 || D_8010A208_dorrie_dip[D_8010A220_dorrie_dip] == 17) {
-                    D_8010A046_dorrie_dip = 7;
+                    D_8010A040_dorrie_dip.unk06 = 7;
                 } else {
-                    D_8010A046_dorrie_dip = 5;
+                    D_8010A040_dorrie_dip.unk06 = 5;
                 }
             }
             if (func_800E6E9C_minigame() == 15 && D_8010A220_dorrie_dip != -1 &&

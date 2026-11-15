@@ -177,7 +177,7 @@ s16 func_8010B5A8_game_guys_sweet_surprise(void) {
         HuAudFXPlay(0x537);
     }
     if (D_8010CC60_game_guys_sweet_surprise == 90) {
-        func_8004AB0C_main(30);
+        HuAudFXAllFadeOut(30);
         HuAudSeqPlay(0x43);
     }
     if (D_8010CC60_game_guys_sweet_surprise == 115) {

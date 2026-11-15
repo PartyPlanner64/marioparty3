@@ -52,8 +52,8 @@ void func_801059A0_storyresult(void) {
             return;
     }
     Hu3DCamInit(1);
-    func_8001FE20_main(1);
-    func_800142A0_main(25);
+    MapCollInit(1);
+    Hu3DSprModelInit(25);
     HuWinInit();
     D_800CD280_main = 0;
     D_8010AC24_storyresult = 80.0f;
@@ -180,11 +180,11 @@ void func_80105EA0_storyresult(MsetupModelEntry *entry, MsetupModelHandle *handl
         return;
     }
     for (i = 0; i < count; entry++, i++, handle++) {
-        model = handle->model = func_8000B108_main(entry->dataId, entry->flags);
+        model = handle->model = Hu3DModelRead(entry->dataId, entry->flags);
         func_80105DEC_storyresult(entry, model);
         motion = handle->motion = Hu3DData[model].motId;
         if (motion >= 0) {
-            func_8001C814_main(model, -1, entry->motion);
+            Hu3DMotionAttrSet(model, -1, entry->motion);
         }
     }
 }

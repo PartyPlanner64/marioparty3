@@ -651,9 +651,9 @@ void func_8010628C_pump_pump_away(omObjData *obj) {
         players = &D_80111978_pump_pump_away[i];
         scale = players[-1].unk_28->trans.y - obj->trans.y - 200.0f;
         if ((scale > 1000.0f) | (scale < -100.0f)) {
-            func_8001C258_main(obj->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(obj->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         } else {
-            func_8001C258_main(obj->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(obj->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             scale = 3.0 - scale * 0.003;
             if (scale >= 3.0) {
                 scale = 3.0f;
@@ -668,13 +668,13 @@ void func_8010628C_pump_pump_away(omObjData *obj) {
 void func_8010654C_pump_pump_away(omObjData *obj) {
     s32 i;
 
-    obj->model[0] = func_8000B108_main(0x2E0000, 0x289);
+    obj->model[0] = Hu3DModelRead(0x2E0000, 0x289);
     obj->trans.x = obj->trans.y = obj->trans.z = 0.0f;
     for (i = 1; i < 3; i++) {
-        obj->model[i] = func_8000B0A0_main(0, 0xC9);
-        func_8001C2FC_main(obj->model[i], 0x80000000, 0);
+        obj->model[i] = Hu3DModelRead2(0, 0xC9);
+        Hu3DModelObjAttrSet(obj->model[i], 0x80000000, 0);
         Hu3DModelRemakeStatic(obj->model[i]);
-        func_8001C514_main(obj->model[i]);
+        Hu3DModelDynamicFree(obj->model[i]);
         func_80088800_main(Hu3DData[obj->model[i]].mtx, 0.0f, 1.0f, 0.0f);
         Hu3DModelScaleSet(obj->model[i], 3.0f, 3.0f, 3.0f);
         Hu3DModelPosSet(obj->model[i], D_80110EA0_pump_pump_away[i - 1].x,
@@ -725,7 +725,7 @@ void func_80106724_pump_pump_away(omObjData *obj) {
 }
 
 void func_8010682C_pump_pump_away(omObjData *obj) {
-    obj->model[0] = func_8000B108_main(0x2E0003, 0x289);
+    obj->model[0] = Hu3DModelRead(0x2E0003, 0x289);
     obj->trans.x = obj->trans.y = 0.0f;
     obj->trans.z = -1100.0f;
     obj->func = func_80106724_pump_pump_away;
@@ -773,7 +773,7 @@ void func_801068C8_pump_pump_away(omObjData *obj) {
 }
 
 void func_801069D0_pump_pump_away(omObjData *obj) {
-    obj->model[0] = func_8000B108_main(0x2E0004, 0x289);
+    obj->model[0] = Hu3DModelRead(0x2E0004, 0x289);
     obj->trans.x = obj->trans.y = 0.0f;
     obj->trans.z = -1290.0f;
     obj->func = func_801068C8_pump_pump_away;
@@ -819,8 +819,8 @@ void func_80106A6C_pump_pump_away(omObjData *obj) {
             }
             break;
         case 4:
-            func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-            func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             players = D_80111978_pump_pump_away;
             other = &players[1];
             if (D_80111990_pump_pump_away > other->unk_18) {
@@ -869,7 +869,7 @@ void func_80106A6C_pump_pump_away(omObjData *obj) {
                 }
             }
         case 5:
-            func_8001E888_main(obj->model[0], D_801116E4_pump_pump_away, D_801116E4_pump_pump_away,
+            Hu3DModelObjTexScroll(obj->model[0], D_801116E4_pump_pump_away, D_801116E4_pump_pump_away,
                                D_80113548_pump_pump_away[0], D_80113548_pump_pump_away[1], "dammy_0-sky_b_2", 0);
             break;
         case 6:
@@ -877,21 +877,21 @@ void func_80106A6C_pump_pump_away(omObjData *obj) {
                 break;
             }
         case 7:
-            func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-            func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             break;
     }
 }
 
 void func_80107338_pump_pump_away(omObjData *obj) {
-    obj->model[0] = func_8000B108_main(0x2E0001, 0x289);
-    obj->model[1] = func_8000B108_main(0x2E0002, 0x289);
-    func_8001C2FC_main(obj->model[0], 0x20000, 0x20000);
+    obj->model[0] = Hu3DModelRead(0x2E0001, 0x289);
+    obj->model[1] = Hu3DModelRead(0x2E0002, 0x289);
+    Hu3DModelObjAttrSet(obj->model[0], 0x20000, 0x20000);
     Hu3DModelRemakeStatic(obj->model[0]);
-    func_8001C954_main(obj->model[0]);
-    func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-    func_800335BC_main("m213_back_DEF", D_80113548_pump_pump_away);
+    Hu3DModelVtxBufMake(obj->model[0]);
+    Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DTexSizeGet("m213_back_DEF", D_80113548_pump_pump_away);
     obj->trans.x = obj->trans.y = 0.0f;
     obj->trans.z = -1300.0f;
     Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
@@ -990,7 +990,7 @@ void func_8010775C_pump_pump_away(omObjData *obj) {
 
 void func_8010780C_pump_pump_away(omObjData *obj) {
     D_80113534_pump_pump_away = HuSprAnimDataRead(0x2E001E);
-    D_8011353C_pump_pump_away = func_80055194_main(D_80113536_pump_pump_away);
+    D_8011353C_pump_pump_away = HuSprAnimDataGet(D_80113536_pump_pump_away);
     D_80113538_pump_pump_away = Hu3DHookFuncCreate(0, func_8010749C_pump_pump_away, 6);
     Hu3DModelCameraSet(D_8011353A_pump_pump_away, HU3D_CAM0);
     D_80113540_pump_pump_away = 0;
@@ -1032,11 +1032,11 @@ void func_80107964_pump_pump_away(omObjData *obj) {
         } else {
             entry->unk_08 ^= 1;
             entry->unk_04 = 1;
-            func_80034048_main(obj->work[1], (s16)entry->unk_08);
+            Hu3DAnimTimeSet(obj->work[1], (s16)entry->unk_08);
         }
     } else {
         entry->unk_04 = 0;
-        func_80034048_main(obj->work[1], 0);
+        Hu3DAnimTimeSet(obj->work[1], 0);
     }
 }
 
@@ -1058,7 +1058,7 @@ void func_80107A8C_pump_pump_away(omObjData *obj) {
                 func_801078EC_pump_pump_away(obj);
                 entry->unk_00 = 1;
             }
-            func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             break;
         case 4:
             break;
@@ -1071,8 +1071,8 @@ void func_80107B40_pump_pump_away(omObjData *obj) {
     s32 i;
     UnkPumpPumpAwayJet *jets;
 
-    obj->model[0] = func_8000B108_main(0x2E0005, 0x2A9);
-    func_8000B460_main(obj, 0, 0x2E0006);
+    obj->model[0] = Hu3DModelRead(0x2E0005, 0x2A9);
+    omObjMotionRead(obj, 0, 0x2E0006);
     switch (obj->work[0]) {
         case 0:
         case 1:
@@ -1096,12 +1096,12 @@ void func_80107B40_pump_pump_away(omObjData *obj) {
             }
             break;
     }
-    func_80034048_main((s16)obj->work[1], 0);
-    func_80032FC0_main((s16)obj->work[1], 1, 1);
+    Hu3DAnimTimeSet((s16)obj->work[1], 0);
+    Hu3DAnimAttrSet((s16)obj->work[1], 1, 1);
     Hu3DModelRemakeStatic(obj->model[0]);
-    func_8001C514_main(obj->model[0]);
-    func_8001C5B4_main(obj->model[0], obj->motion[0]);
-    func_8001C814_main(obj->model[0], 1, 1);
+    Hu3DModelDynamicFree(obj->model[0]);
+    Hu3DMotionModelSet(obj->model[0], obj->motion[0]);
+    Hu3DMotionAttrSet(obj->model[0], 1, 1);
     obj->trans.x = D_80110F6C_pump_pump_away[obj->work[0]].x;
     obj->trans.y = D_80110F6C_pump_pump_away[obj->work[0]].y;
     obj->trans.z = D_80110F6C_pump_pump_away[obj->work[0]].z;
@@ -1142,12 +1142,12 @@ void func_80107EB8_pump_pump_away(omObjData *obj) {
     switch (hose->unk_04) {
         case 0:
             if (hose->unk_0C < jets[0]->unk_10 + jets[1]->unk_10) {
-                func_8001C5B4_main(obj->model[0], obj->motion[0]);
+                Hu3DMotionModelSet(obj->model[0], obj->motion[0]);
                 speed = (jets[0]->unk_10 + jets[1]->unk_10 - hose->unk_0C) / 3;
                 hose->unk_0C = jets[0]->unk_10 + jets[1]->unk_10;
                 hose->unk_08 = speed < 10 ? speed : 9;
                 Hu3DMotionSpeedSet(obj->model[0], D_80110F9C_pump_pump_away[hose->unk_08]);
-                func_8001C814_main(obj->model[0], 1, 0);
+                Hu3DMotionAttrSet(obj->model[0], 1, 0);
                 hose->unk_04 = 1;
             } else {
                 Hu3DMotionTimeSet(obj->model[0], 0);
@@ -1155,7 +1155,7 @@ void func_80107EB8_pump_pump_away(omObjData *obj) {
             break;
         case 1:
             if (Hu3DData[obj->model[0]].motTime >= D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02 - 2) {
-                func_8001C5B4_main(obj->model[0], obj->motion[0]);
+                Hu3DMotionModelSet(obj->model[0], obj->motion[0]);
                 Hu3DMotionTimeSet(obj->model[0], 0);
                 hose->unk_04 = 0;
                 player = &D_80111978_pump_pump_away[obj->work[0]];
@@ -1172,21 +1172,21 @@ void func_8010811C_pump_pump_away(omObjData *obj) {
 
     if (hose->unk_04 == 2) {
         if (Hu3DData[obj->model[0]].motTime >= D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02 - 2) {
-            func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             hose->unk_04 = 3;
         }
     } else if (hose->unk_04 != 3) {
         frame = Hu3DData[obj->model[0]].motTime;
         if (frame != 0.0f) {
             if (frame >= D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02 - 2) {
-                func_8001C5B4_main(obj->model[0], obj->motion[1]);
+                Hu3DMotionModelSet(obj->model[0], obj->motion[1]);
             } else {
                 return;
             }
         } else {
-            func_8001C5B4_main(obj->model[0], obj->motion[1]);
+            Hu3DMotionModelSet(obj->model[0], obj->motion[1]);
         }
-        func_8001C814_main(obj->model[0], 2, 0);
+        Hu3DMotionAttrSet(obj->model[0], 2, 0);
         hose->unk_04 = 2;
     }
 }
@@ -1200,7 +1200,7 @@ void func_801082AC_pump_pump_away(omObjData *obj) {
         case 0:
         case 1:
             Hu3DMotionTimeSet(obj->model[0], 0);
-            func_8001C814_main(obj->model[0], 1, 1);
+            Hu3DMotionAttrSet(obj->model[0], 1, 1);
             break;
         case 2:
             func_80107EB8_pump_pump_away(obj);
@@ -1217,19 +1217,19 @@ void func_80108358_pump_pump_away(omObjData *obj) {
     void *data;
     UnkPumpPumpAwayHose *hose;
 
-    obj->model[0] = func_8000B108_main(0x2E0009, 0x289);
-    func_8000B460_main(obj, 0, 0x2E000A);
-    func_8000B460_main(obj, 1, 0x2E000B);
+    obj->model[0] = Hu3DModelRead(0x2E0009, 0x289);
+    omObjMotionRead(obj, 0, 0x2E000A);
+    omObjMotionRead(obj, 1, 0x2E000B);
     if (obj->work[0] != 0) {
         data = DataRead(0x2E000C);
         obj->work[1] = (s16)Hu3DAnimCreate(Hu3DData[obj->model[0]].hmf, data, 0, "m213_hose_r_DEF");
-        func_80032FC0_main(obj->work[1], 1, 1);
+        Hu3DAnimAttrSet(obj->work[1], 1, 1);
         HuMemMemoryFreePerm(data);
         Hu3DModelRemakeStatic(obj->model[0]);
-        func_8001C514_main(obj->model[0]);
+        Hu3DModelDynamicFree(obj->model[0]);
     }
-    func_8001C5B4_main(obj->model[0], obj->motion[0]);
-    func_8001C814_main(obj->model[0], 2, 2);
+    Hu3DMotionModelSet(obj->model[0], obj->motion[0]);
+    Hu3DMotionAttrSet(obj->model[0], 2, 2);
     obj->trans.x = D_80110FC4_pump_pump_away[obj->work[0]].x;
     obj->trans.y = D_80110FC4_pump_pump_away[obj->work[0]].y;
     obj->trans.z = D_80110FC4_pump_pump_away[obj->work[0]].z;
@@ -1452,14 +1452,14 @@ void func_80108E74_pump_pump_away(omObjData *obj) {
     s32 i;
 
     D_8011175C_pump_pump_away = HuSprAnimDataRead(0x2E0015);
-    D_80111764_pump_pump_away = func_80055194_main(D_8011175E_pump_pump_away);
+    D_80111764_pump_pump_away = HuSprAnimDataGet(D_8011175E_pump_pump_away);
     D_80111760_pump_pump_away = Hu3DHookFuncCreate(0, func_80108560_pump_pump_away, 2);
     Hu3DModelCameraSet(D_80111762_pump_pump_away, HU3D_CAM0);
     D_80111788_pump_pump_away = 0;
     entry->unk_00 = 0;
     entry++;
     D_80111790_pump_pump_away = HuSprAnimDataRead(0x2E0016);
-    D_80111798_pump_pump_away = func_80055194_main(D_80111792_pump_pump_away);
+    D_80111798_pump_pump_away = HuSprAnimDataGet(D_80111792_pump_pump_away);
     D_80111794_pump_pump_away = Hu3DHookFuncCreate(0, func_80108810_pump_pump_away, 2);
     Hu3DModelCameraSet(D_80111796_pump_pump_away, HU3D_CAM0);
     D_801117BC_pump_pump_away = 0;
@@ -1485,18 +1485,18 @@ void func_80108FE0_pump_pump_away(omObjData *obj) {
         case 0:
             break;
         case 1:
-            func_8001C5B4_main(obj->model[0], obj->motion[0]);
+            Hu3DMotionModelSet(obj->model[0], obj->motion[0]);
             Hu3DMotionTimeSet(obj->model[0], 0);
-            func_8001C814_main(obj->model[0], 1, 0);
-            func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DMotionAttrSet(obj->model[0], 1, 0);
+            Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             state->unk_00 = 3;
             break;
         case 2:
-            func_8001C5B4_main(obj->model[1], obj->motion[1]);
+            Hu3DMotionModelSet(obj->model[1], obj->motion[1]);
             Hu3DMotionTimeSet(obj->model[1], 0);
             Hu3DMotionSpeedSet(obj->model[1], 0.5f);
-            func_8001C814_main(obj->model[1], 1, 0);
-            func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DMotionAttrSet(obj->model[1], 1, 0);
+            Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             state->unk_00 = 4;
             break;
         case 3:
@@ -1512,10 +1512,10 @@ void func_80108FE0_pump_pump_away(omObjData *obj) {
             }
             state->unk_04 -= 8;
             if (state->unk_04 > 0) {
-                func_8001F9E4_main(obj->model[0], (u8)state->unk_04);
+                Hu3DModelTPLvlSet(obj->model[0], (u8)state->unk_04);
             } else {
-                func_8001C814_main(obj->model[0], 1, 1);
-                func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DMotionAttrSet(obj->model[0], 1, 1);
+                Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 state->unk_04 = 255;
                 state->unk_00 = 0;
             }
@@ -1523,10 +1523,10 @@ void func_80108FE0_pump_pump_away(omObjData *obj) {
         case 4:
             state->unk_04 -= 5;
             if (state->unk_04 > 0) {
-                func_8001F9E4_main(obj->model[1], (u8)state->unk_04);
+                Hu3DModelTPLvlSet(obj->model[1], (u8)state->unk_04);
             } else {
-                func_8001C814_main(obj->model[1], 1, 1);
-                func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DMotionAttrSet(obj->model[1], 1, 1);
+                Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 state->unk_04 = 255;
                 state->unk_00 = 0;
             }
@@ -1556,22 +1556,22 @@ void func_8010921C_pump_pump_away(omObjData *obj) {
 void func_80109280_pump_pump_away(omObjData *obj) {
     UnkPumpPumpAwayState *state;
 
-    obj->model[0] = func_8000B108_main(0x2E0017, 0x289);
-    obj->model[1] = func_8000B108_main(0x2E0019, 0x289);
-    func_8000B460_main(obj, 0, 0x2E0018);
-    func_8000B460_main(obj, 1, 0x2E001A);
-    func_8001FA68_main(obj->model[0]);
-    func_8001F9E4_main(obj->model[0], 255);
-    func_8001C5B4_main(obj->model[0], obj->motion[0]);
+    obj->model[0] = Hu3DModelRead(0x2E0017, 0x289);
+    obj->model[1] = Hu3DModelRead(0x2E0019, 0x289);
+    omObjMotionRead(obj, 0, 0x2E0018);
+    omObjMotionRead(obj, 1, 0x2E001A);
+    Hu3DModelTPLvlInit(obj->model[0]);
+    Hu3DModelTPLvlSet(obj->model[0], 255);
+    Hu3DMotionModelSet(obj->model[0], obj->motion[0]);
     Hu3DMotionTimeSet(obj->model[0], 0);
-    func_8001C814_main(obj->model[0], 1, 1);
-    func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    func_8001FA68_main(obj->model[1]);
-    func_8001F9E4_main(obj->model[1], 255);
-    func_8001C5B4_main(obj->model[1], obj->motion[1]);
+    Hu3DMotionAttrSet(obj->model[0], 1, 1);
+    Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelTPLvlInit(obj->model[1]);
+    Hu3DModelTPLvlSet(obj->model[1], 255);
+    Hu3DMotionModelSet(obj->model[1], obj->motion[1]);
     Hu3DMotionTimeSet(obj->model[1], 0);
-    func_8001C814_main(obj->model[1], 1, 1);
-    func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DMotionAttrSet(obj->model[1], 1, 1);
+    Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     obj->trans.x = D_80111004_pump_pump_away[obj->work[0]].x;
     obj->trans.y = D_80111004_pump_pump_away[obj->work[0]].y;
     obj->trans.z = D_80111004_pump_pump_away[obj->work[0]].z;
@@ -1599,20 +1599,20 @@ void func_801094CC_pump_pump_away(omObjData *obj) {
         case 0:
             break;
         case 1:
-            func_8001C5B4_main(obj->model[0], obj->motion[0]);
+            Hu3DMotionModelSet(obj->model[0], obj->motion[0]);
             Hu3DMotionTimeSet(obj->model[0], 0);
-            func_8001C814_main(obj->model[0], 1, 0);
-            func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DMotionAttrSet(obj->model[0], 1, 0);
+            Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             obj->trans.x = player->unk_28->trans.x;
             obj->trans.y = player->unk_28->trans.y + 200.0f;
             obj->trans.z = player->unk_28->trans.z;
             state->state = 3;
             break;
         case 2:
-            func_8001C5B4_main(obj->model[0], obj->motion[1]);
+            Hu3DMotionModelSet(obj->model[0], obj->motion[1]);
             Hu3DMotionTimeSet(obj->model[0], 0);
-            func_8001C814_main(obj->model[0], 1, 0);
-            func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DMotionAttrSet(obj->model[0], 1, 0);
+            Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             obj->trans.x = player->unk_28->trans.x;
             obj->trans.y = player->unk_28->trans.y + 200.0f;
             obj->trans.z = player->unk_28->trans.z;
@@ -1666,10 +1666,10 @@ void func_801098E0_pump_pump_away(omObjData *obj) {
     UnkPumpPumpAwayPlayer *player = &D_80111978_pump_pump_away[D_8011351C_pump_pump_away];
 
     if (*state == 4) {
-        func_8001C5B4_main(obj->model[0], obj->motion[1]);
+        Hu3DMotionModelSet(obj->model[0], obj->motion[1]);
         Hu3DMotionTimeSet(obj->model[0], 0);
-        func_8001C814_main(obj->model[0], 1, 0);
-        func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        Hu3DMotionAttrSet(obj->model[0], 1, 0);
+        Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         obj->trans.x = player->unk_28->trans.x;
         obj->trans.y = player->unk_28->trans.y + 200.0f;
         obj->trans.z = player->unk_28->trans.z;
@@ -1704,13 +1704,13 @@ void func_801099D4_pump_pump_away(omObjData *obj) {
 }
 
 void func_80109A50_pump_pump_away(omObjData *obj) {
-    obj->model[0] = func_8000B108_main(0x2E001B, 0x1689);
-    func_8000B460_main(obj, 0, 0x2E001C);
-    func_8000B460_main(obj, 1, 0x2E001D);
-    func_8001C5B4_main(obj->model[0], obj->motion[0]);
+    obj->model[0] = Hu3DModelRead(0x2E001B, 0x1689);
+    omObjMotionRead(obj, 0, 0x2E001C);
+    omObjMotionRead(obj, 1, 0x2E001D);
+    Hu3DMotionModelSet(obj->model[0], obj->motion[0]);
     Hu3DMotionTimeSet(obj->model[0], 0);
-    func_8001C814_main(obj->model[0], 1, 1);
-    func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DMotionAttrSet(obj->model[0], 1, 1);
+    Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     obj->trans.x = obj->trans.y = obj->trans.z = 0.0f;
     obj->func = func_801099D4_pump_pump_away;
     D_80113518_pump_pump_away.state = 0;
@@ -1753,19 +1753,19 @@ void func_80109C30_pump_pump_away(omObjData *obj) {
         case 0:
             break;
         case 1:
-            func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             entry->unk_00 = 2;
             break;
         case 2:
             entry->unk_04 -= 25;
             if (entry->unk_04 > 0) {
-                func_8001F9E4_main(obj->model[0], (u8)entry->unk_04);
+                Hu3DModelTPLvlSet(obj->model[0], (u8)entry->unk_04);
                 obj->trans.y -= entry->unk_08 * entry->unk_08;
                 obj->scale.x += 0.1;
                 obj->scale.y += 0.1;
                 obj->scale.z += 0.1;
             } else {
-                func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 entry->unk_04 = 255;
                 entry->unk_08 = 0;
                 entry->unk_00 = 0;
@@ -1778,10 +1778,10 @@ void func_80109C30_pump_pump_away(omObjData *obj) {
 void func_80109D74_pump_pump_away(omObjData *obj) {
     UnkPumpPumpAwayParticle *entry;
 
-    obj->model[0] = func_8000B108_main(0x2E0013, 0x289);
-    func_8001FA68_main(obj->model[0]);
-    func_8001F9E4_main(obj->model[0], 255);
-    func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    obj->model[0] = Hu3DModelRead(0x2E0013, 0x289);
+    Hu3DModelTPLvlInit(obj->model[0]);
+    Hu3DModelTPLvlSet(obj->model[0], 255);
+    Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     obj->trans.x = obj->trans.y = obj->trans.z = 0.0f;
     obj->scale.x = obj->scale.y = obj->scale.z = 1.0f;
     obj->func = func_80109C30_pump_pump_away;
@@ -1809,10 +1809,10 @@ void func_80109E98_pump_pump_away(omObjData *obj) {
             Hu3DMotionTimeSet(obj->model[0], 0);
             break;
         case 1:
-            func_8001C5B4_main(obj->model[0], obj->motion[0]);
+            Hu3DMotionModelSet(obj->model[0], obj->motion[0]);
             Hu3DMotionSpeedSet(obj->model[0], D_80110F9C_pump_pump_away[player->unk_10]);
-            func_8001C814_main(obj->model[0], 1, 0);
-            func_8001C814_main(obj->model[0], 4, 0);
+            Hu3DMotionAttrSet(obj->model[0], 1, 0);
+            Hu3DMotionAttrSet(obj->model[0], 4, 0);
             player->unk_0C = 2;
             sound = HuAudFXPlay(0x362);
             if (obj->work[0] != 0) {
@@ -1823,16 +1823,16 @@ void func_80109E98_pump_pump_away(omObjData *obj) {
             break;
         case 2:
             if (Hu3DData[obj->model[0]].motTime >= D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02 - 2) {
-                func_8001C5B4_main(obj->model[0], obj->motion[0]);
+                Hu3DMotionModelSet(obj->model[0], obj->motion[0]);
                 Hu3DMotionTimeSet(obj->model[0], D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02 - 2);
                 Hu3DMotionSpeedSet(obj->model[0], D_80110F9C_pump_pump_away[player->unk_10]);
-                func_8001C814_main(obj->model[0], 4, 4);
+                Hu3DMotionAttrSet(obj->model[0], 4, 4);
                 player->unk_0C = 3;
             }
             break;
         case 3:
             if (Hu3DData[obj->model[0]].motTime <= 2.0f) {
-                func_8001C5B4_main(obj->model[0], obj->motion[0]);
+                Hu3DMotionModelSet(obj->model[0], obj->motion[0]);
                 Hu3DMotionTimeSet(obj->model[0], 0);
                 player->unk_0C = 0;
             }
@@ -1846,26 +1846,26 @@ void func_8010A150_pump_pump_away(omObjData *obj) {
     switch (player->unk_0C) {
         case 2:
             if (Hu3DData[obj->model[0]].motTime >= D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02 - 2) {
-                func_8001C5B4_main(obj->model[0], obj->motion[0]);
+                Hu3DMotionModelSet(obj->model[0], obj->motion[0]);
                 Hu3DMotionTimeSet(obj->model[0], D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02 - 2);
                 Hu3DMotionSpeedSet(obj->model[0], D_80110F9C_pump_pump_away[player->unk_10]);
-                func_8001C814_main(obj->model[0], 4, 4);
+                Hu3DMotionAttrSet(obj->model[0], 4, 4);
                 player->unk_0C = 3;
             }
             break;
         case 3:
             if (Hu3DData[obj->model[0]].motTime <= 2.0f) {
-                func_8001C5B4_main(obj->model[0], obj->motion[0]);
+                Hu3DMotionModelSet(obj->model[0], obj->motion[0]);
                 Hu3DMotionTimeSet(obj->model[0], 0);
-                func_8001C814_main(obj->model[0], 4, 0);
-                func_8001C814_main(obj->model[0], 1, 1);
+                Hu3DMotionAttrSet(obj->model[0], 4, 0);
+                Hu3DMotionAttrSet(obj->model[0], 1, 1);
                 player->unk_0C = 0;
             }
             break;
         default:
-            func_8001C5B4_main(obj->model[0], obj->motion[0]);
+            Hu3DMotionModelSet(obj->model[0], obj->motion[0]);
             Hu3DMotionTimeSet(obj->model[0], 0);
-            func_8001C814_main(obj->model[0], 1, 1);
+            Hu3DMotionAttrSet(obj->model[0], 1, 1);
             player->unk_0C = 3;
             break;
     }
@@ -2167,7 +2167,7 @@ void func_8010B274_pump_pump_away(omObjData *obj) {
         case 0:
         case 1:
             Hu3DMotionTimeSet(obj->model[0], 0);
-            func_8001C814_main(obj->model[0], 1, 1);
+            Hu3DMotionAttrSet(obj->model[0], 1, 1);
             break;
         case 2:
             func_80109E98_pump_pump_away(obj);
@@ -2194,25 +2194,25 @@ void func_8010B370_pump_pump_away(omObjData *obj) {
     void *data;
     UnkPumpPumpAwayPlayer *player;
 
-    obj->model[0] = func_8000B108_main(0x2E000D, 0x4022A9);
-    obj->motion[0] = func_8000B5BC_main(0x2E000E);
-    func_8001C954_main(obj->model[0]);
-    func_8001F974_main(obj->model[0], obj->motion[0]);
-    func_8001C514_main(obj->motion[0]);
+    obj->model[0] = Hu3DModelRead(0x2E000D, 0x4022A9);
+    obj->motion[0] = Hu3DModelReadNum(0x2E000E);
+    Hu3DModelVtxBufMake(obj->model[0]);
+    Hu3DMotionModelSetEx(obj->model[0], obj->motion[0]);
+    Hu3DModelDynamicFree(obj->motion[0]);
     if (obj->work[0] != 0) {
         data = DataRead(0x2E000F);
         obj->work[1] = (s16)Hu3DAnimCreate(Hu3DData[obj->model[0]].hmf, data, 0, "m213_roket_r00_DEF");
-        func_80032FC0_main(obj->work[1], 1, 1);
+        Hu3DAnimAttrSet(obj->work[1], 1, 1);
         HuMemMemoryFreePerm(data);
         data = DataRead(0x2E0010);
         obj->work[2] = (s16)Hu3DAnimCreate(Hu3DData[obj->model[0]].hmf, data, 0, "m213_roket_r01_DEF");
-        func_80032FC0_main(obj->work[2], 1, 1);
+        Hu3DAnimAttrSet(obj->work[2], 1, 1);
         HuMemMemoryFreePerm(data);
         Hu3DModelRemakeStatic(obj->model[0]);
-        func_8001C514_main(obj->model[0]);
+        Hu3DModelDynamicFree(obj->model[0]);
     }
-    func_8001C5B4_main(obj->model[0], obj->motion[0]);
-    func_8001C814_main(obj->model[0], 2, 0);
+    Hu3DMotionModelSet(obj->model[0], obj->motion[0]);
+    Hu3DMotionAttrSet(obj->model[0], 2, 0);
     obj->trans.x = D_80110EA0_pump_pump_away[obj->work[0]].x;
     obj->trans.y = D_80110EA0_pump_pump_away[obj->work[0]].y;
     obj->trans.z = D_80110EA0_pump_pump_away[obj->work[0]].z;
@@ -2284,7 +2284,7 @@ void func_8010B898_pump_pump_away(omObjData *obj) {
         }
         jet->unk_10 += (s32)jet->unk_14;
         if (D_800D5558_main[GwPlayer[obj->work[0]].pad] & 0x8000) {
-            sound = func_8004AC98_main(0x35D, obj->work[0]);
+            sound = HuAudPlayerFXPlay(0x35D, obj->work[0]);
             if (obj->work[1] != 0) {
                 HuAudFXPanning(sound, 0x60);
             } else {
@@ -2309,7 +2309,7 @@ void func_8010B898_pump_pump_away(omObjData *obj) {
         jet->unk_10 += (s32)jet->unk_14;
         if ((D_800D5558_main[GwPlayer[obj->work[0]].pad] & 0x4000) ||
             (D_800D5558_main[GwPlayer[obj->work[0]].pad] & 0x2000)) {
-            sound = func_8004AC98_main(0x35E, obj->work[0]);
+            sound = HuAudPlayerFXPlay(0x35E, obj->work[0]);
             if (obj->work[1] != 0) {
                 HuAudFXPanning(sound, 0x60);
             } else {
@@ -2332,18 +2332,18 @@ void func_8010BC14_pump_pump_away(omObjData *obj) {
 
     if (jet->unk_28 != 0) {
         if (jet->unk_18 != 0) {
-            func_8001C814_main(obj->model[0], 1, 0);
-            func_8001C814_main(obj->model[0], 4, 4);
+            Hu3DMotionAttrSet(obj->model[0], 1, 0);
+            Hu3DMotionAttrSet(obj->model[0], 4, 4);
         } else {
-            func_8001C814_main(obj->model[0], 1, 0);
-            func_8001C814_main(obj->model[0], 4, 0);
+            Hu3DMotionAttrSet(obj->model[0], 1, 0);
+            Hu3DMotionAttrSet(obj->model[0], 4, 0);
         }
     } else if (jet->unk_18 != 0) {
         if (Hu3DData[obj->model[0]].motTime <= 2.0f) {
-            func_8001C814_main(obj->model[0], 1, 1);
+            Hu3DMotionAttrSet(obj->model[0], 1, 1);
         }
     } else if (Hu3DData[obj->model[0]].motTime >= D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02 - 2) {
-        func_8001C814_main(obj->model[0], 1, 1);
+        Hu3DMotionAttrSet(obj->model[0], 1, 1);
     }
 }
 
@@ -2359,9 +2359,9 @@ void func_8010BD80_pump_pump_away(omObjData *obj) {
                 D_80111708_pump_pump_away--;
             }
             if (D_80111708_pump_pump_away == 0) {
-                func_8001C5B4_main(obj->model[0], obj->motion[3]);
+                Hu3DMotionModelSet(obj->model[0], obj->motion[3]);
                 Hu3DMotionTimeSet(obj->model[0], 0.0f);
-                func_8001C814_main(obj->model[0], 2, 2);
+                Hu3DMotionAttrSet(obj->model[0], 2, 2);
                 jet->unk_08 = 3;
             }
             break;
@@ -2409,10 +2409,10 @@ void func_8010C060_pump_pump_away(omObjData *obj) {
         case 0:
             obj->trans.y = D_80110E70_pump_pump_away[0].y;
             if (D_80111978_pump_pump_away[obj->work[1]].unk_24 == 2) {
-                func_8001C5B4_main(obj->model[0], obj->motion[6]);
+                Hu3DMotionModelSet(obj->model[0], obj->motion[6]);
                 Hu3DMotionTimeSet(obj->model[0], 0.0f);
-                func_8001C814_main(obj->model[0], 2, 0);
-                func_8001C814_main(obj->model[0], 1, 0);
+                Hu3DMotionAttrSet(obj->model[0], 2, 0);
+                Hu3DMotionAttrSet(obj->model[0], 1, 0);
                 jet->unk_08 = 6;
                 sound = PlayerFXPlay(0x286, obj->work[0]);
                 if (obj->work[1] != 0) {
@@ -2442,9 +2442,9 @@ void func_8010C1C8_pump_pump_away(omObjData *obj) {
             if (jet->unk_0C == 9) {
                 break;
             }
-            func_8001C5B4_main(obj->model[0], obj->motion[3]);
+            Hu3DMotionModelSet(obj->model[0], obj->motion[3]);
             Hu3DMotionTimeSet(obj->model[0], 0);
-            func_8001C814_main(obj->model[0], 2, 2);
+            Hu3DMotionAttrSet(obj->model[0], 2, 2);
             jet->unk_08 = 3;
             break;
         case 3:
@@ -2467,15 +2467,15 @@ void func_8010C3E0_pump_pump_away(omObjData *obj) {
     s32 modelFile = D_800A178C_main[GwPlayer[obj->work[0]].chr][0];
 
     if (jet->unk_08 == 0) {
-        func_8001C5B4_main(obj->model[0], obj->motion[5]);
+        Hu3DMotionModelSet(obj->model[0], obj->motion[5]);
         Hu3DMotionTimeSet(obj->model[0], 0.0f);
-        func_8001C814_main(obj->model[0], 1, 0);
-        func_8001C814_main(obj->model[0], 2, 0);
+        Hu3DMotionAttrSet(obj->model[0], 1, 0);
+        Hu3DMotionAttrSet(obj->model[0], 2, 0);
         jet->unk_08 = 5;
         if (obj->work[0] != 0) {
-            func_80045EF4_main(modelFile | 0x2F, 0x60);
+            HuAudCharVoicePlayPan(modelFile | 0x2F, 0x60);
         } else {
-            func_80045EF4_main(modelFile | 0x2F, 0x20);
+            HuAudCharVoicePlayPan(modelFile | 0x2F, 0x20);
         }
     }
 }
@@ -2491,9 +2491,9 @@ void func_8010C4D0_pump_pump_away(omObjData *obj) {
         case 1:
             func_80105D1C_pump_pump_away(obj->work[0]);
             if (jet->unk_0C == 0) {
-                func_8001C5B4_main(obj->model[0], obj->motion[1]);
+                Hu3DMotionModelSet(obj->model[0], obj->motion[1]);
                 Hu3DMotionTimeSet(obj->model[0], 0.0f);
-                func_8001C814_main(obj->model[0], 1, 1);
+                Hu3DMotionAttrSet(obj->model[0], 1, 1);
                 jet->unk_08 = 1;
                 jet->unk_0C = 0;
             }
@@ -2544,19 +2544,19 @@ void func_8010C6E4_pump_pump_away(omObjData *obj) {
     u16 character = GwPlayer[obj->work[0]].chr;
     UnkPumpPumpAwayJet *jet;
 
-    obj->model[0] = func_8000B108_main(D_800A178C_main[character][0] | D_800A178C_main[character][1], 0x2B9);
-    func_8000B460_main(obj, 0, func_80017BB8_main(character, 0));
-    func_8000B460_main(obj, 1, func_80017BB8_main(character, 0x14));
-    func_8000B460_main(obj, 3, func_80017BB8_main(character, 1));
-    func_8000B460_main(obj, 4, func_80017BB8_main(character, 0x13));
-    func_8000B460_main(obj, 5, func_80017BB8_main(character, 0x2F));
-    func_8000B460_main(obj, 6, func_80017BB8_main(character, 0x37));
-    func_8001C5B4_main(obj->model[0], obj->motion[1]);
-    func_8001C814_main(obj->model[0], 2, 2);
-    obj->model[1] = func_8000B0A0_main(0, 0xC9);
-    func_8001C2FC_main(obj->model[1], 0x80000000, 0);
+    obj->model[0] = Hu3DModelRead(D_800A178C_main[character][0] | D_800A178C_main[character][1], 0x2B9);
+    omObjMotionRead(obj, 0, CharMotionDataNumGet(character, 0));
+    omObjMotionRead(obj, 1, CharMotionDataNumGet(character, 0x14));
+    omObjMotionRead(obj, 3, CharMotionDataNumGet(character, 1));
+    omObjMotionRead(obj, 4, CharMotionDataNumGet(character, 0x13));
+    omObjMotionRead(obj, 5, CharMotionDataNumGet(character, 0x2F));
+    omObjMotionRead(obj, 6, CharMotionDataNumGet(character, 0x37));
+    Hu3DMotionModelSet(obj->model[0], obj->motion[1]);
+    Hu3DMotionAttrSet(obj->model[0], 2, 2);
+    obj->model[1] = Hu3DModelRead2(0, 0xC9);
+    Hu3DModelObjAttrSet(obj->model[1], 0x80000000, 0);
     Hu3DModelRemakeStatic(obj->model[1]);
-    func_8001C514_main(obj->model[1]);
+    Hu3DModelDynamicFree(obj->model[1]);
     func_80088800_main(Hu3DData[obj->model[1]].mtx, 0.0f, 5.0f, 0.0f);
     if (obj->work[1] == 0) {
         obj->trans.x = D_80110E70_pump_pump_away[obj->work[1] + D_80111700_pump_pump_away].x;
@@ -2718,7 +2718,7 @@ void func_8010CEE8_pump_pump_away(omObjData *obj) {
         HuSprPosSet(record->group, 0, record->unk_20 / 4 + 32, record->unk_20 / 4 + 22);
         HuSprGrpMemberSet(record->group, 0, record->spriteData, 0);
         HuSprAnimModeSet(record->group, 0, HUSPR_ANIM_MODE_STOP);
-        func_80054FF8_main(record->group, 0, (s16)record->digits[0]);
+        HuSprPatNoSet(record->group, 0, (s16)record->digits[0]);
         HuSprAttrSet(record->group, 0, 0x1000);
         HuSprAttrSet(record->group, 0, 0);
         for (i = 1; i < 3; i++) {
@@ -2726,7 +2726,7 @@ void func_8010CEE8_pump_pump_away(omObjData *obj) {
             HuSprPosSet(record->group, i, i * 12, 0);
             HuSprGrpMemberSet(record->group, i, record->spriteData, 0);
             HuSprAnimModeSet(record->group, i, HUSPR_ANIM_MODE_STOP);
-            func_80054FF8_main(record->group, i, (s16)record->digits[i]);
+            HuSprPatNoSet(record->group, i, (s16)record->digits[i]);
             HuSprAttrSet(record->group, i, 0x1000);
             HuSprAttrSet(record->group, i, 0);
         }
@@ -2746,24 +2746,24 @@ void func_8010D1B8_pump_pump_away(omObjData *obj) {
     HuSprPosSet(D_801135B8_pump_pump_away, 0, 32, 22);
     HuSprGrpMemberSet(D_801135B8_pump_pump_away, 0, D_801135B4_pump_pump_away, 0);
     HuSprAnimModeSet(D_801135B8_pump_pump_away, 0, HUSPR_ANIM_MODE_STOP);
-    func_80054FF8_main(D_801135B8_pump_pump_away, 0, D_801135BE_pump_pump_away);
+    HuSprPatNoSet(D_801135B8_pump_pump_away, 0, D_801135BE_pump_pump_away);
     HuSprAttrSet(D_801135B8_pump_pump_away, 0, 0x1000);
     HuSprAttrSet(D_801135B8_pump_pump_away, 0, 0);
     for (i = 1; i < 3; i++) {
-        func_800554C4_main(record->group, i, 0);
+        HuSprParentSet(record->group, i, 0);
         HuSprGrpMemberSet(record->group, i, record->spriteData, 0);
         if (record->digits[i] != -1) {
             HuSprPosSet(record->group, i, i * 12, 0);
             HuSprGrpMemberSet(record->group, i, record->spriteData, 0);
             HuSprAnimModeSet(record->group, i, HUSPR_ANIM_MODE_STOP);
-            func_80054FF8_main(record->group, i, (s16)record->digits[i]);
+            HuSprPatNoSet(record->group, i, (s16)record->digits[i]);
             HuSprAttrSet(record->group, i, 0x1000);
             HuSprAttrSet(record->group, i, 0);
         } else {
             HuSprPosSet(record->group, i, i * 12, 0);
             HuSprGrpMemberSet(record->group, i, record->spriteData, 0);
             HuSprAnimModeSet(record->group, i, HUSPR_ANIM_MODE_STOP);
-            func_80054FF8_main(record->group, i, 0);
+            HuSprPatNoSet(record->group, i, 0);
             HuSprAttrSet(record->group, i, 0x1000);
             HuSprDispOff(record->group, i);
         }
@@ -2795,23 +2795,23 @@ void func_8010D48C_pump_pump_away(omObjData *obj) {
     if (D_801135E0_pump_pump_away == 0) {
         height = (first->unk_18 > other->unk_18) ? first->unk_18 : other->unk_18;
         if (marker->record * 10 - height * 0.1 + 400.0 < 2000.0) {
-            func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             obj->trans.y = marker->record * 10 - height * 0.1 + 350.0;
             if (obj->trans.y < -1000.0f) {
-                func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 marker->hidden = 1;
             }
         }
     }
     if (D_80113530_pump_pump_away.state >= 2 && marker->state < 10) {
-        func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         marker->state = 10;
     }
 }
 
 void func_8010D620_pump_pump_away(omObjData *obj) {
-    obj->model[0] = func_8000B108_main(0x2E001F, 0x1689);
-    func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    obj->model[0] = Hu3DModelRead(0x2E001F, 0x1689);
+    Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     obj->trans.x = 0.0f;
     obj->trans.y = 1000.0f;
     obj->trans.z = 550.0f;
@@ -2851,9 +2851,9 @@ void func_8010D6F4_pump_pump_away(omObjData *obj) {
                 break;
         }
     }
-    func_80034048_main(obj->work[1], (s16)entry->unk_04);
-    func_80034048_main(obj->work[2], 0);
-    func_80034048_main(obj->work[3], 0);
+    Hu3DAnimTimeSet(obj->work[1], (s16)entry->unk_04);
+    Hu3DAnimTimeSet(obj->work[2], 0);
+    Hu3DAnimTimeSet(obj->work[3], 0);
     if (entry->unk_08 + 6.0f >= 360.0f) {
         angle = entry->unk_08 + 6.0f - 360.0f;
     } else {
@@ -2898,9 +2898,9 @@ void func_8010D95C_pump_pump_away(omObjData *obj) {
                 break;
         }
     }
-    func_80034048_main(obj->work[1], (s16)entry->unk_04);
-    func_80034048_main(obj->work[2], 0);
-    func_80034048_main(obj->work[3], 0);
+    Hu3DAnimTimeSet(obj->work[1], (s16)entry->unk_04);
+    Hu3DAnimTimeSet(obj->work[2], 0);
+    Hu3DAnimTimeSet(obj->work[3], 0);
     if (entry->unk_08 + 6.0f >= 360.0f) {
         angle = entry->unk_08 + 6.0f - 360.0f;
     } else {
@@ -2926,8 +2926,8 @@ void func_8010DC68_pump_pump_away(omObjData *obj) {
         func_8010D95C_pump_pump_away(obj);
     }
     if (D_80113530_pump_pump_away.state >= 2 && entry->unk_00 < 10) {
-        func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-        func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         entry->unk_00 = 10;
     }
 }
@@ -2938,8 +2938,8 @@ void func_8010DD24_pump_pump_away(omObjData *obj) {
     PumpPumpAwayMilestone *entry;
 
     if (obj->work[0] == 0) {
-        D_801116EA_pump_pump_away = obj->model[0] = func_8000B108_main(0xA0089, 0x289);
-        obj->model[1] = func_8000B108_main(0x2E0020, 0x289);
+        D_801116EA_pump_pump_away = obj->model[0] = Hu3DModelRead(0xA0089, 0x289);
+        obj->model[1] = Hu3DModelRead(0x2E0020, 0x289);
         data = DataRead(0x2E0021);
         obj->work[1] = D_801116E8_pump_pump_away = Hu3DAnimCreate(Hu3DData[obj->model[1]].hmf, data, 0, "m213_plart2_DEF");
         obj->work[2] = Hu3DAnimLink(Hu3DData[obj->model[1]].hmf, D_801116E8_pump_pump_away, 0, "m213_plart1_DEF");
@@ -2947,18 +2947,18 @@ void func_8010DD24_pump_pump_away(omObjData *obj) {
         HuMemMemoryFreePerm(data);
     } else {
         obj->model[0] = Hu3DModelLink(D_801116EA_pump_pump_away);
-        obj->model[1] = func_8000B108_main(0x2E0020, 0x289);
+        obj->model[1] = Hu3DModelRead(0x2E0020, 0x289);
         obj->work[1] = Hu3DAnimLink(Hu3DData[obj->model[1]].hmf, D_801116E8_pump_pump_away, 0, "m213_plart2_DEF");
         obj->work[2] = Hu3DAnimLink(Hu3DData[obj->model[1]].hmf, D_801116E8_pump_pump_away, 0, "m213_plart1_DEF");
         obj->work[3] = Hu3DAnimLink(Hu3DData[obj->model[1]].hmf, D_801116E8_pump_pump_away, 0, "m213_plart0_DEF");
     }
     Hu3DModelRemakeStatic(obj->model[1]);
-    func_8001C514_main(obj->model[1]);
+    Hu3DModelDynamicFree(obj->model[1]);
     for (i = 1; i < 4; i++) {
-        func_80034048_main((s16)obj->work[i], 0);
-        func_80032FC0_main((s16)obj->work[i], 1, 1);
+        Hu3DAnimTimeSet((s16)obj->work[i], 0);
+        Hu3DAnimAttrSet((s16)obj->work[i], 1, 1);
     }
-    func_8001C814_main(obj->model[0], 2, 2);
+    Hu3DMotionAttrSet(obj->model[0], 2, 2);
     obj->trans.x = 43.5f;
     obj->trans.y = 1000.0f;
     obj->trans.z = -17.5f;
@@ -2993,10 +2993,10 @@ void func_8010E0F4_pump_pump_away(omObjData *obj) {
         distance = player->unk_18 > other->unk_18 ? player->unk_18 : other->unk_18;
         positions = D_8011101C_pump_pump_away;
         if (D_8011101C_pump_pump_away[obj->work[0]] - distance * 0.1 + 400.0 < 1000.0) {
-            func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             obj->trans.y = positions[obj->work[0]] - distance * 0.1 + 400.0;
             if (obj->trans.y < -1000.0f) {
-                func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 nozzle->unk_04 = 1;
             }
         }
@@ -3027,7 +3027,7 @@ void func_8010E0F4_pump_pump_away(omObjData *obj) {
     nozzle->unk_10 = angle;
     obj->trans.y += sindf(angle) * 2.0;
     if (D_80113530_pump_pump_away.state >= 2 && nozzle->unk_00 < 10) {
-        func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         nozzle->unk_00 = 10;
     }
 }
@@ -3036,12 +3036,12 @@ void func_8010E45C_pump_pump_away(omObjData *obj) {
     UnkPumpPumpAwayNozzle *nozzle;
 
     if (D_801116EC_pump_pump_away == 0) {
-        D_801116EC_pump_pump_away = obj->model[0] = func_8000B108_main(0x2E0011, 0x299);
+        D_801116EC_pump_pump_away = obj->model[0] = Hu3DModelRead(0x2E0011, 0x299);
     } else {
         obj->model[0] = Hu3DModelLink(D_801116EC_pump_pump_away);
     }
-    func_8001C814_main(obj->model[0], 2, 2);
-    func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DMotionAttrSet(obj->model[0], 2, 2);
+    Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     if (rand8() & 1) {
         obj->trans.x = (u8)(rand8() % 10) * 50;
     } else {
@@ -3078,10 +3078,10 @@ void func_8010E6B8_pump_pump_away(omObjData *obj) {
             distance = (player->unk_18 > other->unk_18) ? player->unk_18 : other->unk_18;
             positions = D_8011102C_pump_pump_away;
             if (D_8011102C_pump_pump_away[obj->work[0]] - distance * 0.1 + 400.0 < 1000.0) {
-                func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 obj->trans.y = positions[obj->work[0]] - distance * 0.1 + 400.0;
                 if (obj->trans.y < -1000.0f) {
-                    func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     effect->hidden = 1;
                 }
             }
@@ -3102,7 +3102,7 @@ void func_8010E6B8_pump_pump_away(omObjData *obj) {
             effect->direction ^= 1;
         }
         if (D_80113530_pump_pump_away.state >= 2 && effect->state < 10) {
-            func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             effect->state = 10;
         }
     }
@@ -3112,12 +3112,12 @@ void func_8010E98C_pump_pump_away(omObjData *obj) {
     PumpPumpAwayMovingEffect *effect;
 
     if (D_801116EE_pump_pump_away == 0) {
-        D_801116EE_pump_pump_away = obj->model[0] = func_8000B108_main(0xA0062, 0x299);
+        D_801116EE_pump_pump_away = obj->model[0] = Hu3DModelRead(0xA0062, 0x299);
     } else {
         obj->model[0] = Hu3DModelLink(D_801116EE_pump_pump_away);
     }
-    func_8001C814_main(obj->model[0], 1, 1);
-    func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DMotionAttrSet(obj->model[0], 1, 1);
+    Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     if (rand8() & 1) {
         obj->trans.x = (u8)(rand8() % 10) * 50;
     } else {
@@ -3157,7 +3157,7 @@ void func_8010EBC4_pump_pump_away(omObjData *obj) {
                 case 0:
                     positions = D_8011103C_pump_pump_away;
                     if (D_8011103C_pump_pump_away[D_80111970_pump_pump_away] - distance * 0.1 + 400.0 < 1000.0) {
-                        func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                        Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                         obj->trans.y = positions[obj->work[0]] + distance * 0.1 + 400.0;
                         spray->unk_00 = 1;
                         obj->work[1] = D_80111970_pump_pump_away;
@@ -3167,7 +3167,7 @@ void func_8010EBC4_pump_pump_away(omObjData *obj) {
                 case 1:
                     obj->trans.y = D_8011103C_pump_pump_away[obj->work[1]] - distance * 0.1 + 400.0;
                     if (obj->trans.y < -500.0f) {
-                        func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                        Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                         if (obj->work[0] & 1) {
                             obj->trans.x = rand16() % 501 + 100;
                         } else {
@@ -3196,7 +3196,7 @@ void func_8010EBC4_pump_pump_away(omObjData *obj) {
         }
         obj->rot.z = rotation;
         if (D_80113530_pump_pump_away.state >= 2 && spray->unk_00 < 10) {
-            func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             spray->unk_00 = 10;
         }
     }
@@ -3206,12 +3206,12 @@ void func_8010F024_pump_pump_away(omObjData *obj) {
     UnkPumpPumpAwaySpray *spray;
 
     if (D_801116F0_pump_pump_away == 0) {
-        D_801116F0_pump_pump_away = obj->model[0] = func_8000B108_main(0x2E0022, 0x289);
+        D_801116F0_pump_pump_away = obj->model[0] = Hu3DModelRead(0x2E0022, 0x289);
     } else {
         obj->model[0] = Hu3DModelLink(D_801116F0_pump_pump_away);
     }
-    func_8001C814_main(obj->model[0], 1, 1);
-    func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DMotionAttrSet(obj->model[0], 1, 1);
+    Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     if (obj->work[0] & 1) {
         obj->trans.x = rand16() % 501 + 100;
     } else {
@@ -3251,7 +3251,7 @@ void func_8010F268_pump_pump_away(omObjData *obj) {
                 case 0:
                     positions = D_8011109C_pump_pump_away;
                     if (D_8011109C_pump_pump_away[D_801133F8_pump_pump_away] - distance * 0.1 + 400.0 < 1000.0) {
-                        func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                        Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                         obj->trans.y = positions[obj->work[0]] + distance * 0.1 + 400.0;
                         spray->unk_00 = 1;
                         obj->work[1] = D_801133F8_pump_pump_away;
@@ -3261,7 +3261,7 @@ void func_8010F268_pump_pump_away(omObjData *obj) {
                 case 1:
                     obj->trans.y = D_8011109C_pump_pump_away[obj->work[1]] - distance * 0.1 + 400.0;
                     if (obj->trans.y < -1000.0f) {
-                        func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                        Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                         if (obj->work[0] & 1) {
                             obj->trans.x = rand16() % 301 + 100;
                         } else {
@@ -3284,7 +3284,7 @@ void func_8010F268_pump_pump_away(omObjData *obj) {
         spray->unk_08 = angle;
         obj->scale.y = obj->scale.z = obj->scale.x = sindf(angle) * 0.03 + 0.5;
         if ((D_80113530_pump_pump_away.state >= 2 && spray->unk_00 < 10) || (progress >= 351 && spray->unk_00 == 0)) {
-            func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             spray->unk_00 = 10;
             spray->unk_04 = 1;
         }
@@ -3295,12 +3295,12 @@ void func_8010F688_pump_pump_away(omObjData *obj) {
     UnkPumpPumpAwaySpray *spray;
 
     if (D_801116F2_pump_pump_away == 0) {
-        D_801116F2_pump_pump_away = obj->model[0] = func_8000B108_main(0x230005, 0x299);
+        D_801116F2_pump_pump_away = obj->model[0] = Hu3DModelRead(0x230005, 0x299);
     } else {
         obj->model[0] = Hu3DModelLink(D_801116F2_pump_pump_away);
     }
-    func_8001C814_main(obj->model[0], 1, 1);
-    func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DMotionAttrSet(obj->model[0], 1, 1);
+    Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     if (obj->work[0] & 1) {
         obj->trans.x = rand16() % 301 + 100;
     } else {
@@ -3604,9 +3604,9 @@ void func_80110290_pump_pump_away(omObjData *obj) {
 void func_801102E4_pump_pump_away(omObjData *obj) {
     if (D_801116FC_pump_pump_away != 0) {
         D_801116FC_pump_pump_away--;
-        func_8003F578_main((D_801116FC_pump_pump_away + 29) / 30);
+        GMesTimerValueSet((D_801116FC_pump_pump_away + 29) / 30);
     } else {
-        func_8003F5C0_main();
+        GMesTimerEnd();
         D_801116FC_pump_pump_away = 90;
         obj->func = func_80110290_pump_pump_away;
         D_801116F8_pump_pump_away = 1;
@@ -3652,7 +3652,7 @@ void func_801104F4_pump_pump_away(omObjData *obj) {
         WipeCreateOut(WIPE_TYPE_NORMAL, 0x14);
         obj->func = func_801104BC_pump_pump_away;
         HuAudSeqFadeOut(0x1E);
-        func_8004AB0C_main(0x1E);
+        HuAudFXAllFadeOut(0x1E);
     }
 }
 
@@ -3934,8 +3934,8 @@ void func_80110BB8_pump_pump_away(void) {
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
     obj->work[0] = 1;
     omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    func_8000B5F0_main(1);
-    func_8000B710_main(1);
+    CamSetupInit(1);
+    CamSetupMapCullAddMulti(1);
     for (i = 0; i < 1; i++) {
         ScissorSet(i, D_8011111C_pump_pump_away[i].scissorX, D_8011111C_pump_pump_away[i].scissorY,
                    D_8011111C_pump_pump_away[i].scissorWidth, D_8011111C_pump_pump_away[i].scissorHeight);
@@ -3947,10 +3947,10 @@ void func_80110BB8_pump_pump_away(void) {
 }
 
 void func_80110D28_pump_pump_away(void) {
-    func_8001FE20_main(50);
-    func_800142A0_main(100);
+    MapCollInit(50);
+    Hu3DSprModelInit(100);
     omInitObjMan(100, 0);
-    func_8004A208_main();
+    omGameSysInit();
     func_80110BB8_pump_pump_away();
     Hu3DGLightMaxSet(1);
     Hu3DGLightMaxSet(2);
@@ -3963,8 +3963,8 @@ void func_80110D28_pump_pump_away(void) {
     D_800EC1B8_minigame = 0;
     D_800EC280_minigame = 0;
     D_800EBE28_minigame = 0;
-    func_80045010_main(D_801116D8_pump_pump_away, 0);
-    func_80045010_main(D_801116D8_pump_pump_away, 1);
+    GMesFontMesCreate(D_801116D8_pump_pump_away, 0);
+    GMesFontMesCreate(D_801116D8_pump_pump_away, 1);
     omAddObj(1000, 0, 0, -1, func_80110B34_pump_pump_away);
     omAddObj(1000, 0, 0, -1, func_801104F4_pump_pump_away);
     func_80105C54_pump_pump_away();

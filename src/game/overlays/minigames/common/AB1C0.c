@@ -94,7 +94,7 @@ f32 func_800D8818_minigame(f32 x, f32 y, f32 z, Hu3DPoint *points, Hu3DQuad *qua
     f32 denom;
     f32 t;
 
-    func_8002038C_main(p0, &points[quad->vtx[2]], &points[quad->vtx[3]], &normal);
+    MapTriNormalGet(p0, &points[quad->vtx[2]], &points[quad->vtx[3]], &normal);
     nx = normal.x;
     ny = normal.y;
     nz = normal.z;
@@ -160,7 +160,7 @@ f32 func_800D89CC_minigame(omObjData *arg0, f32 x, f32 y, f32 z, Vec *normal) {
                         normal->z = normal->x = 0.0f;
                         normal->y = 1.0f;
                         func_800E2B58_minigame(D_800EC240_minigame, normal);
-                        func_800202FC_main(normal);
+                        MapVecNormalize(normal);
                     }
                 }
             } else if (height >= best && height < y + 150.0f) {
@@ -175,9 +175,9 @@ f32 func_800D89CC_minigame(omObjData *arg0, f32 x, f32 y, f32 z, Vec *normal) {
             }
         } else {
             points = (Hu3DPoint *)Hu3DData[obj->model[0]].hmf->unk50;
-            func_80021C14_main(obj->model[0], &D_800EBEB0_minigame, func_800DB704_minigame, &sphere.pos);
-            for (quad = func_80022198_main(&D_800EBEB0_minigame); quad != NULL;
-                 quad = func_80022198_main(&D_800EBEB0_minigame)) {
+            Hu3DQuadPoolCollect(obj->model[0], &D_800EBEB0_minigame, func_800DB704_minigame, &sphere.pos);
+            for (quad = Hu3DQuadPoolNext(&D_800EBEB0_minigame); quad != NULL;
+                 quad = Hu3DQuadPoolNext(&D_800EBEB0_minigame)) {
                 transformed = 0;
                 if (obj->trans.x != 0.0f || obj->trans.y != 0.0f || obj->trans.z != 0.0f || obj->rot.x != 0.0f ||
                     obj->rot.y != 0.0f || obj->rot.z != 0.0f) {
@@ -188,22 +188,22 @@ f32 func_800D89CC_minigame(omObjData *arg0, f32 x, f32 y, f32 z, Vec *normal) {
                     dir.x = tmp.x - sphere.pos.x;
                     dir.y = tmp.y - sphere.pos.y;
                     dir.z = tmp.z - sphere.pos.z;
-                    func_800202FC_main(&dir);
+                    MapVecNormalize(&dir);
                     func_800D8818_minigame(sphere.pos.x, sphere.pos.y, sphere.pos.z, points, quad, &dir, &sphere.pos);
                     func_800E2C68_minigame(D_800EC240_minigame, &sphere.pos);
-                    func_8002038C_main(&points[quad->vtx[1]], &points[quad->vtx[2]], &points[quad->vtx[3]], &dir);
+                    MapTriNormalGet(&points[quad->vtx[1]], &points[quad->vtx[2]], &points[quad->vtx[3]], &dir);
                     func_800E2B58_minigame(D_800EC240_minigame, &dir);
                     height = func_800D8778_minigame(obj, data, sphere.pos.y, y, &dir);
                     transformed = 1;
                 } else {
-                    height = func_800204F4_main(sphere.pos.x, sphere.pos.y, sphere.pos.z, points, quad);
+                    height = MapCalcPoint(sphere.pos.x, sphere.pos.y, sphere.pos.z, points, quad);
                 }
                 if (height >= best && height < y + 150.0f) {
                     best = height;
                     D_800EB738_minigame = i;
                     data->unk53[0] = i;
                     if (normal != NULL) {
-                        func_8002038C_main(&points[quad->vtx[1]], &points[quad->vtx[2]], &points[quad->vtx[3]],
+                        MapTriNormalGet(&points[quad->vtx[1]], &points[quad->vtx[2]], &points[quad->vtx[3]],
                                            normal);
                         if (transformed == 1) {
                             tmp.x = normal->x;
@@ -213,7 +213,7 @@ f32 func_800D89CC_minigame(omObjData *arg0, f32 x, f32 y, f32 z, Vec *normal) {
                             normal->x = tmp.x;
                             normal->y = tmp.y;
                             normal->z = tmp.z;
-                            func_800202FC_main(normal);
+                            MapVecNormalize(normal);
                         }
                     }
                 }
@@ -301,11 +301,11 @@ f32 func_800D9028_minigame(omObjData *arg0, f32 x, f32 y, f32 z, f32 prevY) {
                 }
             } else {
                 points = (Hu3DPoint *)Hu3DData[D_800EC1C0_minigame[D_800EB734_minigame]->model[0]].hmf->unk50;
-                func_80021C14_main(D_800EC1C0_minigame[D_800EB734_minigame]->model[0], &D_800EBEB0_minigame,
+                Hu3DQuadPoolCollect(D_800EC1C0_minigame[D_800EB734_minigame]->model[0], &D_800EBEB0_minigame,
                                    func_800DB704_minigame, &sphere.pos);
-                for (quad = func_80022198_main(&D_800EBEB0_minigame); quad != NULL;
-                     quad = func_80022198_main(&D_800EBEB0_minigame)) {
-                    height = func_800204F4_main(newX + D_800EBE2C_minigame, y, newZ + D_800EC5D8_minigame, points,
+                for (quad = Hu3DQuadPoolNext(&D_800EBEB0_minigame); quad != NULL;
+                     quad = Hu3DQuadPoolNext(&D_800EBEB0_minigame)) {
+                    height = MapCalcPoint(newX + D_800EBE2C_minigame, y, newZ + D_800EC5D8_minigame, points,
                                                 quad);
                     if (best < height && height < y + 150.0f) {
                         best = height;
@@ -313,7 +313,7 @@ f32 func_800D9028_minigame(omObjData *arg0, f32 x, f32 y, f32 z, f32 prevY) {
                     }
                     if (groundY < height && groundY < y + 35.0f) {
                         groundY = height;
-                        func_8002038C_main(&points[quad->vtx[1]], &points[quad->vtx[2]], &points[quad->vtx[3]],
+                        MapTriNormalGet(&points[quad->vtx[1]], &points[quad->vtx[2]], &points[quad->vtx[3]],
                                            &floorNormal);
                         normal = &floorNormal;
                     }
@@ -456,18 +456,18 @@ f32 func_800D972C_minigame(omObjData *arg0, f32 angle, f32 x, f32 y, f32 z) {
                 }
             } else {
                 points = (Hu3DPoint *)Hu3DData[D_800EC1C0_minigame[D_800EB734_minigame]->model[0]].hmf->unk50;
-                func_80021C14_main(D_800EC1C0_minigame[D_800EB734_minigame]->model[0], &D_800EBEB0_minigame,
+                Hu3DQuadPoolCollect(D_800EC1C0_minigame[D_800EB734_minigame]->model[0], &D_800EBEB0_minigame,
                                    func_800DB704_minigame, &sphere.pos);
-                for (quad = func_80022198_main(&D_800EBEB0_minigame); quad != NULL;
-                     quad = func_80022198_main(&D_800EBEB0_minigame)) {
-                    height = func_800204F4_main(newX, y, newZ, points, quad);
+                for (quad = Hu3DQuadPoolNext(&D_800EBEB0_minigame); quad != NULL;
+                     quad = Hu3DQuadPoolNext(&D_800EBEB0_minigame)) {
+                    height = MapCalcPoint(newX, y, newZ, points, quad);
                     if (best < height) {
                         best = height;
                         idx = D_800EB734_minigame;
                     }
                     if (groundY < height && groundY < y + 35.0f) {
                         groundY = height;
-                        func_8002038C_main(&points[quad->vtx[1]], &points[quad->vtx[2]], &points[quad->vtx[3]],
+                        MapTriNormalGet(&points[quad->vtx[1]], &points[quad->vtx[2]], &points[quad->vtx[3]],
                                            &floorNormal);
                         normal = &floorNormal;
                     }
@@ -555,7 +555,7 @@ s32 func_800D9F3C_minigame(Vec *pos, Hu3DQuad *quad, Hu3DPoint *points) {
     f32 py;
     f32 pz;
 
-    func_8002038C_main(&points[quad->vtx[1]], &points[quad->vtx[2]], &points[quad->vtx[3]], &normal);
+    MapTriNormalGet(&points[quad->vtx[1]], &points[quad->vtx[2]], &points[quad->vtx[3]], &normal);
     p0 = &points[quad->vtx[1]];
     px = p0->x;
     py = p0->y;
@@ -584,7 +584,7 @@ s32 func_800DA054_minigame(Hu3DSphere *sphere, Hu3DQuad *quad, Hu3DPoint *points
     if (flags <= 0x200) {
         return FALSE;
     }
-    func_8002038C_main(&points[quad->vtx[1]], &points[quad->vtx[2]], &points[quad->vtx[3]], &normal);
+    MapTriNormalGet(&points[quad->vtx[1]], &points[quad->vtx[2]], &points[quad->vtx[3]], &normal);
     p0 = &points[quad->vtx[1]];
     px = p0->x;
     py = p0->y;
@@ -659,17 +659,17 @@ s32 func_800DA540_minigame(Vec *pos, s16 *face, Hu3DPoint *points) {
     z = pos->z;
     count = ((u16)face[0] >> 14) + 2;
     face++;
-    if (func_8002048C_main(x, z, &points[face[0]], &points[face[1]]) > 0.0f) {
+    if (MapXZCross(x, z, &points[face[0]], &points[face[1]]) > 0.0f) {
         for (i = 1; i < count; i++) {
             next = (i + 1) % count;
-            if (func_8002048C_main(x, z, &points[face[i]], &points[face[next]]) < 0.0f) {
+            if (MapXZCross(x, z, &points[face[i]], &points[face[next]]) < 0.0f) {
                 return FALSE;
             }
         }
     } else {
         for (i = 1; i < count; i++) {
             next = (i + 1) % count;
-            if (func_8002048C_main(x, z, &points[face[i]], &points[face[next]]) > 0.0f) {
+            if (MapXZCross(x, z, &points[face[i]], &points[face[next]]) > 0.0f) {
                 return FALSE;
             }
         }
@@ -989,7 +989,7 @@ s32 func_800DB724_minigame(s32 count, s16 *vtx, Hu3DPoint *points, Hu3DSphere *a
     }
     if (hit == 1) {
         func_800E048C_minigame(closest.x, closest.y, closest.z);
-        func_8002038C_main(&points[vtx[0]], &points[vtx[1]], &points[vtx[2]], &D_800EC298_minigame[D_800EB736_minigame]);
+        MapTriNormalGet(&points[vtx[0]], &points[vtx[1]], &points[vtx[2]], &D_800EC298_minigame[D_800EB736_minigame]);
         D_800EB736_minigame++;
         dx = closest.x - prev.pos.x;
         dz = closest.z - prev.pos.z;
@@ -999,7 +999,7 @@ s32 func_800DB724_minigame(s32 count, s16 *vtx, Hu3DPoint *points, Hu3DSphere *a
                 dir.x = D_800EBDD0_minigame.x - prev.pos.x;
                 dir.y = D_800EBDD0_minigame.y - prev.pos.y;
                 dir.z = D_800EBDD0_minigame.z - prev.pos.z;
-                func_800202FC_main(&dir);
+                MapVecNormalize(&dir);
                 if (func_800DA2E0_minigame(&prev.pos, vtx - 1, points, &dir) == hit) {
                     depth = HuSqrtf(dx * dx + dz * dz) + sphere.radius;
                 }
@@ -1067,7 +1067,7 @@ s32 func_800DBCF4_minigame(s32 count, s16 *vtx, Hu3DPoint *points, func_800DBCF4
         prev.pos.z = arg3->prev.z + D_800EC5D8_minigame;
         func_800E2BD4_minigame(D_800EC240_minigame, &closest);
         func_800E048C_minigame(closest.x, closest.y, closest.z);
-        func_8002038C_main(&points[vtx[0]], &points[vtx[1]], &points[vtx[2]], &D_800EC298_minigame[D_800EB736_minigame]);
+        MapTriNormalGet(&points[vtx[0]], &points[vtx[1]], &points[vtx[2]], &D_800EC298_minigame[D_800EB736_minigame]);
         D_800EB736_minigame++;
         dx = closest.x - prev.pos.x;
         dz = closest.z - prev.pos.z;
@@ -1081,7 +1081,7 @@ s32 func_800DBCF4_minigame(s32 count, s16 *vtx, Hu3DPoint *points, func_800DBCF4
                 dir.x = sphere.pos.x - prev.pos.x;
                 dir.y = sphere.pos.y - prev.pos.y;
                 dir.z = sphere.pos.z - prev.pos.z;
-                func_800202FC_main(&dir);
+                MapVecNormalize(&dir);
                 if (func_800DA2E0_minigame(&prev.pos, vtx - 1, points, &dir) == hit) {
                     depth = HuSqrtf(dx * dx + dz * dz) + sphere.radius;
                 }
@@ -1174,7 +1174,7 @@ void func_800DC7D8_minigame(omObjData *arg0, Hu3DSphere *arg1) {
         dir.x = x;
         dir.y = 0.0f;
         dir.z = z;
-        func_800202FC_main(&dir);
+        MapVecNormalize(&dir);
         func_800E048C_minigame(arg1->pos.x * dir.x, arg1->pos.y, arg1->pos.z * dir.z);
         func_800E0430_minigame(-arg1->pos.x, 0.0f, -arg1->pos.z);
         D_800EB736_minigame++;
@@ -1195,7 +1195,7 @@ void func_800DC8E4_minigame(omObjData *arg0, Hu3DSphere *arg1, f32 arg2) {
             dir.x = x;
             dir.y = 0.0f;
             dir.z = z;
-            func_800202FC_main(&dir);
+            MapVecNormalize(&dir);
             func_800E048C_minigame(-arg1->pos.x * dir.x, arg1->pos.y, -arg1->pos.z * dir.z);
             func_800E0430_minigame(arg1->pos.x, 0.0f, arg1->pos.z);
             D_800EB736_minigame++;
@@ -1423,7 +1423,7 @@ s8 func_800DD530_minigame(omObjData *arg0, Hu3DSphere *arg1, f32 arg2) {
             sphere.pos.y += D_800EC5D8_minigame;
             func_800DC8E4_minigame(obj, &sphere, data->unk34 / 2);
         } else if (!(objData->unk06 & 2)) {
-            func_80021C14_main(D_800EC1C0_minigame[D_800EB734_minigame]->model[0], &D_800EBEB0_minigame,
+            Hu3DQuadPoolCollect(D_800EC1C0_minigame[D_800EB734_minigame]->model[0], &D_800EBEB0_minigame,
                                (s32 (*)(s32, s16 *, Hu3DPoint *, Vec *))func_800DB724_minigame, &sphere.pos);
         }
         if (count != D_800EB736_minigame) {
@@ -1470,7 +1470,7 @@ s8 func_800DD530_minigame(omObjData *arg0, Hu3DSphere *arg1, f32 arg2) {
             local.pos.y += D_800EC5D8_minigame;
             func_800DC8E4_minigame(obj, (Hu3DSphere *)&local, data->unk34 / 2);
         } else {
-            func_80021C14_main(D_800EC1C0_minigame[i]->model[0], &D_800EBEB0_minigame,
+            Hu3DQuadPoolCollect(D_800EC1C0_minigame[i]->model[0], &D_800EBEB0_minigame,
                                (s32 (*)(s32, s16 *, Hu3DPoint *, Vec *))func_800DBCF4_minigame, &local.pos);
         }
         if (count != D_800EB736_minigame) {
@@ -1641,7 +1641,7 @@ void func_800DDD94_minigame(omObjData *arg0) {
             data->unk40 = D_800EB770_minigame;
             arg0->rot.y = 0.0f;
         } else {
-            arg0->rot.y = func_800202A8_main(data->unkC0 * 45.0f);
+            arg0->rot.y = HuAngleWrap(data->unkC0 * 45.0f);
             if (data->unk40 < D_800EB770_minigame) {
                 data->unk40 += D_800EB740_minigame * 0.2f;
                 if (D_800EB770_minigame <= data->unk40) {
@@ -2127,7 +2127,7 @@ void func_800DFCDC_minigame(f32 x, f32 z, f32 scale) {
     dir.x = x;
     dir.y = 0.0f;
     dir.z = z;
-    func_800202FC_main(&dir);
+    MapVecNormalize(&dir);
     D_800EBE2C_minigame += scale * dir.x;
     D_800EC5D8_minigame += scale * dir.z;
 }
@@ -2151,8 +2151,8 @@ void func_800DFD9C_minigame(omObjData *arg0, f32 x, f32 y, f32 z) {
 
     func_800E5690_minigame(arg0, 0x10);
     temp = data->unk21[2];
-    func_80014850_main(temp);
-    func_800146DC_main(temp, 4, 4);
+    Hu3DSprModelReset(temp);
+    Hu3DSprModelAttrSet(temp, 4, 4);
     Hu3DModelPosSet(arg0->model[2], x, y, z);
     data->unk40 = D_800EB770_minigame;
     func_800E1810_minigame();
@@ -2275,7 +2275,7 @@ void func_800E0430_minigame(f32 x, f32 y, f32 z) {
     D_800EC298_minigame[D_800EB736_minigame].x = x;
     D_800EC298_minigame[D_800EB736_minigame].y = y;
     D_800EC298_minigame[D_800EB736_minigame].z = z;
-    func_800202FC_main(&D_800EC298_minigame[D_800EB736_minigame]);
+    MapVecNormalize(&D_800EC298_minigame[D_800EB736_minigame]);
 }
 
 void func_800E048C_minigame(f32 arg0, f32 arg1, f32 arg2) {

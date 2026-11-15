@@ -55,19 +55,19 @@ void Hu3DCameraScissorSet(s16 camIndex, RectF* arg1);
 void Hu3DCameraViewportSet(s16 camIndex, Vec* arg1, Vec* arg2);
 void Hu3DCamUpdateMtx(s16 camIndex);
 void Hu3DCameraSet(s16 camIndex, Gfx** dispList);
-void func_800127C4_main(s16 camIndex, Gfx** dispList);
-void func_80012888_main(s16 camIndex, void (*arg1)(void*, struct HmfModel*), void* arg2);
-void func_80013320_main(s16 value, s16 camIndex);
+void Hu3DCameraScissorDraw(s16 camIndex, Gfx** dispList);
+void Hu3DCameraModelHookSet(s16 camIndex, void (*arg1)(void*, struct HmfModel*), void* arg2);
+void Hu3DCameraMotionSet(s16 value, s16 camIndex);
 
 extern HuCamera* gCameraList;
 
-void func_800123F4_main(void);
-void func_800128BC_main(s16 camIndex, void (*arg1)(s16));
-void func_800128EC_main(s16 camIndex, void (*arg1)(s16));
+void Hu3DCamMtxBufSync(void);
+void Hu3DCameraPreHookSet(s16 camIndex, void (*arg1)(s16));
+void Hu3DCameraPostHookSet(s16 camIndex, void (*arg1)(s16));
 void Hu3D3Dto2D(s16 camIndex, Vec *worldPos, Vec2f *outPos);
-void func_80012B14_main(s16 camIndex, Vec *worldPos, Vec2f *outPos);
+void Hu3DCam3Dto2D(s16 camIndex, Vec *worldPos, Vec2f *outPos);
 void Hu3D2Dto3D(s16 camIndex, f32 depth, Vec2f *screenPos, Vec *outPos);
-void func_80012E54_main(s16 camIndex);
-void func_80013350_main(s16 camIndex);
+void Hu3DCameraMotionExec(s16 camIndex);
+void Hu3DCameraMotionOff(s16 camIndex);
 
 #endif

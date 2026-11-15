@@ -146,12 +146,12 @@ s16 func_80110C3C_ridiculous_relay(s16 seId, s16 playerIdx);
 void func_801059A0_ridiculous_relay(void) {
     omObjData *object;
 
-    func_800142A0_main(0x30);
+    Hu3DSprModelInit(0x30);
     omInitObjMan(50, 0);
-    func_8004A208_main();
+    omGameSysInit();
     D_800CD280_main = 1;
-    func_8000B5F0_main(2);
-    func_8000B710_main(2);
+    CamSetupInit(2);
+    CamSetupMapCullAddMulti(2);
     ScissorSet(0, 0.0f, 0.0f, 320.0f, 120.0f);
     ScissorSet(1, 0.0f, 120.0f, 320.0f, 240.0f);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 240.0f, 511.0f);
@@ -187,7 +187,7 @@ void func_801059A0_ridiculous_relay(void) {
     object = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
     object->work[0] = 2;
     omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    func_80045010_main(D_80110E60_ridiculous_relay, 1);
+    GMesFontMesCreate(D_80110E60_ridiculous_relay, 1);
     WipeCreateIn(0xFF, 16);
     D_80110CB0_ridiculous_relay.type = MINIGAME_2V2;
     D_80110CB0_ridiculous_relay.startDelay = -1;
@@ -308,7 +308,7 @@ void func_80105F48_ridiculous_relay(omObjData *object) {
             if (D_801119D4_ridiculous_relay == 15) {
                 for (i = 0; i < 3; i++) {
                     if (D_80111A30_ridiculous_relay[i] != -1) {
-                        func_8004AEF0_main(D_80111A30_ridiculous_relay[i], 15);
+                        HuAudFXFadeOut(D_80111A30_ridiculous_relay[i], 15);
                         D_80111A30_ridiculous_relay[i] = -1;
                     }
                 }
@@ -332,13 +332,13 @@ void func_80105F48_ridiculous_relay(omObjData *object) {
         case 4:
             if (D_801119D4_ridiculous_relay == 30) {
                 if (D_801119C0_ridiculous_relay == 0) {
-                    func_8001C5B4_main(D_80111A20_ridiculous_relay[0]->model[0], D_80111A20_ridiculous_relay[0]->motion[3]);
-                    func_8001C814_main(D_80111A20_ridiculous_relay[0]->model[0], 3, 0);
-                    func_80045ED0_main(D_80111970_ridiculous_relay[0]->unk08);
+                    Hu3DMotionModelSet(D_80111A20_ridiculous_relay[0]->model[0], D_80111A20_ridiculous_relay[0]->motion[3]);
+                    Hu3DMotionAttrSet(D_80111A20_ridiculous_relay[0]->model[0], 3, 0);
+                    HuAudCharVoicePlay(D_80111970_ridiculous_relay[0]->unk08);
                 } else if (D_801119C0_ridiculous_relay == 1) {
-                    func_8001C5B4_main(D_80111A20_ridiculous_relay[3]->model[0], D_80111A20_ridiculous_relay[3]->motion[3]);
-                    func_8001C814_main(D_80111A20_ridiculous_relay[3]->model[0], 3, 0);
-                    func_80045ED0_main(D_80111970_ridiculous_relay[3]->unk08);
+                    Hu3DMotionModelSet(D_80111A20_ridiculous_relay[3]->model[0], D_80111A20_ridiculous_relay[3]->motion[3]);
+                    Hu3DMotionAttrSet(D_80111A20_ridiculous_relay[3]->model[0], 3, 0);
+                    HuAudCharVoicePlay(D_80111970_ridiculous_relay[3]->unk08);
                 }
             }
         case 6:
@@ -370,7 +370,7 @@ void func_80105F48_ridiculous_relay(omObjData *object) {
             if (D_801119DA_ridiculous_relay == 1) {
                 WipeCreateOut(WIPE_TYPE_NORMAL, 20);
                 HuAudSeqFadeOut(20);
-                func_8004AB0C_main(20);
+                HuAudFXAllFadeOut(20);
             }
             D_801119DA_ridiculous_relay++;
             if (D_801119DA_ridiculous_relay < 25) {
@@ -384,7 +384,7 @@ void func_80105F48_ridiculous_relay(omObjData *object) {
 
 s16 func_80106610_ridiculous_relay(s32 file, u16 *sprite, u16 flags) {
     void *data = DataRead(file);
-    s16 anim = func_800329B4_main(data);
+    s16 anim = Hu3DAnimDataCreate(data);
     u16 idx;
 
     HuMemMemoryFreePerm(data);
@@ -404,18 +404,18 @@ void func_801066A0_ridiculous_relay(omObjData *object) {
         D_80111A58_ridiculous_relay[i] = espEntry(D_801119E0_ridiculous_relay[i] = HuSprAnimDataRead(files[i]), 0, 0);
         espDispOff(D_80111A58_ridiculous_relay[i]);
     }
-    object->model[0] = func_8000B108_main(0xA00E7, 0x4B9);
+    object->model[0] = Hu3DModelRead(0xA00E7, 0x4B9);
     omSetSca(object, 0.3125f, 0.3125f, 0.3125f);
     Hu3DModelCameraSet(object->model[0], 2);
-    object->model[2] = func_8000B108_main(0x28000E, 0x39);
+    object->model[2] = Hu3DModelRead(0x28000E, 0x39);
     Hu3DModelPosSet(object->model[2], 3787.5f, -26.25f, 0.0f);
     Hu3DModelScaleSet(object->model[2], 0.125f, 0.125f, 0.125f);
     Hu3DModelCameraSet(object->model[2], 1);
-    object->model[3] = func_8000B108_main(0x28000F, 0x4B9);
+    object->model[3] = Hu3DModelRead(0x28000F, 0x4B9);
     Hu3DModelPosSet(object->model[3], 3787.5f, -31.25f, 0.0f);
     Hu3DModelScaleSet(object->model[3], 0.125f, 0.125f, 0.125f);
     Hu3DModelCameraSet(object->model[3], 2);
-    object->model[1] = func_8000B108_main(0x280010, 0x4B9);
+    object->model[1] = Hu3DModelRead(0x280010, 0x4B9);
     Hu3DModelScaleSet(object->model[1], 0.125f, 0.125f, 0.125f);
     Hu3DModelCameraSet(object->model[1], 2);
     for (i = 0; i < 5; i++) {
@@ -429,41 +429,41 @@ void func_801066A0_ridiculous_relay(omObjData *object) {
         Hu3DModelScaleSet(object->model[10 + i], 0.7565625f, 0.7565625f, 0.7565625f);
     }
     object->model[4] = func_80106610_ridiculous_relay(0xB, &D_80111A40_ridiculous_relay[7], 0x639);
-    func_8001C258_main(object->model[4], 4, 4);
+    Hu3DModelAttrSet(object->model[4], 4, 4);
     Hu3DModelScaleSet(object->model[4], 1.6549804f, 0.9457031f, 0.9457031f);
     Hu3DModelCameraSet(object->model[4], 1);
     for (i = 0; i < 18; i++) {
         if (i == 0) {
-            object->model[17] = func_8000B108_main(0x280006, 0x4B9);
+            object->model[17] = Hu3DModelRead(0x280006, 0x4B9);
         } else {
             object->model[17 + i] = Hu3DModelLink(object->model[17]);
         }
-        func_8001C258_main(object->model[17 + i], 4, 4);
-        func_8001C2FC_main(object->model[17 + i], 0x70000000, 0x70000000);
+        Hu3DModelAttrSet(object->model[17 + i], 4, 4);
+        Hu3DModelObjAttrSet(object->model[17 + i], 0x70000000, 0x70000000);
         Hu3DModelScaleSet(object->model[17 + i], 0.15625f, 0.15625f, 0.15625f);
         Hu3DModelCameraSet(object->model[17 + i], 2);
     }
-    object->model[6] = func_8000B108_main(0x28000C, 0x4B9);
-    func_8001C258_main(object->model[6], 4, 4);
-    func_8001C814_main(object->model[6], 2, 2);
+    object->model[6] = Hu3DModelRead(0x28000C, 0x4B9);
+    Hu3DModelAttrSet(object->model[6], 4, 4);
+    Hu3DMotionAttrSet(object->model[6], 2, 2);
     Hu3DModelScaleSet(object->model[6], 0.15625f, 0.15625f, 0.15625f);
     Hu3DModelCameraSet(object->model[6], 2);
-    object->model[7] = func_8000B108_main(0x28000D, 0x4B9);
-    func_8001C258_main(object->model[7], 4, 4);
+    object->model[7] = Hu3DModelRead(0x28000D, 0x4B9);
+    Hu3DModelAttrSet(object->model[7], 4, 4);
     Hu3DModelScaleSet(object->model[7], 0.15625f, 0.15625f, 0.15625f);
     Hu3DModelCameraSet(object->model[7], 2);
     object->model[8] = Hu3DModelLink(object->model[7]);
-    func_8001C258_main(object->model[8], 4, 4);
+    Hu3DModelAttrSet(object->model[8], 4, 4);
     Hu3DModelScaleSet(object->model[8], 0.15625f, 0.15625f, 0.15625f);
     Hu3DModelCameraSet(object->model[8], 2);
-    func_8001C814_main(object->model[8], 2, 2);
-    object->model[9] = func_8000B108_main(0x28000D, 0x839);
-    func_8001C258_main(object->model[9], 4, 4);
+    Hu3DMotionAttrSet(object->model[8], 2, 2);
+    object->model[9] = Hu3DModelRead(0x28000D, 0x839);
+    Hu3DModelAttrSet(object->model[9], 4, 4);
     Hu3DModelScaleSet(object->model[9], 0.15625f, 0.15625f, 0.15625f);
     Hu3DModelCameraSet(object->model[9], 2);
-    func_8001C814_main(object->model[9], 2, 2);
-    object->model[5] = func_8000B108_main(0x370003, 0x82D);
-    func_8001FA68_main(object->model[5]);
+    Hu3DMotionAttrSet(object->model[9], 2, 2);
+    object->model[5] = Hu3DModelRead(0x370003, 0x82D);
+    Hu3DModelTPLvlInit(object->model[5]);
     Hu3DModelCameraSet(object->model[5], 1);
     Hu3DModelScaleSet(object->model[5], 0.125f, 0.125f, 0.125f);
     object->func = func_80106D28_ridiculous_relay;
@@ -911,53 +911,53 @@ void func_8010AF04_ridiculous_relay(omObjData *object, s8 group) {
     u16 chr = D_80111970_ridiculous_relay[group]->chr;
 
     D_80111970_ridiculous_relay[group]->unk08 = (rand8() & 1) ? 0x2F : 0x30;
-    object->model[0] = func_8000B108_main((dirs[chr] << 16) | files[chr], 0x4B9);
+    object->model[0] = Hu3DModelRead((dirs[chr] << 16) | files[chr], 0x4B9);
     switch (group) {
         case 0:
         case 3:
-            func_8000B460_main(object, 0, func_80017BB8_main(chr, 0));
-            func_8000B460_main(object, 1, func_80017BB8_main(chr, (group != 0) ? 0x7D : 0x7C));
-            func_8000B460_main(object, 3, func_80017BB8_main(chr, D_80111970_ridiculous_relay[group]->unk08));
-            func_8000B460_main(object, 4, func_80017BB8_main(chr, 0x3A));
-            func_8000B460_main(object, 5, func_80017BB8_main(chr, 4));
-            func_8000B460_main(object, 6, func_80017BB8_main(chr, 0x1F));
+            omObjMotionRead(object, 0, CharMotionDataNumGet(chr, 0));
+            omObjMotionRead(object, 1, CharMotionDataNumGet(chr, (group != 0) ? 0x7D : 0x7C));
+            omObjMotionRead(object, 3, CharMotionDataNumGet(chr, D_80111970_ridiculous_relay[group]->unk08));
+            omObjMotionRead(object, 4, CharMotionDataNumGet(chr, 0x3A));
+            omObjMotionRead(object, 5, CharMotionDataNumGet(chr, 4));
+            omObjMotionRead(object, 6, CharMotionDataNumGet(chr, 0x1F));
             if (group == 3) {
-                func_8001C258_main(object->model[0], 4, 4);
+                Hu3DModelAttrSet(object->model[0], 4, 4);
             }
-            func_8001C814_main(object->model[0], 1, 1);
+            Hu3DMotionAttrSet(object->model[0], 1, 1);
             break;
         case 1:
-            func_8000B460_main(object, 1, func_80017BB8_main(chr, 0x7E));
-            object->model[2] = func_8000B108_main(0x280002, 0x4B9);
+            omObjMotionRead(object, 1, CharMotionDataNumGet(chr, 0x7E));
+            object->model[2] = Hu3DModelRead(0x280002, 0x4B9);
             Hu3DModelScaleSet(object->model[2], 0.15625f, 0.15625f, 0.15625f);
             Hu3DModelCameraSet(object->model[2], (group == 0) ? 1 : 2);
             Hu3DModelHookSet(object->model[2], object->model[0], "item_hook");
-            func_8001C258_main(object->model[2], 0x4000, 0x4000);
+            Hu3DModelAttrSet(object->model[2], 0x4000, 0x4000);
             break;
         case 2:
-            func_8000B460_main(object, 1, func_80017BB8_main(chr, 0x7F));
-            func_8000B460_main(object, 2, func_80017BB8_main(chr, 0x80));
-            func_8001C258_main(object->model[0], 4, 4);
-            object->model[2] = func_8000B108_main(0x280004, 0x4B9);
+            omObjMotionRead(object, 1, CharMotionDataNumGet(chr, 0x7F));
+            omObjMotionRead(object, 2, CharMotionDataNumGet(chr, 0x80));
+            Hu3DModelAttrSet(object->model[0], 4, 4);
+            object->model[2] = Hu3DModelRead(0x280004, 0x4B9);
             Hu3DModelScaleSet(object->model[2], 0.15625f, 0.15625f, 0.15625f);
-            func_8001C814_main(object->model[2], 1, 1);
+            Hu3DMotionAttrSet(object->model[2], 1, 1);
             Hu3DModelCameraSet(object->model[2], (group == 0) ? 1 : 2);
             break;
     }
     D_80111970_ridiculous_relay[group]->unk08 |= dirs[chr] << 16;
     omSetSca(object, 0.15625f, 0.15625f, 0.15625f);
-    func_8001C5B4_main(object->model[0], object->motion[1]);
-    func_8001C2FC_main(object->model[0], 0x600, 0x400);
+    Hu3DMotionModelSet(object->model[0], object->motion[1]);
+    Hu3DModelObjAttrSet(object->model[0], 0x600, 0x400);
     Hu3DModelCameraSet(object->model[0], (group != 0) ? 2 : 1);
-    object->model[1] = func_8000B108_main(shadowFiles[group] | 0x280000, 0x4B9);
+    object->model[1] = Hu3DModelRead(shadowFiles[group] | 0x280000, 0x4B9);
     Hu3DModelScaleSet(object->model[1], 0.15625f, 0.15625f, 0.15625f);
     Hu3DModelCameraSet(object->model[1], (group == 0) ? 1 : 2);
     if (group == 2) {
-        func_8000B460_main(object, 7, 0x280007);
-        func_8000B460_main(object, 8, 0x280008);
-        func_8000B460_main(object, 9, 0x280009);
-        func_8000B460_main(object, 10, 0x28000A);
-        func_8000B460_main(object, 11, 0x28000B);
+        omObjMotionRead(object, 7, 0x280007);
+        omObjMotionRead(object, 8, 0x280008);
+        omObjMotionRead(object, 9, 0x280009);
+        omObjMotionRead(object, 10, 0x28000A);
+        omObjMotionRead(object, 11, 0x28000B);
     }
 }
 
@@ -968,7 +968,7 @@ f32 func_8010B474_ridiculous_relay(f32 x) {
     pos.x = x;
     pos.y = 0.0f;
     pos.z = 0.0f;
-    func_80012B14_main(1, &pos, &out);
+    Hu3DCam3Dto2D(1, &pos, &out);
     return out.x;
 }
 
@@ -1025,12 +1025,12 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
             visY[visCount] = (hurdleLane[i] * 200.0 + waves[i % 3] + D_80110D7C_ridiculous_relay[i] * 10.5) * 0.125;
             Hu3DModelPosSet(D_801119BC_ridiculous_relay->model[visCount + 12], visX[visCount], visY[visCount], -250.0f);
             Hu3DModelPosSet(D_801119BC_ridiculous_relay->model[visCount + 12], visX[visCount], visY[visCount], 0.0f);
-            func_8001C258_main(D_801119BC_ridiculous_relay->model[visCount + 12], 4, 0);
+            Hu3DModelAttrSet(D_801119BC_ridiculous_relay->model[visCount + 12], 4, 0);
             visCount++;
         }
     }
     for (i = visCount; i < 5; i++) {
-        func_8001C258_main(D_801119BC_ridiculous_relay->model[i + 12], 4, 4);
+        Hu3DModelAttrSet(D_801119BC_ridiculous_relay->model[i + 12], 4, 4);
     }
 
     for (j = 0; j < 2; j++) {
@@ -1078,10 +1078,10 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
                                                                                          : (s32)((1250.0 - D_80110DAC_ridiculous_relay[0]) / 1000.0 * 20.0);
         }
         if (D_80110E20_ridiculous_relay[j] <= -1000.0f) {
-            func_8001C258_main(D_801119BC_ridiculous_relay->model[j + 10], 4, 4);
+            Hu3DModelAttrSet(D_801119BC_ridiculous_relay->model[j + 10], 4, 4);
         } else {
             Hu3DModelPosSet(D_801119BC_ridiculous_relay->model[j + 10], D_80110E20_ridiculous_relay[j], D_80110E28_ridiculous_relay[j], 0.0f);
-            func_8001C258_main(D_801119BC_ridiculous_relay->model[j + 10], 4, 0);
+            Hu3DModelAttrSet(D_801119BC_ridiculous_relay->model[j + 10], 4, 0);
         }
     }
 
@@ -1092,19 +1092,19 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
     if (D_80110D70_ridiculous_relay[0] != 0 && D_80110D70_ridiculous_relay[0] < 100 && D_80110DAC_ridiculous_relay[0] > 1900.0) {
         D_80110D70_ridiculous_relay[0] = 100;
         Hu3DModelPosSet(D_801119BC_ridiculous_relay->model[4], obj->trans.x + 12.5, obj->trans.y - 3.125, obj->trans.z);
-        func_8001C258_main(D_801119BC_ridiculous_relay->model[4], 4, 0);
-        func_8001C258_main(obj->model[1], 4, 4);
+        Hu3DModelAttrSet(D_801119BC_ridiculous_relay->model[4], 4, 0);
+        Hu3DModelAttrSet(obj->model[1], 4, 4);
     }
     if (D_80110D70_ridiculous_relay[0] >= 100) {
-        func_8001C258_main(obj->model[0], 4, 0);
+        Hu3DModelAttrSet(obj->model[0], 4, 0);
         if (D_80110D70_ridiculous_relay[0] == 100) {
             D_80111918_ridiculous_relay = obj->trans.x;
             D_8011191C_ridiculous_relay = obj->trans.y;
             D_80111924_ridiculous_relay = 0.0f;
             D_80111928_ridiculous_relay = 90.0f;
             D_80111920_ridiculous_relay = 2.0 * (D_80110DCC_ridiculous_relay[0] * SPEED_SCALE);
-            func_8001C5B4_main(obj->model[0], obj->motion[5]);
-            func_8001C814_main(obj->model[0], 2, 0);
+            Hu3DMotionModelSet(obj->model[0], obj->motion[5]);
+            Hu3DMotionAttrSet(obj->model[0], 2, 0);
             Hu3DMotionTimeSet(obj->model[0], 14.0f);
         }
         if (D_80110D70_ridiculous_relay[0] == 203) {
@@ -1125,8 +1125,8 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
             } else if (D_80110D70_ridiculous_relay[0] >= 215) {
                 if (D_801119D8_ridiculous_relay == 4 && ((D_801119D4_ridiculous_relay > 30 && D_801119D4_ridiculous_relay < 120 && D_80110D70_ridiculous_relay[0] == 215) || (D_801119D4_ridiculous_relay == 30 && D_801119D4_ridiculous_relay < 120 && D_80110D70_ridiculous_relay[0] >= 215))) {
                     D_80110D70_ridiculous_relay[0] = 300;
-                    func_8001C5B4_main(obj->model[0], obj->motion[4]);
-                    func_8001C814_main(obj->model[0], 3, 0);
+                    Hu3DMotionModelSet(obj->model[0], obj->motion[4]);
+                    Hu3DMotionAttrSet(obj->model[0], 3, 0);
                 }
                 if (D_80110D70_ridiculous_relay[0] >= 300) {
                     D_80111928_ridiculous_relay = SETTLE_ANGLE(D_80111928_ridiculous_relay);
@@ -1268,8 +1268,8 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
                         Hu3DModelPosSet(D_801119BC_ridiculous_relay->model[5], x * 0.5 + obj->trans.x * 0.5, y * 0.5 + obj->trans.y * 0.5 + 5.0, 0.0f);
                         Hu3DModelRotSet(D_801119BC_ridiculous_relay->model[5], 0.0f, 0.0f, rand8() / 256.0 * 360.0);
                         Hu3DModelScaleSet(D_801119BC_ridiculous_relay->model[5], 0.1875f, 0.1875f, 0.1875f);
-                        func_8001C258_main(D_801119BC_ridiculous_relay->model[5], 4, 0);
-                        func_8001F9E4_main(D_801119BC_ridiculous_relay->model[5], 0xFF);
+                        Hu3DModelAttrSet(D_801119BC_ridiculous_relay->model[5], 4, 0);
+                        Hu3DModelTPLvlSet(D_801119BC_ridiculous_relay->model[5], 0xFF);
                         obj->trans.y += -0.75;
                         omVibrate(D_80111970_ridiculous_relay[0]->playerNo, 20, 0, 20);
                         func_80110C3C_ridiculous_relay(0x286, D_80111970_ridiculous_relay[0]->playerNo);
@@ -1286,12 +1286,12 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
         }
         if (D_80110DF4_ridiculous_relay[0] == 58 || D_80110DF4_ridiculous_relay[0] == 56) {
             i = (D_80110DF4_ridiculous_relay[0] == 58);
-            func_8001F9E4_main(D_801119BC_ridiculous_relay->model[5], i ? 0x80 : 0x30);
+            Hu3DModelTPLvlSet(D_801119BC_ridiculous_relay->model[5], i ? 0x80 : 0x30);
             Hu3DModelScaleSet(D_801119BC_ridiculous_relay->model[5], i ? 0.28125f : 0.34375f, i ? 0.28125f : 0.34375f,
                               i ? 0.28125f : 0.34375f);
             obj->trans.x += i ? 0.5 : -0.75;
         } else if (D_80110DF4_ridiculous_relay[0] == 54) {
-            func_8001C258_main(D_801119BC_ridiculous_relay->model[5], 4, 4);
+            Hu3DModelAttrSet(D_801119BC_ridiculous_relay->model[5], 4, 4);
             obj->trans.x += 0.25;
         }
         if (D_80110DF4_ridiculous_relay[0] != 0) {
@@ -1309,10 +1309,10 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
                 D_80110DAC_ridiculous_relay[0] -= (1.0f - sindf((60 - D_80110E18_ridiculous_relay) / 30.0 * 90.0)) / 2.0f * (D_80110E50_ridiculous_relay ? 4.0 : 2.5);
             }
             if (D_80110E18_ridiculous_relay < 31) {
-                func_8001C258_main(obj->model[0], 4, (D_80110E18_ridiculous_relay % 2) * 4);
+                Hu3DModelAttrSet(obj->model[0], 4, (D_80110E18_ridiculous_relay % 2) * 4);
             }
         } else {
-            func_8001C258_main(obj->model[0], 4, 0);
+            Hu3DModelAttrSet(obj->model[0], 4, 0);
         }
         for (i = 0; i < 18; i++) {
             D_80110D7C_ridiculous_relay[i] += (D_80110D7C_ridiculous_relay[i] != 0 || D_801119D8_ridiculous_relay >= 3) && D_80110D7C_ridiculous_relay[i] < 0xFFFF;
@@ -1365,10 +1365,10 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
             D_801117F0_ridiculous_relay = prevCenter[1] - D_80110DA0_ridiculous_relay[1];
             CenterM[1].x = camX;
         }
-        func_8001C258_main(obj->model[0], 4, 0);
+        Hu3DModelAttrSet(obj->model[0], 4, 0);
         omSetTra(obj, 2.0 * D_80110DAC_ridiculous_relay[1], D_801119DC_ridiculous_relay * 100.0f * 0.125 + -25.0, 0.0f);
         omSetRot(obj, 0.0f, 90.0f, 0.0f);
-        func_8001C258_main(obj->model[1], 4, 0);
+        Hu3DModelAttrSet(obj->model[1], 4, 0);
         Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
         Hu3DModelRotSet(obj->model[1], obj->rot.x, obj->rot.y, obj->rot.z);
         {
@@ -1386,12 +1386,12 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
             D_80111980_ridiculous_relay[D_80110DEC_ridiculous_relay[1]] = obj->trans.x;
         }
     } else {
-        func_8001C258_main(obj->model[0], 4, 4);
-        func_8001C258_main(obj->model[1], 4, 4);
-        func_8001C258_main(obj->model[2], 4, 4);
+        Hu3DModelAttrSet(obj->model[0], 4, 4);
+        Hu3DModelAttrSet(obj->model[1], 4, 4);
+        Hu3DModelAttrSet(obj->model[2], 4, 4);
     }
     if (D_80110E3C_ridiculous_relay[0] == 1) {
-        func_8001C258_main(D_801119BC_ridiculous_relay->model[7], 4, 4);
+        Hu3DModelAttrSet(D_801119BC_ridiculous_relay->model[7], 4, 4);
     }
     D_80110E3C_ridiculous_relay[0] -= (D_80110E3C_ridiculous_relay[0] != 0) ? 1 : 0;
     D_801119A8_ridiculous_relay[1] = (D_80110D78_ridiculous_relay != 0)        ? 1.0f
@@ -1419,11 +1419,11 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
                 D_80110DF4_ridiculous_relay[2] = 50;
                 D_80110DCC_ridiculous_relay[2] = 53.0f;
                 if (D_80110D78_ridiculous_relay == 1) {
-                    func_8001C258_main(D_801119BC_ridiculous_relay->model[8], 4, 0);
+                    Hu3DModelAttrSet(D_801119BC_ridiculous_relay->model[8], 4, 0);
                     Hu3DModelScaleSet(D_801119BC_ridiculous_relay->model[8], 0.234375f, 0.234375f, 0.234375f);
                     Hu3DMotionTimeSet(D_801119BC_ridiculous_relay->model[8], 0.0f);
                     Hu3DMotionSpeedSet(D_801119BC_ridiculous_relay->model[8], 1.5f);
-                    func_8001C258_main(D_801119BC_ridiculous_relay->model[9], 4, 0);
+                    Hu3DModelAttrSet(D_801119BC_ridiculous_relay->model[9], 4, 0);
                     Hu3DModelScaleSet(D_801119BC_ridiculous_relay->model[9], 0.234375f, 0.234375f, 0.234375f);
                     Hu3DMotionTimeSet(D_801119BC_ridiculous_relay->model[9], 0.0f);
                     Hu3DMotionSpeedSet(D_801119BC_ridiculous_relay->model[9], 1.5f);
@@ -1478,8 +1478,8 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
                 CenterM[1].x = camX;
             }
         }
-        func_8001C258_main(obj->model[0], 4, 0);
-        func_8001C258_main(obj->model[2], 4, 0);
+        Hu3DModelAttrSet(obj->model[0], 4, 0);
+        Hu3DModelAttrSet(obj->model[2], 4, 0);
         D_80110E11_ridiculous_relay = (D_80110E0F_ridiculous_relay == D_80110E10_ridiculous_relay) ? 0 : D_80110E11_ridiculous_relay + 1;
         if (D_80110E11_ridiculous_relay > D_80110E12_ridiculous_relay) {
             u8 prevAnim = D_80110E0F_ridiculous_relay;
@@ -1496,7 +1496,7 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
         }
         omSetTra(obj, 2.0 * D_80110DAC_ridiculous_relay[2], D_801119DC_ridiculous_relay * 100.0f * 0.125 + -25.0 + 25.0, 0.0f);
         omSetRot(obj, 0.0f, 90.0f, 0.0f);
-        func_8001C258_main(obj->model[1], 4, 0);
+        Hu3DModelAttrSet(obj->model[1], 4, 0);
         Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
         Hu3DModelRotSet(obj->model[1], obj->rot.x, obj->rot.y, obj->rot.z);
         obj->trans.x -= ROWER_OFFSET() * 0.125 * 1.25;
@@ -1507,7 +1507,7 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
         if (D_80110DF4_ridiculous_relay[2] > 0) {
             if (D_80110DF4_ridiculous_relay[2] == 2) {
                 D_80110DF4_ridiculous_relay[2] = 0;
-                func_8001C5B4_main(obj->model[0], obj->motion[1]);
+                Hu3DMotionModelSet(obj->model[0], obj->motion[1]);
                 Hu3DMotionTimeSet(obj->model[2], 0.0f);
             } else {
                 if (D_80110DF4_ridiculous_relay[2] == 50) {
@@ -1520,14 +1520,14 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
                                                                                          : (f32)(50 - D_80110DF4_ridiculous_relay[2]));
             }
         }
-        func_8001C814_main(obj->model[0], 3, 2);
-        func_8001C814_main(obj->model[2], 3, 1);
+        Hu3DMotionAttrSet(obj->model[0], 3, 2);
+        Hu3DMotionAttrSet(obj->model[2], 3, 1);
         if (D_80110D78_ridiculous_relay == 1 && mode == 1) {
             D_80111980_ridiculous_relay[D_80110DEC_ridiculous_relay[2] + 2] = Hu3DData[obj->model[1]].pos.x;
         }
         if (D_80110E0F_ridiculous_relay == 4 && (D_80110E11_ridiculous_relay == 0 || D_80110E11_ridiculous_relay == 4)) {
             for (i = (D_80110E11_ridiculous_relay != 0) ? 9 : 0; i < ((D_80110E11_ridiculous_relay == 0) ? 9 : 18); i++) {
-                func_8001C258_main(D_801119BC_ridiculous_relay->model[i + 17], 4, 0);
+                Hu3DModelAttrSet(D_801119BC_ridiculous_relay->model[i + 17], 4, 0);
                 D_801117F8_ridiculous_relay[i] = Hu3DData[obj->model[1]].pos.x + ((D_80110E11_ridiculous_relay == 0) ? -31.25 : 27.5);
                 D_80111840_ridiculous_relay[i] = D_801119DC_ridiculous_relay * 100.0f * 0.125 + -25.0;
                 D_80111888_ridiculous_relay[i] = (rand8() / 256.0 * 30.0 - 10.0) * 0.125 * ((D_80110E11_ridiculous_relay != 0) ? 1 : -1);
@@ -1536,13 +1536,13 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
             }
         }
     } else {
-        func_8001C258_main(obj->model[0], 4, 4);
-        func_8001C258_main(obj->model[1], 4, 4);
-        func_8001C258_main(obj->model[2], 4, 4);
+        Hu3DModelAttrSet(obj->model[0], 4, 4);
+        Hu3DModelAttrSet(obj->model[1], 4, 4);
+        Hu3DModelAttrSet(obj->model[2], 4, 4);
     }
     if (D_80110E3C_ridiculous_relay[1] == 1) {
-        func_8001C258_main(D_801119BC_ridiculous_relay->model[8], 4, 4);
-        func_8001C258_main(D_801119BC_ridiculous_relay->model[9], 4, 4);
+        Hu3DModelAttrSet(D_801119BC_ridiculous_relay->model[8], 4, 4);
+        Hu3DModelAttrSet(D_801119BC_ridiculous_relay->model[9], 4, 4);
     }
     D_80110E3C_ridiculous_relay[1] -= (D_80110E3C_ridiculous_relay[1] != 0) ? 1 : 0;
     D_801119A8_ridiculous_relay[2] = (D_80110D78_ridiculous_relay >= 2)        ? 1.0f
@@ -1559,7 +1559,7 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
         D_80111840_ridiculous_relay[i] += D_801118D0_ridiculous_relay[i];
         D_801118D0_ridiculous_relay[i] -= 0.625;
         if (D_801118D0_ridiculous_relay[i] < 0.0f && D_80111840_ridiculous_relay[i] < D_801119DC_ridiculous_relay * 100.0f * 0.125 + -25.0) {
-            func_8001C258_main(D_801119BC_ridiculous_relay->model[i + 17], 4, 4);
+            Hu3DModelAttrSet(D_801119BC_ridiculous_relay->model[i + 17], 4, 4);
             D_80111840_ridiculous_relay[i] = -1000.0f;
         } else {
             Hu3DModelPosSet(D_801119BC_ridiculous_relay->model[i + 17], D_801117F8_ridiculous_relay[i], D_80111840_ridiculous_relay[i], 0.0f);
@@ -1614,10 +1614,10 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
             }
         }
         D_80110DEC_ridiculous_relay[3] = D_80110DEC_ridiculous_relay[3] * 0.875 + D_80110DCC_ridiculous_relay[3] / 50.0 * 10.0 * 1000.0 * 0.125;
-        func_8001C258_main(obj->model[0], 4, 0);
+        Hu3DModelAttrSet(obj->model[0], 4, 0);
         omSetTra(obj, 2.0 * D_80110DAC_ridiculous_relay[3], D_801119DC_ridiculous_relay * 100.0f * 0.125 + -25.0, 0.0f);
         omSetRot(obj, 0.0f, 90.0f, D_80110DEC_ridiculous_relay[3] / 1000.0);
-        func_8001C258_main(obj->model[1], 4, 0);
+        Hu3DModelAttrSet(obj->model[1], 4, 0);
         Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
         Hu3DModelRotSet(obj->model[1], obj->rot.x, obj->rot.y, obj->rot.z);
         D_80110DF4_ridiculous_relay[3] += ABS(D_80110DCC_ridiculous_relay[3]) / 50.0 * 350.0;
@@ -1627,7 +1627,7 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
                                           : D_80110E14_ridiculous_relay - 4.0 / 47.5;
         D_80110E14_ridiculous_relay = (D_80110E14_ridiculous_relay < 0.0f) ? 0.0f : D_80110E14_ridiculous_relay;
         Hu3DMotionTimeSet(obj->model[1], D_80110DF4_ridiculous_relay[3] / 100.0);
-        func_8001C258_main(D_801119BC_ridiculous_relay->model[6], 4, 0);
+        Hu3DModelAttrSet(D_801119BC_ridiculous_relay->model[6], 4, 0);
         Hu3DModelPosSet(D_801119BC_ridiculous_relay->model[6], obj->trans.x - (D_80110E14_ridiculous_relay * 40.0f + 200.0f) * 1.25 * 0.125,
                         obj->trans.y + D_80110E14_ridiculous_relay * 100.0f * 1.25 * 0.125, obj->trans.z);
         Hu3DModelScaleSet(D_801119BC_ridiculous_relay->model[6], D_80110E14_ridiculous_relay * 1.25 * 0.125 * 1.3,
@@ -1648,8 +1648,8 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
                 D_8011193C_ridiculous_relay = 90.0f;
                 D_80111934_ridiculous_relay = (3768.75 - obj->trans.x) / (f32)i;
                 D_80111938_ridiculous_relay = 7.5f;
-                func_8001C5B4_main(obj->model[0], obj->motion[5]);
-                func_8001C814_main(obj->model[0], 3, 0);
+                Hu3DMotionModelSet(obj->model[0], obj->motion[5]);
+                Hu3DMotionAttrSet(obj->model[0], 3, 0);
                 D_80110DCC_ridiculous_relay[3] -= 2.0;
             }
             if (D_80110D70_ridiculous_relay[1] >= 16 && D_80110D70_ridiculous_relay[1] < 100) {
@@ -1675,14 +1675,14 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
             }
             D_80110D70_ridiculous_relay[1]++;
         } else {
-            func_8001C814_main(obj->model[0], 3, 2);
+            Hu3DMotionAttrSet(obj->model[0], 3, 2);
         }
         if (D_80110D78_ridiculous_relay >= 2 && mode == 1) {
             D_80111980_ridiculous_relay[6] = obj->trans.x;
         }
     } else {
-        func_8001C258_main(obj->model[0], 4, 4);
-        func_8001C258_main(obj->model[1], 4, 4);
+        Hu3DModelAttrSet(obj->model[0], 4, 4);
+        Hu3DModelAttrSet(obj->model[1], 4, 4);
     }
     D_801119A8_ridiculous_relay[3] = (D_80110D78_ridiculous_relay >= 3)        ? 1.0f
                                      : (D_80110DAC_ridiculous_relay[3] < 0.0f) ? 0.0f
@@ -1745,7 +1745,7 @@ s16 func_80110BF4_ridiculous_relay(s16 arg0, s16 arg1) {
     if (arg0 == 0) {
         return 0;
     }
-    return func_8004AC5C_main(arg0, 0);
+    return _HuAudPlayerFXPlay(arg0, 0);
 }
 
 s16 func_80110C3C_ridiculous_relay(s16 seId, s16 playerIdx) {
@@ -1755,5 +1755,5 @@ s16 func_80110C3C_ridiculous_relay(s16 seId, s16 playerIdx) {
     if (seId == 0) {
         return 0;
     }
-    return func_8004AC5C_main(seId + GwPlayer[playerIdx].chr + 1, 0);
+    return _HuAudPlayerFXPlay(seId + GwPlayer[playerIdx].chr + 1, 0);
 }

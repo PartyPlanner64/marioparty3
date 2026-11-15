@@ -131,8 +131,8 @@ void func_801059A0_meschk() {
     omObjData *temp_v0;
 
     Hu3DCamInit(1);
-    func_8001FE20_main(1);
-    func_800142A0_main(0x19);
+    MapCollInit(1);
+    Hu3DSprModelInit(0x19);
     omInitObjMan(0x33, 10);
     HuWinInit();
     temp_v0 = omAddObj(0x7FDA, 0, 0, -1, omOutView);
@@ -142,7 +142,7 @@ void func_801059A0_meschk() {
     omSetStatBit(temp_v0, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     if (omdispinfo != 0) {
         omdispinfo = 0;
-        func_8004DEC8_main(D_800A1786_main);
+        pfWinKill(D_800A1786_main);
         D_800A1786_main = -1;
     }
     omAddObj(0x2710, 0, 0, -1, func_80106334_meschk);
@@ -207,7 +207,7 @@ void func_80105B8C_meschk() {
             check->lastMessage = check->firstMessage;
         }
         HuWinMesMaxSizeBetGet(size, check->firstMessage, check->lastMessage);
-        text = func_800364DC_main((void *)check->firstMessage);
+        text = MessDataMesGet((void *)check->firstMessage);
         for (i = 0, cursor = text; i < 5; i++, cursor++) {
             if (((cursor[0] == 0x10) | (cursor[0] == 0x20) || cursor[0] == 0x1A) &&
                 ((cursor[1] == 0x10) | (cursor[1] == 0x20) || cursor[1] == 0x1A) &&
@@ -215,7 +215,7 @@ void func_80105B8C_meschk() {
                 break;
             }
         }
-        func_800365E8_main(text);
+        MessDataMesFree(text);
         if (i == 5) {
             window = HuWinExCreate(0, 50, 44, size[0], size[1], 0);
             portrait = 0;
@@ -228,7 +228,7 @@ void func_80105B8C_meschk() {
         HuWinExAnimIn(window);
         for (message = (s16)check->firstMessage; (u32)message <= check->lastMessage; message++) {
             HuWinHomeClear(window);
-            text = func_800364DC_main((void *)(s32)message);
+            text = MessDataMesGet((void *)(s32)message);
             cursor = text;
             hasChoice = 0;
             for (; *cursor != 0; cursor++) {
@@ -253,7 +253,7 @@ void func_80105B8C_meschk() {
                 HuWinExAnimPopIn(window, 7);
                 portrait = 1;
             }
-            func_800365E8_main(text);
+            MessDataMesFree(text);
             HuWinMesSet(window, message, -1, -1);
             while (HuWinStatGet(window) != 0) {
                 HuPrcVSleep();
@@ -333,24 +333,24 @@ void func_801063BC_meschk() {
     HmfModelSet *animation;
     s16 frame;
 
-    model = func_8000B108_main(0x700A0, 0x2A9);
-    motion = func_8000B108_main(0x70001, 8);
-    func_8001C5B4_main(model, motion);
+    model = Hu3DModelRead(0x700A0, 0x2A9);
+    motion = Hu3DModelRead(0x70001, 8);
+    Hu3DMotionModelSet(model, motion);
     Hu3DModelPosSet(model, 0.0f, 0.0f, 100.0f);
-    animation = func_80016784_main(model, 2);
+    animation = Hu3DMotionBake(model, 2);
     frame = 0;
     while (1) {
         HuPrcVSleep();
         if (D_80106500_meschk.finished != 0) {
             break;
         }
-        func_80016FB4_main(model, animation, frame);
+        Hu3DMotionBakeApply(model, animation, frame);
         if (frame >= D_800CCF58_main[Hu3DData[motion].motId].unk02) {
             frame = 0;
         }
         frame += 2;
     }
-    func_80017320_main(animation);
+    Hu3DMotionBakeFree(animation);
     while (1) {
         HuPrcVSleep();
     }

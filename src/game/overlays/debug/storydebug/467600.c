@@ -22,7 +22,7 @@ void func_801062A0_storydebug(void);
 
 void func_801059D0_storydebug(void) {
     omInitObjMan(10, 10);
-    func_8004A208_main();
+    omGameSysInit();
     Hu3DCamInit(1);
     Hu3DCameraScissorSet(0, &ScissorDimensions);
     Hu3DGLightMaxSet(1);
@@ -134,7 +134,7 @@ void func_80106134_storydebug(void) {
     s16 i, j;
 
     SLCurBoxNoSet(0);
-    func_80050ABC_main();
+    SLLoadStory();
     while (1) {
         HuPrcVSleep();
         func_801062A0_storydebug();
@@ -153,7 +153,7 @@ void func_80106134_storydebug(void) {
             for (j = 0; j < ARRAY_COUNT(GwStory.unk5E); j++) {
                 GwStory.unk5E[j] = 0;
             }
-            func_8005035C_main(1);
+            SLSaveStory(1);
         }
         TextYPos = DEFAULT_Y_POS;
     }

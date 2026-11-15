@@ -23,7 +23,7 @@ typedef struct
     u32 endTimes[PROF_MAX_SAMPLES];
 } ProfSampleBuff;
 
-OSTime func_8004D638_main(ProfSampleBuff *buffer, s16 sampleIdx);
+OSTime HuProfRecordEnd(ProfSampleBuff *buffer, s16 sampleIdx);
 
 extern u8 D_8008F1C0_main;
 static ProfSampleBuff D_800B23E0_main;
@@ -102,7 +102,7 @@ s16 HuProfRecordSample(ProfSampleBuff *buffer, s32 red, s32 green, u32 blue) {
     return buffer->sampleCount++;
 }
 
-OSTime func_8004D638_main(ProfSampleBuff *buffer, s16 sampleIdx) {
+OSTime HuProfRecordEnd(ProfSampleBuff *buffer, s16 sampleIdx) {
 
     if (sampleIdx >= 0) {
         buffer->endTimes[sampleIdx] = (u32)osGetTime();
@@ -111,15 +111,15 @@ OSTime func_8004D638_main(ProfSampleBuff *buffer, s16 sampleIdx) {
     return buffer->endTimes[sampleIdx] - buffer->startTimes[sampleIdx];
 }
 
-s16 func_8004D6AC_main(u8 red, u8 green, u8 blue) {
+s16 HuProfCpuBegin(u8 red, u8 green, u8 blue) {
     return HuProfRecordSample(&D_800B2468_main, red, green, blue);
 }
 
-void func_8004D6E8_main(s16 sampleIdx) {
-    func_8004D638_main(&D_800B2468_main, sampleIdx);
+void HuProfCpuEnd(s16 sampleIdx) {
+    HuProfRecordEnd(&D_800B2468_main, sampleIdx);
 }
 
-s16 func_8004D710_main(u8 arg0, u8 arg1, u8 arg2) {
+s16 HuProfRspBegin(u8 arg0, u8 arg1, u8 arg2) {
     s16 temp_s0;
     u32 temp_s3;
 
@@ -129,15 +129,15 @@ s16 func_8004D710_main(u8 arg0, u8 arg1, u8 arg2) {
     return temp_s0;
 }
 
-void func_8004D788_main(s16 sampleIdx) {
+void HuProfRspEnd(s16 sampleIdx) {
     u32 temp_s1;
 
     temp_s1 = osSetIntMask(1U);
-    func_8004D638_main(&D_800B24F0_main, sampleIdx);
+    HuProfRecordEnd(&D_800B24F0_main, sampleIdx);
     osSetIntMask(temp_s1);
 }
 
-void func_8004D7D8_main(void) {
+void HuProfFrameBegin(void) {
     u32 temp_v0;
 
     D_800B246C_main = 0;
@@ -146,7 +146,7 @@ void func_8004D7D8_main(void) {
     osSetIntMask(temp_v0);
 }
 
-void func_8004D814_main(void) {
+void HuProfFrameEnd(void) {
     u32 temp_s0;
 
     temp_s0 = osSetIntMask(1);
@@ -154,16 +154,16 @@ void func_8004D814_main(void) {
     osSetIntMask(temp_s0);
 }
 
-void func_8004D85C_main(void) {
+void HuProfRspReset(void) {
     D_800B24F4_main = 0;
     D_800B24F0_main.unk0 = D_800B2574_main;
 }
 
-void func_8004D878_main(void) {
+void HuProfDummy(void) {
 }
 
 // profiler rendering code was stubbed out
-Gfx *func_8004D880_main(ProfSampleBuff *arg1, Gfx *arg2, s32 arg3) {
+Gfx *HuProfDraw(ProfSampleBuff *arg1, Gfx *arg2, s32 arg3) {
     return arg2;
 }
 
@@ -173,7 +173,7 @@ extern s32 gThreadOutStack;
 extern s32 gThreadOutStackSize;
 extern s32 gThreadYieldStack;
 
-void func_8004D888_main(void) {
+void HuProfDrawTask(void) {
     Gfx *gfx = D_800B25F0_main;
 
     D_800B25C0_main = gThread3Stack;
@@ -183,8 +183,8 @@ void func_8004D888_main(void) {
     gDPPipeSync(gfx++);
     gDPSetCycleType(gfx++, G_CYC_FILL);
     gDPSetRenderMode(gfx++, G_RM_NOOP, G_RM_NOOP2);
-    gfx = func_8004D880_main(&D_800B23E0_main, gfx, 0);
-    gfx = func_8004D880_main(&D_800B24F0_main, gfx, 2);
+    gfx = HuProfDraw(&D_800B23E0_main, gfx, 0);
+    gfx = HuProfDraw(&D_800B24F0_main, gfx, 2);
     gDPFullSync(gfx++);
     gSPEndDisplayList(gfx++);
     osJamMesg(&D_800CC3C0_main, &D_800B25A0_main, 0);

@@ -73,7 +73,7 @@ void main(void *arg) {
 
     D_800CCF52_main = 3;
 
-    func_8000EA10_main(D_800A1240_main, 3, 2, D_800A124C_main, (s32 *)D_800A125C_main);
+    HuGfxInit(D_800A1240_main, 3, 2, D_800A124C_main, (s32 *)D_800A125C_main);
 
     if (osTvType == TV_TYPE_PAL) {
         while (TRUE) {}
@@ -99,8 +99,8 @@ void main(void *arg) {
 
     FlushController();
     osViSetSpecialFeatures(2);
-    func_8000F094_main(2);
-    HuPrcCreate(func_8000E3C0_main, 1, 0, 0);
+    HuGfxModeSet(2);
+    HuPrcCreate(GameManInitProc, 1, 0, 0);
 
     while (!stopLooping) {
         if (osRecvMesg(&D_800CCF60_main, &msg, OS_MESG_NOBLOCK) != -1) {
@@ -120,8 +120,8 @@ void main(void *arg) {
                 if (D_800D2094_main - iVar5 >= 2) {
                     iVar5 = D_800D2094_main;
                     if (D_800A12A0_main < D_800CCF52_main) {
-                        func_8004D7D8_main();
-                        temp_s1 = func_8004D6AC_main(0xC8, 0, 0);
+                        HuProfFrameBegin();
+                        temp_s1 = HuProfCpuBegin(0xC8, 0, 0);
                         FlushController();
                         ContDataUpdate();
                         temp_s0 = D_800A08B0_main;
@@ -129,8 +129,8 @@ void main(void *arg) {
                         if (temp_s0 != D_800A08B0_main) {
                             D_800A12A0_main++;
                         }
-                        func_8004D6E8_main(temp_s1);
-                        func_8004D814_main();
+                        HuProfCpuEnd(temp_s1);
+                        HuProfFrameEnd();
                     }
                 }
             } break;
@@ -150,7 +150,7 @@ spinloop:
     while (TRUE) {}
 }
 
-void func_800357AC_main(s16 count) {
+void FrameBufferClear(s16 count) {
     s16 i = 0;
     for (i = 0; i < count; i++) {
         memset(*(&D_800A1240_main[i]), 0, 0x25800); // sizeof(gZBuffer) ?

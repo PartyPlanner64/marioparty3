@@ -328,7 +328,7 @@ void func_80105B7C_spotlight_swim(s16 arg0, s16 arg1) {
         HuAudFXStop(stopSeNo);
     }
 
-    D_8010D3B0_spotlight_swim[arg1] = func_8004AC98_main(D_8010CCF4_spotlight_swim[arg0], arg1);
+    D_8010D3B0_spotlight_swim[arg1] = HuAudPlayerFXPlay(D_8010CCF4_spotlight_swim[arg0], arg1);
 }
 
 void func_80105C04_spotlight_swim(s16 arg0, s16 arg1) {
@@ -347,8 +347,8 @@ s32 func_80105C8C_spotlight_swim(s32 arg0) {
 
 void func_80105CE0_spotlight_swim(omObjData *arg0, u16 arg1, s16 arg2) {
     if (arg1 < 0xA) {
-        func_8001C5B4_main(arg0->model[0], arg0->motion[arg1]);
-        func_8001C814_main(arg0->model[0], arg2, arg2);
+        Hu3DMotionModelSet(arg0->model[0], arg0->motion[arg1]);
+        Hu3DMotionAttrSet(arg0->model[0], arg2, arg2);
     }
 }
 
@@ -405,7 +405,7 @@ void func_80106148_spotlight_swim(omObjData *object) {
 }
 
 void func_80106150_spotlight_swim(omObjData *obj) {
-    obj->model[0] = func_8000B108_main(0x240000, 0x299);
+    obj->model[0] = Hu3DModelRead(0x240000, 0x299);
     Hu3DModelCameraSet(obj->model[0], HU3D_CAM0);
     obj->func = func_80106148_spotlight_swim;
 }
@@ -448,7 +448,7 @@ void func_801061DC_spotlight_swim(omObjData *obj) {
 }
 
 void func_80106350_spotlight_swim(omObjData *obj) {
-    obj->model[0] = func_8000B108_main(0x240001, 0xA9);
+    obj->model[0] = Hu3DModelRead(0x240001, 0xA9);
     obj->trans.x = 250.0f;
     obj->trans.y = 0.0f;
     obj->trans.z = -50.0f;
@@ -498,10 +498,10 @@ void func_801065C4_spotlight_swim(omObjData *obj) {
 
     data = DataRead(0x24000F);
     for (i = 0, xs = D_8010D380_spotlight_swim, zs = D_8010D38C_spotlight_swim; i < 3; i++) {
-        obj->model[i + 1] = func_8000B108_main(0x24000E, 0x289);
+        obj->model[i + 1] = Hu3DModelRead(0x24000E, 0x289);
         Hu3DAnimCreate(Hu3DData[obj->model[i + 1]].hmf, data, 0, "s203_004_DEF");
         Hu3DModelRemakeStatic(obj->model[i + 1]);
-        func_8001C514_main(obj->model[i + 1]);
+        Hu3DModelDynamicFree(obj->model[i + 1]);
         Hu3DModelCameraSet(obj->model[i + 1], HU3D_CAM0);
         xs[i] = 1000.0f;
         zs[i] = 0.0f;
@@ -622,7 +622,7 @@ void func_80106BC8_spotlight_swim(omObjData *obj) {
         }
         if (D_8010EE48_spotlight_swim == 5 && D_8010D343_spotlight_swim != 6) {
             func_80105CE0_spotlight_swim(obj, 6, 0);
-            func_80045ED0_main((D_8010CCD4_spotlight_swim[GwPlayer[obj->work[0]].chr] << 16) | 0x2F);
+            HuAudCharVoicePlay((D_8010CCD4_spotlight_swim[GwPlayer[obj->work[0]].chr] << 16) | 0x2F);
             Hu3DMotionSpeedSet(obj->model[0], 1.0f);
             D_8010D343_spotlight_swim = 6;
         }
@@ -643,7 +643,7 @@ void func_80106EB0_spotlight_swim(omObjData *obj) {
         case 1:
             if (D_8010D350_spotlight_swim.timer == 0) {
                 Hu3DMotionTimeSet(obj->model[6], 0);
-                func_8001C258_main(obj->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                Hu3DModelAttrSet(obj->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 if (obj->work[1] != 5) {
                     D_8010D350_spotlight_swim.x[0] = obj->trans.x;
                     D_8010D350_spotlight_swim.z[0] = obj->trans.z;
@@ -652,19 +652,19 @@ void func_80106EB0_spotlight_swim(omObjData *obj) {
                     D_8010D350_spotlight_swim.z[0] = obj->trans.z - cosdf(obj->rot.y) * 50.0f;
                 }
                 D_8010D350_spotlight_swim.alpha[0] = 255;
-                func_8001F9E4_main(obj->model[6], 255);
+                Hu3DModelTPLvlSet(obj->model[6], 255);
             } else if (D_8010D350_spotlight_swim.timer >= 5) {
                 if (D_8010D350_spotlight_swim.alpha[0] >= 36) {
                     D_8010D350_spotlight_swim.alpha[0] -= 20;
                 } else {
-                    func_8001C258_main(obj->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    Hu3DModelAttrSet(obj->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     D_8010D350_spotlight_swim.alpha[0] = 0;
                 }
-                func_8001F9E4_main(obj->model[6], D_8010D350_spotlight_swim.alpha[0]);
+                Hu3DModelTPLvlSet(obj->model[6], D_8010D350_spotlight_swim.alpha[0]);
             }
             if (D_8010D350_spotlight_swim.timer == 8) {
                 Hu3DMotionTimeSet(obj->model[7], 0);
-                func_8001C258_main(obj->model[7], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                Hu3DModelAttrSet(obj->model[7], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 if (obj->work[1] != 5) {
                     D_8010D350_spotlight_swim.x[1] = obj->trans.x;
                     D_8010D350_spotlight_swim.z[1] = obj->trans.z;
@@ -673,16 +673,16 @@ void func_80106EB0_spotlight_swim(omObjData *obj) {
                     D_8010D350_spotlight_swim.z[0] = obj->trans.z - cosdf(obj->rot.y) * 50.0f;
                 }
                 D_8010D350_spotlight_swim.alpha[1] = 255;
-                func_8001F9E4_main(obj->model[7], 255);
+                Hu3DModelTPLvlSet(obj->model[7], 255);
             } else if (D_8010D350_spotlight_swim.timer >= 10) {
                 if (D_8010D350_spotlight_swim.alpha[1] >= 36) {
                     D_8010D350_spotlight_swim.alpha[1] -= 20;
                 } else {
-                    func_8001C258_main(obj->model[7], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    Hu3DModelAttrSet(obj->model[7], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     D_8010D350_spotlight_swim.alpha[1] = 0;
                     D_8010D350_spotlight_swim.state = 0;
                 }
-                func_8001F9E4_main(obj->model[7], D_8010D350_spotlight_swim.alpha[1]);
+                Hu3DModelTPLvlSet(obj->model[7], D_8010D350_spotlight_swim.alpha[1]);
             }
             D_8010D350_spotlight_swim.timer++;
             break;
@@ -1124,31 +1124,31 @@ void func_80108AD8_spotlight_swim(omObjData *obj) {
 
     chr = GwPlayer[obj->work[0]].chr;
     obj->work[1] = chr;
-    obj->model[0] = func_8000B108_main(D_800A178C_main[chr][0] | D_800A1790_main[chr][0], 0x2B9);
-    func_8000B460_main(obj, 0, func_80017BB8_main(chr, 9));
-    func_8000B460_main(obj, 1, func_80017BB8_main(chr, 0x60));
-    func_8000B460_main(obj, 3, func_80017BB8_main(chr, 0x61));
-    func_8000B460_main(obj, 4, func_80017BB8_main(chr, 0xD));
-    func_8000B460_main(obj, 5, func_80017BB8_main(chr, 0x59));
-    func_8000B460_main(obj, 7, func_80017BB8_main(chr, 4));
-    func_8000B460_main(obj, 6, func_80017BB8_main(chr, 0x2F));
+    obj->model[0] = Hu3DModelRead(D_800A178C_main[chr][0] | D_800A1790_main[chr][0], 0x2B9);
+    omObjMotionRead(obj, 0, CharMotionDataNumGet(chr, 9));
+    omObjMotionRead(obj, 1, CharMotionDataNumGet(chr, 0x60));
+    omObjMotionRead(obj, 3, CharMotionDataNumGet(chr, 0x61));
+    omObjMotionRead(obj, 4, CharMotionDataNumGet(chr, 0xD));
+    omObjMotionRead(obj, 5, CharMotionDataNumGet(chr, 0x59));
+    omObjMotionRead(obj, 7, CharMotionDataNumGet(chr, 4));
+    omObjMotionRead(obj, 6, CharMotionDataNumGet(chr, 0x2F));
     obj->trans.x = 0.0f;
     obj->trans.y = -200.0f;
     obj->trans.z = -90.0f;
     Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
     func_80105CE0_spotlight_swim(obj, 4, 2);
     D_8010D343_spotlight_swim = 4;
-    obj->model[1] = func_8000B108_main(0x240006, 0x299);
-    obj->model[2] = func_8000B108_main(0x240006, 0x299);
-    obj->model[3] = func_8000B108_main(0x240006, 0x299);
-    obj->model[4] = func_8000B108_main(0x240006, 0x299);
-    obj->model[5] = func_8000B108_main(0x240006, 0x2B9);
-    obj->model[6] = func_8000B108_main(0x240007, 0x288);
-    func_8001FA68_main(obj->model[6]);
-    func_8001F9E4_main(obj->model[6], 0xFF);
-    obj->model[7] = func_8000B108_main(0x240007, 0x288);
-    func_8001FA68_main(obj->model[7]);
-    func_8001F9E4_main(obj->model[7], 0xFF);
+    obj->model[1] = Hu3DModelRead(0x240006, 0x299);
+    obj->model[2] = Hu3DModelRead(0x240006, 0x299);
+    obj->model[3] = Hu3DModelRead(0x240006, 0x299);
+    obj->model[4] = Hu3DModelRead(0x240006, 0x299);
+    obj->model[5] = Hu3DModelRead(0x240006, 0x2B9);
+    obj->model[6] = Hu3DModelRead(0x240007, 0x288);
+    Hu3DModelTPLvlInit(obj->model[6]);
+    Hu3DModelTPLvlSet(obj->model[6], 0xFF);
+    obj->model[7] = Hu3DModelRead(0x240007, 0x288);
+    Hu3DModelTPLvlInit(obj->model[7]);
+    Hu3DModelTPLvlSet(obj->model[7], 0xFF);
     Hu3DModelCameraSet(obj->model[0], HU3D_CAM0);
     Hu3DModelCameraSet(obj->model[1], HU3D_CAM0);
     Hu3DModelCameraSet(obj->model[2], HU3D_CAM0);
@@ -1604,7 +1604,7 @@ void func_80109F60_spotlight_swim(omObjData *obj) {
         case 6:
             if (D_8010EE48_spotlight_swim == 6 && spotlightSwimBss320.unk03[obj->work[1]] == 1) {
                 func_80105CE0_spotlight_swim(obj, 3, 0);
-                func_80045ED0_main((D_8010CCD4_spotlight_swim[chr] << 16) | 0x2F);
+                HuAudCharVoicePlay((D_8010CCD4_spotlight_swim[chr] << 16) | 0x2F);
                 spotlightSwimBss320.unk03[obj->work[1]] = 10;
             }
             break;
@@ -1625,20 +1625,20 @@ void func_8010A328_spotlight_swim(omObjData *obj) {
     u16 chr = GwPlayer[obj->work[0]].chr;
     f32 unused[2]; // Unused stack space retained from the original function.
 
-    obj->model[0] = func_8000B108_main(D_800A178C_main[chr][0] | D_800A1790_main[chr][0], 0x2B9);
-    func_8000B460_main(obj, 0, func_80017BB8_main(chr, 0x5C));
-    func_8000B460_main(obj, 1, func_80017BB8_main(chr, 0x5B));
-    func_8000B460_main(obj, 2, func_80017BB8_main(chr, 0x5A));
-    func_8000B460_main(obj, 4, func_80017BB8_main(chr, 0x36));
-    func_8000B460_main(obj, 5, func_80017BB8_main(chr, 1));
-    func_8000B460_main(obj, 6, func_80017BB8_main(chr, 0));
-    func_8000B460_main(obj, 3, func_80017BB8_main(chr, 0x2F));
+    obj->model[0] = Hu3DModelRead(D_800A178C_main[chr][0] | D_800A1790_main[chr][0], 0x2B9);
+    omObjMotionRead(obj, 0, CharMotionDataNumGet(chr, 0x5C));
+    omObjMotionRead(obj, 1, CharMotionDataNumGet(chr, 0x5B));
+    omObjMotionRead(obj, 2, CharMotionDataNumGet(chr, 0x5A));
+    omObjMotionRead(obj, 4, CharMotionDataNumGet(chr, 0x36));
+    omObjMotionRead(obj, 5, CharMotionDataNumGet(chr, 1));
+    omObjMotionRead(obj, 6, CharMotionDataNumGet(chr, 0));
+    omObjMotionRead(obj, 3, CharMotionDataNumGet(chr, 0x2F));
     func_80105CE0_spotlight_swim(obj, 0, 2);
     Hu3DMotionSpeedSet(obj->model[0], 0);
-    obj->model[1] = func_8000B0A0_main(0, 0xC9);
-    func_8001C2FC_main(obj->model[1], 0x80000000, 0);
+    obj->model[1] = Hu3DModelRead2(0, 0xC9);
+    Hu3DModelObjAttrSet(obj->model[1], 0x80000000, 0);
     Hu3DModelRemakeStatic(obj->model[1]);
-    func_8001C514_main(obj->model[1]);
+    Hu3DModelDynamicFree(obj->model[1]);
     func_80088800_main(Hu3DData[obj->model[1]].mtx, 0, 0, 0);
     Hu3DModelCameraSet(obj->model[0], HU3D_CAM0);
     Hu3DModelCameraSet(obj->model[1], HU3D_CAM0);
@@ -1777,18 +1777,18 @@ void func_8010AAB8_spotlight_swim(omObjData *obj) {
     obj->rot.x = obj->rot.z = 0.0f;
     data->unk50.y = obj->rot.y = 180.0f;
 
-    obj->model[0] = func_8000B108_main(0x240002, 0xA9);
+    obj->model[0] = Hu3DModelRead(0x240002, 0xA9);
     file1 = DataRead(D_8010CDB8_spotlight_swim[idx] | 0x240000);
     Hu3DAnimCreate(Hu3DData[obj->model[0]].hmf, file1, 0, "m203_001_DEF");
     Hu3DModelRemakeStatic(obj->model[0]);
-    func_8001C514_main(obj->model[0]);
+    Hu3DModelDynamicFree(obj->model[0]);
     DataClose(file1);
 
-    obj->model[1] = func_8000B108_main(0x240003, 0x89);
+    obj->model[1] = Hu3DModelRead(0x240003, 0x89);
     file2 = DataRead(D_8010CDC0_spotlight_swim[idx] | 0x240000);
     Hu3DAnimCreate(Hu3DData[obj->model[1]].hmf, file2, 0, "light_boddy_DEF");
     Hu3DModelRemakeStatic(obj->model[1]);
-    func_8001C514_main(obj->model[1]);
+    Hu3DModelDynamicFree(obj->model[1]);
     DataClose(file2);
 
     Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
@@ -1825,8 +1825,8 @@ void func_8010AE9C_spotlight_swim(omObjData *obj) {
 
     if (data->unk04 == 1) {
         if (obj->trans.y == 920.0f) {
-            func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-            func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             obj->trans.x = D_8010D348_spotlight_swim->trans.x;
             obj->trans.z = D_8010D348_spotlight_swim->trans.z;
             data->unk06 = (obj->trans.x > 0.0f) ? 0 : 1;
@@ -1916,7 +1916,7 @@ void func_8010AE9C_spotlight_swim(omObjData *obj) {
     if (data->unk04 == 2) {
         switch (data->unk08) {
             case 0:
-                func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 data->unk44.x = D_8010D348_spotlight_swim->trans.x;
                 data->unk44.z = D_8010D348_spotlight_swim->trans.z;
                 D_8010D450_spotlight_swim[0].x = data->unk44.x;
@@ -1982,19 +1982,19 @@ void func_8010B828_spotlight_swim(omObjData *obj) {
     s16 i;
 
     data = &D_8010D480_spotlight_swim[13];
-    obj->model[0] = func_8000B108_main(0xA0089, 0x2B9);
+    obj->model[0] = Hu3DModelRead(0xA0089, 0x2B9);
     hmf = Hu3DData[obj->model[0]].hmf;
-    node = func_8002C834_main(hmf, "c205_000-sao");
+    node = SearchObjectIndex(hmf, "c205_000-sao");
     for (i = 0; i < hmf->unk10; i++) {
         if (i == node) {
             hmf->unk60[i].unk24 |= 1;
         }
     }
-    obj->model[1] = func_8000B108_main(0x240005, 0x299);
-    obj->model[2] = func_8000B108_main(0x240004, 0x299);
-    func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    obj->model[1] = Hu3DModelRead(0x240005, 0x299);
+    obj->model[2] = Hu3DModelRead(0x240004, 0x299);
+    Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelCameraSet(obj->model[0], HU3D_CAM0);
     Hu3DModelCameraSet(obj->model[1], HU3D_CAM0);
     Hu3DModelCameraSet(obj->model[2], HU3D_CAM0);
@@ -2175,7 +2175,7 @@ void func_8010C25C_spotlight_swim(omObjData *obj) {
     D_8010D2F0_spotlight_swim = 0;
     obj->model[0] = Hu3DHookFuncCreate(0, func_8010BA6C_spotlight_swim, 2);
     Hu3DModelCameraSet(obj->model[0], HU3D_CAM0);
-    func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     for (i = 0; i < 3; i++) {
         D_8010D2F8_spotlight_swim[i] = HuMemAllocTag(0x12C00, TAG_OVERLAY);
         for (j = 0; j < 0x4B00; j++) {
@@ -2237,7 +2237,7 @@ void func_8010C588_spotlight_swim(omObjData *obj) {
         WipeCreateOut(WIPE_TYPE_NORMAL, 20);
         obj->func = func_8010C550_spotlight_swim;
         HuAudSeqFadeOut(30);
-        func_8004AB0C_main(30);
+        HuAudFXAllFadeOut(30);
     }
 }
 
@@ -2261,7 +2261,7 @@ void func_8010C5E0_spotlight_swim(omObjData *obj) {
         case 2:
             if (D_8010D364_spotlight_swim > 0) {
                 D_8010D364_spotlight_swim--;
-                func_8003F578_main((D_8010D364_spotlight_swim + 29) / 30);
+                GMesTimerValueSet((D_8010D364_spotlight_swim + 29) / 30);
                 if (D_8010D2F4_spotlight_swim != 7) {
                     break;
                 }
@@ -2270,7 +2270,7 @@ void func_8010C5E0_spotlight_swim(omObjData *obj) {
             } else {
                 D_8010EE48_spotlight_swim = 3;
             }
-            func_8003F5C0_main();
+            GMesTimerEnd();
             GMesCreate(0xF);
             HuAudSeqFadeOut(120);
             break;
@@ -2352,8 +2352,8 @@ void func_8010CA08_spotlight_swim(void) {
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
     obj->work[0] = 1;
     omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    func_8000B5F0_main(1);
-    func_8000B710_main(1);
+    CamSetupInit(1);
+    CamSetupMapCullAddMulti(1);
     for (i = 0; i < 1; i++) {
         ScissorSet(i, D_8010D1D4_spotlight_swim[i].scissorX, D_8010D1D4_spotlight_swim[i].scissorY,
                    D_8010D1D4_spotlight_swim[i].scissorWidth, D_8010D1D4_spotlight_swim[i].scissorHeight);
@@ -2365,10 +2365,10 @@ void func_8010CA08_spotlight_swim(void) {
 }
 
 void func_8010CB78_spotlight_swim(void) {
-    func_8001FE20_main(50);
-    func_800142A0_main(50);
+    MapCollInit(50);
+    Hu3DSprModelInit(50);
     omInitObjMan(50, 0);
-    func_8004A208_main();
+    omGameSysInit();
     func_8010CA08_spotlight_swim();
     Hu3DGLightMaxSet(1);
     Hu3DGLightMaxSet(2);
@@ -2381,8 +2381,8 @@ void func_8010CB78_spotlight_swim(void) {
     D_800EC1B8_minigame = 0;
     D_800EC280_minigame = 0;
     D_800EBE28_minigame = 0;
-    func_80045010_main(D_8010D2E0_spotlight_swim, 0);
-    func_80045010_main(D_8010D2E0_spotlight_swim, 1);
+    GMesFontMesCreate(D_8010D2E0_spotlight_swim, 0);
+    GMesFontMesCreate(D_8010D2E0_spotlight_swim, 1);
     omAddObj(0x5DC, 0, 0, -1, func_8010C900_spotlight_swim);
     omAddObj(0x5DC, 0, 0, -1, func_8010C588_spotlight_swim);
     func_80105A3C_spotlight_swim();

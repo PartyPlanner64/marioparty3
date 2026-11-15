@@ -1,5 +1,5 @@
 /* This file does not include common.h: the original source appears to have called rand8() without a
- * prototype in scope (implicit int return, no 0xFF mask at the call site in func_80013390_main).
+ * prototype in scope (implicit int return, no 0xFF mask at the call site in Hu3DParticleCreate).
  * The int-returning declaration below reproduces that without relying on an implicit declaration. */
 #include "ultra64.h"
 #include "types.h"
@@ -16,11 +16,11 @@ s32 rand8(void);
 extern u8 D_800CD6A6_main;
 extern u8 D_800D2008_main;
 
-void func_80013D44_main(s16 model);
-void func_80013D4C_main(s16 model);
-void func_80013FB4_main(s16 model);
+void Hu3DParticleHookNull(s16 model);
+void Hu3DParticleHook1(s16 model);
+void Hu3DParticleHook2(s16 model);
 
-void func_80013390_main(s16 model, s16 type, char *name, void (*func)(s16)) {
+void Hu3DParticleCreate(s16 model, s16 type, char *name, void (*func)(s16)) {
     HmfModel *modelP = &Hu3DData[model];
     HmfData *hmf = modelP->hmf;
     HmfModelData_UnkBC_Struct *bc;
@@ -40,7 +40,7 @@ void func_80013390_main(s16 model, s16 type, char *name, void (*func)(s16)) {
     f32 angle2;
     f32 sinAngle1;
 
-    func_8001C258_main(model, 0x1000000, 0x1000000);
+    Hu3DModelAttrSet(model, 0x1000000, 0x1000000);
     bc = HuMemAllocTag(sizeof(HmfModelData_UnkBC_Struct), hmf->unk0E + 1);
     modelP->unkBC = bc;
     particle = HuMemAllocTag(hmf->unk1A * sizeof(HmfModelData_UnkBC_Unk58_Struct), hmf->unk0E + 1);
@@ -52,7 +52,7 @@ void func_80013390_main(s16 model, s16 type, char *name, void (*func)(s16)) {
     bc->unk04 = 0;
     bc->unk08.f = bc->unk0C.f = 0.0f;
     if (name != NULL) {
-        bc->unk00 = func_8002C834_main(Hu3DData[model].hmf, name);
+        bc->unk00 = SearchObjectIndex(Hu3DData[model].hmf, name);
         first = hmf->unk60[bc->unk00].unk2C;
         count = hmf->unk60[bc->unk00].unk2E;
     } else {
@@ -88,13 +88,13 @@ void func_80013390_main(s16 model, s16 type, char *name, void (*func)(s16)) {
     if (type != -1) {
         switch (type) {
             case 0:
-                bc->unk18 = func_80013D44_main;
+                bc->unk18 = Hu3DParticleHookNull;
                 break;
             case 1:
-                bc->unk18 = func_80013D4C_main;
+                bc->unk18 = Hu3DParticleHook1;
                 break;
             case 2:
-                bc->unk18 = func_80013FB4_main;
+                bc->unk18 = Hu3DParticleHook2;
                 break;
         }
         side = HuSqrtf(count);
@@ -120,25 +120,25 @@ void func_80013390_main(s16 model, s16 type, char *name, void (*func)(s16)) {
     HuMemFree(order);
 }
 
-void func_800138EC_main(s16 arg0, s32 arg1, s32 arg2) {
+void Hu3DParticleAttrSet(s16 arg0, s32 arg1, s32 arg2) {
     HmfModelData_UnkBC_Struct *lightFlags = Hu3DData[arg0].unkBC;
 
     lightFlags->unk04 = arg2 | (lightFlags->unk04 & ~arg1);
 }
 
-s16 func_80013928_main(s16 arg0) {
+s16 Hu3DParticleAttrGet(s16 arg0) {
     return Hu3DData[arg0].unkBC->unk04;
 }
 
-void func_80013954_main(s16 arg0, s16 arg1) {
+void Hu3DParticleCntSet(s16 arg0, s16 arg1) {
     Hu3DData[arg0].unkBC->unk02 = arg1;
 }
 
-s16 func_80013980_main(s16 arg0) {
+s16 Hu3DParticleCntGet(s16 arg0) {
     return Hu3DData[arg0].unkBC->unk02;
 }
 
-void func_800139AC_main(s16 model, s16 group) {
+void Hu3DParticleDraw(s16 model, s16 group) {
     HuMtx4F lookAt;
     HuMtx4F rotMtx;
     Vec rotated[4];
@@ -165,7 +165,7 @@ void func_800139AC_main(s16 model, s16 group) {
 
     HuLookAtF(lookAt, camera->pos.x, camera->pos.y, camera->pos.z, camera->at.x, camera->at.y, camera->at.z,
               camera->up.x, camera->up.y, camera->up.z);
-    func_80018F18_main(lookAt, rotMtx);
+    mtxInverse(lookAt, rotMtx);
     if (group != -1) {
         first = hmf->unk60[group].unk2C;
         count = hmf->unk60[group].unk2E;
@@ -222,10 +222,10 @@ void func_800139AC_main(s16 model, s16 group) {
     }
 }
 
-void func_80013D44_main(s16 model) {
+void Hu3DParticleHookNull(s16 model) {
 }
 
-void func_80013D4C_main(s16 model) {
+void Hu3DParticleHook1(s16 model) {
     HmfData *hmf = Hu3DData[model].hmf;
     HmfModelData_UnkBC_Struct *bc = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle;
@@ -272,7 +272,7 @@ void func_80013D4C_main(s16 model) {
     }
 }
 
-void func_80013FB4_main(s16 model) {
+void Hu3DParticleHook2(s16 model) {
     HmfData *hmf = Hu3DData[model].hmf;
     HmfModelData_UnkBC_Struct *bc = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle;

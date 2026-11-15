@@ -113,8 +113,8 @@ void func_800DA00C_name_81(omObjData *arg0) {
 
         case 2:
             D_800A0A7C_main = entry->unk48;
-            func_8001C2FC_main(*arg0->model, 0x22000, 0x20000);
-            func_8001D558_main(*arg0->model, entry->unk40, entry->unk44, 2);
+            Hu3DModelObjAttrSet(*arg0->model, 0x22000, 0x20000);
+            Hu3DModelVtxWave(*arg0->model, entry->unk40, entry->unk44, 2);
             if (Hu3DPauseF == 0) {
                 entry->unk48 += 39.0f;
                 entry->unk40 += 0.05f;
@@ -457,7 +457,7 @@ void func_800DB4DC_name_81(s32 arg0) {
 
 void func_800DB544_name_81(s32 arg0) {
     if (D_800CDBD0_main[arg0].unk_16 != -1) {
-        func_8001C258_main(D_800CDBD0_main[arg0].unk_16, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(D_800CDBD0_main[arg0].unk_16, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
 }
 
@@ -468,7 +468,7 @@ void func_800DB58C_name_81(s32 arg0) {
 
 void func_800DB5AC_name_81(s32 playerIndex) {
     if (D_80105555_name_81 && D_800CDBD0_main[playerIndex].unk_16 != -1) {
-        func_8001C258_main(D_800CDBD0_main[playerIndex].unk_16, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        Hu3DModelAttrSet(D_800CDBD0_main[playerIndex].unk_16, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     }
 }
 
@@ -509,7 +509,7 @@ s16 func_800DB648_name_81(s32 arg0) {
     entry->unk_16 = Hu3DModelCreate(DataRead(D_80100E24_name_81[entry->unk_0A]), 0x6A9);
     Hu3DModelCameraSet(entry->unk_16, HU3D_CAM0);
     Hu3DModelScaleSet(entry->unk_16, 0.0f, 0.0f, 0.0f);
-    func_8001C2FC_main(entry->unk_16, 0x20000, 0x20000);
+    Hu3DModelObjAttrSet(entry->unk_16, 0x20000, 0x20000);
 
     entry->unk_2C = DataRead(D_80100E30_name_81[entry->unk_0A]);
     entry->unk_1A[0] = Hu3DAnimCreate(Hu3DData[entry->unk_16].hmf, entry->unk_2C, 0, "tile01_DEF");
@@ -531,7 +531,7 @@ s16 func_800DB648_name_81(s32 arg0) {
     }
 
     Hu3DModelRemakeStatic(entry->unk_16);
-    func_8001C954_main(entry->unk_16);
+    Hu3DModelVtxBufMake(entry->unk_16);
 
     dice = omAddObj(-0x8000, 1, 1, -1, func_800DA00C_name_81);
     entry->dice = dice;
@@ -595,7 +595,7 @@ void func_800DBAB0_name_81(s32 arg0, s32 arg1, s32 arg2, char *arg3[]) {
         entry->unk_16 = Hu3DModelCreate(DataRead(arg1), 0x6A9);
         Hu3DModelCameraSet(entry->unk_16, HU3D_CAM0);
         Hu3DModelScaleSet(entry->unk_16, 0.0f, 0.0f, 0.0f);
-        func_8001C2FC_main(entry->unk_16, 0x20000, 0x20000);
+        Hu3DModelObjAttrSet(entry->unk_16, 0x20000, 0x20000);
 
         if (arg2 != -1) {
             entry->unk_2C = DataRead(arg2);
@@ -616,7 +616,7 @@ void func_800DBAB0_name_81(s32 arg0, s32 arg1, s32 arg2, char *arg3[]) {
         }
 
         Hu3DModelRemakeStatic(entry->unk_16);
-        func_8001C954_main(entry->unk_16);
+        Hu3DModelVtxBufMake(entry->unk_16);
 
         dice = omAddObj(-0x8000, 1, 1, -1, func_800DA00C_name_81);
         entry->dice = dice;
@@ -648,7 +648,7 @@ void func_800DBD88_name_81(s32 arg0) {
         Hu3DModelKill(entry->unk_16);
         for (i = 0; i < 6; i++) {
             if (entry->unk_1A[i] != -1) {
-                func_80033430_main(entry->unk_1A[i]);
+                Hu3DAnimModelKill(entry->unk_1A[i]);
             }
         }
         if (entry->unk_2C != NULL) {
@@ -669,7 +669,7 @@ void func_800DBD88_name_81(s32 arg0) {
     }
 
     if (entry->unk_26 != -1) {
-        func_80033430_main(entry->unk_26);
+        Hu3DAnimModelKill(entry->unk_26);
         entry->unk_26 = -1;
     }
 

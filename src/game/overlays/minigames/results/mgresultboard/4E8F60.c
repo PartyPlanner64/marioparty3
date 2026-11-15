@@ -23,16 +23,16 @@ void func_80107B40_mgresultboard(void) {
     D_8010AF98_mgresultboard = obj;
     for (i = 0; i < 4; i++) {
         if (i == 0) {
-            obj->model[1] = func_8000B0D4_main(0x180001, 0x2B9);
+            obj->model[1] = Hu3DModelRead3(0x180001, 0x2B9);
         } else {
             obj->model[i + 1] = Hu3DModelLink(obj->model[1]);
         }
-        func_8001C814_main(obj->model[i + 1], 2, 0);
+        Hu3DMotionAttrSet(obj->model[i + 1], 2, 0);
         Hu3DModelPosSet(obj->model[i + 1], D_8010AB10_mgresultboard[i].x, D_8010AB10_mgresultboard[i].y,
                         D_8010AB10_mgresultboard[i].z);
         Hu3DMotionTimeSet(obj->model[i + 1], 0.0f);
         Hu3DModelCameraSet(obj->model[i + 1], 2);
-        func_8001C258_main(obj->model[i + 1], 4, 0);
+        Hu3DModelAttrSet(obj->model[i + 1], 4, 0);
     }
     obj->trans.x = 0.0f;
     obj->trans.y = 0.0f;

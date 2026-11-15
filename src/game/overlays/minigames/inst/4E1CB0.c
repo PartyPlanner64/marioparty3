@@ -46,7 +46,7 @@ void func_80108AF0_inst(s16 model, void *imageHeader, void *imageData, u8 *alpha
         }
     }
     HuMemMemoryFreePerm(decoded);
-    node = func_8002C834_main(hmf, "gamen");
+    node = SearchObjectIndex(hmf, "gamen");
     mesh = &hmf->unk60[node];
     vertex = HuMemAllocTag(0x640, hmf->unk0E);
     ((Gfx **)hmf->unk3C)[node] = gfx = HuMemAllocTag(0x2000, hmf->unk0E);

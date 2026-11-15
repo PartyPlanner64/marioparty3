@@ -448,11 +448,11 @@ void func_801059A0_selmenu(void) {
     omMakeGroup(0, 32);
     obj = omAddObj(10, 1, 80, -1, NULL);
     for (i = 0; i < 8; i++) {
-        D_8010A1C0_selmenu[i] = func_8000B108_main(D_800A178C_main[i][0] | D_800A1790_main[i][0], 0x69D);
+        D_8010A1C0_selmenu[i] = Hu3DModelRead(D_800A178C_main[i][0] | D_800A1790_main[i][0], 0x69D);
         Hu3DData[D_8010A1C0_selmenu[i]].motAttr |= 2;
-        func_8000B460_main(obj, 0, func_80017BB8_main(i, 0));
+        omObjMotionRead(obj, 0, CharMotionDataNumGet(i, 0));
         D_8010A1D0_selmenu[i] = obj->motion[0];
-        func_8000B460_main(obj, 1, func_80017BB8_main(i, 0x2F));
+        omObjMotionRead(obj, 1, CharMotionDataNumGet(i, 0x2F));
         D_8010A1E0_selmenu[i] = obj->motion[1];
     }
     omDelObj(obj);
@@ -461,7 +461,7 @@ void func_801059A0_selmenu(void) {
         D_8010A1F8_selmenu[i] = 0;
     }
     D_8010A202_selmenu = HuSprAnimDataRead(0x10020);
-    func_8000B880_main(D_8010A202_selmenu, 0.3f, 0.3f, 0.3f);
+    espPalColorSet(D_8010A202_selmenu, 0.3f, 0.3f, 0.3f);
     for (i = 0; i < 35; i++) {
         sprite = espEntry(D_8010A202_selmenu, i % 6, 1);
         espDispOn(sprite);
@@ -489,7 +489,7 @@ void func_801059A0_selmenu(void) {
 }
 
 void func_80105F30_selmenu(f32 zoom, f32 rotX, f32 rotY, f32 rotZ, f32 centerX, f32 centerY, f32 centerZ) {
-    func_8000B5F0_main(1);
+    CamSetupInit(1);
     CZoom = zoom;
     CRot.x = rotX;
     CRot.y = rotY;
@@ -1051,7 +1051,7 @@ void func_80107924_selmenu(omObjData *obj) {
         print8(x, y - (u16)D_80109810_selmenu + textOfs, D_800D5218_main);
     }
     for (i = 0; i < D_80109814_selmenu; i++) {
-        if (D_8010A210_selmenu[i] != -1 && (func_8000BE1C_main(D_8010A210_selmenu[i]) & 6)) {
+        if (D_8010A210_selmenu[i] != -1 && (espAnimStatGet(D_8010A210_selmenu[i]) & 6)) {
             espKill(D_8010A210_selmenu[i]);
             D_8010A210_selmenu[i] = -1;
         }
@@ -1091,7 +1091,7 @@ void func_80107DFC_selmenu(omObjData *obj) {
                 if (D_800D1F28_main == 0) {
                     omOvlCallEx(D_80108C90_selmenu[D_8010A070_selmenu * 10 + D_8010A072_selmenu].unk_04, 0, 0x94);
                 } else {
-                    omOvlCallEx(func_800341C0_main(GwSystem.minigame_index), 0, 0x82);
+                    omOvlCallEx(MgDataMaxGet(GwSystem.minigame_index), 0, 0x82);
                 }
             } else if (D_800A175E_main == 1) {
                 GwSystem.playMode = 1;
@@ -1163,7 +1163,7 @@ void func_80107DFC_selmenu(omObjData *obj) {
             func_801089C0_selmenu(i * 56 + 56, 144, D_800D5218_main, 15, 7);
             continue;
         }
-        func_8001C258_main(D_8010A1C0_selmenu[GwPlayer[i].chr], 4, 0);
+        Hu3DModelAttrSet(D_8010A1C0_selmenu[GwPlayer[i].chr], 4, 0);
         Hu3DModelPosSet(D_8010A1C0_selmenu[GwPlayer[i].chr], i * 420 - 650.0f - 60.0f + i * 40, -120.0f, 0.0f);
         Hu3DModelScaleSet(D_8010A1C0_selmenu[GwPlayer[i].chr], 2.0f, 2.0f, 2.0f);
         if (D_8010A1B0_selmenu[i] == 1) {
@@ -1180,15 +1180,15 @@ void func_80107DFC_selmenu(omObjData *obj) {
         func_801089C0_selmenu(i * 56 + 50 + i * 4, 144, D_800D5218_main, textColor, color - 8);
         if ((D_8010A270_selmenu[i] & 0x10) && D_8010A1B0_selmenu[i] == 0) {
             D_8010A1B0_selmenu[i] = 1;
-            func_8001C5B4_main(D_8010A1C0_selmenu[GwPlayer[i].chr], D_8010A1E0_selmenu[GwPlayer[i].chr]);
-            func_8001C814_main(D_8010A1C0_selmenu[GwPlayer[i].chr], 1, 0);
-            func_8001C814_main(D_8010A1C0_selmenu[GwPlayer[i].chr], 2, 2);
+            Hu3DMotionModelSet(D_8010A1C0_selmenu[GwPlayer[i].chr], D_8010A1E0_selmenu[GwPlayer[i].chr]);
+            Hu3DMotionAttrSet(D_8010A1C0_selmenu[GwPlayer[i].chr], 1, 0);
+            Hu3DMotionAttrSet(D_8010A1C0_selmenu[GwPlayer[i].chr], 2, 2);
             func_801087C8_selmenu(2);
         } else if ((D_8010A270_selmenu[i] & 0x20) && D_8010A1B0_selmenu[i] == 1) {
             D_8010A1B0_selmenu[i] = 0;
-            func_8001C5B4_main(D_8010A1C0_selmenu[GwPlayer[i].chr], D_8010A1D0_selmenu[GwPlayer[i].chr]);
-            func_8001C814_main(D_8010A1C0_selmenu[GwPlayer[i].chr], 1, 0);
-            func_8001C814_main(D_8010A1C0_selmenu[GwPlayer[i].chr], 2, 2);
+            Hu3DMotionModelSet(D_8010A1C0_selmenu[GwPlayer[i].chr], D_8010A1D0_selmenu[GwPlayer[i].chr]);
+            Hu3DMotionAttrSet(D_8010A1C0_selmenu[GwPlayer[i].chr], 1, 0);
+            Hu3DMotionAttrSet(D_8010A1C0_selmenu[GwPlayer[i].chr], 2, 2);
             func_801087C8_selmenu(3);
         }
         if (D_8010A1B0_selmenu[i] == 0) {
@@ -1205,7 +1205,7 @@ void func_80107DFC_selmenu(omObjData *obj) {
                     chr--;
                 }
                 D_8010A1B4_selmenu[GwPlayer[i].chr] = 0;
-                func_8001C258_main(D_8010A1C0_selmenu[GwPlayer[i].chr], 4, 4);
+                Hu3DModelAttrSet(D_8010A1C0_selmenu[GwPlayer[i].chr], 4, 4);
                 GwPlayer[i].chr = chr;
                 D_8010A1B4_selmenu[GwPlayer[i].chr] = 1;
                 D_8010A260_selmenu[i] = 0.0f;
@@ -1222,7 +1222,7 @@ void func_80107DFC_selmenu(omObjData *obj) {
                     chr++;
                 }
                 D_8010A1B4_selmenu[GwPlayer[i].chr] = 0;
-                func_8001C258_main(D_8010A1C0_selmenu[GwPlayer[i].chr], 4, 4);
+                Hu3DModelAttrSet(D_8010A1C0_selmenu[GwPlayer[i].chr], 4, 4);
                 GwPlayer[i].chr = chr;
                 D_8010A1B4_selmenu[GwPlayer[i].chr] = 1;
                 D_8010A260_selmenu[i] = 0.0f;

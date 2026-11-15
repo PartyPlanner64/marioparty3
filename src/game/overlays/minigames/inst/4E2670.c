@@ -23,20 +23,20 @@ void func_801094B0_inst(void) {
 
     object = omAddObj(25, 5, 8, -1, NULL);
     D_8010DDE8_inst.object = object;
-    object->model[0] = func_8000B108_main(0xA0000, 0x16A9);
-    func_8000B460_main(object, 0, 0xA0001);
-    func_8000B460_main(object, 1, 0xA0002);
-    func_8000B460_main(object, 2, 0xA0006);
-    func_8000B460_main(object, 3, 0xA0023);
-    func_8000B460_main(object, 4, 0xA0018);
-    func_8001C5B4_main(object->model[0], object->motion[1]);
-    func_8001C814_main(object->model[0], 2, 2);
+    object->model[0] = Hu3DModelRead(0xA0000, 0x16A9);
+    omObjMotionRead(object, 0, 0xA0001);
+    omObjMotionRead(object, 1, 0xA0002);
+    omObjMotionRead(object, 2, 0xA0006);
+    omObjMotionRead(object, 3, 0xA0023);
+    omObjMotionRead(object, 4, 0xA0018);
+    Hu3DMotionModelSet(object->model[0], object->motion[1]);
+    Hu3DMotionAttrSet(object->model[0], 2, 2);
     data = DataRead(0xA002A);
     D_8010DC30_inst = (s16)Hu3DAnimCreate(Hu3DData[object->model[0]].hmf, data, 0, "c160n_0_DEF");
     HuMemMemoryFreePerm(data);
     Hu3DModelRemakeStatic(object->model[0]);
-    func_8001C514_main(object->model[0]);
-    func_80032FC0_main(D_8010DC32_inst, 1, 0);
+    Hu3DModelDynamicFree(object->model[0]);
+    Hu3DAnimAttrSet(D_8010DC32_inst, 1, 0);
     Hu3DAnimBankSet(D_8010DC32_inst, 0);
     object->trans.x = -91.0f;
     object->trans.y = -171.0f;
@@ -47,11 +47,11 @@ void func_801094B0_inst(void) {
     Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
     object->scale.x = object->scale.y = object->scale.z = 0.4f;
     Hu3DModelScaleSet(object->model[0], 0.4f, 0.4f, 0.4f);
-    func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     if (D_8010D408_inst == 1) {
-        func_8001C5B4_main(object->model[0], object->motion[3]);
-        func_8001C814_main(object->model[0], 2, 2);
-        func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        Hu3DMotionModelSet(object->model[0], object->motion[3]);
+        Hu3DMotionAttrSet(object->model[0], 2, 2);
+        Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         object->trans.x = -91.0f;
         object->trans.y = 29.0f;
         object->trans.z = 210.0f;
@@ -82,7 +82,7 @@ void func_8010986C_inst(omObjData *object) {
     if (D_8010D530_inst >= 100) {
         D_8010DDEC_inst = func_801098D8_inst;
         D_8010D530_inst = 0;
-        func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         HuAudFXPlay(0x298);
         func_8010C8D0_inst();
     }
@@ -92,8 +92,8 @@ void func_801098D8_inst(omObjData *object) {
     D_8010D534_inst++;
     object->trans.y = sindf(D_8010D534_inst * 5) * 200.0f + -171.0f;
     if (D_8010D534_inst == 13) {
-        func_8001C5B4_main(object->model[0], object->motion[4]);
-        func_8001C814_main(object->model[0], 2, 0);
+        Hu3DMotionModelSet(object->model[0], object->motion[4]);
+        Hu3DMotionAttrSet(object->model[0], 2, 0);
     }
     if (D_8010D534_inst >= 17) {
         object->trans.y = 29.0f;

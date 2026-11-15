@@ -96,7 +96,7 @@ void WipeExecAlways(Gfx **gfx) {
             case 8:
             case 9:
             case 10:
-                func_800651F0_main(gfx, 1.0f);
+                WipeBlindDraw(gfx, 1.0f);
                 break;
             default:
                 WipeColorFill(gfx, 255, D_800A2728_main);
@@ -118,13 +118,13 @@ void WipeExecAlways(Gfx **gfx) {
                     wipeStat = WipeCrossFadeIn(gfx);
                     break;
                 case 1:
-                    wipeStat = func_80063454_main(gfx);
+                    wipeStat = WipeShapeIn(gfx);
                     break;
                 case 2:
-                    wipeStat = func_800640EC_main(gfx);
+                    wipeStat = WipeTileIn(gfx);
                     break;
                 case 12:
-                    wipeStat = func_80065D80_main(gfx);
+                    wipeStat = WipeShape2In(gfx);
                     break;
                 case WIPE_TYPE_NORMAL:
                 case 3:
@@ -135,7 +135,7 @@ void WipeExecAlways(Gfx **gfx) {
                 case 8:
                 case 9:
                 case 10:
-                    wipeStat = func_8006515C_main(gfx);
+                    wipeStat = WipeBlindExec(gfx);
                     break;
             }
             wipeTime += 1.0f;
@@ -154,7 +154,7 @@ void WipeExecAlways(Gfx **gfx) {
                     D_800D1F80_main[i] = NULL;
                 }
                 D_800D1F60_main = NULL;
-                func_80019C68_main(TAG_WIPE);
+                HuMemDelayFreeAllWithTag(TAG_WIPE);
             }
             break;
         case WIPE_MODE_OUT:
@@ -169,13 +169,13 @@ void WipeExecAlways(Gfx **gfx) {
                     wipeStat = WipeCrossFadeOut(gfx);
                     break;
                 case 1:
-                    wipeStat = func_80063510_main(gfx);
+                    wipeStat = WipeShapeOut(gfx);
                     break;
                 case 2:
-                    wipeStat = func_80065094_main(gfx);
+                    wipeStat = WipeTileOut(gfx);
                     break;
                 case 12:
-                    wipeStat = func_80065E88_main(gfx);
+                    wipeStat = WipeShape2Out(gfx);
                     break;
                 case 3:
                     wipeStat = WipeImageOut(gfx, 18);
@@ -308,7 +308,7 @@ s32 WipeCrossFadeIn(Gfx **gfx) {
     gDPSetCombineMode((*gfx)++, G_CC_MODULATEI_PRIM, G_CC_MODULATEI_PRIM);
     gDPSetRenderMode((*gfx)++, G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2);
     gDPSetPrimColor((*gfx)++, 0, 0, 255, 255, 255, alpha);
-    func_80062884_main(gfx, D_800D5550_main);
+    WipeScreenDraw(gfx, D_800D5550_main);
     if (wipeTime >= wipeDuration) {
     cleanup:
         if (D_800D5304_main == 0) {
@@ -325,24 +325,24 @@ s32 WipeCrossFadeOut(Gfx **gfx) {
     if (wipeTime == 0.0f) {
         D_800A26D4_main = HuMemMemoryAllocPerm(320 * 240 * sizeof(u16) + 64);
         D_800D5550_main = (u16 *)(((u32)D_800A26D4_main + 63) & ~63);
-        func_8006265C_main(gfx, D_800D5550_main);
+        WipeScreenCopy(gfx, D_800D5550_main);
         return 1;
     }
-    func_80062884_main(gfx, D_800D5550_main);
+    WipeScreenDraw(gfx, D_800D5550_main);
     if (wipeTime > 1.0f) {
         return 0;
     }
     return 1;
 }
 
-void func_8006265C_main(Gfx **gfx, u16 *image) {
+void WipeScreenCopy(Gfx **gfx, u16 *image) {
     s16 y;
     s16 x;
 
     gDPSetColorImage((*gfx)++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 320, image);
     for (y = 0; y < 240; y += 16) {
         for (x = 0; x < 320; x += 64) {
-            func_800341D0_main(gfx, &((u16 *)0x02000000)[x + y * 320], G_IM_FMT_RGBA, G_IM_SIZ_16b,
+            HuLoadTextureTile(gfx, &((u16 *)0x02000000)[x + y * 320], G_IM_FMT_RGBA, G_IM_SIZ_16b,
                                320, 240, 0, 0, 64, 16, 0, G_TX_CLAMP, G_TX_CLAMP, 0, 0, 0, 0);
             gSPTextureRectangle((*gfx)++, x * 4, y * 4, (x + 64) * 4, (y + 16) * 4,
                                 G_TX_RENDERTILE, 0, 0, 1024, 1024);
@@ -353,16 +353,16 @@ void func_8006265C_main(Gfx **gfx, u16 *image) {
 
 void WipeFrameStill(Gfx **gfx) {
     gSPDisplayList((*gfx)++, D_800A26D8_main);
-    func_80062884_main(gfx, D_800D5550_main);
+    WipeScreenDraw(gfx, D_800D5550_main);
 }
 
-void func_80062884_main(Gfx **gfx, u16 *image) {
+void WipeScreenDraw(Gfx **gfx, u16 *image) {
     s16 y;
     s16 x;
 
     for (y = 0; y < 240; y += 16) {
         for (x = 0; x < 320; x += 64) {
-            func_800341D0_main(gfx, &image[x + y * 320], G_IM_FMT_RGBA, G_IM_SIZ_16b,
+            HuLoadTextureTile(gfx, &image[x + y * 320], G_IM_FMT_RGBA, G_IM_SIZ_16b,
                                320, 240, 0, 0, 64, 16, 0, G_TX_CLAMP, G_TX_CLAMP, 0, 0, 0, 0);
             gSPTextureRectangle((*gfx)++, x * 4, y * 4, (x + 64) * 4, (y + 16) * 4,
                                 G_TX_RENDERTILE, 0, 0, 1024, 1024);
@@ -370,7 +370,7 @@ void func_80062884_main(Gfx **gfx, u16 *image) {
     }
 }
 
-s32 func_80062A30_main(Gfx **gfx) {
+s32 WipeFrameStillExec(Gfx **gfx) {
     s16 y;
     s16 x;
     f32 scale;
@@ -395,7 +395,7 @@ s32 func_80062A30_main(Gfx **gfx) {
     gDPSetRenderMode((*gfx)++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
     for (y = 0; y < 240; y += 16) {
         for (x = 0; x < 320; x += 64) {
-            func_800341D0_main(gfx, &image[x + y * 320], G_IM_FMT_RGBA, G_IM_SIZ_16b,
+            HuLoadTextureTile(gfx, &image[x + y * 320], G_IM_FMT_RGBA, G_IM_SIZ_16b,
                                320, 240, 0, 0, 64, 16, 0, G_TX_CLAMP, G_TX_CLAMP, 0, 0, 0, 0);
             gSPTextureRectangle((*gfx)++, x * scale * 4, y * scale * 4,
                                 (x * scale + scale * 64) * 4, (y * scale + scale * 16) * 4,
@@ -406,7 +406,7 @@ s32 func_80062A30_main(Gfx **gfx) {
     image = (u16 *)0x803D0800;
     for (y = 0; y < scale * 240 + 15; y += 16) {
         for (x = 0; x < scale * 320 + 31; x += 32) {
-            func_800341D0_main(gfx, &image[x + y * 320], G_IM_FMT_RGBA, G_IM_SIZ_16b,
+            HuLoadTextureTile(gfx, &image[x + y * 320], G_IM_FMT_RGBA, G_IM_SIZ_16b,
                                320, 240, 0, 0, 32, 16, 0, G_TX_CLAMP, G_TX_CLAMP, 0, 0, 0, 0);
             gSPTextureRectangle((*gfx)++, x * inverseScale * 4, y * inverseScale * 4,
                                 (x + 32) * inverseScale * 4, (y + 16) * inverseScale * 4,
@@ -421,40 +421,40 @@ s32 func_80062A30_main(Gfx **gfx) {
     return 1;
 }
 
-s32 func_80063454_main(Gfx **gfx) {
+s32 WipeShapeIn(Gfx **gfx) {
     if (wipeDuration == 0.0f) {
         return 0;
     }
     if (wipeTime == 0.0f) {
-        func_800635F4_main(13);
+        WipeTexRead(13);
     }
-    func_800636D8_main(gfx, wipeTime / wipeDuration, 1.0f);
+    WipeCircleDraw(gfx, wipeTime / wipeDuration, 1.0f);
     if (wipeTime >= wipeDuration) {
         return 0;
     }
     return 1;
 }
 
-s32 func_80063510_main(Gfx **gfx) {
+s32 WipeShapeOut(Gfx **gfx) {
     f32 scale;
 
     if (wipeDuration == 0.0f) {
         return 0;
     }
     if (wipeTime == 0.0f) {
-        func_800635F4_main(13);
+        WipeTexRead(13);
     }
     scale = wipeTime / wipeDuration;
     scale = 1.0f - scale;
     scale *= 1.1f;
-    func_800636D8_main(gfx, scale, 1.0f);
+    WipeCircleDraw(gfx, scale, 1.0f);
     if (wipeTime >= wipeDuration) {
         return 0;
     }
     return 1;
 }
 
-u8 *func_800635F4_main(s32 file) {
+u8 *WipeTexRead(s32 file) {
     u8 *data;
     WipeTextureHeader *header;
 
@@ -469,7 +469,7 @@ u8 *func_800635F4_main(s32 file) {
     return data;
 }
 
-void func_800636D8_main(Gfx **gfx, f32 scale, f32 alpha) {
+void WipeCircleDraw(Gfx **gfx, f32 scale, f32 alpha) {
     s16 left;
     s16 top;
     s16 right;
@@ -522,21 +522,21 @@ void func_800636D8_main(Gfx **gfx, f32 scale, f32 alpha) {
     }
 }
 
-s32 func_800640EC_main(Gfx **gfx) {
+s32 WipeTileIn(Gfx **gfx) {
     if (wipeDuration == 0.0f) {
         return 0;
     }
     if (wipeTime == 0.0f && D_800D1F60_main == NULL) {
-        func_800635F4_main(23);
+        WipeTexRead(23);
     }
-    func_800641C8_main(gfx, 1.0f - (1.0f / wipeDuration) * wipeTime);
+    WipeTileDraw(gfx, 1.0f - (1.0f / wipeDuration) * wipeTime);
     if (wipeTime >= wipeDuration) {
         return 0;
     }
     return 1;
 }
 
-void func_800641C8_main(Gfx **gfx, f32 progress) {
+void WipeTileDraw(Gfx **gfx, f32 progress) {
     s16 i;
     f32 alpha;
     f32 tileAlpha;
@@ -621,32 +621,32 @@ void func_800641C8_main(Gfx **gfx, f32 progress) {
     }
 }
 
-s32 func_80065094_main(Gfx **gfx) {
+s32 WipeTileOut(Gfx **gfx) {
     if (wipeDuration == 0.0f) {
         return 0;
     }
     if (wipeTime == 0.0f) {
-        func_800635F4_main(23);
+        WipeTexRead(23);
     }
-    func_800641C8_main(gfx, (1.0f / wipeDuration) * wipeTime);
+    WipeTileDraw(gfx, (1.0f / wipeDuration) * wipeTime);
     if (wipeTime >= wipeDuration) {
         return 0;
     }
     return 1;
 }
 
-s32 func_8006515C_main(Gfx **gfx) {
+s32 WipeBlindExec(Gfx **gfx) {
     if (wipeDuration == 0.0f) {
         return 0;
     }
-    func_800651F0_main(gfx, 1.0f - (1.0f / wipeDuration) * wipeTime);
+    WipeBlindDraw(gfx, 1.0f - (1.0f / wipeDuration) * wipeTime);
     if (wipeTime >= wipeDuration) {
         return 0;
     }
     return 1;
 }
 
-void func_800651F0_main(Gfx **gfx, f32 progress) {
+void WipeBlindDraw(Gfx **gfx, f32 progress) {
     s16 i;
     s16 center;
     s16 row;
@@ -707,19 +707,19 @@ s32 WipeImageOut(Gfx **gfx, s32 file) {
     }
     if (wipeTime == 0.0f) {
         if (file != 0) {
-            func_800635F4_main(file);
+            WipeTexRead(file);
         } else {
             D_800D1F60_main = NULL;
         }
     }
-    func_800651F0_main(gfx, (1.0f / wipeDuration) * wipeTime);
+    WipeBlindDraw(gfx, (1.0f / wipeDuration) * wipeTime);
     if (wipeTime >= wipeDuration) {
         return 0;
     }
     return 1;
 }
 
-s32 func_80065D80_main(Gfx **gfx) {
+s32 WipeShape2In(Gfx **gfx) {
     f32 scale;
     f32 alpha;
 
@@ -727,7 +727,7 @@ s32 func_80065D80_main(Gfx **gfx) {
         return 0;
     }
     if (wipeTime == 0.0f) {
-        func_800635F4_main(24);
+        WipeTexRead(24);
     }
     scale = (wipeTime / wipeDuration) * 2.0f;
     if (wipeTime > wipeDuration * 0.5f) {
@@ -735,14 +735,14 @@ s32 func_80065D80_main(Gfx **gfx) {
     } else {
         alpha = 1.0f;
     }
-    func_800636D8_main(gfx, scale, alpha);
+    WipeCircleDraw(gfx, scale, alpha);
     if (wipeTime >= wipeDuration) {
         return 0;
     }
     return 1;
 }
 
-s32 func_80065E88_main(Gfx **gfx) {
+s32 WipeShape2Out(Gfx **gfx) {
     f32 scale;
     f32 alpha;
 
@@ -750,7 +750,7 @@ s32 func_80065E88_main(Gfx **gfx) {
         return 0;
     }
     if (wipeTime == 0.0f) {
-        func_800635F4_main(24);
+        WipeTexRead(24);
     }
     scale = (1.0f - wipeTime / wipeDuration) * 2.0f;
     if (wipeTime < wipeDuration * 0.5f) {
@@ -758,73 +758,73 @@ s32 func_80065E88_main(Gfx **gfx) {
     } else {
         alpha = 1.0f;
     }
-    func_800636D8_main(gfx, scale, alpha);
+    WipeCircleDraw(gfx, scale, alpha);
     if (wipeTime >= wipeDuration) {
         return 0;
     }
     return 1;
 }
 
-void func_80065F8C_main(void) {
+void WipeScreenCapture(void) {
     Gfx *gfx;
 
     D_800BDA70_main = HuMemAlloc(320 * 240 * sizeof(u16) + 64);
     D_800BDA7C_main = HuMemAlloc(0x1900);
     gfx = D_800BDA7C_main;
     D_800BDA74_main = (u16 *)(((u32)D_800BDA70_main + 63) & ~63);
-    D_800BDA80_main = Hu3DHookFuncCreate(0, func_8006619C_main, 6);
+    D_800BDA80_main = Hu3DHookFuncCreate(0, WipeScreenHook, 6);
     gSPDisplayList(gfx++, D_800A26D8_main);
-    func_8006265C_main(&gfx, D_800BDA74_main);
+    WipeScreenCopy(&gfx, D_800BDA74_main);
     gSPEndDisplayList(gfx);
     D_800BDA78_main = 0;
 }
 
-s32 func_80066048_main(void) {
+s32 WipeScreenCaptureEnd(void) {
     if (D_800BDA78_main < 3) {
         return 0;
     }
-    func_80019C00_main(D_800BDA7C_main);
+    HuMemDelayFree(D_800BDA7C_main);
     Hu3DModelKill(D_800BDA80_main);
     return 1;
 }
 
-void func_8006608C_main(void) {
+void WipeScreenHookCreate(void) {
     Gfx *gfx;
 
     D_800BDA7C_main = HuMemAlloc(0x1900);
     gfx = D_800BDA7C_main;
-    D_800BDA82_main = Hu3DHookFuncCreate(0, func_800661D4_main, 0);
+    D_800BDA82_main = Hu3DHookFuncCreate(0, WipeScreenHook2, 0);
     gSPDisplayList(gfx++, D_800A26D8_main);
     gDPSetCombineMode(gfx++, G_CC_MODULATEI_PRIM, G_CC_MODULATEI_PRIM);
     gDPSetRenderMode(gfx++, G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2);
     gDPSetPrimColor(gfx++, 0, 0, 255, 255, 255, 128);
-    func_80062884_main(&gfx, D_800BDA74_main);
+    WipeScreenDraw(&gfx, D_800BDA74_main);
     gSPEndDisplayList(gfx);
 }
 
-void func_80066164_main(void) {
-    func_80019C00_main(D_800BDA7C_main);
-    func_80019C00_main(D_800BDA70_main);
+void WipeScreenHookKill(void) {
+    HuMemDelayFree(D_800BDA7C_main);
+    HuMemDelayFree(D_800BDA70_main);
     Hu3DModelKill(D_800BDA82_main);
 }
 
-void func_8006619C_main(Gfx **arg0, s32 arg1, s32 arg2) {
+void WipeScreenHook(Gfx **arg0, s32 arg1, s32 arg2) {
     gSPDisplayList((*arg0)++, D_800BDA7C_main);
     D_800BDA78_main++;
 }
 
-void func_800661D4_main(Gfx **arg0, s32 arg1, s32 arg2) {
+void WipeScreenHook2(Gfx **arg0, s32 arg1, s32 arg2) {
     gSPDisplayList((*arg0)++, D_800BDA7C_main);
 }
 
-void func_800661F8_main(void) {
+void WipeScreenStillSet(void) {
     D_800BDA70_main = D_800A26D4_main;
     D_800BDA74_main = D_800D5550_main;
     D_800D5304_main = 1;
 }
 
-void func_80066228_main(void) {
-    func_80019C00_main(D_800BDA7C_main);
+void WipeScreenStillReset(void) {
+    HuMemDelayFree(D_800BDA7C_main);
     HuMemMemoryFreePerm(D_800BDA70_main);
     Hu3DModelKill(D_800BDA82_main);
     D_800D5304_main = 0;

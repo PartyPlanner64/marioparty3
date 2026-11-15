@@ -118,7 +118,7 @@ static void func_800EDC90_shared_board(s32 arg0, s32 arg1, s32 arg2) {
     }
 
     if (hasCom != 0) {
-        func_8005B63C_main(arg0, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
+        HuWinAttrSet(arg0, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
         HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
         HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
@@ -136,7 +136,7 @@ static void func_800EDC90_shared_board(s32 arg0, s32 arg1, s32 arg2) {
             HuPrcVSleep();
         }
     } else {
-        while ((HuWinStatGet(arg0) != 0) && !(func_8005B68C_main(arg0) & 0x200)) {
+        while ((HuWinStatGet(arg0) != 0) && !(HuWinAttrGet(arg0) & 0x200)) {
             HuPrcVSleep();
         }
         winData[arg0].stat = 7;
@@ -176,7 +176,7 @@ static void func_800EDFC8_shared_board(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
         HuWinActivePlayerSet(arg0, mask);
         HuWinComKeySet(sp18[0], sp18[1], sp18[2], sp18[3]);
     } else {
-        func_8005B63C_main(arg0, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
+        HuWinAttrSet(arg0, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
         HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
         HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
@@ -192,7 +192,7 @@ static void func_800EDFC8_shared_board(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
             HuPrcVSleep();
         }
     } else {
-        while ((HuWinStatGet(arg0) != 0) && !(func_8005B68C_main(arg0) & 0x200)) {
+        while ((HuWinStatGet(arg0) != 0) && !(HuWinAttrGet(arg0) & 0x200)) {
             HuPrcVSleep();
         }
         winData[arg0].stat = 7;
@@ -222,7 +222,7 @@ static void func_800EE2DC_shared_board(s32 arg0, s32 arg1) {
     }
 
     if (i == 4) {
-        func_8005B63C_main(arg0, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
+        HuWinAttrSet(arg0, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         HuWinComKeyWait(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON, D_800A12C0_main);
         HuWinComKeyWait(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON, D_800A12C0_main);
         HuWinComKeyWait(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON, D_800A12C0_main);
@@ -236,7 +236,7 @@ static void func_800EE2DC_shared_board(s32 arg0, s32 arg1) {
                 HuPrcVSleep();
             }
         } else {
-            while ((HuWinStatGet(arg0) != 0) && !(func_8005B68C_main(arg0) & 0x200)) {
+            while ((HuWinStatGet(arg0) != 0) && !(HuWinAttrGet(arg0) & 0x200)) {
                 HuPrcVSleep();
             }
             winData[arg0].stat = 7;
@@ -257,7 +257,7 @@ static void func_800EE2DC_shared_board(s32 arg0, s32 arg1) {
                 HuPrcVSleep();
             }
         } else {
-            while ((HuWinStatGet(arg0) != 0) && !(func_8005B68C_main(arg0) & 0x200)) {
+            while ((HuWinStatGet(arg0) != 0) && !(HuWinAttrGet(arg0) & 0x200)) {
                 HuPrcVSleep();
             }
             winData[arg0].stat = 7;
@@ -545,7 +545,7 @@ s32 MBRand(f32 arg0) { // 800EFE20 in duel mode,
 
 // is there some kind of macro at play here? the cast to u8 is weird because `work` used to be u8[] in mp1/mp2
 void MBGuideFaceCreate(Object *arg0, s16 arg1, s16 arg2, s32 arg3) {
-    arg0->omObj1->work[0] = (u8)func_80017790_main(arg0->omObj1->model[0], arg1, arg2, arg3);
+    arg0->omObj1->work[0] = (u8)CharAnimCreate(arg0->omObj1->model[0], arg1, arg2, arg3);
     arg0->omObj1->work[1] = (u8)arg1;
     arg0->omObj1->work[2] = (u8)arg2;
 }
@@ -554,9 +554,9 @@ void func_800EF068_shared_board(void) {
 }
 
 void MBGuideFaceSet(Object* arg0, s32 arg1) {
-    func_800333B0_main(arg0->omObj1->work[0]);
-    arg0->omObj1->work[0] = (u8)func_80017AD8_main(arg1);
-    func_80017954_main(arg0->omObj1->model[0], arg0->omObj1->work[1], arg0->omObj1->work[2], arg0->omObj1->work[0]);
+    Hu3DAnimDataKill(arg0->omObj1->work[0]);
+    arg0->omObj1->work[0] = (u8)Hu3DAnimDataRead(arg1);
+    CharAnimSet(arg0->omObj1->model[0], arg0->omObj1->work[1], arg0->omObj1->work[2], arg0->omObj1->work[0]);
 }
 
 s32 func_800EF0D8_shared_board(s32 arg0) {
@@ -754,7 +754,7 @@ static s32 MBPauseHelpMesCreate(s16 arg0, s16 arg1, s16 arg2) {
     HuWinPriSet(win, 9);
     HuWinBGTPLvlSet(win, 0);
     HuWinMesSpeedSet(win, 0);
-    func_8005B63C_main(win, HUWIN_ATTR_NONE, HUWIN_ATTR_OUTLINE);
+    HuWinAttrSet(win, HUWIN_ATTR_NONE, HUWIN_ATTR_OUTLINE);
     MBPauseHelpMesSet(win, arg0);
     return win;
 }
@@ -1066,14 +1066,14 @@ static s32 MBPauseOptionExec(s32 arg0) {
         if (D_80105550_shared_board == NULL) {
             HuPrcVSleep();
             D_80105550_shared_board = MBGuideCreate(0, 8);
-            func_8005E1A8_main(D_80105550_shared_board->amount, 0x2D);
+            HuWinTabWidthSet(D_80105550_shared_board->amount, 0x2D);
             MBModelTempAllocFree(D_80105550_shared_board->obj);
-            func_8001C258_main(D_80105550_shared_board->obj->omObj1->model[0], HU3D_ATTR_NOPAUSE, HU3D_ATTR_NOPAUSE);
+            Hu3DModelAttrSet(D_80105550_shared_board->obj->omObj1->model[0], HU3D_ATTR_NOPAUSE, HU3D_ATTR_NOPAUSE);
             D_80105550_shared_board->obj->flags |= 0x10;
             MBGuidePosSet(D_80105550_shared_board, 0x104, 8);
             func_800EF768_shared_board(D_80105550_shared_board, 0x69);
-            func_80061100_main(D_80105550_shared_board->amount, 5);
-            func_80060C14_main(D_80105550_shared_board->amount, 1);
+            HuWinExPriSet(D_80105550_shared_board->amount, 5);
+            HuWinExOpen(D_80105550_shared_board->amount, 1);
         }
     
         cursor = func_800F2C48_shared_board(1, 0);
@@ -1205,7 +1205,7 @@ static s32 MBPauseOptionExec(s32 arg0) {
     case 0:
     case 1:
         if (D_80105550_shared_board != NULL) {
-            func_80060EA8_main(D_80105550_shared_board->amount, 1);
+            HuWinExClose(D_80105550_shared_board->amount, 1);
             func_800EF768_shared_board(D_80105550_shared_board, 0x104);
             MBGuideKill(D_80105550_shared_board);
             D_80105550_shared_board = NULL;
@@ -1650,7 +1650,7 @@ static void MBPauseMain(void) {
     HuSprAttrSet(temp_s1->spriteGroup, 0, 0x1000);
     HuSprPosSet(temp_s1->spriteGroup, 0, 0xA0, 0x78);
     HuSprScaleSet(temp_s1->spriteGroup, 0, 40.0f, 30.0f);
-    func_80055484_main(temp_s1->spriteGroup, 0, 0, 0, 0, 0xC0);
+    HuSprColorTPLvlSet(temp_s1->spriteGroup, 0, 0, 0, 0, 0xC0);
     DataClose(temp_v0_2);
     
     do {
@@ -1694,10 +1694,10 @@ void MBPauseCreate(s32 arg0) {
     if (D_800C9930_main != -1) {
         msmMusSetVolume(D_800C9930_main, 0x60);
     } else {
-        func_8004A9DC_main(0x60);
+        HuAudSeqVolSet(0x60);
     }
     
-    func_8001AC34_main(D_800D10F2_main, 2);
+    Hu3DModelModeSet(D_800D10F2_main, 2);
     Hu3DModelCameraSet(D_800D10F2_main, HU3D_CAM0);
     D_80105550_shared_board = 0;
     D_80105554_shared_board = 0;
@@ -1708,11 +1708,11 @@ void MBPauseCreate(s32 arg0) {
     omPrcSetStatBit(temp_v0, OM_STAT_NOALLPAUSE);
     HuPrcChildLink(temp_s1_2, temp_v0);
     HuPrcChildWatch();
-    func_8001AC34_main(D_800D10F2_main, 6);
+    Hu3DModelModeSet(D_800D10F2_main, 6);
     if (D_800C9930_main != -1) {
         msmMusSetVolume(D_800C9930_main, 0x7F);
     } else {
-        func_8004A9DC_main(0x7F);
+        HuAudSeqVolSet(0x7F);
     }
     if (((_CheckFlag(0x20) != 0) && (temp_s2 == 0)) || ((_CheckFlag(0x20) == 0) && (temp_s2 != 0))) {
         MBMgCallHisInit();
@@ -1721,7 +1721,7 @@ void MBPauseCreate(s32 arg0) {
         D_800A176D_main = 0;
         HuAudSeqFadeOut(0x5A);
         if (D_800C9930_main != -1) {
-            func_800039A4_main(D_800C9930_main, 0x5A);
+            msmMusFadeOut(D_800C9930_main, 0x5A);
             D_800C9930_main = -1;
             HuAudSeqStop();
         }

@@ -236,14 +236,14 @@ void func_801059A0_popgun_pickoff(void) {
     omObjData *obj;
     u8 camIndex;
 
-    func_8001FE20_main(1);
-    func_80021BE0_main(&D_800EBEB0_minigame, 0x40);
+    MapCollInit(1);
+    Hu3DQuadPoolInit(&D_800EBEB0_minigame, 0x40);
     omInitObjMan(0x10, 0);
-    func_8004A208_main();
+    omGameSysInit();
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutView);
     omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    func_8000B5F0_main(1);
-    camIndex = func_8000B638_main();
+    CamSetupInit(1);
+    camIndex = CamSetupMapCullAdd();
     ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 45.0f, 80.0f, 8000.0f);
@@ -293,7 +293,7 @@ void func_80105C78_popgun_pickoff(HuMtx4F src, HuMtx4F dst) {
     f32 det;
     f32 *dstRow3;
 
-    func_8002367C_main(mtx, src);
+    mtxCopy(mtx, src);
 
     t0 = mtx[1][1] * mtx[2][2] - mtx[1][2] * mtx[2][1];
     t1 = mtx[1][2] * mtx[2][0] - mtx[1][0] * mtx[2][2];
@@ -428,7 +428,7 @@ void func_801060E8_popgun_pickoff(omObjData *object) {
     attr = 0x2D9;
     for (i = 0; i < 9; i++) {
         if (i == 0) {
-            object->model[i] = func_8000B108_main(0x530009, attr);
+            object->model[i] = Hu3DModelRead(0x530009, attr);
             object->trans.x = D_8010CC28_popgun_pickoff[i].pos.x;
             object->trans.y = D_8010CC28_popgun_pickoff[i].pos.y;
             object->trans.z = D_8010CC28_popgun_pickoff[i].pos.z + 10.0;
@@ -446,8 +446,8 @@ void func_801060E8_popgun_pickoff(omObjData *object) {
     D_8010CBF0_popgun_pickoff[2] = func_80109150_popgun_pickoff(D_8010CBD0_popgun_pickoff[6], 2);
     HuSprAttrSet(D_8010CBF0_popgun_pickoff[2], 0, 0x1000);
     HuSprAttrSet(D_8010CBF0_popgun_pickoff[2], 1, 0x1000);
-    func_80055484_main(D_8010CBF0_popgun_pickoff[2], 0, 0, 0, 0, 0xC2);
-    func_80055484_main(D_8010CBF0_popgun_pickoff[2], 1, 0, 0, 0, 0xC2);
+    HuSprColorTPLvlSet(D_8010CBF0_popgun_pickoff[2], 0, 0, 0, 0, 0xC2);
+    HuSprColorTPLvlSet(D_8010CBF0_popgun_pickoff[2], 1, 0, 0, 0, 0xC2);
     HuSprPosSet(D_8010CBF0_popgun_pickoff[2], 0, 60, 48);
     HuSprPosSet(D_8010CBF0_popgun_pickoff[2], 1, 260, 48);
     D_8010CBD0_popgun_pickoff[11] =
@@ -493,9 +493,9 @@ u8 func_801068D0_popgun_pickoff(s16 x, s16 y) {
     HuSprPosSet(group, 0, x, y);
     HuSprPosSet(group, 1, 12, 0);
     HuSprPosSet(group, 2, -12, 0);
-    func_80054FF8_main(group, 0, 1);
-    func_80054FF8_main(group, 1, 0);
-    func_80054FF8_main(group, 2, 4);
+    HuSprPatNoSet(group, 0, 1);
+    HuSprPatNoSet(group, 1, 0);
+    HuSprPatNoSet(group, 2, 4);
     return group;
 }
 
@@ -520,10 +520,10 @@ void func_80106A44_popgun_pickoff(omObjData *object) {
             break;
         case 2:
             D_8010C594_popgun_pickoff--;
-            func_8003F578_main((D_8010C594_popgun_pickoff + 29) / 30);
+            GMesTimerValueSet((D_8010C594_popgun_pickoff + 29) / 30);
             if (D_8010C594_popgun_pickoff == 0) {
                 D_8010CC20_popgun_pickoff = 3;
-                func_8003F5C0_main();
+                GMesTimerEnd();
                 GMesCreate(0x11);
                 HuAudSeqFadeOut(0x78);
             }
@@ -586,7 +586,7 @@ void func_80106A44_popgun_pickoff(omObjData *object) {
                 D_8010C590_popgun_pickoff = 16;
                 WipeCreateOut(WIPE_TYPE_NORMAL, D_8010C590_popgun_pickoff);
                 HuAudSeqFadeOut(D_8010C590_popgun_pickoff);
-                func_8004AB0C_main((s16)D_8010C590_popgun_pickoff);
+                HuAudFXAllFadeOut((s16)D_8010C590_popgun_pickoff);
             }
             break;
         case 7:
@@ -599,9 +599,9 @@ void func_80106A44_popgun_pickoff(omObjData *object) {
     for (i = 0; i < 2; i++) {
         HuSprAttrReset(D_8010CBF0_popgun_pickoff[4], i * 3 + 1, 0x8000);
         HuSprAttrReset(D_8010CBF0_popgun_pickoff[4], i * 3 + 2, 0x8000);
-        func_80054FF8_main(D_8010CBF0_popgun_pickoff[4], i * 3, D_8010CC22_popgun_pickoff[i] % 10);
-        func_80054FF8_main(D_8010CBF0_popgun_pickoff[4], i * 3 + 1, D_8010CC22_popgun_pickoff[i] / 10 % 10);
-        func_80054FF8_main(D_8010CBF0_popgun_pickoff[4], i * 3 + 2, D_8010CC22_popgun_pickoff[i] / 100);
+        HuSprPatNoSet(D_8010CBF0_popgun_pickoff[4], i * 3, D_8010CC22_popgun_pickoff[i] % 10);
+        HuSprPatNoSet(D_8010CBF0_popgun_pickoff[4], i * 3 + 1, D_8010CC22_popgun_pickoff[i] / 10 % 10);
+        HuSprPatNoSet(D_8010CBF0_popgun_pickoff[4], i * 3 + 2, D_8010CC22_popgun_pickoff[i] / 100);
     }
     if (D_800D530C_main == 1 && WipeStatGet() == 0) {
         D_8010CC20_popgun_pickoff = 6;
@@ -864,26 +864,26 @@ void func_80107B20_popgun_pickoff(omObjData *object) {
     work->unk20 = 0;
     work->unk2F = func_80109150_popgun_pickoff(D_8010CBD0_popgun_pickoff[2], 1);
     HuSprAttrSet(work->unk2F, 0, 0x9008);
-    func_80055484_main(work->unk2F, 0, colors.rgb[character][0], colors.rgb[character][1],
+    HuSprColorTPLvlSet(work->unk2F, 0, colors.rgb[character][0], colors.rgb[character][1],
                        colors.rgb[character][2], 0x100);
-    work->unk33 = func_80017790_main(object->model[0], 2, motions.values[character], model | anims[2][character]);
-    work->unk31 = func_80017AD8_main(model | anims[0][character]);
-    work->unk32 = func_80017AD8_main(model | anims[1][character]);
-    func_8001C514_main(object->model[0]);
+    work->unk33 = CharAnimCreate(object->model[0], 2, motions.values[character], model | anims[2][character]);
+    work->unk31 = Hu3DAnimDataRead(model | anims[0][character]);
+    work->unk32 = Hu3DAnimDataRead(model | anims[1][character]);
+    Hu3DModelDynamicFree(object->model[0]);
     if (D_8010C5B0_popgun_pickoff == 0) {
-        object->model[2] = func_8000B108_main(0x530008, 0x2C9);
+        object->model[2] = Hu3DModelRead(0x530008, 0x2C9);
     } else {
-        object->model[2] = func_8000B108_main(0x530008, 0x2C9);
+        object->model[2] = Hu3DModelRead(0x530008, 0x2C9);
         HuSprZRotSet(work->unk2F, 0, 45.0f);
     }
     Hu3DModelHookSet(object->model[2], object->model[0], "item_hook");
-    func_8001C258_main(object->model[2], 0x4000, 0x4000);
+    Hu3DModelAttrSet(object->model[2], 0x4000, 0x4000);
     object->func = func_80108398_popgun_pickoff;
-    func_800E5A00_minigame(object, 0, func_80017BB8_main(character, 0x4B), 1, 0);
-    func_800E5A00_minigame(object, 0x26, func_80017BB8_main(character, 0x4C), 2, 0);
-    func_800E5A00_minigame(object, 0x27, func_80017BB8_main(character, 0x4D), 0, 0);
-    func_800E5A00_minigame(object, 0xD, func_80017BB8_main(character, 0x2F), 2, 0x78);
-    func_800E5A00_minigame(object, 0xE, func_80017BB8_main(character, 0x36), 2, 0x78);
+    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(character, 0x4B), 1, 0);
+    func_800E5A00_minigame(object, 0x26, CharMotionDataNumGet(character, 0x4C), 2, 0);
+    func_800E5A00_minigame(object, 0x27, CharMotionDataNumGet(character, 0x4D), 0, 0);
+    func_800E5A00_minigame(object, 0xD, CharMotionDataNumGet(character, 0x2F), 2, 0x78);
+    func_800E5A00_minigame(object, 0xE, CharMotionDataNumGet(character, 0x36), 2, 0x78);
     func_800E5690_minigame(object, 0);
     D_8010C5B0_popgun_pickoff++;
 }
@@ -906,8 +906,8 @@ void func_801080DC_popgun_pickoff(omObjData *object, s32 arg1, s32 arg2, u16 pla
     data->unk158 = HuMemAllocTag(sizeof(PopgunPickoffPlayerWork), TAG_OVERLAY);
     memset(data->unk158, 0, sizeof(PopgunPickoffPlayerWork));
 
-    object->model[0] = func_8000B108_main(arg1 | arg2, tag);
-    object->model[1] = func_8000B0D4_main(9, tag);
+    object->model[0] = Hu3DModelRead(arg1 | arg2, tag);
+    object->model[1] = Hu3DModelRead3(9, tag);
     func_800E3584_minigame(object->model[1]);
     for (i = 0; i < object->mtncnt; i++) {
         object->motion[i] = -1;
@@ -1011,7 +1011,7 @@ void func_80108398_popgun_pickoff(omObjData *object) {
             func_800E5690_minigame(object, 0);
         case 4:
             func_800E5690_minigame(object, 0);
-            func_8001C258_main(object->model[2], 4, 4);
+            Hu3DModelAttrSet(object->model[2], 4, 4);
             rotX = 0.0f;
             if (work->unk2A != 0) {
                 if (rot > -180.0) {
@@ -1035,11 +1035,11 @@ void func_80108398_popgun_pickoff(omObjData *object) {
             if (work->unk2C) {
                 GwPlayer[data->unk59].bonusCoin += 10;
                 func_800E5690_minigame(object, 0xD);
-                func_80045F1C_main(work->unk24, -1, work->unk2A);
-                func_80017954_main(object->model[0], 2, motions.values[work->unk29], work->unk31);
+                HuAudCharVoicePlayPlayer(work->unk24, -1, work->unk2A);
+                CharAnimSet(object->model[0], 2, motions.values[work->unk29], work->unk31);
             } else {
                 func_800E5690_minigame(object, 0xE);
-                func_80017954_main(object->model[0], 2, motions.values[work->unk29], work->unk32);
+                CharAnimSet(object->model[0], 2, motions.values[work->unk29], work->unk32);
             }
             work->unk20++;
             break;
@@ -1057,7 +1057,7 @@ void func_80108398_popgun_pickoff(omObjData *object) {
     }
     if (input & 0x8000) {
         if (func_80108A78_popgun_pickoff(object, target) != 0) {
-            func_8004AC5C_main(0x496, data->unk59);
+            _HuAudPlayerFXPlay(0x496, data->unk59);
             Hu3DMotionTimeSet(object->model[0], 0.0f);
             func_800E5798_minigame(object, 0x27);
         }
@@ -1216,12 +1216,12 @@ void func_80108FE4_popgun_pickoff(s16 model, char *hook, s16 time, Vec *pos) {
     HuMtx4F hookTransform;
     HmfModel *modelData;
 
-    func_80016B00_main(model, time, hook, &hookTransform);
+    Hu3DModelObjMtxFrameGet(model, time, hook, &hookTransform);
     modelData = &Hu3DData[model];
     func_80088800_main(transform, modelData->pos.x, modelData->pos.y, modelData->pos.z);
     mtxRotCat(transform, modelData->rot.x, modelData->rot.y, modelData->rot.z);
     mtxScaleCat(transform, modelData->scale.x, modelData->scale.y, modelData->scale.z);
-    func_80018044_main(hookTransform, transform, result);
+    mtxCat(hookTransform, transform, result);
     pos->x = result[0][0] + result[1][0] + result[2][0] + result[3][0];
     pos->y = result[0][1] + result[1][1] + result[2][1] + result[3][1];
     pos->z = result[0][2] + result[1][2] + result[2][2] + result[3][2];
@@ -1255,7 +1255,7 @@ s16 func_80109150_popgun_pickoff(s16 spriteId, s16 count) {
 }
 
 HuSprAnimPat *func_80109218_popgun_pickoff(s16 groupId, s16 member) {
-    return &func_80055194_main(groupId)->pat[member];
+    return &HuSprAnimDataGet(groupId)->pat[member];
 }
 
 void func_80109260_popgun_pickoff(u16 count) {
@@ -1298,15 +1298,15 @@ void func_801093A8_popgun_pickoff(Gfx **gfx, HuSprAnimPat *cel, u8 fmt, u8 siz, 
                                   cmt, masks, maskt, 0, 0);
             break;
         case 1:
-            func_80034998_main(&gdl, (void *)0x0C000000, fmt, cel->sizeX, height, uls, ult, lrs, lrt, 0, cms, cmt,
+            HuLoadTextureBlock_4b(&gdl, (void *)0x0C000000, fmt, cel->sizeX, height, uls, ult, lrs, lrt, 0, cms, cmt,
                                masks, maskt, 0, 0);
             break;
         case 2:
-            func_800341D0_main(&gdl, (u16 *)0x0C000000, fmt, siz, cel->sizeX, cel->sizeY, uls, ult, lrs, lrt, 0,
+            HuLoadTextureTile(&gdl, (u16 *)0x0C000000, fmt, siz, cel->sizeX, cel->sizeY, uls, ult, lrs, lrt, 0,
                                cms, cmt, masks, maskt, 0, 0);
             break;
         case 3:
-            func_8003465C_main(&gdl, (void *)0x0C000000, fmt, siz, cel->sizeX, height, uls, ult, lrs, lrt, 0, cms,
+            HuLoadTextureBlock(&gdl, (void *)0x0C000000, fmt, siz, cel->sizeX, height, uls, ult, lrs, lrt, 0, cms,
                                cmt, masks, maskt, 0, 0);
             break;
     }
@@ -2273,7 +2273,7 @@ Gfx *func_8010BC6C_popgun_pickoff(Gfx *gfx, PopgunPickoffPlayer *player, HuMtx4F
         billboard[3][1] = (u16)cel->centerY;
     }
     billboard[3][2] = player->unk_3C;
-    func_8002367C_main(mtx, lookAt);
+    mtxCopy(mtx, lookAt);
     mtxTransCat(mtx, player->unk_40.x, player->unk_40.y, player->unk_40.z);
     mtxRotCat(mtx, player->unk_58.x, player->unk_58.y, player->unk_58.z);
     mtxScaleCat(mtx, player->unk_4C.x, player->unk_4C.y, player->unk_4C.z);
@@ -2293,8 +2293,8 @@ Gfx *func_8010BC6C_popgun_pickoff(Gfx *gfx, PopgunPickoffPlayer *player, HuMtx4F
             scale[3][3] = 1.0f;
             scale[0][1] = scale[0][2] = scale[0][3] = scale[1][0] = scale[1][2] = scale[1][3] = scale[2][0] =
                 scale[2][1] = scale[2][3] = scale[3][0] = scale[3][1] = scale[3][2] = 0.0f;
-            func_80018544_main(mtx, inverse);
-            func_80018044_main(scale, inverse, mtx);
+            HmfInverseMtxF3X3Cat(mtx, inverse);
+            mtxCat(scale, inverse, mtx);
             break;
     }
     guMtxCatF(billboard, mtx, mtx);

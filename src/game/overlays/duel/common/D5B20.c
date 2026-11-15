@@ -25,15 +25,15 @@ Object *func_800EDD50_name_81(Vec *pos) {
     D_801011F0_name_81 = func_800D8010_name_81(0x3B, NULL);
     HuVecCopy3F(&D_801011F0_name_81->coords, pos);
     D_801011F0_name_81->flags |= 1;
-    func_800461B4_main(D_801011F0_name_81->omObj1->model[0]);
+    AuraCreate(D_801011F0_name_81->omObj1->model[0]);
     return D_801011F0_name_81;
 }
 
 void func_800EDDBC_name_81(void) {
-    func_80046558_main(D_801011F0_name_81->omObj1->model[0]);
+    AuraKill(D_801011F0_name_81->omObj1->model[0]);
     MBDModelKill(D_801011F0_name_81);
     if (D_801011F8_name_81 != -1) {
-        func_8000D044_main(D_801011F8_name_81);
+        EffectStop(D_801011F8_name_81);
         D_801011F8_name_81 = -1;
     }
 }
@@ -246,14 +246,14 @@ void func_800EE74C_name_81(s32 arg0) {
 
     switch (arg0) {
         case 0:
-            D_801011F8_name_81 = func_8000CED8_main(0xB0004, 0xAA9);
+            D_801011F8_name_81 = EffectCreate(0xB0004, 0xAA9);
             Hu3DModelCameraSet(D_801011F8_name_81, 1);
-            func_8000CD00_main(D_801011F8_name_81, 1.0f, 30.0f, 1.0f);
-            func_8000D018_main(D_801011F8_name_81, 10.0f);
+            EffectParamSet(D_801011F8_name_81, 1.0f, 30.0f, 1.0f);
+            EffectRangeSet(D_801011F8_name_81, 10.0f);
             HuVecCopy3F(&pos, &D_801011F0_name_81->coords);
             angle = MBDVecAngleGet(&D_801011F0_name_81->rot);
             for (i = 0; i <= 720; i += 15) {
-                func_8000CFA4_main(D_801011F8_name_81, D_801011F0_name_81->coords.x, D_801011F0_name_81->velocity.x,
+                EffectPosSet(D_801011F8_name_81, D_801011F0_name_81->coords.x, D_801011F0_name_81->velocity.x,
                                    D_801011F0_name_81->coords.z);
                 HuVecCopyXYZ(&D_801011F0_name_81->coords, sindf(i) * 12.0f + pos.x, pos.y, cosdf(i) * 2.0f + pos.z);
                 D_801011F0_name_81->rot.z = cosdf(i * 3 + angle);
@@ -262,13 +262,13 @@ void func_800EE74C_name_81(s32 arg0) {
             }
             break;
         case 1:
-            D_801011F8_name_81 = func_8000CED8_main(0xB0004, 0xAA9);
+            D_801011F8_name_81 = EffectCreate(0xB0004, 0xAA9);
             Hu3DModelCameraSet(D_801011F8_name_81, 1);
-            func_8000CD00_main(D_801011F8_name_81, 1.0f, 30.0f, 1.0f);
-            func_8000D018_main(D_801011F8_name_81, 10.0f);
+            EffectParamSet(D_801011F8_name_81, 1.0f, 30.0f, 1.0f);
+            EffectRangeSet(D_801011F8_name_81, 10.0f);
             angle = MBDVecAngleGet(&D_801011F0_name_81->rot);
             for (i = 0; i <= 720; i += 15) {
-                func_8000CFA4_main(D_801011F8_name_81, D_801011F0_name_81->coords.x, D_801011F0_name_81->velocity.x,
+                EffectPosSet(D_801011F8_name_81, D_801011F0_name_81->coords.x, D_801011F0_name_81->velocity.x,
                                    D_801011F0_name_81->coords.z);
                 D_801011F0_name_81->rot.z = cosdf(i * 3 + angle);
                 D_801011F0_name_81->rot.x = sindf(i * 3 + angle);
@@ -284,13 +284,13 @@ void func_800EE74C_name_81(s32 arg0) {
             }
             break;
         case 3:
-            D_801011F8_name_81 = func_8000CED8_main(0xB000C, 0xAA9);
+            D_801011F8_name_81 = EffectCreate(0xB000C, 0xAA9);
             Hu3DModelCameraSet(D_801011F8_name_81, 1);
-            func_8000CD00_main(D_801011F8_name_81, 0.3f, 30.0f, 1.0f);
-            func_8000D018_main(D_801011F8_name_81, 10.0f);
+            EffectParamSet(D_801011F8_name_81, 0.3f, 30.0f, 1.0f);
+            EffectRangeSet(D_801011F8_name_81, 10.0f);
             angle = MBDVecAngleGet(&D_801011F0_name_81->rot);
             for (i = 0; i <= 720; i += 15) {
-                func_8000CFA4_main(D_801011F8_name_81, D_801011F0_name_81->coords.x, D_801011F0_name_81->velocity.x,
+                EffectPosSet(D_801011F8_name_81, D_801011F0_name_81->coords.x, D_801011F0_name_81->velocity.x,
                                    D_801011F0_name_81->coords.z);
                 D_801011F0_name_81->rot.z = cosdf(i * 3 + angle);
                 D_801011F0_name_81->rot.x = sindf(i * 3 + angle);
@@ -298,13 +298,13 @@ void func_800EE74C_name_81(s32 arg0) {
             }
             break;
         case 4:
-            D_801011F8_name_81 = func_8000CED8_main(0xB0005, 0xAA9);
+            D_801011F8_name_81 = EffectCreate(0xB0005, 0xAA9);
             Hu3DModelCameraSet(D_801011F8_name_81, 1);
-            func_8000CD00_main(D_801011F8_name_81, 1.0f, 30.0f, 1.0f);
-            func_8000D018_main(D_801011F8_name_81, 10.0f);
+            EffectParamSet(D_801011F8_name_81, 1.0f, 30.0f, 1.0f);
+            EffectRangeSet(D_801011F8_name_81, 10.0f);
             angle = MBDVecAngleGet(&D_801011F0_name_81->rot);
             for (i = 0; i <= 720; i += 15) {
-                func_8000CFA4_main(D_801011F8_name_81, D_801011F0_name_81->coords.x, D_801011F0_name_81->velocity.x,
+                EffectPosSet(D_801011F8_name_81, D_801011F0_name_81->coords.x, D_801011F0_name_81->velocity.x,
                                    D_801011F0_name_81->coords.z);
                 D_801011F0_name_81->rot.z = cosdf(i * 3 + angle);
                 D_801011F0_name_81->rot.x = sindf(i * 3 + angle);
@@ -313,7 +313,7 @@ void func_800EE74C_name_81(s32 arg0) {
             break;
     }
     if (D_801011F8_name_81 != -1) {
-        func_8000D044_main(D_801011F8_name_81);
+        EffectStop(D_801011F8_name_81);
         D_801011F8_name_81 = -1;
     }
 }

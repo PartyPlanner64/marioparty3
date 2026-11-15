@@ -124,7 +124,7 @@ void func_800E62A8_minigame(void) {
     data = DataRead(0x31);
     D_800EBDE6_minigame = HuSprAnimRead(data);
     DataClose(data);
-    func_8000B880_main(D_800EBDE6_minigame, 0.0f, 1.0f, 0.0f);
+    espPalColorSet(D_800EBDE6_minigame, 0.0f, 1.0f, 0.0f);
 }
 
 s16 func_800E6300_minigame(s32 x, s32 y) {
@@ -151,7 +151,7 @@ s16 func_800E6300_minigame(s32 x, s32 y) {
         } else {
             memberX += 12;
         }
-        func_800554C4_main(group, member, 0);
+        HuSprParentSet(group, member, 0);
     }
 
     HuSprDispOn(group, 2);
@@ -182,7 +182,7 @@ s16 func_800E64B8_minigame(s32 x, s32 y) {
         } else {
             memberX += 12;
         }
-        func_800554C4_main(group, member, 0);
+        HuSprParentSet(group, member, 0);
     }
 
     HuSprDispOn(group, 2);
@@ -415,7 +415,7 @@ u8 MgFlowMain(void) {
                     }
                     break;
                 case MG_TIME_DISP_COUNTDOWN:
-                    func_8003F578_main(D_800EBDE0_minigame->timer / 30 + 1);
+                    GMesTimerValueSet(D_800EBDE0_minigame->timer / 30 + 1);
                     break;
             }
             if (D_800EBDE0_minigame->timeLimit != -1) {
@@ -423,7 +423,7 @@ u8 MgFlowMain(void) {
                     GMesCreate(0x1A, 30, 160, 24);
                     D_800EB93C_minigame = 1;
                 } else if (D_800EBDE0_minigame->timeLimit - 900 < D_800EB914_minigame) {
-                    func_8003F578_main((D_800EBDE0_minigame->timeLimit - D_800EB914_minigame) / 30 + 1);
+                    GMesTimerValueSet((D_800EBDE0_minigame->timeLimit - D_800EB914_minigame) / 30 + 1);
                 }
             }
             if (D_800EBDE0_minigame->timer != -1) {
@@ -438,7 +438,7 @@ u8 MgFlowMain(void) {
                     case MG_TIMER_COUNT_DOWN:
                         if (D_800EBDE0_minigame->timer == 0) {
                             MgFlowStatSet(MG_STATE_FINISH);
-                            func_8003F578_main(0);
+                            GMesTimerValueSet(0);
                         } else {
                             D_800EBDE0_minigame->timer--;
                         }
@@ -460,7 +460,7 @@ u8 MgFlowMain(void) {
                     D_800EB940_minigame = 1;
                 }
                 if (D_800EBDE0_minigame->timeDisp == MG_TIME_DISP_COUNTDOWN || D_800EB93C_minigame != 0) {
-                    func_8003F5C0_main();
+                    GMesTimerEnd();
                 }
                 switch (D_800EBDE0_minigame->type) {
                     case MINIGAME_4P:

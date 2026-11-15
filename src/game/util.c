@@ -51,19 +51,19 @@ RectF D_800975F0_main[] = {
 };
 u32 rnd_seed = 0xD9ED;
 
-u16 func_8000B0A0_main(s32 arg0, s32 arg1) {
+u16 Hu3DModelRead2(s32 arg0, s32 arg1) {
     return Hu3DModelCreate(DataRead(arg0), arg1);
 }
 
-u16 func_8000B0D4_main(s32 arg0, s32 arg1) {
+u16 Hu3DModelRead3(s32 arg0, s32 arg1) {
     return Hu3DModelCreate(DataRead(arg0), arg1);
 }
 
-u16 func_8000B108_main(s32 arg0, s32 arg1) {
+u16 Hu3DModelRead(s32 arg0, s32 arg1) {
     return Hu3DModelCreate(DataRead(arg0), arg1);
 }
 
-s16 func_8000B13C_main(s32 arg0) {
+s16 Hu3DMotionModelRead(s32 arg0) {
     return Hu3DModelCreate(DataRead(arg0), 0x1D);
 }
 
@@ -73,7 +73,7 @@ u8 rand8(void) {
 }
 
 // checks if the overlay has a text, data, and bss section and dmas/clears the region if so
-void func_8000B1A0_main(s32 arg0, u8 sectionFlags) {
+void OvlModeLoad(s32 arg0, u8 sectionFlags) {
     u8 *textVramEnd;
     u8 *textVramStart;
     u32 romStart;
@@ -171,16 +171,16 @@ void ViewportSet(u8 camIndex, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, 
     Hu3DCameraViewportSet(camIndex, &D_80097560_main[camIndex], &D_800975A8_main[camIndex]);
 }
 
-void func_8000B460_main(omObjData *arg0, u16 arg1, s32 arg2) {
+void omObjMotionRead(omObjData *arg0, u16 arg1, s32 arg2) {
     s16 temp_v0;
 
-    temp_v0 = func_8000B13C_main(arg2);
+    temp_v0 = Hu3DMotionModelRead(arg2);
     if ((temp_v0 >= 0)) {
         arg0->motion[arg1] = temp_v0;
     }
 }
 
-s8 func_8000B4B4_main(void) {
+s8 PadNextIndexGet(void) {
     s8 temp_v1;
 
     if (gNumOfControllers > D_800962F0_main) {
@@ -211,6 +211,6 @@ s16 Hu3DAnimRead(HmfData* arg0, s32 arg1, char* arg2) {
     return temp_s0;
 }
 
-s16 func_8000B5BC_main(s32 arg0) {
+s16 Hu3DModelReadNum(s32 arg0) {
     return Hu3DModelCreate(DataReadNum(arg0, TAG_OVERLAY), 0);
 }

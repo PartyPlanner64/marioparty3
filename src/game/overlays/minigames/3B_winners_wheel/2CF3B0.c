@@ -126,7 +126,7 @@ omObjData *D_8010A4C4_winners_wheel BSS;
 extern u16 D_800A11D0_main[];
 extern u16 D_800A11DC_main[];
 
-void func_8004BCE4_main(struct CameraViewData *data);
+void omCameraViewSprDraw(struct CameraViewData *data);
 void func_80105AB0_winners_wheel(void);
 void func_80105BA8_winners_wheel(void);
 void func_80105C5C_winners_wheel(omObjData *obj);
@@ -184,11 +184,11 @@ void func_8010A190_winners_wheel(void);
 
 void func_801059A0_winners_wheel(void) {
     omInitObjMan(30, 10);
-    func_8001FE20_main(16);
-    func_80021BE0_main(&D_800EBEB0_minigame, 64);
-    func_800142A0_main(64);
+    MapCollInit(16);
+    Hu3DQuadPoolInit(&D_800EBEB0_minigame, 64);
+    Hu3DSprModelInit(64);
     func_8010A190_winners_wheel();
-    func_8004A208_main();
+    omGameSysInit();
     Hu3DBGColorSet(0, 0, 0);
     func_800E5EA0_minigame(&D_8010A260_winners_wheel);
     WipeCreateIn(0xFF, 16);
@@ -222,7 +222,7 @@ void func_80105AB0_winners_wheel(void) {
     target.x = -0.9f;
     target.y = -21.9f;
     target.z = -253.6f;
-    func_8004B760_main(100, D_800CD1DC_main[sprite].unk04, func_8004BCE4_main, 11.1f, &pos, &target);
+    omCameraViewCreate(100, D_800CD1DC_main[sprite].unk04, omCameraViewSprDraw, 11.1f, &pos, &target);
 }
 
 void func_80105BA8_winners_wheel(void) {
@@ -231,8 +231,8 @@ void func_80105BA8_winners_wheel(void) {
 
     obj = D_8010A498_winners_wheel = omAddObj(10, 1, 0, -1, func_80105C5C_winners_wheel);
     sign = obj->data = HuMemAllocTag(sizeof(WinnersWheelSign), 0x7918);
-    obj->model[0] = func_8000B108_main(0x5C0000, 0x699);
-    func_8001C814_main(obj->model[0], 1, 1);
+    obj->model[0] = Hu3DModelRead(0x5C0000, 0x699);
+    Hu3DMotionAttrSet(obj->model[0], 1, 1);
     omSetTra(obj, -175.0f, -400.0f, 400.0f);
     obj->func = func_80105C5C_winners_wheel;
     sign->flags = 0;
@@ -260,7 +260,7 @@ void func_80105C5C_winners_wheel(omObjData *obj) {
         obj->trans.y -= 2.0f;
         if (obj->trans.y <= -400.0f) {
             sign->flags &= ~4;
-            func_8001C258_main(obj->model[0], 4, 4);
+            Hu3DModelAttrSet(obj->model[0], 4, 4);
         }
     }
     if (sign->flags & 8) {
@@ -278,8 +278,8 @@ void func_80105C5C_winners_wheel(omObjData *obj) {
 void func_80105E78_winners_wheel(s32 result) {
     WinnersWheelSign *sign = D_8010A498_winners_wheel->data;
 
-    func_8001C814_main(D_8010A498_winners_wheel->model[0], 4, 0);
-    func_8001C814_main(D_8010A498_winners_wheel->model[0], 1, 0);
+    Hu3DMotionAttrSet(D_8010A498_winners_wheel->model[0], 4, 0);
+    Hu3DMotionAttrSet(D_8010A498_winners_wheel->model[0], 1, 0);
     sign->flags |= 1;
     sign->result = result;
     if (result == 0) {
@@ -294,7 +294,7 @@ void func_80105E78_winners_wheel(s32 result) {
 void func_80105F18_winners_wheel(void) {
     WinnersWheelSign *sign = D_8010A498_winners_wheel->data;
 
-    func_8001C814_main(D_8010A498_winners_wheel->model[0], 4, 4);
+    Hu3DMotionAttrSet(D_8010A498_winners_wheel->model[0], 4, 4);
     sign->flags |= 2;
 }
 
@@ -415,9 +415,9 @@ void func_801063B0_winners_wheel(void) {
     obj->data = HuMemAllocTag(sizeof(WinnersWheelWheel), 0x7918);
     D_8010A49C_winners_wheel = obj;
     wheel = obj->data;
-    obj->model[0] = func_8000B108_main(0x5C0001, 0x6B9);
-    obj->model[1] = func_8000B108_main(0x5C0002, 0x6B9);
-    obj->model[2] = func_8000B108_main(0x5C0004, 0xA99);
+    obj->model[0] = Hu3DModelRead(0x5C0001, 0x6B9);
+    obj->model[1] = Hu3DModelRead(0x5C0002, 0x6B9);
+    obj->model[2] = Hu3DModelRead(0x5C0004, 0xA99);
     obj->func = func_80106514_winners_wheel;
     wheel->flags = 0;
     wheel->speed = 0.0f;
@@ -551,7 +551,7 @@ void func_80106910_winners_wheel(void) {
     player->scale = 0.93f;
     chr = GwPlayer[D_8010A48C_winners_wheel].chr;
     dir = D_8010A28C_winners_wheel[chr] << 16;
-    obj->model[0] = func_8000B108_main(dir | modelFiles[chr], 0x6C9);
+    obj->model[0] = Hu3DModelRead(dir | modelFiles[chr], 0x6C9);
     player->pos.x = -170.0f;
     player->pos.y = -125.0f;
     player->pos.z = 230.0f;
@@ -559,14 +559,14 @@ void func_80106910_winners_wheel(void) {
     omSetRot(obj, 0.0f, 0.0f, 0.0f);
     omSetSca(obj, 1.0f, 1.0f, 1.0f);
     for (i = 0; i < 4; i++) {
-        func_8000B460_main(obj, i, func_80017BB8_main(chr, motions[chr][i]));
+        omObjMotionRead(obj, i, CharMotionDataNumGet(chr, motions[chr][i]));
     }
-    func_8001C5B4_main(obj->model[0], obj->motion[0]);
-    func_8001C814_main(obj->model[0], 2, 2);
-    D_8010A4AC_winners_wheel[0] = func_80017790_main(obj->model[0], 1, D_8010A2AC_winners_wheel[chr], dir | spriteFiles[chr]);
-    D_8010A4AC_winners_wheel[1] = func_80017AD8_main(dir | spriteFiles3[chr]);
-    D_8010A4AC_winners_wheel[2] = func_80017AD8_main(dir | spriteFiles2[chr]);
-    func_8001C514_main(obj->model[0]);
+    Hu3DMotionModelSet(obj->model[0], obj->motion[0]);
+    Hu3DMotionAttrSet(obj->model[0], 2, 2);
+    D_8010A4AC_winners_wheel[0] = CharAnimCreate(obj->model[0], 1, D_8010A2AC_winners_wheel[chr], dir | spriteFiles[chr]);
+    D_8010A4AC_winners_wheel[1] = Hu3DAnimDataRead(dir | spriteFiles3[chr]);
+    D_8010A4AC_winners_wheel[2] = Hu3DAnimDataRead(dir | spriteFiles2[chr]);
+    Hu3DModelDynamicFree(obj->model[0]);
 }
 
 void func_80106D2C_winners_wheel(omObjData *obj) {
@@ -576,7 +576,7 @@ void func_80106D2C_winners_wheel(omObjData *obj) {
     omSetTra(obj, player->pos.x, player->pos.y, player->pos.z);
     if (player->flags & 1) {
         if (Hu3DData[obj->model[0]].motTime >= D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02) {
-            func_8001C814_main(obj->model[0], 4, 4);
+            Hu3DMotionAttrSet(obj->model[0], 4, 4);
             if (player->result != 0) {
                 player->flags |= 2;
             }
@@ -598,7 +598,7 @@ void func_80106EB0_winners_wheel(s32 result) {
     player->result = result;
     Hu3DMotionShiftSet(D_8010A4B4_winners_wheel->model[0], Hu3DData[D_8010A4B4_winners_wheel->motion[1]].motId, 0,
                        10, 0);
-    func_8001C814_main(D_8010A4B4_winners_wheel->model[0], 4, 0);
+    Hu3DMotionAttrSet(D_8010A4B4_winners_wheel->model[0], 4, 0);
     HuAudFXPlay(0x4C9);
     func_80105E78_winners_wheel(result);
 }
@@ -608,9 +608,9 @@ void func_80106F54_winners_wheel(void) {
 
     Hu3DMotionShiftSet(D_8010A4B4_winners_wheel->model[0], Hu3DData[D_8010A4B4_winners_wheel->motion[2]].motId, 0,
                        10, 0);
-    func_80017954_main(D_8010A4B4_winners_wheel->model[0], 1, D_8010A2AC_winners_wheel[chr],
+    CharAnimSet(D_8010A4B4_winners_wheel->model[0], 1, D_8010A2AC_winners_wheel[chr],
                        D_8010A4AC_winners_wheel[1]);
-    func_80045ED0_main((D_8010A28C_winners_wheel[chr] << 16) | 0x2F);
+    HuAudCharVoicePlay((D_8010A28C_winners_wheel[chr] << 16) | 0x2F);
 }
 
 void func_8010701C_winners_wheel(void) {
@@ -618,7 +618,7 @@ void func_8010701C_winners_wheel(void) {
 
     Hu3DMotionShiftSet(D_8010A4B4_winners_wheel->model[0], Hu3DData[D_8010A4B4_winners_wheel->motion[3]].motId, 0,
                        10, 0);
-    func_80017954_main(D_8010A4B4_winners_wheel->model[0], 1, D_8010A2AC_winners_wheel[chr],
+    CharAnimSet(D_8010A4B4_winners_wheel->model[0], 1, D_8010A2AC_winners_wheel[chr],
                        D_8010A4AC_winners_wheel[2]);
 }
 
@@ -665,7 +665,7 @@ void func_801070CC_winners_wheel(void) {
         D_8010A468_winners_wheel[i] = item;
         data = DataRead(0x21002C);
         sprite = Hu3DSprModelCreate(data, 0x699, 8);
-        func_8001473C_main(sprite, item);
+        Hu3DSprModelPointSet(sprite, item);
         DataClose(data);
         obj->model[i] = D_800CBB60_main[sprite].modelId;
         panels->angle[i] = i * 60.0f + 30.0f;
@@ -720,7 +720,7 @@ void func_801075D4_winners_wheel(omObjData *obj) {
             Hu3DModelRotSet(obj->model[i], panels->rot[i], 0.0f, 0.0f);
         }
         if (panels->z[i] <= 0.0f) {
-            func_8001C258_main(obj->model[i], 4, 4);
+            Hu3DModelAttrSet(obj->model[i], 4, 4);
         }
     }
 }
@@ -764,7 +764,7 @@ void func_801078D8_winners_wheel(void) {
         D_8010A4B8_winners_wheel[i] = obj;
         npc = obj->data = HuMemAllocTag(sizeof(WinnersWheelNpc), 0x7918);
         if (i == 0) {
-            obj->model[0] = func_8000B108_main(0xA0147, attr);
+            obj->model[0] = Hu3DModelRead(0xA0147, attr);
         } else {
             obj->model[0] = Hu3DModelLink(D_8010A4B8_winners_wheel[0]->model[0]);
         }
@@ -773,11 +773,11 @@ void func_801078D8_winners_wheel(void) {
         omSetTra(obj, x[i], y[i], z[i]);
         omSetRot(obj, 0.0f, rotY[i], 0.0f);
         omSetSca(obj, 0.7f, 0.7f, 0.7f);
-        func_8000B460_main(obj, 0, 0xA0148);
-        func_8000B460_main(obj, 1, 0xA0149);
-        func_8000B460_main(obj, 2, 0xA014A);
-        func_8000B460_main(obj, 3, 0xA014B);
-        func_8000B460_main(obj, 4, 0xA014C);
+        omObjMotionRead(obj, 0, 0xA0148);
+        omObjMotionRead(obj, 1, 0xA0149);
+        omObjMotionRead(obj, 2, 0xA014A);
+        omObjMotionRead(obj, 3, 0xA014B);
+        omObjMotionRead(obj, 4, 0xA014C);
     }
 }
 
@@ -789,8 +789,8 @@ void func_80107B0C_winners_wheel(void) {
                        10, 0);
     Hu3DMotionShiftSet(D_8010A4B8_winners_wheel[1]->model[0], Hu3DData[D_8010A4B8_winners_wheel[1]->motion[0]].motId, 0,
                        10, 0);
-    func_8001C814_main(D_8010A4B8_winners_wheel[0]->model[0], 2, 2);
-    func_8001C814_main(D_8010A4B8_winners_wheel[1]->model[0], 2, 2);
+    Hu3DMotionAttrSet(D_8010A4B8_winners_wheel[0]->model[0], 2, 2);
+    Hu3DMotionAttrSet(D_8010A4B8_winners_wheel[1]->model[0], 2, 2);
 }
 
 void func_80107BE0_winners_wheel(void) {
@@ -798,8 +798,8 @@ void func_80107BE0_winners_wheel(void) {
                        10, 0);
     Hu3DMotionShiftSet(D_8010A4B8_winners_wheel[1]->model[0], Hu3DData[D_8010A4B8_winners_wheel[1]->motion[2]].motId, 0,
                        10, 0);
-    func_8001C814_main(D_8010A4B8_winners_wheel[0]->model[0], 2, 2);
-    func_8001C814_main(D_8010A4B8_winners_wheel[1]->model[0], 2, 2);
+    Hu3DMotionAttrSet(D_8010A4B8_winners_wheel[0]->model[0], 2, 2);
+    Hu3DMotionAttrSet(D_8010A4B8_winners_wheel[1]->model[0], 2, 2);
 }
 
 void func_80107CB4_winners_wheel(void) {
@@ -826,7 +826,7 @@ void func_80107D50_winners_wheel(void) {
     for (i = 0; i < 18; i++) {
         pointer->rawRot[i] = pointer->rot[i] = i * 20.0f;
         if (i == 0) {
-            obj->model[i] = func_8000B108_main(0x5C0005, attr);
+            obj->model[i] = Hu3DModelRead(0x5C0005, attr);
             omSetTra(obj, sindf(pointer->rot[i]) * -10.5f, cosdf(pointer->rot[i]) * -10.5f, 0.0f);
             omSetRot(obj, 0.0f, 0.0f, -pointer->rot[i]);
         } else {
@@ -931,8 +931,8 @@ void func_80108458_winners_wheel(void) {
 
     pointer->flags |= 8;
     pointer->flags &= ~0x20;
-    func_8001C258_main(D_8010A4C0_winners_wheel->model[0], 4, 0);
-    func_8001C258_main(D_8010A4C0_winners_wheel->model[1], 4, 0);
+    Hu3DModelAttrSet(D_8010A4C0_winners_wheel->model[0], 4, 0);
+    Hu3DModelAttrSet(D_8010A4C0_winners_wheel->model[1], 4, 0);
     for (i = 0; i < 18; i++) {
         if (i == 0) {
             omSetTra(D_8010A4C0_winners_wheel, sindf(pointer->rot[0]) * -10.5f, cosdf(pointer->rot[0]) * -10.5f, 0.0f);
@@ -955,8 +955,8 @@ void func_80108458_winners_wheel(void) {
     }
     pointer->flags &= ~8;
     D_8010A484_winners_wheel = -1;
-    func_8001C258_main(D_8010A4C0_winners_wheel->model[0], 4, 4);
-    func_8001C258_main(D_8010A4C0_winners_wheel->model[1], 4, 4);
+    Hu3DModelAttrSet(D_8010A4C0_winners_wheel->model[0], 4, 4);
+    Hu3DModelAttrSet(D_8010A4C0_winners_wheel->model[1], 4, 4);
     pointer->flags |= 0x20;
     func_80109104_winners_wheel();
     while (CZoom < 2887.1f) {
@@ -965,7 +965,7 @@ void func_80108458_winners_wheel(void) {
     for (i = 0; i < 2; i++) {
         Hu3DMotionShiftSet(D_8010A4B8_winners_wheel[i]->model[0],
                            Hu3DData[D_8010A4B8_winners_wheel[i]->motion[4]].motId, 0, 10, 0);
-        func_8001C814_main(D_8010A4B8_winners_wheel[i]->model[0], 2, 2);
+        Hu3DMotionAttrSet(D_8010A4B8_winners_wheel[i]->model[0], 2, 2);
     }
     func_80105F94_winners_wheel();
     for (i = 0; i < 18; i++) {
@@ -975,17 +975,17 @@ void func_80108458_winners_wheel(void) {
         } else {
             Hu3DModelPosSet(D_8010A4C0_winners_wheel->model[i], sindf(pointer->rot[i]), cosdf(pointer->rot[i]), 0.0f);
         }
-        func_8001C258_main(D_8010A4C0_winners_wheel->model[i], 4, 0);
+        Hu3DModelAttrSet(D_8010A4C0_winners_wheel->model[i], 4, 0);
     }
     for (j = 0; j < 3; j++) {
         for (i = 0; i < 18; i++) {
-            func_8001C258_main(D_8010A4C0_winners_wheel->model[i], 4, 0);
+            Hu3DModelAttrSet(D_8010A4C0_winners_wheel->model[i], 4, 0);
         }
         pointer->flags |= 0x10;
         pointer->flags &= ~0x20;
         HuPrcSleep(10);
         for (i = 0; i < 18; i++) {
-            func_8001C258_main(D_8010A4C0_winners_wheel->model[i], 4, 4);
+            Hu3DModelAttrSet(D_8010A4C0_winners_wheel->model[i], 4, 4);
         }
         pointer->flags &= ~0x10;
         pointer->flags |= 0x20;
@@ -1017,14 +1017,14 @@ void func_801089F4_winners_wheel(void) {
         }
     }
     while (TRUE) {
-        func_8001C258_main(D_8010A4C0_winners_wheel->model[0], 4, 0);
-        func_8001C258_main(D_8010A4C0_winners_wheel->model[1], 4, 0);
-        func_8001C258_main(D_8010A4C0_winners_wheel->model[2], 4, 0);
-        func_8001C258_main(D_8010A4C0_winners_wheel->model[3], 4, 0);
-        func_8001C258_main(D_8010A4C0_winners_wheel->model[4], 4, 0);
-        func_8001C258_main(D_8010A4C0_winners_wheel->model[5], 4, 0);
-        func_8001C258_main(D_8010A4C0_winners_wheel->model[6], 4, 0);
-        func_8001C258_main(D_8010A4C0_winners_wheel->model[7], 4, 0);
+        Hu3DModelAttrSet(D_8010A4C0_winners_wheel->model[0], 4, 0);
+        Hu3DModelAttrSet(D_8010A4C0_winners_wheel->model[1], 4, 0);
+        Hu3DModelAttrSet(D_8010A4C0_winners_wheel->model[2], 4, 0);
+        Hu3DModelAttrSet(D_8010A4C0_winners_wheel->model[3], 4, 0);
+        Hu3DModelAttrSet(D_8010A4C0_winners_wheel->model[4], 4, 0);
+        Hu3DModelAttrSet(D_8010A4C0_winners_wheel->model[5], 4, 0);
+        Hu3DModelAttrSet(D_8010A4C0_winners_wheel->model[6], 4, 0);
+        Hu3DModelAttrSet(D_8010A4C0_winners_wheel->model[7], 4, 0);
         for (i = 0; i < 36; i++) {
             pointer->rot[0] = i * 20.0f;
             pointer->rot[1] = 340.0f - i * 20.0f;
@@ -1049,15 +1049,15 @@ void func_801089F4_winners_wheel(void) {
                 Hu3DModelPosSet(D_8010A4C0_winners_wheel->model[i], sindf(pointer->rot[i]), cosdf(pointer->rot[i]),
                                 0.0f);
             }
-            func_8001C258_main(D_8010A4C0_winners_wheel->model[i], 4, 0);
+            Hu3DModelAttrSet(D_8010A4C0_winners_wheel->model[i], 4, 0);
         }
         for (j = 0; j < 8; j++) {
             for (i = 0; i < 18; i++) {
-                func_8001C258_main(D_8010A4C0_winners_wheel->model[i], 4, 0);
+                Hu3DModelAttrSet(D_8010A4C0_winners_wheel->model[i], 4, 0);
             }
             HuPrcSleep(1);
             for (i = 0; i < 18; i++) {
-                func_8001C258_main(D_8010A4C0_winners_wheel->model[i], 4, 4);
+                Hu3DModelAttrSet(D_8010A4C0_winners_wheel->model[i], 4, 4);
             }
             HuPrcSleep(1);
         }
@@ -1070,7 +1070,7 @@ void func_80108E80_winners_wheel(void) {
     pointer->flags |= 3;
     pointer->rot[0] = 340.0f;
     pointer->rawRot[0] = 340.0f;
-    func_8001C258_main(D_8010A4C0_winners_wheel->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(D_8010A4C0_winners_wheel->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     omSetRot(D_8010A4C0_winners_wheel, 0.0f, 0.0f, pointer->rot[0]);
     D_8010A48A_winners_wheel = HuAudFXPlay(0x4C7);
 }
@@ -1112,9 +1112,9 @@ void func_8010907C_winners_wheel(void) {
     s32 i;
 
     for (i = 0; i < 3; i++) {
-        func_8001C258_main(*D_8010A4C0_winners_wheel->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        Hu3DModelAttrSet(*D_8010A4C0_winners_wheel->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         HuPrcSleep(10);
-        func_8001C258_main(*D_8010A4C0_winners_wheel->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(*D_8010A4C0_winners_wheel->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         HuPrcSleep(10);
     }
     D_8010A464_winners_wheel = 4;
@@ -1171,13 +1171,13 @@ void func_80109388_winners_wheel(void) {
             frames = 30;
             seconds--;
         }
-        func_8003F578_main(seconds);
+        GMesTimerValueSet(seconds);
         HuPrcVSleep();
         if (D_8010A464_winners_wheel == 3) {
             break;
         }
     } while (seconds > 0);
-    func_8003F5C0_main();
+    GMesTimerEnd();
     if (D_8010A464_winners_wheel != 3) {
         D_8010A464_winners_wheel = 2;
     }
@@ -1198,7 +1198,7 @@ void func_80109454_winners_wheel(void) {
     frames->flags = 0;
     for (i = 0; i < 6; i++) {
         if (i == 0) {
-            obj->model[0] = func_8000B108_main(0x5C0003, attr);
+            obj->model[0] = Hu3DModelRead(0x5C0003, attr);
             omSetTra(obj, 0.0f, 0.0f, 6.0f);
             omSetSca(obj, wheel->scale, wheel->scale, 1.0f);
         } else {
@@ -1229,11 +1229,11 @@ void func_801095E4_winners_wheel(omObjData *obj) {
             Hu3DModelScaleSet(obj->model[i], wheel->scale, wheel->scale, 1.0f);
         }
         if (frames->rot[i] >= 90.0f) {
-            func_8001C258_main(obj->model[i], 4, 4);
+            Hu3DModelAttrSet(obj->model[i], 4, 4);
         }
     }
     for (i = 0; i < 6; i++) {
-        func_8001C258_main(obj->model[i], 4, 0);
+        Hu3DModelAttrSet(obj->model[i], 4, 0);
     }
     if (pointer->flags & 0x20) {
         D_8010A480_winners_wheel = D_8010A484_winners_wheel = -1;
@@ -1241,7 +1241,7 @@ void func_801095E4_winners_wheel(omObjData *obj) {
     for (i = 0; i < 6; i++) {
         frames->angle[i] = i * 60.0f + wheel->angle;
         if (i == D_8010A480_winners_wheel || i == D_8010A484_winners_wheel || (pointer->flags & 0x10)) {
-            func_8001C258_main(obj->model[i], 4, 4);
+            Hu3DModelAttrSet(obj->model[i], 4, 4);
         }
     }
 }
@@ -1273,7 +1273,7 @@ void func_8010985C_winners_wheel(void) {
     prize->flags = 0;
     omSetTra(obj, prize->pos.x, prize->pos.y, prize->pos.z);
     omSetSca(obj, 2.2f, 2.2f, 1.0f);
-    func_8001C258_main(obj->model[0], 4, 4);
+    Hu3DModelAttrSet(obj->model[0], 4, 4);
 }
 
 void func_80109A18_winners_wheel(omObjData *obj) {
@@ -1289,14 +1289,14 @@ void func_80109A18_winners_wheel(omObjData *obj) {
         prize->pos.y = sindf(prize->unk_10) * 10.0f + 90.0f;
     }
     if (prize->angle >= 270.0f) {
-        func_8001C258_main(obj->model[0], 4, 0);
+        Hu3DModelAttrSet(obj->model[0], 4, 0);
     }
     if (prize->angle == 270.0f) {
         omVibrate(D_8010A48C_winners_wheel, 2, 2, 20);
         HuAudFXPlay(0x10);
     }
     if (prize->flags & 2) {
-        func_8000CFA4_main(D_8010A488_winners_wheel, prize->pos.x, prize->pos.y, prize->pos.z - 2.0f);
+        EffectPosSet(D_8010A488_winners_wheel, prize->pos.x, prize->pos.y, prize->pos.z - 2.0f);
     }
 }
 
@@ -1307,7 +1307,7 @@ void func_80109B90_winners_wheel(void) {
 }
 
 void func_80109BAC_winners_wheel(void) {
-    D_8010A488_winners_wheel = func_8000CED8_main(0xB0004, 0x6A9);
+    D_8010A488_winners_wheel = EffectCreate(0xB0004, 0x6A9);
     ((WinnersWheelPrize *)D_8010A4A8_winners_wheel->data)->flags |= 2;
 }
 
@@ -1319,7 +1319,7 @@ void func_80109C1C_winners_wheel(void) {
     WinnersWheelPrize *prize = D_8010A4A8_winners_wheel->data;
     s32 i;
 
-    func_8001C258_main(D_8010A4A8_winners_wheel->model[0], 4, 0);
+    Hu3DModelAttrSet(D_8010A4A8_winners_wheel->model[0], 4, 0);
     HuPrcSleep(30);
     HuAudFXPlay(0x19);
     for (i = 0; i < 31; i++) {
@@ -1341,8 +1341,8 @@ void func_80109D44_winners_wheel(void) {
     obj->data = HuMemAllocTag(sizeof(WinnersWheelBowser), 0x7918);
     D_8010A4C4_winners_wheel = obj;
     bowser = obj->data;
-    obj->model[0] = func_8000B108_main(0xA00EE, 0x69D);
-    obj->model[1] = func_8000B108_main(9, 0x4AD);
+    obj->model[0] = Hu3DModelRead(0xA00EE, 0x69D);
+    obj->model[1] = Hu3DModelRead(9, 0x4AD);
     bowser->pos.x = 0.0f;
     bowser->pos.y = -182.0f;
     bowser->pos.z = -190.0f;
@@ -1350,11 +1350,11 @@ void func_80109D44_winners_wheel(void) {
     bowser->unk_14 = 0.0f;
     omSetTra(obj, bowser->pos.x, bowser->pos.y, bowser->pos.z);
     omSetSca(obj, 0.8f, 0.8f, 0.8f);
-    func_8000B460_main(obj, 0, 0xA00EF);
-    func_8000B460_main(obj, 1, 0xA00F0);
-    func_8000B460_main(obj, 2, 0xA00F6);
-    func_8001C5B4_main(obj->model[0], obj->motion[4]);
-    func_8001C814_main(obj->model[0], 2, 2);
+    omObjMotionRead(obj, 0, 0xA00EF);
+    omObjMotionRead(obj, 1, 0xA00F0);
+    omObjMotionRead(obj, 2, 0xA00F6);
+    Hu3DMotionModelSet(obj->model[0], obj->motion[4]);
+    Hu3DMotionAttrSet(obj->model[0], 2, 2);
 }
 
 void func_80109E90_winners_wheel(omObjData *obj) {
@@ -1380,12 +1380,12 @@ void func_80109FAC_winners_wheel(void) {
     WinnersWheelBowser *bowser = D_8010A4C4_winners_wheel->data;
     s32 i;
 
-    func_8001C5B4_main(D_8010A4C4_winners_wheel->model[0], D_8010A4C4_winners_wheel->motion[1]);
+    Hu3DMotionModelSet(D_8010A4C4_winners_wheel->model[0], D_8010A4C4_winners_wheel->motion[1]);
     bowser->unk_14 = 50.0f;
     for (i = 0; i < 31; i++) {
         if (i == 5) {
-            func_8001C258_main(D_8010A4C4_winners_wheel->model[0], 4, 0);
-            func_8001C258_main(D_8010A4C4_winners_wheel->model[1], 4, 0);
+            Hu3DModelAttrSet(D_8010A4C4_winners_wheel->model[0], 4, 0);
+            Hu3DModelAttrSet(D_8010A4C4_winners_wheel->model[1], 4, 0);
             HuAudFXPlay(0x4CC);
             omVibrate(D_8010A48C_winners_wheel, 20, 0, 20);
         }
@@ -1398,13 +1398,13 @@ void func_80109FAC_winners_wheel(void) {
     MgFlowStatNext();
     Hu3DMotionShiftSet(D_8010A4C4_winners_wheel->model[0], Hu3DData[D_8010A4C4_winners_wheel->motion[2]].motId, 0,
                        10, 0);
-    func_8001C814_main(D_8010A4C4_winners_wheel->model[0], 2, 2);
+    Hu3DMotionAttrSet(D_8010A4C4_winners_wheel->model[0], 2, 2);
     omDelPrcObj(NULL);
 }
 
 void func_8010A190_winners_wheel(void) {
-    func_8000B5F0_main(1);
-    D_8010A460_winners_wheel = func_8000B638_main();
+    CamSetupInit(1);
+    D_8010A460_winners_wheel = CamSetupMapCullAdd();
     Hu3DCameraPerspectiveSet(D_8010A460_winners_wheel, 11.1f, 80.0f, 8000.0f);
     CZoom = 2887.1f;
     CRot.x = -4.4f;

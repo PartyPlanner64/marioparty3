@@ -366,11 +366,11 @@ void func_801059A0_selmenu2(void) {
     omMakeGroup(0, 32);
     obj = omAddObj(10, 1, 80, -1, NULL);
     for (i = 0; i < 8; i++) {
-        D_80109C48_selmenu2[i] = func_8000B108_main(D_800A178C_main[i][0] | D_800A1790_main[i][0], 0x69D);
+        D_80109C48_selmenu2[i] = Hu3DModelRead(D_800A178C_main[i][0] | D_800A1790_main[i][0], 0x69D);
         Hu3DData[D_80109C48_selmenu2[i]].motAttr |= 2;
-        func_8000B460_main(obj, 0, func_80017BB8_main(i, 0));
+        omObjMotionRead(obj, 0, CharMotionDataNumGet(i, 0));
         D_80109C58_selmenu2[i] = obj->motion[0];
-        func_8000B460_main(obj, 1, func_80017BB8_main(i, 0x2F));
+        omObjMotionRead(obj, 1, CharMotionDataNumGet(i, 0x2F));
         D_80109C68_selmenu2[i] = obj->motion[1];
     }
     omDelObj(obj);
@@ -379,7 +379,7 @@ void func_801059A0_selmenu2(void) {
         D_80109C80_selmenu2[i] = 0;
     }
     D_80109C8A_selmenu2 = HuSprAnimDataRead(0x10020);
-    func_8000B880_main(D_80109C8A_selmenu2, 0.3f, 0.3f, 0.3f);
+    espPalColorSet(D_80109C8A_selmenu2, 0.3f, 0.3f, 0.3f);
     for (i = 0; i < 35; i++) {
         sprite = espEntry(D_80109C8A_selmenu2, i % 6, 1);
         espDispOn(sprite);
@@ -422,7 +422,7 @@ void func_801059A0_selmenu2(void) {
 }
 
 void func_80105F74_selmenu2(f32 zoom, f32 rotX, f32 rotY, f32 rotZ, f32 centerX, f32 centerY, f32 centerZ) {
-    func_8000B5F0_main(1);
+    CamSetupInit(1);
     CZoom = zoom;
     CRot.x = rotX;
     CRot.y = rotY;
@@ -988,7 +988,7 @@ void func_801078CC_selmenu2(omObjData *obj) {
         print8(x, y - (u16)D_801093C0_selmenu2 + textOfs, D_800D5218_main);
     }
     for (i = 0; i < D_801093C4_selmenu2; i++) {
-        if (D_80109C98_selmenu2[i] != -1 && (func_8000BE1C_main(D_80109C98_selmenu2[i]) & 6)) {
+        if (D_80109C98_selmenu2[i] != -1 && (espAnimStatGet(D_80109C98_selmenu2[i]) & 6)) {
             espKill(D_80109C98_selmenu2[i]);
             D_80109C98_selmenu2[i] = -1;
         }
@@ -1095,7 +1095,7 @@ void func_80107DA4_selmenu2(omObjData *obj) {
             func_80108910_selmenu2(i * 56 + 56, 144, D_800D5218_main, 15, 7);
             continue;
         }
-        func_8001C258_main(D_80109C48_selmenu2[GwPlayer[i].chr], 4, 0);
+        Hu3DModelAttrSet(D_80109C48_selmenu2[GwPlayer[i].chr], 4, 0);
         Hu3DModelPosSet(D_80109C48_selmenu2[GwPlayer[i].chr], i * 420 - 650.0f - 60.0f + i * 40, -120.0f, 0.0f);
         Hu3DModelScaleSet(D_80109C48_selmenu2[GwPlayer[i].chr], 2.0f, 2.0f, 2.0f);
         if (D_80109C38_selmenu2[i] == 1) {
@@ -1112,15 +1112,15 @@ void func_80107DA4_selmenu2(omObjData *obj) {
         func_80108910_selmenu2(i * 56 + 50 + i * 4, 144, D_800D5218_main, textColor, color - 8);
         if ((D_80109CF8_selmenu2[i] & 0x10) && D_80109C38_selmenu2[i] == 0) {
             D_80109C38_selmenu2[i] = 1;
-            func_8001C5B4_main(D_80109C48_selmenu2[GwPlayer[i].chr], D_80109C68_selmenu2[GwPlayer[i].chr]);
-            func_8001C814_main(D_80109C48_selmenu2[GwPlayer[i].chr], 1, 0);
-            func_8001C814_main(D_80109C48_selmenu2[GwPlayer[i].chr], 2, 2);
+            Hu3DMotionModelSet(D_80109C48_selmenu2[GwPlayer[i].chr], D_80109C68_selmenu2[GwPlayer[i].chr]);
+            Hu3DMotionAttrSet(D_80109C48_selmenu2[GwPlayer[i].chr], 1, 0);
+            Hu3DMotionAttrSet(D_80109C48_selmenu2[GwPlayer[i].chr], 2, 2);
             func_80108718_selmenu2(2);
         } else if ((D_80109CF8_selmenu2[i] & 0x20) && D_80109C38_selmenu2[i] == 1) {
             D_80109C38_selmenu2[i] = 0;
-            func_8001C5B4_main(D_80109C48_selmenu2[GwPlayer[i].chr], D_80109C58_selmenu2[GwPlayer[i].chr]);
-            func_8001C814_main(D_80109C48_selmenu2[GwPlayer[i].chr], 1, 0);
-            func_8001C814_main(D_80109C48_selmenu2[GwPlayer[i].chr], 2, 2);
+            Hu3DMotionModelSet(D_80109C48_selmenu2[GwPlayer[i].chr], D_80109C58_selmenu2[GwPlayer[i].chr]);
+            Hu3DMotionAttrSet(D_80109C48_selmenu2[GwPlayer[i].chr], 1, 0);
+            Hu3DMotionAttrSet(D_80109C48_selmenu2[GwPlayer[i].chr], 2, 2);
             func_80108718_selmenu2(3);
         }
         if (D_80109C38_selmenu2[i] == 0) {
@@ -1137,7 +1137,7 @@ void func_80107DA4_selmenu2(omObjData *obj) {
                     chr--;
                 }
                 D_80109C3C_selmenu2[GwPlayer[i].chr] = 0;
-                func_8001C258_main(D_80109C48_selmenu2[GwPlayer[i].chr], 4, 4);
+                Hu3DModelAttrSet(D_80109C48_selmenu2[GwPlayer[i].chr], 4, 4);
                 GwPlayer[i].chr = chr;
                 D_80109C3C_selmenu2[GwPlayer[i].chr] = 1;
                 D_80109CE8_selmenu2[i] = 0.0f;
@@ -1154,7 +1154,7 @@ void func_80107DA4_selmenu2(omObjData *obj) {
                     chr++;
                 }
                 D_80109C3C_selmenu2[GwPlayer[i].chr] = 0;
-                func_8001C258_main(D_80109C48_selmenu2[GwPlayer[i].chr], 4, 4);
+                Hu3DModelAttrSet(D_80109C48_selmenu2[GwPlayer[i].chr], 4, 4);
                 GwPlayer[i].chr = chr;
                 D_80109C3C_selmenu2[GwPlayer[i].chr] = 1;
                 D_80109CE8_selmenu2[i] = 0.0f;

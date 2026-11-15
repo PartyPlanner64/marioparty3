@@ -217,19 +217,19 @@ void ScExecuteGraphics(void *arg) {
         osSpTaskLoad(&graphicsTask->task);
         osSpTaskStartGo(&graphicsTask->task);
         osSetIntMask(mask);
-        rspSample = func_8004D710_main(0, 0, 255);
-        rdpSample = func_8004D710_main(0, 255, 0);
+        rspSample = HuProfRspBegin(0, 0, 255);
+        rdpSample = HuProfRspBegin(0, 255, 0);
         osRecvMesg(&D_800BBB00_main, &D_800BCC88_main, OS_MESG_BLOCK);
-        func_8004D788_main(rspSample);
+        HuProfRspEnd(rspSample);
         mask = osSetIntMask(OS_IM_NONE);
         D_800BCC84_main = NULL;
         D_800BCC88_main = NULL;
         osSetIntMask(mask);
         osRecvMesg(&D_800BBB38_main, NULL, OS_MESG_BLOCK);
-        func_8004D788_main(rdpSample);
+        HuProfRspEnd(rdpSample);
         osSendMesg(graphicsTask->completionQueue, graphicsTask->completionMsg, OS_MESG_BLOCK);
         if ((s32)graphicsTask->completionMsg & 1) {
-            func_8004D888_main();
+            HuProfDrawTask();
         }
     }
 }

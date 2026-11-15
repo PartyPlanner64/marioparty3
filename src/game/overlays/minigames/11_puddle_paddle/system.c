@@ -307,7 +307,7 @@ s16 func_8010BEE8_puddle_paddle(s16 priority, s32 directory, s32 file, u16 bank,
             HuSprAttrSet(sprite->unk_01, 0, attr);
             HuSprAnimModeSet(sprite->unk_01, 0, bank);
             HuSprPriSet(sprite->unk_01, 0, (u16)priority);
-            func_80054FF8_main(sprite->unk_01, 0, 0);
+            HuSprPatNoSet(sprite->unk_01, 0, 0);
             HuSprSpeedSet(sprite->unk_01, 0, 1.0f);
             HuSprScaleSet(sprite->unk_01, 0, 1.0f, 1.0f);
             HuSprPosSet(sprite->unk_01, 0, 100, 100);
@@ -329,7 +329,7 @@ void func_8010C088_puddle_paddle(s16 index, s16 x, s16 y) {
     UnkPuddlePaddleSpr *sprite = &D_80111664_puddle_paddle[index];
 
     if (sprite->unk_00 != 0) {
-        func_80054FF8_main(sprite->unk_01, 0, 0);
+        HuSprPatNoSet(sprite->unk_01, 0, 0);
         HuSprDispOn(sprite->unk_01, 0);
         HuSprPosSet(sprite->unk_01, 0, x, y);
         sprite->unk_00 = 2;
@@ -353,7 +353,7 @@ void func_8010C16C_puddle_paddle(void) {
         if (sprite->unk_00 == 2) {
             if (HuSprGet(sprite->unk_01, 0)->patNo + 1 >= (u16)sprite->unk_04) {
                 HuSprDispOff(sprite->unk_01, 0);
-                func_80054FF8_main(sprite->unk_01, 0, 0);
+                HuSprPatNoSet(sprite->unk_01, 0, 0);
             }
         }
     }
@@ -366,8 +366,8 @@ s16 func_8010C214_puddle_paddle(s32 directory, s32 file, f32 speed, s16 type, s3
 
     for (i = 0; i < 16; i++, work++) {
         if (work->unk_00 == 0) {
-            work->unk_0C = func_8000B108_main((directory << 16) | file, attr);
-            func_8001C258_main(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            work->unk_0C = Hu3DModelRead((directory << 16) | file, attr);
+            Hu3DModelAttrSet(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             model = &Hu3DData[work->unk_0C];
             model->motTime = 0;
             model->motSpeed = 0;
@@ -393,7 +393,7 @@ s16 func_8010C324_puddle_paddle(s16 arg0, f32 arg1, s16 arg2, s32 arg3) {
     for (i = 0; i < 16; i++, work++) {
         if (work->unk_00 == 0) {
             work->unk_0C = Hu3DModelLink(arg0);
-            func_8001C258_main(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             model = &Hu3DData[work->unk_0C];
             model->motTime = 0;
             model->motSpeed = 0;
@@ -449,7 +449,7 @@ s32 func_8010C4D0_puddle_paddle(s16 index, f32 x, f32 y, f32 z, f32 rx, f32 ry, 
         work->unk_1C.y = ry;
         work->unk_1C.z = rz;
         if (delay == 0.0f) {
-            func_8001C258_main(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             work->unk_08 = 1;
             work->unk_18 = 0.0f;
             work->unk_14 = 0.0f;
@@ -480,14 +480,14 @@ void func_8010C664_puddle_paddle(void) {
                         model->hmf->unk98->unk08 = 0;
                     }
                     if (!(work->unk_04 & 1)) {
-                        func_8001C258_main(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                        Hu3DModelAttrSet(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                         work->unk_08 = -1;
                         model->motSpeed = 0;
                     }
                 }
             } else {
                 if (work->unk_14++ >= work->unk_18) {
-                    func_8001C258_main(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                    Hu3DModelAttrSet(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     work->unk_08 = 1;
                     model->motSpeed = work->unk_10;
                 }
@@ -506,19 +506,19 @@ s16 func_8010C804_puddle_paddle(s32 directory, s32 file, s16 interval, s16 type,
             frame = HuSprAnimDataRead((directory << 16) | file);
             work->unk_0A = frame;
             if (flags & 1) {
-                work->unk_0C = func_8010D5E4_puddle_paddle(func_80055194_main(frame), 1.0f);
+                work->unk_0C = func_8010D5E4_puddle_paddle(HuSprAnimDataGet(frame), 1.0f);
             } else {
-                work->unk_0C = func_8010CE74_puddle_paddle(func_80055194_main(frame), 1.0f);
+                work->unk_0C = func_8010CE74_puddle_paddle(HuSprAnimDataGet(frame), 1.0f);
             }
             if (flags & 8) {
-                func_8001C258_main(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
             work->unk_18 = &Hu3DData[work->unk_0C].pos.x;
             work->unk_1C = &Hu3DData[work->unk_0C].pos.y;
             work->unk_20 = &Hu3DData[work->unk_0C].pos.z;
             work->unk_08 = type;
             work->unk_04 = flags;
-            work->unk_0E = func_80055194_main(frame)->patNum;
+            work->unk_0E = HuSprAnimDataGet(frame)->patNum;
             work->unk_10 = 0;
             work->unk_12 = 0;
             work->unk_14 = interval;
@@ -556,7 +556,7 @@ void func_8010CA30_puddle_paddle(s16 index, f32 x, f32 y, f32 z) {
         model->pos.x = x;
         model->pos.y = y;
         model->pos.z = z;
-        func_8001C258_main(D_80111668_puddle_paddle[index].unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        Hu3DModelAttrSet(D_80111668_puddle_paddle[index].unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         D_80111668_puddle_paddle[index].unk_04 &= ~0x18;
     }
 }
@@ -581,7 +581,7 @@ void func_8010CAD4_puddle_paddle(s16 index, f32 *x, f32 *y, f32 *z) {
         } else {
             D_80111668_puddle_paddle[index].unk_20 = &model->pos.z;
         }
-        func_8001C258_main(D_80111668_puddle_paddle[index].unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        Hu3DModelAttrSet(D_80111668_puddle_paddle[index].unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         D_80111668_puddle_paddle[index].unk_04 = (D_80111668_puddle_paddle[index].unk_04 & ~0x18) | 0x10;
     }
 }
@@ -627,14 +627,14 @@ void func_8010CCF0_puddle_paddle(void) {
                 if (work->unk_04 & 2) {
                     if (++work->unk_12 > work->unk_14) {
                         work->unk_12 = 0;
-                        func_8010EDE8_puddle_paddle(work->unk_0C, func_80055194_main(work->unk_0A), work->unk_10);
+                        func_8010EDE8_puddle_paddle(work->unk_0C, HuSprAnimDataGet(work->unk_0A), work->unk_10);
                         if (++work->unk_10 >= work->unk_0E) {
                             if (work->unk_04 & 4) {
                                 work->unk_10 = 0;
                             } else {
                                 work->unk_10 = 0;
                                 work->unk_04 |= 8;
-                                func_8001C258_main(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                                Hu3DModelAttrSet(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                             }
                         }
                     }
@@ -655,7 +655,7 @@ s16 func_8010CE74_puddle_paddle(HuSprAnimData *sprite, f32 alpha) {
     s16 i;
 
     dlBuf = gfx = HuMemAlloc(0x10000);
-    model = func_8001A894_main(0x4C1, dlBuf, 4);
+    model = Hu3DModelDLCreate(0x4C1, dlBuf, 4);
     hmf = Hu3DData[model].hmf;
     hmf->unk60->unk50 |= 0x01010000;
     frameCount = func_8010EFEC_puddle_paddle(sprite, hmf, 1.0f, 0, 0x64);
@@ -724,7 +724,7 @@ s16 func_8010D5E4_puddle_paddle(HuSprAnimData *sprite, f32 alpha) {
     s16 i;
 
     dlBuf = gfx = HuMemAlloc(0x10000);
-    model = func_8001A894_main(0x4C1, dlBuf, 4);
+    model = Hu3DModelDLCreate(0x4C1, dlBuf, 4);
     hmf = Hu3DData[model].hmf;
     hmf->unk60->unk50 |= 0x01010000;
     HuMemFree(hmf->unk3C);
@@ -826,7 +826,7 @@ s16 func_8010E1FC_puddle_paddle(HuSprAnimData *sprite, RGBA *color) {
     s32 i;
 
     dlBuf = gfx = HuMemAlloc(0x10000);
-    model = func_8001A894_main(0x8C1, dlBuf, 4);
+    model = Hu3DModelDLCreate(0x8C1, dlBuf, 4);
     hmf = Hu3DData[model].hmf;
     hmf->unk60->unk50 |= 0x01010000;
     HuMemFree(hmf->unk3C);

@@ -26,12 +26,12 @@ void Hu3DGLightMaxSet(s16);
 void Hu3DGLightStatSet(s16, u8, u8);
 void Hu3DGLightColorSet(s16, u8, u8, u8);
 void Hu3DGLightDirSet(s16, f32, f32, f32);
-void func_80019968_main(s16);
+void Hu3DLightModeSet(s16);
 
 void Hu3DLighInit(void);
 void Hu3DLightClose(void);
 void Hu3DLightReset(void);
-void func_80019668_main(HmfData_UnkD0 *arg0);
-s16 func_80019828_main(s16 arg0, s16 arg1);
+void Hu3DLLightSet(HmfData_UnkD0 *arg0);
+s16 Hu3DModelLightInfoSet(s16 arg0, s16 arg1);
 
 #endif

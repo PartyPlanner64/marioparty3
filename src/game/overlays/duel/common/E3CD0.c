@@ -177,8 +177,8 @@ void func_800FC260_name_81(s32 arg0, s16 arg1, s32 arg2) {
         MBDModelDispOn(MBDGetPlayerStruct(i)->player_obj);
     }
 
-    func_8001FDE8_main(MBDGetPlayerStruct(0)->player_obj->omObj1->model[0]);
-    func_8001FDE8_main(MBDGetPlayerStruct(1)->player_obj->omObj1->model[0]);
+    Hu3DMotionReset(MBDGetPlayerStruct(0)->player_obj->omObj1->model[0]);
+    Hu3DMotionReset(MBDGetPlayerStruct(1)->player_obj->omObj1->model[0]);
     func_800F8C68_name_81(0);
     func_800F8C68_name_81(1);
     func_800F4300_name_81();
@@ -479,7 +479,7 @@ void func_800FCAB4_name_81(void) {
             HuAudSeqFadeOut(0x5A);
             D_800C9930_main = D_800C9930_main;
             if (D_800C9930_main != -1) {
-                func_800039A4_main(D_800C9930_main, 0x5A);
+                msmMusFadeOut(D_800C9930_main, 0x5A);
                 D_800C9930_main = -1;
                 HuAudSeqStop();
             }
@@ -773,7 +773,7 @@ void func_800FD620_name_81(void) {
     temp_s0 = MBDGetPlayerStruct(CUR_PLAYER);
     temp_s1 = HuPrcCurrentGet();
     mbItemBtnF = 0;
-    func_8001FDE8_main(temp_s0->player_obj->omObj1->model[0]);
+    Hu3DMotionReset(temp_s0->player_obj->omObj1->model[0]);
     func_800F8C68_name_81(GwSystem.current_player_index);
     D_800A12D4_main = 0;
     HuPrcChildLink(temp_s1, func_800E0888_name_81());
@@ -828,7 +828,7 @@ void func_800FD6F4_name_81(void) {
                         if (system->playMode & 4) {
                             _SetFlag(0x18);
                             _SetFlag(0x28);
-                            func_8005035C_main(1);
+                            SLSaveStory(1);
                         } else {
                             _SetFlag(0x17);
                             SLSaveBoardStory(1);
@@ -860,7 +860,7 @@ void func_800FD6F4_name_81(void) {
         }
 
         player = MBDGetPlayerStruct(system->current_player_index);
-        func_80050E84_main();
+        SLPadAssign();
         GwPlayer[2].stat |= PLAYER_IS_CPU;
         GwPlayer[3].stat |= PLAYER_IS_CPU;
         masuId = MBDMasuLinkMasuIdGet(player->clink, player->cidx);
@@ -879,8 +879,8 @@ void func_800FD6F4_name_81(void) {
         switch (mbGameMode) {
         start:
             func_800EA4D4_name_81(-4, 7);
-            func_8001FDE8_main(MBDGetPlayerStruct(0)->player_obj->omObj1->model[0]);
-            func_8001FDE8_main(MBDGetPlayerStruct(1)->player_obj->omObj1->model[0]);
+            Hu3DMotionReset(MBDGetPlayerStruct(0)->player_obj->omObj1->model[0]);
+            Hu3DMotionReset(MBDGetPlayerStruct(1)->player_obj->omObj1->model[0]);
             func_800F8C68_name_81(0);
             func_800F8C68_name_81(1);
             func_800F38DC_name_81(-1, -1, 2);
@@ -1494,13 +1494,13 @@ void func_800FD6F4_name_81(void) {
                             partnerObj[0] = func_800D8010_name_81(0x38, NULL);
                             MBDModelTempAllocFree(partnerObj[0]);
                             HuVecCopy3F(&partnerObj[0]->coords, &MBDGetPlayerPartnerRef(system->current_player_index, 0)->coords);
-                            func_8001C814_main(partnerObj[0]->omObj1->model[0], 2, 0);
+                            Hu3DMotionAttrSet(partnerObj[0]->omObj1->model[0], 2, 0);
                         }
                         if (player->stats.partners.backID != -1) {
                             partnerObj[1] = func_800D8010_name_81(0x38, NULL);
                             MBDModelTempAllocFree(partnerObj[1]);
                             HuVecCopy3F(&partnerObj[1]->coords, &MBDGetPlayerPartnerRef(system->current_player_index, 1)->coords);
-                            func_8001C814_main(partnerObj[1]->omObj1->model[0], 2, 0);
+                            Hu3DMotionAttrSet(partnerObj[1]->omObj1->model[0], 2, 0);
                         }
 
                         HuAudFXPlay(0x1FA);
@@ -1715,7 +1715,7 @@ void func_800FF640_name_81(u32 arg0) {
             D_800D51F8_main = 0;
             omAddPrcObj(func_800FC8E8_name_81, 0x1005, 0, 0);
             func_800FC888_name_81(1);
-            if (func_800037C4_main(D_800CDBC8_main) < 0x7F) {
+            if (msmMusGetVolume(D_800CDBC8_main) < 0x7F) {
                 func_800DC7CC_name_81();
                 return;
             }

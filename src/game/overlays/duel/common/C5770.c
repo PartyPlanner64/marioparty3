@@ -216,13 +216,13 @@ void func_800DD9EC_name_81(omObjData *arg0) {
 
                         arg0->work[0] = 2;
                         arg0->work[3] = 60;
-                        func_8005D2D4_main(D_80102B70_name_81[arg0->work[1]].windowId);
+                        HuWinNoCRSet(D_80102B70_name_81[arg0->work[1]].windowId);
                         HuWinHomeClear(D_80102B70_name_81[arg0->work[1]].windowId);
                         HuWinMesSet(D_80102B70_name_81[arg0->work[1]].windowId,
                                     D_80100EE4_name_81[D_80102BAD_name_81] + D_80102BA8_name_81[arg0->work[1]] - 1,
                                     HUWIN_POS_CENTER, 4);
                         HuWinMesColSet(D_80102B70_name_81[arg0->work[1]].windowId, 1);
-                        func_8005C154_main(D_80102B70_name_81[arg0->work[1]].windowId, 0xA0, 0xA0, 0xA0);
+                        HuWinMesDefColSet(D_80102B70_name_81[arg0->work[1]].windowId, 0xA0, 0xA0, 0xA0);
                         HuWinBGColSet(D_80102B70_name_81[arg0->work[1]].windowId, 0xFE, 0xFF, 0xD0);
                         HuWinMesSpeedSet(D_80102B70_name_81[arg0->work[1]].windowId, 0);
                     } else {
@@ -405,13 +405,13 @@ void func_800DE4D0_name_81(omObjData *arg0) {
 
                         arg0->work[0] = 2;
                         arg0->work[3] = 60;
-                        func_8005D2D4_main(D_80102B70_name_81[arg0->work[1]].windowId);
+                        HuWinNoCRSet(D_80102B70_name_81[arg0->work[1]].windowId);
                         HuWinHomeClear(D_80102B70_name_81[arg0->work[1]].windowId);
                         HuWinMesSet(D_80102B70_name_81[arg0->work[1]].windowId,
                                     D_80100EE4_name_81[D_80102BAD_name_81] + D_80102BA8_name_81[arg0->work[1]] - 1,
                                     HUWIN_POS_CENTER, 4);
                         HuWinMesColSet(D_80102B70_name_81[arg0->work[1]].windowId, 1);
-                        func_8005C154_main(D_80102B70_name_81[arg0->work[1]].windowId, 0xA0, 0xA0, 0xA0);
+                        HuWinMesDefColSet(D_80102B70_name_81[arg0->work[1]].windowId, 0xA0, 0xA0, 0xA0);
                         HuWinBGColSet(D_80102B70_name_81[arg0->work[1]].windowId, 0xFE, 0xFF, 0xD0);
                         HuWinMesSpeedSet(D_80102B70_name_81[arg0->work[1]].windowId, 0);
                     } else {
@@ -606,7 +606,7 @@ void func_800DF594_name_81(s32 arg0) {
 
         entry->windowId = HuWinCreate(entry->x + (entry->w / 2), entry->y + (entry->h / 2), entry->w, entry->h, 0, winStyles[type]);
         HuWinPriSet(entry->windowId, 0x2328);
-        func_80060144_main(entry->windowId);
+        HuWinDummy(entry->windowId);
         HuWinCenterPosSet(entry->windowId, entry->w / 2, entry->h / 2);
         HuWinBGTPLvlSet(entry->windowId, 0);
 
@@ -688,7 +688,7 @@ void func_800DF594_name_81(s32 arg0) {
                 }
             }
 
-            func_8005D2D4_main(entry->windowId);
+            HuWinNoCRSet(entry->windowId);
 
             if (D_80102BAD_name_81 != 1 && GWMgUnlockCheck(D_80102BA8_name_81[i] - 1) == FALSE) {
                 HuWinMesSet(entry->windowId, 0x4748, HUWIN_POS_CENTER, 4);
@@ -752,7 +752,7 @@ void func_800DFBF4_name_81(void) {
 
         entry->windowId = HuWinCreate(entry->x + (entry->w / 2), entry->y + (entry->h / 2), entry->w, entry->h, 0, winStyles[arg0]);
         HuWinPriSet(entry->windowId, 0x2328);
-        func_80060144_main(entry->windowId);
+        HuWinDummy(entry->windowId);
         HuWinCenterPosSet(entry->windowId, entry->w / 2, entry->h / 2);
         HuWinBGTPLvlSet(entry->windowId, 0);
         HuPrcVSleep();
@@ -835,7 +835,7 @@ void func_800DFBF4_name_81(void) {
                 }
             }
 
-            func_8005D2D4_main(entry->windowId);
+            HuWinNoCRSet(entry->windowId);
 
             if (D_80102BAD_name_81 != 1 && GWMgUnlockCheck(D_80102BA8_name_81[i] - 1) == FALSE) {
                 HuWinMesSet(entry->windowId, 0x4748, HUWIN_POS_CENTER, 4);
@@ -922,7 +922,7 @@ void func_800E03F0_name_81(void) {
     s32 i;
 
     obj = MBDModelFileCreate(0x130204, -1, 1.4f, scale, NULL);
-    func_8001C258_main(obj->omObj1->model[0], 0x180, 0);
+    Hu3DModelAttrSet(obj->omObj1->model[0], 0x180, 0);
     Hu3DModelLayerSet(obj->omObj1->model[0], 0x1800);
     Hu3DModelRemakeStatic(obj->omObj1->model[0]);
     MBDModelTempAllocFree(obj);

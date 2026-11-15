@@ -571,16 +571,16 @@ void func_801059A0_stardust_battle(void) {
     u8 camIndex;
     s32 level;
 
-    func_8001FE20_main(50);
+    MapCollInit(50);
     omInitObjMan(50, 10);
-    func_8004A208_main();
-    func_800142A0_main(64);
+    omGameSysInit();
+    Hu3DSprModelInit(64);
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     Hu3DGLightColorSet(0, 0xFF, 0xFF, 0xFF);
     Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
     Hu3DGLightDirSet(1, -56.0f, 50.0f, 56.0f);
-    func_8000B5F0_main(1);
-    camIndex = func_8000B638_main();
+    CamSetupInit(1);
+    camIndex = CamSetupMapCullAdd();
     ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 30.0f, 80.0f, 4000.0f);
@@ -641,8 +641,8 @@ void func_801059A0_stardust_battle(void) {
     memset(&D_80114BB8_stardust_battle, 0, 0x28);
     D_80114BB8_stardust_battle.type = MINIGAME_BATTLE;
     func_800E5EA0_minigame(&D_80114BB8_stardust_battle);
-    func_80045010_main(D_80114100_stardust_battle, 1);
-    func_80045010_main(D_8011410C_stardust_battle, 1);
+    GMesFontMesCreate(D_80114100_stardust_battle, 1);
+    GMesFontMesCreate(D_8011410C_stardust_battle, 1);
 }
 
 void func_80105D18_stardust_battle(omObjData *object) {
@@ -655,7 +655,7 @@ void func_80105D18_stardust_battle(omObjData *object) {
     func_8010CB34_stardust_battle();
     func_801107E4_stardust_battle();
     func_8010EE7C_stardust_battle();
-    D_80114B54_stardust_battle = func_8000D658_main(0x1CA9, 10);
+    D_80114B54_stardust_battle = EffectGroupStarCreate(0x1CA9, 10);
     if (_CheckFlag(10)) {
         D_80114A9C_stardust_battle = 1;
     }
@@ -740,7 +740,7 @@ void func_80105DA0_stardust_battle(omObjData *object) {
                                               D_80113D68_stardust_battle.rot.y, D_80113D68_stardust_battle.rot.z,
                                               D_80113D68_stardust_battle.zoom, 22);
                 if (D_80113DE0_stardust_battle != -1) {
-                    func_8004AEF0_main(D_80113DE0_stardust_battle, 22);
+                    HuAudFXFadeOut(D_80113DE0_stardust_battle, 22);
                     D_80113DE0_stardust_battle = -1;
                 }
                 D_80114AA4_stardust_battle = 0;
@@ -772,10 +772,10 @@ void func_80105DA0_stardust_battle(omObjData *object) {
                 GMesCreate(0x1A, 31, 156, 32);
             } else if (D_80114AB0_stardust_battle >= 4500) {
                 secs = 5400 - D_80114AB0_stardust_battle + 29;
-                func_8003F578_main(secs / 30);
+                GMesTimerValueSet(secs / 30);
             }
             if (D_80114AB0_stardust_battle >= 5400 || D_80114ACE_stardust_battle != 0 || actor->unk_06 <= 0) {
-                func_8003F5C0_main();
+                GMesTimerEnd();
                 GMesCreate(0x14);
                 MgFlowStatSet(MG_STATE_FINISH);
                 func_8010C06C_stardust_battle();
@@ -838,7 +838,7 @@ void func_80105DA0_stardust_battle(omObjData *object) {
             WipeColorSet(255, 255, 255);
             WipeCreateOut(WIPE_FADE, 16);
             HuAudSeqFadeOut(16);
-            func_8004AB0C_main(16);
+            HuAudFXAllFadeOut(16);
             HuAudFXPlay(0x509);
             D_80114AB8_stardust_battle = 99;
             D_80114AA4_stardust_battle = 0;
@@ -870,7 +870,7 @@ void func_801065D8_stardust_battle(omObjData *object) {
         WipeColorSet(0, 0, 0);
         WipeCreateOut(0, D_80113DE6_stardust_battle[0]);
         HuAudSeqFadeOut(D_80113DE6_stardust_battle[0]);
-        func_8004AB0C_main(D_80113DE6_stardust_battle[0]);
+        HuAudFXAllFadeOut(D_80113DE6_stardust_battle[0]);
     }
 }
 
@@ -1109,39 +1109,39 @@ void func_80106EB0_stardust_battle(omObjData *object) {
     data = object->data;
     data->unk50 &= ~1;
     data->unkEC = NULL;
-    object->model[3] = func_8000B108_main(3, 0x1E8D);
-    object->model[4] = func_8000B108_main(4, 0x1E8D);
+    object->model[3] = Hu3DModelRead(3, 0x1E8D);
+    object->model[4] = Hu3DModelRead(4, 0x1E8D);
     object->model[10] = -1;
-    object->model[9] = func_8000B108_main(model | extra, 0x6BD);
-    func_800E5A00_minigame(object, 0, func_80017BB8_main(chr, 0), 1, 0);
-    func_800E5A00_minigame(object, 1, func_80017BB8_main(chr, 1), 1, 0);
-    func_800E5A00_minigame(object, 2, func_80017BB8_main(chr, 2), 1, 0);
-    func_800E5A00_minigame(object, 6, func_80017BB8_main(chr, 4), 1, 19);
-    func_800E5A00_minigame(object, 17, func_80017BB8_main(chr, 14), 1, 15);
-    func_800E5A00_minigame(object, 18, func_80017BB8_main(chr, 15), 2, 0);
-    func_800E5A00_minigame(object, 21, func_80017BB8_main(chr, 31), 0, 0);
-    func_800E5A00_minigame(object, 20, func_80017BB8_main(chr, 29), 0, 0);
-    func_800E5A00_minigame(object, 4, func_80017BB8_main(chr, 30), 1, 0);
-    func_800E5A00_minigame(object, 32, func_80017BB8_main(chr, 34), 0, 0);
-    func_800E5A00_minigame(object, 9, func_80017BB8_main(chr, 7), 1, 39);
-    func_800E5978_minigame(object, 33, func_80017BB8_main(chr, 35), 2, 0);
-    func_800E5A00_minigame(object, 34, func_80017BB8_main(chr, 36), 2, 0);
+    object->model[9] = Hu3DModelRead(model | extra, 0x6BD);
+    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(chr, 0), 1, 0);
+    func_800E5A00_minigame(object, 1, CharMotionDataNumGet(chr, 1), 1, 0);
+    func_800E5A00_minigame(object, 2, CharMotionDataNumGet(chr, 2), 1, 0);
+    func_800E5A00_minigame(object, 6, CharMotionDataNumGet(chr, 4), 1, 19);
+    func_800E5A00_minigame(object, 17, CharMotionDataNumGet(chr, 14), 1, 15);
+    func_800E5A00_minigame(object, 18, CharMotionDataNumGet(chr, 15), 2, 0);
+    func_800E5A00_minigame(object, 21, CharMotionDataNumGet(chr, 31), 0, 0);
+    func_800E5A00_minigame(object, 20, CharMotionDataNumGet(chr, 29), 0, 0);
+    func_800E5A00_minigame(object, 4, CharMotionDataNumGet(chr, 30), 1, 0);
+    func_800E5A00_minigame(object, 32, CharMotionDataNumGet(chr, 34), 0, 0);
+    func_800E5A00_minigame(object, 9, CharMotionDataNumGet(chr, 7), 1, 39);
+    func_800E5978_minigame(object, 33, CharMotionDataNumGet(chr, 35), 2, 0);
+    func_800E5A00_minigame(object, 34, CharMotionDataNumGet(chr, 36), 2, 0);
     if (chr != 5) {
-        func_800E5A00_minigame(object, 5, func_80017BB8_main(chr, 142), 0, 0);
-        func_800E5A00_minigame(object, 38, func_80017BB8_main(chr, 18), 0, 0);
-        func_800E5A00_minigame(object, 39, func_80017BB8_main(chr, 28), 0, 0);
+        func_800E5A00_minigame(object, 5, CharMotionDataNumGet(chr, 142), 0, 0);
+        func_800E5A00_minigame(object, 38, CharMotionDataNumGet(chr, 18), 0, 0);
+        func_800E5A00_minigame(object, 39, CharMotionDataNumGet(chr, 28), 0, 0);
     } else {
         func_800E5A00_minigame(object, 5, 0xA015C, 0, 0);
         func_800E5A00_minigame(object, 38, 0xA015B, 0, 0);
         func_800E5A00_minigame(object, 39, 0xA015A, 0, 0);
     }
     chr = character;
-    func_800E5A00_minigame(object, 40, func_80017BB8_main(chr, 108), 0, 0);
-    func_800E5A00_minigame(object, 41, func_80017BB8_main(chr, 155), 0, 0);
+    func_800E5A00_minigame(object, 40, CharMotionDataNumGet(chr, 108), 0, 0);
+    func_800E5A00_minigame(object, 41, CharMotionDataNumGet(chr, 155), 0, 0);
     r = rand8() & 1;
-    func_800E5A00_minigame(object, 13, func_80017BB8_main(chr, D_80113E1C_stardust_battle[r]), 1, 120);
+    func_800E5A00_minigame(object, 13, CharMotionDataNumGet(chr, D_80113E1C_stardust_battle[r]), 1, 120);
     obj->unk_18 = D_80113DFC_stardust_battle[chr] | D_80113E1C_stardust_battle[r];
-    func_800E5A00_minigame(object, 14, func_80017BB8_main(chr, 57), 1, 60);
+    func_800E5A00_minigame(object, 14, CharMotionDataNumGet(chr, 57), 1, 60);
     obj->unk_1C = D_80113DFC_stardust_battle[chr] | 57;
     func_800E5690_minigame(object, 0);
     func_800E149C_minigame(object, 0, 2);
@@ -1171,7 +1171,7 @@ void func_801073F4_stardust_battle(omObjData *object) {
     s16 stickY;
 
     if (omPauseChk() + D_800D6A90_main != 0) {
-        func_8001C258_main(object->model[0], 4, 0);
+        Hu3DModelAttrSet(object->model[0], 4, 0);
         return;
     }
     if (obj->func_6C != NULL) {
@@ -1216,19 +1216,19 @@ void func_801073F4_stardust_battle(omObjData *object) {
     }
     func_801092F0_stardust_battle(object);
     if (func_8010929C_stardust_battle() == 1) {
-        func_8001C258_main(object->model[1], 4, 4);
+        Hu3DModelAttrSet(object->model[1], 4, 4);
     }
     obj->unk_2C = object->trans.x;
     obj->unk_30 = object->trans.y;
     obj->unk_34 = object->trans.z;
     if (obj->unk_14 != 0) {
         if (obj->unk_0A & 1) {
-            func_8001C258_main(object->model[0], 4, 4);
+            Hu3DModelAttrSet(object->model[0], 4, 4);
         } else {
-            func_8001C258_main(object->model[0], 4, 0);
+            Hu3DModelAttrSet(object->model[0], 4, 0);
         }
         if (--obj->unk_14 == 0) {
-            func_8001C258_main(object->model[0], 4, 0);
+            Hu3DModelAttrSet(object->model[0], 4, 0);
         }
     }
     obj->unk_0A++;
@@ -1302,7 +1302,7 @@ void func_80107760_stardust_battle(omObjData *object, s16 noControl) {
                     star = func_8010E300_stardust_battle(obj->unk_66);
                     if (star != NULL) {
                         mtx[3][0] = mtx[3][1] = mtx[3][2] = 0.0f;
-                        func_8002367C_main(Hu3DData[star->model[star->unk_10]].mtx, mtx);
+                        mtxCopy(Hu3DData[star->model[star->unk_10]].mtx, mtx);
                         func_8010E4C8_stardust_battle(obj->unk_66, 0.0f, 0.0f, 0.0f);
                     } else {
                         func_8010E4C8_stardust_battle(obj->unk_66, 0.0f, data->unk3C, 0.0f);
@@ -1336,7 +1336,7 @@ void func_80107760_stardust_battle(omObjData *object, s16 noControl) {
         if (obj->unk_66 >= 0) {
             star = func_8010E300_stardust_battle(obj->unk_66);
             if (star != NULL) {
-                Hu3DModelScaleSet(func_8000D550_main(D_80114B54_stardust_battle, star->x, star->y, star->z), 2.0f, 2.0f,
+                Hu3DModelScaleSet(EffectGroupEmit(D_80114B54_stardust_battle, star->x, star->y, star->z), 2.0f, 2.0f,
                                   2.0f);
                 func_8010DF70_stardust_battle(obj->unk_66);
             }
@@ -1501,7 +1501,7 @@ void func_801082C4_stardust_battle(omObjData *object) {
         }
         Hu3DData[object->model[0]].motIdShape = 0xFF;
         func_800E5798_minigame(object, (u16)obj->unk_04);
-        func_80045F1C_main(obj->unk_04 == 13 ? obj->unk_18 : obj->unk_1C, -1, obj->unk_20);
+        HuAudCharVoicePlayPlayer(obj->unk_04 == 13 ? obj->unk_18 : obj->unk_1C, -1, obj->unk_20);
         obj->unk_04 = -1;
     }
 }
@@ -1601,10 +1601,10 @@ void func_8010882C_stardust_battle(omObjData *object) {
     D_800EB748_minigame = 0.15f;
     D_800EB774_minigame = 1.7f;
     object->model[10] =
-        func_8000B108_main(D_800A178C_main[obj->character][0] | D_800A178C_main[obj->character][1], 0x689);
-    func_8001ED54_main(object->model[10]);
+        Hu3DModelRead(D_800A178C_main[obj->character][0] | D_800A178C_main[obj->character][1], 0x689);
+    Hu3DModelFaceFlip(object->model[10]);
     Hu3DModelRemakeStatic(object->model[10]);
-    func_8001C514_main(object->model[10]);
+    Hu3DModelDynamicFree(object->model[10]);
     shadow = &Hu3DData[object->model[10]];
     obj->unk_38 = shadow->motId;
     shadow->motId = model->motId;
@@ -1697,13 +1697,13 @@ void func_80108C14_stardust_battle(omObjData *object) {
     func_800E1310_minigame(object, 10.0f);
     func_800E1370_minigame(object, 2, 0.0f);
     func_80109128_stardust_battle(0);
-    object->model[2] = func_8000B108_main(0x62000A, 0x19);
+    object->model[2] = Hu3DModelRead(0x62000A, 0x19);
     Hu3DModelScaleSet(object->model[2], 1.75f, 1.5f, 1.5f);
     Hu3DModelPosSet(object->model[2], 0.0f, -200.0f, 0.0f);
-    func_8001C954_main(object->model[2]);
+    Hu3DModelVtxBufMake(object->model[2]);
     hmf = Hu3DData[object->model[2]].hmf;
-    stage->unk_02 = func_8002C834_main(hmf, "stardast-cyl10");
-    stage->unk_04 = func_8002C834_main(hmf, "stardast-cyl5_1");
+    stage->unk_02 = SearchObjectIndex(hmf, "stardast-cyl10");
+    stage->unk_04 = SearchObjectIndex(hmf, "stardast-cyl5_1");
     stage->unk_08 = stage->unk_0C = 0.0f;
     stage->unk_10 = stage->unk_14 = 0.0f;
     stage->unk_18 = stage->unk_1C = 0.0f;
@@ -1797,9 +1797,9 @@ void func_80109128_stardust_battle(s16 mode) {
     if (object->model[1] != -1) {
         Hu3DModelKill(object->model[1]);
     }
-    object->model[0] = func_8000B108_main(D_80113E60_stardust_battle[mode] | 0x620000, 0x699);
+    object->model[0] = Hu3DModelRead(D_80113E60_stardust_battle[mode] | 0x620000, 0x699);
     object->model[1] =
-        func_8000B108_main(D_80113E54_stardust_battle[mode] | 0x620000, D_80113E6C_stardust_battle[mode] | 0x299);
+        Hu3DModelRead(D_80113E54_stardust_battle[mode] | 0x620000, D_80113E6C_stardust_battle[mode] | 0x299);
     if (stage->func_30 != NULL) {
         stage->func_30(object);
     }
@@ -1869,8 +1869,8 @@ void func_80109424_stardust_battle(omObjData *object) {
     func_800E131C_minigame(object, 20.0f);
     func_800E1304_minigame(object, 1.5f);
     func_800E1310_minigame(object, 8.0f);
-    func_8001C954_main(object->model[1]);
-    func_8001EFEC_main(object->model[1], "co_y02_DEF");
+    Hu3DModelVtxBufMake(object->model[1]);
+    Hu3DModelAnimNameSet(object->model[1], "co_y02_DEF");
     hmf->unk60->unk50 |= 0x8000000;
     points = HuMemAlloc(hmf->unk18 * sizeof(UnkStardustBattlePoint));
     memset(points, 0, hmf->unk18 * sizeof(UnkStardustBattlePoint));
@@ -2216,8 +2216,8 @@ void func_8010A5E0_stardust_battle(omObjData *object) {
     func_800E131C_minigame(object, 20.0f);
     func_800E1304_minigame(object, 0.1f);
     func_800E1310_minigame(object, 5.0f);
-    func_8001C954_main(object->model[0]);
-    stage->unk_2C = func_8002C834_main(hmf, "comet-nagare");
+    Hu3DModelVtxBufMake(object->model[0]);
+    stage->unk_2C = SearchObjectIndex(hmf, "comet-nagare");
     stage->func_30 = func_8010A690_stardust_battle;
 }
 
@@ -2241,20 +2241,20 @@ void func_8010A74C_stardust_battle(void) {
     actor = D_80114B1C_stardust_battle = HuMemAllocTag(sizeof(UnkStardustBattleActor), TAG_OVERLAY);
     memset(actor, 0, sizeof(UnkStardustBattleActor));
     func_80111FC0_stardust_battle(object, (u32)actor);
-    object->model[0] = func_8000B108_main(0xA0122, 0x1AA8);
+    object->model[0] = Hu3DModelRead(0xA0122, 0x1AA8);
     func_8008A070_main(Hu3DData[object->model[0]].mtx);
     mtxTransCat(Hu3DData[object->model[0]].mtx, 0.0f, 90.0f, 0.0f);
-    func_800461B4_main(object->model[0]);
-    func_800465A8_main(object->model[0], 0.0f, 0.0f, 1.0f);
-    object->model[1] = func_8000B108_main(0, 0x149D);
-    object->model[2] = func_8000B108_main(0xA0122, 0x688);
-    func_8001C258_main(object->model[2], 4, 4);
-    func_800461B4_main(object->model[2]);
+    AuraCreate(object->model[0]);
+    AuraParamSet(object->model[0], 0.0f, 0.0f, 1.0f);
+    object->model[1] = Hu3DModelRead(0, 0x149D);
+    object->model[2] = Hu3DModelRead(0xA0122, 0x688);
+    Hu3DModelAttrSet(object->model[2], 4, 4);
+    AuraCreate(object->model[2]);
     mtxRotCat(Hu3DData[object->model[2]].mtx, 180.0f, 0.0f, 0.0f);
     mtxRotCat(Hu3DData[object->model[2]].mtx, 0.0f, 180.0f, 0.0f);
     mtxTransCat(Hu3DData[object->model[2]].mtx, 0.0f, 90.0f, 0.0f);
-    object->motion[0] = func_8000B108_main(0xA012C, 0x18);
-    object->motion[1] = func_8000B108_main(0xA0128, 0x18);
+    object->motion[0] = Hu3DModelRead(0xA012C, 0x18);
+    object->motion[1] = Hu3DModelRead(0xA0128, 0x18);
     func_8010FE74_stardust_battle(16);
     func_8010C538_stardust_battle();
     actor->active = 0;
@@ -2584,7 +2584,7 @@ void func_8010AAC4_stardust_battle(omObjData *object) {
                 effectPos.z = actor->unk_54 + (0.5 - (f32)(u8)(rand8() % 100) * 0.01) * 100.0 * 2.0;
                 effectPos.y = actor->unk_50 + (f32)(u8)(rand8() % 100) * 0.01 * 150.0;
                 Hu3DModelScaleSet(
-                    func_8000D550_main(D_80114B54_stardust_battle, effectPos.x, effectPos.y, effectPos.z), 2.0f,
+                    EffectGroupEmit(D_80114B54_stardust_battle, effectPos.x, effectPos.y, effectPos.z), 2.0f,
                     2.0f, 2.0f);
             }
             break;
@@ -2605,7 +2605,7 @@ void func_8010AAC4_stardust_battle(omObjData *object) {
         actor->active = 0;
     }
 
-    func_800465A8_main(object->model[0], actor->unk_68, actor->unk_6C, actor->unk_70);
+    AuraParamSet(object->model[0], actor->unk_68, actor->unk_6C, actor->unk_70);
 
     x = object->trans.x;
     z = object->trans.z;
@@ -2634,21 +2634,21 @@ void func_8010AAC4_stardust_battle(omObjData *object) {
         if (t < 0.2f) {
             t = 0.2f;
         }
-        func_8001C258_main(object->model[1], 4, 0);
+        Hu3DModelAttrSet(object->model[1], 4, 0);
         Hu3DModelPosSet(object->model[1], object->trans.x, 0.0f, object->trans.z);
         Hu3DModelScaleSet(object->model[1], t * 1.5f, 1.0f, t * 1.5f);
     } else {
-        func_8001C258_main(object->model[1], 4, 4);
+        Hu3DModelAttrSet(object->model[1], 4, 4);
     }
 
     if (func_8010929C_stardust_battle() == 2) {
-        func_8001C258_main(object->model[2], 4, 0);
+        Hu3DModelAttrSet(object->model[2], 4, 0);
         Hu3DModelPosSet(object->model[2], object->trans.x, -object->trans.y, object->trans.z);
         Hu3DModelRotSet(object->model[2], object->rot.x, object->rot.y, object->rot.z);
         Hu3DData[object->model[2]].motId = Hu3DData[object->model[0]].motId;
         Hu3DData[object->model[2]].motTime = Hu3DData[object->model[0]].motTime;
     } else {
-        func_8001C258_main(object->model[2], 4, 4);
+        Hu3DModelAttrSet(object->model[2], 4, 4);
     }
 
     actor->active++;
@@ -2719,7 +2719,7 @@ void func_8010C1F8_stardust_battle(s16 motion, s16 startTime, s16 endTime, u8 at
     if (obj != NULL) {
         func_80111FEC_stardust_battle(obj);
         model = &Hu3DData[obj->model[0]];
-        func_8001C5B4_main(obj->model[0], obj->motion[motion]);
+        Hu3DMotionModelSet(obj->model[0], obj->motion[motion]);
         model->motTime = startTime;
         model->unk48 = endTime;
         model->motAttr = attr;
@@ -2924,10 +2924,10 @@ void func_8010CB34_stardust_battle(void) {
     stars = HuMemAllocTag(sizeof(UnkStardustBattleStars), TAG_OVERLAY);
     D_80114B2C_stardust_battle = stars;
     memset(stars, 0, sizeof(UnkStardustBattleStars));
-    stars->modelId1 = func_8000B108_main(0x620005, 0x49D);
-    stars->modelId2 = func_8000B108_main(0x620006, 0x49D);
-    stars->effectId1 = func_8000B108_main(0, 0x149D);
-    stars->effectId2 = func_8000B108_main(0x620008, 0x189D);
+    stars->modelId1 = Hu3DModelRead(0x620005, 0x49D);
+    stars->modelId2 = Hu3DModelRead(0x620006, 0x49D);
+    stars->effectId1 = Hu3DModelRead(0, 0x149D);
+    stars->effectId2 = Hu3DModelRead(0x620008, 0x189D);
     stars->count = 10;
     star = HuMemAllocTag(sizeof(UnkStardustBattleStar) * 10, TAG_OVERLAY);
     stars->star = star;
@@ -2947,18 +2947,18 @@ void func_8010CB34_stardust_battle(void) {
             star->reflection[1] = Hu3DModelLink(stars->modelId2);
             star->shadow = Hu3DModelLink(stars->effectId1);
         }
-        func_8001C258_main(star->model[0], 4, 4);
-        func_8001C258_main(star->reflection[0], 4, 4);
-        func_8001C258_main(star->model[1], 4, 4);
-        func_8001C258_main(star->reflection[1], 4, 4);
-        func_8001C258_main(star->shadow, 4, 4);
+        Hu3DModelAttrSet(star->model[0], 4, 4);
+        Hu3DModelAttrSet(star->reflection[0], 4, 4);
+        Hu3DModelAttrSet(star->model[1], 4, 4);
+        Hu3DModelAttrSet(star->reflection[1], 4, 4);
+        Hu3DModelAttrSet(star->shadow, 4, 4);
         mtxRotCat(Hu3DData[star->reflection[0]].mtx, 180.0f, 0.0f, 0.0f);
         mtxRotCat(Hu3DData[star->reflection[0]].mtx, 0.0f, 180.0f, 0.0f);
         mtxRotCat(Hu3DData[star->reflection[1]].mtx, 180.0f, 0.0f, 0.0f);
         mtxRotCat(Hu3DData[star->reflection[1]].mtx, 0.0f, 180.0f, 0.0f);
-        star->effect = func_8000B108_main(0x620007, 0x189D);
+        star->effect = Hu3DModelRead(0x620007, 0x189D);
         Hu3DModelScaleSet(star->effect, 0.75f, 0.75f, 0.75f);
-        func_8001C954_main(star->effect);
+        Hu3DModelVtxBufMake(star->effect);
         star->unk_0E = 0;
         star->unk_10 = 0;
         star->unk_12 = 0;
@@ -2994,10 +2994,10 @@ void func_8010CE5C_stardust_battle(omObjData *object) {
         }
         if (omPauseChk() + D_800D6A90_main != 0) {
             if (star->unk_18 != 0) {
-                func_8001CAA4_main(star->effect, stars->effectId2, star->unk_68);
+                Hu3DModelVtxMorph(star->effect, stars->effectId2, star->unk_68);
             }
             if (star->state == 3) {
-                func_8001C258_main(star->model[star->unk_10], 4, 0);
+                Hu3DModelAttrSet(star->model[star->unk_10], 4, 0);
             }
             continue;
         }
@@ -3048,7 +3048,7 @@ void func_8010CE5C_stardust_battle(omObjData *object) {
                 break;
             case 2:
                 if (star->unk_14 >= 30) {
-                    func_8001C258_main(star->model[1], 4, 0);
+                    Hu3DModelAttrSet(star->model[1], 4, 0);
                     star->unk_10 = 1;
                     star->unk_18 = 0;
                     star->state = 3;
@@ -3068,10 +3068,10 @@ void func_8010CE5C_stardust_battle(omObjData *object) {
                 }
                 if (star->unk_14 >= 15.0f) {
                     if (star->unk_14 & 1) {
-                        func_8001C258_main(star->model[0], 4, 0);
+                        Hu3DModelAttrSet(star->model[0], 4, 0);
                         star->unk_10 = 0;
                     } else {
-                        func_8001C258_main(star->model[1], 4, 0);
+                        Hu3DModelAttrSet(star->model[1], 4, 0);
                         star->unk_10 = 1;
                     }
                 }
@@ -3079,9 +3079,9 @@ void func_8010CE5C_stardust_battle(omObjData *object) {
             case 3:
                 if (star->unk_14 >= 60.0f) {
                     if (star->unk_14 & 1) {
-                        func_8001C258_main(star->model[star->unk_10], 4, 4);
+                        Hu3DModelAttrSet(star->model[star->unk_10], 4, 4);
                     } else {
-                        func_8001C258_main(star->model[star->unk_10], 4, 0);
+                        Hu3DModelAttrSet(star->model[star->unk_10], 4, 0);
                     }
                     if (star->unk_14 >= 90.0f) {
                         func_8010DF70_stardust_battle(i);
@@ -3110,19 +3110,19 @@ void func_8010CE5C_stardust_battle(omObjData *object) {
         if (done) {
             continue;
         }
-        func_8001C258_main(star->model[(s16)(star->unk_10 ^ 1)], 4, 4);
-        func_8001C258_main(star->reflection[(s16)(star->unk_10 ^ 1)], 4, 4);
+        Hu3DModelAttrSet(star->model[(s16)(star->unk_10 ^ 1)], 4, 4);
+        Hu3DModelAttrSet(star->reflection[(s16)(star->unk_10 ^ 1)], 4, 4);
         Hu3DModelPosSet(star->model[star->unk_10], star->x, star->y, star->z);
         Hu3DModelRotSet(star->model[star->unk_10], star->targetX, star->targetY, star->targetZ);
         if (mode != 2 || star->y <= -50.0 || star->x * star->x + star->z * star->z > 275625.0) {
-            func_8001C258_main(star->reflection[star->unk_10], 4, 4);
+            Hu3DModelAttrSet(star->reflection[star->unk_10], 4, 4);
         } else {
-            func_8001C258_main(star->reflection[star->unk_10], 4, 0);
+            Hu3DModelAttrSet(star->reflection[star->unk_10], 4, 0);
             Hu3DModelPosSet(star->reflection[star->unk_10], star->x, -star->y, star->z);
             Hu3DModelRotSet(star->reflection[star->unk_10], star->targetX, star->targetY, star->targetZ);
         }
         if (star->unk_18 != 0) {
-            func_8001C258_main(star->effect, 4, 0);
+            Hu3DModelAttrSet(star->effect, 4, 0);
             Hu3DModelPosSet(star->effect, star->x, star->y + 34.99999940395355, star->z);
             star->unk_78 += 20.0f;
             if (star->unk_78 >= 360.0f) {
@@ -3137,22 +3137,22 @@ void func_8010CE5C_stardust_battle(omObjData *object) {
                 star->unk_68 = 0.0f;
             }
             if (star->unk_68 != star->unk_6C) {
-                func_8001CAA4_main(star->effect, stars->effectId2, star->unk_68);
+                Hu3DModelVtxMorph(star->effect, stars->effectId2, star->unk_68);
             }
             star->unk_6C = star->unk_68;
         } else {
-            func_8001C258_main(star->effect, 4, 4);
+            Hu3DModelAttrSet(star->effect, 4, 4);
         }
         if (mode != 1 && star->x * star->x + star->z * star->z < 275625.0) {
             temp = 1.0 - star->y * 0.001;
             if (temp < 0.2f) {
                 temp = 0.2f;
             }
-            func_8001C258_main(star->shadow, 4, 0);
+            Hu3DModelAttrSet(star->shadow, 4, 0);
             Hu3DModelPosSet(star->shadow, star->x, 0.0f, star->z);
             Hu3DModelScaleSet(star->shadow, temp * 0.8f, 1.0f, temp * 0.8f);
         } else {
-            func_8001C258_main(star->shadow, 4, 4);
+            Hu3DModelAttrSet(star->shadow, 4, 4);
         }
         if (star->y < -1000.0) {
             func_8010DF70_stardust_battle(i);
@@ -3179,8 +3179,8 @@ s16 func_8010DADC_stardust_battle(Vec *pos, Vec *target, f32 speed) {
     for (i = 0; i < stars->count; i++, star++) {
         if (star->active == 0) {
             star->active = 1;
-            func_8001C258_main(star->model[0], 4, 0);
-            func_8001C258_main(star->effect, 4, 0);
+            Hu3DModelAttrSet(star->model[0], 4, 0);
+            Hu3DModelAttrSet(star->effect, 4, 0);
             star->state = 0;
             star->unk_14 = 0;
             star->unk_18 = 1;
@@ -3225,7 +3225,7 @@ s16 func_8010DADC_stardust_battle(Vec *pos, Vec *target, f32 speed) {
             func_8008A070_main(Hu3DData[star->model[1]].mtx);
             Hu3DModelPosSet(star->effect, star->x, star->y + 34.99999940395355, star->z);
             Hu3DModelScaleSet(star->effect, 0.75f, 0.75f, 0.75f);
-            func_8001CAA4_main(star->effect, stars->effectId2, star->unk_68);
+            Hu3DModelVtxMorph(star->effect, stars->effectId2, star->unk_68);
             Hu3DModelRotSet(star->effect, star->unk_70 + 180.0f, star->unk_74, 0.0f);
             func_8008A070_main(Hu3DData[star->effect].mtx);
             mtxRotCat(Hu3DData[star->effect].mtx, 0.0f, star->unk_78, 0.0f);
@@ -3254,12 +3254,12 @@ void func_8010DF70_stardust_battle(s16 index) {
         if (star->active != 0) {
             star->active = 0;
             star->x = star->targetX = star->unk_40 = 0.0f;
-            func_8001C258_main(star->model[0], 4, 4);
-            func_8001C258_main(star->model[1], 4, 4);
-            func_8001C258_main(star->reflection[0], 4, 4);
-            func_8001C258_main(star->reflection[1], 4, 4);
-            func_8001C258_main(star->shadow, 4, 4);
-            func_8001C258_main(star->effect, 4, 4);
+            Hu3DModelAttrSet(star->model[0], 4, 4);
+            Hu3DModelAttrSet(star->model[1], 4, 4);
+            Hu3DModelAttrSet(star->reflection[0], 4, 4);
+            Hu3DModelAttrSet(star->reflection[1], 4, 4);
+            Hu3DModelAttrSet(star->shadow, 4, 4);
+            Hu3DModelAttrSet(star->effect, 4, 4);
         }
     }
 }
@@ -3326,7 +3326,7 @@ s16 func_8010E03C_stardust_battle(omObjData *object) {
     } while (0);
     star = &stars->star[index];
     if (star->active != 0) {
-        func_8001C258_main(star->model[star->unk_10], 4, 0);
+        Hu3DModelAttrSet(star->model[star->unk_10], 4, 0);
         star->unk_58 = star->x;
         star->unk_5C = star->y;
         star->unk_60 = star->z;
@@ -3590,7 +3590,7 @@ void func_8010ED7C_stardust_battle(void) {
     star = stars->star;
     for (i = 0; i < stars->count; i++, star++) {
         if (star->active != 0) {
-            Hu3DModelScaleSet(func_8000D550_main(D_80114B54_stardust_battle, star->x, star->y, star->z), 2.0f, 2.0f,
+            Hu3DModelScaleSet(EffectGroupEmit(D_80114B54_stardust_battle, star->x, star->y, star->z), 2.0f, 2.0f,
                               2.0f);
             func_8010DF70_stardust_battle(i);
         }
@@ -3632,13 +3632,13 @@ void func_8010EE7C_stardust_battle(void) {
         for (j = 0; j < 8; j++) {
             HuSprPosSet(sprGrp, j, D_80113CE0_stardust_battle[j], D_80113CF0_stardust_battle[i]);
             HuSprGrpMemberSet(sprGrp, j, D_80114B30_stardust_battle[i + 3], 0);
-            func_80054FF8_main(sprGrp, j, 0);
+            HuSprPatNoSet(sprGrp, j, 0);
             HuSprAttrSet(sprGrp, j, 0x1000);
             HuSprAnimModeSet(sprGrp, j, HUSPR_ANIM_MODE_STOP);
         }
         HuSprAttrSet(sprGrp, 0, 0x8000);
-        func_80054FF8_main(sprGrp, 2, 10);
-        func_80054FF8_main(sprGrp, 5, 11);
+        HuSprPatNoSet(sprGrp, 2, 10);
+        HuSprPatNoSet(sprGrp, 5, 11);
     }
     func_8010F400_stardust_battle(0, D_80114AB0_stardust_battle);
     if (D_80114AC0_stardust_battle != 0) {
@@ -3695,7 +3695,7 @@ void func_8010F0E8_stardust_battle(omObjData *object) {
             if (digits[j] >= 10) {
                 digits[j] = 9;
             }
-            func_80054FF8_main(sprGrp, D_80113ED8_stardust_battle[j], digits[j]);
+            HuSprPatNoSet(sprGrp, D_80113ED8_stardust_battle[j], digits[j]);
         }
         disp->timer++;
     }
@@ -3752,7 +3752,7 @@ void func_8010F5E0_stardust_battle(void) {
     s32 i;
 
     D_80114B30_stardust_battle[1] = func_8010EE38_stardust_battle(11);
-    sprite = func_80055194_main(D_80114B30_stardust_battle[1]);
+    sprite = HuSprAnimDataGet(D_80114B30_stardust_battle[1]);
     D_80114B48_stardust_battle = omAddObj(30, 0, 0, -1, func_8010F73C_stardust_battle);
     D_80114B4C_stardust_battle = effect = HuMemAllocTag(sizeof(UnkStardustBattleEffect) * 4, TAG_OVERLAY);
     for (i = 0; i < 4; i++, effect++) {
@@ -3768,14 +3768,14 @@ void func_8010F5E0_stardust_battle(void) {
         effect->pos.x = effect->pos.y = effect->pos.z = 0.0f;
         effect->vel.x = effect->vel.y = effect->vel.z = 0.0f;
         effect->scale.x = effect->scale.y = effect->scale.z = 0.0f;
-        func_8001C258_main(effect->model, 4, 4);
+        Hu3DModelAttrSet(effect->model, 4, 4);
         model = &Hu3DData[effect->model];
         model->motTime = 0.0f;
     }
 }
 
 void func_8010F73C_stardust_battle(omObjData *object) {
-    HuSprAnimData *sprite = func_80055194_main(D_80114B30_stardust_battle[1]);
+    HuSprAnimData *sprite = HuSprAnimDataGet(D_80114B30_stardust_battle[1]);
     UnkStardustBattleEffect *effect;
     HmfModel *model;
     s32 i;
@@ -3808,7 +3808,7 @@ void func_8010F73C_stardust_battle(omObjData *object) {
 }
 
 s32 func_8010F890_stardust_battle(Vec *pos, Vec *vel, Vec *scale, f32 speed, u8 *color) {
-    HuSprAnimData *sprite = func_80055194_main(D_80114B30_stardust_battle[1]);
+    HuSprAnimData *sprite = HuSprAnimDataGet(D_80114B30_stardust_battle[1]);
     UnkStardustBattleEffect *effect;
     HmfModel *model;
     s32 i;
@@ -3844,7 +3844,7 @@ s32 func_8010F890_stardust_battle(Vec *pos, Vec *vel, Vec *scale, f32 speed, u8 
         effect->speed = speed;
         effect->frame = 0.0f;
         func_8011376C_stardust_battle(effect->model, sprite, 0, effect->color.rgba);
-        func_8001C258_main(effect->model, 4, 0);
+        Hu3DModelAttrSet(effect->model, 4, 0);
         model->motTime = 0.0f;
         model->pos.x = effect->pos.x;
         model->pos.y = effect->pos.y;
@@ -3873,8 +3873,8 @@ void func_8010FA60_stardust_battle(void) {
         if (i >= object->work[j + 1]) {
             j++;
         }
-        object->model[i] = func_8000B0A0_main(D_80113EF0_stardust_battle[j], D_80113EFC_stardust_battle[i / 16] | 0x99);
-        func_8001C258_main(object->model[i], 4, 4);
+        object->model[i] = Hu3DModelRead2(D_80113EF0_stardust_battle[j], D_80113EFC_stardust_battle[i / 16] | 0x99);
+        Hu3DModelAttrSet(object->model[i], 4, 4);
         model = &Hu3DData[object->model[i]];
         model->motTime = 0.0f;
         model->motSpeed = 0.0f;
@@ -3895,7 +3895,7 @@ void func_8010FBCC_stardust_battle(omObjData *object) {
             continue;
         }
         if (D_800CCF58_main[model->motId].unk02 <= model->motTime) {
-            func_8001C258_main(object->model[i], 4, 4);
+            Hu3DModelAttrSet(object->model[i], 4, 4);
             model->motTime = 0.0f;
             model->motSpeed = 0.0f;
             if (model->hmf->unk98 != NULL) {
@@ -3921,7 +3921,7 @@ s32 func_8010FCBC_stardust_battle(Vec *pos, Vec *rot, f32 scale, s16 group) {
         if (!(model->attr & 4)) {
             continue;
         }
-        func_8001C258_main(object->model[i], 4, 0);
+        Hu3DModelAttrSet(object->model[i], 4, 0);
         if (pos != NULL) {
             model->pos.x = pos->x;
             model->pos.y = pos->y;
@@ -3980,7 +3980,7 @@ void func_8010FE74_stardust_battle(s16 arg0) {
     }
     for (i = 0; i < 16; i++, stard++) {
         stard->modelId = func_801122D0_stardust_battle();
-        func_8001C258_main(stard->modelId, 4, 4);
+        Hu3DModelAttrSet(stard->modelId, 4, 4);
         Hu3DModelScaleSet(stard->modelId, (f32)(rand8() % 100) * 0.01 * 1.5 + 1.0 - 0.5, 1.0f, 1.0f);
         stard->angleX = rand8() % 180;
         stard->angleY = rand8() % 180;
@@ -3991,17 +3991,17 @@ void func_8010FE74_stardust_battle(s16 arg0) {
         stard->z = angles[i] + ((f32)(rand8() % 100) * 0.01 * 10.0 - 5.0);
         stard->worldX = stard->worldY = stard->worldZ = 0.0f;
     }
-    object->model[0] = func_8000B0A0_main(0x620009, 0x1839);
-    func_8001C258_main(object->model[0], 4, 4);
+    object->model[0] = Hu3DModelRead2(0x620009, 0x1839);
+    Hu3DModelAttrSet(object->model[0], 4, 4);
     object->scale.x = object->scale.y = object->scale.z = 10.0f;
     D_80114B30_stardust_battle[2] = func_8010EE38_stardust_battle(0x62000B);
     object->work[3] = sprGrp = HuSprGrpCreate(1, 0);
     HuSprGrpMemberSet(sprGrp, 0, D_80114B30_stardust_battle[2], 0);
     HuSprAnimModeSet(sprGrp, 0, HUSPR_ANIM_MODE_STOP);
-    func_80054FF8_main(sprGrp, 0, 0);
+    HuSprPatNoSet(sprGrp, 0, 0);
     HuSprPosSet(sprGrp, 0, 160, 120);
     HuSprScaleSet(sprGrp, 0, 4.0f, 4.0f);
-    func_80055484_main(sprGrp, 0, 255, 255, 255, 0);
+    HuSprColorTPLvlSet(sprGrp, 0, 255, 255, 255, 0);
     HuSprAttrSet(sprGrp, 0, 0x20009800);
     HuSprPriSet(sprGrp, 0, 0xFFFF);
 }
@@ -4030,7 +4030,7 @@ void func_80110364_stardust_battle(omObjData *object) {
         stard->worldX = sindf(stard->angleX) * stard->radius + stard->x;
         stard->worldY = sindf(stard->angleX) * stard->radius2 + stard->y;
         stard->worldZ = stard->z;
-        func_8001C258_main(stard->modelId, 4, 0);
+        Hu3DModelAttrSet(stard->modelId, 4, 0);
         Hu3DModelPosSet(stard->modelId, object->trans.x, object->trans.y, object->trans.z);
         Hu3DModelRotSet(stard->modelId, stard->worldX, stard->worldY, stard->worldZ);
     }
@@ -4040,7 +4040,7 @@ void func_80110364_stardust_battle(omObjData *object) {
                 object->work[0]++;
                 object->work[1] = 0;
                 object->work[2] = 0;
-                func_8001C258_main(object->model[0], 4, 0);
+                Hu3DModelAttrSet(object->model[0], 4, 0);
                 object->scale.x = object->scale.y = object->scale.z = 0.1f;
             }
             break;
@@ -4060,10 +4060,10 @@ void func_80110364_stardust_battle(omObjData *object) {
         alpha = object->work[2] / 255.0f;
         next = object->work[2];
         HuSprAttrReset(object->work[3], 0, 0x8000);
-        func_80055484_main(object->work[3], 0, 255, 255, 255, alpha * 255.0f);
+        HuSprColorTPLvlSet(object->work[3], 0, 255, 255, 255, alpha * 255.0f);
         next += 10;
         if (next >= 255) {
-            func_80055484_main(object->work[3], 0, 255, 255, 255, 256);
+            HuSprColorTPLvlSet(object->work[3], 0, 255, 255, 255, 256);
             object->work[2] = 1;
         } else {
             object->work[2] = next;
@@ -4554,7 +4554,7 @@ void func_80112040_stardust_battle(s16 model, const char *name, HuMtx4F *out) {
     s16 nodeMap[4];
     HmfModel *mdl = &Hu3DData[model];
     HmfData *hmf = mdl->hmf;
-    s16 node = func_8002C834_main(hmf, name);
+    s16 node = SearchObjectIndex(hmf, name);
     HmfModelData_Unk64_Unk8C_Struct *motion = &D_800CCF58_main[Hu3DData[model].motId];
 
     D_800D1358_main = out;
@@ -4574,15 +4574,15 @@ void func_80112040_stardust_battle(s16 model, const char *name, HuMtx4F *out) {
         hmf->unk90 = NULL;
     }
     guMtxIdentF(D_800D5A00_main[0]);
-    func_8002DFF8_main(hmf, mdl->motTime, motion, 1);
+    Hu3DMotionExec(hmf, mdl->motTime, motion, 1);
     if (hmf->unk90 != NULL) {
-        func_8002EAC0_main(hmf, hmf->unkA4, hmf->unkA8);
+        Hu3DSubMotionExec(hmf, hmf->unkA4, hmf->unkA8);
     }
     if (hmf->unk94 != NULL) {
-        func_8002DFF8_main(hmf, hmf->unkAC, hmf->unk94, 0);
+        Hu3DMotionExec(hmf, hmf->unkAC, hmf->unk94, 0);
     }
     D_800D138A_main = 0;
-    func_80016C2C_main(hmf, 0, node);
+    objMtxCalcFrame(hmf, 0, node);
     if (D_800CD1B0_main >= 2) {
         osSyncPrintf("Mtx Made Over\n");
     }
@@ -4598,7 +4598,7 @@ void func_80112220_stardust_battle(omObjData *object, const char *name, HuMtx4F 
     mtxRotCat(mtx, 0.0f, data->unk3C, 0.0f);
     mtxScaleCat(mtx, object->scale.x, object->scale.y, object->scale.z);
     func_80112040_stardust_battle(object->model[0], name, &local);
-    func_80018044_main(local, mtx, out);
+    mtxCat(local, mtx, out);
 }
 
 s32 func_801122D0_stardust_battle(void) {
@@ -4613,7 +4613,7 @@ s32 func_801122D0_stardust_battle(void) {
     s32 j;
 
     buffer = (u8 *)(gfx = HuMemAlloc(0x10000));
-    model = func_8001A894_main(0x1CC1, buffer, 4);
+    model = Hu3DModelDLCreate(0x1CC1, buffer, 4);
     hmf = Hu3DData[model].hmf;
     hmf->unk60->unk50 |= 0x1010000;
     HuMemFree(hmf->unk3C);
@@ -4719,7 +4719,7 @@ s32 func_80112980_stardust_battle(HuSprAnimData *sprite, u8 *color) {
     gfx = HuMemAlloc(0x10000);
     header = gfx;
     buffer = (u8 *)gfx;
-    model = func_8001A894_main(0x1CC1, buffer, 4);
+    model = Hu3DModelDLCreate(0x1CC1, buffer, 4);
     data = Hu3DData[model].hmf;
     data->unk60->unk50 |= 0x1010000;
     gfx++;
@@ -4824,7 +4824,7 @@ s32 func_80113568_stardust_battle(HuSprAnimData *sprite, u16 model, u8 *color) {
     s32 newModel;
     s32 i;
 
-    newModel = func_8001A894_main(srcModel->attr, NULL, 4);
+    newModel = Hu3DModelDLCreate(srcModel->attr, NULL, 4);
     data = Hu3DData[newModel].hmf;
     data->unk60->unk50 = srcData->unk60->unk50;
     HuMemFree(data->unk3C);

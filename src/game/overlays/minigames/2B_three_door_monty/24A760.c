@@ -307,8 +307,8 @@ void func_801062F4_three_door_monty(omObjData *obj, s16 motion, s16 start, s16 e
 
 void func_80106390_three_door_monty(omObjData *obj, s16 motion, s16 start, s16 end, s16 *current) {
     if (*current != motion) {
-        func_8001C5B4_main(obj->model[0], obj->motion[motion]);
-        func_8001C814_main(obj->model[0], start, end);
+        Hu3DMotionModelSet(obj->model[0], obj->motion[motion]);
+        Hu3DMotionAttrSet(obj->model[0], start, end);
         *current = motion;
     }
 }
@@ -535,14 +535,14 @@ void func_801071F4_three_door_monty(omObjData *obj) {
 }
 
 void func_801071FC_three_door_monty(omObjData *obj) {
-    D_8010EC34_three_door_monty = func_80055194_main(HuSprAnimDataRead(0x4C0004));
+    D_8010EC34_three_door_monty = HuSprAnimDataGet(HuSprAnimDataRead(0x4C0004));
     Hu3DModelCameraSet(Hu3DHookFuncCreate(0, func_80106B98_three_door_monty, 2), 2);
-    D_8010D24C_three_door_monty = func_80055194_main(HuSprAnimDataRead(0x4C0003));
+    D_8010D24C_three_door_monty = HuSprAnimDataGet(HuSprAnimDataRead(0x4C0003));
     Hu3DModelCameraSet(Hu3DHookFuncCreate(0, func_80106868_three_door_monty, 2), 1);
-    D_8010EC28_three_door_monty[0] = func_80055194_main(HuSprAnimDataRead(0x4C0005));
-    D_8010EC28_three_door_monty[1] = func_80055194_main(HuSprAnimDataRead(0x4C0006));
+    D_8010EC28_three_door_monty[0] = HuSprAnimDataGet(HuSprAnimDataRead(0x4C0005));
+    D_8010EC28_three_door_monty[1] = HuSprAnimDataGet(HuSprAnimDataRead(0x4C0006));
     Hu3DModelCameraSet(Hu3DHookFuncCreate(0, func_80106EDC_three_door_monty, 2), 2);
-    obj->model[0] = func_8000B108_main(0x4C000F, 0x289);
+    obj->model[0] = Hu3DModelRead(0x4C000F, 0x289);
     Hu3DModelCameraSet(obj->model[0], 2);
     obj->func = func_801071F4_three_door_monty;
 }
@@ -559,14 +559,14 @@ void func_80107384_three_door_monty(omObjData *obj) {
     if (omPauseChk() + D_800D6A90_main == 0) {
         D_8010D8A8_three_door_monty += 0.05f;
     }
-    func_8001E888_main(obj->model[0], entry->unk_18, 0.0f, D_8010D234_three_door_monty[0], D_8010D234_three_door_monty[1],
+    Hu3DModelObjTexScroll(obj->model[0], entry->unk_18, 0.0f, D_8010D234_three_door_monty[0], D_8010D234_three_door_monty[1],
                        "dammy-castle_ground1_2", 0);
 }
 
 void func_8010742C_three_door_monty(omObjData *obj) {
-    obj->model[0] = func_8000B108_main(0x4C000D, 0x2A9);
-    func_8001C954_main(obj->model[0]);
-    func_800335BC_main("243_water_DEF", D_8010D234_three_door_monty);
+    obj->model[0] = Hu3DModelRead(0x4C000D, 0x2A9);
+    Hu3DModelVtxBufMake(obj->model[0]);
+    Hu3DTexSizeGet("243_water_DEF", D_8010D234_three_door_monty);
     D_8010D260_three_door_monty[12].unk_18 = 0.0f;
     obj->trans.x = 0.0f;
     obj->trans.y = 0.0f;
@@ -898,8 +898,8 @@ void func_80108034_three_door_monty(omObjData *obj) {
                         }
                         break;
                 }
-                func_8001F9E4_main(obj->model[0], D_8010EC46_three_door_monty);
-                func_8001F9E4_main(obj->model[1], D_8010EC46_three_door_monty);
+                Hu3DModelTPLvlSet(obj->model[0], D_8010EC46_three_door_monty);
+                Hu3DModelTPLvlSet(obj->model[1], D_8010EC46_three_door_monty);
             }
             busy = 0;
             for (i = 0; i < 3; i++) {
@@ -910,8 +910,8 @@ void func_80108034_three_door_monty(omObjData *obj) {
             }
             if (busy == 0) {
                 D_8010EC46_three_door_monty = 255;
-                func_8001F9E4_main(obj->model[0], D_8010EC46_three_door_monty);
-                func_8001F9E4_main(obj->model[1], D_8010EC46_three_door_monty);
+                Hu3DModelTPLvlSet(obj->model[0], D_8010EC46_three_door_monty);
+                Hu3DModelTPLvlSet(obj->model[1], D_8010EC46_three_door_monty);
                 for (i = 0; i < 3; i++) {
                     if (doors[i]->unk_04 != 0 && doors[i]->unk_04 != 1) {
                         doors[i]->unk_04 = 0;
@@ -1063,9 +1063,9 @@ void func_80108C28_three_door_monty(omObjData *obj) {
 
     switch (obj->work[0]) {
         case 0:
-            obj->model[0] = func_8000B108_main(0xA0000, 0x2A9);
-            func_8000B460_main(obj, 0, D_8010CD28_three_door_monty[obj->work[0]][0] | 0xA0000);
-            func_8000B460_main(obj, 1, D_8010CD28_three_door_monty[obj->work[0]][1] | 0xA0000);
+            obj->model[0] = Hu3DModelRead(0xA0000, 0x2A9);
+            omObjMotionRead(obj, 0, D_8010CD28_three_door_monty[obj->work[0]][0] | 0xA0000);
+            omObjMotionRead(obj, 1, D_8010CD28_three_door_monty[obj->work[0]][1] | 0xA0000);
             obj->trans.x = D_8010CD40_three_door_monty[obj->work[0]].x;
             entry->unk_24 = obj->trans.y = 10.0f;
             obj->trans.z = D_8010CD40_three_door_monty[obj->work[0]].y - 300.0f;
@@ -1075,9 +1075,9 @@ void func_80108C28_three_door_monty(omObjData *obj) {
             obj->scale.z = 1.0f;
             break;
         case 1:
-            obj->model[0] = func_8000B108_main(0xA008E, 0x2A9);
-            func_8000B460_main(obj, 0, D_8010CD28_three_door_monty[obj->work[0]][0] | 0xA0000);
-            func_8000B460_main(obj, 1, D_8010CD28_three_door_monty[obj->work[0]][1] | 0xA0000);
+            obj->model[0] = Hu3DModelRead(0xA008E, 0x2A9);
+            omObjMotionRead(obj, 0, D_8010CD28_three_door_monty[obj->work[0]][0] | 0xA0000);
+            omObjMotionRead(obj, 1, D_8010CD28_three_door_monty[obj->work[0]][1] | 0xA0000);
             obj->trans.x = D_8010CD40_three_door_monty[obj->work[0]].x;
             entry->unk_24 = obj->trans.y = 30.0f;
             obj->trans.z = D_8010CD40_three_door_monty[obj->work[0]].y - 300.0f;
@@ -1087,9 +1087,9 @@ void func_80108C28_three_door_monty(omObjData *obj) {
             obj->scale.z = 1.0f;
             break;
         case 2:
-            obj->model[0] = func_8000B108_main(0xA00C4, 0x2A9);
-            func_8000B460_main(obj, 0, D_8010CD28_three_door_monty[obj->work[0]][0] | 0xA0000);
-            func_8000B460_main(obj, 1, D_8010CD28_three_door_monty[obj->work[0]][1] | 0xA0000);
+            obj->model[0] = Hu3DModelRead(0xA00C4, 0x2A9);
+            omObjMotionRead(obj, 0, D_8010CD28_three_door_monty[obj->work[0]][0] | 0xA0000);
+            omObjMotionRead(obj, 1, D_8010CD28_three_door_monty[obj->work[0]][1] | 0xA0000);
             obj->trans.x = D_8010CD40_three_door_monty[obj->work[0]].x;
             entry->unk_24 = obj->trans.y = 0.0f;
             obj->trans.z = D_8010CD40_three_door_monty[obj->work[0]].y - 300.0f;
@@ -1098,19 +1098,19 @@ void func_80108C28_three_door_monty(omObjData *obj) {
             obj->scale.y = 0.52f;
             obj->scale.z = 0.52f;
             D_8010EC46_three_door_monty = 0xFF;
-            func_8001FA68_main(obj->model[0]);
-            func_8001F9E4_main(obj->model[0], D_8010EC47_three_door_monty);
+            Hu3DModelTPLvlInit(obj->model[0]);
+            Hu3DModelTPLvlSet(obj->model[0], D_8010EC47_three_door_monty);
             break;
     }
-    obj->model[1] = func_8000B0A0_main(0, 0xC9);
-    func_8001C2FC_main(obj->model[1], 0x80000000, 0);
+    obj->model[1] = Hu3DModelRead2(0, 0xC9);
+    Hu3DModelObjAttrSet(obj->model[1], 0x80000000, 0);
     func_80088800_main(Hu3DData[obj->model[1]].mtx, 0.0f, 15.0f, 0.0f);
     if (obj->work[0] == 2) {
-        func_8001FA68_main(obj->model[1]);
-        func_8001F9E4_main(obj->model[1], D_8010EC47_three_door_monty);
+        Hu3DModelTPLvlInit(obj->model[1]);
+        Hu3DModelTPLvlSet(obj->model[1], D_8010EC47_three_door_monty);
     } else {
         Hu3DModelRemakeStatic(obj->model[1]);
-        func_8001C514_main(obj->model[1]);
+        Hu3DModelDynamicFree(obj->model[1]);
     }
     Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
     Hu3DModelRotSet(obj->model[0], obj->rot.x, obj->rot.y, obj->rot.z);
@@ -1119,8 +1119,8 @@ void func_80108C28_three_door_monty(omObjData *obj) {
     Hu3DModelRotSet(obj->model[1], obj->rot.x, obj->rot.y, obj->rot.z);
     entry->unk_20 = 1.0f;
     Hu3DModelScaleSet(obj->model[1], entry->unk_20, obj->scale.y, entry->unk_20);
-    func_8001C5B4_main(obj->model[0], obj->motion[0]);
-    func_8001C814_main(obj->model[0], 2, 2);
+    Hu3DMotionModelSet(obj->model[0], obj->motion[0]);
+    Hu3DMotionAttrSet(obj->model[0], 2, 2);
     Hu3DMotionTimeSet(obj->model[0], 0.0f);
     entry->unk_08 = -1;
     Hu3DModelCameraSet(obj->model[0], 2);
@@ -1163,7 +1163,7 @@ void func_8010916C_three_door_monty(omObjData *obj) {
                 }
             }
             if (busy == 0) {
-                func_8001C258_main(obj->model[0], 4, 0);
+                Hu3DModelAttrSet(obj->model[0], 4, 0);
                 entry->unk_18 += 0.1f;
                 if (entry->unk_18 > 1.0f) {
                     entry->unk_18 = 1.0f;
@@ -1216,7 +1216,7 @@ void func_8010916C_three_door_monty(omObjData *obj) {
                 entry->unk_18 -= 0.1f;
             } else {
                 entry->unk_18 = 0.1f;
-                func_8001C258_main(obj->model[0], 4, 4);
+                Hu3DModelAttrSet(obj->model[0], 4, 4);
                 Hu3DMotionTimeSet(obj->model[0], 0.0f);
                 Hu3DMotionSpeedSet(obj->model[0], 0.0f);
             }
@@ -1226,17 +1226,17 @@ void func_8010916C_three_door_monty(omObjData *obj) {
 }
 
 void func_80109594_three_door_monty(omObjData *obj) {
-    obj->model[0] = func_8000B108_main(0x4C000E, 0x2A9);
+    obj->model[0] = Hu3DModelRead(0x4C000E, 0x2A9);
     D_8010D238_three_door_monty[0] = DataRead(0x4C0000);
     D_8010D238_three_door_monty[1] = DataRead(0x4C0001);
     D_8010D238_three_door_monty[2] = DataRead(0x4C0002);
     D_8010EC3E_three_door_monty =
         Hu3DAnimCreate(Hu3DData[obj->model[0]].hmf, D_8010D238_three_door_monty[0], 0, D_8010CEFC_three_door_monty);
     Hu3DModelRemakeStatic(obj->model[0]);
-    func_8001C514_main(obj->model[0]);
+    Hu3DModelDynamicFree(obj->model[0]);
     Hu3DMotionTimeSet(obj->model[0], 0.0f);
     Hu3DMotionSpeedSet(obj->model[0], 0.0f);
-    func_8001C258_main(obj->model[0], 4, 4);
+    Hu3DModelAttrSet(obj->model[0], 4, 4);
     obj->trans.x = 0.0f;
     obj->trans.y = 450.0f;
     obj->trans.z = 0.0f;
@@ -1291,13 +1291,13 @@ void func_80109890_three_door_monty(omObjData *obj) {
 
     switch (obj->work[0]) {
         case 0:
-            obj->model[0] = func_8000B108_main(0x4C000C, 0x2B9);
+            obj->model[0] = Hu3DModelRead(0x4C000C, 0x2B9);
             break;
         case 1:
-            obj->model[0] = func_8000B108_main(0x4C000B, 0x2B9);
+            obj->model[0] = Hu3DModelRead(0x4C000B, 0x2B9);
             break;
         case 2:
-            obj->model[0] = func_8000B108_main(0x4C000A, 0x2B9);
+            obj->model[0] = Hu3DModelRead(0x4C000A, 0x2B9);
             break;
     }
     obj->trans.x = D_8010CD40_three_door_monty[obj->work[0]].x;
@@ -1440,9 +1440,9 @@ void func_80109F0C_three_door_monty(omObjData *obj) {
             entry->unk_12 = D_8010D254_three_door_monty;
         }
         func_801062F4_three_door_monty(obj, 4, 0, 3, 0, &entry->unk_04);
-        func_8001C258_main(obj->model[2], 4, 0);
-        func_8001C258_main(obj->model[3], 4, 4);
-        func_8001C258_main(obj->model[4], 4, 4);
+        Hu3DModelAttrSet(obj->model[2], 4, 0);
+        Hu3DModelAttrSet(obj->model[3], 4, 4);
+        Hu3DModelAttrSet(obj->model[4], 4, 4);
         entry->unk_06 = 2;
     }
     if (D_800D5558_main[obj->work[3]] & 0x4000) {
@@ -1452,9 +1452,9 @@ void func_80109F0C_three_door_monty(omObjData *obj) {
             entry->unk_12 = D_8010D254_three_door_monty;
         }
         func_801062F4_three_door_monty(obj, 4, 0, 3, 0, &entry->unk_04);
-        func_8001C258_main(obj->model[2], 4, 4);
-        func_8001C258_main(obj->model[3], 4, 0);
-        func_8001C258_main(obj->model[4], 4, 4);
+        Hu3DModelAttrSet(obj->model[2], 4, 4);
+        Hu3DModelAttrSet(obj->model[3], 4, 0);
+        Hu3DModelAttrSet(obj->model[4], 4, 4);
         entry->unk_06 = 1;
     }
     if (D_800D5558_main[obj->work[3]] & 0x2000) {
@@ -1464,9 +1464,9 @@ void func_80109F0C_three_door_monty(omObjData *obj) {
             entry->unk_12 = D_8010D254_three_door_monty;
         }
         func_801062F4_three_door_monty(obj, 4, 0, 3, 0, &entry->unk_04);
-        func_8001C258_main(obj->model[2], 4, 4);
-        func_8001C258_main(obj->model[3], 4, 4);
-        func_8001C258_main(obj->model[4], 4, 0);
+        Hu3DModelAttrSet(obj->model[2], 4, 4);
+        Hu3DModelAttrSet(obj->model[3], 4, 4);
+        Hu3DModelAttrSet(obj->model[4], 4, 0);
         entry->unk_06 = 0;
     }
 }
@@ -1613,7 +1613,7 @@ void func_8010A678_three_door_monty(omObjData *obj) {
                         case 2:
                             if (D_8010EC3C_three_door_monty >= 2) {
                                 for (i = 0; i < 3; i++) {
-                                    func_8001C258_main(obj->model[2 + i], 4, 4);
+                                    Hu3DModelAttrSet(obj->model[2 + i], 4, 4);
                                 }
                                 func_80106390_three_door_monty(obj, 6, 2, 0, &entry->unk_04);
                                 if (D_8010D244_three_door_monty[obj->work[0]] == 0) {
@@ -1631,7 +1631,7 @@ void func_8010A678_three_door_monty(omObjData *obj) {
                         case 3:
                             if (D_8010EC3C_three_door_monty >= 2) {
                                 for (i = 0; i < 3; i++) {
-                                    func_8001C258_main(obj->model[2 + i], 4, 4);
+                                    Hu3DModelAttrSet(obj->model[2 + i], 4, 4);
                                 }
                                 func_80106390_three_door_monty(obj, 6, 2, 0, &entry->unk_04);
                                 if (D_8010D244_three_door_monty[obj->work[0]] == 0) {
@@ -1683,11 +1683,11 @@ void func_8010A678_three_door_monty(omObjData *obj) {
             if (entry->unk_14 != 0) {
                 if (D_8010EC3C_three_door_monty >= 2) {
                     for (i = 0; i < 3; i++) {
-                        func_8001C258_main(obj->model[2 + i], 4, 4);
+                        Hu3DModelAttrSet(obj->model[2 + i], 4, 4);
                     }
                     func_801062F4_three_door_monty(obj, 5, 0, 30, 0, &entry->unk_04);
                     if (D_8010D244_three_door_monty[obj->work[0]] == 0) {
-                        func_80045ED0_main((D_8010CDA4_three_door_monty[GwPlayer[obj->work[0]].chr] << 16) | 0x2F);
+                        HuAudCharVoicePlay((D_8010CDA4_three_door_monty[GwPlayer[obj->work[0]].chr] << 16) | 0x2F);
                         D_8010D244_three_door_monty[obj->work[0]] = 1;
                     }
                 }
@@ -1698,7 +1698,7 @@ void func_8010A678_three_door_monty(omObjData *obj) {
                     case 2:
                         if (D_8010EC3C_three_door_monty >= 2) {
                             for (i = 0; i < 3; i++) {
-                                func_8001C258_main(obj->model[2 + i], 4, 4);
+                                Hu3DModelAttrSet(obj->model[2 + i], 4, 4);
                             }
                             func_80106390_three_door_monty(obj, 6, 2, 0, &entry->unk_04);
                             if (D_8010D230_three_door_monty >= 4) {
@@ -1717,12 +1717,12 @@ void func_8010A678_three_door_monty(omObjData *obj) {
                     case 3:
                         if (D_8010EC3C_three_door_monty >= 2) {
                             for (i = 0; i < 3; i++) {
-                                func_8001C258_main(obj->model[2 + i], 4, 4);
+                                Hu3DModelAttrSet(obj->model[2 + i], 4, 4);
                             }
                             func_80106390_three_door_monty(obj, 6, 2, 0, &entry->unk_04);
                             if (D_8010D230_three_door_monty >= 4) {
                                 if (D_8010D244_three_door_monty[obj->work[0]] == 0) {
-                                    func_80045ED0_main(
+                                    HuAudCharVoicePlay(
                                         (D_8010CDA4_three_door_monty[GwPlayer[obj->work[0]].chr] << 16) | 0x36);
                                     D_8010D244_three_door_monty[obj->work[0]] = 1;
                                 }
@@ -1755,23 +1755,23 @@ void func_8010B138_three_door_monty(omObjData *obj) {
     s8 chr = GwPlayer[obj->work[0]].chr;
     s16 i;
 
-    obj->model[0] = func_8000B108_main(D_800A178C_main[chr][0] | D_800A178C_main[chr][3], 0x2A9);
+    obj->model[0] = Hu3DModelRead(D_800A178C_main[chr][0] | D_800A178C_main[chr][3], 0x2A9);
     Hu3DModelRemakeStatic(obj->model[0]);
-    func_8001C514_main(obj->model[0]);
-    func_8000B460_main(obj, 0, func_80017BB8_main(chr, 0));
-    func_8000B460_main(obj, 1, func_80017BB8_main(chr, 1));
-    func_8000B460_main(obj, 2, func_80017BB8_main(chr, 0x6C));
-    func_8000B460_main(obj, 3, func_80017BB8_main(chr, 0x66));
-    func_8000B460_main(obj, 4, func_80017BB8_main(chr, 0x8A));
-    func_8000B460_main(obj, 5, func_80017BB8_main(chr, 0x2F));
-    func_8000B460_main(obj, 6, func_80017BB8_main(chr, 0x36));
-    func_8001C5B4_main(obj->model[0], obj->motion[0]);
-    func_8001C814_main(obj->model[0], 2, 2);
+    Hu3DModelDynamicFree(obj->model[0]);
+    omObjMotionRead(obj, 0, CharMotionDataNumGet(chr, 0));
+    omObjMotionRead(obj, 1, CharMotionDataNumGet(chr, 1));
+    omObjMotionRead(obj, 2, CharMotionDataNumGet(chr, 0x6C));
+    omObjMotionRead(obj, 3, CharMotionDataNumGet(chr, 0x66));
+    omObjMotionRead(obj, 4, CharMotionDataNumGet(chr, 0x8A));
+    omObjMotionRead(obj, 5, CharMotionDataNumGet(chr, 0x2F));
+    omObjMotionRead(obj, 6, CharMotionDataNumGet(chr, 0x36));
+    Hu3DMotionModelSet(obj->model[0], obj->motion[0]);
+    Hu3DMotionAttrSet(obj->model[0], 2, 2);
     entry->unk_04 = 0;
-    obj->model[1] = func_8000B0A0_main(0, 0x14C9);
-    func_8001C2FC_main(obj->model[1], 0x80000000, 0);
+    obj->model[1] = Hu3DModelRead2(0, 0x14C9);
+    Hu3DModelObjAttrSet(obj->model[1], 0x80000000, 0);
     Hu3DModelRemakeStatic(obj->model[1]);
-    func_8001C514_main(obj->model[1]);
+    Hu3DModelDynamicFree(obj->model[1]);
     switch (obj->work[1]) {
         case 0:
             obj->trans.x = -325.0f;
@@ -1800,13 +1800,13 @@ void func_8010B138_three_door_monty(omObjData *obj) {
     Hu3DModelRotSet(obj->model[0], obj->rot.x, obj->rot.y, obj->rot.z);
     Hu3DModelRotSet(obj->model[1], obj->rot.x, obj->rot.y, obj->rot.z);
     for (i = 0; i < 3; i++) {
-        obj->model[2 + i] = func_8000B108_main(D_8010CD58_three_door_monty[i] | 0x4C0000, 0xA9);
+        obj->model[2 + i] = Hu3DModelRead(D_8010CD58_three_door_monty[i] | 0x4C0000, 0xA9);
         Hu3DModelHookSet(obj->model[2 + i], obj->model[0], "item_hook");
-        func_8001C258_main(obj->model[2 + i], 0x4000, 0x4000);
+        Hu3DModelAttrSet(obj->model[2 + i], 0x4000, 0x4000);
         if (i == 0) {
-            func_8001C258_main(obj->model[2], 4, 0);
+            Hu3DModelAttrSet(obj->model[2], 4, 0);
         } else {
-            func_8001C258_main(obj->model[2 + i], 4, 4);
+            Hu3DModelAttrSet(obj->model[2 + i], 4, 4);
         }
     }
     Hu3DModelCameraSet(obj->model[0], 4);
@@ -1918,7 +1918,7 @@ void func_8010B7B8_three_door_monty(omObjData *obj) {
                         do {
                             entry->unk_04 = 11;
                         } while (0);
-                        func_8000BD50_main(entry->unk_40[1], 11);
+                        espPatNoSet(entry->unk_40[1], 11);
                     } else {
                         entry->unk_04++;
                         if (entry->unk_04 >= 10) {
@@ -1948,7 +1948,7 @@ void func_8010B7B8_three_door_monty(omObjData *obj) {
                                 }
                                 break;
                         }
-                        func_8000BD50_main(entry->unk_40[1], entry->unk_04);
+                        espPatNoSet(entry->unk_40[1], entry->unk_04);
                     }
                 }
             } else if (D_8010EC3C_three_door_monty == 1) {
@@ -1972,10 +1972,10 @@ void func_8010BC08_three_door_monty(omObjData *obj) {
     entry->unk_40[1] = espEntry(entry->unk_40[0], 0, 0);
     if (obj->work[1] == 1) {
         entry->unk_04 = 11;
-        func_8000BD50_main(entry->unk_40[1], 11);
+        espPatNoSet(entry->unk_40[1], 11);
     } else {
         entry->unk_04 = (u8)(rand8() % 10);
-        func_8000BD50_main(entry->unk_40[1], entry->unk_04);
+        espPatNoSet(entry->unk_40[1], entry->unk_04);
     }
     espPosSet(entry->unk_40[1], D_8010CD64_three_door_monty[(s16)objs[obj->work[0]]->work[1]][obj->work[1]], 140);
     espDispOff(entry->unk_40[1]);
@@ -2102,7 +2102,7 @@ void func_8010C390_three_door_monty(omObjData *obj) {
         WipeCreateOut(0, 20);
         obj->func = func_8010C358_three_door_monty;
         HuAudSeqFadeOut(30);
-        func_8004AB0C_main(30);
+        HuAudFXAllFadeOut(30);
     }
 }
 
@@ -2159,7 +2159,7 @@ void func_8010C3E8_three_door_monty(omObjData *obj) {
             if (D_8010EC32_three_door_monty <= 0 || D_8010EC44_three_door_monty == 1) {
                 D_8010D254_three_door_monty = 0;
                 D_8010EC44_three_door_monty = 0;
-                func_8003F5C0_main();
+                GMesTimerEnd();
                 func_801062E8_three_door_monty(7);
                 D_800D6A58_main = 0;
             } else {
@@ -2169,7 +2169,7 @@ void func_8010C3E8_three_door_monty(omObjData *obj) {
                     D_8010D254_three_door_monty += 10;
                 }
             }
-            func_8003F578_main((D_8010EC32_three_door_monty + 29) / 30);
+            GMesTimerValueSet((D_8010EC32_three_door_monty + 29) / 30);
             break;
         case 7:
             if (D_8010EC42_three_door_monty == 7) {
@@ -2292,8 +2292,8 @@ void func_8010CA48_three_door_monty(void) {
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
     obj->work[0] = 3;
     omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    func_8000B5F0_main(3);
-    func_8000B710_main(3);
+    CamSetupInit(3);
+    CamSetupMapCullAddMulti(3);
     for (i = 0; i < 3; i++) {
         ScissorSet(i, D_8010CDD0_three_door_monty[i].scissorX, D_8010CDD0_three_door_monty[i].scissorY,
                    D_8010CDD0_three_door_monty[i].scissorWidth, D_8010CDD0_three_door_monty[i].scissorHeight);
@@ -2306,10 +2306,10 @@ void func_8010CA48_three_door_monty(void) {
 }
 
 void func_8010CBBC_three_door_monty(void) {
-    func_8001FE20_main(50);
-    func_800142A0_main(50);
+    MapCollInit(50);
+    Hu3DSprModelInit(50);
     omInitObjMan(60, 0);
-    func_8004A208_main();
+    omGameSysInit();
     func_8010CA48_three_door_monty();
     Hu3DGLightMaxSet(1);
     Hu3DGLightMaxSet(2);
@@ -2322,8 +2322,8 @@ void func_8010CBBC_three_door_monty(void) {
     D_800EC1B8_minigame = 0;
     D_800EC280_minigame = 0;
     D_800EBE28_minigame = 0;
-    func_80045010_main(D_8010D228_three_door_monty, 0);
-    func_80045010_main(D_8010D228_three_door_monty, 1);
+    GMesFontMesCreate(D_8010D228_three_door_monty, 0);
+    GMesFontMesCreate(D_8010D228_three_door_monty, 1);
     omAddObj(1000, 0, 0, -1, func_8010C8C0_three_door_monty);
     omAddObj(1000, 0, 0, -1, func_8010C390_three_door_monty);
     func_80105A74_three_door_monty();

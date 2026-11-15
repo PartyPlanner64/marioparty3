@@ -402,7 +402,7 @@ void func_80106134_filesel(s32 arg0, u16 arg1) {
 }
 
 void func_80106168_filesel(s32 arg0, u16 arg1, u16 arg2) {
-    func_8000BDDC_main(D_80112ED0_filesel[arg0].unk_00, 1);
+    espAnimModeSet(D_80112ED0_filesel[arg0].unk_00, 1);
     espBankSet(D_80112ED0_filesel[arg0].unk_00, arg1, arg2);
 }
 
@@ -416,7 +416,7 @@ void func_801061D4_filesel(void) {
 }
 
 void func_80106220_filesel(s32 arg0, s32 arg1, s32 arg2) {
-    s16 modelId = func_8000B108_main(arg1, arg2);
+    s16 modelId = Hu3DModelRead(arg1, arg2);
 
     D_80113650_filesel[arg0].unk_00 = modelId;
     Hu3DModelPosSet(modelId, 0.0f, 0.0f, 0.0f);
@@ -502,15 +502,15 @@ void func_80106654_filesel(s32 arg0, f32 *arg1, f32 *arg2, f32 *arg3) {
 }
 
 void func_8010669C_filesel(s32 arg0) {
-    func_8001C258_main(D_80113650_filesel[arg0].unk_00, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(D_80113650_filesel[arg0].unk_00, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
 }
 
 void func_801066DC_filesel(s32 arg0) {
-    func_8001C258_main(D_80113650_filesel[arg0].unk_00, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(D_80113650_filesel[arg0].unk_00, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
 }
 
 void func_8010671C_filesel(s32 arg0, s32 arg1) {
-    func_8001C814_main(D_80113650_filesel[arg0].unk_00, -1, arg1);
+    Hu3DMotionAttrSet(D_80113650_filesel[arg0].unk_00, -1, arg1);
 }
 
 void func_80106760_filesel(s32 arg0, s32 arg1, s16 arg2, s16 arg3, s16 arg4) {
@@ -518,7 +518,7 @@ void func_80106760_filesel(s32 arg0, s32 arg1, s16 arg2, s16 arg3, s16 arg4) {
 }
 
 void func_801067D0_filesel(s32 arg0, s16 arg1) {
-    func_8001C814_main(D_80113650_filesel[arg0].unk_00, arg1, 0);
+    Hu3DMotionAttrSet(D_80113650_filesel[arg0].unk_00, arg1, 0);
 }
 
 void func_80106814_filesel(s32 arg0) {
@@ -550,7 +550,7 @@ void func_801069D8_filesel(s32 arg0, s32 arg1, s16 arg2) {
     s16 parentModelId = func_80106450_filesel(arg1);
 
     Hu3DMotionSet(modelId, parentModelId);
-    func_8001C814_main(modelId, -1, arg2);
+    Hu3DMotionAttrSet(modelId, -1, arg2);
 }
 
 void func_80106A48_filesel(s32 arg0) {
@@ -571,7 +571,7 @@ u32 func_80106AD8_filesel(u32 arg0) {
     void *ptr;
 
     if (0x80000000U < arg0) {
-        len = func_800452A0_main(buf, (void *)arg0);
+        len = GameMesStrConv2(buf, (void *)arg0);
         ptr = HuMemAlloc(len);
         bcopy(buf, ptr, len);
         return (u32)ptr;
@@ -622,13 +622,13 @@ void func_80106B40_filesel(s32 index, u32 message, s16 x, s16 y, s16 width, s16 
 s32 func_80106D8C_filesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 style) {
     s16 window = HuWinCreate(x, y, width, height, 0, 8);
 
-    func_8005B63C_main(window, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
+    HuWinAttrSet(window, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
     HuWinMesSpeedSet(window, 0);
     HuWinBGTPLvlSet(window, 255);
-    func_80060144_main(window);
+    HuWinDummy(window);
     HuWinPriSet(window, 1);
     HuWinActivePlayerSet(window, HUWIN_PLAYER_1);
-    func_8005C154_main(window, 192, 192, 192);
+    HuWinMesDefColSet(window, 192, 192, 192);
     HuWinBGColSet(window, 0, 64, 64);
     HuWinMesColSet(window, 7);
     HuWinMesPalSet(window, 2, 255, 64, 64);
@@ -642,17 +642,17 @@ s32 func_80106D8C_filesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 
 s32 func_80106ED8_filesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 style) {
     s16 window = HuWinCreate(x, y, width, height, 0, 4);
 
-    func_8005B63C_main(window, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
+    HuWinAttrSet(window, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
     HuWinMesSpeedSet(window, 0);
     HuWinBGTPLvlSet(window, 255);
-    func_80060144_main(window);
+    HuWinDummy(window);
     HuWinPriSet(window, 1);
     HuWinActivePlayerSet(window, HUWIN_PLAYER_1);
     HuWinMesPalSet(window, 5, 0, 176, 192);
     HuWinMesPalSet(window, 2, 255, 64, 64);
     HuWinMesPalSet(window, 4, 96, 255, 64);
     HuWinMesPalSet(window, 6, 255, 255, 64);
-    func_8005C154_main(window, 192, 192, 192);
+    HuWinMesDefColSet(window, 192, 192, 192);
     HuWinBGColSet(window, 255, 255, 255);
     HuWinMesColSet(window, 1);
     HuWinHomeClear(window);
@@ -663,9 +663,9 @@ s32 func_80106ED8_filesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 
 s32 func_80107040_filesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 style) {
     s16 window = HuWinCreate(x, y, width, height, 0, 8);
 
-    func_8005B63C_main(window, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
+    HuWinAttrSet(window, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
     HuWinMesSpeedSet(window, 0);
-    func_80060144_main(window);
+    HuWinDummy(window);
     HuWinPriSet(window, 1);
     HuWinActivePlayerSet(window, HUWIN_PLAYER_1);
     HuWinMesPalSet(window, 5, 0, 176, 192);
@@ -675,7 +675,7 @@ s32 func_80107040_filesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 
     HuWinMesPalSet(window, 2, 255, 64, 64);
     HuWinMesPalSet(window, 4, 96, 255, 64);
     HuWinMesPalSet(window, 6, 255, 255, 64);
-    func_8005C154_main(window, 192, 192, 0);
+    HuWinMesDefColSet(window, 192, 192, 0);
     HuWinBGColSet(window, 255, 255, 255);
     HuWinMesColSet(window, 6);
     HuWinHomeClear(window);
@@ -684,37 +684,37 @@ s32 func_80107040_filesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 
 }
 
 s32 func_801071E8_filesel(u32 message, s16 x, s16 y, s16 style) {
-    s16 window = func_80060880_main(x, y, 19);
+    s16 window = HuWinExCreateStyled(x, y, 19);
 
     HuWinMesPalSet(window, 2, 255, 64, 64);
     HuWinMesPalSet(window, 4, 96, 255, 64);
     HuWinMesPalSet(window, 6, 255, 255, 64);
-    func_80060C14_main(window, 1);
+    HuWinExOpen(window, 1);
     HuWinActivePlayerSet(window, HUWIN_PLAYER_1);
     HuWinMesSet(window, message, -1, -1);
     return window;
 }
 
 s32 func_801072B4_filesel(u32 message, s16 x, s16 y, s16 style) {
-    s16 window = func_80060880_main(x, y, 20);
+    s16 window = HuWinExCreateStyled(x, y, 20);
 
     HuWinMesPalSet(window, 2, 255, 64, 64);
     HuWinMesPalSet(window, 4, 96, 255, 64);
     HuWinMesPalSet(window, 6, 255, 255, 64);
-    func_80060C14_main(window, 0);
+    HuWinExOpen(window, 0);
     HuWinActivePlayerSet(window, HUWIN_PLAYER_1);
     HuWinMesSet(window, message, -1, -1);
     return window;
 }
 
 s32 func_80107380_filesel(u32 message, s16 x, s16 y, s16 style) {
-    s16 window = func_80060880_main(x, y, 19);
+    s16 window = HuWinExCreateStyled(x, y, 19);
 
     HuWinMesPalSet(window, 2, 255, 64, 64);
     HuWinMesPalSet(window, 4, 96, 255, 64);
     HuWinMesPalSet(window, 6, 255, 255, 64);
     HuWinActivePlayerSet(window, HUWIN_PLAYER_1);
-    func_80060C14_main(window, 0);
+    HuWinExOpen(window, 0);
     HuWinMesSet(window, message, -1, -1);
     return window;
 }
@@ -730,7 +730,7 @@ void func_8010744C_filesel(void) {
 
 void func_80107490_filesel(s32 arg0) {
     if (D_80114158_filesel[arg0].unk_08 == 3) {
-        func_80060EA8_main(D_80114158_filesel[arg0].unk_00, 1);
+        HuWinExClose(D_80114158_filesel[arg0].unk_00, 1);
         HuWinExCleanup(D_80114158_filesel[arg0].unk_00);
     } else {
         HuWinDispOff(D_80114158_filesel[arg0].unk_00);
@@ -738,7 +738,7 @@ void func_80107490_filesel(s32 arg0) {
         D_80114158_filesel[arg0].unk_00 = -1;
     }
     if (D_80114158_filesel[arg0].unk_04 != 0) {
-        func_80019C00_main((void *)D_80114158_filesel[arg0].unk_04);
+        HuMemDelayFree((void *)D_80114158_filesel[arg0].unk_04);
         D_80114158_filesel[arg0].unk_04 = 0;
     }
 }
@@ -777,7 +777,7 @@ void func_801076D0_filesel(s32 arg0, u32 arg1) {
 
     HuWinHomeClear(D_80114158_filesel[arg0].unk_00);
     if (D_80114158_filesel[arg0].unk_04 != 0) {
-        func_80019C00_main((void *)D_80114158_filesel[arg0].unk_04);
+        HuMemDelayFree((void *)D_80114158_filesel[arg0].unk_04);
         D_80114158_filesel[arg0].unk_04 = 0;
     }
 
@@ -790,7 +790,7 @@ void func_801076D0_filesel(s32 arg0, u32 arg1) {
 }
 
 void func_8010779C_filesel(s32 arg0, s8 arg1, u32 arg2) {
-    func_800601BC_main(D_80114158_filesel[arg0].unk_00, arg2, arg1);
+    HuWinInsertMesSetNoLF(D_80114158_filesel[arg0].unk_00, arg2, arg1);
 }
 
 s32 func_801077D8_filesel(s32 arg0, s16 arg1, s32 arg2) {
@@ -1008,7 +1008,7 @@ void func_80107CF8_filesel(void) {
     D_800D09A8_main.boxNo = fileIndex;
     func_800465F4_main(0);
     D_800D09A8_main.boxNo = fileIndex;
-    func_80050CFC_main();
+    SLSaveCommon();
     HuAudFXPlay(0x155);
     func_8010F10C_filesel();
     func_8010F874_filesel(fileIndex);
@@ -1434,7 +1434,7 @@ s32 func_80108EB8_filesel(void) {
             func_801076D0_filesel(4, 0x2A14);
             HuPrcSleep(3);
             SLCurBoxNoSet(fileIndex);
-            func_8004FCF0_main();
+            SLSaveDataInit();
             func_80112584_filesel(fileIndex);
             func_80112184_filesel(fileIndex);
             func_801076A0_filesel(4);
@@ -1457,23 +1457,23 @@ s32 func_80108EB8_filesel(void) {
             func_8010669C_filesel(fileIndex);
             models[0] = func_8010642C_filesel(6);
             models[1] = func_8010642C_filesel(7);
-            func_8001FA68_main(models[0]);
-            func_8001FA68_main(models[1]);
+            Hu3DModelTPLvlInit(models[0]);
+            Hu3DModelTPLvlInit(models[1]);
             func_801066DC_filesel(6);
             func_8010669C_filesel(7);
             for (alpha = 255; i < 16; i++) {
-                func_8001F9E4_main(models[0], alpha);
+                Hu3DModelTPLvlSet(models[0], alpha);
                 alpha -= 16;
                 HuPrcVSleep();
             }
             func_8010669C_filesel(6);
             func_801066DC_filesel(7);
             for (i = 0, alpha = 255, max = 255; i < 16; i++) {
-                func_8001F9E4_main(models[1], max - alpha);
+                Hu3DModelTPLvlSet(models[1], max - alpha);
                 alpha -= 16;
                 HuPrcVSleep();
             }
-            func_8001F9E4_main(models[1], 255);
+            Hu3DModelTPLvlSet(models[1], 255);
             func_801066DC_filesel(fileIndex);
             func_801066DC_filesel(fileIndex + 3);
             func_80106344_filesel(6);
@@ -1856,7 +1856,7 @@ void func_80109B2C_filesel(void) {
         func_80107608_filesel(4, 160.0f, 208.0f);
         func_801076D0_filesel(4, 0x2A16);
         HuPrcSleep(3);
-        func_80050DDC_main(source, destination);
+        SLBoxCopy(source, destination);
         SLCurBoxNoSet(destination);
         SLLoadGameStat();
         func_80112184_filesel(destination);
@@ -1882,9 +1882,9 @@ void func_80109B2C_filesel(void) {
         func_8010671C_filesel(destination, 1);
         func_8010669C_filesel(destination);
         model = func_8010642C_filesel(6);
-        func_8001FA68_main(model);
+        Hu3DModelTPLvlInit(model);
         for (i = 0, alpha = 255; i < 16; i++) {
-            func_8001F9E4_main(model, alpha);
+            Hu3DModelTPLvlSet(model, alpha);
             alpha -= 16;
             HuPrcVSleep();
         }
@@ -1974,7 +1974,7 @@ void func_8010A028_filesel(void) {
                 func_8010779C_filesel(4, 1, (u32) "0");
                 func_8010779C_filesel(4, 2, (u32) "0");
                 func_8010779C_filesel(4, 3, (u32) "0");
-                func_8005B63C_main(D_80114158_filesel[4].unk_00, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK, HUWIN_ATTR_NONE);
+                HuWinAttrSet(D_80114158_filesel[4].unk_00, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK, HUWIN_ATTR_NONE);
                 HuWinActivePlayerSet(D_80114158_filesel[4].unk_00, HUWIN_PLAYER_1);
                 func_801076D0_filesel(4, 0x2A09);
                 while (HuWinStatGet(D_80114158_filesel[4].unk_00) != 0) {
@@ -2031,14 +2031,14 @@ void func_8010A028_filesel(void) {
                         func_80106550_filesel(cursor, 0.8f, 0.8f, 0.8f);
                         HuPrcSleep(16);
                         func_8010F844_filesel(selection);
-                        func_8005B63C_main(D_80114158_filesel[4].unk_00, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
+                        HuWinAttrSet(D_80114158_filesel[4].unk_00, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
                         func_801076D0_filesel(4, 0x2A0B);
                         func_80107670_filesel(4);
                         func_80105F24_filesel(18);
                         break;
                     }
                 }
-                func_8005B63C_main(D_80114158_filesel[4].unk_00, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
+                HuWinAttrSet(D_80114158_filesel[4].unk_00, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
                 func_801076D0_filesel(4, 0x2A08);
                 break;
             }
@@ -2111,9 +2111,9 @@ void func_8010A7D8_filesel(s32 arg0) {
     f32 progress;
     f32 scale;
 
-    func_8001C2FC_main(model, 0x22000, 0x20000);
+    Hu3DModelObjAttrSet(model, 0x22000, 0x20000);
     Hu3DModelRemakeStatic(model);
-    func_8001C954_main(model);
+    Hu3DModelVtxBufMake(model);
     HuPrcVSleep();
     progress = 0.0f;
     angle = 0.0f;
@@ -2123,7 +2123,7 @@ void func_8010A7D8_filesel(s32 arg0) {
             break;
         }
         D_800A0A7C_main = angle;
-        func_8001D558_main(model, progress, scale, 2);
+        Hu3DModelVtxWave(model, progress, scale, 2);
         angle += 46.0f;
         if (angle > 360.0f) {
             angle -= 360.0f;
@@ -2132,7 +2132,7 @@ void func_8010A7D8_filesel(s32 arg0) {
         scale += ((10.0f - scale) / 67.0f) * 4.0f;
         HuPrcVSleep();
     }
-    func_8001C258_main(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelKill(model);
     HuPrcSleep(3);
 }
@@ -2290,7 +2290,7 @@ s32 func_8010AC58_filesel(s32 fileIndex) {
     func_80112508_filesel(fileIndex, name);
     func_80106B40_filesel(10, (u32)name, 104, 46, 62, 20, 2);
     window = func_80107810_filesel(10);
-    func_8005B63C_main(window, HUWIN_ATTR_MONOSPACE, HUWIN_ATTR_MONOSPACE);
+    HuWinAttrSet(window, HUWIN_ATTR_MONOSPACE, HUWIN_ATTR_MONOSPACE);
     HuWinBGColSet(window, 128, 128, 128);
     HuWinMesColSet(window, 7);
     func_80105E48_filesel(16, 0x1F0020);
@@ -3250,13 +3250,13 @@ s32 func_8010CCA8_filesel(s32 fileIndex) {
                         if (func_801077D8_filesel(4, 0, 0) == 0) {
                             func_801076D0_filesel(4, (u32)D_80112A64_filesel);
                             HuPrcVSleep();
-                            func_8005B63C_main(D_80114158_filesel[4].unk_00, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK, HUWIN_ATTR_NONE);
+                            HuWinAttrSet(D_80114158_filesel[4].unk_00, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK, HUWIN_ATTR_NONE);
                             func_801076D0_filesel(4, 0x2A18);
                             func_8010782C_filesel(4);
                             func_801076D0_filesel(4, 0x2A19);
                             func_8010782C_filesel(4);
                             input = func_801077D8_filesel(4, 1, 0) == 0 ? 2 : -1;
-                            func_8005B63C_main(D_80114158_filesel[4].unk_00, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
+                            HuWinAttrSet(D_80114158_filesel[4].unk_00, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
                             break;
                         }
                     }
@@ -3841,7 +3841,7 @@ void func_8010F168_filesel(void) {
     y = 168.0f;
     func_80106B40_filesel(1, (u32)D_801142D8_filesel.files[0].name, x, 168, width, 20, 2);
     window = func_80107810_filesel(1);
-    func_8005B63C_main(window, HUWIN_ATTR_MONOSPACE, HUWIN_ATTR_MONOSPACE);
+    HuWinAttrSet(window, HUWIN_ATTR_MONOSPACE, HUWIN_ATTR_MONOSPACE);
     HuWinBGColSet(window, 192, 192, 192);
     HuWinMesColSet(window, 7);
     if (!(D_801142D8_filesel.files[0].name[0] | D_801142D8_filesel.files[0].name[1])) {
@@ -3856,7 +3856,7 @@ void func_8010F168_filesel(void) {
     x = screen.x - (s32)(width >> 1);
     func_80106B40_filesel(2, (u32)D_801142D8_filesel.files[1].name, x, y, width, 20, 2);
     window = func_80107810_filesel(2);
-    func_8005B63C_main(window, HUWIN_ATTR_MONOSPACE, HUWIN_ATTR_MONOSPACE);
+    HuWinAttrSet(window, HUWIN_ATTR_MONOSPACE, HUWIN_ATTR_MONOSPACE);
     HuWinBGColSet(window, 192, 192, 192);
     HuWinMesColSet(window, 7);
     if (!(D_801142D8_filesel.files[1].name[0] | D_801142D8_filesel.files[1].name[1])) {
@@ -3871,7 +3871,7 @@ void func_8010F168_filesel(void) {
     x = screen.x - (s32)(width >> 1);
     func_80106B40_filesel(3, (u32)D_801142D8_filesel.files[2].name, x, y, width, 20, 2);
     window = func_80107810_filesel(3);
-    func_8005B63C_main(window, HUWIN_ATTR_MONOSPACE, HUWIN_ATTR_MONOSPACE);
+    HuWinAttrSet(window, HUWIN_ATTR_MONOSPACE, HUWIN_ATTR_MONOSPACE);
     HuWinBGColSet(window, 128, 128, 128);
     HuWinMesColSet(window, 7);
     if (!(D_801142D8_filesel.files[2].name[0] | D_801142D8_filesel.files[2].name[1])) {
@@ -4894,7 +4894,7 @@ void func_801126C0_filesel(s32 arg0, u8 *arg1, u8 *arg2) {
 }
 
 void func_80112758_filesel(void) {
-    func_80050ABC_main();
+    SLLoadStory();
     if (GwStory.unk0 == 0 && _CheckFlag(0x18)) {
         _SetFlag(0x28);
     }

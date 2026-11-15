@@ -78,8 +78,8 @@ void func_801059A0_chancetime(void) {
 
     omInitObjMan(30, 20);
     HuWinInit();
-    func_800142A0_main(80);
-    func_8000B690_main(3);
+    Hu3DSprModelInit(80);
+    CamSetupInitMulti(3);
     ScissorSet(0, 104.0f, 52.0f, 215.0f, 163.0f);
     ScissorSet(1, 0.0f, 0.0f, 320.0f, 240.0f);
     ScissorSet(2, 0.0f, 0.0f, 320.0f, 240.0f);
@@ -226,7 +226,7 @@ void func_80105E08_chancetime(omObjData *object) {
         case 22:
             WipeCreateOut(0, 20);
             HuAudSeqFadeOut(30);
-            func_8004AB0C_main(30);
+            HuAudFXAllFadeOut(30);
             state++;
             break;
         case 23:
@@ -269,7 +269,7 @@ void func_801061B8_chancetime(omObjData *object) {
         D_8010FAE8_chancetime = 1;
     } else if (WipeStatGet() == 0) {
         HuAudSeqFadeOut(30);
-        func_8004AB0C_main(30);
+        HuAudFXAllFadeOut(30);
         GMesClose();
         func_801062DC_chancetime();
         omOvlReturnEx(1);

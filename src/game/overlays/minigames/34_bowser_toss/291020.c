@@ -349,18 +349,18 @@ void func_801059A0_bowser_toss(void) {
     omObjData *obj;
     s32 i;
 
-    func_8001FE20_main(50);
+    MapCollInit(50);
     omInitObjMan(50, 0);
-    func_8004A208_main();
-    func_800142A0_main(16);
+    omGameSysInit();
+    Hu3DSprModelInit(16);
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
     omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     obj->work[0] = 2;
     Hu3DGLightColorSet(0, 0xFF, 0xFF, 0xFF);
     Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
     Hu3DGLightDirSet(1, -56.0f, 50.0f, 56.0f);
-    func_8000B5F0_main(2);
-    func_8000B710_main(2);
+    CamSetupInit(2);
+    CamSetupMapCullAddMulti(2);
     ScissorSet(0, 0.0f, 0.0f, 320.0f, 120.0f);
     ScissorSet(1, 0.0f, 121.0f, 320.0f, 240.0f);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 240.0f, 511.0f);
@@ -389,8 +389,8 @@ void func_801059A0_bowser_toss(void) {
     func_800E5EA0_minigame(&D_8010FBB8_bowser_toss);
     D_8010FB98_bowser_toss = HuMemAllocTag(0x20, TAG_OVERLAY);
     memset(D_8010FB98_bowser_toss, 0, 0x20);
-    func_80045010_main(D_8010F530_bowser_toss, 1);
-    func_80045010_main(D_8010F53C_bowser_toss, 1);
+    GMesFontMesCreate(D_8010F530_bowser_toss, 1);
+    GMesFontMesCreate(D_8010F53C_bowser_toss, 1);
 }
 
 void func_80105C80_bowser_toss(omObjData *object) {
@@ -448,12 +448,12 @@ void func_80105CEC_bowser_toss(omObjData *object) {
             break;
         case 3:
             D_8010FB60_bowser_toss--;
-            func_8003F578_main((D_8010FB60_bowser_toss + 29) / 30);
+            GMesTimerValueSet((D_8010FB60_bowser_toss + 29) / 30);
             if (D_8010FB60_bowser_toss <= 0) {
                 player1 = func_8010D98C_bowser_toss(D_800EC598_minigame[0]);
                 player2 = func_8010D98C_bowser_toss(D_800EC598_minigame[1]);
                 player2->unk_0C = player1->unk_0C = 3;
-                func_8003F5C0_main();
+                GMesTimerEnd();
                 D_8010FB5C_bowser_toss = 0;
                 D_8010FB64_bowser_toss++;
             }
@@ -594,7 +594,7 @@ void func_80105CEC_bowser_toss(omObjData *object) {
             if (D_8010FB5C_bowser_toss >= 15) {
                 WipeCreateOut(WIPE_TYPE_NORMAL, 16);
                 HuAudSeqFadeOut(16);
-                func_8004AB0C_main(16);
+                HuAudFXAllFadeOut(16);
                 D_8010FB5C_bowser_toss = 0;
                 D_8010FB64_bowser_toss++;
             }
@@ -625,7 +625,7 @@ void func_801064C0_bowser_toss(omObjData *object) {
         D_8010F194_bowser_toss = 16;
         WipeCreateOut(WIPE_TYPE_NORMAL, (s16)D_8010F194_bowser_toss);
         HuAudSeqFadeOut((s16)D_8010F194_bowser_toss);
-        func_8004AB0C_main((s16)D_8010F194_bowser_toss);
+        HuAudFXAllFadeOut((s16)D_8010F194_bowser_toss);
     }
 }
 
@@ -696,21 +696,21 @@ void func_801067B0_bowser_toss(omObjData *object) {
     data = object->data;
     data->unk50 &= ~1;
     data->unkEC = 0;
-    object->model[3] = func_8000B108_main(3, 0x68D);
-    object->model[4] = func_8000B108_main(4, 0x68D);
-    object->model[10] = func_8000B108_main(model | linkModel, 0x2AD);
+    object->model[3] = Hu3DModelRead(3, 0x68D);
+    object->model[4] = Hu3DModelRead(4, 0x68D);
+    object->model[10] = Hu3DModelRead(model | linkModel, 0x2AD);
     Hu3DModelCameraSet(object->model[0], 1 << player->index);
     Hu3DModelCameraSet(object->model[1], 1 << player->index);
     Hu3DModelCameraSet(object->model[10], 1 << player->index);
-    func_800E5A00_minigame(object, 0, func_80017BB8_main(chr, 0), 1, 0);
-    func_800E5A00_minigame(object, 3, func_80017BB8_main(chr, 4), 1, 0x13);
-    func_800E5A00_minigame(object, 4, func_80017BB8_main(chr, 0x6D), 1, 0);
-    func_800E5A00_minigame(object, 5, func_80017BB8_main(chr, 0x64), 1, 0);
-    func_800E5A00_minigame(object, 6, func_80017BB8_main(chr, 0x65), 1, 30);
+    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(chr, 0), 1, 0);
+    func_800E5A00_minigame(object, 3, CharMotionDataNumGet(chr, 4), 1, 0x13);
+    func_800E5A00_minigame(object, 4, CharMotionDataNumGet(chr, 0x6D), 1, 0);
+    func_800E5A00_minigame(object, 5, CharMotionDataNumGet(chr, 0x64), 1, 0);
+    func_800E5A00_minigame(object, 6, CharMotionDataNumGet(chr, 0x65), 1, 30);
     variant = rand8() & 1;
-    func_800E5A00_minigame(object, 7, func_80017BB8_main(chr, D_8010F220_bowser_toss[variant]), 1, 120);
+    func_800E5A00_minigame(object, 7, CharMotionDataNumGet(chr, D_8010F220_bowser_toss[variant]), 1, 120);
     player->unk_14 = D_8010F1C0_bowser_toss[chr] | D_8010F220_bowser_toss[variant];
-    func_800E5A00_minigame(object, 8, func_80017BB8_main(chr, D_8010F228_bowser_toss[rand8() & 1]), 1, 120);
+    func_800E5A00_minigame(object, 8, CharMotionDataNumGet(chr, D_8010F228_bowser_toss[rand8() & 1]), 1, 120);
     func_800E5690_minigame(object, 5);
     Hu3DData[object->model[0]].motId = object->motion[5];
     Hu3DMotionShapeSet(object->model[0], object->motion[6], 1);
@@ -793,7 +793,7 @@ void func_80106BC4_bowser_toss(omObjData *object) {
                             player->unk_4C = 1;
                             model->motShapeSpeed = 0.0f;
                             player->unk_0C = 2;
-                            player->unk_10 = func_8004AC5C_main(0x4A6, player->index);
+                            player->unk_10 = _HuAudPlayerFXPlay(0x4A6, player->index);
                         } else {
                             player->unk_44 = 0.0f;
                         }
@@ -967,7 +967,7 @@ void func_80106BC4_bowser_toss(omObjData *object) {
                                 HuAudFXStop(player->unk_10);
                             }
                             player->unk_10 = -1;
-                            func_8004AC98_main(player->unk_1C + 0xB0, player->index);
+                            HuAudPlayerFXPlay(player->unk_1C + 0xB0, player->index);
                             func_800E5690_minigame(object, 0);
                             Hu3DData[object->model[0]].motIdShape = 0xFF;
                             player->unk_3C = 0;
@@ -1015,7 +1015,7 @@ void func_80106BC4_bowser_toss(omObjData *object) {
                         func_800E5690_minigame(object, 3);
                         player->unk_34 = 19.0f;
                         player->unk_0C = 7;
-                        func_8004AC98_main(player->unk_1C + 0x3B, player->index);
+                        HuAudPlayerFXPlay(player->unk_1C + 0x3B, player->index);
                         temp = (player->unk_04 - 400.0) / 400.0;
                         player->unk_38 = (temp + 1.0) * 9.000000357627869;
                     } else {
@@ -1024,7 +1024,7 @@ void func_80106BC4_bowser_toss(omObjData *object) {
                         func_800E5690_minigame(object, 3);
                         player->unk_34 = 0.0f;
                         player->unk_0C = 8;
-                        func_8004AC98_main(player->unk_1C + 0xB9, player->index);
+                        HuAudPlayerFXPlay(player->unk_1C + 0xB9, player->index);
                     }
                     break;
                 case 7:
@@ -1034,7 +1034,7 @@ void func_80106BC4_bowser_toss(omObjData *object) {
                     object->rot.y = func_8010D6E0_bowser_toss(90.0f, object->rot.y, 10.0f);
                     if (object->trans.y <= 0.0f) {
                         func_800E5690_minigame(object, 0);
-                        func_8004AC98_main(player->unk_1C + 0x32, player->index);
+                        HuAudPlayerFXPlay(player->unk_1C + 0x32, player->index);
                         object->trans.y = 0.0f;
                         player->unk_0C = 9;
                     }
@@ -1046,7 +1046,7 @@ void func_80106BC4_bowser_toss(omObjData *object) {
                     object->rot.y = func_8010D6E0_bowser_toss(90.0f, object->rot.y, 10.0f);
                     if (object->trans.y <= 0.0f) {
                         func_800E5690_minigame(object, 0);
-                        func_8004AC98_main(player->unk_1C + 0x32, player->index);
+                        HuAudPlayerFXPlay(player->unk_1C + 0x32, player->index);
                         if (D_8010FB84_bowser_toss == -1) {
                             D_8010FB84_bowser_toss = HuAudFXPlay(0x4AA);
                         }
@@ -1074,14 +1074,14 @@ void func_80106BC4_bowser_toss(omObjData *object) {
             switch (player->unk_02) {
                 case 0:
                     if (func_800E5690_minigame(object, 7)) {
-                        func_80017790_main(object->model[0], 2, player->unk_1C, D_8010F154_bowser_toss[player->unk_1C]);
-                        func_80045F1C_main(player->unk_14, -1, player->index);
+                        CharAnimCreate(object->model[0], 2, player->unk_1C, D_8010F154_bowser_toss[player->unk_1C]);
+                        HuAudCharVoicePlayPlayer(player->unk_14, -1, player->index);
                         player->unk_02 = -1;
                     }
                     break;
                 case 1:
                     if (func_800E5690_minigame(object, 8)) {
-                        func_80017790_main(object->model[0], 2, player->unk_1C, D_8010F174_bowser_toss[player->unk_1C]);
+                        CharAnimCreate(object->model[0], 2, player->unk_1C, D_8010F174_bowser_toss[player->unk_1C]);
                         player->unk_02 = -1;
                     }
                     break;
@@ -1265,16 +1265,16 @@ void func_8010858C_bowser_toss(s16 index) {
     func_8010DDC4_bowser_toss(bowser->unk_5C);
     bowser->unk_5C = NULL;
     if (index == 0) {
-        bowser->unk_04 = func_8000B108_main(0x550000, 0x299);
-        bowser->unk_06 = func_8000B108_main(0x550005, 0x29D);
-        modelId = bowser->unk_08 = func_8000B108_main(0, 0x299);
+        bowser->unk_04 = Hu3DModelRead(0x550000, 0x299);
+        bowser->unk_06 = Hu3DModelRead(0x550005, 0x29D);
+        modelId = bowser->unk_08 = Hu3DModelRead(0, 0x299);
     } else {
         bowser->unk_04 = Hu3DModelLink(D_8010FB8C_bowser_toss->unk_04);
         bowser->unk_06 = Hu3DModelLink(D_8010FB8C_bowser_toss->unk_06);
         modelId = bowser->unk_08 = Hu3DModelLink(D_8010FB8C_bowser_toss->unk_08);
     }
     Hu3DModelScaleSet(modelId, 1.3f, 1.3f, 1.3f);
-    func_8001C258_main(bowser->unk_04, 0x4000, 0x4000);
+    Hu3DModelAttrSet(bowser->unk_04, 0x4000, 0x4000);
     Hu3DModelHookSet(bowser->unk_04, bowser->unk_00->model[0], "item_hook");
     Hu3DModelCameraSet(bowser->unk_04, 1 << index);
     Hu3DModelCameraSet(bowser->unk_06, 1 << index);
@@ -1322,9 +1322,9 @@ void func_8010882C_bowser_toss(omObjData *object) {
                     func_80109DB8_bowser_toss(object, object->rot.y, rotMtx);
                     func_80109E4C_bowser_toss(bowser, hookMtx[0], model->motShapeTime);
                     if (model->motIdShape != 0xFF) {
-                        func_80018044_main(hookMtx, rotMtx, mtx);
+                        mtxCat(hookMtx, rotMtx, mtx);
                     } else {
-                        func_8002367C_main(mtx, rotMtx);
+                        mtxCopy(mtx, rotMtx);
                     }
                     mtxTransCat(mtx, 0.0f, 0.0f, 150.0f);
                     bowser->unk_30 = mtx[3][0];
@@ -1332,10 +1332,10 @@ void func_8010882C_bowser_toss(omObjData *object) {
                 }
                 break;
             case 1:
-                func_8001C258_main(bowser->unk_04, 0x4000, 0);
+                Hu3DModelAttrSet(bowser->unk_04, 0x4000, 0);
                 func_80109DB8_bowser_toss(object, 90.0f, rotMtx);
                 func_80109E4C_bowser_toss(bowser, hookMtx[0], model->motShapeTime);
-                func_80018044_main(hookMtx, rotMtx, mtx);
+                mtxCat(hookMtx, rotMtx, mtx);
                 mtxTransCat(mtx, 0.0f, 0.0f, 150.0f);
                 bowser->unk_30 = mtx[3][0];
                 bowser->unk_34 = mtx[3][1];
@@ -1343,8 +1343,8 @@ void func_8010882C_bowser_toss(omObjData *object) {
                 bowser->unk_3C = 360.0f - bowser->unk_2C * 85.0f;
                 bowser->unk_40 = 90.0f;
                 bowser->unk_44 = 0.0f;
-                func_8001C258_main(bowser->unk_04, 4, 4);
-                func_8001C258_main(bowser->unk_06, 4, 0);
+                Hu3DModelAttrSet(bowser->unk_04, 4, 4);
+                Hu3DModelAttrSet(bowser->unk_06, 4, 0);
                 bowser->unk_48 = fabs(cosdf(bowser->unk_3C)) * bowser->unk_28 * 75.99999904632568;
                 bowser->unk_4C = fabs(sindf(bowser->unk_3C)) * bowser->unk_28 * 75.99999904632568;
                 bowser->unk_50 = 0;
@@ -1352,7 +1352,7 @@ void func_8010882C_bowser_toss(omObjData *object) {
                 bowser->unk_34 += bowser->unk_4C;
                 bowser->unk_22 = 0;
                 bowser->unk_24 = func_80109F68_bowser_toss(bowser->unk_30, bowser->unk_34, bowser->unk_48, bowser->unk_4C);
-                bowser->unk_20 = func_8004AC5C_main(0x4A7, player->index);
+                bowser->unk_20 = _HuAudPlayerFXPlay(0x4A7, player->index);
                 if (bowser->unk_20 != -1) {
                     HuAudFXPitchSet(bowser->unk_20, bowser->unk_22);
                 }
@@ -1415,7 +1415,7 @@ void func_8010882C_bowser_toss(omObjData *object) {
                         HuAudFXStop(bowser->unk_20);
                     }
                     bowser->unk_20 = -1;
-                    func_8004AC5C_main(0x4A8, player->index);
+                    _HuAudPlayerFXPlay(0x4A8, player->index);
                     omVibrate(player->unk_18, 20, 0, 20);
                     if (bowser->unk_28 < 0.4f) {
                         bowser->unk_0A = 7;
@@ -1445,10 +1445,10 @@ void func_8010882C_bowser_toss(omObjData *object) {
                 }
                 break;
             case 3:
-                func_8001C258_main(bowser->unk_04, 0x4000, 0);
+                Hu3DModelAttrSet(bowser->unk_04, 0x4000, 0);
                 func_80109DB8_bowser_toss(object, 90.0f, rotMtx);
                 func_80109E4C_bowser_toss(bowser, hookMtx[0], 0.0f);
-                func_80018044_main(hookMtx, rotMtx, mtx);
+                mtxCat(hookMtx, rotMtx, mtx);
                 mtxTransCat(mtx, 0.0f, 0.0f, 150.0f);
                 bowser->unk_30 = mtx[3][0];
                 bowser->unk_34 = mtx[3][1];
@@ -1456,8 +1456,8 @@ void func_8010882C_bowser_toss(omObjData *object) {
                 bowser->unk_3C = 45.0f;
                 bowser->unk_40 = 90.0f;
                 bowser->unk_44 = 0.0f;
-                func_8001C258_main(bowser->unk_04, 4, 4);
-                func_8001C258_main(bowser->unk_06, 4, 0);
+                Hu3DModelAttrSet(bowser->unk_04, 4, 4);
+                Hu3DModelAttrSet(bowser->unk_06, 4, 0);
                 bowser->unk_4C = 0.0f;
                 bowser->unk_0A = 4;
             case 4:
@@ -1482,7 +1482,7 @@ void func_8010882C_bowser_toss(omObjData *object) {
                         vel.z = cosdf(yaw) * cosdf(pitch) * speed;
                         func_8010A2D4_bowser_toss(&pos, &vel, &scale, 1.0f, player->index);
                     }
-                    func_8004AC5C_main(0x4A8, player->index);
+                    _HuAudPlayerFXPlay(0x4A8, player->index);
                     bowser->unk_0A = 9;
                 }
                 break;
@@ -1640,7 +1640,7 @@ void func_8010A028_bowser_toss(void) {
     s32 i;
 
     D_8010FB98_bowser_toss[5] = func_8010AD54_bowser_toss(11);
-    sprite = func_80055194_main(D_8010FB98_bowser_toss[5]);
+    sprite = HuSprAnimDataGet(D_8010FB98_bowser_toss[5]);
     D_8010FB90_bowser_toss = omAddObj(0x1E, 0, 0, -1, func_8010A17C_bowser_toss);
     D_8010FB94_bowser_toss = effect = HuMemAllocTag(sizeof(BowserTossEffect) * 32, TAG_OVERLAY);
     for (i = 0; i < 32; i++, effect++) {
@@ -1654,7 +1654,7 @@ void func_8010A028_bowser_toss(void) {
         effect->unk_0C.x = effect->unk_0C.y = effect->unk_0C.z = 0.0f;
         effect->unk_18.x = effect->unk_18.y = effect->unk_18.z = 0.0f;
         effect->unk_24.x = effect->unk_24.y = effect->unk_24.z = 0.0f;
-        func_8001C258_main(effect->unk_02, 4, 4);
+        Hu3DModelAttrSet(effect->unk_02, 4, 4);
         model = &Hu3DData[effect->unk_02];
         model->motTime = 0.0f;
     }
@@ -1666,7 +1666,7 @@ void func_8010A17C_bowser_toss(omObjData *object) {
     HmfModel *model;
     s32 i;
 
-    sprite = func_80055194_main(D_8010FB98_bowser_toss[5]);
+    sprite = HuSprAnimDataGet(D_8010FB98_bowser_toss[5]);
     for (i = 0, effect = D_8010FB94_bowser_toss; i < 32; i++, effect++) {
         if (effect->unk_00 == 0) {
             continue;
@@ -1700,7 +1700,7 @@ s32 func_8010A2D4_bowser_toss(Vec *pos, Vec *vel, Vec *scale, f32 speed, s16 cam
     HmfModel *model;
     s32 i;
 
-    sprite = func_80055194_main(D_8010FB98_bowser_toss[5]);
+    sprite = HuSprAnimDataGet(D_8010FB98_bowser_toss[5]);
     for (i = 0, effect = D_8010FB94_bowser_toss; i < 32; i++, effect++) {
         if (effect->unk_00 != 0) {
             continue;
@@ -1731,7 +1731,7 @@ s32 func_8010A2D4_bowser_toss(Vec *pos, Vec *vel, Vec *scale, f32 speed, s16 cam
         effect->unk_08 = speed;
         effect->unk_04 = 0.0f;
         func_8010EC10_bowser_toss(effect->unk_02, sprite, 0, D_8010F150_bowser_toss);
-        func_8001C258_main(effect->unk_02, 4, 0);
+        Hu3DModelAttrSet(effect->unk_02, 4, 0);
         Hu3DModelCameraSet(effect->unk_02, 1 << (u16)camera);
         model->motTime = 0.0f;
         model->pos.x = effect->unk_0C.x;
@@ -1763,19 +1763,19 @@ void func_8010A500_bowser_toss(omObjData *object) {
     s16 group;
 
     D_8010FB98_bowser_toss[0] = func_8010AD54_bowser_toss(0x550006);
-    sprite = func_80055194_main(D_8010FB98_bowser_toss[0]);
+    sprite = HuSprAnimDataGet(D_8010FB98_bowser_toss[0]);
     for (i = 0; i < 2; i++) {
         base = i * 14;
         j = 0;
         if (i == 0) {
-            object->model[base + j] = func_8000B108_main(0x550001, 0xB9);
+            object->model[base + j] = Hu3DModelRead(0x550001, 0xB9);
         } else {
             object->model[base + j] = Hu3DModelLink(object->model[0]);
         }
         j++;
         if (i == 0) {
-            object->model[base + j] = func_8000B108_main(0x550003, 0xB9);
-            object->model[base + j + 1] = func_8000B108_main(0x550004, 0xB9);
+            object->model[base + j] = Hu3DModelRead(0x550003, 0xB9);
+            object->model[base + j + 1] = Hu3DModelRead(0x550004, 0xB9);
         } else {
             object->model[base + j] = Hu3DModelLink(object->model[j]);
             object->model[base + j + 1] = Hu3DModelLink(object->model[j + 1]);
@@ -1785,7 +1785,7 @@ void func_8010A500_bowser_toss(omObjData *object) {
         }
         j += 5;
         if (i == 0) {
-            object->model[base + j] = func_8000B108_main(0x550002, 0x99);
+            object->model[base + j] = Hu3DModelRead(0x550002, 0x99);
         } else {
             object->model[base + j] = Hu3DModelLink(object->model[j]);
         }
@@ -1812,7 +1812,7 @@ void func_8010A500_bowser_toss(omObjData *object) {
     HuSprGrpMemberSet(group, 0, D_8010FB98_bowser_toss[4], 0);
     HuSprPosSet(group, 0, 160, 120);
     HuSprAnimModeSet(group, 0, HUSPR_ANIM_MODE_STOP);
-    func_80054FF8_main(group, 0, 0);
+    HuSprPatNoSet(group, 0, 0);
     HuSprAttrSet(group, 0, 0x1000);
     object->func = func_8010A908_bowser_toss;
 }
@@ -1829,7 +1829,7 @@ void func_8010A908_bowser_toss(omObjData *object) {
     s32 index;
     s32 frame;
 
-    sprite = func_80055194_main(D_8010FB98_bowser_toss[0]);
+    sprite = HuSprAnimDataGet(D_8010FB98_bowser_toss[0]);
     for (i = 0; i < 2; i++) {
         base = i * 14;
         j = 0;
@@ -1838,18 +1838,18 @@ void func_8010A908_bowser_toss(omObjData *object) {
             start = 0;
         }
         if (start >= 2) {
-            func_8001C258_main(object->model[base + j], 4, 4);
+            Hu3DModelAttrSet(object->model[base + j], 4, 4);
         } else {
-            func_8001C258_main(object->model[base + j], 4, 0);
+            Hu3DModelAttrSet(object->model[base + j], 4, 0);
         }
         j++;
         for (k = 0; k < 5; k++) {
             parity = (start & 1) ? 1 : 0;
             index = start + k;
             if (CenterM[i].x == Center.x) {
-                func_8001C258_main(object->model[base + j + D_8010F324_bowser_toss[parity][k]], 4, 4);
+                Hu3DModelAttrSet(object->model[base + j + D_8010F324_bowser_toss[parity][k]], 4, 4);
             } else {
-                func_8001C258_main(object->model[base + j + D_8010F324_bowser_toss[parity][k]], 4, 0);
+                Hu3DModelAttrSet(object->model[base + j + D_8010F324_bowser_toss[parity][k]], 4, 0);
                 Hu3DModelPosSet(object->model[base + j + D_8010F324_bowser_toss[parity][k]],
                                 (s16)index * 704.502487182617188 + 955.695037841796875, 0.0f, 0.0f);
             }
@@ -1868,12 +1868,12 @@ void func_8010A908_bowser_toss(omObjData *object) {
             frame = first + k - 1;
             if (frame >= 20) {
                 frame = 19;
-                func_8001C258_main(object->model[base + j + k], 4, 4);
+                Hu3DModelAttrSet(object->model[base + j + k], 4, 4);
             } else if (frame < 0) {
                 frame = 0;
-                func_8001C258_main(object->model[base + j + k], 4, 0);
+                Hu3DModelAttrSet(object->model[base + j + k], 4, 0);
             } else {
-                func_8001C258_main(object->model[base + j + k], 4, 0);
+                Hu3DModelAttrSet(object->model[base + j + k], 4, 0);
             }
             func_8010EC10_bowser_toss(object->model[base + j + k], sprite, frame, D_8010F338_bowser_toss);
         }
@@ -1905,7 +1905,7 @@ void func_8010AD98_bowser_toss(void) {
             HuSprGrpMemberSet(group, j, D_8010FB98_bowser_toss[1], 0);
             HuSprPosSet(group, j, D_8010F33C_bowser_toss[i].x, D_8010F33C_bowser_toss[i].y);
             HuSprAnimModeSet(group, j, HUSPR_ANIM_MODE_STOP);
-            func_80054FF8_main(group, j, 0);
+            HuSprPatNoSet(group, j, 0);
             HuSprAttrSet(group, j, 0x483C);
             HuSprScissorSet(group, j, D_8010F33C_bowser_toss[i].x, D_8010F33C_bowser_toss[i].y,
                             D_8010F33C_bowser_toss[i].width, D_8010F33C_bowser_toss[i].height);
@@ -1959,10 +1959,10 @@ void func_8010AF38_bowser_toss(s16 camera, Vec *pos, Vec *rot) {
     entry = &D_8010F350_bowser_toss[frame];
     HuSprPosSet(group, 0, x, scrollY);
     HuSprGrpMemberSet(group, 0, D_8010FB98_bowser_toss[entry->sprite], entry->frame);
-    func_80054FF8_main(group, 0, entry->frame);
+    HuSprPatNoSet(group, 0, entry->frame);
     HuSprPosSet(group, 1, x + signX * 320.0f, scrollY);
     HuSprGrpMemberSet(group, 1, D_8010FB98_bowser_toss[entry->sprite], entry->frame);
-    func_80054FF8_main(group, 1, entry->frame);
+    HuSprPatNoSet(group, 1, entry->frame);
 
     if (signY >= 0.0f) {
         frame++;
@@ -1977,10 +1977,10 @@ void func_8010AF38_bowser_toss(s16 camera, Vec *pos, Vec *rot) {
     entry = &D_8010F350_bowser_toss[frame];
     HuSprPosSet(group, 2, x, scrollY - signY * 120.0f);
     HuSprGrpMemberSet(group, 2, D_8010FB98_bowser_toss[entry->sprite], entry->frame);
-    func_80054FF8_main(group, 2, entry->frame);
+    HuSprPatNoSet(group, 2, entry->frame);
     HuSprPosSet(group, 3, x + signX * 320.0f, scrollY - signY * 120.0f);
     HuSprGrpMemberSet(group, 3, D_8010FB98_bowser_toss[entry->sprite], entry->frame);
-    func_80054FF8_main(group, 3, entry->frame);
+    HuSprPatNoSet(group, 3, entry->frame);
 }
 
 void func_8010B41C_bowser_toss(void) {
@@ -1992,14 +1992,14 @@ void func_8010B41C_bowser_toss(void) {
     D_8010FB98_bowser_toss[6] = func_8010AD54_bowser_toss(0x31);
     D_8010FB98_bowser_toss[7] = func_8010AD54_bowser_toss(0x55000B);
     D_8010FB98_bowser_toss[8] = func_8010AD54_bowser_toss(0x55000C);
-    anim = func_80055194_main(D_8010FB98_bowser_toss[8]);
+    anim = HuSprAnimDataGet(D_8010FB98_bowser_toss[8]);
     for (i = 0; i < anim->patNum; i++) {
         anim->pat[i].centerX = 8;
         anim->pat[i].centerY = 8;
     }
     D_8010FB98_bowser_toss[9] = func_8010AD54_bowser_toss(0x32);
     D_8010FB98_bowser_toss[10] = func_8010AD54_bowser_toss(0x55000D);
-    anim = func_80055194_main(D_8010FB98_bowser_toss[10]);
+    anim = HuSprAnimDataGet(D_8010FB98_bowser_toss[10]);
     for (i = 0; i < anim->patNum; i++) {
         anim->pat[i].centerX = 8;
         anim->pat[i].centerY = 8;
@@ -2049,7 +2049,7 @@ void func_8010B41C_bowser_toss(void) {
                     break;
             }
             HuSprAnimModeSet(bowser->spriteId, j, HUSPR_ANIM_MODE_STOP);
-            func_80054FF8_main(bowser->spriteId, j, 0);
+            HuSprPatNoSet(bowser->spriteId, j, 0);
             HuSprAttrSet(bowser->spriteId, j, 0x903C);
         }
     }
@@ -2094,8 +2094,8 @@ void func_8010B7AC_bowser_toss(omObjData *object) {
                     HuSprDispOn(bowser->spriteId, j);
                 }
                 HuSprPosSet(bowser->spriteId, 7, D_8010F378_bowser_toss[i][7].x, D_8010F378_bowser_toss[i][7].y);
-                func_80054FF8_main(bowser->spriteId, 4, 1);
-                func_80054FF8_main(bowser->spriteId, 5, 0);
+                HuSprPatNoSet(bowser->spriteId, 4, 1);
+                HuSprPatNoSet(bowser->spriteId, 5, 0);
                 bowser->state = 4;
                 bowser->timer = 0;
                 break;
@@ -2118,9 +2118,9 @@ void func_8010B7AC_bowser_toss(omObjData *object) {
                         if (digits[0] > 0) {
                             HuSprDispOn(bowser->spriteId, 7);
                         }
-                        func_80054FF8_main(bowser->spriteId, 7, (s16)digits[j]);
+                        HuSprPatNoSet(bowser->spriteId, 7, (s16)digits[j]);
                     } else {
-                        func_80054FF8_main(bowser->spriteId, j - 1, (s16)digits[j]);
+                        HuSprPatNoSet(bowser->spriteId, j - 1, (s16)digits[j]);
                     }
                 }
                 if (done) {
@@ -2151,8 +2151,8 @@ void func_8010B7AC_bowser_toss(omObjData *object) {
                     HuSprDispOn(bowser->spriteId, j);
                 }
                 HuSprPosSet(bowser->spriteId, 7, D_8010F378_bowser_toss[i][7].x, D_8010F378_bowser_toss[i][7].y);
-                func_80054FF8_main(bowser->spriteId, 4, 1);
-                func_80054FF8_main(bowser->spriteId, 5, 0);
+                HuSprPatNoSet(bowser->spriteId, 4, 1);
+                HuSprPatNoSet(bowser->spriteId, 5, 0);
                 value = bowser->unk_0C;
                 for (j = 0; j < 5; j++) {
                     digits[j] = value / D_8010F3D8_bowser_toss[j];
@@ -2166,9 +2166,9 @@ void func_8010B7AC_bowser_toss(omObjData *object) {
                         if (digits[0] > 0) {
                             HuSprDispOn(bowser->spriteId, 7);
                         }
-                        func_80054FF8_main(bowser->spriteId, 7, (s16)digits[j]);
+                        HuSprPatNoSet(bowser->spriteId, 7, (s16)digits[j]);
                     } else {
-                        func_80054FF8_main(bowser->spriteId, j - 1, (s16)digits[j]);
+                        HuSprPatNoSet(bowser->spriteId, j - 1, (s16)digits[j]);
                     }
                 }
                 bowser->state = 0x40;
@@ -2188,9 +2188,9 @@ void func_8010B7AC_bowser_toss(omObjData *object) {
                         if (digits[0] > 0) {
                             HuSprDispOn(bowser->spriteId, 7);
                         }
-                        func_80054FF8_main(bowser->spriteId, 7, (s16)digits[j]);
+                        HuSprPatNoSet(bowser->spriteId, 7, (s16)digits[j]);
                     } else {
-                        func_80054FF8_main(bowser->spriteId, j - 1, (s16)digits[j]);
+                        HuSprPatNoSet(bowser->spriteId, j - 1, (s16)digits[j]);
                     }
                 }
                 bowser->state = 0x13;
@@ -2721,7 +2721,7 @@ BowserTossItem *func_8010D9E0_bowser_toss(s16 model, s16 step, const char *hookN
         motion = &D_800CCF58_main[Hu3DData[model].motId];
     }
     hmf = Hu3DData[model].hmf;
-    node = func_8002C834_main(hmf, hookName);
+    node = SearchObjectIndex(hmf, hookName);
     item = HuMemAlloc(sizeof(BowserTossItem));
     item->mtx = HuMemAlloc((motion->unk02 + step) / step * sizeof(HuMtx4F));
     item->nodes = HuMemAlloc(hmf->unk16 * sizeof(s16));
@@ -2743,17 +2743,17 @@ void func_8010DB9C_bowser_toss(s16 model, s16 step, BowserTossItem *item, s16 no
     guMtxIdentF(D_800D5A00_main[0]);
     if (shape) {
         for (i = 0; i < shapeMotion->unk02; i += step) {
-            func_8002DFF8_main(hmf, frame, motion, 1);
-            func_8002DFF8_main(hmf, i, shapeMotion, 0);
+            Hu3DMotionExec(hmf, frame, motion, 1);
+            Hu3DMotionExec(hmf, i, shapeMotion, 0);
             D_800D138A_main = 0;
-            func_80016C2C_main(hmf, 0, node);
+            objMtxCalcFrame(hmf, 0, node);
         }
     } else {
         for (i = 0; i < motion->unk02; i += step) {
-            func_8002DFF8_main(hmf, i, motion, 1);
-            func_8002DFF8_main(hmf, frame, shapeMotion, 0);
+            Hu3DMotionExec(hmf, i, motion, 1);
+            Hu3DMotionExec(hmf, frame, shapeMotion, 0);
             D_800D138A_main = 0;
-            func_80016C2C_main(hmf, 0, node);
+            objMtxCalcFrame(hmf, 0, node);
         }
     }
 }
@@ -2777,7 +2777,7 @@ s32 func_8010DDFC_bowser_toss(HuSprAnimData *sprite, u8 *color, u8 antialias) {
     gfx = HuMemAlloc(0x10000);
     header = gfx;
     buffer = (u8 *)gfx;
-    model = func_8001A894_main(0x8C1, gfx, 4);
+    model = Hu3DModelDLCreate(0x8C1, gfx, 4);
     data = Hu3DData[model].hmf;
     data->unk60->unk50 |= 0x1010000;
     gfx++;
@@ -2886,7 +2886,7 @@ s32 func_8010EA0C_bowser_toss(HuSprAnimData *sprite, u16 model, u8 *color) {
     s32 newModel;
     s32 i;
 
-    newModel = func_8001A894_main(srcModel->attr, NULL, 4);
+    newModel = Hu3DModelDLCreate(srcModel->attr, NULL, 4);
     data = Hu3DData[newModel].hmf;
     data->unk60->unk50 = srcData->unk60->unk50;
     HuMemFree(data->unk3C);

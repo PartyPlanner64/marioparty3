@@ -52,18 +52,18 @@ extern Unk_D_800CE1DC D_800CE1DC_main;
 #endif
 
 s16 printWin(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
-void func_8004DEC8_main(s16 arg0);
-void func_8004DF10_main(void);
-void func_8004DF4C_main(u8 arg0, u8 arg1, u8 arg2);
-void func_8004DF7C_main(s8 arg0, s8 arg1, s8 arg2, s8 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7, u8 arg8);
-void func_8004DFC0_main(void);
-void func_8004DFD8_main(void);
+void pfWinKill(s16 arg0);
+void pfWinClose(void);
+void saftyFrameSet(u8 arg0, u8 arg1, u8 arg2);
+void saftyFrameFlashSet(s8 arg0, s8 arg1, s8 arg2, s8 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7, u8 arg8);
+void saftyFrameFlashReset(void);
+void saftyFrameReset(void);
 
 void pfInit(void);
 void pfClsScr(void);
-void func_8004DCFC_main(s16 arg0);
+void pfClrStrLine(s16 arg0);
 s32 print8(u16 x, u16 y, char *src);
-void func_8004DFE4_main(s16 arg0, u8 *src);
+void pfStrLineSet(s16 arg0, u8 *src);
 Gfx *pfDrawFonts(Gfx *gfx);
 
 #endif

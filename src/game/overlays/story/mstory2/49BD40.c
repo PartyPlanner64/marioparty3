@@ -72,7 +72,7 @@ void func_801059E4_mstory2(omObjData *obj) {
 void func_80105A64_mstory2(void) {
     omObjData *obj;
 
-    func_8000B5F0_main(1);
+    CamSetupInit(1);
     ScissorSet(0, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 35.0f, 80.0f, 8000.0f);
@@ -106,7 +106,7 @@ void func_80105B60_mstory2(void) {
 }
 
 void func_80105C1C_mstory2(void) {
-    func_800142A0_main(32);
+    Hu3DSprModelInit(32);
     omInitObjMan(32, 32);
     func_801059BC_mstory2();
     func_80105A64_mstory2();
@@ -196,7 +196,7 @@ void func_80105EC4_mstory2(omObjData *obj) {
 void func_80105F4C_mstory2(omObjData *obj) {
     WipeCreateOut(2, 20);
     HuAudSeqFadeOut(30);
-    func_8004AB0C_main(30);
+    HuAudFXAllFadeOut(30);
     obj->func = func_80105EC4_mstory2;
 }
 
@@ -210,20 +210,20 @@ void func_80105FBC_mstory2(void) {
     s16 comKeys[4] = { 0, 0, 0, 0 };
     s16 playerBits[4] = { 1, 2, 4, 8 };
 
-    D_8011C644_mstory2 = func_80060880_main(160, 194, 20);
+    D_8011C644_mstory2 = HuWinExCreateStyled(160, 194, 20);
     comKeys[D_8011C642_mstory2] = -1;
-    func_8005B63C_main(D_8011C644_mstory2, HUWIN_ATTR_COMKEY, HUWIN_ATTR_NONE);
+    HuWinAttrSet(D_8011C644_mstory2, HUWIN_ATTR_COMKEY, HUWIN_ATTR_NONE);
     HuWinActivePlayerSet(D_8011C644_mstory2, playerBits[D_8011C642_mstory2]);
     HuWinComKeySet(comKeys[0], comKeys[1], comKeys[2], comKeys[3]);
 }
 
 void func_801060A4_mstory2(void) {
     HuWinHomeClear(D_8011C644_mstory2);
-    func_80060C14_main(D_8011C644_mstory2, 1);
+    HuWinExOpen(D_8011C644_mstory2, 1);
 }
 
 void func_801060D4_mstory2(void) {
-    func_80060EA8_main(D_8011C644_mstory2, 1);
+    HuWinExClose(D_8011C644_mstory2, 1);
 }
 
 void func_801060F8_mstory2(s32 mess) {
@@ -255,15 +255,15 @@ void func_8010620C_mstory2(void) {
 
 void func_8010622C_mstory2(void) {
     HuAudFXPlay(0x216);
-    func_8001C814_main(D_8011C648_mstory2, 4, 0);
-    func_8001C814_main(D_8011C648_mstory2, 1, 0);
+    Hu3DMotionAttrSet(D_8011C648_mstory2, 4, 0);
+    Hu3DMotionAttrSet(D_8011C648_mstory2, 1, 0);
     Hu3DMotionTimeSet(D_8011C648_mstory2, 0.0f);
     Hu3DMotionSpeedSet(D_8011C648_mstory2, 2.0f);
 }
 
 void func_80106290_mstory2(void) {
-    func_8001C814_main(D_8011C648_mstory2, 4, 4);
-    func_8001C814_main(D_8011C648_mstory2, 1, 0);
+    Hu3DMotionAttrSet(D_8011C648_mstory2, 4, 4);
+    Hu3DMotionAttrSet(D_8011C648_mstory2, 1, 0);
     Hu3DMotionTimeSet(D_8011C648_mstory2, Hu3DData[D_8011C648_mstory2].motTime);
 }
 
@@ -282,10 +282,10 @@ void func_801063B0_mstory2(void) {
     D_8011C646_mstory2 = espEntry(HuSprAnimDataRead(0x1D0012), 0, 0);
     espPosSet(D_8011C646_mstory2, 160, 120);
     espAttrSet(D_8011C646_mstory2, 0x4000);
-    D_8011C648_mstory2 = func_8000B108_main(0x1D0014, 0x2B9);
+    D_8011C648_mstory2 = Hu3DModelRead(0x1D0014, 0x2B9);
     Hu3DModelPosSet(D_8011C648_mstory2, 591.7f, -81.0f, -1305.7f);
-    func_8001C814_main(D_8011C648_mstory2, 2, 0);
-    func_8001C814_main(D_8011C648_mstory2, 1, 1);
+    Hu3DMotionAttrSet(D_8011C648_mstory2, 2, 0);
+    Hu3DMotionAttrSet(D_8011C648_mstory2, 1, 1);
 }
 
 void func_80106470_mstory2(s32 arg0) {
@@ -364,7 +364,7 @@ void func_801064AC_mstory2(void) {
     espScaleSet(D_8011C650_mstory2[D_8011C674_mstory2 + 1], 1.0f, 1.0f);
     for (i = 0; i < 8; i++) {
         espBankSet(D_8011C660_mstory2[i], 0, 0);
-        func_8000BDDC_main(D_8011C660_mstory2[i], 1);
+        espAnimModeSet(D_8011C660_mstory2[i], 1);
         espDispOn(D_8011C660_mstory2[i]);
     }
     HuPrcSleep(20);
@@ -427,9 +427,9 @@ void func_80106D58_mstory2(s16 model, s16 animSlot, s16 anim) {
 
     if (animSlot >= 0) {
         if (anim == -1) {
-            func_80033910_main(Hu3DData[model].hmf);
+            Hu3DModelAnimStop(Hu3DData[model].hmf);
         } else {
-            func_80033970_main(Hu3DData[model].hmf);
+            Hu3DModelAnimStart(Hu3DData[model].hmf);
             entry = &D_800D1714_main[animSlot];
             entry->animIdx = anim;
             entry->rot = 0;

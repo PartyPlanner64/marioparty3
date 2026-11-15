@@ -35,10 +35,10 @@ void func_801059A0_mstory1(void) {
             break;
         }
     }
-    func_800142A0_main(60);
+    Hu3DSprModelInit(60);
     omInitObjMan(30, 30);
     HuWinInit();
-    func_8000B5F0_main(1);
+    CamSetupInit(1);
     ScissorSet(0, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 35.0f, 80.0f, 8000.0f);

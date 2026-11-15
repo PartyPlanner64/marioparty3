@@ -257,17 +257,17 @@ void func_801059A0_baby_bowser_bonkers(void) {
     omObjData *obj;
     u8 camIndex;
 
-    func_8001FE20_main(50);
+    MapCollInit(50);
     omInitObjMan(50, 0);
-    func_8004A208_main();
-    func_800142A0_main(16);
+    omGameSysInit();
+    Hu3DSprModelInit(16);
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutView);
     omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     Hu3DGLightColorSet(0, 0xFF, 0xFF, 0xFF);
     Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
     Hu3DGLightDirSet(1, -56.0f, 50.0f, 56.0f);
-    func_8000B5F0_main(1);
-    camIndex = func_8000B638_main();
+    CamSetupInit(1);
+    camIndex = CamSetupMapCullAdd();
     ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 30.0f, 80.0f, 4000.0f);
@@ -285,8 +285,8 @@ void func_801059A0_baby_bowser_bonkers(void) {
     memset(&D_8010BD08_baby_bowser_bonkers, 0, 0x28);
     D_8010BD08_baby_bowser_bonkers.type = MINIGAME_BATTLE;
     func_800E5EA0_minigame(&D_8010BD08_baby_bowser_bonkers);
-    func_80045010_main(D_8010B950_baby_bowser_bonkers, 1);
-    func_80045010_main(D_8010B95C_baby_bowser_bonkers, 1);
+    GMesFontMesCreate(D_8010B950_baby_bowser_bonkers, 1);
+    GMesFontMesCreate(D_8010B95C_baby_bowser_bonkers, 1);
 }
 
 void func_80105BB0_baby_bowser_bonkers(omObjData *object) {
@@ -343,7 +343,7 @@ void func_80105C0C_baby_bowser_bonkers(omObjData *object) {
             break;
         case 2:
             D_8010BC48_baby_bowser_bonkers--;
-            func_8003F578_main((D_8010BC48_baby_bowser_bonkers + 29) / 30);
+            GMesTimerValueSet((D_8010BC48_baby_bowser_bonkers + 29) / 30);
             if (D_8010BC48_baby_bowser_bonkers <= 0) {
                 D_8010BC48_baby_bowser_bonkers = 0;
             }
@@ -373,7 +373,7 @@ void func_80105C0C_baby_bowser_bonkers(omObjData *object) {
                 D_8010B888_baby_bowser_bonkers = D_8010BC68_baby_bowser_bonkers[group][D_8010BC50_baby_bowser_bonkers];
             }
             if (D_8010BC48_baby_bowser_bonkers <= 0) {
-                func_8003F5C0_main();
+                GMesTimerEnd();
                 GMesCreate(0x11);
                 MgFlowStatSet(MG_STATE_FINISH);
                 func_80107678_baby_bowser_bonkers(D_800EC598_minigame[0], 0, 13);
@@ -386,7 +386,7 @@ void func_80105C0C_baby_bowser_bonkers(omObjData *object) {
         case 3:
             if (D_8010BC44_baby_bowser_bonkers == 15) {
                 if (D_8010BC54_baby_bowser_bonkers != -1) {
-                    func_8004AEF0_main((s16)D_8010BC54_baby_bowser_bonkers, 15);
+                    HuAudFXFadeOut((s16)D_8010BC54_baby_bowser_bonkers, 15);
                 }
                 D_8010BC54_baby_bowser_bonkers = -1;
             }
@@ -443,7 +443,7 @@ void func_80105C0C_baby_bowser_bonkers(omObjData *object) {
             if (D_8010BC44_baby_bowser_bonkers >= 15) {
                 WipeCreateOut(WIPE_TYPE_NORMAL, 16);
                 HuAudSeqFadeOut(16);
-                func_8004AB0C_main(16);
+                HuAudFXAllFadeOut(16);
                 D_8010BC44_baby_bowser_bonkers = 0;
                 D_8010BC4C_baby_bowser_bonkers++;
             }
@@ -482,7 +482,7 @@ void func_8010630C_baby_bowser_bonkers(omObjData *object) {
         D_8010B890_baby_bowser_bonkers = 16;
         WipeCreateOut(WIPE_TYPE_NORMAL, (s16)D_8010B890_baby_bowser_bonkers);
         HuAudSeqFadeOut((s16)D_8010B890_baby_bowser_bonkers);
-        func_8004AB0C_main((s16)D_8010B890_baby_bowser_bonkers);
+        HuAudFXAllFadeOut((s16)D_8010B890_baby_bowser_bonkers);
     }
 }
 
@@ -556,28 +556,28 @@ void func_8010660C_baby_bowser_bonkers(omObjData *object) {
     data = object->data;
     data->unk50 &= ~1;
     data->unkEC = 0;
-    object->model[3] = func_8000B108_main(3, 0x68D);
-    object->model[4] = func_8000B108_main(4, 0x68D);
+    object->model[3] = Hu3DModelRead(3, 0x68D);
+    object->model[4] = Hu3DModelRead(4, 0x68D);
     for (i = 0; i < 3; i++) {
-        object->model[7 + i] = func_8000B108_main(8, 0x68D);
+        object->model[7 + i] = Hu3DModelRead(8, 0x68D);
     }
-    object->model[13] = func_8000B108_main(model | linkModel, 0x28D);
-    func_800E5A00_minigame(object, 0, func_80017BB8_main(chr, 0), 1, 0);
-    func_800E5A00_minigame(object, 1, func_80017BB8_main(chr, 1), 1, 0);
-    func_800E5A00_minigame(object, 2, func_80017BB8_main(chr, 2), 1, 0);
-    func_800E5A00_minigame(object, 6, func_80017BB8_main(chr, 4), 1, 0x13);
-    func_800E5A00_minigame(object, 0x11, func_80017BB8_main(chr, 0xE), 0, 0);
-    func_800E5A00_minigame(object, 0x12, func_80017BB8_main(chr, 0xF), 2, 0);
-    func_800E5A00_minigame(object, 0x15, func_80017BB8_main(chr, 0x1F), 0, 0);
-    func_800E5A00_minigame(object, 0x14, func_80017BB8_main(chr, 0x1D), 0, 0);
-    func_800E5A00_minigame(object, 4, func_80017BB8_main(chr, 0x1E), 1, 0);
-    func_800E5A00_minigame(object, 0x20, func_80017BB8_main(chr, 0x22), 0, 0);
-    func_800E5978_minigame(object, 0x21, func_80017BB8_main(chr, 0x23), 2, 0);
-    func_800E5A00_minigame(object, 0x22, func_80017BB8_main(chr, 0x24), 2, 0);
+    object->model[13] = Hu3DModelRead(model | linkModel, 0x28D);
+    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(chr, 0), 1, 0);
+    func_800E5A00_minigame(object, 1, CharMotionDataNumGet(chr, 1), 1, 0);
+    func_800E5A00_minigame(object, 2, CharMotionDataNumGet(chr, 2), 1, 0);
+    func_800E5A00_minigame(object, 6, CharMotionDataNumGet(chr, 4), 1, 0x13);
+    func_800E5A00_minigame(object, 0x11, CharMotionDataNumGet(chr, 0xE), 0, 0);
+    func_800E5A00_minigame(object, 0x12, CharMotionDataNumGet(chr, 0xF), 2, 0);
+    func_800E5A00_minigame(object, 0x15, CharMotionDataNumGet(chr, 0x1F), 0, 0);
+    func_800E5A00_minigame(object, 0x14, CharMotionDataNumGet(chr, 0x1D), 0, 0);
+    func_800E5A00_minigame(object, 4, CharMotionDataNumGet(chr, 0x1E), 1, 0);
+    func_800E5A00_minigame(object, 0x20, CharMotionDataNumGet(chr, 0x22), 0, 0);
+    func_800E5978_minigame(object, 0x21, CharMotionDataNumGet(chr, 0x23), 2, 0);
+    func_800E5A00_minigame(object, 0x22, CharMotionDataNumGet(chr, 0x24), 2, 0);
     variant = rand8() & 1;
-    func_800E5A00_minigame(object, 0xD, func_80017BB8_main(chr, D_8010B8DC_baby_bowser_bonkers[variant]), 1, 120);
+    func_800E5A00_minigame(object, 0xD, CharMotionDataNumGet(chr, D_8010B8DC_baby_bowser_bonkers[variant]), 1, 120);
     player->unk_0C = D_8010B8BC_baby_bowser_bonkers[chr] | D_8010B8DC_baby_bowser_bonkers[variant];
-    func_800E5A00_minigame(object, 0xE, func_80017BB8_main(chr, D_8010B8E4_baby_bowser_bonkers[rand8() & 1]), 1, 120);
+    func_800E5A00_minigame(object, 0xE, CharMotionDataNumGet(chr, D_8010B8E4_baby_bowser_bonkers[rand8() & 1]), 1, 120);
     func_800E5690_minigame(object, 0);
     func_800E149C_minigame(object, 0, 2);
     player->unk_10 = player->unk_1C.x = 0.0f;
@@ -623,15 +623,15 @@ void func_80106AA4_baby_bowser_bonkers(omObjData *object) {
             switch (player->unk_04) {
                 case 0:
                     if (func_800E5690_minigame(object, 0xD) != 0) {
-                        func_80017790_main(object->model[0], 2, player->unk_2C,
+                        CharAnimCreate(object->model[0], 2, player->unk_2C,
                                            D_8010B848_baby_bowser_bonkers[player->unk_2C]);
-                        func_80045F1C_main(player->unk_0C, -1, player->unk_00);
+                        HuAudCharVoicePlayPlayer(player->unk_0C, -1, player->unk_00);
                         player->unk_04 = -1;
                     }
                     break;
                 case 1:
                     if (func_800E5690_minigame(object, 0xE) != 0) {
-                        func_80017790_main(object->model[0], 2, player->unk_2C,
+                        CharAnimCreate(object->model[0], 2, player->unk_2C,
                                            D_8010B868_baby_bowser_bonkers[player->unk_2C]);
                         player->unk_04 = -1;
                     }
@@ -963,20 +963,20 @@ void func_80107D38_baby_bowser_bonkers(omObjData *object) {
     func_800E1304_minigame(object, 1.0f);
     func_800E1310_minigame(object, 10.0f);
     func_800E139C_minigame(object, 39.100002f, -939.99994f, -939.99994f, 939.99994f, 939.99994f);
-    object->model[0] = func_8000B0A0_main(0x560000, 0x10099);
-    func_8001C954_main(object->model[0]);
+    object->model[0] = Hu3DModelRead2(0x560000, 0x10099);
+    Hu3DModelVtxBufMake(object->model[0]);
     omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    object->model[1] = func_8000B0A0_main(0x560001, 0x99);
-    object->model[2] = func_8000B0A0_main(0x560002, 0x99);
+    object->model[1] = Hu3DModelRead2(0x560001, 0x99);
+    object->model[2] = Hu3DModelRead2(0x560002, 0x99);
     object->func = func_80107E54_baby_bowser_bonkers;
 }
 
 void func_80107E54_baby_bowser_bonkers(omObjData *object) {
-    func_8001E65C_main(object->model[0], sindf(D_8010B8EC_baby_bowser_bonkers) * 15.0f,
+    Hu3DModelTexScroll(object->model[0], sindf(D_8010B8EC_baby_bowser_bonkers) * 15.0f,
                        -D_8010B8F0_baby_bowser_bonkers, 64, 64);
-    func_8001F6BC_main(object->model[0], (u8)(cosdf(D_8010B8F4_baby_bowser_bonkers) * 32.0f + 32.0f), 0, 0,
+    Hu3DModelPrimColorSet(object->model[0], (u8)(cosdf(D_8010B8F4_baby_bowser_bonkers) * 32.0f + 32.0f), 0, 0,
                        (u8)(cosdf(D_8010B8F4_baby_bowser_bonkers) * 32.0f + 32.0f));
-    func_8001F6F8_main(object->model[0], 64, 32, 32, 0);
+    Hu3DModelEnvColorSet(object->model[0], 64, 32, 32, 0);
     if (omPauseChk() + D_800D6A90_main == 0) {
         D_8010B8EC_baby_bowser_bonkers += 0.5f;
         if (D_8010B8EC_baby_bowser_bonkers >= 360.0f) {
@@ -1023,7 +1023,7 @@ void func_801081C0_baby_bowser_bonkers(omObjData *object) {
     object->func = func_8010831C_baby_bowser_bonkers;
     for (actor = D_8010BC60_baby_bowser_bonkers, i = 0; i < 14; i++, actor++) {
         if (i == 0) {
-            actor->unk_02 = func_8000B0A0_main(0x560003, 0x299);
+            actor->unk_02 = Hu3DModelRead2(0x560003, 0x299);
         } else {
             actor->unk_02 = Hu3DModelLink(D_8010BC60_baby_bowser_bonkers->unk_02);
         }
@@ -1550,8 +1550,8 @@ void func_80109990_baby_bowser_bonkers(omObjData *object) {
         if (digits[1] >= 10) {
             digits[1] = 9;
         }
-        func_80054FF8_main(entry->unk_02, 0, (s16)digits[0]);
-        func_80054FF8_main(entry->unk_02, 1, (s16)digits[1]);
+        HuSprPatNoSet(entry->unk_02, 0, (s16)digits[0]);
+        HuSprPatNoSet(entry->unk_02, 1, (s16)digits[1]);
         if (entry->unk_0C < entry->unk_0E && entry->unk_10 == 0) {
             entry->unk_10 = 12;
             if (++entry->unk_0C == 10) {
@@ -1606,11 +1606,11 @@ void func_80109BFC_baby_bowser_bonkers(s32 index, s32 chr) {
                 HuSprGrpMemberSet(group, i, D_8010BCA8_baby_bowser_bonkers[1], 0);
                 HuSprPosSet(group, i, x, y);
                 HuSprScaleSet(group, i, 1.0f, 1.0f);
-                func_80055484_main(group, i, 0, 0, 255, 160);
+                HuSprColorTPLvlSet(group, i, 0, 0, 255, 160);
                 break;
         }
         HuSprAnimModeSet(group, i, HUSPR_ANIM_MODE_STOP);
-        func_80054FF8_main(group, i, 0);
+        HuSprPatNoSet(group, i, 0);
         HuSprAttrSet(group, i, 0x1000);
         HuSprPriSet(group, i, i - 16);
     }

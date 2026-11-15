@@ -223,7 +223,7 @@ typedef struct {
     /* 0x454 */ f32 unk_454;
 } SeManager; // size: 0x458
 
-/* Voices considered by func_800072A4_main when picking a voice to play on. */
+/* Voices considered by msmSeAllocVoice when picking a voice to play on. */
 #define SE_VOICES_FREE 0  // not playing
 #define SE_VOICES_SAME 1  // playing the same sound effect
 #define SE_VOICES_OTHER 2 // playing another sound effect
@@ -242,7 +242,7 @@ typedef struct {
     /* 0x10 */ f32 unk_10;
 } SePosParam;
 
-/* Settings of the sound effect player, see func_80007A10_main. */
+/* Settings of the sound effect player, see msmSeGetParam. */
 typedef struct {
     /* 0x00 */ s32 flags;
     /* 0x04 */ s32 masterVol;
@@ -251,7 +251,7 @@ typedef struct {
     /* 0x10 */ s32 unk_10;
 } SeParam;
 
-/* Positional settings of the sound effect player, see func_8000801C_main. */
+/* Positional settings of the sound effect player, see msmSeSetListener. */
 typedef struct {
     /* 0x00 */ s32 flags;
     /* 0x04 */ s32 angle;
@@ -428,29 +428,29 @@ static SndSys D_800A9740_main;
 static AudioManager *D_800A97B8_main;
 static SeManager *D_800A97BC_main;
 
-SndSys *func_80000E9C_main(void);
-s32 func_80001E10_main(SndSys *sys, ALHeap *heap, s32 arg2, s32 arg3);
-void func_80001348_main(SeqPlayer *player, s32 fadeTime);
+SndSys *msmSysGetConfigPtr(void);
+s32 msmMusInit(SndSys *sys, ALHeap *heap, s32 arg2, s32 arg3);
+void msmMusStartFadeIn(SeqPlayer *player, s32 fadeTime);
 s32 msmMusPlay(s32 trackId, MusPlayParam *param);
-AudioManager *func_800025B4_main(void);
-s32 func_80006A8C_main(SndSys *sys, ALHeap *heap, s32 arg2, s32 arg3);
-SeManager *func_8000704C_main(void);
-void func_800048D0_main(GameSound *sound);
-void func_80004928_main(GameSound *sound);
-void func_8000499C_main(GameSound *sound);
-void func_800049E8_main(GameSound *sound);
-void func_80004D4C_main(GameSound *sound);
-f32 func_80005850_main(GameSound *sound);
-void func_80005BAC_main(GameSound *sound, f32 arg1);
-void func_80005FE4_main(GameSound *sound);
-void func_80006148_main(GameSound *sound);
-void func_800062A8_main(GameSound *sound);
-void func_8000658C_main(GameSound *sound, s32 arg1);
-void func_8000810C_main(s32 slot, SePosParam *param);
+AudioManager *msmMusGetManager(void);
+s32 msmSeInit(SndSys *sys, ALHeap *heap, s32 arg2, s32 arg3);
+SeManager *msmSeGetManager(void);
+void msmSeSoundStop(GameSound *sound);
+void msmSeSoundUpdate(GameSound *sound);
+void msmSeSoundCount(GameSound *sound);
+void msmSeSoundStart(GameSound *sound);
+void msmSeRunScript(GameSound *sound);
+f32 msmSeUpdateLfo(GameSound *sound);
+void msmSeUpdatePitch(GameSound *sound, f32 arg1);
+void msmSeUpdatePan(GameSound *sound);
+void msmSeUpdateVolume(GameSound *sound);
+void msmSeUpdateSound(GameSound *sound);
+void msmSeUpdateBaseParam(GameSound *sound, s32 arg1);
+void msmSeUpdataListener(s32 slot, SePosParam *param);
 
 /* Takes the default settings from a bank header for any setting not given by
  * the caller's configuration. */
-void func_80000540_main(SndBankHeader *hdr, void *romAddr) {
+void msmSysSetDefaults(SndBankHeader *hdr, void *romAddr) {
     SndSys *sys = &D_800A9740_main;
 
     if (!(sys->cfg.unk0 & 0x10)) {
@@ -490,7 +490,7 @@ void func_80000540_main(SndBankHeader *hdr, void *romAddr) {
 
 /* Loads the effect table, either the one given by the configuration or the
  * selected entry of the FXD0 file. */
-s32 func_80000650_main(void) {
+s32 msmSysLoadFx(void) {
     SndSys *sys;
     SndFxHeader *buf;
     u8 *romAddr;
@@ -504,7 +504,7 @@ s32 func_80000650_main(void) {
     D_800A9740_main.fxCount = 0;
     sys->cfg.unk4 &= ~3;
     if (sys->cfg.unk10 != NULL) {
-        func_80000FE4_main(buf, sys->cfg.unk10, 0x10, 0);
+        msmFioRead(buf, sys->cfg.unk10, 0x10, 0);
         if (buf->count == MAGIC_FXD0) {
             sys->fxCount = ((u16 *)buf)[3];
         }
@@ -523,27 +523,27 @@ s32 func_80000650_main(void) {
         return 0;
     }
     if (D_800A9740_main.fxCount < sys->cfg.unk28) {
-        func_80001134_main(0, 0x20);
+        msmSysError(0, 0x20);
         return 1;
     }
     romAddr = (u8 *)sys->cfg.unk10 + ((sys->cfg.unk28 - 1) * 0x208 + 0x10);
     flags = sys->cfg.unk4 | 2;
 load:
     sys->cfg.unk4 = flags;
-    func_80000FE4_main(buf, romAddr, 4, 0);
+    msmFioRead(buf, romAddr, 4, 0);
     D_800A9740_main.fxId = buf->count >> 16;
     buf->count = buf->bytes[3];
     size = (buf->count * 32) | 8;
-    if ((sys->cfg.unk2C = func_800010B8_main(size)) == NULL) {
+    if ((sys->cfg.unk2C = msmMemAlloc(size)) == NULL) {
         return 2;
     }
-    func_80000FE4_main(sys->cfg.unk2C, romAddr, size, 0);
+    msmFioRead(sys->cfg.unk2C, romAddr, size, 0);
     fx = sys->cfg.unk2C;
     fx->count = fx->bytes[3];
     return 0;
 }
 
-void func_800007FC_main(str800D5298 *cfg) {
+void msmInit(str800D5298 *cfg) {
     osCreateMesgQueue(&D_800A9718_main, D_800A9650_main, ARRAY_COUNT(D_800A9650_main));
     bzero(&D_800A9740_main, sizeof(str800D5298));
     D_800A9740_main.cfg.unk40 = 1;
@@ -586,7 +586,7 @@ s32 msmSysInit(str800D5298 *cfg) {
     } else if (!(sys->cfg.unk0 & 0x800000)) {
         sys->cfg.unk68 = osCartRomInit();
     }
-    buf = func_800010B8_main(sizeof(SndBankHeader));
+    buf = msmMemAlloc(sizeof(SndBankHeader));
     D_800A9740_main.buf = (u8 *)buf;
     if (buf == NULL) {
         return 2;
@@ -607,10 +607,10 @@ s32 msmSysInit(str800D5298 *cfg) {
         return 3;
     }
     if (sys->cfg.unkC != NULL) {
-        func_80000FE4_main(buf, sys->cfg.unkC, sizeof(SndBankHeader), 0);
+        msmFioRead(buf, sys->cfg.unkC, sizeof(SndBankHeader), 0);
         if (buf->magic == MAGIC_SBF0) {
             if (sys->cfg.unk8 == NULL) {
-                func_80000540_main(buf, sys->cfg.unkC);
+                msmSysSetDefaults(buf, sys->cfg.unkC);
             }
             if (!(sys->cfg.unk0 & 0x40000)) {
                 sys->cfg.unk54 = buf->unk_10;
@@ -623,9 +623,9 @@ s32 msmSysInit(str800D5298 *cfg) {
         }
     }
     if (sys->cfg.unk8 != NULL) {
-        func_80000FE4_main(buf, sys->cfg.unk8, sizeof(SndBankHeader), 0);
+        msmFioRead(buf, sys->cfg.unk8, sizeof(SndBankHeader), 0);
         if (buf->magic == MAGIC_MBF0) {
-            func_80000540_main(buf, sys->cfg.unk8);
+            msmSysSetDefaults(buf, sys->cfg.unk8);
             if (!(sys->cfg.unk0 & 0x10000)) {
                 sys->cfg.unk4C = buf->unk_10;
             }
@@ -700,80 +700,80 @@ s32 msmSysInit(str800D5298 *cfg) {
     if ((cfg->unk0 & 0x100) && cfg->unk2C == NULL) {
         sys->cfg.unk0 &= ~0x100;
     }
-    if ((ret = func_80000650_main()) != 0) {
+    if ((ret = msmSysLoadFx()) != 0) {
         return ret + 100;
     }
     if ((ret = amCreateAudioMgr(&sys->cfg, &D_800A9730_main)) != 0) {
         return ret + 200;
     }
-    if ((ret = func_80001E10_main(&D_800A9740_main, &D_800A9730_main, mbfArg2, mbfArg3)) != 0) {
+    if ((ret = msmMusInit(&D_800A9740_main, &D_800A9730_main, mbfArg2, mbfArg3)) != 0) {
         return ret + 300;
     }
-    if ((ret = func_80006A8C_main(&D_800A9740_main, &D_800A9730_main, sbfArg2, sbfArg3)) != 0) {
+    if ((ret = msmSeInit(&D_800A9740_main, &D_800A9730_main, sbfArg2, sbfArg3)) != 0) {
         return ret + 400;
     }
-    func_80001134_main(100, 0);
-    func_80008678_main(&sys->cfg);
+    msmSysError(100, 0);
+    amStart(&sys->cfg);
     return 0;
 }
 
-s32 func_80000DF0_main(void) {
-    AudioManager *mus = func_800025B4_main();
+s32 msmSysIsPlay(void) {
+    AudioManager *mus = msmMusGetManager();
     SeManager *se;
 
     if (mus != NULL && mus->playingCount != 0) {
         return 1;
     }
-    se = func_8000704C_main();
+    se = msmSeGetManager();
     if (se != NULL) {
         if (se->unk_18 != 0) {
             return 1;
         }
-        func_80006FC4_main();
+        msmSeStopAllSounds();
     }
     if (mus != NULL) {
-        func_80002528_main();
+        msmMusDeleteAll();
     }
-    func_8000870C_main(&func_80000E9C_main()->cfg);
+    amDestroyAudioMgr(&msmSysGetConfigPtr()->cfg);
     if (mus != NULL) {
-        func_800025C0_main();
+        msmMusClear();
     }
     if (se != NULL) {
-        func_80007058_main();
+        msmSeClear();
     }
     return 0;
 }
 
-SndSys *func_80000E9C_main(void) {
+SndSys *msmSysGetConfigPtr(void) {
     return &D_800A9740_main;
 }
 
-void func_80000EA8_main(str800D5298 *cfg) {
-    bcopy(func_80000E9C_main(), cfg, sizeof(str800D5298));
+void msmSysGetConfig(str800D5298 *cfg) {
+    bcopy(msmSysGetConfigPtr(), cfg, sizeof(str800D5298));
 }
 
-s32 func_80000EDC_main(void) {
-    return func_80000E9C_main()->fxCount;
+s32 msmSysGetFxCount(void) {
+    return msmSysGetConfigPtr()->fxCount;
 }
 
-s32 func_80000EFC_main(void) {
+s32 msmSysGetVersion(void) {
     return 0x660104;
 }
 
-s32 func_80000F08_main(s32 arg0) {
+s32 msmSysDummy(s32 arg0) {
     return 0;
 }
 
-s32 func_80000F10_main(void) {
-    return func_80000E9C_main()->unk_72;
+s32 msmSysGetUnk72(void) {
+    return msmSysGetConfigPtr()->unk_72;
 }
 
-void func_80000F30_main(u32 mono) {
+void msmSysSetOutputMode(u32 mono) {
     SeManager *se;
     s32 i;
 
     D_800CB8AC_main = mono & 1;
-    se = func_8000704C_main();
+    se = msmSeGetManager();
     if (se != NULL) {
         for (i = 0; i < se->soundCount; i++) {
             if (se->sounds[i].flags & 3) {
@@ -785,12 +785,12 @@ void func_80000F30_main(u32 mono) {
     }
 }
 
-s32 func_80000FC4_main(void) {
-    return func_80000E9C_main()->fxId;
+s32 msmSysGetFxId(void) {
+    return msmSysGetConfigPtr()->fxId;
 }
 
 /* Reads from ROM using PI DMA, in chunks of at most chunkSize bytes. */
-void func_80000FE4_main(void *dst, void *romAddr, s32 size, s32 chunkSize) {
+void msmFioRead(void *dst, void *romAddr, s32 size, s32 chunkSize) {
     OSIoMesg mesg;
     s32 len;
     s32 chunk = chunkSize;
@@ -823,24 +823,24 @@ void func_80000FE4_main(void *dst, void *romAddr, s32 size, s32 chunkSize) {
 
 /* Allocates a single element of the given size from the audio heap, reporting a
  * fatal error if the allocation fails. This is the non-debug alHeapAlloc(). */
-void *func_800010B8_main(s32 size) {
+void *msmMemAlloc(s32 size) {
     void *ptr = alHeapDBAlloc(NULL, 0, &D_800A9730_main, 1, size);
 
     if (ptr == NULL) {
-        func_80001134_main(0, 1);
+        msmSysError(0, 1);
     }
     return ptr;
 }
 
-void func_8000110C_main(s16 arg0) {
-    func_80000E9C_main()->unk_72 = arg0;
+void msmSysSetUnk72(s16 arg0) {
+    msmSysGetConfigPtr()->unk_72 = arg0;
 }
 
-s32 func_80001134_main(s32 arg0, s32 arg1) {
+s32 msmSysError(s32 arg0, s32 arg1) {
     return 0;
 }
 
-s16 func_8000113C_main(s32 arg0) {
+s16 msmSysVolExpand(s32 arg0) {
     if (arg0 <= 0) {
         return 0;
     }
@@ -855,7 +855,7 @@ s16 func_8000113C_main(s32 arg0) {
 // real split.
 /* Loads a bank file for the player, copying it from another player that
  * already has it loaded when possible. */
-void func_80001160_main(SeqPlayer *player, s8 bankFileIdx, s32 chunkSize) {
+void msmMusLoadBank(SeqPlayer *player, s8 bankFileIdx, s32 chunkSize) {
     MusBankFile *bankFile;
     SeqPlayer *other;
     s32 i;
@@ -870,31 +870,31 @@ void func_80001160_main(SeqPlayer *player, s8 bankFileIdx, s32 chunkSize) {
                 return;
             }
         }
-        func_80000FE4_main(player->bankFile, bankFile->ctlAddr, bankFile->ctlSize, chunkSize);
+        msmFioRead(player->bankFile, bankFile->ctlAddr, bankFile->ctlSize, chunkSize);
         alBnkfNew(player->bankFile, bankFile->tblAddr);
         player->bankFileIdx = bankFileIdx;
     }
 }
 
 /* Loads the sequence data of the requested track, then hands it to the player. */
-void func_8000124C_main(SeqPlayer *player) {
+void msmMusLoadSeq(SeqPlayer *player) {
     MusTrack *track;
 
     if (player->curTrack != player->newTrack) {
         player->curTrack = player->newTrack;
         track = &D_800A97B8_main->tracks[player->newTrack];
-        func_80000FE4_main(player->seqData, track->romAddr, track->size, 0x4000);
+        msmFioRead(player->seqData, track->romAddr, track->size, 0x4000);
     }
     n_alCSeqNew(player->seq, player->seqData);
     n_alCSPSetSeq(player->seqp, player->seq);
 }
 
-s32 func_800012C4_main(SeqPlayer *seqPlayer) {
+s32 msmMusCalcVolume(SeqPlayer *seqPlayer) {
     return D_800A97B8_main->configVol * seqPlayer->evtVol * seqPlayer->trackVol * seqPlayer->fadeVol / 127 / 127 / 127 * D_800A97B8_main->masterVol / 127;
 }
 
 /* Queues the player to start, fading in over the given number of frames. */
-void func_80001348_main(SeqPlayer *player, s32 fadeTime) {
+void msmMusStartFadeIn(SeqPlayer *player, s32 fadeTime) {
     if (!(player->flags & 0x40)) {
         player->flags &= ~8;
         if (!(player->flags & 1)) {
@@ -910,7 +910,7 @@ void func_80001348_main(SeqPlayer *player, s32 fadeTime) {
 }
 
 /* Processes the events queued by the API functions. */
-void func_80001408_main(void) {
+void msmMusEventProc(void) {
     AudioCmd *event;
     SeqPlayer *player;
     s32 time;
@@ -935,7 +935,7 @@ void func_80001408_main(void) {
                 if (player->flags & 3) {
                     player->flags |= 4;
                 } else {
-                    n_alCSPSetVol(player->seqp, func_8000113C_main(func_800012C4_main(player)));
+                    n_alCSPSetVol(player->seqp, msmSysVolExpand(msmMusCalcVolume(player)));
                 }
                 break;
             case 3:
@@ -945,7 +945,7 @@ void func_80001408_main(void) {
                     if (player->flags & 3) {
                         player->flags |= 4;
                     } else {
-                        n_alCSPSetVol(player->seqp, func_8000113C_main(func_800012C4_main(player)));
+                        n_alCSPSetVol(player->seqp, msmSysVolExpand(msmMusCalcVolume(player)));
                     }
                 }
                 break;
@@ -955,7 +955,7 @@ void func_80001408_main(void) {
                     player = &D_800A97B8_main->players[j];
                     player->fadeTime = 0;
                     player->fadeVol = 0x7F;
-                    n_alCSPSetVol(player->seqp, func_8000113C_main(func_800012C4_main(player)));
+                    n_alCSPSetVol(player->seqp, msmSysVolExpand(msmMusCalcVolume(player)));
                 }
                 break;
             case 6:
@@ -1014,13 +1014,13 @@ void func_80001408_main(void) {
                 }
                 break;
             case 12:
-                func_80001348_main(player, event->cmdArg);
+                msmMusStartFadeIn(player, event->cmdArg);
                 break;
             case 13:
                 for (j = 0; j < D_800A97B8_main->playerCount; j++) {
                     player = &D_800A97B8_main->players[j];
                     if (player->flags & 8) {
-                        func_80001348_main(player, event->cmdArg);
+                        msmMusStartFadeIn(player, event->cmdArg);
                     }
                 }
                 break;
@@ -1063,7 +1063,7 @@ void func_80001408_main(void) {
     D_800A97B8_main->eventCount = 0;
 }
 
-void func_80001ADC_main(SeqPlayer *seqPlayer) {
+void msmMusUpdateState(SeqPlayer *seqPlayer) {
     s32 state = n_alCSPGetState(seqPlayer->seqp);
 
     seqPlayer->cspState = state;
@@ -1082,7 +1082,7 @@ void func_80001ADC_main(SeqPlayer *seqPlayer) {
     }
 }
 
-void func_80001B44_main(SeqPlayer *player) {
+void msmMusCheckState(SeqPlayer *player) {
     if (player->cspState < 3) {
         if (player->cspState > 0) {
             if (player->flags & 0x10) {
@@ -1105,7 +1105,7 @@ void func_80001B44_main(SeqPlayer *player) {
 }
 
 /* Starts the requested track once the sequence player has stopped. */
-void func_80001BEC_main(SeqPlayer *player) {
+void msmMusStartRequested(SeqPlayer *player) {
     MusTrack *track;
     s32 vol;
 
@@ -1115,9 +1115,9 @@ void func_80001BEC_main(SeqPlayer *player) {
             n_alCSPStop(player->seqp);
         } else if (player->cspState != 2) {
             track = &D_800A97B8_main->tracks[player->newTrack];
-            func_80001160_main(player, track->bankFile, 0x4000);
+            msmMusLoadBank(player, track->bankFile, 0x4000);
             n_alCSPSetBank(player->seqp, player->bankFile->bankArray[track->bank]);
-            func_8000124C_main(player);
+            msmMusLoadSeq(player);
             player->trackVol = track->vol;
             if (!(player->flags & 4)) {
                 player->evtVol = 0x7F;
@@ -1125,11 +1125,11 @@ void func_80001BEC_main(SeqPlayer *player) {
             if (!(player->flags & 0x20)) {
                 player->fadeVol = 0x7F;
                 player->fadeTime = 0;
-                vol = func_800012C4_main(player);
+                vol = msmMusCalcVolume(player);
             } else {
                 vol = 0;
             }
-            n_alCSPSetVol(player->seqp, func_8000113C_main(vol));
+            n_alCSPSetVol(player->seqp, msmSysVolExpand(vol));
             player->flags &= ~0x67;
             if (!(player->flags & 8)) {
                 n_alCSPPlay(player->seqp);
@@ -1140,7 +1140,7 @@ void func_80001BEC_main(SeqPlayer *player) {
 }
 
 /* Steps the player's fade out or fade in by one frame. */
-void func_80001D20_main(SeqPlayer *player) {
+void msmMusFade(SeqPlayer *player) {
     s32 vol;
 
     if (player->fadeTime > 0) {
@@ -1148,7 +1148,7 @@ void func_80001D20_main(SeqPlayer *player) {
             vol = (player->fadeStep * player->fadeTime) >> 24;
             if (vol != player->fadeVol) {
                 player->fadeVol = vol;
-                n_alCSPSetVol(player->seqp, func_8000113C_main(func_800012C4_main(player)));
+                n_alCSPSetVol(player->seqp, msmSysVolExpand(msmMusCalcVolume(player)));
             }
         } else {
             n_alCSPStop(player->seqp);
@@ -1163,14 +1163,14 @@ void func_80001D20_main(SeqPlayer *player) {
         }
         if (vol != player->fadeVol) {
             player->fadeVol = vol;
-            n_alCSPSetVol(player->seqp, func_8000113C_main(func_800012C4_main(player)));
+            n_alCSPSetVol(player->seqp, msmSysVolExpand(msmMusCalcVolume(player)));
         }
     }
 }
 
 /* Creates the music players from the track and bank file tables of the MBF0
  * bank. */
-s32 func_80001E10_main(SndSys *sys, ALHeap *heap, s32 trackCount, s32 vol) {
+s32 msmMusInit(SndSys *sys, ALHeap *heap, s32 trackCount, s32 vol) {
     str800D5298 *cfg = &sys->cfg;
     s32 seqSize[5];
     ALSeqpConfig config;
@@ -1191,16 +1191,16 @@ s32 func_80001E10_main(SndSys *sys, ALHeap *heap, s32 trackCount, s32 vol) {
         D_800A97B8_main = NULL;
         return 0;
     }
-    if ((D_800A97B8_main = func_800010B8_main(sizeof(AudioManager))) == NULL) {
+    if ((D_800A97B8_main = msmMemAlloc(sizeof(AudioManager))) == NULL) {
         return 1;
     }
     bzero(seqSize, sizeof(seqSize));
     size = trackCount * sizeof(MusTrack);
-    if ((D_800A97B8_main->tracks = func_800010B8_main(size)) == NULL) {
+    if ((D_800A97B8_main->tracks = msmMemAlloc(size)) == NULL) {
         return 2;
     }
     romAddr = (u8 *)cfg->unk8 + sizeof(SndBankHeader);
-    func_80000FE4_main(D_800A97B8_main->tracks, romAddr, size, 0);
+    msmFioRead(D_800A97B8_main->tracks, romAddr, size, 0);
     bankFileCount = 0;
     playerCount = 0;
     for (i = 0; i < trackCount; i++) {
@@ -1222,11 +1222,11 @@ s32 func_80001E10_main(SndSys *sys, ALHeap *heap, s32 trackCount, s32 vol) {
     bankFileCount++;
     playerCount++;
     size = bankFileCount * sizeof(MusBankFile);
-    if ((D_800A97B8_main->bankFiles = func_800010B8_main(size)) == NULL) {
+    if ((D_800A97B8_main->bankFiles = msmMemAlloc(size)) == NULL) {
         return 3;
     }
     romAddr = (u8 *)cfg->unk8 + (trackCount * sizeof(MusTrack) + sizeof(SndBankHeader));
-    func_80000FE4_main(D_800A97B8_main->bankFiles, romAddr, size, 0);
+    msmFioRead(D_800A97B8_main->bankFiles, romAddr, size, 0);
     maxCtlSize = 0;
     for (i = 0; i < bankFileCount; i++) {
         bankFile = &D_800A97B8_main->bankFiles[i];
@@ -1237,10 +1237,10 @@ s32 func_80001E10_main(SndSys *sys, ALHeap *heap, s32 trackCount, s32 vol) {
         }
     }
     if (bankFileCount == 1) {
-        if ((sharedBankFile = func_800010B8_main(maxCtlSize)) == NULL) {
+        if ((sharedBankFile = msmMemAlloc(maxCtlSize)) == NULL) {
             return 4;
         }
-        func_80000FE4_main(sharedBankFile, bankFile->ctlAddr, bankFile->ctlSize, 0);
+        msmFioRead(sharedBankFile, bankFile->ctlAddr, bankFile->ctlSize, 0);
         alBnkfNew(sharedBankFile, bankFile->tblAddr);
     } else {
         sharedBankFile = NULL;
@@ -1250,10 +1250,10 @@ s32 func_80001E10_main(SndSys *sys, ALHeap *heap, s32 trackCount, s32 vol) {
     config.maxChannels = 16;
     config.debugFlags = 0;
     config.heap = heap;
-    config.initOsc = func_800025CC_main;
-    config.updateOsc = func_80002A28_main;
-    config.stopOsc = func_800032B4_main;
-    if ((D_800A97B8_main->players = func_800010B8_main(playerCount * sizeof(SeqPlayer))) == NULL) {
+    config.initOsc = msmMusInitOsc;
+    config.updateOsc = msmMusUpdateOsc;
+    config.stopOsc = msmMusStopOsc;
+    if ((D_800A97B8_main->players = msmMemAlloc(playerCount * sizeof(SeqPlayer))) == NULL) {
         return 5;
     }
     for (i = 0; i < playerCount; i++) {
@@ -1262,17 +1262,17 @@ s32 func_80001E10_main(SndSys *sys, ALHeap *heap, s32 trackCount, s32 vol) {
         player->state = 0;
         player->fadeTime = 0;
         player->curTrack = -1;
-        if ((player->seqp = func_800010B8_main(sizeof(N_ALCSPlayer))) == NULL) {
+        if ((player->seqp = msmMemAlloc(sizeof(N_ALCSPlayer))) == NULL) {
             return 6;
         }
         n_alCSPNew(player->seqp, &config);
-        if ((player->seq = func_800010B8_main(sizeof(ALCSeq))) == NULL) {
+        if ((player->seq = msmMemAlloc(sizeof(ALCSeq))) == NULL) {
             return 7;
         }
         if (seqSize[i] & 1) {
             seqSize[i]++;
         }
-        if ((player->seqData = func_800010B8_main(seqSize[i])) == NULL) {
+        if ((player->seqData = msmMemAlloc(seqSize[i])) == NULL) {
             return 8;
         }
         player->seqDataSize = seqSize[i];
@@ -1280,16 +1280,16 @@ s32 func_80001E10_main(SndSys *sys, ALHeap *heap, s32 trackCount, s32 vol) {
             player->bankFile = sharedBankFile;
             player->bankFileIdx = 0;
         } else {
-            if ((player->bankFile = func_800010B8_main(maxCtlSize)) == NULL) {
+            if ((player->bankFile = msmMemAlloc(maxCtlSize)) == NULL) {
                 return 9;
             }
             player->bankFileIdx = -1;
             D_800A97B8_main->playerCount = i;
-            func_80001160_main(player, 0, 0);
+            msmMusLoadBank(player, 0, 0);
         }
     }
     oscCount = playerCount * cfg->unk4C;
-    if ((D_800A97B8_main->oscs = func_800010B8_main(oscCount * sizeof(MusOsc))) == NULL) {
+    if ((D_800A97B8_main->oscs = msmMemAlloc(oscCount * sizeof(MusOsc))) == NULL) {
         return 10;
     }
     osc = D_800A97B8_main->freeOscs = D_800A97B8_main->oscs;
@@ -1310,7 +1310,7 @@ s32 func_80001E10_main(SndSys *sys, ALHeap *heap, s32 trackCount, s32 vol) {
 }
 
 /* Queues an event for the periodic proc to process. */
-void func_80002300_main(s32 player, s32 type, s32 arg) {
+void msmMusPushEvent(s32 player, s32 type, s32 arg) {
     u32 mask = osSetIntMask(1);
     AudioCmd *event = &D_800A97B8_main->events[D_800A97B8_main->eventCount];
 
@@ -1318,41 +1318,41 @@ void func_80002300_main(s32 player, s32 type, s32 arg) {
     event->voiceSlot = player;
     event->cmdArg = arg;
     if (++D_800A97B8_main->eventCount >= ARRAY_COUNT(D_800A97B8_main->events)) {
-        func_80001134_main(0, 0x100);
+        msmSysError(0, 0x100);
         D_800A97B8_main->eventCount = 0;
     }
     osSetIntMask(mask);
 }
 
-void func_800023B4_main(void) {
+void msmMusPeriodicProc(void) {
     SeqPlayer *player;
     s32 i;
 
     if (D_800A97B8_main != NULL && D_800A97B8_main->busy.all == 0) {
         D_800A97B8_main->busy.flag[1] = 1;
-        func_80001408_main();
+        msmMusEventProc();
         D_800A97B8_main->playingCount = 0;
         for (i = 0; i < D_800A97B8_main->playerCount; i++) {
             player = &D_800A97B8_main->players[i];
-            func_80001ADC_main(player);
-            func_80001BEC_main(player);
-            func_80001B44_main(player);
+            msmMusUpdateState(player);
+            msmMusStartRequested(player);
+            msmMusCheckState(player);
             if ((player->flags & 0x40) && D_800A97B8_main->players[player->waitPlayer].state < 2) {
                 player->flags &= ~0x40;
-                func_80001348_main(player, player->resumeFade * 10);
+                msmMusStartFadeIn(player, player->resumeFade * 10);
             }
             if (player->state >= 2) {
                 D_800A97B8_main->playingCount++;
             }
             if (player->state >= 3) {
-                func_80001D20_main(player);
+                msmMusFade(player);
             }
         }
         D_800A97B8_main->busy.flag[1] = 0;
     }
 }
 
-void func_80002528_main(void) {
+void msmMusDeleteAll(void) {
     SeqPlayer *player;
     s32 i;
 
@@ -1365,17 +1365,17 @@ void func_80002528_main(void) {
     }
 }
 
-AudioManager *func_800025B4_main(void) {
+AudioManager *msmMusGetManager(void) {
     return D_800A97B8_main;
 }
 
-void func_800025C0_main(void) {
+void msmMusClear(void) {
     D_800A97B8_main = NULL;
 }
 
 /* Oscillator init callback for the sequence players, based on the initOsc()
  * of the N64 SDK sequence player demos. */
-ALMicroTime func_800025CC_main(void **oscState, f32 *initVal, u8 oscType, u8 oscRate, u8 oscDepth, u8 oscDelay) {
+ALMicroTime msmMusInitOsc(void **oscState, f32 *initVal, u8 oscType, u8 oscRate, u8 oscDepth, u8 oscDelay) {
     MusOsc *osc;
     ALMicroTime deltaTime = 0;
     s32 cents;
@@ -1444,7 +1444,7 @@ ALMicroTime func_800025CC_main(void **oscState, f32 *initVal, u8 oscType, u8 osc
                 break;
             case VIBRATO_SIN:
             case 0x8A:
-                osc->data.vsin.depthcents = func_800032CC_main(oscDepth);
+                osc->data.vsin.depthcents = msmPitchToRatio(oscDepth);
                 osc->curCount = 0;
                 osc->maxCount = 259 - oscRate;
                 *initVal = 1.0f;
@@ -1453,7 +1453,7 @@ ALMicroTime func_800025CC_main(void **oscState, f32 *initVal, u8 oscType, u8 osc
                 osc->maxCount = 256 - oscRate;
                 osc->curCount = osc->maxCount;
                 osc->stateFlags = OSC_HIGH;
-                cents = func_800032CC_main(oscDepth);
+                cents = msmPitchToRatio(oscDepth);
                 osc->data.vsqr.loRatio = alCents2Ratio(-cents);
                 osc->data.vsqr.hiRatio = alCents2Ratio(cents);
                 *initVal = osc->data.vsqr.hiRatio;
@@ -1461,7 +1461,7 @@ ALMicroTime func_800025CC_main(void **oscState, f32 *initVal, u8 oscType, u8 osc
             case VIBRATO_DSC_SAW:
                 osc->maxCount = 256 - oscRate;
                 osc->curCount = osc->maxCount;
-                cents = func_800032CC_main(oscDepth);
+                cents = msmPitchToRatio(oscDepth);
                 osc->data.vdsaw.hicents = cents;
                 osc->data.vdsaw.centsrange = 2 * cents;
                 *initVal = alCents2Ratio(osc->data.vdsaw.hicents);
@@ -1469,13 +1469,13 @@ ALMicroTime func_800025CC_main(void **oscState, f32 *initVal, u8 oscType, u8 osc
             case VIBRATO_ASC_SAW:
                 osc->maxCount = 256 - oscRate;
                 osc->curCount = osc->maxCount;
-                cents = func_800032CC_main(oscDepth);
+                cents = msmPitchToRatio(oscDepth);
                 osc->data.vasaw.locents = -cents;
                 osc->data.vasaw.centsrange = 2 * cents;
                 *initVal = alCents2Ratio(osc->data.vasaw.locents);
                 break;
             case 0x84:
-                osc->data.vsin.depthcents = func_800032CC_main(oscDepth);
+                osc->data.vsin.depthcents = msmPitchToRatio(oscDepth);
                 osc->stateFlags = 0;
                 osc->curCount = 0;
                 osc->maxCount = (259 - oscRate) / 4;
@@ -1485,7 +1485,7 @@ ALMicroTime func_800025CC_main(void **oscState, f32 *initVal, u8 oscType, u8 osc
                 osc->maxCount = 256 - oscRate;
                 osc->curCount = osc->maxCount;
                 osc->stateFlags = 0;
-                cents = func_800032CC_main(oscDepth);
+                cents = msmPitchToRatio(oscDepth);
                 osc->data.vsqr.loRatio = alCents2Ratio(-cents);
                 osc->data.vsqr.hiRatio = alCents2Ratio(cents);
                 *initVal = 1.0f;
@@ -1494,7 +1494,7 @@ ALMicroTime func_800025CC_main(void **oscState, f32 *initVal, u8 oscType, u8 osc
                 osc->maxCount = 256 - oscRate;
                 osc->curCount = osc->maxCount;
                 osc->stateFlags = 1;
-                cents = func_800032CC_main(oscDepth);
+                cents = msmPitchToRatio(oscDepth);
                 osc->data.vsqr.loRatio = alCents2Ratio(-cents);
                 osc->data.vsqr.hiRatio = alCents2Ratio(cents);
                 *initVal = 1.0f;
@@ -1502,7 +1502,7 @@ ALMicroTime func_800025CC_main(void **oscState, f32 *initVal, u8 oscType, u8 osc
             case 0x87:
                 osc->maxCount = 256 - oscRate;
                 osc->curCount = 0;
-                cents = func_800032CC_main(oscDepth);
+                cents = msmPitchToRatio(oscDepth);
                 osc->data.vdsaw.hicents = cents;
                 osc->data.vdsaw.centsrange = 2 * cents;
                 *initVal = 1.0f;
@@ -1510,13 +1510,13 @@ ALMicroTime func_800025CC_main(void **oscState, f32 *initVal, u8 oscType, u8 osc
             case 0x88:
                 osc->maxCount = 256 - oscRate;
                 osc->curCount = 0;
-                cents = func_800032CC_main(oscDepth);
+                cents = msmPitchToRatio(oscDepth);
                 osc->data.vasaw.locents = -cents;
                 osc->data.vasaw.centsrange = 2 * cents;
                 *initVal = 1.0f;
                 break;
             case 0x89:
-                osc->data.vsin.depthcents = func_800032CC_main(oscDepth);
+                osc->data.vsin.depthcents = msmPitchToRatio(oscDepth);
                 osc->stateFlags = 2;
                 osc->curCount = 0;
                 osc->maxCount = (259 - oscRate) / 4;
@@ -1532,7 +1532,7 @@ ALMicroTime func_800025CC_main(void **oscState, f32 *initVal, u8 oscType, u8 osc
 
 /* Oscillator update callback for the sequence players, based on the
  * updateOsc() of the N64 SDK sequence player demos. */
-ALMicroTime func_80002A28_main(void *oscState, f32 *updateVal) {
+ALMicroTime msmMusUpdateOsc(void *oscState, f32 *updateVal) {
     MusOsc *osc = oscState;
     ALMicroTime deltaTime = AL_USEC_PER_FRAME;
     f32 tmpflt;
@@ -1741,14 +1741,14 @@ ALMicroTime func_80002A28_main(void *oscState, f32 *updateVal) {
     return deltaTime;
 }
 
-void func_800032B4_main(void *oscState) {
+void msmMusStopOsc(void *oscState) {
     MusOsc *osc = oscState;
 
     osc->next = D_800A97B8_main->freeOscs;
     D_800A97B8_main->freeOscs = osc;
 }
 
-f32 func_800032CC_main(s32 arg0) {
+f32 msmPitchToRatio(s32 arg0) {
     f32 base = 1.03099298f;
     f32 result = 1.0f;
 
@@ -1770,7 +1770,7 @@ s32 msmMusPlayDefault(s32 trackId) {
 
 /* Starts a music track, returning the index of the player it plays on. */
 s32 msmMusPlay(s32 trackId, MusPlayParam *param) {
-    AudioManager *mus = func_800025B4_main();
+    AudioManager *mus = msmMusGetManager();
     SeqPlayer *player;
     s32 playerIdx;
     s32 type;
@@ -1795,27 +1795,27 @@ s32 msmMusPlay(s32 trackId, MusPlayParam *param) {
         if (param->flags & 2) {
             type = param->crossfade ? 15 : 1;
         }
-        func_80002300_main(playerIdx, 0, 0);
+        msmMusPushEvent(playerIdx, 0, 0);
         if (param->flags & 4) {
             player->evtVol = param->vol;
-            func_80002300_main(playerIdx, 2, param->vol);
+            msmMusPushEvent(playerIdx, 2, param->vol);
         }
         if (param->flags & 8) {
-            func_80002300_main(playerIdx, 14, param->fadeIn);
+            msmMusPushEvent(playerIdx, 14, param->fadeIn);
         }
     }
     if (mus->tracks[trackId].size > player->seqDataSize) {
         return -1;
     }
     mus->busy.flag[0] = 1;
-    func_80002300_main(playerIdx, type, trackId);
+    msmMusPushEvent(playerIdx, type, trackId);
     player->state = 3;
     mus->busy.flag[0] = 0;
     return playerIdx;
 }
 
 s32 msmMusGetStatus(s32 playerIdx) {
-    AudioManager *mus = func_800025B4_main();
+    AudioManager *mus = msmMusGetManager();
 
     if (mus == NULL) {
         return 0;
@@ -1823,8 +1823,8 @@ s32 msmMusGetStatus(s32 playerIdx) {
     return mus->players[playerIdx].state;
 }
 
-s32 func_80003524_main(void) {
-    AudioManager *mus = func_800025B4_main();
+s32 msmMusGetTrackCount(void) {
+    AudioManager *mus = msmMusGetManager();
 
     if (mus == NULL) {
         return 0;
@@ -1832,8 +1832,8 @@ s32 func_80003524_main(void) {
     return mus->trackCount;
 }
 
-s32 func_8000354C_main(s32 playerIdx) {
-    AudioManager *mus = func_800025B4_main();
+s32 msmMusGetTrack(s32 playerIdx) {
+    AudioManager *mus = msmMusGetManager();
 
     if (mus == NULL) {
         return 0;
@@ -1841,8 +1841,8 @@ s32 func_8000354C_main(s32 playerIdx) {
     return mus->players[playerIdx].curTrack;
 }
 
-s32 func_80003598_main(void) {
-    AudioManager *mus = func_800025B4_main();
+s32 msmMusGetPlayerCount(void) {
+    AudioManager *mus = msmMusGetManager();
 
     if (mus == NULL) {
         return 0;
@@ -1850,8 +1850,8 @@ s32 func_80003598_main(void) {
     return mus->playerCount;
 }
 
-s32 func_800035C0_main(void) {
-    AudioManager *mus = func_800025B4_main();
+s32 msmMusGetNumPlay(void) {
+    AudioManager *mus = msmMusGetManager();
 
     if (mus == NULL) {
         return 0;
@@ -1861,7 +1861,7 @@ s32 func_800035C0_main(void) {
 
 /* Stops the given player, or every player when the index is negative. */
 void msmMusStop(s32 playerIdx) {
-    AudioManager *mus = func_800025B4_main();
+    AudioManager *mus = msmMusGetManager();
     SeqPlayer *player;
     s32 i;
 
@@ -1869,7 +1869,7 @@ void msmMusStop(s32 playerIdx) {
         return;
     }
     if (playerIdx < 0) {
-        func_80002300_main(0, 7, 0);
+        msmMusPushEvent(0, 7, 0);
         mus->busy.flag[0] = 1;
         for (i = 0; i < mus->playerCount; i++) {
             player = &mus->players[i];
@@ -1883,7 +1883,7 @@ void msmMusStop(s32 playerIdx) {
             return;
         }
         mus->busy.flag[0] = 1;
-        func_80002300_main(playerIdx, 6, 0);
+        msmMusPushEvent(playerIdx, 6, 0);
         player->state = 1;
     }
     mus->busy.flag[0] = 0;
@@ -1891,13 +1891,13 @@ void msmMusStop(s32 playerIdx) {
 
 /* Sets the volume of the given player, or every player when the index is negative. */
 void msmMusSetVolume(s32 playerIdx, s32 vol) {
-    AudioManager *mus = func_800025B4_main();
+    AudioManager *mus = msmMusGetManager();
     SeqPlayer *player;
     s32 i;
 
     if (mus != NULL) {
         if (playerIdx < 0) {
-            func_80002300_main(0, 3, vol);
+            msmMusPushEvent(0, 3, vol);
             for (i = 0; i < mus->playerCount; i++) {
                 player = &mus->players[i];
                 if (player->state >= 2) {
@@ -1906,13 +1906,13 @@ void msmMusSetVolume(s32 playerIdx, s32 vol) {
             }
         } else {
             mus->players[playerIdx].evtVol = vol;
-            func_80002300_main(playerIdx, 2, vol);
+            msmMusPushEvent(playerIdx, 2, vol);
         }
     }
 }
 
-s32 func_800037C4_main(s32 playerIdx) {
-    AudioManager *mus = func_800025B4_main();
+s32 msmMusGetVolume(s32 playerIdx) {
+    AudioManager *mus = msmMusGetManager();
 
     if (mus == NULL) {
         return 0;
@@ -1921,14 +1921,14 @@ s32 func_800037C4_main(s32 playerIdx) {
 }
 
 void msmMusSetMasterVolume(s32 vol) {
-    if (func_800025B4_main() != NULL) {
-        func_80002300_main(0, 4, vol);
+    if (msmMusGetManager() != NULL) {
+        msmMusPushEvent(0, 4, vol);
     }
 }
 
 /* Sets the tempo of the given player, in beats per minute. */
 void msmMusSetTempo(s32 playerIdx, s32 bpm) {
-    AudioManager *mus = func_800025B4_main();
+    AudioManager *mus = msmMusGetManager();
     f32 tempo;
 
     if (mus != NULL) {
@@ -1941,8 +1941,8 @@ void msmMusSetTempo(s32 playerIdx, s32 bpm) {
 }
 
 /* Returns the tempo of the given player, in beats per minute. */
-s32 func_800038EC_main(s32 playerIdx) {
-    AudioManager *mus = func_800025B4_main();
+s32 msmMusGetTempo(s32 playerIdx) {
+    AudioManager *mus = msmMusGetManager();
     SeqPlayer *player;
     s32 tempo;
 
@@ -1957,20 +1957,20 @@ s32 func_800038EC_main(s32 playerIdx) {
 }
 
 /* Fades out the given player, or every player when the index is negative. */
-void func_800039A4_main(s32 playerIdx, s32 time) {
-    AudioManager *mus = func_800025B4_main();
+void msmMusFadeOut(s32 playerIdx, s32 time) {
+    AudioManager *mus = msmMusGetManager();
 
     if (mus != NULL) {
         if (playerIdx < 0) {
-            func_80002300_main(0, 9, time);
+            msmMusPushEvent(0, 9, time);
         } else if (mus->players[playerIdx].state >= 3) {
-            func_80002300_main(playerIdx, 8, time);
+            msmMusPushEvent(playerIdx, 8, time);
         }
     }
 }
 
-s32 func_80003A24_main(s32 playerIdx) {
-    AudioManager *mus = func_800025B4_main();
+s32 msmMusGetFadeTime(s32 playerIdx) {
+    AudioManager *mus = msmMusGetManager();
 
     if (mus == NULL) {
         return 0;
@@ -1979,8 +1979,8 @@ s32 func_80003A24_main(s32 playerIdx) {
 }
 
 /* Pauses the given player, or every player when the index is negative. */
-void func_80003A70_main(s32 playerIdx) {
-    AudioManager *mus = func_800025B4_main();
+void msmMusPause(s32 playerIdx) {
+    AudioManager *mus = msmMusGetManager();
     SeqPlayer *player;
     s32 i;
 
@@ -1988,7 +1988,7 @@ void func_80003A70_main(s32 playerIdx) {
         return;
     }
     if (playerIdx < 0) {
-        func_80002300_main(0, 11, 0);
+        msmMusPushEvent(0, 11, 0);
         mus->busy.flag[0] = 1;
         for (i = 0; i < mus->playerCount; i++) {
             player = &mus->players[i];
@@ -2002,32 +2002,32 @@ void func_80003A70_main(s32 playerIdx) {
             return;
         }
         mus->busy.flag[0] = 1;
-        func_80002300_main(playerIdx, 10, 0);
+        msmMusPushEvent(playerIdx, 10, 0);
         player->state = 2;
     }
     mus->busy.flag[0] = 0;
 }
 
 /* Resumes the given player, or every player when the index is negative. */
-void func_80003B70_main(s32 playerIdx, s32 fadeTime) {
-    AudioManager *mus = func_800025B4_main();
+void msmMusResume(s32 playerIdx, s32 fadeTime) {
+    AudioManager *mus = msmMusGetManager();
     SeqPlayer *player;
 
     if (mus != NULL) {
         if (playerIdx < 0) {
-            func_80002300_main(0, 13, fadeTime);
+            msmMusPushEvent(0, 13, fadeTime);
         } else {
             player = &mus->players[playerIdx];
             if (player->state == 2) {
-                func_80002300_main(playerIdx, 12, fadeTime);
+                msmMusPushEvent(playerIdx, 12, fadeTime);
             }
         }
     }
 }
 
 /* Reads the settings of one MIDI channel of the given player. */
-void func_80003BF4_main(s32 playerIdx, s32 chan, MusChlInfo *info) {
-    AudioManager *mus = func_800025B4_main();
+void msmMusGetMidiCtrl(s32 playerIdx, s32 chan, MusChlInfo *info) {
+    AudioManager *mus = msmMusGetManager();
     SeqPlayer *player;
 
     if (mus != NULL && (player = &mus->players[playerIdx])->state == 4) {
@@ -2040,20 +2040,20 @@ void func_80003BF4_main(s32 playerIdx, s32 chan, MusChlInfo *info) {
 
 // Suspected mus/se boundary: ROM 0x48B8 (msm "se" code starts here). This is
 // not a real file split: the mus text ends here at a non-16-aligned address with
-// no nop padding, and func_80003CB8_main is clearly se code (D_800A97BC), so the
+// no nop padding, and msmSeLoadBank is clearly se code (D_800A97BC), so the
 // mus and se code were most likely built as one file. The mus rodata (jump
 // tables 0x800A6300-0x800A6790) does end 16-aligned, but that looks incidental.
 /* Loads the sound effect bank file and resolves the offsets inside it. */
-s32 func_80003CB8_main(u8 *bankAddr, SeBankInfo *info) {
+s32 msmSeLoadBank(u8 *bankAddr, SeBankInfo *info) {
     ALSound *sound;
     ALWaveTable *wave;
     s32 i;
 
-    if ((D_800A97BC_main->alSounds = func_800010B8_main(info->ctlSize)) == NULL) {
+    if ((D_800A97BC_main->alSounds = msmMemAlloc(info->ctlSize)) == NULL) {
         return 1;
     }
     info->ctlAddr = bankAddr + (u32)info->ctlAddr;
-    func_80000FE4_main(D_800A97BC_main->alSounds, info->ctlAddr, info->ctlSize, 0);
+    msmFioRead(D_800A97BC_main->alSounds, info->ctlAddr, info->ctlSize, 0);
     info->tblAddr = bankAddr + (u32)info->tblAddr;
     for (i = 0; i < info->soundCount; i++) {
         sound = &D_800A97BC_main->alSounds[i];
@@ -2077,17 +2077,17 @@ s32 func_80003CB8_main(u8 *bankAddr, SeBankInfo *info) {
 }
 
 /* Loads the sound effect table and resolves the offsets inside it. */
-s32 func_80003DF4_main(u8 *bankAddr, SeBankInfo *info) {
+s32 msmSeLoadTable(u8 *bankAddr, SeBankInfo *info) {
     u8 *romAddr;
     SeEntry *entry;
     s32 i;
     s32 j;
 
-    if ((D_800A97BC_main->entries = func_800010B8_main(info->seSize)) == NULL) {
+    if ((D_800A97BC_main->entries = msmMemAlloc(info->seSize)) == NULL) {
         return 1;
     }
     romAddr = bankAddr + info->seOffset;
-    func_80000FE4_main(D_800A97BC_main->entries, romAddr, info->seSize, 0);
+    msmFioRead(D_800A97BC_main->entries, romAddr, info->seSize, 0);
     for (i = 0; i < info->seCount; i++) {
         if (D_800A97BC_main->entries[i] != NULL) {
             entry = D_800A97BC_main->entries[i] = (SeEntry *)((u8 *)D_800A97BC_main->entries[i] + (u32)D_800A97BC_main->entries);
@@ -2099,7 +2099,7 @@ s32 func_80003DF4_main(u8 *bankAddr, SeBankInfo *info) {
     return 0;
 }
 
-s32 func_80003EE4_main(u8 *bankAddr, SeBankInfo *info) {
+s32 msmSeLoadEnvScripts(u8 *bankAddr, SeBankInfo *info) {
     u8 *romAddr;
     s32 i;
 
@@ -2107,11 +2107,11 @@ s32 func_80003EE4_main(u8 *bankAddr, SeBankInfo *info) {
         D_800A97BC_main->envScripts = NULL;
         return 0;
     }
-    if ((D_800A97BC_main->envScripts = func_800010B8_main(info->unk_30)) == NULL) {
+    if ((D_800A97BC_main->envScripts = msmMemAlloc(info->unk_30)) == NULL) {
         return 1;
     }
     romAddr = bankAddr + info->unk_2C;
-    func_80000FE4_main(D_800A97BC_main->envScripts, romAddr, info->unk_30, 0);
+    msmFioRead(D_800A97BC_main->envScripts, romAddr, info->unk_30, 0);
     for (i = 0; i < info->unk_28; i++) {
         if (D_800A97BC_main->envScripts[i] != NULL) {
             D_800A97BC_main->envScripts[i] += (u32)D_800A97BC_main->envScripts;
@@ -2123,7 +2123,7 @@ s32 func_80003EE4_main(u8 *bankAddr, SeBankInfo *info) {
 /* Processes the commands queued by the API functions. Changes to a voice that
  * has not started yet are flagged so they are not overwritten when it starts;
  * changes to a playing voice also apply to the voices of its other layers. */
-void func_80003FB4_main(void) {
+void msmSeCmdProc(void) {
     SeCmd *cmd;
     GameSound *sound;
     GameSound *link;
@@ -2267,19 +2267,19 @@ void func_80003FB4_main(void) {
                 }
                 break;
             case 11:
-                func_800048D0_main(sound);
+                msmSeSoundStop(sound);
                 if (sound->linkCount != 0) {
                     for (j = 0; j < sound->linkCount; j++) {
                         link = &D_800A97BC_main->sounds[sound->links[j].slot];
                         if (link->order == sound->links[j].order) {
-                            func_800048D0_main(link);
+                            msmSeSoundStop(link);
                         }
                     }
                 }
                 break;
             case 12:
                 for (j = 0; j < D_800A97BC_main->soundCount; j++) {
-                    func_800048D0_main(&D_800A97BC_main->sounds[j]);
+                    msmSeSoundStop(&D_800A97BC_main->sounds[j]);
                 }
                 break;
             case 13:
@@ -2294,7 +2294,7 @@ void func_80003FB4_main(void) {
                         link->state = 2;
                     }
                     if (link->flags & 8) {
-                        func_800048D0_main(link);
+                        msmSeSoundStop(link);
                     }
                 }
                 D_800A97BC_main->pauseState = 0x7E;
@@ -2343,7 +2343,7 @@ void func_80003FB4_main(void) {
     D_800A97BC_main->cmdCount = 0;
 }
 
-void func_800048D0_main(GameSound *sound) {
+void msmSeSoundStop(GameSound *sound) {
     sound->flags = 0;
     sound->state = 0;
     if (sound->sndId >= 0) {
@@ -2354,7 +2354,7 @@ void func_800048D0_main(GameSound *sound) {
     }
 }
 
-void func_80004928_main(GameSound *sound) {
+void msmSeSoundUpdate(GameSound *sound) {
     if (sound->sndId >= 0) {
         n_alSndpSetSound(sound->sndId);
         if ((sound->sndState = n_alSndpGetState()) == AL_STOPPED && (sound->flags & 0x800)) {
@@ -2365,7 +2365,7 @@ void func_80004928_main(GameSound *sound) {
     }
 }
 
-void func_8000499C_main(GameSound *sound) {
+void msmSeSoundCount(GameSound *sound) {
     if (sound->state != 1) {
         if (sound->state > 0) {
             if (sound->state < 5) {
@@ -2381,7 +2381,7 @@ void func_8000499C_main(GameSound *sound) {
 
 /* Starts the scripts of a sound effect once its previous sound has stopped.
  * The first layer's voice starts the voices of the other layers too. */
-void func_800049E8_main(GameSound *sound) {
+void msmSeSoundStart(GameSound *sound) {
     SeEntry *entry;
     SeLink *links;
     GameSound *link;
@@ -2398,7 +2398,7 @@ void func_800049E8_main(GameSound *sound) {
     }
     sound->state = 3;
     if (sound->sndState == AL_PLAYING) {
-        sound->env.releaseTime = 184000000 / func_80000E9C_main()->cfg.unk1C;
+        sound->env.releaseTime = 184000000 / msmSysGetConfigPtr()->cfg.unk1C;
         n_alSndpStop();
         sound->flags |= 0x800;
         return;
@@ -2488,7 +2488,7 @@ void func_800049E8_main(GameSound *sound) {
 
 /* Runs the script of a voice until it has to wait. Each command byte is
  * followed by a variable length wait time unless bit 7 is set. */
-void func_80004D4C_main(GameSound *sound) {
+void msmSeRunScript(GameSound *sound) {
     u8 *cursor;
     u8 *op;
     u8 *count;
@@ -2509,7 +2509,7 @@ void func_80004D4C_main(GameSound *sound) {
     while (sound->wait == 0) {
         op = cursor++;
         if (!(*op & 0x80)) {
-            sound->wait = func_80005804_main(&cursor);
+            sound->wait = msmSeReadVarLen(&cursor);
         }
         switch (*op & 0x7F) {
             case 2:
@@ -2718,7 +2718,7 @@ void func_80004D4C_main(GameSound *sound) {
             case 53:
                 bit = SE_READ16(cursor);
                 cursor += 2;
-                sound->pitchRatio = (f32)bit / func_80000E9C_main()->cfg.unk1C;
+                sound->pitchRatio = (f32)bit / msmSysGetConfigPtr()->cfg.unk1C;
                 if (sound->flags & 0x2000000) {
                     sound->flags |= 0x4000000;
                 }
@@ -2813,7 +2813,7 @@ void func_80004D4C_main(GameSound *sound) {
  * low 7 bits, with bit 7 signalling that another byte follows. Only the final
  * byte is added unshifted, which is why it is kept out of the loop accumulator.
  */
-s32 func_80005804_main(u8 **cursor) {
+s32 msmSeReadVarLen(u8 **cursor) {
     s32 value = 0;
     s32 byte = *(*cursor)++;
 
@@ -2827,7 +2827,7 @@ s32 func_80005804_main(u8 **cursor) {
 }
 
 /* Steps the pitch LFO of a voice, returning its current value. */
-f32 func_80005850_main(GameSound *sound) {
+f32 msmSeUpdateLfo(GameSound *sound) {
     f32 val;
     f32 half;
 
@@ -2918,7 +2918,7 @@ f32 func_80005850_main(GameSound *sound) {
 
 /* Updates the pitch modulation of a voice: LFO, sweep, pitch envelope, random
  * pitch and external modulation. */
-void func_80005BAC_main(GameSound *sound, f32 lfo) {
+void msmSeUpdatePitch(GameSound *sound, f32 lfo) {
     f32 detune = 0.0f;
     s32 i;
     s32 n;
@@ -3015,7 +3015,7 @@ void func_80005BAC_main(GameSound *sound, f32 lfo) {
 }
 
 /* Updates the random and modulated pan of a voice. */
-void func_80005FE4_main(GameSound *sound) {
+void msmSeUpdatePan(GameSound *sound) {
     s32 mod = 0;
     s32 modded = FALSE;
     s32 i;
@@ -3049,7 +3049,7 @@ void func_80005FE4_main(GameSound *sound) {
 }
 
 /* Updates the random and modulated volume of a voice. */
-void func_80006148_main(GameSound *sound) {
+void msmSeUpdateVolume(GameSound *sound) {
     s32 mod = 0;
     s32 modded = FALSE;
     s32 i;
@@ -3083,14 +3083,14 @@ void func_80006148_main(GameSound *sound) {
 }
 
 /* Starts, stops and releases the voice's sound as requested by its script. */
-void func_800062A8_main(GameSound *sound) {
+void msmSeUpdateSound(GameSound *sound) {
     s32 start;
     s32 val;
 
     if (sound->flags & 0x40000) {
         switch (sound->sndState) {
             case AL_PLAYING:
-                sound->env.releaseTime = 184000000 / func_80000E9C_main()->cfg.unk1C;
+                sound->env.releaseTime = 184000000 / msmSysGetConfigPtr()->cfg.unk1C;
                 n_alSndpStop();
             case AL_STOPPING:
                 sound->state = 1;
@@ -3137,11 +3137,11 @@ void func_800062A8_main(GameSound *sound) {
             }
             sound->sound.envelope = &sound->env;
             if (sound->soundIdx >= 0) {
-                sound->env.releaseTime = 184000000 / func_80000E9C_main()->cfg.unk1C;
+                sound->env.releaseTime = 184000000 / msmSysGetConfigPtr()->cfg.unk1C;
             }
             if (!(sound->flags & 0x4000000)) {
                 val = (s32)sound->sound.keyMap;
-                sound->pitchRatio = (f32)val / func_80000E9C_main()->cfg.unk1C;
+                sound->pitchRatio = (f32)val / msmSysGetConfigPtr()->cfg.unk1C;
             }
             sound->sound.keyMap = NULL;
             sound->flags &= ~0x7F00000;
@@ -3151,11 +3151,11 @@ void func_800062A8_main(GameSound *sound) {
             n_alSndpSetPriority(sound->sndId, 20);
         }
     }
-    func_8000658C_main(sound, start);
+    msmSeUpdateBaseParam(sound, start);
 }
 
 /* Applies the changed parameters of a voice to its sound. */
-void func_8000658C_main(GameSound *sound, s32 force) {
+void msmSeUpdateBaseParam(GameSound *sound, s32 force) {
     s32 val;
 
     if (sound->sndId < 0) {
@@ -3175,7 +3175,7 @@ void func_8000658C_main(GameSound *sound, s32 force) {
         if (!(sound->flags & 4)) {
             val = val * D_800A97BC_main->pauseState / 127;
         }
-        n_alSndpSetVol(func_8000113C_main(val));
+        n_alSndpSetVol(msmSysVolExpand(val));
     }
     if ((sound->flags & 0x8000) || force) {
         val = 0x40;
@@ -3213,7 +3213,7 @@ void func_8000658C_main(GameSound *sound, s32 force) {
     sound->flags &= ~0x3E000;
 }
 
-void func_80006830_main(void) {
+void msmSePauseSub(void) {
     switch (D_800A97BC_main->pauseState) {
         case 0x7E:
             D_800A97BC_main->pauseState = 0x40;
@@ -3232,7 +3232,7 @@ void func_80006830_main(void) {
 
 /* Steps the fade of all sound effects. The loop counter doubles as the new
  * fade volume. */
-void func_800068B8_main(void) {
+void msmSeFade(void) {
     GameSound *sound;
     s32 i;
 
@@ -3250,7 +3250,7 @@ void func_800068B8_main(void) {
             }
         } else {
             for (i = 0; i < D_800A97BC_main->soundCount; i++) {
-                func_800048D0_main(&D_800A97BC_main->sounds[i]);
+                msmSeSoundStop(&D_800A97BC_main->sounds[i]);
             }
             D_800A97BC_main->fadeVol = 0x7F;
         }
@@ -3275,7 +3275,7 @@ void func_800068B8_main(void) {
 
 /* Sets up the sound effect manager. The loop counter doubles as the size of
  * the voice array. */
-s32 func_80006A8C_main(SndSys *sys, ALHeap *heap, s32 seCount, s32 vol) {
+s32 msmSeInit(SndSys *sys, ALHeap *heap, s32 seCount, s32 vol) {
     str800D5298 *cfg = &sys->cfg;
     SeBankInfo *info = (SeBankInfo *)sys->buf;
     ALSndpConfig config;
@@ -3285,29 +3285,29 @@ s32 func_80006A8C_main(SndSys *sys, ALHeap *heap, s32 seCount, s32 vol) {
         D_800A97BC_main = NULL;
         return 0;
     }
-    if ((D_800A97BC_main = func_800010B8_main(sizeof(SeManager))) == NULL) {
+    if ((D_800A97BC_main = msmMemAlloc(sizeof(SeManager))) == NULL) {
         return 1;
     }
     bzero(D_800A97BC_main, sizeof(SeManager));
-    func_80000FE4_main(info, (u8 *)cfg->unkC + sizeof(SndBankHeader), sizeof(SeBankInfo), 0);
-    if (func_80003CB8_main(cfg->unkC, info) != 0) {
+    msmFioRead(info, (u8 *)cfg->unkC + sizeof(SndBankHeader), sizeof(SeBankInfo), 0);
+    if (msmSeLoadBank(cfg->unkC, info) != 0) {
         return 2;
     }
-    if (func_80003DF4_main(cfg->unkC, info) != 0) {
+    if (msmSeLoadTable(cfg->unkC, info) != 0) {
         return 3;
     }
-    if (func_80003EE4_main(cfg->unkC, info) != 0) {
+    if (msmSeLoadEnvScripts(cfg->unkC, info) != 0) {
         return 4;
     }
     i = cfg->unk54 * sizeof(GameSound);
-    if ((D_800A97BC_main->sounds = func_800010B8_main(i)) == NULL) {
+    if ((D_800A97BC_main->sounds = msmMemAlloc(i)) == NULL) {
         return 5;
     }
     bzero(D_800A97BC_main->sounds, i);
     config.maxSounds = cfg->unk54;
     config.maxEvents = cfg->unk58;
     config.heap = heap;
-    if ((D_800A97BC_main->sndp = func_800010B8_main(sizeof(N_ALSndPlayer))) == NULL) {
+    if ((D_800A97BC_main->sndp = msmMemAlloc(sizeof(N_ALSndPlayer))) == NULL) {
         return 6;
     }
     n_alSndpNew(D_800A97BC_main->sndp, &config);
@@ -3328,7 +3328,7 @@ s32 func_80006A8C_main(SndSys *sys, ALHeap *heap, s32 seCount, s32 vol) {
 }
 
 /* Queues a command for the periodic proc to process. */
-void func_80006CD4_main(s32 voiceSlot, s32 cmdType, s32 cmdArg) {
+void msmSePushCmd(s32 voiceSlot, s32 cmdType, s32 cmdArg) {
     u32 mask = osSetIntMask(1);
     SeCmd *cmd = &D_800A97BC_main->cmds[D_800A97BC_main->cmdCount];
 
@@ -3336,14 +3336,14 @@ void func_80006CD4_main(s32 voiceSlot, s32 cmdType, s32 cmdArg) {
     cmd->voiceSlot = voiceSlot;
     cmd->arg.i = cmdArg;
     if (++D_800A97BC_main->cmdCount >= ARRAY_COUNT(D_800A97BC_main->cmds)) {
-        func_80001134_main(0, 0x200);
+        msmSysError(0, 0x200);
         D_800A97BC_main->cmdCount = 0;
     }
     osSetIntMask(mask);
 }
 
 /* Queues a command with a float argument for the periodic proc to process. */
-void func_80006D80_main(s32 voiceSlot, s32 cmdType, f32 cmdArg) {
+void msmSePushCmdF(s32 voiceSlot, s32 cmdType, f32 cmdArg) {
     u32 mask = osSetIntMask(1);
     SeCmd *cmd = &D_800A97BC_main->cmds[D_800A97BC_main->cmdCount];
 
@@ -3351,50 +3351,50 @@ void func_80006D80_main(s32 voiceSlot, s32 cmdType, f32 cmdArg) {
     cmd->voiceSlot = voiceSlot;
     cmd->arg.f = cmdArg;
     if (++D_800A97BC_main->cmdCount >= ARRAY_COUNT(D_800A97BC_main->cmds)) {
-        func_80001134_main(0, 0x200);
+        msmSysError(0, 0x200);
         D_800A97BC_main->cmdCount = 0;
     }
     osSetIntMask(mask);
 }
 
-void func_80006E30_main(void) {
+void msmSePeriodicProc(void) {
     GameSound *sound;
     s32 i;
 
     if (D_800A97BC_main != NULL && D_800A97BC_main->busy.all == 0) {
         D_800A97BC_main->busy.flag[1] = 1;
         D_800A97BC_main->unk_18 = 0;
-        func_80003FB4_main();
-        func_80006830_main();
+        msmSeCmdProc();
+        msmSePauseSub();
         for (i = 0; i < D_800A97BC_main->soundCount; i++) {
             sound = &D_800A97BC_main->sounds[i];
-            func_80004928_main(sound);
-            func_800049E8_main(sound);
-            func_8000499C_main(sound);
+            msmSeSoundUpdate(sound);
+            msmSeSoundStart(sound);
+            msmSeSoundCount(sound);
             if (sound->state != 4) {
                 if (sound->state == 2 && D_800A97BC_main->pauseState >= 0) {
                     sound->flags |= 0x4000;
-                    func_8000658C_main(sound, 0);
+                    msmSeUpdateBaseParam(sound, 0);
                 }
             } else {
-                func_80004D4C_main(sound);
-                func_80005BAC_main(sound, func_80005850_main(sound));
-                func_80005FE4_main(sound);
-                func_80006148_main(sound);
-                func_800062A8_main(sound);
+                msmSeRunScript(sound);
+                msmSeUpdatePitch(sound, msmSeUpdateLfo(sound));
+                msmSeUpdatePan(sound);
+                msmSeUpdateVolume(sound);
+                msmSeUpdateSound(sound);
                 if (sound->state < 2) {
                     D_800A97BC_main->unk_18--;
                 }
             }
         }
         if (D_800A97BC_main->pauseState == 0x7F) {
-            func_800068B8_main();
+            msmSeFade();
         }
         D_800A97BC_main->busy.flag[1] = 0;
     }
 }
 
-void func_80006FC4_main(void) {
+void msmSeStopAllSounds(void) {
     GameSound *sound;
     s32 i;
 
@@ -3410,11 +3410,11 @@ void func_80006FC4_main(void) {
     }
 }
 
-SeManager *func_8000704C_main(void) {
+SeManager *msmSeGetManager(void) {
     return D_800A97BC_main;
 }
 
-void func_80007058_main(void) {
+void msmSeClear(void) {
     D_800A97BC_main = NULL;
 }
 
@@ -3425,7 +3425,7 @@ s32 msmSePlayDefault(s32 seId) {
 /* Starts a sound effect, allocating one voice per layer. Returns the slot of
  * the first layer's voice, or -1 if it could not be played. */
 s32 msmSePlay(s32 seId, SePlayParam *param) {
-    SeManager *se = func_8000704C_main();
+    SeManager *se = msmSeGetManager();
     s32 slots[4];
     SeEntry *entry;
     GameSound *sound;
@@ -3451,16 +3451,16 @@ s32 msmSePlay(s32 seId, SePlayParam *param) {
     if (param != NULL && (param->flags & 0x200)) {
         variant = param->variant;
     }
-    if ((slots[0] = func_800072A4_main(seId, 0, slot, variant)) < 0) {
+    if ((slots[0] = msmSeAllocVoice(seId, 0, slot, variant)) < 0) {
         return -1;
     }
-    func_800076B8_main(seId, slots[0], 0xFF, param);
+    msmSeSetupVoice(seId, slots[0], 0xFF, param);
     sound = &se->sounds[slots[0]];
     linkCount = 0;
     for (i = entry->layerCount - 1; i > 0; i--) {
-        slot = slots[i] = func_800072A4_main(seId, i, -1, variant);
+        slot = slots[i] = msmSeAllocVoice(seId, i, -1, variant);
         if (slot >= 0) {
-            func_800076B8_main(seId, slot, entry->priority, param);
+            msmSeSetupVoice(seId, slot, entry->priority, param);
             se->sounds[slot].links[0].slot = (s8)slots[0];
             se->sounds[slot].links[0].order = sound->order;
             sound->links[linkCount].slot = slot;
@@ -3471,18 +3471,18 @@ s32 msmSePlay(s32 seId, SePlayParam *param) {
     sound->priority = entry->priority;
     for (i = entry->layerCount - 1; i > 0; i--) {
         if (slots[i] >= 0) {
-            func_80006CD4_main(slots[i], 1, i);
+            msmSePushCmd(slots[i], 1, i);
         }
     }
-    func_80006CD4_main(slots[0], 1, linkCount << 4);
+    msmSePushCmd(slots[0], 1, linkCount << 4);
     return slots[0];
 }
 
 /* Picks the voice to play the given layer of a sound effect on: the requested
  * slot, a free voice, or the oldest voice of lower priority. Returns -1 if
  * there is none. */
-s32 func_800072A4_main(s32 seId, s32 layer, s32 slot, s32 variant) {
-    SeManager *se = func_8000704C_main();
+s32 msmSeAllocVoice(s32 seId, s32 layer, s32 slot, s32 variant) {
+    SeManager *se = msmSeGetManager();
     SeEntry *entry = se->entries[seId];
     u32 mask = entry->layers[layer].voiceMask;
     SeVoiceList lists[3];
@@ -3582,12 +3582,12 @@ s32 func_800072A4_main(s32 seId, s32 layer, s32 slot, s32 variant) {
 }
 
 /* Sets up a voice for a newly started sound effect layer. */
-void func_800076B8_main(s32 seId, s32 slot, u8 priority, SePlayParam *param) {
-    SeManager *se = func_8000704C_main();
+void msmSeSetupVoice(s32 seId, s32 slot, u8 priority, SePlayParam *param) {
+    SeManager *se = msmSeGetManager();
     GameSound *sound;
     SePosParam pos;
 
-    func_80006CD4_main(slot, 0, 0);
+    msmSePushCmd(slot, 0, 0);
     sound = &se->sounds[slot];
     sound->state = 3;
     sound->order = se->order++;
@@ -3598,19 +3598,19 @@ void func_800076B8_main(s32 seId, s32 slot, u8 priority, SePlayParam *param) {
     if (param != NULL) {
         if (param->flags & 1) {
             sound->vol = param->vol;
-            func_80006CD4_main(slot, 2, param->vol);
+            msmSePushCmd(slot, 2, param->vol);
         }
         if (param->flags & 2) {
             sound->pan = param->pan;
-            func_80006CD4_main(slot, 7, param->pan);
+            msmSePushCmd(slot, 7, param->pan);
         }
         if (param->flags & 4) {
             sound->pitch = param->pitch;
-            func_80006CD4_main(slot, 5, param->pitch);
+            msmSePushCmd(slot, 5, param->pitch);
         }
         if (param->flags & 8) {
             sound->fxMix = param->fxMix;
-            func_80006CD4_main(slot, 9, param->fxMix);
+            msmSePushCmd(slot, 9, param->fxMix);
         }
         pos.flags = 0;
         if (param->flags & 0x20) {
@@ -3630,13 +3630,13 @@ void func_800076B8_main(s32 seId, s32 slot, u8 priority, SePlayParam *param) {
             pos.unk_10 = param->unk_28;
         }
         if (pos.flags & 0x33) {
-            func_8000810C_main(slot, &pos);
+            msmSeUpdataListener(slot, &pos);
         }
     }
 }
 
-s32 func_800078A4_main(void) {
-    SeManager *se = func_8000704C_main();
+s32 msmSeGetCount(void) {
+    SeManager *se = msmSeGetManager();
 
     if (se == NULL) {
         return 0;
@@ -3644,8 +3644,8 @@ s32 func_800078A4_main(void) {
     return se->seCount;
 }
 
-s32 func_800078CC_main(void) {
-    SeManager *se = func_8000704C_main();
+s32 msmSeGetNumPlay(void) {
+    SeManager *se = msmSeGetManager();
 
     if (se == NULL) {
         return 0;
@@ -3654,7 +3654,7 @@ s32 func_800078CC_main(void) {
 }
 
 s32 msmSeGetStatus(s32 slot) {
-    SeManager *se = func_8000704C_main();
+    SeManager *se = msmSeGetManager();
 
     if (se == NULL) {
         return 0;
@@ -3663,8 +3663,8 @@ s32 msmSeGetStatus(s32 slot) {
 }
 
 /* Returns the slot of the first layer of a playing sound effect. */
-s32 func_8000793C_main(s32 seId) {
-    SeManager *se = func_8000704C_main();
+s32 msmSeSearchEntry(s32 seId) {
+    SeManager *se = msmSeGetManager();
     GameSound *sound;
     s32 i;
 
@@ -3680,8 +3680,8 @@ s32 func_8000793C_main(s32 seId) {
     return -1;
 }
 
-s32 func_800079CC_main(s32 seId) {
-    SeManager *se = func_8000704C_main();
+s32 msmSeGetEntryLayers(s32 seId) {
+    SeManager *se = msmSeGetManager();
 
     if (se == NULL) {
         return 0;
@@ -3689,8 +3689,8 @@ s32 func_800079CC_main(s32 seId) {
     return se->entries[seId]->unk_03;
 }
 
-void func_80007A10_main(SeParam *param) {
-    SeManager *se = func_8000704C_main();
+void msmSeGetParam(SeParam *param) {
+    SeManager *se = msmSeGetManager();
 
     if (se != NULL) {
         param->masterVol = se->masterVol;
@@ -3700,8 +3700,8 @@ void func_80007A10_main(SeParam *param) {
     }
 }
 
-void func_80007A60_main(SeParam *param) {
-    SeManager *se = func_8000704C_main();
+void msmSeSetParam(SeParam *param) {
+    SeManager *se = msmSeGetManager();
 
     if (se != NULL) {
         if (param->flags & 1) {
@@ -3720,82 +3720,82 @@ void func_80007A60_main(SeParam *param) {
 }
 
 void msmSeSetMasterVolume(s32 vol) {
-    if (func_8000704C_main() != NULL) {
-        func_80006CD4_main(0, 3, vol);
+    if (msmSeGetManager() != NULL) {
+        msmSePushCmd(0, 3, vol);
     }
 }
 
 /* Sets the volume of the given voice, or of every voice when negative. */
 void msmSeSetVolume(s32 slot, s32 vol) {
-    SeManager *se = func_8000704C_main();
+    SeManager *se = msmSeGetManager();
 
     if (se != NULL) {
         if (slot < 0) {
             for (slot = 0; slot < se->soundCount; slot++) {
                 se->sounds[slot].vol = vol;
             }
-            func_80006CD4_main(0, 4, vol);
+            msmSePushCmd(0, 4, vol);
         } else {
             se->sounds[slot].vol = vol;
-            func_80006CD4_main(slot, 2, vol);
+            msmSePushCmd(slot, 2, vol);
         }
     }
 }
 
 /* Sets the pitch of the given voice, or of every voice when negative. */
 void msmSeSetPitch(s32 slot, s32 pitch) {
-    SeManager *se = func_8000704C_main();
+    SeManager *se = msmSeGetManager();
 
     if (se != NULL) {
         if (slot < 0) {
             for (slot = 0; slot < se->soundCount; slot++) {
                 se->sounds[slot].pitch = pitch;
             }
-            func_80006CD4_main(0, 6, pitch);
+            msmSePushCmd(0, 6, pitch);
         } else {
             se->sounds[slot].pitch = pitch;
-            func_80006CD4_main(slot, 5, pitch);
+            msmSePushCmd(slot, 5, pitch);
         }
     }
 }
 
 /* Sets the pan of the given voice, or of every voice when negative. */
 void msmSeSetPan(s32 slot, s32 pan) {
-    SeManager *se = func_8000704C_main();
+    SeManager *se = msmSeGetManager();
 
     if (se != NULL) {
         if (slot < 0) {
             for (slot = 0; slot < se->soundCount; slot++) {
                 se->sounds[slot].pan = pan;
             }
-            func_80006CD4_main(0, 8, pan);
+            msmSePushCmd(0, 8, pan);
         } else {
             se->sounds[slot].pan = pan;
-            func_80006CD4_main(slot, 7, pan);
+            msmSePushCmd(slot, 7, pan);
         }
     }
 }
 
 /* Sets the effect mix of the given voice, or of every voice when negative. */
-void func_80007D2C_main(s32 slot, s32 fxMix) {
-    SeManager *se = func_8000704C_main();
+void msmSeSetFxMix(s32 slot, s32 fxMix) {
+    SeManager *se = msmSeGetManager();
 
     if (se != NULL) {
         if (slot < 0) {
             for (slot = 0; slot < se->soundCount; slot++) {
                 se->sounds[slot].fxMix = fxMix;
             }
-            func_80006CD4_main(0, 10, fxMix);
+            msmSePushCmd(0, 10, fxMix);
         } else {
             se->sounds[slot].fxMix = fxMix;
-            func_80006CD4_main(slot, 9, fxMix);
+            msmSePushCmd(slot, 9, fxMix);
         }
     }
 }
 
 /* Stops the given voice, or every voice when negative. */
 void msmSeStop(s32 slot) {
-    SeManager *se = func_8000704C_main();
+    SeManager *se = msmSeGetManager();
     GameSound *sound;
     s32 i;
 
@@ -3804,7 +3804,7 @@ void msmSeStop(s32 slot) {
     }
     se->busy.flag[0] = 1;
     if (slot < 0) {
-        func_80006CD4_main(0, 12, 0);
+        msmSePushCmd(0, 12, 0);
         for (i = 0; i < se->soundCount; i++) {
             sound = &se->sounds[i];
             if (sound->state >= 2) {
@@ -3814,21 +3814,21 @@ void msmSeStop(s32 slot) {
     } else {
         sound = &se->sounds[slot];
         if (sound->state >= 2) {
-            func_80006CD4_main(slot, 11, 0);
+            msmSePushCmd(slot, 11, 0);
             sound->state = 1;
         }
     }
     se->busy.flag[0] = 0;
 }
 
-void func_80007EC0_main(s32 time) {
-    if (func_8000704C_main() != NULL) {
-        func_80006CD4_main(0, 13, time);
+void msmSeFadeOut(s32 time) {
+    if (msmSeGetManager() != NULL) {
+        msmSePushCmd(0, 13, time);
     }
 }
 
-s32 func_80007EF8_main(void) {
-    SeManager *se = func_8000704C_main();
+s32 msmSeGetFadeTime(void) {
+    SeManager *se = msmSeGetManager();
 
     if (se == NULL) {
         return 0;
@@ -3837,13 +3837,13 @@ s32 func_80007EF8_main(void) {
 }
 
 /* Pauses every playing voice. */
-void func_80007F24_main(void) {
-    SeManager *se = func_8000704C_main();
+void msmSePauseAll(void) {
+    SeManager *se = msmSeGetManager();
     GameSound *sound;
     s32 i;
 
     if (se != NULL && se->pauseState >= 0x7F) {
-        func_80006CD4_main(0, 14, 0);
+        msmSePushCmd(0, 14, 0);
         se->busy.flag[0] = 1;
         for (i = 0; i < D_800A97BC_main->soundCount; i++) {
             sound = &D_800A97BC_main->sounds[i];
@@ -3856,16 +3856,16 @@ void func_80007F24_main(void) {
 }
 
 /* Resumes the paused voices. */
-void func_80007FD4_main(s32 time) {
-    SeManager *se = func_8000704C_main();
+void msmSeResumeAll(s32 time) {
+    SeManager *se = msmSeGetManager();
 
     if (se != NULL && se->pauseState != 0x7F) {
-        func_80006CD4_main(0, 15, time);
+        msmSePushCmd(0, 15, time);
     }
 }
 
-void func_8000801C_main(SePosConfig *cfg) {
-    SeManager *se = func_8000704C_main();
+void msmSeSetListener(SePosConfig *cfg) {
+    SeManager *se = msmSeGetManager();
 
     if (se != NULL) {
         if (cfg->flags & 1) {
@@ -3897,8 +3897,8 @@ void func_8000801C_main(SePosConfig *cfg) {
 
 /* Sets the volume and pan of a voice from its distance and angle to the
  * listener. */
-void func_8000810C_main(s32 slot, SePosParam *param) {
-    SeManager *se = func_8000704C_main();
+void msmSeUpdataListener(s32 slot, SePosParam *param) {
+    SeManager *se = msmSeGetManager();
     f32 dist;
     f32 range;
     s32 val;
@@ -3923,7 +3923,7 @@ void func_8000810C_main(s32 slot, SePosParam *param) {
                 val = 0x7F;
             }
         }
-        func_80006CD4_main(slot, 16, val);
+        msmSePushCmd(slot, 16, val);
     }
     if (param->flags & 1) {
         val = se->angle + param->angle;
@@ -3951,6 +3951,6 @@ void func_8000810C_main(s32 slot, SePosParam *param) {
                 val = 64.0f - (64 - val) * (dist / range);
             }
         }
-        func_80006CD4_main(slot, 17, val);
+        msmSePushCmd(slot, 17, val);
     }
 }

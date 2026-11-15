@@ -144,16 +144,16 @@ void func_801059A0_hand_line_sinker(void) {
     s32 i;
 
     omInitObjMan(26, 0);
-    func_8004A208_main();
+    omGameSysInit();
     data = DataRead(0x220015);
-    D_8010C12C_hand_line_sinker = func_800329B4_main(data);
+    D_8010C12C_hand_line_sinker = Hu3DAnimDataCreate(data);
     HuMemMemoryFreePerm(data);
-    func_800142A0_main(9);
+    Hu3DSprModelInit(9);
     Hu3DBGColorSet(0, 40, 120);
     D_800CD280_main = 1;
     func_8010B5B0_hand_line_sinker();
     func_8010A5F0_hand_line_sinker();
-    func_80045C2C_main();
+    HuAudCharVoiceInit();
     ScissorSet(0, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DGLightMaxSet(3);
@@ -185,10 +185,10 @@ void func_801059A0_hand_line_sinker(void) {
         }
     }
     D_8010C100_hand_line_sinker = omGetGroupMemberList(0);
-    func_80045010_main(D_8010BFB0_hand_line_sinker, 1);
+    GMesFontMesCreate(D_8010BFB0_hand_line_sinker, 1);
     func_800E5EA0_minigame(&D_8010BF00_hand_line_sinker);
     D_800EB930_minigame = 45;
-    func_8001766C_main();
+    CharAnimInit();
 }
 
 void func_80105CF0_hand_line_sinker(omObjData *arg0) {
@@ -248,19 +248,19 @@ void func_80105D28_hand_line_sinker(omObjData *obj) {
         func_8010BE6C_hand_line_sinker(work->line);
         work->line = NULL;
         HuAudSeqFadeOut(30);
-        func_8004AB0C_main(30);
+        HuAudFXAllFadeOut(30);
         func_8010BA64_hand_line_sinker();
     }
 }
 
 void func_80105EE8_hand_line_sinker(omObjData *obj) {
     obj->data = HuMemAllocTag(0x24, TAG_OVERLAY);
-    obj->model[0] = func_8000B108_main(0x220000, 0x699);
-    obj->model[1] = func_8000B108_main(0x220001, 0x1A99);
-    obj->model[2] = func_8000B108_main(0x220003, 0x699);
-    func_8001C814_main(obj->model[2], 2, 2);
-    func_800335BC_main("m201_3mizu_DEF", D_8010C104_hand_line_sinker);
-    func_8001C954_main(obj->model[1]);
+    obj->model[0] = Hu3DModelRead(0x220000, 0x699);
+    obj->model[1] = Hu3DModelRead(0x220001, 0x1A99);
+    obj->model[2] = Hu3DModelRead(0x220003, 0x699);
+    Hu3DMotionAttrSet(obj->model[2], 2, 2);
+    Hu3DTexSizeGet("m201_3mizu_DEF", D_8010C104_hand_line_sinker);
+    Hu3DModelVtxBufMake(obj->model[1]);
     D_8010C108_hand_line_sinker = 0.0f;
     obj->func = func_80105FA4_hand_line_sinker;
 }
@@ -269,7 +269,7 @@ void func_80105FA4_hand_line_sinker(omObjData *obj) {
     if (omPauseChk() + D_800D6A90_main == 0) {
         D_8010C108_hand_line_sinker += 0.1f;
     }
-    func_8001E888_main(obj->model[1], D_8010C108_hand_line_sinker, 0.0f, D_8010C104_hand_line_sinker[0],
+    Hu3DModelObjTexScroll(obj->model[1], D_8010C108_hand_line_sinker, 0.0f, D_8010C104_hand_line_sinker[0],
                        D_8010C104_hand_line_sinker[1], "m201_00-grid6", 0);
 }
 
@@ -321,39 +321,39 @@ void func_80106100_hand_line_sinker(omObjData *obj, u16 playerNo) {
     work->pressTimer = 0;
     work->speed = 0.0f;
     if (playerNo == D_8010C0EA_hand_line_sinker) {
-        obj->model[0] = func_8000B108_main(model | motion, 0x20689);
-        func_80017790_main(obj->model[0], 2, chr, func_80017B6C_main(chr, 2, 0));
-        func_8001C514_main(obj->model[0]);
-        obj->model[5] = func_80017AD8_main(func_80017B6C_main(chr, 2, 1));
+        obj->model[0] = Hu3DModelRead(model | motion, 0x20689);
+        CharAnimCreate(obj->model[0], 2, chr, CharMotionDataNumGetTbl(chr, 2, 0));
+        Hu3DModelDynamicFree(obj->model[0]);
+        obj->model[5] = Hu3DAnimDataRead(CharMotionDataNumGetTbl(chr, 2, 1));
         obj->work[0] = 0;
         work->unk8 = 0.0f;
         work->line = func_8010BA80_hand_line_sinker(0xFF, 0xFF, 0xFF);
         work->lineObj = NULL;
         work->aiTarget = NULL;
-        obj->model[1] = func_8000B108_main(0x220006, 0x20499);
-        obj->model[2] = func_8000B108_main(0x220007, 0x20499);
-        obj->model[3] = func_8000B108_main(0x22000B, 0x21899);
-        obj->model[4] = func_8000B0D4_main(9, 0x689);
+        obj->model[1] = Hu3DModelRead(0x220006, 0x20499);
+        obj->model[2] = Hu3DModelRead(0x220007, 0x20499);
+        obj->model[3] = Hu3DModelRead(0x22000B, 0x21899);
+        obj->model[4] = Hu3DModelRead3(9, 0x689);
         Hu3DModelHookSet(obj->model[1], obj->model[0], "item_hook");
-        func_8000B460_main(obj, 17, 0x220007);
-        func_8000B460_main(obj, 14, 0x220008);
-        func_8000B460_main(obj, 15, 0x220009);
-        func_8000B460_main(obj, 16, 0x22000A);
-        func_8000B460_main(obj, 2, func_80017BB8_main(chr, 0x16));
-        func_8000B460_main(obj, 5, func_80017BB8_main(chr, 0x17));
-        func_8000B460_main(obj, 8, func_80017BB8_main(chr, 0x40));
-        func_8000B460_main(obj, 3, func_80017BB8_main(chr, 0x26));
-        func_8000B460_main(obj, 4, func_80017BB8_main(chr, 0x2A));
-        func_8000B460_main(obj, 10, func_80017BB8_main(chr, 1));
-        func_8000B460_main(obj, 11, func_80017BB8_main(chr, 0));
-        func_8000B460_main(obj, 12, func_80017BB8_main(chr, 0x2F));
-        func_8000B460_main(obj, 13, func_80017BB8_main(chr, 0x36));
-        func_8001C5B4_main(obj->model[0], obj->motion[4]);
-        func_8001C814_main(obj->model[0], 2, 2);
-        func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        omObjMotionRead(obj, 17, 0x220007);
+        omObjMotionRead(obj, 14, 0x220008);
+        omObjMotionRead(obj, 15, 0x220009);
+        omObjMotionRead(obj, 16, 0x22000A);
+        omObjMotionRead(obj, 2, CharMotionDataNumGet(chr, 0x16));
+        omObjMotionRead(obj, 5, CharMotionDataNumGet(chr, 0x17));
+        omObjMotionRead(obj, 8, CharMotionDataNumGet(chr, 0x40));
+        omObjMotionRead(obj, 3, CharMotionDataNumGet(chr, 0x26));
+        omObjMotionRead(obj, 4, CharMotionDataNumGet(chr, 0x2A));
+        omObjMotionRead(obj, 10, CharMotionDataNumGet(chr, 1));
+        omObjMotionRead(obj, 11, CharMotionDataNumGet(chr, 0));
+        omObjMotionRead(obj, 12, CharMotionDataNumGet(chr, 0x2F));
+        omObjMotionRead(obj, 13, CharMotionDataNumGet(chr, 0x36));
+        Hu3DMotionModelSet(obj->model[0], obj->motion[4]);
+        Hu3DMotionAttrSet(obj->model[0], 2, 2);
+        Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         Hu3DModelHookSet(obj->model[3], obj->model[1], D_8010BF88_hand_line_sinker[0]);
-        func_8001C258_main(obj->model[3], 0x4000, 0x4000);
-        func_8001C258_main(obj->model[1], 0x4000, 0x4000);
+        Hu3DModelAttrSet(obj->model[3], 0x4000, 0x4000);
+        Hu3DModelAttrSet(obj->model[1], 0x4000, 0x4000);
         omSetTra(obj, 0.0f, 100.0f, 900.0f);
         omSetRot(obj, 0.0f, 180.0f, 0.0f);
         Hu3DModelPosSet(obj->model[4], 0.0f, 100.0f, 900.0f);
@@ -363,11 +363,11 @@ void func_80106100_hand_line_sinker(omObjData *obj, u16 playerNo) {
         Hu3DModelRotSet(obj->model[2], obj->rot.x, obj->rot.y, obj->rot.z);
         obj->func = func_8010689C_hand_line_sinker;
     } else {
-        obj->model[0] = func_8000B108_main(D_8010BF64_hand_line_sinker[chr] | 0x220000, 0x1A99);
-        func_8000B460_main(obj, 0, D_8010BF64_hand_line_sinker[chr] | 0x220000);
-        func_8000B460_main(obj, 1, 0x220014);
-        func_8001C5B4_main(obj->model[0], obj->motion[0]);
-        func_8001C814_main(obj->model[0], 2, 2);
+        obj->model[0] = Hu3DModelRead(D_8010BF64_hand_line_sinker[chr] | 0x220000, 0x1A99);
+        omObjMotionRead(obj, 0, D_8010BF64_hand_line_sinker[chr] | 0x220000);
+        omObjMotionRead(obj, 1, 0x220014);
+        Hu3DMotionModelSet(obj->model[0], obj->motion[0]);
+        Hu3DMotionAttrSet(obj->model[0], 2, 2);
         omSetSca(obj, 1.0f, 1.0f, 1.0f);
         omSetSca(obj, 1.5f, 1.5f, 1.5f);
         do {
@@ -476,11 +476,11 @@ void func_8010689C_hand_line_sinker(omObjData *obj) {
                     break;
                 }
                 obj->work[0] = 2;
-                func_8001C258_main(obj->model[1], 0x4000, 0);
-                func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-                func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-                func_8001C5B4_main(obj->model[0], obj->motion[3]);
-                func_8001C5B4_main(obj->model[2], obj->motion[14]);
+                Hu3DModelAttrSet(obj->model[1], 0x4000, 0);
+                Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                Hu3DMotionModelSet(obj->model[0], obj->motion[3]);
+                Hu3DMotionModelSet(obj->model[2], obj->motion[14]);
                 work->aiWait = 5;
             }
             break;
@@ -490,19 +490,19 @@ void func_8010689C_hand_line_sinker(omObjData *obj) {
             }
             if (MgFlowStatGet() != MG_STATE_PLAY) {
                 obj->work[0] = 0;
-                func_8001C258_main(obj->model[1], 0x4000, 0x4000);
-                func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-                func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-                func_8001C5B4_main(obj->model[0], obj->motion[8]);
-                func_8001C814_main(obj->model[0], 3, 3);
+                Hu3DModelAttrSet(obj->model[1], 0x4000, 0x4000);
+                Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DMotionModelSet(obj->model[0], obj->motion[8]);
+                Hu3DMotionAttrSet(obj->model[0], 3, 3);
                 break;
             }
             obj->work[0] = 4;
-            func_8001C5B4_main(obj->model[0], obj->motion[8]);
-            func_8001C814_main(obj->model[0], 3, 3);
+            Hu3DMotionModelSet(obj->model[0], obj->motion[8]);
+            Hu3DMotionAttrSet(obj->model[0], 3, 3);
             Hu3DMotionSpeedSet(obj->model[0], 1.0f);
             Hu3DMotionSpeedSet(obj->model[2], 1.0f);
-            func_8001C258_main(obj->model[3], 0x4000, 0);
+            Hu3DModelAttrSet(obj->model[3], 0x4000, 0);
             if (work->lineObj != NULL) {
                 omDelObj(work->lineObj);
             }
@@ -556,22 +556,22 @@ void func_8010689C_hand_line_sinker(omObjData *obj) {
             if (stat & 2) {
                 obj->mode &= ~2;
                 if (work->lineObj->work[1] == 1) {
-                    func_80047E90_main(lineWork->unk1B8, 2);
+                    omObjModeSet(lineWork->unk1B8, 2);
                     obj->work[0] = 5;
-                    func_8001C258_main(obj->model[1], 0x4000, 0);
-                    func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-                    func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-                    func_8001C5B4_main(obj->model[0], obj->motion[2]);
-                    func_8001C5B4_main(obj->model[2], obj->motion[17]);
-                    func_8001C258_main(obj->model[3], 0x4000, 0x4000);
+                    Hu3DModelAttrSet(obj->model[1], 0x4000, 0);
+                    Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                    Hu3DMotionModelSet(obj->model[0], obj->motion[2]);
+                    Hu3DMotionModelSet(obj->model[2], obj->motion[17]);
+                    Hu3DModelAttrSet(obj->model[3], 0x4000, 0x4000);
                 } else {
                     obj->work[0] = 0;
-                    func_8001C258_main(obj->model[1], 0x4000, 0x4000);
-                    func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-                    func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-                    func_8001C5B4_main(obj->model[0], obj->motion[8]);
-                    func_8001C814_main(obj->model[0], 3, 3);
-                    func_8001C258_main(obj->model[3], 0x4000, 0x4000);
+                    Hu3DModelAttrSet(obj->model[1], 0x4000, 0x4000);
+                    Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                    Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    Hu3DMotionModelSet(obj->model[0], obj->motion[8]);
+                    Hu3DMotionAttrSet(obj->model[0], 3, 3);
+                    Hu3DModelAttrSet(obj->model[3], 0x4000, 0x4000);
                     work->aiTarget = NULL;
                 }
                 omDelObj(work->lineObj);
@@ -609,11 +609,11 @@ void func_8010689C_hand_line_sinker(omObjData *obj) {
         case 5:
             if (Hu3DData[obj->model[0]].motTime >= D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02) {
                 obj->work[0] = 0;
-                func_8001C258_main(obj->model[1], 0x4000, 0x4000);
-                func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-                func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-                func_8001C5B4_main(obj->model[0], obj->motion[8]);
-                func_8001C814_main(obj->model[0], 3, 3);
+                Hu3DModelAttrSet(obj->model[1], 0x4000, 0x4000);
+                Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DMotionModelSet(obj->model[0], obj->motion[8]);
+                Hu3DMotionAttrSet(obj->model[0], 3, 3);
                 work->aiTarget = NULL;
             }
             break;
@@ -775,7 +775,7 @@ void func_80107B24_hand_line_sinker(omObjData *obj) {
                 offset.z = obj->trans.z;
                 rot.x = rot.y = rot.z = 0.0f;
                 func_8010A6D0_hand_line_sinker(NULL, 0, &offset, &rot);
-                work->seNo = func_8004AC98_main(0x300, work->unk1C8);
+                work->seNo = HuAudPlayerFXPlay(0x300, work->unk1C8);
                 HuAudFXStop(work->unk1CA);
                 omVibrate(work->unk1C8, 2, 3, 10);
             }
@@ -783,7 +783,7 @@ void func_80107B24_hand_line_sinker(omObjData *obj) {
                 y = -210.0f;
                 work->unk1D0 = 0;
                 obj->work[0] = 1;
-                func_80047E90_main(D_8010C0FC_hand_line_sinker, 1);
+                omObjModeSet(D_8010C0FC_hand_line_sinker, 1);
                 work->unk1C4 = 0.0f;
                 work->unk1CA = HuAudFXPlay(0x303);
             }
@@ -804,11 +804,11 @@ void func_80107B24_hand_line_sinker(omObjData *obj) {
             work->unk1B4 -= 21.0f - work->unk1BC * 21.0f;
             if (work->unk1D0 == 0 && (target = func_801080F0_hand_line_sinker(obj)) != NULL && obj->work[1] == 0) {
                 obj->work[1] = 1;
-                func_80047E90_main(target, 1);
+                omObjModeSet(target, 1);
                 work->unk1B8 = target;
                 obj->trans.y = -140.0f;
                 targetWork = target->data;
-                work->seNo = func_8004AC98_main(0x301, work->unk1C8);
+                work->seNo = HuAudPlayerFXPlay(0x301, work->unk1C8);
                 omVibrate(targetWork->playerNo, 2, 2, 20);
                 omVibrate(work->unk1C8, 2, 2, 20);
             }
@@ -829,12 +829,12 @@ void func_80107B24_hand_line_sinker(omObjData *obj) {
                     work->unk1D0 = 1;
                     if (work->unk1CE == 0 && work->unk1B8 != NULL) {
                         work->unk1CE = 1;
-                        func_8004AC98_main(0x304, work->unk1C8);
+                        HuAudPlayerFXPlay(0x304, work->unk1C8);
                     }
                     work->unk1C4 = 0.0f;
                     obj->rot.y = D_8010C0FC_hand_line_sinker->rot.y;
                     if (work->unk1B0 < 0.0f) {
-                        func_80047E90_main(D_8010C0FC_hand_line_sinker, 2);
+                        omObjModeSet(D_8010C0FC_hand_line_sinker, 2);
                         omSetTra(obj, work->pos.x, work->pos.y, work->pos.z);
                         HuAudFXStop(work->unk1CA);
                     } else {
@@ -902,8 +902,8 @@ void func_801081D0_hand_line_sinker(omObjData *obj) {
         obj->work[0] = 3;
         work->aiTimer = 0;
         work->aiBtn = 0;
-        func_8001C5B4_main(obj->model[0], obj->motion[1]);
-        func_8001C814_main(obj->model[0], 2, 2);
+        Hu3DMotionModelSet(obj->model[0], obj->motion[1]);
+        Hu3DMotionAttrSet(obj->model[0], 2, 2);
     }
     switch (obj->work[0]) {
         case 0:
@@ -1301,11 +1301,11 @@ void func_80109584_hand_line_sinker(omObjData *obj) {
             }
             break;
         case 1:
-            func_8001C258_main(D_8010C0FC_hand_line_sinker->model[1], 0x4000, 0);
-            func_8001C258_main(D_8010C0FC_hand_line_sinker->model[3], 0x4000, 0);
-            func_8001C258_main(D_8010C0FC_hand_line_sinker->model[2], 0x4000, 0);
-            func_8001C258_main(D_8010C0FC_hand_line_sinker->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-            func_8001C258_main(D_8010C0FC_hand_line_sinker->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(D_8010C0FC_hand_line_sinker->model[1], 0x4000, 0);
+            Hu3DModelAttrSet(D_8010C0FC_hand_line_sinker->model[3], 0x4000, 0);
+            Hu3DModelAttrSet(D_8010C0FC_hand_line_sinker->model[2], 0x4000, 0);
+            Hu3DModelAttrSet(D_8010C0FC_hand_line_sinker->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(D_8010C0FC_hand_line_sinker->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             for (i = 0; i < 6; i++) {
                 dist = i * 17.0f;
                 pos.y = 240.0f - dist;
@@ -1313,9 +1313,9 @@ void func_80109584_hand_line_sinker(omObjData *obj) {
                         D_8010C0FC_hand_line_sinker->trans.x;
                 pos.z = cosdf(D_8010C0FC_hand_line_sinker->rot.y - 6.0f + rand8() % 13 - 6.0f) * (140.0f - dist) +
                         D_8010C0FC_hand_line_sinker->trans.z;
-                effect = func_8000CED8_main(0x85, 0x2A9);
-                func_8000CFA4_main(effect, pos.x, pos.y, pos.z);
-                func_8000CFD8_main(effect, 16);
+                effect = EffectCreate(0x85, 0x2A9);
+                EffectPosSet(effect, pos.x, pos.y, pos.z);
+                EffectTimeSet(effect, 16);
             }
             obj->work[1] = 2;
             Hu3DMotionShiftSet(D_8010C0FC_hand_line_sinker->model[0],
@@ -1361,11 +1361,11 @@ void func_80109584_hand_line_sinker(omObjData *obj) {
         case 4:
             if (D_8010C190_hand_line_sinker->work[0] == 0) {
                 work = D_8010C0FC_hand_line_sinker->data;
-                func_80017954_main(D_8010C0FC_hand_line_sinker->model[0], 2, GwPlayer[work->playerNo].chr,
+                CharAnimSet(D_8010C0FC_hand_line_sinker->model[0], 2, GwPlayer[work->playerNo].chr,
                                    D_8010C0FC_hand_line_sinker->model[5]);
                 Hu3DMotionShiftSet(D_8010C0FC_hand_line_sinker->model[0],
                                    Hu3DData[D_8010C0FC_hand_line_sinker->motion[12]].motId, 0, 8, 0);
-                func_80045ED0_main(D_800A178C_main[GwPlayer[work->playerNo].chr][0] | 0x2F);
+                HuAudCharVoicePlay(D_800A178C_main[GwPlayer[work->playerNo].chr][0] | 0x2F);
                 omDelObj(D_8010C190_hand_line_sinker);
                 D_8010BF00_hand_line_sinker.winners[0] = work->playerNo;
                 obj->work[0] = 1;
@@ -1463,11 +1463,11 @@ void func_80109B9C_hand_line_sinker(omObjData *obj) {
             }
             break;
         case 4:
-            func_8001C258_main(D_8010C0FC_hand_line_sinker->model[1], 0x4000, 0);
-            func_8001C258_main(D_8010C0FC_hand_line_sinker->model[3], 0x4000, 0);
-            func_8001C258_main(D_8010C0FC_hand_line_sinker->model[2], 0x4000, 0);
-            func_8001C258_main(D_8010C0FC_hand_line_sinker->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-            func_8001C258_main(D_8010C0FC_hand_line_sinker->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(D_8010C0FC_hand_line_sinker->model[1], 0x4000, 0);
+            Hu3DModelAttrSet(D_8010C0FC_hand_line_sinker->model[3], 0x4000, 0);
+            Hu3DModelAttrSet(D_8010C0FC_hand_line_sinker->model[2], 0x4000, 0);
+            Hu3DModelAttrSet(D_8010C0FC_hand_line_sinker->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(D_8010C0FC_hand_line_sinker->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             for (i = 0; i < 6; i++) {
                 dist = i * 17.0f;
                 pos.y = 240.0f - dist;
@@ -1475,9 +1475,9 @@ void func_80109B9C_hand_line_sinker(omObjData *obj) {
                         D_8010C0FC_hand_line_sinker->trans.x;
                 pos.z = cosdf(D_8010C0FC_hand_line_sinker->rot.y - 6.0f + rand8() % 13 - 6.0f) * (140.0f - dist) +
                         D_8010C0FC_hand_line_sinker->trans.z;
-                effect = func_8000CED8_main(0x85, 0x2A9);
-                func_8000CFA4_main(effect, pos.x, pos.y, pos.z);
-                func_8000CFD8_main(effect, 16);
+                effect = EffectCreate(0x85, 0x2A9);
+                EffectPosSet(effect, pos.x, pos.y, pos.z);
+                EffectTimeSet(effect, 16);
             }
             obj->work[1] = 5;
             Hu3DMotionShiftSet(D_8010C0FC_hand_line_sinker->model[0],
@@ -1588,9 +1588,9 @@ void func_8010A5F0_hand_line_sinker(void) {
 
     for (i = 0; i < 2; i++) {
         for (j = 0; j < 6; j++) {
-            D_8010C148_hand_line_sinker[i][j] = func_8000B108_main(D_8010BFA0_hand_line_sinker[i], 0x1A9D);
+            D_8010C148_hand_line_sinker[i][j] = Hu3DModelRead(D_8010BFA0_hand_line_sinker[i], 0x1A9D);
             if (i == 0) {
-                func_8001C2FC_main(D_8010C148_hand_line_sinker[0][j], 0x20000000, 0x20000000);
+                Hu3DModelObjAttrSet(D_8010C148_hand_line_sinker[0][j], 0x20000000, 0x20000000);
             }
             D_8010C160_hand_line_sinker[j] = 0;
         }
@@ -1613,7 +1613,7 @@ void func_8010A6D0_hand_line_sinker(omObjData *parent, u16 type, Vec *offset, Ve
     D_8010C160_hand_line_sinker[i]->data = HuMemAllocTag(sizeof(HandLineSinkerFollowWork), TAG_OVERLAY);
     work = D_8010C160_hand_line_sinker[i]->data;
     D_8010C160_hand_line_sinker[i]->work[0] = i;
-    func_8001C258_main(D_8010C148_hand_line_sinker[type][i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(D_8010C148_hand_line_sinker[type][i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     D_8010C160_hand_line_sinker[i]->model[0] = D_8010C148_hand_line_sinker[type][i];
     Hu3DMotionTimeSet(D_8010C160_hand_line_sinker[i]->model[0], 0);
     work->parent = parent;
@@ -1640,7 +1640,7 @@ void func_8010A904_hand_line_sinker(omObjData *obj) {
                  work->parent->trans.z + work->offset.z);
     }
     if (D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02 <= Hu3DData[obj->model[0]].motTime) {
-        func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         D_8010C160_hand_line_sinker[obj->work[0]] = 0;
         omDelObj(obj);
     }
@@ -1654,7 +1654,7 @@ void func_8010A9F8_hand_line_sinker(omObjData *obj) {
                  work->parent->trans.z + work->offset.z);
     }
     if (D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02 <= Hu3DData[obj->model[0]].motTime) {
-        func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         D_8010C160_hand_line_sinker[obj->work[0]] = 0;
         omDelObj(obj);
     }

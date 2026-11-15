@@ -606,7 +606,7 @@ void func_80106BC8_stacked_deck(omObjData *object) {
             if (object->work[1] == 0) {
                 if (D_80111140_stacked_deck == 3) {
                     D_80111140_stacked_deck = 4;
-                    func_8004AC98_main(0x445, object->work[0]);
+                    HuAudPlayerFXPlay(0x445, object->work[0]);
                 } else if (D_80111140_stacked_deck < 3) {
                     D_80111140_stacked_deck++;
                 }
@@ -1154,7 +1154,7 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                         func_800E5690_minigame(object, 13);
                         card->unk_04[1] = 13;
                         card->unk_04[7] = 0;
-                        func_80045ED0_main((D_8010F290_stacked_deck[GwPlayer[object->work[0]].chr] << 16) | 0x30);
+                        HuAudCharVoicePlay((D_8010F290_stacked_deck[GwPlayer[object->work[0]].chr] << 16) | 0x30);
                     }
                 } else {
                     data->unk3C = func_801059BC_stacked_deck(data->unk3C, 15.0f);
@@ -1206,24 +1206,24 @@ void func_80108E48_stacked_deck(omObjData *object) {
     func_800E1BA8_minigame(object, modelFile, motionFile, ((u16 *)object->work)[1], 0x2B9, 0x2A9);
     work = object->data;
     work->unkEC = NULL;
-    func_8001C2FC_main(object->model[1], 0x80000000, 0);
-    func_8001C258_main(object->model[1], 0x60, 0x20);
-    func_8001C258_main(object->model[1], 0x180, 0x80);
+    Hu3DModelObjAttrSet(object->model[1], 0x80000000, 0);
+    Hu3DModelAttrSet(object->model[1], 0x60, 0x20);
+    Hu3DModelAttrSet(object->model[1], 0x180, 0x80);
     Hu3DModelRemakeStatic(object->model[1]);
-    func_8001C514_main(object->model[1]);
-    object->model[7] = func_8000B108_main(8, 0x2BD);
-    func_800E5A00_minigame(object, 0, func_80017BB8_main(character, 0), 1, 0);
-    func_800E5A00_minigame(object, 1, func_80017BB8_main(character, 1), 1, 0);
-    func_800E5A00_minigame(object, 2, func_80017BB8_main(character, 2), 1, 0);
-    func_800E5A00_minigame(object, 6, func_80017BB8_main(character, 4), 1, 0x13);
-    func_800E5A00_minigame(object, 8, func_80017BB8_main(character, 6), 1, 0x1B);
-    func_800E5A00_minigame(object, 0x12, func_80017BB8_main(character, 0xF), 2, 0);
-    func_800E5978_minigame(object, 0x15, func_80017BB8_main(character, 0x1F), 0, 0);
-    func_800E5A00_minigame(object, 0xD, func_80017BB8_main(character, 0x30), 1, 0x78);
-    func_800E5A00_minigame(object, 0x27, func_80017BB8_main(character, 0x33), 2, 0);
-    func_800E5A00_minigame(object, 0x28, func_80017BB8_main(character, 0x7A), 2, 0);
-    func_800E5A00_minigame(object, 0x29, func_80017BB8_main(character, 0x37), 1, 0x78);
-    func_800E5A00_minigame(object, 0x2A, func_80017BB8_main(character, 0x70), 1, 0);
+    Hu3DModelDynamicFree(object->model[1]);
+    object->model[7] = Hu3DModelRead(8, 0x2BD);
+    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(character, 0), 1, 0);
+    func_800E5A00_minigame(object, 1, CharMotionDataNumGet(character, 1), 1, 0);
+    func_800E5A00_minigame(object, 2, CharMotionDataNumGet(character, 2), 1, 0);
+    func_800E5A00_minigame(object, 6, CharMotionDataNumGet(character, 4), 1, 0x13);
+    func_800E5A00_minigame(object, 8, CharMotionDataNumGet(character, 6), 1, 0x1B);
+    func_800E5A00_minigame(object, 0x12, CharMotionDataNumGet(character, 0xF), 2, 0);
+    func_800E5978_minigame(object, 0x15, CharMotionDataNumGet(character, 0x1F), 0, 0);
+    func_800E5A00_minigame(object, 0xD, CharMotionDataNumGet(character, 0x30), 1, 0x78);
+    func_800E5A00_minigame(object, 0x27, CharMotionDataNumGet(character, 0x33), 2, 0);
+    func_800E5A00_minigame(object, 0x28, CharMotionDataNumGet(character, 0x7A), 2, 0);
+    func_800E5A00_minigame(object, 0x29, CharMotionDataNumGet(character, 0x37), 1, 0x78);
+    func_800E5A00_minigame(object, 0x2A, CharMotionDataNumGet(character, 0x70), 1, 0);
     card->unk_04[1] = 0;
     func_800E5690_minigame(object, 0);
     D_800EBE24_minigame = 1;
@@ -1437,9 +1437,9 @@ void func_801097D4_stacked_deck(omObjData *object) {
                             break;
                     }
                     D_8011114E_stacked_deck++;
-                    func_8001C258_main(object->model[0], 4, 0);
-                    func_8001C258_main(object->model[1], 4, 0);
-                    func_8001C258_main(object->model[2], 4, 0);
+                    Hu3DModelAttrSet(object->model[0], 4, 0);
+                    Hu3DModelAttrSet(object->model[1], 4, 0);
+                    Hu3DModelAttrSet(object->model[2], 4, 0);
                     card->unk_04[1] = 1;
                     card->unk_04[2] = 1;
                     break;
@@ -2090,7 +2090,7 @@ void func_801097D4_stacked_deck(omObjData *object) {
                 }
                 if (object->trans.y <= 0.0f) {
                     object->trans.y = 0.0f;
-                    func_8001C258_main(object->model[1], 4, 4);
+                    Hu3DModelAttrSet(object->model[1], 4, 4);
                     card->unk_18[4] = 1.0f;
                     switch (object->work[1]) {
                         case 1:
@@ -2125,8 +2125,8 @@ void func_801097D4_stacked_deck(omObjData *object) {
                 card->unk_04[6] -= 15;
                 if (card->unk_18[2] < 0.1f) {
                     card->unk_18[2] = 0.1f;
-                    func_8001C258_main(object->model[0], 4, 4);
-                    func_8001C258_main(object->model[2], 4, 4);
+                    Hu3DModelAttrSet(object->model[0], 4, 4);
+                    Hu3DModelAttrSet(object->model[2], 4, 4);
                     card->unk_04[0] = 0;
                     card->unk_04[1] = 0;
                     D_80111128_stacked_deck[card->unk_04[3]] = 0;
@@ -2149,14 +2149,14 @@ void func_801097D4_stacked_deck(omObjData *object) {
     if (card->unk_04[5] >= 151) {
         card->unk_04[5] = 150;
     }
-    func_8001F9E4_main(object->model[1], card->unk_04[5]);
+    Hu3DModelTPLvlSet(object->model[1], card->unk_04[5]);
     if (card->unk_04[6] < 0) {
         card->unk_04[6] = 0;
     }
     if (card->unk_04[6] >= 256) {
         card->unk_04[6] = 255;
     }
-    func_8001F9E4_main(object->model[2], card->unk_04[6]);
+    Hu3DModelTPLvlSet(object->model[2], card->unk_04[6]);
     object->rot.x = 0.0f;
     object->rot.y = 180.0f;
     object->rot.z = func_801059BC_stacked_deck(card->unk_18[1], 0.0f);
@@ -2192,9 +2192,9 @@ void func_801097D4_stacked_deck(omObjData *object) {
 void func_8010C188_stacked_deck(omObjData *object) {
     StackedDeckCard *card = &STACKED_DECK_CARDS[object->work[0]];
 
-    object->model[0] = func_8000B108_main(0x4B0008, 0x2A9);
-    object->model[1] = func_8000B108_main(0x4B0009, 0x2A9);
-    object->model[2] = func_8000B108_main(0x4B000B, 0x2A9);
+    object->model[0] = Hu3DModelRead(0x4B0008, 0x2A9);
+    object->model[1] = Hu3DModelRead(0x4B0009, 0x2A9);
+    object->model[2] = Hu3DModelRead(0x4B000B, 0x2A9);
     if (object->work[0] == 0) {
         D_8010F708_stacked_deck[0] = DataRead(0x4B0002);
         D_8010F708_stacked_deck[1] = DataRead(0x4B0003);
@@ -2206,13 +2206,13 @@ void func_8010C188_stacked_deck(omObjData *object) {
     D_80111150_stacked_deck[object->work[0]] =
         Hu3DAnimCreate(Hu3DData[object->model[0]].hmf, D_8010F708_stacked_deck[0], 0, "card_k_DEF");
     Hu3DModelRemakeStatic(object->model[0]);
-    func_8001C514_main(object->model[0]);
+    Hu3DModelDynamicFree(object->model[0]);
     card->unk_04[5] = 150;
-    func_8001FA68_main(object->model[1]);
-    func_8001F9E4_main(object->model[1], card->unk_04[5]);
+    Hu3DModelTPLvlInit(object->model[1]);
+    Hu3DModelTPLvlSet(object->model[1], card->unk_04[5]);
     card->unk_04[6] = 0;
-    func_8001FA68_main(object->model[2]);
-    func_8001F9E4_main(object->model[2], card->unk_04[6]);
+    Hu3DModelTPLvlInit(object->model[2]);
+    Hu3DModelTPLvlSet(object->model[2], card->unk_04[6]);
     card->unk_18[0] = 15.0f;
     card->unk_18[1] = 0.0f;
     object->rot.x = 0.0f;
@@ -2238,9 +2238,9 @@ void func_8010C188_stacked_deck(omObjData *object) {
     Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
     Hu3DModelPosSet(object->model[1], object->trans.x + card->unk_18[5], -4.0f, object->trans.z + card->unk_18[6]);
     Hu3DModelPosSet(object->model[2], object->trans.x, object->trans.y, object->trans.z);
-    func_8001C258_main(object->model[0], 4, 4);
-    func_8001C258_main(object->model[1], 4, 4);
-    func_8001C258_main(object->model[2], 4, 4);
+    Hu3DModelAttrSet(object->model[0], 4, 4);
+    Hu3DModelAttrSet(object->model[1], 4, 4);
+    Hu3DModelAttrSet(object->model[2], 4, 4);
     object->func = func_801097D4_stacked_deck;
 }
 
@@ -2295,8 +2295,8 @@ void func_8010C5C8_stacked_deck(omObjData *object) {
                         D_80111170_stacked_deck = 1;
                         HuAudFXPlay(0x446);
                     }
-                    func_8001C258_main(object->model[0], 4, 0);
-                    func_8001C258_main(object->model[1], 4, 0);
+                    Hu3DModelAttrSet(object->model[0], 4, 0);
+                    Hu3DModelAttrSet(object->model[1], 4, 0);
                     card->unk_18[0] = 20.0f;
                     card->unk_18[4] = 1.0f;
                     card->unk_04[0] = 2;
@@ -2345,8 +2345,8 @@ void func_8010C5C8_stacked_deck(omObjData *object) {
                     }
                     if (object->trans.x < -1000.0f || object->trans.x > 1000.0f) {
                         card->unk_04[3] = 0;
-                        func_8001C258_main(object->model[0], 4, 4);
-                        func_8001C258_main(object->model[1], 4, 4);
+                        Hu3DModelAttrSet(object->model[0], 4, 4);
+                        Hu3DModelAttrSet(object->model[1], 4, 4);
                         card->unk_04[0] = 5;
                     }
                     break;
@@ -2389,8 +2389,8 @@ void func_8010C5C8_stacked_deck(omObjData *object) {
                         D_80111170_stacked_deck = 1;
                         HuAudFXPlay(0x446);
                     }
-                    func_8001C258_main(object->model[0], 4, 0);
-                    func_8001C258_main(object->model[1], 4, 0);
+                    Hu3DModelAttrSet(object->model[0], 4, 0);
+                    Hu3DModelAttrSet(object->model[1], 4, 0);
                     card->unk_18[0] = 20.0f;
                     card->unk_18[4] = card->unk_18[5];
                     card->unk_04[0] = 2;
@@ -2457,8 +2457,8 @@ void func_8010C5C8_stacked_deck(omObjData *object) {
                     object->trans.x += card->unk_18[2];
                     object->trans.z += card->unk_18[3];
                     if (object->trans.x < -2000.0f || object->trans.x > 2000.0f || object->trans.z > 2000.0f) {
-                        func_8001C258_main(object->model[0], 4, 4);
-                        func_8001C258_main(object->model[1], 4, 4);
+                        Hu3DModelAttrSet(object->model[0], 4, 4);
+                        Hu3DModelAttrSet(object->model[1], 4, 4);
                         card->unk_04[0] = 5;
                         card->unk_18[2] = 0.0f;
                         card->unk_18[3] = 0.0f;
@@ -2474,8 +2474,8 @@ void func_8010C5C8_stacked_deck(omObjData *object) {
                     break;
             }
             object->scale.x = object->scale.y = object->scale.z = card->unk_18[5];
-            func_8001F9E4_main(object->model[0], card->unk_04[4]);
-            func_8001F9E4_main(object->model[1], card->unk_04[4]);
+            Hu3DModelTPLvlSet(object->model[0], card->unk_04[4]);
+            Hu3DModelTPLvlSet(object->model[1], card->unk_04[4]);
             break;
         case 11:
         case 14:
@@ -2506,8 +2506,8 @@ void func_8010C5C8_stacked_deck(omObjData *object) {
                         D_80111170_stacked_deck = 1;
                         HuAudFXPlay(0x446);
                     }
-                    func_8001C258_main(object->model[0], 4, 0);
-                    func_8001C258_main(object->model[1], 4, 0);
+                    Hu3DModelAttrSet(object->model[0], 4, 0);
+                    Hu3DModelAttrSet(object->model[1], 4, 0);
                     card->unk_18[0] = 20.0f;
                     card->unk_18[4] = 1.0f;
                     card->unk_04[0] = 2;
@@ -2571,8 +2571,8 @@ void func_8010C5C8_stacked_deck(omObjData *object) {
                     }
                     if (object->trans.x < -1000.0f || object->trans.x > 1000.0f) {
                         card->unk_04[3] = 0;
-                        func_8001C258_main(object->model[0], 4, 4);
-                        func_8001C258_main(object->model[1], 4, 4);
+                        Hu3DModelAttrSet(object->model[0], 4, 4);
+                        Hu3DModelAttrSet(object->model[1], 4, 4);
                         Hu3DMotionSpeedSet(object->model[0], 1.0f);
                         card->unk_18[2] = 0.0f;
                         card->unk_18[3] = 0.0f;
@@ -2602,11 +2602,11 @@ void func_8010D58C_stacked_deck(omObjData *object) {
 
     switch (object->work[0]) {
         case 0:
-            object->model[0] = func_8000B108_main(0xA0000, 0x2B9);
-            func_8000B460_main(object, 0, 0xA0001);
-            func_8000B460_main(object, 1, 0xA0006);
-            func_8001C5B4_main(object->model[0], object->motion[0]);
-            func_8001C814_main(object->model[0], 2, 2);
+            object->model[0] = Hu3DModelRead(0xA0000, 0x2B9);
+            omObjMotionRead(object, 0, 0xA0001);
+            omObjMotionRead(object, 1, 0xA0006);
+            Hu3DMotionModelSet(object->model[0], object->motion[0]);
+            Hu3DMotionAttrSet(object->model[0], 2, 2);
             Hu3DMotionTimeSet(object->model[0], 0.0f);
             object->trans.x = 0.0f;
             object->trans.y = 0.0f;
@@ -2619,10 +2619,10 @@ void func_8010D58C_stacked_deck(omObjData *object) {
             object->rot.z = 0.0f;
             break;
         case 1:
-            object->model[0] = func_8000B108_main(0xA00C4, 0x2A9);
-            func_8000B460_main(object, 0, 0xA00C7);
-            func_8001C5B4_main(object->model[0], object->motion[0]);
-            func_8001C814_main(object->model[0], 2, 2);
+            object->model[0] = Hu3DModelRead(0xA00C4, 0x2A9);
+            omObjMotionRead(object, 0, 0xA00C7);
+            Hu3DMotionModelSet(object->model[0], object->motion[0]);
+            Hu3DMotionAttrSet(object->model[0], 2, 2);
             Hu3DMotionTimeSet(object->model[0], 0.0f);
             object->trans.x = 0.0f;
             object->trans.y = 50.0f;
@@ -2634,15 +2634,15 @@ void func_8010D58C_stacked_deck(omObjData *object) {
             object->rot.y = 0.0f;
             object->rot.z = 0.0f;
             card->unk_04[4] = 0;
-            func_8001FA68_main(object->model[0]);
-            func_8001F9E4_main(object->model[0], card->unk_04[4]);
+            Hu3DModelTPLvlInit(object->model[0]);
+            Hu3DModelTPLvlSet(object->model[0], card->unk_04[4]);
             break;
         case 2:
-            object->model[0] = func_8000B108_main(0xA00EE, 0x2B9);
-            func_8000B460_main(object, 0, 0xA00EF);
-            func_8000B460_main(object, 1, 0xA0103);
-            func_8001C5B4_main(object->model[0], object->motion[0]);
-            func_8001C814_main(object->model[0], 2, 2);
+            object->model[0] = Hu3DModelRead(0xA00EE, 0x2B9);
+            omObjMotionRead(object, 0, 0xA00EF);
+            omObjMotionRead(object, 1, 0xA0103);
+            Hu3DMotionModelSet(object->model[0], object->motion[0]);
+            Hu3DMotionAttrSet(object->model[0], 2, 2);
             Hu3DMotionTimeSet(object->model[0], 0.0f);
             object->trans.x = 0.0f;
             object->trans.y = 0.0f;
@@ -2655,14 +2655,14 @@ void func_8010D58C_stacked_deck(omObjData *object) {
             object->rot.z = 0.0f;
             break;
     }
-    object->model[1] = func_8000B0A0_main(0, 0xC9);
-    func_8001C2FC_main(object->model[1], 0x80000000, 0);
+    object->model[1] = Hu3DModelRead2(0, 0xC9);
+    Hu3DModelObjAttrSet(object->model[1], 0x80000000, 0);
     if (object->work[0] == 1) {
-        func_8001FA68_main(object->model[1]);
-        func_8001F9E4_main(object->model[1], card->unk_04[4]);
+        Hu3DModelTPLvlInit(object->model[1]);
+        Hu3DModelTPLvlSet(object->model[1], card->unk_04[4]);
     } else {
         Hu3DModelRemakeStatic(object->model[1]);
-        func_8001C514_main(object->model[1]);
+        Hu3DModelDynamicFree(object->model[1]);
     }
     Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
     Hu3DModelPosSet(object->model[1], object->trans.x, 1.5f, object->trans.z);
@@ -2671,8 +2671,8 @@ void func_8010D58C_stacked_deck(omObjData *object) {
     card->unk_18[4] = 1.0f;
     Hu3DModelScaleSet(object->model[0], object->scale.x, object->scale.y, object->scale.z);
     Hu3DModelScaleSet(object->model[1], card->unk_18[4], object->scale.y, card->unk_18[4]);
-    func_8001C258_main(object->model[0], 4, 4);
-    func_8001C258_main(object->model[1], 4, 4);
+    Hu3DModelAttrSet(object->model[0], 4, 4);
+    Hu3DModelAttrSet(object->model[1], 4, 4);
     object->func = func_8010C5C8_stacked_deck;
 }
 
@@ -2711,8 +2711,8 @@ void func_8010D98C_stacked_deck(omObjData *object) {
             break;
         case 2:
             effect->unk_18[0] += 0.7f;
-            func_80014714_main(effect->unk_04[0], (s32)effect->unk_18[0]);
-            if (func_8001476C_main(effect->unk_04[0]) >= 14) {
+            Hu3DSprModelFrameSet(effect->unk_04[0], (s32)effect->unk_18[0]);
+            if (Hu3DSprModelFrameGet(effect->unk_04[0]) >= 14) {
                 D_80111170_stacked_deck = 0;
                 effect->unk_18[0] = 0.0f;
             }
@@ -2730,10 +2730,10 @@ void func_8010DAE4_stacked_deck(omObjData *object) {
     DataClose(data);
     object->model[0] = D_800CBB60_main[sprite].modelId;
     effect->unk_04[0] = sprite;
-    func_800146DC_main(sprite, 1, 1);
-    func_800147FC_main(effect->unk_04[0], 200, 200, 200);
-    func_80014794_main(effect->unk_04[0], 255);
-    func_80014714_main(effect->unk_04[0], 14);
+    Hu3DSprModelAttrSet(sprite, 1, 1);
+    Hu3DSprModelColorSet(effect->unk_04[0], 200, 200, 200);
+    Hu3DSprModelTPLvlSet(effect->unk_04[0], 255);
+    Hu3DSprModelFrameSet(effect->unk_04[0], 14);
     object->scale.x = object->scale.y = object->scale.z = 10.0f;
     Hu3DModelScaleSet(object->model[0], object->scale.x, object->scale.y, object->scale.z);
     object->func = func_8010D98C_stacked_deck;
@@ -2771,12 +2771,12 @@ void func_8010DC2C_stacked_deck(omObjData *object) {
             break;
         case 2:
             if (effect->unk_04[1] < 5) {
-                func_8001C258_main(object->model[0], 4, 0);
+                Hu3DModelAttrSet(object->model[0], 4, 0);
                 effect->unk_04[1]++;
             } else {
                 D_80111120_stacked_deck = 0;
                 effect->unk_04[1] = 0;
-                func_8001C258_main(object->model[0], 4, 4);
+                Hu3DModelAttrSet(object->model[0], 4, 4);
             }
             break;
     }
@@ -2792,12 +2792,12 @@ void func_8010DDAC_stacked_deck(omObjData *object) {
     DataClose(data);
     object->model[0] = D_800CBB60_main[sprite].modelId;
     effect->unk_04[0] = sprite;
-    func_800146DC_main(sprite, 2, 0);
-    func_80014714_main(effect->unk_04[0], 0);
+    Hu3DSprModelAttrSet(sprite, 2, 0);
+    Hu3DSprModelFrameSet(effect->unk_04[0], 0);
     Hu3DMotionSpeedSet(object->model[0], 3.0f);
     object->scale.x = object->scale.y = object->scale.z = 5.0f;
     Hu3DModelScaleSet(object->model[0], object->scale.x, object->scale.y, object->scale.z);
-    func_8001C258_main(object->model[0], 4, 4);
+    Hu3DModelAttrSet(object->model[0], 4, 4);
     object->func = func_8010DC2C_stacked_deck;
 }
 
@@ -2908,7 +2908,7 @@ void func_8010E368_stacked_deck(omObjData *object) {
     StackedDeckCard *card = &D_8010F730_stacked_deck[object->work[0] + 23];
 
     if (object->work[0] == 0) {
-        object->model[0] = func_8000B108_main(0x4B000A, 0x2B9);
+        object->model[0] = Hu3DModelRead(0x4B000A, 0x2B9);
         D_801110FC_stacked_deck = object->model[0];
     } else {
         object->model[0] = Hu3DModelLink((s16)D_801110FC_stacked_deck);
@@ -2926,7 +2926,7 @@ void func_8010E368_stacked_deck(omObjData *object) {
     object->scale.z = 1.0f;
     Hu3DModelScaleSet(object->model[0], object->scale.x, object->scale.y, object->scale.z);
     card->unk_18[0] = 0.0f;
-    func_8001C258_main(object->model[0], 4, 0);
+    Hu3DModelAttrSet(object->model[0], 4, 0);
     object->func = func_8010DEF4_stacked_deck;
 }
 
@@ -2983,7 +2983,7 @@ void func_8010E734_stacked_deck(omObjData *object) {
         WipeCreateOut(0, 20);
         object->func = func_8010E6FC_stacked_deck;
         HuAudSeqFadeOut(30);
-        func_8004AB0C_main(30);
+        HuAudFXAllFadeOut(30);
     }
 }
 
@@ -3066,15 +3066,15 @@ void func_8010E78C_stacked_deck(omObjData *object) {
         case 6:
             if (D_8010F720_stacked_deck > 0) {
                 D_8010F720_stacked_deck--;
-                func_8003F578_main((D_8010F720_stacked_deck + 29) / 30);
+                GMesTimerValueSet((D_8010F720_stacked_deck + 29) / 30);
             } else if (D_80111169_stacked_deck != 6 && D_80111168_stacked_deck == 0) {
                 D_8010F6F0_stacked_deck = 4;
-                func_8003F5C0_main();
+                GMesTimerEnd();
                 D_8010F720_stacked_deck = 0;
                 func_80106290_stacked_deck(7);
             }
             if (D_80111169_stacked_deck == 6) {
-                func_8003F5C0_main();
+                GMesTimerEnd();
                 D_8010F720_stacked_deck = 0;
                 func_80106290_stacked_deck(7);
             }
@@ -3232,8 +3232,8 @@ void func_8010EFC4_stacked_deck(void) {
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
     obj->work[0] = 1;
     omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    func_8000B5F0_main(1);
-    func_8000B710_main(1);
+    CamSetupInit(1);
+    CamSetupMapCullAddMulti(1);
     for (i = 0; i < 1; i++) {
         ScissorSet(i, D_8010F360_stacked_deck[i].scissorX, D_8010F360_stacked_deck[i].scissorY,
                    D_8010F360_stacked_deck[i].scissorWidth, D_8010F360_stacked_deck[i].scissorHeight);
@@ -3245,10 +3245,10 @@ void func_8010EFC4_stacked_deck(void) {
 }
 
 void func_8010F134_stacked_deck(void) {
-    func_8001FE20_main(50);
-    func_800142A0_main(50);
+    MapCollInit(50);
+    Hu3DSprModelInit(50);
     omInitObjMan(50, 0);
-    func_8004A208_main();
+    omGameSysInit();
     func_8010EFC4_stacked_deck();
     Hu3DGLightMaxSet(1);
     Hu3DGLightMaxSet(2);
@@ -3261,8 +3261,8 @@ void func_8010F134_stacked_deck(void) {
     D_800EC1B8_minigame = 0;
     D_800EC280_minigame = 0;
     D_800EBE28_minigame = 0;
-    func_80045010_main(D_8010F6E8_stacked_deck, 0);
-    func_80045010_main(D_8010F6E8_stacked_deck, 1);
+    GMesFontMesCreate(D_8010F6E8_stacked_deck, 0);
+    GMesFontMesCreate(D_8010F6E8_stacked_deck, 1);
     omAddObj(1000, 0, 0, -1, func_8010ED44_stacked_deck);
     omAddObj(1000, 0, 0, -1, func_8010E734_stacked_deck);
     func_80105A74_stacked_deck();

@@ -160,10 +160,10 @@ void func_800E95C4_name_81(Gfx **arg0, Mtx *arg1, s32 arg2) {
 
     camMtx = arg1;
     if (!(arg2 & 0xFF) && (D_801050FE_name_81 != 0) && (D_80101064_name_81 != NULL)) {
-        sp5E = func_8004D6AC_main(0xC8, 0xC8, 0xC8);
+        sp5E = HuProfCpuBegin(0xC8, 0xC8, 0xC8);
         gSPDisplayList((*gfxPos)++, D_80101140_name_81);
         Hu3DCameraSet(0, gfxPos);
-        func_800127C4_main(0, gfxPos);
+        Hu3DCameraScissorDraw(0, gfxPos);
         MBDCameraPos3DGet(&sp50);
         vtx = (Vtx *)OS_K0_TO_PHYSICAL(D_80101100_name_81);
 
@@ -198,7 +198,7 @@ void func_800E95C4_name_81(Gfx **arg0, Mtx *arg1, s32 arg2) {
             }
         }
 
-        func_8004D6E8_main(sp5E);
+        HuProfCpuEnd(sp5E);
     }
 }
 

@@ -6,7 +6,7 @@
 
 
 // MP3's version of n_alSynStartVoiceParams, which can force centered panning.
-void func_80066270_main(N_ALVoice *v, ALWaveTable *w, f32 pitch, s16 vol, ALPan pan, u8 fxmix, ALMicroTime t) {
+void n_alSynStartVoiceParams(N_ALVoice *v, ALWaveTable *w, f32 pitch, s16 vol, ALPan pan, u8 fxmix, ALMicroTime t) {
     ALStartParamAlt *update;
 
     if (v->pvoice) {

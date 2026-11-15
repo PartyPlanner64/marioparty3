@@ -181,11 +181,11 @@ void func_801059A0_picture_imperfect(void) {
     omObjData *object;
     s32 i;
 
-    func_8001FE20_main(0x20);
-    func_80021BE0_main(&D_800EBEB0_minigame, 0x40);
-    func_800142A0_main(0x40);
+    MapCollInit(0x20);
+    Hu3DQuadPoolInit(&D_800EBEB0_minigame, 0x40);
+    Hu3DSprModelInit(0x40);
     omInitObjMan(0x20, 0);
-    func_8004A208_main();
+    omGameSysInit();
     D_800EC1B8_minigame = 0;
     D_800EC280_minigame = 0;
     D_800EBE28_minigame = 0;
@@ -277,8 +277,8 @@ void func_80105E68_picture_imperfect(MinigameFlow *flow) {
 void func_80105EF4_picture_imperfect(void) {
     s32 i;
 
-    func_8000B710_main(4);
-    func_8000B5F0_main(4);
+    CamSetupMapCullAddMulti(4);
+    CamSetupInit(4);
     for (i = 0; i < 4; i++) {
         CenterM[i].x = -200.0f;
         CenterM[i].y = 100.0f;
@@ -361,10 +361,10 @@ void func_8010629C_picture_imperfect(omObjData *object) {
     Hu3DModelPosSet(object->model[1], object->trans.x, 0.0f, object->trans.z);
     Hu3DModelScaleSet(object->model[1], object->scale.x, object->scale.y, object->scale.z);
     work->unk10 = 272.0f;
-    object->model[2] = func_8000B108_main(0x3F0000, 0x2B9);
+    object->model[2] = Hu3DModelRead(0x3F0000, 0x2B9);
     Hu3DModelPosSet(object->model[2], object->trans.x, work->unk10, object->trans.z);
     Hu3DModelScaleSet(object->model[2], 1.2f, 1.2f, 1.2f);
-    object->model[3] = func_8000B108_main(8, 0x88D);
+    object->model[3] = Hu3DModelRead(8, 0x88D);
     switch (D_8010A028_picture_imperfect) {
         case 0:
         default:
@@ -385,11 +385,11 @@ void func_8010629C_picture_imperfect(omObjData *object) {
     Hu3DModelCameraSet(object->model[2], camera);
     Hu3DModelCameraSet(object->model[3], camera);
     func_800E149C_minigame(object, 0, 2);
-    func_800E5A00_minigame(object, 0, func_80017BB8_main(character, 0), 1, 0);
-    func_800E5A00_minigame(object, 6, func_80017BB8_main(character, 4), 1, 19);
-    func_800E5A00_minigame(object, 21, func_80017BB8_main(character, 0x1F), 0, 0);
-    func_800E5A00_minigame(object, 13, func_80017BB8_main(character, 0x2F), 1, 120);
-    func_800E5A00_minigame(object, 14, func_80017BB8_main(character, 0x36), 1, 120);
+    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(character, 0), 1, 0);
+    func_800E5A00_minigame(object, 6, CharMotionDataNumGet(character, 4), 1, 19);
+    func_800E5A00_minigame(object, 21, CharMotionDataNumGet(character, 0x1F), 0, 0);
+    func_800E5A00_minigame(object, 13, CharMotionDataNumGet(character, 0x2F), 1, 120);
+    func_800E5A00_minigame(object, 14, CharMotionDataNumGet(character, 0x36), 1, 120);
     func_800E5690_minigame(object, 0);
     object->func = func_80107820_picture_imperfect;
     work->unk00 = 0;
@@ -607,7 +607,7 @@ void func_80107820_picture_imperfect(omObjData *object) {
             }
             if (work->unk05 == 0 && work->unk06 == 0 && playerData->unk38 != 1000.0f &&
                 200.0f - playerData->unk34 <= object->trans.y) {
-                sound = func_8004AC98_main(0x3F3, playerData->unk59);
+                sound = HuAudPlayerFXPlay(0x3F3, playerData->unk59);
                 if (playerData->unk59 & 1) {
                     HuAudFXPanning(sound, 92);
                 } else {
@@ -760,7 +760,7 @@ void func_80107820_picture_imperfect(omObjData *object) {
                                 character = 9;
                                 break;
                         }
-                        func_80045ED0_main((character << 16) | 0x2F);
+                        HuAudCharVoicePlay((character << 16) | 0x2F);
                         GwPlayer[playerData->unk59].bonusCoin += 10;
                     } else {
                         func_800E5690_minigame(object, 14);
@@ -797,7 +797,7 @@ void func_80107820_picture_imperfect(omObjData *object) {
             }
             break;
     }
-    func_8001C258_main(object->model[1], 4, 4);
+    Hu3DModelAttrSet(object->model[1], 4, 4);
 }
 
 void func_801081E4_picture_imperfect(omObjData *object) {
@@ -1176,7 +1176,7 @@ void func_80108C20_picture_imperfect(PictureImperfectWork *work, s8 player) {
             espColorSet(D_8010A276_picture_imperfect[player], color[0], color[1], color[2]);
             espScaleSet(D_8010A276_picture_imperfect[player], work->unk0C, work->unk0C);
             espTPLvlSet(D_8010A276_picture_imperfect[player], work->unk0A);
-            func_8000BD50_main(D_8010A276_picture_imperfect[player], work->unk03 / 10);
+            espPatNoSet(D_8010A276_picture_imperfect[player], work->unk03 / 10);
             espPosSet(D_8010A276_picture_imperfect[player], D_80109FE8_picture_imperfect[player].x - 14, y);
             espDispOn(D_8010A276_picture_imperfect[player]);
         } else {
@@ -1185,7 +1185,7 @@ void func_80108C20_picture_imperfect(PictureImperfectWork *work, s8 player) {
         espColorSet(D_8010A27E_picture_imperfect[player], color[0], color[1], color[2]);
         espScaleSet(D_8010A27E_picture_imperfect[player], work->unk0C, work->unk0C);
         espTPLvlSet(D_8010A27E_picture_imperfect[player], work->unk0A);
-        func_8000BD50_main(D_8010A27E_picture_imperfect[player], work->unk03 % 10);
+        espPatNoSet(D_8010A27E_picture_imperfect[player], work->unk03 % 10);
         espPosSet(D_8010A27E_picture_imperfect[player], D_80109FE8_picture_imperfect[player].x + 2, y);
         espDispOn(D_8010A27E_picture_imperfect[player]);
         espColorSet(D_8010A286_picture_imperfect[player], color[0], color[1], color[2]);
@@ -1237,11 +1237,11 @@ void func_80109284_picture_imperfect(PictureImperfectWork *work, s8 player) {
         if (D_8010A11A_picture_imperfect[player] == 0) {
             HuAudFXPlay(0x3EC);
         }
-        func_8000BD50_main(D_8010A28E_picture_imperfect[player], (rand8() * 10U) >> 8);
+        espPatNoSet(D_8010A28E_picture_imperfect[player], (rand8() * 10U) >> 8);
         espPosSet(D_8010A28E_picture_imperfect[player], D_80109FE8_picture_imperfect[player].x - 32,
                   D_80109FE8_picture_imperfect[player].y);
         espDispOn(D_8010A28E_picture_imperfect[player]);
-        func_8000BD50_main(D_8010A296_picture_imperfect[player], (rand8() * 10U) >> 8);
+        espPatNoSet(D_8010A296_picture_imperfect[player], (rand8() * 10U) >> 8);
         espPosSet(D_8010A296_picture_imperfect[player], D_80109FE8_picture_imperfect[player].x - 12,
                   D_80109FE8_picture_imperfect[player].y);
         espDispOn(D_8010A296_picture_imperfect[player]);
@@ -1251,13 +1251,13 @@ void func_80109284_picture_imperfect(PictureImperfectWork *work, s8 player) {
     } else if (D_8010A11A_picture_imperfect[player] == 30) {
         HuAudFXPlay(0x3ED);
         if (work->unk04 >= 10) {
-            func_8000BD50_main(D_8010A28E_picture_imperfect[player], work->unk04 / 10);
+            espPatNoSet(D_8010A28E_picture_imperfect[player], work->unk04 / 10);
             espPosSet(D_8010A28E_picture_imperfect[player], D_80109FE8_picture_imperfect[player].x - 32,
                       D_80109FE8_picture_imperfect[player].y);
         } else {
             espDispOff(D_8010A28E_picture_imperfect[player]);
         }
-        func_8000BD50_main(D_8010A296_picture_imperfect[player], work->unk04 % 10);
+        espPatNoSet(D_8010A296_picture_imperfect[player], work->unk04 % 10);
         espPosSet(D_8010A296_picture_imperfect[player], D_80109FE8_picture_imperfect[player].x - 12,
                   D_80109FE8_picture_imperfect[player].y);
     } else if (D_8010A11A_picture_imperfect[player] == 90) {
@@ -1371,16 +1371,16 @@ void func_80109AC4_picture_imperfect(omObjData *object) {
         switch (D_8010A150_picture_imperfect) {
             case 0:
             default:
-                func_8000BD50_main(D_8010A2A6_picture_imperfect, 5);
+                espPatNoSet(D_8010A2A6_picture_imperfect, 5);
                 break;
             case 1:
-                func_8000BD50_main(D_8010A2A6_picture_imperfect, 4);
+                espPatNoSet(D_8010A2A6_picture_imperfect, 4);
                 break;
             case 2:
-                func_8000BD50_main(D_8010A2A6_picture_imperfect, 3);
+                espPatNoSet(D_8010A2A6_picture_imperfect, 3);
                 break;
         }
-        func_8000BD50_main(D_8010A2A8_picture_imperfect, 0);
+        espPatNoSet(D_8010A2A8_picture_imperfect, 0);
         if (func_800E6E9C_minigame() == 1) {
             espDispOn(D_8010A2A6_picture_imperfect);
             espDispOn(D_8010A2A8_picture_imperfect);

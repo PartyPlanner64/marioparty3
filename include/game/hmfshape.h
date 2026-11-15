@@ -13,13 +13,13 @@ typedef struct {
     s16 frameStep;
 } HmfVertexAnim;
 
-void func_80030040_main(void);
-s32 func_800300A4_main(HmfData *model, u8 *data);
-void func_80030178_main(s32 arg0);
-void func_80030198_main(void);
-void func_80030208_main(HmfData *model);
-void func_800303C8_main(HmfModel *model, f32 time);
-void func_80030414_main(HmfData *model, s16 animIndex, f32 time);
-void func_80031324_main(HmfData *model, f32 time);
+void Hu3DShapeInit(void);
+s32 Hu3DShapeCreate(HmfData *model, u8 *data);
+void Hu3DShapeKill(s32 arg0);
+void Hu3DShapeAllKill(void);
+void Hu3DShapeCacheMake(HmfData *model);
+void Hu3DShapeExec(HmfModel *model, f32 time);
+void Hu3DShapeAnimExec(HmfData *model, s16 animIndex, f32 time);
+void Hu3DShapeMorphExec(HmfData *model, f32 time);
 
 #endif

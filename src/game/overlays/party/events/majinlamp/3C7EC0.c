@@ -342,11 +342,11 @@ omObjData *func_801069B8_majinlamp(s32 arg0, Vec *arg1, s32 arg2, Object *arg3) 
 }
 
 void func_80106BB0_majinlamp(omObjData *arg0) {
-    func_8001E888_main(D_80108330_majinlamp->omObj1->model[0], 0, arg0->trans.x, 0x40, 0x40, D_80108260_majinlamp, 0);
+    Hu3DModelObjTexScroll(D_80108330_majinlamp->omObj1->model[0], 0, arg0->trans.x, 0x40, 0x40, D_80108260_majinlamp, 0);
     arg0->trans.x += 1.0f;
 
     if (D_80108124_majinlamp != 0) {
-        func_8001E888_main(D_80108330_majinlamp->omObj1->model[0], 0, arg0->trans.y, 0x40, 0x40, D_80108268_majinlamp, 0);
+        Hu3DModelObjTexScroll(D_80108330_majinlamp->omObj1->model[0], 0, arg0->trans.y, 0x40, 0x40, D_80108268_majinlamp, 0);
         arg0->trans.y += 1.0f;
     }
 
@@ -415,13 +415,13 @@ void func_80106E74_majinlamp(void) {
     MBPlayerModelCreate(D_8010833C_majinlamp, D_80101734_shared_board[GwPlayer[D_8010833C_majinlamp].chr], 2);
     memcpy(&sp18, D_80108270_majinlamp, 0x20);
     memcpy(&sp38, D_80108290_majinlamp, 0x20);
-    D_80108340_majinlamp[0] = func_80017790_main(
+    D_80108340_majinlamp[0] = CharAnimCreate(
         D_80108334_majinlamp->player_obj->omObj1->model[0], 2,
         GwPlayer[D_8010833C_majinlamp].chr,
         ((s32 *)&sp18)[GwPlayer[D_8010833C_majinlamp].chr]);
-    D_80108340_majinlamp[1] = func_80017AD8_main(
+    D_80108340_majinlamp[1] = Hu3DAnimDataRead(
         ((s32 *)&sp38)[GwPlayer[D_8010833C_majinlamp].chr]);
-    func_80017954_main(D_80108334_majinlamp->player_obj->omObj1->model[0], 2,
+    CharAnimSet(D_80108334_majinlamp->player_obj->omObj1->model[0], 2,
                        GwPlayer[D_8010833C_majinlamp].chr, D_80108340_majinlamp[0]);
     MBPlayerMotionSet(D_8010833C_majinlamp, 4, 2);
     HuVecCopyXYZ(&D_80108334_majinlamp->player_obj->coords, 150.0f, -100.0f, 3000.0f);
@@ -434,7 +434,7 @@ void func_80106E74_majinlamp(void) {
         obj->rot.y = 0.0f;
         obj->scale.x = 0.0f;
     }
-    D_800C9930_main = func_8004A5C4_main(0x3C);
+    D_800C9930_main = HuAudSubSeqPlay(0x3C);
     HuAudFXPlay(0x129);
     WipeColorSet(0xFF, 0xFF, 0xFF);
     WipeCreateIn(0xB, 0x10);
@@ -519,7 +519,7 @@ void func_8010771C_majinlamp(void) {
 
     D_80108330_majinlamp = MBModelFileCreate(0x1301F6, -1, 1.0f, 0.0f, NULL);
     HuVecCopyXYZ(&D_80108330_majinlamp->scale, 2.0f, 2.0f, 2.0f);
-    func_8001C954_main(D_80108330_majinlamp->omObj1->model[0]);
+    Hu3DModelVtxBufMake(D_80108330_majinlamp->omObj1->model[0]);
     Hu3DMotionSpeedSet(D_80108330_majinlamp->omObj1->model[0], 0.25f);
     HuVecCopyXYZ(&D_80108330_majinlamp->scale, 4.0f, 4.0f, 4.0f);
     Hu3DModelCameraSet(D_80108330_majinlamp->omObj1->model[0], HU3D_CAM1);
@@ -576,7 +576,7 @@ void func_8010771C_majinlamp(void) {
     HuPrcChildWatch();
     msmSeStop(sound);
     PlayerFXPlay(0x2BD, D_8010833C_majinlamp);
-    func_80017954_main(D_80108334_majinlamp->player_obj->omObj1->model[0], 2,
+    CharAnimSet(D_80108334_majinlamp->player_obj->omObj1->model[0], 2,
                        GwPlayer[D_8010833C_majinlamp].chr, D_80108340_majinlamp[1]);
     MBPlayerMotionSet(D_8010833C_majinlamp, 5, 2);
     HuPrcSleep(0x32);

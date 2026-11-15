@@ -176,7 +176,7 @@ s16 func_80109078_game_guys_roulette(void) {
         HuAudFXPlay(0x514);
     }
     if (D_8010A6B0_game_guys_roulette == 90) {
-        func_8004AB0C_main(30);
+        HuAudFXAllFadeOut(30);
         HuAudSeqPlay(0x43);
     }
     if (D_8010A6B0_game_guys_roulette == 115) {

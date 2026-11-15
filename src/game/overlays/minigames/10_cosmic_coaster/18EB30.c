@@ -120,7 +120,7 @@ void func_8010991C_cosmic_coaster(omObjData *object) {
         D_8010C394_cosmic_coaster[i] = 0;
     }
     for (i = 0; i < 11; i++) {
-        D_8010C398_cosmic_coaster[i] = func_8000B108_main(D_8010BEE0_cosmic_coaster[i], D_8010BF0C_cosmic_coaster[i] | 4);
+        D_8010C398_cosmic_coaster[i] = Hu3DModelRead(D_8010BEE0_cosmic_coaster[i], D_8010BF0C_cosmic_coaster[i] | 4);
     }
     func_8010ABE0_cosmic_coaster();
     object->func = func_80109A38_cosmic_coaster;
@@ -220,7 +220,7 @@ void func_80109BFC_cosmic_coaster(omObjData *object, s16 carIdx, CosmicCoasterSp
         } else {
             osSyncPrintf("obj over\n");
         }
-        func_8001C258_main(object->model[j], 4, 0);
+        Hu3DModelAttrSet(object->model[j], 4, 0);
         Hu3DModelPosSet(object->model[j], spawn->x, spawn->y + 400.0f, car->progress - spawn->z * 100.0 - 1185.0);
         Hu3DModelPosSet(object->model[k], spawn->x, spawn->y + 400.0f, car->progress - spawn->z * 100.0 - 1185.0);
         Hu3DModelCameraSet(object->model[j], cam);
@@ -235,8 +235,8 @@ void func_80109BFC_cosmic_coaster(omObjData *object, s16 carIdx, CosmicCoasterSp
     Hu3DLLightCreate(object->model[i], 1);
     Hu3DLLightColorSet(object->model[i], 0, 0, 0);
     Hu3DLLightDirSet(object->model[i], 0.0f, -127.0f, 0.0f);
-    func_8001C258_main(object->model[i], 4, 0);
-    func_8001C814_main(object->model[i], 2, 2);
+    Hu3DModelAttrSet(object->model[i], 4, 0);
+    Hu3DMotionAttrSet(object->model[i], 2, 2);
     Hu3DModelCameraSet(object->model[i], cam);
     omSetTra(newObj, spawn->x, spawn->y, spawn->z * 100.0f);
     Hu3DModelPosSet(newObj->model[0], object->trans.x, object->trans.y, car->progress - object->trans.z);
@@ -268,7 +268,7 @@ void func_8010A244_cosmic_coaster(omObjData *object) {
         Hu3DLLightCreate(object->model[0], 1);
         Hu3DLLightColorSet(object->model[0], 0, 0, 0);
         Hu3DLLightDirSet(object->model[0], 0.0f, -127.0f, 0.0f);
-        func_8001C258_main(object->model[0], 4, 0);
+        Hu3DModelAttrSet(object->model[0], 4, 0);
         Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, car->progress - object->trans.z);
     } else if (car->progress - object->trans.z >= 3300.0f) {
         Hu3DModelKill(object->model[0]);
@@ -313,7 +313,7 @@ void func_8010A528_cosmic_coaster(omObjData *object) {
         Hu3DLLightCreate(object->model[0], 1);
         Hu3DLLightColorSet(object->model[0], 0, 0, 0);
         Hu3DLLightDirSet(object->model[0], 0.0f, -127.0f, 0.0f);
-        func_8001C258_main(object->model[0], 4, 0);
+        Hu3DModelAttrSet(object->model[0], 4, 0);
         Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, car->progress - object->trans.z);
     } else if (car->progress - object->trans.z >= 3300.0f) {
         Hu3DModelKill(object->model[0]);
@@ -476,8 +476,8 @@ void func_8010B234_cosmic_coaster(omObjData *object) {
     Hu3DModelPosSet(object->model[2], object->trans.x, object->trans.y + 400.0f, car->progress - object->trans.z - 1185.0f);
     state = object->data;
     if (D_8010C3BC_cosmic_coaster != -1 && D_8010C3BC_cosmic_coaster == object->work[2]) {
-        func_8001C258_main(object->model[1], 4, 4);
-        func_8001C258_main(object->model[2], 4, 0);
+        Hu3DModelAttrSet(object->model[1], 4, 4);
+        Hu3DModelAttrSet(object->model[2], 4, 0);
         state->angle += 8.0f;
         if (state->angle >= 360.0f) {
             state->angle -= 360.0f;
@@ -600,7 +600,7 @@ u32 func_8010B644_cosmic_coaster(omObjData **found, CosmicCoasterCarData *car, f
                 found[j] = other;
                 hits[j] = other->work[1];
                 if (notify == 1) {
-                    func_80047E90_main(other, 1);
+                    omObjModeSet(other, 1);
                 }
             }
         }

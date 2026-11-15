@@ -6,7 +6,7 @@
 //very closely resembles UnkBoard5, but member at offset 0x08 must be s16 here instead of s32?
 //this needs to be removed, already exist in 106640.h
 
-// void func_80055484_main(s16 group, s16 member, u8 arg2, u8 arg3, u8 arg4, u16 arg5);
+// void HuSprColorTPLvlSet(s16 group, s16 member, u8 arg2, u8 arg3, u8 arg4, u16 arg5);
 // u16 MBCameraPos3DSet(Vec *arg0);
 // Process *MBPlayerPosMoveCreate(Vec *, Vec *, Vec *, s32);
 // void msmMusStop(s16);
@@ -22,7 +22,7 @@
 // s16 MBRandCheck100(s8 arg0);
 // void SLSaveBoard(s32);
 // s16 HuWinStatGet(s16);
-// void func_800600C0_main(s16, s32);
+// void HuWinKeyLockSet(s16, s32);
 // s32 HuWinExCreate(s16 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u16 arg5);
 // void HuWinExAnimOut(s16, s16);
 // void func_800DBFBC_shared_board(s32);
@@ -89,7 +89,7 @@
 // void func_800FC7C8_shared_board(void);
 // void func_800FF794_shared_board(s32, s32, s32, s32);
 // void func_800FF840_shared_board(Vec *);
-// void func_8004A670_main(s32);
+// void HuAudSeqVolFadeOut(s32);
 // Process *func_800E11C0_shared_board(s32, s32);
 // void func_800E2260_shared_board(s32, char *);
 // Unk3 *func_800E210C_shared_board(s16 arg0, s16 arg1, u8 arg2);
@@ -144,12 +144,12 @@
 // void func_800F4730_shared_board(void);
 // void func_800FC8A4_shared_board(void);
 // void Hu3DCameraSet(s16, Gfx**);
-// void func_800127C4_main(s16, Gfx**);
+// void Hu3DCameraScissorDraw(s16, Gfx**);
 // void mtxTransCat(Mtx*, f32, f32, f32);
 // void mtxScaleCat(Mtx*, f32, f32, f32);
-// void func_800185A4_main(Mtx*, f32);
-// u16 func_8004D6AC_main(s32, s32, s32);
-// void func_8004D6E8_main(s16);
+// void mtxRotYCat(Mtx*, f32);
+// u16 HuProfCpuBegin(s32, s32, s32);
+// void HuProfCpuEnd(s16);
 // void func_800898F0_main(Mtx*, Mtx*);
 // void func_80089980_main(Mtx*, Mtx*);
 // void MBCameraPos3DGet(Vec2f*);
@@ -297,7 +297,7 @@
 // f32 MBBackMdlScaleGet(void);
 // void MBModelAttrSetDispOn(Object*);
 // void MBMasuBlockTblExtSet(s16*);
-// s32 func_800037C4_main(s16);                        /* extern */
+// s32 msmMusGetVolume(s16);                        /* extern */
 // void func_800DECBC_shared_board(void);               /* extern */
 // void func_800E6FBC_shared_board(void);               /* extern */
 // void func_800E9730_shared_board(f32);              /* extern */

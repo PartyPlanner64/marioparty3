@@ -21,7 +21,7 @@ HmfData_Unk84_Entry2 D_800A1190_main = {
     "0123456789ABCDE", 0, 2, 4, 4, 0xFF, 0, 0, 0, (u8 *)D_800A1170_main, (struct HmfData *)-1, NULL,
 };
 
-void func_80031560_main(void) {
+void Hu3DTexInit(void) {
     s16 i;
 
     D_800D1FCC_main = HuMemAlloc(0x1A00);
@@ -33,23 +33,23 @@ void func_80031560_main(void) {
         D_800CD2F8_main[i].nameHash = 0;
     }
     D_800CCF85_main = 0;
-    func_8003235C_main();
+    Hu3DAnimWorkInit();
 }
 
-void func_80031630_main(HmfData *hmf) {
+void Hu3DTexLoad(HmfData *hmf) {
     char name[0x20];
     HmfData_Unk84_Entry2 *tex;
     u8 *chunk;
     s16 hash;
     s16 i;
 
-    func_80031DF4_main(hmf);
-    for (chunk = hmf->unk34; chunk < hmf->unk30; chunk = func_80010AC8_main(chunk + 4)) {
-        chunk = func_80010A38_main(0x424D5031, chunk, hmf->unk30); // "BMP1"
+    Hu3DPalLoad(hmf);
+    for (chunk = hmf->unk34; chunk < hmf->unk30; chunk = HmfChunkNext(chunk + 4)) {
+        chunk = HmfChunkSearch(0x424D5031, chunk, hmf->unk30); // "BMP1"
         if (chunk == NULL) {
             return;
         }
-        hash = func_80011334_main(hmf, name, (chunk[8] << 8) + chunk[9]);
+        hash = GetString(hmf, name, (chunk[8] << 8) + chunk[9]);
         for (i = 0; i < 0x80; i++) {
             if (D_800D1FCC_main[i].nameHash == hash && strcmp(D_800D1FCC_main[i].name, name) == 0) {
                 break;
@@ -69,19 +69,19 @@ void func_80031630_main(HmfData *hmf) {
             tex->nameHash = hash;
             strcpy(tex->name, name);
             tex->owner = hmf;
-            func_80031B30_main(chunk, hmf, tex);
+            Hu3DTexDataSet(chunk, hmf, tex);
         } else {
             tex = &D_800D1FCC_main[i];
             if (D_800CCF85_main & 2) {
-                func_80019C00_main(tex->unk28);
+                HuMemDelayFree(tex->unk28);
                 tex->owner = hmf;
-                func_80031B30_main(chunk, hmf, tex);
+                Hu3DTexDataSet(chunk, hmf, tex);
             }
         }
     }
 }
 
-void func_8003186C_main(HmfData *hmf) {
+void Hu3DTexRelease(HmfData *hmf) {
     HmfData_Unk84_Entry2 *tex;
     HmfData *other;
     s16 i;
@@ -114,26 +114,26 @@ void func_8003186C_main(HmfData *hmf) {
             tex->nameHash = 0;
             tex->owner = NULL;
             if (tex->unk1C == 2) {
-                func_80032194_main(tex->unk_30);
+                Hu3DPalKill(tex->unk_30);
             }
-            func_80019C00_main(tex->unk28);
+            HuMemDelayFree(tex->unk28);
         }
     }
 }
 
-HmfData_Unk84_Entry2 *func_80031A08_main(HmfData *hmf, s16 index) {
+HmfData_Unk84_Entry2 *Hu3DTexSearchIdx(HmfData *hmf, s16 index) {
     char name[0x20];
 
-    func_80011334_main(hmf, name, index);
-    return func_80031A60_main(hmf, name);
+    GetString(hmf, name, index);
+    return Hu3DTexSearch(hmf, name);
 }
 
-HmfData_Unk84_Entry2 *func_80031A44_main(HmfData *hmf, char *name) {
-    return func_80031A60_main(hmf, name);
+HmfData_Unk84_Entry2 *Hu3DTexSearchName(HmfData *hmf, char *name) {
+    return Hu3DTexSearch(hmf, name);
 }
 
-HmfData_Unk84_Entry2 *func_80031A60_main(HmfData *hmf, char *name) {
-    u16 hash = func_80011460_main((u8 *)name);
+HmfData_Unk84_Entry2 *Hu3DTexSearch(HmfData *hmf, char *name) {
+    u16 hash = HmfNameHash((u8 *)name);
     u16 i;
 
     for (i = 0; i < 0x80; i++) {
@@ -148,7 +148,7 @@ HmfData_Unk84_Entry2 *func_80031A60_main(HmfData *hmf, char *name) {
     return &D_800D1FCC_main[i];
 }
 
-void func_80031B30_main(u8 *data, HmfData *hmf, HmfData_Unk84_Entry2 *tex) {
+void Hu3DTexDataSet(u8 *data, HmfData *hmf, HmfData_Unk84_Entry2 *tex) {
     u16 bpp;
     s32 size;
     u8 *dst;
@@ -160,7 +160,7 @@ void func_80031B30_main(u8 *data, HmfData *hmf, HmfData_Unk84_Entry2 *tex) {
     tex->unk26 = (data[4] << 8) + data[5];
     if (data[0] == 0x28) {
         tex->unk1C = 2;
-        tex->unk_30 = func_80032038_main(hmf, (data[6] << 8) + data[7]);
+        tex->unk_30 = Hu3DPalSearch(hmf, (data[6] << 8) + data[7]);
         tex->unk20 = (data[8] << 8) + data[9];
         tex->unk1D = 1;
         if (tex->unk_30->colorCount <= 16) {
@@ -235,19 +235,19 @@ void func_80031B30_main(u8 *data, HmfData *hmf, HmfData_Unk84_Entry2 *tex) {
     }
 }
 
-void func_80031DF4_main(HmfData *hmf) {
+void Hu3DPalLoad(HmfData *hmf) {
     char name[0x20];
     HmfPaletteData *pal;
     u8 *chunk;
     s16 hash;
     s16 i;
 
-    for (chunk = hmf->unk34; chunk < hmf->unk30; chunk = func_80010AC8_main(chunk + 4)) {
-        chunk = func_80010A38_main(0x50414C31, chunk, hmf->unk30); // "PAL1"
+    for (chunk = hmf->unk34; chunk < hmf->unk30; chunk = HmfChunkNext(chunk + 4)) {
+        chunk = HmfChunkSearch(0x50414C31, chunk, hmf->unk30); // "PAL1"
         if (chunk == NULL) {
             return;
         }
-        hash = func_80011334_main(hmf, name, (chunk[8] << 8) + chunk[9]);
+        hash = GetString(hmf, name, (chunk[8] << 8) + chunk[9]);
         for (i = 0; i < 0x80; i++) {
             if (D_800CD2F8_main[i].nameHash == hash && strcmp(D_800CD2F8_main[i].name, name) == 0) {
                 break;
@@ -267,22 +267,22 @@ void func_80031DF4_main(HmfData *hmf) {
             strcpy(pal->name, name);
             pal->owner = hmf;
             pal->refCount = 1;
-            func_800321B8_main(chunk, hmf, pal);
+            Hu3DPalDataSet(chunk, hmf, pal);
         } else {
             pal = &D_800CD2F8_main[i];
             if (D_800CCF85_main & 2) {
-                func_80019C00_main(pal->data);
+                HuMemDelayFree(pal->data);
                 pal->owner = hmf;
-                func_800321B8_main(chunk, hmf, pal);
+                Hu3DPalDataSet(chunk, hmf, pal);
             }
             pal->refCount++;
         }
     }
 }
 
-HmfPaletteData *func_80032038_main(HmfData *hmf, s16 index) {
+HmfPaletteData *Hu3DPalSearch(HmfData *hmf, s16 index) {
     char name[0x20];
-    u16 hash = func_80011334_main(hmf, name, index);
+    u16 hash = GetString(hmf, name, index);
     u16 i;
 
     for (i = 0; i < 0x80; i++) {
@@ -297,23 +297,23 @@ HmfPaletteData *func_80032038_main(HmfData *hmf, s16 index) {
     return &D_800CD2F8_main[i];
 }
 
-void func_80032104_main(void *unk) {
+void Hu3DPalOwnerKill(void *unk) {
     s16 i;
 
     for (i = 0; i < 0x80; i++) {
         if (D_800CD2F8_main[i].nameHash != 0 && D_800CD2F8_main[i].owner == unk) {
-            func_80032194_main(&D_800CD2F8_main[i]);
+            Hu3DPalKill(&D_800CD2F8_main[i]);
         }
     }
 }
 
-void func_80032194_main(HmfPaletteData *pal) {
+void Hu3DPalKill(HmfPaletteData *pal) {
     pal->nameHash = 0;
     pal->owner = NULL;
-    func_80019C00_main(pal->data);
+    HuMemDelayFree(pal->data);
 }
 
-void func_800321B8_main(u8 *data, HmfData *hmf, HmfPaletteData *pal) {
+void Hu3DPalDataSet(u8 *data, HmfData *hmf, HmfPaletteData *pal) {
     s16 count;
     u16 *dst;
     s16 i;
@@ -330,7 +330,7 @@ void func_800321B8_main(u8 *data, HmfData *hmf, HmfPaletteData *pal) {
     }
 }
 
-void func_800322AC_main(HmfData_Unk84_Entry2 *tex) {
+void Hu3DTexRefClear(HmfData_Unk84_Entry2 *tex) {
     HmfData *hmf;
     s16 i;
     s16 j;
@@ -347,7 +347,7 @@ void func_800322AC_main(HmfData_Unk84_Entry2 *tex) {
     }
 }
 
-void func_8003235C_main(void) {
+void Hu3DAnimWorkInit(void) {
     s16 i;
 
     D_800D1714_main = HuMemAlloc(0x600);
@@ -359,7 +359,7 @@ void func_8003235C_main(void) {
 
 s32 Hu3DAnimCreate(HmfData *hmf, void *data, s16 bank, const char *name) {
     HmfData_Unk84_Entry2 *tex;
-    s16 hash = func_80011460_main((u8 *)name);
+    s16 hash = HmfNameHash((u8 *)name);
     s16 slot;
     s16 i;
     s16 j;
@@ -381,7 +381,7 @@ s32 Hu3DAnimCreate(HmfData *hmf, void *data, s16 bank, const char *name) {
     if (slot == 0x80) {
         return -1;
     }
-    D_800D1714_main[slot].animIdx = func_800329B4_main(data);
+    D_800D1714_main[slot].animIdx = Hu3DAnimDataCreate(data);
     D_800D1714_main[slot].rot = bank;
     D_800D1714_main[slot].frame = 0;
     D_800D1714_main[slot].interp = 0;
@@ -412,7 +412,7 @@ s32 Hu3DAnimCreate(HmfData *hmf, void *data, s16 bank, const char *name) {
 s16 Hu3DAnimLink(HmfData *hmf, u16 linkIdx, s16 bank, const char *name) {
     HmfData_Unk84_Entry2 *tex;
     HmfAnim *anim;
-    s16 hash = func_80011460_main((u8 *)name);
+    s16 hash = HmfNameHash((u8 *)name);
     s16 slot;
     s16 i;
     s16 j;
@@ -426,7 +426,7 @@ s16 Hu3DAnimLink(HmfData *hmf, u16 linkIdx, s16 bank, const char *name) {
         osSyncPrintf("Can't Find TextureName! LinkAnimMAn\n");
         return -1;
     }
-    if ((slot = func_80033F8C_main()) == -1) {
+    if ((slot = Hu3DAnimSlotGet()) == -1) {
         return -1;
     }
     anim = &D_800D1714_main[slot];
@@ -468,7 +468,7 @@ void Hu3DAnimInit(void) {
     }
 }
 
-s32 func_800329B4_main(u8 *data) {
+s32 Hu3DAnimDataCreate(u8 *data) {
     HmfAnimSet *set;
     HmfAnimImage *img;
     HmfAnimFrame *frame;
@@ -575,7 +575,7 @@ s32 func_800329B4_main(u8 *data) {
     return slot;
 }
 
-void func_80032FC0_main(s16 animIdx, u8 bitmask, u8 flags) {
+void Hu3DAnimAttrSet(s16 animIdx, u8 bitmask, u8 flags) {
     HmfAnim *anim = &D_800D1714_main[animIdx];
 
     anim->flags = (anim->flags & ~bitmask) | flags;
@@ -603,7 +603,7 @@ void Hu3DAnmNoSet(s16 animIdx, u8 frame) {
     anim->speed = 0x10;
 }
 
-u8 func_800330D4_main(s16 animIdx) {
+u8 Hu3DAnimFrameGet(s16 animIdx) {
     HmfAnim *anim = &D_800D1714_main[animIdx];
     u8 *rotFrames = (u8 *)&D_800D408C_main[anim->animIdx].rot[anim->rot];
 
@@ -649,22 +649,22 @@ void Hu3DAnimKill(s16 animIdx) {
     HmfAnim *anim = &D_800D1714_main[animIdx];
 
     if (anim->animIdx != -1) {
-        func_800333B0_main(anim->animIdx);
+        Hu3DAnimDataKill(anim->animIdx);
         anim->animIdx = -1;
     }
 }
 
-void func_800333B0_main(s16 animIdx) {
+void Hu3DAnimDataKill(s16 animIdx) {
     if (D_800D408C_main[animIdx].unk0C != NULL) {
         D_800D408C_main[animIdx].refCount--;
         if (D_800D408C_main[animIdx].refCount == 0) {
-            func_80019C68_main(animIdx + TAG_TEXANIM);
+            HuMemDelayFreeAllWithTag(animIdx + TAG_TEXANIM);
             D_800D408C_main[animIdx].unk0C = NULL;
         }
     }
 }
 
-void func_80033430_main(s16 animIdx) {
+void Hu3DAnimModelKill(s16 animIdx) {
     Hu3DAnimKill(animIdx);
 }
 
@@ -674,7 +674,7 @@ void Hu3DAnimAllKill(void) {
     for (i = 0; i < 0x20; i++) {
         if (D_800D408C_main[i].unk0C != NULL) {
             D_800D408C_main[i].unk0C = NULL;
-            func_80019C68_main(i + TAG_TEXANIM);
+            HuMemDelayFreeAllWithTag(i + TAG_TEXANIM);
         }
     }
     for (i = 0; i < 0x80; i++) {
@@ -682,7 +682,7 @@ void Hu3DAnimAllKill(void) {
     }
 }
 
-void func_80033510_main(void) {
+void Hu3DTexAllKill(void) {
     s16 i;
 
     for (i = 0; i < 0x80; i++) {
@@ -691,12 +691,12 @@ void func_80033510_main(void) {
     for (i = 0; i < 0x80; i++) {
         D_800CD2F8_main[i].nameHash = 0;
     }
-    func_80019C68_main(TAG_TEXTURE);
+    HuMemDelayFreeAllWithTag(TAG_TEXTURE);
 }
 
-void func_800335BC_main(char *name, u16 *out) {
+void Hu3DTexSizeGet(char *name, u16 *out) {
     HmfData_Unk84_Entry2 *entry;
-    u16 hash = func_80011460_main((u8 *)name);
+    u16 hash = HmfNameHash((u8 *)name);
     u16 i;
 
     for (i = 0; i < 0x80; i++) {
@@ -711,7 +711,7 @@ void func_800335BC_main(char *name, u16 *out) {
     }
 }
 
-void func_80033694_main(HmfData *hmf) {
+void Hu3DAnimSegmentSet(HmfData *hmf) {
     HmfData_Unk84_Entry2 *tex;
     HmfAnimSet *set;
     HmfAnim *anim;
@@ -752,7 +752,7 @@ void func_80033694_main(HmfData *hmf) {
     }
 }
 
-void func_80033910_main(HmfData *arg0) {
+void Hu3DModelAnimStop(HmfData *arg0) {
     s16 i;
 
     for (i = 0; i < arg0->unk12; i++) {
@@ -762,7 +762,7 @@ void func_80033910_main(HmfData *arg0) {
     }
 }
 
-void func_80033970_main(HmfData *arg0) {
+void Hu3DModelAnimStart(HmfData *arg0) {
     s16 i;
 
     for (i = 0; i < arg0->unk12; i++) {
@@ -772,7 +772,7 @@ void func_80033970_main(HmfData *arg0) {
     }
 }
 
-s32 func_800339D0_main(HmfData *hmf) {
+s32 Hu3DModelAnimLoad(HmfData *hmf) {
     u8 slots[0x20];
     HmfData_Unk84_Entry2 *tex;
     HmfData_Unk84_Entry *entry;
@@ -789,7 +789,7 @@ s32 func_800339D0_main(HmfData *hmf) {
     count = 0;
     chunk = hmf->unk34;
     while (TRUE) {
-        chunk = func_80010A38_main(0x4D544E31, chunk, hmf->unk30); // "MTN1"
+        chunk = HmfChunkSearch(0x4D544E31, chunk, hmf->unk30); // "MTN1"
         if (chunk == NULL) {
             break;
         }
@@ -800,12 +800,12 @@ s32 func_800339D0_main(HmfData *hmf) {
             next += ((next[0] << 8) + next[1]) + 2;
             if (rec[2] == 'V' && rec[3] == 'X') {
                 rec += 4;
-                slot = func_80033F8C_main();
+                slot = Hu3DAnimSlotGet();
                 if (slot == -1) {
                     break;
                 }
                 slots[count] = slot;
-                D_800D1714_main[slot].animIdx = func_80033D0C_main(hmf, rec);
+                D_800D1714_main[slot].animIdx = Hu3DAnimSetCreate(hmf, rec);
                 D_800D1714_main[slot].rot = 0;
                 D_800D1714_main[slot].frame = 0;
                 D_800D1714_main[slot].interp = 0;
@@ -828,7 +828,7 @@ s32 func_800339D0_main(HmfData *hmf) {
                 count++;
             }
         }
-        chunk = func_80010AC8_main(chunk + 4);
+        chunk = HmfChunkNext(chunk + 4);
     }
     if (count == 0) {
         hmf->unkC8 = NULL;
@@ -842,7 +842,7 @@ s32 func_800339D0_main(HmfData *hmf) {
     return 1;
 }
 
-s16 func_80033D0C_main(HmfData *hmf, u8 *data) {
+s16 Hu3DAnimSetCreate(HmfData *hmf, u8 *data) {
     HmfData_Unk84_Entry2 *tex;
     HmfAnimSet *set;
     HmfAnimImage *img;
@@ -853,7 +853,7 @@ s16 func_80033D0C_main(HmfData *hmf, u8 *data) {
     s16 totalTime;
     s16 i;
 
-    slot = func_80033FEC_main();
+    slot = Hu3DAnimDataSlotGet();
     if (slot == -1) {
         return -1;
     }
@@ -871,7 +871,7 @@ s16 func_80033D0C_main(HmfData *hmf, u8 *data) {
     for (i = 0; i < count; i++) {
         img = &set->unk0C[i];
         frame = &set->rot->frames[i];
-        tex = func_80031A08_main(hmf, (entry[0] << 8) + entry[1]);
+        tex = Hu3DTexSearchIdx(hmf, (entry[0] << 8) + entry[1]);
         img->width = tex->unk24;
         img->height = tex->unk26;
         img->unk06 = 0;
@@ -901,7 +901,7 @@ s16 func_80033D0C_main(HmfData *hmf, u8 *data) {
     return slot;
 }
 
-s16 func_80033F8C_main(void) {
+s16 Hu3DAnimSlotGet(void) {
     s16 i;
 
     for (i = 0; i < 0x80; i++) {
@@ -912,7 +912,7 @@ s16 func_80033F8C_main(void) {
     return -1;
 }
 
-s16 func_80033FEC_main(void) {
+s16 Hu3DAnimDataSlotGet(void) {
     s16 i;
 
     for (i = 0; i < 0x20; i++) {
@@ -923,7 +923,7 @@ s16 func_80033FEC_main(void) {
     return -1;
 }
 
-void func_80034048_main(s16 animIdx, s16 count) {
+void Hu3DAnimTimeSet(s16 animIdx, s16 count) {
     HmfAnim *anim;
     HmfAnimRot *bank;
     s16 j;

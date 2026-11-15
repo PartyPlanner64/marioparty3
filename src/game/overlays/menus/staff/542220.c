@@ -7,11 +7,11 @@ u32 D_8011053C_staff = 0;
 
 void func_801059A0_staff(void) {
     Hu3DCamInit(1);
-    func_8001FE20_main(1);
-    func_800142A0_main(25);
+    MapCollInit(1);
+    Hu3DSprModelInit(25);
     omInitObjMan(51, 25);
     HuWinInit();
-    func_8004A208_main();
+    omGameSysInit();
     D_800CD280_main = 0;
     D_80111564_staff = 80.0f;
     D_80111560_staff = 6000.0f;
@@ -129,11 +129,11 @@ void func_80105E6C_staff(MsetupModelEntry *entry, MsetupModelHandle *handle, s32
         return;
     }
     for (i = 0; i < count; entry++, i++, handle++) {
-        model = handle->model = func_8000B108_main(entry->dataId, entry->flags);
+        model = handle->model = Hu3DModelRead(entry->dataId, entry->flags);
         func_80105DB8_staff(entry, model);
         motion = handle->motion = Hu3DData[model].motId;
         if (motion >= 0) {
-            func_8001C814_main(model, -1, entry->motion);
+            Hu3DMotionAttrSet(model, -1, entry->motion);
         }
     }
 }

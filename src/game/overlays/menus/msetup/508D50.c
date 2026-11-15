@@ -14,13 +14,13 @@ s16 func_8010CAF0_msetup(s32 dataId, s32 flags) {
     f32 angleStep;
     s16 i;
 
-    model = func_8000B108_main(dataId, flags);
+    model = Hu3DModelRead(dataId, flags);
     Hu3DModelPosSet(model, 0.0f, 0.0f, 0.0f);
-    func_8001C2FC_main(model, 0x20000, 0x20000);
+    Hu3DModelObjAttrSet(model, 0x20000, 0x20000);
     Hu3DModelRemakeStatic(model);
-    func_8001C954_main(model);
-    func_8001C514_main(model);
-    func_80013390_main(model, -1, 0, func_8010CE8C_msetup);
+    Hu3DModelVtxBufMake(model);
+    Hu3DModelDynamicFree(model);
+    Hu3DParticleCreate(model, -1, 0, func_8010CE8C_msetup);
     hmf = Hu3DData[model].hmf;
     data = Hu3DData[model].unkBC;
     entry = data->unk58;

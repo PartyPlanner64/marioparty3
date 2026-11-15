@@ -411,7 +411,7 @@ void func_80106194_modesel(s32 arg0, u16 arg1) {
 }
 
 void func_801061C8_modesel(s32 arg0, u16 arg1, u16 arg2) {
-    func_8000BDDC_main(D_8010F710_modesel[arg0].unk_00, 1);
+    espAnimModeSet(D_8010F710_modesel[arg0].unk_00, 1);
     espBankSet(D_8010F710_modesel[arg0].unk_00, arg1, arg2);
 }
 
@@ -425,7 +425,7 @@ void func_80106234_modesel(void) {
 }
 
 void func_80106280_modesel(s32 arg0, s32 arg1, s32 arg2) {
-    s16 modelId = func_8000B108_main(arg1, arg2);
+    s16 modelId = Hu3DModelRead(arg1, arg2);
 
     D_8010FE90_modesel[arg0].unk_00 = modelId;
     Hu3DModelPosSet(modelId, 0.0f, 0.0f, 0.0f);
@@ -511,15 +511,15 @@ void func_801066B4_modesel(s32 arg0, f32 *arg1, f32 *arg2, f32 *arg3) {
 }
 
 void func_801066FC_modesel(s32 arg0) {
-    func_8001C258_main(D_8010FE90_modesel[arg0].unk_00, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(D_8010FE90_modesel[arg0].unk_00, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
 }
 
 void func_8010673C_modesel(s32 arg0) {
-    func_8001C258_main(D_8010FE90_modesel[arg0].unk_00, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(D_8010FE90_modesel[arg0].unk_00, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
 }
 
 void func_8010677C_modesel(s32 arg0, s32 arg1) {
-    func_8001C814_main(D_8010FE90_modesel[arg0].unk_00, -1, arg1);
+    Hu3DMotionAttrSet(D_8010FE90_modesel[arg0].unk_00, -1, arg1);
 }
 
 void func_801067C0_modesel(s32 arg0, s32 arg1, s16 arg2, s16 arg3, s16 arg4) {
@@ -527,7 +527,7 @@ void func_801067C0_modesel(s32 arg0, s32 arg1, s16 arg2, s16 arg3, s16 arg4) {
 }
 
 void func_80106830_modesel(s32 arg0, s32 arg1) {
-    func_8001C814_main(D_8010FE90_modesel[arg0].unk_00, arg1, 0);
+    Hu3DMotionAttrSet(D_8010FE90_modesel[arg0].unk_00, arg1, 0);
 }
 
 void func_80106874_modesel(s32 arg0) {
@@ -559,7 +559,7 @@ void func_80106A38_modesel(s32 arg0, s32 arg1, s16 arg2) {
     s16 parentModelId = func_801064B0_modesel(arg1);
 
     Hu3DMotionSet(modelId, parentModelId);
-    func_8001C814_main(modelId, -1, arg2);
+    Hu3DMotionAttrSet(modelId, -1, arg2);
 }
 
 void func_80106AA8_modesel(void) {
@@ -581,7 +581,7 @@ u32 func_80106B38_modesel(u32 arg0) {
     void *ptr;
 
     if (0x80000000U < arg0) {
-        len = func_800452A0_main(buf, (void *)arg0);
+        len = GameMesStrConv2(buf, (void *)arg0);
         ptr = HuMemAlloc(len);
         bcopy(buf, ptr, len);
         return (u32)ptr;
@@ -632,13 +632,13 @@ void func_80106BA0_modesel(s32 index, u32 message, s16 x, s16 y, s16 width, s16 
 s32 func_80106DEC_modesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 style) {
     s16 window = HuWinCreate(x, y, width, height, 0, 8);
 
-    func_8005B63C_main(window, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
+    HuWinAttrSet(window, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
     HuWinMesSpeedSet(window, 0);
     HuWinBGTPLvlSet(window, 255);
-    func_80060144_main(window);
+    HuWinDummy(window);
     HuWinPriSet(window, 1);
     HuWinActivePlayerSet(window, HUWIN_PLAYER_1);
-    func_8005C154_main(window, 192, 192, 192);
+    HuWinMesDefColSet(window, 192, 192, 192);
     HuWinBGColSet(window, 0, 64, 64);
     HuWinMesColSet(window, 7);
     HuWinMesPalSet(window, 2, 255, 64, 64);
@@ -652,17 +652,17 @@ s32 func_80106DEC_modesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 
 s32 func_80106F38_modesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 style) {
     s16 window = HuWinCreate(x, y, width, height, 0, 4);
 
-    func_8005B63C_main(window, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
+    HuWinAttrSet(window, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
     HuWinMesSpeedSet(window, 0);
     HuWinBGTPLvlSet(window, 255);
-    func_80060144_main(window);
+    HuWinDummy(window);
     HuWinPriSet(window, 1);
     HuWinActivePlayerSet(window, HUWIN_PLAYER_1);
     HuWinMesPalSet(window, 5, 0, 176, 192);
     HuWinMesPalSet(window, 2, 255, 64, 64);
     HuWinMesPalSet(window, 4, 96, 255, 64);
     HuWinMesPalSet(window, 6, 255, 255, 64);
-    func_8005C154_main(window, 192, 192, 192);
+    HuWinMesDefColSet(window, 192, 192, 192);
     HuWinBGColSet(window, 255, 255, 255);
     HuWinMesColSet(window, 1);
     HuWinHomeClear(window);
@@ -673,9 +673,9 @@ s32 func_80106F38_modesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 
 s32 func_801070A0_modesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 style) {
     s16 window = HuWinCreate(x, y, width, height, 0, 8);
 
-    func_8005B63C_main(window, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
+    HuWinAttrSet(window, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
     HuWinMesSpeedSet(window, 0);
-    func_80060144_main(window);
+    HuWinDummy(window);
     HuWinPriSet(window, 1);
     HuWinActivePlayerSet(window, HUWIN_PLAYER_1);
     HuWinMesPalSet(window, 5, 0, 176, 192);
@@ -685,7 +685,7 @@ s32 func_801070A0_modesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 
     HuWinMesPalSet(window, 2, 255, 64, 64);
     HuWinMesPalSet(window, 4, 96, 255, 64);
     HuWinMesPalSet(window, 6, 255, 255, 64);
-    func_8005C154_main(window, 192, 192, 0);
+    HuWinMesDefColSet(window, 192, 192, 0);
     HuWinBGColSet(window, 255, 255, 255);
     HuWinMesColSet(window, 6);
     HuWinHomeClear(window);
@@ -694,37 +694,37 @@ s32 func_801070A0_modesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 
 }
 
 s32 func_80107248_modesel(u32 message, s16 x, s16 y, s16 style) {
-    s16 window = func_80060880_main(x, y, 19);
+    s16 window = HuWinExCreateStyled(x, y, 19);
 
     HuWinMesPalSet(window, 2, 255, 64, 64);
     HuWinMesPalSet(window, 4, 96, 255, 64);
     HuWinMesPalSet(window, 6, 255, 255, 64);
-    func_80060C14_main(window, 1);
+    HuWinExOpen(window, 1);
     HuWinActivePlayerSet(window, HUWIN_PLAYER_1);
     HuWinMesSet(window, message, -1, -1);
     return window;
 }
 
 s32 func_80107314_modesel(u32 message, s16 x, s16 y, s16 style) {
-    s16 window = func_80060880_main(x, y, 20);
+    s16 window = HuWinExCreateStyled(x, y, 20);
 
     HuWinMesPalSet(window, 2, 255, 64, 64);
     HuWinMesPalSet(window, 4, 96, 255, 64);
     HuWinMesPalSet(window, 6, 255, 255, 64);
-    func_80060C14_main(window, 0);
+    HuWinExOpen(window, 0);
     HuWinActivePlayerSet(window, HUWIN_PLAYER_1);
     HuWinMesSet(window, message, -1, -1);
     return window;
 }
 
 s32 func_801073E0_modesel(u32 message, s16 x, s16 y, s16 style) {
-    s16 window = func_80060880_main(x, y, 19);
+    s16 window = HuWinExCreateStyled(x, y, 19);
 
     HuWinMesPalSet(window, 2, 255, 64, 64);
     HuWinMesPalSet(window, 4, 96, 255, 64);
     HuWinMesPalSet(window, 6, 255, 255, 64);
     HuWinActivePlayerSet(window, HUWIN_PLAYER_1);
-    func_80060C14_main(window, 0);
+    HuWinExOpen(window, 0);
     HuWinMesSet(window, message, -1, -1);
     return window;
 }
@@ -740,7 +740,7 @@ void func_801074AC_modesel(void) {
 
 void func_801074F0_modesel(s32 arg0) {
     if (D_801109A0_modesel[arg0][0] == 3) {
-        func_80060EA8_main(D_80110998_modesel[arg0][0], 1);
+        HuWinExClose(D_80110998_modesel[arg0][0], 1);
         HuWinExCleanup(D_80110998_modesel[arg0][0]);
     } else {
         HuWinDispOff(D_80110998_modesel[arg0][0]);
@@ -748,7 +748,7 @@ void func_801074F0_modesel(s32 arg0) {
         D_80110998_modesel[arg0][0] = -1;
     }
     if (D_8011099C_modesel[arg0][0] != 0) {
-        func_80019C00_main((void *)D_8011099C_modesel[arg0][0]);
+        HuMemDelayFree((void *)D_8011099C_modesel[arg0][0]);
         D_8011099C_modesel[arg0][0] = 0;
     }
 }
@@ -784,7 +784,7 @@ void func_80107730_modesel(s32 arg0, u32 message) {
 
     HuWinHomeClear(D_80110998_modesel[arg0][0]);
     if (D_8011099C_modesel[arg0][0] != 0) {
-        func_80019C00_main((void *)D_8011099C_modesel[arg0][0]);
+        HuMemDelayFree((void *)D_8011099C_modesel[arg0][0]);
         D_8011099C_modesel[arg0][0] = 0;
     }
     text = func_80106B38_modesel(message);
@@ -795,7 +795,7 @@ void func_80107730_modesel(s32 arg0, u32 message) {
 }
 
 void func_801077FC_modesel(s32 arg0, s8 arg1, u32 arg2) {
-    func_800601BC_main(D_80110998_modesel[arg0][0], arg2, arg1);
+    HuWinInsertMesSetNoLF(D_80110998_modesel[arg0][0], arg2, arg1);
 }
 
 s32 func_80107838_modesel(s32 arg0, s16 arg1, s32 arg2) {
@@ -939,7 +939,7 @@ void func_80107CEC_modesel(void) {
         WipeCreateIn(0xB, 0x10);
         modelId = func_8010648C_modesel(0xB);
         Hu3DModelPosSet(modelId, 0.0f, 0.0f, 0.0f);
-        func_80013320_main(modelId, 0);
+        Hu3DCameraMotionSet(modelId, 0);
         HuPrcSleep(0x10);
     } else {
         WipeColorSet(0xFF, 0xFF, 0xFF);
@@ -952,7 +952,7 @@ void func_80107CEC_modesel(void) {
         func_80106910_modesel(0xD);
         modelId = func_8010648C_modesel(0xB);
         Hu3DModelPosSet(modelId, 0.0f, 0.0f, 0.0f);
-        func_80013320_main(modelId, 0);
+        Hu3DCameraMotionSet(modelId, 0);
         func_8010EBF8_modesel();
     }
     if (func_800465D0_main() == 1) {
@@ -1161,7 +1161,7 @@ void func_80107CEC_modesel(void) {
             }
             break;
         case 11:
-            func_80050ABC_main();
+            SLLoadStory();
             _SetFlag(0);
             if (GwStory.unk0 == 12) {
                 while (1) {
@@ -2045,7 +2045,7 @@ void func_8010AF90_modesel(void) {
         modelId = func_8010648C_modesel(2);
         for (i = 0; i < 6; i++) {
             if (func_800E905C_minigame(i) < 0) {
-                node = func_8001D33C_main(modelId, names[i]);
+                node = Hu3DModelObjPtrGet(modelId, names[i]);
                 func_80088800_main(node->unk58, 0.0f, -4000.0f, 0.0f);
             }
         }
@@ -2074,7 +2074,7 @@ void func_8010AF90_modesel(void) {
     func_801065B0_modesel(5, 1.0f, 1.0f, 1.0f);
     func_801068AC_modesel(5, 0);
     func_8010677C_modesel(5, 1);
-    D_80110BD4_modesel = func_8001D33C_main(func_8010648C_modesel(5), "taiho");
+    D_80110BD4_modesel = Hu3DModelObjPtrGet(func_8010648C_modesel(5), "taiho");
 
     func_8010631C_modesel(0x11, 0xD000B, -1);
 
@@ -2091,8 +2091,8 @@ void func_8010AF90_modesel(void) {
     func_8010677C_modesel(7, 1);
     func_80109CEC_modesel(7);
     modelId = func_8010648C_modesel(7);
-    D_80110B18_modesel[0].star = func_8001D33C_main(modelId, "star_red");
-    D_80110B18_modesel[0].shadow = func_8001D33C_main(modelId, "red_kage");
+    D_80110B18_modesel[0].star = Hu3DModelObjPtrGet(modelId, "star_red");
+    D_80110B18_modesel[0].shadow = Hu3DModelObjPtrGet(modelId, "red_kage");
     func_8010B804_modesel(7, 0);
     func_8010B75C_modesel(7, 0.0f, 16.0f, 0.0f, 20.0f);
 
@@ -2102,8 +2102,8 @@ void func_8010AF90_modesel(void) {
     func_8010677C_modesel(8, 1);
     func_80109CEC_modesel(8);
     modelId = func_8010648C_modesel(8);
-    D_80110B18_modesel[1].star = func_8001D33C_main(modelId, "star_blue");
-    D_80110B18_modesel[1].shadow = func_8001D33C_main(modelId, "blue_kage");
+    D_80110B18_modesel[1].star = Hu3DModelObjPtrGet(modelId, "star_blue");
+    D_80110B18_modesel[1].shadow = Hu3DModelObjPtrGet(modelId, "blue_kage");
     func_8010B804_modesel(8, 0);
     func_8010B75C_modesel(8, 0.0f, 0.0f, 16.0f, 20.0f);
 
@@ -2113,8 +2113,8 @@ void func_8010AF90_modesel(void) {
     func_8010677C_modesel(9, 1);
     func_80109CEC_modesel(9);
     modelId = func_8010648C_modesel(9);
-    D_80110B18_modesel[2].star = func_8001D33C_main(modelId, "star_yellow");
-    D_80110B18_modesel[2].shadow = func_8001D33C_main(modelId, "yellow_kage");
+    D_80110B18_modesel[2].star = Hu3DModelObjPtrGet(modelId, "star_yellow");
+    D_80110B18_modesel[2].shadow = Hu3DModelObjPtrGet(modelId, "yellow_kage");
     func_8010B75C_modesel(9, 0.0f, 0.0f, 16.0f, 20.0f);
 
     func_80106280_modesel(10, 0xA0122, 0xAA9);
@@ -2127,7 +2127,7 @@ void func_8010AF90_modesel(void) {
     }
     func_801065B0_modesel(10, 1.0f, 1.0f, 1.0f);
     func_801068AC_modesel(10, 0);
-    func_800461B4_main(func_8010648C_modesel(10));
+    AuraCreate(func_8010648C_modesel(10));
 
     func_8010631C_modesel(0x13, 0xA0125, 0);
     func_8010631C_modesel(0x14, 0xA0123, 0);
@@ -2157,7 +2157,7 @@ void func_8010B6B0_modesel(void) {
     func_801063A4_modesel(7);
     func_801063A4_modesel(8);
     func_801063A4_modesel(9);
-    func_80046558_main(func_8010648C_modesel(0xA));
+    AuraKill(func_8010648C_modesel(0xA));
     func_801063A4_modesel(0xA);
     omDelObj(D_80110BD0_modesel);
     func_80109154_modesel();
@@ -2189,11 +2189,11 @@ void func_8010B824_modesel(s32 arg0) {
 
     func_80088800_main(D_80110B18_modesel[index].star->unk58, D_80110B18_modesel[index].x,
                        D_80110B18_modesel[index].y, D_80110B18_modesel[index].z);
-    func_800185A4_main(D_80110B18_modesel[index].star->unk58, D_80110B18_modesel[index].rot.angle);
+    mtxRotYCat(D_80110B18_modesel[index].star->unk58, D_80110B18_modesel[index].rot.angle);
     shadowY = (8.0f < D_80110B18_modesel[index].y) ? 4.0f : -200.0f;
     func_80088800_main(D_80110B18_modesel[index].shadow->unk58, D_80110B18_modesel[index].x, shadowY,
                        D_80110B18_modesel[index].z);
-    func_800185A4_main(D_80110B18_modesel[index].shadow->unk58, D_80110B18_modesel[index].rot.angle);
+    mtxRotYCat(D_80110B18_modesel[index].shadow->unk58, D_80110B18_modesel[index].rot.angle);
 }
 
 void func_8010B940_modesel(s32 arg0, f32 arg1) {
@@ -2212,9 +2212,9 @@ Process *func_8010B9C4_modesel(void) {
     s16 modelId = func_8010648C_modesel(omovlevtno != 1 ? 0xB : 0xD);
 
     Hu3DModelPosSet(modelId, 0.0f, 0.0f, 0.0f);
-    func_80013320_main(modelId, 0);
+    Hu3DCameraMotionSet(modelId, 0);
     Hu3DMotionTimeSet(modelId, 0.0f);
-    func_8001C814_main(modelId, 1, 1);
+    Hu3DMotionAttrSet(modelId, 1, 1);
     func_80108AE0_modesel(&D_80110BE8_modesel.pos, &D_80110BE8_modesel.at, &D_80110BE8_modesel.up);
     return omAddPrcObj(func_801088AC_modesel, 0x5000, 0x2000, 0);
 }
@@ -2248,7 +2248,7 @@ s32 func_8010BA70_modesel(void) {
     func_8010DFD0_modesel(cur);
     omDelPrcObj(D_80110BE0_modesel);
     D_80110BE0_modesel = func_8010899C_modesel();
-    func_80013350_main(0);
+    Hu3DCameraMotionOff(0);
     func_80109188_modesel(cur, 7);
     while (1) {
         buttons = D_800D5558_main[0];
@@ -2314,10 +2314,10 @@ s32 func_8010BA70_modesel(void) {
             }
             HuPrcSleep(20);
             modelId = func_8010648C_modesel(12);
-            func_80013320_main(modelId, 0);
+            Hu3DCameraMotionSet(modelId, 0);
             Hu3DMotionTimeSet(modelId, 2.0f);
             Hu3DMotionSpeedSet(modelId, 0.7f);
-            func_8001C814_main(modelId, 3, 0);
+            Hu3DMotionAttrSet(modelId, 3, 0);
             HuPrcSleep(20);
             HuAudFXPlay(0x2E1);
             func_80106830_modesel(3, 3);
@@ -2342,10 +2342,10 @@ s32 func_8010BA70_modesel(void) {
             }
             HuPrcSleep(20);
             modelId = func_8010648C_modesel(11);
-            func_80013320_main(modelId, 0);
+            Hu3DCameraMotionSet(modelId, 0);
             Hu3DMotionTimeSet(modelId, 0.0f);
             Hu3DMotionSpeedSet(modelId, 0.7f);
-            func_8001C814_main(modelId, 3, 0);
+            Hu3DMotionAttrSet(modelId, 3, 0);
             HuPrcSleep(50);
             func_8010ED00_modesel();
             break;
@@ -2379,10 +2379,10 @@ s32 func_8010BA70_modesel(void) {
             func_80109188_modesel(-1, 20);
             HuPrcSleep(20);
             modelId = func_8010648C_modesel(11);
-            func_80013320_main(modelId, 0);
+            Hu3DCameraMotionSet(modelId, 0);
             Hu3DMotionTimeSet(modelId, 0.0f);
             Hu3DMotionSpeedSet(modelId, 0.7f);
-            func_8001C814_main(modelId, 3, 0);
+            Hu3DMotionAttrSet(modelId, 3, 0);
             HuPrcSleep(50);
             func_8010ED00_modesel();
             break;
@@ -3540,7 +3540,7 @@ void func_8010E6D8_modesel(s32 arg0) {
 
 void func_8010E790_modesel(Process *arg0) {
     omDelPrcObj(arg0);
-    func_80013350_main(0);
+    Hu3DCameraMotionOff(0);
 }
 
 void func_8010E7B4_modesel(void) {
@@ -3714,7 +3714,7 @@ void func_8010ED3C_modesel(void) {
     func_801060F4_modesel(2, 256);
     func_801060F4_modesel(3, 128);
     func_80106BA0_modesel(1, 0x5F01, 0, 16, 304, 208, 0);
-    func_8005C154_main(D_80110998_modesel[1][0], 64, 64, 64);
+    HuWinMesDefColSet(D_80110998_modesel[1][0], 64, 64, 64);
     HuWinMesPalSet(D_80110998_modesel[1][0], 4, 0, 255, 0);
     HuWinMesPalSet(D_80110998_modesel[1][0], 6, 255, 255, 128);
     while (1) {

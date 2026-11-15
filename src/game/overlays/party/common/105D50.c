@@ -286,7 +286,7 @@ void func_800F26E8_shared_board(void) {
 
     for (i = 1; i < 8; i++) {
         for (j = 0; j < D_80101634_shared_board[0]; j++) {
-            D_80101734_shared_board[i][j + 1] = func_80017BB8_main(i, D_80101634_shared_board[j + 1]);
+            D_80101734_shared_board[i][j + 1] = CharMotionDataNumGet(i, D_80101634_shared_board[j + 1]);
         }
     }
 }

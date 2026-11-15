@@ -173,10 +173,10 @@ void func_801059A0_dorrie_dip(void) {
     omObjData *obj;
 
     omInitObjMan(30, 10);
-    func_8001FE20_main(16);
-    func_80021BE0_main(&D_800EBEB0_minigame, 0x40);
-    func_800142A0_main(0x40);
-    func_8004A208_main();
+    MapCollInit(16);
+    Hu3DQuadPoolInit(&D_800EBEB0_minigame, 0x40);
+    Hu3DSprModelInit(0x40);
+    omGameSysInit();
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutView);
     omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     func_80105B44_dorrie_dip(500.0f, 345.0f, 0.0f, 0.0f, 0.0f, 190.0f, 0.0f);
@@ -204,8 +204,8 @@ void func_801059A0_dorrie_dip(void) {
 }
 
 void func_80105B44_dorrie_dip(f32 zoom, f32 rotX, f32 rotY, f32 rotZ, f32 centerX, f32 centerY, f32 centerZ) {
-    func_8000B5F0_main(1);
-    D_8010A1F4_dorrie_dip = func_8000B638_main();
+    CamSetupInit(1);
+    D_8010A1F4_dorrie_dip = CamSetupMapCullAdd();
     ScissorSet(D_8010A1F4_dorrie_dip, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(D_8010A1F4_dorrie_dip, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     CZoom = zoom;
@@ -297,7 +297,7 @@ void func_80105C7C_dorrie_dip(omObjData *obj) {
 }
 
 void func_80105FD0_dorrie_dip(omObjData *obj) {
-    func_8004AB0C_main(30);
+    HuAudFXAllFadeOut(30);
     if (WipeStatGet() == 0) {
         HuWinAllKill();
         GMesClose();
@@ -322,7 +322,7 @@ void func_8010601C_dorrie_dip(void) {
         dips->unk18[i] = i * 60.0f;
         dips->unk30[i] = 0;
         if (i == 0) {
-            obj->model[i] = func_8000B108_main(0x5F0002, modelFlags);
+            obj->model[i] = Hu3DModelRead(0x5F0002, modelFlags);
             omSetRot(obj, 0.0f, dips->unk18[i], 0.0f);
         } else {
             obj->model[i] = Hu3DModelLink(obj->model[0]);
@@ -331,13 +331,13 @@ void func_8010601C_dorrie_dip(void) {
     }
     for (i = 0; i < 6; i++) {
         if (i == 0) {
-            obj->model[i + 6] = func_8000B108_main(0x5F000B, splashFlags);
+            obj->model[i + 6] = Hu3DModelRead(0x5F000B, splashFlags);
             Hu3DModelRotSet(obj->model[i + 6], 0.0f, 0.0f, 0.0f);
         } else {
             obj->model[i + 6] = Hu3DModelLink(obj->model[6]);
             Hu3DModelRotSet(obj->model[i + 6], 0.0f, 0.0f, 0.0f);
         }
-        func_8001C814_main(obj->model[i + 6], 2, 2);
+        Hu3DMotionAttrSet(obj->model[i + 6], 2, 2);
     }
 }
 
@@ -375,8 +375,8 @@ void func_80106210_dorrie_dip(omObjData *obj) {
                 dips->unk30[i] = 4.8f;
             }
             if (dips->unk30[i] >= 4.0f && dips->unk30[i] < 4.2f) {
-                func_8001C258_main(D_8010A230_dorrie_dip->model[i + 6], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-                func_8001C814_main(D_8010A230_dorrie_dip->model[i + 6], 2, 2);
+                Hu3DModelAttrSet(D_8010A230_dorrie_dip->model[i + 6], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                Hu3DMotionAttrSet(D_8010A230_dorrie_dip->model[i + 6], 2, 2);
             }
         }
     }
@@ -399,14 +399,14 @@ void func_80106538_dorrie_dip(void) {
     obj->data = HuMemAllocTag(sizeof(DorrieDipDorrie), TAG_OVERLAY);
     D_8010A238_dorrie_dip = obj;
     data = obj->data;
-    obj->model[0] = func_8000B108_main(0x5F0005, 0x699);
-    func_8000B460_main(obj, 0, 0x5F0006);
-    func_8000B460_main(obj, 1, 0x5F0007);
-    func_8000B460_main(obj, 2, 0x5F0008);
-    func_8000B460_main(obj, 3, 0x5F0009);
-    func_8000B460_main(obj, 4, 0x5F000A);
-    func_8001C5B4_main(obj->model[0], obj->motion[0]);
-    func_8001C814_main(obj->model[0], 2, 2);
+    obj->model[0] = Hu3DModelRead(0x5F0005, 0x699);
+    omObjMotionRead(obj, 0, 0x5F0006);
+    omObjMotionRead(obj, 1, 0x5F0007);
+    omObjMotionRead(obj, 2, 0x5F0008);
+    omObjMotionRead(obj, 3, 0x5F0009);
+    omObjMotionRead(obj, 4, 0x5F000A);
+    Hu3DMotionModelSet(obj->model[0], obj->motion[0]);
+    Hu3DMotionAttrSet(obj->model[0], 2, 2);
     data->flags = 0;
     data->grabTimer = 0;
     D_8010A220_dorrie_dip = -1;
@@ -426,7 +426,7 @@ void func_80106668_dorrie_dip(omObjData *obj) {
     if ((data->flags & 2) && Hu3DData[obj->model[0]].motTime == 50.0f &&
         data->hookPos.y < 20.0f && D_8010A220_dorrie_dip == -1 && data->grabTimer < 15) {
         if (data->grabTimer == 0) {
-            func_8001C814_main(obj->model[0], 8, 8);
+            Hu3DMotionAttrSet(obj->model[0], 8, 8);
         }
         for (i = 0; i < 6; i++) {
             if (dips->unk18[i] >= 265.0f && dips->unk18[i] < 275.0f) {
@@ -437,10 +437,10 @@ void func_80106668_dorrie_dip(omObjData *obj) {
         }
         if (D_8010A220_dorrie_dip != -1) {
             Hu3DModelHookSet(D_8010A230_dorrie_dip->model[D_8010A220_dorrie_dip], obj->model[0], "item_hook");
-            func_8001C258_main(D_8010A230_dorrie_dip->model[D_8010A220_dorrie_dip], 0x4000, 0x4000);
-            func_8001C258_main(D_8010A230_dorrie_dip->model[D_8010A220_dorrie_dip + 6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(D_8010A230_dorrie_dip->model[D_8010A220_dorrie_dip], 0x4000, 0x4000);
+            Hu3DModelAttrSet(D_8010A230_dorrie_dip->model[D_8010A220_dorrie_dip + 6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             dips->unk00[D_8010A220_dorrie_dip] &= ~1;
-            func_8001C814_main(obj->model[0], 8, 0);
+            Hu3DMotionAttrSet(obj->model[0], 8, 0);
             if (D_8010A220_dorrie_dip == D_8010A200_dorrie_dip) {
                 item->unk14 |= 4;
             } else {
@@ -456,7 +456,7 @@ void func_80106668_dorrie_dip(omObjData *obj) {
         }
         data->grabTimer++;
         if (data->grabTimer == 15) {
-            func_8001C814_main(obj->model[0], 8, 0);
+            Hu3DMotionAttrSet(obj->model[0], 8, 0);
         }
     }
     if (data->flags & 4) {
@@ -467,11 +467,11 @@ void func_80106668_dorrie_dip(omObjData *obj) {
         if (time >= D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02) {
             data->flags &= ~4;
             Hu3DMotionShiftSet(obj->model[0], Hu3DData[D_8010A238_dorrie_dip->motion[0]].motId, 0, 10, 0);
-            func_8001C814_main(obj->model[0], 2, 2);
+            Hu3DMotionAttrSet(obj->model[0], 2, 2);
         }
         if (Hu3DData[obj->model[0]].motTime == 50.0f) {
-            func_8001C814_main(D_8010A224_dorrie_dip[0]->model[1], 8, 0);
-            func_8001C814_main(D_8010A224_dorrie_dip[0]->model[1], 2, 2);
+            Hu3DMotionAttrSet(D_8010A224_dorrie_dip[0]->model[1], 8, 0);
+            Hu3DMotionAttrSet(D_8010A224_dorrie_dip[0]->model[1], 2, 2);
             func_8010971C_dorrie_dip();
             func_801064FC_dorrie_dip();
             for (i = 0; i < 6; i++) {
@@ -499,7 +499,7 @@ void func_80106BEC_dorrie_dip(void) {
         HuPrcVSleep();
     }
     Hu3DMotionShiftSet(D_8010A238_dorrie_dip->model[0], Hu3DData[D_8010A238_dorrie_dip->motion[0]].motId, 0, 10, 0);
-    func_8001C814_main(D_8010A238_dorrie_dip->model[0], 2, 2);
+    Hu3DMotionAttrSet(D_8010A238_dorrie_dip->model[0], 2, 2);
     data->flags &= ~2;
     MgFlowStatSet(MG_STATE_FINISH);
     omDelPrcObj(NULL);
@@ -544,20 +544,20 @@ void func_80106E14_dorrie_dip(omObjData *obj, s32 playerIdx) {
     motion = D_800A178C_main[character][3];
     func_800E1BA8_minigame(obj, model, motion, playerIdx, 0x20A99, 0x20A99);
     data = obj->data;
-    obj->model[3] = func_8000B108_main(3, 0x6DD);
-    obj->model[4] = func_8000B108_main(4, 0x6DD);
-    obj->model[6] = func_8000B108_main(5, 0x6DD);
-    obj->model[5] = func_8000B108_main(6, 0x6DD);
-    obj->model[7] = func_8000B108_main(8, 0x6DD);
-    obj->model[8] = func_8000B108_main(7, 0x6DD);
-    func_800E5A00_minigame(obj, 0, func_80017BB8_main(character, (s16)motion0[character]), 1, 0);
-    func_800E5A00_minigame(obj, 6, func_80017BB8_main(character, (s16)motion1[character]), 1, 19);
-    func_800E5A00_minigame(obj, 21, func_80017BB8_main(character, (s16)motion2[character]), 0, 0);
-    func_800E5A00_minigame(obj, 14, func_80017BB8_main(character, (s16)motion3[character]), 1, 120);
-    func_800E5A00_minigame(obj, 13, func_80017BB8_main(character, (s16)motion4[character]), 1, 120);
-    func_800E5A00_minigame(obj, 18, func_80017BB8_main(character, (s16)motion5[character]), 2, 0);
-    func_800E5A00_minigame(obj, 8, func_80017BB8_main(character, (s16)motion6[character]), 1, 29);
-    func_800E5A00_minigame(obj, 38, func_80017BB8_main(character, (s16)motion7[character]), 0, 0);
+    obj->model[3] = Hu3DModelRead(3, 0x6DD);
+    obj->model[4] = Hu3DModelRead(4, 0x6DD);
+    obj->model[6] = Hu3DModelRead(5, 0x6DD);
+    obj->model[5] = Hu3DModelRead(6, 0x6DD);
+    obj->model[7] = Hu3DModelRead(8, 0x6DD);
+    obj->model[8] = Hu3DModelRead(7, 0x6DD);
+    func_800E5A00_minigame(obj, 0, CharMotionDataNumGet(character, (s16)motion0[character]), 1, 0);
+    func_800E5A00_minigame(obj, 6, CharMotionDataNumGet(character, (s16)motion1[character]), 1, 19);
+    func_800E5A00_minigame(obj, 21, CharMotionDataNumGet(character, (s16)motion2[character]), 0, 0);
+    func_800E5A00_minigame(obj, 14, CharMotionDataNumGet(character, (s16)motion3[character]), 1, 120);
+    func_800E5A00_minigame(obj, 13, CharMotionDataNumGet(character, (s16)motion4[character]), 1, 120);
+    func_800E5A00_minigame(obj, 18, CharMotionDataNumGet(character, (s16)motion5[character]), 2, 0);
+    func_800E5A00_minigame(obj, 8, CharMotionDataNumGet(character, (s16)motion6[character]), 1, 29);
+    func_800E5A00_minigame(obj, 38, CharMotionDataNumGet(character, (s16)motion7[character]), 0, 0);
     omSetTra(obj, 50.0f, 133.0f, 0.0f);
     data->unk3C = 270.0f;
     func_800E149C_minigame(obj, 0, 2);
@@ -655,7 +655,7 @@ void func_80107690_dorrie_dip(void) {
         sprite = Hu3DSprModelCreate(spriteData, 0xA99, 8);
         DataClose(spriteData);
         obj->model[itemIdx] = D_800CBB60_main[sprite].modelId;
-        func_8001C2FC_main(obj->model[itemIdx], 0x70000000, 0x70000000);
+        Hu3DModelObjAttrSet(obj->model[itemIdx], 0x70000000, 0x70000000);
         splashes->posX[itemIdx] = sindf(dips->unk18[i]) * 450.0f;
         splashes->posY[itemIdx] = 1500.0f;
         splashes->posZ[itemIdx] = cosdf(dips->unk18[i]) * 450.0f;
@@ -672,7 +672,7 @@ void func_80107690_dorrie_dip(void) {
         }
         splashes->flags[itemIdx] = 0;
         if (itemIdx == 0) {
-            obj->model[itemIdx + 5] = func_8000B108_main(9, 0x4A9);
+            obj->model[itemIdx + 5] = Hu3DModelRead(9, 0x4A9);
         } else {
             obj->model[itemIdx + 5] = Hu3DModelLink(obj->model[5]);
         }
@@ -725,7 +725,7 @@ void func_801079D4_dorrie_dip(omObjData *obj) {
             if (splashes->unk78[i] >= 360.0f) {
                 splashes->unk78[i] -= 360.0f;
             }
-            func_8000CFA4_main(D_8010A1FA_dorrie_dip, splashes->posX[i], splashes->posY[i], splashes->posZ[i]);
+            EffectPosSet(D_8010A1FA_dorrie_dip, splashes->posX[i], splashes->posY[i], splashes->posZ[i]);
         }
     }
 }
@@ -751,12 +751,12 @@ void func_80107D58_dorrie_dip(void) {
     D_8010A234_dorrie_dip = obj;
     data = obj->data;
     dips = D_8010A230_dorrie_dip->data;
-    obj->model[0] = func_8000B108_main(0xA00EE, 0x4B9);
-    obj->model[1] = func_8000B108_main(9, 0x4A9);
-    func_8000B460_main(obj, 0, 0xA00EF);
-    func_8000B460_main(obj, 1, 0xA00F6);
-    func_8000B460_main(obj, 2, 0xA00F1);
-    func_8001C814_main(obj->model[0], 2, 2);
+    obj->model[0] = Hu3DModelRead(0xA00EE, 0x4B9);
+    obj->model[1] = Hu3DModelRead(9, 0x4A9);
+    omObjMotionRead(obj, 0, 0xA00EF);
+    omObjMotionRead(obj, 1, 0xA00F6);
+    omObjMotionRead(obj, 2, 0xA00F1);
+    Hu3DMotionAttrSet(obj->model[0], 2, 2);
     data->pos.x = sindf(dips->unk18[D_8010A200_dorrie_dip]) * 450.0f;
     data->pos.y = 1500.0f;
     data->pos.z = cosdf(dips->unk18[D_8010A200_dorrie_dip]) * 450.0f;
@@ -842,15 +842,15 @@ void func_801081D4_dorrie_dip(void) {
             }
             HuPrcVSleep();
         }
-        func_8001C5B4_main(D_8010A234_dorrie_dip->model[0], D_8010A234_dorrie_dip->motion[1]);
-        func_8001C814_main(D_8010A234_dorrie_dip->model[0], 2, 2);
+        Hu3DMotionModelSet(D_8010A234_dorrie_dip->model[0], D_8010A234_dorrie_dip->motion[1]);
+        Hu3DMotionAttrSet(D_8010A234_dorrie_dip->model[0], 2, 2);
         HuAudFXPlay(0x4E2);
         omDelPrcObj(NULL);
     }
     radius = 450.0f;
     velY = 90.0f;
     data->unk10 = dips->unk18[D_8010A200_dorrie_dip];
-    func_8001C5B4_main(D_8010A234_dorrie_dip->model[0], D_8010A234_dorrie_dip->motion[1]);
+    Hu3DMotionModelSet(D_8010A234_dorrie_dip->model[0], D_8010A234_dorrie_dip->motion[1]);
     landed = 0;
     while (radius < 1050.0f) {
         data->pos.x = radius * sindf(dips->unk18[D_8010A200_dorrie_dip]);
@@ -861,8 +861,8 @@ void func_801081D4_dorrie_dip(void) {
             data->pos.y = 80.0f;
             if (landed == 0) {
                 landed = 1;
-                func_8001C5B4_main(D_8010A234_dorrie_dip->model[0], D_8010A234_dorrie_dip->motion[2]);
-                func_8001C814_main(D_8010A234_dorrie_dip->model[0], 2, 2);
+                Hu3DMotionModelSet(D_8010A234_dorrie_dip->model[0], D_8010A234_dorrie_dip->motion[2]);
+                Hu3DMotionAttrSet(D_8010A234_dorrie_dip->model[0], 2, 2);
             }
         }
         data->pos.z = radius * cosdf(dips->unk18[D_8010A200_dorrie_dip]);
@@ -883,12 +883,12 @@ void func_80108484_dorrie_dip(void) {
 
     for (i = 0; i < 6; i++) {
         dips->unk00[i] &= ~1;
-        func_8001C258_main(D_8010A230_dorrie_dip->model[i + 6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(D_8010A230_dorrie_dip->model[i + 6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         if (i != D_8010A200_dorrie_dip) {
             func_80108EA0_dorrie_dip(i);
         }
     }
-    func_8001C814_main(D_8010A224_dorrie_dip[0]->model[1], 1, 1);
+    Hu3DMotionAttrSet(D_8010A224_dorrie_dip[0]->model[1], 1, 1);
     func_801096F0_dorrie_dip();
     data->unk14 &= ~2;
     rotStep = (data->unk10 >= 180.0) ? 9.0f : -9.0f;
@@ -902,8 +902,8 @@ void func_80108484_dorrie_dip(void) {
         }
         HuPrcVSleep();
     }
-    func_8001C5B4_main(D_8010A234_dorrie_dip->model[0], D_8010A234_dorrie_dip->motion[1]);
-    func_8001C814_main(D_8010A234_dorrie_dip->model[0], 2, 2);
+    Hu3DMotionModelSet(D_8010A234_dorrie_dip->model[0], D_8010A234_dorrie_dip->motion[1]);
+    Hu3DMotionAttrSet(D_8010A234_dorrie_dip->model[0], 2, 2);
     omDelPrcObj(NULL);
 }
 
@@ -936,7 +936,7 @@ void func_8010872C_dorrie_dip(void) {
             frames = 30;
             seconds--;
         }
-        func_8003F578_main(seconds);
+        GMesTimerValueSet(seconds);
         HuPrcVSleep();
         if (MgFlowStatGet() == MG_STATE_FINISH) {
             break;
@@ -946,7 +946,7 @@ void func_8010872C_dorrie_dip(void) {
         D_8010A1F8_dorrie_dip = 2;
         MgFlowStatSet(MG_STATE_FINISH);
     }
-    func_8003F5C0_main();
+    GMesTimerEnd();
     omDelPrcObj(NULL);
 }
 
@@ -958,10 +958,10 @@ void func_80108800_dorrie_dip(void) {
     D_8010A224_dorrie_dip[0] = obj;
     data = HuMemAllocTag(sizeof(DorrieDipBackground), TAG_OVERLAY);
     obj->data = data;
-    obj->model[0] = func_8000B0A0_main(0x5F0000, 0x699);
-    obj->model[1] = func_8000B0A0_main(0x5F0001, 0x699);
-    obj->model[2] = func_8000B0A0_main(0x5F0003, 0x699);
-    obj->model[3] = func_8000B0A0_main(0x5F0004, 0x699);
+    obj->model[0] = Hu3DModelRead2(0x5F0000, 0x699);
+    obj->model[1] = Hu3DModelRead2(0x5F0001, 0x699);
+    obj->model[2] = Hu3DModelRead2(0x5F0003, 0x699);
+    obj->model[3] = Hu3DModelRead2(0x5F0004, 0x699);
     D_8010A1F0_dorrie_dip = 1.0f;
     obj->trans.x = 0;
     obj->trans.y = 0;
@@ -973,8 +973,8 @@ void func_80108800_dorrie_dip(void) {
     data->unk08 = 0.5f;
     data->unk04 = 0;
     func_800E1370_minigame(obj, 2, 133.0f);
-    func_8001C814_main(obj->model[1], 8, 8);
-    func_8001C814_main(obj->model[1], 2, 2);
+    Hu3DMotionAttrSet(obj->model[1], 8, 8);
+    Hu3DMotionAttrSet(obj->model[1], 2, 2);
     omSetTra(obj, 0.0f, 13.0f, 0.0f);
     D_8010A244_dorrie_dip = 0;
 }
@@ -995,12 +995,12 @@ void func_80108A74_dorrie_dip(s16 model, char *hook, s16 time, Vec *pos) {
     HuMtx4F hookTransform;
     HmfModel *modelData;
 
-    func_80016B00_main(model, time, hook, &hookTransform);
+    Hu3DModelObjMtxFrameGet(model, time, hook, &hookTransform);
     modelData = &Hu3DData[model];
     func_80088800_main(transform, modelData->pos.x, modelData->pos.y, modelData->pos.z);
     mtxRotCat(transform, modelData->rot.x, modelData->rot.y, modelData->rot.z);
     mtxScaleCat(transform, modelData->scale.x, modelData->scale.y, modelData->scale.z);
-    func_80018044_main(hookTransform, transform, result);
+    mtxCat(hookTransform, transform, result);
     pos->x = result[0][0] + result[1][0] + result[2][0] + result[3][0];
     pos->y = result[0][1] + result[1][1] + result[2][1] + result[3][1];
     pos->z = result[0][2] + result[1][2] + result[2][2] + result[3][2];
@@ -1018,7 +1018,7 @@ void func_80108B98_dorrie_dip(void) {
     data = obj->data;
     for (i = 0; i < 6; i++) {
         if (i == 0) {
-            obj->model[i] = func_8000B108_main(0x5D0008, flags);
+            obj->model[i] = Hu3DModelRead(0x5D0008, flags);
         } else {
             obj->model[i] = Hu3DModelLink(obj->model[0]);
         }
@@ -1049,7 +1049,7 @@ void func_80108C6C_dorrie_dip(omObjData *obj) {
         }
         if ((data->flags[i] & 1) &&
             Hu3DData[obj->model[i]].motTime >= D_800CCF58_main[Hu3DData[obj->model[i]].motId].unk02) {
-            func_8001C258_main(obj->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(obj->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             data->flags[i] &= ~1;
         }
     }
@@ -1064,8 +1064,8 @@ void func_80108EA0_dorrie_dip(s32 dipIdx) {
     DorrieDipSplashes *splashes = D_8010A23C_dorrie_dip->data;
     DorrieDipDorrie *dorrie = D_8010A238_dorrie_dip->data;
 
-    func_8001C258_main(D_8010A230_dorrie_dip->model[dipIdx], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    func_8001C258_main(D_8010A230_dorrie_dip->model[dipIdx + 6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(D_8010A230_dorrie_dip->model[dipIdx], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(D_8010A230_dorrie_dip->model[dipIdx + 6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     splashIdx = -1;
     for (i = 0; i < 5; i++) {
         if (splashes->playerIdx[i] == dipIdx) {
@@ -1074,9 +1074,9 @@ void func_80108EA0_dorrie_dip(s32 dipIdx) {
     }
     if (splashIdx != -1) {
         if (dipIdx != D_8010A220_dorrie_dip) {
-            func_8001C258_main(D_8010A23C_dorrie_dip->model[splashIdx], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(D_8010A23C_dorrie_dip->model[splashIdx], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         }
-        func_8001C258_main(D_8010A23C_dorrie_dip->model[splashIdx + 5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(D_8010A23C_dorrie_dip->model[splashIdx + 5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
     x = sindf(dips->unk18[dipIdx]) * 450.0f;
     z = cosdf(dips->unk18[dipIdx]) * 450.0f;
@@ -1090,8 +1090,8 @@ void func_80108EA0_dorrie_dip(s32 dipIdx) {
     }
     dips->unk00[dipIdx] &= ~1;
     effects->flags[dipIdx] |= 1;
-    func_8001C258_main(D_8010A248_dorrie_dip->model[dipIdx], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-    func_8001C814_main(D_8010A224_dorrie_dip[0]->model[1], 1, 1);
+    Hu3DModelAttrSet(D_8010A248_dorrie_dip->model[dipIdx], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DMotionAttrSet(D_8010A224_dorrie_dip[0]->model[1], 1, 1);
 }
 
 void func_801090C4_dorrie_dip(void) {
@@ -1110,7 +1110,7 @@ void func_801090F0_dorrie_dip(void) {
     if (D_8010A220_dorrie_dip != -1 && D_8010A208_dorrie_dip[D_8010A220_dorrie_dip] != 17) {
         func_800E5798_minigame(D_800EC598_minigame[0], 13);
         Hu3DMotionShiftSet(D_8010A238_dorrie_dip->model[0], Hu3DData[D_8010A238_dorrie_dip->motion[4]].motId, 0, 10, 0);
-        func_80045ED0_main(D_800A178C_main[GwPlayer[data->unk59].chr][0] | 0x35);
+        HuAudCharVoicePlay(D_800A178C_main[GwPlayer[data->unk59].chr][0] | 0x35);
         for (i = 0; i < 60; i++) {
             HuPrcVSleep();
         }
@@ -1138,7 +1138,7 @@ void func_8010930C_dorrie_dip(void) {
     HuAudFXPlay(25);
     splashes = D_8010A23C_dorrie_dip->data;
     dorrie = D_8010A238_dorrie_dip->data;
-    D_8010A1FA_dorrie_dip = func_8000CED8_main(0xB0004, 0x6A9);
+    D_8010A1FA_dorrie_dip = EffectCreate(0xB0004, 0x6A9);
     splashIdx = -1;
     for (i = 0; i < 5; i++) {
         if (splashes->playerIdx[i] == D_8010A220_dorrie_dip) {
@@ -1181,7 +1181,7 @@ void func_80109520_dorrie_dip(void) {
     data = obj->data;
     for (i = 0; i < 9; i++) {
         if (i == 0) {
-            obj->model[i] = func_8000B108_main(0x5F000C, flags);
+            obj->model[i] = Hu3DModelRead(0x5F000C, flags);
         } else {
             obj->model[i] = Hu3DModelLink(obj->model[0]);
         }
@@ -1196,7 +1196,7 @@ void func_801095FC_dorrie_dip(omObjData *obj) {
 
     for (i = 0; i < 9; i++) {
         if ((data[i] & 1) && Hu3DData[obj->model[i]].motTime >= D_800CCF58_main[Hu3DData[obj->model[i]].motId].unk02) {
-            func_8001C258_main(obj->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(obj->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             data[i] &= ~1;
         }
     }
@@ -1239,7 +1239,7 @@ void func_80109738_dorrie_dip(void) {
                 } else {
                     Hu3DModelPosSet(D_8010A24C_dorrie_dip->model[effectIdx], x, 0.0f, z);
                 }
-                func_8001C258_main(D_8010A24C_dorrie_dip->model[effectIdx], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                Hu3DModelAttrSet(D_8010A24C_dorrie_dip->model[effectIdx], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 Hu3DMotionTimeSet(D_8010A24C_dorrie_dip->model[effectIdx], 0.0f);
             }
         }
@@ -1310,7 +1310,7 @@ void func_80109B28_dorrie_dip(void) {
     data = obj->data;
     for (i = 0; i < 6; i++) {
         if (i == 0) {
-            obj->model[i] = func_8000B108_main(0x5F000D, flags);
+            obj->model[i] = Hu3DModelRead(0x5F000D, flags);
         } else {
             obj->model[i] = Hu3DModelLink(obj->model[0]);
         }
@@ -1337,7 +1337,7 @@ void func_80109C14_dorrie_dip(omObjData *obj) {
         if (data->flags[i] & 1) {
             data->scaleX[i] = (4.8f - dips->unk30[i]) / 4.8f;
             if (data->scaleX[i] == 0.0f) {
-                func_8001C258_main(obj->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(obj->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 data->flags[i] &= ~1;
             }
         }
@@ -1355,8 +1355,8 @@ void func_80109E1C_dorrie_dip(s32 dipIdx) {
     data->posX[dipIdx] = sindf(dips->unk18[dipIdx]) * 450.0f;
     data->posY[dipIdx] = D_8010A22C_dorrie_dip;
     data->posZ[dipIdx] = cosdf(dips->unk18[dipIdx]) * 450.0f;
-    func_8001C258_main(D_8010A260_dorrie_dip->model[dipIdx], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-    func_8001C814_main(D_8010A260_dorrie_dip->model[dipIdx], 2, 2);
+    Hu3DModelAttrSet(D_8010A260_dorrie_dip->model[dipIdx], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DMotionAttrSet(D_8010A260_dorrie_dip->model[dipIdx], 2, 2);
 }
 
 void func_80109F00_dorrie_dip(void) {

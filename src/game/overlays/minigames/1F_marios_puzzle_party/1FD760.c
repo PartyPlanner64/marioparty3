@@ -57,7 +57,7 @@ void func_8010F570_marios_puzzle_party(s16 blockCount) {
     }
     D_801168C4_marios_puzzle_party = omAddObj(0x7D0, 0, 0, -1, func_8010F810_marios_puzzle_party);
     omSetStatBit(D_801168C4_marios_puzzle_party, 0xA0);
-    D_801168B6_marios_puzzle_party = func_8001A894_main(0, D_801168B8_marios_puzzle_party[D_800D2008_main], 2);
+    D_801168B6_marios_puzzle_party = Hu3DModelDLCreate(0, D_801168B8_marios_puzzle_party[D_800D2008_main], 2);
 }
 
 void func_8010F678_marios_puzzle_party(s32 spriteData, s16 count) {

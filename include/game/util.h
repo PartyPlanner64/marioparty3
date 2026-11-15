@@ -7,20 +7,20 @@
 
 #define rand16() ((rand8() << 8) | rand8())
 
-u16 func_8000B108_main(s32 arg0, s32 arg1);
+u16 Hu3DModelRead(s32 arg0, s32 arg1);
 u16 SprModelRead(s32 arg0, s32 arg1, s32 arg2);
-s16 func_8000B13C_main(s32 arg0);
+s16 Hu3DMotionModelRead(s32 arg0);
 u8 rand8(void);
 void ScissorSet(u8 camIndex, f32 arg1, f32 arg2, f32 arg3, f32 arg4);
 void ViewportSet(u8 camIndex, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6);
-void func_8000B460_main(omObjData *, u16, s32);
+void omObjMotionRead(omObjData *, u16, s32);
 
-u16 func_8000B0A0_main(s32 arg0, s32 arg1);
-u16 func_8000B0D4_main(s32 arg0, s32 arg1);
-void func_8000B1A0_main(s32 arg0, u8 sectionFlags);
+u16 Hu3DModelRead2(s32 arg0, s32 arg1);
+u16 Hu3DModelRead3(s32 arg0, s32 arg1);
+void OvlModeLoad(s32 arg0, u8 sectionFlags);
 void OvlLoad(s32 overlayIndex);
-s8 func_8000B4B4_main(void);
+s8 PadNextIndexGet(void);
 s16 Hu3DAnimRead(HmfData* arg0, s32 arg1, char* arg2);
-s16 func_8000B5BC_main(s32 arg0);
+s16 Hu3DModelReadNum(s32 arg0);
 
 #endif //_GAME_UTIL_H

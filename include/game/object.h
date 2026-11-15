@@ -78,7 +78,7 @@ typedef struct UnkomOvl {
 } UnkomOvl;
 
 #ifndef NO_EXTERN_VARIABLES
-extern UnkomOvl D_800A1920_main[128]; // per-overlay arguments for func_8004A468_main
+extern UnkomOvl D_800A1920_main[128]; // per-overlay arguments for omHu3DParamSet
 
 extern s16 omovlevtno;
 extern s32 omprevovl;
@@ -101,7 +101,7 @@ s32 omDelPrcObj(Process*);
 s32 omOvlCallEx(s32 ovlID, s16 event, u16 stat);
 void omMain(void);
 u16 omPauseChk(void);
-void func_8004A208_main(void);
+void omGameSysInit(void);
 void omPrcSetStatBit(Process* prc, s32 stat);
 void omOvlGotoEx(s32 ovlID, s16 event, u16 stat);
 void omOvlHisChg(s16 level, s32 overlay, s16 event, s16 stat);
@@ -116,7 +116,7 @@ void omDelObj(omObjData*);
 
 void omOutView(omObjData* object);
 void omOutViewMulti(omObjData* object);
-void func_8004B760_main(s32 priority, s16 spriteGroup, void (*draw)(struct CameraViewData *), f32 fov, Vec *pos, Vec *at);
+void omCameraViewCreate(s32 priority, s16 spriteGroup, void (*draw)(struct CameraViewData *), f32 fov, Vec *pos, Vec *at);
 
 #ifndef NO_EXTERN_VARIABLES
 extern f32 CZoomM[];
@@ -137,29 +137,29 @@ void omMakeGroup(u16 group, u16 max_objs);
 void omAddMember(u16 group, omObjData *obj);
 void omDelMember(omObjData *obj);
 omObjData **omGetGroupMemberList(s16 arg0);
-omObjData *func_80047DD4_main(s16 arg0, u16 arg1);
-void func_80047DFC_main(s16 group, u32 stat);
-void func_80047E5C_main(s16 group, u16 idx, s32 flags);
-void func_80047E90_main(omObjData *obj, s32 arg1);
-Process *func_80047F50_main(process_func func, s32 priority, s32 stack_size, s32 extra_data_size, Process *parent);
+omObjData *omGetGroupMember(s16 arg0, u16 arg1);
+void omGroupModeSet(s16 group, u32 stat);
+void omGroupMemberModeSet(s16 group, u16 idx, s32 flags);
+void omObjModeSet(omObjData *obj, s32 arg1);
+Process *omAddChildPrcObj(process_func func, s32 priority, s32 stack_size, s32 extra_data_size, Process *parent);
 void omDestroyPrcObj(void);
 void omSystemKeyCheckSetup(void);
-void func_80048EE8_main(omObjData *object);
+void omDBGSystemKeyCheck(omObjData *object);
 void omSystemKeyCheck(omObjData *object);
 s32 omAllPause(void);
 void omAllUPause(void);
-void func_8004A354_main(omObjData *arg0);
-void func_8004A444_main(s32 arg0);
-void func_8004A468_main(u16 arg0, u16 arg1, u16 arg2);
-void func_8004A49C_main(void);
-void func_8004BC00_main(void);
-void func_8004C4C4_main(omObjData *object);
-void func_8004C76C_main(omObjData *object);
-void func_8004CB44_main(Vec *out, Vec *normal);
-void func_8004CD04_main(Vec *pos, Vec *at, f32 *zoom, Vec *rot, Vec *center);
-void func_8004CEA4_main(void);
-void func_8004CF00_main(omObjData *object);
-void func_8004CF30_main(void);
-void func_8004D094_main(omObjData *object);
+void omPracticeSprExec(omObjData *arg0);
+void omHu3DLayerNumSet(s32 arg0);
+void omHu3DParamSet(u16 arg0, u16 arg1, u16 arg2);
+void omModeOvlLoad(void);
+void omCameraViewGfxSetup(void);
+void omCameraViewExec(omObjData *object);
+void omCameraViewMultiExec(omObjData *object);
+void omCameraPosGet(Vec *out, Vec *normal);
+void omCameraLookAtToRot(Vec *pos, Vec *at, f32 *zoom, Vec *rot, Vec *center);
+void omSysTimerCreate(void);
+void omSysTimerExec(omObjData *object);
+void HuAudFadeObjCreate(void);
+void HuAudFadeObjExec(omObjData *object);
 
 #endif //_GAME_OBJECT_H

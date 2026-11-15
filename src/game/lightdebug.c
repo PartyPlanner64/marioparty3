@@ -45,10 +45,10 @@ void func_800465F4_main(s8 arg0) {
     D_800B23B1_main = arg0;
 }
 
-void func_80046600_main(void) {
+void LightDebugCreate(void) {
     LightObjWork *work;
 
-    D_800A1660_main = omAddObj(0x7FD0, 0, 0, -1, func_80046728_main);
+    D_800A1660_main = omAddObj(0x7FD0, 0, 0, -1, LightDebugExec);
     omSetStatBit(D_800A1660_main, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     work = OM_GET_WORK_PTR(D_800A1660_main, LightObjWork);
     work->halfwords[0] = printWin(14, 14, 306, 34, 0xDF70);
@@ -59,20 +59,20 @@ void func_80046600_main(void) {
     D_800A1669_main = 0;
 }
 
-void func_800466D8_main(void) {
+void LightDebugKill(void) {
     omObjData *lightObj = D_800A1660_main;
     LightObjWork *work;
 
     if (lightObj != NULL) {
         work = OM_GET_WORK_PTR(lightObj, LightObjWork);
-        func_8004DEC8_main(work->halfwords[0]);
-        func_8004DEC8_main(work->halfwords[4]);
+        pfWinKill(work->halfwords[0]);
+        pfWinKill(work->halfwords[4]);
         omDelObj(D_800A1660_main);
         D_800A1660_main = NULL;
     }
 }
 
-void func_80046728_main(omObjData *object) {
+void LightDebugExec(omObjData *object) {
     s16 *dirWin = &OM_GET_WORK_PTR(D_800A1660_main, LightObjWork)->halfwords[0];
     s16 *colorWin = &OM_GET_WORK_PTR(D_800A1660_main, LightObjWork)->halfwords[4];
     f32 x, y, z;

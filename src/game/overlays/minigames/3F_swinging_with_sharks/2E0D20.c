@@ -260,8 +260,8 @@ void func_801059A0_swinging_with_sharks(void) {
     s32 i;
 
     omInitObjMan(20, 10);
-    func_8004A208_main();
-    func_800142A0_main(20);
+    omGameSysInit();
+    Hu3DSprModelInit(20);
     Hu3DBGColorSet(0, 0xFF, 0);
     D_800CD280_main = 1;
     ScissorSet(0, 0.0f, 0.0f, 320.0f, 240.0f);
@@ -328,9 +328,9 @@ void func_801059A0_swinging_with_sharks(void) {
     func_80108C08_swinging_with_sharks(0.0f);
     func_80108DB0_swinging_with_sharks(&D_8010B9B8_swinging_with_sharks);
     D_8010B9E4_swinging_with_sharks = 0;
-    func_8001FA68_main(D_8010B8E0_swinging_with_sharks[31]);
-    func_8001C514_main(D_8010B8E0_swinging_with_sharks[31]);
-    func_80045010_main(D_8010B770_swinging_with_sharks, 1);
+    Hu3DModelTPLvlInit(D_8010B8E0_swinging_with_sharks[31]);
+    Hu3DModelDynamicFree(D_8010B8E0_swinging_with_sharks[31]);
+    GMesFontMesCreate(D_8010B770_swinging_with_sharks, 1);
     func_8010A41C_swinging_with_sharks();
     omAddPrcObj(func_80109950_swinging_with_sharks, 0x3F00, 0x2000, 0);
     omAddPrcObj(func_80109950_swinging_with_sharks, 0x3F00, 0x2000, 0);
@@ -361,9 +361,9 @@ void func_80105FE4_swinging_with_sharks(omObjData *object) {
         case 1:
             if (D_8010B9E2_swinging_with_sharks > 0) {
                 D_8010B9E2_swinging_with_sharks--;
-                func_8003F578_main(D_8010B9E2_swinging_with_sharks / 30);
+                GMesTimerValueSet(D_8010B9E2_swinging_with_sharks / 30);
                 if (D_8010B9E2_swinging_with_sharks == 0) {
-                    func_8003F5C0_main();
+                    GMesTimerEnd();
                     D_8010B9E4_swinging_with_sharks = 0;
                 }
             }
@@ -376,7 +376,7 @@ void func_80105FE4_swinging_with_sharks(omObjData *object) {
                 D_8010BAE2_swinging_with_sharks = 0;
             }
             if (++D_8010BAE2_swinging_with_sharks == 30) {
-                func_8004AEF0_main(D_8010B9E6_swinging_with_sharks, 30);
+                HuAudFXFadeOut(D_8010B9E6_swinging_with_sharks, 30);
             }
             if (GMesStatGet() == 0) {
                 D_8010B9E4_swinging_with_sharks++;
@@ -413,10 +413,10 @@ void func_80105FE4_swinging_with_sharks(omObjData *object) {
 
 void func_80106334_swinging_with_sharks(void) {
     Hu3DMotionSet(D_8010B8E0_swinging_with_sharks[32], D_8010B948_swinging_with_sharks[41]);
-    func_8001C814_main(D_8010B8E0_swinging_with_sharks[32], 1, 1);
+    Hu3DMotionAttrSet(D_8010B8E0_swinging_with_sharks[32], 1, 1);
     Hu3DMotionTimeSet(D_8010B8E0_swinging_with_sharks[32], 0.0f);
-    func_8001FA68_main(D_8010B8E0_swinging_with_sharks[33]);
-    func_8001C514_main(D_8010B8E0_swinging_with_sharks[33]);
+    Hu3DModelTPLvlInit(D_8010B8E0_swinging_with_sharks[33]);
+    Hu3DModelDynamicFree(D_8010B8E0_swinging_with_sharks[33]);
 }
 
 void func_80106398_swinging_with_sharks(omObjData *object) {
@@ -458,7 +458,7 @@ void func_80106398_swinging_with_sharks(omObjData *object) {
               345.0f < D_8010ACE8_swinging_with_sharks))) {
             HuAudFXPlay(0x4E9);
             if (D_8010B9E2_swinging_with_sharks != 0) {
-                func_8003F5C0_main();
+                GMesTimerEnd();
             }
             velY = pos.y - D_8010B9B8_swinging_with_sharks.y + 10.0f;
             y = pos.y;
@@ -513,12 +513,12 @@ void func_80106870_swinging_with_sharks(omObjData *object) {
         Hu3DMotionShiftSet(D_8010B8E0_swinging_with_sharks[47], D_8010B948_swinging_with_sharks[48], 0, 4, 2);
         Hu3DModelRotSet(D_8010B8E0_swinging_with_sharks[32], 0.0f, 90.0f, 0.0f);
         object->work[0] = 0;
-        func_8001C258_main(D_8010B8E0_swinging_with_sharks[29], 4, 0);
+        Hu3DModelAttrSet(D_8010B8E0_swinging_with_sharks[29], 4, 0);
         Hu3DModelPosSet(D_8010B8E0_swinging_with_sharks[29], D_8010B9C4_swinging_with_sharks.x, 0.0f,
                         D_8010B9C4_swinging_with_sharks.z);
         Hu3DMotionSpeedSet(D_8010B8E0_swinging_with_sharks[29], 0.5f);
         Hu3DModelScaleSet(D_8010B8E0_swinging_with_sharks[29], 3.0f, 3.0f, 3.0f);
-        func_8001C258_main(D_8010B8E0_swinging_with_sharks[30], 4, 0);
+        Hu3DModelAttrSet(D_8010B8E0_swinging_with_sharks[30], 4, 0);
         Hu3DModelPosSet(D_8010B8E0_swinging_with_sharks[30], D_8010B9C4_swinging_with_sharks.x, -30.0f,
                         D_8010B9C4_swinging_with_sharks.z + 50.0f);
         Hu3DModelScaleSet(D_8010B8E0_swinging_with_sharks[30], 2.0f, 2.0f, 2.0f);
@@ -537,13 +537,13 @@ void func_80106870_swinging_with_sharks(omObjData *object) {
                 } else if (x + 40.0f < D_8010B9C4_swinging_with_sharks.x || 35.0f < D_8010B9AC_swinging_with_sharks.x) {
                     Hu3DMotionShiftSet(D_8010B8E0_swinging_with_sharks[32], D_8010B948_swinging_with_sharks[37], 0, 4, 0);
                 } else {
-                    func_8001C814_main(D_8010B8E0_swinging_with_sharks[32], 4, 4);
+                    Hu3DMotionAttrSet(D_8010B8E0_swinging_with_sharks[32], 4, 4);
                 }
                 Hu3DModelRotSet(D_8010B8E0_swinging_with_sharks[32], 0.0f, 100.0f, 0.0f);
                 Hu3DModelPosSet(D_8010B8E0_swinging_with_sharks[32], D_8010B9C4_swinging_with_sharks.x, 50.0f,
                                 D_8010B9C4_swinging_with_sharks.z);
                 D_8010B9DE_swinging_with_sharks = i;
-                func_8001C258_main(D_8010B8E0_swinging_with_sharks[42], 4, 0);
+                Hu3DModelAttrSet(D_8010B8E0_swinging_with_sharks[42], 4, 0);
                 Hu3DModelPosSet(D_8010B8E0_swinging_with_sharks[42], D_8010B9C4_swinging_with_sharks.x, 50.0f,
                                 D_8010B9C4_swinging_with_sharks.z + 30.0f);
                 HuAudFXPlay(0x4EF);
@@ -565,7 +565,7 @@ void func_80106D44_swinging_with_sharks(omObjData *object) {
     }
     if (object->work[0] >= 9) {
         model = D_8010B8E0_swinging_with_sharks[31];
-        func_8001C258_main(model, 4, 0);
+        Hu3DModelAttrSet(model, 4, 0);
         Hu3DModelPosSet(model, D_8010B9C4_swinging_with_sharks.x, 0.0f, D_8010B9C4_swinging_with_sharks.z);
         if (D_8010B428_swinging_with_sharks > 90) {
             if (Hu3DData[D_8010B8E0_swinging_with_sharks[32]].motTime != 0.0f) {
@@ -575,7 +575,7 @@ void func_80106D44_swinging_with_sharks(omObjData *object) {
         }
         scale = sindf((s16)(D_8010B428_swinging_with_sharks % 90)) + 0.5f;
         Hu3DModelScaleSet(model, scale, scale, scale);
-        func_8001F9E4_main(model, 255.0f - D_8010B428_swinging_with_sharks * 2.8333333f);
+        Hu3DModelTPLvlSet(model, 255.0f - D_8010B428_swinging_with_sharks * 2.8333333f);
         D_8010B428_swinging_with_sharks += 3;
     } else {
         D_8010B9C4_swinging_with_sharks.y = sindf(object->work[0] * 18.0f) * D_8010B9AC_swinging_with_sharks.y;
@@ -615,7 +615,7 @@ void func_801071A8_swinging_with_sharks(omObjData *object) {
     }
     if (++object->work[0] == 75) {
         Hu3DMotionShiftSet(model, D_8010B948_swinging_with_sharks[39], 0, 4, 0);
-        func_80045ED0_main((D_8010B420_swinging_with_sharks[D_8010B9DC_swinging_with_sharks] << 16) | 0x35);
+        HuAudCharVoicePlay((D_8010B420_swinging_with_sharks[D_8010B9DC_swinging_with_sharks] << 16) | 0x35);
     }
     if (object->work[0] < 9) {
         Hu3DData[model].rot.y = 90.0f - object->work[0] * 11.25f;
@@ -628,10 +628,10 @@ void func_801071A8_swinging_with_sharks(omObjData *object) {
 void func_80107384_swinging_with_sharks(void) {
     HmfSkeletonNode *node;
 
-    node = func_8001D33C_main(D_8010B8E0_swinging_with_sharks[2], "rope");
-    func_8002367C_main(D_8010B860_swinging_with_sharks, node->unk4C);
-    node = func_8001D33C_main(D_8010B8E0_swinging_with_sharks[2], "step");
-    func_8002367C_main(D_8010B8A0_swinging_with_sharks, node->unk4C);
+    node = Hu3DModelObjPtrGet(D_8010B8E0_swinging_with_sharks[2], "rope");
+    mtxCopy(D_8010B860_swinging_with_sharks, node->unk4C);
+    node = Hu3DModelObjPtrGet(D_8010B8E0_swinging_with_sharks[2], "step");
+    mtxCopy(D_8010B8A0_swinging_with_sharks, node->unk4C);
     D_8010ACE8_swinging_with_sharks = 0.0f;
 }
 
@@ -711,13 +711,13 @@ void func_801077C4_swinging_with_sharks(void) {
         Hu3DAnimBankSet(Hu3DAnimRead(Hu3DData[D_8010B8E0_swinging_with_sharks[i + 8]].hmf, 0x21002C, "m259_30_000_DEF"),
                         D_800A11D0_main[i]);
         Hu3DModelRemakeStatic(D_8010B8E0_swinging_with_sharks[i + 8]);
-        func_8001C514_main(D_8010B8E0_swinging_with_sharks[i + 8]);
+        Hu3DModelDynamicFree(D_8010B8E0_swinging_with_sharks[i + 8]);
         shark->unk24 = rand8() & 0x3F;
-        func_8001FA68_main(D_8010B8E0_swinging_with_sharks[i + 18]);
-        func_8001C514_main(D_8010B8E0_swinging_with_sharks[i + 18]);
+        Hu3DModelTPLvlInit(D_8010B8E0_swinging_with_sharks[i + 18]);
+        Hu3DModelDynamicFree(D_8010B8E0_swinging_with_sharks[i + 18]);
     }
-    D_8010BAE6_swinging_with_sharks = func_8000CED8_main(0xB0004, 0x2A9);
-    func_800138EC_main(D_8010BAE6_swinging_with_sharks, 1, 0);
+    D_8010BAE6_swinging_with_sharks = EffectCreate(0xB0004, 0x2A9);
+    Hu3DParticleAttrSet(D_8010BAE6_swinging_with_sharks, 1, 0);
 }
 
 void func_80107954_swinging_with_sharks(omObjData *object) {
@@ -744,7 +744,7 @@ void func_80107954_swinging_with_sharks(omObjData *object) {
             shark->unk04--;
             if (++shark->unk02 == 50) {
                 shark->unk20 = 500.0f;
-                func_8001C258_main(D_8010B8E0_swinging_with_sharks[43], 4, 0);
+                Hu3DModelAttrSet(D_8010B8E0_swinging_with_sharks[43], 4, 0);
                 Hu3DModelRotSet(D_8010B8E0_swinging_with_sharks[43], CRot.x, CRot.y, CRot.z);
                 Hu3DModelScaleSet(D_8010B8E0_swinging_with_sharks[43], 4.0f, 4.0f, 4.0f);
                 Hu3DModelPosSet(D_8010B8E0_swinging_with_sharks[43], model->pos.x, model->pos.y + 300.0f,
@@ -758,8 +758,8 @@ void func_80107954_swinging_with_sharks(omObjData *object) {
             }
             Hu3DModelPosSet(shark->model, shark->cur.x, shark->cur.y, shark->cur.z);
             if (shark->unk02 > 60) {
-                func_8001C258_main(D_8010B8E0_swinging_with_sharks[i + 8], 4, 4);
-                func_8001C258_main(D_8010B8E0_swinging_with_sharks[i + 13], 4, 4);
+                Hu3DModelAttrSet(D_8010B8E0_swinging_with_sharks[i + 8], 4, 4);
+                Hu3DModelAttrSet(D_8010B8E0_swinging_with_sharks[i + 13], 4, 4);
             } else {
                 shark->unk02++;
             }
@@ -815,14 +815,14 @@ void func_80107954_swinging_with_sharks(omObjData *object) {
                                 shark->cur.z - ((i & 1) * 10 + 80));
                 Hu3DData[D_8010B8E0_swinging_with_sharks[i + 8]].rot.z = 0.0f;
                 if (shark->cur.y <= -80.0f) {
-                    func_8001C258_main(D_8010B8E0_swinging_with_sharks[i + 23], 4, 0);
+                    Hu3DModelAttrSet(D_8010B8E0_swinging_with_sharks[i + 23], 4, 0);
                     Hu3DModelPosSet(D_8010B8E0_swinging_with_sharks[i + 23], shark->cur.x, 0.0f, shark->cur.z);
                     Hu3DMotionSpeedSet(D_8010B8E0_swinging_with_sharks[i + 23], 1.0f);
                     Hu3DModelScaleSet(D_8010B8E0_swinging_with_sharks[i + 23], 1.0f, 1.0f, 1.0f);
                 }
             } else {
-                func_8001C258_main(D_8010B8E0_swinging_with_sharks[i + 8], 4, 4);
-                func_8001C258_main(D_8010B8E0_swinging_with_sharks[i + 13], 4, 4);
+                Hu3DModelAttrSet(D_8010B8E0_swinging_with_sharks[i + 8], 4, 4);
+                Hu3DModelAttrSet(D_8010B8E0_swinging_with_sharks[i + 13], 4, 4);
                 shark->cur.y -= 8.0f;
                 shark->unk20 += shark->unk04 / 10.0f;
                 Hu3DData[shark->model].rot.z = shark->unk20;
@@ -837,7 +837,7 @@ void func_80107954_swinging_with_sharks(omObjData *object) {
             Hu3DModelPosSet(splash, shark->cur.x, 0.0f, shark->cur.z);
             scale = sindf((s16)(shark->unk24 % 90)) + 0.8f;
             Hu3DModelScaleSet(splash, scale, scale, scale);
-            func_8001F9E4_main(splash, 255.0f - shark->unk24 * 2.8333333f);
+            Hu3DModelTPLvlSet(splash, 255.0f - shark->unk24 * 2.8333333f);
             shark->unk24 += 2;
             if (shark->unk24 > 90) {
                 if (shark->cur.y < -50.0f && D_8010B9DE_swinging_with_sharks != i) {
@@ -859,13 +859,13 @@ void func_80108474_swinging_with_sharks(omObjData *object) {
     model = D_800CBB60_main[D_8010BAE4_swinging_with_sharks].modelId;
     Hu3DModelScaleSet(model, 5.0f, 5.0f, 5.0f);
     Hu3DModelPosSet(model, shark->pos.x, 200.0f, shark->pos.z - 80.0f);
-    func_80014850_main(D_8010BAE4_swinging_with_sharks);
+    Hu3DSprModelReset(D_8010BAE4_swinging_with_sharks);
     object->work[0] = 0;
     object->work[1] = 0;
-    func_800138EC_main(D_8010BAE6_swinging_with_sharks, 1, 1);
-    func_8000CD00_main(D_8010BAE6_swinging_with_sharks, 8.0f, 20.0f, 10.0f);
-    func_8000D018_main(D_8010BAE6_swinging_with_sharks, 150.0f);
-    func_8000CFA4_main(D_8010BAE6_swinging_with_sharks, shark->pos.x, 200.0f, shark->pos.z - 80.0f);
+    Hu3DParticleAttrSet(D_8010BAE6_swinging_with_sharks, 1, 1);
+    EffectParamSet(D_8010BAE6_swinging_with_sharks, 8.0f, 20.0f, 10.0f);
+    EffectRangeSet(D_8010BAE6_swinging_with_sharks, 150.0f);
+    EffectPosSet(D_8010BAE6_swinging_with_sharks, shark->pos.x, 200.0f, shark->pos.z - 80.0f);
     HuAudFXPlay(0x4EE);
     object->func = func_801085F4_swinging_with_sharks;
 }
@@ -878,7 +878,7 @@ void func_801085F4_swinging_with_sharks(omObjData *object) {
     switch (object->work[0]) {
         case 0:
             Hu3DModelPosSet(model, shark->pos.x, sindf(object->work[1] * 9.0f) * 200.0f + 200.0f, shark->pos.z - (80.0f - sindf(object->work[1] * 9.0f) * 80.0f));
-            func_8000CFA4_main(D_8010BAE6_swinging_with_sharks, spr->pos.x, spr->pos.y - 50.0f, spr->pos.z);
+            EffectPosSet(D_8010BAE6_swinging_with_sharks, spr->pos.x, spr->pos.y - 50.0f, spr->pos.z);
             if (++object->work[1] > 10) {
                 GwPlayer[D_8010B9D8_swinging_with_sharks].bonusCoin = D_800A11D0_main[D_8010B9DE_swinging_with_sharks];
                 object->work[0] = 1;
@@ -888,7 +888,7 @@ void func_801085F4_swinging_with_sharks(omObjData *object) {
             break;
         case 1:
             Hu3DData[model].pos.y = sindf(object->work[1]) * 20.0f + 400.0f;
-            func_8000CFA4_main(D_8010BAE6_swinging_with_sharks, spr->pos.x, spr->pos.y - 50.0f, spr->pos.z);
+            EffectPosSet(D_8010BAE6_swinging_with_sharks, spr->pos.x, spr->pos.y - 50.0f, spr->pos.z);
             object->work[1] += 10;
             break;
     }
@@ -932,12 +932,12 @@ void func_801089A4_swinging_with_sharks(omObjData *object) {
 }
 
 void func_80108B24_swinging_with_sharks(void) {
-    func_8001C954_main(D_8010B8E0_swinging_with_sharks[0]);
+    Hu3DModelVtxBufMake(D_8010B8E0_swinging_with_sharks[0]);
     D_8010BAE8_swinging_with_sharks = 0;
 }
 
 void func_80108B4C_swinging_with_sharks(omObjData *object) {
-    func_8001E888_main(D_8010B8E0_swinging_with_sharks[0], 0, -D_8010BAE8_swinging_with_sharks, 32, 32, "sea", 0);
+    Hu3DModelObjTexScroll(D_8010B8E0_swinging_with_sharks[0], 0, -D_8010BAE8_swinging_with_sharks, 32, 32, "sea", 0);
     if (omPauseChk() + D_800D6A90_main == 0) {
         D_8010BAE8_swinging_with_sharks += 0.3f;
         if (D_8010BAE8_swinging_with_sharks > 32.0f) {
@@ -961,22 +961,22 @@ void func_80108C08_swinging_with_sharks(f32 angle) {
         HuAudFXPitchSet(D_8010B42C_swinging_with_sharks, (s16)(swing * 6.6666665f));
         HuAudFXVolSet(D_8010B42C_swinging_with_sharks, 127.0f - swing * 0.35f);
     }
-    rope = func_8001D33C_main(D_8010B8E0_swinging_with_sharks[2], "rope");
-    func_8002367C_main(rope->unk4C, D_8010B860_swinging_with_sharks);
+    rope = Hu3DModelObjPtrGet(D_8010B8E0_swinging_with_sharks[2], "rope");
+    mtxCopy(rope->unk4C, D_8010B860_swinging_with_sharks);
     func_80108E50_swinging_with_sharks(rope->unk4C, angle);
-    step = func_8001D33C_main(D_8010B8E0_swinging_with_sharks[2], "step");
-    func_8002367C_main(step->unk4C, rope->unk4C);
+    step = Hu3DModelObjPtrGet(D_8010B8E0_swinging_with_sharks[2], "step");
+    mtxCopy(step->unk4C, rope->unk4C);
     mtxTransCat(step->unk4C, step->unk08.x, step->unk08.y, step->unk08.z);
 }
 
 void func_80108DB0_swinging_with_sharks(Vec *pos) {
-    HmfSkeletonNode *node = func_8001D33C_main(D_8010B8E0_swinging_with_sharks[2], "step");
+    HmfSkeletonNode *node = Hu3DModelObjPtrGet(D_8010B8E0_swinging_with_sharks[2], "step");
 
     func_80108F20_swinging_with_sharks(D_8010B8E0_swinging_with_sharks[2], pos, node->unk4C);
 }
 
 void func_80108E00_swinging_with_sharks(Vec *pos) {
-    HmfSkeletonNode *node = func_8001D33C_main(D_8010B8E0_swinging_with_sharks[2], "rope");
+    HmfSkeletonNode *node = Hu3DModelObjPtrGet(D_8010B8E0_swinging_with_sharks[2], "rope");
 
     func_80108F20_swinging_with_sharks(D_8010B8E0_swinging_with_sharks[2], pos, node->unk4C);
 }
@@ -1007,7 +1007,7 @@ void func_80108F20_swinging_with_sharks(s16 model, Vec *pos, HuMtx4F mtx) {
     func_80088800_main(local, hmf->pos.x, hmf->pos.y, hmf->pos.z);
     mtxRotCat(local, hmf->rot.x, hmf->rot.y, hmf->rot.z);
     mtxScaleCat(local, hmf->scale.x, hmf->scale.y, hmf->scale.z);
-    func_80018044_main(mtx, local, result);
+    mtxCat(mtx, local, result);
     pos->x = result[0][0] + result[1][0] + result[2][0] + result[3][0];
     pos->y = result[0][1] + result[1][1] + result[2][1] + result[3][1];
     pos->z = result[0][2] + result[1][2] + result[2][2] + result[3][2];
@@ -1114,14 +1114,14 @@ void func_8010979C_swinging_with_sharks(SharkEntry *entries) {
 
     for (i = 0; entry->dataNum != -1; i++, entry++) {
         if ((entry->dataNum & 0xFFFF0000) == 0xFFFF0000) {
-            entry->dataNum = func_80017BB8_main(D_8010B9DC_swinging_with_sharks, (s16)entry->dataNum);
+            entry->dataNum = CharMotionDataNumGet(D_8010B9DC_swinging_with_sharks, (s16)entry->dataNum);
         }
-        D_8010B8E0_swinging_with_sharks[i] = func_8000B108_main(entry->dataNum, entry->attr | 0x288);
+        D_8010B8E0_swinging_with_sharks[i] = Hu3DModelRead(entry->dataNum, entry->attr | 0x288);
         model = D_8010B8E0_swinging_with_sharks[i];
         func_80109730_swinging_with_sharks(entries, i, model);
         D_8010B948_swinging_with_sharks[i] = Hu3DData[model].motId;
         if (D_8010B948_swinging_with_sharks[i] != -1) {
-            func_8001C814_main(model, -1, entry->motAttr);
+            Hu3DMotionAttrSet(model, -1, entry->motAttr);
         }
     }
 }
@@ -1131,7 +1131,7 @@ void func_801098C0_swinging_with_sharks(omObjData *object) {
         WipeCreateOut(0, 20);
         object->func = func_80109924_swinging_with_sharks;
         HuAudSeqFadeOut(60);
-        func_8004AB0C_main(30);
+        HuAudFXAllFadeOut(30);
     }
 }
 
@@ -1148,16 +1148,16 @@ void func_80109950_swinging_with_sharks(void) {
     f32 total;
 
     if (D_8010B768_swinging_with_sharks == 0) {
-        model = D_8010BAEC_swinging_with_sharks = func_8000B108_main(0xA0154, 0x299);
-        D_8010BAEE_swinging_with_sharks = func_8000B13C_main(0xA0155);
+        model = D_8010BAEC_swinging_with_sharks = Hu3DModelRead(0xA0154, 0x299);
+        D_8010BAEE_swinging_with_sharks = Hu3DMotionModelRead(0xA0155);
     } else {
         model = Hu3DModelLink(D_8010BAEC_swinging_with_sharks);
     }
-    func_8001C5B4_main(model, D_8010BAEE_swinging_with_sharks);
+    Hu3DMotionModelSet(model, D_8010BAEE_swinging_with_sharks);
     n = D_8010B768_swinging_with_sharks++;
     D_8010BAF0_swinging_with_sharks[n] = model;
     path = n % 2;
-    func_8001C814_main(model, 2, 2);
+    Hu3DMotionAttrSet(model, 2, 2);
     Hu3DMotionTimeSet(model, n * 10);
     Hu3DModelPosSet(model, 0.0f, -100.0f, 0.0f);
     Hu3DModelRotSet(model, 0.0f, 90.0f, 0.0f);
@@ -1281,7 +1281,7 @@ void func_8010A0C0_swinging_with_sharks(void) {
     f32 angle;
 
     if (Hu3DData[model].motId != D_8010B948_swinging_with_sharks[47]) {
-        func_8002FDCC_main(model, Hu3DData[model].motId, "c162_000-atama", 0x4C, 0x46);
+        Hu3DMotionNoMotReset(model, Hu3DData[model].motId, "c162_000-atama", 0x4C, 0x46);
         return;
     }
     target = &Hu3DData[D_8010B8E0_swinging_with_sharks[32]];
@@ -1290,10 +1290,10 @@ void func_8010A0C0_swinging_with_sharks(void) {
     dy = target->pos.y - self->pos.y;
     dz = target->pos.z - self->pos.z;
     angle = atan2df(dx, dz);
-    func_8002FD8C_main(model, Hu3DData[model].motId, "c162_000-atama", 0x4C, 0x46);
-    node = func_8001D33C_main(model, "c162_000-atama");
+    Hu3DMotionNoMotSet(model, Hu3DData[model].motId, "c162_000-atama", 0x4C, 0x46);
+    node = Hu3DModelObjPtrGet(model, "c162_000-atama");
     node->baseRot.y = node->rot.y = angle - self->rot.y;
-    func_8002FD8C_main(model, Hu3DData[model].motId, "c162_000-atama", 0x4C, 0x45);
+    Hu3DMotionNoMotSet(model, Hu3DData[model].motId, "c162_000-atama", 0x4C, 0x45);
     node->baseRot.x = node->rot.x = -atan2df(dy, dz);
 }
 
@@ -1313,12 +1313,12 @@ void func_8010A260_swinging_with_sharks(void) {
         alpha = (base->pos.y - 40.0f) / 50.0f * 102.0f;
         if (alpha <= 0) {
             alpha = 0;
-            func_8001C258_main(model, 4, 4);
+            Hu3DModelAttrSet(model, 4, 4);
         }
-        func_8001F9E4_main(model, alpha);
+        Hu3DModelTPLvlSet(model, alpha);
     } else {
-        func_8001C258_main(model, 4, 0);
-        func_8001F9E4_main(model, 102);
+        Hu3DModelAttrSet(model, 4, 0);
+        Hu3DModelTPLvlSet(model, 102);
     }
     len = HuSqrtf(-1.3f * -1.3f + -1.0f * -1.0f + -1.3f * -1.3f);
     dx = -1.3f / len;
@@ -1338,13 +1338,13 @@ void func_8010A260_swinging_with_sharks(void) {
 void func_8010A41C_swinging_with_sharks(void) {
     s16 i;
 
-    func_8001FA68_main(D_8010B8E0_swinging_with_sharks[46]);
-    func_8001C514_main(D_8010B8E0_swinging_with_sharks[46]);
+    Hu3DModelTPLvlInit(D_8010B8E0_swinging_with_sharks[46]);
+    Hu3DModelDynamicFree(D_8010B8E0_swinging_with_sharks[46]);
     for (i = 0; i < 20; i++) {
-        D_8010BB20_swinging_with_sharks[i] = func_8000B108_main(0xB0031, 0xA8C);
+        D_8010BB20_swinging_with_sharks[i] = Hu3DModelRead(0xB0031, 0xA8C);
         D_8010BAF8_swinging_with_sharks[i] = 90;
-        func_8001FA68_main(D_8010BB20_swinging_with_sharks[i]);
-        func_8001C514_main(D_8010BB20_swinging_with_sharks[i]);
+        Hu3DModelTPLvlInit(D_8010BB20_swinging_with_sharks[i]);
+        Hu3DModelDynamicFree(D_8010BB20_swinging_with_sharks[i]);
     }
 }
 
@@ -1364,7 +1364,7 @@ void func_8010A4DC_swinging_with_sharks(void) {
                         D_8010BAF8_swinging_with_sharks[j] = 0;
                         Hu3DModelPosSet(D_8010BB20_swinging_with_sharks[j], source->pos.x, 0.0f, source->pos.z);
                         Hu3DModelRotSet(D_8010BB20_swinging_with_sharks[j], 0.0f, source->rot.y, 0.0f);
-                        func_8001C258_main(D_8010BB20_swinging_with_sharks[j], 4, 0);
+                        Hu3DModelAttrSet(D_8010BB20_swinging_with_sharks[j], 4, 0);
                         break;
                     }
                 }
@@ -1374,12 +1374,12 @@ void func_8010A4DC_swinging_with_sharks(void) {
     model = D_8010B8E0_swinging_with_sharks[46];
     scale = sindf(D_8010B76A_swinging_with_sharks % 90) * 1.5f + 0.5f;
     Hu3DModelScaleSet(model, scale, scale, scale);
-    func_8001F9E4_main(model, 255.0f - D_8010B76A_swinging_with_sharks * (255.0f / 90.0f));
+    Hu3DModelTPLvlSet(model, 255.0f - D_8010B76A_swinging_with_sharks * (255.0f / 90.0f));
     D_8010B76A_swinging_with_sharks += 2;
     if (D_8010B9E0_swinging_with_sharks >= 3 &&
         Hu3DData[D_8010B8E0_swinging_with_sharks[47]].motId == D_8010B948_swinging_with_sharks[49]) {
         if (D_8010B76A_swinging_with_sharks > 90) {
-            func_8001C258_main(model, 4, 4);
+            Hu3DModelAttrSet(model, 4, 4);
         }
         if ((D_8010B76A_swinging_with_sharks & 0xF) == 0) {
             source = &Hu3DData[D_8010B8E0_swinging_with_sharks[44]];
@@ -1388,7 +1388,7 @@ void func_8010A4DC_swinging_with_sharks(void) {
                     D_8010BAF8_swinging_with_sharks[j] = 0;
                     Hu3DModelPosSet(D_8010BB20_swinging_with_sharks[j], source->pos.x, 0.0f, source->pos.z);
                     Hu3DModelRotSet(D_8010BB20_swinging_with_sharks[j], 0.0f, source->rot.y, 0.0f);
-                    func_8001C258_main(D_8010BB20_swinging_with_sharks[j], 4, 0);
+                    Hu3DModelAttrSet(D_8010BB20_swinging_with_sharks[j], 4, 0);
                     break;
                 }
             }
@@ -1399,11 +1399,11 @@ void func_8010A4DC_swinging_with_sharks(void) {
     }
     for (i = 0; i < 20; i++) {
         if (D_8010BAF8_swinging_with_sharks[i] >= 90) {
-            func_8001C258_main(D_8010BB20_swinging_with_sharks[i], 4, 4);
+            Hu3DModelAttrSet(D_8010BB20_swinging_with_sharks[i], 4, 4);
         } else {
             scale = sindf(D_8010BAF8_swinging_with_sharks[i] % 90) * 1.5f;
             Hu3DModelScaleSet(D_8010BB20_swinging_with_sharks[i], scale, scale, scale);
-            func_8001F9E4_main(D_8010BB20_swinging_with_sharks[i],
+            Hu3DModelTPLvlSet(D_8010BB20_swinging_with_sharks[i],
                                128.0f - D_8010BAF8_swinging_with_sharks[i] * (128.0f / 90.0f));
             D_8010BAF8_swinging_with_sharks[i] += 2;
         }

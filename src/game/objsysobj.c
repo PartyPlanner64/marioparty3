@@ -164,8 +164,8 @@ extern f32 D_800D4198_main[];
 extern f32 D_800D5210_main;
 extern s32 D_800D6AB8_main;
 
-void func_8004B7B0_main(s32 priority, s16 spriteGroup, void (*draw)(CameraViewData *), f32 fov, Vec *pos, Vec *at);
-void func_8004B984_main(u8 count, s32 priority, s16 *spriteGroups, void (*draw)(CameraViewData *), f32 fov, Vec *pos, Vec *at);
+void omCameraViewCreateEx(s32 priority, s16 spriteGroup, void (*draw)(CameraViewData *), f32 fov, Vec *pos, Vec *at);
+void omCameraViewMultiCreateEx(u8 count, s32 priority, s16 *spriteGroups, void (*draw)(CameraViewData *), f32 fov, Vec *pos, Vec *at);
 
 void omOutView(omObjData *object) {
     Vec pos, at, up;
@@ -219,30 +219,30 @@ void omOutViewMulti(omObjData *object) {
     }
 }
 
-void func_8004B760_main(s32 priority, s16 spriteGroup, void (*draw)(CameraViewData *), f32 fov, Vec *pos, Vec *at) {
+void omCameraViewCreate(s32 priority, s16 spriteGroup, void (*draw)(CameraViewData *), f32 fov, Vec *pos, Vec *at) {
     D_800D6A78_main.x = 0;
     D_800D6A78_main.y = 1.0f;
     D_800D6A78_main.z = 0;
-    func_8004B7B0_main(priority, spriteGroup, draw, fov, pos, at);
+    omCameraViewCreateEx(priority, spriteGroup, draw, fov, pos, at);
 }
 
-void func_8004B7B0_main(s32 priority, s16 spriteGroup, void (*draw)(CameraViewData *), f32 fov, Vec *pos, Vec *at) {
+void omCameraViewCreateEx(s32 priority, s16 spriteGroup, void (*draw)(CameraViewData *), f32 fov, Vec *pos, Vec *at) {
     // Retained camera scratch vectors from the original setup routines.
     Vec unusedPos, unusedAt, unusedUp, unusedOrigin;
     omObjData *object;
     CameraViewData *data;
     HuCamera *camera;
 
-    object = omAddObj(priority, 0, 0, -1, func_8004C4C4_main);
+    object = omAddObj(priority, 0, 0, -1, omCameraViewExec);
     omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     data = HuMemAllocTag(sizeof(CameraViewData), TAG_OVERLAY);
     object->data = data;
     data->draw = draw;
     data->spriteGroup = spriteGroup;
-    func_8004CD04_main(pos, at, &CZoom, &CRot, &Center);
+    omCameraLookAtToRot(pos, at, &CZoom, &CRot, &Center);
     Hu3DCameraPerspectiveSet(0, fov, 80.0f, 8000.0f);
     camera = gCameraList;
-    func_8004CB44_main(&data->origin, &D_800D6A78_main);
+    omCameraPosGet(&data->origin, &D_800D6A78_main);
     data->zoom = CZoom;
     data->baseScale.x = camera->screenScale.x / 640.0f;
     data->baseScale.y = camera->screenScale.y / 480.0f;
@@ -251,7 +251,7 @@ void func_8004B7B0_main(s32 priority, s16 spriteGroup, void (*draw)(CameraViewDa
     data->camera = camera;
 }
 
-void func_8004B904_main(u8 count, s32 priority, s16 *spriteGroups, void (*draw)(CameraViewData *), f32 fov, Vec *pos, Vec *at) {
+void omCameraViewMultiCreate(u8 count, s32 priority, s16 *spriteGroups, void (*draw)(CameraViewData *), f32 fov, Vec *pos, Vec *at) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
@@ -259,10 +259,10 @@ void func_8004B904_main(u8 count, s32 priority, s16 *spriteGroups, void (*draw)(
         D_800CD2A8_main[i].y = 1.0f;
         D_800CD2A8_main[i].z = 0;
     }
-    func_8004B984_main(count, priority, spriteGroups, draw, fov, pos, at);
+    omCameraViewMultiCreateEx(count, priority, spriteGroups, draw, fov, pos, at);
 }
 
-void func_8004B984_main(u8 count, s32 priority, s16 *spriteGroups, void (*draw)(CameraViewData *), f32 fov, Vec *pos, Vec *at) {
+void omCameraViewMultiCreateEx(u8 count, s32 priority, s16 *spriteGroups, void (*draw)(CameraViewData *), f32 fov, Vec *pos, Vec *at) {
     // Retained camera scratch vectors from the original setup routines.
     Vec unusedPos, unusedAt, unusedUp, unusedOrigin;
     omObjData *object;
@@ -272,11 +272,11 @@ void func_8004B984_main(u8 count, s32 priority, s16 *spriteGroups, void (*draw)(
     f32 near;
     f32 far;
 
-    object = omAddObj(priority, 0, 0, -1, func_8004C76C_main);
+    object = omAddObj(priority, 0, 0, -1, omCameraViewMultiExec);
     omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     object->data = HuMemAllocTag(count * sizeof(CameraViewData), TAG_OVERLAY);
     data = object->data;
-    func_8004CD04_main(pos, at, &CZoom, &CRot, &Center);
+    omCameraLookAtToRot(pos, at, &CZoom, &CRot, &Center);
     near = 80.0f;
     far = 8000.0f;
     object->work[0] = count;
@@ -288,7 +288,7 @@ void func_8004B984_main(u8 count, s32 priority, s16 *spriteGroups, void (*draw)(
         CRotM[i] = CRot;
         CenterM[i] = Center;
         camera = &gCameraList[i];
-        func_8004CB44_main(&data->origin, &D_800CD2A8_main[i]);
+        omCameraPosGet(&data->origin, &D_800CD2A8_main[i]);
         data->zoom = CZoom;
         data->baseScale.x = camera->screenScale.x / 640.0f;
         data->baseScale.y = camera->screenScale.y / 480.0f;
@@ -298,7 +298,7 @@ void func_8004B984_main(u8 count, s32 priority, s16 *spriteGroups, void (*draw)(
     }
 }
 
-void func_8004BC00_main(void) {
+void omCameraViewGfxSetup(void) {
     gDPPipeSync(gMainGfxPos++);
     gDPSetCycleType(gMainGfxPos++, G_CYC_1CYCLE);
     gDPSetCombineLERP(gMainGfxPos++, TEXEL0, 0, TEXEL0_ALPHA, 0, TEXEL0, 0, 1, 0,
@@ -309,7 +309,7 @@ void func_8004BC00_main(void) {
     gDPSetTexturePersp(gMainGfxPos++, G_TP_NONE);
 }
 
-void func_8004BCE4_main(CameraViewData *data) {
+void omCameraViewSprDraw(CameraViewData *data) {
     HuSprite *sprite;
     s16 left, top, right, bottom;
     u16 width, height;
@@ -363,7 +363,7 @@ void func_8004BCE4_main(CameraViewData *data) {
     }
 }
 
-void func_8004C4C4_main(omObjData *object) {
+void omCameraViewExec(omObjData *object) {
     Vec pos, at, up, origin;
     Vec2f screenPos, screenOrigin;
     f32 length;
@@ -394,19 +394,19 @@ void func_8004C4C4_main(omObjData *object) {
                      (Center.z - pos.z) * (Center.z - pos.z));
     data->scale.x = data->zoom / length * data->baseScale.x;
     data->scale.y = data->zoom / length * data->baseScale.y;
-    func_8004CB44_main(&origin, &D_800D6A78_main);
-    func_80012B14_main(0, &origin, &screenPos);
-    func_80012B14_main(0, &data->origin, &screenOrigin);
+    omCameraPosGet(&origin, &D_800D6A78_main);
+    Hu3DCam3Dto2D(0, &origin, &screenPos);
+    Hu3DCam3Dto2D(0, &data->origin, &screenOrigin);
     data->offset.x = (screenPos.x - screenOrigin.x) * data->baseScale.x;
     data->offset.y = (screenPos.y - screenOrigin.y) * data->baseScale.y;
     if (data->draw != NULL) {
-        func_8004BC00_main();
+        omCameraViewGfxSetup();
         data->draw(data);
         gSPEndDisplayList(gMainGfxPos++);
     }
 }
 
-void func_8004C76C_main(omObjData *object) {
+void omCameraViewMultiExec(omObjData *object) {
     Vec pos, at, up, origin;
     Vec2f screenPos, screenOrigin;
     f32 length;
@@ -414,7 +414,7 @@ void func_8004C76C_main(omObjData *object) {
     CameraViewData *data = object->data;
     u32 i;
 
-    func_8004BC00_main();
+    omCameraViewGfxSetup();
     for (i = 0; i < object->work[0]; i++, data++) {
         rot_x = CRotM[i].x;
         rot_y = CRotM[i].y;
@@ -441,9 +441,9 @@ void func_8004C76C_main(omObjData *object) {
                          (CenterM[i].z - pos.z) * (CenterM[i].z - pos.z));
         data->scale.x = data->zoom / length * data->baseScale.x;
         data->scale.y = data->zoom / length * data->baseScale.y;
-        func_8004CB44_main(&origin, &D_800CD2A8_main[i]);
-        func_80012B14_main(0, &origin, &screenPos);
-        func_80012B14_main(0, &data->origin, &screenOrigin);
+        omCameraPosGet(&origin, &D_800CD2A8_main[i]);
+        Hu3DCam3Dto2D(0, &origin, &screenPos);
+        Hu3DCam3Dto2D(0, &data->origin, &screenOrigin);
         data->offset.x = (screenPos.x - screenOrigin.x) * data->baseScale.x;
         data->offset.y = (screenPos.y - screenOrigin.y) * data->baseScale.y;
         if (data->draw != NULL) {
@@ -456,7 +456,7 @@ void func_8004C76C_main(omObjData *object) {
     gSPEndDisplayList(gMainGfxPos++);
 }
 
-void func_8004CB44_main(Vec *out, Vec *normal) {
+void omCameraPosGet(Vec *out, Vec *normal) {
     Vec pos;
     f32 rot_x = CRot.x;
     f32 rot_y = CRot.y;
@@ -478,7 +478,7 @@ void func_8004CB44_main(Vec *out, Vec *normal) {
     out->z = z * distance + pos.z;
 }
 
-void func_8004CD04_main(Vec *pos, Vec *at, f32 *zoom, Vec *rot, Vec *center) {
+void omCameraLookAtToRot(Vec *pos, Vec *at, f32 *zoom, Vec *rot, Vec *center) {
     HuMtx4F matrix;
     f32 x = pos->x - at->x;
     f32 y = pos->y - at->y;
@@ -505,13 +505,13 @@ void func_8004CD04_main(Vec *pos, Vec *at, f32 *zoom, Vec *rot, Vec *center) {
     center->z = at->z;
 }
 
-void func_8004CEA4_main() {
-    D_800CE194_main = omAddObj(0x7FD8, 0, 0, -1, func_8004CF00_main);
+void omSysTimerCreate() {
+    D_800CE194_main = omAddObj(0x7FD8, 0, 0, -1, omSysTimerExec);
     omSetStatBit(D_800CE194_main, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     D_800CE194_main->work[0] = D_800D6AB8_main;
 }
 
-void func_8004CF00_main(omObjData *object) {
+void omSysTimerExec(omObjData *object) {
     u32 *counter = object->work;
 
     if (*counter == 0) {
@@ -521,13 +521,13 @@ void func_8004CF00_main(omObjData *object) {
     }
 }
 
-void func_8004CF30_main(void) {
+void HuAudFadeObjCreate(void) {
     UnkAudioObjData *data;
     s32 i;
 
-    D_800D6A40_main = omAddObj(0x7FD8, 0, 0, -1, func_8004D094_main);
+    D_800D6A40_main = omAddObj(0x7FD8, 0, 0, -1, HuAudFadeObjExec);
     data = D_800D6A40_main->data = HuMemAllocTag(sizeof(UnkAudioObjData), TAG_OVERLAY);
-    func_80000EA8_main(&D_800D1398_main);
+    msmSysGetConfig(&D_800D1398_main);
     D_800A1910_main = D_800D13EE_main;
     data->unk00 = HuMemAllocTag(D_800A1910_main * sizeof(f32), TAG_OVERLAY);
     data->unk04 = HuMemAllocTag(D_800A1910_main * sizeof(f32), TAG_OVERLAY);
@@ -549,7 +549,7 @@ void func_8004CF30_main(void) {
     data->unk34 = -1;
 }
 
-void func_8004D094_main(omObjData *object) {
+void HuAudFadeObjExec(omObjData *object) {
     UnkAudioObjData *data = D_800D6A40_main->data;
     s16 i;
     u8 flags;
@@ -590,7 +590,7 @@ void func_8004D094_main(omObjData *object) {
         }
     }
     if ((D_800A1906_main & 0x10) && data->unk34 >= 0) {
-        func_8004A72C_main(data->unk34);
+        HuAudSeqVolFadeIn(data->unk34);
         data->unk34 = -1;
     }
     if (data->unk14 == 1) {

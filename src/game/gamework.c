@@ -146,7 +146,7 @@ void GWCharPlayNumInc(s16 boardNo, s16 charNo) {
     }
 }
 
-s32 func_80035E3C_main(s16 arg0) {
+s32 GWBoardRecordStub0(s16 arg0) {
     // 0x18 of stack is reserved but unused in the original; the array keeps the frame.
     s32 buf[6];
 
@@ -154,12 +154,12 @@ s32 func_80035E3C_main(s16 arg0) {
     return 0;
 }
 
-void func_80035E60_main(s16 arg0) {
+void GWBoardRecordStub1(s16 arg0) {
     u8 *record = GWBoardRecordGet(arg0);
     *record = *record;
 }
 
-void func_80035E88_main(s16 arg0) {
+void GWBoardRecordStub2(s16 arg0) {
     u8 *record = GWBoardRecordGet(arg0);
     *record = *record;
 }

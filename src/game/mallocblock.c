@@ -102,7 +102,7 @@ void HuMemFreeAllWithTag(s16 tag) {
     }
 }
 
-void func_80019C00_main(void *data) {
+void HuMemDelayFree(void *data) {
     HuMallocHeader *block;
 
     block = gFirstMallocBlock->next;
@@ -119,7 +119,7 @@ void func_80019C00_main(void *data) {
     ++D_800C993C_main;
 }
 
-void func_80019C68_main(s16 arg0) {
+void HuMemDelayFreeAllWithTag(s16 arg0) {
     HuMallocHeader *block;
 
     block = gFirstMallocBlock->next;

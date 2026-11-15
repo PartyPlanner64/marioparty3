@@ -455,7 +455,7 @@ void func_80106624_storm_chasers(omObjData *object) {
 
 void func_8010662C_storm_chasers(omObjData *object) {
     D_8010CF6C_storm_chasers = HuSprAnimDataRead(0x500001);
-    D_8010CF74_storm_chasers = func_80055194_main(D_8010CF6E_storm_chasers);
+    D_8010CF74_storm_chasers = HuSprAnimDataGet(D_8010CF6E_storm_chasers);
     D_8010CF70_storm_chasers =
         Hu3DHookFuncCreate(0, func_801063B0_storm_chasers, 2);
     Hu3DModelCameraSet(D_8010CF72_storm_chasers, HU3D_CAM0);
@@ -491,18 +491,18 @@ void func_80106794_storm_chasers(omObjData *object) {
         case 0:
             break;
         case 1:
-            func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, 0);
+            Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, 0);
             entry->state = 2;
             break;
         case 2:
             entry->unk_04 -= 25;
             if (entry->unk_04 > 0) {
-                func_8001F9E4_main(object->model[0], entry->unk_04);
+                Hu3DModelTPLvlSet(object->model[0], entry->unk_04);
                 object->scale.x += 0.1;
                 object->scale.y += 0.1;
                 object->scale.z += 0.1;
             } else {
-                func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 entry->unk_04 = 255;
                 entry->state = 0;
                 object->scale.x = object->scale.y = object->scale.z = 1.0f;
@@ -515,10 +515,10 @@ void func_801068C8_storm_chasers(omObjData *object) {
     StormChaserPlayer *player;
     StormChaserEntry *entry;
 
-    object->model[0] = func_8000B108_main(0x50000D, 0x289);
-    func_8001FA68_main(object->model[0]);
-    func_8001F9E4_main(object->model[0], 255);
-    func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    object->model[0] = Hu3DModelRead(0x50000D, 0x289);
+    Hu3DModelTPLvlInit(object->model[0]);
+    Hu3DModelTPLvlSet(object->model[0], 255);
+    Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     player = &D_8010CD80_storm_chasers[object->work[0]];
     object->trans.x = player->unk_44->trans.x;
     object->trans.y = 100.0f;
@@ -587,8 +587,8 @@ void func_80106F98_storm_chasers(omObjData *object) {
     object->trans.y += 20.0f;
     if (object->trans.y > 1000.0f) {
         object->trans.y = 1000.0f;
-        func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-        func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     } else {
         scale = (1000.0f - object->trans.y) / 800.0f * 1.3;
         Hu3DModelScaleSet(object->model[1], scale, scale, scale);
@@ -647,11 +647,11 @@ void func_801070A8_storm_chasers(omObjData *object) {
         case 8:
             func_80106F98_storm_chasers(object);
             if (cloud->unk_1C != -1) {
-                func_8004AEF0_main(cloud->unk_1C, 0x1E);
+                HuAudFXFadeOut(cloud->unk_1C, 0x1E);
                 cloud->unk_1C = -1;
             }
             if (cloud->unk_1E != -1) {
-                func_8004AEF0_main(cloud->unk_1E, 0x1E);
+                HuAudFXFadeOut(cloud->unk_1E, 0x1E);
                 cloud->unk_1E = -1;
             }
             break;
@@ -662,18 +662,18 @@ void func_801070A8_storm_chasers(omObjData *object) {
 void func_8010746C_storm_chasers(omObjData *object) {
     StormChaserCloud *cloud = &D_8010CCC0_storm_chasers;
 
-    object->model[0] = func_8000B108_main(0x500006, 0x289);
-    object->model[1] = func_8000B0A0_main(0, 0xC9);
-    func_8001C2FC_main(object->model[1], 0x80000000, 0);
+    object->model[0] = Hu3DModelRead(0x500006, 0x289);
+    object->model[1] = Hu3DModelRead2(0, 0xC9);
+    Hu3DModelObjAttrSet(object->model[1], 0x80000000, 0);
     Hu3DModelRemakeStatic(object->model[1]);
-    func_8001C514_main(object->model[1]);
+    Hu3DModelDynamicFree(object->model[1]);
     func_80088800_main(Hu3DData[object->model[1]].mtx, 0.0f, 0.0f, 0.0f);
     object->trans.x = 0.0f;
     object->trans.y = 350.0f;
     object->trans.z = 0.0f;
     Hu3DModelPosSet(object->model[1], object->trans.x, -10.0f, object->trans.z);
     Hu3DModelScaleSet(object->model[1], 1.5f, 1.5f, 1.5f);
-    func_8001C814_main(object->model[0], 2, 2);
+    Hu3DMotionAttrSet(object->model[0], 2, 2);
     Hu3DModelCameraSet(object->model[0], HU3D_CAM0);
     Hu3DModelCameraSet(object->model[1], HU3D_CAM0);
     object->func = func_801070A8_storm_chasers;
@@ -700,7 +700,7 @@ void func_801075F8_storm_chasers(omObjData *object) {
     if (omPauseChk() + D_800D6A90_main == 0) {
         D_8010CF24_storm_chasers -= 4.0f;
     }
-    func_8001E888_main(object->model[0], 0.0f, rain->unk_04, D_8010CF1C_storm_chasers[0], D_8010CF1C_storm_chasers[1], "247_1-ame", 0);
+    Hu3DModelObjTexScroll(object->model[0], 0.0f, rain->unk_04, D_8010CF1C_storm_chasers[0], D_8010CF1C_storm_chasers[1], "247_1-ame", 0);
     object->trans.x = cloud->unk_18->trans.x;
     object->trans.y = 0.0f;
     object->trans.z = cloud->unk_18->trans.z;
@@ -710,9 +710,9 @@ void func_801075F8_storm_chasers(omObjData *object) {
     rain->unk_08 -= 20.0f;
     if (rain->unk_08 < 0.0f) {
         rain->unk_08 = 0.0f;
-        func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     } else {
-        func_8001F9E4_main(object->model[0], rain->unk_08);
+        Hu3DModelTPLvlSet(object->model[0], rain->unk_08);
     }
 }
 
@@ -723,12 +723,12 @@ void func_801077A0_storm_chasers(omObjData *object) {
     if (cloud->state == -1) {
         return;
     }
-    object->model[0] = func_8000B108_main(0x500007, 0x289);
-    func_8001C954_main(object->model[0]);
-    func_8001FA68_main(object->model[0]);
-    func_8001F9E4_main(object->model[0], 255);
-    func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, 0);
-    func_800335BC_main("247_ame_IA44", D_8010CF1C_storm_chasers);
+    object->model[0] = Hu3DModelRead(0x500007, 0x289);
+    Hu3DModelVtxBufMake(object->model[0]);
+    Hu3DModelTPLvlInit(object->model[0]);
+    Hu3DModelTPLvlSet(object->model[0], 255);
+    Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, 0);
+    Hu3DTexSizeGet("247_ame_IA44", D_8010CF1C_storm_chasers);
     object->trans.x = cloud->unk_18->trans.x;
     object->trans.y = 0.0f;
     object->trans.z = cloud->unk_18->trans.z;
@@ -761,7 +761,7 @@ void func_801078E0_storm_chasers(omObjData *object) {
             if (D_8010CCAC_storm_chasers <= 90) {
                 break;
             }
-            func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, 0);
+            Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, 0);
             if (state->state == 0) {
                 angle = ((u8)(rand8() % 5) + 1) * 30;
                 radius = ((rand8() & 3) + 1) * 80;
@@ -778,34 +778,34 @@ void func_801078E0_storm_chasers(omObjData *object) {
                 object->trans.x = sindf(edgeAngle) * (350 - (u8)(rand8() % 50));
                 object->trans.z = cosdf(edgeAngle) * (350 - (u8)(rand8() % 50));
             }
-            func_80034048_main(object->work[2], D_8010C9C4_storm_chasers[state->unk_04]);
+            Hu3DAnimTimeSet(object->work[2], D_8010C9C4_storm_chasers[state->unk_04]);
             state->unk_04++;
             break;
         case 1:
             if (D_8010C9C4_storm_chasers[state->unk_04] == -1) {
                 HuAudFXPlay(0x483);
-                func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, 0);
-                func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, 0);
-                func_8001C258_main(object->model[2], HU3D_ATTR_DISPOFF, 0);
+                Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, 0);
+                Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, 0);
+                Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, 0);
                 state->unk_04 = 0;
                 state->state = 2;
-                func_8001C814_main(object->model[2], 1, 0);
-                func_80034048_main(object->work[1], D_8010C960_storm_chasers[state->unk_04]);
-                func_80034048_main(object->work[2], D_8010CA28_storm_chasers[state->unk_04]);
+                Hu3DMotionAttrSet(object->model[2], 1, 0);
+                Hu3DAnimTimeSet(object->work[1], D_8010C960_storm_chasers[state->unk_04]);
+                Hu3DAnimTimeSet(object->work[2], D_8010CA28_storm_chasers[state->unk_04]);
                 state->unk_04++;
-                func_8001F9E4_main(object->model[2], state->unk_0C);
+                Hu3DModelTPLvlSet(object->model[2], state->unk_0C);
             } else {
-                func_80034048_main(object->work[2], D_8010C9C4_storm_chasers[state->unk_04]);
+                Hu3DAnimTimeSet(object->work[2], D_8010C9C4_storm_chasers[state->unk_04]);
                 state->unk_04++;
             }
             break;
         case 2:
             if (D_8010C960_storm_chasers[state->unk_04] == -1) {
-                func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-                func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-                func_8001C258_main(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 Hu3DMotionTimeSet(object->model[2], 0.0f);
-                func_8001C814_main(object->model[2], 1, 1);
+                Hu3DMotionAttrSet(object->model[2], 1, 1);
                 state->unk_0C = 255;
                 state->unk_04 = 0;
                 state->unk_08 = (u8)(rand8() % 75) + 75;
@@ -815,12 +815,12 @@ void func_801078E0_storm_chasers(omObjData *object) {
                     state->unk_0C -= 52;
                     if (state->unk_0C < 0) {
                         state->unk_0C = 255;
-                        func_8001C258_main(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                        Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     }
                 }
-                func_8001F9E4_main(object->model[2], state->unk_0C);
-                func_80034048_main(object->work[1], D_8010C960_storm_chasers[state->unk_04]);
-                func_80034048_main(object->work[2], D_8010CA28_storm_chasers[state->unk_04]);
+                Hu3DModelTPLvlSet(object->model[2], state->unk_0C);
+                Hu3DAnimTimeSet(object->work[1], D_8010C960_storm_chasers[state->unk_04]);
+                Hu3DAnimTimeSet(object->work[2], D_8010CA28_storm_chasers[state->unk_04]);
                 state->unk_04++;
             }
             break;
@@ -845,9 +845,9 @@ void func_80107EA4_storm_chasers(omObjData *object) {
             func_801078E0_storm_chasers(object);
             break;
         case 3:
-            func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-            func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-            func_8001C258_main(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             state->state = 0;
             break;
         case 4:
@@ -868,9 +868,9 @@ void func_80107F70_storm_chasers(omObjData *object) {
     void *animData;
     s32 i;
 
-    object->model[0] = func_8000B108_main(0x500008, 0x2A9);
-    object->model[1] = func_8000B108_main(0x50000A, 0x2A9);
-    object->model[2] = func_8000B108_main(0x50000C, 0x2A9);
+    object->model[0] = Hu3DModelRead(0x500008, 0x2A9);
+    object->model[1] = Hu3DModelRead(0x50000A, 0x2A9);
+    object->model[2] = Hu3DModelRead(0x50000C, 0x2A9);
     if (object->work[0] == 0) {
         animData = DataRead(0x500009);
         object->work[1] = D_8010CF30_storm_chasers =
@@ -885,18 +885,18 @@ void func_80107F70_storm_chasers(omObjData *object) {
         object->work[2] = Hu3DAnimLink(Hu3DData[object->model[1]].hmf, D_8010CF34_storm_chasers, 0, "s247_004_DEF");
     }
     for (i = 0; i < 2; i++) {
-        func_80034048_main(object->work[i + 1], 0);
-        func_80032FC0_main(object->work[i + 1], 1, 1);
+        Hu3DAnimTimeSet(object->work[i + 1], 0);
+        Hu3DAnimAttrSet(object->work[i + 1], 1, 1);
         Hu3DModelRemakeStatic(object->model[i]);
-        func_8001C514_main(object->model[i]);
-        func_8001C258_main(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelDynamicFree(object->model[i]);
+        Hu3DModelAttrSet(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
-    func_8001FA68_main(object->model[2]);
-    func_8001F9E4_main(object->model[2], 0xFF);
-    func_8001C258_main(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelTPLvlInit(object->model[2]);
+    Hu3DModelTPLvlSet(object->model[2], 0xFF);
+    Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DMotionTimeSet(object->model[2], 0.0f);
-    func_8001C814_main(object->model[2], 1, 1);
-    func_8001C814_main(object->model[2], 2, 0);
+    Hu3DMotionAttrSet(object->model[2], 1, 1);
+    Hu3DMotionAttrSet(object->model[2], 2, 0);
     object->trans.x = object->trans.y = object->trans.z = 0.0f;
     object->scale.x = object->scale.y = 1.3f;
     for (i = 1; i < 3; i++) {
@@ -967,7 +967,7 @@ void func_801085E4_storm_chasers(omObjData *object) {
         data->unk_20 = HuAudFXPlay(0x484);
     }
     if (player->unk_1C != 3) {
-        func_8001C814_main(object->model[0], 1, 0);
+        Hu3DMotionAttrSet(object->model[0], 1, 0);
         data->state = 0xB;
     } else {
         data->state = 0xC;
@@ -978,8 +978,8 @@ void func_801085E4_storm_chasers(omObjData *object) {
 void func_801086C4_storm_chasers(omObjData *object) {
     StormChaserData *data = &D_8010CCE0_storm_chasers[object->work[0]];
 
-    func_8001C5B4_main(object->model[0], object->motion[1]);
-    func_8001C814_main(object->model[0], 2, 2);
+    Hu3DMotionModelSet(object->model[0], object->motion[1]);
+    Hu3DMotionAttrSet(object->model[0], 2, 2);
     data->state = 0xC;
 }
 
@@ -999,7 +999,7 @@ void func_80108738_storm_chasers(omObjData *object) {
             data->unk_20 = -1;
         }
         Hu3DMotionTimeSet(object->model[0], time);
-        func_8001C814_main(object->model[0], 1, 1);
+        Hu3DMotionAttrSet(object->model[0], 1, 1);
         if (player->unk_1C != 0) {
             data->state = 0xC;
         } else {
@@ -1022,7 +1022,7 @@ void func_8010891C_storm_chasers(omObjData *object) {
         case 0:
             if (data->unk_04 == 0) {
                 data->state = 1;
-                func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, 0);
+                Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, 0);
             }
             object->trans.x = player->unk_44->trans.x;
             object->trans.y = 100.0f;
@@ -1085,19 +1085,19 @@ void func_8010891C_storm_chasers(omObjData *object) {
                     object->work[2] = 0;
                 }
             }
-            func_80034048_main(object->work[1], object->work[3]);
+            Hu3DAnimTimeSet(object->work[1], object->work[3]);
         } else {
             if (object->work[3] != 0) {
                 object->work[3]--;
             }
-            func_80034048_main(object->work[1], object->work[3]);
+            Hu3DAnimTimeSet(object->work[1], object->work[3]);
         }
     } else {
-        func_80034048_main(object->work[1], 0);
+        Hu3DAnimTimeSet(object->work[1], 0);
     }
 
     if (D_8010CCA0_storm_chasers == 8 && data->unk_20 != -1) {
-        func_8004AEF0_main(data->unk_20, 0x1E);
+        HuAudFXFadeOut(data->unk_20, 0x1E);
         data->unk_20 = -1;
     }
 }
@@ -1107,9 +1107,9 @@ void func_80108C64_storm_chasers(omObjData *object) {
     StormChaserData *data;
     void *animData;
 
-    object->model[0] = func_8000B108_main(0x500002, 0x289);
-    func_8000B460_main(object, 0, 0x500003);
-    func_8000B460_main(object, 1, 0x500004);
+    object->model[0] = Hu3DModelRead(0x500002, 0x289);
+    omObjMotionRead(object, 0, 0x500003);
+    omObjMotionRead(object, 1, 0x500004);
     if (object->work[0] == 0) {
         animData = DataRead(0x500005);
         object->work[1] = D_8010CCB0_storm_chasers =
@@ -1119,20 +1119,20 @@ void func_80108C64_storm_chasers(omObjData *object) {
         object->work[1] =
             Hu3DAnimLink(Hu3DData[object->model[0]].hmf, D_8010CCB0_storm_chasers, 0, "pakkun_optimized_00_DEF");
     }
-    func_80034048_main(object->work[1], 0);
-    func_80032FC0_main(object->work[1], 1, 1);
+    Hu3DAnimTimeSet(object->work[1], 0);
+    Hu3DAnimAttrSet(object->work[1], 1, 1);
     Hu3DModelRemakeStatic(object->model[0]);
-    func_8001C514_main(object->model[0]);
-    object->model[1] = func_8000B0A0_main(0, 0xC9);
-    func_8001C2FC_main(object->model[1], 0x80000000, 0);
+    Hu3DModelDynamicFree(object->model[0]);
+    object->model[1] = Hu3DModelRead2(0, 0xC9);
+    Hu3DModelObjAttrSet(object->model[1], 0x80000000, 0);
     Hu3DModelRemakeStatic(object->model[1]);
-    func_8001C514_main(object->model[1]);
+    Hu3DModelDynamicFree(object->model[1]);
     func_80088800_main(Hu3DData[object->model[1]].mtx, 0.0f, 10.0f, 0.0f);
-    func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    func_8001C5B4_main(object->model[0], object->motion[0]);
+    Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DMotionModelSet(object->model[0], object->motion[0]);
     Hu3DMotionTimeSet(object->model[0], 0.0f);
-    func_8001C814_main(object->model[0], 2, 0);
-    func_8001C814_main(object->model[0], 1, 1);
+    Hu3DMotionAttrSet(object->model[0], 2, 0);
+    Hu3DMotionAttrSet(object->model[0], 1, 1);
     player = &D_8010CD80_storm_chasers[object->work[0]];
     object->trans.x = player->unk_44->trans.x;
     object->trans.y = player->unk_44->trans.y + 100.0f;
@@ -1165,7 +1165,7 @@ void func_80108FF8_storm_chasers(omObjData *object) {
     StormChaserData *data = &D_8010CCE0_storm_chasers[object->work[0]];
 
     if (data->state != -1) {
-        func_8001C258_main(data->unk_24->model[0], 0x4000, 0x4000);
+        Hu3DModelAttrSet(data->unk_24->model[0], 0x4000, 0x4000);
         Hu3DModelHookSet(data->unk_24->model[0], object->model[0], "item_hook");
         Hu3DMotionShapeSet(object->model[0], object->motion[22], 1);
         object->work[1] = 1;
@@ -1177,7 +1177,7 @@ void func_801090A4_storm_chasers(omObjData *object) {
     StormChaserPlayer *player = &D_8010CD80_storm_chasers[object->work[0]];
     StormChaserData *data = &D_8010CCE0_storm_chasers[object->work[0]];
 
-    func_8001C258_main(object->model[0], 0x4000, 0x4000);
+    Hu3DModelAttrSet(object->model[0], 0x4000, 0x4000);
     Hu3DModelHookSet(object->model[0], player->unk_44->model[0], "item_hook");
     Hu3DMotionShapeSet(player->unk_44->model[0], player->unk_44->motion[22], 1);
     player->unk_44->work[1] = 1;
@@ -1339,7 +1339,7 @@ void func_8010AC7C_storm_chasers(omObjData *object) {
 
     if (data->unk_04 != 0) {
         Hu3DData[object->model[0]].motIdShape = 255;
-        func_8001C258_main(data->unk_24->model[0], 0x4000, 0);
+        Hu3DModelAttrSet(data->unk_24->model[0], 0x4000, 0);
         data->unk_04 = 0;
         func_801066F4_storm_chasers(object);
     }
@@ -1362,7 +1362,7 @@ void func_8010AE4C_storm_chasers(omObjData *object) {
 
     if (player->unk_18 == 1) {
         func_800E5690_minigame(object, 0xD);
-        func_80045ED0_main(charBase | 0x2F);
+        HuAudCharVoicePlay(charBase | 0x2F);
         player->unk_18 = 2;
     } else if (player->unk_18 == 0) {
         func_800E5690_minigame(object, 0xE);
@@ -1420,7 +1420,7 @@ void func_8010AF20_storm_chasers(omObjData *object) {
     }
 
     if (player->unk_3C == 1 && Hu3DData[object->model[0]].motTime >= 10.0f) {
-        func_8001C814_main(object->model[0], 1, 1);
+        Hu3DMotionAttrSet(object->model[0], 1, 1);
         player->unk_3C = 2;
     }
     if (player->unk_20 > 0) {
@@ -1428,7 +1428,7 @@ void func_8010AF20_storm_chasers(omObjData *object) {
             object->trans.y = 0.0f;
             player->unk_34 = 0.0f;
             work->unk40 = 0.0f;
-            func_8001C814_main(object->model[0], 1, 0);
+            Hu3DMotionAttrSet(object->model[0], 1, 0);
             if (work->unk5C & 2) {
                 player->unk_20 = 0;
                 player->unk_3C = 0;
@@ -1458,25 +1458,25 @@ void func_8010B1B0_storm_chasers(omObjData *object) {
     func_800E1BA8_minigame(object, modelFile, motionFile, object->work[0], modelAttr, shadowAttr);
     work = object->data;
     work->unkEC = 0;
-    func_8001C2FC_main(object->model[1], 0x80000000, 0);
-    func_8001C258_main(object->model[1], 0x60, 0x20);
-    func_8001C258_main(object->model[1], 0x180, 0x80);
+    Hu3DModelObjAttrSet(object->model[1], 0x80000000, 0);
+    Hu3DModelAttrSet(object->model[1], 0x60, 0x20);
+    Hu3DModelAttrSet(object->model[1], 0x180, 0x80);
     Hu3DModelRemakeStatic(object->model[1]);
-    func_8001C514_main(object->model[1]);
-    object->model[3] = func_8000B108_main(3, 0x2BD);
-    object->model[4] = func_8000B108_main(4, 0x2BD);
-    object->model[8] = func_8000B108_main(8, 0x2BD);
-    func_800E5A00_minigame(object, 0, func_80017BB8_main(character, 0), 1, 0);
-    func_800E5A00_minigame(object, 1, func_80017BB8_main(character, 1), 1, 0);
-    func_800E5A00_minigame(object, 2, func_80017BB8_main(character, 2), 1, 0);
-    func_800E5A00_minigame(object, 0x11, func_80017BB8_main(character, 0xE), 0, 0);
-    func_800E5A00_minigame(object, 3, func_80017BB8_main(character, 0x1D), 1, 0);
-    func_800E5A00_minigame(object, 4, func_80017BB8_main(character, 0x1E), 1, 0);
-    func_800E5A00_minigame(object, 0x20, func_80017BB8_main(character, 0x22), 0, 0);
-    func_800E5A00_minigame(object, 0x16, func_80017BB8_main(character, 0x96), 1, 0);
-    func_800E5A00_minigame(object, 0xD, func_80017BB8_main(character, 0x2F), 1, 120);
-    func_800E5A00_minigame(object, 0xE, func_80017BB8_main(character, 0x37), 1, 120);
-    func_800E5A00_minigame(object, 0x21, func_80017BB8_main(character, 0x97), 2, 0);
+    Hu3DModelDynamicFree(object->model[1]);
+    object->model[3] = Hu3DModelRead(3, 0x2BD);
+    object->model[4] = Hu3DModelRead(4, 0x2BD);
+    object->model[8] = Hu3DModelRead(8, 0x2BD);
+    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(character, 0), 1, 0);
+    func_800E5A00_minigame(object, 1, CharMotionDataNumGet(character, 1), 1, 0);
+    func_800E5A00_minigame(object, 2, CharMotionDataNumGet(character, 2), 1, 0);
+    func_800E5A00_minigame(object, 0x11, CharMotionDataNumGet(character, 0xE), 0, 0);
+    func_800E5A00_minigame(object, 3, CharMotionDataNumGet(character, 0x1D), 1, 0);
+    func_800E5A00_minigame(object, 4, CharMotionDataNumGet(character, 0x1E), 1, 0);
+    func_800E5A00_minigame(object, 0x20, CharMotionDataNumGet(character, 0x22), 0, 0);
+    func_800E5A00_minigame(object, 0x16, CharMotionDataNumGet(character, 0x96), 1, 0);
+    func_800E5A00_minigame(object, 0xD, CharMotionDataNumGet(character, 0x2F), 1, 120);
+    func_800E5A00_minigame(object, 0xE, CharMotionDataNumGet(character, 0x37), 1, 120);
+    func_800E5A00_minigame(object, 0x21, CharMotionDataNumGet(character, 0x97), 2, 0);
     if (object->work[0] == 0) {
         D_8010CF18_storm_chasers = rand8() & 3;
     } else {
@@ -1794,9 +1794,9 @@ void func_8010BF3C_storm_chasers(omObjData *object) {
 void func_8010BF84_storm_chasers(omObjData *object) {
     if (D_8010CCAC_storm_chasers != 0) {
         D_8010CCAC_storm_chasers--;
-        func_8003F578_main((D_8010CCAC_storm_chasers + 0x1D) / 30);
+        GMesTimerValueSet((D_8010CCAC_storm_chasers + 0x1D) / 30);
     } else {
-        func_8003F5C0_main();
+        GMesTimerEnd();
         object->func = func_8010BF3C_storm_chasers;
         D_8010CCA4_storm_chasers = 1;
     }
@@ -1867,7 +1867,7 @@ void func_8010C29C_storm_chasers(omObjData *object) {
         WipeCreateOut(WIPE_TYPE_NORMAL, 20);
         object->func = func_8010C264_storm_chasers;
         HuAudSeqFadeOut(30);
-        func_8004AB0C_main(30);
+        HuAudFXAllFadeOut(30);
     }
 }
 
@@ -1993,8 +1993,8 @@ void func_8010C60C_storm_chasers(void) {
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
     obj->work[0] = 2;
     omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    func_8000B5F0_main(2);
-    func_8000B710_main(2);
+    CamSetupInit(2);
+    CamSetupMapCullAddMulti(2);
     for (i = 0; i < 2; i++) {
         ScissorSet(i, D_8010CAB8_storm_chasers[i].scissorX, D_8010CAB8_storm_chasers[i].scissorY,
                    D_8010CAB8_storm_chasers[i].scissorWidth, D_8010CAB8_storm_chasers[i].scissorHeight);
@@ -2006,10 +2006,10 @@ void func_8010C60C_storm_chasers(void) {
 }
 
 void func_8010C780_storm_chasers(void) {
-    func_8001FE20_main(50);
-    func_800142A0_main(50);
+    MapCollInit(50);
+    Hu3DSprModelInit(50);
     omInitObjMan(60, 0);
-    func_8004A208_main();
+    omGameSysInit();
     func_8010C60C_storm_chasers();
     Hu3DGLightMaxSet(2);
     Hu3DGLightColorSet(0, 144, 144, 144);
@@ -2019,8 +2019,8 @@ void func_8010C780_storm_chasers(void) {
     D_800EC1B8_minigame = 0;
     D_800EC280_minigame = 0;
     D_800EBE28_minigame = 0;
-    func_80045010_main(D_8010CC8C_storm_chasers, 0);
-    func_80045010_main(D_8010CC8C_storm_chasers, 1);
+    GMesFontMesCreate(D_8010CC8C_storm_chasers, 0);
+    GMesFontMesCreate(D_8010CC8C_storm_chasers, 1);
     omAddObj(1000, 0, 0, -1, func_8010C57C_storm_chasers);
     omAddObj(1000, 0, 0, -1, func_8010C29C_storm_chasers);
     func_800E5EA0_minigame(&D_8010C8B0_storm_chasers);

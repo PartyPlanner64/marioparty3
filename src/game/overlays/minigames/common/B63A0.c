@@ -225,7 +225,7 @@ void func_800E4248_minigame(omObjData *arg0, f32 x, f32 y, f32 z) {
             if (HuSqrtf(dx * dx + dy * dy + dz * dz) < otherData->unk48 + data->unk70) {
                 func_800E5690_minigame(other, 0x25);
                 otherData->unk40 = D_800EB760_minigame + D_800EB760_minigame;
-                otherData->unk3C = func_800202A8_main(atan2df(dx, dz) + 90.0f);
+                otherData->unk3C = HuAngleWrap(atan2df(dx, dz) + 90.0f);
                 otherData->unkC0 = 90;
             }
         }
@@ -264,7 +264,7 @@ void func_800E454C_minigame(omObjData *arg0, omObjData *arg1, f32 x, f32 z, u16 
                 otherData->unk40 = -D_800EB760_minigame;
                 otherData->unk38 = -D_800EB744_minigame * 0.6f;
             }
-            otherData->unk3C = func_800202A8_main(data->unk3C + 180.0f);
+            otherData->unk3C = HuAngleWrap(data->unk3C + 180.0f);
         } else {
             func_800E5690_minigame(arg1, 0x1F);
             if (otherData->unk38 == 1000.0f) {
@@ -324,8 +324,8 @@ void func_800E4890_minigame(omObjData *arg0, f32 x, f32 y, f32 z, f32 groundY, V
             Hu3DModelPosSet(arg0->model[1], x, groundY, z);
         }
         func_800E3628_minigame(arg0->model[1], normal);
-        func_8001C258_main(arg0->model[1], 4, 0);
+        Hu3DModelAttrSet(arg0->model[1], 4, 0);
     } else {
-        func_8001C258_main(arg0->model[1], 4, 4);
+        Hu3DModelAttrSet(arg0->model[1], 4, 4);
     }
 }

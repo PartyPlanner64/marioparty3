@@ -49,7 +49,7 @@ extern s16 D_800D418E_main;
 extern Mtx *MTXBuf;
 extern s16 MTXBufNum;
 
-void func_8001FE20_main(s16 count) {
+void MapCollInit(s16 count) {
     s32 i;
 
     D_800B19E2_main = 0;
@@ -62,11 +62,11 @@ void func_8001FE20_main(s16 count) {
     D_800B19E4_main = 0;
 }
 
-s32 func_8001FED0_main(s16 index) {
+s32 MapCollSquareCheck(s16 index) {
     return D_800D1104_main[index].width == D_800D1104_main[index].depth;
 }
 
-s16 func_8001FF04_main(s16 model) {
+s16 MapCollCreate(s16 model) {
     s16 index;
     u8 *data;
     u32 size;
@@ -121,7 +121,7 @@ s16 func_8001FF04_main(s16 model) {
     return index;
 }
 
-f32 func_800202A8_main(f32 angle) {
+f32 HuAngleWrap(f32 angle) {
     if (angle >= 360.0f) {
         angle -= 360.0f;
     } else if (angle < 0.0f) {
@@ -130,7 +130,7 @@ f32 func_800202A8_main(f32 angle) {
     return angle;
 }
 
-s32 func_800202FC_main(Vec *vec) {
+s32 MapVecNormalize(Vec *vec) {
     f32 x = vec->x, y = vec->y, z = vec->z;
     f32 length = HuSqrtf(x * x + y * y + z * z);
 
@@ -143,7 +143,7 @@ s32 func_800202FC_main(Vec *vec) {
     return TRUE;
 }
 
-s32 func_8002038C_main(Hu3DPoint *p0, Hu3DPoint *p1, Hu3DPoint *p2, Vec *out) {
+s32 MapTriNormalGet(Hu3DPoint *p0, Hu3DPoint *p1, Hu3DPoint *p2, Vec *out) {
     f32 d1x = (f32)p1->x - (f32)p0->x;
     f32 d1y = (f32)p1->y - (f32)p0->y;
     f32 d1z = (f32)p1->z - (f32)p0->z;
@@ -153,10 +153,10 @@ s32 func_8002038C_main(Hu3DPoint *p0, Hu3DPoint *p1, Hu3DPoint *p2, Vec *out) {
     out->x = d1y * d2z - d1z * d2y;
     out->y = d1z * d2x - d1x * d2z;
     out->z = d1x * d2y - d1y * d2x;
-    return func_800202FC_main(out);
+    return MapVecNormalize(out);
 }
 
-f32 func_8002048C_main(f32 x, f32 z, Hu3DPoint *p, Hu3DPoint *q) {
+f32 MapXZCross(f32 x, f32 z, Hu3DPoint *p, Hu3DPoint *q) {
     f32 px = p->x - x;
     f32 pz = p->z - z;
     f32 qx = q->x - x;
@@ -164,7 +164,7 @@ f32 func_8002048C_main(f32 x, f32 z, Hu3DPoint *p, Hu3DPoint *q) {
     return -(pz * qx - px * qz);
 }
 
-f32 func_800204F4_main(f32 x, f32 y, f32 z, Hu3DPoint *points, Hu3DQuad *quad) {
+f32 MapCalcPoint(f32 x, f32 y, f32 z, Hu3DPoint *points, Hu3DQuad *quad) {
     Vec normal;
     Vec p;
     f32 nx, ny, nz;
@@ -173,36 +173,36 @@ f32 func_800204F4_main(f32 x, f32 y, f32 z, Hu3DPoint *points, Hu3DQuad *quad) {
     p.x = p0->x;
     p.y = p0->y;
     p.z = p0->z;
-    func_8002038C_main(&points[quad->vtx[1]], &points[quad->vtx[2]], &points[quad->vtx[3]], &normal);
+    MapTriNormalGet(&points[quad->vtx[1]], &points[quad->vtx[2]], &points[quad->vtx[3]], &normal);
     nx = normal.x;
     ny = normal.y;
     nz = normal.z;
     return y + (nx * (p.x - x) + ny * (p.y - y) + nz * (p.z - z)) / ny;
 }
 
-s32 func_80020604_main(f32 x, f32 z, s16 *face, Hu3DPoint *points) {
+s32 MapIflnnerPolygon(f32 x, f32 z, s16 *face, Hu3DPoint *points) {
     Vec normal;
     s32 count;
     s32 i;
     s32 next;
 
-    func_8002038C_main(&points[face[1]], &points[face[2]], &points[face[3]], &normal);
+    MapTriNormalGet(&points[face[1]], &points[face[2]], &points[face[3]], &normal);
     if (normal.y == 0.0f) {
         return FALSE;
     }
     count = ((u16)face[0] >> 14) + 2;
     face++;
-    if (func_8002048C_main(x, z, &points[face[0]], &points[face[1]]) > 0.0f) {
+    if (MapXZCross(x, z, &points[face[0]], &points[face[1]]) > 0.0f) {
         for (i = 1; i < count; i++) {
             next = (i + 1) % count;
-            if (func_8002048C_main(x, z, &points[face[i]], &points[face[next]]) < 0.0f) {
+            if (MapXZCross(x, z, &points[face[i]], &points[face[next]]) < 0.0f) {
                 return FALSE;
             }
         }
     } else {
         for (i = 1; i < count; i++) {
             next = (i + 1) % count;
-            if (func_8002048C_main(x, z, &points[face[i]], &points[face[next]]) > 0.0f) {
+            if (MapXZCross(x, z, &points[face[i]], &points[face[next]]) > 0.0f) {
                 return FALSE;
             }
         }
@@ -210,7 +210,7 @@ s32 func_80020604_main(f32 x, f32 z, s16 *face, Hu3DPoint *points) {
     return TRUE;
 }
 
-void func_8002087C_main(HmfModel *model, HuMtx4F mtx) {
+void Hu3DModelMtxGet(HmfModel *model, HuMtx4F mtx) {
     HmfSkeletonNode *node;
     HuMtx4F temp;
 
@@ -225,7 +225,7 @@ void func_8002087C_main(HmfModel *model, HuMtx4F mtx) {
     if (model->scale.x != 1.0f || model->scale.y != 1.0f || model->scale.z != 1.0f) {
         mtxScaleCat(mtx, model->scale.x, model->scale.y, model->scale.z);
     }
-    func_80018044_main(model->mtx, mtx, mtx);
+    mtxCat(model->mtx, mtx, mtx);
     node = model->hmf->unk68;
     guMtxIdentF(temp);
     if (node->unk08.x == 0.0f || node->unk08.y == 0.0f || node->unk08.z == 0.0f) {
@@ -241,7 +241,7 @@ void func_8002087C_main(HmfModel *model, HuMtx4F mtx) {
     guMtxF2L(mtx, &MTXBuf[MTXBufNum]);
 }
 
-void func_80020B48_main(CollisionRect *rect, HmfModel *model) {
+void MapCullRect(CollisionRect *rect, HmfModel *model) {
     HuMtx4F mtx;
     HuMtx4F ident;
     CollisionExtent *extent;
@@ -258,10 +258,10 @@ void func_80020B48_main(CollisionRect *rect, HmfModel *model) {
     model->hmf->unkD0 = model->unkB4;
     extent = &rect->extent;
     if (model->unkB4 != NULL) {
-        func_80019668_main(model->unkB4);
+        Hu3DLLightSet(model->unkB4);
     }
     gridIndex = model->unk10;
-    func_8002087C_main(model, mtx);
+    Hu3DModelMtxGet(model, mtx);
     guMtxIdentF(ident);
     x = (D_800D1104_main[gridIndex].width * D_800D1104_main[gridIndex].cellWidth / 2.0f + rect->x + model->pos.x -
          2.0f * sindf(rect->angle) * D_800D1104_main[gridIndex].cellWidth) /
@@ -292,22 +292,22 @@ void func_80020B48_main(CollisionRect *rect, HmfModel *model) {
             cell = z * D_800D1104_main[gridIndex].width + x;
             object = D_800D1104_main[gridIndex].unk_14[cell];
             if (object != -1) {
-                func_80024DF0_main(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
+                Hu3DDrawEntryAdd(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
             }
             object = D_800D1104_main[gridIndex].unk_18[cell];
             if (object != -1) {
-                func_80024DF0_main(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
+                Hu3DDrawEntryAdd(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
             }
             object = D_800D1104_main[gridIndex].unk_1C[cell];
             if (object != -1) {
-                func_80024DF0_main(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
+                Hu3DDrawEntryAdd(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
             }
         }
     }
     MTXBufNum++;
 }
 
-void func_80020E94_main(CollisionFan *fan, HmfModel *model) {
+void MapCullFan(CollisionFan *fan, HmfModel *model) {
     Hu3DPoint tri[3];
     HuMtx4F mtx;
     HuMtx4F ident;
@@ -326,10 +326,10 @@ void func_80020E94_main(CollisionFan *fan, HmfModel *model) {
     model->hmf->unkD0 = model->unkB4;
     shape = &fan->shape;
     if (model->unkB4 != NULL) {
-        func_80019668_main(model->unkB4);
+        Hu3DLLightSet(model->unkB4);
     }
     gridIndex = model->unk10;
-    func_8002087C_main(model, mtx);
+    Hu3DModelMtxGet(model, mtx);
     guMtxIdentF(ident);
     /* Dead stores (only the sindf/cosdf calls survive), but they are needed for matching codegen. */
     x0 = D_800D1104_main[gridIndex].width * D_800D1104_main[gridIndex].cellWidth / 2.0f + fan->x +
@@ -366,38 +366,38 @@ void func_80020E94_main(CollisionFan *fan, HmfModel *model) {
             x1 = x0 + D_800D1104_main[gridIndex].cellWidth;
             object = D_800D1104_main[gridIndex].unk_14[cell];
             if (object != -1) {
-                if (func_80021550_main(x0, z0, tri) == TRUE) {
-                    func_80024DF0_main(model->hmf, object, &MTXBuf[MTXBufNum], ident);
-                } else if (func_80021550_main(x1, z0, tri) == TRUE) {
-                    func_80024DF0_main(model->hmf, object, &MTXBuf[MTXBufNum], ident);
-                } else if (func_80021550_main(x0, z1, tri) == TRUE) {
-                    func_80024DF0_main(model->hmf, object, &MTXBuf[MTXBufNum], ident);
-                } else if (func_80021550_main(x1, z1, tri) == TRUE) {
-                    func_80024DF0_main(model->hmf, object, &MTXBuf[MTXBufNum], ident);
+                if (MapIflnnerTriangle(x0, z0, tri) == TRUE) {
+                    Hu3DDrawEntryAdd(model->hmf, object, &MTXBuf[MTXBufNum], ident);
+                } else if (MapIflnnerTriangle(x1, z0, tri) == TRUE) {
+                    Hu3DDrawEntryAdd(model->hmf, object, &MTXBuf[MTXBufNum], ident);
+                } else if (MapIflnnerTriangle(x0, z1, tri) == TRUE) {
+                    Hu3DDrawEntryAdd(model->hmf, object, &MTXBuf[MTXBufNum], ident);
+                } else if (MapIflnnerTriangle(x1, z1, tri) == TRUE) {
+                    Hu3DDrawEntryAdd(model->hmf, object, &MTXBuf[MTXBufNum], ident);
                 }
             }
             object = D_800D1104_main[gridIndex].unk_18[cell];
             if (object != -1) {
-                if (func_80021550_main(x0, z0, tri) == TRUE) {
-                    func_80024DF0_main(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
-                } else if (func_80021550_main(x1, z0, tri) == TRUE) {
-                    func_80024DF0_main(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
-                } else if (func_80021550_main(x0, z1, tri) == TRUE) {
-                    func_80024DF0_main(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
-                } else if (func_80021550_main(x1, z1, tri) == TRUE) {
-                    func_80024DF0_main(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
+                if (MapIflnnerTriangle(x0, z0, tri) == TRUE) {
+                    Hu3DDrawEntryAdd(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
+                } else if (MapIflnnerTriangle(x1, z0, tri) == TRUE) {
+                    Hu3DDrawEntryAdd(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
+                } else if (MapIflnnerTriangle(x0, z1, tri) == TRUE) {
+                    Hu3DDrawEntryAdd(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
+                } else if (MapIflnnerTriangle(x1, z1, tri) == TRUE) {
+                    Hu3DDrawEntryAdd(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
                 }
             }
             object = D_800D1104_main[gridIndex].unk_1C[cell];
             if (object != -1) {
-                if (func_80021550_main(x0, z0, tri) == TRUE) {
-                    func_80024DF0_main(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
-                } else if (func_80021550_main(x1, z0, tri) == TRUE) {
-                    func_80024DF0_main(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
-                } else if (func_80021550_main(x0, z1, tri) == TRUE) {
-                    func_80024DF0_main(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
-                } else if (func_80021550_main(x1, z1, tri) == TRUE) {
-                    func_80024DF0_main(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
+                if (MapIflnnerTriangle(x0, z0, tri) == TRUE) {
+                    Hu3DDrawEntryAdd(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
+                } else if (MapIflnnerTriangle(x1, z0, tri) == TRUE) {
+                    Hu3DDrawEntryAdd(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
+                } else if (MapIflnnerTriangle(x0, z1, tri) == TRUE) {
+                    Hu3DDrawEntryAdd(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
+                } else if (MapIflnnerTriangle(x1, z1, tri) == TRUE) {
+                    Hu3DDrawEntryAdd(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
                 }
             }
         }
@@ -405,15 +405,15 @@ void func_80020E94_main(CollisionFan *fan, HmfModel *model) {
     MTXBufNum++;
 }
 
-s32 func_80021550_main(f32 x, f32 z, Hu3DPoint *tri) {
+s32 MapIflnnerTriangle(f32 x, f32 z, Hu3DPoint *tri) {
     s32 i;
     s32 next;
     f32 side;
 
-    if (func_8002048C_main(x, z, &tri[0], &tri[1]) > 0.0f) {
+    if (MapXZCross(x, z, &tri[0], &tri[1]) > 0.0f) {
         for (i = 1; i < 3; i++) {
             next = (i + 1) % 3;
-            side = func_8002048C_main(x, z, &tri[i], &tri[next]);
+            side = MapXZCross(x, z, &tri[i], &tri[next]);
             if (side == 0.0f) {
                 return TRUE;
             }
@@ -424,7 +424,7 @@ s32 func_80021550_main(f32 x, f32 z, Hu3DPoint *tri) {
     } else {
         for (i = 1; i < 3; i++) {
             next = (i + 1) % 3;
-            side = func_8002048C_main(x, z, &tri[i], &tri[next]);
+            side = MapXZCross(x, z, &tri[i], &tri[next]);
             if (side == 0.0f) {
                 return TRUE;
             }
@@ -436,7 +436,7 @@ s32 func_80021550_main(f32 x, f32 z, Hu3DPoint *tri) {
     return TRUE;
 }
 
-void func_800216F8_main(CollisionCircle *circle, HmfModel *model) {
+void MapCullCircle(CollisionCircle *circle, HmfModel *model) {
     f32 *radius = &circle->radius;
     HuMtx4F mtx;
     HuMtx4F ident;
@@ -454,10 +454,10 @@ void func_800216F8_main(CollisionCircle *circle, HmfModel *model) {
 
     model->hmf->unkD0 = model->unkB4;
     if (model->unkB4 != NULL) {
-        func_80019668_main(model->unkB4);
+        Hu3DLLightSet(model->unkB4);
     }
     gridIndex = model->unk10;
-    func_8002087C_main(model, mtx);
+    Hu3DModelMtxGet(model, mtx);
     guMtxIdentF(ident);
     minX = (circle->x - *radius + D_800D1104_main[gridIndex].width * D_800D1104_main[gridIndex].cellWidth / 2.0f) / D_800D1104_main[gridIndex].cellWidth;
     maxX = (circle->x + *radius + D_800D1104_main[gridIndex].width * D_800D1104_main[gridIndex].cellWidth / 2.0f) / D_800D1104_main[gridIndex].cellWidth;
@@ -485,15 +485,15 @@ void func_800216F8_main(CollisionCircle *circle, HmfModel *model) {
                 cell = z * D_800D1104_main[gridIndex].width + x;
                 object = D_800D1104_main[gridIndex].unk_14[cell];
                 if (object != -1) {
-                    func_80024DF0_main(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
+                    Hu3DDrawEntryAdd(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
                 }
                 object = D_800D1104_main[gridIndex].unk_18[cell];
                 if (object != -1) {
-                    func_80024DF0_main(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
+                    Hu3DDrawEntryAdd(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
                 }
                 object = D_800D1104_main[gridIndex].unk_1C[cell];
                 if (object != -1) {
-                    func_80024DF0_main(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
+                    Hu3DDrawEntryAdd(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
                 }
             }
         }
@@ -501,13 +501,13 @@ void func_800216F8_main(CollisionCircle *circle, HmfModel *model) {
     MTXBufNum++;
 }
 
-void func_80021AF4_main(void) {
+void MapCollAllKill(void) {
     HuMemFreeAllWithTag(TAG_COLLISION);
     D_800B19E0_main = 0;
     D_800B19E2_main = 0;
 }
 
-void func_80021B20_main(s16 index) {
+void MapCollKill(s16 index) {
     CollisionGrid *grid;
 
     if (D_800B19E2_main != 0) {
@@ -523,11 +523,11 @@ void func_80021B20_main(s16 index) {
     }
 }
 
-void func_80021BE0_main(Hu3DQuadPool *pool, u16 numQuads) {
+void Hu3DQuadPoolInit(Hu3DQuadPool *pool, u16 numQuads) {
     pool->quads = HuMemAllocTag(numQuads * sizeof(Hu3DQuad *), TAG_COLLISION);
 }
 
-void func_80021C14_main(s16 model, Hu3DQuadPool *pool, s32 (*callback)(s32, s16 *, Hu3DPoint *, Vec *), Vec *pos) {
+void Hu3DQuadPoolCollect(s16 model, Hu3DQuadPool *pool, s32 (*callback)(s32, s16 *, Hu3DPoint *, Vec *), Vec *pos) {
     s32 i;
     s32 x;
     s32 z;
@@ -577,20 +577,20 @@ void func_80021C14_main(s16 model, Hu3DQuadPool *pool, s32 (*callback)(s32, s16 
     }
 }
 
-s32 func_80021E64_main(u16 count, s16 *vtx, Hu3DPoint *points, Hu3DSphere *sphere) {
+s32 MapFaceSphereCheck(u16 count, s16 *vtx, Hu3DPoint *points, Hu3DSphere *sphere) {
     f32 centerX;
     f32 centerZ;
     f32 dist;
 
     if (count == 4) {
-        dist = func_80021F98_main(points, vtx[0], vtx[2], vtx[3], &centerX, &centerZ) + sphere->radius;
+        dist = MapCircumcircleGet(points, vtx[0], vtx[2], vtx[3], &centerX, &centerZ) + sphere->radius;
         centerX -= sphere->pos.x;
         centerZ -= sphere->pos.z;
         if (centerX * centerX + centerZ * centerZ < dist * dist) {
             return TRUE;
         }
     }
-    dist = func_80021F98_main(points, vtx[0], vtx[1], vtx[2], &centerX, &centerZ) + sphere->radius;
+    dist = MapCircumcircleGet(points, vtx[0], vtx[1], vtx[2], &centerX, &centerZ) + sphere->radius;
     centerX -= sphere->pos.x;
     centerZ -= sphere->pos.z;
     if (centerX * centerX + centerZ * centerZ < dist * dist) {
@@ -599,7 +599,7 @@ s32 func_80021E64_main(u16 count, s16 *vtx, Hu3DPoint *points, Hu3DSphere *spher
     return FALSE;
 }
 
-f32 func_80021F98_main(Hu3DPoint *points, s16 i0, s16 i1, s16 i2, f32 *centerX, f32 *centerZ) {
+f32 MapCircumcircleGet(Hu3DPoint *points, s16 i0, s16 i1, s16 i2, f32 *centerX, f32 *centerZ) {
     f32 dx;
     f32 dz;
     f32 dx2;
@@ -624,14 +624,14 @@ f32 func_80021F98_main(Hu3DPoint *points, s16 i0, s16 i1, s16 i2, f32 *centerX, 
     return HuSqrtf(dx * dx + dz * dz);
 }
 
-Hu3DQuad *func_80022198_main(Hu3DQuadPool *pool) {
+Hu3DQuad *Hu3DQuadPoolNext(Hu3DQuadPool *pool) {
     if (pool->curQuad == pool->numQuads) {
         return NULL;
     }
     return pool->quads[pool->curQuad++];
 }
 
-void func_800221CC_main(Hu3DQuadPool *pool, s32 offset, u16 mode) {
+void Hu3DQuadPoolSeek(Hu3DQuadPool *pool, s32 offset, u16 mode) {
     s32 pos;
 
     switch (mode) {
@@ -654,6 +654,6 @@ void func_800221CC_main(Hu3DQuadPool *pool, s32 offset, u16 mode) {
     }
 }
 
-void func_80022288_main(Hu3DQuadPool *pool) {
+void Hu3DQuadPoolFree(Hu3DQuadPool *pool) {
     HuMemFree(pool->quads);
 }

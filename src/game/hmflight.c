@@ -31,7 +31,7 @@ void Hu3DLighInit(void) {
         D_800CE1D4_main->unk02[var_a1].unk06 = 100;
     }
     D_800CE1D4_main->unk00 = 1;
-    func_80019968_main(1);
+    Hu3DLightModeSet(1);
 }
 
 void Hu3DLightClose(void) {
@@ -118,7 +118,7 @@ void Hu3DGLightDirSet(s16 arg0, f32 arg1, f32 arg2, f32 arg3) {
     }
 }
 
-void func_80019668_main(HmfData_UnkD0 *arg0) {
+void Hu3DLLightSet(HmfData_UnkD0 *arg0) {
     Light *temp_s0 = &arg0->unk08[D_800D2008_main];
 
     temp_s0->l.col[0] = temp_s0->l.colc[0] = arg0->unk00;
@@ -150,7 +150,7 @@ void func_80019668_main(HmfData_UnkD0 *arg0) {
     }
 }
 
-s16 func_80019828_main(s16 arg0, s16 arg1) {
+s16 Hu3DModelLightInfoSet(s16 arg0, s16 arg1) {
     HmfData *temp_v0_2 = Hu3DData[arg0].hmf;
     UnkLightData_unk02 *temp_s5 = temp_v0_2->unkC0;
     s16 temp_v0 = temp_v0_2->unk20;
@@ -164,6 +164,6 @@ s16 func_80019828_main(s16 arg0, s16 arg1) {
     return temp_v0;
 }
 
-void func_80019968_main(s16 arg0) {
+void Hu3DLightModeSet(s16 arg0) {
     D_800CC0B4_main = arg0;
 }

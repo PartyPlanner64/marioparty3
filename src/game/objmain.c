@@ -539,11 +539,11 @@ omObjData **omGetGroupMemberList(s16 arg0) {
     return omgroup[arg0].objs;
 }
 
-omObjData *func_80047DD4_main(s16 arg0, u16 arg1) {
+omObjData *omGetGroupMember(s16 arg0, u16 arg1) {
     return omgroup[arg0].objs[arg1];
 }
 
-void func_80047DFC_main(s16 group, u32 stat) {
+void omGroupModeSet(s16 group, u32 stat) {
     omObjGroup *grp = &omgroup[group];
     s32 i;
 
@@ -554,11 +554,11 @@ void func_80047DFC_main(s16 group, u32 stat) {
     }
 }
 
-void func_80047E5C_main(s16 group, u16 idx, s32 flags) {
+void omGroupMemberModeSet(s16 group, u16 idx, s32 flags) {
     omgroup[group].objs[idx]->mode |= flags;
 }
 
-void func_80047E90_main(omObjData *obj, s32 arg1) {
+void omObjModeSet(omObjData *obj, s32 arg1) {
     obj->mode |= arg1;
 }
 
@@ -588,7 +588,7 @@ Process *omAddPrcObj(process_func func, u16 priority, s32 stackSize, s32 extData
     return temp_s0->processInstance;
 }
 
-Process *func_80047F50_main(process_func func, s32 priority, s32 stack_size, s32 extra_data_size, Process *parent) {
+Process *omAddChildPrcObj(process_func func, s32 priority, s32 stack_size, s32 extra_data_size, Process *parent) {
     unkProcessStruct *prcInfo;
     Process *process;
     s16 prevIdx;
@@ -683,13 +683,13 @@ void omOvlGotoEx(s32 ovlID, s16 event, u16 stat) {
     D_800D0A3A_main = 0;
 
     if (stat & 0x40 && D_800CCF52_main != 2) {
-        func_8004A444_main(2);
+        omHu3DLayerNumSet(2);
     } else if (stat & 0x80 && (D_800CCF52_main != 3)) {
-        func_8004A444_main(3);
+        omHu3DLayerNumSet(3);
     }
 
     if ((D_800D4082_main != D_800A1920_main[ovlID].unk_00) || (D_800CD2F4_main != D_800A1920_main[ovlID].unk_02) || (D_800D6A56_main != D_800A1920_main[ovlID].unk_04)) {
-        func_8004A468_main(D_800A1920_main[ovlID].unk_00, D_800A1920_main[ovlID].unk_02, D_800A1920_main[ovlID].unk_04);
+        omHu3DParamSet(D_800A1920_main[ovlID].unk_00, D_800A1920_main[ovlID].unk_02, D_800A1920_main[ovlID].unk_04);
     }
 
     if (!(stat & 0x2000)) {
@@ -744,10 +744,10 @@ void omOvlKill(void) {
     D_800B23C0_main = D_800CD050_main;
     GMesClose();
     Hu3DAllKill();
-    func_80021AF4_main();
+    MapCollAllKill();
     omDestroyObjMan();
-    func_8000BA00_main();
-    func_800166D0_main();
+    espClose();
+    Hu3DSprModelAllKill();
     D_800CD280_main = 1;
 }
 
@@ -801,15 +801,15 @@ void omMain(void) {
         print8(0x18, 0x38, D_800D5218_main);
         sprintf(D_800D5218_main, "%02X", D_800A1906_main);
         print8(0x70, 0x38, D_800D5218_main);
-        i = func_80000F08_main(6);
-        sprintf(D_800D5218_main, "C:%04X D:%02X", i, func_80000F08_main(5));
+        i = msmSysDummy(6);
+        sprintf(D_800D5218_main, "C:%04X D:%02X", i, msmSysDummy(5));
         print8(0x28, 0x40, D_800D5218_main);
         if (D_800A1786_main == -1) {
             D_800A1786_main = printWin(0xE, 0x16, 0x82, 0x4A, 0xFF70);
         }
     }
-    func_8004B1AC_main();
-    func_8004AE28_main();
+    HuAudPlayerParamCopy();
+    HuAudStatUpdate();
     if (D_800A176C_main != 0) {
         if (D_800A1906_main & 8) {
             D_800A1783_main = 1;
@@ -826,17 +826,17 @@ void omMain(void) {
             if (D_800D1FA0_main != 1) {
                 if (D_800A1780_main == 1) {
                     if (D_800D0A3A_main == 4) {
-                        func_8001BF14_main();
+                        Hu3DModelAllReset();
                     }
                     if (D_800D0A3A_main != 0) {
                         D_800D0A3A_main--;
                         return;
                     }
                     D_800CCF52_main = D_800D1710_main;
-                    func_8000F024_main(D_800A1240_main, (u8)D_800D1710_main, 2);
+                    HuGfxFBPoolSet(D_800A1240_main, (u8)D_800D1710_main, 2);
                     Hu3DInit(HuMemMemoryAllocPerm, HuMemMemoryFreePerm, D_800D4082_main, D_800CD2F4_main, (u16)(s32)D_800D6A56_main, (u8)(s32)(u8)D_800D1710_main);
-                    func_800224BC_main();
-                    func_8001BF90_main(0x02000000, 0x3D0800);
+                    Hu3DPreProc();
+                    Hu3DScreenClear(0x02000000, 0x3D0800);
                     Hu3DCamInit(1);
                 }
                 D_800A1780_main = 0;
@@ -848,7 +848,7 @@ void omMain(void) {
                         return;
                     } else {
                         D_800B23CA_main = 0;
-                        if ((func_8004B2C0_main()) == 1) {
+                        if ((HuAudDummy()) == 1) {
                             HuAudSeqStop();
                             msmMusStop(0);
                             msmMusStop(1);
@@ -858,7 +858,7 @@ void omMain(void) {
                                 return;
                             } else if (D_800A1849_main != 1) {
                                 return;
-                            } else if (func_80000DF0_main() != 0) {
+                            } else if (msmSysIsPlay() != 0) {
                                 return;
                             }
                             D_800B23CA_main = 1;
@@ -868,7 +868,7 @@ void omMain(void) {
                     }
                 } else {
                     if (!(--D_800B23CA_main)) {
-                        func_8004B2C8_main();
+                        HuAudInit();
                         D_800A190A_main = D_800A1908_main;
                         D_800A190E_main = D_800A190C_main;
                         D_800A1782_main = 0;
@@ -886,9 +886,9 @@ void omMain(void) {
             }
             D_800D6A58_main = 0;
             espInit();
-            func_8001766C_main();
+            CharAnimInit();
             D_800A176C_main = 0;
-            func_8004A49C_main();
+            omModeOvlLoad();
             OvlLoad(omovl);
             Hu3DLighInit();
             D_800D5410_main = 1.0f;
@@ -907,18 +907,18 @@ void omMain(void) {
             Hu3DGLightStatSet(3, 0, 0);
             Hu3DBGColorSet(0, 0, 0);
             D_800CD280_main = 1;
-            func_8001F6B0_main(1);
-            func_80045C2C_main();
+            Hu3DDrawModeSet(1);
+            HuAudCharVoiceInit();
             if (D_800A176D_main == 0) {
                 HuAudFXAllStop();
                 if (D_800A1783_main == 1) {
-                    func_8004AB7C_main(0x7F);
+                    HuAudFXMasterVolSet(0x7F);
                 }
-                func_8004ADDC_main(0x40);
-                func_80007D2C_main(-1, D_800A1784_main);
+                HuAudFXAllPanning(0x40);
+                msmSeSetFxMix(-1, D_800A1784_main);
             }
             if (D_800A1783_main == 1) {
-                func_8004AA04_main(0x7F);
+                HuAudSeqMasterVolSet(0x7F);
             }
             D_800A1783_main = 0;
             D_800D1FA0_main = 0;
@@ -939,7 +939,7 @@ void omMain(void) {
             return;
         }
     }
-    temp_s3 = func_8004D6AC_main(0, 0, 0xFF);
+    temp_s3 = HuProfCpuBegin(0, 0, 0xFF);
     D_800CC370_main = 0;
     D_800D054C_main = NULL;
     for (var_s1 = omobjlast; var_s1 != -1;) {
@@ -977,7 +977,7 @@ void omMain(void) {
         }
     }
     D_800CE190_main = 4;
-    func_8004D6E8_main(temp_s3);
+    HuProfCpuEnd(temp_s3);
     D_800CE190_main = 5;
     if (D_800A176C_main != 0) {
         D_800CE190_main = 6;
@@ -1037,7 +1037,7 @@ void omSystemKeyCheckSetup(void) {
 }
 
 // Debug pause menu.
-void func_80048EE8_main(omObjData *object) {
+void omDBGSystemKeyCheck(omObjData *object) {
     char *buf;
     s32 port;
     s32 i;
@@ -1089,9 +1089,9 @@ void func_80048EE8_main(omObjData *object) {
             } else if (D_800CDD5C_main[port] & U_CBUTTONS) {
                 object->work[0] ^= 8;
                 if (object->work[0] & 8) {
-                    func_8004DF7C_main(1, 1, -1, 0x60, 0x80, 0xFF, 0, 0, 100);
+                    saftyFrameFlashSet(1, 1, -1, 0x60, 0x80, 0xFF, 0, 0, 100);
                 } else {
-                    func_8004DFC0_main();
+                    saftyFrameFlashReset();
                     D_800CE1DC_main.unk_00 = D_800CE1DC_main.unk_01 = 0;
                     D_800CE1DC_main.unk_02 = 0x90;
                 }
@@ -1134,16 +1134,16 @@ void func_80048EE8_main(omObjData *object) {
                         }
                         break;
                     case 2: // LIGHT
-                        func_8004DF10_main();
+                        pfWinClose();
                         omdispinfo = 0;
                         D_800A1786_main = -1;
-                        func_8004DFD8_main();
+                        saftyFrameReset();
                         object->work[0] |= 4;
-                        func_80046600_main();
+                        LightDebugCreate();
                         break;
                     case 3: // INFO
                         if ((omdispinfo ^= 1) == 0) {
-                            func_8004DEC8_main(D_800A1786_main);
+                            pfWinKill(D_800A1786_main);
                             D_800A1786_main = -1;
                         }
                         break;
@@ -1184,12 +1184,12 @@ void func_80048EE8_main(omObjData *object) {
                         }
                     }
                 }
-                func_80003B70_main(D_800CDBC8_main, 0);
+                msmMusResume(D_800CDBC8_main, 0);
                 if (D_800A1785_main == 1) {
-                    func_80003B70_main(1, 0);
+                    msmMusResume(1, 0);
                     D_800A1785_main = 0;
                 }
-                func_8004B0D4_main();
+                HuAudFXAllVolRestore();
                 if (D_800A1906_main & 8) {
                     D_800A1906_main &= ~8;
                 }
@@ -1200,12 +1200,12 @@ void func_80048EE8_main(omObjData *object) {
                 }
             }
             if (!(object->work[0] & 4)) {
-                func_8004DEC8_main(D_800B23CC_main);
-                func_8004DEC8_main(D_800B23CE_main);
+                pfWinKill(D_800B23CC_main);
+                pfWinKill(D_800B23CE_main);
             }
             object->work[0] &= ~4;
-            func_8004DFD8_main();
-            func_800466D8_main();
+            saftyFrameReset();
+            LightDebugKill();
         }
         return;
     }
@@ -1240,13 +1240,13 @@ void func_80048EE8_main(omObjData *object) {
         }
         D_800B23CC_main = printWin(120, 96, 208, 168, 0x40FF);
         D_800B23CE_main = printWin(116, 92, 204, 164, 0x90FF);
-        func_8004DF4C_main(0, 0, 0x90);
-        func_80003A70_main(D_800CDBC8_main);
+        saftyFrameSet(0, 0, 0x90);
+        msmMusPause(D_800CDBC8_main);
         if (msmMusGetStatus(1) == 4) {
-            func_80003A70_main(1);
+            msmMusPause(1);
             D_800A1785_main = 1;
         }
-        func_8004AFBC_main(4);
+        HuAudFXAllVolFadeDown(4);
         for (i = 0; i < 4; i++) {
             if (CheckControllerRead(i)) {
                 ResetVibrator(i);
@@ -1299,13 +1299,13 @@ void omSystemKeyCheck(omObjData *object) {
             if (D_800CE214_main == 1) {
                 HuWinAllKill();
             }
-            func_80045A90_main();
-            func_80003B70_main(D_800CDBC8_main, 0);
+            GamePauseEnd();
+            msmMusResume(D_800CDBC8_main, 0);
             if (D_800A1785_main == 1) {
-                func_80003B70_main(1, 0);
+                msmMusResume(1, 0);
                 D_800A1785_main = 0;
             }
-            func_8004B0D4_main();
+            HuAudFXAllVolRestore();
             if (D_800A1906_main & 8) {
                 D_800A1906_main &= ~8;
             }
@@ -1366,12 +1366,12 @@ void omSystemKeyCheck(omObjData *object) {
         if (_CheckFlag(FLAG_MG_PRACTICE)) {
             espDispOff(D_800B23C4_main);
         }
-        func_80003A70_main(D_800CDBC8_main);
+        msmMusPause(D_800CDBC8_main);
         if (msmMusGetStatus(1) == 4) {
-            func_80003A70_main(1);
+            msmMusPause(1);
             D_800A1785_main = 1;
         }
-        func_8004AFBC_main(4);
+        HuAudFXAllVolFadeDown(4);
         for (i = 0; i < 4; i++) {
             if (CheckControllerRead(i)) {
                 ResetVibrator(i);
@@ -1430,8 +1430,8 @@ void omAllUPause(void) {
     }
 }
 
-void func_8004A208_main(void) {
-    func_80045350_main();
+void omGameSysInit(void) {
+    MgCoinReset();
     if (omovlstat & 0x10) {
         omSystemKeyCheckSetup();
         if (omovlstat & 4) {
@@ -1439,9 +1439,9 @@ void func_8004A208_main(void) {
         }
     }
     if (omovlstat & 0x20) {
-        func_8004CEA4_main();
+        omSysTimerCreate();
     }
-    func_8004CF30_main();
+    HuAudFadeObjCreate();
     if (_CheckFlag(FLAG_MG_PRACTICE) != 0) {
         D_800B23C2_main = HuSprAnimDataRead(0x94);
         D_800B23C4_main = espEntry(D_800B23C2_main, 0, 1);
@@ -1450,11 +1450,11 @@ void func_8004A208_main(void) {
         D_800B23C8_main = D_800A18B8_main[GwSystem.minigame_index - 1];
         espPosSet(D_800B23C4_main, D_800A18A8_main[D_800B23C8_main][0], D_800A18A8_main[D_800B23C8_main][1]);
         D_800B23C6_main = 0;
-        omSetStatBit(omAddObj(10, 0, 0, -1, func_8004A354_main), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+        omSetStatBit(omAddObj(10, 0, 0, -1, omPracticeSprExec), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     }
 }
 
-void func_8004A354_main(omObjData *arg0) {
+void omPracticeSprExec(omObjData *arg0) {
     D_800B23C6_main += 10;
     if (D_800B23C6_main > 180) {
         D_800B23C6_main -= 180;
@@ -1468,13 +1468,13 @@ void func_8004A354_main(omObjData *arg0) {
     }
 }
 
-void func_8004A444_main(s32 arg0) {
+void omHu3DLayerNumSet(s32 arg0) {
     D_800A1780_main = 1;
     D_800D0A3A_main = 4;
     D_800D1710_main = arg0;
 }
 
-void func_8004A468_main(u16 arg0, u16 arg1, u16 arg2) {
+void omHu3DParamSet(u16 arg0, u16 arg1, u16 arg2) {
     D_800D4082_main = arg0;
     D_800CD2F4_main = arg1;
     D_800D6A56_main = arg2;
@@ -1482,7 +1482,7 @@ void func_8004A468_main(u16 arg0, u16 arg1, u16 arg2) {
     D_800D0A3A_main = 4;
 }
 
-void func_8004A49C_main(void) {
+void omModeOvlLoad(void) {
     s16 ovlIndex;
 
     if (omovlstat & 0x5) {
@@ -1495,9 +1495,9 @@ void func_8004A49C_main(void) {
         return;
     }
     if (ovlIndex == D_800A1754_main) {
-        func_8000B1A0_main(ovlIndex, 6);
+        OvlModeLoad(ovlIndex, 6);
     } else {
-        func_8000B1A0_main(ovlIndex, 7);
+        OvlModeLoad(ovlIndex, 7);
     }
     D_800A1754_main = ovlIndex;
 }

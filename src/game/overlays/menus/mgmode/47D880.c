@@ -183,13 +183,13 @@ void func_8011667C_mgmode(MgmodeModelEntry *entries) {
     s16 model;
 
     for (i = 0; entry->unk_00 != -1; i++, entry++) {
-        D_8011B8A8_mgmode[i] = func_8000B108_main(entry->unk_00, entry->unk_04 | 0x288);
+        D_8011B8A8_mgmode[i] = Hu3DModelRead(entry->unk_00, entry->unk_04 | 0x288);
         model = D_8011B8A8_mgmode[i];
         Hu3DModelCameraSet(model, 1);
         func_80116610_mgmode(entries, i, model);
         D_8011B780_mgmode[i] = Hu3DData[model].motId;
         if (D_8011B780_mgmode[i] != -1) {
-            func_8001C814_main(model, -1, entry->motAttr);
+            Hu3DMotionAttrSet(model, -1, entry->motAttr);
         }
     }
 }
@@ -261,8 +261,8 @@ void func_80116A78_mgmode(MgmodeEsprite *arg0, s16 index, s16 tpLvl) {
 }
 
 void func_80116AA8_mgmode(MgmodeEsprite *arg0, s16 index, s16 arg2) {
-    func_8000BD50_main(arg0[index].espriteSlot, arg2);
-    func_8000BDDC_main(arg0[index].espriteSlot, 0);
+    espPatNoSet(arg0[index].espriteSlot, arg2);
+    espAnimModeSet(arg0[index].espriteSlot, 0);
 }
 
 void func_80116AEC_mgmode(MgmodeEsprite *arg0, s16 index, u16 arg2) {

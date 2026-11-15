@@ -141,12 +141,12 @@ void func_801059A0_fridged_bridges(void) {
     s32 i;
 
     omInitObjMan(60, 0);
-    func_8004A208_main();
-    func_8001FE20_main(16);
-    func_80021BE0_main(&D_800EBEB0_minigame, 64);
-    func_80045C2C_main();
-    func_8000B690_main(4);
-    func_8000B710_main(4);
+    omGameSysInit();
+    MapCollInit(16);
+    Hu3DQuadPoolInit(&D_800EBEB0_minigame, 64);
+    HuAudCharVoiceInit();
+    CamSetupInitMulti(4);
+    CamSetupMapCullAddMulti(4);
     for (i = 0; i < 4; i++) {
         CZoomM[i] = 1340.0f;
         CRotM[i].x = -60.0f;
@@ -157,7 +157,7 @@ void func_801059A0_fridged_bridges(void) {
         CenterM[i].z = -420.0f;
         D_800CCF98_main[i] = 5000.0f;
         D_800D4198_main[i] = 1000.0f;
-        func_80012888_main(i, (void (*)(void *, struct HmfModel *))func_80020E94_main, &D_8010DA90_fridged_bridges[i]);
+        Hu3DCameraModelHookSet(i, (void (*)(void *, struct HmfModel *))MapCullFan, &D_8010DA90_fridged_bridges[i]);
     }
     obj = omAddObj(0x7FDA, 0, 0, -1, func_8010C1D8_fridged_bridges);
     obj->work[0] = 4;
@@ -262,7 +262,7 @@ void func_80105F34_fridged_bridges(omObjData *arg0) {
             case 5:
                 WipeCreateOut(WIPE_TYPE_NORMAL, 20);
                 HuAudSeqFadeOut(30);
-                func_8004AB0C_main(30);
+                HuAudFXAllFadeOut(30);
                 D_8010CF50_fridged_bridges = 1;
                 break;
         }
@@ -366,14 +366,14 @@ void func_801061C4_fridged_bridges(omObjData *arg0) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        arg0->model[i] = func_8000B108_main(D_8010CF54_fridged_bridges[i], 0x699);
-        arg0->model[i + 4] = func_8000B108_main(D_8010CF64_fridged_bridges[i], 0x689);
+        arg0->model[i] = Hu3DModelRead(D_8010CF54_fridged_bridges[i], 0x699);
+        arg0->model[i + 4] = Hu3DModelRead(D_8010CF64_fridged_bridges[i], 0x689);
         Hu3DModelCameraSet(arg0->model[i], D_8010CF48_fridged_bridges[i]);
         Hu3DModelCameraSet(arg0->model[i + 4], D_8010CF48_fridged_bridges[i]);
         D_8010D378_fridged_bridges[i].x = 0.0f;
         D_8010D378_fridged_bridges[i].y = 0.0f;
-        func_800335BC_main("sea_01_DEF", D_8010D368_fridged_bridges[i]);
-        func_8001C954_main(arg0->model[i + 4]);
+        Hu3DTexSizeGet("sea_01_DEF", D_8010D368_fridged_bridges[i]);
+        Hu3DModelVtxBufMake(arg0->model[i + 4]);
     }
     func_8010B164_fridged_bridges();
     arg0->func = func_801062F8_fridged_bridges;
@@ -387,7 +387,7 @@ void func_801062F8_fridged_bridges(omObjData *arg0) {
             D_8010D378_fridged_bridges[i].x += 0.1f;
             D_8010D378_fridged_bridges[i].y += 0.1f;
         }
-        func_8001E888_main(arg0->model[i + 4], D_8010D378_fridged_bridges[i].x, D_8010D378_fridged_bridges[i].y,
+        Hu3DModelObjTexScroll(arg0->model[i + 4], D_8010D378_fridged_bridges[i].x, D_8010D378_fridged_bridges[i].y,
                            D_8010D368_fridged_bridges[i][0], D_8010D368_fridged_bridges[i][1],
                            D_8010CF94_fridged_bridges[i], 0);
     }
@@ -435,17 +435,17 @@ void func_8010648C_fridged_bridges(omObjData *arg0, s16 playerIndex) {
     player->unk_6A = 0;
     chr = GwPlayer[playerIndex].chr;
     modelFile = D_800A178C_main[chr][0];
-    arg0->model[0] = func_8000B108_main(modelFile | D_800A178C_main[chr][1], 0x20699);
+    arg0->model[0] = Hu3DModelRead(modelFile | D_800A178C_main[chr][1], 0x20699);
     omSetTra(arg0, D_8010CFA4_fridged_bridges[playerIndex].x, D_8010CFA4_fridged_bridges[playerIndex].y,
              D_8010CFA4_fridged_bridges[playerIndex].z);
-    arg0->model[1] = func_8000B0D4_main(9, 0xA89);
+    arg0->model[1] = Hu3DModelRead3(9, 0xA89);
     Hu3DModelPosSet(arg0->model[1], arg0->trans.x, 0.0f, arg0->trans.z);
-    arg0->model[2] = func_8000B108_main(0x450011, 0xA9D);
-    arg0->model[3] = func_8000B108_main(0x450012, 0x69D);
-    arg0->model[4] = func_8000B108_main(modelFile | D_800A178C_main[chr][2], 0x2068D);
-    func_80017790_main(arg0->model[4], 2, chr, func_80017B6C_main(chr, 2, 0));
-    func_8001C514_main(arg0->model[4]);
-    arg0->model[5] = func_80017AD8_main(func_80017B6C_main(chr, 2, 1));
+    arg0->model[2] = Hu3DModelRead(0x450011, 0xA9D);
+    arg0->model[3] = Hu3DModelRead(0x450012, 0x69D);
+    arg0->model[4] = Hu3DModelRead(modelFile | D_800A178C_main[chr][2], 0x2068D);
+    CharAnimCreate(arg0->model[4], 2, chr, CharMotionDataNumGetTbl(chr, 2, 0));
+    Hu3DModelDynamicFree(arg0->model[4]);
+    arg0->model[5] = Hu3DAnimDataRead(CharMotionDataNumGetTbl(chr, 2, 1));
     Hu3DModelCameraSet(arg0->model[0], D_8010CF48_fridged_bridges[playerIndex]);
     Hu3DModelCameraSet(arg0->model[1], D_8010CF48_fridged_bridges[playerIndex]);
     Hu3DModelCameraSet(arg0->model[2], D_8010CF48_fridged_bridges[playerIndex]);
@@ -456,21 +456,21 @@ void func_8010648C_fridged_bridges(omObjData *arg0, s16 playerIndex) {
     } else {
         omSetRot(arg0, 0.0f, 180.0f, 0.0f);
     }
-    func_8000B460_main(arg0, 0, func_80017BB8_main(chr, 0));
-    func_8000B460_main(arg0, 1, func_80017BB8_main(chr, 1));
-    func_8000B460_main(arg0, 2, func_80017BB8_main(chr, 2));
+    omObjMotionRead(arg0, 0, CharMotionDataNumGet(chr, 0));
+    omObjMotionRead(arg0, 1, CharMotionDataNumGet(chr, 1));
+    omObjMotionRead(arg0, 2, CharMotionDataNumGet(chr, 2));
     if (chr == 5) {
-        func_8000B460_main(arg0, 3, 0x45000D);
-        func_8000B460_main(arg0, 7, 0x45000E);
-        func_8000B460_main(arg0, 8, 0x45000F);
+        omObjMotionRead(arg0, 3, 0x45000D);
+        omObjMotionRead(arg0, 7, 0x45000E);
+        omObjMotionRead(arg0, 8, 0x45000F);
     } else {
-        func_8000B460_main(arg0, 3, func_80017BB8_main(chr, 0x12));
+        omObjMotionRead(arg0, 3, CharMotionDataNumGet(chr, 0x12));
     }
-    func_8000B460_main(arg0, 4, func_80017BB8_main(chr, 0xD));
-    func_8000B460_main(arg0, 5, func_80017BB8_main(chr, 0x2F));
-    func_8000B460_main(arg0, 6, func_80017BB8_main(chr, 0x36));
-    func_8001C5B4_main(arg0->model[0], arg0->motion[0]);
-    func_8001C814_main(arg0->model[0], 3, 2);
+    omObjMotionRead(arg0, 4, CharMotionDataNumGet(chr, 0xD));
+    omObjMotionRead(arg0, 5, CharMotionDataNumGet(chr, 0x2F));
+    omObjMotionRead(arg0, 6, CharMotionDataNumGet(chr, 0x36));
+    Hu3DMotionModelSet(arg0->model[0], arg0->motion[0]);
+    Hu3DMotionAttrSet(arg0->model[0], 3, 2);
     omSetSca(arg0, D_8010CFD4_fridged_bridges[chr], D_8010CFD4_fridged_bridges[chr], D_8010CFD4_fridged_bridges[chr]);
     func_8010BE0C_fridged_bridges(arg0);
     player->pos.x = arg0->trans.x;
@@ -596,7 +596,7 @@ void func_801068F4_fridged_bridges(omObjData *arg0) {
                                       arg0->trans.z + player->unk_0C) == 1) {
         if (player->unk_28 == 0) {
             func_801082D0_fridged_bridges(arg0);
-            func_8004AC98_main(0x42D, player->playerId);
+            HuAudPlayerFXPlay(0x42D, player->playerId);
             player->unk_1E = func_80108050_fridged_bridges(arg0);
             player->unk_20 = 1;
             player->unk_22 = 1;
@@ -624,7 +624,7 @@ void func_801068F4_fridged_bridges(omObjData *arg0) {
         player->unk_48 = 0;
         arg0->func = func_80107164_fridged_bridges;
         player->unk_2C->work[0] = 0;
-        func_8001C814_main(arg0->model[0], 1, 1);
+        Hu3DMotionAttrSet(arg0->model[0], 1, 1);
     }
     if (player->unk_1C == D_8010CFF4_fridged_bridges[player->unk_24] && player->unk_28 == 1) {
         func_801084E0_fridged_bridges(arg0);
@@ -660,13 +660,13 @@ void func_80107164_fridged_bridges(omObjData *arg0) {
         omVibrate(player->playerId, 2, 2, 20);
         PlayerFXPlay(0x70, player->playerId);
         func_8010BFD0_fridged_bridges(0, player->playerId, arg0->trans.x, -150.0f, arg0->trans.z);
-        func_8001C258_main(arg0->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(arg0->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         player->unk_54 = 29;
         player->scale = 0.1f;
         player->state = 3;
         Hu3DModelPosSet(arg0->model[3], arg0->trans.x, arg0->trans.y, arg0->trans.z);
         Hu3DModelScaleSet(arg0->model[3], player->scale, player->scale, player->scale);
-        func_8004AC98_main(0x42F, player->playerId);
+        HuAudPlayerFXPlay(0x42F, player->playerId);
         arg0->func = func_8010733C_fridged_bridges;
         player->unk_56 = 0;
         player->unk_58 = 0;
@@ -683,26 +683,26 @@ void func_8010733C_fridged_bridges(omObjData *arg0) {
 
     if (--player->unk_54 != 0) {
         if (player->unk_54 & 1) {
-            func_8001C258_main(arg0->model[0], HU3D_ATTR_DISPOFF, 0);
-            func_8001C258_main(arg0->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(arg0->model[0], HU3D_ATTR_DISPOFF, 0);
+            Hu3DModelAttrSet(arg0->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             if (player->unk_28 == 1) {
-                func_8001C258_main(D_8010DA70_fridged_bridges->model[player->playerId * 5], HU3D_ATTR_DISPOFF, 0);
+                Hu3DModelAttrSet(D_8010DA70_fridged_bridges->model[player->playerId * 5], HU3D_ATTR_DISPOFF, 0);
             }
         } else {
-            func_8001C258_main(arg0->model[3], HU3D_ATTR_DISPOFF, 0);
-            func_8001C258_main(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(arg0->model[3], HU3D_ATTR_DISPOFF, 0);
+            Hu3DModelAttrSet(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             if (player->unk_28 == 1) {
-                func_8001C258_main(D_8010DA70_fridged_bridges->model[player->playerId * 5], HU3D_ATTR_DISPOFF,
+                Hu3DModelAttrSet(D_8010DA70_fridged_bridges->model[player->playerId * 5], HU3D_ATTR_DISPOFF,
                                    HU3D_ATTR_DISPOFF);
             }
         }
         player->scale += 0.03f;
         Hu3DModelScaleSet(arg0->model[3], player->scale, player->scale, player->scale);
     } else {
-        func_8001C258_main(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-        func_8001C258_main(D_8010DA70_fridged_bridges->model[player->playerId * 5], HU3D_ATTR_DISPOFF,
+        Hu3DModelAttrSet(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(D_8010DA70_fridged_bridges->model[player->playerId * 5], HU3D_ATTR_DISPOFF,
                            HU3D_ATTR_DISPOFF);
-        func_8001C258_main(arg0->model[3], HU3D_ATTR_DISPOFF, 0);
+        Hu3DModelAttrSet(arg0->model[3], HU3D_ATTR_DISPOFF, 0);
         player->unk_40 = 0.0f;
         Hu3DModelScaleSet(arg0->model[3], 1.0f, 1.0f, 1.0f);
         arg0->func = func_80107510_fridged_bridges;
@@ -760,7 +760,7 @@ void func_8010775C_fridged_bridges(omObjData *arg0) {
     HmfMotionNode *hook;
 
     if (player->unk_28 == 1) {
-        hook = func_8001D33C_main(arg0->model[0], "item_hook");
+        hook = Hu3DModelObjPtrGet(arg0->model[0], "item_hook");
         player->unk_44 -= 0.1f;
         hook->scale.x = player->unk_44;
         hook->scale.y = player->unk_44;
@@ -768,7 +768,7 @@ void func_8010775C_fridged_bridges(omObjData *arg0) {
         if (!(player->unk_44 <= 0.0f)) {
             return;
         }
-        func_8001C258_main(D_8010DA70_fridged_bridges->model[player->playerId * 5], 0x4004, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(D_8010DA70_fridged_bridges->model[player->playerId * 5], 0x4004, HU3D_ATTR_DISPOFF);
         func_80108648_fridged_bridges(arg0);
     }
     Hu3DMotionShiftSet(arg0->model[0], Hu3DData[arg0->motion[6]].motId, 0, 6, 0);
@@ -974,11 +974,11 @@ void func_801082D0_fridged_bridges(omObjData *arg0) {
     player->unk_28 = 1;
     player->unk_26++;
     D_8010DA70_fridged_bridges->work[2] &= ~(1 << player->playerId);
-    func_8001C258_main(D_8010DA70_fridged_bridges->model[player->playerId * 5 + 4], HU3D_ATTR_DISPOFF,
+    Hu3DModelAttrSet(D_8010DA70_fridged_bridges->model[player->playerId * 5 + 4], HU3D_ATTR_DISPOFF,
                        HU3D_ATTR_DISPOFF);
     Hu3DModelScaleSet(D_8010DA70_fridged_bridges->model[playerId * 5], 1.0f, 1.0f, 1.0f);
     Hu3DModelHookSet(D_8010DA70_fridged_bridges->model[playerId * 5], arg0->model[0], "item_hook");
-    func_8001C258_main(D_8010DA70_fridged_bridges->model[playerId * 5], 0x4004, 0x4000);
+    Hu3DModelAttrSet(D_8010DA70_fridged_bridges->model[playerId * 5], 0x4004, 0x4000);
     if (GwPlayer[player->playerId].chr == 5) {
         switch (player->motionState) {
             case 0:
@@ -991,8 +991,8 @@ void func_801082D0_fridged_bridges(omObjData *arg0) {
                 motion = arg0->motion[8];
                 break;
         }
-        func_8001C5B4_main(arg0->model[0], motion);
-        func_8001C814_main(arg0->model[0], 2, 2);
+        Hu3DMotionModelSet(arg0->model[0], motion);
+        Hu3DMotionAttrSet(arg0->model[0], 2, 2);
     } else {
         Hu3DMotionShapeSet(arg0->model[0], Hu3DData[arg0->motion[3]].motId, 2);
     }
@@ -1005,7 +1005,7 @@ void func_801084E0_fridged_bridges(omObjData *arg0) {
     FridgedBridgesItemWork *work;
 
     player->unk_28 = 0;
-    func_8001C258_main(D_8010DA70_fridged_bridges->model[playerId * 5], 0x4000, 0);
+    Hu3DModelAttrSet(D_8010DA70_fridged_bridges->model[playerId * 5], 0x4000, 0);
     func_80108648_fridged_bridges(arg0);
     player->state = 0;
     obj = omAddObj(10, 0, 0, -1, func_80108C60_fridged_bridges);
@@ -1038,7 +1038,7 @@ void func_80108648_fridged_bridges(omObjData *arg0) {
                 motion = arg0->motion[2];
                 break;
         }
-        func_8001C5B4_main(arg0->model[0], motion);
+        Hu3DMotionModelSet(arg0->model[0], motion);
     } else {
         Hu3DData[arg0->model[0]].motIdShape = 0xFF;
     }
@@ -1067,16 +1067,16 @@ void func_80108720_fridged_bridges(omObjData *arg0) {
         D_8010DA00_fridged_bridges[i].y = D_8010D194_fridged_bridges.y * sign[1][i];
     }
     for (i = 0; i < 4; i++) {
-        arg0->model[i * 5] = func_8000B108_main(0x450000, 0x20699);
-        arg0->model[i * 5 + 1] = func_8000B108_main(0x450001, 0x699);
-        arg0->model[i * 5 + 2] = func_8000B108_main(0x450002, 0x699);
-        arg0->model[i * 5 + 3] = func_8000B108_main(0x450003, 0x699);
-        arg0->model[i * 5 + 4] = func_8000B108_main(0x450000, 0x20699);
-        func_8001C258_main(arg0->model[i * 5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-        func_8001C258_main(arg0->model[i * 5 + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-        func_8001C258_main(arg0->model[i * 5 + 2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-        func_8001C258_main(arg0->model[i * 5 + 3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-        func_8001C258_main(arg0->model[i * 5 + 4], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        arg0->model[i * 5] = Hu3DModelRead(0x450000, 0x20699);
+        arg0->model[i * 5 + 1] = Hu3DModelRead(0x450001, 0x699);
+        arg0->model[i * 5 + 2] = Hu3DModelRead(0x450002, 0x699);
+        arg0->model[i * 5 + 3] = Hu3DModelRead(0x450003, 0x699);
+        arg0->model[i * 5 + 4] = Hu3DModelRead(0x450000, 0x20699);
+        Hu3DModelAttrSet(arg0->model[i * 5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(arg0->model[i * 5 + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(arg0->model[i * 5 + 2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(arg0->model[i * 5 + 3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(arg0->model[i * 5 + 4], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         Hu3DModelCameraSet(arg0->model[i * 5], D_8010CF48_fridged_bridges[i]);
         Hu3DModelCameraSet(arg0->model[i * 5 + 1], D_8010CF48_fridged_bridges[i]);
         Hu3DModelCameraSet(arg0->model[i * 5 + 2], D_8010CF48_fridged_bridges[i]);
@@ -1087,7 +1087,7 @@ void func_80108720_fridged_bridges(omObjData *arg0) {
     omMakeGroup(1, 12);
     for (i = 0; i < 4; i++) {
         for (j = 0; j < 3; j++) {
-            func_8001C258_main(arg0->model[i * 5 + 1 + j], HU3D_ATTR_DISPOFF, 0);
+            Hu3DModelAttrSet(arg0->model[i * 5 + 1 + j], HU3D_ATTR_DISPOFF, 0);
             obj = omAddObj(10, 1, 0, 1, func_80108B08_fridged_bridges);
             obj->model[0] = arg0->model[i * 5 + 1 + j];
             omSetTra(obj, D_8010D9A0_fridged_bridges[i][j].x, 0.0f, D_8010D9A0_fridged_bridges[i][j].y);
@@ -1111,7 +1111,7 @@ void func_80108B08_fridged_bridges(omObjData *arg0) {
             }
         }
         if (arg0->trans.y < -120.0f) {
-            func_8001C258_main(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             omDelObj(arg0);
         } else {
             arg0->trans.y -= 8.0f;
@@ -1148,11 +1148,11 @@ void func_80108C60_fridged_bridges(omObjData *arg0) {
         if (arg0->trans.y < -100.0f) {
             work->phase = 1;
             func_8010BFD0_fridged_bridges(0, player->playerId, arg0->trans.x, -160.0f, arg0->trans.z);
-            func_8001C258_main(modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             modelId = D_8010DA70_fridged_bridges->model[player->playerId * 5 + 1 + player->unk_24];
-            func_8001C258_main(D_8010DA70_fridged_bridges->model[player->playerId * 5 + 1 + player->unk_24],
+            Hu3DModelAttrSet(D_8010DA70_fridged_bridges->model[player->playerId * 5 + 1 + player->unk_24],
                                HU3D_ATTR_DISPOFF, 0);
-            func_8004AC98_main(0x42B, player->playerId);
+            HuAudPlayerFXPlay(0x42B, player->playerId);
         }
         Hu3DModelPosSet(modelId, arg0->trans.x, arg0->trans.y, arg0->trans.z);
         Hu3DModelRotSet(modelId, arg0->rot.x, arg0->rot.y, arg0->rot.z);
@@ -1187,7 +1187,7 @@ void func_80108EBC_fridged_bridges(omObjData *arg0) {
     scale = (f32 *)&arg0->work[2];
     *scale -= 0.04f;
     if (*scale <= 0.0f) {
-        func_8001C258_main(modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         omDelObj(arg0);
     } else {
         Hu3DModelScaleSet(modelId, *scale, *scale, *scale);
@@ -1211,7 +1211,7 @@ void func_80108FBC_fridged_bridges(omObjData *arg0) {
             omSetRot(obj, 0.0f, 0.0f, 0.0f);
             Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
             Hu3DModelScaleSet(obj->model[0], 1.0f, 0.0f, 1.0f);
-            func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, 0);
+            Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, 0);
             arg0->work[2] |= bit;
         }
     }
@@ -1286,8 +1286,8 @@ void func_80109390_fridged_bridges(omObjData *arg0) {
     switch (D_8010D366_fridged_bridges) {
         case 0:
             obj = D_8010DA64_fridged_bridges[D_8010DA60_fridged_bridges];
-            func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-            func_8001C258_main(obj->model[4], HU3D_ATTR_DISPOFF, 0);
+            Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(obj->model[4], HU3D_ATTR_DISPOFF, 0);
             model = obj->model[0];
             obj->model[0] = obj->model[4];
             obj->model[4] = model;
@@ -1337,13 +1337,13 @@ void func_80109390_fridged_bridges(omObjData *arg0) {
             if (D_8010DA64_fridged_bridges[D_8010DA60_fridged_bridges]->work[0] == 1 &&
                 MgFlowStatGet() == MG_STATE_RESULT) {
                 player = D_8010DA64_fridged_bridges[D_8010DA60_fridged_bridges]->data;
-                func_80017954_main(D_8010DA64_fridged_bridges[D_8010DA60_fridged_bridges]->model[0], 2,
+                CharAnimSet(D_8010DA64_fridged_bridges[D_8010DA60_fridged_bridges]->model[0], 2,
                                    GwPlayer[player->playerId].chr,
                                    D_8010DA64_fridged_bridges[D_8010DA60_fridged_bridges]->model[5]);
                 Hu3DMotionShiftSet(
                     D_8010DA64_fridged_bridges[D_8010DA60_fridged_bridges]->model[0],
                     Hu3DData[D_8010DA64_fridged_bridges[D_8010DA60_fridged_bridges]->motion[5]].motId, 0, 6, 0);
-                func_80045ED0_main(D_800A178C_main[GwPlayer[D_8010DA60_fridged_bridges].chr][0] | 0x2F);
+                HuAudCharVoicePlay(D_800A178C_main[GwPlayer[D_8010DA60_fridged_bridges].chr][0] | 0x2F);
                 D_8010D366_fridged_bridges = 5;
                 for (i = 0; i < 4; i++) {
                     obj = D_8010DA64_fridged_bridges[i];
@@ -1409,11 +1409,11 @@ s32 func_80109988_fridged_bridges(omObjData *arg0, FridgedBridgesProbe *probe) {
         best = probe->height[i] = -10000.0f;
         probe->bridgeIds[i] = 0xFFFF;
         points = (Hu3DPoint *)Hu3DData[D_8010DA6C_fridged_bridges->model[player->playerId]].hmf->unk50;
-        func_80021C14_main(D_8010DA6C_fridged_bridges->model[player->playerId], &D_800EBEB0_minigame,
+        Hu3DQuadPoolCollect(D_8010DA6C_fridged_bridges->model[player->playerId], &D_800EBEB0_minigame,
                            func_80109D4C_fridged_bridges, &pos);
-        for (quad = func_80022198_main(&D_800EBEB0_minigame); quad != NULL;
-             quad = func_80022198_main(&D_800EBEB0_minigame)) {
-            height = func_800204F4_main(x, y, z, points, quad);
+        for (quad = Hu3DQuadPoolNext(&D_800EBEB0_minigame); quad != NULL;
+             quad = Hu3DQuadPoolNext(&D_800EBEB0_minigame)) {
+            height = MapCalcPoint(x, y, z, points, quad);
             if (height > best) {
                 probe->height[i] = best = height;
                 probe->bridgeIds[i] = quad->vtx[0] & 0x3F00;
@@ -1427,11 +1427,11 @@ s32 func_80109988_fridged_bridges(omObjData *arg0, FridgedBridgesProbe *probe) {
             pos.z = z - D_8010D9A0_fridged_bridges[player->playerId][j].y;
             points = (Hu3DPoint *)Hu3DData[D_8010DA70_fridged_bridges->model[player->playerId * 5 + 1 + j]]
                          .hmf->unk50;
-            func_80021C14_main(D_8010DA70_fridged_bridges->model[player->playerId * 5 + 1 + j],
+            Hu3DQuadPoolCollect(D_8010DA70_fridged_bridges->model[player->playerId * 5 + 1 + j],
                                &D_800EBEB0_minigame, func_80109D4C_fridged_bridges, &pos);
-            for (quad = func_80022198_main(&D_800EBEB0_minigame); quad != NULL;
-                 quad = func_80022198_main(&D_800EBEB0_minigame)) {
-                height = func_800204F4_main(x, y, z, points, quad);
+            for (quad = Hu3DQuadPoolNext(&D_800EBEB0_minigame); quad != NULL;
+                 quad = Hu3DQuadPoolNext(&D_800EBEB0_minigame)) {
+                height = MapCalcPoint(x, y, z, points, quad);
                 if (height > best) {
                     probe->height[i] = best = height;
                     probe->bridgeIds[i] = player->unk_1C = quad->vtx[0] & 0x3F00;
@@ -1464,17 +1464,17 @@ s32 func_80109D6C_fridged_bridges(Vec *pos, s16 *face, Hu3DPoint *points) {
     z = pos->z;
     count = ((u16)face[0] >> 14) + 2;
     face++;
-    if (func_8002048C_main(x, z, &points[face[0]], &points[face[1]]) > 0.0f) {
+    if (MapXZCross(x, z, &points[face[0]], &points[face[1]]) > 0.0f) {
         for (i = 1; i < count; i++) {
             next = (i + 1) % count;
-            if (func_8002048C_main(x, z, &points[face[i]], &points[face[next]]) < 0.0f) {
+            if (MapXZCross(x, z, &points[face[i]], &points[face[next]]) < 0.0f) {
                 return FALSE;
             }
         }
     } else {
         for (i = 1; i < count; i++) {
             next = (i + 1) % count;
-            if (func_8002048C_main(x, z, &points[face[i]], &points[face[next]]) > 0.0f) {
+            if (MapXZCross(x, z, &points[face[i]], &points[face[next]]) > 0.0f) {
                 return FALSE;
             }
         }
@@ -1546,7 +1546,7 @@ void func_8010A1A4_fridged_bridges(omObjData *arg0) {
     rescue = obj->data = HuMemAllocTag(sizeof(FridgedBridgesRescue), TAG_OVERLAY);
     rescue->playerObj = arg0;
     obj->model[0] = arg0->model[2];
-    func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, 0);
+    Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, 0);
     angle = (rand8() * rand8()) % 3600 / 10.0f;
     x = sindf(angle) * 600.0f + arg0->trans.x;
     omSetTra(obj, x, 500.0f, cosdf(angle) * 600.0f + arg0->trans.z);
@@ -1580,12 +1580,12 @@ void func_8010A360_fridged_bridges(omObjData *arg0) {
             pos.x = arg0->trans.x;
             pos.y = arg0->trans.y;
             pos.z = arg0->trans.z;
-            func_80012B14_main(player->playerId, &pos, &screen);
+            Hu3DCam3Dto2D(player->playerId, &pos, &screen);
             screen.x -= D_8010D1D4_fridged_bridges[player->playerId].x;
             screen.y -= D_8010D1D4_fridged_bridges[player->playerId].y;
             if (screen.x >= 0.0f && screen.x < 160.0 && screen.y >= 0.0f && screen.y < 120.0f &&
                 rescue->sfxId == -1) {
-                rescue->sfxId = func_8004AC98_main(0x431, player->playerId);
+                rescue->sfxId = HuAudPlayerFXPlay(0x431, player->playerId);
             }
             if (dist > 18.0f) {
                 arg0->trans.x += (rescue->playerObj->trans.x - arg0->trans.x) / dist * 18.0f;
@@ -1606,7 +1606,7 @@ void func_8010A360_fridged_bridges(omObjData *arg0) {
                 arg0->trans.y = 10.0f;
                 rescue->playerObj->func = func_801075A4_fridged_bridges;
                 rescue->state = 2;
-                func_8001C814_main(rescue->playerObj->model[0], 1, 1);
+                Hu3DMotionAttrSet(rescue->playerObj->model[0], 1, 1);
             }
             break;
         case 2:
@@ -1621,8 +1621,8 @@ void func_8010A360_fridged_bridges(omObjData *arg0) {
                             rescue->playerObj->trans.z);
             if (arg0->trans.y > 900.0f) {
                 rescue->state = 3;
-                func_8001C258_main(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-                func_8001C258_main(rescue->playerObj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(rescue->playerObj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
             break;
         case 3:
@@ -1645,8 +1645,8 @@ void func_8010A360_fridged_bridges(omObjData *arg0) {
                                 rescue->playerObj->trans.z);
                 Hu3DModelPosSet(rescue->playerObj->model[3], rescue->playerObj->trans.x, rescue->playerObj->trans.y,
                                 rescue->playerObj->trans.z);
-                func_8001C258_main(arg0->model[0], HU3D_ATTR_DISPOFF, 0);
-                func_8001C258_main(rescue->playerObj->model[3], HU3D_ATTR_DISPOFF, 0);
+                Hu3DModelAttrSet(arg0->model[0], HU3D_ATTR_DISPOFF, 0);
+                Hu3DModelAttrSet(rescue->playerObj->model[3], HU3D_ATTR_DISPOFF, 0);
             }
             break;
         case 4:
@@ -1660,26 +1660,26 @@ void func_8010A360_fridged_bridges(omObjData *arg0) {
             if (arg0->trans.y < 160.0f) {
                 arg0->trans.y = 160.0f;
                 rescue->state = 5;
-                func_8001C5B4_main(rescue->playerObj->model[0], rescue->playerObj->motion[0]);
-                func_8001C814_main(rescue->playerObj->model[0], 2, 2);
+                Hu3DMotionModelSet(rescue->playerObj->model[0], rescue->playerObj->motion[0]);
+                Hu3DMotionAttrSet(rescue->playerObj->model[0], 2, 2);
                 Hu3DModelPosSet(rescue->playerObj->model[1], rescue->playerObj->trans.x, 0.0f,
                                 rescue->playerObj->trans.z);
-                func_8001C258_main(rescue->playerObj->model[1], HU3D_ATTR_DISPOFF, 0);
+                Hu3DModelAttrSet(rescue->playerObj->model[1], HU3D_ATTR_DISPOFF, 0);
                 rescue->timer = 0;
                 player->scale = 1.0f;
-                func_8004AC98_main(0x430, player->playerId);
+                HuAudPlayerFXPlay(0x430, player->playerId);
             }
             break;
         case 5:
             if (D_8010DA68_fridged_bridges == 1 && rescue->released == 1) {
                 rescue->state = 6;
-                func_8001C258_main(rescue->playerObj->model[0], HU3D_ATTR_DISPOFF, 0);
+                Hu3DModelAttrSet(rescue->playerObj->model[0], HU3D_ATTR_DISPOFF, 0);
                 player->state = 1;
                 break;
             }
             arg0->trans.y += 40.0f;
             if (arg0->trans.y > 1500.0f) {
-                func_8001C258_main(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 if (rescue->sfxId != -1) {
                     HuAudFXStop(rescue->sfxId);
                 }
@@ -1690,12 +1690,12 @@ void func_8010A360_fridged_bridges(omObjData *arg0) {
             if (rescue->timer >= 30) {
                 if (rescue->released == 0) {
                     rescue->released = 1;
-                    func_8001C258_main(rescue->playerObj->model[0], HU3D_ATTR_DISPOFF, 0);
+                    Hu3DModelAttrSet(rescue->playerObj->model[0], HU3D_ATTR_DISPOFF, 0);
                     if (player->unk_28 == 1) {
-                        func_8001C258_main(D_8010DA70_fridged_bridges->model[player->playerId * 5], HU3D_ATTR_DISPOFF,
+                        Hu3DModelAttrSet(D_8010DA70_fridged_bridges->model[player->playerId * 5], HU3D_ATTR_DISPOFF,
                                            0);
                     }
-                    func_8001C258_main(rescue->playerObj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    Hu3DModelAttrSet(rescue->playerObj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     player->state = 1;
                     player->unk_08 = player->unk_0C = 0.0f;
                     player->unk_2C->work[0] = 1;
@@ -1714,19 +1714,19 @@ void func_8010A360_fridged_bridges(omObjData *arg0) {
                 }
             } else {
                 if (rescue->timer & 1) {
-                    func_8001C258_main(rescue->playerObj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    Hu3DModelAttrSet(rescue->playerObj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     if (player->unk_28 == 1) {
-                        func_8001C258_main(D_8010DA70_fridged_bridges->model[player->playerId * 5], HU3D_ATTR_DISPOFF,
+                        Hu3DModelAttrSet(D_8010DA70_fridged_bridges->model[player->playerId * 5], HU3D_ATTR_DISPOFF,
                                            HU3D_ATTR_DISPOFF);
                     }
-                    func_8001C258_main(rescue->playerObj->model[3], HU3D_ATTR_DISPOFF, 0);
+                    Hu3DModelAttrSet(rescue->playerObj->model[3], HU3D_ATTR_DISPOFF, 0);
                 } else {
-                    func_8001C258_main(rescue->playerObj->model[0], HU3D_ATTR_DISPOFF, 0);
+                    Hu3DModelAttrSet(rescue->playerObj->model[0], HU3D_ATTR_DISPOFF, 0);
                     if (player->unk_28 == 1) {
-                        func_8001C258_main(D_8010DA70_fridged_bridges->model[player->playerId * 5], HU3D_ATTR_DISPOFF,
+                        Hu3DModelAttrSet(D_8010DA70_fridged_bridges->model[player->playerId * 5], HU3D_ATTR_DISPOFF,
                                            0);
                     }
-                    func_8001C258_main(rescue->playerObj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    Hu3DModelAttrSet(rescue->playerObj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 }
                 player->scale -= 0.03f;
                 Hu3DModelScaleSet(rescue->playerObj->model[3], player->scale, player->scale, player->scale);
@@ -1735,7 +1735,7 @@ void func_8010A360_fridged_bridges(omObjData *arg0) {
         case 6:
             arg0->trans.y += 40.0f;
             if (arg0->trans.y > 1500.0f) {
-                func_8001C258_main(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 if (rescue->sfxId != -1) {
                     HuAudFXStop(rescue->sfxId);
                 }
@@ -1748,8 +1748,8 @@ void func_8010A360_fridged_bridges(omObjData *arg0) {
             Hu3DModelPosSet(rescue->playerObj->model[3], rescue->playerObj->trans.x, arg0->trans.y - 160.0f,
                             rescue->playerObj->trans.z);
             if (arg0->trans.y > 1500.0f) {
-                func_8001C258_main(rescue->playerObj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-                func_8001C258_main(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(rescue->playerObj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 if (rescue->sfxId != -1) {
                     HuAudFXStop(rescue->sfxId);
                 }
@@ -1844,7 +1844,7 @@ void func_8010B164_fridged_bridges(void) {
     for (i = 0; i < 4; i++) {
         obj = D_8010DA78_fridged_bridges[i] = omAddObj(30, 1, 0, -1, func_8010B3EC_fridged_bridges);
         if (i == 0) {
-            obj->model[0] = func_8000B108_main(0x450010, 0x20699);
+            obj->model[0] = Hu3DModelRead(0x450010, 0x20699);
         } else {
             obj->model[0] = Hu3DModelLink(D_8010DA78_fridged_bridges[0]->model[0]);
         }
@@ -1862,7 +1862,7 @@ void func_8010B164_fridged_bridges(void) {
             angle += 360.0f;
         }
         omSetRot(obj, 0.0f, angle, 0.0f);
-        func_8001C814_main(obj->model[0], 2, 2);
+        Hu3DMotionAttrSet(obj->model[0], 2, 2);
         foe->jumpDist = HuSqrtf((D_8010D1FC_fridged_bridges[i][0].x - D_8010D1FC_fridged_bridges[i][1].x) *
                                     (D_8010D1FC_fridged_bridges[i][0].x - D_8010D1FC_fridged_bridges[i][1].x) +
                                 (D_8010D1FC_fridged_bridges[i][0].y - D_8010D1FC_fridged_bridges[i][1].y) *

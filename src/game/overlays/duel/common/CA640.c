@@ -70,7 +70,7 @@ void func_800E2870_name_81(void) {
 
 void func_800E28B0_name_81(void) {
     if (D_80102CA6_name_81 & 0x20) {
-        func_8003B128_main(&D_80102C30_name_81);
+        GMesSprClose(&D_80102C30_name_81);
     }
     if (D_80102CA6_name_81 & 0x10) {
         HuSprGrpKill(D_80102CA8_name_81);
@@ -333,7 +333,7 @@ void func_800E363C_name_81(s32 arg0, Vec *pos) {
 
     if (!(D_80102CA6_name_81 & 4)) {
         type = arg0;
-        D_80102CA4_name_81 = func_8003A308_main(&D_80102C30_name_81, D_80100FC0_name_81[type], 0, 0, 0);
+        D_80102CA4_name_81 = GameMesStrInit(&D_80102C30_name_81, D_80100FC0_name_81[type], 0, 0, 0);
         MBDCamera3Dto2D(pos, &pos2D);
         D_80102CC8_name_81 = pos2D.y - 24.0f;
         if (MBDCameraZoomGet() == 2.0f) {
@@ -370,7 +370,7 @@ s32 func_800E3858_name_81(void) {
 void func_800E3868_name_81(void) {
     omDelObj(D_80102CB0_name_81);
     D_80102CB0_name_81 = NULL;
-    func_8003B128_main(&D_80102C30_name_81);
+    GMesSprClose(&D_80102C30_name_81);
     D_80102CA6_name_81 &= 0xC3;
 }
 
@@ -797,9 +797,9 @@ UnkOvl81_2 *func_800E4B64_name_81(s32 arg0, s32 arg1) {
         func_800E4AD0_name_81();
 
         if (arg1 != 0) {
-            guide->win_id = func_80060880_main(0x5B, guide->unk_0A + 0x5A + arg1, 0x11);
+            guide->win_id = HuWinExCreateStyled(0x5B, guide->unk_0A + 0x5A + arg1, 0x11);
         } else {
-            guide->win_id = func_80060880_main(0x4B, guide->unk_0A + 0x5A + arg1, 0x10);
+            guide->win_id = HuWinExCreateStyled(0x4B, guide->unk_0A + 0x5A + arg1, 0x10);
         }
     }
     return guide;

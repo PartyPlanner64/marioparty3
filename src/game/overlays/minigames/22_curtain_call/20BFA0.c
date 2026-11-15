@@ -195,8 +195,8 @@ s32 func_80105B7C_curtain_call(s32 arg0) {
 
 void func_80105BD0_curtain_call(omObjData *arg0, u16 arg1, s16 arg2) {
     if (arg1 < 0xA) {
-        func_8001C5B4_main(arg0->model[0], arg0->motion[arg1]);
-        func_8001C814_main(arg0->model[0], arg2, arg2);
+        Hu3DMotionModelSet(arg0->model[0], arg0->motion[arg1]);
+        Hu3DMotionAttrSet(arg0->model[0], arg2, arg2);
     }
 }
 
@@ -282,9 +282,9 @@ void func_80105D14_curtain_call(s16 conNo) {
 }
 
 void func_801062EC_curtain_call(void) {
-    s16 window = func_80060880_main(175, 92, 10);
+    s16 window = HuWinExCreateStyled(175, 92, 10);
 
-    func_80060C14_main(window, 1);
+    HuWinExOpen(window, 1);
     HuWinInsertMesSet(window, D_8010B0E4_curtain_call[D_8010CE8A_curtain_call[1]], 0);
     HuWinMesSet(window, D_8010B0E0_curtain_call[D_8010CE8A_curtain_call[0]], -1, -1);
     while (HuWinStatGet(window) != 0) {
@@ -296,7 +296,7 @@ void func_801062EC_curtain_call(void) {
         }
         HuPrcVSleep();
     }
-    func_80060EA8_main(window, 1);
+    HuWinExClose(window, 1);
     HuWinExCleanup(window);
     HuWinAllKill();
     while (TRUE) {
@@ -326,10 +326,10 @@ void func_80106494_curtain_call(void) {
 void func_801064A0_curtain_call(omObjData *arg0) {
     switch (D_8010CEC1_curtain_call) {
         case 3:
-            func_8001C258_main(arg0->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(arg0->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             break;
         case 5:
-            func_8001C258_main(arg0->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(arg0->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             break;
     }
 }
@@ -342,12 +342,12 @@ void func_80106500_curtain_call(omObjData *obj) {
     D_8010B4F2_curtain_call = espEntry(D_8010B4F0_curtain_call, 0, 0);
     espAttrSet(D_8010B4F2_curtain_call, 0x5000);
     espPosSet(D_8010B4F2_curtain_call, D_8010B4F4_curtain_call, D_8010B4F8_curtain_call);
-    obj->model[0] = func_8000B108_main(0x430001, 0x299);
-    obj->model[1] = func_8000B108_main(0x430002, 0x299);
-    obj->model[2] = func_8000B108_main(0x430003, 0x299);
+    obj->model[0] = Hu3DModelRead(0x430001, 0x299);
+    obj->model[1] = Hu3DModelRead(0x430002, 0x299);
+    obj->model[2] = Hu3DModelRead(0x430003, 0x299);
     Hu3DMotionSpeedSet(obj->model[0], 0.0f);
     Hu3DMotionTimeSet(obj->model[0], 60.0f);
-    func_8001C814_main(obj->model[2], 2, 2);
+    Hu3DMotionAttrSet(obj->model[2], 2, 2);
     Hu3DModelCameraSet(obj->model[0], 1);
     Hu3DModelCameraSet(obj->model[1], 1);
     Hu3DModelCameraSet(obj->model[2], 1);
@@ -499,8 +499,8 @@ s8 func_801067A8_curtain_call(omObjData *obj, s8 mode) {
     switch (mode) {
         case 0:
             if (entry->unk_5C.y == 0.05f) {
-                func_8001C258_main(obj->model[2], 4, 0);
-                func_8001C258_main(obj->model[3], 4, 0);
+                Hu3DModelAttrSet(obj->model[2], 4, 0);
+                Hu3DModelAttrSet(obj->model[3], 4, 0);
             }
             if (entry->unk_5C.y < 1.0f) {
                 entry->unk_5C.y += 0.19f;
@@ -515,8 +515,8 @@ s8 func_801067A8_curtain_call(omObjData *obj, s8 mode) {
                 entry->unk_5C.y -= 0.19;
                 break;
             }
-            func_8001C258_main(obj->model[2], 4, 4);
-            func_8001C258_main(obj->model[3], 4, 4);
+            Hu3DModelAttrSet(obj->model[2], 4, 4);
+            Hu3DModelAttrSet(obj->model[3], 4, 4);
             entry->unk_5C.y = 0.05f;
             Hu3DModelScaleSet(obj->model[2], entry->unk_5C.x, entry->unk_5C.y, entry->unk_5C.z);
             Hu3DModelScaleSet(obj->model[3], entry->unk_5C.x, entry->unk_5C.y, entry->unk_5C.z);
@@ -552,7 +552,7 @@ void func_80106988_curtain_call(omObjData *obj, s8 motion) {
         func_80105C3C_curtain_call(obj, motion, 0, 10, shift);
         entry->unk_06 = motion;
         if (motion == 4) {
-            func_80045ED0_main((D_8010B0C0_curtain_call[chr] << 16) | 0x2F);
+            HuAudCharVoicePlay((D_8010B0C0_curtain_call[chr] << 16) | 0x2F);
         }
     }
 }
@@ -698,11 +698,11 @@ void func_80106C18_curtain_call(omObjData *obj) {
                         func_80106B78_curtain_call(obj);
                     } else if (D_8010CE88_curtain_call == D_8010CF08_curtain_call[player][0]) {
                         entry->unk_0A = 2;
-                        func_8004AC98_main(0x417, obj->work[0]);
+                        HuAudPlayerFXPlay(0x417, obj->work[0]);
                     } else if (D_8010CE88_curtain_call == D_8010CF08_curtain_call[player][1]) {
                         if (D_8010CF18_curtain_call[player] != D_8010CEFF_curtain_call) {
                             entry->unk_0A = 4;
-                            func_8004AC98_main(0x418, obj->work[0]);
+                            HuAudPlayerFXPlay(0x418, obj->work[0]);
                         }
                     } else if (D_8010CE88_curtain_call < D_8010CF08_curtain_call[player][1]) {
                         if (D_8010CF18_curtain_call[player] != D_8010CEFF_curtain_call) {
@@ -719,10 +719,10 @@ void func_80106C18_curtain_call(omObjData *obj) {
                         func_80106B78_curtain_call(obj);
                     } else if (D_8010CE88_curtain_call == D_8010CF08_curtain_call[player][0]) {
                         entry->unk_0A = 2;
-                        func_8004AC98_main(0x417, obj->work[0]);
+                        HuAudPlayerFXPlay(0x417, obj->work[0]);
                     } else if (D_8010CE88_curtain_call == D_8010CF08_curtain_call[player][1]) {
                         entry->unk_0A = 4;
-                        func_8004AC98_main(0x418, obj->work[0]);
+                        HuAudPlayerFXPlay(0x418, obj->work[0]);
                     } else if (D_8010CE88_curtain_call < D_8010CF08_curtain_call[player][1]) {
                         if (D_8010CF18_curtain_call[player] == D_8010CEFF_curtain_call) {
                             if (entry->unk_10 != 0) {
@@ -761,7 +761,7 @@ void func_80106C18_curtain_call(omObjData *obj) {
                     } else if (D_8010CF18_curtain_call[player] == D_8010CEFF_curtain_call) {
                         if (entry->unk_0C == 0) {
                             entry->unk_0A = 2;
-                            func_8004AC98_main(0x417, obj->work[0]);
+                            HuAudPlayerFXPlay(0x417, obj->work[0]);
                             entry->unk_0C = 1;
                         }
                     } else {
@@ -784,7 +784,7 @@ void func_80106C18_curtain_call(omObjData *obj) {
                     } else {
                         if (entry->unk_0C == 0) {
                             entry->unk_0A = 2;
-                            func_8004AC98_main(0x417, obj->work[0]);
+                            HuAudPlayerFXPlay(0x417, obj->work[0]);
                             entry->unk_0C = 1;
                         }
                     }
@@ -938,7 +938,7 @@ void func_80107680_curtain_call(omObjData *obj) {
                     break;
                 case 1:
                     if ((s32)entry->unk_44.x % 60 == 0 && (D_800D5558_main[pad] & 0x8000)) {
-                        func_8004AC98_main(0x417, obj->work[0]);
+                        HuAudPlayerFXPlay(0x417, obj->work[0]);
                         entry->unk_0A = 2;
                     }
                     break;
@@ -950,7 +950,7 @@ void func_80107680_curtain_call(omObjData *obj) {
                     break;
                 case 3:
                     if (D_800D5558_main[pad] & 0x4000) {
-                        func_8004AC98_main(0x418, obj->work[0]);
+                        HuAudPlayerFXPlay(0x418, obj->work[0]);
                         entry->unk_0A = 4;
                     }
                     break;
@@ -982,36 +982,36 @@ void func_80107D20_curtain_call(omObjData *obj) {
     s32 dir = D_800A178C_main[chr][0];
     s8 i;
 
-    obj->model[0] = func_8000B108_main(dir | D_800A178C_main[chr][3], 0x2A9);
-    func_8000B460_main(obj, 0, func_80017BB8_main(chr, 0x6C));
-    func_8000B460_main(obj, 1, func_80017BB8_main(chr, 0x2C));
-    func_8000B460_main(obj, 3, func_80017BB8_main(chr, 0));
-    func_8000B460_main(obj, 4, func_80017BB8_main(chr, 0x2F));
-    func_8000B460_main(obj, 5, func_80017BB8_main(chr, 0x36));
-    func_8000B460_main(obj, 2, func_80017BB8_main(chr, 1));
-    func_8000B460_main(obj, 6, func_80017BB8_main(chr, 0x33));
-    func_8000B460_main(obj, 7, func_80017BB8_main(chr, 0x63));
-    func_8000B460_main(obj, 8, func_80017BB8_main(chr, 0x3A));
+    obj->model[0] = Hu3DModelRead(dir | D_800A178C_main[chr][3], 0x2A9);
+    omObjMotionRead(obj, 0, CharMotionDataNumGet(chr, 0x6C));
+    omObjMotionRead(obj, 1, CharMotionDataNumGet(chr, 0x2C));
+    omObjMotionRead(obj, 3, CharMotionDataNumGet(chr, 0));
+    omObjMotionRead(obj, 4, CharMotionDataNumGet(chr, 0x2F));
+    omObjMotionRead(obj, 5, CharMotionDataNumGet(chr, 0x36));
+    omObjMotionRead(obj, 2, CharMotionDataNumGet(chr, 1));
+    omObjMotionRead(obj, 6, CharMotionDataNumGet(chr, 0x33));
+    omObjMotionRead(obj, 7, CharMotionDataNumGet(chr, 0x63));
+    omObjMotionRead(obj, 8, CharMotionDataNumGet(chr, 0x3A));
     for (i = 0; i < 3; i++) {
         D_8010CE90_curtain_call[player][i] = DataRead(dir | D_8010B0F0_curtain_call[chr][i]);
     }
     D_8010CE78_curtain_call[player] =
         Hu3DAnimCreate(Hu3DData[obj->model[0]].hmf, D_8010CE90_curtain_call[player][0], 0, D_8010B120_curtain_call[chr]);
     Hu3DModelRemakeStatic(obj->model[0]);
-    func_8001C514_main(obj->model[0]);
+    Hu3DModelDynamicFree(obj->model[0]);
     if (obj->work[0] == 0) {
-        obj->model[1] = func_8000B0A0_main(0, 0xC9);
-        func_8001C2FC_main(obj->model[1], 0x80000000, 0);
+        obj->model[1] = Hu3DModelRead2(0, 0xC9);
+        Hu3DModelObjAttrSet(obj->model[1], 0x80000000, 0);
         Hu3DModelRemakeStatic(obj->model[1]);
-        func_8001C514_main(obj->model[1]);
+        Hu3DModelDynamicFree(obj->model[1]);
         func_80088800_main(Hu3DData[obj->model[1]].mtx, 0.0f, 0.0f, 0.0f);
-        obj->model[2] = func_8000B108_main(0x430004, 0x288);
+        obj->model[2] = Hu3DModelRead(0x430004, 0x288);
         Hu3DModelRemakeStatic(obj->model[2]);
-        func_8001C514_main(obj->model[2]);
-        obj->model[3] = func_8000B108_main(0x430005, 0x288);
-        func_8001C2FC_main(obj->model[3], 0x80000000, 0x80000000);
+        Hu3DModelDynamicFree(obj->model[2]);
+        obj->model[3] = Hu3DModelRead(0x430005, 0x288);
+        Hu3DModelObjAttrSet(obj->model[3], 0x80000000, 0x80000000);
         Hu3DModelRemakeStatic(obj->model[3]);
-        func_8001C514_main(obj->model[3]);
+        Hu3DModelDynamicFree(obj->model[3]);
         D_8010CF2C_curtain_call[0] = obj->model[1];
         D_8010CF2C_curtain_call[1] = obj->model[2];
         D_8010CF2C_curtain_call[2] = obj->model[3];
@@ -1020,7 +1020,7 @@ void func_80107D20_curtain_call(omObjData *obj) {
         obj->model[2] = Hu3DModelLink(D_8010CF2C_curtain_call[1]);
         obj->model[3] = Hu3DModelLink(D_8010CF2C_curtain_call[2]);
     }
-    func_8001C814_main(obj->model[2], 2, 2);
+    Hu3DMotionAttrSet(obj->model[2], 2, 2);
     Hu3DMotionTimeSet(obj->model[2], func_80105B7C_curtain_call(50));
     switch (obj->work[1]) {
         case 0:
@@ -1063,8 +1063,8 @@ void func_80107D20_curtain_call(omObjData *obj) {
     entry->unk_5C.z = 1.0f;
     Hu3DModelScaleSet(obj->model[2], entry->unk_5C.x, entry->unk_5C.y, entry->unk_5C.z);
     Hu3DModelScaleSet(obj->model[3], entry->unk_5C.x, entry->unk_5C.y, entry->unk_5C.z);
-    func_8001C258_main(obj->model[2], 4, 4);
-    func_8001C258_main(obj->model[3], 4, 4);
+    Hu3DModelAttrSet(obj->model[2], 4, 4);
+    Hu3DModelAttrSet(obj->model[3], 4, 4);
     func_80105BD0_curtain_call(obj, 3, 2);
     entry->unk_06 = 3;
     D_8010CF18_curtain_call[player] = 0;
@@ -1146,16 +1146,16 @@ void func_80108670_curtain_call(omObjData *obj) {
             break;
         case 1:
             if (omPauseChk() + D_800D6A90_main != 0) {
-                func_8001C258_main(obj->model[0], 4, 4);
-                func_8001C258_main(obj->model[1], 4, 4);
+                Hu3DModelAttrSet(obj->model[0], 4, 4);
+                Hu3DModelAttrSet(obj->model[1], 4, 4);
             } else {
-                func_8001C258_main(obj->model[0], 4, 0);
-                func_8001C258_main(obj->model[1], 4, 0);
+                Hu3DModelAttrSet(obj->model[0], 4, 0);
+                Hu3DModelAttrSet(obj->model[1], 4, 0);
             }
             break;
         case 2:
-            func_8001C258_main(obj->model[0], 4, 4);
-            func_8001C258_main(obj->model[1], 4, 4);
+            Hu3DModelAttrSet(obj->model[0], 4, 4);
+            Hu3DModelAttrSet(obj->model[1], 4, 4);
             break;
         case 6:
             if (D_8010CEC0_curtain_call == D_8010CEC9_curtain_call[player][0]) {
@@ -1173,11 +1173,11 @@ void func_80108670_curtain_call(omObjData *obj) {
         case 4:
         case 5:
             if (omPauseChk() + D_800D6A90_main != 0) {
-                func_8001C258_main(obj->model[0], 4, 4);
-                func_8001C258_main(obj->model[1], 4, 4);
+                Hu3DModelAttrSet(obj->model[0], 4, 4);
+                Hu3DModelAttrSet(obj->model[1], 4, 4);
             } else {
-                func_8001C258_main(obj->model[0], 4, 0);
-                func_8001C258_main(obj->model[1], 4, 0);
+                Hu3DModelAttrSet(obj->model[0], 4, 0);
+                Hu3DModelAttrSet(obj->model[1], 4, 0);
             }
             break;
     }
@@ -1200,10 +1200,10 @@ void func_801089FC_curtain_call(omObjData *obj) {
 
     switch (player) {
         case 0:
-            obj->model[0] = func_8000B108_main(0xA008E, 0x2B9);
-            func_8000B460_main(obj, 0, 0xA0097);
-            func_8000B460_main(obj, 1, 0xA0098);
-            func_8000B460_main(obj, 2, 0xA0099);
+            obj->model[0] = Hu3DModelRead(0xA008E, 0x2B9);
+            omObjMotionRead(obj, 0, 0xA0097);
+            omObjMotionRead(obj, 1, 0xA0098);
+            omObjMotionRead(obj, 2, 0xA0099);
             obj->work[1] = 0;
             D_8010CF2C_curtain_call[0] = obj->model[0];
             D_8010CF24_curtain_call = obj;
@@ -1216,10 +1216,10 @@ void func_801089FC_curtain_call(omObjData *obj) {
             obj->motion[2] = D_8010CF24_curtain_call->motion[2];
             break;
         case 2:
-            obj->model[0] = func_8000B108_main(0xA00A5, 0x2B9);
-            func_8000B460_main(obj, 0, 0xA00A8);
-            func_8000B460_main(obj, 1, 0xA00A9);
-            func_8000B460_main(obj, 2, 0xA00AA);
+            obj->model[0] = Hu3DModelRead(0xA00A5, 0x2B9);
+            omObjMotionRead(obj, 0, 0xA00A8);
+            omObjMotionRead(obj, 1, 0xA00A9);
+            omObjMotionRead(obj, 2, 0xA00AA);
             obj->work[1] = 1;
             D_8010CF2C_curtain_call[0] = obj->model[0];
             D_8010CF24_curtain_call = obj;
@@ -1232,10 +1232,10 @@ void func_801089FC_curtain_call(omObjData *obj) {
             obj->motion[2] = D_8010CF24_curtain_call->motion[2];
             break;
         case 4:
-            obj->model[0] = func_8000B108_main(0xA00C5, 0x2B9);
-            func_8000B460_main(obj, 0, 0xA00CB);
-            func_8000B460_main(obj, 1, 0xA00CC);
-            func_8000B460_main(obj, 2, 0xA00CD);
+            obj->model[0] = Hu3DModelRead(0xA00C5, 0x2B9);
+            omObjMotionRead(obj, 0, 0xA00CB);
+            omObjMotionRead(obj, 1, 0xA00CC);
+            omObjMotionRead(obj, 2, 0xA00CD);
             obj->work[1] = 2;
             D_8010CF2C_curtain_call[0] = obj->model[0];
             D_8010CF24_curtain_call = obj;
@@ -1250,10 +1250,10 @@ void func_801089FC_curtain_call(omObjData *obj) {
     }
     func_80105BD0_curtain_call(obj, 0, 2);
     if (obj->work[0] == 0) {
-        obj->model[1] = func_8000B0A0_main(0, 0xC9);
-        func_8001C2FC_main(obj->model[1], 0x80000000, 0);
+        obj->model[1] = Hu3DModelRead2(0, 0xC9);
+        Hu3DModelObjAttrSet(obj->model[1], 0x80000000, 0);
         Hu3DModelRemakeStatic(obj->model[1]);
-        func_8001C514_main(obj->model[1]);
+        Hu3DModelDynamicFree(obj->model[1]);
         func_80088800_main(Hu3DData[obj->model[1]].mtx, 0.0f, 0.0f, 0.0f);
         D_8010CF2C_curtain_call[1] = obj->model[1];
     } else {
@@ -1300,13 +1300,13 @@ void func_80108EF8_curtain_call(omObjData *obj) {
 }
 
 void func_80108F28_curtain_call(omObjData *obj) {
-    obj->model[0] = func_8000B108_main(0xA0000, 0x2B9);
-    func_8000B460_main(obj, 0, 0xA000C);
+    obj->model[0] = Hu3DModelRead(0xA0000, 0x2B9);
+    omObjMotionRead(obj, 0, 0xA000C);
     func_80105BD0_curtain_call(obj, 0, 2);
-    obj->model[1] = func_8000B0A0_main(0, 0xC9);
-    func_8001C2FC_main(obj->model[1], 0x80000000, 0);
+    obj->model[1] = Hu3DModelRead2(0, 0xC9);
+    Hu3DModelObjAttrSet(obj->model[1], 0x80000000, 0);
     Hu3DModelRemakeStatic(obj->model[1]);
-    func_8001C514_main(obj->model[1]);
+    Hu3DModelDynamicFree(obj->model[1]);
     func_80088800_main(Hu3DData[obj->model[1]].mtx, 0.0f, 0.0f, 0.0f);
     obj->trans.x = -450.0f;
     obj->trans.y = 125.0f;
@@ -1318,8 +1318,8 @@ void func_80108F28_curtain_call(omObjData *obj) {
     obj->scale.z = 0.8f;
     Hu3DModelScaleSet(obj->model[0], obj->scale.x, obj->scale.y, obj->scale.z);
     Hu3DModelScaleSet(obj->model[1], obj->scale.x, obj->scale.y, obj->scale.z);
-    func_8001C258_main(obj->model[0], 4, 4);
-    func_8001C258_main(obj->model[1], 4, 4);
+    Hu3DModelAttrSet(obj->model[0], 4, 4);
+    Hu3DModelAttrSet(obj->model[1], 4, 4);
     Hu3DModelCameraSet(obj->model[0], 1);
     Hu3DModelCameraSet(obj->model[1], 1);
     obj->func = func_80108EF8_curtain_call;
@@ -1334,7 +1334,7 @@ void func_80109138_curtain_call(omObjData *obj) {
 
     switch (D_8010CEC1_curtain_call) {
         case 0:
-            func_8001C258_main(obj->model[0], 4, 4);
+            Hu3DModelAttrSet(obj->model[0], 4, 4);
             break;
         case 5:
             switch (D_8010CEFE_curtain_call) {
@@ -1351,30 +1351,30 @@ void func_80109138_curtain_call(omObjData *obj) {
                                    D_8010B234_curtain_call[D_8010CEC0_curtain_call];
                     break;
             }
-            func_8001C258_main(obj->model[0], 4, 0);
+            Hu3DModelAttrSet(obj->model[0], 4, 0);
             break;
     }
     if (D_8010CF32_curtain_call >= 3) {
         if (entry->unk_04 <= 0) {
             entry->unk_04 = 0;
-            func_8001C258_main(obj->model[0], 4, 4);
+            Hu3DModelAttrSet(obj->model[0], 4, 4);
         } else {
             entry->unk_04 -= 5;
-            func_8001F9E4_main(obj->model[0], entry->unk_04);
+            Hu3DModelTPLvlSet(obj->model[0], entry->unk_04);
         }
     }
 }
 
 void func_801092F0_curtain_call(omObjData *obj) {
-    obj->model[0] = func_8000B108_main(0x430006, 0x2A8);
-    func_8001FA68_main(obj->model[0]);
-    func_8001F9E4_main(obj->model[0], 0xD2);
+    obj->model[0] = Hu3DModelRead(0x430006, 0x2A8);
+    Hu3DModelTPLvlInit(obj->model[0]);
+    Hu3DModelTPLvlSet(obj->model[0], 0xD2);
     obj->trans.x = 0.0f;
     obj->trans.y = 125.0f;
     obj->trans.z = -725.0f;
     Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
     D_8010B4B0_curtain_call[13].unk_04 = 0xFF;
-    func_8001C258_main(obj->model[0], 4, 4);
+    Hu3DModelAttrSet(obj->model[0], 4, 4);
     Hu3DModelCameraSet(obj->model[0], 1);
     obj->func = func_80109138_curtain_call;
 }
@@ -1635,14 +1635,14 @@ void func_80109AD0_curtain_call(void) {
             if ((s32)Hu3DData[host->model[0]].motTime <= 0) {
                 Hu3DMotionTimeSet(host->model[0], 0.0f);
                 Hu3DMotionSpeedSet(host->model[0], 0.0f);
-                func_8001C258_main(host->model[0], 4, 4);
+                Hu3DModelAttrSet(host->model[0], 4, 4);
             }
             func_8010954C_curtain_call();
             if (D_8010CECC_curtain_call[D_8010CF33_curtain_call][0]->trans.x >= 500.0f) {
                 D_8010CEC1_curtain_call = 2;
-                func_8001C258_main(host->model[0], 4, 0);
-                func_8001C258_main(curtain->model[0], 4, 0);
-                func_8001C258_main(curtain->model[1], 4, 0);
+                Hu3DModelAttrSet(host->model[0], 4, 0);
+                Hu3DModelAttrSet(curtain->model[0], 4, 0);
+                Hu3DModelAttrSet(curtain->model[1], 4, 0);
             }
             break;
         case 2:
@@ -1662,10 +1662,10 @@ void func_80109AD0_curtain_call(void) {
         case 3:
             if (D_8010CE88_curtain_call > 0) {
                 D_8010CE88_curtain_call--;
-                func_8003F578_main((D_8010CE88_curtain_call + 29) / 30);
+                GMesTimerValueSet((D_8010CE88_curtain_call + 29) / 30);
             } else {
-                func_8003F5C0_main();
-                func_8004AD8C_main(0x414);
+                GMesTimerEnd();
+                HuAudFXIdStop(0x414);
                 D_8010CEC1_curtain_call = 4;
             }
             break;
@@ -1673,13 +1673,13 @@ void func_80109AD0_curtain_call(void) {
             if (curtain->trans.x > -450.0f) {
                 curtain->trans.x -= 7.0f;
                 if (curtain->trans.x < -300.0f && D_8010CF00_curtain_call == 0) {
-                    func_8004A670_main(30);
+                    HuAudSeqVolFadeOut(30);
                     D_8010CF00_curtain_call = 1;
                 }
             } else {
                 curtain->trans.x = -450.0f;
-                func_8001C258_main(curtain->model[0], 4, 4);
-                func_8001C258_main(curtain->model[1], 4, 4);
+                Hu3DModelAttrSet(curtain->model[0], 4, 4);
+                Hu3DModelAttrSet(curtain->model[1], 4, 4);
                 D_8010CF00_curtain_call = 0;
                 for (i = 0; i < 6; i++) {
                     if (D_8010CEC8_curtain_call[i][0] != 0) {
@@ -1712,7 +1712,7 @@ void func_80109AD0_curtain_call(void) {
             if ((s32)Hu3DData[host->model[0]].motTime <= 0) {
                 Hu3DMotionTimeSet(host->model[0], 0.0f);
                 Hu3DMotionSpeedSet(host->model[0], 0.0f);
-                func_8001C258_main(host->model[0], 4, 4);
+                Hu3DModelAttrSet(host->model[0], 4, 4);
                 HuAudFXPlay(0x522);
                 D_8010CE88_curtain_call = 100;
                 D_8010CEC1_curtain_call = 6;
@@ -1767,11 +1767,11 @@ void func_80109AD0_curtain_call(void) {
             }
             if (D_8010CF00_curtain_call == 0) {
                 D_8010CF00_curtain_call = 1;
-                func_8004AB0C_main(30);
-                func_8004A72C_main(30);
+                HuAudFXAllFadeOut(30);
+                HuAudSeqVolFadeIn(30);
             }
             Hu3DMotionSpeedSet(host->model[0], 1.0f);
-            func_8001C258_main(host->model[0], 4, 0);
+            Hu3DModelAttrSet(host->model[0], 4, 0);
             if ((s32)Hu3DData[host->model[0]].motTime >= 60) {
                 Hu3DMotionTimeSet(host->model[0], 60.0f);
                 Hu3DMotionSpeedSet(host->model[0], 0.0f);
@@ -1823,7 +1823,7 @@ void func_8010A8E8_curtain_call(omObjData *obj) {
         WipeCreateOut(0, 20);
         obj->func = func_8010A7FC_curtain_call;
         HuAudSeqFadeOut(30);
-        func_8004AB0C_main(30);
+        HuAudFXAllFadeOut(30);
     }
 }
 
@@ -1945,8 +1945,8 @@ void func_8010AE08_curtain_call(void) {
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
     obj->work[0] = 1;
     omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    func_8000B5F0_main(1);
-    func_8000B710_main(1);
+    CamSetupInit(1);
+    CamSetupMapCullAddMulti(1);
     for (i = 0; i < 1; i++) {
         ScissorSet(i, D_8010B280_curtain_call[i].scissorX, D_8010B280_curtain_call[i].scissorY,
                    D_8010B280_curtain_call[i].scissorWidth, D_8010B280_curtain_call[i].scissorHeight);
@@ -1958,10 +1958,10 @@ void func_8010AE08_curtain_call(void) {
 }
 
 void func_8010AF78_curtain_call(void) {
-    func_8001FE20_main(50);
-    func_800142A0_main(50);
+    MapCollInit(50);
+    Hu3DSprModelInit(50);
     omInitObjMan(50, 3);
-    func_8004A208_main();
+    omGameSysInit();
     func_8010AE08_curtain_call();
     Hu3DGLightMaxSet(1);
     Hu3DGLightMaxSet(2);
@@ -1974,8 +1974,8 @@ void func_8010AF78_curtain_call(void) {
     D_800EC1B8_minigame = 0;
     D_800EC280_minigame = 0;
     D_800EBE28_minigame = 0;
-    func_80045010_main(D_8010B4A0_curtain_call, 0);
-    func_80045010_main(D_8010B4A0_curtain_call, 1);
+    GMesFontMesCreate(D_8010B4A0_curtain_call, 0);
+    GMesFontMesCreate(D_8010B4A0_curtain_call, 1);
     omAddObj(1500, 0, 0, -1, func_8010AD68_curtain_call);
     omAddObj(1500, 0, 0, -1, func_8010A8E8_curtain_call);
     func_80105A3C_curtain_call();

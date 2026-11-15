@@ -139,15 +139,15 @@ void func_801059A0_inst(void) {
         return;
     }
 
-    func_8001FE20_main(1);
+    MapCollInit(1);
     omInitObjMan(0x1E, 0x1E);
     HuWinInit();
-    func_8000B5F0_main(1);
+    CamSetupInit(1);
     ScissorSet(0, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 15.0f, 500.0f, 8000.0f);
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, func_8010674C_inst), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    func_800142A0_main(0x28);
+    Hu3DSprModelInit(0x28);
     Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
     omAddPrcObj(func_80107470_inst, 0x1001, 0x1000, 0);
     omAddPrcObj(func_8010B990_inst, 0x1001, 0x1000, 0);

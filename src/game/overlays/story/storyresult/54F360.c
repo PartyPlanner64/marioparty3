@@ -149,7 +149,7 @@ void func_80107030_storyresult(void) {
     } else {
         _ClearFlag(0x29);
     }
-    func_80050614_main(1);
+    SLSaveStorySystem(1);
 }
 
 s16 func_801070D8_storyresult(void) {
@@ -180,7 +180,7 @@ void func_80107140_storyresult(void) {
     } else {
         _ClearFlag(0x29);
     }
-    func_80050614_main(1);
+    SLSaveStorySystem(1);
 }
 
 void func_80107204_storyresult(void) {
@@ -237,10 +237,10 @@ void func_80107204_storyresult(void) {
     HuWinMesPalSet(window, 5, 0, 176, 192);
     HuWinMesPalSet(window, 4, 96, 255, 64);
     HuWinMesPalSet(window, 6, 255, 255, 64);
-    func_8005C154_main(window, 64, 64, 64);
+    HuWinMesDefColSet(window, 64, 64, 64);
     HuWinBGColSet(window, 0, 0, 0);
     HuWinMesColSet(window, 7);
-    func_8005BF70_main(window, 255);
+    HuWinTPLvlSet(window, 255);
 
     if (GwStory.unk0 >= 12) {
         HuAudSeqPlay(0x26);
@@ -377,10 +377,10 @@ void func_80107920_storyresult(void) {
     HuWinMesPalSet(window, 5, 0, 176, 192);
     HuWinMesPalSet(window, 4, 96, 255, 64);
     HuWinMesPalSet(window, 6, 255, 255, 64);
-    func_8005C154_main(window, 64, 64, 64);
+    HuWinMesDefColSet(window, 64, 64, 64);
     HuWinBGColSet(window, 0, 0, 0);
     HuWinMesColSet(window, 7);
-    func_8005BF70_main(window, 255);
+    HuWinTPLvlSet(window, 255);
 
     pos[0].x = 25;
     pos[1].x = 295;
@@ -1045,10 +1045,10 @@ void func_80108F0C_storyresult(void) {
         HuWinMesPalSet(*win, 5, 0, 176, 192);
         HuWinMesPalSet(*win, 4, 96, 255, 64);
         HuWinMesPalSet(*win, 6, 255, 255, 64);
-        func_8005C154_main(*win, 64, 64, 64);
+        HuWinMesDefColSet(*win, 64, 64, 64);
         HuWinBGColSet(*win, 0, 0, 0);
         HuWinMesColSet(*win, 7);
-        func_8005BF70_main(*win, 0);
+        HuWinTPLvlSet(*win, 0);
         *flag = 0;
     }
     win = work->windows;
@@ -1376,7 +1376,7 @@ void func_80108F0C_storyresult(void) {
                     if ((s16)temp) {
                         *flag = 0;
                     }
-                    func_8005BF70_main(*win, winAlpha);
+                    HuWinTPLvlSet(*win, winAlpha);
                 }
             }
         }

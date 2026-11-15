@@ -74,7 +74,7 @@ void pfClsScr(void) {
     }
 }
 
-void func_8004DCFC_main(s16 arg0) {
+void pfClrStrLine(s16 arg0) {
     strline_data *temp_v1;
 
     if ((strline[arg0].str[0] != '\0') && (strlinecnt != 0)) {
@@ -133,14 +133,14 @@ s16 printWin(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     return i;
 }
 
-void func_8004DEC8_main(s16 arg0) {
+void pfWinKill(s16 arg0) {
     if (D_800D6A46_main != 0) {
         D_800CC440_main[arg0].unk_00 = 0;
         D_800D6A46_main -= 1;
     }
 }
 
-void func_8004DF10_main(void) {
+void pfWinClose(void) {
     s32 i;
 
     D_800D6A46_main = 0;
@@ -149,7 +149,7 @@ void func_8004DF10_main(void) {
     }
 }
 
-void func_8004DF4C_main(u8 arg0, u8 arg1, u8 arg2) {
+void saftyFrameSet(u8 arg0, u8 arg1, u8 arg2) {
     D_800CE1DC_main.unk_00 = arg0;
     D_800CE1DC_main.unk_01 = arg1;
     D_800CE1DC_main.unk_02 = arg2;
@@ -157,7 +157,7 @@ void func_8004DF4C_main(u8 arg0, u8 arg1, u8 arg2) {
     saftyFrameF = 1;
 }
 
-void func_8004DF7C_main(s8 arg0, s8 arg1, s8 arg2, s8 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7, u8 arg8) {
+void saftyFrameFlashSet(s8 arg0, s8 arg1, s8 arg2, s8 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7, u8 arg8) {
     D_800CE1DC_main.unk_03 = arg0;
     D_800CE1DC_main.unk_04 = arg1;
     D_800CE1DC_main.unk_05 = arg2;
@@ -169,15 +169,15 @@ void func_8004DF7C_main(s8 arg0, s8 arg1, s8 arg2, s8 arg3, u8 arg4, u8 arg5, u8
     D_800CE1DC_main.unk_0B = arg8;
 }
 
-void func_8004DFC0_main(void) {
+void saftyFrameFlashReset(void) {
     D_800CE1DC_main.unk_03 = D_800CE1DC_main.unk_04 = D_800CE1DC_main.unk_05 = 0;
 }
 
-void func_8004DFD8_main(void) {
+void saftyFrameReset(void) {
     saftyFrameF = 0;
 }
 
-void func_8004DFE4_main(s16 arg0, u8 *src) {
+void pfStrLineSet(s16 arg0, u8 *src) {
     u8 *dst;
 
     if ((u32)strline[arg0].str != 0) {

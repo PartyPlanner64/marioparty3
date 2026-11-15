@@ -91,15 +91,15 @@ void HuSprInit(void) {
                 D_800D59F4_main = NULL;
     D_800D1FDC_main = NULL;
     guOrtho(&D_800BD7C0_main, -160.0f, 160.0f, -120.0f, 120.0f, 0.0f, 8000.0f, 2.0f);
-    D_800D0468_main = Hu3DHookFuncCreate(0, func_80054218_main, 0);
+    D_800D0468_main = Hu3DHookFuncCreate(0, HuSprLayerHook, 0);
     Hu3DModelCameraSet(D_800D0468_main, HU3D_CAM0);
-    D_800D10F2_main = Hu3DHookFuncCreate(0, func_80054658_main, 6);
-    func_80055628_main();
-    func_80056CD0_main();
+    D_800D10F2_main = Hu3DHookFuncCreate(0, HuSprBGHook, 6);
+    HuSprAnimInit();
+    HuSprPalAnimInit();
     D_800A1EA0_main = 1;
 }
 
-HuSprGrp *func_80052468_main(s16 arg0, u16 arg1) {
+HuSprGrp *HuSprGrpAlloc(s16 arg0, u16 arg1) {
     HuSprGrp *temp_v0;
 
     // Allocation assumes 'members' is the last member of HuSprGrp.
@@ -123,21 +123,21 @@ HuSprGrp *func_80052468_main(s16 arg0, u16 arg1) {
     return temp_v0;
 }
 
-void func_80052518_main(HuSprite *arg0) {
+void HuSprMemberDataFree(HuSprite *arg0) {
     s16 i;
 
     for (i = 0; i < 3; i++) {
         if (arg0->unk_128[i] != NULL) {
-            func_80019C00_main(arg0->unk_128[i]);
+            HuMemDelayFree(arg0->unk_128[i]);
         }
         if (arg0->unk_134[i] != NULL) {
-            func_80019C00_main(arg0->unk_134[i]);
+            HuMemDelayFree(arg0->unk_134[i]);
         }
         if (arg0->unk_98.unk70[i] != NULL) {
-            func_80019C00_main(arg0->unk_98.unk70[i]);
+            HuMemDelayFree(arg0->unk_98.unk70[i]);
         }
     }
-    func_80019C00_main(arg0);
+    HuMemDelayFree(arg0);
 }
 
 void HuSprGrpKill(s16 arg0) {
@@ -150,7 +150,7 @@ void HuSprGrpKill(s16 arg0) {
         HuSprite **mp = group->members;
 
         for (i = 0; i < group->unk_0A; i++) {
-            func_80052518_main(*mp++);
+            HuSprMemberDataFree(*mp++);
         }
     }
     if (next != NULL) {
@@ -177,7 +177,7 @@ void HuSprGrpKill(s16 arg0) {
     D_800A1EA0_main = 1;
 }
 
-void func_80052700_main(void) {
+void HuSprGrpAllKill(void) {
     s16 i;
 
     HuSprGrpNum = 0;
@@ -208,7 +208,7 @@ s16 HuSprGrpCreate(u16 arg0, u16 arg1) {
         return -1;
     }
     var_s4 = i;
-    temp_v0_2 = func_80052468_main(arg0, arg1);
+    temp_v0_2 = HuSprGrpAlloc(arg0, arg1);
     if (temp_v0_2 == NULL) {
         return -1;
     }
@@ -224,7 +224,7 @@ s16 HuSprGrpCreate(u16 arg0, u16 arg1) {
         }
         temp_v0_2->unk_0A++;
     }
-    func_80052E68_main(temp_v0_2, arg0);
+    HuSprGrpMemberInit(temp_v0_2, arg0);
     return var_s4;
 }
 
@@ -235,7 +235,7 @@ s32 HuSprGrpMemberKill(s16 group, s16 member, u16 count) {
     s16 i;
 
     for (i = 0; i < count; i++) {
-        func_80052518_main(*mp++);
+        HuSprMemberDataFree(*mp++);
     }
     groupPtr->unk_0A -= count;
     if (groupPtr->unk_0A == 0) {
@@ -257,7 +257,7 @@ s32 HuSprGrpMemberKill(s16 group, s16 member, u16 count) {
     return 0;
 }
 
-s32 func_80052A90_main(s16 group, s16 member, u16 count) {
+s32 HuSprGrpMemberInsert(s16 group, s16 member, u16 count) {
     HuSprGrp *oldGroup = HuSprGrpData[group];
     HuSprGrp *newGroup;
     HuSprite **mp;
@@ -274,7 +274,7 @@ s32 func_80052A90_main(s16 group, s16 member, u16 count) {
         return -1;
     }
     newSlot = i;
-    newGroup = func_80052468_main(count + oldGroup->unk_0A, oldGroup->unk_08);
+    newGroup = HuSprGrpAlloc(count + oldGroup->unk_0A, oldGroup->unk_08);
     if (newGroup == NULL) {
         return -1;
     }
@@ -290,7 +290,7 @@ s32 func_80052A90_main(s16 group, s16 member, u16 count) {
         }
         newGroup->unk_0A++;
     }
-    func_80052E68_main(newGroup, count);
+    HuSprGrpMemberInit(newGroup, count);
     newGroup->members[0]->unk_2E = 0;
     if (member >= 0) {
         mp = newGroup->members + count - 1;
@@ -321,7 +321,7 @@ s32 func_80052A90_main(s16 group, s16 member, u16 count) {
     return 0;
 }
 
-void func_80052DD8_main(HuSprAnm *arg0) {
+void HuSprAnmInit(HuSprAnm *arg0) {
     arg0->data = NULL;
     arg0->animStat = 0;
     arg0->animMode = 0;
@@ -335,7 +335,7 @@ void func_80052DD8_main(HuSprAnm *arg0) {
     arg0->shiftX = 0;
 }
 
-void func_80052E14_main(HuSprite *arg0) {
+void HuSprAnmSync(HuSprite *arg0) {
     arg0->anim.data = arg0->data;
     arg0->anim.animStat = arg0->animStat;
     arg0->anim.animMode = arg0->animMode;
@@ -349,7 +349,7 @@ void func_80052E14_main(HuSprite *arg0) {
     arg0->anim.shiftX = 0;
 }
 
-void func_80052E68_main(HuSprGrp *group, u16 count) {
+void HuSprGrpMemberInit(HuSprGrp *group, u16 count) {
     HuSprite *sprite;
     s16 i;
     s16 j;
@@ -380,7 +380,7 @@ void func_80052E68_main(HuSprGrp *group, u16 count) {
         sprite->zRot = 0.0f;
         sprite->attr = 0;
         sprite->unk_60 = sprite->unk_64 = 1.0f;
-        func_80052DD8_main(&sprite->anim);
+        HuSprAnmInit(&sprite->anim);
         sprite->data = sprite->anim.data;
         sprite->animStat = sprite->anim.animStat;
         sprite->animMode = (u16)sprite->anim.animMode;
@@ -417,7 +417,7 @@ void func_80052E68_main(HuSprGrp *group, u16 count) {
 }
 
 // rebuild sprite draw list (highest priority first)
-HuSprite *func_800530AC_main(void) {
+HuSprite *HuSprPrioSort(void) {
     HuSprPrioBucket buckets[0x100];
     HuSprGrp *group;
     HuSprite *sprite;
@@ -512,7 +512,7 @@ HuSprite *func_800530AC_main(void) {
     return buckets[maxBucket].first;
 }
 
-s16 func_8005338C_main(HuSprGrp *arg0) {
+s16 HuSprGrpRootCount(HuSprGrp *arg0) {
     HuSprite *sprite;
     s16 result = 0;
     s16 i;
@@ -548,7 +548,7 @@ s16 func_8005338C_main(HuSprGrp *arg0) {
     return result;
 }
 
-void func_800534C8_main(f32 a0[][2], f32 a1[][2], f32 a2[][2]) {
+void HuSprMtxCat(f32 a0[][2], f32 a1[][2], f32 a2[][2]) {
     s16 i;
 
     for (i = 0; i < 3; i++) {
@@ -562,7 +562,7 @@ void func_800534C8_main(f32 a0[][2], f32 a1[][2], f32 a2[][2]) {
 // Updates all sprite groups, resolving parent-relative positions and
 // rotations by walking each group's sprite hierarchy.
 // The traversal stack depth wraps at 8 bits.
-void func_80053558_main(void) {
+void HuSprExec(void) {
     f32 mtx[0x100][3][2];
     f32 parentMtx[3][2];
     f32 localMtx[3][2];
@@ -582,18 +582,18 @@ void func_80053558_main(void) {
                 case 0:
                     for (cur = 0; cur < group->unk_0A; cur++) {
                         sprite = group->members[cur];
-                        func_80056650_main(sprite);
+                        HuSprAnimExec(sprite);
                         sprite->unk_04 = sprite->shiftX + sprite->pos.x;
                         sprite->unk_08 = sprite->shiftY + sprite->pos.y;
                         sprite->unk_20 = sprite->zRot;
-                        func_80056758_main(sprite);
+                        HuSprTexLoad(sprite);
                     }
                     break;
                 case 1:
-                    cur = func_8005338C_main(group);
+                    cur = HuSprGrpRootCount(group);
                     for (n = 0; n < group->unk_0A; n++) {
                         sprite = group->members[cur];
-                        func_80056650_main(sprite);
+                        HuSprAnimExec(sprite);
                         if (sprite->unk_2E < 0) {
                             sprite->unk_04 = sprite->shiftX + sprite->pos.x;
                             sprite->unk_08 = sprite->shiftY + sprite->pos.y;
@@ -604,7 +604,7 @@ void func_80053558_main(void) {
                             sprite->unk_08 = sprite->shiftY + sprite->pos.y;
                             sprite->unk_20 = parent->unk_20 + sprite->zRot;
                         }
-                        func_80056758_main(sprite);
+                        HuSprTexLoad(sprite);
                         if (sprite->unk_116 >= 0) {
                             stack[depth++] = cur;
                             depth = (u8)depth;
@@ -621,10 +621,10 @@ void func_80053558_main(void) {
                     }
                     break;
                 case 2:
-                    cur = func_8005338C_main(group);
+                    cur = HuSprGrpRootCount(group);
                     for (n = 0; n < group->unk_0A; n++) {
                         sprite = group->members[cur];
-                        func_80056650_main(sprite);
+                        HuSprAnimExec(sprite);
                         if (sprite->unk_2E < 0) {
                             sprite->unk_04 = sprite->shiftX + sprite->pos.x;
                             sprite->unk_08 = sprite->shiftY + sprite->pos.y;
@@ -634,7 +634,7 @@ void func_80053558_main(void) {
                             sprite->unk_08 = (sprite->shiftY + sprite->pos.y) * sprite->unk_1C + parent->unk_08;
                         }
                         sprite->unk_20 = sprite->zRot;
-                        func_80056758_main(sprite);
+                        HuSprTexLoad(sprite);
                         if (sprite->unk_116 >= 0) {
                             stack[depth++] = cur;
                             depth = (u8)depth;
@@ -651,10 +651,10 @@ void func_80053558_main(void) {
                     }
                     break;
                 case 3:
-                    cur = func_8005338C_main(group);
+                    cur = HuSprGrpRootCount(group);
                     for (n = 0; n < group->unk_0A; n++) {
                         sprite = group->members[cur];
-                        func_80056650_main(sprite);
+                        HuSprAnimExec(sprite);
                         if (sprite->unk_2E < 0) {
                             sprite->unk_04 = sprite->shiftX + sprite->pos.x;
                             sprite->unk_08 = sprite->shiftY + sprite->pos.y;
@@ -665,7 +665,7 @@ void func_80053558_main(void) {
                             sprite->unk_08 = (sprite->shiftY + sprite->pos.y) * sprite->unk_1C + parent->unk_08;
                             sprite->unk_20 = parent->unk_20 + sprite->zRot;
                         }
-                        func_80056758_main(sprite);
+                        HuSprTexLoad(sprite);
                         if (sprite->unk_116 >= 0) {
                             stack[depth++] = cur;
                             depth = (u8)depth;
@@ -682,10 +682,10 @@ void func_80053558_main(void) {
                     }
                     break;
                 case 4:
-                    cur = func_8005338C_main(group);
+                    cur = HuSprGrpRootCount(group);
                     for (n = 0; n < group->unk_0A; n++) {
                         sprite = group->members[cur];
-                        func_80056650_main(sprite);
+                        HuSprAnimExec(sprite);
                         if (sprite->unk_2E < 0) {
                             parentMtx[0][0] = parentMtx[1][1] = 1.0f;
                             parentMtx[0][1] = parentMtx[1][0] = 0.0f;
@@ -698,7 +698,7 @@ void func_80053558_main(void) {
                             localMtx[0][1] = localMtx[1][0] = 0.0f;
                             localMtx[2][0] = (sprite->shiftX + sprite->pos.x) * sprite->unk_18;
                             localMtx[2][1] = (sprite->shiftY + sprite->pos.y) * sprite->unk_1C;
-                            func_800534C8_main(localMtx, mtx[sprite->unk_2E], parentMtx);
+                            HuSprMtxCat(localMtx, mtx[sprite->unk_2E], parentMtx);
                             sprite->unk_04 = (s16)parentMtx[2][0];
                             sprite->unk_08 = (s16)parentMtx[2][1];
                         }
@@ -708,8 +708,8 @@ void func_80053558_main(void) {
                         localMtx[0][1] = sinf(angle);
                         localMtx[1][0] = -localMtx[0][1];
                         localMtx[2][0] = localMtx[2][1] = 0.0f;
-                        func_800534C8_main(localMtx, parentMtx, mtx[sprite->unk_00]);
-                        func_80056758_main(sprite);
+                        HuSprMtxCat(localMtx, parentMtx, mtx[sprite->unk_00]);
+                        HuSprTexLoad(sprite);
                         if (sprite->unk_116 >= 0) {
                             stack[depth++] = cur;
                             depth = (u8)depth;
@@ -726,10 +726,10 @@ void func_80053558_main(void) {
                     }
                     break;
                 case 5:
-                    cur = func_8005338C_main(group);
+                    cur = HuSprGrpRootCount(group);
                     for (n = 0; n < group->unk_0A; n++) {
                         sprite = group->members[cur];
-                        func_80056650_main(sprite);
+                        HuSprAnimExec(sprite);
                         if (sprite->unk_2E < 0) {
                             parentMtx[0][0] = parentMtx[1][1] = 1.0f;
                             parentMtx[0][1] = parentMtx[1][0] = 0.0f;
@@ -744,7 +744,7 @@ void func_80053558_main(void) {
                             localMtx[0][1] = localMtx[1][0] = 0.0f;
                             localMtx[2][0] = (sprite->shiftX + sprite->pos.x) * sprite->unk_18;
                             localMtx[2][1] = (sprite->shiftY + sprite->pos.y) * sprite->unk_1C;
-                            func_800534C8_main(localMtx, mtx[sprite->unk_2E], parentMtx);
+                            HuSprMtxCat(localMtx, mtx[sprite->unk_2E], parentMtx);
                             sprite->unk_04 = (s16)parentMtx[2][0];
                             sprite->unk_08 = (s16)parentMtx[2][1];
                             sprite->unk_20 = parent->unk_20 + sprite->zRot;
@@ -754,8 +754,8 @@ void func_80053558_main(void) {
                         localMtx[0][1] = sinf(angle);
                         localMtx[1][0] = -localMtx[0][1];
                         localMtx[2][0] = localMtx[2][1] = 0.0f;
-                        func_800534C8_main(localMtx, parentMtx, mtx[sprite->unk_00]);
-                        func_80056758_main(sprite);
+                        HuSprMtxCat(localMtx, parentMtx, mtx[sprite->unk_00]);
+                        HuSprTexLoad(sprite);
                         if (sprite->unk_116 >= 0) {
                             stack[depth++] = cur;
                             depth = (u8)depth;
@@ -777,8 +777,8 @@ void func_80053558_main(void) {
                 case 0:
                     for (cur = 0; cur < group->unk_0A; cur++) {
                         sprite = group->members[cur];
-                        func_80056650_main(sprite);
-                        func_80056758_main(sprite);
+                        HuSprAnimExec(sprite);
+                        HuSprTexLoad(sprite);
                     }
                     break;
                 case 1:
@@ -786,11 +786,11 @@ void func_80053558_main(void) {
                 case 3:
                 case 4:
                 case 5:
-                    cur = func_8005338C_main(group);
+                    cur = HuSprGrpRootCount(group);
                     for (n = 0; n < group->unk_0A; n++) {
                         sprite = group->members[cur];
-                        func_80056650_main(sprite);
-                        func_80056758_main(sprite);
+                        HuSprAnimExec(sprite);
+                        HuSprTexLoad(sprite);
                         if (sprite->unk_116 >= 0) {
                             stack[depth++] = cur;
                             depth = (u8)depth;
@@ -811,7 +811,7 @@ void func_80053558_main(void) {
     }
 }
 
-void func_80054170_main(void) {
+void HuSprGfxBufAlloc(void) {
     if (D_800CE1B8_main[D_800D2008_main] != NULL) {
         HuMemFree(D_800CE1B8_main[D_800D2008_main]);
     }
@@ -825,8 +825,8 @@ void func_80054170_main(void) {
 
 // Model draw callback that builds the display list for all sprites. Sprites
 // without attribute 0x4000 are linked into a separate list (D_800BD800_main)
-// and branched over here, so that func_80054658_main can draw them later.
-void func_80054218_main(Gfx **gdl, s32 arg1, s32 arg2) {
+// and branched over here, so that HuSprBGHook can draw them later.
+void HuSprLayerHook(Gfx **gdl, s32 arg1, s32 arg2) {
     HuCamMtxs *mtxs;
     HuCamera *cam;
     HuSprite *sprite;
@@ -836,13 +836,13 @@ void func_80054218_main(Gfx **gdl, s32 arg1, s32 arg2) {
     s16 sample;
 
     D_800D1FDC_main = 0;
-    sample = func_8004D6AC_main(0, 200, 0);
-    func_80053558_main();
-    func_8004D6E8_main(sample);
-    sprite = func_800530AC_main();
-    func_80054170_main();
+    sample = HuProfCpuBegin(0, 200, 0);
+    HuSprExec();
+    HuProfCpuEnd(sample);
+    sprite = HuSprPrioSort();
+    HuSprGfxBufAlloc();
     D_800CCF30_main = HuMemAlloc(0x4000);
-    sample = func_8004D6AC_main(0, 0, 200);
+    sample = HuProfCpuBegin(0, 0, 200);
     gSPViewport((*gdl)++, &D_800A1E90_main);
     gSPPerspNormalize((*gdl)++, 0x8000);
     gSPMatrix((*gdl)++, osVirtualToPhysical(&D_800BD7C0_main), G_MTX_PROJECTION | G_MTX_LOAD | G_MTX_NOPUSH);
@@ -893,11 +893,11 @@ void func_80054218_main(Gfx **gdl, s32 arg1, s32 arg2) {
     gSPMatrix((*gdl)++, &mtxs->perspMtx, G_MTX_PROJECTION | G_MTX_LOAD | G_MTX_NOPUSH);
     gSPMatrix((*gdl)++, &mtxs->lookAtMtx, G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH);
     gDPSetScissor((*gdl)++, G_SC_NON_INTERLACE, cam->screenLeft, cam->screenTop, cam->screenRight, cam->screenBottom);
-    func_8004D6E8_main(sample);
+    HuProfCpuEnd(sample);
 }
 
 // Model draw callback that renders the sprite display list for a camera.
-void func_80054658_main(Gfx **gdl, s32 arg1, s32 arg2) {
+void HuSprBGHook(Gfx **gdl, s32 arg1, s32 arg2) {
     HuCamMtxs *mtxs = (HuCamMtxs *)arg1;
     HuCamera *cam = (HuCamera *)arg2;
 
@@ -933,14 +933,14 @@ void HuSprPosSet(s16 group, s16 member, s16 arg2, s16 arg3) {
     }
 }
 
-void func_800549C0_main(s16 group, s16 member, s16 arg2) {
+void HuSprPrimDepthSet(s16 group, s16 member, s16 arg2) {
     HuSprite *sprite = HuSprGrpData[group]->members[member];
 
     sprite->unk_44 = arg2;
 }
 
 // Transforms a point by a fixed-point matrix.
-void func_800549F4_main(Mtx *m, f32 x, f32 y, f32 z, f32 w, f32 *ox, f32 *oy, f32 *oz, f32 *ow) {
+void HuSprMtxXformVec4(Mtx *m, f32 x, f32 y, f32 z, f32 w, f32 *ox, f32 *oy, f32 *oz, f32 *ow) {
     HuMtx4F mf;
 
     func_80089980_main(mf, m);
@@ -952,7 +952,7 @@ void func_800549F4_main(Mtx *m, f32 x, f32 y, f32 z, f32 w, f32 *ox, f32 *oy, f3
 
 // Projects a 3D point through a camera and positions the sprite at the
 // resulting screen coordinate. Returns the projected depth scale.
-f32 func_80054B1C_main(s16 group, s16 member, s16 camera, f32 x, f32 y, f32 z) {
+f32 HuSpr3Dto2D(s16 group, s16 member, s16 camera, f32 x, f32 y, f32 z) {
     Mtx perspMtx;
     Mtx lookAtMtx;
     u16 perspNorm;
@@ -967,8 +967,8 @@ f32 func_80054B1C_main(s16 group, s16 member, s16 camera, f32 x, f32 y, f32 z) {
     guPerspective(&perspMtx, &perspNorm, cam->fov, 4.0f / 3.0f, cam->near, cam->far, 1.0f);
     guLookAt(&lookAtMtx, cam->pos.x, cam->pos.y, cam->pos.z, cam->at.x, cam->at.y, cam->at.z, cam->up.x, cam->up.y,
              cam->up.z);
-    func_800549F4_main(&lookAtMtx, x, y, z, 1.0f, &x1, &y1, &z1, &w1);
-    func_800549F4_main(&perspMtx, x1, y1, z1, w1, &x2, &y2, &z2, &w2);
+    HuSprMtxXformVec4(&lookAtMtx, x, y, z, 1.0f, &x1, &y1, &z1, &w1);
+    HuSprMtxXformVec4(&perspMtx, x1, y1, z1, w1, &x2, &y2, &z2, &w2);
     if (w2 != 0.0f) {
         depth = (cam->viewports[D_800D418E_main].vp.vscale[2] << 5) * z2 / w2 +
                 (cam->viewports[D_800D418E_main].vp.vtrans[2] << 5);
@@ -994,18 +994,18 @@ f32 func_80054B1C_main(s16 group, s16 member, s16 camera, f32 x, f32 y, f32 z) {
 }
 
 // Positions the sprite at a projected 3D point and scales it by depth.
-void func_80054EE0_main(s16 group, s16 member, s16 camera, f32 x, f32 y, f32 z) {
+void HuSpr3DPosSet(s16 group, s16 member, s16 camera, f32 x, f32 y, f32 z) {
     HuSprite *sprite = HuSprGrpData[group]->members[member];
     HuCamera *cam = &gCameraList[camera];
 
-    func_80054B1C_main(group, member, camera, x, y, z);
+    HuSpr3Dto2D(group, member, camera, x, y, z);
     if (D_800BD808_main != 0.0) {
         sprite->unk_60 = cam->viewports[D_800D418E_main].vp.vscale[0] / 4.0 / D_800BD808_main / (f64)(4.0f / 3.0f);
         sprite->unk_64 = cam->viewports[D_800D418E_main].vp.vscale[1] / 4.0 / D_800BD808_main;
     }
 }
 
-void func_80054FF8_main(s16 group, s16 member, s32 arg2) {
+void HuSprPatNoSet(s16 group, s16 member, s32 arg2) {
     HuSprGrpData[group]->members[member]->patNo = arg2;
 }
 
@@ -1022,14 +1022,14 @@ void HuSprGrpMemberSet(s16 group, s16 member, s16 arg2, u16 arg3) {
     sprite_ptr->animNo = 0;
     sprite_ptr->animStat = 0;
     sprite_ptr->patNo = 0;
-    func_80052E14_main(sprite_ptr);
+    HuSprAnmSync(sprite_ptr);
 }
 
 void HuSprSpeedSet(s16 group, s16 member, f32 arg2) {
     HuSprite *sprite_ptr = HuSprGrpData[group]->members[member];
 
     sprite_ptr->speed = arg2;
-    func_80052E14_main(sprite_ptr);
+    HuSprAnmSync(sprite_ptr);
 }
 
 void HuSprAnimModeSet(s16 group, s16 member, s32 mode) {
@@ -1037,7 +1037,7 @@ void HuSprAnimModeSet(s16 group, s16 member, s32 mode) {
 
     sprite_ptr->animStat &= ~HUSPR_ANIM_STAT_INIT;
     sprite_ptr->animMode = mode;
-    func_80052E14_main(sprite_ptr);
+    HuSprAnmSync(sprite_ptr);
 }
 
 void HuSprBankSet(s16 group, s16 member, u16 arg2, s32 arg3) {
@@ -1047,14 +1047,14 @@ void HuSprBankSet(s16 group, s16 member, u16 arg2, s32 arg3) {
     sprite->bank = arg2;
     sprite->animNo = arg3;
     sprite->time = 0;
-    func_80052E14_main(sprite);
+    HuSprAnmSync(sprite);
 }
 
-HuSprAnimData *func_80055194_main(s16 arg0) {
+HuSprAnimData *HuSprAnimDataGet(s16 arg0) {
     return D_800C9530_main[arg0];
 }
 
-u8 func_800551AC_main(s16 group, s16 member) {
+u8 HuSprAnimStatGet(s16 group, s16 member) {
     return HuSprGrpData[group]->members[member]->animStat;
 }
 
@@ -1130,7 +1130,7 @@ void HuSprTPLvlSet(s16 group, s16 member, u16 arg2) {
     sprite_ptr->tpLvl = arg2;
 }
 
-void func_80055484_main(s16 group, s16 member, u8 arg2, u8 arg3, u8 arg4, u16 arg5) {
+void HuSprColorTPLvlSet(s16 group, s16 member, u8 arg2, u8 arg3, u8 arg4, u16 arg5) {
     HuSprite *sprite_ptr = HuSprGrpData[group]->members[member];
 
     sprite_ptr->color[0] = arg2;
@@ -1139,7 +1139,7 @@ void func_80055484_main(s16 group, s16 member, u8 arg2, u8 arg3, u8 arg4, u16 ar
     sprite_ptr->tpLvl = arg5;
 }
 
-void func_800554C4_main(s16 group, s16 member, s16 arg2) {
+void HuSprParentSet(s16 group, s16 member, s16 arg2) {
     HuSprGrpData[group]->members[member]->unk_2E = arg2;
 }
 
@@ -1154,7 +1154,7 @@ HuSprite *HuSprGet(s16 group, s16 member) {
     return HuSprGrpData[group]->members[member];
 }
 
-void func_80055548_main(s16 group, s16 member, u16 arg2, u16 arg3, u16 arg4, u16 arg5) {
+void HuSprRectSet(s16 group, s16 member, u16 arg2, u16 arg3, u16 arg4, u16 arg5) {
     HuSprite *sprite = HuSprGrpData[group]->members[member];
 
     sprite->unk_3C = arg2;
@@ -1163,14 +1163,14 @@ void func_80055548_main(s16 group, s16 member, u16 arg2, u16 arg3, u16 arg4, u16
     sprite->unk_42 = arg5;
 }
 
-void func_80055588_main(s16 group, s16 member, f32 arg2, f32 arg3) {
+void HuSprTexScaleSet(s16 group, s16 member, f32 arg2, f32 arg3) {
     HuSprite *sprite = HuSprGrpData[group]->members[member];
 
     sprite->unk_30.f = arg2;
     sprite->unk_34.f = arg3;
 }
 
-void func_800555B8_main(s16 group, s16 member, u16 arg2, u16 arg3) {
+void HuSprTexMaskSet(s16 group, s16 member, u16 arg2, u16 arg3) {
     HuSprite *sprite = HuSprGrpData[group]->members[member];
 
     sprite->unk_38 = arg2;
@@ -1186,7 +1186,7 @@ void HuSprScissorSet(s16 group, s16 member, u16 arg2, u16 arg3, u16 arg4, u16 ar
     sprite->scissorY2 = arg5;
 }
 
-void func_80055628_main(void) {
+void HuSprAnimInit(void) {
     s16 i;
 
     D_800CC3E6_main = 0;
@@ -1210,11 +1210,11 @@ void HuSprAnimKill(s16 arg0) {
         HuMemFree(*desc->bank);
         HuMemFree(desc->bank);
     }
-    func_80019C00_main(desc->pal);
+    HuMemDelayFree(desc->pal);
     {
         HuSprAnimPat *cel = desc->pat;
         for (i = 0; i < desc->patNum; i++) {
-            func_80019C00_main(cel->data);
+            HuMemDelayFree(cel->data);
             cel++;
         }
     }
@@ -1437,83 +1437,83 @@ s32 HuSprAnimMake(u16 sizeX, u16 sizeY, u16 pixelBits, u16 palNum, u16 patNum) {
     return slot;
 }
 
-void func_80055FF4_main(HuSprAnm *arg0, s16 arg1, u16 arg2, u16 arg3) {
-    func_80052DD8_main(arg0);
+void HuSprAnmSet(HuSprAnm *arg0, s16 arg1, u16 arg2, u16 arg3) {
+    HuSprAnmInit(arg0);
     arg0->animMode = arg3;
     arg0->bank = arg2;
-    arg0->data = func_80055194_main(arg1);
+    arg0->data = HuSprAnimDataGet(arg1);
 }
 
-s16 func_80056054_main(void *arg0, HuSprAnm *arg1, u16 arg2, u16 arg3) {
+s16 HuSprAnmRead(void *arg0, HuSprAnm *arg1, u16 arg2, u16 arg3) {
     s16 temp = HuSprAnimRead(arg0);
 
-    func_80055FF4_main(arg1, temp, arg2, arg3);
+    HuSprAnmSet(arg1, temp, arg2, arg3);
     return temp;
 }
 
-HuSprAnimPat *func_800560B8_main(HuSprAnimData **arg0, u16 arg1) {
+HuSprAnimPat *HuSprAnimPatGet(HuSprAnimData **arg0, u16 arg1) {
     return &(*arg0)->pat[arg1];
 }
 
-HuSprAnimPat *func_800560D8_main(s16 arg0, u16 arg1) {
+HuSprAnimPat *HuSprAnimPatGetNum(s16 arg0, u16 arg1) {
     return &D_800C9530_main[arg0]->pat[arg1];
 }
 
-HuSprAnimPat *func_80056108_main(HuSprAnm *arg0) {
+HuSprAnimPat *HuSprAnmPatGet(HuSprAnm *arg0) {
     return &arg0->data->pat[arg0->patNo];
 }
 
-void *func_80056128_main(HuSprAnimData **arg0, u16 arg1) {
+void *HuSprAnimPatDataGet(HuSprAnimData **arg0, u16 arg1) {
     HuSprAnimPat *entry = &(*arg0)->pat[arg1];
 
     return entry->data;
 }
 
-void *func_8005614C_main(s16 arg0, u16 arg1) {
+void *HuSprAnimPatDataGetNum(s16 arg0, u16 arg1) {
     HuSprAnimPat *entry = &D_800C9530_main[arg0]->pat[arg1];
 
     return entry->data;
 }
 
-void func_80056180_main(HuSprAnimData **arg0, u16 arg1, void *arg2) {
+void HuSprAnimPatDataSet(HuSprAnimData **arg0, u16 arg1, void *arg2) {
     HuSprAnimPat *entry = &(*arg0)->pat[arg1];
 
-    func_80019C00_main(entry->data);
+    HuMemDelayFree(entry->data);
     entry->data = arg2;
 }
 
-void func_800561D0_main(s16 arg0, u16 arg1, void *arg2) {
+void HuSprAnimPatDataSetNum(s16 arg0, u16 arg1, void *arg2) {
     HuSprAnimPat *entry = &D_800C9530_main[arg0]->pat[arg1];
 
-    func_80019C00_main(entry->data);
+    HuMemDelayFree(entry->data);
     entry->data = arg2;
 }
 
-void *func_80056230_main(HuSprAnm *arg0) {
+void *HuSprAnmPatDataGet(HuSprAnm *arg0) {
     HuSprAnimPat *entry = &arg0->data->pat[arg0->patNo];
 
     return entry->data;
 }
 
-void *func_80056254_main(HuSprAnimData **arg0) {
+void *HuSprAnimPalGet(HuSprAnimData **arg0) {
     return (*arg0)->pal;
 }
 
-void *func_80056260_main(s16 arg0) {
+void *HuSprAnimPalGetNum(s16 arg0) {
     return D_800C9530_main[arg0]->pal;
 }
 
-void func_8005627C_main(HuSprAnimData **arg0, void *arg1) {
-    func_80019C00_main((*arg0)->pal);
+void HuSprAnimPalSet(HuSprAnimData **arg0, void *arg1) {
+    HuMemDelayFree((*arg0)->pal);
     (*arg0)->pal = arg1;
 }
 
-void func_800562BC_main(s16 arg0, void *arg1) {
-    func_80019C00_main(D_800C9530_main[arg0]->pal);
+void HuSprAnimPalSetNum(s16 arg0, void *arg1) {
+    HuMemDelayFree(D_800C9530_main[arg0]->pal);
     D_800C9530_main[arg0]->pal = arg1;
 }
 
-s16 func_8005630C_main(HuSprAnm *arg0) {
+s16 HuSprAnmFrameGet(HuSprAnm *arg0) {
     HuSprAnimData *desc = arg0->data;
 
     if (desc == NULL) {
@@ -1540,7 +1540,7 @@ s16 func_8005630C_main(HuSprAnm *arg0) {
     return 0;
 }
 
-void func_800563A4_main(HuSprAnm *arg0) {
+void SpriteCalcFrame(HuSprAnm *arg0) {
     HuSprAnimData *desc = arg0->data;
     HuSprAnimBank *cel;
     HuSprAnimFrame *frame;
@@ -1614,17 +1614,17 @@ void func_800563A4_main(HuSprAnm *arg0) {
     arg0->animStat |= HUSPR_ANIM_STAT_UPDATE;
 }
 
-void func_80056650_main(HuSprite *sprite) {
+void HuSprAnimExec(HuSprite *sprite) {
     HuSprAnm *anm = &sprite->anim;
 
-    func_80052E14_main(sprite);
+    HuSprAnmSync(sprite);
     if (!(sprite->anim.animStat & HUSPR_ANIM_STAT_INIT)) {
-        if (func_8005630C_main(anm) == 0) {
+        if (HuSprAnmFrameGet(anm) == 0) {
             sprite->anim.animStat |= HUSPR_ANIM_STAT_INIT;
         }
     } else {
         if (Hu3DPauseF == 0 || (sprite->dispAttr & HUSPR_ATTR_NOPAUSE)) {
-            func_800563A4_main(anm);
+            SpriteCalcFrame(anm);
         }
     }
     sprite->animStat = anm->animStat;
@@ -1639,12 +1639,12 @@ void func_80056650_main(HuSprite *sprite) {
     sprite->unk_18 = sprite->scale.x * sprite->unk_60;
     sprite->unk_1C = sprite->scale.y * sprite->unk_64;
     if (sprite->unk_98.unk00 != NULL) {
-        func_800571C8_main(&sprite->unk_98);
+        HuSprPalAnimExec(&sprite->unk_98);
     }
 }
 
 // Computes the texture tiling of a sprite and reserves display list space.
-void func_80056758_main(HuSprite *sprite) {
+void HuSprTexLoad(HuSprite *sprite) {
     HuSprAnimPat *image;
     s32 fmt = G_IM_FMT_RGBA;
     s32 siz = G_IM_SIZ_4b;
@@ -1748,9 +1748,9 @@ void func_80056758_main(HuSprite *sprite) {
 void HuSprClose(void) {
     s16 i;
 
-    func_80052700_main();
+    HuSprGrpAllKill();
     HuSprAnimAllKill();
-    func_80057158_main();
+    HuSprPalAnimAllKill();
     for (i = 0; i < 3; i++) {
         if (D_800CE1B8_main[i] != NULL) {
             HuMemFree(D_800CE1B8_main[i]);
@@ -1759,7 +1759,7 @@ void HuSprClose(void) {
 }
 
 // Unused; references math routines so they are linked.
-void func_80056C28_main(void) {
+void HuSprDummy(void) {
     HuMtx4F mf;
     Mtx a;
     Mtx b;
@@ -1769,7 +1769,7 @@ void func_80056C28_main(void) {
     func_8007E040_main(&a, &b, &a);
 }
 
-u16 func_80056C74_main(u8 **arg0) {
+u16 HuSprRead16(u8 **arg0) {
     u8 *p = *arg0;
     u16 val = (p[0] << 8) + p[1];
 
@@ -1777,7 +1777,7 @@ u16 func_80056C74_main(u8 **arg0) {
     return val;
 }
 
-u32 func_80056C98_main(u8 **arg0) {
+u32 HuSprRead32(u8 **arg0) {
     u8 *p = *arg0;
     u32 val = (p[0] << 24) + (p[1] << 16) + (p[2] << 8) + p[3];
 
@@ -1785,7 +1785,7 @@ u32 func_80056C98_main(u8 **arg0) {
     return val;
 }
 
-void func_80056CD0_main(void) {
+void HuSprPalAnimInit(void) {
     s16 i;
 
     D_800D554E_main = 0;
@@ -1794,7 +1794,7 @@ void func_80056CD0_main(void) {
     }
 }
 
-s16 func_80056D18_main(u8 *data) {
+s16 HuSprPalAnimRead(u8 *data) {
     u8 *base = data;
     HuSprAnmDesc *desc;
     HuSprAnmEntry *group;
@@ -1816,42 +1816,42 @@ s16 func_80056D18_main(u8 *data) {
     }
     slot = i;
     desc = HuMemAlloc(sizeof(*desc));
-    desc->unk00 = func_80056C74_main(&data);
-    desc->unk02 = func_80056C74_main(&data);
+    desc->unk00 = HuSprRead16(&data);
+    desc->unk02 = HuSprRead16(&data);
     desc->unk04 = HuMemAlloc(desc->unk02 * sizeof(*desc->unk04));
     for (j = 0; j < desc->unk02; j++) {
         desc->unk04[j] = group = HuMemAlloc(sizeof(*group));
-        groupData = base + func_80056C98_main(&data);
-        group->unk00 = func_80056C74_main(&groupData);
+        groupData = base + HuSprRead32(&data);
+        group->unk00 = HuSprRead16(&groupData);
         if (group->unk00 == 0) {
             continue;
         }
-        group->unk02 = func_80056C74_main(&groupData);
+        group->unk02 = HuSprRead16(&groupData);
         group->unk04 = HuMemAlloc(group->unk02 * sizeof(*group->unk04));
         for (k = 0; k < group->unk02; k++) {
             frame = HuMemAlloc(sizeof(*frame));
             group->unk04[k] = frame;
-            frame->duration = func_80056C74_main(&groupData);
+            frame->duration = HuSprRead16(&groupData);
             entry = HuMemAlloc(group->unk00 * sizeof(*entry));
             frame->entries = entry;
             for (i = 0; i < group->unk00; i++) {
-                entry->index = func_80056C74_main(&groupData);
-                entry->color = func_80056C74_main(&groupData);
+                entry->index = HuSprRead16(&groupData);
+                entry->color = HuSprRead16(&groupData);
                 entry++;
             }
         }
     }
-    desc->unk08 = func_80056C74_main(&data);
+    desc->unk08 = HuSprRead16(&data);
     desc->unk0C = HuMemAlloc(desc->unk08 * sizeof(*desc->unk0C));
     for (i = 0; i < desc->unk08; i++) {
-        desc->unk0C[i] = func_80056C74_main(&data);
+        desc->unk0C[i] = HuSprRead16(&data);
     }
     D_800D0A50_main[slot] = desc;
     D_800D554E_main++;
     return slot;
 }
 
-void func_80056F80_main(s16 arg0) {
+void HuSprPalAnimKill(s16 arg0) {
     HuSprAnmDesc *desc = D_800D0A50_main[arg0];
     s32 i;
 
@@ -1878,7 +1878,7 @@ void func_80056F80_main(s16 arg0) {
     D_800D554E_main--;
 }
 
-void func_800570A8_main(s16 group, s16 member, s16 arg2) {
+void HuSprPalAnimSet(s16 group, s16 member, s16 arg2) {
     HuSprite *sprite = HuSprGrpData[group]->members[member];
     s32 i;
 
@@ -1891,21 +1891,21 @@ void func_800570A8_main(s16 group, s16 member, s16 arg2) {
     sprite->unk_98.unk6C = NULL;
 }
 
-void func_8005712C_main(s16 group, s16 member, s32 arg2) {
+void HuSprPalAnimParamSet(s16 group, s16 member, s32 arg2) {
     HuSprGrpData[group]->members[member]->unk_98.unk64.i = arg2;
 }
 
-void func_80057158_main(void) {
+void HuSprPalAnimAllKill(void) {
     s16 i;
 
     for (i = 0; i < 0x100; i++) {
         if (D_800D0A50_main[i] != NULL) {
-            func_80056F80_main(i);
+            HuSprPalAnimKill(i);
         }
     }
 }
 
-void func_800571C8_main(HuSprPalAnm *arg0) {
+void HuSprPalAnimExec(HuSprPalAnm *arg0) {
     HuSprAnmDesc *desc;
     HuSprAnmEntry *group;
     HuSprPalFrame *frame;

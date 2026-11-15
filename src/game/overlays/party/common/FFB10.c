@@ -47,7 +47,7 @@ s16 MBWinCreate(s16 arg0, s16 *arg1, s16 arg2) {
     }
 
     if (D_800CB99C_main == 0) {
-        func_8005B63C_main(result, HUWIN_ATTR_PAUSE, HUWIN_ATTR_PAUSE);
+        HuWinAttrSet(result, HUWIN_ATTR_PAUSE, HUWIN_ATTR_PAUSE);
     }
 
     return result;
@@ -62,7 +62,7 @@ void MBWinOpen(s32 arg0) {
     mbWinId = temp_v0;
 
     if (D_800CB99C_main == 0) {
-        func_8005B63C_main(temp_v0, HUWIN_ATTR_PAUSE, HUWIN_ATTR_PAUSE);
+        HuWinAttrSet(temp_v0, HUWIN_ATTR_PAUSE, HUWIN_ATTR_PAUSE);
     }
 
     HuWinMesSet(temp_v0, arg0, -1, -1);
@@ -95,7 +95,7 @@ void MBWinInsertOpen(s32 arg0, char *arg1, u32 arg2, u32 arg3, u32 arg4, u32 arg
     mbWinId = temp_v0;
 
     if (D_800CB99C_main == 0) {
-        func_8005B63C_main(temp_v0, HUWIN_ATTR_PAUSE, HUWIN_ATTR_PAUSE);
+        HuWinAttrSet(temp_v0, HUWIN_ATTR_PAUSE, HUWIN_ATTR_PAUSE);
     }
     if (arg1 != NULL) {
         HuWinInsertMesSet(temp_v0, (u32)arg1, 0);
@@ -138,7 +138,7 @@ void MBDlgResultWinExec(s32 arg0) {
     mbDlgWinId = temp_v0;
 
     if (D_800CB99C_main == 0) {
-        func_8005B63C_main(temp_v0, HUWIN_ATTR_PAUSE, HUWIN_ATTR_PAUSE);
+        HuWinAttrSet(temp_v0, HUWIN_ATTR_PAUSE, HUWIN_ATTR_PAUSE);
     }
 
     HuWinMesSet(temp_v0, arg0, -1, -1);
@@ -241,7 +241,7 @@ void MBDlgWinInsertCreateY(s16 arg0, s32 arg1, u32 arg2, u32 arg3, u32 arg4, u32
         HuWinInsertMesSet(temp_v0, arg6, 4);
     }
     if (D_80101480_shared_board != 0) {
-        func_8005E1A8_main(temp_v0, D_80101480_shared_board);
+        HuWinTabWidthSet(temp_v0, D_80101480_shared_board);
     }
 
     HuWinMesSet(temp_v0, arg1, -1, -1);

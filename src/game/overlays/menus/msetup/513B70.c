@@ -50,7 +50,7 @@ void func_80117910_msetup(s16 group, s16 member, s16 camera, f32 x, f32 y, f32 z
 
     sprite = HuSprGrpData[group]->members[member];
     cam = &gCameraList[camera];
-    depth = func_80054B1C_main(group, member, camera, x, y, z);
+    depth = HuSpr3Dto2D(group, member, camera, x, y, z);
     if (depth != 0.0) {
         sprite->unk_60 = (cam->viewports[D_800D418E_main].vp.vscale[0] * scale) / 4.0 / depth / (f64)(4.0f / 3.0f);
         sprite->unk_64 = (cam->viewports[D_800D418E_main].vp.vscale[1] * scale) / 4.0 / depth;
@@ -195,11 +195,11 @@ void func_80117A3C_msetup(void) {
         HuSprTPLvlSet(group, 0, 0x40);
         HuSprTPLvlSet(group, 1, 0x40);
     }
-    model = func_8000B108_main(0xA0089, 0x29D);
-    decoration = func_8000B108_main(0x140068, 0x29D);
-    func_8001C814_main(model, 2, 2);
-    func_8001C258_main(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-    func_8001C258_main(decoration, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    model = Hu3DModelRead(0xA0089, 0x29D);
+    decoration = Hu3DModelRead(0x140068, 0x29D);
+    Hu3DMotionAttrSet(model, 2, 2);
+    Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(decoration, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DModelScaleSet(model, 0.8f, 0.8f, 0.8f);
     Hu3DModelScaleSet(decoration, 0.8f, 0.8f, 0.8f);
     target = &D_8011A38C_msetup[menu->type];
@@ -499,13 +499,13 @@ void func_80118D48_msetup(void) {
     sprite = espEntry(HuSprAnimDataRead(0x140067), 0, 0);
     espAttrSet(sprite, 0x4000);
     espPosSet(sprite, 160, 120);
-    D_8011A910_msetup = func_80060880_main(160, 204, 19);
+    D_8011A910_msetup = HuWinExCreateStyled(160, 204, 19);
     HuWinActivePlayerSet(D_8011A910_msetup, 1 << D_8011A948_msetup);
-    func_8006105C_main(D_8011A910_msetup, 0xE0);
+    HuWinExTPLvlSet(D_8011A910_msetup, 0xE0);
     HuWinMesPalSet(D_8011A910_msetup, 2, 255, 64, 64);
     HuWinMesPalSet(D_8011A910_msetup, 4, 96, 255, 64);
     HuWinMesPalSet(D_8011A910_msetup, 6, 255, 255, 64);
-    func_80060C14_main(D_8011A910_msetup, 0);
+    HuWinExOpen(D_8011A910_msetup, 0);
     HuAudSeqPlay(10);
     WipeColorSet(255, 255, 255);
     WipeCreateIn(D_8011AA48_msetup, 16);
@@ -636,7 +636,7 @@ void func_80118D48_msetup(void) {
                         for (i = 0; i < 12; i++) {
                             GwStory.unk67[i] = 0;
                         }
-                        func_8005035C_main(1);
+                        SLSaveStory(1);
                     }
                     HuAudFXPlay(0x214);
                     first.state = 6;

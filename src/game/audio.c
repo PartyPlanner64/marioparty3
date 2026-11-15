@@ -51,7 +51,7 @@ s16 HuAudSeqPlay(s16 musId) {
     return D_800CDBC8_main;
 }
 
-s16 func_8004A5C4_main(s16 musId) {
+s16 HuAudSubSeqPlay(s16 musId) {
     if (musId == 0) {
         return -1;
     }
@@ -67,20 +67,20 @@ s16 func_8004A5C4_main(s16 musId) {
     return D_800D037E_main;
 }
 
-void func_8004A650_main(s32 arg0) {
+void HuAudSubSeqParamSet(s32 arg0) {
     if (D_800D6A40_main != NULL) {
         OM_GET_DATA_PTR(D_800D6A40_main, UnkAudioObjData)->unk34 = arg0;
     }
 }
 
-void func_8004A670_main(s16 duration) {
+void HuAudSeqVolFadeOut(s16 duration) {
     UnkAudioObjData *data;
     s16 frames = duration;
     f32 volume;
 
     if (D_800D6A40_main != NULL) {
         data = OM_GET_DATA_PTR(D_800D6A40_main, UnkAudioObjData);
-        volume = func_800037C4_main(D_800CDBC8_main);
+        volume = msmMusGetVolume(D_800CDBC8_main);
         data->unk24 = data->unk2C = volume;
         data->unk18 = frames;
         if (duration == 0) {
@@ -94,7 +94,7 @@ void func_8004A670_main(s16 duration) {
     }
 }
 
-void func_8004A72C_main(s16 duration) {
+void HuAudSeqVolFadeIn(s16 duration) {
     UnkAudioObjData *data;
     s16 frames = duration;
 
@@ -114,14 +114,14 @@ void func_8004A72C_main(s16 duration) {
     }
 }
 
-void func_8004A7C4_main(s16 duration) {
+void HuAudSubSeqVolFadeOut(s16 duration) {
     UnkAudioObjData *data;
     s16 frames = duration;
     f32 volume;
 
     if (D_800D6A40_main != NULL) {
         data = OM_GET_DATA_PTR(D_800D6A40_main, UnkAudioObjData);
-        volume = func_800037C4_main(D_800D037E_main);
+        volume = msmMusGetVolume(D_800D037E_main);
         data->unk28 = data->unk30 = volume;
         data->unk1A = frames;
         if (duration == 0) {
@@ -135,7 +135,7 @@ void func_8004A7C4_main(s16 duration) {
     }
 }
 
-void func_8004A880_main(s16 duration) {
+void HuAudSubSeqVolFadeIn(s16 duration) {
     UnkAudioObjData *data;
     s16 frames = duration;
 
@@ -155,10 +155,10 @@ void func_8004A880_main(s16 duration) {
     }
 }
 
-void func_8004A918_main(s16 musId) {
-    func_8004A5C4_main(musId);
+void HuAudSubSeqPlayMute(s16 musId) {
+    HuAudSubSeqPlay(musId);
     msmMusSetVolume(D_800D037E_main, 127);
-    func_8004A7C4_main(0);
+    HuAudSubSeqVolFadeOut(0);
 }
 
 void HuAudSeqStop(void) {
@@ -170,25 +170,25 @@ void HuAudSeqStop(void) {
 
 void HuAudSeqFadeOut(s16 speed) {
     D_800A1904_main = -1;
-    func_800039A4_main(D_800CDBC8_main, speed);
+    msmMusFadeOut(D_800CDBC8_main, speed);
     D_800A1906_main |= 8;
 }
 
-void func_8004A9DC_main(s8 volume) {
+void HuAudSeqVolSet(s8 volume) {
     msmMusSetVolume(D_800CDBC8_main, volume);
 }
 
-void func_8004AA04_main(s8 volume) {
+void HuAudSeqMasterVolSet(s8 volume) {
     msmMusSetMasterVolume(volume);
     D_800A1906_main &= ~8;
 }
 
-void func_8004AA38_main(s16 arg0) {
+void HuAudSeqTempoSet(s16 arg0) {
     msmMusSetTempo(D_800CDBC8_main, arg0);
 }
 
-s16 func_8004AA60_main(void) {
-    return func_800038EC_main(D_800CDBC8_main);
+s16 HuAudSeqTempoGet(void) {
+    return msmMusGetTempo(D_800CDBC8_main);
 }
 
 s16 HuAudFXPlay(s16 seId) {
@@ -206,17 +206,17 @@ void HuAudFXVolSet(s16 seNo, s8 volume) {
     msmSeSetVolume(seNo, volume);
 }
 
-void func_8004AB0C_main(s32 arg0) {
+void HuAudFXAllFadeOut(s32 arg0) {
     s32 i;
 
     if (D_800D6A40_main != NULL) {
         for (i = 0; i < D_800A1910_main; i++) {
-            func_8004AEF0_main(i, (s16)arg0);
+            HuAudFXFadeOut(i, (s16)arg0);
         }
     }
 }
 
-void func_8004AB7C_main(s8 volume) {
+void HuAudFXMasterVolSet(s8 volume) {
     s32 i;
 
     for (i = 0; i < D_800A1910_main; i++) {
@@ -239,7 +239,7 @@ s16 CharFXPlay(s16 seId, u8 charNo) {
     return msmSePlayDefault(seId + charNo + 1);
 }
 
-s32 func_8004AC5C_main(s16 arg0, s16 arg1) {
+s32 _HuAudPlayerFXPlay(s16 arg0, s16 arg1) {
     SePlayParam sp10;
 
     sp10.flags = 0x200;
@@ -247,14 +247,14 @@ s32 func_8004AC5C_main(s16 arg0, s16 arg1) {
     return msmSePlay(arg0, &sp10);
 }
 
-s16 func_8004AC98_main(s16 arg0, s16 arg1) {
+s16 HuAudPlayerFXPlay(s16 arg0, s16 arg1) {
     if (D_800A1902_main == 0) {
         return 0;
     }
     if (arg0 == 0) {
         return 0;
     }
-    return func_8004AC5C_main(arg0, arg1);
+    return _HuAudPlayerFXPlay(arg0, arg1);
 }
 
 s16 PlayerFXPlay(s16 seId, s16 playerIdx) {
@@ -264,7 +264,7 @@ s16 PlayerFXPlay(s16 seId, s16 playerIdx) {
     if (seId == 0) {
         return 0;
     }
-    return func_8004AC5C_main(seId + GwPlayer[playerIdx].chr + 1, playerIdx);
+    return _HuAudPlayerFXPlay(seId + GwPlayer[playerIdx].chr + 1, playerIdx);
 }
 
 void HuAudFXStop(s32 seNo) {
@@ -275,17 +275,17 @@ void HuAudFXAllStop(void) {
     msmSeStop(-1);
 }
 
-s16 func_8004AD8C_main(s16 seId) {
+s16 HuAudFXIdStop(s16 seId) {
     s16 seNo;
 
-    seNo = func_8000793C_main(seId);
+    seNo = msmSeSearchEntry(seId);
     if (seNo != -1) {
         msmSeStop(seNo);
     }
     return seNo;
 }
 
-void func_8004ADDC_main(s16 arg0) {
+void HuAudFXAllPanning(s16 arg0) {
     msmSeSetPan(-1, arg0);
 }
 
@@ -293,7 +293,7 @@ void HuAudFXPanning(s16 arg0, s16 arg1) {
     msmSeSetPan(arg0, arg1);
 }
 
-void func_8004AE28_main(void) {
+void HuAudStatUpdate(void) {
     s32 i;
 
     for (i = 0; i < 6; i++) {
@@ -321,7 +321,7 @@ void func_8004AE28_main(void) {
     }
 }
 
-void func_8004AEF0_main(s16 seNo, s32 duration) {
+void HuAudFXFadeOut(s16 seNo, s32 duration) {
     UnkAudioObjData *data;
 
     if (D_800D6A40_main != NULL && msmSeGetStatus(seNo) != 0) {
@@ -332,7 +332,7 @@ void func_8004AEF0_main(s16 seNo, s32 duration) {
     }
 }
 
-void func_8004AFBC_main(s16 duration) {
+void HuAudFXAllVolFadeDown(s16 duration) {
     UnkAudioObjData *data;
     s32 i;
 
@@ -351,7 +351,7 @@ void func_8004AFBC_main(s16 duration) {
     }
 }
 
-void func_8004B0D4_main(void) {
+void HuAudFXAllVolRestore(void) {
     UnkAudioObjData *data;
     s32 i;
     s16 volume;
@@ -370,7 +370,7 @@ void func_8004B0D4_main(void) {
     }
 }
 
-void func_8004B1AC_main(void) {
+void HuAudPlayerParamCopy(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
@@ -389,22 +389,22 @@ void omVibrate(s16 player, s16 duration, s16 off, s16 on) {
     }
 }
 
-u16 func_8004B2C0_main(void) {
+u16 HuAudDummy(void) {
     return 0;
 }
 
-void func_8004B2C8_main(void) {
+void HuAudInit(void) {
     str800D5298 *temp;
 
-    func_80000EA8_main(&D_800D5298_main);
+    msmSysGetConfig(&D_800D5298_main);
     temp = &D_800D5298_main;
     temp->unk28 = 1; //?
     D_800D5298_main.unk8 = audio_mbf0_ROM_START;
     D_800D5298_main.unkC = audio_sbf0_ROM_START;
     msmSysInit(&D_800D5298_main);
     if (!(D_800D09A8_main & 1)) {
-        func_80000F30_main(0);
+        msmSysSetOutputMode(0);
     } else {
-        func_80000F30_main(1);
+        msmSysSetOutputMode(1);
     }
 }

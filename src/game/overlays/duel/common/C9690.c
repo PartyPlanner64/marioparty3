@@ -193,18 +193,18 @@ void func_800E1F94_name_81(void) {
 
 void func_800E1FB8_name_81(void) {
     GW_PLAYER *player = MBDGetPlayerStruct(-1);
-    s16 effect = func_8000CED8_main(0x110012, 0x2A9);
+    s16 effect = EffectCreate(0x110012, 0x2A9);
     s32 i;
 
     Hu3DModelCameraSet(effect, 1);
-    func_8000CD00_main(effect, 1.0f, 30.0f, 1.0f);
-    func_8000D018_main(effect, 10.0f);
+    EffectParamSet(effect, 1.0f, 30.0f, 1.0f);
+    EffectRangeSet(effect, 10.0f);
     for (i = 0; i < 30; i++) {
-        func_8000CFA4_main(effect, player->player_obj->coords.x, player->player_obj->coords.y + 30.0f,
+        EffectPosSet(effect, player->player_obj->coords.x, player->player_obj->coords.y + 30.0f,
                            player->player_obj->coords.z);
         HuPrcVSleep();
     }
-    func_8000D044_main(effect);
+    EffectStop(effect);
     omDelPrcObj(NULL);
 }
 

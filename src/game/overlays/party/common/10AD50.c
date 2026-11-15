@@ -143,7 +143,7 @@ static s32 func_800F7240_shared_board(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     }
 
     if (arg2 != 0) {
-        func_8005B63C_main(mbDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
+        HuWinAttrSet(mbDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         for (j = 0; arg2 != 0; j++) {
             if (--arg2 == 0) {
                 sp18[GwPlayer[GwSystem.current_player_index].pad] = -0x8000;
@@ -302,7 +302,7 @@ void func_800F76A4_shared_board(s32 arg0) {
         } else {
             D_80105628_shared_board = MBModelFileCreate(0xB0036, -1, 1.0f, 0, 0);
         }
-        func_8001C258_main(D_80105628_shared_board->omObj1->model[0], 0x180, 0);
+        Hu3DModelAttrSet(D_80105628_shared_board->omObj1->model[0], 0x180, 0);
         Hu3DModelLayerSet(D_80105628_shared_board->omObj1->model[0], 0x1800);
         Hu3DModelRemakeStatic(D_80105628_shared_board->omObj1->model[0]);
         HuVecCopy3F(&D_80105628_shared_board->coords, &player->player_obj->coords);
@@ -481,18 +481,18 @@ static void func_800F7FE8_shared_board(void) {
     if (D_80105654_shared_board != 0) {
         D_80105620_shared_board = MBModelCreate(9, NULL);
         D_80105624_shared_board = MBModelFileCreate(0x1301C8, -1, 1.0f, 0, 0);
-        D_80105658_shared_board = func_8000CED8_main(0xB0004, 0xAA9);
+        D_80105658_shared_board = EffectCreate(0xB0004, 0xAA9);
         HuAudFXPlay(0x119);
     } else {
         D_80105620_shared_board = MBModelCreate(0x39, NULL);
         D_80105624_shared_board = MBModelFileCreate(0x130203, -1, 1.0f, 0, 0);
-        D_80105658_shared_board = func_8000CED8_main(0xB0005, 0xAA9);
+        D_80105658_shared_board = EffectCreate(0xB0005, 0xAA9);
         HuAudFXPlay(0x11A);
     }
 
     Hu3DModelCameraSet(D_80105658_shared_board, HU3D_CAM0);
-    func_8000CD00_main(D_80105658_shared_board, 1.0f, 20.0f, 1.0f);
-    func_8000D018_main(D_80105658_shared_board, 15.0f);
+    EffectParamSet(D_80105658_shared_board, 1.0f, 20.0f, 1.0f);
+    EffectRangeSet(D_80105658_shared_board, 15.0f);
     MBModelTempAllocFree(D_80105620_shared_board);
     D_80105620_shared_board->flags |= 1;
     MBModelTempAllocFree(D_80105624_shared_board);
@@ -503,7 +503,7 @@ static void func_800F7FE8_shared_board(void) {
     D_80105624_shared_board->velocity.x = 120.0f;
 
     while (D_80105620_shared_board->velocity.x > 50.0f) {
-        func_8000CFA4_main(D_80105658_shared_board, D_80105620_shared_board->coords.x, D_80105620_shared_board->velocity.x - 10.0f, D_80105620_shared_board->coords.z);
+        EffectPosSet(D_80105658_shared_board, D_80105620_shared_board->coords.x, D_80105620_shared_board->velocity.x - 10.0f, D_80105620_shared_board->coords.z);
         HuPrcVSleep();
         D_80105620_shared_board->velocity.x -= 2.0f;
         D_80105624_shared_board->velocity.x -= 2.0f;
@@ -612,13 +612,13 @@ static void func_800F7FE8_shared_board(void) {
     omDelObj(temp_v0);
 
     while (D_80105620_shared_board->velocity.x < 120.0f) {
-        func_8000CFA4_main(D_80105658_shared_board, D_80105620_shared_board->coords.x, D_80105620_shared_board->velocity.x - 10.0f, D_80105620_shared_board->coords.z);
+        EffectPosSet(D_80105658_shared_board, D_80105620_shared_board->coords.x, D_80105620_shared_board->velocity.x - 10.0f, D_80105620_shared_board->coords.z);
         HuPrcVSleep();
         D_80105620_shared_board->velocity.x += 4.0f;
         D_80105624_shared_board->velocity.x += 4.0f;
     }
 
-    func_8000D044_main(D_80105658_shared_board);
+    EffectStop(D_80105658_shared_board);
     MBModelKill(D_80105620_shared_board);
     MBModelKill(D_80105624_shared_board);
 }

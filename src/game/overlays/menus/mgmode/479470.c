@@ -143,43 +143,43 @@ void func_80112200_mgmode(void) {
     D_8011B954_mgmode = D_801194D0_mgmode;
     D_8011B888_mgmode = 2500.0f;
     D_8011B622_mgmode = GwPlayer[D_8011B800_mgmode].chr;
-    D_80119FA0_mgmode[8].unk_00 = func_80017BB8_main(D_8011B622_mgmode, 0xA1);
-    D_80119FA0_mgmode[9].unk_00 = func_80017BB8_main(D_8011B622_mgmode, 0x2);
-    D_80119FA0_mgmode[10].unk_00 = func_80017BB8_main(D_8011B622_mgmode, 0x33);
-    D_80119FA0_mgmode[11].unk_00 = func_80017BB8_main(D_8011B622_mgmode, 0x3A);
-    D_80119FA0_mgmode[12].unk_00 = func_80017BB8_main(D_8011B622_mgmode, 0x2F);
-    D_80119FA0_mgmode[13].unk_00 = func_80017BB8_main(D_8011B622_mgmode, 0x37);
-    D_80119FA0_mgmode[14].unk_00 = func_80017BB8_main(D_8011B622_mgmode, 0x9B);
+    D_80119FA0_mgmode[8].unk_00 = CharMotionDataNumGet(D_8011B622_mgmode, 0xA1);
+    D_80119FA0_mgmode[9].unk_00 = CharMotionDataNumGet(D_8011B622_mgmode, 0x2);
+    D_80119FA0_mgmode[10].unk_00 = CharMotionDataNumGet(D_8011B622_mgmode, 0x33);
+    D_80119FA0_mgmode[11].unk_00 = CharMotionDataNumGet(D_8011B622_mgmode, 0x3A);
+    D_80119FA0_mgmode[12].unk_00 = CharMotionDataNumGet(D_8011B622_mgmode, 0x2F);
+    D_80119FA0_mgmode[13].unk_00 = CharMotionDataNumGet(D_8011B622_mgmode, 0x37);
+    D_80119FA0_mgmode[14].unk_00 = CharMotionDataNumGet(D_8011B622_mgmode, 0x9B);
     func_8011667C_mgmode(D_80119FA0_mgmode);
     Hu3DModelCameraSet(D_8011B8A8_mgmode[4], 2);
     Hu3DModelCameraSet(D_8011B8A8_mgmode[8], 2);
-    D_8011B620_mgmode = func_80017790_main(D_8011B8A8_mgmode[8], 1, D_8011B622_mgmode,
-                                           func_80017B6C_main(D_8011B622_mgmode, 1, 0));
-    func_8001C514_main(D_8011B8A8_mgmode[8]);
-    func_8001C258_main(D_8011B8A8_mgmode[18], 0x180, HU3D_ATTR_NONE);
+    D_8011B620_mgmode = CharAnimCreate(D_8011B8A8_mgmode[8], 1, D_8011B622_mgmode,
+                                           CharMotionDataNumGetTbl(D_8011B622_mgmode, 1, 0));
+    Hu3DModelDynamicFree(D_8011B8A8_mgmode[8]);
+    Hu3DModelAttrSet(D_8011B8A8_mgmode[18], 0x180, HU3D_ATTR_NONE);
     Hu3DModelRemakeStatic(D_8011B8A8_mgmode[18]);
-    func_8001C514_main(D_8011B8A8_mgmode[18]);
+    Hu3DModelDynamicFree(D_8011B8A8_mgmode[18]);
     Hu3DModelPosSet(D_8011B8A8_mgmode[18], -208.0f, 0.0f, -332.0f);
     Hu3DModelCameraSet(D_8011B8A8_mgmode[15], 2);
     D_8011B624_mgmode = func_80118678_mgmode(2.0f, 400.0f, -332.0f, 50.0f);
-    node = func_8001D33C_main(D_8011B8A8_mgmode[0], "door");
-    func_8002367C_main(D_8011B4D0_mgmode, node->unk58);
+    node = Hu3DModelObjPtrGet(D_8011B8A8_mgmode[0], "door");
+    mtxCopy(D_8011B4D0_mgmode, node->unk58);
     if (omovlevtno == 3) {
         Hu3DMotionSet(D_8011B8A8_mgmode[4], D_8011B78A_mgmode);
-        func_8001C814_main(D_8011B8A8_mgmode[4], 2, 2);
+        Hu3DMotionAttrSet(D_8011B8A8_mgmode[4], 2, 2);
         func_80116E24_mgmode(0);
         WipeCreateIn(0xFF, 0);
-        node = func_8001D33C_main(D_8011B8A8_mgmode[0], "door");
+        node = Hu3DModelObjPtrGet(D_8011B8A8_mgmode[0], "door");
         RepeatVibrator(D_8011B808_mgmode, 5, 0, 5);
         HuAudFXPlay(0x2EB);
         for (i = 0; i < 19; i++) {
             HuPrcVSleep();
-            func_8002367C_main(node->unk58, D_8011B4D0_mgmode);
+            mtxCopy(node->unk58, D_8011B4D0_mgmode);
             mtxRotCat(node->unk58, 0.0f, i * 5, 0.0f);
         }
         func_80116ED4_mgmode(1, 10, 1, (void (*)(s16 *))-1);
         HuPrcSleep(5);
-        func_8002367C_main(node->unk58, D_8011B4D0_mgmode);
+        mtxCopy(node->unk58, D_8011B4D0_mgmode);
         func_80116ED4_mgmode(2, 20, 1, (void (*)(s16 *))-1);
         HuAudFXPlay(0x2A1);
     } else {
@@ -193,7 +193,7 @@ void func_80112200_mgmode(void) {
             HuAudSeqPlay(0x4D);
         }
         Hu3DMotionSet(D_8011B8A8_mgmode[4], D_8011B78A_mgmode);
-        func_8001C814_main(D_8011B8A8_mgmode[4], 2, 2);
+        Hu3DMotionAttrSet(D_8011B8A8_mgmode[4], 2, 2);
         D_8011B884_mgmode = 0;
     }
     func_8011822C_mgmode(D_801195B0_mgmode);
@@ -290,12 +290,12 @@ void func_80112200_mgmode(void) {
                     func_801182B4_mgmode(0);
                     HuWinExAnimOut(D_8011B6A8_mgmode, 0);
                     HuPrcSleep(10);
-                    node = func_8001D33C_main(D_8011B8A8_mgmode[0], "door");
+                    node = Hu3DModelObjPtrGet(D_8011B8A8_mgmode[0], "door");
                     RepeatVibrator(D_8011B808_mgmode, 5, 0, 5);
                     HuAudFXPlay(0x2EB);
                     for (i = 0; i < 19; i++) {
                         HuPrcVSleep();
-                        func_8002367C_main(node->unk58, D_8011B4D0_mgmode);
+                        mtxCopy(node->unk58, D_8011B4D0_mgmode);
                         mtxRotCat(node->unk58, 0.0f, i * 5, 0.0f);
                     }
                     func_80116ED4_mgmode(4, 20, 1, (void (*)(s16 *))-1);
@@ -340,7 +340,7 @@ void func_80112CF4_mgmode(void) {
     s16 i;
 
     HuWinExAnimOut(D_8011B6A8_mgmode, 0);
-    func_8001C258_main(D_8011B8A8_mgmode[18], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(D_8011B8A8_mgmode[18], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DModelScaleSet(D_8011B8A8_mgmode[18], 1.0f, 0.0f, 1.0f);
     func_80116ED4_mgmode(6, 20, 1, (void (*)(s16 *))-1);
     radius = 144.0f;
@@ -443,7 +443,7 @@ void func_80113204_mgmode(void) {
     Hu3DData[D_8011B8A8_mgmode[4]].rot.y = 100.0f;
     Hu3DMotionShiftSet(D_8011B8A8_mgmode[4], D_8011B788_mgmode, 0, 8, 0);
     func_80116ED4_mgmode(2, 20, 1, (void (*)(s16 *))-1);
-    func_8001C258_main(D_8011B8A8_mgmode[18], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(D_8011B8A8_mgmode[18], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
 }
 
 void func_801134C0_mgmode(void) {
@@ -501,12 +501,12 @@ s32 func_801136EC_mgmode(void) {
     func_80115C5C_mgmode(D_800D1FE0_main);
     Hu3DModelPosSet(D_8011B8A8_mgmode[4], -208.0f, 63.75f, -332.0f);
     Hu3DData[D_8011B8A8_mgmode[4]].rot.y = 15.0f;
-    func_8001C258_main(D_8011B8A8_mgmode[8], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(D_8011B8A8_mgmode[8], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DModelPosSet(D_8011B8A8_mgmode[8], 2.0f, 0.0f, -332.0f);
-    func_8001C258_main(D_8011B8A8_mgmode[17], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(D_8011B8A8_mgmode[17], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DModelPosSet(D_8011B8A8_mgmode[17], 2.0f, 63.75f, -332.0f);
     WipeCreateIn(0xFF, 10);
-    func_8001C258_main(D_8011B8A8_mgmode[18], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(D_8011B8A8_mgmode[18], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -524,7 +524,7 @@ s32 func_801136EC_mgmode(void) {
             HuPrcVSleep();
         }
         Hu3DMotionShiftSet(D_8011B8B8_mgmode[0], D_8011B79A_mgmode, 0, 4, 0);
-        func_8004AC5C_main(GwPlayer[0].chr + 0x26C, 0);
+        _HuAudPlayerFXPlay(GwPlayer[0].chr + 0x26C, 0);
         HuWinMesSet(D_8011B6A8_mgmode, 0x5812, -1, -1);
         while (HuWinStatGet(D_8011B6A8_mgmode) != 0) {
             HuPrcVSleep();
@@ -593,7 +593,7 @@ s32 func_801136EC_mgmode(void) {
         while (HuWinStatGet(D_8011B6A8_mgmode) != 0) {
             HuPrcVSleep();
         }
-        if (func_8005B68C_main(D_8011B6A8_mgmode) & 8) {
+        if (HuWinAttrGet(D_8011B6A8_mgmode) & 8) {
             HuWinExAnimIn(D_8011B6A8_mgmode);
         }
         func_801146D8_mgmode();
@@ -603,7 +603,7 @@ s32 func_801136EC_mgmode(void) {
         while (HuWinStatGet(D_8011B6A8_mgmode) != 0) {
             HuPrcVSleep();
         }
-        if (func_8005B68C_main(D_8011B6A8_mgmode) & 8) {
+        if (HuWinAttrGet(D_8011B6A8_mgmode) & 8) {
             HuWinExAnimIn(D_8011B6A8_mgmode);
         }
         if (winData[D_8011B6A8_mgmode].input & B_BUTTON) {
@@ -613,7 +613,7 @@ s32 func_801136EC_mgmode(void) {
             }
         }
         HuWinMesSet(D_8011B6A8_mgmode, 0x580B, -1, -1);
-        if (func_8005B68C_main(D_8011B6A8_mgmode) & 8) {
+        if (HuWinAttrGet(D_8011B6A8_mgmode) & 8) {
             HuWinExAnimIn(D_8011B6A8_mgmode);
         }
         D_800CB894_main = -1;
@@ -624,7 +624,7 @@ s32 func_801136EC_mgmode(void) {
                     goto cancel;
                 }
                 HuWinMesSet(D_8011B6A8_mgmode, 0x580B, -1, -1);
-                if (func_8005B68C_main(D_8011B6A8_mgmode) & 8) {
+                if (HuWinAttrGet(D_8011B6A8_mgmode) & 8) {
                     HuWinExAnimIn(D_8011B6A8_mgmode);
                 }
             }
@@ -752,10 +752,10 @@ void func_80114404_mgmode(void) {
     D_800D1FE0_main += coins * rate;
     if (coins == 0) {
         Hu3DMotionShiftSet(D_8011B8B8_mgmode[0], D_8011B796_mgmode, 0, 8, 0);
-        func_8004AC5C_main(GwPlayer[0].chr + 0x287, 0);
+        _HuAudPlayerFXPlay(GwPlayer[0].chr + 0x287, 0);
     } else {
         Hu3DMotionShiftSet(D_8011B8B8_mgmode[0], D_8011B794_mgmode, 0, 8, 0);
-        func_8004AC5C_main(GwPlayer[0].chr + 0x275, 0);
+        _HuAudPlayerFXPlay(GwPlayer[0].chr + 0x275, 0);
     }
     func_80114614_mgmode(8);
 }
@@ -925,14 +925,14 @@ void func_80114FA0_mgmode(void) {
     f32 y;
     s16 i;
 
-    camera = func_8000CED8_main(0xB0004, 0x2A9);
+    camera = EffectCreate(0xB0004, 0x2A9);
     Hu3DModelCameraSet(camera, 2);
-    func_8000D018_main(camera, 50.0f);
-    func_8000CD00_main(camera, 2.0f, 20.0f, 0.0f);
+    EffectRangeSet(camera, 50.0f);
+    EffectParamSet(camera, 2.0f, 20.0f, 0.0f);
     Hu3DMotionShiftSet(D_8011B8B8_mgmode[0], D_8011B790_mgmode, 0, 8, 0);
-    func_8001C258_main(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DModelPosSet(model, 2.0f, 500.0f, -382.0f);
-    func_8000CFA4_main(camera, 2.0f, 500.0f, -332.0f);
+    EffectPosSet(camera, 2.0f, 500.0f, -332.0f);
     Hu3DModelRotSet(model, 30.0f, 80.0f, 3.0f);
     func_80088800_main(Hu3DData[model].mtx, 0.0f, 0.0f, 20.0f);
     scale = 1.0f;
@@ -940,7 +940,7 @@ void func_80114FA0_mgmode(void) {
     for (i = 0; i < 51; i++) {
         y = (1.0f - sindf(i / 50.0f * 90.0f)) * 400.0f + 100.0f;
         Hu3DData[model].pos.y = y;
-        func_8000CFA4_main(camera, 2.0f, y + 30.0f, -332.0f);
+        EffectPosSet(camera, 2.0f, y + 30.0f, -332.0f);
         if (i == 10) {
             Hu3DMotionShiftSet(D_8011B8B8_mgmode[0], D_8011B79C_mgmode, 0, 8, 0);
         }
@@ -957,8 +957,8 @@ void func_80114FA0_mgmode(void) {
         }
         HuPrcVSleep();
     }
-    func_8001C258_main(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    func_8000D044_main(camera);
+    Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    EffectStop(camera);
 }
 
 void func_801152C0_mgmode(void) {
@@ -974,7 +974,7 @@ void func_801152C0_mgmode(void) {
         }
         if (i == 25) {
             Hu3DMotionShiftSet(D_8011B8B8_mgmode[0], D_8011B798_mgmode, 0, 8, 0);
-            func_8004AC5C_main(GwPlayer[0].chr + 0x263, 0);
+            _HuAudPlayerFXPlay(GwPlayer[0].chr + 0x263, 0);
         }
         HuSprTPLvlSet(D_8011B61E_mgmode, 0, i / 30.0f * 220.0f);
         func_801162B4_mgmode(186.0f, sindf(i / 30.0f * 90.0f) * 10.0f);
@@ -1005,10 +1005,10 @@ void func_80115590_mgmode(void) {
     f32 z;
     s16 i;
 
-    func_8001C258_main(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-    func_8001C258_main(other, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(other, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DMotionSet(model, D_8011B792_mgmode);
-    func_8001C814_main(model, 2, 2);
+    Hu3DMotionAttrSet(model, 2, 2);
     angle = atan2df(dx, dz) + 180.0f;
     Hu3DModelPosSet(model, 200.0f, 0.0f, -122.0f);
     Hu3DModelRotSet(model, 0.0f, angle, 0.0f);
@@ -1019,7 +1019,7 @@ void func_80115590_mgmode(void) {
         Hu3DModelPosSet(model, x, 0.0f, z);
         func_80118624_mgmode(other, model);
         if (i < 12 && i % 5 == 0) {
-            func_8004AC5C_main(GwPlayer[0].chr + 0x29, 0);
+            _HuAudPlayerFXPlay(GwPlayer[0].chr + 0x29, 0);
         }
         HuPrcVSleep();
     }
@@ -1056,12 +1056,12 @@ void func_80115848_mgmode(void) {
         Hu3DModelPosSet(model, x, 0.0f, z);
         func_80118624_mgmode(other, model);
         if (i < 12 && i % 5 == 0) {
-            func_8004AC5C_main(GwPlayer[0].chr + 0x29, 0);
+            _HuAudPlayerFXPlay(GwPlayer[0].chr + 0x29, 0);
         }
         HuPrcVSleep();
     }
-    func_8001C258_main(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    func_8001C258_main(other, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(other, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
 }
 
 void func_80115A9C_mgmode(s16 x, s16 y, s16 value) {
@@ -1144,7 +1144,7 @@ void func_80115E9C_mgmode(s32 mesId, s16 x, s16 y) {
     s16 count;
     s16 i;
 
-    str = func_800364DC_main((void *)mesId);
+    str = MessDataMesGet((void *)mesId);
     len = strlen((char *)str);
     count = 0;
     for (i = 0; i <= len; i++) {
@@ -1153,7 +1153,7 @@ void func_80115E9C_mgmode(s32 mesId, s16 x, s16 y) {
         }
     }
     D_8011B510_mgmode[count] = 0;
-    func_800365E8_main(str);
+    MessDataMesFree(str);
     D_8011B810_mgmode.subMode = count;
     GameMesStrCreate(&D_8011B810_mgmode, (char *)D_8011B510_mgmode, 0, -1, -1);
     for (i = 0; i < D_8011B810_mgmode.subMode; i++) {

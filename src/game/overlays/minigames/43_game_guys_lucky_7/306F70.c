@@ -176,7 +176,7 @@ s16 func_8010BB88_game_guys_lucky_7(void) {
         HuAudFXPlay(0x51F);
     }
     if (D_8010D300_game_guys_lucky_7 == 90) {
-        func_8004AB0C_main(30);
+        HuAudFXAllFadeOut(30);
         HuAudSeqPlay(0x43);
     }
     if (D_8010D300_game_guys_lucky_7 == 100) {

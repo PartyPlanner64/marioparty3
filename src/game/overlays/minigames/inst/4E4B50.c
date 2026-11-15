@@ -103,7 +103,7 @@ void func_8010B990_inst(void) {
             espBankSet(sprites[i], (u16)digits[i], 0);
         }
     }
-    D_8010DCA8_inst.curGroup = func_80060880_main(72, 188, 7);
+    D_8010DCA8_inst.curGroup = HuWinExCreateStyled(72, 188, 7);
     HuWinMesPalSet(D_8010DCA8_inst.curGroup, 2, 0, 255, 255);
     HuWinMesPalSet(D_8010DCA8_inst.curGroup, 4, 96, 255, 64);
     HuWinMesPalSet(D_8010DCA8_inst.curGroup, 6, 255, 255, 64);
@@ -184,7 +184,7 @@ void func_8010BE78_inst(s32 arg0) {
                 espPosSet(sprites[i], positions[i].x, 54);
             }
         }
-        func_80060DEC_main(D_8010DCA8_inst.curGroup);
+        HuWinExOpenNow(D_8010DCA8_inst.curGroup);
         value = 1;
         D_8010D440_inst = value;
     }
@@ -388,13 +388,13 @@ void func_8010C5C4_inst(s32 arg0) {
 void func_8010C848_inst(void) {
     if (D_8010D408_inst == 0) {
         HuAudFXPlay(0x11D);
-        func_80060C14_main(D_8010DCA8_inst.curGroup, 0);
+        HuWinExOpen(D_8010DCA8_inst.curGroup, 0);
         D_8010D440_inst = 1;
     }
 }
 
 void func_8010C890_inst(void) {
-    func_80060EA8_main(D_8010DCA8_inst.curGroup, 1);
+    HuWinExClose(D_8010DCA8_inst.curGroup, 1);
 }
 
 void func_8010C8B4_inst(void) {
@@ -522,7 +522,7 @@ void func_8010CC14_inst(void) {
 }
 
 void func_8010CDE4_inst(const char *message, s32 x, s32 y) {
-    char *text = func_800364DC_main((char *)message);
+    char *text = MessDataMesGet((char *)message);
 
     D_8010DCD8_inst.subMode = -1;
     D_8010DCD8_inst.subMode = GameMesStrCreate(&D_8010DCD8_inst, text + 1, 0, -1, -1);
@@ -530,7 +530,7 @@ void func_8010CDE4_inst(const char *message, s32 x, s32 y) {
     D_8010DCD8_inst.pos.y = (s16)y;
     HuSprPosSet(D_8010DCD8_inst.strGId[D_8010DCD8_inst.subMode], 0, D_8010DCD8_inst.pos.x,
                        D_8010DCD8_inst.pos.y);
-    func_800365E8_main(text);
+    MessDataMesFree(text);
 }
 
 void func_8010CED0_inst(s32 x, s32 y) {

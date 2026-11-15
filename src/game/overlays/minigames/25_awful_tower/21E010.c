@@ -141,14 +141,14 @@ void func_801059A0_awful_tower(void) {
     s32 i;
     s32 j;
 
-    func_8001FE20_main(50);
-    func_80021BE0_main(&D_800EBEB0_minigame, 0x40);
-    func_800142A0_main(0x20);
+    MapCollInit(50);
+    Hu3DQuadPoolInit(&D_800EBEB0_minigame, 0x40);
+    Hu3DSprModelInit(0x20);
     omInitObjMan(100, 0);
-    func_8004A208_main();
+    omGameSysInit();
     D_800CD280_main = 1;
-    func_8000B5F0_main(4);
-    func_8000B710_main(4);
+    CamSetupInit(4);
+    CamSetupMapCullAddMulti(4);
     for (i = 0; i < 4; i++) {
         s32 lefts[4] = { 0, 93, 161, 229 };
         s32 rights[4] = { 92, 160, 228, 320 };
@@ -195,7 +195,7 @@ void func_801059A0_awful_tower(void) {
     object->work[0] = 4;
     omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     WipeCreateIn(0xFF, 30);
-    func_80045010_main(D_8010CCE0_awful_tower, 1);
+    GMesFontMesCreate(D_8010CCE0_awful_tower, 1);
     D_8010CB70_awful_tower.type = MINIGAME_4P;
     D_8010CB70_awful_tower.startDelay = 60;
     D_8010CB70_awful_tower.timer = 1800;
@@ -208,7 +208,7 @@ void func_801059A0_awful_tower(void) {
     D_8010CB70_awful_tower.timeLimit = -1;
     func_800E5EA0_minigame(&D_8010CB70_awful_tower);
     for (i = 0; i < 4; i++) {
-        D_8010D2CC_awful_tower[i] = func_8000D658_main(0x6A9, 4);
+        D_8010D2CC_awful_tower[i] = EffectGroupStarCreate(0x6A9, 4);
     }
 }
 
@@ -335,19 +335,19 @@ void func_801061FC_awful_tower(omObjData *object) {
             if (D_8010D3DC_awful_tower == 1) {
                 chr = D_8010D308_awful_tower[D_8010D3FC_awful_tower]->chr;
                 D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[9] =
-                    func_8000B108_main(D_800A178C_main[chr][0] | D_800A178C_main[chr][2], 0x4AD);
+                    Hu3DModelRead(D_800A178C_main[chr][0] | D_800A178C_main[chr][2], 0x4AD);
                 D_8010D3EC_awful_tower[0] =
-                    func_80017790_main(D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[9], 1, motions[chr],
+                    CharAnimCreate(D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[9], 1, motions[chr],
                                        (chrDirs[chr] << 16) | winFiles[0][chr]);
-                D_8010D3EC_awful_tower[1] = func_80017AD8_main((chrDirs[chr] << 16) | winFiles[1][chr]);
-                func_8001C514_main(D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[9]);
+                D_8010D3EC_awful_tower[1] = Hu3DAnimDataRead((chrDirs[chr] << 16) | winFiles[1][chr]);
+                Hu3DModelDynamicFree(D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[9]);
                 Hu3DModelCameraSet(D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[9],
                                    D_8010CB60_awful_tower[D_8010D3FC_awful_tower]);
-                func_8001C258_main(D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[0], 4, 4);
-                func_8001C258_main(D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[9], 4, 0);
+                Hu3DModelAttrSet(D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[0], 4, 4);
+                Hu3DModelAttrSet(D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[9], 4, 0);
                 Hu3DMotionTimeSet(D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[9],
                                   Hu3DData[D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[0]].motTime);
-                func_8001C814_main(D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[9], 2, 2);
+                Hu3DMotionAttrSet(D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[9], 2, 2);
                 Hu3DData[D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[9]].pos.x =
                     D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->trans.x;
                 Hu3DData[D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[9]].pos.y =
@@ -360,13 +360,13 @@ void func_801061FC_awful_tower(omObjData *object) {
                                 D_8010D3DC_awful_tower / 15.0f * 90.0f + -90.0f, 0.0f);
             }
             if (D_8010D3DC_awful_tower == 30) {
-                func_8001C5B4_main(D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[9],
+                Hu3DMotionModelSet(D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[9],
                                    D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[10]);
-                func_8001C814_main(D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[9], 2, 0);
-                func_80017954_main(D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[9], 1,
+                Hu3DMotionAttrSet(D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[9], 2, 0);
+                CharAnimSet(D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[9], 1,
                                    motions[D_8010D308_awful_tower[D_8010D3FC_awful_tower]->chr],
                                    D_8010D3EC_awful_tower[1]);
-                func_80045ED0_main(D_8010D308_awful_tower[D_8010D3FC_awful_tower]->unk08);
+                HuAudCharVoicePlay(D_8010D308_awful_tower[D_8010D3FC_awful_tower]->unk08);
             }
         case 5:
             if (D_8010D3E4_awful_tower == 5 && D_8010D3DC_awful_tower == 1) {
@@ -392,7 +392,7 @@ void func_801061FC_awful_tower(omObjData *object) {
             if (D_8010D3FD_awful_tower == 0) {
                 WipeCreateOut(WIPE_TYPE_NORMAL, 20);
                 HuAudSeqFadeOut(20);
-                func_8004AB0C_main(20);
+                HuAudFXAllFadeOut(20);
             }
             D_8010D3FD_awful_tower++;
             if (D_8010D3FD_awful_tower < 25) {
@@ -409,8 +409,8 @@ void func_80106A9C_awful_tower(omObjData *object) {
     D_800EC1C0_minigame_ObjData *work;
 
     object->model[0] = -1;
-    object->model[0] = func_8000B0A0_main(0x460006, 0x499);
-    func_8001C2FC_main(object->model[0], 0x600, 0);
+    object->model[0] = Hu3DModelRead2(0x460006, 0x499);
+    Hu3DModelObjAttrSet(object->model[0], 0x600, 0);
     Hu3DLLightCreate(object->model[0], 1);
     Hu3DLLightColorSet(object->model[0], 0xFF, 0xFF, 0xFF);
     Hu3DLLightDirSet(object->model[0], 0.0f, 0.0f, 127.0f);
@@ -439,8 +439,8 @@ s32 func_80106C44_awful_tower(omObjData *player, omObjData *object) {
     HuAudFXPlay(9);
     data->unk54 = 0;
     data->unk78 = 0;
-    func_8001C258_main(object->model[0], 4, 4);
-    func_8001C258_main(object->model[1], 4, 4);
+    Hu3DModelAttrSet(object->model[0], 4, 4);
+    Hu3DModelAttrSet(object->model[1], 4, 4);
     return 1;
 }
 
@@ -456,9 +456,9 @@ void func_80106CDC_awful_tower(omObjData *object) {
         func_800E1594_minigame(object, 0x210026, 0x41D, 8);
         D_8010CB98_awful_tower[0] = data->unk55;
     } else {
-        data->unk55 = func_80014618_main(D_8010CB98_awful_tower[0], 8);
+        data->unk55 = Hu3DSprModelLink(D_8010CB98_awful_tower[0], 8);
         object->model[0] = D_800CBB60_main[data->unk55].modelId;
-        func_8001C2FC_main(object->model[0], 0x70000000, 0x70000000);
+        Hu3DModelObjAttrSet(object->model[0], 0x70000000, 0x70000000);
     }
     data->unk44 = 0.0f;
     data->unk48 = 40.0f;
@@ -477,7 +477,7 @@ void func_80106CDC_awful_tower(omObjData *object) {
     }
     data->unk84[8] = (void *)func_80106C44_awful_tower;
     func_800E17F4_minigame(object, 3.0f, 3.0f, 3.0f);
-    func_8001C258_main(object->model[0], 4, 4);
+    Hu3DModelAttrSet(object->model[0], 4, 4);
     object->func = NULL;
 }
 
@@ -499,7 +499,7 @@ void func_80106E84_awful_tower(omObjData *object) {
 
 s16 func_80106F58_awful_tower(s32 file, u16 *sprite) {
     void *data = DataRead(file);
-    s16 anim = func_800329B4_main(data);
+    s16 anim = Hu3DAnimDataCreate(data);
     u16 idx;
 
     HuMemMemoryFreePerm(data);
@@ -527,7 +527,7 @@ void func_80106FDC_awful_tower(omObjData *object) {
 
             object->model[modelIdx[j] + i] =
                 func_80106F58_awful_tower(animFiles[j] | 0x460000, &D_8010D348_awful_tower[i][j]);
-            func_8001C258_main(object->model[modelIdx[j] + i], 4, 4);
+            Hu3DModelAttrSet(object->model[modelIdx[j] + i], 4, 4);
             Hu3DModelCameraSet(object->model[modelIdx[j] + i], D_8010CB60_awful_tower[i]);
             if (j < 2) {
                 Hu3DModelScaleSet(object->model[modelIdx[j] + i], 6.0525f, 6.0525f, 6.0525f);
@@ -545,14 +545,14 @@ void func_80106FDC_awful_tower(omObjData *object) {
         D_8010D390_awful_tower[i]->trans.y = posY[i] * 100.0f + 50.0f;
         D_8010D390_awful_tower[i]->trans.z = 0.0f;
         data->unk56 = i;
-        func_8001C258_main(D_8010D390_awful_tower[i]->model[0], 4, 0);
+        Hu3DModelAttrSet(D_8010D390_awful_tower[i]->model[0], 4, 0);
     }
     for (i = 0; i < 3; i++) {
         s32 files[3] = { 2, 3, 4 };
 
-        object->model[i] = func_8000B108_main(files[i] | 0x460000, 0x4BD);
+        object->model[i] = Hu3DModelRead(files[i] | 0x460000, 0x4BD);
     }
-    object->model[20] = func_8000B108_main(0x460005, 0x4BD);
+    object->model[20] = Hu3DModelRead(0x460005, 0x4BD);
     Hu3DModelCameraSet(object->model[20], 0);
     Hu3DModelScaleSet(object->model[20], 0.666666f, 0.666666f, 0.666666f);
     for (i = 0; i < 4; i++) {
@@ -560,24 +560,24 @@ void func_80106FDC_awful_tower(omObjData *object) {
             ((D_800EC1C0_minigame_ObjData *)D_8010D360_awful_tower[i][j]->data)->unk04 = i * 3 + j + 1;
             for (k = 0; k < 3; k++) {
                 D_8010D360_awful_tower[i][j]->model[k + 1] = Hu3DModelLink(D_8010D3E8_awful_tower->model[j]);
-                func_8001C258_main(D_8010D360_awful_tower[i][j]->model[k + 1], 4, 4);
+                Hu3DModelAttrSet(D_8010D360_awful_tower[i][j]->model[k + 1], 4, 4);
                 Hu3DModelScaleSet(D_8010D360_awful_tower[i][j]->model[k + 1], 0.666666f, 0.666666f, 0.666666f);
                 Hu3DModelCameraSet(D_8010D360_awful_tower[i][j]->model[k + 1], D_8010CB60_awful_tower[i]);
             }
         }
     }
-    object->model[3] = func_8000B108_main(0xA011A, 0x4BD);
-    func_8001C814_main(object->model[3], 2, 2);
+    object->model[3] = Hu3DModelRead(0xA011A, 0x4BD);
+    Hu3DMotionAttrSet(object->model[3], 2, 2);
     Hu3DModelPosSet(object->model[3], 0.0f, 4500.0f, 300.0f);
     Hu3DModelScaleSet(object->model[3], 0.5f, 0.5f, 0.5f);
     for (i = 0; i < 4; i++) {
         if (i == 0 || i == 3) {
-            object->model[i + 4] = func_8000B108_main(i == 3 ? 0x460001 : 0x460000, 0x4B9);
+            object->model[i + 4] = Hu3DModelRead(i == 3 ? 0x460001 : 0x460000, 0x4B9);
         } else {
             object->model[i + 4] = Hu3DModelLink(object->model[4]);
         }
         Hu3DModelCameraSet(object->model[i + 4], 15);
-        func_8001C814_main(object->model[i + 4], 1, 1);
+        Hu3DMotionAttrSet(object->model[i + 4], 1, 1);
         Hu3DModelPosSet(object->model[i + 4], 0.0f, i * 1120.0 - 9.0, -300.0f);
         Hu3DModelScaleSet(object->model[i + 4], 0.75f, 0.75f, 0.75f);
     }
@@ -588,7 +588,7 @@ void func_80107734_awful_tower(omObjData *object) {
     func_80107858_awful_tower();
     if (D_8010D3E4_awful_tower == 3) {
         if (D_8010D3DC_awful_tower == 1) {
-            func_8001C258_main(object->model[3], 4, 0);
+            Hu3DModelAttrSet(object->model[3], 4, 0);
             Hu3DModelCameraSet(object->model[3], D_8010CB60_awful_tower[D_8010D3FC_awful_tower]);
         }
         if (D_8010D3DC_awful_tower != 0 && D_8010D3DC_awful_tower < 46) {
@@ -747,22 +747,22 @@ void func_80108880_awful_tower(omObjData *object, s32 model, s32 motion, u16 gro
     data->unk50 |= 0x400;
     data->unk4C = 1.0f;
     data->unkB4 = 1.0f;
-    object->model[6] = func_8000B108_main(5, 0x80D);
+    object->model[6] = Hu3DModelRead(5, 0x80D);
     Hu3DModelCameraSet(object->model[6], D_8010CB60_awful_tower[group]);
     Hu3DModelCameraSet(object->model[9], D_8010CB60_awful_tower[group]);
     D_8010D308_awful_tower[group]->unk08 = (rand8() & 1) ? 0x2F : 0x30;
-    object->model[10] = func_8000B108_main(func_80017BB8_main(chr, D_8010D308_awful_tower[group]->unk08), attr1 | 4);
+    object->model[10] = Hu3DModelRead(CharMotionDataNumGet(chr, D_8010D308_awful_tower[group]->unk08), attr1 | 4);
     D_8010D308_awful_tower[group]->unk08 |= chrDirs[chr] << 16;
-    func_800E5A00_minigame(object, 0, func_80017BB8_main(chr, 0), 1, 0);
-    func_800E5A00_minigame(object, 1, func_80017BB8_main(chr, 1), 1, 0);
-    func_800E5A00_minigame(object, 2, func_80017BB8_main(chr, 2), 1, 0);
-    func_800E5A00_minigame(object, 6, func_80017BB8_main(chr, 4), 1, 19);
-    func_800E5A00_minigame(object, 17, func_80017BB8_main(chr, 14), 1, 15);
-    func_800E5978_minigame(object, 21, func_80017BB8_main(chr, 31), 0, 0);
-    func_800E5978_minigame(object, 30, func_80017BB8_main(chr, 32), 2, 0);
-    func_800E5978_minigame(object, 31, func_80017BB8_main(chr, 33), 2, 0);
-    func_800E5978_minigame(object, 32, func_80017BB8_main(chr, 34), 0, 0);
-    func_800E5A00_minigame(object, 14, func_80017BB8_main(chr, 58), 1, 120);
+    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(chr, 0), 1, 0);
+    func_800E5A00_minigame(object, 1, CharMotionDataNumGet(chr, 1), 1, 0);
+    func_800E5A00_minigame(object, 2, CharMotionDataNumGet(chr, 2), 1, 0);
+    func_800E5A00_minigame(object, 6, CharMotionDataNumGet(chr, 4), 1, 19);
+    func_800E5A00_minigame(object, 17, CharMotionDataNumGet(chr, 14), 1, 15);
+    func_800E5978_minigame(object, 21, CharMotionDataNumGet(chr, 31), 0, 0);
+    func_800E5978_minigame(object, 30, CharMotionDataNumGet(chr, 32), 2, 0);
+    func_800E5978_minigame(object, 31, CharMotionDataNumGet(chr, 33), 2, 0);
+    func_800E5978_minigame(object, 32, CharMotionDataNumGet(chr, 34), 0, 0);
+    func_800E5A00_minigame(object, 14, CharMotionDataNumGet(chr, 58), 1, 120);
     object->trans.x = x;
     object->trans.y = y;
     object->trans.z = z;
@@ -930,10 +930,10 @@ void func_80108E8C_awful_tower(omObjData *object) {
             func_800E13CC_minigame(D_8010D360_awful_tower[group][i], 50.0f, 100.0f, -50.0f, -50.0f, 50.0f, 50.0f);
         }
         for (j = 0; j < 3; j++) {
-            func_8001C258_main(D_8010D360_awful_tower[group][i]->model[j + 1], 4, 4);
+            Hu3DModelAttrSet(D_8010D360_awful_tower[group][i]->model[j + 1], 4, 4);
         }
         if (group == 0) {
-            func_8001C258_main(D_8010D3E8_awful_tower->model[20], 4, 4);
+            Hu3DModelAttrSet(D_8010D3E8_awful_tower->model[20], 4, 4);
             Hu3DModelCameraSet(D_8010D3E8_awful_tower->model[20], 0);
         }
     }
@@ -947,12 +947,12 @@ void func_80108E8C_awful_tower(omObjData *object) {
                 if (j == 14) {
                     Hu3DModelPosSet(D_8010D3E8_awful_tower->model[20], platCols[j] * 150 - 150,
                                     D_8010D0D0_awful_tower[j], 0.0f);
-                    func_8001C258_main(D_8010D3E8_awful_tower->model[20], 4, 0);
+                    Hu3DModelAttrSet(D_8010D3E8_awful_tower->model[20], 4, 0);
                     Hu3DData[D_8010D3E8_awful_tower->model[20]].cameraBit |= D_8010CB60_awful_tower[group];
                 } else {
                     Hu3DModelPosSet(D_8010D360_awful_tower[group][k]->model[counts[k] + 1],
                                     platCols[j] * 150 - 150, D_8010D0D0_awful_tower[j], 0.0f);
-                    func_8001C258_main(D_8010D360_awful_tower[group][k]->model[counts[k] + 1], 4, 0);
+                    Hu3DModelAttrSet(D_8010D360_awful_tower[group][k]->model[counts[k] + 1], 4, 0);
                 }
                 counts[k]++;
             }
@@ -994,7 +994,7 @@ void func_80108E8C_awful_tower(omObjData *object) {
     }
     if (Hu3DData[object->model[6]].motTime >= 10.0f) {
         Hu3DData[object->model[6]].motTime = 0.0f;
-        func_8001C258_main(object->model[6], 4, 4);
+        Hu3DModelAttrSet(object->model[6], 4, 4);
     }
     if (player->cpuDifficulty != -1 ||
         (D_8010D3FC_awful_tower == group && D_8010D3E4_awful_tower == 3 && D_8010D3DC_awful_tower >= 50)) {
@@ -1168,7 +1168,7 @@ void func_80108E8C_awful_tower(omObjData *object) {
     if (savedCB70 != 0xFF) {
         D_8010CB70_awful_tower.state = savedCB70;
     }
-    func_8001C258_main(object->model[1], 4, 4);
+    Hu3DModelAttrSet(object->model[1], 4, 4);
     for (i = 0; i < 3; i++) {
         if (data->unk38 != 1000.0f && ABS(object->trans.x - D_8010D360_awful_tower[group][i]->trans.x) < 110.0f &&
             ABS(object->trans.y + 75.0f - D_8010D360_awful_tower[group][i]->trans.y) < 125.0f) {
@@ -1187,7 +1187,7 @@ void func_80108E8C_awful_tower(omObjData *object) {
         if (D_8010D330_awful_tower[group][i] != 0 && coinNear[i] != 0 && coin->unk54 == 0) {
             EffectGroupModel *effect = D_800D6A00_main[D_8010D2CC_awful_tower[group]]->models;
 
-            func_8000D550_main(D_8010D2CC_awful_tower[group], D_8010D390_awful_tower[i]->trans.x,
+            EffectGroupEmit(D_8010D2CC_awful_tower[group], D_8010D390_awful_tower[i]->trans.x,
                                D_8010D390_awful_tower[i]->trans.y, D_8010D390_awful_tower[i]->trans.z);
             Hu3DModelCameraSet(effect->model, D_8010CB60_awful_tower[group]);
             D_8010D330_awful_tower[group][i] = 0;
@@ -1202,7 +1202,7 @@ void func_80108E8C_awful_tower(omObjData *object) {
                       ((D_8010D330_awful_tower[1][i] == 1) ? D_8010CB60_awful_tower[1] : 0) |
                       ((D_8010D330_awful_tower[2][i] == 1) ? D_8010CB60_awful_tower[2] : 0) |
                       ((D_8010D330_awful_tower[3][i] == 1) ? D_8010CB60_awful_tower[3] : 0);
-            func_8001C258_main(D_8010D390_awful_tower[i]->model[0], 4, 0);
+            Hu3DModelAttrSet(D_8010D390_awful_tower[i]->model[0], 4, 0);
             Hu3DModelCameraSet(D_8010D390_awful_tower[i]->model[0], cameras);
         }
     }
@@ -1211,7 +1211,7 @@ void func_80108E8C_awful_tower(omObjData *object) {
     }
     work = object->data;
     if (work->unk38 != 1000.0f && work->unk53[3] != 0 && work->unk53[3] != -1 && D_8010CC08_awful_tower[group] == -1) {
-        func_8004AC98_main(player->chr + 203, work->unk59);
+        HuAudPlayerFXPlay(player->chr + 203, work->unk59);
     }
     D_8010CC08_awful_tower[group] = (work->unk53[3] != 0) ? work->unk53[3] - 1 : -1;
     D_8010CC04_awful_tower[group] =
@@ -1241,7 +1241,7 @@ void func_80108E8C_awful_tower(omObjData *object) {
                 D_8010D170_awful_tower[group] = 0.0f;
                 D_8010D180_awful_tower[group] = -20.0f;
                 D_8010D160_awful_tower[group] = D_8010D320_awful_tower[group] + 900.0f;
-                func_8001C258_main(D_8010D3E8_awful_tower->model[group + 8], 4, 0);
+                Hu3DModelAttrSet(D_8010D3E8_awful_tower->model[group + 8], 4, 0);
             }
             D_8010CC0C_awful_tower[group] = 1;
             D_8010CC10_awful_tower[group] = i / 5;
@@ -1295,8 +1295,8 @@ void func_80108E8C_awful_tower(omObjData *object) {
                 if (D_8010CBE8_awful_tower % 60 == frame && D_8010CC14_awful_tower[group] == 0) {
                     D_8010CC14_awful_tower[group] = 1;
                     D_8010CC4C_awful_tower[group] += (D_8010CC4C_awful_tower[group] < 30) ? 5 : 0;
-                    func_80014850_main(D_8010D348_awful_tower[group][1]);
-                    func_8001C258_main(D_8010D3E8_awful_tower->model[group + 8], 4, 4);
+                    Hu3DSprModelReset(D_8010D348_awful_tower[group][1]);
+                    Hu3DModelAttrSet(D_8010D3E8_awful_tower->model[group + 8], 4, 4);
                 }
                 if (D_8010D3E4_awful_tower != 2) {
                     D_8010CC0C_awful_tower[group] = 3;
@@ -1307,8 +1307,8 @@ void func_80108E8C_awful_tower(omObjData *object) {
                     D_8010CC14_awful_tower[group] = 0;
                     D_8010CC0C_awful_tower[group] = 0;
                     D_8010CC4C_awful_tower[group] = 0;
-                    func_8001C258_main(D_8010D3E8_awful_tower->model[group + 8], 4, 4);
-                    func_8001C258_main(D_8010D3E8_awful_tower->model[group + 12], 4, 4);
+                    Hu3DModelAttrSet(D_8010D3E8_awful_tower->model[group + 8], 4, 4);
+                    Hu3DModelAttrSet(D_8010D3E8_awful_tower->model[group + 12], 4, 4);
                 } else if (D_8010CC0C_awful_tower[group] == 3) {
                     targetX = (D_8010CC10_awful_tower[group] == 2) ? -1000.0f : 1000.0f;
                     targetY = D_8010D320_awful_tower[group] + 1200.0f;
@@ -1343,8 +1343,8 @@ void func_80108E8C_awful_tower(omObjData *object) {
             if (D_8010CC14_awful_tower[group] != 0) {
                 if (D_8010CC14_awful_tower[group] == 12) {
                     D_8010CC14_awful_tower[group] = 0;
-                    func_80014850_main(D_8010D348_awful_tower[group][0]);
-                    func_8001C258_main(D_8010D3E8_awful_tower->model[group + 12], 4, 4);
+                    Hu3DSprModelReset(D_8010D348_awful_tower[group][0]);
+                    Hu3DModelAttrSet(D_8010D3E8_awful_tower->model[group + 12], 4, 4);
                 } else {
                     D_8010CC14_awful_tower[group]++;
                     if (D_8010CC14_awful_tower[group] == 8 && D_8010CC18_awful_tower[group] <= -1000.0f) {
@@ -1355,7 +1355,7 @@ void func_80108E8C_awful_tower(omObjData *object) {
                         D_8010D1B0_awful_tower[group] = D_8010CCB4_awful_tower[D_8010CC10_awful_tower[group]];
                         D_8010D1C0_awful_tower[group] = 0.0f;
                         D_8010D1D0_awful_tower[group] = (D_8010CC10_awful_tower[group] != 3) ? 23.0f : -23.0f;
-                        func_8001C258_main(D_8010D3E8_awful_tower->model[group + 16], 4, 0);
+                        Hu3DModelAttrSet(D_8010D3E8_awful_tower->model[group + 16], 4, 0);
                         Hu3DModelPosSet(D_8010D3E8_awful_tower->model[group + 16], D_8010D190_awful_tower[group],
                                         D_8010CC18_awful_tower[group], 0.0f);
                         Hu3DModelRotSet(D_8010D3E8_awful_tower->model[group + 16], 0.0f, 0.0f,
@@ -1408,7 +1408,7 @@ void func_80108E8C_awful_tower(omObjData *object) {
         (D_8010CC18_awful_tower[group] < D_8010D320_awful_tower[group] - 850.0f ||
          D_8010CC18_awful_tower[group] > D_8010D320_awful_tower[group] + 850.0f)) {
         D_8010CC18_awful_tower[group] = -1000.0f;
-        func_8001C258_main(D_8010D3E8_awful_tower->model[group + 16], 4, 4);
+        Hu3DModelAttrSet(D_8010D3E8_awful_tower->model[group + 16], 4, 4);
     }
     CenterM[group].y = D_8010D320_awful_tower[group];
     D_800CDA7C_main[player->pad] = savedBtn;

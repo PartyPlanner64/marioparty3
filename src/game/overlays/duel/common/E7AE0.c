@@ -313,7 +313,7 @@ void func_801008E8_name_81(void) {
         if ((func_800FC114_name_81()) == 0) {
             var_s7 = func_800DB3E0_name_81(GwSystem.current_player_index);
             func_800DB544_name_81(GwSystem.current_player_index);
-            func_8004A9DC_main(0x60);
+            HuAudSeqVolSet(0x60);
         }
         func_80100864_name_81();
         temp_s3 = func_800FFEEC_name_81();
@@ -388,7 +388,7 @@ void func_801008E8_name_81(void) {
                 }
                 func_800DB5AC_name_81(GwSystem.current_player_index);
                 func_80100890_name_81();
-                func_8004A9DC_main(0x7F);
+                HuAudSeqVolSet(0x7F);
                 WipeCreateIn(WIPE_TYPE_NORMAL, 4);
                 HuPrcSleep(4);
                 MBDCameraSpeedSet(temp_f22);

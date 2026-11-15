@@ -28,10 +28,10 @@ Vec D_80106C2C_sldebug BSS;
 
 void func_801059A0_sldebug(void) {
     Hu3DCamInit(1);
-    func_8001FE20_main(1);
-    func_800142A0_main(0x2D);
+    MapCollInit(1);
+    Hu3DSprModelInit(0x2D);
     omInitObjMan(0x33, 0xA);
-    func_8004A208_main();
+    omGameSysInit();
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     omAddObj(0x2710, 0, 0, -1, func_801068D4_sldebug);
     Hu3DGLightMaxSet(4);
@@ -50,7 +50,7 @@ void func_801059A0_sldebug(void) {
     omAddObj(0x7D0, 0, 0, -1, func_80106254_sldebug);
     WipeCreateIn(WIPE_TYPE_NORMAL, 0x10);
     D_800CD280_main = 1;
-    func_80050ABC_main();
+    SLLoadStory();
     HuAudSeqPlay(8);
 }
 
@@ -159,7 +159,7 @@ void func_80105B64_sldebug(omObjData *arg0) {
                 } else {
                     D_80106964_sldebug = 4;
                 }
-                func_8005035C_main(1);
+                SLSaveStory(1);
             } else {
                 SLCommonSet(1);
             }

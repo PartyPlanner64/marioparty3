@@ -31,6 +31,6 @@ void func_80105A6C_boardcall(void) {
 // entry 2
 void func_80105A98_boardcall(void) {
     omInitObjMan(0xA, 0xA);
-    func_8004A208_main();
+    omGameSysInit();
     omAddPrcObj(func_80105A6C_boardcall, 0x1005, 0, 0);
 }

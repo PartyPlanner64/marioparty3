@@ -104,14 +104,14 @@ void func_801059A0_eatsa_pizza(void) {
     omObjData *obj;
     u8 camIndex;
 
-    func_8001FE20_main(1);
-    func_80021BE0_main(&D_800EBEB0_minigame, 0x40);
+    MapCollInit(1);
+    Hu3DQuadPoolInit(&D_800EBEB0_minigame, 0x40);
     omInitObjMan(0x10, 0);
-    func_8004A208_main();
+    omGameSysInit();
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutView);
     omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    func_8000B5F0_main(1);
-    camIndex = func_8000B638_main();
+    CamSetupInit(1);
+    camIndex = CamSetupMapCullAdd();
     ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 5.0f, 80.0f, 4000.0f);
@@ -160,7 +160,7 @@ void func_80105C64_eatsa_pizza(HuMtx4F src, HuMtx4F dst) {
     f32 det;
     f32 *dstRow3;
 
-    func_8002367C_main(mtx, src);
+    mtxCopy(mtx, src);
 
     t0 = mtx[1][1] * mtx[2][2] - mtx[1][2] * mtx[2][1];
     t1 = mtx[1][2] * mtx[2][0] - mtx[1][0] * mtx[2][2];
@@ -282,17 +282,17 @@ void func_80106084_eatsa_pizza(omObjData *object) {
     work->unk28 = 8;
     work->unk2A = 0;
     D_80109268_eatsa_pizza[group][D_8010910C_eatsa_pizza[group]] = work;
-    object->model[3] = func_8000B108_main(3, 0x2DD);
-    object->model[4] = func_8000B108_main(4, 0x2DD);
-    object->model[6] = func_8000B108_main(5, 0x2DD);
-    object->model[5] = func_8000B108_main(6, 0x2DD);
-    object->model[7] = func_8000B108_main(8, 0x2DD);
-    object->model[8] = func_8000B108_main(7, 0x2DD);
+    object->model[3] = Hu3DModelRead(3, 0x2DD);
+    object->model[4] = Hu3DModelRead(4, 0x2DD);
+    object->model[6] = Hu3DModelRead(5, 0x2DD);
+    object->model[5] = Hu3DModelRead(6, 0x2DD);
+    object->model[7] = Hu3DModelRead(8, 0x2DD);
+    object->model[8] = Hu3DModelRead(7, 0x2DD);
     object->func = func_8010679C_eatsa_pizza;
-    func_800E5A00_minigame(object, 0, func_80017BB8_main(character, 0), 1, 0);
-    func_800E5A00_minigame(object, 0x10, func_80017BB8_main(character, 0x3E), 1, 0);
-    func_800E5A00_minigame(object, 0xD, func_80017BB8_main(character, 0x4E), 2, 0x78);
-    func_800E5A00_minigame(object, 0xE, func_80017BB8_main(character, 0x3A), 2, 0x3C);
+    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(character, 0), 1, 0);
+    func_800E5A00_minigame(object, 0x10, CharMotionDataNumGet(character, 0x3E), 1, 0);
+    func_800E5A00_minigame(object, 0xD, CharMotionDataNumGet(character, 0x4E), 2, 0x78);
+    func_800E5A00_minigame(object, 0xE, CharMotionDataNumGet(character, 0x3A), 2, 0x3C);
     func_800E5690_minigame(object, 0);
     D_80109108_eatsa_pizza++;
     D_8010910C_eatsa_pizza[group]++;
@@ -316,7 +316,7 @@ void func_80106504_eatsa_pizza(omObjData *object, s32 arg1, s32 arg2, u16 player
     data->unk158 = HuMemAllocTag(0x38, TAG_OVERLAY);
     memset(data->unk158, 0, 0x38);
 
-    object->model[0] = func_8000B108_main(arg1 | arg2, tag);
+    object->model[0] = Hu3DModelRead(arg1 | arg2, tag);
     for (i = 0; i < object->mtncnt; i++) {
         object->motion[i] = -1;
     }
@@ -518,7 +518,7 @@ void func_8010679C_eatsa_pizza(omObjData *object) {
             if (work->unk36 != 0) {
                 if (work->unk34 != 0) {
                     func_800E5690_minigame(object, 0xD);
-                    func_80045F1C_main(work->unk2C, (work->unk32 * 5 << 3) + 0x2C, work->unk30);
+                    HuAudCharVoicePlayPlayer(work->unk2C, (work->unk32 * 5 << 3) + 0x2C, work->unk30);
                     GwPlayer[data->unk59].bonusCoin += 10;
                 } else {
                     func_800E5690_minigame(object, 0xE);
@@ -1115,7 +1115,7 @@ void func_801087DC_eatsa_pizza(omObjData *object) {
                 }
             }
             D_8010913C_eatsa_pizza--;
-            func_8003F578_main((D_8010913C_eatsa_pizza + 0x1D) / 30);
+            GMesTimerValueSet((D_8010913C_eatsa_pizza + 0x1D) / 30);
             if (D_8010913C_eatsa_pizza == 0) {
                 D_80109350_eatsa_pizza = 3;
             }
@@ -1138,7 +1138,7 @@ void func_801087DC_eatsa_pizza(omObjData *object) {
                     D_80109140_eatsa_pizza = 1;
                 }
             }
-            func_8003F5C0_main();
+            GMesTimerEnd();
             GMesCreate(0x10);
             HuAudSeqFadeOut(0x78);
             D_80109138_eatsa_pizza = 0xF;
@@ -1191,7 +1191,7 @@ void func_801087DC_eatsa_pizza(omObjData *object) {
             wipeDuration = &D_8010913A_eatsa_pizza;
             WipeCreateOut(WIPE_TYPE_NORMAL, *wipeDuration);
             HuAudSeqFadeOut(*wipeDuration);
-            func_8004AB0C_main(*wipeDuration);
+            HuAudFXAllFadeOut(*wipeDuration);
             break;
         case 7:
             HuAudSeqStop();
@@ -1214,7 +1214,7 @@ void func_80108C50_eatsa_pizza(omObjData *object) {
             continue;
         }
         sprite = HuSprGet(group, i);
-        func_800551AC_main(group, i);
+        HuSprAnimStatGet(group, i);
         if (sprite->animNo < sprite->data->patNum - 1) {
             continue;
         }
@@ -1265,7 +1265,7 @@ s16 func_80108E48_eatsa_pizza(u16 arg0, f32 *arg1) {
     red = (color >> 11) << 3;
     green = (color >> 3) & 0xF8;
     blue = (color << 2) & 0xF8;
-    func_80055484_main(group, spriteId, red, green, blue, 0x100);
+    HuSprColorTPLvlSet(group, spriteId, red, green, blue, 0x100);
     HuSprScaleSet(group, spriteId, 0.75f, 0.75f);
     return spriteId;
 }
@@ -1304,7 +1304,7 @@ s16 func_80108FEC_eatsa_pizza(s16 arg0, s16 arg1) {
 }
 
 void *func_801090B4_eatsa_pizza(s16 arg0, s16 arg1) {
-    HuSprAnimPat *entry = &func_80055194_main(arg0)->pat[arg1];
+    HuSprAnimPat *entry = &HuSprAnimDataGet(arg0)->pat[arg1];
 
     return entry->data;
 }

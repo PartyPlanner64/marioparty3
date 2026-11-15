@@ -114,7 +114,7 @@ static void MBMapFullStarGrow(void) {
             var_f22 -= 360.0f;
         }
         
-        func_80055484_main(temp_s0->x, temp_s0->y, 0xFF, temp, 0, 0xC0);
+        HuSprColorTPLvlSet(temp_s0->x, temp_s0->y, 0xFF, temp, 0, 0xC0);
 
         temp_f0 = sindf(var_f20);
         temp_f0 = (temp_f0 < 0.0f) ? 0.0f : 0.2f;
@@ -168,14 +168,14 @@ void MBMapFullLineCreate(void) {
         HuSprGrpMemberSet(temp_s0->spriteGroup, 0, temp_s0->model[0], 0);
         HuSprAttrSet(temp_s0->spriteGroup, 0, 0x01001808);
         HuSprPriSet(temp_s0->spriteGroup, 0, 2);
-        func_80055484_main(temp_s0->spriteGroup, 0, 0, 0, 0xFF, 0x80);
+        HuSprColorTPLvlSet(temp_s0->spriteGroup, 0, 0, 0, 0xFF, 0x80);
         DataClose(temp_v0);
         temp_v0_2 = DataRead(0x1301CD);
         temp_s0->model[1] = HuSprAnimRead(temp_v0_2);
         HuSprGrpMemberSet(temp_s0->spriteGroup, 1, temp_s0->model[1], 0);
         HuSprAttrSet(temp_s0->spriteGroup, 1, 0x01001808);
         HuSprPriSet(temp_s0->spriteGroup, 1, 2);
-        func_80055484_main(temp_s0->spriteGroup, 1, 0, 0, 0xFF, 0x80);
+        HuSprColorTPLvlSet(temp_s0->spriteGroup, 1, 0, 0, 0xFF, 0x80);
         DataClose(temp_v0_2);
         MBMapFullLinePosFix(temp_s0, i);
         D_80102A98_shared_board[i] = temp_s0;
@@ -216,8 +216,8 @@ static void MBMapFullLineFlash(void) {
                     HuSprPriSet(entry->spriteGroup, 0, 2);
                     HuSprPriSet(entry->spriteGroup, 1, 2);
                 } else {
-                    func_80055484_main(entry->spriteGroup, 0, 0, 0, 0xFF, 0xA0);
-                    func_80055484_main(entry->spriteGroup, 1, 0, 0, 0xFF, 0xFF);
+                    HuSprColorTPLvlSet(entry->spriteGroup, 0, 0, 0, 0xFF, 0xA0);
+                    HuSprColorTPLvlSet(entry->spriteGroup, 1, 0, 0, 0xFF, 0xFF);
                     HuSprPriSet(entry->spriteGroup, 0, 3);
                     HuSprPriSet(entry->spriteGroup, 1, 3);
                 }
@@ -236,8 +236,8 @@ static void MBMapFullLineFlash(void) {
             angle -= 360.0f;
         }
  
-        func_80055484_main(entry->spriteGroup, 0, 0xFF, alpha, 0, 0xA0);
-        func_80055484_main(entry->spriteGroup, 1, 0xFF, alpha, 0, 0xFF);
+        HuSprColorTPLvlSet(entry->spriteGroup, 0, 0xFF, alpha, 0, 0xA0);
+        HuSprColorTPLvlSet(entry->spriteGroup, 1, 0xFF, alpha, 0, 0xFF);
     }
 }
 
@@ -359,7 +359,7 @@ static void MBMapFullMain(void) {
         DataClose(data);
     }
 
-    func_8004A9DC_main(0x60);
+    HuAudSeqVolSet(0x60);
     WipeCreateIn(WIPE_TYPE_NORMAL, 8);
     HuPrcSleep(7);
     help0 = func_800E210C_shared_board(0, 0xC0, 0);
@@ -407,7 +407,7 @@ static void MBMapFullMain(void) {
     func_800DC08C_shared_board(userData);
     MBStatusShowAll();
     func_800EA6B0_shared_board(0);
-    func_8004A9DC_main(0x7F);
+    HuAudSeqVolSet(0x7F);
     WipeCreateIn(WIPE_TYPE_NORMAL, 8);
     HuPrcSleep(8);
     omDelPrcObj(NULL);

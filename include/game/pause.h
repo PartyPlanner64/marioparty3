@@ -8,19 +8,19 @@
 extern u8 D_800CB99C_main;
 #endif
 
-void func_80045350_main(void);
-omObjData *func_80045ED0_main(s32 arg0);
-omObjData* func_80045F1C_main(u32, s16, s16);
+void MgCoinReset(void);
+omObjData *HuAudCharVoicePlay(s32 arg0);
+omObjData* HuAudCharVoicePlayPlayer(u32, s16, s16);
 
 void GameMesPauseCreate(void);
 void ExecPause(void);
-void func_80045964_main(s16 arg0, s16 arg1);
-void func_80045A90_main(void);
-s16 func_80045B24_main(s16 arg0, s16 arg1);
-s32 func_80045BF0_main(s32 arg0);
-void func_80045C2C_main(void);
-void func_80045D38_main(omObjData *object);
-omObjData *func_80045EF4_main(u32 arg0, s16 arg1);
-omObjData *func_80045F48_main(u32 arg0, s16 arg1, s16 arg2, s16 arg3);
+void GamePauseNameSet(s16 arg0, s16 arg1);
+void GamePauseEnd(void);
+s16 GamePauseWinCreate(s16 arg0, s16 arg1);
+s32 HuAudVoiceTypeGet(s32 arg0);
+void HuAudCharVoiceInit(void);
+void HuAudCharVoiceExec(omObjData *object);
+omObjData *HuAudCharVoicePlayPan(u32 arg0, s16 arg1);
+omObjData *HuAudCharVoicePlayEx(u32 arg0, s16 arg1, s16 arg2, s16 arg3);
 
 #endif

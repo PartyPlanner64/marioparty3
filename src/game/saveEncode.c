@@ -136,7 +136,7 @@ extern u16 D_800CE2C0_main;
 
 // extern char D_800A7B40_main[];
 
-void func_8004F290_main(void) {
+void SaveSchemeInit(void) {
     SAVE_SCHEME_BYTE_SIZE(D_800D04B0_main, D_800A1D70_main);
     SAVE_SCHEME_BYTE_SIZE(D_800CBB64_main, D_800A1D9C_main);
     SAVE_SCHEME_BYTE_SIZE(D_800C9944_main, D_800A1DC8_main);
@@ -148,11 +148,11 @@ void func_8004F290_main(void) {
                       (D_800CD6A4_main + D_800C9944_main + D_800CCF54_main * 4);
 }
 
-s32 func_8004F504_main(GW_SYSTEM *system) {
+s32 SaveBoardSystemEncode(GW_SYSTEM *system) {
     return SaveFileEncode((u8 *)system, D_800A1D9C_main);
 }
 
-s32 func_8004F524_main(GW_SYSTEM *system) {
+s32 SaveStorySystemEncode(GW_SYSTEM *system) {
     return SaveFileEncode((u8 *)system, D_800A1DC8_main);
 }
 
@@ -160,11 +160,11 @@ s32 SavePlayerStruct(GW_PLAYER *player) {
     return SaveFileEncode((u8 *)player, D_800A1DF8_main);
 }
 
-s32 func_8004F564_main(GW_COMMON *common) {
+s32 SaveCommonEncode(GW_COMMON *common) {
     return SaveFileEncode((u8 *)common, D_800A1D70_main);
 }
 
-s32 func_8004F584_main(GW_STORY *story) {
+s32 SaveStoryEncode(GW_STORY *story) {
     return SaveFileEncode((u8 *)story, D_800A1E58_main);
 }
 
@@ -188,7 +188,7 @@ s32 SaveFileEncode(u8 *sourceData, u8 *encodingScheme) {
                 for (byteIndex = 0; byteIndex < (encodingScheme[0] >> 3); byteIndex++, currentDataPtr++) {
                     phi_s0 = *currentDataPtr;
                     for (bitIndex = 0; bitIndex < 8; bitIndex++, phi_s0 *= 2) {
-                        func_8004F83C_main(phi_s0 & 0x80);
+                        SaveBitWrite(phi_s0 & 0x80);
                     }
                 }
                 continue;
@@ -197,7 +197,7 @@ s32 SaveFileEncode(u8 *sourceData, u8 *encodingScheme) {
                     phi_s0 = *currentDataPtr << (16 - encodingScheme[0]);
                     phi_v1_2 = encodingScheme[0] - 8;
                     for (bitIndex = 0; bitIndex < phi_v1_2; bitIndex++, phi_s0 *= 2) {
-                        func_8004F83C_main(phi_s0 & 0x80);
+                        SaveBitWrite(phi_s0 & 0x80);
                     }
                     currentDataPtr++;
                     phi_s0 = *currentDataPtr;
@@ -207,7 +207,7 @@ s32 SaveFileEncode(u8 *sourceData, u8 *encodingScheme) {
                     phi_v1_2 = encodingScheme[0];
                 }
                 for (bitIndex = 0; bitIndex < phi_v1_2; bitIndex++, phi_s0 *= 2) {
-                    func_8004F83C_main(phi_s0 & 0x80);
+                    SaveBitWrite(phi_s0 & 0x80);
                 }
             }
             currentDataPtr++;
@@ -225,7 +225,7 @@ s32 SaveFileEncode(u8 *sourceData, u8 *encodingScheme) {
     return D_800BBAA0_main + 1;
 }
 
-void func_8004F83C_main(s32 arg0) {
+void SaveBitWrite(s32 arg0) {
     gEncodedSaveBuffer[D_800BBAA0_main] *= 2;
     gEncodedSaveBuffer[D_800BBAA0_main] |= arg0 ? 1 : 0;
 
@@ -236,32 +236,32 @@ void func_8004F83C_main(s32 arg0) {
 }
 
 // Only the first 0x62 bytes of GwSystem are saved.
-void func_8004F8BC_main(u8 *src, GW_SYSTEM *system) {
+void SaveBoardSystemDecode(u8 *src, GW_SYSTEM *system) {
     memset(system, 0, 0x62);
-    func_8004FA4C_main(src, (u8 *)system, D_800A1D9C_main);
+    SaveFileDecode(src, (u8 *)system, D_800A1D9C_main);
 }
 
-void func_8004F90C_main(u8 *src, GW_SYSTEM *system) {
+void SaveStorySystemDecode(u8 *src, GW_SYSTEM *system) {
     memset(system, 0, 0x62);
-    func_8004FA4C_main(src, (u8 *)system, D_800A1DC8_main);
+    SaveFileDecode(src, (u8 *)system, D_800A1DC8_main);
 }
 
-void func_8004F95C_main(u8 *src, GW_PLAYER *player) {
+void SavePlayerDecode(u8 *src, GW_PLAYER *player) {
     memset(player, 0, sizeof(GW_PLAYER));
-    func_8004FA4C_main(src, (u8 *)player, D_800A1DF8_main);
+    SaveFileDecode(src, (u8 *)player, D_800A1DF8_main);
 }
 
-void func_8004F9AC_main(u8 *src, GW_COMMON *common) {
+void SaveCommonDecode(u8 *src, GW_COMMON *common) {
     memset(common, 0, sizeof(GW_COMMON));
-    func_8004FA4C_main(src, (u8 *)common, D_800A1D70_main);
+    SaveFileDecode(src, (u8 *)common, D_800A1D70_main);
 }
 
-void func_8004F9FC_main(u8 *src, GW_STORY *story) {
+void SaveStoryDecode(u8 *src, GW_STORY *story) {
     memset(story, 0, sizeof(GW_STORY));
-    func_8004FA4C_main(src, (u8 *)story, D_800A1E58_main);
+    SaveFileDecode(src, (u8 *)story, D_800A1E58_main);
 }
 
-void func_8004FA4C_main(u8 *src, u8 *destData, u8 *encodingScheme) {
+void SaveFileDecode(u8 *src, u8 *destData, u8 *encodingScheme) {
     u8 *currentDataPtr;
     u8 value;
     s16 bitCount;
@@ -281,7 +281,7 @@ void func_8004FA4C_main(u8 *src, u8 *destData, u8 *encodingScheme) {
                 for (byteIndex = 0; byteIndex < (encodingScheme[0] >> 3); byteIndex++) {
                     value = 0;
                     for (bitIndex = 0; bitIndex < 8; bitIndex++) {
-                        value = (value << 1) | (func_8004FC84_main() ? 1 : 0);
+                        value = (value << 1) | (SaveBitRead() ? 1 : 0);
                     }
                     *currentDataPtr++ = value;
                 }
@@ -290,7 +290,7 @@ void func_8004FA4C_main(u8 *src, u8 *destData, u8 *encodingScheme) {
                     value = 0;
                     bitCount = encodingScheme[0] - 8;
                     for (bitIndex = 0; bitIndex < bitCount; bitIndex++) {
-                        value = (value << 1) | (func_8004FC84_main() ? 1 : 0);
+                        value = (value << 1) | (SaveBitRead() ? 1 : 0);
                     }
                     *currentDataPtr++ = value;
                     bitCount = 8;
@@ -299,7 +299,7 @@ void func_8004FA4C_main(u8 *src, u8 *destData, u8 *encodingScheme) {
                 }
                 value = 0;
                 for (bitIndex = 0; bitIndex < bitCount; bitIndex++) {
-                    value = (value << 1) | (func_8004FC84_main() ? 1 : 0);
+                    value = (value << 1) | (SaveBitRead() ? 1 : 0);
                 }
                 *currentDataPtr++ = value;
             }
@@ -308,7 +308,7 @@ void func_8004FA4C_main(u8 *src, u8 *destData, u8 *encodingScheme) {
     }
 }
 
-s32 func_8004FC84_main(void) {
+s32 SaveBitRead(void) {
     s32 topBit = gEncodedSaveBuffer[D_800BBAA0_main] & 0x80;
 
     gEncodedSaveBuffer[D_800BBAA0_main] <<= 1;

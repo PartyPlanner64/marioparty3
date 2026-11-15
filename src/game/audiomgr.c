@@ -80,7 +80,7 @@ extern OSMesgQueue D_800CC3A0_main;
 s32 __amHandleFrameMsg(AudioInfo *info, AudioInfo *lastInfo);
 void __amHandleDoneMsg(AudioInfo *info);
 ALDMAproc __amDmaNew(AMDMAState **state);
-void func_80008D28_main(swapChainTaskQueue *task, AudioMsg *msg, Acmd *cmdp);
+void __amTaskSetup(swapChainTaskQueue *task, AudioMsg *msg, Acmd *cmdp);
 
 s32 amCreateAudioMgr(str800D5298 *cfg, ALHeap *heap) {
     ALSynConfig c;
@@ -119,7 +119,7 @@ s32 amCreateAudioMgr(str800D5298 *cfg, ALHeap *heap) {
     D_800ABA80_main = cfg->unk38;
     D_800ABA84_main = cfg->unk3C;
 
-    dmaBuffs = func_800010B8_main(cfg->unk34 * sizeof(AMDMABuffer));
+    dmaBuffs = msmMemAlloc(cfg->unk34 * sizeof(AMDMABuffer));
     if (dmaBuffs == NULL) {
         return 1;
     }
@@ -128,11 +128,11 @@ s32 amCreateAudioMgr(str800D5298 *cfg, ALHeap *heap) {
     dmaBuffs[0].node.prev = NULL;
     for (i = 0; i < cfg->unk34 - 1; i++) {
         alLink(&dmaBuffs[i + 1].node, &dmaBuffs[i].node);
-        if ((dmaBuffs[i].ptr = func_800010B8_main(D_800ABA80_main)) == NULL) {
+        if ((dmaBuffs[i].ptr = msmMemAlloc(D_800ABA80_main)) == NULL) {
             return 1;
         }
     }
-    if ((dmaBuffs[i].ptr = func_800010B8_main(D_800ABA80_main)) == NULL) {
+    if ((dmaBuffs[i].ptr = msmMemAlloc(D_800ABA80_main)) == NULL) {
         return 1;
     }
     D_800ABA70_main.firstUsed = NULL;
@@ -140,17 +140,17 @@ s32 amCreateAudioMgr(str800D5298 *cfg, ALHeap *heap) {
     D_800ABE38_main = cfg->unk68;
 
     for (i = 0; i < NUM_ACMD_LISTS; i++) {
-        if ((D_800AB7D8_main.ACMDList[i] = func_800010B8_main(cfg->unk30 * sizeof(Acmd))) == NULL) {
+        if ((D_800AB7D8_main.ACMDList[i] = msmMemAlloc(cfg->unk30 * sizeof(Acmd))) == NULL) {
             return 2;
         }
     }
     for (i = 0; i < NUM_OUTPUT_BUFFERS; i++) {
-        if ((D_800AB7D8_main.audioInfo[i] = func_800010B8_main(sizeof(AudioInfo))) == NULL) {
+        if ((D_800AB7D8_main.audioInfo[i] = msmMemAlloc(sizeof(AudioInfo))) == NULL) {
             return 3;
         }
         D_800AB7D8_main.audioInfo[i]->msg.type = 0;
         D_800AB7D8_main.audioInfo[i]->msg.info = D_800AB7D8_main.audioInfo[i];
-        D_800AB7D8_main.audioInfo[i]->data = func_800010B8_main(D_800ABA90_main * 4);
+        D_800AB7D8_main.audioInfo[i]->data = msmMemAlloc(D_800ABA90_main * 4);
         if (D_800AB7D8_main.audioInfo[i]->data == NULL) {
             return 4;
         }
@@ -158,19 +158,19 @@ s32 amCreateAudioMgr(str800D5298 *cfg, ALHeap *heap) {
     return 0;
 }
 
-void func_80008678_main(str800D5298 *cfg) {
+void amStart(str800D5298 *cfg) {
     osCreateMesgQueue(&D_800AB7D8_main.audioReplyMsgQ, D_800AB7D8_main.audioReplyMsgBuf, MAX_MESGS);
     osCreateMesgQueue(&D_800ABDA0_main, D_800ABDB8_main, NUM_DMA_MESSAGES);
-    func_80008CC0_main(cfg->unk64, 0);
+    amSchedClientSet(cfg->unk64, 0);
     osCreateThread(&D_800AB7D8_main.thread, cfg->unk60, __amMain, NULL,
                    D_800A97D0_main + ARRAY_COUNT(D_800A97D0_main), cfg->unk5C);
     osStartThread(&D_800AB7D8_main.thread);
 }
 
-void func_8000870C_main(str800D5298 *cfg) {
+void amDestroyAudioMgr(str800D5298 *cfg) {
     osDestroyThread(&D_800AB7D8_main.thread);
     n_alClose(&D_800AB7D8_main.g);
-    func_80008CC0_main(cfg->unk64, 1);
+    amSchedClientSet(cfg->unk64, 1);
 }
 
 void __amMain(void *arg) {
@@ -188,14 +188,14 @@ void __amMain(void *arg) {
                     osRecvMesg(&D_800AB7D8_main.audioReplyMsgQ, (OSMesg *)&doneMsg, OS_MESG_BLOCK);
                     __amHandleDoneMsg(doneMsg->info);
                     lastInfo = doneMsg->info;
-                    func_800023B4_main();
-                    func_80006E30_main();
+                    msmMusPeriodicProc();
+                    msmSePeriodicProc();
                 }
                 break;
             case 2:
-                func_80002528_main();
+                msmMusDeleteAll();
                 done = TRUE;
-                func_80006FC4_main();
+                msmSeStopAllSounds();
                 break;
             case 10:
                 done = TRUE;
@@ -228,7 +228,7 @@ s32 __amHandleFrameMsg(AudioInfo *info, AudioInfo *lastInfo) {
     if (cmdLen == 0) {
         return 0;
     }
-    func_80008D28_main(&info->task, &info->msg, cmdp);
+    __amTaskSetup(&info->task, &info->msg, cmdp);
     osSendMesg(D_800AB7D0_main, &info->task, OS_MESG_BLOCK);
     D_800ABA88_main ^= 1;
     return 1;
@@ -339,7 +339,7 @@ void __clearAudioDMA(void) {
     D_800ABA78_main++;
 }
 
-void func_80008CC0_main(s32 arg0, s32 remove) {
+void amSchedClientSet(s32 arg0, s32 remove) {
     if (remove) {
         RemoveSchedulerClient(&D_800A97C0_main);
     } else {
@@ -349,7 +349,7 @@ void func_80008CC0_main(s32 arg0, s32 remove) {
     }
 }
 
-void func_80008D28_main(swapChainTaskQueue *task, AudioMsg *msg, Acmd *cmdp) {
+void __amTaskSetup(swapChainTaskQueue *task, AudioMsg *msg, Acmd *cmdp) {
     task->completionQueue = &D_800AB7D8_main.audioReplyMsgQ;
     task->completionMsg = msg;
     task->task.t.data_ptr = (u64 *)D_800AB7D8_main.ACMDList[D_800ABA88_main];

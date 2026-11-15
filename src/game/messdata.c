@@ -13,7 +13,7 @@ static s32 D_800B1A44_main;  // string directory count
 static u32 *D_800B1A48_main; // string directory table
 static s32 D_800B1A4C_main;  // string directory table size
 
-void func_80036380_main(u32 stringsRomPtr) {
+void MessDataInit(u32 stringsRomPtr) {
     s32 stringDirTableSize;
     u32 *stringDirTable;
     u32 *stringsHeader;
@@ -30,7 +30,7 @@ void func_80036380_main(u32 stringsRomPtr) {
     dmaRead(stringsRomPtr + 4, (u8 *)stringDirTable, D_800B1A4C_main);
 }
 
-void func_80036414_main(u32 ptr) {
+void MessDataSet(u32 ptr) {
     D_800B1A40_main = ptr;
     dmaRead(ptr + 4, (u8 *)D_800B1A48_main, D_800B1A4C_main);
 }
@@ -51,7 +51,7 @@ struct string_entry {
     u8 text[1];
 };
 
-void func_80036448_main(s32 arg0, struct str80036448 *arg1) {
+void MessDataDirGet(s32 arg0, struct str80036448 *arg1) {
     u32 temp_a0;
     struct string_dir_header *dirHeader;
 
@@ -68,7 +68,7 @@ void func_80036448_main(s32 arg0, struct str80036448 *arg1) {
 // Reads a message by id. The upper bits select the string directory,
 // and the low byte is the index of the message within that directory.
 // TODO: the message id is passed as a pointer to match the existing prototype.
-void *func_800364DC_main(void *arg0) {
+void *MessDataMesGet(void *arg0) {
     s32 messageId = (s32)arg0;
     struct str80036448 dirInfo;
     u8 *dirData;
@@ -78,7 +78,7 @@ void *func_800364DC_main(void *arg0) {
     s16 length;
     s32 i;
 
-    func_80036448_main(messageId >> 8, &dirInfo);
+    MessDataDirGet(messageId >> 8, &dirInfo);
     text = NULL;
     dirData = HuMemMemoryAllocPerm((dirInfo.unk4 + 1) & ~1);
     if (dirData != NULL) {
@@ -100,7 +100,7 @@ void *func_800364DC_main(void *arg0) {
     return text;
 }
 
-void func_800365E8_main(void *ptr) {
+void MessDataMesFree(void *ptr) {
     if (ptr != NULL) {
         HuMemMemoryFreePerm(ptr);
     }

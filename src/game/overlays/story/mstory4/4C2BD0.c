@@ -65,10 +65,10 @@ void func_801059A0_mstory4(void) {
             break;
         }
     }
-    func_800142A0_main(60);
+    Hu3DSprModelInit(60);
     omInitObjMan(30, 30);
     HuWinInit();
-    func_8000B5F0_main(1);
+    CamSetupInit(1);
     ScissorSet(0, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 35.0f, 80.0f, 8000.0f);
@@ -167,15 +167,15 @@ void func_80105DA8_mstory4(omObjData *obj) {
 }
 
 void func_80105E58_mstory4(void) {
-    func_8001C814_main(D_80112122_mstory4, 4, 0);
-    func_8001C814_main(D_80112122_mstory4, 1, 0);
+    Hu3DMotionAttrSet(D_80112122_mstory4, 4, 0);
+    Hu3DMotionAttrSet(D_80112122_mstory4, 1, 0);
     Hu3DMotionTimeSet(D_80112122_mstory4, 0.0f);
     HuAudFXPlay(0x217);
 }
 
 void func_80105EAC_mstory4(void) {
-    func_8001C814_main(D_80112122_mstory4, 4, 4);
-    func_8001C814_main(D_80112122_mstory4, 1, 0);
+    Hu3DMotionAttrSet(D_80112122_mstory4, 4, 4);
+    Hu3DMotionAttrSet(D_80112122_mstory4, 1, 0);
     Hu3DMotionTimeSet(D_80112122_mstory4, D_800CCF58_main[Hu3DData[D_80112122_mstory4].motId].unk02);
 }
 
@@ -183,19 +183,19 @@ void func_80105F40_mstory4(void) {
     D_80112128_mstory4 = espEntry(HuSprAnimDataRead(0x1D0012), 0, 0);
     espPosSet(D_80112128_mstory4, 160, 120);
     espAttrSet(D_80112128_mstory4, 0x4000);
-    D_80112122_mstory4 = func_8000B108_main(0x1D0014, 0x2B9);
+    D_80112122_mstory4 = Hu3DModelRead(0x1D0014, 0x2B9);
     Hu3DModelPosSet(D_80112122_mstory4, 591.7f, -81.0f, -1305.7f);
-    func_8001C814_main(D_80112122_mstory4, 2, 0);
-    func_8001C814_main(D_80112122_mstory4, 1, 1);
+    Hu3DMotionAttrSet(D_80112122_mstory4, 2, 0);
+    Hu3DMotionAttrSet(D_80112122_mstory4, 1, 1);
 }
 
 void func_80106000_mstory4(void) {
-    func_8001C258_main(D_80112122_mstory4, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(D_80112122_mstory4, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     espDispOff(D_80112128_mstory4);
 }
 
 void func_80106034_mstory4(void) {
-    func_8001C258_main(D_80112122_mstory4, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(D_80112122_mstory4, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     espDispOn(D_80112128_mstory4);
 }
 
@@ -294,7 +294,7 @@ void func_80106134_mstory4(void) {
     HuAudFXPlay(0x131);
     for (i = 0; i < 8; i++) {
         espBankSet(D_80112140_mstory4[D_801121B4_mstory4][i], 0, 0);
-        func_8000BDDC_main(D_80112140_mstory4[D_801121B4_mstory4][i], 1);
+        espAnimModeSet(D_80112140_mstory4[D_801121B4_mstory4][i], 1);
         espDispOn(D_80112140_mstory4[D_801121B4_mstory4][i]);
     }
     HuPrcSleep(20);
@@ -306,7 +306,7 @@ void func_80106134_mstory4(void) {
     for (j = 0; j < 7; j++) {
         for (i = 0; i < 8; i++) {
             espBankSet(D_80112140_mstory4[j][i], 0, 0);
-            func_8000BDDC_main(D_80112140_mstory4[j][i], 1);
+            espAnimModeSet(D_80112140_mstory4[j][i], 1);
             espDispOn(D_80112140_mstory4[j][i]);
         }
     }
@@ -378,9 +378,9 @@ void func_80106B3C_mstory4(s16 model, s16 animSlot, s16 anim) {
 
     if (animSlot >= 0) {
         if (anim == -1) {
-            func_80033910_main(Hu3DData[model].hmf);
+            Hu3DModelAnimStop(Hu3DData[model].hmf);
         } else {
-            func_80033970_main(Hu3DData[model].hmf);
+            Hu3DModelAnimStart(Hu3DData[model].hmf);
             entry = &D_800D1714_main[animSlot];
             entry->animIdx = anim;
             entry->rot = 0;
@@ -392,18 +392,18 @@ void func_80106B3C_mstory4(s16 model, s16 animSlot, s16 anim) {
 }
 
 void func_80106C10_mstory4(void) {
-    D_80112120_mstory4 = func_80060880_main(160, 194, 20);
+    D_80112120_mstory4 = HuWinExCreateStyled(160, 194, 20);
     HuWinActivePlayerSet(D_80112120_mstory4, 1 << D_80112124_mstory4);
     HuWinInsertMesSet(D_80112120_mstory4, GwStory.unk1 + 0x1C00, 0);
 }
 
 void func_80106C78_mstory4(void) {
     HuWinHomeClear(D_80112120_mstory4);
-    func_80060C14_main(D_80112120_mstory4, 1);
+    HuWinExOpen(D_80112120_mstory4, 1);
 }
 
 void func_80106CA8_mstory4(void) {
-    func_80060EA8_main(D_80112120_mstory4, 1);
+    HuWinExClose(D_80112120_mstory4, 1);
 }
 
 void func_80106CCC_mstory4(s32 mess) {

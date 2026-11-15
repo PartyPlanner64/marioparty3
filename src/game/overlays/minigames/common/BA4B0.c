@@ -413,10 +413,10 @@ void func_800E7F60_minigame(void) {
         HuWinMesPalSet(*win, 4, 0, 144, 0);
         HuWinMesPalSet(*win, 5, 0, 176, 192);
         HuWinMesPalSet(*win, 6, 255, 173, 0);
-        func_8005C154_main(*win, 64, 64, 64);
+        HuWinMesDefColSet(*win, 64, 64, 64);
         HuWinBGColSet(*win, 0, 0, 0);
         HuWinMesColSet(*win, 7);
-        func_8005BF70_main(*win, 0);
+        HuWinTPLvlSet(*win, 0);
         *flag = 0;
     }
     win = work->windows;
@@ -636,7 +636,7 @@ void func_800E7F60_minigame(void) {
                     if ((s16)done) {
                         *flag = 0;
                     }
-                    func_8005BF70_main(*win, winAlpha);
+                    HuWinTPLvlSet(*win, winAlpha);
                 }
             }
         }
@@ -811,10 +811,10 @@ void func_800E9170_minigame(void) {
     HuWinMesPalSet(window, 4, 0, 144, 0);
     HuWinMesPalSet(window, 5, 0, 176, 192);
     HuWinMesPalSet(window, 6, 255, 173, 0);
-    func_8005C154_main(window, 64, 64, 64);
+    HuWinMesDefColSet(window, 64, 64, 64);
     HuWinBGColSet(window, 0, 0, 0);
     HuWinMesColSet(window, 7);
-    func_8005BF70_main(window, 255);
+    HuWinTPLvlSet(window, 255);
 
     pos[0].x = 25;
     pos[1].x = 295;

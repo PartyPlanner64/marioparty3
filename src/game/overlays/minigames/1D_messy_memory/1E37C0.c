@@ -450,10 +450,10 @@ void func_80105B88_messy_memory(Gfx **gfxPos, s32 arg1, s32 arg2) {
 void func_801060E0_messy_memory(omObjData *obj) {
     switch (D_80115D8C_messy_memory) {
         case 8:
-            func_8001C258_main(*obj->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(*obj->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             break;
         case 0xC:
-            func_8001C258_main(*obj->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(*obj->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             break;
     }
 }
@@ -461,14 +461,14 @@ void func_801060E0_messy_memory(omObjData *obj) {
 void func_80106140_messy_memory(omObjData *obj) {
     *obj->model = Hu3DHookFuncCreate(0, func_80105B88_messy_memory, 2);
     Hu3DModelCameraSet(*obj->model, HU3D_CAM1);
-    func_8001C258_main(*obj->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(*obj->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     obj->func = func_801060E0_messy_memory;
 }
 
 void func_801061AC_messy_memory(void) {
     omObjData *obj;
-    D_80111654_messy_memory = func_80055194_main(HuSprAnimDataRead(0x3E0002));
-    D_801116D8_messy_memory = func_80055194_main(HuSprAnimDataRead(0x3E0004));
+    D_80111654_messy_memory = HuSprAnimDataGet(HuSprAnimDataRead(0x3E0002));
+    D_801116D8_messy_memory = HuSprAnimDataGet(HuSprAnimDataRead(0x3E0004));
     obj = omAddObj(0xC8, 1, 0, -1, func_80106140_messy_memory);
     obj->work[0] = 0;
     D_80111A9C_messy_memory[0].obj = obj;
@@ -732,7 +732,7 @@ void func_80106C60_messy_memory(omObjData *obj) {
                                         item->unk44.y - 15.0f <= work->unk44.y && item->unk44.y + 6.0f >= work->unk44.y) {
                                         D_801116B0_messy_memory[i * 10 + k] = 1;
                                         D_80111640_messy_memory[obj->work[0]] = 1;
-                                        func_8004AC98_main(D_80111338_messy_memory, obj->work[0]);
+                                        HuAudPlayerFXPlay(D_80111338_messy_memory, obj->work[0]);
                                         D_80111670_messy_memory[playerNo] = 1;
                                         omVibrate(playerNo, 5, 0, 5);
                                     }
@@ -741,7 +741,7 @@ void func_80106C60_messy_memory(omObjData *obj) {
                                         item->unk44.y - 7.0f <= work->unk44.y && item->unk44.y + 6.0f >= work->unk44.y) {
                                         D_801116B0_messy_memory[i * 10 + k] = 1;
                                         D_80111640_messy_memory[obj->work[0]] = 1;
-                                        func_8004AC98_main(D_80111338_messy_memory, obj->work[0]);
+                                        HuAudPlayerFXPlay(D_80111338_messy_memory, obj->work[0]);
                                         D_80111670_messy_memory[playerNo] = 1;
                                         omVibrate(playerNo, 5, 0, 5);
                                     }
@@ -792,7 +792,7 @@ void func_80106C60_messy_memory(omObjData *obj) {
                                     item->unk44.x = D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[playerNo][0];
                                     item->unk44.y = D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[playerNo][1];
                                     D_80111640_messy_memory[obj->work[0]] = 0;
-                                    func_8004AC98_main(D_8011133A_messy_memory, obj->work[0]);
+                                    HuAudPlayerFXPlay(D_8011133A_messy_memory, obj->work[0]);
                                     D_80111670_messy_memory[playerNo] = 0;
                                     omVibrate(playerNo, 2, 3, 10);
                                 }
@@ -806,7 +806,7 @@ void func_80106C60_messy_memory(omObjData *obj) {
                                     item->unk44.x = D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[playerNo][0];
                                     item->unk44.y = D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[playerNo][1];
                                     D_80111640_messy_memory[obj->work[0]] = 0;
-                                    func_8004AC98_main(D_8011133A_messy_memory, obj->work[0]);
+                                    HuAudPlayerFXPlay(D_8011133A_messy_memory, obj->work[0]);
                                     D_80111670_messy_memory[playerNo] = 0;
                                     omVibrate(playerNo, 2, 3, 10);
                                 }
@@ -1053,7 +1053,7 @@ void func_80107C88_messy_memory(omObjData *obj) {
                 if (MM_CPU_NEAR(work, item->unk44.x, item->unk44.y)) {
                     D_801116B0_messy_memory[playerNo * 10 + work->unk08] = 1;
                     D_80111640_messy_memory[obj->work[0]] = 1;
-                    func_8004AC98_main(D_80111338_messy_memory, obj->work[0]);
+                    HuAudPlayerFXPlay(D_80111338_messy_memory, obj->work[0]);
                     D_80111670_messy_memory[playerNo] = 1;
                     if (D_80111678_messy_memory[playerNo][work->unk08] == 1) {
                         work->unk06 = 2;
@@ -1117,7 +1117,7 @@ void func_80107C88_messy_memory(omObjData *obj) {
                             item->unk44.x = D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[playerNo][0];
                             item->unk44.y = D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[playerNo][1];
                             D_80111640_messy_memory[obj->work[0]] = 0;
-                            func_8004AC98_main(D_8011133A_messy_memory, obj->work[0]);
+                            HuAudPlayerFXPlay(D_8011133A_messy_memory, obj->work[0]);
                             D_80111670_messy_memory[playerNo] = 0;
                         }
                     }
@@ -1153,7 +1153,7 @@ void func_80107C88_messy_memory(omObjData *obj) {
                 if (MM_CPU_NEAR(work, work->unk1C, work->unk20)) {
                     D_801116B0_messy_memory[playerNo * 10 + work->unk08] = 0;
                     D_80111640_messy_memory[obj->work[0]] = 0;
-                    func_8004AC98_main(D_8011133A_messy_memory, obj->work[0]);
+                    HuAudPlayerFXPlay(D_8011133A_messy_memory, obj->work[0]);
                     D_80111670_messy_memory[playerNo] = 0;
                     item->unk44.x = D_80111044_messy_memory[work->unk0A][0] + D_80110FE0_messy_memory[playerNo][0];
                     item->unk44.y = D_80111044_messy_memory[work->unk0A][1] + D_80110FE0_messy_memory[playerNo][1];
@@ -1190,7 +1190,7 @@ void func_80107C88_messy_memory(omObjData *obj) {
                 if (MM_CPU_NEAR(work, work->unk1C, work->unk20)) {
                     D_801116B0_messy_memory[playerNo * 10 + work->unk08] = 0;
                     D_80111640_messy_memory[obj->work[0]] = 0;
-                    func_8004AC98_main(D_8011133A_messy_memory, obj->work[0]);
+                    HuAudPlayerFXPlay(D_8011133A_messy_memory, obj->work[0]);
                     D_80111670_messy_memory[playerNo] = 0;
                     item->unk44.x = D_80111044_messy_memory[work->unk0C][0] + D_80110FE0_messy_memory[playerNo][0];
                     item->unk44.y = D_80111044_messy_memory[work->unk0C][1] + D_80110FE0_messy_memory[playerNo][1];
@@ -1214,7 +1214,7 @@ void func_80107C88_messy_memory(omObjData *obj) {
                 if (MM_CPU_NEAR(work, item->unk44.x, item->unk44.y)) {
                     D_801116B0_messy_memory[playerNo * 10 + work->unk08] = 1;
                     D_80111640_messy_memory[obj->work[0]] = 1;
-                    func_8004AC98_main(D_80111338_messy_memory, obj->work[0]);
+                    HuAudPlayerFXPlay(D_80111338_messy_memory, obj->work[0]);
                     D_80111670_messy_memory[playerNo] = 1;
                     work->unk1C = D_80111044_messy_memory[work->unk0A][0] + D_80110FE0_messy_memory[playerNo][0];
                     work->unk20 = D_80111044_messy_memory[work->unk0A][1] + D_80110FE0_messy_memory[playerNo][1];
@@ -1243,7 +1243,7 @@ void func_80107C88_messy_memory(omObjData *obj) {
                 if (MM_CPU_NEAR(work, item->unk44.x, item->unk44.y)) {
                     D_801116B0_messy_memory[playerNo * 10 + work->unk08] = 1;
                     D_80111640_messy_memory[obj->work[0]] = 1;
-                    func_8004AC98_main(D_80111338_messy_memory, obj->work[0]);
+                    HuAudPlayerFXPlay(D_80111338_messy_memory, obj->work[0]);
                     D_80111670_messy_memory[playerNo] = 1;
                     work->unk14--;
                     work->unk06 = 2;
@@ -1262,7 +1262,7 @@ void func_80107C88_messy_memory(omObjData *obj) {
                 if (MM_CPU_NEAR(work, work->unk1C, work->unk20)) {
                     D_801116B0_messy_memory[playerNo * 10 + work->unk08] = 0;
                     D_80111640_messy_memory[obj->work[0]] = 0;
-                    func_8004AC98_main(D_8011133A_messy_memory, obj->work[0]);
+                    HuAudPlayerFXPlay(D_8011133A_messy_memory, obj->work[0]);
                     D_80111670_messy_memory[playerNo] = 0;
                     item->unk44.x = D_80111044_messy_memory[work->unk0A][0] + D_80110FE0_messy_memory[playerNo][0];
                     item->unk44.y = D_80111044_messy_memory[work->unk0A][1] + D_80110FE0_messy_memory[playerNo][1];
@@ -1285,7 +1285,7 @@ void func_80107C88_messy_memory(omObjData *obj) {
                 if (MM_CPU_NEAR(work, item->unk44.x, item->unk44.y)) {
                     D_801116B0_messy_memory[playerNo * 10 + work->unk08] = 1;
                     D_80111640_messy_memory[obj->work[0]] = 1;
-                    func_8004AC98_main(D_80111338_messy_memory, obj->work[0]);
+                    HuAudPlayerFXPlay(D_80111338_messy_memory, obj->work[0]);
                     D_80111670_messy_memory[playerNo] = 1;
                     work->unk14--;
                     work->unk06 = 6;
@@ -1308,7 +1308,7 @@ void func_80107C88_messy_memory(omObjData *obj) {
                 if (MM_CPU_NEAR(work, work->unk1C, work->unk20)) {
                     D_801116B0_messy_memory[playerNo * 10 + work->unk08] = 0;
                     D_80111640_messy_memory[obj->work[0]] = 0;
-                    func_8004AC98_main(D_8011133A_messy_memory, obj->work[0]);
+                    HuAudPlayerFXPlay(D_8011133A_messy_memory, obj->work[0]);
                     D_80111670_messy_memory[playerNo] = 0;
                     item->unk44.x = D_80111044_messy_memory[work->unk0A][0] + D_80110FE0_messy_memory[playerNo][0];
                     item->unk44.y = D_80111044_messy_memory[work->unk0A][1] + D_80110FE0_messy_memory[playerNo][1];
@@ -1333,7 +1333,7 @@ void func_80107C88_messy_memory(omObjData *obj) {
                 if (MM_CPU_NEAR(work, item->unk44.x, item->unk44.y)) {
                     D_801116B0_messy_memory[playerNo * 10 + work->unk08] = 1;
                     D_80111640_messy_memory[obj->work[0]] = 1;
-                    func_8004AC98_main(D_80111338_messy_memory, obj->work[0]);
+                    HuAudPlayerFXPlay(D_80111338_messy_memory, obj->work[0]);
                     D_80111670_messy_memory[playerNo] = 1;
                     work->unk06 = 10;
                 }
@@ -1362,7 +1362,7 @@ void func_80107C88_messy_memory(omObjData *obj) {
                 if (MM_CPU_NEAR(work, work->unk1C, work->unk20)) {
                     D_801116B0_messy_memory[playerNo * 10 + work->unk08] = 0;
                     D_80111640_messy_memory[obj->work[0]] = 0;
-                    func_8004AC98_main(D_8011133A_messy_memory, obj->work[0]);
+                    HuAudPlayerFXPlay(D_8011133A_messy_memory, obj->work[0]);
                     D_80111670_messy_memory[playerNo] = 0;
                     item->unk44.x = D_80111044_messy_memory[work->unk0A][0] + D_80110FE0_messy_memory[playerNo][0];
                     item->unk44.y = D_80111044_messy_memory[work->unk0A][1] + D_80110FE0_messy_memory[playerNo][1];
@@ -1561,7 +1561,7 @@ void func_8010B32C_messy_memory(omObjData *obj) {
     s16 i;
 
     work->unk40 = HuSprAnimDataRead(D_801111E8_messy_memory[chr].fileId);
-    D_80111660_messy_memory[obj->work[0]] = func_80055194_main(work->unk40);
+    D_80111660_messy_memory[obj->work[0]] = HuSprAnimDataGet(work->unk40);
     for (i = 0; i < 4; i++) {
         if (obj->work[0] == i) {
             work->unk44.x = D_80110FE0_messy_memory[obj->work[0]][0] + 88.0f;
@@ -1617,14 +1617,14 @@ void func_8010B5C8_messy_memory(omObjData *obj) {
 
     switch (D_80115D8C_messy_memory) {
         case 5:
-            func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-            func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             break;
         case 6:
-            func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             switch (work->unk04) {
                 case 0:
-                    func_8001C5B4_main(*obj->model, obj->motion[2]);
+                    Hu3DMotionModelSet(*obj->model, obj->motion[2]);
                     work->unk04 = 1;
                     break;
                 case 1:
@@ -1636,22 +1636,22 @@ void func_8010B5C8_messy_memory(omObjData *obj) {
                     if ((s16)obj->rot.y == 180) {
                         work->unk04 = 2;
                         obj->rot.y = 180.0f;
-                        func_8001C5B4_main(*obj->model, obj->motion[0]);
+                        Hu3DMotionModelSet(*obj->model, obj->motion[0]);
                     }
                     break;
                 case 2:
                     work->unk08++;
                     if (work->unk08 >= 5) {
                         work->unk04 = 3;
-                        func_8001C5B4_main(*obj->model, obj->motion[5]);
+                        Hu3DMotionModelSet(*obj->model, obj->motion[5]);
                         PlayerFXPlay(0x286, obj->work[0]);
                     }
                     break;
                 case 3:
                     if (Hu3DData[*obj->model].motTime >= D_800CCF58_main[Hu3DData[*obj->model].motId].unk02) {
                         work->unk04 = 4;
-                        func_8001C5B4_main(*obj->model, obj->motion[2]);
-                        func_8001C814_main(*obj->model, 2, 2);
+                        Hu3DMotionModelSet(*obj->model, obj->motion[2]);
+                        Hu3DMotionAttrSet(*obj->model, 2, 2);
                     }
                     break;
                 case 4:
@@ -1676,7 +1676,7 @@ void func_8010B5C8_messy_memory(omObjData *obj) {
                         if (!near) {
                             D_80115D9A_messy_memory = 6;
                             for (i = 0; i < 4; i++) {
-                                func_8001C258_main(*(&D_80113B18_messy_memory[i])->obj->model, HU3D_ATTR_DISPOFF,
+                                Hu3DModelAttrSet(*(&D_80113B18_messy_memory[i])->obj->model, HU3D_ATTR_DISPOFF,
                                                    HU3D_ATTR_DISPOFF);
                             }
                         }
@@ -1717,7 +1717,7 @@ void func_8010B5C8_messy_memory(omObjData *obj) {
             work->unk04 = 0;
             break;
         case 14:
-            func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             switch (work->unk04) {
                 case 0:
                     obj->trans.x += D_80111298_messy_memory[index][0];
@@ -1733,7 +1733,7 @@ void func_8010B5C8_messy_memory(omObjData *obj) {
                     if (abs(obj->trans.x) <= abs(D_80111298_messy_memory[index][1])) {
                         obj->trans.x = D_80111298_messy_memory[index][1];
                         work->unk04 = 1;
-                        func_8001C5B4_main(*obj->model, obj->motion[1]);
+                        Hu3DMotionModelSet(*obj->model, obj->motion[1]);
                     }
                     break;
                 case 1:
@@ -1744,7 +1744,7 @@ void func_8010B5C8_messy_memory(omObjData *obj) {
                     }
                     if ((s16)obj->rot.y == 0) {
                         work->unk04 = 2;
-                        func_8001C5B4_main(*obj->model, obj->motion[0]);
+                        Hu3DMotionModelSet(*obj->model, obj->motion[0]);
                         if (index == 3) {
                             D_80115D9A_messy_memory = 14;
                         }
@@ -1756,35 +1756,35 @@ void func_8010B5C8_messy_memory(omObjData *obj) {
             if (D_80115D8E_messy_memory >= 0 && work->unk04 == 2) {
                 if (D_8011163B_messy_memory == 0) {
                     if (index == D_80111630_messy_memory[0]) {
-                        func_8001C5B4_main(*obj->model, obj->motion[3]);
-                        func_80045ED0_main((D_80110FC0_messy_memory[GwPlayer[obj->work[0]].chr] << 16) | 0x2F);
+                        Hu3DMotionModelSet(*obj->model, obj->motion[3]);
+                        HuAudCharVoicePlay((D_80110FC0_messy_memory[GwPlayer[obj->work[0]].chr] << 16) | 0x2F);
                     } else {
-                        func_8001C5B4_main(*obj->model, obj->motion[4]);
+                        Hu3DMotionModelSet(*obj->model, obj->motion[4]);
                     }
                 }
                 if (D_8011163B_messy_memory == 1) {
                     if (index == D_80111630_messy_memory[0] || index == D_80111630_messy_memory[1]) {
-                        func_8001C5B4_main(*obj->model, obj->motion[3]);
-                        func_80045ED0_main((D_80110FC0_messy_memory[GwPlayer[obj->work[0]].chr] << 16) | 0x2F);
+                        Hu3DMotionModelSet(*obj->model, obj->motion[3]);
+                        HuAudCharVoicePlay((D_80110FC0_messy_memory[GwPlayer[obj->work[0]].chr] << 16) | 0x2F);
                     } else {
-                        func_8001C5B4_main(*obj->model, obj->motion[4]);
+                        Hu3DMotionModelSet(*obj->model, obj->motion[4]);
                     }
                 }
                 if (D_8011163B_messy_memory == 2) {
                     if (index == D_80111630_messy_memory[0] || index == D_80111630_messy_memory[1] ||
                         index == D_80111630_messy_memory[2]) {
-                        func_8001C5B4_main(*obj->model, obj->motion[3]);
-                        func_80045ED0_main((D_80110FC0_messy_memory[GwPlayer[obj->work[0]].chr] << 16) | 0x2F);
+                        Hu3DMotionModelSet(*obj->model, obj->motion[3]);
+                        HuAudCharVoicePlay((D_80110FC0_messy_memory[GwPlayer[obj->work[0]].chr] << 16) | 0x2F);
                     } else {
-                        func_8001C5B4_main(*obj->model, obj->motion[4]);
+                        Hu3DMotionModelSet(*obj->model, obj->motion[4]);
                     }
                 }
                 if (D_8011163B_messy_memory == 3) {
-                    func_8001C5B4_main(*obj->model, obj->motion[3]);
-                    func_80045ED0_main((D_80110FC0_messy_memory[GwPlayer[obj->work[0]].chr] << 16) | 0x2F);
+                    Hu3DMotionModelSet(*obj->model, obj->motion[3]);
+                    HuAudCharVoicePlay((D_80110FC0_messy_memory[GwPlayer[obj->work[0]].chr] << 16) | 0x2F);
                 }
                 if (D_8011163B_messy_memory == 4) {
-                    func_8001C5B4_main(*obj->model, obj->motion[4]);
+                    Hu3DMotionModelSet(*obj->model, obj->motion[4]);
                 }
                 work->unk04 = 3;
             }
@@ -1802,23 +1802,23 @@ void func_8010C03C_messy_memory(omObjData *obj) {
     u16 index = obj->work[0];
     s8 chr = GwPlayer[playerNo].chr;
 
-    *obj->model = func_8000B108_main(D_800A1788_main[chr].model | D_800A1788_main[chr].motion[0], 0x2A9);
+    *obj->model = Hu3DModelRead(D_800A1788_main[chr].model | D_800A1788_main[chr].motion[0], 0x2A9);
     Hu3DModelRemakeStatic(*obj->model);
-    func_8001C514_main(*obj->model);
-    obj->model[1] = func_8000B0A0_main(0, 0x14C9);
-    func_8001C2FC_main(obj->model[1], 0x80000000, 0);
+    Hu3DModelDynamicFree(*obj->model);
+    obj->model[1] = Hu3DModelRead2(0, 0x14C9);
+    Hu3DModelObjAttrSet(obj->model[1], 0x80000000, 0);
     Hu3DModelRemakeStatic(obj->model[1]);
-    func_8001C514_main(obj->model[1]);
+    Hu3DModelDynamicFree(obj->model[1]);
     func_80088800_main(Hu3DData[obj->model[1]].mtx, 0.0f, 15.0f, 0.0f);
-    func_8000B460_main(obj, 0, func_80017BB8_main(chr, 0));
-    func_8000B460_main(obj, 1, func_80017BB8_main(chr, 1));
-    func_8000B460_main(obj, 2, func_80017BB8_main(chr, 2));
-    func_8000B460_main(obj, 3, func_80017BB8_main(chr, 0x2F));
-    func_8000B460_main(obj, 4, func_80017BB8_main(chr, 0x36));
-    func_8000B460_main(obj, 5, func_80017BB8_main(chr, 0x7A));
-    func_8001C5B4_main(*obj->model, *obj->motion);
+    omObjMotionRead(obj, 0, CharMotionDataNumGet(chr, 0));
+    omObjMotionRead(obj, 1, CharMotionDataNumGet(chr, 1));
+    omObjMotionRead(obj, 2, CharMotionDataNumGet(chr, 2));
+    omObjMotionRead(obj, 3, CharMotionDataNumGet(chr, 0x2F));
+    omObjMotionRead(obj, 4, CharMotionDataNumGet(chr, 0x36));
+    omObjMotionRead(obj, 5, CharMotionDataNumGet(chr, 0x7A));
+    Hu3DMotionModelSet(*obj->model, *obj->motion);
     Hu3DMotionTimeSet(*obj->model, 0.0f);
-    func_8001C814_main(*obj->model, 2, 2);
+    Hu3DMotionAttrSet(*obj->model, 2, 2);
     switch (index) {
         case 0:
         case 1:
@@ -1840,8 +1840,8 @@ void func_8010C03C_messy_memory(omObjData *obj) {
     obj->scale.x = obj->scale.y = obj->scale.z = 1.0f;
     Hu3DModelScaleSet(*obj->model, obj->scale.x, obj->scale.y, obj->scale.z);
     Hu3DModelPosSet(obj->model[1], 0.0f, 0.0f, 0.0f);
-    func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelCameraSet(obj->model[0], HU3D_CAM0);
     Hu3DModelCameraSet(obj->model[1], HU3D_CAM0);
     obj->func = func_8010B5C8_messy_memory;
@@ -2406,14 +2406,14 @@ void func_8010E654_messy_memory(omObjData *obj) {
                         obj->work[1] = 1;
                         D_80111650_messy_memory = 1;
                         if (obj->work[0] == 4 || obj->work[0] == 6) {
-                            func_8001C5B4_main(*obj->model, mainObj->motion[3]);
+                            Hu3DMotionModelSet(*obj->model, mainObj->motion[3]);
                         } else {
-                            func_8001C5B4_main(*obj->model, mainObj->motion[4]);
+                            Hu3DMotionModelSet(*obj->model, mainObj->motion[4]);
                             if (Hu3DData[*obj->model].motTime == 0.0f) {
                                 HuAudFXVolSet(HuAudFXPlay(0x3EE), 0x73);
                             }
                         }
-                        func_8001C814_main(*obj->model, 2, 2);
+                        Hu3DMotionAttrSet(*obj->model, 2, 2);
                         Hu3DMotionTimeSet(*obj->model, 0.0f);
                     }
                     break;
@@ -2448,8 +2448,8 @@ void func_8010E654_messy_memory(omObjData *obj) {
                     break;
                 case 2:
                     obj->rot.y = func_801059BC_messy_memory(obj->rot.y, 180.0f);
-                    func_8001C5B4_main(*obj->model, mainObj->motion[2]);
-                    func_8001C814_main(*obj->model, 2, 2);
+                    Hu3DMotionModelSet(*obj->model, mainObj->motion[2]);
+                    Hu3DMotionAttrSet(*obj->model, 2, 2);
                     Hu3DMotionTimeSet(*obj->model, 0.0f);
                     if (obj->work[0] == 2) {
                         D_80111675_messy_memory = 2;
@@ -2471,7 +2471,7 @@ void func_8010E654_messy_memory(omObjData *obj) {
                     }
                     break;
                 case 4:
-                    func_8001C258_main(*obj->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    Hu3DModelAttrSet(*obj->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     break;
             }
             Hu3DModelPosSet(*obj->model, obj->trans.x, obj->trans.y, obj->trans.z);
@@ -2486,23 +2486,23 @@ void func_8010EBB0_messy_memory(omObjData *obj) {
     u8 i;
 
     if (index == 0) {
-        *obj->model = func_8000B108_main(0xA0000, 0xB9);
+        *obj->model = Hu3DModelRead(0xA0000, 0xB9);
         D_8011163C_messy_memory = *obj->model;
-        func_8000B460_main(obj, 0, 0xA0001);
-        func_8000B460_main(obj, 1, 0xA0002);
-        func_8000B460_main(obj, 2, 0xA0006);
-        func_8000B460_main(obj, 3, 0xA0007);
-        func_8000B460_main(obj, 4, 0xA0009);
+        omObjMotionRead(obj, 0, 0xA0001);
+        omObjMotionRead(obj, 1, 0xA0002);
+        omObjMotionRead(obj, 2, 0xA0006);
+        omObjMotionRead(obj, 3, 0xA0007);
+        omObjMotionRead(obj, 4, 0xA0009);
     } else {
         *obj->model = Hu3DModelLink(D_8011163C_messy_memory);
     }
-    obj->model[1] = func_8000B0A0_main(0, 0xA9);
-    func_8001C2FC_main(obj->model[1], 0x80000000, 0);
+    obj->model[1] = Hu3DModelRead2(0, 0xA9);
+    Hu3DModelObjAttrSet(obj->model[1], 0x80000000, 0);
     Hu3DModelRemakeStatic(obj->model[1]);
-    func_8001C514_main(obj->model[1]);
+    Hu3DModelDynamicFree(obj->model[1]);
     func_80088800_main(Hu3DData[obj->model[1]].mtx, 0.0f, 15.0f, 0.0f);
-    func_8001C5B4_main(*obj->model, mainObj->motion[2]);
-    func_8001C814_main(*obj->model, 2, 2);
+    Hu3DMotionModelSet(*obj->model, mainObj->motion[2]);
+    Hu3DMotionAttrSet(*obj->model, 2, 2);
     Hu3DMotionTimeSet(*obj->model, 0.0f);
     obj->trans.x = 0.0f;
     obj->trans.y = 0.0f;
@@ -2552,19 +2552,19 @@ void func_8010EF10_messy_memory(omObjData *obj) {
                     D_80115D70_messy_memory = 1;
                     HuAudFXPlay(0x127);
                 }
-                func_8001C258_main(*obj->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-                func_8001F9E4_main(*obj->model, work->unk06);
+                Hu3DModelAttrSet(*obj->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                Hu3DModelTPLvlSet(*obj->model, work->unk06);
                 work->unk06 += 20;
                 if (work->unk06 >= 255) {
                     work->unk06 = 255;
                 }
             }
             if (D_80111675_messy_memory == 2) {
-                func_8001F9E4_main(*obj->model, work->unk06);
+                Hu3DModelTPLvlSet(*obj->model, work->unk06);
                 work->unk06 -= 10;
                 if (work->unk06 <= 0) {
                     work->unk06 = 0;
-                    func_8001C258_main(*obj->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    Hu3DModelAttrSet(*obj->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     D_80111650_messy_memory = 0;
                 }
             }
@@ -2573,11 +2573,11 @@ void func_8010EF10_messy_memory(omObjData *obj) {
 }
 
 void func_8010F04C_messy_memory(omObjData *obj) {
-    *obj->model = func_8000B108_main(0x3E001C, 0xA9);
-    func_8001C814_main(*obj->model, 2, 2);
-    func_8001C258_main(*obj->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    func_8001FA68_main(*obj->model);
-    func_8001F9E4_main(*obj->model, 100);
+    *obj->model = Hu3DModelRead(0x3E001C, 0xA9);
+    Hu3DMotionAttrSet(*obj->model, 2, 2);
+    Hu3DModelAttrSet(*obj->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelTPLvlInit(*obj->model);
+    Hu3DModelTPLvlSet(*obj->model, 100);
     obj->trans.x = 0.0f;
     obj->trans.y = 0.0f;
     obj->trans.z = 0.0f;
@@ -2608,7 +2608,7 @@ void func_8010F19C_messy_memory(omObjData *obj) {
             switch (D_80115D80_messy_memory[obj->work[0]]) {
                 case 2:
                     if (Hu3DData[*obj->model].motTime == D_80111600_messy_memory) {
-                        func_8001C814_main(*obj->model, 4, 4);
+                        Hu3DMotionAttrSet(*obj->model, 4, 4);
                     }
                     if (Hu3DData[*obj->model].motTime == 0.0f) {
                         D_80115D80_messy_memory[obj->work[0]] = 0;
@@ -2616,8 +2616,8 @@ void func_8010F19C_messy_memory(omObjData *obj) {
                     break;
                 case 1:
                     if (Hu3DData[*obj->model].motTime == 0.0f) {
-                        func_8001C5B4_main(*obj->model, *obj->motion);
-                        func_8001C814_main(*obj->model, 2, 0);
+                        Hu3DMotionModelSet(*obj->model, *obj->motion);
+                        Hu3DMotionAttrSet(*obj->model, 2, 0);
                     }
                     break;
             }
@@ -2625,7 +2625,7 @@ void func_8010F19C_messy_memory(omObjData *obj) {
         case 11:
             if (D_80115D80_messy_memory[obj->work[0]] == 1 ||
                 Hu3DData[*obj->model].motTime == D_80111600_messy_memory) {
-                func_8001C814_main(*obj->model, 4, 4);
+                Hu3DMotionAttrSet(*obj->model, 4, 4);
                 D_80115D80_messy_memory[obj->work[0]] = 0;
             }
             if (obj->work[0] == 3) {
@@ -2640,11 +2640,11 @@ void func_8010F19C_messy_memory(omObjData *obj) {
 }
 
 void func_8010F3DC_messy_memory(omObjData *obj) {
-    *obj->model = func_8000B108_main(0x3E001A, 0xB9);
-    func_8000B460_main(obj, 0, 0x3E001B);
-    func_8001C5B4_main(*obj->model, *obj->motion);
+    *obj->model = Hu3DModelRead(0x3E001A, 0xB9);
+    omObjMotionRead(obj, 0, 0x3E001B);
+    Hu3DMotionModelSet(*obj->model, *obj->motion);
     D_80111600_messy_memory = D_800CCF58_main[Hu3DData[*obj->model].motId].unk02;
-    func_8001C814_main(*obj->model, 2, 1);
+    Hu3DMotionAttrSet(*obj->model, 2, 1);
     switch (obj->work[0]) {
         case 0:
             obj->trans.x = -106.0f;
@@ -2715,7 +2715,7 @@ void func_8010F6E8_messy_memory(omObjData *obj) {
                 if (work->unk04 >= 10) {
                     work->unk04 = 0;
                 }
-                func_8000BD50_main(work->unk42, work->unk04);
+                espPatNoSet(work->unk42, work->unk04);
             }
             if (obj->work[0] == 2) {
                 espDispOn(work->unk42);
@@ -2729,15 +2729,15 @@ void func_8010F6E8_messy_memory(omObjData *obj) {
             for (i = 0; i < 10; i++) {
                 if (D_80115D76_messy_memory[obj->work[1]] == i) {
                     work = &D_80111700_messy_memory[obj->work[1] * 3 + 0x4B];
-                    func_8000BD50_main(work->unk42, i);
+                    espPatNoSet(work->unk42, i);
                 }
             }
             if (D_80115D76_messy_memory[obj->work[1]] == 10) {
                 work = &D_80111700_messy_memory[obj->work[1] * 3 + 0x4A];
                 espDispOn(work->unk42);
-                func_8000BD50_main(work->unk42, 1);
+                espPatNoSet(work->unk42, 1);
                 work = &D_80111700_messy_memory[obj->work[1] * 3 + 0x4B];
-                func_8000BD50_main(work->unk42, 0);
+                espPatNoSet(work->unk42, 0);
             }
             work = &D_80111700_messy_memory[obj->work[0] + 0x4A + obj->work[1] * 3];
             work->unk5C.x = work->unk5C.y = D_80115D7C_messy_memory;
@@ -2828,7 +2828,7 @@ void func_8010FD98_messy_memory(omObjData *obj) {
         WipeCreateOut(0, 20);
         obj->func = func_8010FD60_messy_memory;
         HuAudSeqFadeOut(30);
-        func_8004AB0C_main(30);
+        HuAudFXAllFadeOut(30);
     }
 }
 
@@ -2854,9 +2854,9 @@ void func_8010FDF0_messy_memory(omObjData *obj) {
                 if (D_80115D8E_messy_memory == 88) {
                     HuAudFXPlay(8);
                 }
-                func_8003F578_main((D_80115D8E_messy_memory + 29) / 30);
+                GMesTimerValueSet((D_80115D8E_messy_memory + 29) / 30);
             } else {
-                func_8003F5C0_main();
+                GMesTimerEnd();
                 D_80115D8E_messy_memory = 0;
                 func_80105B7C_messy_memory(2);
             }
@@ -2916,9 +2916,9 @@ void func_8010FDF0_messy_memory(omObjData *obj) {
         case 9:
             if (D_80115D8E_messy_memory > 0) {
                 D_80115D8E_messy_memory--;
-                func_8003F578_main((D_80115D8E_messy_memory + 29) / 30);
+                GMesTimerValueSet((D_80115D8E_messy_memory + 29) / 30);
             } else {
-                func_8003F5C0_main();
+                GMesTimerEnd();
                 func_80105B7C_messy_memory(10);
                 D_8011165C_messy_memory = 0.01f;
                 GMesCreate(GMES_MES_14);
@@ -3166,8 +3166,8 @@ void func_80110D50_messy_memory(void) {
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
     obj->work[0] = 2;
     omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    func_8000B5F0_main(2);
-    func_8000B710_main(2);
+    CamSetupInit(2);
+    CamSetupMapCullAddMulti(2);
     for (i = 0; i < 2; i++) {
         ScissorSet(i, D_80111340_messy_memory[i].scissorX, D_80111340_messy_memory[i].scissorY,
                    D_80111340_messy_memory[i].scissorWidth, D_80111340_messy_memory[i].scissorHeight);
@@ -3179,10 +3179,10 @@ void func_80110D50_messy_memory(void) {
 }
 
 void func_80110EC4_messy_memory(void) {
-    func_8001FE20_main(50);
-    func_800142A0_main(32);
+    MapCollInit(50);
+    Hu3DSprModelInit(32);
     omInitObjMan(150, 0);
-    func_8004A208_main();
+    omGameSysInit();
     Hu3DGLightColorSet(0, 64, 64, 96);
     Hu3DGLightColorSet(1, 64, 64, 64);
     Hu3DGLightDirSet(1, 0.0f, 85.0f, 100.0f);
@@ -3190,8 +3190,8 @@ void func_80110EC4_messy_memory(void) {
     D_800EC1B8_minigame = 0;
     D_800EC280_minigame = 0;
     D_800EBE28_minigame = 0;
-    func_80045010_main(D_801115F4_messy_memory, 0);
-    func_80045010_main(D_801115F4_messy_memory, 1);
+    GMesFontMesCreate(D_801115F4_messy_memory, 0);
+    GMesFontMesCreate(D_801115F4_messy_memory, 1);
     omAddObj(1000, 0, 0, -1, func_801109BC_messy_memory);
     omAddObj(1000, 0, 0, -1, func_8010FD98_messy_memory);
     func_80105A3C_messy_memory();

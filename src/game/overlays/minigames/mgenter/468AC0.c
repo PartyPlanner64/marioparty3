@@ -57,11 +57,11 @@ void func_801059D0_mgenter(void) {
     s16 typeBits;
 
     Hu3DCamInit(1);
-    func_8001FE20_main(1);
-    func_800142A0_main(0x19);
+    MapCollInit(1);
+    Hu3DSprModelInit(0x19);
     omInitObjMan(0x33, 0x19);
     HuWinInit();
-    func_8004A208_main();
+    omGameSysInit();
     omAddObj(0x2710, 0, 0, -1, func_80108934_mgenter);
     Hu3DGLightMaxSet(1);
     D_80109B78_mgenter = 8000.0f;
@@ -81,7 +81,7 @@ void func_801059D0_mgenter(void) {
     Hu3DBGColorSet(0xFF, 0xFF, 0xFF);
     D_80109B74_mgenter = D_800D1F36_main;
     D_80109B7C_mgenter = 1;
-    D_80109B76_mgenter = func_800341C0_main(GwSystem.minigame_index);
+    D_80109B76_mgenter = MgDataMaxGet(GwSystem.minigame_index);
     D_80109B98_mgenter = 0;
     D_80109B2A_mgenter = GwSystem.minigame_index - 1;
     typeBits = (D_800A6D40_main[D_80109B2A_mgenter].flags & 0x3800) >> 11;
@@ -108,8 +108,8 @@ void func_801059D0_mgenter(void) {
 
 void func_80105C60_mgenter(void) {
     Hu3DCamInit(1);
-    func_8001FE20_main(1);
-    func_800142A0_main(0x19);
+    MapCollInit(1);
+    Hu3DSprModelInit(0x19);
     omInitObjMan(0x33, 0x19);
     omOvlHisChg(0, 0x68, 0, 4);
     omOvlCallEx(0x70, 0, 2);
@@ -237,7 +237,7 @@ void func_80105CD8_mgenter(void) {
     D_800CB894_main = D_80109B32_mgenter;
     HuWinKill(winId);
     D_80109B7C_mgenter = 2;
-    D_80109B76_mgenter = func_800341C0_main(GwSystem.minigame_index);
+    D_80109B76_mgenter = MgDataMaxGet(GwSystem.minigame_index);
     D_80109B98_mgenter = 0;
     D_80109AA4_mgenter = 1;
     while (TRUE) {
@@ -293,7 +293,7 @@ void func_80106294_mgenter(void) {
     func_801087C0_mgenter();
     HuWinKill(winId);
     D_80109B7C_mgenter = 2;
-    D_80109B76_mgenter = func_800341C0_main(GwSystem.minigame_index);
+    D_80109B76_mgenter = MgDataMaxGet(GwSystem.minigame_index);
     D_80109B98_mgenter = 0;
     D_80109AA4_mgenter = 1;
     while (TRUE) {
@@ -308,11 +308,11 @@ void func_80106568_mgenter(void) {
     s16 i;
     f32 y;
 
-    text = func_800364DC_main((void *)(D_80109B2A_mgenter + 0x4700));
+    text = MessDataMesGet((void *)(D_80109B2A_mgenter + 0x4700));
     func_80106710_mgenter(text);
-    strId = func_8003A308_main(&gMes, (char *)text, 0, -1, -1);
+    strId = GameMesStrInit(&gMes, (char *)text, 0, -1, -1);
     HuSprPosSet(gMes.strGId[strId], 0, 0, -100);
-    func_800365E8_main(text);
+    MessDataMesFree(text);
     D_80109B24_mgenter = -1;
     if (D_80109B2E_mgenter != 1) {
         y = 28.0f;
@@ -366,7 +366,7 @@ void func_8010677C_mgenter(void) {
 
     cur = D_80109B2C_mgenter;
     for (i = 0; i < 3; i++) {
-        text = func_800364DC_main((void *)(i + 0x4608));
+        text = MessDataMesGet((void *)(i + 0x4608));
         len = strlen((char *)text);
         k = 0;
         for (j = 0; j <= len; j++) {
@@ -376,10 +376,10 @@ void func_8010677C_mgenter(void) {
             buf[k++] = text[j];
         }
         buf[k] = '\0';
-        strId = func_8003A308_main(&gMes[i], (char *)buf, 0, -1, -1);
+        strId = GameMesStrInit(&gMes[i], (char *)buf, 0, -1, -1);
         HuSprPosSet(gMes[i].strGId[strId], 0, -340, 52);
         gMes[i].subMode = k;
-        func_800365E8_main(text);
+        MessDataMesFree(text);
     }
     while (TRUE) {
         if (D_80109B24_mgenter == 0) {
@@ -434,18 +434,18 @@ void func_80106BD0_mgenter(void) {
 
     Hu3DFogSet(500, 550, 255, 255, 255);
     for (i = 0; i < 3; i++) {
-        models[i] = func_8000B108_main(charIds[i] | 0x670000, 0x2BD);
+        models[i] = Hu3DModelRead(charIds[i] | 0x670000, 0x2BD);
         model = models[i];
-        func_8001C258_main(model, 4, 4);
-        func_8001C814_main(model, 1, 1);
+        Hu3DModelAttrSet(model, 4, 4);
+        Hu3DMotionAttrSet(model, 1, 1);
         Hu3DMotionTimeSet(model, D_800CCF58_main[Hu3DData[model].motId].unk02 / 2);
         Hu3DModelPosSet(model, sindf(i * 120) * 500.0f, 0.0f, cosdf(i * 120) * 500.0f);
         hmf = Hu3DData[model].hmf;
-        hmf->unk60[func_8002C834_main(hmf, "atama_2")].unk24 = 1;
+        hmf->unk60[SearchObjectIndex(hmf, "atama_2")].unk24 = 1;
         Hu3DData[model].rot.x = 20.0f;
     }
     for (i = 0; i < 3; i++) {
-        text = func_800364DC_main((void *)(mesIds[i] + 0x4604));
+        text = MessDataMesGet((void *)(mesIds[i] + 0x4604));
         len = strlen((char *)text);
         j = 0;
         for (k = 0; k <= len; k++) {
@@ -454,14 +454,14 @@ void func_80106BD0_mgenter(void) {
             }
         }
         buf[j] = '\0';
-        strId = func_8003A308_main(&gMes[i], (char *)buf, 0, -1, -1);
+        strId = GameMesStrInit(&gMes[i], (char *)buf, 0, -1, -1);
         HuSprPosSet(gMes[i].strGId[strId], 0, 160, 130);
         len = j;
         gMes[i].subMode = j;
         for (j = 0; j < len; j++) {
             HuSprTPLvlSet(gMes[i].strGId[0], j + 1, 0);
         }
-        func_800365E8_main(text);
+        MessDataMesFree(text);
     }
     baseAngle = 0.0f;
     prevSel = D_80109B32_mgenter;
@@ -477,9 +477,9 @@ void func_80106BD0_mgenter(void) {
                 }
                 for (i = 0; i < 3; i++) {
                     if (Hu3DData[models[i]].pos.z > 0.0f) {
-                        func_8001C258_main(models[i], 4, 0);
+                        Hu3DModelAttrSet(models[i], 4, 0);
                     } else {
-                        func_8001C258_main(models[i], 4, 4);
+                        Hu3DModelAttrSet(models[i], 4, 4);
                     }
                 }
                 for (i = 0; i < 6; i++) {
@@ -492,9 +492,9 @@ void func_80106BD0_mgenter(void) {
                 break;
             case 1:
                 for (i = 0; i < 3; i++) {
-                    func_8001C258_main(models[i], 4, 4);
+                    Hu3DModelAttrSet(models[i], 4, 4);
                 }
-                func_8001C258_main(models[D_80109B32_mgenter], 4, 0);
+                Hu3DModelAttrSet(models[D_80109B32_mgenter], 4, 0);
                 for (i = 0; i < 6; i++) {
                     alpha = i * 51.0f;
                     for (j = 0; j < gMes[D_80109B32_mgenter].subMode; j++) {
@@ -504,7 +504,7 @@ void func_80106BD0_mgenter(void) {
                 }
                 HuPrcSleep(5);
                 for (i = 0; i < 3; i++) {
-                    func_8001C258_main(models[i], 4, 4);
+                    Hu3DModelAttrSet(models[i], 4, 4);
                 }
                 break;
         }
@@ -515,7 +515,7 @@ void func_80106BD0_mgenter(void) {
                 dir = -dir;
             }
             for (i = 0; i < 3; i++) {
-                func_8001C258_main(models[i], 4, 0);
+                Hu3DModelAttrSet(models[i], 4, 0);
             }
             for (i = 1; i < 11; i++) {
                 for (j = 0; j < 3; j++) {
@@ -536,9 +536,9 @@ void func_80106BD0_mgenter(void) {
             prevSel = D_80109B32_mgenter;
             for (i = 0; i < 3; i++) {
                 if (Hu3DData[models[i]].pos.z > 0.0f) {
-                    func_8001C258_main(models[i], 4, 0);
+                    Hu3DModelAttrSet(models[i], 4, 0);
                 } else {
-                    func_8001C258_main(models[i], 4, 4);
+                    Hu3DModelAttrSet(models[i], 4, 4);
                 }
             }
             baseAngle = D_80109B32_mgenter * 120;
@@ -635,7 +635,7 @@ void func_801079B4_mgenter(void) {
     HuWinKill(winId);
     HuWinKill(valueWinId);
     D_80109B7C_mgenter = 2;
-    D_80109B76_mgenter = func_800341C0_main(GwSystem.minigame_index);
+    D_80109B76_mgenter = MgDataMaxGet(GwSystem.minigame_index);
     D_80109B98_mgenter = 0;
     D_80109AA4_mgenter = 1;
     while (TRUE) {

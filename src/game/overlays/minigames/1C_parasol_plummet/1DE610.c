@@ -210,10 +210,10 @@ void func_801059A0_parasol_plummet(void) {
     s32 i;
 
     omInitObjMan(40, 10);
-    func_8001FE20_main(16);
-    func_80021BE0_main(&D_800EBEB0_minigame, 64);
-    func_800142A0_main(64);
-    func_8004A208_main();
+    MapCollInit(16);
+    Hu3DQuadPoolInit(&D_800EBEB0_minigame, 64);
+    Hu3DSprModelInit(64);
+    omGameSysInit();
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutView);
     omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     func_8010A75C_parasol_plummet(2500.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
@@ -238,7 +238,7 @@ void func_801059A0_parasol_plummet(void) {
     D_8010AB54_parasol_plummet = 0;
     D_8010ABD0_parasol_plummet = 0;
     func_8010A160_parasol_plummet();
-    D_8010AC64_parasol_plummet = func_8000D658_main(0x2A9, 4);
+    D_8010AC64_parasol_plummet = EffectGroupStarCreate(0x2A9, 4);
 }
 
 void func_80105B94_parasol_plummet(omObjData *object) {
@@ -385,57 +385,57 @@ void func_80105EC0_parasol_plummet(s32 playerIndex) {
             break;
         }
     }
-    object->model[0] = func_8000B108_main(group | modelId, 0x6D9);
+    object->model[0] = Hu3DModelRead(group | modelId, 0x6D9);
     omSetTra(object, work->coords.x, work->coords.y, work->coords.z);
     omSetRot(object, 0.0f, 0.0f, 0.0f);
     omSetSca(object, 1.0f, 1.0f, 1.0f);
     for (i = 0; i < 7; i++) {
-        func_8000B460_main(object, i, func_80017BB8_main(chr, motionIds[chr][i]));
+        omObjMotionRead(object, i, CharMotionDataNumGet(chr, motionIds[chr][i]));
     }
-    func_8001C5B4_main(object->model[0], object->motion[0]);
-    func_8001C814_main(object->model[0], 2, 2);
+    Hu3DMotionModelSet(object->model[0], object->motion[0]);
+    Hu3DMotionAttrSet(object->model[0], 2, 2);
 
-    object->model[1] = func_8000B108_main(0x3D0006, 0x6C9);
+    object->model[1] = Hu3DModelRead(0x3D0006, 0x6C9);
     Hu3DModelPosSet(object->model[1], work->coords.x, work->coords.y, work->coords.z);
     Hu3DModelRotSet(object->model[1], 0.0f, 0.0f, 0.0f);
     Hu3DModelScaleSet(object->model[1], 1.0f, 1.0f, 1.0f);
-    func_8001C258_main(object->model[1], 4, 4);
-    func_8000B460_main(object, 8, 0x3D0000);
-    func_8001C5B4_main(object->model[1], object->motion[8]);
-    func_8001C814_main(object->model[1], 2, 2);
-    func_8000B460_main(object, 9, 0x3D0001);
+    Hu3DModelAttrSet(object->model[1], 4, 4);
+    omObjMotionRead(object, 8, 0x3D0000);
+    Hu3DMotionModelSet(object->model[1], object->motion[8]);
+    Hu3DMotionAttrSet(object->model[1], 2, 2);
+    omObjMotionRead(object, 9, 0x3D0001);
 
-    object->model[2] = func_8000B108_main(0x3D0007, 0x6D9);
+    object->model[2] = Hu3DModelRead(0x3D0007, 0x6D9);
     Hu3DModelPosSet(object->model[2], 0.0f, 0.0f, 0.0f);
     Hu3DModelRotSet(object->model[2], 0.0f, 0.0f, 0.0f);
     Hu3DModelScaleSet(object->model[2], 1.0f, 1.0f, 1.0f);
-    func_8001C258_main(object->model[2], 4, 4);
+    Hu3DModelAttrSet(object->model[2], 4, 4);
 
     switch (GwPlayer[playerIndex].chr) {
         case 1:
-            func_8001E500_main(object->model[1], "ma01_DEF", "ru_DEF");
+            Hu3DModelTexAnimChange(object->model[1], "ma01_DEF", "ru_DEF");
             break;
         case 2:
-            func_8001E500_main(object->model[1], "ma01_DEF", "pi_DEF");
+            Hu3DModelTexAnimChange(object->model[1], "ma01_DEF", "pi_DEF");
             break;
         case 3:
-            func_8001E500_main(object->model[1], "ma01_DEF", "yo_DEF");
+            Hu3DModelTexAnimChange(object->model[1], "ma01_DEF", "yo_DEF");
             break;
         case 4:
-            func_8001E500_main(object->model[1], "ma01_DEF", "wa_DEF");
+            Hu3DModelTexAnimChange(object->model[1], "ma01_DEF", "wa_DEF");
             break;
         case 5:
-            func_8001E500_main(object->model[1], "ma01_DEF", "do_DEF");
+            Hu3DModelTexAnimChange(object->model[1], "ma01_DEF", "do_DEF");
             break;
         case 6:
-            func_8001E500_main(object->model[1], "ma01_DEF", "waru_DEF");
+            Hu3DModelTexAnimChange(object->model[1], "ma01_DEF", "waru_DEF");
             break;
         case 7:
-            func_8001E500_main(object->model[1], "ma01_DEF", "di_DEF");
+            Hu3DModelTexAnimChange(object->model[1], "ma01_DEF", "di_DEF");
             break;
     }
     Hu3DModelRemakeStatic(object->model[1]);
-    func_8001C514_main(object->model[1]);
+    Hu3DModelDynamicFree(object->model[1]);
 }
 
 void func_80106418_parasol_plummet(omObjData *object) {
@@ -466,7 +466,7 @@ void func_80106418_parasol_plummet(omObjData *object) {
             work->flags &= ~0x10;
             work->coords.x = laneX[work->lane];
             func_8010687C_parasol_plummet(object);
-            func_8001C258_main(object->model[1], 4, 0);
+            Hu3DModelAttrSet(object->model[1], 4, 0);
         }
     }
     if ((work->flags & 0x60) == 0x40) {
@@ -495,7 +495,7 @@ void func_80106418_parasol_plummet(omObjData *object) {
                 work->flags &= ~FLAG_IDLE;
                 work->driftTimer = 0;
                 work->angle = 0.0f;
-                func_8001C258_main(object->model[1], 4, 4);
+                Hu3DModelAttrSet(object->model[1], 4, 4);
             }
         } else if (!(work->flags & FLAG_SPINNING)) {
             func_80106788_parasol_plummet(object);
@@ -514,14 +514,14 @@ void func_80106788_parasol_plummet(omObjData *object) {
     ParasolPlummetWork *work = OM_GET_DATA_PTR(object, ParasolPlummetWork);
 
     if (!(work->flags & 0x20)) {
-        func_8001C5B4_main(object->model[0], object->motion[1]);
-        func_8001C814_main(object->model[0], 2, 2);
+        Hu3DMotionModelSet(object->model[0], object->motion[1]);
+        Hu3DMotionAttrSet(object->model[0], 2, 2);
         Hu3DMotionShiftSet(object->model[1], Hu3DData[object->motion[8]].motId, 0, 10, 2);
-        func_8001C258_main(object->model[1], 4, 0);
+        Hu3DModelAttrSet(object->model[1], 4, 0);
         work->unk_10 = 1;
         work->flags &= ~4;
         if (MgFlowStatGet() == MG_STATE_PLAY) {
-            func_8004AC5C_main(0x3E1, work->playerIndex);
+            _HuAudPlayerFXPlay(0x3E1, work->playerIndex);
         }
     }
 }
@@ -530,8 +530,8 @@ void func_8010687C_parasol_plummet(omObjData *object) {
     ParasolPlummetWork *work = OM_GET_DATA_PTR(object, ParasolPlummetWork);
 
     if (!(work->flags & 0x20)) {
-        func_8001C5B4_main(object->model[0], object->motion[2]);
-        func_8001C814_main(object->model[0], 2, 2);
+        Hu3DMotionModelSet(object->model[0], object->motion[2]);
+        Hu3DMotionAttrSet(object->model[0], 2, 2);
         Hu3DMotionShiftSet(object->model[1], Hu3DData[object->motion[9]].motId, 0, 10, 2);
         work->unk_10 = 0;
         work->tiltAngleLimit = 0.0f;
@@ -546,8 +546,8 @@ void func_8010693C_parasol_plummet(omObjData *object) {
         work->spinTimer = 30;
         work->flags = (work->flags & ~FLAG_IDLE) | FLAG_SPINNING;
         func_8010687C_parasol_plummet(object);
-        func_8001C5B4_main(object->model[0], object->motion[4]);
-        func_8001C814_main(object->model[0], 2, 2);
+        Hu3DMotionModelSet(object->model[0], object->motion[4]);
+        Hu3DMotionAttrSet(object->model[0], 2, 2);
         PlayerFXPlay(0x286, work->playerIndex);
         HuAudFXPlay(0x3E6);
         omVibrate(work->playerIndex, 2, 2, 20);
@@ -569,8 +569,8 @@ void func_801069E4_parasol_plummet(omObjData *object) {
     }
     if (--work->spinTimer == 0) {
         work->flags = (work->flags | FLAG_IDLE) & ~FLAG_SPINNING;
-        func_8001C5B4_main(object->model[0], object->motion[1]);
-        func_8001C814_main(object->model[0], 2, 2);
+        Hu3DMotionModelSet(object->model[0], object->motion[1]);
+        Hu3DMotionAttrSet(object->model[0], 2, 2);
         work->angle = 0.0f;
     }
 }
@@ -743,15 +743,15 @@ void func_80106E14_parasol_plummet(omObjData *object) {
             case 1:
                 HuAudFXPlay(9);
                 GwPlayer[work->playerIndex].gameCoin += 1;
-                func_8001C258_main(D_8010AB70_parasol_plummet[hit]->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-                func_8000D550_main(D_8010AC64_parasol_plummet, item->x, item->y, 0.0f);
+                Hu3DModelAttrSet(D_8010AB70_parasol_plummet[hit]->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                EffectGroupEmit(D_8010AC64_parasol_plummet, item->x, item->y, 0.0f);
                 D_8010ABB8_parasol_plummet[item->slot] = 0;
                 break;
             case 2:
                 HuAudFXPlay(0x15);
                 GwPlayer[work->playerIndex].gameCoin += 5;
-                func_8001C258_main(D_8010AB70_parasol_plummet[hit]->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-                func_8000D550_main(D_8010AC64_parasol_plummet, item->x, item->y, 0.0f);
+                Hu3DModelAttrSet(D_8010AB70_parasol_plummet[hit]->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                EffectGroupEmit(D_8010AC64_parasol_plummet, item->x, item->y, 0.0f);
                 D_8010ABB8_parasol_plummet[item->slot] = 0;
                 break;
             case 3:
@@ -781,22 +781,22 @@ void func_801071B4_parasol_plummet(omObjData *object) {
             work->coords.z = 0.0f;
             work->flags = (work->flags | 0x10) & ~0x20;
             work->unk_2C = 130.0f;
-            func_8001C5B4_main(object->model[0], object->motion[3]);
-            func_8001C258_main(object->model[4], 4, 0);
+            Hu3DMotionModelSet(object->model[0], object->motion[3]);
+            Hu3DModelAttrSet(object->model[4], 4, 0);
             Hu3DModelPosSet(object->model[4], object->trans.x, object->trans.y, object->trans.z);
         }
     } else {
         if (work->driftTimer == 0) {
-            func_8001C5B4_main(object->model[0], object->motion[0]);
-            func_8001C814_main(object->model[0], 2, 2);
+            Hu3DMotionModelSet(object->model[0], object->motion[0]);
+            Hu3DMotionAttrSet(object->model[0], 2, 2);
         }
         if (work->driftTimer == 120) {
             group = D_8010A8C8_parasol_plummet[GwPlayer[work->playerIndex].chr] << 16;
             if (GwPlayer[work->playerIndex].gameCoin != 0) {
-                func_8001C5B4_main(object->model[0], object->motion[5]);
-                func_80045ED0_main(group | 0x2F);
+                Hu3DMotionModelSet(object->model[0], object->motion[5]);
+                HuAudCharVoicePlay(group | 0x2F);
             } else {
-                func_8001C5B4_main(object->model[0], object->motion[6]);
+                Hu3DMotionModelSet(object->model[0], object->motion[6]);
             }
         }
         work->coords.x = goal->pos.x + laneX[work->lane];
@@ -1040,19 +1040,19 @@ void func_80107B78_parasol_plummet(omObjData *object) {
         func_80107C30_parasol_plummet(object);
     }
     if (work->blinkTimer & 1) {
-        func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-        func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     } else {
-        func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-        func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     }
 }
 
 void func_80107C30_parasol_plummet(omObjData *object) {
     ParasolPlummetWork *work = OM_GET_DATA_PTR(object, ParasolPlummetWork);
 
-    func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-    func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     work->flags &= ~0x100;
 }
 
@@ -1099,7 +1099,7 @@ void func_80107D30_parasol_plummet(void) {
     obj->data = HuMemAllocTag(sizeof(ParasolPlummetGoalWork), 0x7918);
     D_8010ABCC_parasol_plummet = obj;
     work = OM_GET_DATA_PTR(obj, ParasolPlummetGoalWork);
-    obj->model[0] = func_8000B108_main(0xA011A, 0x6D9);
+    obj->model[0] = Hu3DModelRead(0xA011A, 0x6D9);
     omSetTra(obj, 0.0f, 0.0f, 0.0f);
     omSetRot(obj, 0.0f, 0.0f, 0.0f);
     omSetSca(obj, 1.0f, 1.0f, 1.0f);
@@ -1144,12 +1144,12 @@ void func_8010803C_parasol_plummet(void) {
 
     work->flags |= 1;
     HuPrcSleep(120);
-    func_8001C814_main(obj->model[0], 4, 4);
+    Hu3DMotionAttrSet(obj->model[0], 4, 4);
     work->flags &= ~1;
     while (D_8010AC66_parasol_plummet != 3) {
         HuPrcVSleep();
     }
-    func_8001C814_main(obj->model[0], 4, 0);
+    Hu3DMotionAttrSet(obj->model[0], 4, 0);
     work->pos.x = 0.0f;
     work->pos.y = -2000.0f;
     work->pos.z = 0.0f;
@@ -1465,7 +1465,7 @@ void func_801090A8_parasol_plummet(s32 index) {
     x = pos.x;
     y = pos.y;
     work->flags |= 1;
-    func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     D_8010AC75_parasol_plummet[index] = 1;
     work->index = index;
     work->timer = D_8010AC98_parasol_plummet;
@@ -1484,11 +1484,11 @@ void func_801092B0_parasol_plummet(s32 index) {
     obj = omAddObj(10, 1, 2, -1, func_801093D4_parasol_plummet);
     work = HuMemAllocTag(sizeof(ParasolPlummetFlyerWork), 0x7918);
     obj->data = work;
-    obj->model[0] = func_8000B108_main(0xA0117, 0x6DD);
-    func_8000B460_main(obj, 0, 0xA0118);
-    func_8001C5B4_main(obj->model[0], obj->motion[0]);
-    func_8001C814_main(obj->model[0], 2, 2);
-    func_8000B460_main(obj, 1, 0xA0119);
+    obj->model[0] = Hu3DModelRead(0xA0117, 0x6DD);
+    omObjMotionRead(obj, 0, 0xA0118);
+    Hu3DMotionModelSet(obj->model[0], obj->motion[0]);
+    Hu3DMotionAttrSet(obj->model[0], 2, 2);
+    omObjMotionRead(obj, 1, 0xA0119);
     omSetTra(obj, 0.0f, 0.0f, 0.0f);
     omSetRot(obj, 0.0f, 0.0f, 0.0f);
     omSetSca(obj, 1.0f, 1.0f, 1.0f);
@@ -1525,7 +1525,7 @@ void func_801093D4_parasol_plummet(omObjData *object) {
     work->y += D_8010AC70_parasol_plummet;
     work->timer--;
     if (work->y <= 250.0f && !(work->flags & 2)) {
-        func_8001C5B4_main(object->model[0], object->motion[1]);
+        Hu3DMotionModelSet(object->model[0], object->motion[1]);
         Hu3DMotionTimeSet(object->model[0], 30.0f);
         work->flags |= 2;
     }
@@ -1537,7 +1537,7 @@ void func_801093D4_parasol_plummet(omObjData *object) {
         }
     }
     if (work->y <= 20.0f) {
-        func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         D_8010AC75_parasol_plummet[work->index] = 0;
         work->flags = 0;
     }
@@ -1652,7 +1652,7 @@ void func_8010995C_parasol_plummet(s32 index) {
     f32 y;
 
     item->flags |= 1;
-    func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     D_8010ABB8_parasol_plummet[index] = 1;
     item->slot = index;
     flyer = OM_GET_DATA_PTR(D_8010AC80_parasol_plummet[D_8010AC60_parasol_plummet], ParasolPlummetFlyerWork);
@@ -1695,7 +1695,7 @@ void func_80109B38_parasol_plummet(s32 index) {
         DataClose(data);
         D_8010ACA0_parasol_plummet[index / 6] = model;
     } else {
-        model = func_80014618_main(D_8010ACA0_parasol_plummet[index / 6], 8);
+        model = Hu3DSprModelLink(D_8010ACA0_parasol_plummet[index / 6], 8);
     }
     obj->model[0] = D_800CBB60_main[model].modelId;
     omSetTra(obj, 0.0f, 0.0f, 0.0f);
@@ -1740,12 +1740,12 @@ void func_80109D74_parasol_plummet(omObjData *object) {
     pos.z = 0.0f;
     Hu3D3Dto2D(0, &pos, &screen);
     if ((s32)screen.y >= 240) {
-        func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         D_8010ABB8_parasol_plummet[item->slot] = 0;
         item->flags &= ~1;
     }
     if (D_8010AC66_parasol_plummet != 1 && D_8010AC66_parasol_plummet != 2) {
-        func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         D_8010ABB8_parasol_plummet[item->slot] = 0;
         item->y = item->x = -10000.0f;
     }
@@ -1879,7 +1879,7 @@ void func_8010A484_parasol_plummet(void) {
                 if (total >= 100) {
                     espDispOff(D_8010ACDE_parasol_plummet[i]);
                 }
-                func_8000BDDC_main(D_8010ACA8_parasol_plummet[i * 3 + j], 1);
+                espAnimModeSet(D_8010ACA8_parasol_plummet[i * 3 + j], 1);
                 espBankSet(D_8010ACA8_parasol_plummet[i * 3 + j], (u16)digit, 0);
                 divisor /= 10;
             }
@@ -1889,8 +1889,8 @@ void func_8010A484_parasol_plummet(void) {
 }
 
 void func_8010A75C_parasol_plummet(f32 zoom, f32 rotX, f32 rotY, f32 rotZ, f32 centerX, f32 centerY, f32 centerZ) {
-    func_8000B5F0_main(1);
-    D_8010AB50_parasol_plummet = func_8000B638_main();
+    CamSetupInit(1);
+    D_8010AB50_parasol_plummet = CamSetupMapCullAdd();
     ScissorSet(D_8010AB50_parasol_plummet, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(D_8010AB50_parasol_plummet, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     CZoom = zoom;

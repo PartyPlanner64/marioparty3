@@ -273,7 +273,7 @@ Gfx D_800A1118_main[] = {
 u8 *D_800A1150_main[] = { D_800A0B18_main, D_800A0D18_main, D_800A0F18_main, NULL };
 s16 D_800A1160_main = 0;
 
-void func_800222B0_main(HuAllocFunc alloc, HuFreeFunc free, u16 vertexCount, u16 matrixCount, u16 gfxCount, u8 bufferCount) {
+void Hu3DDrawInit(HuAllocFunc alloc, HuFreeFunc free, u16 vertexCount, u16 matrixCount, u16 gfxCount, u8 bufferCount) {
     s16 i;
 
     D_800D1FF0_main = bufferCount;
@@ -293,8 +293,8 @@ void func_800222B0_main(HuAllocFunc alloc, HuFreeFunc free, u16 vertexCount, u16
     D_800CC0BC_main = HuMemAlloc(0x8400);
     D_800CE1D4_main = NULL;
     Hu3DLighInit();
-    func_80031560_main();
-    func_80030040_main();
+    Hu3DTexInit();
+    Hu3DShapeInit();
     D_800CB8B0_main = 1;
     D_800D10F0_main = 2;
     D_800D5410_main = 1.0f;
@@ -308,7 +308,7 @@ void func_800222B0_main(HuAllocFunc alloc, HuFreeFunc free, u16 vertexCount, u16
     D_800CC0A8_main = 1;
 }
 
-void func_800224BC_main(void) {
+void Hu3DPreProc(void) {
     HuMemCleanUp();
     if (D_800D20EE_main != 0) {
         D_800D5308_main = D_800D6A98_main[D_800D2008_main];
@@ -325,12 +325,12 @@ void func_800224BC_main(void) {
         D_800D1FD8_main = 0;
         D_800D6A92_main = 0;
         D_800CE19A_main = 0;
-        func_800123F4_main();
+        Hu3DCamMtxBufSync();
         D_800D20AC_main++;
     }
 }
 
-void func_800225D4_main(void) {
+void Hu3DDrawListInit(void) {
     s16 i;
 
     for (i = 0; i < ARRAY_COUNT(D_800D2070_main); i++) {
@@ -343,7 +343,7 @@ void func_800225D4_main(void) {
     D_800D5564_main = 0;
 }
 
-void func_80022660_main(HmfData *arg0) {
+void MakeDisplayList(HmfData *arg0) {
     Vtx *vertices;
     HmfModelData_Unk64_Unk60_Struct *object;
     s16 i, j;
@@ -397,18 +397,18 @@ void func_80022660_main(HmfData *arg0) {
     if (arg0->unkCC != NULL) {
         for (i = 0; i < arg0->unk10; i++) {
             if (arg0->unkCC->unk00[i] != NULL) {
-                func_80019C00_main(arg0->unkCC->unk00[i]);
+                HuMemDelayFree(arg0->unkCC->unk00[i]);
             }
         }
         HuMemFree(arg0->unkCC->unk00);
         HuMemFree(arg0->unkCC);
         arg0->unkCC = NULL;
     }
-    func_80022F08_main(arg0);
+    MakeVtxBuf(arg0);
     D_800CE1CE_main = 0;
     D_800D5562_main = 0;
     Hu3DLightReset();
-    func_800230F8_main(arg0);
+    MakeTexAnim(arg0);
     object = arg0->unk60;
     for (i = 0; i < arg0->unk10; i++, object++) {
         gMainGfxPos = gfx;
@@ -421,7 +421,7 @@ void func_80022660_main(HmfData *arg0) {
         D_800CE2F0_main = 0xFFFFFFFF;
         D_800D1FD0_main = 0xFFFFFFFF;
         D_800D0440_main = NULL;
-        func_8002D094_main(&gMainGfxPos, 1, 0);
+        SetLightColor(&gMainGfxPos, 1, 0);
         if (D_800C9940_main & 0x200) {
             gSPLight(gMainGfxPos++, D_800CB8A8_main, D_800CE1D4_main->unk00 + 1);
             D_800D1F78_main = D_800CB8A8_main->l.col[0];
@@ -432,7 +432,7 @@ void func_80022660_main(HmfData *arg0) {
         object->unk28 = D_800CE1CE_main;
         object->unk2C = D_800D5562_main;
         object->unk50 &= ~0x6000000;
-        func_800257BC_main(arg0, i);
+        FaceDraw(arg0, i);
         flags &= 0x6000000;
         if (flags) {
             object->unk50 |= flags;
@@ -477,7 +477,7 @@ void func_80022660_main(HmfData *arg0) {
             D_800CE2F0_main = 0xFFFFFFFF;
             D_800D1FD0_main = 0xFFFFFFFF;
             D_800D0440_main = NULL;
-            func_800257BC_main(arg0, i);
+            FaceDraw(arg0, i);
             gSPEndDisplayList(gMainGfxPos++);
             arg0->unkCC->unk00[i] = HuMemAllocTag((gMainGfxPos - gfx) * sizeof(Gfx), D_800CDD6A_main);
             bcopy(gfx, arg0->unkCC->unk00[i], (gMainGfxPos - gfx) * sizeof(Gfx));
@@ -488,7 +488,7 @@ void func_80022660_main(HmfData *arg0) {
     vertices = HuMemAllocTag(D_800CE1CE_main * sizeof(Vtx), D_800CDD6A_main);
     bcopy(D_800D5308_main, vertices, D_800CE1CE_main * sizeof(Vtx));
     arg0->unk40 = vertices;
-    func_80022FF4_main(arg0);
+    MakeVtxGroup(arg0);
     for (i = 0; i < ARRAY_COUNT(arg0->unk44); i++) {
         arg0->unk44[i] = vertices;
     }
@@ -499,7 +499,7 @@ void func_80022660_main(HmfData *arg0) {
         arg0->unk5C = indices;
     }
     if (arg0->unkB4 != 0 || (D_800C9940_main & 0x400000)) {
-        func_80030208_main(arg0);
+        Hu3DShapeCacheMake(arg0);
     }
     if (arg0->unk1C * 4 + arg0->unk10 * 8 < D_800CE1CE_main) {
         osSyncPrintf("Vertex Over!\n");
@@ -512,7 +512,7 @@ void func_80022660_main(HmfData *arg0) {
     gMainGfxPos = savedGfx;
 }
 
-void func_80022F08_main(HmfData *arg0) {
+void MakeVtxBuf(HmfData *arg0) {
     s16 needed;
     s16 i;
     u16 count;
@@ -529,7 +529,7 @@ void func_80022F08_main(HmfData *arg0) {
     }
 }
 
-void func_80022FF4_main(HmfData *arg0) {
+void MakeVtxGroup(HmfData *arg0) {
     HmfVertexGroup *group;
     s16 *indices;
     s16 i, j;
@@ -555,7 +555,7 @@ void func_80022FF4_main(HmfData *arg0) {
     }
 }
 
-void func_800230F8_main(HmfData *arg0) {
+void MakeTexAnim(HmfData *arg0) {
     s16 textureIndex;
     s16 i, j;
 
@@ -592,7 +592,7 @@ void func_800230F8_main(HmfData *arg0) {
     }
 }
 
-s32 func_80023264_main(HmfData *arg0) {
+s32 RemakeDisplayList(HmfData *arg0) {
     s32 var_s2;
     s16 i;
 
@@ -601,7 +601,7 @@ s32 func_80023264_main(HmfData *arg0) {
         for (i = 0; i < ARRAY_COUNT(arg0->unk44); i++) {
             if (arg0->unk40 != arg0->unk44[i]) {
                 if (arg0->unk0A != 0) {
-                    func_80019C00_main(arg0->unk44[i]);
+                    HuMemDelayFree(arg0->unk44[i]);
                 } else {
                     HuMemFree(arg0->unk44[i]);
                 }
@@ -611,7 +611,7 @@ s32 func_80023264_main(HmfData *arg0) {
         }
 
         if (arg0->unk0A != 0) {
-            func_80019C00_main(arg0->unk40);
+            HuMemDelayFree(arg0->unk40);
         } else {
             HuMemFree(arg0->unk40);
         }
@@ -619,78 +619,78 @@ s32 func_80023264_main(HmfData *arg0) {
     if (arg0->unk3C != NULL) {
         for (i = 0; i < arg0->unk10; i++) {
             if (arg0->unk0A != 0) {
-                func_80019C00_main(arg0->unk3C->unk00[i]);
+                HuMemDelayFree(arg0->unk3C->unk00[i]);
             } else {
                 HuMemFree(arg0->unk3C->unk00[i]);
             }
         }
 
         if (arg0->unk0A != 0) {
-            func_80019C00_main(arg0->unk3C);
+            HuMemDelayFree(arg0->unk3C);
         } else {
             HuMemFree(arg0->unk3C);
         }
     }
     D_800D5204_main = arg0->unk0E;
     D_800CDD6A_main = arg0->unk0E + 1;
-    func_80022660_main(arg0);
+    MakeDisplayList(arg0);
     return var_s2;
 }
 
-void func_80023404_main(HmfData *arg0, HuMtx4F arg1, HuMtx4F arg2) {
+void Hu3DDraw(HmfData *arg0, HuMtx4F arg1, HuMtx4F arg2) {
     HuMtx4F mtx;
 
     if (arg0->unk14 == 0) {
         return;
     }
-    func_8002367C_main(D_800D5A00_main[0], arg1);
+    mtxCopy(D_800D5A00_main[0], arg1);
     D_800D138A_main = 1;
     guMtxIdentF(D_800D5A40_main);
     D_800D5214_main = 0;
-    func_8002367C_main(D_800D41F0_main[0], arg2);
+    mtxCopy(D_800D41F0_main[0], arg2);
     if (arg0->unk01 & 4) {
         if (arg0->unk60[0].unk50 & 0x70000000) {
-            func_8002C4C0_main(arg0, 0, arg1, mtx);
-            func_80018044_main(arg2, mtx, arg1);
+            objBillboardCheck(arg0, 0, arg1, mtx);
+            mtxCat(arg2, mtx, arg1);
         }
         func_800898F0_main(arg1, &MTXBuf[MTXBufNum]);
-        func_80024DF0_main(arg0, 0, &MTXBuf[MTXBufNum++], arg1);
+        Hu3DDrawEntryAdd(arg0, 0, &MTXBuf[MTXBufNum++], arg1);
         return;
     }
     if (arg0->unk80 == (HmfMotionNode *)-1) {
         if (arg0->unk8C != NULL) {
-            func_8002DFF8_main(arg0, arg0->unkA0, arg0->unk8C, 1);
+            Hu3DMotionExec(arg0, arg0->unkA0, arg0->unk8C, 1);
             if (arg0->unk90 != NULL) {
-                func_8002EAC0_main(arg0, arg0->unkA4, arg0->unkA8);
+                Hu3DSubMotionExec(arg0, arg0->unkA4, arg0->unkA8);
             }
             if (arg0->unk94 != NULL) {
-                func_8002DFF8_main(arg0, arg0->unkAC, arg0->unk94, 0);
+                Hu3DMotionExec(arg0, arg0->unkAC, arg0->unk94, 0);
             }
         }
         if (arg0->unk64 == 0) {
             return;
         }
-        func_80023700_main(arg0, 0);
+        objCallSkeleton(arg0, 0);
     } else {
         if (arg0->unk16 == 0) {
             return;
         }
         if (D_800CD6A6_main != 0 && arg0->unk0B == 1 && (u8)arg0->unk0C != 0) {
-            func_8002404C_main(arg0, 0);
+            objCallNoAnim(arg0, 0);
         } else {
             if (arg0->unk8C != NULL) {
-                func_8002DFF8_main(arg0, arg0->unkA0, arg0->unk8C, 1);
+                Hu3DMotionExec(arg0, arg0->unkA0, arg0->unk8C, 1);
                 if (arg0->unk90 != NULL) {
-                    func_8002EAC0_main(arg0, arg0->unkA4, arg0->unkA8);
+                    Hu3DSubMotionExec(arg0, arg0->unkA4, arg0->unkA8);
                 }
                 if (arg0->unk94 != NULL) {
-                    func_8002DFF8_main(arg0, arg0->unkAC, arg0->unk94, 0);
+                    Hu3DMotionExec(arg0, arg0->unkAC, arg0->unk94, 0);
                 }
             }
             if (arg0->unk16 == 1) {
-                func_80024354_main(arg0, 0);
+                objCallLink(arg0, 0);
             } else {
-                func_80023AF8_main(arg0, 0);
+                objCall(arg0, 0);
             }
         }
     }
@@ -699,7 +699,7 @@ void func_80023404_main(HmfData *arg0, HuMtx4F arg1, HuMtx4F arg2) {
     }
 }
 
-void func_8002367C_main(HuMtx4F dst, HuMtx4F src) {
+void mtxCopy(HuMtx4F dst, HuMtx4F src) {
     dst[0][0] = src[0][0];
     dst[0][1] = src[0][1];
     dst[0][2] = src[0][2];
@@ -718,7 +718,7 @@ void func_8002367C_main(HuMtx4F dst, HuMtx4F src) {
     dst[3][3] = src[3][3];
 }
 
-void func_80023700_main(HmfData *arg0, s16 arg1) {
+void objCallSkeleton(HmfData *arg0, s16 arg1) {
     HuMtx4F mtx;
     HuMtx4F temp;
     HmfSkeletonNode *node;
@@ -731,7 +731,7 @@ void func_80023700_main(HmfData *arg0, s16 arg1) {
     scaled = 0;
     transformed = 0;
     if (arg0->unk8C == NULL) {
-        func_80018044_main(node->unk4C, D_800D5A00_main[0], mtx);
+        mtxCat(node->unk4C, D_800D5A00_main[0], mtx);
     } else {
         func_8008A070_main(mtx);
         if (node->pos.x != 0.0f || node->pos.y != 0.0f || node->pos.z != 0.0f) {
@@ -747,27 +747,27 @@ void func_80023700_main(HmfData *arg0, s16 arg1) {
             func_8008A070_main(temp);
             mtxScaleCat(temp, node->scale.x, node->scale.y, node->scale.z);
             D_800D5214_main++;
-            func_80018044_main(temp, D_800D41B0_main[D_800D5214_main], D_800D41B0_main[D_800D5214_main + 1]);
+            mtxCat(temp, D_800D41B0_main[D_800D5214_main], D_800D41B0_main[D_800D5214_main + 1]);
             scaled = 1;
             transformed = 1;
         }
         if (transformed) {
             D_800D138A_main++;
-            func_80018044_main(mtx, D_800D59C0_main[D_800D138A_main], D_800D59C0_main[D_800D138A_main + 1]);
+            mtxCat(mtx, D_800D59C0_main[D_800D138A_main], D_800D59C0_main[D_800D138A_main + 1]);
         }
-        func_80018044_main(D_800D5A00_main[D_800D138A_main], D_800D5A00_main[0], mtx);
+        mtxCat(D_800D5A00_main[D_800D138A_main], D_800D5A00_main[0], mtx);
     }
     if (objectIndex >= 0) {
         if (node->unk48->unk60[objectIndex].unk50 & 0x70000000) {
-            func_8002C4C0_main(node->unk48, objectIndex, mtx, temp);
-            func_80018044_main(D_800D41F0_main[D_800D5214_main], temp, mtx);
+            objBillboardCheck(node->unk48, objectIndex, mtx, temp);
+            mtxCat(D_800D41F0_main[D_800D5214_main], temp, mtx);
         }
         func_800898F0_main(mtx, &MTXBuf[MTXBufNum]);
-        func_80024DF0_main(node->unk48, objectIndex, &MTXBuf[MTXBufNum], mtx);
+        Hu3DDrawEntryAdd(node->unk48, objectIndex, &MTXBuf[MTXBufNum], mtx);
         MTXBufNum++;
     }
     if (node->unk04 != 0) {
-        func_80023700_main(arg0, arg1 + node->unk04);
+        objCallSkeleton(arg0, arg1 + node->unk04);
     }
     if (transformed) {
         D_800D138A_main--;
@@ -776,14 +776,14 @@ void func_80023700_main(HmfData *arg0, s16 arg1) {
         D_800D5214_main--;
     }
     if (objectIndex >= 0 && node->unk48 == arg0 && arg0->unk60[objectIndex].unk58 != NULL) {
-        func_80023700_main(arg0->unk60[objectIndex].unk58, 0);
+        objCallSkeleton(arg0->unk60[objectIndex].unk58, 0);
     }
     if (node->unk02 != 0) {
-        func_80023700_main(arg0, arg1 + node->unk02);
+        objCallSkeleton(arg0, arg1 + node->unk02);
     }
 }
 
-void func_80023AF8_main(HmfData *arg0, s16 arg1) {
+void objCall(HmfData *arg0, s16 arg1) {
     HuMtx4F mtx;
     HuMtx4F temp;
     HmfMotionNode *node;
@@ -802,11 +802,11 @@ void func_80023AF8_main(HmfData *arg0, s16 arg1) {
     scaled = 0;
     transformed = 0;
     if (arg0->unk8C == NULL) {
-        func_80018044_main(node->unk58, D_800D5A00_main[0], mtx);
+        mtxCat(node->unk58, D_800D5A00_main[0], mtx);
         if (node->baseScale.x != 1.0f || node->baseScale.y != 1.0f || node->baseScale.z != 1.0f) {
             func_80088700_main(temp, node->baseScale.x, node->baseScale.y, node->baseScale.z);
             D_800D5214_main++;
-            func_80018044_main(temp, D_800D41B0_main[D_800D5214_main], D_800D41B0_main[D_800D5214_main + 1]);
+            mtxCat(temp, D_800D41B0_main[D_800D5214_main], D_800D41B0_main[D_800D5214_main + 1]);
             scaled = 1;
         }
     } else {
@@ -831,18 +831,18 @@ void func_80023AF8_main(HmfData *arg0, s16 arg1) {
             }
             func_80088700_main(temp, node->scale.x, node->scale.y, node->scale.z);
             matrixIndex = ++D_800D5214_main;
-            func_80018044_main(temp, D_800D41B0_main[matrixIndex], D_800D41B0_main[matrixIndex + 1]);
+            mtxCat(temp, D_800D41B0_main[matrixIndex], D_800D41B0_main[matrixIndex + 1]);
             scaled = 1;
             transformed = 1;
         }
         if (transformed) {
             D_800D138A_main++;
-            func_80018044_main(mtx, D_800D59C0_main[D_800D138A_main], D_800D59C0_main[D_800D138A_main + 1]);
+            mtxCat(mtx, D_800D59C0_main[D_800D138A_main], D_800D59C0_main[D_800D138A_main + 1]);
         }
         if (D_800C9932_main != 1 && arg0->unk0B == 1) {
-            func_8002367C_main(node->unk58, D_800D5A00_main[D_800D138A_main]);
+            mtxCopy(node->unk58, D_800D5A00_main[D_800D138A_main]);
         }
-        func_80018044_main(D_800D5A00_main[D_800D138A_main], D_800D5A00_main[0], mtx);
+        mtxCat(D_800D5A00_main[D_800D138A_main], D_800D5A00_main[0], mtx);
     }
     func_800898F0_main(mtx, &MTXBuf[MTXBufNum]);
     matrixIndex = MTXBufNum++;
@@ -853,7 +853,7 @@ void func_80023AF8_main(HmfData *arg0, s16 arg1) {
         indices++;
         if (objectIndex & 0x8000) {
             if (objectIndex != -1) {
-                func_80023AF8_main(arg0, objectIndex & 0x7FFF);
+                objCall(arg0, objectIndex & 0x7FFF);
             }
         } else {
             object = &node->unk54->unk60[objectIndex];
@@ -861,15 +861,15 @@ void func_80023AF8_main(HmfData *arg0, s16 arg1) {
                 break;
             }
             if (object->unk50 & 0x70000000) {
-                func_8002C4C0_main(node->unk54, objectIndex, mtx, temp);
-                func_80018044_main(D_800D41F0_main[D_800D5214_main], temp, mtx);
+                objBillboardCheck(node->unk54, objectIndex, mtx, temp);
+                mtxCat(D_800D41F0_main[D_800D5214_main], temp, mtx);
                 func_800898F0_main(mtx, &MTXBuf[MTXBufNum]);
                 matrixIndex = MTXBufNum++;
             }
-            func_80024DF0_main(node->unk54, objectIndex, &MTXBuf[matrixIndex], mtx);
+            Hu3DDrawEntryAdd(node->unk54, objectIndex, &MTXBuf[matrixIndex], mtx);
             linked = arg0->unk60[objectIndex].unk58;
             if (linked != NULL && arg0 == node->unk54) {
-                func_80023AF8_main(linked, 0);
+                objCall(linked, 0);
             }
         }
     }
@@ -881,7 +881,7 @@ void func_80023AF8_main(HmfData *arg0, s16 arg1) {
     }
 }
 
-void func_8002404C_main(HmfData *arg0, s16 arg1) {
+void objCallNoAnim(HmfData *arg0, s16 arg1) {
     HuMtx4F mtx;
     HuMtx4F temp;
     HmfMotionNode *node;
@@ -896,11 +896,11 @@ void func_8002404C_main(HmfData *arg0, s16 arg1) {
 
     node = &arg0->unk80[arg1 & 0x7FFF];
     scaled = 0;
-    func_80018044_main(node->unk58, D_800D5A00_main[0], mtx);
+    mtxCat(node->unk58, D_800D5A00_main[0], mtx);
     if (node->baseScale.x != 1.0f || node->baseScale.y != 1.0f || node->baseScale.z != 1.0f) {
         func_80088700_main(temp, node->baseScale.x, node->baseScale.y, node->baseScale.z);
         D_800D5214_main++;
-        func_80018044_main(temp, D_800D41B0_main[D_800D5214_main], D_800D41B0_main[D_800D5214_main + 1]);
+        mtxCat(temp, D_800D41B0_main[D_800D5214_main], D_800D41B0_main[D_800D5214_main + 1]);
         scaled = 1;
     }
     func_800898F0_main(mtx, &MTXBuf[MTXBufNum]);
@@ -913,7 +913,7 @@ void func_8002404C_main(HmfData *arg0, s16 arg1) {
         indices++;
         if (objectIndex & 0x8000) {
             if (objectIndex != -1) {
-                func_8002404C_main(arg0, objectIndex & 0x7FFF);
+                objCallNoAnim(arg0, objectIndex & 0x7FFF);
             }
         } else {
             object = &node->unk54->unk60[objectIndex];
@@ -921,15 +921,15 @@ void func_8002404C_main(HmfData *arg0, s16 arg1) {
                 break;
             }
             if (object->unk50 & 0x70000000) {
-                func_8002C4C0_main(node->unk54, objectIndex, mtx, temp);
-                func_80018044_main(D_800D41F0_main[D_800D5214_main], temp, mtx);
+                objBillboardCheck(node->unk54, objectIndex, mtx, temp);
+                mtxCat(D_800D41F0_main[D_800D5214_main], temp, mtx);
                 func_800898F0_main(mtx, &MTXBuf[MTXBufNum]);
                 matrixIndex = MTXBufNum++;
             }
-            func_80024DF0_main(node->unk54, objectIndex, &MTXBuf[matrixIndex], mtx);
+            Hu3DDrawEntryAdd(node->unk54, objectIndex, &MTXBuf[matrixIndex], mtx);
             linked = arg0->unk60[objectIndex].unk58;
             if (linked != NULL && arg0 == node->unk54) {
-                func_8002404C_main(linked, 0);
+                objCallNoAnim(linked, 0);
             }
         }
     }
@@ -938,7 +938,7 @@ void func_8002404C_main(HmfData *arg0, s16 arg1) {
     }
 }
 
-void func_80024354_main(HmfData *arg0, s16 arg1) {
+void objCallLink(HmfData *arg0, s16 arg1) {
     HuMtx4F mtx;
     HuMtx4F temp;
     HmfMotionNode *node;
@@ -959,11 +959,11 @@ void func_80024354_main(HmfData *arg0, s16 arg1) {
     flags = object->unk50 & 0x70000000;
     transformed = 0;
     if (arg0->unk8C == NULL) {
-        func_80018044_main(node->unk58, D_800D5A00_main[0], mtx);
+        mtxCat(node->unk58, D_800D5A00_main[0], mtx);
         if (flags && (node->baseScale.x != 1.0f || node->baseScale.y != 1.0f || node->baseScale.z != 1.0f)) {
             func_80088700_main(temp, node->baseScale.x, node->baseScale.y, node->baseScale.z);
             D_800D5214_main++;
-            func_80018044_main(temp, D_800D41B0_main[D_800D5214_main], D_800D41B0_main[D_800D5214_main + 1]);
+            mtxCat(temp, D_800D41B0_main[D_800D5214_main], D_800D41B0_main[D_800D5214_main + 1]);
         }
     } else {
         if (node->pos.x != 0.0f || node->pos.y != 0.0f || node->pos.z != 0.0f) {
@@ -988,35 +988,35 @@ void func_80024354_main(HmfData *arg0, s16 arg1) {
             if (flags) {
                 func_80088700_main(temp, node->scale.x, node->scale.y, node->scale.z);
                 D_800D5214_main++;
-                func_80018044_main(temp, D_800D41B0_main[D_800D5214_main], D_800D41B0_main[D_800D5214_main + 1]);
+                mtxCat(temp, D_800D41B0_main[D_800D5214_main], D_800D41B0_main[D_800D5214_main + 1]);
             }
             transformed = 1;
         }
         if (transformed) {
             D_800D138A_main++;
-            func_80018044_main(mtx, D_800D59C0_main[D_800D138A_main], D_800D59C0_main[D_800D138A_main + 1]);
+            mtxCat(mtx, D_800D59C0_main[D_800D138A_main], D_800D59C0_main[D_800D138A_main + 1]);
         }
         if (D_800C9932_main != 1 && arg0->unk0B == 1) {
-            func_8002367C_main(node->unk58, D_800D5A00_main[D_800D138A_main]);
+            mtxCopy(node->unk58, D_800D5A00_main[D_800D138A_main]);
         }
-        func_80018044_main(D_800D5A00_main[D_800D138A_main], D_800D5A00_main[0], mtx);
+        mtxCat(D_800D5A00_main[D_800D138A_main], D_800D5A00_main[0], mtx);
     }
     func_800898F0_main(mtx, &MTXBuf[MTXBufNum]);
     matrixIndex = MTXBufNum++;
     if (object->unk50 & 0x70000000) {
-        func_8002C4C0_main(node->unk54, objectIndex, mtx, temp);
-        func_80018044_main(D_800D41F0_main[D_800D5214_main], temp, mtx);
+        objBillboardCheck(node->unk54, objectIndex, mtx, temp);
+        mtxCat(D_800D41F0_main[D_800D5214_main], temp, mtx);
         func_800898F0_main(mtx, &MTXBuf[MTXBufNum]);
         matrixIndex = MTXBufNum++;
     }
-    func_80024DF0_main(node->unk54, objectIndex, &MTXBuf[matrixIndex], mtx);
+    Hu3DDrawEntryAdd(node->unk54, objectIndex, &MTXBuf[matrixIndex], mtx);
     linked = arg0->unk60[objectIndex].unk58;
     if (linked != NULL && arg0 == node->unk54) {
-        func_80023AF8_main(linked, 0);
+        objCall(linked, 0);
     }
 }
 
-void func_80024814_main(HmfData *arg0, s16 arg1, HmfDrawObject *arg2) {
+void objMesh(HmfData *arg0, s16 arg1, HmfDrawObject *arg2) {
     HmfModelData_Unk64_Unk60_Struct *object;
     HmfMaterialData *material;
     s32 flags;
@@ -1026,11 +1026,11 @@ void func_80024814_main(HmfData *arg0, s16 arg1, HmfDrawObject *arg2) {
         if (D_800C9940_main == 0) {
             arg0->unk60[arg1].unk50 = flags & ~0x6000000;
             gSPSegment(gMainGfxPos++, 1, osVirtualToPhysical(D_800D5308_main));
-            func_80024814_main(arg0, arg1, arg2);
+            objMesh(arg0, arg1, arg2);
             arg0->unk60[arg1].unk50 = flags;
         } else {
             object = &arg0->unk60[arg1];
-            func_8002AFEC_main(arg0, object->unk50 & ~0x6000000, arg1);
+            SetupGeometry(arg0, object->unk50 & ~0x6000000, arg1);
             gSPSegment(gMainGfxPos++, 1, osVirtualToPhysical(arg0->unk44[D_800D2008_main]));
             if (object->unk5C != NULL) {
                 if (D_800D0440_main != object->unk5C && object->unk5C != (HmfData_Unk84_Entry *)-1) {
@@ -1041,16 +1041,16 @@ void func_80024814_main(HmfData *arg0, s16 arg1, HmfDrawObject *arg2) {
                 D_800D0440_main = NULL;
             }
             gSPDisplayList(gMainGfxPos++, ((Gfx **)arg0->unk3C)[arg1]);
-            func_8002AFEC_main(arg0, object->unk50, arg1);
+            SetupGeometry(arg0, object->unk50, arg1);
             gSPMatrix(gMainGfxPos++, osVirtualToPhysical(arg2->fixedMtx), G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH);
             gSPDisplayList(gMainGfxPos++, arg0->unkCC->unk00[arg1]);
             return;
         }
     }
     object = &arg0->unk60[arg1];
-    func_8002AFEC_main(arg0, object->unk50, arg1);
+    SetupGeometry(arg0, object->unk50, arg1);
     if (object->unk50 & 0x40000) {
-        func_80033694_main(arg0);
+        Hu3DAnimSegmentSet(arg0);
     }
     if (object->unk20 != -1 || (arg0->unk98 != NULL && (arg0->unk88[object->unk1E].unk09 & 4))) {
         material = &arg0->unk88[object->unk1E];
@@ -1076,21 +1076,21 @@ void func_80024814_main(HmfData *arg0, s16 arg1, HmfDrawObject *arg2) {
         gSPDisplayList(gMainGfxPos++, ((Gfx **)arg0->unk3C)[arg1]);
     } else {
         gSPSegment(gMainGfxPos++, 1, osVirtualToPhysical(D_800D5308_main));
-        func_800257BC_main(arg0, arg1);
+        FaceDraw(arg0, arg1);
     }
     if ((u32)gMainGfxPos >= (u32)D_800D1FF8_main + (D_800D5306_main << 6)) {
         osSyncPrintf("GfxMax Over\n");
     }
 }
 
-void func_80024D94_main(HmfData *arg0, s16 arg1, Mtx *arg2) {
+void Hu3DDrawEntryAddL(HmfData *arg0, s16 arg1, Mtx *arg2) {
     HuMtx4F mtx;
 
     func_80089980_main(mtx, arg2);
-    func_80024DF0_main(arg0, arg1, arg2, mtx);
+    Hu3DDrawEntryAdd(arg0, arg1, arg2, mtx);
 }
 
-void func_80024DF0_main(HmfData *arg0, s16 arg1, Mtx *arg2, HuMtx4F arg3) {
+void Hu3DDrawEntryAdd(HmfData *arg0, s16 arg1, Mtx *arg2, HuMtx4F arg3) {
     HmfDrawEntry *entries;
     HmfDrawObject *object;
     s16 entryIndex;
@@ -1152,7 +1152,7 @@ void func_80024DF0_main(HmfData *arg0, s16 arg1, Mtx *arg2, HuMtx4F arg3) {
     object->light = arg0->unkD0;
 }
 
-Gfx *func_800250D4_main(s16 arg0, Gfx *arg1, Gfx *arg2) {
+Gfx *Hu3DDrawLayer(s16 arg0, Gfx *arg1, Gfx *arg2) {
     HmfDrawEntry *entry;
     HmfDrawObject *object;
     HmfData *hmf;
@@ -1183,10 +1183,10 @@ Gfx *func_800250D4_main(s16 arg0, Gfx *arg1, Gfx *arg2) {
         if (active) {
             gDPFullSync(gMainGfxPos++);
             gSPEndDisplayList(gMainGfxPos++);
-            func_8000EF64_main(start, D_800CE19A_main, 0, NULL, 0);
+            HuGfxTaskSend(start, D_800CE19A_main, 0, NULL, 0);
             start = gMainGfxPos;
         }
-        func_800127C4_main(arg0, &gMainGfxPos);
+        Hu3DCameraScissorDraw(arg0, &gMainGfxPos);
         visited++;
         active = 1;
         D_800CE19A_main = layer;
@@ -1204,7 +1204,7 @@ Gfx *func_800250D4_main(s16 arg0, Gfx *arg1, Gfx *arg2) {
         D_800D211C_main = 0xFF;
         D_800D1F2A_main = 0xFF;
         flags = -1;
-        func_8002AF40_main();
+        SetClipRatio();
         entry = &D_800D2070_main[layer][D_800D2070_main[layer][0].next];
         count = D_800D6AC8_main[layer];
         for (i = 2; i < count; i++) {
@@ -1216,19 +1216,19 @@ Gfx *func_800250D4_main(s16 arg0, Gfx *arg1, Gfx *arg2) {
             D_800CDA86_main = 0;
             D_800CE170_main = 0;
             D_800CDD5A_main = 0;
-            func_8002D094_main(&gMainGfxPos, lightCount,
+            SetLightColor(&gMainGfxPos, lightCount,
                                ((u16)D_800D1F78_main << 24) + ((u16)D_800D1FE2_main << 16) + ((u16)D_800CDA76_main << 8));
-            func_8002D094_main(&gMainGfxPos, 1, 0);
+            SetLightColor(&gMainGfxPos, 1, 0);
             if (object->light != NULL) {
                 gSPLight(gMainGfxPos++, &hmf->unkD0->unk08[D_800D2008_main], 2);
             }
             if (flags != object->objectFlags) {
                 flags = object->objectFlags;
-                func_8002AC5C_main((u16)flags);
+                SetFogMode((u16)flags);
             }
             gSPMatrix(gMainGfxPos++, osVirtualToPhysical(object->fixedMtx), G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH);
             D_800C9940_main = object->modelFlags;
-            func_80024814_main(hmf, object->objectIndex, object);
+            objMesh(hmf, object->objectIndex, object);
             if (object->light != NULL) {
                 gSPLight(gMainGfxPos++, &D_800CB8A8_main[2], 2);
             }
@@ -1249,7 +1249,7 @@ Gfx *func_800250D4_main(s16 arg0, Gfx *arg1, Gfx *arg2) {
     return start;
 }
 
-void func_800257BC_main(HmfData *hmf, s16 objectIndex) {
+void FaceDraw(HmfData *hmf, s16 objectIndex) {
     s16 i;
     s16 j;
     s16 faceCount;
@@ -1286,7 +1286,7 @@ void func_800257BC_main(HmfData *hmf, s16 objectIndex) {
     flags = D_800B19F0_main->unk50 &= ~0x40000;
     groupVertices = (flags & 0x6020000) == 0x20000;
     if ((D_800C9940_main & 0x2001) == 0x2001) {
-        func_80029FB4_main(hmf, objectIndex);
+        ObjCullCheck(hmf, objectIndex);
     }
     unlit = source->unk00 & 0x80;
     previousUnlit = unlit;
@@ -1316,7 +1316,7 @@ void func_800257BC_main(HmfData *hmf, s16 objectIndex) {
                 previousTexture != texture || (D_800D0A44_main >= 48) | (unlit != previousUnlit) || animated) {
                 previousMaterial = material;
                 previousTexture = texture;
-                func_800260F0_main(hmf, &D_800B19F0_main->unk50);
+                MaterialSet(hmf, &D_800B19F0_main->unk50);
                 if (unlit != previousUnlit) {
                     if (unlit) {
                         gSPClearGeometryMode(gMainGfxPos++, G_LIGHTING);
@@ -1412,14 +1412,14 @@ void func_800257BC_main(HmfData *hmf, s16 objectIndex) {
                 gSPSetGeometryMode(gMainGfxPos++, G_LIGHTING);
             }
         }
-        func_800260F0_main(hmf, &D_800B19F0_main->unk50);
+        MaterialSet(hmf, &D_800B19F0_main->unk50);
         if (unlit) {
             gSPSetGeometryMode(gMainGfxPos++, G_LIGHTING);
         }
     }
 }
 
-void func_800260F0_main(HmfData *hmf, s32 *flags) {
+void MaterialSet(HmfData *hmf, s32 *flags) {
     HmfData_Unk84_Entry2 *texture;
     HmfMaterialData *material;
     HmfData_Unk84_Entry *textureEntry;
@@ -1442,7 +1442,7 @@ void func_800260F0_main(HmfData *hmf, s32 *flags) {
     material = D_800CD6B0_main[0].material;
     textureEntry = D_800CD6B0_main[0].texture;
     if (!(*flags & 0x6000000)) {
-        func_8002A358_main(material, textureEntry, *flags);
+        SetBlendMode(material, textureEntry, *flags);
         r = g = b = 0;
         if (textureEntry == (HmfData_Unk84_Entry *)-1) {
             changed = 0;
@@ -1460,7 +1460,7 @@ void func_800260F0_main(HmfData *hmf, s32 *flags) {
                     D_800D1F78_main = r;
                     D_800D1FE2_main = g;
                     D_800CDA76_main = b;
-                    func_8002D094_main(&gMainGfxPos, D_800CE1D4_main->unk00 + 1,
+                    SetLightColor(&gMainGfxPos, D_800CE1D4_main->unk00 + 1,
                                        ((u16)D_800D1F78_main << 24) + ((u16)D_800D1FE2_main << 16) + ((u16)D_800CDA76_main << 8));
                     changed = 1;
                 }
@@ -1478,7 +1478,7 @@ void func_800260F0_main(HmfData *hmf, s32 *flags) {
                 D_800CDD5A_main = r;
                 D_800CE170_main = g;
                 D_800CDA86_main = b;
-                func_8002D094_main(&gMainGfxPos, 1,
+                SetLightColor(&gMainGfxPos, 1,
                                    ((u16)D_800CDD5A_main << 24) + ((u16)D_800CE170_main << 16) + ((u16)D_800CDA86_main << 8));
                 changed = 1;
             }
@@ -1537,7 +1537,7 @@ void func_800260F0_main(HmfData *hmf, s32 *flags) {
                 D_800D1F78_main = r;
                 D_800D1FE2_main = g;
                 D_800CDA76_main = b;
-                func_8002D094_main(&gMainGfxPos, D_800CE1D4_main->unk00 + 1,
+                SetLightColor(&gMainGfxPos, D_800CE1D4_main->unk00 + 1,
                                    ((u16)D_800D1F78_main << 24) + ((u16)D_800D1FE2_main << 16) + ((u16)D_800CDA76_main << 8));
             }
             switch ((s8)textureEntry->unk0[0]) {
@@ -1574,7 +1574,7 @@ void func_800260F0_main(HmfData *hmf, s32 *flags) {
                 D_800CDD5A_main = r;
                 D_800CE170_main = g;
                 D_800CDA86_main = b;
-                func_8002D094_main(&gMainGfxPos, 1,
+                SetLightColor(&gMainGfxPos, 1,
                                    ((u16)D_800CDD5A_main << 24) + ((u16)D_800CE170_main << 16) + ((u16)D_800CDA86_main << 8));
             }
             if (changed || (textureEntry != D_800D0440_main && !(*flags & 0x8000000))) {
@@ -1759,7 +1759,7 @@ void func_800260F0_main(HmfData *hmf, s32 *flags) {
     D_800CDD66_main = D_800CE1CE_main;
 }
 
-void func_80029FB4_main(HmfData *hmf, s16 objectIndex) {
+void ObjCullCheck(HmfData *hmf, s16 objectIndex) {
     s16 *position;
 
     gSPClearGeometryMode(gMainGfxPos++, G_LIGHTING);
@@ -1800,7 +1800,7 @@ void func_80029FB4_main(HmfData *hmf, s16 objectIndex) {
     gSPCullDisplayList(gMainGfxPos++, 0, 7);
 }
 
-void func_8002A358_main(HmfMaterialData *material, HmfData_Unk84_Entry *texture, u32 flags) {
+void SetBlendMode(HmfMaterialData *material, HmfData_Unk84_Entry *texture, u32 flags) {
     u8 materialFlags;
     s32 antialias;
     u64 combine;
@@ -2118,7 +2118,7 @@ void func_8002A358_main(HmfMaterialData *material, HmfData_Unk84_Entry *texture,
     }
 }
 
-void func_8002AC5C_main(u16 flags) {
+void SetFogMode(u16 flags) {
     u8 mode;
 
     mode = (flags >> 7) & 3;
@@ -2158,14 +2158,14 @@ void func_8002AC5C_main(u16 flags) {
     }
 }
 
-void func_8002AF40_main(void) {
+void SetClipRatio(void) {
     gMoveWd(gMainGfxPos++, G_MW_CLIP, G_MWO_CLIP_RNX, *D_800A0AE8_main[D_800CC0A8_main]);
     gMoveWd(gMainGfxPos++, G_MW_CLIP, G_MWO_CLIP_RNY, *D_800A0AE8_main[D_800CC0A8_main]);
     gMoveWd(gMainGfxPos++, G_MW_CLIP, G_MWO_CLIP_RPX, *(D_800A0AE8_main[D_800CC0A8_main] + 1));
     gMoveWd(gMainGfxPos++, G_MW_CLIP, G_MWO_CLIP_RPY, *(D_800A0AE8_main[D_800CC0A8_main] + 1));
 }
 
-void func_8002AFEC_main(HmfData *hmf, s32 flags, s16 objectIndex) {
+void SetupGeometry(HmfData *hmf, s32 flags, s16 objectIndex) {
     if (D_800D1F74_main != flags || (flags & 0xE000000)) {
         D_800D1F74_main = flags;
         gSPDisplayList(gMainGfxPos++, D_800A0A80_main);
@@ -2177,14 +2177,14 @@ void func_8002AFEC_main(HmfData *hmf, s32 flags, s16 objectIndex) {
             gSPSetGeometryMode(gMainGfxPos++, G_FOG);
         }
         if (flags & 0x6000000) {
-            func_8002C0EC_main(hmf, objectIndex);
+            SetHilite(hmf, objectIndex);
         } else if (flags & 0x8000000) {
-            func_8002B104_main(hmf, objectIndex);
+            SetReflect(hmf, objectIndex);
         }
     }
 }
 
-void func_8002B104_main(HmfData *hmf, s16 objectIndex) {
+void SetReflect(HmfData *hmf, s16 objectIndex) {
     HuMtx4F mtx;
     HmfData_Unk84_Entry2 *texture;
 
@@ -2203,11 +2203,11 @@ void func_8002B104_main(HmfData *hmf, s16 objectIndex) {
     } else {
         texture = hmf->unk9C;
     }
-    func_8002B2AC_main(texture, 0, 0);
+    LoadTexture(texture, 0, 0);
     gSPSetGeometryMode(gMainGfxPos++, G_TEXTURE_GEN | G_LIGHTING);
 }
 
-void func_8002B2AC_main(HmfData_Unk84_Entry2 *texture, s16 wrapS, s16 wrapT) {
+void LoadTexture(HmfData_Unk84_Entry2 *texture, s16 wrapS, s16 wrapT) {
     if (texture->unk1C != G_IM_FMT_CI) {
         gDPSetTextureLUT(gMainGfxPos++, G_TT_NONE);
         switch (texture->unk1D) {
@@ -2259,7 +2259,7 @@ void func_8002B2AC_main(HmfData_Unk84_Entry2 *texture, s16 wrapS, s16 wrapT) {
     }
 }
 
-void func_8002C0EC_main(HmfData *hmf, s16 objectIndex) {
+void SetHilite(HmfData *hmf, s16 objectIndex) {
     Mtx mtx;
     Light *light;
     u8 *texture;
@@ -2291,24 +2291,24 @@ void func_8002C0EC_main(HmfData *hmf, s16 objectIndex) {
     D_800D1FD0_main = 0xFFFFFFFF;
 }
 
-s32 func_8002C4C0_main(HmfData *arg0, s16 arg1, HuMtx4F arg2, HuMtx4F arg3) {
+s32 objBillboardCheck(HmfData *arg0, s16 arg1, HuMtx4F arg2, HuMtx4F arg3) {
     if (!(arg0->unk60[arg1].unk50 & 0x70000000)) {
         return 0;
     }
-    func_80018544_main(arg2, arg3);
+    HmfInverseMtxF3X3Cat(arg2, arg3);
     return 1;
 }
 
-void func_8002C520_main(HmfData *hmf, s16 nodeIndex, HuMtx4F mtx) {
+void Hu3DModelObjMtxGet(HmfData *hmf, s16 nodeIndex, HuMtx4F mtx) {
     D_800D138A_main = 0;
     guMtxIdentF(D_800D5A00_main[0]);
     if (hmf->unk80 == (HmfMotionNode *)-1 && hmf->unk64 != 0) {
-        func_8002C5B8_main(hmf, 0, nodeIndex);
-        func_8002367C_main(mtx, D_800D5A00_main[D_800D138A_main]);
+        objMtxCalc(hmf, 0, nodeIndex);
+        mtxCopy(mtx, D_800D5A00_main[D_800D138A_main]);
     }
 }
 
-s32 func_8002C5B8_main(HmfData *hmf, s16 nodeIndex, s16 targetIndex) {
+s32 objMtxCalc(HmfData *hmf, s16 nodeIndex, s16 targetIndex) {
     HuMtx4F mtx;
     HmfSkeletonNode *node;
     s8 changed;
@@ -2331,30 +2331,30 @@ s32 func_8002C5B8_main(HmfData *hmf, s16 nodeIndex, s16 targetIndex) {
     }
     if (changed) {
         matrixIndex = ++D_800D138A_main;
-        func_80018044_main(mtx, D_800D59C0_main[matrixIndex], D_800D59C0_main[matrixIndex + 1]);
+        mtxCat(mtx, D_800D59C0_main[matrixIndex], D_800D59C0_main[matrixIndex + 1]);
     }
     if (targetIndex == nodeIndex) {
         return 0;
     }
-    if (node->unk04 != 0 && func_8002C5B8_main(hmf, nodeIndex + node->unk04, targetIndex) == 0) {
+    if (node->unk04 != 0 && objMtxCalc(hmf, nodeIndex + node->unk04, targetIndex) == 0) {
         return 0;
     }
     if (changed) {
         D_800D138A_main--;
     }
     if (node->unk02 != 0) {
-        if (func_8002C5B8_main(hmf, nodeIndex + node->unk02, targetIndex) == 0) {
+        if (objMtxCalc(hmf, nodeIndex + node->unk02, targetIndex) == 0) {
             return 0;
         }
     }
     return 1;
 }
 
-s16 func_8002C834_main(HmfData *arg0, const char *name) {
+s16 SearchObjectIndex(HmfData *arg0, const char *name) {
     s16 hash;
     s16 i;
 
-    hash = func_80011460_main((const u8 *)name);
+    hash = HmfNameHash((const u8 *)name);
     for (i = 0; i < arg0->unk10; i++) {
         if (arg0->unk60[i].unk26 == hash && strcmp(arg0->unk60[i].unk00, name) == 0) {
             break;
@@ -2367,16 +2367,16 @@ s16 func_8002C834_main(HmfData *arg0, const char *name) {
     return i;
 }
 
-void func_8002C914_main(HmfData *hmf, char *name, HmfData *replacement) {
+void Hu3DObjReplace(HmfData *hmf, char *name, HmfData *replacement) {
     s16 objectIndex;
 
-    objectIndex = func_8002C834_main(hmf, name);
+    objectIndex = SearchObjectIndex(hmf, name);
     if (objectIndex != -1) {
-        func_8002C960_main(hmf, objectIndex, replacement);
+        Hu3DObjReplaceIdx(hmf, objectIndex, replacement);
     }
 }
 
-void func_8002C960_main(HmfData *hmf, s16 objectIndex, HmfData *replacement) {
+void Hu3DObjReplaceIdx(HmfData *hmf, s16 objectIndex, HmfData *replacement) {
     s16 i;
     s16 hash;
     s16 j;
@@ -2400,22 +2400,22 @@ void func_8002C960_main(HmfData *hmf, s16 objectIndex, HmfData *replacement) {
     }
 }
 
-void func_8002CAE4_main(HmfData *hmf) {
+void Hu3DMtxCalc(HmfData *hmf) {
     if (hmf->unk14 != 0) {
         D_800D5214_main = 0;
         D_800D138A_main = 0;
         func_8008A070_main(D_800D5A00_main[0]);
         if (hmf->unk80 == (HmfMotionNode *)-1) {
             if (hmf->unk64 != 0) {
-                func_8002CB6C_main(hmf, 0);
+                objMtxCalcSkeleton(hmf, 0);
             }
         } else if (hmf->unk16 != 0) {
-            func_8002CDF4_main(hmf, 0);
+            objMtxCalcMotion(hmf, 0);
         }
     }
 }
 
-void func_8002CB6C_main(HmfData *hmf, s16 nodeIndex) {
+void objMtxCalcSkeleton(HmfData *hmf, s16 nodeIndex) {
     HuMtx4F mtx;
     HmfSkeletonNode *node;
     s8 scaled;
@@ -2443,11 +2443,11 @@ void func_8002CB6C_main(HmfData *hmf, s16 nodeIndex) {
     }
     if (changed) {
         matrixIndex = ++D_800D138A_main;
-        func_80018044_main(mtx, D_800D59C0_main[matrixIndex], D_800D59C0_main[matrixIndex + 1]);
+        mtxCat(mtx, D_800D59C0_main[matrixIndex], D_800D59C0_main[matrixIndex + 1]);
     }
-    func_8002367C_main(node->unk4C, D_800D5A00_main[D_800D138A_main]);
+    mtxCopy(node->unk4C, D_800D5A00_main[D_800D138A_main]);
     if (node->unk04 != 0) {
-        func_8002CB6C_main(hmf, nodeIndex + node->unk04);
+        objMtxCalcSkeleton(hmf, nodeIndex + node->unk04);
     }
     if (changed) {
         D_800D138A_main--;
@@ -2456,11 +2456,11 @@ void func_8002CB6C_main(HmfData *hmf, s16 nodeIndex) {
         D_800D5214_main--;
     }
     if (node->unk02 != 0) {
-        func_8002CB6C_main(hmf, nodeIndex + node->unk02);
+        objMtxCalcSkeleton(hmf, nodeIndex + node->unk02);
     }
 }
 
-void func_8002CDF4_main(HmfData *hmf, s16 nodeIndex) {
+void objMtxCalcMotion(HmfData *hmf, s16 nodeIndex) {
     HuMtx4F mtx;
     HmfMotionNode *node;
     s16 i;
@@ -2488,14 +2488,14 @@ void func_8002CDF4_main(HmfData *hmf, s16 nodeIndex) {
     }
     if (changed) {
         matrixIndex = ++D_800D138A_main;
-        func_80018044_main(mtx, D_800D59C0_main[matrixIndex], D_800D59C0_main[matrixIndex + 1]);
+        mtxCat(mtx, D_800D59C0_main[matrixIndex], D_800D59C0_main[matrixIndex + 1]);
     }
-    func_8002367C_main(node->unk58, D_800D5A00_main[D_800D138A_main]);
+    mtxCopy(node->unk58, D_800D5A00_main[D_800D138A_main]);
     for (i = 0; i < node->unk00; i++) {
         child = node->unk50[i];
         if (child & 0x8000) {
             if (child != -1) {
-                func_8002CDF4_main(hmf, child & 0x7FFF);
+                objMtxCalcMotion(hmf, child & 0x7FFF);
             }
         }
     }
@@ -2507,7 +2507,7 @@ void func_8002CDF4_main(HmfData *hmf, s16 nodeIndex) {
     }
 }
 
-void func_8002D094_main(Gfx **arg0, s16 arg1, s32 color) {
+void SetLightColor(Gfx **arg0, s16 arg1, s32 color) {
     switch (arg1) {
         case 0:
         case 1:
@@ -2543,14 +2543,14 @@ void func_8002D094_main(Gfx **arg0, s16 arg1, s32 color) {
 void Hu3DMotionInit(void) {
     s16 i;
 
-    func_80030030_main(1.0f);
+    Hu3DMotionGlobalSpeedSet(1.0f);
     D_800CCF58_main = HuMemAlloc(HU3D_MODEL_MAX * sizeof(*D_800CCF58_main));
     for (i = 0; i < HU3D_MODEL_MAX; i++) {
         D_800CCF58_main[i].unk02 = -1;
     }
 }
 
-s16 func_8002D2D8_main(HmfMotionFile *file, HmfData *hmf) {
+s16 Hu3DMotionCreateSub(HmfMotionFile *file, HmfData *hmf) {
     s16 i;
 
     for (i = 0; i < HU3D_MODEL_MAX; i++) {
@@ -2561,7 +2561,7 @@ s16 func_8002D2D8_main(HmfMotionFile *file, HmfData *hmf) {
     if (i == HU3D_MODEL_MAX) {
         return -1;
     }
-    if ((s16)func_8002D3D0_main(hmf, file, i) != 0) {
+    if ((s16)MotionLoad(hmf, file, i) != 0) {
         if (hmf == NULL) {
             return i;
         }
@@ -2571,11 +2571,11 @@ s16 func_8002D2D8_main(HmfMotionFile *file, HmfData *hmf) {
     return -1;
 }
 
-s32 func_8002D3AC_main(HmfMotionFile *file) {
-    return func_8002D2D8_main(file, NULL);
+s32 Hu3DMotionCreateNoHmf(HmfMotionFile *file) {
+    return Hu3DMotionCreateSub(file, NULL);
 }
 
-s32 func_8002D3D0_main(HmfData *hmf, HmfMotionFile *file, s32 arg2) {
+s32 MotionLoad(HmfData *hmf, HmfMotionFile *file, s32 arg2) {
     s16 modelIndex = arg2;
     u32 size;
     HmfMotionFile *copy;
@@ -2587,10 +2587,10 @@ s32 func_8002D3D0_main(HmfData *hmf, HmfMotionFile *file, s32 arg2) {
         size = file->size + 8;
         copy = HuMemAllocTag(size, D_800CE2B4_main);
         bcopy(file, copy, size);
-        func_8002DF2C_main(&D_800CCF58_main[modelIndex], copy);
+        MotionLoadFixup(&D_800CCF58_main[modelIndex], copy);
         result = 1;
     } else {
-        result = func_8002D5B0_main(&D_800CCF58_main[modelIndex], hmf) != 0;
+        result = MotionLoadTransform(&D_800CCF58_main[modelIndex], hmf) != 0;
     }
     return result;
 }
@@ -2615,7 +2615,7 @@ void Hu3DMotionAllKill(void) {
     }
 }
 
-s32 func_8002D5B0_main(HmfModelData_Unk64_Unk8C_Struct *motion, HmfData *hmf) {
+s32 MotionLoadTransform(HmfModelData_Unk64_Unk8C_Struct *motion, HmfData *hmf) {
     u8 *data;
     u8 *record;
     HmfMotionChannel *channels;
@@ -2636,7 +2636,7 @@ s32 func_8002D5B0_main(HmfModelData_Unk64_Unk8C_Struct *motion, HmfData *hmf) {
     channelCapacity = 0;
     blockCount = 0;
     while (1) {
-        data = func_80010A38_main(0x4D544E31, data, hmf->unk30);
+        data = HmfChunkSearch(0x4D544E31, data, hmf->unk30);
         if (data == NULL) {
             break;
         }
@@ -2645,7 +2645,7 @@ s32 func_8002D5B0_main(HmfModelData_Unk64_Unk8C_Struct *motion, HmfData *hmf) {
             channelCapacity += data[10];
         }
         blockCount++;
-        data = func_80010AC8_main(data + 4);
+        data = HmfChunkNext(data + 4);
     }
     if (channelCapacity == 0) {
         return 0;
@@ -2662,9 +2662,9 @@ s32 func_8002D5B0_main(HmfModelData_Unk64_Unk8C_Struct *motion, HmfData *hmf) {
     channelIndex = 0;
     materialIndex = 0;
     for (; blockIndex < blockCount; blockIndex++) {
-        data = func_80010A38_main(0x4D544E31, data, hmf->unk30);
+        data = HmfChunkSearch(0x4D544E31, data, hmf->unk30);
         record = data;
-        objectIndex = func_8000FDAC_main(hmf, (data[8] << 8) + data[9]);
+        objectIndex = HmfRecordCount(hmf, (data[8] << 8) + data[9]);
         channelCount = data[10];
         if (channelCount != 0) {
             if ((data[11] << 8) + data[12] > duration) {
@@ -2678,12 +2678,12 @@ s32 func_8002D5B0_main(HmfModelData_Unk64_Unk8C_Struct *motion, HmfData *hmf) {
                 motion->unk08[channelIndex] = &channels[i];
                 switch (type) {
                     case 0x4E:
-                        if (func_8002DA98_main(motion, channelIndex, record + 2)) {
+                        if (MotionLoadChannel(motion, channelIndex, record + 2)) {
                             channelIndex++;
                         }
                         break;
                     case 0x0D:
-                        if (func_8002DA98_main(motion, channelIndex, record + 2)) {
+                        if (MotionLoadChannel(motion, channelIndex, record + 2)) {
                             motion->unk08[channelIndex]->targetIndex = objectIndex;
                             if (objectIndex == -1) {
                                 motion->unk0C[channelIndex] = 0x4E;
@@ -2695,14 +2695,14 @@ s32 func_8002D5B0_main(HmfModelData_Unk64_Unk8C_Struct *motion, HmfData *hmf) {
                         if (materialIndex == 0) {
                             hmf->unk98 = HuMemAllocTag(sizeof(*hmf->unk98), (s16)(hmf->unk0E + 1));
                         }
-                        if (func_8002DD4C_main(hmf, materialIndex, record + 4)) {
+                        if (MotionLoadMaterial(hmf, materialIndex, record + 4)) {
                             materialIndex++;
                         }
                         break;
                 }
                 record += (record[0] << 8) + record[1] + 2;
             }
-            data = func_80010AC8_main(data + 4);
+            data = HmfChunkNext(data + 4);
         }
     }
     if (materialIndex != 0) {
@@ -2727,7 +2727,7 @@ s32 func_8002D5B0_main(HmfModelData_Unk64_Unk8C_Struct *motion, HmfData *hmf) {
     return 1;
 }
 
-s32 func_8002DA98_main(HmfModelData_Unk64_Unk8C_Struct *motion, s16 channelIndex, u8 *data) {
+s32 MotionLoadChannel(HmfModelData_Unk64_Unk8C_Struct *motion, s16 channelIndex, u8 *data) {
     HmfMotionChannel *channel;
     s16 i;
     u16 type;
@@ -2797,7 +2797,7 @@ s32 func_8002DA98_main(HmfModelData_Unk64_Unk8C_Struct *motion, s16 channelIndex
     return 1;
 }
 
-s32 func_8002DD4C_main(HmfData *hmf, s16 trackIndex, u8 *data) {
+s32 MotionLoadMaterial(HmfData *hmf, s16 trackIndex, u8 *data) {
     HmfMaterialAnimTrack *track;
     s16 count;
     s16 i;
@@ -2824,7 +2824,7 @@ s32 func_8002DD4C_main(HmfData *hmf, s16 trackIndex, u8 *data) {
     return 1;
 }
 
-s32 func_8002DF2C_main(HmfModelData_Unk64_Unk8C_Struct *motion, HmfMotionFile *file) {
+s32 MotionLoadFixup(HmfModelData_Unk64_Unk8C_Struct *motion, HmfMotionFile *file) {
     s16 count;
     s16 i;
     u32 *offsets;
@@ -2845,7 +2845,7 @@ s32 func_8002DF2C_main(HmfModelData_Unk64_Unk8C_Struct *motion, HmfMotionFile *f
     return 1;
 }
 
-void func_8002DFF8_main(HmfData *hmf, f32 frame, HmfModelData_Unk64_Unk8C_Struct *motion, s32 reset) {
+void Hu3DMotionExec(HmfData *hmf, f32 frame, HmfModelData_Unk64_Unk8C_Struct *motion, s32 reset) {
     HmfData_UnkBC *environment;
     HmfSkeletonNode *skeleton;
     HmfSkeletonNode *object;
@@ -2932,9 +2932,9 @@ void func_8002DFF8_main(HmfData *hmf, f32 frame, HmfModelData_Unk64_Unk8C_Struct
                     value += 2;
                 }
                 if (channel->interpolation == 'I') {
-                    *value = func_8002E78C_main(motion, channel, frame);
+                    *value = GetLinear(motion, channel, frame);
                 } else {
-                    *value = func_8002E8E8_main(motion, channel, frame);
+                    *value = GetCurve(motion, channel, frame);
                 }
                 continue;
             }
@@ -2958,9 +2958,9 @@ void func_8002DFF8_main(HmfData *hmf, f32 frame, HmfModelData_Unk64_Unk8C_Struct
                                     break;
                             }
                             if (channel->interpolation == 'I') {
-                                *value = func_8002E78C_main(motion, channel, frame);
+                                *value = GetLinear(motion, channel, frame);
                             } else {
-                                *value = func_8002E8E8_main(motion, channel, frame);
+                                *value = GetCurve(motion, channel, frame);
                             }
                             hmf->unk68[index].unk45 = 0x80;
                             break;
@@ -2973,9 +2973,9 @@ void func_8002DFF8_main(HmfData *hmf, f32 frame, HmfModelData_Unk64_Unk8C_Struct
                                 value += 2;
                             }
                             if (channel->interpolation == 'I') {
-                                *value = func_8002E78C_main(motion, channel, frame);
+                                *value = GetLinear(motion, channel, frame);
                             } else {
-                                *value = func_8002E8E8_main(motion, channel, frame);
+                                *value = GetCurve(motion, channel, frame);
                             }
                             hmf->unk68[index].unk44 = 0x80;
                             break;
@@ -2988,9 +2988,9 @@ void func_8002DFF8_main(HmfData *hmf, f32 frame, HmfModelData_Unk64_Unk8C_Struct
                                 value += 2;
                             }
                             if (channel->interpolation == 'I') {
-                                *value = func_8002E78C_main(motion, channel, frame);
+                                *value = GetLinear(motion, channel, frame);
                             } else {
-                                *value = func_8002E8E8_main(motion, channel, frame);
+                                *value = GetCurve(motion, channel, frame);
                             }
                             hmf->unk68[index].unk44 = 0x80;
                             break;
@@ -3007,9 +3007,9 @@ void func_8002DFF8_main(HmfData *hmf, f32 frame, HmfModelData_Unk64_Unk8C_Struct
                                 value += 2;
                             }
                             if (channel->interpolation == 'I') {
-                                *value = func_8002E78C_main(motion, channel, frame);
+                                *value = GetLinear(motion, channel, frame);
                             } else {
-                                *value = func_8002E8E8_main(motion, channel, frame);
+                                *value = GetCurve(motion, channel, frame);
                             }
                             node->unk4C = 0x80;
                             break;
@@ -3021,9 +3021,9 @@ void func_8002DFF8_main(HmfData *hmf, f32 frame, HmfModelData_Unk64_Unk8C_Struct
                                 value += 2;
                             }
                             if (channel->interpolation == 'I') {
-                                *value = func_8002E78C_main(motion, channel, frame);
+                                *value = GetLinear(motion, channel, frame);
                             } else {
-                                *value = func_8002E8E8_main(motion, channel, frame);
+                                *value = GetCurve(motion, channel, frame);
                             }
                             node->unk4D = 0x80;
                             break;
@@ -3035,9 +3035,9 @@ void func_8002DFF8_main(HmfData *hmf, f32 frame, HmfModelData_Unk64_Unk8C_Struct
                                 value += 2;
                             }
                             if (channel->interpolation == 'I') {
-                                *value = func_8002E78C_main(motion, channel, frame);
+                                *value = GetLinear(motion, channel, frame);
                             } else {
-                                *value = func_8002E8E8_main(motion, channel, frame);
+                                *value = GetCurve(motion, channel, frame);
                             }
                             node->unk4E = 0x80;
                             break;
@@ -3048,7 +3048,7 @@ void func_8002DFF8_main(HmfData *hmf, f32 frame, HmfModelData_Unk64_Unk8C_Struct
     }
 }
 
-f32 func_8002E78C_main(HmfModelData_Unk64_Unk8C_Struct *motion, HmfMotionChannel *channel, f32 frame) {
+f32 GetLinear(HmfModelData_Unk64_Unk8C_Struct *motion, HmfMotionChannel *channel, f32 frame) {
     f32 *values;
     s16 *times;
     s16 i;
@@ -3081,7 +3081,7 @@ const u32 D_800A6CC8_main[2] = { 0, 0 };
 const f64 D_800A6CD0_main = 1.0;
 const f64 D_800A6CD8_main = 3.0;
 
-f32 func_8002E8E8_main(HmfModelData_Unk64_Unk8C_Struct *motion, HmfMotionChannel *channel, f32 frame) {
+f32 GetCurve(HmfModelData_Unk64_Unk8C_Struct *motion, HmfMotionChannel *channel, f32 frame) {
     HmfHermiteKey *values;
     HmfHermiteKey *previous;
     HmfHermiteKey *next;
@@ -3132,7 +3132,7 @@ f32 func_8002E8E8_main(HmfModelData_Unk64_Unk8C_Struct *motion, HmfMotionChannel
     }
 }
 
-void func_8002EAC0_main(HmfData *hmf, f32 frame, f32 weight) {
+void Hu3DSubMotionExec(HmfData *hmf, f32 frame, f32 weight) {
     HmfModelData_Unk64_Unk8C_Struct *motion;
     HmfMotionChannel *channel;
     HmfSkeletonNode *skeleton;
@@ -3177,9 +3177,9 @@ void func_8002EAC0_main(HmfData *hmf, f32 frame, f32 weight) {
                     case 0x4C:
                         value = &hmf->unk68[index].rot.x + component;
                         if (channel->interpolation == 'I') {
-                            result = func_8002E78C_main(motion, channel, frame);
+                            result = GetLinear(motion, channel, frame);
                         } else {
-                            result = func_8002E8E8_main(motion, channel, frame);
+                            result = GetCurve(motion, channel, frame);
                         }
                         if (result < -180.0f) {
                             result += 360.0f;
@@ -3200,9 +3200,9 @@ void func_8002EAC0_main(HmfData *hmf, f32 frame, f32 weight) {
                     case 0x4F:
                         value = &hmf->unk68[index].pos.x + component;
                         if (channel->interpolation == 'I') {
-                            result = func_8002E78C_main(motion, channel, frame);
+                            result = GetLinear(motion, channel, frame);
                         } else {
-                            result = func_8002E8E8_main(motion, channel, frame);
+                            result = GetCurve(motion, channel, frame);
                         }
                         *value = inverseWeight * *value + result * weight;
                         hmf->unk68[index].unk44 |= (1 << component) | 0x40;
@@ -3214,9 +3214,9 @@ void func_8002EAC0_main(HmfData *hmf, f32 frame, f32 weight) {
                     case 0x17:
                         value = &hmf->unk80[index].pos.x + component;
                         if (channel->interpolation == 'I') {
-                            result = func_8002E78C_main(motion, channel, frame);
+                            result = GetLinear(motion, channel, frame);
                         } else {
-                            result = func_8002E8E8_main(motion, channel, frame);
+                            result = GetCurve(motion, channel, frame);
                         }
                         *value = inverseWeight * *value + result * weight;
                         hmf->unk80[index].unk4C |= (1 << component) | 0x40;
@@ -3224,9 +3224,9 @@ void func_8002EAC0_main(HmfData *hmf, f32 frame, f32 weight) {
                     case 0x4C:
                         value = &hmf->unk80[index].rot.x + component;
                         if (channel->interpolation == 'I') {
-                            result = func_8002E78C_main(motion, channel, frame);
+                            result = GetLinear(motion, channel, frame);
                         } else {
-                            result = func_8002E8E8_main(motion, channel, frame);
+                            result = GetCurve(motion, channel, frame);
                         }
                         if (result < 0.0f) {
                             result += 360.0f;
@@ -3249,9 +3249,9 @@ void func_8002EAC0_main(HmfData *hmf, f32 frame, f32 weight) {
                     case 0x1B:
                         value = &hmf->unk80[index].scale.x + component;
                         if (channel->interpolation == 'I') {
-                            result = func_8002E78C_main(motion, channel, frame);
+                            result = GetLinear(motion, channel, frame);
                         } else {
-                            result = func_8002E8E8_main(motion, channel, frame);
+                            result = GetCurve(motion, channel, frame);
                         }
                         *value = inverseWeight * *value + result * weight;
                         hmf->unk80[index].unk4E |= (1 << component) | 0x40;
@@ -3367,7 +3367,7 @@ void func_8002EAC0_main(HmfData *hmf, f32 frame, f32 weight) {
     }
 }
 
-s32 func_8002F60C_main(HmfData *hmf) {
+s32 SetObjMatMotion(HmfData *hmf) {
     HmfMaterialAnimTrack *track;
     s16 i;
     s16 j;
@@ -3412,7 +3412,7 @@ s32 func_8002F60C_main(HmfData *hmf) {
     return 1;
 }
 
-void func_8002FB08_main(HmfData *arg0, f32 arg1) {
+void Hu3DAnimTimeStep(HmfData *arg0, f32 arg1) {
     if (arg0->unk98->unk02 & 1) {
         return;
     }
@@ -3430,7 +3430,7 @@ void func_8002FB08_main(HmfData *arg0, f32 arg1) {
     }
 }
 
-void func_8002FB98_main(HmfData *arg0, f32 arg1) {
+void Hu3DMotionTimeStepFwd(HmfData *arg0, f32 arg1) {
     arg0->unkA0 = arg1 * D_800D2120_main + arg0->unkA0;
 
     if (arg0->unkA0 >= arg0->unk8C->unk02) {
@@ -3442,7 +3442,7 @@ void func_8002FB98_main(HmfData *arg0, f32 arg1) {
     }
 }
 
-void func_8002FC14_main(HmfData *arg0, f32 arg1) {
+void Hu3DMotionTimeStepBwd(HmfData *arg0, f32 arg1) {
     arg0->unkA0 = arg0->unkA0 - arg1 * D_800D2120_main;
 
     if (arg0->unkA0 < 0) {
@@ -3454,7 +3454,7 @@ void func_8002FC14_main(HmfData *arg0, f32 arg1) {
     }
 }
 
-f32 func_8002FC7C_main(HmfModelData_Unk64_Unk8C_Struct *arg0, u16 flags, f32 frame, f32 start, f32 speed) {
+f32 Hu3DMotionTimeCalc(HmfModelData_Unk64_Unk8C_Struct *arg0, u16 flags, f32 frame, f32 start, f32 speed) {
     speed *= D_800A0A78_main * D_800D2120_main;
     if (!(flags & 9)) {
         if (!(flags & 4)) {
@@ -3480,27 +3480,27 @@ f32 func_8002FC7C_main(HmfModelData_Unk64_Unk8C_Struct *arg0, u16 flags, f32 fra
     return frame;
 }
 
-void func_8002FD48_main(HmfData *arg0) {
+void Hu3DMotionTimeReset(HmfData *arg0) {
     arg0->unkA0 = 0;
 }
 
-void func_8002FD50_main(HmfData *arg0) {
+void Hu3DMotionTimeEnd(HmfData *arg0) {
     arg0->unkA0 = arg0->unk8C->unk02 - 1;
 }
 
-s16 func_8002FD70_main(HmfData *arg0) {
+s16 Hu3DMotionTimeGet(HmfData *arg0) {
     return arg0->unkA0;
 }
 
-void func_8002FD8C_main(s16 arg0, s16 arg1, const char *arg2, s16 arg3, s16 arg4) {
-    func_8002FE08_main(arg0, arg1, arg2, arg3, arg4, 0x8000);
+void Hu3DMotionNoMotSet(s16 arg0, s16 arg1, const char *arg2, s16 arg3, s16 arg4) {
+    Hu3DMotionNoMotSetEx(arg0, arg1, arg2, arg3, arg4, 0x8000);
 }
 
-void func_8002FDCC_main(s16 arg0, s16 arg1, const char *arg2, s16 arg3, s16 arg4) {
-    func_8002FE08_main(arg0, arg1, arg2, arg3, arg4, 0);
+void Hu3DMotionNoMotReset(s16 arg0, s16 arg1, const char *arg2, s16 arg3, s16 arg4) {
+    Hu3DMotionNoMotSetEx(arg0, arg1, arg2, arg3, arg4, 0);
 }
 
-void func_8002FE08_main(s16 modelIndex, s16 motionIndex, const char *name, s16 target, s16 component, s16 flags) {
+void Hu3DMotionNoMotSetEx(s16 modelIndex, s16 motionIndex, const char *name, s16 target, s16 component, s16 flags) {
     HmfModelData_Unk64_Unk8C_Struct *motion;
     HmfData *hmf;
     s16 objectIndex;
@@ -3510,7 +3510,7 @@ void func_8002FE08_main(s16 modelIndex, s16 motionIndex, const char *name, s16 t
 
     motion = &D_800CCF58_main[motionIndex];
     hmf = Hu3DData[modelIndex].hmf;
-    objectIndex = func_8002C834_main(hmf, name);
+    objectIndex = SearchObjectIndex(hmf, name);
     for (i = 0; i < hmf->unk16; i++) {
         for (j = 0; j < hmf->unk80[i].unk00; j++) {
             if (hmf->unk80[i].unk50[j] == objectIndex) {
@@ -3530,6 +3530,6 @@ void func_8002FE08_main(s16 modelIndex, s16 motionIndex, const char *name, s16 t
     }
 }
 
-void func_80030030_main(f32 arg0) {
+void Hu3DMotionGlobalSpeedSet(f32 arg0) {
     D_800D2120_main = arg0;
 }

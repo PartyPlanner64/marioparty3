@@ -146,11 +146,11 @@ void func_801059A0_all_fired_up(void) {
     omObjData *object;
     s32 i;
 
-    func_8001FE20_main(32);
-    func_80021BE0_main(&D_800EBEB0_minigame, 64);
-    func_800142A0_main(64);
+    MapCollInit(32);
+    Hu3DQuadPoolInit(&D_800EBEB0_minigame, 64);
+    Hu3DSprModelInit(64);
     omInitObjMan(32, 0);
-    func_8004A208_main();
+    omGameSysInit();
     D_800EC1B8_minigame = 0;
     D_800EC280_minigame = 0;
     D_800EBE28_minigame = 0;
@@ -170,8 +170,8 @@ void func_801059A0_all_fired_up(void) {
         D_800EC598_minigame[D_800EC280_minigame++] = omAddObj(1, 2, 60, -1, func_80107DA4_all_fired_up);
     }
     for (i = 0; i < 4; i++) {
-        D_80109AF2_all_fired_up[i] = func_8000B108_main(0x4A0003, 0x819);
-        func_8001C258_main(D_80109AF2_all_fired_up[i], 4, 4);
+        D_80109AF2_all_fired_up[i] = Hu3DModelRead(0x4A0003, 0x819);
+        Hu3DModelAttrSet(D_80109AF2_all_fired_up[i], 4, 4);
     }
     func_80105F5C_all_fired_up();
     D_80109C58_all_fired_up = (rand8() * 6) >> 8;
@@ -213,8 +213,8 @@ void func_80105CE8_all_fired_up(void) {
     CRot.x = -45.0f;
     CRot.y = CRot.z = Center.x;
     CZoom = 2100.0f;
-    func_8000B5F0_main(1);
-    camIndex = func_8000B638_main();
+    CamSetupInit(1);
+    camIndex = CamSetupMapCullAdd();
     ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(camIndex, 30.0f, 80.0f, 8000.0f);
@@ -317,19 +317,19 @@ void func_80106348_all_fired_up(omObjData *object) {
     object->trans.y = D_80109B58_all_fired_up[work->unk00].y;
     object->trans.z = D_80109B58_all_fired_up[work->unk00].z;
     object->scale.x = object->scale.y = object->scale.z = 1.2f;
-    model = object->model[0] = func_8000B108_main(0xA008A, 0xAA9);
+    model = object->model[0] = Hu3DModelRead(0xA008A, 0xAA9);
     if (work->unk00 == 0) {
         Hu3DAnimRead(Hu3DData[model].hmf, 0xA008C, "c201n_00_DEF");
     } else {
         Hu3DAnimLink(Hu3DData[model].hmf, 0, 0, "c201n_00_DEF");
     }
     Hu3DModelRemakeStatic(model);
-    func_8001C514_main(model);
-    object->model[1] = func_8000B108_main(0x4A0004, 0x2D9);
+    Hu3DModelDynamicFree(model);
+    object->model[1] = Hu3DModelRead(0x4A0004, 0x2D9);
     Hu3DModelPosSet(object->model[1], object->trans.x, 0.0f, object->trans.z);
     if (work->unk00 >= 15) {
-        func_8001C258_main(object->model[0], 4, 4);
-        func_8001C258_main(object->model[1], 4, 4);
+        Hu3DModelAttrSet(object->model[0], 4, 4);
+        Hu3DModelAttrSet(object->model[1], 4, 4);
     }
     D_80109AC0_all_fired_up++;
 }
@@ -499,10 +499,10 @@ void func_80106B7C_all_fired_up(void) {
     work->unk0C = firstWork->unk0C;
     work->unk14 = firstWork->unk14;
     work->unk10 = firstWork->unk10;
-    func_8001C258_main(object->model[0], 4, 0);
+    Hu3DModelAttrSet(object->model[0], 4, 0);
     Hu3DModelPosSet(object->model[1], object->trans.x, object->trans.y, object->trans.z);
     Hu3DModelScaleSet(object->model[1], work->unk08, work->unk08, work->unk08);
-    func_8001C258_main(object->model[1], 4, 0);
+    Hu3DModelAttrSet(object->model[1], 4, 0);
 }
 
 void func_80106C68_all_fired_up(void) {
@@ -760,7 +760,7 @@ void func_80107BD4_all_fired_up(omObjData *object) {
             if (player->trans.y < object->trans.y + 36.0f && player->trans.y + 150.0f > object->trans.y - 36.0f) {
                 player->work[0] = 1;
                 D_801099C0_all_fired_up[data->unk59] = func_800E6E9C_minigame();
-                func_8004AC98_main(0x440, data->unk59);
+                HuAudPlayerFXPlay(0x440, data->unk59);
                 PlayerFXPlay(0x286, data->unk59);
                 omVibrate(data->unk59, 2, 2, 20);
             }
@@ -798,13 +798,13 @@ void func_80107DA4_all_fired_up(omObjData *object) {
     func_800E149C_minigame(object, 0, 2);
     Hu3DModelPosSet(object->model[1], object->trans.x, 0.0f, object->trans.z);
     Hu3DModelScaleSet(object->model[1], object->scale.x, object->scale.y, object->scale.z);
-    func_800E5A00_minigame(object, 0, func_80017BB8_main(chr, 0), 1, 0);
-    func_800E5A00_minigame(object, 1, func_80017BB8_main(chr, 1), 1, 0);
-    func_800E5A00_minigame(object, 2, func_80017BB8_main(chr, 2), 1, 0);
-    func_800E5A00_minigame(object, 6, func_80017BB8_main(chr, 4), 1, 19);
-    func_800E5A00_minigame(object, 21, func_80017BB8_main(chr, 0x1F), 0, 0);
-    func_800E5A00_minigame(object, 14, func_80017BB8_main(chr, 0x1A), 1, 0);
-    func_800E5A00_minigame(object, 13, func_80017BB8_main(chr, 0x2F), 1, 120);
+    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(chr, 0), 1, 0);
+    func_800E5A00_minigame(object, 1, CharMotionDataNumGet(chr, 1), 1, 0);
+    func_800E5A00_minigame(object, 2, CharMotionDataNumGet(chr, 2), 1, 0);
+    func_800E5A00_minigame(object, 6, CharMotionDataNumGet(chr, 4), 1, 19);
+    func_800E5A00_minigame(object, 21, CharMotionDataNumGet(chr, 0x1F), 0, 0);
+    func_800E5A00_minigame(object, 14, CharMotionDataNumGet(chr, 0x1A), 1, 0);
+    func_800E5A00_minigame(object, 13, CharMotionDataNumGet(chr, 0x2F), 1, 120);
     func_800E5690_minigame(object, 0);
     func_800E1328_minigame(object, 60.0f);
     object->func = func_801080C8_all_fired_up;
@@ -894,7 +894,7 @@ void func_801080C8_all_fired_up(omObjData *object) {
                                 character = 9;
                                 break;
                         }
-                        func_80045ED0_main((character << 16) | 0x2F);
+                        HuAudCharVoicePlay((character << 16) | 0x2F);
                         func_800E5690_minigame(object, 13);
                         D_80109A06_all_fired_up = 0;
                     }
@@ -984,7 +984,7 @@ void func_80108710_all_fired_up(omObjData *object) {
     }
     if (ABS(object->trans.x) > 700.0f) {
         func_800E149C_minigame(object, 0, 1);
-        func_8001C258_main(object->model[1], 4, 4);
+        Hu3DModelAttrSet(object->model[1], 4, 4);
         if (object->trans.y < -2000.0f) {
             object->work[0] = 3;
         }
@@ -1010,7 +1010,7 @@ void func_80108958_all_fired_up(omObjData *object) {
         if (D_80109A18_all_fired_up[player][i] >= 0) {
             if (D_80109A18_all_fired_up[player][i] == 0) {
                 Hu3DModelPosSet(D_80109AF2_all_fired_up[i], object->trans.x, object->trans.y, object->trans.z);
-                func_8001C258_main(D_80109AF2_all_fired_up[i], 4, 0);
+                Hu3DModelAttrSet(D_80109AF2_all_fired_up[i], 4, 0);
             }
             if (D_80109A18_all_fired_up[player][i] < 8) {
                 scale = D_80109A58_all_fired_up[D_80109A18_all_fired_up[player][i] / 2];
@@ -1275,7 +1275,7 @@ void func_801097B0_all_fired_up(omObjData *object) {
     HuSprAttrSet(group2, 0, 0x1000);
     HuSprPosSet(group2, 0, 160, 180);
     object->trans.x = object->trans.y = object->trans.z = 0.0f;
-    object->model[0] = func_8000B0A0_main(0x4A0000, 0x29D);
+    object->model[0] = Hu3DModelRead2(0x4A0000, 0x29D);
     work = HuMemAllocTag(0xB4, TAG_OVERLAY);
     object->data = work;
     memset(work, 0, 0xB4);

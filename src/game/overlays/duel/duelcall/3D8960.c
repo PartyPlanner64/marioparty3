@@ -28,6 +28,6 @@ void func_80105A6C_duelcall(void) {
 
 void func_80105A98_duelcall(void) {
     omInitObjMan(0xA, 0xA);
-    func_8004A208_main();
+    omGameSysInit();
     omAddPrcObj(func_80105A6C_duelcall, 0x1005, 0, 0);
 }

@@ -192,11 +192,11 @@ Vec2f func_8010C574_etch_n_catch(s32 x0, s32 y0, s32 x1, s32 y1);
 void func_801059A0_etch_n_catch(void) {
     s32 i;
 
-    func_8001FE20_main(32);
-    func_80021BE0_main(&D_800EBEB0_minigame, 64);
-    func_800142A0_main(64);
+    MapCollInit(32);
+    Hu3DQuadPoolInit(&D_800EBEB0_minigame, 64);
+    Hu3DSprModelInit(64);
     omInitObjMan(32, 0);
-    func_8004A208_main();
+    omGameSysInit();
     D_800EC1B8_minigame = 0;
     D_800EC280_minigame = 0;
     D_800EBE28_minigame = 0;
@@ -253,8 +253,8 @@ void func_80105D5C_etch_n_catch(void) {
     s32 camIndex;
     HuCamera *camera;
 
-    func_8000B5F0_main(1);
-    camIndex = func_8000B638_main();
+    CamSetupInit(1);
+    camIndex = CamSetupMapCullAdd();
     ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(camIndex, 27.211f, 80.0f, 8000.0f);
@@ -357,7 +357,7 @@ void func_80105ED4_etch_n_catch(omObjData *object) {
                                         break;
                                 }
                                 HuAudFXAllStop();
-                                func_80045ED0_main((voice << 16) | 0x2F);
+                                HuAudCharVoicePlay((voice << 16) | 0x2F);
                             } else {
                                 func_800E5690_minigame(D_800EC598_minigame[i], 14);
                             }
@@ -472,29 +472,29 @@ void func_80106334_etch_n_catch(omObjData *object) {
     Hu3DModelPosSet(object->model[1], object->trans.x - offsetX, 0.0f, object->trans.z - offsetZ);
     Hu3DModelScaleSet(object->model[1], object->scale.x, object->scale.y, object->scale.z);
     if (work->unk_02 == 8) {
-        object->model[2] = func_8000B108_main(0x330000, 0xAB9);
+        object->model[2] = Hu3DModelRead(0x330000, 0xAB9);
     } else {
-        object->model[2] = func_8000B108_main(0x330001, 0xAB9);
+        object->model[2] = Hu3DModelRead(0x330001, 0xAB9);
     }
     Hu3DModelPosSet(object->model[2], object->trans.x, object->trans.y, object->trans.z);
-    func_8001C814_main(object->model[2], 2, 1);
-    object->model[3] = func_8000B108_main(3, 0x89D);
-    object->model[4] = func_8000B108_main(4, 0x89D);
+    Hu3DMotionAttrSet(object->model[2], 2, 1);
+    object->model[3] = Hu3DModelRead(3, 0x89D);
+    object->model[4] = Hu3DModelRead(4, 0x89D);
     for (i = 0; i < 3; i++) {
         if (i == 0 && data->unk59 == 0) {
-            D_80111390_etch_n_catch[0][0] = func_8000B0D4_main(0x330006, 0x28D);
+            D_80111390_etch_n_catch[0][0] = Hu3DModelRead3(0x330006, 0x28D);
         } else {
             D_80111390_etch_n_catch[data->unk59][i] = Hu3DModelLink(D_80111390_etch_n_catch[0][0]);
         }
-        func_8001C814_main(D_80111390_etch_n_catch[data->unk59][i], 2, 2);
-        func_8001FA68_main(D_80111390_etch_n_catch[data->unk59][i]);
+        Hu3DMotionAttrSet(D_80111390_etch_n_catch[data->unk59][i], 2, 2);
+        Hu3DModelTPLvlInit(D_80111390_etch_n_catch[data->unk59][i]);
     }
     func_800E1328_minigame(object, 46.875f);
-    func_800E5A00_minigame(object, 0, func_80017BB8_main(chr, 0x47), 1, 0);
-    func_800E5A00_minigame(object, 1, func_80017BB8_main(chr, 0x48), 1, 0);
-    func_800E5A00_minigame(object, 13, func_80017BB8_main(chr, 0x2F), 1, 120);
-    func_800E5A00_minigame(object, 14, func_80017BB8_main(chr, 0x36), 1, 120);
-    func_800E5A00_minigame(object, 38, func_80017BB8_main(chr, 0), 1, 0);
+    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(chr, 0x47), 1, 0);
+    func_800E5A00_minigame(object, 1, CharMotionDataNumGet(chr, 0x48), 1, 0);
+    func_800E5A00_minigame(object, 13, CharMotionDataNumGet(chr, 0x2F), 1, 120);
+    func_800E5A00_minigame(object, 14, CharMotionDataNumGet(chr, 0x36), 1, 120);
+    func_800E5A00_minigame(object, 38, CharMotionDataNumGet(chr, 0), 1, 0);
     func_800E5690_minigame(object, 0);
     D_8010C6D9_etch_n_catch++;
 }
@@ -608,9 +608,9 @@ void func_80106A64_etch_n_catch(omObjData *object) {
     Hu3DModelPosSet(object->model[2], object->trans.x, object->trans.y, object->trans.z);
     Hu3DModelRotSet(object->model[2], object->rot.x, data->unk3C, object->rot.z);
     if (func_800E4A90_minigame(object) == 2) {
-        func_8001C814_main(object->model[2], 2, 1);
+        Hu3DMotionAttrSet(object->model[2], 2, 1);
     } else {
-        func_8001C814_main(object->model[2], 2, 2);
+        Hu3DMotionAttrSet(object->model[2], 2, 2);
     }
     switch (MgFlowStatGet()) {
         case MG_STATE_OPENING:
@@ -620,7 +620,7 @@ void func_80106A64_etch_n_catch(omObjData *object) {
             return;
         case MG_STATE_FINISH:
             if (func_800E6E9C_minigame() == 0) {
-                func_8001C258_main(object->model[2], 4, 4);
+                Hu3DModelAttrSet(object->model[2], 4, 4);
                 func_800E5690_minigame(object, 38);
             }
             data->unk3C = func_8010C4F8_etch_n_catch(data->unk3C);
@@ -642,7 +642,7 @@ void func_80106A64_etch_n_catch(omObjData *object) {
     pos.x = object->trans.x;
     pos.y = object->trans.y;
     pos.z = object->trans.z;
-    func_80012B14_main(0, &pos, &screenPos);
+    Hu3DCam3Dto2D(0, &pos, &screenPos);
     if (D_8010C838_etch_n_catch->unk_08 != D_8010C838_etch_n_catch->unk_04 ||
         D_8010C838_etch_n_catch->unk_0A != D_8010C838_etch_n_catch->unk_06) {
         D_8010C838_etch_n_catch->unk_08 = D_8010C838_etch_n_catch->unk_04;
@@ -827,7 +827,7 @@ void func_80106A64_etch_n_catch(omObjData *object) {
                                 func_801097B4_etch_n_catch(node);
                             }
                         } else {
-                            func_8001C258_main(node->unk_1E, 4, 4);
+                            Hu3DModelAttrSet(node->unk_1E, 4, 4);
                             func_80108BCC_etch_n_catch(&D_8010C838_etch_n_catch->unk_0C, node);
                         }
                     }
@@ -1374,11 +1374,11 @@ void func_801097B4_etch_n_catch(EtchNCatchNode *node) {
         Hu3DModelPosSet(node->unk_1E, node->unk_20.x, node->unk_20.y, node->unk_20.z);
         node->unk_20.y += 5.0f;
         if (node->unk_2C >= 15) {
-            func_8001C258_main(node->unk_1E, 4, 4);
+            Hu3DModelAttrSet(node->unk_1E, 4, 4);
             D_8010C6E8_etch_n_catch[node->unk_1C][node->unk_34] = 0;
         } else {
-            func_8001F9E4_main(node->unk_1E, 255 - node->unk_2C * 16);
-            func_8001C258_main(node->unk_1E, 4, 0);
+            Hu3DModelTPLvlSet(node->unk_1E, 255 - node->unk_2C * 16);
+            Hu3DModelAttrSet(node->unk_1E, 4, 0);
         }
     }
 }
@@ -1389,11 +1389,11 @@ void func_80109A54_etch_n_catch(omObjData *object) {
     s32 i;
 
     if (D_8010C6A0_etch_n_catch == 0) {
-        D_8010C83C_etch_n_catch = object->model[0] = func_8000B108_main(0xA0000, 0x8BD);
+        D_8010C83C_etch_n_catch = object->model[0] = Hu3DModelRead(0xA0000, 0x8BD);
     } else {
         object->model[0] = Hu3DModelLink(D_8010C83C_etch_n_catch);
     }
-    func_8001C258_main(object->model[0], 4, 0);
+    Hu3DModelAttrSet(object->model[0], 4, 0);
     object->data = HuMemAllocTag(sizeof(EtchNCatchPlayerData), TAG_OVERLAY);
     memset(object->data, 0, sizeof(EtchNCatchPlayerData));
     data = object->data;
@@ -1402,8 +1402,8 @@ void func_80109A54_etch_n_catch(omObjData *object) {
     data->base.unk5B = 0;
     data->unk160 = D_8010C6A0_etch_n_catch % 2;
     data->unk168 = 0.0f;
-    func_8000B460_main(object, 2, file | 8);
-    func_8000B460_main(object, 3, file);
+    omObjMotionRead(object, 2, file | 8);
+    omObjMotionRead(object, 3, file);
     Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[2]].motId, 0, 1, 2);
     switch (data->unk160) {
         case 0:
@@ -1424,19 +1424,19 @@ void func_80109A54_etch_n_catch(omObjData *object) {
     data->unk170 = data->unk174 = 0.0f;
     data->unk161 = 0;
     if (D_8010C6A0_etch_n_catch == 0) {
-        D_8010C83E_etch_n_catch = object->model[6] = func_8000B108_main(9, 0x8BD);
+        D_8010C83E_etch_n_catch = object->model[6] = Hu3DModelRead(9, 0x8BD);
     } else {
         object->model[6] = Hu3DModelLink(D_8010C83E_etch_n_catch);
     }
     Hu3DModelPosSet(object->model[6], object->trans.x, 0.0f, object->trans.z);
     for (i = 0; i < 5; i++) {
         if (i == 0) {
-            object->model[1] = func_8000B108_main(0x330006, 0x8AD);
+            object->model[1] = Hu3DModelRead(0x330006, 0x8AD);
         } else {
             object->model[i + 1] = Hu3DModelLink(object->model[1]);
         }
-        func_8001C814_main(object->model[i + 1], 2, 2);
-        func_8001FA68_main(object->model[i + 1]);
+        Hu3DMotionAttrSet(object->model[i + 1], 2, 2);
+        Hu3DModelTPLvlInit(object->model[i + 1]);
         data->unk1B4 = 0.0f;
         data->unk178[i].y = 1.0f;
     }
@@ -1472,7 +1472,7 @@ void func_80109EB8_etch_n_catch(omObjData *object) {
     pos.x = object->trans.x;
     pos.y = 0.0f;
     pos.z = object->trans.z;
-    func_80012B14_main(0, &pos, &screen);
+    Hu3DCam3Dto2D(0, &pos, &screen);
     D_8010C850_etch_n_catch[data->unk160][0] = screen.x / 2.0f;
     D_8010C850_etch_n_catch[data->unk160][1] = screen.y / 2.0f;
     switch (object->work[0]) {
@@ -1483,17 +1483,17 @@ void func_80109EB8_etch_n_catch(omObjData *object) {
             pos.x = object->trans.x;
             pos.y = 0.0f;
             pos.z = object->trans.z;
-            func_80012B14_main(0, &pos, &screen);
+            Hu3DCam3Dto2D(0, &pos, &screen);
             espPosSet(D_801113E8_etch_n_catch[data->unk160], screen.x, screen.y);
             data->unk164 = 0.5f;
             espScaleSet(D_801113E8_etch_n_catch[data->unk160], data->unk164, data->unk164);
             data->unk170 = data->unk174 = 0.0f;
             espZRotSet(D_801113E8_etch_n_catch[data->unk160], data->unk170);
             espDispOn(D_801113E8_etch_n_catch[data->unk160]);
-            func_8001C258_main(object->model[0], 4, 4);
-            func_8001C258_main(object->model[6], 4, 4);
+            Hu3DModelAttrSet(object->model[0], 4, 4);
+            Hu3DModelAttrSet(object->model[6], 4, 4);
             for (i = 0; i < 5; i++) {
-                func_8001C258_main(object->model[i + 1], 4, 4);
+                Hu3DModelAttrSet(object->model[i + 1], 4, 4);
             }
             data->unk15C = 0;
             object->work[0] = 1;
@@ -1517,8 +1517,8 @@ void func_80109EB8_etch_n_catch(omObjData *object) {
                 D_8010C6F8_etch_n_catch[data->unk160] = 1;
             } else {
                 espDispOff(D_801113E8_etch_n_catch[data->unk160]);
-                func_8001C258_main(object->model[0], 4, 0);
-                func_8001C258_main(object->model[6], 4, 0);
+                Hu3DModelAttrSet(object->model[0], 4, 0);
+                Hu3DModelAttrSet(object->model[6], 4, 0);
                 for (i = 0; i < 5; i++) {
                     Hu3DMotionTimeSet(object->model[i + 1], 0.0f);
                 }
@@ -1538,11 +1538,11 @@ void func_80109EB8_etch_n_catch(omObjData *object) {
                 func_8010AB7C_etch_n_catch(object);
             } else {
                 for (i = 0; i < 5; i++) {
-                    func_8001C258_main(object->model[i + 1], 4, 4);
+                    Hu3DModelAttrSet(object->model[i + 1], 4, 4);
                 }
             }
             if (data->unk15C >= D_800CCF58_main[Hu3DData[object->model[0]].motId].unk02 / 2.0f - 2.0f) {
-                func_8001C814_main(object->model[0], 2, 1);
+                Hu3DMotionAttrSet(object->model[0], 2, 1);
                 object->work[0] = 8;
                 data->unk15C = 0;
             } else {
@@ -1555,14 +1555,14 @@ void func_80109EB8_etch_n_catch(omObjData *object) {
             data->unk168 += 2.0f;
             object->trans.y += data->unk168 + 5.0f;
             for (i = 0; i < 5; i++) {
-                func_8001C258_main(object->model[i + 1], 4, 4);
+                Hu3DModelAttrSet(object->model[i + 1], 4, 4);
             }
             object->work[0] = 9;
             D_8010C860_etch_n_catch[data->unk160]->work[0] = 0;
             break;
         case 9:
             for (i = 0; i < 5; i++) {
-                func_8001C258_main(object->model[i + 1], 4, 4);
+                Hu3DModelAttrSet(object->model[i + 1], 4, 4);
             }
             data->unk15C++;
             object->trans.y += data->unk168 + 5.0f;
@@ -1581,8 +1581,8 @@ void func_80109EB8_etch_n_catch(omObjData *object) {
             Hu3DModelScaleSet(object->model[6], data->unk164, data->unk164, data->unk164);
             break;
         case 10:
-            func_8001C258_main(object->model[0], 4, 4);
-            func_8001C258_main(object->model[6], 4, 4);
+            Hu3DModelAttrSet(object->model[0], 4, 4);
+            Hu3DModelAttrSet(object->model[6], 4, 4);
             data->unk164 = 1.0f;
             Hu3DModelScaleSet(object->model[6], data->unk164, data->unk164, data->unk164);
             break;
@@ -1645,7 +1645,7 @@ void func_80109EB8_etch_n_catch(omObjData *object) {
                         pos.x = object->trans.x;
                         pos.y = 0.0f;
                         pos.z = object->trans.z;
-                        func_80012B14_main(0, &pos, &screen);
+                        Hu3DCam3Dto2D(0, &pos, &screen);
                         espPosSet(D_801113E8_etch_n_catch[data->unk160], screen.x, screen.y);
                         D_8010C850_etch_n_catch[data->unk160][0] = screen.x / 2.0f;
                         D_8010C850_etch_n_catch[data->unk160][1] = screen.y / 2.0f;
@@ -1693,10 +1693,10 @@ void func_8010AB7C_etch_n_catch(omObjData *object) {
         Hu3DModelPosSet(object->model[i + 1], data->unk178[i].x * data->unk1B4 * 1.5f + object->trans.x,
                         data->unk178[i].y * data->unk1B4 + object->trans.y,
                         data->unk178[i].z * data->unk1B4 * 1.5f + object->trans.z);
-        func_8001F9E4_main(object->model[i + 1], 255.0f - data->unk1B4 * 8.0f);
+        Hu3DModelTPLvlSet(object->model[i + 1], 255.0f - data->unk1B4 * 8.0f);
         Hu3DModelScaleSet(object->model[i + 1], 3.0f, 3.0f, 3.0f);
         Hu3DModelRotSet(object->model[i + 1], 0.0f, 90.0f, 0.0f);
-        func_8001C258_main(object->model[i + 1], 4, 0);
+        Hu3DModelAttrSet(object->model[i + 1], 4, 0);
     }
 }
 
@@ -1784,10 +1784,10 @@ void func_8010B24C_etch_n_catch(omObjData *object) {
     }
     object->trans.y = 800.0f;
     object->trans.z = D_8010C6B0_etch_n_catch[0].z;
-    object->model[0] = func_8000B108_main(0x330002, 0x8B9);
+    object->model[0] = Hu3DModelRead(0x330002, 0x8B9);
     Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
-    object->model[1] = func_8000B108_main(0x330008, 0x89D);
-    object->model[2] = func_8000B108_main(9, 0x8B9);
+    object->model[1] = Hu3DModelRead(0x330008, 0x89D);
+    object->model[2] = Hu3DModelRead(9, 0x8B9);
     Hu3DModelPosSet(object->model[2], object->trans.x, 0.0f, object->trans.z);
     Hu3DModelScaleSet(object->model[2], 0.0f, 0.0f, 0.0f);
     object->func = func_8010B3B4_etch_n_catch;
@@ -1871,7 +1871,7 @@ void func_8010B3B4_etch_n_catch(omObjData *object) {
             Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
             Hu3DModelPosSet(object->model[2], object->trans.x, 0.0f, object->trans.z);
             Hu3DModelScaleSet(object->model[2], work->unk04, work->unk04, work->unk04);
-            func_8001C258_main(object->model[2], 4, 0);
+            Hu3DModelAttrSet(object->model[2], 4, 0);
             break;
         case 1:
             if (D_8010C858_etch_n_catch[work->unk00]->work[0] != 10) {
@@ -1918,7 +1918,7 @@ void func_8010B3B4_etch_n_catch(omObjData *object) {
             break;
         case 3:
             work->unk04 = 1.0f;
-            func_8001C258_main(object->model[2], 4, 4);
+            Hu3DModelAttrSet(object->model[2], 4, 4);
             break;
     }
 }
@@ -1945,9 +1945,9 @@ void func_8010BBE4_etch_n_catch(omObjData *object) {
 }
 
 void func_8010BD98_etch_n_catch(omObjData *object) {
-    func_8000BD50_main(D_801113A8_etch_n_catch[0], (s8)(D_8010C6AC_etch_n_catch % 10));
+    espPatNoSet(D_801113A8_etch_n_catch[0], (s8)(D_8010C6AC_etch_n_catch % 10));
     espPosSet(D_801113A8_etch_n_catch[0], D_8010C6A4_etch_n_catch[0][0], D_8010C6A4_etch_n_catch[0][1]);
-    func_8000BD50_main(D_801113A8_etch_n_catch[1], (s8)(D_8010C6AD_etch_n_catch % 10));
+    espPatNoSet(D_801113A8_etch_n_catch[1], (s8)(D_8010C6AD_etch_n_catch % 10));
     espPosSet(D_801113A8_etch_n_catch[1], D_8010C6A4_etch_n_catch[1][0], D_8010C6A4_etch_n_catch[1][1]);
 }
 

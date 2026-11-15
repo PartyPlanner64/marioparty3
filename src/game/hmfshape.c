@@ -30,9 +30,9 @@ extern HmfVertexAnim *D_800D59F8_main;
 extern s16 D_800CDD6A_main;
 extern u8 D_800D2008_main;
 
-void func_800308C0_main(HmfVertexAnim *, HmfData *, HmfVertexAnimCache *, s16);
+void Hu3DShapeFrameDecode(HmfVertexAnim *, HmfData *, HmfVertexAnimCache *, s16);
 
-void func_80030040_main(void) {
+void Hu3DShapeInit(void) {
     s16 i;
     D_800D59F8_main = HuMemAlloc(0x140);
     for (i = 0; i < 0x10; i++) {
@@ -40,7 +40,7 @@ void func_80030040_main(void) {
     }
 }
 
-s32 func_800300A4_main(HmfData *model, u8 *data) {
+s32 Hu3DShapeCreate(HmfData *model, u8 *data) {
     s16 i;
     HmfVertexAnim *anim;
 
@@ -62,21 +62,21 @@ s32 func_800300A4_main(HmfData *model, u8 *data) {
     return i;
 }
 
-void func_80030178_main(s32 arg0) {
+void Hu3DShapeKill(s32 arg0) {
     D_800D59F8_main[arg0].frames = 0;
 }
 
-void func_80030198_main(void) {
+void Hu3DShapeAllKill(void) {
     s16 i;
 
     for (i = 0; i < 0x10; i++) {
         if (D_800D59F8_main[i].frames != 0) {
-            func_80030178_main(i);
+            Hu3DShapeKill(i);
         }
     }
 }
 
-void func_80030208_main(HmfData *model) {
+void Hu3DShapeCacheMake(HmfData *model) {
     s16 count;
     s16 i;
     HmfVertexAnimCache *cache;
@@ -120,15 +120,15 @@ void func_80030208_main(HmfData *model) {
     }
 }
 
-void func_800303C8_main(HmfModel *model, f32 time) {
+void Hu3DShapeExec(HmfModel *model, f32 time) {
     if (model->hmf->unkB4 != NULL) {
-        func_80031324_main(model->hmf, time);
+        Hu3DShapeMorphExec(model->hmf, time);
     } else {
-        func_80030414_main(model->hmf, model->unk08, time);
+        Hu3DShapeAnimExec(model->hmf, model->unk08, time);
     }
 }
 
-void func_80030414_main(HmfData *model, s16 animIndex, f32 time) {
+void Hu3DShapeAnimExec(HmfData *model, s16 animIndex, f32 time) {
     HmfVertexAnim *anim;
     s16 frame;
     s16 nextFrame;
@@ -169,7 +169,7 @@ void func_80030414_main(HmfData *model, s16 animIndex, f32 time) {
             i = 0;
         }
         for (; i <= frame; i++) {
-            func_800308C0_main(anim, model, cache, i);
+            Hu3DShapeFrameDecode(anim, model, cache, i);
         }
         buffer = cache->currentBuffer;
     } else if (cache->frames[0] == frame) {
@@ -178,7 +178,7 @@ void func_80030414_main(HmfData *model, s16 animIndex, f32 time) {
         buffer = cache->currentBuffer = 1;
     }
     if (cache->frames[0] != nextFrame && cache->frames[1] != nextFrame) {
-        func_800308C0_main(anim, model, cache, nextFrame);
+        Hu3DShapeFrameDecode(anim, model, cache, nextFrame);
     }
     if (frame == nextFrame) {
         weight = 0.0f;
@@ -204,7 +204,7 @@ void func_80030414_main(HmfData *model, s16 animIndex, f32 time) {
     }
 }
 
-void func_800308C0_main(HmfVertexAnim *anim, HmfData *model, HmfVertexAnimCache *cache, s16 frame) {
+void Hu3DShapeFrameDecode(HmfVertexAnim *anim, HmfData *model, HmfVertexAnimCache *cache, s16 frame) {
     s32 positionOffset;
     s32 positionVertex;
     s32 positionBuffer;
@@ -442,7 +442,7 @@ void func_800308C0_main(HmfVertexAnim *anim, HmfData *model, HmfVertexAnimCache 
     cache->currentBuffer = (cache->currentBuffer + 1) & 1;
 }
 
-void func_80031324_main(HmfData *model, f32 time) {
+void Hu3DShapeMorphExec(HmfData *model, f32 time) {
     Vtx_t *source;
     Vtx_t *dest;
     s16 count;

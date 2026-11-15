@@ -527,10 +527,10 @@ void MBObjectSetup(s32 arg0, s16 arg1, s32 arg2, s32 unused) {
         MBModelDispOff(GwPlayer[system->current_player_index].player_obj);
     }
 
-    func_8001FDE8_main(MBPlayerGet(0)->player_obj->omObj1->model[0]);
-    func_8001FDE8_main(MBPlayerGet(1)->player_obj->omObj1->model[0]);
-    func_8001FDE8_main(MBPlayerGet(2)->player_obj->omObj1->model[0]);
-    func_8001FDE8_main(MBPlayerGet(3)->player_obj->omObj1->model[0]);
+    Hu3DMotionReset(MBPlayerGet(0)->player_obj->omObj1->model[0]);
+    Hu3DMotionReset(MBPlayerGet(1)->player_obj->omObj1->model[0]);
+    Hu3DMotionReset(MBPlayerGet(2)->player_obj->omObj1->model[0]);
+    Hu3DMotionReset(MBPlayerGet(3)->player_obj->omObj1->model[0]);
     func_800F2A20_shared_board();
     func_800DF854_shared_board();
     MBCoinChangeInit();
@@ -546,7 +546,7 @@ void MBObjectSetup(s32 arg0, s16 arg1, s32 arg2, s32 unused) {
     D_80101B64_shared_board = NULL;
     D_80101B68_shared_board = NULL;
     D_80101B6C_shared_board = NULL;
-    func_8004CF30_main();
+    HuAudFadeObjCreate();
 
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         temp_v0_2 = omAddPrcObj(func_800F8908_shared_board, 0, 0, 0x40);
@@ -846,7 +846,7 @@ static void func_800F93A4_shared_board(void) {
         if (D_80105666_shared_board != 0) {
             HuAudSeqFadeOut(0x5A);
             if (D_800C9930_main != -1) {
-                func_800039A4_main(D_800C9930_main, 0x5A);
+                msmMusFadeOut(D_800C9930_main, 0x5A);
                 D_800C9930_main = -1;
                 HuAudSeqStop();
             }
@@ -1194,7 +1194,7 @@ static s32 func_800FA104_shared_board(u8 *arg0) {
     }
 
     if (var_s2 != 0) {
-        func_8005B63C_main(mbDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
+        HuWinAttrSet(mbDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         for (j = 0; var_s2 != 0; j++) {
             var_s2--;
             if (var_s2 == 0) {
@@ -1271,7 +1271,7 @@ void MBKettouResultExec(void) {
 void MBBattleKuriboStart(GW_PLAYER *arg0, s32 arg1) {
     mbBattleKuriboMdl = MBModelCreate(0xC, NULL);
     Hu3DModelScaleSet(mbBattleKuriboMdl->omObj1->model[0], 0.0f, 0.0f, 0.0f);
-    func_8001FDE8_main(mbBattleKuriboMdl->omObj1->model[0]);
+    Hu3DMotionReset(mbBattleKuriboMdl->omObj1->model[0]);
 
     mbBattleKuriboMdl->flags |= 1;
     mbBattleKuriboUpperMdl = MBModelCreate(0x1F, NULL);
@@ -1376,9 +1376,9 @@ void MBKettouComResultSet(void) {
     }
 
     mbItemBtnF = 0;
-    func_8004A7C4_main(0x1E);
+    HuAudSubSeqVolFadeOut(0x1E);
     HuPrcSleep(0xF);
-    func_8004A72C_main(0x1E);
+    HuAudSeqVolFadeIn(0x1E);
     mbItemBtnF = 1;
     D_800C9930_main = -1;
     D_800CE206 = 0;
@@ -1411,13 +1411,13 @@ s32 MBKettouExec(GW_PLAYER *arg0, s32 arg1) {
     var_s7 = 0;
     var_s4 = 0;
     mbItemBtnF = 0;
-    func_8004A670_main(0xF);
+    HuAudSeqVolFadeOut(0xF);
     HuPrcSleep(0x10);
-    D_800C9930_main = func_8004A5C4_main(0x3E);
+    D_800C9930_main = HuAudSubSeqPlay(0x3E);
     mbItemBtnF = 1;
     mbBattleKuriboMdl = MBModelCreate(0xC, NULL);
     Hu3DModelScaleSet(mbBattleKuriboMdl->omObj1->model[0], 0.0f, 0.0f, 0.0f);
-    func_8001FDE8_main(mbBattleKuriboMdl->omObj1->model[0]);
+    Hu3DMotionReset(mbBattleKuriboMdl->omObj1->model[0]);
     mbBattleKuriboMdl->flags |= 1;
     mbBattleKuriboUpperMdl = MBModelCreate(0x1F, NULL);
     Hu3DModelScaleSet(mbBattleKuriboUpperMdl->omObj1->model[0], 0.0f, 0.0f, 0.0f);
@@ -1463,9 +1463,9 @@ s32 MBKettouExec(GW_PLAYER *arg0, s32 arg1) {
             MBDlgWinExecY(6, 0x4002, 0x88);
             MBBattleKuriboEnd();
             mbItemBtnF = 0;
-            func_8004A7C4_main(0x1E);
+            HuAudSubSeqVolFadeOut(0x1E);
             HuPrcSleep(0xF);
-            func_8004A72C_main(0x1E);
+            HuAudSeqVolFadeIn(0x1E);
             mbItemBtnF = 1;
             D_800C9930_main = -1;
             D_800CE206 = 0;
@@ -1479,9 +1479,9 @@ s32 MBKettouExec(GW_PLAYER *arg0, s32 arg1) {
         MBDlgWinExecY(6, 0x4001, 0x88);
         MBBattleKuriboEnd();
         mbItemBtnF = 0;
-        func_8004A7C4_main(0x1E);
+        HuAudSubSeqVolFadeOut(0x1E);
         HuPrcSleep(0xF);
-        func_8004A72C_main(0x1E);
+        HuAudSeqVolFadeIn(0x1E);
         mbItemBtnF = 1;
         D_800C9930_main = -1;
         D_800CE206 = 0;
@@ -1748,14 +1748,14 @@ static s32 func_800FB624_shared_board(GW_PLAYER* arg0) {
     u8 *table;
     
     mbItemBtnF = 0;
-    func_8004A670_main(0xF);
+    HuAudSeqVolFadeOut(0xF);
     HuPrcSleep(0x10);
-    D_800C9930_main = func_8004A5C4_main(0x3E);
+    D_800C9930_main = HuAudSubSeqPlay(0x3E);
     mbItemBtnF = 1;
     
     mbBattleKuriboMdl = MBModelCreate(0xCU, 0);
     Hu3DModelScaleSet(mbBattleKuriboMdl->omObj1->model[0], 0.0f, 0.0f, 0.0f);
-    func_8001FDE8_main(mbBattleKuriboMdl->omObj1->model[0]);
+    Hu3DMotionReset(mbBattleKuriboMdl->omObj1->model[0]);
     
     mbBattleKuriboMdl->flags |= 1;
     mbBattleKuriboUpperMdl = MBModelCreate(0x1F, 0);
@@ -1829,7 +1829,7 @@ static s32 func_800FB624_shared_board(GW_PLAYER* arg0) {
         HuSprAnimModeSet(var_s5, 0, HUSPR_ANIM_MODE_STOP);
         HuSprAttrSet(var_s5, 0, 0x1000);
         HuSprPosSet(var_s5, 0, 0xA0, 0x78);
-        func_800554C4_main(var_s5, 0, -1);
+        HuSprParentSet(var_s5, 0, -1);
         temp_v0_4 = DataRead(0x130114);
         sp4C = HuSprAnimRead(temp_v0_4);
         DataClose(temp_v0_4);
@@ -1838,7 +1838,7 @@ static s32 func_800FB624_shared_board(GW_PLAYER* arg0) {
         HuSprAnimModeSet(var_s5, 1, HUSPR_ANIM_MODE_BANK);
         HuSprAttrSet(var_s5, 1, 0x1000);
         HuSprPosSet(var_s5, 1, -0x28, 0x10);
-        func_800554C4_main(var_s5, 1, 0);
+        HuSprParentSet(var_s5, 1, 0);
         
         for (var_f20 = 0.0f; var_f20 < 1.0f; var_f20 += 0.1f) {
             HuSprScaleSet(var_s5, 0, var_f20, var_f20);
@@ -2030,9 +2030,9 @@ static s32 func_800FB624_shared_board(GW_PLAYER* arg0) {
         MBModelKill(mbBattleKuriboMdl);
         MBModelKill(mbBattleKuriboUpperMdl);
         mbItemBtnF = 0;
-        func_8004A7C4_main(0x1E);
+        HuAudSubSeqVolFadeOut(0x1E);
         HuPrcSleep(0xF);
-        func_8004A72C_main(0x1E);
+        HuAudSeqVolFadeIn(0x1E);
         mbItemBtnF = 1;
         D_800C9930_main = -1;
         D_800CE206 = 0;
@@ -2292,7 +2292,7 @@ static void MBMain(void) {
                         if (system->playMode & 4) {
                             _SetFlag(0x18);
                             _SetFlag(0x28);
-                            func_8005035C_main(1);
+                            SLSaveStory(1);
                         } else {
                             _SetFlag(0x16);
                             SLSaveBoard(1);
@@ -2409,10 +2409,10 @@ static void MBMain(void) {
             temp:
                 MBMasuEventCall(-4, 7);
                 // Hide all player models
-                func_8001FDE8_main(MBPlayerGet(0)->player_obj->omObj1->model[0]);
-                func_8001FDE8_main(MBPlayerGet(1)->player_obj->omObj1->model[0]);
-                func_8001FDE8_main(MBPlayerGet(2)->player_obj->omObj1->model[0]);
-                func_8001FDE8_main(MBPlayerGet(3)->player_obj->omObj1->model[0]);
+                Hu3DMotionReset(MBPlayerGet(0)->player_obj->omObj1->model[0]);
+                Hu3DMotionReset(MBPlayerGet(1)->player_obj->omObj1->model[0]);
+                Hu3DMotionReset(MBPlayerGet(2)->player_obj->omObj1->model[0]);
+                Hu3DMotionReset(MBPlayerGet(3)->player_obj->omObj1->model[0]);
 
                 MBPlayerMotionSet(-1, -1, 2);
                 MBCameraFocusModeSet(1);
@@ -2731,10 +2731,10 @@ static void MBMain(void) {
                     temp_v0_9 = HuWinExCreate(-1, 0xA0 - (sp30[0] / 2), 0x96, sp30[0], sp30[1], 0);
                     HuWinMesSet(temp_v0_9, 0x3F00, -1, -1);
                     HuWinExAnimIn(temp_v0_9);
-                    func_800600C0_main(temp_v0_9, 1);
+                    HuWinKeyLockSet(temp_v0_9, 1);
                     HuPrcChildWatch();
 
-                    func_800600C0_main(temp_v0_9, 0);
+                    HuWinKeyLockSet(temp_v0_9, 0);
                     func_800EDC58_shared_board(temp_v0_9, temp_v0_4->turn);
                     HuWinExAnimOut(temp_v0_9, 0);
                     HuWinKill(temp_v0_9);
@@ -2778,9 +2778,9 @@ static void MBMain(void) {
                     temp_v0_9 = HuWinExCreate(-1, 0xA0 - (sp38[0] / 2), 0x96, sp38[0], sp38[1], 0);
                     HuWinMesSet(temp_v0_9, 0x3F00, -1, -1);
                     HuWinExAnimIn(temp_v0_9);
-                    func_800600C0_main(temp_v0_9, 1);
+                    HuWinKeyLockSet(temp_v0_9, 1);
                     HuPrcChildWatch();
-                    func_800600C0_main(temp_v0_9, 0);
+                    HuWinKeyLockSet(temp_v0_9, 0);
                     func_800EDC58_shared_board(temp_v0_9, temp_v0_4->turn);
                     HuWinExAnimOut(temp_v0_9, 0);
                     HuWinKill(temp_v0_9);
@@ -2837,10 +2837,10 @@ static void MBMain(void) {
                     temp_v0_9 = HuWinExCreate(-1, 0xA0 - (sp40[0] / 2), 0x96, sp40[0], sp40[1], 0);
                     HuWinMesSet(temp_v0_9, 0x3F00, -1, -1);
                     HuWinExAnimIn(temp_v0_9);
-                    func_800600C0_main(temp_v0_9, 1);
+                    HuWinKeyLockSet(temp_v0_9, 1);
                     HuPrcChildWatch();
 
-                    func_800600C0_main(temp_v0_9, 0);
+                    HuWinKeyLockSet(temp_v0_9, 0);
                     func_800EDC58_shared_board(temp_v0_9, temp_v0_4->turn);
                     HuWinExAnimOut(temp_v0_9, 0);
                     HuWinKill(temp_v0_9);
@@ -3324,7 +3324,7 @@ static void MBMain(void) {
                 // END OF TURN: Check for end of round minigames
                 if (system->current_player_index >= 3) {
                     MBMasuEventCall(-3, 7);
-                    func_8001FDE8_main(MBPlayerGet(3)->player_obj->omObj1->model[0]);
+                    Hu3DMotionReset(MBPlayerGet(3)->player_obj->omObj1->model[0]);
                     D_800A12D4_main = 0;
                     func_800F7108_shared_board();
 
@@ -3526,7 +3526,7 @@ void MBStart(u32 arg0) {
             D_800D51F8_main = 0;
             omAddPrcObj(func_800F91A4_shared_board, 0x1005, 0, 0);
             MBCameraFocusModeSet(1);
-            if (func_800037C4_main(D_800CDBC8_main) < 0x7F) {
+            if (msmMusGetVolume(D_800CDBC8_main) < 0x7F) {
                 func_800DECBC_shared_board();
                 return;
             }

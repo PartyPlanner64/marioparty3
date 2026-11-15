@@ -202,7 +202,7 @@ void func_801106B4_option(s32 arg0, u16 arg1) {
 }
 
 void func_801106E8_option(s32 arg0, u16 arg1, u16 arg2) {
-    func_8000BDDC_main(D_801147F0_option[arg0].espriteSlot, 1);
+    espAnimModeSet(D_801147F0_option[arg0].espriteSlot, 1);
     espBankSet(D_801147F0_option[arg0].espriteSlot, arg1, arg2);
 }
 
@@ -218,7 +218,7 @@ void func_80110754_option(void) {
 void func_801107A0_option(s32 arg0, s32 arg1, s32 arg2) {
     s16 model;
 
-    model = func_8000B108_main(arg1, arg2);
+    model = Hu3DModelRead(arg1, arg2);
     D_80114F70_option[arg0].unk_00 = model;
     Hu3DModelPosSet(model, 0.0f, 0.0f, 0.0f);
     Hu3DModelRotSet(model, 0.0f, 0.0f, 0.0f);
@@ -303,15 +303,15 @@ void func_80110BD4_option(s32 arg0, f32 *arg1, f32 *arg2, f32 *arg3) {
 }
 
 void func_80110C1C_option(s32 arg0) {
-    func_8001C258_main(D_80114F70_option[arg0].unk_00, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(D_80114F70_option[arg0].unk_00, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
 }
 
 void func_80110C5C_option(s32 arg0) {
-    func_8001C258_main(D_80114F70_option[arg0].unk_00, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(D_80114F70_option[arg0].unk_00, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
 }
 
 void func_80110C9C_option(s32 arg0, s32 arg1) {
-    func_8001C814_main(D_80114F70_option[arg0].unk_00, -1, arg1);
+    Hu3DMotionAttrSet(D_80114F70_option[arg0].unk_00, -1, arg1);
 }
 
 void func_80110CE0_option(s32 arg0, s32 arg1, s16 arg2, s16 arg3, s32 arg4) {
@@ -319,7 +319,7 @@ void func_80110CE0_option(s32 arg0, s32 arg1, s16 arg2, s16 arg3, s32 arg4) {
 }
 
 void func_80110D50_option(s32 arg0, s32 arg1) {
-    func_8001C814_main(D_80114F70_option[arg0].unk_00, arg1, 0);
+    Hu3DMotionAttrSet(D_80114F70_option[arg0].unk_00, arg1, 0);
 }
 
 void func_80110D94_option(s32 arg0) {
@@ -350,7 +350,7 @@ void func_80110F58_option(s32 arg0, s32 arg1, s32 arg2) {
     s16 parentModelId = func_801109D0_option(arg1);
 
     Hu3DMotionSet(modelId, parentModelId);
-    func_8001C814_main(modelId, -1, arg2);
+    Hu3DMotionAttrSet(modelId, -1, arg2);
 }
 
 void func_80110FC8_option(void) {
@@ -372,7 +372,7 @@ u32 func_80111058_option(u32 arg0) {
     void *ptr;
 
     if (0x80000000U < arg0) {
-        len = func_800452A0_main(buf, (void *)arg0);
+        len = GameMesStrConv2(buf, (void *)arg0);
         ptr = HuMemAlloc(len);
         bcopy(buf, ptr, len);
         return (u32)ptr;
@@ -424,13 +424,13 @@ s32 func_8011130C_option(s32 message, s16 x, s16 y, s16 width, s16 height, s16 t
     s16 winID;
 
     winID = HuWinCreate(x, y, width, height, 0, 8);
-    func_8005B63C_main(winID, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
+    HuWinAttrSet(winID, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
     HuWinMesSpeedSet(winID, 0);
     HuWinBGTPLvlSet(winID, 255);
-    func_80060144_main(winID);
+    HuWinDummy(winID);
     HuWinPriSet(winID, 1);
     HuWinActivePlayerSet(winID, HUWIN_PLAYER_1);
-    func_8005C154_main(winID, 192, 192, 192);
+    HuWinMesDefColSet(winID, 192, 192, 192);
     HuWinBGColSet(winID, 0, 64, 64);
     HuWinMesColSet(winID, 7);
     HuWinMesPalSet(winID, 2, 255, 64, 64);
@@ -445,17 +445,17 @@ s32 func_80111458_option(s32 message, s16 x, s16 y, s16 width, s16 height, s16 t
     s16 winID;
 
     winID = HuWinCreate(x, y, width, height, 0, 4);
-    func_8005B63C_main(winID, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
+    HuWinAttrSet(winID, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
     HuWinMesSpeedSet(winID, 0);
     HuWinBGTPLvlSet(winID, 255);
-    func_80060144_main(winID);
+    HuWinDummy(winID);
     HuWinPriSet(winID, 1);
     HuWinActivePlayerSet(winID, HUWIN_PLAYER_1);
     HuWinMesPalSet(winID, 5, 0, 176, 192);
     HuWinMesPalSet(winID, 2, 255, 64, 64);
     HuWinMesPalSet(winID, 4, 96, 255, 64);
     HuWinMesPalSet(winID, 6, 255, 255, 64);
-    func_8005C154_main(winID, 192, 192, 192);
+    HuWinMesDefColSet(winID, 192, 192, 192);
     HuWinBGColSet(winID, 255, 255, 255);
     HuWinMesColSet(winID, 1);
     HuWinHomeClear(winID);
@@ -467,9 +467,9 @@ s32 func_801115C0_option(s32 message, s16 x, s16 y, s16 width, s16 height, s16 t
     s16 winID;
 
     winID = HuWinCreate(x, y, width, height, 0, 8);
-    func_8005B63C_main(winID, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
+    HuWinAttrSet(winID, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
     HuWinMesSpeedSet(winID, 0);
-    func_80060144_main(winID);
+    HuWinDummy(winID);
     HuWinPriSet(winID, 1);
     HuWinActivePlayerSet(winID, HUWIN_PLAYER_1);
     HuWinMesPalSet(winID, 5, 0, 176, 192);
@@ -479,7 +479,7 @@ s32 func_801115C0_option(s32 message, s16 x, s16 y, s16 width, s16 height, s16 t
     HuWinMesPalSet(winID, 2, 255, 64, 64);
     HuWinMesPalSet(winID, 4, 96, 255, 64);
     HuWinMesPalSet(winID, 6, 255, 255, 64);
-    func_8005C154_main(winID, 192, 192, 0);
+    HuWinMesDefColSet(winID, 192, 192, 0);
     HuWinBGColSet(winID, 255, 255, 255);
     HuWinMesColSet(winID, 6);
     HuWinHomeClear(winID);
@@ -490,11 +490,11 @@ s32 func_801115C0_option(s32 message, s16 x, s16 y, s16 width, s16 height, s16 t
 s32 func_80111768_option(s32 message, s16 x, s16 y, s16 type) {
     s16 winID;
 
-    winID = func_80060880_main(x, y, 19);
+    winID = HuWinExCreateStyled(x, y, 19);
     HuWinMesPalSet(winID, 2, 255, 64, 64);
     HuWinMesPalSet(winID, 4, 96, 255, 64);
     HuWinMesPalSet(winID, 6, 255, 255, 64);
-    func_80060C14_main(winID, 1);
+    HuWinExOpen(winID, 1);
     HuWinActivePlayerSet(winID, HUWIN_PLAYER_1);
     HuWinMesSet(winID, message, -1, -1);
     return winID;
@@ -503,11 +503,11 @@ s32 func_80111768_option(s32 message, s16 x, s16 y, s16 type) {
 s32 func_80111834_option(s32 message, s16 x, s16 y, s16 type) {
     s16 winID;
 
-    winID = func_80060880_main(x, y, 20);
+    winID = HuWinExCreateStyled(x, y, 20);
     HuWinMesPalSet(winID, 2, 255, 64, 64);
     HuWinMesPalSet(winID, 4, 96, 255, 64);
     HuWinMesPalSet(winID, 6, 255, 255, 64);
-    func_80060C14_main(winID, 0);
+    HuWinExOpen(winID, 0);
     HuWinActivePlayerSet(winID, HUWIN_PLAYER_1);
     HuWinMesSet(winID, message, -1, -1);
     return winID;
@@ -516,12 +516,12 @@ s32 func_80111834_option(s32 message, s16 x, s16 y, s16 type) {
 s32 func_80111900_option(s32 message, s16 x, s16 y, s16 type) {
     s16 winID;
 
-    winID = func_80060880_main(x, y, 19);
+    winID = HuWinExCreateStyled(x, y, 19);
     HuWinMesPalSet(winID, 2, 255, 64, 64);
     HuWinMesPalSet(winID, 4, 96, 255, 64);
     HuWinMesPalSet(winID, 6, 255, 255, 64);
     HuWinActivePlayerSet(winID, HUWIN_PLAYER_1);
-    func_80060C14_main(winID, 0);
+    HuWinExOpen(winID, 0);
     HuWinMesSet(winID, message, -1, -1);
     return winID;
 }
@@ -537,7 +537,7 @@ void func_801119CC_option(void) {
 
 void func_80111A10_option(s32 arg0) {
     if (D_80115A78_option[arg0].unk_08 == 3) {
-        func_80060EA8_main(D_80115A78_option[arg0].winID, 1);
+        HuWinExClose(D_80115A78_option[arg0].winID, 1);
         HuWinExCleanup(D_80115A78_option[arg0].winID);
     } else {
         HuWinDispOff(D_80115A78_option[arg0].winID);
@@ -545,7 +545,7 @@ void func_80111A10_option(s32 arg0) {
         D_80115A78_option[arg0].winID = -1;
     }
     if (D_80115A78_option[arg0].unk_04 != NULL) {
-        func_80019C00_main(D_80115A78_option[arg0].unk_04);
+        HuMemDelayFree(D_80115A78_option[arg0].unk_04);
         D_80115A78_option[arg0].unk_04 = NULL;
     }
 }
@@ -581,7 +581,7 @@ void func_80111C50_option(s32 arg0, u32 arg1) {
 
     HuWinHomeClear(D_80115A78_option[arg0].winID);
     if (D_80115A78_option[arg0].unk_04 != NULL) {
-        func_80019C00_main(D_80115A78_option[arg0].unk_04);
+        HuMemDelayFree(D_80115A78_option[arg0].unk_04);
         D_80115A78_option[arg0].unk_04 = NULL;
     }
     message = func_80111058_option(arg1);
@@ -592,7 +592,7 @@ void func_80111C50_option(s32 arg0, u32 arg1) {
 }
 
 void func_80111D1C_option(s32 arg0, s8 arg1, u32 arg2) {
-    func_800601BC_main(D_80115A78_option[arg0].winID, arg2, arg1);
+    HuWinInsertMesSetNoLF(D_80115A78_option[arg0].winID, arg2, arg1);
 }
 
 s32 func_80111D58_option(s32 arg0, s16 arg1, s32 arg2) {
@@ -681,10 +681,10 @@ void func_80112084_option(void) {
     func_80112EB8_option(10, 0xA0000, 385.0f, -6.25f, -500.0f);
     func_80110AD0_option(10, 0.75f, 0.75f, 0.75f);
     func_80110C9C_option(10, 2);
-    func_80017790_main(func_80113218_option(9), 0, 10, 0xA002A);
+    CharAnimCreate(func_80113218_option(9), 0, 10, 0xA002A);
     model = func_80113218_option(10);
-    func_80017790_main(model, 0, 10, 0xA002A);
-    func_80017A84_main(model, 0, 10, 1, 0);
+    CharAnimCreate(model, 0, 10, 0xA002A);
+    CharAnimFrameSet(model, 0, 10, 1, 0);
     func_80112FD8_option(11, 0xA001D, 1);
     func_80112FD8_option(12, 0xA001E, 1);
     func_80112FD8_option(13, 0xA001D, 1);
@@ -729,24 +729,24 @@ void func_801123D8_option(void) {
     func_801109F4_option(2, 0.0f, 10.0f, 0.0f);
     model = func_80113218_option(2);
     data = DataRead(0xE0020);
-    func_80032FC0_main(Hu3DAnimCreate(Hu3DData[model].hmf, data, 0, (char *)parrot), 1, 0);
+    Hu3DAnimAttrSet(Hu3DAnimCreate(Hu3DData[model].hmf, data, 0, (char *)parrot), 1, 0);
     DataClose(data);
     Hu3DModelRemakeStatic(model);
-    func_80033910_main(Hu3DData[model].hmf);
+    Hu3DModelAnimStop(Hu3DData[model].hmf);
     func_80112F48_option(3, 0xE0013, 250.0f, 0.0f, -401.15002f);
     func_801109F4_option(3, 0.0f, -11.0f, 0.0f);
     model = func_80113218_option(3);
     data = DataRead(0xE0021);
-    func_80032FC0_main(Hu3DAnimCreate(Hu3DData[model].hmf, data, 0, (char *)trumpet), 1, 0);
+    Hu3DAnimAttrSet(Hu3DAnimCreate(Hu3DData[model].hmf, data, 0, (char *)trumpet), 1, 0);
     DataClose(data);
     data = DataRead(0xE0022);
-    func_80032FC0_main(Hu3DAnimCreate(Hu3DData[model].hmf, data, 0, (char *)drum), 1, 0);
+    Hu3DAnimAttrSet(Hu3DAnimCreate(Hu3DData[model].hmf, data, 0, (char *)drum), 1, 0);
     DataClose(data);
     data = DataRead(0xE0023);
-    func_80032FC0_main(Hu3DAnimCreate(Hu3DData[model].hmf, data, 0, (char *)cymbal), 1, 0);
+    Hu3DAnimAttrSet(Hu3DAnimCreate(Hu3DData[model].hmf, data, 0, (char *)cymbal), 1, 0);
     DataClose(data);
     Hu3DModelRemakeStatic(model);
-    func_80033910_main(Hu3DData[model].hmf);
+    Hu3DModelAnimStop(Hu3DData[model].hmf);
     func_80112F48_option(4, 0xE0016, 0.0f, 0.0f, 0.0f);
     func_80112F48_option(5, 0xE0019, 0.0f, 0.0f, 0.0f);
     func_80112FD8_option(17, 0xE0017, 0);
@@ -772,7 +772,7 @@ void func_801123D8_option(void) {
     func_80112F48_option(7, 0xE001C, -90.0f, 108.2f, -300.0f);
     func_80112EB8_option(8, 0xA00B0, 0.0f, 20.0f, -401.15002f);
     func_80110C9C_option(8, 2);
-    func_80017790_main(func_80113218_option(8), 0, 13, 0xA00B7);
+    CharAnimCreate(func_80113218_option(8), 0, 13, 0xA00B7);
     func_80112EB8_option(9, 0xE001E, 0.0f, 0.0f, 0.0f);
     func_80110C9C_option(9, 2);
     func_80112EB8_option(21, 0xE001F, 0.0f, 22.25f, -310.7f);
@@ -843,12 +843,12 @@ void func_80112B08_option(void) {
     func_80110C1C_option(7);
     func_80112EB8_option(8, 0xA008E, -74.973503f, 56.406998f, -735.0f);
     func_80110C9C_option(8, 2);
-    func_80017790_main(func_80113218_option(8), 0, 9, 0xA00A3);
+    CharAnimCreate(func_80113218_option(8), 0, 9, 0xA00A3);
     func_80112EB8_option(9, 0xA00A2, 64.973503f, 60.8265f, -720.0f);
     func_80110C9C_option(9, 2);
     model = func_80113218_option(9);
-    func_80017790_main(model, 0, 8, 0xA00A3);
-    func_80017A84_main(model, 0, 8, 1, 0);
+    CharAnimCreate(model, 0, 8, 0xA00A3);
+    CharAnimFrameSet(model, 0, 8, 1, 0);
     func_80112FD8_option(10, 0xA009E, 1);
     func_80110F58_option(8, 10, 2);
     func_80112FD8_option(11, 0xA009F, 1);

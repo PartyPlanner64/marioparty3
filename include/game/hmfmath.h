@@ -7,17 +7,17 @@
 void mtxTransCat(HuMtx4F mtx, f32 x, f32 y, f32 z);
 void mtxScaleCat(HuMtx4F mtx, f32 x, f32 y, f32 z);
 void mtxRotCat(HuMtx4F mtx, f32 x, f32 y, f32 z);
-void func_80018044_main(HuMtx4F a, HuMtx4F b, HuMtx4F out);
+void mtxCat(HuMtx4F a, HuMtx4F b, HuMtx4F out);
 s16 HmfInverseMtxF3X3(HuMtx4F src, HuMtx4F dst);
-s32 func_80018544_main(HuMtx4F src, HuMtx4F dst);
-void func_800185A4_main(HuMtx4F mtx, f32 angle);
-void func_8001866C_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
-void func_80018978_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
+s32 HmfInverseMtxF3X3Cat(HuMtx4F src, HuMtx4F dst);
+void mtxRotYCat(HuMtx4F mtx, f32 angle);
+void mtxRotCatZXY(HuMtx4F mtx, f32 x, f32 y, f32 z);
+void mtxRotZXY(HuMtx4F mtx, f32 x, f32 y, f32 z);
 f32 InterpolateBMLine(f32 *value, const f32 *time, f32 x);
-f32 func_80018D68_main(f32 mtx[3][3]);
-void func_80018DD8_main(f32 arg0[4][4], s32 arg1, s32 arg2, f32 arg3[3][3]);
-f32 func_80018E50_main(HuMtx4F mtx, s32 row, s32 col);
-f32 func_80018E74_main(HuMtx4F mtx);
-s32 func_80018F18_main(HuMtx4F src, HuMtx4F dst);
+f32 mtxDet3x3(f32 mtx[3][3]);
+void mtxMinorGet(f32 arg0[4][4], s32 arg1, s32 arg2, f32 arg3[3][3]);
+f32 mtxMinorDet(HuMtx4F mtx, s32 row, s32 col);
+f32 mtxDet(HuMtx4F mtx);
+s32 mtxInverse(HuMtx4F src, HuMtx4F dst);
 
 #endif

@@ -30,7 +30,7 @@ static f32 D_800B23A0_main;
 static f32 D_800B23A4_main;
 static f32 D_800B23A8_main;
 
-void func_80046030_main(s16 arg0, s16 arg1) {
+void AuraCreateEx(s16 arg0, s16 arg1) {
     HmfData *temp_s0 = Hu3DData[arg0].hmf;
     HmfModelData_Unk64_Unk60_Unk54_Struct *var_a0;
     Process *temp_v0_4;
@@ -39,16 +39,16 @@ void func_80046030_main(s16 arg0, s16 arg1) {
     s16 temp_v1;
     s16 var_a1;
 
-    temp_v0 = func_8002C834_main(temp_s0, "aura");
+    temp_v0 = SearchObjectIndex(temp_s0, "aura");
     temp_v1 = temp_s0->unk60[temp_v0].unk22;
     var_a0 = temp_s0->unk60[temp_v0].unk54;
     for (var_a1 = 0; var_a1 < temp_v1; var_a1++, var_a0++) {
         var_a0->unk00 |= 0x80;
     }
     Hu3DModelRemakeStatic(arg0);
-    func_8001C514_main(arg0);
-    func_8001C954_main(arg0);
-    temp_v0_4 = omAddPrcObj(func_800461D8_main, 0x3F00, 0x1000, 0);
+    Hu3DModelDynamicFree(arg0);
+    Hu3DModelVtxBufMake(arg0);
+    temp_v0_4 = omAddPrcObj(AuraProc, 0x3F00, 0x1000, 0);
     omPrcSetStatBit(temp_v0_4, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     temp_v0_4->user_data = temp_v0_5 = HuMemAllocTag(sizeof(AuraPrcData), TAG_OVERLAY);
     temp_v0_5->unk00 = arg0;
@@ -58,12 +58,12 @@ void func_80046030_main(s16 arg0, s16 arg1) {
     D_800B23A0_main = D_800B23A4_main = D_800B23A8_main = 1.0f;
 }
 
-void func_800461B4_main(s16 arg0) {
-    func_80046030_main(arg0, 5);
+void AuraCreate(s16 arg0) {
+    AuraCreateEx(arg0, 5);
 }
 
 // TODO: doesn't work with -Wa,--vr4300mul-off.
-void func_800461D8_main(void) {
+void AuraProc(void) {
     s32 var_s1 = 0;
     AuraPrcData *temp_s4 = HuPrcCurrentGet()->user_data;
     HmfData *temp_s6 = Hu3DData[temp_s4->unk00].hmf;
@@ -101,14 +101,14 @@ void func_800461D8_main(void) {
     }
 }
 
-void func_80046558_main(s16 arg0) {
+void AuraKill(s16 arg0) {
     Process *temp_s0 = (void *)Hu3DData[arg0].unkBC; // TODO
 
     HuMemFree(temp_s0->user_data);
     omDelPrcObj(temp_s0);
 }
 
-void func_800465A8_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3) {
+void AuraParamSet(s32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     D_800B23A0_main = arg1;
     D_800B23A4_main = arg2;
     D_800B23A8_main = arg3;

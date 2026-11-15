@@ -46,7 +46,7 @@ s16 func_800EABBC_name_81(s16 arg0, s16 *arg1, s16 arg2) {
     }
 
     if (D_800CB99C_main == 0) {
-        func_8005B63C_main(result, HUWIN_ATTR_PAUSE, HUWIN_ATTR_PAUSE);
+        HuWinAttrSet(result, HUWIN_ATTR_PAUSE, HUWIN_ATTR_PAUSE);
     }
 
     return result;
@@ -61,7 +61,7 @@ void func_800EAD08_name_81(s32 arg0) {
     D_80105712_name_81 = temp_v0;
 
     if (D_800CB99C_main == 0) {
-        func_8005B63C_main(temp_v0, HUWIN_ATTR_PAUSE, HUWIN_ATTR_PAUSE);
+        HuWinAttrSet(temp_v0, HUWIN_ATTR_PAUSE, HUWIN_ATTR_PAUSE);
     }
 
     HuWinMesSet(temp_v0, arg0, -1, -1);
@@ -94,7 +94,7 @@ void func_800EADBC_name_81(s32 arg0, char *arg1, s32 arg2, s32 arg3, s32 arg4, s
     D_80105712_name_81 = temp_v0;
 
     if (D_800CB99C_main == 0) {
-        func_8005B63C_main(temp_v0, HUWIN_ATTR_PAUSE, HUWIN_ATTR_PAUSE);
+        HuWinAttrSet(temp_v0, HUWIN_ATTR_PAUSE, HUWIN_ATTR_PAUSE);
     }
     if (arg1 != NULL) {
         HuWinInsertMesSet(temp_v0, (u32)arg1, 0);
@@ -133,7 +133,7 @@ void func_800EAFC4_name_81(s32 arg0) {
     D_8010555C_name_81 = temp_v0;
 
     if (D_800CB99C_main == 0) {
-        func_8005B63C_main(temp_v0, HUWIN_ATTR_PAUSE, HUWIN_ATTR_PAUSE);
+        HuWinAttrSet(temp_v0, HUWIN_ATTR_PAUSE, HUWIN_ATTR_PAUSE);
     }
 
     HuWinMesSet(temp_v0, arg0, -1, -1);
@@ -234,7 +234,7 @@ void func_800EB2BC_name_81(s16 arg0, s32 arg1, u32 arg2, u32 arg3, u32 arg4, u32
         HuWinInsertMesSet(temp_v0, arg6, 4);
     }
     if (D_801011D0_name_81 != 0) {
-        func_8005E1A8_main(temp_v0, D_801011D0_name_81);
+        HuWinTabWidthSet(temp_v0, D_801011D0_name_81);
     }
     HuWinMesSet(temp_v0, arg1, -1, -1);
     if (arg0 == -1) {

@@ -122,7 +122,7 @@ void func_800E4BA4_minigame(s32 arg0) {
     if (arg0 & 0xFF) {
         unk40 = Hu3DData[arg0 & 0xFF].motTime;
         if (D_800CCF58_main[Hu3DData[arg0 & 0xFF].motId].unk02 <= unk40) {
-            func_8001C258_main((u8)arg0, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet((u8)arg0, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         }
     }
 }
@@ -148,7 +148,7 @@ void func_800E4C88_minigame(omObjData *arg0, u8 arg1, f32 x, f32 y, f32 z, f32 r
                 }
                 Hu3DMotionTimeSet(model, 0.0f);
             }
-            func_8001C258_main(model, HU3D_ATTR_DISPOFF, 0);
+            Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, 0);
             Hu3DModelPosSet(model, x, y, z);
             Hu3DModelRotSet(model, rotX, rotY, 0.0f);
         }
@@ -198,7 +198,7 @@ void func_800E4E30_minigame(omObjData *arg0) {
                 shape = 2;
             }
             if (anim->unk06 >= 0) {
-                func_80017954_main(data->unk5A, data->unk5B, chr, anim->unk06);
+                CharAnimSet(data->unk5A, data->unk5B, chr, anim->unk06);
             }
             Hu3DMotionShiftSet(model, motion, 0, shiftTime, shape);
             Hu3DData[(u16)model].unk54 = anim->unk0C;
@@ -305,9 +305,9 @@ void func_800E5138_minigame(omObjData *arg0) {
             }
         }
         attr = (data->unkC2 & 1) ? 0 : HU3D_ATTR_DISPOFF;
-        func_8001C258_main(arg0->model[0], HU3D_ATTR_DISPOFF, attr);
+        Hu3DModelAttrSet(arg0->model[0], HU3D_ATTR_DISPOFF, attr);
         if (attr) {
-            func_8001F038_main(&Hu3DData[arg0->model[0]], 2);
+            Hu3DMotionNext(&Hu3DData[arg0->model[0]], 2);
         }
         data->unkC2 = (data->unkC2 + 1) & 3;
     }
@@ -453,7 +453,7 @@ void func_800E5978_minigame(omObjData *arg0, u16 arg1, s32 arg2, u16 arg3, u16 a
     func_800E1BA8_minigame_UnkE8_ObjData *entry;
     s16 modelId;
 
-    modelId = func_8000B13C_main(arg2);
+    modelId = Hu3DMotionModelRead(arg2);
     if (modelId < 0) {
         return;
     }
@@ -489,7 +489,7 @@ s16 func_800E5A98_minigame(omObjData *arg0, s32 arg1) {
             return data->unkE8[i].unk04;
         }
     }
-    return func_80017AD8_main(arg1);
+    return Hu3DAnimDataRead(arg1);
 }
 
 void func_800E5B08_minigame(omObjData *arg0, u16 arg1, s32 arg2, u16 arg3, u16 arg4, s16 arg5) {
@@ -499,7 +499,7 @@ void func_800E5B08_minigame(omObjData *arg0, u16 arg1, s32 arg2, u16 arg3, u16 a
     s32 chr;
     s32 unk08;
 
-    modelId = func_8000B13C_main(arg2);
+    modelId = Hu3DMotionModelRead(arg2);
     if (modelId < 0) {
         return;
     }

@@ -276,7 +276,7 @@ s16 m257_SetSprite(u16 prio, s32 dir, s32 file, u16 arg3, s32 attr) {
             HuSprAttrSet(sprite->groupId, 0, attr);
             HuSprAnimModeSet(sprite->groupId, 0, arg3);
             HuSprPriSet(sprite->groupId, 0, prio);
-            func_80054FF8_main(sprite->groupId, 0, 0);
+            HuSprPatNoSet(sprite->groupId, 0, 0);
             HuSprSpeedSet(sprite->groupId, 0, 1.0f);
             HuSprScaleSet(sprite->groupId, 0, 1.0f, 1.0f);
             HuSprPosSet(sprite->groupId, 0, 100, 100);
@@ -298,7 +298,7 @@ void m257_SetSpriteDispOn(s16 spriteId, s32 posX, s32 posY) {
     SpriteData *sprite = &m257_sprites[spriteId];
 
     if (sprite->state != SPRITE_STATE_NOTSET) {
-        func_80054FF8_main(sprite->groupId, 0, 0);
+        HuSprPatNoSet(sprite->groupId, 0, 0);
         HuSprDispOn(sprite->groupId, 0);
         HuSprPosSet(sprite->groupId, 0, posX, posY);
         sprite->state = SPRITE_STATE_VISIBLE;
@@ -324,7 +324,7 @@ void m257_UpdateSprites(void) {
             case SPRITE_STATE_VISIBLE:
                 if (HuSprGet(sprite->groupId, 0)->patNo + 1 >= sprite->unk04) {
                     HuSprDispOff(sprite->groupId, 0);
-                    func_80054FF8_main(sprite->groupId, 0, 0);
+                    HuSprPatNoSet(sprite->groupId, 0, 0);
                 }
                 break;
         }
@@ -339,8 +339,8 @@ s32 m257_SetAnimModel(s32 dir, s32 file, f32 freq, s32 attr, s32 arg4) {
     animModel = m257_animModels;
     for (i = 0; i < ANIMMDL_MAX; i++, animModel++) {
         if (!animModel->set) {
-            animModel->modelId = func_8000B108_main((dir << 16) | file, arg4);
-            func_8001C258_main(animModel->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            animModel->modelId = Hu3DModelRead((dir << 16) | file, arg4);
+            Hu3DModelAttrSet(animModel->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             hmfModel = &Hu3DData[animModel->modelId];
             hmfModel->motTime = 0.0f;
             hmfModel->motSpeed = 0.0f;
@@ -374,7 +374,7 @@ s32 m257_SetAnimModelDispOn(s16 animModelId, f32 posX, f32 posY, f32 posZ, f32 r
         Hu3DModelRotSet(animModel->modelId, rotX, rotY, rotZ);
         Hu3DModelScaleSet(animModel->modelId, scale, scale, scale);
         if (animStart == 0.0f) {
-            func_8001C258_main(animModel->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(animModel->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             animModel->state = ANIMMDL_STATE_ANIM;
             animModel->animStart = 0.0f;
             animModel->animTimer = 0.0f;
@@ -408,7 +408,7 @@ void m257_UpdateAnimModels(void) {
                         hmfModel->hmf->unk98->unk08 = 0;
                     }
                     if (!(animModel->attr & ANIMMDL_ATTR_DISPON)) {
-                        func_8001C258_main(animModel->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                        Hu3DModelAttrSet(animModel->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                         animModel->state = ANIMMDL_STATE_INVISIBLE;
                         hmfModel->motSpeed = 0.0f;
                     }
@@ -416,7 +416,7 @@ void m257_UpdateAnimModels(void) {
                 break;
             case ANIMMDL_STATE_WAIT:
                 if (animModel->animStart <= animModel->animTimer++) {
-                    func_8001C258_main(animModel->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                    Hu3DModelAttrSet(animModel->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     animModel->state = ANIMMDL_STATE_ANIM;
                     hmfModel->motSpeed = animModel->freq;
                 }
@@ -435,18 +435,18 @@ s32 m257_SetBill(s32 dir, s32 file, s32 attr) {
         if (!bill->set) {
             bill->unk08 = temp_v0_2 = HuSprAnimDataRead((dir << 16) | file);
             if (attr & BILL_ATTR_01) {
-                bill->modelId = func_8010B4D0_tick_tock_hop(func_80055194_main(temp_v0_2), 1.0f);
+                bill->modelId = func_8010B4D0_tick_tock_hop(HuSprAnimDataGet(temp_v0_2), 1.0f);
             } else {
-                bill->modelId = func_8010AD60_tick_tock_hop(func_80055194_main(temp_v0_2), 1.0f);
+                bill->modelId = func_8010AD60_tick_tock_hop(HuSprAnimDataGet(temp_v0_2), 1.0f);
             }
             if (attr & BILL_ATTR_DISPOFF) {
-                func_8001C258_main(bill->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(bill->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
             bill->posX = &Hu3DData[bill->modelId].pos.x;
             bill->posY = &Hu3DData[bill->modelId].pos.y;
             bill->posZ = &Hu3DData[bill->modelId].pos.z;
             bill->attr = attr;
-            bill->duration = func_80055194_main(temp_v0_2)->patNum;
+            bill->duration = HuSprAnimDataGet(temp_v0_2)->patNum;
             bill->timer = 0;
             bill->set = TRUE;
             break;
@@ -465,7 +465,7 @@ void m257_SetBillDispOn(s16 billId, f32 posX, f32 posY, f32 posZ) {
         model->pos.x = posX;
         model->pos.y = posY;
         model->pos.z = posZ;
-        func_8001C258_main(m257_billboards[billId].modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        Hu3DModelAttrSet(m257_billboards[billId].modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         m257_billboards[billId].attr &= ~(BILL_ATTR_DISPOFF | BILL_ATTR_REF);
     }
 }
@@ -489,7 +489,7 @@ void m257_SetBillDispOnRef(s16 billId, f32 *posX, f32 *posY, f32 *posZ) {
         } else {
             m257_billboards[billId].posZ = &model->pos.z;
         }
-        func_8001C258_main(m257_billboards[billId].modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        Hu3DModelAttrSet(m257_billboards[billId].modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         m257_billboards[billId].attr &= ~(BILL_ATTR_DISPOFF | BILL_ATTR_REF);
         m257_billboards[billId].attr |= BILL_ATTR_REF;
     }
@@ -531,7 +531,7 @@ void m257_UpdateBills(void) {
         mtxRotCat(model->mtx, 0.0f, 0.0f, CRot.z);
         if (bill->attr & BILL_ATTR_01) {
             if (bill->attr & BILL_ATTR_ANIM) {
-                func_8010CCD4_tick_tock_hop(bill->modelId, func_80055194_main(bill->unk08), bill->timer);
+                func_8010CCD4_tick_tock_hop(bill->modelId, HuSprAnimDataGet(bill->unk08), bill->timer);
                 bill->timer++;
                 if (bill->timer >= bill->duration) {
                     if (bill->attr & BILL_ATTR_LOOP) {
@@ -539,7 +539,7 @@ void m257_UpdateBills(void) {
                     } else {
                         bill->timer = 0;
                         bill->attr |= BILL_ATTR_DISPOFF;
-                        func_8001C258_main(bill->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                        Hu3DModelAttrSet(bill->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     }
                 }
             }
@@ -559,7 +559,7 @@ s32 func_8010AD60_tick_tock_hop(HuSprAnimData *arg0, f32 arg1) {
     s16 var_s4;
 
     temp_v0_0 = temp_v0 = HuMemAlloc(0x10000);
-    temp_v0_2 = func_8001A894_main(0x4C1, temp_v0_0, 4);
+    temp_v0_2 = Hu3DModelDLCreate(0x4C1, temp_v0_0, 4);
     temp_s6 = Hu3DData[temp_v0_2].hmf;
     temp_s6->unk60->unk50 |= 0x01010000;
     temp_s5 = func_8010CED8_tick_tock_hop(arg0, temp_s6, 1.0f, 0, 0x64);
@@ -629,7 +629,7 @@ s32 func_8010B4D0_tick_tock_hop(HuSprAnimData *arg0, f32 arg1) {
     s16 var_s1;
 
     temp_v0_0 = temp_v0 = HuMemAlloc(0x10000);
-    temp_v0_2 = func_8001A894_main(0x4C1, temp_v0_0, 4);
+    temp_v0_2 = Hu3DModelDLCreate(0x4C1, temp_v0_0, 4);
     temp_s4 = Hu3DData[temp_v0_2].hmf;
     temp_s4->unk60->unk50 |= 0x01010000;
     HuMemFree(temp_s4->unk3C);
@@ -732,7 +732,7 @@ s16 func_8010C0E8_tick_tock_hop(HuSprAnimData *arg0, RGBA *arg1) {
     s32 var_s1;
 
     temp_v0_0 = temp_v0_2 = HuMemAlloc(0x10000);
-    temp_v0 = func_8001A894_main(0x8C1, temp_v0_0, 4);
+    temp_v0 = Hu3DModelDLCreate(0x8C1, temp_v0_0, 4);
     temp_s4 = Hu3DData[temp_v0].hmf;
     temp_s4->unk60->unk50 |= 0x01010000;
     HuMemFree(temp_s4->unk3C);

@@ -315,13 +315,13 @@ void func_80106768_last5(void) {
     MBVecDirGet(&model->coords, &D_8010748C_last5, &model->rot);
     HuVecCopyXYZ(&model->scale, 1.5f, 1.5f, 1.5f);
     D_8010757C_last5 = MBModelCreate(0x3A, D_801074E0_last5);
-    func_800461B4_main(D_8010757C_last5->omObj1->model[0]);
+    AuraCreate(D_8010757C_last5->omObj1->model[0]);
     HuVecCopy3F(&D_8010757C_last5->coords, &D_80107498_last5[0]);
     D_8010757C_last5->velocity.x = 1000.0f;
-    light = func_8000CED8_main(0xB0004, 0x6A9);
-    func_8000CD00_main(light, 10.0f, 20.0f, 10.0f);
-    func_800138EC_main(light, 1, 0);
-    func_8000D018_main(light, 300.0f);
+    light = EffectCreate(0xB0004, 0x6A9);
+    EffectParamSet(light, 10.0f, 20.0f, 10.0f);
+    Hu3DParticleAttrSet(light, 1, 0);
+    EffectRangeSet(light, 300.0f);
     faceModel = MBModelCreate(9, D_801074BC_last5);
     HuVecCopy3F(&faceModel->coords, &D_801074B0_last5);
     MBGuideFaceCreate(faceModel, 2, 0xA, D_80107500_last5);
@@ -372,11 +372,11 @@ void func_80106768_last5(void) {
         func_80105AAC_last5(window);
         func_80105C9C_last5(window);
     } else {
-        func_800138EC_main(light, 0, 1);
+        Hu3DParticleAttrSet(light, 0, 1);
         HuAudFXPlay(0x157);
         while (400.0f <= D_8010757C_last5->velocity.x) {
             D_8010757C_last5->velocity.x -= 20.0f;
-            func_8000CFA4_main(light, D_8010757C_last5->coords.x, D_8010757C_last5->velocity.x - 100.0f,
+            EffectPosSet(light, D_8010757C_last5->coords.x, D_8010757C_last5->velocity.x - 100.0f,
                                D_8010757C_last5->coords.z);
             HuPrcVSleep();
         }
@@ -448,19 +448,19 @@ void func_80106768_last5(void) {
             value -= step;
             step += 2;
             D_8010757C_last5->velocity.x += 20.0f;
-            func_8000CFA4_main(light, D_8010757C_last5->coords.x, D_8010757C_last5->velocity.x - 100.0f,
+            EffectPosSet(light, D_8010757C_last5->coords.x, D_8010757C_last5->velocity.x - 100.0f,
                                D_8010757C_last5->coords.z);
             HuPrcVSleep();
         }
         while (D_8010757C_last5->velocity.x <= 1000.0f) {
             D_8010757C_last5->velocity.x += 20.0f;
-            func_8000CFA4_main(light, D_8010757C_last5->coords.x, D_8010757C_last5->velocity.x - 100.0f,
+            EffectPosSet(light, D_8010757C_last5->coords.x, D_8010757C_last5->velocity.x - 100.0f,
                                D_8010757C_last5->coords.z);
             HuPrcVSleep();
         }
-        func_800138EC_main(light, 1, 0);
+        Hu3DParticleAttrSet(light, 1, 0);
     }
-    func_8000D044_main(light);
+    EffectStop(light);
     func_800EC5B4_shared_board(-1, 0x4309);
     MBGuideFaceSet(faceModel, D_80107504_last5);
     MBMotionShiftSet(faceModel, 0, 0, 5, 2);

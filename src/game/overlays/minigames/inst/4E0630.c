@@ -174,20 +174,20 @@ void func_80107470_inst(void) {
 
     object = omAddObj(20, 10, 5, -1, NULL);
     D_8010DDD8_inst.object = object;
-    object->model[0] = func_8000B0D4_main(D_8010D90C_inst[D_8010D40A_inst][0] | 0x170000, 0x16B9);
-    object->model[1] = func_8000B0D4_main(0x170029, 0x1E89);
-    object->model[2] = func_8000B0D4_main(D_8010D954_inst[D_8010D40A_inst], 0x1AB9);
-    object->model[3] = func_8000B0D4_main(0x170028, 0x2B9);
-    object->model[4] = func_8000B0D4_main(D_8010D910_inst[D_8010D40A_inst][0] | 0x170000, 0x239);
-    func_8001C814_main(object->model[0], 2, 0);
-    func_8001C814_main(object->model[1], 2, 0);
-    func_8001C814_main(object->model[2], 2, 0);
-    func_8001C814_main(object->model[3], 2, 0);
-    func_8001C814_main(object->model[0], 1, 1);
-    func_8001C814_main(object->model[1], 1, 1);
-    func_8001C814_main(object->model[2], 1, 1);
-    func_8001C814_main(object->model[3], 1, 1);
-    func_8001C258_main(object->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    object->model[0] = Hu3DModelRead3(D_8010D90C_inst[D_8010D40A_inst][0] | 0x170000, 0x16B9);
+    object->model[1] = Hu3DModelRead3(0x170029, 0x1E89);
+    object->model[2] = Hu3DModelRead3(D_8010D954_inst[D_8010D40A_inst], 0x1AB9);
+    object->model[3] = Hu3DModelRead3(0x170028, 0x2B9);
+    object->model[4] = Hu3DModelRead3(D_8010D910_inst[D_8010D40A_inst][0] | 0x170000, 0x239);
+    Hu3DMotionAttrSet(object->model[0], 2, 0);
+    Hu3DMotionAttrSet(object->model[1], 2, 0);
+    Hu3DMotionAttrSet(object->model[2], 2, 0);
+    Hu3DMotionAttrSet(object->model[3], 2, 0);
+    Hu3DMotionAttrSet(object->model[0], 1, 1);
+    Hu3DMotionAttrSet(object->model[1], 1, 1);
+    Hu3DMotionAttrSet(object->model[2], 1, 1);
+    Hu3DMotionAttrSet(object->model[3], 1, 1);
+    Hu3DModelAttrSet(object->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     object->trans.x = 0;
     object->trans.y = 0;
     object->trans.z = 0;
@@ -206,7 +206,7 @@ void func_80107470_inst(void) {
     for (group = 0; group < 2; group++) {
         hooks = D_8010D4C0_inst[D_8010D40A_inst][group];
         for (j = 0; j < hooks->count; j++) {
-            node = (HmfMotionNode *)func_8001D33C_main(object->model[0], hooks->nodes[j]);
+            node = (HmfMotionNode *)Hu3DModelObjPtrGet(object->model[0], hooks->nodes[j]);
             data = node->unk54;
             for (i = 0; i < node->unk00; i++) {
                 if (node->unk50[i] >= 0) {
@@ -235,17 +235,17 @@ void func_80107470_inst(void) {
 
 void func_80107938_inst(omObjData *obj) {
     if ((s8)func_8010B10C_inst() == 1) {
-        func_8001C814_main(obj->model[1], 1, 0);
-        func_8001C814_main(obj->model[2], 1, 0);
-        func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-        func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        Hu3DMotionAttrSet(obj->model[1], 1, 0);
+        Hu3DMotionAttrSet(obj->model[2], 1, 0);
+        Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         D_8010DDD8_inst.update = func_801079CC_inst;
     }
 }
 
 void func_801079CC_inst(omObjData *obj) {
-    func_8001C814_main(obj->model[3], 1, 0);
-    func_8001C258_main(obj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DMotionAttrSet(obj->model[3], 1, 0);
+    Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     D_8010DDD8_inst.update = func_80107A24_inst;
 }
 
@@ -279,8 +279,8 @@ void func_80107BF8_inst(omObjData *object) {
     s32 j;
     f32 scale;
 
-    nodes[0] = func_8001D33C_main(object->model[1], D_8010D978_inst);
-    nodes[1] = func_8001D33C_main(object->model[2], D_8010D980_inst);
+    nodes[0] = Hu3DModelObjPtrGet(object->model[1], D_8010D978_inst);
+    nodes[1] = Hu3DModelObjPtrGet(object->model[2], D_8010D980_inst);
     if (nodes[0] == (HmfSkeletonNode *)-1 || nodes[1] == (HmfSkeletonNode *)-1) {
         osSyncPrintf("ERROR\n");
     }
@@ -324,7 +324,7 @@ s32 func_80107E20_inst(void) {
 
 void func_80107E98_inst(void) {
     Hu3DMotionTimeSet(D_8010DDD8_inst.object->model[0], 0);
-    func_8001C814_main(D_8010DDD8_inst.object->model[0], 1, 0);
+    Hu3DMotionAttrSet(D_8010DDD8_inst.object->model[0], 1, 0);
 }
 
 void func_80107EE0_inst(void) {
@@ -336,9 +336,9 @@ void func_80107EE0_inst(void) {
 void func_80107F18_inst(void) {
     omObjData *object = D_8010DDD8_inst.object;
 
-    func_8001C814_main(object->model[3], 1, 0);
-    func_8001C814_main(object->model[3], 4, 4);
-    func_8001C258_main(object->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DMotionAttrSet(object->model[3], 1, 0);
+    Hu3DMotionAttrSet(object->model[3], 4, 4);
+    Hu3DModelAttrSet(object->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     func_8010B124_inst();
     D_8010DDD8_inst.update = func_80107F98_inst;
 }
@@ -364,9 +364,9 @@ s32 func_801080A8_inst(void) {
 void func_801080FC_inst(void) {
     omObjData *obj = D_8010DDD8_inst.object;
 
-    func_8001C814_main(obj->model[0], 1, 0);
-    func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-    func_8001C814_main(obj->model[0], 4, 4);
+    Hu3DMotionAttrSet(obj->model[0], 1, 0);
+    Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DMotionAttrSet(obj->model[0], 4, 4);
 }
 
 void func_8010815C_inst(omObjData *obj) {
@@ -374,17 +374,17 @@ void func_8010815C_inst(omObjData *obj) {
     s32 i;
     f32 duration = D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02;
 
-    func_8001C814_main(obj->model[0], 1, 0);
-    func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DMotionAttrSet(obj->model[0], 1, 0);
+    Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DMotionTimeSet(obj->model[0], duration);
     Hu3DData[obj->model[1]].rot.x = D_8010D414_inst - 90.0f;
     Hu3DData[obj->model[2]].rot.x = D_8010D414_inst;
     for (i = 0; i < 3; i++) {
         Hu3DModelScaleSet(obj->model[i + 1], 0.6f, 0.6f, 0.6f);
-        func_8001C258_main(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        Hu3DModelAttrSet(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     }
-    nodes[0] = func_8001D33C_main(obj->model[1], D_8010D978_inst);
-    nodes[1] = func_8001D33C_main(obj->model[2], D_8010D980_inst);
+    nodes[0] = Hu3DModelObjPtrGet(obj->model[1], D_8010D978_inst);
+    nodes[1] = Hu3DModelObjPtrGet(obj->model[2], D_8010D980_inst);
     for (i = 0; i < 2; i++) {
         nodes[i]->unk4C[0][0] = 1.3f;
         nodes[i]->unk4C[1][1] = 1.3f;

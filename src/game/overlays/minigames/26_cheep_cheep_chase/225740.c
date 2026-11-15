@@ -236,16 +236,16 @@ void func_801059A0_cheep_cheep_chase(void) {
 void func_801059BC_cheep_cheep_chase(void) {
     u8 camera;
 
-    func_8001FE20_main(50);
-    func_800142A0_main(0x20);
+    MapCollInit(50);
+    Hu3DSprModelInit(0x20);
     omInitObjMan(50, 0);
-    func_8004A208_main();
+    omGameSysInit();
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     Hu3DGLightColorSet(0, 0xFF, 0xFF, 0xFF);
     Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
     Hu3DGLightDirSet(1, -56.0f, 50.0f, 56.0f);
-    func_8000B5F0_main(1);
-    camera = func_8000B638_main();
+    CamSetupInit(1);
+    camera = CamSetupMapCullAdd();
     ScissorSet(camera, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(camera, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 30.0f, 80.0f, 4000.0f);
@@ -257,9 +257,9 @@ void func_801059BC_cheep_cheep_chase(void) {
     func_8010D6F4_cheep_cheep_chase(0, 0, -1, 0, NULL, func_801076B4_cheep_cheep_chase, FALSE, FALSE);
     omAddObj(100, 0, 0, -1, func_80105F50_cheep_cheep_chase);
     omAddObj(1000, 0, 0, -1, func_80105DD0_cheep_cheep_chase);
-    func_80045010_main(D_8010E050_cheep_cheep_chase, 1);
-    func_80045010_main(D_8010E05C_cheep_cheep_chase, 1);
-    func_80045010_main(D_8010E06C_cheep_cheep_chase, 1);
+    GMesFontMesCreate(D_8010E050_cheep_cheep_chase, 1);
+    GMesFontMesCreate(D_8010E05C_cheep_cheep_chase, 1);
+    GMesFontMesCreate(D_8010E06C_cheep_cheep_chase, 1);
 }
 
 void func_80105BBC_cheep_cheep_chase(void) {
@@ -363,13 +363,13 @@ void func_8010619C_cheep_cheep_chase(omObjData *object) {
 void func_801061C8_cheep_cheep_chase(omObjData *object) {
     s16 i;
 
-    object->model[0] = D_8010E360_cheep_cheep_chase->segments[0].model = func_8000B108_main(0x470000, 0x9D);
-    object->model[1] = D_8010E360_cheep_cheep_chase->segments[1].model = func_8000B108_main(0x470002, 0x9D);
-    object->model[2] = D_8010E360_cheep_cheep_chase->segments[2].model = func_8000B108_main(0x470001, 0x9D);
+    object->model[0] = D_8010E360_cheep_cheep_chase->segments[0].model = Hu3DModelRead(0x470000, 0x9D);
+    object->model[1] = D_8010E360_cheep_cheep_chase->segments[1].model = Hu3DModelRead(0x470002, 0x9D);
+    object->model[2] = D_8010E360_cheep_cheep_chase->segments[2].model = Hu3DModelRead(0x470001, 0x9D);
     for (i = 0; i < 3; i++) {
         object->model[i + 3] = D_8010E360_cheep_cheep_chase->segments[i + 3].model = Hu3DModelLink(object->model[2]);
     }
-    object->model[6] = func_8000B108_main(0x470008, 0x9D);
+    object->model[6] = Hu3DModelRead(0x470008, 0x9D);
     func_8010D6F4_cheep_cheep_chase(2, 0, object->model[6], 0, NULL, func_80108C98_cheep_cheep_chase, FALSE, TRUE);
     func_8010D6F4_cheep_cheep_chase(2, 1, -1, 0, NULL, func_80108F78_cheep_cheep_chase, FALSE, TRUE);
     func_8010D6F4_cheep_cheep_chase(2, 0, -1, 1, NULL, func_801090E0_cheep_cheep_chase, TRUE, FALSE);
@@ -383,11 +383,11 @@ void func_8010636C_cheep_cheep_chase(omObjData *object) {
 void func_80106388_cheep_cheep_chase(omObjData *object) {
     u16 i;
 
-    object->model[0] = func_8000B108_main(0x470003, 0x2009D);
+    object->model[0] = Hu3DModelRead(0x470003, 0x2009D);
     for (i = 1; i < 4; i++) {
         object->model[i] = Hu3DModelLink(object->model[0]);
     }
-    func_8001C954_main(object->model[0]);
+    Hu3DModelVtxBufMake(object->model[0]);
     object->trans.x = 0.0f;
     object->trans.z = -250.0f;
     object->trans.y = 110.0f;
@@ -402,17 +402,17 @@ void func_80106484_cheep_cheep_chase(omObjData *object) {
     HmfModel *model;
     s16 i;
 
-    func_8001E65C_main(object->model[0], 0.0f, D_8010E014_cheep_cheep_chase, 64, 64);
+    Hu3DModelTexScroll(object->model[0], 0.0f, D_8010E014_cheep_cheep_chase, 64, 64);
     if (omPauseChk() + D_800D6A90_main == 0) {
         D_8010E014_cheep_cheep_chase += D_8010E360_cheep_cheep_chase->unk_18;
     }
     for (i = 0; i < 4; i++) {
         model = &Hu3DData[object->model[i]];
         if (Center.z - 900.0f <= model->pos.z) {
-            func_8001C258_main(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         }
         if (Center.z + 1000.0f <= model->pos.z) {
-            func_8001C258_main(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             if (i != 0) {
                 func_801093CC_cheep_cheep_chase(object->model[i]);
             } else {
@@ -426,7 +426,7 @@ void func_80106484_cheep_cheep_chase(omObjData *object) {
 void func_8010665C_cheep_cheep_chase(omObjData *object) {
     u16 i;
 
-    object->model[0] = func_8000B108_main(0x470009, 0x9D);
+    object->model[0] = Hu3DModelRead(0x470009, 0x9D);
     for (i = 1; i < 3; i++) {
         object->model[i] = Hu3DModelLink(object->model[0]);
     }
@@ -448,10 +448,10 @@ void func_801067B0_cheep_cheep_chase(omObjData *object) {
     for (i = 0; i < 3; i++) {
         model = &Hu3DData[object->model[i]];
         if (model->pos.z >= Center.z - 800.0) {
-            func_8001C258_main(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         }
         if (model->pos.z >= Center.z + 700.0) {
-            func_8001C258_main(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             if (i != 0) {
                 func_80109444_cheep_cheep_chase(object->model[i]);
             } else {
@@ -468,7 +468,7 @@ void func_801067B0_cheep_cheep_chase(omObjData *object) {
 void func_80106978_cheep_cheep_chase(omObjData *object) {
     u16 i;
 
-    object->model[0] = D_8010E360_cheep_cheep_chase->unk_04[0].model = func_8000B108_main(0x470004, 0x2008D);
+    object->model[0] = D_8010E360_cheep_cheep_chase->unk_04[0].model = Hu3DModelRead(0x470004, 0x2008D);
     for (i = 1; i < 8; i++) {
         object->model[i] = D_8010E360_cheep_cheep_chase->unk_04[i].model = Hu3DModelLink(object->model[0]);
     }
@@ -512,14 +512,14 @@ void func_80106AA0_cheep_cheep_chase(omObjData *object) {
                                    D_8010E360_cheep_cheep_chase->unk_04[i].unk_08;
                 }
                 if (Center.z - 1000.0f <= model->pos.z) {
-                    func_8001C258_main(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                    Hu3DModelAttrSet(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 }
             } else {
-                func_8001C258_main(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
         }
         if (Center.z + 700.0f <= model->pos.z) {
-            func_8001C258_main(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             if (i == 0 || i == 4) {
                 func_801094C0_cheep_cheep_chase(object, i);
             }
@@ -540,16 +540,16 @@ void func_80106E80_cheep_cheep_chase(omObjData *object) {
     model = D_800A178C_main[chr][0];
     motion = D_800A178C_main[chr][2];
     func_800E1BA8_minigame(object, model, motion, D_800EC280_minigame, attr, 0x2BD);
-    object->model[9] = func_8000B108_main(0x47000A, 0x2B9);
-    func_8001C258_main(object->model[9], 4, 4);
-    func_800E5A00_minigame(object, 0, func_80017BB8_main(chr, 0), 1, 0);
-    func_800E5A00_minigame(object, 1, func_80017BB8_main(chr, 1), 1, 0);
-    func_800E5A00_minigame(object, 0x26, func_80017BB8_main(chr, 0xD), 1, 0);
-    func_800E5A00_minigame(object, 0x27, func_80017BB8_main(chr, 0x3B), 1, 0);
-    func_800E5A00_minigame(object, 0x28, func_80017BB8_main(chr, 0x3C), 1, 0);
-    func_800E5A00_minigame(object, 0x2A, func_80017BB8_main(chr, 0x59), 1, 0);
-    func_800E5A00_minigame(object, 0x2B, func_80017BB8_main(chr, 0x5D), 1, 0);
-    func_800E5A00_minigame(object, 0xD, func_80017BB8_main(chr, 0x2F), 1, 999);
+    object->model[9] = Hu3DModelRead(0x47000A, 0x2B9);
+    Hu3DModelAttrSet(object->model[9], 4, 4);
+    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(chr, 0), 1, 0);
+    func_800E5A00_minigame(object, 1, CharMotionDataNumGet(chr, 1), 1, 0);
+    func_800E5A00_minigame(object, 0x26, CharMotionDataNumGet(chr, 0xD), 1, 0);
+    func_800E5A00_minigame(object, 0x27, CharMotionDataNumGet(chr, 0x3B), 1, 0);
+    func_800E5A00_minigame(object, 0x28, CharMotionDataNumGet(chr, 0x3C), 1, 0);
+    func_800E5A00_minigame(object, 0x2A, CharMotionDataNumGet(chr, 0x59), 1, 0);
+    func_800E5A00_minigame(object, 0x2B, CharMotionDataNumGet(chr, 0x5D), 1, 0);
+    func_800E5A00_minigame(object, 0xD, CharMotionDataNumGet(chr, 0x2F), 1, 999);
     Hu3DModelScaleSet(object->model[0], 0.7f, 0.7f, 0.7f);
     object->trans.x = 300.0 - (D_8010E370_cheep_cheep_chase[D_800EC280_minigame] + 1.0f) * 120.0;
     object->trans.y = 1060.0f;
@@ -557,7 +557,7 @@ void func_80106E80_cheep_cheep_chase(omObjData *object) {
     object->rot.y = 180.0f;
     func_800E5690_minigame(object, 0x2A);
     Hu3DModelPosSet(object->model[1], 0.0f, 0.0f, 0.0f);
-    func_8001C258_main(object->model[1], 4, 4);
+    Hu3DModelAttrSet(object->model[1], 4, 4);
     D_800EC280_minigame++;
     data = object->data;
     D_8010E364_cheep_cheep_chase[object->work[0]].padId = data->unk57;
@@ -592,18 +592,18 @@ void func_8010732C_cheep_cheep_chase(omObjData *object) {
 void func_80107440_cheep_cheep_chase(omObjData *object) {
     s16 ctxId;
 
-    object->model[1] = D_8010E368_cheep_cheep_chase->model = func_8000B108_main(0xA0086, 0x289);
-    object->model[0] = func_8000B108_main(0xA0087, 0x28D);
-    object->motion[0] = func_8000B108_main(0xA0088, 0x28D);
-    func_8001C5B4_main(object->model[1], object->motion[0]);
-    func_8001C814_main(object->motion[0], 2, 2);
-    func_8001C954_main(object->model[1]);
-    func_8001C2FC_main(object->model[1], 0x20000, 0x20000);
-    func_8001C2FC_main(object->model[0], 0x20000, 0x20000);
+    object->model[1] = D_8010E368_cheep_cheep_chase->model = Hu3DModelRead(0xA0086, 0x289);
+    object->model[0] = Hu3DModelRead(0xA0087, 0x28D);
+    object->motion[0] = Hu3DModelRead(0xA0088, 0x28D);
+    Hu3DMotionModelSet(object->model[1], object->motion[0]);
+    Hu3DMotionAttrSet(object->motion[0], 2, 2);
+    Hu3DModelVtxBufMake(object->model[1]);
+    Hu3DModelObjAttrSet(object->model[1], 0x20000, 0x20000);
+    Hu3DModelObjAttrSet(object->model[0], 0x20000, 0x20000);
     Hu3DModelRemakeStatic(object->model[1]);
     Hu3DModelRemakeStatic(object->model[0]);
-    func_8001C514_main(object->model[1]);
-    func_8001C514_main(object->model[0]);
+    Hu3DModelDynamicFree(object->model[1]);
+    Hu3DModelDynamicFree(object->model[0]);
     Hu3DModelScaleSet(object->model[1], 1.4f, 1.4f, 1.4f);
     Hu3DModelPosSet(object->model[1], 0.0f, 40.0f, 0.0f);
     Hu3DModelRotSet(object->model[1], 0.0f, 180.0f, 0.0f);
@@ -945,7 +945,7 @@ void func_801088F8_cheep_cheep_chase(FuncContext *ctx) {
     }
     if (++ctx->work.s16[0] >= 16) {
         ctx->work.s16[0] = 15;
-        func_8004AEF0_main(D_8010E380_cheep_cheep_chase[0], 15);
+        HuAudFXFadeOut(D_8010E380_cheep_cheep_chase[0], 15);
         func_8010D7F4_cheep_cheep_chase(1, ctx);
     }
 }
@@ -1076,7 +1076,7 @@ void func_80108C98_cheep_cheep_chase(FuncContext *ctx) {
         D_8010E360_cheep_cheep_chase->unk_24 = ctx->param;
         Hu3DModelScaleSet(ctx->param, 1.4f, 1.4f, 1.4f);
         Hu3DModelPosSet(ctx->param, 0.0f, -100.0f, 0.0f);
-        func_8001C258_main(ctx->param, 4, 0);
+        Hu3DModelAttrSet(ctx->param, 4, 0);
         Hu3DData[ctx->param].motSpeed = 0.0f;
         Hu3DData[ctx->param].motTime = 0.0f;
         func_8010D7F4_cheep_cheep_chase(2, ctx);
@@ -1097,10 +1097,10 @@ void func_80108F78_cheep_cheep_chase(FuncContext *ctx) {
             for (i = 1; i < 6; i++, segment++) {
                 model = &Hu3DData[segment->model];
                 if (Center.z - 700.0f <= model->pos.z) {
-                    func_8001C258_main(segment->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                    Hu3DModelAttrSet(segment->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 }
                 if (Center.z + 1700.0f <= model->pos.z) {
-                    func_8001C258_main(segment->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    Hu3DModelAttrSet(segment->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     if (i >= 2 && ctx->work.s8[0] < 7) {
                         func_801091FC_cheep_cheep_chase(ctx->work.s8[0]++);
                     }
@@ -1121,12 +1121,12 @@ void func_801090E0_cheep_cheep_chase(FuncContext *ctx) {
             break;
         case 1:
             if (Center.z - 700.0f <= model->pos.z) {
-                func_8001C258_main(segment->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                Hu3DModelAttrSet(segment->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             }
             if (model->pos.z >= Center.z + 1700.0f + 400.0) {
-                func_8001C258_main(segment->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(segment->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 func_8010D7F4_cheep_cheep_chase(2, ctx);
-                func_8001C258_main(D_8010E360_cheep_cheep_chase->unk_24, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(D_8010E360_cheep_cheep_chase->unk_24, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
             break;
         case 2:
@@ -1298,14 +1298,14 @@ void func_80109CAC_cheep_cheep_chase(FuncContext *ctx) {
                                     ctx->work.s8[2] = 0;
                                     ctx->work.s8[3] = 1;
                                 }
-                                func_8001C258_main(object->model[9], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                                Hu3DModelAttrSet(object->model[9], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                                 break;
                             case 1:
                                 if (func_8010DF48_cheep_cheep_chase(&scale, (u8 *)&ctx->work.s8[2], 2.5f, 0.8f, 3.0f)) {
                                     Hu3DData[object->model[0]].motSpeed = 0.75f;
                                     ctx->work.s8[2] = 0;
                                     ctx->work.s8[3] = 2;
-                                    func_8001C258_main(object->model[9], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                                    Hu3DModelAttrSet(object->model[9], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                                     D_8010E01C_cheep_cheep_chase++;
                                 }
                                 break;
@@ -1343,7 +1343,7 @@ void func_8010A08C_cheep_cheep_chase(FuncContext *ctx) {
             ctx->work.s8[4] = 0;
             ctx->work.f32[0] = object->trans.z;
             ctx->work.f32[1] = object->trans.x;
-            func_8001C258_main(object->model[9], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(object->model[9], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             ctx->state = 1;
             break;
         case 1:
@@ -1378,7 +1378,7 @@ void func_8010A08C_cheep_cheep_chase(FuncContext *ctx) {
                             ctx->work.s8[1] = 0;
                         }
                     }
-                    func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                    Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     Hu3DModelPosSet(object->model[1], object->trans.x, object->trans.y - 5.0f, object->trans.z);
                     break;
             }
@@ -1394,10 +1394,10 @@ void func_8010A08C_cheep_cheep_chase(FuncContext *ctx) {
                 s16 playerNo = ctx->work.s16[0];
                 s32 dataNum = D_8010E028_cheep_cheep_chase[GwPlayer[playerNo].chr];
 
-                func_80017790_main(object->model[0], 2, GwPlayer[playerNo].chr, dataNum);
+                CharAnimCreate(object->model[0], 2, GwPlayer[playerNo].chr, dataNum);
                 func_8010D7F4_cheep_cheep_chase(ctx->work.s16[0] + 4, ctx);
                 func_800E5690_minigame(object, 0xD);
-                func_80045ED0_main(D_800A178C_main[GwPlayer[playerNo].chr][0] | 0x2F);
+                HuAudCharVoicePlay(D_800A178C_main[GwPlayer[playerNo].chr][0] | 0x2F);
                 func_8010D6F4_cheep_cheep_chase(1, 0, -1, 0, NULL, func_8010896C_cheep_cheep_chase, FALSE, FALSE);
             }
             break;
@@ -1680,7 +1680,7 @@ void func_8010B148_cheep_cheep_chase(FuncContext *ctx) {
                 ctx->work.s8[2] = 0;
                 object->trans.z -= sindf(player->unk_14) * (player->unk_18 + 6.0f);
                 if (Hu3DData[object->model[0]].motTime == 0.0f) {
-                    func_8004AC98_main(GwPlayer[object->work[0]].chr + 0x7A, object->work[0] + 4);
+                    HuAudPlayerFXPlay(GwPlayer[object->work[0]].chr + 0x7A, object->work[0] + 4);
                 }
             } else {
                 object->trans.z -= sindf(player->unk_14) * (player->unk_18 + 6.0f) - 1.0f;
@@ -1818,7 +1818,7 @@ void func_8010B648_cheep_cheep_chase(FuncContext *ctx) {
                                 ctx->work.s8[2] = 1;
                                 ctx->work.s8[1] = 1;
                             }
-                            func_8001C258_main(object->model[9], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                            Hu3DModelAttrSet(object->model[9], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                             break;
                         case 1:
                             if (func_8010DF48_cheep_cheep_chase(&scale, (u8 *)&ctx->work.s8[2], 3.0f, 0.8f, 3.0f)) {
@@ -1838,7 +1838,7 @@ void func_8010B648_cheep_cheep_chase(FuncContext *ctx) {
                     Hu3DModelScaleSet(object->model[9], scale, scale, scale);
                 } else {
                     ctx->work.s8[1] = 0;
-                    func_8001C258_main(object->model[9], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    Hu3DModelAttrSet(object->model[9], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     Hu3DData[object->model[9]].motSpeed = 0.0f;
                     Hu3DData[object->model[9]].motTime = 0.0f;
                 }
@@ -1873,7 +1873,7 @@ void func_8010BB9C_cheep_cheep_chase(FuncContext *ctx) {
             item->unk_02 = 1;
             omVibrate(ctx->work.s16[0], 2, 2, 20);
             PlayerFXPlay(0x286, ctx->work.s16[0]);
-            func_8004AC5C_main(0x434, ctx->work.s16[0]);
+            _HuAudPlayerFXPlay(0x434, ctx->work.s16[0]);
             func_8010D6F4_cheep_cheep_chase(ctx->work.s16[0] + 4, 0, -1, 0, NULL, func_8010BEA4_cheep_cheep_chase, FALSE, FALSE);
         }
     }
@@ -1962,7 +1962,7 @@ void func_8010C004_cheep_cheep_chase(FuncContext *ctx) {
                     D_8010E368_cheep_cheep_chase->unk_02 = 1;
                 }
             } else if (Hu3DData[D_8010E368_cheep_cheep_chase->model].pos.z <= object->trans.z) {
-                func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 D_8010E048_cheep_cheep_chase = 0;
                 func_8010D85C_cheep_cheep_chase(ctx->work.s16[0] + 4);
                 D_8010E360_cheep_cheep_chase->unk_2E++;
@@ -2004,7 +2004,7 @@ void func_8010C440_cheep_cheep_chase(FuncContext *ctx) {
                     player->unk_01 = 4;
                     func_8010B63C_cheep_cheep_chase(player, 0x2A, TRUE);
                     func_8010D6F4_cheep_cheep_chase(i + 4, 0, -1, 0, NULL, func_8010C004_cheep_cheep_chase, FALSE, FALSE);
-                    func_8001C258_main(object->model[9], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    Hu3DModelAttrSet(object->model[9], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 }
                 speed += player->unk_18 + 6.0f;
                 count++;
@@ -2056,7 +2056,7 @@ void func_8010C8EC_cheep_cheep_chase(s16 model1, s16 model2, f32 t, s32 node1, s
     if (node1 == -1 || node2 == -1) {
         return;
     }
-    func_8001CF1C_main(hmf1, hmf2, t, node1, node2, full);
+    HmfObjVtxMorph(hmf1, hmf2, t, node1, node2, full);
 }
 
 void func_8010C988_cheep_cheep_chase(FuncContext *ctx) {
@@ -2246,7 +2246,7 @@ void func_8010D198_cheep_cheep_chase(FuncContext *ctx) {
                         HuAudFXPlay(0x432);
                     }
                 } else if (Hu3DData[D_8010E368_cheep_cheep_chase->model].pos.z <= model->pos.z) {
-                    func_8001C258_main(item->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    Hu3DModelAttrSet(item->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     item->unk_02 = 1;
                     item->unk_03 = 1;
                 }
@@ -2386,7 +2386,7 @@ s16 func_8010DA74_cheep_cheep_chase(s32 dir, s32 file, u16 arg2, s32 attr) {
             HuSprAttrSet(sprite->groupId, 0, attr);
             HuSprAnimModeSet(sprite->groupId, 0, arg2);
             HuSprPriSet(sprite->groupId, 0, 0xFFF0);
-            func_80054FF8_main(sprite->groupId, 0, 0);
+            HuSprPatNoSet(sprite->groupId, 0, 0);
             HuSprSpeedSet(sprite->groupId, 0, 1.0f);
             HuSprScaleSet(sprite->groupId, 0, 1.0f, 1.0f);
             HuSprPosSet(sprite->groupId, 0, 100, 100);
@@ -2407,7 +2407,7 @@ void func_8010DA84_cheep_cheep_chase(s16 spriteId, s32 posX, s32 posY) {
     SpriteData *sprite = &D_8010E390_cheep_cheep_chase[spriteId];
 
     if (sprite->state != SPRITE_STATE_NOTSET) {
-        func_80054FF8_main(sprite->groupId, 0, 0);
+        HuSprPatNoSet(sprite->groupId, 0, 0);
         HuSprAttrReset(sprite->groupId, 0, 0x8000);
         HuSprPosSet(sprite->groupId, 0, posX, posY);
         sprite->state = SPRITE_STATE_VISIBLE;
@@ -2433,7 +2433,7 @@ void func_8010DB80_cheep_cheep_chase(void) {
             case SPRITE_STATE_VISIBLE:
                 if (HuSprGet(sprite->groupId, 0)->patNo + 1 >= sprite->unk04) {
                     HuSprDispOff(sprite->groupId, 0);
-                    func_80054FF8_main(sprite->groupId, 0, 0);
+                    HuSprPatNoSet(sprite->groupId, 0, 0);
                 }
                 break;
         }
@@ -2448,8 +2448,8 @@ s16 func_8010DB8C_cheep_cheep_chase(s32 dir, s32 file, f32 freq, s32 arg3) {
     animModel = D_8010E394_cheep_cheep_chase;
     for (i = 0; i < ANIMMDL_MAX; i++, animModel++) {
         if (!animModel->set) {
-            animModel->modelId = func_8000B108_main((dir << 16) | file, arg3);
-            func_8001C258_main(animModel->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            animModel->modelId = Hu3DModelRead((dir << 16) | file, arg3);
+            Hu3DModelAttrSet(animModel->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             hmfModel = &Hu3DData[animModel->modelId];
             hmfModel->motTime = 0.0f;
             hmfModel->motSpeed = 0.0f;
@@ -2482,7 +2482,7 @@ s16 func_8010DC7C_cheep_cheep_chase(s16 animModelId, f32 posX, f32 posY, f32 pos
         Hu3DModelRotSet(animModel->modelId, rotX, rotY, rotZ);
         Hu3DModelScaleSet(animModel->modelId, scale, scale, scale);
         if (animStart == 0.0f) {
-            func_8001C258_main(animModel->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(animModel->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             animModel->state = ANIMMDL_STATE_ANIM;
             animModel->animStart = 0.0f;
             animModel->animTimer = 0.0f;
@@ -2511,7 +2511,7 @@ void func_8010DDF4_cheep_cheep_chase(void) {
         switch (animModel->state) {
             default:
                 if (D_800CCF58_main[hmfModel->motId].unk02 <= hmfModel->motTime) {
-                    func_8001C258_main(animModel->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    Hu3DModelAttrSet(animModel->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     hmfModel->motTime = 0.0f;
                     hmfModel->motSpeed = 0.0f;
                     if (hmfModel->hmf->unk98 != NULL) {
@@ -2522,7 +2522,7 @@ void func_8010DDF4_cheep_cheep_chase(void) {
                 break;
             case ANIMMDL_STATE_WAIT:
                 if (animModel->animStart <= animModel->animTimer++) {
-                    func_8001C258_main(animModel->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                    Hu3DModelAttrSet(animModel->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     animModel->state = ANIMMDL_STATE_ANIM;
                     hmfModel->motSpeed = animModel->freq;
                 }

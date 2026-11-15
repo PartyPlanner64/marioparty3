@@ -26,20 +26,20 @@ void func_80107D10_mgresultbattle(void) {
 
     obj = omAddObj(0x14, 8, 8, -1, NULL);
     D_80108F7C_mgresultbattle = obj;
-    obj->model[0] = func_8000B108_main(0x1B0005, 0x2B9);
+    obj->model[0] = Hu3DModelRead(0x1B0005, 0x2B9);
 
     for (i = 0; i < 4; i++) {
-        obj->model[i + 1] = func_8000B108_main(
+        obj->model[i + 1] = Hu3DModelRead(
             D_80108A00_mgresultbattle[GwPlayer[D_80108F8C_mgresultbattle[i]].bonusCoin], 0x16B9);
-        func_8001C814_main(obj->model[i + 1], 2, 0);
-        func_8001C814_main(obj->model[i + 1], 1, 1);
-        func_8001C258_main(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DMotionAttrSet(obj->model[i + 1], 2, 0);
+        Hu3DMotionAttrSet(obj->model[i + 1], 1, 1);
+        Hu3DModelAttrSet(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         Hu3DModelPosSet(obj->model[i + 1], D_801089D0_mgresultbattle[i].x, D_801089D0_mgresultbattle[i].y,
                         D_801089D0_mgresultbattle[i].z);
         Hu3DModelRotSet(obj->model[i + 1], 0.0f, D_80108A10_mgresultbattle[i], 0.0f);
-        func_8001C258_main(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        Hu3DModelAttrSet(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DMotionTimeSet(obj->model[i + 1], D_800CCF58_main[Hu3DData[obj->model[i + 1]].motId].unk02);
-        func_8001C814_main(obj->model[i + 1], 1, 1);
+        Hu3DMotionAttrSet(obj->model[i + 1], 1, 1);
     }
 
     obj->trans.x = 0.0f;
@@ -64,7 +64,7 @@ void func_80107F9C_mgresultbattle(omObjData *obj) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        func_80016B00_main(obj->model[i + 1], Hu3DData[obj->model[i + 1]].motTime, "chara", &mtx);
+        Hu3DModelObjMtxFrameGet(obj->model[i + 1], Hu3DData[obj->model[i + 1]].motTime, "chara", &mtx);
         Hu3DModelPosSet(D_80108F50_mgresultbattle[i].obj->model[1], mtx[3][0] + D_801089D0_mgresultbattle[i].x,
                         mtx[3][1] + D_801089D0_mgresultbattle[i].y, mtx[3][2] + D_801089D0_mgresultbattle[i].z);
     }
@@ -75,8 +75,8 @@ void func_801080A0_mgresultbattle(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        func_8001C258_main(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-        func_8001C814_main(obj->model[i + 1], 1, 0);
+        Hu3DModelAttrSet(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        Hu3DMotionAttrSet(obj->model[i + 1], 1, 0);
         Hu3DMotionTimeSet(obj->model[i + 1], 0.0f);
     }
 }
@@ -163,8 +163,8 @@ void func_80108510_mgresultbattle(s16 group, s16 x, s16 y) {
         espDispOn(D_80108F38_mgresultbattle[group][1]);
         espPosSet(D_80108F38_mgresultbattle[group][0], x - 6, y - 18);
         espPosSet(D_80108F38_mgresultbattle[group][1], x + 4, y - 18);
-        func_8000BD50_main(D_80108F38_mgresultbattle[group][0], 11);
-        func_8000BD50_main(D_80108F38_mgresultbattle[group][1], coins % 10);
+        espPatNoSet(D_80108F38_mgresultbattle[group][0], 11);
+        espPatNoSet(D_80108F38_mgresultbattle[group][1], coins % 10);
     } else {
         espDispOn(D_80108F38_mgresultbattle[group][0]);
         espDispOn(D_80108F38_mgresultbattle[group][1]);
@@ -173,12 +173,12 @@ void func_80108510_mgresultbattle(s16 group, s16 x, s16 y) {
         espPosSet(D_80108F38_mgresultbattle[group][1], x - 1, y - 18);
         espPosSet(D_80108F38_mgresultbattle[group][2], x + 9, y - 18);
         if (coins < 100) {
-            func_8000BD50_main(D_80108F38_mgresultbattle[group][0], 11);
+            espPatNoSet(D_80108F38_mgresultbattle[group][0], 11);
         } else {
-            func_8000BD50_main(D_80108F38_mgresultbattle[group][0], coins / 100 % 10);
+            espPatNoSet(D_80108F38_mgresultbattle[group][0], coins / 100 % 10);
         }
-        func_8000BD50_main(D_80108F38_mgresultbattle[group][1], coins / 10 % 10);
-        func_8000BD50_main(D_80108F38_mgresultbattle[group][2], coins % 10);
+        espPatNoSet(D_80108F38_mgresultbattle[group][1], coins / 10 % 10);
+        espPatNoSet(D_80108F38_mgresultbattle[group][2], coins % 10);
     }
 }
 

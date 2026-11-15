@@ -573,7 +573,7 @@ void func_800E5FB0_name_81(Gfx** arg0, u16* arg1, s16 arg2, s16 arg3) {
     temp_f22 = ((f32) arg3 + (D_80104848_name_81[1] / 4.0f)) - (f32) (s32) (D_80104848_name_81[1] / 4.0f);
 
     if (D_8010100C_name_81 == 0) {
-        func_8003465C_main(arg0, arg1, 0, 2, 0x40, 0x20, 0, 0, 0x40, 0x20, 0, 1, 1, 6, 5, 0, 0);
+        HuLoadTextureBlock(arg0, arg1, 0, 2, 0x40, 0x20, 0, 0, 0x40, 0x20, 0, 1, 1, 6, 5, 0, 0);
     } else {
         gDPLoadTextureBlock((*arg0)++, arg1, G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, 32, 0, G_TX_MIRROR,
                             G_TX_MIRROR, 6, 5, G_TX_NOLOD, G_TX_NOLOD);
@@ -620,7 +620,7 @@ void func_800E5FB0_name_81(Gfx** arg0, u16* arg1, s16 arg2, s16 arg3) {
     }
 
     if (D_8010100C_name_81 == 0) {
-        func_8003465C_main(arg0, arg1 + (64 * 32), 0, 2, 0x40, 0x10, 0, 0, 0x40, 0x10, 0, 1, 1, 6, 4, 0, 0);
+        HuLoadTextureBlock(arg0, arg1 + (64 * 32), 0, 2, 0x40, 0x10, 0, 0, 0x40, 0x10, 0, 1, 1, 6, 4, 0, 0);
     } else {
         gDPLoadTextureBlock((*arg0)++, arg1 + (64 * 32), G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, 16, 0,
                             G_TX_MIRROR, G_TX_MIRROR, 6, 4, G_TX_NOLOD, G_TX_NOLOD);
@@ -687,9 +687,9 @@ void func_800E77D8_name_81(Gfx** arg0, s32 arg1, u8 arg2) {
     }
 
     func_800E5B3C_name_81();
-    temp_s0 = func_8004D6AC_main(0xC8, 0, 0);
+    temp_s0 = HuProfCpuBegin(0xC8, 0, 0);
     func_800E5DD8_name_81();
-    func_8004D6E8_main(temp_s0);
+    HuProfCpuEnd(temp_s0);
 
     sp26 = ((D_80102D38_name_81 + D_80102D34_name_81) - 120) % 48;
     sp1E = ((D_80102D36_name_81 + D_80102D32_name_81) - 160) % 64;

@@ -172,7 +172,7 @@ void func_801059A0_mgmode(void) {
     omInitObjMan(20, 10);
     Hu3DCamInit(2);
     HuWinInit();
-    func_800142A0_main(20);
+    Hu3DSprModelInit(20);
     Hu3DBGColorSet(0, 0, 0);
     D_800CD280_main = 1;
     D_800D6A58_main = 1;
@@ -300,7 +300,7 @@ void func_8010606C_mgmode(void) {
             D_800D2124_main[i] = -1;
         }
         Hu3DMotionSet(D_8011B8A8_mgmode[15], D_8011B7A0_mgmode[0]);
-        func_8001C814_main(D_8011B8A8_mgmode[15], 2, 2);
+        Hu3DMotionAttrSet(D_8011B8A8_mgmode[15], 2, 2);
         if (omovlevtno == 0) {
             func_80116E24_mgmode(0);
             while (WipeStatGet()) {
@@ -314,36 +314,36 @@ void func_8010606C_mgmode(void) {
             while (WipeStatGet()) {
                 HuPrcVSleep();
             }
-            node = func_8001D33C_main(D_8011B8A8_mgmode[3], "door_b");
+            node = Hu3DModelObjPtrGet(D_8011B8A8_mgmode[3], "door_b");
             RepeatVibrator(D_8011B808_mgmode, 5, 0, 5);
             HuAudFXPlay(0x2EB);
             for (i = 0; i < 19; i++) {
                 HuPrcVSleep();
-                func_8002367C_main(node->unk58, D_8011A848_mgmode);
+                mtxCopy(node->unk58, D_8011A848_mgmode);
                 mtxRotCat(node->unk58, 0.0f, i * 5, 0.0f);
             }
             func_80116ED4_mgmode(18, 20, 1, (void (*)(s16 *))-1);
-            func_8002367C_main(node->unk58, D_8011A848_mgmode);
+            mtxCopy(node->unk58, D_8011A848_mgmode);
             func_80116ED4_mgmode(1, 30, 1, (void (*)(s16 *))-1);
         } else if (omovlevtno == 7) {
             func_80116E24_mgmode(19);
             while (WipeStatGet()) {
                 HuPrcVSleep();
             }
-            node = func_8001D33C_main(D_8011B8A8_mgmode[3], "door_g");
+            node = Hu3DModelObjPtrGet(D_8011B8A8_mgmode[3], "door_g");
             RepeatVibrator(D_8011B808_mgmode, 5, 0, 5);
             HuAudFXPlay(0x2EB);
             for (i = 0; i < 19; i++) {
                 HuPrcVSleep();
-                func_8002367C_main(node->unk58, D_8011A888_mgmode);
+                mtxCopy(node->unk58, D_8011A888_mgmode);
                 mtxRotCat(node->unk58, 0.0f, -i * 5, 0.0f);
             }
             func_80116ED4_mgmode(20, 20, 1, (void (*)(s16 *))-1);
-            func_8002367C_main(node->unk58, D_8011A888_mgmode);
+            mtxCopy(node->unk58, D_8011A888_mgmode);
             func_80116ED4_mgmode(1, 30, 1, (void (*)(s16 *))-1);
         }
         hmf = Hu3DData[D_8011B8A8_mgmode[0]].hmf;
-        hmf->unk60[func_8002C834_main(hmf, "fog")].unk24 = 1;
+        hmf->unk60[SearchObjectIndex(hmf, "fog")].unk24 = 1;
         func_8011822C_mgmode(D_80119158_mgmode);
         func_801181F4_mgmode(0);
         func_80107298_mgmode();
@@ -371,21 +371,21 @@ void func_8010606C_mgmode(void) {
         HuPrcSleep(5);
     } else if (omovlevtno == 1) {
         hmf = Hu3DData[D_8011B8A8_mgmode[0]].hmf;
-        hmf->unk60[func_8002C834_main(hmf, "fog")].unk24 = 1;
+        hmf->unk60[SearchObjectIndex(hmf, "fog")].unk24 = 1;
         D_8011A700_mgmode = 0;
         func_80116E24_mgmode(2);
         Hu3DMotionSet(D_8011B8A8_mgmode[15], D_8011B7A0_mgmode[1]);
-        func_8001C814_main(D_8011B8A8_mgmode[15], 2, 2);
+        Hu3DMotionAttrSet(D_8011B8A8_mgmode[15], 2, 2);
         func_80108C88_mgmode();
         Hu3DMotionShiftSet(D_8011B8A8_mgmode[15], D_8011B7A0_mgmode[0], 0, 8, 2);
     }
     if (D_8011B8A4_mgmode) {
         hmf = Hu3DData[D_8011B8A8_mgmode[3]].hmf;
-        hmf->unk60[func_8002C834_main(hmf, "harigami_g")].unk24 = 1;
+        hmf->unk60[SearchObjectIndex(hmf, "harigami_g")].unk24 = 1;
     }
     if (D_8011B778_mgmode) {
         hmf = Hu3DData[D_8011B8A8_mgmode[3]].hmf;
-        hmf->unk60[func_8002C834_main(hmf, "harigami_b")].unk24 = 1;
+        hmf->unk60[SearchObjectIndex(hmf, "harigami_b")].unk24 = 1;
     }
     while (TRUE) {
         HuPrcVSleep();
@@ -439,12 +439,12 @@ void func_8010606C_mgmode(void) {
                     } else {
                         func_801182B4_mgmode(0);
                         HuWinExAnimOut(D_8011B6A8_mgmode, 0);
-                        node = func_8001D33C_main(D_8011B8A8_mgmode[3], "door_g");
+                        node = Hu3DModelObjPtrGet(D_8011B8A8_mgmode[3], "door_g");
                         RepeatVibrator(D_8011B808_mgmode, 5, 0, 5);
                         HuAudFXPlay(0x2EB);
                         for (i = 0; i < 19; i++) {
                             HuPrcVSleep();
-                            func_8002367C_main(node->unk58, D_8011A888_mgmode);
+                            mtxCopy(node->unk58, D_8011A888_mgmode);
                             mtxRotCat(node->unk58, 0.0f, -i * 5, 0.0f);
                         }
                         func_80116ED4_mgmode(15, 20, 1, (void (*)(s16 *))-1);
@@ -490,12 +490,12 @@ void func_8010606C_mgmode(void) {
                     } else {
                         func_801182B4_mgmode(0);
                         HuWinExAnimOut(D_8011B6A8_mgmode, 0);
-                        node = func_8001D33C_main(D_8011B8A8_mgmode[3], "door_b");
+                        node = Hu3DModelObjPtrGet(D_8011B8A8_mgmode[3], "door_b");
                         RepeatVibrator(D_8011B808_mgmode, 5, 0, 5);
                         HuAudFXPlay(0x2EB);
                         for (i = 0; i < 19; i++) {
                             HuPrcVSleep();
-                            func_8002367C_main(node->unk58, D_8011A848_mgmode);
+                            mtxCopy(node->unk58, D_8011A848_mgmode);
                             mtxRotCat(node->unk58, 0.0f, i * 5, 0.0f);
                         }
                         func_80116ED4_mgmode(14, 20, 1, (void (*)(s16 *))-1);
@@ -711,20 +711,20 @@ void func_801076B0_mgmode(void) {
     f32 z;
     void *data;
 
-    func_8002367C_main(D_8011A808_mgmode,
-                       ((HmfMotionNode *)func_8001D33C_main(D_8011B8A8_mgmode[6], "moniter_R"))->unk58);
-    func_8002367C_main(D_8011A848_mgmode,
-                       ((HmfMotionNode *)func_8001D33C_main(D_8011B8A8_mgmode[3], "door_b"))->unk58);
-    func_8002367C_main(D_8011A888_mgmode,
-                       ((HmfMotionNode *)func_8001D33C_main(D_8011B8A8_mgmode[3], "door_g"))->unk58);
+    mtxCopy(D_8011A808_mgmode,
+                       ((HmfMotionNode *)Hu3DModelObjPtrGet(D_8011B8A8_mgmode[6], "moniter_R"))->unk58);
+    mtxCopy(D_8011A848_mgmode,
+                       ((HmfMotionNode *)Hu3DModelObjPtrGet(D_8011B8A8_mgmode[3], "door_b"))->unk58);
+    mtxCopy(D_8011A888_mgmode,
+                       ((HmfMotionNode *)Hu3DModelObjPtrGet(D_8011B8A8_mgmode[3], "door_g"))->unk58);
     model = D_8011B8A8_mgmode[2];
-    func_8001C2FC_main(model, 0x20000, 0x20000);
+    Hu3DModelObjAttrSet(model, 0x20000, 0x20000);
     Hu3DModelRemakeStatic(model);
-    func_8001C954_main(model);
-    func_8001C514_main(model);
+    Hu3DModelVtxBufMake(model);
+    Hu3DModelDynamicFree(model);
     hmf = Hu3DData[model].hmf;
     for (i = 0; i < 7; i++) {
-        node = func_8002C834_main(hmf, D_801192D8_mgmode[i]);
+        node = SearchObjectIndex(hmf, D_801192D8_mgmode[i]);
         group = &hmf->unkB0[hmf->unk60[node].unk2C];
         verts = hmf->unk40;
         count = hmf->unk60[node].unk2E;
@@ -775,7 +775,7 @@ void func_801076B0_mgmode(void) {
     Hu3DAnimCreate(Hu3DData[model].hmf, data, 0, "c160n_0_DEF");
     DataClose(data);
     Hu3DModelRemakeStatic(model);
-    func_8001C514_main(model);
+    Hu3DModelDynamicFree(model);
 }
 
 void func_80107D0C_mgmode(s32 dataNum, s16 x, s16 y) {
@@ -962,11 +962,11 @@ void func_80108824_mgmode(s32 arg0) {
         func_80108DDC_mgmode(0);
     } else if (choice == 1) {
         func_801182B4_mgmode(0);
-        node = func_8001D33C_main(D_8011B8B4_mgmode, "moniter_R");
+        node = Hu3DModelObjPtrGet(D_8011B8B4_mgmode, "moniter_R");
         HuAudFXPlay(0x245);
         for (i = 0; i < 11; i++) {
             HuPrcVSleep();
-            func_8002367C_main(node->unk58, D_8011A808_mgmode);
+            mtxCopy(node->unk58, D_8011A808_mgmode);
             mtxRotCat(node->unk58, 0.0f, sindf(i * 9) * 117.0f, 0.0f);
         }
         func_80116ED4_mgmode(6, 10, 1, (void (*)(s16 *))-1);
@@ -975,7 +975,7 @@ void func_80108824_mgmode(s32 arg0) {
         HuAudFXPlay(0x245);
         for (i = 0; i < 11; i++) {
             HuPrcVSleep();
-            func_8002367C_main(node->unk58, D_8011A808_mgmode);
+            mtxCopy(node->unk58, D_8011A808_mgmode);
             mtxRotCat(node->unk58, 0.0f, (1.0f - sindf(i * 9)) * 117.0f, 0.0f);
         }
     }
@@ -1133,7 +1133,7 @@ void func_801090C4_mgmode(s16 arg0) {
             sel = next;
             D_800D2124_main[arg0] = sel;
             for (i = 0; i < 8; i++) {
-                func_8001C258_main(D_8011B8B6_mgmode[i], 4, 4);
+                Hu3DModelAttrSet(D_8011B8B6_mgmode[i], 4, 4);
             }
             if (D_8011B6B0_mgmode[category][sel] != 0xFF && D_8011B6B0_mgmode[category][sel] < 72) {
                 func_80109C10_mgmode(arg0, sel);
@@ -1218,7 +1218,7 @@ void func_801090C4_mgmode(s16 arg0) {
     HuSprAnimKill(spriteGrp);
     HuWinExAnimOut(win, 0);
     for (i = 0; i < 8; i++) {
-        func_8001C258_main(D_8011B8B6_mgmode[i], 4, 4);
+        Hu3DModelAttrSet(D_8011B8B6_mgmode[i], 4, 4);
     }
     HuWinKill(win);
 }
@@ -1234,7 +1234,7 @@ void func_80109C10_mgmode(s16 arg0, s16 arg1) {
     } else {
         model = D_8011B8B6_mgmode[arg0];
     }
-    func_8001C258_main(model, 4, 0);
+    Hu3DModelAttrSet(model, 4, 0);
     Hu3DModelRotSet(model, 15.0f, CRot.y, 0.0f);
     x = sindf(CRot.y) * cosdf(CRot.x);
     z = cosdf(CRot.y) * cosdf(CRot.x);

@@ -441,23 +441,23 @@ s16 func_80118678_mgmode(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     s16 i;
 
     for (i = 0; i < 4; i++) {
-        model = func_8000B108_main(D_8011A3E4_mgmode[i], 0x2A9);
+        model = Hu3DModelRead(D_8011A3E4_mgmode[i], 0x2A9);
         D_8011B678_mgmode[D_8011A3F4_mgmode][i] = model;
         anim = Hu3DAnimRead(Hu3DData[model].hmf, 0xB0048, "e268p01_I8");
         Hu3DModelCameraSet(model, 2);
         Hu3DAnmNoSet(anim, i * 2);
         Hu3DModelPosSet(model, 0.0f, 0.0f, 0.0f);
-        func_8001C2FC_main(model, 0x20000, 0x20000);
+        Hu3DModelObjAttrSet(model, 0x20000, 0x20000);
         Hu3DModelRemakeStatic(model);
-        func_8001C954_main(model);
-        func_8001C514_main(model);
-        func_80013390_main(model, -1, 0, func_80118B8C_mgmode);
+        Hu3DModelVtxBufMake(model);
+        Hu3DModelDynamicFree(model);
+        Hu3DParticleCreate(model, -1, 0, func_80118B8C_mgmode);
         bc = Hu3DData[model].unkBC;
         bc->unk1C.f = arg0;
         bc->unk20.f = arg1;
         bc->unk24.f = arg2;
         bc->unk08.f = arg3;
-        func_8001C258_main(model, 4, 4);
+        Hu3DModelAttrSet(model, 4, 4);
     }
     obj = omAddObj(10, 10, 10, -1, func_801188BC_mgmode);
     obj->work[0] = D_8011A3F4_mgmode;
@@ -479,7 +479,7 @@ void func_801188BC_mgmode(omObjData *obj) {
 
     if (D_8011A3F8_mgmode[index] != 0) {
         for (i = 0; i < 4; i++) {
-            func_8001C258_main(D_8011B678_mgmode[index][i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(D_8011B678_mgmode[index][i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             if (((D_8011B698_mgmode[index] + i) & 3) == 0) {
                 func_801189C4_mgmode(D_8011B678_mgmode[index][i]);
             }

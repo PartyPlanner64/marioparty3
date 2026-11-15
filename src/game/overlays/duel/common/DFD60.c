@@ -150,10 +150,10 @@ Object *func_800F8050_name_81(s32 partnerID) {
     Object *obj = func_800D8010_name_81(PartnersBaseStats[partnerID].unk_00, D_801017DC_name_81[partnerID]);
 
     if (partnerID == PARTNER_BOO) {
-        func_8001FA68_main(obj->omObj1->model[0]);
-        func_8001F9E4_main(obj->omObj1->model[0], 0xFF);
-        func_8001FA68_main(obj->omObj2->model[0]);
-        func_8001F9E4_main(obj->omObj2->model[0], 0xFF);
+        Hu3DModelTPLvlInit(obj->omObj1->model[0]);
+        Hu3DModelTPLvlSet(obj->omObj1->model[0], 0xFF);
+        Hu3DModelTPLvlInit(obj->omObj2->model[0]);
+        Hu3DModelTPLvlSet(obj->omObj2->model[0], 0xFF);
     }
 
     MBDModelTempAllocFree(obj);
@@ -464,12 +464,12 @@ void func_800F8C68_name_81(s32 arg0) {
     Object *backPartnerObj;
 
     if (frontPartnerObj != NULL) {
-        func_8001FDE8_main(frontPartnerObj->omObj1->model[0]);
+        Hu3DMotionReset(frontPartnerObj->omObj1->model[0]);
     }
 
     backPartnerObj = Duel_PartnerObjects[arg0][1];
     if (backPartnerObj != NULL) {
-        func_8001FDE8_main(backPartnerObj->omObj1->model[0]);
+        Hu3DMotionReset(backPartnerObj->omObj1->model[0]);
     }
 }
 
@@ -614,15 +614,15 @@ void func_800F90BC_name_81(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     s16 spD8[2];
 
     if (arg1 != 0) {
-        func_8005FBA4_main(sp98, arg1);
+        HuWinMesConv(sp98, arg1);
         HuWinInsertMesSizeGet((u32)sp98, 0);
     }
     if (arg2 != 0) {
-        func_8005FBA4_main(spB8, arg2);
+        HuWinMesConv(spB8, arg2);
         HuWinInsertMesSizeGet((u32)spB8, 1);
     }
 
-    func_8005FBA4_main(sp18, arg0);
+    HuWinMesConv(sp18, arg0);
     HuWinMesMaxSizeGet(1, spD8, (u32)sp18);
     temp_v0 = HuWinExCreate(-1, 0xA0 - spD8[0] / 2, 0x78 - spD8[1] / 2, spD8[0], spD8[1], 0);
 
@@ -777,9 +777,9 @@ void func_800F924C_name_81(s32 attackType) {
             HuPrcVSleep();
         }
 
-        func_80003A70_main(D_800CDBC8_main);
+        msmMusPause(D_800CDBC8_main);
         msmMusSetVolume(D_800CDBC8_main, 127);
-        musHandle = func_8004A5C4_main(0x17);
+        musHandle = HuAudSubSeqPlay(0x17);
         func_800FFAE0_name_81(0, 2);
         func_800FFAE0_name_81(1, 2);
         HuPrcChildLink(process, func_800E415C_name_81());
@@ -894,7 +894,7 @@ void func_800F924C_name_81(s32 attackType) {
         HuPrcChildLink(process, func_800E47B8_name_81(curPlayerIndex, *D_80101974_name_81, &player->player_obj->coords, &opposingPlayer->player_obj->coords, 1));
         effect = func_800D8010_name_81(0x36, 0);
         HuVecCopy3F(&effect->coords, &partner->coords);
-        func_8001C814_main(effect->omObj1->model[0], 2, 0);
+        Hu3DMotionAttrSet(effect->omObj1->model[0], 2, 0);
         HuAudFXPlay(0x1CC);
         func_800EFABC_name_81(effect);
         MBDModelKill(effect);
@@ -968,7 +968,7 @@ void func_800F924C_name_81(s32 attackType) {
             HuPrcChildLink(process, func_800E47B8_name_81(opposingPlayerIndex, *D_80101978_name_81, &opposingPlayer->player_obj->coords, &player->player_obj->coords, 0));
             counterEffect = func_800D8010_name_81(0x36, 0);
             HuVecCopy3F(&counterEffect->coords, &opposingPartner->coords);
-            func_8001C814_main(counterEffect->omObj1->model[0], 2, 0);
+            Hu3DMotionAttrSet(counterEffect->omObj1->model[0], 2, 0);
             HuAudFXPlay(0x1CC);
             func_800EFABC_name_81(counterEffect);
             MBDModelKill(counterEffect);
@@ -1048,8 +1048,8 @@ void func_800F924C_name_81(s32 attackType) {
 
     end:
         if (musHandle != -1) {
-            func_800039A4_main(musHandle, 30);
-            func_80003B70_main(D_800CDBC8_main, 90);
+            msmMusFadeOut(musHandle, 30);
+            msmMusResume(D_800CDBC8_main, 90);
         }
     }
 
@@ -1246,7 +1246,7 @@ void func_800FA120_name_81(void) {
         HuPrcVSleep();
         HuAudFXPlay(0x1CB);
         MBDModelDispOff(obj);
-        func_8001FDE8_main(obj->omObj1->model[0]);
+        Hu3DMotionReset(obj->omObj1->model[0]);
         HuPrcSleep(40);
     } else {
         MBDMotionSet(obj, -1, 2);
@@ -1339,7 +1339,7 @@ void func_800FADB4_name_81(void) {
 void func_800FAE18_name_81(Object *arg0, s16 arg1, s16 arg2) {
     if (arg1 <= D_80101990_name_81) {
         Hu3DMotionSet(arg0->omObj1->model[0], D_80105470_name_81[arg1]);
-        func_8001C814_main(arg0->omObj1->model[0], -1, arg2);
+        Hu3DMotionAttrSet(arg0->omObj1->model[0], -1, arg2);
     }
 }
 
@@ -1384,7 +1384,7 @@ void func_800FAFAC_name_81(void) {
 void func_800FB038_name_81(Object *arg0, s16 arg1, u16 arg2) {
     if (arg1 < D_80101992_name_81) {
         Hu3DMotionSet(arg0->omObj1->model[0], D_80105480_name_81[arg1]);
-        func_8001C814_main(arg0->omObj1->model[0], -1, arg2);
+        Hu3DMotionAttrSet(arg0->omObj1->model[0], -1, arg2);
     }
 }
 
@@ -1423,10 +1423,10 @@ void func_800FB160_name_81(void) {
 
     playerPad = GwPlayer[playerIndex].pad;
     var_s3 = 0;
-    func_80060388_main(0x78);
+    HuWinTabSizeSet(0x78);
     HuWinMesMaxSizeBetGet(sp18, 0x4F00, 0x4F0A);
     sp36 = HuWinExCreate(D_801019C8_name_81[0], 0xA0 - sp18[0] / 2, 0x3C, sp18[0], sp18[1], 0);
-    func_8005E1A8_main(sp36, 0x78);
+    HuWinTabWidthSet(sp36, 0x78);
     HuWinBGColSet(sp36, 1, 0xB9, 0xE7);
     HuWinMesSet(sp36, D_80101998_name_81[0], -1, -1);
     HuWinExAnimIn(sp36);
@@ -1597,7 +1597,7 @@ void func_800FB59C_name_81(s32 playerIndex, s32 frontOrBackIndex, s32 targetInde
     HuPrcChildLink(process, func_800E47B8_name_81(playerIndex, *D_80101974_name_81, &player->player_obj->coords, &opposingPlayer->player_obj->coords, 1));
     effect = func_800D8010_name_81(0x36, 0);
     HuVecCopy3F(&effect->coords, &partner->coords);
-    func_8001C814_main(effect->omObj1->model[0], 2, 0);
+    Hu3DMotionAttrSet(effect->omObj1->model[0], 2, 0);
     HuAudFXPlay(0x1CC);
     func_800EFABC_name_81(effect);
     MBDModelKill(effect);
@@ -1622,7 +1622,7 @@ void func_800FB59C_name_81(s32 playerIndex, s32 frontOrBackIndex, s32 targetInde
         HuPrcChildLink(process, func_800E47B8_name_81(opposingPlayerIndex, *D_80101978_name_81, &opposingPlayer->player_obj->coords, &player->player_obj->coords, 0));
         counterEffect = func_800D8010_name_81(0x36, 0);
         HuVecCopy3F(&counterEffect->coords, &opposingPartner->coords);
-        func_8001C814_main(counterEffect->omObj1->model[0], 2, 0);
+        Hu3DMotionAttrSet(counterEffect->omObj1->model[0], 2, 0);
         HuAudFXPlay(0x1CC);
         func_800EFABC_name_81(counterEffect);
         MBDModelKill(counterEffect);

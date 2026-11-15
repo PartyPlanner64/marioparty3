@@ -36,7 +36,7 @@ void func_80106E20_staff(void) {
     omAddPrcObj(func_80109264_staff, 0x4000, 0, 0)->user_data = &stat3;
     stat4 = 0;
     omAddPrcObj(func_80107508_staff, 0x1000, 0, 0)->user_data = &stat4;
-    strId = func_8003A308_main(&gMes, (char *)D_80111208_staff, 0, -1, -1);
+    strId = GameMesStrInit(&gMes, (char *)D_80111208_staff, 0, -1, -1);
     grpId = gMes.strGId[strId];
     HuSprPosSet(grpId, 0, 160, 120);
     for (i = 1; i < 20; i++) {
@@ -71,7 +71,7 @@ void func_80106E20_staff(void) {
         }
         HuPrcVSleep();
     }
-    func_8003B128_main(&gMes);
+    GMesSprClose(&gMes);
     stat0 = 2;
     HuPrcVSleep();
     stat3 = 1;

@@ -82,16 +82,16 @@ void func_8010AF40_msetup(MsetupModelHandle *models, s16 *animSlot, s16 *anim) {
     D_80119AF0_msetup->work[0] = 1;
     D_80119AF0_msetup->work[1] = 1;
     func_8010E00C_msetup(D_80119AF0_msetup, 2);
-    func_8001C258_main(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-    func_8001C258_main(linkedModel, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(linkedModel, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     func_8010ACC0_msetup(model, linkedModel);
     D_80119AF0_msetup->work[0] = 0;
     HuAudFXPlay(0x135);
-    func_8001C814_main(model, 2, 0);
+    Hu3DMotionAttrSet(model, 2, 0);
     while (Hu3DData[model].motTime < 40.0) {
         HuPrcVSleep();
     }
-    func_8001C5B4_main(model, models[2].model);
+    Hu3DMotionModelSet(model, models[2].model);
     while (Hu3DData[model].motTime < 45.0) {
         HuPrcVSleep();
     }
@@ -101,7 +101,7 @@ void func_8010AF40_msetup(MsetupModelHandle *models, s16 *animSlot, s16 *anim) {
         HuPrcVSleep();
     }
     Hu3DMotionSet(model, models[0].motion);
-    func_8001C814_main(model, 2, 2);
+    Hu3DMotionAttrSet(model, 2, 2);
 }
 
 void func_8010B1F4_msetup(void) {
@@ -120,7 +120,7 @@ void func_8010B1F4_msetup(void) {
     linkedModel = models[3].model;
     Hu3DModelScaleSet(linkedModel, 0.6f, 1.0f, 0.6f);
     Hu3DMotionSet(model, models[1].motion);
-    func_8001C814_main(model, 2, 2);
+    Hu3DMotionAttrSet(model, 2, 2);
     animSlot[0] = -1;
     anim = func_8010B388_msetup(model, animSlot, 0xA007E, "c204n_0_DEF");
     func_8010B4B8_msetup(model, animSlot, -1);
@@ -137,8 +137,8 @@ void func_8010B1F4_msetup(void) {
                 *requestedState = 0;
                 break;
             case 2:
-                func_8001C258_main(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-                func_8001C258_main(linkedModel, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(linkedModel, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 *requestedState = 0;
                 break;
         }
@@ -158,7 +158,7 @@ s16 func_8010B388_msetup(s16 model, s16 *animSlot, s32 dataId, char *name) {
     data = DataRead(dataId);
     anim = Hu3DAnimCreate(Hu3DData[model].hmf, data, 0, name);
     animSlot[1] = anim;
-    func_80032FC0_main(anim, 1, 1);
+    Hu3DAnimAttrSet(anim, 1, 1);
     DataClose(data);
     length = D_800D1714_main[(s16)anim].animIdx;
     animSlot[2] = length;
@@ -172,9 +172,9 @@ void func_8010B4B8_msetup(s16 model, s16 *animSlot, s16 anim) {
 
     if (*animSlot >= 0) {
         if (anim == -1) {
-            func_80033910_main(Hu3DData[model].hmf);
+            Hu3DModelAnimStop(Hu3DData[model].hmf);
         } else {
-            func_80033970_main(Hu3DData[model].hmf);
+            Hu3DModelAnimStart(Hu3DData[model].hmf);
             entry = &D_800D1714_main[*animSlot];
             entry->animIdx = anim;
             entry->rot = 0;
@@ -190,7 +190,7 @@ s16 func_8010B588_msetup(s32 dataId) {
     s32 anim;
 
     data = DataRead(dataId);
-    anim = func_800329B4_main(data);
+    anim = Hu3DAnimDataCreate(data);
     DataClose(data);
     return anim;
 }
@@ -199,16 +199,16 @@ void func_8010B5D0_msetup(void) {
     s16 window;
     s16 state;
 
-    window = func_80060880_main(250, 204, 8);
+    window = HuWinExCreateStyled(250, 204, 8);
     HuWinActivePlayerSet(window, 1 << D_8011A948_msetup);
-    func_8006105C_main(window, 224);
+    HuWinExTPLvlSet(window, 224);
     HuWinMesPalSet(window, 2, 255, 64, 64);
     HuWinMesPalSet(window, 4, 96, 255, 64);
     HuWinMesPalSet(window, 6, 255, 255, 64);
     D_8011A890_msetup = D_8011A892_msetup[0] = window;
-    window = func_80060880_main(250, 204, 18);
+    window = HuWinExCreateStyled(250, 204, 18);
     HuWinActivePlayerSet(window, 1 << D_8011A948_msetup);
-    func_8006105C_main(window, 224);
+    HuWinExTPLvlSet(window, 224);
     HuWinMesPalSet(window, 2, 255, 64, 64);
     HuWinMesPalSet(window, 4, 96, 255, 64);
     HuWinMesPalSet(window, 6, 255, 255, 64);
@@ -219,25 +219,25 @@ void func_8010B5D0_msetup(void) {
         if (state != D_8011A990_msetup) {
             switch (D_8011A990_msetup) {
                 case 0:
-                    func_80060EA8_main(D_8011A890_msetup, 1);
+                    HuWinExClose(D_8011A890_msetup, 1);
                     break;
                 case 1:
                     window = D_8011A890_msetup;
                     D_8011A890_msetup = D_8011A892_msetup[0];
                     if (state != 0) {
-                        func_80060EA8_main(window, 1);
+                        HuWinExClose(window, 1);
                     }
                     HuWinHomeClear(D_8011A890_msetup);
-                    func_80060C14_main(D_8011A890_msetup, 1);
+                    HuWinExOpen(D_8011A890_msetup, 1);
                     break;
                 case 2:
                     window = D_8011A890_msetup;
                     D_8011A890_msetup = D_8011A892_msetup[1];
                     if (state != 0) {
-                        func_80060EA8_main(window, 1);
+                        HuWinExClose(window, 1);
                     }
                     HuWinHomeClear(D_8011A890_msetup);
-                    func_80060C14_main(D_8011A890_msetup, 1);
+                    HuWinExOpen(D_8011A890_msetup, 1);
                     break;
             }
             state = D_8011A990_msetup;
@@ -274,13 +274,13 @@ void func_8010B998_msetup(void) {
 
 void func_8010B9B8_msetup(s32 arg0, s32 arg1) {
     // wait for the given status bits of the menu window to be set
-    while ((~func_8005B68C_main(D_8011A890_msetup) & arg0) == arg1) {
+    while ((~HuWinAttrGet(D_8011A890_msetup) & arg0) == arg1) {
         HuPrcVSleep();
     }
 }
 
 void func_8010BA10_msetup(s32 arg0, s32 arg1) {
-    func_8005B63C_main(D_8011A890_msetup, arg0, arg1);
+    HuWinAttrSet(D_8011A890_msetup, arg0, arg1);
 }
 
 s16 func_8010BA3C_msetup(void) {
@@ -408,41 +408,41 @@ void func_8010BEF8_msetup(void) {
     motions[1] = -1;
     character = D_8011AA30_msetup.characters[entry->index];
     setupCharacter = character;
-    model = func_8000B108_main(D_80119964_msetup[setupCharacter], 0x2A9);
+    model = Hu3DModelRead(D_80119964_msetup[setupCharacter], 0x2A9);
     index = model;
-    func_8001C814_main(index, 2, 2);
-    func_8001C258_main(index, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DMotionAttrSet(index, 2, 2);
+    Hu3DModelAttrSet(index, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     pos = &entry->pos;
     Hu3DModelPosSet(index, entry->pos.x, entry->pos.y, entry->pos.z);
     Hu3DModelRotSet(index, 0.0f, entry->value, 0.0f);
     motions[3] = Hu3DData[index].motId;
     HuPrcVSleep();
     if (D_80119984_msetup[setupCharacter] != 0) {
-        func_80017790_main(index, 1, setupCharacter, func_80017BB8_main(setupCharacter, 0xA4));
+        CharAnimCreate(index, 1, setupCharacter, CharMotionDataNumGet(setupCharacter, 0xA4));
     } else {
-        func_80017790_main(index, 0, character, func_80017BB8_main(character, 0xA3));
+        CharAnimCreate(index, 0, character, CharMotionDataNumGet(character, 0xA3));
     }
-    func_8001C514_main(index);
+    Hu3DModelDynamicFree(index);
     HuPrcVSleep();
     if (D_801198C0_msetup < 0) {
-        index = D_801198C0_msetup = func_8000B108_main(9, 0x299);
+        index = D_801198C0_msetup = Hu3DModelRead(9, 0x299);
     } else {
         index = Hu3DModelLink(D_801198C0_msetup);
     }
     shadow = index;
-    func_8001C258_main(shadow, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(shadow, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelPosSet(shadow, pos->x, 0.0f, pos->z);
     HuPrcVSleep();
     specialMotion = 0;
     if ((D_80119ACC_msetup >> D_8011A938_msetup) & 1) {
         specialMotion = 1;
-        motions[0] = func_8000B13C_main(D_801199AC_msetup[character]);
+        motions[0] = Hu3DMotionModelRead(D_801199AC_msetup[character]);
     } else {
-        motions[0] = func_8000B13C_main(D_8011998C_msetup[character]);
+        motions[0] = Hu3DMotionModelRead(D_8011998C_msetup[character]);
     }
     state = 0;
     HuPrcVSleep();
-    motions[1] = func_8000B13C_main(D_801199EC_msetup[character]);
+    motions[1] = Hu3DMotionModelRead(D_801199EC_msetup[character]);
     HuPrcVSleep();
     effect = func_8010CAF0_msetup(0x110012, 0x289);
     scale = 0.0f;
@@ -464,10 +464,10 @@ void func_8010BEF8_msetup(void) {
                 entry->state = 3;
                 break;
             case 3:
-                func_8001C258_main(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-                func_8001C258_main(shadow, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                Hu3DModelAttrSet(shadow, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 if (motions[0] >= 0 && (!specialMotion || entry->index != 0)) {
-                    func_8001C5B4_main(model, motions[0]);
+                    Hu3DMotionModelSet(model, motions[0]);
                     playing = 1;
                 }
                 scale = 0.0f;
@@ -489,8 +489,8 @@ void func_8010BEF8_msetup(void) {
                 scale -= scaleStep;
                 if (scale <= 0.0f) {
                     scale = 0.0f;
-                    func_8001C258_main(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-                    func_8001C258_main(shadow, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    Hu3DModelAttrSet(shadow, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     entry->state = 0;
                 }
                 Hu3DModelScaleSet(model, scale, 1.0f, scale);
@@ -558,7 +558,7 @@ void func_8010BEF8_msetup(void) {
                 sprites[index] = HuSprAnimDataRead(dataId);
                 slots[index] = espEntry(sprites[index], 0, 1);
                 espPriSet(slots[index], 1);
-                func_80012B14_main(0, pos, &projected);
+                Hu3DCam3Dto2D(0, pos, &projected);
                 espPosSet(slots[index], (s16)(offset[0] + projected.x), (s16)(offset[1] + projected.y));
                 espTPLvlSet(slots[index], 0);
                 espDispOn(slots[index]);
@@ -588,7 +588,7 @@ void func_8010BEF8_msetup(void) {
                 break;
             case 16:
                 if (motions[1] >= 0) {
-                    func_8001C5B4_main(model, motions[1]);
+                    Hu3DMotionModelSet(model, motions[1]);
                 }
                 entry->state = 0;
                 break;

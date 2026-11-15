@@ -33,24 +33,24 @@ void func_80106BA0_mgresultbattle(void) {
     data = DataRead(0x210026);
     sprite1 = Hu3DSprModelCreate(data, 0x2BD, 8);
     DataClose(data);
-    func_8001C2FC_main(D_800CBB60_main[sprite1].modelId, 0x70000000, 0x70000000);
+    Hu3DModelObjAttrSet(D_800CBB60_main[sprite1].modelId, 0x70000000, 0x70000000);
 
     data = DataRead(0xC);
     sprite2 = Hu3DSprModelCreate(data, 0x2BD, 8);
     DataClose(data);
-    func_8001C2FC_main(D_800CBB60_main[sprite2].modelId, 0x70000000, 0x70000000);
+    Hu3DModelObjAttrSet(D_800CBB60_main[sprite2].modelId, 0x70000000, 0x70000000);
 
     for (i = 0; i < 40; i++) {
         D_80108A30_mgresultbattle[i].state = 1;
-        D_80108A30_mgresultbattle[i].unk02 = func_80014618_main(sprite1, 8);
-        D_80108A30_mgresultbattle[i].unk04 = func_80014618_main(sprite2, 8);
+        D_80108A30_mgresultbattle[i].unk02 = Hu3DSprModelLink(sprite1, 8);
+        D_80108A30_mgresultbattle[i].unk04 = Hu3DSprModelLink(sprite2, 8);
         D_80108A30_mgresultbattle[i].unk08 = 0;
         D_80108A30_mgresultbattle[i].unk18 = 0.0f;
         D_80108A30_mgresultbattle[i].unk1C = 0.0f;
         obj->model[i + 1] = D_800CBB60_main[D_80108A30_mgresultbattle[i].unk02].modelId;
         Hu3DMotionSpeedSet(obj->model[i + 1], 2.0f);
         Hu3DModelScaleSet(D_800CBB60_main[i + 1].modelId, 3.0f, 3.0f, 3.0f);
-        func_8001C258_main(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         obj->model[i + 41] = D_800CBB60_main[D_80108A30_mgresultbattle[i].unk04].modelId;
         Hu3DModelScaleSet(D_800CBB60_main[i + 41].modelId, 3.0f, 3.0f, 3.0f);
     }
@@ -96,7 +96,7 @@ void func_80106ED0_mgresultbattle(omObjData *obj) {
                 /* fallthrough */
             case 2:
                 Hu3DModelScaleSet(obj->model[i + 1], 1.5f, 1.5f, 1.5f);
-                func_8001C258_main(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                Hu3DModelAttrSet(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 Hu3DModelPosSet(obj->model[i + 1], D_80108A30_mgresultbattle[i].x, D_80108A30_mgresultbattle[i].y,
                                 D_80108A30_mgresultbattle[i].z);
                 D_80108A30_mgresultbattle[i].y -= D_80108A30_mgresultbattle[i].unk18;
@@ -119,11 +119,11 @@ void func_80106ED0_mgresultbattle(omObjData *obj) {
                         }
                     }
                     D_80108A30_mgresultbattle[i].state = 1;
-                    func_8001C258_main(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-                    func_80014714_main(D_80108A30_mgresultbattle[i].unk04, 0);
+                    Hu3DModelAttrSet(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    Hu3DSprModelFrameSet(D_80108A30_mgresultbattle[i].unk04, 0);
                     Hu3DModelPosSet(obj->model[i + 41], D_80108A30_mgresultbattle[i].x,
                                     D_80108A30_mgresultbattle[i].unk1C, D_80108A30_mgresultbattle[i].z);
-                    func_8001C258_main(obj->model[i + 41], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                    Hu3DModelAttrSet(obj->model[i + 41], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 }
                 break;
         }
@@ -160,21 +160,21 @@ void func_80107400_mgresultbattle(void) {
 
     itemObj = omAddObj(20, 4, 8, -1, NULL);
     D_80108F90_mgresultbattle.obj = itemObj;
-    itemObj->model[1] = func_8000B108_main(0xA00A5, 0x2B9);
-    func_8001C814_main(itemObj->model[1], 2, 2);
-    func_8001C258_main(itemObj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    itemObj->model[2] = func_8000B108_main(0x1B0000, 0x2B9);
-    func_8001C258_main(itemObj->model[2], 0x4000, 0x4000);
-    func_8001C814_main(itemObj->model[2], 2, 2);
-    func_8001C258_main(itemObj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    itemObj->model[1] = Hu3DModelRead(0xA00A5, 0x2B9);
+    Hu3DMotionAttrSet(itemObj->model[1], 2, 2);
+    Hu3DModelAttrSet(itemObj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    itemObj->model[2] = Hu3DModelRead(0x1B0000, 0x2B9);
+    Hu3DModelAttrSet(itemObj->model[2], 0x4000, 0x4000);
+    Hu3DMotionAttrSet(itemObj->model[2], 2, 2);
+    Hu3DModelAttrSet(itemObj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelHookSet(itemObj->model[2], itemObj->model[1], "item_hook");
-    itemObj->model[3] = func_8000B108_main(0x130200, 0x2B9);
-    func_8001C814_main(itemObj->model[3], 2, 2);
-    func_8001C258_main(itemObj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    func_8000B460_main(itemObj, 0, 0xA00A6);
-    func_8000B460_main(itemObj, 1, 0xA00B6);
-    func_8001C5B4_main(itemObj->model[1], itemObj->motion[1]);
-    func_8001C814_main(itemObj->model[1], 2, 2);
+    itemObj->model[3] = Hu3DModelRead(0x130200, 0x2B9);
+    Hu3DMotionAttrSet(itemObj->model[3], 2, 2);
+    Hu3DModelAttrSet(itemObj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    omObjMotionRead(itemObj, 0, 0xA00A6);
+    omObjMotionRead(itemObj, 1, 0xA00B6);
+    Hu3DMotionModelSet(itemObj->model[1], itemObj->motion[1]);
+    Hu3DMotionAttrSet(itemObj->model[1], 2, 2);
     func_80107CA4_mgresultbattle();
     itemObj->trans.x = 0.0f;
     itemObj->trans.y = 0.0f;
@@ -306,17 +306,17 @@ void func_80107BDC_mgresultbattle(f32 arg0) {
 void func_80107C44_mgresultbattle(void) {
     omObjData *itemObj = D_80108F90_mgresultbattle.obj;
 
-    func_8001C258_main(itemObj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-    func_8001C258_main(itemObj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-    func_8001C258_main(itemObj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(itemObj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(itemObj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(itemObj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
 }
 
 void func_80107CA4_mgresultbattle(void) {
     omObjData *itemObj = D_80108F90_mgresultbattle.obj;
 
-    func_8001C258_main(itemObj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    func_8001C258_main(itemObj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    func_8001C258_main(itemObj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(itemObj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(itemObj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(itemObj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
 }
 
 const s32 D_801089C0_mgresultbattle[] = { 10, 20, 30, 40 };

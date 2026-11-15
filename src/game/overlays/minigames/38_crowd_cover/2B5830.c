@@ -232,14 +232,14 @@ void func_801059A0_crowd_cover(void) {
     u8 camIndex;
     s32 count;
 
-    func_8001FE20_main(1);
-    func_80021BE0_main(&D_800EBEB0_minigame, 0x40);
+    MapCollInit(1);
+    Hu3DQuadPoolInit(&D_800EBEB0_minigame, 0x40);
     omInitObjMan(0x10, 0);
-    func_8004A208_main();
+    omGameSysInit();
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutView);
     omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    func_8000B5F0_main(1);
-    camIndex = func_8000B638_main();
+    CamSetupInit(1);
+    camIndex = CamSetupMapCullAdd();
     ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 45.0f, 80.0f, 8000.0f);
@@ -294,7 +294,7 @@ void func_80105CD4_crowd_cover(HuMtx4F src, HuMtx4F dst) {
     f32 det;
     f32 *dstRow3;
 
-    func_8002367C_main(mtx, src);
+    mtxCopy(mtx, src);
 
     t0 = mtx[1][1] * mtx[2][2] - mtx[1][2] * mtx[2][1];
     t1 = mtx[1][2] * mtx[2][0] - mtx[1][0] * mtx[2][2];
@@ -391,13 +391,13 @@ void func_80106144_crowd_cover(omObjData *object) {
     for (i = 0; i < 3; i++) {
         HuSprPosSet(D_8010CFA8_crowd_cover[2], i, D_8010C6C4_crowd_cover[i][0], D_8010C6C4_crowd_cover[i][1]);
         HuSprAttrSet(D_8010CFA8_crowd_cover[2], i, 0x1008);
-        func_80054FF8_main(D_8010CFA8_crowd_cover[2], i, orders[order][i]);
+        HuSprPatNoSet(D_8010CFA8_crowd_cover[2], i, orders[order][i]);
     }
     D_8010CF88_crowd_cover[1] = func_801091FC_crowd_cover(sp10[D_8010D860_crowd_cover] | 0x590000);
     D_8010CFA8_crowd_cover[1] = func_80109244_crowd_cover(D_8010CF88_crowd_cover[1], 1);
     HuSprPosSet(D_8010CFA8_crowd_cover[1], 0, 160, 110);
     D_8010D862_crowd_cover = (f32)func_80108F1C_crowd_cover() * 1.52587890625e-05 * 3.0;
-    func_80054FF8_main(D_8010CFA8_crowd_cover[1], 0, orders[order][D_8010D862_crowd_cover]);
+    HuSprPatNoSet(D_8010CFA8_crowd_cover[1], 0, orders[order][D_8010D862_crowd_cover]);
     HuSprAttrSet(D_8010CFA8_crowd_cover[1], 0, 0x405808);
     D_8010CF88_crowd_cover[4] = func_801091FC_crowd_cover(0x59000B);
     D_8010CFA8_crowd_cover[5] = func_80109244_crowd_cover(D_8010CF88_crowd_cover[4], 1);
@@ -443,7 +443,7 @@ void func_80106580_crowd_cover(omObjData *object) {
                 HuSprTPLvlSet(D_8010CFA8_crowd_cover[1], 0, 0x100);
             }
             D_8010C6C0_crowd_cover--;
-            func_8003F578_main((D_8010C6C0_crowd_cover + 29) / 30);
+            GMesTimerValueSet((D_8010C6C0_crowd_cover + 29) / 30);
             if (D_8010C6C0_crowd_cover == 0) {
                 D_8010CFD8_crowd_cover = 3;
             }
@@ -483,7 +483,7 @@ void func_80106580_crowd_cover(omObjData *object) {
                 D_8010C6D4_crowd_cover = -1;
             }
             D_8010C6D0_crowd_cover = 15;
-            func_8003F5C0_main();
+            GMesTimerEnd();
             GMesCreate(0x11);
             HuAudSeqFadeOut(0x78);
             D_8010CFD8_crowd_cover++;
@@ -511,7 +511,7 @@ void func_80106580_crowd_cover(omObjData *object) {
                                 D_8010C6C4_crowd_cover[D_8010D862_crowd_cover][1]);
                 } else {
                     HuAudFXPlay(0x4B6);
-                    func_80054FF8_main(D_8010CFA8_crowd_cover[5], 0, 1);
+                    HuSprPatNoSet(D_8010CFA8_crowd_cover[5], 0, 1);
                     HuSprPosSet(D_8010CFA8_crowd_cover[5], 0, D_8010C6C4_crowd_cover[D_8010C6D8_crowd_cover - 1][0],
                                 D_8010C6C4_crowd_cover[D_8010C6D8_crowd_cover - 1][1]);
                 }
@@ -545,7 +545,7 @@ void func_80106580_crowd_cover(omObjData *object) {
                 D_8010C6D0_crowd_cover = 16;
                 WipeCreateOut(WIPE_TYPE_NORMAL, D_8010C6D0_crowd_cover);
                 HuAudSeqFadeOut(D_8010C6D0_crowd_cover);
-                func_8004AB0C_main((s16)D_8010C6D0_crowd_cover);
+                HuAudFXAllFadeOut((s16)D_8010C6D0_crowd_cover);
             }
             break;
         case 7:
@@ -630,25 +630,25 @@ void func_80106D4C_crowd_cover(omObjData *object) {
     work->pos.y = object->trans.y;
     work->pos.z = object->trans.z;
     work->unk20 = 0;
-    work->unk31 = func_80017790_main(object->model[0], 2, motions.values[character], model | anims[2][character]);
-    work->unk2F = func_80017AD8_main(model | anims[0][character]);
-    work->unk30 = func_80017AD8_main(model | anims[1][character]);
-    func_8001C514_main(object->model[0]);
+    work->unk31 = CharAnimCreate(object->model[0], 2, motions.values[character], model | anims[2][character]);
+    work->unk2F = Hu3DAnimDataRead(model | anims[0][character]);
+    work->unk30 = Hu3DAnimDataRead(model | anims[1][character]);
+    Hu3DModelDynamicFree(object->model[0]);
     tag = 0x2BD;
     for (i = 0; i < 3; i++) {
         slot = i + 2;
-        object->model[slot] = func_8000B108_main(itemModels[i] | 0x590000, tag);
+        object->model[slot] = Hu3DModelRead(itemModels[i] | 0x590000, tag);
         Hu3DModelHookSet(object->model[slot], object->model[0], "item_hook");
-        func_8001C258_main(object->model[slot], 0x4000, 0x4000);
+        Hu3DModelAttrSet(object->model[slot], 0x4000, 0x4000);
     }
-    func_8001C258_main(object->model[2], 4, 0);
-    object->model[9] = func_8000B0A0_main(7, 0x2DD);
+    Hu3DModelAttrSet(object->model[2], 4, 0);
+    object->model[9] = Hu3DModelRead2(7, 0x2DD);
     object->func = func_80107554_crowd_cover;
-    func_800E5A00_minigame(object, 0, func_80017BB8_main(character, 0), 1, 0);
-    func_800E5A00_minigame(object, 0x26, func_80017BB8_main(character, 0x66), 1, 0);
-    func_800E5A00_minigame(object, 0x27, func_80017BB8_main(character, 0x67), 1, 0x3C);
-    func_800E5A00_minigame(object, 0xD, func_80017BB8_main(character, 0x2F), 2, 0x78);
-    func_800E5A00_minigame(object, 0xE, func_80017BB8_main(character, 0x36), 2, 0x78);
+    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(character, 0), 1, 0);
+    func_800E5A00_minigame(object, 0x26, CharMotionDataNumGet(character, 0x66), 1, 0);
+    func_800E5A00_minigame(object, 0x27, CharMotionDataNumGet(character, 0x67), 1, 0x3C);
+    func_800E5A00_minigame(object, 0xD, CharMotionDataNumGet(character, 0x2F), 2, 0x78);
+    func_800E5A00_minigame(object, 0xE, CharMotionDataNumGet(character, 0x36), 2, 0x78);
     func_800E5690_minigame(object, 0x26);
     D_8010C6E4_crowd_cover++;
 }
@@ -671,8 +671,8 @@ void func_80107298_crowd_cover(omObjData *object, s32 arg1, s32 arg2, u16 player
     data->unk158 = HuMemAllocTag(sizeof(UnkCrowdCoverWork), TAG_OVERLAY);
     memset(data->unk158, 0, sizeof(UnkCrowdCoverWork));
 
-    object->model[0] = func_8000B108_main(arg1 | arg2, tag);
-    object->model[1] = func_8000B0D4_main(9, tag);
+    object->model[0] = Hu3DModelRead(arg1 | arg2, tag);
+    object->model[1] = Hu3DModelRead3(9, tag);
     func_800E3584_minigame(object->model[1]);
     for (i = 0; i < object->mtncnt; i++) {
         object->motion[i] = -1;
@@ -768,19 +768,19 @@ void func_80107554_crowd_cover(omObjData *object) {
         case 3:
             if (work->unk32 != 0) {
                 HuAudFXPlay(0x4B4);
-                func_8001C258_main(object->model[2], 4, 4);
-                func_8001C258_main(object->model[work->unk32 + 1], 4, 0);
+                Hu3DModelAttrSet(object->model[2], 4, 4);
+                Hu3DModelAttrSet(object->model[work->unk32 + 1], 4, 0);
             } else {
                 func_800E5690_minigame(object, 0);
                 model = object->model[9];
                 func_801090CC_crowd_cover(object->model[0], "item_hook", Hu3DData[object->model[0]].motTime, &pos);
-                func_8001C258_main(model, 4, 0);
+                Hu3DModelAttrSet(model, 4, 0);
                 Hu3DModelPosSet(model, pos.x, pos.y, pos.z + 10.0);
                 Hu3DModelScaleSet(model, 0.4f, 0.4f, 0.4f);
                 Hu3DMotionTimeSet(model, 0.0f);
                 Hu3DMotionSpeedSet(model, 2.0f);
-                func_8001C814_main(model, 1, 0);
-                func_8001C258_main(object->model[2], 4, 4);
+                Hu3DMotionAttrSet(model, 1, 0);
+                Hu3DModelAttrSet(object->model[2], 4, 4);
             }
         case 4:
             if (rot > 0.0) {
@@ -804,21 +804,21 @@ void func_80107554_crowd_cover(omObjData *object) {
             if (work->unk32 != 0) {
                 model = object->model[9];
                 func_801090CC_crowd_cover(object->model[0], "item_hook", Hu3DData[object->model[0]].motTime, &pos);
-                func_8001C258_main(model, 4, 0);
+                Hu3DModelAttrSet(model, 4, 0);
                 Hu3DModelPosSet(model, pos.x, pos.y, pos.z + 10.0);
                 Hu3DModelScaleSet(model, 0.4f, 0.4f, 0.4f);
                 Hu3DMotionTimeSet(model, 0.0f);
                 Hu3DMotionSpeedSet(model, 2.0f);
-                func_8001C814_main(model, 1, 0);
-                func_8001C258_main(object->model[work->unk32 + 1], 4, 4);
+                Hu3DMotionAttrSet(model, 1, 0);
+                Hu3DModelAttrSet(object->model[work->unk32 + 1], 4, 4);
             }
             if (work->unk2C) {
                 GwPlayer[data->unk59].bonusCoin += 10;
-                func_80017954_main(object->model[0], 2, motions.values[work->unk29], work->unk2F);
+                CharAnimSet(object->model[0], 2, motions.values[work->unk29], work->unk2F);
                 func_800E5690_minigame(object, 0xD);
-                func_80045F1C_main(work->unk24, -1, work->unk2A);
+                HuAudCharVoicePlayPlayer(work->unk24, -1, work->unk2A);
             } else {
-                func_80017954_main(object->model[0], 2, motions.values[work->unk29], work->unk30);
+                CharAnimSet(object->model[0], 2, motions.values[work->unk29], work->unk30);
                 func_800E5690_minigame(object, 0xE);
             }
             work->unk20++;
@@ -943,9 +943,9 @@ void func_80107E40_crowd_cover(omObjData *object) {
     member = D_8010CFE0_crowd_cover;
     for (i = 0; i < D_8010D866_crowd_cover; i++, member++) {
         member->crowdIndex = func_8010A12C_crowd_cover(D_8010D864_crowd_cover, 0x401808);
-        member->model = func_8000B0D4_main(9, 0x2C9);
-        func_8001FA68_main(member->model);
-        func_8001F9E4_main(member->model, 0xFF);
+        member->model = Hu3DModelRead3(9, 0x2C9);
+        Hu3DModelTPLvlInit(member->model);
+        Hu3DModelTPLvlSet(member->model, 0xFF);
         member->pos.x = positions[order[i]].x;
         member->pos.y = positions[order[i]].y;
         member->pos.z = positions[order[i]].z;
@@ -958,7 +958,7 @@ void func_80107E40_crowd_cover(omObjData *object) {
         member->unk34 = (f32)func_80108F1C_crowd_cover() * 1.52587890625e-05 * 360.0;
         member->unk38 = member->unk3C = member->unk40 = 0.0f;
         if (D_8010D860_crowd_cover == 1) {
-            member->unk34 = func_8000B0A0_main(0x10013, 0x2DD);
+            member->unk34 = Hu3DModelRead2(0x10013, 0x2DD);
         } else if (D_8010D860_crowd_cover == 2) {
             member->unk3C = member->unk04 * 4;
         }
@@ -1039,15 +1039,15 @@ void func_80108238_crowd_cover(omObjData *object) {
                         func_8010AF14_crowd_cover(member->crowdIndex, scale, scale, 1.0f);
                         if (member->unk07 >= 8) {
                             func_8010AFB4_crowd_cover(member->crowdIndex, 0x8000);
-                            func_8001C258_main(member->model, 4, 4);
+                            Hu3DModelAttrSet(member->model, 4, 4);
                             model = member->unk34;
                             HuAudFXPlay(0x4B7);
-                            func_8001C258_main(model, 4, 0);
+                            Hu3DModelAttrSet(model, 4, 0);
                             Hu3DModelPosSet(model, member->pos.x, member->pos.y + 40.0, member->pos.z);
                             Hu3DModelScaleSet(model, object->scale.x, object->scale.y, object->scale.z);
                             Hu3DMotionTimeSet(model, 0.0f);
                             Hu3DMotionSpeedSet(model, 1.5f);
-                            func_8001C814_main(model, 1, 0);
+                            Hu3DMotionAttrSet(model, 1, 0);
                             member->state = 5;
                         }
                         break;
@@ -1062,7 +1062,7 @@ void func_80108238_crowd_cover(omObjData *object) {
                         member->offset.x = sindf(member->unk38) * 6.0;
                         member->timer -= 9;
                         func_8010B1DC_crowd_cover(member->crowdIndex, 0, 0, 0, member->timer);
-                        func_8001F9E4_main(member->model, member->timer);
+                        Hu3DModelTPLvlSet(member->model, member->timer);
                         if (member->timer == 0) {
                             member->state = 6;
                         }
@@ -1078,7 +1078,7 @@ void func_80108238_crowd_cover(omObjData *object) {
                 continue;
             case 6:
                 func_8010AFB4_crowd_cover(member->crowdIndex, 0x8000);
-                func_8001C258_main(member->model, 4, 4);
+                Hu3DModelAttrSet(member->model, 4, 4);
                 continue;
         }
         member->pos.x += member->vel.x;
@@ -1211,13 +1211,13 @@ void func_801090CC_crowd_cover(s16 model, char *hook, s16 time, Vec *pos) {
     HuMtx4F hookTransform;
     HmfModel *modelData;
 
-    func_80016B00_main(model, time, hook, &hookTransform);
+    Hu3DModelObjMtxFrameGet(model, time, hook, &hookTransform);
     modelData = &Hu3DData[model];
-    func_8002367C_main(transform, modelData->mtx);
+    mtxCopy(transform, modelData->mtx);
     mtxTransCat(transform, modelData->pos.x, modelData->pos.y, modelData->pos.z);
     mtxRotCat(transform, modelData->rot.x, modelData->rot.y, modelData->rot.z);
     mtxScaleCat(transform, modelData->scale.x, modelData->scale.y, modelData->scale.z);
-    func_80018044_main(hookTransform, transform, result);
+    mtxCat(hookTransform, transform, result);
     pos->x = result[0][0] + result[1][0] + result[2][0] + result[3][0];
     pos->y = result[0][1] + result[1][1] + result[2][1] + result[3][1];
     pos->z = result[0][2] + result[1][2] + result[2][2] + result[3][2];
@@ -1251,7 +1251,7 @@ s16 func_80109244_crowd_cover(s16 spriteId, s16 count) {
 }
 
 HuSprAnimPat *func_8010930C_crowd_cover(s16 groupId, s16 member) {
-    return &func_80055194_main(groupId)->pat[member];
+    return &HuSprAnimDataGet(groupId)->pat[member];
 }
 
 void func_80109354_crowd_cover(u16 count) {
@@ -1294,15 +1294,15 @@ void func_8010949C_crowd_cover(Gfx **gfx, HuSprAnimPat *cel, u8 fmt, u8 siz, u16
                                   cmt, masks, maskt, 0, 0);
             break;
         case 1:
-            func_80034998_main(&gdl, (void *)0x0C000000, fmt, cel->sizeX, height, uls, ult, lrs, lrt, 0, cms, cmt,
+            HuLoadTextureBlock_4b(&gdl, (void *)0x0C000000, fmt, cel->sizeX, height, uls, ult, lrs, lrt, 0, cms, cmt,
                                masks, maskt, 0, 0);
             break;
         case 2:
-            func_800341D0_main(&gdl, (u16 *)0x0C000000, fmt, siz, cel->sizeX, cel->sizeY, uls, ult, lrs, lrt, 0,
+            HuLoadTextureTile(&gdl, (u16 *)0x0C000000, fmt, siz, cel->sizeX, cel->sizeY, uls, ult, lrs, lrt, 0,
                                cms, cmt, masks, maskt, 0, 0);
             break;
         case 3:
-            func_8003465C_main(&gdl, (void *)0x0C000000, fmt, siz, cel->sizeX, height, uls, ult, lrs, lrt, 0, cms,
+            HuLoadTextureBlock(&gdl, (void *)0x0C000000, fmt, siz, cel->sizeX, height, uls, ult, lrs, lrt, 0, cms,
                                cmt, masks, maskt, 0, 0);
             break;
     }
@@ -2274,7 +2274,7 @@ Gfx *func_8010BD74_crowd_cover(Gfx *gfx, UnkCrowdCover *crowd, HuMtx4F lookAt, V
         billboard[3][1] = (u16)cel->centerY;
     }
     billboard[3][2] = crowd->unk_3C;
-    func_8002367C_main(mtx, lookAt);
+    mtxCopy(mtx, lookAt);
     mtxTransCat(mtx, crowd->unk_40.x, crowd->unk_40.y, crowd->unk_40.z);
     mtxRotCat(mtx, crowd->unk_58.x, crowd->unk_58.y, crowd->unk_58.z);
     mtxScaleCat(mtx, crowd->unk_4C.x, crowd->unk_4C.y, crowd->unk_4C.z);
@@ -2294,8 +2294,8 @@ Gfx *func_8010BD74_crowd_cover(Gfx *gfx, UnkCrowdCover *crowd, HuMtx4F lookAt, V
             scale[3][3] = 1.0f;
             scale[0][1] = scale[0][2] = scale[0][3] = scale[1][0] = scale[1][2] = scale[1][3] = scale[2][0] =
                 scale[2][1] = scale[2][3] = scale[3][0] = scale[3][1] = scale[3][2] = 0.0f;
-            func_80018544_main(mtx, inverse);
-            func_80018044_main(scale, inverse, mtx);
+            HmfInverseMtxF3X3Cat(mtx, inverse);
+            mtxCat(scale, inverse, mtx);
             break;
     }
     guMtxCatF(billboard, mtx, mtx);

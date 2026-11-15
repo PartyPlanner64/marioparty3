@@ -48,9 +48,9 @@ s32 D_80114764_option BSS;
 
 void func_801059D0_option(void) {
     omInitObjMan(0x40, 0x20);
-    func_800142A0_main(0x20);
-    func_8004A208_main();
-    func_8000B5F0_main(1);
+    Hu3DSprModelInit(0x20);
+    omGameSysInit();
+    CamSetupInit(1);
     ScissorSet(0, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     {
@@ -63,7 +63,7 @@ void func_801059D0_option(void) {
         Hu3DCameraPerspectiveSet(0, 41.0f, 80.0f, 8000.0f);
         Hu3DCameraPosSetV(0, &pos, &at, &up);
     }
-    func_80030030_main(1.0f);
+    Hu3DMotionGlobalSpeedSet(1.0f);
     pfInit();
     HuWinInit();
     Hu3DGLightMaxSet(3);
@@ -129,7 +129,7 @@ void func_80105D5C_option(f32 fov, f32 nearPlane, f32 farPlane) {
 
 void func_80105D74_option(void) {
     while (1) {
-        func_80012E54_main(0);
+        Hu3DCameraMotionExec(0);
         HuPrcVSleep();
     }
 }
@@ -138,11 +138,11 @@ void func_80105DA0_option(s32 camId, f32 fov) {
     if (D_801146F0_option.prcObj != NULL) {
         func_80105E40_option();
     }
-    func_80013320_main(camId, 0);
+    Hu3DCameraMotionSet(camId, 0);
     D_801146F0_option.camId = camId;
     D_801146F0_option.fov = fov;
     Hu3DCameraPerspectiveSet(0, fov, D_801146F0_option.nearPlane, D_801146F0_option.farPlane);
-    func_80012E54_main(0);
+    Hu3DCameraMotionExec(0);
     D_801146F0_option.prcObj = omAddPrcObj(func_80105D74_option, 0x5000, 0x2000, 0);
 }
 
@@ -156,7 +156,7 @@ void func_80105E40_option(void) {
     }
 
     if (D_801146F0_option.camId != -1) {
-        func_80013350_main(0);
+        Hu3DCameraMotionOff(0);
         D_801146F0_option.camId = -1;
     }
 

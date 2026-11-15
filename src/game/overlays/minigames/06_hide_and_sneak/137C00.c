@@ -451,8 +451,8 @@ s32 func_801064F4_hide_and_sneak(s32 arg0) {
 }
 
 void func_80106548_hide_and_sneak(omObjData *object, u16 motionIndex, s16 arg2) {
-    func_8001C5B4_main(object->model[0], object->motion[motionIndex]);
-    func_8001C814_main(object->model[0], arg2, arg2);
+    Hu3DMotionModelSet(object->model[0], object->motion[motionIndex]);
+    Hu3DMotionAttrSet(object->model[0], arg2, arg2);
 }
 
 void func_801065B0_hide_and_sneak(omObjData *arg0, u16 arg1, s16 arg2, s16 arg3, s16 arg4) {
@@ -507,9 +507,9 @@ void func_80106738_hide_and_sneak(omObjData *object) {
     work->unk_42 = espEntry(work->unk_40, 0, 0);
     espAttrSet(work->unk_42, 0x1000);
     espPosSet(work->unk_42, work->unk_44.x, work->unk_44.y);
-    object->model[0] = func_8000B108_main(0x270003, 0x299);
-    object->model[1] = func_8000B108_main(0x270002, 0x299);
-    object->model[2] = func_8000B108_main(0x27000C, 0x299);
+    object->model[0] = Hu3DModelRead(0x270003, 0x299);
+    object->model[1] = Hu3DModelRead(0x270002, 0x299);
+    object->model[2] = Hu3DModelRead(0x27000C, 0x299);
     Hu3DMotionSpeedSet(object->model[0], 0.0f);
     Hu3DModelPosSet(object->model[1], 0.0f, 0.0f, 0.0f);
     Hu3DModelPosSet(object->model[2], 4.0f, 0.0f, 0.0f);
@@ -545,7 +545,7 @@ void func_8010699C_hide_and_sneak(omObjData *object, s8 motion) {
         Hu3DMotionSpeedSet(object->model[0], 1.0f);
         func_801065B0_hide_and_sneak(object, motion, 0, 10, mode);
         if (motion == 6) {
-            func_80045ED0_main((D_8010C398_hide_and_sneak[GwPlayer[object->work[0]].chr] << 16) | 0x30);
+            HuAudCharVoicePlay((D_8010C398_hide_and_sneak[GwPlayer[object->work[0]].chr] << 16) | 0x30);
         }
         work->unk_06 = motion;
     }
@@ -796,19 +796,19 @@ void func_80107638_hide_and_sneak(omObjData *object) {
     HideAndSneakSoloCpu *cpu = &D_8010E168_hide_and_sneak;
     u16 character = GwPlayer[object->work[0]].chr;
 
-    object->model[0] = func_8000B108_main(D_800A178C_main[character][0] | D_800A178C_main[character][3], 0x2B9);
-    func_8000B460_main(object, 0, func_80017BB8_main(character, 0));
-    func_8000B460_main(object, 1, func_80017BB8_main(character, 1));
-    func_8000B460_main(object, 2, func_80017BB8_main(character, 0x14));
-    func_8000B460_main(object, 3, func_80017BB8_main(character, 0x6C));
-    func_8000B460_main(object, 4, func_80017BB8_main(character, 0x33));
-    func_8000B460_main(object, 5, func_80017BB8_main(character, 0x3A));
-    func_8000B460_main(object, 6, func_80017BB8_main(character, 0x30));
-    func_8000B460_main(object, 7, func_80017BB8_main(character, 0x36));
-    object->model[1] = func_8000B0A0_main(0, 0xC9);
-    func_8001C2FC_main(object->model[1], 0x80000000, 0);
+    object->model[0] = Hu3DModelRead(D_800A178C_main[character][0] | D_800A178C_main[character][3], 0x2B9);
+    omObjMotionRead(object, 0, CharMotionDataNumGet(character, 0));
+    omObjMotionRead(object, 1, CharMotionDataNumGet(character, 1));
+    omObjMotionRead(object, 2, CharMotionDataNumGet(character, 0x14));
+    omObjMotionRead(object, 3, CharMotionDataNumGet(character, 0x6C));
+    omObjMotionRead(object, 4, CharMotionDataNumGet(character, 0x33));
+    omObjMotionRead(object, 5, CharMotionDataNumGet(character, 0x3A));
+    omObjMotionRead(object, 6, CharMotionDataNumGet(character, 0x30));
+    omObjMotionRead(object, 7, CharMotionDataNumGet(character, 0x36));
+    object->model[1] = Hu3DModelRead2(0, 0xC9);
+    Hu3DModelObjAttrSet(object->model[1], 0x80000000, 0);
     Hu3DModelRemakeStatic(object->model[1]);
-    func_8001C514_main(object->model[1]);
+    Hu3DModelDynamicFree(object->model[1]);
     func_80088800_main(Hu3DData[object->model[1]].mtx, 0.0f, 0.0f, 0.0f);
     object->trans.x = 0.0f;
     object->trans.y = 0.0f;
@@ -866,10 +866,10 @@ void func_801079E8_hide_and_sneak(omObjData *object) {
         if (D_8010E182_hide_and_sneak[i] != 0) {
             if (D_8010C3E4_hide_and_sneak[i] - 150.0f < object->trans.x && object->trans.x < D_8010C3E4_hide_and_sneak[i] + 150.0f && D_8010C3F4_hide_and_sneak[i] - 20.0f < object->trans.z &&
                 object->trans.z < D_8010C3F4_hide_and_sneak[i] + 100.0f) {
-                func_8001C258_main(object->model[0], 4, 4);
+                Hu3DModelAttrSet(object->model[0], 4, 4);
                 break;
             }
-            func_8001C258_main(object->model[0], 4, 0);
+            Hu3DModelAttrSet(object->model[0], 4, 0);
         }
     }
 }
@@ -912,7 +912,7 @@ void func_80107BD8_hide_and_sneak(omObjData *object, s8 motion) {
         Hu3DMotionSpeedSet(object->model[0], 1.0f);
         work->unk_06 = motion;
         if (motion == 4) {
-            func_80045ED0_main((D_8010C398_hide_and_sneak[GwPlayer[object->work[0]].chr] << 16) | 0x30);
+            HuAudCharVoicePlay((D_8010C398_hide_and_sneak[GwPlayer[object->work[0]].chr] << 16) | 0x30);
         }
     }
 }
@@ -1745,8 +1745,8 @@ s8 func_80109BF4_hide_and_sneak(omObjData *object) {
         }
         if (abs(object->trans.x) > 1000) {
             work->unk_04 = 2;
-            func_8001C258_main(object->model[0], 4, 4);
-            func_8001C258_main(object->model[1], 4, 4);
+            Hu3DModelAttrSet(object->model[0], 4, 4);
+            Hu3DModelAttrSet(object->model[1], 4, 4);
             D_8010E1A9_hide_and_sneak[object->work[1]] = 0;
             return 1;
         }
@@ -1803,7 +1803,7 @@ void func_80109D88_hide_and_sneak(omObjData *object) {
             break;
         case 3:
             if (work->unk_08 == -1) {
-                func_8001C258_main(object->model[0], 4, 0);
+                Hu3DModelAttrSet(object->model[0], 4, 0);
                 func_80107BD8_hide_and_sneak(object, 2);
                 object->trans.x = D_8010C3CC_hide_and_sneak[D_8010C3B8_hide_and_sneak[D_8010C781_hide_and_sneak][index]];
                 object->trans.z = D_8010C3D8_hide_and_sneak[D_8010C3B8_hide_and_sneak[D_8010C781_hide_and_sneak][index]];
@@ -1819,12 +1819,12 @@ void func_80109D88_hide_and_sneak(omObjData *object) {
                 object->trans.z = D_8010C3F4_hide_and_sneak[spot];
                 func_80107BD8_hide_and_sneak(object, 3);
                 Hu3DMotionSpeedSet(object->model[0], 0.0f);
-                func_8001C258_main(object->model[0], 4, 4);
+                Hu3DModelAttrSet(object->model[0], 4, 4);
                 object->rot.y = 0.0f;
             }
             break;
         case 4:
-            func_8001C258_main(object->model[0], 4, 0);
+            Hu3DModelAttrSet(object->model[0], 4, 0);
             if (work->unk_08 == D_8010E17C_hide_and_sneak) {
                 if (work->unk_0C == 40) {
                     Hu3DMotionSpeedSet(object->model[0], 1.0f);
@@ -1867,16 +1867,16 @@ void func_8010A1CC_hide_and_sneak(omObjData *object) {
     HideAndSneakUnk788 *entry = &D_8010C788_hide_and_sneak[object->work[1]];
     u16 character = GwPlayer[object->work[0]].chr;
 
-    object->model[0] = func_8000B108_main(D_800A178C_main[character][0] | D_800A178C_main[character][3], 0x2B9);
-    func_8000B460_main(object, 0, func_80017BB8_main(character, 0));
-    func_8000B460_main(object, 1, func_80017BB8_main(character, 2));
-    func_8000B460_main(object, 3, func_80017BB8_main(character, 0x79));
-    func_8000B460_main(object, 4, func_80017BB8_main(character, 0x30));
-    func_8000B460_main(object, 2, func_80017BB8_main(character, 0x70));
-    object->model[1] = func_8000B0A0_main(0, 0xC9);
-    func_8001C2FC_main(object->model[1], 0x80000000, 0);
+    object->model[0] = Hu3DModelRead(D_800A178C_main[character][0] | D_800A178C_main[character][3], 0x2B9);
+    omObjMotionRead(object, 0, CharMotionDataNumGet(character, 0));
+    omObjMotionRead(object, 1, CharMotionDataNumGet(character, 2));
+    omObjMotionRead(object, 3, CharMotionDataNumGet(character, 0x79));
+    omObjMotionRead(object, 4, CharMotionDataNumGet(character, 0x30));
+    omObjMotionRead(object, 2, CharMotionDataNumGet(character, 0x70));
+    object->model[1] = Hu3DModelRead2(0, 0xC9);
+    Hu3DModelObjAttrSet(object->model[1], 0x80000000, 0);
     Hu3DModelRemakeStatic(object->model[1]);
-    func_8001C514_main(object->model[1]);
+    Hu3DModelDynamicFree(object->model[1]);
     func_80088800_main(Hu3DData[object->model[1]].mtx, 0.0f, 0.0f, 0.0f);
     switch (object->work[1]) {
         case 0:
@@ -1959,8 +1959,8 @@ void func_8010A48C_hide_and_sneak(void) {
 void func_8010A6BC_hide_and_sneak(omObjData *object) {
     HideAndSneakWork *work = &D_8010C7A0_hide_and_sneak[5 + object->work[0]];
 
-    func_8001E888_main(object->model[0], 0.0f, work->unk_04, 0x60, 0x40, D_8010C47C_hide_and_sneak[object->work[0]], 0);
-    func_8001E888_main(object->model[0], 0.0f, work->unk_04, 0x60, 0x40, D_8010C48C_hide_and_sneak[object->work[0]], 0);
+    Hu3DModelObjTexScroll(object->model[0], 0.0f, work->unk_04, 0x60, 0x40, D_8010C47C_hide_and_sneak[object->work[0]], 0);
+    Hu3DModelObjTexScroll(object->model[0], 0.0f, work->unk_04, 0x60, 0x40, D_8010C48C_hide_and_sneak[object->work[0]], 0);
 }
 
 s8 func_8010A7A4_hide_and_sneak(void) {
@@ -2065,13 +2065,13 @@ void func_8010AAC8_hide_and_sneak(omObjData *object) {
     s8 index = object->work[0];
     HideAndSneakWork *work = &D_8010C7A0_hide_and_sneak[5 + index];
 
-    object->model[0] = func_8000B108_main(D_8010C474_hide_and_sneak[index] | 0x270000, 0x1689);
+    object->model[0] = Hu3DModelRead(D_8010C474_hide_and_sneak[index] | 0x270000, 0x1689);
     object->trans.z = -10.0f;
     if (index == 1) {
         object->trans.x = -10.0f;
     }
     Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
-    func_8001C954_main(object->model[0]);
+    Hu3DModelVtxBufMake(object->model[0]);
     work->unk_04 = -0x40;
     func_8010A6BC_hide_and_sneak(object);
     D_8010E182_hide_and_sneak[index] = 1;
@@ -2144,7 +2144,7 @@ void func_8010AFA0_hide_and_sneak(omObjData *object) {
         D_8010C760_hide_and_sneak[i].x = D_8010C4A4_hide_and_sneak[i].x;
         D_8010C760_hide_and_sneak[i].y = D_8010C4A4_hide_and_sneak[i].y;
         D_8010C760_hide_and_sneak[i].unk_06 = 0;
-        D_8010E198_hide_and_sneak[i] = func_80055194_main(D_8010C760_hide_and_sneak[i].sprite);
+        D_8010E198_hide_and_sneak[i] = HuSprAnimDataGet(D_8010C760_hide_and_sneak[i].sprite);
     }
     Hu3DModelCameraSet(Hu3DHookFuncCreate(0, func_8010ACC4_hide_and_sneak, 2), HU3D_CAM0);
     object->func = func_8010AF98_hide_and_sneak;
@@ -2230,11 +2230,11 @@ void func_8010B410_hide_and_sneak(omObjData *object) {
     s32 index = (s8)object->work[0];
     void *data;
 
-    object->model[0] = func_8000B108_main(0x27000D, 0x2A9);
+    object->model[0] = Hu3DModelRead(0x27000D, 0x2A9);
     data = DataRead(D_8010C4B4_hide_and_sneak[index] | 0x270000);
     Hu3DAnimCreate(Hu3DData[object->model[0]].hmf, data, 0, "s206_004_DEF");
     Hu3DModelRemakeStatic(object->model[0]);
-    func_8001C514_main(object->model[0]);
+    Hu3DModelDynamicFree(object->model[0]);
     DataClose(data);
     object->trans.x = index * 130 - 195;
     object->trans.y = -160.0f;
@@ -2275,12 +2275,12 @@ void func_8010B600_hide_and_sneak(void) {
         case 1:
             if (D_8010E17A_hide_and_sneak > 0) {
                 D_8010E17A_hide_and_sneak--;
-                func_8003F578_main((D_8010E17A_hide_and_sneak + 29) / 30);
+                GMesTimerValueSet((D_8010E17A_hide_and_sneak + 29) / 30);
                 func_8010AC78_hide_and_sneak();
             } else {
-                func_8003F5C0_main();
+                GMesTimerEnd();
                 D_8010E17A_hide_and_sneak = 30;
-                func_8001C258_main(object->model[0], 4, 0);
+                Hu3DModelAttrSet(object->model[0], 4, 0);
                 Hu3DMotionSpeedSet(object->model[0], 1.0f);
                 func_80109578_hide_and_sneak();
                 func_801095DC_hide_and_sneak();
@@ -2309,13 +2309,13 @@ void func_8010B600_hide_and_sneak(void) {
             if ((s32)Hu3DData[object->model[0]].motTime <= 0) {
                 Hu3DMotionTimeSet(object->model[0], 0.0f);
                 Hu3DMotionSpeedSet(object->model[0], 0.0f);
-                func_8001C258_main(object->model[0], 4, 4);
+                Hu3DModelAttrSet(object->model[0], 4, 4);
             }
             if (D_8010E17A_hide_and_sneak > 0) {
                 D_8010E17A_hide_and_sneak--;
-                func_8003F578_main((D_8010E17A_hide_and_sneak + 29) / 30);
+                GMesTimerValueSet((D_8010E17A_hide_and_sneak + 29) / 30);
             } else {
-                func_8003F5C0_main();
+                GMesTimerEnd();
                 if (D_8010E174_hide_and_sneak == 2) {
                     GMesCreate(GMES_MES_15);
                     HuAudSeqFadeOut(100);
@@ -2325,7 +2325,7 @@ void func_8010B600_hide_and_sneak(void) {
             }
             if (D_8010E170_hide_and_sneak != 0) {
                 D_8010E170_hide_and_sneak = 0;
-                func_8003F5C0_main();
+                GMesTimerEnd();
                 D_8010C780_hide_and_sneak = 4;
             }
             break;
@@ -2333,7 +2333,7 @@ void func_8010B600_hide_and_sneak(void) {
             if ((s32)Hu3DData[object->model[0]].motTime <= 0) {
                 Hu3DMotionTimeSet(object->model[0], 0.0f);
                 Hu3DMotionSpeedSet(object->model[0], 0.0f);
-                func_8001C258_main(object->model[0], 4, 4);
+                Hu3DModelAttrSet(object->model[0], 4, 4);
             }
             if (D_8010E170_hide_and_sneak != 0 && func_8010A824_hide_and_sneak() && D_8010E1B3_hide_and_sneak == 2) {
                 D_8010E1B3_hide_and_sneak = 0;
@@ -2363,12 +2363,12 @@ void func_8010B600_hide_and_sneak(void) {
             if ((s32)Hu3DData[object->model[0]].motTime <= 0) {
                 Hu3DMotionTimeSet(object->model[0], 0.0f);
                 Hu3DMotionSpeedSet(object->model[0], 0.0f);
-                func_8001C258_main(object->model[0], 4, 4);
+                Hu3DModelAttrSet(object->model[0], 4, 4);
             }
             if (D_8010E17A_hide_and_sneak > 0) {
                 D_8010E17A_hide_and_sneak--;
             } else {
-                func_8003F5C0_main();
+                GMesTimerEnd();
                 if (D_8010E1A9_hide_and_sneak[0] == 0 && D_8010E1A9_hide_and_sneak[1] == 0 && D_8010E1A9_hide_and_sneak[2] == 0) {
                     D_8010E174_hide_and_sneak++;
                     if (D_8010E174_hide_and_sneak == 3) {
@@ -2419,7 +2419,7 @@ void func_8010BCE8_hide_and_sneak(omObjData *object) {
         WipeCreateOut(WIPE_TYPE_NORMAL, 20);
         object->func = func_8010BCB0_hide_and_sneak;
         HuAudSeqFadeOut(30);
-        func_8004AB0C_main(30);
+        HuAudFXAllFadeOut(30);
     }
 }
 
@@ -2523,8 +2523,8 @@ void func_8010C0AC_hide_and_sneak(void) {
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
     obj->work[0] = 2;
     omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    func_8000B5F0_main(2);
-    func_8000B710_main(2);
+    CamSetupInit(2);
+    CamSetupMapCullAddMulti(2);
     for (i = 0; i < 2; i++) {
         ScissorSet(i, D_8010C4C0_hide_and_sneak[i].scissorX, D_8010C4C0_hide_and_sneak[i].scissorY, D_8010C4C0_hide_and_sneak[i].scissorWidth, D_8010C4C0_hide_and_sneak[i].scissorHeight);
         ViewportSet(i, D_8010C4C0_hide_and_sneak[i].viewportScale.x, D_8010C4C0_hide_and_sneak[i].viewportScale.y, D_8010C4C0_hide_and_sneak[i].viewportScale.z, D_8010C4C0_hide_and_sneak[i].viewportTranslate.x,
@@ -2534,10 +2534,10 @@ void func_8010C0AC_hide_and_sneak(void) {
 }
 
 void func_8010C220_hide_and_sneak(void) {
-    func_8001FE20_main(50);
-    func_800142A0_main(50);
+    MapCollInit(50);
+    Hu3DSprModelInit(50);
     omInitObjMan(50, 0);
-    func_8004A208_main();
+    omGameSysInit();
     func_8010C0AC_hide_and_sneak();
     Hu3DGLightMaxSet(1);
     Hu3DGLightMaxSet(2);
@@ -2550,8 +2550,8 @@ void func_8010C220_hide_and_sneak(void) {
     D_800EC1B8_minigame = 0;
     D_800EC280_minigame = 0;
     D_800EBE28_minigame = 0;
-    func_80045010_main(D_8010C754_hide_and_sneak, 0);
-    func_80045010_main(D_8010C754_hide_and_sneak, 1);
+    GMesFontMesCreate(D_8010C754_hide_and_sneak, 0);
+    GMesFontMesCreate(D_8010C754_hide_and_sneak, 1);
     omAddObj(1500, 0, 0, -1, func_8010BFE8_hide_and_sneak);
     omAddObj(1500, 0, 0, -1, func_8010BCE8_hide_and_sneak);
     func_80105A74_hide_and_sneak();

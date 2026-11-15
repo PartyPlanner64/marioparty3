@@ -403,10 +403,10 @@ void func_8010BE20_staff(s16 *windows, s16 count) {
         HuWinMesPalSet(window, 4, 0, 144, 0);
         HuWinMesPalSet(window, 5, 0, 176, 192);
         HuWinMesPalSet(window, 6, 255, 173, 0);
-        func_8005C154_main(window, 64, 64, 64);
+        HuWinMesDefColSet(window, 64, 64, 64);
         HuWinBGColSet(window, 0, 0, 0);
         HuWinMesColSet(window, 7);
-        func_8005BF70_main(window, 0x100);
+        HuWinTPLvlSet(window, 0x100);
         HuWinDispOff(window);
     }
 }
@@ -450,12 +450,12 @@ void func_8010BF84_staff(void) {
     model = -1;
     for (i = 0; i < 3; i++) {
         if (model < 0) {
-            model = link = func_8000B108_main(0x160025, 0x2B9);
+            model = link = Hu3DModelRead(0x160025, 0x2B9);
         } else {
             link = Hu3DModelLink(model);
         }
         models[i] = link;
-        func_8001C258_main(link, 4, 4);
+        Hu3DModelAttrSet(link, 4, 4);
     }
     for (i = 0; i < 1; i++) {
         anims[i] = HuSprAnimDataRead(D_80110B80_staff[i]);
@@ -511,7 +511,7 @@ void func_8010BF84_staff(void) {
                                 break;
                             case 4:
                                 slot->linkModel = models[modelIdx];
-                                func_8001C258_main(slot->linkModel, 4, 0);
+                                Hu3DModelAttrSet(slot->linkModel, 4, 0);
                                 Hu3DModelPosSet(slot->linkModel, slot->pos.x, slot->pos.y, slot->pos.z);
                                 func_8010998C_staff(prc, &slot->model, &slot->motion, &slot->pos);
                                 if (++modelIdx >= 3) {
@@ -557,7 +557,7 @@ void func_8010BF84_staff(void) {
                 if (done) {
                     slot->type = 0;
                     if (slot->model >= 0) {
-                        func_8001C258_main(slot->model, 4, 4);
+                        Hu3DModelAttrSet(slot->model, 4, 4);
                         func_8010992C_staff(prc, slot->model);
                     }
                     slot->model = -1;
@@ -575,7 +575,7 @@ void func_8010BF84_staff(void) {
                         slot->win0 = -1;
                     }
                     if (slot->linkModel >= 0) {
-                        func_8001C258_main(slot->linkModel, 4, 4);
+                        Hu3DModelAttrSet(slot->linkModel, 4, 4);
                         slot->linkModel = -1;
                     }
                 } else {
@@ -788,7 +788,7 @@ void func_8010CD74_staff(UnkStaff_1 *works) {
             model = Hu3DModelLink(base);
         }
         work->unk_28 = model;
-        func_8001C814_main(model, -1, 2);
+        Hu3DMotionAttrSet(model, -1, 2);
         work->pos = D_80110FA0_staff[i];
         Hu3DModelPosSet(model, work->pos.x, work->pos.y, work->pos.z);
         work->rot.x = work->rot.y = work->rot.z = 0.0f;
@@ -832,10 +832,10 @@ void func_8010CFD4_staff(UnkStaff *works) {
         work->unk_1C = Hu3DAnimCreate(Hu3DData[model].hmf, data, 0, entry->animName);
         HuMemMemoryFreePerm(data);
         Hu3DModelRemakeStatic(model);
-        func_8001C514_main(model);
+        Hu3DModelDynamicFree(model);
         work->unk_1A = Hu3DModelCreate(DataReadTemp(entry->subDataId), 0x1D);
-        func_8001C5B4_main(model, work->unk_1A);
-        func_8001C814_main(model, -1, 2);
+        Hu3DMotionModelSet(model, work->unk_1A);
+        Hu3DMotionAttrSet(model, -1, 2);
         Hu3DModelScaleSet(model, 1.0f, 1.0f, 1.0f);
         work->pos = entry->pos;
         Hu3DModelPosSet(model, work->pos.x, work->pos.y, work->pos.z);
@@ -950,9 +950,9 @@ void func_8010D450_staff(s16 model, Vec *pos) {
     offsetZ += pos->z;
     Hu3DModelPosSet(model, offsetX, 0.0f, offsetZ);
     if (height >= 80.0f) {
-        func_8001C258_main(model, 4, 4);
+        Hu3DModelAttrSet(model, 4, 4);
     } else {
-        func_8001C258_main(model, 4, 0);
+        Hu3DModelAttrSet(model, 4, 0);
     }
 }
 
@@ -1065,16 +1065,16 @@ void func_8010D998_staff(void) {
     D_80111534_staff.z = 48.0235f;
     D_80110534_staff = 32.0f;
     Hu3DCameraPerspectiveSet(0, 32.0f, D_80111564_staff, D_80111560_staff);
-    motion = func_8000B13C_main(0xA007D);
-    model = func_8000B108_main(0xA0075, 0x2A9);
-    func_8001C514_main(model);
+    motion = Hu3DMotionModelRead(0xA007D);
+    model = Hu3DModelRead(0xA0075, 0x2A9);
+    Hu3DModelDynamicFree(model);
     Hu3DModelScaleSet(model, 0.6f, 0.6f, 0.6f);
     HuPrcVSleep();
-    func_8001C5B4_main(model, motion);
-    func_8001C814_main(model, 2, 2);
-    shadow = func_8000B108_main(9, 0x299);
-    func_8001C258_main(model, 4, 0);
-    func_8001C258_main(shadow, 4, 0);
+    Hu3DMotionModelSet(model, motion);
+    Hu3DMotionAttrSet(model, 2, 2);
+    shadow = Hu3DModelRead(9, 0x299);
+    Hu3DModelAttrSet(model, 4, 0);
+    Hu3DModelAttrSet(shadow, 4, 0);
     work.pos = D_80110FDC_staff;
     Hu3DModelPosSet(model, work.pos.x, work.pos.y + 22.0f, work.pos.z);
     func_8010D450_staff(shadow, &work.pos);
@@ -1102,8 +1102,8 @@ void func_8010D998_staff(void) {
     while (TRUE) {
         if (state != *stat) {
             if (*stat == 1) {
-                func_8001C258_main(model, 4, 0);
-                func_8001C258_main(shadow, 4, 0);
+                Hu3DModelAttrSet(model, 4, 0);
+                Hu3DModelAttrSet(shadow, 4, 0);
             }
             state = *stat;
         }
@@ -1211,8 +1211,8 @@ void func_8010DF34_staff(void) {
     rot = 0.0f;
     work = HuPrcCurrentGet()->user_data;
     angle = 0;
-    model = func_8000B108_main(0xB0034, 0x2A8);
-    func_8001C2FC_main(model, 0x20000, 0x20000);
+    model = Hu3DModelRead(0xB0034, 0x2A8);
+    Hu3DModelObjAttrSet(model, 0x20000, 0x20000);
     hmf = Hu3DData[model].hmf;
     for (k = 0; k < hmf->unk10; k++) {
         count = hmf->unk60[k].unk22;
@@ -1222,14 +1222,14 @@ void func_8010DF34_staff(void) {
         }
     }
     Hu3DModelRemakeStatic(model);
-    func_8001C954_main(model);
-    func_8001C514_main(model);
-    func_80013390_main(model, -1, NULL, func_8010F4C4_staff);
-    func_800138EC_main(model, 8, 8);
+    Hu3DModelVtxBufMake(model);
+    Hu3DModelDynamicFree(model);
+    Hu3DParticleCreate(model, -1, NULL, func_8010F4C4_staff);
+    Hu3DParticleAttrSet(model, 8, 8);
     effect = Hu3DData[model].unkBC;
-    func_8001C258_main(model, 4, 4);
-    model2 = func_8000B108_main(0xB0035, 0x2B9);
-    func_8001C258_main(model2, 4, 4);
+    Hu3DModelAttrSet(model, 4, 4);
+    model2 = Hu3DModelRead(0xB0035, 0x2B9);
+    Hu3DModelAttrSet(model2, 4, 4);
     Hu3DModelScaleSet(model2, 2.0f, 2.0f, 2.0f);
     Hu3DMotionSpeedSet(model2, 2.0f);
 
@@ -1256,10 +1256,10 @@ void func_8010DF34_staff(void) {
         cur = work->center;
         prev = cur;
         HuAudFXPlay(0x16F);
-        func_8001C258_main(model, 4, 0);
-        func_80013954_main(model, 0);
+        Hu3DModelAttrSet(model, 4, 0);
+        Hu3DParticleCntSet(model, 0);
         effect->unk18 = func_8010F9D4_staff;
-        func_800138EC_main(model, 2, 0);
+        Hu3DParticleAttrSet(model, 2, 0);
 
         for (i = 0; i <= work->unk_08; i++) {
             HuPrcVSleep();
@@ -1321,23 +1321,23 @@ void func_8010DF34_staff(void) {
         }
 
         HuPrcSleep(15);
-        func_8001C258_main(model, 4, 4);
+        Hu3DModelAttrSet(model, 4, 4);
         Hu3DMotionTimeSet(model2, 0.0f);
-        func_8001C258_main(model2, 4, 0);
+        Hu3DModelAttrSet(model2, 4, 0);
         Hu3DModelPosSet(model2, cur.x, cur.y, cur.z);
         HuPrcVSleep();
         HuAudFXPlay(0x170);
         func_8010F04C_staff(model, work->unk_00);
         effect->unk18 = func_8010F4C4_staff;
-        func_80013954_main(model, 0);
-        func_8001C258_main(model, 4, 0);
+        Hu3DParticleCntSet(model, 0);
+        Hu3DModelAttrSet(model, 4, 0);
         Hu3DModelPosSet(model, cur.x, cur.y, cur.z);
-        func_800138EC_main(model, 2, 0);
-        while (!(func_80013928_main(model) & 2)) {
+        Hu3DParticleAttrSet(model, 2, 0);
+        while (!(Hu3DParticleAttrGet(model) & 2)) {
             HuPrcVSleep();
         }
-        func_8001C258_main(model2, 4, 4);
-        func_8001C258_main(model, 4, 4);
+        Hu3DModelAttrSet(model2, 4, 4);
+        Hu3DModelAttrSet(model, 4, 4);
         Hu3DModelPosSet(model, 0.0f, 0.0f, 0.0f);
         if (!(work->unk_04 & 2)) {
             work->unk_04 |= 1;
@@ -1597,8 +1597,8 @@ void func_8010FB88_staff(void) {
     s16 color;
 
     work = HuPrcCurrentGet()->user_data;
-    model = func_8000B108_main(0xB0034, 0x6A8);
-    func_8001C2FC_main(model, 0x20000, 0x20000);
+    model = Hu3DModelRead(0xB0034, 0x6A8);
+    Hu3DModelObjAttrSet(model, 0x20000, 0x20000);
     hmf = Hu3DData[model].hmf;
     for (j = 0; j < hmf->unk10; j++) {
         count = hmf->unk60[j].unk22;
@@ -1608,16 +1608,16 @@ void func_8010FB88_staff(void) {
         }
     }
     Hu3DModelRemakeStatic(model);
-    func_8001C954_main(model);
-    func_8001C514_main(model);
-    func_80013390_main(model, -1, NULL, func_8010F4C4_staff);
-    func_800138EC_main(model, 8, 8);
+    Hu3DModelVtxBufMake(model);
+    Hu3DModelDynamicFree(model);
+    Hu3DParticleCreate(model, -1, NULL, func_8010F4C4_staff);
+    Hu3DParticleAttrSet(model, 8, 8);
     effect = Hu3DData[model].unkBC;
-    func_8001C258_main(model, 4, 4);
-    func_8001C258_main(model, 4, 0);
-    func_80013954_main(model, 0);
+    Hu3DModelAttrSet(model, 4, 4);
+    Hu3DModelAttrSet(model, 4, 0);
+    Hu3DParticleCntSet(model, 0);
     effect->unk18 = func_8010F9D4_staff;
-    func_800138EC_main(model, 2, 0);
+    Hu3DParticleAttrSet(model, 2, 0);
     work->unk_30 = work->unk_18;
     cur[0].x = sindf(0.0f) * 150.0f + work->unk_30.x;
     cur[0].y = work->unk_30.y;

@@ -17,21 +17,21 @@ typedef struct EffectGroup {
     /* 0x04 */ EffectGroupModel *models;
 } EffectGroup; // Size 0x08
 
-s16 func_8000CBA0_main(s32 fileId, s32 attr);
-s16 func_8000CC98_main(s32 fileId, s32 attr);
-void func_8000CD00_main(s16 model, f32 arg1, f32 arg2, f32 arg3);
-s32 func_8000CD74_main(s16 model, f32 x, f32 y, f32 z);
-s16 func_8000CED8_main(s32 fileId, s32 attr);
-void func_8000CFA4_main(s16 model, f32 x, f32 y, f32 z);
-void func_8000CFD8_main(s16 model, s16 time);
-void func_8000D018_main(s16 model, f32 range);
-void func_8000D044_main(s16 model);
-void func_8000D06C_main(omObjData *obj);
-void func_8000D268_main(s16 model);
-void func_8000D3AC_main(void);
-s16 func_8000D3E0_main(s32 fileId, s32 attr, s16 count, void (*func)(s16));
-s16 func_8000D550_main(s16 index, f32 x, f32 y, f32 z);
-s16 func_8000D658_main(s32 attr, s16 count);
-void func_8000D694_main(s16 model);
+s16 EffectModelCreate(s32 fileId, s32 attr);
+s16 EffectModelRead(s32 fileId, s32 attr);
+void EffectParamSet(s16 model, f32 arg1, f32 arg2, f32 arg3);
+s32 EffectEmit(s16 model, f32 x, f32 y, f32 z);
+s16 EffectCreate(s32 fileId, s32 attr);
+void EffectPosSet(s16 model, f32 x, f32 y, f32 z);
+void EffectTimeSet(s16 model, s16 time);
+void EffectRangeSet(s16 model, f32 range);
+void EffectStop(s16 model);
+void EffectObjExec(omObjData *obj);
+void EffectParticleHook(s16 model);
+void EffectGroupInit(void);
+s16 EffectGroupCreate(s32 fileId, s32 attr, s16 count, void (*func)(s16));
+s16 EffectGroupEmit(s16 index, f32 x, f32 y, f32 z);
+s16 EffectGroupStarCreate(s32 attr, s16 count);
+void EffectGroupStarHook(s16 model);
 
 #endif

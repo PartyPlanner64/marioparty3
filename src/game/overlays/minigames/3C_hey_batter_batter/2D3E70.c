@@ -176,10 +176,10 @@ void func_801059A0_hey_batter_batter(void) {
 }
 
 void func_801059BC_hey_batter_batter(void) {
-    func_8001FE20_main(32);
-    func_800142A0_main(32);
+    MapCollInit(32);
+    Hu3DSprModelInit(32);
     omInitObjMan(32, 32);
-    func_8004A208_main();
+    omGameSysInit();
     func_80105A4C_hey_batter_batter();
     func_80105AB8_hey_batter_batter();
     func_80105C44_hey_batter_batter();
@@ -199,8 +199,8 @@ void func_80105AB8_hey_batter_batter(void) {
     s16 camIndex;
 
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    func_8000B5F0_main(1);
-    camIndex = func_8000B638_main();
+    CamSetupInit(1);
+    camIndex = CamSetupMapCullAdd();
     ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(camIndex, 45.0f, 80.0f, 8000.0f);
@@ -306,7 +306,7 @@ void func_80106048_hey_batter_batter(omObjData *object) {
             break;
         case 4:
             if (++D_80109C34_hey_batter_batter == 1) {
-                func_80017954_main(D_80109EF4_hey_batter_batter->model[0], 1,
+                CharAnimSet(D_80109EF4_hey_batter_batter->model[0], 1,
                                    GwPlayer[D_80109ED0_hey_batter_batter].chr, D_80109EF8_hey_batter_batter[1]);
                 D_80109B60_hey_batter_batter = 1;
                 GMesCreate(0x13);
@@ -335,7 +335,7 @@ void func_80106048_hey_batter_batter(omObjData *object) {
                         GwPlayer[D_80109ED0_hey_batter_batter].bonusCoin = -1;
                         break;
                 }
-                func_800370D0_main(D_80109C32_hey_batter_batter, 120);
+                GMesTimeMaxSet(D_80109C32_hey_batter_batter, 120);
             } else if (D_80109C34_hey_batter_batter >= 135) {
                 D_80109C34_hey_batter_batter = 0;
                 D_80109C30_hey_batter_batter++;
@@ -450,9 +450,9 @@ void func_80106744_hey_batter_batter(omObjData *object) {
             break;
         case 3:
             if (D_80109C46_hey_batter_batter-- >= 0) {
-                func_8003F578_main((D_80109C46_hey_batter_batter + 29) / 30);
+                GMesTimerValueSet((D_80109C46_hey_batter_batter + 29) / 30);
             } else {
-                func_8003F5C0_main();
+                GMesTimerEnd();
                 D_80109EDA_hey_batter_batter = 4;
                 D_80109C40_hey_batter_batter++;
             }
@@ -506,13 +506,13 @@ void func_80106928_hey_batter_batter(omObjData *object) {
             break;
         case 2:
             if (D_80109EE0_hey_batter_batter == 1) {
-                func_80017954_main(D_80109EF4_hey_batter_batter->model[0], 1,
+                CharAnimSet(D_80109EF4_hey_batter_batter->model[0], 1,
                                    GwPlayer[D_80109ED0_hey_batter_batter].chr, D_80109EF8_hey_batter_batter[3]);
                 D_80109ED2_hey_batter_batter = 3;
                 D_80109EDA_hey_batter_batter = 1;
                 HuAudFXPlay(0x4D8);
             } else if (D_80109EE0_hey_batter_batter == 0) {
-                func_80017954_main(D_80109EF4_hey_batter_batter->model[0], 1,
+                CharAnimSet(D_80109EF4_hey_batter_batter->model[0], 1,
                                    GwPlayer[D_80109ED0_hey_batter_batter].chr, D_80109EF8_hey_batter_batter[2]);
                 D_80109ED2_hey_batter_batter = 2;
                 D_80109EDA_hey_batter_batter = 2;
@@ -528,7 +528,7 @@ void func_80106928_hey_batter_batter(omObjData *object) {
 void func_80106C24_hey_batter_batter(omObjData *object) {
     WipeCreateOut(WIPE_TYPE_NORMAL, 20);
     HuAudSeqFadeOut(30);
-    func_8004AB0C_main(30);
+    HuAudFXAllFadeOut(30);
     object->func = func_80106C6C_hey_batter_batter;
 }
 
@@ -554,7 +554,7 @@ void func_80106CE4_hey_batter_batter(omObjData *object) {
 
     func_80109A78_hey_batter_batter(0x5D0000, 0x4000, 1000, 160, 120);
     for (i = 0; i < 2; i++) {
-        model = D_80109F00_hey_batter_batter[i] = func_8000B108_main(0x5D0003, 0x2A9);
+        model = D_80109F00_hey_batter_batter[i] = Hu3DModelRead(0x5D0003, 0x2A9);
         Hu3DModelPosSet(model, D_80109C4C_hey_batter_batter[i].x, D_80109C4C_hey_batter_batter[i].y,
                         D_80109C4C_hey_batter_batter[i].z);
         Hu3DModelScaleSet(model, 2.0f, 2.0f, 2.0f);
@@ -562,7 +562,7 @@ void func_80106CE4_hey_batter_batter(omObjData *object) {
         D_80109F0C_hey_batter_batter[i] = rand8() % 90;
     }
     for (; i < 5; i++) {
-        model = D_80109F00_hey_batter_batter[i] = func_8000B108_main(0x5D0003, 0x2A9);
+        model = D_80109F00_hey_batter_batter[i] = Hu3DModelRead(0x5D0003, 0x2A9);
         Hu3DModelPosSet(model, D_80109C4C_hey_batter_batter[i].x, D_80109C4C_hey_batter_batter[i].y,
                         D_80109C4C_hey_batter_batter[i].z);
         Hu3DModelScaleSet(model, 2.0f, 2.0f, 2.0f);
@@ -588,8 +588,8 @@ void func_80106FA8_hey_batter_batter(omObjData *object) {
 }
 
 void func_801070D8_hey_batter_batter(omObjData *object) {
-    object->model[0] = func_8000B108_main(0x5D0001, 0x2A9);
-    object->model[1] = func_8000B108_main(0x5D0002, 0x2A9);
+    object->model[0] = Hu3DModelRead(0x5D0001, 0x2A9);
+    object->model[1] = Hu3DModelRead(0x5D0002, 0x2A9);
     Hu3DModelPosSet(object->model[1], 0.0f, 0.0f, -1000.0f);
     object->func = NULL;
 }
@@ -597,19 +597,19 @@ void func_801070D8_hey_batter_batter(omObjData *object) {
 void func_80107144_hey_batter_batter(omObjData *object) {
     s32 chr = GwPlayer[D_80109ED0_hey_batter_batter].chr;
 
-    object->model[0] = func_8000B108_main(D_800A178C_main[chr][0] | D_800A178C_main[chr][2], 0x6A8);
-    object->model[1] = func_8000B108_main(0x5D0005, 0x6A9);
-    object->model[2] = func_8000B108_main(9, 0x2A9);
-    func_8000B460_main(object, 0, func_80017BB8_main(chr, 0));
-    func_8000B460_main(object, 1, func_80017BB8_main(chr, 0x82));
-    func_8000B460_main(object, 2, func_80017BB8_main(chr, 0x35));
-    func_8000B460_main(object, 3, func_80017BB8_main(chr, 0x38));
-    func_8000B460_main(object, 4, func_80017BB8_main(chr, 0x83));
-    func_8000B460_main(object, 5, func_80017BB8_main(chr, 1));
+    object->model[0] = Hu3DModelRead(D_800A178C_main[chr][0] | D_800A178C_main[chr][2], 0x6A8);
+    object->model[1] = Hu3DModelRead(0x5D0005, 0x6A9);
+    object->model[2] = Hu3DModelRead(9, 0x2A9);
+    omObjMotionRead(object, 0, CharMotionDataNumGet(chr, 0));
+    omObjMotionRead(object, 1, CharMotionDataNumGet(chr, 0x82));
+    omObjMotionRead(object, 2, CharMotionDataNumGet(chr, 0x35));
+    omObjMotionRead(object, 3, CharMotionDataNumGet(chr, 0x38));
+    omObjMotionRead(object, 4, CharMotionDataNumGet(chr, 0x83));
+    omObjMotionRead(object, 5, CharMotionDataNumGet(chr, 1));
     if (chr == 5) {
-        func_8000B460_main(object, 6, 0x5D000A);
+        omObjMotionRead(object, 6, 0x5D000A);
     }
-    func_8001C258_main(object->model[1], 0x4000, 0x4000);
+    Hu3DModelAttrSet(object->model[1], 0x4000, 0x4000);
     Hu3DModelHookSet(object->model[1], object->model[0], "item_hook");
     omSetTra(object, -150.0f, 15.0f, 0.0f);
     omSetRot(object, 0.0f, 180.0f, 0.0f);
@@ -617,12 +617,12 @@ void func_80107144_hey_batter_batter(omObjData *object) {
     GwPlayer[D_80109ED0_hey_batter_batter].bonusCoin = -1;
     Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[1]].motId, 0, 2, 2);
     D_80109ED2_hey_batter_batter = 1;
-    D_80109EF8_hey_batter_batter[0] = func_80017790_main(object->model[0], 1, chr, func_80017BB8_main(chr, 0xAA));
-    D_80109EF8_hey_batter_batter[1] = func_80017AD8_main(func_80017BB8_main(chr, 0xA4));
-    D_80109EF8_hey_batter_batter[2] = func_80017AD8_main(func_80017BB8_main(chr, 0xA5));
-    D_80109EF8_hey_batter_batter[3] = func_80017AD8_main(func_80017BB8_main(chr, 0xA6));
-    func_8001C514_main(object->model[0]);
-    func_80017954_main(object->model[0], 1, GwPlayer[D_80109ED0_hey_batter_batter].chr,
+    D_80109EF8_hey_batter_batter[0] = CharAnimCreate(object->model[0], 1, chr, CharMotionDataNumGet(chr, 0xAA));
+    D_80109EF8_hey_batter_batter[1] = Hu3DAnimDataRead(CharMotionDataNumGet(chr, 0xA4));
+    D_80109EF8_hey_batter_batter[2] = Hu3DAnimDataRead(CharMotionDataNumGet(chr, 0xA5));
+    D_80109EF8_hey_batter_batter[3] = Hu3DAnimDataRead(CharMotionDataNumGet(chr, 0xA6));
+    Hu3DModelDynamicFree(object->model[0]);
+    CharAnimSet(object->model[0], 1, GwPlayer[D_80109ED0_hey_batter_batter].chr,
                        D_80109EF8_hey_batter_batter[0]);
     object->func = func_80107464_hey_batter_batter;
 }
@@ -636,19 +636,19 @@ void func_80107464_hey_batter_batter(omObjData *object) {
                                    30, 2);
                 break;
             case 2:
-                func_8001C5B4_main(object->model[0], object->motion[2]);
-                func_80045ED0_main(D_800A178C_main[GwPlayer[D_80109ED0_hey_batter_batter].chr][0] | 0x35);
+                Hu3DMotionModelSet(object->model[0], object->motion[2]);
+                HuAudCharVoicePlay(D_800A178C_main[GwPlayer[D_80109ED0_hey_batter_batter].chr][0] | 0x35);
                 break;
             case 3:
-                func_8001C5B4_main(object->model[0], object->motion[3]);
-                func_80045ED0_main(D_800A178C_main[GwPlayer[D_80109ED0_hey_batter_batter].chr][0] | 0x38);
+                Hu3DMotionModelSet(object->model[0], object->motion[3]);
+                HuAudCharVoicePlay(D_800A178C_main[GwPlayer[D_80109ED0_hey_batter_batter].chr][0] | 0x38);
                 break;
             case 4:
                 Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[D_80109ED2_hey_batter_batter]].motId, 0,
                                    15, 0);
                 break;
             case 5:
-                func_8001C5B4_main(object->model[0], object->motion[4]);
+                Hu3DMotionModelSet(object->model[0], object->motion[4]);
                 Hu3DMotionTimeSet(object->model[0], D_800CCF58_main[Hu3DData[object->model[0]].motId].unk02);
                 Hu3DMotionSpeedSet(object->model[0], -0.9f);
                 break;
@@ -659,7 +659,7 @@ void func_80107464_hey_batter_batter(omObjData *object) {
                 Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[5]].motId, 0, 10, 2);
                 break;
             case 8:
-                func_8001C5B4_main(object->model[0], object->motion[6]);
+                Hu3DMotionModelSet(object->model[0], object->motion[6]);
                 break;
         }
         D_80109C88_hey_batter_batter = D_80109ED2_hey_batter_batter;
@@ -722,24 +722,24 @@ void func_801079D0_hey_batter_batter(omObjData *object) {
     void *data;
     s16 anim;
 
-    object->model[0] = func_8000B108_main(0xA00EE, 0x2A9);
-    object->model[1] = func_8000B108_main(0x5D0009, 0x2A9);
-    object->model[2] = func_8000B108_main(9, 0x6A9);
-    object->model[3] = func_8000B108_main(0x5D0004, 0x2A9);
-    object->model[4] = func_8000B108_main(9, 0x6A9);
+    object->model[0] = Hu3DModelRead(0xA00EE, 0x2A9);
+    object->model[1] = Hu3DModelRead(0x5D0009, 0x2A9);
+    object->model[2] = Hu3DModelRead(9, 0x6A9);
+    object->model[3] = Hu3DModelRead(0x5D0004, 0x2A9);
+    object->model[4] = Hu3DModelRead(9, 0x6A9);
     data = DataRead(0xA0100);
     anim = Hu3DAnimCreate(Hu3DData[object->model[0]].hmf, data, 0, "c162n_0_DEF");
     DataClose(data);
     Hu3DModelRemakeStatic(object->model[0]);
     Hu3DAnimBankSet(anim, 0);
-    func_80032FC0_main(anim, 1, 0);
-    func_8000B460_main(object, 0, 0xA00F7);
-    func_8000B460_main(object, 1, 0xA00F6);
-    func_8000B460_main(object, 2, 0xA00F2);
-    func_8000B460_main(object, 3, 0xA00F8);
-    func_8000B460_main(object, 4, 0xA00F9);
-    func_8000B460_main(object, 5, 0xA00FA);
-    func_8001C258_main(object->model[1], 0x4000, 0x4000);
+    Hu3DAnimAttrSet(anim, 1, 0);
+    omObjMotionRead(object, 0, 0xA00F7);
+    omObjMotionRead(object, 1, 0xA00F6);
+    omObjMotionRead(object, 2, 0xA00F2);
+    omObjMotionRead(object, 3, 0xA00F8);
+    omObjMotionRead(object, 4, 0xA00F9);
+    omObjMotionRead(object, 5, 0xA00FA);
+    Hu3DModelAttrSet(object->model[1], 0x4000, 0x4000);
     Hu3DModelHookSet(object->model[1], object->model[0], "c162_000-te2");
     Hu3DModelCameraSet(object->model[1], 1);
     omSetTra(object, 0.0f, 5.5f, -1000.0f);
@@ -959,25 +959,25 @@ void func_80108B48_hey_batter_batter(omObjData *object) {
     s16 model;
 
     for (i = 0; i < 5; i++) {
-        model = func_8000B108_main(0x5D0006, 0x6A9);
+        model = Hu3DModelRead(0x5D0006, 0x6A9);
         base = &D_80109F18_hey_batter_batter[i];
         base->base = model;
         Hu3DModelPosSet(base->base, D_80109D04_hey_batter_batter[i].x,
                         D_80109D04_hey_batter_batter[i].y + 1.0f, D_80109D04_hey_batter_batter[i].z);
-        base->shadow = func_8000B108_main(0x5D0007, 0x2A9);
+        base->shadow = Hu3DModelRead(0x5D0007, 0x2A9);
         Hu3DModelPosSet(base->shadow, D_80109D04_hey_batter_batter[i].x,
                         D_80109D04_hey_batter_batter[i].y, D_80109D04_hey_batter_batter[i].z);
         sprite = SprModelRead(0x21002C, 0xA0, 0x10);
         model = D_80109F2C_hey_batter_batter[i] = D_800CBB60_main[sprite].modelId;
-        func_8001473C_main(sprite, D_800A11D0_main[i]);
+        Hu3DSprModelPointSet(sprite, D_800A11D0_main[i]);
         Hu3DModelPosSet(model, D_80109D04_hey_batter_batter[i].x, D_80109D04_hey_batter_batter[i].y + 250.0f,
                         D_80109D04_hey_batter_batter[i].z + 2.0f);
         Hu3DModelScaleSet(model, 6.0f, 6.0f, 6.0f);
     }
-    object->model[2] = func_8000B108_main(9, 0x6A9);
+    object->model[2] = Hu3DModelRead(9, 0x6A9);
     Hu3DModelCameraSet(object->model[2], 0);
-    object->model[3] = func_8000CED8_main(0xB0004, 0x6A9);
-    func_800138EC_main(object->model[3], 1, 0);
+    object->model[3] = EffectCreate(0xB0004, 0x6A9);
+    Hu3DParticleAttrSet(object->model[3], 1, 0);
     D_80109EEE_hey_batter_batter = 0;
     object->func = func_80108D90_hey_batter_batter;
 }
@@ -1005,10 +1005,10 @@ void func_80108D90_hey_batter_batter(omObjData *object) {
         Hu3DModelScaleSet(object->model[1], 6.0f, 6.0f, 6.0f);
         Hu3DModelCameraSet(object->model[2], 1);
         Hu3DModelPosSet(object->model[2], Hu3DData[object->model[1]].pos.x, 10.0f, Hu3DData[object->model[1]].pos.z);
-        func_800138EC_main(object->model[3], 1, 1);
-        func_8000CD00_main(object->model[3], 5.0f, 20.0f, 10.0f);
-        func_8000D018_main(object->model[3], 100.0f);
-        func_8000CFA4_main(object->model[3], Hu3DData[object->model[1]].pos.x, Hu3DData[object->model[1]].pos.y,
+        Hu3DParticleAttrSet(object->model[3], 1, 1);
+        EffectParamSet(object->model[3], 5.0f, 20.0f, 10.0f);
+        EffectRangeSet(object->model[3], 100.0f);
+        EffectPosSet(object->model[3], Hu3DData[object->model[1]].pos.x, Hu3DData[object->model[1]].pos.y,
                            Hu3DData[object->model[1]].pos.z);
         omVibrate(D_80109ED0_hey_batter_batter, 2, 2, 20);
         D_80109EEE_hey_batter_batter = 2;
@@ -1061,7 +1061,7 @@ void func_80108D90_hey_batter_batter(omObjData *object) {
                 break;
         }
         Hu3DModelPosSet(object->model[2], Hu3DData[object->model[1]].pos.x, 10.0f, Hu3DData[object->model[1]].pos.z);
-        func_8000CFA4_main(object->model[3], Hu3DData[object->model[1]].pos.x, Hu3DData[object->model[1]].pos.y,
+        EffectPosSet(object->model[3], Hu3DData[object->model[1]].pos.x, Hu3DData[object->model[1]].pos.y,
                            Hu3DData[object->model[1]].pos.z);
     }
 }
@@ -1069,13 +1069,13 @@ void func_80108D90_hey_batter_batter(omObjData *object) {
 void func_8010951C_hey_batter_batter(omObjData *object) {
     s16 i;
 
-    object->model[0] = func_8000B108_main(0xB0006, 0x6A9);
+    object->model[0] = Hu3DModelRead(0xB0006, 0x6A9);
     Hu3DModelCameraSet(object->model[0], 0);
     for (i = 1; i < 6; i++) {
-        object->model[i] = func_8000B108_main(0x5D0008, 0x6A9);
+        object->model[i] = Hu3DModelRead(0x5D0008, 0x6A9);
         Hu3DModelCameraSet(object->model[i], 0);
     }
-    object->model[6] = func_8000B108_main(0xB0006, 0x6A9);
+    object->model[6] = Hu3DModelRead(0xB0006, 0x6A9);
     Hu3DModelCameraSet(object->model[6], 0);
     D_80109EE6_hey_batter_batter[0] = func_80109B24_hey_batter_batter(0xB0006);
     D_80109EE6_hey_batter_batter[1] = func_80109B24_hey_batter_batter(0x5D0008);
@@ -1094,13 +1094,13 @@ void func_80109630_hey_batter_batter(omObjData *object) {
                 omSetTra(object, D_80109BF4_hey_batter_batter[i].x, D_80109BF4_hey_batter_batter[i].y,
                          D_80109BF4_hey_batter_batter[i].z);
                 omSetSca(object, 3.0f, 3.0f, 3.0f);
-                func_8001C5B4_main(object->model[0], D_80109EE6_hey_batter_batter[0]);
+                Hu3DMotionModelSet(object->model[0], D_80109EE6_hey_batter_batter[0]);
                 Hu3DModelCameraSet(object->model[0], 1);
             } else {
                 Hu3DModelPosSet(object->model[i + 1], D_80109BF4_hey_batter_batter[i].x,
                                 D_80109BF4_hey_batter_batter[i].y, D_80109BF4_hey_batter_batter[i].z);
                 Hu3DModelScaleSet(object->model[i + 1], 3.0f, 3.0f, 3.0f);
-                func_8001C5B4_main(object->model[i + 1], D_80109EE6_hey_batter_batter[1]);
+                Hu3DMotionModelSet(object->model[i + 1], D_80109EE6_hey_batter_batter[1]);
                 Hu3DModelCameraSet(object->model[i + 1], 1);
             }
         }
@@ -1115,7 +1115,7 @@ void func_80109630_hey_batter_batter(omObjData *object) {
     if (D_80109EEA_hey_batter_batter[1] == 1) {
         Hu3DModelPosSet(object->model[6], -170.0f, 100.0f, 0.0f);
         Hu3DModelScaleSet(object->model[6], 1.0f, 1.0f, 1.0f);
-        func_8001C5B4_main(object->model[6], D_80109EE6_hey_batter_batter[0]);
+        Hu3DMotionModelSet(object->model[6], D_80109EE6_hey_batter_batter[0]);
         Hu3DModelCameraSet(object->model[6], 1);
         D_80109EEA_hey_batter_batter[1] = 0;
     }
@@ -1148,7 +1148,7 @@ s16 func_80109A78_hey_batter_batter(s32 spriteId, u16 attr, u16 priority, s16 x,
 }
 
 s16 func_80109B24_hey_batter_batter(s32 arg0) {
-    s16 temp = func_8000B13C_main(arg0);
+    s16 temp = Hu3DMotionModelRead(arg0);
 
     if (temp < 0) {
         temp = -1;

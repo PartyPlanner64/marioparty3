@@ -162,16 +162,16 @@ void func_801059A0_puddle_paddle(void) {
 void func_801059BC_puddle_paddle(void) {
     u8 camera;
 
-    func_8001FE20_main(0x32);
-    func_800142A0_main(0x30);
+    MapCollInit(0x32);
+    Hu3DSprModelInit(0x30);
     omInitObjMan(0x32, 0);
-    func_8004A208_main();
+    omGameSysInit();
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     Hu3DGLightColorSet(0, 0xFF, 0xFF, 0xFF);
     Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
     Hu3DGLightDirSet(1, -56.0f, 50.0f, 56.0f);
-    func_8000B5F0_main(1);
-    camera = func_8000B638_main();
+    CamSetupInit(1);
+    camera = CamSetupMapCullAdd();
     ScissorSet(camera, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(camera, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 30.0f, 80.0f, 5000.0f);
@@ -182,9 +182,9 @@ void func_801059BC_puddle_paddle(void) {
     func_80105B94_puddle_paddle();
     omAddObj(0x3E8, 0, 0, -1, func_80105DBC_puddle_paddle);
     omAddObj(0x7D0, 0, 0, -1, func_80105C3C_puddle_paddle);
-    func_80045010_main(D_80111370_puddle_paddle, 1);
-    func_80045010_main(D_8011137C_puddle_paddle, 1);
-    func_80045010_main(D_8011138C_puddle_paddle, 1);
+    GMesFontMesCreate(D_80111370_puddle_paddle, 1);
+    GMesFontMesCreate(D_8011137C_puddle_paddle, 1);
+    GMesFontMesCreate(D_8011138C_puddle_paddle, 1);
 }
 
 void func_80105B94_puddle_paddle(void) {
@@ -282,19 +282,19 @@ void func_80106064_puddle_paddle(omObjData *object) {
 
     object->work[1] = 2;
     slot = func_8010B8B4_puddle_paddle(object, (s8)object->work[1], 6, 6)->unk_00;
-    slot->unk_04[0] = func_8000B108_main(0xA0117, 0x2D9);
-    slot->unk_04[1] = func_8000B108_main(0x320000, 0x2D9);
-    slot->unk_04[2] = func_8000B108_main(9, 0x2D9);
-    func_8000B460_main(object, 0, 0xA0118);
-    func_8000B460_main(object, 1, 0xA0119);
-    func_8001C5B4_main(slot->unk_04[0], object->motion[0]);
-    func_8001C814_main(slot->unk_04[0], 2, 2);
+    slot->unk_04[0] = Hu3DModelRead(0xA0117, 0x2D9);
+    slot->unk_04[1] = Hu3DModelRead(0x320000, 0x2D9);
+    slot->unk_04[2] = Hu3DModelRead(9, 0x2D9);
+    omObjMotionRead(object, 0, 0xA0118);
+    omObjMotionRead(object, 1, 0xA0119);
+    Hu3DMotionModelSet(slot->unk_04[0], object->motion[0]);
+    Hu3DMotionAttrSet(slot->unk_04[0], 2, 2);
     Hu3DModelScaleSet(slot->unk_04[1], 0.8f, 0.8f, 0.8f);
     Hu3DModelScaleSet(slot->unk_04[0], 1.2f, 1.2f, 1.2f);
     Hu3DModelPosSet(slot->unk_04[0], 0.0f, 325.0f, 0.0f);
     Hu3DModelScaleSet(slot->unk_04[2], 1.2f, 1.2f, 1.2f);
     Hu3DModelPosSet(slot->unk_04[2], 0.0f, 320.0f, 0.0f);
-    D_80111658_puddle_paddle->unk_3C = func_8000D658_main(0x6A9, 4);
+    D_80111658_puddle_paddle->unk_3C = EffectGroupStarCreate(0x6A9, 4);
 
     srcModel = 0;
     base = 0;
@@ -307,7 +307,7 @@ void func_80106064_puddle_paddle(omObjData *object) {
                 sprModel = srcModel = Hu3DSprModelCreate(data, 0x9D, 0);
                 DataClose(data);
             } else {
-                sprModel = func_80014618_main(srcModel, 0);
+                sprModel = Hu3DSprModelLink(srcModel, 0);
             }
             D_80111658_puddle_paddle->items[j].model = D_800CBB60_main[sprModel].modelId;
             Hu3DModelScaleSet(D_800CBB60_main[sprModel].modelId, 3.0f, 3.0f, 1.0f);
@@ -367,15 +367,15 @@ void func_80106958_puddle_paddle(omObjData *object) {
 }
 
 void func_80106988_puddle_paddle(omObjData *object) {
-    object->model[0] = func_8000B108_main(0x320001, 0x20099);
+    object->model[0] = Hu3DModelRead(0x320001, 0x20099);
     Hu3DModelPosSet(object->model[0], 0.0f, 200.0f, 0.0f);
-    func_8001C954_main(object->model[0]);
+    Hu3DModelVtxBufMake(object->model[0]);
     func_80110714_puddle_paddle(object);
     object->func = func_801069FC_puddle_paddle;
 }
 
 void func_801069FC_puddle_paddle(omObjData *object) {
-    func_8001E65C_main(object->model[0], sindf(D_80111220_puddle_paddle) * 15.0f, -D_80111224_puddle_paddle, 64, 64);
+    Hu3DModelTexScroll(object->model[0], sindf(D_80111220_puddle_paddle) * 15.0f, -D_80111224_puddle_paddle, 64, 64);
     if (omPauseChk() + D_800D6A90_main == 0) {
         D_80111220_puddle_paddle += 0.5f;
         if (D_80111220_puddle_paddle >= 360.0f) {
@@ -452,21 +452,21 @@ void func_80106CE4_puddle_paddle(omObjData *object) {
     modelFile = D_800A178C_main[player->chr][0];
     motionFile = D_800A1790_main[player->chr][0];
     func_800E1BA8_minigame(object, modelFile, motionFile, object->work[0], attr, attr);
-    object->model[9] = model = func_8000B108_main(handFiles[player->chr] | 0x320000, attr);
-    D_8011122C_puddle_paddle = func_8002C834_main(Hu3DData[object->model[0]].hmf, objNames[player->chr][0]);
+    object->model[9] = model = Hu3DModelRead(handFiles[player->chr] | 0x320000, attr);
+    D_8011122C_puddle_paddle = SearchObjectIndex(Hu3DData[object->model[0]].hmf, objNames[player->chr][0]);
     func_80106B6C_puddle_paddle(model, object->model[0], D_8011122C_puddle_paddle);
-    object->model[10] = model = func_8000B108_main(paddleFiles[player->chr] | 0x320000, attr);
-    D_8011122C_puddle_paddle = func_8002C834_main(Hu3DData[object->model[0]].hmf, objNames[player->chr][1]);
+    object->model[10] = model = Hu3DModelRead(paddleFiles[player->chr] | 0x320000, attr);
+    D_8011122C_puddle_paddle = SearchObjectIndex(Hu3DData[object->model[0]].hmf, objNames[player->chr][1]);
     func_80106B6C_puddle_paddle(model, object->model[0], D_8011122C_puddle_paddle);
     object->trans.z = 200.0f;
-    func_800E5A00_minigame(object, 0, func_80017BB8_main(player->chr, 0x98), 0, 0);
-    func_800E5A00_minigame(object, 2, func_80017BB8_main(player->chr, 2), 1, 0);
-    func_800E5A00_minigame(object, 13, func_80017BB8_main(player->chr, 0x9E), 1, 0);
-    func_800E5A00_minigame(object, 14, func_80017BB8_main(player->chr, 0x37), 1, 999);
-    func_800E5A00_minigame(object, 38, func_80017BB8_main(player->chr, 0x92), 0, 0);
-    func_800E5A00_minigame(object, 40, func_80017BB8_main(player->chr, 0x93), 0, 0);
-    func_800E5A00_minigame(object, 39, func_80017BB8_main(player->chr, 0x94), 0, 0);
-    func_800E5A00_minigame(object, 41, func_80017BB8_main(player->chr, 0x95), 0, 0);
+    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(player->chr, 0x98), 0, 0);
+    func_800E5A00_minigame(object, 2, CharMotionDataNumGet(player->chr, 2), 1, 0);
+    func_800E5A00_minigame(object, 13, CharMotionDataNumGet(player->chr, 0x9E), 1, 0);
+    func_800E5A00_minigame(object, 14, CharMotionDataNumGet(player->chr, 0x37), 1, 999);
+    func_800E5A00_minigame(object, 38, CharMotionDataNumGet(player->chr, 0x92), 0, 0);
+    func_800E5A00_minigame(object, 40, CharMotionDataNumGet(player->chr, 0x93), 0, 0);
+    func_800E5A00_minigame(object, 39, CharMotionDataNumGet(player->chr, 0x94), 0, 0);
+    func_800E5A00_minigame(object, 41, CharMotionDataNumGet(player->chr, 0x95), 0, 0);
     func_80109804_puddle_paddle(player, 0, 1);
     func_800E5690_minigame(object, 0);
     player->unk_0E = -1;
@@ -510,7 +510,7 @@ void func_801073E4_puddle_paddle(omObjData *object) {
     object->work[1] = 7;
     slot = func_8010B8B4_puddle_paddle(object, (s8)object->work[1], 2, 6)->unk_00;
     for (i = 0; i < 2; i++) {
-        slot->unk_04[i] = func_8000B108_main(0x320002, flags);
+        slot->unk_04[i] = Hu3DModelRead(0x320002, flags);
         Hu3DModelPosSet(slot->unk_04[i], positions.points[i].x, positions.points[i].y, positions.points[i].z);
     }
     func_8010BA04_puddle_paddle((s8)object->work[1], 0xFF, 0, func_8010A398_puddle_paddle, 0);
@@ -556,11 +556,11 @@ void func_80107638_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
             } else {
                 func_8010C11C_puddle_paddle(D_80111650_puddle_paddle[i].tensSprite);
             }
-            func_80054FF8_main(D_80111664_puddle_paddle[D_80111650_puddle_paddle[i].tensSprite].unk_01, 0, tens);
-            func_80054FF8_main(D_80111664_puddle_paddle[D_80111650_puddle_paddle[i].onesSprite].unk_01, 0, ones);
+            HuSprPatNoSet(D_80111664_puddle_paddle[D_80111650_puddle_paddle[i].tensSprite].unk_01, 0, tens);
+            HuSprPatNoSet(D_80111664_puddle_paddle[D_80111650_puddle_paddle[i].onesSprite].unk_01, 0, ones);
         } else {
-            func_80054FF8_main(D_80111664_puddle_paddle[D_80111650_puddle_paddle[i].tensSprite].unk_01, 0, 9);
-            func_80054FF8_main(D_80111664_puddle_paddle[D_80111650_puddle_paddle[i].onesSprite].unk_01, 0, 9);
+            HuSprPatNoSet(D_80111664_puddle_paddle[D_80111650_puddle_paddle[i].tensSprite].unk_01, 0, 9);
+            HuSprPatNoSet(D_80111664_puddle_paddle[D_80111650_puddle_paddle[i].onesSprite].unk_01, 0, 9);
         }
     }
 }
@@ -572,12 +572,12 @@ void func_8010788C_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
         handler->unk_04 = 1;
     }
     D_80111658_puddle_paddle->timer -= 1.0f;
-    func_8003F578_main((s16)((D_80111658_puddle_paddle->timer + 29.0f) * (1.0f / 30.0f)));
+    GMesTimerValueSet((s16)((D_80111658_puddle_paddle->timer + 29.0f) * (1.0f / 30.0f)));
     if (D_80111658_puddle_paddle->timer < 0.0f) {
         D_80111658_puddle_paddle->unk_00 = 4;
         HuAudSeqFadeOut(120);
         GMesCreate(16);
-        func_8003F5C0_main();
+        GMesTimerEnd();
         func_8010BA04_puddle_paddle((s8)slot->unk_00->work[1], 0, 0, func_80107B2C_puddle_paddle, 0);
         func_8010BAA8_puddle_paddle((s8)slot->unk_00->work[1], handler);
     }
@@ -629,7 +629,7 @@ void func_80107B2C_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
                 for (j = 0; j < 2; j++) {
                     if (D_80111654_puddle_paddle[D_80111650_puddle_paddle[i].players[j]].unk_56 != 0) {
                         func_80109804_puddle_paddle(&D_80111654_puddle_paddle[D_80111650_puddle_paddle[i].players[j]], 13, 1);
-                        func_8004AC98_main(GwPlayer[D_80111650_puddle_paddle[i].players[j]].chr + 0x290,
+                        HuAudPlayerFXPlay(GwPlayer[D_80111650_puddle_paddle[i].players[j]].chr + 0x290,
                                            D_80111650_puddle_paddle[i].players[j]);
                         D_80111654_puddle_paddle[D_80111650_puddle_paddle[i].players[j]].unk_58 = -1;
                         D_80111654_puddle_paddle[D_80111650_puddle_paddle[i].players[j]].unk_0E = -1;
@@ -730,7 +730,7 @@ void func_80108178_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
     }
     if (D_80111658_puddle_paddle->unk_40 == 0) {
         if (++handler->unk_1C[0] > handler->unk_1C[1]) {
-            func_8001C5B4_main(slot->unk_04[0], object->motion[1]);
+            Hu3DMotionModelSet(slot->unk_04[0], object->motion[1]);
             Hu3DMotionSpeedSet(slot->unk_04[0], 2.0f);
             Hu3DMotionTimeSet(object->model[0], 0.0f);
             D_80111658_puddle_paddle->unk_40 = 1;
@@ -739,7 +739,7 @@ void func_80108178_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
         }
         time = Hu3DData[object->model[0]].motTime;
         if (time >= D_800CCF58_main[Hu3DData[object->model[0]].motId].unk02) {
-            func_8001C5B4_main(slot->unk_04[0], object->motion[0]);
+            Hu3DMotionModelSet(slot->unk_04[0], object->motion[0]);
             Hu3DMotionSpeedSet(slot->unk_04[0], 1.0f);
         }
     }
@@ -887,15 +887,15 @@ void func_801087DC_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
                 break;
             case 4:
                 if (++item->timer < item->unk_1C) {
-                    func_8001C258_main(item->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    Hu3DModelAttrSet(item->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 } else {
                     item->timer = 0;
-                    func_8001C258_main(item->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                    Hu3DModelAttrSet(item->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 }
                 model->pos.y -= item->velocity.y;
                 if (model->pos.y < 0.0f) {
                     item->state = 0;
-                    func_8001C258_main(item->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    Hu3DModelAttrSet(item->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 }
                 break;
         }
@@ -915,7 +915,7 @@ void func_80108D10_puddle_paddle(void) {
         model = &Hu3DData[item->model];
         if (item->state == 5) {
             if (++item->timer >= 6) {
-                func_8001C258_main(item->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(item->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 item->state = 0;
             }
         } else {
@@ -963,7 +963,7 @@ void func_80108E2C_puddle_paddle(s16 index, s16 type, f32 angle, f32 pitch, s16 
     }
     dx = sindf(Hu3DData[model].rot.y) * 75.0f;
     dz = cosdf(Hu3DData[model].rot.y) * 75.0f;
-    func_8001C258_main(item->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(item->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DModelPosSet(item->model, Hu3DData[model].pos.x + dx, Hu3DData[model].pos.y + 50.0f, Hu3DData[model].pos.z + dz);
 }
 
@@ -1296,7 +1296,7 @@ void func_80109BD4_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
                 }
             }
             if (left | right) {
-                func_8004AC5C_main(0x379, team->players[j]);
+                _HuAudPlayerFXPlay(0x379, team->players[j]);
             }
         }
     }
@@ -1318,13 +1318,13 @@ void func_8010A224_puddle_paddle(void) {
                 continue;
             }
             if (++player->unk_10 < 3) {
-                func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             } else {
                 player->unk_10 = 0;
-                func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
             if (++player->unk_11 >= 21) {
-                func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 player->unk_04 &= ~0x10;
                 player->unk_11 = 0;
                 player->unk_10 = 0;
@@ -1522,10 +1522,10 @@ void func_8010ABCC_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
                 continue;
             }
             item->state = 0;
-            func_8001C258_main(item->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(item->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             switch (item->type) {
                 case 0:
-                    Hu3DModelScaleSet(func_8000D550_main(D_80111658_puddle_paddle->unk_3C, b.x, b.y, b.z), 2.0f, 2.0f, 2.0f);
+                    Hu3DModelScaleSet(EffectGroupEmit(D_80111658_puddle_paddle->unk_3C, b.x, b.y, b.z), 2.0f, 2.0f, 2.0f);
                     D_80111650_puddle_paddle[i].score += 1;
                     GwPlayer[D_80111650_puddle_paddle[i].players[0]].gameCoin += 1;
                     GwPlayer[D_80111650_puddle_paddle[i].players[1]].gameCoin += 1;
@@ -1534,7 +1534,7 @@ void func_8010ABCC_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
                     HuAudFXPlay(9);
                     break;
                 case 1:
-                    Hu3DModelScaleSet(func_8000D550_main(D_80111658_puddle_paddle->unk_3C, b.x, b.y, b.z), 2.0f, 2.0f, 2.0f);
+                    Hu3DModelScaleSet(EffectGroupEmit(D_80111658_puddle_paddle->unk_3C, b.x, b.y, b.z), 2.0f, 2.0f, 2.0f);
                     D_80111650_puddle_paddle[i].score += 5;
                     GwPlayer[D_80111650_puddle_paddle[i].players[0]].gameCoin += 5;
                     GwPlayer[D_80111650_puddle_paddle[i].players[1]].gameCoin += 5;
@@ -1550,7 +1550,7 @@ void func_8010ABCC_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
                         omVibrate(D_80111650_puddle_paddle[i].players[k], 20, 0, 20);
                         D_80111654_puddle_paddle[D_80111650_puddle_paddle[i].players[k]].unk_04 |= 0x10;
                         func_80109804_puddle_paddle(&D_80111654_puddle_paddle[D_80111650_puddle_paddle[i].players[k]], 0x29, 1);
-                        func_8004AC5C_main(GwPlayer[D_80111650_puddle_paddle[i].players[k]].chr + 0x95, D_80111650_puddle_paddle[i].players[k]);
+                        _HuAudPlayerFXPlay(GwPlayer[D_80111650_puddle_paddle[i].players[k]].chr + 0x95, D_80111650_puddle_paddle[i].players[k]);
                         D_80111650_puddle_paddle[i].unk_50 = models[i]->pos.x;
                         D_80111650_puddle_paddle[i].unk_54 = models[i]->pos.z;
                     }

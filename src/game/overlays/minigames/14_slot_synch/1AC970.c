@@ -432,17 +432,17 @@ void func_801059A0_slot_synch(void) {
     omObjData *obj;
     u8 camIndex;
 
-    func_8001FE20_main(50);
+    MapCollInit(50);
     omInitObjMan(50, 0);
-    func_8004A208_main();
-    func_800142A0_main(64);
+    omGameSysInit();
+    Hu3DSprModelInit(64);
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutView);
     omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     Hu3DGLightColorSet(0, 0xFF, 0xFF, 0xFF);
     Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
     Hu3DGLightDirSet(1, -56.0f, 50.0f, 56.0f);
-    func_8000B5F0_main(1);
-    camIndex = func_8000B638_main();
+    CamSetupInit(1);
+    camIndex = CamSetupMapCullAdd();
     ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 30.0f, 80.0f, 4000.0f);
@@ -501,10 +501,10 @@ void func_80105C08_slot_synch(omObjData *object) {
             break;
         case 2:
             D_8010DF50_slot_synch--;
-            func_8003F578_main((D_8010DF50_slot_synch + 29) / 30);
+            GMesTimerValueSet((D_8010DF50_slot_synch + 29) / 30);
             if (D_8010DF50_slot_synch <= 0) {
                 HuAudFXAllStop();
-                func_8003F5C0_main();
+                GMesTimerEnd();
                 GMesCreate(0x10);
                 MgFlowStatSet(MG_STATE_FINISH);
                 HuAudSeqFadeOut(120);
@@ -560,7 +560,7 @@ void func_80105C08_slot_synch(omObjData *object) {
             if (D_8010DF4C_slot_synch >= 15) {
                 WipeCreateOut(WIPE_TYPE_NORMAL, 16);
                 HuAudSeqFadeOut(16);
-                func_8004AB0C_main(16);
+                HuAudFXAllFadeOut(16);
                 D_8010DF4C_slot_synch = 0;
                 D_8010DF54_slot_synch++;
             }
@@ -591,7 +591,7 @@ void func_801060A4_slot_synch(omObjData *object) {
         D_8010D8B0_slot_synch = 16;
         WipeCreateOut(WIPE_TYPE_NORMAL, D_8010D8B0_slot_synch);
         HuAudSeqFadeOut(D_8010D8B0_slot_synch);
-        func_8004AB0C_main((s16)D_8010D8B0_slot_synch);
+        HuAudFXAllFadeOut((s16)D_8010D8B0_slot_synch);
     }
 }
 
@@ -722,21 +722,21 @@ void func_80106560_slot_synch(omObjData *object) {
     data = object->data;
     data->unk50 &= ~1;
     data->unkEC = NULL;
-    func_800E5A00_minigame(object, 0, func_80017BB8_main(chr, 0), 1, 0);
-    func_800E5A00_minigame(object, 1, func_80017BB8_main(chr, 1), 1, 0);
-    func_800E5A00_minigame(object, 6, func_80017BB8_main(chr, 4), 1, 19);
-    func_800E5A00_minigame(object, 21, func_80017BB8_main(chr, 0x1F), 0, 0);
-    func_800E5A00_minigame(object, 38, func_80017BB8_main(chr, 0x33), 1, 60);
-    func_800E5A00_minigame(object, 39, func_80017BB8_main(chr, 0x3A), 1, 60);
+    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(chr, 0), 1, 0);
+    func_800E5A00_minigame(object, 1, CharMotionDataNumGet(chr, 1), 1, 0);
+    func_800E5A00_minigame(object, 6, CharMotionDataNumGet(chr, 4), 1, 19);
+    func_800E5A00_minigame(object, 21, CharMotionDataNumGet(chr, 0x1F), 0, 0);
+    func_800E5A00_minigame(object, 38, CharMotionDataNumGet(chr, 0x33), 1, 60);
+    func_800E5A00_minigame(object, 39, CharMotionDataNumGet(chr, 0x3A), 1, 60);
     if (chr != 5) {
         index = rand8() & 1;
-        func_800E5A00_minigame(object, 13, func_80017BB8_main(chr, D_8010D90C_slot_synch[index]), 1, 120);
+        func_800E5A00_minigame(object, 13, CharMotionDataNumGet(chr, D_8010D90C_slot_synch[index]), 1, 120);
         player->unk_18 = D_8010D8EC_slot_synch[chr] | D_8010D90C_slot_synch[index];
     } else {
-        func_800E5A00_minigame(object, 13, func_80017BB8_main(chr, D_8010D90C_slot_synch[1]), 1, 120);
+        func_800E5A00_minigame(object, 13, CharMotionDataNumGet(chr, D_8010D90C_slot_synch[1]), 1, 120);
         player->unk_18 = D_8010D8EC_slot_synch[chr] | D_8010D90C_slot_synch[1];
     }
-    func_800E5A00_minigame(object, 14, func_80017BB8_main(chr, D_8010D90C_slot_synch[2]), 1, 120);
+    func_800E5A00_minigame(object, 14, CharMotionDataNumGet(chr, D_8010D90C_slot_synch[2]), 1, 120);
     func_800E5690_minigame(object, 0);
     func_800E149C_minigame(object, 0, 2);
     player->unk_04 = -1;
@@ -914,12 +914,12 @@ void func_80106E8C_slot_synch(omObjData *object) {
         switch (player->unk_04) {
             case 0:
                 func_800E5690_minigame(object, 13);
-                func_80017790_main(object->model[0], 2, player->unk_20, D_8010D870_slot_synch[player->unk_20]);
-                func_80045F1C_main(player->unk_18, -1, player->unk_1C);
+                CharAnimCreate(object->model[0], 2, player->unk_20, D_8010D870_slot_synch[player->unk_20]);
+                HuAudCharVoicePlayPlayer(player->unk_18, -1, player->unk_1C);
                 break;
             case 1:
                 func_800E5690_minigame(object, 14);
-                func_80017790_main(object->model[0], 2, player->unk_20, D_8010D890_slot_synch[player->unk_20]);
+                CharAnimCreate(object->model[0], 2, player->unk_20, D_8010D890_slot_synch[player->unk_20]);
                 break;
         }
         player->unk_04 = -1;
@@ -1088,28 +1088,28 @@ void func_80107794_slot_synch(omObjData *object) {
     HuSprGrpMemberSet(group, 0, D_8010DF8C_slot_synch[3], 0);
     HuSprPosSet(group, 0, 0, 0);
     HuSprAnimModeSet(group, 0, HUSPR_ANIM_MODE_STOP);
-    func_80054FF8_main(group, 0, 0);
+    HuSprPatNoSet(group, 0, 0);
     HuSprAttrSet(group, 0, 0x580C);
     HuSprPriSet(group, 0, D_8010DF66_slot_synch[0]);
     D_8010DF8C_slot_synch[8] = func_8010A2C4_slot_synch(0x350008);
     HuSprGrpMemberSet(group, 1, D_8010DF8C_slot_synch[8], 0);
     HuSprPosSet(group, 1, 0, 84);
     HuSprAnimModeSet(group, 1, HUSPR_ANIM_MODE_STOP);
-    func_80054FF8_main(group, 1, 0);
+    HuSprPatNoSet(group, 1, 0);
     HuSprAttrSet(group, 1, 0x580C);
     HuSprPriSet(group, 1, D_8010DF66_slot_synch[1]);
     D_8010DF8C_slot_synch[9] = func_8010A2C4_slot_synch(0x350009);
     HuSprGrpMemberSet(group, 2, D_8010DF8C_slot_synch[9], 0);
     HuSprPosSet(group, 2, 160, 0);
     HuSprAnimModeSet(group, 2, HUSPR_ANIM_MODE_STOP);
-    func_80054FF8_main(group, 2, 0);
+    HuSprPatNoSet(group, 2, 0);
     HuSprAttrSet(group, 2, 0x580C);
     HuSprPriSet(group, 2, D_8010DF66_slot_synch[2]);
     D_8010DF8C_slot_synch[0] = func_8010A2C4_slot_synch(0x35000A);
     HuSprGrpMemberSet(group, 3, D_8010DF8C_slot_synch[0], 0);
     HuSprPosSet(group, 3, 0, 138);
     HuSprAnimModeSet(group, 3, HUSPR_ANIM_MODE_STOP);
-    func_80054FF8_main(group, 3, 0);
+    HuSprPatNoSet(group, 3, 0);
     HuSprAttrSet(group, 3, 0x580C);
     HuSprPriSet(group, 3, D_8010DF66_slot_synch[3]);
     object->func = func_80107A80_slot_synch;
@@ -1168,7 +1168,7 @@ void func_80107BAC_slot_synch(void) {
         HuSprGrpMemberSet(group, sprite->unk_00, anims[sprite->unk_06], 0);
         func_8010A308_slot_synch(group, sprite->unk_00, sprite->unk_24, sprite->unk_28);
         HuSprAnimModeSet(group, sprite->unk_00, HUSPR_ANIM_MODE_STOP);
-        func_80054FF8_main(group, sprite->unk_00, 0);
+        HuSprPatNoSet(group, sprite->unk_00, 0);
         HuSprAttrSet(group, sprite->unk_00, 0x4000580C);
         HuSprPriSet(group, sprite->unk_00, sprite->unk_02);
     }
@@ -1197,7 +1197,7 @@ void func_80107D54_slot_synch(omObjData *object) {
                 } else if ((--sprite->unk_0A & 0x7F) == 0) {
                     sprite->unk_0A = 0x80;
                 }
-                func_80054FF8_main(D_8010DF70_slot_synch.unk_04, sprite->unk_00, (s16)(u8)(sprite->unk_0A & 2));
+                HuSprPatNoSet(D_8010DF70_slot_synch.unk_04, sprite->unk_00, (s16)(u8)(sprite->unk_0A & 2));
                 bounce = sindf(sprite->unk_04 * 25);
                 sprite->unk_24 = sprite->unk_14;
                 sprite->unk_28 = sprite->unk_18 - fabs(bounce) * sprite->unk_10;
@@ -1216,10 +1216,10 @@ void func_80107D54_slot_synch(omObjData *object) {
                     } else if ((--sprite->unk_0A & 0x7F) == 0) {
                         sprite->unk_0A = 0x80;
                     }
-                    func_80054FF8_main(D_8010DF70_slot_synch.unk_04, sprite->unk_00, (s16)(u8)(sprite->unk_0A & 2));
+                    HuSprPatNoSet(D_8010DF70_slot_synch.unk_04, sprite->unk_00, (s16)(u8)(sprite->unk_0A & 2));
                     sprite->unk_28 += 1.0f;
                 } else {
-                    func_80054FF8_main(D_8010DF70_slot_synch.unk_04, sprite->unk_00, 0);
+                    HuSprPatNoSet(D_8010DF70_slot_synch.unk_04, sprite->unk_00, 0);
                     sprite->unk_28 = sprite->unk_18;
                     sprite->unk_04 = 0;
                     sprite->unk_08 = 0;
@@ -1265,13 +1265,13 @@ void func_80108238_slot_synch(void) {
             if (model0 != -1) {
                 machine->unk_00 = Hu3DModelLink(model0);
             } else {
-                model0 = machine->unk_00 = func_8000B108_main(0x350000, 0xB9);
+                model0 = machine->unk_00 = Hu3DModelRead(0x350000, 0xB9);
             }
         } else {
             if (model1 != -1) {
                 machine->unk_00 = Hu3DModelLink(model1);
             } else {
-                model1 = machine->unk_00 = func_8000B108_main(0x350001, 0xB9);
+                model1 = machine->unk_00 = Hu3DModelRead(0x350001, 0xB9);
             }
         }
         machine->unk_02 = i;
@@ -1326,7 +1326,7 @@ void func_80108428_slot_synch(omObjData *object) {
                 }
                 break;
             case 4:
-                func_8001C258_main(machine->unk_00, 4, 4);
+                Hu3DModelAttrSet(machine->unk_00, 4, 4);
                 pos.x = machine->unk_24;
                 pos.y = machine->unk_28;
                 pos.z = machine->unk_2C;
@@ -1352,7 +1352,7 @@ void func_80108428_slot_synch(omObjData *object) {
             machine->unk_30 -= 360.0f;
         }
         if (func_80108848_slot_synch(machine->unk_02) != -1 && (machine->unk_0C == 1 || machine->unk_0C == 2)) {
-            func_8004AC98_main(0x38E, i);
+            HuAudPlayerFXPlay(0x38E, i);
             if (machine->unk_08 == -1) {
                 machine->unk_14 = 0.0f;
                 machine->unk_30 = D_8010D840_slot_synch[machine->unk_05];
@@ -1501,11 +1501,11 @@ void func_80108D3C_slot_synch(void) {
     reel = D_8010DF80_slot_synch = HuMemAllocTag(sizeof(UnkSlotReel) * 2, TAG_OVERLAY);
     memset(reel, 0, sizeof(UnkSlotReel) * 2);
     for (i = 0; i < 2; i++, reel++) {
-        reel->unk_00 = func_8000B108_main(0x350002, 0xB9);
+        reel->unk_00 = Hu3DModelRead(0x350002, 0xB9);
         Hu3DModelPosSet(reel->unk_00, D_8010D820_slot_synch[i].x, D_8010D820_slot_synch[i].y,
                         D_8010D820_slot_synch[i].z);
         Hu3DModelScaleSet(reel->unk_00, 1.0f, 0.85f, 1.0f);
-        func_8001C954_main(reel->unk_00);
+        Hu3DModelVtxBufMake(reel->unk_00);
         hmf = Hu3DData[reel->unk_00].hmf;
         reel->unk_02 = i;
         reel->unk_04 = 0;
@@ -1646,24 +1646,24 @@ void func_80109508_slot_synch(void) {
         spin->unk_30 = 0;
         if (i == 0) {
             for (j = 0; j < 4; j++) {
-                spin->unk_04[j] = func_8000B108_main(D_8010D9F0_slot_synch[j], 0x299);
-                func_8001C258_main(spin->unk_04[j], 4, 4);
+                spin->unk_04[j] = Hu3DModelRead(D_8010D9F0_slot_synch[j], 0x299);
+                Hu3DModelAttrSet(spin->unk_04[j], 4, 4);
                 spin->unk_0C[j][0] = Hu3DData[spin->unk_04[j]].motId;
                 spin->unk_0C[j][1] = func_8010C47C_slot_synch(D_8010DA00_slot_synch[j]);
                 spin->unk_0C[j][2] = func_8010C47C_slot_synch(D_8010DA10_slot_synch[j]);
             }
-            spin->unk_24 = func_8000B108_main(9, 0x99);
-            func_8001C258_main(spin->unk_24, 4, 4);
+            spin->unk_24 = Hu3DModelRead(9, 0x99);
+            Hu3DModelAttrSet(spin->unk_24, 4, 4);
         } else {
             for (j = 0; j < 4; j++) {
                 spin->unk_04[j] = Hu3DModelLink(D_8010DF88_slot_synch->unk_04[j]);
-                func_8001C258_main(spin->unk_04[j], 4, 4);
+                Hu3DModelAttrSet(spin->unk_04[j], 4, 4);
                 spin->unk_0C[j][0] = D_8010DF88_slot_synch->unk_0C[j][0];
                 spin->unk_0C[j][1] = D_8010DF88_slot_synch->unk_0C[j][1];
                 spin->unk_0C[j][2] = D_8010DF88_slot_synch->unk_0C[j][2];
             }
             spin->unk_24 = Hu3DModelLink(D_8010DF88_slot_synch->unk_24);
-            func_8001C258_main(spin->unk_24, 4, 4);
+            Hu3DModelAttrSet(spin->unk_24, 4, 4);
         }
     }
     D_8010DF84_slot_synch = omAddObj(0x19, 0, 6, -1, func_80109754_slot_synch);
@@ -1701,8 +1701,8 @@ void func_80109754_slot_synch(omObjData *object) {
                 spin->unk_34[1] += 20.0000002980232239;
                 spin->unk_34[6] = spin->unk_34[7] = spin->unk_34[8] = spin->unk_34[1] / 255.000007152557373;
                 if (spin->unk_34[1] >= 0.0f) {
-                    func_8001C258_main(modelId, 4, 0);
-                    func_8001C258_main(spin->unk_24, 4, 0);
+                    Hu3DModelAttrSet(modelId, 4, 0);
+                    Hu3DModelAttrSet(spin->unk_24, 4, 0);
                 }
                 if (spin->unk_03 == 0 && spin->unk_34[1] > 204.000008761882867) {
                     baseAngle = (f32)(u8)(rand8() % 100) * 0.01 * 360.0;
@@ -1720,7 +1720,7 @@ void func_80109754_slot_synch(omObjData *object) {
                     HuAudFXPlay(0x390);
                 }
                 if (spin->unk_34[1] >= 255.000007152557373) {
-                    func_8004AC98_main(D_8010DA30_slot_synch[spin->unk_26], spin->unk_01);
+                    HuAudPlayerFXPlay(D_8010DA30_slot_synch[spin->unk_26], spin->unk_01);
                     if (spin->unk_26 == 3) {
                         func_80106D0C_slot_synch(spin->unk_01, 4);
                     } else {
@@ -1805,7 +1805,7 @@ void func_80109754_slot_synch(omObjData *object) {
                 spin->unk_00 = 0;
                 spin->unk_28 = 0;
                 spin->unk_2A = 0;
-                func_8001C258_main(modelId, 4, 4);
+                Hu3DModelAttrSet(modelId, 4, 4);
                 break;
         }
         Hu3DModelPosSet(modelId, spin->unk_34[0], spin->unk_34[1], spin->unk_34[2]);
@@ -1849,7 +1849,7 @@ s16 func_80109FA4_slot_synch(s16 arg0, s16 arg1) {
         if (spin->unk_26 != 4) {
             spin->unk_28 = 0;
             modelId = spin->unk_04[spin->unk_26];
-            func_8001C258_main(modelId, 4, 4);
+            Hu3DModelAttrSet(modelId, 4, 4);
             Hu3DData[modelId].motId = spin->unk_0C[spin->unk_26][1];
             model = &Hu3DData[modelId];
             model->motTime = 0.0f;
@@ -1981,12 +1981,12 @@ void func_8010A480_slot_synch(s16 team, s16 chr0, s16 chr1, s16 arg3) {
             case 5:
                 HuSprPosSet(group, i, light->unk_02, light->unk_04);
                 HuSprScaleSet(group, i, 1.0f, 1.0f);
-                func_80055484_main(group, i, 0, 0, 255, 160);
+                HuSprColorTPLvlSet(group, i, 0, 0, 255, 160);
                 HuSprGrpMemberSet(group, i, D_8010DF8C_slot_synch[10], 0);
                 break;
         }
         HuSprAnimModeSet(group, i, HUSPR_ANIM_MODE_STOP);
-        func_80054FF8_main(group, i, 0);
+        HuSprPatNoSet(group, i, 0);
         HuSprAttrSet(group, i, 0x1000);
         HuSprPriSet(group, i, i - 16);
     }
@@ -2007,8 +2007,8 @@ void func_8010A7D0_slot_synch(omObjData *object) {
         if (digits[1] >= 10) {
             digits[1] = 9;
         }
-        func_80054FF8_main(light->unk_00, 0, (s16)digits[0]);
-        func_80054FF8_main(light->unk_00, 1, (s16)digits[1]);
+        HuSprPatNoSet(light->unk_00, 0, (s16)digits[0]);
+        HuSprPatNoSet(light->unk_00, 1, (s16)digits[1]);
         if (light->unk_0A != light->unk_0C && light->unk_0E == 0) {
             light->unk_0E = 15;
             if (light->unk_0A < light->unk_0C) {
@@ -2049,7 +2049,7 @@ void func_8010AAB8_slot_synch(void) {
     s32 i;
 
     D_8010DF8C_slot_synch[1] = func_8010A2C4_slot_synch(11);
-    sprite = func_80055194_main(D_8010DF8C_slot_synch[1]);
+    sprite = HuSprAnimDataGet(D_8010DF8C_slot_synch[1]);
     D_8010DF94_slot_synch = omAddObj(30, 0, 0, -1, func_8010AC14_slot_synch);
     D_8010DF98_slot_synch = effect = HuMemAllocTag(sizeof(UnkSlotEffect) * 8, TAG_OVERLAY);
     for (i = 0; i < 8; i++, effect++) {
@@ -2064,14 +2064,14 @@ void func_8010AAB8_slot_synch(void) {
         effect->pos.x = effect->pos.y = effect->pos.z = 0.0f;
         effect->vel.x = effect->vel.y = effect->vel.z = 0.0f;
         effect->scale.x = effect->scale.y = effect->scale.z = 0.0f;
-        func_8001C258_main(effect->model, 4, 4);
+        Hu3DModelAttrSet(effect->model, 4, 4);
         model = &Hu3DData[effect->model];
         model->motTime = 0.0f;
     }
 }
 
 void func_8010AC14_slot_synch(omObjData *object) {
-    HuSprAnimData *sprite = func_80055194_main(D_8010DF8C_slot_synch[1]);
+    HuSprAnimData *sprite = HuSprAnimDataGet(D_8010DF8C_slot_synch[1]);
     UnkSlotEffect *effect;
     HmfModel *model;
     s32 i;
@@ -2104,7 +2104,7 @@ void func_8010AC14_slot_synch(omObjData *object) {
 }
 
 s32 func_8010AD68_slot_synch(Vec *pos, Vec *vel, Vec *scale, f32 speed, u8 *color) {
-    HuSprAnimData *sprite = func_80055194_main(D_8010DF8C_slot_synch[1]);
+    HuSprAnimData *sprite = HuSprAnimDataGet(D_8010DF8C_slot_synch[1]);
     UnkSlotEffect *effect;
     HmfModel *model;
     s32 i;
@@ -2140,7 +2140,7 @@ s32 func_8010AD68_slot_synch(Vec *pos, Vec *vel, Vec *scale, f32 speed, u8 *colo
         effect->speed = speed;
         effect->frame = 0.0f;
         func_8010D2AC_slot_synch(effect->model, sprite, 0, effect->color.rgba);
-        func_8001C258_main(effect->model, 4, 0);
+        Hu3DModelAttrSet(effect->model, 4, 0);
         model->motTime = 0.0f;
         model->pos.x = effect->pos.x;
         model->pos.y = effect->pos.y;
@@ -2557,7 +2557,7 @@ s32 func_8010C4C0_slot_synch(HuSprAnimData *sprite, u8 *color) {
     gfx = HuMemAlloc(0x10000);
     header = gfx;
     buffer = (u8 *)gfx;
-    model = func_8001A894_main(0x8C1, gfx, 4);
+    model = Hu3DModelDLCreate(0x8C1, gfx, 4);
     data = Hu3DData[model].hmf;
     data->unk60->unk50 |= 0x1010000;
     gfx++;
@@ -2662,7 +2662,7 @@ s32 func_8010D0A8_slot_synch(HuSprAnimData *sprite, u16 model, u8 *color) {
     s32 newModel;
     s32 i;
 
-    newModel = func_8001A894_main(srcModel->attr, NULL, 4);
+    newModel = Hu3DModelDLCreate(srcModel->attr, NULL, 4);
     data = Hu3DData[newModel].hmf;
     data->unk60->unk50 = srcData->unk60->unk50;
     HuMemFree(data->unk3C);

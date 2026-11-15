@@ -58,7 +58,7 @@ extern Gfx *D_800CCF30_main;
 extern Vtx *D_800D59F4_main;
 
 
-s32 func_80057400_main(HuSprite *sprite) {
+s32 HuSprCullCheck(HuSprite *sprite) {
     HuSprAnimPat *cel;
     f32 sin;
     f32 cos;
@@ -89,11 +89,11 @@ s32 func_80057400_main(HuSprite *sprite) {
     D_800BD810_main[2][1] = -sin * right + cos * bottom + sprite->unk_08;
     D_800BD810_main[3][0] = cos * left + sin * bottom + sprite->unk_04;
     D_800BD810_main[3][1] = -sin * left + cos * bottom + sprite->unk_08;
-    return func_800575D8_main(D_800BD810_main);
+    return HuSprQuadClip(D_800BD810_main);
 }
 
 // Test the transformed sprite quad against the 320 by 240 viewport.
-s32 func_800575D8_main(f32 vertices[][2]) {
+s32 HuSprQuadClip(f32 vertices[][2]) {
     s32 i;
     s32 next;
     f32 dx;
@@ -192,7 +192,7 @@ void HuSprDisp(Gfx **gfx, HuSprite *sprite, s32 arg2) {
     if ((scaleX <= 0.0f) | (scaleY <= 0.0f)) {
         return;
     }
-    if (!func_80057400_main(sprite)) {
+    if (!HuSprCullCheck(sprite)) {
         return;
     }
     gDPSetScissor(gdl++, G_SC_NON_INTERLACE, sprite->scissorX, sprite->scissorY, sprite->scissorX2, sprite->scissorY2);
@@ -395,7 +395,7 @@ void HuSprDisp(Gfx **gfx, HuSprite *sprite, s32 arg2) {
         transform[0][2] = transform[0][3] = transform[1][2] = transform[1][3] = transform[2][0] =
             transform[2][1] = transform[2][3] = transform[3][2] = 0.0f;
         transform[2][2] = transform[3][3] = 1.0f;
-        func_8003521C_main(transform, sprite->unk_04 - 160.0f, 120.0f - sprite->unk_08, sprite->unk_20);
+        HuMtx2DRotTrans(transform, sprite->unk_04 - 160.0f, 120.0f - sprite->unk_08, sprite->unk_20);
         mtxScaleCat(transform, scaleX, scaleY, 1.0f);
         mtxTransCat(transform, originX, originY, 0.0f);
         func_800898F0_main(transform, &sprite->unk_140[D_800D2008_main]);
@@ -404,10 +404,10 @@ void HuSprDisp(Gfx **gfx, HuSprite *sprite, s32 arg2) {
     if (sprite->dispAttr & 0x8000000) {
         if (sprite->dispAttr & 0x10000000) {
             if (D_800BD850_main) {
-                cached = func_800589F4_main(D_800CCF30_main, sprite, sprite->unk_134[sprite->unk_120],
+                cached = HuSprDispTile(D_800CCF30_main, sprite, sprite->unk_134[sprite->unk_120],
                                             &sprite->unk_140[D_800D2008_main], arg2);
             } else {
-                cached = func_800589F4_main(D_800CCF30_main, sprite, NULL, NULL, arg2);
+                cached = HuSprDispTile(D_800CCF30_main, sprite, NULL, NULL, arg2);
             }
             gSPEndDisplayList(cached++);
             size = (u8 *)cached - (u8 *)D_800CCF30_main;
@@ -424,20 +424,20 @@ void HuSprDisp(Gfx **gfx, HuSprite *sprite, s32 arg2) {
     } else {
         if (D_800BD850_main) {
             vertices = D_800D59F4_main;
-            gdl = func_800589F4_main(gdl, sprite, vertices, &sprite->unk_140[D_800D2008_main], arg2);
+            gdl = HuSprDispTile(gdl, sprite, vertices, &sprite->unk_140[D_800D2008_main], arg2);
             if (!(sprite->dispAttr & 0x2000)) {
                 D_800D59F4_main = vertices + (D_800BD840_main + 2) * 2;
             } else {
                 D_800D59F4_main = vertices + (D_800BD840_main + 2) * 4;
             }
         } else {
-            gdl = func_800589F4_main(gdl, sprite, NULL, NULL, arg2);
+            gdl = HuSprDispTile(gdl, sprite, NULL, NULL, arg2);
         }
     }
     *gfx = gdl;
 }
 
-Gfx *func_800589F4_main(Gfx *gfx, HuSprite *sprite, Vtx *vertices, Mtx *matrix, s32 arg4) {
+Gfx *HuSprDispTile(Gfx *gfx, HuSprite *sprite, Vtx *vertices, Mtx *matrix, s32 arg4) {
     HuSprAnimPat *cel;
     f32 texT = 0.0f;
     f32 texS = 0.0f;
@@ -622,7 +622,7 @@ Gfx *func_800589F4_main(Gfx *gfx, HuSprite *sprite, Vtx *vertices, Mtx *matrix, 
             height = D_800BD844_main;
         }
         remaining -= D_800BD844_main;
-        func_8005988C_main(&gfx, sprite, height, 0, strip * D_800BD844_main,
+        HuSprTileLoad(&gfx, sprite, height, 0, strip * D_800BD844_main,
                            cel->sizeX - 1, strip * D_800BD844_main + height - 1, cms, cmt, masks, maskt);
         if (D_800BD850_main) {
             gSPVertex(gfx++, &vertexBase[strip * 2], 4, 0);
@@ -645,7 +645,7 @@ Gfx *func_800589F4_main(Gfx *gfx, HuSprite *sprite, Vtx *vertices, Mtx *matrix, 
     return gfx;
 }
 
-void func_8005988C_main(Gfx **gfx, HuSprite *sprite, u16 height, u16 uls, u16 ult,
+void HuSprTileLoad(Gfx **gfx, HuSprite *sprite, u16 height, u16 uls, u16 ult,
                         u16 lrs, u16 lrt, u16 cms, u16 cmt, u16 masks, u16 maskt) {
     HuSprAnimPat *cel;
     Gfx *gdl;
@@ -659,25 +659,25 @@ void func_8005988C_main(Gfx **gfx, HuSprite *sprite, u16 height, u16 uls, u16 ul
                                   0, cms, cmt, masks, maskt, 0, 0);
             break;
         case 1:
-            func_80034998_main(&gdl, (void *)0x02000000, D_800BD830_main, cel->sizeX,
+            HuLoadTextureBlock_4b(&gdl, (void *)0x02000000, D_800BD830_main, cel->sizeX,
                                height, uls, ult, lrs, lrt, 0, cms, cmt, masks, maskt, 0, 0);
             break;
         case 2:
-            func_800341D0_main(&gdl, (u16 *)0x02000000, D_800BD830_main, D_800BD834_main,
+            HuLoadTextureTile(&gdl, (u16 *)0x02000000, D_800BD830_main, D_800BD834_main,
                                cel->sizeX, cel->sizeY, uls, ult, lrs, lrt, 0, cms, cmt, masks, maskt, 0, 0);
             break;
         case 3:
-            func_8003465C_main(&gdl, (void *)0x02000000, D_800BD830_main, D_800BD834_main,
+            HuLoadTextureBlock(&gdl, (void *)0x02000000, D_800BD830_main, D_800BD834_main,
                                cel->sizeX, height, uls, ult, lrs, lrt, 0, cms, cmt, masks, maskt, 0, 0);
             break;
     }
     if (sprite->dispAttr & 0x2000) {
-        func_80059CDC_main(&gdl, sprite, height, uls, ult, lrs, lrt, cms, cmt, masks, maskt);
+        HuSprTileLoad_4b(&gdl, sprite, height, uls, ult, lrs, lrt, cms, cmt, masks, maskt);
     }
     *gfx = gdl;
 }
 
-void func_80059CDC_main(Gfx **gfx, HuSprite *sprite, u16 height, u16 uls, u16 ult,
+void HuSprTileLoad_4b(Gfx **gfx, HuSprite *sprite, u16 height, u16 uls, u16 ult,
                         u16 lrs, u16 lrt, u16 cms, u16 cmt, u16 masks, u16 maskt) {
     HuSprAnimPat *cel;
     Gfx *gdl;
@@ -691,15 +691,15 @@ void func_80059CDC_main(Gfx **gfx, HuSprite *sprite, u16 height, u16 uls, u16 ul
                                 0, cms, cmt, masks, maskt, 0, 0);
             break;
         case 1:
-            func_80034F70_main(&gdl, (void *)0x02000000, D_800BD830_main, cel->sizeX,
+            HuLoadMultiBlock_4b(&gdl, (void *)0x02000000, D_800BD830_main, cel->sizeX,
                                height, uls, ult, lrs, lrt, 0, cms, cmt, masks, maskt, 0, 0, 1, D_800A1EB0_main);
             break;
         case 2:
-            func_800343FC_main(&gdl, (void *)0x02000000, D_800BD830_main, D_800BD834_main,
+            HuLoadMultiTile(&gdl, (void *)0x02000000, D_800BD830_main, D_800BD834_main,
                                cel->sizeX, cel->sizeY, uls, ult, lrs, lrt, 0, cms, cmt, masks, maskt, 0, 0, 1, D_800A1EB0_main);
             break;
         case 3:
-            func_80034C08_main(&gdl, (void *)0x02000000, D_800BD830_main, D_800BD834_main,
+            HuLoadMultiBlock(&gdl, (void *)0x02000000, D_800BD830_main, D_800BD834_main,
                                cel->sizeX, height, uls, ult, lrs, lrt, 0, cms, cmt, masks, maskt, 0, 0, 1, D_800A1EB0_main);
             break;
     }

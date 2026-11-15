@@ -123,7 +123,7 @@ void _n_handleEvent(N_ALSndpEvent *event) {
             n_alSynStartVoice(voice, snd->wavetable);
             state->state = AL_PLAYING;
 
-            func_80066400_main(voice, pan);
+            n_alSynSetPan(voice, pan);
             n_alSynSetVol(voice, vol, delta);
             n_alSynSetPitch(voice, pitch);
             n_alSynSetFXMix(voice, state->fxMix);
@@ -162,7 +162,7 @@ void _n_handleEvent(N_ALSndpEvent *event) {
                 tmp = state->pan - AL_PAN_CENTER + snd->samplePan;
                 tmp = MAX(tmp, AL_PAN_LEFT);
                 pan = (ALPan)MIN(tmp, AL_PAN_RIGHT);
-                func_80066400_main(&state->voice, pan);
+                n_alSynSetPan(&state->voice, pan);
             }
             break;
 

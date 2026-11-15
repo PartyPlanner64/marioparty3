@@ -207,7 +207,7 @@ s16 m254_SetSprite(u16 prio, s32 dir, s32 file, u16 arg3, s32 attr) {
             HuSprAttrSet(sprite->groupId, 0, attr);
             HuSprAnimModeSet(sprite->groupId, 0, arg3);
             HuSprPriSet(sprite->groupId, 0, prio);
-            func_80054FF8_main(sprite->groupId, 0, 0);
+            HuSprPatNoSet(sprite->groupId, 0, 0);
             HuSprSpeedSet(sprite->groupId, 0, 1.0f);
             HuSprScaleSet(sprite->groupId, 0, 1.0f, 1.0f);
             HuSprPosSet(sprite->groupId, 0, 100, 100);
@@ -229,7 +229,7 @@ void m254_SetSpriteDispOn(s16 spriteId, s32 posX, s32 posY) {
     SpriteData *sprite = &m254_sprites[spriteId];
 
     if (sprite->state != SPRITE_STATE_NOTSET) {
-        func_80054FF8_main(sprite->groupId, 0, 0);
+        HuSprPatNoSet(sprite->groupId, 0, 0);
         HuSprDispOn(sprite->groupId, 0);
         HuSprPosSet(sprite->groupId, 0, posX, posY);
         sprite->state = SPRITE_STATE_VISIBLE;
@@ -255,7 +255,7 @@ void m254_UpdateSprites(void) {
             case SPRITE_STATE_VISIBLE:
                 if (HuSprGet(sprite->groupId, 0)->patNo + 1 >= sprite->unk04) {
                     HuSprDispOff(sprite->groupId, 0);
-                    func_80054FF8_main(sprite->groupId, 0, 0);
+                    HuSprPatNoSet(sprite->groupId, 0, 0);
                 }
                 break;
         }
@@ -270,8 +270,8 @@ s32 m254_SetAnimModel(s32 dir, s32 file, f32 freq, s32 attr, s32 arg4) {
     animModel = m254_animModels;
     for (i = 0; i < ANIMMDL_MAX; i++, animModel++) {
         if (!animModel->set) {
-            animModel->modelId = func_8000B108_main((dir << 16) | file, arg4);
-            func_8001C258_main(animModel->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            animModel->modelId = Hu3DModelRead((dir << 16) | file, arg4);
+            Hu3DModelAttrSet(animModel->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             hmfModel = &Hu3DData[animModel->modelId];
             hmfModel->motTime = 0.0f;
             hmfModel->motSpeed = 0.0f;
@@ -305,7 +305,7 @@ s32 m254_SetAnimModelDispOn(s16 animModelId, f32 posX, f32 posY, f32 posZ, f32 r
         Hu3DModelRotSet(animModel->modelId, rotX, rotY, rotZ);
         Hu3DModelScaleSet(animModel->modelId, scale, scale, scale);
         if (animStart == 0.0f) {
-            func_8001C258_main(animModel->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(animModel->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             animModel->state = ANIMMDL_STATE_ANIM;
             animModel->animStart = 0.0f;
             animModel->animTimer = 0.0f;
@@ -339,7 +339,7 @@ void m254_UpdateAnimModels(void) {
                         hmfModel->hmf->unk98->unk08 = 0;
                     }
                     if (!(animModel->attr & ANIMMDL_ATTR_DISPON)) {
-                        func_8001C258_main(animModel->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                        Hu3DModelAttrSet(animModel->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                         animModel->state = ANIMMDL_STATE_INVISIBLE;
                         hmfModel->motSpeed = 0.0f;
                     }
@@ -347,7 +347,7 @@ void m254_UpdateAnimModels(void) {
                 break;
             case ANIMMDL_STATE_WAIT:
                 if (animModel->animStart <= animModel->animTimer++) {
-                    func_8001C258_main(animModel->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                    Hu3DModelAttrSet(animModel->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     animModel->state = ANIMMDL_STATE_ANIM;
                     hmfModel->motSpeed = animModel->freq;
                 }
@@ -368,7 +368,7 @@ s16 func_8010E888_motor_rooter(HuSprAnimData *arg0, f32 arg1) {
     s16 var_s4;
 
     temp_v0_0 = temp_v0 = HuMemAlloc(0x10000);
-    temp_v0_2 = func_8001A894_main(0x4C1, temp_v0_0, 4);
+    temp_v0_2 = Hu3DModelDLCreate(0x4C1, temp_v0_0, 4);
     temp_s6 = Hu3DData[temp_v0_2].hmf;
     temp_s6->unk60->unk50 |= 0x01010000;
     temp_s5 = func_80110A00_motor_rooter(arg0, temp_s6, 1.0f, 0, 0x14);
@@ -438,7 +438,7 @@ s16 func_8010EFF8_motor_rooter(HuSprAnimData *arg0, f32 arg1) {
     s16 var_s1;
 
     temp_v0_0 = temp_v0 = HuMemAlloc(0x10000);
-    temp_v0_2 = func_8001A894_main(0x4C1, temp_v0_0, 4);
+    temp_v0_2 = Hu3DModelDLCreate(0x4C1, temp_v0_0, 4);
     temp_s4 = Hu3DData[temp_v0_2].hmf;
     temp_s4->unk60->unk50 |= 0x01010000;
     HuMemFree(temp_s4->unk3C);
@@ -541,7 +541,7 @@ s16 func_8010FC10_motor_rooter(HuSprAnimData *arg0, RGBA *arg1) {
     s32 var_s1;
 
     temp_v0_0 = temp_v0_2 = HuMemAlloc(0x10000);
-    temp_v0 = func_8001A894_main(0x8C1, temp_v0_0, 4);
+    temp_v0 = Hu3DModelDLCreate(0x8C1, temp_v0_0, 4);
     temp_s4 = Hu3DData[temp_v0].hmf;
     temp_s4->unk60->unk50 |= 0x01010000;
     HuMemFree(temp_s4->unk3C);

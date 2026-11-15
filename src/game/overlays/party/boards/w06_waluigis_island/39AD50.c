@@ -2185,33 +2185,33 @@ void func_80105CA4_w06(void) {
     HuAudFXPlay(0x11B);
     D_8011E2BC_w06 = MBModelCreate(0x3A, NULL);
     model = D_8011E2BC_w06;
-    func_800461B4_main(model->omObj1->model[0]);
+    AuraCreate(model->omObj1->model[0]);
     model->flags |= 4;
     func_800ECC54_shared_board(model);
     HuVecCopy3F(&model->coords, &space->coords);
     model->velocity.x = 50.0f;
-    obj = func_8000CED8_main(0xB0004, 0xAA9);
-    func_8000CD00_main(obj, 2.0f, 20.0f, 1.0f);
-    func_8000D018_main(obj, 30.0f);
-    func_8000CFA4_main(obj, model->coords.x, model->coords.y + model->velocity.x, model->coords.z);
+    obj = EffectCreate(0xB0004, 0xAA9);
+    EffectParamSet(obj, 2.0f, 20.0f, 1.0f);
+    EffectRangeSet(obj, 30.0f);
+    EffectPosSet(obj, model->coords.x, model->coords.y + model->velocity.x, model->coords.z);
     Hu3DModelCameraSet(obj, HU3D_CAM0);
 
     scale = 0.0f;
     for (i = 0; i < 6; i++) {
         HuVecCopyXYZ(&model->scale, scale, scale, scale);
         scale += 0.5f;
-        func_8000D018_main(obj, scale * 30.0f);
+        EffectRangeSet(obj, scale * 30.0f);
         HuPrcVSleep();
     }
 
     for (i = 0; i < 3; i++) {
         HuVecCopyXYZ(&model->scale, scale, scale, scale);
         scale -= 0.4f;
-        func_8000D018_main(obj, scale * 30.0f);
+        EffectRangeSet(obj, scale * 30.0f);
         HuPrcVSleep();
     }
 
-    func_8000D018_main(obj, scale * 30.0f);
+    EffectRangeSet(obj, scale * 30.0f);
     HuPrcSleep(30);
     HuAudFXPlay(0x132);
 
@@ -2229,8 +2229,8 @@ void func_80105CA4_w06(void) {
         if (model->velocity.x > 10.0f) {
             model->velocity.x -= 1.2f;
         }
-        func_8000D018_main(obj, scale * 30.0f);
-        func_8000CFA4_main(obj, model->coords.x, model->coords.y + model->velocity.x, model->coords.z);
+        EffectRangeSet(obj, scale * 30.0f);
+        EffectPosSet(obj, model->coords.x, model->coords.y + model->velocity.x, model->coords.z);
         if ((model->velocity.x <= 10.0f) & (scale <= 0.6f)) {
             if (angle == 0.0f) {
                 break;
@@ -2240,7 +2240,7 @@ void func_80105CA4_w06(void) {
     }
 
     func_8008A2A0_main(Hu3DData[model->omObj1->model[0]].mtx, 0.0f);
-    func_8000D044_main(obj);
+    EffectStop(obj);
     D_8011E2B8_w06 = 0;
     omDelPrcObj(NULL);
 }
@@ -2281,12 +2281,12 @@ void func_80106120_w06(void) {
             ? (((loc->current_board_index == 2) ? 0x5E09 : 0) | 0x5E00)
             : (((loc->current_board_index == 2) ? 0x5E09 : 0) | 0x5E01),
         -1, -1);
-    func_80060C14_main(data->amount, 1);
+    HuWinExOpen(data->amount, 1);
     HuAudFXPlay(0x2A7);
     func_800EE2C0_shared_board(data->amount);
     MBMotionShiftSet(data->obj, -1, 0, 6, 2);
-    func_80060EA8_main(data->amount, 1);
-    func_8001FDE8_main(data->obj->omObj1->model[0]);
+    HuWinExClose(data->amount, 1);
+    Hu3DMotionReset(data->obj->omObj1->model[0]);
     if (loc->current_board_index != 2 || (rand8() & 1)) {
         space = MBMasuGet(D_8011B5C0_w06[loc->star_spawn_indices[loc->current_star_spawn]]);
     }
@@ -2309,17 +2309,17 @@ void func_80106120_w06(void) {
         D_8011E2B8_w06 = 0;
     }
     HuWinMesSet(data->amount, D_8011B5EC_w06[idx], -1, -1);
-    func_80060C14_main(data->amount, 1);
+    HuWinExOpen(data->amount, 1);
     func_800EE2C0_shared_board(data->amount);
     MBMotionShiftSet(data->obj, -1, 0, 6, 2);
-    func_80060EA8_main(data->amount, 1);
+    HuWinExClose(data->amount, 1);
     HuAudSeqFadeOut(0x5A);
     HuPrcSleep(30);
     WipeCreateOut(2, 0x10);
     HuPrcSleep(0x11);
     D_800A12D4_main = 1;
     func_80100130_shared_board();
-    func_80046558_main(D_8011E2BC_w06->omObj1->model[0]);
+    AuraKill(D_8011E2BC_w06->omObj1->model[0]);
     MBModelKill(D_8011E2BC_w06);
     MBModelDispOn(D_8011E278_w06[GwSystem.star_spawn_indices[GwSystem.current_star_spawn]]);
     MBGuideKill(data);
@@ -2353,28 +2353,28 @@ void func_801064DC_w06(void) {
         model->velocity.x = 35.0f;
     }
 
-    obj = func_8000CED8_main(0xB0004, 0xAA9);
-    func_8000CD00_main(obj, 1.0f, 20.0f, 1.0f);
-    func_8000D018_main(obj, 15.0f);
+    obj = EffectCreate(0xB0004, 0xAA9);
+    EffectParamSet(obj, 1.0f, 20.0f, 1.0f);
+    EffectRangeSet(obj, 15.0f);
     Hu3DModelCameraSet(obj, HU3D_CAM0);
-    func_8000CFA4_main(obj, model->coords.x, model->coords.y + model->velocity.x, model->coords.z);
+    EffectPosSet(obj, model->coords.x, model->coords.y + model->velocity.x, model->coords.z);
 
     scale = 0.0f;
     for (i = 0; i < 6; i++) {
         HuVecCopyXYZ(&model->scale, scale, scale, scale);
         scale += 0.5f;
-        func_8000D018_main(obj, scale * 15.0f);
+        EffectRangeSet(obj, scale * 15.0f);
         HuPrcVSleep();
     }
 
     for (i = 0; i < 3; i++) {
         HuVecCopyXYZ(&model->scale, scale, scale, scale);
         scale -= 0.4f;
-        func_8000D018_main(obj, scale * 15.0f);
+        EffectRangeSet(obj, scale * 15.0f);
         HuPrcVSleep();
     }
 
-    func_8000D018_main(obj, scale * 15.0f);
+    EffectRangeSet(obj, scale * 15.0f);
     HuPrcSleep(20);
     HuAudFXPlay(0x132);
 
@@ -2390,17 +2390,17 @@ void func_801064DC_w06(void) {
             scale = 0.0f;
         }
         HuVecCopyXYZ(&model->scale, scale, scale, scale);
-        func_8000D018_main(obj, scale * 15.0f);
-        func_8000CFA4_main(obj, model->coords.x, model->coords.y + model->velocity.x, model->coords.z);
+        EffectRangeSet(obj, scale * 15.0f);
+        EffectPosSet(obj, model->coords.x, model->coords.y + model->velocity.x, model->coords.z);
         HuPrcVSleep();
     }
 
     MBModelKill(model);
-    func_8000D044_main(obj);
+    EffectStop(obj);
     MBVecForwardSet(&player->player_obj->rot);
     MBPlayerVibrate(-1, 5);
     if (D_8011B608_w06 != 0) {
-        func_8004A670_main(0xE);
+        HuAudSeqVolFadeOut(0xE);
     } else {
         HuAudSeqPlay(0x6F);
     }
@@ -2414,12 +2414,12 @@ void func_801064DC_w06(void) {
     PlayerFXPlay(0x262, GwSystem.current_player_index);
     if (D_8011B608_w06 != 0) {
         HuPrcSleep(16);
-        func_80003A70_main(D_800CDBC8_main);
-        func_8004A918_main(0x6F);
-        func_8004A880_main(0);
+        msmMusPause(D_800CDBC8_main);
+        HuAudSubSeqPlayMute(0x6F);
+        HuAudSubSeqVolFadeIn(0);
         HuPrcSleep(110);
-        func_80003B70_main(D_800CDBC8_main, 0);
-        func_8004A72C_main(0xF);
+        msmMusResume(D_800CDBC8_main, 0);
+        HuAudSeqVolFadeIn(0xF);
     } else {
         HuPrcSleep(60);
     }
@@ -2503,7 +2503,7 @@ s32 func_80106CC4_w06(u8 *arg0) {
     }
 
     if (var_s2 != 0) {
-        func_8005B63C_main(mbDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
+        HuWinAttrSet(mbDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         for (j = 0; var_s2 != 0; j++) {
             if (--var_s2 == 0) {
                 sp18[GwPlayer[GwSystem.current_player_index].pad] = -0x8000;
@@ -2559,7 +2559,7 @@ s32 func_80106F58_w06(void) {
     }
 
     if (var_s2 != 0) {
-        func_8005B63C_main(mbDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
+        HuWinAttrSet(mbDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         for (j = 0; var_s2 != 0; j++) {
             if (--var_s2 == 0) {
                 sp18[GwPlayer[GwSystem.current_player_index].pad] = -0x8000;
@@ -2677,7 +2677,7 @@ s32 func_80107438_w06(u8 *arg0, s32 arg1, s32 arg2) {
     }
 
     if (var_s2 != 0) {
-        func_8005B63C_main(mbDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
+        HuWinAttrSet(mbDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         for (j = 0; var_s2 != 0; j++) {
             if (--var_s2 == 0) {
                 sp18[GwPlayer[GwSystem.current_player_index].pad] = -0x8000;
@@ -2838,7 +2838,7 @@ void func_80107C04_w06(s16 arg0) {
         return;
     }
     obj = MBModelCreate(0x3A, NULL);
-    func_800461B4_main(obj->omObj1->model[0]);
+    AuraCreate(obj->omObj1->model[0]);
     if (D_8011E270_w06 == NULL) {
         D_8011E270_w06 = obj;
     }
@@ -2887,8 +2887,8 @@ void func_80107E44_w06(s16 arg0) {
     }
     if (D_8011E2DC_w06 == NULL) {
         obj = MBModelCreate(0xA, NULL);
-        func_8001FA68_main(obj->omObj1->model[0]);
-        func_8001FA68_main(obj->omObj2->model[0]);
+        Hu3DModelTPLvlInit(obj->omObj1->model[0]);
+        Hu3DModelTPLvlInit(obj->omObj2->model[0]);
         D_8011E2DC_w06 = obj;
     } else {
         obj = MBModelLinkCreate(D_8011E2DC_w06);
@@ -2981,7 +2981,7 @@ void func_80108290_w06(s16 arg0) {
     }
     D_8011E314_w06[arg0] = obj;
     obj->flags |= 2;
-    func_8001C814_main(obj->omObj1->model[0], 2, 1);
+    Hu3DMotionAttrSet(obj->omObj1->model[0], 2, 1);
     HuVecCopy3F(&obj->coords, &MBMasuGet(D_8011B728_w06[arg0])->coords);
     {
         SpaceData *masuA = MBMasuGet(D_8011B680_w06[arg0][0]);
@@ -3010,7 +3010,7 @@ void func_8010845C_w06(void) {
 
 void func_801084B8_w06(s32 arg0, s32 arg1) {
     MBMotionSet(D_8011E314_w06[arg0], arg1 - 1, 0);
-    func_8001C814_main(D_8011E314_w06[arg0]->omObj1->model[0], 5, 0);
+    Hu3DMotionAttrSet(D_8011E314_w06[arg0]->omObj1->model[0], 5, 0);
     if (D_8011B780_w06[GwSystem.current_board_index] != -1) {
         HuAudFXPlay(D_8011B780_w06[GwSystem.current_board_index]);
     }
@@ -3039,7 +3039,7 @@ void func_80108580_w06(void) {
     }
 
     HuPrcSleep(sleep);
-    func_8001C814_main(D_8011E314_w06[index]->omObj1->model[0], 1, 4);
+    Hu3DMotionAttrSet(D_8011E314_w06[index]->omObj1->model[0], 1, 4);
 
     if (D_8011B7EC_w06[GwSystem.current_board_index] != -1) {
         HuAudFXPlay(D_8011B7EC_w06[GwSystem.current_board_index]);
@@ -3112,7 +3112,7 @@ void func_801088F4_w06(void) {
         D_8011B828_w06 = NULL;
     }
     if (D_8011B82C_w06 != -1) {
-        func_80033430_main(D_8011B82C_w06);
+        Hu3DAnimModelKill(D_8011B82C_w06);
         D_8011B82C_w06 = -1;
     }
 }
@@ -3164,7 +3164,7 @@ void func_80108A2C_w06(void) {
         if (GwSystem.boardData.halfWordBytes[0] == i) {
             Hu3DMotionTimeSet(obj->omObj1->model[0], 1000.0f);
         }
-        func_8001C814_main(obj->omObj1->model[0], 6, 1);
+        Hu3DMotionAttrSet(obj->omObj1->model[0], 6, 1);
     }
 }
 
@@ -3859,14 +3859,14 @@ void func_8010A860_w06(void) {
     if (MBRand(2.0f) == 0) {
         func_800DBEC0_shared_board(playerIdx);
         model1 = MBModelFileCreate(0x13018B, -1, 1.0f, 0, 0);
-        func_8001C258_main(model1->omObj1->model[0], 0x180, 0);
+        Hu3DModelAttrSet(model1->omObj1->model[0], 0x180, 0);
         Hu3DModelLayerSet(model1->omObj1->model[0], 0);
         Hu3DModelRemakeStatic(model1->omObj1->model[0]);
         MBModelTempAllocFree(model1);
         HuVecCopy3F(&model1->coords, &player->player_obj->coords);
         model2 = MBModelFileCreate(0x13018C, -1, 1.0f, 0, 0);
         Hu3DModelLayerSet(model2->omObj1->model[0], 0);
-        func_8001C258_main(model2->omObj1->model[0], 0x80000, 0x80000);
+        Hu3DModelAttrSet(model2->omObj1->model[0], 0x80000, 0x80000);
         Hu3DModelRemakeStatic(model2->omObj1->model[0]);
         MBModelTempAllocFree(model2);
         HuVecCopy3F(&model2->coords, &player->player_obj->coords);
@@ -3975,7 +3975,7 @@ s32 func_8010AE78_w06(s32 arg0) {
     }
 
     if (var_s2 != 0) {
-        func_8005B63C_main(mbDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
+        HuWinAttrSet(mbDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         for (j = 0; var_s2 != 0; j++) {
             if (--var_s2 == 0) {
                 sp18[GwPlayer[GwSystem.current_player_index].pad] = -0x8000;
@@ -4149,7 +4149,7 @@ s32 func_8010B4C4_w06(s32 arg0, s32 arg1) {
     }
 
     if (var_s2 != 0) {
-        func_8005B63C_main(mbDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
+        HuWinAttrSet(mbDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         for (j = 0; var_s2 != 0; j++) {
             if (--var_s2 == 0) {
                 sp18[GwPlayer[GwSystem.current_player_index].pad] = -0x8000;
@@ -4229,7 +4229,7 @@ void func_8010B844_w06(void) {
                         MBDlgWinExec(0x16, 0x4802);
                         if (D_800A12D0_main != 0) {
                             HuAudSeqStop();
-                            func_800039A4_main(D_800C9930_main, 60);
+                            msmMusFadeOut(D_800C9930_main, 60);
                             D_800C9930_main = -1;
                         } else {
                             HuAudSeqFadeOut(0x5A);
@@ -4242,10 +4242,10 @@ void func_8010B844_w06(void) {
                         return;
                     case 1:
                         if (D_800A12D0_main != 0) {
-                            func_800039A4_main(D_800C9930_main, 60);
+                            msmMusFadeOut(D_800C9930_main, 60);
                             msmMusPlayDefault(D_800CE198_main);
-                            func_8004A670_main(0);
-                            func_8004A72C_main(0x5A);
+                            HuAudSeqVolFadeOut(0);
+                            HuAudSeqVolFadeIn(0x5A);
                             D_800C9930_main = -1;
                         }
                         MBDlgWinExec(0x16, 0x4803);
@@ -4267,10 +4267,10 @@ void func_8010B844_w06(void) {
         }
 
         if (D_800A12D0_main != 0) {
-            func_800039A4_main(D_800C9930_main, 60);
+            msmMusFadeOut(D_800C9930_main, 60);
             msmMusPlayDefault(D_800CE198_main);
-            func_8004A670_main(0);
-            func_8004A72C_main(0x5A);
+            HuAudSeqVolFadeOut(0);
+            HuAudSeqVolFadeIn(0x5A);
             D_800C9930_main = -1;
         }
 
@@ -5045,24 +5045,24 @@ void func_8010DCA4_w06(Object *obj) {
 
     MBModelDispOn(obj);
     for (i = 0; i < 0x100; i += 0xC) {
-        func_8001F9E4_main(obj->omObj1->model[0], i);
-        func_8001F9E4_main(obj->omObj2->model[0], i);
+        Hu3DModelTPLvlSet(obj->omObj1->model[0], i);
+        Hu3DModelTPLvlSet(obj->omObj2->model[0], i);
         HuPrcVSleep();
     }
-    func_8001F9E4_main(obj->omObj1->model[0], 0xFF);
-    func_8001F9E4_main(obj->omObj2->model[0], 0xFF);
+    Hu3DModelTPLvlSet(obj->omObj1->model[0], 0xFF);
+    Hu3DModelTPLvlSet(obj->omObj2->model[0], 0xFF);
 }
 
 void func_8010DD44_w06(Object *obj) {
     s32 i;
 
     for (i = 0xFF; i >= 0; i -= 0xC) {
-        func_8001F9E4_main(obj->omObj1->model[0], i);
-        func_8001F9E4_main(obj->omObj2->model[0], i);
+        Hu3DModelTPLvlSet(obj->omObj1->model[0], i);
+        Hu3DModelTPLvlSet(obj->omObj2->model[0], i);
         HuPrcVSleep();
     }
-    func_8001F9E4_main(obj->omObj1->model[0], 0);
-    func_8001F9E4_main(obj->omObj2->model[0], 0);
+    Hu3DModelTPLvlSet(obj->omObj1->model[0], 0);
+    Hu3DModelTPLvlSet(obj->omObj2->model[0], 0);
     MBModelDispOff(obj);
 }
 
@@ -5479,7 +5479,7 @@ void func_8010F20C_w06(void) {
         HuAudFXPlay(0x125);
         model = MBModelCreate(0x33, NULL);
         if (D_8011C970_w06[sys->current_board_index] != 0) {
-            func_8001ED54_main(model->omObj1->model[0]);
+            Hu3DModelFaceFlip(model->omObj1->model[0]);
         }
         Hu3DModelRemakeStatic(model->omObj1->model[0]);
         MBModelTempAllocFree(model);
@@ -5900,8 +5900,8 @@ omObjData *func_80110418_w06(Vec *arg0, f32 arg1, f32 arg2, s16 arg3, Vec *arg4,
     model->coords.x = arg0->x;
     model->coords.y = arg0->y;
     model->coords.z = arg0->z;
-    func_8001FA68_main(model->omObj1->model[0]);
-    func_8001F9E4_main(model->omObj1->model[0], 0xFF);
+    Hu3DModelTPLvlInit(model->omObj1->model[0]);
+    Hu3DModelTPLvlSet(model->omObj1->model[0], 0xFF);
     data->model = model;
     data->unk1C = arg3;
     return obj;
@@ -5929,7 +5929,7 @@ void func_80110574_w06(omObjData *arg0) {
         }
         omSetStatBit(arg0, OM_STAT_FUNCOFF);
     }
-    func_8001F9E4_main(model->omObj1->model[0], (u8)data->unk0C);
+    Hu3DModelTPLvlSet(model->omObj1->model[0], (u8)data->unk0C);
 }
 
 void func_8011068C_w06(void) {
@@ -5954,7 +5954,7 @@ void func_8011068C_w06(void) {
     }
 
     HuAudFXPlay(0x127);
-    func_8004A7C4_main(0xB4);
+    HuAudSubSeqVolFadeOut(0xB4);
     vib = MBPlayerVibrateObjCreate(CUR_PLAYER, 4, 5);
 
     angle = 0xB4;
@@ -6029,7 +6029,7 @@ void func_8011068C_w06(void) {
         HuPrcVSleep();
         angle += 0x14;
         if (angle == 0x500) {
-            func_80003A70_main(0);
+            msmMusPause(0);
         }
     }
 }
@@ -6384,7 +6384,7 @@ void func_80111CCC_w06(void) {
     HuAudFXPlay(0x143);
 
     model = MBModelCreate(0x22, NULL);
-    func_8001C258_main(model->omObj1->model[0], 0x180, 0);
+    Hu3DModelAttrSet(model->omObj1->model[0], 0x180, 0);
     Hu3DModelLayerSet(model->omObj1->model[0], 0x1800);
     Hu3DModelRemakeStatic(model->omObj1->model[0]);
     HuVecCopy3F(&model->coords, &player->player_obj->coords);
@@ -6431,7 +6431,7 @@ void func_80111F58_w06(void) {
     HuAudFXPlay(0x143);
 
     model = MBModelCreate(0x22, NULL);
-    func_8001C258_main(model->omObj1->model[0], 0x180, 0);
+    Hu3DModelAttrSet(model->omObj1->model[0], 0x180, 0);
     Hu3DModelLayerSet(model->omObj1->model[0], 0x1800);
     Hu3DModelRemakeStatic(model->omObj1->model[0]);
     HuVecCopy3F(&model->coords, &player->player_obj->coords);
@@ -6723,8 +6723,8 @@ void func_80112A08_w06(void) {
         MBItemRemoveEmpty(system->current_player_index);
 
         starModel = MBModelCreate(0x3D, NULL);
-        func_8001FA68_main(starModel->omObj1->model[0]);
-        func_8001F9E4_main(starModel->omObj1->model[0], 0xFF);
+        Hu3DModelTPLvlInit(starModel->omObj1->model[0]);
+        Hu3DModelTPLvlSet(starModel->omObj1->model[0], 0xFF);
         Hu3DModelScaleSet(starModel->omObj1->model[0], 0.0f, 0.0f, 0.0f);
         HuVecCopy3F(&starModel->coords, &player->player_obj->coords);
         starModel->coords.y = 100.0f;
@@ -6735,7 +6735,7 @@ void func_80112A08_w06(void) {
     }
 
     HuAudFXPlay(0x127);
-    func_800039A4_main(D_800CDBC8_main, 0xB4);
+    msmMusFadeOut(D_800CDBC8_main, 0xB4);
     dialog = MBPlayerVibrateObjCreate(-1, 3, 5);
 
     for (angle = 180, i = 0; angle < 1080; angle += 20, i++) {
@@ -6793,7 +6793,7 @@ void func_80112A08_w06(void) {
         }
 
         if (alpha > 0) {
-            func_8001F9E4_main(starModel->omObj1->model[0], alpha & 0xFF);
+            Hu3DModelTPLvlSet(starModel->omObj1->model[0], alpha & 0xFF);
             alpha -= 12;
         } else {
             MBModelDispOff(starModel);
@@ -7086,14 +7086,14 @@ void func_80113B68_w06(void) {
     HuSprGrpMemberSet(setupGroup, 0, itemSpriteId, 0xC);
     HuSprPriSet(setupGroup, 0, 9);
     HuSprAttrSet(setupGroup, 0, 0x1000);
-    func_800554C4_main(setupGroup, 0, -1);
+    HuSprParentSet(setupGroup, 0, -1);
     HuSprGrpMemberSet(setupGroup, 1, auraSpriteId, 0);
     HuSprPriSet(setupGroup, 1, 9);
     HuSprAttrSet(setupGroup, 1, 0x9000);
     HuSprColorSet(setupGroup, 1, 0xFF, 0xFF, 0xFF);
     HuSprTPLvlSet(setupGroup, 1, 0xFF);
     HuSprScaleSet(setupGroup, 1, 2.0f, 2.0f);
-    func_800554C4_main(setupGroup, 1, 0);
+    HuSprParentSet(setupGroup, 1, 0);
 
     yPos = 0xC8;
     if (playerIndex & 1) {
@@ -7343,7 +7343,7 @@ s32 func_801146F4_w06(u8 *arg0, s32 arg1) {
     }
 
     if (delay != 0) {
-        func_8005B63C_main(mbDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
+        HuWinAttrSet(mbDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         for (j = 0; delay != 0; j++) {
             if (--delay == 0) {
                 inputs[GwPlayer[GwSystem.current_player_index].pad] = 0x8000;
@@ -7470,13 +7470,13 @@ void func_80114C74_w06(void) {
 
     func_801111E4_w06();
     box = MBModelCreate(0x20, NULL);
-    func_8001C2FC_main(box->omObj1->model[0], 0x20000, 0x20000);
+    Hu3DModelObjAttrSet(box->omObj1->model[0], 0x20000, 0x20000);
     Hu3DModelRemakeStatic(box->omObj1->model[0]);
-    func_8001C954_main(box->omObj1->model[0]);
-    func_8001C514_main(box->omObj1->model[0]);
+    Hu3DModelVtxBufMake(box->omObj1->model[0]);
+    Hu3DModelDynamicFree(box->omObj1->model[0]);
     Hu3DModelScaleSet(box->omObj1->model[0], 0.0f, 0.0f, 0.0f);
     HuVecCopy3F(&box->coords, &MBPlayerGet(-1)->player_obj->coords);
-    func_8001C814_main(box->omObj1->model[0], 2, 1);
+    Hu3DMotionAttrSet(box->omObj1->model[0], 2, 1);
     box->velocity.x = 100.0f;
     HuAudFXPlay(0x142);
     while (box->velocity.x > 30.0f) {
@@ -7513,7 +7513,7 @@ void func_80114C74_w06(void) {
 
     if (!noAnimation) {
         HuAudFXPlay(0x149);
-        func_8001C814_main(box->omObj1->model[0], 1, 0);
+        Hu3DMotionAttrSet(box->omObj1->model[0], 1, 0);
         HuPrcSleep(20);
         position.x = 160.0f;
         position.y = 84.0f;
@@ -7532,7 +7532,7 @@ void func_80114C74_w06(void) {
                 }
             }
         }
-        func_8001C814_main(box->omObj1->model[0], 4, 4);
+        Hu3DMotionAttrSet(box->omObj1->model[0], 4, 4);
         while (Hu3DData[box->omObj1->model[0]].motTime != 0.0f) {
             HuPrcVSleep();
         }
@@ -7592,7 +7592,7 @@ void func_80114C74_w06(void) {
         }
 
         HuAudFXPlay(0x149);
-        func_8001C814_main(box->omObj1->model[0], 4, 0);
+        Hu3DMotionAttrSet(box->omObj1->model[0], 4, 0);
         HuPrcSleep(20);
         process = omAddPrcObj(func_80114A98_w06, 0x4800, 0, 0);
         process->user_data = (void *)targetPlayer;
@@ -7683,7 +7683,7 @@ void func_80114C74_w06(void) {
     finalScale = 0.1f;
     for (i = 0; i < 20; i++) {
         finalScale += 0.044999998f;
-        func_8001D558_main(box->omObj1->model[0], finalScale, finalScale * 10.0f, 1);
+        Hu3DModelVtxWave(box->omObj1->model[0], finalScale, finalScale * 10.0f, 1);
         HuPrcVSleep();
     }
     MBModelKill(box);
@@ -7736,9 +7736,9 @@ void func_801159E0_w06(void) {
 
     model = MBModelCreate(0x45, NULL);
     MBModelDispOff(model);
-    effect = func_8000CED8_main(0xB0004, 0xAA9);
-    func_8000CD00_main(effect, 1.0f, 20.0f, 1.0f);
-    func_8000D018_main(effect, 10.0f);
+    effect = EffectCreate(0xB0004, 0xAA9);
+    EffectParamSet(effect, 1.0f, 20.0f, 1.0f);
+    EffectRangeSet(effect, 10.0f);
     Hu3DModelCameraSet(effect, HU3D_CAM0);
     HuAudFXPlay(0x24C);
 
@@ -7755,7 +7755,7 @@ void func_801159E0_w06(void) {
         if (angleStep > 80.0f) {
             angleStep = 80.0f;
         }
-        func_8000CFA4_main(effect, gameGuyModel->coords.x,
+        EffectPosSet(effect, gameGuyModel->coords.x,
                            gameGuyModel->coords.y + gameGuyModel->velocity.x, gameGuyModel->coords.z);
         HuPrcVSleep();
     }
@@ -7769,7 +7769,7 @@ void func_801159E0_w06(void) {
         if (angle > 360.0f) {
             angle -= 360.0f;
         }
-        func_8000CFA4_main(effect, gameGuyModel->coords.x,
+        EffectPosSet(effect, gameGuyModel->coords.x,
                            gameGuyModel->coords.y + gameGuyModel->velocity.x, gameGuyModel->coords.z);
         HuPrcVSleep();
     }
@@ -7779,7 +7779,7 @@ void func_801159E0_w06(void) {
         if (D_8011CB80_w06 != -1) {
             HuVecCopy3F(&gameGuyModel->coords,
                         &MBPlayerGet(D_8011CB80_w06)->player_obj->coords);
-            func_8000CFA4_main(effect, gameGuyModel->coords.x,
+            EffectPosSet(effect, gameGuyModel->coords.x,
                                gameGuyModel->coords.y + gameGuyModel->velocity.x, gameGuyModel->coords.z);
         }
         HuPrcVSleep();
@@ -7798,7 +7798,7 @@ void func_801159E0_w06(void) {
         if (angle > 360.0f) {
             angle -= 360.0f;
         }
-        func_8000CFA4_main(effect, gameGuyModel->coords.x,
+        EffectPosSet(effect, gameGuyModel->coords.x,
                            gameGuyModel->coords.y + gameGuyModel->velocity.x, gameGuyModel->coords.z);
         HuPrcVSleep();
     }
@@ -7818,12 +7818,12 @@ void func_801159E0_w06(void) {
         if (angleStep < 1.0f) {
             break;
         }
-        func_8000CFA4_main(effect, gameGuyModel->coords.x,
+        EffectPosSet(effect, gameGuyModel->coords.x,
                            gameGuyModel->coords.y + gameGuyModel->velocity.x, gameGuyModel->coords.z);
         HuPrcVSleep();
     }
 
-    func_8000D044_main(effect);
+    EffectStop(effect);
     process = omAddPrcObj(func_80115920_w06, 0x4800, 0, 0x40);
     work = HuMemMemoryAlloc(process->heap, 0x20);
     process->user_data = work;
@@ -7839,7 +7839,7 @@ void func_801159E0_w06(void) {
     scale = 0.1f;
     for (; i < 20; i++) {
         scale += 0.044999998f;
-        func_8001D558_main(gameGuyModel->omObj1->model[0], scale, scale * 10.0f, 1);
+        Hu3DModelVtxWave(gameGuyModel->omObj1->model[0], scale, scale * 10.0f, 1);
         HuPrcVSleep();
     }
     MBModelKill(gameGuyModel);
@@ -7882,12 +7882,12 @@ void func_80115F10_w06(void) {
 
     gameGuyModel = MBModelCreate(0x43, 0);
     D_8011E368_w06 = gameGuyModel;
-    func_8001C2FC_main(gameGuyModel->omObj1->model[0], 0x20000, 0x20000);
+    Hu3DModelObjAttrSet(gameGuyModel->omObj1->model[0], 0x20000, 0x20000);
     Hu3DModelRemakeStatic(gameGuyModel->omObj1->model[0]);
-    func_8001C954_main(gameGuyModel->omObj1->model[0]);
-    func_8001C514_main(gameGuyModel->omObj1->model[0]);
+    Hu3DModelVtxBufMake(gameGuyModel->omObj1->model[0]);
+    Hu3DModelDynamicFree(gameGuyModel->omObj1->model[0]);
     HuVecCopy3F(&gameGuyModel->coords, &MBPlayerGet(-1)->player_obj->coords);
-    func_8001C814_main(gameGuyModel->omObj1->model[0], 2, 1);
+    Hu3DMotionAttrSet(gameGuyModel->omObj1->model[0], 2, 1);
     gameGuyModel->velocity.x = 100.0f;
     HuAudFXPlay(0x14B);
     while (gameGuyModel->velocity.x > 30.0f) {
@@ -8231,7 +8231,7 @@ void func_80116F10_w06(void) {
     }
     temp_v0_3 = MBModelCreate(0x46, NULL);
     D_8011E380_w06 = temp_v0_3;
-    func_8001C258_main(temp_v0_3->omObj1->model[0], 0x180, 0);
+    Hu3DModelAttrSet(temp_v0_3->omObj1->model[0], 0x180, 0);
     Hu3DModelLayerSet(temp_v0_3->omObj1->model[0], 0x1800);
     Hu3DModelRemakeStatic(temp_v0_3->omObj1->model[0]);
     Hu3DModelScaleSet(temp_v0_3->omObj1->model[0], 0.0f, 0.0f, 0.0f);
@@ -8910,7 +8910,7 @@ void func_80118FF0_w06(void) {
     chest = MBModelCreate(0x21, NULL);
     Hu3DModelScaleSet(chest->omObj1->model[0], 0.0f, 0.0f, 0.0f);
     HuVecCopy3F(&chest->coords, &MBPlayerGet(-1)->player_obj->coords);
-    func_8001C814_main(chest->omObj1->model[0], 2, 1);
+    Hu3DMotionAttrSet(chest->omObj1->model[0], 2, 1);
     chest->velocity.x = 100.0f;
     HuAudFXPlay(0x142);
     while (chest->velocity.x > 30.0f) {
@@ -8928,7 +8928,7 @@ void func_80118FF0_w06(void) {
     }
 
     HuAudFXPlay(0x149);
-    func_8001C814_main(chest->omObj1->model[0], 1, 0);
+    Hu3DMotionAttrSet(chest->omObj1->model[0], 1, 0);
     HuPrcSleep(20);
 
     for (i = 0; i < 4; i++) {
@@ -9017,7 +9017,7 @@ void func_80118FF0_w06(void) {
 void func_80119698_w06(void) {
     Object *obj = *(Object **)HuPrcCurrentGet()->user_data;
 
-    func_8001C814_main(obj->omObj1->model[0], 3, 0);
+    Hu3DMotionAttrSet(obj->omObj1->model[0], 3, 0);
     MBModelMotionWait(obj);
     MBModelKill(obj);
     omDelPrcObj(NULL);
@@ -9110,7 +9110,7 @@ void func_80119748_w06(void) {
         for (i = 0; i < 3; i++) {
             scale = 25.0f;
             models[i] = MBModelFileCreate(animIds.entries[i], -1, 1.0f, 0, 0);
-            func_8001C258_main(models[i]->omObj1->model[0], 0x180, 0);
+            Hu3DModelAttrSet(models[i]->omObj1->model[0], 0x180, 0);
             Hu3DModelLayerSet(models[i]->omObj1->model[0], 0x1800);
             Hu3DModelRemakeStatic(models[i]->omObj1->model[0]);
             func_801196F0_w06(models[i]);
@@ -9204,13 +9204,13 @@ void func_80119E00_w06(s32 arg0) {
     model = D_8011E32C_w06[index];
     if (GwSystem.boardData.halfWordBytes[0] == index) {
         HuAudFXPlay(0x1BE);
-        func_8001C814_main(model->omObj1->model[0], 3, 4);
+        Hu3DMotionAttrSet(model->omObj1->model[0], 3, 4);
         while (func_800D9E80_shared_board(model) == 0) {
             HuPrcVSleep();
         }
     } else {
         HuAudFXPlay(0x1BF);
-        func_8001C814_main(model->omObj1->model[0], 7, 0);
+        Hu3DMotionAttrSet(model->omObj1->model[0], 7, 0);
         MBModelMotionWait(model);
     }
 
@@ -9231,13 +9231,13 @@ void func_80119E00_w06(s32 arg0) {
     model = D_8011E32C_w06[index];
     if (GwSystem.boardData.halfWordBytes[0] == index) {
         HuAudFXPlay(0x1BE);
-        func_8001C814_main(model->omObj1->model[0], 3, 4);
+        Hu3DMotionAttrSet(model->omObj1->model[0], 3, 4);
         while (func_800D9E80_shared_board(model) == 0) {
             HuPrcVSleep();
         }
     } else {
         HuAudFXPlay(0x1BF);
-        func_8001C814_main(model->omObj1->model[0], 7, 0);
+        Hu3DMotionAttrSet(model->omObj1->model[0], 7, 0);
         MBModelMotionWait(model);
     }
 

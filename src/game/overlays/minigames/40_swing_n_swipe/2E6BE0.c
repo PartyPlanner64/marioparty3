@@ -185,14 +185,14 @@ void func_801059BC_swing_n_swipe(void) {
     s32 camIndex;
     s16 i;
 
-    func_8001FE20_main(0x40);
-    func_800142A0_main(0x40);
+    MapCollInit(0x40);
+    Hu3DSprModelInit(0x40);
     omInitObjMan(0x40, 0x40);
-    func_8004A208_main();
+    omGameSysInit();
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutView);
     omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    func_8000B5F0_main(1);
-    camIndex = func_8000B638_main();
+    CamSetupInit(1);
+    camIndex = CamSetupMapCullAdd();
     ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(camIndex, 30.0f, 80.0f, 8000.0f);
@@ -299,12 +299,12 @@ void func_80105EE0_swing_n_swipe(omObjData *object) {
                 switch (D_8010C13C_swing_n_swipe) {
                     case 0:
                         HuAudSeqPlay(0x68);
-                        func_800370D0_main(GMesCreate(0x24), 120);
+                        GMesTimeMaxSet(GMesCreate(0x24), 120);
                         GwPlayer[D_8010C144_swing_n_swipe].bonusCoin = D_800A11D0_main[D_8010C15E_swing_n_swipe];
                         break;
                     case 1:
                         HuAudSeqPlay(0x6B);
-                        func_800370D0_main(GMesCreate(0x1D), 120);
+                        GMesTimeMaxSet(GMesCreate(0x1D), 120);
                         GwPlayer[D_8010C144_swing_n_swipe].bonusCoin = -1;
                         break;
                 }
@@ -371,12 +371,12 @@ void func_80106290_swing_n_swipe(omObjData *object) {
         D_8010C148_swing_n_swipe = 2;
         GMesCreate(0x1A, 10, 160, 56);
     } else if (D_8010BD48_swing_n_swipe >= 0) {
-        func_8003F578_main((D_8010BD48_swing_n_swipe + 29) / 30);
+        GMesTimerValueSet((D_8010BD48_swing_n_swipe + 29) / 30);
         func_801072D0_swing_n_swipe();
         func_8010897C_swing_n_swipe();
     } else {
         D_8010C13C_swing_n_swipe = 1;
-        func_8003F5C0_main();
+        GMesTimerEnd();
         D_8010C156_swing_n_swipe = 1;
         D_8010C15A_swing_n_swipe = 1;
         D_8010C146_swing_n_swipe = 0;
@@ -390,7 +390,7 @@ void func_80106290_swing_n_swipe(omObjData *object) {
     }
     if (D_8010C13C_swing_n_swipe == 0) {
         D_8010C13C_swing_n_swipe = 0;
-        func_8003F5C0_main();
+        GMesTimerEnd();
         D_8010C156_swing_n_swipe = 1;
         D_8010C146_swing_n_swipe = 0;
         D_8010C148_swing_n_swipe = 4;
@@ -425,11 +425,11 @@ void func_801064A4_swing_n_swipe(omObjData *object) {
         case 2:
             if (D_8010C13C_swing_n_swipe == 0) {
                 func_800E5690_minigame(D_8010C140_swing_n_swipe, 6);
-                func_80045ED0_main(D_800A178C_main[GwPlayer[D_8010C144_swing_n_swipe].chr][0] | 0x35);
+                HuAudCharVoicePlay(D_800A178C_main[GwPlayer[D_8010C144_swing_n_swipe].chr][0] | 0x35);
             } else if (D_8010C13C_swing_n_swipe == 1) {
                 HuAudFXPlay(0x4F6);
                 func_800E5690_minigame(D_8010C140_swing_n_swipe, 7);
-                func_80045ED0_main(D_800A178C_main[GwPlayer[D_8010C144_swing_n_swipe].chr][0] | 0x38);
+                HuAudCharVoicePlay(D_800A178C_main[GwPlayer[D_8010C144_swing_n_swipe].chr][0] | 0x38);
                 for (i = 0; i < 5; i++) {
                     D_8010C14A_swing_n_swipe[i] = 4;
                 }
@@ -446,7 +446,7 @@ void func_801064A4_swing_n_swipe(omObjData *object) {
 void func_801066BC_swing_n_swipe(omObjData *object) {
     WipeCreateOut(WIPE_TYPE_NORMAL, 16);
     HuAudSeqFadeOut(30);
-    func_8004AB0C_main(30);
+    HuAudFXAllFadeOut(30);
     object->func = func_80106704_swing_n_swipe;
 }
 
@@ -473,21 +473,21 @@ void func_80106764_swing_n_swipe(omObjData *object) {
     model = D_800A178C_main[chr][0];
     motion = D_800A178C_main[chr][1];
     func_800E1BA8_minigame(object, model, motion, D_8010C144_swing_n_swipe, 0x2B9, 0x2B9);
-    func_800E5A00_minigame(object, 0, func_80017BB8_main(chr, 0), 1, 0);
-    func_800E5A00_minigame(object, 1, func_80017BB8_main(chr, 1), 1, 0);
-    func_800E5A00_minigame(object, 2, func_80017BB8_main(chr, 2), 1, 0);
-    func_800E5A00_minigame(object, 4, func_80017BB8_main(chr, 0x18), 1, 0);
-    func_800E5A00_minigame(object, 3, func_80017BB8_main(chr, 4), 0, 0);
-    func_800E5A00_minigame(object, 5, func_80017BB8_main(chr, 0x91), 0, 0);
-    func_800E5A00_minigame(object, 6, func_80017BB8_main(chr, 0x35), 0, 0);
-    func_800E5A00_minigame(object, 7, func_80017BB8_main(chr, 0x38), 0, 0);
+    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(chr, 0), 1, 0);
+    func_800E5A00_minigame(object, 1, CharMotionDataNumGet(chr, 1), 1, 0);
+    func_800E5A00_minigame(object, 2, CharMotionDataNumGet(chr, 2), 1, 0);
+    func_800E5A00_minigame(object, 4, CharMotionDataNumGet(chr, 0x18), 1, 0);
+    func_800E5A00_minigame(object, 3, CharMotionDataNumGet(chr, 4), 0, 0);
+    func_800E5A00_minigame(object, 5, CharMotionDataNumGet(chr, 0x91), 0, 0);
+    func_800E5A00_minigame(object, 6, CharMotionDataNumGet(chr, 0x35), 0, 0);
+    func_800E5A00_minigame(object, 7, CharMotionDataNumGet(chr, 0x38), 0, 0);
     func_800E5690_minigame(object, 4);
     omSetTra(object, 0.0f, 0.0f, 1500.0f);
-    object->model[1] = func_8000B108_main(9, 0x2B9);
+    object->model[1] = Hu3DModelRead(9, 0x2B9);
     Hu3DModelPosSet(object->model[1], object->trans.x, object->trans.y, object->trans.z);
     Hu3DModelScaleSet(object->model[1], 1.5f, 1.0f, 1.5f);
-    D_8010C166_swing_n_swipe = func_8000B108_main(0x610002, 0x2B9);
-    func_8001C258_main(D_8010C166_swing_n_swipe, 0x4000, 0x4000);
+    D_8010C166_swing_n_swipe = Hu3DModelRead(0x610002, 0x2B9);
+    Hu3DModelAttrSet(D_8010C166_swing_n_swipe, 0x4000, 0x4000);
     Hu3DModelHookSet(D_8010C166_swing_n_swipe, object->model[0], "item_hook");
     object->func = func_801069CC_swing_n_swipe;
 }
@@ -794,8 +794,8 @@ void func_801072D0_swing_n_swipe(void) {
 void func_80107CEC_swing_n_swipe(omObjData *object) {
     s16 i;
 
-    D_8010C170_swing_n_swipe[0][0] = func_8000B108_main(0xA0109, 0x2B9);
-    D_8010C170_swing_n_swipe[0][1] = func_8000B108_main(9, 0x2B9);
+    D_8010C170_swing_n_swipe[0][0] = Hu3DModelRead(0xA0109, 0x2B9);
+    D_8010C170_swing_n_swipe[0][1] = Hu3DModelRead(9, 0x2B9);
     for (i = 1; i < 5; i++) {
         D_8010C170_swing_n_swipe[i][0] = Hu3DModelLink(D_8010C170_swing_n_swipe[0][0]);
         D_8010C170_swing_n_swipe[i][1] = Hu3DModelLink(D_8010C170_swing_n_swipe[0][1]);
@@ -833,7 +833,7 @@ void func_80107F00_swing_n_swipe(omObjData *object) {
                                        Hu3DData[D_8010C184_swing_n_swipe[D_8010BDBC_swing_n_swipe[i]]].motId, 0, 30, 2);
                     break;
                 case 2:
-                    func_8001C5B4_main(D_8010C170_swing_n_swipe[i][0],
+                    Hu3DMotionModelSet(D_8010C170_swing_n_swipe[i][0],
                                        D_8010C184_swing_n_swipe[D_8010BDBC_swing_n_swipe[i]]);
                     break;
             }
@@ -1266,8 +1266,8 @@ void func_801099E8_swing_n_swipe(void) {
 void func_8010A0E4_swing_n_swipe(omObjData *object) {
     s16 i;
 
-    D_8010C190_swing_n_swipe[0][0] = func_8000B108_main(0x610001, 0x2B9);
-    D_8010C190_swing_n_swipe[0][2] = func_8000B108_main(9, 0x2B9);
+    D_8010C190_swing_n_swipe[0][0] = Hu3DModelRead(0x610001, 0x2B9);
+    D_8010C190_swing_n_swipe[0][2] = Hu3DModelRead(9, 0x2B9);
     for (i = 1; i < 5; i++) {
         D_8010C190_swing_n_swipe[i][0] = Hu3DModelLink(D_8010C190_swing_n_swipe[0][0]);
         D_8010C190_swing_n_swipe[i][2] = Hu3DModelLink(D_8010C190_swing_n_swipe[0][2]);
@@ -1287,9 +1287,9 @@ void func_8010A0E4_swing_n_swipe(omObjData *object) {
                         Hu3DData[D_8010C190_swing_n_swipe[i][0]].pos.z);
         Hu3DModelScaleSet(D_8010C190_swing_n_swipe[i][2], 1.5f, 1.0f, 1.5f);
     }
-    D_8010C1B8_swing_n_swipe[0] = func_8000CED8_main(0xB0004, 0x2A9);
-    func_800138EC_main(D_8010C1B8_swing_n_swipe[0], 1, 0);
-    D_8010C1B8_swing_n_swipe[1] = func_8000B108_main(9, 0x2B9);
+    D_8010C1B8_swing_n_swipe[0] = EffectCreate(0xB0004, 0x2A9);
+    Hu3DParticleAttrSet(D_8010C1B8_swing_n_swipe[0], 1, 0);
+    D_8010C1B8_swing_n_swipe[1] = Hu3DModelRead(9, 0x2B9);
     Hu3DModelScaleSet(D_8010C1B8_swing_n_swipe[1], 1.0f, 1.0f, 1.0f);
     Hu3DModelCameraSet(D_8010C1B8_swing_n_swipe[1], 0);
     D_8010C154_swing_n_swipe = 0;
@@ -1393,10 +1393,10 @@ void func_8010AA3C_swing_n_swipe(void) {
                 if (D_800CCF58_main[Hu3DData[D_8010C190_swing_n_swipe[index][0]].motId].unk02 ==
                     Hu3DData[D_8010C190_swing_n_swipe[index][0]].motTime) {
                     HuAudFXPlay(0x4F3);
-                    func_800138EC_main(D_8010C1B8_swing_n_swipe[0], 1, 1);
-                    func_8000CD00_main(D_8010C1B8_swing_n_swipe[0], 5.0f, 20.0f, 10.0f);
-                    func_8000D018_main(D_8010C1B8_swing_n_swipe[0], 100.0f);
-                    func_8000CFA4_main(D_8010C1B8_swing_n_swipe[0], Hu3DData[D_8010C190_swing_n_swipe[index][1]].pos.x,
+                    Hu3DParticleAttrSet(D_8010C1B8_swing_n_swipe[0], 1, 1);
+                    EffectParamSet(D_8010C1B8_swing_n_swipe[0], 5.0f, 20.0f, 10.0f);
+                    EffectRangeSet(D_8010C1B8_swing_n_swipe[0], 100.0f);
+                    EffectPosSet(D_8010C1B8_swing_n_swipe[0], Hu3DData[D_8010C190_swing_n_swipe[index][1]].pos.x,
                                        Hu3DData[D_8010C190_swing_n_swipe[index][1]].pos.y,
                                        Hu3DData[D_8010C190_swing_n_swipe[index][1]].pos.z);
                     Hu3DModelCameraSet(D_8010C1B8_swing_n_swipe[1], 1);
@@ -1440,7 +1440,7 @@ void func_8010AA3C_swing_n_swipe(void) {
                 }
                 break;
         }
-        func_8000CFA4_main(D_8010C1B8_swing_n_swipe[0], Hu3DData[D_8010C190_swing_n_swipe[index][1]].pos.x,
+        EffectPosSet(D_8010C1B8_swing_n_swipe[0], Hu3DData[D_8010C190_swing_n_swipe[index][1]].pos.x,
                            Hu3DData[D_8010C190_swing_n_swipe[index][1]].pos.y,
                            Hu3DData[D_8010C190_swing_n_swipe[index][1]].pos.z);
         Hu3DModelPosSet(D_8010C1B8_swing_n_swipe[1], Hu3DData[D_8010C190_swing_n_swipe[index][1]].pos.x, 0.0f,
@@ -1464,15 +1464,15 @@ void func_8010B100_swing_n_swipe(omObjData *object) {
     s16 i;
 
     for (i = 0; i < 5; i++) {
-        D_8010C1C0_swing_n_swipe[i] = func_8000B108_main(0x610005, 0x2B9);
+        D_8010C1C0_swing_n_swipe[i] = Hu3DModelRead(0x610005, 0x2B9);
         Hu3DModelScaleSet(D_8010C1C0_swing_n_swipe[i], 1.5f, 1.5f, 1.0f);
         Hu3DModelCameraSet(D_8010C1C0_swing_n_swipe[i], 0);
     }
     D_8010C1D0_swing_n_swipe[0] = func_8010B8EC_swing_n_swipe(0x610005);
-    D_8010C1CC_swing_n_swipe[0] = func_8000B108_main(0xB0006, 0x2B9);
+    D_8010C1CC_swing_n_swipe[0] = Hu3DModelRead(0xB0006, 0x2B9);
     D_8010C1D0_swing_n_swipe[1] = func_8010B8EC_swing_n_swipe(0xB0006);
     Hu3DModelCameraSet(D_8010C1CC_swing_n_swipe[0], 0);
-    D_8010C1CC_swing_n_swipe[1] = func_8000B108_main(0x610004, 0x2B9);
+    D_8010C1CC_swing_n_swipe[1] = Hu3DModelRead(0x610004, 0x2B9);
     D_8010C1D0_swing_n_swipe[2] = func_8010B8EC_swing_n_swipe(0x610004);
     Hu3DModelCameraSet(D_8010C1CC_swing_n_swipe[1], 0);
     object->func = func_8010B23C_swing_n_swipe;
@@ -1496,7 +1496,7 @@ void func_8010B23C_swing_n_swipe(omObjData *object) {
                 z = Hu3DData[D_8010C170_swing_n_swipe[i][0]].pos.z + 50.0f;
                 Hu3DModelPosSet(D_8010C1C0_swing_n_swipe[i], x, y, z);
                 Hu3DModelCameraSet(D_8010C1C0_swing_n_swipe[i], 1);
-                func_8001C5B4_main(D_8010C1C0_swing_n_swipe[i], D_8010C1D0_swing_n_swipe[0]);
+                Hu3DMotionModelSet(D_8010C1C0_swing_n_swipe[i], D_8010C1D0_swing_n_swipe[0]);
                 Hu3DModelCameraSet(D_8010C190_swing_n_swipe[i][0], 0);
                 Hu3DModelCameraSet(D_8010C190_swing_n_swipe[i][1], 0);
                 Hu3DModelCameraSet(D_8010C190_swing_n_swipe[i][2], 0);
@@ -1521,7 +1521,7 @@ void func_8010B23C_swing_n_swipe(omObjData *object) {
         z = Hu3DData[D_8010C190_swing_n_swipe[index][0]].pos.z + 50.0f;
         Hu3DModelPosSet(D_8010C1C0_swing_n_swipe[index], Hu3DData[D_8010C190_swing_n_swipe[index][0]].pos.x, 10.0f, z);
         Hu3DModelCameraSet(D_8010C1C0_swing_n_swipe[index], 1);
-        func_8001C5B4_main(D_8010C1C0_swing_n_swipe[index], D_8010C1D0_swing_n_swipe[0]);
+        Hu3DMotionModelSet(D_8010C1C0_swing_n_swipe[index], D_8010C1D0_swing_n_swipe[0]);
         Hu3DModelCameraSet(D_8010C190_swing_n_swipe[index][0], 0);
         Hu3DModelCameraSet(D_8010C190_swing_n_swipe[index][2], 0);
         D_8010C146_swing_n_swipe = 3;
@@ -1537,7 +1537,7 @@ void func_8010B23C_swing_n_swipe(omObjData *object) {
         Hu3DModelPosSet(D_8010C1CC_swing_n_swipe[0], D_8010C140_swing_n_swipe->trans.x, 100.0f,
                         D_8010C140_swing_n_swipe->trans.z + 150.0f);
         Hu3DModelCameraSet(D_8010C1CC_swing_n_swipe[0], 1);
-        func_8001C5B4_main(D_8010C1CC_swing_n_swipe[0], D_8010C1D0_swing_n_swipe[1]);
+        Hu3DMotionModelSet(D_8010C1CC_swing_n_swipe[0], D_8010C1D0_swing_n_swipe[1]);
         Hu3DModelCameraSet(D_8010C166_swing_n_swipe, 0);
         D_8010C15A_swing_n_swipe = 2;
     }
@@ -1552,7 +1552,7 @@ void func_8010B23C_swing_n_swipe(omObjData *object) {
         Hu3DModelPosSet(D_8010C1CC_swing_n_swipe[1], x, 50.0f,
                         D_8010C140_swing_n_swipe->trans.z + sindf(D_8010C140_swing_n_swipe->rot.y - 90.0f) * 100.0f);
         Hu3DModelCameraSet(D_8010C1CC_swing_n_swipe[1], 1);
-        func_8001C5B4_main(D_8010C1CC_swing_n_swipe[1], D_8010C1D0_swing_n_swipe[2]);
+        Hu3DMotionModelSet(D_8010C1CC_swing_n_swipe[1], D_8010C1D0_swing_n_swipe[2]);
         D_8010C15C_swing_n_swipe = 2;
     }
     if (D_8010C15C_swing_n_swipe == 2) {
@@ -1573,7 +1573,7 @@ s16 func_8010B840_swing_n_swipe(s32 dataNum, u16 attr, u16 pri, s16 x, s16 y) {
 }
 
 s16 func_8010B8EC_swing_n_swipe(s32 arg0) {
-    s16 temp = func_8000B13C_main(arg0);
+    s16 temp = Hu3DMotionModelRead(arg0);
 
     if (temp < 0) {
         temp = -1;

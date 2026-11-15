@@ -113,14 +113,14 @@ void func_801059A0_ice_rink_risk(void) {
     u8 camIndex;
     s16 sprite;
 
-    func_8001FE20_main(50);
-    func_80021BE0_main(&D_800EBEB0_minigame, 0x40);
-    func_800142A0_main(32);
+    MapCollInit(50);
+    Hu3DQuadPoolInit(&D_800EBEB0_minigame, 0x40);
+    Hu3DSprModelInit(32);
     omInitObjMan(50, 0);
-    func_8004A208_main();
+    omGameSysInit();
     func_800E1804_minigame();
-    func_8000B5F0_main(1);
-    camIndex = func_8000B638_main();
+    CamSetupInit(1);
+    camIndex = CamSetupMapCullAdd();
     ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 41.539f, 80.0f, 13000.0f);
@@ -150,7 +150,7 @@ void func_801059A0_ice_rink_risk(void) {
     espDispOn(sprite);
     espPosSet(sprite, 160, 120);
     espAttrSet(sprite, 0x4000);
-    func_8004B760_main(100, sprite, NULL, 41.539f, &D_801086D0_ice_rink_risk, &D_801086DC_ice_rink_risk);
+    omCameraViewCreate(100, sprite, NULL, 41.539f, &D_801086D0_ice_rink_risk, &D_801086DC_ice_rink_risk);
     CZoom *= 1.25f;
     WipeCreateIn(WIPE_TYPE_PREV, 0x10);
     func_800E5EA0_minigame(&D_8010860C_ice_rink_risk);
@@ -176,12 +176,12 @@ void func_80105EA4_ice_rink_risk(void) {
 
     for (i = 0; i < D_801085F8_ice_rink_risk; i++) {
         puck = D_800EBE70_minigame[i];
-        func_8001C258_main(puck->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        Hu3DModelAttrSet(puck->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DMotionTimeSet(puck->model[2], 0);
         Hu3DModelPosSet(puck->model[2], puck->trans.x, puck->trans.y, puck->trans.z);
         Hu3DModelScaleSet(puck->model[2], 1.2f, 1.2f, 1.2f);
-        func_8001C258_main(puck->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-        func_8001C258_main(puck->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(puck->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(puck->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         puck->func = NULL;
     }
     D_80108634_ice_rink_risk = 0;
@@ -206,7 +206,7 @@ void func_80105FAC_ice_rink_risk(omObjData *object) {
                 }
             }
             if (!hidden) {
-                func_8001C258_main(object->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                Hu3DModelAttrSet(object->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 Hu3DModelPosSet(object->model[i + 1], D_801085B0_ice_rink_risk[i].pos.x,
                                 D_801085B0_ice_rink_risk[i].pos.y, D_801085B0_ice_rink_risk[i].pos.z);
                 Hu3DMotionTimeSet(object->model[i + 1], 0);
@@ -289,7 +289,7 @@ void func_80106198_ice_rink_risk(omObjData *object) {
                         data = obj->data;
                         func_800E5798_minigame(obj, 0xD);
                         GwPlayer[data->unk59].bonusCoin += 10;
-                        func_80045ED0_main(D_800A178C_main[GwPlayer[data->unk59].chr][0] | 0x2F);
+                        HuAudCharVoicePlay(D_800A178C_main[GwPlayer[data->unk59].chr][0] | 0x2F);
                     }
                 }
             }
@@ -305,7 +305,7 @@ void func_80106198_ice_rink_risk(omObjData *object) {
     if (D_800D530C_main == 1) {
         WipeCreateOut(WIPE_TYPE_NORMAL, 20);
         HuAudSeqFadeOut(30);
-        func_8004AB0C_main(30);
+        HuAudFXAllFadeOut(30);
         object->func = func_80105E34_ice_rink_risk;
     }
 }
@@ -314,10 +314,10 @@ void func_80106554_ice_rink_risk(omObjData *object) {
     D_800EC1C0_minigame_ObjData *work;
 
     D_800EB73C_minigame = 20.0f;
-    object->model[0] = func_8000B0A0_main(0x3A0001, 0x80019);
-    object->model[1] = func_8000B108_main(8, 0x88D);
-    object->model[2] = func_8000B108_main(8, 0x88D);
-    object->model[3] = func_8000B108_main(8, 0x88D);
+    object->model[0] = Hu3DModelRead2(0x3A0001, 0x80019);
+    object->model[1] = Hu3DModelRead(8, 0x88D);
+    object->model[2] = Hu3DModelRead(8, 0x88D);
+    object->model[3] = Hu3DModelRead(8, 0x88D);
     object->trans.x = 0.0f;
     object->trans.y = 0.0f;
     object->trans.z = 0.0f;
@@ -349,26 +349,26 @@ void func_80106710_ice_rink_risk(omObjData *object, s32 model, s32 motion, s32 p
     func_800E1BA8_minigame(object, model, motion, player, 0xA99, 0xA99);
     data = object->data;
     chr = GwPlayer[data->unk59].chr;
-    object->model[3] = func_8000B108_main(3, 0x88D);
-    object->model[4] = func_8000B108_main(4, 0x88D);
-    object->model[5] = func_8000B108_main(6, 0x88D);
-    object->model[7] = func_8000B108_main(8, 0x88D);
-    func_800E5A00_minigame(object, 0, func_80017BB8_main(chr, 0), 1, 0);
-    func_800E5A00_minigame(object, 1, func_80017BB8_main(chr, 1), 1, 0);
-    func_800E5A00_minigame(object, 2, func_80017BB8_main(chr, 2), 1, 0);
-    func_800E5A00_minigame(object, 6, func_80017BB8_main(chr, 4), 1, 0x13);
-    func_800E5A00_minigame(object, 9, func_80017BB8_main(chr, 7), 1, 0x27);
-    func_800E5A00_minigame(object, 0x11, func_80017BB8_main(chr, 0xE), 1, 0xF);
-    func_800E5A00_minigame(object, 0xA, func_80017BB8_main(chr, 0x11), 1, 0x27);
-    func_800E5A00_minigame(object, 0x15, func_80017BB8_main(chr, 0x1F), 0, 0);
-    func_800E5A00_minigame(object, 3, func_80017BB8_main(chr, 0x1D), 1, 0);
-    func_800E5A00_minigame(object, 4, func_80017BB8_main(chr, 0x1E), 1, 0);
-    func_800E5A00_minigame(object, 0x1E, func_80017BB8_main(chr, 0x20), 2, 0);
-    func_800E5A00_minigame(object, 0x1F, func_80017BB8_main(chr, 0x21), 2, 0);
-    func_800E5A00_minigame(object, 0x20, func_80017BB8_main(chr, 0x22), 0, 0);
-    func_800E5A00_minigame(object, 0x26, func_80017BB8_main(chr, 0x1A), 1, 0);
-    func_800E5978_minigame(object, 0xD, func_80017BB8_main(chr, 0x2F), 1, 0x78);
-    func_800E5978_minigame(object, 0xE, func_80017BB8_main(chr, 0x36), 1, 0x78);
+    object->model[3] = Hu3DModelRead(3, 0x88D);
+    object->model[4] = Hu3DModelRead(4, 0x88D);
+    object->model[5] = Hu3DModelRead(6, 0x88D);
+    object->model[7] = Hu3DModelRead(8, 0x88D);
+    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(chr, 0), 1, 0);
+    func_800E5A00_minigame(object, 1, CharMotionDataNumGet(chr, 1), 1, 0);
+    func_800E5A00_minigame(object, 2, CharMotionDataNumGet(chr, 2), 1, 0);
+    func_800E5A00_minigame(object, 6, CharMotionDataNumGet(chr, 4), 1, 0x13);
+    func_800E5A00_minigame(object, 9, CharMotionDataNumGet(chr, 7), 1, 0x27);
+    func_800E5A00_minigame(object, 0x11, CharMotionDataNumGet(chr, 0xE), 1, 0xF);
+    func_800E5A00_minigame(object, 0xA, CharMotionDataNumGet(chr, 0x11), 1, 0x27);
+    func_800E5A00_minigame(object, 0x15, CharMotionDataNumGet(chr, 0x1F), 0, 0);
+    func_800E5A00_minigame(object, 3, CharMotionDataNumGet(chr, 0x1D), 1, 0);
+    func_800E5A00_minigame(object, 4, CharMotionDataNumGet(chr, 0x1E), 1, 0);
+    func_800E5A00_minigame(object, 0x1E, CharMotionDataNumGet(chr, 0x20), 2, 0);
+    func_800E5A00_minigame(object, 0x1F, CharMotionDataNumGet(chr, 0x21), 2, 0);
+    func_800E5A00_minigame(object, 0x20, CharMotionDataNumGet(chr, 0x22), 0, 0);
+    func_800E5A00_minigame(object, 0x26, CharMotionDataNumGet(chr, 0x1A), 1, 0);
+    func_800E5978_minigame(object, 0xD, CharMotionDataNumGet(chr, 0x2F), 1, 0x78);
+    func_800E5978_minigame(object, 0xE, CharMotionDataNumGet(chr, 0x36), 1, 0x78);
     data->unkEC = func_80106A60_ice_rink_risk;
     func_800E149C_minigame(object, 0, 2);
     func_800E3568_minigame(data, 0, func_80106FC0_ice_rink_risk);
@@ -391,17 +391,17 @@ s32 func_80106A60_ice_rink_risk(omObjData *object, omObjData *other) {
     dir.y = object->trans.y - other->trans.y;
     dir.z = object->trans.z - other->trans.z;
     half = HuSqrtf(dir.x * dir.x + dir.y * dir.y + dir.z * dir.z) * 0.5f;
-    func_800202FC_main(&dir);
+    MapVecNormalize(&dir);
     x += half * dir.x;
     y += half * dir.y;
     z += half * dir.z;
-    func_8004AC98_main(0x3D4, data->unk59);
+    HuAudPlayerFXPlay(0x3D4, data->unk59);
     PlayerFXPlay(0x286, data->unk59);
     func_800E5798_minigame(object, 0x26);
     data->unk38 = -D_800EB744_minigame;
     data->unk3C = atan2df(object->trans.x, object->trans.z);
     data->unk40 = D_800EB760_minigame * 0.8f;
-    func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     func_800E4C88_minigame(object, 7, x, y, z, 0.0f, 0.0f);
     D_801085FC_ice_rink_risk[data->unk59] = 0;
     object->func = func_80106C54_ice_rink_risk;
@@ -437,9 +437,9 @@ void func_80106C54_ice_rink_risk(omObjData *object) {
     z += cosdf(data->unk3C) * data->unk40;
     if (HuSqrtf(x * x + y * y + z * z) > 2000.0f) {
         object->func = NULL;
-        func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
-    func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     D_8010863C_ice_rink_risk[data->unk59]++;
     object->trans.x = x;
     object->trans.y = y;
@@ -457,14 +457,14 @@ s32 func_80106E20_ice_rink_risk(omObjData *object) {
     }
     if (object->trans.y < -2000.0f) {
         object->func = NULL;
-        func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
     if (D_8010864C_ice_rink_risk[data->unk59] == 1) {
         func_800E5798_minigame(object, 0x26);
         data->unk38 = -D_800EB744_minigame;
         data->unk3C = atan2df(object->trans.x, object->trans.z);
         data->unk40 = D_800EB760_minigame * 0.8f;
-        func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         D_801085FC_ice_rink_risk[data->unk59] = 0;
         object->func = func_80106C54_ice_rink_risk;
         data->unk50 |= 0x400;
@@ -522,7 +522,7 @@ s32 func_80106FC0_ice_rink_risk(omObjData *object) {
             dir.x = object->trans.x - puck->trans.x;
             dir.y = 0.0f;
             dir.z = object->trans.z - puck->trans.z;
-            func_800202FC_main(&dir);
+            MapVecNormalize(&dir);
             D_800CBB6E_main[pad] = dir.x * 60.0f * D_80108664_ice_rink_risk[difficulty];
             D_800D20A1_main[pad] = dir.z * -60.0f * D_80108664_ice_rink_risk[difficulty];
             D_800D5558_main[pad] |= 0x8000;
@@ -547,7 +547,7 @@ s32 func_80106FC0_ice_rink_risk(omObjData *object) {
             dir.x = dx - object->trans.x;
             dir.y = 0.0f;
             dir.z = dz - object->trans.z;
-            func_800202FC_main(&dir);
+            MapVecNormalize(&dir);
             D_800CBB6E_main[pad] = dir.x * 60.0f * D_80108664_ice_rink_risk[difficulty];
             D_800D20A1_main[pad] = dir.z * -60.0f * D_80108664_ice_rink_risk[difficulty];
         } else {
@@ -557,7 +557,7 @@ s32 func_80106FC0_ice_rink_risk(omObjData *object) {
                 dir.x = -object->trans.x;
                 dir.y = 0.0f;
                 dir.z = -object->trans.z;
-                func_800202FC_main(&dir);
+                MapVecNormalize(&dir);
                 D_800CBB6E_main[pad] = dir.x * 60.0f * D_80108664_ice_rink_risk[difficulty];
                 D_800D20A1_main[pad] = dir.z * -60.0f * D_80108664_ice_rink_risk[difficulty];
             }
@@ -603,9 +603,9 @@ void func_80107760_ice_rink_risk(omObjData *object) {
     object->data = HuMemAllocTag(sizeof(IceRinkRiskPuckWork), TAG_OVERLAY);
     memset(object->data, 0, sizeof(IceRinkRiskPuckWork));
     work = OM_GET_DATA_PTR(object, IceRinkRiskPuckWork);
-    object->model[0] = func_8000B0A0_main(0x3A0000, 0x899);
-    object->model[1] = func_8000B0D4_main(9, 0xADD);
-    object->model[2] = func_8000B108_main(0x3A0002, 0xADD);
+    object->model[0] = Hu3DModelRead2(0x3A0000, 0x899);
+    object->model[1] = Hu3DModelRead3(9, 0xADD);
+    object->model[2] = Hu3DModelRead(0x3A0002, 0xADD);
     func_800E3584_minigame(object->model[1]);
     object->func = func_8010796C_ice_rink_risk;
     work->unk44 = 0.3f;
@@ -677,7 +677,7 @@ void func_8010796C_ice_rink_risk(omObjData *object) {
         }
         func_800E17D4_minigame(object, x + D_800EBE2C_minigame, y, z + D_800EC5D8_minigame);
         D_80108688_ice_rink_risk[work->unk56] += work->unk40 / 5.0f;
-        D_80108688_ice_rink_risk[work->unk56] = func_800202A8_main(D_80108688_ice_rink_risk[work->unk56]);
+        D_80108688_ice_rink_risk[work->unk56] = HuAngleWrap(D_80108688_ice_rink_risk[work->unk56]);
         func_80088910_main(Hu3DData[object->model[0]].mtx, 0.0f, D_80108688_ice_rink_risk[work->unk56], 0.0f);
     }
 }
@@ -730,7 +730,7 @@ void func_80107DEC_ice_rink_risk(omObjData *object, f32 x, f32 y, f32 z, f32 flo
         Hu3DModelPosSet(object->model[1], x, floorY + 5.0f, z);
         Hu3DModelScaleSet(object->model[1], scale, 1.0f, scale);
         func_800E3628_minigame(object->model[1], normal);
-        func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     }
 }
 
@@ -864,7 +864,7 @@ void func_80108384_ice_rink_risk(omObjData *object, f32 dx, f32 dz) {
     normal.x = dx;
     normal.y = dir.y = 0.0f;
     normal.z = dz;
-    func_800202FC_main(&normal);
+    MapVecNormalize(&normal);
     dir.x = sindf(work->unk3C + 180.0f);
     dir.z = cosdf(work->unk3C + 180.0f);
     dot = HuVecDot3F(&normal, &dir);

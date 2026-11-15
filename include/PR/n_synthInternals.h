@@ -268,8 +268,8 @@ s32 _n_timeToSamples(s32 micros);
  * MP3 links its own versions of n_alSynStartVoiceParams (src/n_synstartvoiceparam.c) and
  * n_alSynSetPan (src/n_synsetpan.c) outside of the library.
  */
-void func_80066270_main(N_ALVoice *v, ALWaveTable *w, f32 pitch, s16 vol, ALPan pan, u8 fxmix, ALMicroTime t);
-void func_80066400_main(N_ALVoice *v, u8 pan);
+void n_alSynStartVoiceParams(N_ALVoice *v, ALWaveTable *w, f32 pitch, s16 vol, ALPan pan, u8 fxmix, ALMicroTime t);
+void n_alSynSetPan(N_ALVoice *v, u8 pan);
 
 void n_alLoadParam(N_PVoice *filter, s32 paramID, void *param);
 Acmd *n_alResamplePull(N_PVoice *filter, s16 *outp, Acmd *p);

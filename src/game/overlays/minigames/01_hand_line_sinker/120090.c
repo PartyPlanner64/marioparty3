@@ -24,8 +24,8 @@ extern Gfx *gMainGfxPos;
 void func_8010B750_hand_line_sinker(omObjData *obj);
 
 void func_8010B5B0_hand_line_sinker(void) {
-    func_8000B5F0_main(1);
-    func_8000B638_main();
+    CamSetupInit(1);
+    CamSetupMapCullAdd();
     gCameraList->fov = 40.0f;
 }
 
@@ -121,7 +121,7 @@ FishingLine *func_8010BA80_hand_line_sinker(u8 r, u8 g, u8 b) {
     s16 i;
 
     line = HuMemAlloc(sizeof(FishingLine));
-    line->model = func_8001A894_main(0x1080, NULL, 4);
+    line->model = Hu3DModelDLCreate(0x1080, NULL, 4);
     for (i = 0; i < D_800D1FF0_main; i++) {
         line->vtx[i] = HuMemAlloc(32 * sizeof(Vtx));
         line->gfx[i] = HuMemAlloc(128 * sizeof(Gfx));
@@ -188,8 +188,8 @@ void func_8010BE6C_hand_line_sinker(FishingLine *line) {
 
     Hu3DModelKill(line->model);
     for (i = 0; i < D_800D1FF0_main; i++) {
-        func_80019C00_main(line->vtx[i]);
-        func_80019C00_main(line->gfx[i]);
+        HuMemDelayFree(line->vtx[i]);
+        HuMemDelayFree(line->gfx[i]);
     }
-    func_80019C00_main(line);
+    HuMemDelayFree(line);
 }

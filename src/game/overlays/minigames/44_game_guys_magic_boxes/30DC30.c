@@ -177,7 +177,7 @@ s16 func_8010AC18_game_guys_magic_boxes(void) {
         HuAudFXPlay(0x52B);
     }
     if (D_8010C260_game_guys_magic_boxes == 90) {
-        func_8004AB0C_main(30);
+        HuAudFXAllFadeOut(30);
         HuAudSeqPlay(0x43);
     }
     if (D_8010C260_game_guys_magic_boxes == 115) {

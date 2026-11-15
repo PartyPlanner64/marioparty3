@@ -10,15 +10,15 @@
 u8 D_80097720_main[] = { 0, 1, 2, 1 };
 extern EffectGroup *D_800D6A00_main[EFFECT_GROUP_MAX];
 
-s16 func_8000CBA0_main(s32 fileId, s32 attr) {
+s16 EffectModelCreate(s32 fileId, s32 attr) {
     s16 model;
     HmfData *hmf;
     HmfModelData_UnkBC_Struct *bc;
     HmfModelData_UnkBC_Unk58_Struct *particle;
     s16 i;
 
-    model = func_8000CC98_main(fileId, attr & ~0x60);
-    func_80013390_main(model, -1, NULL, func_8000D268_main);
+    model = EffectModelRead(fileId, attr & ~0x60);
+    Hu3DParticleCreate(model, -1, NULL, EffectParticleHook);
     hmf = Hu3DData[model].hmf;
     bc = Hu3DData[model].unkBC;
     particle = bc->unk58;
@@ -33,18 +33,18 @@ s16 func_8000CBA0_main(s32 fileId, s32 attr) {
     return model;
 }
 
-s16 func_8000CC98_main(s32 fileId, s32 attr) {
-    s16 model = func_8000B108_main(fileId, attr);
+s16 EffectModelRead(s32 fileId, s32 attr) {
+    s16 model = Hu3DModelRead(fileId, attr);
 
     Hu3DModelPosSet(model, 0.0f, 0.0f, 0.0f);
-    func_8001C2FC_main(model, 0x20000, 0x20000);
+    Hu3DModelObjAttrSet(model, 0x20000, 0x20000);
     Hu3DModelRemakeStatic(model);
-    func_8001C954_main(model);
-    func_8001C514_main(model);
+    Hu3DModelVtxBufMake(model);
+    Hu3DModelDynamicFree(model);
     return model;
 }
 
-void func_8000CD00_main(s16 model, f32 arg1, f32 arg2, f32 arg3) {
+void EffectParamSet(s16 model, f32 arg1, f32 arg2, f32 arg3) {
     HmfData *hmf = Hu3DData[model].hmf;
     HmfModelData_UnkBC_Struct *bc = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle = bc->unk58;
@@ -57,7 +57,7 @@ void func_8000CD00_main(s16 model, f32 arg1, f32 arg2, f32 arg3) {
     }
 }
 
-s32 func_8000CD74_main(s16 model, f32 x, f32 y, f32 z) {
+s32 EffectEmit(s16 model, f32 x, f32 y, f32 z) {
     HmfData *hmf = Hu3DData[model].hmf;
     HmfModelData_UnkBC_Struct *bc = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle = bc->unk58;
@@ -76,13 +76,13 @@ s32 func_8000CD74_main(s16 model, f32 x, f32 y, f32 z) {
     return 0;
 }
 
-s16 func_8000CED8_main(s32 fileId, s32 attr) {
+s16 EffectCreate(s32 fileId, s32 attr) {
     omObjData *obj;
     s16 model;
     HmfModelData_UnkBC_Struct *bc;
 
-    obj = omAddObj(1000, 0, 0, -1, func_8000D06C_main);
-    model = func_8000CBA0_main(fileId, attr);
+    obj = omAddObj(1000, 0, 0, -1, EffectObjExec);
+    model = EffectModelCreate(fileId, attr);
     obj->work[0] = model;
     bc = Hu3DData[model].unkBC;
     bc->unk1C.f = bc->unk20.f = bc->unk24.f = 0.0f;
@@ -92,7 +92,7 @@ s16 func_8000CED8_main(s32 fileId, s32 attr) {
     return model;
 }
 
-void func_8000CFA4_main(s16 model, f32 x, f32 y, f32 z) {
+void EffectPosSet(s16 model, f32 x, f32 y, f32 z) {
     HmfModelData_UnkBC_Struct *bc = Hu3DData[model].unkBC;
 
     bc->unk1C.f = x;
@@ -100,19 +100,19 @@ void func_8000CFA4_main(s16 model, f32 x, f32 y, f32 z) {
     bc->unk24.f = z;
 }
 
-void func_8000CFD8_main(s16 model, s16 time) {
+void EffectTimeSet(s16 model, s16 time) {
     Hu3DData[model].unkBC->unk14 = time;
 }
 
-void func_8000D018_main(s16 model, f32 range) {
+void EffectRangeSet(s16 model, f32 range) {
     Hu3DData[model].unkBC->unk10.f = range;
 }
 
-void func_8000D044_main(s16 model) {
-    func_800138EC_main(model, 5, 4);
+void EffectStop(s16 model) {
+    Hu3DParticleAttrSet(model, 5, 4);
 }
 
-void func_8000D06C_main(omObjData *obj) {
+void EffectObjExec(omObjData *obj) {
     s16 model = obj->work[0];
     HmfData *hmf = Hu3DData[model].hmf;
     HmfModelData_UnkBC_Struct *bc = Hu3DData[model].unkBC;
@@ -143,11 +143,11 @@ void func_8000D06C_main(omObjData *obj) {
     if (bc->unk04 & 1) {
         x = rand8() * bc->unk10.f / 256.0f - bc->unk10.f / 2.0f;
         z = rand8() * bc->unk10.f / 256.0f - bc->unk10.f / 2.0f;
-        func_8000CD74_main(model, x + bc->unk1C.f, bc->unk20.f, z + bc->unk24.f);
+        EffectEmit(model, x + bc->unk1C.f, bc->unk20.f, z + bc->unk24.f);
     }
 }
 
-void func_8000D268_main(s16 model) {
+void EffectParticleHook(s16 model) {
     HmfData *hmf = Hu3DData[model].hmf;
     HmfModelData_UnkBC_Struct *bc = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle = bc->unk58;
@@ -169,7 +169,7 @@ void func_8000D268_main(s16 model) {
     bc->unk02++;
 }
 
-void func_8000D3AC_main(void) {
+void EffectGroupInit(void) {
     EffectGroup **slot = D_800D6A00_main;
     s16 i;
 
@@ -178,7 +178,7 @@ void func_8000D3AC_main(void) {
     }
 }
 
-s16 func_8000D3E0_main(s32 fileId, s32 attr, s16 count, void (*func)(s16)) {
+s16 EffectGroupCreate(s32 fileId, s32 attr, s16 count, void (*func)(s16)) {
     EffectGroup **slot;
     EffectGroup *group;
     EffectGroupModel *entry;
@@ -200,24 +200,24 @@ s16 func_8000D3E0_main(s32 fileId, s32 attr, s16 count, void (*func)(s16)) {
     entry = HuMemAllocTag(count * sizeof(EffectGroupModel), TAG_OVERLAY);
     group->models = entry;
     for (j = 0; j < count; j++, entry++) {
-        model = func_8000CC98_main(fileId, attr | 4);
+        model = EffectModelRead(fileId, attr | 4);
         entry->model = model;
-        func_80013390_main(model, -1, NULL, func);
-        func_800138EC_main(model, 6, 6);
+        Hu3DParticleCreate(model, -1, NULL, func);
+        Hu3DParticleAttrSet(model, 6, 6);
         entry->unk04.x = entry->unk04.y = entry->unk04.z = 0.0f;
         entry->unk00 = 0;
     }
     return i;
 }
 
-s16 func_8000D550_main(s16 index, f32 x, f32 y, f32 z) {
+s16 EffectGroupEmit(s16 index, f32 x, f32 y, f32 z) {
     EffectGroup *group = D_800D6A00_main[index];
     EffectGroupModel *entry = group->models;
     s16 i;
     s16 model;
 
     for (i = 0; i < group->count; i++, entry++) {
-        if (func_80013928_main(entry->model) & 4) {
+        if (Hu3DParticleAttrGet(entry->model) & 4) {
             break;
         }
     }
@@ -226,17 +226,17 @@ s16 func_8000D550_main(s16 index, f32 x, f32 y, f32 z) {
     }
     model = entry->model;
     Hu3DModelPosSet(model, x, y, z);
-    func_80013954_main(model, 0);
-    func_800138EC_main(model, 6, 0);
-    func_8001C258_main(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DParticleCntSet(model, 0);
+    Hu3DParticleAttrSet(model, 6, 0);
+    Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     return model;
 }
 
-s16 func_8000D658_main(s32 attr, s16 count) {
-    return func_8000D3E0_main(0x85, attr, count, func_8000D694_main);
+s16 EffectGroupStarCreate(s32 attr, s16 count) {
+    return EffectGroupCreate(0x85, attr, count, EffectGroupStarHook);
 }
 
-void func_8000D694_main(s16 model) {
+void EffectGroupStarHook(s16 model) {
     HmfData *hmf = Hu3DData[model].hmf;
     HmfModelData_UnkBC_Struct *bc = Hu3DData[model].unkBC;
     s16 count = hmf->unk1A;
@@ -270,7 +270,7 @@ void func_8000D694_main(s16 model) {
         }
         if (++bc->unk02 >= 8) {
             bc->unk04 |= 4;
-            func_8001C258_main(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         }
     }
 }

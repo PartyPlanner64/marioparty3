@@ -52,7 +52,7 @@ static void func_800E1560_name_81(DuelHelpWin *arg0) {
     HuWinPriSet(arg0->winID, 5);
     HuWinBGTPLvlSet(arg0->winID, 0);
     HuWinMesSpeedSet(arg0->winID, 0);
-    func_8005B63C_main(arg0->winID, HUWIN_ATTR_NONE, HUWIN_ATTR_OUTLINE);
+    HuWinAttrSet(arg0->winID, HUWIN_ATTR_NONE, HUWIN_ATTR_OUTLINE);
     HuWinMesSet(arg0->winID, D_80100F60_name_81[arg0->unk_00], -1, -1);
 }
 

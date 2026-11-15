@@ -304,16 +304,16 @@ void func_801059A0_marios_puzzle_party(void) {
     s32 camIndex;
     s32 i;
 
-    func_8001FE20_main(50);
-    func_80021BE0_main(&D_800EBEB0_minigame, 64);
-    func_800142A0_main(32);
+    MapCollInit(50);
+    Hu3DQuadPoolInit(&D_800EBEB0_minigame, 64);
+    Hu3DSprModelInit(32);
     omInitObjMan(170, 200);
-    func_8004A208_main();
+    omGameSysInit();
     func_800E1804_minigame();
     HuWinInit();
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    func_8000B5F0_main(1);
-    camIndex = func_8000B638_main() & 0xFF;
+    CamSetupInit(1);
+    camIndex = CamSetupMapCullAdd() & 0xFF;
     ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 16.0f, 500.0f, 5000.0f);
@@ -360,7 +360,7 @@ void func_80105C98_marios_puzzle_party(void) {
             D_801160E8_marios_puzzle_party = 1;
             WipeCreateOut(0, 20);
             HuAudSeqFadeOut(30);
-            func_8004AB0C_main(30);
+            HuAudFXAllFadeOut(30);
             while (WipeStatGet()) {
                 HuPrcVSleep();
             }
@@ -523,11 +523,11 @@ void func_8010604C_marios_puzzle_party(void) {
         data = DataRead(0x31);
         D_801160A0_marios_puzzle_party = HuSprAnimRead(data);
         DataClose(data);
-        func_8000B880_main(D_801160A2_marios_puzzle_party, 0.0f, 1.0f, 0.0f);
+        espPalColorSet(D_801160A2_marios_puzzle_party, 0.0f, 1.0f, 0.0f);
         data = DataRead(0x40001F);
         D_801160A4_marios_puzzle_party = HuSprAnimRead(data);
         DataClose(data);
-        func_8000B880_main(D_801160A6_marios_puzzle_party, 0.0f, 1.0f, 0.0f);
+        espPalColorSet(D_801160A6_marios_puzzle_party, 0.0f, 1.0f, 0.0f);
         omAddPrcObj(func_8010E12C_marios_puzzle_party, 0x4001, 0, 0);
         data = DataRead(0x31);
         D_801160A8_marios_puzzle_party = HuSprAnimRead(data);
@@ -959,7 +959,7 @@ void func_80107CBC_marios_puzzle_party(void) {
     HuSprPriSet(group, 1, 0x100);
     HuSprColorSet(group, 1, 255, 255, 255);
     HuSprTPLvlSet(group, 1, 255);
-    func_800554C4_main(group, 1, 0);
+    HuSprParentSet(group, 1, 0);
     for (i = 2; i < 5; i++) {
         HuSprGrpMemberSet(group, i, D_801160DA_marios_puzzle_party, 0);
         HuSprAnimModeSet(group, i, HUSPR_ANIM_MODE_STOP);
@@ -969,7 +969,7 @@ void func_80107CBC_marios_puzzle_party(void) {
         HuSprPriSet(group, i, 0x100);
         HuSprColorSet(group, i, 255, 255, 255);
         HuSprTPLvlSet(group, i, 255);
-        func_800554C4_main(group, i, 0);
+        HuSprParentSet(group, i, 0);
     }
     HuSprGrpMemberSet(group, 5, D_801160E2_marios_puzzle_party, 0);
     HuSprAnimModeSet(group, 5, HUSPR_ANIM_MODE_STOP);
@@ -979,10 +979,10 @@ void func_80107CBC_marios_puzzle_party(void) {
     HuSprPriSet(group, 5, 0x100);
     HuSprColorSet(group, 5, 255, 255, 255);
     HuSprTPLvlSet(group, 5, 255);
-    func_800554C4_main(group, 5, 0);
+    HuSprParentSet(group, 5, 0);
     HuSprGrpMemberSet(group, 0, D_801160DE_marios_puzzle_party, 0);
     HuSprAttrSet(group, 0, 0x8000);
-    func_800554C4_main(group, 0, -1);
+    HuSprParentSet(group, 0, -1);
     HuSprPosSet(group, 0, D_80110080_marios_puzzle_party[board][0] + 42, D_80110080_marios_puzzle_party[board][1] - 70);
     HuSprScaleSet(group, 0, scale, scale);
     flash = TRUE;
@@ -1110,12 +1110,12 @@ void func_80108568_marios_puzzle_party(s32 board, s32 arg1) {
         }
         if (found) {
             D_80116108_marios_puzzle_party[board]++;
-            func_8004AC98_main(0x3F8, board);
+            HuAudPlayerFXPlay(0x3F8, board);
             chain = D_80116108_marios_puzzle_party[board] - 1;
             if (chain < 0 || chain > 4) {
                 chain = 4;
             }
-            func_8004AC98_main(chain + 0x400, board);
+            HuAudPlayerFXPlay(chain + 0x400, board);
             omVibrate(board, 2, 3, 10);
             for (pathIdx = 1; pathIdx < 5; pathIdx++) {
                 for (spaceIdx = 1; spaceIdx < 40; spaceIdx++) {
@@ -1206,7 +1206,7 @@ void func_80108BB0_marios_puzzle_party(void) {
                                           (D_80110080_marios_puzzle_party[D_801160E4_marios_puzzle_party][1] - block->y) / 7);
         func_80110000_marios_puzzle_party(block->sprite);
     }
-    func_80019C00_main(HuPrcCurrentGet()->user_data);
+    HuMemDelayFree(HuPrcCurrentGet()->user_data);
 }
 
 void func_80108C80_marios_puzzle_party(void) {
@@ -1282,7 +1282,7 @@ void func_80108C80_marios_puzzle_party(void) {
     if ((spaceIdx >= 20 && type == 1) || (spaceIdx >= 21 && type == 3)) {
         func_80107224_marios_puzzle_party(block->board, pathIdx, spaceIdx);
     } else if (block->unk_18 != 0) {
-        func_8004AC98_main(0x3F9, block->board);
+        HuAudPlayerFXPlay(0x3F9, block->board);
     }
     omDelPrcObj(NULL);
     while (TRUE) {
@@ -1291,7 +1291,7 @@ void func_80108C80_marios_puzzle_party(void) {
 }
 
 void func_8010913C_marios_puzzle_party(void) {
-    func_80019C00_main(HuPrcCurrentGet()->user_data);
+    HuMemDelayFree(HuPrcCurrentGet()->user_data);
 }
 
 void func_80109160_marios_puzzle_party(void) {
@@ -1393,7 +1393,7 @@ s32 func_8010961C_marios_puzzle_party(s32 board, s32 x, s32 sprGroup, MarioPuzzl
     pathIdx = x - 22;
     pathIdx = (pathIdx - D_80110080_marios_puzzle_party[board][0]) / 14 + 1;
     omAddPrcObj(func_8010D8E8_marios_puzzle_party, 0x4001, 0x800, 0)->user_data = (void *)board;
-    func_8004AC98_main(0x3FA, board);
+    HuAudPlayerFXPlay(0x3FA, board);
     omVibrate(board, 20, 0, 20);
     while (TRUE) {
         count[0] = func_80107070_marios_puzzle_party(board, pathIdx);
@@ -1419,7 +1419,7 @@ s32 func_8010961C_marios_puzzle_party(s32 board, s32 x, s32 sprGroup, MarioPuzzl
             squash->cursor = cursor;
         }
         if (height[0] <= height[1]) {
-            func_8004AC98_main(0x3FB, board);
+            HuAudPlayerFXPlay(0x3FB, board);
             process = omAddPrcObj(func_80109160_marios_puzzle_party, 0x4001, 0x800, 0);
             HuPrcChildLink(HuPrcCurrentGet(), process);
             squash = process->user_data = HuMemAlloc(sizeof(MarioPuzzlePartySquash));
@@ -1456,14 +1456,14 @@ void func_801098A0_marios_puzzle_party(void) {
         HuSprAttrReset(group, i, 0xFFFF);
         HuSprAttrSet(group, i, 0x4000);
         HuSprPriSet(group, i, 0x1FE);
-        func_800554C4_main(group, i, 0);
+        HuSprParentSet(group, i, 0);
     }
     HuSprGrpMemberSet(group, 8, D_801160D6_marios_puzzle_party, 0);
     HuSprPosSet(group, 8, 0, 12);
     HuSprAttrReset(group, 8, 0xFFFF);
     HuSprAttrSet(group, 8, 0x4000);
     HuSprPriSet(group, 8, 0x1FF);
-    func_800554C4_main(group, 8, 0);
+    HuSprParentSet(group, 8, 0);
     while (TRUE) {
         if (D_80116128_marios_puzzle_party[board] < 0) {
             D_80116128_marios_puzzle_party[board] = 0;
@@ -1573,9 +1573,9 @@ void func_8010A0D8_marios_puzzle_party(void) {
     f32 z;
 
     if (board == 4) {
-        func_8004AC98_main(0x3FE, 0);
+        HuAudPlayerFXPlay(0x3FE, 0);
     } else {
-        func_8004AC98_main(0x3FE, board);
+        HuAudPlayerFXPlay(0x3FE, board);
     }
     group0 = HuSprGrpCreate(1, 5);
     HuSprGrpMemberSet(group0, 0, D_801160B2_marios_puzzle_party, 0);
@@ -1598,17 +1598,17 @@ void func_8010A0D8_marios_puzzle_party(void) {
         y = sindf(angle) * 150.0f;
         angle += 6.0f;
         z += 111.111115f;
-        func_80054B1C_main(group0, 0, 0, xOffsets[board], y, z);
-        func_80054EE0_main(group0, 0, 0, xOffsets[board], y, z);
+        HuSpr3Dto2D(group0, 0, 0, xOffsets[board], y, z);
+        HuSpr3DPosSet(group0, 0, 0, xOffsets[board], y, z);
         if (D_80116158_marios_puzzle_party == 0) {
-            func_80054B1C_main(group1, 0, 0, xOffsets[board] + 8.0f, y - 12.0f, z);
-            func_80054EE0_main(group1, 0, 0, xOffsets[board] + 8.0f, y - 12.0f, z);
+            HuSpr3Dto2D(group1, 0, 0, xOffsets[board] + 8.0f, y - 12.0f, z);
+            HuSpr3DPosSet(group1, 0, 0, xOffsets[board] + 8.0f, y - 12.0f, z);
         } else {
-            func_80054B1C_main(group1, 0, 0, xOffsets[board] + 16.0f, y - 12.0f, z);
-            func_80054EE0_main(group1, 0, 0, xOffsets[board] + 16.0f, y - 12.0f, z);
+            HuSpr3Dto2D(group1, 0, 0, xOffsets[board] + 16.0f, y - 12.0f, z);
+            HuSpr3DPosSet(group1, 0, 0, xOffsets[board] + 16.0f, y - 12.0f, z);
         }
-        func_80054B1C_main(group2, 0, 0, xOffsets[board], y - 12.0f, z);
-        func_80054EE0_main(group2, 0, 0, xOffsets[board], y - 12.0f, z);
+        HuSpr3Dto2D(group2, 0, 0, xOffsets[board], y - 12.0f, z);
+        HuSpr3DPosSet(group2, 0, 0, xOffsets[board], y - 12.0f, z);
         HuPrcVSleep();
     }
     HuSprGrpKill(group0);
@@ -1800,7 +1800,7 @@ void func_8010AD20_marios_puzzle_party(void) {
     HuSprAttrReset(display.sprGroup, 9, 0xFFFF);
     HuSprAttrSet(display.sprGroup, 9, 0xC000);
     HuSprPriSet(display.sprGroup, 9, 0x200);
-    func_800554C4_main(display.sprGroup, 9, 0);
+    HuSprParentSet(display.sprGroup, 9, 0);
     process = omAddPrcObj(func_801098A0_marios_puzzle_party, 0x4001, 0x800, 0);
     display.board = board;
     process->user_data = &display;
@@ -2030,10 +2030,10 @@ void func_8010AD20_marios_puzzle_party(void) {
             HuPrcVSleep();
         } while (next->y != j);
         if (D_80116158_marios_puzzle_party == 2) {
-            func_8004AC98_main(0x3FD, board);
+            HuAudPlayerFXPlay(0x3FD, board);
         }
         espBankSet(cursor->sprite, 1, 0);
-        func_8000BDDC_main(cursor->sprite, 1);
+        espAnimModeSet(cursor->sprite, 1);
         // the waiting piece becomes the active one
         sprite0 = cursor->blockSprites[0] = next->blockSprites[0];
         sprite1 = cursor->blockSprites[1] = next->blockSprites[1];
@@ -2523,7 +2523,7 @@ void func_8010D290_marios_puzzle_party(s32 board, s32 pathIdx, s32 spaceIdx) {
 }
 
 void func_8010D46C_marios_puzzle_party(void) {
-    func_80019C00_main(HuPrcCurrentGet()->user_data);
+    HuMemDelayFree(HuPrcCurrentGet()->user_data);
 }
 
 void func_8010D490_marios_puzzle_party(void) {
@@ -2742,7 +2742,7 @@ void func_8010E12C_marios_puzzle_party(void) {
     HuSprGrpMemberSet(group, 0, D_801160A2_marios_puzzle_party, 0);
     HuSprAttrReset(group, 0, 0xFFFF);
     HuSprAttrSet(group, 0, HUSPR_ATTR_DISPOFF);
-    func_800554C4_main(group, 0, -1);
+    HuSprParentSet(group, 0, -1);
     HuSprPriSet(group, 0, 0x100);
     record = GWMgRecordGet(8);
 
@@ -2760,7 +2760,7 @@ void func_8010E12C_marios_puzzle_party(void) {
             }
         }
         HuSprPriSet(group, i, 0x100);
-        func_800554C4_main(group, i, 0);
+        HuSprParentSet(group, i, 0);
     }
     // j is the digit count, i is the place value divisor.
     for (j = 4, i = 1000; j >= 2; j--, i /= 10) {
@@ -2781,7 +2781,7 @@ void func_8010E12C_marios_puzzle_party(void) {
     HuSprAttrReset(group, 5, 0xFFFF);
     HuSprAttrSet(group, 5, 8);
     HuSprPriSet(group, 5, 0x100);
-    func_800554C4_main(group, 5, 0);
+    HuSprParentSet(group, 5, 0);
     while (D_80110140_marios_puzzle_party.state != MG_STATE_RESULT) {
         HuPrcVSleep();
     }
@@ -2801,7 +2801,7 @@ void func_8010E12C_marios_puzzle_party(void) {
                 }
             }
             HuSprPriSet(group, i, 0x100);
-            func_800554C4_main(group, i, 0);
+            HuSprParentSet(group, i, 0);
         }
         for (j = 4, i = 1000; j >= 2; j--, i /= 10) {
             if (record / i != 0) {
@@ -2864,7 +2864,7 @@ void func_8010EAA0_marios_puzzle_party(void) {
     HuSprGrpMemberSet(group, 0, D_801160AA_marios_puzzle_party, 0);
     HuSprAttrReset(group, 0, 0xFFFF);
     HuSprAttrSet(group, 0, HUSPR_ATTR_DISPOFF);
-    func_800554C4_main(group, 0, -1);
+    HuSprParentSet(group, 0, -1);
     HuSprPriSet(group, 0, 0x100);
     HuSprPosSet(group, 0, 215, 30);
     D_80116160_marios_puzzle_party = 5400;
@@ -2874,7 +2874,7 @@ void func_8010EAA0_marios_puzzle_party(void) {
         HuSprAttrReset(group, i, 0xFFFF);
         HuSprAttrSet(group, i, 8);
         HuSprPriSet(group, i, 0x100);
-        func_800554C4_main(group, i, 0);
+        HuSprParentSet(group, i, 0);
         HuSprPosSet(group, i, x, 0);
         switch (i) {
             case 1:

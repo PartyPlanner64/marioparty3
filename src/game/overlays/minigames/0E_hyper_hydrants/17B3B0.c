@@ -161,11 +161,11 @@ void func_801059A0_hyper_hydrants(void) {
     s32 i;
     s32 j;
 
-    func_8001FE20_main(0x20);
-    func_80021BE0_main(&D_800EBEB0_minigame, 0x40);
-    func_800142A0_main(0x40);
+    MapCollInit(0x20);
+    Hu3DQuadPoolInit(&D_800EBEB0_minigame, 0x40);
+    Hu3DSprModelInit(0x40);
     omInitObjMan(0x20, 0);
-    func_8004A208_main();
+    omGameSysInit();
     D_800EC1B8_minigame = 0;
     D_800EC280_minigame = 0;
     D_800EBE28_minigame = 0;
@@ -287,8 +287,8 @@ void func_80105EB0_hyper_hydrants(s8 camera) {
 }
 
 void func_80105FC8_hyper_hydrants(void) {
-    func_8000B5F0_main(2);
-    func_8000B710_main(2);
+    CamSetupInit(2);
+    CamSetupMapCullAddMulti(2);
     ScissorSet(0, 0.0f, 0.0f, 160.0f, 240.0f);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 320.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 35.883f, 80.0f, 8000.0f);
@@ -358,11 +358,11 @@ void func_80106238_hyper_hydrants(omObjData *object) {
     data->unk12 = 0x4000;
     data->unk1E = 0;
     data->unk1C = 0;
-    func_8000B460_main(object, 0, func_80017BB8_main(character, 0));
-    func_8000B460_main(object, 1, func_80017BB8_main(character, 0x14));
-    func_8000B460_main(object, 2, func_80017BB8_main(character, 0x7B));
-    func_8000B460_main(object, 3, func_80017BB8_main(character, 0x2F));
-    func_8000B460_main(object, 4, func_80017BB8_main(character, 0x36));
+    omObjMotionRead(object, 0, CharMotionDataNumGet(character, 0));
+    omObjMotionRead(object, 1, CharMotionDataNumGet(character, 0x14));
+    omObjMotionRead(object, 2, CharMotionDataNumGet(character, 0x7B));
+    omObjMotionRead(object, 3, CharMotionDataNumGet(character, 0x2F));
+    omObjMotionRead(object, 4, CharMotionDataNumGet(character, 0x36));
     if (D_8010BE35_hyper_hydrants == 0) {
         D_8010BF40_hyper_hydrants = (rand8() * 5U) >> 7;
     }
@@ -373,7 +373,7 @@ void func_80106238_hyper_hydrants(omObjData *object) {
             object->trans.z = D_8010BDE0_hyper_hydrants.z;
             D_8010BFAA_hyper_hydrants = playerData->unk59;
             object->rot.y = 180.0f;
-            object->model[2] = func_8000B108_main(0x2F0004, 0xA99);
+            object->model[2] = Hu3DModelRead(0x2F0004, 0xA99);
             Hu3DModelRotSet(object->model[2], object->rot.x, object->rot.y, object->rot.z);
             Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[2]].motId, 0, 1, 2);
             Hu3DModelPosSet(object->model[2], object->trans.x, 0, object->trans.z);
@@ -389,10 +389,10 @@ void func_80106238_hyper_hydrants(omObjData *object) {
             object->trans.z = D_8010BDEC_hyper_hydrants.z;
             D_8010BFA8_hyper_hydrants = playerData->unk59;
             object->rot.y = 0;
-            object->model[2] = func_8000B108_main(0x2F0005, 0xA89);
-            func_8001C258_main(object->model[2], 0x10000, 0x10000);
-            func_8001F6BC_main(object->model[2], 0, 0, 0, 0);
-            func_8001F6F8_main(object->model[2], 16, 16, 16, 0);
+            object->model[2] = Hu3DModelRead(0x2F0005, 0xA89);
+            Hu3DModelAttrSet(object->model[2], 0x10000, 0x10000);
+            Hu3DModelPrimColorSet(object->model[2], 0, 0, 0, 0);
+            Hu3DModelEnvColorSet(object->model[2], 16, 16, 16, 0);
             Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[1]].motId, 0, 1, 2);
             if ((model >> 16) == 6) {
                 object->trans.z -= 48.7f;
@@ -410,7 +410,7 @@ void func_80106238_hyper_hydrants(omObjData *object) {
             object->trans.z = D_8010BDF8_hyper_hydrants.z;
             D_8010BFAB_hyper_hydrants = playerData->unk59;
             object->rot.y = 180.0f;
-            object->model[2] = func_8000B108_main(0x2F0006, 0xA99);
+            object->model[2] = Hu3DModelRead(0x2F0006, 0xA99);
             Hu3DModelRotSet(object->model[2], object->rot.x, object->rot.y, object->rot.z);
             Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[2]].motId, 0, 1, 2);
             Hu3DModelPosSet(object->model[2], object->trans.x, 0, object->trans.z);
@@ -426,10 +426,10 @@ void func_80106238_hyper_hydrants(omObjData *object) {
             object->trans.z = D_8010BE04_hyper_hydrants.z;
             D_8010BFA9_hyper_hydrants = playerData->unk59;
             object->rot.y = 0;
-            object->model[2] = func_8000B108_main(0x2F0007, 0xA89);
-            func_8001C258_main(object->model[2], 0x10000, 0x10000);
-            func_8001F6BC_main(object->model[2], 0, 0, 0, 0);
-            func_8001F6F8_main(object->model[2], 16, 16, 16, 0);
+            object->model[2] = Hu3DModelRead(0x2F0007, 0xA89);
+            Hu3DModelAttrSet(object->model[2], 0x10000, 0x10000);
+            Hu3DModelPrimColorSet(object->model[2], 0, 0, 0, 0);
+            Hu3DModelEnvColorSet(object->model[2], 16, 16, 16, 0);
             Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[1]].motId, 0, 1, 2);
             if ((model >> 16) == 6) {
                 object->trans.z -= 48.7f;
@@ -446,7 +446,7 @@ void func_80106238_hyper_hydrants(omObjData *object) {
     data->unk04 = cosdf(object->rot.y - 40.0f);
     data->unk08 = sindf(object->rot.y - 140.0f);
     data->unk0C = cosdf(object->rot.y - 140.0f);
-    func_8001C814_main(object->model[0], 1, 1);
+    Hu3DMotionAttrSet(object->model[0], 1, 1);
     Hu3DMotionTimeSet(object->model[2], 0);
     object->func = func_80106A50_hyper_hydrants;
     Hu3DModelPosSet(object->model[1], object->trans.x, 0, object->trans.z);
@@ -474,9 +474,9 @@ void func_80106A50_hyper_hydrants(omObjData *object) {
             }
             if (!(GwPlayer[playerData->unk59].stat & 1)) {
                 if ((D_800CBB6E_main[playerData->unk57] < 0 ? -D_800CBB6E_main[playerData->unk57] : D_800CBB6E_main[playerData->unk57]) > 0 && object->rot.y > 120.0f && object->rot.y < 240.0f) {
-                    func_8001C814_main(object->model[0], 1, 2);
+                    Hu3DMotionAttrSet(object->model[0], 1, 2);
                 } else {
-                    func_8001C814_main(object->model[0], 1, 1);
+                    Hu3DMotionAttrSet(object->model[0], 1, 1);
                 }
             }
             data->unk00 = sindf(object->rot.y - 40.0f);
@@ -521,7 +521,7 @@ void func_80106A50_hyper_hydrants(omObjData *object) {
                 HuAudFXStop(D_8010C022_hyper_hydrants[1]);
                 HuAudFXPlay(0x36B);
                 Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[0]].motId, 0, 30, 2);
-                func_8001C258_main(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 switch (GwPlayer[playerData->unk59].group) {
                     case 0:
                     case 1:
@@ -598,13 +598,13 @@ void func_80106A50_hyper_hydrants(omObjData *object) {
                             character = 9;
                             break;
                     }
-                    func_80045ED0_main((character << 16) | 0x2F);
+                    HuAudCharVoicePlay((character << 16) | 0x2F);
                     GwPlayer[playerData->unk59].bonusCoin += 10;
                 } else {
                     Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[4]].motId, 0, 30, 2);
                 }
             } else if (Hu3DData[object->model[0]].motTime >= 118.0f) {
-                func_8001C814_main(object->model[0], 1, 1);
+                Hu3DMotionAttrSet(object->model[0], 1, 1);
             }
             break;
         case MG_STATE_EXIT:
@@ -691,8 +691,8 @@ void func_80107238_hyper_hydrants(omObjData *object) {
             data->charge.value++;
         }
         if (time >= end - 2.0f) {
-            func_8001C814_main(object->model[0], 1, 1);
-            func_8001C814_main(object->model[2], 1, 1);
+            Hu3DMotionAttrSet(object->model[0], 1, 1);
+            Hu3DMotionAttrSet(object->model[2], 1, 1);
             time = end;
             data->unk10 = 0;
         }
@@ -700,8 +700,8 @@ void func_80107238_hyper_hydrants(omObjData *object) {
     } else if (data->unk10 == 2) {
         end = 0.0f;
         if (time == end) {
-            func_8001C814_main(object->model[0], 1, 1);
-            func_8001C814_main(object->model[2], 1, 1);
+            Hu3DMotionAttrSet(object->model[0], 1, 1);
+            Hu3DMotionAttrSet(object->model[2], 1, 1);
             time = end;
             data->unk10 = 0;
         } else {
@@ -739,11 +739,11 @@ void func_80107238_hyper_hydrants(omObjData *object) {
         data->unk1C = 0;
     }
     if (data->unk1C) {
-        func_8001F6BC_main(object->model[2], 64, 64, 64, 0);
-        func_8001F6F8_main(object->model[2], 0, 0, 0, 0);
+        Hu3DModelPrimColorSet(object->model[2], 64, 64, 64, 0);
+        Hu3DModelEnvColorSet(object->model[2], 0, 0, 0, 0);
     } else {
-        func_8001F6BC_main(object->model[2], 0, 0, 0, 0);
-        func_8001F6F8_main(object->model[2], 16, 16, 16, 0);
+        Hu3DModelPrimColorSet(object->model[2], 0, 0, 0, 0);
+        Hu3DModelEnvColorSet(object->model[2], 16, 16, 16, 0);
     }
     if (data->unk1A >= 31) {
         D_8010BFAC_hyper_hydrants[side] = data->charge.bytes[1];
@@ -760,7 +760,7 @@ void func_801078B8_hyper_hydrants(omObjData *object) {
 
     object->work[0] = D_8010BF46_hyper_hydrants;
     object->func = func_80107A90_hyper_hydrants;
-    object->model[0] = func_8000B108_main(0x2F000B, 0x689);
+    object->model[0] = Hu3DModelRead(0x2F000B, 0x689);
     if (D_8010BF46_hyper_hydrants == 0) {
         player = D_800EC598_minigame[D_8010BFAA_hyper_hydrants];
         Hu3DModelCameraSet(object->model[0], HU3D_CAM0);
@@ -772,11 +772,11 @@ void func_801078B8_hyper_hydrants(omObjData *object) {
     object->trans.z = player->trans.z;
     object->trans.y = 40.0f;
     Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
-    func_8001C2FC_main(object->model[0], 0x20000, 0x20000);
+    Hu3DModelObjAttrSet(object->model[0], 0x20000, 0x20000);
     Hu3DModelRemakeStatic(object->model[0]);
-    func_8001C954_main(object->model[0]);
-    func_8001C514_main(object->model[0]);
-    func_80013390_main(object->model[0], -1, 0, func_80108788_hyper_hydrants);
+    Hu3DModelVtxBufMake(object->model[0]);
+    Hu3DModelDynamicFree(object->model[0]);
+    Hu3DParticleCreate(object->model[0], -1, 0, func_80108788_hyper_hydrants);
     data = HuMemAllocTag(sizeof(HyperHydrantsSprayData), TAG_OVERLAY);
     object->data = data;
     memset(data, 0, sizeof(HyperHydrantsSprayData));
@@ -847,7 +847,7 @@ void func_80107A90_hyper_hydrants(omObjData *object) {
             angle += 360.0f;
         }
         if (ABS((s32)angle - data->angle) > 5.0f) {
-            func_8001C814_main(D_800EC598_minigame[playerIndex]->model[0], 1, 2);
+            Hu3DMotionAttrSet(D_800EC598_minigame[playerIndex]->model[0], 1, 2);
             switch (GwPlayer[playerIndex].cpu_difficulty) {
                 case 3:
                     if ((s32)angle < data->angle) {
@@ -886,7 +886,7 @@ void func_80107A90_hyper_hydrants(omObjData *object) {
                     break;
             }
         } else {
-            func_8001C814_main(D_800EC598_minigame[playerIndex]->model[0], 1, 1);
+            Hu3DMotionAttrSet(D_800EC598_minigame[playerIndex]->model[0], 1, 1);
         }
         if (data->angle > 240.0f) {
             data->angle = 240.0f;
@@ -1210,13 +1210,13 @@ void func_80108F34_hyper_hydrants(omObjData *object) {
     position.y = object->trans.y + 200.0f;
     position.z = object->trans.z;
     if (data->unk00 == 0) {
-        func_80012B14_main(0, &position, &screen);
+        Hu3DCam3Dto2D(0, &position, &screen);
     } else {
-        func_80012B14_main(1, &position, &screen);
+        Hu3DCam3Dto2D(1, &position, &screen);
     }
     D_8010BFA0_hyper_hydrants = screen.x;
     D_8010BFA4_hyper_hydrants = screen.y;
-    model = object->model[0] = func_8000B108_main(0xA008A, 0x289);
+    model = object->model[0] = Hu3DModelRead(0xA008A, 0x289);
     if (data->unk00 == 0) {
         Hu3DAnimRead(Hu3DData[model].hmf, 0xA008C, "c201n_00_DEF");
         Hu3DModelCameraSet(object->model[0], HU3D_CAM0);
@@ -1225,8 +1225,8 @@ void func_80108F34_hyper_hydrants(omObjData *object) {
         Hu3DModelCameraSet(object->model[0], HU3D_CAM1);
     }
     Hu3DModelRemakeStatic(model);
-    func_8001C514_main(model);
-    object->model[1] = func_8000B108_main(0x2F0003, 0x99);
+    Hu3DModelDynamicFree(model);
+    object->model[1] = Hu3DModelRead(0x2F0003, 0x99);
     Hu3DModelPosSet(object->model[1], object->trans.x, 0, object->trans.z);
     data->unk0C = 0.1f;
     Hu3DModelScaleSet(object->model[1], data->unk0C, data->unk0C, data->unk0C);
@@ -1245,7 +1245,7 @@ void func_801091B0_hyper_hydrants(omObjData *object) {
                 position.x = object->trans.x + 50.0f;
                 position.y = object->trans.y + 120.0f;
                 position.z = object->trans.z;
-                func_80012B14_main(0, &position, &screen);
+                Hu3DCam3Dto2D(0, &position, &screen);
                 D_8010BFA0_hyper_hydrants = screen.x;
                 D_8010BFA4_hyper_hydrants = screen.y;
                 if (data->unk03 == 0) {
@@ -1363,20 +1363,20 @@ void func_80109588_hyper_hydrants(omObjData *object) {
             data->unk01 = 3;
             break;
     }
-    model = object->model[0] = func_8000B108_main(0x2F0002, 9);
+    model = object->model[0] = Hu3DModelRead(0x2F0002, 9);
     if (D_8010BF4C_hyper_hydrants == 0) {
         Hu3DAnimRead(Hu3DData[model].hmf, 0xA008C, "c201n_00_DEF");
     } else {
         Hu3DAnimLink(Hu3DData[model].hmf, 0, 0, "c201n_00_DEF");
     }
     Hu3DModelRemakeStatic(model);
-    func_8001C514_main(model);
-    func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    object->model[1] = func_8000B108_main(0x2F0003, 0x99);
+    Hu3DModelDynamicFree(model);
+    Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    object->model[1] = Hu3DModelRead(0x2F0003, 0x99);
     Hu3DModelPosSet(object->model[1], object->trans.x, 0, object->trans.z);
     Hu3DModelScaleSet(object->model[1], data->unk0C, data->unk0C, data->unk0C);
-    func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    object->model[2] = func_8000B108_main(0x2F000C, 0xA59);
+    Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    object->model[2] = Hu3DModelRead(0x2F000C, 0xA59);
     Hu3DModelScaleSet(object->model[2], 2.0f, 2.0f, 2.0f);
     if (data->unk02 == 0) {
         Hu3DModelCameraSet(object->model[0], HU3D_CAM0);
@@ -1438,8 +1438,8 @@ void func_80109B30_hyper_hydrants(omObjData *object) {
         return;
     }
     if (data->unk14 == 0.0f) {
-        func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-        func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     } else if (data->unk14 < 720.0f) {
         angle = (s32)data->unk14 % 360;
         object->trans.y = sindf(data->unk14) * 200.0f;
@@ -1735,7 +1735,7 @@ void func_8010A68C_hyper_hydrants(omObjData *object) {
     step.y = -8.5f;
     step.z = ((D_8010C028_hyper_hydrants[side].z - z > 0.0f) ? D_8010C028_hyper_hydrants[side].z - z : 0.0f - (D_8010C028_hyper_hydrants[side].z - z)) / 5.0f;
     for (i = 0; i < 6; i++) {
-        object->model[i] = func_8000B108_main(0x2F0008, 0x899);
+        object->model[i] = Hu3DModelRead(0x2F0008, 0x899);
         Hu3DModelScaleSet(object->model[i], object->scale.x, object->scale.y, object->scale.z);
         D_8010BFB0_hyper_hydrants[side][i] = HuMemAllocTag(sizeof(HyperHydrantsChainPoint), TAG_OVERLAY);
         if (side == 0) {
@@ -1803,7 +1803,7 @@ void func_8010AB34_hyper_hydrants(omObjData *object) {
         case MG_STATE_RESULT:
         case MG_STATE_EXIT:
             for (i = 0; i < 6; i++) {
-                func_8001C258_main(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
             break;
     }
@@ -1998,28 +1998,28 @@ void func_8010B8B0_hyper_hydrants(omObjData *object) {
         case MG_STATE_FINISH:
             if (D_8010BE24_hyper_hydrants < 10) {
                 espDispOn(D_8010C01A_hyper_hydrants[0][0]);
-                func_8000BD50_main(D_8010C01A_hyper_hydrants[0][0], (s8)(D_8010BE24_hyper_hydrants % 10));
+                espPatNoSet(D_8010C01A_hyper_hydrants[0][0], (s8)(D_8010BE24_hyper_hydrants % 10));
                 espPosSet(D_8010C01A_hyper_hydrants[0][0], D_8010BE14_hyper_hydrants[0][0][0], D_8010BE14_hyper_hydrants[0][0][1]);
                 espDispOff(D_8010C01A_hyper_hydrants[0][1]);
             } else {
                 espDispOn(D_8010C01A_hyper_hydrants[0][0]);
-                func_8000BD50_main(D_8010C01A_hyper_hydrants[0][0], (s8)(D_8010BE24_hyper_hydrants / 10));
+                espPatNoSet(D_8010C01A_hyper_hydrants[0][0], (s8)(D_8010BE24_hyper_hydrants / 10));
                 espPosSet(D_8010C01A_hyper_hydrants[0][0], D_8010BE14_hyper_hydrants[0][0][0], D_8010BE14_hyper_hydrants[0][0][1]);
                 espDispOn(D_8010C01A_hyper_hydrants[0][1]);
-                func_8000BD50_main(D_8010C01A_hyper_hydrants[0][1], (s8)(D_8010BE24_hyper_hydrants % 10));
+                espPatNoSet(D_8010C01A_hyper_hydrants[0][1], (s8)(D_8010BE24_hyper_hydrants % 10));
                 espPosSet(D_8010C01A_hyper_hydrants[0][1], D_8010BE14_hyper_hydrants[0][1][0], D_8010BE14_hyper_hydrants[0][1][1]);
             }
             if (D_8010BE25_hyper_hydrants < 10) {
                 espDispOn(D_8010C01A_hyper_hydrants[1][0]);
-                func_8000BD50_main(D_8010C01A_hyper_hydrants[1][0], (s8)(D_8010BE25_hyper_hydrants % 10));
+                espPatNoSet(D_8010C01A_hyper_hydrants[1][0], (s8)(D_8010BE25_hyper_hydrants % 10));
                 espPosSet(D_8010C01A_hyper_hydrants[1][0], D_8010BE14_hyper_hydrants[1][0][0], D_8010BE14_hyper_hydrants[1][0][1]);
                 espDispOff(D_8010C01A_hyper_hydrants[1][1]);
             } else {
                 espDispOn(D_8010C01A_hyper_hydrants[1][0]);
-                func_8000BD50_main(D_8010C01A_hyper_hydrants[1][0], (s8)(D_8010BE25_hyper_hydrants / 10));
+                espPatNoSet(D_8010C01A_hyper_hydrants[1][0], (s8)(D_8010BE25_hyper_hydrants / 10));
                 espPosSet(D_8010C01A_hyper_hydrants[1][0], D_8010BE14_hyper_hydrants[1][0][0], D_8010BE14_hyper_hydrants[1][0][1]);
                 espDispOn(D_8010C01A_hyper_hydrants[1][1]);
-                func_8000BD50_main(D_8010C01A_hyper_hydrants[1][1], (s8)(D_8010BE25_hyper_hydrants % 10));
+                espPatNoSet(D_8010C01A_hyper_hydrants[1][1], (s8)(D_8010BE25_hyper_hydrants % 10));
                 espPosSet(D_8010C01A_hyper_hydrants[1][1], D_8010BE14_hyper_hydrants[1][1][0], D_8010BE14_hyper_hydrants[1][1][1]);
             }
             for (i = 0; i < 2; i++) {
@@ -2043,7 +2043,7 @@ s16 func_8010BC80_hyper_hydrants(s16 soundId, s16 side, s8 playerSound, s16 play
     s16 sound;
 
     if (playerSound) {
-        sound = func_8004AC98_main(soundId, player);
+        sound = HuAudPlayerFXPlay(soundId, player);
     } else {
         sound = HuAudFXPlay(soundId);
     }

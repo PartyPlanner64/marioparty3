@@ -656,7 +656,7 @@ static void func_800E76EC_shared_board(Gfx** arg0, u16* arg1, s16 arg2, s16 arg3
 
     temp_f20 = ((f32) arg2 + (D_801049F8_shared_board[0] / 4.0f)) - (f32) (s32) (D_801049F8_shared_board[0] / 4.0f);
     temp_f22 = ((f32) arg3 + (D_801049F8_shared_board[1] / 4.0f)) - (f32) (s32) (D_801049F8_shared_board[1] / 4.0f);
-    func_8003465C_main(arg0, arg1, 0, 2, 0x40, 0x20, 0, 0, 0x40, 0x20, 0, 1, 1, 6, 5, 0, 0);
+    HuLoadTextureBlock(arg0, arg1, 0, 2, 0x40, 0x20, 0, 0, 0x40, 0x20, 0, 1, 1, 6, 5, 0, 0);
     if (!(D_80102DC0_shared_board & 0x10)) {
         gSPScisTextureRectangle_MP((*arg0)++,
             /*xl*/(temp_f20 * D_80101250_shared_board * 4.0f),
@@ -682,7 +682,7 @@ static void func_800E76EC_shared_board(Gfx** arg0, u16* arg1, s16 arg2, s16 arg3
             /*dtdy*/(1024.0f / D_80101250_shared_board)
         );
     }
-    func_8003465C_main(arg0, arg1 + (64 * 32), 0, 2, 0x40, 0x10, 0, 0, 0x40, 0x10, 0, 1, 1, 6, 4, 0, 0);
+    HuLoadTextureBlock(arg0, arg1 + (64 * 32), 0, 2, 0x40, 0x10, 0, 0, 0x40, 0x10, 0, 1, 1, 6, 4, 0, 0);
     if (!(D_80102DC0_shared_board & 0x10)) {
         gSPScisTextureRectangle_MP((*arg0)++,
             /*xl*/(temp_f20 * D_80101250_shared_board * 4.0f),
@@ -731,9 +731,9 @@ static void func_800E86CC_shared_board(Gfx** arg0, s32 arg1, u8 arg2) {
     }
 
     func_800E71A8_shared_board();
-    temp_s0 = func_8004D6AC_main(0xC8, 0, 0);
+    temp_s0 = HuProfCpuBegin(0xC8, 0, 0);
     func_800E7514_shared_board();
-    func_8004D6E8_main(temp_s0);
+    HuProfCpuEnd(temp_s0);
 
     sp26 = ((D_80102DC8_shared_board + D_80102DC4_shared_board) - 120) % 48;
     sp1E = ((D_80102DC6_shared_board + D_80102DC2_shared_board) - 160) % 64;
@@ -1517,10 +1517,10 @@ static void MBMasuDraw(Gfx **arg0, Mtx *arg1, s32 arg2) {
     sp5C = arg1;
     var_s5 = 0;
     if (!(arg2 & 0xFF) && (D_80105262_shared_board != 0) && (D_801012C4_shared_board != 0)) {
-        sp7E = func_8004D6AC_main(0xC8, 0xC8, 0xC8);
+        sp7E = HuProfCpuBegin(0xC8, 0xC8, 0xC8);
         gSPDisplayList((*gfxPos)++, D_801013D8_shared_board);
         Hu3DCameraSet(0, gfxPos);
-        func_800127C4_main(0, gfxPos);
+        Hu3DCameraScissorDraw(0, gfxPos);
         MBCameraPos3DGet(&sp50);
 
         if ((D_80105260_shared_board == 0) || (var_v0 = 8, (D_80105260_shared_board != 1))) {
@@ -1567,7 +1567,7 @@ static void MBMasuDraw(Gfx **arg0, Mtx *arg1, s32 arg2) {
                     func_80089980_main(sp10, &sp5C[1]);
                     mtxTransCat(sp10, temp_s0->coords.x, temp_s0->coords.y, temp_s0->coords.z);
                     if ((i == 0xD) && (var_s5 < D_801052B0_shared_board)) {
-                        func_800185A4_main(sp10, D_80105290_shared_board[var_s5++]);
+                        mtxRotYCat(sp10, D_80105290_shared_board[var_s5++]);
                     }
                     mtxScaleCat(sp10, temp_s0->rot.x, 1.0f, temp_s0->rot.z);
                     temp_s0_3 = &MTXBuf[MTXBufNum++];
@@ -1579,7 +1579,7 @@ static void MBMasuDraw(Gfx **arg0, Mtx *arg1, s32 arg2) {
             }
         }
 
-        func_8004D6E8_main(sp7E);
+        HuProfCpuEnd(sp7E);
     }
 }
 

@@ -615,10 +615,10 @@ s32 func_8010FBAC_rockin_raceway(HuSprAnimData *sprite, HmfData *data, f32 scale
 void func_801059A0_rockin_raceway(void) {
     u8 camIndex;
 
-    func_8001FE20_main(50);
+    MapCollInit(50);
     omInitObjMan(50, 0);
-    func_8004A208_main();
-    func_800142A0_main(64);
+    omGameSysInit();
+    Hu3DSprModelInit(64);
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     Hu3DGLightColorSet(0, 0xFF, 0xFF, 0xFF);
     Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
@@ -626,8 +626,8 @@ void func_801059A0_rockin_raceway(void) {
     Hu3DGLightColorSet(2, 0xFF, 0xFF, 0xFF);
     Hu3DGLightDirSet(2, 1.0f, 50.0f, -108.0f);
     Hu3DGLightMaxSet(2);
-    func_8000B5F0_main(1);
-    camIndex = func_8000B638_main();
+    CamSetupInit(1);
+    camIndex = CamSetupMapCullAdd();
     ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 30.0f, 80.0f, 6000.0f);
@@ -654,8 +654,8 @@ void func_801059A0_rockin_raceway(void) {
     D_80111C30_rockin_raceway = NULL;
     D_80111B68_rockin_raceway = HuMemAllocTag(0x40, TAG_OVERLAY);
     D_80111AC4_rockin_raceway = omAddObj(0x20, 0, 0, -1, func_80105C24_rockin_raceway);
-    func_80045010_main(D_80111740_rockin_raceway, 1);
-    func_80045010_main(D_8011174C_rockin_raceway, 1);
+    GMesFontMesCreate(D_80111740_rockin_raceway, 1);
+    GMesFontMesCreate(D_8011174C_rockin_raceway, 1);
 }
 
 void func_80105C24_rockin_raceway(omObjData *object) {
@@ -793,9 +793,9 @@ void func_80105CB0_rockin_raceway(omObjData *object) {
                 gMesData[mes].pos.x = 156.0f;
                 gMesData[mes].pos.y = 56.0f;
             } else if (D_80111AEC_rockin_raceway < 900) {
-                func_8003F578_main((D_80111AEC_rockin_raceway + 29) / 30);
+                GMesTimerValueSet((D_80111AEC_rockin_raceway + 29) / 30);
                 if (D_80111AEC_rockin_raceway == 0) {
-                    func_8003F5C0_main();
+                    GMesTimerEnd();
                 }
             }
             D_80111B34_rockin_raceway = func_80108464_rockin_raceway();
@@ -988,7 +988,7 @@ void func_80105CB0_rockin_raceway(omObjData *object) {
                     if (D_80111AD0_rockin_raceway >= 15) {
                         WipeCreateOut(WIPE_TYPE_NORMAL, 16);
                         HuAudSeqFadeOut(16);
-                        func_8004AB0C_main(16);
+                        HuAudFXAllFadeOut(16);
                         D_80111AD0_rockin_raceway = 0;
                         D_80111ADC_rockin_raceway++;
                     }
@@ -1028,7 +1028,7 @@ void func_80106A80_rockin_raceway(omObjData *object) {
         D_8011155C_rockin_raceway = 16;
         WipeCreateOut(WIPE_TYPE_NORMAL, (s16)D_8011155C_rockin_raceway);
         HuAudSeqFadeOut((s16)D_8011155C_rockin_raceway);
-        func_8004AB0C_main((s16)D_8011155C_rockin_raceway);
+        HuAudFXAllFadeOut((s16)D_8011155C_rockin_raceway);
     }
 }
 
@@ -1091,14 +1091,14 @@ void func_80106DC8_rockin_raceway(omObjData *object) {
 
     object->func = func_801071D8_rockin_raceway;
     character = racer->unk0E;
-    object->model[0] = func_8000B108_main(0x4D0000 | D_80111580_rockin_raceway[character], 0x299);
-    object->model[1] = func_8000B108_main(9, 0x299);
+    object->model[0] = Hu3DModelRead(0x4D0000 | D_80111580_rockin_raceway[character], 0x299);
+    object->model[1] = Hu3DModelRead(9, 0x299);
     for (i = 0; i < 2; i++) {
         if (i == 0) {
-            object->model[3] = func_8000B108_main(0x4D0000 | D_80111580_rockin_raceway[character], 0x28D);
-            func_8001FA68_main(object->model[3]);
-            func_8001F9E4_main(object->model[3], 64);
-            func_8001C514_main(object->model[3]);
+            object->model[3] = Hu3DModelRead(0x4D0000 | D_80111580_rockin_raceway[character], 0x28D);
+            Hu3DModelTPLvlInit(object->model[3]);
+            Hu3DModelTPLvlSet(object->model[3], 64);
+            Hu3DModelDynamicFree(object->model[3]);
         } else {
             object->model[3 + i] = Hu3DModelLink(object->model[3]);
         }
@@ -1141,7 +1141,7 @@ void func_80106DC8_rockin_raceway(omObjData *object) {
     racer->rot.x = racer->rot.y = racer->rot.z = 0.0f;
     racer->unk44 = func_8010A258_rockin_raceway(racer->unk2E, racer->unk30, racer->unk44, 0.0f, &racer->unk4C,
                                                 &racer->unk50, &racer->pos, &racer->rot);
-    object->model[2] = model = func_8000B108_main(0x4D0009, 0x99);
+    object->model[2] = model = Hu3DModelRead(0x4D0009, 0x99);
     Hu3DModelPosSet(model, racer->pos.x - 0.35f * 200.0, racer->pos.y, racer->pos.z);
     Hu3DMotionSpeedSet(model, 0.0f);
     object->trans.x = racer->pos.x;
@@ -1162,14 +1162,14 @@ void func_801071D8_rockin_raceway(omObjData *object) {
     if (D_80111B3A_rockin_raceway != 0) {
         for (i = 0; i < 2; i++) {
             if (D_80111B3C_rockin_raceway[i].racers[racer->unk0A].active != 0) {
-                func_8001C258_main(object->model[3 + i], 4, 0);
+                Hu3DModelAttrSet(object->model[3 + i], 4, 0);
             } else {
-                func_8001C258_main(object->model[3 + i], 4, 4);
+                Hu3DModelAttrSet(object->model[3 + i], 4, 4);
             }
         }
     } else {
         for (i = 0; i < 2; i++) {
-            func_8001C258_main(object->model[3 + i], 4, 4);
+            Hu3DModelAttrSet(object->model[3 + i], 4, 4);
         }
     }
     for (i = 1; i >= 0; i--) {
@@ -1359,8 +1359,8 @@ void func_80107958_rockin_raceway(RockinRacewayRacer *racer) {
 void func_80107A38_rockin_raceway(RockinRacewayRacer *racer) {
     if (racer->unk28 <= 0.0f && D_80111AD8_rockin_raceway == 2) {
         racer->unk02 = 1;
-        func_8004AC98_main(0x458, racer->unk0A);
-        func_8004AC98_main(0x459, racer->unk0A);
+        HuAudPlayerFXPlay(0x458, racer->unk0A);
+        HuAudPlayerFXPlay(0x459, racer->unk0A);
         func_8010E344_rockin_raceway(0x286, 3, 3, racer->unk0A);
         if (D_80111AD8_rockin_raceway == 2) {
             omVibrate(racer->unk0A, 2, 2, 20);
@@ -1561,14 +1561,14 @@ void func_80108578_rockin_raceway(void) {
     for (i = 0; i < 8; i++, entry++) {
         memset(entry, 0, sizeof(RockinRacewayFx));
         if (i == 0) {
-            entry->modelA = func_8000B108_main(0x4D0007, 0x99);
-            entry->modelB = func_8000B108_main(0x4D0008, 0x99);
+            entry->modelA = Hu3DModelRead(0x4D0007, 0x99);
+            entry->modelB = Hu3DModelRead(0x4D0008, 0x99);
         } else {
             entry->modelA = Hu3DModelLink(D_80111B48_rockin_raceway->modelA);
             entry->modelB = Hu3DModelLink(D_80111B48_rockin_raceway->modelB);
         }
-        func_8001C258_main(entry->modelA, 4, 4);
-        func_8001C258_main(entry->modelB, 4, 4);
+        Hu3DModelAttrSet(entry->modelA, 4, 4);
+        Hu3DModelAttrSet(entry->modelB, 4, 4);
         entry->flag = 0;
         entry->timer = 0;
         entry->active = 0;
@@ -1643,8 +1643,8 @@ void func_80108864_rockin_raceway(omObjData *object) {
             shown = entry->modelA;
             hidden = entry->modelB;
         }
-        func_8001C258_main(shown, 4, 0);
-        func_8001C258_main(hidden, 4, 4);
+        Hu3DModelAttrSet(shown, 4, 0);
+        Hu3DModelAttrSet(hidden, 4, 4);
         entry->posX += entry->velX;
         entry->posY += entry->velY;
         entry->posZ += entry->velZ;
@@ -1654,8 +1654,8 @@ void func_80108864_rockin_raceway(omObjData *object) {
         Hu3DModelScaleSet(hidden, 1.0f, 1.0f, 1.0f);
         if (D_80111AD8_rockin_raceway >= 3) {
             entry->active = 0;
-            func_8001C258_main(shown, 4, 4);
-            func_8001C258_main(hidden, 4, 4);
+            Hu3DModelAttrSet(shown, 4, 4);
+            Hu3DModelAttrSet(hidden, 4, 4);
         }
     }
 }
@@ -1676,8 +1676,8 @@ s32 func_80108A80_rockin_raceway(Vec *pos) {
         dy = entry->posY - pos->y;
         dz = entry->posZ - pos->z;
         if (dx * dx + dy * dy + dz * dz < (0.3f * 200.0) * (0.3f * 200.0)) {
-            func_8001C258_main(entry->modelA, 4, 4);
-            func_8001C258_main(entry->modelB, 4, 4);
+            Hu3DModelAttrSet(entry->modelA, 4, 4);
+            Hu3DModelAttrSet(entry->modelB, 4, 4);
             entry->active = 0;
             if (D_80111BD4_rockin_raceway == -1 && D_80111BD6_rockin_raceway == -1 && entry->duration == 30) {
                 D_80111BD6_rockin_raceway = 4;
@@ -1716,8 +1716,8 @@ void func_80108BAC_rockin_raceway(void) {
                         racer->unk06 = -1;
                     }
                 }
-                racer->unk04 = func_8004AC98_main(0x46D, racer->unk0A);
-                racer->unk06 = func_8004AC98_main(0x46E, racer->unk0A);
+                racer->unk04 = HuAudPlayerFXPlay(0x46D, racer->unk0A);
+                racer->unk06 = HuAudPlayerFXPlay(0x46E, racer->unk0A);
                 break;
             case 1:
                 racer->unk02 = 1;
@@ -1732,8 +1732,8 @@ void func_80108BAC_rockin_raceway(void) {
                         racer->unk06 = -1;
                     }
                 }
-                func_8004AC98_main(0x458, racer->unk0A);
-                func_8004AC98_main(0x459, racer->unk0A);
+                HuAudPlayerFXPlay(0x458, racer->unk0A);
+                HuAudPlayerFXPlay(0x459, racer->unk0A);
                 func_8010E344_rockin_raceway(0x286, 3, 3, racer->unk0A);
                 if (D_80111AD8_rockin_raceway == 2) {
                     omVibrate(racer->unk0A, 2, 2, 20);
@@ -1751,13 +1751,13 @@ void func_80108D84_rockin_raceway(void) {
     D_80111B4C_rockin_raceway = object = omAddObj(29, 13, 0, -1, func_80108ED4_rockin_raceway);
     object->model[0] = -1;
     for (i = 1; i < 13; i++) {
-        object->model[i] = func_8000B108_main(0x1001F, 0x899);
-        func_8001C2FC_main(object->model[i], 0x600, 0x400);
+        object->model[i] = Hu3DModelRead(0x1001F, 0x899);
+        Hu3DModelObjAttrSet(object->model[i], 0x600, 0x400);
         Hu3DModelScaleSet(object->model[i], 1.0f, 1.0f, 1.0f);
         model = &Hu3DData[object->model[i]];
         model->motTime = 0.0f;
         model->motSpeed = 1.0f;
-        func_8001C258_main(object->model[i], 4, 4);
+        Hu3DModelAttrSet(object->model[i], 4, 4);
     }
     D_80111B50_rockin_raceway = HuMemAllocTag(12 * sizeof(RockinRacewayModelState), TAG_OVERLAY);
     memset(D_80111B50_rockin_raceway, 0, 12 * sizeof(RockinRacewayModelState));
@@ -1885,7 +1885,7 @@ void func_80109208_rockin_raceway(void) {
     s32 i;
 
     D_80111B68_rockin_raceway[2] = func_8010A4C0_rockin_raceway(11);
-    sprite = func_80055194_main(D_80111B68_rockin_raceway[2]);
+    sprite = HuSprAnimDataGet(D_80111B68_rockin_raceway[2]);
     D_80111B58_rockin_raceway = omAddObj(28, 0, 0, -1, func_80109384_rockin_raceway);
     D_80111B5C_rockin_raceway = effect = HuMemAllocTag(sizeof(RockinRacewayEffect) * 16, TAG_OVERLAY);
     for (i = 0; i < 16; i++, effect++) {
@@ -1900,7 +1900,7 @@ void func_80109208_rockin_raceway(void) {
         effect->pos.x = effect->pos.y = effect->pos.z = 0.0f;
         effect->vel.x = effect->vel.y = effect->vel.z = 0.0f;
         effect->scale.x = effect->scale.y = effect->scale.z = 0.0f;
-        func_8001C258_main(effect->model, 4, 4);
+        Hu3DModelAttrSet(effect->model, 4, 4);
         model = &Hu3DData[effect->model];
         model->motTime = 0.0f;
     }
@@ -1918,7 +1918,7 @@ void func_80109384_rockin_raceway(omObjData *object) {
     if (D_80111B64_rockin_raceway != 0) {
         return;
     }
-    sprite = func_80055194_main(D_80111B68_rockin_raceway[2]);
+    sprite = HuSprAnimDataGet(D_80111B68_rockin_raceway[2]);
     for (i = 0, effect = D_80111B5C_rockin_raceway; i < 16; i++, effect++) {
         if (effect->active == 0) {
             continue;
@@ -1947,7 +1947,7 @@ void func_80109384_rockin_raceway(omObjData *object) {
 }
 
 s32 func_801094EC_rockin_raceway(Vec *pos, Vec *vel, Vec *scale, f32 speed) {
-    HuSprAnimData *sprite = func_80055194_main(D_80111B68_rockin_raceway[2]);
+    HuSprAnimData *sprite = HuSprAnimDataGet(D_80111B68_rockin_raceway[2]);
     RockinRacewayEffect *effect;
     HmfModel *model;
     s32 i;
@@ -1982,7 +1982,7 @@ s32 func_801094EC_rockin_raceway(Vec *pos, Vec *vel, Vec *scale, f32 speed) {
         effect->speed = speed;
         effect->frame = 0.0f;
         func_8010FA78_rockin_raceway(effect->model, sprite, 0, D_801114D4_rockin_raceway);
-        func_8001C258_main(effect->model, 4, 0);
+        Hu3DModelAttrSet(effect->model, 4, 0);
         model->motTime = 0.0f;
         model->pos.x = effect->pos.x;
         model->pos.y = effect->pos.y;
@@ -2098,34 +2098,34 @@ void func_80109A04_rockin_raceway(omObjData *object) {
     object->trans.x = object->trans.y = object->trans.z = 0.0f;
     object->rot.x = object->rot.y = object->rot.z = 0.0f;
     object->scale.x = object->scale.y = object->scale.z = 1.0f;
-    object->model[0] = func_8000B0A0_main(0x4D0000, 0x99);
-    object->model[1] = func_8000B0A0_main(0x4D000A, 0xB9);
-    object->model[2] = func_8000B0A0_main(0x4D000B, 0xB9);
+    object->model[0] = Hu3DModelRead2(0x4D0000, 0x99);
+    object->model[1] = Hu3DModelRead2(0x4D000A, 0xB9);
+    object->model[2] = Hu3DModelRead2(0x4D000B, 0xB9);
     D_80111B68_rockin_raceway[3] = func_8010A4C0_rockin_raceway(0x4D0010);
     D_80111B68_rockin_raceway[4] = func_8010A4C0_rockin_raceway(0x4D0011);
     for (i = 0; i < 4; i++) {
         if (i == 0) {
             object->model[3] =
-                func_8010FFB8_rockin_raceway(func_80055194_main(D_80111B68_rockin_raceway[3]), &D_801114D8_rockin_raceway);
+                func_8010FFB8_rockin_raceway(HuSprAnimDataGet(D_80111B68_rockin_raceway[3]), &D_801114D8_rockin_raceway);
         } else {
-            object->model[3 + i] = func_8010F874_rockin_raceway(func_80055194_main(D_80111B68_rockin_raceway[3]),
+            object->model[3 + i] = func_8010F874_rockin_raceway(HuSprAnimDataGet(D_80111B68_rockin_raceway[3]),
                                                                 object->model[3], D_801115B4_rockin_raceway);
         }
     }
     for (i = 0; i < 12; i++) {
         if (i == 0) {
             object->model[7] =
-                func_8010FFB8_rockin_raceway(func_80055194_main(D_80111B68_rockin_raceway[4]), &D_80111518_rockin_raceway);
+                func_8010FFB8_rockin_raceway(HuSprAnimDataGet(D_80111B68_rockin_raceway[4]), &D_80111518_rockin_raceway);
         } else {
-            object->model[7 + i] = func_8010F874_rockin_raceway(func_80055194_main(D_80111B68_rockin_raceway[4]),
+            object->model[7 + i] = func_8010F874_rockin_raceway(HuSprAnimDataGet(D_80111B68_rockin_raceway[4]),
                                                                 object->model[7], D_801115B4_rockin_raceway);
         }
     }
-    func_80110C38_rockin_raceway(&object->model[3], func_80055194_main(D_80111B68_rockin_raceway[3]),
+    func_80110C38_rockin_raceway(&object->model[3], HuSprAnimDataGet(D_80111B68_rockin_raceway[3]),
                                  D_8011159C_rockin_raceway.players);
     D_8011159C_rockin_raceway.times[1] = D_80111AE8_rockin_raceway;
     func_8010B5DC_rockin_raceway(D_8011159C_rockin_raceway.times);
-    func_80110D90_rockin_raceway(&object->model[7], func_80055194_main(D_80111B68_rockin_raceway[4]),
+    func_80110D90_rockin_raceway(&object->model[7], HuSprAnimDataGet(D_80111B68_rockin_raceway[4]),
                                  D_8011159C_rockin_raceway.times);
     D_80111B68_rockin_raceway[0] = func_8010A4C0_rockin_raceway(0x4D000E);
     group = HuSprGrpCreate(1, 0);
@@ -2144,13 +2144,13 @@ void func_80109CF8_rockin_raceway(omObjData *object) {
 void func_80109D00_rockin_raceway(s32 *players) {
     omObjData *object = D_800EC1C0_minigame[0];
 
-    func_80110C38_rockin_raceway(&object->model[3], func_80055194_main(D_80111B68_rockin_raceway[3]), players);
+    func_80110C38_rockin_raceway(&object->model[3], HuSprAnimDataGet(D_80111B68_rockin_raceway[3]), players);
 }
 
 void func_80109D54_rockin_raceway(s32 *values) {
     omObjData *object = D_800EC1C0_minigame[0];
 
-    func_80110D90_rockin_raceway(&object->model[7], func_80055194_main(D_80111B68_rockin_raceway[4]), values);
+    func_80110D90_rockin_raceway(&object->model[7], HuSprAnimDataGet(D_80111B68_rockin_raceway[4]), values);
 }
 
 void func_80109DA8_rockin_raceway(void) {
@@ -2292,7 +2292,7 @@ void func_8010A504_rockin_raceway(void) {
     HuSprPosSet(group, 0, 160, 60);
     HuSprGrpMemberSet(group, 0, D_80111B68_rockin_raceway[5], 0);
     HuSprAnimModeSet(group, 0, HUSPR_ANIM_MODE_STOP);
-    func_80054FF8_main(group, 0, 0);
+    HuSprPatNoSet(group, 0, 0);
     HuSprAttrSet(group, 0, HUSPR_ATTR_DISPOFF | 0x1000);
 }
 
@@ -2339,7 +2339,7 @@ void func_8010A5E4_rockin_raceway(s16 track, s16 character) {
                 HuSprPosSet(group, i, x - 5, y);
             }
             HuSprGrpMemberSet(group, i, D_80111B68_rockin_raceway[8], 0);
-            func_80055484_main(group, i, 0, 0, 0, 160);
+            HuSprColorTPLvlSet(group, i, 0, 0, 0, 160);
         } else {
             if (track & 1) {
                 HuSprPosSet(group, i, x - 20, y);
@@ -2350,7 +2350,7 @@ void func_8010A5E4_rockin_raceway(s16 track, s16 character) {
             x += 8;
         }
         HuSprAnimModeSet(group, i, HUSPR_ANIM_MODE_STOP);
-        func_80054FF8_main(group, i, 0);
+        HuSprPatNoSet(group, i, 0);
         HuSprAttrSet(group, i, 0x1000);
         if (i != 6) {
             HuSprPriSet(group, i, -16 - i);
@@ -2431,13 +2431,13 @@ void func_8010AAAC_rockin_raceway(s16 track, s16 progress, u16 state) {
             if (!(D_80111AD0_rockin_raceway & 3)) {
                 for (i = 0; i < 5; i++) {
                     HuSprAttrReset(group, i + 1, HUSPR_ATTR_DISPOFF);
-                    func_80054FF8_main(group, i + 1, 1);
+                    HuSprPatNoSet(group, i + 1, 1);
                     HuSprTPLvlSet(group, i + 1, 0x100);
                 }
             } else {
                 for (i = 0; i < 5; i++) {
                     HuSprAttrReset(group, i + 1, HUSPR_ATTR_DISPOFF);
-                    func_80054FF8_main(group, i + 1, 0);
+                    HuSprPatNoSet(group, i + 1, 0);
                     HuSprTPLvlSet(group, i + 1, 0x100);
                 }
             }
@@ -2456,11 +2456,11 @@ void func_8010AAAC_rockin_raceway(s16 track, s16 progress, u16 state) {
             HuSprAttrReset(group, i + 1, HUSPR_ATTR_DISPOFF);
             if ((i + 1) * 20 <= progress) {
                 HuSprTPLvlSet(group, i + 1, 0x100);
-                func_80054FF8_main(group, i + 1, 0);
+                HuSprPatNoSet(group, i + 1, 0);
             } else {
                 remainder = progress % 20;
                 HuSprTPLvlSet(group, i + 1, remainder * 0.05f * 256.0f);
-                func_80054FF8_main(group, i + 1, 0);
+                HuSprPatNoSet(group, i + 1, 0);
             }
         } else {
             HuSprAttrSet(group, i + 1, HUSPR_ATTR_DISPOFF);
@@ -2481,12 +2481,12 @@ void func_8010B124_rockin_raceway(void) {
         for (j = 0; j < 8; j++) {
             HuSprPosSet(group, j, D_80111340_rockin_raceway[j], i * 12 + 28);
             HuSprGrpMemberSet(group, j, D_80111B68_rockin_raceway[6 + i], 0);
-            func_80054FF8_main(group, j, 0);
+            HuSprPatNoSet(group, j, 0);
             HuSprAttrSet(group, j, 0x1000);
             HuSprAnimModeSet(group, j, HUSPR_ANIM_MODE_STOP);
         }
-        func_80054FF8_main(group, 2, 10);
-        func_80054FF8_main(group, 5, 11);
+        HuSprPatNoSet(group, 2, 10);
+        HuSprPatNoSet(group, 5, 11);
     }
 }
 
@@ -2527,7 +2527,7 @@ void func_8010B2B8_rockin_raceway(void) {
                 } else if (digits[i * 6 + j] < 0) {
                     digits[i * 6 + j] = 0;
                 }
-                func_80054FF8_main(group, D_801115D8_rockin_raceway[j], (s16)digits[i * 6 + j]);
+                HuSprPatNoSet(group, D_801115D8_rockin_raceway[j], (s16)digits[i * 6 + j]);
             }
             if (D_80111B7A_rockin_raceway != 0 && i == 1) {
                 for (j = 0; j < 8; j++) {
@@ -3295,7 +3295,7 @@ void func_8010D9C4_rockin_raceway(s32 index) {
         model->attr = effectState->attr;
         effect->frame = effectState->frame;
         effect->speed = effectState->speed;
-        func_8010FA78_rockin_raceway(effect->model, func_80055194_main(D_80111B68_rockin_raceway[2]), effect->frame,
+        func_8010FA78_rockin_raceway(effect->model, HuSprAnimDataGet(D_80111B68_rockin_raceway[2]), effect->frame,
                                      D_801114D4_rockin_raceway);
         if (prevState.effect->active != 0) {
             model->pos.x = func_8010E7C8_rockin_raceway(t, prevState.effect->pos.x, effectState->pos.x);
@@ -3400,13 +3400,13 @@ void func_8010E39C_rockin_raceway(void) {
                     HuAudFXPlay(sfx->soundId);
                     break;
                 case 1:
-                    func_8004AC98_main(sfx->soundId, sfx->playerIndex);
+                    HuAudPlayerFXPlay(sfx->soundId, sfx->playerIndex);
                     break;
                 case 2:
                     CharFXPlay(sfx->soundId, GwPlayer[(s16)(sfx->playerIndex % 4)].chr);
                     break;
                 default:
-                    func_8004AC98_main(GwPlayer[(s16)(sfx->playerIndex % 4)].chr + sfx->soundId + 1, sfx->playerIndex);
+                    HuAudPlayerFXPlay(GwPlayer[(s16)(sfx->playerIndex % 4)].chr + sfx->soundId + 1, sfx->playerIndex);
                     break;
             }
             sfx->soundId = -1;
@@ -3572,7 +3572,7 @@ s32 func_8010EC8C_rockin_raceway(HuSprAnimData *sprite, u8 *color) {
     gfx = HuMemAlloc(0x10000);
     header = gfx;
     buffer = (u8 *)gfx;
-    model = func_8001A894_main(0x18C1, buffer, 4);
+    model = Hu3DModelDLCreate(0x18C1, buffer, 4);
     data = Hu3DData[model].hmf;
     data->unk60->unk50 |= 0x71010000;
     gfx++;
@@ -3677,7 +3677,7 @@ s32 func_8010F874_rockin_raceway(HuSprAnimData *sprite, u16 model, u8 *color) {
     s32 newModel;
     s32 i;
 
-    newModel = func_8001A894_main(srcModel->attr, NULL, 4);
+    newModel = Hu3DModelDLCreate(srcModel->attr, NULL, 4);
     data = Hu3DData[newModel].hmf;
     data->unk60->unk50 = srcData->unk60->unk50;
     HuMemFree(data->unk3C);
@@ -3797,7 +3797,7 @@ s32 func_8010FFB8_rockin_raceway(HuSprAnimData *sprite, RockinRacewayQuad *quad)
 
     gfx = HuMemAlloc(0x10000);
     buffer = (u8 *)gfx;
-    model = func_8001A894_main(0x4C1, buffer, 4);
+    model = Hu3DModelDLCreate(0x4C1, buffer, 4);
     data = Hu3DData[model].hmf;
     data->unk60->unk50 |= 0x1000000;
     HuMemFree(data->unk3C);

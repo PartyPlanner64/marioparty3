@@ -205,9 +205,9 @@ void func_801059A0_aces_high(void) {
     s32 i;
 
     omInitObjMan(80, 0);
-    func_8004A208_main();
-    func_8000B690_main(4);
-    func_8000B710_main(4);
+    omGameSysInit();
+    CamSetupInitMulti(4);
+    CamSetupMapCullAddMulti(4);
     for (i = 0; i < 4; i++) {
         CZoomM[i] = 1500.0f;
         CRotM[i].x = -5.0f;
@@ -291,7 +291,7 @@ void func_80105E84_aces_high(omObjData *object) {
                 WipeCreateOut(WIPE_TYPE_NORMAL, 20);
                 HuAudFXStop(D_8010DE96_aces_high);
                 HuAudSeqFadeOut(30);
-                func_8004AB0C_main(30);
+                HuAudFXAllFadeOut(30);
                 D_8010DC08_aces_high = 1;
                 break;
         }
@@ -303,18 +303,18 @@ void func_80105E84_aces_high(omObjData *object) {
 void func_80105FC8_aces_high(omObjData *object) {
     u16 sprite;
 
-    object->model[0] = func_8000B108_main(0x38000A, 0x6D9);
+    object->model[0] = Hu3DModelRead(0x38000A, 0x6D9);
     Hu3DModelPosSet(object->model[0], 0.0f, -1000.0f, 0.0f);
-    object->model[1] = func_8000B108_main(0x380025, 0x699);
+    object->model[1] = Hu3DModelRead(0x380025, 0x699);
     Hu3DModelPosSet(object->model[1], 0.0f, 900.0f, -8000.0f);
-    object->model[2] = func_8000B108_main(0x380026, 0x699);
+    object->model[2] = Hu3DModelRead(0x380026, 0x699);
     Hu3DModelPosSet(object->model[2], 0.0f, 0.0f, 8000.0f);
     Hu3DModelRotSet(object->model[2], 0.0f, 180.0f, 0.0f);
-    object->model[3] = func_8000B108_main(0x38000B, 0x6C9);
+    object->model[3] = Hu3DModelRead(0x38000B, 0x6C9);
     Hu3DModelPosSet(object->model[3], 0.0f, -1000.0f, 0.0f);
     Hu3DData[object->model[3]].hmf->unk84->unk0[2] = 0;
     Hu3DModelRemakeStatic(object->model[3]);
-    func_8001C514_main(object->model[3]);
+    Hu3DModelDynamicFree(object->model[3]);
     D_8010DE92_aces_high = sprite = espEntry(HuSprAnimDataRead(0x38001E), 0, 0);
     espPosSet(sprite, 160, 120);
     espPriSet(sprite, 0x8096);
@@ -322,8 +322,8 @@ void func_80105FC8_aces_high(omObjData *object) {
     espPosSet(sprite, 160, 120);
     espPriSet(sprite, 0x8096);
     D_8010DE54_aces_high[0] = D_8010DE54_aces_high[1] = 0.0f;
-    func_800335BC_main("m223_03kaze_IA88", D_8010DE50_aces_high);
-    func_8001C954_main(object->model[3]);
+    Hu3DTexSizeGet("m223_03kaze_IA88", D_8010DE50_aces_high);
+    Hu3DModelVtxBufMake(object->model[3]);
     object->func = func_801061E0_aces_high;
 }
 
@@ -335,7 +335,7 @@ void func_801061E0_aces_high(omObjData *object) {
             D_8010DC0C_aces_high += 360.0f;
         }
     }
-    func_8001E888_main(object->model[3], D_8010DE54_aces_high[0], D_8010DE54_aces_high[1], D_8010DE50_aces_high[0],
+    Hu3DModelObjTexScroll(object->model[3], D_8010DE54_aces_high[0], D_8010DE54_aces_high[1], D_8010DE50_aces_high[0],
                        D_8010DE50_aces_high[1], "m223_4-cyl11", 0);
     Hu3DModelRotSet(object->model[3], 0.0f, D_8010DC0C_aces_high, 0.0f);
 }
@@ -354,14 +354,14 @@ void func_801062DC_aces_high(omObjData *object) {
     player = object->data = HuMemAllocTag(sizeof(AceHighPlayer), 0x7918);
     player->camIdx = idx;
     chr = GwPlayer[idx].chr;
-    object->model[0] = func_8000B108_main(D_8010DC10_aces_high[chr], 0x6B9);
+    object->model[0] = Hu3DModelRead(D_8010DC10_aces_high[chr], 0x6B9);
     if (idx == 0) {
-        object->model[1] = func_8000B108_main(0x380008, 0x6D9);
-        object->model[2] = func_8000B108_main(0x380009, 0x6D9);
-        object->model[3] = func_8000B108_main(0x380021, 0x6D9);
-        object->model[4] = func_8000B108_main(0x380022, 0x6D9);
-        object->model[5] = func_8000B108_main(0x380023, 0x6D9);
-        object->model[6] = func_8000B108_main(0x380024, 0x6D9);
+        object->model[1] = Hu3DModelRead(0x380008, 0x6D9);
+        object->model[2] = Hu3DModelRead(0x380009, 0x6D9);
+        object->model[3] = Hu3DModelRead(0x380021, 0x6D9);
+        object->model[4] = Hu3DModelRead(0x380022, 0x6D9);
+        object->model[5] = Hu3DModelRead(0x380023, 0x6D9);
+        object->model[6] = Hu3DModelRead(0x380024, 0x6D9);
     } else {
         object->model[1] = Hu3DModelLink(D_8010DE68_aces_high[0]->model[1]);
         object->model[2] = Hu3DModelLink(D_8010DE68_aces_high[0]->model[2]);
@@ -370,14 +370,14 @@ void func_801062DC_aces_high(omObjData *object) {
         object->model[5] = Hu3DModelLink(D_8010DE68_aces_high[0]->model[5]);
         object->model[6] = Hu3DModelLink(D_8010DE68_aces_high[0]->model[6]);
     }
-    func_8001C258_main(object->model[3], 4, 4);
-    func_8001C2FC_main(object->model[3], 0x70000000, 0x70000000);
-    func_8001C258_main(object->model[2], 4, 4);
-    func_8001C814_main(object->model[4], 3, 2);
-    func_8001C814_main(object->model[5], 3, 2);
-    func_8001C814_main(object->model[6], 3, 2);
-    func_8001C258_main(object->model[4], 4, 4);
-    func_8001C258_main(object->model[6], 4, 4);
+    Hu3DModelAttrSet(object->model[3], 4, 4);
+    Hu3DModelObjAttrSet(object->model[3], 0x70000000, 0x70000000);
+    Hu3DModelAttrSet(object->model[2], 4, 4);
+    Hu3DMotionAttrSet(object->model[4], 3, 2);
+    Hu3DMotionAttrSet(object->model[5], 3, 2);
+    Hu3DMotionAttrSet(object->model[6], 3, 2);
+    Hu3DModelAttrSet(object->model[4], 4, 4);
+    Hu3DModelAttrSet(object->model[6], 4, 4);
     omSetTra(object, sindf(D_8010DC80_aces_high[idx]) * 1150.0f, -250.0f, cosdf(D_8010DC80_aces_high[idx]) * 1150.0f);
     omSetRot(object, 0.0f, atan2df(-object->trans.x, -object->trans.z), 0.0f);
     Hu3DModelPosSet(object->model[1], object->trans.x, object->trans.y, object->trans.z);
@@ -452,9 +452,9 @@ void func_801068F4_aces_high(omObjData *object) {
     func_80088910_main(Hu3DData[object->model[0]].mtx, player->unk_38, 0.0f, player->unk_3C + player->unk_44);
     omSetRot(object, 0.0f, object->rot.y, 0.0f);
     if (player->unk_90 == 0) {
-        func_8001C258_main(object->model[0], 4, 4);
+        Hu3DModelAttrSet(object->model[0], 4, 4);
     } else {
-        func_8001C258_main(object->model[0], 4, 0);
+        Hu3DModelAttrSet(object->model[0], 4, 0);
     }
     if (player->unk_56 == 1) {
         Hu3DModelPosSet(object->model[1], object->trans.x + player->unk_60, object->trans.y + player->unk_68,
@@ -466,15 +466,15 @@ void func_801068F4_aces_high(omObjData *object) {
         func_80088910_main(Hu3DData[object->model[2]].mtx, player->unk_38, 0.0f, player->unk_3C + player->unk_44);
         Hu3DModelRotSet(object->model[2], 0.0f, object->rot.y, 0.0f);
         if (player->unk_58 == 0) {
-            func_8001C258_main(object->model[2], 4, 4);
-            func_8001C258_main(object->model[1], 4, 0);
+            Hu3DModelAttrSet(object->model[2], 4, 4);
+            Hu3DModelAttrSet(object->model[1], 4, 0);
         } else {
-            func_8001C258_main(object->model[1], 4, 4);
-            func_8001C258_main(object->model[2], 4, 0);
+            Hu3DModelAttrSet(object->model[1], 4, 4);
+            Hu3DModelAttrSet(object->model[2], 4, 0);
         }
         if (player->unk_90 == 0) {
-            func_8001C258_main(object->model[1], 4, 4);
-            func_8001C258_main(object->model[2], 4, 4);
+            Hu3DModelAttrSet(object->model[1], 4, 4);
+            Hu3DModelAttrSet(object->model[2], 4, 4);
         }
     }
 }
@@ -486,36 +486,36 @@ void func_80106B70_aces_high(omObjData *object) {
     switch (player->unk_4C) {
         case 0:
             model = object->model[4];
-            func_8001C258_main(object->model[5], 4, 4);
-            func_8001C258_main(object->model[6], 4, 4);
+            Hu3DModelAttrSet(object->model[5], 4, 4);
+            Hu3DModelAttrSet(object->model[6], 4, 4);
             break;
         case 1:
             model = object->model[5];
-            func_8001C258_main(object->model[4], 4, 4);
-            func_8001C258_main(object->model[6], 4, 4);
+            Hu3DModelAttrSet(object->model[4], 4, 4);
+            Hu3DModelAttrSet(object->model[6], 4, 4);
             break;
         case 2:
             model = object->model[6];
-            func_8001C258_main(object->model[4], 4, 4);
-            func_8001C258_main(object->model[5], 4, 4);
+            Hu3DModelAttrSet(object->model[4], 4, 4);
+            Hu3DModelAttrSet(object->model[5], 4, 4);
             break;
         case 3:
             model = -1;
-            func_8001C258_main(object->model[4], 4, 4);
-            func_8001C258_main(object->model[5], 4, 4);
-            func_8001C258_main(object->model[6], 4, 4);
+            Hu3DModelAttrSet(object->model[4], 4, 4);
+            Hu3DModelAttrSet(object->model[5], 4, 4);
+            Hu3DModelAttrSet(object->model[6], 4, 4);
             break;
     }
     if (model >= 0) {
-        func_8001C258_main(model, 4, 0);
+        Hu3DModelAttrSet(model, 4, 0);
         Hu3DModelPosSet(model, object->trans.x, object->trans.y, object->trans.z);
         func_80088910_main(Hu3DData[model].mtx, player->unk_38, 0.0f, player->unk_3C + player->unk_44);
         Hu3DModelRotSet(model, 0.0f, object->rot.y, 0.0f);
     }
     if (player->unk_90 == 0) {
-        func_8001C258_main(object->model[4], 4, 4);
-        func_8001C258_main(object->model[5], 4, 4);
-        func_8001C258_main(object->model[6], 4, 4);
+        Hu3DModelAttrSet(object->model[4], 4, 4);
+        Hu3DModelAttrSet(object->model[5], 4, 4);
+        Hu3DModelAttrSet(object->model[6], 4, 4);
     }
 }
 
@@ -736,7 +736,7 @@ void func_80107654_aces_high(omObjData *object) {
     hit = object->mode;
     object->mode = 0;
     if (hit & 1) {
-        func_8004AC5C_main(0x3AF, player->camIdx);
+        _HuAudPlayerFXPlay(0x3AF, player->camIdx);
         espDispOff(player->espriteSlots[--player->unk_26]);
         if (player->unk_26 == 0) {
             player->unk_00 = 4;
@@ -744,8 +744,8 @@ void func_80107654_aces_high(omObjData *object) {
             player->unk_4C = 3;
             player->unk_58 = 0;
             func_8010A884_aces_high(object);
-            func_8001C258_main(object->model[3], 4, 0);
-            func_8001C814_main(object->model[3], 3, 2);
+            Hu3DModelAttrSet(object->model[3], 4, 0);
+            Hu3DMotionAttrSet(object->model[3], 3, 2);
             Hu3DMotionTimeSet(object->model[3], 0.0f);
             Hu3DModelPosSet(object->model[3], object->trans.x, object->trans.y, object->trans.z);
             D_8010DE8C_aces_high--;
@@ -764,7 +764,7 @@ void func_80107654_aces_high(omObjData *object) {
     if (hit & 2) {
         player->unk_56 = 1;
         player->unk_5C = 50.0f;
-        func_8001C258_main(object->model[1], 4, 0);
+        Hu3DModelAttrSet(object->model[1], 4, 0);
     }
     if (hit & 4) {
         player->unk_74->work[0] = 45;
@@ -913,7 +913,7 @@ void func_80107654_aces_high(omObjData *object) {
     } else {
         if (player->unk_52 >= 30 && player->unk_54 == 1) {
             func_8010BF3C_aces_high(object);
-            func_8004AC5C_main(0x3B2, player->camIdx);
+            _HuAudPlayerFXPlay(0x3B2, player->camIdx);
         }
         player->unk_52 = 0;
         player->unk_58 = 0;
@@ -921,7 +921,7 @@ void func_80107654_aces_high(omObjData *object) {
     if (player->unk_20 == 0) {
         if ((btnDown & Z_TRIG) && player->unk_24 != 0) {
             func_8010B9F4_aces_high(object);
-            func_8004AC5C_main(0x3AD, player->camIdx);
+            _HuAudPlayerFXPlay(0x3AD, player->camIdx);
         }
     } else {
         player->unk_20--;
@@ -947,7 +947,7 @@ void func_80107F98_aces_high(omObjData *object) {
     if (hit & 2) {
         player->unk_56 = 1;
         player->unk_5C = 50.0f;
-        func_8001C258_main(object->model[1], 4, 0);
+        Hu3DModelAttrSet(object->model[1], 4, 0);
     }
     if (hit & 4) {
         player->unk_74->work[0] = 45;
@@ -1013,7 +1013,7 @@ void func_801081A8_aces_high(omObjData *object) {
                 player->unk_00 = 6;
                 object->func = NULL;
                 player->unk_90 = 0;
-                func_8001C258_main(object->model[3], 4, 4);
+                Hu3DModelAttrSet(object->model[3], 4, 4);
                 player->camObj->func = func_8010ACE0_aces_high;
                 Hu3DModelCameraSet(D_8010DE64_aces_high->model[3],
                                    Hu3DData[D_8010DE64_aces_high->model[3]].cameraBit &
@@ -1905,11 +1905,11 @@ void func_8010B618_aces_high(void) {
 
     D_8010DE6C_aces_high = omAddObj(28, 4, 0, -1, func_8010B760_aces_high);
     for (i = 0; i < 4; i++) {
-        D_8010DE6C_aces_high->model[i] = func_8000B108_main(D_8010DC90_aces_high[GwPlayer[i].chr], 0xADD);
+        D_8010DE6C_aces_high->model[i] = Hu3DModelRead(D_8010DC90_aces_high[GwPlayer[i].chr], 0xADD);
     }
     for (i = 0; i < 20; i++) {
         D_8010DED0_aces_high[i] = 0;
-        D_8010DEF8_aces_high[i] = func_8000B108_main(0x380020, 0xADD);
+        D_8010DEF8_aces_high[i] = Hu3DModelRead(0x380020, 0xADD);
     }
     for (i = 0; i < 4; i++) {
         omMakeGroup(i + 1, 5);
@@ -1958,8 +1958,8 @@ void func_8010B760_aces_high(omObjData *object) {
                 if (HuSqrtf((shotData->radius + 90.0f) * (shotData->radius + 90.0f)) < dist) {
                     continue;
                 }
-                func_80047E90_main(other, 1);
-                func_80047E90_main(shot, 1);
+                omObjModeSet(other, 1);
+                omObjModeSet(shot, 1);
             }
             for (k = 0; k < 4; k++) {
                 if (k == i) {
@@ -1985,8 +1985,8 @@ void func_8010B760_aces_high(omObjData *object) {
                         dist) {
                         continue;
                     }
-                    func_80047E90_main(shot, 1);
-                    func_80047E90_main(other, 1);
+                    omObjModeSet(shot, 1);
+                    omObjModeSet(other, 1);
                 }
             }
         }
@@ -2013,7 +2013,7 @@ void func_8010B9F4_aces_high(omObjData *object) {
     shotObj = omAddObj(28, 1, 0, idx + 1, func_8010BD84_aces_high);
     shot = shotObj->data = HuMemAllocTag(sizeof(AceHighShot), 0x7918);
     shotObj->model[0] = Hu3DModelLink(D_8010DE6C_aces_high->model[idx]);
-    func_8001C258_main(shotObj->model[0], 4, 0);
+    Hu3DModelAttrSet(shotObj->model[0], 4, 0);
     shot->unk_00 = 0;
     shot->speed = player->unk_08 + 27.777777f;
     dir = player->dir;
@@ -2058,7 +2058,7 @@ void func_8010BCC4_aces_high(void) {
         shots = D_8010DE70_aces_high[i];
         for (j = 0; j < 5; j++) {
             if (shots[j] != NULL) {
-                func_80047E90_main(shots[j], 1);
+                omObjModeSet(shots[j], 1);
             }
         }
         player = D_8010DE68_aces_high[i]->data;
@@ -2077,8 +2077,8 @@ void func_8010BD84_aces_high(omObjData *object) {
     object->mode = 0;
     if (hit & 1) {
         shot->unk_02 = 1;
-        func_8001C258_main(shot->effectModel, 4, 0);
-        func_8001C814_main(shot->effectModel, 3, 0);
+        Hu3DModelAttrSet(shot->effectModel, 4, 0);
+        Hu3DMotionAttrSet(shot->effectModel, 3, 0);
         Hu3DMotionTimeSet(shot->effectModel, 0.0f);
         Hu3DModelPosSet(shot->effectModel, object->trans.x, object->trans.y, object->trans.z);
         Hu3DModelKill(object->model[0]);
@@ -2093,13 +2093,13 @@ void func_8010BD84_aces_high(omObjData *object) {
             shot->unk_08 -= shot->speed;
             if (shot->unk_08 < 0.0f) {
                 owner = shot->owner->data;
-                func_8004AC5C_main(0x3AE, owner->camIdx);
-                func_80047E90_main(object, 1);
+                _HuAudPlayerFXPlay(0x3AE, owner->camIdx);
+                omObjModeSet(object, 1);
             }
             break;
         case 1:
             if (shot->timer == 0) {
-                func_8001C258_main(shot->effectModel, 4, 4);
+                Hu3DModelAttrSet(shot->effectModel, 4, 4);
                 D_8010DED0_aces_high[shot->effectIdx] = 0;
                 owner = shot->owner->data;
                 owner->unk_24++;
@@ -2121,8 +2121,8 @@ void func_8010BF3C_aces_high(omObjData *object) {
     f32 dist;
     s32 i;
 
-    func_8001C258_main(object->model[1], 4, 0);
-    func_8001C258_main(object->model[2], 4, 4);
+    Hu3DModelAttrSet(object->model[1], 4, 0);
+    Hu3DModelAttrSet(object->model[2], 4, 4);
     player->unk_58 = 0;
     if (MgFlowStatGet() != MG_STATE_PLAY) {
         return;
@@ -2191,7 +2191,7 @@ void func_8010BF3C_aces_high(omObjData *object) {
     if (shot->target != NULL) {
         otherData = shot->target->data;
         otherData->unk_70++;
-        func_80047E90_main(shot->target, 4);
+        omObjModeSet(shot->target, 4);
         otherData->unk_78->work[1] = 1;
     }
     omVibrate(player->camIdx, 10, 0, 10);
@@ -2211,11 +2211,11 @@ void func_8010C288_aces_high(omObjData *object) {
     object->mode = 0;
     if (hit & 1) {
         shot->unk_02 = 1;
-        func_8001C258_main(shot->effectModel, 4, 0);
-        func_8001C814_main(shot->effectModel, 3, 0);
+        Hu3DModelAttrSet(shot->effectModel, 4, 0);
+        Hu3DMotionAttrSet(shot->effectModel, 3, 0);
         Hu3DMotionTimeSet(shot->effectModel, 0.0f);
         Hu3DModelPosSet(shot->effectModel, object->trans.x, object->trans.y, object->trans.z);
-        func_8001C258_main(object->model[0], 4, 4);
+        Hu3DModelAttrSet(object->model[0], 4, 4);
         shot->timer = 30;
         shot->radius = 50.0f;
         playerData = shot->owner->data;
@@ -2343,14 +2343,14 @@ void func_8010C288_aces_high(omObjData *object) {
             object->rot.y = shot->unk_30;
             shot->unk_08 -= shot->speed;
             if (shot->unk_08 < 0.0f) {
-                func_80047E90_main(object, 1);
+                omObjModeSet(object, 1);
             }
             break;
         case 1:
             if (shot->timer == 0) {
-                func_8001C258_main(shot->effectModel, 4, 4);
+                Hu3DModelAttrSet(shot->effectModel, 4, 4);
                 D_8010DED0_aces_high[shot->effectIdx] = 0;
-                func_80047E90_main(shot->owner, 2);
+                omObjModeSet(shot->owner, 2);
                 omDelObj(object);
             } else {
                 shot->timer--;
@@ -2657,7 +2657,7 @@ void func_8010D6D4_aces_high(omObjData *object) {
         pos.x = playerObj->trans.x;
         pos.y = playerObj->trans.y + 160.0f + playerObj->trans.y / 25.0f;
         pos.z = playerObj->trans.z;
-        func_80012B14_main(player->camIdx, &pos, &screen);
+        Hu3DCam3Dto2D(player->camIdx, &pos, &screen);
         minX = minY = 15.400001f;
         maxX = 144.6f;
         maxY = 104.6f;
@@ -2685,7 +2685,7 @@ void func_8010D6D4_aces_high(omObjData *object) {
         espScaleSet(player->unk_2E, scale, scale);
         espDispOn(player->unk_2E);
         if (player->unk_2C == -1) {
-            player->unk_2C = func_8004AC98_main(0x3B1, player->camIdx);
+            player->unk_2C = HuAudPlayerFXPlay(0x3B1, player->camIdx);
         }
     } else {
         object->work[2] = 0;

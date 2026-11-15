@@ -242,8 +242,8 @@ s32 func_80105CE4_eye_sore(s32 arg0) {
 }
 
 void func_80105D38_eye_sore(omObjData *obj, u16 motion, s16 shift) {
-    func_8001C5B4_main(obj->model[0], obj->motion[motion]);
-    func_8001C814_main(obj->model[0], shift, shift);
+    Hu3DMotionModelSet(obj->model[0], obj->motion[motion]);
+    Hu3DMotionAttrSet(obj->model[0], shift, shift);
 }
 
 void func_80105DA0_eye_sore(omObjData *arg0, u16 arg1, s16 arg2, s16 arg3, s16 arg4) {
@@ -311,9 +311,9 @@ void func_80106054_eye_sore(omObjData *obj) {
 }
 
 void func_8010605C_eye_sore(omObjData *obj) {
-    obj->model[0] = func_8000B108_main(0x510000, 0x2B9);
-    obj->model[1] = func_8000B108_main(0x510001, 0x2B9);
-    func_8001C814_main(obj->model[1], 2, 2);
+    obj->model[0] = Hu3DModelRead(0x510000, 0x2B9);
+    obj->model[1] = Hu3DModelRead(0x510001, 0x2B9);
+    Hu3DMotionAttrSet(obj->model[1], 2, 2);
     D_8010AFB4_eye_sore = 160.0f;
     D_8010AFB8_eye_sore = 120.0f;
     D_8010AFB0_eye_sore = HuSprAnimDataRead(0x510004);
@@ -410,7 +410,7 @@ void func_801063E8_eye_sore(omObjData *obj, s8 motion) {
         func_80105DA0_eye_sore(obj, motion, 0, 10, shift);
         entry->unk_04[1] = motion;
         if (motion == 7) {
-            func_80045ED0_main((D_8010AC10_eye_sore[chr] << 16) | 0x2F);
+            HuAudCharVoicePlay((D_8010AC10_eye_sore[chr] << 16) | 0x2F);
         }
     }
 }
@@ -693,7 +693,7 @@ void func_8010725C_eye_sore(omObjData *obj) {
     if (state->unk_0F < 46) {
         state->unk_34 = obj->trans.y + 30.0f;
         if ((state->unk_0F == 0) | (state->unk_0F == 23)) {
-            func_8004AC98_main(0x48C, obj->work[0]);
+            HuAudPlayerFXPlay(0x48C, obj->work[0]);
         }
         if ((u8)(state->unk_0F % 23) < 11) {
             if (state->unk_38 < state->unk_34 + 44.0f) {
@@ -725,30 +725,30 @@ void func_8010725C_eye_sore(omObjData *obj) {
         Hu3DModelRotSet(obj->model[3], 0.0f, 0.0f, entry->unk_18[0]);
         Hu3DModelRotSet(obj->model[4], 0.0f, 0.0f, entry->unk_18[0]);
         Hu3DModelRotSet(obj->model[5], 0.0f, 0.0f, entry->unk_18[0]);
-        func_8001C258_main(obj->model[2], 4, 0);
-        func_8001C258_main(obj->model[3], 4, 0);
-        func_8001C258_main(obj->model[4], 4, 0);
-        func_8001C258_main(obj->model[5], 4, 0);
+        Hu3DModelAttrSet(obj->model[2], 4, 0);
+        Hu3DModelAttrSet(obj->model[3], 4, 0);
+        Hu3DModelAttrSet(obj->model[4], 4, 0);
+        Hu3DModelAttrSet(obj->model[5], 4, 0);
     }
     if (state->unk_0F == 46) {
-        func_8004AC98_main(0x48C, obj->work[0]);
+        HuAudPlayerFXPlay(0x48C, obj->work[0]);
     }
     if (state->unk_0F >= 16 && state->unk_0F < 51) {
         entry->unk_04[9] -= 7;
         if (entry->unk_04[9] < 0) {
             entry->unk_04[9] = 0;
         }
-        func_8001F9E4_main(obj->model[2], entry->unk_04[9]);
+        Hu3DModelTPLvlSet(obj->model[2], entry->unk_04[9]);
     }
     if (state->unk_0F < 23) {
         obj->trans.y += D_8010AC38_eye_sore[state->unk_0F];
     } else if (state->unk_0F < 46) {
         obj->trans.y += D_8010AC38_eye_sore[state->unk_0F - 23];
     } else if (state->unk_0F == 50) {
-        func_8001C258_main(obj->model[2], 4, 4);
-        func_8001C258_main(obj->model[3], 4, 4);
-        func_8001C258_main(obj->model[4], 4, 4);
-        func_8001C258_main(obj->model[5], 4, 4);
+        Hu3DModelAttrSet(obj->model[2], 4, 4);
+        Hu3DModelAttrSet(obj->model[3], 4, 4);
+        Hu3DModelAttrSet(obj->model[4], 4, 4);
+        Hu3DModelAttrSet(obj->model[5], 4, 4);
         func_801063E8_eye_sore(obj, 4);
     } else if (state->unk_0F >= 65 && (D_8010AF20_eye_sore >= 3 ||
                                        D_800CBB6E_main[(s8)pad] + D_800D20A1_main[(s8)pad] != 0 || state->unk_00 != 0)) {
@@ -756,7 +756,7 @@ void func_8010725C_eye_sore(omObjData *obj) {
         state->unk_0F = 0;
         state->unk_02 = 0;
         entry->unk_04[9] = 255;
-        func_8001F9E4_main(obj->model[2], 255);
+        Hu3DModelTPLvlSet(obj->model[2], 255);
         state->unk_34 = obj->trans.y + 30.0f;
         state->unk_38 = obj->trans.y + 74.0f;
         state->unk_3C = obj->trans.y + 120.0f;
@@ -799,11 +799,11 @@ void func_80107804_eye_sore(omObjData *obj) {
         if (!(GwPlayer[obj->work[0]].stat & 1)) {
             omVibrate(obj->work[0], 20, 0, 20);
         }
-        func_8004AC98_main(0x488, obj->work[0]);
-        func_8001C258_main(obj->model[2], 4, 4);
-        func_8001C258_main(obj->model[3], 4, 4);
-        func_8001C258_main(obj->model[4], 4, 4);
-        func_8001C258_main(obj->model[5], 4, 4);
+        HuAudPlayerFXPlay(0x488, obj->work[0]);
+        Hu3DModelAttrSet(obj->model[2], 4, 4);
+        Hu3DModelAttrSet(obj->model[3], 4, 4);
+        Hu3DModelAttrSet(obj->model[4], 4, 4);
+        Hu3DModelAttrSet(obj->model[5], 4, 4);
     }
     end = base + 2;
     for (i = base; i < end; i++) {
@@ -825,7 +825,7 @@ void func_80107804_eye_sore(omObjData *obj) {
             if (!(GwPlayer[obj->work[0]].stat & 1)) {
                 omVibrate(obj->work[0], 20, 0, 20);
             }
-            func_8004AC98_main(0x48B, obj->work[0]);
+            HuAudPlayerFXPlay(0x48B, obj->work[0]);
             PlayerFXPlay(0x2AB, obj->work[0]);
             angle = func_801059BC_eye_sore(obj->rot.y, 180.0f);
             state->unk_30 = sindf(angle) * D_8010AC98_eye_sore[GwPlayer[player].chr] + obj->trans.x;
@@ -920,10 +920,10 @@ void func_80107CBC_eye_sore(omObjData *obj) {
                 if (--state->unk_0D < 0) {
                     state->unk_13 = D_8010AF6C_eye_sore;
                     D_8010CA5A_eye_sore++;
-                    func_8004AC98_main(0x490, obj->work[0]);
+                    HuAudPlayerFXPlay(0x490, obj->work[0]);
                     return;
                 }
-                func_8004AC98_main(0x48F, obj->work[0]);
+                HuAudPlayerFXPlay(0x48F, obj->work[0]);
                 unkCBC0->unk_04 = D_8010AF30_eye_sore[state->unk_0D] * 75.0f;
             }
         }
@@ -949,36 +949,36 @@ void func_80108330_eye_sore(omObjData *obj) {
     s32 dir = D_800A178C_main[chr][0];
     u16 i;
 
-    obj->model[0] = func_8000B108_main(dir | D_800A178C_main[chr][2], 0x2A9);
-    func_8000B460_main(obj, 0, func_80017BB8_main(chr, 0));
-    func_8000B460_main(obj, 1, func_80017BB8_main(chr, 1));
-    func_8000B460_main(obj, 2, func_80017BB8_main(chr, 2));
-    func_8000B460_main(obj, 3, func_80017BB8_main(chr, 0x13));
-    func_8000B460_main(obj, 4, func_80017BB8_main(chr, 0x23));
-    func_8000B460_main(obj, 5, func_80017BB8_main(chr, 0x15));
-    func_8000B460_main(obj, 6, func_80017BB8_main(chr, 0x1A));
-    func_8000B460_main(obj, 7, func_80017BB8_main(chr, 0x2F));
-    func_8000B460_main(obj, 8, func_80017BB8_main(chr, 0x36));
+    obj->model[0] = Hu3DModelRead(dir | D_800A178C_main[chr][2], 0x2A9);
+    omObjMotionRead(obj, 0, CharMotionDataNumGet(chr, 0));
+    omObjMotionRead(obj, 1, CharMotionDataNumGet(chr, 1));
+    omObjMotionRead(obj, 2, CharMotionDataNumGet(chr, 2));
+    omObjMotionRead(obj, 3, CharMotionDataNumGet(chr, 0x13));
+    omObjMotionRead(obj, 4, CharMotionDataNumGet(chr, 0x23));
+    omObjMotionRead(obj, 5, CharMotionDataNumGet(chr, 0x15));
+    omObjMotionRead(obj, 6, CharMotionDataNumGet(chr, 0x1A));
+    omObjMotionRead(obj, 7, CharMotionDataNumGet(chr, 0x2F));
+    omObjMotionRead(obj, 8, CharMotionDataNumGet(chr, 0x36));
     for (i = 0; i < 2; i++) {
         D_8010CC18_eye_sore[player][i] = DataRead(dir | D_8010AC58_eye_sore[chr][i]);
     }
     D_8010AF22_eye_sore[player] =
         Hu3DAnimCreate(Hu3DData[obj->model[0]].hmf, D_8010CC18_eye_sore[player][0], 0, D_8010AC78_eye_sore[chr]);
     Hu3DModelRemakeStatic(obj->model[0]);
-    func_8001C514_main(obj->model[0]);
+    Hu3DModelDynamicFree(obj->model[0]);
     if (player == 0) {
-        obj->model[1] = func_8000B0A0_main(0, 0xC9);
-        func_8001C2FC_main(obj->model[1], 0x80000000, 0);
+        obj->model[1] = Hu3DModelRead2(0, 0xC9);
+        Hu3DModelObjAttrSet(obj->model[1], 0x80000000, 0);
         Hu3DModelRemakeStatic(obj->model[1]);
-        func_8001C514_main(obj->model[1]);
+        Hu3DModelDynamicFree(obj->model[1]);
         func_80088800_main(Hu3DData[obj->model[1]].mtx, 0.0f, 0.0f, 0.0f);
         D_8010CBB4_eye_sore[0] = obj->model[1];
     } else {
         obj->model[1] = Hu3DModelLink(D_8010CBB4_eye_sore[0]);
     }
-    obj->model[2] = func_8000B108_main(0x10014, 0x8C);
-    func_8001FA68_main(obj->model[2]);
-    func_8001F9E4_main(obj->model[2], 255);
+    obj->model[2] = Hu3DModelRead(0x10014, 0x8C);
+    Hu3DModelTPLvlInit(obj->model[2]);
+    Hu3DModelTPLvlSet(obj->model[2], 255);
     obj->model[3] = Hu3DModelLink(D_8010CBB4_eye_sore[1] = obj->model[2]);
     obj->model[4] = Hu3DModelLink(D_8010CBB4_eye_sore[1]);
     obj->model[5] = Hu3DModelLink(D_8010CBB4_eye_sore[1]);
@@ -1158,10 +1158,10 @@ void func_80108E8C_eye_sore(omObjData *obj) {
                 scale = entry->unk_18[4] * 2.4f;
                 Hu3DModelScaleSet(obj->model[1], scale, 1.0f, scale);
                 if (entry->unk_18[4] < 0.06f) {
-                    func_8001C258_main(obj->model[0], 4, 4);
-                    func_8001C258_main(obj->model[1], 4, 4);
-                    func_8001C258_main(obj->model[2], 4, 4);
-                    func_8001C258_main(obj->model[3], 4, 0);
+                    Hu3DModelAttrSet(obj->model[0], 4, 4);
+                    Hu3DModelAttrSet(obj->model[1], 4, 4);
+                    Hu3DModelAttrSet(obj->model[2], 4, 4);
+                    Hu3DModelAttrSet(obj->model[3], 4, 0);
                     Hu3DModelPosSet(obj->model[3], 0.0f, 90.0f, 70.0f);
                     unkCBC0->unk_0C++;
                 }
@@ -1172,16 +1172,16 @@ void func_80108E8C_eye_sore(omObjData *obj) {
             Hu3DModelScaleSet(obj->model[3], size, size, size);
             if (entry->unk_04[9] > 16) {
                 entry->unk_04[0] = 0;
-                func_8001C258_main(obj->model[3], 4, 4);
+                Hu3DModelAttrSet(obj->model[3], 4, 4);
                 unkCBC0->unk_0C++;
             } else {
                 entry->unk_04[0] -= 15;
                 entry->unk_04[9]++;
                 if (unkCBC0->unk_0D == 0) {
-                    func_8004AC98_main(0x48A, playerObj->work[0]);
+                    HuAudPlayerFXPlay(0x48A, playerObj->work[0]);
                     unkCBC0->unk_0D = 1;
                 }
-                func_8001F9E4_main(obj->model[3], entry->unk_04[0]);
+                Hu3DModelTPLvlSet(obj->model[3], entry->unk_04[0]);
             }
             break;
         case 3:
@@ -1199,7 +1199,7 @@ void func_80108E8C_eye_sore(omObjData *obj) {
                     angle = func_801059BC_eye_sore(state->unk_48, 180.0f);
                     obj->trans.x = sindf(angle) * 30.0f;
                     obj->trans.z = cosdf(angle) * 30.0f;
-                    func_8001C258_main(obj->model[2], 4, 0);
+                    Hu3DModelAttrSet(obj->model[2], 4, 0);
                     Hu3DMotionSpeedSet(obj->model[2], 1.0f);
                     Hu3DMotionTimeSet(obj->model[2], 5.0f);
                     Hu3DModelRotSet(obj->model[2], 0.0f, state->unk_48, 0.0f);
@@ -1236,7 +1236,7 @@ void func_80108E8C_eye_sore(omObjData *obj) {
             }
             if (entry->unk_04[1] != 0 && ++entry->unk_04[1] >= 15) {
                 entry->unk_04[1] = 0;
-                func_8001C258_main(obj->model[2], 4, 4);
+                Hu3DModelAttrSet(obj->model[2], 4, 4);
             }
             break;
     }
@@ -1250,20 +1250,20 @@ void func_80109478_eye_sore(omObjData *obj) {
     u16 i;
 
     if (player == 0) {
-        obj->model[0] = func_8000B108_main(0xA015D, 0x2B9);
+        obj->model[0] = Hu3DModelRead(0xA015D, 0x2B9);
         D_8010CBB2_eye_sore = obj->model[0];
     } else {
         obj->model[0] = Hu3DModelLink(D_8010CBB2_eye_sore);
     }
     obj->model[1] = Hu3DModelLink(D_8010CBB4_eye_sore[0]);
-    obj->model[2] = func_8000B108_main(0x510002, 0x2B9);
+    obj->model[2] = Hu3DModelRead(0x510002, 0x2B9);
     Hu3DMotionSpeedSet(obj->model[2], 0.0f);
-    func_8001C258_main(obj->model[2], 4, 4);
+    Hu3DModelAttrSet(obj->model[2], 4, 4);
     Hu3DModelPosSet(obj->model[2], 0.0f, 0.0f, 0.0f);
-    obj->model[3] = func_8000B108_main(0x510003, 0x2A8);
-    func_8001FA68_main(obj->model[3]);
-    func_8001F9E4_main(obj->model[3], 255);
-    func_8001C258_main(obj->model[3], 4, 4);
+    obj->model[3] = Hu3DModelRead(0x510003, 0x2A8);
+    Hu3DModelTPLvlInit(obj->model[3]);
+    Hu3DModelTPLvlSet(obj->model[3], 255);
+    Hu3DModelAttrSet(obj->model[3], 4, 4);
     Hu3DModelPosSet(obj->model[3], 0.0f, 60.0f, 20.0f);
     Hu3DModelRotSet(obj->model[3], 318.0f, 0.0f, 0.0f);
     Hu3DModelScaleSet(obj->model[3], 0.3f, 0.3f, 0.3f);
@@ -1412,7 +1412,7 @@ void func_801098F8_eye_sore(omObjData *obj) {
                 eye->unk_0C = 30.0f;
                 obj->scale.x = obj->scale.y = obj->scale.z = 1.0f;
                 Hu3DModelScaleSet(obj->model[1], 0.1f, 1.0f, 0.1f);
-                func_8001C258_main(obj->model[1], 4, 4);
+                Hu3DModelAttrSet(obj->model[1], 4, 4);
             } else {
                 eye->unk_0C = entry->unk_18[1] * 30.0f;
                 obj->scale.x = obj->scale.y = obj->scale.z = entry->unk_18[1];
@@ -1429,7 +1429,7 @@ void func_801098F8_eye_sore(omObjData *obj) {
             Hu3DModelScaleSet(obj->model[1], scale, 1.0f, scale);
             eye->unk_10 = 1;
         } else if (obj->trans.y < 580.0f) {
-            func_8001C258_main(obj->model[1], 4, 0);
+            Hu3DModelAttrSet(obj->model[1], 4, 0);
             if (eye->unk_11 == 0) {
                 HuAudFXPlay(0x489);
                 eye->unk_11 = 1;
@@ -1465,13 +1465,13 @@ void func_8010A0CC_eye_sore(omObjData *obj) {
     void *anim = DataRead(0xA008C);
     u16 i;
 
-    obj->model[0] = func_8000B108_main(0xA008A, 0x2A9);
+    obj->model[0] = Hu3DModelRead(0xA008A, 0x2A9);
     Hu3DAnimCreate(Hu3DData[obj->model[0]].hmf, anim, 0, "c201n_00_DEF");
     Hu3DModelRemakeStatic(obj->model[0]);
-    func_8001C514_main(obj->model[0]);
+    Hu3DModelDynamicFree(obj->model[0]);
     DataClose(anim);
     if (idx == 0) {
-        obj->model[1] = func_8000B108_main(0x510006, 0x2B9);
+        obj->model[1] = Hu3DModelRead(0x510006, 0x2B9);
         D_8010CBB8_eye_sore = obj->model[1];
         obj->trans.x = 0.0f;
     } else {
@@ -1481,7 +1481,7 @@ void func_8010A0CC_eye_sore(omObjData *obj) {
     obj->trans.y = 600.0f;
     obj->trans.z = 250.0f;
     obj->rot.x = 340.0f;
-    func_8001C258_main(obj->model[1], 4, 4);
+    Hu3DModelAttrSet(obj->model[1], 4, 4);
     Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
     Hu3DModelScaleSet(obj->model[1], 0.1f, 1.0f, 0.1f);
     switch (index) {
@@ -1579,7 +1579,7 @@ void func_8010A62C_eye_sore(omObjData *obj) {
         WipeCreateOut(0, 20);
         obj->func = func_8010A54C_eye_sore;
         HuAudSeqFadeOut(30);
-        func_8004AB0C_main(30);
+        HuAudFXAllFadeOut(30);
     }
 }
 
@@ -1601,7 +1601,7 @@ void func_8010A684_eye_sore(omObjData *obj) {
             break;
         case 2:
             D_8010CBB0_eye_sore--;
-            func_8003F578_main((D_8010CBB0_eye_sore + 29) / 30);
+            GMesTimerValueSet((D_8010CBB0_eye_sore + 29) / 30);
             if (D_8010CA5A_eye_sore != 0) {
                 D_8010AF6C_eye_sore += D_8010CA5A_eye_sore;
                 D_8010CC11_eye_sore += D_8010CA5A_eye_sore;
@@ -1609,7 +1609,7 @@ void func_8010A684_eye_sore(omObjData *obj) {
                 func_80108D3C_eye_sore();
             }
             if (D_8010CBB0_eye_sore == 0 || D_8010CC11_eye_sore >= 3) {
-                func_8003F5C0_main();
+                GMesTimerEnd();
                 GMesCreate(0x12);
                 HuAudSeqFadeOut(120);
                 D_8010CBB0_eye_sore = 0;
@@ -1666,8 +1666,8 @@ void func_8010A984_eye_sore(void) {
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
     obj->work[0] = 4;
     omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    func_8000B5F0_main(4);
-    func_8000B710_main(4);
+    CamSetupInit(4);
+    CamSetupMapCullAddMulti(4);
     for (i = 0; i < 4; i++) {
         ScissorSet(i, D_8010ACF8_eye_sore[i].scissorX, D_8010ACF8_eye_sore[i].scissorY,
                    D_8010ACF8_eye_sore[i].scissorWidth, D_8010ACF8_eye_sore[i].scissorHeight);
@@ -1679,10 +1679,10 @@ void func_8010A984_eye_sore(void) {
 }
 
 void func_8010AAF8_eye_sore(void) {
-    func_8001FE20_main(50);
-    func_800142A0_main(50);
+    MapCollInit(50);
+    Hu3DSprModelInit(50);
     omInitObjMan(60, 0);
-    func_8004A208_main();
+    omGameSysInit();
     func_8010A984_eye_sore();
     Hu3DGLightMaxSet(1);
     Hu3DGLightMaxSet(2);
@@ -1692,8 +1692,8 @@ void func_8010AAF8_eye_sore(void) {
     D_800EC1B8_minigame = 0;
     D_800EC280_minigame = 0;
     D_800EBE28_minigame = 0;
-    func_80045010_main(D_8010AF0C_eye_sore, 0);
-    func_80045010_main(D_8010AF0C_eye_sore, 1);
+    GMesFontMesCreate(D_8010AF0C_eye_sore, 0);
+    GMesFontMesCreate(D_8010AF0C_eye_sore, 1);
     omAddObj(1000, 0, 0, -1, func_8010A8EC_eye_sore);
     omAddObj(1000, 0, 0, -1, func_8010A62C_eye_sore);
     func_80105A74_eye_sore();

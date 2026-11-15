@@ -52,9 +52,9 @@ void func_801059A0_mgresultbattle(void) {
             break;
         }
     }
-    func_800142A0_main(0x78);
+    Hu3DSprModelInit(0x78);
     omInitObjMan(0x1E, 0x1E);
-    func_8000B690_main(1);
+    CamSetupInitMulti(1);
     ScissorSet(0, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 30.0f, 80.0f, 8000.0f);
@@ -123,7 +123,7 @@ void func_80105CAC_mgresultbattle(omObjData *obj) {
             }
             WipeCreateOut(WIPE_TYPE_NORMAL, 20);
             HuAudSeqFadeOut(30);
-            func_8004AB0C_main(30);
+            HuAudFXAllFadeOut(30);
             state++;
             break;
         case 5:
@@ -157,7 +157,7 @@ void func_80105E64_mgresultbattle(omObjData *obj) {
         }
         if (WipeStatGet() == 0) {
             HuAudSeqFadeOut(30);
-            func_8004AB0C_main(30);
+            HuAudFXAllFadeOut(30);
             GameMesStub();
             MBBackKill();
             MBBackClose();
@@ -337,17 +337,17 @@ void func_80106660_mgresultbattle(void) {
         D_80108F50_mgresultbattle[i].obj = obj;
         chr = GwPlayer[D_80108F8C_mgresultbattle[i]].chr;
 
-        obj->model[1] = func_8000B108_main(D_800A178C_main[chr][0] | D_800A178C_main[chr][1], 0x2B9);
-        func_8001C814_main(obj->model[1], 2, 2);
-        obj->model[2] = func_8000B108_main(9, 0x2B9);
+        obj->model[1] = Hu3DModelRead(D_800A178C_main[chr][0] | D_800A178C_main[chr][1], 0x2B9);
+        Hu3DMotionAttrSet(obj->model[1], 2, 2);
+        obj->model[2] = Hu3DModelRead(9, 0x2B9);
         Hu3DModelPosSet(obj->model[2], 0.0f, -5.0f, 0.0f);
 
-        func_8000B460_main(obj, 0, func_80017BB8_main(chr, 0));
-        func_8000B460_main(obj, 1, func_80017BB8_main(chr, 0x2F));
-        func_8000B460_main(obj, 2, func_80017BB8_main(chr, 0x36));
-        func_8000B460_main(obj, 3, func_80017BB8_main(chr, 0x25));
-        func_8001C5B4_main(obj->model[1], obj->motion[0]);
-        func_8001C814_main(obj->model[1], 2, 2);
+        omObjMotionRead(obj, 0, CharMotionDataNumGet(chr, 0));
+        omObjMotionRead(obj, 1, CharMotionDataNumGet(chr, 0x2F));
+        omObjMotionRead(obj, 2, CharMotionDataNumGet(chr, 0x36));
+        omObjMotionRead(obj, 3, CharMotionDataNumGet(chr, 0x25));
+        Hu3DMotionModelSet(obj->model[1], obj->motion[0]);
+        Hu3DMotionAttrSet(obj->model[1], 2, 2);
         Hu3DModelPosSet(obj->model[1], D_801089D0_mgresultbattle[i].x, D_801089D0_mgresultbattle[i].y,
                         D_801089D0_mgresultbattle[i].z);
         Hu3DModelPosSet(obj->model[2], D_801089D0_mgresultbattle[i].x, D_801089D0_mgresultbattle[i].y,

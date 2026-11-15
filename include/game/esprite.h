@@ -31,24 +31,24 @@ void espDispOff(u16 arg0);
 void espMain(void);
 void espPosSet(u16 spriteId, s16 x, s16 y);
 void espPriSet(u16, s32);
-void func_8000BD50_main(u16 spriteId, s16 arg1);
-void func_8000BDDC_main(u16 spriteId, s32 arg1);
+void espPatNoSet(u16 spriteId, s16 arg1);
+void espAnimModeSet(u16 spriteId, s32 arg1);
 s16 espEntry(s16 arg0, s16 arg1, u16 arg2);
 void espKill(u16);
 
 void espInit(void);
-void func_8000B880_main(s16 arg0, f32 r, f32 g, f32 b);
-void func_8000BA00_main(void);
+void espPalColorSet(s16 arg0, f32 r, f32 g, f32 b);
+void espClose(void);
 void espTPLvlSet(u16 spriteId, s16 arg1);
 void espAttrSet(u16 arg0, u16 arg1);
 void espAttrReset(u16 arg0, u16 arg1);
 void espSpeedSet(u16 spriteId, f32 arg1);
 void espBankSet(u16 spriteId, s32 arg1, s32 arg2);
-u8 func_8000BE1C_main(u16 spriteId);
+u8 espAnimStatGet(u16 spriteId);
 void espScaleSet(u16 spriteId, f32 x, f32 y);
 void espColorSet(u16 spriteId, s32 arg1, s32 arg2, s32 arg3);
 void espZRotSet(u16 spriteId, f32 arg1);
-void func_8000BF48_main(u16 spriteId, s16 arg1, s16 arg2, s16 arg3);
-void func_8000BF8C_main(u16 spriteId, s16 arg1);
+void espTPLvlFadeSet(u16 spriteId, s16 arg1, s16 arg2, s16 arg3);
+void espTPLvlFadeReset(u16 spriteId, s16 arg1);
 
 #endif

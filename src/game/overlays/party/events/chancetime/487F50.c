@@ -111,50 +111,50 @@ void func_8010BF80_chancetime(void) {
     obj = omAddObj(20, 16, 0, -1, NULL);
     D_801100C8_chancetime = obj;
 
-    obj->model[1] = func_8000B108_main(0x1C0009, 0x229);
+    obj->model[1] = Hu3DModelRead(0x1C0009, 0x229);
     data = DataRead(0x1C0002);
     D_8010FEB0_chancetime[0][0] = Hu3DAnimCreate(Hu3DData[obj->model[1]].hmf, data, 0, D_8010FBD8_chancetime[0]);
-    func_80032FC0_main(D_8010FEB0_chancetime[0][0], 1, 1);
+    Hu3DAnimAttrSet(D_8010FEB0_chancetime[0][0], 1, 1);
     Hu3DAnimBankSet(D_8010FEB0_chancetime[0][0], 0);
     HuMemMemoryFreePerm(data);
     for (i = 1; i < 3; i++) {
         D_8010FEB0_chancetime[0][i] =
             Hu3DAnimLink(Hu3DData[obj->model[1]].hmf, D_8010FEB0_chancetime[0][0], 0, D_8010FBD8_chancetime[i]);
-        func_80032FC0_main(D_8010FEB0_chancetime[0][i], 1, 1);
+        Hu3DAnimAttrSet(D_8010FEB0_chancetime[0][i], 1, 1);
         Hu3DAnimBankSet(D_8010FEB0_chancetime[0][i], 0);
     }
     Hu3DModelRemakeStatic(obj->model[1]);
-    func_8001C514_main(obj->model[1]);
-    func_8001C814_main(obj->model[1], 2, 0);
+    Hu3DModelDynamicFree(obj->model[1]);
+    Hu3DMotionAttrSet(obj->model[1], 2, 0);
     Hu3DModelCameraSet(obj->model[1], 1);
 
-    obj->model[2] = func_8000B108_main(0x1C0009, 0x229);
+    obj->model[2] = Hu3DModelRead(0x1C0009, 0x229);
     for (i = 0; i < 3; i++) {
         D_8010FEB0_chancetime[1][i] =
             Hu3DAnimLink(Hu3DData[obj->model[2]].hmf, D_8010FEB0_chancetime[0][0], 0, D_8010FBD8_chancetime[i]);
-        func_80032FC0_main(D_8010FEB0_chancetime[1][i], 1, 1);
+        Hu3DAnimAttrSet(D_8010FEB0_chancetime[1][i], 1, 1);
         Hu3DAnimBankSet(D_8010FEB0_chancetime[1][i], 0);
     }
     Hu3DModelRemakeStatic(obj->model[2]);
-    func_8001C514_main(obj->model[2]);
-    func_8001C814_main(obj->model[2], 2, 0);
+    Hu3DModelDynamicFree(obj->model[2]);
+    Hu3DMotionAttrSet(obj->model[2], 2, 0);
     Hu3DModelCameraSet(obj->model[2], 1);
 
-    obj->model[3] = func_8000B108_main(0x1C0009, 0x229);
+    obj->model[3] = Hu3DModelRead(0x1C0009, 0x229);
     data = DataRead(0x1C0003);
     D_8010FEB0_chancetime[2][0] = Hu3DAnimCreate(Hu3DData[obj->model[3]].hmf, data, 0, D_8010FBD8_chancetime[0]);
-    func_80032FC0_main(D_8010FEB0_chancetime[2][0], 1, 1);
+    Hu3DAnimAttrSet(D_8010FEB0_chancetime[2][0], 1, 1);
     Hu3DAnimBankSet(D_8010FEB0_chancetime[2][0], 0);
     HuMemMemoryFreePerm(data);
     for (i = 1; i < 3; i++) {
         D_8010FEB0_chancetime[2][i] =
             Hu3DAnimLink(Hu3DData[obj->model[3]].hmf, D_8010FEB0_chancetime[2][0], 0, D_8010FBD8_chancetime[i]);
-        func_80032FC0_main(D_8010FEB0_chancetime[2][i], 1, 1);
+        Hu3DAnimAttrSet(D_8010FEB0_chancetime[2][i], 1, 1);
         Hu3DAnimBankSet(D_8010FEB0_chancetime[2][i], 0);
     }
     Hu3DModelRemakeStatic(obj->model[3]);
-    func_8001C514_main(obj->model[3]);
-    func_8001C814_main(obj->model[3], 2, 0);
+    Hu3DModelDynamicFree(obj->model[3]);
+    Hu3DMotionAttrSet(obj->model[3], 2, 0);
     Hu3DModelCameraSet(obj->model[3], 1);
 
     spriteId = HuSprAnimDataRead(0x1C0000);
@@ -521,7 +521,7 @@ void func_8010DAB0_chancetime(void) {
     s8 i;
 
     for (i = 0; i < 3; i++) {
-        func_8001C258_main(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
 }
 
@@ -529,7 +529,7 @@ void func_8010DB1C_chancetime(s8 arg0) {
     omObjData *obj = D_801100C8_chancetime;
 
     espDispOff(D_8010FE94_chancetime[arg0]);
-    func_8001C258_main(obj->model[arg0 + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(obj->model[arg0 + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
 }
 
 void func_8010DB78_chancetime(void) {
@@ -560,31 +560,31 @@ void func_8010DBB0_chancetime(void) {
         espPriSet(D_80110028_chancetime[i], 0);
         espDispOff(D_80110028_chancetime[i]);
         espBankSet(D_80110028_chancetime[i], 0, 0);
-        func_8000BDDC_main(D_80110028_chancetime[i], 1);
+        espAnimModeSet(D_80110028_chancetime[i], 1);
         espScaleSet(D_80110028_chancetime[i], 0.5f, 0.5f);
     }
-    obj->model[1] = func_8000B0D4_main(0x1301CC, 0x2B9);
+    obj->model[1] = Hu3DModelRead3(0x1301CC, 0x2B9);
     Hu3DModelScaleSet(obj->model[1], 0.5f, 0.5f, 0.5f);
-    func_8001C814_main(obj->model[1], 2, 2);
+    Hu3DMotionAttrSet(obj->model[1], 2, 2);
     Hu3DModelCameraSet(obj->model[1], 4);
-    func_8001C258_main(obj->model[1], 4, 4);
+    Hu3DModelAttrSet(obj->model[1], 4, 4);
     for (i = 1; i < 10; i++) {
         obj->model[i + 1] = Hu3DModelLink(obj->model[1]);
         Hu3DModelScaleSet(obj->model[i + 1], 0.5f, 0.5f, 0.5f);
         Hu3DModelCameraSet(obj->model[i + 1], 4);
-        func_8001C258_main(obj->model[i + 1], 4, 4);
-        func_8001C814_main(obj->model[i + 1], 2, 2);
+        Hu3DModelAttrSet(obj->model[i + 1], 4, 4);
+        Hu3DMotionAttrSet(obj->model[i + 1], 2, 2);
     }
     for (i = 0; i < 10; i++) {
-        D_80110010_chancetime[i] = func_8000CED8_main(0xB0004, 0x6A9);
-        func_8000CD00_main(D_80110010_chancetime[i], 4.0f, 20.0f, 4.0f);
-        func_8000D018_main(D_80110010_chancetime[i], 60.0f);
+        D_80110010_chancetime[i] = EffectCreate(0xB0004, 0x6A9);
+        EffectParamSet(D_80110010_chancetime[i], 4.0f, 20.0f, 4.0f);
+        EffectRangeSet(D_80110010_chancetime[i], 60.0f);
         Hu3DModelCameraSet(D_80110010_chancetime[i], 4);
-        func_800138EC_main(D_80110010_chancetime[i], 1, 0);
-        func_8001C258_main(D_80110010_chancetime[i], 4, 4);
+        Hu3DParticleAttrSet(D_80110010_chancetime[i], 1, 0);
+        Hu3DModelAttrSet(D_80110010_chancetime[i], 4, 4);
     }
-    D_80110004_chancetime = func_80060880_main(100, 160, 14);
-    func_80061100_main((s16)D_80110004_chancetime, 5);
+    D_80110004_chancetime = HuWinExCreateStyled(100, 160, 14);
+    HuWinExPriSet((s16)D_80110004_chancetime, 5);
     if (!(GwPlayer[D_801100D0_chancetime[0]].stat & 1)) {
         HuWinActivePlayerSet((s16)D_80110004_chancetime, 1 << GwPlayer[D_801100D0_chancetime[0]].pad);
     }
@@ -613,7 +613,7 @@ void func_8010DFA4_chancetime(void) {
 
     HuWinHomeClear(D_80110004_chancetime);
     if (GwPlayer[D_801100D0_chancetime[0]].stat & 1) {
-        func_8005B63C_main(D_80110004_chancetime, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
+        HuWinAttrSet(D_80110004_chancetime, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
         HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
         HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
@@ -624,11 +624,11 @@ void func_8010DFA4_chancetime(void) {
     }
     func_80108B50_chancetime();
     HuWinMesSet(D_80110004_chancetime, D_8010FD5C_chancetime[index], -1, -1);
-    func_80060C14_main(D_80110004_chancetime, 1);
+    HuWinExOpen(D_80110004_chancetime, 1);
     while (HuWinStatGet(D_80110004_chancetime)) {
         HuPrcVSleep();
     }
-    func_80060EA8_main(D_80110004_chancetime, 1);
+    HuWinExClose(D_80110004_chancetime, 1);
     func_80108A88_chancetime();
     if (GwPlayer[D_801100D0_chancetime[0]].stat & 1) {
         HuWinComKeyReset();
@@ -831,15 +831,15 @@ void func_8010E4D0_chancetime(omObjData *object) {
                 case 1:
                     if (!isStars) {
                         espDispOn(D_80110028_chancetime[i]);
-                        func_8000BDDC_main(D_80110028_chancetime[i], 1);
+                        espAnimModeSet(D_80110028_chancetime[i], 1);
                         espBankSet(D_80110028_chancetime[i], 0, 0);
                         espPosSet(D_80110028_chancetime[i], 80, 74.0f - offsetY);
                     } else {
-                        func_8001C258_main(object->model[i + 1], 4, 0);
-                        func_8001C258_main(D_80110010_chancetime[i], 4, 0);
-                        func_800138EC_main(D_80110010_chancetime[i], 1, 1);
+                        Hu3DModelAttrSet(object->model[i + 1], 4, 0);
+                        Hu3DModelAttrSet(D_80110010_chancetime[i], 4, 0);
+                        Hu3DParticleAttrSet(D_80110010_chancetime[i], 1, 1);
                         Hu3DModelPosSet(object->model[i + 1], -170.0f, 375.0f, 0.0f);
-                        func_8000CFA4_main(D_80110010_chancetime[i], -170.0f, 375.0f, 0.0f);
+                        EffectPosSet(D_80110010_chancetime[i], -170.0f, 375.0f, 0.0f);
                     }
                     D_8010FF60_chancetime[i].timer = 0;
                     D_8010FF60_chancetime[i].state = 3;
@@ -857,8 +857,8 @@ void func_8010E4D0_chancetime(omObjData *object) {
                         }
                         HuAudFXPlay(0x106);
                     } else {
-                        func_8001C258_main(object->model[i + 1], 4, 4);
-                        func_800138EC_main(D_80110010_chancetime[i], 1, 0);
+                        Hu3DModelAttrSet(object->model[i + 1], 4, 4);
+                        Hu3DParticleAttrSet(D_80110010_chancetime[i], 1, 0);
                         gained += step;
                         value = gained + starsF[1];
                         if (value <= 99.0f) {
@@ -888,11 +888,11 @@ void func_8010E4D0_chancetime(omObjData *object) {
                         s = sindf(t * 4.5f);
                         y = s * 88.0f;
                         Hu3DModelPosSet(object->model[i + 1], x + -170.0f, y + 375.0f, 0.0f);
-                        func_8000CFA4_main(D_80110010_chancetime[i], x + -170.0f, y + 375.0f, 0.0f);
+                        EffectPosSet(D_80110010_chancetime[i], x + -170.0f, y + 375.0f, 0.0f);
                         scale = s * 0.5f + 0.5f;
                         Hu3DModelScaleSet(object->model[i + 1], scale, scale, scale);
                         Hu3DModelRotSet(object->model[i + 1], 0.0f, t * 15.0f, 0.0f);
-                        func_8000CD00_main(D_80110010_chancetime[i], s + s + 4.0f, 20.0f, s + s + 4.0f);
+                        EffectParamSet(D_80110010_chancetime[i], s + s + 4.0f, 20.0f, s + s + 4.0f);
                         D_8010FF60_chancetime[i].timer++;
                         if (timer >= 40) {
                             D_8010FF60_chancetime[i].state = 2;
@@ -944,7 +944,7 @@ void func_8010F1DC_chancetime(void) {
 void func_8010F1F8_chancetime(void) {
     HuWinHomeClear(D_80110004_chancetime);
     if (GwPlayer[D_801100D0_chancetime[0]].stat & 1) {
-        func_8005B63C_main(D_80110004_chancetime, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
+        HuWinAttrSet(D_80110004_chancetime, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
         HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
         HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
@@ -957,11 +957,11 @@ void func_8010F1F8_chancetime(void) {
     func_8010BF48_chancetime();
     HuAudFXPlay(0x298);
     HuWinMesSet(D_80110004_chancetime, 0x1B00, -1, -1);
-    func_80060C14_main(D_80110004_chancetime, 1);
+    HuWinExOpen(D_80110004_chancetime, 1);
     while (HuWinStatGet(D_80110004_chancetime)) {
         HuPrcVSleep();
     }
-    func_80060EA8_main(D_80110004_chancetime, 1);
+    HuWinExClose(D_80110004_chancetime, 1);
     func_80108A88_chancetime();
     if (GwPlayer[D_801100D0_chancetime[0]].stat & 1) {
         HuWinComKeyReset();
@@ -996,7 +996,7 @@ void func_8010F44C_chancetime(s32 arg0, s32 arg1, s32 arg2) {
     }
     HuWinHomeClear(D_80110004_chancetime);
     if (GwPlayer[D_801100D0_chancetime[0]].stat & 1) {
-        func_8005B63C_main(D_80110004_chancetime, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
+        HuWinAttrSet(D_80110004_chancetime, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
         HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
         HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
@@ -1007,12 +1007,12 @@ void func_8010F44C_chancetime(s32 arg0, s32 arg1, s32 arg2) {
     }
     func_80108B50_chancetime();
     HuWinMesSet(D_80110004_chancetime, D_8010FD8C_chancetime[arg0], -1, -1);
-    func_80060C14_main(D_80110004_chancetime, 1);
+    HuWinExOpen(D_80110004_chancetime, 1);
     while (HuWinStatGet(D_80110004_chancetime)) {
         HuPrcVSleep();
     }
     if (GwPlayer[D_801100D0_chancetime[0]].stat & 1) {
-        func_8005B63C_main(D_80110004_chancetime, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
+        HuWinAttrSet(D_80110004_chancetime, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
         HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
         HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
@@ -1025,25 +1025,25 @@ void func_8010F44C_chancetime(s32 arg0, s32 arg1, s32 arg2) {
         if (arg2 > 0) {
             mes = D_8010FDB0_chancetime[arg0];
             if (mes != 0) {
-                func_80060EA8_main(D_80110004_chancetime, 1);
+                HuWinExClose(D_80110004_chancetime, 1);
                 HuWinMesSet(D_80110004_chancetime, mes, -1, -1);
                 HuAudFXPlay(0x29A);
-                func_80060C14_main(D_80110004_chancetime, 1);
+                HuWinExOpen(D_80110004_chancetime, 1);
                 while (HuWinStatGet(D_80110004_chancetime)) {
                     HuPrcVSleep();
                 }
             }
         } else {
-            func_80060EA8_main(D_80110004_chancetime, 1);
+            HuWinExClose(D_80110004_chancetime, 1);
             HuWinMesSet(D_80110004_chancetime, D_8010FDD4_chancetime[arg0], -1, -1);
             HuAudFXPlay(0x29A);
-            func_80060C14_main(D_80110004_chancetime, 1);
+            HuWinExOpen(D_80110004_chancetime, 1);
             while (HuWinStatGet(D_80110004_chancetime)) {
                 HuPrcVSleep();
             }
         }
     }
-    func_80060EA8_main(D_80110004_chancetime, 1);
+    HuWinExClose(D_80110004_chancetime, 1);
     func_80108A88_chancetime();
     if (GwPlayer[D_801100D0_chancetime[0]].stat & 1) {
         HuWinComKeyReset();

@@ -17,9 +17,9 @@ void func_801059D0_filesel(void) {
     Vec up;
 
     omInitObjMan(0x40, 0x20);
-    func_800142A0_main(0x20);
-    func_8004A208_main();
-    func_8000B5F0_main(1);
+    Hu3DSprModelInit(0x20);
+    omGameSysInit();
+    CamSetupInit(1);
     position = D_801129C0_filesel;
     target = D_801129CC_filesel;
     up = D_801129D8_filesel;
@@ -27,7 +27,7 @@ void func_801059D0_filesel(void) {
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 41.0f, 80.0f, 8000.0f);
     Hu3DCameraPosSetV(0, &position, &target, &up);
-    func_80030030_main(1.0f);
+    Hu3DMotionGlobalSpeedSet(1.0f);
     HuAudSeqStop();
     pfInit();
     HuWinInit();

@@ -355,7 +355,7 @@ void func_8010C96C_mstory1(MstoryPath *path) {
 
 void func_8010C99C_mstory1(void) {
     func_80106984_mstory1();
-    D_80115B50_mstory1 = func_8000B108_main(9, 0x2B9);
+    D_80115B50_mstory1 = Hu3DModelRead(9, 0x2B9);
     omAddPrcObj(func_8010CAE0_mstory1, 0x1001, 0x800, 0);
     omAddPrcObj(func_8010DA38_mstory1, 0x1001, 0x800, 0);
     omAddPrcObj(func_8010E29C_mstory1, 0x1001, 0x800, 0);
@@ -367,7 +367,7 @@ void func_8010C99C_mstory1(void) {
     omAddPrcObj(func_8010FC24_mstory1, 0x384, 0x800, 0);
     omAddPrcObj(func_801103A8_mstory1, 0x384, 0x800, 0);
     HuPrcVSleep();
-    func_8001C258_main(D_80115B50_mstory1, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(D_80115B50_mstory1, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
 }
 
 void func_8010CAD8_mstory1(omObjData *obj) {
@@ -382,34 +382,34 @@ void func_8010CAE0_mstory1(void) {
     D_80115A30_mstory1[0].unk_08 = 0;
     D_80115A30_mstory1[0].unk_0C = 0;
     chr = GwStory.unk1;
-    obj->model[1] = func_8000B108_main(D_800A178C_main[chr][0] | D_800A178C_main[chr][2], 0x2A9);
+    obj->model[1] = Hu3DModelRead(D_800A178C_main[chr][0] | D_800A178C_main[chr][2], 0x2A9);
     obj->model[2] = Hu3DModelLink(D_80115B50_mstory1);
     if (GwStory.unk1 == 5) {
         Hu3DModelScaleSet(obj->model[2], 1.5f, 1.0f, 1.5f);
     }
-    obj->model[3] = func_8000B108_main(0x1D000A, 0x2B9);
-    func_8001C258_main(obj->model[3], 4, 4);
-    obj->model[4] = func_8000B108_main(0x83, 0x2B9);
-    func_8001C258_main(obj->model[4], 4, 4);
-    func_8000B460_main(obj, 0, func_80017BB8_main(chr, 0));
-    func_8000B460_main(obj, 1, func_80017BB8_main(chr, 0x9C));
-    func_8000B460_main(obj, 2, func_80017BB8_main(chr, 0x2F));
-    func_8000B460_main(obj, 3, func_80017BB8_main(chr, 1));
-    func_8000B460_main(obj, 4, func_80017BB8_main(chr, 0x21));
-    func_8000B460_main(obj, 5, D_80115120_mstory1[chr]);
-    func_8000B460_main(obj, 6, D_80115140_mstory1[chr]);
-    func_8000B460_main(obj, 7, D_80115160_mstory1[chr]);
-    func_8000B460_main(obj, 8, func_80017BB8_main(chr, 0x33));
-    func_8000B460_main(obj, 9, D_80115180_mstory1[chr]);
-    func_8000B460_main(obj, 10, func_80017BB8_main(chr, 0x9B));
-    D_80115B54_mstory1[0] = func_80017790_main(obj->model[1], 2, chr, func_80017BB8_main(chr, 0xA4));
-    D_80115B54_mstory1[1] = func_80017AD8_main(func_80017BB8_main(chr, 0xAA));
-    D_80115B54_mstory1[2] = func_80017AD8_main(func_80017BB8_main(chr, 0xA5));
-    D_80115B54_mstory1[3] = func_80017AD8_main(func_80017BB8_main(chr, 0xA9));
-    func_8001C514_main(obj->model[1]);
-    func_80017954_main(obj->model[1], 2, GwStory.unk1, D_80115B54_mstory1[0]);
-    func_8001C5B4_main(obj->model[1], obj->motion[0]);
-    func_8001C814_main(obj->model[1], 2, 2);
+    obj->model[3] = Hu3DModelRead(0x1D000A, 0x2B9);
+    Hu3DModelAttrSet(obj->model[3], 4, 4);
+    obj->model[4] = Hu3DModelRead(0x83, 0x2B9);
+    Hu3DModelAttrSet(obj->model[4], 4, 4);
+    omObjMotionRead(obj, 0, CharMotionDataNumGet(chr, 0));
+    omObjMotionRead(obj, 1, CharMotionDataNumGet(chr, 0x9C));
+    omObjMotionRead(obj, 2, CharMotionDataNumGet(chr, 0x2F));
+    omObjMotionRead(obj, 3, CharMotionDataNumGet(chr, 1));
+    omObjMotionRead(obj, 4, CharMotionDataNumGet(chr, 0x21));
+    omObjMotionRead(obj, 5, D_80115120_mstory1[chr]);
+    omObjMotionRead(obj, 6, D_80115140_mstory1[chr]);
+    omObjMotionRead(obj, 7, D_80115160_mstory1[chr]);
+    omObjMotionRead(obj, 8, CharMotionDataNumGet(chr, 0x33));
+    omObjMotionRead(obj, 9, D_80115180_mstory1[chr]);
+    omObjMotionRead(obj, 10, CharMotionDataNumGet(chr, 0x9B));
+    D_80115B54_mstory1[0] = CharAnimCreate(obj->model[1], 2, chr, CharMotionDataNumGet(chr, 0xA4));
+    D_80115B54_mstory1[1] = Hu3DAnimDataRead(CharMotionDataNumGet(chr, 0xAA));
+    D_80115B54_mstory1[2] = Hu3DAnimDataRead(CharMotionDataNumGet(chr, 0xA5));
+    D_80115B54_mstory1[3] = Hu3DAnimDataRead(CharMotionDataNumGet(chr, 0xA9));
+    Hu3DModelDynamicFree(obj->model[1]);
+    CharAnimSet(obj->model[1], 2, GwStory.unk1, D_80115B54_mstory1[0]);
+    Hu3DMotionModelSet(obj->model[1], obj->motion[0]);
+    Hu3DMotionAttrSet(obj->model[1], 2, 2);
     obj->trans.x = 0.0f;
     obj->trans.y = 0.0f;
     obj->trans.z = 0.0f;
@@ -491,21 +491,21 @@ void func_8010CEF8_mstory1(omObjData *obj) {
     func_801071F4_mstory1(obj, 0.0f, 110.0f, 0.0f, 10);
     Hu3DMotionShiftSet(model, Hu3DData[obj->motion[6]].motId, 0, 10, 0);
     HuPrcSleep(10);
-    func_8001C258_main(obj->model[3], 0x4000, 0x4000);
+    Hu3DModelAttrSet(obj->model[3], 0x4000, 0x4000);
     Hu3DModelHookSet(obj->model[3], model, "item_hook");
-    func_8001C258_main(obj->model[3], HU3D_ATTR_DISPOFF, 0);
+    Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_DISPOFF, 0);
     func_80107220_mstory1(model);
     Hu3DMotionShiftSet(model, Hu3DData[obj->motion[5]].motId, 0, 10, 0);
     func_80107220_mstory1(model);
     while (!(D_80115A30_mstory1[7].unk_08 & 1)) {
         HuPrcVSleep();
     }
-    func_8001C258_main(D_80115A30_mstory1[7].obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    func_8001C258_main(D_80115B52_mstory1, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    func_8002FD8C_main(model, Hu3DData[model].motId, "item_hook", 27, 69);
-    func_8002FD8C_main(model, Hu3DData[model].motId, "item_hook", 27, 70);
-    func_8002FD8C_main(model, Hu3DData[model].motId, "item_hook", 27, 71);
-    node = func_8001D33C_main(model, "item_hook");
+    Hu3DModelAttrSet(D_80115A30_mstory1[7].obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(D_80115B52_mstory1, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DMotionNoMotSet(model, Hu3DData[model].motId, "item_hook", 27, 69);
+    Hu3DMotionNoMotSet(model, Hu3DData[model].motId, "item_hook", 27, 70);
+    Hu3DMotionNoMotSet(model, Hu3DData[model].motId, "item_hook", 27, 71);
+    node = Hu3DModelObjPtrGet(model, "item_hook");
     for (i = 0; i < 10; i++) {
         scale = sindf(i * 18.0f) * 0.8 + 1.0;
         node->baseScale.x = scale;
@@ -516,9 +516,9 @@ void func_8010CEF8_mstory1(omObjData *obj) {
         node->scale.z = scale;
         HuPrcVSleep();
     }
-    func_8002FDCC_main(model, Hu3DData[model].motId, "item_hook", 27, 71);
-    func_8002FDCC_main(model, Hu3DData[model].motId, "item_hook", 27, 70);
-    func_8002FDCC_main(model, Hu3DData[model].motId, "item_hook", 27, 69);
+    Hu3DMotionNoMotReset(model, Hu3DData[model].motId, "item_hook", 27, 71);
+    Hu3DMotionNoMotReset(model, Hu3DData[model].motId, "item_hook", 27, 70);
+    Hu3DMotionNoMotReset(model, Hu3DData[model].motId, "item_hook", 27, 69);
     func_80105FB8_mstory1(1);
     while (TRUE) {
         if (func_80106894_mstory1() != 0) {
@@ -530,30 +530,30 @@ void func_8010CEF8_mstory1(omObjData *obj) {
     func_801069EC_mstory1();
     func_80106A40_mstory1(func_80106AFC_mstory1(3) == 0 ? 0x5A25 : 0x5B16);
     func_80106A1C_mstory1();
-    func_8001C5B4_main(model, obj->motion[5]);
-    func_8001C814_main(model, 4, 4);
+    Hu3DMotionModelSet(model, obj->motion[5]);
+    Hu3DMotionAttrSet(model, 4, 4);
     Hu3DMotionSpeedSet(model, 2.0f);
     Hu3DMotionTimeSet(model, D_800CCF58_main[Hu3DData[model].motId].unk02);
     do {
         time = Hu3DData[model].motTime;
         HuPrcVSleep();
     } while (time > 0.0f);
-    func_8001C5B4_main(model, obj->motion[6]);
-    func_8001C814_main(model, 4, 4);
+    Hu3DMotionModelSet(model, obj->motion[6]);
+    Hu3DMotionAttrSet(model, 4, 4);
     Hu3DMotionTimeSet(model, D_800CCF58_main[Hu3DData[model].motId].unk02);
     do {
         time = Hu3DData[model].motTime;
         HuPrcVSleep();
     } while (time > 0.0f);
     Hu3DMotionSpeedSet(model, 1.0f);
-    func_8001C258_main(obj->model[3], 0x4000, 0);
-    func_8001C258_main(obj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(obj->model[3], 0x4000, 0);
+    Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     HuAudSeqFadeOut(20);
     Hu3DMotionShiftSet(model, Hu3DData[obj->motion[3]].motId, 0, 10, 0);
     func_8010704C_mstory1(obj, &D_801151A0_mstory1, 10);
     HuAudSeqPlay(0x72);
     Hu3DMotionShiftSet(model, Hu3DData[obj->motion[2]].motId, 0, 10, 0);
-    func_80017954_main(obj->model[1], 2, GwStory.unk1, D_80115B54_mstory1[2]);
+    CharAnimSet(obj->model[1], 2, GwStory.unk1, D_80115B54_mstory1[2]);
     func_80107220_mstory1(model);
     fx = CharFXPlay(0x262, GwStory.unk1);
     HuPrcSleep(30);
@@ -564,16 +564,16 @@ void func_8010CEF8_mstory1(omObjData *obj) {
     D_80115A30_mstory1[1].func = func_8010E12C_mstory1;
     HuAudFXPlay(0x219);
     HuAudFXStop(fx);
-    func_8001C258_main(obj->model[4], HU3D_ATTR_DISPOFF, 0);
+    Hu3DModelAttrSet(obj->model[4], HU3D_ATTR_DISPOFF, 0);
     Hu3DMotionShiftSet(model, Hu3DData[obj->motion[4]].motId, 0, 10, 0);
-    func_80017954_main(obj->model[1], 2, GwStory.unk1, D_80115B54_mstory1[3]);
+    CharAnimSet(obj->model[1], 2, GwStory.unk1, D_80115B54_mstory1[3]);
     func_8010704C_mstory1(other, &D_80115218_mstory1, 3);
     func_80106B30_mstory1(other, &D_80115200_mstory1, 10, 0);
     func_80107220_mstory1(model);
     HuAudSeqPlay(0x26);
     func_8010704C_mstory1(obj, &D_801151AC_mstory1, 10);
     Hu3DMotionShiftSet(model, Hu3DData[obj->motion[0]].motId, 0, 10, 2);
-    func_80017954_main(obj->model[1], 2, GwStory.unk1, D_80115B54_mstory1[0]);
+    CharAnimSet(obj->model[1], 2, GwStory.unk1, D_80115B54_mstory1[0]);
     HuAudFXPlay(0x159);
     Hu3DMotionShiftSet(D_80115A30_mstory1[6].obj->model[1], Hu3DData[D_80115A30_mstory1[6].obj->motion[1]].motId, 0, 10, 2);
     func_801069EC_mstory1();
@@ -591,8 +591,8 @@ void func_8010CEF8_mstory1(omObjData *obj) {
     func_8010704C_mstory1(obj, &D_801151B8_mstory1, 10);
     func_80106B14_mstory1(obj, &D_801151DC_mstory1, 50);
     func_8011032C_mstory1(0);
-    func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     D_80115A30_mstory1[0].func = func_8010CAD8_mstory1;
 }
 
@@ -630,12 +630,12 @@ void func_8010DA38_mstory1(void) {
     D_80115A30_mstory1[1].obj = obj;
     D_80115A30_mstory1[1].unk_08 = 0;
     D_80115A30_mstory1[1].unk_0C = 0;
-    obj->model[1] = func_8000B108_main(0xA0075, 0x2A9);
+    obj->model[1] = Hu3DModelRead(0xA0075, 0x2A9);
     obj->model[2] = Hu3DModelLink(D_80115B50_mstory1);
-    func_8000B460_main(obj, 0, 0xA0076);
-    func_8000B460_main(obj, 1, 0x1D0029);
-    func_8001C5B4_main(obj->model[1], obj->motion[0]);
-    func_8001C814_main(obj->model[1], 2, 2);
+    omObjMotionRead(obj, 0, 0xA0076);
+    omObjMotionRead(obj, 1, 0x1D0029);
+    Hu3DMotionModelSet(obj->model[1], obj->motion[0]);
+    Hu3DMotionAttrSet(obj->model[1], 2, 2);
     obj->trans.x = 0.0f;
     obj->trans.y = 0.0f;
     obj->trans.z = 0.0f;
@@ -648,16 +648,16 @@ void func_8010DA38_mstory1(void) {
     D_80115B5C_mstory1[0] = (s16)Hu3DAnimCreate(Hu3DData[obj->model[1]].hmf, data, 0, D_80115268_mstory1);
     HuMemMemoryFreePerm(data);
     Hu3DModelRemakeStatic(obj->model[1]);
-    func_8001C514_main(obj->model[1]);
-    func_80032FC0_main(D_80115B5E_mstory1, 1, 0);
+    Hu3DModelDynamicFree(obj->model[1]);
+    Hu3DAnimAttrSet(D_80115B5E_mstory1, 1, 0);
     Hu3DAnimBankSet(D_80115B5E_mstory1, 0);
     D_80115B68_mstory1 = Hu3DAnimLink(Hu3DData[obj->model[1]].hmf, D_80115B5E_mstory1, 0, D_80115268_mstory1);
     D_80115B5C_mstory1[0] = D_800D1714_main[D_80115B5C_mstory1[0]].animIdx;
     data = DataRead(0xA0080);
-    D_80115B5C_mstory1[1] = (s16)func_800329B4_main(data);
+    D_80115B5C_mstory1[1] = (s16)Hu3DAnimDataCreate(data);
     HuMemMemoryFreePerm(data);
     data = DataRead(0xA0083);
-    D_80115B5C_mstory1[2] = (s16)func_800329B4_main(data);
+    D_80115B5C_mstory1[2] = (s16)Hu3DAnimDataCreate(data);
     HuMemMemoryFreePerm(data);
     func_801068B0_mstory1(obj->model[1], D_80115B68_mstory1, D_80115B5E_mstory1);
     omPrcSetDestructor(0, func_8010DD68_mstory1);
@@ -717,8 +717,8 @@ void func_8010DD70_mstory1(omObjData *obj) {
 void func_8010E0B0_mstory1(omObjData *obj) {
     func_8010704C_mstory1(obj, &D_8011531C_mstory1, 10);
     func_80106B14_mstory1(obj, &D_80115310_mstory1, 50);
-    func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     D_80115A30_mstory1[1].func = func_8010CAD8_mstory1;
 }
 
@@ -753,20 +753,20 @@ void func_8010E29C_mstory1(void) {
     D_80115A30_mstory1[2].unk_08 = 0;
     D_80115A30_mstory1[2].unk_0C = 0;
     if (func_80106AFC_mstory1(3) == 0) {
-        obj->model[1] = func_8000B108_main(0x400A0, 0x2B9);
+        obj->model[1] = Hu3DModelRead(0x400A0, 0x2B9);
         obj->model[2] = Hu3DModelLink(D_80115B50_mstory1);
-        func_8000B460_main(obj, 0, 0x40000);
-        func_8000B460_main(obj, 1, 0x1D0059);
-        func_8000B460_main(obj, 2, 0x1D005A);
+        omObjMotionRead(obj, 0, 0x40000);
+        omObjMotionRead(obj, 1, 0x1D0059);
+        omObjMotionRead(obj, 2, 0x1D005A);
     } else {
-        obj->model[1] = func_8000B108_main(0x300A0, 0x2B9);
+        obj->model[1] = Hu3DModelRead(0x300A0, 0x2B9);
         obj->model[2] = Hu3DModelLink(D_80115B50_mstory1);
-        func_8000B460_main(obj, 0, 0x30000);
-        func_8000B460_main(obj, 1, 0x1D0046);
-        func_8000B460_main(obj, 2, 0x1D0047);
+        omObjMotionRead(obj, 0, 0x30000);
+        omObjMotionRead(obj, 1, 0x1D0046);
+        omObjMotionRead(obj, 2, 0x1D0047);
     }
-    func_8001C5B4_main(obj->model[1], obj->motion[1]);
-    func_8001C814_main(obj->model[1], 2, 2);
+    Hu3DMotionModelSet(obj->model[1], obj->motion[1]);
+    Hu3DMotionAttrSet(obj->model[1], 2, 2);
     obj->trans.x = 0.0f;
     obj->trans.y = 0.0f;
     obj->trans.z = 0.0f;
@@ -832,8 +832,8 @@ void func_8010E4CC_mstory1(omObjData *obj) {
     func_80110248_mstory1(2, 40);
     func_80106B14_mstory1(obj, &D_80115334_mstory1, 40);
     func_8011032C_mstory1(2);
-    func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     D_80115A30_mstory1[2].func = func_8010CAD8_mstory1;
 }
 
@@ -844,17 +844,17 @@ void func_8010E5FC_mstory1(void) {
     D_80115A30_mstory1[3].obj = obj;
     D_80115A30_mstory1[3].unk_08 = 0;
     D_80115A30_mstory1[3].unk_0C = 0;
-    obj->model[1] = func_8000B108_main(0xA002F, 0x2B9);
+    obj->model[1] = Hu3DModelRead(0xA002F, 0x2B9);
     obj->model[2] = Hu3DModelLink(D_80115B50_mstory1);
     Hu3DModelScaleSet(obj->model[2], 3.0f, 1.0f, 3.0f);
-    func_8000B460_main(obj, 0, 0xA0030);
-    func_8000B460_main(obj, 1, 0xA0035);
-    func_8000B460_main(obj, 2, 0xA0032);
-    func_8000B460_main(obj, 3, 0x1D0035);
-    func_8001C5B4_main(obj->model[1], obj->motion[1]);
-    func_8001C814_main(obj->model[1], 2, 2);
-    func_8001C258_main(obj->model[1], 4, 4);
-    func_8001C258_main(obj->model[2], 4, 4);
+    omObjMotionRead(obj, 0, 0xA0030);
+    omObjMotionRead(obj, 1, 0xA0035);
+    omObjMotionRead(obj, 2, 0xA0032);
+    omObjMotionRead(obj, 3, 0x1D0035);
+    Hu3DMotionModelSet(obj->model[1], obj->motion[1]);
+    Hu3DMotionAttrSet(obj->model[1], 2, 2);
+    Hu3DModelAttrSet(obj->model[1], 4, 4);
+    Hu3DModelAttrSet(obj->model[2], 4, 4);
     obj->trans.x = 0.0f;
     obj->trans.y = 0.0f;
     obj->trans.z = 0.0f;
@@ -879,8 +879,8 @@ void func_8010E814_mstory1(omObjData *obj) {
 
     HuPrcSleep(60);
     model = obj->model[1];
-    func_8001C258_main(model, 4, 0);
-    func_8001C258_main(obj->model[2], 4, 0);
+    Hu3DModelAttrSet(model, 4, 0);
+    Hu3DModelAttrSet(obj->model[2], 4, 0);
     HuAudSeqPlay(0x21);
     HuAudFXPlay(0x29D);
     func_801069EC_mstory1();
@@ -938,15 +938,15 @@ void func_8010EC30_mstory1(void) {
     D_80115A30_mstory1[4].obj = obj;
     D_80115A30_mstory1[4].unk_08 = 0;
     D_80115A30_mstory1[4].unk_0C = 0;
-    obj->model[1] = func_8000B108_main(0xA00EE, 0x2B9);
+    obj->model[1] = Hu3DModelRead(0xA00EE, 0x2B9);
     obj->model[2] = Hu3DModelLink(D_80115B50_mstory1);
-    func_8000B460_main(obj, 0, 0xA00EF);
-    func_8000B460_main(obj, 1, 0xA00F1);
-    func_8000B460_main(obj, 2, 0xA00F0);
-    func_8001C5B4_main(obj->model[1], obj->motion[1]);
-    func_8001C814_main(obj->model[1], 2, 2);
-    func_8001C258_main(obj->model[1], 4, 4);
-    func_8001C258_main(obj->model[2], 4, 4);
+    omObjMotionRead(obj, 0, 0xA00EF);
+    omObjMotionRead(obj, 1, 0xA00F1);
+    omObjMotionRead(obj, 2, 0xA00F0);
+    Hu3DMotionModelSet(obj->model[1], obj->motion[1]);
+    Hu3DMotionAttrSet(obj->model[1], 2, 2);
+    Hu3DModelAttrSet(obj->model[1], 4, 4);
+    Hu3DModelAttrSet(obj->model[2], 4, 4);
     obj->trans.x = 0.0f;
     obj->trans.y = 0.0f;
     obj->trans.z = 0.0f;
@@ -969,8 +969,8 @@ void func_8010EE14_mstory1(void) {
 void func_8010EE1C_mstory1(omObjData *obj) {
     s16 model = obj->model[1];
 
-    func_8001C258_main(model, 4, 0);
-    func_8001C258_main(obj->model[2], 4, 0);
+    Hu3DModelAttrSet(model, 4, 0);
+    Hu3DModelAttrSet(obj->model[2], 4, 0);
     func_80106B14_mstory1(obj, &D_80115394_mstory1, 30);
     func_8010704C_mstory1(obj, &D_801153AC_mstory1, 10);
     Hu3DMotionShiftSet(model, Hu3DData[obj->motion[0]].motId, 0, 10, 2);
@@ -1020,10 +1020,10 @@ void func_8010F244_mstory1(void) {
     src = D_80115A30_mstory1[4].obj;
     obj->model[1] = Hu3DModelLink(src->model[1]);
     obj->model[2] = Hu3DModelLink(D_80115B50_mstory1);
-    func_8001C5B4_main(obj->model[1], src->motion[1]);
-    func_8001C814_main(obj->model[1], 2, 2);
-    func_8001C258_main(obj->model[1], 4, 4);
-    func_8001C258_main(obj->model[2], 4, 4);
+    Hu3DMotionModelSet(obj->model[1], src->motion[1]);
+    Hu3DMotionAttrSet(obj->model[1], 2, 2);
+    Hu3DModelAttrSet(obj->model[1], 4, 4);
+    Hu3DModelAttrSet(obj->model[2], 4, 4);
     obj->trans.x = 0.0f;
     obj->trans.y = 0.0f;
     obj->trans.z = 0.0f;
@@ -1044,8 +1044,8 @@ void func_8010F3EC_mstory1(omObjData *obj) {
     omObjData *src = D_80115A30_mstory1[4].obj;
     s16 model = obj->model[1];
 
-    func_8001C258_main(model, 4, 0);
-    func_8001C258_main(obj->model[2], 4, 0);
+    Hu3DModelAttrSet(model, 4, 0);
+    Hu3DModelAttrSet(obj->model[2], 4, 0);
     func_80106B14_mstory1(obj, &D_801153DC_mstory1, 30);
     func_8010704C_mstory1(obj, &D_801153F4_mstory1, 10);
     Hu3DMotionShiftSet(model, Hu3DData[src->motion[0]].motId, 0, 10, 2);
@@ -1096,15 +1096,15 @@ void func_8010F850_mstory1(void) {
     D_80115A30_mstory1[6].obj = obj;
     D_80115A30_mstory1[6].unk_08 = 0;
     D_80115A30_mstory1[6].unk_0C = 0;
-    obj->model[1] = func_8000B108_main(0xA0122, 0x2A9);
+    obj->model[1] = Hu3DModelRead(0xA0122, 0x2A9);
     Hu3DModelScaleSet(obj->model[1], 2.0f, 2.0f, 2.0f);
-    func_800461B4_main(obj->model[1]);
-    func_8000B460_main(obj, 0, 0xA0123);
-    func_8000B460_main(obj, 1, 0xA0125);
-    func_8000B460_main(obj, 2, 0xA0127);
+    AuraCreate(obj->model[1]);
+    omObjMotionRead(obj, 0, 0xA0123);
+    omObjMotionRead(obj, 1, 0xA0125);
+    omObjMotionRead(obj, 2, 0xA0127);
     obj->model[2] = Hu3DModelLink(D_80115B50_mstory1);
     Hu3DModelScaleSet(obj->model[2], 2.0f, 1.0f, 2.0f);
-    func_8001C814_main(obj->model[1], 2, 2);
+    Hu3DMotionAttrSet(obj->model[1], 2, 2);
     obj->trans.x = 0.0f;
     obj->trans.y = 0.0f;
     obj->trans.z = 0.0f;
@@ -1165,8 +1165,8 @@ const Vec D_8011543C_mstory1 = { 216.66666f, 0.0f, 150.0f };
 void func_8010FA48_mstory1(omObjData *obj) {
     func_8010704C_mstory1(obj, &D_80115448_mstory1, 10);
     func_80106B14_mstory1(obj, &D_80115430_mstory1, 50);
-    func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     D_80115A30_mstory1[6].func = func_8010CAD8_mstory1;
 }
 
@@ -1203,9 +1203,9 @@ void func_8010FC24_mstory1(void) {
     D_80115A30_mstory1[7].obj = obj;
     D_80115A30_mstory1[7].unk_08 = 0;
     D_80115A30_mstory1[7].unk_0C = 0;
-    obj->model[1] = func_8000B108_main(D_8011546C_mstory1[1], 0x20299);
-    func_8001C814_main(obj->model[1], 2, 2);
-    func_8001C258_main(obj->model[1], 4, 4);
+    obj->model[1] = Hu3DModelRead(D_8011546C_mstory1[1], 0x20299);
+    Hu3DMotionAttrSet(obj->model[1], 2, 2);
+    Hu3DModelAttrSet(obj->model[1], 4, 4);
     obj->trans.x = 0.0f;
     obj->trans.y = 0.0f;
     obj->trans.z = 0.0f;
@@ -1213,11 +1213,11 @@ void func_8010FC24_mstory1(void) {
     Hu3DModelRotSet(obj->model[1], 0.0f, 0.0f, 0.0f);
     D_80115B44_mstory1 = D_80115114_mstory1;
     Hu3DModelPosSet(obj->model[1], D_80115B44_mstory1.x, D_80115B44_mstory1.y, D_80115B44_mstory1.z);
-    D_80115B52_mstory1 = func_8000CED8_main(0xB0004, 0x6A9);
-    func_8000CD00_main(D_80115B52_mstory1, 4.0f, 20.0f, 4.0f);
-    func_8000D018_main(D_80115B52_mstory1, 60.0f);
-    func_800138EC_main(D_80115B52_mstory1, 1, 0);
-    func_8001C258_main(D_80115B52_mstory1, 4, 4);
+    D_80115B52_mstory1 = EffectCreate(0xB0004, 0x6A9);
+    EffectParamSet(D_80115B52_mstory1, 4.0f, 20.0f, 4.0f);
+    EffectRangeSet(D_80115B52_mstory1, 60.0f);
+    Hu3DParticleAttrSet(D_80115B52_mstory1, 1, 0);
+    Hu3DModelAttrSet(D_80115B52_mstory1, 4, 4);
     omPrcSetDestructor(0, func_8010FDDC_mstory1);
     D_80115A30_mstory1[7].func = func_8010CAD8_mstory1;
     while (1) {
@@ -1238,14 +1238,14 @@ void func_8010FDE4_mstory1(omObjData *obj) {
 
     paths[0] = func_8010BDC0_mstory1(D_80114B44_mstory1, 0);
     paths[1] = func_8010BDC0_mstory1(D_80114B74_mstory1, 0);
-    func_8001C258_main(obj->model[1], 4, 0);
-    func_8001C258_main(D_80115B52_mstory1, 4, 0);
-    func_800138EC_main(D_80115B52_mstory1, 1, 1);
+    Hu3DModelAttrSet(obj->model[1], 4, 0);
+    Hu3DModelAttrSet(D_80115B52_mstory1, 4, 0);
+    Hu3DParticleAttrSet(D_80115B52_mstory1, 1, 1);
     HuAudFXPlay(0x215);
     for (i = 0; i < 50; i++) {
         func_8010C0C4_mstory1(paths[0], (i * 0.02f) * (i * 0.02f), &pos);
         Hu3DModelPosSet(obj->model[1], pos.x, pos.y, pos.z);
-        func_8000CFA4_main(D_80115B52_mstory1, pos.x, pos.y - 40.0f, pos.z);
+        EffectPosSet(D_80115B52_mstory1, pos.x, pos.y - 40.0f, pos.z);
         HuPrcVSleep();
     }
     HuPrcSleep(40);
@@ -1261,11 +1261,11 @@ void func_8010FDE4_mstory1(omObjData *obj) {
         rotY -= 24.0f;
         Hu3DModelPosSet(obj->model[1], pos.x, pos.y, pos.z);
         Hu3DModelRotSet(obj->model[1], 0.0f, rotY, 0.0f);
-        func_8000CFA4_main(D_80115B52_mstory1, pos.x, pos.y - 40.0f, pos.z);
+        EffectPosSet(D_80115B52_mstory1, pos.x, pos.y - 40.0f, pos.z);
         HuPrcVSleep();
     }
-    func_8001C258_main(obj->model[1], 4, 4);
-    func_8001C258_main(D_80115B52_mstory1, 4, 4);
+    Hu3DModelAttrSet(obj->model[1], 4, 4);
+    Hu3DModelAttrSet(D_80115B52_mstory1, 4, 4);
     HuAudFXPlay(0x21A);
     func_8010C96C_mstory1(paths[0]);
     func_8010C96C_mstory1(paths[1]);

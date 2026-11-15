@@ -58,9 +58,9 @@ void func_801059A0_mgresultdealer(void) {
             break;
         }
     }
-    func_800142A0_main(100);
+    Hu3DSprModelInit(100);
     omInitObjMan(0x1E, 0x28);
-    func_8000B690_main(2);
+    CamSetupInitMulti(2);
     for (i = 0; i < 2; i++) {
         ScissorSet(i, 0.0f, 0.0f, 320.0f, 240.0f);
         ViewportSet(i, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
@@ -147,14 +147,14 @@ void func_80105C88_mgresultdealer(omObjData *unused) {
             PlayerFXPlay(0x274, D_8010A266_mgresultdealer[0]);
             HuAudFXPlay(0x516);
             if (D_8010A264_mgresultdealer * D_8010A258_mgresultdealer >= 100) {
-                func_8001C258_main(obj->model[4], 4, 0);
-                func_8001C258_main(obj->model[5], 4, 0);
-                func_8001C258_main(obj->model[6], 4, 0);
+                Hu3DModelAttrSet(obj->model[4], 4, 0);
+                Hu3DModelAttrSet(obj->model[5], 4, 0);
+                Hu3DModelAttrSet(obj->model[6], 4, 0);
             } else if (D_8010A264_mgresultdealer * D_8010A258_mgresultdealer >= 50) {
-                func_8001C258_main(obj->model[4], 4, 0);
-                func_8001C258_main(obj->model[6], 4, 0);
+                Hu3DModelAttrSet(obj->model[4], 4, 0);
+                Hu3DModelAttrSet(obj->model[6], 4, 0);
             } else {
-                func_8001C258_main(obj->model[5], 4, 0);
+                Hu3DModelAttrSet(obj->model[5], 4, 0);
             }
             func_80106EAC_mgresultdealer();
             state++;
@@ -204,7 +204,7 @@ void func_80105C88_mgresultdealer(omObjData *unused) {
             D_8010A258_mgresultdealer = 0;
             WipeCreateOut(WIPE_TYPE_NORMAL, 20);
             HuAudSeqFadeOut(30);
-            func_8004AB0C_main(30);
+            HuAudFXAllFadeOut(30);
             state++;
             break;
         case 17:
@@ -220,10 +220,10 @@ void func_80105C88_mgresultdealer(omObjData *unused) {
 void func_801061C8_mgresultdealer(void) {
     s16 model;
 
-    model = func_8000B108_main(0x190002, 0x2002B9);
+    model = Hu3DModelRead(0x190002, 0x2002B9);
     Hu3DModelPosSet(model, 0.0f, 0.0f, 0.0f);
-    func_80019828_main(model, 2);
-    func_80013320_main(model, 0);
+    Hu3DModelLightInfoSet(model, 2);
+    Hu3DCameraMotionSet(model, 0);
     func_8010630C_mgresultdealer(model);
 }
 
@@ -236,7 +236,7 @@ void func_80106234_mgresultdealer(omObjData *obj) {
         }
         if (WipeStatGet() == 0) {
             HuAudSeqFadeOut(30);
-            func_8004AB0C_main(30);
+            HuAudFXAllFadeOut(30);
             GameMesStub();
             omOvlReturnEx(1);
         }

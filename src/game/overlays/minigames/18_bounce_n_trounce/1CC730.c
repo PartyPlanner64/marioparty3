@@ -144,7 +144,7 @@ omObjData **D_8010AEDC_bounce_n_trounce BSS;
 omObjData **D_8010AEE0_bounce_n_trounce BSS;
 s16 D_8010AEE4_bounce_n_trounce[4] BSS;
 
-void func_8004BCE4_main(struct CameraViewData *data);
+void omCameraViewSprDraw(struct CameraViewData *data);
 
 void func_80105C84_bounce_n_trounce(omObjData *arg0);
 void func_80105CBC_bounce_n_trounce(omObjData *);
@@ -189,10 +189,10 @@ void func_801059A0_bounce_n_trounce(void) {
     s16 slot;
 
     omInitObjMan(40, 0);
-    func_8004A208_main();
-    func_80045C2C_main();
-    func_8000B5F0_main(1);
-    func_8000B638_main(1);
+    omGameSysInit();
+    HuAudCharVoiceInit();
+    CamSetupInit(1);
+    CamSetupMapCullAdd(1);
     Center.x = 0.0f;
     Center.y = 30.0f;
     Center.z = 0.0f;
@@ -277,7 +277,7 @@ void func_80105CBC_bounce_n_trounce(omObjData *object) {
             case 5:
                 WipeCreateOut(WIPE_TYPE_NORMAL, 20);
                 HuAudSeqFadeOut(30);
-                func_8004AB0C_main(30);
+                HuAudFXAllFadeOut(30);
                 D_8010ABE8_bounce_n_trounce = 1;
                 break;
         }
@@ -308,13 +308,13 @@ void func_80105E4C_bounce_n_trounce(omObjData *object) {
         tileWork->index = i;
         if (i & 1) {
             if (i == 1) {
-                obj->model[0] = func_8000B108_main(0x390001, 0x6B9);
+                obj->model[0] = Hu3DModelRead(0x390001, 0x6B9);
             } else {
                 obj->model[0] = Hu3DModelLink(D_8010AED8_bounce_n_trounce[1]->model[0]);
             }
         } else {
             if (i == 0) {
-                obj->model[0] = func_8000B108_main(0x390000, 0x6B9);
+                obj->model[0] = Hu3DModelRead(0x390000, 0x6B9);
             } else {
                 obj->model[0] = Hu3DModelLink(D_8010AED8_bounce_n_trounce[0]->model[0]);
             }
@@ -325,7 +325,7 @@ void func_80105E4C_bounce_n_trounce(omObjData *object) {
     }
     for (i = 0; i < 7; i++) {
         deco = omAddObj(20, 1, 0, 3, func_801068F4_bounce_n_trounce);
-        deco->model[0] = func_8000B108_main(D_8010ACAC_bounce_n_trounce[i], 0x6B9);
+        deco->model[0] = Hu3DModelRead(D_8010ACAC_bounce_n_trounce[i], 0x6B9);
         HuSqrtf(D_8010AC58_bounce_n_trounce[i].x * D_8010AC58_bounce_n_trounce[i].x +
                 D_8010AC58_bounce_n_trounce[i].z * D_8010AC58_bounce_n_trounce[i].z);
         x = cosdf(-45.0f) * D_8010AC58_bounce_n_trounce[i].x - sindf(-45.0f) * D_8010AC58_bounce_n_trounce[i].z;
@@ -344,7 +344,7 @@ void func_80105E4C_bounce_n_trounce(omObjData *object) {
     pos.x = sindf(45.0f) * 2800.0f;
     pos.y = 1400.0f;
     pos.z = cosdf(45.0f) * 2800.0f;
-    func_8004B760_main(0x7FDA, D_800CD1DC_main[sprite].unk04, func_8004BCE4_main, 45.0f, &pos, &target);
+    omCameraViewCreate(0x7FDA, D_800CD1DC_main[sprite].unk04, omCameraViewSprDraw, 45.0f, &pos, &target);
     Hu3DCameraPerspectiveSet(0, 45.0f, 500.0f, 4500.0f);
     CZoom = 2100.0f;
     object->work[0] = 1;
@@ -493,7 +493,7 @@ void func_80106854_bounce_n_trounce(omObjData *object) {
     work->velY *= 1.22f;
     if (object->trans.y < -1500.0f) {
         object->trans.y = -1500.0f;
-        func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         work->state = 3;
         object->func = NULL;
     }
@@ -556,45 +556,45 @@ void func_801069F0_bounce_n_trounce(omObjData *object) {
     chr = GwPlayer[playerId].chr;
     mdlId = D_800A178C_main[chr][0];
     mdlAttr = D_800A178C_main[chr][1];
-    object->model[0] = func_8000B108_main(D_8010AD2C_bounce_n_trounce[chr], 0x6D9);
+    object->model[0] = Hu3DModelRead(D_8010AD2C_bounce_n_trounce[chr], 0x6D9);
     omSetTra(object, D_8010ACFC_bounce_n_trounce[D_8010AEE4_bounce_n_trounce[playerId]].x,
              D_8010ACFC_bounce_n_trounce[D_8010AEE4_bounce_n_trounce[playerId]].y,
              D_8010ACFC_bounce_n_trounce[D_8010AEE4_bounce_n_trounce[playerId]].z);
-    object->model[1] = func_8000B108_main(mdlId | mdlAttr, 0x206B9);
+    object->model[1] = Hu3DModelRead(mdlId | mdlAttr, 0x206B9);
     Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
-    object->model[2] = func_8000B0D4_main(0, 0xA89);
+    object->model[2] = Hu3DModelRead3(0, 0xA89);
     Hu3DModelPosSet(object->model[2], object->trans.x, object->trans.y + 1.0f, object->trans.z);
     Hu3DModelScaleSet(object->model[2], work->unk_28, 1.0f, work->unk_28);
-    object->model[3] = func_8000B108_main(0x39000B, 0x68D);
-    object->model[4] = func_8000B108_main(0x39000C, 0x68D);
-    object->model[6] = func_8000B108_main(0x82, 0xA8D);
+    object->model[3] = Hu3DModelRead(0x39000B, 0x68D);
+    object->model[4] = Hu3DModelRead(0x39000C, 0x68D);
+    object->model[6] = Hu3DModelRead(0x82, 0xA8D);
     Hu3DModelScaleSet(object->model[3], 1.2f, 1.0f, 1.2f);
-    func_8000B460_main(object, 0, func_80017BB8_main(chr, 0x73));
-    func_8000B460_main(object, 1, func_80017BB8_main(chr, 0));
-    func_8000B460_main(object, 2, func_80017BB8_main(chr, 1));
-    func_8000B460_main(object, 3, func_80017BB8_main(chr, 0x1F));
-    func_8000B460_main(object, 4, func_80017BB8_main(chr, 0x2F));
-    func_8000B460_main(object, 5, func_80017BB8_main(chr, 0x36));
-    func_8001C5B4_main(object->model[1], object->motion[0]);
-    func_8001C814_main(object->model[1], 3, 1);
-    func_8001C814_main(object->model[0], 3, 1);
+    omObjMotionRead(object, 0, CharMotionDataNumGet(chr, 0x73));
+    omObjMotionRead(object, 1, CharMotionDataNumGet(chr, 0));
+    omObjMotionRead(object, 2, CharMotionDataNumGet(chr, 1));
+    omObjMotionRead(object, 3, CharMotionDataNumGet(chr, 0x1F));
+    omObjMotionRead(object, 4, CharMotionDataNumGet(chr, 0x2F));
+    omObjMotionRead(object, 5, CharMotionDataNumGet(chr, 0x36));
+    Hu3DMotionModelSet(object->model[1], object->motion[0]);
+    Hu3DMotionAttrSet(object->model[1], 3, 1);
+    Hu3DMotionAttrSet(object->model[0], 3, 1);
     angle = atan2df(-object->trans.x, -object->trans.z);
     omSetRot(object, 0.0f, angle, 0.0f);
     Hu3DModelRotSet(object->model[1], 0.0f, angle, 0.0f);
-    object->model[5] = func_8000B108_main(0x39000F, 0x6A9);
+    object->model[5] = Hu3DModelRead(0x39000F, 0x6A9);
     Hu3DModelPosSet(object->model[5], object->trans.x, object->trans.y, object->trans.z);
-    func_8001C2FC_main(object->model[5], 0x20000, 0x20000);
+    Hu3DModelObjAttrSet(object->model[5], 0x20000, 0x20000);
     Hu3DModelRemakeStatic(object->model[5]);
-    func_8001C954_main(object->model[5]);
-    func_8001C514_main(object->model[5]);
-    func_80013390_main(object->model[5], -1, NULL, func_8010A740_bounce_n_trounce);
+    Hu3DModelVtxBufMake(object->model[5]);
+    Hu3DModelDynamicFree(object->model[5]);
+    Hu3DParticleCreate(object->model[5], -1, NULL, func_8010A740_bounce_n_trounce);
     hmf = Hu3DData[object->model[5]].hmf;
     modelData = Hu3DData[object->model[5]].unkBC;
     particle = modelData->unk58;
     modelData->unk1C.i = 0;
     modelData->unk20.i = 0;
     modelData->unk24.i = 0;
-    func_800138EC_main(object->model[5], 1, 1);
+    Hu3DParticleAttrSet(object->model[5], 1, 1);
     for (i = 0; i < hmf->unk1A; i++, particle++) {
         particle->unk0C = particle->unk10 = particle->unk14 = 0.0f;
         particle->unk18 = particle->unk1C = particle->unk20 = 0.0f;
@@ -734,8 +734,8 @@ void func_80107114_bounce_n_trounce(omObjData *object, s8 stickX, s8 stickY, u16
             work->jumpTime = 0.0f;
             work->jumpBaseY = object->trans.y;
             work->radius = 85.0f;
-            func_8001C258_main(object->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-            func_8001C814_main(object->model[3], 3, 2);
+            Hu3DModelAttrSet(object->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DMotionAttrSet(object->model[3], 3, 2);
             Hu3DMotionTimeSet(object->model[3], 0.0f);
             work->unk_06 = 1;
             emitterWork = OM_GET_DATA_PTR(work->emitter, BounceNTrounceEmitterWork);
@@ -927,13 +927,13 @@ void func_80107114_bounce_n_trounce(omObjData *object, s8 stickX, s8 stickY, u16
     Hu3DModelRotSet(object->model[1], object->rot.x, object->rot.y, object->rot.z);
     Hu3DModelPosSet(object->model[1], object->trans.x, object->trans.y, object->trans.z);
     if (floorY == -100000.0f) {
-        func_8001C258_main(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     } else {
         work->unk_28 = 1.5 - fabs(object->trans.y - floorY) / 900.0 * 1.2f;
         if (work->unk_28 < 0.3f) {
             work->unk_28 = 0.3f;
         }
-        func_8001C258_main(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DModelPosSet(object->model[2], object->trans.x, floorY + 1.0f, object->trans.z);
         Hu3DModelScaleSet(object->model[2], work->unk_28, 1.0f, work->unk_28);
     }
@@ -942,7 +942,7 @@ void func_80107114_bounce_n_trounce(omObjData *object, s8 stickX, s8 stickY, u16
     }
     func_8010846C_bounce_n_trounce(object);
     if (object->trans.y < -45.0f && work->unk_08 == 1 && work->state != 2) {
-        func_8004AC98_main(0x3D0, work->playerId);
+        HuAudPlayerFXPlay(0x3D0, work->playerId);
         work->state = 2;
         work->unk_34 = work->unk_38 = work->unk_64 = work->unk_68 = 0.0f;
         D_8010AEBC_bounce_n_trounce--;
@@ -994,13 +994,13 @@ void func_80107EDC_bounce_n_trounce(omObjData *object) {
     Hu3DModelRotSet(object->model[1], object->rot.x, object->rot.y, object->rot.z);
     Hu3DModelPosSet(object->model[1], object->trans.x, object->trans.y, object->trans.z);
     if (floorY == -100000.0f) {
-        func_8001C258_main(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     } else {
         work->unk_28 = 1.5 - fabs(object->trans.y - floorY) / 900.0 * 1.2f;
         if (work->unk_28 < 0.3f) {
             work->unk_28 = 0.3f;
         }
-        func_8001C258_main(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DModelPosSet(object->model[2], object->trans.x, floorY + 1.0f, object->trans.z);
         Hu3DModelScaleSet(object->model[2], work->unk_28, 1.0f, work->unk_28);
     }
@@ -1010,17 +1010,17 @@ void func_80107EDC_bounce_n_trounce(omObjData *object) {
     func_8010846C_bounce_n_trounce(object);
     if (object->trans.y < -5000.0f) {
         work->state = 3;
-        func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-        func_8001C258_main(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-        func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         work->unk_06 = 0;
-        func_8001C258_main(object->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(object->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         object->func = NULL;
     }
     pos.x = object->trans.x;
     pos.y = object->trans.y;
     pos.z = object->trans.z;
-    func_80012B14_main(0, &pos, &screenPos);
+    Hu3DCam3Dto2D(0, &pos, &screenPos);
     if (screenPos.y > 240.0f && work->unk_18 == 0) {
         work->unk_18 = 1;
         PlayerFXPlay(0x286, work->playerId);
@@ -1038,7 +1038,7 @@ void func_80108350_bounce_n_trounce(omObjData *object) {
     }
     work->unk_44 = 0.0f;
     work->unk_48 = 0.0f;
-    func_8001C258_main(object->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(object->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
 }
 
 void func_80108398_bounce_n_trounce(omObjData *object, omObjData *other) {
@@ -1208,7 +1208,7 @@ void func_80108C18_bounce_n_trounce(omObjData *object) {
     BounceNTrounceWork *work = OM_GET_DATA_PTR(object, BounceNTrounceWork);
 
     work->state = 4;
-    func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DMotionShiftSet(object->model[1], Hu3DData[object->motion[3]].motId, 0, 6, 0);
     object->work[0] = 8;
     object->func = func_80108CA8_bounce_n_trounce;
@@ -1253,17 +1253,17 @@ void func_80108D28_bounce_n_trounce(omObjData *object) {
 }
 
 void func_80108EFC_bounce_n_trounce(omObjData *object, f32 x, f32 y, f32 z) {
-    func_8001C258_main(object->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(object->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DModelPosSet(object->model[4], object->trans.x, object->trans.y + 200.0f, object->trans.z);
     Hu3DModelRotSet(object->model[4], 0.0f, CRot.y, 0.0f);
-    func_8001C814_main(object->model[4], 3, 0);
+    Hu3DMotionAttrSet(object->model[4], 3, 0);
     Hu3DMotionTimeSet(object->model[4], 0.0f);
 }
 
 void func_80108F98_bounce_n_trounce(omObjData *object) {
-    func_8001C258_main(object->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(object->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DModelPosSet(object->model[6], object->trans.x, object->trans.y + 5.0f, object->trans.z);
-    func_8001C814_main(object->model[6], 3, 0);
+    Hu3DMotionAttrSet(object->model[6], 3, 0);
     Hu3DMotionTimeSet(object->model[6], 0.0f);
 }
 
@@ -1718,7 +1718,7 @@ void func_80109F68_bounce_n_trounce(omObjData *object) {
                                Hu3DData[D_8010AEDC_bounce_n_trounce[D_8010AEBE_bounce_n_trounce]->motion[4]].motId, 0,
                                6, 0);
             MgFlowStatSet(MG_STATE_RESULT);
-            func_80045ED0_main(D_800A178C_main[GwPlayer[D_8010AEBE_bounce_n_trounce].chr][0] | 0x2F);
+            HuAudCharVoicePlay(D_800A178C_main[GwPlayer[D_8010AEBE_bounce_n_trounce].chr][0] | 0x2F);
             GwPlayer[D_8010AEBE_bounce_n_trounce].bonusCoin = 10;
             D_8010AECA_bounce_n_trounce = 6;
             break;

@@ -38,11 +38,11 @@ extern u16 D_800D6A56_main;
 extern u16 D_800A190C_main;
 extern u16 D_800A190E_main;
 
-void func_8000E3C0_main(void) {
+void GameManInitProc(void) {
     s32 i;
 
     HuPrcVSleep();
-    func_8004F290_main();
+    SaveSchemeInit();
 
     CRot.x = 325.0f;
     CRot.y = 0.0f;
@@ -74,7 +74,7 @@ void func_8000E3C0_main(void) {
     Hu3DInit(&HuMemMemoryAllocPerm, &HuMemMemoryFreePerm, D_800D4082_main, D_800CD2F4_main, D_800D6A56_main, D_800D1710_main);
     Hu3DCamInit(1);
     pfInit();
-    func_80036380_main((u32)strings_japanese_ROM_START);
+    MessDataInit((u32)strings_japanese_ROM_START);
     D_800D1F36_main = 0;
 
     do {
@@ -88,15 +88,15 @@ void func_8000E3C0_main(void) {
     }
 
     HuMemHeapAllocPermSizeGet();
-    D_800D0448_main = HuPrcCreate(&func_8000E740_main, 0xF000, 0x3000, 0);
-    HuPrcCreate(&func_8000E78C_main, 0x4000, 0x3000, 0);
-    D_800D170C_main = HuPrcCreate(&func_8000E7B8_main, 0x1000, 0x3000, 0);
+    D_800D0448_main = HuPrcCreate(&GameManDrawProc, 0xF000, 0x3000, 0);
+    HuPrcCreate(&GameManObjProc, 0x4000, 0x3000, 0);
+    D_800D170C_main = HuPrcCreate(&GameManExecProc, 0x1000, 0x3000, 0);
 
     {
-        s32 temp_s0 = func_8004FDC0_main();
+        s32 temp_s0 = SLInit();
         GWInit();
         GWGameStatReset();
-        func_80000EA8_main(&D_800D5298_main);
+        msmSysGetConfig(&D_800D5298_main);
         SLCurBoxNoSet(0);
         SLLoadGameStat();
         if (temp_s0 != 0) {
@@ -121,12 +121,12 @@ void func_8000E3C0_main(void) {
     D_800D5298_main.unk64 = 0;
     D_800D5298_main.unk68 = D_800CDD50_main;
     D_800D5298_main.unk44 = 0x3C;
-    func_800007FC_main(&D_800D5298_main);
+    msmInit(&D_800D5298_main);
 
     if ((D_800D09A8_main & 1) != 0) {
-        func_80000F30_main(1);
+        msmSysSetOutputMode(1);
     } else {
-        func_80000F30_main(0);
+        msmSysSetOutputMode(0);
     }
 
     HuPrcKill(HuPrcCurrentGet());
@@ -136,35 +136,35 @@ void func_8000E3C0_main(void) {
     }
 }
 
-void func_8000E740_main(void) {
+void GameManDrawProc(void) {
     while (TRUE) {
         HuPrcVSleep();
-        func_800224BC_main();
-        func_800143F0_main();
-        func_8001BF90_main(0x2000000, 0x3D0800);
+        Hu3DPreProc();
+        Hu3DSprModelBufSwap();
+        Hu3DScreenClear(0x2000000, 0x3D0800);
         pfClsScr();
     }
 }
 
-void func_8000E78C_main(void) {
+void GameManObjProc(void) {
     while (TRUE) {
         HuPrcVSleep();
         omMain();
     }
 }
 
-void func_8000E7B8_main(void) {
+void GameManExecProc(void) {
     while (TRUE) {
         HuPrcVSleep();
         rand8();
         espMain(); // esprite
-        func_80014A3C_main(2);
+        Hu3DSprModelExec(2);
         Hu3DExec(&D_800CCF38_main, 2); // hmfman
     }
 }
 
 /* Initialize Players */
-void func_8000E804_main(void) {
+void GameManPlayerInit(void) {
     s32 i;
 
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
@@ -192,7 +192,7 @@ void func_8000E804_main(void) {
 
 /* Initialize Game Save Data */
 void GWGameStatReset(void) {
-    func_8000E804_main();
+    GameManPlayerInit();
     GWMgRecordSet(0, 0x64);
     GWMgRecordSet(1, 0xE10);
     GWMgRecordSet(2, 0xE10);

@@ -14,27 +14,27 @@ typedef struct SaveCommonBuf {
 extern u8 D_800D20EC_main;
 #endif
 
-void func_8004FCF0_main(void);
-s32 func_8004FDC0_main(void);
-void func_80050044_main(void);
-void func_8005004C_main(void);
-void func_80050054_main(void);
-void func_8005005C_main(void);
+void SLSaveDataInit(void);
+s32 SLInit(void);
+void SLStub0(void);
+void SLStub1(void);
+void SLStub2(void);
+void SLStub3(void);
 s32 SLCommonSet(s32 writeBox);
 s32 SLSaveBoard(s32 writeBox);
 s32 SLSaveBoardStory(s32 writeBox);
-s32 func_8005035C_main(s32 writeBox);
-s32 func_80050614_main(s32 writeBox);
+s32 SLSaveStory(s32 writeBox);
+s32 SLSaveStorySystem(s32 writeBox);
 s32 SLLoadGameStat(void);
 s32 SLLoadBoard(void);
 s32 SLLoadBoardStory(void);
-s32 func_80050ABC_main(void);
-s32 func_80050CDC_main(void);
-s32 func_80050CFC_main(void);
+s32 SLLoadStory(void);
+s32 SLLoadCommon(void);
+s32 SLSaveCommon(void);
 void SLCheckSumBoxSet(void);
 s32 SLCheckSumCheck(void);
-s32 func_80050DDC_main(s16 srcBoxNo, s16 dstBoxNo);
+s32 SLBoxCopy(s16 srcBoxNo, s16 dstBoxNo);
 void SLCurBoxNoSet(s32 boxNo);
-void func_80050E84_main(void);
+void SLPadAssign(void);
 
 #endif

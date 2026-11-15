@@ -76,7 +76,7 @@ void func_8010BEE8_fridged_bridges(void) {
     D_8010DA88_fridged_bridges = omAddObj(60, 0, 0, -1, NULL);
     for (i = 0; i < 1; i++) {
         for (j = 0; j < 12; j++) {
-            D_8010DA30_fridged_bridges[i][j] = func_8000B108_main(D_8010D240_fridged_bridges[i], 0x68D);
+            D_8010DA30_fridged_bridges[i][j] = Hu3DModelRead(D_8010D240_fridged_bridges[i], 0x68D);
             D_8010DA48_fridged_bridges[i][j] = 0;
         }
     }
@@ -100,7 +100,7 @@ omObjData *func_8010BFD0_fridged_bridges(u16 type, u16 playerId, f32 x, f32 y, f
     D_8010DA48_fridged_bridges[type][i] = 1;
     obj = omAddObj(60, 1, 0, -1, D_8010D244_fridged_bridges[type]);
     obj->model[0] = model;
-    func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, 0);
+    Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, 0);
     Hu3DModelCameraSet(obj->model[0], D_8010CF48_fridged_bridges[playerId]);
     Hu3DMotionTimeSet(obj->model[0], 0.0f);
     omSetTra(obj, x, y, z);
@@ -112,7 +112,7 @@ omObjData *func_8010BFD0_fridged_bridges(u16 type, u16 playerId, f32 x, f32 y, f
 
 void func_8010C178_fridged_bridges(omObjData *arg0) {
     if (--arg0->work[0] == 0) {
-        func_8001C258_main(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         D_8010DA48_fridged_bridges[0][arg0->work[1]] = 0;
         omDelObj(arg0);
     }
@@ -150,7 +150,7 @@ void func_8010C1D8_fridged_bridges(omObjData *arg0) {
     }
 }
 
-// Copy of func_8002087C_main.
+// Copy of Hu3DModelMtxGet.
 void func_8010C46C_fridged_bridges(HmfModel *model, HuMtx4F mtx) {
     HmfSkeletonNode *node;
     HuMtx4F temp;
@@ -166,7 +166,7 @@ void func_8010C46C_fridged_bridges(HmfModel *model, HuMtx4F mtx) {
     if (model->scale.x != 1.0f || model->scale.y != 1.0f || model->scale.z != 1.0f) {
         mtxScaleCat(mtx, model->scale.x, model->scale.y, model->scale.z);
     }
-    func_80018044_main(model->mtx, mtx, mtx);
+    mtxCat(model->mtx, mtx, mtx);
     node = model->hmf->unk68;
     guMtxIdentF(temp);
     if (node->unk08.x == 0.0f || node->unk08.y == 0.0f || node->unk08.z == 0.0f) {
@@ -182,7 +182,7 @@ void func_8010C46C_fridged_bridges(HmfModel *model, HuMtx4F mtx) {
     guMtxF2L(mtx, &MTXBuf[MTXBufNum]);
 }
 
-// Variant of func_80020E94_main that batches the visible objects of each of the
+// Variant of MapCullFan that batches the visible objects of each of the
 // three object layers into a single display list per layer.
 void func_8010C738_fridged_bridges(FridgedBridgesCamCollWork *work, HmfModel *model) {
     Hu3DPoint tri[3];
@@ -206,12 +206,12 @@ void func_8010C738_fridged_bridges(FridgedBridgesCamCollWork *work, HmfModel *mo
     model->hmf->unkD0 = model->unkB4;
     shape = &work->fan.shape;
     if (model->unkB4 != NULL) {
-        func_80019668_main(model->unkB4);
+        Hu3DLLightSet(model->unkB4);
     }
     gridIndex = model->unk10;
     func_8010C46C_fridged_bridges(model, mtx);
     guMtxIdentF(ident);
-    /* Dead stores (only the sindf/cosdf calls survive), as in func_80020E94_main. */
+    /* Dead stores (only the sindf/cosdf calls survive), as in MapCullFan. */
     x0 = D_800D1104_main[gridIndex].width * D_800D1104_main[gridIndex].cellWidth / 2.0f + work->fan.x +
          sindf(work->fan.angle) * shape->offset;
     z0 = D_800D1104_main[gridIndex].depth * D_800D1104_main[gridIndex].cellDepth / 2.0f + work->fan.z +
@@ -250,37 +250,37 @@ void func_8010C738_fridged_bridges(FridgedBridgesCamCollWork *work, HmfModel *mo
             x1 = x0 + cellWidth;
             object = grid->unk_14[cell];
             if (object != -1) {
-                if (func_80021550_main(x0, z0, tri) == TRUE) {
+                if (MapIflnnerTriangle(x0, z0, tri) == TRUE) {
                     func_8010CDE4_fridged_bridges(0, work, model->hmf, object);
-                } else if (func_80021550_main(x1, z0, tri) == TRUE) {
+                } else if (MapIflnnerTriangle(x1, z0, tri) == TRUE) {
                     func_8010CDE4_fridged_bridges(0, work, model->hmf, object);
-                } else if (func_80021550_main(x0, z1, tri) == TRUE) {
+                } else if (MapIflnnerTriangle(x0, z1, tri) == TRUE) {
                     func_8010CDE4_fridged_bridges(0, work, model->hmf, object);
-                } else if (func_80021550_main(x1, z1, tri) == TRUE) {
+                } else if (MapIflnnerTriangle(x1, z1, tri) == TRUE) {
                     func_8010CDE4_fridged_bridges(0, work, model->hmf, object);
                 }
             }
             object = grid->unk_18[cell];
             if (object != -1) {
-                if (func_80021550_main(x0, z0, tri) == TRUE) {
+                if (MapIflnnerTriangle(x0, z0, tri) == TRUE) {
                     func_8010CDE4_fridged_bridges(1, work, model->hmf, object);
-                } else if (func_80021550_main(x1, z0, tri) == TRUE) {
+                } else if (MapIflnnerTriangle(x1, z0, tri) == TRUE) {
                     func_8010CDE4_fridged_bridges(1, work, model->hmf, object);
-                } else if (func_80021550_main(x0, z1, tri) == TRUE) {
+                } else if (MapIflnnerTriangle(x0, z1, tri) == TRUE) {
                     func_8010CDE4_fridged_bridges(1, work, model->hmf, object);
-                } else if (func_80021550_main(x1, z1, tri) == TRUE) {
+                } else if (MapIflnnerTriangle(x1, z1, tri) == TRUE) {
                     func_8010CDE4_fridged_bridges(1, work, model->hmf, object);
                 }
             }
             object = grid->unk_1C[cell];
             if (object != -1) {
-                if (func_80021550_main(x0, z0, tri) == TRUE) {
+                if (MapIflnnerTriangle(x0, z0, tri) == TRUE) {
                     func_8010CDE4_fridged_bridges(2, work, model->hmf, object);
-                } else if (func_80021550_main(x1, z0, tri) == TRUE) {
+                } else if (MapIflnnerTriangle(x1, z0, tri) == TRUE) {
                     func_8010CDE4_fridged_bridges(2, work, model->hmf, object);
-                } else if (func_80021550_main(x0, z1, tri) == TRUE) {
+                } else if (MapIflnnerTriangle(x0, z1, tri) == TRUE) {
                     func_8010CDE4_fridged_bridges(2, work, model->hmf, object);
-                } else if (func_80021550_main(x1, z1, tri) == TRUE) {
+                } else if (MapIflnnerTriangle(x1, z1, tri) == TRUE) {
                     func_8010CDE4_fridged_bridges(2, work, model->hmf, object);
                 }
             }
@@ -290,7 +290,7 @@ void func_8010C738_fridged_bridges(FridgedBridgesCamCollWork *work, HmfModel *mo
     for (x = 0; x < 3; x++) {
         if (work->dlCount[x] != 0) {
             gSPEndDisplayList(&work->gfx[x][work->dlCount[x]]);
-            func_80024DF0_main(&work->hmf[x], 0, &MTXBuf[MTXBufNum], ident);
+            Hu3DDrawEntryAdd(&work->hmf[x], 0, &MTXBuf[MTXBufNum], ident);
         }
     }
     MTXBufNum++;

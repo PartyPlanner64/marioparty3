@@ -5,7 +5,7 @@
 #include "PR/n_synthInternals.h"
 
 // MP3's version of n_alSynSetPan, which can force centered panning.
-void func_80066400_main(N_ALVoice *v, ALPan pan) {
+void n_alSynSetPan(N_ALVoice *v, ALPan pan) {
     ALParam *update;
 
     if (v->pvoice) {

@@ -11,7 +11,7 @@ extern s16 D_80102DA0_shared_board;
 extern Object *D_80105710_shared_board;
 
 // void MBKSuitKill(void);
-// void func_80017358_main(s16, s32, s16, const char*);
+// void Hu3DModelObjCopy(s16, s32, s16, const char*);
 // void func_800EB24C_shared_board(s16 arg0, s8 *chainOut, s8 *linkOut);
 // void MBMotionKill(s16 arg0);
 // s16 func_800D8E88_shared_board(s32);
@@ -69,7 +69,7 @@ Object *MBKSuitCreate(void) {
         obj = omAddObj(0x3FFF, 0, 0, -1, MBKSuitMain);
         D_80101200_shared_board = obj;
         obj->work[0] = playerIndex & 0xFF;
-        func_80017358_main(player->player_obj->omObj1->model[0], D_801011C0_shared_board[GwPlayer[playerIndex].chr],
+        Hu3DModelObjCopy(player->player_obj->omObj1->model[0], D_801011C0_shared_board[GwPlayer[playerIndex].chr],
                            D_801011FC_shared_board->omObj1->model[0], "atama_3");
         HuVecCopy3F(&D_801011FC_shared_board->coords, &player->player_obj->coords);
     } else {

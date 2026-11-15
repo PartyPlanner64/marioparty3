@@ -68,7 +68,7 @@ void Hu3DCamInit(u32 arg0) {
     D_800D0444_main = gCameraList->mtxs;
 }
 
-void func_800123F4_main(void) {
+void Hu3DCamMtxBufSync(void) {
     D_800D418E_main = D_800D2008_main;
 }
 
@@ -131,22 +131,22 @@ void Hu3DCameraSet(s16 camIndex, Gfx **dispList) {
     gSPMatrix((*dispList)++, OS_PHYSICAL_TO_K0(&camMtx->lookAtMtx), G_MTX_LOAD);
 }
 
-void func_800127C4_main(s16 camIndex, Gfx **dispList) {
+void Hu3DCameraScissorDraw(s16 camIndex, Gfx **dispList) {
     HuCamera *camera = &gCameraList[camIndex];
     gDPSetScissor((*dispList)++, G_SC_NON_INTERLACE, camera->screenLeft, camera->screenTop, camera->screenRight, camera->screenBottom);
 }
 
-void func_80012888_main(s16 camIndex, void (*arg1)(void *, struct HmfModel *), void *arg2) {
+void Hu3DCameraModelHookSet(s16 camIndex, void (*arg1)(void *, struct HmfModel *), void *arg2) {
     HuCamera *camera = &gCameraList[camIndex];
     camera->unkA0 = arg1;
     camera->unkA4 = arg2;
 }
 
-void func_800128BC_main(s16 camIndex, void (*arg1)(s16)) {
+void Hu3DCameraPreHookSet(s16 camIndex, void (*arg1)(s16)) {
     gCameraList[camIndex].unkA8 = arg1;
 }
 
-void func_800128EC_main(s16 camIndex, void (*arg1)(s16)) {
+void Hu3DCameraPostHookSet(s16 camIndex, void (*arg1)(s16)) {
     gCameraList[camIndex].unkAC = arg1;
 }
 
@@ -188,7 +188,7 @@ void Hu3D3Dto2D(s16 camIndex, Vec *worldPos, Vec2f *outPos) {
     outPos->y = ((projectedY * (SCREEN_HEIGHT_CENTER / y)) + SCREEN_HEIGHT_CENTER);
 }
 
-void func_80012B14_main(s16 camIndex, Vec *worldPos, Vec2f *outPos) {
+void Hu3DCam3Dto2D(s16 camIndex, Vec *worldPos, Vec2f *outPos) {
     f32 x;
     f32 y;
     f32 z;
@@ -260,7 +260,7 @@ void Hu3D2Dto3D(s16 camIndex, f32 depth, Vec2f *screenPos, Vec *outPos) {
 }
 
 // Rotates the camera up vector to be perpendicular to the view direction.
-void func_80012E54_main(s16 camIndex) {
+void Hu3DCameraMotionExec(s16 camIndex) {
     HuCamera *camera;
     HmfData *hmf;
     HmfData_UnkBC *env;
@@ -297,10 +297,10 @@ void func_80012E54_main(s16 camIndex) {
     Hu3DCamUpdateMtx(camIndex);
 }
 
-void func_80013320_main(s16 value, s16 camIndex) {
+void Hu3DCameraMotionSet(s16 value, s16 camIndex) {
     gCameraList[camIndex].unk4 = value;
 }
 
-void func_80013350_main(s16 camIndex) {
+void Hu3DCameraMotionOff(s16 camIndex) {
     gCameraList[camIndex].unk4 = -1;
 }

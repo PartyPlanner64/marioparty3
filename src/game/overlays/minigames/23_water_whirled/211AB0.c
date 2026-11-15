@@ -121,14 +121,14 @@ void func_80109E2C_water_whirled(omObjData *object);
 void func_801059A0_water_whirled(void) {
     u8 camIndex;
 
-    func_8001FE20_main(50);
-    func_80021BE0_main(&D_800EBEB0_minigame, 0x40);
-    func_800142A0_main(32);
+    MapCollInit(50);
+    Hu3DQuadPoolInit(&D_800EBEB0_minigame, 0x40);
+    Hu3DSprModelInit(32);
     omInitObjMan(50, 0);
-    func_8004A208_main();
+    omGameSysInit();
     func_800E1804_minigame();
-    func_8000B5F0_main(1);
-    camIndex = func_8000B638_main();
+    CamSetupInit(1);
+    camIndex = CamSetupMapCullAdd();
     ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     D_800D5210_main = 30000.0f;
@@ -216,7 +216,7 @@ void func_80105EA0_water_whirled(omObjData *object) {
             worldPos.x = D_8010A1D0_water_whirled[i].x;
             worldPos.y = 0.0f;
             worldPos.z = D_8010A1D0_water_whirled[i].z;
-            func_80012B14_main(0, &worldPos, &screenPos);
+            Hu3DCam3Dto2D(0, &worldPos, &screenPos);
             screenPos.x = fabsf(screenPos.x - 160.0f);
             screenPos.y = fabsf(screenPos.y - 120.0f);
             screenPos.x = (screenPos.x + 40.0f) / 160.0f;
@@ -407,7 +407,7 @@ void func_80106A58_water_whirled(void) {
                 }
             }
         } else {
-            angle = func_800202A8_main(atan2df(x + 1000.0f, z));
+            angle = HuAngleWrap(atan2df(x + 1000.0f, z));
             if (z > 0.0f) {
                 if (x < -1000.0f) {
                     progress[i] += (angle - 270.0f) / 90.0f * 500.0f;
@@ -493,10 +493,10 @@ void func_80106DB8_water_whirled(omObjData *object) {
             break;
         case 3:
             if (time == 15.0) {
-                func_8004AEF0_main(D_8010A28C_water_whirled[0], 30);
-                func_8004AEF0_main(D_8010A28C_water_whirled[1], 30);
-                func_8004AEF0_main(D_8010A28C_water_whirled[2], 30);
-                func_8004AEF0_main(D_8010A28C_water_whirled[3], 30);
+                HuAudFXFadeOut(D_8010A28C_water_whirled[0], 30);
+                HuAudFXFadeOut(D_8010A28C_water_whirled[1], 30);
+                HuAudFXFadeOut(D_8010A28C_water_whirled[2], 30);
+                HuAudFXFadeOut(D_8010A28C_water_whirled[3], 30);
                 D_8010A28C_water_whirled[0] = -1;
                 D_8010A28C_water_whirled[1] = -1;
                 D_8010A28C_water_whirled[2] = -1;
@@ -514,7 +514,7 @@ void func_80106DB8_water_whirled(omObjData *object) {
             break;
         case 4:
             if (D_8010A280_water_whirled != -1 && D_800EB934_minigame == 1) {
-                func_8004AC98_main(GwPlayer[D_8010A280_water_whirled].chr + 0x290, D_8010A280_water_whirled);
+                HuAudPlayerFXPlay(GwPlayer[D_8010A280_water_whirled].chr + 0x290, D_8010A280_water_whirled);
             }
             if (time >= 150) {
                 D_8010A288_water_whirled -= 4;
@@ -536,7 +536,7 @@ void func_80106DB8_water_whirled(omObjData *object) {
     if (D_800D530C_main == 1) {
         WipeCreateOut(WIPE_TYPE_NORMAL, 20);
         HuAudSeqFadeOut(30);
-        func_8004AB0C_main(30);
+        HuAudFXAllFadeOut(30);
         object->func = func_8010616C_water_whirled;
     }
     if (D_8010A284_water_whirled != 0) {
@@ -547,13 +547,13 @@ void func_80106DB8_water_whirled(omObjData *object) {
 void func_801071BC_water_whirled(omObjData *object) {
     D_800EC1C0_minigame_ObjData *work;
 
-    object->model[0] = func_8000B0A0_main(0x440000, 0x4C9);
-    object->model[1] = func_8000B0A0_main(0x440001, 0x4C9);
-    object->model[2] = func_8000B0A0_main(0x440003, 0x8C9);
+    object->model[0] = Hu3DModelRead2(0x440000, 0x4C9);
+    object->model[1] = Hu3DModelRead2(0x440001, 0x4C9);
+    object->model[2] = Hu3DModelRead2(0x440003, 0x8C9);
     object->model[3] = Hu3DModelLink(object->model[2]);
-    object->model[4] = func_8000B0A0_main(0x440004, 0x8C9);
+    object->model[4] = Hu3DModelRead2(0x440004, 0x8C9);
     object->model[5] = Hu3DModelLink(object->model[4]);
-    object->model[6] = func_8000B0A0_main(0x440005, 0x8C9);
+    object->model[6] = Hu3DModelRead2(0x440005, 0x8C9);
     object->model[7] = Hu3DModelLink(object->model[6]);
     object->trans.x = 0.0f;
     object->trans.y = 0.0f;
@@ -576,21 +576,21 @@ void func_801071BC_water_whirled(omObjData *object) {
     func_800E1310_minigame(object, D_800EB73C_minigame);
     func_800E131C_minigame(object, 25.0f);
     work->unk04 = 0;
-    func_8001C2FC_main(object->model[1], 0x20000, 0x20000);
+    Hu3DModelObjAttrSet(object->model[1], 0x20000, 0x20000);
     Hu3DModelRemakeStatic(object->model[1]);
-    func_8001C954_main(object->model[1]);
+    Hu3DModelVtxBufMake(object->model[1]);
     Hu3DModelPosSet(object->model[2], -2400.0f, 0.0f, -1400.0f);
     Hu3DModelPosSet(object->model[3], 2700.0f, 0.0f, -900.0f);
     Hu3DModelPosSet(object->model[4], 1000.0f, 300.0f, -1950.0f);
     Hu3DModelPosSet(object->model[5], -2400.0f, 500.0f, -2000.0f);
     Hu3DModelPosSet(object->model[6], -1300.0f, 500.0f, -2050.0f);
     Hu3DModelPosSet(object->model[7], 2000.0f, 100.0f, -2500.0f);
-    func_8001C814_main(object->model[2], 2, 2);
-    func_8001C814_main(object->model[3], 2, 2);
-    func_8001C814_main(object->model[4], 2, 2);
-    func_8001C814_main(object->model[5], 2, 2);
-    func_8001C814_main(object->model[6], 2, 2);
-    func_8001C814_main(object->model[7], 2, 2);
+    Hu3DMotionAttrSet(object->model[2], 2, 2);
+    Hu3DMotionAttrSet(object->model[3], 2, 2);
+    Hu3DMotionAttrSet(object->model[4], 2, 2);
+    Hu3DMotionAttrSet(object->model[5], 2, 2);
+    Hu3DMotionAttrSet(object->model[6], 2, 2);
+    Hu3DMotionAttrSet(object->model[7], 2, 2);
     omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
 }
 
@@ -604,7 +604,7 @@ void func_8010750C_water_whirled(omObjData *object, u16 player) {
     object->data = HuMemAllocTag(0x15C, TAG_OVERLAY);
     memset(object->data, 0, 0x15C);
     work = object->data;
-    object->model[0] = func_8000B108_main((GwPlayer[player].chr + 9) | 0x440000, 0x6D9);
+    object->model[0] = Hu3DModelRead((GwPlayer[player].chr + 9) | 0x440000, 0x6D9);
     work->unk57 = GwPlayer[player].pad;
     object->func = func_80107F08_water_whirled;
     work->unk52 = 0;
@@ -628,24 +628,24 @@ void func_8010750C_water_whirled(omObjData *object, u16 player) {
     for (i = 0; i < 6; i++) {
         if (i == 3 || i == 0) {
             if (D_8010A2F4_water_whirled < 0) {
-                object->model[i + 1] = D_8010A2F4_water_whirled = func_8000B108_main(0x440006, 0x889);
+                object->model[i + 1] = D_8010A2F4_water_whirled = Hu3DModelRead(0x440006, 0x889);
             } else {
                 object->model[i + 1] = Hu3DModelLink(D_8010A2F4_water_whirled);
             }
         } else if (i == 4 || i == 1) {
             if (D_8010A2F6_water_whirled < 0) {
-                object->model[i + 1] = D_8010A2F6_water_whirled = func_8000B108_main(0x440007, 0x889);
+                object->model[i + 1] = D_8010A2F6_water_whirled = Hu3DModelRead(0x440007, 0x889);
             } else {
                 object->model[i + 1] = Hu3DModelLink(D_8010A2F6_water_whirled);
             }
         } else {
             if (D_8010A2F8_water_whirled < 0) {
-                object->model[i + 1] = D_8010A2F8_water_whirled = func_8000B108_main(0x440008, 0x889);
+                object->model[i + 1] = D_8010A2F8_water_whirled = Hu3DModelRead(0x440008, 0x889);
             } else {
                 object->model[i + 1] = Hu3DModelLink(D_8010A2F8_water_whirled);
             }
         }
-        func_8001C2FC_main(object->model[i + 1], 0x70000000, 0x70000000);
+        Hu3DModelObjAttrSet(object->model[i + 1], 0x70000000, 0x70000000);
     }
     work = object->data;
     work->unk3C = 90.0f;
@@ -712,9 +712,9 @@ void func_801078F0_water_whirled(omObjData *object, f32 speed) {
             D_8010A800_water_whirled[player][i] *= 1.3f;
             scale = speed * D_8010A800_water_whirled[player][i];
             Hu3DModelScaleSet(object->model[i + 1], scale, scale, scale);
-            func_8001C258_main(object->model[i + 1], 4, 0);
+            Hu3DModelAttrSet(object->model[i + 1], 4, 0);
         } else {
-            func_8001C258_main(object->model[i + 1], 4, 4);
+            Hu3DModelAttrSet(object->model[i + 1], 4, 4);
         }
     }
 }
@@ -837,7 +837,7 @@ void func_80107F08_water_whirled(omObjData *object) {
     vel.x = sindf(work->unk3C) * (speed * D_8010A3CC_water_whirled[player]);
     vel.y = 0.0f;
     vel.z = cosdf(work->unk3C) * (speed * D_8010A3CC_water_whirled[player]);
-    work->unk3C = func_800202A8_main(work->unk3C - turn);
+    work->unk3C = HuAngleWrap(work->unk3C - turn);
     func_80107DD4_water_whirled(player, speed, &drift);
     drift.x += vel.x;
     drift.z += vel.z;
@@ -884,7 +884,7 @@ void func_8010860C_water_whirled(Vec *origin, Vec *p, Vec *q, Vec *out) {
     out->x = ay * bz - az * by;
     out->y = az * bx - ax * bz;
     out->z = ax * by - ay * bx;
-    func_800202FC_main(out);
+    MapVecNormalize(out);
 }
 
 void func_801086A0_water_whirled(omObjData *object, f32 x, f32 z) {
@@ -905,7 +905,7 @@ void func_801086A0_water_whirled(omObjData *object, f32 x, f32 z) {
     c.y = func_801061E4_water_whirled(c.x, c.z);
     func_8010860C_water_whirled(&a, &b, &c, &normal);
     normal.y = 0.0f;
-    func_800202FC_main(&normal);
+    MapVecNormalize(&normal);
     work = object->data;
     normal.x *= 5.0f;
     normal.z *= 20.0f;
@@ -1003,7 +1003,7 @@ f32 func_80108B98_water_whirled(omObjData *object, f32 x, f32 y, f32 z) {
             D_8010A200_water_whirled[player].x = D_800EBE2C_minigame;
             D_8010A200_water_whirled[player].y = 0.0f;
             D_8010A200_water_whirled[player].z = D_800EC5D8_minigame;
-            func_800202FC_main(&D_8010A200_water_whirled[player]);
+            MapVecNormalize(&D_8010A200_water_whirled[player]);
             D_8010A230_water_whirled[player] = 16.0f;
         }
     }
@@ -1080,7 +1080,7 @@ void func_80108DF8_water_whirled(omObjData *object) {
             HuSprAttrReset(grp, j, 0xFFFF);
             HuSprAttrSet(grp, j, HUSPR_ATTR_DISPOFF);
             x += 8;
-            func_800554C4_main(grp, j, 0);
+            HuSprParentSet(grp, j, 0);
         }
         HuSprDispOn(grp, 2);
         func_800E9F40_minigame(i, iconPos[i][0], iconPos[i][1], 0);

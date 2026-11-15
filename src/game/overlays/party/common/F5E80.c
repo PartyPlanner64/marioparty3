@@ -38,9 +38,9 @@ typedef struct TelopData {
 // void func_800FC968_shared_board(void);
 // void MBMasuCurSet(s16);
 // void MBStatusItemIconSprReinit(s32);
-// void func_8003B128_main(char*);
-// void func_8005FBA4_main(u8 *, s32);
-// s32 func_80060880_main(s32 arg0, s32 arg1, s32 arg2);
+// void GMesSprClose(char*);
+// void HuWinMesConv(u8 *, s32);
+// s32 HuWinExCreateStyled(s32 arg0, s32 arg1, s32 arg2);
 // extern void sincosdf(f32, f32*, f32*);
 // void HuWinExCleanup(s16);
 // void func_800FC938_shared_board(void);
@@ -50,7 +50,7 @@ typedef struct TelopData {
 // void func_800DC0E0_shared_board(s32 playerNo);
 // void func_800FC7C8_shared_board(void);
 // static void MBItemKSuitEnd(void);
-// s16 func_8003A308_main(char* arg0, char* arg1, s32 arg2, s16 arg3, u16 arg4);
+// s16 GameMesStrInit(char* arg0, char* arg1, s32 arg2, s16 arg3, u16 arg4);
 // s32 func_800F52C4_shared_board(void);
 
 extern Vec D_8010125C_shared_board;
@@ -120,7 +120,7 @@ void func_800E2260_shared_board(s32 arg0, char *arg1) {
     if (arg0 == CUR_PLAYER) {
         arg0 = GwSystem.current_player_index;
     }
-    func_8005FBA4_main((u8 *)arg1, (s32)D_80101060_shared_board[GwPlayer[arg0].chr]);
+    HuWinMesConv((u8 *)arg1, (s32)D_80101060_shared_board[GwPlayer[arg0].chr]);
 }
 
 void MBItemWarpBlockSwapInit(void) {
@@ -1159,7 +1159,7 @@ void MBTelopInit(void) {
 
 void MBTelopClose(void) {
     if (D_80102D36_shared_board & 0x20) {
-        func_8003B128_main(&D_80102CC0_shared_board);
+        GMesSprClose(&D_80102CC0_shared_board);
     }
     if (D_80102D36_shared_board & 0x10) {
         HuSprGrpKill(D_80102D38_shared_board);
@@ -1426,14 +1426,14 @@ void MBTelopMgTypeCreate(s32 arg0, u32 arg1) {
     if (!(D_80102D36_shared_board & 4) && ((var_s1 = func_800F52C4_shared_board(), (((~var_s1 == 0) | (arg0 != 0)) == 0)) || (var_s1 = arg0 + 2, (arg0 != 0)))) {
         modelObj = MBModelFileCreate(0x130204, -1, 1.8f, 0, 0);
         D_80102D54_shared_board = modelObj;
-        func_8001C258_main(modelObj->omObj1->model[0], 0x180, 0);
+        Hu3DModelAttrSet(modelObj->omObj1->model[0], 0x180, 0);
         Hu3DModelLayerSet(D_80102D54_shared_board->omObj1->model[0], 0x1800U);
         Hu3DModelRemakeStatic(D_80102D54_shared_board->omObj1->model[0]);
         MBModelTempAllocFree(D_80102D54_shared_board);
         HuVecCopy3F(&D_80102D54_shared_board->coords, &D_8010125C_shared_board);
         HuVecCopyXYZ(&D_80102D54_shared_board->scale, 0.0f, 1.0f, 1.0f);
         D_80102D54_shared_board->coords.y += 56.0f;
-        D_80102D34_shared_board = func_8003A308_main(&D_80102CC0_shared_board, D_80101170_shared_board[var_s1], 0, 0, 0U);
+        D_80102D34_shared_board = GameMesStrInit(&D_80102CC0_shared_board, D_80101170_shared_board[var_s1], 0, 0, 0U);
         MBCamera3Dto2D(&D_80102D54_shared_board->coords, sp18);
         D_80102D58_shared_board = (sp18[1] - 14.0f);
         D_80102D58_shared_board = D_80102D58_shared_board + ((1.3f - MBCameraZoomGet()) * 50.0f);
@@ -1472,7 +1472,7 @@ void MBTelopMgTypeKill(void) {
     MBModelKill(D_80102D54_shared_board);
     omDelObj(D_80102D40_shared_board);
     D_80102D40_shared_board = NULL;
-    func_8003B128_main(&D_80102CC0_shared_board);
+    GMesSprClose(&D_80102CC0_shared_board);
     D_80102D36_shared_board &= ~(0x20 | 0x10 | 0x08 | 0x04);
 }
 
@@ -1616,12 +1616,12 @@ UnkMBGuideData* MBGuideCreate(u32* arg0, s32 arg1) {
         if (arg1 != 0) {
             var_a1 = temp_v0->spriteGroup;
             var_a1 = var_a1 + 0x5a + arg1;        
-            temp_v0->amount = func_80060880_main(0x5b, var_a1, 0x11);
+            temp_v0->amount = HuWinExCreateStyled(0x5b, var_a1, 0x11);
             MBGuidePosSet(temp_v0, 0x69, arg1);
         } else {
             var_a1 = temp_v0->spriteGroup;
             var_a1 = var_a1 + 0x5a + arg1;  
-            temp_v0->amount = func_80060880_main(0x4b, var_a1, 0x10);
+            temp_v0->amount = HuWinExCreateStyled(0x4b, var_a1, 0x10);
             MBGuidePosSet(temp_v0, 0x69, arg1);
         }
     }

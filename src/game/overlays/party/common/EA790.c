@@ -13,7 +13,7 @@ UnkBoard2 *func_800D6B70_shared_board(s32 arg0) {
     temp_v0 = HuMemMemoryAllocTemp(sizeof(UnkBoard2));
     temp_v0->unk_00 = 0;
     temp_v0->obj = MBModelCreate(sp10[arg0], NULL);
-    func_8001C258_main(temp_v0->obj->omObj1->model[0], 0x180, 0);
+    Hu3DModelAttrSet(temp_v0->obj->omObj1->model[0], 0x180, 0);
     Hu3DModelLayerSet(temp_v0->obj->omObj1->model[0], 0x1400);
     Hu3DModelRemakeStatic(temp_v0->obj->omObj1->model[0]);
     MBModelTempAllocFree(temp_v0->obj);

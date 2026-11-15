@@ -108,11 +108,11 @@ void func_801068F4_msetup(MsetupCameraKeyframe *, f32, void (*)(s16, s16, s16));
 
 void func_801059A0_msetup(void) {
     Hu3DCamInit(1);
-    func_8001FE20_main(1);
-    func_800142A0_main(25);
+    MapCollInit(1);
+    Hu3DSprModelInit(25);
     omInitObjMan(51, 25);
     HuWinInit();
-    func_8004A208_main();
+    omGameSysInit();
     D_800CD280_main = 1;
     D_8011A940_msetup = 80.0f;
     D_8011A93C_msetup = 6000.0f;
@@ -253,11 +253,11 @@ void func_80105E90_msetup(MsetupModelEntry *entry) {
     s32 motion;
 
     for (i = 0; entry->dataId != -1; entry++, i++) {
-        model = D_8011A950_msetup[(s16)i] = func_8000B108_main(entry->dataId, entry->flags);
+        model = D_8011A950_msetup[(s16)i] = Hu3DModelRead(entry->dataId, entry->flags);
         func_80105F7C_msetup(entry, model);
         motion = D_8011A9A0_msetup[(s16)i] = Hu3DData[model].motId;
         if (motion != -1) {
-            func_8001C814_main(model, -1, entry->motion);
+            Hu3DMotionAttrSet(model, -1, entry->motion);
         }
     }
 }
@@ -286,11 +286,11 @@ void func_80106030_msetup(MsetupModelEntry *entry, MsetupModelHandle *handle, s3
         return;
     }
     for (i = 0; i < count; entry++, i++, handle++) {
-        model = handle->model = func_8000B108_main(entry->dataId, entry->flags);
+        model = handle->model = Hu3DModelRead(entry->dataId, entry->flags);
         func_80105F7C_msetup(entry, model);
         motion = handle->motion = Hu3DData[model].motId;
         if (motion >= 0) {
-            func_8001C814_main(model, -1, entry->motion);
+            Hu3DMotionAttrSet(model, -1, entry->motion);
         }
     }
 }
@@ -626,7 +626,7 @@ omObjData *func_80107428_msetup(void) {
     source = -1;
     for (i = 0; i < 3; i++) {
         if (source < 0) {
-            model = func_8000B108_main(0x140000, 0x2B9);
+            model = Hu3DModelRead(0x140000, 0x2B9);
             source = model;
         } else {
             model = Hu3DModelLink(source);
@@ -642,7 +642,7 @@ omObjData *func_80107428_msetup(void) {
     source = -1;
     for (i = 0; i < 3; i++) {
         if (source < 0) {
-            model = func_8000B108_main(0x140004, 0x299);
+            model = Hu3DModelRead(0x140004, 0x299);
             source = model;
         } else {
             model = Hu3DModelLink(source);
@@ -656,7 +656,7 @@ omObjData *func_80107428_msetup(void) {
     source = -1;
     for (i = 0; i < 3; i++) {
         if (source < 0) {
-            model = func_8000B108_main(0x140002, 0x299);
+            model = Hu3DModelRead(0x140002, 0x299);
             source = model;
         } else {
             model = Hu3DModelLink(source);
@@ -670,7 +670,7 @@ omObjData *func_80107428_msetup(void) {
     source = -1;
     for (i = 0; i < 6; i++) {
         if (source < 0) {
-            model = func_8000B108_main(0x140005, 0x299);
+            model = Hu3DModelRead(0x140005, 0x299);
             source = model;
         } else {
             model = Hu3DModelLink(source);
@@ -932,7 +932,7 @@ void func_80107FB4_msetup(void) {
 
     D_8011A880_msetup = 4;
     _ClearFlag(0);
-    Hu3DModelPosSet(func_8000B108_main(D_80119424_msetup[2], 0x2B9), 0.0f, -37.5f, 100.0f);
+    Hu3DModelPosSet(Hu3DModelRead(D_80119424_msetup[2], 0x2B9), 0.0f, -37.5f, 100.0f);
     func_80107428_msetup();
     process = omAddPrcObj(func_80117820_msetup, 0xBB8, 0x1000, 0);
     memset(&D_8011A882_msetup, 0, sizeof(D_8011A882_msetup));
@@ -1227,7 +1227,7 @@ void func_80108AB8_msetup(void) {
 
     D_8011A880_msetup = 2;
     _ClearFlag(0);
-    Hu3DModelPosSet(func_8000B108_main(D_80119424_msetup[1], 0x2B9), 0.0f, -37.5f, 100.0f);
+    Hu3DModelPosSet(Hu3DModelRead(D_80119424_msetup[1], 0x2B9), 0.0f, -37.5f, 100.0f);
     func_80107428_msetup();
     process = omAddPrcObj(func_80117820_msetup, 0xBB8, 0x1000, 0);
     memset(&D_8011A882_msetup, 0, sizeof(D_8011A882_msetup));
@@ -1413,7 +1413,7 @@ void func_80109218_msetup(void) {
     }
     D_8011AA30_msetup.humanCount = 1;
     D_8011AA30_msetup.cpuCount = 3;
-    Hu3DModelPosSet(func_8000B108_main(D_80119424_msetup[2], 0x2B9), 0.0f, -37.5f, 100.0f);
+    Hu3DModelPosSet(Hu3DModelRead(D_80119424_msetup[2], 0x2B9), 0.0f, -37.5f, 100.0f);
     func_80107428_msetup();
     process = omAddPrcObj(func_80117820_msetup, 0xBB8, 0x1000, 0);
     memset(&D_8011A882_msetup, 0, sizeof(D_8011A882_msetup));
@@ -1552,7 +1552,7 @@ void func_80109868_msetup(void) {
     }
     D_8011AA30_msetup.humanCount = 1;
     D_8011AA30_msetup.cpuCount = 1;
-    Hu3DModelPosSet(func_8000B108_main(D_80119424_msetup[1], 0x2B9), 0.0f, -37.5f, 100.0f);
+    Hu3DModelPosSet(Hu3DModelRead(D_80119424_msetup[1], 0x2B9), 0.0f, -37.5f, 100.0f);
     func_80107428_msetup();
     process = omAddPrcObj(func_80117820_msetup, 0xBB8, 0x1000, 0);
     memset(&D_8011A882_msetup, 0, sizeof(D_8011A882_msetup));
@@ -1809,7 +1809,7 @@ void func_8010A35C_msetup(s16 (**steps)(s16)) {
     s32 i;
 
     D_8011A880_msetup = 4;
-    Hu3DModelPosSet(func_8000B108_main(D_80119424_msetup[0], 0x2B9), 0.0f, -37.5f, 100.0f);
+    Hu3DModelPosSet(Hu3DModelRead(D_80119424_msetup[0], 0x2B9), 0.0f, -37.5f, 100.0f);
     func_80107428_msetup();
     process = omAddPrcObj(func_80117820_msetup, 0xBB8, 0x1000, 0);
     memset(&D_8011A882_msetup, 0, sizeof(D_8011A882_msetup));
@@ -1925,7 +1925,7 @@ void func_8010A7EC_msetup(s16 mode) {
             i = 1;
             break;
     }
-    Hu3DModelPosSet(func_8000B108_main(D_80119424_msetup[i], 0x2B9), 0.0f, -37.5f, 100.0f);
+    Hu3DModelPosSet(Hu3DModelRead(D_80119424_msetup[i], 0x2B9), 0.0f, -37.5f, 100.0f);
     func_80107428_msetup();
     func_8010E21C_msetup();
     process = omAddPrcObj(func_8010B1F4_msetup, 0x3E8, 0x600, 0);

@@ -87,7 +87,7 @@ s16 func_80105A8C_duelresult2(s16 model, s32 dataNum, char *name) {
 
     anim = Hu3DAnimCreate(Hu3DData[model].hmf, data, 0, name);
     D_80108E3C_duelresult2 = anim;
-    func_80032FC0_main(anim, 1, 1);
+    Hu3DAnimAttrSet(anim, 1, 1);
     DataClose(data);
     animIdx = D_800D1714_main[(s16)anim].animIdx;
     D_80108E3E_duelresult2 = Hu3DAnimLink(Hu3DData[model].hmf, anim, 0, name);
@@ -100,9 +100,9 @@ void func_80105B98_duelresult2(s16 model, s16 animIdx) {
 
     if (D_80108E3E_duelresult2 != 0xFF) {
         if (animIdx == -1) {
-            func_80033910_main(Hu3DData[model].hmf);
+            Hu3DModelAnimStop(Hu3DData[model].hmf);
         } else {
-            func_80033970_main(Hu3DData[model].hmf);
+            Hu3DModelAnimStart(Hu3DData[model].hmf);
             anim = &D_800D1714_main[D_80108E3E_duelresult2];
             anim->animIdx = animIdx;
             anim->rot = 0;
@@ -115,7 +115,7 @@ void func_80105B98_duelresult2(s16 model, s16 animIdx) {
 
 s16 func_80105C68_duelresult2(s32 dataNum) {
     void *data = DataRead(dataNum);
-    s16 anim = func_800329B4_main(data);
+    s16 anim = Hu3DAnimDataCreate(data);
 
     DataClose(data);
     return anim;
@@ -705,7 +705,7 @@ void func_80107454_duelresult2(void) {
     func_800E4EAC_name_81(D_80108DC0_duelresult2, 105, 8);
     HuVecCopyXYZ(&D_80108DC0_duelresult2->obj->scale, 0.1f, 0.1f, 0.1f);
     HuWinScaleSet(D_80108DC0_duelresult2->win_id, 1.0f, 1.0f);
-    func_8005B63C_main(D_80108DC0_duelresult2->win_id, 0x4000, 0x4000);
+    HuWinAttrSet(D_80108DC0_duelresult2->win_id, 0x4000, 0x4000);
     HuWinMesPalSet(D_80108DC0_duelresult2->win_id, 2, 255, 96, 96);
     HuWinMesPalSet(D_80108DC0_duelresult2->win_id, 4, 96, 255, 64);
     HuWinMesPalSet(D_80108DC0_duelresult2->win_id, 6, 64, 255, 255);

@@ -121,8 +121,8 @@ void func_8010ACC4_duelresult(void) {
     rot = 0.0f;
     work = HuPrcCurrentGet()->user_data;
     angle = 0;
-    model = func_8000B108_main(0xB0034, 0x2A8);
-    func_8001C2FC_main(model, 0x20000, 0x20000);
+    model = Hu3DModelRead(0xB0034, 0x2A8);
+    Hu3DModelObjAttrSet(model, 0x20000, 0x20000);
     hmf = Hu3DData[model].hmf;
     for (k = 0; k < hmf->unk10; k++) {
         count = hmf->unk60[k].unk22;
@@ -132,14 +132,14 @@ void func_8010ACC4_duelresult(void) {
         }
     }
     Hu3DModelRemakeStatic(model);
-    func_8001C954_main(model);
-    func_8001C514_main(model);
-    func_80013390_main(model, -1, NULL, func_8010C21C_duelresult);
-    func_800138EC_main(model, 8, 8);
+    Hu3DModelVtxBufMake(model);
+    Hu3DModelDynamicFree(model);
+    Hu3DParticleCreate(model, -1, NULL, func_8010C21C_duelresult);
+    Hu3DParticleAttrSet(model, 8, 8);
     effect = Hu3DData[model].unkBC;
-    func_8001C258_main(model, 4, 4);
-    model2 = func_8000B108_main(0xB0035, 0x2B9);
-    func_8001C258_main(model2, 4, 4);
+    Hu3DModelAttrSet(model, 4, 4);
+    model2 = Hu3DModelRead(0xB0035, 0x2B9);
+    Hu3DModelAttrSet(model2, 4, 4);
     Hu3DModelScaleSet(model2, 2.0f, 2.0f, 2.0f);
     Hu3DMotionSpeedSet(model2, 2.0f);
 
@@ -159,10 +159,10 @@ void func_8010ACC4_duelresult(void) {
         cur = work->center;
         prev = cur;
         HuAudFXPlay(0x16F);
-        func_8001C258_main(model, 4, 0);
-        func_80013954_main(model, 0);
+        Hu3DModelAttrSet(model, 4, 0);
+        Hu3DParticleCntSet(model, 0);
         effect->unk18 = func_8010C72C_duelresult;
-        func_800138EC_main(model, 2, 0);
+        Hu3DParticleAttrSet(model, 2, 0);
 
         for (i = 0; i <= work->unk_08; i++) {
             HuPrcVSleep();
@@ -224,23 +224,23 @@ void func_8010ACC4_duelresult(void) {
         }
 
         HuPrcSleep(15);
-        func_8001C258_main(model, 4, 4);
+        Hu3DModelAttrSet(model, 4, 4);
         Hu3DMotionTimeSet(model2, 0.0f);
-        func_8001C258_main(model2, 4, 0);
+        Hu3DModelAttrSet(model2, 4, 0);
         Hu3DModelPosSet(model2, cur.x, cur.y, cur.z);
         HuPrcVSleep();
         HuAudFXPlay(0x170);
         func_8010BDA4_duelresult(model, work->unk_00);
         effect->unk18 = func_8010C21C_duelresult;
-        func_80013954_main(model, 0);
-        func_8001C258_main(model, 4, 0);
+        Hu3DParticleCntSet(model, 0);
+        Hu3DModelAttrSet(model, 4, 0);
         Hu3DModelPosSet(model, cur.x, cur.y, cur.z);
-        func_800138EC_main(model, 2, 0);
-        while (!(func_80013928_main(model) & 2)) {
+        Hu3DParticleAttrSet(model, 2, 0);
+        while (!(Hu3DParticleAttrGet(model) & 2)) {
             HuPrcVSleep();
         }
-        func_8001C258_main(model2, 4, 4);
-        func_8001C258_main(model, 4, 4);
+        Hu3DModelAttrSet(model2, 4, 4);
+        Hu3DModelAttrSet(model, 4, 4);
         Hu3DModelPosSet(model, 0.0f, 0.0f, 0.0f);
         work->unk_04 |= 1;
         if (!(work->unk_04 & 2)) {
@@ -478,7 +478,7 @@ void func_8010C880_duelresult(void) {
 
 void func_8010C8E0_duelresult(void) {
     DuelResultWork *work = HuPrcCurrentGet()->user_data;
-    s16 model = func_8000B108_main(0xB0034, 0x6A8);
+    s16 model = Hu3DModelRead(0xB0034, 0x6A8);
     HmfData *hmf;
     HmfModelData_Unk64_Unk60_Unk54_Struct *face;
     HmfModelData_UnkBC_Struct *effect;
@@ -501,7 +501,7 @@ void func_8010C8E0_duelresult(void) {
     f32 vz;
     s16 color;
 
-    func_8001C2FC_main(model, 0x20000, 0x20000);
+    Hu3DModelObjAttrSet(model, 0x20000, 0x20000);
     hmf = Hu3DData[model].hmf;
     for (j = 0; j < hmf->unk10; j++) {
         count = hmf->unk60[j].unk22;
@@ -511,16 +511,16 @@ void func_8010C8E0_duelresult(void) {
         }
     }
     Hu3DModelRemakeStatic(model);
-    func_8001C954_main(model);
-    func_8001C514_main(model);
-    func_80013390_main(model, -1, NULL, func_8010C21C_duelresult);
-    func_800138EC_main(model, 8, 8);
+    Hu3DModelVtxBufMake(model);
+    Hu3DModelDynamicFree(model);
+    Hu3DParticleCreate(model, -1, NULL, func_8010C21C_duelresult);
+    Hu3DParticleAttrSet(model, 8, 8);
     effect = Hu3DData[model].unkBC;
-    func_8001C258_main(model, 4, 4);
-    func_8001C258_main(model, 4, 0);
-    func_80013954_main(model, 0);
+    Hu3DModelAttrSet(model, 4, 4);
+    Hu3DModelAttrSet(model, 4, 0);
+    Hu3DParticleCntSet(model, 0);
     effect->unk18 = func_8010C72C_duelresult;
-    func_800138EC_main(model, 2, 0);
+    Hu3DParticleAttrSet(model, 2, 0);
 
     work->center = work->pos;
     pos[0].x = sindf(0.0f) * 150.0f + work->center.x;

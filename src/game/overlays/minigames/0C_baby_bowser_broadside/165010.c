@@ -191,16 +191,16 @@ void func_801059A0_baby_bowser_broadside(void) {
 void func_801059BC_baby_bowser_broadside(void) {
     u8 camera;
 
-    func_8001FE20_main(0x32);
-    func_800142A0_main(0x30);
+    MapCollInit(0x32);
+    Hu3DSprModelInit(0x30);
     omInitObjMan(0x32, 0);
-    func_8004A208_main();
+    omGameSysInit();
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     Hu3DGLightColorSet(0, 0xFF, 0xFF, 0xFF);
     Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
     Hu3DGLightDirSet(1, -56.0f, 50.0f, 56.0f);
-    func_8000B5F0_main(1);
-    camera = func_8000B638_main();
+    CamSetupInit(1);
+    camera = CamSetupMapCullAdd();
     ScissorSet(camera, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(camera, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 30.0f, 80.0f, 6000.0f);
@@ -211,9 +211,9 @@ void func_801059BC_baby_bowser_broadside(void) {
     func_80105B94_baby_bowser_broadside();
     omAddObj(0x3E8, 0, 0, -1, func_80105F64_baby_bowser_broadside);
     omAddObj(0x7D0, 0, 0, -1, func_80105DE4_baby_bowser_broadside);
-    func_80045010_main(D_8010FEC0_baby_bowser_broadside, 1);
-    func_80045010_main(D_8010FECC_baby_bowser_broadside, 1);
-    func_80045010_main(D_8010FEDC_baby_bowser_broadside, 1);
+    GMesFontMesCreate(D_8010FEC0_baby_bowser_broadside, 1);
+    GMesFontMesCreate(D_8010FECC_baby_bowser_broadside, 1);
+    GMesFontMesCreate(D_8010FEDC_baby_bowser_broadside, 1);
 }
 
 void func_80105B94_baby_bowser_broadside(void) {
@@ -346,18 +346,18 @@ void func_801062C4_baby_bowser_broadside(omObjData *object) {
 
     object->work[1] = 2;
     slot = func_80109F64_baby_bowser_broadside(object, (s8)object->work[1], 6, 4)->unk_00;
-    slot->unk_04[0] = func_8000B108_main(0x2D0002, flags);
-    slot->unk_04[1] = func_8000B108_main(0x2D0000, flags);
-    slot->unk_04[2] = func_8000B108_main(0x2D0001, flags);
-    slot->unk_04[3] = D_80110008_baby_bowser_broadside->unk_50 = func_8000B108_main(0x2D0008, flags);
-    slot->unk_04[4] = func_8000B108_main(0x2D0009, flags);
-    slot->unk_04[5] = func_8000B108_main(9, flags);
-    D_80110004_baby_bowser_broadside[D_80110000_baby_bowser_broadside[0].players[0]].unk_48 = model = func_8000B108_main(0x2D0004, flags);
+    slot->unk_04[0] = Hu3DModelRead(0x2D0002, flags);
+    slot->unk_04[1] = Hu3DModelRead(0x2D0000, flags);
+    slot->unk_04[2] = Hu3DModelRead(0x2D0001, flags);
+    slot->unk_04[3] = D_80110008_baby_bowser_broadside->unk_50 = Hu3DModelRead(0x2D0008, flags);
+    slot->unk_04[4] = Hu3DModelRead(0x2D0009, flags);
+    slot->unk_04[5] = Hu3DModelRead(9, flags);
+    D_80110004_baby_bowser_broadside[D_80110000_baby_bowser_broadside[0].players[0]].unk_48 = model = Hu3DModelRead(0x2D0004, flags);
     D_80110004_baby_bowser_broadside[D_80110000_baby_bowser_broadside[0].players[1]].unk_48 = Hu3DModelLink(model);
-    D_80110004_baby_bowser_broadside[D_80110000_baby_bowser_broadside[1].players[0]].unk_48 = model = func_8000B108_main(0x2D0005, flags);
+    D_80110004_baby_bowser_broadside[D_80110000_baby_bowser_broadside[1].players[0]].unk_48 = model = Hu3DModelRead(0x2D0005, flags);
     D_80110004_baby_bowser_broadside[D_80110000_baby_bowser_broadside[1].players[1]].unk_48 = Hu3DModelLink(model);
     entry = D_80110004_baby_bowser_broadside[D_80110000_baby_bowser_broadside[0].players[0]].unk_54;
-    model = entry->unk_02 = func_8000B108_main(0x2D0006, flags);
+    model = entry->unk_02 = Hu3DModelRead(0x2D0006, flags);
     for (i = 0; i < 2; i++) {
         entry = D_80110004_baby_bowser_broadside[D_80110000_baby_bowser_broadside[0].players[i]].unk_54;
         for (j = 0; j < 3; j++, entry++) {
@@ -369,7 +369,7 @@ void func_801062C4_baby_bowser_broadside(omObjData *object) {
         }
     }
     entry = D_80110004_baby_bowser_broadside[D_80110000_baby_bowser_broadside[1].players[0]].unk_54;
-    model = entry->unk_02 = func_8000B108_main(0x2D0007, flags);
+    model = entry->unk_02 = Hu3DModelRead(0x2D0007, flags);
     for (i = 0; i < 2; i++) {
         entry = D_80110004_baby_bowser_broadside[D_80110000_baby_bowser_broadside[1].players[i]].unk_54;
         for (j = 0; j < 3; j++, entry++) {
@@ -450,15 +450,15 @@ void func_80106E40_baby_bowser_broadside(omObjData *object) {
 }
 
 void func_80106E70_baby_bowser_broadside(omObjData *object) {
-    object->model[0] = func_8000B108_main(0x2D0003, 0x10099);
-    func_8001C954_main(object->model[0]);
+    object->model[0] = Hu3DModelRead(0x2D0003, 0x10099);
+    Hu3DModelVtxBufMake(object->model[0]);
     object->func = func_80106EC4_baby_bowser_broadside;
 }
 
 void func_80106EC4_baby_bowser_broadside(omObjData *object) {
-    func_8001E65C_main(object->model[0], sindf(D_8010FD64_baby_bowser_broadside) * 15.0f, -D_8010FD68_baby_bowser_broadside, 64, 64);
-    func_8001F6BC_main(object->model[0], (u8)(cosdf(D_8010FD6C_baby_bowser_broadside) * 32.0f + 32.0f), 0, 0, (u8)(cosdf(D_8010FD6C_baby_bowser_broadside) * 32.0f + 32.0f));
-    func_8001F6F8_main(object->model[0], 64, 32, 32, 0);
+    Hu3DModelTexScroll(object->model[0], sindf(D_8010FD64_baby_bowser_broadside) * 15.0f, -D_8010FD68_baby_bowser_broadside, 64, 64);
+    Hu3DModelPrimColorSet(object->model[0], (u8)(cosdf(D_8010FD6C_baby_bowser_broadside) * 32.0f + 32.0f), 0, 0, (u8)(cosdf(D_8010FD6C_baby_bowser_broadside) * 32.0f + 32.0f));
+    Hu3DModelEnvColorSet(object->model[0], 64, 32, 32, 0);
     if (omPauseChk() + D_800D6A90_main == 0) {
         D_8010FD64_baby_bowser_broadside += 0.5f;
         if (D_8010FD64_baby_bowser_broadside >= 360.0f) {
@@ -489,17 +489,17 @@ void func_80107140_baby_bowser_broadside(omObjData *object) {
     motionFile = D_800A1790_main[player->unk_02][0];
     func_800E1BA8_minigame(object, modelFile, motionFile, (u16)object->work[0], flags, flags);
     object->trans.z = 200.0f;
-    func_800E5A00_minigame(object, 0, func_80017BB8_main(player->unk_02, 0), 1, 0);
-    func_800E5A00_minigame(object, 2, func_80017BB8_main(player->unk_02, 2), 1, 0);
-    func_800E5A00_minigame(object, 13, func_80017BB8_main(player->unk_02, 0x2F), 1, 999);
+    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(player->unk_02, 0), 1, 0);
+    func_800E5A00_minigame(object, 2, CharMotionDataNumGet(player->unk_02, 2), 1, 0);
+    func_800E5A00_minigame(object, 13, CharMotionDataNumGet(player->unk_02, 0x2F), 1, 999);
     if (player->unk_02 == 5) {
-        func_800E5A00_minigame(object, 14, func_80017BB8_main(5, 0x38), 1, 999);
+        func_800E5A00_minigame(object, 14, CharMotionDataNumGet(5, 0x38), 1, 999);
     } else {
-        func_800E5A00_minigame(object, 14, func_80017BB8_main(player->unk_02, 0x37), 1, 999);
+        func_800E5A00_minigame(object, 14, CharMotionDataNumGet(player->unk_02, 0x37), 1, 999);
     }
-    func_800E5A00_minigame(object, 38, func_80017BB8_main(player->unk_02, 0x27), 1, 0);
-    func_800E5A00_minigame(object, 39, func_80017BB8_main(player->unk_02, 0x28), 1, 999);
-    func_800E5A00_minigame(object, 40, func_80017BB8_main(player->unk_02, 0x28), 1, 999);
+    func_800E5A00_minigame(object, 38, CharMotionDataNumGet(player->unk_02, 0x27), 1, 0);
+    func_800E5A00_minigame(object, 39, CharMotionDataNumGet(player->unk_02, 0x28), 1, 999);
+    func_800E5A00_minigame(object, 40, CharMotionDataNumGet(player->unk_02, 0x28), 1, 999);
     func_80109EB0_baby_bowser_broadside(player, 38, 1);
     player->unk_0C = -1;
     player->unk_00 = ((func_800E1BA8_minigame_ObjData *)object->data)->unk57;
@@ -518,7 +518,7 @@ void func_80107140_baby_bowser_broadside(omObjData *object) {
         player->unk_54[i].unk_2C->unk_04[4] = D_80110008_baby_bowser_broadside->unk_3E[1];
         player->unk_54[i].unk_2C->unk_04[5] = D_80110008_baby_bowser_broadside->unk_3E[2];
         player->unk_54[i].unk_2C->unk_04[6] = D_80110008_baby_bowser_broadside->unk_3E[3];
-        func_8001C258_main(player->unk_54[i].unk_02, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(player->unk_54[i].unk_02, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
     player->unk_5C = HuMemAllocTag(sizeof(BabyBowserBroadsideShip), TAG_OVERLAY);
     func_8010E018_baby_bowser_broadside(player->unk_5C, 4, 50.0f, -1);
@@ -558,11 +558,11 @@ void func_801076AC_baby_bowser_broadside(void) {
         if (D_80110000_baby_bowser_broadside[i].unk_10 < 100) {
             ones = D_80110000_baby_bowser_broadside[i].unk_10 % 10;
             tens = D_80110000_baby_bowser_broadside[i].unk_10 * 0.1f;
-            func_80054FF8_main(D_80110018_baby_bowser_broadside[D_80110000_baby_bowser_broadside[i].unk_12].unk_01, 0, tens);
-            func_80054FF8_main(D_80110018_baby_bowser_broadside[D_80110000_baby_bowser_broadside[i].unk_14].unk_01, 0, ones);
+            HuSprPatNoSet(D_80110018_baby_bowser_broadside[D_80110000_baby_bowser_broadside[i].unk_12].unk_01, 0, tens);
+            HuSprPatNoSet(D_80110018_baby_bowser_broadside[D_80110000_baby_bowser_broadside[i].unk_14].unk_01, 0, ones);
         } else {
-            func_80054FF8_main(D_80110018_baby_bowser_broadside[D_80110000_baby_bowser_broadside[i].unk_12].unk_01, 0, 9);
-            func_80054FF8_main(D_80110018_baby_bowser_broadside[D_80110000_baby_bowser_broadside[i].unk_14].unk_01, 0, 9);
+            HuSprPatNoSet(D_80110018_baby_bowser_broadside[D_80110000_baby_bowser_broadside[i].unk_12].unk_01, 0, 9);
+            HuSprPatNoSet(D_80110018_baby_bowser_broadside[D_80110000_baby_bowser_broadside[i].unk_14].unk_01, 0, 9);
         }
     }
 }
@@ -574,14 +574,14 @@ void func_80107854_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBows
         handler->unk_04 = 1;
     }
     D_80110008_baby_bowser_broadside->unk_04 -= 1.0f;
-    func_8003F578_main((s16)((D_80110008_baby_bowser_broadside->unk_04 + 29.0f) * (1.0f / 30.0f)));
+    GMesTimerValueSet((s16)((D_80110008_baby_bowser_broadside->unk_04 + 29.0f) * (1.0f / 30.0f)));
     if (D_80110008_baby_bowser_broadside->unk_04 < 0.0f) {
         D_80110008_baby_bowser_broadside->unk_00 = 4;
         D_80110008_baby_bowser_broadside->unk_38 = 0.0f;
         HuAudSeqFadeOut(120);
         GMesCreate(16);
         func_8010A0B4_baby_bowser_broadside((s8)slot->unk_00->work[1], 0xF, 0, func_80107A00_baby_bowser_broadside, 0);
-        func_8003F5C0_main();
+        GMesTimerEnd();
         if (D_80110000_baby_bowser_broadside[0].unk_10 == D_80110000_baby_bowser_broadside[1].unk_10) {
             func_8010A0B4_baby_bowser_broadside((s8)slot->unk_00->work[1], 0, 0, func_80107FE0_baby_bowser_broadside, 0);
         } else {
@@ -599,7 +599,7 @@ void func_80107A00_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBows
     }
     if (++handler->unk_1C >= 16) {
         handler->unk_1C = 15;
-        func_8004AB0C_main(15);
+        HuAudFXAllFadeOut(15);
         func_8010A158_baby_bowser_broadside((s8)slot->unk_00->work[1], handler);
     }
 }
@@ -1156,7 +1156,7 @@ void func_801098F8_baby_bowser_broadside(BabyBowserBroadsideEntry *entry) {
     s16 index = func_8010AADC_baby_bowser_broadside(entry->unk_28);
 
     func_8010AB80_baby_bowser_broadside(index, entry->unk_2C->pos.x, entry->unk_2C->pos.y, entry->unk_2C->pos.z, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
-    func_8001C258_main(entry->unk_02, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(entry->unk_02, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     entry->unk_00 = 0;
 }
 
@@ -1192,7 +1192,7 @@ void func_801099D4_baby_bowser_broadside(omObjData *object, BabyBowserBroadsideE
     entry->elapsed = 0.0f;
     entry->angle = angle;
     entry->unk_00 = 1;
-    func_8001C258_main(entry->unk_02, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(entry->unk_02, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     x = sinAngle * 180.0f;
     z = cosAngle * 180.0f;
     entry->unk_28 = team;
@@ -1266,7 +1266,7 @@ void func_80109D94_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBows
     if (player->unk_08 != 0) {
         func_800E5690_minigame(object, player->unk_0A);
         if (player->unk_0A == 13) {
-            func_80045ED0_main(D_800A178C_main[GwPlayer[object->work[0]].chr][0] | 0x2F);
+            HuAudCharVoicePlay(D_800A178C_main[GwPlayer[object->work[0]].chr][0] | 0x2F);
         }
         player->unk_08 = 0;
         if (player->unk_0C != -1) {

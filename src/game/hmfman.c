@@ -59,9 +59,7 @@ extern HmfData_Unk84_Entry2 *D_800D1FCC_main;
 
 // unknown
 
-
 extern Gfx *gMainGfxPos;
-
 
 extern u8 D_800A0540_main;
 extern u8 D_800A0541_main;
@@ -177,20 +175,20 @@ const char D_800A6BBC_main[] = "Model Entry Over!\n";
 void Hu3DInit(void *arg0, void *arg1, u16 arg2, u16 arg3, u16 arg4, u8 arg5) {
     s16 modelId;
 
-    func_800222B0_main(arg0, arg1, arg2, arg3, arg4, arg5);
+    Hu3DDrawInit(arg0, arg1, arg2, arg3, arg4, arg5);
     Hu3DMotionInit();
     Hu3DData = HuMemAlloc(HU3D_MODEL_MAX * sizeof(HmfModel));
     for (modelId = 0; modelId < HU3D_MODEL_MAX; modelId++) {
         Hu3DData[modelId].hmf = NULL;
     }
-    func_800224BC_main();
+    Hu3DPreProc();
     D_800D20AC_main = 0;
     D_800D1F70_main = 0;
     D_800D20EE_main = 1;
     Hu3DPauseF = 0;
     D_800CD280_main = 1;
     D_800CC3D8_main[0] = D_800CC3D8_main[1] = 0;
-    func_8000D3AC_main();
+    EffectGroupInit();
     D_800D1FE8_main = 0;
 }
 
@@ -223,37 +221,37 @@ s32 Hu3DModelCreate(u8 *data, u32 arg1) {
         hmf->unkC8 = 0;
         hmf->unk98 = NULL;
         if (data[2] == 'N' && data[3] == 'X') {
-            modelP->motId = func_8002D3AC_main((HmfMotionFile *)data);
+            modelP->motId = Hu3DMotionCreateNoHmf((HmfMotionFile *)data);
             arg1 &= ~(0x10 | 0x1);
         } else {
             var_a1 = data + 8;
             if (data[8] == 'M') {
                 if (data[9] == 'T' && data[10] == 'N' && data[11] == 'X') {
-                    modelP->motId = func_8002D3AC_main(var_a1);
+                    modelP->motId = Hu3DMotionCreateNoHmf(var_a1);
                     arg1 &= ~0x11;
-                    var_a1 = func_80010AC8_main(data + 12);
+                    var_a1 = HmfChunkNext(data + 12);
                 } else {
                     modelP->motId = 0xFF;
                 }
             } else {
                 modelP->motId = 0xFF;
             }
-            modelP->unk08 = func_800300A4_main((HmfData *)data, var_a1);
+            modelP->unk08 = Hu3DShapeCreate((HmfData *)data, var_a1);
         }
     } else {
         LoadHMF(hmf, data, arg1);
         if (hmf->unk38 != 0) {
             HuMemSetTag(hmf->unk50, D_800CDD6A_main);
-            modelP->unk10 = func_8001FF04_main(modelId);
+            modelP->unk10 = MapCollCreate(modelId);
         } else {
             modelP->unk10 = -1;
         }
         hmf->unk00 = (arg1 >> HU3D_ATTR_LAYER_SHIFT) & 7;
         modelP->attr = arg1;
-        modelP->motId = func_8002D2D8_main((HmfMotionFile *)data, hmf);
+        modelP->motId = Hu3DMotionCreateSub((HmfMotionFile *)data, hmf);
         if (modelP->motId != 0xFF) {
             if (hmf->unk14 == 0) {
-                func_8000F978_main(hmf);
+                MotionNodeFree(hmf);
             } else {
                 goto skip;
             }
@@ -269,7 +267,7 @@ skip:
     }
     if (arg1 & HU3D_ATTR_STATIC) {
         D_800C9940_main = modelP->attr;
-        func_80022660_main(hmf);
+        MakeDisplayList(hmf);
     }
     hmf->unk0B = 1;
     if (arg1 & HU3D_ATTR_DYNAMICFREE) {
@@ -354,7 +352,7 @@ s32 Hu3DModelLink(s16 linkMdlId) {
     return modelId;
 }
 
-s32 func_8001A894_main(u32 flags, void *dl, s32 mode) {
+s32 Hu3DModelDLCreate(u32 flags, void *dl, s32 mode) {
     HmfModel *modelP;
     HmfData *hmf;
     s16 modelId;
@@ -427,7 +425,7 @@ s32 func_8001A894_main(u32 flags, void *dl, s32 mode) {
     D_800D1FE8_main++;
     return modelId;
 }
-s16 func_8001ABD4_main(s16 arg0, s8 arg1) {
+s16 Hu3DModelLinkModeSet(s16 arg0, s8 arg1) {
     s16 idx = Hu3DModelLink(arg0);
 
     if (idx < 0) {
@@ -437,7 +435,7 @@ s16 func_8001ABD4_main(s16 arg0, s8 arg1) {
     return idx;
 }
 
-void func_8001AC34_main(s16 arg0, s32 arg1) {
+void Hu3DModelModeSet(s16 arg0, s32 arg1) {
     HmfModel *model = &Hu3DData[arg0];
     u8 flags = (model->unk00 & 0xF9) | 1;
     u8 newFlags = arg1 | flags;
@@ -451,7 +449,7 @@ void func_8001AC34_main(s16 arg0, s32 arg1) {
 }
 
 s32 Hu3DHookFuncCreate(s32 arg0, void (*arg1)(Gfx **, s32, s32), u8 arg2) {
-    s16 idx = func_8001A894_main(arg0, NULL, arg2);
+    s16 idx = Hu3DModelDLCreate(arg0, NULL, arg2);
     HmfModel *var_v1 = &Hu3DData[idx];
 
     var_v1->hookFunc = arg1;
@@ -474,8 +472,8 @@ void Hu3DModelKill(s16 idx) {
     Hu3DData[idx].hmf = NULL;
     if (Hu3DData[idx].unk00 & 1) {
         if (--hmf->unk0B == 0) {
-            func_80019C68_main(hmf->unk0E);
-            func_80019C68_main(hmf->unk0E + 1);
+            HuMemDelayFreeAllWithTag(hmf->unk0E);
+            HuMemDelayFreeAllWithTag(hmf->unk0E + 1);
         }
         return;
     }
@@ -493,21 +491,21 @@ void Hu3DModelKill(s16 idx) {
             }
         }
     }
-    func_80019C68_main(hmf->unk0E);
-    func_80019C68_main(hmf->unk0E + 1);
-    func_8003186C_main(hmf);
+    HuMemDelayFreeAllWithTag(hmf->unk0E);
+    HuMemDelayFreeAllWithTag(hmf->unk0E + 1);
+    Hu3DTexRelease(hmf);
     if (hmf->unk38 != NULL) {
-        func_80021B20_main(Hu3DData[idx].unk10);
+        MapCollKill(Hu3DData[idx].unk10);
     }
     if (Hu3DData[idx].unk08 != 0xFF) {
-        func_80030178_main(Hu3DData[idx].unk08);
+        Hu3DShapeKill(Hu3DData[idx].unk08);
     }
     if (hmf->unkC8 != NULL) {
         for (i = 0; i < hmf->unk2A; i++) {
             Hu3DAnimKill(hmf->unkC8[i]);
         }
     }
-    func_80019C00_main(hmf);
+    HuMemDelayFree(hmf);
     if (Hu3DData[idx].motId != 0xFF) {
         Hu3DMotionKill((s16)Hu3DData[idx].motId);
     }
@@ -520,16 +518,16 @@ void Hu3DAllKill(void) {
             Hu3DModelKill(i);
         }
     }
-    func_80033510_main();
+    Hu3DTexAllKill();
     Hu3DAnimAllKill();
-    func_80030198_main();
-    func_80021AF4_main();
+    Hu3DShapeAllKill();
+    MapCollAllKill();
     Hu3DMotionAllKill();
     Hu3DFogClear();
     D_800CC3D8_main[0] = D_800CC3D8_main[1] = 0;
-    func_80030030_main(1.0f);
-    func_80019968_main(1);
-    func_8000D3AC_main();
+    Hu3DMotionGlobalSpeedSet(1.0f);
+    Hu3DLightModeSet(1);
+    EffectGroupInit();
 }
 
 void Hu3DExec(void *arg0, u16 arg1) {
@@ -567,20 +565,20 @@ void Hu3DExec(void *arg0, u16 arg1) {
     D_800CE19A_main = 0;
     for (D_800CD6A6_main = 0; D_800CD6A6_main < D_800C9932_main; D_800CD6A6_main++) {
         if (bgDl == NULL) {
-            gfxStart = func_8001BD24_main(gfxStart, 1, mask);
+            gfxStart = Hu3DDLModelDraw(gfxStart, 1, mask);
             gDPFullSync(gMainGfxPos++);
             gSPEndDisplayList(gMainGfxPos++);
-            func_8000EF64_main(gfxStart, D_800CE19A_main, 0, NULL, 0);
+            HuGfxTaskSend(gfxStart, D_800CE19A_main, 0, NULL, 0);
         }
-        func_800225D4_main();
+        Hu3DDrawListInit();
         D_800D10F4_main = &gCameraList[D_800CD6A6_main];
         D_800D0444_main = &D_800D10F4_main->mtxs[D_800D418E_main];
         gfxStart = gMainGfxPos;
         if (D_800D10F4_main->unk4 != -1) {
-            func_80012E54_main(D_800CD6A6_main);
+            Hu3DCameraMotionExec(D_800CD6A6_main);
         }
         Hu3DCameraSet(D_800CD6A6_main, &gMainGfxPos);
-        func_800127C4_main(D_800CD6A6_main, &gMainGfxPos);
+        Hu3DCameraScissorDraw(D_800CD6A6_main, &gMainGfxPos);
         mask = 1 << (s16)D_800CD6A6_main;
         gSPDisplayList(gMainGfxPos++, D_800A09C8_main);
         gSPEndDisplayList(gMainGfxPos++);
@@ -588,7 +586,7 @@ void Hu3DExec(void *arg0, u16 arg1) {
         if (bgDl != NULL) {
             gSPDisplayList(gMainGfxPos++, bgDl);
         }
-        func_800127C4_main(D_800CD6A6_main, &gMainGfxPos);
+        Hu3DCameraScissorDraw(D_800CD6A6_main, &gMainGfxPos);
         if (D_800D10F4_main->unkA8 != NULL) {
             D_800D10F4_main->unkA8(D_800CD6A6_main);
         }
@@ -598,9 +596,9 @@ void Hu3DExec(void *arg0, u16 arg1) {
         if (D_800CC3D8_main[1] != NULL) {
             D_800CC3D8_main[1](&gMainGfxPos, D_800D0444_main, D_800CD6A6_main);
         }
-        gfx = func_8001BD24_main(gfx, 0, mask);
+        gfx = Hu3DDLModelDraw(gfx, 0, mask);
         gSPEndDisplayList(gMainGfxPos++);
-        sample = func_8004D6AC_main(200, 255, 0);
+        sample = HuProfCpuBegin(200, 255, 0);
         count = D_800D1FE8_main;
         for (i = 0; count != 0; i++) {
             model = &Hu3DData[i];
@@ -629,14 +627,14 @@ void Hu3DExec(void *arg0, u16 arg1) {
                 continue;
             }
             if (model->unk09 != 0xFF) {
-                func_8001F4BC_main(i);
+                Hu3DModelLODExec(i);
             }
             if (model->attr & 0x1000000) {
                 bc = model->unkBC;
                 if ((!Hu3DPauseF || (model->attr & HU3D_ATTR_NOPAUSE)) && !(bc->unk04 & 2)) {
                     bc->unk18(i);
                 }
-                func_800139AC_main(i, bc->unk00);
+                Hu3DParticleDraw(i, bc->unk00);
             }
             hmf->unk0A = 1;
             hmf->unk01 = model->unk00;
@@ -661,9 +659,9 @@ void Hu3DExec(void *arg0, u16 arg1) {
                 } else {
                     func_8008A070_main(scaleMtx);
                 }
-                func_80018044_main(model->mtx, camMtx, mtx);
+                mtxCat(model->mtx, camMtx, mtx);
             } else {
-                func_8002367C_main(mtx, model->mtx);
+                mtxCopy(mtx, model->mtx);
                 if (model->pos.x != 0.0f || model->pos.y != 0.0f || model->pos.z != 0.0f) {
                     mtxTransCat(mtx, model->pos.x, model->pos.y, model->pos.z);
                 }
@@ -685,7 +683,7 @@ void Hu3DExec(void *arg0, u16 arg1) {
             }
             hmf->unkD0 = model->unkB4;
             if (model->unkB4 != NULL) {
-                func_80019668_main(model->unkB4);
+                Hu3DLLightSet(model->unkB4);
             }
             if (model->motId != 0xFF) {
                 hmf->unk8C = &D_800CCF58_main[model->motId];
@@ -723,21 +721,21 @@ void Hu3DExec(void *arg0, u16 arg1) {
             if (D_800C9940_main & 0x4000) {
                 func_80089980_main(mtx, D_800CC0BC_main[D_800D2070_main[model->unk68->unk00][model->unk68->unk60[model->unk0A].unk1D].objectIndex].fixedMtx);
             }
-            func_80023404_main(hmf, mtx, scaleMtx);
+            Hu3DDraw(hmf, mtx, scaleMtx);
             hmf->unk0C++;
             if (model->unk08 != 0xFF || hmf->unkB4 != NULL) {
-                func_800303C8_main(model, model->motTime);
+                Hu3DShapeExec(model, model->motTime);
             }
             if (hmf->unk98 != NULL) {
-                func_8002F60C_main(hmf);
+                SetObjMatMotion(hmf);
             }
             if (hmf->unkC8 != NULL) {
-                func_8001F154_main(model);
+                Hu3DMotionExecAnim(model);
             }
         }
-        func_8004D6E8_main(sample);
+        HuProfCpuEnd(sample);
         bgDl = NULL;
-        gfxStart = func_800250D4_main(D_800CD6A6_main, gfxStart, gfx);
+        gfxStart = Hu3DDrawLayer(D_800CD6A6_main, gfxStart, gfx);
         if (D_800D10F4_main->unkAC != NULL) {
             D_800D10F4_main->unkAC(D_800CD6A6_main);
         }
@@ -753,7 +751,7 @@ void Hu3DExec(void *arg0, u16 arg1) {
         if (model->motId == 0xFF) {
             continue;
         }
-        func_8001F038_main(model, arg1);
+        Hu3DMotionNext(model, arg1);
         if (model->hmf->unk98 != NULL && model->unk00 == 0) {
             model->hmf->unk98->unk08 = model->motTime;
         }
@@ -761,19 +759,19 @@ void Hu3DExec(void *arg0, u16 arg1) {
     if (!Hu3DPauseF) {
         Hu3DAnimExec(arg1);
     }
-    gfxStart = func_8001BD24_main(gfxStart, 1, mask);
+    gfxStart = Hu3DDLModelDraw(gfxStart, 1, mask);
     gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-    gfxStart = func_8001BD24_main(gfxStart, 3, 0);
+    gfxStart = Hu3DDLModelDraw(gfxStart, 3, 0);
     gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     WipeExecAlways(&gMainGfxPos);
     gMainGfxPos = pfDrawFonts(gMainGfxPos);
     gDPFullSync(gMainGfxPos++);
     gSPEndDisplayList(gMainGfxPos++);
-    func_8000EF64_main(gfxStart, D_800CE19A_main, 1, arg0, 0x309);
+    HuGfxTaskSend(gfxStart, D_800CE19A_main, 1, arg0, 0x309);
     D_800A08B0_main++;
 }
 
-Gfx *func_8001BD24_main(Gfx *arg0, s16 arg1, u16 arg2) {
+Gfx *Hu3DDLModelDraw(Gfx *arg0, s16 arg1, u16 arg2) {
     s16 i;
 
     for (i = 0; i < D_800CBB72_main[arg1]; i++) {
@@ -786,7 +784,7 @@ Gfx *func_8001BD24_main(Gfx *arg0, s16 arg1, u16 arg2) {
         if (temp_s0->hmf->unk00 != D_800CE19A_main) {
             gDPFullSync(gMainGfxPos++);
             gSPEndDisplayList(gMainGfxPos++);
-            func_8000EF64_main(arg0, D_800CE19A_main, 0, NULL, 0);
+            HuGfxTaskSend(arg0, D_800CE19A_main, 0, NULL, 0);
             D_800CE19A_main = temp_s0->hmf->unk00;
             arg0 = gMainGfxPos;
         }
@@ -799,7 +797,7 @@ Gfx *func_8001BD24_main(Gfx *arg0, s16 arg1, u16 arg2) {
     return arg0;
 }
 
-void func_8001BF14_main(void) {
+void Hu3DModelAllReset(void) {
     s16 i;
 
     HuMemSetDirty();
@@ -812,7 +810,7 @@ void func_8001BF14_main(void) {
     D_800D20EE_main = 0;
 }
 
-void func_8001BF90_main(u32 arg0, u32 arg1) {
+void Hu3DScreenClear(u32 arg0, u32 arg1) {
     gSPSegment(gMainGfxPos++, 0x00, 0x00000000);
     gSPDisplayList(gMainGfxPos++, D_800A09B0_main);
     gDPSetDepthImage(gMainGfxPos++, arg1);
@@ -855,15 +853,15 @@ void Hu3DModelScaleSet(s16 idx, f32 x, f32 y, f32 z) {
     }
 }
 
-void func_8001C1F0_main(s16 arg0, s32 arg1) {
+void Hu3DModelAllAttrSet(s16 arg0, s32 arg1) {
     s16 i;
 
     for (i = 0; i < HU3D_MODEL_MAX; i++) {
-        func_8001C258_main(i, arg0, arg1);
+        Hu3DModelAttrSet(i, arg0, arg1);
     }
 }
 
-void func_8001C258_main(s16 idx, s32 arg1, s32 arg2) {
+void Hu3DModelAttrSet(s16 idx, s32 arg1, s32 arg2) {
     HmfModel *model = &Hu3DData[idx];
 
     if (model->hmf != NULL) {
@@ -878,7 +876,7 @@ void func_8001C258_main(s16 idx, s32 arg1, s32 arg2) {
     }
 }
 
-void func_8001C2FC_main(s16 idx, s32 arg1, s32 arg2) {
+void Hu3DModelObjAttrSet(s16 idx, s32 arg1, s32 arg2) {
     HmfData *temp_a3 = Hu3DData[idx].hmf;
     s16 var_t0;
 
@@ -888,9 +886,9 @@ void func_8001C2FC_main(s16 idx, s32 arg1, s32 arg2) {
     }
 }
 
-void func_8001C39C_main(s16 idx, char *name, s32 arg2, s32 arg3) {
+void Hu3DModelObjAttrSetByName(s16 idx, char *name, s32 arg2, s32 arg3) {
     HmfData *temp_s0 = Hu3DData[idx].hmf;
-    s16 temp_v0 = func_8002C834_main(temp_s0, name);
+    s16 temp_v0 = SearchObjectIndex(temp_s0, name);
 
     if (temp_v0 >= 0) {
         temp_s0->unk60[temp_v0].unk50 &= ~arg2;
@@ -899,7 +897,7 @@ void func_8001C39C_main(s16 idx, char *name, s32 arg2, s32 arg3) {
 }
 
 void Hu3DModelRemakeStatic(s16 arg0) {
-    func_8001C258_main(arg0, HU3D_ATTR_REMAKESTATIC | HU3D_ATTR_STATIC, HU3D_ATTR_STATIC);
+    Hu3DModelAttrSet(arg0, HU3D_ATTR_REMAKESTATIC | HU3D_ATTR_STATIC, HU3D_ATTR_STATIC);
     D_800C9940_main = Hu3DData[arg0].attr;
 
     if (D_800C9940_main & HU3D_ATTR_DYNAMICFREE) {
@@ -908,21 +906,21 @@ void Hu3DModelRemakeStatic(s16 arg0) {
         return;
     }
 
-    if (func_80023264_main(Hu3DData[arg0].hmf) != NULL) {
-        func_8001C954_main(arg0);
+    if (RemakeDisplayList(Hu3DData[arg0].hmf) != NULL) {
+        Hu3DModelVtxBufMake(arg0);
     }
 }
 
-void func_8001C514_main(s16 idx) {
+void Hu3DModelDynamicFree(s16 idx) {
     if (Hu3DData[idx].hmf->unk0A != 0) {
-        func_80019C68_main(Hu3DData[idx].hmf->unk0E);
+        HuMemDelayFreeAllWithTag(Hu3DData[idx].hmf->unk0E);
     } else {
         HuMemFreeAllWithTag(Hu3DData[idx].hmf->unk0E);
     }
-    func_8001C258_main(idx, HU3D_ATTR_DYNAMICFREE, HU3D_ATTR_DYNAMICFREE);
+    Hu3DModelAttrSet(idx, HU3D_ATTR_DYNAMICFREE, HU3D_ATTR_DYNAMICFREE);
 }
 
-void func_8001C5B4_main(s16 idx, s16 arg1) {
+void Hu3DMotionModelSet(s16 idx, s16 arg1) {
     HmfModel *model = &Hu3DData[idx];
 
     model->motId = Hu3DData[arg1].motId;
@@ -981,7 +979,7 @@ f32 Hu3DMotionShiftTimeGet(s16 idx) {
     return Hu3DData[idx].motShiftTime;
 }
 
-void func_8001C814_main(s16 idx, s16 arg1, s16 arg2) {
+void Hu3DMotionAttrSet(s16 idx, s16 arg1, s16 arg2) {
     HmfModel *temp_a3 = &Hu3DData[idx];
 
     temp_a3->motAttr &= ~arg1;
@@ -1013,8 +1011,7 @@ void Hu3DMotionSpeedSet(s16 idx, f32 arg1) {
     model->motSpeed = arg1;
 }
 
-// officially named "DynamicFree"
-void func_8001C954_main(s16 idx) {
+void Hu3DModelVtxBufMake(s16 idx) {
     HmfData *hmf = Hu3DData[idx].hmf;
     Vtx *src;
     Vtx *dst;
@@ -1035,7 +1032,7 @@ void func_8001C954_main(s16 idx) {
         }
     }
 }
-void func_8001CAA4_main(s16 idx1, s16 idx2, f32 t) {
+void Hu3DModelVtxMorph(s16 idx1, s16 idx2, f32 t) {
     HmfData *hmf = Hu3DData[idx1].hmf;
     Vtx_tn *src1 = (Vtx_tn *)hmf->unk40;
     Vtx_tn *src2 = (Vtx_tn *)Hu3DData[idx2].hmf->unk40;
@@ -1059,29 +1056,29 @@ void func_8001CAA4_main(s16 idx1, s16 idx2, f32 t) {
         dst++;
     }
 }
-void func_8001CD34_main(s16 idx1, s16 idx2, f32 arg2, char *name, s32 arg4) {
+void Hu3DModelObjVtxMorph(s16 idx1, s16 idx2, f32 arg2, char *name, s32 arg4) {
     HmfData *hmf1 = Hu3DData[idx1].hmf;
     HmfData *hmf2 = Hu3DData[idx2].hmf;
-    s16 node1 = func_8002C834_main(hmf1, name);
-    s16 node2 = func_8002C834_main(hmf2, name);
+    s16 node1 = SearchObjectIndex(hmf1, name);
+    s16 node2 = SearchObjectIndex(hmf2, name);
 
     if (node1 == -1 || node2 == -1) {
         return;
     }
-    func_8001CF1C_main(hmf1, hmf2, arg2, node1, node2, arg4);
+    HmfObjVtxMorph(hmf1, hmf2, arg2, node1, node2, arg4);
 }
-void func_8001CE28_main(s16 idx1, s16 idx2, f32 arg2, char *name1, char *name2, s32 arg5) {
+void Hu3DModelObjVtxMorph2(s16 idx1, s16 idx2, f32 arg2, char *name1, char *name2, s32 arg5) {
     HmfData *hmf1 = Hu3DData[idx1].hmf;
     HmfData *hmf2 = Hu3DData[idx2].hmf;
-    s16 node1 = func_8002C834_main(hmf1, name1);
-    s16 node2 = func_8002C834_main(hmf2, name2);
+    s16 node1 = SearchObjectIndex(hmf1, name1);
+    s16 node2 = SearchObjectIndex(hmf2, name2);
 
     if (node1 == -1 || node2 == -1) {
         return;
     }
-    func_8001CF1C_main(hmf1, hmf2, arg2, node1, node2, arg5);
+    HmfObjVtxMorph(hmf1, hmf2, arg2, node1, node2, arg5);
 }
-void func_8001CF1C_main(HmfData *hmf1, HmfData *hmf2, f32 t, s16 node1, s16 node2, s32 full) {
+void HmfObjVtxMorph(HmfData *hmf1, HmfData *hmf2, f32 t, s16 node1, s16 node2, s32 full) {
     Vtx_tn *src1;
     Vtx_tn *src2;
     Vtx_tn *dst;
@@ -1127,13 +1124,13 @@ void func_8001CF1C_main(HmfData *hmf1, HmfData *hmf2, f32 t, s16 node1, s16 node
         }
     }
 }
-void func_8001D330_main(s16 arg0) {
+void Hu3DShapeModeSet(s16 arg0) {
     D_800A0A78_main = arg0;
 }
 
-void *func_8001D33C_main(s16 idx, const char *name) {
+void *Hu3DModelObjPtrGet(s16 idx, const char *name) {
     HmfData *hmf = Hu3DData[idx].hmf;
-    s16 node = func_8002C834_main(hmf, name);
+    s16 node = SearchObjectIndex(hmf, name);
     s16 count;
     s16 i;
     s16 j;
@@ -1166,24 +1163,24 @@ void *func_8001D33C_main(s16 idx, const char *name) {
         return &hmf->unk68[i];
     }
 }
-void func_8001D558_main(s16 idx, f32 arg1, f32 arg2, s32 mode) {
+void Hu3DModelVtxWave(s16 idx, f32 arg1, f32 arg2, s32 mode) {
     HmfData *hmf = Hu3DData[idx].hmf;
 
     if (hmf != NULL) {
         switch (mode & 0xF) {
             case 0:
-                func_8001D874_main(hmf, arg1, arg2, 0, hmf->unk1A);
+                HmfVtxWave0(hmf, arg1, arg2, 0, hmf->unk1A);
                 break;
             case 1:
-                func_8001DACC_main(hmf, arg1, arg2, 0, hmf->unk1A);
+                HmfVtxWave1(hmf, arg1, arg2, 0, hmf->unk1A);
                 break;
             case 2:
-                func_8001DDB8_main(hmf, arg1, arg2, 0, hmf->unk1A);
+                HmfVtxWave2(hmf, arg1, arg2, 0, hmf->unk1A);
                 break;
         }
     }
 }
-void func_8001D638_main(s16 idx, f32 arg1, f32 arg2, char *name, s16 mode) {
+void Hu3DModelObjVtxWave(s16 idx, f32 arg1, f32 arg2, char *name, s16 mode) {
     HmfData *hmf = Hu3DData[idx].hmf;
     Vtx *src;
     Vtx *dst;
@@ -1194,7 +1191,7 @@ void func_8001D638_main(s16 idx, f32 arg1, f32 arg2, char *name, s16 mode) {
     if (hmf == NULL) {
         return;
     }
-    node = func_8002C834_main(hmf, name);
+    node = SearchObjectIndex(hmf, name);
     if (node == -1) {
         return;
     }
@@ -1210,17 +1207,17 @@ void func_8001D638_main(s16 idx, f32 arg1, f32 arg2, char *name, s16 mode) {
     }
     switch (mode & 0xF) {
         case 0:
-            func_8001D874_main(hmf, arg1, arg2, hmf->unk60[node].unk2C, hmf->unk60[node].unk2E);
+            HmfVtxWave0(hmf, arg1, arg2, hmf->unk60[node].unk2C, hmf->unk60[node].unk2E);
             break;
         case 1:
-            func_8001DACC_main(hmf, arg1, arg2, hmf->unk60[node].unk2C, hmf->unk60[node].unk2E);
+            HmfVtxWave1(hmf, arg1, arg2, hmf->unk60[node].unk2C, hmf->unk60[node].unk2E);
             break;
         case 2:
-            func_8001DDB8_main(hmf, arg1, arg2, hmf->unk60[node].unk2C, hmf->unk60[node].unk2E);
+            HmfVtxWave2(hmf, arg1, arg2, hmf->unk60[node].unk2C, hmf->unk60[node].unk2E);
             break;
     }
 }
-void func_8001D874_main(HmfData *hmf, f32 t, f32 scale, u16 start, u16 count) {
+void HmfVtxWave0(HmfData *hmf, f32 t, f32 scale, u16 start, u16 count) {
     HmfVertexGroup *group = &hmf->unkB0[start];
     f32 inv = 1.0f - t;
     s16 *indices;
@@ -1254,7 +1251,7 @@ void func_8001D874_main(HmfData *hmf, f32 t, f32 scale, u16 start, u16 count) {
         }
     }
 }
-void func_8001DACC_main(HmfData *hmf, f32 t, f32 scale, u16 start, u16 count) {
+void HmfVtxWave1(HmfData *hmf, f32 t, f32 scale, u16 start, u16 count) {
     f32 jitter[8] = { 0.0f, -0.1f, 0.5f, 0.8f, -0.2f, 0.1f, 0.3f, -0.3f };
     HmfVertexGroup *group = &hmf->unkB0[start];
     f32 inv = 1.0f - t;
@@ -1290,7 +1287,7 @@ void func_8001DACC_main(HmfData *hmf, f32 t, f32 scale, u16 start, u16 count) {
     }
 }
 
-void func_8001DDB8_main(HmfData *hmf, f32 t, f32 scale, u16 start, u16 count) {
+void HmfVtxWave2(HmfData *hmf, f32 t, f32 scale, u16 start, u16 count) {
     f32 sinTbl[4];
     f32 cosTbl[4];
     f32 jitter[8] = { 0.0f, -0.1f, 0.5f, 0.8f, -0.2f, 0.1f, 0.3f, -0.3f };
@@ -1384,13 +1381,13 @@ void func_8001DDB8_main(HmfData *hmf, f32 t, f32 scale, u16 start, u16 count) {
         }
     }
 }
-void func_8001E500_main(s16 idx, char *oldName, char *newName) {
+void Hu3DModelTexAnimChange(s16 idx, char *oldName, char *newName) {
     HmfData_Unk84_Entry2 *found = NULL;
     HmfData *hmf = Hu3DData[idx].hmf;
     u16 hash;
     s16 i;
 
-    hash = func_80011460_main((u8 *)newName);
+    hash = HmfNameHash((u8 *)newName);
     for (i = 0; i < 128; i++) {
         if (D_800D1FCC_main[i].nameHash != 0 && D_800D1FCC_main[i].nameHash == hash &&
             strcmp(D_800D1FCC_main[i].name, newName) == 0) {
@@ -1398,14 +1395,14 @@ void func_8001E500_main(s16 idx, char *oldName, char *newName) {
             break;
         }
     }
-    hash = func_80011460_main((u8 *)oldName);
+    hash = HmfNameHash((u8 *)oldName);
     for (i = 0; i < hmf->unk12; i++) {
         if (hmf->unk84[i].unkC->nameHash == hash) {
             hmf->unk84[i].unkC = found;
         }
     }
 }
-void func_8001E65C_main(s16 idx, f32 x, f32 y, s32 width, s32 height) {
+void Hu3DModelTexScroll(s16 idx, f32 x, f32 y, s32 width, s32 height) {
     HmfData *hmf = Hu3DData[idx].hmf;
     Vtx *src;
     Vtx *dst;
@@ -1445,7 +1442,7 @@ void func_8001E65C_main(s16 idx, f32 x, f32 y, s32 width, s32 height) {
         dst++;
     }
 }
-void func_8001E888_main(s16 idx, f32 x, f32 y, u16 width, u16 height, const char *name, u8 reset) {
+void Hu3DModelObjTexScroll(s16 idx, f32 x, f32 y, u16 width, u16 height, const char *name, u8 reset) {
     HmfData *hmf = Hu3DData[idx].hmf;
     Vtx *src;
     Vtx *dst;
@@ -1468,7 +1465,7 @@ void func_8001E888_main(s16 idx, f32 x, f32 y, u16 width, u16 height, const char
             dst++;
         }
     }
-    node = func_8002C834_main(hmf, name);
+    node = SearchObjectIndex(hmf, name);
     count = hmf->unk60[node].unk2A;
     src = &hmf->unk40[hmf->unk60[node].unk28];
     dst = &hmf->unk44[D_800D2008_main][hmf->unk60[node].unk28];
@@ -1495,7 +1492,7 @@ void func_8001E888_main(s16 idx, f32 x, f32 y, u16 width, u16 height, const char
         dst++;
     }
 }
-void func_8001EBC0_main(s16 idx, char *name, u8 r, u8 g, u8 b, u8 reset) {
+void Hu3DModelObjVtxColorSet(s16 idx, char *name, u8 r, u8 g, u8 b, u8 reset) {
     HmfData *hmf = Hu3DData[idx].hmf;
     Vtx *vtx;
     Vtx *dst;
@@ -1516,7 +1513,7 @@ void func_8001EBC0_main(s16 idx, char *name, u8 r, u8 g, u8 b, u8 reset) {
             dst++;
         }
     }
-    node = func_8002C834_main(hmf, name);
+    node = SearchObjectIndex(hmf, name);
     count = hmf->unk60[node].unk2A;
     vtx = &hmf->unk44[D_800D2008_main][hmf->unk60[node].unk28];
     for (i = 0; i < count; i++) {
@@ -1526,7 +1523,7 @@ void func_8001EBC0_main(s16 idx, char *name, u8 r, u8 g, u8 b, u8 reset) {
         vtx++;
     }
 }
-void func_8001ED54_main(s16 idx) {
+void Hu3DModelFaceFlip(s16 idx) {
     HmfData *hmf = Hu3DData[idx].hmf;
     HmfModelData_Unk64_Unk60_Struct *obj;
     HmfModelData_Unk64_Unk60_Unk54_Struct *face;
@@ -1583,38 +1580,38 @@ void Hu3DFogClear(void) {
 
 void Hu3DModelHookSet(s16 idx, s16 parentIdx, const char *name) {
     HmfData *hmf = Hu3DData[parentIdx].hmf;
-    s16 node = func_8002C834_main(hmf, name);
+    s16 node = SearchObjectIndex(hmf, name);
 
     Hu3DData[idx].unk68 = hmf;
     Hu3DData[idx].unk0A = node;
 }
 
-void func_8001EFEC_main(s16 idx, char *name) {
+void Hu3DModelAnimNameSet(s16 idx, char *name) {
     HmfData *hmf = Hu3DData[idx].hmf;
 
-    hmf->unk9C = func_80031A44_main(hmf, name);
+    hmf->unk9C = Hu3DTexSearchName(hmf, name);
 }
 
-void func_8001F038_main(HmfModel *model, u16 speed) {
-    model->motTime = func_8002FC7C_main(&D_800CCF58_main[model->motId], model->motAttr,
-                                      model->motTime, model->unk48, speed * model->motSpeed);
+void Hu3DMotionNext(HmfModel *model, u16 speed) {
+    model->motTime = Hu3DMotionTimeCalc(&D_800CCF58_main[model->motId], model->motAttr,
+                                        model->motTime, model->unk48, speed * model->motSpeed);
     if (model->motIdShift != 0xFF) {
-        model->motShiftTime = func_8002FC7C_main(&D_800CCF58_main[model->motIdShift],
-                                          model->motShiftAttr, model->motShiftTime, model->unk54, speed * model->motShiftSpeed);
+        model->motShiftTime = Hu3DMotionTimeCalc(&D_800CCF58_main[model->motIdShift],
+                                                 model->motShiftAttr, model->motShiftTime, model->unk54, speed * model->motShiftSpeed);
     }
     if (model->motIdShape != 0xFF) {
-        model->motShapeTime = func_8002FC7C_main(&D_800CCF58_main[model->motIdShape],
-                                          model->motShapeAttr, model->motShapeTime, model->unk60, speed * model->motShapeSpeed);
+        model->motShapeTime = Hu3DMotionTimeCalc(&D_800CCF58_main[model->motIdShape],
+                                                 model->motShapeAttr, model->motShapeTime, model->unk60, speed * model->motShapeSpeed);
     }
 }
-void func_8001F154_main(HmfModel *model) {
+void Hu3DMotionExecAnim(HmfModel *model) {
     HmfData *hmf = model->hmf;
     s16 frame = model->motTime;
     s16 i;
 
     for (i = 0; i < hmf->unk2A; i++) {
-        func_80032FC0_main(hmf->unkC8[i], 1, 1);
-        func_80034048_main(hmf->unkC8[i], frame);
+        Hu3DAnimAttrSet(hmf->unkC8[i], 1, 1);
+        Hu3DAnimTimeSet(hmf->unkC8[i], frame);
     }
 }
 
@@ -1627,11 +1624,11 @@ s32 Hu3DMotionCreate(void *arg0, s32 arg1) {
         D_800CDD6A_main = 0x2811;
         D_800CB8C0_main.unk0E = 0x2810;
         LoadHMF(&D_800CB8C0_main, data, (s16)arg1);
-        ret = func_8002D2D8_main((HmfMotionFile *)data, &D_800CB8C0_main);
+        ret = Hu3DMotionCreateSub((HmfMotionFile *)data, &D_800CB8C0_main);
         HuMemFreeAllWithTag(D_800D5204_main);
         HuMemFreeAllWithTag(D_800CDD6A_main);
     } else {
-        ret = func_8002D3AC_main((HmfMotionFile *)data);
+        ret = Hu3DMotionCreateNoHmf((HmfMotionFile *)data);
     }
     if (arg1 & 8) {
         gFreeFunc(data);
@@ -1661,7 +1658,7 @@ void Hu3DBGColorSet(s32 r, s32 g, s32 b) {
     D_800A0542_main = b;
 }
 
-void func_8001F3A8_main(s16 idx, s16 flags, s16 clear, s16 set) {
+void Hu3DMotionAttrSetEx(s16 idx, s16 flags, s16 clear, s16 set) {
     HmfModel *model = &Hu3DData[idx];
 
     if (flags & 1) {
@@ -1684,7 +1681,7 @@ void func_8001F3A8_main(s16 idx, s16 flags, s16 clear, s16 set) {
     }
 }
 
-void func_8001F450_main(s16 arg0, s16 arg1, f32 arg2) {
+void Hu3DModelLODSet(s16 arg0, s16 arg1, f32 arg2) {
     HmfModel *model;
 
     model = &Hu3DData[arg0];
@@ -1698,7 +1695,7 @@ void func_8001F450_main(s16 arg0, s16 arg1, f32 arg2) {
     model->attr |= HU3D_ATTR_DISPOFF;
 }
 
-void func_8001F4BC_main(s16 idx) {
+void Hu3DModelLODExec(s16 idx) {
     HmfModel *model = &Hu3DData[idx];
     HmfData *hmf;
     f32 dx = D_800D10F4_main->pos.x - model->pos.x;
@@ -1725,17 +1722,17 @@ void func_8001F4BC_main(s16 idx) {
     }
     Hu3DData[model->unk09].attr |= HU3D_ATTR_DISPOFF;
 }
-s32 func_8001F668_main(s16 arg0) {
+s32 Hu3DModelLODCheck(s16 arg0) {
     HmfModel *model = &Hu3DData[arg0];
 
     return model->hmf == Hu3DData[model->unk09].hmf;
 }
 
-void func_8001F6B0_main(s8 arg0) {
+void Hu3DDrawModeSet(s8 arg0) {
     D_800CC0A8_main = arg0;
 }
 
-void func_8001F6BC_main(s16 arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4) {
+void Hu3DModelPrimColorSet(s16 arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4) {
     HmfData *hmf;
 
     hmf = Hu3DData[arg0].hmf;
@@ -1745,7 +1742,7 @@ void func_8001F6BC_main(s16 arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4) {
     hmf->unk02[3] = arg4;
 }
 
-void func_8001F6F8_main(s16 arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4) {
+void Hu3DModelEnvColorSet(s16 arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4) {
     HmfData *hmf;
 
     hmf = Hu3DData[arg0].hmf;
@@ -1755,20 +1752,20 @@ void func_8001F6F8_main(s16 arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4) {
     hmf->unk02[7] = arg4;
 }
 
-void func_8001F734_main(s16 idx, u8 r, u8 g, u8 b, u8 a) {
-    func_8001F6BC_main(idx, r, g, b, a);
-    func_8001F6F8_main(idx, r * 0.5f, g * 0.5f, b * 0.5f, a * 0.5f);
+void Hu3DModelColorSet(s16 idx, u8 r, u8 g, u8 b, u8 a) {
+    Hu3DModelPrimColorSet(idx, r, g, b, a);
+    Hu3DModelEnvColorSet(idx, r * 0.5f, g * 0.5f, b * 0.5f, a * 0.5f);
 }
 void Hu3DLayerHookSet(s16 idx, void *func) {
     D_800CC3D8_main[idx] = func;
 }
 
-void func_8001F974_main(s16 arg0, s16 arg1) {
-    func_8001C5B4_main(arg0, arg1);
+void Hu3DMotionModelSetEx(s16 arg0, s16 arg1) {
+    Hu3DMotionModelSet(arg0, arg1);
     Hu3DData[arg0].unk08 = Hu3DData[arg1].unk08;
 }
 
-void func_8001F9E4_main(s16 arg0, u8 arg1) {
+void Hu3DModelTPLvlSet(s16 arg0, u8 arg1) {
     HmfData *hmf = Hu3DData[arg0].hmf;
     s16 i;
 
@@ -1777,11 +1774,11 @@ void func_8001F9E4_main(s16 arg0, u8 arg1) {
     }
 }
 
-void func_8001FA68_main(s16 idx) {
+void Hu3DModelTPLvlInit(s16 idx) {
     HmfData *hmf = Hu3DData[idx].hmf;
     s16 i;
 
-    func_8001C2FC_main(idx, 0x110000, 0x110000);
+    Hu3DModelObjAttrSet(idx, 0x110000, 0x110000);
     for (i = 0; i < hmf->unk1E; i++) {
         hmf->unk88[i].unk0A = 0xFF;
         hmf->unk88[i].unk09 |= 5;
@@ -1836,7 +1833,7 @@ void Hu3DLLightDirSet(s16 arg0, f32 arg1, f32 arg2, f32 arg3) {
     }
 }
 
-void func_8001FD08_main(s16 idx) {
+void Hu3DModelFaceFlagSet(s16 idx) {
     HmfData *hmf = Hu3DData[idx].hmf;
     HmfModelData_Unk64_Unk60_Struct *obj;
     s16 i;
@@ -1850,6 +1847,6 @@ void func_8001FD08_main(s16 idx) {
     }
 }
 
-void func_8001FDE8_main(s16 arg0) {
+void Hu3DMotionReset(s16 arg0) {
     Hu3DData[arg0].motId = 0xFF;
 }

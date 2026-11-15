@@ -181,7 +181,7 @@ void func_801059A0_koopa(void) {
     omAddObj(0x1000, 0, 0, -1, func_80109220_koopa);
     func_800EA60C_shared_board();
     MBMasuCreate(0x13, 0x23A);
-    func_8004A208_main();
+    omGameSysInit();
 }
 
 void func_80105A8C_koopa(void) {
@@ -375,7 +375,7 @@ void func_80105AD8_koopa(omObjData *obj) {
                         }
                         HuWinMesSet(D_80109518_koopa[obj->work[1]][0], D_80109354_koopa[D_8010954A_koopa[obj->work[1]]], HUWIN_POS_CENTER, 4);
                         HuWinMesColSet(D_80109518_koopa[obj->work[1]][0], 1);
-                        func_8005C154_main(D_80109518_koopa[obj->work[1]][0], 160, 160, 160);
+                        HuWinMesDefColSet(D_80109518_koopa[obj->work[1]][0], 160, 160, 160);
                         HuWinBGColSet(D_80109518_koopa[obj->work[1]][0], 254, 255, 208);
                         HuWinMesSpeedSet(D_80109518_koopa[obj->work[1]][0], 0);
                     } else {
@@ -683,7 +683,7 @@ void func_80107190_koopa(void) {
         window[3] = positions[i].unk_04;
         window[4] = positions[i].unk_06;
         window[0] = HuWinCreate(window[1] + window[3] / 2, window[2] + window[4] / 2, window[3], window[4], 0, 4);
-        func_80060144_main(window[0]);
+        HuWinDummy(window[0]);
         HuWinCenterPosSet(window[0], window[3] / 2, window[4] / 2);
         HuWinBGTPLvlSet(window[0], 0);
         switch (i) {
@@ -994,7 +994,7 @@ void func_80108360_koopa(s32 modelFile) {
 
     MBMotionShiftSet(D_801094F8_koopa, 5, 0, 5, 0);
     object = MBModelFileCreate(modelFile, -1, 1.0f, NULL, NULL);
-    func_8001C258_main(object->omObj1->model[0], 0x180, 0);
+    Hu3DModelAttrSet(object->omObj1->model[0], 0x180, 0);
     Hu3DModelLayerSet(object->omObj1->model[0], 0);
     HuVecCopy3F(&object->coords, &D_801094F8_koopa->coords);
     object->coords.y += 200.0f;

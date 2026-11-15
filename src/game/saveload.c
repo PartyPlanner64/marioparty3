@@ -38,7 +38,7 @@ extern u16 D_800CCF54_main;
 extern u16 D_800CD6A4_main;
 extern u16 D_800CE2C0_main;
 
-void func_8004FCF0_main(void) {
+void SLSaveDataInit(void) {
     GWInit();
     GWGameStatReset();
     GwCommon.languageIndex = 2;
@@ -60,7 +60,7 @@ void func_8004FCF0_main(void) {
     }
 }
 
-s32 func_8004FDC0_main(void) {
+s32 SLInit(void) {
     u8 formatted;
     s32 i;
     s32 failed;
@@ -90,7 +90,7 @@ s32 func_8004FDC0_main(void) {
             D_800D20EC_main = 0;
         }
 
-        failed = func_80050CDC_main();
+        failed = SLLoadCommon();
         if (D_800D09A8_main.checksum != CalcChecksumEeprom(D_800D0450_main, 0, 0x16)) {
             failed = 1;
         }
@@ -98,7 +98,7 @@ s32 func_8004FDC0_main(void) {
             memset(&D_800D09A8_main, 0, sizeof(SaveCommonBuf));
             D_800D09A8_main.boxNo = 0xFF;
             D_800D09A8_main.flags &= ~1;
-            func_80050CFC_main();
+            SLSaveCommon();
             D_800D20EC_main |= 8;
         }
 
@@ -110,22 +110,22 @@ s32 func_8004FDC0_main(void) {
             }
             if (GwCommon.unk_00 == 0 && D_800D09A8_main.boxNo == i) {
                 D_800D09A8_main.boxNo = 0xFF;
-                func_80050CFC_main();
+                SLSaveCommon();
             }
             if (GwCommon.unk_00 != 0 && (GwCommon.unk_00 != 0x91 || failed != 0)) {
-                func_8000C9C8_main(i);
+                ClearEepromBoxHeader(i);
                 D_800D20EC_main |= 1 << i;
             }
         }
 
         if (D_800D09A8_main.flags & 1) {
-            func_80000F30_main(1);
+            msmSysSetOutputMode(1);
         } else {
-            func_80000F30_main(0);
+            msmSysSetOutputMode(0);
         }
     } else {
-        func_8004FCF0_main();
-        func_80000F30_main(0);
+        SLSaveDataInit();
+        msmSysSetOutputMode(0);
         D_800D20EC_main = 0xFF;
     }
 
@@ -133,21 +133,21 @@ s32 func_8004FDC0_main(void) {
     return D_800D20EC_main;
 }
 
-void func_80050044_main(void) {
+void SLStub0(void) {
 }
 
-void func_8005004C_main(void) {
+void SLStub1(void) {
 }
 
-void func_80050054_main(void) {
+void SLStub2(void) {
 }
 
-void func_8005005C_main(void) {
+void SLStub3(void) {
 }
 
 s32 SLCommonSet(s32 writeBox) {
     if (D_800BBAB0_main) {
-        func_8000C6C0_main(curBoxNo, 0, gEncodedSaveBuffer, func_8004F564_main(&GwCommon));
+        SetEepromBoxBuf(curBoxNo, 0, gEncodedSaveBuffer, SaveCommonEncode(&GwCommon));
         if (writeBox) {
             SLCheckSumBoxSet();
             return WriteEepromBox(curBoxNo);
@@ -163,10 +163,10 @@ s32 SLSaveBoard(s32 writeBox) {
 
     if (D_800BBAB0_main) {
         SLCommonSet(0);
-        func_8000C6C0_main(curBoxNo, SAVE_OFS_BOARD, gEncodedSaveBuffer, func_8004F504_main(&GwSystem));
+        SetEepromBoxBuf(curBoxNo, SAVE_OFS_BOARD, gEncodedSaveBuffer, SaveBoardSystemEncode(&GwSystem));
         offset = SAVE_OFS_BOARD_PLAYERS;
         for (i = 0; i < 4; i++) {
-            func_8000C6C0_main(curBoxNo, offset, gEncodedSaveBuffer, SavePlayerStruct(&GwPlayer[i]));
+            SetEepromBoxBuf(curBoxNo, offset, gEncodedSaveBuffer, SavePlayerStruct(&GwPlayer[i]));
             offset += D_800CCF54_main;
         }
         if (writeBox) {
@@ -184,10 +184,10 @@ s32 SLSaveBoardStory(s32 writeBox) {
 
     if (D_800BBAB0_main) {
         SLCommonSet(0);
-        func_8000C6C0_main(curBoxNo, SAVE_OFS_STORY_BOARD, gEncodedSaveBuffer, func_8004F524_main(&GwSystem));
+        SetEepromBoxBuf(curBoxNo, SAVE_OFS_STORY_BOARD, gEncodedSaveBuffer, SaveStorySystemEncode(&GwSystem));
         offset = SAVE_OFS_STORY_BOARD_PLAYERS;
         for (i = 0; i < 2; i++) {
-            func_8000C6C0_main(curBoxNo, offset, gEncodedSaveBuffer, SavePlayerStruct(&GwPlayer[i]));
+            SetEepromBoxBuf(curBoxNo, offset, gEncodedSaveBuffer, SavePlayerStruct(&GwPlayer[i]));
             offset += D_800CCF54_main;
         }
         if (writeBox) {
@@ -199,7 +199,7 @@ s32 SLSaveBoardStory(s32 writeBox) {
     return 0;
 }
 
-s32 func_8005035C_main(s32 writeBox) {
+s32 SLSaveStory(s32 writeBox) {
     s16 offset;
     s16 i;
 
@@ -211,13 +211,13 @@ s32 func_8005035C_main(s32 writeBox) {
         for (i = 0; i < 12; i++) {
             GwStory.unk67[i] = GwStory.progress.fields.unk3[i];
         }
-        func_8000C6C0_main(curBoxNo, SAVE_OFS_STORY, gEncodedSaveBuffer, func_8004F584_main(&GwStory));
+        SetEepromBoxBuf(curBoxNo, SAVE_OFS_STORY, gEncodedSaveBuffer, SaveStoryEncode(&GwStory));
         SLCommonSet(0);
-        func_8000C6C0_main(curBoxNo, SAVE_OFS_STORY_SYSTEM, gEncodedSaveBuffer, func_8004F524_main(&GwSystem));
-        func_8000C6C0_main(curBoxNo, SAVE_OFS_STORY, gEncodedSaveBuffer, func_8004F584_main(&GwStory));
+        SetEepromBoxBuf(curBoxNo, SAVE_OFS_STORY_SYSTEM, gEncodedSaveBuffer, SaveStorySystemEncode(&GwSystem));
+        SetEepromBoxBuf(curBoxNo, SAVE_OFS_STORY, gEncodedSaveBuffer, SaveStoryEncode(&GwStory));
         offset = SAVE_OFS_STORY_PLAYERS;
         for (i = 0; i < 4; i++) {
-            func_8000C6C0_main(curBoxNo, offset, gEncodedSaveBuffer, SavePlayerStruct(&GwPlayer[i]));
+            SetEepromBoxBuf(curBoxNo, offset, gEncodedSaveBuffer, SavePlayerStruct(&GwPlayer[i]));
             offset += D_800CCF54_main;
         }
         if (writeBox) {
@@ -229,17 +229,17 @@ s32 func_8005035C_main(s32 writeBox) {
     return 0;
 }
 
-s32 func_80050614_main(s32 writeBox) {
+s32 SLSaveStorySystem(s32 writeBox) {
     s16 offset;
     s16 i;
 
     if (D_800BBAB0_main) {
         SLCommonSet(0);
-        func_8000C6C0_main(curBoxNo, SAVE_OFS_STORY_SYSTEM, gEncodedSaveBuffer, func_8004F524_main(&GwSystem));
-        func_8000C6C0_main(curBoxNo, SAVE_OFS_STORY, gEncodedSaveBuffer, func_8004F584_main(&GwStory));
+        SetEepromBoxBuf(curBoxNo, SAVE_OFS_STORY_SYSTEM, gEncodedSaveBuffer, SaveStorySystemEncode(&GwSystem));
+        SetEepromBoxBuf(curBoxNo, SAVE_OFS_STORY, gEncodedSaveBuffer, SaveStoryEncode(&GwStory));
         offset = SAVE_OFS_STORY_PLAYERS;
         for (i = 0; i < 4; i++) {
-            func_8000C6C0_main(curBoxNo, offset, gEncodedSaveBuffer, SavePlayerStruct(&GwPlayer[i]));
+            SetEepromBoxBuf(curBoxNo, offset, gEncodedSaveBuffer, SavePlayerStruct(&GwPlayer[i]));
             offset += D_800CCF54_main;
         }
         if (writeBox) {
@@ -258,7 +258,7 @@ s32 SLLoadGameStat(void) {
     if (ReadEepromBox(curBoxNo | 0x80, 0, NULL, SAVE_BOX_SIZE) != 0) {
         return 1;
     }
-    func_8004F9AC_main(D_800D0E50_main, &GwCommon);
+    SaveCommonDecode(D_800D0E50_main, &GwCommon);
     return 0;
 }
 
@@ -270,10 +270,10 @@ s32 SLLoadBoard(void) {
         if (ReadEepromBox(curBoxNo | 0x80, 0, NULL, SAVE_BOX_SIZE) != 0) {
             return 1;
         }
-        func_8004F8BC_main(D_800D0E50_main + SAVE_OFS_BOARD, &GwSystem);
+        SaveBoardSystemDecode(D_800D0E50_main + SAVE_OFS_BOARD, &GwSystem);
         offset = SAVE_OFS_BOARD_PLAYERS;
         for (i = 0; i < 4; i++) {
-            func_8004F95C_main(D_800D0E50_main + offset, &GwPlayer[i]);
+            SavePlayerDecode(D_800D0E50_main + offset, &GwPlayer[i]);
             offset += D_800CCF54_main;
         }
     }
@@ -288,18 +288,18 @@ s32 SLLoadBoardStory(void) {
         if (ReadEepromBox(curBoxNo | 0x80, 0, NULL, SAVE_BOX_SIZE) != 0) {
             return 1;
         }
-        func_8004F90C_main(D_800D0E50_main + SAVE_OFS_STORY_BOARD, &GwSystem);
+        SaveStorySystemDecode(D_800D0E50_main + SAVE_OFS_STORY_BOARD, &GwSystem);
         offset = SAVE_OFS_STORY_BOARD_PLAYERS;
         for (i = 0; i < 4; i++) {
-            func_8004F95C_main(D_800D0E50_main + offset, &GwPlayer[i]);
+            SavePlayerDecode(D_800D0E50_main + offset, &GwPlayer[i]);
             offset += D_800CCF54_main;
         }
-        func_80050E84_main();
+        SLPadAssign();
     }
     return 0;
 }
 
-s32 func_80050ABC_main(void) {
+s32 SLLoadStory(void) {
     s16 offset;
     s16 i;
 
@@ -307,8 +307,8 @@ s32 func_80050ABC_main(void) {
         if (ReadEepromBox(curBoxNo | 0x80, 0, NULL, SAVE_BOX_SIZE) != 0) {
             return 1;
         }
-        func_8004F90C_main(D_800D0E50_main + SAVE_OFS_STORY_SYSTEM, &GwSystem);
-        func_8004F9FC_main(D_800D0E50_main + SAVE_OFS_STORY, &GwStory);
+        SaveStorySystemDecode(D_800D0E50_main + SAVE_OFS_STORY_SYSTEM, &GwSystem);
+        SaveStoryDecode(D_800D0E50_main + SAVE_OFS_STORY, &GwStory);
         GwStory.unk0 = GwStory.unk64;
         GwStory.unk1 = GwStory.unk65;
         GwStory.unk2 = GwStory.unk66;
@@ -318,18 +318,18 @@ s32 func_80050ABC_main(void) {
         }
         offset = SAVE_OFS_STORY_PLAYERS;
         for (i = 0; i < 4; i++) {
-            func_8004F95C_main(D_800D0E50_main + offset, &GwPlayer[i]);
+            SavePlayerDecode(D_800D0E50_main + offset, &GwPlayer[i]);
             offset += D_800CCF54_main;
         }
     }
     return 0;
 }
 
-s32 func_80050CDC_main(void) {
+s32 SLLoadCommon(void) {
     return ReadEepromCommonBuf((u8 *)&D_800D09A8_main);
 }
 
-s32 func_80050CFC_main(void) {
+s32 SLSaveCommon(void) {
     D_800D09A8_main.checksum = CalcChecksumEeprom((u8 *)&D_800D09A8_main, 0, 0x16);
     return WriteEepromCommonBuf((u8 *)&D_800D09A8_main);
 }
@@ -337,7 +337,7 @@ s32 func_80050CFC_main(void) {
 void SLCheckSumBoxSet(void) {
     u16 checksum = CalcChecksumEeprom(D_800D0E50_main, 0, D_800CE2C0_main);
 
-    func_8000C6C0_main(curBoxNo, D_800CE2C0_main, (u8 *)&checksum, sizeof(checksum));
+    SetEepromBoxBuf(curBoxNo, D_800CE2C0_main, (u8 *)&checksum, sizeof(checksum));
 }
 
 s32 SLCheckSumCheck(void) {
@@ -347,7 +347,7 @@ s32 SLCheckSumCheck(void) {
     return checksum == CalcChecksumEeprom(D_800D0E50_main, 0, D_800CE2C0_main);
 }
 
-s32 func_80050DDC_main(s16 srcBoxNo, s16 dstBoxNo) {
+s32 SLBoxCopy(s16 srcBoxNo, s16 dstBoxNo) {
     s32 prevBoxNo = curBoxNo;
 
     SLCurBoxNoSet(srcBoxNo);
@@ -368,7 +368,7 @@ void SLCurBoxNoSet(s32 boxNo) {
     curBoxNo = boxNo;
 }
 
-void func_80050E84_main(void) {
+void SLPadAssign(void) {
     s8 used[4];
     s16 i;
     s16 j;

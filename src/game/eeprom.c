@@ -75,7 +75,7 @@ s32 _InitEeprom(u8 **arg0) {
                 WriteEeprom(&D_800CE1A0_main, 1, D_800D0450_main, COMMON_BUF_SIZE);
 
                 for (i = 0; i < 3; i++) {
-                    if (func_8000C9C8_main(i)) {
+                    if (ClearEepromBoxHeader(i)) {
                         return EEPROM_TYPE_16K;
                     }
                 }
@@ -157,7 +157,7 @@ s32 WriteEepromBox(s8 saveFileIndex) {
     return result;
 }
 
-void func_8000C6C0_main(s8 saveFileIndex, u16 offset, u8 *src, u16 size) {
+void SetEepromBoxBuf(s8 saveFileIndex, u16 offset, u8 *src, u16 size) {
     s16 i;
 
     if (saveFileIndex != D_800AC7F1_main) {
@@ -236,7 +236,7 @@ s32 ReadEepromCommonBuf(u8 *arg0) {
     return result;
 }
 
-s32 func_8000C9C8_main(s8 saveFileIndex) {
+s32 ClearEepromBoxHeader(s8 saveFileIndex) {
     u8 sp10[8];
 
     memset(sp10, 0, 8);

@@ -480,7 +480,7 @@ void func_80108B58_option(void) {
     func_8010FB40_option(1, 10);
     switch (omovlevtno) {
         case 0:
-            func_8004A5C4_main(7);
+            HuAudSubSeqPlay(7);
             WipeCreateIn(11, 16);
             pos = D_80113A80_option;
             at = D_80113A8C_option;
@@ -496,7 +496,7 @@ void func_80108B58_option(void) {
             HuPrcSleep(45);
             break;
         case 1:
-            func_8004A5C4_main(7);
+            HuAudSubSeqPlay(7);
             WipeColorSet(255, 255, 255);
             WipeCreateIn(11, 16);
             {
@@ -519,7 +519,7 @@ void func_80108B58_option(void) {
             HuPrcSleep(45);
             break;
         case 2:
-            func_8004A5C4_main(7);
+            HuAudSubSeqPlay(7);
             WipeColorSet(255, 255, 255);
             WipeCreateIn(11, 16);
             {
@@ -570,7 +570,7 @@ void func_80108B58_option(void) {
             HuPrcSleep(35);
             break;
         default:
-            func_8004A5C4_main(7);
+            HuAudSubSeqPlay(7);
             WipeCreateIn(11, 16);
             {
                 Vec pos = D_80113A80_option;
@@ -1437,9 +1437,9 @@ s32 func_8010AF54_option(s32 selection, s32 buttons) {
                         func_801133A0_option(0);
                         HuPrcVSleep();
                         D_800D09A8_main.flags |= 1;
-                        func_80000F30_main(1);
+                        msmSysSetOutputMode(1);
                         RepeatVibrator(0, 5, 0, 5);
-                        func_80050CFC_main();
+                        SLSaveCommon();
                         func_80113440_option(0);
                         func_801133EC_option(0);
                         func_80113338_option(8, 11, 0, 8, 0);
@@ -1468,9 +1468,9 @@ s32 func_8010AF54_option(s32 selection, s32 buttons) {
                         func_801133A0_option(0);
                         HuPrcVSleep();
                         D_800D09A8_main.flags &= ~1;
-                        func_80000F30_main(0);
+                        msmSysSetOutputMode(0);
                         RepeatVibrator(0, 5, 0, 5);
-                        func_80050CFC_main();
+                        SLSaveCommon();
                         func_801133EC_option(0);
                         func_80113338_option(8, 11, 0, 2, 0);
                         func_801132C8_option(21, 1);
@@ -1518,9 +1518,9 @@ s32 func_8010AF54_option(s32 selection, s32 buttons) {
             func_801132AC_option(2, 0);
             func_80113300_option(2);
             func_80113440_option(0);
-            func_8004A9DC_main(0x60);
+            HuAudSeqVolSet(0x60);
             func_8010E8E0_option();
-            func_8004A9DC_main(0x7F);
+            HuAudSeqVolSet(0x7F);
             func_80106F88_option(&D_80113844_option[0], &D_80113844_option[1], 8);
             func_801132E4_option(2, 40);
             func_801132C8_option(2, 7);
@@ -1874,7 +1874,7 @@ void func_8010C224_option(void) {
 
     Hu3DBGColorSet(0, 64, 64);
     func_80112B08_option();
-    func_8004A9DC_main(0x60);
+    HuAudSeqVolSet(0x60);
     WipeCreateIn(0xB, 16);
     HuPrcSleep(16);
     selection = func_8010C04C_option();
@@ -1896,7 +1896,7 @@ void func_8010C224_option(void) {
             func_8010FFDC_option();
             WipeColorSet(255, 255, 255);
             WipeCreateOut(0xB, 20);
-            func_8004A9DC_main(0x7F);
+            HuAudSeqVolSet(0x7F);
             HuPrcSleep(20);
             break;
         case 0:
@@ -1967,7 +1967,7 @@ void func_8010C3E4_option(s32 animFile, s16 x, s16 y) {
         espPosSet(icons[i], x + i * 24 - 84, y + 12);
         espPriSet(icons[i], 0x8000);
         espScaleSet(icons[i], 1.0f, 1.0f);
-        func_8000BDDC_main(icons[i], 1);
+        espAnimModeSet(icons[i], 1);
         espBankSet(icons[i], (u16)D_801138C8_option[i], 0);
         espDispOff(icons[i]);
     }
@@ -1984,8 +1984,8 @@ void func_8010C3E4_option(s32 animFile, s16 x, s16 y) {
         espPriSet(digits[i * 2 + 1], 0x8000);
         espScaleSet(digits[i * 2], 1.0f, 1.0f);
         espScaleSet(digits[i * 2 + 1], 1.0f, 1.0f);
-        func_8000BDDC_main(digits[i * 2], 1);
-        func_8000BDDC_main(digits[i * 2 + 1], 1);
+        espAnimModeSet(digits[i * 2], 1);
+        espAnimModeSet(digits[i * 2 + 1], 1);
         value = (u8)(GwCommon.boardRecord[0][page].chr[D_801138C8_option[i]] / 10);
         if (value >= 10) {
             value = 9;
@@ -2070,8 +2070,8 @@ void func_8010C3E4_option(s32 animFile, s16 x, s16 y) {
             ones = (u8)(GwCommon.boardRecord[0][page].chr[D_801138C8_option[i]] % 10);
             espBankSet(digits[i * 2], (u16)value, 0);
             espBankSet(digits[i * 2 + 1], (u16)ones, 0);
-            func_8000BDDC_main(digits[i * 2], 1);
-            func_8000BDDC_main(digits[i * 2 + 1], 1);
+            espAnimModeSet(digits[i * 2], 1);
+            espAnimModeSet(digits[i * 2 + 1], 1);
             if (value != 0) {
                 espDispOn(digits[i * 2]);
             } else {
@@ -2197,7 +2197,7 @@ void func_8010D5B0_option(s32 animFile, s16 x, s16 y) {
         espPosSet(icons[i], x + i * 24 - 84, y + 12);
         espPriSet(icons[i], 0x8000);
         espScaleSet(icons[i], 1.0f, 1.0f);
-        func_8000BDDC_main(icons[i], 1);
+        espAnimModeSet(icons[i], 1);
         espBankSet(icons[i], (u16)D_8011394C_option[i], 0);
         espDispOff(icons[i]);
     }
@@ -2214,8 +2214,8 @@ void func_8010D5B0_option(s32 animFile, s16 x, s16 y) {
         espPriSet(digits[i * 2 + 1], 0x8000);
         espScaleSet(digits[i * 2], 1.0f, 1.0f);
         espScaleSet(digits[i * 2 + 1], 1.0f, 1.0f);
-        func_8000BDDC_main(digits[i * 2], 1);
-        func_8000BDDC_main(digits[i * 2 + 1], 1);
+        espAnimModeSet(digits[i * 2], 1);
+        espAnimModeSet(digits[i * 2 + 1], 1);
         value = (u8)(GwCommon.boardRecord[1][page].chr[D_8011394C_option[i]] / 10);
         if (value >= 10) {
             value = 9;
@@ -2300,8 +2300,8 @@ void func_8010D5B0_option(s32 animFile, s16 x, s16 y) {
             ones = (u8)(GwCommon.boardRecord[1][page].chr[D_8011394C_option[i]] % 10);
             espBankSet(digits[i * 2], (u16)value, 0);
             espBankSet(digits[i * 2 + 1], (u16)ones, 0);
-            func_8000BDDC_main(digits[i * 2], 1);
-            func_8000BDDC_main(digits[i * 2 + 1], 1);
+            espAnimModeSet(digits[i * 2], 1);
+            espAnimModeSet(digits[i * 2 + 1], 1);
             if (value != 0) {
                 espDispOn(digits[i * 2]);
             } else {
@@ -2439,7 +2439,7 @@ void func_8010E8E0_option(void) {
     func_80113384_option(1);
     titleWindow = HuWinExCreate(-1, 24, 28, 120, 20, 0);
     HuWinBGTPLvlSet(titleWindow, 0);
-    func_8005C154_main(titleWindow, 192, 192, 192);
+    HuWinMesDefColSet(titleWindow, 192, 192, 192);
     HuWinBGColSet(titleWindow, 255, 255, 255);
     HuWinMesPalSet(titleWindow, 0, 0, 0, 0);
     HuWinMesColSet(titleWindow, 0);
@@ -2483,7 +2483,7 @@ void func_8010E8E0_option(void) {
     for (i = 0; i < 9; i++) {
         windows[i] = HuWinExCreate(-1, 36, (i + 1) * 14 + 28, 120, 20, 0);
         HuWinBGTPLvlSet(windows[i], 0);
-        func_8005C154_main(windows[i], 192, 192, 192);
+        HuWinMesDefColSet(windows[i], 192, 192, 192);
         HuWinBGColSet(windows[i], 255, 255, 255);
         HuWinMesPalSet(windows[i], 0, 0, 0, 0);
         HuWinMesColSet(windows[i], 0);
@@ -2496,7 +2496,7 @@ void func_8010E8E0_option(void) {
     }
     windows[10] = HuWinExCreate(-1, 36, 176, 120, 44, 0);
     HuWinBGTPLvlSet(windows[10], 0);
-    func_8005C154_main(windows[10], 192, 192, 192);
+    HuWinMesDefColSet(windows[10], 192, 192, 192);
     HuWinBGColSet(windows[10], 255, 255, 255);
     HuWinMesPalSet(windows[10], 0, 0, 0, 0);
     HuWinMesColSet(windows[10], 0);
@@ -2510,7 +2510,7 @@ void func_8010E8E0_option(void) {
         buttons = (buttons & ~(A_BUTTON | B_BUTTON)) | (D_800D5558_main[0] & (A_BUTTON | B_BUTTON));
         if (buttons & 0x4000) {
             model = func_80113218_option(2);
-            func_80033910_main(Hu3DData[model].hmf);
+            Hu3DModelAnimStop(Hu3DData[model].hmf);
             break;
         } else if (buttons & 0x8000) {
             if (menu.pages[page].entries[selected].sound != -1) {
@@ -2519,7 +2519,7 @@ void func_8010E8E0_option(void) {
                 }
                 sound = HuAudFXPlay(menu.pages[page].entries[selected].sound);
                 model = func_80113218_option(2);
-                func_80033970_main(Hu3DData[model].hmf);
+                Hu3DModelAnimStart(Hu3DData[model].hmf);
                 func_8010FF0C_option(sound);
             } else {
                 func_80113218_option(2);
@@ -2617,7 +2617,7 @@ void func_8010F138_option(void) {
     func_80113384_option(1);
     titleWindow = HuWinExCreate(-1, 164, 28, 120, 20, 0);
     HuWinBGTPLvlSet(titleWindow, 0);
-    func_8005C154_main(titleWindow, 192, 192, 192);
+    HuWinMesDefColSet(titleWindow, 192, 192, 192);
     HuWinBGColSet(titleWindow, 255, 255, 255);
     HuWinMesPalSet(titleWindow, 0, 0, 0, 0);
     HuWinMesColSet(titleWindow, 0);
@@ -2654,7 +2654,7 @@ void func_8010F138_option(void) {
     for (i = 0; i < 9; i++) {
         windows[i] = HuWinExCreate(-1, 180, (i + 1) * 14 + 28, 118, 20, 0);
         HuWinBGTPLvlSet(windows[i], 0);
-        func_8005C154_main(windows[i], 192, 192, 192);
+        HuWinMesDefColSet(windows[i], 192, 192, 192);
         HuWinBGColSet(windows[i], 255, 255, 255);
         HuWinMesPalSet(windows[i], 0, 0, 0, 0);
         HuWinMesColSet(windows[i], 0);
@@ -2667,7 +2667,7 @@ void func_8010F138_option(void) {
     }
     windows[10] = HuWinExCreate(-1, 176, 190, 120, 44, 0);
     HuWinBGTPLvlSet(windows[10], 0);
-    func_8005C154_main(windows[10], 192, 192, 192);
+    HuWinMesDefColSet(windows[10], 192, 192, 192);
     HuWinBGColSet(windows[10], 255, 255, 255);
     HuWinMesPalSet(windows[10], 0, 0, 0, 0);
     HuWinMesColSet(windows[10], 0);
@@ -2681,7 +2681,7 @@ void func_8010F138_option(void) {
         buttons = (buttons & ~(A_BUTTON | B_BUTTON)) | (D_800D5558_main[0] & (A_BUTTON | B_BUTTON));
         if (buttons & 0x4000) {
             model = func_80113218_option(3);
-            func_80033910_main(Hu3DData[model].hmf);
+            Hu3DModelAnimStop(Hu3DData[model].hmf);
             break;
         } else if (buttons & 0x8000) {
             HuAudSeqStop();
@@ -2689,7 +2689,7 @@ void func_8010F138_option(void) {
                 HuAudSeqPlay(menu.pages[page].entries[selected].sound);
             }
             model = func_80113218_option(3);
-            func_80033970_main(Hu3DData[model].hmf);
+            Hu3DModelAnimStart(Hu3DData[model].hmf);
         } else if (buttons & 0x300) {
             if (buttons & 0x200) {
                 page--;
@@ -3240,7 +3240,7 @@ void func_8010FE10_option(void) {
 
     if (D_801147E0_option.obj != NULL) {
         modelId = func_80113218_option(2);
-        func_80033910_main(Hu3DData[modelId].hmf);
+        Hu3DModelAnimStop(Hu3DData[modelId].hmf);
         HuAudFXStop((s16)D_801147E0_option.seNo);
         omDelObj(D_801147E0_option.obj);
         D_801147E0_option.obj = NULL;
@@ -3252,7 +3252,7 @@ void func_8010FE84_option(omObjData *obj) {
 
     if (msmSeGetStatus(D_801147E0_option.seNo) == 0) {
         modelId = func_80113218_option(2);
-        func_80033910_main(Hu3DData[modelId].hmf);
+        Hu3DModelAnimStop(Hu3DData[modelId].hmf);
         HuAudFXStop((s16)D_801147E0_option.seNo);
         omDelObj(obj);
         D_801147E0_option.obj = NULL;

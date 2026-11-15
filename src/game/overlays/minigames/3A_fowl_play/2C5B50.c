@@ -259,18 +259,18 @@ void func_8010E704_fowl_play(void);
 void func_801059A0_fowl_play(void) {
     omObjData *obj;
 
-    func_8001FE20_main(1);
-    func_80021BE0_main(&D_800EBEB0_minigame, 0x40);
+    MapCollInit(1);
+    Hu3DQuadPoolInit(&D_800EBEB0_minigame, 0x40);
     omInitObjMan(0x14, 0);
-    func_8004A208_main();
+    omGameSysInit();
     Hu3DGLightColorSet(0, 0xFF, 0xFF, 0xFF);
     Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
     Hu3DGLightDirSet(1, -56.0f, 50.0f, 56.0f);
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
     omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     obj->work[0] = 2;
-    func_8000B5F0_main(2);
-    func_8000B710_main(2);
+    CamSetupInit(2);
+    CamSetupMapCullAddMulti(2);
     ScissorSet(0, 0.0f, 0.0f, 160.0f, 240.0f);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 320.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 45.0f, 80.0f, 8000.0f);
@@ -434,7 +434,7 @@ void func_80106528_fowl_play(HuMtx4F src, HuMtx4F dst) {
     f32 det;
     f32 *dstRow3;
 
-    func_8002367C_main(mtx, src);
+    mtxCopy(mtx, src);
 
     t0 = mtx[1][1] * mtx[2][2] - mtx[1][2] * mtx[2][1];
     t1 = mtx[1][2] * mtx[2][0] - mtx[1][0] * mtx[2][2];
@@ -522,19 +522,19 @@ void func_80106960_fowl_play(omObjData *object) {
     D_8010F240_fowl_play[0] = func_8010B30C_fowl_play(D_8010F230_fowl_play[0], 2);
     HuSprPosSet(D_8010F240_fowl_play[0], 0, 0, 0);
     HuSprAttrSet(D_8010F240_fowl_play[0], 0, 0x44000);
-    func_80055588_main(D_8010F240_fowl_play[0], 0, 2.0f, 1.0f);
-    func_800555B8_main(D_8010F240_fowl_play[0], 0, 8, 7);
+    HuSprTexScaleSet(D_8010F240_fowl_play[0], 0, 2.0f, 1.0f);
+    HuSprTexMaskSet(D_8010F240_fowl_play[0], 0, 8, 7);
     HuSprScissorSet(D_8010F240_fowl_play[0], 0, 0, 0, 159, 240);
     HuSprPosSet(D_8010F240_fowl_play[0], 1, 160, 0);
     HuSprAttrSet(D_8010F240_fowl_play[0], 1, 0x44000);
-    func_80055588_main(D_8010F240_fowl_play[0], 1, 2.0f, 1.0f);
-    func_800555B8_main(D_8010F240_fowl_play[0], 1, 8, 7);
+    HuSprTexScaleSet(D_8010F240_fowl_play[0], 1, 2.0f, 1.0f);
+    HuSprTexMaskSet(D_8010F240_fowl_play[0], 1, 8, 7);
     HuSprScissorSet(D_8010F240_fowl_play[0], 1, 161, 0, 320, 240);
     D_8010F230_fowl_play[1] = func_8010B2C4_fowl_play(0x5B0004);
     D_8010F240_fowl_play[1] = func_8010B30C_fowl_play(D_8010F230_fowl_play[1], 1);
     HuSprPosSet(D_8010F240_fowl_play[1], 0, 160, 120);
     HuSprAttrSet(D_8010F240_fowl_play[1], 0, 0x1000);
-    object->model[0] = func_8000B108_main(0x5B0005, 0x2D9);
+    object->model[0] = Hu3DModelRead(0x5B0005, 0x2D9);
     Hu3DModelCameraSet(object->model[0], 3);
     object->func = func_80106BD0_fowl_play;
 }
@@ -570,13 +570,13 @@ void func_80106BD0_fowl_play(omObjData *object) {
                 }
             }
             D_8010F29E_fowl_play--;
-            func_8003F578_main((D_8010F29E_fowl_play + 29) / 30);
+            GMesTimerValueSet((D_8010F29E_fowl_play + 29) / 30);
             if (D_8010F29E_fowl_play == 0) {
                 D_8010F29C_fowl_play = 3;
             }
             break;
         case 3:
-            func_8003F5C0_main();
+            GMesTimerEnd();
             GMesCreate(0x11);
             HuAudSeqFadeOut(0x78);
             D_8010F29C_fowl_play = 6;
@@ -585,7 +585,7 @@ void func_80106BD0_fowl_play(omObjData *object) {
             break;
         case 6:
             if (--D_8010F202_fowl_play == 0) {
-                func_8004AEF0_main(D_8010F200_fowl_play, 15);
+                HuAudFXFadeOut(D_8010F200_fowl_play, 15);
             }
             if (GMesStatGet() != 0) {
                 break;
@@ -627,7 +627,7 @@ void func_80106BD0_fowl_play(omObjData *object) {
                 D_8010E7A4_fowl_play = 16;
                 WipeCreateOut(WIPE_TYPE_NORMAL, D_8010E7A4_fowl_play);
                 HuAudSeqFadeOut(D_8010E7A4_fowl_play);
-                func_8004AB0C_main((s16)D_8010E7A4_fowl_play);
+                HuAudFXAllFadeOut((s16)D_8010E7A4_fowl_play);
             }
             break;
         case 9:
@@ -894,28 +894,28 @@ void func_80107A4C_fowl_play(omObjData *object) {
     object->func = func_80108298_fowl_play;
     Hu3DModelCameraSet(object->model[0], 3);
     Hu3DModelCameraSet(object->model[1], 3);
-    func_800E5A00_minigame(object, 0, func_80017BB8_main(character, 0), 1, 0);
-    func_800E5A00_minigame(object, 1, func_80017BB8_main(character, 1), 1, 0);
-    func_800E5A00_minigame(object, 2, func_80017BB8_main(character, 2), 1, 0);
-    func_800E5A00_minigame(object, 0x11, func_80017BB8_main(character, 0xE), 0, 0);
-    func_800E5A00_minigame(object, 0x20, func_80017BB8_main(character, 0x22), 0, 0);
-    func_800E5A00_minigame(object, 6, func_80017BB8_main(character, 4), 1, 0x13);
-    func_800E5A00_minigame(object, 0x15, func_80017BB8_main(character, 0x1F), 0, 0x13);
-    func_800E5A00_minigame(object, 5, func_80017BB8_main(character, 0x99), 0, 0);
-    func_800E5A00_minigame(object, 0x27, func_80017BB8_main(character, 0x96), 1, 0);
-    func_800E5A00_minigame(object, 0xD, func_80017BB8_main(character, 0x9A), 1, 0x3C);
+    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(character, 0), 1, 0);
+    func_800E5A00_minigame(object, 1, CharMotionDataNumGet(character, 1), 1, 0);
+    func_800E5A00_minigame(object, 2, CharMotionDataNumGet(character, 2), 1, 0);
+    func_800E5A00_minigame(object, 0x11, CharMotionDataNumGet(character, 0xE), 0, 0);
+    func_800E5A00_minigame(object, 0x20, CharMotionDataNumGet(character, 0x22), 0, 0);
+    func_800E5A00_minigame(object, 6, CharMotionDataNumGet(character, 4), 1, 0x13);
+    func_800E5A00_minigame(object, 0x15, CharMotionDataNumGet(character, 0x1F), 0, 0x13);
+    func_800E5A00_minigame(object, 5, CharMotionDataNumGet(character, 0x99), 0, 0);
+    func_800E5A00_minigame(object, 0x27, CharMotionDataNumGet(character, 0x96), 1, 0);
+    func_800E5A00_minigame(object, 0xD, CharMotionDataNumGet(character, 0x9A), 1, 0x3C);
     switch (model >> 16) {
         case 3:
         case 4:
         case 5:
-            func_800E5A00_minigame(object, 0xE, func_80017BB8_main(character, 0x39), 1, 0x3C);
+            func_800E5A00_minigame(object, 0xE, CharMotionDataNumGet(character, 0x39), 1, 0x3C);
             break;
         case 2:
         case 6:
         case 7:
         case 8:
         case 9:
-            func_800E5A00_minigame(object, 0xE, func_80017BB8_main(character, 0x3A), 1, 0x3C);
+            func_800E5A00_minigame(object, 0xE, CharMotionDataNumGet(character, 0x3A), 1, 0x3C);
             break;
     }
     func_800E5690_minigame(object, 0);
@@ -938,7 +938,7 @@ void func_80108020_fowl_play(omObjData *object, s32 arg1, s32 arg2, u16 player, 
     data->unkE8 = HuMemAllocTag(object->mtncnt * 3 * sizeof(s32), TAG_OVERLAY);
     memset(data->unkE8, 0, object->mtncnt * 3 * sizeof(s32));
 
-    object->model[0] = func_8000B108_main(arg1 | arg2, tag);
+    object->model[0] = Hu3DModelRead(arg1 | arg2, tag);
     for (i = 0; i < object->mtncnt; i++) {
         object->motion[i] = -1;
     }
@@ -1042,7 +1042,7 @@ void func_80108298_fowl_play(omObjData *object) {
             if (work->unk24 == 1) {
                 GwPlayer[data->unk59].bonusCoin += 10;
                 func_800E5690_minigame(object, 0xD);
-                func_80045F1C_main(work->unk1C, -1, work->index);
+                HuAudCharVoicePlayPlayer(work->unk1C, -1, work->index);
                 work->unk24++;
             } else if (work->unk24 == 0) {
                 func_800E5690_minigame(object, 0xE);
@@ -1078,8 +1078,8 @@ void func_80108298_fowl_play(omObjData *object) {
     if (func_8010A738_fowl_play(object, canCatch)) {
         work->unk3C = 1;
         work->unk24 = 1;
-        func_8004AC5C_main(0x4C0, 2);
-        func_8004AC5C_main(0x4C2, 3);
+        _HuAudPlayerFXPlay(0x4C0, 2);
+        _HuAudPlayerFXPlay(0x4C2, 3);
         omVibrate(data->unk59, 10, 0, 10);
         Hu3DMotionShapeSet(object->model[0], object->motion[0x27], 0);
     }
@@ -1299,8 +1299,8 @@ void func_801094A4_fowl_play(omObjData *object) {
     work->unk06 = 0;
     work->unk04 = 0;
     work->unk02 = 0;
-    object->model[0] = func_8000B108_main(0x5B0006, 0x2D9);
-    object->model[1] = func_8000B0D4_main(9, 0x2D9);
+    object->model[0] = Hu3DModelRead(0x5B0006, 0x2D9);
+    object->model[1] = Hu3DModelRead3(9, 0x2D9);
     D_8010F238_fowl_play = func_8010B2C4_fowl_play(0xB);
     for (i = 0; i < 8; i++) {
         work->unk34[i] = index = func_8010C1F4_fowl_play(D_8010F238_fowl_play, 0x20009000);
@@ -1506,7 +1506,7 @@ void func_80109844_fowl_play(omObjData *object) {
                     if (seNo == 0) {
                         seNo = (func_8010A9A0_fowl_play() & 3) + 0x4C3;
                     }
-                    HuAudFXPanning(func_8004AC5C_main(seNo, 4), pan);
+                    HuAudFXPanning(_HuAudPlayerFXPlay(seNo, 4), pan);
                 }
             }
             break;
@@ -1514,9 +1514,9 @@ void func_80109844_fowl_play(omObjData *object) {
             if (--work->unk03 == 0) {
                 func_800E5690_minigame(object, 0);
                 Hu3DModelHookSet(object->model[0], work->target->model[0], "item_hook");
-                func_8001C258_main(object->model[0], 0x4000, 0x4000);
+                Hu3DModelAttrSet(object->model[0], 0x4000, 0x4000);
             }
-            func_8001C258_main(object->model[1], 4, 4);
+            Hu3DModelAttrSet(object->model[1], 4, 4);
             work->unk08 = 0.0f;
             if (D_8010F29C_fowl_play == 6) {
                 func_8010B1A0_fowl_play(work->target->model[0], "item_hook", 0, &object->trans);
@@ -1816,12 +1816,12 @@ void func_8010B1A0_fowl_play(s16 model, char *hook, s16 time, Vec *pos) {
     HuMtx4F hookTransform;
     HmfModel *modelData;
 
-    func_80016B00_main(model, time, hook, &hookTransform);
+    Hu3DModelObjMtxFrameGet(model, time, hook, &hookTransform);
     modelData = &Hu3DData[model];
     func_80088800_main(transform, modelData->pos.x, modelData->pos.y, modelData->pos.z);
     mtxRotCat(transform, modelData->rot.x, modelData->rot.y, modelData->rot.z);
     mtxScaleCat(transform, modelData->scale.x, modelData->scale.y, modelData->scale.z);
-    func_80018044_main(hookTransform, transform, result);
+    mtxCat(hookTransform, transform, result);
     pos->x = result[0][0] + result[1][0] + result[2][0] + result[3][0];
     pos->y = result[0][1] + result[1][1] + result[2][1] + result[3][1];
     pos->z = result[0][2] + result[1][2] + result[2][2] + result[3][2];
@@ -1855,7 +1855,7 @@ s16 func_8010B30C_fowl_play(s16 spriteId, s16 count) {
 }
 
 HuSprAnimPat *func_8010B3D4_fowl_play(s16 arg0, s16 arg1) {
-    return &func_80055194_main(arg0)->pat[arg1];
+    return &HuSprAnimDataGet(arg0)->pat[arg1];
 }
 
 void func_8010B41C_fowl_play(u16 count) {
@@ -1898,15 +1898,15 @@ void func_8010B564_fowl_play(Gfx **gfx, HuSprAnimPat *cel, u8 fmt, u8 siz, u16 h
                                   cmt, masks, maskt, 0, 0);
             break;
         case 1:
-            func_80034998_main(&gdl, (void *)0x0C000000, fmt, cel->sizeX, height, uls, ult, lrs, lrt, 0, cms, cmt,
+            HuLoadTextureBlock_4b(&gdl, (void *)0x0C000000, fmt, cel->sizeX, height, uls, ult, lrs, lrt, 0, cms, cmt,
                                masks, maskt, 0, 0);
             break;
         case 2:
-            func_800341D0_main(&gdl, (u16 *)0x0C000000, fmt, siz, cel->sizeX, cel->sizeY, uls, ult, lrs, lrt, 0,
+            HuLoadTextureTile(&gdl, (u16 *)0x0C000000, fmt, siz, cel->sizeX, cel->sizeY, uls, ult, lrs, lrt, 0,
                                cms, cmt, masks, maskt, 0, 0);
             break;
         case 3:
-            func_8003465C_main(&gdl, (void *)0x0C000000, fmt, siz, cel->sizeX, height, uls, ult, lrs, lrt, 0, cms,
+            HuLoadTextureBlock(&gdl, (void *)0x0C000000, fmt, siz, cel->sizeX, height, uls, ult, lrs, lrt, 0, cms,
                                cmt, masks, maskt, 0, 0);
             break;
     }
@@ -2858,7 +2858,7 @@ Gfx *func_8010DE4C_fowl_play(Gfx *gfx, Fowl *fowl, HuMtx4F lookAt, Vec *rot) {
         billboard[3][1] = (u16)cel->centerY;
     }
     billboard[3][2] = fowl->unk_3C;
-    func_8002367C_main(mtx, lookAt);
+    mtxCopy(mtx, lookAt);
     mtxTransCat(mtx, fowl->unk_40.x, fowl->unk_40.y, fowl->unk_40.z);
     switch (fowl->unk_1A) {
         case 0:
@@ -2881,8 +2881,8 @@ Gfx *func_8010DE4C_fowl_play(Gfx *gfx, Fowl *fowl, HuMtx4F lookAt, Vec *rot) {
             scale[3][3] = 1.0f;
             scale[0][1] = scale[0][2] = scale[0][3] = scale[1][0] = scale[1][2] = scale[1][3] = scale[2][0] =
                 scale[2][1] = scale[2][3] = scale[3][0] = scale[3][1] = scale[3][2] = 0.0f;
-            func_80018544_main(mtx, inverse);
-            func_80018044_main(scale, inverse, mtx);
+            HmfInverseMtxF3X3Cat(mtx, inverse);
+            mtxCat(scale, inverse, mtx);
             break;
     }
     guMtxCatF(billboard, mtx, mtx);

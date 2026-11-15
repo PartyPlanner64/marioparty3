@@ -6,11 +6,11 @@
 s32 InitEeprom(u8 *formatted);
 s32 WriteEepromBox2(s8 saveFileIndex, u16 offset, u8 *src, u16 size);
 s32 WriteEepromBox(s8 saveFileIndex);
-void func_8000C6C0_main(s8 saveFileIndex, u16 offset, u8 *src, u16 size);
+void SetEepromBoxBuf(s8 saveFileIndex, u16 offset, u8 *src, u16 size);
 s32 ReadEepromBox(s8 saveFileIndex, u16 offset, u8 *dst, u16 size);
 s32 WriteEepromCommonBuf(u8 *src);
 s32 ReadEepromCommonBuf(u8 *dst);
-s32 func_8000C9C8_main(s8 saveFileIndex);
+s32 ClearEepromBoxHeader(s8 saveFileIndex);
 void ClearBoxBuf(s8 saveFileIndex);
 void ClearCommonBuf(void);
 s32 DestroyEeprom(void);

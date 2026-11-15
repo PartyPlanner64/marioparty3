@@ -186,7 +186,7 @@ void func_800D71F0_minigame(omObjData *arg0) {
     dir.x = -D_800EBE2C_minigame;
     dir.y = 0.0f;
     dir.z = -D_800EC5D8_minigame;
-    func_800202FC_main(&dir);
+    MapVecNormalize(&dir);
     dir.x = sindf(data->unk3C) - dir.x / 20.0f;
     dir.z = cosdf(data->unk3C) - dir.z / 20.0f;
     data->unk3C = atan2df(dir.x, dir.z);
@@ -294,7 +294,7 @@ f32 func_800D74AC_minigame(omObjData *arg0, Hu3DSphere *arg1, Vec *normal) {
                         normal->x = tmp.x;
                         normal->y = tmp.y;
                         normal->z = tmp.z;
-                        func_800202FC_main(normal);
+                        MapVecNormalize(normal);
                     }
                 }
             } else if (floorY <= hitY && hitY < y + 150.0f) {
@@ -309,9 +309,9 @@ f32 func_800D74AC_minigame(omObjData *arg0, Hu3DSphere *arg1, Vec *normal) {
         } else {
             model = obj->model[0];
             points = (Hu3DPoint *)Hu3DData[model].hmf->unk50;
-            func_80021C14_main(model, &D_800EBEB0_minigame, func_800DB704_minigame, &pos);
-            for (quad = func_80022198_main(&D_800EBEB0_minigame); quad != NULL;
-                 quad = func_80022198_main(&D_800EBEB0_minigame)) {
+            Hu3DQuadPoolCollect(model, &D_800EBEB0_minigame, func_800DB704_minigame, &pos);
+            for (quad = Hu3DQuadPoolNext(&D_800EBEB0_minigame); quad != NULL;
+                 quad = Hu3DQuadPoolNext(&D_800EBEB0_minigame)) {
                 transformed = FALSE;
                 if (Hu3DData[model].pos.x != 0.0f || Hu3DData[model].pos.y != 0.0f ||
                     Hu3DData[model].pos.z != 0.0f || Hu3DData[model].rot.x != 0.0f ||
@@ -323,19 +323,19 @@ f32 func_800D74AC_minigame(omObjData *arg0, Hu3DSphere *arg1, Vec *normal) {
                     dir.x = tmp.x - pos.x;
                     dir.y = tmp.y - pos.y;
                     dir.z = tmp.z - pos.z;
-                    func_800202FC_main(&dir);
+                    MapVecNormalize(&dir);
                     func_800D8818_minigame(pos.x, pos.y, pos.z, points, quad, &dir, &pos);
                     func_800E2C68_minigame(D_800EC240_minigame, &pos);
                     hitY = pos.y;
                     transformed = TRUE;
                 } else {
-                    hitY = func_800204F4_main(pos.x, pos.y, pos.z, points, quad);
+                    hitY = MapCalcPoint(pos.x, pos.y, pos.z, points, quad);
                 }
                 if (floorY <= hitY && hitY < y + 150.0f) {
                     floorY = hitY;
                     data->unk53 = i;
                     if (normal != NULL) {
-                        func_8002038C_main(&points[quad->vtx[1]], &points[quad->vtx[2]], &points[quad->vtx[3]],
+                        MapTriNormalGet(&points[quad->vtx[1]], &points[quad->vtx[2]], &points[quad->vtx[3]],
                                            normal);
                         if (transformed == TRUE) {
                             tmp.x = normal->x;
@@ -345,7 +345,7 @@ f32 func_800D74AC_minigame(omObjData *arg0, Hu3DSphere *arg1, Vec *normal) {
                             normal->x = tmp.x;
                             normal->y = tmp.y;
                             normal->z = tmp.z;
-                            func_800202FC_main(normal);
+                            MapVecNormalize(normal);
                         }
                     }
                 }
@@ -435,7 +435,7 @@ void func_800D7C14_minigame(omObjData *arg0, Hu3DSphere *arg1) {
             local.pos.y += D_800EC5D8_minigame;
             func_800DC8E4_minigame(obj, (Hu3DSphere *)&local, data->unk34 / 2);
         } else {
-            func_80021C14_main(D_800EC1C0_minigame[i]->model[0], &D_800EBEB0_minigame,
+            Hu3DQuadPoolCollect(D_800EC1C0_minigame[i]->model[0], &D_800EBEB0_minigame,
                                (s32 (*)(s32, s16 *, Hu3DPoint *, Vec *))func_800DBCF4_minigame, &local.pos);
         }
         if (count != D_800EB736_minigame) {
@@ -486,16 +486,16 @@ void func_800D80DC_minigame(omObjData *arg0) {
         if (remaining < 45) {
             switch (remaining & 2) {
                 case 0:
-                    func_8001C258_main(arg0->model[0], 4, 4);
+                    Hu3DModelAttrSet(arg0->model[0], 4, 4);
                     break;
                 case 2:
-                    func_8001C258_main(arg0->model[0], 4, 0);
+                    Hu3DModelAttrSet(arg0->model[0], 4, 0);
                     break;
             }
             if (data->unk7C <= data->unk78) {
                 data->unk54 = 0;
-                func_8001C258_main(arg0->model[0], 4, 4);
-                func_8001C258_main(arg0->model[1], 4, 4);
+                Hu3DModelAttrSet(arg0->model[0], 4, 4);
+                Hu3DModelAttrSet(arg0->model[1], 4, 4);
             }
         }
     }
@@ -512,9 +512,9 @@ void func_800D81C8_minigame(omObjData *arg0, omObjData *arg1) {
     }
     sprite = data->unk21[3];
     model = arg1->model[3];
-    func_8001C258_main(model, 4, 0);
-    func_80014714_main(sprite, 0);
-    func_800146DC_main(sprite, 4, 4);
+    Hu3DModelAttrSet(model, 4, 0);
+    Hu3DSprModelFrameSet(sprite, 0);
+    Hu3DSprModelAttrSet(sprite, 4, 4);
     Hu3DModelPosSet(model, arg1->trans.x, arg1->trans.y, arg1->trans.z);
     Hu3DModelScaleSet(model, 5.0f, 5.0f, 5.0f);
     switch (data->unk52) {
@@ -538,8 +538,8 @@ void func_800D81C8_minigame(omObjData *arg0, omObjData *arg1) {
     }
     data->unk54 = 0;
     data->unk78 = 0;
-    func_8001C258_main(arg1->model[0], 4, 4);
-    func_8001C258_main(arg1->model[1], 4, 4);
+    Hu3DModelAttrSet(arg1->model[0], 4, 4);
+    Hu3DModelAttrSet(arg1->model[1], 4, 4);
 }
 
 void func_800D83D8_minigame(omObjData *arg0, s32 arg1) {
@@ -558,13 +558,13 @@ void func_800D83D8_minigame(omObjData *arg0, s32 arg1) {
     if (arg1 == 3) {
         func_800E1594_minigame(arg0, 10, 0x689, 8);
         func_800E1718_minigame(arg0, 3, 12, shadowFile | 0x400, 8);
-        func_80014794_main(data->unk21[3], 240);
-        func_800147FC_main(data->unk21[3], 255, 255, 134);
+        Hu3DSprModelTPLvlSet(data->unk21[3], 240);
+        Hu3DSprModelColorSet(data->unk21[3], 255, 255, 134);
     }
     if (D_800EB739_minigame == 0) {
-        arg0->model[1] = func_8000B0D4_main(0, shadowFile);
+        arg0->model[1] = Hu3DModelRead3(0, shadowFile);
     } else {
-        arg0->model[1] = func_8000B0D4_main(9, shadowFile);
+        arg0->model[1] = Hu3DModelRead3(9, shadowFile);
     }
     data->unk44 = 0.0f;
     data->unk48 = 20.0f;

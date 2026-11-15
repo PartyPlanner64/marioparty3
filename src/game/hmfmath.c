@@ -69,7 +69,7 @@ void mtxRotCat(HuMtx4F mtx, f32 x, f32 y, f32 z) {
     mtx[1][2] = m12;
 }
 
-void func_80018044_main(HuMtx4F a, HuMtx4F b, HuMtx4F out) {
+void mtxCat(HuMtx4F a, HuMtx4F b, HuMtx4F out) {
     s32 i;
 
     if (a[0][3] != 0.0f || a[1][3] != 0.0f || a[2][3] != 0.0f || a[3][3] != 1.0f) {
@@ -159,7 +159,7 @@ s16 HmfInverseMtxF3X3(HuMtx4F src, HuMtx4F dst) {
     return 1;
 }
 
-s32 func_80018544_main(HuMtx4F src, HuMtx4F dst) {
+s32 HmfInverseMtxF3X3Cat(HuMtx4F src, HuMtx4F dst) {
     HuMtx4F inv;
 
     if (!HmfInverseMtxF3X3(src, inv)) {
@@ -170,7 +170,7 @@ s32 func_80018544_main(HuMtx4F src, HuMtx4F dst) {
     return 1;
 }
 
-void func_800185A4_main(HuMtx4F mtx, f32 angle) {
+void mtxRotYCat(HuMtx4F mtx, f32 angle) {
     f32 s = sindf(angle);
     f32 c = cosdf(angle);
     f32 row0[3];
@@ -185,7 +185,7 @@ void func_800185A4_main(HuMtx4F mtx, f32 angle) {
     }
 }
 
-void func_8001866C_main(HuMtx4F mtx, f32 x, f32 y, f32 z) {
+void mtxRotCatZXY(HuMtx4F mtx, f32 x, f32 y, f32 z) {
     HuMtx4F tmp;
     f32 sx, cx;
     f32 sy, cy;
@@ -229,7 +229,7 @@ void func_8001866C_main(HuMtx4F mtx, f32 x, f32 y, f32 z) {
     mtx[2][3] = a * tmp[2][3] - tmp[1][3] * sx + b * tmp[0][3];
 }
 
-void func_80018978_main(HuMtx4F mtx, f32 x, f32 y, f32 z) {
+void mtxRotZXY(HuMtx4F mtx, f32 x, f32 y, f32 z) {
     f32 sx, cx;
     f32 sy, cy;
     f32 sz, cz;
@@ -303,7 +303,7 @@ f32 InterpolateBMLine(f32 *value, const f32 *time, f32 x) {
     return (s1 - s0) / ((t1 - t0) * 2) * (x - t0) * (x - t0) + ((v1 - v0) / (t1 - t0) - (s1 - s0) / 2.0f) * (x - t0) + v0;
 }
 
-f32 func_80018D68_main(f32 mtx[3][3]) {
+f32 mtxDet3x3(f32 mtx[3][3]) {
     f32 m10 = mtx[1][0], m11 = mtx[1][1], m12 = mtx[1][2];
     f32 m20 = mtx[2][0], m21 = mtx[2][1], m22 = mtx[2][2];
 
@@ -312,7 +312,7 @@ f32 func_80018D68_main(f32 mtx[3][3]) {
            mtx[0][2] * (m10 * m21 - m11 * m20);
 }
 
-void func_80018DD8_main(f32 arg0[4][4], s32 arg1, s32 arg2, f32 arg3[3][3]) {
+void mtxMinorGet(f32 arg0[4][4], s32 arg1, s32 arg2, f32 arg3[3][3]) {
     s32 i, j, k, l;
 
     k = 0;
@@ -330,27 +330,27 @@ void func_80018DD8_main(f32 arg0[4][4], s32 arg1, s32 arg2, f32 arg3[3][3]) {
     }
 }
 
-f32 func_80018E50_main(HuMtx4F mtx, s32 row, s32 col) {
+f32 mtxMinorDet(HuMtx4F mtx, s32 row, s32 col) {
     f32 minor[3][3];
 
-    func_80018DD8_main(mtx, row, col, minor);
-    return func_80018D68_main(minor);
+    mtxMinorGet(mtx, row, col, minor);
+    return mtxDet3x3(minor);
 }
 
-f32 func_80018E74_main(HuMtx4F mtx) {
+f32 mtxDet(HuMtx4F mtx) {
     f32 det = 0.0f;
     s32 i;
 
     for (i = 0; i < 4; i++) {
         s32 sign = (i != i / 2 * 2) ? -1 : 1;
 
-        det += func_80018E50_main(mtx, 0, i) * mtx[0][i] * sign;
+        det += mtxMinorDet(mtx, 0, i) * mtx[0][i] * sign;
     }
     return det;
 }
 
-s32 func_80018F18_main(HuMtx4F src, HuMtx4F dst) {
-    f32 det = func_80018E74_main(src);
+s32 mtxInverse(HuMtx4F src, HuMtx4F dst) {
+    f32 det = mtxDet(src);
     s32 i, j;
 
     if (det == 0.0f) {
@@ -363,7 +363,7 @@ s32 func_80018F18_main(HuMtx4F src, HuMtx4F dst) {
 
             sign = (sign != sign / 2 * 2) ? -1 : 1;
 
-            dst[j][i] = func_80018E50_main(src, i, j) * det * sign;
+            dst[j][i] = mtxMinorDet(src, i, j) * det * sign;
         }
     }
     return 1;

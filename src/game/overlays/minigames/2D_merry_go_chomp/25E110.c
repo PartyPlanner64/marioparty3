@@ -241,8 +241,8 @@ s32 func_80105CE4_merry_go_chomp(s32 arg0) {
 }
 
 void func_80105D38_merry_go_chomp(omObjData *obj, u16 motion, s16 shift) {
-    func_8001C5B4_main(obj->model[0], obj->motion[motion]);
-    func_8001C814_main(obj->model[0], shift, shift);
+    Hu3DMotionModelSet(obj->model[0], obj->motion[motion]);
+    Hu3DMotionAttrSet(obj->model[0], shift, shift);
 }
 
 void func_80105DA0_merry_go_chomp(omObjData *arg0, u16 arg1, s16 arg2, s16 arg3, s16 arg4) {
@@ -346,7 +346,7 @@ void func_80106384_merry_go_chomp(omObjData *obj) {
     espAttrSet(D_8010C542_merry_go_chomp, 0x5000);
     espPosSet(D_8010C542_merry_go_chomp, D_8010C544_merry_go_chomp,
               D_8010C548_merry_go_chomp);
-    D_8010C414_merry_go_chomp = func_80055194_main(HuSprAnimDataRead(0x4E0001));
+    D_8010C414_merry_go_chomp = HuSprAnimDataGet(HuSprAnimDataRead(0x4E0001));
     Hu3DModelCameraSet(Hu3DHookFuncCreate(0, func_80106054_merry_go_chomp, 2), 1);
     obj->model[0] = -1;
     obj->func = func_8010637C_merry_go_chomp;
@@ -364,9 +364,9 @@ void func_801064E0_merry_go_chomp(omObjData *obj) {
 void func_801064E8_merry_go_chomp(omObjData *obj) {
     f32 zero;
 
-    obj->model[0] = func_8000B108_main(0x4E0004, 0x2B9);
-    obj->model[1] = func_8000B108_main(0x4E0005, 0x2B9);
-    obj->model[2] = func_8000B108_main(0x4E0002, 0x2B9);
+    obj->model[0] = Hu3DModelRead(0x4E0004, 0x2B9);
+    obj->model[1] = Hu3DModelRead(0x4E0005, 0x2B9);
+    obj->model[2] = Hu3DModelRead(0x4E0002, 0x2B9);
     obj->trans.x = -500.0f;
     obj->trans.y = zero = 0.0f;
     D_8010CD04_merry_go_chomp = zero;
@@ -418,9 +418,9 @@ void func_80106668_merry_go_chomp(omObjData *obj) {
                     if (obj->trans.y > -650.0f) {
                         obj->trans.y -= 15.0f;
                     } else {
-                        func_8001C258_main(obj->model[entry->unk_04], 4, 4);
+                        Hu3DModelAttrSet(obj->model[entry->unk_04], 4, 4);
                         entry->unk_04++;
-                        func_8001C258_main(obj->model[entry->unk_04], 4, 0);
+                        Hu3DModelAttrSet(obj->model[entry->unk_04], 4, 0);
                         entry->unk_06 = 1;
                         if (D_8010C4CE_merry_go_chomp == 0) {
                             obj->rot.y = 0.0f;
@@ -453,12 +453,12 @@ void func_80106668_merry_go_chomp(omObjData *obj) {
 }
 
 void func_80106920_merry_go_chomp(omObjData *obj) {
-    obj->model[0] = func_8000B108_main(0x4E0006, 0x2B9);
-    obj->model[1] = func_8000B108_main(0x4E0007, 0x2B9);
-    obj->model[2] = func_8000B108_main(0x4E0008, 0x2B9);
-    func_8001C258_main(obj->model[2], 4, 4);
-    obj->model[3] = func_8000B108_main(0x4E0009, 0x2B9);
-    func_8001C258_main(obj->model[3], 4, 4);
+    obj->model[0] = Hu3DModelRead(0x4E0006, 0x2B9);
+    obj->model[1] = Hu3DModelRead(0x4E0007, 0x2B9);
+    obj->model[2] = Hu3DModelRead(0x4E0008, 0x2B9);
+    Hu3DModelAttrSet(obj->model[2], 4, 4);
+    obj->model[3] = Hu3DModelRead(0x4E0009, 0x2B9);
+    Hu3DModelAttrSet(obj->model[3], 4, 4);
     D_8010C500_merry_go_chomp[25].unk_04 = 1;
     obj->trans.x = 0.0f;
     obj->trans.y = 500.0f;
@@ -525,7 +525,7 @@ void func_80106B9C_merry_go_chomp(omObjData *obj, s8 motion) {
         func_80105DA0_merry_go_chomp(obj, motion, 0, 5, shift);
         entry->unk_06 = motion;
         if (motion == 9) {
-            func_80045ED0_main((D_8010C140_merry_go_chomp[chr] << 16) | 0x30);
+            HuAudCharVoicePlay((D_8010C140_merry_go_chomp[chr] << 16) | 0x30);
         }
     }
 }
@@ -852,7 +852,7 @@ void func_80107E34_merry_go_chomp(omObjData *obj) {
             break;
         case 4:
             func_80106B9C_merry_go_chomp(obj, 2);
-            func_8001C258_main(obj->model[1], 4, 4);
+            Hu3DModelAttrSet(obj->model[1], 4, 4);
             obj->rot.y = 210.0f;
             if (obj->trans.y < 630.0f) {
                 obj->trans.y += 10.0f;
@@ -870,7 +870,7 @@ void func_80107E34_merry_go_chomp(omObjData *obj) {
             if (move->unk_1D == 0) {
                 PlayerFXPlay(0x3A, obj->work[0]);
             }
-            func_8001C258_main(obj->model[1], 4, 0);
+            Hu3DModelAttrSet(obj->model[1], 4, 0);
             func_801077D0_merry_go_chomp(obj);
             move->unk_1F = 1;
             obj->trans.y += D_8010C160_merry_go_chomp[move->unk_1D];
@@ -1154,22 +1154,22 @@ void func_801090B0_merry_go_chomp(omObjData *obj) {
     MerryGoChompEntry *entry = &D_8010C500_merry_go_chomp[player + 5];
     u16 chr = GwPlayer[player].chr;
 
-    obj->model[0] = func_8000B108_main(D_800A178C_main[chr][0] | D_800A178C_main[chr][3], 0x2B9);
-    func_8000B460_main(obj, 0, func_80017BB8_main(chr, 0));
-    func_8000B460_main(obj, 1, func_80017BB8_main(chr, 2));
-    func_8000B460_main(obj, 4, func_80017BB8_main(chr, 0x15));
-    func_8000B460_main(obj, 5, func_80017BB8_main(chr, 8));
-    func_8000B460_main(obj, 2, func_80017BB8_main(chr, 0x8B));
-    func_8000B460_main(obj, 3, func_80017BB8_main(chr, 0x29));
-    func_8000B460_main(obj, 7, func_80017BB8_main(chr, 0x7A));
-    func_8000B460_main(obj, 6, func_80017BB8_main(chr, 4));
-    func_8000B460_main(obj, 8, func_80017BB8_main(chr, 0x33));
-    func_8000B460_main(obj, 9, func_80017BB8_main(chr, 0x30));
-    func_8000B460_main(obj, 10, func_80017BB8_main(chr, 0x37));
-    obj->model[1] = func_8000B0A0_main(0, 0xC9);
-    func_8001C2FC_main(obj->model[1], 0x80000000, 0);
+    obj->model[0] = Hu3DModelRead(D_800A178C_main[chr][0] | D_800A178C_main[chr][3], 0x2B9);
+    omObjMotionRead(obj, 0, CharMotionDataNumGet(chr, 0));
+    omObjMotionRead(obj, 1, CharMotionDataNumGet(chr, 2));
+    omObjMotionRead(obj, 4, CharMotionDataNumGet(chr, 0x15));
+    omObjMotionRead(obj, 5, CharMotionDataNumGet(chr, 8));
+    omObjMotionRead(obj, 2, CharMotionDataNumGet(chr, 0x8B));
+    omObjMotionRead(obj, 3, CharMotionDataNumGet(chr, 0x29));
+    omObjMotionRead(obj, 7, CharMotionDataNumGet(chr, 0x7A));
+    omObjMotionRead(obj, 6, CharMotionDataNumGet(chr, 4));
+    omObjMotionRead(obj, 8, CharMotionDataNumGet(chr, 0x33));
+    omObjMotionRead(obj, 9, CharMotionDataNumGet(chr, 0x30));
+    omObjMotionRead(obj, 10, CharMotionDataNumGet(chr, 0x37));
+    obj->model[1] = Hu3DModelRead2(0, 0xC9);
+    Hu3DModelObjAttrSet(obj->model[1], 0x80000000, 0);
     Hu3DModelRemakeStatic(obj->model[1]);
-    func_8001C514_main(obj->model[1]);
+    Hu3DModelDynamicFree(obj->model[1]);
     func_80088800_main(Hu3DData[obj->model[1]].mtx, 0.0f, 0.0f, 0.0f);
     omSetTra(obj, D_8010C1B8_merry_go_chomp[obj->work[1]], 505.0f, D_8010C1C8_merry_go_chomp[obj->work[1]]);
     omSetRot(obj, 0.0f, 330.0f, 0.0f);
@@ -1456,7 +1456,7 @@ void func_80109A04_merry_go_chomp(omObjData *obj) {
                     Hu3DMotionSpeedSet(obj->model[0], 0.0f);
                 }
                 if (chomp->unk_04 == 10) {
-                    func_8001C258_main(star->model[0], 4, 0);
+                    Hu3DModelAttrSet(star->model[0], 4, 0);
                     Hu3DMotionSpeedSet(star->model[0], 1.0f);
                     Hu3DMotionTimeSet(star->model[0], 0.0f);
                     star->scale.x = star->scale.y = star->scale.z = 2.5f;
@@ -1501,7 +1501,7 @@ void func_80109A04_merry_go_chomp(omObjData *obj) {
                 }
                 star->scale.z = star->scale.y = star->scale.x -= 0.49;
                 if (star->scale.x < 0.1) {
-                    func_8001C258_main(star->model[0], 4, 4);
+                    Hu3DModelAttrSet(star->model[0], 4, 4);
                 }
             }
             func_80105E0C_merry_go_chomp(chomp->unk_20, chomp->unk_24, obj->trans.x, obj->trans.z, &chomp->unk_18,
@@ -1607,23 +1607,23 @@ void func_8010A9D0_merry_go_chomp(omObjData *obj) {
     s32 shadow;
     s16 i;
 
-    obj->model[0] = func_8000B108_main(0xA00D9, 0x2A9);
+    obj->model[0] = Hu3DModelRead(0xA00D9, 0x2A9);
     Hu3DAnimCreate(Hu3DData[obj->model[0]].hmf, anim, 0, "c165n_4_DEF");
     Hu3DModelRemakeStatic(obj->model[0]);
-    func_8001C514_main(obj->model[0]);
+    Hu3DModelDynamicFree(obj->model[0]);
     DataClose(anim);
-    func_8000B460_main(obj, 0, 0xA00DD);
-    func_8000B460_main(obj, 1, 0xA00E3);
-    func_8000B460_main(obj, 2, 0xA00DB);
-    obj->model[1] = func_8000B108_main(0xA00E4, 0x2B9);
+    omObjMotionRead(obj, 0, 0xA00DD);
+    omObjMotionRead(obj, 1, 0xA00E3);
+    omObjMotionRead(obj, 2, 0xA00DB);
+    obj->model[1] = Hu3DModelRead(0xA00E4, 0x2B9);
     chain = obj->model[1];
     for (i = 2; i < 6; i++) {
         obj->model[i] = Hu3DModelLink(chain);
     }
-    shadow = obj->model[6] = func_8000B0A0_main(0, 0xC9);
-    func_8001C2FC_main(obj->model[6], 0x80000000, 0);
+    shadow = obj->model[6] = Hu3DModelRead2(0, 0xC9);
+    Hu3DModelObjAttrSet(obj->model[6], 0x80000000, 0);
     Hu3DModelRemakeStatic(obj->model[6]);
-    func_8001C514_main(obj->model[6]);
+    Hu3DModelDynamicFree(obj->model[6]);
     func_80088800_main(Hu3DData[obj->model[6]].mtx, 0.0f, 0.0f, 0.0f);
     Hu3DModelScaleSet(obj->model[6], 2.5f, 1.0f, 2.5f);
     for (i = 7; i < 12; i++) {
@@ -1644,8 +1644,8 @@ void func_8010A9D0_merry_go_chomp(omObjData *obj) {
         Hu3DModelPosSet(obj->model[i + 6], D_8010C4D0_merry_go_chomp[i].x, 5.0f, D_8010C4D0_merry_go_chomp[i].y);
         Hu3DModelScaleSet(obj->model[i + 6], 0.8f, 1.0f, 0.8f);
     }
-    func_8001C258_main(obj->model[5], 4, 4);
-    func_8001C258_main(obj->model[11], 4, 4);
+    Hu3DModelAttrSet(obj->model[5], 4, 4);
+    Hu3DModelAttrSet(obj->model[11], 4, 4);
     obj->func = func_80109A04_merry_go_chomp;
 }
 
@@ -1659,8 +1659,8 @@ void func_8010AE24_merry_go_chomp(omObjData *obj) {
 }
 
 void func_8010AE2C_merry_go_chomp(omObjData *obj) {
-    obj->model[0] = func_8000B108_main(0x4E0003, 0x2B9);
-    func_8001C258_main(obj->model[0], 4, 4);
+    obj->model[0] = Hu3DModelRead(0x4E0003, 0x2B9);
+    Hu3DModelAttrSet(obj->model[0], 4, 4);
     Hu3DMotionSpeedSet(obj->model[0], 0.0f);
     obj->scale.x = obj->scale.y = obj->scale.z = 2.5f;
     obj->rot.y = 270.0f;
@@ -1691,13 +1691,13 @@ void func_8010AF08_merry_go_chomp(void) {
         case 1:
             if (D_8010C4B2_merry_go_chomp > 0) {
                 D_8010C4B2_merry_go_chomp--;
-                func_8003F578_main((D_8010C4B2_merry_go_chomp + 29) / 30);
+                GMesTimerValueSet((D_8010C4B2_merry_go_chomp + 29) / 30);
             } else {
-                func_8003F5C0_main();
+                GMesTimerEnd();
             }
             if (D_8010DEDC_merry_go_chomp != 0) {
                 D_8010DEDC_merry_go_chomp = 0;
-                func_8003F5C0_main();
+                GMesTimerEnd();
                 D_8010C4B2_merry_go_chomp = 0;
                 D_8010C4B0_merry_go_chomp = 2;
             }
@@ -1937,7 +1937,7 @@ void func_8010BBD8_merry_go_chomp(omObjData *obj) {
         WipeCreateOut(0, 20);
         obj->func = func_8010BBA0_merry_go_chomp;
         HuAudSeqFadeOut(30);
-        func_8004AB0C_main(30);
+        HuAudFXAllFadeOut(30);
     }
 }
 
@@ -2017,8 +2017,8 @@ void func_8010BEBC_merry_go_chomp(void) {
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
     obj->work[0] = 2;
     omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    func_8000B5F0_main(2);
-    func_8000B710_main(2);
+    CamSetupInit(2);
+    CamSetupMapCullAddMulti(2);
     for (i = 0; i < 2; i++) {
         ScissorSet(i, D_8010C258_merry_go_chomp[i].scissorX, D_8010C258_merry_go_chomp[i].scissorY,
                    D_8010C258_merry_go_chomp[i].scissorWidth, D_8010C258_merry_go_chomp[i].scissorHeight);
@@ -2030,10 +2030,10 @@ void func_8010BEBC_merry_go_chomp(void) {
 }
 
 void func_8010C030_merry_go_chomp(void) {
-    func_8001FE20_main(50);
-    func_800142A0_main(50);
+    MapCollInit(50);
+    Hu3DSprModelInit(50);
     omInitObjMan(60, 0);
-    func_8004A208_main();
+    omGameSysInit();
     func_8010BEBC_merry_go_chomp();
     Hu3DGLightMaxSet(1);
     Hu3DGLightMaxSet(2);
@@ -2043,8 +2043,8 @@ void func_8010C030_merry_go_chomp(void) {
     D_800EC1B8_minigame = 0;
     D_800EC280_minigame = 0;
     D_800EBE28_minigame = 0;
-    func_80045010_main(D_8010C400_merry_go_chomp, 0);
-    func_80045010_main(D_8010C400_merry_go_chomp, 1);
+    GMesFontMesCreate(D_8010C400_merry_go_chomp, 0);
+    GMesFontMesCreate(D_8010C400_merry_go_chomp, 1);
     omAddObj(1500, 0, 0, -1, func_8010BDE8_merry_go_chomp);
     omAddObj(1500, 0, 0, -1, func_8010BBD8_merry_go_chomp);
     func_80105A74_merry_go_chomp();

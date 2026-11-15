@@ -44,11 +44,11 @@ extern OSMesgQueue D_800CC3C0_main; // Another system's message queue
 
 /* Initialize Graphics SwapChain */
 
-void func_8000EA10_main(void **arg1, s32 arg2, s32 arg3, u64 **arg4, s32 *arg5) {
-    func_8000F024_main(arg1, arg2, arg3);
-    func_8000F04C_main(arg4);
-    func_8000F088_main(arg5);
-    func_8000F094_main(0);
+void HuGfxInit(void **arg1, s32 arg2, s32 arg3, u64 **arg4, s32 *arg5) {
+    HuGfxFBPoolSet(arg1, arg2, arg3);
+    HuGfxStackSet(arg4);
+    HuGfxUcodeSet(arg5);
+    HuGfxModeSet(0);
 
     swapChainTask.completionQueue = &gMesgQueue;
     swapChainTask.task.t.type = 1;
@@ -69,12 +69,12 @@ void func_8000EA10_main(void **arg1, s32 arg2, s32 arg3, u64 **arg4, s32 *arg5) 
     currFrameBuffer = 0;
     osCreateMesgQueue(&gSwapChainMesgQueue, gSwapChainInitMesg, 0x40);
     osCreateMesgQueue(&gMesgQueue, gMesgQueueInitMesg, 8);
-    osCreateThread(&swapChainThread, 0x10, &func_8000EBEC_main, NULL, &swapChainStack[ARRAY_COUNT(swapChainStack)], 0x64);
+    osCreateThread(&swapChainThread, 0x10, &HuGfxThreadMain, NULL, &swapChainStack[ARRAY_COUNT(swapChainStack)], 0x64);
     osStartThread(&swapChainThread);
 }
 
 /* Retrieve available frame buffer (triple buffering?) */
-void *func_8000EB60_main(void) {
+void *HuGfxFBNextGet(void) {
     void *current;
     void *next;
     void *fBuffer;
@@ -95,7 +95,7 @@ void *func_8000EB60_main(void) {
 }
 
 /* Swap Chain Loop */
-void func_8000EBEC_main(void *arg0) {
+void HuGfxThreadMain(void *arg0) {
     unkSchedStruct sp10;
     OSMesgQueue mesgQueue;
     unkGraphicsMessage2 sp38;
@@ -133,8 +133,8 @@ void func_8000EBEC_main(void *arg0) {
             }
 
             var_s4 = D_800D2094_main;
-            func_8004D85C_main();
-            pAvailableFrameBuffer = func_8000EB60_main();
+            HuProfRspReset();
+            pAvailableFrameBuffer = HuGfxFBNextGet();
         } while (pAvailableFrameBuffer == NULL);
 
         currFrameBuffer = nextFrameBuffer;
@@ -190,12 +190,12 @@ void func_8000EBEC_main(void *arg0) {
             osViBlack(0);
         }
         D_800CC0A4_main++;
-        func_8004D878_main(); // empty function
+        HuProfDummy(); // empty function
     }
 }
 
 /* Retrieve graphics OSMesg from ring buffer */
-graphicsMessage *func_8000EF10_main(void) {
+graphicsMessage *HuGfxMesgAlloc(void) {
     if (ringBufferIndex >= 0x40) {
         ringBufferIndex = 0;
     }
@@ -203,7 +203,7 @@ graphicsMessage *func_8000EF10_main(void) {
 }
 
 /* Send graphics OSMesg */
-u8 func_8000EF64_main(Gfx *arg0, u16 arg1, s32 arg2, OSMesgQueue *arg3, s32 arg4) {
+u8 HuGfxTaskSend(Gfx *arg0, u16 arg1, s32 arg2, OSMesgQueue *arg3, s32 arg4) {
     graphicsMessage *mesg;
     u32 intMask;
 
@@ -214,7 +214,7 @@ u8 func_8000EF64_main(Gfx *arg0, u16 arg1, s32 arg2, OSMesgQueue *arg3, s32 arg4
     intMask = osSetIntMask(1);
     gSwapChainMesgTotal++;
     osSetIntMask(intMask);
-    mesg = func_8000EF10_main();
+    mesg = HuGfxMesgAlloc();
 
     /* Initialize message. */
     mesg->unk00 = arg0;
@@ -228,19 +228,19 @@ u8 func_8000EF64_main(Gfx *arg0, u16 arg1, s32 arg2, OSMesgQueue *arg3, s32 arg4
 }
 
 /* Init graphics frame buffer pool */
-void func_8000F024_main(void **pool, u16 size, u16 segment) {
+void HuGfxFBPoolSet(void **pool, u16 size, u16 segment) {
     frameBufferPool = pool;
     frameBufferCount = size;
     frameBufferSegmentID = segment;
 }
 
 /* Reset frame buffer pool size. (Switch between double and triple buffering) */
-void func_8000F040_main(u16 size) {
+void HuGfxFBCountSet(u16 size) {
     frameBufferCount = size;
 }
 
 /* Initialize gThreadStacks */
-void func_8000F04C_main(u64 **threadStacks) {
+void HuGfxStackSet(u64 **threadStacks) {
     gThread3Stack = *threadStacks++;
     gThreadOutStack = *threadStacks++;
     gThreadOutStackSize = *threadStacks++;
@@ -248,11 +248,11 @@ void func_8000F04C_main(u64 **threadStacks) {
 }
 
 /* Set pointer to swapchain task's ucode addresses */
-void func_8000F088_main(s32 *uCodeAdresses) {
+void HuGfxUcodeSet(s32 *uCodeAdresses) {
     gUCodeAddresses = uCodeAdresses;
 }
 
 /* Swap chain state set? */
-void func_8000F094_main(u32 arg0) {
+void HuGfxModeSet(u32 arg0) {
     D_800B19A0_main = arg0;
 }

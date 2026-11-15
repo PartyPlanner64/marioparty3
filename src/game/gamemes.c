@@ -97,7 +97,7 @@ static GMesChar D_800B1BC0_main[32];
 extern GAMEMES gMesData[];
 extern s32 omovl;
 
-s32 func_80036610_main(void) {
+s32 GMesMgNoGet(void) {
     return GwSystem.minigame_index;
 }
 
@@ -138,79 +138,79 @@ void GMesExec(Gfx **arg0) {
 
             switch (gMes->mesNo) {
                 case GMES_MES_0:
-                    result = func_80037574_main(gMes, arg0);
+                    result = GameMesStart0Exec(gMes, arg0);
                     break;
                 case GMES_MES_1:
-                    result = func_80037878_main(gMes, arg0);
+                    result = GameMesStart1Exec(gMes, arg0);
                     break;
                 case GMES_MES_2:
-                    result = func_80037C44_main(gMes, arg0);
+                    result = GameMesStart2Exec(gMes, arg0);
                     break;
                 case GMES_MES_3:
-                    result = func_8003843C_main(gMes, arg0);
+                    result = GameMesStart3Exec(gMes, arg0);
                     break;
                 case GMES_MES_4:
-                    result = func_80038934_main(gMes, arg0);
+                    result = GameMesStart4Exec(gMes, arg0);
                     break;
                 case GMES_MES_5:
-                    result = func_80038D78_main(gMes, arg0);
+                    result = GameMesStart5Exec(gMes, arg0);
                     break;
                 case GMES_MES_MG_START:
-                    result = func_800392AC_main(gMes, arg0);
+                    result = GameMesMgStartExec(gMes, arg0);
                     break;
                 case GMES_MES_7:
-                    result = func_8003966C_main(gMes, arg0);
+                    result = GameMesStart7Exec(gMes, arg0);
                     break;
                 case GMES_MES_8:
-                    result = func_80039A6C_main(gMes, arg0);
+                    result = GameMesStart8Exec(gMes, arg0);
                     break;
                 case GMES_MES_9:
-                    result = func_80039E80_main(gMes, arg0);
+                    result = GameMesStart9Exec(gMes, arg0);
                     break;
                 case GMES_MES_10:
-                    result = func_8003A2EC_main(gMes, arg0);
+                    result = GameMesStart10Exec(gMes, arg0);
                     break;
                 case GMES_MES_11:
-                    result = func_8003B14C_main(gMes, arg0);
+                    result = GameMesFinish11Exec(gMes, arg0);
                     break;
                 case GMES_MES_12:
-                    result = func_8003B7E8_main(gMes, arg0);
+                    result = GameMesFinish12Exec(gMes, arg0);
                     break;
                 case GMES_MES_13:
-                    result = func_8003BB84_main(gMes, arg0);
+                    result = GameMesTimeUpExec(gMes, arg0);
                     break;
                 case GMES_MES_14:
-                    result = func_8003C248_main(gMes, arg0);
+                    result = GameMesFinish14Exec(gMes, arg0);
                     break;
                 case GMES_MES_15:
-                    result = func_8003C644_main(gMes, arg0);
+                    result = GameMesFinish15Exec(gMes, arg0);
                     break;
                 case GMES_MES_16:
-                    result = func_8003CA24_main(gMes, arg0);
+                    result = GameMesFinish16Exec(gMes, arg0);
                     break;
                 case GMES_MES_MG_FINISH:
-                    result = func_8003CE20_main(gMes, arg0);
+                    result = GameMesMgFinishExec(gMes, arg0);
                     break;
                 case GMES_MES_18:
-                    result = func_8003D134_main(gMes, arg0);
+                    result = GameMesFinish18Exec(gMes, arg0);
                     break;
                 case GMES_MES_19:
-                    result = func_8003D4DC_main(gMes, arg0);
+                    result = GameMesFinish19Exec(gMes, arg0);
                     break;
                 case GMES_MES_20:
-                    result = func_8003D890_main(gMes, arg0);
+                    result = GameMesFinish20Exec(gMes, arg0);
                     break;
                 case GMES_MES_21:
-                    result = func_8003DC88_main(gMes, arg0);
+                    result = GameMesFinish21Exec(gMes, arg0);
                     break;
                 case GMES_MES_MG_LOSER:
-                    result = func_8003E4A4_main(gMes, arg0);
+                    result = GameMesMgLoserExec(gMes, arg0);
                     break;
                 case GMES_MES_24:
-                    result = func_8003EBC8_main(gMes, arg0);
+                    result = GameMes24Exec(gMes, arg0);
                     break;
                 case GMES_MES_25:
-                    result = func_8003EE98_main(gMes, arg0);
+                    result = GameMes25Exec(gMes, arg0);
                     break;
                 case GMES_MES_TIMER:
                     result = GMesTimerExec(gMes, arg0);
@@ -219,16 +219,16 @@ void GMesExec(Gfx **arg0) {
                     result = GameMesMgRecordExec(gMes, arg0);
                     break;
                 case GMES_MES_31:
-                    result = func_8003FD34_main(gMes, arg0);
+                    result = GameMesTimeUp2Exec(gMes, arg0);
                     break;
                 case GMES_MES_33:
-                    result = func_8003FFD0_main(gMes, arg0);
+                    result = GameMesGoalExec(gMes, arg0);
                     break;
                 case GMES_MES_29:
-                    result = func_80040290_main(gMes, arg0);
+                    result = GameMesGameOverExec(gMes, arg0);
                     break;
                 case GMES_MES_28:
-                    result = func_800407B8_main(gMes, arg0);
+                    result = GameMesReadyGoExec(gMes, arg0);
                     break;
                 case GMES_MES_MG_DRAW:
                     result = GameMesMgDrawExec(gMes, arg0);
@@ -237,19 +237,19 @@ void GMesExec(Gfx **arg0) {
                     result = GameMesMgWinnerExec(gMes, arg0);
                     break;
                 case GMES_MES_MG_WINNERS_2:
-                    result = func_80040CF4_main(gMes, arg0);
+                    result = GameMesMgWinners2Exec(gMes, arg0);
                     break;
                 case GMES_MES_MG_WINNERS_3:
-                    result = func_80041B68_main(gMes, arg0);
+                    result = GameMesMgWinners3Exec(gMes, arg0);
                     break;
                 case GMES_MES_MG_WINNERS_4:
-                    result = func_80042AC8_main(gMes, arg0);
+                    result = GameMesMgWinners4Exec(gMes, arg0);
                     break;
                 case GMES_MES_36:
-                    result = func_800440D4_main(gMes, arg0);
+                    result = GameMesGotItemExec(gMes, arg0);
                     break;
                 case GMES_MES_37:
-                    result = func_800448C0_main(gMes, arg0);
+                    result = GameMesGotItem2Exec(gMes, arg0);
                     break;
             }
             gMes->time++;
@@ -328,7 +328,7 @@ s16 GMesCreate(s16 mesNo, ...) {
             break;
         case GMES_MES_MG_WINNER:
             gMes->unk0E = chr = va_arg(args, s32);
-            gMes->pos.y = func_800452C4_main();
+            gMes->pos.y = GameMesOvlTypeGet();
             gMes->timeMax = 0x78;
             break;
         case GMES_MES_29:
@@ -365,7 +365,7 @@ s16 GMesCreate(s16 mesNo, ...) {
             gMes->work = chr = va_arg(args, s32);
             gMes->unk0C = chr = va_arg(args, s32);
             gMes->unk0E = chr = va_arg(args, s32);
-            gMes->pos.y = func_80045314_main();
+            gMes->pos.y = GameMesOvlOfsGet();
             gMes->timeMax = 0x78;
             break;
         case GMES_MES_MG_WINNERS_4:
@@ -393,11 +393,11 @@ s32 GMesStatGet(void) {
     return stat;
 }
 
-u8 func_800370A4_main(s16 i) {
+u8 GMesStatIdGet(s16 i) {
     return gMesData[i].stat;
 }
 
-void func_800370D0_main(s16 i, s16 value) {
+void GMesTimeMaxSet(s16 i, s16 value) {
     if (value == -1) {
         value = 0x7FFF;
     }
@@ -445,7 +445,7 @@ s32 GameMesKillCheck(void) {
     return TRUE;
 }
 
-void func_8003724C_main(s16 countdown) {
+void GMesMaxWaitSet(s16 countdown) {
     GameMesTime = countdown;
 }
 
@@ -506,7 +506,7 @@ void GMesSprKill(GAMEMES *gMes) {
     }
 }
 
-s32 func_80037574_main(GAMEMES *gMes, Gfx **gfx) {
+s32 GameMesStart0Exec(GAMEMES *gMes, Gfx **gfx) {
     s32 len = strlen("START");
     s32 result;
     s32 i;
@@ -567,12 +567,12 @@ s32 func_80037574_main(GAMEMES *gMes, Gfx **gfx) {
         HuAudFXPlay(0x251);
     }
     if (gMes->time == 38) {
-        func_800452BC_main(func_80036610_main());
+        GameMesMgStub(GMesMgNoGet());
     }
     return result;
 }
 
-s32 func_80037878_main(GAMEMES *gMes, Gfx **gfx) {
+s32 GameMesStart1Exec(GAMEMES *gMes, Gfx **gfx) {
     char *str = "START";
     s32 len = strlen(str);
     s32 result;
@@ -638,12 +638,12 @@ s32 func_80037878_main(GAMEMES *gMes, Gfx **gfx) {
         HuAudFXPlay(0x251);
     }
     if (gMes->time == 38) {
-        func_800452BC_main(func_80036610_main());
+        GameMesMgStub(GMesMgNoGet());
     }
     return result;
 }
 
-s32 func_80037C44_main(GAMEMES *gMes, Gfx **gfx) {
+s32 GameMesStart2Exec(GAMEMES *gMes, Gfx **gfx) {
     char *str = "START";
     s32 len = strlen(str);
     s32 result;
@@ -731,7 +731,7 @@ s32 func_80037C44_main(GAMEMES *gMes, Gfx **gfx) {
         HuAudFXPlay(0x251);
     }
     if (gMes->time == 38) {
-        func_800452BC_main(func_80036610_main());
+        GameMesMgStub(GMesMgNoGet());
     }
     return result;
 }
@@ -742,7 +742,7 @@ s32 func_80037C44_main(GAMEMES *gMes, Gfx **gfx) {
  * The callers implement the remaining states (1: animate in, 2: hold, 5: shrink out).
  * The empty cases are needed for the compiler to emit the original jump tables.
  */
-s32 func_80038208_main(GAMEMES *gMes) {
+s32 GameMesStartStrCreate(GAMEMES *gMes) {
     s32 len = strlen("START");
     s32 result;
     s32 i;
@@ -797,19 +797,19 @@ s32 func_80038208_main(GAMEMES *gMes) {
         HuAudFXPlay(0x251);
     }
     if (gMes->time == 80) {
-        func_800452BC_main(func_80036610_main());
+        GameMesMgStub(GMesMgNoGet());
     }
     return result;
 }
 
-s32 func_8003843C_main(GAMEMES *gMes, Gfx **gfx) {
+s32 GameMesStart3Exec(GAMEMES *gMes, Gfx **gfx) {
     s32 len = strlen("START");
     s32 result;
     s32 i;
     GMesChar *chr;
     f32 scale;
 
-    result = func_80038208_main(gMes);
+    result = GameMesStartStrCreate(gMes);
     switch (gMes->subMode) {
         case 0:
             HuSprPosSet(gMes->strGId[0], 0, 160, 120);
@@ -899,7 +899,7 @@ s32 func_8003843C_main(GAMEMES *gMes, Gfx **gfx) {
     return result;
 }
 
-s32 func_80038934_main(GAMEMES *gMes, Gfx **gfx) {
+s32 GameMesStart4Exec(GAMEMES *gMes, Gfx **gfx) {
     s32 len;
     s32 result;
     s32 i;
@@ -907,7 +907,7 @@ s32 func_80038934_main(GAMEMES *gMes, Gfx **gfx) {
     f32 scale;
     f32 t;
 
-    result = func_80038208_main(gMes);
+    result = GameMesStartStrCreate(gMes);
     len = strlen("START");
     switch (gMes->subMode) {
         case 0:
@@ -985,14 +985,14 @@ s32 func_80038934_main(GAMEMES *gMes, Gfx **gfx) {
     return result;
 }
 
-s32 func_80038D78_main(GAMEMES *gMes, Gfx **gfx) {
+s32 GameMesStart5Exec(GAMEMES *gMes, Gfx **gfx) {
     s32 len;
     s32 result;
     s32 i;
     GMesChar *chr;
     f32 scale;
 
-    result = func_80038208_main(gMes);
+    result = GameMesStartStrCreate(gMes);
     len = strlen("START");
     switch (gMes->subMode) {
         case 0:
@@ -1089,14 +1089,14 @@ s32 func_80038D78_main(GAMEMES *gMes, Gfx **gfx) {
     return result;
 }
 
-s32 func_800392AC_main(GAMEMES *gMes, Gfx **gfx) {
+s32 GameMesMgStartExec(GAMEMES *gMes, Gfx **gfx) {
     s32 len;
     s32 result;
     s32 i;
     GMesChar *chr;
     f32 scale;
 
-    result = func_80038208_main(gMes);
+    result = GameMesStartStrCreate(gMes);
     len = strlen("START");
     switch (gMes->subMode) {
         case 0:
@@ -1167,14 +1167,14 @@ s32 func_800392AC_main(GAMEMES *gMes, Gfx **gfx) {
     return result;
 }
 
-s32 func_8003966C_main(GAMEMES *gMes, Gfx **gfx) {
+s32 GameMesStart7Exec(GAMEMES *gMes, Gfx **gfx) {
     s32 len;
     s32 result;
     s32 i;
     GMesChar *chr;
     f32 scale;
 
-    result = func_80038208_main(gMes);
+    result = GameMesStartStrCreate(gMes);
     len = strlen("START");
     switch (gMes->subMode) {
         case 0:
@@ -1250,14 +1250,14 @@ s32 func_8003966C_main(GAMEMES *gMes, Gfx **gfx) {
     return result;
 }
 
-s32 func_80039A6C_main(GAMEMES *gMes, Gfx **gfx) {
+s32 GameMesStart8Exec(GAMEMES *gMes, Gfx **gfx) {
     s32 len;
     s32 result;
     s32 i;
     GMesChar *chr;
     f32 scale;
 
-    result = func_80038208_main(gMes);
+    result = GameMesStartStrCreate(gMes);
     len = strlen("START");
     switch (gMes->subMode) {
         case 0:
@@ -1333,7 +1333,7 @@ s32 func_80039A6C_main(GAMEMES *gMes, Gfx **gfx) {
     return result;
 }
 
-s32 func_80039E80_main(GAMEMES *gMes, Gfx **gfx) {
+s32 GameMesStart9Exec(GAMEMES *gMes, Gfx **gfx) {
     s32 len;
     s32 result;
     s32 i;
@@ -1347,7 +1347,7 @@ s32 func_80039E80_main(GAMEMES *gMes, Gfx **gfx) {
     f32 x, y;
 
     endY = endX = startX = startY = 0.0f;
-    result = func_80038208_main(gMes);
+    result = GameMesStartStrCreate(gMes);
     t = 1.0f;
     left = 55.0f;
     right = 265.0f;
@@ -1462,11 +1462,11 @@ s32 func_80039E80_main(GAMEMES *gMes, Gfx **gfx) {
     return result;
 }
 
-s32 func_8003A2EC_main(GAMEMES *gMes, Gfx **gfx) {
-    return func_80039E80_main(gMes, gfx);
+s32 GameMesStart10Exec(GAMEMES *gMes, Gfx **gfx) {
+    return GameMesStart9Exec(gMes, gfx);
 }
 
-s16 func_8003A308_main(GAMEMES *gMes, char *str, u8 flags, s16 arg3, s16 arg4) {
+s16 GameMesStrInit(GAMEMES *gMes, char *str, u8 flags, s16 arg3, s16 arg4) {
     s16 i;
 
     for (i = 0; i < GMES_STRMAX; i++) {
@@ -1476,10 +1476,10 @@ s16 func_8003A308_main(GAMEMES *gMes, char *str, u8 flags, s16 arg3, s16 arg4) {
 }
 
 s16 GameMesStrCreate(GAMEMES *gMes, char *str, u8 flags, s16 arg3, s16 arg4) {
-    return func_8003A3C4_main(gMes, (u8 *)str, flags, arg3, arg4, 1.0f, 1.0f);
+    return GameMesStrCreateScale(gMes, (u8 *)str, flags, arg3, arg4, 1.0f, 1.0f);
 }
 
-s16 func_8003A3C4_main(GAMEMES *gMes, u8 *str, u8 flags, s16 x, s16 y, f32 scaleX, f32 scaleY) {
+s16 GameMesStrCreateScale(GAMEMES *gMes, u8 *str, u8 flags, s16 x, s16 y, f32 scaleX, f32 scaleY) {
     s16 grp;
     s16 animId = -1;
     s16 len;
@@ -1491,7 +1491,7 @@ s16 func_8003A3C4_main(GAMEMES *gMes, u8 *str, u8 flags, s16 x, s16 y, f32 scale
     u32 code;
     u8 *p;
 
-    len = func_8005B5EC_main(str);
+    len = HuWinStrLen(str);
     for (i = 0; i < GMES_STRMAX; i++) {
         if (gMes->strSprId[i] == HUSPR_NONE && gMes->strGId[i] == HUSPR_NONE) {
             break;
@@ -1521,7 +1521,7 @@ s16 func_8003A3C4_main(GAMEMES *gMes, u8 *str, u8 flags, s16 x, s16 y, f32 scale
         y = -y * scaleY;
     }
     for (member = 1; *str != 0; member++) {
-        code = func_8003A81C_main(str, flags);
+        code = GameMesCharCreate(str, flags);
         animId = code >> 16;
         HuSprGrpMemberSet(grp, member, animId, code & 0xFF);
         ofsY = 0;
@@ -1542,7 +1542,7 @@ s16 func_8003A3C4_main(GAMEMES *gMes, u8 *str, u8 flags, s16 x, s16 y, f32 scale
         } else {
             x += charW * scaleX;
         }
-        func_800554C4_main(grp, member, 0);
+        HuSprParentSet(grp, member, 0);
         if (str[1] == 0x80 || str[1] == 0x81) {
             str++;
         }
@@ -1550,52 +1550,52 @@ s16 func_8003A3C4_main(GAMEMES *gMes, u8 *str, u8 flags, s16 x, s16 y, f32 scale
     }
     HuSprGrpMemberSet(grp, 0, animId, 0);
     HuSprDispOff(grp, 0);
-    func_800554C4_main(grp, 0, -1);
+    HuSprParentSet(grp, 0, -1);
     return i;
 }
 
-u32 func_8003A81C_main(u8 *str, u8 flags) {
+u32 GameMesCharCreate(u8 *str, u8 flags) {
     u8 c = str[0];
     s32 idx = 0;
     s32 type;
     s16 animId;
 
-    type = func_8003A9C8_main(str, 0, &idx);
+    type = GameMesCharFileGet(str, 0, &idx);
     if (type == 2) {
         if (flags & 1) {
             if (D_800B1A70_main[2] == -1) {
-                animId = D_800B1A70_main[2] = func_8003AE44_main(0x87);
+                animId = D_800B1A70_main[2] = GameMesAnimRead(0x87);
             } else {
                 animId = D_800B1A70_main[2];
             }
         } else {
             if (D_800B1A58_main[2] == -1) {
-                animId = D_800B1A58_main[2] = func_8003AE44_main(0x86);
+                animId = D_800B1A58_main[2] = GameMesAnimRead(0x86);
             } else {
                 animId = D_800B1A58_main[2];
             }
         }
     } else if (type == 4) {
         if (D_800B1A58_main[4] == -1) {
-            animId = D_800B1A58_main[4] = func_8003AE44_main(0x88);
+            animId = D_800B1A58_main[4] = GameMesAnimRead(0x88);
         } else {
             animId = D_800B1A58_main[4];
         }
     } else if (type == 5) {
         if (D_800B1A58_main[5] == -1) {
-            animId = D_800B1A58_main[5] = func_8003AE44_main(0x89);
+            animId = D_800B1A58_main[5] = GameMesAnimRead(0x89);
         } else {
             animId = D_800B1A58_main[5];
         }
     } else if (type == 6) {
         if (D_800B1A58_main[6] == -1) {
-            animId = D_800B1A58_main[6] = func_8003AE44_main(0x8A);
+            animId = D_800B1A58_main[6] = GameMesAnimRead(0x8A);
         } else {
             animId = D_800B1A58_main[6];
         }
     } else if (type == 7) {
         if (D_800B1A58_main[7] == -1) {
-            animId = D_800B1A58_main[7] = func_8003AE44_main(0x8B);
+            animId = D_800B1A58_main[7] = GameMesAnimRead(0x8B);
         } else {
             animId = D_800B1A58_main[7];
         }
@@ -1612,7 +1612,7 @@ u32 func_8003A81C_main(u8 *str, u8 flags) {
     return (animId << 16) | idx;
 }
 
-s32 func_8003A9C8_main(u8 *str, s32 flags, s32 *idx) {
+s32 GameMesCharFileGet(u8 *str, s32 flags, s32 *idx) {
     u16 c = str[0];
     u8 next = str[1];
     s32 i;
@@ -1721,7 +1721,7 @@ s32 func_8003A9C8_main(u8 *str, s32 flags, s32 *idx) {
     return 3;
 }
 
-s32 func_8003AC9C_main(u8 *str, s32 mode, u8 flags, s32 *width) {
+s32 GameMesCharWidthGet(u8 *str, s32 mode, u8 flags, s32 *width) {
     s32 c = str[0];
     u8 next = str[1];
     s32 w;
@@ -1803,7 +1803,7 @@ s32 func_8003AC9C_main(u8 *str, s32 mode, u8 flags, s32 *width) {
     return 3;
 }
 
-s16 func_8003AE44_main(s16 fileNo) {
+s16 GameMesAnimRead(s16 fileNo) {
     void *data = DataReadTemp(fileNo | 0xC0000);
     s16 animId = HuSprAnimRead(data);
 
@@ -1889,16 +1889,16 @@ s16 CreateFontChar(u8 c, u8 flags) {
     return id;
 }
 
-void func_8003B128_main(GAMEMES *gMes) {
+void GMesSprClose(GAMEMES *gMes) {
     GMesSprKill(gMes);
     GameMesStub();
 }
 
-s32 func_8003B14C_main(GAMEMES *gMes, Gfx **gfx) {
-    return func_8003B4D8_main(gMes, 0xC0090, 0x253);
+s32 GameMesFinish11Exec(GAMEMES *gMes, Gfx **gfx) {
+    return GameMesImageExec(gMes, 0xC0090, 0x253);
 }
 
-s32 func_8003B170_main(GAMEMES *gMes, char *str, s32 seNo) {
+s32 GameMesStrPopExec(GAMEMES *gMes, char *str, s32 seNo) {
     f32 len = strlen(str);
     f32 i;
     f32 t;
@@ -1934,7 +1934,7 @@ s32 func_8003B170_main(GAMEMES *gMes, char *str, s32 seNo) {
     return TRUE;
 }
 
-s32 func_8003B4D8_main(GAMEMES *gMes, s32 fileNo, s32 seNo) {
+s32 GameMesImageExec(GAMEMES *gMes, s32 fileNo, s32 seNo) {
     s32 result;
     s32 i;
 
@@ -1944,7 +1944,7 @@ s32 func_8003B4D8_main(GAMEMES *gMes, s32 fileNo, s32 seNo) {
     result = TRUE;
     switch (gMes->subMode) {
         case 0:
-            func_8003DCA4_main(gMes, fileNo);
+            GameMesImageCreate(gMes, fileNo);
             HuAudFXPlay(seNo);
             D_800D6A58_main = 1;
             D_800D1100_main = 0;
@@ -2000,7 +2000,7 @@ s32 func_8003B4D8_main(GAMEMES *gMes, s32 fileNo, s32 seNo) {
     return result;
 }
 
-s32 func_8003B7E8_main(GAMEMES *gMes, Gfx **gfx) {
+s32 GameMesFinish12Exec(GAMEMES *gMes, Gfx **gfx) {
     s32 result;
     s32 i;
 
@@ -2010,7 +2010,7 @@ s32 func_8003B7E8_main(GAMEMES *gMes, Gfx **gfx) {
     result = TRUE;
     switch (gMes->subMode) {
         case 0:
-            func_8003DCA4_main(gMes, 0xC0090);
+            GameMesImageCreate(gMes, 0xC0090);
             HuAudFXPlay(0x253);
             D_800D6A58_main = 1;
             D_800D1100_main = 0;
@@ -2065,7 +2065,7 @@ s32 func_8003B7E8_main(GAMEMES *gMes, Gfx **gfx) {
     return result;
 }
 
-s32 func_8003BB84_main(GAMEMES *gMes, Gfx **gfx) {
+s32 GameMesTimeUpExec(GAMEMES *gMes, Gfx **gfx) {
     s32 result;
     s32 i;
 
@@ -2075,7 +2075,7 @@ s32 func_8003BB84_main(GAMEMES *gMes, Gfx **gfx) {
     result = TRUE;
     switch (gMes->subMode) {
         case 0:
-            func_8003DCA4_main(gMes, 0xC0090);
+            GameMesImageCreate(gMes, 0xC0090);
             HuAudFXPlay(0x253);
             D_800D6A58_main = 1;
             D_800D1100_main = 0;
@@ -2161,7 +2161,7 @@ s32 func_8003BB84_main(GAMEMES *gMes, Gfx **gfx) {
  * per-character work and builds the string sprites, state 6 tears everything down.
  * The callers implement the remaining states (1: animate in, 2: hold, 5: animate out).
  */
-s32 func_8003C058_main(GAMEMES *gMes) {
+s32 GameMesFinishStrCreate(GAMEMES *gMes) {
     s32 len = strlen("FINISH");
     s32 result;
     s32 i;
@@ -2217,14 +2217,14 @@ s32 func_8003C058_main(GAMEMES *gMes) {
     return result;
 }
 
-s32 func_8003C248_main(GAMEMES *gMes, Gfx **gfx) {
+s32 GameMesFinish14Exec(GAMEMES *gMes, Gfx **gfx) {
     s32 len;
     s32 result;
     s32 i;
     GMesChar *chr;
     f32 scale;
 
-    result = func_8003C058_main(gMes);
+    result = GameMesFinishStrCreate(gMes);
     len = strlen("FINISH");
     switch (gMes->subMode) {
         case 0:
@@ -2299,14 +2299,14 @@ s32 func_8003C248_main(GAMEMES *gMes, Gfx **gfx) {
     return result;
 }
 
-s32 func_8003C644_main(GAMEMES *gMes, Gfx **gfx) {
+s32 GameMesFinish15Exec(GAMEMES *gMes, Gfx **gfx) {
     s32 len;
     s32 result;
     s32 i;
     GMesChar *chr;
     f32 t;
 
-    result = func_8003C058_main(gMes);
+    result = GameMesFinishStrCreate(gMes);
     len = strlen("FINISH");
     switch (gMes->subMode) {
         case 0:
@@ -2375,14 +2375,14 @@ s32 func_8003C644_main(GAMEMES *gMes, Gfx **gfx) {
     return result;
 }
 
-s32 func_8003CA24_main(GAMEMES *gMes, Gfx **gfx) {
+s32 GameMesFinish16Exec(GAMEMES *gMes, Gfx **gfx) {
     s32 len;
     s32 result;
     s32 i;
     GMesChar *chr;
     f32 scale;
 
-    result = func_8003C058_main(gMes);
+    result = GameMesFinishStrCreate(gMes);
     len = strlen("FINISH");
     switch (gMes->subMode) {
         case 0:
@@ -2457,14 +2457,14 @@ s32 func_8003CA24_main(GAMEMES *gMes, Gfx **gfx) {
     return result;
 }
 
-s32 func_8003CE20_main(GAMEMES *gMes, Gfx **gfx) {
+s32 GameMesMgFinishExec(GAMEMES *gMes, Gfx **gfx) {
     s32 len;
     s32 result;
     s32 i;
     f32 scale;
     f32 t;
 
-    result = func_8003C058_main(gMes);
+    result = GameMesFinishStrCreate(gMes);
     len = strlen("FINISH");
     switch (gMes->subMode) {
         case 0:
@@ -2528,14 +2528,14 @@ s32 func_8003CE20_main(GAMEMES *gMes, Gfx **gfx) {
     return result;
 }
 
-s32 func_8003D134_main(GAMEMES *gMes, Gfx **gfx) {
+s32 GameMesFinish18Exec(GAMEMES *gMes, Gfx **gfx) {
     s32 len;
     s32 result;
     s32 i;
     GMesChar *chr;
     f32 t;
 
-    result = func_8003C058_main(gMes);
+    result = GameMesFinishStrCreate(gMes);
     len = strlen("FINISH");
     switch (gMes->subMode) {
         case 0:
@@ -2602,14 +2602,14 @@ s32 func_8003D134_main(GAMEMES *gMes, Gfx **gfx) {
     return result;
 }
 
-s32 func_8003D4DC_main(GAMEMES *gMes, Gfx **gfx) {
+s32 GameMesFinish19Exec(GAMEMES *gMes, Gfx **gfx) {
     s32 len;
     s32 result;
     s32 i;
     GMesChar *chr;
     f32 t;
 
-    result = func_8003C058_main(gMes);
+    result = GameMesFinishStrCreate(gMes);
     len = strlen("FINISH");
     switch (gMes->subMode) {
         case 0:
@@ -2676,14 +2676,14 @@ s32 func_8003D4DC_main(GAMEMES *gMes, Gfx **gfx) {
     return result;
 }
 
-s32 func_8003D890_main(GAMEMES *gMes, Gfx **gfx) {
+s32 GameMesFinish20Exec(GAMEMES *gMes, Gfx **gfx) {
     s32 len;
     s32 result;
     s32 i;
     GMesChar *chr;
     f32 scale;
 
-    result = func_8003C058_main(gMes);
+    result = GameMesFinishStrCreate(gMes);
     len = strlen("FINISH");
     switch (gMes->subMode) {
         case 0:
@@ -2757,11 +2757,11 @@ s32 func_8003D890_main(GAMEMES *gMes, Gfx **gfx) {
     return result;
 }
 
-s32 func_8003DC88_main(GAMEMES *gMes, Gfx **gfx) {
-    return func_8003D890_main(gMes, gfx);
+s32 GameMesFinish21Exec(GAMEMES *gMes, Gfx **gfx) {
+    return GameMesFinish20Exec(gMes, gfx);
 }
 
-void func_8003DCA4_main(GAMEMES *gMes, s32 fileNo) {
+void GameMesImageCreate(GAMEMES *gMes, s32 fileNo) {
     void *data;
     s16 sprId0;
     s16 sprId1;
@@ -2780,14 +2780,14 @@ void func_8003DCA4_main(GAMEMES *gMes, s32 fileNo) {
     HuSprAttrReset(grp, 0, 0xFFFF);
     HuSprAttrSet(grp, 0, 0x1008);
     HuSprPosSet(grp, 0, 160, gMes->pos.y);
-    func_800554C4_main(grp, 0, -1);
+    HuSprParentSet(grp, 0, -1);
     HuSprGrpMemberSet(grp, 1, sprId1, 0);
     HuSprTPLvlSet(grp, 1, 255);
     HuSprPriSet(grp, 1, 6);
     HuSprAttrReset(grp, 1, 0xFFFF);
     HuSprAttrSet(grp, 1, 0x1008);
     HuSprColorSet(grp, 1, 69, 2, 133);
-    func_800554C4_main(grp, 1, 0);
+    HuSprParentSet(grp, 1, 0);
 }
 
 // The following data is defined here rather than at the top of the file so that the
@@ -2835,8 +2835,8 @@ s32 GameMesMgWinnerExec(GAMEMES *gMes, Gfx **gfx) {
     result = TRUE;
     switch (gMes->subMode) {
         case 0:
-            func_8003A3C4_main(gMes, (u8 *)D_800A1410_main[gMes->unk0E], 1, -1, -1, 1.0f, 1.0f);
-            func_8003A3C4_main(gMes, (u8 *)wonStr, 1, -1, -1, 1.0f, 1.0f);
+            GameMesStrCreateScale(gMes, (u8 *)D_800A1410_main[gMes->unk0E], 1, -1, -1, 1.0f, 1.0f);
+            GameMesStrCreateScale(gMes, (u8 *)wonStr, 1, -1, -1, 1.0f, 1.0f);
             total = nameLen + wonLen + 1.0f;
             gMes->work = 160.0f - total * 17.6f / 2.0f + nameLen * 17.6f / 2.0f;
             gMes->pos.x = gMes->work;
@@ -2893,7 +2893,7 @@ s32 GameMesMgWinnerExec(GAMEMES *gMes, Gfx **gfx) {
     return result;
 }
 
-s32 func_8003E4A4_main(GAMEMES *gMes, Gfx **gfx) {
+s32 GameMesMgLoserExec(GAMEMES *gMes, Gfx **gfx) {
     char lostStr[] = "LOST";
     f32 nameLen = strlen(D_800A1410_main[gMes->subMode]);
     f32 lostLen = strlen(lostStr);
@@ -2950,14 +2950,14 @@ s32 func_8003E4A4_main(GAMEMES *gMes, Gfx **gfx) {
     return TRUE;
 }
 
-s32 func_8003EBC8_main(GAMEMES *gMes, Gfx **gfx) {
+s32 GameMes24Exec(GAMEMES *gMes, Gfx **gfx) {
     char *str;
     f32 scale;
     f32 i;
 
     if (gMes->time == 0) {
         str = HuMemMemoryAllocPerm(256);
-        func_80045208_main((u8 *)str, (void *)gMes->unk1C);
+        GameMesStrConv((u8 *)str, (void *)gMes->unk1C);
         GameMesStrCreate(gMes, str, gMes->unk02, -1, -1);
         gMes->subMode = strlen(str);
         HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
@@ -2983,13 +2983,13 @@ s32 func_8003EBC8_main(GAMEMES *gMes, Gfx **gfx) {
     return TRUE;
 }
 
-s32 func_8003EE98_main(GAMEMES *gMes, Gfx **gfx) {
+s32 GameMes25Exec(GAMEMES *gMes, Gfx **gfx) {
     char *str;
     f32 i;
 
     if (gMes->time == 0) {
         str = HuMemMemoryAllocPerm(256);
-        func_80045208_main((u8 *)str, (void *)gMes->unk1C);
+        GameMesStrConv((u8 *)str, (void *)gMes->unk1C);
         GameMesStrCreate(gMes, str, gMes->unk02, -1, -1);
         gMes->subMode = strlen(str);
         HuMemMemoryFreePerm(str);
@@ -3087,7 +3087,7 @@ s32 GMesTimerExec(GAMEMES *gMes, Gfx **arg1) {
 }
 
 // GMesUpdate? GMesTimerUpdate? GMesTimerSet?
-void func_8003F578_main(s16 arg0) {
+void GMesTimerValueSet(s16 arg0) {
     if (gMesTimerId < 0 || arg0 < 0) {
         return;
     }
@@ -3095,7 +3095,7 @@ void func_8003F578_main(s16 arg0) {
 }
 
 // GMesTimerKill?
-void func_8003F5C0_main(void) {
+void GMesTimerEnd(void) {
     if (gMesTimerId < 0) {
         return;
     }
@@ -3211,7 +3211,7 @@ s32 GameMesMgRecordExec(GAMEMES *gMes, Gfx **gfx) {
     return result;
 }
 
-s32 func_8003FD34_main(GAMEMES *gMes, Gfx **gfx) {
+s32 GameMesTimeUp2Exec(GAMEMES *gMes, Gfx **gfx) {
     s32 result;
     s32 i;
 
@@ -3221,7 +3221,7 @@ s32 func_8003FD34_main(GAMEMES *gMes, Gfx **gfx) {
     result = TRUE;
     switch (gMes->subMode) {
         case 0:
-            func_8003DCA4_main(gMes, 0xC0092);
+            GameMesImageCreate(gMes, 0xC0092);
             D_800D6A58_main = 1;
             D_800D1100_main = 0;
             gMes->pos.x = 160.0f;
@@ -3265,7 +3265,7 @@ s32 func_8003FD34_main(GAMEMES *gMes, Gfx **gfx) {
     return result;
 }
 
-s32 func_8003FFD0_main(GAMEMES *gMes, Gfx **gfx) {
+s32 GameMesGoalExec(GAMEMES *gMes, Gfx **gfx) {
     s32 result;
     s32 i;
 
@@ -3275,7 +3275,7 @@ s32 func_8003FFD0_main(GAMEMES *gMes, Gfx **gfx) {
     result = TRUE;
     switch (gMes->subMode) {
         case 0:
-            func_8003DCA4_main(gMes, 0xC0094);
+            GameMesImageCreate(gMes, 0xC0094);
             D_800D6A58_main = 1;
             D_800D1100_main = 0;
             gMes->pos.x = 160.0f;
@@ -3324,7 +3324,7 @@ s32 func_8003FFD0_main(GAMEMES *gMes, Gfx **gfx) {
     return result;
 }
 
-s32 func_80040290_main(GAMEMES *gMes, Gfx **gfx) {
+s32 GameMesGameOverExec(GAMEMES *gMes, Gfx **gfx) {
     s32 result;
     s32 i;
     f32 t;
@@ -3335,7 +3335,7 @@ s32 func_80040290_main(GAMEMES *gMes, Gfx **gfx) {
     result = TRUE;
     switch (gMes->subMode) {
         case 0:
-            func_8003DCA4_main(gMes, 0xC0098);
+            GameMesImageCreate(gMes, 0xC0098);
             HuSprColorSet(gMes->strGId[0], 1, 69, 2, 133);
             gMes->pos.x = 160.0f;
             gMes->pos.y = 120.0f;
@@ -3407,7 +3407,7 @@ s32 func_80040290_main(GAMEMES *gMes, Gfx **gfx) {
     return result;
 }
 
-s32 func_800407B8_main(GAMEMES *gMes, Gfx **gfx) {
+s32 GameMesReadyGoExec(GAMEMES *gMes, Gfx **gfx) {
     char *readyStr = "READY";
     char *goStr = "GO\xC4";
     s32 readyLen;
@@ -3482,7 +3482,7 @@ s32 func_800407B8_main(GAMEMES *gMes, Gfx **gfx) {
             }
             gMes->work++;
             if (gMes->time >= 50) {
-                func_800452BC_main(func_80036610_main());
+                GameMesMgStub(GMesMgNoGet());
                 gMes->subMode = 5;
                 gMes->tpLvl = 255;
             }
@@ -3511,7 +3511,7 @@ s32 func_800407B8_main(GAMEMES *gMes, Gfx **gfx) {
     return result;
 }
 
-s32 func_80040CF4_main(GAMEMES *gMes, Gfx **gfx) {
+s32 GameMesMgWinners2Exec(GAMEMES *gMes, Gfx **gfx) {
     char wonStr[] = "WON\xC4 ";
     f32 name1Len = strlen(D_800A1410_main[gMes->unk0C]);
     f32 name2Len = strlen(D_800A1410_main[gMes->unk0E]);
@@ -3526,8 +3526,8 @@ s32 func_80040CF4_main(GAMEMES *gMes, Gfx **gfx) {
     result = TRUE;
     switch (gMes->subMode) {
         case 0:
-            func_8003A3C4_main(gMes, (u8 *)D_800A1410_main[gMes->unk0C], 1, -1, -1, 0.8f, 1.0f);
-            func_8003A3C4_main(gMes, (u8 *)D_800A1410_main[gMes->unk0E], 1, -1, -1, 0.8f, 1.0f);
+            GameMesStrCreateScale(gMes, (u8 *)D_800A1410_main[gMes->unk0C], 1, -1, -1, 0.8f, 1.0f);
+            GameMesStrCreateScale(gMes, (u8 *)D_800A1410_main[gMes->unk0E], 1, -1, -1, 0.8f, 1.0f);
             GameMesStrCreate(gMes, wonStr, 1, -1, -1);
             gMes->pos.x = 80.0f;
             gMes->pos.y = 0.0f;
@@ -3648,7 +3648,7 @@ s32 GameMesMgDrawExec(GAMEMES *gMes, Gfx **gfx) {
     result = TRUE;
     switch (gMes->subMode) {
         case 0:
-            func_8003DCA4_main(gMes, 0xC0096);
+            GameMesImageCreate(gMes, 0xC0096);
             HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
             D_800D6A58_main = 1;
             D_800D1100_main = 0;
@@ -3710,7 +3710,7 @@ s32 GameMesMgDrawExec(GAMEMES *gMes, Gfx **gfx) {
     return result;
 }
 
-s32 func_80041B68_main(GAMEMES *gMes, Gfx **gfx) {
+s32 GameMesMgWinners3Exec(GAMEMES *gMes, Gfx **gfx) {
     char wonStr[] = "WON\xC4 ";
     s32 startPos[4][2] = { { 95, 80 }, { 210, 80 }, { 155, 140 }, { 170, 145 } };
     s32 endPos[4][2] = { { 240, 117 }, { 80, 117 }, { 160, 80 }, { 160, 145 } };
@@ -3730,9 +3730,9 @@ s32 func_80041B68_main(GAMEMES *gMes, Gfx **gfx) {
     result = TRUE;
     switch (gMes->subMode) {
         case 0:
-            func_8003A3C4_main(gMes, (u8 *)D_800A1410_main[gMes->work], 1, -1, -1, 0.8f, 1.0f);
-            func_8003A3C4_main(gMes, (u8 *)D_800A1410_main[gMes->unk0C], 1, -1, -1, 0.8f, 1.0f);
-            func_8003A3C4_main(gMes, (u8 *)D_800A1410_main[gMes->unk0E], 1, -1, -1, 0.8f, 1.0f);
+            GameMesStrCreateScale(gMes, (u8 *)D_800A1410_main[gMes->work], 1, -1, -1, 0.8f, 1.0f);
+            GameMesStrCreateScale(gMes, (u8 *)D_800A1410_main[gMes->unk0C], 1, -1, -1, 0.8f, 1.0f);
+            GameMesStrCreateScale(gMes, (u8 *)D_800A1410_main[gMes->unk0E], 1, -1, -1, 0.8f, 1.0f);
             GameMesStrCreate(gMes, wonStr, 1, -1, -1);
             gMes->pos.x = startPos[0][0];
             gMes->pos.y = startPos[0][1] + gMes->pos.y;
@@ -3865,7 +3865,7 @@ s32 func_80041B68_main(GAMEMES *gMes, Gfx **gfx) {
     return result;
 }
 
-s32 func_80042AC8_main(GAMEMES *gMes, Gfx **gfx) {
+s32 GameMesMgWinners4Exec(GAMEMES *gMes, Gfx **gfx) {
     char wonStr[] = "WON\xC4 ";
     s32 dx;
     s32 dy;
@@ -3884,11 +3884,11 @@ s32 func_80042AC8_main(GAMEMES *gMes, Gfx **gfx) {
     result = TRUE;
     switch ((s32)gMes->unk10) {
         case 0:
-            func_8003A3C4_main(gMes, (u8 *)D_800A1410_main[gMes->subMode], 1, -1, -1, 0.8f, 1.0f);
-            func_8003A3C4_main(gMes, (u8 *)D_800A1410_main[gMes->work], 1, -1, -1, 0.8f, 1.0f);
-            func_8003A3C4_main(gMes, (u8 *)D_800A1410_main[gMes->unk0C], 1, -1, -1, 0.8f, 1.0f);
-            func_8003A3C4_main(gMes, (u8 *)D_800A1410_main[gMes->unk0E], 1, -1, -1, 0.8f, 1.0f);
-            func_8003A3C4_main(gMes, (u8 *)wonStr, 1, -1, -1, 0.8f, 1.0f);
+            GameMesStrCreateScale(gMes, (u8 *)D_800A1410_main[gMes->subMode], 1, -1, -1, 0.8f, 1.0f);
+            GameMesStrCreateScale(gMes, (u8 *)D_800A1410_main[gMes->work], 1, -1, -1, 0.8f, 1.0f);
+            GameMesStrCreateScale(gMes, (u8 *)D_800A1410_main[gMes->unk0C], 1, -1, -1, 0.8f, 1.0f);
+            GameMesStrCreateScale(gMes, (u8 *)D_800A1410_main[gMes->unk0E], 1, -1, -1, 0.8f, 1.0f);
+            GameMesStrCreateScale(gMes, (u8 *)wonStr, 1, -1, -1, 0.8f, 1.0f);
             gMes->pos.x = D_800A1434_main[0][0];
             gMes->pos.y = D_800A1434_main[0][1];
             gMes->scale.x = gMes->scale.y = 0.5f;
@@ -4067,7 +4067,7 @@ s32 func_80042AC8_main(GAMEMES *gMes, Gfx **gfx) {
     return result;
 }
 
-s32 func_800440D4_main(GAMEMES *gMes, Gfx **gfx) {
+s32 GameMesGotItemExec(GAMEMES *gMes, Gfx **gfx) {
     char *gotStr = "GOT";
     char *itemStr = "ITEM\xC4";
     s32 result;
@@ -4179,7 +4179,7 @@ s32 func_800440D4_main(GAMEMES *gMes, Gfx **gfx) {
     return result;
 }
 
-s32 func_800448C0_main(GAMEMES *gMes, Gfx **gfx) {
+s32 GameMesGotItem2Exec(GAMEMES *gMes, Gfx **gfx) {
     char *gotStr = "GOT";
     char *itemStr = "ITEM";
     char *exclStr = "\xC3";
@@ -4302,13 +4302,13 @@ s32 func_800448C0_main(GAMEMES *gMes, Gfx **gfx) {
     return result;
 }
 
-void func_80045010_main(const s16 *str, s32 flags) {
+void GMesFontMesCreate(const s16 *str, s32 flags) {
     u8 *buf = HuMemMemoryAllocPerm(0x200);
     u8 *c = buf;
 
-    func_80045208_main(buf, (u8 *)str);
+    GameMesStrConv(buf, (u8 *)str);
     while (*c != 0) {
-        func_8003A81C_main(c, flags);
+        GameMesCharCreate(c, flags);
         c += (c[1] == 0x80 || c[1] == 0x81);
         c++;
     }
@@ -4316,7 +4316,7 @@ void func_80045010_main(const s16 *str, s32 flags) {
     HuMemMemoryFreePerm(buf);
 }
 
-u16 func_800450B8_main(u16 code) {
+u16 GameMesCharConv(u16 code) {
     u16 tmp;
     s32 i;
 
@@ -4324,26 +4324,26 @@ u16 func_800450B8_main(u16 code) {
         tmp = (D_800A14AC_main[i] << 8) | D_800A14AC_main[i + 1];
         if (tmp == code) {
             tmp = (D_800A1500_main[i] << 8) | D_800A1500_main[i + 1];
-            return (func_8005FA90_main((u8 *)&tmp) << 8) | 0x80;
+            return (HuWinMesCharConv((u8 *)&tmp) << 8) | 0x80;
         }
     }
     for (i = 0; D_800A1554_main[i] != 0; i += 2) {
         tmp = (D_800A1554_main[i] << 8) | D_800A1554_main[i + 1];
         if (tmp == code) {
             tmp = (D_800A156C_main[i] << 8) | D_800A156C_main[i + 1];
-            return (func_8005FA90_main((u8 *)&tmp) << 8) | 0x81;
+            return (HuWinMesCharConv((u8 *)&tmp) << 8) | 0x81;
         }
     }
-    return func_8005FA90_main((u8 *)&code) << 8;
+    return HuWinMesCharConv((u8 *)&code) << 8;
 }
 
-s32 func_80045208_main(u8 *dst, u8 *src) {
+s32 GameMesStrConv(u8 *dst, u8 *src) {
     u16 code;
     s32 len = 0;
     u8 *p = src;
 
     while (*p != 0) {
-        code = func_800450B8_main((p[0] << 8) | p[1]);
+        code = GameMesCharConv((p[0] << 8) | p[1]);
         if (code & 0xFF) {
             dst[0] = code >> 8;
             dst[1] = code;
@@ -4360,14 +4360,14 @@ s32 func_80045208_main(u8 *dst, u8 *src) {
     return len + 1;
 }
 
-s32 func_800452A0_main(void *arg0, void *arg1) {
-    return func_80045208_main(arg0, arg1);
+s32 GameMesStrConv2(void *arg0, void *arg1) {
+    return GameMesStrConv(arg0, arg1);
 }
 
-void func_800452BC_main(s32 mgIndex) {
+void GameMesMgStub(s32 mgIndex) {
 }
 
-s32 func_800452C4_main(void) {
+s32 GameMesOvlTypeGet(void) {
     switch (omovl) {
         case 0x1:
         case 0x2:
@@ -4394,7 +4394,7 @@ s32 func_800452C4_main(void) {
     }
 }
 
-s32 func_80045314_main(void) {
+s32 GameMesOvlOfsGet(void) {
     switch (omovl) {
         case 2:
             return 20;

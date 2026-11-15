@@ -240,12 +240,12 @@ static void MBMgCallListExec(omObjData *arg0) {
 
                         arg0->work[0] = 2;
                         arg0->work[3] = 0x3C;
-                        func_8005D2D4_main(entry->obj);
+                        HuWinNoCRSet(entry->obj);
                         HuWinHomeClear(D_80102BD0_shared_board[arg0->work[1]].obj);
                         HuWinMesSet(D_80102BD0_shared_board[arg0->work[1]].obj,
                                             D_80102C08_shared_board[arg0->work[1]] + FILE_FROM_OVL_ID(boardcall) - 1, HUWIN_POS_CENTER, 4);
                         HuWinMesColSet(D_80102BD0_shared_board[arg0->work[1]].obj, 1);
-                        func_8005C154_main(D_80102BD0_shared_board[arg0->work[1]].obj, 0xA0, 0xA0, 0xA0);
+                        HuWinMesDefColSet(D_80102BD0_shared_board[arg0->work[1]].obj, 0xA0, 0xA0, 0xA0);
                         HuWinBGColSet(D_80102BD0_shared_board[arg0->work[1]].obj, 0xFE, 0xFF, 0xD0);
                         HuWinMesSpeedSet(D_80102BD0_shared_board[arg0->work[1]].obj, 0);
                     } else {
@@ -447,7 +447,7 @@ void MBMgCallListCreate(s32 arg0) {
             entry->h,
             0, 4);
         HuWinPriSet(entry->obj, 0x2328);
-        func_80060144_main(entry->obj);
+        HuWinDummy(entry->obj);
         HuWinCenterPosSet(entry->obj, entry->w / 2, entry->h / 2);
         HuWinBGTPLvlSet(entry->obj, 0);
 
@@ -503,7 +503,7 @@ void MBMgCallListCreate(s32 arg0) {
             break;
         }
 
-        func_8005D2D4_main(entry->obj);
+        HuWinNoCRSet(entry->obj);
 
         if (GWMgUnlockCheck(D_80102C08_shared_board[i] - 1) != FALSE) {
             HuWinMesSet(entry->obj, D_80102C08_shared_board[i] + FILE_FROM_OVL_ID(boardcall) - 1, HUWIN_POS_CENTER, 4);
@@ -766,7 +766,7 @@ static void MBMgCallExec(void) {
     temp_v0->velocity.x = 120.0f;
     MBMotionSet(temp_v0, 0, 0);
     HuPrcVSleep();
-    func_8001C814_main(temp_v0->omObj1->model[0], 2, 1);
+    Hu3DMotionAttrSet(temp_v0->omObj1->model[0], 2, 1);
     temp_s2 = process->user_data;
 
     for (;;) {
@@ -783,7 +783,7 @@ static void MBMgCallExec(void) {
                 } else {
                     var_s5 = 2;
                     xVelocity = 0;
-                    func_8001C814_main(temp_v0->omObj1->model[0], 1, 0);
+                    Hu3DMotionAttrSet(temp_v0->omObj1->model[0], 1, 0);
                 }
                 break;
             case 2:
@@ -1031,7 +1031,7 @@ static void func_800E0C94_shared_board(void) {
     temp_v0->velocity.x = 120.0f;
     MBMotionSet(temp_v0, 0, 0);
     HuPrcVSleep();
-    func_8001C814_main(temp_v0->omObj1->model[0], 2, 1);
+    Hu3DMotionAttrSet(temp_v0->omObj1->model[0], 2, 1);
     temp_s2 = process->user_data;
     HuAudFXPlay(0x156);
 
@@ -1045,7 +1045,7 @@ static void func_800E0C94_shared_board(void) {
                 } else {
                     var_s5 = 2;
                     xVelocity = 0;
-                    func_8001C814_main(temp_v0->omObj1->model[0], 1, 0);
+                    Hu3DMotionAttrSet(temp_v0->omObj1->model[0], 1, 0);
                 }
                 break;
             case 2:

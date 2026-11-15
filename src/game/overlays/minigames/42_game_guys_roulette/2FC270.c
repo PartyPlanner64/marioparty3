@@ -161,8 +161,8 @@ void func_80105A78_game_guys_roulette(void) {
     s32 camIndex;
 
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    func_8000B5F0_main(1);
-    camIndex = func_8000B638_main();
+    CamSetupInit(1);
+    camIndex = CamSetupMapCullAdd();
     ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(camIndex, 19.03f, 80.0f, 8000.0f);
@@ -177,17 +177,17 @@ void func_80105A78_game_guys_roulette(void) {
 
 void func_80105BD8_game_guys_roulette(void) {
     HuWinInit();
-    D_8010AADE_game_guys_roulette = func_80060880_main(130, 110, 9);
-    func_8005B63C_main(D_8010AADE_game_guys_roulette, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
-    func_80061100_main(D_8010AADE_game_guys_roulette, 1);
-    func_80060EA8_main(D_8010AADE_game_guys_roulette, 1);
+    D_8010AADE_game_guys_roulette = HuWinExCreateStyled(130, 110, 9);
+    HuWinAttrSet(D_8010AADE_game_guys_roulette, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
+    HuWinExPriSet(D_8010AADE_game_guys_roulette, 1);
+    HuWinExClose(D_8010AADE_game_guys_roulette, 1);
 }
 
 void func_80105C40_game_guys_roulette(void) {
-    func_8001FE20_main(32);
-    func_800142A0_main(32);
+    MapCollInit(32);
+    Hu3DSprModelInit(32);
     omInitObjMan(32, 32);
-    func_8004A208_main();
+    omGameSysInit();
     func_80105A28_game_guys_roulette();
     func_80105A78_game_guys_roulette();
     func_80105BD8_game_guys_roulette();
@@ -366,13 +366,13 @@ void func_80106428_game_guys_roulette(omObjData *object) {
 }
 
 void func_801068E8_game_guys_roulette(omObjData *object) {
-    object->model[0] = func_8000B108_main(0xA0063, 0x2B9);
+    object->model[0] = Hu3DModelRead(0xA0063, 0x2B9);
     omSetTra(object, 0.0f, 193.0f, -117.0f);
     omSetRot(object, 0.0f, 0.0f, 0.0f);
     omSetSca(object, 1.0f, 1.0f, 1.0f);
-    func_8000B460_main(object, 0, 0xA0063);
-    func_8000B460_main(object, 1, 0xA0066);
-    func_8000B460_main(object, 2, 0xA0067);
+    omObjMotionRead(object, 0, 0xA0063);
+    omObjMotionRead(object, 1, 0xA0066);
+    omObjMotionRead(object, 2, 0xA0067);
     Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[0]].motId, 0, 30, 2);
     object->func = NULL;
 }
@@ -381,12 +381,12 @@ void func_801069DC_game_guys_roulette(omObjData *object) {
     GameGuysRoulettePrizeFiles modelFiles = D_8010A6F8_game_guys_roulette;
     u8 i;
 
-    object->model[0] = func_8000B108_main(0x63000D, 0x2B9);
+    object->model[0] = Hu3DModelRead(0x63000D, 0x2B9);
     omSetTra(object, 0.0f, 100.0f, 0.0f);
     omSetRot(object, 15.0f, 0.0f, 0.0f);
     omSetSca(object, 1.0f, 1.0f, 1.0f);
     for (i = 1; i < 7; i++) {
-        object->model[i] = func_8000B108_main(modelFiles.ids[i - 1] | 0x630000, 0x2B9);
+        object->model[i] = Hu3DModelRead(modelFiles.ids[i - 1] | 0x630000, 0x2B9);
         Hu3DModelPosSet(object->model[i], 0.0f, 100.0f, 0.0f);
         Hu3DModelRotSet(object->model[i], 15.0f, 0.0f, 0.0f);
         Hu3DModelScaleSet(object->model[i], 1.0f, 1.0f, 1.0f);
@@ -397,7 +397,7 @@ void func_801069DC_game_guys_roulette(omObjData *object) {
 void func_80106B74_game_guys_roulette(omObjData *object) {
     GameGuysRouletteCharFiles charFiles = D_8010A710_game_guys_roulette;
 
-    object->model[0] = func_8000B108_main(charFiles.ids[D_8010AAD6_game_guys_roulette.chr] | 0x210000, 0x2B9);
+    object->model[0] = Hu3DModelRead(charFiles.ids[D_8010AAD6_game_guys_roulette.chr] | 0x210000, 0x2B9);
     omSetTra(object, 0.0f, 0.0f, 0.0f);
     omSetRot(object, 15.0f, 0.0f, 0.0f);
     omSetSca(object, 1.0f, 1.0f, 1.0f);
@@ -408,8 +408,8 @@ void func_80106B74_game_guys_roulette(omObjData *object) {
 void func_80106C58_game_guys_roulette(omObjData *object) {
     f32 x, y, z;
 
-    object->model[0] = func_8000B108_main(0x63000B, 0x2B9);
-    object->model[1] = func_8000B108_main(0x63000C, 0x2B9);
+    object->model[0] = Hu3DModelRead(0x63000B, 0x2B9);
+    object->model[1] = Hu3DModelRead(0x63000C, 0x2B9);
     x = cosdf(270.0f) * 85.0f;
     y = cosdf(15.0f) * 100.0f - sindf(270.0f) * 85.0f * sindf(15.0f);
     z = sindf(15.0f) * 100.0f + sindf(270.0f) * 85.0f * cosdf(15.0f);
@@ -419,11 +419,11 @@ void func_80106C58_game_guys_roulette(omObjData *object) {
 }
 
 void func_80106DD8_game_guys_roulette(omObjData *object) {
-    object->model[0] = func_8000B108_main(0x630014, 0x2B9);
+    object->model[0] = Hu3DModelRead(0x630014, 0x2B9);
     omSetTra(object, 0.0f, 0.0f, 0.0f);
     omSetRot(object, 0.0f, 0.0f, 0.0f);
     omSetSca(object, 1.0f, 1.0f, 1.0f);
-    func_8000B460_main(object, 0, 0x630014);
+    omObjMotionRead(object, 0, 0x630014);
     Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[0]].motId, 0, 30, 2);
     object->func = NULL;
 }
@@ -498,7 +498,7 @@ void func_80107104_game_guys_roulette(void) {
 
     HuWinHomeClear(D_8010AADE_game_guys_roulette);
     HuAudFXPlay(0x11D);
-    func_80060C14_main(D_8010AADE_game_guys_roulette, 1);
+    HuWinExOpen(D_8010AADE_game_guys_roulette, 1);
     HuWinMesSet(D_8010AADE_game_guys_roulette, 0x2D00, -1, -1);
     func_8010726C_game_guys_roulette(D_8010AADE_game_guys_roulette);
     HuWinMesSet(D_8010AADE_game_guys_roulette, 0x2D01, -1, -1);
@@ -517,7 +517,7 @@ void func_80107104_game_guys_roulette(void) {
     HuWinMesSet(D_8010AADE_game_guys_roulette, 0x2D03, -1, -1);
     func_8010726C_game_guys_roulette(D_8010AADE_game_guys_roulette);
     HuWinHomeClear(D_8010AADE_game_guys_roulette);
-    func_80060EA8_main(D_8010AADE_game_guys_roulette, 1);
+    HuWinExClose(D_8010AADE_game_guys_roulette, 1);
     D_8010AAE0_game_guys_roulette = 1;
     while (TRUE) {
         HuPrcVSleep();
@@ -588,7 +588,7 @@ void func_801073AC_game_guys_roulette(void) {
             decide = TRUE;
         }
     }
-    func_8003F578_main(D_8010A657_game_guys_roulette);
+    GMesTimerValueSet(D_8010A657_game_guys_roulette);
 
     if (D_8010A654_game_guys_roulette == 0) {
         if (dir == 1 && D_8010AB51_game_guys_roulette != 0) {
@@ -639,7 +639,7 @@ void func_801073AC_game_guys_roulette(void) {
     }
 
     if (decide == TRUE) {
-        func_8003F5C0_main();
+        GMesTimerEnd();
         D_800D6A58_main = 1;
         HuAudFXPlay(3);
         omVibrate(D_8010AAD6_game_guys_roulette.player, 10, 0, 10);
@@ -665,12 +665,12 @@ void func_801073AC_game_guys_roulette(void) {
 
 void func_80107A00_game_guys_roulette(void) {
     HuWinHomeClear(D_8010AADE_game_guys_roulette);
-    func_80060C14_main(D_8010AADE_game_guys_roulette, 1);
+    HuWinExOpen(D_8010AADE_game_guys_roulette, 1);
     HuWinMesSet(D_8010AADE_game_guys_roulette, 0x2D04, -1, -1);
     HuWinInsertMesSet(D_8010AADE_game_guys_roulette, D_8010AB51_game_guys_roulette + 0x2D05, 0);
     func_8010726C_game_guys_roulette(D_8010AADE_game_guys_roulette);
     HuWinHomeClear(D_8010AADE_game_guys_roulette);
-    func_80060EA8_main(D_8010AADE_game_guys_roulette, 1);
+    HuWinExClose(D_8010AADE_game_guys_roulette, 1);
     D_8010AAE2_game_guys_roulette = 1;
     while (TRUE) {
         HuPrcVSleep();
@@ -699,7 +699,7 @@ void func_80107B20_game_guys_roulette(void) {
     }
 
     if (D_8010A65F_game_guys_roulette == 0) {
-        func_8001C5B4_main(D_8010A918_game_guys_roulette->model[0], D_8010A918_game_guys_roulette->motion[1]);
+        Hu3DMotionModelSet(D_8010A918_game_guys_roulette->model[0], D_8010A918_game_guys_roulette->motion[1]);
         D_8010A65F_game_guys_roulette = 1;
     } else if (D_8010A65F_game_guys_roulette == 1) {
         if (D_8010A660_game_guys_roulette == 0 &&
@@ -837,17 +837,17 @@ u8 D_8010A6A4_game_guys_roulette[6] = { 2, 4, 8, 16, 32, 64 }; // prize multipli
 
 void func_80108480_game_guys_roulette(void) {
     if (D_8010A67B_game_guys_roulette == 0) {
-        func_8004AB0C_main(30);
+        HuAudFXAllFadeOut(30);
         if (D_8010AB58_game_guys_roulette == 1) {
             HuAudSeqPlay(0x73);
             D_8010A67C_game_guys_roulette = GMesCreate(0x16, D_8010AAD6_game_guys_roulette.chr);
-            func_800370D0_main(D_8010A67C_game_guys_roulette, 0x78);
+            GMesTimeMaxSet(D_8010A67C_game_guys_roulette, 0x78);
         } else {
             HuAudSeqPlay(0x71);
             sprintf(D_8010A810_game_guys_roulette, "%s\x81\x40\x82\x6B\x82\x6E\x82\x72\x82\x73\x81\x49",
                     D_8010A680_game_guys_roulette[D_8010AAD6_game_guys_roulette.chr]);
             D_8010A67C_game_guys_roulette = GMesCreate(0x19, D_8010A810_game_guys_roulette, 0xA0, 0x78, 1.0, 1.0, 1);
-            func_800370D0_main(D_8010A67C_game_guys_roulette, 0x78);
+            GMesTimeMaxSet(D_8010A67C_game_guys_roulette, 0x78);
         }
         D_8010A67B_game_guys_roulette = 1;
     } else if (D_8010A67B_game_guys_roulette == 1) {
@@ -890,7 +890,7 @@ void func_801085A4_game_guys_roulette(omObjData *object) {
     if ((digit = D_8010AAD6_game_guys_roulette.coins / 100) == 0) {
         espDispOff(D_8010AAD0_game_guys_roulette[2]);
     }
-    func_8000BD50_main(D_8010AAD0_game_guys_roulette[2], digit);
+    espPatNoSet(D_8010AAD0_game_guys_roulette[2], digit);
     espPosSet(D_8010AAD0_game_guys_roulette[2], x + 54, 22);
     if (digit != 0) {
         x += 12;
@@ -901,13 +901,13 @@ void func_801085A4_game_guys_roulette(omObjData *object) {
         (u16)(D_8010AAD6_game_guys_roulette.coins / 100) == 0) {
         espDispOff(D_8010AAD0_game_guys_roulette[1]);
     }
-    func_8000BD50_main(D_8010AAD0_game_guys_roulette[1], digit);
+    espPatNoSet(D_8010AAD0_game_guys_roulette[1], digit);
     espPosSet(D_8010AAD0_game_guys_roulette[1], x + 54, 22);
     if (digit != 0 || (u16)(D_8010AAD6_game_guys_roulette.coins / 100) != 0) {
         x += 12;
     }
 
-    func_8000BD50_main(D_8010AAD0_game_guys_roulette[0], D_8010AAD6_game_guys_roulette.coins % 10);
+    espPatNoSet(D_8010AAD0_game_guys_roulette[0], D_8010AAD6_game_guys_roulette.coins % 10);
     espPosSet(D_8010AAD0_game_guys_roulette[0], x + 54, 22);
 }
 
@@ -920,7 +920,7 @@ void func_801088B0_game_guys_roulette(omObjData *object) {
     }
     WipeCreateOut(0, 20);
     HuAudSeqFadeOut(30);
-    func_8004AB0C_main(30);
+    HuAudFXAllFadeOut(30);
     object->func = func_80108998_game_guys_roulette;
 }
 
@@ -976,7 +976,7 @@ s16 func_80108B44_game_guys_roulette(s16 win, s16 player, s16 mode, s16 count) {
     switch (mode) {
         case 0:
             keys[player] = -1;
-            func_8005B63C_main(win, HUWIN_ATTR_COMKEY, HUWIN_ATTR_NONE);
+            HuWinAttrSet(win, HUWIN_ATTR_COMKEY, HUWIN_ATTR_NONE);
             HuWinActivePlayerSet(win, players[player]);
             HuWinComKeySet(keys[0], keys[1], keys[2], keys[3]);
             break;

@@ -196,11 +196,11 @@ void func_801059A0_mpiq(void) {
     omObjData *obj;
 
     omInitObjMan(40, 20);
-    func_8001FE20_main(16);
-    func_80021BE0_main(&D_800EBEB0_minigame, 64);
-    func_800142A0_main(64);
-    func_80045C2C_main();
-    func_8004A208_main();
+    MapCollInit(16);
+    Hu3DQuadPoolInit(&D_800EBEB0_minigame, 64);
+    Hu3DSprModelInit(64);
+    HuAudCharVoiceInit();
+    omGameSysInit();
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutView);
     omSetStatBit(obj, 0xA0);
     func_80108A3C_mpiq(2000.0f, 0.0f, 0.0f, 0.0f, 0.0f, 420.0f, 0.0f);
@@ -328,18 +328,18 @@ void func_80105E14_mpiq(omObjData *obj, s32 index) {
     func_800E1BA8_minigame(obj, model, motion, index, attr1, attr2);
     data = obj->data;
     chr = GwPlayer[index].chr;
-    func_800E5A00_minigame(obj, 0, func_80017BB8_main(chr, motion0[chr]), 1, 0);
-    func_800E5A00_minigame(obj, 6, func_80017BB8_main(chr, motion1[chr]), 1, 19);
-    func_800E5A00_minigame(obj, 21, func_80017BB8_main(chr, motion2[chr]), 0, 0);
-    func_800E5A00_minigame(obj, 14, func_80017BB8_main(chr, motion3[chr]), 1, 120);
-    func_800E5A00_minigame(obj, 13, func_80017BB8_main(chr, motion4[chr]), 1, 120);
-    func_800E5A00_minigame(obj, 38, func_80017BB8_main(chr, motion5[chr]), 0, 0);
-    func_800E5A00_minigame(obj, 39, func_80017BB8_main(chr, motion6[chr]), 0, 0);
-    func_800E5A00_minigame(obj, 40, func_80017BB8_main(chr, motion7[chr]), 0, 0);
-    func_800E5A00_minigame(obj, 41, func_80017BB8_main(chr, motion8[chr]), 0, 0);
-    func_800E5A00_minigame(obj, 42, func_80017BB8_main(chr, motion9[chr]), 0, 0);
-    func_800E5A00_minigame(obj, 43, func_80017BB8_main(chr, motion10[chr]), 1, 0);
-    func_800E5A00_minigame(obj, 33, func_80017BB8_main(chr, motion11[chr]), 1, 0);
+    func_800E5A00_minigame(obj, 0, CharMotionDataNumGet(chr, motion0[chr]), 1, 0);
+    func_800E5A00_minigame(obj, 6, CharMotionDataNumGet(chr, motion1[chr]), 1, 19);
+    func_800E5A00_minigame(obj, 21, CharMotionDataNumGet(chr, motion2[chr]), 0, 0);
+    func_800E5A00_minigame(obj, 14, CharMotionDataNumGet(chr, motion3[chr]), 1, 120);
+    func_800E5A00_minigame(obj, 13, CharMotionDataNumGet(chr, motion4[chr]), 1, 120);
+    func_800E5A00_minigame(obj, 38, CharMotionDataNumGet(chr, motion5[chr]), 0, 0);
+    func_800E5A00_minigame(obj, 39, CharMotionDataNumGet(chr, motion6[chr]), 0, 0);
+    func_800E5A00_minigame(obj, 40, CharMotionDataNumGet(chr, motion7[chr]), 0, 0);
+    func_800E5A00_minigame(obj, 41, CharMotionDataNumGet(chr, motion8[chr]), 0, 0);
+    func_800E5A00_minigame(obj, 42, CharMotionDataNumGet(chr, motion9[chr]), 0, 0);
+    func_800E5A00_minigame(obj, 43, CharMotionDataNumGet(chr, motion10[chr]), 1, 0);
+    func_800E5A00_minigame(obj, 33, CharMotionDataNumGet(chr, motion11[chr]), 1, 0);
     screenPos.x = D_8010C6A8_mpiq[index];
     screenPos.y = 180.0f;
     Hu3D2Dto3D(0, CZoom, &screenPos, &pos);
@@ -397,8 +397,8 @@ void func_80106664_mpiq(s32 index) {
     s32 range;
 
     accuracy = 0;
-    mes = func_800364DC_main((void *)D_8010CA50_mpiq[D_8010CA4C_mpiq]);
-    base = func_8005B5EC_main(mes) * 5 - 40;
+    mes = MessDataMesGet((void *)D_8010CA50_mpiq[D_8010CA4C_mpiq]);
+    base = HuWinStrLen(mes) * 5 - 40;
     holdBase = 0;
     holdRange = 0;
     offset = 0;
@@ -448,7 +448,7 @@ void func_80106664_mpiq(s32 index) {
         }
         D_8010CA08_mpiq[index].button = buttons[choice];
     }
-    func_800365E8_main(mes);
+    MessDataMesFree(mes);
 }
 
 void func_801069F8_mpiq(s32 index) {
@@ -610,7 +610,7 @@ void func_8010720C_mpiq(void) {
         work = obj->data;
         work->unkB0 = HuMemAllocTag(0x14, TAG_OVERLAY);
         if (i == 0) {
-            obj->model[0] = func_8000B0A0_main(0x42000E, 0x29D);
+            obj->model[0] = Hu3DModelRead2(0x42000E, 0x29D);
         } else {
             obj->model[0] = Hu3DModelLink(D_8010CA80_mpiq[0]->model[0]);
         }
@@ -675,16 +675,16 @@ void func_80107584_mpiq(void) {
         obj->data = HuMemAllocTag(sizeof(MpiqObjWork), TAG_OVERLAY);
         work = obj->data;
         if (i == 0) {
-            obj->model[0] = func_8000B0A0_main(0x42000B, attr);
-            obj->model[1] = func_8000B0A0_main(0x42000F, attr2 | 4);
-            func_8001FA68_main(obj->model[1]);
-            obj->model[2] = func_8000B108_main(0x5D0008, attr | 4);
+            obj->model[0] = Hu3DModelRead2(0x42000B, attr);
+            obj->model[1] = Hu3DModelRead2(0x42000F, attr2 | 4);
+            Hu3DModelTPLvlInit(obj->model[1]);
+            obj->model[2] = Hu3DModelRead(0x5D0008, attr | 4);
         } else {
             obj->model[0] = Hu3DModelLink(D_8010CAC0_mpiq[0]->model[0]);
             obj->model[1] = Hu3DModelLink(D_8010CAC0_mpiq[0]->model[1]);
             obj->model[2] = Hu3DModelLink(D_8010CAC0_mpiq[0]->model[2]);
         }
-        func_8001C814_main(obj->model[0], 1, 1);
+        Hu3DMotionAttrSet(obj->model[0], 1, 1);
         screenPos.x = D_8010C6A8_mpiq[i];
         screenPos.y = 52.0f;
         Hu3D2Dto3D(0, CZoom, &screenPos, &pos);
@@ -727,16 +727,16 @@ void func_80107774_mpiq(omObjData *obj) {
         }
     }
     if (work->flags & 8) {
-        func_8001C814_main(obj->model[0], 4, 4);
+        Hu3DMotionAttrSet(obj->model[0], 4, 4);
         work->flags &= ~8;
     }
     if (work->flags & 0x10) {
         if (--work->timer == 12) {
-            func_8001C258_main(obj->model[0], 4, 4);
+            Hu3DModelAttrSet(obj->model[0], 4, 4);
         }
         model = obj->model[2];
         if (Hu3DData[model].motTime >= D_800CCF58_main[Hu3DData[model].motId].unk02) {
-            func_8001C258_main(model, 4, 4);
+            Hu3DModelAttrSet(model, 4, 4);
             work->flags &= ~0x10;
         }
     }
@@ -744,25 +744,25 @@ void func_80107774_mpiq(omObjData *obj) {
         work->timer--;
         Hu3DModelScaleSet(obj->model[1], work->scale, work->scale, work->scale);
         Hu3DModelPosSet(obj->model[1], work->x, work->y + bounce[7 - work->timer], 0.0f);
-        func_8001F9E4_main(obj->model[1], work->counter);
+        Hu3DModelTPLvlSet(obj->model[1], work->counter);
         work->scale += 0.2f;
         work->counter -= 35;
         if (work->timer == 0) {
-            func_8001C258_main(obj->model[1], 4, 4);
+            Hu3DModelAttrSet(obj->model[1], 4, 4);
             work->flags &= ~0x20;
         }
     }
     if (func_801089D0_mpiq(obj, D_800EC598_minigame[D_8010C9BC_mpiq])) {
         if (work->flags & 3) {
             if (work->unk_24 == 0) {
-                func_8004AC5C_main(0x411, D_8010C9BE_mpiq);
+                _HuAudPlayerFXPlay(0x411, D_8010C9BE_mpiq);
                 work->unk_24 = 1;
             }
             func_800E561C_minigame(D_800EC598_minigame[D_8010C9BC_mpiq], 1);
             omVibrate(D_8010C9BE_mpiq, 20, 0, 20);
         } else if (D_8010C9C2_mpiq == 0) {
-            func_8001C814_main(obj->model[0], 4, 0);
-            func_8001C814_main(obj->model[0], 1, 0);
+            Hu3DMotionAttrSet(obj->model[0], 4, 0);
+            Hu3DMotionAttrSet(obj->model[0], 1, 0);
             func_800E58F8_minigame(D_800EC598_minigame[D_8010C9BC_mpiq], 0x26, 0);
             D_8010C9C2_mpiq = 1;
             for (i = 0; i < 4; i++) {
@@ -770,7 +770,7 @@ void func_80107774_mpiq(omObjData *obj) {
             }
             work->flags |= 0x20;
             work->timer = 7;
-            func_8001C258_main(obj->model[1], 4, 0);
+            Hu3DModelAttrSet(obj->model[1], 4, 0);
             work->scale = 1.0f;
             work->counter = 255;
         }
@@ -808,7 +808,7 @@ void func_80107C74_mpiq(void) {
         work->timer = 15;
         Hu3DModelPosSet(D_8010CAC0_mpiq[i]->model[2], x, y, z);
         Hu3DModelScaleSet(D_8010CAC0_mpiq[i]->model[2], 1.0f, 1.0f, 1.0f);
-        func_8001C258_main(D_8010CAC0_mpiq[i]->model[2], 4, 0);
+        Hu3DModelAttrSet(D_8010CAC0_mpiq[i]->model[2], 4, 0);
     }
 }
 
@@ -821,7 +821,7 @@ void func_80107D70_mpiq(void) {
     flags = HuMemAllocTag(sizeof(s32), TAG_OVERLAY);
     obj->data = flags;
     *flags = 0;
-    *obj->model = func_8000B108_main(8, 0x69D);
+    *obj->model = Hu3DModelRead(8, 0x69D);
 }
 
 void func_80107DE0_mpiq(omObjData *obj) {
@@ -831,7 +831,7 @@ void func_80107DE0_mpiq(omObjData *obj) {
     if (*flags & 1) {
         model = obj->model[0];
         if (Hu3DData[model].motTime >= D_800CCF58_main[Hu3DData[model].motId].unk02) {
-            func_8001C258_main(model, 4, 4);
+            Hu3DModelAttrSet(model, 4, 4);
             *flags &= ~1;
         }
     }
@@ -842,7 +842,7 @@ void func_80107E90_mpiq(f32 x, f32 y, f32 z) {
     s32 *flags = obj->data;
 
     *flags |= 1;
-    func_8001C258_main(obj->model[0], 4, 0);
+    Hu3DModelAttrSet(obj->model[0], 4, 0);
     Hu3DMotionTimeSet(D_8010CAD0_mpiq->model[0], 0.0f);
     omSetTra(D_8010CAD0_mpiq, x, y, z);
 }
@@ -856,7 +856,7 @@ void func_80107F28_mpiq(void) {
     work = HuMemAllocTag(sizeof(MpiqMarkerObjWork), TAG_OVERLAY);
     obj->data = work;
     work->flags = 0;
-    obj->model[0] = func_8000B108_main(0x230009, 0x69D);
+    obj->model[0] = Hu3DModelRead(0x230009, 0x69D);
     Hu3DModelScaleSet(obj->model[0], 1.5f, 1.5f, 1.5f);
     work->timer = 0;
 }
@@ -876,9 +876,9 @@ void func_80107FCC_mpiq(s32 index) {
 
     work->flags |= 1;
     if (work->timer == 0) {
-        func_8001C258_main(obj->model[0], 4, 0);
+        Hu3DModelAttrSet(obj->model[0], 4, 0);
         Hu3DMotionTimeSet(D_8010CAD4_mpiq->model[0], 0.0f);
-        func_8001C814_main(D_8010CAD4_mpiq->model[0], 2, 2);
+        Hu3DMotionAttrSet(D_8010CAD4_mpiq->model[0], 2, 2);
     }
     omSetTra(D_8010CAD4_mpiq, x, y, z);
     work->timer++;
@@ -888,7 +888,7 @@ void func_8010811C_mpiq(void) {
     MpiqMarkerObjWork *work = OM_GET_DATA_PTR(D_8010CAD4_mpiq, MpiqMarkerObjWork);
 
     if (--work->timer == 0) {
-        func_8001C258_main(*D_8010CAD4_mpiq->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(*D_8010CAD4_mpiq->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         work->flags &= ~1;
     }
 }
@@ -908,11 +908,11 @@ void func_80108178_mpiq(void) {
         work = obj->data;
         omSetSca(obj, 2.0f, 3.0f, 2.0f);
         if (i == 0) {
-            obj->model[0] = func_8000B108_main(0x42000A, 0x6B9);
-            obj->model[1] = func_8000B108_main(0x420007, 0x6BD);
-            obj->model[2] = func_8000B108_main(0x420008, 0x6BD);
-            obj->model[3] = func_8000B108_main(0x420009, 0x6BD);
-            obj->model[4] = func_8000B108_main(0x420006, 0x6B9);
+            obj->model[0] = Hu3DModelRead(0x42000A, 0x6B9);
+            obj->model[1] = Hu3DModelRead(0x420007, 0x6BD);
+            obj->model[2] = Hu3DModelRead(0x420008, 0x6BD);
+            obj->model[3] = Hu3DModelRead(0x420009, 0x6BD);
+            obj->model[4] = Hu3DModelRead(0x420006, 0x6B9);
         } else {
             obj->model[0] = Hu3DModelLink(D_8010CAD8_mpiq[0]->model[0]);
             obj->model[1] = Hu3DModelLink(D_8010CAD8_mpiq[0]->model[1]);
@@ -971,8 +971,8 @@ void func_801085F4_mpiq(s32 index) {
 
     work->flags |= 1;
     work->index = index;
-    func_8001C258_main(D_8010CAD8_mpiq[index]->model[work->stage + 1], 4, 0);
-    func_8004AC5C_main(0x410, index);
+    Hu3DModelAttrSet(D_8010CAD8_mpiq[index]->model[work->stage + 1], 4, 0);
+    _HuAudPlayerFXPlay(0x410, index);
     omVibrate(index, 10, 0, 10);
 }
 
@@ -986,19 +986,19 @@ void func_80108688_mpiq(void) {
     obj->data = HuMemAllocTag(sizeof(MpiqDanceObjData), TAG_OVERLAY);
     D_8010CA78_mpiq = obj;
     work = obj->data;
-    obj->model[0] = func_8000B108_main(0xA005D, 0x6D9);
-    func_8001C814_main(obj->model[0], 2, 2);
+    obj->model[0] = Hu3DModelRead(0xA005D, 0x6D9);
+    Hu3DMotionAttrSet(obj->model[0], 2, 2);
     screenPos.x = 260.0f;
     screenPos.y = -120.0f;
     Hu3D2Dto3D(0, CZoom, &screenPos, &pos);
     omSetTra(obj, pos.x, pos.y, 200.0f);
     omSetRot(obj, 0.0f, 0.0f, 0.0f);
     omSetSca(obj, 1.1f, 1.1f, 1.1f);
-    func_8000B460_main(obj, 0, 0xA005F);
-    func_8000B460_main(obj, 1, 0xA0060);
-    func_8000B460_main(obj, 2, 0xA0061);
-    func_8001C5B4_main(obj->model[0], obj->motion[0]);
-    func_8001C814_main(obj->model[0], 2, 2);
+    omObjMotionRead(obj, 0, 0xA005F);
+    omObjMotionRead(obj, 1, 0xA0060);
+    omObjMotionRead(obj, 2, 0xA0061);
+    Hu3DMotionModelSet(obj->model[0], obj->motion[0]);
+    Hu3DMotionAttrSet(obj->model[0], 2, 2);
     work->rotY = 0.0f;
 }
 
@@ -1011,7 +1011,7 @@ void func_801087F8_mpiq(omObjData *obj) {
         model = obj->model[0];
         if (Hu3DData[model].motTime >= D_800CCF58_main[Hu3DData[model].motId].unk02) {
             Hu3DMotionShiftSet(model, Hu3DData[obj->motion[0]].motId, 0, 10, 0);
-            func_8001C814_main(obj->model[0], 2, 2);
+            Hu3DMotionAttrSet(obj->model[0], 2, 2);
             work->flags &= ~1;
         }
     }
@@ -1052,8 +1052,8 @@ s16 func_801089D0_mpiq(omObjData *objA, omObjData *objB) {
 }
 
 void func_80108A3C_mpiq(f32 zoom, f32 rotX, f32 rotY, f32 rotZ, f32 centerX, f32 centerY, f32 centerZ) {
-    func_8000B5F0_main(1);
-    D_8010C9B4_mpiq = func_8000B638_main();
+    CamSetupInit(1);
+    D_8010C9B4_mpiq = CamSetupMapCullAdd();
     ScissorSet(D_8010C9B4_mpiq, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(D_8010C9B4_mpiq, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     CZoom = zoom;
@@ -1988,7 +1988,7 @@ void func_8010B0CC_mpiq(void) {
             HuWinKill(D_8010CA00_mpiq);
             D_8010CA00_mpiq = -1;
             if (D_8010C9C0_mpiq & 4) {
-                func_8004AC5C_main(0x40D, D_8010C9BC_mpiq);
+                _HuAudPlayerFXPlay(0x40D, D_8010C9BC_mpiq);
                 PlayerFXPlay(0xCA, D_8010C9BC_mpiq);
                 D_8010CA00_mpiq = func_8010BD1C_mpiq();
                 func_801089A4_mpiq(2);
@@ -2002,7 +2002,7 @@ void func_8010B0CC_mpiq(void) {
                 player = D_800EC598_minigame[D_8010C9BC_mpiq];
                 data = D_8010CA78_mpiq->data;
                 if (D_8010C6B8_mpiq == D_8010CA38_mpiq[round]) {
-                    func_8004AC5C_main(0x40E, D_8010C9BC_mpiq);
+                    _HuAudPlayerFXPlay(0x40E, D_8010C9BC_mpiq);
                     PlayerFXPlay(0x274, D_8010C9BC_mpiq);
                     espDispOn(D_8010C9DC_mpiq[0]);
                     func_800E5798_minigame(player, 0x29);
@@ -2015,7 +2015,7 @@ void func_8010B0CC_mpiq(void) {
                         HuPrcSleep(30);
                     }
                 } else {
-                    func_8004AC5C_main(0x40F, D_8010C9BC_mpiq);
+                    _HuAudPlayerFXPlay(0x40F, D_8010C9BC_mpiq);
                     PlayerFXPlay(0x286, D_8010C9BC_mpiq);
                     espDispOn(D_8010C9DC_mpiq[1]);
                     func_800E5798_minigame(player, 0x2A);
@@ -2114,7 +2114,7 @@ void func_8010B0CC_mpiq(void) {
     for (round = 0; round < 4; round++) {
         if (round == D_8010C9D8_mpiq) {
             func_800E5798_minigame(D_800EC598_minigame[round], 0xD);
-            func_80045ED0_main(D_800A178C_main[GwPlayer[round].chr][0] | 0x2F);
+            HuAudCharVoicePlay(D_800A178C_main[GwPlayer[round].chr][0] | 0x2F);
         } else {
             func_800E5798_minigame(D_800EC598_minigame[round], 0xE);
         }
@@ -2189,9 +2189,9 @@ s16 func_8010BB74_mpiq(void) {
     HuWinMesMaxSizeGet(1, size, mes);
     win = HuWinCreate(79, 45, 165, 80, 0, 0);
     D_8010CAFC_mpiq = win;
-    func_8005B63C_main(win, 64, 64);
+    HuWinAttrSet(win, 64, 64);
     HuWinMesSpeedSet(win, 5);
-    func_80060144_main(win);
+    HuWinDummy(win);
     HuWinBGTPLvlSet(win, 0);
     HuWinActivePlayerSet(win, 1 << GwPlayer[0].pad);
     HuWinInsertMesSet(win, (u32)buf, 1);
@@ -2266,9 +2266,9 @@ s16 func_8010BD1C_mpiq(void) {
     }
     HuWinMesMaxSizeGet(1, size, mes);
     win = HuWinCreate(79, 45, 165, 80, 0, 0);
-    func_8005B63C_main(win, 64, 64);
+    HuWinAttrSet(win, 64, 64);
     HuWinMesSpeedSet(win, 0);
-    func_80060144_main(win);
+    HuWinDummy(win);
     HuWinBGTPLvlSet(win, 0);
     HuWinActivePlayerSet(win, 1 << GwPlayer[0].pad);
     count = 0;
@@ -2320,7 +2320,7 @@ void func_8010C2F0_mpiq(void) {
             timer = 30;
             D_8010CAF8_mpiq--;
         }
-        func_8003F578_main(D_8010CAFA_mpiq);
+        GMesTimerValueSet(D_8010CAFA_mpiq);
         if (mode == 1 && (D_8010C9C0_mpiq & 4)) {
             D_8010CAF8_mpiq = 5;
             timer = 30;
@@ -2339,7 +2339,7 @@ void func_8010C2F0_mpiq(void) {
             func_800E12EC_minigame(D_800EC598_minigame[i], 1000.0f);
         }
     }
-    func_8003F5C0_main();
+    GMesTimerEnd();
     omDelPrcObj(NULL);
 }
 

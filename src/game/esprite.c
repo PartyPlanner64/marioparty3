@@ -41,7 +41,7 @@ s16 HuSprAnimDataRead(s32 dataNum) {
     return slot;
 }
 
-void func_8000B880_main(s16 arg0, f32 r, f32 g, f32 b) {
+void espPalColorSet(s16 arg0, f32 r, f32 g, f32 b) {
     HuSprAnimData *tex = D_800C9530_main[arg0];
     u16 *pal = tex->pal;
     s32 i;
@@ -60,7 +60,7 @@ void func_8000B880_main(s16 arg0, f32 r, f32 g, f32 b) {
     }
 }
 
-void func_8000BA00_main(void) {
+void espClose(void) {
     HuSprClose();
     HuMemFree(D_800CD1DC_main);
     D_800CD1DC_main = NULL;
@@ -147,11 +147,11 @@ void espSpeedSet(u16 spriteId, f32 arg1) {
     HuSprSpeedSet(sprite->unk04, 0, arg1);
 }
 
-void func_8000BD50_main(u16 spriteId, s16 arg1) {
+void espPatNoSet(u16 spriteId, s16 arg1) {
     ESPRITE *sprite;
 
     sprite = D_800CD1DC_main + spriteId;
-    func_80054FF8_main(sprite->unk04, 0, arg1);
+    HuSprPatNoSet(sprite->unk04, 0, arg1);
 }
 
 void espBankSet(u16 spriteId, s32 arg1, s32 arg2) {
@@ -161,18 +161,18 @@ void espBankSet(u16 spriteId, s32 arg1, s32 arg2) {
     HuSprBankSet(sprite->unk04, 0, arg1, (u16)arg2);
 }
 
-void func_8000BDDC_main(u16 spriteId, s32 arg1) {
+void espAnimModeSet(u16 spriteId, s32 arg1) {
     ESPRITE *sprite;
 
     sprite = D_800CD1DC_main + spriteId;
     HuSprAnimModeSet(sprite->unk04, 0, (u16)arg1);
 }
 
-u8 func_8000BE1C_main(u16 spriteId) {
+u8 espAnimStatGet(u16 spriteId) {
     ESPRITE *sprite;
 
     sprite = D_800CD1DC_main + spriteId;
-    return func_800551AC_main(sprite->unk04, 0);
+    return HuSprAnimStatGet(sprite->unk04, 0);
 }
 
 void espScaleSet(u16 spriteId, f32 x, f32 y) {
@@ -196,7 +196,7 @@ void espZRotSet(u16 spriteId, f32 arg1) {
     HuSprZRotSet(sprite->unk04, 0, arg1);
 }
 
-void func_8000BF48_main(u16 spriteId, s16 arg1, s16 arg2, s16 arg3) {
+void espTPLvlFadeSet(u16 spriteId, s16 arg1, s16 arg2, s16 arg3) {
     u16 temp_v0;
     ESPRITE *sprite;
 
@@ -209,7 +209,7 @@ void func_8000BF48_main(u16 spriteId, s16 arg1, s16 arg2, s16 arg3) {
     sprite->unk20 = arg3;
 }
 
-void func_8000BF8C_main(u16 spriteId, s16 arg1) {
+void espTPLvlFadeReset(u16 spriteId, s16 arg1) {
     u16 temp_v0;
     ESPRITE *sprite;
     u16 phi_return;
@@ -247,7 +247,7 @@ s16 espEntry(s16 arg0, s16 arg1, u16 arg2) {
     HuSprGrpMemberSet(temp_v0, 0, arg0, arg1);
     HuSprPriSet(temp_v0, 0, 10);
     if (arg2 == 0) {
-        func_80054FF8_main(temp_v0, 0, 0);
+        HuSprPatNoSet(temp_v0, 0, 0);
     }
     return temp_s3;
 }

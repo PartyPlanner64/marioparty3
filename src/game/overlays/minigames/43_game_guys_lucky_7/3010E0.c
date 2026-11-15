@@ -157,10 +157,10 @@ s32 func_801059BC_game_guys_lucky_7(f32 arg0) {
 }
 
 void func_80105A28_game_guys_lucky_7(void) {
-    func_8001FE20_main(32);
-    func_800142A0_main(32);
+    MapCollInit(32);
+    Hu3DSprModelInit(32);
     omInitObjMan(32, 32);
-    func_8004A208_main();
+    omGameSysInit();
     func_80105AC0_game_guys_lucky_7();
     func_80105AC8_game_guys_lucky_7();
     func_80105C08_game_guys_lucky_7();
@@ -176,8 +176,8 @@ void func_80105AC8_game_guys_lucky_7(void) {
     s32 camIndex;
 
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    func_8000B5F0_main(1);
-    camIndex = func_8000B638_main();
+    CamSetupInit(1);
+    camIndex = CamSetupMapCullAdd();
     ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(camIndex, 6.57f, 2000.0f, 8500.0f);
@@ -382,7 +382,7 @@ void func_80105F70_game_guys_lucky_7(omObjData *object) {
                     case 1:
                         HuAudSeqPlay(0x73);
                         D_8010D6D0_game_guys_lucky_7 = GMesCreate(0x16, D_8010D6DC_game_guys_lucky_7[2]);
-                        func_800370D0_main(D_8010D6D0_game_guys_lucky_7, 0x78);
+                        GMesTimeMaxSet(D_8010D6D0_game_guys_lucky_7, 0x78);
                         break;
                     case 0:
                         HuAudSeqPlay(0x71);
@@ -391,7 +391,7 @@ void func_80105F70_game_guys_lucky_7(omObjData *object) {
                                 D_8010D194_game_guys_lucky_7[D_8010D6DC_game_guys_lucky_7[2]]);
                         D_8010D6D0_game_guys_lucky_7 =
                             GMesCreate(0x19, D_8010D5D0_game_guys_lucky_7, 0xA0, 0x78, 1.0, 1.0, 1);
-                        func_800370D0_main(D_8010D6D0_game_guys_lucky_7, 0x78);
+                        GMesTimeMaxSet(D_8010D6D0_game_guys_lucky_7, 0x78);
                         break;
                 }
             } else if (D_8010D190_game_guys_lucky_7 >= 135) {
@@ -449,7 +449,7 @@ void func_80106370_game_guys_lucky_7(void) {
     win = func_8010AD44_game_guys_lucky_7(D_8010D150_game_guys_lucky_7[0][0], D_8010D150_game_guys_lucky_7[0][1],
                                           D_8010D150_game_guys_lucky_7[0][2]);
     HuAudFXPlay(0x11D);
-    func_80060C14_main(win, 1);
+    HuWinExOpen(win, 1);
     HuWinMesSet(win, 0x2B00, -1, -1);
     func_8010ADF8_game_guys_lucky_7(win, D_8010D6DC_game_guys_lucky_7[1], D_8010D6DC_game_guys_lucky_7[3]);
     HuWinMesSet(win, 0x2B01, -1, -1);
@@ -606,7 +606,7 @@ void func_80106A0C_game_guys_lucky_7(omObjData *object) {
                     D_8010D1CC_game_guys_lucky_7--;
                     D_8010D1CA_game_guys_lucky_7 = 0;
                 }
-                func_8003F578_main(D_8010D1CC_game_guys_lucky_7);
+                GMesTimerValueSet(D_8010D1CC_game_guys_lucky_7);
                 switch (D_8010D6DC_game_guys_lucky_7[3]) {
                     case 0:
                         if ((D_800D5558_main[D_8010D6DC_game_guys_lucky_7[1]] & 0x8000) ||
@@ -635,7 +635,7 @@ void func_80106A0C_game_guys_lucky_7(omObjData *object) {
                 D_8010D758_game_guys_lucky_7 = 2;
                 D_8010D76A_game_guys_lucky_7 = func_801059BC_game_guys_lucky_7(6.0f);
                 if (D_8010D772_game_guys_lucky_7 == 1) {
-                    func_8003F5C0_main();
+                    GMesTimerEnd();
                 }
             }
             break;
@@ -761,7 +761,7 @@ void func_80107090_game_guys_lucky_7(void) {
                                           D_8010D150_game_guys_lucky_7[D_8010D774_game_guys_lucky_7][1],
                                           D_8010D150_game_guys_lucky_7[D_8010D774_game_guys_lucky_7][2]);
     HuAudFXPlay(0x11D);
-    func_80060C14_main(win, 1);
+    HuWinExOpen(win, 1);
     if (success == TRUE) {
         HuWinMesSet(win, 0x2B04, -1, -1);
     } else {
@@ -828,7 +828,7 @@ void func_80107270_game_guys_lucky_7(void) {
                                           D_8010D150_game_guys_lucky_7[D_8010D774_game_guys_lucky_7][1],
                                           D_8010D150_game_guys_lucky_7[D_8010D774_game_guys_lucky_7][2]);
     HuAudFXPlay(0x11D);
-    func_80060C14_main(win, 1);
+    HuWinExOpen(win, 1);
     if (D_8010D774_game_guys_lucky_7 <= D_8010D776_game_guys_lucky_7 || D_8010D774_game_guys_lucky_7 >= 8) {
         if (D_8010D776_game_guys_lucky_7 == 1) {
             HuWinMesSet(win, 0x2B09, -1, -1);
@@ -1056,7 +1056,7 @@ void func_80107DE4_game_guys_lucky_7(omObjData *object) {
     }
     WipeCreateOut(WIPE_TYPE_NORMAL, 20);
     HuAudSeqFadeOut(30);
-    func_8004AB0C_main(30);
+    HuAudFXAllFadeOut(30);
     object->func = func_80107EEC_game_guys_lucky_7;
 }
 
@@ -1222,7 +1222,7 @@ void func_801085D4_game_guys_lucky_7(void) {
     if ((hundreds = D_8010D6DC_game_guys_lucky_7[5] / 100) == 0) {
         espDispOff(D_8010D71C_game_guys_lucky_7[2]);
     } else {
-        func_8000BD50_main(D_8010D71C_game_guys_lucky_7[2], hundreds);
+        espPatNoSet(D_8010D71C_game_guys_lucky_7[2], hundreds);
         espPosSet(D_8010D71C_game_guys_lucky_7[2], 54, 22);
         espDispOn(D_8010D71C_game_guys_lucky_7[2]);
         x += 12;
@@ -1232,13 +1232,13 @@ void func_801085D4_game_guys_lucky_7(void) {
         (u16)(D_8010D6DC_game_guys_lucky_7[5] / 100) == 0) {
         espDispOff(D_8010D71C_game_guys_lucky_7[3]);
     } else {
-        func_8000BD50_main(D_8010D71C_game_guys_lucky_7[3], tens);
+        espPatNoSet(D_8010D71C_game_guys_lucky_7[3], tens);
         espPosSet(D_8010D71C_game_guys_lucky_7[3], x + 54, 22);
         espDispOn(D_8010D71C_game_guys_lucky_7[3]);
         x += 12;
     }
 
-    func_8000BD50_main(D_8010D71C_game_guys_lucky_7[4], D_8010D6DC_game_guys_lucky_7[5] % 10);
+    espPatNoSet(D_8010D71C_game_guys_lucky_7[4], D_8010D6DC_game_guys_lucky_7[5] % 10);
     espPosSet(D_8010D71C_game_guys_lucky_7[4], x + 54, 22);
     espDispOn(D_8010D71C_game_guys_lucky_7[4]);
 }
@@ -1249,29 +1249,29 @@ void func_801087B4_game_guys_lucky_7(omObjData *object) {
     s32 bodyFile = D_800A178C_main[chr][0] | D_800A178C_main[chr][1];
     s32 files[4] = { bodyFile, 9, 0x82, 0x83 };
     s32 motions[10] = {
-        func_80017BB8_main(chr, 0x00),
-        func_80017BB8_main(chr, 0x01),
-        func_80017BB8_main(chr, 0x04),
-        func_80017BB8_main(chr, 0x2B),
-        func_80017BB8_main(chr, 0x1F),
-        func_80017BB8_main(chr, 0x2F),
-        func_80017BB8_main(chr, 0x36),
-        func_80017BB8_main(chr, 0x29),
-        func_80017BB8_main(chr, 0x0F),
-        func_80017BB8_main(chr, 0x15),
+        CharMotionDataNumGet(chr, 0x00),
+        CharMotionDataNumGet(chr, 0x01),
+        CharMotionDataNumGet(chr, 0x04),
+        CharMotionDataNumGet(chr, 0x2B),
+        CharMotionDataNumGet(chr, 0x1F),
+        CharMotionDataNumGet(chr, 0x2F),
+        CharMotionDataNumGet(chr, 0x36),
+        CharMotionDataNumGet(chr, 0x29),
+        CharMotionDataNumGet(chr, 0x0F),
+        CharMotionDataNumGet(chr, 0x15),
     };
     u16 i;
 
-    object->model[0] = func_8000B108_main(files[0], attr);
+    object->model[0] = Hu3DModelRead(files[0], attr);
     omSetTra(object, 0.0f, 0.0f, 0.0f);
     omSetRot(object, 0.0f, 0.0f, 0.0f);
     omSetSca(object, 1.0f, 1.0f, 1.0f);
     for (i = 0; i < 10; i++) {
-        func_8000B460_main(object, i, motions[i]);
+        omObjMotionRead(object, i, motions[i]);
     }
     Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[0]].motId, 0, 4, 2);
     for (i = 1; i < 4; i++) {
-        object->model[i] = func_8000B108_main(files[i], attr);
+        object->model[i] = Hu3DModelRead(files[i], attr);
     }
     Hu3DModelPosSet(object->model[1], 0.0f, 0.0f, 0.0f);
     Hu3DModelRotSet(object->model[1], 15.0f, 0.0f, 0.0f);
@@ -1310,15 +1310,15 @@ void func_80108B64_game_guys_lucky_7(omObjData *object) {
                 break;
             case 2:
             case 3:
-                func_8001C5B4_main(object->model[0], object->motion[D_8010D746_game_guys_lucky_7]);
+                Hu3DMotionModelSet(object->model[0], object->motion[D_8010D746_game_guys_lucky_7]);
                 break;
             case 5:
-                func_8001C5B4_main(object->model[0], object->motion[5]);
-                func_80045ED0_main(D_800A178C_main[D_8010D6DC_game_guys_lucky_7[2]][0] | 0x2F);
+                Hu3DMotionModelSet(object->model[0], object->motion[5]);
+                HuAudCharVoicePlay(D_800A178C_main[D_8010D6DC_game_guys_lucky_7[2]][0] | 0x2F);
                 break;
             case 6:
-                func_8001C5B4_main(object->model[0], object->motion[6]);
-                func_80045ED0_main(D_800A178C_main[D_8010D6DC_game_guys_lucky_7[2]][0] | 0x36);
+                Hu3DMotionModelSet(object->model[0], object->motion[6]);
+                HuAudCharVoicePlay(D_800A178C_main[D_8010D6DC_game_guys_lucky_7[2]][0] | 0x36);
                 break;
             case 7:
                 Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[D_8010D746_game_guys_lucky_7]].motId, 0,
@@ -1432,15 +1432,15 @@ void func_801092B0_game_guys_lucky_7(omObjData *object) {
     };
     u16 i;
 
-    object->model[0] = func_8000B108_main(files[0], attr);
+    object->model[0] = Hu3DModelRead(files[0], attr);
     omSetTra(object, 0.0f, 190.0f, 5100.0f);
     omSetRot(object, 0.0f, 0.0f, 0.0f);
     omSetSca(object, 1.0f, 1.0f, 1.0f);
     for (i = 0; i < 10; i++) {
-        func_8000B460_main(object, i, motions[i]);
+        omObjMotionRead(object, i, motions[i]);
     }
     for (i = 1; i < 4; i++) {
-        object->model[i] = func_8000B108_main(files[i], attr);
+        object->model[i] = Hu3DModelRead(files[i], attr);
     }
     Hu3DModelPosSet(object->model[1], 0.0f, 0.0f, 0.0f);
     Hu3DModelRotSet(object->model[1], 15.0f, 0.0f, 0.0f);
@@ -1484,7 +1484,7 @@ void func_80109570_game_guys_lucky_7(omObjData *object) {
             case 2:
             case 4:
             case 7:
-                func_8001C5B4_main(object->model[0], object->motion[D_8010D73C_game_guys_lucky_7]);
+                Hu3DMotionModelSet(object->model[0], object->motion[D_8010D73C_game_guys_lucky_7]);
                 break;
             case 6:
                 Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[D_8010D73C_game_guys_lucky_7]].motId, 0,
@@ -1632,19 +1632,19 @@ void func_80109570_game_guys_lucky_7(omObjData *object) {
 }
 
 void func_80109FA4_game_guys_lucky_7(omObjData *object) {
-    object->model[0] = func_8000B108_main(0x83, 0x2A9);
+    object->model[0] = Hu3DModelRead(0x83, 0x2A9);
     omSetTra(object, 0.0f, 0.0f, 0.0f);
     omSetRot(object, 0.0f, 0.0f, 0.0f);
     omSetSca(object, 1.0f, 1.0f, 1.0f);
-    func_8000B460_main(object, 0, 0x83);
-    func_8001C5B4_main(object->model[0], object->motion[0]);
+    omObjMotionRead(object, 0, 0x83);
+    Hu3DMotionModelSet(object->model[0], object->motion[0]);
     D_8010D76C_game_guys_lucky_7 = 0;
     object->func = func_8010A04C_game_guys_lucky_7;
 }
 
 void func_8010A04C_game_guys_lucky_7(omObjData *object) {
     if (D_8010D76C_game_guys_lucky_7 == 1) {
-        func_8001C5B4_main(object->model[0], object->motion[0]);
+        Hu3DMotionModelSet(object->model[0], object->motion[0]);
         D_8010D76C_game_guys_lucky_7 = 0;
     }
     omSetTra(object, D_8010D75C_game_guys_lucky_7, D_8010D760_game_guys_lucky_7 - 50.0f,
@@ -1652,12 +1652,12 @@ void func_8010A04C_game_guys_lucky_7(omObjData *object) {
 }
 
 void func_8010A0DC_game_guys_lucky_7(omObjData *object) {
-    object->model[0] = func_8000B108_main(0xB002F, 0x2A9);
+    object->model[0] = Hu3DModelRead(0xB002F, 0x2A9);
     omSetTra(object, 0.0f, 0.0f, 0.0f);
     omSetRot(object, 0.0f, 0.0f, 0.0f);
     omSetSca(object, 1.0f, 1.0f, 1.0f);
-    func_8000B460_main(object, 0, 0xB002F);
-    func_8001C5B4_main(object->model[0], object->motion[0]);
+    omObjMotionRead(object, 0, 0xB002F);
+    Hu3DMotionModelSet(object->model[0], object->motion[0]);
     Hu3DModelCameraSet(object->model[0], 0);
     D_8010D76E_game_guys_lucky_7 = 0;
     object->func = func_8010A19C_game_guys_lucky_7;
@@ -1677,19 +1677,19 @@ void func_8010A19C_game_guys_lucky_7(omObjData *object) {
 }
 
 void func_8010A278_game_guys_lucky_7(omObjData *object) {
-    object->model[0] = func_8000B108_main(0xB0006, 0x2A9);
+    object->model[0] = Hu3DModelRead(0xB0006, 0x2A9);
     omSetTra(object, 0.0f, 0.0f, 0.0f);
     omSetRot(object, 0.0f, 0.0f, 0.0f);
     omSetSca(object, 2.0f, 2.0f, 2.0f);
-    func_8000B460_main(object, 0, 0xB0006);
-    func_8001C5B4_main(object->model[0], object->motion[0]);
+    omObjMotionRead(object, 0, 0xB0006);
+    Hu3DMotionModelSet(object->model[0], object->motion[0]);
     D_8010D770_game_guys_lucky_7 = 0;
     object->func = func_8010A328_game_guys_lucky_7;
 }
 
 void func_8010A328_game_guys_lucky_7(omObjData *object) {
     if (D_8010D770_game_guys_lucky_7 == 1) {
-        func_8001C5B4_main(object->model[0], object->motion[0]);
+        Hu3DMotionModelSet(object->model[0], object->motion[0]);
         D_8010D770_game_guys_lucky_7 = 0;
     }
     omSetTra(object, D_8010D75C_game_guys_lucky_7, D_8010D760_game_guys_lucky_7 - 50.0f,
@@ -1697,7 +1697,7 @@ void func_8010A328_game_guys_lucky_7(omObjData *object) {
 }
 
 void func_8010A3B8_game_guys_lucky_7(omObjData *object) {
-    object->model[0] = func_8000B108_main(0x64000B, 0x2A9);
+    object->model[0] = Hu3DModelRead(0x64000B, 0x2A9);
     omSetTra(object, 0.0f, 0.0f, 0.0f);
     omSetRot(object, 0.0f, 0.0f, 0.0f);
     omSetSca(object, 1.0f, 1.0f, 1.0f);
@@ -1776,7 +1776,7 @@ void func_8010A8A4_game_guys_lucky_7(omObjData *object) {
     s32 files[6] = { 0x64000C, 0x64000D, 0x64000E, 0x64000F, 0x640010, 0x640011 };
 
     for (i = 0; i < 6; i++) {
-        object->model[i] = func_8000B108_main(files[i], attr);
+        object->model[i] = Hu3DModelRead(files[i], attr);
     }
     omSetTra(object, 0.0f, 0.0f, 0.0f);
     omSetRot(object, 0.0f, 0.0f, 0.0f);
@@ -1848,9 +1848,9 @@ void func_8010AA8C_game_guys_lucky_7(omObjData *object) {
 s16 func_8010AD44_game_guys_lucky_7(s16 x, s16 y, s16 lines) {
     s16 win;
 
-    win = func_80060880_main(x, y, lines);
-    func_8005B63C_main(win, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
-    func_80061100_main(win, 1);
+    win = HuWinExCreateStyled(x, y, lines);
+    HuWinAttrSet(win, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
+    HuWinExPriSet(win, 1);
     HuWinMesSpeedSet(win, 0);
     HuWinHomeClear(win);
     return win;
@@ -1858,7 +1858,7 @@ s16 func_8010AD44_game_guys_lucky_7(s16 x, s16 y, s16 lines) {
 
 void func_8010ADB8_game_guys_lucky_7(s16 win) {
     HuWinHomeClear(win);
-    func_80060EA8_main(win, 1);
+    HuWinExClose(win, 1);
     HuWinExCleanup(win);
 }
 
@@ -1898,7 +1898,7 @@ s16 func_8010AF44_game_guys_lucky_7(s16 win, s16 player, s16 mode, s16 count) {
     switch (mode) {
         case 0:
             keys.v[player] = -1;
-            func_8005B63C_main(win, HUWIN_ATTR_COMKEY, HUWIN_ATTR_NONE);
+            HuWinAttrSet(win, HUWIN_ATTR_COMKEY, HUWIN_ATTR_NONE);
             HuWinActivePlayerSet(win, players.v[player]);
             HuWinComKeySet(keys.v[0], keys.v[1], keys.v[2], keys.v[3]);
             break;
@@ -1926,7 +1926,7 @@ s16 func_8010B13C_game_guys_lucky_7(s16 win, s16 player, s16 mode, s16 count) {
     switch (mode) {
         case 0:
             keys.v[player] = -1;
-            func_8005B63C_main(win, HUWIN_ATTR_COMKEY, HUWIN_ATTR_NONE);
+            HuWinAttrSet(win, HUWIN_ATTR_COMKEY, HUWIN_ATTR_NONE);
             HuWinActivePlayerSet(win, players.v[player]);
             HuWinComKeySet(keys.v[0], keys.v[1], keys.v[2], keys.v[3]);
             break;
@@ -1953,15 +1953,15 @@ void func_8010B334_game_guys_lucky_7(void) {
     s16 model;
 
     for (i = 0; i < 4; i++) {
-        model = func_8000B108_main(D_8010D2F0_game_guys_lucky_7[i], 0x2A9);
+        model = Hu3DModelRead(D_8010D2F0_game_guys_lucky_7[i], 0x2A9);
         D_8010D798_game_guys_lucky_7[i] = model;
         Hu3DAnmNoSet(Hu3DAnimRead(Hu3DData[model].hmf, 0xB0048, "e268p01_I8"), i * 2);
         Hu3DModelPosSet(model, 0.0f, 0.0f, 0.0f);
-        func_8001C2FC_main(model, 0x20000, 0x20000);
+        Hu3DModelObjAttrSet(model, 0x20000, 0x20000);
         Hu3DModelRemakeStatic(model);
-        func_8001C954_main(model);
-        func_8001C514_main(model);
-        func_80013390_main(model, -1, NULL, func_8010B6E0_game_guys_lucky_7);
+        Hu3DModelVtxBufMake(model);
+        Hu3DModelDynamicFree(model);
+        Hu3DParticleCreate(model, -1, NULL, func_8010B6E0_game_guys_lucky_7);
     }
     omAddObj(10, 10, 10, -1, func_8010B498_game_guys_lucky_7);
 }

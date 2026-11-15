@@ -70,10 +70,10 @@ void func_801074A0_mgresultdealer(void) {
     data = DataRead(0x210026);
     D_80109A70_mgresultdealer = Hu3DSprModelCreate(data, 0x2BD, 8);
     DataClose(data);
-    func_8001C2FC_main(D_800CBB60_main[D_80109A70_mgresultdealer].modelId, 0x70000000, 0x70000000);
+    Hu3DModelObjAttrSet(D_800CBB60_main[D_80109A70_mgresultdealer].modelId, 0x70000000, 0x70000000);
     for (i = 0; i < 40; i++) {
         D_80109A78_mgresultdealer[i].unk_00 = 0;
-        D_80109A78_mgresultdealer[i].unk_02 = func_80014618_main(D_80109A70_mgresultdealer, 8);
+        D_80109A78_mgresultdealer[i].unk_02 = Hu3DSprModelLink(D_80109A70_mgresultdealer, 8);
         D_80109A78_mgresultdealer[i].unk_04 = 0;
         obj->model[i + 1] = D_800CBB60_main[D_80109A78_mgresultdealer[i].unk_02].modelId;
         Hu3DModelPosSet(obj->model[i + 1], 0.0f, 400.0f, 0.0f);
@@ -85,11 +85,11 @@ void func_801074A0_mgresultdealer(void) {
     data = DataRead(0xC);
     D_80109A72_mgresultdealer = Hu3DSprModelCreate(data, 0x2BD, 8);
     DataClose(data);
-    func_8001C2FC_main(D_800CBB60_main[D_80109A72_mgresultdealer].modelId, 0x70000000, 0x70000000);
+    Hu3DModelObjAttrSet(D_800CBB60_main[D_80109A72_mgresultdealer].modelId, 0x70000000, 0x70000000);
     Hu3DModelScaleSet(D_800CBB60_main[D_80109A72_mgresultdealer].modelId, 1.0f, 1.0f, 1.0f);
     for (i = 0; i < 40; i++) {
         D_80109E38_mgresultdealer[i].unk_00 = 0;
-        D_80109E38_mgresultdealer[i].unk_02 = func_80014618_main(D_80109A72_mgresultdealer, 8);
+        D_80109E38_mgresultdealer[i].unk_02 = Hu3DSprModelLink(D_80109A72_mgresultdealer, 8);
         D_80109E38_mgresultdealer[i].unk_04 = 0;
         obj->model[i + 41] = D_800CBB60_main[D_80109E38_mgresultdealer[i].unk_02].modelId;
         Hu3DModelPosSet(obj->model[i + 41], 0.0f, 400.0f, 0.0f);
@@ -138,7 +138,7 @@ void func_80107888_mgresultdealer(omObjData *obj) {
                 entry = &D_800CBB60_main[D_80109A78_mgresultdealer[i].unk_02];
                 animSet = &D_800D408C_main[(u16)entry->unk_02];
                 rot = &animSet->rot[entry->pointIdx];
-                func_8001C258_main(obj->model[i + 1], HU3D_ATTR_DISPOFF, 0);
+                Hu3DModelAttrSet(obj->model[i + 1], HU3D_ATTR_DISPOFF, 0);
                 if (D_80109918_mgresultdealer >= 20) {
                     max = (rand8() & 1) + 1;
                 } else {
@@ -177,11 +177,11 @@ void func_80107888_mgresultdealer(omObjData *obj) {
             D_80109A78_mgresultdealer[i].unk_04++;
             if (y <= 152.5f) {
                 D_80109A78_mgresultdealer[i].unk_00 = 0;
-                func_8001C258_main(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-                func_8001C258_main(obj->model[i + 41], HU3D_ATTR_DISPOFF, 0);
+                Hu3DModelAttrSet(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(obj->model[i + 41], HU3D_ATTR_DISPOFF, 0);
                 Hu3DModelPosSet(obj->model[i + 41], x, y, z);
                 Hu3DMotionTimeSet(obj->model[i + 41], 0);
-                func_80014714_main(D_80109E38_mgresultdealer[i].unk_02, 0);
+                Hu3DSprModelFrameSet(D_80109E38_mgresultdealer[i].unk_02, 0);
                 HuAudFXPlay(9);
                 if (D_8010992C_mgresultdealer == 0) {
                     if (!(GwPlayer[D_8010A266_mgresultdealer[0]].stat & 1)) {
@@ -233,7 +233,7 @@ void func_80107E44_mgresultdealer(s32 count) {
             D_80109A78_mgresultdealer[i].unk_04 = 0;
             D_80109A78_mgresultdealer[i].unk_08.x = D_80109A78_mgresultdealer[i].unk_08.y = D_80109A78_mgresultdealer[i].unk_08.z = 0.0f;
             D_80109A78_mgresultdealer[i].unk_14 = 0.98f;
-            func_8001C258_main(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             Hu3DModelPosSet(obj->model[i + 1], 0.0f, 400.0f, 0.0f);
         }
         D_80109910_mgresultdealer = 1;
@@ -382,7 +382,7 @@ void func_80108570_mgresultdealer(void) {
     espPosSet(D_8010A210_mgresultdealer.groups[0].unk_00, 0x4C, 0x5A);
     espBankSet(D_8010A210_mgresultdealer.groups[0].unk_00, 0, 0);
     espSpeedSet(D_8010A210_mgresultdealer.groups[0].unk_00, 2.0f);
-    func_8000BDDC_main(D_8010A210_mgresultdealer.groups[0].unk_00, 0);
+    espAnimModeSet(D_8010A210_mgresultdealer.groups[0].unk_00, 0);
     espDispOff(D_8010A210_mgresultdealer.groups[0].unk_00);
 
     sprite = HuSprAnimDataRead(0xC0086);
@@ -452,7 +452,7 @@ void func_80108AEC_mgresultdealer(omObjData *arg0) {
         D_8010A260_mgresultdealer = func_80109710_mgresultdealer;
     } else {
         espBankSet(D_8010A210_mgresultdealer.groups[0].unk_00, 0, 0);
-        func_8000BDDC_main(D_8010A210_mgresultdealer.groups[0].unk_00, 1);
+        espAnimModeSet(D_8010A210_mgresultdealer.groups[0].unk_00, 1);
         espDispOn(D_8010A210_mgresultdealer.groups[0].unk_00);
         D_8010A260_mgresultdealer = func_80108BD4_mgresultdealer;
     }
@@ -474,7 +474,7 @@ void func_80108BD4_mgresultdealer(omObjData *arg0) {
     D_8010A210_mgresultdealer.groups[2].unk_02[1] = (s16)(value / 10) % 10;
     D_8010A210_mgresultdealer.groups[2].unk_02[2] = value % 10;
     for (i = 0; i < 3; i++) {
-        func_8000BDDC_main(D_8010A210_mgresultdealer.groups[2].unk_08[i], 1);
+        espAnimModeSet(D_8010A210_mgresultdealer.groups[2].unk_08[i], 1);
         espBankSet(D_8010A210_mgresultdealer.groups[2].unk_08[i], (u16)D_8010A210_mgresultdealer.groups[2].unk_02[i], 0);
     }
     if (value < 10) {
@@ -504,7 +504,7 @@ void func_80108BD4_mgresultdealer(omObjData *arg0) {
     D_8010A210_mgresultdealer.groups[2].unk_02[1] = (s16)(value / 10) % 10;
     D_8010A210_mgresultdealer.groups[2].unk_02[2] = value % 10;
     for (i = 0; i < 3; i++) {
-        func_8000BDDC_main(D_8010A210_mgresultdealer.groups[2].unk_08[i], 1);
+        espAnimModeSet(D_8010A210_mgresultdealer.groups[2].unk_08[i], 1);
         espBankSet(D_8010A210_mgresultdealer.groups[2].unk_08[i], (u16)D_8010A210_mgresultdealer.groups[2].unk_02[i], 0);
     }
     if (value < 10) {
@@ -518,7 +518,7 @@ void func_80108BD4_mgresultdealer(omObjData *arg0) {
         espDispOn(D_8010A210_mgresultdealer.groups[2].unk_08[1]);
     }
     espDispOn(D_8010A210_mgresultdealer.groups[2].unk_08[2]);
-    func_8000BDDC_main(D_8010A210_mgresultdealer.groups[0].unk_00, 0);
+    espAnimModeSet(D_8010A210_mgresultdealer.groups[0].unk_00, 0);
     D_8010994C_mgresultdealer = 0;
     D_8010A260_mgresultdealer = func_80109044_mgresultdealer;
 }

@@ -55,7 +55,7 @@ extern s16 D_800D0A38_main;
 extern s8 D_800D2132_main;
 extern s16 D_800D6ADA_main;
 
-void func_80045350_main(void) {
+void MgCoinReset(void) {
     s32 var_v1;
 
     if (D_800A6D40_main[GwSystem.minigame_index - 1].minigameType == 6) {
@@ -111,10 +111,10 @@ void ExecPause(void) {
     HuSprPosSet(D_800D6ADA_main, 0, 0xA0, var_s1 - 20);
     HuSprPriSet(D_800D6ADA_main, 0, 1);
     for (var_s2 = 0; var_s2 < ARRAY_COUNT(D_800B2340_main) - 1; var_s2++) {
-        D_800B2340_main[var_s2] = func_80045B24_main(0x3C, var_s1 + var_s2 * 0x41);
+        D_800B2340_main[var_s2] = GamePauseWinCreate(0x3C, var_s1 + var_s2 * 0x41);
     }
     for (var_s2 = 0; var_s2 < ARRAY_COUNT(D_800B2340_main) - 1; var_s2++) {
-        func_80045964_main(D_800B2340_main[var_s2], var_s6);
+        GamePauseNameSet(D_800B2340_main[var_s2], var_s6);
         if (var_s4 <= var_s2 + var_s7 * 2) {
             HuWinDispOff(D_800B2340_main[var_s2]);
         } else {
@@ -143,7 +143,7 @@ void ExecPause(void) {
         if (var_s4 >= 3 && (D_800C9520_main[0] & (L_JPAD | R_JPAD))) {
             var_s7 ^= 1;
             for (var_s2 = 0; var_s2 < 2; var_s2++) {
-                func_80045964_main(D_800B2340_main[var_s2], var_s6);
+                GamePauseNameSet(D_800B2340_main[var_s2], var_s6);
                 if (var_s4 <= var_s2 + var_s7 * 2) {
                     HuWinDispOff(D_800B2340_main[var_s2]);
                 } else {
@@ -159,7 +159,7 @@ void ExecPause(void) {
     }
 }
 
-void func_80045964_main(s16 arg0, s16 arg1) {
+void GamePauseNameSet(s16 arg0, s16 arg1) {
     u8 sp10[4];
     s16 var_a2;
     s16 var_a1;
@@ -182,7 +182,7 @@ void func_80045964_main(s16 arg0, s16 arg1) {
     }
 }
 
-void func_80045A90_main(void) {
+void GamePauseEnd(void) {
     s16 i;
 
     HuSprGrpKill(D_800D6ADA_main);
@@ -195,7 +195,7 @@ void func_80045A90_main(void) {
     omDelPrcObj(pauseProc);
 }
 
-s16 func_80045B24_main(s16 arg0, s16 arg1) {
+s16 GamePauseWinCreate(s16 arg0, s16 arg1) {
     TextWindow *temp_v0_2;
     s16 temp_v0;
 
@@ -211,7 +211,7 @@ s16 func_80045B24_main(s16 arg0, s16 arg1) {
     return temp_v0;
 }
 
-s32 func_80045BF0_main(s32 arg0) {
+s32 HuAudVoiceTypeGet(s32 arg0) {
     u32 var_v0;
     u32 var_v1;
 
@@ -226,7 +226,7 @@ s32 func_80045BF0_main(s32 arg0) {
     return var_v1;
 }
 
-void func_80045C2C_main(void) {
+void HuAudCharVoiceInit(void) {
     s32 var_v1;
 
     D_800B2390_main = NULL;
@@ -236,14 +236,14 @@ void func_80045C2C_main(void) {
 }
 
 // TODO: type of arg1 assumed. Implies unk06 and unk07.
-s16 func_80045C64_main(u32 arg0, D_800B2350_main_Struct *arg1) {
+s16 HuAudCharVoiceSearch(u32 arg0, D_800B2350_main_Struct *arg1) {
     s32 temp_v0;
     s32 var_v1;
     s16 var_a2;
     s16 var_a1;
     s32 temp_a0;
 
-    temp_v0 = func_80045BF0_main(arg0);
+    temp_v0 = HuAudVoiceTypeGet(arg0);
     if (temp_v0 < 0) {
         return -1;
     }
@@ -273,7 +273,7 @@ s16 func_80045C64_main(u32 arg0, D_800B2350_main_Struct *arg1) {
 }
 
 // https://decomp.me/scratch/TTLIZ
-void func_80045D38_main(omObjData *object) {
+void HuAudCharVoiceExec(omObjData *object) {
     s16 seNo;
     s32 i;
     s32 seId;
@@ -290,10 +290,10 @@ void func_80045D38_main(omObjData *object) {
         player = D_800B2350_main[i].unk05;
         if (player < 4) {
             seId = D_800B2350_main[i].unk00 + D_800B2350_main[i].unk06 + 1;
-            seNo = func_8004AC98_main(seId, (s8)player);
+            seNo = HuAudPlayerFXPlay(seId, (s8)player);
         } else {
             seId = D_800B2350_main[i].unk00 + D_800B2350_main[i].unk06 + 1;
-            seNo = func_8004AC5C_main(seId, object->work[0]);
+            seNo = _HuAudPlayerFXPlay(seId, object->work[0]);
             if (++object->work[0] >= 4) {
                 object->work[0] = 0;
             }
@@ -310,23 +310,23 @@ void func_80045D38_main(omObjData *object) {
     }
 }
 
-omObjData *func_80045ED0_main(s32 arg0) {
-    return func_80045F48_main(arg0, -1, -1, -1);
+omObjData *HuAudCharVoicePlay(s32 arg0) {
+    return HuAudCharVoicePlayEx(arg0, -1, -1, -1);
 }
 
-omObjData *func_80045EF4_main(u32 arg0, s16 arg1) {
-    return func_80045F48_main(arg0, arg1, -1, -1);
+omObjData *HuAudCharVoicePlayPan(u32 arg0, s16 arg1) {
+    return HuAudCharVoicePlayEx(arg0, arg1, -1, -1);
 }
 
-omObjData *func_80045F1C_main(u32 arg0, s16 arg1, s16 arg2) {
-    return func_80045F48_main(arg0, arg1, -1, arg2);
+omObjData *HuAudCharVoicePlayPlayer(u32 arg0, s16 arg1, s16 arg2) {
+    return HuAudCharVoicePlayEx(arg0, arg1, -1, arg2);
 }
 
-omObjData *func_80045F48_main(u32 arg0, s16 arg1, s16 arg2, s16 arg3) {
+omObjData *HuAudCharVoicePlayEx(u32 arg0, s16 arg1, s16 arg2, s16 arg3) {
     D_800B2350_main_Struct sp18;
     omObjData *temp_v0_2;
 
-    if (func_80045C64_main(arg0, &sp18) >= 0) {
+    if (HuAudCharVoiceSearch(arg0, &sp18) >= 0) {
         u8 temp_06 = sp18.unk06;
 
         D_800B2350_main[temp_06].unk00 = sp18.unk00;
@@ -336,7 +336,7 @@ omObjData *func_80045F48_main(u32 arg0, s16 arg1, s16 arg2, s16 arg3) {
         D_800B2350_main[temp_06].unk06 = sp18.unk06;
         D_800B2350_main[temp_06].unk07 = sp18.unk07;
         if (D_800B2390_main == NULL) {
-            D_800B2390_main = omAddObj(32000, 0, 0, -1, func_80045D38_main);
+            D_800B2390_main = omAddObj(32000, 0, 0, -1, HuAudCharVoiceExec);
             D_800B2390_main->work[0] = 0;
         }
     }

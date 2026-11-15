@@ -64,7 +64,7 @@ static void func_800EEDA0_name_81(s32 arg0, s32 arg1, s32 arg2) {
     }
 
     if (hasCom != 0) {
-        func_8005B63C_main(arg0, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
+        HuWinAttrSet(arg0, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
         HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
         HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
@@ -82,7 +82,7 @@ static void func_800EEDA0_name_81(s32 arg0, s32 arg1, s32 arg2) {
             HuPrcVSleep();
         }
     } else {
-        while ((HuWinStatGet(arg0) != 0) && !(func_8005B68C_main(arg0) & 0x200)) {
+        while ((HuWinStatGet(arg0) != 0) && !(HuWinAttrGet(arg0) & 0x200)) {
             HuPrcVSleep();
         }
         winData[arg0].stat = 7;
@@ -122,7 +122,7 @@ static void func_800EF0D8_name_81(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
         HuWinActivePlayerSet(arg0, mask);
         HuWinComKeySet(sp18[0], sp18[1], sp18[2], sp18[3]);
     } else {
-        func_8005B63C_main(arg0, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
+        HuWinAttrSet(arg0, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
         HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
         HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
@@ -138,7 +138,7 @@ static void func_800EF0D8_name_81(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
             HuPrcVSleep();
         }
     } else {
-        while ((HuWinStatGet(arg0) != 0) && !(func_8005B68C_main(arg0) & 0x200)) {
+        while ((HuWinStatGet(arg0) != 0) && !(HuWinAttrGet(arg0) & 0x200)) {
             HuPrcVSleep();
         }
         winData[arg0].stat = 7;
@@ -172,7 +172,7 @@ static void func_800EF3F8_name_81(s32 arg0, s32 arg1) {
     }
 
     if (i == D_80101220_name_81) {
-        func_8005B63C_main(arg0, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
+        HuWinAttrSet(arg0, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, D_800A12C0_main);
         HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, D_800A12C0_main);
         HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, D_800A12C0_main);
@@ -186,7 +186,7 @@ static void func_800EF3F8_name_81(s32 arg0, s32 arg1) {
                 HuPrcVSleep();
             }
         } else {
-            while ((HuWinStatGet(arg0) != 0) && !(func_8005B68C_main(arg0) & 0x200)) {
+            while ((HuWinStatGet(arg0) != 0) && !(HuWinAttrGet(arg0) & 0x200)) {
                 HuPrcVSleep();
             }
             winData[arg0].stat = 7;
@@ -207,7 +207,7 @@ static void func_800EF3F8_name_81(s32 arg0, s32 arg1) {
                 HuPrcVSleep();
             }
         } else {
-            while ((HuWinStatGet(arg0) != 0) && !(func_8005B68C_main(arg0) & 0x200)) {
+            while ((HuWinStatGet(arg0) != 0) && !(HuWinAttrGet(arg0) & 0x200)) {
                 HuPrcVSleep();
             }
             winData[arg0].stat = 7;
@@ -521,19 +521,19 @@ void func_800F0208_name_81(Vec *pos, f32 zoom, f32 targetZoom, u32 frames) {
 
 void func_800F0378_name_81(Object *obj, char *hookName, s16 model) {
     Hu3DModelHookSet(model, obj->omObj1->model[0], hookName);
-    func_8001C258_main(model, 0x4000, 0x4000);
+    Hu3DModelAttrSet(model, 0x4000, 0x4000);
 }
 
 void func_800F03C8_name_81(s16 arg0) {
-    func_8001C258_main(arg0, 0x4000, 0);
+    Hu3DModelAttrSet(arg0, 0x4000, 0);
 }
 
 s32 func_800F03F0_name_81(s16 x, s16 y, s16 w, s16 h) {
     s32 win = HuWinCreate(x, y, w, h, 0, 0);
 
     HuWinBGTPLvlSet(win, 200);
-    func_80060144_main(win);
-    func_8005B63C_main(win, HUWIN_ATTR_PAUSE, HUWIN_ATTR_PAUSE);
+    HuWinDummy(win);
+    HuWinAttrSet(win, HUWIN_ATTR_PAUSE, HUWIN_ATTR_PAUSE);
     HuWinMesSpeedSet(win, 0);
     return win;
 }

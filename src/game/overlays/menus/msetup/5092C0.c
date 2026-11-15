@@ -62,7 +62,7 @@ void func_8010D094_msetup(HmfData *arg0, s16 arg1) {
 s16 func_8010D0C8_msetup(s16 model, char *name) {
     HmfData *hmf = Hu3DData[model].hmf;
     HmfData_Unk84_Entry2 *texture;
-    s16 hash = func_80011460_main((u8 *)name);
+    s16 hash = HmfNameHash((u8 *)name);
     s32 i;
 
     texture = NULL;
@@ -506,7 +506,7 @@ void func_8010E09C_msetup(omObjData *object) {
     f32 *pos;
 
     if (object->work[1] != object->work[2]) {
-        func_8000CD00_main(modelIndex, D_80119AF4_msetup, D_80119AF8_msetup, D_80119AFC_msetup);
+        EffectParamSet(modelIndex, D_80119AF4_msetup, D_80119AF8_msetup, D_80119AFC_msetup);
         object->work[2] = object->work[1];
     }
     anim = object->data;
@@ -519,7 +519,7 @@ void func_8010E09C_msetup(omObjData *object) {
                 pos = anim->pos[i];
                 x = (rand8() * range) / 256 - range / 2;
                 z = (rand8() * range) / 256 - range / 2;
-                func_8000CD74_main(model, x + pos[0], pos[1], z + pos[2]);
+                EffectEmit(model, x + pos[0], pos[1], z + pos[2]);
             }
             break;
     }
@@ -540,7 +540,7 @@ omObjData *func_8010E21C_msetup(void) {
     anim = HuMemAllocTag(sizeof(MsetupBoardAnim), TAG_OVERLAY);
     memset(anim, 0, sizeof(MsetupBoardAnim));
     object->data = anim;
-    model = object->model[0] = func_8000CBA0_main(0x110012, 0x289);
+    model = object->model[0] = EffectModelCreate(0x110012, 0x289);
     data = Hu3DData[model].unkBC;
     data->unk1C.f = data->unk20.f = data->unk24.f = 0.0f;
     data->unk10.f = 100.0f;
@@ -561,7 +561,7 @@ void func_8010E32C_msetup(Array2D *arg0, s32 count, f32 rotation, s32 link) {
 
     for (i = 0; i < count; i++) {
         if (sourceModel < 0 || !link) {
-            model = sourceModel = func_8000B108_main(0x140003, 0x2A9);
+            model = sourceModel = Hu3DModelRead(0x140003, 0x2A9);
         } else {
             model = Hu3DModelLink(sourceModel);
         }
@@ -591,7 +591,7 @@ void func_8010E4D8_msetup(MsetupLinkedModel *entry, s32 count) {
     s32 i;
 
     for (i = 0; i < count; i++, entry++) {
-        func_8001C514_main(entry->model);
+        Hu3DModelDynamicFree(entry->model);
     }
 }
 
@@ -769,7 +769,7 @@ void func_8010EB94_msetup(void) {
                     anim.scale[0] = 0;
                     anim.speed[0] = 1.0f / 7.0f;
                     handle = slots[0];
-                    func_8001C258_main(handle, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                    Hu3DModelAttrSet(handle, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     Hu3DModelPosSet(handle, 260.0f, 345.0f, -40.0f);
                     Hu3DModelRotSet(handle, 0, 180.0f, 0);
                     anim.fade.sprite.alpha[0] = 0;
@@ -810,7 +810,7 @@ void func_8010EB94_msetup(void) {
                     anim.scale[1] = 0;
                     anim.speed[1] = 1.0f / 7.0f;
                     handle = slots[1];
-                    func_8001C258_main(handle, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                    Hu3DModelAttrSet(handle, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     Hu3DModelPosSet(handle, 260.0f, 175.0f, -80.0f);
                     Hu3DModelRotSet(handle, 0, 180.0f, 0);
                     anim.fade.destroy[1] = 0;
@@ -850,7 +850,7 @@ void func_8010EB94_msetup(void) {
                     handle = 0;
                     for (i = 0; i < 2; i++, handle++) {
                         if (values[handle] >= 0) {
-                            func_80033430_main(values[handle]);
+                            Hu3DAnimModelKill(values[handle]);
                         }
                         if (slots[handle] >= 0) {
                             Hu3DModelKill(slots[handle]);
@@ -890,10 +890,10 @@ void func_8010EB94_msetup(void) {
                 } else if (anim.scale[i] <= 0) {
                     anim.scale[i] = 0;
                     anim.speed[i] = 0;
-                    func_8001C258_main(handle, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    Hu3DModelAttrSet(handle, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     if (anim.fade.destroy[index] != 0) {
                         if (values[index] >= 0) {
-                            func_80033430_main(values[index]);
+                            Hu3DAnimModelKill(values[index]);
                             values[index] = -1;
                         }
                         Hu3DModelKill(handle);
@@ -975,7 +975,7 @@ void func_8010F33C_msetup(s16 model, Vec *worldPos, HuMtx4F nodeTransform) {
     func_80088800_main(transform, entry->pos.x, entry->pos.y, entry->pos.z);
     mtxRotCat(transform, entry->rot.x, entry->rot.y, entry->rot.z);
     mtxScaleCat(transform, entry->scale.x, entry->scale.y, entry->scale.z);
-    func_80018044_main(nodeTransform, transform, combined);
+    mtxCat(nodeTransform, transform, combined);
     worldPos->x = combined[0][0] + combined[1][0] + combined[2][0] + combined[3][0];
     worldPos->y = combined[0][1] + combined[1][1] + combined[2][1] + combined[3][1];
     worldPos->z = combined[0][2] + combined[1][2] + combined[2][2] + combined[3][2];
@@ -985,7 +985,7 @@ void func_8010F43C_msetup(s16 model, char *node, Vec2f *screenPos) {
     HuMtx4F transform;
     Vec worldPos;
 
-    func_80016B00_main(model, Hu3DData[model].motTime, node, &transform);
+    Hu3DModelObjMtxFrameGet(model, Hu3DData[model].motTime, node, &transform);
     func_8010F33C_msetup(model, &worldPos, transform);
     Hu3D3Dto2D(0, &worldPos, screenPos);
 }

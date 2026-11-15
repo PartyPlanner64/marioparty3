@@ -245,7 +245,7 @@ static void func_8010024C_shared_board(void) {
         if (D_800C9930_main != -1) {
             msmMusSetVolume(D_800C9930_main, 0x60);
         } else {
-            func_8004A9DC_main(0x60);
+            HuAudSeqVolSet(0x60);
         }
     }
     
@@ -328,7 +328,7 @@ static void func_8010024C_shared_board(void) {
         if (D_800C9930_main != -1) {
             msmMusSetVolume(D_800C9930_main, 0x7F);
         } else {
-            func_8004A9DC_main(0x7F);
+            HuAudSeqVolSet(0x7F);
         }
         
         WipeCreateIn(WIPE_TYPE_NORMAL, 4);

@@ -66,7 +66,7 @@ void func_801059A0_mgresultboard(void) {
     s8 i;
 
     omInitObjMan(0x1E, 0x1E);
-    func_8000B690_main(2);
+    CamSetupInitMulti(2);
     for (i = 0; i < 2; i++) {
         ScissorSet(i, 0.0f, 0.0f, 320.0f, 240.0f);
         ViewportSet(i, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);

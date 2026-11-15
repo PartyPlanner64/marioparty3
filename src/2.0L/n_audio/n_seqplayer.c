@@ -409,7 +409,7 @@ static void __n_handleMIDIMsg(N_ALSeqPlayer *seqp, N_ALEvent *event) {
                 vol = __n_vsVol(vstate, seqp);
                 deltaTime = sound->envelope->attackTime;
 
-                func_80066270_main(voice, sound->wavetable, pitch, vol, pan, fxmix, deltaTime);
+                n_alSynStartVoiceParams(voice, sound->wavetable, pitch, vol, pan, fxmix, deltaTime);
                 /*
                  * set up callbacks for envelope
                  */
@@ -477,7 +477,7 @@ static void __n_handleMIDIMsg(N_ALSeqPlayer *seqp, N_ALEvent *event) {
                     for (vs = seqp->vAllocHead; vs != 0; vs = vs->next) {
                         if (vs->channel == chan) {
                             pan = __n_vsPan(vs, seqp);
-                            func_80066400_main(&vs->voice, pan);
+                            n_alSynSetPan(&vs->voice, pan);
                         }
                     }
                     break;

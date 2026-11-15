@@ -417,7 +417,7 @@ void __n_CSPHandleMIDIMsg(N_ALCSPlayer *seqp, N_ALEvent *event) {
                 vol = __n_vsVol(vstate, (N_ALSeqPlayer *)seqp);
                 deltaTime = sound->envelope->attackTime;
 
-                func_80066270_main(voice, sound->wavetable, pitch, vol, pan, fxmix, deltaTime);
+                n_alSynStartVoiceParams(voice, sound->wavetable, pitch, vol, pan, fxmix, deltaTime);
                 /*
                  * set up callbacks for envelope
                  */
@@ -498,7 +498,7 @@ void __n_CSPHandleMIDIMsg(N_ALCSPlayer *seqp, N_ALEvent *event) {
                     for (vs = seqp->vAllocHead; vs != 0; vs = vs->next) {
                         if (vs->channel == chan) {
                             pan = __n_vsPan(vs, (N_ALSeqPlayer *)seqp);
-                            func_80066400_main(&vs->voice, pan);
+                            n_alSynSetPan(&vs->voice, pan);
                         }
                     }
                     break;

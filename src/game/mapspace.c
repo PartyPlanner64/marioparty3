@@ -4,7 +4,7 @@
 #include "game/mapspace.h"
 
 
-void func_8000D960_main(HuMtx4F in, HuMtx4F out) {
+void HuMtxInverseAffine(HuMtx4F in, HuMtx4F out) {
     f32 m00m11 = in[0][0] * in[1][1];
     f32 m00m12 = in[0][0] * in[1][2];
     f32 m00m21 = in[0][0] * in[2][1];
@@ -156,6 +156,6 @@ s32 Hitcheck_Quadrangle_with_Sphere(Vec *quad, Vec *sphereOrigin, f32 sphereRadi
     }
 }
 
-void func_8000E344_main(Vec *a, Vec *b, Vec *out) {
+void HuVecProject(Vec *a, Vec *b, Vec *out) {
     HuVecMulScalar(out, HuVecDot3F(a, b) / HuVecDot3F(a, a), a);
 }

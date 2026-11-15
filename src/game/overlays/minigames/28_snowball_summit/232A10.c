@@ -429,8 +429,8 @@ void func_80106758_snowball_summit(omObjData *object) {
 }
 
 void func_80106760_snowball_summit(omObjData *object) {
-    D_8010F8CC_snowball_summit = func_80055194_main(HuSprAnimDataRead(0x490000));
-    D_8010F8D4_snowball_summit = func_80055194_main(HuSprAnimDataRead(0x490001));
+    D_8010F8CC_snowball_summit = HuSprAnimDataGet(HuSprAnimDataRead(0x490000));
+    D_8010F8D4_snowball_summit = HuSprAnimDataGet(HuSprAnimDataRead(0x490001));
     D_8010F8C8_snowball_summit = Hu3DHookFuncCreate(0, func_801062E0_snowball_summit, 2);
     Hu3DModelCameraSet(D_8010F8CA_snowball_summit, HU3D_CAM0);
     D_8010F8C0_snowball_summit = 0;
@@ -446,7 +446,7 @@ void func_80106834_snowball_summit(omObjData *object) {
 }
 
 void func_8010683C_snowball_summit(omObjData *this) {
-    *this->model = func_8000B108_main(0x490003, 0x2B9);
+    *this->model = Hu3DModelRead(0x490003, 0x2B9);
     this->trans.x = this->trans.z = 0.0f;
     this->trans.y = 20.0f;
     Hu3DModelCameraSet(*this->model, HU3D_CAM1);
@@ -461,8 +461,8 @@ void func_801068E4_snowball_summit(omObjData *object) {
 }
 
 void func_801068EC_snowball_summit(omObjData *this) {
-    *this->model = func_8000B108_main(0x490006, 0x2B9);
-    func_8001C814_main(*this->model, 2, 2);
+    *this->model = Hu3DModelRead(0x490006, 0x2B9);
+    Hu3DMotionAttrSet(*this->model, 2, 2);
     this->trans.x = this->trans.z = 0.0f;
     this->trans.y = 0.0f;
     Hu3DModelCameraSet(*this->model, HU3D_CAM0);
@@ -491,8 +491,8 @@ void func_8010699C_snowball_summit(omObjData *object) {
             break;
         case 1:
             variant = rand8() & 1;
-            func_8001C258_main(object->model[variant], HU3D_ATTR_DISPOFF, 0);
-            func_8001C258_main(object->model[variant ^ 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(object->model[variant], HU3D_ATTR_DISPOFF, 0);
+            Hu3DModelAttrSet(object->model[variant ^ 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             object->trans.x = D_8010F550_snowball_summit[object->work[0]].start.x;
             object->trans.y = D_8010F550_snowball_summit[object->work[0]].start.y;
             object->trans.z = D_8010F550_snowball_summit[object->work[0]].start.z;
@@ -510,8 +510,8 @@ void func_8010699C_snowball_summit(omObjData *object) {
             object->trans.z = D_8010F550_snowball_summit[object->work[0]].start.z + throw->unk_14;
             Hu3DModelPosSet(object->model[1], object->trans.x, object->trans.y, object->trans.z);
             if (throw->unk_04 >= throw->unk_08) {
-                func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-                func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 throw->state = 0;
                 throw->unk_04 = (u8)(rand8() % 60) + 150;
                 throw->unk_0C = throw->unk_10 = throw->unk_14 = 0.0f;
@@ -527,21 +527,21 @@ void func_80106D58_snowball_summit(omObjData *object) {
     void *data;
 
     if (object->work[0] == 0) {
-        object->model[0] = D_8010F890_snowball_summit = func_8000B108_main(0x490007, 0x2B9);
-        object->model[1] = func_8000B108_main(0x490007, 0x2A9);
+        object->model[0] = D_8010F890_snowball_summit = Hu3DModelRead(0x490007, 0x2B9);
+        object->model[1] = Hu3DModelRead(0x490007, 0x2A9);
         data = DataRead(0x490008);
         object->work[1] = D_8010F892_snowball_summit = Hu3DAnimCreate(Hu3DData[object->model[1]].hmf, data, 0, "s240_002_DEF");
         HuMemMemoryFreePerm(data);
     } else {
         object->model[0] = Hu3DModelLink(D_8010F890_snowball_summit);
-        object->model[1] = func_8000B108_main(0x490007, 0x2A9);
+        object->model[1] = Hu3DModelRead(0x490007, 0x2A9);
         object->work[1] = Hu3DAnimLink(Hu3DData[object->model[1]].hmf, D_8010F892_snowball_summit, 0, "s240_002_DEF");
     }
-    func_80032FC0_main(object->work[1], 1, 1);
+    Hu3DAnimAttrSet(object->work[1], 1, 1);
     Hu3DModelRemakeStatic(object->model[1]);
-    func_8001C514_main(object->model[1]);
-    func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelDynamicFree(object->model[1]);
+    Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     object->trans.x = D_8010F550_snowball_summit[object->work[0]].start.x;
     object->trans.y = D_8010F550_snowball_summit[object->work[0]].start.y;
     object->trans.z = D_8010F550_snowball_summit[object->work[0]].start.z;
@@ -593,24 +593,24 @@ void func_801070F4_snowball_summit(omObjData *object) {
         case 0:
             break;
         case 1:
-            func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, 0);
+            Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, 0);
             roll->state = 2;
             break;
         case 2:
             roll->unk_04 -= roll->unk_08;
             if (roll->unk_04 > 0) {
-                func_8001F9E4_main(object->model[0], roll->unk_04);
+                Hu3DModelTPLvlSet(object->model[0], roll->unk_04);
                 object->scale.x += roll->unk_10;
                 object->scale.y += roll->unk_10;
                 object->scale.z += roll->unk_10;
             } else {
-                func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 roll->state = 0;
                 roll->unk_04 = 255;
                 roll->unk_08 = 0;
                 roll->unk_10 = 0;
                 object->scale.x = object->scale.y = object->scale.z = 1.0f;
-                func_8001F9E4_main(object->model[0], 255);
+                Hu3DModelTPLvlSet(object->model[0], 255);
             }
             break;
     }
@@ -619,10 +619,10 @@ void func_801070F4_snowball_summit(omObjData *object) {
 void func_80107230_snowball_summit(omObjData *object) {
     UnkSnowballSummitRoll *roll;
 
-    object->model[0] = func_8000B108_main(0x490009, 0x289);
-    func_8001FA68_main(object->model[0]);
-    func_8001F9E4_main(object->model[0], 255);
-    func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    object->model[0] = Hu3DModelRead(0x490009, 0x289);
+    Hu3DModelTPLvlInit(object->model[0]);
+    Hu3DModelTPLvlSet(object->model[0], 255);
+    Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     object->trans.x = object->trans.y = object->trans.z = 0.0f;
     object->scale.x = object->scale.y = object->scale.z = 1.0f;
     Hu3DModelCameraSet(object->model[0], HU3D_CAM1);
@@ -675,8 +675,8 @@ void func_8010742C_snowball_summit(omObjData *object) {
         case 0:
             break;
         case 1:
-            func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, 0);
-            func_8001C814_main(object->model[0], 1, 0);
+            Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, 0);
+            Hu3DMotionAttrSet(object->model[0], 1, 0);
             object->scale.x = object->scale.y = object->scale.z = snowball->unk_14;
             snowball->state = 2;
             break;
@@ -684,9 +684,9 @@ void func_8010742C_snowball_summit(omObjData *object) {
             snowball->unk_04 -= snowball->unk_08;
             if (snowball->unk_04 > 0) {
                 if (snowball->unk_04 < 255) {
-                    func_8001F9E4_main(object->model[0], snowball->unk_04);
+                    Hu3DModelTPLvlSet(object->model[0], snowball->unk_04);
                 } else {
-                    func_8001F9E4_main(object->model[0], 255);
+                    Hu3DModelTPLvlSet(object->model[0], 255);
                 }
                 if (object->scale.x < snowball->unk_0C) {
                     object->scale.x += snowball->unk_10;
@@ -694,15 +694,15 @@ void func_8010742C_snowball_summit(omObjData *object) {
                     object->scale.z += snowball->unk_10;
                 }
             } else {
-                func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 Hu3DMotionTimeSet(object->model[0], 0);
-                func_8001C814_main(object->model[0], 1, 1);
+                Hu3DMotionAttrSet(object->model[0], 1, 1);
                 snowball->state = 0;
                 snowball->unk_04 = 450;
                 snowball->unk_08 = 0;
                 snowball->unk_10 = 0;
                 object->scale.x = object->scale.y = object->scale.z = 0.5f;
-                func_8001F9E4_main(object->model[0], 255);
+                Hu3DModelTPLvlSet(object->model[0], 255);
             }
             break;
     }
@@ -711,11 +711,11 @@ void func_8010742C_snowball_summit(omObjData *object) {
 void func_801075E0_snowball_summit(omObjData *object) {
     UnkSnowballSummitSnowball *snowball;
 
-    object->model[0] = func_8000B108_main(0x49000A, 0x1689);
-    func_8001FA68_main(object->model[0]);
-    func_8001F9E4_main(object->model[0], 255);
-    func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    func_8001C814_main(object->model[0], 1, 1);
+    object->model[0] = Hu3DModelRead(0x49000A, 0x1689);
+    Hu3DModelTPLvlInit(object->model[0]);
+    Hu3DModelTPLvlSet(object->model[0], 255);
+    Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DMotionAttrSet(object->model[0], 1, 1);
     Hu3DMotionTimeSet(object->model[0], 0);
     object->trans.x = object->trans.y = object->trans.z = 0.0f;
     object->scale.x = object->scale.y = object->scale.z = 0.7f;
@@ -749,15 +749,15 @@ void func_8010775C_snowball_summit(omObjData *this) {
             x = (rand8() - 128) * 12;
             z = i * 720 - 700;
         } while (!(x * x + z * z < 1.0e8f));
-        func_8000CD74_main(*model, x, i * 180 + 1000, z);
+        EffectEmit(*model, x, i * 180 + 1000, z);
     }
 }
 
 void func_80107860_snowball_summit(omObjData *this) {
     s16 *model = &D_80110030_snowball_summit;
 
-    *model = func_8000CBA0_main(0x49000D, 0x2A9);
-    func_8000CD00_main(*model, 15.0f, 110.0f, 8.0f);
+    *model = EffectModelCreate(0x49000D, 0x2A9);
+    EffectParamSet(*model, 15.0f, 110.0f, 8.0f);
     Hu3DModelCameraSet(*model, HU3D_CAM1);
     this->func = func_8010775C_snowball_summit;
 }
@@ -868,8 +868,8 @@ void func_80107B58_snowball_summit(omObjData *object, Vec stick) {
 void func_80107CA4_snowball_summit(omObjData *object, s32 motion) {
     UnkSnowballSummitMover *mover = &D_8010F9B8_snowball_summit[object->work[0]];
 
-    func_8001C5B4_main(object->model[0], object->motion[motion]);
-    func_8001C814_main(object->model[0], 2, 2);
+    Hu3DMotionModelSet(object->model[0], object->motion[motion]);
+    Hu3DMotionAttrSet(object->model[0], 2, 2);
     mover->unk_04 = motion;
 }
 
@@ -1127,8 +1127,8 @@ void func_8010A0B0_snowball_summit(omObjData *object) {
                 if (mover->unk_04 == 3 && D_8010FC30_snowball_summit[mover->unk_70].unk_0C >= 1.7) {
                     func_80107D30_snowball_summit(object, 4, 12, 6);
                 }
-                func_8001C814_main(object->model[0], 2, 2);
-                func_8001C814_main(object->model[0], 1, 0);
+                Hu3DMotionAttrSet(object->model[0], 2, 2);
+                Hu3DMotionAttrSet(object->model[0], 1, 0);
             }
             break;
     }
@@ -1166,8 +1166,8 @@ void func_8010A384_snowball_summit(omObjData *object) {
             }
             func_80107D30_snowball_summit(object, 3, 12, 10);
             Hu3DMotionTimeSet(object->model[0], 12.0f);
-            func_8001C814_main(object->model[0], 2, 0);
-            func_8001C814_main(object->model[0], 1, 1);
+            Hu3DMotionAttrSet(object->model[0], 2, 0);
+            Hu3DMotionAttrSet(object->model[0], 1, 1);
             break;
         case 3:
         case 4:
@@ -1179,8 +1179,8 @@ void func_8010A384_snowball_summit(omObjData *object) {
                 func_80107D30_snowball_summit(object, 4, 12, 3);
             }
             Hu3DMotionTimeSet(object->model[0], 12.0f);
-            func_8001C814_main(object->model[0], 2, 0);
-            func_8001C814_main(object->model[0], 1, 1);
+            Hu3DMotionAttrSet(object->model[0], 2, 0);
+            Hu3DMotionAttrSet(object->model[0], 1, 1);
             break;
         case 5:
         case 6:
@@ -1236,7 +1236,7 @@ void func_8010A71C_snowball_summit(omObjData *object) {
             omVibrate(object->work[0], 2, 3, 10);
         }
     } else {
-        func_8004AC98_main(0x438, object->work[0]);
+        HuAudPlayerFXPlay(0x438, object->work[0]);
     }
 }
 
@@ -1329,12 +1329,12 @@ void func_8010AE74_snowball_summit(omObjData *object) {
     } else if (mover->unk_74 == 1) {
         if (mover->unk_04 != 7) {
             func_80107CA4_snowball_summit(object, 7);
-            func_8001C814_main(object->model[0], 2, 0);
-            func_8001C814_main(object->model[0], 1, 1);
+            Hu3DMotionAttrSet(object->model[0], 2, 0);
+            Hu3DMotionAttrSet(object->model[0], 1, 1);
         }
     } else if (mover->unk_74 == 2) {
         func_80107CA4_snowball_summit(object, 7);
-        func_8001C814_main(object->model[0], 1, 0);
+        Hu3DMotionAttrSet(object->model[0], 1, 0);
         mover->unk_74 = 3;
     } else if (mover->unk_74 == 3) {
         if (Hu3DData[object->model[0]].motTime >= D_800CCF58_main[Hu3DData[object->model[0]].motId].unk02 - 2) {
@@ -1392,12 +1392,12 @@ void func_8010B158_snowball_summit(omObjData *object) {
     if (D_80110044_snowball_summit != 0) {
         if (mover->unk_3C == 0 && mover->unk_04 != 9) {
             func_80107CA4_snowball_summit(object, 9);
-            func_8001C814_main(object->model[0], 2, 0);
-            func_80045ED0_main(charBase | 0x2F);
+            Hu3DMotionAttrSet(object->model[0], 2, 0);
+            HuAudCharVoicePlay(charBase | 0x2F);
         }
     } else if (mover->unk_04 != 10) {
         func_80107CA4_snowball_summit(object, 10);
-        func_8001C814_main(object->model[0], 2, 0);
+        Hu3DMotionAttrSet(object->model[0], 2, 0);
     }
 }
 
@@ -1439,25 +1439,25 @@ void func_8010B34C_snowball_summit(omObjData *object) {
     u16 character = GwPlayer[object->work[0]].chr;
     UnkSnowballSummitMover *mover;
 
-    object->model[0] = func_8000B108_main(D_800A178C_main[character][0] | D_800A178C_main[character][1], 0x2B9);
-    func_8000B460_main(object, 0, func_80017BB8_main(character, 0));
-    func_8000B460_main(object, 1, func_80017BB8_main(character, 1));
-    func_8000B460_main(object, 2, func_80017BB8_main(character, 0x89));
-    func_8000B460_main(object, 3, func_80017BB8_main(character, 0x85));
-    func_8000B460_main(object, 4, func_80017BB8_main(character, 0x86));
-    func_8000B460_main(object, 5, func_80017BB8_main(character, 0x87));
-    func_8000B460_main(object, 6, func_80017BB8_main(character, 0x88));
-    func_8000B460_main(object, 7, func_80017BB8_main(character, 0xF));
-    func_8000B460_main(object, 8, func_80017BB8_main(character, 0x9F));
-    func_8000B460_main(object, 9, func_80017BB8_main(character, 0x2F));
-    func_8000B460_main(object, 10, func_80017BB8_main(character, 0x38));
-    object->model[1] = func_8000B0A0_main(0, 0xC9);
-    func_8001C2FC_main(object->model[1], 0x80000000, 0);
+    object->model[0] = Hu3DModelRead(D_800A178C_main[character][0] | D_800A178C_main[character][1], 0x2B9);
+    omObjMotionRead(object, 0, CharMotionDataNumGet(character, 0));
+    omObjMotionRead(object, 1, CharMotionDataNumGet(character, 1));
+    omObjMotionRead(object, 2, CharMotionDataNumGet(character, 0x89));
+    omObjMotionRead(object, 3, CharMotionDataNumGet(character, 0x85));
+    omObjMotionRead(object, 4, CharMotionDataNumGet(character, 0x86));
+    omObjMotionRead(object, 5, CharMotionDataNumGet(character, 0x87));
+    omObjMotionRead(object, 6, CharMotionDataNumGet(character, 0x88));
+    omObjMotionRead(object, 7, CharMotionDataNumGet(character, 0xF));
+    omObjMotionRead(object, 8, CharMotionDataNumGet(character, 0x9F));
+    omObjMotionRead(object, 9, CharMotionDataNumGet(character, 0x2F));
+    omObjMotionRead(object, 10, CharMotionDataNumGet(character, 0x38));
+    object->model[1] = Hu3DModelRead2(0, 0xC9);
+    Hu3DModelObjAttrSet(object->model[1], 0x80000000, 0);
     Hu3DModelRemakeStatic(object->model[1]);
-    func_8001C514_main(object->model[1]);
+    Hu3DModelDynamicFree(object->model[1]);
     func_80088800_main(Hu3DData[object->model[1]].mtx, 0.0f, 10.0f, 0.0f);
-    func_8001C5B4_main(object->model[0], object->motion[0]);
-    func_8001C814_main(object->model[0], 2, 2);
+    Hu3DMotionModelSet(object->model[0], object->motion[0]);
+    Hu3DMotionAttrSet(object->model[0], 2, 2);
     if (object->work[0] == 0) {
         D_8010F8A8_snowball_summit = rand8() & 3;
         object->trans.x = D_8010F598_snowball_summit[D_8010F8A8_snowball_summit].x;
@@ -1609,8 +1609,8 @@ void func_8010B9E4_snowball_summit(omObjData *object) {
         case 0:
             break;
         case 1:
-            func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, 0);
-            func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, 0);
+            Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, 0);
+            Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, 0);
             slot->unk_0C = 1.0f;
             slot->id = 2;
             break;
@@ -1639,8 +1639,8 @@ void func_8010B9E4_snowball_summit(omObjData *object) {
                 mover->unk_40 = 0;
                 mover->unk_44 = 0;
             }
-            func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-            func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             slot->id = 0;
             slot->unk_04 = 0;
             slot->unk_08 = 0;
@@ -1659,17 +1659,17 @@ void func_8010BC7C_snowball_summit(omObjData *object) {
     UnkSnowballSummitSlot *slot;
 
     if (object->work[0] == 0) {
-        object->model[0] = D_8010F8AC_snowball_summit = func_8000B108_main(0x490004, 0x16B9);
+        object->model[0] = D_8010F8AC_snowball_summit = Hu3DModelRead(0x490004, 0x16B9);
     } else {
         object->model[0] = Hu3DModelLink(D_8010F8AC_snowball_summit);
     }
-    object->model[1] = func_8000B0A0_main(0, 0x14C9);
-    func_8001C2FC_main(object->model[1], 0x80000000, 0);
+    object->model[1] = Hu3DModelRead2(0, 0x14C9);
+    Hu3DModelObjAttrSet(object->model[1], 0x80000000, 0);
     Hu3DModelRemakeStatic(object->model[1]);
-    func_8001C514_main(object->model[1]);
+    Hu3DModelDynamicFree(object->model[1]);
     func_80088800_main(Hu3DData[object->model[1]].mtx, 0.0f, 10.0f, 0.0f);
-    func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     object->trans.x = object->trans.y = object->trans.z = 0.0f;
     object->scale.x = object->scale.y = object->scale.z = 1.0f;
     Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y + 20.0f, object->trans.z);
@@ -1715,13 +1715,13 @@ void func_8010BEE8_snowball_summit(omObjData *object) {
 
     switch (slot->id) {
         case 0:
-            func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             if (mover->unk_04 == 2) {
                 slot->id = 1;
             }
             break;
         case 1:
-            func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, 0);
+            Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, 0);
             if (mover->unk_04 != 2) {
                 slot->id = 0;
             }
@@ -1739,12 +1739,12 @@ void func_8010C000_snowball_summit(omObjData *object) {
     UnkSnowballSummitObjSlot *slot;
 
     if (object->work[0] == 0) {
-        object->model[0] = D_8010F8AE_snowball_summit = func_8000B108_main(0x49000C, 0x1699);
+        object->model[0] = D_8010F8AE_snowball_summit = Hu3DModelRead(0x49000C, 0x1699);
     } else {
         object->model[0] = Hu3DModelLink(D_8010F8AE_snowball_summit);
     }
-    func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    func_8001C814_main(object->model[0], 2, 2);
+    Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DMotionAttrSet(object->model[0], 2, 2);
     mover = &D_8010F9B8_snowball_summit[object->work[0]];
     object->trans.x = mover->spawnPosX;
     object->trans.y = mover->spawnPosY + 40.0f;
@@ -1772,12 +1772,12 @@ void func_8010C170_snowball_summit(omObjData *object) {
     UnkSnowballSummitNode *node;
 
     if (object->work[0] == 0) {
-        object->model[0] = D_8010F8B0_snowball_summit = func_8000B108_main(0x49000B, 0x1699);
+        object->model[0] = D_8010F8B0_snowball_summit = Hu3DModelRead(0x49000B, 0x1699);
     } else {
         object->model[0] = Hu3DModelLink(D_8010F8B0_snowball_summit);
     }
-    func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    func_8001C814_main(object->model[0], 2, 2);
+    Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DMotionAttrSet(object->model[0], 2, 2);
     mover = &D_8010F9B8_snowball_summit[object->work[0]];
     object->trans.x = mover->spawnPosX;
     object->trans.y = mover->spawnPosY + 20.0f;
@@ -1935,22 +1935,22 @@ void func_8010C6A8_snowball_summit(omObjData *object) {
 
     if (D_8010F88C_snowball_summit != 0) {
         D_8010F88C_snowball_summit--;
-        func_8003F578_main((D_8010F88C_snowball_summit + 29) / 30);
+        GMesTimerValueSet((D_8010F88C_snowball_summit + 29) / 30);
         result = func_8010C648_snowball_summit();
         if (result == 1) {
-            func_8003F5C0_main();
+            GMesTimerEnd();
             D_8010F88C_snowball_summit = 90;
             object->func = func_8010C600_snowball_summit;
             D_8010F884_snowball_summit = 1;
         } else if (result == -1) {
-            func_8003F5C0_main();
+            GMesTimerEnd();
             D_8010F88C_snowball_summit = 90;
             object->func = func_8010C600_snowball_summit;
             HuAudSeqFadeOut(120);
             D_8010F884_snowball_summit = 1;
         }
     } else {
-        func_8003F5C0_main();
+        GMesTimerEnd();
         object->func = func_8010C600_snowball_summit;
         HuAudSeqFadeOut(120);
         D_8010F884_snowball_summit = 1;
@@ -2021,7 +2021,7 @@ void func_8010CA18_snowball_summit(omObjData *object) {
         WipeCreateOut(WIPE_TYPE_NORMAL, 20);
         object->func = func_8010C9E0_snowball_summit;
         HuAudSeqFadeOut(30);
-        func_8004AB0C_main(30);
+        HuAudFXAllFadeOut(30);
     }
 }
 
@@ -2153,10 +2153,10 @@ void func_8010D108_snowball_summit(UnkSnowballSummitMover *mover) {
     if (mover->spawnPosY < -2000.0f) {
         mover->spawnPosY = -2000.0f;
         mover->unk_10 = mover->unk_2C = mover->posY = mover->posZ = mover->unk_24 = mover->unk_28 = 0.0f;
-        func_8001C258_main(mover->unk_78->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(mover->unk_78->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         mover->id = 90;
     } else if (mover->spawnPosX * mover->spawnPosX + mover->spawnPosZ * mover->spawnPosZ > 9000000.0f) {
-        func_8001C258_main(mover->unk_78->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(mover->unk_78->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         mover->id = 90;
     } else {
         angle = func_8010610C_snowball_summit(mover->spawnPosX, mover->spawnPosZ);
@@ -2185,7 +2185,7 @@ void func_8010D304_snowball_summit(UnkSnowballSummitMover *mover) {
         object->trans.z = mover->spawnPosZ;
         Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
         Hu3DModelPosSet(object->model[1], object->trans.x, object->trans.y + 5.0f, object->trans.z);
-        func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     } else {
         if (mover->unk_3C == 1) {
             object->trans.x = mover->spawnPosX;
@@ -2341,7 +2341,7 @@ void func_8010DB10_snowball_summit(UnkSnowballSummitSlot *slot) {
         angle = func_8010610C_snowball_summit(slot->unk_3C->trans.x, slot->unk_3C->trans.z);
         slot->unk_3C->trans.x += sindf(angle) * (slot->unk_0C * 37.5);
         slot->unk_3C->trans.z += cosdf(angle) * (slot->unk_0C * 37.5);
-        func_8001C258_main(slot->unk_3C->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(slot->unk_3C->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     } else {
         slot->unk_18 = 0;
     }
@@ -2441,8 +2441,8 @@ void func_8010E2F4_snowball_summit(UnkSnowballSummitSlot *slot) {
     }
 
     if (object->trans.y < -1200.0f) {
-        func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-        func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         slot->id = 0;
         slot->unk_18 = 0;
         slot->unk_1C = 0;
@@ -2494,7 +2494,7 @@ void func_8010E52C_snowball_summit(UnkSnowballSummitSlot *slot) {
                     node->unk_08 = -1;
                 }
             }
-            func_8004AC98_main(0x43C, mover->unk_78->work[0]);
+            HuAudPlayerFXPlay(0x43C, mover->unk_78->work[0]);
             D_8010F898_snowball_summit[moverObject->work[0]] = 30;
             slot->id = 20;
             mover->unk_74 = 1;
@@ -2505,7 +2505,7 @@ void func_8010E52C_snowball_summit(UnkSnowballSummitSlot *slot) {
             } else {
                 mover->unk_10 = slot->unk_0C * 15.0f;
                 mover->unk_24 = slot->unk_0C * 20.0f;
-                func_8004AC98_main(0x43E, mover->unk_78->work[0]);
+                HuAudPlayerFXPlay(0x43E, mover->unk_78->work[0]);
             }
             mover->unk_2C = 4.0f;
             mover->posX = delta.z;
@@ -2632,15 +2632,15 @@ void func_8010EBC0_snowball_summit(void) {
                     node->unk_04 = 0;
                     node->unk_08 = -1;
                 }
-                func_8001C258_main(node->unk_0C->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(node->unk_0C->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 if ((mover->unk_04 == 3 || mover->unk_04 == 4) && mover->unk_10 > 0.0f) {
                     node->id = 1;
                 }
                 break;
             case 1:
-                func_8001C258_main(node->unk_0C->model[0], HU3D_ATTR_DISPOFF, 0);
+                Hu3DModelAttrSet(node->unk_0C->model[0], HU3D_ATTR_DISPOFF, 0);
                 if (node->unk_04 != 1 && node->unk_08 == -1) {
-                    node->unk_08 = func_8004AC98_main(0x439, mover->unk_78->work[0]);
+                    node->unk_08 = HuAudPlayerFXPlay(0x439, mover->unk_78->work[0]);
                     if (node->unk_08 != -1) {
                         node->unk_04 = 1;
                     }
@@ -2818,8 +2818,8 @@ void func_8010F2B8_snowball_summit(void) {
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
     obj->work[0] = 2;
     omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    func_8000B5F0_main(2);
-    func_8000B710_main(2);
+    CamSetupInit(2);
+    CamSetupMapCullAddMulti(2);
     for (i = 0; i < 2; i++) {
         ScissorSet(i, D_8010F5CC_snowball_summit[i].scissorX, D_8010F5CC_snowball_summit[i].scissorY,
                    D_8010F5CC_snowball_summit[i].scissorWidth, D_8010F5CC_snowball_summit[i].scissorHeight);
@@ -2831,10 +2831,10 @@ void func_8010F2B8_snowball_summit(void) {
 }
 
 void func_8010F42C_snowball_summit(void) {
-    func_8001FE20_main(50);
-    func_800142A0_main(50);
+    MapCollInit(50);
+    Hu3DSprModelInit(50);
     omInitObjMan(100, 0);
-    func_8004A208_main();
+    omGameSysInit();
     func_8010F2B8_snowball_summit();
     Hu3DGLightMaxSet(2);
     Hu3DGLightColorSet(0, 144, 144, 144);
@@ -2844,8 +2844,8 @@ void func_8010F42C_snowball_summit(void) {
     D_800EC1B8_minigame = 0;
     D_800EC280_minigame = 0;
     D_800EBE28_minigame = 0;
-    func_80045010_main(D_8010F870_snowball_summit, 0);
-    func_80045010_main(D_8010F870_snowball_summit, 1);
+    GMesFontMesCreate(D_8010F870_snowball_summit, 0);
+    GMesFontMesCreate(D_8010F870_snowball_summit, 1);
     omAddObj(1000, 0, 0, -1, func_8010F234_snowball_summit);
     omAddObj(1000, 0, 0, -1, func_8010CA18_snowball_summit);
 }

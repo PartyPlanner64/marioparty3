@@ -20,7 +20,7 @@ void ultraMain() {
     __osInitialize_common();
     __osInitialize_autodetect();
     InitSchedulerEvent();
-    func_800357AC_main(3);
+    FrameBufferClear(3);
     osCreateThread(&gInitThread, 1, &thread1_idle, NULL, &gThread1Stack[2048], 10);
     osStartThread(&gInitThread);
 }

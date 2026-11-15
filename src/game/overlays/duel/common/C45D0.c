@@ -61,11 +61,11 @@ void func_800DC800_name_81(void) {
         D_80102AD0_name_81[i] = obj;
         if (!noLayer) {
             Hu3DModelLayerSet(obj->omObj1->model[0], 0x800);
-            func_8001C258_main(D_80102AD0_name_81[i]->omObj1->model[0], 0x180, 0);
+            Hu3DModelAttrSet(D_80102AD0_name_81[i]->omObj1->model[0], 0x180, 0);
             Hu3DModelRemakeStatic(D_80102AD0_name_81[i]->omObj1->model[0]);
         }
         MBDModelTempAllocFree(D_80102AD0_name_81[i]);
-        func_8001C814_main(D_80102AD0_name_81[i]->omObj1->model[0], 2, 0);
+        Hu3DMotionAttrSet(D_80102AD0_name_81[i]->omObj1->model[0], 2, 0);
         HuVecCopy3F(&D_80102AD0_name_81[i]->coords, &pos);
         D_80102AD0_name_81[i]->coords.x += spread * offsets[i % 6].x;
         D_80102AD0_name_81[i]->coords.y += spread * offsets[i % 6].y;
@@ -119,7 +119,7 @@ void func_800DCBA8_name_81(void) {
     }
     if (delay != 0) {
         HuPrcSleep(delay - 1);
-        func_8001C814_main(obj->omObj1->model[0], 1, 0);
+        Hu3DMotionAttrSet(obj->omObj1->model[0], 1, 0);
         MBDModelDispOn(obj);
     }
     while (!(MBDMotionCheck(obj) & 1)) {
@@ -136,15 +136,15 @@ Process *func_800DCC8C_name_81(s32 modelId, Vec *pos, Vec *vel, f32 scale, s32 d
     EffectMoveWork *work;
 
     Hu3DModelLayerSet(obj->omObj1->model[0], 0x800);
-    func_8001C258_main(obj->omObj1->model[0], 0x180, 0);
+    Hu3DModelAttrSet(obj->omObj1->model[0], 0x180, 0);
     Hu3DModelRemakeStatic(obj->omObj1->model[0]);
     Hu3DMotionSpeedSet(obj->omObj1->model[0], speed);
     MBDModelTempAllocFree(obj);
     if (delay != 0) {
-        func_8001C814_main(obj->omObj1->model[0], 2, 1);
+        Hu3DMotionAttrSet(obj->omObj1->model[0], 2, 1);
         MBDModelDispOff(obj);
     } else {
-        func_8001C814_main(obj->omObj1->model[0], 2, 0);
+        Hu3DMotionAttrSet(obj->omObj1->model[0], 2, 0);
     }
     HuVecCopy3F(&obj->coords, pos);
     HuVecCopyXYZ(&obj->scale, scale, scale, scale);
@@ -218,18 +218,18 @@ void func_800DCE6C_name_81(s16 model) {
 }
 
 s32 func_800DD1E0_name_81(s32 dataNum, char *objName) {
-    s32 model = func_8000B108_main(dataNum, 0xAA9);
+    s32 model = Hu3DModelRead(dataNum, 0xAA9);
 
     Hu3DModelPosSet(model, 0.0f, 0.0f, 0.0f);
-    func_8001C2FC_main(model, 0x20000, 0x20000);
-    func_8001C258_main(model, 0x180, 0);
+    Hu3DModelObjAttrSet(model, 0x20000, 0x20000);
+    Hu3DModelAttrSet(model, 0x180, 0);
     Hu3DModelRemakeStatic(model);
-    func_8001C954_main(model);
-    func_8001C514_main(model);
+    Hu3DModelVtxBufMake(model);
+    Hu3DModelDynamicFree(model);
     Hu3DModelCameraSet(model, 1);
     Hu3DMotionSpeedSet(model, 0.5f);
     Hu3DModelScaleSet(model, 0.1f, 0.1f, 0.1f);
-    func_80013390_main(model, -1, objName, func_800DCE6C_name_81);
+    Hu3DParticleCreate(model, -1, objName, func_800DCE6C_name_81);
     return model;
 }
 
@@ -244,8 +244,8 @@ void func_800DD2DC_name_81(s32 model, Vec *pos) {
 void func_800DD30C_name_81(s32 model) {
     if (D_800CCF58_main[Hu3DData[model].motId].unk02 <= Hu3DData[model].motTime) {
         Hu3DMotionTimeSet(model, 0.0f);
-        func_800138EC_main(model, 4, 0);
-        func_80013954_main(model, 0);
+        Hu3DParticleAttrSet(model, 4, 0);
+        Hu3DParticleCntSet(model, 0);
     }
 }
 
@@ -256,14 +256,14 @@ s32 func_800DD3B4_name_81(s32 arg0) {
 void func_800DD41C_name_81(Vec *pos) {
     s16 model;
 
-    model = D_80102B50_name_81 = func_8000B108_main(0xB0032, 0xAA9);
+    model = D_80102B50_name_81 = Hu3DModelRead(0xB0032, 0xAA9);
     Hu3DModelPosSet(model, 0.0f, 0.0f, 0.0f);
-    func_8001C2FC_main(model, 0x20000, 0x20000);
+    Hu3DModelObjAttrSet(model, 0x20000, 0x20000);
     Hu3DModelCameraSet(model, 1);
     Hu3DModelRemakeStatic(model);
-    func_8001C954_main(model);
-    func_8001C514_main(model);
-    func_80013390_main(model, -1, NULL, func_800DD75C_name_81);
+    Hu3DModelVtxBufMake(model);
+    Hu3DModelDynamicFree(model);
+    Hu3DParticleCreate(model, -1, NULL, func_800DD75C_name_81);
     func_800DD59C_name_81(model, 5.0f, 1.0f);
     D_80100E40_name_81 = 0;
     D_80102B54_name_81 = omAddObj(2000, 10, 10, -1, func_800DD518_name_81);

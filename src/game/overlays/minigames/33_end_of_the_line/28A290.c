@@ -198,10 +198,10 @@ void func_801059A0_end_of_the_line(void) {
     s32 i;
 
     omInitObjMan(30, 0);
-    func_8004A208_main();
-    func_80045C2C_main();
-    func_8000B690_main(2);
-    func_8000B710_main(2);
+    omGameSysInit();
+    HuAudCharVoiceInit();
+    CamSetupInitMulti(2);
+    CamSetupMapCullAddMulti(2);
     for (i = 0; i < 2; i++) {
         D_8010C7A0_end_of_the_line[i].x = 0.0f;
         D_8010C7A0_end_of_the_line[i].y = 200.0f;
@@ -308,7 +308,7 @@ void func_80105E88_end_of_the_line(omObjData *obj) {
                 } else if (func_800E6E9C_minigame() == 9000 || D_8010C75A_end_of_the_line == 1) {
                     D_8010C75A_end_of_the_line = 1;
                     D_8010C75C_end_of_the_line = 1;
-                    func_8003F578_main(0);
+                    GMesTimerValueSet(0);
                     player = OM_GET_DATA_PTR(D_8010C73C_end_of_the_line[0], EndOfTheLinePlayer);
                     player2 = OM_GET_DATA_PTR(D_8010C73C_end_of_the_line[1], EndOfTheLinePlayer);
                     if (player->unk18 == 1 && player2->unk18 == player->unk18) {
@@ -406,14 +406,14 @@ void func_80106444_end_of_the_line(omObjData *obj) {
     data = obj->data = HuMemAllocTag(sizeof(EndOfTheLineData), TAG_OVERLAY);
     for (i = 0; i < 2; i++) {
         if (i == 0) {
-            obj->model[0] = func_8000B108_main(0x540002, 0x6DD);
-            obj->model[4] = func_8000B108_main(0x540003, 0x6DD);
-            obj->model[12] = func_8000B108_main(0x540004, 0x6DD);
-            obj->model[14] = func_8000B108_main(0x540008, 0x6DD);
-            obj->model[16] = func_8000B108_main(0x540009, 0x6DD);
-            obj->model[18] = func_8000B108_main(0x54000A, 0x6DD);
+            obj->model[0] = Hu3DModelRead(0x540002, 0x6DD);
+            obj->model[4] = Hu3DModelRead(0x540003, 0x6DD);
+            obj->model[12] = Hu3DModelRead(0x540004, 0x6DD);
+            obj->model[14] = Hu3DModelRead(0x540008, 0x6DD);
+            obj->model[16] = Hu3DModelRead(0x540009, 0x6DD);
+            obj->model[18] = Hu3DModelRead(0x54000A, 0x6DD);
             for (j = 0; j < 5; j++) {
-                obj->model[20 + j * 2] = func_8000B108_main(D_8010C5D8_end_of_the_line[j], D_8010C5EC_end_of_the_line[j]);
+                obj->model[20 + j * 2] = Hu3DModelRead(D_8010C5D8_end_of_the_line[j], D_8010C5EC_end_of_the_line[j]);
             }
         } else {
             obj->model[2] = Hu3DModelLink(obj->model[0]);
@@ -432,9 +432,9 @@ void func_80106444_end_of_the_line(omObjData *obj) {
         Hu3DModelCameraSet(obj->model[14 + i], D_8010C5C8_end_of_the_line[i]);
         Hu3DModelCameraSet(obj->model[16 + i], D_8010C5C8_end_of_the_line[i]);
         Hu3DModelCameraSet(obj->model[18 + i], D_8010C5C8_end_of_the_line[i]);
-        func_8001C2FC_main(obj->model[18 + i], 0x70000000, 0x70000000);
+        Hu3DModelObjAttrSet(obj->model[18 + i], 0x70000000, 0x70000000);
         for (j = 0; j < 5; j++) {
-            func_8001C2FC_main(obj->model[20 + j * 2 + i], 0x70000000, 0x70000000);
+            Hu3DModelObjAttrSet(obj->model[20 + j * 2 + i], 0x70000000, 0x70000000);
             Hu3DModelCameraSet(obj->model[20 + j * 2 + i], D_8010C5C8_end_of_the_line[i]);
         }
         for (j = 0; j < 1; j++) {
@@ -443,7 +443,7 @@ void func_80106444_end_of_the_line(omObjData *obj) {
         }
         for (j = 0; j < 3; j++) {
             if (i == 0) {
-                obj->model[6 + j] = func_8000B108_main(D_8010C658_end_of_the_line[j], 0x6DD);
+                obj->model[6 + j] = Hu3DModelRead(D_8010C658_end_of_the_line[j], 0x6DD);
             } else {
                 obj->model[9 + j] = Hu3DModelLink(obj->model[6 + j]);
             }
@@ -531,25 +531,25 @@ void func_80106CDC_end_of_the_line(omObjData *arg0, omObjData *arg1, s32 arg2) {
     EndOfTheLineData *data = OM_GET_DATA_PTR(arg0, EndOfTheLineData);
     s32 i;
 
-    func_8001C258_main(arg0->model[idx * 2], 4, 4);
-    func_8001C258_main(arg0->model[idx * 2 + 1], 4, 4);
-    func_8001C258_main(arg0->model[4 + idx], 4, 4);
-    func_8001C258_main(arg0->model[12 + idx], 4, 4);
-    func_8001C258_main(arg0->model[14 + idx], 4, 4);
-    func_8001C258_main(arg0->model[16 + idx], 4, 4);
-    func_8001C258_main(arg0->model[18 + idx], 4, 4);
+    Hu3DModelAttrSet(arg0->model[idx * 2], 4, 4);
+    Hu3DModelAttrSet(arg0->model[idx * 2 + 1], 4, 4);
+    Hu3DModelAttrSet(arg0->model[4 + idx], 4, 4);
+    Hu3DModelAttrSet(arg0->model[12 + idx], 4, 4);
+    Hu3DModelAttrSet(arg0->model[14 + idx], 4, 4);
+    Hu3DModelAttrSet(arg0->model[16 + idx], 4, 4);
+    Hu3DModelAttrSet(arg0->model[18 + idx], 4, 4);
     for (i = 0; i < 5; i++) {
-        func_8001C258_main(arg0->model[20 + i * 2 + idx], 4, 4);
+        Hu3DModelAttrSet(arg0->model[20 + i * 2 + idx], 4, 4);
     }
-    func_8001C258_main(arg0->model[6 + idx * 3], 4, 4);
-    func_8001C258_main(arg0->model[6 + idx * 3 + 1], 4, 4);
-    func_8001C258_main(arg0->model[6 + idx * 3 + 2], 4, 4);
-    func_8001C258_main(arg1->model[0], 4, 4);
-    func_8001C258_main(arg1->model[1], 4, 4);
-    func_8001C258_main(arg1->model[2], 4, 4);
-    func_8001C258_main(arg1->model[3], 4, 4);
-    func_8001C258_main(arg1->model[4], 4, 4);
-    func_8001C258_main(arg1->model[5], 4, 4);
+    Hu3DModelAttrSet(arg0->model[6 + idx * 3], 4, 4);
+    Hu3DModelAttrSet(arg0->model[6 + idx * 3 + 1], 4, 4);
+    Hu3DModelAttrSet(arg0->model[6 + idx * 3 + 2], 4, 4);
+    Hu3DModelAttrSet(arg1->model[0], 4, 4);
+    Hu3DModelAttrSet(arg1->model[1], 4, 4);
+    Hu3DModelAttrSet(arg1->model[2], 4, 4);
+    Hu3DModelAttrSet(arg1->model[3], 4, 4);
+    Hu3DModelAttrSet(arg1->model[4], 4, 4);
+    Hu3DModelAttrSet(arg1->model[5], 4, 4);
     espDispOff(data->esprites[idx]);
     espDispOff(player->esprites[0]);
     espDispOff(player->esprites[1]);
@@ -561,10 +561,10 @@ void func_80106CDC_end_of_the_line(omObjData *arg0, omObjData *arg1, s32 arg2) {
     switch ((s16)arg2) {
         case 0:
             Hu3DGLightDirSet(1, 44.0f, 82.0f, -74.0f);
-            func_8001C258_main(arg0->model[16 + idx], 4, 0);
-            func_8001C258_main(arg1->model[0], 4, 0);
-            func_8001C258_main(arg1->model[1], 4, 0);
-            func_8001C258_main(arg1->model[2], 4, 0);
+            Hu3DModelAttrSet(arg0->model[16 + idx], 4, 0);
+            Hu3DModelAttrSet(arg1->model[0], 4, 0);
+            Hu3DModelAttrSet(arg1->model[1], 4, 0);
+            Hu3DModelAttrSet(arg1->model[2], 4, 0);
             omSetTra(arg1, 0.0f, 0.0f, 2000.0f);
             omSetRot(arg1, 0.0f, 180.0f, 0.0f);
             player->pos.x = 0.0f;
@@ -585,22 +585,22 @@ void func_80106CDC_end_of_the_line(omObjData *arg0, omObjData *arg1, s32 arg2) {
             Hu3DModelRotSet(arg1->model[2], player->rot2.x, player->rot2.y, player->rot2.z);
             espDispOn(data->esprites[idx]);
             for (i = 0; i < 5; i++) {
-                func_8001C258_main(arg0->model[20 + i * 2 + idx], 4, 0);
+                Hu3DModelAttrSet(arg0->model[20 + i * 2 + idx], 4, 0);
             }
-            func_8001C258_main(arg0->model[18 + idx], 4, 0);
+            Hu3DModelAttrSet(arg0->model[18 + idx], 4, 0);
             Hu3DModelPosSet(arg0->model[18 + idx], -1000.0f, 4000.0f, 0.0f);
             Hu3DModelScaleSet(arg0->model[18 + idx], 4.5f, 4.5f, 4.5f);
             break;
         case 1:
-            func_8001C258_main(arg0->model[idx * 2], 4, 0);
-            func_8001C258_main(arg0->model[4 + idx], 4, 0);
-            func_8001C258_main(arg0->model[6 + idx * 3 + player->unk16], 4, 0);
+            Hu3DModelAttrSet(arg0->model[idx * 2], 4, 0);
+            Hu3DModelAttrSet(arg0->model[4 + idx], 4, 0);
+            Hu3DModelAttrSet(arg0->model[6 + idx * 3 + player->unk16], 4, 0);
             Hu3DModelPosSet(arg0->model[idx * 2], 0.0f, 0.0f, 0.0f);
             Hu3DModelPosSet(arg0->model[4 + idx], 0.0f, 0.0f, -3300.0f);
             Hu3DModelPosSet(arg0->model[6 + idx * 3 + player->unk16], 0.0f, 0.0f, -3150.0f);
-            func_8001C258_main(arg1->model[0], 4, 0);
-            func_8001C258_main(arg1->model[1], 4, 0);
-            func_8001C258_main(arg1->model[2], 4, 0);
+            Hu3DModelAttrSet(arg1->model[0], 4, 0);
+            Hu3DModelAttrSet(arg1->model[1], 4, 0);
+            Hu3DModelAttrSet(arg1->model[2], 4, 0);
             omSetTra(arg1, 0.0f, 0.0f, 0.0f);
             omSetRot(arg1, 0.0f, 180.0f, 0.0f);
             player->pos.x = 0.0f;
@@ -617,7 +617,7 @@ void func_80106CDC_end_of_the_line(omObjData *arg0, omObjData *arg1, s32 arg2) {
             Hu3DModelRotSet(arg1->model[2], 0.0f, 180.0f, 0.0f);
             Hu3DModelPosSet(arg1->model[4], player->pos.x - sindf(player->rot.y) * 20.0f, player->pos2.y + 100.0f,
                             player->pos.z - cosdf(player->rot.y) * 20.0f);
-            func_8001C258_main(arg1->model[4], 4, 0);
+            Hu3DModelAttrSet(arg1->model[4], 4, 0);
             espDispOn(data->esprites[idx]);
             espPosSet(data->esprites[player->playerIdx],
                       D_8010C5D0_end_of_the_line[player->playerIdx] + D_8010C5CC_end_of_the_line, 0x78);
@@ -633,11 +633,11 @@ void func_80106CDC_end_of_the_line(omObjData *arg0, omObjData *arg1, s32 arg2) {
             }
             player->unk68 = 0.0f;
             if (player->unk86 != -1) {
-                func_80007D2C_main(player->unk86, 22);
+                msmSeSetFxMix(player->unk86, 22);
             }
             break;
         case 2:
-            func_8001C258_main(arg0->model[14 + idx], 4, 0);
+            Hu3DModelAttrSet(arg0->model[14 + idx], 4, 0);
             Hu3DModelPosSet(arg0->model[14 + idx], 0.0f, 0.0f, -1650.0f);
             omSetTra(arg1, 0.0f, 0.0f, 0.0f);
             omSetRot(arg1, 0.0f, 180.0f, 0.0f);
@@ -654,15 +654,15 @@ void func_80106CDC_end_of_the_line(omObjData *arg0, omObjData *arg1, s32 arg2) {
         case 3:
             player->unk88 = 0;
             player->unk54 = 345.0f;
-            func_8001C258_main(arg1->model[0], 4, 0);
-            func_8001C258_main(arg1->model[1], 4, 0);
-            func_8001C258_main(arg1->model[2], 4, 0);
+            Hu3DModelAttrSet(arg1->model[0], 4, 0);
+            Hu3DModelAttrSet(arg1->model[1], 4, 0);
+            Hu3DModelAttrSet(arg1->model[2], 4, 0);
             for (i = 0; i < 5; i++) {
-                func_8001C258_main(arg0->model[20 + i * 2 + idx], 4, 0);
+                Hu3DModelAttrSet(arg0->model[20 + i * 2 + idx], 4, 0);
             }
-            func_8001C258_main(arg0->model[12 + idx], 4, 0);
+            Hu3DModelAttrSet(arg0->model[12 + idx], 4, 0);
             Hu3DModelPosSet(arg0->model[12 + idx], 0.0f, 0.0f, 0.0f);
-            func_8001C258_main(arg0->model[18 + idx], 4, 0);
+            Hu3DModelAttrSet(arg0->model[18 + idx], 4, 0);
             Hu3DModelPosSet(arg0->model[18 + idx], 1000.0f, 2500.0f, 900.0f);
             Hu3DModelScaleSet(arg0->model[18 + idx], 5.0f, 5.0f, 5.0f);
             omSetTra(arg1, -500.0f, -sindf(player->unk54) * 447.5f, -500.0f);
@@ -684,9 +684,9 @@ void func_80106CDC_end_of_the_line(omObjData *arg0, omObjData *arg1, s32 arg2) {
             player->unk0C = 48.0f;
             break;
         case 4:
-            func_8001C258_main(arg1->model[0], 4, 0);
-            func_8001C258_main(arg1->model[1], 4, 0);
-            func_8001C258_main(arg1->model[2], 4, 0);
+            Hu3DModelAttrSet(arg1->model[0], 4, 0);
+            Hu3DModelAttrSet(arg1->model[1], 4, 0);
+            Hu3DModelAttrSet(arg1->model[2], 4, 0);
             omSetTra(arg1, 0.0f, 0.0f, 950.0f);
             omSetRot(arg1, 0.0f, 180.0f, 0.0f);
             player->pos.x = 0.0f;
@@ -702,7 +702,7 @@ void func_80106CDC_end_of_the_line(omObjData *arg0, omObjData *arg1, s32 arg2) {
             Hu3DModelRotSet(arg1->model[2], 0.0f, 180.0f, 0.0f);
             Hu3DModelPosSet(arg1->model[4], player->pos.x - sindf(player->rot.y) * 20.0f, player->pos.y + 100.0f,
                             player->pos.z - cosdf(player->rot.y) * 20.0f);
-            func_8001C258_main(arg1->model[4], 4, 0);
+            Hu3DModelAttrSet(arg1->model[4], 4, 0);
             espDispOn(data->esprites[idx + 6]);
             if (idx == 0) {
                 espPosSet(data->esprites[6], 0, 0x78);
@@ -711,19 +711,19 @@ void func_80106CDC_end_of_the_line(omObjData *arg0, omObjData *arg1, s32 arg2) {
             }
             player->unk88 = 0x48;
             if (player->unk86 != -1) {
-                func_80007D2C_main(player->unk86, 22);
+                msmSeSetFxMix(player->unk86, 22);
             }
             break;
         case 5:
-            func_8001C258_main(arg0->model[idx * 2], 4, 0);
-            func_8001C258_main(arg0->model[idx * 2 + 1], 4, 0);
+            Hu3DModelAttrSet(arg0->model[idx * 2], 4, 0);
+            Hu3DModelAttrSet(arg0->model[idx * 2 + 1], 4, 0);
             data->unk18[idx][0] = 1650.0f;
             data->unk18[idx][1] = -1650.0f;
             Hu3DModelPosSet(arg0->model[idx * 2], 0.0f, 0.0f, data->unk18[idx][0]);
             Hu3DModelPosSet(arg0->model[idx * 2 + 1], 0.0f, 0.0f, data->unk18[idx][1]);
-            func_8001C258_main(arg1->model[0], 4, 0);
-            func_8001C258_main(arg1->model[1], 4, 0);
-            func_8001C258_main(arg1->model[2], 4, 0);
+            Hu3DModelAttrSet(arg1->model[0], 4, 0);
+            Hu3DModelAttrSet(arg1->model[1], 4, 0);
+            Hu3DModelAttrSet(arg1->model[2], 4, 0);
             omSetTra(arg1, 0.0f, 0.0f, 0.0f);
             omSetRot(arg1, 0.0f, 180.0f, 0.0f);
             player->pos.x = 0.0f;
@@ -742,16 +742,16 @@ void func_80106CDC_end_of_the_line(omObjData *arg0, omObjData *arg1, s32 arg2) {
             player->rot2.z = 0.0f;
             Hu3DModelPosSet(arg1->model[2], player->pos2.x, player->pos2.y, player->pos2.z);
             Hu3DModelRotSet(arg1->model[2], player->rot2.x, player->rot2.y, player->rot2.z);
-            func_8001C258_main(arg1->model[4], 4, 0);
+            Hu3DModelAttrSet(arg1->model[4], 4, 0);
             Hu3DModelPosSet(arg1->model[4], player->pos2.x, 100.0f, player->pos2.z);
             player->unk6C = 0.1f;
             espDispOn(data->esprites[idx]);
             D_8010C738_end_of_the_line->func = func_801069D8_end_of_the_line;
             break;
         case 6:
-            func_8001C258_main(arg1->model[0], 4, 0);
-            func_8001C258_main(arg1->model[1], 4, 0);
-            func_8001C258_main(arg1->model[2], 4, 0);
+            Hu3DModelAttrSet(arg1->model[0], 4, 0);
+            Hu3DModelAttrSet(arg1->model[1], 4, 0);
+            Hu3DModelAttrSet(arg1->model[2], 4, 0);
             omSetTra(arg1, 0.0f, 0.0f, 950.0f);
             omSetRot(arg1, 0.0f, 180.0f, 0.0f);
             player->pos.x = 0.0f;
@@ -767,7 +767,7 @@ void func_80106CDC_end_of_the_line(omObjData *arg0, omObjData *arg1, s32 arg2) {
             Hu3DModelRotSet(arg1->model[2], 0.0f, 180.0f, 0.0f);
             Hu3DModelPosSet(arg1->model[4], player->pos.x - sindf(player->rot.y) * 20.0f, player->pos.y + 100.0f,
                             player->pos.z - cosdf(player->rot.y) * 20.0f);
-            func_8001C258_main(arg1->model[4], 4, 0);
+            Hu3DModelAttrSet(arg1->model[4], 4, 0);
             espDispOn(data->esprites[idx + 8]);
             if (idx == 0) {
                 espPosSet(data->esprites[6], 0, 0x78);
@@ -793,7 +793,7 @@ void func_80107F0C_end_of_the_line(void) {
         work = obj->data = HuMemAllocTag(sizeof(EndOfTheLineRiseWork), TAG_OVERLAY);
         for (j = 0; j < 3; j++) {
             work->timers[j] = 0;
-            obj->model[j] = func_8000B108_main(0x540010, 0xA8D);
+            obj->model[j] = Hu3DModelRead(0x540010, 0xA8D);
         }
         work->cooldown = 0;
     }
@@ -821,7 +821,7 @@ void func_801080C8_end_of_the_line(omObjData *obj) {
             }
         }
         if (i != 3) {
-            func_8001C258_main(obj->model[i], 4, 0);
+            Hu3DModelAttrSet(obj->model[i], 4, 0);
             Hu3DMotionTimeSet(obj->model[i], 0.0f);
             Hu3DModelScaleSet(obj->model[i], 2.0f, 2.0f, 2.0f);
             work->pos[i].x = work->target->trans.x;
@@ -840,7 +840,7 @@ void func_801080C8_end_of_the_line(omObjData *obj) {
             work->pos[i].y += work->velY[i];
             work->velY[i] *= 0.97f;
             if (--work->timers[i] == 0) {
-                func_8001C258_main(obj->model[i], 4, 4);
+                Hu3DModelAttrSet(obj->model[i], 4, 4);
             }
         }
     }
@@ -865,11 +865,11 @@ void func_801082D8_end_of_the_line(omObjData *obj) {
     if (D_8010C762_end_of_the_line == 1) {
         D_8010C764_end_of_the_line = rand8() & 1;
     }
-    obj->model[0] = func_8000B108_main(0x540000, 0xAD9);
-    obj->model[1] = func_8000B108_main(0x540001, 0xAD9);
-    obj->model[5] = func_8000B108_main(0x540011, 0xADD);
-    obj->model[3] = func_8000B108_main(0x82, 0xA8D);
-    obj->model[4] = func_8000B0D4_main(9, 0xA8D);
+    obj->model[0] = Hu3DModelRead(0x540000, 0xAD9);
+    obj->model[1] = Hu3DModelRead(0x540001, 0xAD9);
+    obj->model[5] = Hu3DModelRead(0x540011, 0xADD);
+    obj->model[3] = Hu3DModelRead(0x82, 0xA8D);
+    obj->model[4] = Hu3DModelRead3(9, 0xA8D);
     Hu3DModelCameraSet(obj->model[0], D_8010C5C8_end_of_the_line[player->playerIdx]);
     Hu3DModelCameraSet(obj->model[1], D_8010C5C8_end_of_the_line[player->playerIdx]);
     Hu3DModelCameraSet(obj->model[3], D_8010C5C8_end_of_the_line[player->playerIdx]);
@@ -879,23 +879,23 @@ void func_801082D8_end_of_the_line(omObjData *obj) {
     Hu3DLLightColorSet(obj->model[5], 0xFF, 0xFF, 0xFF);
     Hu3DLLightDirSet(obj->model[5], 102.0f, 40.0f, 48.0f);
     chr = GwPlayer[player->gwPlayerIdx].chr;
-    obj->model[2] = func_8000B108_main(D_800A178C_main[chr][0] | D_800A178C_main[chr][1], 0x20AD9);
+    obj->model[2] = Hu3DModelRead(D_800A178C_main[chr][0] | D_800A178C_main[chr][1], 0x20AD9);
     Hu3DModelCameraSet(obj->model[2], D_8010C5C8_end_of_the_line[player->playerIdx]);
-    func_8000B460_main(obj, 0, func_80017BB8_main(chr, 0));
-    func_8000B460_main(obj, 1, func_80017BB8_main(chr, 1));
-    func_8000B460_main(obj, 2, func_80017BB8_main(chr, 0x2F));
-    func_8000B460_main(obj, 3, func_80017BB8_main(chr, 0x36));
-    func_8000B460_main(obj, 6, func_80017BB8_main(chr, 0x10));
-    func_8000B460_main(obj, 5, func_80017BB8_main(chr, 0x11));
-    func_8000B460_main(obj, 4, func_80017BB8_main(chr, 0x1A));
-    func_8000B460_main(obj, 7, func_80017BB8_main(chr, 0x6C));
-    func_8000B460_main(obj, 8, func_80017BB8_main(chr, 0x7A));
-    func_8000B460_main(obj, 9, func_80017BB8_main(chr, 0x2C));
-    func_8000B460_main(obj, 10, func_80017BB8_main(chr, 0x2E));
-    func_8000B460_main(obj, 11, func_80017BB8_main(chr, 0x1F));
-    func_8001C5B4_main(obj->model[2], obj->motion[0]);
-    func_8001C814_main(obj->model[2], 2, 2);
-    func_8001C814_main(obj->model[0], 2, 2);
+    omObjMotionRead(obj, 0, CharMotionDataNumGet(chr, 0));
+    omObjMotionRead(obj, 1, CharMotionDataNumGet(chr, 1));
+    omObjMotionRead(obj, 2, CharMotionDataNumGet(chr, 0x2F));
+    omObjMotionRead(obj, 3, CharMotionDataNumGet(chr, 0x36));
+    omObjMotionRead(obj, 6, CharMotionDataNumGet(chr, 0x10));
+    omObjMotionRead(obj, 5, CharMotionDataNumGet(chr, 0x11));
+    omObjMotionRead(obj, 4, CharMotionDataNumGet(chr, 0x1A));
+    omObjMotionRead(obj, 7, CharMotionDataNumGet(chr, 0x6C));
+    omObjMotionRead(obj, 8, CharMotionDataNumGet(chr, 0x7A));
+    omObjMotionRead(obj, 9, CharMotionDataNumGet(chr, 0x2C));
+    omObjMotionRead(obj, 10, CharMotionDataNumGet(chr, 0x2E));
+    omObjMotionRead(obj, 11, CharMotionDataNumGet(chr, 0x1F));
+    Hu3DMotionModelSet(obj->model[2], obj->motion[0]);
+    Hu3DMotionAttrSet(obj->model[2], 2, 2);
+    Hu3DMotionAttrSet(obj->model[0], 2, 2);
     player->unk04 = omAddObj(0x32, 0, 0, -1, func_8010B190_end_of_the_line);
     player->unk04->data = HuMemAllocTag(sizeof(EndOfTheLinePlayerSubWork), TAG_OVERLAY);
     player->unk04->work[0] = (u32)obj;
@@ -942,11 +942,11 @@ void func_801088A4_end_of_the_line(omObjData *obj) {
 
     if (player->pos2.y > 600.0f) {
         for (i = 0; i < 5; i++) {
-            func_8001C258_main(D_8010C738_end_of_the_line->model[20 + i * 2 + player->playerIdx], 4, 0);
+            Hu3DModelAttrSet(D_8010C738_end_of_the_line->model[20 + i * 2 + player->playerIdx], 4, 0);
         }
     } else {
         for (i = 0; i < 5; i++) {
-            func_8001C258_main(D_8010C738_end_of_the_line->model[20 + i * 2 + player->playerIdx], 4, 4);
+            Hu3DModelAttrSet(D_8010C738_end_of_the_line->model[20 + i * 2 + player->playerIdx], 4, 4);
         }
     }
     if (player->unk8A == 0) {
@@ -959,8 +959,8 @@ void func_801088A4_end_of_the_line(omObjData *obj) {
         player->unk78--;
     } else if (player->rot2.y > 0.0f) {
         if (player->unk1A != 5 && player->unk70 == 0) {
-            func_8001C5B4_main(obj->model[2], obj->motion[1]);
-            func_8001C814_main(obj->model[2], 2, 2);
+            Hu3DMotionModelSet(obj->model[2], obj->motion[1]);
+            Hu3DMotionAttrSet(obj->model[2], 2, 2);
             Hu3DMotionSpeedSet(obj->model[2], 2.0f);
             player->unk1A = 5;
         }
@@ -982,13 +982,13 @@ void func_801088A4_end_of_the_line(omObjData *obj) {
         player->unk74 = 80.0f;
         player->unk8A = 10000;
         Hu3DMotionShiftSet(obj->model[2], Hu3DData[obj->motion[4]].motId, 0, 6, 2);
-        func_8001C258_main(obj->model[5], 4, 0);
+        Hu3DModelAttrSet(obj->model[5], 4, 0);
         Hu3DModelScaleSet(obj->model[5], 1.8f, 1.8f, 1.8f);
         player->unk1E = 7;
     }
     if (player->unk70 == 1) {
         if (player->unk8C == 0) {
-            func_80007D2C_main(player->unk8E, 0x40);
+            msmSeSetFxMix(player->unk8E, 0x40);
         } else {
             player->unk8C--;
         }
@@ -1016,14 +1016,14 @@ void func_801088A4_end_of_the_line(omObjData *obj) {
             D_8010C782_end_of_the_line[player->playerIdx] = 0x85;
             player->unk74 = -6.0f;
             player->unk5C = 0;
-            func_8001C5B4_main(obj->model[2], obj->motion[5]);
+            Hu3DMotionModelSet(obj->model[2], obj->motion[5]);
             obj->func = func_80108F0C_end_of_the_line;
             player->unk08 = func_8010B234_end_of_the_line;
         }
         if (player->unk1E != 0) {
             Hu3DModelRotSet(obj->model[5], 0.0f, 0.0f, (rand8() / 256.0f) * 360.0f);
             if (--player->unk1E == 0) {
-                func_8001C258_main(obj->model[5], 4, 4);
+                Hu3DModelAttrSet(obj->model[5], 4, 4);
             }
         }
     }
@@ -1054,7 +1054,7 @@ void func_80108F0C_end_of_the_line(omObjData *obj) {
                 player->unk74 = 40.0f;
                 player->unk5C = 1;
                 player->unk6C = 1.0f;
-                func_8001C258_main(obj->model[3], 4, 0);
+                Hu3DModelAttrSet(obj->model[3], 4, 0);
                 Hu3DModelPosSet(obj->model[3], player->pos2.x, player->pos2.y, player->pos2.z);
                 Hu3DMotionTimeSet(obj->model[3], 0.0f);
                 D_8010C730_end_of_the_line->work[0] = 1;
@@ -1080,7 +1080,7 @@ void func_80108F0C_end_of_the_line(omObjData *obj) {
             player->unk74 += player->unk74;
             if (player->pos2.y < 100.0f) {
                 player->pos2.y = 100.0f;
-                func_8001C5B4_main(obj->model[2], obj->motion[6]);
+                Hu3DMotionModelSet(obj->model[2], obj->motion[6]);
                 player->unk5C = 3;
                 player->unk78 = 22;
             }
@@ -1243,7 +1243,7 @@ void func_8010937C_end_of_the_line(omObjData *obj) {
     if (obj->trans.z < -4600.0f) {
         func_8010A91C_end_of_the_line(obj, 10);
         if (player->unk86 != -1) {
-            func_80007D2C_main(player->unk86, 0x3C);
+            msmSeSetFxMix(player->unk86, 0x3C);
         }
     }
     dz = cosdf(player->rot.y) * (player->unk0C / 1.08f);
@@ -1277,8 +1277,8 @@ void func_8010937C_end_of_the_line(omObjData *obj) {
         if (player->pos2.y < 0.0f) {
             player->pos2.y = 0.0f;
             player->unk1C = 7;
-            func_8001C814_main(obj->model[2], 1, 0);
-            func_8001C258_main(obj->model[3], 4, 0);
+            Hu3DMotionAttrSet(obj->model[2], 1, 0);
+            Hu3DModelAttrSet(obj->model[3], 4, 0);
             Hu3DMotionTimeSet(obj->model[3], 0.0f);
         }
     } else if (player->unk1A == 2) {
@@ -1341,8 +1341,8 @@ void func_80109E70_end_of_the_line(omObjData *obj) {
             }
             if (player->unk16 < 3) {
                 D_8010C782_end_of_the_line[player->playerIdx] = 0x21;
-                func_8001C5B4_main(obj->model[2], obj->motion[9]);
-                func_8001C814_main(obj->model[2], 2, 2);
+                Hu3DMotionModelSet(obj->model[2], obj->motion[9]);
+                Hu3DMotionAttrSet(obj->model[2], 2, 2);
                 player->unk1A = 0;
                 obj->func = func_8010937C_end_of_the_line;
                 player->unk04->func = func_8010B420_end_of_the_line;
@@ -1350,7 +1350,7 @@ void func_80109E70_end_of_the_line(omObjData *obj) {
                 D_8010C758_end_of_the_line = 1;
                 D_8010C75E_end_of_the_line[player->playerIdx] = 1;
                 D_8010C782_end_of_the_line[player->playerIdx] = 0x24;
-                func_8001C5B4_main(obj->model[2], obj->motion[0]);
+                Hu3DMotionModelSet(obj->model[2], obj->motion[0]);
                 player->unk1A = 4;
                 obj->func = NULL;
             }
@@ -1358,7 +1358,7 @@ void func_80109E70_end_of_the_line(omObjData *obj) {
             D_8010C782_end_of_the_line[player->playerIdx] = 0x23;
             obj->func = func_8010A17C_end_of_the_line;
             player->unk04->func = func_8010B588_end_of_the_line;
-            func_8001C5B4_main(obj->model[2], obj->motion[8]);
+            Hu3DMotionModelSet(obj->model[2], obj->motion[8]);
             player->unk1A = 3;
             if (D_8010C766_end_of_the_line == 0) {
                 fx = PlayerFXPlay(0x286, player->gwPlayerIdx);
@@ -1409,8 +1409,8 @@ void func_8010A17C_end_of_the_line(omObjData *obj) {
         D_8010C782_end_of_the_line[player->playerIdx] = 0x61;
         player->unk74 = -16.0f;
         player->unk04->work[1] = 1;
-        func_8001C5B4_main(obj->model[2], obj->motion[11]);
-        func_8001C814_main(obj->model[2], 1, 1);
+        Hu3DMotionModelSet(obj->model[2], obj->motion[11]);
+        Hu3DMotionAttrSet(obj->model[2], 1, 1);
         player->unk1A = 2;
         obj->func = func_8010937C_end_of_the_line;
         player->unk04->func = func_8010B420_end_of_the_line;
@@ -1482,7 +1482,7 @@ void func_8010A7D0_end_of_the_line(void) {
     D_8010C5A0_end_of_the_line.winners[0] = player->gwPlayerIdx;
     GwPlayer[player->gwPlayerIdx].bonusCoin = 10;
     Hu3DMotionShiftSet(obj->model[2], Hu3DData[obj->motion[2]].motId, 0, 6, 0);
-    func_80045F1C_main(D_800A178C_main[GwPlayer[player->gwPlayerIdx].chr][0] | 0x2F, -1, 0);
+    HuAudCharVoicePlayPlayer(D_800A178C_main[GwPlayer[player->gwPlayerIdx].chr][0] | 0x2F, -1, 0);
 }
 
 void func_8010A8B4_end_of_the_line(omObjData *obj) {
@@ -1669,7 +1669,7 @@ void func_8010AF28_end_of_the_line(omObjData *obj) {
                     player->unk88 = 0x48;
                     HuAudFXVolSet(player->unk86, 0x48);
                     HuAudFXPitchSet(player->unk86, 600);
-                    func_80007D2C_main(player->unk86, 22);
+                    msmSeSetFxMix(player->unk86, 22);
                 }
             }
             break;
@@ -1962,7 +1962,7 @@ void func_8010C3F4_end_of_the_line(void) {
 
     for (i = 0; i < 2; i++) {
         D_8010C74C_end_of_the_line[i] = obj = omAddObj(0x28, 1, 0, -1, NULL);
-        obj->model[0] = func_8000B108_main(0x540012, 0xA8D);
+        obj->model[0] = Hu3DModelRead(0x540012, 0xA8D);
     }
 }
 
@@ -1971,9 +1971,9 @@ void func_8010C47C_end_of_the_line(omObjData *obj) {
 
     omSetTra(D_8010C74C_end_of_the_line[idx], obj->trans.x + 150.0f, obj->trans.y + 50.0f, obj->trans.z + 100.0f);
     omSetSca(D_8010C74C_end_of_the_line[idx], 3.0f, 3.0f, 3.0f);
-    func_8001C258_main(D_8010C74C_end_of_the_line[idx]->model[0], 4, 0);
+    Hu3DModelAttrSet(D_8010C74C_end_of_the_line[idx]->model[0], 4, 0);
     Hu3DModelCameraSet(D_8010C74C_end_of_the_line[idx]->model[0], D_8010C5C8_end_of_the_line[idx]);
-    func_8001C814_main(D_8010C74C_end_of_the_line[idx]->model[0], 2, 2);
+    Hu3DMotionAttrSet(D_8010C74C_end_of_the_line[idx]->model[0], 2, 2);
     D_8010C74C_end_of_the_line[idx]->func = func_8010C574_end_of_the_line;
 }
 

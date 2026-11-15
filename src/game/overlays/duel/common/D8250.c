@@ -71,7 +71,7 @@ s32 func_800F1784_name_81(s32 arg0);
 s32 func_800F2618_name_81(s32 arg0);
 
 void func_800F0480_name_81(Object *obj, s16 slot, s16 chr, s32 dataNum) {
-    obj->omObj1->work[0] = (u8)func_80017790_main(obj->omObj1->model[0], slot, chr, dataNum);
+    obj->omObj1->work[0] = (u8)CharAnimCreate(obj->omObj1->model[0], slot, chr, dataNum);
     obj->omObj1->work[1] = (u8)slot;
     obj->omObj1->work[2] = (u8)chr;
 }
@@ -79,10 +79,10 @@ void func_800F0480_name_81(Object *obj, s16 slot, s16 chr, s32 dataNum) {
 void func_800F04FC_name_81(GW_PLAYER *player, s16 slot, s16 arg2) {
     s16 chr = player->chr;
     Object *obj = player->player_obj;
-    s32 dataNum = func_80017B6C_main(chr, slot, arg2);
+    s32 dataNum = CharMotionDataNumGetTbl(chr, slot, arg2);
 
     if (dataNum != -1) {
-        obj->omObj1->work[0] = (u8)func_80017790_main(obj->omObj1->model[0], slot, chr, dataNum);
+        obj->omObj1->work[0] = (u8)CharAnimCreate(obj->omObj1->model[0], slot, chr, dataNum);
         obj->omObj1->work[1] = (u8)slot;
         obj->omObj1->work[2] = (u8)chr;
     }
@@ -92,28 +92,28 @@ void func_800F05AC_name_81(void) {
 }
 
 void func_800F05B4_name_81(Object *obj, s32 dataNum) {
-    func_800333B0_main(obj->omObj1->work[0]);
-    obj->omObj1->work[0] = (u8)func_80017AD8_main(dataNum);
-    func_80017954_main(obj->omObj1->model[0], obj->omObj1->work[1], obj->omObj1->work[2], obj->omObj1->work[0]);
+    Hu3DAnimDataKill(obj->omObj1->work[0]);
+    obj->omObj1->work[0] = (u8)Hu3DAnimDataRead(dataNum);
+    CharAnimSet(obj->omObj1->model[0], obj->omObj1->work[1], obj->omObj1->work[2], obj->omObj1->work[0]);
 }
 
 void func_800F061C_name_81(GW_PLAYER *player, s16 arg1) {
     Object *obj = player->player_obj;
-    s32 dataNum = func_80017B6C_main(obj->omObj1->work[2], obj->omObj1->work[1], arg1);
+    s32 dataNum = CharMotionDataNumGetTbl(obj->omObj1->work[2], obj->omObj1->work[1], arg1);
 
     if (dataNum != -1) {
-        func_800333B0_main(obj->omObj1->work[0]);
-        obj->omObj1->work[0] = (u8)func_80017AD8_main(dataNum);
-        func_80017954_main(obj->omObj1->model[0], obj->omObj1->work[1], obj->omObj1->work[2], obj->omObj1->work[0]);
+        Hu3DAnimDataKill(obj->omObj1->work[0]);
+        obj->omObj1->work[0] = (u8)Hu3DAnimDataRead(dataNum);
+        CharAnimSet(obj->omObj1->model[0], obj->omObj1->work[1], obj->omObj1->work[2], obj->omObj1->work[0]);
     }
 }
 
 void func_800F06A8_name_81(Object *obj) {
-    func_80017B20_main(obj->omObj1->work[1], obj->omObj1->work[2], 1, 1);
+    CharAnimAttrSet(obj->omObj1->work[1], obj->omObj1->work[2], 1, 1);
 }
 
 void func_800F06D4_name_81(Object *obj) {
-    func_80017B20_main(obj->omObj1->work[1], obj->omObj1->work[2], 1, 0);
+    CharAnimAttrSet(obj->omObj1->work[1], obj->omObj1->work[2], 1, 0);
 }
 
 s32 func_800F0700_name_81(s32 arg0) {
@@ -287,7 +287,7 @@ static s32 func_800F0EA8_name_81(s16 arg0, s16 arg1, s16 arg2) {
     HuWinPriSet(win, 9);
     HuWinBGTPLvlSet(win, 0);
     HuWinMesSpeedSet(win, 0);
-    func_8005B63C_main(win, HUWIN_ATTR_NONE, HUWIN_ATTR_OUTLINE);
+    HuWinAttrSet(win, HUWIN_ATTR_NONE, HUWIN_ATTR_OUTLINE);
     func_800F0E4C_name_81(win, arg0);
     return win;
 }
@@ -595,14 +595,14 @@ s32 func_800F1784_name_81(s32 arg0) {
             HuPrcVSleep();
             D_801053E0_name_81 = func_800E4B64_name_81(0, 8);
             HuVecCopyXYZ(&D_801053E0_name_81->obj->scale, 1.0f, 1.0f, 1.0f);
-            func_8005E1A8_main(D_801053E0_name_81->win_id, 0x2C);
+            HuWinTabWidthSet(D_801053E0_name_81->win_id, 0x2C);
             MBDModelTempAllocFree(D_801053E0_name_81->obj);
-            func_8001C258_main(D_801053E0_name_81->obj->omObj1->model[0], HU3D_ATTR_NOPAUSE, HU3D_ATTR_NOPAUSE);
+            Hu3DModelAttrSet(D_801053E0_name_81->obj->omObj1->model[0], HU3D_ATTR_NOPAUSE, HU3D_ATTR_NOPAUSE);
             D_801053E0_name_81->obj->flags |= 0x10;
             func_800E4EAC_name_81(D_801053E0_name_81, 0x104, 8);
             func_800F0D1C_name_81(D_801053E0_name_81, 0x69);
-            func_80061100_main(D_801053E0_name_81->win_id, 5);
-            func_80060C14_main(D_801053E0_name_81->win_id, 1);
+            HuWinExPriSet(D_801053E0_name_81->win_id, 5);
+            HuWinExOpen(D_801053E0_name_81->win_id, 1);
         }
 
         cursor = func_800F4528_name_81(1, 0);
@@ -734,7 +734,7 @@ s32 func_800F1784_name_81(s32 arg0) {
         case 0:
         case 1:
             if (D_801053E0_name_81 != NULL) {
-                func_80060EA8_main(D_801053E0_name_81->win_id, 1);
+                HuWinExClose(D_801053E0_name_81->win_id, 1);
                 func_800F0D1C_name_81(D_801053E0_name_81, 0x104);
                 func_800E4E64_name_81(D_801053E0_name_81);
                 D_801053E0_name_81 = NULL;
@@ -1174,7 +1174,7 @@ static void func_800F336C_name_81(void) {
     HuSprAttrSet(temp_s1->unk_0A, 0, 0x1000);
     HuSprPosSet(temp_s1->unk_0A, 0, 0xA0, 0x78);
     HuSprScaleSet(temp_s1->unk_0A, 0, 40.0f, 30.0f);
-    func_80055484_main(temp_s1->unk_0A, 0, 0, 0, 0, 0xC0);
+    HuSprColorTPLvlSet(temp_s1->unk_0A, 0, 0, 0, 0, 0xC0);
     DataClose(temp_v0_2);
 
     do {
@@ -1212,12 +1212,12 @@ void func_800F3500_name_81(s32 arg0) {
         }
     }
 
-    func_8004A9DC_main(0x60);
+    HuAudSeqVolSet(0x60);
     if (D_800C9930_main != -1) {
         msmMusSetVolume(D_800C9930_main, 0x60);
     }
 
-    func_8001AC34_main(D_800D10F2_main, 2);
+    Hu3DModelModeSet(D_800D10F2_main, 2);
     Hu3DModelCameraSet(D_800D10F2_main, HU3D_CAM0);
     D_801053E0_name_81 = NULL;
     D_801053E4_name_81 = 0;
@@ -1228,8 +1228,8 @@ void func_800F3500_name_81(s32 arg0) {
     omPrcSetStatBit(temp_v0, OM_STAT_NOALLPAUSE);
     HuPrcChildLink(temp_s1_2, temp_v0);
     HuPrcChildWatch();
-    func_8001AC34_main(D_800D10F2_main, 6);
-    func_8004A9DC_main(0x7F);
+    Hu3DModelModeSet(D_800D10F2_main, 6);
+    HuAudSeqVolSet(0x7F);
     if (D_800C9930_main != -1) {
         msmMusSetVolume(D_800C9930_main, 0x7F);
     }
@@ -1240,7 +1240,7 @@ void func_800F3500_name_81(s32 arg0) {
         D_800A176D_main = 0;
         HuAudSeqFadeOut(0x5A);
         if (D_800C9930_main != -1) {
-            func_800039A4_main(D_800C9930_main, 0x5A);
+            msmMusFadeOut(D_800C9930_main, 0x5A);
             D_800C9930_main = -1;
             HuAudSeqStop();
         }
@@ -1467,7 +1467,7 @@ void func_800F3F4C_name_81(void) {
 
     for (i = 1; i < 8; i++) {
         for (j = 0; j < D_80101374_name_81[0]; j++) {
-            D_80101494_name_81[i][j + 1] = func_80017BB8_main(i, D_80101374_name_81[j + 1]);
+            D_80101494_name_81[i][j + 1] = CharMotionDataNumGet(i, D_80101374_name_81[j + 1]);
         }
     }
 }

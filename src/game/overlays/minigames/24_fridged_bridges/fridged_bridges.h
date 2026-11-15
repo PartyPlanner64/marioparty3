@@ -6,8 +6,8 @@
 #include "game/hmfcoll.h"
 #include "game/object.h"
 
-// Per-camera collision work buffer passed to func_80012888_main. Starts with the
-// CollisionFan used by func_80020E94_main; the remainder is used by the custom
+// Per-camera collision work buffer passed to Hu3DCameraModelHookSet. Starts with the
+// CollisionFan used by MapCullFan; the remainder is used by the custom
 // fan-culling draw in func_8010C738_fridged_bridges.
 typedef struct FridgedBridgesCamCollWork {
     /* 0x000 */ CollisionFan fan;

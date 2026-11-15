@@ -3,9 +3,9 @@
 
 #include "ultra64.h"
 
-void func_80036380_main(u32 stringsRomPtr);
-void func_80036414_main(u32 ptr);
-void *func_800364DC_main(void *arg0);
-void func_800365E8_main(void *ptr);
+void MessDataInit(u32 stringsRomPtr);
+void MessDataSet(u32 ptr);
+void *MessDataMesGet(void *arg0);
+void MessDataMesFree(void *ptr);
 
 #endif

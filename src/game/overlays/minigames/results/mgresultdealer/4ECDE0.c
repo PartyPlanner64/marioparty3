@@ -34,50 +34,50 @@ void func_801065D0_mgresultdealer(void) {
     D_8010A250_mgresultdealer.obj = obj;
     chr = GwPlayer[D_8010A266_mgresultdealer[0]].chr;
 
-    obj->model[0] = func_8000B108_main(D_800A178C_main[chr][0] | D_800A178C_main[chr][2], 0x2A9);
-    func_8001C814_main(obj->model[0], 2, 2);
+    obj->model[0] = Hu3DModelRead(D_800A178C_main[chr][0] | D_800A178C_main[chr][2], 0x2A9);
+    Hu3DMotionAttrSet(obj->model[0], 2, 2);
     Hu3DModelCameraSet(obj->model[0], 1);
 
-    obj->model[1] = func_8000B108_main(0x83, 0x2B9);
-    func_8001C814_main(obj->model[1], 2, 0);
-    func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    obj->model[1] = Hu3DModelRead(0x83, 0x2B9);
+    Hu3DMotionAttrSet(obj->model[1], 2, 0);
+    Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelPosSet(obj->model[1], 0.0f, 140.0f, 0.0f);
     Hu3DModelCameraSet(obj->model[1], 2);
 
-    obj->model[2] = func_8000B108_main(0x190003, 0x2B9);
-    func_8001C814_main(obj->model[2], 2, 0);
-    func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    obj->model[2] = Hu3DModelRead(0x190003, 0x2B9);
+    Hu3DMotionAttrSet(obj->model[2], 2, 0);
+    Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelPosSet(obj->model[2], 0.0f, 400.0f, -35.0f);
     Hu3DModelCameraSet(obj->model[2], 2);
 
-    obj->model[3] = func_8000B108_main(9, 0x2B9);
+    obj->model[3] = Hu3DModelRead(9, 0x2B9);
     Hu3DModelPosSet(obj->model[3], 0.0f, -5.0f, -35.0f);
     Hu3DModelScaleSet(obj->model[3], 1.0f, 1.0f, 1.0f);
     Hu3DModelCameraSet(obj->model[3], 1);
 
-    obj->model[4] = func_8000B108_main(0x190006, 0x2B9);
-    obj->model[5] = func_8000B108_main(0x190007, 0x2B9);
-    obj->model[6] = func_8000B108_main(0x190008, 0x2B9);
+    obj->model[4] = Hu3DModelRead(0x190006, 0x2B9);
+    obj->model[5] = Hu3DModelRead(0x190007, 0x2B9);
+    obj->model[6] = Hu3DModelRead(0x190008, 0x2B9);
     Hu3DModelCameraSet(obj->model[4], 2);
     Hu3DModelCameraSet(obj->model[5], 2);
     Hu3DModelCameraSet(obj->model[6], 2);
-    func_8001C258_main(obj->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    func_8001C258_main(obj->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    func_8001C258_main(obj->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(obj->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(obj->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(obj->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
 
-    D_80109A64_mgresultdealer[0] = func_80017790_main(obj->model[0], 2, chr, func_80017BB8_main(chr, 0xA4));
-    D_80109A64_mgresultdealer[1] = func_80017AD8_main(func_80017BB8_main(chr, 0xAA));
-    D_80109A64_mgresultdealer[2] = func_80017AD8_main(func_80017BB8_main(chr, 0xA5));
-    D_80109A64_mgresultdealer[3] = func_80017AD8_main(func_80017BB8_main(chr, 0xA6));
-    func_8001C514_main(obj->model[0]);
-    func_80017954_main(obj->model[0], 2, GwPlayer[D_8010A266_mgresultdealer[0]].chr, D_80109A64_mgresultdealer[0]);
+    D_80109A64_mgresultdealer[0] = CharAnimCreate(obj->model[0], 2, chr, CharMotionDataNumGet(chr, 0xA4));
+    D_80109A64_mgresultdealer[1] = Hu3DAnimDataRead(CharMotionDataNumGet(chr, 0xAA));
+    D_80109A64_mgresultdealer[2] = Hu3DAnimDataRead(CharMotionDataNumGet(chr, 0xA5));
+    D_80109A64_mgresultdealer[3] = Hu3DAnimDataRead(CharMotionDataNumGet(chr, 0xA6));
+    Hu3DModelDynamicFree(obj->model[0]);
+    CharAnimSet(obj->model[0], 2, GwPlayer[D_8010A266_mgresultdealer[0]].chr, D_80109A64_mgresultdealer[0]);
 
-    func_8000B460_main(obj, 0, func_80017BB8_main(chr, 0));
-    func_8000B460_main(obj, 1, func_80017BB8_main(chr, 0x2F));
-    func_8000B460_main(obj, 2, func_80017BB8_main(chr, D_801099A8_mgresultdealer[chr][1]));
-    func_8000B460_main(obj, 3, func_80017BB8_main(chr, 0x25));
-    func_8001C5B4_main(obj->model[0], obj->motion[0]);
-    func_8001C814_main(obj->model[0], 2, 2);
+    omObjMotionRead(obj, 0, CharMotionDataNumGet(chr, 0));
+    omObjMotionRead(obj, 1, CharMotionDataNumGet(chr, 0x2F));
+    omObjMotionRead(obj, 2, CharMotionDataNumGet(chr, D_801099A8_mgresultdealer[chr][1]));
+    omObjMotionRead(obj, 3, CharMotionDataNumGet(chr, 0x25));
+    Hu3DMotionModelSet(obj->model[0], obj->motion[0]);
+    Hu3DMotionAttrSet(obj->model[0], 2, 2);
 
     obj->trans.x = 0.0f;
     obj->trans.y = 0.0f;
@@ -98,7 +98,7 @@ void func_80106A50_mgresultdealer(omObjData *obj) {
         D_80109A60_mgresultdealer += 0.98f;
         D_801098F0_mgresultdealer.x += 30.0f;
         if (D_801098E4_mgresultdealer.y <= 180.0f) {
-            func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             D_801098E4_mgresultdealer.y = 180.0f;
             D_80109A60_mgresultdealer = -10.0f;
             D_801098E2_mgresultdealer = 1;
@@ -122,7 +122,7 @@ void func_80106B94_mgresultdealer(omObjData *obj) {
     D_801098F0_mgresultdealer.y -= 5.0f;
     if (D_801098E4_mgresultdealer.y <= 20.0f) {
         D_801098E4_mgresultdealer.y = 20.0f;
-        func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         D_80109A60_mgresultdealer = -2.0f;
         D_8010A250_mgresultdealer.func = func_80106CC8_mgresultdealer;
     }
@@ -164,8 +164,8 @@ void func_80106D9C_mgresultdealer(void) {
     D_80109A60_mgresultdealer = 0;
     Hu3DModelPosSet(obj->model[2], D_801098E4_mgresultdealer.x, 400.0f, -55.0f);
     Hu3DModelRotSet(obj->model[2], D_801098F0_mgresultdealer.x, D_801098F0_mgresultdealer.y, D_801098F0_mgresultdealer.z);
-    func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
 }
 
 s8 func_80106EA0_mgresultdealer(void) {
@@ -188,15 +188,15 @@ void func_80106EEC_mgresultdealer(void) {
     s16 i;
 
     for (i = 0; i < 4; i++) {
-        model = func_8000B108_main(D_801098FC_mgresultdealer[i], 0x2A9);
+        model = Hu3DModelRead(D_801098FC_mgresultdealer[i], 0x2A9);
         D_801099F8_mgresultdealer[i] = model;
         Hu3DAnmNoSet(Hu3DAnimRead(Hu3DData[model].hmf, 0xB0048, "e268p01_I8"), i * 2);
         Hu3DModelPosSet(model, 0.0f, 0.0f, 0.0f);
-        func_8001C2FC_main(model, 0x20000, 0x20000);
+        Hu3DModelObjAttrSet(model, 0x20000, 0x20000);
         Hu3DModelRemakeStatic(model);
-        func_8001C954_main(model);
-        func_8001C514_main(model);
-        func_80013390_main(model, -1, 0, func_801072A8_mgresultdealer);
+        Hu3DModelVtxBufMake(model);
+        Hu3DModelDynamicFree(model);
+        Hu3DParticleCreate(model, -1, 0, func_801072A8_mgresultdealer);
         Hu3DModelCameraSet(model, 2);
     }
     omAddObj(10, 10, 10, -1, func_8010705C_mgresultdealer);
@@ -265,11 +265,11 @@ void func_801072A8_mgresultdealer(s16 model) {
 }
 
 void func_801073F4_mgresultdealer(void) {
-    func_80017954_main(D_8010A250_mgresultdealer.obj->model[0], 2, GwPlayer[D_8010A266_mgresultdealer[0]].chr,
+    CharAnimSet(D_8010A250_mgresultdealer.obj->model[0], 2, GwPlayer[D_8010A266_mgresultdealer[0]].chr,
                        D_80109A64_mgresultdealer[2]);
 }
 
 void func_80107448_mgresultdealer(void) {
-    func_80017954_main(D_8010A250_mgresultdealer.obj->model[0], 2, GwPlayer[D_8010A266_mgresultdealer[0]].chr,
+    CharAnimSet(D_8010A250_mgresultdealer.obj->model[0], 2, GwPlayer[D_8010A266_mgresultdealer[0]].chr,
                        D_80109A64_mgresultdealer[3]);
 }

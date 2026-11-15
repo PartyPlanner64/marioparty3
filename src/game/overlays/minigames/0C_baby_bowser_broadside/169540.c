@@ -258,7 +258,7 @@ s16 func_8010A598_baby_bowser_broadside(s16 priority, s32 directory, s32 file, s
             HuSprAttrSet(sprite->unk_01, 0, attr);
             HuSprAnimModeSet(sprite->unk_01, 0, animation);
             HuSprPriSet(sprite->unk_01, 0, (u16)priority);
-            func_80054FF8_main(sprite->unk_01, 0, 0);
+            HuSprPatNoSet(sprite->unk_01, 0, 0);
             HuSprSpeedSet(sprite->unk_01, 0, 1.0f);
             HuSprScaleSet(sprite->unk_01, 0, 1.0f, 1.0f);
             HuSprPosSet(sprite->unk_01, 0, 100, 100);
@@ -280,7 +280,7 @@ void func_8010A738_baby_bowser_broadside(s16 index, s16 x, s16 y) {
     BabyBowserBroadsideSprite *sprite = &D_80110018_baby_bowser_broadside[index];
 
     if (sprite->unk_00 != 0) {
-        func_80054FF8_main(sprite->unk_01, 0, 0);
+        HuSprPatNoSet(sprite->unk_01, 0, 0);
         HuSprDispOn(sprite->unk_01, 0);
         HuSprPosSet(sprite->unk_01, 0, x, y);
         sprite->unk_00 = 2;
@@ -304,7 +304,7 @@ void func_8010A81C_baby_bowser_broadside(void) {
         if (sprite->unk_00 == 2) {
             if (HuSprGet(sprite->unk_01, 0)->patNo + 1 >= (u16)sprite->unk_04) {
                 HuSprDispOff(sprite->unk_01, 0);
-                func_80054FF8_main(sprite->unk_01, 0, 0);
+                HuSprPatNoSet(sprite->unk_01, 0, 0);
             }
         }
     }
@@ -317,8 +317,8 @@ s16 func_8010A8C4_baby_bowser_broadside(s32 directory, s32 file, f32 scale, s16 
 
     for (i = 0; i < 16; i++, work++) {
         if (work->unk_00 == 0) {
-            work->unk_0C = func_8000B108_main((directory << 16) | file, flags);
-            func_8001C258_main(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            work->unk_0C = Hu3DModelRead((directory << 16) | file, flags);
+            Hu3DModelAttrSet(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             model = &Hu3DData[work->unk_0C];
             model->motTime = 0;
             model->motSpeed = 0;
@@ -344,7 +344,7 @@ s16 func_8010A9D4_baby_bowser_broadside(s16 source, f32 scale, s16 type, s32 arg
     for (i = 0; i < 16; i++, work++) {
         if (work->unk_00 == 0) {
             work->unk_0C = Hu3DModelLink(source);
-            func_8001C258_main(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             model = &Hu3DData[work->unk_0C];
             model->motTime = 0;
             model->motSpeed = 0;
@@ -399,7 +399,7 @@ s32 func_8010AB80_baby_bowser_broadside(s16 index, f32 x, f32 y, f32 z, f32 rx, 
             Hu3DModelRotSet(work->unk_0C, rx, ry, rz);
             Hu3DModelScaleSet(work->unk_0C, scale, scale, scale);
             if (delay == 0.0f) {
-                func_8001C258_main(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                Hu3DModelAttrSet(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 work->unk_08 = 1;
                 work->unk_18 = 0.0f;
                 work->unk_14 = 0.0f;
@@ -430,14 +430,14 @@ void func_8010ACF8_baby_bowser_broadside(void) {
                         model->hmf->unk98->unk08 = 0;
                     }
                     if (!(work->unk_04 & 1)) {
-                        func_8001C258_main(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                        Hu3DModelAttrSet(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                         work->unk_08 = -1;
                         model->motSpeed = 0;
                     }
                 }
             } else {
                 if (work->unk_14++ >= work->unk_18) {
-                    func_8001C258_main(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                    Hu3DModelAttrSet(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     work->unk_08 = 1;
                     model->motSpeed = work->unk_10;
                 }
@@ -457,19 +457,19 @@ s16 func_8010AE60_baby_bowser_broadside(s32 directory, s32 file, s16 type, s32 f
             frame = HuSprAnimDataRead((directory << 16) | file);
             work->unk_0A = frame;
             if (flags & 1) {
-                work->unk_0C = func_8010C8D4_baby_bowser_broadside(func_80055194_main(frame), color.rgba);
+                work->unk_0C = func_8010C8D4_baby_bowser_broadside(HuSprAnimDataGet(frame), color.rgba);
             } else {
-                work->unk_0C = func_8010B54C_baby_bowser_broadside(func_80055194_main(frame), 1.0f);
+                work->unk_0C = func_8010B54C_baby_bowser_broadside(HuSprAnimDataGet(frame), 1.0f);
             }
             if (flags & 8) {
-                func_8001C258_main(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
             work->unk_14 = &Hu3DData[work->unk_0C].pos.x;
             work->unk_18 = &Hu3DData[work->unk_0C].pos.y;
             work->unk_1C = &Hu3DData[work->unk_0C].pos.z;
             work->unk_08 = type;
             work->unk_04 = flags;
-            work->unk_0E = func_80055194_main(frame)->patNum;
+            work->unk_0E = HuSprAnimDataGet(frame)->patNum;
             work->unk_10 = 0;
             work->unk_00 = 1;
             break;
@@ -507,7 +507,7 @@ void func_8010B098_baby_bowser_broadside(s16 arg0, f32 arg1, f32 arg2, f32 arg3,
     model->pos.x = arg1;
     model->pos.y = arg2;
     model->pos.z = arg3;
-    func_8001C258_main(D_80110010_baby_bowser_broadside[arg0].unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(D_80110010_baby_bowser_broadside[arg0].unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     D_80110010_baby_bowser_broadside[arg0].unk_20[0] = arg4[0];
     D_80110010_baby_bowser_broadside[arg0].unk_20[1] = arg4[1];
     D_80110010_baby_bowser_broadside[arg0].unk_20[2] = arg4[2];
@@ -537,7 +537,7 @@ void func_8010B198_baby_bowser_broadside(s16 index, f32 *x, f32 *y, f32 *z) {
     } else {
         D_80110010_baby_bowser_broadside[index].unk_1C = &model->pos.z;
     }
-    func_8001C258_main(D_80110010_baby_bowser_broadside[index].unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(D_80110010_baby_bowser_broadside[index].unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     D_80110010_baby_bowser_broadside[index].unk_04 = (D_80110010_baby_bowser_broadside[index].unk_04 & ~0x18) | 0x10;
 }
 
@@ -578,7 +578,7 @@ void func_8010B3B4_baby_bowser_broadside(void) {
             mtxRotCat(model->mtx, 0.0f, 0.0f, CRot.z);
             if (work->unk_04 & 1) {
                 if (work->unk_04 & 2) {
-                    func_8010D590_baby_bowser_broadside((u16)work->unk_0C, func_80055194_main(work->unk_0A), (u16)work->unk_10, work->unk_20);
+                    func_8010D590_baby_bowser_broadside((u16)work->unk_0C, HuSprAnimDataGet(work->unk_0A), (u16)work->unk_10, work->unk_20);
                     work->unk_10++;
                     if (work->unk_10 >= work->unk_0E) {
                         if (work->unk_04 & 4) {
@@ -586,7 +586,7 @@ void func_8010B3B4_baby_bowser_broadside(void) {
                         } else {
                             work->unk_10 = 0;
                             work->unk_04 |= 8;
-                            func_8001C258_main(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                            Hu3DModelAttrSet(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                         }
                     }
                 }
@@ -606,7 +606,7 @@ s16 func_8010B54C_baby_bowser_broadside(HuSprAnimData *sprite, f32 alpha) {
     s32 size;
 
     buffer = HuMemAlloc(0x10000);
-    model = func_8001A894_main(0x4C1, buffer, 4);
+    model = Hu3DModelDLCreate(0x4C1, buffer, 4);
     data = Hu3DData[model].hmf;
     data->unk60->unk50 |= 0x1010000;
     count = func_8010D6C4_baby_bowser_broadside(sprite, data, 1.0f, 0, 100);
@@ -677,7 +677,7 @@ s16 func_8010BCBC_baby_bowser_broadside(HuSprAnimData *sprite, f32 alpha) {
     gfx = HuMemAlloc(0x10000);
     header = gfx;
     buffer = (u8 *)gfx;
-    model = func_8001A894_main(0x4C1, gfx, 4);
+    model = Hu3DModelDLCreate(0x4C1, gfx, 4);
     data = Hu3DData[model].hmf;
     data->unk60->unk50 |= 0x1010000;
     gfx++;
@@ -777,7 +777,7 @@ s16 func_8010C8D4_baby_bowser_broadside(HuSprAnimData *sprite, u8 *color) {
     gfx = HuMemAlloc(0x10000);
     header = gfx;
     buffer = (u8 *)gfx;
-    model = func_8001A894_main(0x8C1, gfx, 4);
+    model = Hu3DModelDLCreate(0x8C1, gfx, 4);
     data = Hu3DData[model].hmf;
     data->unk60->unk50 |= 0x1010000;
     gfx++;

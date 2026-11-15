@@ -519,3 +519,16 @@ D_801134E8_messy_memory = D_80111700_messy_memory + 0x1DE8; /* [58] */
 D_80113884_messy_memory = D_80111700_messy_memory + 0x2184; /* [65] */
 D_80113A94_messy_memory = D_80111700_messy_memory + 0x2394; /* [69] */
 D_80113B18_messy_memory = D_80111700_messy_memory + 0x2418; /* [70] */
+
+/* curtain_call: D_8010B4B0_curtain_call entry fields, CurtainCallBssCE88 fields, D_8010CEC8_curtain_call columns. */
+D_8010B4F0_curtain_call = D_8010B4B0_curtain_call + 0x40;  /* [0].unk_40[0] */
+D_8010B4F2_curtain_call = D_8010B4B0_curtain_call + 0x42;  /* [0].unk_40[1] */
+D_8010B4F4_curtain_call = D_8010B4B0_curtain_call + 0x44;  /* [0].unk_44.x */
+D_8010B4F8_curtain_call = D_8010B4B0_curtain_call + 0x48;  /* [0].unk_44.y */
+D_8010B4FC_curtain_call = D_8010B4B0_curtain_call + 0x4C;  /* [0].unk_44.z */
+D_8010BA5C_curtain_call = D_8010B4B0_curtain_call + 0x5AC; /* [11].obj */
+D_8010BB64_curtain_call = D_8010B4B0_curtain_call + 0x6B4; /* [13].obj */
+D_8010CE88_curtain_call = curtainCallBssCE88;
+D_8010CE8A_curtain_call = curtainCallBssCE88 + 0x2;
+D_8010CEC9_curtain_call = D_8010CEC8_curtain_call + 0x1;
+D_8010CECC_curtain_call = D_8010CEC8_curtain_call + 0x4;

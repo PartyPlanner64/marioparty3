@@ -44,76 +44,29 @@ typedef struct {
     /* 0x28 */ f32 fov;
 } CurtainCallCamera; // sizeof 0x2C
 
-extern CurtainCallEntry D_8010B4B0_curtain_call[50];
-// Fields of the first entry of D_8010B4B0_curtain_call are accessed through
-// these separate symbols.
-extern s16 D_8010B4F0_curtain_call;
-extern s16 D_8010B4F2_curtain_call;
-extern f32 D_8010B4F4_curtain_call;
-extern f32 D_8010B4F8_curtain_call;
-extern f32 D_8010B4FC_curtain_call;
-extern omObjData *D_8010BA5C_curtain_call;
-extern omObjData *D_8010BB64_curtain_call;
-extern Process *D_8010CF34_curtain_call;
-extern s8 D_8010CEC1_curtain_call;
-extern s8 D_8010CE8A_curtain_call[2];
-extern s32 D_8010B0C0_curtain_call[8];
-extern s16 D_8010B0E0_curtain_call[2];
-extern s16 D_8010B0E4_curtain_call[6];
-extern u16 D_8010B0F0_curtain_call[][3];
-extern char *D_8010B120_curtain_call[];
-extern s8 D_8010B180_curtain_call[25];
-extern f32 D_8010B19C_curtain_call[25];
-extern s16 D_8010B200_curtain_call[];
-extern s16 D_8010B208_curtain_call[];
-extern s16 D_8010B210_curtain_call[];
-extern s16 D_8010B21C_curtain_call[];
-extern s8 D_8010B228_curtain_call[];
-extern s8 D_8010B22C_curtain_call[];
-extern s8 D_8010B234_curtain_call[];
-extern u8 D_8010B25C_curtain_call[][3];
-extern u8 D_8010B268_curtain_call[][4];
-extern u8 D_8010B140_curtain_call[3][5];
-extern u8 D_8010B150_curtain_call[3][5];
-extern u8 D_8010B160_curtain_call[3][5];
-extern u8 D_8010B170_curtain_call[3][5];
-extern s16 D_8010CE78_curtain_call[4];
+typedef struct {
+    /* 0x00 */ s16 unk_00;   // D_8010CE88
+    /* 0x02 */ s8 unk_02[2]; // D_8010CE8A
+} CurtainCallBssCE88;        // sizeof 0x4
+
+// Fields of entries of D_8010B4B0_curtain_call accessed through separate
+// symbols (aliased in undefined_syms.txt).
+extern s16 D_8010B4F0_curtain_call;        // [0].unk_40[0]
+extern s16 D_8010B4F2_curtain_call;        // [0].unk_40[1]
+extern f32 D_8010B4F4_curtain_call;        // [0].unk_44.x
+extern f32 D_8010B4F8_curtain_call;        // [0].unk_44.y
+extern f32 D_8010B4FC_curtain_call;        // [0].unk_44.z
+extern omObjData *D_8010BA5C_curtain_call; // [11].obj
+extern omObjData *D_8010BB64_curtain_call; // [13].obj
+// Fields of curtainCallBssCE88 (aliased in undefined_syms.txt).
 extern s16 D_8010CE88_curtain_call;
-extern void *D_8010CE90_curtain_call[4][3];
-extern s8 D_8010CEC0_curtain_call;
-extern s8 D_8010CEC8_curtain_call[][8];
-// Field at offset 1 of an 8 byte per-player table at D_8010CEC8_curtain_call,
-// accessed through its own symbol.
+extern s8 D_8010CE8A_curtain_call[2];
+// Fields at offsets 1 and 4 of the 8 byte per-entry table at
+// D_8010CEC8_curtain_call (aliased in undefined_syms.txt).
 extern s8 D_8010CEC9_curtain_call[][8];
-// Field at offset 4 of the same table.
 extern omObjData *D_8010CECC_curtain_call[][2];
-extern s8 D_8010CEF8_curtain_call[4];
-extern s8 D_8010CEFE_curtain_call;
-extern s8 D_8010CEFF_curtain_call;
-extern s16 D_8010CF08_curtain_call[4][2];
-extern s8 D_8010CF18_curtain_call[4];
-extern s8 D_8010CF20_curtain_call[2];
-extern s8 D_8010CF22_curtain_call;
-extern omObjData *D_8010CF24_curtain_call;
-extern s16 D_8010CF2C_curtain_call[3];
-extern s8 D_8010CF32_curtain_call;
-extern s8 D_8010CF00_curtain_call;
-extern s16 D_8010CEFC_curtain_call;
-extern CurtainCallCamera D_8010B280_curtain_call[1];
+extern char *D_8010B120_curtain_call[8];
 extern const s16 D_8010B4A0_curtain_call[];
-extern s8 D_8010CF38_curtain_call;
-extern s16 D_8010CE84_curtain_call;
-extern s8 D_8010CE86_curtain_call;
-extern s16 D_8010CF1C_curtain_call[2];
-extern s8 D_8010CE80_curtain_call[4];
-extern s8 D_8010CF01_curtain_call;
-extern s8 D_8010CF28_curtain_call[4];
-extern s8 D_8010CF33_curtain_call;
-extern s16 D_8010B23C_curtain_call[6];
-// Columns of a 3 byte per-row table, each accessed through its own symbol.
-extern u8 D_8010B248_curtain_call[][3];
-extern u8 D_8010B249_curtain_call[][3];
-extern u8 D_8010B24A_curtain_call[][3];
 extern s32 D_800A178C_main[][6];
 extern u8 D_800D6A90_main;
 
@@ -125,6 +78,52 @@ void func_8010A948_curtain_call(omObjData *);
 void func_80109AD0_curtain_call(void);
 void func_8010954C_curtain_call(void);
 void func_801092F0_curtain_call(omObjData *);
+
+s32 D_8010B0C0_curtain_call[8] = { 2, 3, 7, 4, 5, 6, 8, 9 };
+s16 D_8010B0E0_curtain_call[2] = { 0x6300, 0x6301 };
+s16 D_8010B0E4_curtain_call[6] = { 0x6302, 0x6303, 0x6304, 0x6305, 0x6306, 0x6307 };
+u16 D_8010B0F0_curtain_call[8][3] = {
+    { 0xA4, 0xA5, 0xA6 },
+    { 0xA4, 0xA5, 0xA6 },
+    { 0xA4, 0xA5, 0xA6 },
+    { 0xA4, 0xA5, 0xA6 },
+    { 0xA4, 0xA5, 0xA6 },
+    { 0xA4, 0xA5, 0xA6 },
+    { 0xA4, 0xA5, 0xA6 },
+    { 0x1A, 0x1C, 0x1D },
+};
+
+CurtainCallEntry D_8010B4B0_curtain_call[50] BSS;
+s16 D_8010CE78_curtain_call[4] BSS;
+s8 D_8010CE80_curtain_call[4] BSS;
+s16 D_8010CE84_curtain_call BSS;
+s8 D_8010CE86_curtain_call BSS;
+CurtainCallBssCE88 curtainCallBssCE88 BSS;
+u8 D_8010CE8C_curtain_call[4] BSS; /* Unreferenced. */
+void *D_8010CE90_curtain_call[4][3] BSS;
+s8 D_8010CEC0_curtain_call BSS;
+s8 D_8010CEC1_curtain_call BSS;
+u8 D_8010CEC4_curtain_call[4] BSS; /* Unreferenced. */
+s8 D_8010CEC8_curtain_call[6][8] BSS;
+s8 D_8010CEF8_curtain_call[4] BSS;
+s16 D_8010CEFC_curtain_call BSS;
+s8 D_8010CEFE_curtain_call BSS;
+s8 D_8010CEFF_curtain_call BSS;
+s8 D_8010CF00_curtain_call BSS;
+s8 D_8010CF01_curtain_call BSS;
+u8 D_8010CF04_curtain_call[4] BSS; /* Unreferenced. */
+s16 D_8010CF08_curtain_call[4][2] BSS;
+s8 D_8010CF18_curtain_call[4] BSS;
+s16 D_8010CF1C_curtain_call[2] BSS;
+s8 D_8010CF20_curtain_call[2] BSS;
+s8 D_8010CF22_curtain_call BSS;
+omObjData *D_8010CF24_curtain_call BSS;
+s8 D_8010CF28_curtain_call[4] BSS;
+s16 D_8010CF2C_curtain_call[3] BSS;
+s8 D_8010CF32_curtain_call BSS;
+s8 D_8010CF33_curtain_call BSS;
+Process *D_8010CF34_curtain_call BSS;
+s8 D_8010CF38_curtain_call BSS;
 
 void func_801059A0_curtain_call(void) {
     func_8010AF78_curtain_call();
@@ -367,21 +366,132 @@ void func_801066C4_curtain_call(omObjData *obj, u8 anim) {
     D_8010CE78_curtain_call[player] = Hu3DAnimCreate(Hu3DData[obj->model[0]].hmf, D_8010CE90_curtain_call[player][anim], 0, D_8010B120_curtain_call[chr]);
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_22_curtain_call/20BFA0", D_8010B32C_curtain_call);
+char *D_8010B120_curtain_call[8] = {
+    "c000l_0_DEF",
+    "c001l_0_DEF",
+    "c002l_0_DEF",
+    "c003l_0_DEF",
+    "c004l_0_DEF",
+    "c005l_0_DEF",
+    "c300l_0_DEF",
+    "c301l_0_DEF",
+};
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_22_curtain_call/20BFA0", D_8010B338_curtain_call);
+u8 D_8010B140_curtain_call[3][5] = {
+    { 13, 20, 33, 40, 74 },
+    { 10, 20, 30, 40, 70 },
+    { 7, 20, 27, 40, 66 },
+};
+u8 D_8010B150_curtain_call[3][5] = {
+    { 18, 25, 43, 50, 84 },
+    { 15, 25, 40, 50, 80 },
+    { 12, 25, 37, 50, 76 },
+};
+u8 D_8010B160_curtain_call[3][5] = {
+    { 44, 50, 73, 80, 93 },
+    { 40, 50, 70, 80, 90 },
+    { 36, 50, 67, 80, 87 },
+};
+u8 D_8010B170_curtain_call[3][5] = {
+    { 74, 80, 88, 90, 98 },
+    { 70, 80, 85, 90, 95 },
+    { 66, 80, 82, 90, 92 },
+};
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_22_curtain_call/20BFA0", D_8010B344_curtain_call);
+s8 D_8010B180_curtain_call[25] = {
+    0,
+    0,
+    0,
+    0,
+    16,
+    14,
+    12,
+    10,
+    8,
+    6,
+    4,
+    2,
+    0,
+    -2,
+    -4,
+    -6,
+    -8,
+    -10,
+    -12,
+    -14,
+    -16,
+    0,
+    0,
+    0,
+    0,
+};
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_22_curtain_call/20BFA0", D_8010B350_curtain_call);
+f32 D_8010B19C_curtain_call[25] = {
+    1.0f,
+    1.0f,
+    1.0f,
+    1.0f,
+    1.0f,
+    0.95f,
+    0.9f,
+    0.85f,
+    0.8f,
+    0.75f,
+    0.7f,
+    0.65f,
+    0.6f,
+    0.65f,
+    0.7f,
+    0.75f,
+    0.8f,
+    0.85f,
+    0.9f,
+    0.95f,
+    1.0f,
+    1.0f,
+    1.0f,
+    1.0f,
+    1.0f,
+};
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_22_curtain_call/20BFA0", D_8010B35C_curtain_call);
+s16 D_8010B200_curtain_call[3] = { 601, 603, 599 };
+s16 D_8010B208_curtain_call[3] = { 150, 0, -150 };
+s16 D_8010B210_curtain_call[5] = { 300, 150, 0, -150, -300 };
+s16 D_8010B21C_curtain_call[6] = { 310, 185, 60, -60, -185, -310 };
+s8 D_8010B228_curtain_call[3] = { -8, 0, 8 };
+s8 D_8010B22C_curtain_call[5] = { -16, -8, 0, 8, 16 };
+s8 D_8010B234_curtain_call[6] = { -18, -10, -3, 3, 10, 18 };
+s16 D_8010B23C_curtain_call[6] = { -525, -655, -785, -915, -1045, -1175 };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_22_curtain_call/20BFA0", D_8010B368_curtain_call);
+u8 D_8010B248_curtain_call[6][3] = {
+    { 0, 1, 2 },
+    { 0, 2, 1 },
+    { 1, 0, 2 },
+    { 1, 2, 0 },
+    { 2, 0, 1 },
+    { 2, 1, 0 },
+};
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_22_curtain_call/20BFA0", D_8010B374_curtain_call);
+u8 D_8010B25C_curtain_call[3][3] = {
+    { 4, 4, 8 },
+    { 4, 8, 4 },
+    { 8, 4, 4 },
+};
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_22_curtain_call/20BFA0", D_8010B380_curtain_call);
+u8 D_8010B268_curtain_call[6][4] = {
+    { 8, 8, 252, 4 },
+    { 8, 252, 8, 4 },
+    { 4, 252, 8, 8 },
+    { 4, 8, 252, 8 },
+    { 8, 252, 4, 8 },
+    { 8, 4, 252, 8 },
+};
+
+CurtainCallCamera D_8010B280_curtain_call[1] = {
+    { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 21.0f },
+};
+
+const char D_8010B38C_curtain_call[] = ""; /* Unreferenced. */
 
 s8 func_801067A8_curtain_call(omObjData *obj, s8 mode) {
     CurtainCallEntry *entry = &D_8010B4B0_curtain_call[1 + obj->work[0]];
@@ -1442,8 +1552,8 @@ void func_80109AD0_curtain_call(void) {
                     D_8010CEC8_curtain_call[1][0] = D_8010CEC8_curtain_call[3][0] = D_8010CEC8_curtain_call[5][0] = 0;
                     pick = func_80105B7C_curtain_call(6);
                     D_8010CEC8_curtain_call[0][1] = D_8010B248_curtain_call[pick][0];
-                    D_8010CEC8_curtain_call[2][1] = D_8010B249_curtain_call[pick][0];
-                    D_8010CEC8_curtain_call[4][1] = D_8010B24A_curtain_call[pick][0];
+                    D_8010CEC8_curtain_call[2][1] = D_8010B248_curtain_call[pick][1];
+                    D_8010CEC8_curtain_call[4][1] = D_8010B248_curtain_call[pick][2];
                     D_8010CEC8_curtain_call[1][1] = 3;
                     D_8010CEC8_curtain_call[3][1] = 4;
                     D_8010CEC8_curtain_call[5][1] = 5;
@@ -1871,4 +1981,4 @@ void func_8010AF78_curtain_call(void) {
     func_80105A3C_curtain_call();
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_22_curtain_call/20BFA0", D_8010B4A0_curtain_call);
+const s16 D_8010B4A0_curtain_call[] = { 0x8260, 0x8261, 0x8262, 0 };

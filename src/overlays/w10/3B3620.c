@@ -45,43 +45,93 @@ typedef struct {
     /* 0x0C */ s32 unkC;
 } W10RunnerData; // sizeof 0x10
 
-extern s16 D_8010B7F0_w10[4];
-extern Vec D_8010B818_w10[];
-extern Vec D_8010B854_w10[];
-extern s16 D_8010B890_w10[];
-extern s16 D_8010B898_w10[];
-extern s32 D_8010B8C0_w10[];
-extern s32 D_8010B8E8_w10[];
-extern s16 D_8010B8FC_w10;
-extern Object *D_8010BA24_w10;
-extern Process *D_8010BA28_w10;
-extern Object *D_8010BA2C_w10;
-extern Object *D_8010BA30_w10;
-extern Object *D_8010BA38_w10[2];
-extern u32 D_8010B900_w10[];
-extern u32 D_8010B908_w10[];
-extern s32 D_8010B918_w10;
-extern f32 D_8010B91C_w10[][2];
-extern s32 D_8010BA20_w10;
-extern s16 D_8010BA4C_w10;
-extern s16 D_8010BA4E_w10;
-extern s16 D_8010BA50_w10;
-extern s16 D_8010BA52_w10;
-extern s16 D_8010BA54_w10;
-extern Vec D_8010BA58_w10;
-extern Object *D_8010BA68_w10;
-extern Object *D_8010BA6C_w10;
-extern Object *D_8010BA70_w10;
-extern Object *D_8010BA74_w10;
-extern event_table_entry D_8010B8B0_w10[];
-extern s32 D_8010BA80_w10[];
-extern Object *D_8010BA90_w10;
-extern s32 D_8010BA94_w10;
-extern s32 D_8010B7F8_w10[];
-extern s32 D_8010B810_w10[];
-extern u32 D_8010B910_w10[];
-extern UnkMBGuideData *D_8010BA64_w10;
-extern Process *D_8010BA78_w10;
+void func_80105E10_w10(void);
+
+s16 D_8010B7F0_w10[] = { 4, 0, 1, 2 };
+
+s32 D_8010B7F8_w10[] = { 0xA007E, 0xA007F, 0xA0080, 0xA0081, 0xA0082, 0xA0083 };
+
+s32 D_8010B810_w10[] = { 0xA0084, 0xA0085 };
+
+Vec D_8010B818_w10[] = {
+    { -3.0f, 0.0f, -2.0f },
+    { 0.0f, 2.0f, 2.0f },
+    { 1.0f, 5.5f, -3.0f },
+    { 3.5f, 8.0f, 4.0f },
+    { -1.0f, 12.0f, 11.0f }
+};
+
+Vec D_8010B854_w10[] = {
+    { 0.0f, 0.0f, 0.0f },
+    { 0.0f, 0.0f, 0.0f },
+    { -15.0f, 0.0f, 0.0f },
+    { 20.0f, 0.0f, -30.0f },
+    { 45.0f, 0.0f, 45.0f }
+};
+
+s16 D_8010B890_w10[] = { 31, 24, -1, 0 };
+
+s16 D_8010B898_w10[] = { 1, 0, 0, 0 };
+
+event_list_entry D_8010B8A0_w10[] = {
+    { 1, 2, func_80105E10_w10 },
+    { 0, 0, NULL }
+};
+
+event_table_entry D_8010B8B0_w10[] = {
+    { 39, D_8010B8A0_w10 },
+    { -1, NULL }
+};
+
+s32 D_8010B8C0_w10[] = {
+    0x13000A, 0x13000B, 0x13000C, 0x13000D, 0x13000E, 0x13000F, 0x130010, 0x130011,
+    0x130012, 0x130013
+};
+
+s32 D_8010B8E8_w10[] = { 0x130115, 0x130012, 0x130011 };
+
+u32 D_8010B8F4_w10[] = { 1, 0xA005E }; /* Unreferenced. */
+
+s16 D_8010B8FC_w10 = -1;
+
+u32 D_8010B900_w10[] = { 1, 0xA0017 };
+
+u32 D_8010B908_w10[] = { 1, 0xA00F0 };
+
+u32 D_8010B910_w10[] = { 1, 0xA009D };
+
+s32 D_8010B918_w10 = 0;
+
+f32 D_8010B91C_w10[][2] = {
+    { 0.0f, 0.0f },
+    { -10.0f, 0.0f },
+    { 10.0f, 0.0f },
+    { 0.0f, -10.0f }
+};
+
+s32 D_8010BA20_w10 BSS;
+Object *D_8010BA24_w10 BSS;
+Process *D_8010BA28_w10 BSS;
+Object *D_8010BA2C_w10 BSS;
+Object *D_8010BA30_w10 BSS;
+u8 D_8010BA34_w10[4] BSS; /* Unreferenced. */
+Object *D_8010BA38_w10[5] BSS;
+s16 D_8010BA4C_w10 BSS;
+s16 D_8010BA4E_w10 BSS;
+s16 D_8010BA50_w10 BSS;
+s16 D_8010BA52_w10 BSS;
+s16 D_8010BA54_w10 BSS;
+Vec D_8010BA58_w10 BSS;
+UnkMBGuideData *D_8010BA64_w10 BSS;
+Object *D_8010BA68_w10 BSS;
+Object *D_8010BA6C_w10 BSS;
+Object *D_8010BA70_w10 BSS;
+Object *D_8010BA74_w10 BSS;
+Process *D_8010BA78_w10 BSS;
+u8 D_8010BA7C_w10[4] BSS; /* Unreferenced. */
+s32 D_8010BA80_w10[4] BSS;
+Object *D_8010BA90_w10 BSS;
+s32 D_8010BA94_w10 BSS;
 
 void func_80109444_w10(void);
 void func_8010AF68_w10(UnkMBGuideData *guide);

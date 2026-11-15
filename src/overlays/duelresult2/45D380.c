@@ -22,33 +22,9 @@ typedef struct DuelResult2StatFiles {
     s32 files[11];
 } DuelResult2StatFiles;
 
-extern DuelResult2PlayerFiles D_80108C40_duelresult2;
-extern DuelResult2PlayerFiles D_80108C58_duelresult2;
-extern DuelResult2Portraits D_80108C70_duelresult2;
-extern DuelResult2Positions D_80108C90_duelresult2;
-extern DuelResult2Portraits D_80108D08_duelresult2;
-extern DuelResult2Portraits D_80108D28_duelresult2;
-extern DuelResult2StatFiles D_80108D48_duelresult2;
-
-extern UnkBoard4 *D_80108DB0_duelresult2;
-extern UnkBoard4 *D_80108DB4_duelresult2[2];
-extern UnkBoard4 *D_80108DBC_duelresult2;
-extern UnkOvl81_2 *D_80108DC0_duelresult2;
-extern UnkBoard4 *D_80108DC4_duelresult2;
-extern UnkBoard4 *D_80108DC8_duelresult2;
-extern UnkBoard4 *D_80108DCC_duelresult2;
-extern UnkBoard4 *D_80108DD0_duelresult2[2];
-extern UnkBoard4 *D_80108DD8_duelresult2;
-extern UnkBoard4 *D_80108DDC_duelresult2;
-extern UnkBoard4 *D_80108DE0_duelresult2;
-extern UnkBoard4 *D_80108DE4_duelresult2;
-extern s32 D_80108DE8_duelresult2[16];
-extern s16 D_80108E28_duelresult2[10];
-extern UnkBoard4 *D_80108C30_duelresult2;
-extern s32 D_80108C34_duelresult2;
-extern s32 D_80108C38_duelresult2;
-extern s16 D_80108E3C_duelresult2;
-extern s16 D_80108E3E_duelresult2;
+extern const DuelResult2Portraits D_80108D08_duelresult2;
+extern const DuelResult2Portraits D_80108D28_duelresult2;
+extern const DuelResult2StatFiles D_80108D48_duelresult2;
 extern s16 kakusiMasuItemHis[10];
 
 void func_80105B98_duelresult2(s16 model, s16 animIdx);
@@ -60,6 +36,32 @@ void func_80108BA0_duelresult2(void);
 void func_80108BF8_duelresult2(void);
 void func_80108BCC_duelresult2(void);
 void func_80108C28_duelresult2(void);
+
+UnkBoard4 *D_80108C30_duelresult2 = NULL;
+s32 D_80108C34_duelresult2 = 0;
+s32 D_80108C38_duelresult2 = 0;
+
+const DuelResult2PlayerFiles D_80108C40_duelresult2 = { { { 0x130035, 0x130071, 0x130045 }, { 0x130032, 0x130070, 0x130042 } } };
+const DuelResult2PlayerFiles D_80108C58_duelresult2 = { { { 0x130066, 0x130067, 0x130068 }, { 0x130063, 0x130064, 0x130065 } } };
+const DuelResult2Portraits D_80108C70_duelresult2 = { { 0x130036, 0x130037, 0x130038, 0x130039, 0x13003A, 0x13003B, 0x13003C, 0x13003D } };
+const DuelResult2Positions D_80108C90_duelresult2 = { { 0, 60, 142, 0 } };
+
+UnkBoard4 *D_80108DB0_duelresult2 BSS;
+UnkBoard4 *D_80108DB4_duelresult2[2] BSS;
+UnkBoard4 *D_80108DBC_duelresult2 BSS;
+UnkOvl81_2 *D_80108DC0_duelresult2 BSS;
+UnkBoard4 *D_80108DC4_duelresult2 BSS;
+UnkBoard4 *D_80108DC8_duelresult2 BSS;
+UnkBoard4 *D_80108DCC_duelresult2 BSS;
+UnkBoard4 *D_80108DD0_duelresult2[2] BSS;
+UnkBoard4 *D_80108DD8_duelresult2 BSS;
+UnkBoard4 *D_80108DDC_duelresult2 BSS;
+UnkBoard4 *D_80108DE0_duelresult2 BSS;
+UnkBoard4 *D_80108DE4_duelresult2 BSS;
+s32 D_80108DE8_duelresult2[16] BSS;
+s16 D_80108E28_duelresult2[10] BSS;
+s16 D_80108E3C_duelresult2 BSS;
+s16 D_80108E3E_duelresult2 BSS;
 
 void func_801059A0_duelresult2(void) {
     u32 i;
@@ -565,11 +567,11 @@ void func_80106F7C_duelresult2(void) {
     HuSprPosSet(D_80108DE4_duelresult2->unk_0A, 0, D_80108C38_duelresult2 * 44 + 146, 100);
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/duelresult2/45D380", D_80108D08_duelresult2);
+const DuelResult2Portraits D_80108D08_duelresult2 = { { 0x210008, 0x210009, 0x21000A, 0x21000B, 0x21000C, 0x21000D, 0x21000E, 0x21000F } };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/duelresult2/45D380", D_80108D28_duelresult2);
+const DuelResult2Portraits D_80108D28_duelresult2 = { { 0x1301D5, 0x1301D6, 0x1301D7, 0x1301D8, 0x1301D9, 0x1301DA, 0x1301DB, 0x1301DC } };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/duelresult2/45D380", D_80108D48_duelresult2);
+const DuelResult2StatFiles D_80108D48_duelresult2 = { { 0x13005A, 0x13004E, 0x13004F, 0x130050, 0x13005B, 0x13005C, 0x13005D, 0x13005E, 0x13005F, 0x130060, 0x130061 } };
 
 void func_80107454_duelresult2(void) {
     s32 rankFiles[2] = { 0x13004A, 0x130047 };

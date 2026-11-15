@@ -1407,9 +1407,9 @@ segments:
     bss_size: 0x1A90
     subsegments:
       - [0x240A10, c]
-      - [0x24A300, data, 240A10] #8010F290
+      - [0x24A300, .data, 240A10] #8010F290
       - [0x24A400, .rodata, 240A10] #8010F390
-      - {0x24A760, type: bss, vram: 0x8010F6F0, name: ovl_2A_bss}
+      - {start: 0x24A760, type: .bss, vram: 0x8010F6F0, name: 240A10}
 
   - type: code
     start: 0x24A760

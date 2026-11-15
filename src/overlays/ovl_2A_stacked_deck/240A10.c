@@ -33,50 +33,85 @@ typedef struct {
     /* 0x68 */ f32 unk_68[4];
     /* 0x78 */ Vec unk_78;
 } StackedDeckCard; // sizeof 0x84
+// Groups of BSS variables that are not 4-aligned as standalone arrays. The
+// original names are aliased to the fields (see undefined_syms.txt).
+typedef struct {
+    /* 0x00 */ u8 unk_00;
+    /* 0x01 */ s8 unk_01[5];
+    /* 0x06 */ s16 unk_06[7];
+} StackedDeckBssF6F4; // sizeof 0x14
 
-extern StackedDeckCard D_8010F730_stacked_deck[50];
+typedef struct {
+    /* 0x00 */ s16 unk_00;
+    /* 0x02 */ s16 unk_02[4];
+} StackedDeckBssS16Run; // sizeof 0xA
+
+extern s32 D_800A178C_main[][6];
+extern s32 D_800A1790_main[][6];
+
+s32 D_8010F290_stacked_deck[8] = { 2, 3, 7, 4, 5, 6, 8, 9 };
+Vec2f D_8010F2B0_stacked_deck[12] = {
+    { -525.0f, -350.0f },
+    { -175.0f, -350.0f },
+    { 175.0f, -350.0f },
+    { 525.0f, -350.0f },
+    { -525.0f, 150.0f },
+    { -175.0f, 150.0f },
+    { 175.0f, 150.0f },
+    { 525.0f, 150.0f },
+    { -525.0f, 650.0f },
+    { -175.0f, 650.0f },
+    { 175.0f, 650.0f },
+    { 525.0f, 650.0f },
+};
+Vec2f D_8010F310_stacked_deck[3] = { { 70.0f, 20.0f }, { -10.0f, 10.0f }, { -70.0f, 20.0f } };
+f32 D_8010F328_stacked_deck[3] = { 2.0f, 2.0f, 2.0f };
+D_80111B50_vine_with_me_Struct D_8010F334_stacked_deck = { 0, 0, 1, 2, 0, 0, 0, 0, { 90.0f, 900.0f, 0.0f, 30.0f }, { 150, 0, 0, 0 }, 0, 0, 0, 0, 0 };
+s32 D_8010F35C_stacked_deck = 0;
+StackedDeckCamera D_8010F360_stacked_deck[1] = {
+    { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 33.0f }
+};
+
+extern const s16 D_8010F6E8_stacked_deck[];
+
+s16 D_8010F6F0_stacked_deck BSS;
+s16 D_8010F6F2_stacked_deck BSS;
+StackedDeckBssF6F4 stackedDeckBssF6F4 BSS;
+extern u8 D_8010F6F4_stacked_deck;     // stackedDeckBssF6F4.unk_00
+extern s8 D_8010F6F5_stacked_deck[5];  // stackedDeckBssF6F4.unk_01
+extern s16 D_8010F6FA_stacked_deck[7]; // stackedDeckBssF6F4.unk_06
+void *D_8010F708_stacked_deck[6] BSS;
+s16 D_8010F720_stacked_deck BSS;
+u8 D_8010F724_stacked_deck[0xC] BSS; /* Unreferenced. */
+StackedDeckCard D_8010F730_stacked_deck[50] BSS;
 // Alias of the player entries (STACKED_DECK_PLAYERS), used where the target
 // indexes the player table directly.
 extern StackedDeckCard D_8010F838_stacked_deck[4];
-extern s32 D_800A178C_main[][6];
-extern s32 D_800A1790_main[][6];
-extern u8 D_8010F6F4_stacked_deck;
-extern void *D_8010F708_stacked_deck[];
-extern Vec2f D_8010F2B0_stacked_deck[12];
-extern s16 D_8010F6F0_stacked_deck;
-extern s16 D_80111120_stacked_deck;
-extern s16 D_80111150_stacked_deck[];
-extern u8 D_80111168_stacked_deck;
-extern u8 D_80111169_stacked_deck;
-extern s16 D_80111170_stacked_deck;
-extern s32 D_8010F35C_stacked_deck;
-extern Vec2f D_8010F310_stacked_deck[];
-extern f32 D_8010F328_stacked_deck[];
-extern s32 D_801110FC_stacked_deck;
-extern D_80111B50_vine_with_me_Struct D_8010F334_stacked_deck;
-extern StackedDeckCamera D_8010F360_stacked_deck[1];
-extern const s16 D_8010F6E8_stacked_deck[];
-extern s16 D_8010F6F2_stacked_deck;
-extern s8 D_8010F6F5_stacked_deck[];
-extern s16 D_8010F6FA_stacked_deck[];
-extern s16 D_8010F720_stacked_deck;
-extern s16 D_801110F8_stacked_deck;
-extern s16 D_801110FA_stacked_deck;
-extern s16 D_80111100_stacked_deck;
-extern s16 D_80111102_stacked_deck[];
-extern s16 D_8011110A_stacked_deck;
-extern s16 D_8011110C_stacked_deck;
-extern s8 D_80111110_stacked_deck[4][4];
-extern s16 D_80111128_stacked_deck[];
-extern s16 D_80111140_stacked_deck;
-extern s16 D_80111142_stacked_deck[];
-extern s16 D_8011114A_stacked_deck;
-extern s16 D_8011114C_stacked_deck;
-extern s16 D_8011114E_stacked_deck;
-extern s16 D_8011116A_stacked_deck;
-extern s16 D_8011116C_stacked_deck;
-extern s16 D_8011116E_stacked_deck;
-extern s32 D_8010F290_stacked_deck[];
+s16 D_801110F8_stacked_deck BSS;
+s16 D_801110FA_stacked_deck BSS;
+s32 D_801110FC_stacked_deck BSS;
+StackedDeckBssS16Run stackedDeckBss11100 BSS;
+extern s16 D_80111100_stacked_deck;    // stackedDeckBss11100.unk_00
+extern s16 D_80111102_stacked_deck[4]; // stackedDeckBss11100.unk_02
+s16 D_8011110A_stacked_deck BSS;
+s16 D_8011110C_stacked_deck BSS;
+s8 D_80111110_stacked_deck[4][4] BSS;
+s16 D_80111120_stacked_deck BSS;
+u8 D_80111124_stacked_deck[4] BSS; /* Unreferenced. */
+s16 D_80111128_stacked_deck[12] BSS;
+StackedDeckBssS16Run stackedDeckBss11140 BSS;
+extern s16 D_80111140_stacked_deck;    // stackedDeckBss11140.unk_00
+extern s16 D_80111142_stacked_deck[4]; // stackedDeckBss11140.unk_02
+s16 D_8011114A_stacked_deck BSS;
+s16 D_8011114C_stacked_deck BSS;
+s16 D_8011114E_stacked_deck BSS;
+s16 D_80111150_stacked_deck[12] BSS;
+u8 D_80111168_stacked_deck BSS;
+u8 D_80111169_stacked_deck BSS;
+s16 D_8011116A_stacked_deck BSS;
+s16 D_8011116C_stacked_deck BSS;
+s16 D_8011116E_stacked_deck BSS;
+s16 D_80111170_stacked_deck BSS;
 
 void func_801063F4_stacked_deck(f32 x0, f32 z0, f32 x1, f32 z1, f32 *velX, f32 *velZ, f32 speed);
 void func_80106554_stacked_deck(omObjData *object);
@@ -3225,4 +3260,4 @@ void func_8010F134_stacked_deck(void) {
     func_800E5EA0_minigame(&D_8010F334_stacked_deck);
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_2A_stacked_deck/240A10", D_8010F6E8_stacked_deck);
+const s16 D_8010F6E8_stacked_deck[] = { 0x8260, 0x8261, 0x8262, 0 };

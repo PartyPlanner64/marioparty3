@@ -439,3 +439,13 @@ D_8010F8C8_snowball_summit = snowballSummitBackdrop + 0x8;
 D_8010F8CA_snowball_summit = snowballSummitBackdrop + 0xA;
 D_8010F8CC_snowball_summit = snowballSummitBackdrop + 0xC;
 D_8010F8D4_snowball_summit = snowballSummitBackdrop + 0x14;
+
+/* stacked_deck: stackedDeckBss* fields and the D_8010F730_stacked_deck player entries. */
+D_8010F6F4_stacked_deck = stackedDeckBssF6F4;
+D_8010F6F5_stacked_deck = stackedDeckBssF6F4 + 0x1;
+D_8010F6FA_stacked_deck = stackedDeckBssF6F4 + 0x6;
+D_8010F838_stacked_deck = D_8010F730_stacked_deck + 0x108;
+D_80111100_stacked_deck = stackedDeckBss11100;
+D_80111102_stacked_deck = stackedDeckBss11100 + 0x2;
+D_80111140_stacked_deck = stackedDeckBss11140;
+D_80111142_stacked_deck = stackedDeckBss11140 + 0x2;

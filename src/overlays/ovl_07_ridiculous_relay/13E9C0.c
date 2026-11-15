@@ -948,13 +948,6 @@ f32 func_8010B474_ridiculous_relay(f32 x) {
 }
 
 // `float best` and `int i` (instead of f32/s32) are deliberate: the typedef variants change fold/cross-jumping.
-// Matches fully if the two decrements guarded by an enclosing `!= 0` test (D_80110E38[j] and
-// D_80110E18) use the same saturating form as the unguarded timers and the thwomp_pull sibling:
-//     x -= (x != 0) ? 1 : 0;
-// Inside the guard that test is always true, so the plain `x--` is kept here (pending a decision on
-// whether the redundant form, likely a decrement-to-zero macro in the original, is acceptable).
-// With `x--` the zero-tested value is reloaded for the decrement instead of reused.
-#ifdef NON_MATCHING
 void func_8010B4A8_ridiculous_relay(omObjData *object) {
     f32 hurdleX[18] = { 0.0f, 32.0f, 64.0f, 96.0f, 128.0f, 128.0f, 160.0f, 192.0f, 224.0f,
                         256.0f, 288.0f, 320.0f, 352.0f, 384.0f, 384.0f, 416.0f, 448.0f, 480.0f };
@@ -1017,7 +1010,8 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
 
     for (j = 0; j < 2; j++) {
         if (D_80110E20_ridiculous_relay[j] <= -1000.0f && D_80110E38_ridiculous_relay[j] != 0 && D_801119D8_ridiculous_relay == 2 && D_80110DAC_ridiculous_relay[0] >= 50.0 && D_80110DAC_ridiculous_relay[0] < 1775.0) {
-            D_80110E38_ridiculous_relay[j]--;
+            // Saturating decrement (same form as the unguarded timers); reuses the tested value.
+            D_80110E38_ridiculous_relay[j] -= (D_80110E38_ridiculous_relay[j] != 0) ? 1 : 0;
         }
         if (D_80110E20_ridiculous_relay[j] <= -1000.0f && D_80110E38_ridiculous_relay[j] == 0 && D_801119D8_ridiculous_relay == 2 && D_80110DAC_ridiculous_relay[0] >= 50.0 && D_80110DAC_ridiculous_relay[0] < 1775.0) {
             D_80110E20_ridiculous_relay[j] = CenterM[0].x + 125.0;
@@ -1281,7 +1275,8 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
         D_80110DF4_ridiculous_relay[0] = MAX((s16)(D_80110DF4_ridiculous_relay[0] - 2), 0);
         Hu3DMotionTimeSet(obj->model[0], (D_80110DF4_ridiculous_relay[0] != 0) ? (f32)(60 - D_80110DF4_ridiculous_relay[0]) : 0.0f);
         if (D_80110E18_ridiculous_relay != 0) {
-            D_80110E18_ridiculous_relay--;
+            // Saturating decrement (same form as the unguarded timers); reuses the tested value.
+            D_80110E18_ridiculous_relay -= (D_80110E18_ridiculous_relay != 0) ? 1 : 0;
             if (D_80110E18_ridiculous_relay >= 30) {
                 f32 t = sindf((60 - D_80110E18_ridiculous_relay) / 30.0 * 90.0);
 
@@ -1717,18 +1712,6 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
     D_80110DA0_ridiculous_relay[0] = prevCenter[0];
     D_80110DA0_ridiculous_relay[1] = prevCenter[1];
 }
-#else
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", D_8011108C_ridiculous_relay);
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", D_801110D4_ridiculous_relay);
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", D_8011111C_ridiculous_relay);
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", D_80111164_ridiculous_relay);
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", D_80111178_ridiculous_relay);
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", D_80111184_ridiculous_relay);
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", D_80111194_ridiculous_relay);
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", D_801111A4_ridiculous_relay);
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", D_801111B4_ridiculous_relay);
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", func_8010B4A8_ridiculous_relay);
-#endif
 
 s16 func_80110BF4_ridiculous_relay(s16 arg0, s16 arg1) {
     if (D_800A1902_main == 0) {

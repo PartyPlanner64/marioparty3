@@ -16,8 +16,10 @@ typedef struct CameraViewState {
 extern f32 D_800CB890_main;
 extern CameraViewState D_800CE178_main;
 extern f32 D_800D5210_main;
-extern f32 D_80109AB0_mgenter;
-extern s8 D_80109AB4_mgenter;
+
+f32 D_80109AB0_mgenter = 58.0f;
+s8 D_80109AB4_mgenter = 0;
+
 extern s16 D_80109B40_mgenter;
 extern s16 D_80109B42_mgenter;
 extern s16 D_80109B44_mgenter;

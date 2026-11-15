@@ -5,8 +5,11 @@ extern s16 D_800A11E6_main;
 extern s16 D_800D1F36_main;
 extern s16 D_800D1FE0_main;
 extern u8 D_800CE20A_main;
-extern u16 D_80109AA4_mgenter;
-extern s16 D_80109AA6_mgenter;
+
+f32 D_80109AA0_mgenter = 115.0f;
+u16 D_80109AA4_mgenter = 0;
+s16 D_80109AA6_mgenter = 0;
+
 extern s16 D_80109B20_mgenter;
 extern s16 D_80109B22_mgenter;
 extern s16 D_80109B24_mgenter;
@@ -21,7 +24,6 @@ extern s16 D_80109B34_mgenter;
 extern s16 D_80109B36_mgenter;
 extern s16 D_80109B38_mgenter;
 extern s16 D_80109B3A_mgenter;
-extern f32 D_80109AA0_mgenter;
 extern f32 D_80109AB0_mgenter;
 extern f32 D_80109B64_mgenter;
 extern s16 D_80109B74_mgenter;

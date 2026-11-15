@@ -546,3 +546,6 @@ D_80119EE2_duel04 = D_80119EE4_duel04 - 0x2;
 D_80119EEA_duel04 = D_80119EEC_duel04 - 0x2;
 D_80119EF2_duel04 = D_80119EF4_duel04 - 0x2;
 D_80119EFA_duel04 = D_80119EFC_duel04 - 0x2;
+
+/* duel06: misaligned BSS */
+D_80114D72_duel06 = D_80114D68_duel06 + 0xA;

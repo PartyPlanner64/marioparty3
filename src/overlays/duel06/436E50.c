@@ -76,41 +76,18 @@ typedef struct Duel06SwayWork {
 
 
 void *memcpy(void *, const void *, unsigned int);
+extern const Vec D_80114930_duel06[];
 void func_80114324_duel06(void);
 s32 func_8010ED04_duel06(void);
-extern Vec D_80114930_duel06[];
-extern u8 D_80114954_duel06[];
-extern u8 D_80114A3C_duel06[];
-extern u8 D_80114B24_duel06[];
-extern u8 D_80114C0C_duel06[];
-extern s16 D_80114928_duel06[];
-extern u8 D_80114924_duel06[];
-extern s16 D_801148A0_duel06[][2];
-extern s32 D_801148AC_duel06[];
-extern s32 D_801148C4_duel06[];
-extern s32 D_8011464C_duel06;
 void func_8010F184_duel06(void);
 Process *func_800EBC60_name_81(Vec *, Vec *, Vec *, s32);
 void func_800EB7BC_name_81(Vec *);
 void func_800FC8DC_name_81(Object *);
 void func_8010F2F4_duel06(void);
-extern Vec D_801148F4_duel06[];
-extern Object *D_80114648_duel06;
-extern s32 D_80114644_duel06;
-extern Duel06PartnerSpaces D_8011462C_duel06[];
-extern char D_801147A0_duel06[];
-extern s32 D_801144B0_duel06[];
 Process *func_800FAB68_name_81(Object *, s32, s32, s32, s32);
 Process *func_800DCE40_name_81(s32, Vec *, Vec *, f32);
-extern void (*D_80114694_duel06[])(void);
 Process *func_800E0924_name_81(void);
 extern s32 D_80101200_shared_board[];
-extern Object *D_80114D44_duel06;
-extern Object *D_80114D40_duel06;
-extern s32 D_801144B8_duel06[];
-extern Object *D_80114D48_duel06;
-extern s8 *D_8011460C_duel06[];
-extern s8 D_80114510_duel06[];
 void func_8010B138_duel06(omObjData *);
 Object *func_800EDD50_name_81(Vec *);
 void func_800EE0F4_name_81(s32);
@@ -122,44 +99,21 @@ void func_800EDF78_name_81(void);
 void func_800EE468_name_81(s32);
 void func_800EDDBC_name_81(void);
 void func_800F3880_name_81(s32, s32, s32);
-extern f32 D_801144CC_duel06;
-extern s16 D_801144E2_duel06;
-extern s16 D_801144E0_duel06;
-extern s16 D_801144EA_duel06;
-extern s16 D_801144E8_duel06;
 void func_800FADB4_name_81(void);
 void func_800FAE18_name_81(Object *, s32, s32);
-extern s16 D_80114870_duel06[];
-extern char D_80114858_duel06[];
-extern Object *D_80114D50_duel06;
-extern Process *D_80114D54_duel06;
-extern s32 D_801144D0_duel06[];
-extern s16 D_80114888_duel06[];
 void func_8010E1BC_duel06(void);
 extern void func_80105CC8_duel06(void);
 extern void func_80106310_duel06(void);
 extern void func_8010E7C8_duel06(void);
-extern omObjData *D_80114D4C_duel06;
-extern Object *D_80114D58_duel06;
-extern Object *D_80114D60_duel06;
 void func_8010D9FC_duel06(void);
 void func_8010DCB0_duel06(void);
 void func_8010DD44_duel06(void);
 void func_8010E350_duel06(void);
 void func_8010EAD0_duel06(void);
 void func_8010E95C_duel06(s16);
-extern s16 D_80114D68_duel06[];
-extern s16 D_80114D72_duel06[];
-extern s16 D_801144F0_duel06[];
-extern f32 D_801144FC_duel06[];
-extern s16 D_8011471C_duel06[];
 void func_800FF640_name_81(s32);
 f32 MBDVecAngleGet(Vec *);
 s32 func_800E88FC_name_81(void);
-extern DuelHelpWin *D_80114D30_duel06;
-extern DuelHelpWin *D_80114D34_duel06;
-extern DuelHelpWin *D_80114D38_duel06;
-extern DuelHelpWin *D_80114D3C_duel06;
 void MBDVecDirGet(Vec *, Vec *, Vec *);
 Process *func_800EBF2C_name_81(Vec *, Vec *, Vec *, s32);
 void func_800F38DC_name_81(s32, s32, s32);
@@ -171,14 +125,8 @@ void func_800E1F38_name_81(void);
 void func_800E14D8_name_81(s32, s32);
 void func_800F7378_name_81(s32, s32);
 void func_80105F28_duel06(void);
-extern Process *D_801144E4_duel06;
-extern f32 D_80114D5C_duel06;
 void func_8010DDF4_duel06(void);
-extern Process *D_801144EC_duel06;
-extern f32 D_80114D64_duel06;
 void func_8010E400_duel06(void);
-extern event_table_entry D_801146C4_duel06[];
-extern event_table_entry D_80114750_duel06[];
 void func_800EA46C_name_81(event_table_entry *);
 void func_800FC59C_name_81(s32 (*)(void));
 void func_800FC5A8_name_81(process_func);
@@ -197,6 +145,229 @@ void func_8010B554_duel06(s32, s32, Object *, Object *, s32, s32);
 void func_8010BCDC_duel06(s32, s32, Object *, Object *, s32, s32);
 void func_8010CE70_duel06(s32, s32, Object *, Object *, s32, s32);
 void func_8010D42C_duel06(s32, s32, Object *, Object *, s32, s32);
+
+void func_80110D44_duel06(void);
+void func_80110DA0_duel06(void);
+void func_80110E04_duel06(void);
+void func_80111FC4_duel06(void);
+void func_80114474_duel06(void);
+void func_801125B0_duel06(void);
+void func_801126A0_duel06(void);
+void func_801126DC_duel06(void);
+void func_80112758_duel06(void);
+void func_80112794_duel06(void);
+void func_80112814_duel06(void);
+void func_80112B90_duel06(void);
+void func_80112D7C_duel06(void);
+void func_80112F68_duel06(void);
+void func_801137A0_duel06(void);
+void func_80113A98_duel06(void);
+void func_80113F14_duel06(void);
+void func_80113FB4_duel06(void);
+void func_80113FF0_duel06(void);
+void func_80114174_duel06(void);
+void func_80113E74_duel06(void);
+
+s32 D_801144B0_duel06[] = { 55, 57 };
+
+s32 D_801144B8_duel06[] = { 4, 0xA0035, 0xA003A, 0xA003B, 0xA003F };
+
+f32 D_801144CC_duel06 = 3.0f;
+
+s32 D_801144D0_duel06[] = { 3, 0xA011D, 0xA011E, 0xA0121 };
+
+s16 D_801144E0_duel06 = 27;
+
+s16 D_801144E2_duel06 = 26;
+
+Process *D_801144E4_duel06 = NULL;
+
+s16 D_801144E8_duel06 = 30;
+
+s16 D_801144EA_duel06 = 29;
+
+Process *D_801144EC_duel06 = NULL;
+
+s16 D_801144F0_duel06[] = { 31, 25, 24, 33, 32 };
+
+f32 D_801144FC_duel06[] = { 0.0f, -12.0f, 192.0f, -192.0f, 12.0f };
+
+s8 D_80114510_duel06[] = {
+    7, 30, 6, 30, 4, 30, 1, 30,
+    11, 30, 8, 20, 3, 20, 10, 20,
+    0, 20, 2, 20, 9, 20, 5, 20,
+    -1, -1
+};
+
+s8 D_8011452C_duel06[] = {
+    0, 50, 7, 20, 6, 20, 4, 20,
+    1, 20, 11, 20, 8, 10, 3, 10,
+    10, 10, 0, 10, 2, 10, 9, 10,
+    5, 10, -1, -1
+};
+
+s8 D_80114548_duel06[] = {
+    1, 50, 7, 20, 6, 20, 4, 20,
+    1, 20, 11, 20, 8, 10, 3, 10,
+    10, 10, 0, 10, 2, 10, 9, 10,
+    5, 10, -1, -1
+};
+
+s8 D_80114564_duel06[] = {
+    2, 50, 7, 20, 6, 20, 4, 20,
+    1, 20, 11, 20, 8, 10, 3, 10,
+    10, 10, 0, 10, 2, 10, 9, 10,
+    5, 10, -1, -1
+};
+
+s8 D_80114580_duel06[] = {
+    4, 50, 7, 20, 6, 20, 4, 20,
+    1, 20, 11, 20, 8, 10, 3, 10,
+    10, 10, 0, 10, 2, 10, 9, 10,
+    5, 10, -1, -1
+};
+
+s8 D_8011459C_duel06[] = {
+    3, 50, 7, 20, 6, 20, 4, 20,
+    1, 20, 11, 20, 8, 10, 3, 10,
+    10, 10, 0, 10, 2, 10, 9, 10,
+    5, 10, -1, -1
+};
+
+s8 D_801145B8_duel06[] = {
+    5, 50, 7, 20, 6, 20, 4, 20,
+    1, 20, 11, 20, 8, 10, 3, 10,
+    10, 10, 0, 10, 2, 10, 9, 10,
+    5, 10, -1, -1
+};
+
+s8 D_801145D4_duel06[] = {
+    7, 50, 7, 20, 6, 20, 4, 20,
+    1, 20, 11, 20, 8, 10, 3, 10,
+    10, 10, 0, 10, 2, 10, 9, 10,
+    5, 10, -1, -1
+};
+
+s8 D_801145F0_duel06[] = {
+    6, 50, 7, 20, 6, 20, 4, 20,
+    1, 20, 11, 20, 8, 10, 3, 10,
+    10, 10, 0, 10, 2, 10, 9, 10,
+    5, 10, -1, -1
+};
+
+s8 *D_8011460C_duel06[] = { D_8011452C_duel06, D_80114548_duel06, D_80114564_duel06, D_80114580_duel06, D_8011459C_duel06, D_801145B8_duel06, D_801145D4_duel06, D_801145F0_duel06 };
+
+Duel06PartnerSpaces D_8011462C_duel06[] = {
+    { 21, 26, 27 },
+    { 22, 29, 30 }
+};
+
+s32 D_80114644_duel06 = -1;
+
+Object *D_80114648_duel06 = NULL;
+
+s32 D_8011464C_duel06 = 0;
+
+event_list_entry D_80114650_duel06[] = {
+    { 1, 1, func_80110D44_duel06 },
+    { 0, 0, NULL }
+};
+
+event_list_entry D_80114660_duel06[] = {
+    { 1, 1, func_80110DA0_duel06 },
+    { 0, 0, NULL }
+};
+
+event_list_entry D_80114670_duel06[] = {
+    { 7, 1, func_80110E04_duel06 },
+    { 0, 0, NULL }
+};
+
+event_list_entry D_80114680_duel06[] = {
+    { 1, 1, func_80111FC4_duel06 },
+    { 8, 1, func_80114474_duel06 },
+    { 0, 0, NULL }
+};
+
+void (*D_80114698_duel06[])(void) = {
+    func_801125B0_duel06,
+    func_801126A0_duel06,
+    func_801126DC_duel06,
+    func_80112758_duel06,
+    func_80112794_duel06,
+    func_80112814_duel06,
+    func_80112B90_duel06,
+    func_80112D7C_duel06,
+    func_80112F68_duel06,
+    func_801137A0_duel06,
+    func_80113A98_duel06
+};
+
+event_table_entry D_801146C4_duel06[] = {
+    { 21, D_80114650_duel06 },
+    { 22, D_80114660_duel06 },
+    { -5, D_80114670_duel06 },
+    { 23, D_80114680_duel06 },
+    { -1, NULL }
+};
+
+event_list_entry D_801146EC_duel06[] = {
+    { 1, 1, func_80113F14_duel06 },
+    { 0, 0, NULL }
+};
+
+event_list_entry D_801146FC_duel06[] = {
+    { 1, 1, func_80113FB4_duel06 },
+    { 0, 0, NULL }
+};
+
+event_list_entry D_8011470C_duel06[] = {
+    { 1, 1, func_80113FF0_duel06 },
+    { 0, 0, NULL }
+};
+
+s16 D_8011471C_duel06[] = { 20, 4, 8, 0, 16 };
+
+event_list_entry D_80114728_duel06[] = {
+    { 3, 1, func_80114174_duel06 },
+    { 0, 0, NULL }
+};
+
+event_list_entry D_80114738_duel06[] = {
+    { 3, 1, func_80114174_duel06 },
+    { 1, 1, func_80113E74_duel06 },
+    { 0, 0, NULL }
+};
+
+event_table_entry D_80114750_duel06[] = {
+    { 19, D_801146EC_duel06 },
+    { 18, D_801146FC_duel06 },
+    { 1, D_8011470C_duel06 },
+    { 20, D_80114738_duel06 },
+    { 4, D_80114728_duel06 },
+    { 8, D_80114728_duel06 },
+    { 0, D_80114728_duel06 },
+    { 16, D_80114728_duel06 },
+    { -1, NULL }
+};
+
+DuelHelpWin *D_80114D30_duel06 BSS;
+DuelHelpWin *D_80114D34_duel06 BSS;
+DuelHelpWin *D_80114D38_duel06 BSS;
+DuelHelpWin *D_80114D3C_duel06 BSS;
+Object *D_80114D40_duel06 BSS;
+Object *D_80114D44_duel06 BSS;
+Object *D_80114D48_duel06 BSS;
+omObjData *D_80114D4C_duel06 BSS;
+Object *D_80114D50_duel06 BSS;
+Process *D_80114D54_duel06 BSS;
+Object *D_80114D58_duel06 BSS;
+f32 D_80114D5C_duel06 BSS;
+Object *D_80114D60_duel06 BSS;
+f32 D_80114D64_duel06 BSS;
+s16 D_80114D68_duel06[6] BSS;
+
+extern s16 D_80114D72_duel06[]; // D_80114D68_duel06[5]
 
 void func_801059D0_duel06(void) {
     mbCameraBtnF = 1;
@@ -640,7 +811,7 @@ void func_80106830_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
                 func_80105C6C_duel06(&target->coords, &effect->coords, &effect->rot);
                 func_801067DC_duel06(effect, &target->coords);
             } else {
-                model = func_800DD1E0_name_81(0xB0025, D_801147A0_duel06);
+                model = func_800DD1E0_name_81(0xB0025, "obj1");
                 func_800DD2DC_name_81(model, &midPos);
             }
         } else {
@@ -651,7 +822,7 @@ void func_80106830_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
                 func_80105C6C_duel06(&player->player_obj->coords, &effect->coords, &effect->rot);
                 func_801067DC_duel06(effect, &player->player_obj->coords);
             } else {
-                model = func_800DD1E0_name_81(0xB0025, D_801147A0_duel06);
+                model = func_800DD1E0_name_81(0xB0025, "obj1");
                 func_800DD2DC_name_81(model, &midPos);
             }
         }
@@ -836,8 +1007,6 @@ void func_80107190_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     }
     func_800FADB4_name_81();
 }
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/duel06/436E50", D_801147A0_duel06);
 
 void func_801079C0_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
     GW_PLAYER *player;
@@ -1183,7 +1352,7 @@ void func_80108558_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
                 smoke = func_800D8010_name_81(0x5A, NULL);
                 func_800D974C_name_81(smoke);
                 HuVecCopy3F(&smoke->coords, &obj->coords);
-                model = func_800DD1E0_name_81(0xB0023, D_801147A0_duel06);
+                model = func_800DD1E0_name_81(0xB0023, "obj1");
                 func_800DD2DC_name_81(model, &obj->coords);
             }
         }
@@ -1941,7 +2110,7 @@ void func_8010B554_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
                 }
                 HuVecMulScalar(mid, 0.5f, mid);
                 midPos.y += 5.0f;
-                model = func_800DD1E0_name_81(0xB0025, D_801147A0_duel06);
+                model = func_800DD1E0_name_81(0xB0025, "obj1");
                 func_800DD2DC_name_81(model, &midPos);
                 func_800FAC1C_name_81(&D_80105540_name_81);
                 if (flags & 1) {
@@ -2512,7 +2681,7 @@ void func_8010D42C_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
             func_800EB804_name_81(effect);
             func_801067DC_duel06(effect, &midPos);
         } else {
-            model = func_800DD1E0_name_81(0xB0024, D_801147A0_duel06);
+            model = func_800DD1E0_name_81(0xB0024, "obj1");
             func_800DD2DC_name_81(model, &midPos);
             HuAudFXPlay(0x1DB);
             HuAudFXPlay(0x1F1);
@@ -2637,8 +2806,8 @@ void func_8010DB34_duel06(void) {
 void func_8010DC0C_duel06(void) {
     HmfMotionNode *node;
 
-    func_8002FD8C_main(D_80114D50_duel06->omObj1->model[0], Hu3DData[D_80114D50_duel06->omObj1->model[0]].motId, D_80114858_duel06, 0x4C, 0x46);
-    node = func_8001D33C_main(D_80114D50_duel06->omObj1->model[0], D_80114858_duel06);
+    func_8002FD8C_main(D_80114D50_duel06->omObj1->model[0], Hu3DData[D_80114D50_duel06->omObj1->model[0]].motId, "bell", 0x4C, 0x46);
+    node = func_8001D33C_main(D_80114D50_duel06->omObj1->model[0], "bell");
     node->baseRot.y = (GwSystem.bank_coins - 5) * 60;
 }
 
@@ -2710,8 +2879,6 @@ void func_8010E010_duel06(void) {
         MTX_ROTZ(Hu3DData[D_80114D58_duel06->omObj1->model[0]].mtx, 0.0f);
     }
 }
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/duel06/436E50", D_80114858_duel06);
 
 void func_8010E1BC_duel06(void) {
     f32 amplitude;
@@ -2931,9 +3098,8 @@ s32 func_8010ED04_duel06(void) {
 
 s32 func_8010EE40_duel06(void) {
     GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
-    s16 partnerValues[12];
+    s16 partnerValues[12] = { 40, 90, 30, 50, 90, 10, 80, 15, 60, 80, 70, 90 };
 
-    memcpy(partnerValues, D_80114870_duel06, sizeof(partnerValues));
     if (player->stats.partners.frontID == PARTNER_NONE) {
         return 0;
     }
@@ -2941,9 +3107,8 @@ s32 func_8010EE40_duel06(void) {
 }
 
 s32 func_8010EEE8_duel06(s32 index) {
-    s16 shakeAngles[12];
+    s16 shakeAngles[12] = { 70, 10, 50, 20, 30, 90, 10, 10, 20, 80, 60, 30 };
 
-    memcpy(shakeAngles, D_80114888_duel06, sizeof(shakeAngles));
     return shakeAngles[index];
 }
 
@@ -3033,10 +3198,9 @@ void func_8010F184_duel06(void) {
 }
 
 void func_8010F2F4_duel06(void) {
-    s16 pos[3][2];
-    s32 files[6];
+    s16 pos[3][2] = { { 160, -80 }, { 160, -160 }, { 160, -80 } };
+    s32 files[6] = { 0x13011C, 0x13011F, 0x13011E, 0x13011D, 0x130120, 0x13011E };
     u8 order[32]; // Only 12 are used; the size matches the original stack frame.
-    s32 sfx[12];
     s32 player;
     DuelHelpWin *msgWindow;
     s16 window;
@@ -3053,8 +3217,6 @@ void func_8010F2F4_duel06(void) {
     s32 max;
     s32 delay;
 
-    memcpy(pos, D_801148A0_duel06, sizeof(pos));
-    memcpy(files, D_801148AC_duel06, sizeof(files));
     player = ((Duel06PartnerRouletteWork *)HuPrcCurrentGet()->user_data)->player;
     colorProcess = NULL;
     cpuPartner = -1;
@@ -3150,8 +3312,11 @@ void func_8010F2F4_duel06(void) {
             }
         }
     } while (i == max + 1);
-    memcpy(sfx, D_801148C4_duel06, sizeof(sfx));
-    HuAudFXPlay(sfx[order[i]]);
+    {
+        s32 sfx[12] = { 0x25A, 0x25B, 0x298, 0x256, 0x257, 0x25D, 0x2A3, 0x2A4, 0x2A2, 0x1E7, 0x2A5, 0x2A0 };
+
+        HuAudFXPlay(sfx[order[i]]);
+    }
     D_8011464C_duel06 = 0;
     if (player == 0) {
         if (state == 2) {
@@ -3175,6 +3340,13 @@ void func_8010F2F4_duel06(void) {
     mbItemBtnF = 1;
     omDelPrcObj(NULL);
 }
+
+const Vec D_801148F4_duel06[] = {
+    { 4.0f, 4.0f, -4.0f },
+    { -4.0f, -2.0f, -4.0f },
+    { 4.0f, 0.0f, 4.0f },
+    { -4.0f, 2.0f, 4.0f }
+};
 
 s32 func_8010FB64_duel06(s32 index) {
     Vec camPos;
@@ -3316,22 +3488,19 @@ s32 func_8010FB64_duel06(s32 index) {
 
 void func_80110230_duel06(s32 index) {
     Vec pos;
-    u8 playerBits[4];
-    s16 comKeys[4];
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    u8 playerBits[4] = { 1, 2, 4, 8 };
+    s16 comKeys[4] = { 0, 0, 0, 0 };
     Vec offsets[3];
     Vec frontPos;
     Vec backPos;
     Vec frontRot;
     Vec backRot;
-    GW_PLAYER *player;
     s16 partnerId;
     s16 choice;
     Object *partner;
     s32 i;
 
-    player = MBDGetPlayerStruct(CUR_PLAYER);
-    memcpy(playerBits, D_80114924_duel06, sizeof(playerBits));
-    memcpy(comKeys, D_80114928_duel06, sizeof(comKeys));
     func_800DB3E0_name_81(index);
     func_800F38DC_name_81(-1, -1, 2);
     func_800EB7BC_name_81(&pos);
@@ -3533,38 +3702,54 @@ void func_80110DA0_duel06(void) {
     }
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/duel06/436E50", D_80114870_duel06);
+const Vec D_80114930_duel06[] = {
+    { 0.0f, 0.5f, 0.0f },
+    { -0.5f, 0.5f, 0.0f },
+    { 0.5f, 0.5f, 0.0f }
+};
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/duel06/436E50", D_80114888_duel06);
+// なにをつけますか？１Ｐまえ行　＜ノコノコ＞　　＜クリホ゛ー＞行　＜キノヒオ＞　　＜ホ゛ムへい＞行　＜テレサ　＞　　＜ハ゛ッタン＞行　＜ムーチョ＞　　＜フラワー＞行　＜ワンワン＞　　＜ト゛ッスン＞行　＜スノーマ＞　　＜ミニクハ＞行
+const u8 D_80114954_duel06[] = "\x82\xC8\x82\xC9\x82\xF0\x82\xC2\x82\xAF\x82\xDC\x82\xB7\x82\xA9\x81\x48\x82\x50\x82\x6F\x82\xDC\x82\xA6\x8D\x73"
+    "\x81\x40\x81\x83\x83\x6D\x83\x52\x83\x6D\x83\x52\x81\x84\x81\x40\x81\x40\x81\x83\x83\x4E\x83\x8A\x83\x7A\x81\x4A\x81\x5B\x81\x84\x8D\x73"
+    "\x81\x40\x81\x83\x83\x4C\x83\x6D\x83\x71\x83\x49\x81\x84\x81\x40\x81\x40\x81\x83\x83\x7A\x81\x4A\x83\x80\x82\xD6\x82\xA2\x81\x84\x8D\x73"
+    "\x81\x40\x81\x83\x83\x65\x83\x8C\x83\x54\x81\x40\x81\x84\x81\x40\x81\x40\x81\x83\x83\x6E\x81\x4A\x83\x62\x83\x5E\x83\x93\x81\x84\x8D\x73"
+    "\x81\x40\x81\x83\x83\x80\x81\x5B\x83\x60\x83\x87\x81\x84\x81\x40\x81\x40\x81\x83\x83\x74\x83\x89\x83\x8F\x81\x5B\x81\x84\x8D\x73"
+    "\x81\x40\x81\x83\x83\x8F\x83\x93\x83\x8F\x83\x93\x81\x84\x81\x40\x81\x40\x81\x83\x83\x67\x81\x4A\x83\x62\x83\x58\x83\x93\x81\x84\x8D\x73"
+    "\x81\x40\x81\x83\x83\x58\x83\x6D\x81\x5B\x83\x7D\x81\x84\x81\x40\x81\x40\x81\x83\x83\x7E\x83\x6A\x83\x4E\x83\x6E\x81\x84\x8D\x73";
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/duel06/436E50", D_801148A0_duel06);
+// なにをつけますか？１Ｐうしろ行　＜ノコノコ＞　　＜クリホ゛ー＞行　＜キノヒオ＞　　＜ホ゛ムへい＞行　＜テレサ　＞　　＜ハ゛ッタン＞行　＜ムーチョ＞　　＜フラワー＞行　＜ワンワン＞　　＜ト゛ッスン＞行　＜スノーマ＞　　＜ミニクハ＞行
+const u8 D_80114A3C_duel06[] = "\x82\xC8\x82\xC9\x82\xF0\x82\xC2\x82\xAF\x82\xDC\x82\xB7\x82\xA9\x81\x48\x82\x50\x82\x6F\x82\xA4\x82\xB5\x82\xEB\x8D\x73"
+    "\x81\x40\x81\x83\x83\x6D\x83\x52\x83\x6D\x83\x52\x81\x84\x81\x40\x81\x40\x81\x83\x83\x4E\x83\x8A\x83\x7A\x81\x4A\x81\x5B\x81\x84\x8D\x73"
+    "\x81\x40\x81\x83\x83\x4C\x83\x6D\x83\x71\x83\x49\x81\x84\x81\x40\x81\x40\x81\x83\x83\x7A\x81\x4A\x83\x80\x82\xD6\x82\xA2\x81\x84\x8D\x73"
+    "\x81\x40\x81\x83\x83\x65\x83\x8C\x83\x54\x81\x40\x81\x84\x81\x40\x81\x40\x81\x83\x83\x6E\x81\x4A\x83\x62\x83\x5E\x83\x93\x81\x84\x8D\x73"
+    "\x81\x40\x81\x83\x83\x80\x81\x5B\x83\x60\x83\x87\x81\x84\x81\x40\x81\x40\x81\x83\x83\x74\x83\x89\x83\x8F\x81\x5B\x81\x84\x8D\x73"
+    "\x81\x40\x81\x83\x83\x8F\x83\x93\x83\x8F\x83\x93\x81\x84\x81\x40\x81\x40\x81\x83\x83\x67\x81\x4A\x83\x62\x83\x58\x83\x93\x81\x84\x8D\x73"
+    "\x81\x40\x81\x83\x83\x58\x83\x6D\x81\x5B\x83\x7D\x81\x84\x81\x40\x81\x40\x81\x83\x83\x7E\x83\x6A\x83\x4E\x83\x6E\x81\x84\x8D\x73";
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/duel06/436E50", D_801148AC_duel06);
+// なにをつけますか？２Ｐまえ行　＜ノコノコ＞　　＜クリホ゛ー＞行　＜キノヒオ＞　　＜ホ゛ムへい＞行　＜テレサ　＞　　＜ハ゛ッタン＞行　＜ムーチョ＞　　＜フラワー＞行　＜ワンワン＞　　＜ト゛ッスン＞行　＜スノーマ＞　　＜ミニクハ＞行
+const u8 D_80114B24_duel06[] = "\x82\xC8\x82\xC9\x82\xF0\x82\xC2\x82\xAF\x82\xDC\x82\xB7\x82\xA9\x81\x48\x82\x51\x82\x6F\x82\xDC\x82\xA6\x8D\x73"
+    "\x81\x40\x81\x83\x83\x6D\x83\x52\x83\x6D\x83\x52\x81\x84\x81\x40\x81\x40\x81\x83\x83\x4E\x83\x8A\x83\x7A\x81\x4A\x81\x5B\x81\x84\x8D\x73"
+    "\x81\x40\x81\x83\x83\x4C\x83\x6D\x83\x71\x83\x49\x81\x84\x81\x40\x81\x40\x81\x83\x83\x7A\x81\x4A\x83\x80\x82\xD6\x82\xA2\x81\x84\x8D\x73"
+    "\x81\x40\x81\x83\x83\x65\x83\x8C\x83\x54\x81\x40\x81\x84\x81\x40\x81\x40\x81\x83\x83\x6E\x81\x4A\x83\x62\x83\x5E\x83\x93\x81\x84\x8D\x73"
+    "\x81\x40\x81\x83\x83\x80\x81\x5B\x83\x60\x83\x87\x81\x84\x81\x40\x81\x40\x81\x83\x83\x74\x83\x89\x83\x8F\x81\x5B\x81\x84\x8D\x73"
+    "\x81\x40\x81\x83\x83\x8F\x83\x93\x83\x8F\x83\x93\x81\x84\x81\x40\x81\x40\x81\x83\x83\x67\x81\x4A\x83\x62\x83\x58\x83\x93\x81\x84\x8D\x73"
+    "\x81\x40\x81\x83\x83\x58\x83\x6D\x81\x5B\x83\x7D\x81\x84\x81\x40\x81\x40\x81\x83\x83\x7E\x83\x6A\x83\x4E\x83\x6E\x81\x84\x8D\x73";
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/duel06/436E50", D_801148C4_duel06);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/duel06/436E50", D_801148F4_duel06);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/duel06/436E50", D_80114924_duel06);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/duel06/436E50", D_80114928_duel06);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/duel06/436E50", D_80114930_duel06);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/duel06/436E50", D_80114950_duel06);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/duel06/436E50", D_80114954_duel06);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/duel06/436E50", D_80114A3C_duel06);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/duel06/436E50", D_80114B24_duel06);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/duel06/436E50", D_80114C0C_duel06);
+// なにをつけますか？２Ｐうしろ行　＜ノコノコ＞　　＜クリホ゛ー＞行　＜キノヒオ＞　　＜ホ゛ムへい＞行　＜テレサ　＞　　＜ハ゛ッタン＞行　＜ムーチョ＞　　＜フラワー＞行　＜ワンワン＞　　＜ト゛ッスン＞行　＜スノーマ＞　　＜ミニクハ＞行
+const u8 D_80114C0C_duel06[] = "\x82\xC8\x82\xC9\x82\xF0\x82\xC2\x82\xAF\x82\xDC\x82\xB7\x82\xA9\x81\x48\x82\x51\x82\x6F\x82\xA4\x82\xB5\x82\xEB\x8D\x73"
+    "\x81\x40\x81\x83\x83\x6D\x83\x52\x83\x6D\x83\x52\x81\x84\x81\x40\x81\x40\x81\x83\x83\x4E\x83\x8A\x83\x7A\x81\x4A\x81\x5B\x81\x84\x8D\x73"
+    "\x81\x40\x81\x83\x83\x4C\x83\x6D\x83\x71\x83\x49\x81\x84\x81\x40\x81\x40\x81\x83\x83\x7A\x81\x4A\x83\x80\x82\xD6\x82\xA2\x81\x84\x8D\x73"
+    "\x81\x40\x81\x83\x83\x65\x83\x8C\x83\x54\x81\x40\x81\x84\x81\x40\x81\x40\x81\x83\x83\x6E\x81\x4A\x83\x62\x83\x5E\x83\x93\x81\x84\x8D\x73"
+    "\x81\x40\x81\x83\x83\x80\x81\x5B\x83\x60\x83\x87\x81\x84\x81\x40\x81\x40\x81\x83\x83\x74\x83\x89\x83\x8F\x81\x5B\x81\x84\x8D\x73"
+    "\x81\x40\x81\x83\x83\x8F\x83\x93\x83\x8F\x83\x93\x81\x84\x81\x40\x81\x40\x81\x83\x83\x67\x81\x4A\x83\x62\x83\x58\x83\x93\x81\x84\x8D\x73"
+    "\x81\x40\x81\x83\x83\x58\x83\x6D\x81\x5B\x83\x7D\x81\x84\x81\x40\x81\x40\x81\x83\x83\x7E\x83\x6A\x83\x4E\x83\x6E\x81\x84\x8D\x73";
 
 void func_80110E04_duel06(void) {
+    s32 index = GwSystem.current_player_index;
+    GW_PLAYER *player = MBDGetPlayerStruct(index);
     u8 mes[0x200];
-    u8 playerBits[4];
-    s16 comKeys[4];
+    u8 playerBits[4] = { 1, 2, 4, 8 };
+    s16 comKeys[4] = { 0, 0, 0, 0 };
     Vec rot;
     Vec origRot;
     Vec camPos;
@@ -3572,8 +3757,6 @@ void func_80110E04_duel06(void) {
     Vec effectPos;
     Vec pos;
     Vec offsets[3];
-    s32 index;
-    GW_PLAYER *player;
     s16 win;
     s32 frontChoice;
     s32 backChoice;
@@ -3587,10 +3770,6 @@ void func_80110E04_duel06(void) {
     s32 j;
     s32 k;
 
-    index = GwSystem.current_player_index;
-    player = MBDGetPlayerStruct(index);
-    memcpy(playerBits, D_80114924_duel06, sizeof(playerBits));
-    memcpy(comKeys, D_80114928_duel06, sizeof(comKeys));
     if (index == 0 && GwSystem.current_turn == 1 && player->stats.partners.frontID == -1 &&
         player->stats.partners.backID == -1) {
         win = HuWinExCreate(-1, 80, 80, 160, 105, 0);
@@ -3868,9 +4047,9 @@ void func_80111FC4_duel06(void) {
     func_800FC8C4_name_81(&pos);
     HuPrcChildLink(HuPrcCurrentGet(), func_800EC1E4_name_81(&pos, &space->coords, &pos, 4.0f));
     MBDMotionSet(D_80114D50_duel06, 2, 0);
-    func_8002FD8C_main(D_80114D50_duel06->omObj1->model[0], Hu3DData[D_80114D50_duel06->omObj1->model[0]].motId, D_80114858_duel06, 0x4C, 0x46);
-    func_8002FD8C_main(D_80114D50_duel06->omObj1->model[0], D_80114D50_duel06->omObj1->motion[2], D_80114858_duel06, 0x4C, 0x46);
-    node = func_8001D33C_main(D_80114D50_duel06->omObj1->model[0], D_80114858_duel06);
+    func_8002FD8C_main(D_80114D50_duel06->omObj1->model[0], Hu3DData[D_80114D50_duel06->omObj1->model[0]].motId, "bell", 0x4C, 0x46);
+    func_8002FD8C_main(D_80114D50_duel06->omObj1->model[0], D_80114D50_duel06->omObj1->motion[2], "bell", 0x4C, 0x46);
+    node = func_8001D33C_main(D_80114D50_duel06->omObj1->model[0], "bell");
     node->baseRot.y = (GwSystem.bank_coins - 5) * 60;
     i = 0;
     while (!(MBDMotionCheck(D_80114D50_duel06) & 1)) {
@@ -3879,8 +4058,8 @@ void func_80111FC4_duel06(void) {
         }
         HuPrcVSleep();
     }
-    func_8002FD8C_main(D_80114D50_duel06->omObj1->model[0], Hu3DData[D_80114D50_duel06->omObj1->model[0]].motId, D_80114858_duel06, 0x4C, 0x46);
-    node = func_8001D33C_main(D_80114D50_duel06->omObj1->model[0], D_80114858_duel06);
+    func_8002FD8C_main(D_80114D50_duel06->omObj1->model[0], Hu3DData[D_80114D50_duel06->omObj1->model[0]].motId, "bell", 0x4C, 0x46);
+    node = func_8001D33C_main(D_80114D50_duel06->omObj1->model[0], "bell");
     node->baseRot.y = (GwSystem.bank_coins - 5) * 60;
     HuAudFXPlay(0x1C7);
     for (offset = 0.0f; offset >= -60.0f; offset -= 4.0f) {
@@ -3896,14 +4075,14 @@ void func_80111FC4_duel06(void) {
     if (GwSystem.bank_coins != 0) {
         HuAudFXPlay(0x207);
         MBDMotionShiftSet(D_80114D50_duel06, 0, 0, 5, 2);
-        func_8002FD8C_main(D_80114D50_duel06->omObj1->model[0], D_80114D50_duel06->omObj1->motion[0], D_80114858_duel06, 0x4C, 0x46);
+        func_8002FD8C_main(D_80114D50_duel06->omObj1->model[0], D_80114D50_duel06->omObj1->motion[0], "bell", 0x4C, 0x46);
         Hu3DMotionSpeedSet(D_80114D50_duel06->omObj1->model[0], (5.0f - GwSystem.bank_coins) / 4.0f + 1.0f);
         HuPrcSleep(24);
         MBDMotionSet(D_80114D50_duel06, -1, 2);
     } else {
         HuAudFXPlay(0x1C6);
         MBDMotionShiftSet(D_80114D50_duel06, 1, 0, 5, 2);
-        func_8002FD8C_main(D_80114D50_duel06->omObj1->model[0], D_80114D50_duel06->omObj1->motion[1], D_80114858_duel06, 0x4C, 0x46);
+        func_8002FD8C_main(D_80114D50_duel06->omObj1->model[0], D_80114D50_duel06->omObj1->motion[1], "bell", 0x4C, 0x46);
         Hu3DMotionSpeedSet(D_80114D50_duel06->omObj1->model[0], 1.0f);
         func_8010DC0C_duel06();
         func_800F74E4_name_81(-1);
@@ -4327,7 +4506,7 @@ void func_80113AD4_duel06(void) {
     HuPrcChildWatch();
     func_800F4584_name_81(sprite);
     func_800F75EC_name_81(-1);
-    D_80114694_duel06[GwSystem.minigame_index]();
+    D_80114698_duel06[GwSystem.minigame_index - 1]();
     mbItemBtnF = 1;
     omDelPrcObj(NULL);
 }

@@ -1,4 +1,5 @@
 #include "overlays/ovl_36.h"
+#include "macros.h"
 #include "gcc/memory.h"
 #include "game/esprite.h"
 #include "game/hu3d.h"
@@ -14,7 +15,6 @@
 #define M_ID(m, i, j) ((m)[(i) * 4 + (j)])
 
 // EXTERN
-
 
 // 8EA10
 
@@ -59,8 +59,9 @@ void m254_InitFuncGroup(FuncGroup *group, s16 maxFuncs);
 void m254_SortFuncGroup(FuncGroup *group);
 s16 func_80110A00_motor_rooter(HuSprite_Unk84_Struct *arg0, HmfData *arg1, f32 arg2, u16 arg3, u16 arg4);
 
-extern AnimModelData *m254_animModels;
-extern FuncGroup *m254_funcGroups;
+SpriteData *m254_sprites BSS;
+AnimModelData *m254_animModels BSS;
+FuncGroup *m254_funcGroups BSS;
 
 extern Gfx D_801135A0_motor_rooter[];
 

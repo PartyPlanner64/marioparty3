@@ -1566,11 +1566,11 @@ segments:
     subsegments:
       - [0x2A1430, c, main]
       - [0x2A9850, c, system]
-      - [0x2ACFE0, data, main] #80111550
-      - [0x2AF0F0, .rodata, main] #80113660
+      - [0x2ACFE0, .data, main] #80111550
+      - [0x2AF070, .rodata, main] #801135E0
       - [0x2AF210, .rodata, system] #8011BAD0
-      - {0x2AF250, type: bss, vram: 0x801137C0, name: main}
-      #- {0x2AF270, type: .bss, vram: 0x801137E0, name: system}
+      - {0x2AF250, type: .bss, vram: 0x801137C0, name: main}
+      - {0x2AF250, type: .bss, vram: 0x801137E0, name: system}
 
   - type: code
     start: 0x2AF250

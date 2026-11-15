@@ -10,22 +10,62 @@
 #include "../ovl_80_shared_board/F5B90.h"
 
 extern s32 D_80100D90_shared_board;
-extern s32 D_801075C0_opboardtutorial;
-extern Vec D_801075C4_opboardtutorial;
-extern Vec D_801075D0_opboardtutorial;
-extern Vec D_801075F4_opboardtutorial;
-extern Vec D_80107600_opboardtutorial[];
-extern Vec D_80107630_opboardtutorial[];
-extern u32 D_80107660_opboardtutorial[];
-extern u32 *D_80107720_opboardtutorial[];
-extern u8 D_80107760_opboardtutorial;
-extern Object *D_80107764_opboardtutorial;
-extern s16 D_80107768_opboardtutorial;
-extern s16 D_80107770_opboardtutorial[];
-extern s16 D_80107784_opboardtutorial;
-extern s16 D_80107786_opboardtutorial;
-extern GW_PLAYER *D_80107788_opboardtutorial[4];
-extern Object *D_80107798_opboardtutorial;
+
+s32 D_801075C0_opboardtutorial = 0;
+
+Vec D_801075C4_opboardtutorial = { -170.0f, 125.0f, 3000.0f };
+
+Vec D_801075D0_opboardtutorial = { 0.0f, 250.0f, 0.0f };
+
+/* Unreferenced. */
+Vec D_801075DC_opboardtutorial[2] = {
+    { 0.0f, 100.0f, 0.0f },
+    { 0.0f, 0.0f, 0.0f }
+};
+
+Vec D_801075F4_opboardtutorial = { 0.0f, 0.0f, 1750.0f };
+
+Vec D_80107600_opboardtutorial[4] = {
+    { -18.0f, 250.0f, 0.0f },
+    { -6.0f, 250.0f, 0.0f },
+    { 6.0f, 250.0f, 0.0f },
+    { 18.0f, 250.0f, 0.0f }
+};
+
+Vec D_80107630_opboardtutorial[4] = {
+    { -175.0f, 0.0f, 2000.0f },
+    { 0.0f, 0.0f, 2000.0f },
+    { 175.0f, 0.0f, 2000.0f },
+    { 350.0f, 0.0f, 2000.0f }
+};
+
+u32 D_80107660_opboardtutorial[6] = { 5, 0x20001, 0x20002, 0x2002B, 0x20033, 0x20031 };
+
+u32 D_80107678_opboardtutorial[6] = { 5, 0, 0, 0, 0, 0 };
+
+u32 D_80107690_opboardtutorial[6] = { 5, 0, 0, 0, 0, 0 };
+
+u32 D_801076A8_opboardtutorial[6] = { 5, 0, 0, 0, 0, 0 };
+
+u32 D_801076C0_opboardtutorial[6] = { 5, 0, 0, 0, 0, 0 };
+
+u32 D_801076D8_opboardtutorial[6] = { 5, 0, 0, 0, 0, 0 };
+
+u32 D_801076F0_opboardtutorial[6] = { 5, 0, 0, 0, 0, 0 };
+
+u32 D_80107708_opboardtutorial[6] = { 5, 0, 0, 0, 0, 0 };
+
+u32 *D_80107720_opboardtutorial[8] = { D_80107660_opboardtutorial, D_80107678_opboardtutorial, D_80107690_opboardtutorial, D_801076A8_opboardtutorial, D_801076C0_opboardtutorial, D_801076D8_opboardtutorial, D_801076F0_opboardtutorial, D_80107708_opboardtutorial };
+
+u8 D_80107760_opboardtutorial BSS;
+Object *D_80107764_opboardtutorial BSS;
+s16 D_80107768_opboardtutorial BSS;
+u8 D_8010776C_opboardtutorial[4] BSS; /* Unreferenced. */
+s16 D_80107770_opboardtutorial[10] BSS;
+s16 D_80107784_opboardtutorial BSS;
+s16 D_80107786_opboardtutorial BSS;
+GW_PLAYER *D_80107788_opboardtutorial[4] BSS;
+Object *D_80107798_opboardtutorial BSS;
 
 void func_800DCCE0_shared_board(void);
 void func_800DCD64_shared_board(s32 player, s32 value);

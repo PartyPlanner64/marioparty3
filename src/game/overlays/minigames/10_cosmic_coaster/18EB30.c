@@ -284,7 +284,7 @@ void func_8010A434_cosmic_coaster(omObjData *object) {
 
     Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, car->progress - object->trans.z);
     object->motion = NULL;
-    if (D_800CCF58_main[Hu3DData[object->model[0]].motId].unk02 <= Hu3DData[object->model[0]].motTime) {
+    if (Hu3DMotion[Hu3DData[object->model[0]].motId].unk02 <= Hu3DData[object->model[0]].motTime) {
         Hu3DModelKill(object->model[0]);
         D_8010C3C4_cosmic_coaster->model[object->work[0]] = -1;
         omDelObj(object);
@@ -327,7 +327,7 @@ void func_8010A744_cosmic_coaster(omObjData *object) {
 
     Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, car->progress - object->trans.z);
     object->motion = NULL;
-    if (D_800CCF58_main[Hu3DData[object->model[0]].motId].unk02 <= Hu3DData[object->model[0]].motTime) {
+    if (Hu3DMotion[Hu3DData[object->model[0]].motId].unk02 <= Hu3DData[object->model[0]].motTime) {
         Hu3DModelKill(object->model[0]);
         D_8010C3C4_cosmic_coaster->model[object->work[0]] = -1;
         omDelObj(object);

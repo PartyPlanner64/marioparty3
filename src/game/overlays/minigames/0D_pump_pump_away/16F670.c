@@ -182,8 +182,8 @@ typedef struct PumpPumpAwaySkyColor {
     s32 blue;
 } PumpPumpAwaySkyColor;
 
-extern u8 D_800D2008_main;
-extern u8 D_800D6A90_main;
+extern u8 Hu3DBufNo;
+extern u8 omAllPauseF;
 extern s32 D_800A178C_main[][6];
 extern const s16 D_801116D8_pump_pump_away[];
 
@@ -516,10 +516,10 @@ void func_80105C54_pump_pump_away(void) {
 }
 
 void func_80105D1C_pump_pump_away(s32 playerIndex) {
-    D_800CDA7C_main[GwPlayer[playerIndex].pad] = 0;
-    D_800D5558_main[GwPlayer[playerIndex].pad] = 0;
-    D_800CBB6E_main[GwPlayer[playerIndex].pad] = 0;
-    D_800D20A1_main[GwPlayer[playerIndex].pad] = 0;
+    HuPadBtn[GwPlayer[playerIndex].pad] = 0;
+    HuPadBtnDown[GwPlayer[playerIndex].pad] = 0;
+    HuPadStkX[GwPlayer[playerIndex].pad] = 0;
+    HuPadStkY[GwPlayer[playerIndex].pad] = 0;
 }
 
 f32 func_80105D94_pump_pump_away(f32 value) {
@@ -785,7 +785,7 @@ void func_80106A38_pump_pump_away(void) {
 
 void func_80106A6C_pump_pump_away(omObjData *obj) {
     HmfData *model = Hu3DData[obj->model[0]].hmf;
-    Vtx *vertex = model->unk44[D_800D2008_main];
+    Vtx *vertex = model->unk44[Hu3DBufNo];
     UnkPumpPumpAwayPlayer *players;
     UnkPumpPumpAwayPlayer *other;
     f32 distance;
@@ -830,7 +830,7 @@ void func_80106A6C_pump_pump_away(omObjData *obj) {
             }
             meters = distance * 0.01;
             D_801135E4_pump_pump_away = meters * 0.01;
-            if (omPauseChk() + D_800D6A90_main == 0) {
+            if (omPauseChk() + omAllPauseF == 0) {
                 if (players->unk_18 - other->unk_18 > 0.0f) {
                     D_801116E0_pump_pump_away = players->unk_18 * 0.0000125;
                     D_801116E4_pump_pump_away -= players->unk_20 * 0.08;
@@ -1154,7 +1154,7 @@ void func_80107EB8_pump_pump_away(omObjData *obj) {
             }
             break;
         case 1:
-            if (Hu3DData[obj->model[0]].motTime >= D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02 - 2) {
+            if (Hu3DData[obj->model[0]].motTime >= Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02 - 2) {
                 Hu3DMotionModelSet(obj->model[0], obj->motion[0]);
                 Hu3DMotionTimeSet(obj->model[0], 0);
                 hose->unk_04 = 0;
@@ -1171,14 +1171,14 @@ void func_8010811C_pump_pump_away(omObjData *obj) {
     f32 frame;
 
     if (hose->unk_04 == 2) {
-        if (Hu3DData[obj->model[0]].motTime >= D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02 - 2) {
+        if (Hu3DData[obj->model[0]].motTime >= Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02 - 2) {
             Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             hose->unk_04 = 3;
         }
     } else if (hose->unk_04 != 3) {
         frame = Hu3DData[obj->model[0]].motTime;
         if (frame != 0.0f) {
-            if (frame >= D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02 - 2) {
+            if (frame >= Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02 - 2) {
                 Hu3DMotionModelSet(obj->model[0], obj->motion[1]);
             } else {
                 return;
@@ -1822,9 +1822,9 @@ void func_80109E98_pump_pump_away(omObjData *obj) {
             }
             break;
         case 2:
-            if (Hu3DData[obj->model[0]].motTime >= D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02 - 2) {
+            if (Hu3DData[obj->model[0]].motTime >= Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02 - 2) {
                 Hu3DMotionModelSet(obj->model[0], obj->motion[0]);
-                Hu3DMotionTimeSet(obj->model[0], D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02 - 2);
+                Hu3DMotionTimeSet(obj->model[0], Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02 - 2);
                 Hu3DMotionSpeedSet(obj->model[0], D_80110F9C_pump_pump_away[player->unk_10]);
                 Hu3DMotionAttrSet(obj->model[0], 4, 4);
                 player->unk_0C = 3;
@@ -1845,9 +1845,9 @@ void func_8010A150_pump_pump_away(omObjData *obj) {
 
     switch (player->unk_0C) {
         case 2:
-            if (Hu3DData[obj->model[0]].motTime >= D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02 - 2) {
+            if (Hu3DData[obj->model[0]].motTime >= Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02 - 2) {
                 Hu3DMotionModelSet(obj->model[0], obj->motion[0]);
-                Hu3DMotionTimeSet(obj->model[0], D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02 - 2);
+                Hu3DMotionTimeSet(obj->model[0], Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02 - 2);
                 Hu3DMotionSpeedSet(obj->model[0], D_80110F9C_pump_pump_away[player->unk_10]);
                 Hu3DMotionAttrSet(obj->model[0], 4, 4);
                 player->unk_0C = 3;
@@ -2253,17 +2253,17 @@ void func_8010B630_pump_pump_away(omObjData *obj) {
     }
     if (press) {
         if (jet->unk_18 != 0) {
-            D_800D5558_main[GwPlayer[obj->work[0]].pad] |= 0x8000;
+            HuPadBtnDown[GwPlayer[obj->work[0]].pad] |= 0x8000;
         } else {
-            D_800D5558_main[GwPlayer[obj->work[0]].pad] |= 0x4000;
+            HuPadBtnDown[GwPlayer[obj->work[0]].pad] |= 0x4000;
         }
     } else {
         interval = jet->unk_30 * 0.5;
         if (rand8() % interval == 0 && jet->unk_14 == 0.0f) {
             if (jet->unk_18 != 0) {
-                D_800D5558_main[GwPlayer[obj->work[0]].pad] |= 0x8000;
+                HuPadBtnDown[GwPlayer[obj->work[0]].pad] |= 0x8000;
             } else {
-                D_800D5558_main[GwPlayer[obj->work[0]].pad] |= 0x4000;
+                HuPadBtnDown[GwPlayer[obj->work[0]].pad] |= 0x4000;
             }
             jet->unk_34 = rand8() % jet->unk_30 + 5;
         }
@@ -2283,7 +2283,7 @@ void func_8010B898_pump_pump_away(omObjData *obj) {
             jet->unk_14 = 0.0f;
         }
         jet->unk_10 += (s32)jet->unk_14;
-        if (D_800D5558_main[GwPlayer[obj->work[0]].pad] & 0x8000) {
+        if (HuPadBtnDown[GwPlayer[obj->work[0]].pad] & 0x8000) {
             sound = HuAudPlayerFXPlay(0x35D, obj->work[0]);
             if (obj->work[1] != 0) {
                 HuAudFXPanning(sound, 0x60);
@@ -2300,22 +2300,22 @@ void func_8010B898_pump_pump_away(omObjData *obj) {
             jet->unk_2C = frame;
         }
     } else {
-        if (frame >= D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02 - 2) {
+        if (frame >= Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02 - 2) {
             if (jet->unk_10 >= 6) {
                 jet->unk_10 *= 0.97;
             }
             jet->unk_14 = 0.0f;
         }
         jet->unk_10 += (s32)jet->unk_14;
-        if ((D_800D5558_main[GwPlayer[obj->work[0]].pad] & 0x4000) ||
-            (D_800D5558_main[GwPlayer[obj->work[0]].pad] & 0x2000)) {
+        if ((HuPadBtnDown[GwPlayer[obj->work[0]].pad] & 0x4000) ||
+            (HuPadBtnDown[GwPlayer[obj->work[0]].pad] & 0x2000)) {
             sound = HuAudPlayerFXPlay(0x35E, obj->work[0]);
             if (obj->work[1] != 0) {
                 HuAudFXPanning(sound, 0x60);
             } else {
                 HuAudFXPanning(sound, 0x20);
             }
-            if (frame >= D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02) {
+            if (frame >= Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02) {
                 jet->unk_14 = (frame - jet->unk_2C) * 0.17;
             } else {
                 jet->unk_14 = (frame - jet->unk_2C) * 0.01;
@@ -2342,7 +2342,7 @@ void func_8010BC14_pump_pump_away(omObjData *obj) {
         if (Hu3DData[obj->model[0]].motTime <= 2.0f) {
             Hu3DMotionAttrSet(obj->model[0], 1, 1);
         }
-    } else if (Hu3DData[obj->model[0]].motTime >= D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02 - 2) {
+    } else if (Hu3DData[obj->model[0]].motTime >= Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02 - 2) {
         Hu3DMotionAttrSet(obj->model[0], 1, 1);
     }
 }
@@ -3610,7 +3610,7 @@ void func_801102E4_pump_pump_away(omObjData *obj) {
         D_801116FC_pump_pump_away = 90;
         obj->func = func_80110290_pump_pump_away;
         D_801116F8_pump_pump_away = 1;
-        D_800D6A58_main = 1;
+        omSysPauseDisableF = 1;
     }
 }
 
@@ -3648,7 +3648,7 @@ void func_801104BC_pump_pump_away(omObjData *obj) {
 }
 
 void func_801104F4_pump_pump_away(omObjData *obj) {
-    if (D_800D530C_main == 1) {
+    if (omSysExitReq == 1) {
         WipeCreateOut(WIPE_TYPE_NORMAL, 0x14);
         obj->func = func_801104BC_pump_pump_away;
         HuAudSeqFadeOut(0x1E);

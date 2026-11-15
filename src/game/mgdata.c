@@ -3,10 +3,10 @@
 #include "humath.h"
 #include "game/mgdata.h"
 
-u16 D_800A11D0_main[6] = { 0, 0, 0, 0, 0, 0 };
-u16 D_800A11DC_main[6] = { 20, 20, 20, 20, 20, -1 };
+u16 mgInstColumnTbl[6] = { 0, 0, 0, 0, 0, 0 };
+u16 mgInstSlotTbl[6] = { 20, 20, 20, 20, 20, -1 };
 
-const MinigameTable D_800A6D40_main[] = {
+const MinigameTable mgDataTbl[] = {
     { 1, 2, 0, 0x0048, 0x3200, { 0x3201, 0x3202, -1, -1 }, 0x3203 },
     { 2, 2, 0, 0x804A, 0x3204, { 0x3205, 0x3206, -1, -1 }, 0x3207 },
     { 3, 2, 0, 0x804C, 0x3208, { 0x3209, 0x320A, -1, -1 }, 0x320B },

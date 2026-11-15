@@ -46,19 +46,19 @@ typedef struct WindowFrameDefinition {
     u8 attributes;
 } WindowFrameDefinition; // Size 0x1C
 
-extern s32 D_800D209C_main;
-extern u8 D_800D6A90_main;
-u8 D_800A2150_main = 0;
+extern s32 winLastAdvance;
+extern u8 omAllPauseF;
+u8 winInitF = 0;
 u8 gLanguageIndex = 2;
-static u8 D_800A2154_main[] = {
+static u8 winBGColTbl[] = {
     0x40, 0x20, 0xB0, 0x00, 0x00, 0x00, 0x20, 0x0E, 0x71, 0xFF, 0x3C, 0x52, 0xFF, 0x00, 0xFF, 0x50,
     0xFF, 0x50, 0x00, 0x3E, 0xF9, 0xFF, 0xFF, 0x00, 0xFF, 0xFF, 0xFF, 0x80, 0xFF, 0x80, 0x00, 0x00,
 };
-static u16 D_800A2174_main[] = {
+static u16 winPalTbl[] = {
     0x0000, 0x0001, 0x003F, 0xFA11, 0xF83F, 0x07C1, 0x07FF, 0xFFC1,
     0xFFFF, 0x0021, 0x8109, 0x8021, 0x0401, 0x0421, 0x8401, 0x8421,
 };
-u8 D_800A2194_main[] = {
+u8 winFontWidthTbl[] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     4, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
@@ -76,7 +76,7 @@ u8 D_800A2194_main[] = {
     6, 4, 4, 6, 6, 6, 6, 10, 10, 10, 10, 10, 10, 10, 10, 10,
     10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 8, 10,
 };
-static WindowIconDefinition D_800A2294_main[] = {
+static WindowIconDefinition winSpcFontTbl[] = {
     { 0x34, 0x34, 0, 10 },
     { 0x34, 0x34, 1, 10 },
     { 0x34, 0x34, 2, 10 },
@@ -90,22 +90,22 @@ static WindowIconDefinition D_800A2294_main[] = {
     { 0x34, 0x34, 10, 10 },
     { 0x34, 0x34, 11, 10 },
 };
-static u8 D_800A2324_main[] = { 0x00, 0x44, 0x04, 0x77, 0x47, 0xCF, 0x47, 0xFF };
+static u8 winBGEdgeTbl[] = { 0x00, 0x44, 0x04, 0x77, 0x47, 0xCF, 0x47, 0xFF };
 // 零一二三四五六七八九
-static u8 D_800A232C_main[] = "\x97\xEB\x88\xEA\x93\xF1\x8E\x4F\x8E\x6C\x8C\xDC\x98\x5A\x8E\xB5\x94\xAA\x8B\xE3";
-extern u8 *D_800A2344_main[];
-static s16 D_800BDA50_main[12];
-static s16 D_800BDA68_main;
+static u8 winKanjiNumTbl[] = "\x97\xEB\x88\xEA\x93\xF1\x8E\x4F\x8E\x6C\x8C\xDC\x98\x5A\x8E\xB5\x94\xAA\x8B\xE3";
+extern u8 *winKanjiNumAltTbl[];
+static s16 winSpcFontAnim[12];
+static s16 winKeyWaitAnim;
 static u8 winInsertF;
 static u16 winMaxWidth;
 static u16 winMaxHeight;
 extern u8 cancelCRF;
-extern void *D_800CE2C4_main;
+extern void *winCursorData;
 extern Process *winProc;
 extern u8 comKeyIdx;
-extern u8 D_800D2008_main;
-extern WindowFont *D_800D1FE4_main;
-extern void *D_800D4084_main;
+extern u8 Hu3DBufNo;
+extern WindowFont *winFontData;
+extern void *winFrameData;
 extern u8 mesWInsert[5];
 extern s8 winTabSize;
 extern s8 comKeyIdxNow;
@@ -118,7 +118,7 @@ void HuWinInit(void) {
     void *temp_v0_6;
     s16 i;
 
-    if (D_800A2150_main == 0) {
+    if (winInitF == 0) {
         winData = HuMemMemoryAllocTemp(sizeof(TextWindow) * WINDOWS_MAX);
 
         for (i = 0; i < WINDOWS_MAX; i++) {
@@ -140,10 +140,10 @@ void HuWinInit(void) {
             gLanguageIndex = LANGUAGE_ENGLISH;
         }
         if (gLanguageIndex == LANGUAGE_JAPANESE) {
-            D_800D1FE4_main = DataReadTemp(0x0000002B);
+            winFontData = DataReadTemp(0x0000002B);
             MessDataSet((u32)strings_japanese_ROM_START);
         } else {
-            D_800D1FE4_main = DataReadTemp(0x0000002C);
+            winFontData = DataReadTemp(0x0000002C);
             switch (gLanguageIndex) {
                 case LANGUAGE_ENGLISH:
                     MessDataSet((u32)strings_english_ROM_START);
@@ -167,17 +167,17 @@ void HuWinInit(void) {
         winProc = temp_v0_4;
         omPrcSetStatBit(temp_v0_4, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
 
-        D_800A2150_main = 1;
-        D_800CB99C_main = 0;
-        D_800D4084_main = DataReadTemp(0x00000029);
-        D_800CE2C4_main = DataReadTemp(0x0000002A);
+        winInitF = 1;
+        winPauseF = 0;
+        winFrameData = DataReadTemp(0x00000029);
+        winCursorData = DataReadTemp(0x0000002A);
 
-        for (i = 0; i < ARRAY_COUNT(D_800BDA50_main); i++) {
-            D_800BDA50_main[i] = -1;
+        for (i = 0; i < ARRAY_COUNT(winSpcFontAnim); i++) {
+            winSpcFontAnim[i] = -1;
         }
 
         temp_v0_6 = DataRead(0x00000033);
-        D_800BDA68_main = HuSprAnimRead(temp_v0_6);
+        winKeyWaitAnim = HuSprAnimRead(temp_v0_6);
         DataClose(temp_v0_6);
 
         for (i = 0; i < ARRAY_COUNT(mesWInsert); i++) {
@@ -254,9 +254,9 @@ s16 HuWinCreate(s16 x, s16 y, s16 width, s16 height, s32 arg4, s16 flags) {
     window->unk58 = window->w - window->unk_27 - 4;
     window->unk5A = window->h - window->unk_28;
     window->unk48 = window->unk4A = 0;
-    window->backgroundRed = D_800A2154_main[0];
-    window->backgroundGreen = D_800A2154_main[1];
-    window->backgroundBlue = D_800A2154_main[2];
+    window->backgroundRed = winBGColTbl[0];
+    window->backgroundGreen = winBGColTbl[1];
+    window->backgroundBlue = winBGColTbl[2];
     window->active_pad = HUWIN_PLAYER_ALL;
     window->choice = window->unk_32 = 0;
     window->attr = 0;
@@ -275,8 +275,8 @@ s16 HuWinCreate(s16 x, s16 y, s16 width, s16 height, s32 arg4, s16 flags) {
         window->sprite_id[i] = i >= 3 ? -1 : 0;
     }
     window->unk_9A = 0;
-    window->unk66 = HuSprAnimRead(D_800D4084_main);
-    window->unk68 = HuSprAnimRead(D_800CE2C4_main);
+    window->unk66 = HuSprAnimRead(winFrameData);
+    window->unk68 = HuSprAnimRead(winCursorData);
     group = HuSprGrpCreate(22, 5);
     window->group = group;
     HuSprTPLvlSet(group, 0, 0x100);
@@ -319,7 +319,7 @@ s16 HuWinCreate(s16 x, s16 y, s16 width, s16 height, s32 arg4, s16 flags) {
     HuSprAnimModeSet(group, 1, HUSPR_ANIM_MODE_STOP);
     HuSprPosSet(group, 1, 0, 0);
     HuSprParentSet(group, 1, 0);
-    bcopy(D_800A2174_main, window, 32);
+    bcopy(winPalTbl, window, 32);
     for (i = 0; i < 22; i++) {
         HuSprPriSet(group, i, winPrio);
     }
@@ -351,12 +351,12 @@ void winBGMake(u8 *pixels, s16 width, s16 height) {
         row[-1] = 0x74;
     }
     for (y = 0; y < 4; y++) {
-        pixels[y * stride] = D_800A2324_main[(s16)(y * 2)];
-        pixels[y * stride + 1] = D_800A2324_main[(s16)(y * 2) + 1];
-        pixels[(height - y - 1) * stride] = D_800A2324_main[(s16)(y * 2)];
-        pixels[(height - y - 1) * stride + 1] = D_800A2324_main[(s16)(y * 2) + 1];
-        left = (D_800A2324_main[(s16)(y * 2)] >> 4) | (D_800A2324_main[(s16)(y * 2)] << 4);
-        right = (D_800A2324_main[(s16)(y * 2) + 1] >> 4) | (D_800A2324_main[(s16)(y * 2) + 1] << 4);
+        pixels[y * stride] = winBGEdgeTbl[(s16)(y * 2)];
+        pixels[y * stride + 1] = winBGEdgeTbl[(s16)(y * 2) + 1];
+        pixels[(height - y - 1) * stride] = winBGEdgeTbl[(s16)(y * 2)];
+        pixels[(height - y - 1) * stride + 1] = winBGEdgeTbl[(s16)(y * 2) + 1];
+        left = (winBGEdgeTbl[(s16)(y * 2)] >> 4) | (winBGEdgeTbl[(s16)(y * 2)] << 4);
+        right = (winBGEdgeTbl[(s16)(y * 2) + 1] >> 4) | (winBGEdgeTbl[(s16)(y * 2) + 1] << 4);
         pixels[y * stride + stride - 2] = right;
         pixels[y * stride + stride - 1] = left;
         pixels[(height - y - 1) * stride + stride - 2] = right;
@@ -885,14 +885,14 @@ s32 winCharAdvance(TextWindow *window) {
 s32 winCursorAdvance(TextWindow *window, s16 advance) {
     s32 width;
 
-    D_800D209C_main = advance;
+    winLastAdvance = advance;
     window->mess_x += advance;
     if (gLanguageIndex == LANGUAGE_JAPANESE) {
         width = window->unk_27;
     } else if (window->attr & HUWIN_ATTR_MONOSPACE) {
         width = 10;
     } else {
-        width = D_800A2194_main[*window->mess];
+        width = winFontWidthTbl[*window->mess];
     }
     if (width + (s16)window->mess_x > (s16)window->mess_rect_x + window->mess_rect_w && *window->mess >= 0x20) {
         return HuWinCR(window);
@@ -941,7 +941,7 @@ void _HuWinHomeClear(TextWindow *window) {
 void HuWinKeyWaitEntry(s16 winId) {
     TextWindow *window = &winData[winId];
 
-    HuSprGrpMemberSet(window->group, 3, D_800BDA68_main, 0);
+    HuSprGrpMemberSet(window->group, 3, winKeyWaitAnim, 0);
     HuSprAttrReset(window->group, 3, 0xFFFF);
     HuSprAttrSet(window->group, 3, HUSPR_ATTR_NOPAUSE);
     HuSprPriSet(window->group, 3, window->prio - 1);
@@ -963,14 +963,14 @@ s32 HuWinSpcFontEntry(s16 winId, s16 icon) {
     s16 graphic;
     void *data;
 
-    graphic = D_800BDA50_main[icon];
+    graphic = winSpcFontAnim[icon];
     if (graphic == -1) {
         if (window->attr & HUWIN_ATTR_EX) {
-            data = DataRead(D_800A2294_main[icon].highlightedFile);
+            data = DataRead(winSpcFontTbl[icon].highlightedFile);
         } else {
-            data = DataRead(D_800A2294_main[icon].file);
+            data = DataRead(winSpcFontTbl[icon].file);
         }
-        D_800BDA50_main[icon] = graphic = HuSprAnimRead(data);
+        winSpcFontAnim[icon] = graphic = HuSprAnimRead(data);
         HuMemMemoryFreePerm(data);
     }
     for (sprite = 12; sprite < 22; sprite++) {
@@ -983,7 +983,7 @@ s32 HuWinSpcFontEntry(s16 winId, s16 icon) {
     }
     window->sprite_id[sprite] = graphic;
     HuSprAttrSet(window->group, sprite, 0x1000);
-    HuSprGrpMemberSet(window->group, sprite, graphic, D_800A2294_main[icon].bank);
+    HuSprGrpMemberSet(window->group, sprite, graphic, winSpcFontTbl[icon].bank);
     HuSprPosSet(window->group, sprite, window->mess_x - window->unk48, window->mess_y - window->unk4A);
     HuSprParentSet(window->group, sprite, 0);
     if ((u8)window->mess_color == 0) {
@@ -998,7 +998,7 @@ s32 HuWinSpcFontEntry(s16 winId, s16 icon) {
     } else {
         HuSprDispOn(window->group, sprite);
     }
-    return D_800A2294_main[icon].width;
+    return winSpcFontTbl[icon].width;
 }
 
 void HuWinHomeClear(s16 winId) {
@@ -1035,10 +1035,10 @@ void charEntry(s16 winId, u8 character, u8 color, s16 x, s16 y) {
         x = 0;
     }
     pixelData = HuWinBGBufGet(winId);
-    glyph = (u8 *)D_800D1FE4_main + D_800D1FE4_main->glyphOffset;
+    glyph = (u8 *)winFontData + winFontData->glyphOffset;
     glyph += (character - 0x30) * 60;
     if (gLanguageIndex != LANGUAGE_JAPANESE && !(window->attr & HUWIN_ATTR_MONOSPACE)) {
-        width = D_800A2194_main[character];
+        width = winFontWidthTbl[character];
     } else {
         width = 10;
     }
@@ -1210,8 +1210,8 @@ void HuWinProc(void) {
         while (winData[winId].unk64 != -1) {
             window = &winData[winId];
             if ((window->attr & HUWIN_ATTR_PROCOFF) ||
-                ((!D_800CB99C_main || (window->attr & HUWIN_ATTR_PAUSE)) &&
-                 (omPauseChk() + D_800D6A90_main != 0))) {
+                ((!winPauseF || (window->attr & HUWIN_ATTR_PAUSE)) &&
+                 (omPauseChk() + omAllPauseF != 0))) {
                 if (window->attr & HUWIN_ATTR_BUFDIRTY) {
                     HuWinBGBufSwap(winId);
                 }
@@ -1705,22 +1705,22 @@ void HuWinKill(s16 winId) {
 void HuWinAllKill(void) {
     s16 i;
 
-    if (D_800A2150_main != 0) {
+    if (winInitF != 0) {
         for (i = winData[0].unk64; winData[i].unk64 != -1; i = winData[i].unk64) {
             HuWinKill(i);
         }
-        DataCloseTemp(D_800D1FE4_main);
-        DataCloseTemp(D_800D4084_main);
-        DataCloseTemp(D_800CE2C4_main);
+        DataCloseTemp(winFontData);
+        DataCloseTemp(winFrameData);
+        DataCloseTemp(winCursorData);
         HuMemMemoryFreeTemp(winData);
         omDelPrcObj(winProc);
-        D_800A2150_main = 0;
-        for (i = 0; i < ARRAY_COUNT(D_800BDA50_main); i++) {
-            if (D_800BDA50_main[i] != -1) {
-                HuSprAnimKill(D_800BDA50_main[i]);
+        winInitF = 0;
+        for (i = 0; i < ARRAY_COUNT(winSpcFontAnim); i++) {
+            if (winSpcFontAnim[i] != -1) {
+                HuSprAnimKill(winSpcFontAnim[i]);
             }
         }
-        HuSprAnimKill(D_800BDA68_main);
+        HuSprAnimKill(winKeyWaitAnim);
     }
 }
 
@@ -1752,7 +1752,7 @@ void HuWinComKeyGet(s16 *inputs) {
     for (i = 0; i < MAXCONTROLLERS; i++) {
         inputs[i] = winComKeyBuf[(u8)comKeyIdxNow][i];
         if (inputs[i] == -1) {
-            inputs[i] = D_800D0590_main[i];
+            inputs[i] = ContBtnRep[i];
         }
     }
     winComKeyBuf[(u8)comKeyIdxNow][WINDOW_INPUT_RECORD_FRAMES]--;
@@ -1777,28 +1777,28 @@ s32 HuWinActivePadGet(TextWindow *window) {
         if (window->attr & HUWIN_ATTR_COMKEY) {
             input = queuedInputs[0] | input;
         } else {
-            input |= (D_800D0590_main[0] & (u16)~(A_BUTTON | B_BUTTON)) | (D_800C9520_main[0] & (A_BUTTON | B_BUTTON));
+            input |= (ContBtnRep[0] & (u16)~(A_BUTTON | B_BUTTON)) | (ContBtnDown[0] & (A_BUTTON | B_BUTTON));
         }
     }
     if (window->active_pad & HUWIN_PLAYER_2) {
         if (window->attr & HUWIN_ATTR_COMKEY) {
             input = queuedInputs[1] | input;
         } else {
-            input |= (D_800D0590_main[1] & (u16)~(A_BUTTON | B_BUTTON)) | (D_800C9520_main[1] & (A_BUTTON | B_BUTTON));
+            input |= (ContBtnRep[1] & (u16)~(A_BUTTON | B_BUTTON)) | (ContBtnDown[1] & (A_BUTTON | B_BUTTON));
         }
     }
     if (window->active_pad & HUWIN_PLAYER_3) {
         if (window->attr & HUWIN_ATTR_COMKEY) {
             input = queuedInputs[2] | input;
         } else {
-            input |= (D_800D0590_main[2] & (u16)~(A_BUTTON | B_BUTTON)) | (D_800C9520_main[2] & (A_BUTTON | B_BUTTON));
+            input |= (ContBtnRep[2] & (u16)~(A_BUTTON | B_BUTTON)) | (ContBtnDown[2] & (A_BUTTON | B_BUTTON));
         }
     }
     if (window->active_pad & HUWIN_PLAYER_4) {
         if (window->attr & HUWIN_ATTR_COMKEY) {
             input = queuedInputs[3] | input;
         } else {
-            input |= (D_800D0590_main[3] & (u16)~(A_BUTTON | B_BUTTON)) | (D_800C9520_main[3] & (A_BUTTON | B_BUTTON));
+            input |= (ContBtnRep[3] & (u16)~(A_BUTTON | B_BUTTON)) | (ContBtnDown[3] & (A_BUTTON | B_BUTTON));
         }
     }
     return input;
@@ -1808,13 +1808,13 @@ u8 HuWinMesCharConv(u8 *arg0) {
     s16 i, j;
 
     for (i = 0; i < 10; i += 2) {
-        if (D_800A232C_main[i] == arg0[0] && D_800A232C_main[i + 1] == arg0[1]) {
+        if (winKanjiNumTbl[i] == arg0[0] && winKanjiNumTbl[i + 1] == arg0[1]) {
             return i / 2;
         }
     }
     for (i = 0; i < 16; i++) {
         for (j = 0; j < 32; j += 2) {
-            if (D_800A2344_main[i][j] == arg0[0] && D_800A2344_main[i][j + 1] == arg0[1]) {
+            if (winKanjiNumAltTbl[i][j] == arg0[0] && winKanjiNumAltTbl[i][j + 1] == arg0[1]) {
                 return i * 16 + j / 2;
             }
         }
@@ -1852,7 +1852,7 @@ void HuWinBGColSet(s16 winId, s32 red, s32 green, s32 blue) {
     HuSprColorSet(window->group, 0, red, green, blue);
     sprite = HuSprGet(window->group, 1);
     for (i = 0; i < 7; i++) {
-        color = D_800A2174_main[i + 9];
+        color = winPalTbl[i + 9];
         r = ((color >> 8) & 0xF8) * 0.3f + (u8)red * 0.7f;
         if (r >= 256) {
             r = 255;
@@ -2060,7 +2060,7 @@ void HuWinMesMaxSizeBetGet(s16 *arg0, s16 arg1, s16 arg2) {
 
 // The following data is defined here rather than at the top of the file so that the
 // character set strings are placed in the middle of this file's .rodata.
-u8 *D_800A2344_main[] = {
+u8 *winKanjiNumAltTbl[] = {
     // 終黒青赤紫緑水黄白※行頁＜＞間［
     (u8 *)"\x8F\x49\x8D\x95\x90\xC2\x90\xD4\x8E\x87\x97\xCE\x90\x85\x89\xA9\x94\x92\x81\xA6\x8D\x73\x95\xC5\x81\x83\x81\x84\x8A\xD4\x81\x6D",
     // 　①②③④⑤］半特基※※※※※※
@@ -2095,7 +2095,7 @@ u8 *D_800A2344_main[] = {
     (u8 *)"\x83\x7E\x83\x80\x83\x81\x83\x82\x83\x84\x83\x86\x83\x88\x83\x89\x83\x8A\x83\x8B\x83\x8C\x83\x8D\x83\x8F\x83\x93\x81\x63\x81\xA5",
 };
 
-static WindowFrameDefinition D_800A2384_main[] = {
+static WindowFrameDefinition winExFrameTbl[] = {
     { 0x87, 0x0, 220, 46, 24, 9, 190, 28, 3, 22, 1, 1 },
     { 0x93, 0x0, 220, 62, 23, 12, 190, 42, 4, 38, 1, 0 },
     { 0x11000A, 0x0, 220, 74, 27, 9, 190, 56, 3, 36, 1, 0 },
@@ -2119,7 +2119,7 @@ static WindowFrameDefinition D_800A2384_main[] = {
     { 0x92, 0x0, 230, 52, 9, 6, 210, 45, 115, 26, 1, 0 },
 };
 
-static s32 D_800A25D0_main[] = {
+static s32 winExAnimTbl[] = {
     0x35, 0x36, 0x3C, 0x3D, 0x3E, 0x42, 0x3F, 0x40,
     0x37, 0x38, 0x41, 0x39, 0x3A, 0x3B, 0x46, 0x47,
     0x48, 0x49, 0x4A, 0x4B, 0x4C, 0x43, 0x44, 0x140036,
@@ -2155,7 +2155,7 @@ void GetMesMaxSizeSub(u32 str) {
         if (gLanguageIndex == LANGUAGE_JAPANESE) {
             advance = (*text == 0x80 || *text == 0x81) ? 0 : 10;
         } else {
-            advance = D_800A2194_main[*text];
+            advance = winFontWidthTbl[*text];
         }
         if ((*text > 0) && (*text < 9)) {
             advance = 0;
@@ -2254,7 +2254,7 @@ s32 HuWinExCreateStyled(s32 x, s32 y, s32 frameIndex) {
     WindowFrameDefinition *frame;
     HuSprite *sprite;
 
-    frame = &D_800A2384_main[frameIndex];
+    frame = &winExFrameTbl[frameIndex];
     winId = HuWinCreate(x, y, frame->width, frame->height, 0, 12);
     HuWinMesSpeedSet(winId, 0);
     HuWinMesPalSet(winId, 2, 255, 0, 0);
@@ -2431,7 +2431,7 @@ s32 HuWinExCreate(s16 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u16 arg5) {
     temp_s2->unk276 = arg0;
 
     if (arg0 != -1) {
-        temp_s2->unk274 = HuWinAnimSet(temp_v0, D_800A25D0_main[arg0], (0x18 - temp_s2->unk48), (0x18 - temp_s2->unk4A), 0);
+        temp_s2->unk274 = HuWinAnimSet(temp_v0, winExAnimTbl[arg0], (0x18 - temp_s2->unk48), (0x18 - temp_s2->unk4A), 0);
     }
 
     temp_s2->mess_x = 6;
@@ -2503,7 +2503,7 @@ void HuWinExFrameAnim(s16 winId, s32 opening) {
     frames = opening ? 6 : 3;
     for (i = 1; i <= frames; i++) {
         source = original;
-        dest = buffers[D_800D2008_main];
+        dest = buffers[Hu3DBufNo];
         radius = HuSqrtf(1800.0f);
         radius *= 1.0f - cosdf((90.0f / frames) * i);
         for (y = 0; y < 40; y++) {
@@ -2527,7 +2527,7 @@ void HuWinExFrameAnim(s16 winId, s32 opening) {
                 }
             }
         }
-        sprite->data->pat->data = buffers[D_800D2008_main];
+        sprite->data->pat->data = buffers[Hu3DBufNo];
         HuPrcVSleep();
     }
     for (i = 0; i < 3; i++) {
@@ -2544,7 +2544,7 @@ void HuWinExAnimPopIn(s16 winId, s16 arg1) {
     HuWinKeyLockSet(winId, 1);
     HuWinExFrameAnim(winId, 0);
     HuWinSprKill(winId, temp_s0->unk274);
-    temp_v0 = HuWinAnimSet(winId, D_800A25D0_main[arg1], 0x18 - temp_s0->unk48, 0x18 - temp_s0->unk4A, 0);
+    temp_v0 = HuWinAnimSet(winId, winExAnimTbl[arg1], 0x18 - temp_s0->unk48, 0x18 - temp_s0->unk4A, 0);
     temp_s0->unk274 = temp_v0;
     HuSprPosSet(temp_s0->group, temp_v0, 0x18 - temp_s0->unk48, 0x18 - temp_s0->unk4A);
     HuSprScaleSet(temp_s0->group, temp_s0->unk274, 1.0f, 1.0f);

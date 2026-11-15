@@ -45,7 +45,7 @@ s16 func_800EABBC_name_81(s16 arg0, s16 *arg1, s16 arg2) {
         }
     }
 
-    if (D_800CB99C_main == 0) {
+    if (winPauseF == 0) {
         HuWinAttrSet(result, HUWIN_ATTR_PAUSE, HUWIN_ATTR_PAUSE);
     }
 
@@ -60,7 +60,7 @@ void func_800EAD08_name_81(s32 arg0) {
     temp_v0 = HuWinExCreate(-1, 0, 0, sp18[0], sp18[1], 2);
     D_80105712_name_81 = temp_v0;
 
-    if (D_800CB99C_main == 0) {
+    if (winPauseF == 0) {
         HuWinAttrSet(temp_v0, HUWIN_ATTR_PAUSE, HUWIN_ATTR_PAUSE);
     }
 
@@ -93,7 +93,7 @@ void func_800EADBC_name_81(s32 arg0, char *arg1, s32 arg2, s32 arg3, s32 arg4, s
     temp_v0 = HuWinExCreate(-1, 0, 0, sp18[0], sp18[1], 2);
     D_80105712_name_81 = temp_v0;
 
-    if (D_800CB99C_main == 0) {
+    if (winPauseF == 0) {
         HuWinAttrSet(temp_v0, HUWIN_ATTR_PAUSE, HUWIN_ATTR_PAUSE);
     }
     if (arg1 != NULL) {
@@ -132,7 +132,7 @@ void func_800EAFC4_name_81(s32 arg0) {
     temp_v0 = HuWinExCreate(-1, 0, 0, sp18[0], sp18[1], 2);
     D_8010555C_name_81 = temp_v0;
 
-    if (D_800CB99C_main == 0) {
+    if (winPauseF == 0) {
         HuWinAttrSet(temp_v0, HUWIN_ATTR_PAUSE, HUWIN_ATTR_PAUSE);
     }
 

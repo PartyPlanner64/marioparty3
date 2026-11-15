@@ -13,8 +13,8 @@ u32 func_80105F7C_storyresult(u32 seed);
 void func_80106190_storyresult(void);
 void func_80106754_storyresult(void);
 void func_80106C84_storyresult(void);
-extern f32 D_800D5210_main;
-extern f32 D_800CB890_main;
+extern f32 CFanLen;
+extern f32 CFanOfs;
 extern s16 kakusiMasuItemHis[10];
 
 u16 D_8010A910_storyresult = 0;
@@ -55,7 +55,7 @@ void func_801059A0_storyresult(void) {
     MapCollInit(1);
     Hu3DSprModelInit(25);
     HuWinInit();
-    D_800CD280_main = 0;
+    Hu3DScreenClearF = 0;
     D_8010AC24_storyresult = 80.0f;
     D_8010AC2C_storyresult = 6000.0f;
     D_8010A918_storyresult = 58.0f;
@@ -100,7 +100,7 @@ void func_801059A0_storyresult(void) {
 
 void func_80105C30_storyresult(omObjData *object) {
     if (D_8010A910_storyresult == 0) {
-        if (D_800D530C_main != 0) {
+        if (omSysExitReq != 0) {
             goto createWipe;
         }
     } else if (D_8010A910_storyresult == 1) {
@@ -274,8 +274,8 @@ void func_80106190_storyresult(void) {
     D_800CE17C_main[1] = pos.z;
     D_800CE17C_main[-1] = CRot.y;
     D_800CE17C_main[2] = gCameraList->fov;
-    D_800CE17C_main[3] = D_800D5210_main;
-    D_800CE17C_main[4] = D_800CB890_main;
+    D_800CE17C_main[3] = CFanLen;
+    D_800CE17C_main[4] = CFanOfs;
     Hu3DCameraPosSetV(0, &pos, &at, &up);
     Hu3DCamUpdateMtx(0);
 }
@@ -383,7 +383,7 @@ void func_80106780_storyresult(MsetupCameraKeyframe *keys, f32 speed, void (*cal
     Center.y = keys[segment].values.preset.center.y;
     Center.z = keys[segment].values.preset.center.z;
     gCameraList->fov = D_8010A918_storyresult = keys[segment].values.preset.fov;
-    D_800CB99C_main = 0;
+    winPauseF = 0;
 }
 
 void func_80106C84_storyresult(void) {
@@ -467,7 +467,7 @@ s16 func_80106E48_storyresult(void) {
         D_8010ABE2_storyresult = 1;
         D_8010AC32_storyresult = 0x75;
         D_8010AC30_storyresult = 0;
-        D_800CE20A_main = 15;
+        storySceneNo = 15;
         omOvlGotoEx(0x75, 0, 0x14);
     }
     return result;

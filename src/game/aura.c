@@ -13,7 +13,7 @@ typedef struct {
     /* 0x04 */ s16 unk04;
 } AuraPrcData; // Size 6
 
-static u8 D_800A1640_main[][4] = {
+static u8 auraColTbl[][4] = {
     { 255, 0, 0, 0 },
     { 255, 160, 40, 0 },
     { 255, 255, 0, 0 },
@@ -24,11 +24,11 @@ static u8 D_800A1640_main[][4] = {
     { 150, 60, 255, 0 },
 };
 
-extern u8 D_800D2008_main;
+extern u8 Hu3DBufNo;
 
-static f32 D_800B23A0_main;
-static f32 D_800B23A4_main;
-static f32 D_800B23A8_main;
+static f32 auraColScaleR;
+static f32 auraColScaleG;
+static f32 auraColScaleB;
 
 void AuraCreateEx(s16 arg0, s16 arg1) {
     HmfData *temp_s0 = Hu3DData[arg0].hmf;
@@ -55,7 +55,7 @@ void AuraCreateEx(s16 arg0, s16 arg1) {
     temp_v0_5->unk02 = temp_v0;
     temp_v0_5->unk04 = arg1;
     Hu3DData[arg0].unkBC = (void *)temp_v0_4; // TODO: is unkBC just a void* data?
-    D_800B23A0_main = D_800B23A4_main = D_800B23A8_main = 1.0f;
+    auraColScaleR = auraColScaleG = auraColScaleB = 1.0f;
 }
 
 void AuraCreate(s16 arg0) {
@@ -71,7 +71,7 @@ void AuraProc(void) {
     s16 temp_v1_0 = temp_s6->unk60[temp_s4->unk02].unk28;
 
     while (TRUE) {
-        Vtx *var_s0 = &temp_s6->unk44[D_800D2008_main][temp_v1_0];
+        Vtx *var_s0 = &temp_s6->unk44[Hu3DBufNo][temp_v1_0];
         s16 var_s2;
 
         for (var_s2 = 0; var_s2 < temp_v0_2; var_s2++, var_s0++) {
@@ -82,14 +82,14 @@ void AuraProc(void) {
             f32 temp_f32 = (s16)temp_f0_2;
             f32 temp_f6 = ((s16)temp_f0_2 % 30) / 30.0f;
             s16 temp_v0_4 = (s16)(temp_f32 / 30.0f) % 8;
-            s32 var_a1 = D_800A1640_main[temp_v0_4][0];
-            s32 var_a2 = D_800A1640_main[temp_v0_4][1];
-            s32 var_a3 = D_800A1640_main[temp_v0_4][2];
+            s32 var_a1 = auraColTbl[temp_v0_4][0];
+            s32 var_a2 = auraColTbl[temp_v0_4][1];
+            s32 var_a3 = auraColTbl[temp_v0_4][2];
             s16 temp_v1 = (temp_v0_4 + 1) % 8;
 
-            var_s0->v.cn[0] = (s32)((D_800A1640_main[temp_v1][0] * temp_f6 + (1.0f - temp_f6) * var_a1) * D_800B23A0_main);
-            var_s0->v.cn[1] = (s32)((D_800A1640_main[temp_v1][1] * temp_f6 + (1.0f - temp_f6) * var_a2) * D_800B23A4_main);
-            var_s0->v.cn[2] = (s32)((D_800A1640_main[temp_v1][2] * temp_f6 + (1.0f - temp_f6) * var_a3) * D_800B23A8_main);
+            var_s0->v.cn[0] = (s32)((auraColTbl[temp_v1][0] * temp_f6 + (1.0f - temp_f6) * var_a1) * auraColScaleR);
+            var_s0->v.cn[1] = (s32)((auraColTbl[temp_v1][1] * temp_f6 + (1.0f - temp_f6) * var_a2) * auraColScaleG);
+            var_s0->v.cn[2] = (s32)((auraColTbl[temp_v1][2] * temp_f6 + (1.0f - temp_f6) * var_a3) * auraColScaleB);
         }
         var_s1 += temp_s4->unk04;
         if (var_s1 > 240) {
@@ -109,7 +109,7 @@ void AuraKill(s16 arg0) {
 }
 
 void AuraParamSet(s32 arg0, f32 arg1, f32 arg2, f32 arg3) {
-    D_800B23A0_main = arg1;
-    D_800B23A4_main = arg2;
-    D_800B23A8_main = arg3;
+    auraColScaleR = arg1;
+    auraColScaleG = arg2;
+    auraColScaleB = arg3;
 }

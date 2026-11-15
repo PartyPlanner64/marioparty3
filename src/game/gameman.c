@@ -23,20 +23,20 @@
 #include "game/util.h"
 #include "gcc/memory.h"
 
-extern str800D5298 D_800D5298_main;
-extern void *D_800CCF38_main;
-extern u8 D_800CCF78_main[];
-extern u16 D_800CD2F4_main;
-extern OSPiHandle *D_800CDD50_main;
-extern Process *D_800D0448_main;
-extern u8 D_800D09A8_main;
-extern Process *D_800D170C_main;
-extern u8 D_800D1710_main;
-extern s16 D_800D1F36_main;
-extern u16 D_800D4082_main;
-extern u16 D_800D6A56_main;
-extern u16 D_800A190C_main;
-extern u16 D_800A190E_main;
+extern str800D5298 HuAudSysConfig;
+extern void *mainIntrQueue;
+extern u8 GameManPadNoneF[];
+extern u16 omHu3DGfxNum;
+extern OSPiHandle *cartRomHandle;
+extern Process *GameManDrawPrc;
+extern u8 saveCommonBuf;
+extern Process *GameManExecPrc;
+extern u8 omHu3DBufNum;
+extern s16 GameManFirstPad;
+extern u16 omHu3DVtxNum;
+extern u16 omHu3DMtxNum;
+extern u16 HuAudFxParamNext;
+extern u16 HuAudFxParam;
 
 void GameManInitProc(void) {
     s32 i;
@@ -66,37 +66,37 @@ void GameManInitProc(void) {
                 CenterM[i].z = 0.0f;
     }
 
-    D_800D1710_main = 3;
-    D_800D4082_main = 0x1000;
-    D_800CD2F4_main = 0x2004;
-    D_800D6A56_main = 0x180;
+    omHu3DBufNum = 3;
+    omHu3DVtxNum = 0x1000;
+    omHu3DGfxNum = 0x2004;
+    omHu3DMtxNum = 0x180;
     WipeInit();
-    Hu3DInit(&HuMemMemoryAllocPerm, &HuMemMemoryFreePerm, D_800D4082_main, D_800CD2F4_main, D_800D6A56_main, D_800D1710_main);
+    Hu3DInit(&HuMemMemoryAllocPerm, &HuMemMemoryFreePerm, omHu3DVtxNum, omHu3DGfxNum, omHu3DMtxNum, omHu3DBufNum);
     Hu3DCamInit(1);
     pfInit();
     MessDataInit((u32)strings_japanese_ROM_START);
-    D_800D1F36_main = 0;
+    GameManFirstPad = 0;
 
     do {
-        if (CheckControllerRead(D_800D1F36_main) != 0) {
+        if (CheckControllerRead(GameManFirstPad) != 0) {
             break;
         }
-    } while (++D_800D1F36_main < 4);
+    } while (++GameManFirstPad < 4);
 
-    if (D_800D1F36_main == 4) {
-        D_800D1F36_main = -1;
+    if (GameManFirstPad == 4) {
+        GameManFirstPad = -1;
     }
 
     HuMemHeapAllocPermSizeGet();
-    D_800D0448_main = HuPrcCreate(&GameManDrawProc, 0xF000, 0x3000, 0);
+    GameManDrawPrc = HuPrcCreate(&GameManDrawProc, 0xF000, 0x3000, 0);
     HuPrcCreate(&GameManObjProc, 0x4000, 0x3000, 0);
-    D_800D170C_main = HuPrcCreate(&GameManExecProc, 0x1000, 0x3000, 0);
+    GameManExecPrc = HuPrcCreate(&GameManExecProc, 0x1000, 0x3000, 0);
 
     {
         s32 temp_s0 = SLInit();
         GWInit();
         GWGameStatReset();
-        msmSysGetConfig(&D_800D5298_main);
+        msmSysGetConfig(&HuAudSysConfig);
         SLCurBoxNoSet(0);
         SLLoadGameStat();
         if (temp_s0 != 0) {
@@ -106,24 +106,24 @@ void GameManInitProc(void) {
         }
     }
 
-    D_800D5298_main.unk8 = audio_mbf0_ROM_START;
-    D_800D5298_main.unkC = audio_sbf0_ROM_START;
-    D_800A190E_main = 0;
-    D_800A190C_main = 0;
-    D_800D5298_main.unk0 = 0x70418F;
-    D_800D5298_main.unk10 = audio_fxd0_ROM_START;
-    D_800D5298_main.unk28 = 1;
-    D_800D5298_main.unk2C = 0;
-    D_800D5298_main.unk14 = (void *)0x802E0000;
-    D_800D5298_main.unk18 = 0x80000;
-    D_800D5298_main.unk5C = 0x6E;
-    D_800D5298_main.unk60 = 0;
-    D_800D5298_main.unk64 = 0;
-    D_800D5298_main.unk68 = D_800CDD50_main;
-    D_800D5298_main.unk44 = 0x3C;
-    msmInit(&D_800D5298_main);
+    HuAudSysConfig.unk8 = audio_mbf0_ROM_START;
+    HuAudSysConfig.unkC = audio_sbf0_ROM_START;
+    HuAudFxParam = 0;
+    HuAudFxParamNext = 0;
+    HuAudSysConfig.unk0 = 0x70418F;
+    HuAudSysConfig.unk10 = audio_fxd0_ROM_START;
+    HuAudSysConfig.unk28 = 1;
+    HuAudSysConfig.unk2C = 0;
+    HuAudSysConfig.unk14 = (void *)0x802E0000;
+    HuAudSysConfig.unk18 = 0x80000;
+    HuAudSysConfig.unk5C = 0x6E;
+    HuAudSysConfig.unk60 = 0;
+    HuAudSysConfig.unk64 = 0;
+    HuAudSysConfig.unk68 = cartRomHandle;
+    HuAudSysConfig.unk44 = 0x3C;
+    msmInit(&HuAudSysConfig);
 
-    if ((D_800D09A8_main & 1) != 0) {
+    if ((saveCommonBuf & 1) != 0) {
         msmSysSetOutputMode(1);
     } else {
         msmSysSetOutputMode(0);
@@ -159,7 +159,7 @@ void GameManExecProc(void) {
         rand8();
         espMain(); // esprite
         Hu3DSprModelExec(2);
-        Hu3DExec(&D_800CCF38_main, 2); // hmfman
+        Hu3DExec(&mainIntrQueue, 2); // hmfman
     }
 }
 
@@ -170,10 +170,10 @@ void GameManPlayerInit(void) {
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         memset(&GwPlayer[i], 0, sizeof(GW_PLAYER));
         if (CheckControllerRead(i) != PAD_NOT_INSERTED) {
-            D_800CCF78_main[i] = 0;
+            GameManPadNoneF[i] = 0;
             GwPlayer[i].stat &= ~1;
         } else {
-            D_800CCF78_main[i] = 1;
+            GameManPadNoneF[i] = 1;
             GwPlayer[i].stat |= 1;
         }
 

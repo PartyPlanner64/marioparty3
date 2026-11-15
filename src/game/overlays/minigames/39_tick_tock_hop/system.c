@@ -25,8 +25,8 @@
 // 8FB20
 
 // unknown
-extern s16 D_800CDD6A_main;
-extern u8 D_800D2008_main;
+extern s16 Hu3DModelTag;
+extern u8 Hu3DBufNo;
 
 // LOCAL
 
@@ -402,7 +402,7 @@ void m257_UpdateAnimModels(void) {
         hmfModel = &Hu3DData[animModel->modelId];
         switch (animModel->state) {
             default:
-                if (D_800CCF58_main[hmfModel->motId].unk02 <= hmfModel->motTime) {
+                if (Hu3DMotion[hmfModel->motId].unk02 <= hmfModel->motTime) {
                     hmfModel->motTime = 0.0f;
                     if (hmfModel->hmf->unk98 != NULL) {
                         hmfModel->hmf->unk98->unk08 = 0;
@@ -633,7 +633,7 @@ s32 func_8010B4D0_tick_tock_hop(HuSprAnimData *arg0, f32 arg1) {
     temp_s4 = Hu3DData[temp_v0_2].hmf;
     temp_s4->unk60->unk50 |= 0x01010000;
     HuMemFree(temp_s4->unk3C);
-    temp_s4->unk3C = HuMemAllocTag(0x14, D_800CDD6A_main);
+    temp_s4->unk3C = HuMemAllocTag(0x14, Hu3DModelTag);
     func_8010CED8_tick_tock_hop(arg0, temp_s4, 1.0f, 0, 0x1E);
     gSPDisplayList(temp_v0++, osVirtualToPhysical(D_8010E5A0_tick_tock_hop));
     gDPPipeSync(temp_v0++);
@@ -710,14 +710,14 @@ s32 func_8010B4D0_tick_tock_hop(HuSprAnimData *arg0, f32 arg1) {
     temp_s4->unk3C->unk00[0] = temp_s4->unk3C->unk10 = HuMemAllocTag(temp_s0, temp_s4->unk0E);
     bcopy(temp_v0_0, temp_s4->unk3C->unk00[0], temp_s0);
     HuMemFree(temp_v0_0);
-    for (var_s1 = 0; var_s1 < D_800D1FF0_main; var_s1++) {
+    for (var_s1 = 0; var_s1 < Hu3DBufNum; var_s1++) {
         temp_v0 = *(temp_s4->unk3C->unk00 + (var_s1 + 1)) = HuMemAllocTag(0x100, temp_s4->unk0E);
         gDPPipeSync(temp_v0++);
         gSPSegment(temp_v0++, 0x02, osVirtualToPhysical(arg0->pat->data));
         gSPDisplayList(temp_v0++, osVirtualToPhysical(temp_s4->unk3C->unk10));
         gSPEndDisplayList(temp_v0++);
     }
-    temp_s4->unk3C->unk00[0] = temp_s4->unk3C->unk00[D_800D2008_main + 1];
+    temp_s4->unk3C->unk00[0] = temp_s4->unk3C->unk00[Hu3DBufNo + 1];
     return temp_v0_2;
 }
 
@@ -736,7 +736,7 @@ s16 func_8010C0E8_tick_tock_hop(HuSprAnimData *arg0, RGBA *arg1) {
     temp_s4 = Hu3DData[temp_v0].hmf;
     temp_s4->unk60->unk50 |= 0x01010000;
     HuMemFree(temp_s4->unk3C);
-    temp_s4->unk3C = HuMemAllocTag(0x18, D_800CDD6A_main);
+    temp_s4->unk3C = HuMemAllocTag(0x18, Hu3DModelTag);
     func_8010CED8_tick_tock_hop(arg0, temp_s4, 1.0f, 0, 0);
     gSPDisplayList(temp_v0_2++, osVirtualToPhysical(D_8010E5A0_tick_tock_hop));
     gDPPipeSync(temp_v0_2++);
@@ -813,7 +813,7 @@ s16 func_8010C0E8_tick_tock_hop(HuSprAnimData *arg0, RGBA *arg1) {
     temp_s4->unk3C->unk14 = HuMemAllocTag(temp_s0, temp_s4->unk0E);
     bcopy(temp_v0_0, temp_s4->unk3C->unk14, temp_s0);
     HuMemFree(temp_v0_0);
-    for (var_s1 = 0; var_s1 < D_800D1FF0_main; var_s1++) {
+    for (var_s1 = 0; var_s1 < Hu3DBufNum; var_s1++) {
         temp_v0_2 = temp_s4->unk3C->unk00[var_s1 + 1] = HuMemAllocTag(0x100, temp_s4->unk0E);
         gDPPipeSync(temp_v0_2++);
         gSPSegment(temp_v0_2++, 0x02, osVirtualToPhysical(arg0->pat->data));
@@ -824,7 +824,7 @@ s16 func_8010C0E8_tick_tock_hop(HuSprAnimData *arg0, RGBA *arg1) {
         gDPPipeSync(temp_v0_2++);
         gSPEndDisplayList(temp_v0_2++);
     }
-    temp_s4->unk3C->unk00[0] = temp_s4->unk3C->unk00[D_800D2008_main + 1];
+    temp_s4->unk3C->unk00[0] = temp_s4->unk3C->unk00[Hu3DBufNo + 1];
     return temp_v0;
 }
 
@@ -832,7 +832,7 @@ s16 func_8010C0E8_tick_tock_hop(HuSprAnimData *arg0, RGBA *arg1) {
 void func_8010CCD4_tick_tock_hop(u16 modelId, HuSprAnimData *arg1, u16 arg2) {
     HmfModel *model = &Hu3DData[modelId];
     HmfData *temp_s2 = model->hmf;
-    Gfx *temp_s0 = temp_s2->unk3C->unk00[D_800D2008_main + 1];
+    Gfx *temp_s0 = temp_s2->unk3C->unk00[Hu3DBufNo + 1];
 
     temp_s2->unk3C->unk00[0] = temp_s0;
     gDPPipeSync(&temp_s0[0]);
@@ -847,7 +847,7 @@ void func_8010CDA4_tick_tock_hop(u16 modelId, HuSprAnimData *arg1, u16 arg2, RGB
     HmfModel *model = &Hu3DData[modelId];
     HmfData *temp_s3 = model->hmf;
     HmfModelData_Unk64_Unk3C_Struct *temp_v1 = temp_s3->unk3C;
-    Gfx *temp_s0 = temp_v1->unk00[D_800D2008_main + 1];
+    Gfx *temp_s0 = temp_v1->unk00[Hu3DBufNo + 1];
 
     temp_v1->unk00[0] = temp_s0;
     gDPPipeSync(&temp_s0[0]);
@@ -931,7 +931,7 @@ s16 func_8010CED8_tick_tock_hop(HuSprAnimData *arg0, HmfData *arg1, f32 arg2, u1
         }
     }
     var_s1 = temp_s7;
-    for (var_s0_2 = 0; var_s0_2 < D_800D1FF0_main; var_s0_2++) {
+    for (var_s0_2 = 0; var_s0_2 < Hu3DBufNum; var_s0_2++) {
         arg1->unk44[var_s0_2] = HuMemAllocTag(temp_s3 * sizeof(Vtx), arg1->unk0E);
         var_t0 = &arg1->unk44[var_s0_2]->v;
         var_a3 = &var_s1->v;

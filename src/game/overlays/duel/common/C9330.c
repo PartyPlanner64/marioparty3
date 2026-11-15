@@ -2,8 +2,8 @@
 #include "ovl_81.h"
 #include "game/malloc.h"
 
-extern u8 D_800D6A90_main;
-extern s16 D_800D41C2_main;
+extern u8 omAllPauseF;
+extern s16 mbMesNum;
 
 s32 D_80100F60_name_81[] = {
     0x00001D00,
@@ -65,7 +65,7 @@ static void func_800E16C4_name_81(omObjData *arg0) {
     DuelHelpWin *temp_a0;
 
     temp_a0 = (DuelHelpWin *)arg0->data;
-    if ((temp_a0->unk_01 == 1) && (D_800D6A90_main != 0)) {
+    if ((temp_a0->unk_01 == 1) && (omAllPauseF != 0)) {
         if (temp_a0->winID >= 0) {
             func_800E1694_name_81(temp_a0);
         }
@@ -95,7 +95,7 @@ DuelHelpWin *func_800E172C_name_81(s16 arg0, s16 arg1, s16 arg2, u16 arg3) {
         } else {
             temp_v0_3 = HuMemMemoryAllocTemp(8);
             temp_v0->unk_10 = temp_v0_3;
-            sprintf(temp_v0_3, "\x03%2d\x08", D_800D41C2_main);
+            sprintf(temp_v0_3, "\x03%2d\x08", mbMesNum);
             return temp_v0;
         }
     }

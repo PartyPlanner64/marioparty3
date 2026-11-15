@@ -22,9 +22,9 @@ void func_800D9E50_name_81(void) {
     work = HuPrcCurrentGet()->user_data;
 
     for (;; HuPrcVSleep()) {
-        if (*D_800D5558_main == 0) {
+        if (*HuPadBtnDown == 0) {
             continue;
-        } else if (*D_800D5558_main != work->inputSeq[work->index]) {
+        } else if (*HuPadBtnDown != work->inputSeq[work->index]) {
             work->index = 0;
             continue;
         } else if (work->inputSeq[++work->index] == 0) {

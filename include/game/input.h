@@ -4,15 +4,15 @@
 #include "ultra64.h"
 
 #ifndef NO_EXTERN_VARIABLES
-extern u16 D_800C9520_main[];
-extern s16 D_800D0590_main[];
-extern s16 D_800D10F8_main[];
-extern u16 D_800D1350_main[];
-extern u16 D_800D5546_main[];
+extern u16 ContBtnDown[];
+extern s16 ContBtnRep[];
+extern s16 ContRepCnt[];
+extern u16 ContBtnOld[];
+extern u16 ContBtn[];
 
-extern s8 D_800CBB6E_main[];
-extern s16 D_800CDA7C_main[];
-extern s8 D_800D20A1_main[];
+extern s8 HuPadStkX[];
+extern s16 HuPadBtn[];
+extern s8 HuPadStkY[];
 #endif
 
 void ContDataInit(void);

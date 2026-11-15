@@ -18,13 +18,13 @@ void func_801059D0_slerror(void) {
     s16 sprite;
     u16 i;
 
-    if (D_800D20EC_main & 0x10) {
+    if (SLFormatFlags & 0x10) {
         omOvlGotoEx(0x58, 0, 0x81);
         omOvlKill();
         HuPrcVSleep();
     }
     HuWinInit();
-    if (D_800D20EC_main == 0xF) {
+    if (SLFormatFlags == 0xF) {
         count = 1;
         D_80105F48_slerror[0] = sprite = espEntry(D_80105F40_slerror[0] = HuSprAnimDataRead(0x200000), 0, 1);
         espPosSet(sprite, 160, 120);
@@ -34,7 +34,7 @@ void func_801059D0_slerror(void) {
         espDispOff(sprite);
     } else {
         count = 0;
-        if (D_800D20EC_main & 8) {
+        if (SLFormatFlags & 8) {
             D_80105F40_slerror[0] = anim = HuSprAnimDataRead(0x200004);
             D_80105F48_slerror[0] = sprite = espEntry(anim, 0, 1);
             espPosSet(sprite, 160, 120);
@@ -44,7 +44,7 @@ void func_801059D0_slerror(void) {
             espDispOff(sprite);
             count = 1;
         }
-        if (D_800D20EC_main & 1) {
+        if (SLFormatFlags & 1) {
             D_80105F40_slerror[count] = anim = HuSprAnimDataRead(0x200001);
             D_80105F48_slerror[count] = sprite = espEntry(anim, 0, 1);
             espPosSet(sprite, 160, 120);
@@ -54,7 +54,7 @@ void func_801059D0_slerror(void) {
             espDispOff(sprite);
             count++;
         }
-        if (D_800D20EC_main & 2) {
+        if (SLFormatFlags & 2) {
             D_80105F40_slerror[count] = anim = HuSprAnimDataRead(0x200002);
             D_80105F48_slerror[count] = sprite = espEntry(anim, 0, 1);
             espPosSet(sprite, 160, 120);
@@ -64,7 +64,7 @@ void func_801059D0_slerror(void) {
             espDispOff(sprite);
             count++;
         }
-        if (D_800D20EC_main & 4) {
+        if (SLFormatFlags & 4) {
             D_80105F40_slerror[count] = anim = HuSprAnimDataRead(0x200003);
             D_80105F48_slerror[count] = sprite = espEntry(anim, 0, 1);
             espPosSet(sprite, 160, 120);
@@ -83,7 +83,7 @@ void func_801059D0_slerror(void) {
         }
         do {
             HuPrcVSleep();
-        } while ((D_800D5558_main[0] | D_800D5558_main[1] | D_800D5558_main[2] | D_800D5558_main[3]) == 0);
+        } while ((HuPadBtnDown[0] | HuPadBtnDown[1] | HuPadBtnDown[2] | HuPadBtnDown[3]) == 0);
         WipeCreateOut(0xB, 8);
         while (WipeStatGet() != 0) {
             HuPrcVSleep();

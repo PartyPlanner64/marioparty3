@@ -609,7 +609,7 @@ void func_80106A0C_game_guys_lucky_7(omObjData *object) {
                 GMesTimerValueSet(D_8010D1CC_game_guys_lucky_7);
                 switch (D_8010D6DC_game_guys_lucky_7[3]) {
                     case 0:
-                        if ((D_800D5558_main[D_8010D6DC_game_guys_lucky_7[1]] & 0x8000) ||
+                        if ((HuPadBtnDown[D_8010D6DC_game_guys_lucky_7[1]] & 0x8000) ||
                             D_8010D1CC_game_guys_lucky_7 == 0) {
                             D_8010D746_game_guys_lucky_7 = 3;
                             D_8010D1C8_game_guys_lucky_7 = 0;
@@ -647,7 +647,7 @@ void func_80106A0C_game_guys_lucky_7(omObjData *object) {
             object->func = func_80106CF4_game_guys_lucky_7;
             break;
         case 999:
-            if (D_800D5558_main[0] & 2) {
+            if (HuPadBtnDown[0] & 2) {
                 D_8010D1C6_game_guys_lucky_7 = 0;
             }
             break;
@@ -1072,7 +1072,7 @@ void func_80107EEC_game_guys_lucky_7(omObjData *object) {
 }
 
 void func_80107F44_game_guys_lucky_7(omObjData *object) {
-    if (D_800D530C_main == 1) {
+    if (omSysExitReq == 1) {
         object->func = func_80107DE4_game_guys_lucky_7;
     }
 }
@@ -1504,7 +1504,7 @@ void func_80109570_game_guys_lucky_7(omObjData *object) {
     if (D_8010D800_game_guys_lucky_7 == 4) {
         D_8010D73E_game_guys_lucky_7 = 1;
         Hu3DMotionSpeedSet(object->model[0], 1.0f);
-        if (Hu3DData[object->model[0]].motTime == D_800CCF58_main[Hu3DData[object->model[0]].motId].unk02) {
+        if (Hu3DData[object->model[0]].motTime == Hu3DMotion[Hu3DData[object->model[0]].motId].unk02) {
             D_8010D73C_game_guys_lucky_7 = 0;
             D_8010D800_game_guys_lucky_7 = 0;
         }
@@ -1869,7 +1869,7 @@ void func_8010ADF8_game_guys_lucky_7(s16 win, s16 player, s16 mode) {
     while (HuWinStatGet(win) != 0) {
         switch (mode) {
             case 0:
-                if (D_800D5558_main[player] & 0x8000) {
+                if (HuPadBtnDown[player] & 0x8000) {
                     HuWinComKeySet(-0x8000, -0x8000, -0x8000, -0x8000);
                 }
                 break;

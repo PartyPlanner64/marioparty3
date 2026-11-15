@@ -250,7 +250,7 @@ void func_80105B94_parasol_plummet(omObjData *object) {
     f32 tempX;
     s32 tempLane;
 
-    if (D_800D530C_main != 0) {
+    if (omSysExitReq != 0) {
         HuAudFXAllStop();
         HuAudSeqFadeOut(30);
         WipeCreateOut(0, 20);
@@ -593,7 +593,7 @@ void func_80106AB4_parasol_plummet(omObjData *object) {
     if (GwPlayer[work->playerIndex].stat & 1) {
         stickX = func_801074CC_parasol_plummet(object);
     } else {
-        stickX = D_800CBB6E_main[GwPlayer[work->playerIndex].pad];
+        stickX = HuPadStkX[GwPlayer[work->playerIndex].pad];
     }
     speed = (fabs((f32)stickX) - 30.0) / 5.0;
     if (stickX >= 30) {
@@ -635,7 +635,7 @@ void func_80106CDC_parasol_plummet(omObjData *object) {
         if (GwPlayer[work->playerIndex].stat & 1) {
             pressed = func_801076D4_parasol_plummet(object);
         } else {
-            pressed = D_800D5558_main[GwPlayer[work->playerIndex].pad];
+            pressed = HuPadBtnDown[GwPlayer[work->playerIndex].pad];
         }
         if (pressed & A_BUTTON) {
             if (work->flags & 4) {
@@ -1697,7 +1697,7 @@ void func_80109B38_parasol_plummet(s32 index) {
     } else {
         model = Hu3DSprModelLink(D_8010ACA0_parasol_plummet[index / 6], 8);
     }
-    obj->model[0] = D_800CBB60_main[model].modelId;
+    obj->model[0] = Hu3DSprModelData[model].modelId;
     omSetTra(obj, 0.0f, 0.0f, 0.0f);
     omSetRot(obj, 0.0f, 0.0f, 0.0f);
     item->scale = scales[index / 6];

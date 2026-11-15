@@ -255,12 +255,12 @@ void func_80105A58_duel10(void) {
     D_80114CBC_duel10 = func_800E1824_name_81(3, 0xCA, 1);
     HuPrcSleep(3);
     mbCameraBtnF = 1;
-    D_800D51F8_main = 1;
+    duelCancelEnableF = 1;
 }
 
 void func_80105B10_duel10(void) {
     mbCameraBtnF = 0;
-    D_800D51F8_main = 0;
+    duelCancelEnableF = 0;
     func_800E1854_name_81(D_80114CB0_duel10);
     func_800E1854_name_81(D_80114CB4_duel10);
     func_800E1854_name_81(D_80114CB8_duel10);
@@ -1815,7 +1815,7 @@ void func_8010B020_duel10(void) {
             data->sprId[i] = Hu3DSprModelLink(data->sprId[0], 8);
         }
         Hu3DSprModelAttrSet(data->sprId[i], 6, 0x180);
-        data->modelId[i] = D_800CBB60_main[data->sprId[i]].modelId;
+        data->modelId[i] = Hu3DSprModelData[data->sprId[i]].modelId;
         Hu3DSprModelColorSet(data->sprId[i], 0xFF, 0x40, 8);
         Hu3DSprModelTPLvlSet(data->sprId[i], 0xC8);
         Hu3DModelObjAttrSet(data->modelId[i], 0x70000000, 0x70000000);
@@ -2780,13 +2780,13 @@ void func_8010E0EC_duel10(void) {
         }
         player = MBDGetCurrentPlayerIndex();
         for (i = 0; i < 4; i++) {
-            if (!(D_800C9520_main[i] & START_BUTTON) || D_80114A30_duel10 == 0) {
+            if (!(ContBtnDown[i] & START_BUTTON) || D_80114A30_duel10 == 0) {
                 continue;
             }
             func_800DC3AC_name_81(player);
             MBDCameraPos2DGet(&pos);
             MBDCameraPos2DSet(&pos);
-            D_800CB99C_main = 1;
+            winPauseF = 1;
             omAllPause();
             Hu3DPauseF = 1;
             if (func_8010DDA4_duel10(i)) {
@@ -2802,7 +2802,7 @@ void func_8010E0EC_duel10(void) {
             }
             Hu3DPauseF = 0;
             omAllUPause();
-            D_800CB99C_main = 0;
+            winPauseF = 0;
             func_800DC410_name_81(player);
             break;
         }
@@ -4247,7 +4247,7 @@ void func_80111FDC_duel10(void) {
                     if (--count == 0) {
                         break;
                     }
-                } else if (D_800C9520_main[GwPlayer[player].pad] & A_BUTTON) {
+                } else if (ContBtnDown[GwPlayer[player].pad] & A_BUTTON) {
                     break;
                 }
                 HuPrcVSleep();

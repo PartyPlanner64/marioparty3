@@ -53,12 +53,12 @@ extern u16 D_8010D364_fridged_bridges;
 extern u16 D_8010D366_fridged_bridges;
 extern u16 D_8010D368_fridged_bridges[4][2];
 extern Vec2f D_8010D378_fridged_bridges[4];
-extern u8 D_800D6A90_main;
+extern u8 omAllPauseF;
 extern s32 D_800A178C_main[][6];
 extern Vec2f D_8010D3A0_fridged_bridges[4][3][12];
 extern Vec2f D_8010D820_fridged_bridges[4][12];
-extern f32 D_800CCF98_main[];
-extern f32 D_800D4198_main[];
+extern f32 CFanLenM[];
+extern f32 CFanOfsM[];
 extern omObjData *D_8010DA78_fridged_bridges[4];
 extern f32 D_8010D340_fridged_bridges;
 extern Vec D_8010D344_fridged_bridges;
@@ -155,8 +155,8 @@ void func_801059A0_fridged_bridges(void) {
         CenterM[i].x = -320.0f;
         CenterM[i].y = 100.0f;
         CenterM[i].z = -420.0f;
-        D_800CCF98_main[i] = 5000.0f;
-        D_800D4198_main[i] = 1000.0f;
+        CFanLenM[i] = 5000.0f;
+        CFanOfsM[i] = 1000.0f;
         Hu3DCameraModelHookSet(i, (void (*)(void *, struct HmfModel *))MapCullFan, &D_8010DA90_fridged_bridges[i]);
     }
     obj = omAddObj(0x7FDA, 0, 0, -1, func_8010C1D8_fridged_bridges);
@@ -383,7 +383,7 @@ void func_801062F8_fridged_bridges(omObjData *arg0) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        if (omPauseChk() + D_800D6A90_main == 0) {
+        if (omPauseChk() + omAllPauseF == 0) {
             D_8010D378_fridged_bridges[i].x += 0.1f;
             D_8010D378_fridged_bridges[i].y += 0.1f;
         }
@@ -492,8 +492,8 @@ void func_801068F4_fridged_bridges(omObjData *arg0) {
 
     if (MgFlowStatGet() == MG_STATE_PLAY) {
         if (!(GwPlayer[player->playerId].stat & 1)) {
-            stickX = D_800CBB6E_main[port];
-            stickY = D_800D20A1_main[port];
+            stickX = HuPadStkX[port];
+            stickY = HuPadStkY[port];
         } else {
             func_801079CC_fridged_bridges(arg0, &stickX, &stickY);
         }

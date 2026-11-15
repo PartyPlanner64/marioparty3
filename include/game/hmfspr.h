@@ -7,9 +7,9 @@
 #include "common_structs.h"
 
 #ifndef NO_EXTERN_VARIABLES
-extern u8 D_800D20B8_main[16][3];
-extern u8 D_800D5570_main[16][3];
-extern Gfx *D_800D1360[8];
+extern u8 CharAnimId[16][3];
+extern u8 CharAnimSrc[16][3];
+extern Gfx *Hu3DSprGfxBuf[8];
 #endif
 
 void Hu3DSprModelInit(s32 count);

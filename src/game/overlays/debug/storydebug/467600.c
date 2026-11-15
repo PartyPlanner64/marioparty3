@@ -42,11 +42,11 @@ void func_80105A98_storydebug(void) {
     fontcolor = FONT_COLOR_WHITE;
 
     for (i = 0; i < 16 && (i * 8) < ARRAY_COUNT(D_801068C0_storydebug); i++) {
-        sprintf(D_800D5218_main, "%3X:", var_s2);
-        print8(40, (i * 10 + 48), D_800D5218_main);
+        sprintf(omDBGStrBuf, "%3X:", var_s2);
+        print8(40, (i * 10 + 48), omDBGStrBuf);
         for (j = 0; j < 8; j++) {
-            sprintf(D_800D5218_main, "%02X", D_801068C0_storydebug[var_s2 + j]);
-            print8((j * 24 + 80), (i * 10 + 48), D_800D5218_main);
+            sprintf(omDBGStrBuf, "%02X", D_801068C0_storydebug[var_s2 + j]);
+            print8((j * 24 + 80), (i * 10 + 48), omDBGStrBuf);
         }
         var_s2 += 8;
     }
@@ -61,7 +61,7 @@ void func_80105BB4_storydebug(void) {
     SLLoadBoardStory();
     while (1) {
         HuPrcVSleep();
-        if (D_800D5558_main[0] & A_BUTTON) {
+        if (HuPadBtnDown[0] & A_BUTTON) {
             var_s1 = (var_s1 == 0) ? 2 : 0;
         }
 
@@ -125,7 +125,7 @@ void func_80105C6C_storydebug(s16 playerIndex) {
 }
 
 void func_80106108_storydebug(omObjData *arg0) {
-    if (D_800D530C_main != 0) {
+    if (omSysExitReq != 0) {
         omOvlReturnEx(1);
     }
 }
@@ -138,7 +138,7 @@ void func_80106134_storydebug(void) {
     while (1) {
         HuPrcVSleep();
         func_801062A0_storydebug();
-        if (D_800D5558_main[0] & A_BUTTON) {
+        if (HuPadBtnDown[0] & A_BUTTON) {
             for (j = 0; j < ARRAY_COUNT(GwStory.progress.fields.unk3); j++) {
                 GwStory.progress.fields.unk3[j] = 0;
             }

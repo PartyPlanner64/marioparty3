@@ -314,7 +314,7 @@ void m255_UpdateAnimModels(void) {
         hmfModel = &Hu3DData[animModel->modelId];
         switch (animModel->state) {
             default:
-                if (D_800CCF58_main[hmfModel->motId].unk02 <= hmfModel->motTime) {
+                if (Hu3DMotion[hmfModel->motId].unk02 <= hmfModel->motTime) {
                     hmfModel->motTime = 0.0f;
                     if (hmfModel->hmf->unk98 != NULL) {
                         hmfModel->hmf->unk98->unk08 = 0;

@@ -38,7 +38,7 @@ void func_80107D10_mgresultbattle(void) {
                         D_801089D0_mgresultbattle[i].z);
         Hu3DModelRotSet(obj->model[i + 1], 0.0f, D_80108A10_mgresultbattle[i], 0.0f);
         Hu3DModelAttrSet(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-        Hu3DMotionTimeSet(obj->model[i + 1], D_800CCF58_main[Hu3DData[obj->model[i + 1]].motId].unk02);
+        Hu3DMotionTimeSet(obj->model[i + 1], Hu3DMotion[Hu3DData[obj->model[i + 1]].motId].unk02);
         Hu3DMotionAttrSet(obj->model[i + 1], 1, 1);
     }
 

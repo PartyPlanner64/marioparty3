@@ -30,12 +30,12 @@
 // 8FB20
 
 // pad
-extern u16 D_800D5558_main[];
+extern u16 HuPadBtnDown[];
 
 // save
 
 // unknown
-extern u16 D_800D530C_main;
+extern u16 omSysExitReq;
 
 extern Gfx *gMainGfxPos;
 
@@ -210,7 +210,7 @@ void func_801059A0_vine_with_me(void) {
     Hu3DSprModelInit(0x20);
     omInitObjMan(50, 0);
     omGameSysInit();
-    D_800CD280_main = 1;
+    Hu3DScreenClearF = 1;
     CamSetupInit(2);
     CamSetupMapCullAddMulti(2);
     ScissorSet(0, 0.0f, 0.0f, 320.0f, 120.0f);
@@ -334,10 +334,10 @@ void func_80106004_vine_with_me(omObjData *arg0) {
         case 5:
             break;
         case 0:
-            if (D_801155D0_vine_with_me == 1 && D_801155B8_vine_with_me == 0 && D_800D530C_main == 0) {
+            if (D_801155D0_vine_with_me == 1 && D_801155B8_vine_with_me == 0 && omSysExitReq == 0) {
                 D_80115554_vine_with_me = HuAudFXPlay(0x495);
             }
-            if (D_801155D0_vine_with_me == 28 && D_801155B8_vine_with_me == 0 && D_800D530C_main == 0) {
+            if (D_801155D0_vine_with_me == 28 && D_801155B8_vine_with_me == 0 && omSysExitReq == 0) {
                 HuAudSeqPlay(0x30);
             }
             if (D_801155D0_vine_with_me == 30) {
@@ -431,17 +431,17 @@ void func_80106004_vine_with_me(omObjData *arg0) {
             break;
     }
     // TODO: why 2U?
-    if (_CheckFlag(FLAG_MG_PRACTICE) && D_800D530C_main == 0 && D_801155B0_vine_with_me == 0 && D_8011563C_vine_with_me == 2U) {
+    if (_CheckFlag(FLAG_MG_PRACTICE) && omSysExitReq == 0 && D_801155B0_vine_with_me == 0 && D_8011563C_vine_with_me == 2U) {
         for (var_a0 = 0; var_a0 < 2; var_a0++) {
-            if (D_80115530_vine_with_me[var_a0]->unk04 == -1 && (D_800D5558_main[D_80115530_vine_with_me[var_a0]->unk02] & R_TRIG)) {
+            if (D_80115530_vine_with_me[var_a0]->unk04 == -1 && (HuPadBtnDown[D_80115530_vine_with_me[var_a0]->unk02] & R_TRIG)) {
                 D_801155B0_vine_with_me = 1;
             }
         }
     }
-    if (D_801155B8_vine_with_me == 0 && D_800D530C_main == 0 && D_801155B0_vine_with_me == 0) {
+    if (D_801155B8_vine_with_me == 0 && omSysExitReq == 0 && D_801155B0_vine_with_me == 0) {
         return;
     }
-    if (D_800D530C_main != 0 && D_801155B0_vine_with_me == 0) {
+    if (omSysExitReq != 0 && D_801155B0_vine_with_me == 0) {
         D_801155B0_vine_with_me = 1;
     }
     if (D_801155B0_vine_with_me != 0) {
@@ -821,7 +821,7 @@ void func_801087BC_vine_with_me(void) {
     gSPDisplayList(gMainGfxPos++, D_80111B98_vine_with_me);
     gDPSetTextureLUT(gMainGfxPos++, G_TT_RGBA16);
     for (i = 0, pass = 0; i < 4; i++) {
-        sprite = HuSprGet(D_800CD1DC_main[D_80115640_vine_with_me.unk00[(i != 0 || pass != 1) ? sprites[i] : 3]].unk04, 0);
+        sprite = HuSprGet(esprite[D_80115640_vine_with_me.unk00[(i != 0 || pass != 1) ? sprites[i] : 3]].unk04, 0);
         frame = &sprite->data->pat[sprite->patNo];
         if (i != 20) {
             gDPLoadTLUT_pal256(gMainGfxPos++, sprite->data->pal);
@@ -895,7 +895,7 @@ void func_801087BC_vine_with_me(void) {
     }
     if (goalSide[0] != 0 || goalSide[1] != 0) {
         i = 3;
-        sprite = HuSprGet(D_800CD1DC_main[D_80115640_vine_with_me.unk00[14]].unk04, 0);
+        sprite = HuSprGet(esprite[D_80115640_vine_with_me.unk00[14]].unk04, 0);
         frame = &sprite->data->pat[sprite->patNo];
         gDPLoadTLUT_pal256(gMainGfxPos++, sprite->data->pal);
         for (row = 0; row < rowCounts[i]; row++) {
@@ -936,7 +936,7 @@ void func_801087BC_vine_with_me(void) {
     if (D_8011563C_vine_with_me < 3 || D_8011558C_vine_with_me >= 2) {
         s16 layer = 3;
 
-        sprite = HuSprGet(D_800CD1DC_main[D_80115640_vine_with_me.unk00[15]].unk04, 0);
+        sprite = HuSprGet(esprite[D_80115640_vine_with_me.unk00[15]].unk04, 0);
         frame = &sprite->data->pat[sprite->patNo];
         gDPSetTextureLUT(gMainGfxPos++, G_TT_NONE);
         for (row = 0; row < 4; row++) {
@@ -989,7 +989,7 @@ void func_8010ADB0_vine_with_me(Gfx **arg0, s32 arg1, s32 arg2) {
     }
     gSPDisplayList(gMainGfxPos++, D_80111BE0_vine_with_me);
     gDPSetTextureLUT(gMainGfxPos++, G_TT_RGBA16);
-    sprite = HuSprGet(D_800CD1DC_main[D_80115640_vine_with_me.unk00[16]].unk04, 0);
+    sprite = HuSprGet(esprite[D_80115640_vine_with_me.unk00[16]].unk04, 0);
     frame = &sprite->data->pat[sprite->patNo];
     gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->data->pal);
     gDPSetRenderMode(gMainGfxPos++, G_RM_AA_TEX_EDGE, G_RM_AA_TEX_EDGE2);
@@ -1031,7 +1031,7 @@ void func_8010ADB0_vine_with_me(Gfx **arg0, s32 arg1, s32 arg2) {
             }
         }
     }
-    sprite = HuSprGet(D_800CD1DC_main[D_80115640_vine_with_me.unk00[5]].unk04, 0);
+    sprite = HuSprGet(esprite[D_80115640_vine_with_me.unk00[5]].unk04, 0);
     frame = &sprite->data->pat[sprite->patNo];
     gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->data->pal);
     gDPSetRenderMode(gMainGfxPos++, G_RM_AA_OPA_SURF, G_RM_AA_OPA_SURF2);
@@ -1064,7 +1064,7 @@ void func_8010ADB0_vine_with_me(Gfx **arg0, s32 arg1, s32 arg2) {
     gDPSetBlendColor(gMainGfxPos++, 0, 0, 0, 224);
     for (i = 0; i < 2; i++) {
         xPos = (D_80115540_vine_with_me[i] * (1.0 - D_80115548_vine_with_me[i] / 20.0) + D_801155FC_vine_with_me[i] * (D_80115548_vine_with_me[i] / 20.0)) * 14.0 + 32.0;
-        sprite = HuSprGet(D_800CD1DC_main[D_80115640_vine_with_me.unk00[6 + D_80115530_vine_with_me[i]->unk03]].unk04, 0);
+        sprite = HuSprGet(esprite[D_80115640_vine_with_me.unk00[6 + D_80115530_vine_with_me[i]->unk03]].unk04, 0);
         // The extra alias is needed for matching register allocation.
         frame = iconFrame = &sprite->data->pat[sprite->patNo];
         if (D_80115530_vine_with_me[i]->unk03 == 7) {
@@ -1092,7 +1092,7 @@ void func_8010ADB0_vine_with_me(Gfx **arg0, s32 arg1, s32 arg2) {
     }
     gDPSetTextureLUT(gMainGfxPos++, G_TT_NONE);
     if (D_8011563C_vine_with_me >= 3 && D_8011558C_vine_with_me < 2) {
-        sprite = HuSprGet(D_800CD1DC_main[D_80115640_vine_with_me.unk00[15]].unk04, 0);
+        sprite = HuSprGet(esprite[D_80115640_vine_with_me.unk00[15]].unk04, 0);
         frame = &sprite->data->pat[sprite->patNo];
         gDPSetTextureLUT(gMainGfxPos++, G_TT_NONE);
         for (row = 0; row < 4; row++) {
@@ -1510,7 +1510,7 @@ void func_8010D4AC_vine_with_me(omObjData *arg0, s8 arg1, s8 arg2) {
                             }
                         }
                     }
-                } else if (sp3D7 != -1 && (D_800D5558_main[sp3C4->unk02] & A_BUTTON)) {
+                } else if (sp3D7 != -1 && (HuPadBtnDown[sp3C4->unk02] & A_BUTTON)) {
                     sp3D7 = 1;
                 }
             }

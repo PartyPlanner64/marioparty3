@@ -29,13 +29,13 @@
 // 8FB20
 
 // pad
-extern s8 D_800CBB6E_main[];
-extern u16 D_800CDA7C_main[];
-extern s8 D_800D20A1_main[];
+extern s8 HuPadStkX[];
+extern u16 HuPadBtn[];
+extern s8 HuPadStkY[];
 
 // unknown
 extern s32 D_800A178C_main[][6];
-extern u16 D_800D530C_main;
+extern u16 omSysExitReq;
 
 // LOCAL
 
@@ -227,7 +227,7 @@ void m257_CreateMinigame(void) {
 }
 
 void m257_CheckExitRequest(omObjData *object) {
-    if (D_800D530C_main == 1) { // omSysExitReq?
+    if (omSysExitReq == 1) {
         WipeCreateOut(WIPE_TYPE_NORMAL, 20);
         object->func = m257_WaitExitWipeOut;
     }
@@ -920,7 +920,7 @@ void m257_CheckPlayerJumpStart(FuncGroupContext *groupCtx, FuncContext *ctx) {
         m257_ResetFunc(object->work[1], ctx);
         return;
     }
-    if (D_800CDA7C_main[player->padId] & A_BUTTON) {
+    if (HuPadBtn[player->padId] & A_BUTTON) {
         if (ctx->work.s8[0] == 0 && !(player->stat & PLAYER_STAT_JUMPING) && player->state != PLAYER_STATE_LAND) {
             ctx->work.s8[0] = 1;
             player->stat |= PLAYER_STAT_JUMPING;
@@ -976,13 +976,13 @@ void m257_UpdatePlayerRotation(FuncGroupContext *groupCtx, FuncContext *ctx) {
     if (player->state == PLAYER_STATE_LAND || player->state == PLAYER_STATE_JUMP) {
         return;
     }
-    if (D_800CBB6E_main[player->padId] == 0 && D_800D20A1_main[player->padId] == 0) {
+    if (HuPadStkX[player->padId] == 0 && HuPadStkY[player->padId] == 0) {
         m257_SetPlayerState(player, PLAYER_STATE_IDLE, TRUE);
     } else {
         m257_SetPlayerState(player, PLAYER_STATE_WALK, TRUE);
-        direction.x = -D_800CBB6E_main[player->padId];
+        direction.x = -HuPadStkX[player->padId];
         direction.y = 0.0f;
-        direction.z = D_800D20A1_main[player->padId];
+        direction.z = HuPadStkY[player->padId];
         origin.x = 0.0f;
         origin.y = 0.0f;
         origin.z = 0.0f;
@@ -1014,7 +1014,7 @@ void m257_ExecPlayerJump(FuncGroupContext *groupCtx, FuncContext *ctx) {
     if (var_f2 == -1.0f) {
         var_f2 = Hu3DData[object->model[0]].motTime;
     }
-    if (var_f2 > 5.0f && var_f2 < 7.0f && !(D_800CDA7C_main[player->padId] & A_BUTTON)) {
+    if (var_f2 > 5.0f && var_f2 < 7.0f && !(HuPadBtn[player->padId] & A_BUTTON)) {
         player->accelY = -0.294f;
     }
     accelY = player->accelY;
@@ -1064,20 +1064,20 @@ void m257_CheckPlayerCollision(FuncGroupContext *groupCtx, FuncContext *ctx) {
 void m257_ExecPlayerIntro(FuncGroupContext *groupCtx, FuncContext *ctx) {
     PlayerData *player = ctx->data;
 
-    D_800CDA7C_main[player->padId] = 0;
-    D_800CBB6E_main[player->padId] = 0;
-    D_800D20A1_main[player->padId] = 0;
+    HuPadBtn[player->padId] = 0;
+    HuPadStkX[player->padId] = 0;
+    HuPadStkY[player->padId] = 0;
     if (player->obstacleProximityTracker->colliding) {
         ctx->work.s8[1] = 1;
         ctx->work.s8[0]++;
         if (ctx->work.s8[0] < 5) {
-            D_800CDA7C_main[player->padId] = A_BUTTON;
+            HuPadBtn[player->padId] = A_BUTTON;
         }
     } else {
         ctx->work.s8[0] = 0;
         if (ctx->work.s8[1] != 0 && ctx->work.s8[2] == 0) {
-            D_800CBB6E_main[player->padId] = sindf(ctx->work.f32[0]) * 70.0f;
-            D_800D20A1_main[player->padId] = cosdf(ctx->work.f32[0]) * 70.0f;
+            HuPadStkX[player->padId] = sindf(ctx->work.f32[0]) * 70.0f;
+            HuPadStkY[player->padId] = cosdf(ctx->work.f32[0]) * 70.0f;
             ctx->work.f32[0] += 10.0f;
             if (ctx->work.f32[0] > 180.0f) {
                 ctx->work.f32[0] = 180.0f;
@@ -1226,7 +1226,7 @@ void m257_UpdatePlayerAnimation(FuncGroupContext *groupCtx, FuncContext *ctx) {
     omObjData *object = groupCtx->object;
     HmfModel *model = &Hu3DData[object->model[0]];
 
-    if (D_800CCF58_main[model->motId].unk02 - 1 <= model->motTime) {
+    if (Hu3DMotion[model->motId].unk02 - 1 <= model->motTime) {
         player->updateAnimation = TRUE;
     }
     if (player->updateAnimation) {
@@ -1289,9 +1289,9 @@ void m257_ResetPlayerInput(FuncGroupContext *groupCtx, FuncContext *ctx) {
     PlayerData *player = ctx->data;
 
     if (player->unk24 != 99) {
-        D_800CDA7C_main[player->padId] = 0;
-        D_800CBB6E_main[player->padId] = 0;
-        D_800D20A1_main[player->padId] = 0;
+        HuPadBtn[player->padId] = 0;
+        HuPadStkX[player->padId] = 0;
+        HuPadStkY[player->padId] = 0;
     }
 }
 
@@ -1299,9 +1299,9 @@ void m257_UpdateComInput(FuncGroupContext *groupCtx, FuncContext *ctx) {
     PlayerData *player = ctx->data;
 
     player->unk24 = 99;
-    D_800CDA7C_main[player->padId] = 0;
-    D_800CBB6E_main[player->padId] = 0;
-    D_800D20A1_main[player->padId] = 0;
+    HuPadBtn[player->padId] = 0;
+    HuPadStkX[player->padId] = 0;
+    HuPadStkY[player->padId] = 0;
     if (player->stat & PLAYER_STAT_FROZEN) {
         return;
     }
@@ -1333,7 +1333,7 @@ void m257_UpdateComInput(FuncGroupContext *groupCtx, FuncContext *ctx) {
     if (ctx->work.s8[0] == 2) {
         ctx->work.s16[0]++;
         if (ctx->work.s16[0] <= ctx->work.s16[1]) {
-            D_800CDA7C_main[player->padId] = A_BUTTON;
+            HuPadBtn[player->padId] = A_BUTTON;
         } else {
             ctx->work.s16[0] = 0;
             ctx->work.s8[0] = 0;

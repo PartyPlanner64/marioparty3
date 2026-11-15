@@ -368,22 +368,22 @@ static void MBMapFullMain(void) {
     do {
         u16 pad;
         HuPrcVSleep();
-        pad = D_800C9520_main[userData];
+        pad = ContBtnDown[userData];
         dir = -((pad & 0x800) == 0);
         if (pad & 0x400) {
             dir = 1;
         }
-        if (D_800C9520_main[userData] & L_JPAD) {
+        if (ContBtnDown[userData] & L_JPAD) {
             dir = 2;
         }
-        if (D_800C9520_main[userData] & R_JPAD) {
+        if (ContBtnDown[userData] & R_JPAD) {
             dir = 3;
         }
         if (dir != -1) {
             sel += D_801007D4_shared_board[sel][dir];
         }
         D_80102AA8_shared_board = sel;
-    } while (!(D_800D5558_main[userData] & (A_BUTTON | B_BUTTON | Z_TRIG | R_TRIG)));
+    } while (!(HuPadBtnDown[userData] & (A_BUTTON | B_BUTTON | Z_TRIG | R_TRIG)));
 
     WipeCreateOut(WIPE_TYPE_NORMAL, 8);
     HuPrcSleep(8);
@@ -417,7 +417,7 @@ void MBMapFullExec(s32 playerPadNo) {
     Process* temp_s1;
     Process* temp_v0;
 
-    D_800CB99C_main = 1;
+    winPauseF = 1;
     omAllPause();
     temp_s1 = HuPrcCurrentGet();
     temp_v0 = omAddPrcObj(MBMapFullMain, 0x1005, 0, 0);
@@ -426,5 +426,5 @@ void MBMapFullExec(s32 playerPadNo) {
     HuPrcChildLink(temp_s1, temp_v0);
     HuPrcChildWatch();
     omAllUPause();
-    D_800CB99C_main = 0;
+    winPauseF = 0;
 }

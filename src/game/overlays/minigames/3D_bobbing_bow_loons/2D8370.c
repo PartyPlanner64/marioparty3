@@ -88,8 +88,8 @@ typedef struct BobbingBowLoonsItems {
     /* 0x58 */ f32 heldY;
 } BobbingBowLoonsItems; // Size 0x5C
 
-extern u16 D_800A11D0_main[];
-extern u16 D_800A11DC_main[];
+extern u16 mgInstColumnTbl[];
+extern u16 mgInstSlotTbl[];
 
 MinigameFlow D_80109720_bobbing_bow_loons = {
     MG_STATE_OPENING, MINIGAME_ITEM, MG_TIMER_NONE, MG_TIME_DISP_NONE, FALSE, MG_GAUGE_NONE, MG_RESULT_GOT_ITEM, 0,
@@ -240,7 +240,7 @@ void func_80105B64_bobbing_bow_loons(void) {
     target.x = 0.0f;
     target.y = 0.0f;
     target.z = 0.0f;
-    omCameraViewCreate(100, D_800CD1DC_main[sprite].unk04, omCameraViewSprDraw, 30.0f, &pos, &target);
+    omCameraViewCreate(100, esprite[sprite].unk04, omCameraViewSprDraw, 30.0f, &pos, &target);
     obj = omAddObj(0x50, 3, 0, -1, NULL);
     obj->model[0] = Hu3DModelRead(0x5E0003, 0x6D9);
     obj->model[1] = Hu3DModelLink(obj->model[0]);
@@ -460,7 +460,7 @@ void func_80106A00_bobbing_bow_loons(omObjData *obj) {
 void func_80106A34_bobbing_bow_loons(omObjData *obj) {
     f32 cueFrames[8] = { 40.0f, 40.0f, 40.0f, 40.0f, 40.0f, 40.0f, 40.0f, 40.0f };
 
-    if (D_800D530C_main != 0) {
+    if (omSysExitReq != 0) {
         HuAudFXAllStop();
         HuAudSeqFadeOut(30);
         WipeCreateOut(0, 20);
@@ -682,13 +682,13 @@ void func_801074CC_bobbing_bow_loons(void) {
         counts[i] = 0;
     }
     for (i = 0; i < 5; i++) {
-        value = D_800A11D0_main[4 - i];
+        value = mgInstColumnTbl[4 - i];
         counts[value]++;
         D_80109B40_bobbing_bow_loons[i] = value;
         spriteData = DataRead(itemFiles[value] | 0x210000);
         sprite = Hu3DSprModelCreate(spriteData, 0x699, 8);
         DataClose(spriteData);
-        obj->model[i] = D_800CBB60_main[sprite].modelId;
+        obj->model[i] = Hu3DSprModelData[sprite].modelId;
         items->x[i] = work->pos_x[i];
         items->y[i] = work->pos_y[i];
         items->z[i] = work->pos_z[i] - 2.0f;
@@ -707,10 +707,10 @@ void func_801074CC_bobbing_bow_loons(void) {
     if (GwPlayer[D_80109B0C_bobbing_bow_loons].stat & 1) {
         value = (u8)(rand8() % 100);
         for (j = 0, total = 0; j < 5; j++) {
-            if (value >= total && value < total + D_800A11DC_main[j]) {
+            if (value >= total && value < total + mgInstSlotTbl[j]) {
                 break;
             }
-            total += D_800A11DC_main[j];
+            total += mgInstSlotTbl[j];
         }
         if (j == 5) {
             j = 4;
@@ -1046,7 +1046,7 @@ void func_801088C0_bobbing_bow_loons(void) {
                     break;
                 }
             }
-        } else if (D_800D5558_main[GwPlayer[D_80109B0C_bobbing_bow_loons].pad] & 0x8000) {
+        } else if (HuPadBtnDown[GwPlayer[D_80109B0C_bobbing_bow_loons].pad] & 0x8000) {
             D_80109B04_bobbing_bow_loons = 3;
             break;
         }
@@ -1164,7 +1164,7 @@ void func_801090EC_bobbing_bow_loons(omObjData *obj) {
     for (i = 1; i < 5; i++) {
         Hu3DModelPosSet(obj->model[i], loons->x[i], loons->y[i], loons->z[i]);
     }
-    if (D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02 <= Hu3DData[obj->model[0]].motTime) {
+    if (Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02 <= Hu3DData[obj->model[0]].motTime) {
         for (i = 0; i < 5; i++) {
             Hu3DModelAttrSet(obj->model[i], 4, 4);
         }

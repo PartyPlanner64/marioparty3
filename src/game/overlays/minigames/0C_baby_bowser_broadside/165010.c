@@ -77,7 +77,7 @@ typedef struct BabyBowserBroadsideGame {
     /* 0x62 */ char unk_62[2];
 } BabyBowserBroadsideGame; // Size 0x64
 
-extern u8 D_800CB8B1_main[];
+extern u8 mgPlayerTeam[];
 
 typedef struct BabyBowserBroadsidePositions {
     Vec points[4][4];
@@ -132,7 +132,7 @@ s16 func_8010DC88_baby_bowser_broadside(s16 boat, s32 flags);
 void func_8010F250_baby_bowser_broadside(omObjData *object);
 void func_8010F6F8_baby_bowser_broadside(f32 *start, f32 *end);
 
-extern u8 D_800D6A90_main;
+extern u8 omAllPauseF;
 
 extern s32 D_800A178C_main[][6];
 extern s32 D_800A1790_main[][6];
@@ -248,7 +248,7 @@ void func_80105B94_baby_bowser_broadside(void) {
 }
 
 void func_80105DE4_baby_bowser_broadside(omObjData *object) {
-    if (D_800D530C_main == 1) {
+    if (omSysExitReq == 1) {
         WipeCreateOut(WIPE_TYPE_NORMAL, 20);
         object->func = func_80105E2C_baby_bowser_broadside;
     }
@@ -296,16 +296,16 @@ void func_80105F64_baby_bowser_broadside(omObjData *object) {
     counts[1] = 0;
     counts[0] = 0;
     for (i = 0; i < 4; i++) {
-        if (D_800CB8B1_main[i] >= 2 || counts[0] >= 3 || counts[1] >= 3) {
+        if (mgPlayerTeam[i] >= 2 || counts[0] >= 3 || counts[1] >= 3) {
             for (j = 0; j < 4; j++) {
-                D_800CB8B1_main[j] = GwPlayer[j].group;
+                mgPlayerTeam[j] = GwPlayer[j].group;
             }
             break;
         }
-        counts[D_800CB8B1_main[i]]++;
+        counts[mgPlayerTeam[i]]++;
     }
     for (i = 0; i < 4; i++) {
-        team = &D_80110000_baby_bowser_broadside[D_80110004_baby_bowser_broadside[i].unk_5A = D_800CB8B1_main[i]];
+        team = &D_80110000_baby_bowser_broadside[D_80110004_baby_bowser_broadside[i].unk_5A = mgPlayerTeam[i]];
         D_80110004_baby_bowser_broadside[i].unk_10 = team->count;
         team->players[team->count++] = i;
     }
@@ -459,7 +459,7 @@ void func_80106EC4_baby_bowser_broadside(omObjData *object) {
     Hu3DModelTexScroll(object->model[0], sindf(D_8010FD64_baby_bowser_broadside) * 15.0f, -D_8010FD68_baby_bowser_broadside, 64, 64);
     Hu3DModelPrimColorSet(object->model[0], (u8)(cosdf(D_8010FD6C_baby_bowser_broadside) * 32.0f + 32.0f), 0, 0, (u8)(cosdf(D_8010FD6C_baby_bowser_broadside) * 32.0f + 32.0f));
     Hu3DModelEnvColorSet(object->model[0], 64, 32, 32, 0);
-    if (omPauseChk() + D_800D6A90_main == 0) {
+    if (omPauseChk() + omAllPauseF == 0) {
         D_8010FD64_baby_bowser_broadside += 0.5f;
         if (D_8010FD64_baby_bowser_broadside >= 360.0f) {
             D_8010FD64_baby_bowser_broadside -= 360.0f;
@@ -911,9 +911,9 @@ void func_80108860_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBows
         handler->unk_1E = 30;
         handler->unk_04 = 1;
     }
-    D_800CBB6E_main[player->unk_00] = 0;
-    D_800D20A1_main[player->unk_00] = 0;
-    D_800CDA7C_main[player->unk_00] = 0;
+    HuPadStkX[player->unk_00] = 0;
+    HuPadStkY[player->unk_00] = 0;
+    HuPadBtn[player->unk_00] = 0;
     player->unk_10 = 0;
     x = model->pos.x - object->trans.x;
     z = model->pos.z - object->trans.z;
@@ -956,7 +956,7 @@ void func_80108860_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBows
             }
             if ((s32)rand16() % (handler->unk_11 + 1) == 0) {
                 if ((s16)func_80109058_baby_bowser_broadside(object, player) == 0) {
-                    ((u16 *)D_800CDA7C_main)[player->unk_00] = 0x8000;
+                    ((u16 *)HuPadBtn)[player->unk_00] = 0x8000;
                 }
             }
             break;
@@ -973,7 +973,7 @@ void func_80108860_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBows
                 if (--handler->unk_1C <= 0) {
                     handler->unk_0C = 0;
                 } else if ((s32)rand16() % (handler->unk_11 + 1) == 0) {
-                    ((u16 *)D_800CDA7C_main)[player->unk_00] = 0x8000;
+                    ((u16 *)HuPadBtn)[player->unk_00] = 0x8000;
                 }
             }
             break;
@@ -1009,7 +1009,7 @@ void func_8010913C_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBows
         if (--player->unk_58 < 0) {
             player->unk_58 = 0;
         }
-        if ((u16)D_800CDA7C_main[player->unk_00] & A_BUTTON) {
+        if ((u16)HuPadBtn[player->unk_00] & A_BUTTON) {
             if (player->unk_58 == 0 && player->unk_10 == 0) {
                 player->unk_10 = 1;
                 index = func_80109970_baby_bowser_broadside(player);
@@ -1030,8 +1030,8 @@ void func_8010913C_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBows
         } else {
             player->unk_10 = 0;
         }
-        stickX = D_800CBB6E_main[player->unk_00];
-        stickY = D_800D20A1_main[player->unk_00];
+        stickX = HuPadStkX[player->unk_00];
+        stickY = HuPadStkY[player->unk_00];
         if ((stickX == 0.0f) & (stickY == 0.0f)) {
             if (player->unk_20 != 0) {
                 player->unk_20 = 0;
@@ -1260,7 +1260,7 @@ void func_80109D94_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBows
     omObjData *object = slot->unk_00;
     HmfModel *model = &Hu3DData[object->model[0]];
 
-    if (model->motTime >= D_800CCF58_main[model->motId].unk02 - 1) {
+    if (model->motTime >= Hu3DMotion[model->motId].unk02 - 1) {
         player->unk_08 = 1;
     }
     if (player->unk_08 != 0) {

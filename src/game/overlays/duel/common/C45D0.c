@@ -242,7 +242,7 @@ void func_800DD2DC_name_81(s32 model, Vec *pos) {
 }
 
 void func_800DD30C_name_81(s32 model) {
-    if (D_800CCF58_main[Hu3DData[model].motId].unk02 <= Hu3DData[model].motTime) {
+    if (Hu3DMotion[Hu3DData[model].motId].unk02 <= Hu3DData[model].motTime) {
         Hu3DMotionTimeSet(model, 0.0f);
         Hu3DParticleAttrSet(model, 4, 0);
         Hu3DParticleCntSet(model, 0);
@@ -250,7 +250,7 @@ void func_800DD30C_name_81(s32 model) {
 }
 
 s32 func_800DD3B4_name_81(s32 arg0) {
-    return D_800CCF58_main[Hu3DData[arg0].motId].unk02 <= Hu3DData[arg0].motTime;
+    return Hu3DMotion[Hu3DData[arg0].motId].unk02 <= Hu3DData[arg0].motTime;
 }
 
 void func_800DD41C_name_81(Vec *pos) {

@@ -16,7 +16,7 @@ typedef struct CameraViewData {
     HuCamera *camera;
 } CameraViewData; // Size 0x34
 
-UnkomOvl D_800A1920_main[128] = {
+UnkomOvl omOvlHu3DParamTbl[128] = {
     { 0x1000, 0x2000, 0x0180, 0 }, // 0x00
     { 0x1000, 0x2000, 0x0180, 0 }, // 0x01
     { 0x1000, 0x2000, 0x0180, 0 }, // 0x02
@@ -148,21 +148,21 @@ UnkomOvl D_800A1920_main[128] = {
 };
 
 extern Gfx *gMainGfxPos;
-extern omObjData *D_800D6A40_main;
-extern struct str800D5298 D_800D1398_main;
-extern s16 D_800CDBC8_main;
-extern u16 D_800D530C_main;
+extern omObjData *HuAudFadeObj;
+extern struct str800D5298 HuAudFadeSysConfig;
+extern s16 HuAudMusNo;
+extern u16 omSysExitReq;
 extern u16 D_800D13EE_main;
-extern s16 D_800A1910_main;
-extern s16 D_800D037E_main;
-extern Vec D_800CD2A8_main[4];
-extern Vec D_800D6A78_main;
-extern f32 D_800CB890_main;
-extern f32 D_800CCF98_main[];
-extern f32 D_800D04B8_main[][6];
-extern f32 D_800D4198_main[];
-extern f32 D_800D5210_main;
-extern s32 D_800D6AB8_main;
+extern s16 HuAudSeChMax;
+extern s16 HuAudSubMusNo;
+extern Vec CUpM[4];
+extern Vec CUp;
+extern f32 CFanOfs;
+extern f32 CFanLenM[];
+extern f32 CFanM[][6];
+extern f32 CFanOfsM[];
+extern f32 CFanLen;
+extern s32 omSysTimerMax;
 
 void omCameraViewCreateEx(s32 priority, s16 spriteGroup, void (*draw)(CameraViewData *), f32 fov, Vec *pos, Vec *at);
 void omCameraViewMultiCreateEx(u8 count, s32 priority, s16 *spriteGroups, void (*draw)(CameraViewData *), f32 fov, Vec *pos, Vec *at);
@@ -183,10 +183,10 @@ void omOutView(omObjData *object) {
     up.z = cosdf(rot_y) * sindf(rot_x);
     D_800CE17C_main[0] = pos.x;
     D_800CE17C_main[1] = pos.z;
-    D_800CE17C_main[-1] = CRot.y; // actually D_800CE178_main?
+    D_800CE17C_main[-1] = CRot.y; // actually CFan?
     D_800CE17C_main[2] = gCameraList->fov;
-    D_800CE17C_main[3] = D_800D5210_main;
-    D_800CE17C_main[4] = D_800CB890_main;
+    D_800CE17C_main[3] = CFanLen;
+    D_800CE17C_main[4] = CFanOfs;
     Hu3DCameraPosSetV(0, &pos, &at, &up);
     Hu3DCamUpdateMtx(0);
 }
@@ -208,21 +208,21 @@ void omOutViewMulti(omObjData *object) {
         up.x = sindf(rot_y) * sindf(rot_x);
         up.y = cosdf(rot_x);
         up.z = cosdf(rot_y) * sindf(rot_x);
-        D_800D04B8_main[i][1] = pos.x;
-        D_800D04B8_main[i][2] = pos.z;
-        D_800D04B8_main[i][0] = CRotM[i].y;
-        D_800D04B8_main[i][3] = gCameraList[i].fov;
-        D_800D04B8_main[i][4] = D_800CCF98_main[i];
-        D_800D04B8_main[i][5] = D_800D4198_main[i];
+        CFanM[i][1] = pos.x;
+        CFanM[i][2] = pos.z;
+        CFanM[i][0] = CRotM[i].y;
+        CFanM[i][3] = gCameraList[i].fov;
+        CFanM[i][4] = CFanLenM[i];
+        CFanM[i][5] = CFanOfsM[i];
         Hu3DCameraPosSetV(i, &pos, &at, &up);
         Hu3DCamUpdateMtx(i);
     }
 }
 
 void omCameraViewCreate(s32 priority, s16 spriteGroup, void (*draw)(CameraViewData *), f32 fov, Vec *pos, Vec *at) {
-    D_800D6A78_main.x = 0;
-    D_800D6A78_main.y = 1.0f;
-    D_800D6A78_main.z = 0;
+    CUp.x = 0;
+    CUp.y = 1.0f;
+    CUp.z = 0;
     omCameraViewCreateEx(priority, spriteGroup, draw, fov, pos, at);
 }
 
@@ -242,7 +242,7 @@ void omCameraViewCreateEx(s32 priority, s16 spriteGroup, void (*draw)(CameraView
     omCameraLookAtToRot(pos, at, &CZoom, &CRot, &Center);
     Hu3DCameraPerspectiveSet(0, fov, 80.0f, 8000.0f);
     camera = gCameraList;
-    omCameraPosGet(&data->origin, &D_800D6A78_main);
+    omCameraPosGet(&data->origin, &CUp);
     data->zoom = CZoom;
     data->baseScale.x = camera->screenScale.x / 640.0f;
     data->baseScale.y = camera->screenScale.y / 480.0f;
@@ -255,9 +255,9 @@ void omCameraViewMultiCreate(u8 count, s32 priority, s16 *spriteGroups, void (*d
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        D_800CD2A8_main[i].x = 0;
-        D_800CD2A8_main[i].y = 1.0f;
-        D_800CD2A8_main[i].z = 0;
+        CUpM[i].x = 0;
+        CUpM[i].y = 1.0f;
+        CUpM[i].z = 0;
     }
     omCameraViewMultiCreateEx(count, priority, spriteGroups, draw, fov, pos, at);
 }
@@ -288,7 +288,7 @@ void omCameraViewMultiCreateEx(u8 count, s32 priority, s16 *spriteGroups, void (
         CRotM[i] = CRot;
         CenterM[i] = Center;
         camera = &gCameraList[i];
-        omCameraPosGet(&data->origin, &D_800CD2A8_main[i]);
+        omCameraPosGet(&data->origin, &CUpM[i]);
         data->zoom = CZoom;
         data->baseScale.x = camera->screenScale.x / 640.0f;
         data->baseScale.y = camera->screenScale.y / 480.0f;
@@ -382,10 +382,10 @@ void omCameraViewExec(omObjData *object) {
     up.z = cosdf(rot_y) * sindf(rot_x);
     D_800CE17C_main[0] = pos.x;
     D_800CE17C_main[1] = pos.z;
-    D_800CE17C_main[-1] = CRot.y; // actually D_800CE178_main?
+    D_800CE17C_main[-1] = CRot.y; // actually CFan?
     D_800CE17C_main[2] = gCameraList->fov;
-    D_800CE17C_main[3] = D_800D5210_main;
-    D_800CE17C_main[4] = D_800CB890_main;
+    D_800CE17C_main[3] = CFanLen;
+    D_800CE17C_main[4] = CFanOfs;
     Hu3DCameraPosSetV(0, &pos, &at, &up);
     Hu3DCamUpdateMtx(0);
 
@@ -394,7 +394,7 @@ void omCameraViewExec(omObjData *object) {
                      (Center.z - pos.z) * (Center.z - pos.z));
     data->scale.x = data->zoom / length * data->baseScale.x;
     data->scale.y = data->zoom / length * data->baseScale.y;
-    omCameraPosGet(&origin, &D_800D6A78_main);
+    omCameraPosGet(&origin, &CUp);
     Hu3DCam3Dto2D(0, &origin, &screenPos);
     Hu3DCam3Dto2D(0, &data->origin, &screenOrigin);
     data->offset.x = (screenPos.x - screenOrigin.x) * data->baseScale.x;
@@ -427,12 +427,12 @@ void omCameraViewMultiExec(omObjData *object) {
         up.x = sindf(rot_y) * sindf(rot_x);
         up.y = cosdf(rot_x);
         up.z = cosdf(rot_y) * sindf(rot_x);
-        D_800D04B8_main[i][1] = pos.x;
-        D_800D04B8_main[i][2] = pos.z;
-        D_800D04B8_main[i][0] = CRotM[i].y; // actually D_800CE178_main?
-        D_800D04B8_main[i][3] = gCameraList[i].fov;
-        D_800D04B8_main[i][4] = D_800CCF98_main[i];
-        D_800D04B8_main[i][5] = D_800D4198_main[i];
+        CFanM[i][1] = pos.x;
+        CFanM[i][2] = pos.z;
+        CFanM[i][0] = CRotM[i].y; // actually CFan?
+        CFanM[i][3] = gCameraList[i].fov;
+        CFanM[i][4] = CFanLenM[i];
+        CFanM[i][5] = CFanOfsM[i];
         Hu3DCameraPosSetV(i, &pos, &at, &up);
         Hu3DCamUpdateMtx(i);
 
@@ -441,7 +441,7 @@ void omCameraViewMultiExec(omObjData *object) {
                          (CenterM[i].z - pos.z) * (CenterM[i].z - pos.z));
         data->scale.x = data->zoom / length * data->baseScale.x;
         data->scale.y = data->zoom / length * data->baseScale.y;
-        omCameraPosGet(&origin, &D_800CD2A8_main[i]);
+        omCameraPosGet(&origin, &CUpM[i]);
         Hu3DCam3Dto2D(0, &origin, &screenPos);
         Hu3DCam3Dto2D(0, &data->origin, &screenOrigin);
         data->offset.x = (screenPos.x - screenOrigin.x) * data->baseScale.x;
@@ -506,16 +506,16 @@ void omCameraLookAtToRot(Vec *pos, Vec *at, f32 *zoom, Vec *rot, Vec *center) {
 }
 
 void omSysTimerCreate() {
-    D_800CE194_main = omAddObj(0x7FD8, 0, 0, -1, omSysTimerExec);
-    omSetStatBit(D_800CE194_main, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    D_800CE194_main->work[0] = D_800D6AB8_main;
+    omSysTimerObj = omAddObj(0x7FD8, 0, 0, -1, omSysTimerExec);
+    omSetStatBit(omSysTimerObj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    omSysTimerObj->work[0] = omSysTimerMax;
 }
 
 void omSysTimerExec(omObjData *object) {
     u32 *counter = object->work;
 
     if (*counter == 0) {
-        D_800D530C_main = 1;
+        omSysExitReq = 1;
     } else {
         *counter -= 1;
     }
@@ -525,17 +525,17 @@ void HuAudFadeObjCreate(void) {
     UnkAudioObjData *data;
     s32 i;
 
-    D_800D6A40_main = omAddObj(0x7FD8, 0, 0, -1, HuAudFadeObjExec);
-    data = D_800D6A40_main->data = HuMemAllocTag(sizeof(UnkAudioObjData), TAG_OVERLAY);
-    msmSysGetConfig(&D_800D1398_main);
-    D_800A1910_main = D_800D13EE_main;
-    data->unk00 = HuMemAllocTag(D_800A1910_main * sizeof(f32), TAG_OVERLAY);
-    data->unk04 = HuMemAllocTag(D_800A1910_main * sizeof(f32), TAG_OVERLAY);
-    data->unk08 = HuMemAllocTag(D_800A1910_main * sizeof(f32), TAG_OVERLAY);
-    data->unk0C = HuMemAllocTag(D_800A1910_main * sizeof(f32), TAG_OVERLAY);
-    data->unk10 = HuMemAllocTag(D_800A1910_main, TAG_OVERLAY);
-    omSetStatBit(D_800D6A40_main, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    for (i = 0; i < D_800A1910_main; i++) {
+    HuAudFadeObj = omAddObj(0x7FD8, 0, 0, -1, HuAudFadeObjExec);
+    data = HuAudFadeObj->data = HuMemAllocTag(sizeof(UnkAudioObjData), TAG_OVERLAY);
+    msmSysGetConfig(&HuAudFadeSysConfig);
+    HuAudSeChMax = D_800D13EE_main;
+    data->unk00 = HuMemAllocTag(HuAudSeChMax * sizeof(f32), TAG_OVERLAY);
+    data->unk04 = HuMemAllocTag(HuAudSeChMax * sizeof(f32), TAG_OVERLAY);
+    data->unk08 = HuMemAllocTag(HuAudSeChMax * sizeof(f32), TAG_OVERLAY);
+    data->unk0C = HuMemAllocTag(HuAudSeChMax * sizeof(f32), TAG_OVERLAY);
+    data->unk10 = HuMemAllocTag(HuAudSeChMax, TAG_OVERLAY);
+    omSetStatBit(HuAudFadeObj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    for (i = 0; i < HuAudSeChMax; i++) {
         data->unk10[i] = 0;
     }
     data->unk14 = 0;
@@ -550,13 +550,13 @@ void HuAudFadeObjCreate(void) {
 }
 
 void HuAudFadeObjExec(omObjData *object) {
-    UnkAudioObjData *data = D_800D6A40_main->data;
+    UnkAudioObjData *data = HuAudFadeObj->data;
     s16 i;
     u8 flags;
     s32 active;
     f32 volume;
 
-    for (i = 0; i < D_800A1910_main; i++) {
+    for (i = 0; i < HuAudSeChMax; i++) {
         flags = data->unk10[i];
         active = msmSeGetStatus(i);
         if (flags & 2) {
@@ -589,7 +589,7 @@ void HuAudFadeObjExec(omObjData *object) {
             }
         }
     }
-    if ((D_800A1906_main & 0x10) && data->unk34 >= 0) {
+    if ((HuAudStat & 0x10) && data->unk34 >= 0) {
         HuAudSeqVolFadeIn(data->unk34);
         data->unk34 = -1;
     }
@@ -604,7 +604,7 @@ void HuAudFadeObjExec(omObjData *object) {
             volume = data->unk2C = data->unk24;
             data->unk14 = 0;
         }
-        msmMusSetVolume(D_800CDBC8_main, volume);
+        msmMusSetVolume(HuAudMusNo, volume);
     }
     if (data->unk16 == 1) {
         volume = data->unk30 += data->unk20;
@@ -617,6 +617,6 @@ void HuAudFadeObjExec(omObjData *object) {
             volume = data->unk30 = data->unk28;
             data->unk16 = 0;
         }
-        msmMusSetVolume(D_800D037E_main, volume);
+        msmMusSetVolume(HuAudSubMusNo, volume);
     }
 }

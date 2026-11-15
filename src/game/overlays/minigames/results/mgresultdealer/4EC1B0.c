@@ -161,7 +161,7 @@ void func_80105C88_mgresultdealer(omObjData *unused) {
             break;
         case 10:
             time = Hu3DData[obj->model[0]].motTime;
-            if (time >= D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02) {
+            if (time >= Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02) {
                 D_801098CC_mgresultdealer = 0;
                 state = 15;
             }
@@ -189,7 +189,7 @@ void func_80105C88_mgresultdealer(omObjData *unused) {
             break;
         case 14:
             time = Hu3DData[obj->model[0]].motTime;
-            if (time >= D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02) {
+            if (time >= Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02) {
                 D_801098CC_mgresultdealer = 0;
                 state++;
             }
@@ -228,7 +228,7 @@ void func_801061C8_mgresultdealer(void) {
 }
 
 void func_80106234_mgresultdealer(omObjData *obj) {
-    if (D_800D530C_main == 1) {
+    if (omSysExitReq == 1) {
         if (D_801098D0_mgresultdealer == 0) {
             WipeCreateOut(WIPE_TYPE_NORMAL, 20);
             D_801098D0_mgresultdealer = 1;

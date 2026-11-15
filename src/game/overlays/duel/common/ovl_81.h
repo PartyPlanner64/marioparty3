@@ -176,7 +176,7 @@ extern s16 D_80102BFA_name_81;
 extern Vec D_80102C00_name_81;
 extern Vec D_80102C0C_name_81;
 extern Vec D_80102C18_name_81;
-extern s16 D_800CE1D0_main;
+extern s16 duelUnkF0;
 #endif
 
 void MBDBackKill(void);

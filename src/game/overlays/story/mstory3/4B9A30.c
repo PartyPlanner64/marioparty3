@@ -1036,14 +1036,14 @@ void func_8010FDB0_mstory3(omObjData *obj) {
     Hu3DMotionModelSet(obj->model[1], obj->motion[4]);
     Hu3DMotionAttrSet(obj->model[1], 4, 4);
     Hu3DMotionSpeedSet(obj->model[1], 2.0f);
-    Hu3DMotionTimeSet(obj->model[1], D_800CCF58_main[Hu3DData[obj->model[1]].motId].unk02);
+    Hu3DMotionTimeSet(obj->model[1], Hu3DMotion[Hu3DData[obj->model[1]].motId].unk02);
     do {
         time = Hu3DData[obj->model[1]].motTime;
         HuPrcVSleep();
     } while (time > 0.0f);
     Hu3DMotionModelSet(obj->model[1], obj->motion[3]);
     Hu3DMotionAttrSet(obj->model[1], 4, 4);
-    Hu3DMotionTimeSet(obj->model[1], D_800CCF58_main[Hu3DData[obj->model[1]].motId].unk02);
+    Hu3DMotionTimeSet(obj->model[1], Hu3DMotion[Hu3DData[obj->model[1]].motId].unk02);
     do {
         time = Hu3DData[obj->model[1]].motTime;
         HuPrcVSleep();

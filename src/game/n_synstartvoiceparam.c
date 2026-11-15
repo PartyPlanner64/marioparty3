@@ -23,7 +23,7 @@ void n_alSynStartVoiceParams(N_ALVoice *v, ALWaveTable *w, f32 pitch, s16 vol, A
         update->next = 0;
         update->type = AL_FILTER_START_VOICE_ALT;
         update->unity = v->unityPitch;
-        if (D_800CB8AC_main & 1) {
+        if (msmMonoF & 1) {
             update->pan = 64;
         } else {
             update->pan = pan;

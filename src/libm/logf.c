@@ -26,7 +26,7 @@ f32 logf(f32 x) {
     squared = ratio * ratio;
     for (; i < 100; i += 2) {
         power *= squared;
-        term = D_800A46A0[i] * power;
+        term = __invFactTblF[i] * power;
         result += term;
         if (term <= 1.0e-7f) {
             break;

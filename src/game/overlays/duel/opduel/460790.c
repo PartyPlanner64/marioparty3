@@ -328,7 +328,7 @@ void func_801061C4_opduel(omObjData *obj) {
 
     for (i = 0; i < 2; i++) {
         if (!(GwPlayer[i].stat & PLAYER_IS_CPU)) {
-            if (D_800C9520_main[GwPlayer[i].pad] & START_BUTTON) {
+            if (ContBtnDown[GwPlayer[i].pad] & START_BUTTON) {
                 break;
             }
         }
@@ -970,9 +970,9 @@ spin:
                     continue;
                 }
                 if (func_800F37B8_name_81(i) == 0) {
-                    if (D_800C9520_main[GwPlayer[i].pad] & A_BUTTON) {
+                    if (ContBtnDown[GwPlayer[i].pad] & A_BUTTON) {
                         choices[i] = 1;
-                    } else if (D_800C9520_main[GwPlayer[i].pad] & B_BUTTON) {
+                    } else if (ContBtnDown[GwPlayer[i].pad] & B_BUTTON) {
                         choices[i] = 2;
                     }
                 } else {
@@ -1072,7 +1072,7 @@ void func_80108FDC_opduel(void) {
     HuPrcChildLink(HuPrcCurrentGet(), D_80109218_opduel);
     HuPrcChildWatch();
     func_80106D18_opduel();
-    D_800D530C_main = 1;
+    omSysExitReq = 1;
     while (1) {
         HuPrcVSleep();
     }
@@ -1091,7 +1091,7 @@ void func_80109050_opduel(omObjData *obj) {
 }
 
 void func_801090AC_opduel(omObjData *obj) {
-    if (D_800D530C_main != 0) {
+    if (omSysExitReq != 0) {
         WipeCreateOut(2, 20);
         HuAudSeqFadeOut(60);
         obj->func = func_80109050_opduel;

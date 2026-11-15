@@ -22,6 +22,6 @@ extern s16 D_8010AC2A_storyresult;
 extern s16 D_8010AC30_storyresult;
 extern s16 D_8010AC32_storyresult;
 #endif
-extern u8 D_800CE20A_main;
+extern u8 storySceneNo;
 
 #endif

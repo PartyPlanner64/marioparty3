@@ -23,9 +23,9 @@ extern OverlayTable mod_modeovltbl[];
 #else
 #endif
 
-extern u8 D_800962F0_main;
+extern u8 padNextIdx;
 
-Vec D_80097560_main[] = {
+Vec utilViewportScale[] = {
     { 640.0f, 480.0f, 511.0f },
     { 640.0f, 480.0f, 511.0f },
     { 640.0f, 480.0f, 511.0f },
@@ -33,7 +33,7 @@ Vec D_80097560_main[] = {
     { 640.0f, 480.0f, 511.0f },
     { 0.0f, 0.0f, 0.0f },
 };
-Vec D_800975A8_main[] = {
+Vec utilViewportPos[] = {
     { 640.0f, 480.0f, 511.0f },
     { 640.0f, 480.0f, 511.0f },
     { 640.0f, 480.0f, 511.0f },
@@ -41,7 +41,7 @@ Vec D_800975A8_main[] = {
     { 640.0f, 480.0f, 511.0f },
     { 0.0f, 0.0f, 0.0f },
 };
-RectF D_800975F0_main[] = {
+RectF utilScissor[] = {
     { 0.0f, 0.0f, 320.0f, 240.0f },
     { 0.0f, 0.0f, 320.0f, 240.0f },
     { 0.0f, 0.0f, 320.0f, 240.0f },
@@ -148,27 +148,27 @@ void OvlLoad(s32 overlayIndex) {
         bss_start++;
     }
 
-    D_800962F0_main = 0;
+    padNextIdx = 0;
 }
 
 void ScissorSet(u8 camIndex, f32 arg1, f32 arg2, f32 arg3, f32 arg4) {
-    D_800975F0_main[camIndex].x1 = arg1;
-    D_800975F0_main[camIndex].y1 = arg2;
-    D_800975F0_main[camIndex].x2 = arg3;
-    D_800975F0_main[camIndex].y2 = arg4;
-    Hu3DCameraScissorSet(camIndex, &D_800975F0_main[camIndex]);
+    utilScissor[camIndex].x1 = arg1;
+    utilScissor[camIndex].y1 = arg2;
+    utilScissor[camIndex].x2 = arg3;
+    utilScissor[camIndex].y2 = arg4;
+    Hu3DCameraScissorSet(camIndex, &utilScissor[camIndex]);
 }
 
 void ViewportSet(u8 camIndex, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6) {
-    D_80097560_main[camIndex].x = arg1;
-    D_80097560_main[camIndex].y = arg2;
-    D_80097560_main[camIndex].z = arg3;
+    utilViewportScale[camIndex].x = arg1;
+    utilViewportScale[camIndex].y = arg2;
+    utilViewportScale[camIndex].z = arg3;
 
-    D_800975A8_main[camIndex].x = arg4;
-    D_800975A8_main[camIndex].y = arg5;
-    D_800975A8_main[camIndex].z = arg6;
+    utilViewportPos[camIndex].x = arg4;
+    utilViewportPos[camIndex].y = arg5;
+    utilViewportPos[camIndex].z = arg6;
 
-    Hu3DCameraViewportSet(camIndex, &D_80097560_main[camIndex], &D_800975A8_main[camIndex]);
+    Hu3DCameraViewportSet(camIndex, &utilViewportScale[camIndex], &utilViewportPos[camIndex]);
 }
 
 void omObjMotionRead(omObjData *arg0, u16 arg1, s32 arg2) {
@@ -183,8 +183,8 @@ void omObjMotionRead(omObjData *arg0, u16 arg1, s32 arg2) {
 s8 PadNextIndexGet(void) {
     s8 temp_v1;
 
-    if (gNumOfControllers > D_800962F0_main) {
-        temp_v1 = D_800962F0_main++;
+    if (gNumOfControllers > padNextIdx) {
+        temp_v1 = padNextIdx++;
     } else {
         temp_v1 = -1;
     }

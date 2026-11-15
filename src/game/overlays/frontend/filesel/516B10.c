@@ -1,6 +1,6 @@
 #include "common.h"
 
-extern u8 D_800D2132_main;
+extern u8 omSysPauseReadyF;
 
 void func_80107C84_filesel(void);
 
@@ -37,7 +37,7 @@ void func_801059D0_filesel(void) {
     Hu3DGLightColorSet(2, 0, 0, 0);
     Hu3DGLightColorSet(3, 0, 0, 0);
     Hu3DGLightDirSet(1, 0.0f, 64.0f, 192.0f);
-    D_800D2132_main = 0;
+    omSysPauseReadyF = 0;
 }
 
 void func_80105BC0_filesel(void) {

@@ -4,16 +4,16 @@
 #include "humath.h"
 #include "game/rom.h"
 
-extern OSPiHandle *D_800CDD50_main;
-static OSMesgQueue D_800B29F0_main;
-static OSMesg D_800B2A08_main[10];
-extern void *D_800CCFA8_main;
-extern OSMesgQueue D_800D6B28_main;
+extern OSPiHandle *cartRomHandle;
+static OSMesgQueue dmaMesgQueue;
+static OSMesg dmaMesgBuf[10];
+extern void *piMesgBuf;
+extern OSMesgQueue piMesgQueue;
 
 void dmaInit(void) {
-    osCreatePiManager(OS_PRIORITY_PIMGR, &D_800D6B28_main, &D_800CCFA8_main, 0x2A);
-    D_800CDD50_main = osCartRomInit();
-    osCreateMesgQueue(&D_800B29F0_main, D_800B2A08_main, ARRAY_COUNT(D_800B2A08_main));
+    osCreatePiManager(OS_PRIORITY_PIMGR, &piMesgQueue, &piMesgBuf, 0x2A);
+    cartRomHandle = osCartRomInit();
+    osCreateMesgQueue(&dmaMesgQueue, dmaMesgBuf, ARRAY_COUNT(dmaMesgBuf));
 }
 
 s32 dmaStart(OSIoMesg *msg, u8 pri, s32 direction, u8 *src, u8 *dest, u32 size, OSMesgQueue *retQueue) {
@@ -22,7 +22,7 @@ s32 dmaStart(OSIoMesg *msg, u8 pri, s32 direction, u8 *src, u8 *dest, u32 size, 
     msg->dramAddr = dest;
     msg->devAddr = (u32)src;
     msg->size = size;
-    return osEPiStartDma(D_800CDD50_main, msg, direction);
+    return osEPiStartDma(cartRomHandle, msg, direction);
 }
 
 s32 dmaRead(u32 src, u8 *dest, s32 size) {
@@ -39,13 +39,13 @@ s32 dmaRead(u32 src, u8 *dest, s32 size) {
         if (size > 0x4000) {
             curBlockSize = 0x4000;
         }
-        err = dmaStart(&msg, 0, 0, &((u8*)src)[curBlockOffset], &dest[curBlockOffset], curBlockSize, &D_800B29F0_main);
+        err = dmaStart(&msg, 0, 0, &((u8*)src)[curBlockOffset], &dest[curBlockOffset], curBlockSize, &dmaMesgQueue);
 
         if (err != 0) {
             return err;
         }
 
-        osRecvMesg(&D_800B29F0_main, 0, 1);
+        osRecvMesg(&dmaMesgQueue, 0, 1);
         size -= 0x4000;
         curBlockOffset += 0x4000;
     }
@@ -67,13 +67,13 @@ s32 dmaReadOvl(u32 src, u8 *dest, s32 size) {
         if (size > 0x4000) {
             var_v1 = 0x4000;
         }
-        err = dmaStart(&msg, 0, 0, &((u8*)src)[curBlockOffset], &dest[curBlockOffset], var_v1, &D_800B29F0_main);
+        err = dmaStart(&msg, 0, 0, &((u8*)src)[curBlockOffset], &dest[curBlockOffset], var_v1, &dmaMesgQueue);
 
         if (err != 0) {
             return err;
         }
 
-        osRecvMesg(&D_800B29F0_main, 0, 1);
+        osRecvMesg(&dmaMesgQueue, 0, 1);
         size -= 0x4000;
         curBlockOffset += 0x4000;
     }

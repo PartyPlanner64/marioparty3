@@ -543,14 +543,14 @@ void func_80110620_mstory5(omObjData *obj) {
     Hu3DMotionModelSet(model, obj->motion[5]);
     Hu3DMotionAttrSet(model, 4, 4);
     Hu3DMotionSpeedSet(model, 2.0f);
-    Hu3DMotionTimeSet(model, D_800CCF58_main[Hu3DData[model].motId].unk02);
+    Hu3DMotionTimeSet(model, Hu3DMotion[Hu3DData[model].motId].unk02);
     do {
         time = Hu3DData[model].motTime;
         HuPrcVSleep();
     } while (time > 0.0f);
     Hu3DMotionModelSet(model, obj->motion[6]);
     Hu3DMotionAttrSet(model, 4, 4);
-    Hu3DMotionTimeSet(model, D_800CCF58_main[Hu3DData[model].motId].unk02);
+    Hu3DMotionTimeSet(model, Hu3DMotion[Hu3DData[model].motId].unk02);
     do {
         time = Hu3DData[model].motTime;
         HuPrcVSleep();
@@ -617,7 +617,7 @@ void func_80110620_mstory5(omObjData *obj) {
         Hu3DMotionAttrSet(model, 4, 4);
         Hu3DMotionAttrSet(model, 2, 0);
         Hu3DMotionSpeedSet(model, 5.0f);
-        Hu3DMotionTimeSet(model, D_800CCF58_main[Hu3DData[model].motId].unk02);
+        Hu3DMotionTimeSet(model, Hu3DMotion[Hu3DData[model].motId].unk02);
         while (Hu3DData[model].motTime > 0.0f) {
             HuPrcVSleep();
         }
@@ -700,7 +700,7 @@ void func_801114E8_mstory5(void) {
     Hu3DAnimAttrSet(D_801154E6_mstory5, 1, 0);
     Hu3DAnimBankSet(D_801154E6_mstory5, 0);
     D_801154F0_mstory5 = Hu3DAnimLink(Hu3DData[obj->model[1]].hmf, D_801154E6_mstory5, 0, D_80114ED0_mstory5);
-    D_801154E4_mstory5[0] = D_800D1714_main[D_801154E4_mstory5[0]].animIdx;
+    D_801154E4_mstory5[0] = Hu3DAnimData[D_801154E4_mstory5[0]].animIdx;
     data = DataRead(0xA0080);
     D_801154E4_mstory5[1] = (s16)Hu3DAnimDataCreate(data);
     HuMemMemoryFreePerm(data);
@@ -916,7 +916,7 @@ void func_80112104_mstory5(void) {
         }
         Hu3DSprModelColorSet(spr, 0xF0, 0x40, 8);
         Hu3DSprModelTPLvlSet(spr, 0x80);
-        model = D_800CBB60_main[spr].modelId;
+        model = Hu3DSprModelData[spr].modelId;
         Hu3DModelPosSet(model, 0.0f, 0.0f, 0.0f);
         Hu3DModelRotSet(model, 0.0f, 0.0f, 0.0f);
         Hu3DModelScaleSet(model, 0.0f, 0.0f, 0.0f);

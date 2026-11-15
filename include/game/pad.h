@@ -13,16 +13,16 @@ typedef struct {
 } HuPad;
 
 #ifndef NO_EXTERN_VARIABLES
-extern u16 D_800CBB66_main[];
-extern s16 D_800CDA7C_main[];
-extern s16 D_800D056A_main[];
-extern u16 D_800D1244_main[];
-extern s16 D_800D1382_main[];
-extern s8 D_800CE2D0_main[][8];
-extern s8 D_800D5418_main[][8];
-extern s16 D_800D5542_main;
+extern u16 HuPadBtnOld[];
+extern s16 HuPadBtn[];
+extern s16 HuPadStkXSum[];
+extern u16 HuPadBtnRep[];
+extern s16 HuPadStkYSum[];
+extern s8 HuPadStkXHis[][8];
+extern s8 HuPadStkYHis[][8];
+extern s16 HuPadReadNum;
 extern s16 gNumOfControllers;
-extern s8 D_800D20A1_main[];
+extern s8 HuPadStkY[];
 #endif
 s32 _InitController(u16* channel);
 s16 InitController(s16 ch, s32 arg1);

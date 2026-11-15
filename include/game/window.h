@@ -152,7 +152,7 @@ typedef struct TextWindow {
 } TextWindow;                   /* size = 0x27C */
 
 #ifndef NO_EXTERN_VARIABLES
-extern u8 D_800A2150_main;
+extern u8 winInitF;
 #endif
 
 void HuWinInit(void);

@@ -68,7 +68,7 @@ extern omObjData *D_8010CECC_curtain_call[][2];
 extern char *D_8010B120_curtain_call[8];
 extern const s16 D_8010B4A0_curtain_call[];
 extern s32 D_800A178C_main[][6];
-extern u8 D_800D6A90_main;
+extern u8 omAllPauseF;
 
 void func_801062EC_curtain_call(void);
 void func_8010AF78_curtain_call(void);
@@ -183,10 +183,10 @@ void func_80105A3C_curtain_call(void) {
 }
 
 void func_80105B04_curtain_call(s32 playerIndex) {
-    D_800CDA7C_main[GwPlayer[playerIndex].pad] = 0;
-    D_800D5558_main[GwPlayer[playerIndex].pad] = 0;
-    D_800CBB6E_main[GwPlayer[playerIndex].pad] = 0;
-    D_800D20A1_main[GwPlayer[playerIndex].pad] = 0;
+    HuPadBtn[GwPlayer[playerIndex].pad] = 0;
+    HuPadBtnDown[GwPlayer[playerIndex].pad] = 0;
+    HuPadStkX[GwPlayer[playerIndex].pad] = 0;
+    HuPadStkY[GwPlayer[playerIndex].pad] = 0;
 }
 
 s32 func_80105B7C_curtain_call(s32 arg0) {
@@ -221,57 +221,57 @@ void func_80105D14_curtain_call(s16 conNo) {
         osSyncPrintf("\n ConNo False! \n");
         return;
     }
-    if ((u16)D_800CDA7C_main[conNo] & D_JPAD) {
+    if ((u16)HuPadBtn[conNo] & D_JPAD) {
         for (i = 0; i < 1; i++) {
             CRotM[i].x = func_801059BC_curtain_call(CRotM[i].x, 1.0f);
         }
     }
-    if ((u16)D_800CDA7C_main[GwPlayer[0].pad] & U_JPAD) {
+    if ((u16)HuPadBtn[GwPlayer[0].pad] & U_JPAD) {
         for (i = 0; i < 1; i++) {
             CRotM[i].x = func_801059BC_curtain_call(CRotM[i].x, -1.0f);
         }
     }
-    if ((u16)D_800CDA7C_main[conNo] & L_JPAD) {
+    if ((u16)HuPadBtn[conNo] & L_JPAD) {
         for (i = 0; i < 1; i++) {
             CRotM[i].y = func_801059BC_curtain_call(CRotM[i].y, 1.0f);
         }
     }
-    if ((u16)D_800CDA7C_main[conNo] & R_JPAD) {
+    if ((u16)HuPadBtn[conNo] & R_JPAD) {
         for (i = 0; i < 1; i++) {
             CRotM[i].y = func_801059BC_curtain_call(CRotM[i].y, -1.0f);
         }
     }
-    if ((u16)D_800CDA7C_main[conNo] & A_BUTTON) {
+    if ((u16)HuPadBtn[conNo] & A_BUTTON) {
         for (i = 0; i < 1; i++) {
             CZoomM[i] += 10.0f;
         }
     }
-    if ((u16)D_800CDA7C_main[conNo] & B_BUTTON) {
+    if ((u16)HuPadBtn[conNo] & B_BUTTON) {
         for (i = 0; i < 1; i++) {
             CZoomM[i] -= 10.0f;
         }
     }
-    if ((u16)D_800CDA7C_main[conNo] & L_CBUTTONS) {
+    if ((u16)HuPadBtn[conNo] & L_CBUTTONS) {
         for (i = 0; i < 1; i++) {
             CenterM[i].x -= 10.0f;
         }
     }
-    if ((u16)D_800CDA7C_main[conNo] & R_CBUTTONS) {
+    if ((u16)HuPadBtn[conNo] & R_CBUTTONS) {
         for (i = 0; i < 1; i++) {
             CenterM[i].x += 10.0f;
         }
     }
-    if ((u16)D_800CDA7C_main[conNo] & U_CBUTTONS) {
+    if ((u16)HuPadBtn[conNo] & U_CBUTTONS) {
         for (i = 0; i < 1; i++) {
             CenterM[i].y += 10.0f;
         }
     }
-    if ((u16)D_800CDA7C_main[conNo] & D_CBUTTONS) {
+    if ((u16)HuPadBtn[conNo] & D_CBUTTONS) {
         for (i = 0; i < 1; i++) {
             CenterM[i].y -= 10.0f;
         }
     }
-    if (D_800D5558_main[conNo] & Z_TRIG) {
+    if (HuPadBtnDown[conNo] & Z_TRIG) {
         osSyncPrintf("\n");
         for (i = 0; i < 1; i++) {
             osSyncPrintf("CameraNo / %d   Zoom / %f\n", i, CZoomM[i]);
@@ -305,7 +305,7 @@ void func_801062EC_curtain_call(void) {
 }
 
 void func_80106408_curtain_call(void) {
-    D_800D6A58_main = 1;
+    omSysPauseDisableF = 1;
     HuWinInit();
     D_8010CF34_curtain_call = omAddPrcObj(func_801062EC_curtain_call, 0x3F00, 0x800, 0);
 }
@@ -320,7 +320,7 @@ void func_8010644C_curtain_call(void) {
 }
 
 void func_80106494_curtain_call(void) {
-    D_800D6A58_main = 0;
+    omSysPauseDisableF = 0;
 }
 
 void func_801064A0_curtain_call(omObjData *arg0) {
@@ -584,13 +584,13 @@ void func_80106B78_curtain_call(omObjData *obj) {
     if ((D_8010CE88_curtain_call & 0xF) == 0) {
         switch (func_80105B7C_curtain_call(3)) {
             case 0:
-                D_800CBB6E_main[obj->work[3]] = 0;
+                HuPadStkX[obj->work[3]] = 0;
                 break;
             case 1:
-                D_800CBB6E_main[obj->work[3]] = 10;
+                HuPadStkX[obj->work[3]] = 10;
                 break;
             case 2:
-                D_800CBB6E_main[obj->work[3]] = -10;
+                HuPadStkX[obj->work[3]] = -10;
                 break;
         }
     }
@@ -707,9 +707,9 @@ void func_80106C18_curtain_call(omObjData *obj) {
                     } else if (D_8010CE88_curtain_call < D_8010CF08_curtain_call[player][1]) {
                         if (D_8010CF18_curtain_call[player] != D_8010CEFF_curtain_call) {
                             if (entry->unk_10 != 0) {
-                                D_800CBB6E_main[pad] = 10;
+                                HuPadStkX[pad] = 10;
                             } else {
-                                D_800CBB6E_main[pad] = -10;
+                                HuPadStkX[pad] = -10;
                             }
                         }
                     }
@@ -726,9 +726,9 @@ void func_80106C18_curtain_call(omObjData *obj) {
                     } else if (D_8010CE88_curtain_call < D_8010CF08_curtain_call[player][1]) {
                         if (D_8010CF18_curtain_call[player] == D_8010CEFF_curtain_call) {
                             if (entry->unk_10 != 0) {
-                                D_800CBB6E_main[pad] = 10;
+                                HuPadStkX[pad] = 10;
                             } else {
-                                D_800CBB6E_main[pad] = -10;
+                                HuPadStkX[pad] = -10;
                             }
                         }
                     }
@@ -738,9 +738,9 @@ void func_80106C18_curtain_call(omObjData *obj) {
                         func_80106B78_curtain_call(obj);
                     } else if (D_8010CF18_curtain_call[player] != D_8010CEFF_curtain_call) {
                         if (entry->unk_10 != 0) {
-                            D_800CBB6E_main[pad] = 10;
+                            HuPadStkX[pad] = 10;
                         } else {
-                            D_800CBB6E_main[pad] = -10;
+                            HuPadStkX[pad] = -10;
                         }
                     }
                     break;
@@ -749,9 +749,9 @@ void func_80106C18_curtain_call(omObjData *obj) {
                         func_80106B78_curtain_call(obj);
                     } else if (D_8010CF18_curtain_call[player] == D_8010CEFF_curtain_call) {
                         if (entry->unk_10 != 0) {
-                            D_800CBB6E_main[pad] = 10;
+                            HuPadStkX[pad] = 10;
                         } else {
-                            D_800CBB6E_main[pad] = -10;
+                            HuPadStkX[pad] = -10;
                         }
                     }
                     break;
@@ -766,9 +766,9 @@ void func_80106C18_curtain_call(omObjData *obj) {
                         }
                     } else {
                         if (entry->unk_10 != 0) {
-                            D_800CBB6E_main[pad] = 10;
+                            HuPadStkX[pad] = 10;
                         } else {
-                            D_800CBB6E_main[pad] = -10;
+                            HuPadStkX[pad] = -10;
                         }
                     }
                     break;
@@ -777,9 +777,9 @@ void func_80106C18_curtain_call(omObjData *obj) {
                         func_80106B78_curtain_call(obj);
                     } else if (D_8010CF18_curtain_call[player] == D_8010CEFF_curtain_call) {
                         if (entry->unk_10 != 0) {
-                            D_800CBB6E_main[pad] = 10;
+                            HuPadStkX[pad] = 10;
                         } else {
-                            D_800CBB6E_main[pad] = -10;
+                            HuPadStkX[pad] = -10;
                         }
                     } else {
                         if (entry->unk_0C == 0) {
@@ -835,7 +835,7 @@ void func_80107680_curtain_call(omObjData *obj) {
         case 3:
             if (entry->unk_0A == 1) {
                 if (entry->unk_08 <= 0) {
-                    if (D_800CBB6E_main[pad] < -5) {
+                    if (HuPadStkX[pad] < -5) {
                         if ((s32)entry->unk_44.x == -180) {
                             entry->unk_44.x = 0.0f;
                         }
@@ -844,7 +844,7 @@ void func_80107680_curtain_call(omObjData *obj) {
                     }
                 }
                 if (entry->unk_08 >= 0) {
-                    if (D_800CBB6E_main[pad] > 5) {
+                    if (HuPadStkX[pad] > 5) {
                         if ((s32)entry->unk_44.x == 0) {
                             entry->unk_44.x = -180.0f;
                         }
@@ -937,7 +937,7 @@ void func_80107680_curtain_call(omObjData *obj) {
                     }
                     break;
                 case 1:
-                    if ((s32)entry->unk_44.x % 60 == 0 && (D_800D5558_main[pad] & 0x8000)) {
+                    if ((s32)entry->unk_44.x % 60 == 0 && (HuPadBtnDown[pad] & 0x8000)) {
                         HuAudPlayerFXPlay(0x417, obj->work[0]);
                         entry->unk_0A = 2;
                     }
@@ -949,7 +949,7 @@ void func_80107680_curtain_call(omObjData *obj) {
                     }
                     break;
                 case 3:
-                    if (D_800D5558_main[pad] & 0x4000) {
+                    if (HuPadBtnDown[pad] & 0x4000) {
                         HuAudPlayerFXPlay(0x418, obj->work[0]);
                         entry->unk_0A = 4;
                     }
@@ -1145,7 +1145,7 @@ void func_80108670_curtain_call(omObjData *obj) {
             entry->unk_5C.x = entry->unk_5C.z = 1.0f;
             break;
         case 1:
-            if (omPauseChk() + D_800D6A90_main != 0) {
+            if (omPauseChk() + omAllPauseF != 0) {
                 Hu3DModelAttrSet(obj->model[0], 4, 4);
                 Hu3DModelAttrSet(obj->model[1], 4, 4);
             } else {
@@ -1172,7 +1172,7 @@ void func_80108670_curtain_call(omObjData *obj) {
             /* fallthrough */
         case 4:
         case 5:
-            if (omPauseChk() + D_800D6A90_main != 0) {
+            if (omPauseChk() + omAllPauseF != 0) {
                 Hu3DModelAttrSet(obj->model[0], 4, 4);
                 Hu3DModelAttrSet(obj->model[1], 4, 4);
             } else {
@@ -1818,7 +1818,7 @@ void func_8010A7FC_curtain_call(omObjData *obj) {
 }
 
 void func_8010A8E8_curtain_call(omObjData *obj) {
-    if (D_800D530C_main == 1) {
+    if (omSysExitReq == 1) {
         func_8010644C_curtain_call();
         WipeCreateOut(0, 20);
         obj->func = func_8010A7FC_curtain_call;

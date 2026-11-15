@@ -107,7 +107,7 @@ void func_800E1A24_name_81(void) {
     playerCopy = player1;
     MBDModelKill(effect);
 
-    D_800CE1D0_main = 0;
+    duelUnkF0 = 0;
     func_800EB8B0_name_81(D_80102BF0_name_81, D_80102BF2_name_81);
     func_800EB6C4_name_81(D_80102BF0_name_81, MBDMasuLinkMasuIdGet(playerCopy->clink, player1->cidx));
     func_800EB6C4_name_81(D_80102BF2_name_81, MBDMasuLinkMasuIdGet(player2->clink, player2->cidx));
@@ -265,7 +265,7 @@ void func_800E209C_name_81(void) {
         player->bidx = D_80102BFA_name_81;
     }
     player->rev = 0;
-    D_800CE1D0_main = 0;
+    duelUnkF0 = 0;
     func_800EB6C4_name_81(D_80102BF0_name_81, MBDMasuLinkMasuIdGet(player->clink, player->cidx));
     if (GwSystem.current_board_index == 5 && GwSystem.boardData.halfWordBytes[0] != 0) {
         player->rev = 1;

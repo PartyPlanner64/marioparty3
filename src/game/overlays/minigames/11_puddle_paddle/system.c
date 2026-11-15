@@ -73,8 +73,8 @@ typedef struct PuddlePaddleShip { // 0x34 bytes
     /* 0x32 */ char unk_32[2];
 } PuddlePaddleShip; // Size 0x34
 
-extern s16 D_800CDD6A_main;
-extern u8 D_800D2008_main;
+extern s16 Hu3DModelTag;
+extern u8 Hu3DBufNo;
 
 Gfx D_80111240_puddle_paddle[] = {
     gsSPSegment(0x00, 0x00000000),
@@ -474,7 +474,7 @@ void func_8010C664_puddle_paddle(void) {
             model = &Hu3DData[work->unk_0C];
             func_80088910_main(model->mtx, work->unk_1C.x, work->unk_1C.y, work->unk_1C.z);
             if (work->unk_08 != 0) {
-                if (model->motTime >= D_800CCF58_main[Hu3DData[work->unk_0C].motId].unk02) {
+                if (model->motTime >= Hu3DMotion[Hu3DData[work->unk_0C].motId].unk02) {
                     model->motTime = 0;
                     if (model->hmf->unk98 != NULL) {
                         model->hmf->unk98->unk08 = 0;
@@ -728,7 +728,7 @@ s16 func_8010D5E4_puddle_paddle(HuSprAnimData *sprite, f32 alpha) {
     hmf = Hu3DData[model].hmf;
     hmf->unk60->unk50 |= 0x01010000;
     HuMemFree(hmf->unk3C);
-    hmf->unk3C = HuMemAllocTag(0x14, D_800CDD6A_main);
+    hmf->unk3C = HuMemAllocTag(0x14, Hu3DModelTag);
     func_8010EFEC_puddle_paddle(sprite, hmf, 1.0f, 0, 0x1E);
     gSPDisplayList(gfx++, osVirtualToPhysical(D_80111330_puddle_paddle));
     gDPPipeSync(gfx++);
@@ -805,14 +805,14 @@ s16 func_8010D5E4_puddle_paddle(HuSprAnimData *sprite, f32 alpha) {
     hmf->unk3C->unk00[0] = hmf->unk3C->unk10 = HuMemAllocTag(size, hmf->unk0E);
     bcopy(dlBuf, hmf->unk3C->unk00[0], size);
     HuMemFree(dlBuf);
-    for (i = 0; i < D_800D1FF0_main; i++) {
+    for (i = 0; i < Hu3DBufNum; i++) {
         gfx = *(hmf->unk3C->unk00 + (i + 1)) = HuMemAllocTag(0x100, hmf->unk0E);
         gDPPipeSync(gfx++);
         gSPSegment(gfx++, 0x02, osVirtualToPhysical(sprite->pat->data));
         gSPDisplayList(gfx++, osVirtualToPhysical(hmf->unk3C->unk10));
         gSPEndDisplayList(gfx++);
     }
-    hmf->unk3C->unk00[0] = hmf->unk3C->unk00[D_800D2008_main + 1];
+    hmf->unk3C->unk00[0] = hmf->unk3C->unk00[Hu3DBufNo + 1];
     return model;
 }
 
@@ -830,7 +830,7 @@ s16 func_8010E1FC_puddle_paddle(HuSprAnimData *sprite, RGBA *color) {
     hmf = Hu3DData[model].hmf;
     hmf->unk60->unk50 |= 0x01010000;
     HuMemFree(hmf->unk3C);
-    hmf->unk3C = HuMemAllocTag(0x18, D_800CDD6A_main);
+    hmf->unk3C = HuMemAllocTag(0x18, Hu3DModelTag);
     func_8010EFEC_puddle_paddle(sprite, hmf, 1.0f, 0, 0);
     gSPDisplayList(gfx++, osVirtualToPhysical(D_80111330_puddle_paddle));
     gDPPipeSync(gfx++);
@@ -907,7 +907,7 @@ s16 func_8010E1FC_puddle_paddle(HuSprAnimData *sprite, RGBA *color) {
     hmf->unk3C->unk14 = HuMemAllocTag(size, hmf->unk0E);
     bcopy(dlBuf, hmf->unk3C->unk14, size);
     HuMemFree(dlBuf);
-    for (i = 0; i < D_800D1FF0_main; i++) {
+    for (i = 0; i < Hu3DBufNum; i++) {
         gfx = hmf->unk3C->unk00[i + 1] = HuMemAllocTag(0x100, hmf->unk0E);
         gDPPipeSync(gfx++);
         gSPSegment(gfx++, 0x02, osVirtualToPhysical(sprite->pat->data));
@@ -918,14 +918,14 @@ s16 func_8010E1FC_puddle_paddle(HuSprAnimData *sprite, RGBA *color) {
         gDPPipeSync(gfx++);
         gSPEndDisplayList(gfx++);
     }
-    hmf->unk3C->unk00[0] = hmf->unk3C->unk00[D_800D2008_main + 1];
+    hmf->unk3C->unk00[0] = hmf->unk3C->unk00[Hu3DBufNo + 1];
     return model;
 }
 
 void func_8010EDE8_puddle_paddle(u16 model, HuSprAnimData *sprite, u16 frame) {
     HmfModel *modelData = Hu3DData + model;
     HmfData *data = modelData->hmf;
-    Gfx *gfx = data->unk3C->unk00[D_800D2008_main + 1];
+    Gfx *gfx = data->unk3C->unk00[Hu3DBufNo + 1];
 
     data->unk3C->unk00[0] = gfx;
     gDPPipeSync(gfx);
@@ -938,7 +938,7 @@ void func_8010EDE8_puddle_paddle(u16 model, HuSprAnimData *sprite, u16 frame) {
 void func_8010EEB8_puddle_paddle(u16 model, HuSprAnimData *sprite, u16 frame, u8 *color) {
     HmfModel *modelData = Hu3DData + model;
     HmfData *data = modelData->hmf;
-    Gfx *gfx = data->unk3C->unk00[D_800D2008_main + 1];
+    Gfx *gfx = data->unk3C->unk00[Hu3DBufNo + 1];
 
     data->unk3C->unk00[0] = gfx;
     gDPPipeSync(gfx);
@@ -1021,7 +1021,7 @@ s16 func_8010EFEC_puddle_paddle(HuSprAnimData *arg0, HmfData *arg1, f32 arg2, u1
         }
     }
     var_s1 = temp_s7;
-    for (var_s0_2 = 0; var_s0_2 < D_800D1FF0_main; var_s0_2++) {
+    for (var_s0_2 = 0; var_s0_2 < Hu3DBufNum; var_s0_2++) {
         arg1->unk44[var_s0_2] = HuMemAllocTag(temp_s3 * sizeof(Vtx), arg1->unk0E);
         var_t0 = &arg1->unk44[var_s0_2]->v;
         var_a3 = &var_s1->v;

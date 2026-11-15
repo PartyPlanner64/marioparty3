@@ -69,8 +69,8 @@ extern MsetupCameraKeyframe D_801196C0_msetup[];
 extern s8 D_80119418_msetup;
 extern Vec D_8011A920_msetup;
 extern Vec D_8011A92C_msetup;
-extern f32 D_800D5210_main;
-extern f32 D_800CB890_main;
+extern f32 CFanLen;
+extern f32 CFanOfs;
 
 void func_8010B82C_msetup(s32);
 s32 func_8010B858_msetup(void);
@@ -113,7 +113,7 @@ void func_801059A0_msetup(void) {
     omInitObjMan(51, 25);
     HuWinInit();
     omGameSysInit();
-    D_800CD280_main = 1;
+    Hu3DScreenClearF = 1;
     D_8011A940_msetup = 80.0f;
     D_8011A93C_msetup = 6000.0f;
     D_80119414_msetup = 58.0f;
@@ -193,7 +193,7 @@ void func_80105C4C_msetup(omObjData *object) {
         }
     }
     if (D_80119410_msetup == 0) {
-        if (D_800D530C_main != 0) {
+        if (omSysExitReq != 0) {
             goto createWipe;
         }
     } else if (D_80119410_msetup == 1) {
@@ -380,8 +380,8 @@ void func_80106320_msetup(void) {
         D_800CE17C_main[1] = pos.z;
         D_800CE17C_main[-1] = CRot.y;
         D_800CE17C_main[2] = gCameraList->fov;
-        D_800CE17C_main[3] = D_800D5210_main;
-        D_800CE17C_main[4] = D_800CB890_main;
+        D_800CE17C_main[3] = CFanLen;
+        D_800CE17C_main[4] = CFanOfs;
         Hu3DCameraPosSetV(0, &pos, &at, &up);
         Hu3DCamUpdateMtx(0);
         HuPrcVSleep();
@@ -484,7 +484,7 @@ void func_801068F4_msetup(MsetupCameraKeyframe *keys, f32 speed, void (*callback
     Center.y = keys[segment].values.preset.center.y;
     Center.z = keys[segment].values.preset.center.z;
     gCameraList->fov = D_80119414_msetup = keys[segment].values.preset.fov;
-    D_800CB99C_main = 0;
+    winPauseF = 0;
 }
 
 void func_80106DF8_msetup(void) {

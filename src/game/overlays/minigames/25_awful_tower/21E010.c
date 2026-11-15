@@ -29,7 +29,7 @@ typedef struct {
 } AwfulTowerPlayer; // Size 0xC
 
 extern s32 D_800A178C_main[][6];
-extern EffectGroup *D_800D6A00_main[];
+extern EffectGroup *EffectGroupData[];
 extern f32 D_800EB760_minigame;
 extern Gfx *gMainGfxPos;
 extern omObjData *D_800EBE70_minigame[];
@@ -146,7 +146,7 @@ void func_801059A0_awful_tower(void) {
     Hu3DSprModelInit(0x20);
     omInitObjMan(100, 0);
     omGameSysInit();
-    D_800CD280_main = 1;
+    Hu3DScreenClearF = 1;
     CamSetupInit(4);
     CamSetupMapCullAddMulti(4);
     for (i = 0; i < 4; i++) {
@@ -266,7 +266,7 @@ void func_801061FC_awful_tower(omObjData *object) {
     D_8010D3DC_awful_tower++;
     switch (D_8010D3E4_awful_tower) {
         case 0:
-            if (D_8010D3DC_awful_tower == 51 && D_8010D3D8_awful_tower == 0 && D_800D530C_main == 0) {
+            if (D_8010D3DC_awful_tower == 51 && D_8010D3D8_awful_tower == 0 && omSysExitReq == 0) {
                 HuAudSeqPlay(0x33);
             }
             break;
@@ -387,8 +387,8 @@ void func_801061FC_awful_tower(omObjData *object) {
             }
             break;
     }
-    if (D_8010D3D8_awful_tower != 0 || D_800D530C_main != 0) {
-        if (D_800D530C_main != 0) {
+    if (D_8010D3D8_awful_tower != 0 || omSysExitReq != 0) {
+        if (omSysExitReq != 0) {
             if (D_8010D3FD_awful_tower == 0) {
                 WipeCreateOut(WIPE_TYPE_NORMAL, 20);
                 HuAudSeqFadeOut(20);
@@ -457,7 +457,7 @@ void func_80106CDC_awful_tower(omObjData *object) {
         D_8010CB98_awful_tower[0] = data->unk55;
     } else {
         data->unk55 = Hu3DSprModelLink(D_8010CB98_awful_tower[0], 8);
-        object->model[0] = D_800CBB60_main[data->unk55].modelId;
+        object->model[0] = Hu3DSprModelData[data->unk55].modelId;
         Hu3DModelObjAttrSet(object->model[0], 0x70000000, 0x70000000);
     }
     data->unk44 = 0.0f;
@@ -504,8 +504,8 @@ s16 func_80106F58_awful_tower(s32 file, u16 *sprite) {
 
     HuMemMemoryFreePerm(data);
     *sprite = idx = Hu3DSprModelCreate((void *)-1, 0x6B9, 0);
-    D_800CBB60_main[idx].unk_02 = anim;
-    return D_800CBB60_main[idx].modelId;
+    Hu3DSprModelData[idx].unk_02 = anim;
+    return Hu3DSprModelData[idx].modelId;
 }
 
 void func_80106FDC_awful_tower(omObjData *object) {
@@ -677,7 +677,7 @@ void func_80107858_awful_tower(void) {
     gSPDisplayList(gMainGfxPos++, D_8010CBA0_awful_tower);
     gDPSetTextureLUT(gMainGfxPos++, G_TT_RGBA16);
     for (i = 3; i >= 0; i--) {
-        sprite = HuSprGet(D_800CD1DC_main[D_8010D3D0_awful_tower[groups[i]]].unk04, 0);
+        sprite = HuSprGet(esprite[D_8010D3D0_awful_tower[groups[i]]].unk04, 0);
         frame = &sprite->data->pat[sprite->patNo];
         for (j = 0; j < 9; j++) {
             y = j * 16;
@@ -873,14 +873,14 @@ void func_80108E8C_awful_tower(omObjData *object) {
             D_8010D110_awful_tower[i] += D_8010D0D0_awful_tower[i];
         }
     }
-    savedBtn = D_800CDA7C_main[player->pad];
-    savedBtn2 = D_800D5558_main[player->pad];
-    savedBtn3 = D_800D1244_main[player->pad];
-    savedStickX = D_800CBB6E_main[player->pad];
-    savedStickY = D_800D20A1_main[player->pad];
-    savedStick2 = D_800D056A_main[player->pad];
-    savedStick3 = D_800D1382_main[player->pad];
-    D_800D20A1_main[player->pad] = D_800D1382_main[player->pad] = 0;
+    savedBtn = HuPadBtn[player->pad];
+    savedBtn2 = HuPadBtnDown[player->pad];
+    savedBtn3 = HuPadBtnRep[player->pad];
+    savedStickX = HuPadStkX[player->pad];
+    savedStickY = HuPadStkY[player->pad];
+    savedStick2 = HuPadStkXSum[player->pad];
+    savedStick3 = HuPadStkYSum[player->pad];
+    HuPadStkY[player->pad] = HuPadStkYSum[player->pad] = 0;
     if (D_8010CC04_awful_tower[group] != 0 && D_8010D110_awful_tower[D_8010CC04_awful_tower[group]] < 0.0f) {
         object->trans.y += D_8010D110_awful_tower[D_8010CC04_awful_tower[group]];
         D_8010CC28_awful_tower[group] = D_8010CC04_awful_tower[group];
@@ -1013,13 +1013,13 @@ void func_80108E8C_awful_tower(omObjData *object) {
                     ? rand8() % jitters[player->cpuDifficulty] - jitters[player->cpuDifficulty] / 2
                     : 0;
         }
-        D_800CDA7C_main[player->pad] = 0;
-        D_800D5558_main[player->pad] = 0;
-        D_800D1244_main[player->pad] = 0;
-        D_800CBB6E_main[player->pad] = 0;
-        D_800D20A1_main[player->pad] = 0;
-        D_800D056A_main[player->pad] = 0;
-        D_800D1382_main[player->pad] = 0;
+        HuPadBtn[player->pad] = 0;
+        HuPadBtnDown[player->pad] = 0;
+        HuPadBtnRep[player->pad] = 0;
+        HuPadStkX[player->pad] = 0;
+        HuPadStkY[player->pad] = 0;
+        HuPadStkXSum[player->pad] = 0;
+        HuPadStkYSum[player->pad] = 0;
         if (D_8010CC40_awful_tower[group] != 0 && D_8010CBFC_awful_tower[group] != -1 &&
             D_8010CBFC_awful_tower[group] != D_8010CC3C_awful_tower[group] - 1 &&
             D_8010CBFC_awful_tower[group] != D_8010CC3C_awful_tower[group]) {
@@ -1066,36 +1066,36 @@ void func_80108E8C_awful_tower(omObjData *object) {
             }
         }
         if (D_8010CC40_awful_tower[group] == D_8010CC90_awful_tower[D_8010CC3C_awful_tower[group] - 1] + 3) {
-            D_800CDA7C_main[player->pad] |= 0x8000;
-            D_800D5558_main[player->pad] = 0x8000;
+            HuPadBtn[player->pad] |= 0x8000;
+            HuPadBtnDown[player->pad] = 0x8000;
         } else if (D_8010CC40_awful_tower[group] > D_8010CC90_awful_tower[D_8010CC3C_awful_tower[group] - 1] + 3) {
-            D_800CDA7C_main[player->pad] |= 0x8000;
+            HuPadBtn[player->pad] |= 0x8000;
         }
         if (D_8010CC40_awful_tower[group] != 0) {
             f32 dx = (platCols[D_8010CC3C_awful_tower[group] - 1] * 150 - 150) * 1.125 - object->trans.x;
 
-            D_800CBB6E_main[player->pad] = (dx > 30.0f)    ? 60
+            HuPadStkX[player->pad] = (dx > 30.0f)    ? 60
                                            : (dx > 15.0f)  ? dx / 7.5 - 1.0
                                            : (dx < -30.0f) ? -60
                                            : (dx < -15.0f) ? dx / 7.5 + 1.0
                                                            : 0;
-            D_800D056A_main[player->pad] = D_800CBB6E_main[player->pad] * 2;
+            HuPadStkXSum[player->pad] = HuPadStkX[player->pad] * 2;
             D_8010CC40_awful_tower[group]++;
             D_8010CC40_awful_tower[group] %= 60;
-            if (D_800CBB6E_main[player->pad] == 0 && D_8010CBFC_awful_tower[group] == D_8010CC3C_awful_tower[group]) {
+            if (HuPadStkX[player->pad] == 0 && D_8010CBFC_awful_tower[group] == D_8010CC3C_awful_tower[group]) {
                 D_8010CC40_awful_tower[group] = 0;
             }
         }
         if (D_8010CBFC_awful_tower[group] == 0) {
             if (object->trans.x < -40.0f) {
                 D_8010CC40_awful_tower[group] = 0;
-                D_800CBB6E_main[player->pad] = 60;
-                D_800D056A_main[player->pad] = D_800CBB6E_main[player->pad] * 2;
+                HuPadStkX[player->pad] = 60;
+                HuPadStkXSum[player->pad] = HuPadStkX[player->pad] * 2;
             }
             if (D_8010CBFC_awful_tower[group] == 0 && object->trans.x > 20.0f) {
                 D_8010CC40_awful_tower[group] = 0;
-                D_800CBB6E_main[player->pad] = -60;
-                D_800D056A_main[player->pad] = D_800CBB6E_main[player->pad] * 2;
+                HuPadStkX[player->pad] = -60;
+                HuPadStkXSum[player->pad] = HuPadStkX[player->pad] * 2;
             }
         }
         if (D_8010D3E4_awful_tower == 3 && D_8010D3FC_awful_tower == group) {
@@ -1113,19 +1113,19 @@ void func_80108E8C_awful_tower(omObjData *object) {
         closeDists[2] = 4500.0f;
     }
     if (D_8010CBFC_awful_tower[group] == 15 && (D_8010D3E4_awful_tower != 3 || D_8010D3DC_awful_tower < 30)) {
-        D_800CBB6E_main[player->pad] = 0;
-        D_800D056A_main[player->pad] = 0;
-        D_800CDA7C_main[player->pad] &= 0x7FFF;
-        D_800D5558_main[player->pad] &= 0x7FFF;
-        D_800D1244_main[player->pad] &= 0x7FFF;
+        HuPadStkX[player->pad] = 0;
+        HuPadStkXSum[player->pad] = 0;
+        HuPadBtn[player->pad] &= 0x7FFF;
+        HuPadBtnDown[player->pad] &= 0x7FFF;
+        HuPadBtnRep[player->pad] &= 0x7FFF;
     }
     if (D_8010CC74_awful_tower[group] != 0) {
-        if (D_8010CC74_awful_tower[group] == ((D_800CBB6E_main[player->pad] < 0)   ? -1
-                                              : (D_800CBB6E_main[player->pad] > 0) ? 1
+        if (D_8010CC74_awful_tower[group] == ((HuPadStkX[player->pad] < 0)   ? -1
+                                              : (HuPadStkX[player->pad] > 0) ? 1
                                                                                    : 0)) {
             D_8010CC74_awful_tower[group] = 0;
-            D_800CBB6E_main[player->pad] = 0;
-            D_800D056A_main[player->pad] = 0;
+            HuPadStkX[player->pad] = 0;
+            HuPadStkXSum[player->pad] = 0;
         }
     }
     for (i = 0; i < 5; i++) {
@@ -1148,7 +1148,7 @@ void func_80108E8C_awful_tower(omObjData *object) {
         }
     }
     if (D_8010CC28_awful_tower[group] != 0) {
-        D_800CDA7C_main[player->pad] &= 0x7FFF;
+        HuPadBtn[player->pad] &= 0x7FFF;
     }
     if (!(D_8010D3FC_awful_tower < 4 &&
           (D_8010D3E4_awful_tower == 7 || (D_8010D3E4_awful_tower == 4 && D_8010D3DC_awful_tower >= 30)))) {
@@ -1185,7 +1185,7 @@ void func_80108E8C_awful_tower(omObjData *object) {
         s32 cameras;
 
         if (D_8010D330_awful_tower[group][i] != 0 && coinNear[i] != 0 && coin->unk54 == 0) {
-            EffectGroupModel *effect = D_800D6A00_main[D_8010D2CC_awful_tower[group]]->models;
+            EffectGroupModel *effect = EffectGroupData[D_8010D2CC_awful_tower[group]]->models;
 
             EffectGroupEmit(D_8010D2CC_awful_tower[group], D_8010D390_awful_tower[i]->trans.x,
                                D_8010D390_awful_tower[i]->trans.y, D_8010D390_awful_tower[i]->trans.z);
@@ -1411,13 +1411,13 @@ void func_80108E8C_awful_tower(omObjData *object) {
         Hu3DModelAttrSet(D_8010D3E8_awful_tower->model[group + 16], 4, 4);
     }
     CenterM[group].y = D_8010D320_awful_tower[group];
-    D_800CDA7C_main[player->pad] = savedBtn;
-    D_800D5558_main[player->pad] = savedBtn2;
-    D_800D1244_main[player->pad] = savedBtn3;
-    D_800CBB6E_main[player->pad] = savedStickX;
-    D_800D20A1_main[player->pad] = savedStickY;
-    D_800D056A_main[player->pad] = savedStick2;
-    D_800D1382_main[player->pad] = savedStick3;
+    HuPadBtn[player->pad] = savedBtn;
+    HuPadBtnDown[player->pad] = savedBtn2;
+    HuPadBtnRep[player->pad] = savedBtn3;
+    HuPadStkX[player->pad] = savedStickX;
+    HuPadStkY[player->pad] = savedStickY;
+    HuPadStkXSum[player->pad] = savedStick2;
+    HuPadStkYSum[player->pad] = savedStick3;
     if (group == 3) {
         D_8010CBE8_awful_tower++;
         for (i = 0; i < 15; i++) {

@@ -268,17 +268,17 @@ typedef struct UnkStardustBattleObj {
     /* 0x78 */ void (*func_78)(omObjData *);
 } UnkStardustBattleObj; // sizeof 0x7C
 
-extern u8 D_800D2008_main;
+extern u8 Hu3DBufNo;
 extern s32 D_800A178C_main[][6];
 extern s16 D_80113DE6_stardust_battle[]; // low halfword of D_80113DE4
-extern s16 D_800CD1B0_main;
-extern s16 *D_800D04B4_main;
-extern HuMtx4F *D_800D1358_main;
-extern s16 D_800D138A_main;
-extern HuMtx4F D_800D5A00_main[];
-extern u8 D_800D6A90_main;
+extern s16 motionBakeMtxCnt;
+extern s16 *motionBakeNodeMap;
+extern HuMtx4F *motionBakeMtx;
+extern s16 Hu3DObjMtxStackIdx;
+extern HuMtx4F Hu3DObjMtxStack[];
+extern u8 omAllPauseF;
 extern f32 D_800EB770_minigame;
-extern s16 D_800CDD6A_main;
+extern s16 Hu3DModelTag;
 
 const s16 D_80114100_stardust_battle[] = {
     0x8272, 0x8273, 0x8260, 0x8271, 0x8273, 0x0000
@@ -865,7 +865,7 @@ void func_801065D8_stardust_battle(omObjData *object) {
             object->func = func_801065B4_stardust_battle;
         }
         D_80113DE4_stardust_battle--;
-    } else if (D_800D530C_main == 1 && WipeStatGet() == 0) {
+    } else if (omSysExitReq == 1 && WipeStatGet() == 0) {
         D_80113DE4_stardust_battle = 16;
         WipeColorSet(0, 0, 0);
         WipeCreateOut(0, D_80113DE6_stardust_battle[0]);
@@ -1170,21 +1170,21 @@ void func_801073F4_stardust_battle(omObjData *object) {
     s16 stickX;
     s16 stickY;
 
-    if (omPauseChk() + D_800D6A90_main != 0) {
+    if (omPauseChk() + omAllPauseF != 0) {
         Hu3DModelAttrSet(object->model[0], 4, 0);
         return;
     }
     if (obj->func_6C != NULL) {
         obj->func_6C(object);
     }
-    btnDown = D_800D5558_main[obj->pad];
-    stickX = D_800CBB6E_main[obj->pad];
-    stickY = D_800D20A1_main[obj->pad];
+    btnDown = HuPadBtnDown[obj->pad];
+    stickX = HuPadStkX[obj->pad];
+    stickY = HuPadStkY[obj->pad];
     if (model->motIdShape == object->motion[39]) {
-        D_800D5558_main[obj->pad] = 0;
-        D_800CBB6E_main[obj->pad] = D_800D20A1_main[obj->pad] = 0;
+        HuPadBtnDown[obj->pad] = 0;
+        HuPadStkX[obj->pad] = HuPadStkY[obj->pad] = 0;
     } else if (obj->unk_66 != -1) {
-        D_800D5558_main[obj->pad] &= ~0x4000;
+        HuPadBtnDown[obj->pad] &= ~0x4000;
     }
     if (obj->func_70 != NULL) {
         obj->func_70(object);
@@ -1196,9 +1196,9 @@ void func_801073F4_stardust_battle(omObjData *object) {
     if (obj->func_74 != NULL) {
         obj->func_74(object);
     }
-    D_800D5558_main[obj->pad] = btnDown;
-    D_800CBB6E_main[obj->pad] = stickX;
-    D_800D20A1_main[obj->pad] = stickY;
+    HuPadBtnDown[obj->pad] = btnDown;
+    HuPadStkX[obj->pad] = stickX;
+    HuPadStkY[obj->pad] = stickY;
     func_80107760_stardust_battle(object, noControl);
     if (!noControl && obj->unk_14 == 0 && MgFlowStatGet() == MG_STATE_PLAY) {
         obj->unk_10 = func_8010E524_stardust_battle(object, 0, NULL);
@@ -1266,7 +1266,7 @@ void func_80107760_stardust_battle(omObjData *object, s16 noControl) {
                 }
                 break;
             case -2:
-                if (model->motShapeTime >= D_800CCF58_main[model->motIdShape].unk02) {
+                if (model->motShapeTime >= Hu3DMotion[model->motIdShape].unk02) {
                     Hu3DData[object->model[0]].motIdShape = 0xFF;
                     obj->unk_66 = -1;
                 }
@@ -1319,13 +1319,13 @@ void func_80107760_stardust_battle(omObjData *object, s16 noControl) {
                         obj->unk_68 = 1;
                     }
                 }
-                if (model->motIdShape == object->motion[38] && (D_800D5558_main[obj->pad] & 0x4000)) {
+                if (model->motIdShape == object->motion[38] && (HuPadBtnDown[obj->pad] & 0x4000)) {
                     if (data->unk5C != 64) {
                         Hu3DMotionShapeSet(object->model[0], object->motion[39], 0);
                         model->motShapeSpeed = 2.0f;
                     }
                 } else if (model->motIdShape == object->motion[39] &&
-                           model->motShapeTime >= D_800CCF58_main[model->motIdShape].unk02 * 0.5f) {
+                           model->motShapeTime >= Hu3DMotion[model->motIdShape].unk02 * 0.5f) {
                     func_8010E4C8_stardust_battle(obj->unk_66, 0.0f, data->unk3C, 0.0f);
                     func_8010E35C_stardust_battle(obj->unk_66);
                     obj->unk_66 = -2;
@@ -1531,8 +1531,8 @@ void func_80108454_stardust_battle(omObjData *object) {
 
 void func_801084B0_stardust_battle(omObjData *object) {
     UnkStardustBattleObj *obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle(object);
-    f32 stickX = D_800CBB6E_main[obj->pad];
-    f32 stickY = D_800D20A1_main[obj->pad];
+    f32 stickX = HuPadStkX[obj->pad];
+    f32 stickY = HuPadStkY[obj->pad];
     f32 scale;
 
     if (stickX > 60.0f) {
@@ -1540,14 +1540,14 @@ void func_801084B0_stardust_battle(omObjData *object) {
     } else if (stickX < -60.0f) {
         stickX = -60.0f;
     } else {
-        stickX = D_800CBB6E_main[obj->pad];
+        stickX = HuPadStkX[obj->pad];
     }
     if (stickY > 60.0f) {
         stickY = 60.0f;
     } else if (stickY < -60.0f) {
         stickY = -60.0f;
     } else {
-        stickY = D_800D20A1_main[obj->pad];
+        stickY = HuPadStkY[obj->pad];
     }
     if (fabs(stickX) < 8.0) {
         stickX = 0.0f;
@@ -1561,8 +1561,8 @@ void func_801084B0_stardust_battle(omObjData *object) {
     } else {
         scale = 0.0f;
     }
-    D_800CBB6E_main[obj->pad] = stickX * scale * 60.0f * 0.8f;
-    D_800D20A1_main[obj->pad] = stickY * scale * 60.0f * 0.8f;
+    HuPadStkX[obj->pad] = stickX * scale * 60.0f * 0.8f;
+    HuPadStkY[obj->pad] = stickY * scale * 60.0f * 0.8f;
 }
 
 void func_801086E8_stardust_battle(omObjData *object) {
@@ -1570,8 +1570,8 @@ void func_801086E8_stardust_battle(omObjData *object) {
     s32 stickX;
     s32 stickY;
 
-    if (object->trans.y == 0.0f && ((stickX = D_800CBB6E_main[obj->pad], ABS(stickX) > 16) ||
-                                    (stickY = D_800D20A1_main[obj->pad], ABS(stickY) > 16))) {
+    if (object->trans.y == 0.0f && ((stickX = HuPadStkX[obj->pad], ABS(stickX) > 16) ||
+                                    (stickY = HuPadStkY[obj->pad], ABS(stickY) > 16))) {
         obj->unk_0C = 1;
     } else {
         obj->unk_0C = 0;
@@ -1713,7 +1713,7 @@ void func_80108C14_stardust_battle(omObjData *object) {
 void func_80108D84_stardust_battle(omObjData *object) {
     UnkStardustBattleStage *stage = (UnkStardustBattleStage *)func_80111FEC_stardust_battle(object);
 
-    if (omPauseChk() + D_800D6A90_main == 0) {
+    if (omPauseChk() + omAllPauseF == 0) {
         stage->unk_0C += 2.0f;
         if (stage->unk_0C >= 64.0f) {
             stage->unk_0C -= 128.0f;
@@ -1745,7 +1745,7 @@ void func_80108EC4_stardust_battle(s16 model, f32 u, f32 v, s32 width, s32 heigh
     if (hmf != NULL) {
         count = hmf->unk60[index].unk2A;
         src = &hmf->unk40[hmf->unk60[index].unk28];
-        dst = &hmf->unk44[D_800D2008_main][hmf->unk60[index].unk28];
+        dst = &hmf->unk44[Hu3DBufNo][hmf->unk60[index].unk28];
         wrapU = width << 5;
         wrapV = height << 5;
         du = u * 32.0f;
@@ -1953,7 +1953,7 @@ void func_80109B18_stardust_battle(omObjData *object) {
     UnkStardustBattleStage *stage = (UnkStardustBattleStage *)func_80111FEC_stardust_battle(object);
     UnkStardustBattlePoint *point = stage->unk_24;
     HmfModel *model = &Hu3DData[object->model[1]];
-    Vtx *vtx = model->hmf->unk44[D_800D2008_main];
+    Vtx *vtx = model->hmf->unk44[Hu3DBufNo];
     UnkStardustBattleStreak *streak;
     f32 dx;
     f32 dz;
@@ -1969,7 +1969,7 @@ void func_80109B18_stardust_battle(omObjData *object) {
     s32 i;
     s32 j;
 
-    if (omPauseChk() + D_800D6A90_main == 0) {
+    if (omPauseChk() + omAllPauseF == 0) {
         func_8010A418_stardust_battle(object);
     }
     if (stage->unk_24 == NULL) {
@@ -2224,7 +2224,7 @@ void func_8010A5E0_stardust_battle(omObjData *object) {
 void func_8010A690_stardust_battle(omObjData *object) {
     UnkStardustBattleStage *stage = (UnkStardustBattleStage *)func_80111FEC_stardust_battle(object);
 
-    if (omPauseChk() + D_800D6A90_main == 0) {
+    if (omPauseChk() + omAllPauseF == 0) {
         stage->unk_1C += 2.0f;
         if (stage->unk_1C >= 64.0f) {
             stage->unk_1C -= 128.0f;
@@ -2992,7 +2992,7 @@ void func_8010CE5C_stardust_battle(omObjData *object) {
         if (star->active == 0) {
             continue;
         }
-        if (omPauseChk() + D_800D6A90_main != 0) {
+        if (omPauseChk() + omAllPauseF != 0) {
             if (star->unk_18 != 0) {
                 Hu3DModelVtxMorph(star->effect, stars->effectId2, star->unk_68);
             }
@@ -3894,7 +3894,7 @@ void func_8010FBCC_stardust_battle(omObjData *object) {
         if (model->attr & 4) {
             continue;
         }
-        if (D_800CCF58_main[model->motId].unk02 <= model->motTime) {
+        if (Hu3DMotion[model->motId].unk02 <= model->motTime) {
             Hu3DModelAttrSet(object->model[i], 4, 4);
             model->motTime = 0.0f;
             model->motSpeed = 0.0f;
@@ -4124,7 +4124,7 @@ void func_801107E4_stardust_battle(void) {
     D_80114BB4_stardust_battle = 0;
     omAddObj(31, 0, 0, -1, func_80111004_stardust_battle);
     camera = gCameraList;
-    for (i = 1; i < D_800D1FF0_main; i++) {
+    for (i = 1; i < Hu3DBufNum; i++) {
         camera->viewports[i].vp.vscale[0] = camera->viewports[0].vp.vscale[0];
         camera->viewports[i].vp.vscale[1] = camera->viewports[0].vp.vscale[1];
         camera->viewports[i].vp.vscale[2] = camera->viewports[0].vp.vscale[2];
@@ -4141,13 +4141,13 @@ void func_80110914_stardust_battle(void) {
     speed = 1.0f;
     switch (D_80113F08_stardust_battle) {
         case 1:
-            if ((u16)D_800CDA7C_main[0] & A_BUTTON) {
+            if ((u16)HuPadBtn[0] & A_BUTTON) {
                 speed = 8.0f;
             }
-            if (D_800CDA7C_main[0] & B_BUTTON) {
+            if (HuPadBtn[0] & B_BUTTON) {
                 speed = 0.5f;
             }
-            if (D_800D5558_main[0] & START_BUTTON) {
+            if (HuPadBtnDown[0] & START_BUTTON) {
                 Center.x = 0.0f;
                 Center.y = 191.2f;
                 Center.z = 0.2f;
@@ -4156,30 +4156,30 @@ void func_80110914_stardust_battle(void) {
                 CRot.z = 0.0f;
                 CZoom = 1069.0f;
             } else {
-                delta.rot.x = (f32)D_800D20A1_main[0] * 0.125 * speed;
-                delta.rot.y = (f32)D_800CBB6E_main[0] * 0.125 * speed;
-                if (D_800CDA7C_main[0] & L_JPAD) {
+                delta.rot.x = (f32)HuPadStkY[0] * 0.125 * speed;
+                delta.rot.y = (f32)HuPadStkX[0] * 0.125 * speed;
+                if (HuPadBtn[0] & L_JPAD) {
                     delta.center.x = speed * 2.0;
                 }
-                if (D_800CDA7C_main[0] & R_JPAD) {
+                if (HuPadBtn[0] & R_JPAD) {
                     delta.center.x = -(speed * 2.0);
                 }
-                if (D_800CDA7C_main[0] & U_JPAD) {
+                if (HuPadBtn[0] & U_JPAD) {
                     delta.center.z = -(speed * 2.0);
                 }
-                if (D_800CDA7C_main[0] & D_JPAD) {
+                if (HuPadBtn[0] & D_JPAD) {
                     delta.center.z = speed * 2.0;
                 }
-                if (D_800CDA7C_main[0] & U_CBUTTONS) {
+                if (HuPadBtn[0] & U_CBUTTONS) {
                     delta.center.y = speed * 2.0;
                 }
-                if (D_800CDA7C_main[0] & D_CBUTTONS) {
+                if (HuPadBtn[0] & D_CBUTTONS) {
                     delta.center.y = -(speed * 2.0);
                 }
-                if (D_800CDA7C_main[0] & R_CBUTTONS) {
+                if (HuPadBtn[0] & R_CBUTTONS) {
                     delta.zoom = speed * 2.0;
                 }
-                if (D_800CDA7C_main[0] & L_CBUTTONS) {
+                if (HuPadBtn[0] & L_CBUTTONS) {
                     delta.zoom = -(speed * 2.0);
                 }
                 delta.center.x += Center.x;
@@ -4192,51 +4192,51 @@ void func_80110914_stardust_battle(void) {
                 func_801117E4_stardust_battle(delta.center.x, delta.center.y, delta.center.z, delta.rot.x,
                                               delta.rot.y, delta.rot.z, delta.zoom, 1);
             }
-            sprintf(D_800D5218_main, "CAMERA TEST_MODE");
+            sprintf(omDBGStrBuf, "CAMERA TEST_MODE");
             print8((s16)D_80113F0C_stardust_battle + 20, (s16)D_80113F10_stardust_battle + 80,
-                   D_800D5218_main);
-            sprintf(D_800D5218_main, " CENTER X>%3.3f Y>%3.3f Z>%3.3f ", Center.x, Center.y, Center.z);
+                   omDBGStrBuf);
+            sprintf(omDBGStrBuf, " CENTER X>%3.3f Y>%3.3f Z>%3.3f ", Center.x, Center.y, Center.z);
             print8((s16)D_80113F0C_stardust_battle + 20, (s16)D_80113F10_stardust_battle + 88,
-                   D_800D5218_main);
-            sprintf(D_800D5218_main, " ROT    X>%3.3f Y>%3.3f Z>%3.3f ", CRot.x, CRot.y, CRot.z);
+                   omDBGStrBuf);
+            sprintf(omDBGStrBuf, " ROT    X>%3.3f Y>%3.3f Z>%3.3f ", CRot.x, CRot.y, CRot.z);
             print8((s16)D_80113F0C_stardust_battle + 20, (s16)D_80113F10_stardust_battle + 96,
-                   D_800D5218_main);
-            sprintf(D_800D5218_main, " ZOOM   %3.3f ", CZoom);
+                   omDBGStrBuf);
+            sprintf(omDBGStrBuf, " ZOOM   %3.3f ", CZoom);
             print8((s16)D_80113F0C_stardust_battle + 20, (s16)D_80113F10_stardust_battle + 104,
-                   D_800D5218_main);
+                   omDBGStrBuf);
             break;
         case 2:
-            if ((D_800CDA7C_main[0] & R_JPAD) || (D_800CDA7C_main[0] & R_CBUTTONS)) {
+            if ((HuPadBtn[0] & R_JPAD) || (HuPadBtn[0] & R_CBUTTONS)) {
                 D_80113F0C_stardust_battle++;
             }
-            if (D_800CDA7C_main[0] & (L_JPAD | L_CBUTTONS)) {
+            if (HuPadBtn[0] & (L_JPAD | L_CBUTTONS)) {
                 D_80113F0C_stardust_battle--;
             }
-            if (D_800CDA7C_main[0] & (D_JPAD | D_CBUTTONS)) {
+            if (HuPadBtn[0] & (D_JPAD | D_CBUTTONS)) {
                 D_80113F10_stardust_battle++;
             }
-            if (D_800CDA7C_main[0] & (U_JPAD | U_CBUTTONS)) {
+            if (HuPadBtn[0] & (U_JPAD | U_CBUTTONS)) {
                 D_80113F10_stardust_battle--;
             }
             fontcolor = 8;
-            sprintf(D_800D5218_main, "CAMERA TEST_MODE ");
+            sprintf(omDBGStrBuf, "CAMERA TEST_MODE ");
             print8((s16)D_80113F0C_stardust_battle + 20, (s16)D_80113F10_stardust_battle + 80,
-                   D_800D5218_main);
-            sprintf(D_800D5218_main, " CENTER X>%3.3f Y>%3.3f Z>%3.3f ", Center.x, Center.y, Center.z);
+                   omDBGStrBuf);
+            sprintf(omDBGStrBuf, " CENTER X>%3.3f Y>%3.3f Z>%3.3f ", Center.x, Center.y, Center.z);
             print8((s16)D_80113F0C_stardust_battle + 20, (s16)D_80113F10_stardust_battle + 88,
-                   D_800D5218_main);
-            sprintf(D_800D5218_main, " ROT    X>%3.3f Y>%3.3f Z>%3.3f ", CRot.x, CRot.y, CRot.z);
+                   omDBGStrBuf);
+            sprintf(omDBGStrBuf, " ROT    X>%3.3f Y>%3.3f Z>%3.3f ", CRot.x, CRot.y, CRot.z);
             print8((s16)D_80113F0C_stardust_battle + 20, (s16)D_80113F10_stardust_battle + 96,
-                   D_800D5218_main);
-            sprintf(D_800D5218_main, " ZOOM   %3.3f ", CZoom);
+                   omDBGStrBuf);
+            sprintf(omDBGStrBuf, " ZOOM   %3.3f ", CZoom);
             print8((s16)D_80113F0C_stardust_battle + 20, (s16)D_80113F10_stardust_battle + 104,
-                   D_800D5218_main);
+                   omDBGStrBuf);
             break;
         case 3:
             D_80113F08_stardust_battle = 0;
             break;
     }
-    if (D_800D5558_main[0] & R_TRIG) {
+    if (HuPadBtnDown[0] & R_TRIG) {
         if (D_80113F08_stardust_battle == 1) {
             osSyncPrintf("CAMERA TEST_MODE \n");
             osSyncPrintf(" CENTER X>%3.3f Y>%3.3f Z>%3.3f \n", Center.x, Center.y, Center.z);
@@ -4555,25 +4555,25 @@ void func_80112040_stardust_battle(s16 model, const char *name, HuMtx4F *out) {
     HmfModel *mdl = &Hu3DData[model];
     HmfData *hmf = mdl->hmf;
     s16 node = SearchObjectIndex(hmf, name);
-    HmfModelData_Unk64_Unk8C_Struct *motion = &D_800CCF58_main[Hu3DData[model].motId];
+    HmfModelData_Unk64_Unk8C_Struct *motion = &Hu3DMotion[Hu3DData[model].motId];
 
-    D_800D1358_main = out;
-    D_800D04B4_main = nodeMap;
-    D_800CD1B0_main = 0;
+    motionBakeMtx = out;
+    motionBakeNodeMap = nodeMap;
+    motionBakeMtxCnt = 0;
     if (mdl->motIdShape != 0xFF) {
-        hmf->unk94 = &D_800CCF58_main[mdl->motIdShape];
+        hmf->unk94 = &Hu3DMotion[mdl->motIdShape];
         hmf->unkAC = mdl->motShapeTime;
     } else {
         hmf->unk94 = NULL;
     }
     if (mdl->motIdShift != 0xFF && mdl->unk0C != 0) {
-        hmf->unk90 = &D_800CCF58_main[mdl->motIdShift];
+        hmf->unk90 = &Hu3DMotion[mdl->motIdShift];
         hmf->unkA4 = mdl->motShiftTime;
         hmf->unkA8 = (f32)mdl->unk0E / mdl->unk0C;
     } else {
         hmf->unk90 = NULL;
     }
-    guMtxIdentF(D_800D5A00_main[0]);
+    guMtxIdentF(Hu3DObjMtxStack[0]);
     Hu3DMotionExec(hmf, mdl->motTime, motion, 1);
     if (hmf->unk90 != NULL) {
         Hu3DSubMotionExec(hmf, hmf->unkA4, hmf->unkA8);
@@ -4581,9 +4581,9 @@ void func_80112040_stardust_battle(s16 model, const char *name, HuMtx4F *out) {
     if (hmf->unk94 != NULL) {
         Hu3DMotionExec(hmf, hmf->unkAC, hmf->unk94, 0);
     }
-    D_800D138A_main = 0;
+    Hu3DObjMtxStackIdx = 0;
     objMtxCalcFrame(hmf, 0, node);
-    if (D_800CD1B0_main >= 2) {
+    if (motionBakeMtxCnt >= 2) {
         osSyncPrintf("Mtx Made Over\n");
     }
 }
@@ -4617,7 +4617,7 @@ s32 func_801122D0_stardust_battle(void) {
     hmf = Hu3DData[model].hmf;
     hmf->unk60->unk50 |= 0x1010000;
     HuMemFree(hmf->unk3C);
-    hmf->unk3C = HuMemAllocTag(sizeof(UnkStardustBattleGfxData), D_800CDD6A_main);
+    hmf->unk3C = HuMemAllocTag(sizeof(UnkStardustBattleGfxData), Hu3DModelTag);
     hmf->unk18 = 10;
     vtx = hmf->unk40 = HuMemAllocTag(sizeof(D_80114060_stardust_battle), hmf->unk0E);
     for (j = 0, src = D_80114060_stardust_battle; j < 10; j++, vtx++, src++) {
@@ -4673,11 +4673,11 @@ s32 func_801122D0_stardust_battle(void) {
     bcopy(buffer, ((UnkStardustBattleGfxData *)hmf->unk3C)->unk18, size);
     HuMemFree(buffer);
 
-    for (i = 0; i < D_800D1FF0_main; i++) {
+    for (i = 0; i < Hu3DBufNum; i++) {
         (hmf->unk3C->unk00 + 1)[i] = HuMemAllocTag(0x100, hmf->unk0E);
         func_801127B8_stardust_battle(model, 1, i);
     }
-    hmf->unk3C->unk00[0] = hmf->unk3C->unk00[D_800D2008_main + 1];
+    hmf->unk3C->unk00[0] = hmf->unk3C->unk00[Hu3DBufNo + 1];
     return model;
 }
 
@@ -4690,7 +4690,7 @@ void func_801127B8_stardust_battle(s16 model, s16 count, s16 buffer) {
     if (buffer != -1) {
         index = buffer;
     } else {
-        index = D_800D2008_main;
+        index = Hu3DBufNo;
     }
     hmf = Hu3DData[model].hmf;
     gfx = (hmf->unk3C->unk00 + 1)[index];
@@ -4724,7 +4724,7 @@ s32 func_80112980_stardust_battle(HuSprAnimData *sprite, u8 *color) {
     data->unk60->unk50 |= 0x1010000;
     gfx++;
     HuMemFree(data->unk3C);
-    data->unk3C = HuMemAllocTag(sizeof(HmfModelData_Unk64_Unk3C_Struct), D_800CDD6A_main);
+    data->unk3C = HuMemAllocTag(sizeof(HmfModelData_Unk64_Unk3C_Struct), Hu3DModelTag);
     func_801138A0_stardust_battle(sprite, data, 1.0f, 0, 0);
     gSPDisplayList(header, osVirtualToPhysical(D_80114020_stardust_battle));
     gDPPipeSync(gfx++);
@@ -4801,7 +4801,7 @@ s32 func_80112980_stardust_battle(HuSprAnimData *sprite, u8 *color) {
     data->unk3C->unk14 = HuMemAllocTag(size, data->unk0E);
     bcopy(buffer, data->unk3C->unk14, size);
     HuMemFree(buffer);
-    for (i = 0; i < D_800D1FF0_main; i++) {
+    for (i = 0; i < Hu3DBufNum; i++) {
         gfx = (data->unk3C->unk00 + 1)[i] = HuMemAllocTag(0x100, data->unk0E);
         gDPPipeSync(gfx++);
         gSPSegment(gfx++, 2, osVirtualToPhysical(sprite->pat->data));
@@ -4812,7 +4812,7 @@ s32 func_80112980_stardust_battle(HuSprAnimData *sprite, u8 *color) {
         gDPPipeSync(gfx++);
         gSPEndDisplayList(gfx++);
     }
-    data->unk3C->unk00[0] = data->unk3C->unk00[D_800D2008_main + 1];
+    data->unk3C->unk00[0] = data->unk3C->unk00[Hu3DBufNo + 1];
     return model;
 }
 
@@ -4828,10 +4828,10 @@ s32 func_80113568_stardust_battle(HuSprAnimData *sprite, u16 model, u8 *color) {
     data = Hu3DData[newModel].hmf;
     data->unk60->unk50 = srcData->unk60->unk50;
     HuMemFree(data->unk3C);
-    data->unk3C = HuMemAllocTag(sizeof(HmfModelData_Unk64_Unk3C_Struct), D_800CDD6A_main);
+    data->unk3C = HuMemAllocTag(sizeof(HmfModelData_Unk64_Unk3C_Struct), Hu3DModelTag);
     data->unk3C->unk10 = srcData->unk3C->unk10;
     data->unk3C->unk14 = srcData->unk3C->unk14;
-    for (i = 0; i < D_800D1FF0_main; i++) {
+    for (i = 0; i < Hu3DBufNum; i++) {
         gfx = (data->unk3C->unk00 + 1)[i] = HuMemAllocTag(0x100, data->unk0E);
         gDPPipeSync(gfx++);
         gSPSegment(gfx++, 2, osVirtualToPhysical(sprite->pat->data));
@@ -4842,14 +4842,14 @@ s32 func_80113568_stardust_battle(HuSprAnimData *sprite, u16 model, u8 *color) {
         gDPPipeSync(gfx++);
         gSPEndDisplayList(gfx++);
     }
-    data->unk3C->unk00[0] = data->unk3C->unk00[D_800D2008_main + 1];
+    data->unk3C->unk00[0] = data->unk3C->unk00[Hu3DBufNo + 1];
     return newModel;
 }
 
 void func_8011376C_stardust_battle(u16 model, HuSprAnimData *sprite, u16 frame, u8 *color) {
     HmfModel *modelData = Hu3DData + model;
     HmfData *data = modelData->hmf;
-    Gfx *gfx = data->unk3C->unk00[D_800D2008_main + 1];
+    Gfx *gfx = data->unk3C->unk00[Hu3DBufNo + 1];
 
     data->unk3C->unk00[0] = gfx;
     gDPPipeSync(gfx);
@@ -4919,7 +4919,7 @@ s32 func_801138A0_stardust_battle(HuSprAnimData *sprite, HmfData *data, f32 scal
         }
     }
     vertices = start;
-    for (i = 0; i < D_800D1FF0_main; i++) {
+    for (i = 0; i < Hu3DBufNum; i++) {
         Vtx_t *destination;
         Vtx_t *source;
         data->unk44[i] = HuMemAllocTag(vertexCount * sizeof(Vtx_t), data->unk0E);

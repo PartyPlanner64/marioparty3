@@ -538,12 +538,12 @@ typedef struct HmfModelEntry {
 } HmfModelEntry; // Size 0x24
 
 #ifndef NO_EXTERN_VARIABLES
-extern HmfAnim *D_800D1714_main;
-extern HmfAnimSet *D_800D408C_main;
-extern HmfModelEntry *D_800CBB60_main;
+extern HmfAnim *Hu3DAnimData;
+extern HmfAnimSet *Hu3DAnimSetData;
+extern HmfModelEntry *Hu3DSprModelData;
 
-extern u8 D_800CD280_main;
-extern HmfModelData_Unk64_Unk8C_Struct *D_800CCF58_main;
+extern u8 Hu3DScreenClearF;
+extern HmfModelData_Unk64_Unk8C_Struct *Hu3DMotion;
 #endif
 
 void Hu3DInit(void *arg0, void *arg1, u16 arg2, u16 arg3, u16 arg4, u8 arg5);

@@ -136,7 +136,7 @@ void func_801059A0_picking_panic(void) {
     Hu3DSprModelInit(0x20);
     omInitObjMan(50, 0);
     omGameSysInit();
-    D_800CD280_main = 1;
+    Hu3DScreenClearF = 1;
     CamSetupInit(2);
     CamSetupMapCullAddMulti(2);
     ScissorSet(0, 0.0f, 0.0f, 320.0f, 120.0f);
@@ -269,7 +269,7 @@ void func_80106020_picking_panic(omObjData *object) {
             }
             break;
         case 1:
-            if (D_8010EFA8_picking_panic == 33 && D_8010EFBE_picking_panic == 0 && D_800D530C_main == 0) {
+            if (D_8010EFA8_picking_panic == 33 && D_8010EFBE_picking_panic == 0 && omSysExitReq == 0) {
                 HuAudSeqPlay(0x38);
             }
             if (MgFlowStatGet() == MG_STATE_PLAY) {
@@ -348,17 +348,17 @@ void func_80106020_picking_panic(omObjData *object) {
             break;
     }
 
-    if (_CheckFlag(FLAG_MG_PRACTICE) && D_800D530C_main == 0 && D_8010EFA5_picking_panic == 0 && (u16)D_8010EF80_picking_panic == 2) {
+    if (_CheckFlag(FLAG_MG_PRACTICE) && omSysExitReq == 0 && D_8010EFA5_picking_panic == 0 && (u16)D_8010EF80_picking_panic == 2) {
         for (j = 0; j < 2; j++) {
             if (D_8010EEE0_picking_panic[j]->unk4 == -1 &&
-                (D_800D5558_main[D_8010EEE0_picking_panic[j]->unk2] & R_TRIG)) {
+                (HuPadBtnDown[D_8010EEE0_picking_panic[j]->unk2] & R_TRIG)) {
                 D_8010EFA5_picking_panic = 1;
             }
         }
     }
 
-    if (D_8010EFBE_picking_panic != 0 || D_800D530C_main != 0 || D_8010EFA5_picking_panic != 0) {
-        if (D_800D530C_main != 0 && D_8010EFA5_picking_panic == 0) {
+    if (D_8010EFBE_picking_panic != 0 || omSysExitReq != 0 || D_8010EFA5_picking_panic != 0) {
+        if (omSysExitReq != 0 && D_8010EFA5_picking_panic == 0) {
             D_8010EFA5_picking_panic = 1;
         }
         if (D_8010EFA5_picking_panic != 0) {
@@ -590,7 +590,7 @@ void func_80107A48_picking_panic(void) {
     gSPDisplayList(gMainGfxPos++, D_8010E5E0_picking_panic);
     gDPSetTextureLUT(gMainGfxPos++, G_TT_RGBA16);
     for (i = 0; i < 2; i++) {
-        sprite = HuSprGet(D_800CD1DC_main[D_8010EFD0_picking_panic[(i == 0) ? 0 : 1]].unk04, 0);
+        sprite = HuSprGet(esprite[D_8010EFD0_picking_panic[(i == 0) ? 0 : 1]].unk04, 0);
         frame = &sprite->data->pat[sprite->patNo];
         gDPLoadTLUT_pal256(gMainGfxPos++, sprite->data->pal);
         for (j = 0; j < 4; j++) {
@@ -668,7 +668,7 @@ void func_80107A48_picking_panic(void) {
     }
 
     if (progress[0] != 0.0f || progress[1] != 0.0f) {
-        sprite = HuSprGet(D_800CD1DC_main[D_8010EFD0_picking_panic[4]].unk04, 0);
+        sprite = HuSprGet(esprite[D_8010EFD0_picking_panic[4]].unk04, 0);
         frame = &sprite->data->pat[sprite->patNo];
         gDPLoadTLUT_pal256(gMainGfxPos++, sprite->data->pal);
         for (k = 0; k < 4; k++) {
@@ -705,7 +705,7 @@ void func_80107A48_picking_panic(void) {
     }
 
     for (i = 0; i < 2; i++) {
-        sprite = HuSprGet(D_800CD1DC_main[D_8010EFD0_picking_panic[(i == 0) ? 2 : 3]].unk04, 0);
+        sprite = HuSprGet(esprite[D_8010EFD0_picking_panic[(i == 0) ? 2 : 3]].unk04, 0);
         frame = &sprite->data->pat[sprite->patNo];
         if (i == 0) {
             gDPLoadTLUT_pal256(gMainGfxPos++, sprite->data->pal);
@@ -797,7 +797,7 @@ void func_80109C00_picking_panic(Gfx **arg0, s32 arg1, s32 arg2) {
     gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 218, alpha * 212 / 255);
     gDPSetCombineLERP(gMainGfxPos++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0,
                       PRIMITIVE, 0);
-    sprite = HuSprGet(D_800CD1DC_main[D_8010EFD0_picking_panic[9]].unk04, 0);
+    sprite = HuSprGet(esprite[D_8010EFD0_picking_panic[9]].unk04, 0);
     frame = &sprite->data->pat[sprite->patNo];
     for (view = 0; view < 2; view++) {
         if (view == 0) {
@@ -826,7 +826,7 @@ void func_80109C00_picking_panic(Gfx **arg0, s32 arg1, s32 arg2) {
     gDPPipeSync(gMainGfxPos++);
 
     for (i = 0; i < 4; i++) {
-        sprite = HuSprGet(D_800CD1DC_main[D_8010EFD0_picking_panic[(i == 0) ? 7 : (i == 1) ? 6
+        sprite = HuSprGet(esprite[D_8010EFD0_picking_panic[(i == 0) ? 7 : (i == 1) ? 6
                                                                                            : 5]]
                               .unk04,
                           0);
@@ -883,7 +883,7 @@ void func_80109C00_picking_panic(Gfx **arg0, s32 arg1, s32 arg2) {
     gDPSetAlphaCompare(gMainGfxPos++, G_AC_THRESHOLD);
     gDPSetBlendColor(gMainGfxPos++, 0x00, 0x00, 0x00, 0xD0);
     gDPSetCombineMode(gMainGfxPos++, G_CC_DECALRGBA, G_CC_DECALRGBA);
-    sprite = HuSprGet(D_800CD1DC_main[D_8010EFD0_picking_panic[8]].unk04, 0);
+    sprite = HuSprGet(esprite[D_8010EFD0_picking_panic[8]].unk04, 0);
     frame = &sprite->data->pat[sprite->patNo];
     gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, 0, 320, 240);
     gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->data->pal);
@@ -1236,7 +1236,7 @@ void func_8010B908_picking_panic(omObjData *object, s8 arg1) {
             D_8010E6F0_picking_panic[arg1][D_8010EEF0_picking_panic[arg1]] == 1 &&
             D_8010EF98_picking_panic[arg1] != -1 &&
             (D_8010EF10_picking_panic[arg1] == 0 || D_8010EF10_picking_panic[arg1] >= 30) &&
-            ((player0->unk4 == -1 && (D_800D5558_main[player0->unk2] & A_BUTTON)) ||
+            ((player0->unk4 == -1 && (HuPadBtnDown[player0->unk2] & A_BUTTON)) ||
              (player0->unk4 != -1 && D_8010E704_picking_panic[arg1].unk0 == 0))) {
             f32 dx = D_8010EE70_picking_panic - -855.0f;
             f32 dy = D_8010EE74_picking_panic - -25.0f;
@@ -1270,7 +1270,7 @@ void func_8010B908_picking_panic(omObjData *object, s8 arg1) {
         }
     }
     if (D_8010EF80_picking_panic == 2 && D_8010E700_picking_panic[idx1] == -1 &&
-        ((player1->unk4 == -1 && (D_800D5558_main[player1->unk2] & A_BUTTON)) ||
+        ((player1->unk4 == -1 && (HuPadBtnDown[player1->unk2] & A_BUTTON)) ||
          (player1->unk4 != -1 && D_8010E704_picking_panic[arg1].unk4 > rand8()))) {
         for (i = 0; i < 4; i++) {
             if (D_8010E6F0_picking_panic[arg1][i] == 3) {
@@ -1305,7 +1305,7 @@ void func_8010B908_picking_panic(omObjData *object, s8 arg1) {
     if (D_8010EF80_picking_panic >= 2 && D_8010E700_picking_panic[idx0] != -1 &&
         D_8010E6F0_picking_panic[arg1][D_8010E700_picking_panic[idx0]] == 2 &&
         (D_8010EF80_picking_panic != 2 ||
-         ((player0->unk4 == -1) ? !((u16)D_800CDA7C_main[player0->unk2] & A_BUTTON)
+         ((player0->unk4 == -1) ? !((u16)HuPadBtn[player0->unk2] & A_BUTTON)
                                 : D_8010E6EC_picking_panic % 60 == (D_8010E704_picking_panic[arg1].unk2 + 68) % 60))) {
         if (hand0->rot.z > 210.0f) {
             power = 0.0f;
@@ -1339,7 +1339,7 @@ void func_8010B908_picking_panic(omObjData *object, s8 arg1) {
     if (D_8010EF80_picking_panic >= 2 && D_8010E700_picking_panic[idx1] != -1 &&
         D_8010E6F0_picking_panic[arg1][D_8010E700_picking_panic[idx1]] == 4 &&
         (D_8010EF80_picking_panic != 2 ||
-         ((player1->unk4 == -1) ? !((u16)D_800CDA7C_main[player1->unk2] & A_BUTTON)
+         ((player1->unk4 == -1) ? !((u16)HuPadBtn[player1->unk2] & A_BUTTON)
                                 : (D_8010E704_picking_panic[arg1].unk6 == 0 &&
                                    ((D_8010E6EC_picking_panic % 60 >= 43 && D_8010E6EC_picking_panic % 60 < 48 && rand8() % 3 == 0) ||
                                     D_8010E6EC_picking_panic % 60 == 48))))) {

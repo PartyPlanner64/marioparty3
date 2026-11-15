@@ -5,7 +5,7 @@
 #include "game/profiler.h"
 #include "game/graphics.h"
 
-s32 D_800A0530_main = 0xFF88FF88;
+s32 HuDbgStatus = 0xFF88FF88;
 
 static u64 swapChainStack[0x1800 / sizeof(u64)];
 static u8 D_800AE000_main[0x3800]; // unreferenced
@@ -17,7 +17,7 @@ static OSMesg gMesgQueueInitMesg[8];
 static void **frameBufferPool;
 static u16 frameBufferCount;
 static u16 frameBufferSegmentID;
-static u32 D_800B19A0_main; // message count?
+static u32 HuGfxRetraceNum; // message count?
 
 extern OSThread swapChainThread;
 
@@ -31,7 +31,7 @@ extern u64 *gThread3Stack;
 
 extern Gfx gTaskDataPointers[];
 
-extern s32 D_800CC0A4_main;
+extern s32 HuGfxFrameCnt;
 extern void *nextFrameBuffer;
 extern void *currFrameBuffer;
 
@@ -39,8 +39,8 @@ extern s32 *gUCodeAddresses;
 
 extern s16 gSwapChainMesgTotal;
 
-extern u32 D_800D2094_main;         // Unk
-extern OSMesgQueue D_800CC3C0_main; // Another system's message queue
+extern u32 scRetraceCnt;         // Unk
+extern OSMesgQueue scGraphicsTaskQueue; // Another system's message queue
 
 /* Initialize Graphics SwapChain */
 
@@ -64,7 +64,7 @@ void HuGfxInit(void **arg1, s32 arg2, s32 arg3, u64 **arg4, s32 *arg5) {
 
     gSwapChainMesgTotal = 0;
     ringBufferIndex = 0;
-    D_800CC0A4_main = 0;
+    HuGfxFrameCnt = 0;
     nextFrameBuffer = 0;
     currFrameBuffer = 0;
     osCreateMesgQueue(&gSwapChainMesgQueue, gSwapChainInitMesg, 0x40);
@@ -128,11 +128,11 @@ void HuGfxThreadMain(void *arg0) {
                 while (TRUE)
                     ;
             } // Infinite loop?
-            if ((D_800D2094_main - var_s4) < D_800B19A0_main) {
+            if ((scRetraceCnt - var_s4) < HuGfxRetraceNum) {
                 goto recvmesg;
             }
 
-            var_s4 = D_800D2094_main;
+            var_s4 = scRetraceCnt;
             HuProfRspReset();
             pAvailableFrameBuffer = HuGfxFBNextGet();
         } while (pAvailableFrameBuffer == NULL);
@@ -161,7 +161,7 @@ void HuGfxThreadMain(void *arg0) {
                     pTask->t.ucode = (u64 *)*((recvdMesg->unk04 * 2) + gUCodeAddresses);            // offset     (data pairs?)
                     pTask->t.ucode_data = (u64 *)*(((recvdMesg->unk04 * 2) | 1) + gUCodeAddresses); // offset + 1
 
-                    osSendMesg(&D_800CC3C0_main, (OSMesg)pSwapChain, 1);
+                    osSendMesg(&scGraphicsTaskQueue, (OSMesg)pSwapChain, 1);
                     osRecvMesg(&gMesgQueue, NULL, 1);
 
                     intMask = osSetIntMask(1);
@@ -176,12 +176,12 @@ void HuGfxThreadMain(void *arg0) {
             } while (!(recvdMesg->unk08 & 1));
         } while (FALSE);
 
-        for (i = 1; i < D_800B19A0_main; i++) {
+        for (i = 1; i < HuGfxRetraceNum; i++) {
             osRecvMesg(&mesgQueue, NULL, 1);
         }
 
         osViSwapBuffer(pAvailableFrameBuffer);
-        if (D_800CC0A4_main == 0) {
+        if (HuGfxFrameCnt == 0) {
             if (osRecvMesg(&mesgQueue2, NULL, 0) == 0) {
                 while (TRUE)
                     ;
@@ -189,7 +189,7 @@ void HuGfxThreadMain(void *arg0) {
             osViSetYScale(1.0f);
             osViBlack(0);
         }
-        D_800CC0A4_main++;
+        HuGfxFrameCnt++;
         HuProfDummy(); // empty function
     }
 }
@@ -254,5 +254,5 @@ void HuGfxUcodeSet(s32 *uCodeAdresses) {
 
 /* Swap chain state set? */
 void HuGfxModeSet(u32 arg0) {
-    D_800B19A0_main = arg0;
+    HuGfxRetraceNum = arg0;
 }

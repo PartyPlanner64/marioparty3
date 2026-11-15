@@ -213,10 +213,10 @@ void func_80105A74_eye_sore(void) {
 }
 
 void func_80105B3C_eye_sore(s32 playerIndex) {
-    D_800CDA7C_main[GwPlayer[playerIndex].pad] = 0;
-    D_800D5558_main[GwPlayer[playerIndex].pad] = 0;
-    D_800CBB6E_main[GwPlayer[playerIndex].pad] = 0;
-    D_800D20A1_main[GwPlayer[playerIndex].pad] = 0;
+    HuPadBtn[GwPlayer[playerIndex].pad] = 0;
+    HuPadBtnDown[GwPlayer[playerIndex].pad] = 0;
+    HuPadStkX[GwPlayer[playerIndex].pad] = 0;
+    HuPadStkY[GwPlayer[playerIndex].pad] = 0;
 }
 
 void func_80105BB4_eye_sore(f32 x0, f32 z0, f32 x1, f32 z1) {
@@ -417,8 +417,8 @@ void func_801063E8_eye_sore(omObjData *obj, s8 motion) {
 
 void func_80106510_eye_sore(omObjData *obj) {
     u8 pad = obj->work[3];
-    s16 stickX = D_800CBB6E_main[pad];
-    s16 stickY = -D_800D20A1_main[pad];
+    s16 stickX = HuPadStkX[pad];
+    s16 stickY = -HuPadStkY[pad];
     f32 mag;
     f32 speed;
 
@@ -673,7 +673,7 @@ void func_801070CC_eye_sore(omObjData *obj) {
             func_801063E8_eye_sore(obj, 4);
         }
         if (state->unk_0F >= 31 && (D_8010AF20_eye_sore >= 3 ||
-                                    D_800CBB6E_main[(s8)pad] + D_800D20A1_main[(s8)pad] != 0 || state->unk_00 != 0)) {
+                                    HuPadStkX[(s8)pad] + HuPadStkY[(s8)pad] != 0 || state->unk_00 != 0)) {
             state->unk_11 = 0;
             state->unk_0F = 0;
             state->unk_02 = 0;
@@ -751,7 +751,7 @@ void func_8010725C_eye_sore(omObjData *obj) {
         Hu3DModelAttrSet(obj->model[5], 4, 4);
         func_801063E8_eye_sore(obj, 4);
     } else if (state->unk_0F >= 65 && (D_8010AF20_eye_sore >= 3 ||
-                                       D_800CBB6E_main[(s8)pad] + D_800D20A1_main[(s8)pad] != 0 || state->unk_00 != 0)) {
+                                       HuPadStkX[(s8)pad] + HuPadStkY[(s8)pad] != 0 || state->unk_00 != 0)) {
         state->unk_11 = 0;
         state->unk_0F = 0;
         state->unk_02 = 0;
@@ -1575,7 +1575,7 @@ void func_8010A54C_eye_sore(omObjData *obj) {
 }
 
 void func_8010A62C_eye_sore(omObjData *obj) {
-    if (D_800D530C_main == 1) {
+    if (omSysExitReq == 1) {
         WipeCreateOut(0, 20);
         obj->func = func_8010A54C_eye_sore;
         HuAudSeqFadeOut(30);

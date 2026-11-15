@@ -6,7 +6,7 @@
 #define MSCP_COMPARE_ADDR (*(vu32 *)0xBFF00000)
 #define MSCP_STATUS_ADDR (*(vu32 *)0xBFF00010)
 
-extern u32 D_8007FB20_main[];
+extern u32 __osExceptionPreambleMsp[];
 
 extern u32 __kmc_pt_mode;
 static u32 stat = 0xBFF08004;
@@ -93,7 +93,7 @@ void __osInitialize_kmc(void) {
             return;
         }
 
-        vecSrc = D_8007FB20_main;
+        vecSrc = __osExceptionPreambleMsp;
         vecDst = (u32 *)E_VEC;
         *vecDst++ = *vecSrc++;
         *vecDst++ = *vecSrc++;

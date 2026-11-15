@@ -7,32 +7,32 @@
 #include "gcc/string.h"
 #include "game/mallocblock.h"
 
-extern HmfPaletteData *D_800CD2F8_main;
-extern HmfData_Unk84_Entry2 *D_800D1FCC_main;
-extern u8 D_800CCF85_main;
+extern HmfPaletteData *Hu3DPalData;
+extern HmfData_Unk84_Entry2 *Hu3DTexData;
+extern u8 Hu3DLoadFlags;
 extern Gfx *gMainGfxPos;
 
-u16 D_800A1170_main[] = {
+u16 Hu3DTexDummyImg[] = {
     0x03C1, 0x03C1, 0x03C1, 0x03C1, 0x03C1, 0x03C1, 0x03C1, 0x03C1,
     0x03C1, 0x03C1, 0x03C1, 0x03C1, 0x03C1, 0x03C1, 0x03C1, 0x03C1,
 };
 
-HmfData_Unk84_Entry2 D_800A1190_main = {
-    "0123456789ABCDE", 0, 2, 4, 4, 0xFF, 0, 0, 0, (u8 *)D_800A1170_main, (struct HmfData *)-1, NULL,
+HmfData_Unk84_Entry2 Hu3DTexDummy = {
+    "0123456789ABCDE", 0, 2, 4, 4, 0xFF, 0, 0, 0, (u8 *)Hu3DTexDummyImg, (struct HmfData *)-1, NULL,
 };
 
 void Hu3DTexInit(void) {
     s16 i;
 
-    D_800D1FCC_main = HuMemAlloc(0x1A00);
-    D_800CD2F8_main = HuMemAlloc(0x1600);
+    Hu3DTexData = HuMemAlloc(0x1A00);
+    Hu3DPalData = HuMemAlloc(0x1600);
     for (i = 0; i < 0x80; i++) {
-        D_800D1FCC_main[i].nameHash = 0;
+        Hu3DTexData[i].nameHash = 0;
     }
     for (i = 0; i < 0x80; i++) {
-        D_800CD2F8_main[i].nameHash = 0;
+        Hu3DPalData[i].nameHash = 0;
     }
-    D_800CCF85_main = 0;
+    Hu3DLoadFlags = 0;
     Hu3DAnimWorkInit();
 }
 
@@ -51,13 +51,13 @@ void Hu3DTexLoad(HmfData *hmf) {
         }
         hash = GetString(hmf, name, (chunk[8] << 8) + chunk[9]);
         for (i = 0; i < 0x80; i++) {
-            if (D_800D1FCC_main[i].nameHash == hash && strcmp(D_800D1FCC_main[i].name, name) == 0) {
+            if (Hu3DTexData[i].nameHash == hash && strcmp(Hu3DTexData[i].name, name) == 0) {
                 break;
             }
         }
         if (i == 0x80) {
             for (i = 0; i < 0x80; i++) {
-                if (D_800D1FCC_main[i].nameHash == 0) {
+                if (Hu3DTexData[i].nameHash == 0) {
                     break;
                 }
             }
@@ -65,14 +65,14 @@ void Hu3DTexLoad(HmfData *hmf) {
                 osSyncPrintf("TEXTURE OVER!\n");
                 return;
             }
-            tex = &D_800D1FCC_main[i];
+            tex = &Hu3DTexData[i];
             tex->nameHash = hash;
             strcpy(tex->name, name);
             tex->owner = hmf;
             Hu3DTexDataSet(chunk, hmf, tex);
         } else {
-            tex = &D_800D1FCC_main[i];
-            if (D_800CCF85_main & 2) {
+            tex = &Hu3DTexData[i];
+            if (Hu3DLoadFlags & 2) {
                 HuMemDelayFree(tex->unk28);
                 tex->owner = hmf;
                 Hu3DTexDataSet(chunk, hmf, tex);
@@ -137,15 +137,15 @@ HmfData_Unk84_Entry2 *Hu3DTexSearch(HmfData *hmf, char *name) {
     u16 i;
 
     for (i = 0; i < 0x80; i++) {
-        if (D_800D1FCC_main[i].nameHash != 0 && D_800D1FCC_main[i].nameHash == hash &&
-            strcmp(D_800D1FCC_main[i].name, name) == 0) {
+        if (Hu3DTexData[i].nameHash != 0 && Hu3DTexData[i].nameHash == hash &&
+            strcmp(Hu3DTexData[i].name, name) == 0) {
             break;
         }
     }
     if (i == 0x80) {
         return NULL;
     }
-    return &D_800D1FCC_main[i];
+    return &Hu3DTexData[i];
 }
 
 void Hu3DTexDataSet(u8 *data, HmfData *hmf, HmfData_Unk84_Entry2 *tex) {
@@ -249,28 +249,28 @@ void Hu3DPalLoad(HmfData *hmf) {
         }
         hash = GetString(hmf, name, (chunk[8] << 8) + chunk[9]);
         for (i = 0; i < 0x80; i++) {
-            if (D_800CD2F8_main[i].nameHash == hash && strcmp(D_800CD2F8_main[i].name, name) == 0) {
+            if (Hu3DPalData[i].nameHash == hash && strcmp(Hu3DPalData[i].name, name) == 0) {
                 break;
             }
         }
         if (i == 0x80) {
             for (i = 0; i < 0x80; i++) {
-                if (D_800CD2F8_main[i].nameHash == 0) {
+                if (Hu3DPalData[i].nameHash == 0) {
                     break;
                 }
             }
             if (i == 0x80) {
                 return;
             }
-            pal = &D_800CD2F8_main[i];
+            pal = &Hu3DPalData[i];
             pal->nameHash = hash;
             strcpy(pal->name, name);
             pal->owner = hmf;
             pal->refCount = 1;
             Hu3DPalDataSet(chunk, hmf, pal);
         } else {
-            pal = &D_800CD2F8_main[i];
-            if (D_800CCF85_main & 2) {
+            pal = &Hu3DPalData[i];
+            if (Hu3DLoadFlags & 2) {
                 HuMemDelayFree(pal->data);
                 pal->owner = hmf;
                 Hu3DPalDataSet(chunk, hmf, pal);
@@ -286,23 +286,23 @@ HmfPaletteData *Hu3DPalSearch(HmfData *hmf, s16 index) {
     u16 i;
 
     for (i = 0; i < 0x80; i++) {
-        if ((u16)D_800CD2F8_main[i].nameHash != 0 && (u16)D_800CD2F8_main[i].nameHash == hash &&
-            strcmp(D_800CD2F8_main[i].name, name) == 0) {
+        if ((u16)Hu3DPalData[i].nameHash != 0 && (u16)Hu3DPalData[i].nameHash == hash &&
+            strcmp(Hu3DPalData[i].name, name) == 0) {
             break;
         }
     }
     if (i == 0x80) {
         return NULL;
     }
-    return &D_800CD2F8_main[i];
+    return &Hu3DPalData[i];
 }
 
 void Hu3DPalOwnerKill(void *unk) {
     s16 i;
 
     for (i = 0; i < 0x80; i++) {
-        if (D_800CD2F8_main[i].nameHash != 0 && D_800CD2F8_main[i].owner == unk) {
-            Hu3DPalKill(&D_800CD2F8_main[i]);
+        if (Hu3DPalData[i].nameHash != 0 && Hu3DPalData[i].owner == unk) {
+            Hu3DPalKill(&Hu3DPalData[i]);
         }
     }
 }
@@ -340,7 +340,7 @@ void Hu3DTexRefClear(HmfData_Unk84_Entry2 *tex) {
             hmf = Hu3DData[i].hmf;
             for (j = 0; j < hmf->unk12; j++) {
                 if (hmf->unk84[j].unkC == tex) {
-                    hmf->unk84[j].unkC = &D_800A1190_main;
+                    hmf->unk84[j].unkC = &Hu3DTexDummy;
                 }
             }
         }
@@ -350,9 +350,9 @@ void Hu3DTexRefClear(HmfData_Unk84_Entry2 *tex) {
 void Hu3DAnimWorkInit(void) {
     s16 i;
 
-    D_800D1714_main = HuMemAlloc(0x600);
+    Hu3DAnimData = HuMemAlloc(0x600);
     for (i = 0; i < 0x80; i++) {
-        D_800D1714_main[i].animIdx = -1;
+        Hu3DAnimData[i].animIdx = -1;
     }
     Hu3DAnimInit();
 }
@@ -365,7 +365,7 @@ s32 Hu3DAnimCreate(HmfData *hmf, void *data, s16 bank, const char *name) {
     s16 j;
 
     for (i = 0; i < 0x80; i++) {
-        if (D_800D1FCC_main[i].nameHash == hash && strcmp(D_800D1FCC_main[i].name, name) == 0) {
+        if (Hu3DTexData[i].nameHash == hash && strcmp(Hu3DTexData[i].name, name) == 0) {
             break;
         }
     }
@@ -374,20 +374,20 @@ s32 Hu3DAnimCreate(HmfData *hmf, void *data, s16 bank, const char *name) {
         return -1;
     }
     for (slot = 0; slot < 0x80; slot++) {
-        if (D_800D1714_main[slot].animIdx == -1) {
+        if (Hu3DAnimData[slot].animIdx == -1) {
             break;
         }
     }
     if (slot == 0x80) {
         return -1;
     }
-    D_800D1714_main[slot].animIdx = Hu3DAnimDataCreate(data);
-    D_800D1714_main[slot].rot = bank;
-    D_800D1714_main[slot].frame = 0;
-    D_800D1714_main[slot].interp = 0;
-    D_800D1714_main[slot].speed = 0x10;
-    D_800D1714_main[slot].flags = 0;
-    tex = &D_800D1FCC_main[i];
+    Hu3DAnimData[slot].animIdx = Hu3DAnimDataCreate(data);
+    Hu3DAnimData[slot].rot = bank;
+    Hu3DAnimData[slot].frame = 0;
+    Hu3DAnimData[slot].interp = 0;
+    Hu3DAnimData[slot].speed = 0x10;
+    Hu3DAnimData[slot].flags = 0;
+    tex = &Hu3DTexData[i];
     if (hmf != (HmfData *)-1) {
         for (i = 0; i < hmf->unk12; i++) {
             if (hmf->unk84[i].unkC == tex) {
@@ -418,7 +418,7 @@ s16 Hu3DAnimLink(HmfData *hmf, u16 linkIdx, s16 bank, const char *name) {
     s16 j;
 
     for (i = 0; i < 0x80; i++) {
-        if (D_800D1FCC_main[i].nameHash == hash && strcmp(D_800D1FCC_main[i].name, name) == 0) {
+        if (Hu3DTexData[i].nameHash == hash && strcmp(Hu3DTexData[i].name, name) == 0) {
             break;
         }
     }
@@ -429,15 +429,15 @@ s16 Hu3DAnimLink(HmfData *hmf, u16 linkIdx, s16 bank, const char *name) {
     if ((slot = Hu3DAnimSlotGet()) == -1) {
         return -1;
     }
-    anim = &D_800D1714_main[slot];
-    anim->animIdx = D_800D1714_main[linkIdx].animIdx;
+    anim = &Hu3DAnimData[slot];
+    anim->animIdx = Hu3DAnimData[linkIdx].animIdx;
     anim->rot = bank;
     anim->flags = 0;
     anim->interp = 0;
     anim->frame = 0;
     anim->speed = 0x10;
-    D_800D408C_main[anim->animIdx].refCount++;
-    tex = &D_800D1FCC_main[i];
+    Hu3DAnimSetData[anim->animIdx].refCount++;
+    tex = &Hu3DTexData[i];
     if (hmf != (HmfData *)-1) {
         for (i = 0; i < hmf->unk12; i++) {
             if (hmf->unk84[i].unkC == tex) {
@@ -462,9 +462,9 @@ s16 Hu3DAnimLink(HmfData *hmf, u16 linkIdx, s16 bank, const char *name) {
 void Hu3DAnimInit(void) {
     s16 i;
 
-    D_800D408C_main = HuMemAlloc(0x300);
+    Hu3DAnimSetData = HuMemAlloc(0x300);
     for (i = 0; i < 0x20; i++) {
-        D_800D408C_main[i].unk0C = NULL;
+        Hu3DAnimSetData[i].unk0C = NULL;
     }
 }
 
@@ -489,14 +489,14 @@ s32 Hu3DAnimDataCreate(u8 *data) {
     s16 j;
 
     for (slot = 0; slot < 0x20; slot++) {
-        if (D_800D408C_main[slot].unk0C == NULL) {
+        if (Hu3DAnimSetData[slot].unk0C == NULL) {
             break;
         }
     }
     if (slot == 0x20) {
         return -1;
     }
-    set = &D_800D408C_main[slot];
+    set = &Hu3DAnimSetData[slot];
     set->interp = (data[0x18] << 8) + data[0x19];
     bpp = set->interp & 0xFF;
     palCount = data[0x1A];
@@ -571,18 +571,18 @@ s32 Hu3DAnimDataCreate(u8 *data) {
         }
         set->rot->totalFrames = frameCount;
     }
-    D_800D408C_main[slot].refCount = 1;
+    Hu3DAnimSetData[slot].refCount = 1;
     return slot;
 }
 
 void Hu3DAnimAttrSet(s16 animIdx, u8 bitmask, u8 flags) {
-    HmfAnim *anim = &D_800D1714_main[animIdx];
+    HmfAnim *anim = &Hu3DAnimData[animIdx];
 
     anim->flags = (anim->flags & ~bitmask) | flags;
 }
 
 void Hu3DAnimBankSet(s16 animIdx, u8 rot) {
-    HmfAnim *anim = &D_800D1714_main[animIdx];
+    HmfAnim *anim = &Hu3DAnimData[animIdx];
 
     anim->rot = rot;
     anim->frame = 0;
@@ -590,12 +590,12 @@ void Hu3DAnimBankSet(s16 animIdx, u8 rot) {
 }
 
 void Hu3DAnmNoSet(s16 animIdx, u8 frame) {
-    HmfAnim *anim = &D_800D1714_main[animIdx];
+    HmfAnim *anim = &Hu3DAnimData[animIdx];
 
     HmfAnimRot *rot;
 
     anim->frame = frame;
-    rot = &D_800D408C_main[anim->animIdx].rot[anim->rot];
+    rot = &Hu3DAnimSetData[anim->animIdx].rot[anim->rot];
     if (rot->frameCount <= frame) {
         anim->frame = frame % rot->frameCount;
     }
@@ -604,8 +604,8 @@ void Hu3DAnmNoSet(s16 animIdx, u8 frame) {
 }
 
 u8 Hu3DAnimFrameGet(s16 animIdx) {
-    HmfAnim *anim = &D_800D1714_main[animIdx];
-    u8 *rotFrames = (u8 *)&D_800D408C_main[anim->animIdx].rot[anim->rot];
+    HmfAnim *anim = &Hu3DAnimData[animIdx];
+    u8 *rotFrames = (u8 *)&Hu3DAnimSetData[anim->animIdx].rot[anim->rot];
 
     return rotFrames[1];
 }
@@ -617,10 +617,10 @@ void Hu3DAnimExec(u16 vcount) {
     s16 j;
 
     for (i = 0; i < 0x80; i++) {
-        if (D_800D1714_main[i].animIdx != -1 && !(D_800D1714_main[i].flags & 4)) {
-            anim = &D_800D1714_main[i];
+        if (Hu3DAnimData[i].animIdx != -1 && !(Hu3DAnimData[i].flags & 4)) {
+            anim = &Hu3DAnimData[i];
             if (!(anim->flags & 1)) {
-                bank = &D_800D408C_main[anim->animIdx].rot[anim->rot];
+                bank = &Hu3DAnimSetData[anim->animIdx].rot[anim->rot];
                 for (j = 0; j < vcount; j++) {
                     anim->interp += anim->speed;
                     while (anim->interp >= bank->frames[anim->frame].time * 16) {
@@ -642,11 +642,11 @@ void Hu3DAnimExec(u16 vcount) {
 }
 
 void Hu3DAnimSpeedSet(s16 animIdx, f32 speed) {
-    D_800D1714_main[animIdx].speed = speed * 16.0f;
+    Hu3DAnimData[animIdx].speed = speed * 16.0f;
 }
 
 void Hu3DAnimKill(s16 animIdx) {
-    HmfAnim *anim = &D_800D1714_main[animIdx];
+    HmfAnim *anim = &Hu3DAnimData[animIdx];
 
     if (anim->animIdx != -1) {
         Hu3DAnimDataKill(anim->animIdx);
@@ -655,11 +655,11 @@ void Hu3DAnimKill(s16 animIdx) {
 }
 
 void Hu3DAnimDataKill(s16 animIdx) {
-    if (D_800D408C_main[animIdx].unk0C != NULL) {
-        D_800D408C_main[animIdx].refCount--;
-        if (D_800D408C_main[animIdx].refCount == 0) {
+    if (Hu3DAnimSetData[animIdx].unk0C != NULL) {
+        Hu3DAnimSetData[animIdx].refCount--;
+        if (Hu3DAnimSetData[animIdx].refCount == 0) {
             HuMemDelayFreeAllWithTag(animIdx + TAG_TEXANIM);
-            D_800D408C_main[animIdx].unk0C = NULL;
+            Hu3DAnimSetData[animIdx].unk0C = NULL;
         }
     }
 }
@@ -672,13 +672,13 @@ void Hu3DAnimAllKill(void) {
     s16 i;
 
     for (i = 0; i < 0x20; i++) {
-        if (D_800D408C_main[i].unk0C != NULL) {
-            D_800D408C_main[i].unk0C = NULL;
+        if (Hu3DAnimSetData[i].unk0C != NULL) {
+            Hu3DAnimSetData[i].unk0C = NULL;
             HuMemDelayFreeAllWithTag(i + TAG_TEXANIM);
         }
     }
     for (i = 0; i < 0x80; i++) {
-        D_800D1714_main[i].animIdx = -1;
+        Hu3DAnimData[i].animIdx = -1;
     }
 }
 
@@ -686,10 +686,10 @@ void Hu3DTexAllKill(void) {
     s16 i;
 
     for (i = 0; i < 0x80; i++) {
-        D_800D1FCC_main[i].nameHash = 0;
+        Hu3DTexData[i].nameHash = 0;
     }
     for (i = 0; i < 0x80; i++) {
-        D_800CD2F8_main[i].nameHash = 0;
+        Hu3DPalData[i].nameHash = 0;
     }
     HuMemDelayFreeAllWithTag(TAG_TEXTURE);
 }
@@ -700,12 +700,12 @@ void Hu3DTexSizeGet(char *name, u16 *out) {
     u16 i;
 
     for (i = 0; i < 0x80; i++) {
-        if (D_800D1FCC_main[i].nameHash == hash && strcmp(D_800D1FCC_main[i].name, name) == 0) {
+        if (Hu3DTexData[i].nameHash == hash && strcmp(Hu3DTexData[i].name, name) == 0) {
             break;
         }
     }
     if (i != 0x80) {
-        entry = D_800D1FCC_main;
+        entry = Hu3DTexData;
         out[0] = entry[i].unk24;
         out[1] = entry[i].unk26;
     }
@@ -725,14 +725,14 @@ void Hu3DAnimSegmentSet(HmfData *hmf) {
             continue;
         }
         slot = hmf->unk84[i].unk9;
-        if (!(slot & 0x80) && D_800D1714_main[slot].animIdx != -1) {
-            anim = &D_800D1714_main[slot];
-            rot = &D_800D408C_main[anim->animIdx].rot[anim->rot];
+        if (!(slot & 0x80) && Hu3DAnimData[slot].animIdx != -1) {
+            anim = &Hu3DAnimData[slot];
+            rot = &Hu3DAnimSetData[anim->animIdx].rot[anim->rot];
             img = rot->frames[anim->frame].unk00;
             if (img != -1) {
-                set = &D_800D408C_main[anim->animIdx];
+                set = &Hu3DAnimSetData[anim->animIdx];
                 gSPSegment(gMainGfxPos++, hmf->unk84[i].unk3, osVirtualToPhysical(set->unk0C[img].data));
-                if (D_800D408C_main[anim->animIdx].unk14 != NULL) {
+                if (Hu3DAnimSetData[anim->animIdx].unk14 != NULL) {
                     gSPSegment(gMainGfxPos++, (s8)hmf->unk84[i].unk4, osVirtualToPhysical(set->unk0C[img].palette));
                 }
             } else {
@@ -805,21 +805,21 @@ s32 Hu3DModelAnimLoad(HmfData *hmf) {
                     break;
                 }
                 slots[count] = slot;
-                D_800D1714_main[slot].animIdx = Hu3DAnimSetCreate(hmf, rec);
-                D_800D1714_main[slot].rot = 0;
-                D_800D1714_main[slot].frame = 0;
-                D_800D1714_main[slot].interp = 0;
-                D_800D1714_main[slot].speed = 0x10;
-                D_800D1714_main[slot].flags = 4;
-                D_800D408C_main[D_800D1714_main[slot].animIdx].refCount = 1;
+                Hu3DAnimData[slot].animIdx = Hu3DAnimSetCreate(hmf, rec);
+                Hu3DAnimData[slot].rot = 0;
+                Hu3DAnimData[slot].frame = 0;
+                Hu3DAnimData[slot].interp = 0;
+                Hu3DAnimData[slot].speed = 0x10;
+                Hu3DAnimData[slot].flags = 4;
+                Hu3DAnimSetData[Hu3DAnimData[slot].animIdx].refCount = 1;
                 entry = &hmf->unk84[(rec[2] << 8) + rec[3]];
                 hash = entry->unkC->nameHash;
                 for (i = 0; i < 0x80; i++) {
-                    if (D_800D1FCC_main[i].nameHash == hash && strcmp(D_800D1FCC_main[i].name, entry->unkC->name) == 0) {
+                    if (Hu3DTexData[i].nameHash == hash && strcmp(Hu3DTexData[i].name, entry->unkC->name) == 0) {
                         break;
                     }
                 }
-                tex = &D_800D1FCC_main[i];
+                tex = &Hu3DTexData[i];
                 for (i = 0; i < hmf->unk12; i++) {
                     if (hmf->unk84[i].unkC == tex) {
                         hmf->unk84[i].unk9 = slot;
@@ -857,7 +857,7 @@ s16 Hu3DAnimSetCreate(HmfData *hmf, u8 *data) {
     if (slot == -1) {
         return -1;
     }
-    set = &D_800D408C_main[slot];
+    set = &Hu3DAnimSetData[slot];
     count = (data[4] << 8) + data[5];
     set->unk00 = count;
     set->unk0C = HuMemAllocTag(count * sizeof(HmfAnimImage), slot + TAG_TEXANIM);
@@ -905,7 +905,7 @@ s16 Hu3DAnimSlotGet(void) {
     s16 i;
 
     for (i = 0; i < 0x80; i++) {
-        if (D_800D1714_main[i].animIdx == -1) {
+        if (Hu3DAnimData[i].animIdx == -1) {
             return i;
         }
     }
@@ -916,7 +916,7 @@ s16 Hu3DAnimDataSlotGet(void) {
     s16 i;
 
     for (i = 0; i < 0x20; i++) {
-        if (D_800D408C_main[i].unk0C == NULL) {
+        if (Hu3DAnimSetData[i].unk0C == NULL) {
             return i;
         }
     }
@@ -928,9 +928,9 @@ void Hu3DAnimTimeSet(s16 animIdx, s16 count) {
     HmfAnimRot *bank;
     s16 j;
 
-    if (D_800D1714_main[animIdx].animIdx != -1) {
-        anim = &D_800D1714_main[animIdx];
-        bank = &D_800D408C_main[anim->animIdx].rot[anim->rot];
+    if (Hu3DAnimData[animIdx].animIdx != -1) {
+        anim = &Hu3DAnimData[animIdx];
+        bank = &Hu3DAnimSetData[anim->animIdx].rot[anim->rot];
         anim->frame = 0;
         anim->interp = 0;
         for (j = 0; j < count; j++) {

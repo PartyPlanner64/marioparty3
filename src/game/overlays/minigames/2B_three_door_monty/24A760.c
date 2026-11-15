@@ -49,7 +49,7 @@ typedef struct {
     /* 0x02 */ s16 unk_02[3];
 } ThreeDoorMontyBssEC48; // sizeof 0x8
 
-extern u8 D_800D6A90_main;
+extern u8 omAllPauseF;
 extern s32 D_800A178C_main[][6];
 extern const s16 D_8010D228_three_door_monty[];
 // obj of D_8010D260_three_door_monty[8], accessed through a separate symbol.
@@ -211,10 +211,10 @@ void func_80105A74_three_door_monty(void) {
 }
 
 void func_80105B3C_three_door_monty(s32 playerIndex) {
-    D_800CDA7C_main[GwPlayer[playerIndex].pad] = 0;
-    D_800D5558_main[GwPlayer[playerIndex].pad] = 0;
-    D_800CBB6E_main[GwPlayer[playerIndex].pad] = 0;
-    D_800D20A1_main[GwPlayer[playerIndex].pad] = 0;
+    HuPadBtn[GwPlayer[playerIndex].pad] = 0;
+    HuPadBtnDown[GwPlayer[playerIndex].pad] = 0;
+    HuPadStkX[GwPlayer[playerIndex].pad] = 0;
+    HuPadStkY[GwPlayer[playerIndex].pad] = 0;
 }
 
 void func_80105BB4_three_door_monty(f32 x0, f32 z0, f32 x1, f32 z1) {
@@ -234,57 +234,57 @@ void func_80105CBC_three_door_monty(s16 conNo) {
         osSyncPrintf("\n ConNo False! \n");
         return;
     }
-    if ((u16)D_800CDA7C_main[conNo] & D_JPAD) {
+    if ((u16)HuPadBtn[conNo] & D_JPAD) {
         for (i = 0; i < 3; i++) {
             CRotM[i].x = func_801059BC_three_door_monty(CRotM[i].x, 1.0f);
         }
     }
-    if ((u16)D_800CDA7C_main[conNo] & U_JPAD) {
+    if ((u16)HuPadBtn[conNo] & U_JPAD) {
         for (i = 0; i < 3; i++) {
             CRotM[i].x = func_801059BC_three_door_monty(CRotM[i].x, -1.0f);
         }
     }
-    if ((u16)D_800CDA7C_main[conNo] & L_JPAD) {
+    if ((u16)HuPadBtn[conNo] & L_JPAD) {
         for (i = 0; i < 3; i++) {
             CRotM[i].y = func_801059BC_three_door_monty(CRotM[i].y, 1.0f);
         }
     }
-    if ((u16)D_800CDA7C_main[conNo] & R_JPAD) {
+    if ((u16)HuPadBtn[conNo] & R_JPAD) {
         for (i = 0; i < 3; i++) {
             CRotM[i].y = func_801059BC_three_door_monty(CRotM[i].y, -1.0f);
         }
     }
-    if ((u16)D_800CDA7C_main[conNo] & A_BUTTON) {
+    if ((u16)HuPadBtn[conNo] & A_BUTTON) {
         for (i = 0; i < 3; i++) {
             CZoomM[i] += 10.0f;
         }
     }
-    if ((u16)D_800CDA7C_main[conNo] & B_BUTTON) {
+    if ((u16)HuPadBtn[conNo] & B_BUTTON) {
         for (i = 0; i < 3; i++) {
             CZoomM[i] -= 10.0f;
         }
     }
-    if ((u16)D_800CDA7C_main[conNo] & L_CBUTTONS) {
+    if ((u16)HuPadBtn[conNo] & L_CBUTTONS) {
         for (i = 0; i < 3; i++) {
             CenterM[i].x -= 10.0f;
         }
     }
-    if ((u16)D_800CDA7C_main[conNo] & R_CBUTTONS) {
+    if ((u16)HuPadBtn[conNo] & R_CBUTTONS) {
         for (i = 0; i < 3; i++) {
             CenterM[i].x += 10.0f;
         }
     }
-    if ((u16)D_800CDA7C_main[conNo] & U_CBUTTONS) {
+    if ((u16)HuPadBtn[conNo] & U_CBUTTONS) {
         for (i = 0; i < 3; i++) {
             CenterM[i].y += 10.0f;
         }
     }
-    if ((u16)D_800CDA7C_main[conNo] & D_CBUTTONS) {
+    if ((u16)HuPadBtn[conNo] & D_CBUTTONS) {
         for (i = 0; i < 3; i++) {
             CenterM[i].y -= 10.0f;
         }
     }
-    if ((u16)D_800CDA7C_main[conNo] & Z_TRIG) {
+    if ((u16)HuPadBtn[conNo] & Z_TRIG) {
         osSyncPrintf("\n");
         for (i = 0; i < 3; i++) {
             osSyncPrintf("CameraNo / %d   Zoom / %f\n", i, CZoomM[i]);
@@ -556,7 +556,7 @@ void func_80107344_three_door_monty(void) {
 void func_80107384_three_door_monty(omObjData *obj) {
     ThreeDoorMontyEntry *entry = &D_8010D260_three_door_monty[12];
 
-    if (omPauseChk() + D_800D6A90_main == 0) {
+    if (omPauseChk() + omAllPauseF == 0) {
         D_8010D8A8_three_door_monty += 0.05f;
     }
     Hu3DModelObjTexScroll(obj->model[0], entry->unk_18, 0.0f, D_8010D234_three_door_monty[0], D_8010D234_three_door_monty[1],
@@ -1199,7 +1199,7 @@ void func_8010916C_three_door_monty(omObjData *obj) {
                 }
                 D_8010EC50_three_door_monty = 3;
             }
-            if (Hu3DData[obj->model[0]].motTime >= D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02) {
+            if (Hu3DData[obj->model[0]].motTime >= Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02) {
                 D_8010EC42_three_door_monty = 5;
             }
             break;
@@ -1397,21 +1397,21 @@ void func_80109C84_three_door_monty(omObjData *obj) {
     if (act != 0) {
         switch (choice) {
             case 0:
-                D_800D5558_main[obj->work[3]] |= 0x2000;
+                HuPadBtnDown[obj->work[3]] |= 0x2000;
                 break;
             case 1:
-                D_800D5558_main[obj->work[3]] |= 0x4000;
+                HuPadBtnDown[obj->work[3]] |= 0x4000;
                 break;
             case 2:
-                D_800D5558_main[obj->work[3]] |= 0x8000;
+                HuPadBtnDown[obj->work[3]] |= 0x8000;
                 break;
             default:
                 if (door == 0) {
-                    D_800D5558_main[obj->work[3]] |= 0x2000;
+                    HuPadBtnDown[obj->work[3]] |= 0x2000;
                 } else if (door == 1) {
-                    D_800D5558_main[obj->work[3]] |= 0x4000;
+                    HuPadBtnDown[obj->work[3]] |= 0x4000;
                 } else if (door == 2) {
-                    D_800D5558_main[obj->work[3]] |= 0x8000;
+                    HuPadBtnDown[obj->work[3]] |= 0x8000;
                 }
                 break;
         }
@@ -1433,7 +1433,7 @@ void func_80109F0C_three_door_monty(omObjData *obj) {
     if (entry->unk_06 != -1) {
         return;
     }
-    if (D_800D5558_main[obj->work[3]] & 0x8000) {
+    if (HuPadBtnDown[obj->work[3]] & 0x8000) {
         if (D_8010D254_three_door_monty >= 34) {
             entry->unk_12 = D_8010D254_three_door_monty - (u8)(rand8() % 3) * 10;
         } else {
@@ -1445,7 +1445,7 @@ void func_80109F0C_three_door_monty(omObjData *obj) {
         Hu3DModelAttrSet(obj->model[4], 4, 4);
         entry->unk_06 = 2;
     }
-    if (D_800D5558_main[obj->work[3]] & 0x4000) {
+    if (HuPadBtnDown[obj->work[3]] & 0x4000) {
         if (D_8010D254_three_door_monty >= 34) {
             entry->unk_12 = D_8010D254_three_door_monty - (u8)(rand8() % 3) * 10;
         } else {
@@ -1457,7 +1457,7 @@ void func_80109F0C_three_door_monty(omObjData *obj) {
         Hu3DModelAttrSet(obj->model[4], 4, 4);
         entry->unk_06 = 1;
     }
-    if (D_800D5558_main[obj->work[3]] & 0x2000) {
+    if (HuPadBtnDown[obj->work[3]] & 0x2000) {
         if (D_8010D254_three_door_monty >= 34) {
             entry->unk_12 = D_8010D254_three_door_monty - (u8)(rand8() % 3) * 10;
         } else {
@@ -1622,7 +1622,7 @@ void func_8010A678_three_door_monty(omObjData *obj) {
                                 }
                                 if (entry->unk_04 == 6) {
                                     if (Hu3DData[obj->model[0]].motTime >=
-                                        D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02) {
+                                        Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02) {
                                         entry->unk_08 = 10;
                                     }
                                 }
@@ -1640,7 +1640,7 @@ void func_8010A678_three_door_monty(omObjData *obj) {
                                 }
                                 if (entry->unk_04 == 6) {
                                     if (Hu3DData[obj->model[0]].motTime >=
-                                        D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02) {
+                                        Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02) {
                                         entry->unk_08 = 10;
                                     }
                                 }
@@ -1708,7 +1708,7 @@ void func_8010A678_three_door_monty(omObjData *obj) {
                             }
                             if (entry->unk_04 == 6) {
                                 if (Hu3DData[obj->model[0]].motTime >=
-                                    D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02) {
+                                    Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02) {
                                     entry->unk_08 = 10;
                                 }
                             }
@@ -1729,7 +1729,7 @@ void func_8010A678_three_door_monty(omObjData *obj) {
                             }
                             if (entry->unk_04 == 6) {
                                 if (Hu3DData[obj->model[0]].motTime >=
-                                    D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02) {
+                                    Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02) {
                                     entry->unk_08 = 10;
                                 }
                             }
@@ -2098,7 +2098,7 @@ void func_8010C358_three_door_monty(omObjData *obj) {
 }
 
 void func_8010C390_three_door_monty(omObjData *obj) {
-    if (D_800D530C_main == 1) {
+    if (omSysExitReq == 1) {
         WipeCreateOut(0, 20);
         obj->func = func_8010C358_three_door_monty;
         HuAudSeqFadeOut(30);
@@ -2137,7 +2137,7 @@ void func_8010C3E8_three_door_monty(omObjData *obj) {
             if (D_8010EC42_three_door_monty == 3) {
                 func_801062E8_three_door_monty(4);
                 D_8010EC3C_three_door_monty = 0;
-                D_800D6A58_main = 1;
+                omSysPauseDisableF = 1;
             } else {
                 D_8010EC32_three_door_monty++;
             }
@@ -2161,7 +2161,7 @@ void func_8010C3E8_three_door_monty(omObjData *obj) {
                 D_8010EC44_three_door_monty = 0;
                 GMesTimerEnd();
                 func_801062E8_three_door_monty(7);
-                D_800D6A58_main = 0;
+                omSysPauseDisableF = 0;
             } else {
                 D_8010EC32_three_door_monty--;
                 D_8010D254_three_door_monty += 33;

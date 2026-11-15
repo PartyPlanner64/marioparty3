@@ -83,7 +83,7 @@ typedef struct {
 
 extern s32 D_800A178C_main[][6];
 extern s32 D_800A1790_main[][6];
-extern u8 D_800D2008_main;
+extern u8 Hu3DBufNo;
 
 u8 D_8010AA70_tidal_toss = 0;
 s16 D_8010AA74_tidal_toss[3][2] = { { 55, 30 }, { 198, 38 }, { 294, 24 } };
@@ -544,7 +544,7 @@ void func_801065AC_tidal_toss(omObjData *object) {
         spriteWork++;
     }
 
-    if (D_800D530C_main == 1 && WipeStatGet() == 0) {
+    if (omSysExitReq == 1 && WipeStatGet() == 0) {
         D_8010AF40_tidal_toss = 6;
         D_8010AA8C_tidal_toss = 0;
     }
@@ -805,8 +805,8 @@ void func_80106D24_tidal_toss(Gfx **gfxPos, s32 arg1, s32 arg2) {
     mtxRotCat(mtx, model->rot.x, model->rot.y, model->rot.z);
     mtxScaleCat(mtx, model->scale.x, model->scale.y, model->scale.z);
     mtxCat(model->mtx, mtx, modelMtx);
-    guMtxF2L(modelMtx, &D_8010ADE8_tidal_toss[D_800D2008_main]);
-    gSPMatrix(gfx++, osVirtualToPhysical(&D_8010ADE8_tidal_toss[D_800D2008_main]),
+    guMtxF2L(modelMtx, &D_8010ADE8_tidal_toss[Hu3DBufNo]);
+    gSPMatrix(gfx++, osVirtualToPhysical(&D_8010ADE8_tidal_toss[Hu3DBufNo]),
               G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH);
 
     frame = func_8010AA1C_tidal_toss(D_8010AF3A_tidal_toss, 0);
@@ -829,7 +829,7 @@ void func_80106D24_tidal_toss(Gfx **gfxPos, s32 arg1, s32 arg2) {
     gDPSetPrimColor(gfx++, 0, 0, 128, 128, 128, 176);
 
     src = hmf->unk40;
-    dst = hmf->unk44[D_800D2008_main];
+    dst = hmf->unk44[Hu3DBufNo];
     for (i = 0; i < hmf->unk18; i++, src++, dst++) {
         dist = src->v.ob[0] * src->v.ob[0] + src->v.ob[2] * src->v.ob[2];
         dist = sqrtf(dist);
@@ -882,7 +882,7 @@ void func_80106D24_tidal_toss(Gfx **gfxPos, s32 arg1, s32 arg2) {
     }
 
     gDPPipeSync(gfx++);
-    gSPSegment(gfx++, 1, osVirtualToPhysical(hmf->unk44[D_800D2008_main]));
+    gSPSegment(gfx++, 1, osVirtualToPhysical(hmf->unk44[Hu3DBufNo]));
     gSPDisplayList(gfx++, D_8010AF3C_tidal_toss);
     gDPPipeSync(gfx++);
     gDPSetCycleType(gfx++, G_CYC_1CYCLE);
@@ -1167,19 +1167,19 @@ void func_80109180_tidal_toss(omObjData *object) {
             break;
         case 2:
             if (work->unk30 != 0) {
-                D_800D20A1_main[player] = 0;
-                D_800CBB6E_main[player] = 0;
-                D_800D5558_main[player] = 0;
-                D_800CDA7C_main[player] = 0;
+                HuPadStkY[player] = 0;
+                HuPadStkX[player] = 0;
+                HuPadBtnDown[player] = 0;
+                HuPadBtn[player] = 0;
                 func_8010A11C_tidal_toss(object);
             }
             break;
         case 3:
         case 4:
-            D_800CBB6E_main[player] = 0;
-            D_800D20A1_main[player] = -64;
-            D_800D5558_main[player] = 0;
-            D_800CDA7C_main[player] = 0;
+            HuPadStkX[player] = 0;
+            HuPadStkY[player] = -64;
+            HuPadBtnDown[player] = 0;
+            HuPadBtn[player] = 0;
             break;
         case 5:
             if (work->unk2F == 1) {
@@ -1208,8 +1208,8 @@ void func_80109180_tidal_toss(omObjData *object) {
     work->unk10 = object->trans.y;
     work->unk14 = object->trans.z;
     if (status & 0x20) {
-        D_800D20A1_main[player] = 0;
-        D_800CBB6E_main[player] = 0;
+        HuPadStkY[player] = 0;
+        HuPadStkX[player] = 0;
     }
 
     func_800DDD94_minigame(object);
@@ -1297,10 +1297,10 @@ void func_8010961C_tidal_toss(omObjData *object) {
             break;
         case 2:
             if (work->unk30 != 0) {
-                D_800D20A1_main[player] = 0;
-                D_800CBB6E_main[player] = 0;
-                D_800D5558_main[player] = 0;
-                D_800CDA7C_main[player] = 0;
+                HuPadStkY[player] = 0;
+                HuPadStkX[player] = 0;
+                HuPadBtnDown[player] = 0;
+                HuPadBtn[player] = 0;
                 func_8010A490_tidal_toss(object, dist);
             }
             if (data->unkBE == 0) {
@@ -1362,16 +1362,16 @@ void func_8010961C_tidal_toss(omObjData *object) {
             }
             // fallthrough
         case 4:
-            D_800CBB6E_main[player] = 0;
-            D_800D20A1_main[player] = -48;
-            D_800D5558_main[player] = 0;
-            D_800CDA7C_main[player] = 0;
+            HuPadStkX[player] = 0;
+            HuPadStkY[player] = -48;
+            HuPadBtnDown[player] = 0;
+            HuPadBtn[player] = 0;
             break;
         case 5:
-            D_800CBB6E_main[player] = 0;
-            D_800D20A1_main[player] = -48;
-            D_800D5558_main[player] = 0;
-            D_800CDA7C_main[player] = 0;
+            HuPadStkX[player] = 0;
+            HuPadStkY[player] = -48;
+            HuPadBtnDown[player] = 0;
+            HuPadBtn[player] = 0;
             angle = fmod(data->unk3C, 360.0);
             if ((8.0 < angle && angle < 352.0) || (angle < -8.0 && -352.0 < angle)) {
                 break;
@@ -1398,8 +1398,8 @@ void func_8010961C_tidal_toss(omObjData *object) {
             return;
     }
 
-    D_800CBB6E_main[player] = (f32)D_800CBB6E_main[player] * 0.325;
-    D_800D20A1_main[player] = (f32)D_800D20A1_main[player] * 0.325;
+    HuPadStkX[player] = (f32)HuPadStkX[player] * 0.325;
+    HuPadStkY[player] = (f32)HuPadStkY[player] * 0.325;
     func_800DDD94_minigame(object);
     if (dist <= 190.0) {
         object->trans.x = object->trans.x / dist * 190.0;
@@ -1475,7 +1475,7 @@ void func_8010961C_tidal_toss(omObjData *object) {
     }
     work->unk28 = status;
     for (i = 9; i < 12; i++) {
-        if (Hu3DData[object->model[i]].motTime >= D_800CCF58_main[Hu3DData[object->model[i]].motId].unk02) {
+        if (Hu3DData[object->model[i]].motTime >= Hu3DMotion[Hu3DData[object->model[i]].motId].unk02) {
             Hu3DModelAttrSet(object->model[i], 4, 4);
         }
     }
@@ -1496,17 +1496,17 @@ u16 func_8010A11C_tidal_toss(omObjData *object) {
     switch (work->unk32) {
         case 1:
             if (work->unk2E == 0) {
-                D_800CDA7C_main[player] |= 0x8000;
+                HuPadBtn[player] |= 0x8000;
             }
             if (status & 0x20) {
                 work->unk32++;
             } else {
-                D_800D5558_main[player] |= 0x8000;
+                HuPadBtnDown[player] |= 0x8000;
             }
             break;
         case 2:
             if (work->unk2E == 0) {
-                D_800CDA7C_main[player] |= 0x8000;
+                HuPadBtn[player] |= 0x8000;
             }
             if (!(status & 0x20)) {
                 work->unk32 = 0;
@@ -1514,14 +1514,14 @@ u16 func_8010A11C_tidal_toss(omObjData *object) {
             break;
         case 3:
             if (status & 2) {
-                D_800D5558_main[player] |= 0x8000;
+                HuPadBtnDown[player] |= 0x8000;
                 work->unk32++;
             }
             break;
         case 4:
-            D_800CDA7C_main[player] |= 0x8000;
+            HuPadBtn[player] |= 0x8000;
             if ((f64)(f32)work->unk34 <= object->trans.y - 20.0) {
-                D_800D5558_main[player] |= 0x2000;
+                HuPadBtnDown[player] |= 0x2000;
                 work->unk32++;
             }
             break;
@@ -1586,7 +1586,7 @@ u16 func_8010A490_tidal_toss(omObjData *arg0, f32 arg1) {
                 if (distanceD <= 0.0) {
                     random = (s32)((f32)func_8010A7F8_tidal_toss() * 1.52587890625e-05 * 100.0);
                     if (random < work->unk2E * 10 + 45) {
-                        D_800D5558_main[player] |= 0x8000;
+                        HuPadBtnDown[player] |= 0x8000;
                         switch (work->unk2E) {
                             case 0:
                             case 1:
@@ -1617,12 +1617,12 @@ u16 func_8010A490_tidal_toss(omObjData *arg0, f32 arg1) {
 
     if (work->unk32 != 0) {
         work->unk32--;
-        D_800CDA7C_main[player] |= 0x8000;
+        HuPadBtn[player] |= 0x8000;
     }
 
     if (240.0 < arg1 && !(status & 0x20)) {
-        D_800CBB6E_main[player] = (work->unk2E * 4.0 + 53.0) * -arg0->trans.x / arg1;
-        D_800D20A1_main[player] = (work->unk2E * 4.0 + 53.0) * arg0->trans.z / arg1;
+        HuPadStkX[player] = (work->unk2E * 4.0 + 53.0) * -arg0->trans.x / arg1;
+        HuPadStkY[player] = (work->unk2E * 4.0 + 53.0) * arg0->trans.z / arg1;
     }
 
     return result;

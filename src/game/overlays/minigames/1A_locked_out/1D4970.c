@@ -539,7 +539,7 @@ void func_801064E0_locked_out(omObjData *object) {
             omOvlReturnEx(1);
             break;
     }
-    if (D_800D530C_main == 1 && WipeStatGet() == 0) {
+    if (omSysExitReq == 1 && WipeStatGet() == 0) {
         D_8010A674_locked_out = 8;
     }
 }
@@ -557,7 +557,7 @@ void func_80106FBC_locked_out(omObjData *object) {
         if (entry->unk0C == 0) {
             continue;
         }
-        frames = D_800CCF58_main[Hu3DData[entry->unk0E].motId].unk02;
+        frames = Hu3DMotion[Hu3DData[entry->unk0E].motId].unk02;
         radius = Hu3DData[entry->unk0E].motTime * 175.0 / frames + 50.0;
         pos.x = entry->pos.x - 86.5;
         pos.y = entry->pos.y;
@@ -768,10 +768,10 @@ void func_80107ABC_locked_out(omObjData *object) {
     pad = data->unk57;
     canGrab = FALSE;
     if (D_8010A674_locked_out != 2) {
-        D_800D20A1_main[pad] = 0;
-        D_800CBB6E_main[pad] = 0;
-        D_800D5558_main[pad] = 0;
-        D_800CDA7C_main[pad] = 0;
+        HuPadStkY[pad] = 0;
+        HuPadStkX[pad] = 0;
+        HuPadBtnDown[pad] = 0;
+        HuPadBtn[pad] = 0;
     }
     switch (D_8010A674_locked_out) {
         case 0:
@@ -788,10 +788,10 @@ void func_80107ABC_locked_out(omObjData *object) {
             break;
         case 2:
             if (work->unk27 != 0 && work->unk3C == 0) {
-                D_800D20A1_main[pad] = 0;
-                D_800CBB6E_main[pad] = 0;
-                D_800D5558_main[pad] = 0;
-                D_800CDA7C_main[pad] = 0;
+                HuPadStkY[pad] = 0;
+                HuPadStkX[pad] = 0;
+                HuPadBtnDown[pad] = 0;
+                HuPadBtn[pad] = 0;
                 func_80108A90_locked_out(object);
             }
             break;
@@ -882,13 +882,13 @@ void func_80107ABC_locked_out(omObjData *object) {
             return;
     }
 
-    buttons = D_800D5558_main[pad];
+    buttons = HuPadBtnDown[pad];
     status = func_800E4A90_minigame(object);
     work->unk0C.x = object->trans.x;
     work->unk0C.y = object->trans.y;
     work->unk0C.z = object->trans.z;
     if (work->unk25 != 0) {
-        D_800D5558_main[pad] &= ~0x4000;
+        HuPadBtnDown[pad] &= ~0x4000;
     } else {
         Hu3DData[object->model[0]].motIdShape = 0xFF;
     }
@@ -896,13 +896,13 @@ void func_80107ABC_locked_out(omObjData *object) {
     switch (work->unk3C) {
         case 0:
             if (status & 0x200000) {
-                D_800D20A1_main[pad] = 0;
-                D_800CBB6E_main[pad] = 0;
-                D_800D5558_main[pad] = 0;
-                D_800CDA7C_main[pad] = 0;
+                HuPadStkY[pad] = 0;
+                HuPadStkX[pad] = 0;
+                HuPadBtnDown[pad] = 0;
+                HuPadBtn[pad] = 0;
                 data->unk40 = 0.0f;
                 time = Hu3DData[object->model[0]].motTime;
-                if (time >= D_800CCF58_main[Hu3DData[object->model[0]].motId].unk02) {
+                if (time >= Hu3DMotion[Hu3DData[object->model[0]].motId].unk02) {
                     work->unk26 = 0;
                     if (work->unk25 != 0) {
                         Hu3DMotionShapeSet(object->model[0], object->motion[0x26], 0);
@@ -1007,7 +1007,7 @@ void func_80107ABC_locked_out(omObjData *object) {
             } else {
                 func_800E5690_minigame(object, 0);
             }
-            if (Hu3DData[entry->unk0E].motTime >= D_800CCF58_main[Hu3DData[entry->unk0E].motId].unk02) {
+            if (Hu3DData[entry->unk0E].motTime >= Hu3DMotion[Hu3DData[entry->unk0E].motId].unk02) {
                 work->unk3C++;
                 work->unk40 = 30;
             }
@@ -1089,7 +1089,7 @@ u16 func_80108A90_locked_out(omObjData *object) {
     switch (work->unk28) {
         case 0:
             if (work->unk25 != 0) {
-                D_800D5558_main[pad] |= 0x8000;
+                HuPadBtnDown[pad] |= 0x8000;
             }
             work->unk2C = 0;
             work->unk2E = 0;
@@ -1116,7 +1116,7 @@ u16 func_80108A90_locked_out(omObjData *object) {
                 holder = blockWork->unk14;
                 angle = func_80109DBC_locked_out(holder->trans.x - object->trans.x, holder->trans.z - object->trans.z);
                 if (func_80109E34_locked_out(&object->trans, &holder->trans) < data->unk48 * 2.2 + data->unk64) {
-                    D_800D5558_main[pad] |= 0x4000;
+                    HuPadBtnDown[pad] |= 0x4000;
                 }
                 for (i = 0; i < D_8010A678_locked_out; i++) {
                     blockWork = D_8010A610_locked_out[i]->data;
@@ -1136,15 +1136,15 @@ u16 func_80108A90_locked_out(omObjData *object) {
                 angle = func_80109DBC_locked_out(block->trans.x - object->trans.x, block->trans.z - object->trans.z);
                 if (func_80109E34_locked_out(&object->trans, &block->trans) <= data->unk48 + blockWork->unk04 + 2.0 &&
                     __builtin_fabs((f64)(angle - data->unk3C)) < 40.0) {
-                    D_800D5558_main[pad] |= 0x8000;
+                    HuPadBtnDown[pad] |= 0x8000;
                 }
             }
-            D_800CBB6E_main[pad] = (work->unk22 * 6.0 + 46.0) * sindf(angle);
-            D_800D20A1_main[pad] = (work->unk22 * 6.0 + 46.0) * -cosdf(angle);
+            HuPadStkX[pad] = (work->unk22 * 6.0 + 46.0) * sindf(angle);
+            HuPadStkY[pad] = (work->unk22 * 6.0 + 46.0) * -cosdf(angle);
             break;
         case 2:
             if (work->unk25 != work->unk2C + 1) {
-                D_800D5558_main[pad] |= 0x8000;
+                HuPadBtnDown[pad] |= 0x8000;
                 work->unk28 = 1;
                 break;
             }
@@ -1162,8 +1162,8 @@ u16 func_80108A90_locked_out(omObjData *object) {
                 work->unk28 = 2;
             }
             angle = func_80109DBC_locked_out(entry->pos.x - object->trans.x, entry->pos.z - object->trans.z);
-            D_800CBB6E_main[pad] = (work->unk22 * 6.0 + 46.0) * sindf(angle);
-            D_800D20A1_main[pad] = (work->unk22 * 6.0 + 46.0) * -cosdf(angle);
+            HuPadStkX[pad] = (work->unk22 * 6.0 + 46.0) * sindf(angle);
+            HuPadStkY[pad] = (work->unk22 * 6.0 + 46.0) * -cosdf(angle);
             break;
         case 4:
             break;

@@ -250,7 +250,7 @@ void func_801079CC_inst(omObjData *obj) {
 }
 
 void func_80107A24_inst(omObjData *object) {
-    f32 duration = D_800CCF58_main[Hu3DData[object->model[3]].motId].unk02 - 25.0f;
+    f32 duration = Hu3DMotion[Hu3DData[object->model[3]].motId].unk02 - 25.0f;
     f32 angle = ((f32)D_8010D508_inst / duration) * D_8010D414_inst;
     s32 i;
 
@@ -319,7 +319,7 @@ void func_80107E18_inst(omObjData *object) {
 s32 func_80107E20_inst(void) {
     s16 modelId = D_8010DDD8_inst.object->model[0];
     f32 unk40 = Hu3DData[modelId].motTime;
-    return D_800CCF58_main[Hu3DData[modelId].motId].unk02 <= unk40;
+    return Hu3DMotion[Hu3DData[modelId].motId].unk02 <= unk40;
 }
 
 void func_80107E98_inst(void) {
@@ -344,7 +344,7 @@ void func_80107F18_inst(void) {
 }
 
 void func_80107F98_inst(omObjData *obj) {
-    f32 duration = D_800CCF58_main[Hu3DData[obj->model[3]].motId].unk02 - 25.0f;
+    f32 duration = Hu3DMotion[Hu3DData[obj->model[3]].motId].unk02 - 25.0f;
     f32 angle = D_8010D414_inst - ((f32)D_8010D510_inst / duration) * D_8010D414_inst;
 
     Hu3DData[obj->model[1]].rot.x = angle - 90.0f;
@@ -372,7 +372,7 @@ void func_801080FC_inst(void) {
 void func_8010815C_inst(omObjData *obj) {
     HmfSkeletonNode *nodes[2];
     s32 i;
-    f32 duration = D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02;
+    f32 duration = Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02;
 
     Hu3DMotionAttrSet(obj->model[0], 1, 0);
     Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);

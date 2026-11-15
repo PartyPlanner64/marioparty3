@@ -11,8 +11,8 @@ typedef struct UnkNameVecEntry {
 
 extern UnkD6B00 D_80105560_name_81[16];
 s32 D_80101220_name_81 = 2;
-extern s32 D_800A12C0_main;
-extern s32 D_800A12C4_main;
+extern s32 GwMessSpeed;
+extern s32 GwMessWait;
 
 static void func_800EED5C_name_81(s32 arg0);
 static void func_800EEDA0_name_81(s32 arg0, s32 arg1, s32 arg2);
@@ -21,16 +21,16 @@ static void func_800EF3F8_name_81(s32 arg0, s32 arg1);
 static s32 func_800EFEC8_name_81(Object *obj, Vec *target, f32 speed, Vec *dir);
 
 void func_800EED30_name_81(s32 arg0) {
-    D_800A12C4_main = arg0;
+    GwMessWait = arg0;
     func_800EED5C_name_81(arg0);
 }
 
 s32 func_800EED50_name_81(void) {
-    return D_800A12C4_main;
+    return GwMessWait;
 }
 
 static void func_800EED5C_name_81(s32 arg0) {
-    D_800A12C0_main = arg0;
+    GwMessSpeed = arg0;
 }
 
 void func_800EED68_name_81(s32 arg0, s32 arg1) {
@@ -65,14 +65,14 @@ static void func_800EEDA0_name_81(s32 arg0, s32 arg1, s32 arg2) {
 
     if (hasCom != 0) {
         HuWinAttrSet(arg0, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
-        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
-        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
-        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
-        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
-        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
-        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
-        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
-        D_800A12C0_main = D_800A12C4_main;
+        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], GwMessSpeed);
+        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], GwMessSpeed);
+        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], GwMessSpeed);
+        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], GwMessSpeed);
+        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], GwMessSpeed);
+        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], GwMessSpeed);
+        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], GwMessSpeed);
+        GwMessSpeed = GwMessWait;
     } else {
         HuWinComKeySet(sp18[0], sp18[1], sp18[2], sp18[3]);
     }
@@ -123,14 +123,14 @@ static void func_800EF0D8_name_81(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
         HuWinComKeySet(sp18[0], sp18[1], sp18[2], sp18[3]);
     } else {
         HuWinAttrSet(arg0, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
-        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
-        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
-        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
-        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
-        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
-        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
-        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
-        D_800A12C0_main = D_800A12C4_main;
+        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], GwMessSpeed);
+        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], GwMessSpeed);
+        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], GwMessSpeed);
+        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], GwMessSpeed);
+        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], GwMessSpeed);
+        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], GwMessSpeed);
+        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], GwMessSpeed);
+        GwMessSpeed = GwMessWait;
     }
 
     if (arg3 == 0) {
@@ -173,14 +173,14 @@ static void func_800EF3F8_name_81(s32 arg0, s32 arg1) {
 
     if (i == D_80101220_name_81) {
         HuWinAttrSet(arg0, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, D_800A12C0_main);
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, D_800A12C0_main);
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, D_800A12C0_main);
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, D_800A12C0_main);
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, D_800A12C0_main);
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, D_800A12C0_main);
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, D_800A12C0_main);
-        D_800A12C0_main = D_800A12C4_main;
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, GwMessSpeed);
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, GwMessSpeed);
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, GwMessSpeed);
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, GwMessSpeed);
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, GwMessSpeed);
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, GwMessSpeed);
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, GwMessSpeed);
+        GwMessSpeed = GwMessWait;
         if (arg1 == 0) {
             while (HuWinStatGet(arg0) != 0) {
                 HuPrcVSleep();
@@ -269,7 +269,7 @@ static void func_800EF8EC_name_81(omObjData *obj) {
     UnkD6B00 *entry = &D_80105560_name_81[obj->work[0]];
 
     if (Hu3DData[entry->unk_04->omObj1->model[0]].motTime ==
-        D_800CCF58_main[Hu3DData[entry->unk_04->omObj1->model[0]].motId].unk02) {
+        Hu3DMotion[Hu3DData[entry->unk_04->omObj1->model[0]].motId].unk02) {
         MBDMotionShiftSet(entry->unk_04, entry->unk_00, 0, 0xA, entry->unk_02);
         entry->unk_04 = NULL;
         entry->unk_08 = NULL;
@@ -358,7 +358,7 @@ void func_800EFC28_name_81(void) {
 
     while (1) {
         for (i = 0; i < MBD_MAX_PLAYERS; i++) {
-            if (!(GwPlayer[i].stat & 1) && (D_800D5558_main[GwPlayer[i].pad] & (A_BUTTON | B_BUTTON))) {
+            if (!(GwPlayer[i].stat & 1) && (HuPadBtnDown[GwPlayer[i].pad] & (A_BUTTON | B_BUTTON))) {
                 break;
             }
         }
@@ -388,7 +388,7 @@ void func_800EFD24_name_81(void) {
 
     while (1) {
         for (i = 0; i < MB_MAX_PLAYERS; i++) {
-            if (!(GwPlayer[i].stat & 1) && (D_800D5558_main[GwPlayer[i].pad] & (A_BUTTON | B_BUTTON))) {
+            if (!(GwPlayer[i].stat & 1) && (HuPadBtnDown[GwPlayer[i].pad] & (A_BUTTON | B_BUTTON))) {
                 break;
             }
         }

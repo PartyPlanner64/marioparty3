@@ -404,7 +404,7 @@ void opMotionTimeSet(s32 slot, u32 time) {
 
 void opMotionEndWait(s32 slot) {
     while (Hu3DData[D_80115630_opening[slot].modelId].motTime !=
-           D_800CCF58_main[Hu3DData[D_80115630_opening[slot].modelId].motId].unk02) {
+           Hu3DMotion[Hu3DData[D_80115630_opening[slot].modelId].motId].unk02) {
         HuPrcVSleep();
     }
 }
@@ -412,7 +412,7 @@ void opMotionEndWait(s32 slot) {
 s32 opMotionEndCheck(s32 arg0) {
     s16 modelId = D_80115630_opening[arg0].modelId;
 
-    return Hu3DData[modelId].motTime == D_800CCF58_main[Hu3DData[modelId].motId].unk02;
+    return Hu3DData[modelId].motTime == Hu3DMotion[Hu3DData[modelId].motId].unk02;
 }
 
 void opMotionSet(s32 modelId, s32 motionId, s16 arg2) {
@@ -682,7 +682,7 @@ void func_80107E2C_opening(s32 index) {
 void func_80107E80_opening(s32 arg0) {
     do {
         HuPrcVSleep();
-    } while (!(arg0 & D_800D5558_main[0]));
+    } while (!(arg0 & HuPadBtnDown[0]));
 }
 
 void func_80107EBC_opening(s32 slot, s16 arg1) {
@@ -695,11 +695,11 @@ u16 func_80107EF4_opening(s32 value) {
 
     HuPrcSleep(3);
     while (1) {
-        if (D_800D5558_main[0] & (A_BUTTON | B_BUTTON | START_BUTTON | R_TRIG)) {
+        if (HuPadBtnDown[0] & (A_BUTTON | B_BUTTON | START_BUTTON | R_TRIG)) {
             sprintf(text, "\n%d\n", value);
             break;
         }
-        if (D_800D5558_main[0] & Z_TRIG) {
+        if (HuPadBtnDown[0] & Z_TRIG) {
             camera = Hu3DData[gCameraList[0].unk4].hmf->unkBC;
             sprintf(text, "POS:%4.2f,%4.2f,%4.2f", camera->unk08, camera->unk0C, camera->unk10);
             print8(16, 180, text);
@@ -713,7 +713,7 @@ u16 func_80107EF4_opening(s32 value) {
         }
         HuPrcVSleep();
     }
-    return D_800D5558_main[0];
+    return HuPadBtnDown[0];
 }
 
 void opDemoEventSetup(void) {
@@ -841,7 +841,7 @@ void opDemoEvent(void) {
     s32 var_s1;
     s32 var_s3;
 
-    D_800CD280_main = 1;
+    Hu3DScreenClearF = 1;
     if (omovlevtno == 0) {
         storyMode = 1;
     } else {
@@ -2496,7 +2496,7 @@ void opDemoEvent(void) {
         opModelKill(0x24);
         opModelKill(0x25);
         HuPrcSleep(8);
-        D_800CD280_main = 1;
+        Hu3DScreenClearF = 1;
         opWipeWhiteOutCreate(0xF, 0x14);
         HuPrcSleep(0x14);
         MBBackKill();
@@ -2874,7 +2874,7 @@ void opDemoEvent(void) {
             HuPrcVSleep();
             goto loop_273;
         }
-        D_800CD280_main = 1;
+        Hu3DScreenClearF = 1;
         MBBackKill();
         MBBackLoad(0x22);
         func_800E92D4_shared_board();
@@ -4073,10 +4073,10 @@ void opWipeWhiteOutCreate(s32 index, s32 totalFrames) {
 }
 
 void func_801149A4_opening(s32 character) {
-    if (D_800D20B8_main[character][2] != 0xFF) {
-        Hu3DAnimKill(D_800D20B8_main[character][2]);
-        Hu3DAnimKill(D_800D5570_main[character][2]);
-        D_800D20B8_main[character][2] = 0xFF;
+    if (CharAnimId[character][2] != 0xFF) {
+        Hu3DAnimKill(CharAnimId[character][2]);
+        Hu3DAnimKill(CharAnimSrc[character][2]);
+        CharAnimId[character][2] = 0xFF;
     }
 }
 

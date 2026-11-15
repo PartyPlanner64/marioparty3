@@ -974,7 +974,7 @@ void func_80107F0C_w10(void) {
     MBMotionSet(chest, -1, 4);
     Hu3DMotionSpeedSet(chest->omObj1->model[0], 1.2f);
     model = chest->omObj1->model[0];
-    Hu3DMotionTimeSet(model, D_800CCF58_main[Hu3DData[model].motId].unk02);
+    Hu3DMotionTimeSet(model, Hu3DMotion[Hu3DData[model].motId].unk02);
     while (func_800D9E80_shared_board(chest) == 0) {
         HuPrcVSleep();
     }
@@ -1636,7 +1636,7 @@ void func_80109444_w10(void) {
         MBMotionSet(chest, -1, 4);
         Hu3DMotionSpeedSet(chest->omObj1->model[0], 1.2f);
         model = chest->omObj1->model[0];
-        Hu3DMotionTimeSet(model, D_800CCF58_main[Hu3DData[model].motId].unk02);
+        Hu3DMotionTimeSet(model, Hu3DMotion[Hu3DData[model].motId].unk02);
         while (func_800D9E80_shared_board(chest) == 0) {
             HuPrcVSleep();
         }
@@ -1751,7 +1751,7 @@ void func_80109444_w10(void) {
     MBMotionSet(box, -1, 4);
     Hu3DMotionSpeedSet(box->omObj1->model[0], 1.2f);
     model = box->omObj1->model[0];
-    Hu3DMotionTimeSet(model, D_800CCF58_main[Hu3DData[model].motId].unk02);
+    Hu3DMotionTimeSet(model, Hu3DMotion[Hu3DData[model].motId].unk02);
     while (func_800D9E80_shared_board(box) == 0) {
         HuPrcVSleep();
     }
@@ -1974,13 +1974,13 @@ void func_8010B434_w10(void) {
         }
         player = MBPlayerTurnGet();
         for (i = 0; i < 4; i++) {
-            if (!(D_800C9520_main[i] & START_BUTTON) || D_8010BA20_w10 != 0) {
+            if (!(ContBtnDown[i] & START_BUTTON) || D_8010BA20_w10 != 0) {
                 continue;
             }
             func_800DE874_shared_board(player);
             MBCameraPos2DGet(&pos);
             MBCameraPos2DSet(&pos);
-            D_800CB99C_main = 1;
+            winPauseF = 1;
             omAllPause();
             Hu3DPauseF = 1;
             if (func_8010B12C_w10(i)) {
@@ -1996,7 +1996,7 @@ void func_8010B434_w10(void) {
             }
             Hu3DPauseF = 0;
             omAllUPause();
-            D_800CB99C_main = 0;
+            winPauseF = 0;
             func_800DE8D8_shared_board(player);
             break;
         }

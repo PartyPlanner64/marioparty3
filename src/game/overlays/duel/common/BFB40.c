@@ -22,7 +22,7 @@ typedef struct ModelSpinWork {
 
 extern u16 D_801029C4_name_81;
 extern s16 D_80105624_name_81;
-extern u8 D_800D6A90_main;
+extern u8 omAllPauseF;
 
 f32 D_80100E10_name_81 = 1.0f;
 f32 D_80100E14_name_81 = 100.0f;
@@ -339,7 +339,7 @@ void func_800D85B4_name_81(omObjData *playerObj) {
     temp_s2 = playerObj->data;
     temp_s0 = temp_s2->unk_00;
 
-    if ((D_800D6A90_main == 0) || (temp_s0->flags & 0x10)) {
+    if ((omAllPauseF == 0) || (temp_s0->flags & 0x10)) {
         if (temp_s0->velocity.z != 0.0f) {
             temp_s0->velocity.y += temp_s0->velocity.z;
             temp_s0->velocity.x = temp_s0->velocity.x + temp_s0->velocity.y;
@@ -650,7 +650,7 @@ u16 MBDMotionCheck(Object *arg0) {
     u16 ret;
 
     ret = 0;
-    if (Hu3DData[arg0->omObj1->model[0]].motTime == D_800CCF58_main[Hu3DData[arg0->omObj1->model[0]].motId].unk02) {
+    if (Hu3DData[arg0->omObj1->model[0]].motTime == Hu3DMotion[Hu3DData[arg0->omObj1->model[0]].motId].unk02) {
         ret = 1;
     }
     return ret;

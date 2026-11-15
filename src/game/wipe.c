@@ -17,11 +17,11 @@ typedef struct {
     u8 height[2];
 } WipeTextureHeader;
 
-extern WipeTexture D_800D1F5C_main;
+extern WipeTexture wipeTex;
 u8 wipeType = 0;
-u16 *D_800A26D4_main = NULL;
+u16 *wipeScreenBuf = NULL;
 
-Gfx D_800A26D8_main[] = {
+Gfx wipeInitGfx[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_DECALRGBA),
@@ -34,12 +34,12 @@ Gfx D_800A26D8_main[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx D_800A2728_main[] = {
+Gfx wipeFillGfx[] = {
     { 0xFFFFFFFF, 0xFFFFFFFF },
     { 0xFFFFFFFF, 0xFFFFFFFF },
 };
 
-Gfx D_800A2738_main[] = {
+Gfx wipeClearGfx[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_FILL),
     gsDPSetRenderMode(G_RM_NOOP, G_RM_NOOP2),
@@ -50,18 +50,18 @@ Gfx D_800A2738_main[] = {
     gsSPEndDisplayList(),
 };
 
-static u16 *D_800BDA70_main;
-static u16 *D_800BDA74_main;
-static u8 D_800BDA78_main;
-static Gfx *D_800BDA7C_main;
-static s16 D_800BDA80_main;
-static s16 D_800BDA82_main;
-extern u8 D_800CDA74_main;
-extern u8 D_800D0598_main;
-extern u8 *D_800D1F80_main[8];
-extern u8 D_800D5304_main;
-extern u8 D_800D212E_main;
-extern u16 *D_800D5550_main;
+static u16 *wipeCaptureBuf;
+static u16 *wipeCaptureBufP;
+static u8 wipeCaptureCnt;
+static Gfx *wipeCaptureGfx;
+static s16 wipeCaptureHookMdl;
+static s16 wipeStillHookMdl;
+extern u8 wipeColorR;
+extern u8 wipeColorG;
+extern u8 *wipeMallocBuf[8];
+extern u8 wipeScreenStillF;
+extern u8 wipeColorB;
+extern u16 *wipeScreenBufP;
 extern u16 *currFrameBuffer;
 extern u8 *D_800D1F60_main;
 
@@ -70,12 +70,12 @@ void WipeInit(void) {
 
     wipeStat = 0;
     wipeMode = WIPE_MODE_DUMMY;
-    D_800D212E_main = 0;
-    D_800D0598_main = 0;
-    D_800CDA74_main = 0;
-    D_800D5304_main = 0;
+    wipeColorB = 0;
+    wipeColorG = 0;
+    wipeColorR = 0;
+    wipeScreenStillF = 0;
     for (i = 0; i < 8; i++) {
-        D_800D1F80_main[i] = NULL;
+        wipeMallocBuf[i] = NULL;
     }
     GMesInit();
 }
@@ -99,7 +99,7 @@ void WipeExecAlways(Gfx **gfx) {
                 WipeBlindDraw(gfx, 1.0f);
                 break;
             default:
-                WipeColorFill(gfx, 255, D_800A2728_main);
+                WipeColorFill(gfx, 255, wipeFillGfx);
                 break;
         }
         return;
@@ -141,17 +141,17 @@ void WipeExecAlways(Gfx **gfx) {
             wipeTime += 1.0f;
             if (wipeStat == 0) {
                 WipeColorSet(0, 0, 0);
-                if (D_800A26D4_main != NULL) {
-                    if (D_800D5304_main == 0) {
-                        HuMemMemoryFreePerm(D_800A26D4_main);
+                if (wipeScreenBuf != NULL) {
+                    if (wipeScreenStillF == 0) {
+                        HuMemMemoryFreePerm(wipeScreenBuf);
                     }
-                    D_800A26D4_main = NULL;
+                    wipeScreenBuf = NULL;
                 }
                 for (i = 0; i < 8; i++) {
-                    if (D_800D1F80_main[i] != NULL) {
-                        HuMemMemoryFreePerm(D_800D1F80_main[i]);
+                    if (wipeMallocBuf[i] != NULL) {
+                        HuMemMemoryFreePerm(wipeMallocBuf[i]);
                     }
-                    D_800D1F80_main[i] = NULL;
+                    wipeMallocBuf[i] = NULL;
                 }
                 D_800D1F60_main = NULL;
                 HuMemDelayFreeAllWithTag(TAG_WIPE);
@@ -244,31 +244,31 @@ s32 WipeStatGet(void) {
 }
 
 void WipeColorSet(u8 red, u8 green, u8 blue) {
-    D_800CDA74_main = red;
-    D_800D0598_main = green;
-    D_800D212E_main = blue;
+    wipeColorR = red;
+    wipeColorG = green;
+    wipeColorB = blue;
 }
 
 u8 *WipeMalloc(u32 size) {
     s16 i;
 
     for (i = 0; i < 8; i++) {
-        if (D_800D1F80_main[i] == NULL) {
+        if (wipeMallocBuf[i] == NULL) {
             break;
         }
     }
     if (i == 8) {
         return NULL;
     }
-    D_800D1F80_main[i] = HuMemMemoryAllocPerm(size);
-    return D_800D1F80_main[i];
+    wipeMallocBuf[i] = HuMemMemoryAllocPerm(size);
+    return wipeMallocBuf[i];
 }
 
 s32 WipeFadeIn(Gfx **gfx) {
     if (wipeDuration == 0.0f) {
         return 0;
     }
-    WipeColorFill(gfx, 255.0f - (wipeTime / wipeDuration) * 255.0f, D_800A2728_main);
+    WipeColorFill(gfx, 255.0f - (wipeTime / wipeDuration) * 255.0f, wipeFillGfx);
     if (wipeTime >= wipeDuration) {
         return 0;
     }
@@ -279,7 +279,7 @@ s32 WipeFadeOut(Gfx **gfx) {
     if (wipeDuration == 0.0f) {
         return 0;
     }
-    WipeColorFill(gfx, (wipeTime / wipeDuration) * 255.0f, D_800A2728_main);
+    WipeColorFill(gfx, (wipeTime / wipeDuration) * 255.0f, wipeFillGfx);
     if (wipeTime >= wipeDuration) {
         return 0;
     }
@@ -287,48 +287,48 @@ s32 WipeFadeOut(Gfx **gfx) {
 }
 
 void WipeColorFill(Gfx **gfx, u8 alpha, Gfx *displayList) {
-    gSPDisplayList((*gfx)++, D_800A26D8_main);
+    gSPDisplayList((*gfx)++, wipeInitGfx);
     gDPSetRenderMode((*gfx)++, G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2);
     gDPSetCombineMode((*gfx)++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
-    gDPSetPrimColor((*gfx)++, 0, 0, D_800CDA74_main, D_800D0598_main, D_800D212E_main, alpha);
+    gDPSetPrimColor((*gfx)++, 0, 0, wipeColorR, wipeColorG, wipeColorB, alpha);
     gDPFillRectangle((*gfx)++, 0, 0, 320, 240);
 }
 
 s32 WipeCrossFadeIn(Gfx **gfx) {
     u8 alpha;
 
-    if (D_800A26D4_main == NULL) {
+    if (wipeScreenBuf == NULL) {
         return 0;
     }
     if (wipeDuration == 0.0f) {
         goto cleanup;
     }
     alpha = 255.0f - (wipeTime / wipeDuration) * 255.0f;
-    gSPDisplayList((*gfx)++, D_800A26D8_main);
+    gSPDisplayList((*gfx)++, wipeInitGfx);
     gDPSetCombineMode((*gfx)++, G_CC_MODULATEI_PRIM, G_CC_MODULATEI_PRIM);
     gDPSetRenderMode((*gfx)++, G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2);
     gDPSetPrimColor((*gfx)++, 0, 0, 255, 255, 255, alpha);
-    WipeScreenDraw(gfx, D_800D5550_main);
+    WipeScreenDraw(gfx, wipeScreenBufP);
     if (wipeTime >= wipeDuration) {
     cleanup:
-        if (D_800D5304_main == 0) {
-            HuMemMemoryFreePerm(D_800A26D4_main);
+        if (wipeScreenStillF == 0) {
+            HuMemMemoryFreePerm(wipeScreenBuf);
         }
-        D_800A26D4_main = NULL;
+        wipeScreenBuf = NULL;
         return 0;
     }
     return 1;
 }
 
 s32 WipeCrossFadeOut(Gfx **gfx) {
-    gSPDisplayList((*gfx)++, D_800A26D8_main);
+    gSPDisplayList((*gfx)++, wipeInitGfx);
     if (wipeTime == 0.0f) {
-        D_800A26D4_main = HuMemMemoryAllocPerm(320 * 240 * sizeof(u16) + 64);
-        D_800D5550_main = (u16 *)(((u32)D_800A26D4_main + 63) & ~63);
-        WipeScreenCopy(gfx, D_800D5550_main);
+        wipeScreenBuf = HuMemMemoryAllocPerm(320 * 240 * sizeof(u16) + 64);
+        wipeScreenBufP = (u16 *)(((u32)wipeScreenBuf + 63) & ~63);
+        WipeScreenCopy(gfx, wipeScreenBufP);
         return 1;
     }
-    WipeScreenDraw(gfx, D_800D5550_main);
+    WipeScreenDraw(gfx, wipeScreenBufP);
     if (wipeTime > 1.0f) {
         return 0;
     }
@@ -352,8 +352,8 @@ void WipeScreenCopy(Gfx **gfx, u16 *image) {
 }
 
 void WipeFrameStill(Gfx **gfx) {
-    gSPDisplayList((*gfx)++, D_800A26D8_main);
-    WipeScreenDraw(gfx, D_800D5550_main);
+    gSPDisplayList((*gfx)++, wipeInitGfx);
+    WipeScreenDraw(gfx, wipeScreenBufP);
 }
 
 void WipeScreenDraw(Gfx **gfx, u16 *image) {
@@ -378,19 +378,19 @@ s32 WipeFrameStillExec(Gfx **gfx) {
     u16 *image;
 
     if (wipeTime >= wipeDuration - 1.0f) {
-        WipeColorFill(gfx, 255, D_800A2728_main);
+        WipeColorFill(gfx, 255, wipeFillGfx);
         return 0;
     }
     scale = 1.0f - wipeTime / wipeDuration;
     inverseScale = 1.0f / scale;
-    gSPDisplayList((*gfx)++, D_800A26D8_main);
+    gSPDisplayList((*gfx)++, wipeInitGfx);
     gDPSetAlphaCompare((*gfx)++, G_AC_THRESHOLD);
     gDPSetBlendColor((*gfx)++, 0, 0, 0, 0);
     gDPSetTextureFilter((*gfx)++, G_TF_BILERP);
     gDPSetScissor((*gfx)++, G_SC_NON_INTERLACE, 0, 0, 320, 240);
     image = currFrameBuffer;
     gDPSetColorImage((*gfx)++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 320, (u16 *)0x003D0800);
-    gSPDisplayList((*gfx)++, D_800A2738_main);
+    gSPDisplayList((*gfx)++, wipeClearGfx);
     gDPSetCombineMode((*gfx)++, G_CC_DECALRGB, G_CC_DECALRGB);
     gDPSetRenderMode((*gfx)++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
     for (y = 0; y < 240; y += 16) {
@@ -460,11 +460,11 @@ u8 *WipeTexRead(s32 file) {
 
     data = DataRead(file);
     header = (WipeTextureHeader *)(data + (data[2] << 8) + data[3]);
-    D_800D1F5C_main.width = (header->width[0] << 8) + header->width[1];
-    D_800D1F5C_main.height = (header->height[0] << 8) + header->height[1];
+    wipeTex.width = (header->width[0] << 8) + header->width[1];
+    wipeTex.height = (header->height[0] << 8) + header->height[1];
     header = (WipeTextureHeader *)(data + (header->offset[0] << 8) + header->offset[1]);
-    D_800D1F5C_main.pixels = WipeMalloc(D_800D1F5C_main.width * D_800D1F5C_main.height);
-    bcopy(header, D_800D1F5C_main.pixels, D_800D1F5C_main.width * D_800D1F5C_main.height);
+    wipeTex.pixels = WipeMalloc(wipeTex.width * wipeTex.height);
+    bcopy(header, wipeTex.pixels, wipeTex.width * wipeTex.height);
     DataClose(data);
     return data;
 }
@@ -477,10 +477,10 @@ void WipeCircleDraw(Gfx **gfx, f32 scale, f32 alpha) {
     f32 radius;
 
     if (scale == 0.0f) {
-        WipeColorFill(gfx, 255, D_800A2728_main);
+        WipeColorFill(gfx, 255, wipeFillGfx);
         return;
     }
-    gSPDisplayList((*gfx)++, D_800A26D8_main);
+    gSPDisplayList((*gfx)++, wipeInitGfx);
     gDPSetAlphaCompare((*gfx)++, G_AC_THRESHOLD);
     gDPSetBlendColor((*gfx)++, 0, 0, 0, 1);
     gDPSetScissor((*gfx)++, G_SC_NON_INTERLACE, 0, 0, 320, 240);
@@ -488,22 +488,22 @@ void WipeCircleDraw(Gfx **gfx, f32 scale, f32 alpha) {
     gDPSetRenderMode((*gfx)++, G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2);
     gDPSetCombineLERP((*gfx)++, 0, 0, 0, PRIMITIVE, PRIMITIVE, 0, TEXEL0, 0,
                       0, 0, 0, PRIMITIVE, PRIMITIVE, 0, TEXEL0, 0);
-    gDPLoadTextureBlock((*gfx)++, D_800D1F5C_main.pixels, G_IM_FMT_I, G_IM_SIZ_8b,
-                        D_800D1F5C_main.width, D_800D1F5C_main.height,
+    gDPLoadTextureBlock((*gfx)++, wipeTex.pixels, G_IM_FMT_I, G_IM_SIZ_8b,
+                        wipeTex.width, wipeTex.height,
                         0, G_TX_CLAMP, G_TX_CLAMP, 0, 0, 0, 0);
-    gDPSetPrimColor((*gfx)++, 0, 0, D_800CDA74_main, D_800D0598_main, D_800D212E_main, alpha * 255.0f);
+    gDPSetPrimColor((*gfx)++, 0, 0, wipeColorR, wipeColorG, wipeColorB, alpha * 255.0f);
     radius = scale * 160.0f;
     left = 160.0f - radius;
     top = 120.0f - radius;
     right = radius + 160.0f;
     bottom = radius + 120.0f;
-    scale = ((f32)right - (f32)left) / D_800D1F5C_main.width;
+    scale = ((f32)right - (f32)left) / wipeTex.width;
     gSPScisTextureRectangle((*gfx)++, left * 4, top * 4, right * 4, bottom * 4,
                             G_TX_RENDERTILE, 0, 0, (1.0f / scale) * 1024,
                             (1.0f / scale) * 1024);
     gDPSetRenderMode((*gfx)++, G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2);
     gDPSetCombineMode((*gfx)++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
-    gDPSetPrimColor((*gfx)++, 0, 0, D_800CDA74_main, D_800D0598_main, D_800D212E_main, alpha * 255.0f);
+    gDPSetPrimColor((*gfx)++, 0, 0, wipeColorR, wipeColorG, wipeColorB, alpha * 255.0f);
     if (top > 0) {
         gDPScisFillRectangle((*gfx)++, 0, 0, 320, top);
     } else {
@@ -541,14 +541,14 @@ void WipeTileDraw(Gfx **gfx, f32 progress) {
     f32 alpha;
     f32 tileAlpha;
 
-    gSPDisplayList((*gfx)++, D_800A26D8_main);
+    gSPDisplayList((*gfx)++, wipeInitGfx);
     gDPSetAlphaCompare((*gfx)++, G_AC_THRESHOLD);
     gDPSetBlendColor((*gfx)++, 0, 0, 0, 1);
-    gDPLoadTextureTile_4b((*gfx)++, D_800D1F5C_main.pixels, G_IM_FMT_I,
-                          D_800D1F5C_main.width, D_800D1F5C_main.height,
-                          0, 0, D_800D1F5C_main.width, D_800D1F5C_main.height,
+    gDPLoadTextureTile_4b((*gfx)++, wipeTex.pixels, G_IM_FMT_I,
+                          wipeTex.width, wipeTex.height,
+                          0, 0, wipeTex.width, wipeTex.height,
                           0, G_TX_WRAP, G_TX_WRAP,
-                          HMF_TEXTURE_MASK(D_800D1F5C_main.width), HMF_TEXTURE_MASK(D_800D1F5C_main.height), 0, 0);
+                          HMF_TEXTURE_MASK(wipeTex.width), HMF_TEXTURE_MASK(wipeTex.height), 0, 0);
     gDPSetRenderMode((*gfx)++, G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2);
     gDPSetCombineLERP((*gfx)++, 0, 0, 0, PRIMITIVE, PRIMITIVE, 0, TEXEL0, 0,
                       0, 0, 0, PRIMITIVE, PRIMITIVE, 0, TEXEL0, 0);
@@ -561,7 +561,7 @@ void WipeTileDraw(Gfx **gfx, f32 progress) {
         if (tileAlpha < 0.0f) {
             tileAlpha = 0.0f;
         }
-        gDPSetPrimColor((*gfx)++, 0, 0, D_800CDA74_main, D_800D0598_main, D_800D212E_main, tileAlpha);
+        gDPSetPrimColor((*gfx)++, 0, 0, wipeColorR, wipeColorG, wipeColorB, tileAlpha);
         alpha += 8.0f;
         if (alpha > 255.0f) {
             alpha = 255.0f;
@@ -600,7 +600,7 @@ void WipeTileDraw(Gfx **gfx, f32 progress) {
         if (tileAlpha < 0.0f) {
             tileAlpha = 0.0f;
         }
-        gDPSetPrimColor((*gfx)++, 0, 0, D_800CDA74_main, D_800D0598_main, D_800D212E_main, tileAlpha);
+        gDPSetPrimColor((*gfx)++, 0, 0, wipeColorR, wipeColorG, wipeColorB, tileAlpha);
         alpha += 16.0f;
         if (alpha > 255.0f) {
             alpha = 255.0f;
@@ -658,7 +658,7 @@ void WipeBlindDraw(Gfx **gfx, f32 progress) {
     if (progress == 0.0f) {
         return;
     }
-    gSPDisplayList((*gfx)++, D_800A26D8_main);
+    gSPDisplayList((*gfx)++, wipeInitGfx);
     gDPSetAlphaCompare((*gfx)++, G_AC_THRESHOLD);
     gDPSetBlendColor((*gfx)++, 0, 0, 0, 1);
     alpha = (progress + 0.2f) * 255.0f;
@@ -678,9 +678,9 @@ void WipeBlindDraw(Gfx **gfx, f32 progress) {
         gDPSetCombineMode((*gfx)++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
         gDPSetPrimColor((*gfx)++, 0, 0, 0, 0, 0, alpha);
         gDPFillRectangle((*gfx)++, 0, center - halfHeight, 320, center + halfHeight);
-        if (D_800D1F5C_main.pixels != NULL) {
-            textureTop = (240 - D_800D1F5C_main.height) / 2;
-            if (textureTop > i * stripeHeight || i * stripeHeight >= D_800D1F5C_main.height + textureTop) {
+        if (wipeTex.pixels != NULL) {
+            textureTop = (240 - wipeTex.height) / 2;
+            if (textureTop > i * stripeHeight || i * stripeHeight >= wipeTex.height + textureTop) {
                 continue;
             }
             row = i * stripeHeight - textureTop;
@@ -689,12 +689,12 @@ void WipeBlindDraw(Gfx **gfx, f32 progress) {
             gDPSetCombineLERP((*gfx)++, 0, 0, 0, PRIMITIVE, PRIMITIVE, 0, TEXEL0, 0,
                               0, 0, 0, PRIMITIVE, PRIMITIVE, 0, TEXEL0, 0);
             gDPSetPrimColor((*gfx)++, 0, 0, 255, 255, 255, alpha);
-            gDPLoadTextureTile_4b((*gfx)++, &D_800D1F5C_main.pixels[(u32)(row * D_800D1F5C_main.width) / 2],
-                                  G_IM_FMT_I, D_800D1F5C_main.width, D_800D1F5C_main.height,
-                                  0, 0, D_800D1F5C_main.width, 24, 0, G_TX_CLAMP, G_TX_CLAMP,
-                                  HMF_TEXTURE_MASK(D_800D1F5C_main.width), HMF_TEXTURE_MASK(D_800D1F5C_main.height), 0, 0);
-            gSPScisTextureRectangle((*gfx)++, (160 - D_800D1F5C_main.width / 2) * 4,
-                                    (center - halfHeight) * 4.0f, (D_800D1F5C_main.width / 2 + 160) * 4,
+            gDPLoadTextureTile_4b((*gfx)++, &wipeTex.pixels[(u32)(row * wipeTex.width) / 2],
+                                  G_IM_FMT_I, wipeTex.width, wipeTex.height,
+                                  0, 0, wipeTex.width, 24, 0, G_TX_CLAMP, G_TX_CLAMP,
+                                  HMF_TEXTURE_MASK(wipeTex.width), HMF_TEXTURE_MASK(wipeTex.height), 0, 0);
+            gSPScisTextureRectangle((*gfx)++, (160 - wipeTex.width / 2) * 4,
+                                    (center - halfHeight) * 4.0f, (wipeTex.width / 2 + 160) * 4,
                                     (center + halfHeight) * 4.0f, G_TX_RENDERTILE, 0, 0,
                                     1024, (1.0f / progress) * 1024.0f);
         }
@@ -768,64 +768,64 @@ s32 WipeShape2Out(Gfx **gfx) {
 void WipeScreenCapture(void) {
     Gfx *gfx;
 
-    D_800BDA70_main = HuMemAlloc(320 * 240 * sizeof(u16) + 64);
-    D_800BDA7C_main = HuMemAlloc(0x1900);
-    gfx = D_800BDA7C_main;
-    D_800BDA74_main = (u16 *)(((u32)D_800BDA70_main + 63) & ~63);
-    D_800BDA80_main = Hu3DHookFuncCreate(0, WipeScreenHook, 6);
-    gSPDisplayList(gfx++, D_800A26D8_main);
-    WipeScreenCopy(&gfx, D_800BDA74_main);
+    wipeCaptureBuf = HuMemAlloc(320 * 240 * sizeof(u16) + 64);
+    wipeCaptureGfx = HuMemAlloc(0x1900);
+    gfx = wipeCaptureGfx;
+    wipeCaptureBufP = (u16 *)(((u32)wipeCaptureBuf + 63) & ~63);
+    wipeCaptureHookMdl = Hu3DHookFuncCreate(0, WipeScreenHook, 6);
+    gSPDisplayList(gfx++, wipeInitGfx);
+    WipeScreenCopy(&gfx, wipeCaptureBufP);
     gSPEndDisplayList(gfx);
-    D_800BDA78_main = 0;
+    wipeCaptureCnt = 0;
 }
 
 s32 WipeScreenCaptureEnd(void) {
-    if (D_800BDA78_main < 3) {
+    if (wipeCaptureCnt < 3) {
         return 0;
     }
-    HuMemDelayFree(D_800BDA7C_main);
-    Hu3DModelKill(D_800BDA80_main);
+    HuMemDelayFree(wipeCaptureGfx);
+    Hu3DModelKill(wipeCaptureHookMdl);
     return 1;
 }
 
 void WipeScreenHookCreate(void) {
     Gfx *gfx;
 
-    D_800BDA7C_main = HuMemAlloc(0x1900);
-    gfx = D_800BDA7C_main;
-    D_800BDA82_main = Hu3DHookFuncCreate(0, WipeScreenHook2, 0);
-    gSPDisplayList(gfx++, D_800A26D8_main);
+    wipeCaptureGfx = HuMemAlloc(0x1900);
+    gfx = wipeCaptureGfx;
+    wipeStillHookMdl = Hu3DHookFuncCreate(0, WipeScreenHook2, 0);
+    gSPDisplayList(gfx++, wipeInitGfx);
     gDPSetCombineMode(gfx++, G_CC_MODULATEI_PRIM, G_CC_MODULATEI_PRIM);
     gDPSetRenderMode(gfx++, G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2);
     gDPSetPrimColor(gfx++, 0, 0, 255, 255, 255, 128);
-    WipeScreenDraw(&gfx, D_800BDA74_main);
+    WipeScreenDraw(&gfx, wipeCaptureBufP);
     gSPEndDisplayList(gfx);
 }
 
 void WipeScreenHookKill(void) {
-    HuMemDelayFree(D_800BDA7C_main);
-    HuMemDelayFree(D_800BDA70_main);
-    Hu3DModelKill(D_800BDA82_main);
+    HuMemDelayFree(wipeCaptureGfx);
+    HuMemDelayFree(wipeCaptureBuf);
+    Hu3DModelKill(wipeStillHookMdl);
 }
 
 void WipeScreenHook(Gfx **arg0, s32 arg1, s32 arg2) {
-    gSPDisplayList((*arg0)++, D_800BDA7C_main);
-    D_800BDA78_main++;
+    gSPDisplayList((*arg0)++, wipeCaptureGfx);
+    wipeCaptureCnt++;
 }
 
 void WipeScreenHook2(Gfx **arg0, s32 arg1, s32 arg2) {
-    gSPDisplayList((*arg0)++, D_800BDA7C_main);
+    gSPDisplayList((*arg0)++, wipeCaptureGfx);
 }
 
 void WipeScreenStillSet(void) {
-    D_800BDA70_main = D_800A26D4_main;
-    D_800BDA74_main = D_800D5550_main;
-    D_800D5304_main = 1;
+    wipeCaptureBuf = wipeScreenBuf;
+    wipeCaptureBufP = wipeScreenBufP;
+    wipeScreenStillF = 1;
 }
 
 void WipeScreenStillReset(void) {
-    HuMemDelayFree(D_800BDA7C_main);
-    HuMemMemoryFreePerm(D_800BDA70_main);
-    Hu3DModelKill(D_800BDA82_main);
-    D_800D5304_main = 0;
+    HuMemDelayFree(wipeCaptureGfx);
+    HuMemMemoryFreePerm(wipeCaptureBuf);
+    Hu3DModelKill(wipeStillHookMdl);
+    wipeScreenStillF = 0;
 }

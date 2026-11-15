@@ -7,22 +7,22 @@
 /* Globals whose owning module is not yet known. Most are main segment BSS
  * shared with board overlays. */
 #ifndef NO_EXTERN_VARIABLES
-extern s16 D_800CDBC8_main;
-extern UnkDiceRelated D_800CDBD0_main[5];
-extern s16 D_800CDD64_main;
-extern u8 D_800CC0C0_main;
-extern s16 D_800D51F8_main;
-extern s16 D_800C9930_main;
-extern s16 D_800CB894_main;
-extern char D_800D5218_main[];
-extern u16 D_800D5558_main[4];
-extern u16 D_800D530C_main;
-extern u8 D_800D6A58_main;
+extern s16 HuAudMusNo;
+extern UnkDiceRelated mbDiceData[5];
+extern s16 mbDiceBtnF;
+extern u8 mbDiceUnkF;
+extern s16 duelCancelEnableF;
+extern s16 mbSubMusNo;
+extern s16 mgModeCoinRate;
+extern char omDBGStrBuf[];
+extern u16 HuPadBtnDown[4];
+extern u16 omSysExitReq;
+extern u8 omSysPauseDisableF;
 
 // extern Unk800D6B48 D_800D6B48_main[2];
 
-extern s16 D_800CC0B8_main;
-extern s16 D_800D6A48_main;
+extern s16 mbUnkParam;
+extern s16 mbEndingF;
 #endif
 
 #endif //_VARIABLES_H_

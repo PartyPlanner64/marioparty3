@@ -13,9 +13,9 @@ typedef struct CameraViewState {
     f32 near;
 } CameraViewState;
 
-extern f32 D_800CB890_main;
-extern CameraViewState D_800CE178_main;
-extern f32 D_800D5210_main;
+extern f32 CFanOfs;
+extern CameraViewState CFan;
+extern f32 CFanLen;
 
 f32 D_80109AB0_mgenter = 58.0f;
 s8 D_80109AB4_mgenter = 0;
@@ -39,13 +39,13 @@ void func_80108A60_mgenter(void) {
     f32 length;
     s8 stick;
 
-    if (D_800D5558_main[1] & R_TRIG) {
+    if (HuPadBtnDown[1] & R_TRIG) {
         osSyncPrintf("\t{\n\t{%4.1f,%4.1f,%4.1f},\n", CRot.x, CRot.y, CRot.z);
         osSyncPrintf("\t{%4.1f,%4.1f,%4.1f},\n", Center.x, Center.y, Center.z);
         osSyncPrintf("\t%4.1f,%4.1f\n\t},\n", CZoom, D_80109AB0_mgenter);
     }
-    if (D_800CDA7C_main[1] & U_CBUTTONS) {
-        if (D_800CDA7C_main[1] & Z_TRIG) {
+    if (HuPadBtn[1] & U_CBUTTONS) {
+        if (HuPadBtn[1] & Z_TRIG) {
             zoom = CZoom;
             zoom += 30.0f;
             CZoom = zoom;
@@ -55,36 +55,36 @@ void func_80108A60_mgenter(void) {
             CZoom = zoom;
         }
     }
-    if ((D_800CDA7C_main[1] & D_CBUTTONS) && (CZoom - 10.0f != 0.0f)) {
-        if (D_800CDA7C_main[1] & Z_TRIG) {
+    if ((HuPadBtn[1] & D_CBUTTONS) && (CZoom - 10.0f != 0.0f)) {
+        if (HuPadBtn[1] & Z_TRIG) {
             CZoom -= 30.0f;
         } else {
             zoom = CZoom;
             CZoom = zoom - 10.0f;
         }
     }
-    if (D_800CDA7C_main[1] & L_CBUTTONS) {
+    if (HuPadBtn[1] & L_CBUTTONS) {
         D_80109AB0_mgenter += 1.0f;
     }
-    if (D_800CDA7C_main[1] & R_CBUTTONS) {
+    if (HuPadBtn[1] & R_CBUTTONS) {
         D_80109AB0_mgenter -= 1.0f;
     }
     Hu3DCameraPerspectiveSet(0, D_80109AB0_mgenter, D_80109B64_mgenter, D_80109B78_mgenter);
     x = CRot.x;
     y = CRot.y;
-    if (D_800CDA7C_main[1] & Z_TRIG) {
+    if (HuPadBtn[1] & Z_TRIG) {
         speed = 5.0f;
     } else {
         speed = 2.0f;
     }
-    y += (-D_800CBB6E_main[1] / 30) * speed;
+    y += (-HuPadStkX[1] / 30) * speed;
     if (y >= 360.0f) {
         y -= 360.0f;
     } else if (y < 0.0f) {
         y += 360.0f;
     }
     CRot.y = y;
-    stick = D_800D20A1_main[1];
+    stick = HuPadStkY[1];
     stick /= 30;
     x += stick * speed;
     if (x >= 360.0f) {
@@ -93,27 +93,27 @@ void func_80108A60_mgenter(void) {
         x += 360.0f;
     }
     CRot.x = x;
-    if (D_800CDA7C_main[1] & Z_TRIG) {
+    if (HuPadBtn[1] & Z_TRIG) {
         speed = 10.0f;
     } else {
         speed = 2.0f;
     }
-    if (D_800CDA7C_main[1] & U_JPAD) {
+    if (HuPadBtn[1] & U_JPAD) {
         Center.x += sindf(y) * sindf(x) * -speed;
         Center.y += cosdf(x) * -speed;
         Center.z += cosdf(y) * sindf(x) * -speed;
-    } else if (D_800CDA7C_main[1] & D_JPAD) {
+    } else if (HuPadBtn[1] & D_JPAD) {
         Center.x += sindf(y) * sindf(x) * speed;
         Center.y += cosdf(x) * speed;
         Center.z += cosdf(y) * sindf(x) * speed;
-    } else if (D_800CDA7C_main[1] & L_JPAD) {
+    } else if (HuPadBtn[1] & L_JPAD) {
         x = gCameraList->pos.z - Center.z;
         dz = -(gCameraList->pos.x - Center.x);
         length = 1.0f / HuSqrtf(x * x + dz * dz);
         Center.x += x * length * speed;
         Center.y += 0.0f;
         Center.z += dz * length * speed;
-    } else if (D_800CDA7C_main[1] & R_JPAD) {
+    } else if (HuPadBtn[1] & R_JPAD) {
         x = -(gCameraList->pos.z - Center.z);
         dz = gCameraList->pos.x - Center.x;
         length = 1.0f / HuSqrtf(x * x + dz * dz);
@@ -167,12 +167,12 @@ void func_80109020_mgenter(void) {
             up.y = 1.0f;
             up.z = 0.0f;
         }
-        D_800CE178_main.posX = pos.x;
-        D_800CE178_main.posZ = pos.z;
-        D_800CE178_main.rotY = CRot.y;
-        D_800CE178_main.fov = gCameraList->fov;
-        D_800CE178_main.far = D_800D5210_main;
-        D_800CE178_main.near = D_800CB890_main;
+        CFan.posX = pos.x;
+        CFan.posZ = pos.z;
+        CFan.rotY = CRot.y;
+        CFan.fov = gCameraList->fov;
+        CFan.far = CFanLen;
+        CFan.near = CFanOfs;
         Hu3DCameraPosSetV(0, &pos, &at, &up);
         Hu3DCamUpdateMtx(0);
         HuPrcVSleep();
@@ -189,7 +189,7 @@ s16 func_801095F4_mgenter(void) {
     for (i = 0; i < ARRAY_COUNT(D_80109B48_mgenter); i++) {
         D_80109B48_mgenter[i] = HuMemAllocTag(0x6000, TAG_OVERLAY);
     }
-    D_80109B54_mgenter = HuSprGet(D_800CD1DC_main[sprGrp].unk04, 0)->data->pat->data;
+    D_80109B54_mgenter = HuSprGet(esprite[sprGrp].unk04, 0)->data->pat->data;
     D_80109B44_mgenter = 0;
     espDispOff(sprGrp);
     return sprGrp;
@@ -209,7 +209,7 @@ void func_801096EC_mgenter(s16 arg0) {
     HuMemMemoryFreePerm(buf);
     DataClose(sprData);
     DataClose(palData);
-    HuSprGet(D_800CD1DC_main[D_80109B42_mgenter].unk04, 0)->data->pat->data =
+    HuSprGet(esprite[D_80109B42_mgenter].unk04, 0)->data->pat->data =
         D_80109B48_mgenter[D_80109B44_mgenter];
     D_80109B44_mgenter++;
     if (D_80109B44_mgenter >= ARRAY_COUNT(D_80109B48_mgenter)) {
@@ -221,7 +221,7 @@ void func_801096EC_mgenter(s16 arg0) {
 void func_80109820_mgenter(void) {
     s16 i;
 
-    HuSprGet(D_800CD1DC_main[D_80109B42_mgenter].unk04, 0)->data->pat->data = D_80109B54_mgenter;
+    HuSprGet(esprite[D_80109B42_mgenter].unk04, 0)->data->pat->data = D_80109B54_mgenter;
     espKill(D_80109B42_mgenter);
     HuSprAnimKill(D_80109B40_mgenter);
     for (i = 0; i < ARRAY_COUNT(D_80109B48_mgenter); i++) {
@@ -234,22 +234,22 @@ void func_801098D8_mgenter(void) {
     f32 x = 0.0f;
     f32 length;
 
-    if (D_800CDA7C_main[D_80109B74_mgenter] & L_JPAD) {
+    if (HuPadBtn[D_80109B74_mgenter] & L_JPAD) {
         x = -1.0f;
     }
-    if (D_800CDA7C_main[D_80109B74_mgenter] & R_JPAD) {
+    if (HuPadBtn[D_80109B74_mgenter] & R_JPAD) {
         x += 1.0f;
     }
-    if (D_800CDA7C_main[D_80109B74_mgenter] & U_JPAD) {
+    if (HuPadBtn[D_80109B74_mgenter] & U_JPAD) {
         y += 1.0f;
     }
-    if (D_800CDA7C_main[D_80109B74_mgenter] & D_JPAD) {
+    if (HuPadBtn[D_80109B74_mgenter] & D_JPAD) {
         y += -1.0f;
     }
     if ((x == 0.0f) & (y == 0.0f)) {
         return;
     }
     length = HuSqrtf(x * x + y * y);
-    D_800CBB6E_main[D_80109B74_mgenter] = x / length * 50.0f;
-    D_800D20A1_main[D_80109B74_mgenter] = y / length * 50.0f;
+    HuPadStkX[D_80109B74_mgenter] = x / length * 50.0f;
+    HuPadStkY[D_80109B74_mgenter] = y / length * 50.0f;
 }

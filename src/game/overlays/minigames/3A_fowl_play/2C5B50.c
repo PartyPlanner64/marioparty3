@@ -120,7 +120,7 @@ typedef struct Fowl {
     /* 0x64 */ f32 unk_64;
 } Fowl; // sizeof 0x68
 
-extern HuSprAnimData *D_800C9530_main[];
+extern HuSprAnimData *HuSprAnimTbl[];
 extern s32 D_800A178C_main[][6];
 
 u8 D_8010E7A0_fowl_play = 1; /* Unreferenced. */
@@ -642,7 +642,7 @@ void func_80106BD0_fowl_play(omObjData *object) {
         HuSprPosSet(D_8010F240_fowl_play[0], i, x, 0);
         sprite->pos.x = x;
     }
-    if (D_800D530C_main == 1 && WipeStatGet() == 0) {
+    if (omSysExitReq == 1 && WipeStatGet() == 0) {
         D_8010F29C_fowl_play = 8;
     }
 }
@@ -1003,10 +1003,10 @@ void func_80108298_fowl_play(omObjData *object) {
     pad = data->unk57;
     canCatch = 0;
     if (D_8010F29C_fowl_play != 2) {
-        D_800D20A1_main[pad] = 0;
-        D_800CBB6E_main[pad] = 0;
-        D_800D5558_main[pad] = 0;
-        D_800CDA7C_main[pad] = 0;
+        HuPadStkY[pad] = 0;
+        HuPadStkX[pad] = 0;
+        HuPadBtnDown[pad] = 0;
+        HuPadBtn[pad] = 0;
     }
     switch (D_8010F29C_fowl_play) {
         case 0:
@@ -1017,23 +1017,23 @@ void func_80108298_fowl_play(omObjData *object) {
             break;
         case 2:
             if (!work->unk25) {
-                angle = func_8010A9EC_fowl_play(D_800CBB6E_main[pad], -D_800D20A1_main[pad]) + CRotM[work->index].y;
-                mag = sqrtf(D_800CBB6E_main[pad] * D_800CBB6E_main[pad] + D_800D20A1_main[pad] * D_800D20A1_main[pad]);
-                D_800CBB6E_main[pad] = mag * sindf(angle);
-                D_800D20A1_main[pad] = -mag * cosdf(angle);
+                angle = func_8010A9EC_fowl_play(HuPadStkX[pad], -HuPadStkY[pad]) + CRotM[work->index].y;
+                mag = sqrtf(HuPadStkX[pad] * HuPadStkX[pad] + HuPadStkY[pad] * HuPadStkY[pad]);
+                HuPadStkX[pad] = mag * sindf(angle);
+                HuPadStkY[pad] = -mag * cosdf(angle);
             } else {
-                D_800D20A1_main[pad] = 0;
-                D_800CBB6E_main[pad] = 0;
-                D_800D5558_main[pad] = 0;
-                D_800CDA7C_main[pad] = 0;
+                HuPadStkY[pad] = 0;
+                HuPadStkX[pad] = 0;
+                HuPadBtnDown[pad] = 0;
+                HuPadBtn[pad] = 0;
                 func_80108B08_fowl_play(object);
             }
             break;
         case 6:
             if (work->unk24) {
                 angle = func_8010A9EC_fowl_play(-object->trans.x, -object->trans.z);
-                D_800CBB6E_main[pad] = sindf(angle) * 18.0;
-                D_800D20A1_main[pad] = -cosdf(angle) * 18.0;
+                HuPadStkX[pad] = sindf(angle) * 18.0;
+                HuPadStkY[pad] = -cosdf(angle) * 18.0;
                 Hu3DMotionSpeedSet(object->model[0], 1.0f);
             }
             break;
@@ -1059,13 +1059,13 @@ void func_80108298_fowl_play(omObjData *object) {
         case 9:
             return;
     }
-    buttons = D_800D5558_main[pad]; // Overwritten immediately, but needed to match.
+    buttons = HuPadBtnDown[pad]; // Overwritten immediately, but needed to match.
     buttons = func_800E4A90_minigame(object);
     work->prevPos.x = object->trans.x;
     work->prevPos.y = object->trans.y;
     work->prevPos.z = object->trans.z;
     if (work->unk3C != 0) {
-        D_800D5558_main[pad] &= ~0x4000;
+        HuPadBtnDown[pad] &= ~0x4000;
     } else {
         Hu3DData[object->model[0]].motIdShape = 0xFF;
     }
@@ -1237,10 +1237,10 @@ u16 func_80108B08_fowl_play(omObjData *object) {
             break;
     }
     angle += work->unk30;
-    D_800CBB6E_main[pad] = (work->unk23 * 2.0 + 56.0) * sindf(angle);
-    D_800D20A1_main[pad] = (work->unk23 * 2.0 + 56.0) * -cosdf(angle);
+    HuPadStkX[pad] = (work->unk23 * 2.0 + 56.0) * sindf(angle);
+    HuPadStkY[pad] = (work->unk23 * 2.0 + 56.0) * -cosdf(angle);
     if (press) {
-        D_800D5558_main[pad] |= B_BUTTON;
+        HuPadBtnDown[pad] |= B_BUTTON;
     }
     target.x = object->trans.x;
     target.y = 0.0f;
@@ -1255,7 +1255,7 @@ u16 func_80108B08_fowl_play(omObjData *object) {
     }
     if (clear != angle) {
         if (fabs(diff) < 30.0) {
-            D_800D5558_main[pad] |= A_BUTTON;
+            HuPadBtnDown[pad] |= A_BUTTON;
         }
     }
     return buttons;
@@ -2101,7 +2101,7 @@ s16 func_8010C1F4_fowl_play(s16 spriteId, s32 flags) {
         return -1;
     }
     fowl = &D_8010F32C_fowl_play[index];
-    fowl->sprite = D_800C9530_main[spriteId];
+    fowl->sprite = HuSprAnimTbl[spriteId];
     fowl->unk_28 = flags;
     fowl->unk_1A = 7;
     cel = fowl->sprite->pat;
@@ -2224,7 +2224,7 @@ void func_8010C7FC_fowl_play(s16 index, s16 spriteId) {
     s32 j;
 
     fowl = &D_8010F32C_fowl_play[index];
-    fowl->sprite = D_800C9530_main[spriteId];
+    fowl->sprite = HuSprAnimTbl[spriteId];
     cel = fowl->sprite->pat;
     HuMemFree(fowl->vtx);
     HuMemFree(fowl->displayList);
@@ -2335,7 +2335,7 @@ void func_8010CD84_fowl_play(s16 index, s16 spriteId) {
 
     if (index != -1) {
         fowl = D_8010F32C_fowl_play + index;
-        fowl->sprite = D_800C9530_main[spriteId];
+        fowl->sprite = HuSprAnimTbl[spriteId];
         fowl->unk_20 = 0x100;
         fowl->unk_1F = 0xFF;
         fowl->unk_1E = 0xFF;

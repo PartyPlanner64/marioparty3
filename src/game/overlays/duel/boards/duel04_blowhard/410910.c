@@ -1173,12 +1173,12 @@ void func_80105A58_duel04(void) {
     D_8011B4EC_duel04 = func_800E1824_name_81(3, 0xCA, 1);
     HuPrcSleep(3);
     mbCameraBtnF = 1;
-    D_800D51F8_main = 1;
+    duelCancelEnableF = 1;
 }
 
 void func_80105B10_duel04(void) {
     mbCameraBtnF = 0;
-    D_800D51F8_main = 0;
+    duelCancelEnableF = 0;
     func_800E1854_name_81(D_8011B4E0_duel04);
     func_800E1854_name_81(D_8011B4E4_duel04);
     func_800E1854_name_81(D_8011B4E8_duel04);
@@ -2717,7 +2717,7 @@ void func_8010AFB8_duel04(void) {
             data->sprId[i] = Hu3DSprModelLink(data->sprId[0], 8);
         }
         Hu3DSprModelAttrSet(data->sprId[i], 6, 0x180);
-        data->modelId[i] = D_800CBB60_main[data->sprId[i]].modelId;
+        data->modelId[i] = Hu3DSprModelData[data->sprId[i]].modelId;
         Hu3DSprModelColorSet(data->sprId[i], 0xFF, 0x40, 8);
         Hu3DSprModelTPLvlSet(data->sprId[i], 0xC8);
         Hu3DModelObjAttrSet(data->modelId[i], 0x70000000, 0x70000000);
@@ -4050,7 +4050,7 @@ void func_8010F1E8_duel04(void) {
                             break;
                         }
                     }
-                } else if (D_800C9520_main[GwPlayer[player].pad] & A_BUTTON) {
+                } else if (ContBtnDown[GwPlayer[player].pad] & A_BUTTON) {
                     break;
                 }
                 HuPrcVSleep();
@@ -4575,7 +4575,7 @@ void func_80110CF8_duel04(void) {
         func_800ED214_name_81(index);
         func_800F5BB4_name_81(index);
         func_800F5EB0_name_81(index);
-        if (D_800D5546_main[0] & 0x1000) {
+        if (ContBtn[0] & 0x1000) {
             Duel_PowerUpPartners(index);
         }
 
@@ -4634,7 +4634,7 @@ void func_80110CF8_duel04(void) {
         func_800ED214_name_81(1);
         func_800F5BB4_name_81(1);
         func_800F5EB0_name_81(1);
-        if (D_800D5546_main[0] & 0x1000) {
+        if (ContBtn[0] & 0x1000) {
             Duel_PowerUpPartners(1);
         }
     }

@@ -214,10 +214,10 @@ void func_80105A74_pipe_cleaners(void) {
 }
 
 void func_80105B3C_pipe_cleaners(s32 playerIndex) {
-    D_800CDA7C_main[GwPlayer[playerIndex].pad] = 0;
-    D_800D5558_main[GwPlayer[playerIndex].pad] = 0;
-    D_800CBB6E_main[GwPlayer[playerIndex].pad] = 0;
-    D_800D20A1_main[GwPlayer[playerIndex].pad] = 0;
+    HuPadBtn[GwPlayer[playerIndex].pad] = 0;
+    HuPadBtnDown[GwPlayer[playerIndex].pad] = 0;
+    HuPadStkX[GwPlayer[playerIndex].pad] = 0;
+    HuPadStkY[GwPlayer[playerIndex].pad] = 0;
 }
 
 void func_80105BB4_pipe_cleaners(omObjData *obj) {
@@ -269,7 +269,7 @@ void func_80105E60_pipe_cleaners(void) {
 void func_80105E94_pipe_cleaners(s32 arg0) {
     s16 modelId = D_8010A830_pipe_cleaners[arg0];
 
-    Hu3DModelAttrSet(D_800CBB60_main[modelId].modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(Hu3DSprModelData[modelId].modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DSprModelAttrSet(modelId, 1, 0);
 }
 
@@ -288,12 +288,12 @@ void func_80105F00_pipe_cleaners(omObjData *obj) {
     sprite = Hu3DSprModelCreate((void *)-1, 0x2A4, 0x10);
     Hu3DSprModelColorSet(sprite, 0xFF, 0xFF, 0xFF);
     Hu3DSprModelAttrSet(sprite, 1, 1);
-    D_800CBB60_main[sprite].unk_02 = animId;
-    Hu3DModelAttrSet(D_800CBB60_main[sprite].modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    Hu3DModelPosSet(D_800CBB60_main[sprite].modelId, -60.0f, 180.0f, 0.0f);
-    Hu3DModelScaleSet(D_800CBB60_main[sprite].modelId, 3.0f, 3.0f, 3.0f);
-    Hu3DMotionAttrSet(D_800CBB60_main[sprite].modelId, 2, 2);
-    Hu3DModelCameraSet(D_800CBB60_main[sprite].modelId, 1 << obj->work[0]);
+    Hu3DSprModelData[sprite].unk_02 = animId;
+    Hu3DModelAttrSet(Hu3DSprModelData[sprite].modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelPosSet(Hu3DSprModelData[sprite].modelId, -60.0f, 180.0f, 0.0f);
+    Hu3DModelScaleSet(Hu3DSprModelData[sprite].modelId, 3.0f, 3.0f, 3.0f);
+    Hu3DMotionAttrSet(Hu3DSprModelData[sprite].modelId, 2, 2);
+    Hu3DModelCameraSet(Hu3DSprModelData[sprite].modelId, 1 << obj->work[0]);
     *spritePtr = sprite;
     obj->func = func_80105EF8_pipe_cleaners;
 }
@@ -366,17 +366,17 @@ void func_8010638C_pipe_cleaners(void) {
 void func_801063E8_pipe_cleaners(omObjData *obj, s32 slot) {
     slot &= 3;
     if (slot == 0) {
-        D_800D5558_main[GwPlayer[obj->work[0]].pad] = 0x4000;
-        D_800D20A1_main[GwPlayer[obj->work[0]].pad] = 60;
+        HuPadBtnDown[GwPlayer[obj->work[0]].pad] = 0x4000;
+        HuPadStkY[GwPlayer[obj->work[0]].pad] = 60;
     } else if (slot == 1) {
-        D_800D5558_main[GwPlayer[obj->work[0]].pad] = 0x8000;
-        D_800D20A1_main[GwPlayer[obj->work[0]].pad] = 60;
+        HuPadBtnDown[GwPlayer[obj->work[0]].pad] = 0x8000;
+        HuPadStkY[GwPlayer[obj->work[0]].pad] = 60;
     } else if (slot == 2) {
-        D_800D5558_main[GwPlayer[obj->work[0]].pad] = 0x4000;
-        D_800D20A1_main[GwPlayer[obj->work[0]].pad] = -60;
+        HuPadBtnDown[GwPlayer[obj->work[0]].pad] = 0x4000;
+        HuPadStkY[GwPlayer[obj->work[0]].pad] = -60;
     } else if (slot == 3) {
-        D_800D5558_main[GwPlayer[obj->work[0]].pad] = 0x8000;
-        D_800D20A1_main[GwPlayer[obj->work[0]].pad] = -60;
+        HuPadBtnDown[GwPlayer[obj->work[0]].pad] = 0x8000;
+        HuPadStkY[GwPlayer[obj->work[0]].pad] = -60;
     }
 }
 
@@ -593,16 +593,16 @@ void func_80106DA4_pipe_cleaners(PipeCleanerWork *work) {
 void func_80106E10_pipe_cleaners(omObjData *obj) {
     PipeCleanerWork *work = &D_8010AB30_pipe_cleaners[obj->work[0]];
 
-    if (D_800D20A1_main[GwPlayer[obj->work[0]].pad] > 50 && (D_800D5558_main[GwPlayer[obj->work[0]].pad] & 0x8000)) {
+    if (HuPadStkY[GwPlayer[obj->work[0]].pad] > 50 && (HuPadBtnDown[GwPlayer[obj->work[0]].pad] & 0x8000)) {
         func_80106A70_pipe_cleaners(obj, 1);
         work->motionId = 2;
-    } else if (D_800D20A1_main[GwPlayer[obj->work[0]].pad] < -50 && (D_800D5558_main[GwPlayer[obj->work[0]].pad] & 0x8000)) {
+    } else if (HuPadStkY[GwPlayer[obj->work[0]].pad] < -50 && (HuPadBtnDown[GwPlayer[obj->work[0]].pad] & 0x8000)) {
         func_80106A70_pipe_cleaners(obj, 3);
         work->motionId = 4;
-    } else if (D_800D20A1_main[GwPlayer[obj->work[0]].pad] > 50 && (D_800D5558_main[GwPlayer[obj->work[0]].pad] & 0x4000)) {
+    } else if (HuPadStkY[GwPlayer[obj->work[0]].pad] > 50 && (HuPadBtnDown[GwPlayer[obj->work[0]].pad] & 0x4000)) {
         func_80106A70_pipe_cleaners(obj, 2);
         work->motionId = 1;
-    } else if (D_800D20A1_main[GwPlayer[obj->work[0]].pad] < -50 && (D_800D5558_main[GwPlayer[obj->work[0]].pad] & 0x4000)) {
+    } else if (HuPadStkY[GwPlayer[obj->work[0]].pad] < -50 && (HuPadBtnDown[GwPlayer[obj->work[0]].pad] & 0x4000)) {
         func_80106A70_pipe_cleaners(obj, 4);
         work->motionId = 3;
     }
@@ -683,7 +683,7 @@ void func_80107114_pipe_cleaners(omObjData *obj) {
 void func_8010731C_pipe_cleaners(omObjData *obj) {
     s16 modelId = obj->model[0];
 
-    if (Hu3DData[modelId].motTime == D_800CCF58_main[Hu3DData[modelId].motId].unk02 - 2) {
+    if (Hu3DData[modelId].motTime == Hu3DMotion[Hu3DData[modelId].motId].unk02 - 2) {
         Hu3DMotionAttrSet(modelId, 1, 1);
     }
 }
@@ -691,7 +691,7 @@ void func_8010731C_pipe_cleaners(omObjData *obj) {
 void func_801073A4_pipe_cleaners(omObjData *obj) {
     s16 modelId = obj->model[0];
 
-    if (Hu3DData[modelId].motTime == D_800CCF58_main[Hu3DData[modelId].motId].unk02 - 2) {
+    if (Hu3DData[modelId].motTime == Hu3DMotion[Hu3DData[modelId].motId].unk02 - 2) {
         Hu3DMotionAttrSet(modelId, 1, 1);
     }
 }
@@ -1467,7 +1467,7 @@ void func_8010984C_pipe_cleaners(omObjData *obj) {
 }
 
 void func_80109884_pipe_cleaners(omObjData *obj) {
-    if (D_800D530C_main == 1) {
+    if (omSysExitReq == 1) {
         WipeCreateOut(0, 20);
         obj->func = func_8010984C_pipe_cleaners;
         HuAudSeqFadeOut(30);

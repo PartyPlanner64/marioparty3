@@ -11,7 +11,7 @@ typedef struct SaveCommonBuf {
 } SaveCommonBuf; // sizeof 0x18
 
 #ifndef NO_EXTERN_VARIABLES
-extern u8 D_800D20EC_main;
+extern u8 SLFormatFlags;
 #endif
 
 void SLSaveDataInit(void);

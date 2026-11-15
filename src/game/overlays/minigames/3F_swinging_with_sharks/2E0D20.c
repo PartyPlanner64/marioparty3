@@ -33,8 +33,8 @@ typedef struct {
     /* 0x18 */ f32 dist;
 } SharkPathPoint; // Size 0x1C
 
-extern u16 D_800A11D0_main[];
-extern u8 D_800D6A90_main;
+extern u16 mgInstColumnTbl[];
+extern u8 omAllPauseF;
 
 u8 D_8010ACE0_swinging_with_sharks = 0;
 u8 D_8010ACE1_swinging_with_sharks = 0;
@@ -263,7 +263,7 @@ void func_801059A0_swinging_with_sharks(void) {
     omGameSysInit();
     Hu3DSprModelInit(20);
     Hu3DBGColorSet(0, 0xFF, 0);
-    D_800CD280_main = 1;
+    Hu3DScreenClearF = 1;
     ScissorSet(0, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     CRot.x = 334.0f;
@@ -450,7 +450,7 @@ void func_80106398_swinging_with_sharks(omObjData *object) {
                 D_8010B9EC_swinging_with_sharks--;
             }
         } else {
-            jump = D_800D5558_main[D_8010B9DA_swinging_with_sharks] & 0x8000;
+            jump = HuPadBtnDown[D_8010B9DA_swinging_with_sharks] & 0x8000;
         }
         if ((D_8010B9E2_swinging_with_sharks != 0 && jump) ||
             (D_8010B9E2_swinging_with_sharks == 0 &&
@@ -591,7 +591,7 @@ void func_80107044_swinging_with_sharks(omObjData *object) {
     s16 model = D_8010B8E0_swinging_with_sharks[32];
 
     if (Hu3DData[model].motId == D_8010B948_swinging_with_sharks[37] &&
-        Hu3DData[model].motTime >= D_800CCF58_main[Hu3DData[model].motId].unk02) {
+        Hu3DData[model].motTime >= Hu3DMotion[Hu3DData[model].motId].unk02) {
         Hu3DMotionShiftSet(model, D_8010B948_swinging_with_sharks[32], 0, 16, 2);
     }
     shark = &Hu3DData[D_8010B8E0_swinging_with_sharks[D_8010B9DE_swinging_with_sharks + 3]];
@@ -709,7 +709,7 @@ void func_801077C4_swinging_with_sharks(void) {
         shark->unk02 = 0;
         shark->unk04 = 30;
         Hu3DAnimBankSet(Hu3DAnimRead(Hu3DData[D_8010B8E0_swinging_with_sharks[i + 8]].hmf, 0x21002C, "m259_30_000_DEF"),
-                        D_800A11D0_main[i]);
+                        mgInstColumnTbl[i]);
         Hu3DModelRemakeStatic(D_8010B8E0_swinging_with_sharks[i + 8]);
         Hu3DModelDynamicFree(D_8010B8E0_swinging_with_sharks[i + 8]);
         shark->unk24 = rand8() & 0x3F;
@@ -855,8 +855,8 @@ void func_80108474_swinging_with_sharks(omObjData *object) {
     s16 model;
 
     D_8010BAE4_swinging_with_sharks =
-        SprModelRead(D_8010B430_swinging_with_sharks[D_800A11D0_main[D_8010B9DE_swinging_with_sharks]], 0xA4, 0x10);
-    model = D_800CBB60_main[D_8010BAE4_swinging_with_sharks].modelId;
+        SprModelRead(D_8010B430_swinging_with_sharks[mgInstColumnTbl[D_8010B9DE_swinging_with_sharks]], 0xA4, 0x10);
+    model = Hu3DSprModelData[D_8010BAE4_swinging_with_sharks].modelId;
     Hu3DModelScaleSet(model, 5.0f, 5.0f, 5.0f);
     Hu3DModelPosSet(model, shark->pos.x, 200.0f, shark->pos.z - 80.0f);
     Hu3DSprModelReset(D_8010BAE4_swinging_with_sharks);
@@ -872,7 +872,7 @@ void func_80108474_swinging_with_sharks(omObjData *object) {
 
 void func_801085F4_swinging_with_sharks(omObjData *object) {
     HmfModel *shark = &Hu3DData[D_8010B8E0_swinging_with_sharks[D_8010B9DE_swinging_with_sharks + 3]];
-    s16 model = D_800CBB60_main[D_8010BAE4_swinging_with_sharks].modelId;
+    s16 model = Hu3DSprModelData[D_8010BAE4_swinging_with_sharks].modelId;
     HmfModel *spr = &Hu3DData[model];
 
     switch (object->work[0]) {
@@ -880,7 +880,7 @@ void func_801085F4_swinging_with_sharks(omObjData *object) {
             Hu3DModelPosSet(model, shark->pos.x, sindf(object->work[1] * 9.0f) * 200.0f + 200.0f, shark->pos.z - (80.0f - sindf(object->work[1] * 9.0f) * 80.0f));
             EffectPosSet(D_8010BAE6_swinging_with_sharks, spr->pos.x, spr->pos.y - 50.0f, spr->pos.z);
             if (++object->work[1] > 10) {
-                GwPlayer[D_8010B9D8_swinging_with_sharks].bonusCoin = D_800A11D0_main[D_8010B9DE_swinging_with_sharks];
+                GwPlayer[D_8010B9D8_swinging_with_sharks].bonusCoin = mgInstColumnTbl[D_8010B9DE_swinging_with_sharks];
                 object->work[0] = 1;
                 object->work[1] = 0;
                 func_801088F0_swinging_with_sharks(334.0f, 0.0f, 0.0f, shark->pos.x, 300.0f, shark->pos.z, 2500.0f, 20);
@@ -938,7 +938,7 @@ void func_80108B24_swinging_with_sharks(void) {
 
 void func_80108B4C_swinging_with_sharks(omObjData *object) {
     Hu3DModelObjTexScroll(D_8010B8E0_swinging_with_sharks[0], 0, -D_8010BAE8_swinging_with_sharks, 32, 32, "sea", 0);
-    if (omPauseChk() + D_800D6A90_main == 0) {
+    if (omPauseChk() + omAllPauseF == 0) {
         D_8010BAE8_swinging_with_sharks += 0.3f;
         if (D_8010BAE8_swinging_with_sharks > 32.0f) {
             D_8010BAE8_swinging_with_sharks = 0.0f;
@@ -1021,36 +1021,36 @@ void func_80109020_swinging_with_sharks(void) {
     f32 dirZ;
     f32 inv;
 
-    if (D_800D5558_main[0] & 0x10) {
+    if (HuPadBtnDown[0] & 0x10) {
         D_8010ACE0_swinging_with_sharks ^= 1;
     }
-    if (D_800CDA7C_main[0] & 0x1000) {
+    if (HuPadBtn[0] & 0x1000) {
         func_801096AC_swinging_with_sharks();
     }
-    if (D_800CDA7C_main[0] & 8) {
-        CZoom = (D_800CDA7C_main[0] & 0x2000) ? CZoom + 30.0f : CZoom + 10.0f;
+    if (HuPadBtn[0] & 8) {
+        CZoom = (HuPadBtn[0] & 0x2000) ? CZoom + 30.0f : CZoom + 10.0f;
     }
-    if ((D_800CDA7C_main[0] & 4) && CZoom - 10.0f != 0.0f) {
-        CZoom = (D_800CDA7C_main[0] & 0x2000) ? CZoom - 30.0f : CZoom - 10.0f;
+    if ((HuPadBtn[0] & 4) && CZoom - 10.0f != 0.0f) {
+        CZoom = (HuPadBtn[0] & 0x2000) ? CZoom - 30.0f : CZoom - 10.0f;
     }
-    if (D_800CDA7C_main[0] & 2) {
+    if (HuPadBtn[0] & 2) {
         D_8010BBB4_swinging_with_sharks += 1.0f;
     }
-    if (D_800CDA7C_main[0] & 1) {
+    if (HuPadBtn[0] & 1) {
         D_8010BBB4_swinging_with_sharks -= 1.0f;
     }
     Hu3DCameraPerspectiveSet(0, D_8010BBB4_swinging_with_sharks, 500.0f, 8000.0f);
     rotX = D_8010BB90_swinging_with_sharks.x;
     rotY = D_8010BB90_swinging_with_sharks.y;
-    speed = (D_800CDA7C_main[0] & 0x2000) ? 5.0f : 2.0f;
-    rotY += (-D_800CBB6E_main[0] / 30) * speed;
+    speed = (HuPadBtn[0] & 0x2000) ? 5.0f : 2.0f;
+    rotY += (-HuPadStkX[0] / 30) * speed;
     if (rotY >= 360.0f) {
         rotY -= 360.0f;
     } else if (rotY < 0.0f) {
         rotY += 360.0f;
     }
     D_8010BB90_swinging_with_sharks.y = rotY;
-    rotX += (s8)(D_800D20A1_main[0] / 30) * speed;
+    rotX += (s8)(HuPadStkY[0] / 30) * speed;
     if (rotX >= 360.0f) {
         rotX -= 360.0f;
     } else if (rotX < 0.0f) {
@@ -1059,16 +1059,16 @@ void func_80109020_swinging_with_sharks(void) {
     D_8010BB90_swinging_with_sharks.x = rotX;
     CRot.x = (s16)rotX;
     CRot.y = (s16)D_8010BB90_swinging_with_sharks.y;
-    speed = (D_800CDA7C_main[0] & 0x2000) ? 10.0f : 2.0f;
-    if (D_800CDA7C_main[0] & 0x800) {
+    speed = (HuPadBtn[0] & 0x2000) ? 10.0f : 2.0f;
+    if (HuPadBtn[0] & 0x800) {
         Center.x += sindf(rotY) * sindf(rotX) * -speed;
         Center.y += cosdf(rotX) * -speed;
         Center.z += cosdf(rotY) * sindf(rotX) * -speed;
-    } else if (D_800CDA7C_main[0] & 0x400) {
+    } else if (HuPadBtn[0] & 0x400) {
         Center.x += sindf(rotY) * sindf(rotX) * speed;
         Center.y += cosdf(rotX) * speed;
         Center.z += cosdf(rotY) * sindf(rotX) * speed;
-    } else if (D_800CDA7C_main[0] & 0x200) {
+    } else if (HuPadBtn[0] & 0x200) {
         // rotX is reused here as the X component of the camera direction.
         rotX = gCameraList->pos.z - Center.z;
         dirZ = -(gCameraList->pos.x - Center.x);
@@ -1076,7 +1076,7 @@ void func_80109020_swinging_with_sharks(void) {
         Center.x += rotX * inv * speed;
         Center.y += 0.0f;
         Center.z += dirZ * inv * speed;
-    } else if (D_800CDA7C_main[0] & 0x100) {
+    } else if (HuPadBtn[0] & 0x100) {
         rotX = -(gCameraList->pos.z - Center.z);
         dirZ = gCameraList->pos.x - Center.x;
         inv = 1.0f / HuSqrtf(rotX * rotX + dirZ * dirZ);
@@ -1127,7 +1127,7 @@ void func_8010979C_swinging_with_sharks(SharkEntry *entries) {
 }
 
 void func_801098C0_swinging_with_sharks(omObjData *object) {
-    if (D_8010ACE1_swinging_with_sharks != 0 || D_800D530C_main != 0) {
+    if (D_8010ACE1_swinging_with_sharks != 0 || omSysExitReq != 0) {
         WipeCreateOut(0, 20);
         object->func = func_80109924_swinging_with_sharks;
         HuAudSeqFadeOut(60);

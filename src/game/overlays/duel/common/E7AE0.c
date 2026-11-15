@@ -330,19 +330,19 @@ void func_801008E8_name_81(void) {
             MBDCameraPos2DGet(&sp10);
             func_801000A4_name_81(temp_s3, MBDCameraPos2DSet(&sp10));
 
-            if (D_800D5546_main[temp_s2] & 0x200) {
+            if (ContBtn[temp_s2] & 0x200) {
                 sp10.x -= sixteen;
                 var_s1 = 0xF;
             }
-            if (D_800D5546_main[temp_s2] & 0x100) {
+            if (ContBtn[temp_s2] & 0x100) {
                 sp10.x += sixteen;
                 var_s1 = 0xF;
             }
-            if (D_800D5546_main[temp_s2] & 0x800) {
+            if (ContBtn[temp_s2] & 0x800) {
                 sp10.y -= sixteen;
                 var_s1 = 0xF;
             }
-            if (D_800D5546_main[temp_s2] & 0x400) {
+            if (ContBtn[temp_s2] & 0x400) {
                 sp10.y += sixteen;
                 var_s1 = 0xF;
             }
@@ -360,7 +360,7 @@ void func_801008E8_name_81(void) {
                 HuWinComKeyReset();
                 goto label; // break doesn't work here for some reason
             }
-        } while (mbCameraBtnF != 0 && !(D_800C9520_main[temp_s2] & (A_BUTTON | B_BUTTON | Z_TRIG | R_TRIG)));
+        } while (mbCameraBtnF != 0 && !(ContBtnDown[temp_s2] & (A_BUTTON | B_BUTTON | Z_TRIG | R_TRIG)));
 
         while (1) {
         label:
@@ -419,7 +419,7 @@ void func_80100CEC_name_81(s32 padIdx) {
 
     D_80105528_name_81 = MBDCameraZoomGet();
     MBDCameraPos2DGet(&D_8010552C_name_81);
-    D_800CB99C_main = 1;
+    winPauseF = 1;
     omAllPause();
     func_800E5964_name_81();
     procObj = omAddPrcObj(func_80100CA0_name_81, 0x1005, 0, 0);
@@ -435,6 +435,6 @@ void func_80100CEC_name_81(s32 padIdx) {
     HuPrcChildLink(proc2, procObj);
     HuPrcChildWatch();
     omAllUPause();
-    D_800CB99C_main = 0;
+    winPauseF = 0;
     func_800E5954_name_81();
 }

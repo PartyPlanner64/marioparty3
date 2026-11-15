@@ -2,9 +2,9 @@
 #include "gcc/string.h"
 
 extern s16 D_800A11E6_main;
-extern s16 D_800D1F36_main;
-extern s16 D_800D1FE0_main;
-extern u8 D_800CE20A_main;
+extern s16 GameManFirstPad;
+extern s16 mgModeCoinBase;
+extern u8 storySceneNo;
 
 f32 D_80109AA0_mgenter = 115.0f;
 u16 D_80109AA4_mgenter = 0;
@@ -77,14 +77,14 @@ void func_801059D0_mgenter(void) {
     Hu3DCameraPerspectiveSet(0, D_80109AB0_mgenter, D_80109B64_mgenter, D_80109B78_mgenter);
     omPrcSetStatBit(omAddPrcObj(func_80109020_mgenter, 0x1100, 0x800, 0), 0xA0);
     WipeCreateIn(0xFF, 0x10);
-    D_800CD280_main = 1;
+    Hu3DScreenClearF = 1;
     Hu3DBGColorSet(0xFF, 0xFF, 0xFF);
-    D_80109B74_mgenter = D_800D1F36_main;
+    D_80109B74_mgenter = GameManFirstPad;
     D_80109B7C_mgenter = 1;
     D_80109B76_mgenter = MgDataMaxGet(GwSystem.minigame_index);
     D_80109B98_mgenter = 0;
     D_80109B2A_mgenter = GwSystem.minigame_index - 1;
-    typeBits = (D_800A6D40_main[D_80109B2A_mgenter].flags & 0x3800) >> 11;
+    typeBits = (mgDataTbl[D_80109B2A_mgenter].flags & 0x3800) >> 11;
     D_80109B2E_mgenter = typeBits + 1;
     if (D_80109B2E_mgenter >= 2) {
         D_80109B2E_mgenter = typeBits;
@@ -97,10 +97,10 @@ void func_801059D0_mgenter(void) {
         func = func_80106294_mgenter;
     }
     omAddPrcObj(func, 0x3F00, 0x2000, 0);
-    if (D_800D1FE0_main != 0) {
+    if (mgModeCoinBase != 0) {
         GwSystem.show_minigame_explanations = 1;
     } else {
-        D_800D1FE0_main++;
+        mgModeCoinBase++;
     }
     _SetFlag(0xD);
     HuAudSeqPlay(8);
@@ -114,7 +114,7 @@ void func_80105C60_mgenter(void) {
     omOvlHisChg(0, 0x68, 0, 4);
     omOvlCallEx(0x70, 0, 2);
     _SetFlag(0xD);
-    D_800D1FE0_main++;
+    mgModeCoinBase++;
 }
 
 void func_80105CD8_mgenter(void) {
@@ -153,26 +153,26 @@ void func_80105CD8_mgenter(void) {
         D_80109B22_mgenter = 1;
         while (TRUE) {
             func_801098D8_mgenter();
-            if (D_800CBB6E_main[D_80109B74_mgenter] >= 31 || (D_800D5558_main[D_80109B74_mgenter] & 1)) {
+            if (HuPadStkX[D_80109B74_mgenter] >= 31 || (HuPadBtnDown[D_80109B74_mgenter] & 1)) {
                 HuAudFXPlay(1);
                 D_80109B30_mgenter = 1;
                 D_80109B22_mgenter = 0;
                 HuPrcSleep(10);
                 D_80109B22_mgenter = 1;
-            } else if (D_800CBB6E_main[D_80109B74_mgenter] < -30 || (D_800D5558_main[D_80109B74_mgenter] & 2)) {
+            } else if (HuPadStkX[D_80109B74_mgenter] < -30 || (HuPadBtnDown[D_80109B74_mgenter] & 2)) {
                 HuAudFXPlay(1);
                 D_80109B30_mgenter = -1;
                 D_80109B22_mgenter = 0;
                 HuPrcSleep(10);
                 D_80109B22_mgenter = 1;
             }
-            if (D_800D5558_main[D_80109B74_mgenter] & 0x8000) {
+            if (HuPadBtnDown[D_80109B74_mgenter] & 0x8000) {
                 HuAudFXPlay(2);
                 D_800A11E6_main = D_80109B2C_mgenter;
-                D_800CE20A_main = D_80109B2C_mgenter;
+                storySceneNo = D_80109B2C_mgenter;
                 break;
             }
-            if (D_800D5558_main[D_80109B74_mgenter] & 0x4000) {
+            if (HuPadBtnDown[D_80109B74_mgenter] & 0x4000) {
                 HuAudFXPlay(4);
                 D_800A11E6_main = -1;
                 D_80109B7C_mgenter = 0;
@@ -196,7 +196,7 @@ void func_80105CD8_mgenter(void) {
         }
         while (TRUE) {
             func_801098D8_mgenter();
-            if (D_800CBB6E_main[D_80109B74_mgenter] >= 31 || (D_800D5558_main[D_80109B74_mgenter] & 1)) {
+            if (HuPadStkX[D_80109B74_mgenter] >= 31 || (HuPadBtnDown[D_80109B74_mgenter] & 1)) {
                 HuAudFXPlay(1);
                 if (++D_80109B32_mgenter >= 3) {
                     D_80109B32_mgenter = 0;
@@ -204,7 +204,7 @@ void func_80105CD8_mgenter(void) {
                 D_80109B22_mgenter = 0;
                 HuPrcSleep(10);
                 D_80109B22_mgenter = 1;
-            } else if (D_800CBB6E_main[D_80109B74_mgenter] < -30 || (D_800D5558_main[D_80109B74_mgenter] & 2)) {
+            } else if (HuPadStkX[D_80109B74_mgenter] < -30 || (HuPadBtnDown[D_80109B74_mgenter] & 2)) {
                 HuAudFXPlay(1);
                 if (--D_80109B32_mgenter < 0) {
                     D_80109B32_mgenter = 2;
@@ -213,12 +213,12 @@ void func_80105CD8_mgenter(void) {
                 HuPrcSleep(10);
                 D_80109B22_mgenter = 1;
             }
-            if (D_800D5558_main[D_80109B74_mgenter] & 0x8000) {
+            if (HuPadBtnDown[D_80109B74_mgenter] & 0x8000) {
                 HuAudFXPlay(2);
                 confirmed = TRUE;
                 break;
             }
-            if (D_800D5558_main[D_80109B74_mgenter] & 0x4000) {
+            if (HuPadBtnDown[D_80109B74_mgenter] & 0x4000) {
                 HuAudFXPlay(4);
                 confirmed = FALSE;
                 break;
@@ -234,7 +234,7 @@ void func_80105CD8_mgenter(void) {
         HuPrcSleep(10);
     }
     GwPlayer[0].group = 0;
-    D_800CB894_main = D_80109B32_mgenter;
+    mgModeCoinRate = D_80109B32_mgenter;
     HuWinKill(winId);
     D_80109B7C_mgenter = 2;
     D_80109B76_mgenter = MgDataMaxGet(GwSystem.minigame_index);
@@ -255,7 +255,7 @@ void func_80106294_mgenter(void) {
     D_800A11E6_main = -1;
     omAddPrcObj(func_80106568_mgenter, 0x3F00, 0x800, 0);
     sprite = func_801095F4_mgenter();
-    func_801096EC_mgenter(D_800A6D40_main[D_80109B2A_mgenter].flags & 0x7FF);
+    func_801096EC_mgenter(mgDataTbl[D_80109B2A_mgenter].flags & 0x7FF);
     espPosSet(sprite, 0, -100);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
@@ -274,7 +274,7 @@ void func_80106294_mgenter(void) {
         HuPrcVSleep();
     }
     while (TRUE) {
-        btn = D_800D5558_main[D_80109B74_mgenter];
+        btn = HuPadBtnDown[D_80109B74_mgenter];
         if (btn & 0x8000) {
             HuAudFXPlay(2);
             break;
@@ -438,7 +438,7 @@ void func_80106BD0_mgenter(void) {
         model = models[i];
         Hu3DModelAttrSet(model, 4, 4);
         Hu3DMotionAttrSet(model, 1, 1);
-        Hu3DMotionTimeSet(model, D_800CCF58_main[Hu3DData[model].motId].unk02 / 2);
+        Hu3DMotionTimeSet(model, Hu3DMotion[Hu3DData[model].motId].unk02 / 2);
         Hu3DModelPosSet(model, sindf(i * 120) * 500.0f, 0.0f, cosdf(i * 120) * 500.0f);
         hmf = Hu3DData[model].hmf;
         hmf->unk60[SearchObjectIndex(hmf, "atama_2")].unk24 = 1;
@@ -565,7 +565,7 @@ void func_801079B4_mgenter(void) {
     D_800A11E6_main = -1;
     omAddPrcObj(func_80106568_mgenter, 0x3F00, 0x800, 0);
     sprite = func_801095F4_mgenter();
-    func_801096EC_mgenter(D_800A6D40_main[D_80109B2A_mgenter].flags & 0x7FF);
+    func_801096EC_mgenter(mgDataTbl[D_80109B2A_mgenter].flags & 0x7FF);
     espPosSet(sprite, 0, -100);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
@@ -595,7 +595,7 @@ void func_801079B4_mgenter(void) {
     }
     HuWinExAnimIn(valueWinId);
     while (TRUE) {
-        btn = D_800D0590_main[D_80109B74_mgenter];
+        btn = ContBtnRep[D_80109B74_mgenter];
         if (btn & 0x800) {
             delta = 100;
         } else {
@@ -614,10 +614,10 @@ void func_801079B4_mgenter(void) {
             func_80107E5C_mgenter(valueWinId, value, buf);
             HuWinMesSet(valueWinId, 0x4602, -1, -1);
         }
-        btn = D_800D5558_main[D_80109B74_mgenter];
+        btn = HuPadBtnDown[D_80109B74_mgenter];
         if (btn & 0x8000) {
             HuAudFXPlay(2);
-            D_800CB894_main = value;
+            mgModeCoinRate = value;
             break;
         }
         if (btn & 0x4000) {
@@ -666,7 +666,7 @@ void func_80107F0C_mgenter(void) {
 
     D_80109B24_mgenter = -1;
     sprite = func_801095F4_mgenter();
-    func_801096EC_mgenter((D_800A6D40_main[D_80109B2A_mgenter].flags & 0x7FF) + D_80109B2C_mgenter * 2);
+    func_801096EC_mgenter((mgDataTbl[D_80109B2A_mgenter].flags & 0x7FF) + D_80109B2C_mgenter * 2);
     espDispOff(sprite);
     D_80109B26_mgenter = -1;
     while (TRUE) {
@@ -718,7 +718,7 @@ void func_80107F0C_mgenter(void) {
             if (D_80109B2C_mgenter < 0) {
                 D_80109B2C_mgenter = D_80109B2E_mgenter - 1;
             }
-            func_801096EC_mgenter((D_800A6D40_main[D_80109B2A_mgenter].flags & 0x7FF) + D_80109B2C_mgenter * 2);
+            func_801096EC_mgenter((mgDataTbl[D_80109B2A_mgenter].flags & 0x7FF) + D_80109B2C_mgenter * 2);
             for (i = 1; i < 6; i++) {
                 x = -(1.0f - sindf(i * 18.0f)) * 240.0f * D_80109B30_mgenter + 160.0f;
                 espPosSet(sprite, x, D_80109AA0_mgenter);
@@ -805,7 +805,7 @@ void func_80108590_mgenter(void) {
 }
 
 void func_801087C0_mgenter(void) {
-    s16 minigameType = D_800A6D40_main[D_80109B2A_mgenter].minigameType;
+    s16 minigameType = mgDataTbl[D_80109B2A_mgenter].minigameType;
     s16 i;
 
     if (minigameType == 1 || minigameType == 2) {
@@ -836,7 +836,7 @@ void func_801087C0_mgenter(void) {
 }
 
 void func_80108934_mgenter(omObjData *obj) {
-    if ((D_80109AA4_mgenter != 0) || (D_800D530C_main != 0)) {
+    if ((D_80109AA4_mgenter != 0) || (omSysExitReq != 0)) {
         WipeCreateOut(WIPE_TYPE_NORMAL, 8);
         if (D_80109AA6_mgenter == 0) {
             HuAudSeqFadeOut(0x3C);

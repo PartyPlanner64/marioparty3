@@ -5,28 +5,28 @@
 #include "game/siman.h"
 #include "game/pad.h"
 
-static OSContPad D_800ABE40_main[8 * MAXCONTROLLERS];
-static unkMesg D_800ABF00_main[8];
-static s16 D_800ABF80_main;
-static s16 D_800ABF82_main;
-static s16 D_800ABF84_main;
-static s8 D_800ABF86_main[MAXCONTROLLERS];
-static u8 D_800ABF8A_main[MAXCONTROLLERS];
-static s8 D_800ABF8E_main;
-static s8 D_800ABF8F_main;
-static functionListEntry D_800ABF90_main;
-static s16 D_800ABF9C_main;
-static OSMesgQueue D_800ABFA0_main;
-static OSMesg D_800ABFB8_main;
+static OSContPad padReadBuf[8 * MAXCONTROLLERS];
+static unkMesg padReadMesg[8];
+static s16 padReadCnt;
+static s16 padReadIdx;
+static s16 padWriteIdx;
+static s8 padRepCnt[MAXCONTROLLERS];
+static u8 padConnectF[MAXCONTROLLERS];
+static s8 padStkXLimit;
+static s8 padStkYLimit;
+static functionListEntry padSIClient;
+static s16 padAutoReadF;
+static OSMesgQueue padMesgQueue;
+static OSMesg padMesgBuf;
 
 s32 _InitController(u16 *channel) {
     OSContStatus contStat[MAXCONTROLLERS];
     u8 pattern;
     s16 i;
 
-    osContInit(&D_800CE1A0_main, &pattern, contStat);
+    osContInit(&siMesgQueue, &pattern, contStat);
 
-    D_800ABF80_main = D_800ABF82_main = D_800ABF84_main = 0;
+    padReadCnt = padReadIdx = padWriteIdx = 0;
     gNumOfControllers = 0;
 
     for (i = 0; i < MAXCONTROLLERS; ++i) {
@@ -36,17 +36,17 @@ s32 _InitController(u16 *channel) {
             }
         }
 
-        D_800CDA7C_main[i] =
-            D_800D5558_main[i] =
-                D_800CBB66_main[i] =
-                    D_800D1244_main[i] =
+        HuPadBtn[i] =
+            HuPadBtnDown[i] =
+                HuPadBtnOld[i] =
+                    HuPadBtnRep[i] =
                         0;
-        D_800D056A_main[i] =
-            D_800D1382_main[i] =
+        HuPadStkXSum[i] =
+            HuPadStkYSum[i] =
                 0;
-        D_800D20A1_main[i] = 0;
-        D_800CBB6E_main[i] = 0;
-        D_800ABF8A_main[i] = 0;
+        HuPadStkY[i] = 0;
+        HuPadStkX[i] = 0;
+        padConnectF[i] = 0;
     }
 
     osContSetCh(*channel);
@@ -57,51 +57,51 @@ s16 InitController(s16 ch, s32 arg1) {
     unkMesg siMesg;
     RequestSIFunction(&siMesg, (void *)&_InitController, &ch, 1);
 
-    D_800ABF9C_main = 0;
+    padAutoReadF = 0;
 
     if (arg1 & 1) {
         SetAutoReadController();
     }
 
     SetStickValueLimit(0x46, 0x46);
-    osCreateMesgQueue(&D_800ABFA0_main, &D_800ABFB8_main, 1);
-    osSendMesg(&D_800ABFA0_main, 0, 1);
+    osCreateMesgQueue(&padMesgQueue, &padMesgBuf, 1);
+    osSendMesg(&padMesgQueue, 0, 1);
 
     return gNumOfControllers;
 }
 
 s32 _ReadController(s32 arg0) {
-    osRecvMesg(&D_800ABFA0_main, 0, 1);
+    osRecvMesg(&padMesgQueue, 0, 1);
 
-    if (D_800ABF80_main < 8) {
-        osSendMesg(&D_800ABFA0_main, 0, 1);
-        osContStartReadData(&D_800CE1A0_main);
-        osRecvMesg(&D_800CE1A0_main, 0, 1);
-        osContGetReadData(&D_800ABE40_main[D_800ABF84_main * 4]); //?
-        osRecvMesg(&D_800ABFA0_main, 0, 1);
+    if (padReadCnt < 8) {
+        osSendMesg(&padMesgQueue, 0, 1);
+        osContStartReadData(&siMesgQueue);
+        osRecvMesg(&siMesgQueue, 0, 1);
+        osContGetReadData(&padReadBuf[padWriteIdx * 4]); //?
+        osRecvMesg(&padMesgQueue, 0, 1);
 
-        ++D_800ABF80_main;
+        ++padReadCnt;
 
-        if (++D_800ABF84_main >= 8) {
-            D_800ABF84_main = 0;
+        if (++padWriteIdx >= 8) {
+            padWriteIdx = 0;
         }
     }
 
-    osSendMesg(&D_800ABFA0_main, 0, 1);
+    osSendMesg(&padMesgQueue, 0, 1);
     return 0;
 }
 
 void ReadController(void) {
-    osRecvMesg(&D_800ABFA0_main, NULL, 1);
-    if (D_800ABF80_main < 8) {
-        RequestSIFunction(&D_800ABF00_main[D_800ABF84_main], &_ReadController, 0, 0);
+    osRecvMesg(&padMesgQueue, NULL, 1);
+    if (padReadCnt < 8) {
+        RequestSIFunction(&padReadMesg[padWriteIdx], &_ReadController, 0, 0);
     }
-    osSendMesg(&D_800ABFA0_main, NULL, 1);
+    osSendMesg(&padMesgQueue, NULL, 1);
 }
 
 void SetStickValueLimit(s8 arg0, s8 arg1) {
-    D_800ABF8E_main = arg0;
-    D_800ABF8F_main = arg1;
+    padStkXLimit = arg0;
+    padStkYLimit = arg1;
 }
 
 #define MAX_CONTROLLERS 4
@@ -113,64 +113,64 @@ s16 UpdateController(void) {
     OSContPad *pads;
     u8 temp;
 
-    osRecvMesg(&D_800ABFA0_main, 0, 1);
-    temp_s0 = D_800ABF80_main;
+    osRecvMesg(&padMesgQueue, 0, 1);
+    temp_s0 = padReadCnt;
 
     if (temp_s0 != 0) {
-        --D_800ABF80_main;
+        --padReadCnt;
 
-        pads = &D_800ABE40_main[D_800ABF82_main * 4];
-        ++D_800ABF82_main;
-        if (D_800ABF82_main >= 8) {
-            D_800ABF82_main = 0;
+        pads = &padReadBuf[padReadIdx * 4];
+        ++padReadIdx;
+        if (padReadIdx >= 8) {
+            padReadIdx = 0;
         }
 
         for (i = 0; i < MAX_CONTROLLERS; i++) {
-            D_800ABF8A_main[i] = pads[i].errno != 8;
+            padConnectF[i] = pads[i].errno != 8;
             temp_v0_3 =
-                D_800CDA7C_main[i] = pads[i].button;
-            D_800CBB6E_main[i] = pads[i].stick_x;
-            D_800D056A_main[i] = D_800CBB6E_main[i];
-            D_800D1382_main[i] =
-                D_800D20A1_main[i] = pads[i].stick_y;
-            D_800D5558_main[i] = temp_v0_3 & (temp_v0_3 ^ D_800CBB66_main[i]);
-            if (D_800CBB66_main[i] == temp_v0_3) {
-                if (!(--D_800ABF86_main[i] & 0xFF)) {
-                    D_800D1244_main[i] = temp_v0_3;
-                    D_800ABF86_main[i] = 0xA;
+                HuPadBtn[i] = pads[i].button;
+            HuPadStkX[i] = pads[i].stick_x;
+            HuPadStkXSum[i] = HuPadStkX[i];
+            HuPadStkYSum[i] =
+                HuPadStkY[i] = pads[i].stick_y;
+            HuPadBtnDown[i] = temp_v0_3 & (temp_v0_3 ^ HuPadBtnOld[i]);
+            if (HuPadBtnOld[i] == temp_v0_3) {
+                if (!(--padRepCnt[i] & 0xFF)) {
+                    HuPadBtnRep[i] = temp_v0_3;
+                    padRepCnt[i] = 0xA;
                 } else {
-                    D_800D1244_main[i] = 0;
+                    HuPadBtnRep[i] = 0;
                 }
             } else {
-                D_800D1244_main[i] = D_800D5558_main[i];
-                D_800ABF86_main[i] = 0x1E;
+                HuPadBtnRep[i] = HuPadBtnDown[i];
+                padRepCnt[i] = 0x1E;
             }
 
-            temp = D_800CBB6E_main[i] + 9;
+            temp = HuPadStkX[i] + 9;
 
             if (temp < 0x13) {
-                D_800CBB6E_main[i] = 0;
-            } else if (D_800CBB6E_main[i] > D_800ABF8E_main) {
-                D_800CBB6E_main[i] = D_800ABF8E_main;
-            } else if (D_800CBB6E_main[i] < -D_800ABF8E_main) {
-                D_800CBB6E_main[i] = -D_800ABF8E_main;
+                HuPadStkX[i] = 0;
+            } else if (HuPadStkX[i] > padStkXLimit) {
+                HuPadStkX[i] = padStkXLimit;
+            } else if (HuPadStkX[i] < -padStkXLimit) {
+                HuPadStkX[i] = -padStkXLimit;
             }
 
-            temp = D_800D20A1_main[i] + 9;
+            temp = HuPadStkY[i] + 9;
 
             if (temp < 0x13) {
-                D_800D20A1_main[i] = 0;
-            } else if (D_800D20A1_main[i] > D_800ABF8F_main) {
-                D_800D20A1_main[i] = D_800ABF8F_main;
+                HuPadStkY[i] = 0;
+            } else if (HuPadStkY[i] > padStkYLimit) {
+                HuPadStkY[i] = padStkYLimit;
             } else {
-                if (D_800D20A1_main[i] < -D_800ABF8F_main) {
-                    D_800D20A1_main[i] = -D_800ABF8F_main;
+                if (HuPadStkY[i] < -padStkYLimit) {
+                    HuPadStkY[i] = -padStkYLimit;
                 }
             }
-            D_800CBB66_main[i] = temp_v0_3;
+            HuPadBtnOld[i] = temp_v0_3;
         }
     }
-    osSendMesg(&D_800ABFA0_main, 0, 1);
+    osSendMesg(&padMesgQueue, 0, 1);
     return temp_s0;
 }
 
@@ -182,31 +182,31 @@ s16 FlushController(void) {
 
     if (UpdateController() > 0) {
         for (i = 0; i < MAXCONTROLLERS; i++) {
-            held[i] = D_800D5558_main[i];
-            pressed[i] = D_800D1244_main[i];
-            D_800D056A_main[i] = D_800CBB6E_main[i];
-            D_800D1382_main[i] = D_800D20A1_main[i];
-            D_800CE2D0_main[i][count] = D_800CBB6E_main[i];
-            D_800D5418_main[i][count] = D_800D20A1_main[i];
+            held[i] = HuPadBtnDown[i];
+            pressed[i] = HuPadBtnRep[i];
+            HuPadStkXSum[i] = HuPadStkX[i];
+            HuPadStkYSum[i] = HuPadStkY[i];
+            HuPadStkXHis[i][count] = HuPadStkX[i];
+            HuPadStkYHis[i][count] = HuPadStkY[i];
         }
         count++;
         while (UpdateController() != 0) {
             for (i = 0; i < MAXCONTROLLERS; i++) {
-                held[i] |= D_800D5558_main[i];
-                pressed[i] |= D_800D1244_main[i];
-                D_800D056A_main[i] += D_800CBB6E_main[i];
-                D_800D1382_main[i] += D_800D20A1_main[i];
-                D_800CE2D0_main[i][count] = D_800CBB6E_main[i];
-                D_800D5418_main[i][count] = D_800D20A1_main[i];
+                held[i] |= HuPadBtnDown[i];
+                pressed[i] |= HuPadBtnRep[i];
+                HuPadStkXSum[i] += HuPadStkX[i];
+                HuPadStkYSum[i] += HuPadStkY[i];
+                HuPadStkXHis[i][count] = HuPadStkX[i];
+                HuPadStkYHis[i][count] = HuPadStkY[i];
             }
             count++;
         }
         for (i = 0; i < MAXCONTROLLERS; i++) {
-            D_800D5558_main[i] = held[i];
-            D_800D1244_main[i] = pressed[i];
+            HuPadBtnDown[i] = held[i];
+            HuPadBtnRep[i] = pressed[i];
         }
     }
-    D_800D5542_main = count;
+    HuPadReadNum = count;
     return count;
 }
 
@@ -215,20 +215,20 @@ void _AutoReadController(void) {
 }
 
 void SetAutoReadController(void) {
-    if (D_800ABF9C_main != 0) {
+    if (padAutoReadF != 0) {
         ResetAutoReadController();
     }
-    AddSIClient(&D_800ABF90_main, 0, &_AutoReadController);
-    D_800ABF9C_main = 1;
+    AddSIClient(&padSIClient, 0, &_AutoReadController);
+    padAutoReadF = 1;
 }
 
 void ResetAutoReadController(void) {
-    if (D_800ABF9C_main != 0) {
-        RemoveSIClient(&D_800ABF90_main);
+    if (padAutoReadF != 0) {
+        RemoveSIClient(&padSIClient);
     }
-    D_800ABF9C_main = 0;
+    padAutoReadF = 0;
 }
 
 s32 CheckControllerRead(s16 padNum) {
-    return D_800ABF8A_main[padNum];
+    return padConnectF[padNum];
 }

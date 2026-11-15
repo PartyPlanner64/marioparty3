@@ -85,7 +85,7 @@ typedef struct HuSprAnm {
 } HuSprAnm; // Size 0x1C
 
 // Palette animation data (built by the palette-animation loader, stored in
-// the D_800D0A50_main table). Each group cycles through frames that overwrite
+// the HuSprPalAnimData table). Each group cycles through frames that overwrite
 // a set of palette entries.
 typedef struct HuSprPalEntry {
     /* 0x00 */ u16 index;
@@ -203,7 +203,7 @@ typedef struct HuSprGrp {
 #ifndef NO_EXTERN_VARIABLES
 extern HuSprGrp *HuSprGrpData[HUSPR_GRP_MAX];
 
-extern s16 D_800D10F2_main;
+extern s16 HuSprBGHookMdl;
 #endif
 
 void HuSprInit(void);

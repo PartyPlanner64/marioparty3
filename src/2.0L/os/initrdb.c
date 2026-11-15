@@ -3,11 +3,11 @@
 extern u32 __osDisableInt(void);
 extern void __osRestoreInt(u32);
 
-extern u8 *D_800D5554_main;
-extern s32 D_800CE174_main;
-extern s32 D_800D6A8C_main;
-extern s32 D_800CC43C_main;
-extern s32 D_800D1FC8_main;
+extern u8 *__osRdb_IP6_Data;
+extern s32 __osRdb_IP6_Size;
+extern s32 __osRdb_IP6_Ct;
+extern s32 __osRdb_IP6_CurWrite;
+extern s32 __osRdb_IP6_CurSend;
 
 void osInitRdb(u8 *sendBuf, u32 sendSize) {
     register u32 int_disabled;
@@ -21,11 +21,11 @@ void osInitRdb(u8 *sendBuf, u32 sendSize) {
 
     int_disabled = __osDisableInt();
 
-    D_800D5554_main = sendBuf;
-    D_800CE174_main = sendSize;
-    D_800D6A8C_main = 0;
-    D_800CC43C_main = 0;
-    D_800D1FC8_main = 0;
+    __osRdb_IP6_Data = sendBuf;
+    __osRdb_IP6_Size = sendSize;
+    __osRdb_IP6_Ct = 0;
+    __osRdb_IP6_CurWrite = 0;
+    __osRdb_IP6_CurSend = 0;
 
     __osRestoreInt(int_disabled);
 }

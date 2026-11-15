@@ -4,7 +4,7 @@
 #include "ultra64.h"
 #include "common_structs.h"
 
-extern s16 D_800A12B0_main;
+extern s16 selMenuLastOvl;
 
 void ovlEventCall(OvlEntrypoint *arg0, s16 arg1);
 

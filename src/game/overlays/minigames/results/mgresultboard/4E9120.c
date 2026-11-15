@@ -190,7 +190,7 @@ void func_80108330_mgresultboard(omObjData *obj) {
         cur = D_8010AFE8_mgresultboard[i].unk_06;
         model = obj->model[cur + 1];
         time = Hu3DData[model].motTime;
-        endTime = D_800CCF58_main[Hu3DData[model].motId].unk02;
+        endTime = Hu3DMotion[Hu3DData[model].motId].unk02;
         switch (D_8010AFE8_mgresultboard[i].unk_00) {
             case 1:
                 if (cur >= 0) {
@@ -250,7 +250,7 @@ void func_80108700_mgresultboard(void) {
     data = DataRead(0x180005);
     D_8010ADD0_mgresultboard[0] = (s16)Hu3DAnimCreate(Hu3DData[obj->model[1]].hmf, data, 0, "zero_DEF");
     HuMemMemoryFreePerm(data);
-    D_8010AE70_mgresultboard[0] = D_800D1714_main[D_8010ADD0_mgresultboard[0]].animIdx;
+    D_8010AE70_mgresultboard[0] = Hu3DAnimData[D_8010ADD0_mgresultboard[0]].animIdx;
     Hu3DModelRemakeStatic(obj->model[1]);
     Hu3DModelDynamicFree(obj->model[1]);
     Hu3DAnimAttrSet(D_8010ADD0_mgresultboard[0], 1, 1);
@@ -335,7 +335,7 @@ void func_80108C60_mgresultboard(omObjData *obj) {
             curModel = D_8010AEA8_mgresultboard[i][j].unk_06;
             model = obj->model[curModel + 1];
             time = Hu3DData[model].motTime;
-            maxTime = D_800CCF58_main[Hu3DData[model].motId].unk02;
+            maxTime = Hu3DMotion[Hu3DData[model].motId].unk02;
             switch (D_8010AEA8_mgresultboard[i][j].unk_00) {
                 case 1:
                     if (curModel >= 0) {
@@ -639,7 +639,7 @@ void func_80109F30_mgresultboard(s16 model, s16 anim, s16 animIdx) {
             HmfAnim *entry;
 
             Hu3DModelAnimStart(Hu3DData[model].hmf);
-            entry = &D_800D1714_main[anim];
+            entry = &Hu3DAnimData[anim];
 
             entry->animIdx = animIdx;
         }

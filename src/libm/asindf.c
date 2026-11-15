@@ -29,8 +29,8 @@ f32 asindf(f32 x) {
     power = 1.0f;
     for (;;) {
         i = (s32)factor;
-        term *= (factor - 1.0f) * (factor - 1.0f) * D_800A46A0[i] *
-                D_800A46A0[(s32)(factor + 1.0f)];
+        term *= (factor - 1.0f) * (factor - 1.0f) * __invFactTblF[i] *
+                __invFactTblF[(s32)(factor + 1.0f)];
         power *= squared;
         result += term * power;
         if (term * power < 1.0e-7f) {

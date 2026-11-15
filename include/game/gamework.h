@@ -3,12 +3,12 @@
 
 #include "ultra64.h"
 
-extern s32 D_800A12C0_main;
-extern s32 D_800A12C4_main;
+extern s32 GwMessSpeed;
+extern s32 GwMessWait;
 extern s16 D_800A12C8_main;
-extern s32 D_800A12CC_main;
-extern s8 D_800A12D0_main;
-extern s32 D_800A12D4_main;
+extern s32 mbCameraZoomInstantF;
+extern s8 mbStarMusF;
+extern s32 mbTurnUnkF;
 extern s32 D_800A12D8_main;
 
 void GWInit(void);

@@ -4,7 +4,7 @@
 #include "game/mallocblock.h"
 
 s16 gHuMemIsDirty = FALSE;
-s16 D_800A08A2_main = 0;
+s16 HuMemDebugBlkNum = 0;
 
 void HuMemInit(HuAllocFunc malloc, HuFreeFunc free) {
     HuMallocHeader *newBlock;
@@ -25,7 +25,7 @@ void HuMemInit(HuAllocFunc malloc, HuFreeFunc free) {
     newBlock->prev = newBlock;
     newBlock->next = newBlock;
 
-    D_800C993C_main = 0;
+    HuMemDelayFreeCnt = 0;
 }
 
 void *HuMemAlloc(s32 size) {
@@ -52,7 +52,7 @@ void *HuMemAllocTag(s32 size, s16 tag) {
     newBlk->tag = tag;
     newBlk->size = alignedSize;
     newBlk->data = data;
-    newBlk->creationFrame = D_800D20AC_main;
+    newBlk->creationFrame = Hu3DFrameCnt;
 
     return newBlk->data;
 }
@@ -93,7 +93,7 @@ void HuMemFreeAllWithTag(s16 tag) {
                     HuMemBlockFree(block);
                     block = prevBlk;
 
-                    if (--D_800C993C_main <= 0) {
+                    if (--HuMemDelayFreeCnt <= 0) {
                         break;
                     }
                 }
@@ -114,9 +114,9 @@ void HuMemDelayFree(void *data) {
     }
 
     block->tag = TAG_DELAYED_FREE;
-    block->framesLeft = D_800D1FF0_main + 1;
+    block->framesLeft = Hu3DBufNum + 1;
 
-    ++D_800C993C_main;
+    ++HuMemDelayFreeCnt;
 }
 
 void HuMemDelayFreeAllWithTag(s16 arg0) {
@@ -126,8 +126,8 @@ void HuMemDelayFreeAllWithTag(s16 arg0) {
     while (block != gLastMallocBlock) {
         if (block->tag == arg0) {
             block->tag = TAG_DELAYED_FREE;
-            block->framesLeft = D_800D1FF0_main + 1;
-            ++D_800C993C_main;
+            block->framesLeft = Hu3DBufNum + 1;
+            ++HuMemDelayFreeCnt;
         }
         block = block->next;
     }
@@ -150,14 +150,14 @@ void HuMemFreeAll(void) {
 
     gFreeFunc((void *)gLastMallocBlock);
 
-    D_800C993C_main = 0;
+    HuMemDelayFreeCnt = 0;
     gHuMemIsDirty = FALSE;
 }
 
 void HuMemCleanUp(void) {
     if (gHuMemIsDirty) {
         HuMemFreeAll();
-    } else if (D_800C993C_main != 0) {
+    } else if (HuMemDelayFreeCnt != 0) {
         HuMemFreeAllWithTag(TAG_DELAYED_FREE);
     }
 }
@@ -204,7 +204,7 @@ void HuMemSetTag(void *data, s16 tag) {
 }
 
 // there's a messed up file split somewhere...the next string is in hmfman.c
-extern const char D_800A6BB8_main[];
+extern const char hexFmtStr[];
 
 s32 HuMemDebugCheck(void) {
     HuMallocHeader *block;
@@ -217,27 +217,27 @@ s32 HuMemDebugCheck(void) {
     size = 0;
     count = 0;
     while (block != gLastMallocBlock) {
-        D_800C9950_main[count] = block->data;
+        HuMemDebugBlk[count] = block->data;
         size += block->size;
         block = block->next;
         count++;
     }
 
-    if ((D_800A08A2_main != 0) && (D_800A08A2_main != count)) {
+    if ((HuMemDebugBlkNum != 0) && (HuMemDebugBlkNum != count)) {
         for (i = 0; i < count; i++) {
-            for (var_v1 = 0; var_v1 < D_800A08A2_main; var_v1++) {
-                if (D_800D2140_main[var_v1] == D_800C9950_main[i])
+            for (var_v1 = 0; var_v1 < HuMemDebugBlkNum; var_v1++) {
+                if (HuMemDebugBlkOld[var_v1] == HuMemDebugBlk[i])
                     break;
             }
-            if (var_v1 == D_800A08A2_main) {
-                osSyncPrintf(D_800A6BB8_main, D_800C9950_main[i]);
+            if (var_v1 == HuMemDebugBlkNum) {
+                osSyncPrintf(hexFmtStr, HuMemDebugBlk[i]);
             }
         }
     }
 
-    D_800A08A2_main = count;
+    HuMemDebugBlkNum = count;
     for (i = 0; i < count; i++) {
-        D_800D2140_main[i] = D_800C9950_main[i];
+        HuMemDebugBlkOld[i] = HuMemDebugBlk[i];
     }
     return size;
 }

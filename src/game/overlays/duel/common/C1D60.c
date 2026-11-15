@@ -13,7 +13,7 @@ extern u8 D_80105555_name_81;
 extern f32 D_80105708_name_81;
 extern u8 D_80105710_name_81;
 extern u8 D_8010562C_name_81;
-extern f32 D_800A0A7C_main;
+extern f32 Hu3DVtxWaveAngle;
 
 u8 D_80100E20_name_81 = 0;
 s32 D_80100E24_name_81[] = { 0x130207, 0x130207, 0x130207 };
@@ -30,7 +30,7 @@ void func_800F3880_name_81(s32 playerIndex, s16 motion, u16 arg2);
 void func_800F397C_name_81(s32 playerIndex, s16 arg1, s16 arg2, s16 arg3, u16 arg4);
 
 void func_800D9F90_name_81(s32 playerIndex) {
-    UnkDiceRelated *dice = &D_800CDBD0_main[playerIndex];
+    UnkDiceRelated *dice = &mbDiceData[playerIndex];
 
     if (dice->unk28 == -1 && dice->dice->work[0] == 1) {
         if (dice->unk_0A == 1) {
@@ -48,7 +48,7 @@ void func_800DA00C_name_81(omObjData *arg0) {
     f32 decay;
     s32 i;
 
-    entry = &D_800CDBD0_main[arg0->work[3]];
+    entry = &mbDiceData[arg0->work[3]];
     if (D_80105554_name_81 == 1) {
         base = 1.0f;
     } else {
@@ -78,7 +78,7 @@ void func_800DA00C_name_81(omObjData *arg0) {
 
                 if (D_80105554_name_81 == 1) {
                     for (i = 0; i < 4; i++) {
-                        if (D_800CDBD0_main[i].unk28 != -1) {
+                        if (mbDiceData[i].unk28 != -1) {
                             break;
                         }
                     }
@@ -90,7 +90,7 @@ void func_800DA00C_name_81(omObjData *arg0) {
                             entry->unk28 = HuAudFXPlay(0x100);
                         }
                     } else {
-                        entry->unk28 = D_800CDBD0_main[i].unk28;
+                        entry->unk28 = mbDiceData[i].unk28;
                     }
                 } else if ((entry->unk2A == 0) && (D_80105554_name_81 != 2) && (entry->unk_0A != 2) &&
                            (D_80105555_name_81 != 0)) {
@@ -112,7 +112,7 @@ void func_800DA00C_name_81(omObjData *arg0) {
             break;
 
         case 2:
-            D_800A0A7C_main = entry->unk48;
+            Hu3DVtxWaveAngle = entry->unk48;
             Hu3DModelObjAttrSet(*arg0->model, 0x22000, 0x20000);
             Hu3DModelVtxWave(*arg0->model, entry->unk40, entry->unk44, 2);
             if (Hu3DPauseF == 0) {
@@ -133,7 +133,7 @@ void func_800DA460_name_81(omObjData *arg0) {
     Vec2f pos2d;
     u32 roll;
 
-    entry = &D_800CDBD0_main[arg0->work[3]];
+    entry = &mbDiceData[arg0->work[3]];
 
     if ((arg0->work[0] == 0) && (Hu3DPauseF == 0)) {
         arg0->scale.x = (sindf(arg0->rot.x) * arg0->scale.z) + 1.0f;
@@ -178,7 +178,7 @@ void func_800DA85C_name_81(omObjData *arg0) {
     Vec2f pos2d;
     s8 roll;
 
-    entry = &D_800CDBD0_main[arg0->work[3]];
+    entry = &mbDiceData[arg0->work[3]];
 
     if ((arg0->work[0] == 0) && (Hu3DPauseF == 0)) {
         arg0->scale.x = (sindf(arg0->rot.x) * arg0->scale.z) + 1.0f;
@@ -215,8 +215,8 @@ void func_800DAAB0_name_81(void) {
 
     for (i = 0; i < 5; i++) {
         for (j = 0; j < DICE_TOTAL; j++) {
-            D_800CDBD0_main[i].rollValue[j] = 0;
-            D_800CDBD0_main[i].predecidedRollValue[j] = 0;
+            mbDiceData[i].rollValue[j] = 0;
+            mbDiceData[i].predecidedRollValue[j] = 0;
         }
     }
 }
@@ -227,7 +227,7 @@ void func_800DAB1C_name_81(void) {
     s32 j;
 
     for (i = 0; i < 5; i++) {
-        entry = &D_800CDBD0_main[i];
+        entry = &mbDiceData[i];
 
         for (j = 0; j < DICE_TOTAL; j++) {
             entry->sprites[j] = -1;
@@ -261,11 +261,11 @@ void func_800DABE0_name_81(s32 arg0) {
     void *data;
     s32 i;
 
-    entry = &D_800CDBD0_main[arg0];
+    entry = &mbDiceData[arg0];
 
-    if ((arg0 != 0) && (D_800CDBD0_main[0].unk_14 != -1)) {
-        entry->unk_14 = D_800CDBD0_main[0].unk_14;
-        D_800CDBD0_main[0].unk_0C++;
+    if ((arg0 != 0) && (mbDiceData[0].unk_14 != -1)) {
+        entry->unk_14 = mbDiceData[0].unk_14;
+        mbDiceData[0].unk_0C++;
     } else {
         data = DataRead(0x13020D);
         entry->unk_14 = HuSprAnimRead(data);
@@ -295,7 +295,7 @@ void func_800DADA0_name_81(s32 arg0) {
     Vec2f pos2d;
     s8 roll;
 
-    entry = &D_800CDBD0_main[arg0];
+    entry = &mbDiceData[arg0];
 
     if (entry->rollValue[entry->rollValueIdx] != 0) {
         if ((entry->dice == NULL) || (entry->dice->work[0] == 2)) {
@@ -348,7 +348,7 @@ void func_800DADA0_name_81(s32 arg0) {
 }
 
 void func_800DB148_name_81(s32 arg0) {
-    UnkDiceRelated *entry = &D_800CDBD0_main[arg0];
+    UnkDiceRelated *entry = &mbDiceData[arg0];
     s32 i;
 
     if (entry->unk_0B == 0) {
@@ -372,7 +372,7 @@ void func_800DB148_name_81(s32 arg0) {
                 if (i == arg0) {
                     continue;
                 }
-                if (D_800CDBD0_main[i].rollValue[D_800CDBD0_main[i].rollValueIdx] ==
+                if (mbDiceData[i].rollValue[mbDiceData[i].rollValueIdx] ==
                     entry->rollValue[entry->rollValueIdx]) {
                     break;
                 }
@@ -405,7 +405,7 @@ void func_800DB148_name_81(s32 arg0) {
 }
 
 void func_800DB38C_name_81(s32 playerIndex) {
-    UnkDiceRelated *dice = &D_800CDBD0_main[playerIndex];
+    UnkDiceRelated *dice = &mbDiceData[playerIndex];
 
     if (dice->omObj != NULL) {
         omDelObj(dice->omObj);
@@ -415,7 +415,7 @@ void func_800DB38C_name_81(s32 playerIndex) {
 
 s32 func_800DB3E0_name_81(s32 arg0) {
     s32 count = 0;
-    UnkDiceRelated *entry = &D_800CDBD0_main[arg0];
+    UnkDiceRelated *entry = &mbDiceData[arg0];
     s32 i;
 
     for (i = 0; i < DICE_TOTAL; i++) {
@@ -447,7 +447,7 @@ s32 func_800DB3E0_name_81(s32 arg0) {
 }
 
 void func_800DB4DC_name_81(s32 arg0) {
-    UnkDiceRelated *dice = &D_800CDBD0_main[arg0];
+    UnkDiceRelated *dice = &mbDiceData[arg0];
 
     dice->rollValue[dice->rollValueIdx]--;
     if (dice->rollValue[dice->rollValueIdx] <= 0) {
@@ -456,8 +456,8 @@ void func_800DB4DC_name_81(s32 arg0) {
 }
 
 void func_800DB544_name_81(s32 arg0) {
-    if (D_800CDBD0_main[arg0].unk_16 != -1) {
-        Hu3DModelAttrSet(D_800CDBD0_main[arg0].unk_16, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    if (mbDiceData[arg0].unk_16 != -1) {
+        Hu3DModelAttrSet(mbDiceData[arg0].unk_16, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
 }
 
@@ -467,8 +467,8 @@ void func_800DB58C_name_81(s32 arg0) {
 }
 
 void func_800DB5AC_name_81(s32 playerIndex) {
-    if (D_80105555_name_81 && D_800CDBD0_main[playerIndex].unk_16 != -1) {
-        Hu3DModelAttrSet(D_800CDBD0_main[playerIndex].unk_16, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    if (D_80105555_name_81 && mbDiceData[playerIndex].unk_16 != -1) {
+        Hu3DModelAttrSet(mbDiceData[playerIndex].unk_16, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     }
 }
 
@@ -478,7 +478,7 @@ void func_800DB600_name_81(s32 arg0) {
 }
 
 void func_800DB624_name_81(s32 arg0, s8 arg1) {
-    D_800CDBD0_main[arg0].unk_09 = arg1;
+    mbDiceData[arg0].unk_09 = arg1;
 }
 
 s16 func_800DB648_name_81(s32 arg0) {
@@ -489,7 +489,7 @@ s16 func_800DB648_name_81(s32 arg0) {
     s32 i;
     s16 ret;
 
-    entry = &D_800CDBD0_main[arg0];
+    entry = &mbDiceData[arg0];
 
     if (entry->unk_16 != -1) {
         return -1;
@@ -578,7 +578,7 @@ s16 func_800DB648_name_81(s32 arg0) {
 }
 
 void func_800DBAB0_name_81(s32 arg0, s32 arg1, s32 arg2, char *arg3[]) {
-    UnkDiceRelated *entry = &D_800CDBD0_main[arg0];
+    UnkDiceRelated *entry = &mbDiceData[arg0];
     omObjData *dice;
     s32 i;
 
@@ -641,7 +641,7 @@ void func_800DBAB0_name_81(s32 arg0, s32 arg1, s32 arg2, char *arg3[]) {
 }
 
 void func_800DBD88_name_81(s32 arg0) {
-    UnkDiceRelated *entry = &D_800CDBD0_main[arg0];
+    UnkDiceRelated *entry = &mbDiceData[arg0];
     s32 i;
 
     if (entry->unk_16 != -1) {
@@ -693,7 +693,7 @@ void func_800DBEF0_name_81(s32 arg0) {
     s32 count;
     s32 i;
 
-    entry = &D_800CDBD0_main[arg0];
+    entry = &mbDiceData[arg0];
 
     if (entry->unk_16 != -1) {
         entry->dice->work[0] = 2;
@@ -705,7 +705,7 @@ void func_800DBEF0_name_81(s32 arg0) {
         if (D_80105554_name_81 == 1) {
             count = 0;
             for (i = 0; i < 4; i++) {
-                if (D_800CDBD0_main[i].unk28 != -1) {
+                if (mbDiceData[i].unk28 != -1) {
                     count++;
                 }
             }
@@ -733,7 +733,7 @@ void func_800DBFF8_name_81(void) {
 }
 
 s32 func_800DC018_name_81(s32 arg0) {
-    if (~D_800CDBD0_main[arg0].unk_16) {
+    if (~mbDiceData[arg0].unk_16) {
         return 1;
     } else {
         return 0;
@@ -741,15 +741,15 @@ s32 func_800DC018_name_81(s32 arg0) {
 }
 
 void func_800DC044_name_81(s32 arg0, s8 arg1) {
-    D_800CDBD0_main[arg0].rollValue[D_800CDBD0_main[arg0].rollValueIdx] = arg1;
+    mbDiceData[arg0].rollValue[mbDiceData[arg0].rollValueIdx] = arg1;
 }
 
 void func_800DC07C_name_81(s32 arg0, s8 arg1) {
-    D_800CDBD0_main[arg0].predecidedRollValue[D_800CDBD0_main[arg0].rollValueIdx] = arg1;
+    mbDiceData[arg0].predecidedRollValue[mbDiceData[arg0].rollValueIdx] = arg1;
 }
 
 s32 func_800DC0B4_name_81(s32 arg0) {
-    return D_800CDBD0_main[arg0].rollValue[D_800CDBD0_main[arg0].rollValueIdx];
+    return mbDiceData[arg0].rollValue[mbDiceData[arg0].rollValueIdx];
 }
 
 void func_800DC0EC_name_81(void) {
@@ -769,14 +769,14 @@ void func_800DC0EC_name_81(void) {
                 break;
             case 1:
                 if (((GwPlayer[work->playerIndex].stat & 1) ||
-                     (D_800D5558_main[GwPlayer[work->playerIndex].pad] & A_BUTTON)) &&
-                    !(Hu3DData[D_800CDBD0_main[work->playerIndex].unk_16].attr & 4) && (GWBoardFlagCheck(0x11) == 0) &&
+                     (HuPadBtnDown[GwPlayer[work->playerIndex].pad] & A_BUTTON)) &&
+                    !(Hu3DData[mbDiceData[work->playerIndex].unk_16].attr & 4) && (GWBoardFlagCheck(0x11) == 0) &&
                     (D_80100E20_name_81 == 0)) {
                     work->state++;
                     func_800F3880_name_81(work->playerIndex, 1, 0);
                     func_800EF7C8_name_81(GwPlayer[work->playerIndex].player_obj, 2.0f, -0.3f);
                     mbCameraBtnF = 0;
-                    D_800D51F8_main = 0;
+                    duelCancelEnableF = 0;
                 }
                 break;
             case 2:
@@ -820,7 +820,7 @@ void func_800DC3A0_name_81(void) {
 }
 
 void func_800DC3AC_name_81(s32 playerIndex) {
-    UnkDiceRelated *dice = &D_800CDBD0_main[playerIndex];
+    UnkDiceRelated *dice = &mbDiceData[playerIndex];
 
     if (dice->unk28 != -1) {
         HuAudFXStop(dice->unk28);
@@ -830,7 +830,7 @@ void func_800DC3AC_name_81(s32 playerIndex) {
 }
 
 void func_800DC410_name_81(s32 playerIndex) {
-    UnkDiceRelated *dice = &D_800CDBD0_main[playerIndex];
+    UnkDiceRelated *dice = &mbDiceData[playerIndex];
 
     if (dice->unk2A == 1 && dice->unk_16 != -1) {
         if (dice->dice != NULL && dice->dice->work[0] != 2 && D_80105554_name_81 != 2) {
@@ -849,13 +849,13 @@ void func_800DC4B4_name_81(s8 arg0) {
 }
 
 void func_800DC4C0_name_81(s32 arg0, s8 arg1) {
-    D_800CDBD0_main[arg0].rollValueIdx = arg1;
+    mbDiceData[arg0].rollValueIdx = arg1;
 }
 
 void func_800DC4E4_name_81(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     UnkDiceRelated *entry;
 
-    entry = &D_800CDBD0_main[arg0];
+    entry = &mbDiceData[arg0];
 
     if (entry->rollValue[arg1] >= 10) {
         HuSprDispOn(entry->sprites[arg1], 1);
@@ -868,7 +868,7 @@ void func_800DC4E4_name_81(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 }
 
 void func_800DC5CC_name_81(s32 arg0) {
-    UnkDiceRelated *entry = &D_800CDBD0_main[arg0];
+    UnkDiceRelated *entry = &mbDiceData[arg0];
 
     if (entry->dice != NULL) {
         entry->dice->trans.x = GwPlayer[arg0].player_obj->coords.x;

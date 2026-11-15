@@ -174,7 +174,7 @@ void func_80105E90_mgresultduel(omObjData *object) {
 }
 
 void func_80105FD4_mgresultduel(omObjData *obj) {
-    if (D_800D530C_main == 1) {
+    if (omSysExitReq == 1) {
         if (D_80108E78_mgresultduel == 0) {
             WipeCreateOut(WIPE_TYPE_NORMAL, 0x14);
             D_80108E78_mgresultduel = 1;

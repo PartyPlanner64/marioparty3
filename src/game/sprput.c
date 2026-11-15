@@ -13,22 +13,22 @@
 #define SPRPUT_CC_BLEND_MODULATEA 1, PRIMITIVE, TEXEL0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0
 #define SPRPUT_CC_TEX_MODULATEA 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0
 
-static f32 D_800BD810_main[4][2];
-static s32 D_800BD830_main;
-static s32 D_800BD834_main;
-static s32 D_800BD838_main;
-static s32 D_800BD83C_main;
-static s32 D_800BD840_main;
-static s32 D_800BD844_main;
-static s32 D_800BD848_main;
-static s32 D_800BD84C_main;
-static s32 D_800BD850_main;
+static f32 sprCullCorner[4][2];
+static s32 sprTexFmt;
+static s32 sprTexSiz;
+static s32 sprTlutMode;
+static s32 sprTexScale;
+static s32 sprStripNum;
+static s32 sprStripHeight;
+static s32 sprStripRest;
+static s32 sprStripCnt;
+static s32 sprBilerpF;
 
-static s32 D_800A1EB0_main = 256;
-static s32 D_800A1EB4_main[] = { G_MDSFT_TEXTFILT, G_MDSFT_RGBDITHER, G_MDSFT_CYCLETYPE, G_MDSFT_ALPHACOMPARE };
-static s32 D_800A1EC4_main[] = { G_AC_THRESHOLD, G_AC_NONE, G_AC_DITHER };
-static s32 D_800A1ED0_main[] = { 4, 3, 2, 1 };
-static s16 D_800A1EE0_main[] = {
+static s32 sprTmemLineMax = 256;
+static s32 sprOtherModeShiftTbl[] = { G_MDSFT_TEXTFILT, G_MDSFT_RGBDITHER, G_MDSFT_CYCLETYPE, G_MDSFT_ALPHACOMPARE };
+static s32 sprAlphaCmpTbl[] = { G_AC_THRESHOLD, G_AC_NONE, G_AC_DITHER };
+static s32 sprSizShiftTbl[] = { 4, 3, 2, 1 };
+static s16 sprStripMaxTbl[] = {
     0, 512, 256, 170, 128, 102, 85, 73, 64, 56, 51, 20, 42, 26, 14, 19,
     32, 13, 28, 26, 8, 9, 4, 4, 5, 20, 13, 18, 3, 6, 3, 2,
     16, 2, 2, 3, 14, 2, 13, 2, 1, 12, 4, 2, 2, 2, 2, 2,
@@ -40,7 +40,7 @@ static s16 D_800A1EE0_main[] = {
     0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0,
 };
-static s16 D_800A2018_main[] = {
+static s16 sprStripExactTbl[] = {
     0, 512, 256, 170, 128, 102, 85, 73, 64, 56, 51, 46, 42, 39, 36, 34,
     32, 30, 28, 26, 25, 24, 23, 22, 21, 20, 19, 19, 18, 18, 17, 17,
     16, 16, 15, 15, 14, 14, 13, 13, 13, 12, 12, 12, 11, 11, 11, 10,
@@ -53,9 +53,9 @@ static s16 D_800A2018_main[] = {
     3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0,
 };
 
-extern u8 D_800D2008_main;
-extern Gfx *D_800CCF30_main;
-extern Vtx *D_800D59F4_main;
+extern u8 Hu3DBufNo;
+extern Gfx *HuSprTileBuf;
+extern Vtx *HuSprVtxPos;
 
 
 s32 HuSprCullCheck(HuSprite *sprite) {
@@ -81,15 +81,15 @@ s32 HuSprCullCheck(HuSprite *sprite) {
         right = (s16)sprite->unk_40;
         bottom = (s16)sprite->unk_42;
     }
-    D_800BD810_main[0][0] = cos * left + sin * top + sprite->unk_04;
-    D_800BD810_main[0][1] = -sin * left + cos * top + sprite->unk_08;
-    D_800BD810_main[1][0] = cos * right + sin * top + sprite->unk_04;
-    D_800BD810_main[1][1] = -sin * right + cos * top + sprite->unk_08;
-    D_800BD810_main[2][0] = cos * right + sin * bottom + sprite->unk_04;
-    D_800BD810_main[2][1] = -sin * right + cos * bottom + sprite->unk_08;
-    D_800BD810_main[3][0] = cos * left + sin * bottom + sprite->unk_04;
-    D_800BD810_main[3][1] = -sin * left + cos * bottom + sprite->unk_08;
-    return HuSprQuadClip(D_800BD810_main);
+    sprCullCorner[0][0] = cos * left + sin * top + sprite->unk_04;
+    sprCullCorner[0][1] = -sin * left + cos * top + sprite->unk_08;
+    sprCullCorner[1][0] = cos * right + sin * top + sprite->unk_04;
+    sprCullCorner[1][1] = -sin * right + cos * top + sprite->unk_08;
+    sprCullCorner[2][0] = cos * right + sin * bottom + sprite->unk_04;
+    sprCullCorner[2][1] = -sin * right + cos * bottom + sprite->unk_08;
+    sprCullCorner[3][0] = cos * left + sin * bottom + sprite->unk_04;
+    sprCullCorner[3][1] = -sin * left + cos * bottom + sprite->unk_08;
+    return HuSprQuadClip(sprCullCorner);
 }
 
 // Test the transformed sprite quad against the 320 by 240 viewport.
@@ -198,125 +198,125 @@ void HuSprDisp(Gfx **gfx, HuSprite *sprite, s32 arg2) {
     gDPSetScissor(gdl++, G_SC_NON_INTERLACE, sprite->scissorX, sprite->scissorY, sprite->scissorX2, sprite->scissorY2);
     switch (sprite->data->pixelBits) {
         case 4:
-            D_800BD834_main = G_IM_SIZ_4b;
+            sprTexSiz = G_IM_SIZ_4b;
             if (sprite->data->palNum == 1) {
-                D_800BD830_main = G_IM_FMT_IA;
+                sprTexFmt = G_IM_FMT_IA;
                 gDPSetTextureLUT(gdl++, G_TT_NONE);
             } else {
-                D_800BD830_main = G_IM_FMT_CI;
+                sprTexFmt = G_IM_FMT_CI;
                 if (sprite->unk_98.unk00 != NULL) {
                     gDPLoadTLUT_pal16(gdl++, 0, sprite->unk_98.unk6C);
                 } else {
                     gDPLoadTLUT_pal16(gdl++, 0, sprite->data->pal);
                 }
                 gDPSetTextureLUT(gdl++, G_TT_RGBA16);
-                D_800A1EB0_main = 128;
+                sprTmemLineMax = 128;
             }
-            D_800BD838_main = 0;
+            sprTlutMode = 0;
             break;
         case 8:
-            D_800BD834_main = G_IM_SIZ_8b;
+            sprTexSiz = G_IM_SIZ_8b;
             if (sprite->data->palNum == 1) {
-                D_800BD830_main = G_IM_FMT_IA;
+                sprTexFmt = G_IM_FMT_IA;
                 gDPSetTextureLUT(gdl++, G_TT_NONE);
-                D_800BD838_main = 2;
+                sprTlutMode = 2;
             } else {
-                D_800BD830_main = G_IM_FMT_CI;
+                sprTexFmt = G_IM_FMT_CI;
                 if (sprite->unk_98.unk00 != NULL) {
                     gDPLoadTLUT_pal256(gdl++, sprite->unk_98.unk6C);
                 } else {
                     gDPLoadTLUT_pal256(gdl++, sprite->data->pal);
                 }
                 gDPSetTextureLUT(gdl++, G_TT_RGBA16);
-                D_800A1EB0_main = 128;
-                D_800BD838_main = 2;
+                sprTmemLineMax = 128;
+                sprTlutMode = 2;
             }
             break;
         case 16:
-            D_800BD834_main = G_IM_SIZ_16b;
+            sprTexSiz = G_IM_SIZ_16b;
             if (sprite->data->palNum == 1) {
-                D_800BD830_main = G_IM_FMT_IA;
+                sprTexFmt = G_IM_FMT_IA;
             } else {
-                D_800BD830_main = G_IM_FMT_RGBA;
+                sprTexFmt = G_IM_FMT_RGBA;
             }
             gDPSetTextureLUT(gdl++, G_TT_NONE);
-            D_800A1EB0_main = 256;
-            D_800BD838_main = 2;
+            sprTmemLineMax = 256;
+            sprTlutMode = 2;
             break;
         case 32:
-            D_800BD834_main = G_IM_SIZ_32b;
-            D_800BD830_main = G_IM_FMT_RGBA;
+            sprTexSiz = G_IM_SIZ_32b;
+            sprTexFmt = G_IM_FMT_RGBA;
             gDPSetTextureLUT(gdl++, G_TT_NONE);
-            D_800A1EB0_main = 256;
-            D_800BD838_main = 2;
+            sprTmemLineMax = 256;
+            sprTlutMode = 2;
             break;
         case 0x8004:
-            D_800BD834_main = G_IM_SIZ_4b;
-            D_800BD830_main = G_IM_FMT_I;
+            sprTexSiz = G_IM_SIZ_4b;
+            sprTexFmt = G_IM_FMT_I;
             gDPSetTextureLUT(gdl++, G_TT_NONE);
-            D_800A1EB0_main = 256;
-            D_800BD838_main = 0;
+            sprTmemLineMax = 256;
+            sprTlutMode = 0;
             break;
         case 0x8008:
-            D_800BD834_main = G_IM_SIZ_8b;
-            D_800BD830_main = G_IM_FMT_I;
+            sprTexSiz = G_IM_SIZ_8b;
+            sprTexFmt = G_IM_FMT_I;
             gDPSetTextureLUT(gdl++, G_TT_NONE);
-            D_800A1EB0_main = 256;
-            D_800BD838_main = 2;
+            sprTmemLineMax = 256;
+            sprTlutMode = 2;
             break;
     }
     // Round the row width up to the texture load alignment before sizing strips.
-    alignedWidth = (((cel->sizeX << D_800BD834_main) >> 4) << 4) >> D_800BD834_main;
+    alignedWidth = (((cel->sizeX << sprTexSiz) >> 4) << 4) >> sprTexSiz;
     if (alignedWidth < cel->sizeX) {
-        alignedWidth += 16 >> D_800BD834_main;
+        alignedWidth += 16 >> sprTexSiz;
     }
-    switch (D_800BD830_main) {
+    switch (sprTexFmt) {
         case G_IM_FMT_CI:
-            if ((4096 >> D_800BD834_main) >= cel->sizeY * alignedWidth) {
-                D_800BD844_main = cel->sizeY;
+            if ((4096 >> sprTexSiz) >= cel->sizeY * alignedWidth) {
+                sprStripHeight = cel->sizeY;
             } else {
-                D_800BD844_main = (4096 >> D_800BD834_main) / alignedWidth;
+                sprStripHeight = (4096 >> sprTexSiz) / alignedWidth;
             }
             break;
         case G_IM_FMT_I:
             if (4096 >= cel->sizeY * alignedWidth) {
-                D_800BD844_main = cel->sizeY;
+                sprStripHeight = cel->sizeY;
             } else {
-                D_800BD844_main = 4096 / alignedWidth;
+                sprStripHeight = 4096 / alignedWidth;
             }
             break;
         default:
-            if ((8192 >> D_800BD834_main) >= cel->sizeY * alignedWidth) {
-                D_800BD844_main = cel->sizeY;
+            if ((8192 >> sprTexSiz) >= cel->sizeY * alignedWidth) {
+                sprStripHeight = cel->sizeY;
             } else {
-                D_800BD844_main = (8192 >> D_800BD834_main) / alignedWidth;
+                sprStripHeight = (8192 >> sprTexSiz) / alignedWidth;
             }
             break;
     }
-    D_800BD840_main = cel->sizeY / D_800BD844_main;
-    D_800BD848_main = cel->sizeY - D_800BD840_main * D_800BD844_main;
+    sprStripNum = cel->sizeY / sprStripHeight;
+    sprStripRest = cel->sizeY - sprStripNum * sprStripHeight;
     // Aligned strips can use the block loader when its DXT rounding is exact.
-    if (cel->sizeX % (16 >> D_800BD834_main) == 0) {
-        if (((cel->sizeX * D_800BD844_main) << D_800BD834_main) <= 4096) {
-            if (D_800A1EE0_main[cel->sizeX >> D_800A1ED0_main[D_800BD834_main]] >= D_800BD844_main ||
-                D_800BD844_main == D_800A2018_main[cel->sizeX >> D_800A1ED0_main[D_800BD834_main]]) {
-                D_800BD838_main++;
+    if (cel->sizeX % (16 >> sprTexSiz) == 0) {
+        if (((cel->sizeX * sprStripHeight) << sprTexSiz) <= 4096) {
+            if (sprStripMaxTbl[cel->sizeX >> sprSizShiftTbl[sprTexSiz]] >= sprStripHeight ||
+                sprStripHeight == sprStripExactTbl[cel->sizeX >> sprSizShiftTbl[sprTexSiz]]) {
+                sprTlutMode++;
             }
         }
     }
     gDPPipeSync(gdl++);
-    gSPSetOtherMode(gdl++, G_SETOTHERMODE_H, D_800A1EB4_main[0], 2,
-                    (((u32)sprite->dispAttr >> 2) & 3) << D_800A1EB4_main[0]);
-    gSPSetOtherMode(gdl++, G_SETOTHERMODE_H, D_800A1EB4_main[1], 2,
-                    ((((u32)sprite->dispAttr >> 4) ^ 3) & 3) << D_800A1EB4_main[1]);
-    gSPSetOtherMode(gdl++, G_SETOTHERMODE_H, D_800A1EB4_main[2], 2,
-                    (((u32)sprite->dispAttr >> 6) & 3) << D_800A1EB4_main[2]);
-    gSPSetOtherMode(gdl++, G_SETOTHERMODE_L, D_800A1EB4_main[3], 2,
-                    D_800A1EC4_main[((u32)sprite->dispAttr >> 22) & 3]);
+    gSPSetOtherMode(gdl++, G_SETOTHERMODE_H, sprOtherModeShiftTbl[0], 2,
+                    (((u32)sprite->dispAttr >> 2) & 3) << sprOtherModeShiftTbl[0]);
+    gSPSetOtherMode(gdl++, G_SETOTHERMODE_H, sprOtherModeShiftTbl[1], 2,
+                    ((((u32)sprite->dispAttr >> 4) ^ 3) & 3) << sprOtherModeShiftTbl[1]);
+    gSPSetOtherMode(gdl++, G_SETOTHERMODE_H, sprOtherModeShiftTbl[2], 2,
+                    (((u32)sprite->dispAttr >> 6) & 3) << sprOtherModeShiftTbl[2]);
+    gSPSetOtherMode(gdl++, G_SETOTHERMODE_L, sprOtherModeShiftTbl[3], 2,
+                    sprAlphaCmpTbl[((u32)sprite->dispAttr >> 22) & 3]);
     if (((u32)sprite->dispAttr >> 6) & 2) {
         gDPSetRenderMode(gdl++, G_RM_NOOP, G_RM_NOOP2);
         gDPSetCombineMode(gdl++, G_CC_DECALRGBA, G_CC_DECALRGBA);
-        D_800BD83C_main = 4;
+        sprTexScale = 4;
     } else {
         intensity = sprite->data->pixelBits >> 15;
         renderMode = (sprite->dispAttr & 0x4000000) ? Z_CMP | Z_UPD : 0;
@@ -378,11 +378,11 @@ void HuSprDisp(Gfx **gfx, HuSprite *sprite, s32 arg2) {
             }
         }
         gDPSetPrimColor(gdl++, 0, 0, sprite->color[0], sprite->color[1], sprite->color[2], (u8)sprite->tpLvl);
-        D_800BD83C_main = 1;
+        sprTexScale = 1;
     }
-    D_800BD850_main = ((u32)sprite->dispAttr >> 30) & 1;
+    sprBilerpF = ((u32)sprite->dispAttr >> 30) & 1;
     gSPSegment(gdl++, 2, osVirtualToPhysical(cel->data));
-    if (D_800BD850_main) {
+    if (sprBilerpF) {
         if (sprite->dispAttr & 0x10000) {
             originX = ((s16)sprite->unk_3C - (s16)sprite->unk_40) * (u16)cel->centerX / cel->sizeX;
             originY = ((s16)sprite->unk_42 - (s16)sprite->unk_3E) * (u16)cel->centerY / cel->sizeY;
@@ -398,21 +398,21 @@ void HuSprDisp(Gfx **gfx, HuSprite *sprite, s32 arg2) {
         HuMtx2DRotTrans(transform, sprite->unk_04 - 160.0f, 120.0f - sprite->unk_08, sprite->unk_20);
         mtxScaleCat(transform, scaleX, scaleY, 1.0f);
         mtxTransCat(transform, originX, originY, 0.0f);
-        func_800898F0_main(transform, &sprite->unk_140[D_800D2008_main]);
-        gSPMatrix(gdl++, osVirtualToPhysical(&sprite->unk_140[D_800D2008_main]), G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH);
+        func_800898F0_main(transform, &sprite->unk_140[Hu3DBufNo]);
+        gSPMatrix(gdl++, osVirtualToPhysical(&sprite->unk_140[Hu3DBufNo]), G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH);
     }
     if (sprite->dispAttr & 0x8000000) {
         if (sprite->dispAttr & 0x10000000) {
-            if (D_800BD850_main) {
-                cached = HuSprDispTile(D_800CCF30_main, sprite, sprite->unk_134[sprite->unk_120],
-                                            &sprite->unk_140[D_800D2008_main], arg2);
+            if (sprBilerpF) {
+                cached = HuSprDispTile(HuSprTileBuf, sprite, sprite->unk_134[sprite->unk_120],
+                                            &sprite->unk_140[Hu3DBufNo], arg2);
             } else {
-                cached = HuSprDispTile(D_800CCF30_main, sprite, NULL, NULL, arg2);
+                cached = HuSprDispTile(HuSprTileBuf, sprite, NULL, NULL, arg2);
             }
             gSPEndDisplayList(cached++);
-            size = (u8 *)cached - (u8 *)D_800CCF30_main;
+            size = (u8 *)cached - (u8 *)HuSprTileBuf;
             sprite->unk_128[sprite->unk_120] = HuMemAlloc(size);
-            bcopy(D_800CCF30_main, sprite->unk_128[sprite->unk_120], size);
+            bcopy(HuSprTileBuf, sprite->unk_128[sprite->unk_120], size);
             sprite->unk_124 = sprite->unk_128[sprite->unk_120];
             sprite->unk_120++;
             if (sprite->unk_120 >= 3) {
@@ -422,13 +422,13 @@ void HuSprDisp(Gfx **gfx, HuSprite *sprite, s32 arg2) {
         }
         gSPDisplayList(gdl++, sprite->unk_124);
     } else {
-        if (D_800BD850_main) {
-            vertices = D_800D59F4_main;
-            gdl = HuSprDispTile(gdl, sprite, vertices, &sprite->unk_140[D_800D2008_main], arg2);
+        if (sprBilerpF) {
+            vertices = HuSprVtxPos;
+            gdl = HuSprDispTile(gdl, sprite, vertices, &sprite->unk_140[Hu3DBufNo], arg2);
             if (!(sprite->dispAttr & 0x2000)) {
-                D_800D59F4_main = vertices + (D_800BD840_main + 2) * 2;
+                HuSprVtxPos = vertices + (sprStripNum + 2) * 2;
             } else {
-                D_800D59F4_main = vertices + (D_800BD840_main + 2) * 4;
+                HuSprVtxPos = vertices + (sprStripNum + 2) * 4;
             }
         } else {
             gdl = HuSprDispTile(gdl, sprite, NULL, NULL, arg2);
@@ -475,8 +475,8 @@ Gfx *HuSprDispTile(Gfx *gfx, HuSprite *sprite, Vtx *vertices, Mtx *matrix, s32 a
                           0, 0, 0, COMBINED, 0, 0, 0, COMBINED);
         gDPSetRenderMode(gfx++, G_RM_PASS, G_RM_AA_XLU_SURF2);
         gDPSetPrimColor(gfx++, 0, 0, 0, 0, 0, (u8)sprite->tpLvl);
-        D_800BD840_main <<= 1;
-        D_800BD844_main >>= 1;
+        sprStripNum <<= 1;
+        sprStripHeight >>= 1;
     }
     if ((sprite->dispAttr & 0x30000) == 0x30000) {
         sprite->unk_30.f = ((s16)sprite->unk_40 - (s16)sprite->unk_3C) / (cel->sizeX * scaleX);
@@ -486,12 +486,12 @@ Gfx *HuSprDispTile(Gfx *gfx, HuSprite *sprite, Vtx *vertices, Mtx *matrix, s32 a
         gDPSetDepthSource(gfx++, G_ZS_PRIM);
         gDPSetPrimDepth(gfx++, (u16)sprite->unk_44, 0);
     }
-    if (D_800BD848_main != 0) {
-        D_800BD84C_main = D_800BD840_main + 1;
+    if (sprStripRest != 0) {
+        sprStripCnt = sprStripNum + 1;
     } else {
-        D_800BD84C_main = D_800BD840_main;
+        sprStripCnt = sprStripNum;
     }
-    if (D_800BD850_main) {
+    if (sprBilerpF) {
         vertexBase = vertices;
         flipX = 0;
         if (sprite->dispAttr & 1) {
@@ -515,13 +515,13 @@ Gfx *HuSprDispTile(Gfx *gfx, HuSprite *sprite, Vtx *vertices, Mtx *matrix, s32 a
         }
         texT = 0.0f;
         remaining = cel->sizeY;
-        for (strip = 0; strip < D_800BD840_main + 2; strip++) {
-            if (remaining < D_800BD844_main) {
+        for (strip = 0; strip < sprStripNum + 2; strip++) {
+            if (remaining < sprStripHeight) {
                 height = remaining;
             } else {
-                height = D_800BD844_main;
+                height = sprStripHeight;
             }
-            remaining -= D_800BD844_main;
+            remaining -= sprStripHeight;
             if (sprite->dispAttr & 0x10000) {
                 vertices[0].v.ob[0] = 0;
                 vertices[1].v.ob[0] = ((s16)sprite->unk_40 - (s16)sprite->unk_3C) / sprite->unk_30.f;
@@ -553,9 +553,9 @@ Gfx *HuSprDispTile(Gfx *gfx, HuSprite *sprite, Vtx *vertices, Mtx *matrix, s32 a
             }
             if (sprite->dispAttr & 0x10000) {
                 if (flipY < 0) {
-                    top += (f32)(((s16)sprite->unk_42 - (s16)sprite->unk_3E) * height / D_800BD844_main) / sprite->unk_34.f;
+                    top += (f32)(((s16)sprite->unk_42 - (s16)sprite->unk_3E) * height / sprStripHeight) / sprite->unk_34.f;
                 } else {
-                    top += (f32)(((s16)sprite->unk_3E - (s16)sprite->unk_42) * height / D_800BD844_main) / sprite->unk_34.f;
+                    top += (f32)(((s16)sprite->unk_3E - (s16)sprite->unk_42) * height / sprStripHeight) / sprite->unk_34.f;
                 }
             } else {
                 top += -flipY * height;
@@ -570,12 +570,12 @@ Gfx *HuSprDispTile(Gfx *gfx, HuSprite *sprite, Vtx *vertices, Mtx *matrix, s32 a
             top = (s16)sprite->unk_3E;
             scaleX = (f32)((s16)sprite->unk_40 - (s16)sprite->unk_3C) / cel->sizeX;
             scaleY = (f32)((s16)sprite->unk_42 - (s16)sprite->unk_3E) / cel->sizeY;
-            stripHeight = (f32)(((s16)sprite->unk_42 - (s16)sprite->unk_3E) / D_800BD840_main);
+            stripHeight = (f32)(((s16)sprite->unk_42 - (s16)sprite->unk_3E) / sprStripNum);
         } else {
             left = sprite->unk_04 - (u16)cel->centerX * scaleX;
             right = left + cel->sizeX * scaleX;
             top = sprite->unk_08 - (u16)cel->centerY * scaleY;
-            stripHeight = D_800BD844_main * scaleY;
+            stripHeight = sprStripHeight * scaleY;
         }
         if (sprite->dispAttr & 1) {
             texS = cel->sizeX - 1;
@@ -586,8 +586,8 @@ Gfx *HuSprDispTile(Gfx *gfx, HuSprite *sprite, Vtx *vertices, Mtx *matrix, s32 a
         }
         if (sprite->dispAttr & 2) {
             flipY = -1;
-            drawY = top + stripHeight * (D_800BD840_main - 1);
-            drawY += D_800BD848_main * scaleY;
+            drawY = top + stripHeight * (sprStripNum - 1);
+            drawY += sprStripRest * scaleY;
             drawStep = -stripHeight;
             texT = stripHeight / scaleY - 1.0f;
         } else {
@@ -615,25 +615,25 @@ Gfx *HuSprDispTile(Gfx *gfx, HuSprite *sprite, Vtx *vertices, Mtx *matrix, s32 a
         cmt = 0;
     }
     remaining = cel->sizeY;
-    for (strip = 0; strip < D_800BD84C_main; strip++) {
-        if (remaining < D_800BD844_main) {
+    for (strip = 0; strip < sprStripCnt; strip++) {
+        if (remaining < sprStripHeight) {
             height = remaining;
         } else {
-            height = D_800BD844_main;
+            height = sprStripHeight;
         }
-        remaining -= D_800BD844_main;
-        HuSprTileLoad(&gfx, sprite, height, 0, strip * D_800BD844_main,
-                           cel->sizeX - 1, strip * D_800BD844_main + height - 1, cms, cmt, masks, maskt);
-        if (D_800BD850_main) {
+        remaining -= sprStripHeight;
+        HuSprTileLoad(&gfx, sprite, height, 0, strip * sprStripHeight,
+                           cel->sizeX - 1, strip * sprStripHeight + height - 1, cms, cmt, masks, maskt);
+        if (sprBilerpF) {
             gSPVertex(gfx++, &vertexBase[strip * 2], 4, 0);
             gSP2Triangles(gfx++, 0, 2, 3, 0, 0, 3, 1, 0);
         } else {
             gSPScisTextureRectangle(gfx++, (s32)left << 2, (s16)drawY << 2,
                                     (s32)right << 2, (s32)(drawY + height * scaleY) << 2, 0,
                                     (s16)texS << 5, (s16)texT << 5,
-                                    (s16)((D_800BD83C_main / scaleX) * 1024.0f * flipX),
+                                    (s16)((sprTexScale / scaleX) * 1024.0f * flipX),
                                     (s16)((1.0f / scaleY) * 1024.0f * flipY));
-            if (flipY < 0 && remaining < D_800BD844_main) {
+            if (flipY < 0 && remaining < sprStripHeight) {
                 drawStep = -(f32)remaining * scaleY;
                 texStep = remaining / scaleY;
             }
@@ -652,22 +652,22 @@ void HuSprTileLoad(Gfx **gfx, HuSprite *sprite, u16 height, u16 uls, u16 ult,
 
     cel = &sprite->data->pat[sprite->patNo];
     gdl = *gfx;
-    switch (D_800BD838_main) {
+    switch (sprTlutMode) {
         case 0:
             gDPLoadTextureTile_4b(gdl++, (void *)0x02000000,
-                                  D_800BD830_main, cel->sizeX, height, uls, ult, lrs, lrt,
+                                  sprTexFmt, cel->sizeX, height, uls, ult, lrs, lrt,
                                   0, cms, cmt, masks, maskt, 0, 0);
             break;
         case 1:
-            HuLoadTextureBlock_4b(&gdl, (void *)0x02000000, D_800BD830_main, cel->sizeX,
+            HuLoadTextureBlock_4b(&gdl, (void *)0x02000000, sprTexFmt, cel->sizeX,
                                height, uls, ult, lrs, lrt, 0, cms, cmt, masks, maskt, 0, 0);
             break;
         case 2:
-            HuLoadTextureTile(&gdl, (u16 *)0x02000000, D_800BD830_main, D_800BD834_main,
+            HuLoadTextureTile(&gdl, (u16 *)0x02000000, sprTexFmt, sprTexSiz,
                                cel->sizeX, cel->sizeY, uls, ult, lrs, lrt, 0, cms, cmt, masks, maskt, 0, 0);
             break;
         case 3:
-            HuLoadTextureBlock(&gdl, (void *)0x02000000, D_800BD830_main, D_800BD834_main,
+            HuLoadTextureBlock(&gdl, (void *)0x02000000, sprTexFmt, sprTexSiz,
                                cel->sizeX, height, uls, ult, lrs, lrt, 0, cms, cmt, masks, maskt, 0, 0);
             break;
     }
@@ -684,23 +684,23 @@ void HuSprTileLoad_4b(Gfx **gfx, HuSprite *sprite, u16 height, u16 uls, u16 ult,
 
     cel = &sprite->data->pat[sprite->patNo];
     gdl = *gfx;
-    switch (D_800BD838_main) {
+    switch (sprTlutMode) {
         case 0:
-            gDPLoadMultiTile_4b(gdl++, (void *)0x02000000, D_800A1EB0_main, 1,
-                                D_800BD830_main, cel->sizeX, height, uls, ult, lrs, lrt,
+            gDPLoadMultiTile_4b(gdl++, (void *)0x02000000, sprTmemLineMax, 1,
+                                sprTexFmt, cel->sizeX, height, uls, ult, lrs, lrt,
                                 0, cms, cmt, masks, maskt, 0, 0);
             break;
         case 1:
-            HuLoadMultiBlock_4b(&gdl, (void *)0x02000000, D_800BD830_main, cel->sizeX,
-                               height, uls, ult, lrs, lrt, 0, cms, cmt, masks, maskt, 0, 0, 1, D_800A1EB0_main);
+            HuLoadMultiBlock_4b(&gdl, (void *)0x02000000, sprTexFmt, cel->sizeX,
+                               height, uls, ult, lrs, lrt, 0, cms, cmt, masks, maskt, 0, 0, 1, sprTmemLineMax);
             break;
         case 2:
-            HuLoadMultiTile(&gdl, (void *)0x02000000, D_800BD830_main, D_800BD834_main,
-                               cel->sizeX, cel->sizeY, uls, ult, lrs, lrt, 0, cms, cmt, masks, maskt, 0, 0, 1, D_800A1EB0_main);
+            HuLoadMultiTile(&gdl, (void *)0x02000000, sprTexFmt, sprTexSiz,
+                               cel->sizeX, cel->sizeY, uls, ult, lrs, lrt, 0, cms, cmt, masks, maskt, 0, 0, 1, sprTmemLineMax);
             break;
         case 3:
-            HuLoadMultiBlock(&gdl, (void *)0x02000000, D_800BD830_main, D_800BD834_main,
-                               cel->sizeX, height, uls, ult, lrs, lrt, 0, cms, cmt, masks, maskt, 0, 0, 1, D_800A1EB0_main);
+            HuLoadMultiBlock(&gdl, (void *)0x02000000, sprTexFmt, sprTexSiz,
+                               cel->sizeX, height, uls, ult, lrs, lrt, 0, cms, cmt, masks, maskt, 0, 0, 1, sprTmemLineMax);
             break;
     }
     *gfx = gdl;

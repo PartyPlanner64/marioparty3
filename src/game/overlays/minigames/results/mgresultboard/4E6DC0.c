@@ -77,7 +77,7 @@ void func_801059A0_mgresultboard(void) {
     omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     obj->work[0] = 2;
     Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
-    minigameType = D_800A6D40_main[GwSystem.minigame_index - 1].minigameType;
+    minigameType = mgDataTbl[GwSystem.minigame_index - 1].minigameType;
 
     if (minigameType < MINIGAME_ITEM) {
         if (minigameType >= MINIGAME_4P) {
@@ -441,7 +441,7 @@ void func_80105CE8_mgresultboard(omObjData *arg0) {
     cpuCount = 0;
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         if (!(GwPlayer[i].stat & 1)) {
-            buttonPressed |= D_800CDA7C_main[GwPlayer[i].pad];
+            buttonPressed |= HuPadBtn[GwPlayer[i].pad];
         } else {
             cpuCount++;
         }
@@ -525,7 +525,7 @@ void func_80106DE8_mgresultboard(void) {
 }
 
 void func_80106F40_mgresultboard(omObjData *arg0) {
-    if (D_800D530C_main == 1) {
+    if (omSysExitReq == 1) {
         if (D_8010AAFC_mgresultboard == 0) {
             WipeCreateOut(WIPE_TYPE_NORMAL, 0x14);
             D_8010AAFC_mgresultboard = 1;

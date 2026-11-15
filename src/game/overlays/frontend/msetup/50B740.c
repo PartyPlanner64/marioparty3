@@ -1639,7 +1639,7 @@ s16 func_801132C4_msetup(MsetupMenuState *state) {
     Hu3DModelPosSet(model, 0.0f, -300.0f, -280.0f);
     Hu3DMotionAttrSet(model, 1, 1);
     if (_CheckFlag(0x2D)) {
-        Hu3DMotionTimeSet(model, D_800CCF58_main[Hu3DData[model].motId].unk02);
+        Hu3DMotionTimeSet(model, Hu3DMotion[Hu3DData[model].motId].unk02);
         difficultyCount = 4;
     } else {
         Hu3DMotionTimeSet(model, 0.0f);
@@ -2281,8 +2281,8 @@ s16 func_80114AA0_msetup(MsetupMenuState *state) {
 }
 
 s32 func_801150A0_msetup(s16 controller) {
-    u8 stickX = D_800CBB6E_main[controller];
-    u8 stickY = D_800D20A1_main[controller];
+    u8 stickX = HuPadStkX[controller];
+    u8 stickY = HuPadStkY[controller];
     s32 quadrant = 0;
     f32 angle;
 
@@ -2355,14 +2355,14 @@ s16 func_801152C4_msetup(s16 model, s16 anim, HuMtx4F matrix, s16 *previousButto
         direction = buttons >> 8;
         direction &= 0xF;
         if (direction) {
-            if (D_800CDA7C_main[D_8011A948_msetup] & (L_JPAD | R_JPAD)) {
-                if (D_800CDA7C_main[D_8011A948_msetup] & R_JPAD) {
+            if (HuPadBtn[D_8011A948_msetup] & (L_JPAD | R_JPAD)) {
+                if (HuPadBtn[D_8011A948_msetup] & R_JPAD) {
                     selection++;
                     if (selection >= 4) {
                         selection = 0;
                     }
                     HuAudFXPlay(1);
-                } else if (D_800CDA7C_main[D_8011A948_msetup] & L_JPAD) {
+                } else if (HuPadBtn[D_8011A948_msetup] & L_JPAD) {
                     selection--;
                     if (selection < 0) {
                         selection = 3;

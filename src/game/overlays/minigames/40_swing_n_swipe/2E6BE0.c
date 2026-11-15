@@ -22,9 +22,9 @@ typedef struct SwingNSwipeBssC148 {
     /* 0x02 */ s16 unk02[5]; // D_8010C14A
 } SwingNSwipeBssC148; // sizeof 0xC
 
-extern u16 D_800A11D0_main[];
+extern u16 mgInstColumnTbl[];
 extern s32 D_800A178C_main[][6];
-extern u16 D_800A11DC_main[];
+extern u16 mgInstSlotTbl[];
 extern s16 D_8010C148_swing_n_swipe; // swingNSwipeBssC148.unk00
 extern s16 D_8010C14A_swing_n_swipe[5]; // swingNSwipeBssC148.unk02
 f32 D_8010BD30_swing_n_swipe = -400.0f; // min x
@@ -237,9 +237,9 @@ void func_80105CDC_swing_n_swipe(void) {
     D_8010C13C_swing_n_swipe = 1;
     GwPlayer[D_8010C144_swing_n_swipe].bonusCoin = -1;
     if (GwPlayer[D_8010C144_swing_n_swipe].stat & 1) {
-        thresholds[0] = D_800A11DC_main[0];
+        thresholds[0] = mgInstSlotTbl[0];
         for (i = 1; i < 5; i++) {
-            thresholds[i] = thresholds[i - 1] + D_800A11DC_main[i];
+            thresholds[i] = thresholds[i - 1] + mgInstSlotTbl[i];
         }
         roll = (u8)(rand8() % 100);
         for (i = 0; i < 5; i++) {
@@ -300,7 +300,7 @@ void func_80105EE0_swing_n_swipe(omObjData *object) {
                     case 0:
                         HuAudSeqPlay(0x68);
                         GMesTimeMaxSet(GMesCreate(0x24), 120);
-                        GwPlayer[D_8010C144_swing_n_swipe].bonusCoin = D_800A11D0_main[D_8010C15E_swing_n_swipe];
+                        GwPlayer[D_8010C144_swing_n_swipe].bonusCoin = mgInstColumnTbl[D_8010C15E_swing_n_swipe];
                         break;
                     case 1:
                         HuAudSeqPlay(0x6B);
@@ -458,7 +458,7 @@ void func_80106704_swing_n_swipe(omObjData *object) {
 }
 
 void func_8010673C_swing_n_swipe(omObjData *object) {
-    if (D_800D530C_main == 1) {
+    if (omSysExitReq == 1) {
         object->func = func_801066BC_swing_n_swipe;
     }
 }
@@ -563,7 +563,7 @@ void func_80106AD0_swing_n_swipe(void) {
                 break;
             case 7:
             case 10:
-                if (D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02 == Hu3DData[obj->model[0]].motTime) {
+                if (Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02 == Hu3DData[obj->model[0]].motTime) {
                     D_8010BD4E_swing_n_swipe++;
                 }
                 break;
@@ -666,7 +666,7 @@ void func_801072D0_swing_n_swipe(void) {
 
     if (!(GwPlayer[D_8010C144_swing_n_swipe].stat & 1)) {
         pad = GwPlayer[D_8010C144_swing_n_swipe].pad;
-        if ((D_800D5558_main[pad] & A_BUTTON) && D_8010BD5C_swing_n_swipe == 0) {
+        if ((HuPadBtnDown[pad] & A_BUTTON) && D_8010BD5C_swing_n_swipe == 0) {
             D_8010BD5C_swing_n_swipe = 1;
             for (i = 0; i < 10; i++) {
                 D_8010BD68_swing_n_swipe[i].x = D_8010BD68_swing_n_swipe[i].y = 0.0f;
@@ -675,8 +675,8 @@ void func_801072D0_swing_n_swipe(void) {
             func_800E5690_minigame(obj, 5);
         }
         if (D_8010BD5C_swing_n_swipe == 0) {
-            D_8010BD68_swing_n_swipe[D_8010BDB8_swing_n_swipe].x = D_800CBB6E_main[pad];
-            D_8010BD68_swing_n_swipe[D_8010BDB8_swing_n_swipe++].y = D_800D20A1_main[pad];
+            D_8010BD68_swing_n_swipe[D_8010BDB8_swing_n_swipe].x = HuPadStkX[pad];
+            D_8010BD68_swing_n_swipe[D_8010BDB8_swing_n_swipe++].y = HuPadStkY[pad];
             for (i = 0; i < 10; i++) {
                 moveX += D_8010BD68_swing_n_swipe[i].x;
                 moveZ += D_8010BD68_swing_n_swipe[i].y;
@@ -752,7 +752,7 @@ void func_801072D0_swing_n_swipe(void) {
         } else {
             D_8010BD64_swing_n_swipe++;
         }
-        if (D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02 == Hu3DData[obj->model[0]].motTime &&
+        if (Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02 == Hu3DData[obj->model[0]].motTime &&
             D_8010BD64_swing_n_swipe >= 7) {
             D_8010BD5C_swing_n_swipe = 0;
             D_8010BD64_swing_n_swipe = 0;
@@ -1278,7 +1278,7 @@ void func_8010A0E4_swing_n_swipe(omObjData *object) {
         Hu3DModelScaleSet(D_8010C190_swing_n_swipe[i][0], 1.5f, 1.5f, 1.5f);
         Hu3DMotionSpeedSet(D_8010C190_swing_n_swipe[i][0], 0.0f);
         D_8010C190_swing_n_swipe[i][1] =
-            D_800CBB60_main[(s16)SprModelRead(D_8010BE94_swing_n_swipe[D_800A11D0_main[i]], 0xA0, 0x10)].modelId;
+            Hu3DSprModelData[(s16)SprModelRead(D_8010BE94_swing_n_swipe[mgInstColumnTbl[i]], 0xA0, 0x10)].modelId;
         Hu3DModelPosSet(D_8010C190_swing_n_swipe[i][1], Hu3DData[D_8010C190_swing_n_swipe[i][0]].pos.x, 1000.0f,
                         Hu3DData[D_8010C190_swing_n_swipe[i][0]].pos.z);
         Hu3DModelScaleSet(D_8010C190_swing_n_swipe[i][1], 3.0f, 3.0f, 3.0f);
@@ -1390,7 +1390,7 @@ void func_8010AA3C_swing_n_swipe(void) {
                 D_8010BEE8_swing_n_swipe++;
                 break;
             case 1:
-                if (D_800CCF58_main[Hu3DData[D_8010C190_swing_n_swipe[index][0]].motId].unk02 ==
+                if (Hu3DMotion[Hu3DData[D_8010C190_swing_n_swipe[index][0]].motId].unk02 ==
                     Hu3DData[D_8010C190_swing_n_swipe[index][0]].motTime) {
                     HuAudFXPlay(0x4F3);
                     Hu3DParticleAttrSet(D_8010C1B8_swing_n_swipe[0], 1, 1);
@@ -1506,7 +1506,7 @@ void func_8010B23C_swing_n_swipe(omObjData *object) {
         D_8010C156_swing_n_swipe = 2;
     }
     if (D_8010C156_swing_n_swipe == 2 &&
-        D_800CCF58_main[Hu3DData[D_8010C1C0_swing_n_swipe[0]].motId].unk02 ==
+        Hu3DMotion[Hu3DData[D_8010C1C0_swing_n_swipe[0]].motId].unk02 ==
             Hu3DData[D_8010C1C0_swing_n_swipe[0]].motTime) {
         do {
             for (i = 0; i < 5; i++) {
@@ -1529,7 +1529,7 @@ void func_8010B23C_swing_n_swipe(omObjData *object) {
         D_8010C158_swing_n_swipe = 2;
     } else if (D_8010C158_swing_n_swipe == 2) {
         model = D_8010C1C0_swing_n_swipe[D_8010C15E_swing_n_swipe];
-        if (D_800CCF58_main[Hu3DData[model].motId].unk02 == Hu3DData[model].motTime) {
+        if (Hu3DMotion[Hu3DData[model].motId].unk02 == Hu3DData[model].motTime) {
             Hu3DModelCameraSet(model, 0);
         }
     }
@@ -1543,7 +1543,7 @@ void func_8010B23C_swing_n_swipe(omObjData *object) {
     }
     if (D_8010C15A_swing_n_swipe == 2) {
         model = D_8010C1CC_swing_n_swipe[0];
-        if (D_800CCF58_main[Hu3DData[model].motId].unk02 == Hu3DData[model].motTime) {
+        if (Hu3DMotion[Hu3DData[model].motId].unk02 == Hu3DData[model].motTime) {
             Hu3DModelCameraSet(model, 0);
         }
     }
@@ -1557,7 +1557,7 @@ void func_8010B23C_swing_n_swipe(omObjData *object) {
     }
     if (D_8010C15C_swing_n_swipe == 2) {
         model = D_8010C1CC_swing_n_swipe[1];
-        if (D_800CCF58_main[Hu3DData[model].motId].unk02 == Hu3DData[model].motTime) {
+        if (Hu3DMotion[Hu3DData[model].motId].unk02 == Hu3DData[model].motTime) {
             Hu3DModelCameraSet(model, 0);
         }
     }

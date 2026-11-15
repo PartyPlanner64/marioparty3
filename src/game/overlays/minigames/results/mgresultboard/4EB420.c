@@ -128,7 +128,7 @@ void func_8010A4A0_mgresultboard(omObjData *obj) {
         cur = D_8010AFB0_mgresultboard[i].unk_06;
         model = obj->model[cur + 1];
         time = Hu3DData[model].motTime;
-        endTime = D_800CCF58_main[Hu3DData[model].motId].unk02;
+        endTime = Hu3DMotion[Hu3DData[model].motId].unk02;
         switch (D_8010AFB0_mgresultboard[i].unk_00) {
             case 1:
                 if (cur >= 0) {

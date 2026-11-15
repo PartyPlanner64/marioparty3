@@ -245,10 +245,10 @@ void func_80105A3C_crazy_cogs(void) {
 }
 
 void func_80105B04_crazy_cogs(s32 playerIndex) {
-    D_800CDA7C_main[GwPlayer[playerIndex].pad] = 0;
-    D_800D5558_main[GwPlayer[playerIndex].pad] = 0;
-    D_800CBB6E_main[GwPlayer[playerIndex].pad] = 0;
-    D_800D20A1_main[GwPlayer[playerIndex].pad] = 0;
+    HuPadBtn[GwPlayer[playerIndex].pad] = 0;
+    HuPadBtnDown[GwPlayer[playerIndex].pad] = 0;
+    HuPadStkX[GwPlayer[playerIndex].pad] = 0;
+    HuPadStkY[GwPlayer[playerIndex].pad] = 0;
 }
 
 s32 func_80105B7C_crazy_cogs(s32 arg0) {
@@ -775,11 +775,11 @@ void func_8010728C_crazy_cogs(omObjData *arg0) {
                     break;
             }
         } else {
-            if (((D_800CBB6E_main[arg0->work[3]] < 0) ? -D_800CBB6E_main[arg0->work[3]] : D_800CBB6E_main[arg0->work[3]]) < 15) {
+            if (((HuPadStkX[arg0->work[3]] < 0) ? -HuPadStkX[arg0->work[3]] : HuPadStkX[arg0->work[3]]) < 15) {
                 D_8010DE60_crazy_cogs = 0;
-            } else if (D_800CBB6E_main[arg0->work[3]] > 30) {
+            } else if (HuPadStkX[arg0->work[3]] > 30) {
                 D_8010DE60_crazy_cogs = 1;
-            } else if (D_800CBB6E_main[arg0->work[3]] < -30) {
+            } else if (HuPadStkX[arg0->work[3]] < -30) {
                 D_8010DE60_crazy_cogs = 2;
             }
         }
@@ -1023,15 +1023,15 @@ void func_80107E00_crazy_cogs(omObjData *arg0) {
         case 5:
             switch ((s16)introCog->timer) {
                 case 0:
-                    D_800D20A1_main[arg0->work[3]] = -67;
+                    HuPadStkY[arg0->work[3]] = -67;
                     break;
                 case 1:
-                    D_800CBB6E_main[arg0->work[3]] = 60;
-                    D_800D20A1_main[arg0->work[3]] = 30;
+                    HuPadStkX[arg0->work[3]] = 60;
+                    HuPadStkY[arg0->work[3]] = 30;
                     break;
                 case 2:
-                    D_800CBB6E_main[arg0->work[3]] = -60;
-                    D_800D20A1_main[arg0->work[3]] = 30;
+                    HuPadStkX[arg0->work[3]] = -60;
+                    HuPadStkY[arg0->work[3]] = 30;
                     break;
             }
             cog->unk_16++;
@@ -1148,8 +1148,8 @@ void func_80108464_crazy_cogs(omObjData *arg0) {
             }
         }
     }
-    D_800CBB6E_main[arg0->work[3]] = movement->xStick;
-    D_800D20A1_main[arg0->work[3]] = movement->zStick;
+    HuPadStkX[arg0->work[3]] = movement->xStick;
+    HuPadStkY[arg0->work[3]] = movement->zStick;
 }
 
 void func_801087B8_crazy_cogs(omObjData *arg0) {
@@ -1188,15 +1188,15 @@ void func_801087B8_crazy_cogs(omObjData *arg0) {
                 break;
             case 1:
                 func_80107CA8_crazy_cogs(&arg0->trans.x, &arg0->trans.z, -3.3f);
-                if (((D_800CBB6E_main[arg0->work[3]] < 0) ? -D_800CBB6E_main[arg0->work[3]] : D_800CBB6E_main[arg0->work[3]]) < 20 &&
-                    ((D_800D20A1_main[arg0->work[3]] < 0) ? -D_800D20A1_main[arg0->work[3]] : D_800D20A1_main[arg0->work[3]]) < 20) {
+                if (((HuPadStkX[arg0->work[3]] < 0) ? -HuPadStkX[arg0->work[3]] : HuPadStkX[arg0->work[3]]) < 20 &&
+                    ((HuPadStkY[arg0->work[3]] < 0) ? -HuPadStkY[arg0->work[3]] : HuPadStkY[arg0->work[3]]) < 20) {
                     work->unk3C = func_801059BC_crazy_cogs(work->unk3C, -3.3f);
                 }
                 break;
             case 2:
                 func_80107CA8_crazy_cogs(&arg0->trans.x, &arg0->trans.z, 3.3f);
-                if (((D_800CBB6E_main[arg0->work[3]] < 0) ? -D_800CBB6E_main[arg0->work[3]] : D_800CBB6E_main[arg0->work[3]]) < 20 &&
-                    ((D_800D20A1_main[arg0->work[3]] < 0) ? -D_800D20A1_main[arg0->work[3]] : D_800D20A1_main[arg0->work[3]]) < 20) {
+                if (((HuPadStkX[arg0->work[3]] < 0) ? -HuPadStkX[arg0->work[3]] : HuPadStkX[arg0->work[3]]) < 20 &&
+                    ((HuPadStkY[arg0->work[3]] < 0) ? -HuPadStkY[arg0->work[3]] : HuPadStkY[arg0->work[3]]) < 20) {
                     work->unk3C = func_801059BC_crazy_cogs(work->unk3C, 3.3f);
                 }
                 break;
@@ -1949,7 +1949,7 @@ void func_8010B064_crazy_cogs(omObjData *arg0) {
 }
 
 void func_8010B09C_crazy_cogs(omObjData *arg0) {
-    if (D_800D530C_main == 1) {
+    if (omSysExitReq == 1) {
         WipeCreateOut(WIPE_TYPE_NORMAL, 20);
         arg0->func = func_8010B064_crazy_cogs;
         HuAudSeqFadeOut(30);

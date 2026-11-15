@@ -201,8 +201,8 @@ void func_801059A0_mchar(void) {
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     if (omdispinfo != 0) {
         omdispinfo = 0;
-        pfWinKill(D_800A1786_main);
-        D_800A1786_main = -1;
+        pfWinKill(omDBGInfoWin);
+        omDBGInfoWin = -1;
     }
     omAddObj(0x2710, 0, 0, -1, func_80106DF8_mchar);
     Hu3DGLightMaxSet(3);
@@ -215,7 +215,7 @@ void func_801059A0_mchar(void) {
     omAddObj(0x7D0, 10, 10, -1, func_80105B38_mchar);
     omAddObj(0x7D0, 0, 0, -1, func_80106898_mchar);
     WipeCreateIn(WIPE_TYPE_NORMAL, 16);
-    D_800CD280_main = 1;
+    Hu3DScreenClearF = 1;
     Hu3DBGColorSet(0xC0, 0xE0, 0xFF);
     HuAudCharVoiceInit();
 }
@@ -247,7 +247,7 @@ void func_80105C4C_mchar(omObjData *arg0) {
             Hu3DMotionAttrSet((s16)D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar], 2, 2);
         }
     }
-    if ((u16)D_800D0590_main[0] & A_BUTTON) {
+    if ((u16)ContBtnRep[0] & A_BUTTON) {
         D_80107116_mchar++;
         if (D_80107116_mchar >= 160) {
             D_80107116_mchar = 0;
@@ -255,7 +255,7 @@ void func_80105C4C_mchar(omObjData *arg0) {
         func_80106764_mchar(D_80107116_mchar);
         HuAudCharVoicePlay((D_80106E84_mchar[D_80107114_mchar] << 16) | D_80107116_mchar);
     }
-    if (D_800D0590_main[0] & B_BUTTON) {
+    if (ContBtnRep[0] & B_BUTTON) {
         D_80107116_mchar--;
         if (D_80107116_mchar < 0) {
             D_80107116_mchar = 159;
@@ -263,10 +263,10 @@ void func_80105C4C_mchar(omObjData *arg0) {
         func_80106764_mchar(D_80107116_mchar);
         HuAudCharVoicePlay((D_80106E84_mchar[D_80107114_mchar] << 16) | D_80107116_mchar);
     }
-    if (D_800D5558_main[0] & START_BUTTON) {
+    if (HuPadBtnDown[0] & START_BUTTON) {
         D_8010711C_mchar++;
     }
-    if (D_800D5558_main[0] & D_CBUTTONS) {
+    if (HuPadBtnDown[0] & D_CBUTTONS) {
         Hu3DModelAttrSet((s16)D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         model = &Hu3DData[D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar]];
         D_80107118_mchar++;
@@ -282,7 +282,7 @@ void func_80105C4C_mchar(omObjData *arg0) {
         newModel->motShiftAttr = model->motShiftAttr;
         newModel->motIdShift = model->motIdShift;
     }
-    if (D_800D5558_main[0] & L_CBUTTONS) {
+    if (HuPadBtnDown[0] & L_CBUTTONS) {
         Hu3DModelAttrSet((s16)D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         D_80107114_mchar++;
         if (D_80107114_mchar >= 8) {
@@ -293,7 +293,7 @@ void func_80105C4C_mchar(omObjData *arg0) {
         Hu3DMotionAttrSet((s16)D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar], 2, 2);
         HuAudCharVoicePlay((D_80106E84_mchar[D_80107114_mchar] << 16) | D_80107116_mchar);
     }
-    if (D_800D5558_main[0] & R_CBUTTONS) {
+    if (HuPadBtnDown[0] & R_CBUTTONS) {
         Hu3DModelAttrSet((s16)D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         D_80107114_mchar--;
         if (D_80107114_mchar < 0) {
@@ -304,20 +304,20 @@ void func_80105C4C_mchar(omObjData *arg0) {
         Hu3DMotionAttrSet((s16)D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar], 2, 2);
         HuAudCharVoicePlay((D_80106E84_mchar[D_80107114_mchar] << 16) | D_80107116_mchar);
     }
-    if ((u16)D_800D0590_main[1] & (A_BUTTON | B_BUTTON)) {
+    if ((u16)ContBtnRep[1] & (A_BUTTON | B_BUTTON)) {
         model = &Hu3DData[D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar]];
-        if ((u16)D_800D0590_main[1] & B_BUTTON) {
+        if ((u16)ContBtnRep[1] & B_BUTTON) {
             model->motAttr |= 4;
         }
         model->motAttr &= 0xFE;
-        model->motTime = Hu3DMotionTimeCalc(&D_800CCF58_main[model->motId], model->motAttr, model->motTime, model->unk48, model->motSpeed + model->motSpeed);
-        model->motShiftTime = Hu3DMotionTimeCalc(&D_800CCF58_main[model->motIdShift], model->motShiftAttr, model->motShiftTime, model->unk54, model->motShiftSpeed + model->motShiftSpeed);
+        model->motTime = Hu3DMotionTimeCalc(&Hu3DMotion[model->motId], model->motAttr, model->motTime, model->unk48, model->motSpeed + model->motSpeed);
+        model->motShiftTime = Hu3DMotionTimeCalc(&Hu3DMotion[model->motIdShift], model->motShiftAttr, model->motShiftTime, model->unk54, model->motShiftSpeed + model->motShiftSpeed);
         model->motAttr = (model->motAttr & 0xFB) | 1;
     }
-    if ((D_800CDA7C_main[0] & (L_TRIG | R_TRIG)) == 0x30) {
+    if ((HuPadBtn[0] & (L_TRIG | R_TRIG)) == 0x30) {
         D_80106E80_mchar = 1;
     }
-    if (D_800D5558_main[1] & START_BUTTON) {
+    if (HuPadBtnDown[1] & START_BUTTON) {
         D_80106E82_mchar = !D_80106E82_mchar;
     }
     if (D_80106E82_mchar != 0) {
@@ -396,11 +396,11 @@ void func_80106898_mchar(omObjData *arg0) {
     f32 length;
     s8 stick;
 
-    if (D_800CDA7C_main[0] & START_BUTTON) {
+    if (HuPadBtn[0] & START_BUTTON) {
         func_80106D7C_mchar();
     }
-    if (D_800CDA7C_main[0] & L_TRIG) {
-        if (D_800CDA7C_main[0] & Z_TRIG) {
+    if (HuPadBtn[0] & L_TRIG) {
+        if (HuPadBtn[0] & Z_TRIG) {
             zoom = CZoom;
             zoom += 30.0f;
             CZoom = zoom;
@@ -410,8 +410,8 @@ void func_80106898_mchar(omObjData *arg0) {
             CZoom = zoom;
         }
     }
-    if ((D_800CDA7C_main[0] & R_TRIG) && (CZoom - 10.0f != 0.0f)) {
-        if (D_800CDA7C_main[0] & Z_TRIG) {
+    if ((HuPadBtn[0] & R_TRIG) && (CZoom - 10.0f != 0.0f)) {
+        if (HuPadBtn[0] & Z_TRIG) {
             CZoom -= 30.0f;
         } else {
             zoom = CZoom;
@@ -420,19 +420,19 @@ void func_80106898_mchar(omObjData *arg0) {
     }
     x = D_80107A50_mchar.x;
     y = D_80107A50_mchar.y;
-    if (D_800CDA7C_main[0] & Z_TRIG) {
+    if (HuPadBtn[0] & Z_TRIG) {
         speed = 5.0f;
     } else {
         speed = 2.0f;
     }
-    y += (-D_800CBB6E_main[0] / 30) * speed;
+    y += (-HuPadStkX[0] / 30) * speed;
     if (y >= 360.0f) {
         y -= 360.0f;
     } else if (y < 0.0f) {
         y += 360.0f;
     }
     D_80107A50_mchar.y = y;
-    stick = D_800D20A1_main[0];
+    stick = HuPadStkY[0];
     stick /= 30;
     x += stick * speed;
     if (x >= 360.0f) {
@@ -443,27 +443,27 @@ void func_80106898_mchar(omObjData *arg0) {
     D_80107A50_mchar.x = x;
     CRot.x = (s16)x;
     CRot.y = (s16)D_80107A50_mchar.y;
-    if (D_800CDA7C_main[0] & Z_TRIG) {
+    if (HuPadBtn[0] & Z_TRIG) {
         speed = 10.0f;
     } else {
         speed = 2.0f;
     }
-    if (D_800CDA7C_main[0] & U_JPAD) {
+    if (HuPadBtn[0] & U_JPAD) {
         Center.x += sindf(y) * sindf(x) * -speed;
         Center.y += cosdf(x) * -speed;
         Center.z += cosdf(y) * sindf(x) * -speed;
-    } else if (D_800CDA7C_main[0] & D_JPAD) {
+    } else if (HuPadBtn[0] & D_JPAD) {
         Center.x += sindf(y) * sindf(x) * speed;
         Center.y += cosdf(x) * speed;
         Center.z += cosdf(y) * sindf(x) * speed;
-    } else if (D_800CDA7C_main[0] & L_JPAD) {
+    } else if (HuPadBtn[0] & L_JPAD) {
         x = gCameraList->pos.z - Center.z;
         dz = -(gCameraList->pos.x - Center.x);
         length = 1.0f / HuSqrtf(x * x + dz * dz);
         Center.x += x * length * speed;
         Center.y += 0.0f;
         Center.z += dz * length * speed;
-    } else if (D_800CDA7C_main[0] & R_JPAD) {
+    } else if (HuPadBtn[0] & R_JPAD) {
         x = -(gCameraList->pos.z - Center.z);
         dz = gCameraList->pos.x - Center.x;
         length = 1.0f / HuSqrtf(x * x + dz * dz);
@@ -483,7 +483,7 @@ void func_80106D7C_mchar(void) {
 }
 
 void func_80106DF8_mchar(omObjData *arg0) {
-    if ((D_80106E80_mchar != 0) || (D_800D530C_main != 0)) {
+    if ((D_80106E80_mchar != 0) || (omSysExitReq != 0)) {
         WipeCreateOut(WIPE_TYPE_NORMAL, 8);
         arg0->func = func_80106E54_mchar;
         HuAudSeqFadeOut(0x3C);

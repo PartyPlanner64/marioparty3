@@ -5,7 +5,7 @@
 #include "game/object.h"
 
 #ifndef NO_EXTERN_VARIABLES
-extern u8 D_800CB99C_main;
+extern u8 winPauseF;
 #endif
 
 void MgCoinReset(void);

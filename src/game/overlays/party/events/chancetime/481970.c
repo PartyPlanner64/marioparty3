@@ -260,7 +260,7 @@ void func_80106154_chancetime(void) {
 }
 
 void func_801061B8_chancetime(omObjData *object) {
-    if (D_800D530C_main != 1) {
+    if (omSysExitReq != 1) {
         return;
     }
 

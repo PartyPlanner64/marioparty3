@@ -9,8 +9,8 @@ typedef struct BabyBowserBroadsideColor {
     u8 rgba[4];
 } BabyBowserBroadsideColor;
 
-extern s16 D_800CDD6A_main;
-extern u8 D_800D2008_main;
+extern s16 Hu3DModelTag;
+extern u8 Hu3DBufNo;
 
 Gfx D_8010FD90_baby_bowser_broadside[] = {
     gsSPSegment(0x00, 0x00000000),
@@ -424,7 +424,7 @@ void func_8010ACF8_baby_bowser_broadside(void) {
         if (work->unk_00 != 0 && work->unk_08 != -1) {
             model = &Hu3DData[work->unk_0C];
             if (work->unk_08 != 0) {
-                if (model->motTime >= D_800CCF58_main[model->motId].unk02) {
+                if (model->motTime >= Hu3DMotion[model->motId].unk02) {
                     model->motTime = 0;
                     if (model->hmf->unk98 != NULL) {
                         model->hmf->unk98->unk08 = 0;
@@ -682,7 +682,7 @@ s16 func_8010BCBC_baby_bowser_broadside(HuSprAnimData *sprite, f32 alpha) {
     data->unk60->unk50 |= 0x1010000;
     gfx++;
     HuMemFree(data->unk3C);
-    data->unk3C = HuMemAllocTag(0x14, D_800CDD6A_main);
+    data->unk3C = HuMemAllocTag(0x14, Hu3DModelTag);
     func_8010D6C4_baby_bowser_broadside(sprite, data, 1.0f, 0, 30);
     gSPDisplayList(header, osVirtualToPhysical(D_8010FE80_baby_bowser_broadside));
     gDPPipeSync(gfx++);
@@ -753,14 +753,14 @@ s16 func_8010BCBC_baby_bowser_broadside(HuSprAnimData *sprite, f32 alpha) {
     data->unk3C->unk00[0] = data->unk3C->unk10 = HuMemAllocTag(size, data->unk0E);
     bcopy(buffer, data->unk3C->unk00[0], size);
     HuMemFree(buffer);
-    for (i = 0; i < D_800D1FF0_main; i++) {
+    for (i = 0; i < Hu3DBufNum; i++) {
         gfx = (data->unk3C->unk00 + 1)[i] = HuMemAllocTag(0x100, data->unk0E);
         gDPPipeSync(gfx++);
         gSPSegment(gfx++, 2, osVirtualToPhysical(sprite->pat->data));
         gSPDisplayList(gfx++, osVirtualToPhysical(data->unk3C->unk10));
         gSPEndDisplayList(gfx++);
     }
-    data->unk3C->unk00[0] = data->unk3C->unk00[D_800D2008_main + 1];
+    data->unk3C->unk00[0] = data->unk3C->unk00[Hu3DBufNo + 1];
     return model;
 }
 
@@ -782,7 +782,7 @@ s16 func_8010C8D4_baby_bowser_broadside(HuSprAnimData *sprite, u8 *color) {
     data->unk60->unk50 |= 0x1010000;
     gfx++;
     HuMemFree(data->unk3C);
-    data->unk3C = HuMemAllocTag(sizeof(HmfModelData_Unk64_Unk3C_Struct), D_800CDD6A_main);
+    data->unk3C = HuMemAllocTag(sizeof(HmfModelData_Unk64_Unk3C_Struct), Hu3DModelTag);
     func_8010D6C4_baby_bowser_broadside(sprite, data, 1.0f, 0, 0);
     gSPDisplayList(header, osVirtualToPhysical(D_8010FE80_baby_bowser_broadside));
     gDPPipeSync(gfx++);
@@ -859,7 +859,7 @@ s16 func_8010C8D4_baby_bowser_broadside(HuSprAnimData *sprite, u8 *color) {
     data->unk3C->unk14 = HuMemAllocTag(size, data->unk0E);
     bcopy(buffer, data->unk3C->unk14, size);
     HuMemFree(buffer);
-    for (i = 0; i < D_800D1FF0_main; i++) {
+    for (i = 0; i < Hu3DBufNum; i++) {
         gfx = (data->unk3C->unk00 + 1)[i] = HuMemAllocTag(0x100, data->unk0E);
         gDPPipeSync(gfx++);
         gSPSegment(gfx++, 2, osVirtualToPhysical(sprite->pat->data));
@@ -870,14 +870,14 @@ s16 func_8010C8D4_baby_bowser_broadside(HuSprAnimData *sprite, u8 *color) {
         gDPPipeSync(gfx++);
         gSPEndDisplayList(gfx++);
     }
-    data->unk3C->unk00[0] = data->unk3C->unk00[D_800D2008_main + 1];
+    data->unk3C->unk00[0] = data->unk3C->unk00[Hu3DBufNo + 1];
     return model;
 }
 
 void func_8010D4C0_baby_bowser_broadside(u16 model, HuSprAnimData *sprite, u16 frame) {
     HmfModel *modelData = Hu3DData + model;
     HmfData *data = modelData->hmf;
-    Gfx *gfx = data->unk3C->unk00[D_800D2008_main + 1];
+    Gfx *gfx = data->unk3C->unk00[Hu3DBufNo + 1];
 
     data->unk3C->unk00[0] = gfx;
     gDPPipeSync(gfx);
@@ -890,7 +890,7 @@ void func_8010D4C0_baby_bowser_broadside(u16 model, HuSprAnimData *sprite, u16 f
 void func_8010D590_baby_bowser_broadside(u16 model, HuSprAnimData *sprite, u16 frame, u8 *color) {
     HmfModel *modelData = Hu3DData + model;
     HmfData *data = modelData->hmf;
-    Gfx *gfx = data->unk3C->unk00[D_800D2008_main + 1];
+    Gfx *gfx = data->unk3C->unk00[Hu3DBufNo + 1];
 
     data->unk3C->unk00[0] = gfx;
     gDPPipeSync(gfx);
@@ -960,7 +960,7 @@ s16 func_8010D6C4_baby_bowser_broadside(HuSprAnimData *sprite, HmfData *data, f3
         }
     }
     vertices = start;
-    for (i = 0; i < D_800D1FF0_main; i++) {
+    for (i = 0; i < Hu3DBufNum; i++) {
         Vtx_t *destination;
         Vtx_t *source;
         data->unk44[i] = HuMemAllocTag(vertexCount * sizeof(Vtx_t), data->unk0E);

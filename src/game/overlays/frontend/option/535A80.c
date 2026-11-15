@@ -55,7 +55,7 @@ extern UnkOption D_80114F70_option[0x40];
 extern s16 D_80115A70_option;
 extern u16 D_80115A72_option;
 extern OptWinEntry D_80115A78_option[0x20];
-extern SaveCommonBuf D_800D09A8_main;
+extern SaveCommonBuf saveCommonBuf;
 extern s32 D_801139D0_option;
 
 s32 func_80113204_option(s32 arg0);
@@ -401,7 +401,7 @@ void func_80107F50_option(s32 animFile, s16 x, s16 y) {
     HuWinKill(win);
     do {
         HuPrcVSleep();
-    } while (!(D_800D5558_main[0] & (A_BUTTON | B_BUTTON)));
+    } while (!(HuPadBtnDown[0] & (A_BUTTON | B_BUTTON)));
     for (i = 0; i < 10; i++) {
         HuWinDispOff(wins[i]);
     }
@@ -711,7 +711,7 @@ s32 func_80109504_option(void) {
     func_80113384_option(0);
     func_8010A3E8_option(selection, 0);
     while (1) {
-        buttons = D_800D5558_main[0];
+        buttons = HuPadBtnDown[0];
         buttons |= func_801130E8_option(0);
         if (buttons & 0x8000) {
             result = func_80109D04_option(selection, buttons);
@@ -1080,7 +1080,7 @@ s32 func_8010A498_option(void) {
     func_80113384_option(0);
     func_8010B654_option(0, 0);
     while (1) {
-        buttons = D_800D5558_main[0];
+        buttons = HuPadBtnDown[0];
         buttons |= func_801130E8_option(0);
         if (buttons & 0x8000) {
             result = func_8010AF54_option(selection, buttons);
@@ -1220,7 +1220,7 @@ void func_8010A8DC_option(s32 arg0, s32 *arg1, s32 *arg2) {
 
     switch (arg0) {
         case 0:
-            if (!(D_800D09A8_main.flags & 1)) {
+            if (!(saveCommonBuf.flags & 1)) {
                 val1 = 0xE0;
                 val2 = 0x38;
             } else {
@@ -1429,14 +1429,14 @@ s32 func_8010AF54_option(s32 selection, s32 buttons) {
             HuPrcSleep(8);
             func_801133EC_option(0);
             do {
-                if (!(D_800D09A8_main.flags & 1)) {
+                if (!(saveCommonBuf.flags & 1)) {
                     func_801133BC_option(0, 0x4E07);
                     func_80113408_option(0, 0x4E07);
                     choice = func_8011345C_option(0);
                     if (choice == 0) {
                         func_801133A0_option(0);
                         HuPrcVSleep();
-                        D_800D09A8_main.flags |= 1;
+                        saveCommonBuf.flags |= 1;
                         msmSysSetOutputMode(1);
                         RepeatVibrator(0, 5, 0, 5);
                         SLSaveCommon();
@@ -1467,7 +1467,7 @@ s32 func_8010AF54_option(s32 selection, s32 buttons) {
                     if (choice == 0) {
                         func_801133A0_option(0);
                         HuPrcVSleep();
-                        D_800D09A8_main.flags &= ~1;
+                        saveCommonBuf.flags &= ~1;
                         msmSysSetOutputMode(0);
                         RepeatVibrator(0, 5, 0, 5);
                         SLSaveCommon();
@@ -1827,7 +1827,7 @@ s32 func_8010C04C_option(void) {
     {
         Vec pos, at;
         while (1) {
-            buttons = D_800D5558_main[0];
+            buttons = HuPadBtnDown[0];
             buttons |= func_801130E8_option(0);
             if (buttons & 0x8000) {
                 next = func_8010BACC_option(selection, buttons);
@@ -2099,7 +2099,7 @@ void func_8010C3E4_option(s32 animFile, s16 x, s16 y) {
         }
         do {
             HuPrcVSleep();
-            buttons = D_800D5558_main[0];
+            buttons = HuPadBtnDown[0];
             buttons |= func_801130E8_option(0);
         } while (!(buttons & (B_BUTTON | L_JPAD | R_JPAD)));
         if (buttons & B_BUTTON) {
@@ -2329,7 +2329,7 @@ void func_8010D5B0_option(s32 animFile, s16 x, s16 y) {
         }
         do {
             HuPrcVSleep();
-            buttons = D_800D5558_main[0];
+            buttons = HuPadBtnDown[0];
             buttons |= func_801130E8_option(0);
         } while (!(buttons & (B_BUTTON | L_JPAD | R_JPAD)));
         if (buttons & B_BUTTON) {
@@ -2505,9 +2505,9 @@ void func_8010E8E0_option(void) {
     frame = 0;
     while (1) {
         HuPrcVSleep();
-        buttons = D_800D1244_main[0];
+        buttons = HuPadBtnRep[0];
         buttons |= func_80113204_option(0);
-        buttons = (buttons & ~(A_BUTTON | B_BUTTON)) | (D_800D5558_main[0] & (A_BUTTON | B_BUTTON));
+        buttons = (buttons & ~(A_BUTTON | B_BUTTON)) | (HuPadBtnDown[0] & (A_BUTTON | B_BUTTON));
         if (buttons & 0x4000) {
             model = func_80113218_option(2);
             Hu3DModelAnimStop(Hu3DData[model].hmf);
@@ -2676,9 +2676,9 @@ void func_8010F138_option(void) {
     frame = 0;
     while (1) {
         HuPrcVSleep();
-        buttons = D_800D1244_main[0];
+        buttons = HuPadBtnRep[0];
         buttons |= func_80113204_option(0);
-        buttons = (buttons & ~(A_BUTTON | B_BUTTON)) | (D_800D5558_main[0] & (A_BUTTON | B_BUTTON));
+        buttons = (buttons & ~(A_BUTTON | B_BUTTON)) | (HuPadBtnDown[0] & (A_BUTTON | B_BUTTON));
         if (buttons & 0x4000) {
             model = func_80113218_option(3);
             Hu3DModelAnimStop(Hu3DData[model].hmf);
@@ -3206,11 +3206,11 @@ u16 func_8010FC40_option(s32 value) {
 
     HuPrcSleep(3);
     while (1) {
-        if (D_800D5558_main[0] & (A_BUTTON | B_BUTTON | START_BUTTON | R_TRIG)) {
+        if (HuPadBtnDown[0] & (A_BUTTON | B_BUTTON | START_BUTTON | R_TRIG)) {
             sprintf(text, "\n%d\n", value);
             break;
         }
-        if (D_800D5558_main[0] & Z_TRIG) {
+        if (HuPadBtnDown[0] & Z_TRIG) {
             cam = Hu3DData[gCameraList->unk4].hmf->unkBC;
             sprintf(text, "POS:%4.2f,%4.2f,%4.2f", cam->unk08, cam->unk0C, cam->unk10);
             print8(16, 180, text);
@@ -3224,7 +3224,7 @@ u16 func_8010FC40_option(s32 value) {
         }
         HuPrcVSleep();
     }
-    return D_800D5558_main[0];
+    return HuPadBtnDown[0];
 }
 
 void func_8010FDF4_option(void) {
@@ -3295,8 +3295,8 @@ s32 func_80110018_option(void) {
         counts[i] = 0;
     }
     for (i = 0; i < 71; i++) {
-        minigameType = D_800A6D40_main[i].minigameType;
-        if ((D_800A6D40_main[i].overlay == 0x70) | (D_800A6D40_main[i].overlay == -1)) {
+        minigameType = mgDataTbl[i].minigameType;
+        if ((mgDataTbl[i].overlay == 0x70) | (mgDataTbl[i].overlay == -1)) {
             continue;
         }
         if ((i == 27) | (i == 8)) {

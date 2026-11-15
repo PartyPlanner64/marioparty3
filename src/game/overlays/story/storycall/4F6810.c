@@ -1,9 +1,9 @@
 #include "common.h"
 
-extern u8 D_800CE20A_main;
+extern u8 storySceneNo;
 
 void func_801059A0_storycall(void) {
-    s32 scene = D_800CE20A_main;
+    s32 scene = storySceneNo;
 
     omInitObjMan(10, 10);
     switch (scene) {

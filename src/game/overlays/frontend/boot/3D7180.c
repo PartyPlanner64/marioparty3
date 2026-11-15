@@ -15,7 +15,7 @@ Process *D_80105F10_ovl_boot BSS;
 void func_801059D0_ovl_boot(void) {
     Hu3DCamInit(1);
     omInitObjMan(0x10, 4);
-    D_800D6A58_main = 1;
+    omSysPauseDisableF = 1;
 
     if (D_80105F00_ovl_boot == 0) {
         GWContErrorSet();
@@ -39,12 +39,12 @@ void func_80105ACC_ovl_boot(void) {
 }
 
 void func_80105AF0_ovl_boot(omObjData *arg0) {
-    if (((D_800D530C_main != 0) || (D_80105F04_ovl_boot != 0)) && (WipeStatGet() == 0)) {
+    if (((omSysExitReq != 0) || (D_80105F04_ovl_boot != 0)) && (WipeStatGet() == 0)) {
         WipeColorSet(0, 0, 0U);
         WipeCreateOut(0xB, 9);
         arg0->func = &func_80105BA4_ovl_boot;
 
-        if ((D_800D530C_main != 0) && (WipeStatGet() == 0)) {
+        if ((omSysExitReq != 0) && (WipeStatGet() == 0)) {
             WipeColorSet(0, 0, 0U);
             WipeCreateOut(0xB, 9);
             arg0->func = &func_80105BA4_ovl_boot;
@@ -69,7 +69,7 @@ void func_80105C14_ovl_boot(omObjData *arg0) {
 
     if (WipeStatGet() == 0) {
         temp_v0 = GWContErrorGet();
-        if ((temp_v0 == 1) && (CheckControllerRead(0) != 0) && (D_800D5558_main[0] & START_BUTTON)) {
+        if ((temp_v0 == 1) && (CheckControllerRead(0) != 0) && (HuPadBtnDown[0] & START_BUTTON)) {
             D_80105F04_ovl_boot = temp_v0;
         }
     }
@@ -135,7 +135,7 @@ void func_80105C80_ovl_boot(void) {
     }
 
     HuPrcSleep(37);
-    D_800D530C_main = 1;
+    omSysExitReq = 1;
 
     while (1) {
         HuPrcVSleep();

@@ -89,7 +89,7 @@ s16 func_80105A8C_duelresult2(s16 model, s32 dataNum, char *name) {
     D_80108E3C_duelresult2 = anim;
     Hu3DAnimAttrSet(anim, 1, 1);
     DataClose(data);
-    animIdx = D_800D1714_main[(s16)anim].animIdx;
+    animIdx = Hu3DAnimData[(s16)anim].animIdx;
     D_80108E3E_duelresult2 = Hu3DAnimLink(Hu3DData[model].hmf, anim, 0, name);
     Hu3DModelRemakeStatic(model);
     return animIdx;
@@ -103,7 +103,7 @@ void func_80105B98_duelresult2(s16 model, s16 animIdx) {
             Hu3DModelAnimStop(Hu3DData[model].hmf);
         } else {
             Hu3DModelAnimStart(Hu3DData[model].hmf);
-            anim = &D_800D1714_main[D_80108E3E_duelresult2];
+            anim = &Hu3DAnimData[D_80108E3E_duelresult2];
             anim->animIdx = animIdx;
             anim->rot = 0;
             anim->flags = 0;
@@ -893,7 +893,7 @@ void func_801084F4_duelresult2(void) {
                     if (rightWindow == NULL) {
                         rightWindow = func_800E172C_name_81(0x17, 200, 207, 1);
                     }
-                    if (D_800C9520_main[GwPlayer[i].pad] & START_BUTTON) {
+                    if (ContBtnDown[GwPlayer[i].pad] & START_BUTTON) {
                         showingDetails = 1;
                         func_801068BC_duelresult2();
                         func_80108240_duelresult2();
@@ -905,24 +905,24 @@ void func_801084F4_duelresult2(void) {
                             func_800E1854_name_81(rightWindow);
                             rightWindow = NULL;
                         }
-                    } else if (D_800C9520_main[GwPlayer[i].pad] & A_BUTTON) {
+                    } else if (ContBtnDown[GwPlayer[i].pad] & A_BUTTON) {
                         goto exit;
                     }
                 } else {
                     prevRow = D_80108C38_duelresult2;
                     prevPage = D_80108C34_duelresult2;
-                    if (D_800C9520_main[GwPlayer[i].pad] & START_BUTTON) {
+                    if (ContBtnDown[GwPlayer[i].pad] & START_BUTTON) {
                         showingDetails = 0;
                         func_8010809C_duelresult2();
                         func_80106974_duelresult2();
-                    } else if (D_800D0590_main[GwPlayer[i].pad] & R_JPAD) {
+                    } else if (ContBtnRep[GwPlayer[i].pad] & R_JPAD) {
                         if (++D_80108C38_duelresult2 >= 4) {
                             D_80108C38_duelresult2 = 3;
                             if (++D_80108C34_duelresult2 >= 7) {
                                 D_80108C34_duelresult2 = 6;
                             }
                         }
-                    } else if (D_800D0590_main[GwPlayer[i].pad] & L_JPAD) {
+                    } else if (ContBtnRep[GwPlayer[i].pad] & L_JPAD) {
                         if (--D_80108C38_duelresult2 < 0) {
                             D_80108C38_duelresult2 = 0;
                             if (--D_80108C34_duelresult2 < 0) {
@@ -969,7 +969,7 @@ exit:
     func_80106848_duelresult2();
     func_80107FEC_duelresult2();
     func_800F4584_name_81(D_80108DB0_duelresult2);
-    D_800D530C_main = 1;
+    omSysExitReq = 1;
     while (1) {
         HuPrcVSleep();
     }
@@ -985,7 +985,7 @@ void func_80108B38_duelresult2(omObjData *obj) {
 }
 
 void func_80108B7C_duelresult2(omObjData *arg0) {
-    if (D_800D530C_main != 0) {
+    if (omSysExitReq != 0) {
         arg0->func = func_80108B38_duelresult2;
     }
 }

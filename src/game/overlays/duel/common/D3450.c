@@ -151,9 +151,9 @@ s32 func_800EBA50_name_81(s16 arg0, f32 arg1) {
     Vec sp10;
     s32 var_v0;
 
-    sp10.x = D_800CBB6E_main[arg0];
+    sp10.x = HuPadStkX[arg0];
     sp10.y = 0.0f;
-    sp10.z = D_800D20A1_main[arg0];
+    sp10.z = HuPadStkY[arg0];
 
     if (!(arg1 <= HuVecGetLength3F(&sp10))) {
         var_v0 = 0;

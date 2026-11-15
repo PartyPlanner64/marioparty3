@@ -1,6 +1,6 @@
 #include "libm.h"
 
-f64 D_800C94F0_main;
+f64 __cosSign;
 
 f64 sind(f64 angle) {
     f64 term = 1;
@@ -25,9 +25,9 @@ f64 sind(f64 angle) {
     }
 
     if (angle < 90.0 || 270.0 < angle) {
-        D_800C94F0_main = 1.0;
+        __cosSign = 1.0;
     } else {
-        D_800C94F0_main = -1.0;
+        __cosSign = -1.0;
     }
 
     if (180.0 < angle) {
@@ -45,23 +45,23 @@ f64 sind(f64 angle) {
     fraction = angle - wholeAngle;
     fraction *= M_DTOR;
 
-    sinTbl = D_800A49A0_main[index];
+    sinTbl = __sinTbl[index];
     result = sinTbl;
-    cosTbl = D_800A49A0_main[90 - index];
+    cosTbl = __sinTbl[90 - index];
 
     termsRemaining = 8;
     termIndex = 0;
     do {
-        term = D_800A4380_main[9 - termsRemaining] * (term * fraction);
-        if (-D_800C94E0_main <= term && term <= D_800C94E0_main) {
+        term = __invFactTbl[9 - termsRemaining] * (term * fraction);
+        if (-__libmPrecision <= term && term <= __libmPrecision) {
             break;
         }
         if (toggle) {
-            wholeAngle = D_800A4350_main[termIndex] ? term * cosTbl : -term * cosTbl;
+            wholeAngle = __sinCosSignTbl[termIndex] ? term * cosTbl : -term * cosTbl;
             result += wholeAngle;
             toggle = 0;
         } else {
-            wholeAngle = D_800A4350_main[termIndex] ? term * sinTbl : -term * sinTbl;
+            wholeAngle = __sinCosSignTbl[termIndex] ? term * sinTbl : -term * sinTbl;
             result += wholeAngle;
             toggle = 1;
         }

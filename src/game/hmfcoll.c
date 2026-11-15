@@ -38,32 +38,32 @@ typedef struct CollisionRect {
     /* 0x0C */ CollisionExtent extent;
 } CollisionRect; // sizeof 0x14
 
-static s16 D_800B19E0_main;
-static s16 D_800B19E2_main;
-static s16 D_800B19E4_main;
-static s16 *D_800B19E8_main;
-extern CollisionGrid *D_800D1104_main;
-extern s32 D_800C9940_main;
-extern HuCamera *D_800D10F4_main;
-extern s16 D_800D418E_main;
+static s16 MapCollMax;
+static s16 MapCollNum;
+static s16 MapCollFreeIdx;
+static s16 *MapCollFreeList;
+extern CollisionGrid *MapCollData;
+extern s32 Hu3DCurAttr;
+extern HuCamera *Hu3DCurCamera;
+extern s16 Hu3DCamMtxNo;
 extern Mtx *MTXBuf;
 extern s16 MTXBufNum;
 
 void MapCollInit(s16 count) {
     s32 i;
 
-    D_800B19E2_main = 0;
-    D_800D1104_main = HuMemAllocTag(count * sizeof(CollisionGrid), TAG_COLLISION);
-    D_800B19E0_main = count;
-    D_800B19E8_main = HuMemAllocTag(count * sizeof(s16), TAG_COLLISION);
+    MapCollNum = 0;
+    MapCollData = HuMemAllocTag(count * sizeof(CollisionGrid), TAG_COLLISION);
+    MapCollMax = count;
+    MapCollFreeList = HuMemAllocTag(count * sizeof(s16), TAG_COLLISION);
     for (i = 0; i < count; i++) {
-        D_800B19E8_main[i] = i + 1;
+        MapCollFreeList[i] = i + 1;
     }
-    D_800B19E4_main = 0;
+    MapCollFreeIdx = 0;
 }
 
 s32 MapCollSquareCheck(s16 index) {
-    return D_800D1104_main[index].width == D_800D1104_main[index].depth;
+    return MapCollData[index].width == MapCollData[index].depth;
 }
 
 s16 MapCollCreate(s16 model) {
@@ -81,14 +81,14 @@ s16 MapCollCreate(s16 model) {
         f32 f;
     } bits;
 
-    if (D_800B19E2_main == D_800B19E0_main) {
+    if (MapCollNum == MapCollMax) {
         return -1;
     }
-    index = D_800B19E4_main;
-    D_800B19E4_main = D_800B19E8_main[index];
+    index = MapCollFreeIdx;
+    MapCollFreeIdx = MapCollFreeList[index];
     data = Hu3DData[model].hmf->unk38;
     size = READ32(&data[4]) - 0x10;
-    grid = &D_800D1104_main[index];
+    grid = &MapCollData[index];
     grid->width = READ16(&data[8]);
     grid->depth = READ16(&data[10]);
     bits.i = READ32(&data[0x10]);
@@ -117,7 +117,7 @@ s16 MapCollCreate(s16 model) {
         *faces++ = READ16(data);
         data += 2;
     }
-    D_800B19E2_main++;
+    MapCollNum++;
     return index;
 }
 
@@ -214,8 +214,8 @@ void Hu3DModelMtxGet(HmfModel *model, HuMtx4F mtx) {
     HmfSkeletonNode *node;
     HuMtx4F temp;
 
-    D_800C9940_main = model->attr;
-    guMtxL2F(mtx, &D_800D10F4_main->mtxs[D_800D418E_main].lookAtMtx);
+    Hu3DCurAttr = model->attr;
+    guMtxL2F(mtx, &Hu3DCurCamera->mtxs[Hu3DCamMtxNo].lookAtMtx);
     if (model->pos.x != 0.0f || model->pos.y != 0.0f || model->pos.z != 0.0f) {
         mtxTransCat(mtx, model->pos.x, model->pos.y, model->pos.z);
     }
@@ -263,13 +263,13 @@ void MapCullRect(CollisionRect *rect, HmfModel *model) {
     gridIndex = model->unk10;
     Hu3DModelMtxGet(model, mtx);
     guMtxIdentF(ident);
-    x = (D_800D1104_main[gridIndex].width * D_800D1104_main[gridIndex].cellWidth / 2.0f + rect->x + model->pos.x -
-         2.0f * sindf(rect->angle) * D_800D1104_main[gridIndex].cellWidth) /
-        D_800D1104_main[gridIndex].cellWidth;
+    x = (MapCollData[gridIndex].width * MapCollData[gridIndex].cellWidth / 2.0f + rect->x + model->pos.x -
+         2.0f * sindf(rect->angle) * MapCollData[gridIndex].cellWidth) /
+        MapCollData[gridIndex].cellWidth;
     x = abs(x);
-    z = (D_800D1104_main[gridIndex].depth * D_800D1104_main[gridIndex].cellDepth / 2.0f + rect->z + model->pos.z -
-         2.0f * cosdf(rect->angle) * D_800D1104_main[gridIndex].cellDepth) /
-        D_800D1104_main[gridIndex].cellDepth;
+    z = (MapCollData[gridIndex].depth * MapCollData[gridIndex].cellDepth / 2.0f + rect->z + model->pos.z -
+         2.0f * cosdf(rect->angle) * MapCollData[gridIndex].cellDepth) /
+        MapCollData[gridIndex].cellDepth;
     z = abs(z);
     minX = x - extent->x;
     maxX = x + extent->x + 1;
@@ -281,24 +281,24 @@ void MapCullRect(CollisionRect *rect, HmfModel *model) {
     if (minZ < 0) {
         minZ = 0;
     }
-    if (maxX > D_800D1104_main[gridIndex].width) {
-        maxX = D_800D1104_main[gridIndex].width;
+    if (maxX > MapCollData[gridIndex].width) {
+        maxX = MapCollData[gridIndex].width;
     }
-    if (maxZ > D_800D1104_main[gridIndex].depth) {
-        maxZ = D_800D1104_main[gridIndex].depth;
+    if (maxZ > MapCollData[gridIndex].depth) {
+        maxZ = MapCollData[gridIndex].depth;
     }
     for (z = minZ; z < maxZ; z++) {
         for (x = minX; x < maxX; x++) {
-            cell = z * D_800D1104_main[gridIndex].width + x;
-            object = D_800D1104_main[gridIndex].unk_14[cell];
+            cell = z * MapCollData[gridIndex].width + x;
+            object = MapCollData[gridIndex].unk_14[cell];
             if (object != -1) {
                 Hu3DDrawEntryAdd(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
             }
-            object = D_800D1104_main[gridIndex].unk_18[cell];
+            object = MapCollData[gridIndex].unk_18[cell];
             if (object != -1) {
                 Hu3DDrawEntryAdd(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
             }
-            object = D_800D1104_main[gridIndex].unk_1C[cell];
+            object = MapCollData[gridIndex].unk_1C[cell];
             if (object != -1) {
                 Hu3DDrawEntryAdd(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
             }
@@ -332,16 +332,16 @@ void MapCullFan(CollisionFan *fan, HmfModel *model) {
     Hu3DModelMtxGet(model, mtx);
     guMtxIdentF(ident);
     /* Dead stores (only the sindf/cosdf calls survive), but they are needed for matching codegen. */
-    x0 = D_800D1104_main[gridIndex].width * D_800D1104_main[gridIndex].cellWidth / 2.0f + fan->x +
+    x0 = MapCollData[gridIndex].width * MapCollData[gridIndex].cellWidth / 2.0f + fan->x +
          sindf(fan->angle) * shape->offset;
-    z0 = D_800D1104_main[gridIndex].depth * D_800D1104_main[gridIndex].cellDepth / 2.0f + fan->z +
+    z0 = MapCollData[gridIndex].depth * MapCollData[gridIndex].cellDepth / 2.0f + fan->z +
          cosdf(fan->angle) * shape->offset;
     tri[0].y = tri[1].y = tri[2].y = 0;
-    value = D_800D1104_main[gridIndex].width * D_800D1104_main[gridIndex].cellWidth / 2.0f + fan->x +
+    value = MapCollData[gridIndex].width * MapCollData[gridIndex].cellWidth / 2.0f + fan->x +
             sindf(fan->angle) * shape->offset;
     CLAMP_S16(value);
     tri[0].x = value;
-    value = D_800D1104_main[gridIndex].depth * D_800D1104_main[gridIndex].cellDepth / 2.0f + fan->z +
+    value = MapCollData[gridIndex].depth * MapCollData[gridIndex].cellDepth / 2.0f + fan->z +
             cosdf(fan->angle) * shape->offset;
     CLAMP_S16(value);
     tri[0].z = value;
@@ -357,14 +357,14 @@ void MapCullFan(CollisionFan *fan, HmfModel *model) {
     value = tri[0].z - cosdf(fan->angle - shape->spread / 2.0f) * shape->length;
     CLAMP_S16(value);
     tri[2].z = value;
-    for (z = 0; z < D_800D1104_main[gridIndex].depth; z++) {
-        z0 = z * D_800D1104_main[gridIndex].cellDepth + model->pos.z;
-        z1 = z0 + D_800D1104_main[gridIndex].cellDepth;
-        for (x = 0; x < D_800D1104_main[gridIndex].width; x++) {
-            cell = z * D_800D1104_main[gridIndex].width + x;
-            x0 = x * D_800D1104_main[gridIndex].cellWidth + model->pos.x;
-            x1 = x0 + D_800D1104_main[gridIndex].cellWidth;
-            object = D_800D1104_main[gridIndex].unk_14[cell];
+    for (z = 0; z < MapCollData[gridIndex].depth; z++) {
+        z0 = z * MapCollData[gridIndex].cellDepth + model->pos.z;
+        z1 = z0 + MapCollData[gridIndex].cellDepth;
+        for (x = 0; x < MapCollData[gridIndex].width; x++) {
+            cell = z * MapCollData[gridIndex].width + x;
+            x0 = x * MapCollData[gridIndex].cellWidth + model->pos.x;
+            x1 = x0 + MapCollData[gridIndex].cellWidth;
+            object = MapCollData[gridIndex].unk_14[cell];
             if (object != -1) {
                 if (MapIflnnerTriangle(x0, z0, tri) == TRUE) {
                     Hu3DDrawEntryAdd(model->hmf, object, &MTXBuf[MTXBufNum], ident);
@@ -376,7 +376,7 @@ void MapCullFan(CollisionFan *fan, HmfModel *model) {
                     Hu3DDrawEntryAdd(model->hmf, object, &MTXBuf[MTXBufNum], ident);
                 }
             }
-            object = D_800D1104_main[gridIndex].unk_18[cell];
+            object = MapCollData[gridIndex].unk_18[cell];
             if (object != -1) {
                 if (MapIflnnerTriangle(x0, z0, tri) == TRUE) {
                     Hu3DDrawEntryAdd(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
@@ -388,7 +388,7 @@ void MapCullFan(CollisionFan *fan, HmfModel *model) {
                     Hu3DDrawEntryAdd(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
                 }
             }
-            object = D_800D1104_main[gridIndex].unk_1C[cell];
+            object = MapCollData[gridIndex].unk_1C[cell];
             if (object != -1) {
                 if (MapIflnnerTriangle(x0, z0, tri) == TRUE) {
                     Hu3DDrawEntryAdd(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
@@ -459,39 +459,39 @@ void MapCullCircle(CollisionCircle *circle, HmfModel *model) {
     gridIndex = model->unk10;
     Hu3DModelMtxGet(model, mtx);
     guMtxIdentF(ident);
-    minX = (circle->x - *radius + D_800D1104_main[gridIndex].width * D_800D1104_main[gridIndex].cellWidth / 2.0f) / D_800D1104_main[gridIndex].cellWidth;
-    maxX = (circle->x + *radius + D_800D1104_main[gridIndex].width * D_800D1104_main[gridIndex].cellWidth / 2.0f) / D_800D1104_main[gridIndex].cellWidth;
-    minZ = (circle->z - *radius + D_800D1104_main[gridIndex].depth * D_800D1104_main[gridIndex].cellDepth / 2.0f) / D_800D1104_main[gridIndex].cellDepth;
-    maxZ = (circle->z + *radius + D_800D1104_main[gridIndex].depth * D_800D1104_main[gridIndex].cellDepth / 2.0f) / D_800D1104_main[gridIndex].cellDepth;
+    minX = (circle->x - *radius + MapCollData[gridIndex].width * MapCollData[gridIndex].cellWidth / 2.0f) / MapCollData[gridIndex].cellWidth;
+    maxX = (circle->x + *radius + MapCollData[gridIndex].width * MapCollData[gridIndex].cellWidth / 2.0f) / MapCollData[gridIndex].cellWidth;
+    minZ = (circle->z - *radius + MapCollData[gridIndex].depth * MapCollData[gridIndex].cellDepth / 2.0f) / MapCollData[gridIndex].cellDepth;
+    maxZ = (circle->z + *radius + MapCollData[gridIndex].depth * MapCollData[gridIndex].cellDepth / 2.0f) / MapCollData[gridIndex].cellDepth;
     if (minX < 0) {
         minX = 0;
     }
     if (minZ < 0) {
         minZ = 0;
     }
-    if (D_800D1104_main[gridIndex].width < maxX) {
-        maxX = D_800D1104_main[gridIndex].width;
+    if (MapCollData[gridIndex].width < maxX) {
+        maxX = MapCollData[gridIndex].width;
     }
-    if (D_800D1104_main[gridIndex].depth < maxZ) {
-        maxZ = D_800D1104_main[gridIndex].depth;
+    if (MapCollData[gridIndex].depth < maxZ) {
+        maxZ = MapCollData[gridIndex].depth;
     }
     for (z = minZ; z < maxZ; z++) {
-        dz = (z * D_800D1104_main[gridIndex].cellDepth + model->pos.z + D_800D1104_main[gridIndex].cellDepth / 2.0f) -
-             (D_800D1104_main[gridIndex].depth * D_800D1104_main[gridIndex].cellDepth / 2.0f + circle->z);
+        dz = (z * MapCollData[gridIndex].cellDepth + model->pos.z + MapCollData[gridIndex].cellDepth / 2.0f) -
+             (MapCollData[gridIndex].depth * MapCollData[gridIndex].cellDepth / 2.0f + circle->z);
         for (x = minX; x < maxX; x++) {
-            dx = (x * D_800D1104_main[gridIndex].cellWidth + model->pos.x + D_800D1104_main[gridIndex].cellWidth / 2.0f) -
-                 (D_800D1104_main[gridIndex].width * D_800D1104_main[gridIndex].cellWidth / 2.0f + circle->x);
+            dx = (x * MapCollData[gridIndex].cellWidth + model->pos.x + MapCollData[gridIndex].cellWidth / 2.0f) -
+                 (MapCollData[gridIndex].width * MapCollData[gridIndex].cellWidth / 2.0f + circle->x);
             if (HuSqrtf(dx * dx + dz * dz) < *radius) {
-                cell = z * D_800D1104_main[gridIndex].width + x;
-                object = D_800D1104_main[gridIndex].unk_14[cell];
+                cell = z * MapCollData[gridIndex].width + x;
+                object = MapCollData[gridIndex].unk_14[cell];
                 if (object != -1) {
                     Hu3DDrawEntryAdd(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
                 }
-                object = D_800D1104_main[gridIndex].unk_18[cell];
+                object = MapCollData[gridIndex].unk_18[cell];
                 if (object != -1) {
                     Hu3DDrawEntryAdd(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
                 }
-                object = D_800D1104_main[gridIndex].unk_1C[cell];
+                object = MapCollData[gridIndex].unk_1C[cell];
                 if (object != -1) {
                     Hu3DDrawEntryAdd(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
                 }
@@ -503,23 +503,23 @@ void MapCullCircle(CollisionCircle *circle, HmfModel *model) {
 
 void MapCollAllKill(void) {
     HuMemFreeAllWithTag(TAG_COLLISION);
-    D_800B19E0_main = 0;
-    D_800B19E2_main = 0;
+    MapCollMax = 0;
+    MapCollNum = 0;
 }
 
 void MapCollKill(s16 index) {
     CollisionGrid *grid;
 
-    if (D_800B19E2_main != 0) {
-        grid = &D_800D1104_main[index];
+    if (MapCollNum != 0) {
+        grid = &MapCollData[index];
         HuMemFree(grid->cells);
         HuMemFree(grid->unk_14);
         HuMemFree(grid->unk_18);
         HuMemFree(grid->unk_1C);
         HuMemFree(grid->faces);
-        D_800B19E2_main--;
-        D_800B19E8_main[index] = D_800B19E4_main;
-        D_800B19E4_main = index;
+        MapCollNum--;
+        MapCollFreeList[index] = MapCollFreeIdx;
+        MapCollFreeIdx = index;
     }
 }
 
@@ -544,7 +544,7 @@ void Hu3DQuadPoolCollect(s16 model, Hu3DQuadPool *pool, s32 (*callback)(s32, s16
     pool->curQuad = 0;
     pool->numQuads = 0;
     hmf = Hu3DData[model].hmf;
-    grid = &D_800D1104_main[Hu3DData[model].unk10];
+    grid = &MapCollData[Hu3DData[model].unk10];
     x = (grid->width * grid->cellWidth / 2.0f + pos->x) / grid->cellWidth;
     z = (grid->depth * grid->cellDepth / 2.0f + pos->z) / grid->cellDepth;
     minX = x - 1;

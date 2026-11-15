@@ -45,7 +45,7 @@ extern f32 D_800EB770_minigame;
 extern f32 D_800EB778_minigame;
 extern s16 D_800EBE10_minigame[];
 extern s32 D_800A178C_main[][6];
-extern u8 D_800D2008_main;
+extern u8 Hu3DBufNo;
 extern s16 D_800EBE18_minigame[];
 extern u8 D_800EBE20_minigame[];
 extern s8 D_800EC1BA_minigame[];
@@ -261,7 +261,7 @@ void func_800E1594_minigame(omObjData *arg0, s32 arg1, s32 arg2, s32 arg3) {
     func_800E1BA8_minigame_ObjData *temp_v0 = arg0->data;
 
     temp_v0->unk53[2] = SprModelRead(arg1, arg2, arg3);
-    arg0->model[0] = D_800CBB60_main[(u8)temp_v0->unk53[2]].modelId;
+    arg0->model[0] = Hu3DSprModelData[(u8)temp_v0->unk53[2]].modelId;
     Hu3DModelObjAttrSet(arg0->model[0], 0x70000000, 0x70000000);
 }
 
@@ -284,9 +284,9 @@ void func_800E1718_minigame(omObjData *arg0, u8 arg1, s32 arg2, s32 arg3, s32 ar
     func_800E1BA8_minigame_ObjData *data = arg0->data;
     u16 sprite = SprModelRead(arg2, arg3, arg4);
 
-    arg0->model[arg1] = D_800CBB60_main[(u8)sprite].modelId;
+    arg0->model[arg1] = Hu3DSprModelData[(u8)sprite].modelId;
     data->unk21[arg1] = sprite;
-    Hu3DModelObjAttrSet(D_800CBB60_main[(u8)sprite].modelId, 0x70000000, 0x70000000);
+    Hu3DModelObjAttrSet(Hu3DSprModelData[(u8)sprite].modelId, 0x70000000, 0x70000000);
     Hu3DSprModelAttrSet((u8)sprite, 4, 4);
 }
 
@@ -831,9 +831,9 @@ void func_800E317C_minigame(omObjData *arg0, f32 x, f32 z) {
         data->unk4C = 0.6f;
     }
     func_800E5690_minigame(arg0, 6);
-    if (abs(D_800CBB6E_main[data->unk57]) >= 9 || abs(D_800D20A1_main[data->unk57]) >= 9) {
-        stickX = D_800CBB6E_main[data->unk57];
-        stickY = D_800D20A1_main[data->unk57];
+    if (abs(HuPadStkX[data->unk57]) >= 9 || abs(HuPadStkY[data->unk57]) >= 9) {
+        stickX = HuPadStkX[data->unk57];
+        stickY = HuPadStkY[data->unk57];
         if (stickX > 60) {
             stickX = 60;
         }
@@ -895,7 +895,7 @@ void func_800E3584_minigame(s16 model) {
 
     Hu3DModelVtxBufMake(model);
     hmf = Hu3DData[model].hmf;
-    for (i = 0; i < D_800D1FF0_main; i++) {
+    for (i = 0; i < Hu3DBufNum; i++) {
         bcopy(hmf->unk40, hmf->unk44[i], hmf->unk18 * sizeof(Vtx));
     }
 }
@@ -903,7 +903,7 @@ void func_800E3584_minigame(s16 model) {
 void func_800E3628_minigame(s16 model, Vec *normal) {
     HmfModel *hmfModel = &Hu3DData[model];
     HmfData *hmf = hmfModel->hmf;
-    Vtx *vtx = hmf->unk44[D_800D2008_main];
+    Vtx *vtx = hmf->unk44[Hu3DBufNo];
     Vtx *src = hmf->unk40;
     f32 dist;
     f32 x;

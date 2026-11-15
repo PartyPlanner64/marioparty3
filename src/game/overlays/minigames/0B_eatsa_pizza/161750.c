@@ -401,10 +401,10 @@ void func_8010679C_eatsa_pizza(omObjData *object) {
             }
             if (work->unk35 == 0) {
                 s32 pad = (s8)player;
-                u32 packedInput = func_800E2250_minigame(object, D_800CBB6E_main[pad], D_800D20A1_main[pad]);
+                u32 packedInput = func_800E2250_minigame(object, HuPadStkX[pad], HuPadStkY[pad]);
                 dx = packedInput >> 16;
                 dy = packedInput;
-                input = D_800D5558_main[pad];
+                input = HuPadBtnDown[pad];
                 work->unk24 = work->unk20;
                 work->unk26 = work->unk22;
             } else {
@@ -1199,7 +1199,7 @@ void func_801087DC_eatsa_pizza(omObjData *object) {
             break;
     }
 
-    if (D_800D530C_main == 1 && WipeStatGet() == 0) {
+    if (omSysExitReq == 1 && WipeStatGet() == 0) {
         D_80109350_eatsa_pizza = 6;
     }
 }

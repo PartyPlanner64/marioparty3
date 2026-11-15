@@ -60,7 +60,7 @@ static void func_800D6EE0_name_81(void) {
                 if (work->unk_0C >= 0) {
                     HuAudFXPlay(3);
                     mbCameraBtnF = 0;
-                    D_800D51F8_main = 0;
+                    duelCancelEnableF = 0;
                     timer = 30;
                 }
                 break;
@@ -144,8 +144,8 @@ static void func_800D7280_name_81(void) {
     while (run) {
         HuPrcVSleep();
 
-        stick.x = D_800CBB6E_main[work->unkE];
-        stick.z = D_800D20A1_main[work->unkE];
+        stick.x = HuPadStkX[work->unkE];
+        stick.z = HuPadStkY[work->unkE];
         stick.z = -stick.z;
         stick.y = 0.0f;
 
@@ -165,7 +165,7 @@ static void func_800D7280_name_81(void) {
             }
         }
 
-        if ((D_800C9520_main[work->unkE] & A_BUTTON) && (sel >= 0)) {
+        if ((ContBtnDown[work->unkE] & A_BUTTON) && (sel >= 0)) {
             sel = -4;
             func_800D7250_name_81(work, sel);
             run = 0;

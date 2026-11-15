@@ -181,7 +181,7 @@ void func_800EAA58_minigame(omObjData *obj) {
         sprite = Hu3DSprModelLink(D_800EBE00_minigame[2], 8);
     }
     data->sprites[2] = sprite;
-    model = D_800CBB60_main[sprite].modelId;
+    model = Hu3DSprModelData[sprite].modelId;
     obj->model[2] = model;
     Hu3DModelAttrSet(model, 4, 4);
     Hu3DSprModelTPLvlSet(sprite, 0xC0);
@@ -197,7 +197,7 @@ void func_800EAA58_minigame(omObjData *obj) {
             sprite = Hu3DSprModelLink(D_800EBE00_minigame[3], 8);
         }
         data->sprites[j] = sprite;
-        model = D_800CBB60_main[sprite].modelId;
+        model = Hu3DSprModelData[sprite].modelId;
         obj->model[j] = model;
         Hu3DModelObjAttrSet(model, 0x70000000, 0x70000000);
         Hu3DModelScaleSet(model, 2.0f, 2.0f, 2.0f);
@@ -205,7 +205,7 @@ void func_800EAA58_minigame(omObjData *obj) {
 
         sprite = Hu3DSprModelLink(D_800EBE00_minigame[3], 8);
         data->sprites[k] = sprite;
-        model = D_800CBB60_main[sprite].modelId;
+        model = Hu3DSprModelData[sprite].modelId;
         obj->model[k] = model;
         Hu3DModelObjAttrSet(model, 0x70000000, 0x70000000);
         Hu3DModelScaleSet(model, 2.0f, 2.0f, 2.0f);
@@ -368,7 +368,7 @@ void func_800EB3CC_minigame(omObjData *obj) {
                 break;
             case 2:
                 time = Hu3DData[model].motTime;
-                if (D_800CCF58_main[Hu3DData[model].motId].unk02 <= time) {
+                if (Hu3DMotion[Hu3DData[model].motId].unk02 <= time) {
                     data->unk20 = 3;
                     entry = data->unk24;
                     index = 0;

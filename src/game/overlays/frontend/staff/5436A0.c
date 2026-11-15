@@ -22,7 +22,7 @@ void func_80106E20_staff(void) {
     s16 time;
     s32 i;
 
-    D_800CD280_main = 1;
+    Hu3DScreenClearF = 1;
     func_8010609C_staff(&D_80110560_staff);
     func_8010B514_staff(0, 6);
     func_8010B514_staff(1, 12);
@@ -135,8 +135,8 @@ void func_80106E20_staff(void) {
         HuPrcVSleep();
     }
     while (TRUE) {
-        if ((D_800D5558_main[0] & 0xD000) || (D_800D5558_main[1] & 0xD000) || (D_800D5558_main[2] & 0xD000) ||
-            (D_800D5558_main[3] & 0xD000)) {
+        if ((HuPadBtnDown[0] & 0xD000) || (HuPadBtnDown[1] & 0xD000) || (HuPadBtnDown[2] & 0xD000) ||
+            (HuPadBtnDown[3] & 0xD000)) {
             break;
         }
         HuPrcVSleep();

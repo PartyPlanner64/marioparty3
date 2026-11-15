@@ -5,29 +5,29 @@
 #include "game/siman.h"
 #include "macros.h"
 
-static OSMesg D_800BCD00_main[32];
-static OSMesg D_800BCD80_main[32];
-static OSThread D_800BCE00_main;
+static OSMesg siMesgBuf[32];
+static OSMesg siReqMesgBuf[32];
+static OSThread siThread;
 static u64 sSIThreadStack[0x800 / sizeof(u64)];
-static functionListEntry *D_800BD7B0_main;
-static functionListEntry *D_800BD7B4_main;
+static functionListEntry *siRetraceClientList;
+static functionListEntry *siPreNMIClientList;
 
 void InitSI(void) {
-    D_800BD7B0_main = NULL;
-    D_800BD7B4_main = NULL;
-    osCreateMesgQueue(&D_800CE1A0_main, D_800BCD00_main, ARRAY_COUNT(D_800BCD00_main));
-    osSetEventMesg(OS_EVENT_SI, &D_800CE1A0_main, (OSMesg)32);
-    osCreateMesgQueue(&D_800D1220_main, D_800BCD80_main, ARRAY_COUNT(D_800BCD80_main));
-    osCreateThread(&D_800BCE00_main, 0x14, SIProc, NULL, &sSIThreadStack[ARRAY_COUNT(sSIThreadStack)], HOS_PRIORITY_SIMGR);
-    osStartThread(&D_800BCE00_main);
+    siRetraceClientList = NULL;
+    siPreNMIClientList = NULL;
+    osCreateMesgQueue(&siMesgQueue, siMesgBuf, ARRAY_COUNT(siMesgBuf));
+    osSetEventMesg(OS_EVENT_SI, &siMesgQueue, (OSMesg)32);
+    osCreateMesgQueue(&siReqQueue, siReqMesgBuf, ARRAY_COUNT(siReqMesgBuf));
+    osCreateThread(&siThread, 0x14, SIProc, NULL, &sSIThreadStack[ARRAY_COUNT(sSIThreadStack)], HOS_PRIORITY_SIMGR);
+    osStartThread(&siThread);
 }
 
 functionListEntry **GetSIClientListTable(functionListEntry *entry) {
     switch (entry->type) {
         case 0:
-            return &D_800BD7B0_main;
+            return &siRetraceClientList;
         case 1:
-            return &D_800BD7B4_main;
+            return &siPreNMIClientList;
         default:
             return NULL;
     }
@@ -66,7 +66,7 @@ void AddSIClient(functionListEntry *entry, s16 type, void *func) {
     entry->type = type;
 
     osCreateMesgQueue(&mq, &msgBuffer, OS_MESG_BLOCK);
-    osSendMesg(&D_800D1220_main, &msgOut, OS_MESG_BLOCK);
+    osSendMesg(&siReqQueue, &msgOut, OS_MESG_BLOCK);
     osRecvMesg(&mq, NULL, 1);
 }
 
@@ -108,7 +108,7 @@ void RemoveSIClient(void *entry) {
     msgOut.recvQueue = &mq;
 
     osCreateMesgQueue(&mq, &msgBuffer, 1);
-    osSendMesg(&D_800D1220_main, &msgOut, OS_MESG_BLOCK);
+    osSendMesg(&siReqQueue, &msgOut, OS_MESG_BLOCK);
     osRecvMesg(&mq, NULL, OS_MESG_BLOCK);
 }
 
@@ -119,10 +119,10 @@ void CallSIClient(s16 type) {
     funcList = NULL;
     switch (type) {
         case 0:
-            funcList = D_800BD7B0_main;
+            funcList = siRetraceClientList;
             break;
         case 1:
-            funcList = D_800BD7B4_main;
+            funcList = siPreNMIClientList;
             break;
     }
     if (funcList != NULL) {
@@ -139,10 +139,10 @@ void CallSIClient(s16 type) {
 void SIProc(void *arg0) {
     unkMesgWrapper msgWrapper;
 
-    AddSchedulerClient(&msgWrapper.client, &D_800D1220_main, 3);
+    AddSchedulerClient(&msgWrapper.client, &siReqQueue, 3);
 
     while (TRUE) {
-        osRecvMesg(&D_800D1220_main, (OSMesg *)&msgWrapper.unkMsg, OS_MESG_BLOCK);
+        osRecvMesg(&siReqQueue, (OSMesg *)&msgWrapper.unkMsg, OS_MESG_BLOCK);
         switch ((s32)msgWrapper.unkMsg) {
             case 1:
                 CallSIClient((s16)0);
@@ -170,7 +170,7 @@ s32 RequestSIFunction(unkMesg *siMessg, void *func, void *arg, s32 type) {
     siMessg->arg = arg;
     siMessg->recvQueue = &msgQueue;
     osCreateMesgQueue(&msgQueue, &tmpMsg, 1);
-    osSendMesg(&D_800D1220_main, siMessg, OS_MESG_BLOCK);
+    osSendMesg(&siReqQueue, siMessg, OS_MESG_BLOCK);
     switch (type) {
         case 0:
             siMessg->ret = 0;

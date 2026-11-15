@@ -468,7 +468,7 @@ void func_80106D10_cosmic_coaster(omObjData *object) {
         if (GwPlayer[car->player[i]].stat & 1) {
             func_801083D0_cosmic_coaster(object, i, &stickX);
         } else {
-            stickX = D_800CBB6E_main[pad];
+            stickX = HuPadStkX[pad];
         }
         if (MgFlowStatGet() != MG_STATE_PLAY) {
             stickX = 0;

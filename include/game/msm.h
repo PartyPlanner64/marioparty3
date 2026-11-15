@@ -20,7 +20,7 @@ typedef struct {
 } SePlayParam; // size: 0x2C
 
 #ifndef NO_EXTERN_VARIABLES
-extern u8 D_800CB8AC_main;
+extern u8 msmMonoF;
 #endif
 
 s32 msmSysLoadFx(void);

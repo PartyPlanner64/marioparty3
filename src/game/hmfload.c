@@ -34,21 +34,21 @@ typedef union {
 u8 D_800A0540_main = 0;
 u8 D_800A0541_main = 0;
 u8 D_800A0542_main = 0;
-s16 D_800A0544_main = 0;
+s16 sceneLoadF = 0;
 
-static u8 *D_800B19B0_main;
-static u8 *D_800B19B4_main;
-static u8 *D_800B19B8_main;
-static u8 *D_800B19BC_main;
-static u8 *D_800B19C0_main;
-static u8 *D_800B19C4_main;
-static u8 *D_800B19C8_main;
-static u8 *D_800B19CC_main;
-static u8 *D_800B19D0_main;
-extern u8 D_800CB8B0_main;
-extern u8 D_800CCF85_main;
-extern s16 D_800CDD6A_main;
-extern s16 D_800D5204_main;
+static u8 *ModeTop;
+static u8 *VertexTop;
+static u8 *FaceTop;
+static u8 *ObjectTop;
+static u8 *MaterialTop;
+static u8 *ColorTop;
+static u8 *AttributeTop;
+static u8 *MotionTop;
+static u8 *StringTable;
+extern u8 Hu3DObjExtF;
+extern u8 Hu3DLoadFlags;
+extern s16 Hu3DModelTag;
+extern s16 Hu3DModelDataTag;
 
 s16 SkeletonLoad(HmfData *, void *);
 void VertexLoad(HmfData *);
@@ -90,14 +90,14 @@ void LoadHMF(HmfData *hmf, void *fileData, s32 flags) {
     hmf->unk34 = file + 0xC;
     hmf->unk30 = hmf->unk2C + (hmf->unk2C[5] << 0x10) + (hmf->unk2C[6] << 8) + hmf->unk2C[7] + 8;
 
-    D_800B19B4_main = HmfChunkSearch(0x56545831, hmf->unk34, hmf->unk30);
-    D_800B19B8_main = HmfChunkSearch(0x46414331, hmf->unk34, hmf->unk30);
-    D_800B19BC_main = HmfChunkSearch(0x4F424A31, hmf->unk34, hmf->unk30);
-    D_800B19C0_main = HmfChunkSearch(0x4D415431, hmf->unk34, hmf->unk30);
-    D_800B19C4_main = HmfChunkSearch(0x434F4C31, hmf->unk34, hmf->unk30);
-    D_800B19C8_main = HmfChunkSearch(0x41545231, hmf->unk34, hmf->unk30);
-    D_800B19CC_main = HmfChunkSearch(0x4D544E31, hmf->unk34, hmf->unk30);
-    D_800B19D0_main = HmfChunkSearch(0x53545247, hmf->unk34, hmf->unk30);
+    VertexTop = HmfChunkSearch(0x56545831, hmf->unk34, hmf->unk30);
+    FaceTop = HmfChunkSearch(0x46414331, hmf->unk34, hmf->unk30);
+    ObjectTop = HmfChunkSearch(0x4F424A31, hmf->unk34, hmf->unk30);
+    MaterialTop = HmfChunkSearch(0x4D415431, hmf->unk34, hmf->unk30);
+    ColorTop = HmfChunkSearch(0x434F4C31, hmf->unk34, hmf->unk30);
+    AttributeTop = HmfChunkSearch(0x41545231, hmf->unk34, hmf->unk30);
+    MotionTop = HmfChunkSearch(0x4D544E31, hmf->unk34, hmf->unk30);
+    StringTable = HmfChunkSearch(0x53545247, hmf->unk34, hmf->unk30);
     hmf->unk38 = HmfChunkSearch(0x4D415031, hmf->unk34, hmf->unk30);
 
     hmf->unk16 = 0;
@@ -115,24 +115,24 @@ void LoadHMF(HmfData *hmf, void *fileData, s32 flags) {
     hmf->unkCC = NULL;
     hmf->unkD0 = NULL;
 
-    D_800B19B0_main = HmfChunkSearch(0x4D4F4445, hmf->unk34, hmf->unk30);
+    ModeTop = HmfChunkSearch(0x4D4F4445, hmf->unk34, hmf->unk30);
     SceneLoad(hmf);
-    if (D_800B19B4_main != NULL) {
+    if (VertexTop != NULL) {
         VertexLoad(hmf);
     }
-    if (D_800B19C0_main != NULL) {
+    if (MaterialTop != NULL) {
         MaterialLoad(hmf);
     }
-    D_800CCF85_main = flags;
+    Hu3DLoadFlags = flags;
     Hu3DTexLoad(hmf);
-    if (D_800B19C8_main != NULL) {
+    if (AttributeTop != NULL) {
         AttributeLoad(hmf);
     }
     hmf->unk90 = NULL;
     hmf->unk8C = NULL;
     hmf->unk98 = NULL;
 
-    record = D_800B19BC_main + 8;
+    record = ObjectTop + 8;
     recordCount = record[0];
     recordCount = (recordCount << 8) + record[1];
     hmf->unk64 = 0;
@@ -177,16 +177,16 @@ void LoadHMF(HmfData *hmf, void *fileData, s32 flags) {
     }
 
     if (motionCount != 0) {
-        hmf->unk80 = HuMemAllocTag(recordCount * sizeof(HmfMotionNode), D_800CDD6A_main);
+        hmf->unk80 = HuMemAllocTag(recordCount * sizeof(HmfMotionNode), Hu3DModelTag);
     }
 
     if (flags & 0x200000) {
         if (mapCount != 0) {
-            hmf->unkC4 = HuMemAllocTag(mapCount * sizeof(HmfMapData), D_800CDD6A_main);
+            hmf->unkC4 = HuMemAllocTag(mapCount * sizeof(HmfMapData), Hu3DModelTag);
             hmf->unk26 = mapCount;
         }
         if (extraCount != 0) {
-            hmf->unkBC = HuMemAllocTag(sizeof(HmfData_UnkBC), D_800CDD6A_main);
+            hmf->unkBC = HuMemAllocTag(sizeof(HmfData_UnkBC), Hu3DModelTag);
         } else {
             hmf->unkBC = NULL;
         }
@@ -197,13 +197,13 @@ void LoadHMF(HmfData *hmf, void *fileData, s32 flags) {
 
     if (unk3BCount != 0) {
         hmf->unk20 = unk3BCount;
-        hmf->unkC0 = HuMemAllocTag((unk3BCount * 8) - unk3BCount, D_800CDD6A_main);
+        hmf->unkC0 = HuMemAllocTag((unk3BCount * 8) - unk3BCount, Hu3DModelTag);
     } else {
         hmf->unkC0 = NULL;
         hmf->unk20 = 0;
     }
 
-    hmf->unk60 = HuMemAllocTag(modelCount * sizeof(HmfModelData_Unk64_Unk60_Struct), D_800CDD6A_main);
+    hmf->unk60 = HuMemAllocTag(modelCount * sizeof(HmfModelData_Unk64_Unk60_Struct), Hu3DModelTag);
     record = recordStart;
     hmf->unk1C = 0;
     i = 0;
@@ -239,7 +239,7 @@ void LoadHMF(HmfData *hmf, void *fileData, s32 flags) {
                 }
                 attrMask = hmf->unk60[objectIndex].unk50 & 0x10000;
                 hmf->unk60[objectIndex].unk24 = 0;
-                if (((D_800CB8B0_main != 0) & (recordSize >= 0x3A)) && recordStart[0x35] != 0 && recordStart[0x36] == 0) {
+                if (((Hu3DObjExtF != 0) & (recordSize >= 0x3A)) && recordStart[0x35] != 0 && recordStart[0x36] == 0) {
                     if (recordSize == 0x3E) {
                         hmf->unk60[objectIndex].unk50 = (recordStart[0x37] << 0x18) | (recordStart[0x39] << 8) | recordStart[0x3A] | attrMask;
                     } else {
@@ -334,7 +334,7 @@ s16 SkeletonLoad(HmfData *hmf, void *arg1) {
 
     count = data[0xA];
     hmf->unk64 = count;
-    hmf->unk68 = HuMemAllocTag(count * sizeof(HmfSkeletonNode), D_800CDD6A_main);
+    hmf->unk68 = HuMemAllocTag(count * sizeof(HmfSkeletonNode), Hu3DModelTag);
     data += 0xB;
     for (i = 0; i < count; i++) {
         entry = &hmf->unk68[i];
@@ -410,7 +410,7 @@ s16 HmfRecordCount(void *arg0, s16 arg1) {
     s32 mapCount;
     s32 id;
 
-    base = D_800B19BC_main;
+    base = ObjectTop;
     recordCount = (base[8] << 8) + base[9];
     data = base + 0xC;
     i = 0;
@@ -462,16 +462,16 @@ void VertexLoad(HmfData *hmf) {
     s32 value;
     s16 i;
 
-    data = D_800B19B4_main;
+    data = VertexTop;
     count = (data[8] << 8) + data[9];
     hmf->unk14 = count;
     count2 = count;
     if (count2 != 0) {
         coordBytes = count2 << 1;
         coordBytes += count2;
-        hmf->unk50 = HuMemAllocTag(coordBytes * 2, D_800D5204_main);
+        hmf->unk50 = HuMemAllocTag(coordBytes * 2, Hu3DModelDataTag);
         coords = hmf->unk50[0];
-        hmf->unk54 = HuMemAllocTag(coordBytes, D_800D5204_main);
+        hmf->unk54 = HuMemAllocTag(coordBytes, Hu3DModelDataTag);
         normals = hmf->unk54[0];
         value = data[0xC] << 0x18;
         value += data[0xD] << 0x10;
@@ -503,24 +503,24 @@ s16 MaterialLoad(HmfData *hmf) {
     s16 count;
     s16 i;
 
-    count = (D_800B19C0_main[8] << 8) + D_800B19C0_main[9];
+    count = (MaterialTop[8] << 8) + MaterialTop[9];
     if (count == 0) {
-        D_800B19C0_main = 0;
+        MaterialTop = 0;
         return 0;
     }
     hmf->unk1E = count;
-    hmf->unk88 = HuMemAllocTag(count * sizeof(HmfMaterialData), D_800CDD6A_main);
-    records = D_800B19C0_main + 0xA;
+    hmf->unk88 = HuMemAllocTag(count * sizeof(HmfMaterialData), Hu3DModelTag);
+    records = MaterialTop + 0xA;
     for (i = 0; i < count; ++i) {
         entry = &hmf->unk88[i];
         entry->unk00 = i;
         entry->unk09 = 0;
-        src = D_800B19C4_main + (((records[0] << 8) + records[1]) * 4 + 0xA);
+        src = ColorTop + (((records[0] << 8) + records[1]) * 4 + 0xA);
         entry->unk01 = ((f32)src[0] > 255.0f) ? 255 : (u32)(f32)src[0];
         entry->unk02 = ((f32)src[1] > 255.0f) ? 255 : (u32)(f32)src[1];
         entry->unk03 = ((f32)src[2] > 255.0f) ? 255 : (u32)(f32)src[2];
         entry->unk04 = src[3];
-        src = D_800B19C4_main + (((records[2] << 8) + records[3]) * 4 + 0xA);
+        src = ColorTop + (((records[2] << 8) + records[3]) * 4 + 0xA);
         entry->unk05 = ((f32)src[0] > 255.0f) ? 255 : (u32)(f32)src[0];
         entry->unk06 = ((f32)src[1] > 255.0f) ? 255 : (u32)(f32)src[1];
         entry->unk07 = ((f32)src[2] > 255.0f) ? 255 : (u32)(f32)src[2];
@@ -545,10 +545,10 @@ s16 AttributeLoad(HmfData *hmf) {
     s16 i;
     s8 type;
 
-    count = (D_800B19C8_main[8] << 8) + D_800B19C8_main[9];
-    hmf->unk84 = HuMemAllocTag(count * sizeof(HmfData_Unk84_Entry), D_800CDD6A_main);
+    count = (AttributeTop[8] << 8) + AttributeTop[9];
+    hmf->unk84 = HuMemAllocTag(count * sizeof(HmfData_Unk84_Entry), Hu3DModelTag);
     temp = HuMemAlloc(count * sizeof(s16));
-    data = D_800B19C8_main + 0xA;
+    data = AttributeTop + 0xA;
     hmf->unk12 = count;
     for (i = 0; i < count; i++) {
         s8 fill;
@@ -556,7 +556,7 @@ s16 AttributeLoad(HmfData *hmf) {
         entry = &hmf->unk84[i];
         type = data[2];
         entry->unk0[0] = type;
-        colorData = D_800B19C4_main + (((data[3] << 8) + data[4]) * 4 + 0xA);
+        colorData = ColorTop + (((data[3] << 8) + data[4]) * 4 + 0xA);
         if (type == 0x2B) {
             entry->unk5[0] = colorData[0];
             entry->unk5[1] = colorData[1];
@@ -617,7 +617,7 @@ s16 MotionNodeLoad(HmfData *hmf, u16 motionIndex, void *arg2) {
     entry = &hmf->unk80[motionIndex];
     entry->unk00 = count2 = (data[0] << 8) + data[1];
     count = count2;
-    entry->unk50 = HuMemAllocTag(count2 * sizeof(s16), D_800CDD6A_main);
+    entry->unk50 = HuMemAllocTag(count2 * sizeof(s16), Hu3DModelTag);
     data += 2;
     for (i = 0; i < count; i++) {
         entry->unk50[i] = HmfRecordCount(hmf, (data[0] << 8) + data[1]);
@@ -746,9 +746,9 @@ void FaceLoad(HmfData *hmf, s16 objectIndex, s16 linkIndex, s16 faceCount) {
         return;
     }
 
-    hmf->unk60[objectIndex].unk54 = HuMemAllocTag(faceCount * sizeof(HmfModelData_Unk64_Unk60_Unk54_Struct), D_800D5204_main);
+    hmf->unk60[objectIndex].unk54 = HuMemAllocTag(faceCount * sizeof(HmfModelData_Unk64_Unk60_Unk54_Struct), Hu3DModelDataTag);
     faces = hmf->unk60[objectIndex].unk54;
-    record = D_800B19B8_main + 0x10;
+    record = FaceTop + 0x10;
     for (i = 0; i < linkIndex; i++) {
         if (record[0] == 0x16) {
             next = record + 0x2A;
@@ -890,7 +890,7 @@ void FaceLoadSub(HmfModelData_Unk64_Unk60_Unk54_Struct *arg0, u8 *arg1, HmfData 
     coords2 = (u16 *)arg2->unk50[arg0->unk04[1]];
     coords3 = (u16 *)arg2->unk50[arg0->unk04[2]];
     FaceNormalCalc(arg0->unk01, coords1, coords2, coords3);
-    if (D_800B19C0_main != NULL) {
+    if (MaterialTop != NULL) {
         *arg3 |= arg2->unk88[arg0->unk30].unk09;
         if (count == 2) {
             arg0->unk32 = -1;
@@ -949,7 +949,7 @@ s16 GetString(HmfData *hmf, void *arg1, s16 index) {
     s16 j;
     s16 len;
 
-    data = D_800B19D0_main;
+    data = StringTable;
     sum = data[8];
     sum = (sum << 8) + data[9];
     if (sum == 0) {
@@ -1036,7 +1036,7 @@ s32 ObjectLoad(HmfData *hmf) {
         return 0;
     }
 
-    hmf->unkB4 = HuMemAllocTag(dispCount * sizeof(HmfDispData), D_800CDD6A_main);
+    hmf->unkB4 = HuMemAllocTag(dispCount * sizeof(HmfDispData), Hu3DModelTag);
     hmf->unk22 = dispCount;
     data = hmf->unk34;
     dispIndex = 0;
@@ -1055,12 +1055,12 @@ s32 ObjectLoad(HmfData *hmf) {
             count = vtxCount;
             entry->unk1C = count;
             size = vtxCount * 2;
-            indices = HuMemAllocTag(size, D_800CDD6A_main);
+            indices = HuMemAllocTag(size, Hu3DModelTag);
             entry->unk28 = indices;
             size += vtxCount;
-            coords = HuMemAllocTag(size * 2, D_800CDD6A_main);
+            coords = HuMemAllocTag(size * 2, Hu3DModelTag);
             entry->unk2C = coords;
-            colors = HuMemAllocTag(size, D_800CDD6A_main);
+            colors = HuMemAllocTag(size, Hu3DModelTag);
             entry->unk30 = colors;
             entry->unk20 = (data[0xD] << 8) + data[0xE];
             scale.word = (data[0xF] << 0x18) + (data[0x10] << 0x10) + (data[0x11] << 8) + data[0x12];
@@ -1129,7 +1129,7 @@ s32 MotionNameLoad(HmfData *hmf) {
         hmf->unkB8 = NULL;
         return 0;
     }
-    hmf->unkB8 = HuMemAllocTag(mtnCount * sizeof(HmfMtnData), D_800CDD6A_main);
+    hmf->unkB8 = HuMemAllocTag(mtnCount * sizeof(HmfMtnData), Hu3DModelTag);
     hmf->unk24 = mtnCount;
     data = hmf->unk34;
     mtnCount = 0;
@@ -1150,7 +1150,7 @@ s32 MotionNameLoad(HmfData *hmf) {
                 cnt = (cur[2] << 8) + cur[3];
                 count2 = cnt;
                 entry->unk02 = count2;
-                entry->unk04 = HuMemAllocTag(cnt * 2, D_800CDD6A_main);
+                entry->unk04 = HuMemAllocTag(cnt * 2, Hu3DModelTag);
                 cur += 4;
                 for (k = 0; k < count2; k++) {
                     id = GetString(hmf, buf, (cur[0] << 8) + cur[1]);
@@ -1256,18 +1256,18 @@ void SceneLoad(HmfData *hmf) {
     u8 *data;
     s32 value;
 
-    data = D_800B19B0_main;
+    data = ModeTop;
     value = data[0xC];
     value <<= 0x18;
     value += data[0xD] << 0x10;
     value += data[0xE] << 8;
     value += data[0xF];
     if (value & 2) {
-        D_800A0544_main = 1;
+        sceneLoadF = 1;
     } else {
-        D_800A0544_main = 0;
+        sceneLoadF = 0;
     }
-    if (D_800B19B0_main[0x1C] == 0x45) {
+    if (ModeTop[0x1C] == 0x45) {
         hmf->unkD4 = mtxRotCat;
         hmf->unkD8 = func_80088910_main;
     } else {
@@ -1286,7 +1286,7 @@ void LightLoad(HmfData *hmf, u8 *data, s32 index) {
     s32 value;
 
     entry = &((u8 *)hmf->unkC0)[index * 7];
-    colors = &D_800B19C4_main[((data[0] << 8) + data[1]) * 4 + 0xA];
+    colors = &ColorTop[((data[0] << 8) + data[1]) * 4 + 0xA];
     entry[0] = colors[0];
     entry[1] = colors[1];
     entry[2] = colors[2];

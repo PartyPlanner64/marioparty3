@@ -14,9 +14,9 @@ typedef struct UnkC5770Rect {
     /* 0x06 */ s16 h;
 } UnkC5770Rect; // sizeof 0x8
 
-extern u32 D_800D2094_main;
-extern UnkData_CD0A0 D_800CC4A0_main;
-extern s8 D_800CC3E0_main[];
+extern u32 scRetraceCnt;
+extern UnkData_CD0A0 mbMgHis;
+extern s8 mbMgHisIdx[];
 u8 D_80100E50_name_81[] = { 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 0 };
 u8 D_80100E5C_name_81[] = { 49, 50, 51, 53, 55, 56, 57, 0 };
 u8 D_80100E64_name_81[] = {
@@ -95,9 +95,9 @@ void func_800E0D64_name_81(s32 arg0);
 void func_800E0E70_name_81(s32 arg0, s32 coins, s32 arg2, s32 arg3);
 
 void func_800DD9A0_name_81(void) {
-    if (D_800D2094_main >= (D_80100F38_name_81 + 4)) {
+    if (scRetraceCnt >= (D_80100F38_name_81 + 4)) {
         HuAudFXPlay(0x104);
-        D_80100F38_name_81 = D_800D2094_main;
+        D_80100F38_name_81 = scRetraceCnt;
     }
 }
 
@@ -239,9 +239,9 @@ void func_800DD9EC_name_81(omObjData *arg0) {
             if (arg0->work[3] != 0) {
                 arg0->work[3]--;
             } else {
-                D_800CC4A0_main.recentMinigames[D_80102BAD_name_81][D_800CC3E0_main[D_80102BAD_name_81]] = D_80102BA8_name_81[arg0->work[2]];
-                D_800CC3E0_main[D_80102BAD_name_81]++;
-                D_800CC3E0_main[D_80102BAD_name_81] = D_800CC3E0_main[D_80102BAD_name_81] % D_80100E88_name_81[D_80102BAD_name_81 + D_80102BAE_name_81];
+                mbMgHis.recentMinigames[D_80102BAD_name_81][mbMgHisIdx[D_80102BAD_name_81]] = D_80102BA8_name_81[arg0->work[2]];
+                mbMgHisIdx[D_80102BAD_name_81]++;
+                mbMgHisIdx[D_80102BAD_name_81] = mbMgHisIdx[D_80102BAD_name_81] % D_80100E88_name_81[D_80102BAD_name_81 + D_80102BAE_name_81];
                 GWMgNoSet(D_80102BA8_name_81[arg0->work[2]]);
                 if (GwSystem.current_board_index != 6 || D_80102BAD_name_81 == 1) {
                     func_800E3868_name_81();
@@ -368,7 +368,7 @@ void func_800DE4D0_name_81(omObjData *arg0) {
             if (D_80100F3C_name_81 == 0) {
                 if (func_800F37B8_name_81(GwSystem.current_player_index) != 0) {
                     D_80100F3C_name_81 = 1;
-                } else if (D_800C9520_main[GwPlayer[GwSystem.current_player_index].pad] & A_BUTTON) {
+                } else if (ContBtnDown[GwPlayer[GwSystem.current_player_index].pad] & A_BUTTON) {
                     D_80100F3C_name_81 = 1;
                 }
                 break;
@@ -451,9 +451,9 @@ void func_800DE4D0_name_81(omObjData *arg0) {
             if (arg0->work[3] != 0) {
                 arg0->work[3]--;
             } else {
-                D_800CC4A0_main.recentMinigames[D_80102BAD_name_81][D_800CC3E0_main[D_80102BAD_name_81]] = D_80102BA8_name_81[arg0->work[2]];
-                D_800CC3E0_main[D_80102BAD_name_81]++;
-                D_800CC3E0_main[D_80102BAD_name_81] = D_800CC3E0_main[D_80102BAD_name_81] % D_80100E88_name_81[D_80102BAD_name_81 + D_80102BAE_name_81];
+                mbMgHis.recentMinigames[D_80102BAD_name_81][mbMgHisIdx[D_80102BAD_name_81]] = D_80102BA8_name_81[arg0->work[2]];
+                mbMgHisIdx[D_80102BAD_name_81]++;
+                mbMgHisIdx[D_80102BAD_name_81] = mbMgHisIdx[D_80102BAD_name_81] % D_80100E88_name_81[D_80102BAD_name_81 + D_80102BAE_name_81];
                 GWMgNoSet(D_80102BA8_name_81[arg0->work[2]]);
                 if (GwSystem.current_board_index != 6 || D_80102BAD_name_81 == 1) {
                     func_800E1854_name_81(D_80100F40_name_81);
@@ -481,9 +481,9 @@ void func_800DF154_name_81(void) {
 
     for (category = 0; category <= 0; category++) {
         for (minigameCategoryIndex = 0; minigameCategoryIndex < PREV_MINIGAME_LIST_LENGTH; minigameCategoryIndex++) {
-            D_800CC4A0_main.recentMinigames[category][minigameCategoryIndex] = -1;
+            mbMgHis.recentMinigames[category][minigameCategoryIndex] = -1;
         }
-        D_800CC3E0_main[category] = 0;
+        mbMgHisIdx[category] = 0;
     }
 }
 
@@ -627,7 +627,7 @@ void func_800DF594_name_81(s32 arg0) {
 
             if (type != 1) {
                 for (k = 0; k < D_80100E88_name_81[type + listOffset]; k++) {
-                    if (D_80102BA8_name_81[i] == D_800CC4A0_main.recentMinigames[type][k]) {
+                    if (D_80102BA8_name_81[i] == mbMgHis.recentMinigames[type][k]) {
                         break;
                     }
                 }
@@ -774,7 +774,7 @@ void func_800DFBF4_name_81(void) {
 
             if (arg0 != 1) {
                 for (k = 0; k < D_80100E88_name_81[arg0 + listOffset]; k++) {
-                    if (D_80102BA8_name_81[i] == D_800CC4A0_main.recentMinigames[arg0][k]) {
+                    if (D_80102BA8_name_81[i] == mbMgHis.recentMinigames[arg0][k]) {
                         break;
                     }
                 }
@@ -1004,7 +1004,7 @@ void func_800E03F0_name_81(void) {
 
                     if (i != MBD_MAX_PLAYERS) {
                         for (i = 0; i < MBD_MAX_PLAYERS; i++) {
-                            if ((D_800D5558_main[GwPlayer[i].pad] & A_BUTTON) && !(GwPlayer[i].stat & PLAYER_IS_CPU)) {
+                            if ((HuPadBtnDown[GwPlayer[i].pad] & A_BUTTON) && !(GwPlayer[i].stat & PLAYER_IS_CPU)) {
                                 break;
                             }
                         }

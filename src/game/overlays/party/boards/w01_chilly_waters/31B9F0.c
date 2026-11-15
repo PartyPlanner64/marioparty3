@@ -2189,7 +2189,7 @@ void MB1Ev_StarMapView(void) {
     s32 mesNum;
     GW_SYSTEM* system = &GwSystem;
 
-    D_800A12D4_main = 0;
+    mbTurnUnkF = 0;
     guide = MBGuideCreate(0, 0);
     HuAudSeqPlay(0x12);
     MBGuideFaceCreate(guide->obj, 2, 0xF, D_8011D2D0_ChillyWaters[0]);
@@ -2261,7 +2261,7 @@ void MB1Ev_StarMapView(void) {
     HuPrcSleep(30);
     WipeCreateOut(2, 0x10);
     HuPrcSleep(0x11);
-    D_800A12D4_main = 1;
+    mbTurnUnkF = 1;
     func_80100130_shared_board();
     AuraKill(D_8011FABC_ChillyWaters->omObj1->model[0]);
     MBModelKill(D_8011FABC_ChillyWaters);
@@ -2367,11 +2367,11 @@ void MB1Ev_StarGet(void) {
 
     if (D_8011D308_ChillyWaters != 0) {
         HuPrcSleep(0x10);
-        msmMusPause(D_800CDBC8_main);
+        msmMusPause(HuAudMusNo);
         HuAudSubSeqPlayMute(0x6F);
         HuAudSubSeqVolFadeIn(0);
         HuPrcSleep(0x6E);
-        msmMusResume(D_800CDBC8_main, 0);
+        msmMusResume(HuAudMusNo, 0);
         HuAudSeqVolFadeIn(0xF);
     } else {
         HuPrcSleep(60);
@@ -2422,13 +2422,13 @@ void MB1_BranchHelpStart(void) {
     mb1_BranchMapOverheadHelp = func_800E210C_shared_board(0xB, 0xCA, 1);
     HuPrcSleep(3);
     mbCameraBtnF = 1;
-    D_800D51F8_main = 1;
+    duelCancelEnableF = 1;
 }
 
 // teardown arrows
 void MB1_BranchHelpEnd(void) {
     mbCameraBtnF = 0;
-    D_800D51F8_main = 0;
+    duelCancelEnableF = 0;
     MBHelpWinKill(mb1_BranchStickHelp);
     MBHelpWinKill(mb1_BranchBtnHelp);
     MBHelpWinKill(mb1_BranchItemHelp);
@@ -2784,7 +2784,7 @@ void MB1_ObjectSetup(void) {
 // entrypoint 2
 void MB1_Create(void) {
     HuAudSeqPlay(0x18);
-    D_800CE198_main = 0x18;
+    mbBoardMusId = 0x18;
     func_800F8D6C_shared_board(0x18);
     Hu3DCamInit(2);
     MB1_ObjectSetup();
@@ -3716,12 +3716,12 @@ void MB1Ev_StarMasu(void) {
         }
         if (GwPlayer[system->current_player_index].star >= STARS_MAX) {
             MBDlgWinExec(0x16, 0x4804);
-            if (D_800A12D0_main != 0) {
-                msmMusFadeOut(D_800C9930_main, 0x3C);
-                msmMusPlayDefault(D_800CE198_main);
+            if (mbStarMusF != 0) {
+                msmMusFadeOut(mbSubMusNo, 0x3C);
+                msmMusPlayDefault(mbBoardMusId);
                 HuAudSeqVolFadeOut(0);
                 HuAudSeqVolFadeIn(0x5A);
-                D_800C9930_main = -1;
+                mbSubMusNo = -1;
             }
             func_800DB884_shared_board(system->current_player_index);
             temp_s0 = HuPrcCurrentGet();
@@ -3739,11 +3739,11 @@ void MB1Ev_StarMasu(void) {
                 MBCoinTakeCreate(system->current_player_index, -0x14);
                 HuPrcSleep(30);
                 MBDlgWinExec(0x16, 0x4802);
-                if (D_800A12D0_main != 0) {
+                if (mbStarMusF != 0) {
                     HuAudSeqStop();
-                    msmMusFadeOut(D_800C9930_main, 0x3C);
+                    msmMusFadeOut(mbSubMusNo, 0x3C);
                     ret = -1;
-                    D_800C9930_main = -1;
+                    mbSubMusNo = -1;
                 } else {
                     HuAudSeqFadeOut(0x5A);
                 }
@@ -3753,12 +3753,12 @@ void MB1Ev_StarMasu(void) {
                 func_800FF7F0_shared_board(2);
                 break;
             case 1:
-                if (D_800A12D0_main != 0) {
-                    msmMusFadeOut(D_800C9930_main, 0x3C);
-                    msmMusPlayDefault(D_800CE198_main);
+                if (mbStarMusF != 0) {
+                    msmMusFadeOut(mbSubMusNo, 0x3C);
+                    msmMusPlayDefault(mbBoardMusId);
                     HuAudSeqVolFadeOut(0);
                     HuAudSeqVolFadeIn(0x5A);
-                    D_800C9930_main = -1;
+                    mbSubMusNo = -1;
                 }
                 MBDlgWinExec(0x16, 0x4803);
                 func_800DB884_shared_board(system->current_player_index);
@@ -3772,12 +3772,12 @@ void MB1Ev_StarMasu(void) {
             }
         } else {
             MBDlgWinExec(0x16, 0x4801);
-            if (D_800A12D0_main != 0) {
-                msmMusFadeOut(D_800C9930_main, 0x3C);
-                msmMusPlayDefault(D_800CE198_main);
+            if (mbStarMusF != 0) {
+                msmMusFadeOut(mbSubMusNo, 0x3C);
+                msmMusPlayDefault(mbBoardMusId);
                 HuAudSeqVolFadeOut(0);
                 HuAudSeqVolFadeIn(0x5A);
-                D_800C9930_main = -1;
+                mbSubMusNo = -1;
             }
             func_800DB884_shared_board(system->current_player_index);
             temp_s0 = HuPrcCurrentGet();
@@ -3988,7 +3988,7 @@ void MB1Ev_BankMasu(void) {
     MBMotionSet(bank, -1, 4);
     Hu3DMotionSpeedSet(bank->omObj1->model[0], 1.2f);
     Hu3DMotionTimeSet(bank->omObj1->model[0],
-                        (f32)D_800CCF58_main[Hu3DData[bank->omObj1->model[0]].motId].unk02);
+                        (f32)Hu3DMotion[Hu3DData[bank->omObj1->model[0]].motId].unk02);
     while (func_800D9E80_shared_board(bank) == 0) {
         HuPrcVSleep();
     }
@@ -4376,8 +4376,8 @@ itemSelect:
                     }
                     timer = 30;
 
-                    if ((*(u16 *)((u8 *)D_800C9520_main + (GwPlayer[system->current_player_index].pad << 1)) & 0x8000) == 0) {
-                        row = (s32)D_800C9520_main;
+                    if ((*(u16 *)((u8 *)ContBtnDown + (GwPlayer[system->current_player_index].pad << 1)) & 0x8000) == 0) {
+                        row = (s32)ContBtnDown;
                         while (1) {
                             if (MBPlayerComCheck(-1) != 0) {
                                 timer--;
@@ -4455,7 +4455,7 @@ itemSelect:
         case 2:
             if (camMasu == -1) {
                 MB1_MapScrollCancel();
-                D_800CB99C_main = 1;
+                winPauseF = 1;
                 omAllPause();
             } else {
                 MB1_MapScroll();
@@ -4469,7 +4469,7 @@ end:
         MBMotionSet(model, -1, 4);
         Hu3DMotionSpeedSet(model->omObj1->model[0], 1.2f);
         Hu3DMotionTimeSet(
-            model->omObj1->model[0], D_800CCF58_main[Hu3DData[model->omObj1->model[0]].motId].unk02);
+            model->omObj1->model[0], Hu3DMotion[Hu3DData[model->omObj1->model[0]].motId].unk02);
         while (func_800D9E80_shared_board(model) == 0) {
             HuPrcVSleep();
         }
@@ -4771,7 +4771,7 @@ s32 MB1Ev_TeresaSteal(s32 arg0) {
             }
             goto skip;
         } else {
-            pull = D_800C9520_main[GwPlayer[arg0].pad] & A_BUTTON;
+            pull = ContBtnDown[GwPlayer[arg0].pad] & A_BUTTON;
         }
 
         if (pull != 0) {
@@ -5144,7 +5144,7 @@ selectPlayer:
         case 5:
             if (modelIsLinked == -1) {
                 MB1_MapScrollCancel();
-                D_800CB99C_main = 1;
+                winPauseF = 1;
                 omAllPause();
             } else {
                 MB1_MapScroll();
@@ -5303,7 +5303,7 @@ menuResultTwo:
 menuResultThree:
     if (modelIsLinked == -1) {
         MB1_MapScrollCancel();
-        D_800CB99C_main = 1;
+        winPauseF = 1;
         omAllPause();
     } else {
         MB1_MapScroll();
@@ -5323,7 +5323,7 @@ finishMenu:
         MBMotionSet(model, -1, 4);
         Hu3DMotionSpeedSet(model->omObj1->model[0], 1.2f);
         Hu3DMotionTimeSet(
-            model->omObj1->model[0], D_800CCF58_main[Hu3DData[model->omObj1->model[0]].motId].unk02);
+            model->omObj1->model[0], Hu3DMotion[Hu3DData[model->omObj1->model[0]].motId].unk02);
         while (func_800D9E80_shared_board(model) == 0) {
             HuPrcVSleep();
         }
@@ -5529,9 +5529,9 @@ void MB1Ev_ItemMajinLamp(void) {
 }
 
 void MB1Ev_ItemMajinLampStar(void) {
-    D_800A12D0_main = 1;
+    mbStarMusF = 1;
     MBMasuEventCall(mb1ev_StarMasu[GwSystem.star_spawn_indices[GwSystem.current_star_spawn]], 1);
-    D_800A12D0_main = 0;
+    mbStarMusF = 0;
     if ((func_800FF834_shared_board()) >= 0) {
         HuPrcSleep(-1);
     }
@@ -5972,7 +5972,7 @@ void MB1Ev_ItemShopPhone(void) {
     default:
         proc = omAddPrcObj(func_8010A474_ChillyWaters, 0, 0, 0);
         omPrcSetStatBit(proc, OM_STAT_NOALLPAUSE); MB1_MapScrollCancel();
-        D_800CB99C_main = 1;
+        winPauseF = 1;
         omAllPause();
         omDelPrcObj(proc);
         func_800FC8A4_shared_board();
@@ -6084,7 +6084,7 @@ void MB1Ev_ItemKoopaPhone(void) {
         proc = omAddPrcObj(func_8010A474_ChillyWaters, 0, 0, 0);
         omPrcSetStatBit(proc, OM_STAT_NOALLPAUSE);
         MB1_MapScrollCancel();
-        D_800CB99C_main = 1;
+        winPauseF = 1;
         omAllPause();
         omDelPrcObj(proc);
         func_800FC8A4_shared_board();
@@ -6168,7 +6168,7 @@ void MB1Ev_ItemStarYoke(void) {
     }
 
     HuAudFXPlay(0x127);
-    msmMusFadeOut(D_800CDBC8_main, 0xB4);
+    msmMusFadeOut(HuAudMusNo, 0xB4);
     vib = MBPlayerVibrateObjCreate(CUR_PLAYER, 3, 5);
 
     for (angle = 0xB4, i = 0; angle < 0x438; ) {
@@ -6419,7 +6419,7 @@ choiceLoop:
     default:
         HuSprDispOff(grpId, 0);
         MB1_MapScrollCancel();
-        D_800CB99C_main = 1;
+        winPauseF = 1;
         omAllPause();
         HuSprDispOn(grpId, 0);
         goto choiceLoop;
@@ -7351,7 +7351,7 @@ loop:
             break;
         default:
             MB1_MapScrollCancel();
-            D_800CB99C_main = 1;
+            winPauseF = 1;
             omAllPause();
             goto loop;
     }
@@ -8888,7 +8888,7 @@ void MB1Ev_SnowmanRoll(void) {
             D_8011FAF8_ChillyWaters[work->player] = 2;
         }
         if (HuVecDistance(&playerPos, &snowmanPos) < order * spacing + 100.0f) {
-            if ((D_800C9520_main[GwPlayer[work->player].pad] & A_BUTTON) && state != 0) {
+            if ((ContBtnDown[GwPlayer[work->player].pad] & A_BUTTON) && state != 0) {
                 if (state != 2) {
                     D_8011FAF8_ChillyWaters[work->player] = 4;
                     if (work->player == GwSystem.current_player_index) {
@@ -8899,10 +8899,10 @@ void MB1Ev_SnowmanRoll(void) {
                 }
                 state = 2;
             }
-            if ((D_800C9520_main[GwPlayer[work->player].pad] & A_BUTTON) && state == 0) {
+            if ((ContBtnDown[GwPlayer[work->player].pad] & A_BUTTON) && state == 0) {
                 state = 1;
             }
-        } else if ((D_800C9520_main[GwPlayer[work->player].pad] & A_BUTTON) && state == 0) {
+        } else if ((ContBtnDown[GwPlayer[work->player].pad] & A_BUTTON) && state == 0) {
             if (state != 2) {
                 D_8011FAF8_ChillyWaters[work->player] = 4;
                 if (work->player == GwSystem.current_player_index) {

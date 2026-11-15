@@ -779,7 +779,7 @@ StaffModelEntry *func_80109F34_staff(UnkStaff_3 *work, StaffModelEntry *entry) {
             work->unk_28[0] = link;
             work->unk_36 = entry->unk_14;
             Hu3DMotionAttrSet(link, -1, 2);
-            Hu3DMotionTimeSet(link, D_800CCF58_main[Hu3DData[link].motId].unk02 * 0.5f);
+            Hu3DMotionTimeSet(link, Hu3DMotion[Hu3DData[link].motId].unk02 * 0.5f);
             Hu3DModelScaleSet(link, entry->scale, entry->scale, entry->scale);
             Hu3DModelRotSet(model, -15.0f, 80.0f, 0.0f);
             Hu3DModelRotSet(link, -15.0f, -80.0f, 0.0f);
@@ -789,7 +789,7 @@ StaffModelEntry *func_80109F34_staff(UnkStaff_3 *work, StaffModelEntry *entry) {
             work->unk_28[0] = link;
             work->unk_36 = entry->unk_14;
             Hu3DMotionAttrSet(link, -1, 2);
-            Hu3DMotionTimeSet(link, D_800CCF58_main[Hu3DData[link].motId].unk02 * 0.5f);
+            Hu3DMotionTimeSet(link, Hu3DMotion[Hu3DData[link].motId].unk02 * 0.5f);
             Hu3DModelScaleSet(link, entry->scale, entry->scale, entry->scale);
             Hu3DModelRotSet(model, 0.0f, -30.0f, 0.0f);
             Hu3DModelRotSet(link, 0.0f, 30.0f, 0.0f);

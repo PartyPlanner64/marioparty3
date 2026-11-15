@@ -1,7 +1,7 @@
 #include "common.h"
 #include "inst.h"
 
-extern u16 D_800CC698_main;
+extern u16 mgBattleCoinPot;
 extern omObjData *D_8010DCA0_inst;
 extern s32 D_8010D5B4_inst;
 extern s32 D_8010D5B8_inst;
@@ -71,7 +71,7 @@ void func_8010B990_inst(void) {
 
     object = omAddObj(20, 5, 0, -1, NULL);
     D_8010DCA0_inst = object;
-    D_8010DCD0_inst = &D_800A6D40_main[D_8010D40B_inst];
+    D_8010DCD0_inst = &mgDataTbl[D_8010D40B_inst];
     D_8010DCC0_inst[0] = espEntry(HuSprAnimDataRead(0x170008), 0, 1);
     espAttrSet(D_8010DCC0_inst[0], 0x1000);
     espTPLvlSet(D_8010DCC0_inst[0], 255);
@@ -84,7 +84,7 @@ void func_8010B990_inst(void) {
         espAttrSet(D_8010DCC0_inst[1], 0x1000);
         espTPLvlSet(D_8010DCC0_inst[1], 255);
         espPosSet(D_8010DCC0_inst[1], 160, -78);
-        score = D_800CC698_main;
+        score = mgBattleCoinPot;
         sprite = HuSprAnimDataRead(0x1300CF);
         if (score >= 1000) {
             score = 999;
@@ -415,13 +415,13 @@ u16 func_8010C8E0_inst(s32 buttons) {
         case 7:
         case 8:
             if (!(GwPlayer[D_8010D400_inst[0]].stat & 1)) {
-                pressed = D_800D5558_main[GwPlayer[D_8010D400_inst[0]].pad] & buttons;
+                pressed = HuPadBtnDown[GwPlayer[D_8010D400_inst[0]].pad] & buttons;
             }
             break;
         case 4:
             for (i = 0; i < 2; i++) {
                 if (!(GwPlayer[D_8010D400_inst[i]].stat & 1)) {
-                    pressed = D_800D5558_main[GwPlayer[D_8010D400_inst[i]].pad] & buttons;
+                    pressed = HuPadBtnDown[GwPlayer[D_8010D400_inst[i]].pad] & buttons;
                     if (pressed != 0) {
                         break;
                     }
@@ -435,7 +435,7 @@ u16 func_8010C8E0_inst(s32 buttons) {
         default:
             for (i = 0; i < 4; i++) {
                 if (!(GwPlayer[D_8010D400_inst[i]].stat & 1)) {
-                    pressed = D_800D5558_main[GwPlayer[D_8010D400_inst[i]].pad] & buttons;
+                    pressed = HuPadBtnDown[GwPlayer[D_8010D400_inst[i]].pad] & buttons;
                     if (pressed != 0) {
                         break;
                     }

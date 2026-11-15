@@ -242,10 +242,10 @@ typedef struct {
 } RockinRacewayBssB74; // Size 0x8
 
 extern GAMEMES gMesData[];
-extern s16 D_800CDD6A_main;
-extern s16 D_800D418E_main;
-extern u8 D_800D6A90_main;
-extern u8 D_800D2008_main;
+extern s16 Hu3DModelTag;
+extern s16 Hu3DCamMtxNo;
+extern u8 omAllPauseF;
+extern u8 Hu3DBufNo;
 f32 D_80110EE0_rockin_raceway[20][3] = {
     { 704.785f, 0.0f, -699.55f },
     { 201.485f, 0.0f, -705.05f },
@@ -1024,7 +1024,7 @@ void func_80106A80_rockin_raceway(omObjData *object) {
         D_8011155C_rockin_raceway--;
         return;
     }
-    if (D_800D530C_main == 1 && WipeStatGet() == 0) {
+    if (omSysExitReq == 1 && WipeStatGet() == 0) {
         D_8011155C_rockin_raceway = 16;
         WipeCreateOut(WIPE_TYPE_NORMAL, (s16)D_8011155C_rockin_raceway);
         HuAudSeqFadeOut((s16)D_8011155C_rockin_raceway);
@@ -1302,7 +1302,7 @@ void func_8010769C_rockin_raceway(omObjData *object) {
             if (++racer->unk16 == 0) {
                 racer->unk16 = 0;
             } else {
-                D_800D5558_main[racer->unk0C] = 0;
+                HuPadBtnDown[racer->unk0C] = 0;
                 return;
             }
         } else {
@@ -1331,20 +1331,20 @@ void func_8010769C_rockin_raceway(omObjData *object) {
     }
     if (press) {
         if (racer->unk1E == 0x8000) {
-            D_800D5558_main[racer->unk0C] = 0x8000;
+            HuPadBtnDown[racer->unk0C] = 0x8000;
         } else {
-            D_800D5558_main[racer->unk0C] = 0x6000;
+            HuPadBtnDown[racer->unk0C] = 0x6000;
         }
     }
 }
 
 void func_80107958_rockin_raceway(RockinRacewayRacer *racer) {
-    if (D_800D5558_main[racer->unk0C] & racer->unk1E) {
+    if (HuPadBtnDown[racer->unk0C] & racer->unk1E) {
         racer->unk38 += D_801112E0_rockin_raceway[racer->unk1C] * 0.1f;
         if (racer->unk38 >= 1.0f) {
             racer->unk38 = 1.0f;
         }
-        if (D_800D5558_main[racer->unk0C] == 0x8000) {
+        if (HuPadBtnDown[racer->unk0C] == 0x8000) {
             racer->unk1E = 0x6000;
         } else {
             racer->unk1E = 0x8000;
@@ -1623,14 +1623,14 @@ void func_80108864_rockin_raceway(omObjData *object) {
     u16 hidden;
     s32 i;
 
-    if (omPauseChk() + D_800D6A90_main == 0 && D_80111AD8_rockin_raceway == 2) {
+    if (omPauseChk() + omAllPauseF == 0 && D_80111AD8_rockin_raceway == 2) {
         func_80108BAC_rockin_raceway();
     }
     for (i = 0, entry = D_80111B48_rockin_raceway; i < 8; i++, entry++) {
         if (entry->active == 0) {
             continue;
         }
-        if (omPauseChk() + D_800D6A90_main == 0 && D_80111AD8_rockin_raceway == 2) {
+        if (omPauseChk() + omAllPauseF == 0 && D_80111AD8_rockin_raceway == 2) {
             if (++entry->timer >= entry->duration) {
                 entry->timer = 0;
                 entry->flag ^= 1;
@@ -1780,7 +1780,7 @@ void func_80108ED4_rockin_raceway(omObjData *object) {
         if (model->attr & 4) {
             continue;
         }
-        if (D_800CCF58_main[model->motId].unk02 <= model->motTime) {
+        if (Hu3DMotion[model->motId].unk02 <= model->motTime) {
             model->attr |= 4;
             model->motTime = 0.0f;
         }
@@ -2420,7 +2420,7 @@ void func_8010AAAC_rockin_raceway(s16 track, s16 progress, u16 state) {
     }
     switch (state) {
         case 1:
-            if ((D_80111AD0_rockin_raceway & 1) && omPauseChk() + D_800D6A90_main == 0) {
+            if ((D_80111AD0_rockin_raceway & 1) && omPauseChk() + omAllPauseF == 0) {
                 HuSprAttrSet(group, 0, HUSPR_ATTR_DISPOFF);
             } else {
                 HuSprAttrReset(group, 0, HUSPR_ATTR_DISPOFF);
@@ -2579,7 +2579,7 @@ void func_8010B774_rockin_raceway(void) {
     D_80111C28_rockin_raceway = 0;
     D_80111BD8_rockin_raceway = omAddObj(31, 0, 0, -1, func_8010C0D8_rockin_raceway);
     camera = gCameraList;
-    for (i = 1; i < D_800D1FF0_main; i++) {
+    for (i = 1; i < Hu3DBufNum; i++) {
         camera->viewports[i].vp.vscale[0] = camera->viewports[0].vp.vscale[0];
         camera->viewports[i].vp.vscale[1] = camera->viewports[0].vp.vscale[1];
         camera->viewports[i].vp.vscale[2] = camera->viewports[0].vp.vscale[2];
@@ -2597,13 +2597,13 @@ void func_8010B89C_rockin_raceway(void) {
     speed = 1.0f;
     switch (D_801115F0_rockin_raceway) {
         case 1:
-            if ((u16)D_800CDA7C_main[0] & A_BUTTON) {
+            if ((u16)HuPadBtn[0] & A_BUTTON) {
                 speed = 8.0f;
             }
-            if (D_800CDA7C_main[0] & B_BUTTON) {
+            if (HuPadBtn[0] & B_BUTTON) {
                 speed = 0.5f;
             }
-            if (D_800D5558_main[0] & START_BUTTON) {
+            if (HuPadBtnDown[0] & START_BUTTON) {
                 Center.x = 0.0f;
                 Center.y = 191.2f;
                 Center.z = 0.2f;
@@ -2612,30 +2612,30 @@ void func_8010B89C_rockin_raceway(void) {
                 CRot.z = 0.0f;
                 CZoom = 1069.0f;
             } else {
-                delta.rot.x = (f32)D_800D20A1_main[0] * 0.125 * speed;
-                delta.rot.y = (f32)D_800CBB6E_main[0] * 0.125 * speed;
-                if (D_800CDA7C_main[0] & L_JPAD) {
+                delta.rot.x = (f32)HuPadStkY[0] * 0.125 * speed;
+                delta.rot.y = (f32)HuPadStkX[0] * 0.125 * speed;
+                if (HuPadBtn[0] & L_JPAD) {
                     delta.center.x = speed * 2.0;
                 }
-                if (D_800CDA7C_main[0] & R_JPAD) {
+                if (HuPadBtn[0] & R_JPAD) {
                     delta.center.x = -(speed * 2.0);
                 }
-                if (D_800CDA7C_main[0] & U_JPAD) {
+                if (HuPadBtn[0] & U_JPAD) {
                     delta.center.z = -(speed * 2.0);
                 }
-                if (D_800CDA7C_main[0] & D_JPAD) {
+                if (HuPadBtn[0] & D_JPAD) {
                     delta.center.z = speed * 2.0;
                 }
-                if (D_800CDA7C_main[0] & U_CBUTTONS) {
+                if (HuPadBtn[0] & U_CBUTTONS) {
                     delta.center.y = speed * 2.0;
                 }
-                if (D_800CDA7C_main[0] & D_CBUTTONS) {
+                if (HuPadBtn[0] & D_CBUTTONS) {
                     delta.center.y = -(speed * 2.0);
                 }
-                if (D_800CDA7C_main[0] & R_CBUTTONS) {
+                if (HuPadBtn[0] & R_CBUTTONS) {
                     delta.zoom = speed * 2.0;
                 }
-                if (D_800CDA7C_main[0] & L_CBUTTONS) {
+                if (HuPadBtn[0] & L_CBUTTONS) {
                     delta.zoom = -(speed * 2.0);
                 }
                 delta.center.x += Center.x;
@@ -2648,44 +2648,44 @@ void func_8010B89C_rockin_raceway(void) {
                 func_8010C7CC_rockin_raceway(delta.center.x, delta.center.y, delta.center.z, delta.rot.x, delta.rot.y,
                                              delta.rot.z, delta.zoom, 1);
             }
-            sprintf(D_800D5218_main, "CAMERA TEST_MODE");
-            print8(D_801115F4_rockin_raceway + 20, D_801115F8_rockin_raceway + 80, D_800D5218_main);
-            sprintf(D_800D5218_main, " CENTER X>%3.3f Y>%3.3f Z>%3.3f ", Center.x, Center.y, Center.z);
-            print8(D_801115F4_rockin_raceway + 20, D_801115F8_rockin_raceway + 88, D_800D5218_main);
-            sprintf(D_800D5218_main, " ROT    X>%3.3f Y>%3.3f Z>%3.3f ", CRot.x, CRot.y, CRot.z);
-            print8(D_801115F4_rockin_raceway + 20, D_801115F8_rockin_raceway + 96, D_800D5218_main);
-            sprintf(D_800D5218_main, " ZOOM   %3.3f ", CZoom);
-            print8(D_801115F4_rockin_raceway + 20, D_801115F8_rockin_raceway + 104, D_800D5218_main);
+            sprintf(omDBGStrBuf, "CAMERA TEST_MODE");
+            print8(D_801115F4_rockin_raceway + 20, D_801115F8_rockin_raceway + 80, omDBGStrBuf);
+            sprintf(omDBGStrBuf, " CENTER X>%3.3f Y>%3.3f Z>%3.3f ", Center.x, Center.y, Center.z);
+            print8(D_801115F4_rockin_raceway + 20, D_801115F8_rockin_raceway + 88, omDBGStrBuf);
+            sprintf(omDBGStrBuf, " ROT    X>%3.3f Y>%3.3f Z>%3.3f ", CRot.x, CRot.y, CRot.z);
+            print8(D_801115F4_rockin_raceway + 20, D_801115F8_rockin_raceway + 96, omDBGStrBuf);
+            sprintf(omDBGStrBuf, " ZOOM   %3.3f ", CZoom);
+            print8(D_801115F4_rockin_raceway + 20, D_801115F8_rockin_raceway + 104, omDBGStrBuf);
             D_800EBE24_minigame = 0;
             break;
         case 2:
-            if ((D_800CDA7C_main[0] & R_JPAD) || (D_800CDA7C_main[0] & R_CBUTTONS)) {
+            if ((HuPadBtn[0] & R_JPAD) || (HuPadBtn[0] & R_CBUTTONS)) {
                 D_801115F4_rockin_raceway++;
             }
-            if (D_800CDA7C_main[0] & (L_JPAD | L_CBUTTONS)) {
+            if (HuPadBtn[0] & (L_JPAD | L_CBUTTONS)) {
                 D_801115F4_rockin_raceway--;
             }
-            if (D_800CDA7C_main[0] & (D_JPAD | D_CBUTTONS)) {
+            if (HuPadBtn[0] & (D_JPAD | D_CBUTTONS)) {
                 D_801115F8_rockin_raceway++;
             }
-            if (D_800CDA7C_main[0] & (U_JPAD | U_CBUTTONS)) {
+            if (HuPadBtn[0] & (U_JPAD | U_CBUTTONS)) {
                 D_801115F8_rockin_raceway--;
             }
             fontcolor = 8;
-            sprintf(D_800D5218_main, "CAMERA TEST_MODE ");
-            print8(D_801115F4_rockin_raceway + 20, D_801115F8_rockin_raceway + 80, D_800D5218_main);
-            sprintf(D_800D5218_main, " CENTER X>%3.3f Y>%3.3f Z>%3.3f ", Center.x, Center.y, Center.z);
-            print8(D_801115F4_rockin_raceway + 20, D_801115F8_rockin_raceway + 88, D_800D5218_main);
-            sprintf(D_800D5218_main, " ROT    X>%3.3f Y>%3.3f Z>%3.3f ", CRot.x, CRot.y, CRot.z);
-            print8(D_801115F4_rockin_raceway + 20, D_801115F8_rockin_raceway + 96, D_800D5218_main);
-            sprintf(D_800D5218_main, " ZOOM   %3.3f ", CZoom);
-            print8(D_801115F4_rockin_raceway + 20, D_801115F8_rockin_raceway + 104, D_800D5218_main);
+            sprintf(omDBGStrBuf, "CAMERA TEST_MODE ");
+            print8(D_801115F4_rockin_raceway + 20, D_801115F8_rockin_raceway + 80, omDBGStrBuf);
+            sprintf(omDBGStrBuf, " CENTER X>%3.3f Y>%3.3f Z>%3.3f ", Center.x, Center.y, Center.z);
+            print8(D_801115F4_rockin_raceway + 20, D_801115F8_rockin_raceway + 88, omDBGStrBuf);
+            sprintf(omDBGStrBuf, " ROT    X>%3.3f Y>%3.3f Z>%3.3f ", CRot.x, CRot.y, CRot.z);
+            print8(D_801115F4_rockin_raceway + 20, D_801115F8_rockin_raceway + 96, omDBGStrBuf);
+            sprintf(omDBGStrBuf, " ZOOM   %3.3f ", CZoom);
+            print8(D_801115F4_rockin_raceway + 20, D_801115F8_rockin_raceway + 104, omDBGStrBuf);
             break;
         default:
             D_800EBE24_minigame = 1;
             break;
     }
-    if (D_800D5558_main[0] & R_TRIG) {
+    if (HuPadBtnDown[0] & R_TRIG) {
         if (D_801115F0_rockin_raceway & 1) {
             osSyncPrintf("CAMERA TEST_MODE \n");
             osSyncPrintf(" CENTER X>%3.3f Y>%3.3f Z>%3.3f \n", Center.x, Center.y, Center.z);
@@ -2872,7 +2872,7 @@ void func_8010CA1C_rockin_raceway(void) {
     D_80111C4C_rockin_raceway = HuMemAllocTag(16 * sizeof(RockinRacewayVec), TAG_OVERLAY);
     D_80111C30_rockin_raceway = omAddObj(31, 0, 0, -1, func_8010CE90_rockin_raceway);
     camera = gCameraList;
-    for (i = 1; i < D_800D1FF0_main; i++) {
+    for (i = 1; i < Hu3DBufNum; i++) {
         camera->viewports[i].vp.vscale[0] = camera->viewports[0].vp.vscale[0];
         camera->viewports[i].vp.vscale[1] = camera->viewports[0].vp.vscale[1];
         camera->viewports[i].vp.vscale[2] = camera->viewports[0].vp.vscale[2];
@@ -3049,11 +3049,11 @@ void func_8010D288_rockin_raceway(s32 camIndex, f32 *pos, f32 *screen, f32 *norm
     viewZ = viewZ * sindf(gCameraList[camIndex].fov / 2.0) / cosdf(gCameraList[camIndex].fov / 2.0);
     depth = fabsf(viewZ);
     if (depth != 0.0) {
-        x = camera->viewports[D_800D418E_main].vp.vscale[0] / 4.0 * viewX / depth / (4.0f / 3.0f);
-        y = camera->viewports[D_800D418E_main].vp.vscale[1] / 4.0 * -viewY / depth;
+        x = camera->viewports[Hu3DCamMtxNo].vp.vscale[0] / 4.0 * viewX / depth / (4.0f / 3.0f);
+        y = camera->viewports[Hu3DCamMtxNo].vp.vscale[1] / 4.0 * -viewY / depth;
         if (screen != NULL) {
-            screen[0] = (s16)(x + camera->viewports[D_800D418E_main].vp.vtrans[0] * 0.25f);
-            screen[1] = (s16)(y + camera->viewports[D_800D418E_main].vp.vtrans[1] * 0.25f);
+            screen[0] = (s16)(x + camera->viewports[Hu3DCamMtxNo].vp.vtrans[0] * 0.25f);
+            screen[1] = (s16)(y + camera->viewports[Hu3DCamMtxNo].vp.vtrans[1] * 0.25f);
             screen[2] = depth;
         }
         if (normalized != NULL) {
@@ -3577,7 +3577,7 @@ s32 func_8010EC8C_rockin_raceway(HuSprAnimData *sprite, u8 *color) {
     data->unk60->unk50 |= 0x71010000;
     gfx++;
     HuMemFree(data->unk3C);
-    data->unk3C = HuMemAllocTag(sizeof(HmfModelData_Unk64_Unk3C_Struct), D_800CDD6A_main);
+    data->unk3C = HuMemAllocTag(sizeof(HmfModelData_Unk64_Unk3C_Struct), Hu3DModelTag);
     func_8010FBAC_rockin_raceway(sprite, data, 1.0f, 0, 0);
     gSPDisplayList(header, osVirtualToPhysical(D_801116F0_rockin_raceway));
     gDPPipeSync(gfx++);
@@ -3654,7 +3654,7 @@ s32 func_8010EC8C_rockin_raceway(HuSprAnimData *sprite, u8 *color) {
     data->unk3C->unk14 = HuMemAllocTag(size, data->unk0E);
     bcopy(buffer, data->unk3C->unk14, size);
     HuMemFree(buffer);
-    for (i = 0; i < D_800D1FF0_main; i++) {
+    for (i = 0; i < Hu3DBufNum; i++) {
         gfx = (data->unk3C->unk00 + 1)[i] = HuMemAllocTag(0x100, data->unk0E);
         gDPPipeSync(gfx++);
         gSPSegment(gfx++, 2, osVirtualToPhysical(sprite->pat->data));
@@ -3665,7 +3665,7 @@ s32 func_8010EC8C_rockin_raceway(HuSprAnimData *sprite, u8 *color) {
         gDPPipeSync(gfx++);
         gSPEndDisplayList(gfx++);
     }
-    data->unk3C->unk00[0] = data->unk3C->unk00[D_800D2008_main + 1];
+    data->unk3C->unk00[0] = data->unk3C->unk00[Hu3DBufNo + 1];
     return model;
 }
 
@@ -3681,10 +3681,10 @@ s32 func_8010F874_rockin_raceway(HuSprAnimData *sprite, u16 model, u8 *color) {
     data = Hu3DData[newModel].hmf;
     data->unk60->unk50 = srcData->unk60->unk50;
     HuMemFree(data->unk3C);
-    data->unk3C = HuMemAllocTag(sizeof(HmfModelData_Unk64_Unk3C_Struct), D_800CDD6A_main);
+    data->unk3C = HuMemAllocTag(sizeof(HmfModelData_Unk64_Unk3C_Struct), Hu3DModelTag);
     data->unk3C->unk10 = srcData->unk3C->unk10;
     data->unk3C->unk14 = srcData->unk3C->unk14;
-    for (i = 0; i < D_800D1FF0_main; i++) {
+    for (i = 0; i < Hu3DBufNum; i++) {
         gfx = (data->unk3C->unk00 + 1)[i] = HuMemAllocTag(0x100, data->unk0E);
         gDPPipeSync(gfx++);
         gSPSegment(gfx++, 2, osVirtualToPhysical(sprite->pat->data));
@@ -3695,14 +3695,14 @@ s32 func_8010F874_rockin_raceway(HuSprAnimData *sprite, u16 model, u8 *color) {
         gDPPipeSync(gfx++);
         gSPEndDisplayList(gfx++);
     }
-    data->unk3C->unk00[0] = data->unk3C->unk00[D_800D2008_main + 1];
+    data->unk3C->unk00[0] = data->unk3C->unk00[Hu3DBufNo + 1];
     return newModel;
 }
 
 void func_8010FA78_rockin_raceway(u16 model, HuSprAnimData *sprite, u16 frame, u8 *color) {
     HmfModel *modelData = Hu3DData + model;
     HmfData *data = modelData->hmf;
-    Gfx *gfx = data->unk3C->unk00[D_800D2008_main + 1];
+    Gfx *gfx = data->unk3C->unk00[Hu3DBufNo + 1];
 
     data->unk3C->unk00[0] = gfx;
     gDPPipeSync(gfx);
@@ -3772,7 +3772,7 @@ s32 func_8010FBAC_rockin_raceway(HuSprAnimData *sprite, HmfData *data, f32 scale
         }
     }
     vertices = start;
-    for (i = 0; i < D_800D1FF0_main; i++) {
+    for (i = 0; i < Hu3DBufNum; i++) {
         Vtx_t *destination;
         Vtx_t *source;
         data->unk44[i] = HuMemAllocTag(vertexCount * sizeof(Vtx_t), data->unk0E);
@@ -3801,8 +3801,8 @@ s32 func_8010FFB8_rockin_raceway(HuSprAnimData *sprite, RockinRacewayQuad *quad)
     data = Hu3DData[model].hmf;
     data->unk60->unk50 |= 0x1000000;
     HuMemFree(data->unk3C);
-    data->unk3C = HuMemAllocTag(sizeof(HmfModelData_Unk64_Unk3C_Struct), D_800CDD6A_main);
-    for (i = 0; i < D_800D1FF0_main; i++) {
+    data->unk3C = HuMemAllocTag(sizeof(HmfModelData_Unk64_Unk3C_Struct), Hu3DModelTag);
+    for (i = 0; i < Hu3DBufNum; i++) {
         data->unk44[i] = HuMemAllocTag(sizeof(RockinRacewayQuad), data->unk0E);
         *(RockinRacewayQuad *)data->unk44[i] = *quad;
     }
@@ -3881,7 +3881,7 @@ s32 func_8010FFB8_rockin_raceway(HuSprAnimData *sprite, RockinRacewayQuad *quad)
     data->unk3C->unk14 = HuMemAllocTag(size, data->unk0E);
     bcopy(buffer, data->unk3C->unk14, size);
     HuMemFree(buffer);
-    for (i = 0; i < D_800D1FF0_main; i++) {
+    for (i = 0; i < Hu3DBufNum; i++) {
         gfx = (data->unk3C->unk00 + 1)[i] = HuMemAllocTag(0x200, data->unk0E);
         gDPPipeSync(gfx++);
         gSPSegment(gfx++, 2, osVirtualToPhysical(sprite->pat->data));
@@ -3892,7 +3892,7 @@ s32 func_8010FFB8_rockin_raceway(HuSprAnimData *sprite, RockinRacewayQuad *quad)
         gDPPipeSync(gfx++);
         gSPEndDisplayList(gfx++);
     }
-    data->unk3C->unk00[0] = data->unk3C->unk00[D_800D2008_main + 1];
+    data->unk3C->unk00[0] = data->unk3C->unk00[Hu3DBufNo + 1];
     return model;
 }
 

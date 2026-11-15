@@ -543,7 +543,7 @@ void func_801068AC_modesel(s32 arg0, u32 arg1) {
 
 void func_80106910_modesel(s32 arg0) {
     while (Hu3DData[D_8010FE90_modesel[arg0].unk_00].motTime !=
-           D_800CCF58_main[Hu3DData[D_8010FE90_modesel[arg0].unk_00].motId].unk02) {
+           Hu3DMotion[Hu3DData[D_8010FE90_modesel[arg0].unk_00].motId].unk02) {
         HuPrcVSleep();
     }
 }
@@ -551,7 +551,7 @@ void func_80106910_modesel(s32 arg0) {
 s32 func_801069B0_modesel(s32 arg0) {
     s16 modelId = D_8010FE90_modesel[arg0].unk_00;
 
-    return Hu3DData[modelId].motTime == D_800CCF58_main[Hu3DData[modelId].motId].unk02;
+    return Hu3DData[modelId].motTime == Hu3DMotion[Hu3DData[modelId].motId].unk02;
 }
 
 void func_80106A38_modesel(s32 arg0, s32 arg1, s16 arg2) {
@@ -815,7 +815,7 @@ void func_8010788C_modesel(s32 arg0) {
 void func_801078E0_modesel(s32 arg0) {
     do {
         HuPrcVSleep();
-    } while (!(arg0 & D_800D5558_main[0]));
+    } while (!(arg0 & HuPadBtnDown[0]));
 }
 
 void func_8010791C_modesel(s32 arg0, s16 arg1) {
@@ -828,11 +828,11 @@ u16 func_80107954_modesel(s32 value) {
 
     HuPrcSleep(3);
     while (1) {
-        if (D_800D5558_main[0] & (A_BUTTON | B_BUTTON | START_BUTTON | R_TRIG)) {
+        if (HuPadBtnDown[0] & (A_BUTTON | B_BUTTON | START_BUTTON | R_TRIG)) {
             sprintf(text, "\n%d\n", value);
             break;
         }
-        if (D_800D5558_main[0] & Z_TRIG) {
+        if (HuPadBtnDown[0] & Z_TRIG) {
             camera = Hu3DData[gCameraList[0].unk4].hmf->unkBC;
             sprintf(text, "POS:%4.2f,%4.2f,%4.2f", camera->unk08, camera->unk0C, camera->unk10);
             print8(16, 180, text);
@@ -846,7 +846,7 @@ u16 func_80107954_modesel(s32 value) {
         }
         HuPrcVSleep();
     }
-    return D_800D5558_main[0];
+    return HuPadBtnDown[0];
 }
 
 void func_80107B08_modesel(void) {
@@ -918,7 +918,7 @@ void func_80107CEC_modesel(void) {
         D_80110BD8_modesel = 5;
     }
     Hu3DBGColorSet(0, 0x40, 0x40);
-    D_800CD280_main = 0;
+    Hu3DScreenClearF = 0;
     func_80109B74_modesel();
     func_8010E7B4_modesel();
     func_8010AF90_modesel();
@@ -1083,7 +1083,7 @@ void func_80107CEC_modesel(void) {
     }
     func_801067C0_modesel(10, 0x14, 8, 8, 2);
     result = func_8010BA70_modesel();
-    D_800CD280_main = 1;
+    Hu3DScreenClearF = 1;
     if (result == 16) {
         WipeColorSet(0xFF, 0xFF, 0xFF);
     }
@@ -1536,8 +1536,8 @@ s32 func_80109A58_modesel(s32 arg0) {
     s32 absX;
     s32 absY;
 
-    stickX = D_800CBB6E_main[arg0];
-    stickY = D_800D20A1_main[arg0];
+    stickX = HuPadStkX[arg0];
+    stickY = HuPadStkY[arg0];
     if (D_8010F2C8_modesel != 0) {
         if ((stickX == 0) & (stickY == 0)) {
             D_8010F2C8_modesel = 0;
@@ -2251,7 +2251,7 @@ s32 func_8010BA70_modesel(void) {
     Hu3DCameraMotionOff(0);
     func_80109188_modesel(cur, 7);
     while (1) {
-        buttons = D_800D5558_main[0];
+        buttons = HuPadBtnDown[0];
         buttons |= func_80109A58_modesel(0);
         if (buttons & 0x8000) {
             result = func_8010CD00_modesel(cur, buttons);
@@ -2675,7 +2675,7 @@ s32 func_8010CC38_modesel(void) {
     func_8010601C_modesel(1, x, y);
     while (1) {
         HuPrcVSleep();
-        buttons = D_800D5558_main[0];
+        buttons = HuPadBtnDown[0];
         buttons |= func_80109A58_modesel(0);
         if (buttons & 0x8000) {
             break;
@@ -3718,14 +3718,14 @@ void func_8010ED3C_modesel(void) {
     HuWinMesPalSet(D_80110998_modesel[1][0], 4, 0, 255, 0);
     HuWinMesPalSet(D_80110998_modesel[1][0], 6, 255, 255, 128);
     while (1) {
-        if (D_800D5558_main[0] & 0x4000) {
+        if (HuPadBtnDown[0] & 0x4000) {
             break;
         }
-        if (D_800C9520_main[0] & 0x200) {
+        if (ContBtnDown[0] & 0x200) {
             func_80105FB4_modesel(4);
             func_80105F84_modesel(5);
             func_80107730_modesel(1, 0x5F01);
-        } else if (D_800D5546_main[0] & 0x100) {
+        } else if (ContBtn[0] & 0x100) {
             func_80105F84_modesel(4);
             func_80105FB4_modesel(5);
             func_80107730_modesel(1, 0x5F02);

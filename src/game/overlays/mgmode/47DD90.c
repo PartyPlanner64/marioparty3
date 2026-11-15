@@ -43,7 +43,7 @@ s16 func_80116B20_mgmode(void) {
     for (i = 0; i < ARRAY_COUNT(D_8011B654_mgmode); i++) {
         D_8011B654_mgmode[i] = HuMemAllocTag(0x6000, TAG_OVERLAY);
     }
-    D_8011B660_mgmode = HuSprGet(D_800CD1DC_main[sprGrp].unk04, 0)->data->pat->data;
+    D_8011B660_mgmode = HuSprGet(esprite[sprGrp].unk04, 0)->data->pat->data;
     D_8011B652_mgmode = 0;
     espDispOff(sprGrp);
     return sprGrp;
@@ -63,7 +63,7 @@ void func_80116C18_mgmode(s16 arg0) {
     HuMemMemoryFreePerm(workBuffer);
     DataClose(imageData);
     DataClose(decodeData);
-    HuSprGet(D_800CD1DC_main[D_8011B650_mgmode].unk04, 0)->data->pat->data =
+    HuSprGet(esprite[D_8011B650_mgmode].unk04, 0)->data->pat->data =
         D_8011B654_mgmode[D_8011B652_mgmode];
     D_8011B652_mgmode++;
     if (D_8011B652_mgmode >= ARRAY_COUNT(D_8011B654_mgmode)) {
@@ -76,7 +76,7 @@ void func_80116D4C_mgmode(void) {
     s16 i;
 
     if (D_8011A3E0_mgmode != -1) {
-        HuSprGet(D_800CD1DC_main[D_8011B650_mgmode].unk04, 0)->data->pat->data =
+        HuSprGet(esprite[D_8011B650_mgmode].unk04, 0)->data->pat->data =
             D_8011B660_mgmode;
         espKill(D_8011B650_mgmode);
         HuSprAnimKill(D_8011A3E0_mgmode);
@@ -554,22 +554,22 @@ void func_80118D0C_mgmode(void) {
 
     y = 0.0f;
     x = y;
-    if (D_800CDA7C_main[D_8011B808_mgmode] & 0x200) {
+    if (HuPadBtn[D_8011B808_mgmode] & 0x200) {
         x = -1.0f;
     }
-    if (D_800CDA7C_main[D_8011B808_mgmode] & 0x100) {
+    if (HuPadBtn[D_8011B808_mgmode] & 0x100) {
         x += 1.0f;
     }
-    if (D_800CDA7C_main[D_8011B808_mgmode] & 0x800) {
+    if (HuPadBtn[D_8011B808_mgmode] & 0x800) {
         y += 1.0f;
     }
-    if (D_800CDA7C_main[D_8011B808_mgmode] & 0x400) {
+    if (HuPadBtn[D_8011B808_mgmode] & 0x400) {
         y += -1.0f;
     }
     if (x == 0.0f && y == 0.0f) {
         return;
     }
     dist = HuSqrtf(x * x + y * y);
-    D_800CBB6E_main[D_8011B808_mgmode] = x / dist * 50.0f;
-    D_800D20A1_main[D_8011B808_mgmode] = y / dist * 50.0f;
+    HuPadStkX[D_8011B808_mgmode] = x / dist * 50.0f;
+    HuPadStkY[D_8011B808_mgmode] = y / dist * 50.0f;
 }

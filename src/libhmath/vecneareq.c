@@ -41,7 +41,7 @@ s32 func_80089F30_main(Vec *a, Vec *b) {
     f32 epsilon;
     f32 negEpsilon;
 
-    epsilon = D_800A12A4_main;
+    epsilon = mainUnkF32;
     negEpsilon = -epsilon;
     dx = a->x - b->x;
     if (!(negEpsilon <= dx)) {

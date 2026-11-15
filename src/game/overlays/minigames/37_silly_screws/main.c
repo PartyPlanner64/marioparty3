@@ -38,15 +38,15 @@
 // 8FB20
 
 // pad
-extern u16 D_800CDA7C_main[];
-extern u16 D_800D5558_main[];
+extern u16 HuPadBtn[];
+extern u16 HuPadBtnDown[];
 
 // printfunc
 
 // unknown
 extern s32 D_800A178C_main[][6];
-extern char D_800D5218_main[];
-extern u16 D_800D530C_main;
+extern char omDBGStrBuf[];
+extern u16 omSysExitReq;
 
 // LOCAL
 
@@ -252,7 +252,7 @@ void m255_CreateMinigame(void) {
 }
 
 void m255_CheckExitRequest(omObjData *object) {
-    if (D_800D530C_main == 1) {
+    if (omSysExitReq == 1) {
         WipeCreateOut(WIPE_TYPE_NORMAL, 20);
         object->func = m255_WaitExitWipeOut;
     }
@@ -716,26 +716,26 @@ void m255_UpdateDebugCamera(FuncContext *ctx) {
         case 1:
             if (ctx->work.s8[1] != 0) {
                 if (ctx->work.s8[1] == 1) {
-                    sprintf(D_800D5218_main, "C: TRANSLATE ADD: %d", ctx->work.s8[0]);
+                    sprintf(omDBGStrBuf, "C: TRANSLATE ADD: %d", ctx->work.s8[0]);
                 } else {
-                    sprintf(D_800D5218_main, "C: ROTATE");
+                    sprintf(omDBGStrBuf, "C: ROTATE");
                 }
-                print8(16, 56, D_800D5218_main);
-                sprintf(D_800D5218_main, "CZOOMM %.2f", CZoomM[camId]);
-                print8(16, 64, D_800D5218_main);
-                sprintf(D_800D5218_main, "CCENTER_X %.2f Y %.2f Z %.2f", CenterM[camId].x, CenterM[camId].y, CenterM[camId].z);
-                print8(16, 72, D_800D5218_main);
-                sprintf(D_800D5218_main, "CROTATE_X %.2f Y %.2f Z %.2f", CRotM[camId].x, CRotM[camId].y, CRotM[camId].z);
-                print8(16, 80, D_800D5218_main);
+                print8(16, 56, omDBGStrBuf);
+                sprintf(omDBGStrBuf, "CZOOMM %.2f", CZoomM[camId]);
+                print8(16, 64, omDBGStrBuf);
+                sprintf(omDBGStrBuf, "CCENTER_X %.2f Y %.2f Z %.2f", CenterM[camId].x, CenterM[camId].y, CenterM[camId].z);
+                print8(16, 72, omDBGStrBuf);
+                sprintf(omDBGStrBuf, "CROTATE_X %.2f Y %.2f Z %.2f", CRotM[camId].x, CRotM[camId].y, CRotM[camId].z);
+                print8(16, 80, omDBGStrBuf);
             }
-            temp_a0 = D_800CDA7C_main[0];
-            if (D_800D5558_main[0] & Z_TRIG) {
+            temp_a0 = HuPadBtn[0];
+            if (HuPadBtnDown[0] & Z_TRIG) {
                 ctx->work.s8[1]++;
             }
             if (ctx->work.s8[1] >= 3) {
                 ctx->work.s8[1] = 0;
             }
-            if (D_800D5558_main[0] & R_TRIG) {
+            if (HuPadBtnDown[0] & R_TRIG) {
                 ctx->work.s8[3]++;
             }
             if (ctx->work.s8[3] >= 2) {
@@ -1275,7 +1275,7 @@ void m255_UpdatePlayerSpeed(FuncContext *ctx) {
             if (player->state != PLAYER_STATE_ROTATE) {
                 player->state = PLAYER_STATE_ON_PLATFORM;
             }
-            if (D_800CDA7C_main[player->padId] & B_BUTTON) {
+            if (HuPadBtn[player->padId] & B_BUTTON) {
                 if (ctx->work.s8[0] == 0 && player->state != PLAYER_STATE_ROTATE) {
                     player->inputIdleTimer = 0;
                     if (player->direction == PLAYER_DIR_RIGHT) {
@@ -1307,7 +1307,7 @@ void m255_UpdatePlayerSpeed(FuncContext *ctx) {
                     absSpeed = ABS(player->speed);
                     HuAudFXVolSet(player->nutSeNo, 100 + (s32)((absSpeed / 15.0f) * 27.0f));
                 }
-            } else if (D_800CDA7C_main[player->padId] & A_BUTTON) {
+            } else if (HuPadBtn[player->padId] & A_BUTTON) {
                 if (ctx->work.s8[1] == 0 && player->state != PLAYER_STATE_ROTATE) {
                     player->inputIdleTimer = 0;
                     if (player->direction == PLAYER_DIR_LEFT) {
@@ -1340,10 +1340,10 @@ void m255_UpdatePlayerSpeed(FuncContext *ctx) {
                     HuAudFXVolSet(player->nutSeNo, 100 + (s32)((absSpeed / 15.0f) * 27.0f));
                 }
             }
-            if (!(D_800CDA7C_main[player->padId] & B_BUTTON)) {
+            if (!(HuPadBtn[player->padId] & B_BUTTON)) {
                 ctx->work.s8[0] = 0;
             }
-            if (!(D_800CDA7C_main[player->padId] & A_BUTTON)) {
+            if (!(HuPadBtn[player->padId] & A_BUTTON)) {
                 ctx->work.s8[1] = 0;
             }
             break;
@@ -1617,22 +1617,22 @@ void m255_UpdateComInput(FuncContext *ctx) {
                     temp_v1_3 = rand16() % (ctx->work.s8[3] + 1) + ctx->work.s8[4];
                     ctx->work.f32[0] = (temp_v1_3 >= 0 ? temp_v1_3 : 0) * 0.1f * 20.0f * 5.0f;
                     ctx->work.f32[0] = (rand16() & 1) ? -ctx->work.f32[0] : ctx->work.f32[0];
-                    D_800CDA7C_main[player->padId] = 0;
+                    HuPadBtn[player->padId] = 0;
                 } else if (nutModel->pos.x + temp_f6 - (nextNutPosX + ctx->work.f32[0]) < 0.0f) {
                     ctx->work.s8[0]--;
                     if (ctx->work.s8[0] < 0) {
                         ctx->work.s8[0] = rand16() % ctx->work.s8[2] + 1;
-                        D_800CDA7C_main[player->padId] = A_BUTTON;
+                        HuPadBtn[player->padId] = A_BUTTON;
                     } else {
-                        D_800CDA7C_main[player->padId] = 0;
+                        HuPadBtn[player->padId] = 0;
                     }
                 } else if (nutModel->pos.x + temp_f6 - (nextNutPosX + ctx->work.f32[0]) > 0.0f) {
                     ctx->work.s8[1]--;
                     if (ctx->work.s8[1] < 0) {
                         ctx->work.s8[1] = rand16() % ctx->work.s8[2] + 1;
-                        D_800CDA7C_main[player->padId] = B_BUTTON;
+                        HuPadBtn[player->padId] = B_BUTTON;
                     } else {
-                        D_800CDA7C_main[player->padId] = 0;
+                        HuPadBtn[player->padId] = 0;
                     }
                 }
             }

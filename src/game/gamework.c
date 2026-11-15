@@ -6,16 +6,16 @@
 #include "game/pad.h"
 #include "game/board.h"
 
-s32 D_800A12C0_main = 25; // message speed
-s32 D_800A12C4_main = 25;
+s32 GwMessSpeed = 25; // message speed
+s32 GwMessWait = 25;
 s16 D_800A12C8_main = -1;
-s32 D_800A12CC_main = 0;
-s8 D_800A12D0_main = 0;
-s32 D_800A12D4_main = 1;
+s32 mbCameraZoomInstantF = 0;
+s8 mbStarMusF = 0;
+s32 mbTurnUnkF = 1;
 s32 D_800A12D8_main = 0;
 s32 mbTurnOnF = 0;
 
-static s32 D_800B1A30_main;
+static s32 GwContErrorF;
 
 void GWInit(void) {
     GW_COMMON *gw = &GwCommon;
@@ -190,12 +190,12 @@ void GWBoardFlagClear(s32 flag) {
 
 void GWContErrorSet(void) {
     if (CheckControllerRead(0) != FALSE) {
-        D_800B1A30_main = TRUE;
+        GwContErrorF = TRUE;
         return;
     }
-    D_800B1A30_main = FALSE;
+    GwContErrorF = FALSE;
 }
 
 s32 GWContErrorGet(void) {
-    return D_800B1A30_main;
+    return GwContErrorF;
 }

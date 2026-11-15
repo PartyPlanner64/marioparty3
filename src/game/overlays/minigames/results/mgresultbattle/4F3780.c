@@ -22,7 +22,7 @@ extern s32 D_800A178C_main[][6];
 extern const s32 D_80108908_mgresultbattle[];
 extern const s8 D_801089A0_mgresultbattle[];
 extern const f32 D_80108920_mgresultbattle[][4];
-extern u16 D_800CC698_main;
+extern u16 mgBattleCoinPot;
 
 s8 D_801088D0_mgresultbattle = 0;
 s32 D_801088D4_mgresultbattle = 0;
@@ -149,7 +149,7 @@ void func_80105E0C_mgresultbattle(void) {
 }
 
 void func_80105E64_mgresultbattle(omObjData *obj) {
-    if (D_800D530C_main == 1) {
+    if (omSysExitReq == 1) {
         if (D_801088D8_mgresultbattle == 0) {
             WipeCreateOut(WIPE_TYPE_NORMAL, 20);
             D_801088D8_mgresultbattle = 1;
@@ -269,15 +269,15 @@ void func_801060A4_mgresultbattle(void) {
     total = 0;
     for (i = 0; i < 4; i++) {
         if (D_801089A0_mgresultbattle[type] == 0) {
-            GwPlayer[i].gameCoin = D_800CC698_main * D_80108920_mgresultbattle[type][GwPlayer[i].bonusCoin];
+            GwPlayer[i].gameCoin = mgBattleCoinPot * D_80108920_mgresultbattle[type][GwPlayer[i].bonusCoin];
         } else if (D_80108920_mgresultbattle[type][GwPlayer[i].bonusCoin] != 0.0f) {
-            GwPlayer[i].gameCoin = D_800CC698_main / D_80108920_mgresultbattle[type][GwPlayer[i].bonusCoin];
+            GwPlayer[i].gameCoin = mgBattleCoinPot / D_80108920_mgresultbattle[type][GwPlayer[i].bonusCoin];
         } else {
             GwPlayer[i].gameCoin = 0;
         }
         total += GwPlayer[i].gameCoin;
     }
-    D_80108F70_mgresultbattle = D_800CC698_main - total;
+    D_80108F70_mgresultbattle = mgBattleCoinPot - total;
 
     switch (type) {
         case 4:
@@ -403,11 +403,11 @@ void func_801069FC_mgresultbattle(omObjData *obj) {
         HuPrcVSleep();
     }
     while (TRUE) {
-        if (D_800CCF58_main[Hu3DData[obj->model[1]].motId].unk02 <= Hu3DData[obj->model[1]].motTime) {
+        if (Hu3DMotion[Hu3DData[obj->model[1]].motId].unk02 <= Hu3DData[obj->model[1]].motTime) {
             pressed = 0;
             for (i = 0; i < 40; i++) {
                 for (j = 0; j < 4; j++) {
-                    if (!(GwPlayer[j].stat & 1) && (D_800D5558_main[GwPlayer[j].pad] & A_BUTTON)) {
+                    if (!(GwPlayer[j].stat & 1) && (HuPadBtnDown[GwPlayer[j].pad] & A_BUTTON)) {
                         pressed = 1;
                         break;
                     }

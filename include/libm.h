@@ -3,14 +3,14 @@
 
 #include "humath.h"
 
-extern const s32 D_800A4350_main[12];
-extern const f64 D_800A4380_main[100];
-extern const f32 D_800A46A0[100];
-extern const f32 D_800A4830_main[91];
-extern const f64 D_800A49A0_main[91];
+extern const s32 __sinCosSignTbl[12];
+extern const f64 __invFactTbl[100];
+extern const f32 __invFactTblF[100];
+extern const f32 __sinTblF[91];
+extern const f64 __sinTbl[91];
 
-extern f64 D_800C94E0_main;
-extern f64 D_800C94F0_main;
-extern f32 D_800C9500_main;
+extern f64 __libmPrecision;
+extern f64 __cosSign;
+extern f32 __cosSignF;
 
 #endif

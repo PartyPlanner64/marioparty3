@@ -56,26 +56,26 @@ typedef struct {
     /* 0x04 */ AMDMABuffer *firstFree;
 } AMDMAState;
 
-static unkSchedStruct D_800A97C0_main; // scheduler client
-static u64 D_800A97D0_main[0x400];     // audio thread stack
-static OSMesgQueue *D_800AB7D0_main;   // scheduler command queue
-static AMAudioMgr D_800AB7D8_main;     // __am
-static AMDMAState D_800ABA70_main;     // dmaState
-static u32 D_800ABA78_main;            // audFrameCt
-static u32 D_800ABA7C_main;            // nextDMA
-static s32 D_800ABA80_main;            // DMA buffer length
-static s32 D_800ABA84_main;            // frames before a DMA buffer is freed
-static s32 D_800ABA88_main;            // curAcmdList
-static s32 D_800ABA8C_main;            // minFrameSize
-static s32 D_800ABA90_main;            // maxFrameSize
-static u32 D_800ABA94_main;            // frameSize
-static s32 D_800ABA98_main;
-static OSIoMesg D_800ABAA0_main[NUM_DMA_MESSAGES];
-static OSMesgQueue D_800ABDA0_main; // audDMAMessageQ
-static OSMesg D_800ABDB8_main[NUM_DMA_MESSAGES];
-static OSPiHandle *D_800ABE38_main;
-static s32 D_800ABE3C_main; // use the short frame next
-extern OSMesgQueue D_800CC3A0_main;
+static unkSchedStruct audSchedClient; // scheduler client
+static u64 audMgrStack[0x400];     // audio thread stack
+static OSMesgQueue *audTaskQueue;   // scheduler command queue
+static AMAudioMgr __am;
+static AMDMAState dmaState;
+static u32 audFrameCt;
+static u32 nextDMA;
+static s32 audDmaBufSize;            // DMA buffer length
+static s32 audDmaBufLife;            // frames before a DMA buffer is freed
+static s32 curAcmdList;
+static s32 minFrameSize;
+static s32 maxFrameSize;
+static u32 frameSize;
+static s32 audSampleMin;
+static OSIoMesg audDMAIOMesgBuf[NUM_DMA_MESSAGES];
+static OSMesgQueue audDMAMessageQ;
+static OSMesg audDMAMessageBuf[NUM_DMA_MESSAGES];
+static OSPiHandle *audPiHandle;
+static s32 audFrameAdjF; // use the short frame next
+extern OSMesgQueue scAudioTaskQueue;
 
 s32 __amHandleFrameMsg(AudioInfo *info, AudioInfo *lastInfo);
 void __amHandleDoneMsg(AudioInfo *info);
@@ -89,16 +89,16 @@ s32 amCreateAudioMgr(str800D5298 *cfg, ALHeap *heap) {
     s32 i;
 
     c.outputRate = osAiSetFrequency(cfg->unk1C);
-    D_800ABA98_main = cfg->unk48;
+    audSampleMin = cfg->unk48;
     fsize = (f32)cfg->unk40 * (f32)c.outputRate / (f32)cfg->unk44;
-    D_800ABA94_main = (s32)fsize;
-    if (D_800ABA94_main < fsize) {
-        D_800ABA94_main++;
+    frameSize = (s32)fsize;
+    if (frameSize < fsize) {
+        frameSize++;
     }
-    D_800ABA94_main = (D_800ABA94_main / EXTRA_SAMPLES + 1) * EXTRA_SAMPLES;
-    D_800ABA8C_main = D_800ABA94_main - EXTRA_SAMPLES;
-    D_800ABA90_main = D_800ABA94_main;
-    D_800ABE3C_main = 1;
+    frameSize = (frameSize / EXTRA_SAMPLES + 1) * EXTRA_SAMPLES;
+    minFrameSize = frameSize - EXTRA_SAMPLES;
+    maxFrameSize = frameSize;
+    audFrameAdjF = 1;
     if (cfg->unk2C != NULL) {
         c.fxType = AL_FX_CUSTOM;
         c.params = (s32 *)cfg->unk2C;
@@ -111,13 +111,13 @@ s32 amCreateAudioMgr(str800D5298 *cfg, ALHeap *heap) {
     c.dmaproc = __amDmaNew;
     c.heap = heap;
     c.maxFXbusses = 0;
-    n_alInit(&D_800AB7D8_main.g, &c);
+    n_alInit(&__am.g, &c);
 
-    D_800ABA88_main = 0;
-    D_800ABA7C_main = 0;
-    D_800ABA78_main = 0;
-    D_800ABA80_main = cfg->unk38;
-    D_800ABA84_main = cfg->unk3C;
+    curAcmdList = 0;
+    nextDMA = 0;
+    audFrameCt = 0;
+    audDmaBufSize = cfg->unk38;
+    audDmaBufLife = cfg->unk3C;
 
     dmaBuffs = msmMemAlloc(cfg->unk34 * sizeof(AMDMABuffer));
     if (dmaBuffs == NULL) {
@@ -128,30 +128,30 @@ s32 amCreateAudioMgr(str800D5298 *cfg, ALHeap *heap) {
     dmaBuffs[0].node.prev = NULL;
     for (i = 0; i < cfg->unk34 - 1; i++) {
         alLink(&dmaBuffs[i + 1].node, &dmaBuffs[i].node);
-        if ((dmaBuffs[i].ptr = msmMemAlloc(D_800ABA80_main)) == NULL) {
+        if ((dmaBuffs[i].ptr = msmMemAlloc(audDmaBufSize)) == NULL) {
             return 1;
         }
     }
-    if ((dmaBuffs[i].ptr = msmMemAlloc(D_800ABA80_main)) == NULL) {
+    if ((dmaBuffs[i].ptr = msmMemAlloc(audDmaBufSize)) == NULL) {
         return 1;
     }
-    D_800ABA70_main.firstUsed = NULL;
-    D_800ABA70_main.firstFree = dmaBuffs;
-    D_800ABE38_main = cfg->unk68;
+    dmaState.firstUsed = NULL;
+    dmaState.firstFree = dmaBuffs;
+    audPiHandle = cfg->unk68;
 
     for (i = 0; i < NUM_ACMD_LISTS; i++) {
-        if ((D_800AB7D8_main.ACMDList[i] = msmMemAlloc(cfg->unk30 * sizeof(Acmd))) == NULL) {
+        if ((__am.ACMDList[i] = msmMemAlloc(cfg->unk30 * sizeof(Acmd))) == NULL) {
             return 2;
         }
     }
     for (i = 0; i < NUM_OUTPUT_BUFFERS; i++) {
-        if ((D_800AB7D8_main.audioInfo[i] = msmMemAlloc(sizeof(AudioInfo))) == NULL) {
+        if ((__am.audioInfo[i] = msmMemAlloc(sizeof(AudioInfo))) == NULL) {
             return 3;
         }
-        D_800AB7D8_main.audioInfo[i]->msg.type = 0;
-        D_800AB7D8_main.audioInfo[i]->msg.info = D_800AB7D8_main.audioInfo[i];
-        D_800AB7D8_main.audioInfo[i]->data = msmMemAlloc(D_800ABA90_main * 4);
-        if (D_800AB7D8_main.audioInfo[i]->data == NULL) {
+        __am.audioInfo[i]->msg.type = 0;
+        __am.audioInfo[i]->msg.info = __am.audioInfo[i];
+        __am.audioInfo[i]->data = msmMemAlloc(maxFrameSize * 4);
+        if (__am.audioInfo[i]->data == NULL) {
             return 4;
         }
     }
@@ -159,17 +159,17 @@ s32 amCreateAudioMgr(str800D5298 *cfg, ALHeap *heap) {
 }
 
 void amStart(str800D5298 *cfg) {
-    osCreateMesgQueue(&D_800AB7D8_main.audioReplyMsgQ, D_800AB7D8_main.audioReplyMsgBuf, MAX_MESGS);
-    osCreateMesgQueue(&D_800ABDA0_main, D_800ABDB8_main, NUM_DMA_MESSAGES);
+    osCreateMesgQueue(&__am.audioReplyMsgQ, __am.audioReplyMsgBuf, MAX_MESGS);
+    osCreateMesgQueue(&audDMAMessageQ, audDMAMessageBuf, NUM_DMA_MESSAGES);
     amSchedClientSet(cfg->unk64, 0);
-    osCreateThread(&D_800AB7D8_main.thread, cfg->unk60, __amMain, NULL,
-                   D_800A97D0_main + ARRAY_COUNT(D_800A97D0_main), cfg->unk5C);
-    osStartThread(&D_800AB7D8_main.thread);
+    osCreateThread(&__am.thread, cfg->unk60, __amMain, NULL,
+                   audMgrStack + ARRAY_COUNT(audMgrStack), cfg->unk5C);
+    osStartThread(&__am.thread);
 }
 
 void amDestroyAudioMgr(str800D5298 *cfg) {
-    osDestroyThread(&D_800AB7D8_main.thread);
-    n_alClose(&D_800AB7D8_main.g);
+    osDestroyThread(&__am.thread);
+    n_alClose(&__am.g);
     amSchedClientSet(cfg->unk64, 1);
 }
 
@@ -180,12 +180,12 @@ void __amMain(void *arg) {
     AudioMsg *doneMsg;
 
     while (!done) {
-        osRecvMesg(&D_800AB7D8_main.audioFrameMsgQ, &msg, OS_MESG_BLOCK);
+        osRecvMesg(&__am.audioFrameMsgQ, &msg, OS_MESG_BLOCK);
         switch ((u32)msg) {
             case 1:
-                if (__amHandleFrameMsg(D_800AB7D8_main.audioInfo[D_800ABA78_main % NUM_OUTPUT_BUFFERS],
+                if (__amHandleFrameMsg(__am.audioInfo[audFrameCt % NUM_OUTPUT_BUFFERS],
                                        lastInfo)) {
-                    osRecvMesg(&D_800AB7D8_main.audioReplyMsgQ, (OSMesg *)&doneMsg, OS_MESG_BLOCK);
+                    osRecvMesg(&__am.audioReplyMsgQ, (OSMesg *)&doneMsg, OS_MESG_BLOCK);
                     __amHandleDoneMsg(doneMsg->info);
                     lastInfo = doneMsg->info;
                     msmMusPeriodicProc();
@@ -202,7 +202,7 @@ void __amMain(void *arg) {
                 break;
         }
     }
-    n_alClose(&D_800AB7D8_main.g);
+    n_alClose(&__am.g);
 }
 
 s32 __amHandleFrameMsg(AudioInfo *info, AudioInfo *lastInfo) {
@@ -217,20 +217,20 @@ s32 __amHandleFrameMsg(AudioInfo *info, AudioInfo *lastInfo) {
     if (lastInfo != NULL) {
         osAiSetNextBuffer(lastInfo->data, lastInfo->frameSamples << 2);
     }
-    if (D_800ABA98_main + EXTRA_SAMPLES < samplesLeft && D_800ABE3C_main) {
-        info->frameSamples = D_800ABA8C_main;
-        D_800ABE3C_main = 0;
+    if (audSampleMin + EXTRA_SAMPLES < samplesLeft && audFrameAdjF) {
+        info->frameSamples = minFrameSize;
+        audFrameAdjF = 0;
     } else {
-        info->frameSamples = D_800ABA94_main;
-        D_800ABE3C_main = 1;
+        info->frameSamples = frameSize;
+        audFrameAdjF = 1;
     }
-    cmdp = n_alAudioFrame(D_800AB7D8_main.ACMDList[D_800ABA88_main], &cmdLen, audioPtr, info->frameSamples);
+    cmdp = n_alAudioFrame(__am.ACMDList[curAcmdList], &cmdLen, audioPtr, info->frameSamples);
     if (cmdLen == 0) {
         return 0;
     }
     __amTaskSetup(&info->task, &info->msg, cmdp);
-    osSendMesg(D_800AB7D0_main, &info->task, OS_MESG_BLOCK);
-    D_800ABA88_main ^= 1;
+    osSendMesg(audTaskQueue, &info->task, OS_MESG_BLOCK);
+    curAcmdList ^= 1;
     return 1;
 }
 
@@ -247,15 +247,15 @@ s32 __amDMA(s32 addr, s32 len, void *state) {
     OSIoMesg *ioMesg;
 
     lastDmaPtr = NULL;
-    dmaPtr = D_800ABA70_main.firstUsed;
+    dmaPtr = dmaState.firstUsed;
     addrEnd = addr + len;
 
     while (dmaPtr != NULL) {
-        buffEnd = dmaPtr->startAddr + D_800ABA80_main;
+        buffEnd = dmaPtr->startAddr + audDmaBufSize;
         if (dmaPtr->startAddr > addr) {
             break;
         } else if (addrEnd <= buffEnd) {
-            dmaPtr->lastFrame = D_800ABA78_main;
+            dmaPtr->lastFrame = audFrameCt;
             foundBuffer = dmaPtr->ptr + addr - dmaPtr->startAddr;
             return osVirtualToPhysical(foundBuffer);
         }
@@ -263,24 +263,24 @@ s32 __amDMA(s32 addr, s32 len, void *state) {
         dmaPtr = (AMDMABuffer *)dmaPtr->node.next;
     }
 
-    dmaPtr = D_800ABA70_main.firstFree;
+    dmaPtr = dmaState.firstFree;
     if (dmaPtr == NULL) {
-        return osVirtualToPhysical(D_800ABA70_main.firstUsed);
+        return osVirtualToPhysical(dmaState.firstUsed);
     }
 
-    D_800ABA70_main.firstFree = (AMDMABuffer *)dmaPtr->node.next;
+    dmaState.firstFree = (AMDMABuffer *)dmaPtr->node.next;
     alUnlink(&dmaPtr->node);
 
     if (lastDmaPtr != NULL) {
         alLink(&dmaPtr->node, &lastDmaPtr->node);
-    } else if (D_800ABA70_main.firstUsed != NULL) {
-        lastDmaPtr = D_800ABA70_main.firstUsed;
-        D_800ABA70_main.firstUsed = dmaPtr;
+    } else if (dmaState.firstUsed != NULL) {
+        lastDmaPtr = dmaState.firstUsed;
+        dmaState.firstUsed = dmaPtr;
         dmaPtr->node.next = &lastDmaPtr->node;
         dmaPtr->node.prev = NULL;
         lastDmaPtr->node.prev = &dmaPtr->node;
     } else {
-        D_800ABA70_main.firstUsed = dmaPtr;
+        dmaState.firstUsed = dmaPtr;
         dmaPtr->node.next = NULL;
         dmaPtr->node.prev = NULL;
     }
@@ -289,21 +289,21 @@ s32 __amDMA(s32 addr, s32 len, void *state) {
     delta = addr & 1;
     addr -= delta;
     dmaPtr->startAddr = addr;
-    dmaPtr->lastFrame = D_800ABA78_main;
+    dmaPtr->lastFrame = audFrameCt;
 
-    ioMesg = &D_800ABAA0_main[D_800ABA7C_main++];
+    ioMesg = &audDMAIOMesgBuf[nextDMA++];
     ioMesg->hdr.pri = OS_MESG_PRI_NORMAL;
-    ioMesg->hdr.retQueue = &D_800ABDA0_main;
+    ioMesg->hdr.retQueue = &audDMAMessageQ;
     ioMesg->dramAddr = foundBuffer;
     ioMesg->devAddr = addr;
-    ioMesg->size = D_800ABA80_main;
-    osEPiStartDma(D_800ABE38_main, ioMesg, OS_READ);
+    ioMesg->size = audDmaBufSize;
+    osEPiStartDma(audPiHandle, ioMesg, OS_READ);
 
     return osVirtualToPhysical(foundBuffer) + delta;
 }
 
 ALDMAproc __amDmaNew(AMDMAState **state) {
-    *state = &D_800ABA70_main;
+    *state = &dmaState;
     return __amDMA;
 }
 
@@ -313,47 +313,47 @@ void __clearAudioDMA(void) {
     AMDMABuffer *dmaPtr;
     AMDMABuffer *nextPtr;
 
-    for (i = 0; i < D_800ABA7C_main; i++) {
-        osRecvMesg(&D_800ABDA0_main, (OSMesg *)&iomsg, OS_MESG_NOBLOCK);
+    for (i = 0; i < nextDMA; i++) {
+        osRecvMesg(&audDMAMessageQ, (OSMesg *)&iomsg, OS_MESG_NOBLOCK);
     }
 
-    dmaPtr = D_800ABA70_main.firstUsed;
+    dmaPtr = dmaState.firstUsed;
     while (dmaPtr != NULL) {
         nextPtr = (AMDMABuffer *)dmaPtr->node.next;
-        if (dmaPtr->lastFrame + D_800ABA84_main < D_800ABA78_main) {
-            if (D_800ABA70_main.firstUsed == dmaPtr) {
-                D_800ABA70_main.firstUsed = nextPtr;
+        if (dmaPtr->lastFrame + audDmaBufLife < audFrameCt) {
+            if (dmaState.firstUsed == dmaPtr) {
+                dmaState.firstUsed = nextPtr;
             }
             alUnlink(&dmaPtr->node);
-            if (D_800ABA70_main.firstFree != NULL) {
-                alLink(&dmaPtr->node, &D_800ABA70_main.firstFree->node);
+            if (dmaState.firstFree != NULL) {
+                alLink(&dmaPtr->node, &dmaState.firstFree->node);
             } else {
-                D_800ABA70_main.firstFree = dmaPtr;
+                dmaState.firstFree = dmaPtr;
                 dmaPtr->node.next = NULL;
                 dmaPtr->node.prev = NULL;
             }
         }
         dmaPtr = nextPtr;
     }
-    D_800ABA7C_main = 0;
-    D_800ABA78_main++;
+    nextDMA = 0;
+    audFrameCt++;
 }
 
 void amSchedClientSet(s32 arg0, s32 remove) {
     if (remove) {
-        RemoveSchedulerClient(&D_800A97C0_main);
+        RemoveSchedulerClient(&audSchedClient);
     } else {
-        osCreateMesgQueue(&D_800AB7D8_main.audioFrameMsgQ, D_800AB7D8_main.audioFrameMsgBuf, MAX_MESGS);
-        D_800AB7D0_main = &D_800CC3A0_main;
-        AddSchedulerClient(&D_800A97C0_main, &D_800AB7D8_main.audioFrameMsgQ, 3);
+        osCreateMesgQueue(&__am.audioFrameMsgQ, __am.audioFrameMsgBuf, MAX_MESGS);
+        audTaskQueue = &scAudioTaskQueue;
+        AddSchedulerClient(&audSchedClient, &__am.audioFrameMsgQ, 3);
     }
 }
 
 void __amTaskSetup(swapChainTaskQueue *task, AudioMsg *msg, Acmd *cmdp) {
-    task->completionQueue = &D_800AB7D8_main.audioReplyMsgQ;
+    task->completionQueue = &__am.audioReplyMsgQ;
     task->completionMsg = msg;
-    task->task.t.data_ptr = (u64 *)D_800AB7D8_main.ACMDList[D_800ABA88_main];
-    task->task.t.data_size = (cmdp - D_800AB7D8_main.ACMDList[D_800ABA88_main]) * sizeof(Acmd);
+    task->task.t.data_ptr = (u64 *)__am.ACMDList[curAcmdList];
+    task->task.t.data_size = (cmdp - __am.ACMDList[curAcmdList]) * sizeof(Acmd);
     task->task.t.type = M_AUDTASK;
     task->task.t.ucode_boot = (u64 *)rspbootTextStart;
     task->task.t.ucode_boot_size = (u32)gspF3DEX2_fifoTextStart - (u32)rspbootTextStart;

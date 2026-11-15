@@ -22,7 +22,7 @@ typedef struct {
 } ESPRITE; // Size 0x24
 
 #ifndef NO_EXTERN_VARIABLES
-extern ESPRITE *D_800CD1DC_main;
+extern ESPRITE *esprite;
 #endif
 
 s16 HuSprAnimDataRead(s32 dataNum);

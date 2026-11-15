@@ -17,7 +17,7 @@
 extern u32 _osPreNMI;
 
 u8 D_800C1560_main[0xC10]; /* unreferenced */
-u32 D_800C2170_main;
+u32 LeoBootGameParam;
 
 void __LeoBootGame2(void *entry);
 extern void __LeoBootGame3(void *entry);
@@ -71,7 +71,7 @@ void __LeoBootGame2(void *entry) {
         }
     }
 
-    *(u8 *)PHYS_TO_K1(0x10) = (D_800C2170_main & 0xFF000000) >> 24;
+    *(u8 *)PHYS_TO_K1(0x10) = (LeoBootGameParam & 0xFF000000) >> 24;
     while (!IO_READ(SP_STATUS_REG) & SP_STATUS_HALT) {
     }
     IO_WRITE(SP_STATUS_REG, SP_SET_HALT | SP_CLR_INTR);
@@ -94,7 +94,7 @@ void __LeoBootGame2(void *entry) {
     IO_WRITE(VI_INTR_REG, 0x3FF);
     IO_WRITE(VI_H_START_REG, 0);
     IO_WRITE(VI_CURRENT_REG, 0);
-    *(u8 *)PHYS_TO_K1(0x190) = D_800C2170_main & 0xFF;
+    *(u8 *)PHYS_TO_K1(0x190) = LeoBootGameParam & 0xFF;
     IO_WRITE(AI_DRAM_ADDR_REG, 0);
     IO_WRITE(AI_LEN_REG, 0);
 
@@ -104,12 +104,12 @@ void __LeoBootGame2(void *entry) {
     }
     bcopy(buf, src, 0x100);
 
-    *(u8 *)PHYS_TO_K1(0x110) = (D_800C2170_main & 0xFF00) >> 8;
+    *(u8 *)PHYS_TO_K1(0x110) = (LeoBootGameParam & 0xFF00) >> 8;
     __osSetCause(0);
     __osSetCount(0);
     __osSetCompare(0);
     IO_WRITE(SP_STATUS_REG, 0xAAAAAE);
-    *(u8 *)PHYS_TO_K1(0x90) = (D_800C2170_main & 0xFF0000) >> 16;
+    *(u8 *)PHYS_TO_K1(0x90) = (LeoBootGameParam & 0xFF0000) >> 16;
     IO_WRITE(MI_INTR_MASK_REG, 0);
     IO_WRITE(SI_STATUS_REG, 0);
     IO_WRITE(AI_STATUS_REG, 0);

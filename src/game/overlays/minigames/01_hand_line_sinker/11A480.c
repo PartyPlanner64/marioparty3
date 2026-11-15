@@ -102,7 +102,7 @@ f32 D_8010C140_hand_line_sinker BSS;
 u8 D_8010C144_hand_line_sinker[4] BSS; /* Unreferenced. */
 s16 D_8010C148_hand_line_sinker[2][6] BSS;
 omObjData *D_8010C160_hand_line_sinker[8] BSS;
-extern u8 D_800D6A90_main;
+extern u8 omAllPauseF;
 extern s32 D_800A178C_main[][6];
 
 void func_80105D28_hand_line_sinker(omObjData *);
@@ -150,7 +150,7 @@ void func_801059A0_hand_line_sinker(void) {
     HuMemMemoryFreePerm(data);
     Hu3DSprModelInit(9);
     Hu3DBGColorSet(0, 40, 120);
-    D_800CD280_main = 1;
+    Hu3DScreenClearF = 1;
     func_8010B5B0_hand_line_sinker();
     func_8010A5F0_hand_line_sinker();
     HuAudCharVoiceInit();
@@ -266,7 +266,7 @@ void func_80105EE8_hand_line_sinker(omObjData *obj) {
 }
 
 void func_80105FA4_hand_line_sinker(omObjData *obj) {
-    if (omPauseChk() + D_800D6A90_main == 0) {
+    if (omPauseChk() + omAllPauseF == 0) {
         D_8010C108_hand_line_sinker += 0.1f;
     }
     Hu3DModelObjTexScroll(obj->model[1], D_8010C108_hand_line_sinker, 0.0f, D_8010C104_hand_line_sinker[0],
@@ -416,9 +416,9 @@ void func_8010689C_hand_line_sinker(omObjData *obj) {
     if (GwPlayer[work->playerNo].stat & 1) {
         func_80107420_hand_line_sinker(obj, &stickX, &stickY, &btn);
     } else {
-        stickX = D_800CBB6E_main[pad];
-        stickY = D_800D20A1_main[pad];
-        btn = D_800D5558_main[pad];
+        stickX = HuPadStkX[pad];
+        stickY = HuPadStkY[pad];
+        btn = HuPadBtnDown[pad];
     }
     if (MgFlowStatGet() != MG_STATE_PLAY) {
         stickX = stickY = 0;
@@ -607,7 +607,7 @@ void func_8010689C_hand_line_sinker(omObjData *obj) {
             }
             break;
         case 5:
-            if (Hu3DData[obj->model[0]].motTime >= D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02) {
+            if (Hu3DData[obj->model[0]].motTime >= Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02) {
                 obj->work[0] = 0;
                 Hu3DModelAttrSet(obj->model[1], 0x4000, 0x4000);
                 Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
@@ -888,9 +888,9 @@ void func_801081D0_hand_line_sinker(omObjData *obj) {
     if (GwPlayer[work->playerNo].stat & 1) {
         func_80108880_hand_line_sinker(obj, &stickX, &stickY, &btn);
     } else {
-        stickX = D_800CBB6E_main[pad];
-        stickY = D_800D20A1_main[pad];
-        btn = D_800D5558_main[pad];
+        stickX = HuPadStkX[pad];
+        stickY = HuPadStkY[pad];
+        btn = HuPadBtnDown[pad];
     }
     if (MgFlowStatGet() != MG_STATE_PLAY) {
         stickX = stickY = 0;
@@ -1516,7 +1516,7 @@ void func_80109B9C_hand_line_sinker(omObjData *obj) {
             break;
         case 6:
             if (Hu3DData[D_8010C0FC_hand_line_sinker->model[0]].motTime >=
-                D_800CCF58_main[Hu3DData[D_8010C0FC_hand_line_sinker->model[0]].motId].unk02) {
+                Hu3DMotion[Hu3DData[D_8010C0FC_hand_line_sinker->model[0]].motId].unk02) {
                 min[1] = min[0] = 10000.0f;
                 max[1] = max[0] = -10000.0f;
                 for (i = 0; i < 3; i++) {
@@ -1639,7 +1639,7 @@ void func_8010A904_hand_line_sinker(omObjData *obj) {
         omSetTra(obj, work->parent->trans.x + work->offset.x, work->parent->trans.y + work->offset.y,
                  work->parent->trans.z + work->offset.z);
     }
-    if (D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02 <= Hu3DData[obj->model[0]].motTime) {
+    if (Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02 <= Hu3DData[obj->model[0]].motTime) {
         Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         D_8010C160_hand_line_sinker[obj->work[0]] = 0;
         omDelObj(obj);
@@ -1653,7 +1653,7 @@ void func_8010A9F8_hand_line_sinker(omObjData *obj) {
         omSetTra(obj, work->parent->trans.x + work->offset.x, work->parent->trans.y + work->offset.y,
                  work->parent->trans.z + work->offset.z);
     }
-    if (D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02 <= Hu3DData[obj->model[0]].motTime) {
+    if (Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02 <= Hu3DData[obj->model[0]].motTime) {
         Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         D_8010C160_hand_line_sinker[obj->work[0]] = 0;
         omDelObj(obj);

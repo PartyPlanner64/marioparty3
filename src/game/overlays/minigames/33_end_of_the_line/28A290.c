@@ -1168,7 +1168,7 @@ void func_8010937C_end_of_the_line(omObjData *obj) {
     if (GwPlayer[player->gwPlayerIdx].stat & 1) {
         stick = func_8010AC80_end_of_the_line(obj);
     } else {
-        stick = D_800CBB6E_main[GwPlayer[player->gwPlayerIdx].pad];
+        stick = HuPadStkX[GwPlayer[player->gwPlayerIdx].pad];
     }
     dz = cosdf(obj->rot.y) * (player->unk0C / 1.08f);
     dx = sindf(obj->rot.y) * (player->unk0C / 1.08f);

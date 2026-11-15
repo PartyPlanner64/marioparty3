@@ -8,31 +8,31 @@
 
 // string table parsing code.
 
-static u32 D_800B1A40_main;  // strings ROM pointer
-static s32 D_800B1A44_main;  // string directory count
-static u32 *D_800B1A48_main; // string directory table
-static s32 D_800B1A4C_main;  // string directory table size
+static u32 MessDataRomAddr;  // strings ROM pointer
+static s32 MessDataDirMax;  // string directory count
+static u32 *MessDataDirTbl; // string directory table
+static s32 MessDataDirTblSize;  // string directory table size
 
 void MessDataInit(u32 stringsRomPtr) {
     s32 stringDirTableSize;
     u32 *stringDirTable;
     u32 *stringsHeader;
 
-    D_800B1A40_main = stringsRomPtr;
+    MessDataRomAddr = stringsRomPtr;
     stringsHeader = HuMemMemoryAllocPerm(16);
     dmaRead(stringsRomPtr, (u8 *)stringsHeader, 16);
-    D_800B1A44_main = *stringsHeader;
+    MessDataDirMax = *stringsHeader;
     HuMemMemoryFreePerm(stringsHeader);
-    stringDirTableSize = D_800B1A44_main * 4;
-    D_800B1A4C_main = stringDirTableSize;
+    stringDirTableSize = MessDataDirMax * 4;
+    MessDataDirTblSize = stringDirTableSize;
     stringDirTable = HuMemMemoryAllocPerm(stringDirTableSize);
-    D_800B1A48_main = stringDirTable;
-    dmaRead(stringsRomPtr + 4, (u8 *)stringDirTable, D_800B1A4C_main);
+    MessDataDirTbl = stringDirTable;
+    dmaRead(stringsRomPtr + 4, (u8 *)stringDirTable, MessDataDirTblSize);
 }
 
 void MessDataSet(u32 ptr) {
-    D_800B1A40_main = ptr;
-    dmaRead(ptr + 4, (u8 *)D_800B1A48_main, D_800B1A4C_main);
+    MessDataRomAddr = ptr;
+    dmaRead(ptr + 4, (u8 *)MessDataDirTbl, MessDataDirTblSize);
 }
 
 struct str80036448 {
@@ -56,7 +56,7 @@ void MessDataDirGet(s32 arg0, struct str80036448 *arg1) {
     struct string_dir_header *dirHeader;
 
     dirHeader = HuMemMemoryAllocPerm(16);
-    temp_a0 = D_800B1A40_main + D_800B1A48_main[arg0];
+    temp_a0 = MessDataRomAddr + MessDataDirTbl[arg0];
     arg1->unk0 = temp_a0;
     dmaRead(temp_a0, (u8 *)dirHeader, 16);
     arg1->unk0 = arg1->unk0 + 8;

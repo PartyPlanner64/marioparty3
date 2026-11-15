@@ -287,7 +287,7 @@ void func_80107654_mgresultduel(omObjData *obj) {
 
     model = obj->model[1];
     time = Hu3DData[model].motTime;
-    endTime = D_800CCF58_main[Hu3DData[model].motId].unk02;
+    endTime = Hu3DMotion[Hu3DData[model].motId].unk02;
     while (endTime <= time) {
         HuPrcVSleep();
     }
@@ -309,32 +309,32 @@ void func_80107710_mgresultduel(void) {
     data = DataRead(0x210026);
     D_80108F30_mgresultduel = Hu3DSprModelCreate(data, 0x2BD, 8);
     DataClose(data);
-    Hu3DModelObjAttrSet(D_800CBB60_main[D_80108F30_mgresultduel].modelId, 0x70000000, 0x70000000);
+    Hu3DModelObjAttrSet(Hu3DSprModelData[D_80108F30_mgresultduel].modelId, 0x70000000, 0x70000000);
     for (i = 0; i < 20; i++) {
         D_80108F38_mgresultduel[i].unk00 = 0;
         D_80108F38_mgresultduel[i].unk02 = Hu3DSprModelLink(D_80108F30_mgresultduel, 8);
         D_80108F38_mgresultduel[i].unk04 = 0;
-        obj->model[i + 1] = D_800CBB60_main[D_80108F38_mgresultduel[i].unk02].modelId;
+        obj->model[i + 1] = Hu3DSprModelData[D_80108F38_mgresultduel[i].unk02].modelId;
         Hu3DModelPosSet(obj->model[i + 1], 0.0f, 400.0f, 0.0f);
         Hu3DModelCameraSet(obj->model[i + 1], 1);
         Hu3DMotionSpeedSet(obj->model[i + 1], 2.0f);
-        Hu3DModelScaleSet(D_800CBB60_main[i + 1].modelId, 1.5f, 1.5f, 1.5f);
+        Hu3DModelScaleSet(Hu3DSprModelData[i + 1].modelId, 1.5f, 1.5f, 1.5f);
     }
 
     data = DataRead(0xC);
     D_80108F32_mgresultduel = Hu3DSprModelCreate(data, 0x2BD, 8);
     DataClose(data);
-    Hu3DModelObjAttrSet(D_800CBB60_main[D_80108F32_mgresultduel].modelId, 0x70000000, 0x70000000);
-    Hu3DModelScaleSet(D_800CBB60_main[D_80108F32_mgresultduel].modelId, 1.0f, 1.0f, 1.0f);
+    Hu3DModelObjAttrSet(Hu3DSprModelData[D_80108F32_mgresultduel].modelId, 0x70000000, 0x70000000);
+    Hu3DModelScaleSet(Hu3DSprModelData[D_80108F32_mgresultduel].modelId, 1.0f, 1.0f, 1.0f);
     for (i = 0; i < 20; i++) {
         D_80109118_mgresultduel[i].unk00 = 0;
         D_80109118_mgresultduel[i].unk02 = Hu3DSprModelLink(D_80108F32_mgresultduel, 8);
         D_80109118_mgresultduel[i].unk04 = 0;
-        obj->model[i + 21] = D_800CBB60_main[D_80109118_mgresultduel[i].unk02].modelId;
+        obj->model[i + 21] = Hu3DSprModelData[D_80109118_mgresultduel[i].unk02].modelId;
         Hu3DModelPosSet(obj->model[i + 21], 0.0f, 400.0f, 0.0f);
         Hu3DModelCameraSet(obj->model[i + 21], 1);
         Hu3DMotionSpeedSet(obj->model[i + 21], 1.0f);
-        Hu3DModelScaleSet(D_800CBB60_main[i + 21].modelId, 3.0f, 3.0f, 3.0f);
+        Hu3DModelScaleSet(Hu3DSprModelData[i + 21].modelId, 3.0f, 3.0f, 3.0f);
     }
 
     obj->trans.x = 0.0f;
@@ -412,8 +412,8 @@ void func_80107CA4_mgresultduel(omObjData *obj) {
             if (D_80108E80_mgresultduel % D_80108E94_mgresultduel != 0) {
                 continue;
             }
-            entry = &D_800CBB60_main[D_80108F38_mgresultduel[i].unk02];
-            animSet = &D_800D408C_main[(u16)entry->unk_02];
+            entry = &Hu3DSprModelData[D_80108F38_mgresultduel[i].unk02];
+            animSet = &Hu3DAnimSetData[(u16)entry->unk_02];
             rot = &animSet->rot[entry->pointIdx];
             Hu3DModelAttrSet(obj->model[i + 1], HU3D_ATTR_DISPOFF, 0);
             if (D_80108E84_mgresultduel >= 20) {
@@ -544,7 +544,7 @@ void func_801084B0_mgresultduel(void) {
     Hu3DAnimBankSet(D_80109300_mgresultduel[0], 0);
     D_8010930C_mgresultduel =
         Hu3DAnimLink(Hu3DData[obj->model[1]].hmf, D_80109300_mgresultduel[0], 0, "c204n_0_DEF");
-    D_80109300_mgresultduel[0] = D_800D1714_main[D_80109300_mgresultduel[0]].animIdx;
+    D_80109300_mgresultduel[0] = Hu3DAnimData[D_80109300_mgresultduel[0]].animIdx;
 
     data = DataRead(0xA0081);
     D_80109300_mgresultduel[1] = (s16)Hu3DAnimDataCreate(data);
@@ -676,7 +676,7 @@ void func_80108D30_mgresultduel(s16 model, s16 anim, s16 animIdx) {
             Hu3DModelAnimStop(Hu3DData[model].hmf);
         } else {
             Hu3DModelAnimStart(Hu3DData[model].hmf);
-            entry = &D_800D1714_main[anim];
+            entry = &Hu3DAnimData[anim];
             entry->animIdx = animIdx;
             entry->rot = 0;
             entry->flags = 0;

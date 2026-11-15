@@ -212,10 +212,10 @@ void func_80105A74_merry_go_chomp(void) {
 }
 
 void func_80105B3C_merry_go_chomp(s32 playerIndex) {
-    D_800CDA7C_main[GwPlayer[playerIndex].pad] = 0;
-    D_800D5558_main[GwPlayer[playerIndex].pad] = 0;
-    D_800CBB6E_main[GwPlayer[playerIndex].pad] = 0;
-    D_800D20A1_main[GwPlayer[playerIndex].pad] = 0;
+    HuPadBtn[GwPlayer[playerIndex].pad] = 0;
+    HuPadBtnDown[GwPlayer[playerIndex].pad] = 0;
+    HuPadStkX[GwPlayer[playerIndex].pad] = 0;
+    HuPadStkY[GwPlayer[playerIndex].pad] = 0;
 }
 
 void func_80105BB4_merry_go_chomp(f32 x0, f32 z0, f32 x1, f32 z1) {
@@ -1042,7 +1042,7 @@ void func_80108A88_merry_go_chomp(omObjData *obj) {
                             }
                             entry->unk_0C = choices[func_80105CE4_merry_go_chomp(count)];
                         }
-                    } else if (!(D_800D5558_main[obj->work[3]] & 0x8000)) {
+                    } else if (!(HuPadBtnDown[obj->work[3]] & 0x8000)) {
                         break;
                     }
                 }
@@ -1933,7 +1933,7 @@ void func_8010BBA0_merry_go_chomp(omObjData *obj) {
 }
 
 void func_8010BBD8_merry_go_chomp(omObjData *obj) {
-    if (D_800D530C_main == 1) {
+    if (omSysExitReq == 1) {
         WipeCreateOut(0, 20);
         obj->func = func_8010BBA0_merry_go_chomp;
         HuAudSeqFadeOut(30);

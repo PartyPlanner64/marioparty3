@@ -131,8 +131,8 @@ typedef struct MarioPuzzlePartyPlayerInput {
     /* 0x42 */ u16 buttons;
 } MarioPuzzlePartyPlayerInput; // sizeof 0x44
 
-extern u8 D_800CE20A_main;
-extern u8 D_800D6A90_main;
+extern u8 storySceneNo;
+extern u8 omAllPauseF;
 
 // screen origin of each player's board
 s32 D_80110080_marios_puzzle_party[4][2] = { { 16, 224 }, { 84, 224 }, { 152, 224 }, { 220, 224 } };
@@ -353,7 +353,7 @@ void func_80105C98_marios_puzzle_party(void) {
     s32 done = FALSE;
 
     while (TRUE) {
-        if (D_800D530C_main == 1) {
+        if (omSysExitReq == 1) {
             done = TRUE;
         }
         if (done) {
@@ -396,15 +396,15 @@ u16 func_80105E88_marios_puzzle_party(s32 playerIndex) {
     u16 buttons;
 
     if (!(GwPlayer[playerIndex].stat & PLAYER_IS_CPU)) {
-        buttons = D_800CDA7C_main[GwPlayer[playerIndex].pad];
+        buttons = HuPadBtn[GwPlayer[playerIndex].pad];
         buttons &= 0xF0FF;
-        if (D_800CBB6E_main[GwPlayer[playerIndex].pad] > 30.0f) {
+        if (HuPadStkX[GwPlayer[playerIndex].pad] > 30.0f) {
             buttons |= 0x100;
         }
-        if (D_800CBB6E_main[GwPlayer[playerIndex].pad] < -30.0f) {
+        if (HuPadStkX[GwPlayer[playerIndex].pad] < -30.0f) {
             buttons |= 0x200;
         }
-        if (D_800D20A1_main[GwPlayer[playerIndex].pad] < -30.0f) {
+        if (HuPadStkY[GwPlayer[playerIndex].pad] < -30.0f) {
             buttons |= 0x400;
         }
     } else {
@@ -417,7 +417,7 @@ u16 func_80105FCC_marios_puzzle_party(s32 playerIndex, u16 bits) {
     u16 result;
 
     if (!(GwPlayer[playerIndex].stat & PLAYER_IS_CPU)) {
-        result = D_800D5558_main[GwPlayer[playerIndex].pad];
+        result = HuPadBtnDown[GwPlayer[playerIndex].pad];
         result &= bits;
     } else {
         MarioPuzzlePartyPlayerInput *input = &D_80114DE0_marios_puzzle_party[playerIndex];
@@ -438,10 +438,10 @@ void func_8010604C_marios_puzzle_party(void) {
     MarioPuzzlePartyPathSpace *space;
     s32 *pair;
 
-    switch (D_800CE20A_main) {
+    switch (storySceneNo) {
         case 1:
             D_80116158_marios_puzzle_party = 1;
-            D_8011615C_marios_puzzle_party = D_800CB894_main;
+            D_8011615C_marios_puzzle_party = mgModeCoinRate;
             break;
         case 2:
             D_80116158_marios_puzzle_party = 2;
@@ -2635,7 +2635,7 @@ void func_8010D9AC_marios_puzzle_party(void) {
         for (i = 0; i < 4; i++) {
             cursor = &D_80116238_marios_puzzle_party[i];
             if (cursor->blockOwners[0] == 7 && D_80116228_marios_puzzle_party[i] != -1) {
-                if (omPauseChk() + D_800D6A90_main != 0 || D_80116178_marios_puzzle_party[i] != 0) {
+                if (omPauseChk() + omAllPauseF != 0 || D_80116178_marios_puzzle_party[i] != 0) {
                     HuSprAttrSet(D_80116228_marios_puzzle_party[i], 0, HUSPR_ATTR_DISPOFF);
                 } else {
                     HuSprAttrReset(D_80116228_marios_puzzle_party[i], 0, HUSPR_ATTR_DISPOFF);
@@ -2643,13 +2643,13 @@ void func_8010D9AC_marios_puzzle_party(void) {
             }
             next = &D_80116308_marios_puzzle_party[i];
             if (next->blockOwners[0] == 7) {
-                if (omPauseChk() + D_800D6A90_main != 0 || D_80116178_marios_puzzle_party[i] != 0) {
+                if (omPauseChk() + omAllPauseF != 0 || D_80116178_marios_puzzle_party[i] != 0) {
                     HuSprAttrSet(next->blockSprites[0], 0, HUSPR_ATTR_DISPOFF);
                 } else {
                     HuSprAttrReset(next->blockSprites[0], 0, HUSPR_ATTR_DISPOFF);
                 }
             }
-            if (omPauseChk() + D_800D6A90_main != 0 || D_80116178_marios_puzzle_party[i] != 0) {
+            if (omPauseChk() + omAllPauseF != 0 || D_80116178_marios_puzzle_party[i] != 0) {
                 espDispOff(cursor->sprite);
             } else {
                 espDispOn(cursor->sprite);
@@ -2705,7 +2705,7 @@ void func_8010DB98_marios_puzzle_party(void) {
             } else {
                 if (D_80116228_marios_puzzle_party[i] != -1) {
                     HuSprPosSet(cursor->blockSprites[0], 0, cursor->x, D_801161A8_marios_puzzle_party[i] + cursor->y);
-                    if (omPauseChk() + D_800D6A90_main != 0) {
+                    if (omPauseChk() + omAllPauseF != 0) {
                         HuSprAttrSet(cursor->blockSprites[0], 0, HUSPR_ATTR_DISPOFF);
                     } else {
                         HuSprAttrReset(cursor->blockSprites[0], 0, HUSPR_ATTR_DISPOFF);
@@ -2716,7 +2716,7 @@ void func_8010DB98_marios_puzzle_party(void) {
             cursor = &D_80116308_marios_puzzle_party[i];
             if (cursor->blockOwners[0] == 7) {
                 HuSprPosSet(cursor->blockSprites[0], 0, cursor->x, D_801161A8_marios_puzzle_party[i] + cursor->y);
-                if (omPauseChk() + D_800D6A90_main != 0) {
+                if (omPauseChk() + omAllPauseF != 0) {
                     HuSprAttrSet(cursor->blockSprites[0], 0, HUSPR_ATTR_DISPOFF);
                 } else {
                     HuSprAttrReset(cursor->blockSprites[0], 0, HUSPR_ATTR_DISPOFF);
@@ -3117,7 +3117,7 @@ void func_8010EF30_marios_puzzle_party(void) {
         }
         HuPrcVSleep();
     }
-    D_800D530C_main = 1;
+    omSysExitReq = 1;
     while (TRUE) {
         HuPrcVSleep();
     }

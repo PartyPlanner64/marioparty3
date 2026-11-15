@@ -85,7 +85,7 @@ typedef struct AceHighShot {
     /* 0x36 */ u16 unk_36;
 } AceHighShot; // sizeof 0x38
 
-extern u8 D_800D6A90_main;
+extern u8 omAllPauseF;
 MinigameFlow D_8010DB40_aces_high = {
     MG_STATE_OPENING, MINIGAME_4P, MG_TIMER_COUNT_DOWN, MG_TIME_DISP_COUNTDOWN, FALSE, MG_GAUGE_NONE, MG_RESULT_WIN_1, 0,
     { 0.0f, 0.0f, 0.0f, 0.0f },
@@ -328,7 +328,7 @@ void func_80105FC8_aces_high(omObjData *object) {
 }
 
 void func_801061E0_aces_high(omObjData *object) {
-    if (omPauseChk() + D_800D6A90_main == 0) {
+    if (omPauseChk() + omAllPauseF == 0) {
         D_8010DE54_aces_high[1] += 2.0f;
         D_8010DC0C_aces_high -= 0.0f;
         if (D_8010DC0C_aces_high < 0.0f) {
@@ -522,10 +522,10 @@ void func_80106B70_aces_high(omObjData *object) {
 void func_80106D2C_aces_high(omObjData *object) {
     AceHighPlayer *player = object->data;
 
-    if (D_800CDA7C_main[0] & L_JPAD) {
+    if (HuPadBtn[0] & L_JPAD) {
         object->rot.y -= 2.0f;
     }
-    if (D_800CDA7C_main[0] & R_JPAD) {
+    if (HuPadBtn[0] & R_JPAD) {
         object->rot.y += 2.0f;
     }
     if (object->rot.y < 0.0f) {
@@ -534,16 +534,16 @@ void func_80106D2C_aces_high(omObjData *object) {
     if (object->rot.y >= 360.0f) {
         object->rot.y -= 360.0f;
     }
-    if (D_800CDA7C_main[0] & U_JPAD) {
+    if (HuPadBtn[0] & U_JPAD) {
         player->unk_38 += 2.0f;
     }
-    if (D_800CDA7C_main[0] & D_JPAD) {
+    if (HuPadBtn[0] & D_JPAD) {
         player->unk_38 -= 2.0f;
     }
-    if (D_800CDA7C_main[0] & L_CBUTTONS) {
+    if (HuPadBtn[0] & L_CBUTTONS) {
         player->unk_3C -= 2.0f;
     }
-    if (D_800CDA7C_main[0] & R_CBUTTONS) {
+    if (HuPadBtn[0] & R_CBUTTONS) {
         player->unk_3C += 2.0f;
     }
     func_801068F4_aces_high(object);
@@ -783,10 +783,10 @@ void func_80107654_aces_high(omObjData *object) {
             }
         } else {
             pad = GwPlayer[player->camIdx].pad;
-            stickX = D_800CBB6E_main[pad];
-            stickY = D_800D20A1_main[pad];
-            btnDown = D_800D5558_main[pad];
-            btn = D_800CDA7C_main[pad];
+            stickX = HuPadStkX[pad];
+            stickY = HuPadStkY[pad];
+            btnDown = HuPadBtnDown[pad];
+            btn = HuPadBtn[pad];
         }
     } else {
         btn = 0;

@@ -28,7 +28,7 @@ typedef struct SelMenuSound {
 
 extern s32 D_800A178C_main[][6];
 extern s32 D_800A1790_main[][6];
-extern s16 D_800D1F28_main;
+extern s16 selMenuMgModeF;
 extern char D_80109820_selmenu[];
 extern char D_8010982C_selmenu[];
 extern char D_80109838_selmenu[];
@@ -512,18 +512,18 @@ void func_80105FC8_selmenu(omObjData *obj) {
         if (WipeStatGet() == 1) {
             continue;
         }
-        stickX = D_800CBB6E_main[i];
-        stickY = D_800D20A1_main[i];
-        if (D_800D5558_main[i] & (U_JPAD | U_CBUTTONS)) {
+        stickX = HuPadStkX[i];
+        stickY = HuPadStkY[i];
+        if (HuPadBtnDown[i] & (U_JPAD | U_CBUTTONS)) {
             D_8010A270_selmenu[i] |= 1;
         }
-        if (D_800D5558_main[i] & (D_JPAD | D_CBUTTONS)) {
+        if (HuPadBtnDown[i] & (D_JPAD | D_CBUTTONS)) {
             D_8010A270_selmenu[i] |= 2;
         }
-        if (D_800D5558_main[i] & (L_JPAD | L_CBUTTONS)) {
+        if (HuPadBtnDown[i] & (L_JPAD | L_CBUTTONS)) {
             D_8010A270_selmenu[i] |= 4;
         }
-        if (D_800D5558_main[i] & (R_JPAD | R_CBUTTONS)) {
+        if (HuPadBtnDown[i] & (R_JPAD | R_CBUTTONS)) {
             D_8010A270_selmenu[i] |= 8;
         }
         if (stickY < -10 && ABS(D_8010A1FC_selmenu[i]) < 10) {
@@ -540,10 +540,10 @@ void func_80105FC8_selmenu(omObjData *obj) {
         }
         D_8010A1F8_selmenu[i] = stickX;
         D_8010A1FC_selmenu[i] = stickY;
-        if (D_800D5558_main[i] & Z_TRIG) {
+        if (HuPadBtnDown[i] & Z_TRIG) {
             D_8010A270_selmenu[i] |= 0x40;
         }
-        if ((D_800CDA7C_main[i] & (U_JPAD | U_CBUTTONS)) || stickY > 10) {
+        if ((HuPadBtn[i] & (U_JPAD | U_CBUTTONS)) || stickY > 10) {
             if (D_8010A274_selmenu[i] & 1) {
                 D_8010A27C_selmenu[i]++;
                 if (D_8010A27C_selmenu[i] >= 16) {
@@ -565,7 +565,7 @@ void func_80105FC8_selmenu(omObjData *obj) {
                     D_8010A284_selmenu[i]--;
                 }
             }
-        } else if ((D_800CDA7C_main[i] & (D_JPAD | D_CBUTTONS)) || stickY < -10) {
+        } else if ((HuPadBtn[i] & (D_JPAD | D_CBUTTONS)) || stickY < -10) {
             if (D_8010A274_selmenu[i] & 2) {
                 D_8010A27C_selmenu[i]++;
                 if (D_8010A27C_selmenu[i] >= 16) {
@@ -587,7 +587,7 @@ void func_80105FC8_selmenu(omObjData *obj) {
                     D_8010A284_selmenu[i]--;
                 }
             }
-        } else if ((D_800CDA7C_main[i] & (L_JPAD | L_CBUTTONS)) || stickX < -10) {
+        } else if ((HuPadBtn[i] & (L_JPAD | L_CBUTTONS)) || stickX < -10) {
             if (D_8010A274_selmenu[i] & 4) {
                 D_8010A27C_selmenu[i]++;
                 if (D_8010A27C_selmenu[i] >= 16) {
@@ -609,7 +609,7 @@ void func_80105FC8_selmenu(omObjData *obj) {
                     D_8010A284_selmenu[i]--;
                 }
             }
-        } else if ((D_800CDA7C_main[i] & (R_JPAD | R_CBUTTONS)) || stickX > 10) {
+        } else if ((HuPadBtn[i] & (R_JPAD | R_CBUTTONS)) || stickX > 10) {
             if (D_8010A274_selmenu[i] & 8) {
                 D_8010A27C_selmenu[i]++;
                 if (D_8010A27C_selmenu[i] >= 16) {
@@ -634,16 +634,16 @@ void func_80105FC8_selmenu(omObjData *obj) {
         } else {
             D_8010A27C_selmenu[i] = 0;
         }
-        if (D_800D5558_main[i] & A_BUTTON) {
+        if (HuPadBtnDown[i] & A_BUTTON) {
             D_8010A270_selmenu[i] |= 0x10;
         }
-        if (D_800D5558_main[i] & B_BUTTON) {
+        if (HuPadBtnDown[i] & B_BUTTON) {
             D_8010A270_selmenu[i] |= 0x20;
         }
-        if (D_800D5558_main[i] & START_BUTTON) {
+        if (HuPadBtnDown[i] & START_BUTTON) {
             D_8010A270_selmenu[i] |= 0x80;
         }
-        if ((D_800CDA7C_main[i] & (L_TRIG | R_TRIG)) == (L_TRIG | R_TRIG)) {
+        if ((HuPadBtn[i] & (L_TRIG | R_TRIG)) == (L_TRIG | R_TRIG)) {
             omOvlReturnEx(0);
             return;
         }
@@ -707,9 +707,9 @@ void func_80106A10_selmenu(omObjData *obj) {
     rand8();
     config = &D_80108C90_selmenu[D_8010A070_selmenu * 10];
     for (i = 0; i < 10; i++, config++) {
-        sprintf(D_800D5218_main, config->name);
+        sprintf(omDBGStrBuf, config->name);
         // The strlen result is discarded; x is overwritten with a fixed position.
-        x = strlen(D_800D5218_main);
+        x = strlen(omDBGStrBuf);
         x = 0x40;
         if (D_80108C90_selmenu[D_8010A070_selmenu * 10 + i].available == 0) {
             color = D_80109754_selmenu[0];
@@ -717,15 +717,15 @@ void func_80106A10_selmenu(omObjData *obj) {
             color = D_80109754_selmenu[1];
         }
         if (D_8010A072_selmenu == i) {
-            func_801089C0_selmenu(x, (i + 10) * 9, D_800D5218_main, color[1], color[0]);
+            func_801089C0_selmenu(x, (i + 10) * 9, omDBGStrBuf, color[1], color[0]);
         } else {
-            func_801089C0_selmenu(x, (i + 10) * 9, D_800D5218_main, color[0], 0);
+            func_801089C0_selmenu(x, (i + 10) * 9, omDBGStrBuf, color[0], 0);
         }
     }
-    sprintf(D_800D5218_main, D_80109FEC_selmenu, D_8010A070_selmenu + 1, 10);
-    func_801089C0_selmenu(0x80, 0x40, D_800D5218_main, 15, 7);
-    sprintf(D_800D5218_main, D_80109FF8_selmenu, D_801097F4_selmenu[D_800A175E_main]);
-    func_801089C0_selmenu(0x80, 0x48, D_800D5218_main, 14, 6);
+    sprintf(omDBGStrBuf, D_80109FEC_selmenu, D_8010A070_selmenu + 1, 10);
+    func_801089C0_selmenu(0x80, 0x40, omDBGStrBuf, 15, 7);
+    sprintf(omDBGStrBuf, D_80109FF8_selmenu, D_801097F4_selmenu[omDBGPlayMode]);
+    func_801089C0_selmenu(0x80, 0x48, omDBGStrBuf, 14, 6);
     espPosSet(D_8010A206_selmenu, 0x3C, (D_8010A072_selmenu + 11) * 9 - 1);
     for (i = 0; i < 4; i++) {
         if (!CheckControllerRead(i)) {
@@ -760,9 +760,9 @@ void func_80106A10_selmenu(omObjData *obj) {
             D_8010A08E_selmenu = 0;
             D_8010A090_selmenu = 0;
             obj->func = func_80106DEC_selmenu;
-        } else if (D_800D5558_main[i] & 0x10) {
-            if (++D_800A175E_main >= 3) {
-                D_800A175E_main = 0;
+        } else if (HuPadBtnDown[i] & 0x10) {
+            if (++omDBGPlayMode >= 3) {
+                omDBGPlayMode = 0;
             }
         }
     }
@@ -782,17 +782,17 @@ void func_80106DEC_selmenu(omObjData *obj) {
     s32 j;
 
     rand8();
-    sprintf(D_800D5218_main, "* OPTION *");
-    func_801089C0_selmenu(0x70, 0x40, D_800D5218_main, 15, 7);
+    sprintf(omDBGStrBuf, "* OPTION *");
+    func_801089C0_selmenu(0x70, 0x40, omDBGStrBuf, 15, 7);
     for (i = 0; i < 5; i++) {
         space = D_8010975C_selmenu;
         if (i == 4) {
-            sprintf(D_800D5218_main, "MAP:%d", GwSystem.current_board_index);
+            sprintf(omDBGStrBuf, "MAP:%d", GwSystem.current_board_index);
             color = D_80109754_selmenu[0];
             if (D_8010A08E_selmenu == i) {
-                func_801089C0_selmenu(0x80, 0x50, D_800D5218_main, color[1], color[0]);
+                func_801089C0_selmenu(0x80, 0x50, omDBGStrBuf, color[1], color[0]);
             } else {
-                func_801089C0_selmenu(0x80, 0x50, D_800D5218_main, color[0], 0);
+                func_801089C0_selmenu(0x80, 0x50, omDBGStrBuf, color[0], 0);
             }
             continue;
         }
@@ -803,23 +803,23 @@ void func_80106DEC_selmenu(omObjData *obj) {
             y = (row + line) * 8;
             switch (j) {
                 case 0:
-                    sprintf(D_800D5218_main, space->name, i);
+                    sprintf(omDBGStrBuf, space->name, i);
                     break;
                 case 1:
-                    sprintf(D_800D5218_main, space->name, D_8010A098_selmenu[i].pad,
+                    sprintf(omDBGStrBuf, space->name, D_8010A098_selmenu[i].pad,
                             D_801097BC_selmenu[D_8010A098_selmenu[i].stat & 1]);
                     break;
                 case 2:
-                    sprintf(D_800D5218_main, space->name, D_8010A098_selmenu[i].group);
+                    sprintf(omDBGStrBuf, space->name, D_8010A098_selmenu[i].group);
                     break;
                 case 3:
-                    sprintf(D_800D5218_main, space->name, D_801097C4_selmenu[D_8010A098_selmenu[i].cpu_difficulty]);
+                    sprintf(omDBGStrBuf, space->name, D_801097C4_selmenu[D_8010A098_selmenu[i].cpu_difficulty]);
                     break;
                 case 4:
-                    sprintf(D_800D5218_main, space->name, D_8010A098_selmenu[i].coin);
+                    sprintf(omDBGStrBuf, space->name, D_8010A098_selmenu[i].coin);
                     break;
                 case 5:
-                    sprintf(D_800D5218_main, space->name, D_8010A098_selmenu[i].pad);
+                    sprintf(omDBGStrBuf, space->name, D_8010A098_selmenu[i].pad);
                     break;
             }
             switch (D_8010A090_selmenu) {
@@ -827,24 +827,24 @@ void func_80106DEC_selmenu(omObjData *obj) {
                     if (j == 0) {
                         color = D_80109754_selmenu[0];
                         if (i == D_8010A08E_selmenu) {
-                            func_801089C0_selmenu(x, y, D_800D5218_main, color[1], color[0]);
+                            func_801089C0_selmenu(x, y, omDBGStrBuf, color[1], color[0]);
                         } else {
-                            func_801089C0_selmenu(x, y, D_800D5218_main, color[0], 0);
+                            func_801089C0_selmenu(x, y, omDBGStrBuf, color[0], 0);
                         }
                     } else {
-                        func_801089C0_selmenu(x, y, D_800D5218_main, D_80109754_selmenu[1][0], 0);
+                        func_801089C0_selmenu(x, y, omDBGStrBuf, D_80109754_selmenu[1][0], 0);
                     }
                     break;
                 case 1:
                     if (i == D_8010A08E_selmenu) {
                         color = D_80109754_selmenu[0];
                         if (j == D_8010A08C_selmenu) {
-                            func_801089C0_selmenu(x, y, D_800D5218_main, color[1], color[0]);
+                            func_801089C0_selmenu(x, y, omDBGStrBuf, color[1], color[0]);
                         } else {
-                            func_801089C0_selmenu(x, y, D_800D5218_main, color[0], 0);
+                            func_801089C0_selmenu(x, y, omDBGStrBuf, color[0], 0);
                         }
                     } else {
-                        func_801089C0_selmenu(x, y, D_800D5218_main, D_80109754_selmenu[1][0], 0);
+                        func_801089C0_selmenu(x, y, omDBGStrBuf, D_80109754_selmenu[1][0], 0);
                     }
                     break;
             }
@@ -1010,8 +1010,8 @@ void func_80107924_selmenu(omObjData *obj) {
     s32 i;
 
     rand8();
-    sprintf(D_800D5218_main, D_80108C90_selmenu[D_8010A070_selmenu * 10 + D_8010A072_selmenu].name);
-    x = (320 - strlen(D_800D5218_main) * 8) / 2;
+    sprintf(omDBGStrBuf, D_80108C90_selmenu[D_8010A070_selmenu * 10 + D_8010A072_selmenu].name);
+    x = (320 - strlen(omDBGStrBuf) * 8) / 2;
     y = (D_8010A072_selmenu + 10) * 9;
     // The do-while(0) ends a CSE block, keeping GCC from folding textOfs into the sprite positions.
     do {
@@ -1046,9 +1046,9 @@ void func_80107924_selmenu(omObjData *obj) {
             textOfs = (y - D_80109810_selmenu + textOfs) - y;
         }
         fontcolor = 9;
-        print8(x, y - (u16)D_80109810_selmenu + shadowOfs, D_800D5218_main);
+        print8(x, y - (u16)D_80109810_selmenu + shadowOfs, omDBGStrBuf);
         fontcolor = 13;
-        print8(x, y - (u16)D_80109810_selmenu + textOfs, D_800D5218_main);
+        print8(x, y - (u16)D_80109810_selmenu + textOfs, omDBGStrBuf);
     }
     for (i = 0; i < D_80109814_selmenu; i++) {
         if (D_8010A210_selmenu[i] != -1 && (espAnimStatGet(D_8010A210_selmenu[i]) & 6)) {
@@ -1056,11 +1056,11 @@ void func_80107924_selmenu(omObjData *obj) {
             D_8010A210_selmenu[i] = -1;
         }
     }
-    x = (320 - strlen(D_800D5218_main) * 8) / 2;
+    x = (320 - strlen(omDBGStrBuf) * 8) / 2;
     fontcolor = 7;
-    print8(x + 1, y + 1 - (u16)D_80109810_selmenu, D_800D5218_main);
+    print8(x + 1, y + 1 - (u16)D_80109810_selmenu, omDBGStrBuf);
     fontcolor = 15;
-    print8(x, y - (u16)D_80109810_selmenu, D_800D5218_main);
+    print8(x, y - (u16)D_80109810_selmenu, omDBGStrBuf);
 }
 
 void func_80107DEC_selmenu(omObjData *obj) {
@@ -1087,13 +1087,13 @@ void func_80107DFC_selmenu(omObjData *obj) {
             func_80108AB4_selmenu();
             GwSystem.minigame_index = D_80108C90_selmenu[D_8010A070_selmenu * 10 + D_8010A072_selmenu].player_groups;
             GwSystem.current_player_index = 0;
-            if (D_800A175E_main == 0) {
-                if (D_800D1F28_main == 0) {
+            if (omDBGPlayMode == 0) {
+                if (selMenuMgModeF == 0) {
                     omOvlCallEx(D_80108C90_selmenu[D_8010A070_selmenu * 10 + D_8010A072_selmenu].unk_04, 0, 0x94);
                 } else {
                     omOvlCallEx(MgDataMaxGet(GwSystem.minigame_index), 0, 0x82);
                 }
-            } else if (D_800A175E_main == 1) {
+            } else if (omDBGPlayMode == 1) {
                 GwSystem.playMode = 1;
                 omOvlCallEx(D_80108C90_selmenu[D_8010A070_selmenu * 10 + D_8010A072_selmenu].unk_04, 0, 0x92);
             } else {
@@ -1139,17 +1139,17 @@ void func_80107DFC_selmenu(omObjData *obj) {
         WipeColorSet(0, 0, 0);
         WipeCreateOut(0, 20);
         D_8010A200_selmenu = 1;
-        D_800D1F28_main = 0;
+        selMenuMgModeF = 0;
         for (i = 0; i < 4; i++) {
-            if (CheckControllerRead(i) && (D_800CDA7C_main[i] & L_TRIG)) {
-                D_800D1F28_main = 1;
+            if (CheckControllerRead(i) && (HuPadBtn[i] & L_TRIG)) {
+                selMenuMgModeF = 1;
                 break;
             }
         }
         return;
     }
     for (i = 0; i < 4; i++) {
-        if (CheckControllerRead(i) && (D_800D5558_main[i] & START_BUTTON)) {
+        if (CheckControllerRead(i) && (HuPadBtnDown[i] & START_BUTTON)) {
             for (j = 0; j < 4; j++) {
                 if (CheckControllerRead(j)) {
                     D_8010A270_selmenu[j] |= 0x10;
@@ -1159,8 +1159,8 @@ void func_80107DFC_selmenu(omObjData *obj) {
     }
     for (i = 0; i < 4; i++) {
         if (!CheckControllerRead(i)) {
-            sprintf(D_800D5218_main, "------");
-            func_801089C0_selmenu(i * 56 + 56, 144, D_800D5218_main, 15, 7);
+            sprintf(omDBGStrBuf, "------");
+            func_801089C0_selmenu(i * 56 + 56, 144, omDBGStrBuf, 15, 7);
             continue;
         }
         Hu3DModelAttrSet(D_8010A1C0_selmenu[GwPlayer[i].chr], 4, 0);
@@ -1176,8 +1176,8 @@ void func_80107DFC_selmenu(omObjData *obj) {
         }
         color = (D_8010A1B0_selmenu[i] != 0) ? 15 : 12;
         textColor = color;
-        sprintf(D_800D5218_main, D_801097D4_selmenu[GwPlayer[i].chr]);
-        func_801089C0_selmenu(i * 56 + 50 + i * 4, 144, D_800D5218_main, textColor, color - 8);
+        sprintf(omDBGStrBuf, D_801097D4_selmenu[GwPlayer[i].chr]);
+        func_801089C0_selmenu(i * 56 + 50 + i * 4, 144, omDBGStrBuf, textColor, color - 8);
         if ((D_8010A270_selmenu[i] & 0x10) && D_8010A1B0_selmenu[i] == 0) {
             D_8010A1B0_selmenu[i] = 1;
             Hu3DMotionModelSet(D_8010A1C0_selmenu[GwPlayer[i].chr], D_8010A1E0_selmenu[GwPlayer[i].chr]);

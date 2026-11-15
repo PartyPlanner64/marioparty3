@@ -1048,7 +1048,7 @@ void m254_CreateMinigame(void) {
 }
 
 void m254_CheckExitRequest(omObjData *object) {
-    if (D_800D530C_main == 1) {
+    if (omSysExitReq == 1) {
         WipeCreateOut(WIPE_TYPE_NORMAL, 20);
         object->func = m254_WaitExitWipeOut;
     }
@@ -2154,9 +2154,9 @@ void func_8010A440_motor_rooter(FuncContext *ctx) {
         ctx->work.s16[1] = 8;
         ctx->state = 1;
     }
-    D_800CBB6E_main[player->controllerPort] = 0;
-    D_800D20A1_main[player->controllerPort] = 0;
-    D_800CDA7C_main[player->controllerPort] = 0;
+    HuPadStkX[player->controllerPort] = 0;
+    HuPadStkY[player->controllerPort] = 0;
+    HuPadBtn[player->controllerPort] = 0;
     obstacleClosest = 999;
     for (obstacleI = 0; obstacleI < 3; obstacleI++) {
         if (view->obstacleSlots[obstacleI] != -1) {
@@ -2183,22 +2183,22 @@ void func_8010A440_motor_rooter(FuncContext *ctx) {
                     case 0:
                     case 1:
                         if (obstacleDifference < 3) {
-                            D_800CBB6E_main[player->controllerPort] = 50;
+                            HuPadStkX[player->controllerPort] = 50;
                         } else {
                             if (obstacleDifference < 4) {
                                 (void)rand16();
                             }
-                            D_800CBB6E_main[player->controllerPort] = -50;
+                            HuPadStkX[player->controllerPort] = -50;
                         }
                         break;
                     case 2:
                         if (obstacleDifference < 3) {
-                            ((u16 *)D_800CDA7C_main)[player->controllerPort] = 0x8000;
+                            ((u16 *)HuPadBtn)[player->controllerPort] = 0x8000;
                         } else {
                             if (obstacleDifference < 4) {
                                 (void)rand16();
                             }
-                            ((u16 *)D_800CDA7C_main)[player->controllerPort] = 0x4000;
+                            ((u16 *)HuPadBtn)[player->controllerPort] = 0x4000;
                         }
                         break;
                 }
@@ -2236,29 +2236,29 @@ void func_8010A440_motor_rooter(FuncContext *ctx) {
                             case 0:
                             case 1:
                                 if (itemDifference < 3) {
-                                    D_800CBB6E_main[player->controllerPort] = 50;
+                                    HuPadStkX[player->controllerPort] = 50;
                                 } else {
                                     if (itemDifference < 4) {
                                         (void)rand16();
                                     }
-                                    D_800CBB6E_main[player->controllerPort] = -50;
+                                    HuPadStkX[player->controllerPort] = -50;
                                 }
                                 if (!(rand16() % (ctx->work.s8[6] + 1))) {
-                                    D_800CBB6E_main[player->controllerPort] *= -1;
+                                    HuPadStkX[player->controllerPort] *= -1;
                                 }
                                 break;
                             case 2:
                                 if (itemDifference < 3) {
-                                    ((u16 *)D_800CDA7C_main)[player->controllerPort] = 0x8000;
+                                    ((u16 *)HuPadBtn)[player->controllerPort] = 0x8000;
                                 } else {
                                     if (itemDifference < 4) {
                                         (void)rand16();
                                     }
-                                    ((u16 *)D_800CDA7C_main)[player->controllerPort] = 0x4000;
+                                    ((u16 *)HuPadBtn)[player->controllerPort] = 0x4000;
                                 }
                                 if (!(rand16() % (ctx->work.s8[6] + 1))) {
-                                    D_800CDA7C_main[player->controllerPort] = ~D_800CDA7C_main[player->controllerPort];
-                                    D_800CDA7C_main[player->controllerPort] &= 0xC000;
+                                    HuPadBtn[player->controllerPort] = ~HuPadBtn[player->controllerPort];
+                                    HuPadBtn[player->controllerPort] &= 0xC000;
                                 }
                                 break;
                         }
@@ -2281,7 +2281,7 @@ void func_8010ABC4_motor_rooter(FuncContext *ctx) {
     switch (D_80113458_motor_rooter) {
         case 0:
         case 1:
-            if (D_800CBB6E_main[player->controllerPort] > 10) {
+            if (HuPadStkX[player->controllerPort] > 10) {
                 if (!ctx->work.s8[0]) {
                     if (D_80113458_motor_rooter == 0) {
                         ctx->work.s8[0] = 1;
@@ -2294,7 +2294,7 @@ void func_8010ABC4_motor_rooter(FuncContext *ctx) {
                         ctx->work.s8[2] = 4;
                     }
                 }
-            } else if (D_800CBB6E_main[player->controllerPort] < -10) {
+            } else if (HuPadStkX[player->controllerPort] < -10) {
                 if (!ctx->work.s8[1]) {
                     ctx->work.s8[0] = 0;
                     if (D_80113458_motor_rooter == 0) {
@@ -2312,7 +2312,7 @@ void func_8010ABC4_motor_rooter(FuncContext *ctx) {
             }
             break;
         case 2:
-            if ((u16)D_800CDA7C_main[player->controllerPort] & A_BUTTON) {
+            if ((u16)HuPadBtn[player->controllerPort] & A_BUTTON) {
                 if (!ctx->work.s8[0]) {
                     ctx->work.s8[0] = 1;
                     ctx->work.s8[1] = 0;
@@ -2323,7 +2323,7 @@ void func_8010ABC4_motor_rooter(FuncContext *ctx) {
                         ctx->work.s8[2] = 4;
                     }
                 }
-            } else if (D_800CDA7C_main[player->controllerPort] & B_BUTTON) {
+            } else if (HuPadBtn[player->controllerPort] & B_BUTTON) {
                 if (!ctx->work.s8[1]) {
                     ctx->work.s8[0] = 0;
                     ctx->work.s8[1] = 1;
@@ -2573,7 +2573,7 @@ void func_8010BCD0_motor_rooter(FuncContext *ctx) {
     player = ctx->data;
     object = player->unk00;
     model = &Hu3DData[object->model[0]];
-    if (model->motTime >= D_800CCF58_main[model->motId].unk02 - 1) {
+    if (model->motTime >= Hu3DMotion[model->motId].unk02 - 1) {
         player->animChange = 1;
     }
     if (player->animChange) {
@@ -3113,10 +3113,10 @@ void func_8010DD10_motor_rooter(FuncContext *ctx) {
     ctx->work.s8[0]++;
     if (ctx->work.s8[0] >= 6) {
         ctx->work.s8[0] = 0;
-        if (D_800CDA7C_main[0] & Z_TRIG) {
+        if (HuPadBtn[0] & Z_TRIG) {
             D_80113458_motor_rooter = D_80113458_motor_rooter + 1 < 3 ? D_80113458_motor_rooter + 1 : 0;
         }
     }
-    sprintf(D_800D5218_main, "CONT TYPE %d", D_80113458_motor_rooter);
-    print8(16, 80, D_800D5218_main);
+    sprintf(omDBGStrBuf, "CONT TYPE %d", D_80113458_motor_rooter);
+    print8(16, 80, omDBGStrBuf);
 }

@@ -1,6 +1,6 @@
 #include "common.h"
 
-extern u8 D_800D2132_main;
+extern u8 omSysPauseReadyF;
 
 const Vec D_8010F3B0_modesel = { 0.0f, 0.0f, 100.0f };
 const Vec D_8010F3BC_modesel = { 0.0f, 0.0f, 0.0f };
@@ -37,7 +37,7 @@ void func_801059D0_modesel(void) {
     Hu3DGLightColorSet(2, 0, 0, 0);
     Hu3DGLightColorSet(3, 0, 0, 0);
     Hu3DGLightDirSet(1, 0.0f, 64.0f, 192.0f);
-    D_800D2132_main = 0;
+    omSysPauseReadyF = 0;
     _ClearFlag(0xD);
 }
 

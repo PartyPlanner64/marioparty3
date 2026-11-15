@@ -397,10 +397,10 @@ void func_80105A3C_messy_memory(void) {
 }
 
 void func_80105B04_messy_memory(s32 playerIndex) {
-    D_800CDA7C_main[GwPlayer[playerIndex].pad] = 0;
-    D_800D5558_main[GwPlayer[playerIndex].pad] = 0;
-    D_800CBB6E_main[GwPlayer[playerIndex].pad] = 0;
-    D_800D20A1_main[GwPlayer[playerIndex].pad] = 0;
+    HuPadBtn[GwPlayer[playerIndex].pad] = 0;
+    HuPadBtnDown[GwPlayer[playerIndex].pad] = 0;
+    HuPadStkX[GwPlayer[playerIndex].pad] = 0;
+    HuPadStkY[GwPlayer[playerIndex].pad] = 0;
 }
 
 void func_80105B7C_messy_memory(u8 arg0) {
@@ -649,7 +649,7 @@ void func_80106C60_messy_memory(omObjData *obj) {
     u8 j;
     u8 k;
 
-    if (D_800D5558_main[GwPlayer[playerNo].pad] & Z_TRIG) {
+    if (HuPadBtnDown[GwPlayer[playerNo].pad] & Z_TRIG) {
         switch (D_80115D80_messy_memory[playerNo]) {
             case 0:
                 D_80115D80_messy_memory[playerNo] = 1;
@@ -716,7 +716,7 @@ void func_80106C60_messy_memory(omObjData *obj) {
     if (outside | blocked) {
         D_80115D72_messy_memory[obj->work[0]] = 150;
     }
-    if (D_800D5558_main[GwPlayer[playerNo].pad] & A_BUTTON) {
+    if (HuPadBtnDown[GwPlayer[playerNo].pad] & A_BUTTON) {
         switch (D_80111670_messy_memory[playerNo]) {
             case 0:
                 for (k = 0; k < 10; k++) {
@@ -817,25 +817,25 @@ void func_80106C60_messy_memory(omObjData *obj) {
                 break;
         }
     }
-    if (D_800CBB6E_main[GwPlayer[playerNo].pad] < -29) {
+    if (HuPadStkX[GwPlayer[playerNo].pad] < -29) {
         work->unk44.x -= 2.0f;
         if (work->unk44.x < D_80110FE0_messy_memory[playerNo][0] + 30.0f) {
             work->unk44.x = D_80110FE0_messy_memory[playerNo][0] + 30.0f;
         }
     }
-    if (D_800CBB6E_main[GwPlayer[playerNo].pad] >= 30) {
+    if (HuPadStkX[GwPlayer[playerNo].pad] >= 30) {
         work->unk44.x += 2.0f;
         if (work->unk44.x > D_80110FE0_messy_memory[playerNo][0] + 140.0f) {
             work->unk44.x = D_80110FE0_messy_memory[playerNo][0] + 140.0f;
         }
     }
-    if (D_800D20A1_main[GwPlayer[playerNo].pad] >= 30) {
+    if (HuPadStkY[GwPlayer[playerNo].pad] >= 30) {
         work->unk44.y -= 2.0f;
         if (work->unk44.y < D_80110FE0_messy_memory[playerNo][1] + 20.0f) {
             work->unk44.y = D_80110FE0_messy_memory[playerNo][1] + 20.0f;
         }
     }
-    if (D_800D20A1_main[GwPlayer[playerNo].pad] < -29) {
+    if (HuPadStkY[GwPlayer[playerNo].pad] < -29) {
         work->unk44.y += 2.0f;
         if (work->unk44.y > D_80110FE0_messy_memory[playerNo][1] + 108.0f) {
             work->unk44.y = D_80110FE0_messy_memory[playerNo][1] + 108.0f;
@@ -1648,7 +1648,7 @@ void func_8010B5C8_messy_memory(omObjData *obj) {
                     }
                     break;
                 case 3:
-                    if (Hu3DData[*obj->model].motTime >= D_800CCF58_main[Hu3DData[*obj->model].motId].unk02) {
+                    if (Hu3DData[*obj->model].motTime >= Hu3DMotion[Hu3DData[*obj->model].motId].unk02) {
                         work->unk04 = 4;
                         Hu3DMotionModelSet(*obj->model, obj->motion[2]);
                         Hu3DMotionAttrSet(*obj->model, 2, 2);
@@ -1802,7 +1802,7 @@ void func_8010C03C_messy_memory(omObjData *obj) {
     u16 index = obj->work[0];
     s8 chr = GwPlayer[playerNo].chr;
 
-    *obj->model = Hu3DModelRead(D_800A1788_main[chr].model | D_800A1788_main[chr].motion[0], 0x2A9);
+    *obj->model = Hu3DModelRead(omCharModelTbl[chr].model | omCharModelTbl[chr].motion[0], 0x2A9);
     Hu3DModelRemakeStatic(*obj->model);
     Hu3DModelDynamicFree(*obj->model);
     obj->model[1] = Hu3DModelRead2(0, 0x14C9);
@@ -2643,7 +2643,7 @@ void func_8010F3DC_messy_memory(omObjData *obj) {
     *obj->model = Hu3DModelRead(0x3E001A, 0xB9);
     omObjMotionRead(obj, 0, 0x3E001B);
     Hu3DMotionModelSet(*obj->model, *obj->motion);
-    D_80111600_messy_memory = D_800CCF58_main[Hu3DData[*obj->model].motId].unk02;
+    D_80111600_messy_memory = Hu3DMotion[Hu3DData[*obj->model].motId].unk02;
     Hu3DMotionAttrSet(*obj->model, 2, 1);
     switch (obj->work[0]) {
         case 0:
@@ -2824,7 +2824,7 @@ void func_8010FD60_messy_memory(omObjData *obj) {
 }
 
 void func_8010FD98_messy_memory(omObjData *obj) {
-    if (D_800D530C_main == 1) {
+    if (omSysExitReq == 1) {
         WipeCreateOut(0, 20);
         obj->func = func_8010FD60_messy_memory;
         HuAudSeqFadeOut(30);

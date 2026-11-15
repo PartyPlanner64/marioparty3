@@ -678,14 +678,14 @@ static void MBItemSel(void) {
         prevSelectedItemSlot = D_80100F90_shared_board;
 
         if (GwPlayer[GwSystem.current_player_index].itemNo[0] != -1) {
-            if (D_800C9520_main[playerPadNo] & L_JPAD) {
+            if (ContBtnDown[playerPadNo] & L_JPAD) {
                 do {
                     if (--D_80100F90_shared_board < 0)
                         D_80100F90_shared_board = ARRAY_COUNT(GwPlayer->itemNo) - 1;
                 } while (GwPlayer[GwSystem.current_player_index].itemNo[D_80100F90_shared_board] == -1);
             }
 
-            if ((D_800C9520_main[playerPadNo] & R_JPAD) || ((D_80100F90_shared_board != D_80102CB0_shared_board) && (var_s5-- == 0) && (MBPlayerComCheck(playerNo) != 0))) {
+            if ((ContBtnDown[playerPadNo] & R_JPAD) || ((D_80100F90_shared_board != D_80102CB0_shared_board) && (var_s5-- == 0) && (MBPlayerComCheck(playerNo) != 0))) {
                 var_s5 = 20;
                 do {
                     if (++D_80100F90_shared_board >= ARRAY_COUNT(GwPlayer->itemNo))
@@ -705,7 +705,7 @@ static void MBItemSel(void) {
             }
         }
 
-        if ((D_800C9520_main[playerPadNo] & A_BUTTON) || ((MBPlayerComCheck(playerNo) != 0) && (D_80102CB0_shared_board == D_80100F90_shared_board))) {
+        if ((ContBtnDown[playerPadNo] & A_BUTTON) || ((MBPlayerComCheck(playerNo) != 0) && (D_80102CB0_shared_board == D_80100F90_shared_board))) {
             D_80102CB4_shared_board = -1;
             func_800E3584_shared_board();
             GwSystem.cur_player_used_item |= 1;
@@ -722,8 +722,8 @@ static void MBItemSel(void) {
             }
         }
 
-        if (!(D_800C9520_main[playerPadNo] & B_BUTTON)) {
-            if (D_800C9520_main[playerPadNo] & U_CBUTTONS) {
+        if (!(ContBtnDown[playerPadNo] & B_BUTTON)) {
+            if (ContBtnDown[playerPadNo] & U_CBUTTONS) {
                 D_80102CB4_shared_board = -1;
                 HuPrcVSleep();
                 HuSprDispOff(mbItemCursorGrpId, 0);
@@ -734,27 +734,27 @@ static void MBItemSel(void) {
                 MBItemScaleEffCreate();
             }
 
-            if (D_800C9520_main[playerPadNo] & R_TRIG) {
+            if (ContBtnDown[playerPadNo] & R_TRIG) {
                 D_80102CB4_shared_board = -1;
                 HuPrcVSleep();
                 HuSprDispOff(mbItemCursorGrpId, 0);
                 func_800E3584_shared_board();
                 MBMapScrollExec(playerPadNo);
                 MBItemHelpCreate();
-                D_800CB99C_main = 1;
+                winPauseF = 1;
                 omAllPause();
                 D_80102CB4_shared_board = D_80100F90_shared_board;
                 MBItemScaleEffCreate();
             }
 
-            if (D_800C9520_main[playerPadNo] & Z_TRIG) {
+            if (ContBtnDown[playerPadNo] & Z_TRIG) {
                 D_80102CB4_shared_board = -1;
                 HuPrcVSleep();
                 HuSprDispOff(mbItemCursorGrpId, 0);
                 func_800E3584_shared_board();
                 MBMapFullExec(playerPadNo);
                 MBItemHelpCreate();
-                D_800CB99C_main = 1;
+                winPauseF = 1;
                 omAllPause();
                 D_80102CB4_shared_board = D_80100F90_shared_board;
                 MBItemScaleEffCreate();
@@ -786,7 +786,7 @@ void MBItemSelExec(s32 playerNo, s32 arg1) {
 
     func_800DC06C_shared_board(playerNo);
     
-    D_800CB99C_main = 1;
+    winPauseF = 1;
     omAllPause();
     D_80102CB0_shared_board = arg1;
     temp_s2 = HuPrcCurrentGet();
@@ -796,7 +796,7 @@ void MBItemSelExec(s32 playerNo, s32 arg1) {
     HuPrcChildLink(temp_s2, temp_v0);
     HuPrcChildWatch();
     omAllUPause();
-    D_800CB99C_main = 0;
+    winPauseF = 0;
     func_800DC0E0_shared_board(playerNo);
     func_800FC7C8_shared_board();
 }
@@ -814,10 +814,10 @@ static void MBItemView(void) {
     D_801010D4_shared_board = func_800E210C_shared_board(4, 0xA0, 0);
     D_801010E0_shared_board = func_800E210C_shared_board(0xF, 0xAE, 0);
     while (1) {
-        if ((D_800C9520_main[padNo] & B_BUTTON)) {
+        if ((ContBtnDown[padNo] & B_BUTTON)) {
             break;
         }
-        if (D_800C9520_main[padNo] & U_CBUTTONS) {
+        if (ContBtnDown[padNo] & U_CBUTTONS) {
             MBHelpWinKill(D_801010D4_shared_board);
             MBHelpWinKill(D_801010E0_shared_board);
             MBItemDescExec(playerIdx);
@@ -839,7 +839,7 @@ void MBItemViewExec(s32 playerNo) {
     Process* temp_s1;
     Process* temp_v0;
 
-    D_800CB99C_main = 1;
+    winPauseF = 1;
     omAllPause();
     temp_s1 = HuPrcCurrentGet();
     temp_v0 = omAddPrcObj(MBItemView, 0x1005, 0, 0);
@@ -848,7 +848,7 @@ void MBItemViewExec(s32 playerNo) {
     HuPrcChildLink(temp_s1, temp_v0);
     HuPrcChildWatch();
     omAllUPause();
-    D_800CB99C_main = 0;
+    winPauseF = 0;
 }
 
 static void MBItemDesc(void) {
@@ -880,17 +880,17 @@ static void MBItemDesc(void) {
     D_801010DC_shared_board = func_800E210C_shared_board(4, 0xBC, 0);
     
     while (1) {
-        if ((D_800C9520_main[padNo] & B_BUTTON)) {
+        if ((ContBtnDown[padNo] & B_BUTTON)) {
             break;
         }
-        if (D_800D0590_main[padNo] & R_CBUTTONS) {
+        if (ContBtnRep[padNo] & R_CBUTTONS) {
             savedItemID++;
             savedItemID %= 20;
             HuWinHomeClear(temp_v0_2);
             HuWinMesSet(temp_v0_2, D_801010F8_shared_board[savedItemID], -1, -1);
             HuWinExAnimPopIn(temp_v0_2, D_80101148_shared_board[savedItemID]);
         }
-        if (D_800D0590_main[padNo] & L_CBUTTONS) {
+        if (ContBtnRep[padNo] & L_CBUTTONS) {
             savedItemID -= 1;
             if (savedItemID < 0) {
                 savedItemID = 19;
@@ -1241,7 +1241,7 @@ static void MBTelopPlayerMain(omObjData* arg0) {
         
         if (!(GwPlayer[arg0->work[3]].stat & 1)) {
             if (!(arg0->rot.y <= 0.0f)) {
-                if (!(D_800D5558_main[GwPlayer[arg0->work[3]].pad] & (A_BUTTON | B_BUTTON))) {
+                if (!(HuPadBtnDown[GwPlayer[arg0->work[3]].pad] & (A_BUTTON | B_BUTTON))) {
                     return;
                 }
             }

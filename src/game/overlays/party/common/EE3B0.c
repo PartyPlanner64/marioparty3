@@ -23,9 +23,9 @@ static void func_800DA810_shared_board(void) {
     temp_s0 = HuPrcCurrentGet()->user_data;
 
     for (;; HuPrcVSleep()) {
-        if (*D_800D5558_main == 0) {
+        if (*HuPadBtnDown == 0) {
             continue;
-        } else if (*D_800D5558_main != temp_s0->unk_04[temp_s0->unk_08]) {
+        } else if (*HuPadBtnDown != temp_s0->unk_04[temp_s0->unk_08]) {
             temp_s0->unk_08 = 0;
             continue;
         } else if (temp_s0->unk_04[++temp_s0->unk_08] == 0) {
@@ -69,11 +69,11 @@ void func_800DA948_shared_board(void) {
 // this needs a \0 due to rodata splitting problems
 void func_800DA950_shared_board(s32 arg0, s16 arg1) {
 
-    sprintf(D_800D5218_main, "KMS: %d", kakusiMasuStar);
+    sprintf(omDBGStrBuf, "KMS: %d", kakusiMasuStar);
     arg0 = (arg0 * 8) & 0xFFF8;
-    func_800DA790_shared_board(arg0, (arg1 * 8), D_800D5218_main, 0xF, 9);
-    sprintf(D_800D5218_main, "KMC: %d\0", kakusiMasuCoin);
-    func_800DA790_shared_board(arg0, ((arg1 + 1) * 8), D_800D5218_main, 0xF, 9);
+    func_800DA790_shared_board(arg0, (arg1 * 8), omDBGStrBuf, 0xF, 9);
+    sprintf(omDBGStrBuf, "KMC: %d\0", kakusiMasuCoin);
+    func_800DA790_shared_board(arg0, ((arg1 + 1) * 8), omDBGStrBuf, 0xF, 9);
 }
 
 void func_800DAA14_shared_board(void) {

@@ -49,7 +49,7 @@ void func_801059A0_sldebug(void) {
     omAddObj(0x7D0, 0xA, 0xA, -1, func_80105B64_sldebug);
     omAddObj(0x7D0, 0, 0, -1, func_80106254_sldebug);
     WipeCreateIn(WIPE_TYPE_NORMAL, 0x10);
-    D_800CD280_main = 1;
+    Hu3DScreenClearF = 1;
     SLLoadStory();
     HuAudSeqPlay(8);
 }
@@ -71,19 +71,19 @@ void func_80105B64_sldebug(omObjData *arg0) {
     print8(70, 120, difficultyNames[D_80106988_sldebug]);
     print8(70, 130, "WLUIGILAND & REVKUNMAP ENABLE");
     print8(70, 140, "EXIT");
-    if (D_800D0590_main[0] & U_JPAD) {
+    if (ContBtnRep[0] & U_JPAD) {
         HuAudFXPlay(1);
         D_80106978_sldebug--;
         if (D_80106978_sldebug < 0) {
             D_80106978_sldebug = 6;
         }
-    } else if (D_800D0590_main[0] & D_JPAD) {
+    } else if (ContBtnRep[0] & D_JPAD) {
         HuAudFXPlay(1);
         D_80106978_sldebug++;
         if (D_80106978_sldebug >= 7) {
             D_80106978_sldebug = 0;
         }
-    } else if (D_800D0590_main[0] & L_JPAD) {
+    } else if (ContBtnRep[0] & L_JPAD) {
         switch (D_80106978_sldebug) {
             case 2:
                 HuAudFXPlay(1);
@@ -107,7 +107,7 @@ void func_80105B64_sldebug(omObjData *arg0) {
                 }
                 break;
         }
-    } else if (D_800D0590_main[0] & R_JPAD) {
+    } else if (ContBtnRep[0] & R_JPAD) {
         switch (D_80106978_sldebug) {
             case 2:
                 HuAudFXPlay(1);
@@ -131,7 +131,7 @@ void func_80105B64_sldebug(omObjData *arg0) {
                 }
                 break;
         }
-    } else if (D_800D5558_main[0] & A_BUTTON) {
+    } else if (HuPadBtnDown[0] & A_BUTTON) {
         if (func_8010612C_sldebug() != 0) {
             if (D_80106980_sldebug != 0) {
                 GwStory.unk0 = D_8010697C_sldebug;
@@ -181,7 +181,7 @@ s32 func_8010612C_sldebug(void) {
     switch (D_80106978_sldebug) {
         case 0:
             _SetFlag(0x1D);
-            if ((u16)D_800CDA7C_main[0] & A_BUTTON) {
+            if ((u16)HuPadBtn[0] & A_BUTTON) {
                 for (i = 0; i < 0x48; i++) {
                     GWMgUnlockSet(i);
                 }
@@ -223,22 +223,22 @@ void func_80106254_sldebug(omObjData *arg0) {
     f32 backSpeed;
     s8 stick;
 
-    if (D_800D5558_main[0] & R_TRIG) {
+    if (HuPadBtnDown[0] & R_TRIG) {
         D_8010698C_sldebug ^= 1;
     }
-    if (D_800CDA7C_main[0] & START_BUTTON) {
+    if (HuPadBtn[0] & START_BUTTON) {
         func_80106850_sldebug();
     }
-    if (D_800CDA7C_main[0] & U_CBUTTONS) {
-        if (D_800CDA7C_main[0] & Z_TRIG) {
+    if (HuPadBtn[0] & U_CBUTTONS) {
+        if (HuPadBtn[0] & Z_TRIG) {
             zoom = CZoom + 30.0f;
         } else {
             zoom = CZoom + 10.0f;
         }
         CZoom = zoom;
     }
-    if ((D_800CDA7C_main[0] & D_CBUTTONS) && CZoom - 10.0f != 0.0f) {
-        if (D_800CDA7C_main[0] & Z_TRIG) {
+    if ((HuPadBtn[0] & D_CBUTTONS) && CZoom - 10.0f != 0.0f) {
+        if (HuPadBtn[0] & Z_TRIG) {
             CZoom = CZoom - 30.0f;
         } else {
             zoom = CZoom;
@@ -247,19 +247,19 @@ void func_80106254_sldebug(omObjData *arg0) {
     }
     xRot = D_80106C20_sldebug.x;
     yRot = D_80106C20_sldebug.y;
-    if (D_800CDA7C_main[0] & Z_TRIG) {
+    if (HuPadBtn[0] & Z_TRIG) {
         speed = 5.0f;
     } else {
         speed = 2.0f;
     }
-    yRot += (-D_800CBB6E_main[0] / 30) * speed;
+    yRot += (-HuPadStkX[0] / 30) * speed;
     if (yRot >= 360.0f) {
         yRot -= 360.0f;
     } else if (yRot < 0.0f) {
         yRot += 360.0f;
     }
     D_80106C20_sldebug.y = yRot;
-    stick = D_800D20A1_main[0] / 30;
+    stick = HuPadStkY[0] / 30;
     xRot += stick * speed;
     if (xRot >= 360.0f) {
         xRot -= 360.0f;
@@ -269,27 +269,27 @@ void func_80106254_sldebug(omObjData *arg0) {
     D_80106C20_sldebug.x = xRot;
     CRot.x = (s16)D_80106C20_sldebug.x;
     CRot.y = (s16)D_80106C20_sldebug.y;
-    if (D_800CDA7C_main[0] & Z_TRIG) {
+    if (HuPadBtn[0] & Z_TRIG) {
         speed = 10.0f;
     } else {
         speed = 2.0f;
     }
-    if (D_800CDA7C_main[0] & U_JPAD) {
+    if (HuPadBtn[0] & U_JPAD) {
         Center.x += sindf(yRot) * sindf(xRot) * (backSpeed = -speed);
         Center.y = cosdf(xRot) * backSpeed + Center.y;
         Center.z = cosdf(yRot) * sindf(xRot) * backSpeed + Center.z;
-    } else if (D_800CDA7C_main[0] & D_JPAD) {
+    } else if (HuPadBtn[0] & D_JPAD) {
         Center.x += sindf(yRot) * sindf(xRot) * speed;
         Center.y = cosdf(xRot) * speed + Center.y;
         Center.z = cosdf(yRot) * sindf(xRot) * speed + Center.z;
-    } else if (D_800CDA7C_main[0] & L_JPAD) {
+    } else if (HuPadBtn[0] & L_JPAD) {
         xRot = gCameraList->pos.z - Center.z;
         z = -(gCameraList->pos.x - Center.x);
         scale = 1.0f / HuSqrtf(xRot * xRot + z * z);
         Center.x += xRot * scale * speed;
         Center.y += 0.0f;
         Center.z += z * scale * speed;
-    } else if (D_800CDA7C_main[0] & R_JPAD) {
+    } else if (HuPadBtn[0] & R_JPAD) {
         xRot = -(gCameraList->pos.z - Center.z);
         z = gCameraList->pos.x - Center.x;
         scale = 1.0f / HuSqrtf(xRot * xRot + z * z);
@@ -315,7 +315,7 @@ void func_80106850_sldebug(void) {
 }
 
 void func_801068D4_sldebug(omObjData *arg0) {
-    if ((D_80106960_sldebug != 0) || (D_800D530C_main != 0)) {
+    if ((D_80106960_sldebug != 0) || (omSysExitReq != 0)) {
         WipeCreateOut(WIPE_TYPE_NORMAL, 8);
         arg0->func = func_80106930_sldebug;
         HuAudSeqFadeOut(0x3C);

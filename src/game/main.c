@@ -15,11 +15,11 @@
 #include "gcc/memory.h"
 #include "PR/gs2dex.h"
 
-void *D_800A1240_main[3] = { (void *)0x80360000, (void *)0x80385800, (void *)0x803AB000 };
-u64 *D_800A124C_main[4] = { (u64 *)0x803F6000, (u64 *)0x803F6400, (u64 *)0x803FC400, (u64 *)0x803FC400 };
+void *HuGfxFBPool[3] = { (void *)0x80360000, (void *)0x80385800, (void *)0x803AB000 };
+u64 *HuGfxTaskBufTbl[4] = { (u64 *)0x803F6000, (u64 *)0x803F6400, (u64 *)0x803FC400, (u64 *)0x803FC400 };
 
 // RSP microcode text/data pairs
-void *D_800A125C_main[] = {
+void *HuGfxUcodeTbl[] = {
     gspF3DEX2_fifoTextStart,     gspF3DEX2_fifoDataStart,
     gspF3DEX2_NoN_fifoTextStart, gspF3DEX2_NoN_fifoDataStart,
     gspF3DLX2_Rej_fifoTextStart, gspF3DLX2_Rej_fifoDataStart,
@@ -31,15 +31,15 @@ void *D_800A125C_main[] = {
 };
 s32 D_800A129C_main = 1000; // unreferenced
 
-s32 D_800A12A0_main = 0;
-f32 D_800A12A4_main = 0.0f;
+s32 mainFramePending = 0;
+f32 mainUnkF32 = 0.0f;
 
-extern s32 D_800A08B0_main;
-extern u8 D_800CCF52_main;
-extern OSMesgQueue D_800CCF38_main;
-extern OSMesgQueue D_800CCF60_main;
-extern s32 D_800D1F70_main;
-extern u32 D_800D2094_main;
+extern s32 Hu3DExecCnt;
+extern u8 HuGfxBufNum;
+extern OSMesgQueue mainIntrQueue;
+extern OSMesgQueue mainOtherQueue;
+extern s32 Hu3DDrawDoneCnt;
+extern u32 scRetraceCnt;
 
 
 #define TV_TYPE_NTSC 1
@@ -71,9 +71,9 @@ void main(void *arg) {
     HuMemHeapInitPerm((void *)0x80140000, 0x1A0000);
     HuMemHeapInitTemp((void *)0x80128000, 0x18000);
 
-    D_800CCF52_main = 3;
+    HuGfxBufNum = 3;
 
-    HuGfxInit(D_800A1240_main, 3, 2, D_800A124C_main, (s32 *)D_800A125C_main);
+    HuGfxInit(HuGfxFBPool, 3, 2, HuGfxTaskBufTbl, (s32 *)HuGfxUcodeTbl);
 
     if (osTvType == TV_TYPE_PAL) {
         while (TRUE) {}
@@ -91,11 +91,11 @@ void main(void *arg) {
     HuPrcInit();
 
     msgTempVar = &intrMesgBuf[4];
-    osCreateMesgQueue(&D_800CCF38_main, msgTempVar, INTR_MESG_BUF_SIZE);
-    AddSchedulerClient((void*)&intrMesgBuf, &D_800CCF38_main, 1); //TODO: (void*) cast
+    osCreateMesgQueue(&mainIntrQueue, msgTempVar, INTR_MESG_BUF_SIZE);
+    AddSchedulerClient((void*)&intrMesgBuf, &mainIntrQueue, 1); //TODO: (void*) cast
     msgTempVar = &otherMesgBuf[4];
-    osCreateMesgQueue(&D_800CCF60_main, msgTempVar, OTHER_MESG_BUF_SIZE);
-    AddSchedulerClient((void*)&otherMesgBuf, &D_800CCF60_main, 2); //TODO: (void*) cast
+    osCreateMesgQueue(&mainOtherQueue, msgTempVar, OTHER_MESG_BUF_SIZE);
+    AddSchedulerClient((void*)&otherMesgBuf, &mainOtherQueue, 2); //TODO: (void*) cast
 
     FlushController();
     osViSetSpecialFeatures(2);
@@ -103,31 +103,31 @@ void main(void *arg) {
     HuPrcCreate(GameManInitProc, 1, 0, 0);
 
     while (!stopLooping) {
-        if (osRecvMesg(&D_800CCF60_main, &msg, OS_MESG_NOBLOCK) != -1) {
+        if (osRecvMesg(&mainOtherQueue, &msg, OS_MESG_NOBLOCK) != -1) {
 
-            if (D_800D2094_main) // Mysteriously helpful, courtesy permuter.
+            if (scRetraceCnt) // Mysteriously helpful, courtesy permuter.
             {}
 
             break;
         }
 
-        osRecvMesg(&D_800CCF38_main, &msg, OS_MESG_BLOCK);
+        osRecvMesg(&mainIntrQueue, &msg, OS_MESG_BLOCK);
         switch ((s32)msg) {
             case 1: {
                 s32 temp_s0;
                 s16 temp_s1;
 
-                if (D_800D2094_main - iVar5 >= 2) {
-                    iVar5 = D_800D2094_main;
-                    if (D_800A12A0_main < D_800CCF52_main) {
+                if (scRetraceCnt - iVar5 >= 2) {
+                    iVar5 = scRetraceCnt;
+                    if (mainFramePending < HuGfxBufNum) {
                         HuProfFrameBegin();
                         temp_s1 = HuProfCpuBegin(0xC8, 0, 0);
                         FlushController();
                         ContDataUpdate();
-                        temp_s0 = D_800A08B0_main;
+                        temp_s0 = Hu3DExecCnt;
                         HuPrcCall(1);
-                        if (temp_s0 != D_800A08B0_main) {
-                            D_800A12A0_main++;
+                        if (temp_s0 != Hu3DExecCnt) {
+                            mainFramePending++;
                         }
                         HuProfCpuEnd(temp_s1);
                         HuProfFrameEnd();
@@ -136,8 +136,8 @@ void main(void *arg) {
             } break;
 
             case 777:
-                D_800A12A0_main--;
-                D_800D1F70_main++;
+                mainFramePending--;
+                Hu3DDrawDoneCnt++;
                 break;
 
             case 2:
@@ -153,6 +153,6 @@ spinloop:
 void FrameBufferClear(s16 count) {
     s16 i = 0;
     for (i = 0; i < count; i++) {
-        memset(*(&D_800A1240_main[i]), 0, 0x25800); // sizeof(gZBuffer) ?
+        memset(*(&HuGfxFBPool[i]), 0, 0x25800); // sizeof(gZBuffer) ?
     }
 }

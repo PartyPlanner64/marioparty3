@@ -194,7 +194,7 @@ void func_80106BEC_chancetime(omObjData *object) {
         if (done) {
             break;
         }
-        btn = D_800D5558_main[GwPlayer[player].pad] & 0x8000;
+        btn = HuPadBtnDown[GwPlayer[player].pad] & 0x8000;
         if (btn) {
             break;
         }
@@ -245,7 +245,7 @@ void func_80106F10_chancetime(void) {
     HuPrcSleep(30);
     do {
         time = Hu3DData[object->model[1]].motTime;
-        length = D_800CCF58_main[Hu3DData[object->model[1]].motId].unk02;
+        length = Hu3DMotion[Hu3DData[object->model[1]].motId].unk02;
         HuPrcVSleep();
     } while (time < length);
 }
@@ -262,7 +262,7 @@ void func_8010705C_chancetime(void) {
     HuPrcSleep(30);
     do {
         time = Hu3DData[object->model[1]].motTime;
-        length = D_800CCF58_main[Hu3DData[object->model[1]].motId].unk02;
+        length = Hu3DMotion[Hu3DData[object->model[1]].motId].unk02;
         HuPrcVSleep();
     } while (time < length);
 }
@@ -279,7 +279,7 @@ void func_801071A8_chancetime(void) {
     HuPrcSleep(30);
     do {
         time = Hu3DData[object->model[1]].motTime;
-        length = D_800CCF58_main[Hu3DData[object->model[1]].motId].unk02;
+        length = Hu3DMotion[Hu3DData[object->model[1]].motId].unk02;
         HuPrcVSleep();
     } while (time < length);
 }

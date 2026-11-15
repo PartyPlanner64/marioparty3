@@ -109,7 +109,7 @@ typedef struct {
     /* 0x02 */ s16 unk02[2];
 } PopgunPickoffBssCC20; // Size 0x6
 
-extern HuSprAnimData *D_800C9530_main[];
+extern HuSprAnimData *HuSprAnimTbl[];
 extern s32 D_800A178C_main[][6];
 
 s32 D_8010C590_popgun_pickoff = 0;
@@ -603,7 +603,7 @@ void func_80106A44_popgun_pickoff(omObjData *object) {
         HuSprPatNoSet(D_8010CBF0_popgun_pickoff[4], i * 3 + 1, D_8010CC22_popgun_pickoff[i] / 10 % 10);
         HuSprPatNoSet(D_8010CBF0_popgun_pickoff[4], i * 3 + 2, D_8010CC22_popgun_pickoff[i] / 100);
     }
-    if (D_800D530C_main == 1 && WipeStatGet() == 0) {
+    if (omSysExitReq == 1 && WipeStatGet() == 0) {
         D_8010CC20_popgun_pickoff = 6;
     }
 }
@@ -981,9 +981,9 @@ void func_80108398_popgun_pickoff(omObjData *object) {
             break;
         case 2:
             if (!work->unk2D) {
-                stickX = D_800CBB6E_main[(s8)pad];
-                stickY = D_800D20A1_main[(s8)pad];
-                input = D_800D5558_main[(s8)pad];
+                stickX = HuPadStkX[(s8)pad];
+                stickY = HuPadStkY[(s8)pad];
+                input = HuPadBtnDown[(s8)pad];
                 if (stickY >= 24) {
                     target = 1;
                 } else if (stickY <= -24) {
@@ -1499,7 +1499,7 @@ s16 func_8010A024_popgun_pickoff(s16 spriteId, s32 flags) {
         return -1;
     }
     player = &D_8010DDD8_popgun_pickoff[index];
-    player->sprite = D_800C9530_main[spriteId];
+    player->sprite = HuSprAnimTbl[spriteId];
     player->unk_28 = flags;
     player->unk_1A = 7;
     cel = player->sprite->pat;
@@ -1622,7 +1622,7 @@ void func_8010A62C_popgun_pickoff(s16 index, s16 spriteId) {
     s32 j;
 
     player = &D_8010DDD8_popgun_pickoff[index];
-    player->sprite = D_800C9530_main[spriteId];
+    player->sprite = HuSprAnimTbl[spriteId];
     cel = player->sprite->pat;
     HuMemFree(player->vtx);
     HuMemFree(player->displayList);
@@ -1733,7 +1733,7 @@ void func_8010ABB4_popgun_pickoff(s16 playerId, s16 spriteId) {
 
     if (playerId != -1) {
         player = D_8010DDD8_popgun_pickoff + playerId;
-        player->sprite = D_800C9530_main[spriteId];
+        player->sprite = HuSprAnimTbl[spriteId];
         player->unk_1F = 0xFF;
         player->unk_1E = 0xFF;
         player->unk_1D = 0xFF;

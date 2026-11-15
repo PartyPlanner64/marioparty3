@@ -35,9 +35,9 @@ extern s16 D_8011A944_msetup;
 extern s16 D_8011A946_msetup;
 extern s16 D_8011AA4C_msetup;
 extern u16 D_80119410_msetup;
-extern u8 D_800CE20A_main;
+extern u8 storySceneNo;
 extern u8 D_8011A3B0_msetup[];
-extern s16 D_800D418E_main;
+extern s16 Hu3DCamMtxNo;
 
 void func_80106260_msetup(ModeCameraPreset *);
 void func_80117A3C_msetup(void);
@@ -52,8 +52,8 @@ void func_80117910_msetup(s16 group, s16 member, s16 camera, f32 x, f32 y, f32 z
     cam = &gCameraList[camera];
     depth = HuSpr3Dto2D(group, member, camera, x, y, z);
     if (depth != 0.0) {
-        sprite->unk_60 = (cam->viewports[D_800D418E_main].vp.vscale[0] * scale) / 4.0 / depth / (f64)(4.0f / 3.0f);
-        sprite->unk_64 = (cam->viewports[D_800D418E_main].vp.vscale[1] * scale) / 4.0 / depth;
+        sprite->unk_60 = (cam->viewports[Hu3DCamMtxNo].vp.vscale[0] * scale) / 4.0 / depth / (f64)(4.0f / 3.0f);
+        sprite->unk_64 = (cam->viewports[Hu3DCamMtxNo].vp.vscale[1] * scale) / 4.0 / depth;
     }
 }
 
@@ -469,7 +469,7 @@ void func_80118D48_msetup(void) {
     s16 previous;
     s32 step;
 
-    D_800CD280_main = 1;
+    Hu3DScreenClearF = 1;
     func_80106260_msetup(&D_8011A554_msetup);
     for (i = 0; i < 6; i++) {
         unused2[6] = -1;
@@ -513,7 +513,7 @@ void func_80118D48_msetup(void) {
         HuPrcVSleep();
     }
     step = 0;
-    D_800CD280_main = 0;
+    Hu3DScreenClearF = 0;
     do {
         switch (step) {
             case 0:
@@ -652,7 +652,7 @@ void func_80118D48_msetup(void) {
         D_8011A944_msetup = 1;
         D_8011AA4C_msetup = 0x75;
         D_8011A946_msetup = 0;
-        D_800CE20A_main = 1;
+        storySceneNo = 1;
     }
     D_80119410_msetup = 1;
     while (1) {

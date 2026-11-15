@@ -16,7 +16,7 @@ void n_alSynSetPan(N_ALVoice *v, ALPan pan) {
 
         update->delta = n_syn->paramSamples + v->pvoice->offset;
         update->type = AL_FILTER_SET_PAN;
-        if (D_800CB8AC_main & 1) {
+        if (msmMonoF & 1) {
             update->data.i = 64;
         } else {
             update->data.i = pan;

@@ -47,10 +47,10 @@ typedef struct ChipShotChallengeSphere {
     /* 0x0C */ f32 radius;
 } ChipShotChallengeSphere; // Size 0x10
 
-extern f32 D_800D5410_main;
-extern f32 D_800D51FC_main;
+extern f32 Hu3DMatColScale;
+extern f32 Hu3DMatAmbScale;
 extern s32 D_800A178C_main[][6];
-extern u8 D_800D6A90_main;
+extern u8 omAllPauseF;
 
 s32 D_8010A820_chip_shot_challenge = 0;
 s32 D_8010A824_chip_shot_challenge = 0;
@@ -339,7 +339,7 @@ void func_8010646C_chip_shot_challenge(omObjData *object) {
     s32 i;
     s32 j;
 
-    if (omPauseChk() + D_800D6A90_main != 0) {
+    if (omPauseChk() + omAllPauseF != 0) {
         return;
     }
     time = func_800E6E9C_minigame();
@@ -450,7 +450,7 @@ void func_8010646C_chip_shot_challenge(omObjData *object) {
     for (i = 0; i < D_800EC280_minigame; i++) {
         ((ChipShotChallengeWork *)D_800EC598_minigame[i]->data)->unk_60 = CRot.y;
     }
-    if (D_800D530C_main == 1) {
+    if (omSysExitReq == 1) {
         WipeCreateOut(WIPE_TYPE_NORMAL, 20);
         HuAudSeqFadeOut(30);
         HuAudFXAllFadeOut(30);
@@ -617,7 +617,7 @@ void func_80107520_chip_shot_challenge(omObjData *object) {
     s16 i;
     s16 x;
 
-    D_800D51FC_main = D_800D5410_main = 0.0f;
+    Hu3DMatAmbScale = Hu3DMatColScale = 0.0f;
     object->model[1] = Hu3DModelRead2(0x3C0007, 0xAD9);
     object->model[2] = Hu3DModelRead2(0x3C0007, 0xAD9);
     object->model[3] = Hu3DModelRead2(0x3C0007, 0xAD9);
@@ -628,8 +628,8 @@ void func_80107520_chip_shot_challenge(omObjData *object) {
     object->model[8] = Hu3DModelRead2(0x3C0007, 0xAD9);
     object->model[9] = Hu3DModelRead2(0x3C0007, 0xAD9);
     object->model[10] = Hu3DModelRead2(0x3C0007, 0xAD9);
-    D_800D5410_main = 1.0f;
-    D_800D51FC_main = 1.0f;
+    Hu3DMatColScale = 1.0f;
+    Hu3DMatAmbScale = 1.0f;
     object->func = func_801091E8_chip_shot_challenge;
 
     data = DataRead(0x2D);
@@ -920,9 +920,9 @@ void func_801087AC_chip_shot_challenge(omObjData *object) {
     pad = data->unk57;
     player = data->unk59;
     if (MgFlowStatGet() == MG_STATE_PLAY) {
-        stickX = D_800CBB6E_main[pad];
-        stickY = D_800D20A1_main[pad];
-        buttons = (u16)D_800CDA7C_main[pad];
+        stickX = HuPadStkX[pad];
+        stickY = HuPadStkY[pad];
+        buttons = (u16)HuPadBtn[pad];
         if (stickX > 60) {
             stickX = 60;
         }

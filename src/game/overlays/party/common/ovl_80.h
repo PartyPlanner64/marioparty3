@@ -18,7 +18,7 @@
 // s32 MBLast5Check(void);
 // s16 MBMasuKakusiBlockGet(u8);
 // void func_800EC5EC_shared_board(s16 arg0, s32 arg1, s16 arg2);
-// extern s16 D_800D4080_main;
+// extern s16 kakusiMasuStarForceF;
 // s16 MBRandCheck100(s8 arg0);
 // void SLSaveBoard(s32);
 // s16 HuWinStatGet(s16);
@@ -326,7 +326,7 @@
 // UnkMBGuideData* MBGuideCreate(u32* arg0, s32 arg1);
 // void MBGuideFaceCreate(Object *arg0, s16 arg1, s16 arg2, s32 arg3);
 // void MBGuideKill(UnkMBGuideData* arg0);
-// extern s16 D_800CE198_main;
+// extern s16 mbBoardMusId;
 // extern f32 D_801056E8_shared_board;
 // extern Vec2f D_801056EC_shared_board;
 // extern s32 mbWalkNum;
@@ -342,7 +342,7 @@
 // extern UnkBoard7 D_80104A00_shared_board[64];
 // extern s32 D_80105200_shared_board;
 // extern s32 D_80101B40_shared_board[];
-// extern s16 D_800D6A48_main;
+// extern s16 mbEndingF;
 // extern s16 mbDlgWinId;
 // extern f32 D_80105650_shared_board;
 // extern Object* D_80105628_shared_board;
@@ -397,7 +397,7 @@
 // extern s16 D_80101908_shared_board[];
 // extern s32 D_80101788_shared_board;
 // extern s32 D_8010178C_shared_board;
-// extern char D_800D5218_main[];
+// extern char omDBGStrBuf[];
 // extern s16 kakusiMasuCoin;
 // extern s16 kakusiMasuStar;
 // extern s16 kakusiMasuItem;

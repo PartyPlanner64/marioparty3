@@ -143,7 +143,7 @@ void func_800E2AD0_name_81(omObjData *arg0) {
                 }
                 if (i != 4) {
                     for (i = 0; i < 4; i++) {
-                        if (!(GwPlayer[i].stat & 1) && (D_800D5558_main[GwPlayer[i].pad] & (A_BUTTON | B_BUTTON))) {
+                        if (!(GwPlayer[i].stat & 1) && (HuPadBtnDown[GwPlayer[i].pad] & (A_BUTTON | B_BUTTON))) {
                             arg0->work[0] = 2;
                         }
                     }
@@ -169,7 +169,7 @@ void func_800E2AD0_name_81(omObjData *arg0) {
 
             if (!(GwPlayer[arg0->work[3]].stat & 1)) {
                 if (!(arg0->rot.y <= 0.0f)) {
-                    if (!(D_800D5558_main[GwPlayer[arg0->work[3]].pad] & (A_BUTTON | B_BUTTON))) {
+                    if (!(HuPadBtnDown[GwPlayer[arg0->work[3]].pad] & (A_BUTTON | B_BUTTON))) {
                         break;
                     }
                 }

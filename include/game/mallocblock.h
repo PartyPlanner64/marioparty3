@@ -32,17 +32,17 @@ typedef void (*HuFreeFunc)(void* ptr);
 
 #ifndef NO_EXTERN_VARIABLES
 extern s16 gHuMemIsDirty;
-extern s16 D_800A08A2_main;
+extern s16 HuMemDebugBlkNum;
 
-extern s16 D_800C993C_main;
-extern void* D_800C9950_main[];
+extern s16 HuMemDelayFreeCnt;
+extern void* HuMemDebugBlk[];
 
 extern HuMallocHeader* gLastMallocBlock;
 extern HuFreeFunc gFreeFunc;
 extern HuMallocHeader* gLastFreedBlock;
-extern u8 D_800D1FF0_main;
-extern s32 D_800D20AC_main;
-extern void* D_800D2140_main[];
+extern u8 Hu3DBufNum;
+extern s32 Hu3DFrameCnt;
+extern void* HuMemDebugBlkOld[];
 extern HuAllocFunc gMallocFunc;
 extern HuMallocHeader* gFirstMallocBlock;
 #endif

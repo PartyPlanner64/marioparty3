@@ -168,7 +168,7 @@ extern f32 D_8010B418_coconut_conk;
 extern omObjData *D_8010B484_coconut_conk;
 extern f32 D_8010B4A0_coconut_conk;
 extern f32 D_8010B4A4_coconut_conk;
-extern u8 D_800D6A90_main;
+extern u8 omAllPauseF;
 extern s32 D_800A178C_main[][6];
 extern s32 D_800A1790_main[][6];
 
@@ -252,10 +252,10 @@ void func_80105A3C_coconut_conk(void) {
 }
 
 void func_80105B04_coconut_conk(s32 playerIndex) {
-    D_800CDA7C_main[GwPlayer[playerIndex].pad] = 0;
-    D_800D5558_main[GwPlayer[playerIndex].pad] = 0;
-    D_800CBB6E_main[GwPlayer[playerIndex].pad] = 0;
-    D_800D20A1_main[GwPlayer[playerIndex].pad] = 0;
+    HuPadBtn[GwPlayer[playerIndex].pad] = 0;
+    HuPadBtnDown[GwPlayer[playerIndex].pad] = 0;
+    HuPadStkX[GwPlayer[playerIndex].pad] = 0;
+    HuPadStkY[GwPlayer[playerIndex].pad] = 0;
 }
 
 void func_80105B7C_coconut_conk(u8 arg0) {
@@ -375,7 +375,7 @@ void func_80106294_coconut_conk(void) {
 void func_801062D4_coconut_conk(omObjData *arg0) {
     CoconutConkData *data = &D_8010B1F0_coconut_conk[4];
 
-    if (omPauseChk() + D_800D6A90_main == 0) {
+    if (omPauseChk() + omAllPauseF == 0) {
         data->unk18 += 0.2f;
     }
     Hu3DModelObjTexScroll(arg0->model[0], 0.0f, data->unk18, D_8010B1E2_coconut_conk[0], D_8010B1E2_coconut_conk[1],
@@ -457,7 +457,7 @@ void func_801066E4_coconut_conk(omObjData *arg0) {
             break;
         case 1:
             Hu3DMotionSpeedSet(arg0->model[0], 1.0f);
-            if (D_800CCF58_main[Hu3DData[arg0->model[0]].motId].unk02 == Hu3DData[arg0->model[0]].motTime) {
+            if (Hu3DMotion[Hu3DData[arg0->model[0]].motId].unk02 == Hu3DData[arg0->model[0]].motTime) {
                 data->unk04 = 0;
             }
             break;
@@ -780,10 +780,10 @@ void func_80107690_coconut_conk(omObjData *arg0) {
     CoconutConkData *data = &D_8010B1F0_coconut_conk[21];
 
     data->unk04 = 0;
-    if (D_800CBB6E_main[arg0->work[3]] <= -30) {
+    if (HuPadStkX[arg0->work[3]] <= -30) {
         data->unk04 = 1;
     }
-    if (D_800CBB6E_main[arg0->work[3]] >= 30) {
+    if (HuPadStkX[arg0->work[3]] >= 30) {
         data->unk04 = 2;
     }
 }
@@ -901,7 +901,7 @@ void func_80107B8C_coconut_conk(omObjData *arg0) {
             coconut->unk04 = 4;
         }
     }
-    if (D_800CCF58_main[Hu3DData[arg0->model[6]].motId].unk02 <= Hu3DData[arg0->model[6]].motTime) {
+    if (Hu3DMotion[Hu3DData[arg0->model[6]].motId].unk02 <= Hu3DData[arg0->model[6]].motTime) {
         Hu3DModelAttrSet(arg0->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         Hu3DModelAttrSet(arg0->model[7], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DModelPosSet(arg0->model[7], arg0->trans.x, arg0->trans.y + 50.0f, arg0->trans.z + 40.0f);
@@ -1050,10 +1050,10 @@ void func_8010815C_coconut_conk(omObjData *arg0) {
                         data->unk20 = 0.0f;
                     }
                     Hu3DModelTPLvlSet(arg0->model[4], data->unk20);
-                    if (D_800CCF58_main[Hu3DData[arg0->model[4]].motId].unk02 <= Hu3DData[arg0->model[4]].motTime) {
+                    if (Hu3DMotion[Hu3DData[arg0->model[4]].motId].unk02 <= Hu3DData[arg0->model[4]].motTime) {
                         Hu3DModelAttrSet(arg0->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     }
-                    if (D_800CCF58_main[Hu3DData[arg0->model[5]].motId].unk02 <= Hu3DData[arg0->model[5]].motTime) {
+                    if (Hu3DMotion[Hu3DData[arg0->model[5]].motId].unk02 <= Hu3DData[arg0->model[5]].motTime) {
                         Hu3DModelAttrSet(arg0->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     }
                     break;
@@ -1063,10 +1063,10 @@ void func_8010815C_coconut_conk(omObjData *arg0) {
                         data->unk20 = 0.0f;
                     }
                     Hu3DModelTPLvlSet(arg0->model[4], data->unk20);
-                    if (D_800CCF58_main[Hu3DData[arg0->model[4]].motId].unk02 <= Hu3DData[arg0->model[4]].motTime) {
+                    if (Hu3DMotion[Hu3DData[arg0->model[4]].motId].unk02 <= Hu3DData[arg0->model[4]].motTime) {
                         Hu3DModelAttrSet(arg0->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     }
-                    if (D_800CCF58_main[Hu3DData[arg0->model[5]].motId].unk02 <= Hu3DData[arg0->model[5]].motTime) {
+                    if (Hu3DMotion[Hu3DData[arg0->model[5]].motId].unk02 <= Hu3DData[arg0->model[5]].motTime) {
                         Hu3DModelAttrSet(arg0->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     }
                     break;
@@ -1267,11 +1267,11 @@ void func_801090C4_coconut_conk(omObjData *arg0) {
                 dir = 2;
             }
             if (arg0->trans.x + 29.0f > target->trans.x - 40.0f && arg0->trans.x - 29.0f < target->trans.x + 40.0f) {
-                D_800D5558_main[arg0->work[3]] |= 0x8000;
-                D_800D5558_main[arg0->work[3]] |= 0x2000;
+                HuPadBtnDown[arg0->work[3]] |= 0x8000;
+                HuPadBtnDown[arg0->work[3]] |= 0x2000;
             }
         } else {
-            D_800D5558_main[arg0->work[3]] |= 0x8000;
+            HuPadBtnDown[arg0->work[3]] |= 0x8000;
         }
     }
     data->unk06--;
@@ -1292,12 +1292,12 @@ void func_801090C4_coconut_conk(omObjData *arg0) {
         data->unk08 = (rand8() & 0x1F) + 30;
         data->unk06 = 15;
     }
-    D_800CBB6E_main[arg0->work[3]] = data->unk08;
+    HuPadStkX[arg0->work[3]] = data->unk08;
     if (rand8() % 70 == 0) {
-        D_800D5558_main[arg0->work[3]] |= 0x8000;
+        HuPadBtnDown[arg0->work[3]] |= 0x8000;
     }
     if (rand8() % 5 == 0) {
-        D_800D5558_main[arg0->work[3]] |= 0x2000;
+        HuPadBtnDown[arg0->work[3]] |= 0x2000;
     }
 }
 
@@ -1319,11 +1319,11 @@ void func_801095C8_coconut_conk(omObjData *arg0) {
     s16 closest;
     s16 i;
 
-    if (D_800D20A1_main[arg0->work[3]] >= 5) {
-        D_800D20A1_main[arg0->work[3]] = 0;
+    if (HuPadStkY[arg0->work[3]] >= 5) {
+        HuPadStkY[arg0->work[3]] = 0;
     }
-    if (D_800D20A1_main[arg0->work[3]] < -4) {
-        D_800D20A1_main[arg0->work[3]] = 0;
+    if (HuPadStkY[arg0->work[3]] < -4) {
+        HuPadStkY[arg0->work[3]] = 0;
     }
     func_800DDD94_minigame(arg0);
     if (Hu3DData[arg0->model[7]].motTime == 0.0f) {
@@ -1426,9 +1426,9 @@ void func_80109940_coconut_conk(omObjData *arg0) {
                     data->unk0C = 0;
                 }
                 if (data->unk0C < 70) {
-                    D_800CBB6E_main[arg0->work[3]] = -40;
+                    HuPadStkX[arg0->work[3]] = -40;
                 } else if (data->unk0C < 140) {
-                    D_800CBB6E_main[arg0->work[3]] = 40;
+                    HuPadStkX[arg0->work[3]] = 40;
                 }
                 if (data->unk0C >= 140) {
                     func_801095A4_coconut_conk(arg0);
@@ -1437,8 +1437,8 @@ void func_80109940_coconut_conk(omObjData *arg0) {
                 break;
             }
             if (work->unk3C != 0.0f) {
-                D_800CBB6E_main[arg0->work[3]] = 0;
-                D_800D20A1_main[arg0->work[3]] = -40;
+                HuPadStkX[arg0->work[3]] = 0;
+                HuPadStkY[arg0->work[3]] = -40;
             }
             for (i = 0; i < 3; i++) {
                 datas[i] = &D_8010B1F0_coconut_conk[22 + i];
@@ -1657,7 +1657,7 @@ void func_8010A5D8_coconut_conk(omObjData *arg0) {
 }
 
 void func_8010A610_coconut_conk(omObjData *arg0) {
-    if (D_800D530C_main == 1) {
+    if (omSysExitReq == 1) {
         WipeCreateOut(WIPE_TYPE_NORMAL, 20);
         arg0->func = func_8010A5D8_coconut_conk;
         HuAudSeqFadeOut(30);

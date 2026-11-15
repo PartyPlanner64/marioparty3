@@ -4,10 +4,10 @@
 
 unsigned int __osRdbWriteOK = 1;
 
-extern rdbPacket *D_800D5554_main;
-extern u32 D_800CE174_main;
-extern u32 D_800D6A8C_main;
-extern u32 D_800CC43C_main;
+extern rdbPacket *__osRdb_IP6_Data;
+extern u32 __osRdb_IP6_Size;
+extern u32 __osRdb_IP6_Ct;
+extern u32 __osRdb_IP6_CurWrite;
 
 u32 __osRdbSend(u8 *buf, u32 size, u32 type) {
     rdbPacket packet;
@@ -34,19 +34,19 @@ u32 __osRdbSend(u8 *buf, u32 size, u32 type) {
         sendFirst = TRUE;
     }
 
-    while (size != 0 && D_800D6A8C_main < D_800CE174_main) {
+    while (size != 0 && __osRdb_IP6_Ct < __osRdb_IP6_Size) {
         count = (size < 4) ? size : 3;
-        pkt = &D_800D5554_main[D_800CC43C_main];
+        pkt = &__osRdb_IP6_Data[__osRdb_IP6_CurWrite];
         pkt->type = type;
         pkt->length = count;
         for (i = 0; i < count; i++) {
             pkt->buf[i] = buf[offset++];
         }
-        D_800CC43C_main++;
-        if (D_800CC43C_main >= D_800CE174_main) {
-            D_800CC43C_main = 0;
+        __osRdb_IP6_CurWrite++;
+        if (__osRdb_IP6_CurWrite >= __osRdb_IP6_Size) {
+            __osRdb_IP6_CurWrite = 0;
         }
-        D_800D6A8C_main++;
+        __osRdb_IP6_Ct++;
         size -= count;
         sent += count;
     }

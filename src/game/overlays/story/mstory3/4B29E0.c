@@ -1,8 +1,8 @@
 #include "common.h"
 #include "game/hmfmath.h"
 
-extern f32 D_800CB890_main;
-extern f32 D_800D5210_main;
+extern f32 CFanOfs;
+extern f32 CFanLen;
 
 extern void (*const D_801154F0_mstory3[])(void);
 extern const s32 D_801154F8_mstory3[];
@@ -57,8 +57,8 @@ void func_801059E4_mstory3(omObjData *obj) {
     D_800CE17C_main[1] = D_80115260_mstory3.z;
     D_800CE17C_main[-1] = 0.0f;
     D_800CE17C_main[2] = 35.0f;
-    D_800CE17C_main[3] = D_800D5210_main;
-    D_800CE17C_main[4] = D_800CB890_main;
+    D_800CE17C_main[3] = CFanLen;
+    D_800CE17C_main[4] = CFanOfs;
     Hu3DCameraPosSetV(0, &D_80115260_mstory3, &D_8011526C_mstory3, &D_80115278_mstory3);
     Hu3DCamUpdateMtx(0);
 }
@@ -150,7 +150,7 @@ void func_80105D98_mstory3(omObjData *obj) {
             }
             break;
         case 2:
-            if (D_80115284_mstory3 == 1 && (D_800D5558_main[D_80115B90_mstory3] & START_BUTTON)) {
+            if (D_80115284_mstory3 == 1 && (HuPadBtnDown[D_80115B90_mstory3] & START_BUTTON)) {
                 state++;
             }
             break;
@@ -186,7 +186,7 @@ void func_80105EE4_mstory3(omObjData *obj) {
 }
 
 void func_80105F2C_mstory3(omObjData *obj) {
-    if (D_800D530C_main == 1) {
+    if (omSysExitReq == 1) {
         obj->func = func_80105EE4_mstory3;
     }
 }
@@ -427,7 +427,7 @@ void func_80106CF0_mstory3(s16 model, s16 animSlot, s16 anim) {
             Hu3DModelAnimStop(Hu3DData[model].hmf);
         } else {
             Hu3DModelAnimStart(Hu3DData[model].hmf);
-            entry = &D_800D1714_main[animSlot];
+            entry = &Hu3DAnimData[animSlot];
             entry->animIdx = anim;
             entry->rot = 0;
             entry->flags = 0;
@@ -543,7 +543,7 @@ s32 func_80107290_mstory3(s16 model) {
     f32 time = Hu3DMotionShiftTimeGet(model);
     s32 ret = 0;
 
-    if (time == -1.0f && D_800CCF58_main[Hu3DData[model].motId].unk02 <= Hu3DData[model].motTime) {
+    if (time == -1.0f && Hu3DMotion[Hu3DData[model].motId].unk02 <= Hu3DData[model].motTime) {
         ret = -1;
     }
     return ret;

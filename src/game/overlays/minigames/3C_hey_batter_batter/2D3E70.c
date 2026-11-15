@@ -33,8 +33,8 @@ typedef struct HeyBatterBatterBssEE4 {
 } HeyBatterBatterBssEE4; // Size 0xC
 
 extern s32 D_800A178C_main[][6];
-extern u16 D_800A11D0_main[5];
-extern u16 D_800A11DC_main[5];
+extern u16 mgInstColumnTbl[5];
+extern u16 mgInstSlotTbl[5];
 
 s16 D_80109B60_hey_batter_batter = 0;
 Vec D_80109B64_hey_batter_batter[4] = { { -15.0f, 0.0f, 0.0f }, { 5.0f, 90.0f, 0.0f }, { 5.0f, -90.0f, 0.0f }, { 10.0f, 0.0f, 0.0f } };
@@ -251,9 +251,9 @@ void func_80105DE0_hey_batter_batter(void) {
     D_80109EE2_hey_batter_batter = 0;
     D_80109EE4_hey_batter_batter = 0;
     if (GwPlayer[D_80109ED0_hey_batter_batter].stat & 1) {
-        thresholds[0] = D_800A11DC_main[0];
+        thresholds[0] = mgInstSlotTbl[0];
         for (i = 1; i < 5; i++) {
-            thresholds[i] = thresholds[i - 1] + D_800A11DC_main[i];
+            thresholds[i] = thresholds[i - 1] + mgInstSlotTbl[i];
         }
         roll = rand8() % 100;
         for (i = 0; i < 5; i++) {
@@ -327,7 +327,7 @@ void func_80106048_hey_batter_batter(omObjData *object) {
                         HuAudSeqPlay(0x68);
                         D_80109C32_hey_batter_batter = GMesCreate(0x24);
                         GwPlayer[D_80109ED0_hey_batter_batter].bonusCoin =
-                            D_800A11D0_main[D_80109EF0_hey_batter_batter];
+                            mgInstColumnTbl[D_80109EF0_hey_batter_batter];
                         break;
                     case 1:
                         HuAudSeqPlay(0x6B);
@@ -543,7 +543,7 @@ void func_80106C6C_hey_batter_batter(omObjData *object) {
 }
 
 void func_80106CBC_hey_batter_batter(omObjData *object) {
-    if (D_800D530C_main == 1) {
+    if (omSysExitReq == 1) {
         object->func = func_80106C24_hey_batter_batter;
     }
 }
@@ -649,7 +649,7 @@ void func_80107464_hey_batter_batter(omObjData *object) {
                 break;
             case 5:
                 Hu3DMotionModelSet(object->model[0], object->motion[4]);
-                Hu3DMotionTimeSet(object->model[0], D_800CCF58_main[Hu3DData[object->model[0]].motId].unk02);
+                Hu3DMotionTimeSet(object->model[0], Hu3DMotion[Hu3DData[object->model[0]].motId].unk02);
                 Hu3DMotionSpeedSet(object->model[0], -0.9f);
                 break;
             case 6:
@@ -700,7 +700,7 @@ void func_80107464_hey_batter_batter(omObjData *object) {
                 D_80109C8A_hey_batter_batter++;
                 break;
             case 1:
-                if (D_800CCF58_main[Hu3DData[object->model[0]].motId].unk02 == Hu3DData[object->model[0]].motTime) {
+                if (Hu3DMotion[Hu3DData[object->model[0]].motId].unk02 == Hu3DData[object->model[0]].motTime) {
                     D_80109ED2_hey_batter_batter = 5;
                     D_80109C8A_hey_batter_batter++;
                 }
@@ -821,7 +821,7 @@ void func_80107C48_hey_batter_batter(omObjData *object) {
                                 D_80109CA4_hey_batter_batter = 0;
                             }
                         }
-                    } else if (D_800D5558_main[GwPlayer[D_80109ED0_hey_batter_batter].pad] & A_BUTTON) {
+                    } else if (HuPadBtnDown[GwPlayer[D_80109ED0_hey_batter_batter].pad] & A_BUTTON) {
                         D_80109EAE_hey_batter_batter = 1;
                         HuAudFXPlay(0x4D0);
                         D_80109ED2_hey_batter_batter = 4;
@@ -968,8 +968,8 @@ void func_80108B48_hey_batter_batter(omObjData *object) {
         Hu3DModelPosSet(base->shadow, D_80109D04_hey_batter_batter[i].x,
                         D_80109D04_hey_batter_batter[i].y, D_80109D04_hey_batter_batter[i].z);
         sprite = SprModelRead(0x21002C, 0xA0, 0x10);
-        model = D_80109F2C_hey_batter_batter[i] = D_800CBB60_main[sprite].modelId;
-        Hu3DSprModelPointSet(sprite, D_800A11D0_main[i]);
+        model = D_80109F2C_hey_batter_batter[i] = Hu3DSprModelData[sprite].modelId;
+        Hu3DSprModelPointSet(sprite, mgInstColumnTbl[i]);
         Hu3DModelPosSet(model, D_80109D04_hey_batter_batter[i].x, D_80109D04_hey_batter_batter[i].y + 250.0f,
                         D_80109D04_hey_batter_batter[i].z + 2.0f);
         Hu3DModelScaleSet(model, 6.0f, 6.0f, 6.0f);
@@ -997,8 +997,8 @@ void func_80108D90_hey_batter_batter(omObjData *object) {
             Hu3DModelCameraSet(D_80109F2C_hey_batter_batter[i], 0);
         }
         D_80109D98_hey_batter_batter =
-            SprModelRead(D_80109D40_hey_batter_batter[D_800A11D0_main[D_80109D90_hey_batter_batter]], 0xA0, 0x10);
-        object->model[1] = D_800CBB60_main[D_80109D98_hey_batter_batter].modelId;
+            SprModelRead(D_80109D40_hey_batter_batter[mgInstColumnTbl[D_80109D90_hey_batter_batter]], 0xA0, 0x10);
+        object->model[1] = Hu3DSprModelData[D_80109D98_hey_batter_batter].modelId;
         Hu3DModelPosSet(object->model[1], Hu3DData[D_80109D92_hey_batter_batter].pos.x,
                         Hu3DData[D_80109D92_hey_batter_batter].pos.y,
                         Hu3DData[D_80109D92_hey_batter_batter].pos.z + 1.0f);
@@ -1108,7 +1108,7 @@ void func_80109630_hey_batter_batter(omObjData *object) {
         D_80109EEA_hey_batter_batter[0] = 0;
     }
     for (i = 0; i < 7; i++) {
-        if (D_800CCF58_main[Hu3DData[object->model[i]].motId].unk02 == Hu3DData[object->model[i]].motTime) {
+        if (Hu3DMotion[Hu3DData[object->model[i]].motId].unk02 == Hu3DData[object->model[i]].motTime) {
             Hu3DModelCameraSet(object->model[i], 0);
         }
     }

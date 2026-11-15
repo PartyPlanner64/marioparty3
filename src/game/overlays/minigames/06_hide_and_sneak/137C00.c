@@ -106,7 +106,7 @@ typedef struct {
 } HideAndSneakBssE1A8;       // sizeof 0xC
 
 extern s32 D_800A178C_main[][6];
-extern u8 D_800D6A90_main;
+extern u8 omAllPauseF;
 // Fields of hideAndSneakBssE174 (aliased in undefined_syms.txt).
 extern s8 D_8010E174_hide_and_sneak;
 extern s8 D_8010E175_hide_and_sneak[4];
@@ -314,10 +314,10 @@ void func_80105A74_hide_and_sneak(void) {
 }
 
 void func_80105B3C_hide_and_sneak(s32 playerIndex) {
-    D_800CDA7C_main[GwPlayer[playerIndex].pad] = 0;
-    D_800D5558_main[GwPlayer[playerIndex].pad] = 0;
-    D_800CBB6E_main[GwPlayer[playerIndex].pad] = 0;
-    D_800D20A1_main[GwPlayer[playerIndex].pad] = 0;
+    HuPadBtn[GwPlayer[playerIndex].pad] = 0;
+    HuPadBtnDown[GwPlayer[playerIndex].pad] = 0;
+    HuPadStkX[GwPlayer[playerIndex].pad] = 0;
+    HuPadStkY[GwPlayer[playerIndex].pad] = 0;
 }
 
 Gfx **func_80105BB4_hide_and_sneak(Gfx **gfxPos) {
@@ -384,57 +384,57 @@ void func_80105EC4_hide_and_sneak(s16 conNo) {
         osSyncPrintf("\n ConNo False! \n");
         return;
     }
-    if ((u16)D_800CDA7C_main[conNo] & D_JPAD) {
+    if ((u16)HuPadBtn[conNo] & D_JPAD) {
         for (i = 0; i < 2; i++) {
             CRotM[i].x = func_801059BC_hide_and_sneak(CRotM[i].x, 1.0f);
         }
     }
-    if ((u16)D_800CDA7C_main[GwPlayer[0].pad] & U_JPAD) {
+    if ((u16)HuPadBtn[GwPlayer[0].pad] & U_JPAD) {
         for (i = 0; i < 2; i++) {
             CRotM[i].x = func_801059BC_hide_and_sneak(CRotM[i].x, -1.0f);
         }
     }
-    if ((u16)D_800CDA7C_main[conNo] & L_JPAD) {
+    if ((u16)HuPadBtn[conNo] & L_JPAD) {
         for (i = 0; i < 2; i++) {
             CRotM[i].y = func_801059BC_hide_and_sneak(CRotM[i].y, 1.0f);
         }
     }
-    if ((u16)D_800CDA7C_main[conNo] & R_JPAD) {
+    if ((u16)HuPadBtn[conNo] & R_JPAD) {
         for (i = 0; i < 2; i++) {
             CRotM[i].y = func_801059BC_hide_and_sneak(CRotM[i].y, -1.0f);
         }
     }
-    if ((u16)D_800CDA7C_main[conNo] & A_BUTTON) {
+    if ((u16)HuPadBtn[conNo] & A_BUTTON) {
         for (i = 0; i < 2; i++) {
             CZoomM[i] += 10.0f;
         }
     }
-    if ((u16)D_800CDA7C_main[conNo] & B_BUTTON) {
+    if ((u16)HuPadBtn[conNo] & B_BUTTON) {
         for (i = 0; i < 2; i++) {
             CZoomM[i] -= 10.0f;
         }
     }
-    if ((u16)D_800CDA7C_main[conNo] & L_CBUTTONS) {
+    if ((u16)HuPadBtn[conNo] & L_CBUTTONS) {
         for (i = 0; i < 2; i++) {
             CenterM[i].x -= 10.0f;
         }
     }
-    if ((u16)D_800CDA7C_main[conNo] & R_CBUTTONS) {
+    if ((u16)HuPadBtn[conNo] & R_CBUTTONS) {
         for (i = 0; i < 2; i++) {
             CenterM[i].x += 10.0f;
         }
     }
-    if ((u16)D_800CDA7C_main[conNo] & U_CBUTTONS) {
+    if ((u16)HuPadBtn[conNo] & U_CBUTTONS) {
         for (i = 0; i < 2; i++) {
             CenterM[i].y += 10.0f;
         }
     }
-    if ((u16)D_800CDA7C_main[conNo] & D_CBUTTONS) {
+    if ((u16)HuPadBtn[conNo] & D_CBUTTONS) {
         for (i = 0; i < 2; i++) {
             CenterM[i].y -= 10.0f;
         }
     }
-    if (D_800D5558_main[conNo] & Z_TRIG) {
+    if (HuPadBtnDown[conNo] & Z_TRIG) {
         osSyncPrintf("\n");
         for (i = 0; i < 2; i++) {
             osSyncPrintf("CameraNo / %d   Zoom / %f\n", i, CZoomM[i]);
@@ -568,7 +568,7 @@ s8 func_80106ABC_hide_and_sneak(omObjData *object) {
                 cpu->unk_01++;
                 break;
             case 1:
-                D_800CBB6E_main[object->work[3]] = cpu->unk_02;
+                HuPadStkX[object->work[3]] = cpu->unk_02;
                 cpu->unk_03++;
                 if (cpu->unk_03 >= cpu->unk_04) {
                     cpu->unk_05++;
@@ -583,9 +583,9 @@ s8 func_80106ABC_hide_and_sneak(omObjData *object) {
                 break;
             case 2:
                 if (D_8010C370_hide_and_sneak[D_8010C782_hide_and_sneak][cpu->unk_07] < object->trans.x) {
-                    D_800CBB6E_main[object->work[3]] = -20;
+                    HuPadStkX[object->work[3]] = -20;
                 } else if (object->trans.x < D_8010C370_hide_and_sneak[D_8010C782_hide_and_sneak][cpu->unk_07]) {
-                    D_800CBB6E_main[object->work[3]] = 20;
+                    HuPadStkX[object->work[3]] = 20;
                 } else if (object->trans.x == D_8010C370_hide_and_sneak[D_8010C782_hide_and_sneak][cpu->unk_07]) {
                     cpu->unk_01 = 0;
                     return 1;
@@ -641,14 +641,14 @@ void func_80106D10_hide_and_sneak(omObjData *object) {
             }
             work->unk_0C = func_80106ABC_hide_and_sneak(object);
             if (work->unk_08 <= 0) {
-                if (D_800CBB6E_main[pad] < -10 && -((D_8010C782_hide_and_sneak - 1) * 65) < object->trans.x) {
+                if (HuPadStkX[pad] < -10 && -((D_8010C782_hide_and_sneak - 1) * 65) < object->trans.x) {
                     work->unk_08 = 1;
                     object->rot.y = 270.0f;
                     func_8010699C_hide_and_sneak(object, 1);
                 }
             }
             if (work->unk_08 >= 0) {
-                if (D_800CBB6E_main[pad] > 10 && object->trans.x < (D_8010C782_hide_and_sneak - 1) * 65) {
+                if (HuPadStkX[pad] > 10 && object->trans.x < (D_8010C782_hide_and_sneak - 1) * 65) {
                     work->unk_08 = -1;
                     object->rot.y = 90.0f;
                     func_8010699C_hide_and_sneak(object, 1);
@@ -656,7 +656,7 @@ void func_80106D10_hide_and_sneak(omObjData *object) {
             }
             x = object->trans.x;
             if (work->unk_08 == 0) {
-                if ((D_8010C782_hide_and_sneak == 4 && abs(x) == 195) || (D_8010C782_hide_and_sneak == 3 && abs(x) == 130) || (D_8010C782_hide_and_sneak == 2 && abs(x) == 65) || abs(D_800CBB6E_main[pad]) <= 10) {
+                if ((D_8010C782_hide_and_sneak == 4 && abs(x) == 195) || (D_8010C782_hide_and_sneak == 3 && abs(x) == 130) || (D_8010C782_hide_and_sneak == 2 && abs(x) == 65) || abs(HuPadStkX[pad]) <= 10) {
                     if (func_8010661C_hide_and_sneak(object, 0.0f)) {
                         func_8010699C_hide_and_sneak(object, 1);
                     } else {
@@ -666,7 +666,7 @@ void func_80106D10_hide_and_sneak(omObjData *object) {
             }
             for (i = 0; i < 4; i++) {
                 if (x == D_8010C370_hide_and_sneak[D_8010C782_hide_and_sneak][i]) {
-                    if ((D_800D5558_main[pad] & 0x8000) || work->unk_0C != 0) {
+                    if ((HuPadBtnDown[pad] & 0x8000) || work->unk_0C != 0) {
                         D_8010E17C_hide_and_sneak = D_8010E175_hide_and_sneak[i];
                         D_8010E170_hide_and_sneak = 1;
                         work->unk_08 = 0;
@@ -1631,8 +1631,8 @@ void func_80109688_hide_and_sneak(omObjData *object) {
             work->unk_08 = candidates[func_801064F4_hide_and_sneak(count)];
         }
     } else {
-        stickX = D_800CBB6E_main[pad];
-        stickY = D_800D20A1_main[pad];
+        stickX = HuPadStkX[pad];
+        stickY = HuPadStkY[pad];
         if (abs(stickX) > 10 || abs(stickY) > 10) {
             if (abs(stickX) > abs(stickY)) {
                 if (stickX < 0 && D_8010E182_hide_and_sneak[0] != 0) {
@@ -2015,7 +2015,7 @@ void func_8010A88C_hide_and_sneak(omObjData *object) {
                     if (work->unk_08 > 20) {
                         D_8010E1B3_hide_and_sneak = 2;
                     }
-                } else if (omPauseChk() + D_800D6A90_main == 0) {
+                } else if (omPauseChk() + omAllPauseF == 0) {
                     work->unk_04 -= 4;
                 }
             }
@@ -2026,7 +2026,7 @@ void func_8010A88C_hide_and_sneak(omObjData *object) {
                 D_8010E1AC_hide_and_sneak = 1;
             }
             if (work->unk_04 >= -0x3F) {
-                if (omPauseChk() + D_800D6A90_main == 0) {
+                if (omPauseChk() + omAllPauseF == 0) {
                     work->unk_04 -= 4;
                 }
             } else {
@@ -2040,7 +2040,7 @@ void func_8010A88C_hide_and_sneak(omObjData *object) {
             }
             if (D_8010E182_hide_and_sneak[index] != 0) {
                 if (work->unk_04 < 0) {
-                    if (omPauseChk() + D_800D6A90_main == 0) {
+                    if (omPauseChk() + omAllPauseF == 0) {
                         work->unk_04 += 4;
                     }
                 } else {
@@ -2415,7 +2415,7 @@ void func_8010BCB0_hide_and_sneak(omObjData *object) {
 }
 
 void func_8010BCE8_hide_and_sneak(omObjData *object) {
-    if (D_800D530C_main == 1) {
+    if (omSysExitReq == 1) {
         WipeCreateOut(WIPE_TYPE_NORMAL, 20);
         object->func = func_8010BCB0_hide_and_sneak;
         HuAudSeqFadeOut(30);

@@ -38,23 +38,23 @@ f64 cosd(f64 angle) {
     index = (s32)wholeAngle;
     fraction = angle - wholeAngle;
     fraction *= M_DTOR;
-    sinTbl = D_800A49A0_main[index];
-    cosTbl = D_800A49A0_main[90 - index];
+    sinTbl = __sinTbl[index];
+    cosTbl = __sinTbl[90 - index];
     result = cosTbl;
 
     termsRemaining = 8;
     termIndex = 1;
     do {
-        term = D_800A4380_main[9 - termsRemaining] * (term * fraction);
-        if (-D_800C94E0_main <= term && term <= D_800C94E0_main) {
+        term = __invFactTbl[9 - termsRemaining] * (term * fraction);
+        if (-__libmPrecision <= term && term <= __libmPrecision) {
             break;
         }
         if (toggle) {
-            wholeAngle = D_800A4350_main[termIndex] ? term * sinTbl : -term * sinTbl;
+            wholeAngle = __sinCosSignTbl[termIndex] ? term * sinTbl : -term * sinTbl;
             result += wholeAngle;
             toggle = 0;
         } else {
-            wholeAngle = D_800A4350_main[termIndex] ? term * cosTbl : -term * cosTbl;
+            wholeAngle = __sinCosSignTbl[termIndex] ? term * cosTbl : -term * cosTbl;
             result += wholeAngle;
             toggle = 1;
         }

@@ -22,14 +22,14 @@ extern u16 D_8010DA48_fridged_bridges[1][12];
 extern omObjData *D_8010DA88_fridged_bridges;
 extern FridgedBridgesCamCollWork D_8010DA90_fridged_bridges[4];
 
-extern f32 D_800CCF98_main[];
-extern CollisionGrid *D_800D1104_main;
-extern s32 D_800C9940_main;
-extern HuCamera *D_800D10F4_main;
-extern s16 D_800D418E_main;
+extern f32 CFanLenM[];
+extern CollisionGrid *MapCollData;
+extern s32 Hu3DCurAttr;
+extern HuCamera *Hu3DCurCamera;
+extern s16 Hu3DCamMtxNo;
 extern Mtx *MTXBuf;
 extern s16 MTXBufNum;
-extern f32 D_800D4198_main[];
+extern f32 CFanOfsM[];
 
 void func_8010BE88_fridged_bridges(omObjData *arg0);
 void func_8010C178_fridged_bridges(omObjData *arg0);
@@ -143,8 +143,8 @@ void func_8010C1D8_fridged_bridges(omObjData *arg0) {
         D_8010DA90_fridged_bridges[i].fan.z = pos.z;
         D_8010DA90_fridged_bridges[i].fan.angle = CRotM[i].y;
         D_8010DA90_fridged_bridges[i].fan.shape.spread = gCameraList[i].fov;
-        D_8010DA90_fridged_bridges[i].fan.shape.length = D_800CCF98_main[i];
-        D_8010DA90_fridged_bridges[i].fan.shape.offset = D_800D4198_main[i];
+        D_8010DA90_fridged_bridges[i].fan.shape.length = CFanLenM[i];
+        D_8010DA90_fridged_bridges[i].fan.shape.offset = CFanOfsM[i];
         Hu3DCameraPosSetV(i, &pos, &at, &up);
         Hu3DCamUpdateMtx(i);
     }
@@ -155,8 +155,8 @@ void func_8010C46C_fridged_bridges(HmfModel *model, HuMtx4F mtx) {
     HmfSkeletonNode *node;
     HuMtx4F temp;
 
-    D_800C9940_main = model->attr;
-    guMtxL2F(mtx, &D_800D10F4_main->mtxs[D_800D418E_main].lookAtMtx);
+    Hu3DCurAttr = model->attr;
+    guMtxL2F(mtx, &Hu3DCurCamera->mtxs[Hu3DCamMtxNo].lookAtMtx);
     if (model->pos.x != 0.0f || model->pos.y != 0.0f || model->pos.z != 0.0f) {
         mtxTransCat(mtx, model->pos.x, model->pos.y, model->pos.z);
     }
@@ -212,16 +212,16 @@ void func_8010C738_fridged_bridges(FridgedBridgesCamCollWork *work, HmfModel *mo
     func_8010C46C_fridged_bridges(model, mtx);
     guMtxIdentF(ident);
     /* Dead stores (only the sindf/cosdf calls survive), as in MapCullFan. */
-    x0 = D_800D1104_main[gridIndex].width * D_800D1104_main[gridIndex].cellWidth / 2.0f + work->fan.x +
+    x0 = MapCollData[gridIndex].width * MapCollData[gridIndex].cellWidth / 2.0f + work->fan.x +
          sindf(work->fan.angle) * shape->offset;
-    z0 = D_800D1104_main[gridIndex].depth * D_800D1104_main[gridIndex].cellDepth / 2.0f + work->fan.z +
+    z0 = MapCollData[gridIndex].depth * MapCollData[gridIndex].cellDepth / 2.0f + work->fan.z +
          cosdf(work->fan.angle) * shape->offset;
     tri[0].y = tri[1].y = tri[2].y = 0;
-    value = D_800D1104_main[gridIndex].width * D_800D1104_main[gridIndex].cellWidth / 2.0f + work->fan.x +
+    value = MapCollData[gridIndex].width * MapCollData[gridIndex].cellWidth / 2.0f + work->fan.x +
             sindf(work->fan.angle) * shape->offset;
     CLAMP_S16(value);
     tri[0].x = value;
-    value = D_800D1104_main[gridIndex].depth * D_800D1104_main[gridIndex].cellDepth / 2.0f + work->fan.z +
+    value = MapCollData[gridIndex].depth * MapCollData[gridIndex].cellDepth / 2.0f + work->fan.z +
             cosdf(work->fan.angle) * shape->offset;
     CLAMP_S16(value);
     tri[0].z = value;
@@ -237,11 +237,11 @@ void func_8010C738_fridged_bridges(FridgedBridgesCamCollWork *work, HmfModel *mo
     value = tri[0].z - cosdf(work->fan.angle - shape->spread / 2.0f) * shape->length;
     CLAMP_S16(value);
     tri[2].z = value;
-    grid = &D_800D1104_main[gridIndex];
+    grid = &MapCollData[gridIndex];
     cellWidth = grid->cellWidth;
     cellDepth = grid->cellDepth;
     work->dlCount[0] = work->dlCount[1] = work->dlCount[2] = 0;
-    for (z = 0; z < D_800D1104_main[gridIndex].depth; z++) {
+    for (z = 0; z < MapCollData[gridIndex].depth; z++) {
         z0 = z * cellDepth + model->pos.z;
         z1 = z0 + cellDepth;
         for (x = 0; x < grid->width; x++) {

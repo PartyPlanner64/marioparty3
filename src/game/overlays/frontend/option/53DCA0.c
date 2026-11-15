@@ -8,7 +8,7 @@ extern const Vec D_801146D4_option;
 extern const Vec D_801146E0_option;
 extern const Vec D_80114674_option;
 extern const Vec D_80114680_option;
-extern u8 D_800D09A8_main;
+extern u8 saveCommonBuf;
 
 void func_801133BC_option(s32, u32);
 void func_80113368_option(s32, s32 *, s32 *);
@@ -334,7 +334,7 @@ void func_80110DCC_option(s32 arg0, u32 arg1) {
 }
 
 void func_80110E30_option(s32 arg0) {
-    while (Hu3DData[D_80114F70_option[arg0].unk_00].motTime != D_800CCF58_main[Hu3DData[D_80114F70_option[arg0].unk_00].motId].unk02) {
+    while (Hu3DData[D_80114F70_option[arg0].unk_00].motTime != Hu3DMotion[Hu3DData[D_80114F70_option[arg0].unk_00].motId].unk02) {
         HuPrcVSleep();
     }
 }
@@ -342,7 +342,7 @@ void func_80110E30_option(s32 arg0) {
 s32 func_80110ED0_option(s32 arg0) {
     s16 modelId = D_80114F70_option[arg0].unk_00;
 
-    return Hu3DData[modelId].motTime == D_800CCF58_main[Hu3DData[modelId].motId].unk02;
+    return Hu3DData[modelId].motTime == Hu3DMotion[Hu3DData[modelId].motId].unk02;
 }
 
 void func_80110F58_option(s32 arg0, s32 arg1, s32 arg2) {
@@ -612,7 +612,7 @@ void func_80111DAC_option(s32 arg0) {
 void func_80111E00_option(s32 arg0) {
     do {
         HuPrcVSleep();
-    } while (!(arg0 & D_800D5558_main[0]));
+    } while (!(arg0 & HuPadBtnDown[0]));
 }
 
 void func_80111E3C_option(s32 arg0, s16 arg1) {
@@ -630,11 +630,11 @@ u16 func_80111E74_option(s32 value) {
 
     HuPrcSleep(3);
     while (1) {
-        if (D_800D5558_main[0] & (A_BUTTON | B_BUTTON | START_BUTTON | R_TRIG)) {
+        if (HuPadBtnDown[0] & (A_BUTTON | B_BUTTON | START_BUTTON | R_TRIG)) {
             sprintf(text, exitFormat, value);
             break;
         }
-        if (D_800D5558_main[0] & Z_TRIG) {
+        if (HuPadBtnDown[0] & Z_TRIG) {
             cam = Hu3DData[gCameraList->unk4].hmf->unkBC;
             sprintf(text, posFormat, cam->unk08, cam->unk0C, cam->unk10);
             print8(16, 180, text);
@@ -648,7 +648,7 @@ u16 func_80111E74_option(s32 value) {
         }
         HuPrcVSleep();
     }
-    return D_800D5558_main[0];
+    return HuPadBtnDown[0];
 }
 
 void func_80112028_option(s32 arg0, s32 arg1, s32 arg2) {
@@ -753,7 +753,7 @@ void func_801123D8_option(void) {
     func_80112FD8_option(18, 0xE0018, 0);
     func_80112FD8_option(19, 0xE001A, 0);
     func_80112FD8_option(20, 0xE001B, 0);
-    if (!(D_800D09A8_main & 1)) {
+    if (!(saveCommonBuf & 1)) {
         func_8011331C_option(4, 18, 0);
         func_801132C8_option(4, 7);
         func_801132AC_option(4, 2);
@@ -928,8 +928,8 @@ s32 func_801130E8_option(s32 pad) {
     s32 x, y;
     s32 absX, absY;
 
-    x = D_800CBB6E_main[pad];
-    y = D_800D20A1_main[pad];
+    x = HuPadStkX[pad];
+    y = HuPadStkY[pad];
 
     if (D_801139D0_option != 0) {
         if ((x == 0) & (y == 0)) {
@@ -960,7 +960,7 @@ s32 func_801130E8_option(s32 pad) {
 }
 
 s32 func_80113204_option(s32 arg0) {
-    return (u16)D_800D0590_main[arg0];
+    return (u16)ContBtnRep[arg0];
 }
 
 s32 func_80113218_option(s32 arg0) {

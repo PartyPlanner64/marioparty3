@@ -528,7 +528,7 @@ void func_80106918_game_guys_sweet_surprise(omObjData *object) {
             GMesCreate(0x1A, 10, 0x9C, 0x38);
             D_8010CBA2_game_guys_sweet_surprise = 10;
             D_8010CBA4_game_guys_sweet_surprise = 0;
-            D_800D6A58_main = 0;
+            omSysPauseDisableF = 0;
             D_8010CFE0_game_guys_sweet_surprise = 1;
             D_8010CB9E_game_guys_sweet_surprise++;
             break;
@@ -536,15 +536,15 @@ void func_80106918_game_guys_sweet_surprise(omObjData *object) {
             if (D_8010CBA0_game_guys_sweet_surprise <= 0) {
                 switch (D_8010CF58_game_guys_sweet_surprise[3]) {
                     case 0:
-                        if (D_800D20A1_main[D_8010CF58_game_guys_sweet_surprise[1]] < -64 && D_8010CF68_game_guys_sweet_surprise != 1) {
+                        if (HuPadStkY[D_8010CF58_game_guys_sweet_surprise[1]] < -64 && D_8010CF68_game_guys_sweet_surprise != 1) {
                             input = 1;
                             D_8010CBA0_game_guys_sweet_surprise = 5;
                         }
-                        if (D_800D20A1_main[D_8010CF58_game_guys_sweet_surprise[1]] > 64 && D_8010CF68_game_guys_sweet_surprise != 0) {
+                        if (HuPadStkY[D_8010CF58_game_guys_sweet_surprise[1]] > 64 && D_8010CF68_game_guys_sweet_surprise != 0) {
                             input = -1;
                             D_8010CBA0_game_guys_sweet_surprise = 5;
                         }
-                        if (D_800D5558_main[D_8010CF58_game_guys_sweet_surprise[1]] & 0x8000) {
+                        if (HuPadBtnDown[D_8010CF58_game_guys_sweet_surprise[1]] & 0x8000) {
                             input = 10;
                         }
                         break;
@@ -589,7 +589,7 @@ void func_80106918_game_guys_sweet_surprise(omObjData *object) {
             }
             break;
         case 2:
-            D_800D6A58_main = 1;
+            omSysPauseDisableF = 1;
             GMesTimerEnd();
             object->func = func_801063F0_game_guys_sweet_surprise;
             break;
@@ -645,7 +645,7 @@ void func_80106D48_game_guys_sweet_surprise(omObjData *object) {
                     D_8010CFFA_game_guys_sweet_surprise = 1;
                 }
             }
-            if (D_800CCF58_main[Hu3DData[D_8010CFC8_game_guys_sweet_surprise->model[0]].motId].unk02 <=
+            if (Hu3DMotion[Hu3DData[D_8010CFC8_game_guys_sweet_surprise->model[0]].motId].unk02 <=
                 Hu3DData[D_8010CFC8_game_guys_sweet_surprise->model[0]].motTime) {
                 D_8010CBA8_game_guys_sweet_surprise++;
             }
@@ -766,7 +766,7 @@ void func_80107398_game_guys_sweet_surprise(omObjData *object) {
 }
 
 void func_801073F0_game_guys_sweet_surprise(omObjData *object) {
-    if (D_800D530C_main == 1) {
+    if (omSysExitReq == 1) {
         object->func = func_801072B4_game_guys_sweet_surprise;
     }
 }
@@ -1710,7 +1710,7 @@ void func_8010AEB8_game_guys_sweet_surprise(s16 win, s16 player, s16 mode) {
     while (HuWinStatGet(win) != 0) {
         switch (mode) {
             case 0:
-                if (D_800D5558_main[player] & 0x8000) {
+                if (HuPadBtnDown[player] & 0x8000) {
                     HuWinComKeySet(-0x8000, -0x8000, -0x8000, -0x8000);
                 }
                 break;

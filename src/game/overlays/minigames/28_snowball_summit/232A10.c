@@ -270,10 +270,10 @@ Gfx **func_80105B6C_snowball_summit(Gfx **gfxPos, s32 alpha) {
 }
 
 void func_80105B9C_snowball_summit(s32 playerIndex) {
-    D_800CDA7C_main[GwPlayer[playerIndex].pad] = 0;
-    D_800D5558_main[GwPlayer[playerIndex].pad] = 0;
-    D_800CBB6E_main[GwPlayer[playerIndex].pad] = 0;
-    D_800D20A1_main[GwPlayer[playerIndex].pad] = 0;
+    HuPadBtn[GwPlayer[playerIndex].pad] = 0;
+    HuPadBtnDown[GwPlayer[playerIndex].pad] = 0;
+    HuPadStkX[GwPlayer[playerIndex].pad] = 0;
+    HuPadStkY[GwPlayer[playerIndex].pad] = 0;
 }
 
 f32 func_80105C14_snowball_summit(f32 value) {
@@ -926,15 +926,15 @@ void func_8010811C_snowball_summit(omObjData *object) {
         mover->unk_8C = 0;
         mover->unk_94 = sindf(WRAP_ANGLE(rand16() % 360)) * 70.0f;
         mover->unk_96 = -(s16)(cosdf(WRAP_ANGLE(rand16() % 360)) * 70.0f);
-        D_800CBB6E_main[GwPlayer[object->work[0]].pad] = mover->unk_94;
-        D_800D20A1_main[GwPlayer[object->work[0]].pad] = mover->unk_96;
+        HuPadStkX[GwPlayer[object->work[0]].pad] = mover->unk_94;
+        HuPadStkY[GwPlayer[object->work[0]].pad] = mover->unk_96;
         func_80107DD4_snowball_summit(mover);
         return;
     }
 
     if (mover->unk_8C != 0) {
         if (rand8() < mover->unk_7C && rand8() < mover->unk_7C) {
-            D_800D5558_main[GwPlayer[object->work[0]].pad] |= B_BUTTON;
+            HuPadBtnDown[GwPlayer[object->work[0]].pad] |= B_BUTTON;
         }
     }
 
@@ -946,8 +946,8 @@ void func_8010811C_snowball_summit(omObjData *object) {
             offset = 180.0 - func_80107F80_snowball_summit(mover) * 0.5;
             mover->unk_94 = sindf(WRAP_ANGLE(angle + offset + func_80107F80_snowball_summit(mover))) * 70.0f;
             mover->unk_96 = -(s16)(cosdf(WRAP_ANGLE(angle + offset + func_80107F80_snowball_summit(mover))) * 70.0f);
-            D_800CBB6E_main[GwPlayer[object->work[0]].pad] = mover->unk_94;
-            D_800D20A1_main[GwPlayer[object->work[0]].pad] = mover->unk_96;
+            HuPadStkX[GwPlayer[object->work[0]].pad] = mover->unk_94;
+            HuPadStkY[GwPlayer[object->work[0]].pad] = mover->unk_96;
             return;
         }
     }
@@ -962,8 +962,8 @@ void func_8010811C_snowball_summit(omObjData *object) {
                     if (ABS(result.x) < mover->unk_80 && rand8() % mover->unk_88 != 0) {
                         mover->unk_94 = sindf(WRAP_ANGLE(result.z + 70.0f + (u8)(rand8() % 60))) * 70.0f;
                         mover->unk_96 = -(s16)(cosdf(WRAP_ANGLE(result.z + 70.0f + (u8)(rand8() % 60))) * 70.0f);
-                        D_800CBB6E_main[GwPlayer[object->work[0]].pad] = mover->unk_94;
-                        D_800D20A1_main[GwPlayer[object->work[0]].pad] = mover->unk_96;
+                        HuPadStkX[GwPlayer[object->work[0]].pad] = mover->unk_94;
+                        HuPadStkY[GwPlayer[object->work[0]].pad] = mover->unk_96;
                         mover->unk_8C = 0;
                         func_80107DD4_snowball_summit(mover);
                         return;
@@ -973,9 +973,9 @@ void func_8010811C_snowball_summit(omObjData *object) {
         }
         if (mover->unk_8C == 0 && mover->unk_70 == -1 && mover->unk_90 == 0 && rand8() % mover->unk_7C != 0) {
             mover->unk_8C = 1;
-            D_800CBB6E_main[GwPlayer[object->work[0]].pad] = D_800D20A1_main[GwPlayer[object->work[0]].pad] = 0;
+            HuPadStkX[GwPlayer[object->work[0]].pad] = HuPadStkY[GwPlayer[object->work[0]].pad] = 0;
             mover->unk_94 = mover->unk_96 = 0;
-            D_800D5558_main[GwPlayer[object->work[0]].pad] |= B_BUTTON;
+            HuPadBtnDown[GwPlayer[object->work[0]].pad] |= B_BUTTON;
             return;
         }
     } else {
@@ -994,23 +994,23 @@ void func_8010811C_snowball_summit(omObjData *object) {
                                 mover->unk_94 = sindf(WRAP_ANGLE(result.z + 70.0f + (u8)(rand8() % 60))) * 70.0f;
                                 mover->unk_96 = -(s16)(cosdf(WRAP_ANGLE(result.z + 70.0f + (u8)(rand8() % 60))) * 70.0f);
                             }
-                            D_800CBB6E_main[GwPlayer[object->work[0]].pad] = mover->unk_94;
-                            D_800D20A1_main[GwPlayer[object->work[0]].pad] = mover->unk_96;
+                            HuPadStkX[GwPlayer[object->work[0]].pad] = mover->unk_94;
+                            HuPadStkY[GwPlayer[object->work[0]].pad] = mover->unk_96;
                             func_80107DD4_snowball_summit(mover);
                             return;
                         }
                         mover->unk_94 = sindf(WRAP_ANGLE(result.z + 180.0f)) * 70.0f;
                         mover->unk_96 = -(s16)(cosdf(WRAP_ANGLE(result.z + 180.0f)) * 70.0f);
-                        D_800CBB6E_main[GwPlayer[object->work[0]].pad] = mover->unk_94;
-                        D_800D20A1_main[GwPlayer[object->work[0]].pad] = mover->unk_96;
+                        HuPadStkX[GwPlayer[object->work[0]].pad] = mover->unk_94;
+                        HuPadStkY[GwPlayer[object->work[0]].pad] = mover->unk_96;
                         func_80107DD4_snowball_summit(mover);
                         if (func_80107988_snowball_summit(object->rot.y, WRAP_ANGLE(result.z + 180.0f), 20.0f) == 0) {
-                            D_800D5558_main[GwPlayer[object->work[0]].pad] |= A_BUTTON;
+                            HuPadBtnDown[GwPlayer[object->work[0]].pad] |= A_BUTTON;
                             if (rand8() % mover->unk_88 != 0) {
                                 mover->unk_8C = 1;
-                                D_800CBB6E_main[GwPlayer[object->work[0]].pad] = D_800D20A1_main[GwPlayer[object->work[0]].pad] = 0;
+                                HuPadStkX[GwPlayer[object->work[0]].pad] = HuPadStkY[GwPlayer[object->work[0]].pad] = 0;
                                 mover->unk_94 = mover->unk_96 = 0;
-                                D_800D5558_main[GwPlayer[object->work[0]].pad] |= B_BUTTON;
+                                HuPadBtnDown[GwPlayer[object->work[0]].pad] |= B_BUTTON;
                                 mover->unk_90 = 0;
                                 return;
                             }
@@ -1028,12 +1028,12 @@ void func_8010811C_snowball_summit(omObjData *object) {
                 target = other->unk_78;
                 func_80107908_snowball_summit(object->trans.x, object->trans.z, target->trans.x, target->trans.z, &result);
                 if (func_80107988_snowball_summit(object->rot.y, WRAP_ANGLE(result.z + 180.0f), 15.0f) == 0 && mover->unk_98 < D_8010FC30_snowball_summit[mover->unk_70].unk_0C && rand8() % mover->unk_88 != 0) {
-                    D_800D5558_main[GwPlayer[object->work[0]].pad] |= A_BUTTON;
+                    HuPadBtnDown[GwPlayer[object->work[0]].pad] |= A_BUTTON;
                     if (rand8() % mover->unk_88 != 0) {
                         mover->unk_8C = 1;
-                        D_800CBB6E_main[GwPlayer[object->work[0]].pad] = D_800D20A1_main[GwPlayer[object->work[0]].pad] = 0;
+                        HuPadStkX[GwPlayer[object->work[0]].pad] = HuPadStkY[GwPlayer[object->work[0]].pad] = 0;
                         mover->unk_94 = mover->unk_96 = 0;
-                        D_800D5558_main[GwPlayer[object->work[0]].pad] |= B_BUTTON;
+                        HuPadBtnDown[GwPlayer[object->work[0]].pad] |= B_BUTTON;
                         mover->unk_90 = 0;
                         return;
                     }
@@ -1053,8 +1053,8 @@ void func_8010811C_snowball_summit(omObjData *object) {
                         if (ABS(result.x) < mover->unk_80 * 2 && rand8() % mover->unk_88 == 0) {
                             mover->unk_94 = sindf(WRAP_ANGLE(result.z + 180.0f)) * 70.0f;
                             mover->unk_96 = -(s16)(cosdf(WRAP_ANGLE(result.z + 180.0f)) * 70.0f);
-                            D_800CBB6E_main[GwPlayer[object->work[0]].pad] = mover->unk_94;
-                            D_800D20A1_main[GwPlayer[object->work[0]].pad] = mover->unk_96;
+                            HuPadStkX[GwPlayer[object->work[0]].pad] = mover->unk_94;
+                            HuPadStkY[GwPlayer[object->work[0]].pad] = mover->unk_96;
                             func_80107DD4_snowball_summit(mover);
                             return;
                         }
@@ -1072,8 +1072,8 @@ void func_8010811C_snowball_summit(omObjData *object) {
                     if (ABS(result.x) < mover->unk_80 * 2) {
                         mover->unk_94 = sindf(WRAP_ANGLE(result.z + 180.0f)) * 70.0f;
                         mover->unk_96 = -(s16)(cosdf(WRAP_ANGLE(result.z + 180.0f)) * 70.0f);
-                        D_800CBB6E_main[GwPlayer[object->work[0]].pad] = mover->unk_94;
-                        D_800D20A1_main[GwPlayer[object->work[0]].pad] = mover->unk_96;
+                        HuPadStkX[GwPlayer[object->work[0]].pad] = mover->unk_94;
+                        HuPadStkY[GwPlayer[object->work[0]].pad] = mover->unk_96;
                         func_80107DD4_snowball_summit(mover);
                         return;
                     }
@@ -1085,13 +1085,13 @@ void func_8010811C_snowball_summit(omObjData *object) {
     if (mover->unk_8C == 0) {
         if (mover->unk_90 > 0) {
             mover->unk_90--;
-            D_800CBB6E_main[GwPlayer[object->work[0]].pad] = mover->unk_94;
-            D_800D20A1_main[GwPlayer[object->work[0]].pad] = mover->unk_96;
+            HuPadStkX[GwPlayer[object->work[0]].pad] = mover->unk_94;
+            HuPadStkY[GwPlayer[object->work[0]].pad] = mover->unk_96;
         } else {
             mover->unk_94 = sindf(WRAP_ANGLE(rand16() % 360)) * 70.0f;
             mover->unk_96 = -(s16)(cosdf(WRAP_ANGLE(rand16() % 360)) * 70.0f);
-            D_800CBB6E_main[GwPlayer[object->work[0]].pad] = mover->unk_94;
-            D_800D20A1_main[GwPlayer[object->work[0]].pad] = mover->unk_96;
+            HuPadStkX[GwPlayer[object->work[0]].pad] = mover->unk_94;
+            HuPadStkY[GwPlayer[object->work[0]].pad] = mover->unk_96;
             func_80107DD4_snowball_summit(mover);
         }
     }
@@ -1112,7 +1112,7 @@ void func_8010A0B0_snowball_summit(omObjData *object) {
             break;
         case 5:
         case 6:
-            if (Hu3DData[object->model[0]].motTime >= D_800CCF58_main[Hu3DData[object->model[0]].motId].unk02 - 2) {
+            if (Hu3DData[object->model[0]].motTime >= Hu3DMotion[Hu3DData[object->model[0]].motId].unk02 - 2) {
                 func_80107CA4_snowball_summit(object, 1);
             } else {
                 mover->unk_10 = 0;
@@ -1133,7 +1133,7 @@ void func_8010A0B0_snowball_summit(omObjData *object) {
             break;
     }
 
-    func_80107908_snowball_summit(D_800CBB6E_main[GwPlayer[object->work[0]].pad], -D_800D20A1_main[GwPlayer[object->work[0]].pad], 0.0f, 0.0f, &stick);
+    func_80107908_snowball_summit(HuPadStkX[GwPlayer[object->work[0]].pad], -HuPadStkY[GwPlayer[object->work[0]].pad], 0.0f, 0.0f, &stick);
     if (mover->unk_70 == -1) {
         func_80107A18_snowball_summit(object, stick, 30.0f);
     } else {
@@ -1184,7 +1184,7 @@ void func_8010A384_snowball_summit(omObjData *object) {
             break;
         case 5:
         case 6:
-            if (Hu3DData[object->model[0]].motTime >= D_800CCF58_main[Hu3DData[object->model[0]].motId].unk02 - 2) {
+            if (Hu3DData[object->model[0]].motTime >= Hu3DMotion[Hu3DData[object->model[0]].motId].unk02 - 2) {
                 func_80107CA4_snowball_summit(object, 0);
             }
             break;
@@ -1192,8 +1192,8 @@ void func_8010A384_snowball_summit(omObjData *object) {
     mover->unk_10 = 0;
     mover->posZ = mover->unk_28 = mover->unk_10;
 
-    if (ABS(D_800CBB6E_main[GwPlayer[object->work[0]].pad]) >= 11 || ABS(D_800D20A1_main[GwPlayer[object->work[0]].pad]) >= 11) {
-        func_80107908_snowball_summit(D_800CBB6E_main[GwPlayer[object->work[0]].pad], -D_800D20A1_main[GwPlayer[object->work[0]].pad], 0.0f, 0.0f, &stick);
+    if (ABS(HuPadStkX[GwPlayer[object->work[0]].pad]) >= 11 || ABS(HuPadStkY[GwPlayer[object->work[0]].pad]) >= 11) {
+        func_80107908_snowball_summit(HuPadStkX[GwPlayer[object->work[0]].pad], -HuPadStkY[GwPlayer[object->work[0]].pad], 0.0f, 0.0f, &stick);
         if (mover->unk_70 == -1) {
             func_80107A18_snowball_summit(object, stick, 30.0f);
         } else {
@@ -1205,10 +1205,10 @@ void func_8010A384_snowball_summit(omObjData *object) {
 void func_8010A71C_snowball_summit(omObjData *object) {
     UnkSnowballSummitMover *mover = &D_8010F9B8_snowball_summit[object->work[0]];
 
-    if (ABS(D_800CBB6E_main[GwPlayer[object->work[0]].pad]) >= 11) {
+    if (ABS(HuPadStkX[GwPlayer[object->work[0]].pad]) >= 11) {
         return;
     }
-    if (ABS(D_800D20A1_main[GwPlayer[object->work[0]].pad]) >= 11) {
+    if (ABS(HuPadStkY[GwPlayer[object->work[0]].pad]) >= 11) {
         return;
     }
     if (mover->unk_04 == 5 || mover->unk_04 == 6) {
@@ -1284,15 +1284,15 @@ void func_8010AA78_snowball_summit(omObjData *object) {
 
     if (mover->unk_04 == 5 || mover->unk_04 == 6) {
         func_8010A384_snowball_summit(object);
-    } else if ((D_800D5558_main[GwPlayer[object->work[0]].pad] & A_BUTTON) && mover->unk_48 == 1) {
+    } else if ((HuPadBtnDown[GwPlayer[object->work[0]].pad] & A_BUTTON) && mover->unk_48 == 1) {
         func_8010A940_snowball_summit(object);
-    } else if (ABS(D_800CBB6E_main[GwPlayer[object->work[0]].pad]) >= 31 || ABS(D_800D20A1_main[GwPlayer[object->work[0]].pad]) >= 31) {
+    } else if (ABS(HuPadStkX[GwPlayer[object->work[0]].pad]) >= 31 || ABS(HuPadStkY[GwPlayer[object->work[0]].pad]) >= 31) {
         func_8010A0B0_snowball_summit(object);
     } else {
         func_8010A384_snowball_summit(object);
     }
 
-    if ((D_800D5558_main[GwPlayer[object->work[0]].pad] & B_BUTTON) && mover->unk_48 == 0) {
+    if ((HuPadBtnDown[GwPlayer[object->work[0]].pad] & B_BUTTON) && mover->unk_48 == 0) {
         func_8010A71C_snowball_summit(object);
     }
     if (mover->unk_48 == 0) {
@@ -1337,7 +1337,7 @@ void func_8010AE74_snowball_summit(omObjData *object) {
         Hu3DMotionAttrSet(object->model[0], 1, 0);
         mover->unk_74 = 3;
     } else if (mover->unk_74 == 3) {
-        if (Hu3DData[object->model[0]].motTime >= D_800CCF58_main[Hu3DData[object->model[0]].motId].unk02 - 2) {
+        if (Hu3DData[object->model[0]].motTime >= Hu3DMotion[Hu3DData[object->model[0]].motId].unk02 - 2) {
             func_80107CA4_snowball_summit(object, 0);
             mover->unk_74 = 0;
             mover->unk_3C = 0;
@@ -2017,7 +2017,7 @@ void func_8010C9E0_snowball_summit(omObjData *object) {
 }
 
 void func_8010CA18_snowball_summit(omObjData *object) {
-    if (D_800D530C_main == 1) {
+    if (omSysExitReq == 1) {
         WipeCreateOut(WIPE_TYPE_NORMAL, 20);
         object->func = func_8010C9E0_snowball_summit;
         HuAudSeqFadeOut(30);

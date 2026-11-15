@@ -769,7 +769,7 @@ void func_800F924C_name_81(s32 attackType) {
         HuPrcChildLink(process, MBDCameraZoomMotStart(1.0f));
 
         while (HuPrcChildGet(process) != NULL) {
-            msmMusSetVolume(D_800CDBC8_main, volume);
+            msmMusSetVolume(HuAudMusNo, volume);
             volume -= 5;
             if (volume < 0) {
                 volume = 0;
@@ -777,8 +777,8 @@ void func_800F924C_name_81(s32 attackType) {
             HuPrcVSleep();
         }
 
-        msmMusPause(D_800CDBC8_main);
-        msmMusSetVolume(D_800CDBC8_main, 127);
+        msmMusPause(HuAudMusNo);
+        msmMusSetVolume(HuAudMusNo, 127);
         musHandle = HuAudSubSeqPlay(0x17);
         func_800FFAE0_name_81(0, 2);
         func_800FFAE0_name_81(1, 2);
@@ -1049,7 +1049,7 @@ void func_800F924C_name_81(s32 attackType) {
     end:
         if (musHandle != -1) {
             msmMusFadeOut(musHandle, 30);
-            msmMusResume(D_800CDBC8_main, 90);
+            msmMusResume(HuAudMusNo, 90);
         }
     }
 
@@ -1451,17 +1451,17 @@ void func_800FB160_name_81(void) {
     temp_s7 = func_800E1824_name_81(4, 0xBC, 0);
 
     while (1) {
-        if (D_800C9520_main[playerPad] & B_BUTTON) {
+        if (ContBtnDown[playerPad] & B_BUTTON) {
             break;
         }
-        if (D_800D0590_main[playerPad] & R_CBUTTONS) {
+        if (ContBtnRep[playerPad] & R_CBUTTONS) {
             var_s3++;
             var_s3 %= 12;
             HuWinHomeClear(sp36);
             HuWinMesSet(sp36, D_80101998_name_81[var_s3], -1, -1);
             HuWinExAnimPopIn(sp36, D_801019C8_name_81[var_s3]);
         }
-        if (D_800D0590_main[playerPad] & L_CBUTTONS) {
+        if (ContBtnRep[playerPad] & L_CBUTTONS) {
             var_s3--;
             if (var_s3 < 0) {
                 var_s3 = 0xB;

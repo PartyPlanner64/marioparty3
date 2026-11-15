@@ -1,9 +1,9 @@
 #include "common_board.h"
 #include "game/malloc.h"
 
-extern u8 D_800D6A90_main;
+extern u8 omAllPauseF;
 extern char D_80102180_shared_board[];
-extern s16 D_800D41C2_main;
+extern s16 mbMesNum;
 
 s32 D_80100F20_shared_board[] = {
     0x00003000,
@@ -69,7 +69,7 @@ static void func_800E20A4_shared_board(omObjData *arg0) {
     Unk3 *temp_a0;
 
     temp_a0 = (Unk3 *)arg0->data;
-    if ((temp_a0->unk_01 == 1) && (D_800D6A90_main != 0)) {
+    if ((temp_a0->unk_01 == 1) && (omAllPauseF != 0)) {
         if (temp_a0->winID >= 0) {
             func_800E2074_shared_board(temp_a0);
         }
@@ -98,7 +98,7 @@ Unk3 *func_800E210C_shared_board(s16 arg0, s16 arg1, u8 arg2) {
         } else {
             temp_v0_3 = HuMemMemoryAllocTemp(8);
             temp_v0->unk_0C = temp_v0_3;
-            sprintf(temp_v0_3, "\x03%2d\x08", D_800D41C2_main);
+            sprintf(temp_v0_3, "\x03%2d\x08", mbMesNum);
             return temp_v0;
         }
     }

@@ -33,7 +33,7 @@ typedef struct MsetupBoardAnim {
 extern Vec D_80119B20_msetup;
 extern f32 D_80119B0C_msetup[];
 extern s16 D_8011A938_msetup;
-extern HmfData_Unk84_Entry2 *D_800D1FCC_main;
+extern HmfData_Unk84_Entry2 *Hu3DTexData;
 extern omObjData *D_80119AF0_msetup;
 extern MsetupSpriteState D_8011A8B0_msetup;
 extern f32 D_80119AF4_msetup;
@@ -67,8 +67,8 @@ s16 func_8010D0C8_msetup(s16 model, char *name) {
 
     texture = NULL;
     for (i = 0; i < 128; i++) {
-        if (D_800D1FCC_main[i].nameHash == hash && strcmp(D_800D1FCC_main[i].name, name) == 0) {
-            texture = &D_800D1FCC_main[i];
+        if (Hu3DTexData[i].nameHash == hash && strcmp(Hu3DTexData[i].name, name) == 0) {
+            texture = &Hu3DTexData[i];
             break;
         }
     }
@@ -144,9 +144,9 @@ s16 func_8010D4DC_msetup(s16 positions[][2], u8 *disabled, s16 count, s16 select
     s16 directionX;
     s16 directionY;
 
-    directionX = D_800CBB6E_main[controller];
+    directionX = HuPadStkX[controller];
     directionX = -directionX;
-    directionY = D_800D20A1_main[controller];
+    directionY = HuPadStkY[controller];
     if (buttons & L_JPAD) {
         if (directionX < 30) {
             directionX = 100;
@@ -169,9 +169,9 @@ s16 func_8010D4DC_msetup(s16 positions[][2], u8 *disabled, s16 count, s16 select
 }
 
 s16 func_8010D5EC_msetup(s16 controller) {
-    s16 buttons = D_800CDA7C_main[controller];
-    s8 stickX = D_800CBB6E_main[controller];
-    s8 stickY = D_800D20A1_main[controller];
+    s16 buttons = HuPadBtn[controller];
+    s8 stickX = HuPadStkX[controller];
+    s8 stickY = HuPadStkY[controller];
 
     if (stickX > 30) {
         buttons |= R_JPAD;

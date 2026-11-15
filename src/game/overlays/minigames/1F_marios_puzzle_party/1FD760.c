@@ -17,8 +17,8 @@ typedef struct MarioPuzzlePartySpriteBlock {
     /* 0x08 */ s16 count;
 } MarioPuzzlePartySpriteBlock;
 
-extern u8 D_800D2008_main;
-extern u8 D_800D6A90_main;
+extern u8 Hu3DBufNo;
+extern u8 omAllPauseF;
 
 Gfx D_80110230_marios_puzzle_party[] = {
     gsDPPipeSync(),
@@ -57,7 +57,7 @@ void func_8010F570_marios_puzzle_party(s16 blockCount) {
     }
     D_801168C4_marios_puzzle_party = omAddObj(0x7D0, 0, 0, -1, func_8010F810_marios_puzzle_party);
     omSetStatBit(D_801168C4_marios_puzzle_party, 0xA0);
-    D_801168B6_marios_puzzle_party = Hu3DModelDLCreate(0, D_801168B8_marios_puzzle_party[D_800D2008_main], 2);
+    D_801168B6_marios_puzzle_party = Hu3DModelDLCreate(0, D_801168B8_marios_puzzle_party[Hu3DBufNo], 2);
 }
 
 void func_8010F678_marios_puzzle_party(s32 spriteData, s16 count) {
@@ -95,7 +95,7 @@ void func_8010F810_marios_puzzle_party(omObjData *object) {
     s16 j;
 
     gfx = (Gfx *)(Hu3DData[D_801168B6_marios_puzzle_party].hmf->unk3C =
-                      (HmfModelData_Unk64_Unk3C_Struct *)D_801168B8_marios_puzzle_party[D_800D2008_main]);
+                      (HmfModelData_Unk64_Unk3C_Struct *)D_801168B8_marios_puzzle_party[Hu3DBufNo]);
     if (D_801168B4_marios_puzzle_party == 0) {
         gSPEndDisplayList(gfx++);
         return;
@@ -103,7 +103,7 @@ void func_8010F810_marios_puzzle_party(omObjData *object) {
     block = D_801168B0_marios_puzzle_party;
     gSPDisplayList(gfx++, osVirtualToPhysical(D_80110230_marios_puzzle_party));
     gDPSetTextureLUT(gfx++, G_TT_NONE);
-    if (omPauseChk() + D_800D6A90_main == 0) {
+    if (omPauseChk() + omAllPauseF == 0) {
         for (i = 0; i < D_801168B4_marios_puzzle_party; i++, block++) {
             sprite = block->sprites;
             anim = HuSprGet(block->groupHandle, 0)->data;

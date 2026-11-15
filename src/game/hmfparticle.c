@@ -13,8 +13,8 @@
 
 s32 rand8(void);
 
-extern u8 D_800CD6A6_main;
-extern u8 D_800D2008_main;
+extern u8 Hu3DCameraNo;
+extern u8 Hu3DBufNo;
 
 void Hu3DParticleHookNull(s16 model);
 void Hu3DParticleHook1(s16 model);
@@ -145,7 +145,7 @@ void Hu3DParticleDraw(s16 model, s16 group) {
     HmfModel *modelP = &Hu3DData[model];
     HmfData *hmf = modelP->hmf;
     HmfModelData_UnkBC_Struct *bc = modelP->unkBC;
-    HuCamera *camera = &gCameraList[D_800CD6A6_main];
+    HuCamera *camera = &gCameraList[Hu3DCameraNo];
     HmfModelData_UnkBC_Unk58_Struct *particle;
     HmfVertexGroup *vtxGroup;
     Vtx *vtx;
@@ -184,7 +184,7 @@ void Hu3DParticleDraw(s16 model, s16 group) {
         out->z = x * rotMtx[0][2] + y * rotMtx[1][2] + z * rotMtx[2][2];
     }
     particle = bc->unk58;
-    vtx = hmf->unk44[D_800D2008_main];
+    vtx = hmf->unk44[Hu3DBufNo];
     if (bc->unk04 & 8) {
         for (i = 0; i < count; i++) {
             numVerts = vtxGroup->count & 0x7F;

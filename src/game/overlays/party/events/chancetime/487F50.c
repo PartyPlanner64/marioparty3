@@ -551,9 +551,9 @@ void func_8010DBB0_chancetime(void) {
 
     obj = omAddObj(0x14, 0x15, 0, -1, NULL);
     D_80110080_chancetime = obj;
-    model = &Hu3DData[D_800D10F2_main];
+    model = &Hu3DData[HuSprBGHookMdl];
     model->unk00 = (model->unk00 & 0xF9) | 3;
-    Hu3DModelCameraSet(D_800D10F2_main, 2);
+    Hu3DModelCameraSet(HuSprBGHookMdl, 2);
     sprId = HuSprAnimDataRead(0x210026);
     for (i = 0; i < 20; i++) {
         D_80110028_chancetime[i] = espEntry(sprId, 0, 1);

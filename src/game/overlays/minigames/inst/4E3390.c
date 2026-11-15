@@ -2,7 +2,7 @@
 #include "inst.h"
 #include "game/hmfmath.h"
 
-extern u8 D_800CB8B1_main[];
+extern u8 mgPlayerTeam[];
 extern s8 D_8010D400_inst[4];
 extern s8 D_8010D40A_inst;
 extern u8 D_8010D554_inst[4];
@@ -131,7 +131,7 @@ void func_8010A750_inst(omObjData *object) {
     s8 i;
 
     source = D_8010DDD8_inst.object;
-    duration = D_800CCF58_main[Hu3DData[source->model[0]].motId].unk02;
+    duration = Hu3DMotion[Hu3DData[source->model[0]].motId].unk02;
     time = Hu3DData[source->model[0]].motTime;
     models = D_8010D4C0_inst[D_8010D40A_inst][0];
     for (i = 0; i < models->count; i++) {
@@ -206,7 +206,7 @@ void func_8010AD78_inst(omObjData *object) {
     InstModelHooks *models;
     s8 i;
 
-    duration = D_800CCF58_main[Hu3DData[object->model[5]].motId].unk02 - 20.0f;
+    duration = Hu3DMotion[Hu3DData[object->model[5]].motId].unk02 - 20.0f;
     models = D_8010D4C0_inst[D_8010D40A_inst][0];
     for (i = 0; i < models->count; i++) {
         func_8008A120_main(rotation, (1.0f / duration) * D_8010D414_inst);
@@ -238,7 +238,7 @@ void func_8010B040_inst(void) {
         case 1:
         case 2:
             for (i = 0; i < 4; i++) {
-                if (D_800CB8B1_main[D_8010D400_inst[i]] == 0) {
+                if (mgPlayerTeam[D_8010D400_inst[i]] == 0) {
                     D_8010D554_inst[i] = 0;
                 } else {
                     D_8010D554_inst[i] = 1;
@@ -303,7 +303,7 @@ void func_8010B2A4_inst(omObjData *object) {
     InstModelHooks *models;
     s8 i;
 
-    duration = D_800CCF58_main[Hu3DData[object->model[5]].motId].unk02 - 20.0f;
+    duration = Hu3DMotion[Hu3DData[object->model[5]].motId].unk02 - 20.0f;
     models = D_8010D4C0_inst[D_8010D40A_inst][0];
     for (i = 0; i < models->count; i++) {
         func_8008A120_main(rotation, (1.0f / duration) * D_8010D414_inst);
@@ -339,7 +339,7 @@ void func_8010B628_inst(omObjData *object) {
     InstModelHooks *models;
     s32 i;
 
-    duration = D_800CCF58_main[Hu3DData[object->model[5]].motId].unk02;
+    duration = Hu3DMotion[Hu3DData[object->model[5]].motId].unk02;
     models = D_8010D4C0_inst[D_8010D40A_inst][0];
     for (i = 0; i < models->count; i++) {
         Hu3DModelAttrSet(object->model[i + 5], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
@@ -347,7 +347,7 @@ void func_8010B628_inst(omObjData *object) {
         Hu3DMotionAttrSet(object->model[i + 5], 1, 0);
     }
     models = D_8010D4C0_inst[D_8010D40A_inst][1];
-    duration = D_800CCF58_main[Hu3DData[object->model[15]].motId].unk02;
+    duration = Hu3DMotion[Hu3DData[object->model[15]].motId].unk02;
     for (i = 0; i < models->count; i++) {
         Hu3DModelAttrSet(object->model[i + 15], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DMotionTimeSet(object->model[i + 15], duration);

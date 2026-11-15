@@ -3,11 +3,11 @@
 #include "humath.h"
 #include "game/texload.h"
 
-u32 D_800A11F0_main[4] = { 0, 1, 2, 4 }; // sSizBytes
-u32 D_800A1200_main[4] = { 0, 1, 2, 2 }; // sSizLineBytes
-u32 D_800A1210_main[4] = { 2, 2, 2, 3 }; // sSizLoadBlock
-u32 D_800A1220_main[4] = { 3, 1, 0, 0 }; // sSizIncr
-u32 D_800A1230_main[4] = { 2, 1, 0, 0 }; // sSizShift
+u32 sSizBytes[4] = { 0, 1, 2, 4 };
+u32 sSizLineBytes[4] = { 0, 1, 2, 2 };
+u32 sSizLoadBlock[4] = { 2, 2, 2, 3 };
+u32 sSizIncr[4] = { 3, 1, 0, 0 };
+u32 sSizShift[4] = { 2, 1, 0, 0 };
 
 void HuLoadTextureTile(Gfx **gdl, u16 *timg, s32 fmt, s32 siz,
                         s32 width, s32 height,
@@ -17,12 +17,12 @@ void HuLoadTextureTile(Gfx **gdl, u16 *timg, s32 fmt, s32 siz,
     Gfx *gfx = *gdl;
 
     gDPSetTextureImage(gfx++, fmt, siz, width, timg);
-    gDPSetTile(gfx++, fmt, siz, (((lrs - uls) + 1) * D_800A1200_main[siz] + 7) >> 3, 0,
+    gDPSetTile(gfx++, fmt, siz, (((lrs - uls) + 1) * sSizLineBytes[siz] + 7) >> 3, 0,
                G_TX_LOADTILE, 0, cmt, maskt, shiftt, cms, masks, shifts);
     gDPLoadSync(gfx++);
     gDPLoadTile(gfx++, G_TX_LOADTILE, uls << 2, ult << 2, lrs << 2, lrt << 2);
     gDPPipeSync(gfx++);
-    gDPSetTile(gfx++, fmt, siz, (((lrs - uls) + 1) * D_800A1200_main[siz] + 7) >> 3, 0,
+    gDPSetTile(gfx++, fmt, siz, (((lrs - uls) + 1) * sSizLineBytes[siz] + 7) >> 3, 0,
                G_TX_RENDERTILE, pal, cmt, maskt, shiftt, cms, masks, shifts);
     gDPSetTileSize(gfx++, G_TX_RENDERTILE, uls << 2, ult << 2, lrs << 2, lrt << 2);
 
@@ -37,12 +37,12 @@ void HuLoadMultiTile(Gfx **gdl, void *timg, s32 fmt, s32 siz,
     Gfx *gfx = *gdl;
 
     gDPSetTextureImage(gfx++, fmt, siz, width, timg);
-    gDPSetTile(gfx++, fmt, siz, (((lrs - uls) + 1) * D_800A1200_main[siz] + 7) >> 3, tmem,
+    gDPSetTile(gfx++, fmt, siz, (((lrs - uls) + 1) * sSizLineBytes[siz] + 7) >> 3, tmem,
                G_TX_LOADTILE, 0, cmt, maskt, shiftt, cms, masks, shifts);
     gDPLoadSync(gfx++);
     gDPLoadTile(gfx++, G_TX_LOADTILE, uls << 2, ult << 2, lrs << 2, lrt << 2);
     gDPPipeSync(gfx++);
-    gDPSetTile(gfx++, fmt, siz, (((lrs - uls) + 1) * D_800A1200_main[siz] + 7) >> 3, tmem,
+    gDPSetTile(gfx++, fmt, siz, (((lrs - uls) + 1) * sSizLineBytes[siz] + 7) >> 3, tmem,
                tile, pal, cmt, maskt, shiftt, cms, masks, shifts);
     gDPSetTileSize(gfx++, tile, uls << 2, ult << 2, lrs << 2, lrt << 2);
 
@@ -58,16 +58,16 @@ void HuLoadTextureBlock(Gfx **gdl, void *timg, s32 fmt, s32 siz,
     Gfx *gfx = *gdl;
     timg = (u8 *)timg + ((width * ult) << (siz - 1));
 
-    gDPSetTextureImage(gfx++, fmt, D_800A1210_main[siz], 1,
+    gDPSetTextureImage(gfx++, fmt, sSizLoadBlock[siz], 1,
                        timg);
-    gDPSetTile(gfx++, fmt, D_800A1210_main[siz], 0, 0, G_TX_LOADTILE,
+    gDPSetTile(gfx++, fmt, sSizLoadBlock[siz], 0, 0, G_TX_LOADTILE,
                0, cmt, maskt, shiftt, cms, masks, shifts);
     gDPLoadSync(gfx++);
     gDPLoadBlock(gfx++, G_TX_LOADTILE, 0, 0,
-                 (((width * height) + D_800A1220_main[siz]) >> D_800A1230_main[siz]) - 1,
-                 CALC_DXT(width, D_800A11F0_main[siz]));
+                 (((width * height) + sSizIncr[siz]) >> sSizShift[siz]) - 1,
+                 CALC_DXT(width, sSizBytes[siz]));
     gDPPipeSync(gfx++);
-    gDPSetTile(gfx++, fmt, siz, ((width * D_800A1200_main[siz]) + 7) >> 3, 0,
+    gDPSetTile(gfx++, fmt, siz, ((width * sSizLineBytes[siz]) + 7) >> 3, 0,
                G_TX_RENDERTILE, pal, cmt, maskt, shiftt, cms, masks, shifts);
     gDPSetTileSize(gfx++, G_TX_RENDERTILE, uls << 2, ult << 2, lrs << 2, lrt << 2);
 
@@ -101,15 +101,15 @@ void HuLoadMultiBlock(Gfx **gdl, void *timg, s32 fmt, s32 siz,
     Gfx *gfx = *gdl;
     timg = (u8 *)timg + ((width * ult) << (siz - 1));
 
-    gDPSetTextureImage(gfx++, fmt, D_800A1210_main[siz], 1, timg);
-    gDPSetTile(gfx++, fmt, D_800A1210_main[siz], 0, tmem, G_TX_LOADTILE,
+    gDPSetTextureImage(gfx++, fmt, sSizLoadBlock[siz], 1, timg);
+    gDPSetTile(gfx++, fmt, sSizLoadBlock[siz], 0, tmem, G_TX_LOADTILE,
                0, cmt, maskt, shiftt, cms, masks, shifts);
     gDPLoadSync(gfx++);
     gDPLoadBlock(gfx++, G_TX_LOADTILE, 0, 0,
-                 (((width * height) + D_800A1220_main[siz]) >> D_800A1230_main[siz]) - 1,
-                 CALC_DXT(width, D_800A11F0_main[siz]));
+                 (((width * height) + sSizIncr[siz]) >> sSizShift[siz]) - 1,
+                 CALC_DXT(width, sSizBytes[siz]));
     gDPPipeSync(gfx++);
-    gDPSetTile(gfx++, fmt, siz, ((width * D_800A1200_main[siz]) + 7) >> 3, tmem,
+    gDPSetTile(gfx++, fmt, siz, ((width * sSizLineBytes[siz]) + 7) >> 3, tmem,
                tile, pal, cmt, maskt, shiftt, cms, masks, shifts);
     gDPSetTileSize(gfx++, tile, uls << 2, ult << 2, lrs << 2, lrt << 2);
 

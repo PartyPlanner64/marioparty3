@@ -421,12 +421,12 @@ typedef struct {
     /* 0x74 */ s16 fxId; // id of the loaded effect table
 } SndSys;
 
-static OSMesg D_800A9650_main[50];
-static OSMesgQueue D_800A9718_main;
-static ALHeap D_800A9730_main;
-static SndSys D_800A9740_main;
-static AudioManager *D_800A97B8_main;
-static SeManager *D_800A97BC_main;
+static OSMesg fioMesgBuf[50];
+static OSMesgQueue fioMesgQueue;
+static ALHeap msmHeap;
+static SndSys msmSys;
+static AudioManager *msmMus;
+static SeManager *msmSe;
 
 SndSys *msmSysGetConfigPtr(void);
 s32 msmMusInit(SndSys *sys, ALHeap *heap, s32 arg2, s32 arg3);
@@ -451,7 +451,7 @@ void msmSeUpdataListener(s32 slot, SePosParam *param);
 /* Takes the default settings from a bank header for any setting not given by
  * the caller's configuration. */
 void msmSysSetDefaults(SndBankHeader *hdr, void *romAddr) {
-    SndSys *sys = &D_800A9740_main;
+    SndSys *sys = &msmSys;
 
     if (!(sys->cfg.unk0 & 0x10)) {
         sys->cfg.unk1C = hdr->unk_14;
@@ -498,10 +498,10 @@ s32 msmSysLoadFx(void) {
     s32 flags;
     SndFxHeader *fx;
 
-    sys = &D_800A9740_main;
-    buf = (SndFxHeader *)D_800A9740_main.buf;
-    D_800A9740_main.fxId = 0;
-    D_800A9740_main.fxCount = 0;
+    sys = &msmSys;
+    buf = (SndFxHeader *)msmSys.buf;
+    msmSys.fxId = 0;
+    msmSys.fxCount = 0;
     sys->cfg.unk4 &= ~3;
     if (sys->cfg.unk10 != NULL) {
         msmFioRead(buf, sys->cfg.unk10, 0x10, 0);
@@ -519,10 +519,10 @@ s32 msmSysLoadFx(void) {
         flags = sys->cfg.unk4 | 1;
         goto load;
     }
-    if (D_800A9740_main.fxCount == 0 || sys->cfg.unk28 == 0) {
+    if (msmSys.fxCount == 0 || sys->cfg.unk28 == 0) {
         return 0;
     }
-    if (D_800A9740_main.fxCount < sys->cfg.unk28) {
+    if (msmSys.fxCount < sys->cfg.unk28) {
         msmSysError(0, 0x20);
         return 1;
     }
@@ -531,7 +531,7 @@ s32 msmSysLoadFx(void) {
 load:
     sys->cfg.unk4 = flags;
     msmFioRead(buf, romAddr, 4, 0);
-    D_800A9740_main.fxId = buf->count >> 16;
+    msmSys.fxId = buf->count >> 16;
     buf->count = buf->bytes[3];
     size = (buf->count * 32) | 8;
     if ((sys->cfg.unk2C = msmMemAlloc(size)) == NULL) {
@@ -544,11 +544,11 @@ load:
 }
 
 void msmInit(str800D5298 *cfg) {
-    osCreateMesgQueue(&D_800A9718_main, D_800A9650_main, ARRAY_COUNT(D_800A9650_main));
-    bzero(&D_800A9740_main, sizeof(str800D5298));
-    D_800A9740_main.cfg.unk40 = 1;
-    D_800A9740_main.cfg.unk44 = 0x3C;
-    D_800CB8AC_main = 0;
+    osCreateMesgQueue(&fioMesgQueue, fioMesgBuf, ARRAY_COUNT(fioMesgBuf));
+    bzero(&msmSys, sizeof(str800D5298));
+    msmSys.cfg.unk40 = 1;
+    msmSys.cfg.unk44 = 0x3C;
+    msmMonoF = 0;
     msmSysInit(cfg);
 }
 
@@ -564,7 +564,7 @@ s32 msmSysInit(str800D5298 *cfg) {
     s32 mbfArg3;
     s32 sbfArg3;
 
-    sys = &D_800A9740_main;
+    sys = &msmSys;
     if (cfg->unk0 < 0) {
         sys->cfg.unk0 = 0;
         cfg->unk0 &= 0x7FFFFFFF;
@@ -580,14 +580,14 @@ s32 msmSysInit(str800D5298 *cfg) {
     if (sys->cfg.unk14 == NULL || sys->cfg.unk18 == 0) {
         return 1;
     }
-    alHeapInit(&D_800A9730_main, sys->cfg.unk14, sys->cfg.unk18);
+    alHeapInit(&msmHeap, sys->cfg.unk14, sys->cfg.unk18);
     if (cfg->unk0 & 0x800000) {
         sys->cfg.unk68 = cfg->unk68;
     } else if (!(sys->cfg.unk0 & 0x800000)) {
         sys->cfg.unk68 = osCartRomInit();
     }
     buf = msmMemAlloc(sizeof(SndBankHeader));
-    D_800A9740_main.buf = (u8 *)buf;
+    msmSys.buf = (u8 *)buf;
     if (buf == NULL) {
         return 2;
     }
@@ -703,13 +703,13 @@ s32 msmSysInit(str800D5298 *cfg) {
     if ((ret = msmSysLoadFx()) != 0) {
         return ret + 100;
     }
-    if ((ret = amCreateAudioMgr(&sys->cfg, &D_800A9730_main)) != 0) {
+    if ((ret = amCreateAudioMgr(&sys->cfg, &msmHeap)) != 0) {
         return ret + 200;
     }
-    if ((ret = msmMusInit(&D_800A9740_main, &D_800A9730_main, mbfArg2, mbfArg3)) != 0) {
+    if ((ret = msmMusInit(&msmSys, &msmHeap, mbfArg2, mbfArg3)) != 0) {
         return ret + 300;
     }
-    if ((ret = msmSeInit(&D_800A9740_main, &D_800A9730_main, sbfArg2, sbfArg3)) != 0) {
+    if ((ret = msmSeInit(&msmSys, &msmHeap, sbfArg2, sbfArg3)) != 0) {
         return ret + 400;
     }
     msmSysError(100, 0);
@@ -745,7 +745,7 @@ s32 msmSysIsPlay(void) {
 }
 
 SndSys *msmSysGetConfigPtr(void) {
-    return &D_800A9740_main;
+    return &msmSys;
 }
 
 void msmSysGetConfig(str800D5298 *cfg) {
@@ -772,7 +772,7 @@ void msmSysSetOutputMode(u32 mono) {
     SeManager *se;
     s32 i;
 
-    D_800CB8AC_main = mono & 1;
+    msmMonoF = mono & 1;
     se = msmSeGetManager();
     if (se != NULL) {
         for (i = 0; i < se->soundCount; i++) {
@@ -808,13 +808,13 @@ void msmFioRead(void *dst, void *romAddr, s32 size, s32 chunkSize) {
             len = chunk;
         }
         mesg.hdr.pri = OS_MESG_PRI_NORMAL;
-        mesg.hdr.retQueue = &D_800A9718_main;
+        mesg.hdr.retQueue = &fioMesgQueue;
         mesg.dramAddr = ram;
         mesg.devAddr = rom;
         mesg.size = len;
         osInvalDCache(ram, len);
-        osEPiStartDma(D_800A9740_main.cfg.unk68, &mesg, OS_READ);
-        osRecvMesg(&D_800A9718_main, NULL, OS_MESG_BLOCK);
+        osEPiStartDma(msmSys.cfg.unk68, &mesg, OS_READ);
+        osRecvMesg(&fioMesgQueue, NULL, OS_MESG_BLOCK);
         rom += len;
         remaining -= len;
         ram += len;
@@ -824,7 +824,7 @@ void msmFioRead(void *dst, void *romAddr, s32 size, s32 chunkSize) {
 /* Allocates a single element of the given size from the audio heap, reporting a
  * fatal error if the allocation fails. This is the non-debug alHeapAlloc(). */
 void *msmMemAlloc(s32 size) {
-    void *ptr = alHeapDBAlloc(NULL, 0, &D_800A9730_main, 1, size);
+    void *ptr = alHeapDBAlloc(NULL, 0, &msmHeap, 1, size);
 
     if (ptr == NULL) {
         msmSysError(0, 1);
@@ -861,9 +861,9 @@ void msmMusLoadBank(SeqPlayer *player, s8 bankFileIdx, s32 chunkSize) {
     s32 i;
 
     if (player->bankFileIdx != bankFileIdx) {
-        bankFile = &D_800A97B8_main->bankFiles[bankFileIdx];
-        for (i = 0; i < D_800A97B8_main->playerCount; i++) {
-            other = &D_800A97B8_main->players[i];
+        bankFile = &msmMus->bankFiles[bankFileIdx];
+        for (i = 0; i < msmMus->playerCount; i++) {
+            other = &msmMus->players[i];
             if (other->bankFileIdx == bankFileIdx) {
                 bcopy(other->bankFile, player->bankFile, bankFile->ctlSize);
                 player->bankFileIdx = bankFileIdx;
@@ -882,7 +882,7 @@ void msmMusLoadSeq(SeqPlayer *player) {
 
     if (player->curTrack != player->newTrack) {
         player->curTrack = player->newTrack;
-        track = &D_800A97B8_main->tracks[player->newTrack];
+        track = &msmMus->tracks[player->newTrack];
         msmFioRead(player->seqData, track->romAddr, track->size, 0x4000);
     }
     n_alCSeqNew(player->seq, player->seqData);
@@ -890,7 +890,7 @@ void msmMusLoadSeq(SeqPlayer *player) {
 }
 
 s32 msmMusCalcVolume(SeqPlayer *seqPlayer) {
-    return D_800A97B8_main->configVol * seqPlayer->evtVol * seqPlayer->trackVol * seqPlayer->fadeVol / 127 / 127 / 127 * D_800A97B8_main->masterVol / 127;
+    return msmMus->configVol * seqPlayer->evtVol * seqPlayer->trackVol * seqPlayer->fadeVol / 127 / 127 / 127 * msmMus->masterVol / 127;
 }
 
 /* Queues the player to start, fading in over the given number of frames. */
@@ -918,9 +918,9 @@ void msmMusEventProc(void) {
     s32 i;
     s32 j;
 
-    for (i = 0; i < D_800A97B8_main->eventCount; i++) {
-        event = &D_800A97B8_main->events[i];
-        player = &D_800A97B8_main->players[event->voiceSlot];
+    for (i = 0; i < msmMus->eventCount; i++) {
+        event = &msmMus->events[i];
+        player = &msmMus->players[event->voiceSlot];
         switch (event->cmdType) {
             case 0:
                 player->flags |= 2;
@@ -939,8 +939,8 @@ void msmMusEventProc(void) {
                 }
                 break;
             case 3:
-                for (j = 0; j < D_800A97B8_main->playerCount; j++) {
-                    player = &D_800A97B8_main->players[j];
+                for (j = 0; j < msmMus->playerCount; j++) {
+                    player = &msmMus->players[j];
                     player->evtVol = (u8)event->cmdArg;
                     if (player->flags & 3) {
                         player->flags |= 4;
@@ -950,9 +950,9 @@ void msmMusEventProc(void) {
                 }
                 break;
             case 4:
-                D_800A97B8_main->masterVol = (u8)event->cmdArg;
-                for (j = 0; j < D_800A97B8_main->playerCount; j++) {
-                    player = &D_800A97B8_main->players[j];
+                msmMus->masterVol = (u8)event->cmdArg;
+                for (j = 0; j < msmMus->playerCount; j++) {
+                    player = &msmMus->players[j];
                     player->fadeTime = 0;
                     player->fadeVol = 0x7F;
                     n_alCSPSetVol(player->seqp, msmSysVolExpand(msmMusCalcVolume(player)));
@@ -966,8 +966,8 @@ void msmMusEventProc(void) {
                 player->flags = 0;
                 break;
             case 7:
-                for (j = 0; j < D_800A97B8_main->playerCount; j++) {
-                    player = &D_800A97B8_main->players[j];
+                for (j = 0; j < msmMus->playerCount; j++) {
+                    player = &msmMus->players[j];
                     if (!(player->flags & 1)) {
                         n_alCSPStop(player->seqp);
                         player->state = 1;
@@ -985,8 +985,8 @@ void msmMusEventProc(void) {
                 player->fadeVol = 0x7F;
                 break;
             case 9:
-                for (j = 0; j < D_800A97B8_main->playerCount; j++) {
-                    player = &D_800A97B8_main->players[j];
+                for (j = 0; j < msmMus->playerCount; j++) {
+                    player = &msmMus->players[j];
                     if (player->state >= 3) {
                         time = event->cmdArg;
                         if (time <= 0) {
@@ -1005,8 +1005,8 @@ void msmMusEventProc(void) {
                 player->flags = (player->flags | 8) & ~0x10;
                 break;
             case 11:
-                for (j = 0; j < D_800A97B8_main->playerCount; j++) {
-                    player = &D_800A97B8_main->players[j];
+                for (j = 0; j < msmMus->playerCount; j++) {
+                    player = &msmMus->players[j];
                     if (!(player->flags & 1)) {
                         n_alCSPStop(player->seqp);
                     }
@@ -1017,8 +1017,8 @@ void msmMusEventProc(void) {
                 msmMusStartFadeIn(player, event->cmdArg);
                 break;
             case 13:
-                for (j = 0; j < D_800A97B8_main->playerCount; j++) {
-                    player = &D_800A97B8_main->players[j];
+                for (j = 0; j < msmMus->playerCount; j++) {
+                    player = &msmMus->players[j];
                     if (player->flags & 8) {
                         msmMusStartFadeIn(player, event->cmdArg);
                     }
@@ -1042,9 +1042,9 @@ void msmMusEventProc(void) {
                 player->flags = (player->flags & ~0x18) | 1;
                 player->newTrack = (s16)event->cmdArg;
                 player->crossfade = 1;
-                for (j = 0; j < D_800A97B8_main->playerCount; j++) {
+                for (j = 0; j < msmMus->playerCount; j++) {
                     if (j != event->voiceSlot) {
-                        player = &D_800A97B8_main->players[j];
+                        player = &msmMus->players[j];
                         if (player->state >= 2) {
                             if (player->state == 4) {
                                 n_alCSPStop(player->seqp);
@@ -1052,7 +1052,7 @@ void msmMusEventProc(void) {
                             player->flags = (player->flags | 8) & ~0x10;
                             player->fadeTime = 0;
                             player->waitPlayer = event->voiceSlot;
-                            player->resumeFade = D_800A97B8_main->tracks[player->newTrack].fadeTime;
+                            player->resumeFade = msmMus->tracks[player->newTrack].fadeTime;
                             player->flags |= 0x40;
                         }
                     }
@@ -1060,7 +1060,7 @@ void msmMusEventProc(void) {
                 break;
         }
     }
-    D_800A97B8_main->eventCount = 0;
+    msmMus->eventCount = 0;
 }
 
 void msmMusUpdateState(SeqPlayer *seqPlayer) {
@@ -1114,7 +1114,7 @@ void msmMusStartRequested(SeqPlayer *player) {
         if (player->cspState == 1) {
             n_alCSPStop(player->seqp);
         } else if (player->cspState != 2) {
-            track = &D_800A97B8_main->tracks[player->newTrack];
+            track = &msmMus->tracks[player->newTrack];
             msmMusLoadBank(player, track->bankFile, 0x4000);
             n_alCSPSetBank(player->seqp, player->bankFile->bankArray[track->bank]);
             msmMusLoadSeq(player);
@@ -1188,23 +1188,23 @@ s32 msmMusInit(SndSys *sys, ALHeap *heap, s32 trackCount, s32 vol) {
     s32 i;
 
     if (trackCount == 0) {
-        D_800A97B8_main = NULL;
+        msmMus = NULL;
         return 0;
     }
-    if ((D_800A97B8_main = msmMemAlloc(sizeof(AudioManager))) == NULL) {
+    if ((msmMus = msmMemAlloc(sizeof(AudioManager))) == NULL) {
         return 1;
     }
     bzero(seqSize, sizeof(seqSize));
     size = trackCount * sizeof(MusTrack);
-    if ((D_800A97B8_main->tracks = msmMemAlloc(size)) == NULL) {
+    if ((msmMus->tracks = msmMemAlloc(size)) == NULL) {
         return 2;
     }
     romAddr = (u8 *)cfg->unk8 + sizeof(SndBankHeader);
-    msmFioRead(D_800A97B8_main->tracks, romAddr, size, 0);
+    msmFioRead(msmMus->tracks, romAddr, size, 0);
     bankFileCount = 0;
     playerCount = 0;
     for (i = 0; i < trackCount; i++) {
-        track = &D_800A97B8_main->tracks[i];
+        track = &msmMus->tracks[i];
         if (track->romAddr != NULL && track->size != 0) {
             track->romAddr += (u32)cfg->unk8;
             size = track->player & 0xF;
@@ -1222,14 +1222,14 @@ s32 msmMusInit(SndSys *sys, ALHeap *heap, s32 trackCount, s32 vol) {
     bankFileCount++;
     playerCount++;
     size = bankFileCount * sizeof(MusBankFile);
-    if ((D_800A97B8_main->bankFiles = msmMemAlloc(size)) == NULL) {
+    if ((msmMus->bankFiles = msmMemAlloc(size)) == NULL) {
         return 3;
     }
     romAddr = (u8 *)cfg->unk8 + (trackCount * sizeof(MusTrack) + sizeof(SndBankHeader));
-    msmFioRead(D_800A97B8_main->bankFiles, romAddr, size, 0);
+    msmFioRead(msmMus->bankFiles, romAddr, size, 0);
     maxCtlSize = 0;
     for (i = 0; i < bankFileCount; i++) {
-        bankFile = &D_800A97B8_main->bankFiles[i];
+        bankFile = &msmMus->bankFiles[i];
         bankFile->ctlAddr += (u32)cfg->unk8;
         bankFile->tblAddr += (u32)cfg->unk8;
         if (maxCtlSize < bankFile->ctlSize) {
@@ -1253,11 +1253,11 @@ s32 msmMusInit(SndSys *sys, ALHeap *heap, s32 trackCount, s32 vol) {
     config.initOsc = msmMusInitOsc;
     config.updateOsc = msmMusUpdateOsc;
     config.stopOsc = msmMusStopOsc;
-    if ((D_800A97B8_main->players = msmMemAlloc(playerCount * sizeof(SeqPlayer))) == NULL) {
+    if ((msmMus->players = msmMemAlloc(playerCount * sizeof(SeqPlayer))) == NULL) {
         return 5;
     }
     for (i = 0; i < playerCount; i++) {
-        player = &D_800A97B8_main->players[i];
+        player = &msmMus->players[i];
         player->flags = 0;
         player->state = 0;
         player->fadeTime = 0;
@@ -1284,42 +1284,42 @@ s32 msmMusInit(SndSys *sys, ALHeap *heap, s32 trackCount, s32 vol) {
                 return 9;
             }
             player->bankFileIdx = -1;
-            D_800A97B8_main->playerCount = i;
+            msmMus->playerCount = i;
             msmMusLoadBank(player, 0, 0);
         }
     }
     oscCount = playerCount * cfg->unk4C;
-    if ((D_800A97B8_main->oscs = msmMemAlloc(oscCount * sizeof(MusOsc))) == NULL) {
+    if ((msmMus->oscs = msmMemAlloc(oscCount * sizeof(MusOsc))) == NULL) {
         return 10;
     }
-    osc = D_800A97B8_main->freeOscs = D_800A97B8_main->oscs;
+    osc = msmMus->freeOscs = msmMus->oscs;
     oscCount--;
     for (i = 0; i < oscCount; i++) {
-        osc->next = &D_800A97B8_main->oscs[i + 1];
+        osc->next = &msmMus->oscs[i + 1];
         osc = osc->next;
     }
     osc->next = NULL;
-    D_800A97B8_main->playerCount = playerCount;
-    D_800A97B8_main->trackCount = trackCount;
-    D_800A97B8_main->configVol = vol;
-    D_800A97B8_main->masterVol = 0x7F;
-    D_800A97B8_main->eventCount = 0;
-    D_800A97B8_main->busy.flag[0] = 0;
-    D_800A97B8_main->busy.flag[1] = 0;
+    msmMus->playerCount = playerCount;
+    msmMus->trackCount = trackCount;
+    msmMus->configVol = vol;
+    msmMus->masterVol = 0x7F;
+    msmMus->eventCount = 0;
+    msmMus->busy.flag[0] = 0;
+    msmMus->busy.flag[1] = 0;
     return 0;
 }
 
 /* Queues an event for the periodic proc to process. */
 void msmMusPushEvent(s32 player, s32 type, s32 arg) {
     u32 mask = osSetIntMask(1);
-    AudioCmd *event = &D_800A97B8_main->events[D_800A97B8_main->eventCount];
+    AudioCmd *event = &msmMus->events[msmMus->eventCount];
 
     event->cmdType = type;
     event->voiceSlot = player;
     event->cmdArg = arg;
-    if (++D_800A97B8_main->eventCount >= ARRAY_COUNT(D_800A97B8_main->events)) {
+    if (++msmMus->eventCount >= ARRAY_COUNT(msmMus->events)) {
         msmSysError(0, 0x100);
-        D_800A97B8_main->eventCount = 0;
+        msmMus->eventCount = 0;
     }
     osSetIntMask(mask);
 }
@@ -1328,27 +1328,27 @@ void msmMusPeriodicProc(void) {
     SeqPlayer *player;
     s32 i;
 
-    if (D_800A97B8_main != NULL && D_800A97B8_main->busy.all == 0) {
-        D_800A97B8_main->busy.flag[1] = 1;
+    if (msmMus != NULL && msmMus->busy.all == 0) {
+        msmMus->busy.flag[1] = 1;
         msmMusEventProc();
-        D_800A97B8_main->playingCount = 0;
-        for (i = 0; i < D_800A97B8_main->playerCount; i++) {
-            player = &D_800A97B8_main->players[i];
+        msmMus->playingCount = 0;
+        for (i = 0; i < msmMus->playerCount; i++) {
+            player = &msmMus->players[i];
             msmMusUpdateState(player);
             msmMusStartRequested(player);
             msmMusCheckState(player);
-            if ((player->flags & 0x40) && D_800A97B8_main->players[player->waitPlayer].state < 2) {
+            if ((player->flags & 0x40) && msmMus->players[player->waitPlayer].state < 2) {
                 player->flags &= ~0x40;
                 msmMusStartFadeIn(player, player->resumeFade * 10);
             }
             if (player->state >= 2) {
-                D_800A97B8_main->playingCount++;
+                msmMus->playingCount++;
             }
             if (player->state >= 3) {
                 msmMusFade(player);
             }
         }
-        D_800A97B8_main->busy.flag[1] = 0;
+        msmMus->busy.flag[1] = 0;
     }
 }
 
@@ -1356,9 +1356,9 @@ void msmMusDeleteAll(void) {
     SeqPlayer *player;
     s32 i;
 
-    if (D_800A97B8_main != NULL) {
-        for (i = 0; i < D_800A97B8_main->playerCount; i++) {
-            player = &D_800A97B8_main->players[i];
+    if (msmMus != NULL) {
+        for (i = 0; i < msmMus->playerCount; i++) {
+            player = &msmMus->players[i];
             n_alCSPStop(player->seqp);
             n_alCSPDelete(player->seqp);
         }
@@ -1366,11 +1366,11 @@ void msmMusDeleteAll(void) {
 }
 
 AudioManager *msmMusGetManager(void) {
-    return D_800A97B8_main;
+    return msmMus;
 }
 
 void msmMusClear(void) {
-    D_800A97B8_main = NULL;
+    msmMus = NULL;
 }
 
 /* Oscillator init callback for the sequence players, based on the initOsc()
@@ -1380,9 +1380,9 @@ ALMicroTime msmMusInitOsc(void **oscState, f32 *initVal, u8 oscType, u8 oscRate,
     ALMicroTime deltaTime = 0;
     s32 cents;
 
-    if (D_800A97B8_main->freeOscs != NULL) {
-        osc = D_800A97B8_main->freeOscs;
-        D_800A97B8_main->freeOscs = osc->next;
+    if (msmMus->freeOscs != NULL) {
+        osc = msmMus->freeOscs;
+        msmMus->freeOscs = osc->next;
         osc->type = oscType;
         *oscState = osc;
         deltaTime = oscDelay << 14;
@@ -1744,8 +1744,8 @@ ALMicroTime msmMusUpdateOsc(void *oscState, f32 *updateVal) {
 void msmMusStopOsc(void *oscState) {
     MusOsc *osc = oscState;
 
-    osc->next = D_800A97B8_main->freeOscs;
-    D_800A97B8_main->freeOscs = osc;
+    osc->next = msmMus->freeOscs;
+    msmMus->freeOscs = osc;
 }
 
 f32 msmPitchToRatio(s32 arg0) {
@@ -2049,26 +2049,26 @@ s32 msmSeLoadBank(u8 *bankAddr, SeBankInfo *info) {
     ALWaveTable *wave;
     s32 i;
 
-    if ((D_800A97BC_main->alSounds = msmMemAlloc(info->ctlSize)) == NULL) {
+    if ((msmSe->alSounds = msmMemAlloc(info->ctlSize)) == NULL) {
         return 1;
     }
     info->ctlAddr = bankAddr + (u32)info->ctlAddr;
-    msmFioRead(D_800A97BC_main->alSounds, info->ctlAddr, info->ctlSize, 0);
+    msmFioRead(msmSe->alSounds, info->ctlAddr, info->ctlSize, 0);
     info->tblAddr = bankAddr + (u32)info->tblAddr;
     for (i = 0; i < info->soundCount; i++) {
-        sound = &D_800A97BC_main->alSounds[i];
+        sound = &msmSe->alSounds[i];
         if (sound->flags == 0) {
             sound->flags = 1;
-            sound->envelope = (ALEnvelope *)((u8 *)sound->envelope + (u32)D_800A97BC_main->alSounds);
-            sound->wavetable = wave = (ALWaveTable *)((u8 *)sound->wavetable + (u32)D_800A97BC_main->alSounds);
+            sound->envelope = (ALEnvelope *)((u8 *)sound->envelope + (u32)msmSe->alSounds);
+            sound->wavetable = wave = (ALWaveTable *)((u8 *)sound->wavetable + (u32)msmSe->alSounds);
             if (wave->flags == 0) {
                 wave->flags = 1;
                 wave->base += (u32)info->tblAddr;
                 wave->waveInfo.adpcmWave.book =
-                    (ALADPCMBook *)((u8 *)wave->waveInfo.adpcmWave.book + (u32)D_800A97BC_main->alSounds);
+                    (ALADPCMBook *)((u8 *)wave->waveInfo.adpcmWave.book + (u32)msmSe->alSounds);
                 if (wave->waveInfo.adpcmWave.loop != NULL) {
                     wave->waveInfo.adpcmWave.loop =
-                        (ALADPCMloop *)((u8 *)wave->waveInfo.adpcmWave.loop + (u32)D_800A97BC_main->alSounds);
+                        (ALADPCMloop *)((u8 *)wave->waveInfo.adpcmWave.loop + (u32)msmSe->alSounds);
                 }
             }
         }
@@ -2083,16 +2083,16 @@ s32 msmSeLoadTable(u8 *bankAddr, SeBankInfo *info) {
     s32 i;
     s32 j;
 
-    if ((D_800A97BC_main->entries = msmMemAlloc(info->seSize)) == NULL) {
+    if ((msmSe->entries = msmMemAlloc(info->seSize)) == NULL) {
         return 1;
     }
     romAddr = bankAddr + info->seOffset;
-    msmFioRead(D_800A97BC_main->entries, romAddr, info->seSize, 0);
+    msmFioRead(msmSe->entries, romAddr, info->seSize, 0);
     for (i = 0; i < info->seCount; i++) {
-        if (D_800A97BC_main->entries[i] != NULL) {
-            entry = D_800A97BC_main->entries[i] = (SeEntry *)((u8 *)D_800A97BC_main->entries[i] + (u32)D_800A97BC_main->entries);
+        if (msmSe->entries[i] != NULL) {
+            entry = msmSe->entries[i] = (SeEntry *)((u8 *)msmSe->entries[i] + (u32)msmSe->entries);
             for (j = 0; j < entry->layerCount; j++) {
-                entry->layers[j].script += (u32)D_800A97BC_main->entries;
+                entry->layers[j].script += (u32)msmSe->entries;
             }
         }
     }
@@ -2104,17 +2104,17 @@ s32 msmSeLoadEnvScripts(u8 *bankAddr, SeBankInfo *info) {
     s32 i;
 
     if (info->unk_28 == 0) {
-        D_800A97BC_main->envScripts = NULL;
+        msmSe->envScripts = NULL;
         return 0;
     }
-    if ((D_800A97BC_main->envScripts = msmMemAlloc(info->unk_30)) == NULL) {
+    if ((msmSe->envScripts = msmMemAlloc(info->unk_30)) == NULL) {
         return 1;
     }
     romAddr = bankAddr + info->unk_2C;
-    msmFioRead(D_800A97BC_main->envScripts, romAddr, info->unk_30, 0);
+    msmFioRead(msmSe->envScripts, romAddr, info->unk_30, 0);
     for (i = 0; i < info->unk_28; i++) {
-        if (D_800A97BC_main->envScripts[i] != NULL) {
-            D_800A97BC_main->envScripts[i] += (u32)D_800A97BC_main->envScripts;
+        if (msmSe->envScripts[i] != NULL) {
+            msmSe->envScripts[i] += (u32)msmSe->envScripts;
         }
     }
     return 0;
@@ -2130,9 +2130,9 @@ void msmSeCmdProc(void) {
     s32 i;
     s32 j;
 
-    for (i = 0; i < D_800A97BC_main->cmdCount; i++) {
-        cmd = &D_800A97BC_main->cmds[i];
-        sound = &D_800A97BC_main->sounds[cmd->voiceSlot];
+    for (i = 0; i < msmSe->cmdCount; i++) {
+        cmd = &msmSe->cmds[i];
+        sound = &msmSe->sounds[cmd->voiceSlot];
         switch (cmd->cmdType) {
             case 0:
                 sound->flags = (sound->flags & ~1) | 2;
@@ -2151,7 +2151,7 @@ void msmSeCmdProc(void) {
                     sound->flags |= 0x4000;
                     if (sound->linkCount != 0) {
                         for (j = 0; j < sound->linkCount; j++) {
-                            link = &D_800A97BC_main->sounds[sound->links[j].slot];
+                            link = &msmSe->sounds[sound->links[j].slot];
                             if (link->order == sound->links[j].order) {
                                 link->vol = cmd->arg.i;
                                 link->flags |= 0x4000;
@@ -2161,8 +2161,8 @@ void msmSeCmdProc(void) {
                 }
                 break;
             case 4:
-                for (j = 0; j < D_800A97BC_main->soundCount; j++) {
-                    link = &D_800A97BC_main->sounds[j];
+                for (j = 0; j < msmSe->soundCount; j++) {
+                    link = &msmSe->sounds[j];
                     link->vol = cmd->arg.i;
                     if (link->flags & 3) {
                         link->flags |= 0x10;
@@ -2172,15 +2172,15 @@ void msmSeCmdProc(void) {
                 }
                 break;
             case 3:
-                for (j = 0; j < D_800A97BC_main->soundCount; j++) {
-                    link = &D_800A97BC_main->sounds[j];
+                for (j = 0; j < msmSe->soundCount; j++) {
+                    link = &msmSe->sounds[j];
                     if (link->state == 4) {
                         link->flags |= 0x4000;
                     }
                 }
-                D_800A97BC_main->vol = cmd->arg.i;
-                D_800A97BC_main->fadeVol = 0x7F;
-                D_800A97BC_main->fadeTime = 0;
+                msmSe->vol = cmd->arg.i;
+                msmSe->fadeVol = 0x7F;
+                msmSe->fadeTime = 0;
                 break;
             case 5:
                 sound->pitch = cmd->arg.i;
@@ -2190,7 +2190,7 @@ void msmSeCmdProc(void) {
                     sound->flags |= 0x20000;
                     if (sound->linkCount != 0) {
                         for (j = 0; j < sound->linkCount; j++) {
-                            link = &D_800A97BC_main->sounds[sound->links[j].slot];
+                            link = &msmSe->sounds[sound->links[j].slot];
                             if (link->order == sound->links[j].order) {
                                 link->pitch = cmd->arg.i;
                                 link->flags |= 0x20000;
@@ -2200,8 +2200,8 @@ void msmSeCmdProc(void) {
                 }
                 break;
             case 6:
-                for (j = 0; j < D_800A97BC_main->soundCount; j++) {
-                    link = &D_800A97BC_main->sounds[j];
+                for (j = 0; j < msmSe->soundCount; j++) {
+                    link = &msmSe->sounds[j];
                     link->pitch = cmd->arg.i;
                     if (link->flags & 3) {
                         link->flags |= 0x40;
@@ -2218,7 +2218,7 @@ void msmSeCmdProc(void) {
                     sound->flags |= 0x8000;
                     if (sound->linkCount != 0) {
                         for (j = 0; j < sound->linkCount; j++) {
-                            link = &D_800A97BC_main->sounds[sound->links[j].slot];
+                            link = &msmSe->sounds[sound->links[j].slot];
                             if (link->order == sound->links[j].order) {
                                 link->pan = cmd->arg.i;
                                 link->flags |= 0x8000;
@@ -2228,8 +2228,8 @@ void msmSeCmdProc(void) {
                 }
                 break;
             case 8:
-                for (j = 0; j < D_800A97BC_main->soundCount; j++) {
-                    link = &D_800A97BC_main->sounds[j];
+                for (j = 0; j < msmSe->soundCount; j++) {
+                    link = &msmSe->sounds[j];
                     link->pan = cmd->arg.i;
                     if (link->flags & 3) {
                         link->flags |= 0x20;
@@ -2246,7 +2246,7 @@ void msmSeCmdProc(void) {
                     sound->flags |= 0x10000;
                     if (sound->linkCount != 0) {
                         for (j = 0; j < sound->linkCount; j++) {
-                            link = &D_800A97BC_main->sounds[sound->links[j].slot];
+                            link = &msmSe->sounds[sound->links[j].slot];
                             if (link->order == sound->links[j].order) {
                                 link->fxMix = cmd->arg.i;
                                 link->flags |= 0x10000;
@@ -2256,8 +2256,8 @@ void msmSeCmdProc(void) {
                 }
                 break;
             case 10:
-                for (j = 0; j < D_800A97BC_main->soundCount; j++) {
-                    link = &D_800A97BC_main->sounds[j];
+                for (j = 0; j < msmSe->soundCount; j++) {
+                    link = &msmSe->sounds[j];
                     link->fxMix = cmd->arg.i;
                     if (link->flags & 3) {
                         link->flags |= 0x80;
@@ -2270,7 +2270,7 @@ void msmSeCmdProc(void) {
                 msmSeSoundStop(sound);
                 if (sound->linkCount != 0) {
                     for (j = 0; j < sound->linkCount; j++) {
-                        link = &D_800A97BC_main->sounds[sound->links[j].slot];
+                        link = &msmSe->sounds[sound->links[j].slot];
                         if (link->order == sound->links[j].order) {
                             msmSeSoundStop(link);
                         }
@@ -2278,18 +2278,18 @@ void msmSeCmdProc(void) {
                 }
                 break;
             case 12:
-                for (j = 0; j < D_800A97BC_main->soundCount; j++) {
-                    msmSeSoundStop(&D_800A97BC_main->sounds[j]);
+                for (j = 0; j < msmSe->soundCount; j++) {
+                    msmSeSoundStop(&msmSe->sounds[j]);
                 }
                 break;
             case 13:
-                D_800A97BC_main->fadeTime = cmd->arg.i > 0 ? cmd->arg.i : 1;
-                D_800A97BC_main->fadeStep = 0x7F000000 / D_800A97BC_main->fadeTime;
-                D_800A97BC_main->fadeVol = 0x7F;
+                msmSe->fadeTime = cmd->arg.i > 0 ? cmd->arg.i : 1;
+                msmSe->fadeStep = 0x7F000000 / msmSe->fadeTime;
+                msmSe->fadeVol = 0x7F;
                 break;
             case 14:
-                for (j = 0; j < D_800A97BC_main->soundCount; j++) {
-                    link = &D_800A97BC_main->sounds[j];
+                for (j = 0; j < msmSe->soundCount; j++) {
+                    link = &msmSe->sounds[j];
                     if (link->state >= 2) {
                         link->state = 2;
                     }
@@ -2297,21 +2297,21 @@ void msmSeCmdProc(void) {
                         msmSeSoundStop(link);
                     }
                 }
-                D_800A97BC_main->pauseState = 0x7E;
+                msmSe->pauseState = 0x7E;
                 break;
             case 15:
-                D_800A97BC_main->pauseState = 0x7F;
-                for (j = 0; j < D_800A97BC_main->soundCount; j++) {
-                    link = &D_800A97BC_main->sounds[j];
+                msmSe->pauseState = 0x7F;
+                for (j = 0; j < msmSe->soundCount; j++) {
+                    link = &msmSe->sounds[j];
                     if (link->state == 2) {
                         link->state = 4;
                         link->flags |= 0x4000;
                     }
                 }
-                if (cmd->arg.i != 0 && D_800A97BC_main->fadeTime <= 0) {
-                    D_800A97BC_main->fadeTime = -cmd->arg.i;
-                    D_800A97BC_main->fadeStep = 0x7F000000 / cmd->arg.i;
-                    D_800A97BC_main->fadeVol = 0;
+                if (cmd->arg.i != 0 && msmSe->fadeTime <= 0) {
+                    msmSe->fadeTime = -cmd->arg.i;
+                    msmSe->fadeStep = 0x7F000000 / cmd->arg.i;
+                    msmSe->fadeVol = 0;
                 }
                 break;
             case 16:
@@ -2340,7 +2340,7 @@ void msmSeCmdProc(void) {
                 break;
         }
     }
-    D_800A97BC_main->cmdCount = 0;
+    msmSe->cmdCount = 0;
 }
 
 void msmSeSoundStop(GameSound *sound) {
@@ -2369,7 +2369,7 @@ void msmSeSoundCount(GameSound *sound) {
     if (sound->state != 1) {
         if (sound->state > 0) {
             if (sound->state < 5) {
-                D_800A97BC_main->unk_18++;
+                msmSe->unk_18++;
             }
         }
     } else if (sound->sndId < 0) {
@@ -2392,8 +2392,8 @@ void msmSeSoundStart(GameSound *sound) {
     if (!(sound->flags & 1)) {
         return;
     }
-    entry = D_800A97BC_main->entries[sound->seId];
-    if (D_800A97BC_main->pauseState < 0x7F && !(entry->unk_02 & 1)) {
+    entry = msmSe->entries[sound->seId];
+    if (msmSe->pauseState < 0x7F && !(entry->unk_02 & 1)) {
         return;
     }
     sound->state = 3;
@@ -2411,7 +2411,7 @@ void msmSeSoundStart(GameSound *sound) {
         sound->sndId = -1;
     }
     if (sound->layer > 0) {
-        if (D_800A97BC_main->sounds[sound->links[0].slot].order != sound->links[0].order) {
+        if (msmSe->sounds[sound->links[0].slot].order != sound->links[0].order) {
             sound->state = 0;
             sound->flags = 0;
         }
@@ -2421,7 +2421,7 @@ void msmSeSoundStart(GameSound *sound) {
     links = sound->links;
     if (linkCount != 0) {
         for (i = 0; i < linkCount; i++) {
-            link = &D_800A97BC_main->sounds[links[i].slot];
+            link = &msmSe->sounds[links[i].slot];
             if (link->order == links[i].order && link->sndId >= 0) {
                 return;
             }
@@ -2453,16 +2453,16 @@ void msmSeSoundStart(GameSound *sound) {
         sound->randFlags = 0;
         sound->modMask = 0;
         if (!(sound->flags & 0x10)) {
-            sound->vol = D_800A97BC_main->masterVol;
+            sound->vol = msmSe->masterVol;
         }
         if (!(sound->flags & 0x20)) {
-            sound->pan = D_800A97BC_main->pan;
+            sound->pan = msmSe->pan;
         }
         if (!(sound->flags & 0x40)) {
-            sound->pitch = D_800A97BC_main->unk_2A;
+            sound->pitch = msmSe->unk_2A;
         }
         if (!(sound->flags & 0x80)) {
-            sound->fxMix = D_800A97BC_main->unk_2E;
+            sound->fxMix = msmSe->unk_2E;
         }
         if (!(sound->flags & 0x100)) {
             sound->unk_B2 = 0x7F;
@@ -2477,7 +2477,7 @@ void msmSeSoundStart(GameSound *sound) {
         sound->flags = flags;
         sound->state = 4;
         for (; i < linkCount; i++) {
-            sound = &D_800A97BC_main->sounds[links[i].slot];
+            sound = &msmSe->sounds[links[i].slot];
             if (sound->order == links[i].order) {
                 break;
             }
@@ -2666,8 +2666,8 @@ void msmSeRunScript(GameSound *sound) {
                 cursor += 5;
                 break;
             case 35:
-                if (D_800A97BC_main->envScripts != NULL) {
-                    sound->envScript = D_800A97BC_main->envScripts[cursor[0]];
+                if (msmSe->envScripts != NULL) {
+                    sound->envScript = msmSe->envScripts[cursor[0]];
                     sound->envDelayInit = SE_READ16(cursor + 1);
                     sound->envDelay = -1;
                 }
@@ -3115,7 +3115,7 @@ void msmSeUpdateSound(GameSound *sound) {
     if (start) {
         if (sound->flags & 0x2000000) {
             val = sound->soundIdx & 0x7FFF;
-            bcopy(&D_800A97BC_main->alSounds[val], &sound->sound, sizeof(ALSound));
+            bcopy(&msmSe->alSounds[val], &sound->sound, sizeof(ALSound));
             if (sound->flags & 0x1F00000) {
                 if (!(sound->flags & 0x100000)) {
                     sound->env.attackVolume = sound->sound.envelope->attackVolume;
@@ -3170,16 +3170,16 @@ void msmSeUpdateBaseParam(GameSound *sound, s32 force) {
         if (val < 0) {
             val = 0;
         }
-        val = val * D_800A97BC_main->fadeVol * sound->vol * sound->sound.sampleVolume / (127 * 127 * 127);
-        val = val * D_800A97BC_main->vol * D_800A97BC_main->configVol * sound->unk_B2 / (127 * 127 * 127);
+        val = val * msmSe->fadeVol * sound->vol * sound->sound.sampleVolume / (127 * 127 * 127);
+        val = val * msmSe->vol * msmSe->configVol * sound->unk_B2 / (127 * 127 * 127);
         if (!(sound->flags & 4)) {
-            val = val * D_800A97BC_main->pauseState / 127;
+            val = val * msmSe->pauseState / 127;
         }
         n_alSndpSetVol(msmSysVolExpand(val));
     }
     if ((sound->flags & 0x8000) || force) {
         val = 0x40;
-        if (!(D_800CB8AC_main & 1)) {
+        if (!(msmMonoF & 1)) {
             val = sound->panMod + sound->scriptPan;
             val = sound->unk_B3 - 0x40 + sound->pan - 0x40 + val;
             if (val < 0) {
@@ -3214,18 +3214,18 @@ void msmSeUpdateBaseParam(GameSound *sound, s32 force) {
 }
 
 void msmSePauseSub(void) {
-    switch (D_800A97BC_main->pauseState) {
+    switch (msmSe->pauseState) {
         case 0x7E:
-            D_800A97BC_main->pauseState = 0x40;
+            msmSe->pauseState = 0x40;
             break;
         case 0x40:
-            D_800A97BC_main->pauseState = 10;
+            msmSe->pauseState = 10;
             break;
         case 10:
-            D_800A97BC_main->pauseState = 0;
+            msmSe->pauseState = 0;
             break;
         case 0:
-            D_800A97BC_main->pauseState = -1;
+            msmSe->pauseState = -1;
             break;
     }
 }
@@ -3236,35 +3236,35 @@ void msmSeFade(void) {
     GameSound *sound;
     s32 i;
 
-    if (D_800A97BC_main->fadeTime > 0) {
-        if (--D_800A97BC_main->fadeTime != 0) {
-            i = (D_800A97BC_main->fadeStep * D_800A97BC_main->fadeTime) >> 24;
-            if (i != D_800A97BC_main->fadeVol) {
-                D_800A97BC_main->fadeVol = i;
-                for (i = 0; i < D_800A97BC_main->soundCount; i++) {
-                    sound = &D_800A97BC_main->sounds[i];
+    if (msmSe->fadeTime > 0) {
+        if (--msmSe->fadeTime != 0) {
+            i = (msmSe->fadeStep * msmSe->fadeTime) >> 24;
+            if (i != msmSe->fadeVol) {
+                msmSe->fadeVol = i;
+                for (i = 0; i < msmSe->soundCount; i++) {
+                    sound = &msmSe->sounds[i];
                     if (sound->state == 4) {
                         sound->flags |= 0x4000;
                     }
                 }
             }
         } else {
-            for (i = 0; i < D_800A97BC_main->soundCount; i++) {
-                msmSeSoundStop(&D_800A97BC_main->sounds[i]);
+            for (i = 0; i < msmSe->soundCount; i++) {
+                msmSeSoundStop(&msmSe->sounds[i]);
             }
-            D_800A97BC_main->fadeVol = 0x7F;
+            msmSe->fadeVol = 0x7F;
         }
     }
-    if (D_800A97BC_main->fadeTime < 0) {
-        if (++D_800A97BC_main->fadeTime != 0) {
-            i = 0x7F - ((-D_800A97BC_main->fadeTime * D_800A97BC_main->fadeStep) >> 24);
+    if (msmSe->fadeTime < 0) {
+        if (++msmSe->fadeTime != 0) {
+            i = 0x7F - ((-msmSe->fadeTime * msmSe->fadeStep) >> 24);
         } else {
             i = 0x7F;
         }
-        if (i != D_800A97BC_main->fadeVol) {
-            D_800A97BC_main->fadeVol = i;
-            for (i = 0; i < D_800A97BC_main->soundCount; i++) {
-                sound = &D_800A97BC_main->sounds[i];
+        if (i != msmSe->fadeVol) {
+            msmSe->fadeVol = i;
+            for (i = 0; i < msmSe->soundCount; i++) {
+                sound = &msmSe->sounds[i];
                 if (sound->state == 4) {
                     sound->flags |= 0x4000;
                 }
@@ -3282,13 +3282,13 @@ s32 msmSeInit(SndSys *sys, ALHeap *heap, s32 seCount, s32 vol) {
     s32 i;
 
     if (seCount == 0) {
-        D_800A97BC_main = NULL;
+        msmSe = NULL;
         return 0;
     }
-    if ((D_800A97BC_main = msmMemAlloc(sizeof(SeManager))) == NULL) {
+    if ((msmSe = msmMemAlloc(sizeof(SeManager))) == NULL) {
         return 1;
     }
-    bzero(D_800A97BC_main, sizeof(SeManager));
+    bzero(msmSe, sizeof(SeManager));
     msmFioRead(info, (u8 *)cfg->unkC + sizeof(SndBankHeader), sizeof(SeBankInfo), 0);
     if (msmSeLoadBank(cfg->unkC, info) != 0) {
         return 2;
@@ -3300,29 +3300,29 @@ s32 msmSeInit(SndSys *sys, ALHeap *heap, s32 seCount, s32 vol) {
         return 4;
     }
     i = cfg->unk54 * sizeof(GameSound);
-    if ((D_800A97BC_main->sounds = msmMemAlloc(i)) == NULL) {
+    if ((msmSe->sounds = msmMemAlloc(i)) == NULL) {
         return 5;
     }
-    bzero(D_800A97BC_main->sounds, i);
+    bzero(msmSe->sounds, i);
     config.maxSounds = cfg->unk54;
     config.maxEvents = cfg->unk58;
     config.heap = heap;
-    if ((D_800A97BC_main->sndp = msmMemAlloc(sizeof(N_ALSndPlayer))) == NULL) {
+    if ((msmSe->sndp = msmMemAlloc(sizeof(N_ALSndPlayer))) == NULL) {
         return 6;
     }
-    n_alSndpNew(D_800A97BC_main->sndp, &config);
-    D_800A97BC_main->soundCount = cfg->unk54;
-    D_800A97BC_main->seCount = seCount;
-    D_800A97BC_main->configVol = vol;
-    D_800A97BC_main->pan = 0x40;
-    D_800A97BC_main->vol = D_800A97BC_main->fadeVol = D_800A97BC_main->pauseState = D_800A97BC_main->masterVol = 0x7F;
-    D_800A97BC_main->minDist = 50.0f;
-    D_800A97BC_main->maxDist = 500.0f;
-    D_800A97BC_main->unk_44E = 10;
-    D_800A97BC_main->unk_450 = 1224.0f;
-    D_800A97BC_main->unk_454 = 1.0f;
-    for (i = 0; i < D_800A97BC_main->soundCount; i++) {
-        D_800A97BC_main->sounds[i].sndId = -1;
+    n_alSndpNew(msmSe->sndp, &config);
+    msmSe->soundCount = cfg->unk54;
+    msmSe->seCount = seCount;
+    msmSe->configVol = vol;
+    msmSe->pan = 0x40;
+    msmSe->vol = msmSe->fadeVol = msmSe->pauseState = msmSe->masterVol = 0x7F;
+    msmSe->minDist = 50.0f;
+    msmSe->maxDist = 500.0f;
+    msmSe->unk_44E = 10;
+    msmSe->unk_450 = 1224.0f;
+    msmSe->unk_454 = 1.0f;
+    for (i = 0; i < msmSe->soundCount; i++) {
+        msmSe->sounds[i].sndId = -1;
     }
     return 0;
 }
@@ -3330,14 +3330,14 @@ s32 msmSeInit(SndSys *sys, ALHeap *heap, s32 seCount, s32 vol) {
 /* Queues a command for the periodic proc to process. */
 void msmSePushCmd(s32 voiceSlot, s32 cmdType, s32 cmdArg) {
     u32 mask = osSetIntMask(1);
-    SeCmd *cmd = &D_800A97BC_main->cmds[D_800A97BC_main->cmdCount];
+    SeCmd *cmd = &msmSe->cmds[msmSe->cmdCount];
 
     cmd->cmdType = cmdType;
     cmd->voiceSlot = voiceSlot;
     cmd->arg.i = cmdArg;
-    if (++D_800A97BC_main->cmdCount >= ARRAY_COUNT(D_800A97BC_main->cmds)) {
+    if (++msmSe->cmdCount >= ARRAY_COUNT(msmSe->cmds)) {
         msmSysError(0, 0x200);
-        D_800A97BC_main->cmdCount = 0;
+        msmSe->cmdCount = 0;
     }
     osSetIntMask(mask);
 }
@@ -3345,14 +3345,14 @@ void msmSePushCmd(s32 voiceSlot, s32 cmdType, s32 cmdArg) {
 /* Queues a command with a float argument for the periodic proc to process. */
 void msmSePushCmdF(s32 voiceSlot, s32 cmdType, f32 cmdArg) {
     u32 mask = osSetIntMask(1);
-    SeCmd *cmd = &D_800A97BC_main->cmds[D_800A97BC_main->cmdCount];
+    SeCmd *cmd = &msmSe->cmds[msmSe->cmdCount];
 
     cmd->cmdType = cmdType;
     cmd->voiceSlot = voiceSlot;
     cmd->arg.f = cmdArg;
-    if (++D_800A97BC_main->cmdCount >= ARRAY_COUNT(D_800A97BC_main->cmds)) {
+    if (++msmSe->cmdCount >= ARRAY_COUNT(msmSe->cmds)) {
         msmSysError(0, 0x200);
-        D_800A97BC_main->cmdCount = 0;
+        msmSe->cmdCount = 0;
     }
     osSetIntMask(mask);
 }
@@ -3361,18 +3361,18 @@ void msmSePeriodicProc(void) {
     GameSound *sound;
     s32 i;
 
-    if (D_800A97BC_main != NULL && D_800A97BC_main->busy.all == 0) {
-        D_800A97BC_main->busy.flag[1] = 1;
-        D_800A97BC_main->unk_18 = 0;
+    if (msmSe != NULL && msmSe->busy.all == 0) {
+        msmSe->busy.flag[1] = 1;
+        msmSe->unk_18 = 0;
         msmSeCmdProc();
         msmSePauseSub();
-        for (i = 0; i < D_800A97BC_main->soundCount; i++) {
-            sound = &D_800A97BC_main->sounds[i];
+        for (i = 0; i < msmSe->soundCount; i++) {
+            sound = &msmSe->sounds[i];
             msmSeSoundUpdate(sound);
             msmSeSoundStart(sound);
             msmSeSoundCount(sound);
             if (sound->state != 4) {
-                if (sound->state == 2 && D_800A97BC_main->pauseState >= 0) {
+                if (sound->state == 2 && msmSe->pauseState >= 0) {
                     sound->flags |= 0x4000;
                     msmSeUpdateBaseParam(sound, 0);
                 }
@@ -3383,14 +3383,14 @@ void msmSePeriodicProc(void) {
                 msmSeUpdateVolume(sound);
                 msmSeUpdateSound(sound);
                 if (sound->state < 2) {
-                    D_800A97BC_main->unk_18--;
+                    msmSe->unk_18--;
                 }
             }
         }
-        if (D_800A97BC_main->pauseState == 0x7F) {
+        if (msmSe->pauseState == 0x7F) {
             msmSeFade();
         }
-        D_800A97BC_main->busy.flag[1] = 0;
+        msmSe->busy.flag[1] = 0;
     }
 }
 
@@ -3398,9 +3398,9 @@ void msmSeStopAllSounds(void) {
     GameSound *sound;
     s32 i;
 
-    if (D_800A97BC_main != NULL) {
-        for (i = 0; i < D_800A97BC_main->soundCount; i++) {
-            sound = &D_800A97BC_main->sounds[i];
+    if (msmSe != NULL) {
+        for (i = 0; i < msmSe->soundCount; i++) {
+            sound = &msmSe->sounds[i];
             if (sound->sndId >= 0) {
                 n_alSndpSetSound(sound->sndId);
                 n_alSndpStop();
@@ -3411,11 +3411,11 @@ void msmSeStopAllSounds(void) {
 }
 
 SeManager *msmSeGetManager(void) {
-    return D_800A97BC_main;
+    return msmSe;
 }
 
 void msmSeClear(void) {
-    D_800A97BC_main = NULL;
+    msmSe = NULL;
 }
 
 s32 msmSePlayDefault(s32 seId) {
@@ -3845,8 +3845,8 @@ void msmSePauseAll(void) {
     if (se != NULL && se->pauseState >= 0x7F) {
         msmSePushCmd(0, 14, 0);
         se->busy.flag[0] = 1;
-        for (i = 0; i < D_800A97BC_main->soundCount; i++) {
-            sound = &D_800A97BC_main->sounds[i];
+        for (i = 0; i < msmSe->soundCount; i++) {
+            sound = &msmSe->sounds[i];
             if (sound->state >= 2) {
                 sound->state = 2;
             }

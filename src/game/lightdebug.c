@@ -13,49 +13,49 @@ typedef union LightObjWork {
     s16 halfwords[8];
 } LightObjWork;
 
-static omObjData *D_800A1660_main = NULL;
-static s16 D_800A1664_main = 1;
-static s16 D_800A1666_main = 0;
-static u8 D_800A1668_main = 0xF0;
-static u8 D_800A1669_main = 0;
-static s8 D_800A166A_main = -1;
-static char *D_800A166C_main[] = { "STAT", "CAME" };
-static s16 D_800A1674_main[] = { 16, 72, 224, 88, 152, 232 };
-static s16 D_800A1680_main[] = { 16, 16, 16, 24, 24, 24 };
-static s16 D_800A168C_main[] = { 56, 96, 256, 112, 192, 264 };
-static s16 D_800A1698_main[] = { 24, 24, 24, 32, 32, 32 };
-extern UnkLightData *D_800CE1D4_main;
+static omObjData *lightDebugObj = NULL;
+static s16 lightDebugNo = 1;
+static s16 lightDebugWinPos = 0;
+static u8 lightDebugWinAlpha = 0xF0;
+static u8 lightDebugMode = 0;
+static s8 lightDebugAlphaSpeed = -1;
+static char *lightDebugStatStr[] = { "STAT", "CAME" };
+static s16 lightDebugWinX0[] = { 16, 72, 224, 88, 152, 232 };
+static s16 lightDebugWinY0[] = { 16, 16, 16, 24, 24, 24 };
+static s16 lightDebugWinX1[] = { 56, 96, 256, 112, 192, 264 };
+static s16 lightDebugWinY1[] = { 24, 24, 24, 32, 32, 32 };
+extern UnkLightData *Hu3DLightData;
 
 void LightDebugCreate(void) {
     LightObjWork *work;
 
-    D_800A1660_main = omAddObj(0x7FD0, 0, 0, -1, LightDebugExec);
-    omSetStatBit(D_800A1660_main, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    work = OM_GET_WORK_PTR(D_800A1660_main, LightObjWork);
+    lightDebugObj = omAddObj(0x7FD0, 0, 0, -1, LightDebugExec);
+    omSetStatBit(lightDebugObj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    work = OM_GET_WORK_PTR(lightDebugObj, LightObjWork);
     work->halfwords[0] = printWin(14, 14, 306, 34, 0xDF70);
     work->halfwords[4] =
-        printWin(D_800A1674_main[D_800A1666_main], D_800A1680_main[D_800A1666_main],
-                           D_800A168C_main[D_800A1666_main], D_800A1698_main[D_800A1666_main],
-                           (D_800A1668_main << 24) | 0x80);
-    D_800A1669_main = 0;
+        printWin(lightDebugWinX0[lightDebugWinPos], lightDebugWinY0[lightDebugWinPos],
+                           lightDebugWinX1[lightDebugWinPos], lightDebugWinY1[lightDebugWinPos],
+                           (lightDebugWinAlpha << 24) | 0x80);
+    lightDebugMode = 0;
 }
 
 void LightDebugKill(void) {
-    omObjData *lightObj = D_800A1660_main;
+    omObjData *lightObj = lightDebugObj;
     LightObjWork *work;
 
     if (lightObj != NULL) {
         work = OM_GET_WORK_PTR(lightObj, LightObjWork);
         pfWinKill(work->halfwords[0]);
         pfWinKill(work->halfwords[4]);
-        omDelObj(D_800A1660_main);
-        D_800A1660_main = NULL;
+        omDelObj(lightDebugObj);
+        lightDebugObj = NULL;
     }
 }
 
 void LightDebugExec(omObjData *object) {
-    s16 *dirWin = &OM_GET_WORK_PTR(D_800A1660_main, LightObjWork)->halfwords[0];
-    s16 *colorWin = &OM_GET_WORK_PTR(D_800A1660_main, LightObjWork)->halfwords[4];
+    s16 *dirWin = &OM_GET_WORK_PTR(lightDebugObj, LightObjWork)->halfwords[0];
+    s16 *colorWin = &OM_GET_WORK_PTR(lightDebugObj, LightObjWork)->halfwords[4];
     f32 x, y, z;
     f32 rotY, rotX;
     f32 sinX, cosX, sinY, cosY;
@@ -63,142 +63,142 @@ void LightDebugExec(omObjData *object) {
     char *statStr;
     u16 button;
 
-    statStr = D_800A166C_main[(D_800CE1D4_main->unk02[D_800A1664_main].stat ^ 1) & 1];
+    statStr = lightDebugStatStr[(Hu3DLightData->unk02[lightDebugNo].stat ^ 1) & 1];
     fontcolor = FONT_COLOR_YELLOW;
-    sprintf(D_800D5218_main, "LIGHT%1d DIR%4d,%4d,%4d  STAT %s", D_800A1664_main,
-            D_800CE1D4_main->unk02[D_800A1664_main].unk04, D_800CE1D4_main->unk02[D_800A1664_main].unk05,
-            D_800CE1D4_main->unk02[D_800A1664_main].unk06, statStr);
-    print8(16, 16, D_800D5218_main);
-    sprintf(D_800D5218_main, "COLOR    RED %3d GREEN %3d BLUE %3d", D_800CE1D4_main->unk02[D_800A1664_main].r,
-            D_800CE1D4_main->unk02[D_800A1664_main].g, D_800CE1D4_main->unk02[D_800A1664_main].b);
-    print8(16, 24, D_800D5218_main);
+    sprintf(omDBGStrBuf, "LIGHT%1d DIR%4d,%4d,%4d  STAT %s", lightDebugNo,
+            Hu3DLightData->unk02[lightDebugNo].unk04, Hu3DLightData->unk02[lightDebugNo].unk05,
+            Hu3DLightData->unk02[lightDebugNo].unk06, statStr);
+    print8(16, 16, omDBGStrBuf);
+    sprintf(omDBGStrBuf, "COLOR    RED %3d GREEN %3d BLUE %3d", Hu3DLightData->unk02[lightDebugNo].r,
+            Hu3DLightData->unk02[lightDebugNo].g, Hu3DLightData->unk02[lightDebugNo].b);
+    print8(16, 24, omDBGStrBuf);
 
-    switch (D_800A1669_main) {
+    switch (lightDebugMode) {
         case 0:
-            if ((D_800D5558_main[0] & A_BUTTON) && D_800A1666_main == 1) {
-                D_800CC440_main[*dirWin].unk_14 = 0x7070;
-                D_800A1668_main = 0xF0;
-                D_800A166A_main = -4;
-                D_800A1669_main = 1;
+            if ((HuPadBtnDown[0] & A_BUTTON) && lightDebugWinPos == 1) {
+                printWinData[*dirWin].unk_14 = 0x7070;
+                lightDebugWinAlpha = 0xF0;
+                lightDebugAlphaSpeed = -4;
+                lightDebugMode = 1;
                 break;
             }
-            D_800A1668_main += D_800A166A_main;
-            if (D_800A166A_main < 0) {
-                if (D_800A1668_main <= 0x80) {
-                    D_800A166A_main = 4;
+            lightDebugWinAlpha += lightDebugAlphaSpeed;
+            if (lightDebugAlphaSpeed < 0) {
+                if (lightDebugWinAlpha <= 0x80) {
+                    lightDebugAlphaSpeed = 4;
                 }
-            } else if (D_800A1668_main >= 0xF0) {
-                D_800A166A_main = -4;
+            } else if (lightDebugWinAlpha >= 0xF0) {
+                lightDebugAlphaSpeed = -4;
             }
 
-            button = D_800D0590_main[0];
-            row = D_800A1666_main / 3;
-            col = D_800A1666_main % 3;
+            button = ContBtnRep[0];
+            row = lightDebugWinPos / 3;
+            col = lightDebugWinPos % 3;
             if (button & L_JPAD) {
                 if (col == 0) {
-                    D_800A1666_main = row * 3 + 2;
+                    lightDebugWinPos = row * 3 + 2;
                 } else {
-                    D_800A1666_main--;
+                    lightDebugWinPos--;
                 }
             } else if (button & R_JPAD) {
                 if (col == 2) {
-                    D_800A1666_main = row * 3;
+                    lightDebugWinPos = row * 3;
                 } else {
-                    D_800A1666_main++;
+                    lightDebugWinPos++;
                 }
             } else if (button & U_JPAD) {
                 if (row == 0) {
-                    D_800A1666_main = col + 3;
+                    lightDebugWinPos = col + 3;
                 } else {
-                    D_800A1666_main -= 3;
+                    lightDebugWinPos -= 3;
                 }
             } else if (button & D_JPAD) {
                 if (row == 1) {
-                    D_800A1666_main = col;
+                    lightDebugWinPos = col;
                 } else {
-                    D_800A1666_main += 3;
+                    lightDebugWinPos += 3;
                 }
             }
 
-            switch (D_800A1666_main) {
+            switch (lightDebugWinPos) {
                 case 0:
-                    if ((D_800D1244_main[0] & D_CBUTTONS) && D_800A1664_main >= 2) {
-                        D_800A1664_main--;
+                    if ((HuPadBtnRep[0] & D_CBUTTONS) && lightDebugNo >= 2) {
+                        lightDebugNo--;
                     }
-                    if ((D_800D1244_main[0] & U_CBUTTONS) && D_800A1664_main < D_800CE1D4_main->unk00) {
-                        D_800A1664_main++;
+                    if ((HuPadBtnRep[0] & U_CBUTTONS) && lightDebugNo < Hu3DLightData->unk00) {
+                        lightDebugNo++;
                     }
                     break;
                 case 1:
                     break;
                 case 2:
-                    if (D_800D1244_main[0] & (A_BUTTON | U_CBUTTONS | D_CBUTTONS)) {
-                        if (D_800CE1D4_main->unk02[D_800A1664_main].stat & 1) {
-                            Hu3DGLightStatSet(D_800A1664_main, 1, 0);
+                    if (HuPadBtnRep[0] & (A_BUTTON | U_CBUTTONS | D_CBUTTONS)) {
+                        if (Hu3DLightData->unk02[lightDebugNo].stat & 1) {
+                            Hu3DGLightStatSet(lightDebugNo, 1, 0);
                         } else {
-                            Hu3DGLightStatSet(D_800A1664_main, 1, 1);
+                            Hu3DGLightStatSet(lightDebugNo, 1, 1);
                         }
                     }
                     break;
                 case 3:
-                    if (D_800D1244_main[0] & D_CBUTTONS) {
-                        D_800CE1D4_main->unk02[D_800A1664_main].r -= 1;
+                    if (HuPadBtnRep[0] & D_CBUTTONS) {
+                        Hu3DLightData->unk02[lightDebugNo].r -= 1;
                     }
-                    if (D_800D1244_main[0] & U_CBUTTONS) {
-                        D_800CE1D4_main->unk02[D_800A1664_main].r += 1;
+                    if (HuPadBtnRep[0] & U_CBUTTONS) {
+                        Hu3DLightData->unk02[lightDebugNo].r += 1;
                     }
-                    if (D_800D1244_main[0] & L_CBUTTONS) {
-                        D_800CE1D4_main->unk02[D_800A1664_main].r -= 5;
+                    if (HuPadBtnRep[0] & L_CBUTTONS) {
+                        Hu3DLightData->unk02[lightDebugNo].r -= 5;
                     }
-                    if (D_800D1244_main[0] & R_CBUTTONS) {
-                        D_800CE1D4_main->unk02[D_800A1664_main].r += 5;
+                    if (HuPadBtnRep[0] & R_CBUTTONS) {
+                        Hu3DLightData->unk02[lightDebugNo].r += 5;
                     }
                     break;
                 case 4:
-                    if (D_800D1244_main[0] & D_CBUTTONS) {
-                        D_800CE1D4_main->unk02[D_800A1664_main].g -= 1;
+                    if (HuPadBtnRep[0] & D_CBUTTONS) {
+                        Hu3DLightData->unk02[lightDebugNo].g -= 1;
                     }
-                    if (D_800D1244_main[0] & U_CBUTTONS) {
-                        D_800CE1D4_main->unk02[D_800A1664_main].g += 1;
+                    if (HuPadBtnRep[0] & U_CBUTTONS) {
+                        Hu3DLightData->unk02[lightDebugNo].g += 1;
                     }
-                    if (D_800D1244_main[0] & L_CBUTTONS) {
-                        D_800CE1D4_main->unk02[D_800A1664_main].g -= 5;
+                    if (HuPadBtnRep[0] & L_CBUTTONS) {
+                        Hu3DLightData->unk02[lightDebugNo].g -= 5;
                     }
-                    if (D_800D1244_main[0] & R_CBUTTONS) {
-                        D_800CE1D4_main->unk02[D_800A1664_main].g += 5;
+                    if (HuPadBtnRep[0] & R_CBUTTONS) {
+                        Hu3DLightData->unk02[lightDebugNo].g += 5;
                     }
                     break;
                 case 5:
-                    if (D_800D1244_main[0] & D_CBUTTONS) {
-                        D_800CE1D4_main->unk02[D_800A1664_main].b -= 1;
+                    if (HuPadBtnRep[0] & D_CBUTTONS) {
+                        Hu3DLightData->unk02[lightDebugNo].b -= 1;
                     }
-                    if (D_800D1244_main[0] & U_CBUTTONS) {
-                        D_800CE1D4_main->unk02[D_800A1664_main].b += 1;
+                    if (HuPadBtnRep[0] & U_CBUTTONS) {
+                        Hu3DLightData->unk02[lightDebugNo].b += 1;
                     }
-                    if (D_800D1244_main[0] & L_CBUTTONS) {
-                        D_800CE1D4_main->unk02[D_800A1664_main].b -= 5;
+                    if (HuPadBtnRep[0] & L_CBUTTONS) {
+                        Hu3DLightData->unk02[lightDebugNo].b -= 5;
                     }
-                    if (D_800D1244_main[0] & R_CBUTTONS) {
-                        D_800CE1D4_main->unk02[D_800A1664_main].b += 5;
+                    if (HuPadBtnRep[0] & R_CBUTTONS) {
+                        Hu3DLightData->unk02[lightDebugNo].b += 5;
                     }
                     break;
             }
             break;
         case 1:
-            if (D_800D5558_main[0] & (A_BUTTON | B_BUTTON)) {
-                D_800A1669_main = 0;
-                D_800CC440_main[*dirWin].unk_14 = 0xDF70;
+            if (HuPadBtnDown[0] & (A_BUTTON | B_BUTTON)) {
+                lightDebugMode = 0;
+                printWinData[*dirWin].unk_14 = 0xDF70;
             }
-            x = D_800CE1D4_main->unk02[D_800A1664_main].unk04;
-            y = D_800CE1D4_main->unk02[D_800A1664_main].unk05;
-            z = D_800CE1D4_main->unk02[D_800A1664_main].unk06;
-            rotY = -D_800CBB6E_main[0] / 10;
+            x = Hu3DLightData->unk02[lightDebugNo].unk04;
+            y = Hu3DLightData->unk02[lightDebugNo].unk05;
+            z = Hu3DLightData->unk02[lightDebugNo].unk06;
+            rotY = -HuPadStkX[0] / 10;
             if (rotY >= 360.0f) {
                 rotY -= 360.0f;
             } else if (rotY < 0.0f) {
                 rotY += 360.0f;
             }
-            rotX = -D_800D20A1_main[0] / 10;
+            rotX = -HuPadStkY[0] / 10;
             if (rotX >= 360.0f) {
                 rotX -= 360.0f;
             } else if (rotX < 0.0f) {
@@ -211,13 +211,13 @@ void LightDebugExec(omObjData *object) {
             x = x * cosY - z * sinY;
             y = x * sinX * sinY + y * cosX + z * sinX * cosY;
             z = x * cosX * sinY - y * sinX + z * cosX * cosY;
-            Hu3DGLightDirSet(D_800A1664_main, x, y, z);
+            Hu3DGLightDirSet(lightDebugNo, x, y, z);
             break;
     }
 
-    D_800CC440_main[*colorWin].unk_14 = (D_800A1668_main << 24) | 0x80;
-    D_800CC440_main[*colorWin].unk_04 = D_800A1674_main[D_800A1666_main];
-    D_800CC440_main[*colorWin].unk_08 = D_800A1680_main[D_800A1666_main];
-    D_800CC440_main[*colorWin].unk_0C = D_800A168C_main[D_800A1666_main];
-    D_800CC440_main[*colorWin].unk_10 = D_800A1698_main[D_800A1666_main];
+    printWinData[*colorWin].unk_14 = (lightDebugWinAlpha << 24) | 0x80;
+    printWinData[*colorWin].unk_04 = lightDebugWinX0[lightDebugWinPos];
+    printWinData[*colorWin].unk_08 = lightDebugWinY0[lightDebugWinPos];
+    printWinData[*colorWin].unk_0C = lightDebugWinX1[lightDebugWinPos];
+    printWinData[*colorWin].unk_10 = lightDebugWinY1[lightDebugWinPos];
 }

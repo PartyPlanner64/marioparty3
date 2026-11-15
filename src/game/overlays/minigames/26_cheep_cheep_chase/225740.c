@@ -130,7 +130,7 @@ typedef struct {
     /* 0x04 */ f32 unk_04;
 } CheepCheepChaseUnk368; // sizeof 0x8
 
-extern u8 D_800D6A90_main;
+extern u8 omAllPauseF;
 extern s32 D_800A178C_main[][6];
 
 u8 D_8010E010_cheep_cheep_chase = 0;
@@ -292,7 +292,7 @@ void func_80105BBC_cheep_cheep_chase(void) {
 }
 
 void func_80105DD0_cheep_cheep_chase(omObjData *object) {
-    if (D_800D530C_main == 1) {
+    if (omSysExitReq == 1) {
         WipeCreateOut(WIPE_TYPE_NORMAL, 20);
         object->func = func_80105E18_cheep_cheep_chase;
     }
@@ -403,7 +403,7 @@ void func_80106484_cheep_cheep_chase(omObjData *object) {
     s16 i;
 
     Hu3DModelTexScroll(object->model[0], 0.0f, D_8010E014_cheep_cheep_chase, 64, 64);
-    if (omPauseChk() + D_800D6A90_main == 0) {
+    if (omPauseChk() + omAllPauseF == 0) {
         D_8010E014_cheep_cheep_chase += D_8010E360_cheep_cheep_chase->unk_18;
     }
     for (i = 0; i < 4; i++) {
@@ -437,7 +437,7 @@ void func_8010665C_cheep_cheep_chase(omObjData *object) {
     for (i = 1; i < 3; i++) {
         func_80109444_cheep_cheep_chase(object->model[i]);
     }
-    D_8010E360_cheep_cheep_chase->unk_20 = D_800CCF58_main[Hu3DData[object->model[0]].motId].unk02;
+    D_8010E360_cheep_cheep_chase->unk_20 = Hu3DMotion[Hu3DData[object->model[0]].motId].unk02;
     object->func = func_801067B0_cheep_cheep_chase;
 }
 
@@ -563,7 +563,7 @@ void func_80106E80_cheep_cheep_chase(omObjData *object) {
     D_8010E364_cheep_cheep_chase[object->work[0]].padId = data->unk57;
     D_8010E364_cheep_cheep_chase[object->work[0]].unk_01 = 0;
     D_8010E364_cheep_cheep_chase[object->work[0]].unk_04 = chrTable[GwPlayer[object->work[0]].chr] * 20.0f * 5.0f;
-    D_8010E364_cheep_cheep_chase[object->work[0]].unk_20 = D_800CCF58_main[Hu3DData[object->model[9]].motId].unk02;
+    D_8010E364_cheep_cheep_chase[object->work[0]].unk_20 = Hu3DMotion[Hu3DData[object->model[9]].motId].unk02;
     func_8010D6F4_cheep_cheep_chase(object->work[0] + 4, 9, object->model[0], 0, NULL, func_8010B52C_cheep_cheep_chase, FALSE, FALSE);
     func_8010D6F4_cheep_cheep_chase(object->work[0] + 4, 8, object->model[0], 1, NULL, func_8010BB9C_cheep_cheep_chase, TRUE, FALSE);
     object->func = func_8010732C_cheep_cheep_chase;
@@ -646,20 +646,20 @@ void func_80107760_cheep_cheep_chase(FuncContext *ctx) {
         case 1:
             if (ctx->work.s8[1] != 0) {
                 if (ctx->work.s8[1] == 1) {
-                    sprintf(D_800D5218_main, "C: TRANSLATE ADD: %d", ctx->work.s8[0]);
+                    sprintf(omDBGStrBuf, "C: TRANSLATE ADD: %d", ctx->work.s8[0]);
                 } else {
-                    sprintf(D_800D5218_main, "C: ROTATE");
+                    sprintf(omDBGStrBuf, "C: ROTATE");
                 }
-                print8(16, 56, D_800D5218_main);
-                sprintf(D_800D5218_main, "CZOOMM %.2f", CZoom);
-                print8(16, 64, D_800D5218_main);
-                sprintf(D_800D5218_main, "CCENTER_X %.2f Y %.2f Z %.2f", Center.x, Center.y, Center.z);
-                print8(16, 72, D_800D5218_main);
-                sprintf(D_800D5218_main, "CROTATE_X %.2f Y %.2f Z %.2f", CRot.x, CRot.y, CRot.z);
-                print8(16, 80, D_800D5218_main);
+                print8(16, 56, omDBGStrBuf);
+                sprintf(omDBGStrBuf, "CZOOMM %.2f", CZoom);
+                print8(16, 64, omDBGStrBuf);
+                sprintf(omDBGStrBuf, "CCENTER_X %.2f Y %.2f Z %.2f", Center.x, Center.y, Center.z);
+                print8(16, 72, omDBGStrBuf);
+                sprintf(omDBGStrBuf, "CROTATE_X %.2f Y %.2f Z %.2f", CRot.x, CRot.y, CRot.z);
+                print8(16, 80, omDBGStrBuf);
             }
-            buttons = D_800CDA7C_main[0];
-            if (D_800D5558_main[0] & Z_TRIG) {
+            buttons = HuPadBtn[0];
+            if (HuPadBtnDown[0] & Z_TRIG) {
                 ctx->work.s8[1]++;
             }
             if (ctx->work.s8[1] >= 3) {
@@ -1158,7 +1158,7 @@ void func_801092B8_cheep_cheep_chase(FuncContext *ctx) {
     switch (ctx->state) {
         case 0:
             HuAudFXPlay(0x435);
-            ctx->work.f32[0] = D_800CCF58_main[Hu3DData[ctx->param].motId].unk02 - 1.0f;
+            ctx->work.f32[0] = Hu3DMotion[Hu3DData[ctx->param].motId].unk02 - 1.0f;
             model->motSpeed = 1.0f;
             ctx->state = 1;
             break;
@@ -1458,15 +1458,15 @@ void func_8010A57C_cheep_cheep_chase(FuncContext *ctx) {
                 }
             }
             if (found) {
-                D_800CDA7C_main[player->padId] = B_BUTTON;
+                HuPadBtn[player->padId] = B_BUTTON;
                 break;
             }
             if (ctx->work.s8[1]++ > ctx->work.s8[0] + ctx->work.s8[3]) {
                 ctx->work.s8[1] = 0;
                 ctx->work.s8[3] = rand16() % (ctx->work.s8[2] + 1);
-                ((u16 *)D_800CDA7C_main)[player->padId] = A_BUTTON;
+                ((u16 *)HuPadBtn)[player->padId] = A_BUTTON;
             } else {
-                D_800CDA7C_main[player->padId] = 0;
+                HuPadBtn[player->padId] = 0;
             }
             break;
         case 2:
@@ -1528,15 +1528,15 @@ void func_8010A938_cheep_cheep_chase(FuncContext *ctx) {
                 }
             }
             if (found) {
-                D_800D5558_main[player->padId] = Z_TRIG;
+                HuPadBtnDown[player->padId] = Z_TRIG;
                 break;
             }
             if (ctx->work.s8[1]++ > ctx->work.s8[0] + ctx->work.s8[3]) {
                 ctx->work.s8[1] = 0;
                 ctx->work.s8[3] = rand16() % (ctx->work.s8[2] + 1);
-                ((u16 *)D_800CDA7C_main)[player->padId] = A_BUTTON;
+                ((u16 *)HuPadBtn)[player->padId] = A_BUTTON;
             } else {
-                D_800CDA7C_main[player->padId] = B_BUTTON;
+                HuPadBtn[player->padId] = B_BUTTON;
             }
             break;
         case 2:
@@ -1546,10 +1546,10 @@ void func_8010A938_cheep_cheep_chase(FuncContext *ctx) {
 
 void func_8010ACD8_cheep_cheep_chase(s32 arg0) {
     arg0 &= 0xFF;
-    D_800CBB6E_main[arg0] = 0;
-    D_800D20A1_main[arg0] = 0;
-    D_800CDA7C_main[arg0] = 0;
-    D_800D5558_main[arg0] = 0;
+    HuPadStkX[arg0] = 0;
+    HuPadStkY[arg0] = 0;
+    HuPadBtn[arg0] = 0;
+    HuPadBtnDown[arg0] = 0;
 }
 
 void func_8010AD14_cheep_cheep_chase(FuncContext *ctx) {
@@ -1569,7 +1569,7 @@ void func_8010AD14_cheep_cheep_chase(FuncContext *ctx) {
                 break;
             }
             if (ctx->work.s8[0] == 0) {
-                if ((u16)D_800CDA7C_main[player->padId] & A_BUTTON) {
+                if ((u16)HuPadBtn[player->padId] & A_BUTTON) {
                     if (player->unk_01 == 0) {
                         player->unk_14 = 7.0f;
                         player->unk_01 = 1;
@@ -1587,14 +1587,14 @@ void func_8010AD14_cheep_cheep_chase(FuncContext *ctx) {
                     }
                     ctx->work.s8[0] = 1;
                 }
-            } else if (!((u16)D_800CDA7C_main[player->padId] & A_BUTTON)) {
+            } else if (!((u16)HuPadBtn[player->padId] & A_BUTTON)) {
                 ctx->work.s8[0] = 0;
             }
             if (player->unk_01 == 1 && -(D_8010E360_cheep_cheep_chase->unk_0C[6] + 2) * 100 < object->trans.z) {
-                if ((u16)D_800CDA7C_main[player->padId] & B_BUTTON) {
+                if ((u16)HuPadBtn[player->padId] & B_BUTTON) {
                     player->unk_08 = 1;
                 }
-                if ((u16)D_800CDA7C_main[player->padId] & Z_TRIG) {
+                if ((u16)HuPadBtn[player->padId] & Z_TRIG) {
                     player->unk_08 = 1;
                 }
             }
@@ -1624,7 +1624,7 @@ void func_8010AF70_cheep_cheep_chase(FuncContext *ctx) {
                 break;
             }
             if (ctx->work.s8[0] == 0) {
-                if ((u16)D_800CDA7C_main[player->padId] & A_BUTTON) {
+                if ((u16)HuPadBtn[player->padId] & A_BUTTON) {
                     if (player->unk_01 == 0) {
                         player->unk_14 = 7.0f;
                         player->unk_01 = 1;
@@ -1642,10 +1642,10 @@ void func_8010AF70_cheep_cheep_chase(FuncContext *ctx) {
                     }
                     ctx->work.s8[0] = 1;
                 }
-            } else if ((u16)D_800CDA7C_main[player->padId] & B_BUTTON) {
+            } else if ((u16)HuPadBtn[player->padId] & B_BUTTON) {
                 ctx->work.s8[0] = 0;
             }
-            if (player->unk_01 == 1 && (D_800D5558_main[player->padId] & Z_TRIG)) {
+            if (player->unk_01 == 1 && (HuPadBtnDown[player->padId] & Z_TRIG)) {
                 player->unk_08 = 1;
             }
             if (++ctx->work.s8[1] >= 30) {
@@ -1758,7 +1758,7 @@ void func_8010B52C_cheep_cheep_chase(FuncContext *ctx) {
             ctx->state = 1;
             break;
         case 1:
-            if (D_800CCF58_main[Hu3DData[ctx->param].motId].unk02 - 1 <= model->motTime) {
+            if (Hu3DMotion[Hu3DData[ctx->param].motId].unk02 - 1 <= model->motTime) {
                 player->updateMotion = TRUE;
             }
             if (player->updateMotion) {
@@ -1981,7 +1981,7 @@ void func_8010C440_cheep_cheep_chase(FuncContext *ctx) {
     s16 count = 0;
     s16 i;
 
-    if (omPauseChk() + D_800D6A90_main != 0) {
+    if (omPauseChk() + omAllPauseF != 0) {
         return;
     }
     switch (ctx->state) {
@@ -2069,7 +2069,7 @@ void func_8010C988_cheep_cheep_chase(FuncContext *ctx) {
         case 1:
             switch (ctx->work.s8[0]) {
                 case 0:
-                    if (omPauseChk() + D_800D6A90_main == 0) {
+                    if (omPauseChk() + omAllPauseF == 0) {
                         ctx->work.f32[0] += 0.1f;
                     }
                     if (ctx->work.f32[0] >= 1.0f) {
@@ -2077,7 +2077,7 @@ void func_8010C988_cheep_cheep_chase(FuncContext *ctx) {
                     }
                     break;
                 case 1:
-                    if (omPauseChk() + D_800D6A90_main == 0) {
+                    if (omPauseChk() + omAllPauseF == 0) {
                         ctx->work.f32[0] -= 0.1f;
                     }
                     if (ctx->work.f32[0] <= 0.0f) {
@@ -2093,12 +2093,12 @@ void func_8010C988_cheep_cheep_chase(FuncContext *ctx) {
 }
 
 void func_8010CAD4_cheep_cheep_chase(FuncContext *ctx) {
-    if (omPauseChk() + D_800D6A90_main != 0) {
+    if (omPauseChk() + omAllPauseF != 0) {
         return;
     }
     switch (ctx->state) {
         case 0:
-            ctx->work.f32[0] = D_800CCF58_main[Hu3DData[ctx->param].motId].unk02;
+            ctx->work.f32[0] = Hu3DMotion[Hu3DData[ctx->param].motId].unk02;
             ctx->state = 1;
             break;
         case 1:
@@ -2120,7 +2120,7 @@ void func_8010CBBC_cheep_cheep_chase(FuncContext *ctx) {
     s16 i;
     s16 j;
 
-    if (omPauseChk() + D_800D6A90_main != 0) {
+    if (omPauseChk() + omAllPauseF != 0) {
         return;
     }
     switch (ctx->state) {
@@ -2161,7 +2161,7 @@ void func_8010D02C_cheep_cheep_chase(FuncContext *ctx) {
     CheepCheepChaseGameUnk04 *unk;
     s16 i;
 
-    if (omPauseChk() + D_800D6A90_main != 0) {
+    if (omPauseChk() + omAllPauseF != 0) {
         return;
     }
     if (ctx->state == 1) {
@@ -2189,7 +2189,7 @@ void func_8010D198_cheep_cheep_chase(FuncContext *ctx) {
     HmfModel *model;
     s16 i;
 
-    if (omPauseChk() + D_800D6A90_main != 0) {
+    if (omPauseChk() + omAllPauseF != 0) {
         return;
     }
     switch (ctx->state) {
@@ -2510,7 +2510,7 @@ void func_8010DDF4_cheep_cheep_chase(void) {
         hmfModel = &Hu3DData[animModel->modelId];
         switch (animModel->state) {
             default:
-                if (D_800CCF58_main[hmfModel->motId].unk02 <= hmfModel->motTime) {
+                if (Hu3DMotion[hmfModel->motId].unk02 <= hmfModel->motTime) {
                     Hu3DModelAttrSet(animModel->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     hmfModel->motTime = 0.0f;
                     hmfModel->motSpeed = 0.0f;

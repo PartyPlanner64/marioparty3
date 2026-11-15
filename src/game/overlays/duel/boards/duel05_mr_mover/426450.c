@@ -144,8 +144,8 @@ void func_800FC59C_name_81(s32 (*)(void));
 void func_800FC5A8_name_81(process_func);
 void func_801138DC_duel05(void);
 s32 func_80115378_duel05(void);
-extern s16 D_800D124C_main;
-extern s16 D_800CE1D0_main;
+extern s16 duelUnkF1;
+extern s16 duelUnkF0;
 extern s16 D_80101A50_name_81;
 
 void func_80110B4C_duel05(void);
@@ -618,12 +618,12 @@ void func_80105A58_duel05(void) {
     D_801163AC_duel05 = func_800E1824_name_81(3, 0xCA, 1);
     HuPrcSleep(3);
     mbCameraBtnF = 1;
-    D_800D51F8_main = 1;
+    duelCancelEnableF = 1;
 }
 
 void func_80105B10_duel05(void) {
     mbCameraBtnF = 0;
-    D_800D51F8_main = 0;
+    duelCancelEnableF = 0;
     func_800E1854_name_81(D_801163A0_duel05);
     func_800E1854_name_81(D_801163A4_duel05);
     func_800E1854_name_81(D_801163A8_duel05);
@@ -2164,7 +2164,7 @@ void func_8010AFC4_duel05(void) {
             data->sprId[i] = Hu3DSprModelLink(data->sprId[0], 8);
         }
         Hu3DSprModelAttrSet(data->sprId[i], 6, 0x180);
-        data->modelId[i] = D_800CBB60_main[data->sprId[i]].modelId;
+        data->modelId[i] = Hu3DSprModelData[data->sprId[i]].modelId;
         Hu3DSprModelColorSet(data->sprId[i], 0xFF, 0x40, 8);
         Hu3DSprModelTPLvlSet(data->sprId[i], 0xC8);
         Hu3DModelObjAttrSet(data->modelId[i], 0x70000000, 0x70000000);
@@ -3496,7 +3496,7 @@ void func_8010F0FC_duel05(void) {
                             break;
                         }
                     }
-                } else if (D_800C9520_main[GwPlayer[player].pad] & A_BUTTON) {
+                } else if (ContBtnDown[GwPlayer[player].pad] & A_BUTTON) {
                     break;
                 }
                 HuPrcVSleep();
@@ -4021,7 +4021,7 @@ void func_80110C0C_duel05(void) {
         func_800ED214_name_81(index);
         func_800F5BB4_name_81(index);
         func_800F5EB0_name_81(index);
-        if (D_800D5546_main[0] & 0x1000) {
+        if (ContBtn[0] & 0x1000) {
             Duel_PowerUpPartners(index);
         }
 
@@ -4080,7 +4080,7 @@ void func_80110C0C_duel05(void) {
         func_800ED214_name_81(1);
         func_800F5BB4_name_81(1);
         func_800F5EB0_name_81(1);
-        if (D_800D5546_main[0] & 0x1000) {
+        if (ContBtn[0] & 0x1000) {
             Duel_PowerUpPartners(1);
         }
     }
@@ -5419,7 +5419,7 @@ void func_80115468_duel05(void) {
             func_800E9F4C_name_81(0x24, &player->nnlink, &player->nnidx);
         }
     } else if ((player->stats.partners.frontID == PARTNER_PIRANHA_PLANT || player->stats.partners.backID == PARTNER_PIRANHA_PLANT)
-               && D_800D124C_main == 0 && D_800CE1D0_main == 0) {
+               && duelUnkF1 == 0 && duelUnkF0 == 0) {
         if (func_800EFE20_name_81(100.0f) < 50) {
             D_80101A50_name_81 = 1;
             if (GwSystem.current_turn & 1) {

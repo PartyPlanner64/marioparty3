@@ -117,13 +117,13 @@ void func_80107300_chancetime(void) {
         data = DataRead(0xB);
         sprModel = Hu3DSprModelCreate(data, 0x6BD, 8);
         HuMemMemoryFreePerm(data);
-        Hu3DModelAttrSet(D_800CBB60_main[sprModel].modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-        Hu3DModelPosSet(D_800CBB60_main[sprModel].modelId, 0.0f, 0.0f, 0.0f);
-        Hu3DModelScaleSet(D_800CBB60_main[sprModel].modelId, 3.0f, 3.0f, 3.0f);
-        Hu3DMotionAttrSet(D_800CBB60_main[sprModel].modelId, 2, 0);
-        Hu3DModelObjAttrSet(D_800CBB60_main[sprModel].modelId, 0x70000000, 0x70000000);
-        Hu3DModelCameraSet(D_800CBB60_main[sprModel].modelId, 2);
-        object->model[7 + i] = D_800CBB60_main[sprModel].modelId;
+        Hu3DModelAttrSet(Hu3DSprModelData[sprModel].modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelPosSet(Hu3DSprModelData[sprModel].modelId, 0.0f, 0.0f, 0.0f);
+        Hu3DModelScaleSet(Hu3DSprModelData[sprModel].modelId, 3.0f, 3.0f, 3.0f);
+        Hu3DMotionAttrSet(Hu3DSprModelData[sprModel].modelId, 2, 0);
+        Hu3DModelObjAttrSet(Hu3DSprModelData[sprModel].modelId, 0x70000000, 0x70000000);
+        Hu3DModelCameraSet(Hu3DSprModelData[sprModel].modelId, 2);
+        object->model[7 + i] = Hu3DSprModelData[sprModel].modelId;
         D_8010FE80_chancetime[i] = sprModel;
     }
 
@@ -181,7 +181,7 @@ void func_80107B18_chancetime(omObjData *object) {
         D_8010FB64_chancetime = 45.0f;
         Hu3DModelRotSet(object->model[1], 0.0f, D_8010FB64_chancetime, 0.0f);
         Hu3DModelRotSet(object->model[3], 0.0f, -D_8010FB64_chancetime, 0.0f);
-        if (D_800CCF58_main[Hu3DData[object->model[1]].motId].unk02 <= Hu3DData[object->model[1]].motTime) {
+        if (Hu3DMotion[Hu3DData[object->model[1]].motId].unk02 <= Hu3DData[object->model[1]].motTime) {
             D_801100D4_chancetime.func = func_80107C84_chancetime;
             D_8010FB64_chancetime = 0.0f;
         }
@@ -396,7 +396,7 @@ void func_80108C08_chancetime(s16 model, s16 slot, s16 animIdx) {
             HmfAnim *anim;
 
             Hu3DModelAnimStart(Hu3DData[model].hmf);
-            anim = &D_800D1714_main[slot];
+            anim = &Hu3DAnimData[slot];
             anim->animIdx = animIdx;
             anim->rot = 0;
             anim->flags = 0;
@@ -956,7 +956,7 @@ s32 func_8010B6F4_chancetime(s16 model) {
     f32 time = Hu3DMotionShiftTimeGet(model);
     s32 ret = 0;
 
-    if (time == -1.0f && D_800CCF58_main[Hu3DData[model].motId].unk02 <= Hu3DData[model].motTime) {
+    if (time == -1.0f && Hu3DMotion[Hu3DData[model].motId].unk02 <= Hu3DData[model].motTime) {
         ret = -1;
     }
     return ret;

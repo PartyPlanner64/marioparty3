@@ -9,7 +9,7 @@
 #include "10C230.h"
 #include "ECA50.h"
 
-extern u32 D_800D2094_main;
+extern u32 scRetraceCnt;
 typedef struct ItemRect {
     s16 x;
     s16 y;
@@ -103,12 +103,12 @@ typedef struct Unk800CC3DC {
 } Unk800CC3DC;
 
 extern Unk800CC3DC D_800CC3DC_main;
-extern UnkData_CD0A0 D_800CC4A0_main;
+extern UnkData_CD0A0 mbMgHis;
 extern omObjData *D_80102C04_shared_board;
 extern s16 D_80102C0E_shared_board;
 extern s16 D_80102C10_shared_board;
 extern s16 D_80102C14_shared_board;
-extern u8 D_800CC3E0_main[];
+extern u8 mbMgHisIdx[];
 extern u16 D_80102BD4_shared_board;
 extern s16 D_80102C12_shared_board;
 
@@ -116,9 +116,9 @@ static void MBMgCallCursorSprCreate(void);
 
 
 static void MBMgCallCursorFXPlay(void) {
-    if (D_800D2094_main >= (D_80100EE8_shared_board + 4)) {
+    if (scRetraceCnt >= (D_80100EE8_shared_board + 4)) {
         HuAudFXPlay(0x104);
-        D_80100EE8_shared_board = D_800D2094_main;
+        D_80100EE8_shared_board = scRetraceCnt;
     }
 }
 
@@ -262,7 +262,7 @@ static void MBMgCallListExec(omObjData *arg0) {
             if (arg0->work[3] != 0) {
                 arg0->work[3]--;
             } else {
-                D_800CC4A0_main.recentMinigames[D_80102C0D_shared_board][D_800CC3DC_main.unk_04[D_80102C0D_shared_board]] = D_80102C08_shared_board[arg0->work[2]];
+                mbMgHis.recentMinigames[D_80102C0D_shared_board][D_800CC3DC_main.unk_04[D_80102C0D_shared_board]] = D_80102C08_shared_board[arg0->work[2]];
                 D_800CC3DC_main.unk_04[D_80102C0D_shared_board]++;
 
                 if (_CheckFlag(0x20) != 0) {
@@ -298,9 +298,9 @@ void MBMgCallHisInit(void) {
 
     for (category = 0; category < MINIGAME_TYPE_END; category++) {
         for (minigameCategoryIndex = 0; minigameCategoryIndex < PREV_MINIGAME_LIST_LENGTH; minigameCategoryIndex++) {
-            D_800CC4A0_main.recentMinigames[category][minigameCategoryIndex] = -1;
+            mbMgHis.recentMinigames[category][minigameCategoryIndex] = -1;
         }
-        D_800CC3E0_main[category] = 0;
+        mbMgHisIdx[category] = 0;
     }
 }
 
@@ -481,7 +481,7 @@ void MBMgCallListCreate(s32 arg0) {
 
             forbidCount = _CheckFlag(0x20) ? D_80100E28_shared_board[category] : D_80100E20_shared_board[category];
             for (k = 0; k < forbidCount; k++) {
-                if (D_80102C08_shared_board[i] == D_800CC4A0_main.recentMinigames[category][k]) {
+                if (D_80102C08_shared_board[i] == mbMgHis.recentMinigames[category][k]) {
                     break;
                 }
             }
@@ -881,7 +881,7 @@ static void MBMgCallExec(void) {
 
                     if (j != MB_MAX_PLAYERS) {
                         for (j = 0; j < MB_MAX_PLAYERS; j++) {
-                            if ((D_800D5558_main[GwPlayer[j].pad] & A_BUTTON) && !(GwPlayer[j].stat & PLAYER_IS_CPU)) {
+                            if ((HuPadBtnDown[GwPlayer[j].pad] & A_BUTTON) && !(GwPlayer[j].stat & PLAYER_IS_CPU)) {
                                 break;
                             }
                         }
@@ -970,7 +970,7 @@ static void MBMgCallBattleExec(void) {
                         break;
                     } else {
                         for (i = 0; i < MB_MAX_PLAYERS; i++) {
-                            if (!(D_800D5558_main[GwPlayer[i].pad] & A_BUTTON) || (GwPlayer[i].stat & PLAYER_IS_CPU)) {
+                            if (!(HuPadBtnDown[GwPlayer[i].pad] & A_BUTTON) || (GwPlayer[i].stat & PLAYER_IS_CPU)) {
                                 continue;
                             } else {
                                 break;
@@ -1079,7 +1079,7 @@ static void func_800E0C94_shared_board(void) {
                 break;
             case 1:
                 if ((func_800F5278_shared_board() == 0) &&
-                    (((D_800D5558_main[GwPlayer[temp_s2->curPlayerNo].pad] & A_BUTTON) && !(GwPlayer[temp_s2->curPlayerNo].stat & 1)) || (GwPlayer[temp_s2->curPlayerNo].stat & 1))) {
+                    (((HuPadBtnDown[GwPlayer[temp_s2->curPlayerNo].pad] & A_BUTTON) && !(GwPlayer[temp_s2->curPlayerNo].stat & 1)) || (GwPlayer[temp_s2->curPlayerNo].stat & 1))) {
                     func_800E00EC_shared_board();
                     MBStatusDispMoveSet(5);
                     temp_s2->unk_00++;
@@ -1134,7 +1134,7 @@ static void func_800E0FE0_shared_board(void) {
                 break;
             case 1:
                 if ((func_800F5278_shared_board() == 0) &&
-                    (((GwPlayer[temp_s0->curPlayerNo].stat & PLAYER_IS_CPU) && (GwPlayer[temp_s0->unk_08].stat & PLAYER_IS_CPU)) || ((D_800D5558_main[GwPlayer[temp_s0->curPlayerNo].pad] & A_BUTTON) && !(GwPlayer[temp_s0->curPlayerNo].stat & PLAYER_IS_CPU)) || ((D_800D5558_main[GwPlayer[temp_s0->unk_08].pad] & A_BUTTON) && !(GwPlayer[temp_s0->unk_08].stat & PLAYER_IS_CPU)))) {
+                    (((GwPlayer[temp_s0->curPlayerNo].stat & PLAYER_IS_CPU) && (GwPlayer[temp_s0->unk_08].stat & PLAYER_IS_CPU)) || ((HuPadBtnDown[GwPlayer[temp_s0->curPlayerNo].pad] & A_BUTTON) && !(GwPlayer[temp_s0->curPlayerNo].stat & PLAYER_IS_CPU)) || ((HuPadBtnDown[GwPlayer[temp_s0->unk_08].pad] & A_BUTTON) && !(GwPlayer[temp_s0->unk_08].stat & PLAYER_IS_CPU)))) {
                     func_800E00EC_shared_board();
                     MBStatusDispMoveSet(5);
                     temp_s0->unk_00++;

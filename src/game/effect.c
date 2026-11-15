@@ -7,8 +7,8 @@
 #include "game/util.h"
 #include "game/mallocblock.h"
 
-u8 D_80097720_main[] = { 0, 1, 2, 1 };
-extern EffectGroup *D_800D6A00_main[EFFECT_GROUP_MAX];
+u8 effectScaleWobble[] = { 0, 1, 2, 1 };
+extern EffectGroup *EffectGroupData[EFFECT_GROUP_MAX];
 
 s16 EffectModelCreate(s32 fileId, s32 attr) {
     s16 model;
@@ -163,14 +163,14 @@ void EffectParticleHook(s16 model) {
             if (particle->unk04 <= 0.0f) {
                 particle->unk04 = 0.0f;
             }
-            particle->unk08 = (D_80097720_main[(bc->unk02 + i) & 3] * 0.15f + 1.0f) * particle->unk04;
+            particle->unk08 = (effectScaleWobble[(bc->unk02 + i) & 3] * 0.15f + 1.0f) * particle->unk04;
         }
     }
     bc->unk02++;
 }
 
 void EffectGroupInit(void) {
-    EffectGroup **slot = D_800D6A00_main;
+    EffectGroup **slot = EffectGroupData;
     s16 i;
 
     for (i = 0; i < EFFECT_GROUP_MAX; i++, slot++) {
@@ -186,7 +186,7 @@ s16 EffectGroupCreate(s32 fileId, s32 attr, s16 count, void (*func)(s16)) {
     s16 j;
     s16 model;
 
-    for (slot = D_800D6A00_main, i = 0; i < EFFECT_GROUP_MAX; i++, slot++) {
+    for (slot = EffectGroupData, i = 0; i < EFFECT_GROUP_MAX; i++, slot++) {
         if (*slot == NULL) {
             break;
         }
@@ -211,7 +211,7 @@ s16 EffectGroupCreate(s32 fileId, s32 attr, s16 count, void (*func)(s16)) {
 }
 
 s16 EffectGroupEmit(s16 index, f32 x, f32 y, f32 z) {
-    EffectGroup *group = D_800D6A00_main[index];
+    EffectGroup *group = EffectGroupData[index];
     EffectGroupModel *entry = group->models;
     s16 i;
     s16 model;

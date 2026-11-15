@@ -9,67 +9,67 @@
 #include "game/gamework_data.h"
 #include "ld_addrs.h"
 
-static s16 D_800B23D0_main[6];
-extern s8 D_800D6A4C_main[4];
-extern s8 D_800D123C_main[4];
-extern s16 D_800CCF7C_main[4];
-extern u16 D_800CDD5C_main[4];
-extern s16 D_800CB9A4_main[4];
-extern s16 D_800CE218_main[];
-extern s16 D_800D037E_main;
-extern u8 D_800D09A8_main;
-extern str800D5298 D_800D5298_main;
+static s16 HuAudCharVoiceGrp[6];
+extern s8 omPadStkX[4];
+extern s8 omPadStkY[4];
+extern s16 omPadBtn[4];
+extern u16 omPadBtnDown[4];
+extern s16 omPadBtnRep[4];
+extern s16 HuAudSeVol[];
+extern s16 HuAudSubMusNo;
+extern u8 saveCommonBuf;
+extern str800D5298 HuAudSysConfig;
 extern s32 D_800D52C0_main;
-extern omObjData *D_800D6A40_main;
+extern omObjData *HuAudFadeObj;
 
-u16 D_800A1900_main = 1;
-u16 D_800A1902_main = 1;
-s16 D_800A1904_main = -1; // active musId
-u16 D_800A1906_main = 1;  // stat/attr
-s16 D_800A1908_main = 0;
-s16 D_800A190A_main = 0;
-s16 D_800A190C_main = 1;
-s16 D_800A190E_main = 1;
-s16 D_800A1910_main = 0x40;
+u16 HuAudMusEnableF = 1;
+u16 HuAudSeEnableF = 1;
+s16 HuAudMusId = -1; // active musId
+u16 HuAudStat = 1;  // stat/attr
+s16 HuAudFxTypeNext = 0;
+s16 HuAudFxType = 0;
+s16 HuAudFxParamNext = 1;
+s16 HuAudFxParam = 1;
+s16 HuAudSeChMax = 0x40;
 
 
 s16 HuAudSeqPlay(s16 musId) {
-    if (D_800A1900_main == 0) {
+    if (HuAudMusEnableF == 0) {
         return 0;
     }
-    if (D_800A1904_main == musId) {
+    if (HuAudMusId == musId) {
         return 0;
     }
     if (musId == 0) {
         return -1;
     }
-    msmMusStop(D_800CDBC8_main);
-    D_800A1904_main = musId;
-    D_800A1906_main |= 2;
-    D_800A1906_main &= ~(1 | 8);
-    D_800CDBC8_main = msmMusPlayDefault(musId);
-    return D_800CDBC8_main;
+    msmMusStop(HuAudMusNo);
+    HuAudMusId = musId;
+    HuAudStat |= 2;
+    HuAudStat &= ~(1 | 8);
+    HuAudMusNo = msmMusPlayDefault(musId);
+    return HuAudMusNo;
 }
 
 s16 HuAudSubSeqPlay(s16 musId) {
     if (musId == 0) {
         return -1;
     }
-    if (D_800A1900_main == 0) {
+    if (HuAudMusEnableF == 0) {
         return 0;
     }
-    D_800A1906_main |= 0x20;
-    D_800A1906_main &= ~(0x10 | 0x80);
-    D_800D037E_main = msmMusPlayDefault(musId);
-    if (D_800D6A40_main != NULL) {
-        OM_GET_DATA_PTR(D_800D6A40_main, UnkAudioObjData)->unk34 = -1;
+    HuAudStat |= 0x20;
+    HuAudStat &= ~(0x10 | 0x80);
+    HuAudSubMusNo = msmMusPlayDefault(musId);
+    if (HuAudFadeObj != NULL) {
+        OM_GET_DATA_PTR(HuAudFadeObj, UnkAudioObjData)->unk34 = -1;
     }
-    return D_800D037E_main;
+    return HuAudSubMusNo;
 }
 
 void HuAudSubSeqParamSet(s32 arg0) {
-    if (D_800D6A40_main != NULL) {
-        OM_GET_DATA_PTR(D_800D6A40_main, UnkAudioObjData)->unk34 = arg0;
+    if (HuAudFadeObj != NULL) {
+        OM_GET_DATA_PTR(HuAudFadeObj, UnkAudioObjData)->unk34 = arg0;
     }
 }
 
@@ -78,15 +78,15 @@ void HuAudSeqVolFadeOut(s16 duration) {
     s16 frames = duration;
     f32 volume;
 
-    if (D_800D6A40_main != NULL) {
-        data = OM_GET_DATA_PTR(D_800D6A40_main, UnkAudioObjData);
-        volume = msmMusGetVolume(D_800CDBC8_main);
+    if (HuAudFadeObj != NULL) {
+        data = OM_GET_DATA_PTR(HuAudFadeObj, UnkAudioObjData);
+        volume = msmMusGetVolume(HuAudMusNo);
         data->unk24 = data->unk2C = volume;
         data->unk18 = frames;
         if (duration == 0) {
             data->unk1C = -volume;
             data->unk2C = 0;
-            msmMusSetVolume(D_800CDBC8_main, 0);
+            msmMusSetVolume(HuAudMusNo, 0);
         } else {
             data->unk1C = -volume / frames;
             data->unk14 = 1;
@@ -98,11 +98,11 @@ void HuAudSeqVolFadeIn(s16 duration) {
     UnkAudioObjData *data;
     s16 frames = duration;
 
-    if (D_800D6A40_main != NULL) {
-        data = OM_GET_DATA_PTR(D_800D6A40_main, UnkAudioObjData);
+    if (HuAudFadeObj != NULL) {
+        data = OM_GET_DATA_PTR(HuAudFadeObj, UnkAudioObjData);
         if (duration == 0) {
             data->unk2C = data->unk24;
-            msmMusSetVolume(D_800CDBC8_main, data->unk24);
+            msmMusSetVolume(HuAudMusNo, data->unk24);
         } else {
             if (frames < 0) {
                 data->unk1C = -data->unk1C;
@@ -119,15 +119,15 @@ void HuAudSubSeqVolFadeOut(s16 duration) {
     s16 frames = duration;
     f32 volume;
 
-    if (D_800D6A40_main != NULL) {
-        data = OM_GET_DATA_PTR(D_800D6A40_main, UnkAudioObjData);
-        volume = msmMusGetVolume(D_800D037E_main);
+    if (HuAudFadeObj != NULL) {
+        data = OM_GET_DATA_PTR(HuAudFadeObj, UnkAudioObjData);
+        volume = msmMusGetVolume(HuAudSubMusNo);
         data->unk28 = data->unk30 = volume;
         data->unk1A = frames;
         if (duration == 0) {
             data->unk20 = -volume;
             data->unk30 = 0;
-            msmMusSetVolume(D_800D037E_main, 0);
+            msmMusSetVolume(HuAudSubMusNo, 0);
         } else {
             data->unk20 = -volume / frames;
             data->unk16 = 1;
@@ -139,11 +139,11 @@ void HuAudSubSeqVolFadeIn(s16 duration) {
     UnkAudioObjData *data;
     s16 frames = duration;
 
-    if (D_800D6A40_main != NULL) {
-        data = OM_GET_DATA_PTR(D_800D6A40_main, UnkAudioObjData);
+    if (HuAudFadeObj != NULL) {
+        data = OM_GET_DATA_PTR(HuAudFadeObj, UnkAudioObjData);
         if (duration == 0) {
             data->unk30 = data->unk28;
-            msmMusSetVolume(D_800D037E_main, data->unk28);
+            msmMusSetVolume(HuAudSubMusNo, data->unk28);
         } else {
             if (frames < 0) {
                 data->unk20 = -data->unk20;
@@ -157,42 +157,42 @@ void HuAudSubSeqVolFadeIn(s16 duration) {
 
 void HuAudSubSeqPlayMute(s16 musId) {
     HuAudSubSeqPlay(musId);
-    msmMusSetVolume(D_800D037E_main, 127);
+    msmMusSetVolume(HuAudSubMusNo, 127);
     HuAudSubSeqVolFadeOut(0);
 }
 
 void HuAudSeqStop(void) {
-    D_800A1904_main = -1;
-    msmMusStop(D_800CDBC8_main);
-    D_800A1906_main &= ~(2 | 8);
-    D_800A1906_main |= 1;
+    HuAudMusId = -1;
+    msmMusStop(HuAudMusNo);
+    HuAudStat &= ~(2 | 8);
+    HuAudStat |= 1;
 }
 
 void HuAudSeqFadeOut(s16 speed) {
-    D_800A1904_main = -1;
-    msmMusFadeOut(D_800CDBC8_main, speed);
-    D_800A1906_main |= 8;
+    HuAudMusId = -1;
+    msmMusFadeOut(HuAudMusNo, speed);
+    HuAudStat |= 8;
 }
 
 void HuAudSeqVolSet(s8 volume) {
-    msmMusSetVolume(D_800CDBC8_main, volume);
+    msmMusSetVolume(HuAudMusNo, volume);
 }
 
 void HuAudSeqMasterVolSet(s8 volume) {
     msmMusSetMasterVolume(volume);
-    D_800A1906_main &= ~8;
+    HuAudStat &= ~8;
 }
 
 void HuAudSeqTempoSet(s16 arg0) {
-    msmMusSetTempo(D_800CDBC8_main, arg0);
+    msmMusSetTempo(HuAudMusNo, arg0);
 }
 
 s16 HuAudSeqTempoGet(void) {
-    return msmMusGetTempo(D_800CDBC8_main);
+    return msmMusGetTempo(HuAudMusNo);
 }
 
 s16 HuAudFXPlay(s16 seId) {
-    if (D_800A1902_main == 0) {
+    if (HuAudSeEnableF == 0) {
         return 0;
     }
     if (seId == 0) {
@@ -202,15 +202,15 @@ s16 HuAudFXPlay(s16 seId) {
 }
 
 void HuAudFXVolSet(s16 seNo, s8 volume) {
-    D_800CE218_main[seNo] = volume;
+    HuAudSeVol[seNo] = volume;
     msmSeSetVolume(seNo, volume);
 }
 
 void HuAudFXAllFadeOut(s32 arg0) {
     s32 i;
 
-    if (D_800D6A40_main != NULL) {
-        for (i = 0; i < D_800A1910_main; i++) {
+    if (HuAudFadeObj != NULL) {
+        for (i = 0; i < HuAudSeChMax; i++) {
             HuAudFXFadeOut(i, (s16)arg0);
         }
     }
@@ -219,8 +219,8 @@ void HuAudFXAllFadeOut(s32 arg0) {
 void HuAudFXMasterVolSet(s8 volume) {
     s32 i;
 
-    for (i = 0; i < D_800A1910_main; i++) {
-        D_800CE218_main[i] = volume;
+    for (i = 0; i < HuAudSeChMax; i++) {
+        HuAudSeVol[i] = volume;
     }
     msmSeSetMasterVolume(volume);
 }
@@ -230,7 +230,7 @@ void HuAudFXPitchSet(s32 seNo, s32 pitch) {
 }
 
 s16 CharFXPlay(s16 seId, u8 charNo) {
-    if (D_800A1902_main == 0) {
+    if (HuAudSeEnableF == 0) {
         return 0;
     }
     if (seId == 0) {
@@ -248,7 +248,7 @@ s32 _HuAudPlayerFXPlay(s16 arg0, s16 arg1) {
 }
 
 s16 HuAudPlayerFXPlay(s16 arg0, s16 arg1) {
-    if (D_800A1902_main == 0) {
+    if (HuAudSeEnableF == 0) {
         return 0;
     }
     if (arg0 == 0) {
@@ -258,7 +258,7 @@ s16 HuAudPlayerFXPlay(s16 arg0, s16 arg1) {
 }
 
 s16 PlayerFXPlay(s16 seId, s16 playerIdx) {
-    if (D_800A1902_main == 0) {
+    if (HuAudSeEnableF == 0) {
         return 0;
     }
     if (seId == 0) {
@@ -297,22 +297,22 @@ void HuAudStatUpdate(void) {
     s32 i;
 
     for (i = 0; i < 6; i++) {
-        D_800B23D0_main[i] = -1;
+        HuAudCharVoiceGrp[i] = -1;
     }
-    switch (msmMusGetStatus(D_800CDBC8_main)) {
+    switch (msmMusGetStatus(HuAudMusNo)) {
         case 0:
-            D_800A1906_main |= 1;
-            D_800A1906_main &= ~2;
+            HuAudStat |= 1;
+            HuAudStat &= ~2;
             break;
         case 1:
             break;
         case 2:
             break;
     }
-    switch (msmMusGetStatus(D_800D037E_main)) {
+    switch (msmMusGetStatus(HuAudSubMusNo)) {
         case 0:
-            D_800A1906_main |= 0x10;
-            D_800A1906_main &= ~(0x20 | 0x80);
+            HuAudStat |= 0x10;
+            HuAudStat &= ~(0x20 | 0x80);
             break;
         case 1:
             break;
@@ -324,11 +324,11 @@ void HuAudStatUpdate(void) {
 void HuAudFXFadeOut(s16 seNo, s32 duration) {
     UnkAudioObjData *data;
 
-    if (D_800D6A40_main != NULL && msmSeGetStatus(seNo) != 0) {
-        data = OM_GET_DATA_PTR(D_800D6A40_main, UnkAudioObjData);
+    if (HuAudFadeObj != NULL && msmSeGetStatus(seNo) != 0) {
+        data = OM_GET_DATA_PTR(HuAudFadeObj, UnkAudioObjData);
         data->unk10[seNo] |= 1;
-        data->unk00[seNo] = D_800CE218_main[seNo];
-        data->unk04[seNo] = (f32)D_800CE218_main[seNo] / (s16)duration;
+        data->unk00[seNo] = HuAudSeVol[seNo];
+        data->unk04[seNo] = (f32)HuAudSeVol[seNo] / (s16)duration;
     }
 }
 
@@ -336,16 +336,16 @@ void HuAudFXAllVolFadeDown(s16 duration) {
     UnkAudioObjData *data;
     s32 i;
 
-    if (D_800D6A40_main != NULL) {
-        data = OM_GET_DATA_PTR(D_800D6A40_main, UnkAudioObjData);
-        for (i = 0; i < D_800A1910_main; i++) {
+    if (HuAudFadeObj != NULL) {
+        data = OM_GET_DATA_PTR(HuAudFadeObj, UnkAudioObjData);
+        for (i = 0; i < HuAudSeChMax; i++) {
             data->unk10[i] |= 6;
             if (data->unk10[i] & 1) {
                 data->unk08[i] = data->unk00[i];
                 data->unk0C[i] = data->unk00[i] / duration;
             } else {
-                data->unk08[i] = D_800CE218_main[i];
-                data->unk0C[i] = (f32)D_800CE218_main[i] / duration;
+                data->unk08[i] = HuAudSeVol[i];
+                data->unk0C[i] = (f32)HuAudSeVol[i] / duration;
             }
         }
     }
@@ -356,14 +356,14 @@ void HuAudFXAllVolRestore(void) {
     s32 i;
     s16 volume;
 
-    if (D_800D6A40_main != NULL) {
-        data = OM_GET_DATA_PTR(D_800D6A40_main, UnkAudioObjData);
-        for (i = 0; i < D_800A1910_main; i++) {
+    if (HuAudFadeObj != NULL) {
+        data = OM_GET_DATA_PTR(HuAudFadeObj, UnkAudioObjData);
+        for (i = 0; i < HuAudSeChMax; i++) {
             data->unk10[i] &= ~6;
             if (data->unk10[i] & 1) {
                 volume = (s32)data->unk00[i];
             } else {
-                volume = D_800CE218_main[i];
+                volume = HuAudSeVol[i];
             }
             msmSeSetVolume(i, volume);
         }
@@ -374,11 +374,11 @@ void HuAudPlayerParamCopy(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        D_800D6A4C_main[i] = D_800CBB6E_main[i];
-        D_800D123C_main[i] = D_800D20A1_main[i];
-        D_800CCF7C_main[i] = D_800CDA7C_main[i];
-        D_800CDD5C_main[i] = D_800D5558_main[i];
-        D_800CB9A4_main[i] = D_800D1244_main[i];
+        omPadStkX[i] = HuPadStkX[i];
+        omPadStkY[i] = HuPadStkY[i];
+        omPadBtn[i] = HuPadBtn[i];
+        omPadBtnDown[i] = HuPadBtnDown[i];
+        omPadBtnRep[i] = HuPadBtnRep[i];
     }
 }
 
@@ -396,13 +396,13 @@ u16 HuAudDummy(void) {
 void HuAudInit(void) {
     str800D5298 *temp;
 
-    msmSysGetConfig(&D_800D5298_main);
-    temp = &D_800D5298_main;
+    msmSysGetConfig(&HuAudSysConfig);
+    temp = &HuAudSysConfig;
     temp->unk28 = 1; //?
-    D_800D5298_main.unk8 = audio_mbf0_ROM_START;
-    D_800D5298_main.unkC = audio_sbf0_ROM_START;
-    msmSysInit(&D_800D5298_main);
-    if (!(D_800D09A8_main & 1)) {
+    HuAudSysConfig.unk8 = audio_mbf0_ROM_START;
+    HuAudSysConfig.unkC = audio_sbf0_ROM_START;
+    msmSysInit(&HuAudSysConfig);
+    if (!(saveCommonBuf & 1)) {
         msmSysSetOutputMode(0);
     } else {
         msmSysSetOutputMode(1);

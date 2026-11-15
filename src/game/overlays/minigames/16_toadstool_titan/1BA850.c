@@ -26,19 +26,19 @@ typedef struct ToadstoolTitanBssF650 {
 } ToadstoolTitanBssF650;    // sizeof 0x11
 
 extern s32 D_800A178C_main[][6];
-extern s16 D_800CDBC8_main;
-extern s16 D_800D037E_main;
-extern f32 D_800CB890_main;
-extern f32 D_800D5210_main;
-extern omObjData *D_800D6A40_main;
+extern s16 HuAudMusNo;
+extern s16 HuAudSubMusNo;
+extern f32 CFanOfs;
+extern f32 CFanLen;
+extern omObjData *HuAudFadeObj;
 extern f32 D_800EB760_minigame;
 extern f32 D_800EB764_minigame;
 extern f32 D_800EB768_minigame;
 extern f32 D_800EB76C_minigame;
 extern f32 D_800EB75C_minigame;
-extern u8 D_800CD6A6_main;
-extern s16 D_800D418E_main;
-extern u8 D_800D6A90_main;
+extern u8 Hu3DCameraNo;
+extern s16 Hu3DCamMtxNo;
+extern u8 omAllPauseF;
 extern Gfx *gMainGfxPos;
 
 u8 D_8010EDA0_toadstool_titan = 0;       // number of mushrooms created so far
@@ -162,11 +162,11 @@ void func_801059A0_toadstool_titan(void) {
     Hu3DSprModelInit(0x20);
     omInitObjMan(100, 0);
     omGameSysInit();
-    D_800CD280_main = 1;
+    Hu3DScreenClearF = 1;
     CamSetupInit(1);
-    D_800CD6A6_main = CamSetupMapCullAdd();
-    ScissorSet(D_800CD6A6_main, 0.0f, 0.0f, 320.0f, 240.0f);
-    ViewportSet(D_800CD6A6_main, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
+    Hu3DCameraNo = CamSetupMapCullAdd();
+    ScissorSet(Hu3DCameraNo, 0.0f, 0.0f, 320.0f, 240.0f);
+    ViewportSet(Hu3DCameraNo, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     D_800EC1B8_minigame = 0;
     D_800EC280_minigame = 0;
     D_800EBE28_minigame = 0;
@@ -272,7 +272,7 @@ void func_801060AC_toadstool_titan(omObjData *object) {
             }
             break;
         case 1:
-            if (D_8010F580_toadstool_titan == 61 && D_8010F5BC_toadstool_titan == 0 && D_800D530C_main == 0) {
+            if (D_8010F580_toadstool_titan == 61 && D_8010F5BC_toadstool_titan == 0 && omSysExitReq == 0) {
                 HuAudSeqPlay(0x38);
                 D_8010F614_toadstool_titan[0] = 1;
             }
@@ -309,7 +309,7 @@ void func_801060AC_toadstool_titan(omObjData *object) {
                 D_8010F590_toadstool_titan.winners[0] = D_8010F568_toadstool_titan[D_8010F58A_toadstool_titan]->playerNo;
                 GwPlayer[D_8010F568_toadstool_titan[D_8010F58A_toadstool_titan]->playerNo].bonusCoin = 10;
                 D_8010F614_toadstool_titan[0] = 0;
-                if (D_8010F614_toadstool_titan[1] != 0 && D_8010F5BC_toadstool_titan == 0 && D_800D530C_main == 0) {
+                if (D_8010F614_toadstool_titan[1] != 0 && D_8010F5BC_toadstool_titan == 0 && omSysExitReq == 0) {
                     HuAudSubSeqVolFadeOut(60);
                     D_8010F614_toadstool_titan[1] = 0;
                 }
@@ -329,15 +329,15 @@ void func_801060AC_toadstool_titan(omObjData *object) {
                 D_8010F590_toadstool_titan.finishDelay = 90;
                 D_8010F590_toadstool_titan.resultDelay = 0x90;
                 D_8010F614_toadstool_titan[0] = 0;
-                if (D_8010F614_toadstool_titan[1] != 0 && D_8010F5BC_toadstool_titan == 0 && D_800D530C_main == 0) {
+                if (D_8010F614_toadstool_titan[1] != 0 && D_8010F5BC_toadstool_titan == 0 && omSysExitReq == 0) {
                     HuAudSubSeqVolFadeOut(60);
                     D_8010F614_toadstool_titan[1] = 0;
                 }
             }
-            if (D_8010F580_toadstool_titan == 64 && D_8010F5BC_toadstool_titan == 0 && D_800D530C_main == 0) {
+            if (D_8010F580_toadstool_titan == 64 && D_8010F5BC_toadstool_titan == 0 && omSysExitReq == 0) {
                 HuAudSeqStop();
             }
-            if (D_8010F580_toadstool_titan == 67 && D_8010F5BC_toadstool_titan == 0 && D_800D530C_main == 0) {
+            if (D_8010F580_toadstool_titan == 67 && D_8010F5BC_toadstool_titan == 0 && omSysExitReq == 0) {
                 HuAudSeqVolFadeIn(3);
             }
             if (MgFlowStatGet() == MG_STATE_RESULT) {
@@ -346,10 +346,10 @@ void func_801060AC_toadstool_titan(omObjData *object) {
             }
             break;
         case 4:
-            if (D_8010F580_toadstool_titan == 24 && D_8010F5BC_toadstool_titan == 0 && D_800D530C_main == 0) {
+            if (D_8010F580_toadstool_titan == 24 && D_8010F5BC_toadstool_titan == 0 && omSysExitReq == 0) {
                 HuAudSeqStop();
             }
-            if (D_8010F580_toadstool_titan == 27 && D_8010F5BC_toadstool_titan == 0 && D_800D530C_main == 0) {
+            if (D_8010F580_toadstool_titan == 27 && D_8010F5BC_toadstool_titan == 0 && omSysExitReq == 0) {
                 HuAudSeqVolFadeIn(3);
             }
             if (D_8010F580_toadstool_titan == 29) {
@@ -363,7 +363,7 @@ void func_801060AC_toadstool_titan(omObjData *object) {
                         D_8010F640_toadstool_titan[D_8010F58A_toadstool_titan], 13,
                         CharMotionDataNumGet(D_8010F568_toadstool_titan[D_8010F58A_toadstool_titan]->chr, (rand8() & 1) ? 0x2F : 0x30), 1, 120);
                     HuAudCharVoicePlay(D_8010F568_toadstool_titan[D_8010F58A_toadstool_titan]->unk_0C);
-                    msmMusStop(D_800D037E_main);
+                    msmMusStop(HuAudSubMusNo);
                 }
             }
             if (D_8010F580_toadstool_titan == 30 && D_8010F586_toadstool_titan == 9) {
@@ -376,7 +376,7 @@ void func_801060AC_toadstool_titan(omObjData *object) {
                         func_800E5A00_minigame(D_8010F640_toadstool_titan[i], 14, CharMotionDataNumGet(D_8010F568_toadstool_titan[i]->chr, 0x3A), 1,
                                                120);
                     }
-                    msmMusStop(D_800D037E_main);
+                    msmMusStop(HuAudSubMusNo);
                 }
                 if (D_8010F5FC_toadstool_titan == 5 && D_8010F580_toadstool_titan >= 2) {
                     for (i = 0; i < 4; i++) {
@@ -401,8 +401,8 @@ void func_801060AC_toadstool_titan(omObjData *object) {
             }
             break;
     }
-    if (D_8010F5BC_toadstool_titan != 0 || D_800D530C_main != 0) {
-        if (D_800D530C_main != 0) {
+    if (D_8010F5BC_toadstool_titan != 0 || omSysExitReq != 0) {
+        if (omSysExitReq != 0) {
             if (D_8010F584_toadstool_titan == 0) {
                 WipeCreateOut(WIPE_TYPE_NORMAL, 20);
                 HuAudSeqFadeOut(20);
@@ -410,19 +410,19 @@ void func_801060AC_toadstool_titan(omObjData *object) {
                 HuAudFXAllFadeOut(20);
             }
             D_8010F584_toadstool_titan++;
-            if (D_8010F584_toadstool_titan == 21 && D_800D6A40_main != NULL) {
-                msmMusStop(D_800CDBC8_main);
-                msmMusStop(D_800D037E_main);
+            if (D_8010F584_toadstool_titan == 21 && HuAudFadeObj != NULL) {
+                msmMusStop(HuAudMusNo);
+                msmMusStop(HuAudSubMusNo);
             }
-            if (D_8010F584_toadstool_titan == 23 && D_800D6A40_main != NULL && D_8010F600_toadstool_titan != -1.0f) {
-                msmMusSetVolume(D_800CDBC8_main, D_8010F600_toadstool_titan);
+            if (D_8010F584_toadstool_titan == 23 && HuAudFadeObj != NULL && D_8010F600_toadstool_titan != -1.0f) {
+                msmMusSetVolume(HuAudMusNo, D_8010F600_toadstool_titan);
             }
             if (D_8010F584_toadstool_titan < 25) {
                 return;
             }
         }
-        msmMusStop(D_800CDBC8_main);
-        msmMusStop(D_800D037E_main);
+        msmMusStop(HuAudMusNo);
+        msmMusStop(HuAudSubMusNo);
         omOvlReturnEx(1);
     }
 }
@@ -430,9 +430,9 @@ void func_801060AC_toadstool_titan(omObjData *object) {
 void func_80106984_toadstool_titan(void) {
     UnkAudioObjData *data;
 
-    if (D_800D6A40_main != NULL) {
-        data = D_800D6A40_main->data;
-        D_8010F600_toadstool_titan = data->unk24 = data->unk2C = msmMusGetVolume(D_800CDBC8_main);
+    if (HuAudFadeObj != NULL) {
+        data = HuAudFadeObj->data;
+        D_8010F600_toadstool_titan = data->unk24 = data->unk2C = msmMusGetVolume(HuAudMusNo);
     }
 }
 
@@ -654,7 +654,7 @@ void func_80107360_toadstool_titan(omObjData *object) {
     } else if (D_8010F5F4_toadstool_titan != 0 && D_8010F5F4_toadstool_titan < 13) {
         f32 shakeAngle;
 
-        if (omPauseChk() + D_800D6A90_main == 0) {
+        if (omPauseChk() + omAllPauseF == 0) {
             shakeAngle = D_8010F670_toadstool_titan + rand8() / 255.0 * 30.0 - 15.0;
         } else {
             shakeAngle = D_8010F670_toadstool_titan;
@@ -665,15 +665,15 @@ void func_80107360_toadstool_titan(omObjData *object) {
         D_8010EDA8_toadstool_titan = (s16)(cosdf(shakeAngle) * 0.5 *
                                            ((D_8010F5F4_toadstool_titan % 2 == 0) ? D_8010F5F4_toadstool_titan : -D_8010F5F4_toadstool_titan));
         D_8010EDB0_toadstool_titan = D_8010EDA8_toadstool_titan + 240.0f;
-        D_8010F5F4_toadstool_titan -= (omPauseChk() + D_800D6A90_main == 0) ? 1 : 0;
+        D_8010F5F4_toadstool_titan -= (omPauseChk() + omAllPauseF == 0) ? 1 : 0;
         ViewportSet(0, 640.0f, 480.0f, 511.0f, (s32)((D_8010EDA4_toadstool_titan + D_8010EDAC_toadstool_titan) / 2.0 * 4.0),
                     (s32)((D_8010EDA8_toadstool_titan + D_8010EDB0_toadstool_titan) / 2.0 * 4.0), 511.0f);
     } else if (D_8010F5F4_toadstool_titan == 13) {
-        D_8010F5F4_toadstool_titan -= (omPauseChk() + D_800D6A90_main == 0) ? 1 : 0;
+        D_8010F5F4_toadstool_titan -= (omPauseChk() + omAllPauseF == 0) ? 1 : 0;
     }
     func_8010AD8C_toadstool_titan(D_8010EDA4_toadstool_titan, D_8010EDA8_toadstool_titan, D_8010EDAC_toadstool_titan,
                                   D_8010EDB0_toadstool_titan);
-    if (omPauseChk() + D_800D6A90_main != 0) {
+    if (omPauseChk() + omAllPauseF != 0) {
         return;
     }
     D_8010F61C_toadstool_titan++;
@@ -783,7 +783,7 @@ void func_80107360_toadstool_titan(omObjData *object) {
                 D_8010F61C_toadstool_titan = 0;
                 Hu3DModelAttrSet(D_8010F5F8_toadstool_titan->model[1], 4, 4);
                 Hu3DModelAttrSet(D_8010F5F8_toadstool_titan->model[56], 4, 4);
-                msmMusSetVolume(D_800CDBC8_main, D_8010F600_toadstool_titan);
+                msmMusSetVolume(HuAudMusNo, D_8010F600_toadstool_titan);
                 break;
             }
             if (D_8010F61C_toadstool_titan == 35) {
@@ -924,7 +924,7 @@ void func_80107360_toadstool_titan(omObjData *object) {
             }
             if (D_8010F61C_toadstool_titan == 1) {
                 D_8010EDCE_toadstool_titan = 1;
-                if (D_8010F5BC_toadstool_titan == 0 && D_800D530C_main == 0) {
+                if (D_8010F5BC_toadstool_titan == 0 && omSysExitReq == 0) {
                     HuAudSeqVolFadeOut(90);
                     D_8010F614_toadstool_titan[0] = 0;
                 }
@@ -978,8 +978,8 @@ void func_80107360_toadstool_titan(omObjData *object) {
                 D_8010F586_toadstool_titan = 5;
                 D_8010F61C_toadstool_titan = (D_8010F5FC_toadstool_titan != 2) ? 150 : 0;
                 Hu3DModelLayerSet(D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->model[0], 0x400);
-                if (D_8010F5FC_toadstool_titan == 2 && D_8010F5BC_toadstool_titan == 0 && D_800D530C_main == 0) {
-                    msmMusPause(D_800CDBC8_main);
+                if (D_8010F5FC_toadstool_titan == 2 && D_8010F5BC_toadstool_titan == 0 && omSysExitReq == 0) {
+                    msmMusPause(HuAudMusNo);
                     HuAudSubSeqPlay(0x45);
                     D_8010F614_toadstool_titan[1] = 1;
                 }
@@ -993,7 +993,7 @@ void func_80107360_toadstool_titan(omObjData *object) {
                 work->unk50 &= ~0x400;
                 D_8010F586_toadstool_titan = 6;
                 D_8010F61C_toadstool_titan = 0;
-                if (D_8010F5FC_toadstool_titan == 2 && D_8010F5BC_toadstool_titan == 0 && D_800D530C_main == 0) {
+                if (D_8010F5FC_toadstool_titan == 2 && D_8010F5BC_toadstool_titan == 0 && omSysExitReq == 0) {
                     HuAudSubSeqVolFadeOut(40);
                     D_8010F614_toadstool_titan[1] = 0;
                 }
@@ -1077,10 +1077,10 @@ void func_80107360_toadstool_titan(omObjData *object) {
                 }
                 D_8010EDCD_toadstool_titan = 1;
                 HuAudFXPlay(0x3A9);
-                if (D_8010F5FC_toadstool_titan == 2 && D_8010F5BC_toadstool_titan == 0 && D_800D530C_main == 0 &&
+                if (D_8010F5FC_toadstool_titan == 2 && D_8010F5BC_toadstool_titan == 0 && omSysExitReq == 0 &&
                     D_8010F614_toadstool_titan[0] == 0) {
-                    msmMusStop(D_800D037E_main);
-                    msmMusResume(D_800CDBC8_main, 0);
+                    msmMusStop(HuAudSubMusNo);
+                    msmMusResume(HuAudMusNo, 0);
                     HuAudSeqVolFadeIn(35);
                     D_8010F614_toadstool_titan[0] = 1;
                 }
@@ -1189,7 +1189,7 @@ void func_80107360_toadstool_titan(omObjData *object) {
         f32 ease;
 
         camera = gCameraList;
-        camMtxs = &camera->mtxs[D_800D418E_main];
+        camMtxs = &camera->mtxs[Hu3DCamMtxNo];
         D_8010EDD4_toadstool_titan = D_8010EDDC_toadstool_titan = 0.0f;
         if (D_8010EDCE_toadstool_titan == 1) {
             Hu3DModelTPLvlSet(object->model[3], 0xFF);
@@ -1367,7 +1367,7 @@ void func_8010AD8C_toadstool_titan(s16 left, s16 top, s16 right, s16 bottom) {
 
     gSPDisplayList(gMainGfxPos++, D_8010EDF0_toadstool_titan);
     gDPSetTextureLUT(gMainGfxPos++, G_TT_RGBA16);
-    sprite = HuSprGet(D_800CD1DC_main[D_8010F588_toadstool_titan[0]].unk04, 0);
+    sprite = HuSprGet(esprite[D_8010F588_toadstool_titan[0]].unk04, 0);
     frame = &sprite->data->pat[sprite->patNo];
     gDPLoadTLUT_pal256(gMainGfxPos++, sprite->data->pal);
     for (i = 0; i < 6; i++) {
@@ -1418,8 +1418,8 @@ void func_8010B510_toadstool_titan(omObjData *object) {
     D_800CE17C_main[1] = D_8010F628_toadstool_titan.z;
     D_800CE17C_main[-1] = 0.0f;
     D_800CE17C_main[2] = gCameraList->fov;
-    D_800CE17C_main[3] = D_800D5210_main;
-    D_800CE17C_main[4] = D_800CB890_main;
+    D_800CE17C_main[3] = CFanLen;
+    D_800CE17C_main[4] = CFanOfs;
     Hu3DCameraPerspectiveSet(0, D_8010F624_toadstool_titan, 800.0f, 2750.0f);
     Hu3DCameraPosSetV(0, &D_8010F628_toadstool_titan, &D_8010F5C0_toadstool_titan, &up);
     Hu3DCamUpdateMtx(0);
@@ -1499,7 +1499,7 @@ void func_8010BC48_toadstool_titan(omObjData *object) {
     object->func = func_8010BD2C_toadstool_titan;
 }
 
-// Only differs in the two D_800D20A1_main stick computations (cases 2/3 and
+// Only differs in the two HuPadStkY stick computations (cases 2/3 and
 // 11/12): the target converts the int result of (dist > 33.0f) to double rather
 // than loading 1.0. Writing them with the GNU omitted-middle-operand form
 // `((dist > 33.0f) ?: dist / 33.0)` gives a full match; standard C forms tried
@@ -1565,13 +1565,13 @@ void func_8010BD2C_toadstool_titan(omObjData *object) {
         }
     }
     (void)flags;
-    savedBtn = D_800CDA7C_main[player->pad];
-    savedBtn2 = D_800D5558_main[player->pad];
-    savedBtn3 = D_800D1244_main[player->pad];
-    savedStickX = D_800CBB6E_main[player->pad];
-    savedStickY = D_800D20A1_main[player->pad];
-    savedStick2 = D_800D056A_main[player->pad];
-    savedStick3 = D_800D1382_main[player->pad];
+    savedBtn = HuPadBtn[player->pad];
+    savedBtn2 = HuPadBtnDown[player->pad];
+    savedBtn3 = HuPadBtnRep[player->pad];
+    savedStickX = HuPadStkX[player->pad];
+    savedStickY = HuPadStkY[player->pad];
+    savedStick2 = HuPadStkXSum[player->pad];
+    savedStick3 = HuPadStkYSum[player->pad];
     if (player->cpuDifficulty != -1) {
         s16 params[22][4] = {
             { 0, 0, 0, 0 },
@@ -1598,13 +1598,13 @@ void func_8010BD2C_toadstool_titan(omObjData *object) {
             { 1, 1, 1, 1 },
         };
 
-        D_800CDA7C_main[player->pad] = 0;
-        D_800D5558_main[player->pad] = 0;
-        D_800D1244_main[player->pad] = 0;
-        D_800CBB6E_main[player->pad] = 0;
-        D_800D20A1_main[player->pad] = 0;
-        D_800D056A_main[player->pad] = 0;
-        D_800D1382_main[player->pad] = 0;
+        HuPadBtn[player->pad] = 0;
+        HuPadBtnDown[player->pad] = 0;
+        HuPadBtnRep[player->pad] = 0;
+        HuPadStkX[player->pad] = 0;
+        HuPadStkY[player->pad] = 0;
+        HuPadStkXSum[player->pad] = 0;
+        HuPadStkYSum[player->pad] = 0;
         if (D_8010F616_toadstool_titan[group] != 0) {
             D_8010EE40_toadstool_titan[group] = 13;
         }
@@ -1664,11 +1664,11 @@ void func_8010BD2C_toadstool_titan(omObjData *object) {
                 dx = D_8010F5D0_toadstool_titan[D_8010EE44_toadstool_titan[group]]->trans.x - object->trans.x;
                 dz = D_8010F5D0_toadstool_titan[D_8010EE44_toadstool_titan[group]]->trans.z - object->trans.z;
                 dist = (dx != 0.0f || dz != 0.0f) ? HuSqrtf(dx * dx + dz * dz) : 16777216.0f;
-                D_800CBB6E_main[player->pad] = dx / dist * ((dist > 33.0f) ? 1.0 : dist / 33.0) * params[10][player->cpuDifficulty];
-                D_800D20A1_main[player->pad] = -(dz / dist * ((dist > 33.0f) ? 1.0 : dist / 33.0) * params[10][player->cpuDifficulty]);
+                HuPadStkX[player->pad] = dx / dist * ((dist > 33.0f) ? 1.0 : dist / 33.0) * params[10][player->cpuDifficulty];
+                HuPadStkY[player->pad] = -(dz / dist * ((dist > 33.0f) ? 1.0 : dist / 33.0) * params[10][player->cpuDifficulty]);
                 if (object->trans.y > 375.0f && data->unk38 == 1000.0f) {
-                    D_800CBB6E_main[player->pad] = 0;
-                    D_800D20A1_main[player->pad] = 66;
+                    HuPadStkX[player->pad] = 0;
+                    HuPadStkY[player->pad] = 66;
                 }
                 if (D_8010EE40_toadstool_titan[group] == 3 && D_8010EE4C_toadstool_titan[group] == 0 && object->trans.y <= 0.0f) {
                     D_8010EE40_toadstool_titan[group] = 2;
@@ -1680,7 +1680,7 @@ void func_8010BD2C_toadstool_titan(omObjData *object) {
                             break;
                         case 1:
                             D_8010EE40_toadstool_titan[group] = 3;
-                            D_800D5558_main[player->pad] |= 0x8000;
+                            HuPadBtnDown[player->pad] |= 0x8000;
                             D_8010EE4C_toadstool_titan[group] = params[4][player->cpuDifficulty] + rand8() % params[5][player->cpuDifficulty];
                             break;
                         case 2:
@@ -1690,7 +1690,7 @@ void func_8010BD2C_toadstool_titan(omObjData *object) {
                     }
                 }
                 if (D_8010EE40_toadstool_titan[group] == 3) {
-                    D_800CDA7C_main[player->pad] |= 0x8000;
+                    HuPadBtn[player->pad] |= 0x8000;
                 }
                 D_8010EE4C_toadstool_titan[group] -= (D_8010EE4C_toadstool_titan[group] > 0) ? 1 : 0;
                 if (D_8010F650_toadstool_titan[D_8010EE44_toadstool_titan[group]] == 0) {
@@ -1751,8 +1751,8 @@ void func_8010BD2C_toadstool_titan(omObjData *object) {
                 dz = D_8010F640_toadstool_titan[D_8010EE44_toadstool_titan[group] % 4]->trans.z - object->trans.z +
                      ((D_8010EE44_toadstool_titan[group] >= 4) ? D_8010EE64_toadstool_titan[group] : 0.0f);
                 dist = (dx != 0.0f || dz != 0.0f) ? HuSqrtf(dx * dx + dz * dz) : 16777216.0f;
-                D_800CBB6E_main[player->pad] = dx / dist * ((dist > 33.0f) ? 66.0f : dist * 2);
-                D_800D20A1_main[player->pad] = -(dz / dist * ((dist > 33.0f) ? 66.0f : dist * 2));
+                HuPadStkX[player->pad] = dx / dist * ((dist > 33.0f) ? 66.0f : dist * 2);
+                HuPadStkY[player->pad] = -(dz / dist * ((dist > 33.0f) ? 66.0f : dist * 2));
                 if (D_8010EE40_toadstool_titan[group] == 5 && D_8010EE4C_toadstool_titan[group] <= 0 && D_8010EE3C_toadstool_titan != 0) {
                     D_8010EE40_toadstool_titan[group] = 6;
                     D_8010EE4C_toadstool_titan[group] = 0;
@@ -1834,8 +1834,8 @@ void func_8010BD2C_toadstool_titan(omObjData *object) {
                 dx = ((D_8010EE44_toadstool_titan[group] < 2) ? -400.0f : 400.0f) - object->trans.x;
                 dz = (((D_8010EE44_toadstool_titan[group] + 1) % 4 < 2) ? -350.0f : 350.0f) - object->trans.z;
                 dist = (dx != 0.0f || dz != 0.0f) ? HuSqrtf(dx * dx + dz * dz) : 16777216.0f;
-                D_800CBB6E_main[player->pad] = dx / dist * ((dist > 70.0f) ? 70.0f : ((dist > 35.0f) ? dist : 0.0f));
-                D_800D20A1_main[player->pad] = -(dz / dist * ((dist > 70.0f) ? 70.0f : ((dist > 35.0f) ? dist : 0.0f)));
+                HuPadStkX[player->pad] = dx / dist * ((dist > 70.0f) ? 70.0f : ((dist > 35.0f) ? dist : 0.0f));
+                HuPadStkY[player->pad] = -(dz / dist * ((dist > 70.0f) ? 70.0f : ((dist > 35.0f) ? dist : 0.0f)));
                 if (D_8010EE3C_toadstool_titan != 0) {
                     D_8010EE4C_toadstool_titan[group] -= (D_8010EE4C_toadstool_titan[group] > 0) ? 1 : 0;
                     if (D_8010EE4C_toadstool_titan[group] <= 0) {
@@ -1862,7 +1862,7 @@ void func_8010BD2C_toadstool_titan(omObjData *object) {
                     }
                 }
                 if (data->unk38 != 1000.0f) {
-                    D_800CDA7C_main[player->pad] |= 0x8000;
+                    HuPadBtn[player->pad] |= 0x8000;
                 } else if (D_8010F66C_toadstool_titan != 0) {
                     if (params[16][player->cpuDifficulty] + rand8() % params[17][player->cpuDifficulty] < 32) {
                         break;
@@ -1878,9 +1878,9 @@ void func_8010BD2C_toadstool_titan(omObjData *object) {
                     otherVelZ = cosdf(otherData->unk3C) * otherData->unk40;
                     for (i = 0; i < 6; i++) {
                         if ((posX - otherX) * (posX - otherX) + (posZ - otherZ) * (posZ - otherZ) < 22500.0f) {
-                            D_800CDA7C_main[player->pad] |= 0x8000;
-                            D_800D5558_main[player->pad] |= 0x8000;
-                            D_800D1244_main[player->pad] |= 0x8000;
+                            HuPadBtn[player->pad] |= 0x8000;
+                            HuPadBtnDown[player->pad] |= 0x8000;
+                            HuPadBtnRep[player->pad] |= 0x8000;
                             break;
                         }
                         posX += velX;
@@ -1903,8 +1903,8 @@ void func_8010BD2C_toadstool_titan(omObjData *object) {
                 dx = Hu3DData[D_8010F5F8_toadstool_titan->model[1]].pos.x - object->trans.x;
                 dz = Hu3DData[D_8010F5F8_toadstool_titan->model[1]].pos.z - object->trans.z;
                 dist = (dx != 0.0f || dz != 0.0f) ? HuSqrtf(dx * dx + dz * dz) : 16777216.0f;
-                D_800CBB6E_main[player->pad] = dx / dist * ((dist > 33.0f) ? 1.0 : dist / 33.0) * params[10][player->cpuDifficulty];
-                D_800D20A1_main[player->pad] = -(dz / dist * ((dist > 33.0f) ? 1.0 : dist / 33.0) * params[10][player->cpuDifficulty]);
+                HuPadStkX[player->pad] = dx / dist * ((dist > 33.0f) ? 1.0 : dist / 33.0) * params[10][player->cpuDifficulty];
+                HuPadStkY[player->pad] = -(dz / dist * ((dist > 33.0f) ? 1.0 : dist / 33.0) * params[10][player->cpuDifficulty]);
                 if (D_8010EE40_toadstool_titan[group] == 12 && D_8010EE4C_toadstool_titan[group] == 0 && object->trans.y <= 0.0f) {
                     D_8010EE40_toadstool_titan[group] = 11;
                     D_8010EE4C_toadstool_titan[group] = 0;
@@ -1913,32 +1913,32 @@ void func_8010BD2C_toadstool_titan(omObjData *object) {
                     switch ((dist < 50.0f) ? 1 : (rand8() & 3) < 3) {
                         case 1:
                             D_8010EE40_toadstool_titan[group] = 12;
-                            D_800D5558_main[player->pad] |= 0x8000;
+                            HuPadBtnDown[player->pad] |= 0x8000;
                             D_8010EE4C_toadstool_titan[group] = params[4][player->cpuDifficulty] + rand8() % params[5][player->cpuDifficulty];
                             break;
                     }
                 }
                 if (D_8010EE40_toadstool_titan[group] == 12) {
-                    D_800CDA7C_main[player->pad] |= 0x8000;
+                    HuPadBtn[player->pad] |= 0x8000;
                 }
                 D_8010EE4C_toadstool_titan[group] -= (D_8010EE4C_toadstool_titan[group] > 0) ? 1 : 0;
                 break;
         }
-        D_800D056A_main[player->pad] = D_800CBB6E_main[player->pad] * 2;
-        D_800D1382_main[player->pad] = D_800D20A1_main[player->pad] * 2;
+        HuPadStkXSum[player->pad] = HuPadStkX[player->pad] * 2;
+        HuPadStkYSum[player->pad] = HuPadStkY[player->pad] * 2;
     }
     if (D_8010F586_toadstool_titan == 3 && D_8010F60E_toadstool_titan == group) {
-        D_800CDA7C_main[player->pad] = 0;
-        D_800D5558_main[player->pad] = 0;
-        D_800D1244_main[player->pad] = 0;
-        D_800CBB6E_main[player->pad] = 0;
-        D_800D20A1_main[player->pad] = 0;
-        D_800D056A_main[player->pad] = 0;
-        D_800D1382_main[player->pad] = 0;
+        HuPadBtn[player->pad] = 0;
+        HuPadBtnDown[player->pad] = 0;
+        HuPadBtnRep[player->pad] = 0;
+        HuPadStkX[player->pad] = 0;
+        HuPadStkY[player->pad] = 0;
+        HuPadStkXSum[player->pad] = 0;
+        HuPadStkYSum[player->pad] = 0;
     } else if (D_8010F586_toadstool_titan == 5 && D_8010F60E_toadstool_titan == group) {
-        D_800CDA7C_main[player->pad] = 0;
-        D_800D5558_main[player->pad] = 0;
-        D_800D1244_main[player->pad] = 0;
+        HuPadBtn[player->pad] = 0;
+        HuPadBtnDown[player->pad] = 0;
+        HuPadBtnRep[player->pad] = 0;
     }
     if (D_8010F586_toadstool_titan == 5 && D_8010F60E_toadstool_titan == group) {
         D_800EB73C_minigame = 30.0f;
@@ -1953,17 +1953,17 @@ void func_8010BD2C_toadstool_titan(omObjData *object) {
     if (D_8010F586_toadstool_titan == 5 && D_8010F60E_toadstool_titan == group) {
         if (D_8010EE3C_toadstool_titan == 0 && data->unk40 > 9.0f) {
             D_8010EE3C_toadstool_titan = 1;
-            if (D_800CBB6E_main[player->pad] * D_800CBB6E_main[player->pad] + D_800D20A1_main[player->pad] * D_800D20A1_main[player->pad] > 1600) {
-                data->unk3C = (D_800CBB6E_main[player->pad] == 0) ? ((D_800D20A1_main[player->pad] >= 0) ? 180.0f : 0.0f)
-                                                                  : atan2df(D_800CBB6E_main[player->pad], -D_800D20A1_main[player->pad]);
+            if (HuPadStkX[player->pad] * HuPadStkX[player->pad] + HuPadStkY[player->pad] * HuPadStkY[player->pad] > 1600) {
+                data->unk3C = (HuPadStkX[player->pad] == 0) ? ((HuPadStkY[player->pad] >= 0) ? 180.0f : 0.0f)
+                                                                  : atan2df(HuPadStkX[player->pad], -HuPadStkY[player->pad]);
             }
             D_8010F520_toadstool_titan = data->unk3C;
         }
         if (D_8010EE3C_toadstool_titan != 0) {
-            D_800CBB6E_main[player->pad] = sindf(D_8010F520_toadstool_titan) * 63.0f + D_800CBB6E_main[player->pad] / 6;
-            D_800D20A1_main[player->pad] = cosdf(D_8010F520_toadstool_titan) * -63.0f + D_800D20A1_main[player->pad] / 6;
-            D_800D056A_main[player->pad] = D_800CBB6E_main[player->pad] * 2;
-            D_800D1382_main[player->pad] = D_800D20A1_main[player->pad] * 2;
+            HuPadStkX[player->pad] = sindf(D_8010F520_toadstool_titan) * 63.0f + HuPadStkX[player->pad] / 6;
+            HuPadStkY[player->pad] = cosdf(D_8010F520_toadstool_titan) * -63.0f + HuPadStkY[player->pad] / 6;
+            HuPadStkXSum[player->pad] = HuPadStkX[player->pad] * 2;
+            HuPadStkYSum[player->pad] = HuPadStkY[player->pad] * 2;
         }
     } else if (D_8010F586_toadstool_titan != 5) {
         D_8010EE3C_toadstool_titan = 0;
@@ -1974,10 +1974,10 @@ void func_8010BD2C_toadstool_titan(omObjData *object) {
         work->unk50 |= 0x200;
     }
     if (D_8010F5FC_toadstool_titan >= 3 && data->unk53[0] == -1) {
-        D_800CBB6E_main[player->pad] = rand8() % 40;
-        D_800D20A1_main[player->pad] = rand8() % 40;
-        D_800D056A_main[player->pad] = D_800CBB6E_main[player->pad] * 2;
-        D_800D1382_main[player->pad] = D_800D20A1_main[player->pad] * 2;
+        HuPadStkX[player->pad] = rand8() % 40;
+        HuPadStkY[player->pad] = rand8() % 40;
+        HuPadStkXSum[player->pad] = HuPadStkX[player->pad] * 2;
+        HuPadStkYSum[player->pad] = HuPadStkY[player->pad] * 2;
     }
     if (data->unk53[0] == 5 || data->unk53[0] == 6) {
         if (object->trans.z > 330.0f) {
@@ -2040,13 +2040,13 @@ void func_8010BD2C_toadstool_titan(omObjData *object) {
     D_800EB764_minigame = 13.5f;
     D_800EB768_minigame = 9.0f;
     D_800EB76C_minigame = 4.5f;
-    D_800CDA7C_main[player->pad] = savedBtn;
-    D_800D5558_main[player->pad] = savedBtn2;
-    D_800D1244_main[player->pad] = savedBtn3;
-    D_800CBB6E_main[player->pad] = savedStickX;
-    D_800D20A1_main[player->pad] = savedStickY;
-    D_800D056A_main[player->pad] = savedStick2;
-    D_800D1382_main[player->pad] = savedStick3;
+    HuPadBtn[player->pad] = savedBtn;
+    HuPadBtnDown[player->pad] = savedBtn2;
+    HuPadBtnRep[player->pad] = savedBtn3;
+    HuPadStkX[player->pad] = savedStickX;
+    HuPadStkY[player->pad] = savedStickY;
+    HuPadStkXSum[player->pad] = savedStick2;
+    HuPadStkYSum[player->pad] = savedStick3;
     if (D_8010F616_toadstool_titan[group] >= 60) {
         Hu3DModelAttrSet(object->model[0], 4, 4);
     }

@@ -1573,8 +1573,8 @@ void func_800DDD94_minigame(omObjData *arg0) {
         data->unk104[0](arg0);
     }
     if (MgFlowStatGet() == MG_STATE_PLAY && pad >= 0 && !(data->unk50 & 1)) {
-        stickX = D_800CBB6E_main[pad];
-        stickY = D_800D20A1_main[pad];
+        stickX = HuPadStkX[pad];
+        stickY = HuPadStkY[pad];
         if (stickX > 60) {
             stickX = 60;
         }
@@ -1590,8 +1590,8 @@ void func_800DDD94_minigame(omObjData *arg0) {
         func_800E2308_minigame(&stickX, &stickY);
         held = 0;
         if (!(data->unk50 & 6)) {
-            pressed = D_800D5558_main[pad];
-            held = D_800CDA7C_main[pad];
+            pressed = HuPadBtnDown[pad];
+            held = HuPadBtn[pad];
         } else {
             pressed = 0;
         }
@@ -2291,27 +2291,27 @@ void func_800E04C8_minigame(omObjData *arg0, s32 arg1) {
     if (arg1 != 0) {
         return;
     }
-    if (D_800CDA7C_main[arg1] & R_TRIG) {
+    if (HuPadBtn[arg1] & R_TRIG) {
         CZoom -= 20.0f;
     }
-    if (D_800CDA7C_main[arg1] & L_TRIG) {
+    if (HuPadBtn[arg1] & L_TRIG) {
         CZoom += 20.0f;
     }
-    if (D_800CDA7C_main[arg1] & U_CBUTTONS) {
+    if (HuPadBtn[arg1] & U_CBUTTONS) {
         CRot.x += 0.3f;
     }
-    if (D_800CDA7C_main[arg1] & D_CBUTTONS) {
+    if (HuPadBtn[arg1] & D_CBUTTONS) {
         CRot.x -= 0.3f;
     }
-    if (D_800CDA7C_main[arg1] & R_CBUTTONS) {
+    if (HuPadBtn[arg1] & R_CBUTTONS) {
         CRot.y += 1.0f;
     }
-    if (D_800CDA7C_main[arg1] & L_CBUTTONS) {
+    if (HuPadBtn[arg1] & L_CBUTTONS) {
         CRot.y -= 1.0f;
     }
-    if (D_800D5558_main[arg1] & U_JPAD) {
+    if (HuPadBtnDown[arg1] & U_JPAD) {
         D_800EB780_minigame--;
-    } else if (D_800D5558_main[arg1] & D_JPAD) {
+    } else if (HuPadBtnDown[arg1] & D_JPAD) {
         D_800EB780_minigame++;
     }
     if (D_800EB780_minigame < 0) {
@@ -2322,7 +2322,7 @@ void func_800E04C8_minigame(omObjData *arg0, s32 arg1) {
     }
     switch (D_800EB780_minigame) {
         case 0:
-            if (D_800D5558_main[arg1] & (L_JPAD | R_JPAD)) {
+            if (HuPadBtnDown[arg1] & (L_JPAD | R_JPAD)) {
                 if (D_800EB73B_minigame != 0) {
                     D_800EB73B_minigame = 0;
                 } else {
@@ -2333,10 +2333,10 @@ void func_800E04C8_minigame(omObjData *arg0, s32 arg1) {
         case 1:
             break;
         case 2:
-            if (D_800CDA7C_main[arg1] & R_JPAD) {
+            if (HuPadBtn[arg1] & R_JPAD) {
                 D_800EB73C_minigame += 0.1f;
             }
-            if (D_800CDA7C_main[arg1] & L_JPAD) {
+            if (HuPadBtn[arg1] & L_JPAD) {
                 D_800EB73C_minigame -= 0.1f;
             }
             if (D_800EB73C_minigame > 50.0f) {
@@ -2347,10 +2347,10 @@ void func_800E04C8_minigame(omObjData *arg0, s32 arg1) {
             }
             break;
         case 3:
-            if (D_800CDA7C_main[arg1] & R_JPAD) {
+            if (HuPadBtn[arg1] & R_JPAD) {
                 D_800EB740_minigame += 0.001f;
             }
-            if (D_800CDA7C_main[arg1] & L_JPAD) {
+            if (HuPadBtn[arg1] & L_JPAD) {
                 D_800EB740_minigame -= 0.001f;
             }
             if (D_800EB740_minigame > 0.999f) {
@@ -2361,10 +2361,10 @@ void func_800E04C8_minigame(omObjData *arg0, s32 arg1) {
             }
             break;
         case 4:
-            if (D_800CDA7C_main[arg1] & R_JPAD) {
+            if (HuPadBtn[arg1] & R_JPAD) {
                 D_800EB744_minigame += 0.01f;
             }
-            if (D_800CDA7C_main[arg1] & L_JPAD) {
+            if (HuPadBtn[arg1] & L_JPAD) {
                 D_800EB744_minigame -= 0.01f;
             }
             if (D_800EB744_minigame > 2.0f) {
@@ -2375,10 +2375,10 @@ void func_800E04C8_minigame(omObjData *arg0, s32 arg1) {
             }
             break;
         case 5:
-            if (D_800CDA7C_main[arg1] & R_JPAD) {
+            if (HuPadBtn[arg1] & R_JPAD) {
                 D_800EB748_minigame += 0.001f;
             }
-            if (D_800CDA7C_main[arg1] & L_JPAD) {
+            if (HuPadBtn[arg1] & L_JPAD) {
                 D_800EB748_minigame -= 0.001f;
             }
             if (D_800EB748_minigame > 0.2f) {
@@ -2389,10 +2389,10 @@ void func_800E04C8_minigame(omObjData *arg0, s32 arg1) {
             }
             break;
         case 6:
-            if (D_800CDA7C_main[arg1] & R_JPAD) {
+            if (HuPadBtn[arg1] & R_JPAD) {
                 D_800EB74C_minigame += 0.1f;
             }
-            if (D_800CDA7C_main[arg1] & L_JPAD) {
+            if (HuPadBtn[arg1] & L_JPAD) {
                 D_800EB74C_minigame -= 0.1f;
             }
             if (D_800EB74C_minigame > 30.0f) {
@@ -2403,10 +2403,10 @@ void func_800E04C8_minigame(omObjData *arg0, s32 arg1) {
             }
             break;
         case 7:
-            if (D_800CDA7C_main[arg1] & R_JPAD) {
+            if (HuPadBtn[arg1] & R_JPAD) {
                 D_800EB750_minigame += 0.1f;
             }
-            if (D_800CDA7C_main[arg1] & L_JPAD) {
+            if (HuPadBtn[arg1] & L_JPAD) {
                 D_800EB750_minigame -= 0.1f;
             }
             if (D_800EB750_minigame > 100.0f) {
@@ -2417,10 +2417,10 @@ void func_800E04C8_minigame(omObjData *arg0, s32 arg1) {
             }
             break;
         case 8:
-            if (D_800CDA7C_main[arg1] & R_JPAD) {
+            if (HuPadBtn[arg1] & R_JPAD) {
                 D_800EB760_minigame += 0.1f;
             }
-            if (D_800CDA7C_main[arg1] & L_JPAD) {
+            if (HuPadBtn[arg1] & L_JPAD) {
                 D_800EB760_minigame -= 0.1f;
             }
             if (D_800EB760_minigame > 30.0f) {
@@ -2435,10 +2435,10 @@ void func_800E04C8_minigame(omObjData *arg0, s32 arg1) {
             D_800EB75C_minigame = 60.0f / D_800EB760_minigame;
             break;
         case 9:
-            if (D_800CDA7C_main[arg1] & R_JPAD) {
+            if (HuPadBtn[arg1] & R_JPAD) {
                 D_800EB754_minigame += 0.1f;
             }
-            if (D_800CDA7C_main[arg1] & L_JPAD) {
+            if (HuPadBtn[arg1] & L_JPAD) {
                 D_800EB754_minigame -= 0.1f;
             }
             if (D_800EB754_minigame > 100.0f) {
@@ -2453,10 +2453,10 @@ void func_800E04C8_minigame(omObjData *arg0, s32 arg1) {
             }
             break;
         case 10:
-            if (D_800CDA7C_main[arg1] & R_JPAD) {
+            if (HuPadBtn[arg1] & R_JPAD) {
                 D_800EB758_minigame += 0.1f;
             }
-            if (D_800CDA7C_main[arg1] & L_JPAD) {
+            if (HuPadBtn[arg1] & L_JPAD) {
                 D_800EB758_minigame -= 0.1f;
             }
             if (D_800EB758_minigame > 100.0f) {
@@ -2472,10 +2472,10 @@ void func_800E04C8_minigame(omObjData *arg0, s32 arg1) {
             break;
     }
     fontcolor = 15;
-    sprintf(D_800D5218_main, "*");
-    print8(16, (D_800EB780_minigame + 2) * 8, D_800D5218_main);
-    sprintf(D_800D5218_main, "CAMERA :[%s]", D_800EB73B_minigame ? "HOMING" : "LOCK");
-    print8(24, 16, D_800D5218_main);
+    sprintf(omDBGStrBuf, "*");
+    print8(16, (D_800EB780_minigame + 2) * 8, omDBGStrBuf);
+    sprintf(omDBGStrBuf, "CAMERA :[%s]", D_800EB73B_minigame ? "HOMING" : "LOCK");
+    print8(24, 16, omDBGStrBuf);
     if (D_800EB73B_minigame) {
         f32 y = Hu3DData[arg0->model[1]].pos.y;
 

@@ -495,7 +495,7 @@ void func_80107178_last5(void) {
     } else {
         func_80106768_last5();
     }
-    D_800D530C_main = 1;
+    omSysExitReq = 1;
     while (1) {
         HuPrcVSleep();
     }
@@ -512,7 +512,7 @@ void func_801072B0_last5(omObjData *arg0) {
 }
 
 void func_801072FC_last5(omObjData *arg0) {
-    if (D_800D530C_main != 0) {
+    if (omSysExitReq != 0) {
         WipeColorSet(0xFF, 0xFF, 0xFF);
         WipeCreateOut(2, 0x14);
         HuAudSeqFadeOut(0x3C);

@@ -140,18 +140,18 @@ typedef union BowserTossWorkBytes { // packs the low byte of each work word
 } BowserTossWorkBytes;
 
 extern s32 D_800A178C_main[][6];
-extern s8 D_800D20A1_main[];
-extern u16 D_800D5558_main[];
-extern s16 D_800CDA7C_main[];
+extern s8 HuPadStkY[];
+extern u16 HuPadBtnDown[];
+extern s16 HuPadBtn[];
 extern const s16 D_8010F530_bowser_toss[];
 extern const s16 D_8010F53C_bowser_toss[];
-extern s16 D_800CDD6A_main;
-extern s16 D_800CD1B0_main;
-extern u8 D_800D2008_main;
-extern s16 *D_800D04B4_main;
-extern HuMtx4F *D_800D1358_main;
-extern s16 D_800D138A_main;
-extern HuMtx4F D_800D5A00_main[];
+extern s16 Hu3DModelTag;
+extern s16 motionBakeMtxCnt;
+extern u8 Hu3DBufNo;
+extern s16 *motionBakeNodeMap;
+extern HuMtx4F *motionBakeMtx;
+extern s16 Hu3DObjMtxStackIdx;
+extern HuMtx4F Hu3DObjMtxStack[];
 
 u8 D_8010F150_bowser_toss[4] = { 0xE9, 0xDD, 0xA1, 0x80 };                                                                          // RGBA
 s32 D_8010F154_bowser_toss[8] = { 0x000200A5, 0x000300A5, 0x000700A5, 0x000400A5, 0x000500A5, 0x000600A5, 0x000800A5, 0x0009001C }; // per-character
@@ -621,7 +621,7 @@ void func_801064C0_bowser_toss(omObjData *object) {
             object->func = func_8010649C_bowser_toss;
         }
         D_8010F194_bowser_toss--;
-    } else if (D_800D530C_main == 1 && WipeStatGet() == 0) {
+    } else if (omSysExitReq == 1 && WipeStatGet() == 0) {
         D_8010F194_bowser_toss = 16;
         WipeCreateOut(WIPE_TYPE_NORMAL, (s16)D_8010F194_bowser_toss);
         HuAudSeqFadeOut((s16)D_8010F194_bowser_toss);
@@ -780,7 +780,7 @@ void func_80106BC4_bowser_toss(omObjData *object) {
             }
             switch (player->unk_0C) {
                 case 1:
-                    if (D_800D5558_main[player->unk_1A] & 0x8000) {
+                    if (HuPadBtnDown[player->unk_1A] & 0x8000) {
                         if (func_800E5690_minigame(object, 4)) {
                             player->unk_30 = 10;
                             player->unk_32 = 1;
@@ -800,7 +800,7 @@ void func_80106BC4_bowser_toss(omObjData *object) {
                     }
                     break;
                 case 2:
-                    stickX = fabs(D_800CBB6E_main[player->unk_1A]);
+                    stickX = fabs(HuPadStkX[player->unk_1A]);
                     if (fabs(stickX) < 8.0) {
                         stickX = 0.0f;
                     } else if (stickX > 60.0f) {
@@ -811,7 +811,7 @@ void func_80106BC4_bowser_toss(omObjData *object) {
                     if (stickX >= 8.0f) {
                         stickX -= 8.0f;
                     }
-                    stickY = fabs(D_800D20A1_main[player->unk_1A]);
+                    stickY = fabs(HuPadStkY[player->unk_1A]);
                     if (fabs(stickY) < 8.0) {
                         stickY = 0.0f;
                     } else if (stickY > 60.0f) {
@@ -852,7 +852,7 @@ void func_80106BC4_bowser_toss(omObjData *object) {
                         accel = 2.0f;
                     }
                     accel *= 0.5f;
-                    if (D_800D5558_main[player->unk_1A] & 0x8000) {
+                    if (HuPadBtnDown[player->unk_1A] & 0x8000) {
                         player->unk_44 += accel;
                         player->unk_0E++;
                         if (!(player->unk_0E & 1)) {
@@ -1114,7 +1114,7 @@ void func_80107E84_bowser_toss(omObjData *object) {
 
     player = func_8010D98C_bowser_toss(object);
     func_80108800_bowser_toss(player->index);
-    D_800CDA7C_main[player->unk_1A] = D_800D5558_main[player->unk_1A] = D_800D20A1_main[player->unk_1A] = 0;
+    HuPadBtn[player->unk_1A] = HuPadBtnDown[player->unk_1A] = HuPadStkY[player->unk_1A] = 0;
     switch (player->unk_0C) {
         case 1:
             player->unk_54 = D_8010F230_bowser_toss[player->unk_20] +
@@ -1124,13 +1124,13 @@ void func_80107E84_bowser_toss(omObjData *object) {
                 player->unk_54,
                 D_8010F260_bowser_toss[player->unk_20] + (f32)(u8)(rand8() % 100) * 0.01 * 1500.0,
                 D_8010F250_bowser_toss[player->unk_20]);
-            D_800D5558_main[player->unk_1A] |= A_BUTTON;
+            HuPadBtnDown[player->unk_1A] |= A_BUTTON;
             break;
         case 2:
-            D_800D20A1_main[player->unk_1A] = player->unk_54 * 60.0f;
+            HuPadStkY[player->unk_1A] = player->unk_54 * 60.0f;
             ratio = player->unk_44 / 45.0f;
             if ((player->unk_08 & 1) && ratio < player->unk_58) {
-                D_800D5558_main[player->unk_1A] |= A_BUTTON;
+                HuPadBtnDown[player->unk_1A] |= A_BUTTON;
             }
             break;
     }
@@ -1256,7 +1256,7 @@ void func_8010858C_bowser_toss(s16 index) {
     bowser->unk_5C = func_8010D9E0_bowser_toss(bowser->unk_00->model[0], 1, "item_hook", 1, 0);
     model->motId = motId;
     model->motIdShape = motIdShape;
-    motData = &D_800CCF58_main[bowser->unk_00->motion[6]];
+    motData = &Hu3DMotion[bowser->unk_00->motion[6]];
     frames = motData->unk02 + 1;
     size = frames * sizeof(Mtx);
     bowser->unk_60 = HuMemAllocTag(size, TAG_OVERLAY);
@@ -2330,7 +2330,7 @@ void func_8010C2DC_bowser_toss(void) {
         func_8010D080_bowser_toss(i, 1);
         cam->frame = cam->frames = cam->active = 0;
         camera = &gCameraList[i];
-        for (j = 0; j < D_800D1FF0_main; j++) {
+        for (j = 0; j < Hu3DBufNum; j++) {
             camera->viewports[j].vp.vscale[0] = camera->screenScale.x;
             camera->viewports[j].vp.vscale[1] = camera->screenScale.y;
             camera->viewports[j].vp.vscale[2] = camera->screenScale.z;
@@ -2355,13 +2355,13 @@ void func_8010C570_bowser_toss(void) {
     cam = -1;
     switch (D_8010F3EC_bowser_toss) {
         case 1:
-            if ((u16)D_800CDA7C_main[0] & A_BUTTON) {
+            if ((u16)HuPadBtn[0] & A_BUTTON) {
                 speed = 8.0f;
             }
-            if (D_800CDA7C_main[0] & B_BUTTON) {
+            if (HuPadBtn[0] & B_BUTTON) {
                 speed = 0.5f;
             }
-            if (D_800D5558_main[0] & START_BUTTON) {
+            if (HuPadBtnDown[0] & START_BUTTON) {
                 CenterM[D_8010F3F0_bowser_toss].x = Center.x;
                 CenterM[D_8010F3F0_bowser_toss].y = Center.y;
                 CenterM[D_8010F3F0_bowser_toss].z = Center.z;
@@ -2370,30 +2370,30 @@ void func_8010C570_bowser_toss(void) {
                 CRotM[D_8010F3F0_bowser_toss].z = CRot.z;
                 CZoomM[D_8010F3F0_bowser_toss] = CZoom;
             } else {
-                delta.rot.x = (f32)D_800D20A1_main[0] * 0.125 * speed;
-                delta.rot.y = (f32)D_800CBB6E_main[0] * 0.125 * speed;
-                if (D_800CDA7C_main[0] & L_JPAD) {
+                delta.rot.x = (f32)HuPadStkY[0] * 0.125 * speed;
+                delta.rot.y = (f32)HuPadStkX[0] * 0.125 * speed;
+                if (HuPadBtn[0] & L_JPAD) {
                     delta.center.x = speed * 2.0;
                 }
-                if (D_800CDA7C_main[0] & R_JPAD) {
+                if (HuPadBtn[0] & R_JPAD) {
                     delta.center.x = -(speed * 2.0);
                 }
-                if (D_800CDA7C_main[0] & U_JPAD) {
+                if (HuPadBtn[0] & U_JPAD) {
                     delta.center.z = -(speed * 2.0);
                 }
-                if (D_800CDA7C_main[0] & D_JPAD) {
+                if (HuPadBtn[0] & D_JPAD) {
                     delta.center.z = speed * 2.0;
                 }
-                if (D_800CDA7C_main[0] & U_CBUTTONS) {
+                if (HuPadBtn[0] & U_CBUTTONS) {
                     delta.center.y = speed * 2.0;
                 }
-                if (D_800CDA7C_main[0] & D_CBUTTONS) {
+                if (HuPadBtn[0] & D_CBUTTONS) {
                     delta.center.y = -(speed * 2.0);
                 }
-                if (D_800CDA7C_main[0] & R_CBUTTONS) {
+                if (HuPadBtn[0] & R_CBUTTONS) {
                     delta.zoom = speed * 2.0;
                 }
-                if (D_800CDA7C_main[0] & L_CBUTTONS) {
+                if (HuPadBtn[0] & L_CBUTTONS) {
                     delta.zoom = -(speed * 2.0);
                 }
                 delta.center.x += CenterM[D_8010F3F0_bowser_toss].x;
@@ -2409,25 +2409,25 @@ void func_8010C570_bowser_toss(void) {
             index = D_8010F3F0_bowser_toss;
             fontcolor = 15;
             cam = index;
-            if (D_800D5558_main[0] & R_TRIG) {
+            if (HuPadBtnDown[0] & R_TRIG) {
                 if (++D_8010F3F0_bowser_toss >= 2) {
                     D_8010F3F0_bowser_toss = 0;
                     D_8010F3EC_bowser_toss++;
                 }
-                D_800D5558_main[0] &= ~R_TRIG;
+                HuPadBtnDown[0] &= ~R_TRIG;
             }
             break;
         case 2:
-            if ((D_800CDA7C_main[0] & R_JPAD) || (D_800CDA7C_main[0] & R_CBUTTONS)) {
+            if ((HuPadBtn[0] & R_JPAD) || (HuPadBtn[0] & R_CBUTTONS)) {
                 D_8010F3F4_bowser_toss++;
             }
-            if (D_800CDA7C_main[0] & (L_JPAD | L_CBUTTONS)) {
+            if (HuPadBtn[0] & (L_JPAD | L_CBUTTONS)) {
                 D_8010F3F4_bowser_toss--;
             }
-            if (D_800CDA7C_main[0] & (D_JPAD | D_CBUTTONS)) {
+            if (HuPadBtn[0] & (D_JPAD | D_CBUTTONS)) {
                 D_8010F3F8_bowser_toss++;
             }
-            if (D_800CDA7C_main[0] & (U_JPAD | U_CBUTTONS)) {
+            if (HuPadBtn[0] & (U_JPAD | U_CBUTTONS)) {
                 D_8010F3F8_bowser_toss--;
             }
             fontcolor = 8;
@@ -2440,16 +2440,16 @@ void func_8010C570_bowser_toss(void) {
     if (cam != -1) {
         center = &CenterM[cam];
         rot = &CRotM[cam];
-        sprintf(D_800D5218_main, "CAMERA TEST_MODE CAM_%d ", cam);
-        print8((s16)D_8010F3F4_bowser_toss + 20, (s16)D_8010F3F8_bowser_toss + 80, D_800D5218_main);
-        sprintf(D_800D5218_main, " CENTER X>%3.2f Y>%3.2f Z>%3.2f ", center->x, center->y, center->z);
-        print8((s16)D_8010F3F4_bowser_toss + 20, (s16)D_8010F3F8_bowser_toss + 88, D_800D5218_main);
-        sprintf(D_800D5218_main, " ROT    X>%3.2f Y>%3.2f Z>%3.2f ", rot->x, rot->y, rot->z);
-        print8((s16)D_8010F3F4_bowser_toss + 20, (s16)D_8010F3F8_bowser_toss + 96, D_800D5218_main);
-        sprintf(D_800D5218_main, " ZOOM   %3.2f ", CZoomM[cam]);
-        print8((s16)D_8010F3F4_bowser_toss + 20, (s16)D_8010F3F8_bowser_toss + 104, D_800D5218_main);
+        sprintf(omDBGStrBuf, "CAMERA TEST_MODE CAM_%d ", cam);
+        print8((s16)D_8010F3F4_bowser_toss + 20, (s16)D_8010F3F8_bowser_toss + 80, omDBGStrBuf);
+        sprintf(omDBGStrBuf, " CENTER X>%3.2f Y>%3.2f Z>%3.2f ", center->x, center->y, center->z);
+        print8((s16)D_8010F3F4_bowser_toss + 20, (s16)D_8010F3F8_bowser_toss + 88, omDBGStrBuf);
+        sprintf(omDBGStrBuf, " ROT    X>%3.2f Y>%3.2f Z>%3.2f ", rot->x, rot->y, rot->z);
+        print8((s16)D_8010F3F4_bowser_toss + 20, (s16)D_8010F3F8_bowser_toss + 96, omDBGStrBuf);
+        sprintf(omDBGStrBuf, " ZOOM   %3.2f ", CZoomM[cam]);
+        print8((s16)D_8010F3F4_bowser_toss + 20, (s16)D_8010F3F8_bowser_toss + 104, omDBGStrBuf);
     }
-    if (D_800D5558_main[0] & R_TRIG) {
+    if (HuPadBtnDown[0] & R_TRIG) {
         if (D_8010F3EC_bowser_toss == 1) {
             osSyncPrintf("CAMERA TEST_MODE \n");
             for (i = 0; i < 2; i++) {
@@ -2716,9 +2716,9 @@ BowserTossItem *func_8010D9E0_bowser_toss(s16 model, s16 step, const char *hookN
     BowserTossItem *item;
 
     if (shape) {
-        motion = &D_800CCF58_main[Hu3DData[model].motIdShape];
+        motion = &Hu3DMotion[Hu3DData[model].motIdShape];
     } else {
-        motion = &D_800CCF58_main[Hu3DData[model].motId];
+        motion = &Hu3DMotion[Hu3DData[model].motId];
     }
     hmf = Hu3DData[model].hmf;
     node = SearchObjectIndex(hmf, hookName);
@@ -2733,26 +2733,26 @@ BowserTossItem *func_8010D9E0_bowser_toss(s16 model, s16 step, const char *hookN
 
 void func_8010DB9C_bowser_toss(s16 model, s16 step, BowserTossItem *item, s16 node, s16 shape, s16 frame) {
     HmfData *hmf = Hu3DData[model].hmf;
-    HmfModelData_Unk64_Unk8C_Struct *motion = &D_800CCF58_main[Hu3DData[model].motId];
-    HmfModelData_Unk64_Unk8C_Struct *shapeMotion = &D_800CCF58_main[Hu3DData[model].motIdShape];
+    HmfModelData_Unk64_Unk8C_Struct *motion = &Hu3DMotion[Hu3DData[model].motId];
+    HmfModelData_Unk64_Unk8C_Struct *shapeMotion = &Hu3DMotion[Hu3DData[model].motIdShape];
     s16 i;
 
-    D_800D1358_main = item->mtx;
-    D_800D04B4_main = item->nodes;
-    D_800CD1B0_main = 0;
-    guMtxIdentF(D_800D5A00_main[0]);
+    motionBakeMtx = item->mtx;
+    motionBakeNodeMap = item->nodes;
+    motionBakeMtxCnt = 0;
+    guMtxIdentF(Hu3DObjMtxStack[0]);
     if (shape) {
         for (i = 0; i < shapeMotion->unk02; i += step) {
             Hu3DMotionExec(hmf, frame, motion, 1);
             Hu3DMotionExec(hmf, i, shapeMotion, 0);
-            D_800D138A_main = 0;
+            Hu3DObjMtxStackIdx = 0;
             objMtxCalcFrame(hmf, 0, node);
         }
     } else {
         for (i = 0; i < motion->unk02; i += step) {
             Hu3DMotionExec(hmf, i, motion, 1);
             Hu3DMotionExec(hmf, frame, shapeMotion, 0);
-            D_800D138A_main = 0;
+            Hu3DObjMtxStackIdx = 0;
             objMtxCalcFrame(hmf, 0, node);
         }
     }
@@ -2782,7 +2782,7 @@ s32 func_8010DDFC_bowser_toss(HuSprAnimData *sprite, u8 *color, u8 antialias) {
     data->unk60->unk50 |= 0x1010000;
     gfx++;
     HuMemFree(data->unk3C);
-    data->unk3C = HuMemAllocTag(sizeof(HmfModelData_Unk64_Unk3C_Struct), D_800CDD6A_main);
+    data->unk3C = HuMemAllocTag(sizeof(HmfModelData_Unk64_Unk3C_Struct), Hu3DModelTag);
     func_8010ED44_bowser_toss(sprite, data, 1.0f, 0, 0);
     gSPDisplayList(header, osVirtualToPhysical(D_8010F4F0_bowser_toss));
     gDPPipeSync(gfx++);
@@ -2863,7 +2863,7 @@ s32 func_8010DDFC_bowser_toss(HuSprAnimData *sprite, u8 *color, u8 antialias) {
     data->unk3C->unk14 = HuMemAllocTag(size, data->unk0E);
     bcopy(buffer, data->unk3C->unk14, size);
     HuMemFree(buffer);
-    for (i = 0; i < D_800D1FF0_main; i++) {
+    for (i = 0; i < Hu3DBufNum; i++) {
         gfx = (data->unk3C->unk00 + 1)[i] = HuMemAllocTag(0x100, data->unk0E);
         gDPPipeSync(gfx++);
         gSPSegment(gfx++, 2, osVirtualToPhysical(sprite->pat->data));
@@ -2874,7 +2874,7 @@ s32 func_8010DDFC_bowser_toss(HuSprAnimData *sprite, u8 *color, u8 antialias) {
         gDPPipeSync(gfx++);
         gSPEndDisplayList(gfx++);
     }
-    data->unk3C->unk00[0] = data->unk3C->unk00[D_800D2008_main + 1];
+    data->unk3C->unk00[0] = data->unk3C->unk00[Hu3DBufNo + 1];
     return model;
 }
 
@@ -2890,10 +2890,10 @@ s32 func_8010EA0C_bowser_toss(HuSprAnimData *sprite, u16 model, u8 *color) {
     data = Hu3DData[newModel].hmf;
     data->unk60->unk50 = srcData->unk60->unk50;
     HuMemFree(data->unk3C);
-    data->unk3C = HuMemAllocTag(sizeof(HmfModelData_Unk64_Unk3C_Struct), D_800CDD6A_main);
+    data->unk3C = HuMemAllocTag(sizeof(HmfModelData_Unk64_Unk3C_Struct), Hu3DModelTag);
     data->unk3C->unk10 = srcData->unk3C->unk10;
     data->unk3C->unk14 = srcData->unk3C->unk14;
-    for (i = 0; i < D_800D1FF0_main; i++) {
+    for (i = 0; i < Hu3DBufNum; i++) {
         gfx = (data->unk3C->unk00 + 1)[i] = HuMemAllocTag(0x100, data->unk0E);
         gDPPipeSync(gfx++);
         gSPSegment(gfx++, 2, osVirtualToPhysical(sprite->pat->data));
@@ -2904,14 +2904,14 @@ s32 func_8010EA0C_bowser_toss(HuSprAnimData *sprite, u16 model, u8 *color) {
         gDPPipeSync(gfx++);
         gSPEndDisplayList(gfx++);
     }
-    data->unk3C->unk00[0] = data->unk3C->unk00[D_800D2008_main + 1];
+    data->unk3C->unk00[0] = data->unk3C->unk00[Hu3DBufNo + 1];
     return newModel;
 }
 
 void func_8010EC10_bowser_toss(u16 model, HuSprAnimData *sprite, u16 frame, u8 *color) {
     HmfModel *modelData = Hu3DData + model;
     HmfData *data = modelData->hmf;
-    Gfx *gfx = data->unk3C->unk00[D_800D2008_main + 1];
+    Gfx *gfx = data->unk3C->unk00[Hu3DBufNo + 1];
 
     data->unk3C->unk00[0] = gfx;
     gDPPipeSync(gfx);
@@ -2981,7 +2981,7 @@ s32 func_8010ED44_bowser_toss(HuSprAnimData *sprite, HmfData *data, f32 scale, s
         }
     }
     vertices = start;
-    for (i = 0; i < D_800D1FF0_main; i++) {
+    for (i = 0; i < Hu3DBufNum; i++) {
         Vtx_t *destination;
         Vtx_t *source;
         data->unk44[i] = HuMemAllocTag(vertexCount * sizeof(Vtx_t), data->unk0E);

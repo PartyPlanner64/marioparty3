@@ -104,7 +104,7 @@ f32 D_80100D40_shared_board = 100.0f;
 
 extern Object* D_80102AB0_shared_board;
 extern u16 D_80102AB4_shared_board;
-extern u8 D_800D6A90_main;
+extern u8 omAllPauseF;
 extern s16 D_80102AB8_shared_board[128];
 
 static void func_800D93C0_shared_board(omObjData *playerObj);
@@ -275,7 +275,7 @@ static void func_800D93C0_shared_board(omObjData *playerObj) {
     temp_s2 = playerObj->data;
     temp_s0 = temp_s2->unk_00;
 
-    if ((D_800D6A90_main == 0) || (temp_s0->flags & 0x10)) {
+    if ((omAllPauseF == 0) || (temp_s0->flags & 0x10)) {
         if (temp_s0->velocity.z != 0.0f) {
             temp_s0->velocity.y += temp_s0->velocity.z;
             temp_s0->velocity.x = temp_s0->velocity.x + temp_s0->velocity.y;
@@ -542,7 +542,7 @@ void MBMotionShiftSet(Object* arg0, s16 arg1, s32 arg2, s32 arg3, u16 arg4) {
 u16 MBMotionCheck(Object* arg0) {
     u16 ret = 0;
     
-    if (Hu3DData[arg0->omObj1->model[0]].motTime == D_800CCF58_main[Hu3DData[arg0->omObj1->model[0]].motId].unk02) {
+    if (Hu3DData[arg0->omObj1->model[0]].motTime == Hu3DMotion[Hu3DData[arg0->omObj1->model[0]].motId].unk02) {
         ret = 1;
     }
     return ret;

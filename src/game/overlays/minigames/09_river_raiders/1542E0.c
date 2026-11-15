@@ -62,7 +62,7 @@ typedef struct RiverRaidersBssDB8 {
 } RiverRaidersBssDB8; // sizeof 0x08
 
 extern s32 D_800A178C_main[][6];
-extern u8 D_800D6A90_main;
+extern u8 omAllPauseF;
 extern const s16 D_8010D9BC_river_raiders[];
 
 s16 D_8010D3B0_river_raiders = 9;
@@ -258,10 +258,10 @@ void func_80105A3C_river_raiders(void) {
 }
 
 void func_80105B04_river_raiders(s32 playerIndex) {
-    D_800CDA7C_main[GwPlayer[playerIndex].pad] = 0;
-    D_800D5558_main[GwPlayer[playerIndex].pad] = 0;
-    D_800CBB6E_main[GwPlayer[playerIndex].pad] = 0;
-    D_800D20A1_main[GwPlayer[playerIndex].pad] = 0;
+    HuPadBtn[GwPlayer[playerIndex].pad] = 0;
+    HuPadBtnDown[GwPlayer[playerIndex].pad] = 0;
+    HuPadStkX[GwPlayer[playerIndex].pad] = 0;
+    HuPadStkY[GwPlayer[playerIndex].pad] = 0;
 }
 
 void func_80105B7C_river_raiders(u8 arg0) {
@@ -415,7 +415,7 @@ void func_801061A0_river_raiders(void) {
 void func_80106244_river_raiders(omObjData *obj) {
     RiverRaidersEntry *water = &D_8010D9F0_river_raiders[40];
 
-    if (omPauseChk() + D_800D6A90_main == 0) {
+    if (omPauseChk() + omAllPauseF == 0) {
         D_8010EEA8_river_raiders += 1.5f;
     }
     Hu3DModelObjTexScroll(obj->model[0], 0.0f, water->unk_18, D_80110D88_river_raiders[0],
@@ -667,10 +667,10 @@ void func_80107188_river_raiders(omObjData *obj) {
         Hu3DModelAttrSet(obj->model[1], 4, 4);
     }
     if (entry->unk_06 < 31) {
-        if (D_800CBB6E_main[GwPlayer[player].pad] < -29) {
+        if (HuPadStkX[GwPlayer[player].pad] < -29) {
             entry->unk_04 = 1;
         }
-        if (D_800CBB6E_main[GwPlayer[player].pad] >= 30) {
+        if (HuPadStkX[GwPlayer[player].pad] >= 30) {
             entry->unk_04 = 2;
         }
     }
@@ -1261,10 +1261,10 @@ void func_8010940C_river_raiders(omObjData *obj) {
         Hu3DModelAttrSet(obj->model[1], 4, 4);
     }
     if (entry->unk_06 == 0) {
-        if (D_800CBB6E_main[GwPlayer[player].pad] < -29) {
+        if (HuPadStkX[GwPlayer[player].pad] < -29) {
             entry->unk_04 = 1;
         }
-        if (D_800CBB6E_main[GwPlayer[player].pad] >= 30) {
+        if (HuPadStkX[GwPlayer[player].pad] >= 30) {
             entry->unk_04 = 2;
         }
     }
@@ -2066,9 +2066,9 @@ void func_8010C494_river_raiders(omObjData *obj) {
     switch (obj->work[1]) {
         case 0:
             sprModel = SprModelRead(0x210026, 0x289, 8);
-            obj->model[0] = D_800CBB60_main[sprModel].modelId;
+            obj->model[0] = Hu3DSprModelData[sprModel].modelId;
             Hu3DModelObjAttrSet(obj->model[0], 0x70000000, 0x70000000);
-            Hu3DAnimSpeedSet(D_800CBB60_main[sprModel].unk_02, 10.0f);
+            Hu3DAnimSpeedSet(Hu3DSprModelData[sprModel].unk_02, 10.0f);
             if (!(obj->work[0] & 1)) {
                 obj->trans.x = -(offset / 2) + 120.0f;
             } else {
@@ -2109,7 +2109,7 @@ void func_8010C494_river_raiders(omObjData *obj) {
             Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
             obj->scale.x = obj->scale.y = obj->scale.z = 1.0f;
             Hu3DModelScaleSet(obj->model[0], obj->scale.x, obj->scale.y, obj->scale.z);
-            D_80110DB6_river_raiders = D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02;
+            D_80110DB6_river_raiders = Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02;
             break;
     }
     Hu3DModelAttrSet(obj->model[0], 4, 4);
@@ -2165,7 +2165,7 @@ void func_8010CA4C_river_raiders(omObjData *obj) {
 }
 
 void func_8010CA84_river_raiders(omObjData *obj) {
-    if (D_800D530C_main == 1) {
+    if (omSysExitReq == 1) {
         WipeCreateOut(WIPE_TYPE_NORMAL, 0x14);
         obj->func = func_8010CA4C_river_raiders;
         HuAudSeqFadeOut(0x1E);

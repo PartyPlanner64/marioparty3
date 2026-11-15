@@ -13,5 +13,5 @@ void func_8008D740_main(s32 precision) {
     for (i = 0; i < precision; i++) {
         tolerance /= 10.0;
     }
-    D_800C94E0_main = tolerance;
+    __libmPrecision = tolerance;
 }

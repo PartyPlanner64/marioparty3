@@ -221,7 +221,7 @@ void func_80107204_storyresult(void) {
     espPosSet(sprite, x, y);
     espColorSet(sprite, 0, 0, 0);
     espTPLvlSet(sprite, 64);
-    D_800CD280_main = 1;
+    Hu3DScreenClearF = 1;
 
     cursor = espEntry(HuSprAnimDataRead(0x150001), 0, 1);
     espPriSet(cursor, 600);
@@ -272,7 +272,7 @@ void func_80107204_storyresult(void) {
         D_8010ABE2_storyresult = 1;
         D_8010AC32_storyresult = 0x75;
         D_8010AC30_storyresult = 0;
-        D_800CE20A_main = 14;
+        storySceneNo = 14;
     } else {
         if (GwStory.unk0 == 11) {
             _SetFlag(0x2F);
@@ -293,7 +293,7 @@ void func_80107204_storyresult(void) {
         D_8010ABE2_storyresult = 1;
         D_8010AC32_storyresult = 0x75;
         D_8010AC30_storyresult = 0;
-        D_800CE20A_main = D_8010A9C8_storyresult[GwStory.unk0];
+        storySceneNo = D_8010A9C8_storyresult[GwStory.unk0];
         while (TRUE) {
             data->state = 10;
             do {
@@ -421,19 +421,19 @@ void func_80107920_storyresult(void) {
     angle = 0;
     speed = 0;
     while (TRUE) {
-        if (D_800D5558_main[D_8010ABE0_storyresult] & 0x8000) {
+        if (HuPadBtnDown[D_8010ABE0_storyresult] & 0x8000) {
             HuAudFXPlay(2);
             break;
         }
         if (data->state == 0) {
-            if ((D_800D5558_main[D_8010ABE0_storyresult] & 0x100) || D_800CBB6E_main[D_8010ABE0_storyresult] >= 31) {
+            if ((HuPadBtnDown[D_8010ABE0_storyresult] & 0x100) || HuPadStkX[D_8010ABE0_storyresult] >= 31) {
                 HuAudFXPlay(1);
                 data->state = 3;
                 angle = 180;
                 speed = -22;
                 selection = 1;
-            } else if ((D_800D5558_main[D_8010ABE0_storyresult] & 0x200) ||
-                       D_800CBB6E_main[D_8010ABE0_storyresult] < -30) {
+            } else if ((HuPadBtnDown[D_8010ABE0_storyresult] & 0x200) ||
+                       HuPadStkX[D_8010ABE0_storyresult] < -30) {
                 HuAudFXPlay(1);
                 data->state = 4;
                 angle = 180;
@@ -572,7 +572,7 @@ Process *func_8010818C_storyresult(s16 *arg0, s16 arg1) {
 void func_8010822C_storyresult(void) {
     s16 sp10;
 
-    D_800CD280_main = 0;
+    Hu3DScreenClearF = 0;
     func_801060D0_storyresult(&D_8010AB9C_storyresult);
     D_8010A912_storyresult = 1;
     func_800E4F50_name_81(hvq_data_ROM_START);
@@ -618,7 +618,7 @@ void func_801083A4_storyresult(void) {
     s32 i;
     s32 j;
 
-    D_800CD280_main = 0;
+    Hu3DScreenClearF = 0;
     func_801060D0_storyresult(&D_8010AB9C_storyresult);
     sprite = espEntry(HuSprAnimDataRead(0x140067), 0, 0);
     espAttrSet(sprite, 0x4000);
@@ -659,13 +659,13 @@ void func_801083A4_storyresult(void) {
     }
     // i is reused to hold the button flags.
     i = 0;
-    if (D_800CDA7C_main[0] & 4) {
+    if (HuPadBtn[0] & 4) {
         i |= 1;
     }
-    if (D_800CDA7C_main[0] & 1) {
+    if (HuPadBtn[0] & 1) {
         i |= 2;
     }
-    if (D_800CDA7C_main[0] & 8) {
+    if (HuPadBtn[0] & 8) {
         i |= 4;
     }
     func_8010832C_storyresult(&status, i);

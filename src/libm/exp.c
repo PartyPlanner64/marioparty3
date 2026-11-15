@@ -3,7 +3,7 @@
 static f64 threshold = 0.0625;
 
 f64 exp(f64 x) {
-    f64 tolerance = D_800C94E0_main;
+    f64 tolerance = __libmPrecision;
     f64 term;
     f64 result;
     s32 halvings = 0;
@@ -22,7 +22,7 @@ f64 exp(f64 x) {
     }
     term = result = 1.0;
     for (i = 1; i < 100; i++) {
-        term *= x * D_800A4380_main[i];
+        term *= x * __invFactTbl[i];
         result += term;
         if (term <= tolerance) {
             break;

@@ -106,7 +106,7 @@ extern s16 D_8010C022_hyper_hydrants[2];
 extern Vec D_8010C028_hyper_hydrants[2];
 extern HyperHydrantsChainPoint *D_8010BFB0_hyper_hydrants[2][6];
 
-extern u8 D_800D6A90_main;
+extern u8 omAllPauseF;
 extern s32 D_8010BF48_hyper_hydrants;
 extern s32 D_8010BF4C_hyper_hydrants;
 extern s8 D_8010BFA8_hyper_hydrants;
@@ -298,10 +298,10 @@ void func_80105FC8_hyper_hydrants(void) {
 }
 
 void func_801060F8_hyper_hydrants(omObjData *object) {
-    if (omPauseChk() + D_800D6A90_main == 0) {
-        if (D_8010BE34_hyper_hydrants == 0 && D_800D530C_main == 1) {
+    if (omPauseChk() + omAllPauseF == 0) {
+        if (D_8010BE34_hyper_hydrants == 0 && omSysExitReq == 1) {
             HuAudFXAllStop();
-            if (!(D_800A1906_main & 4)) {
+            if (!(HuAudStat & 4)) {
                 HuAudSeqFadeOut(30);
             } else {
                 HuAudSeqStop();
@@ -325,7 +325,7 @@ void func_801060F8_hyper_hydrants(omObjData *object) {
             case 5:
                 if (D_8010BE30_hyper_hydrants == 0) {
                     WipeCreateOut(WIPE_TYPE_NORMAL, 20);
-                } else if (WipeStatGet() == 0 && !(D_800A1906_main & 4)) {
+                } else if (WipeStatGet() == 0 && !(HuAudStat & 4)) {
                     omOvlReturnEx(1);
                 }
                 D_8010BE30_hyper_hydrants++;
@@ -473,7 +473,7 @@ void func_80106A50_hyper_hydrants(omObjData *object) {
                 break;
             }
             if (!(GwPlayer[playerData->unk59].stat & 1)) {
-                if ((D_800CBB6E_main[playerData->unk57] < 0 ? -D_800CBB6E_main[playerData->unk57] : D_800CBB6E_main[playerData->unk57]) > 0 && object->rot.y > 120.0f && object->rot.y < 240.0f) {
+                if ((HuPadStkX[playerData->unk57] < 0 ? -HuPadStkX[playerData->unk57] : HuPadStkX[playerData->unk57]) > 0 && object->rot.y > 120.0f && object->rot.y < 240.0f) {
                     Hu3DMotionAttrSet(object->model[0], 1, 2);
                 } else {
                     Hu3DMotionAttrSet(object->model[0], 1, 1);
@@ -626,7 +626,7 @@ void func_80107238_hyper_hydrants(omObjData *object) {
     playerData = object->data;
     data = playerData->unk158;
     time = Hu3DData[object->model[0]].motTime;
-    end = D_800CCF58_main[Hu3DData[object->model[0]].motId].unk02;
+    end = Hu3DMotion[Hu3DData[object->model[0]].motId].unk02;
     side = GwPlayer[playerData->unk59].group >= 2;
     if (GwPlayer[playerData->unk59].stat & 1) {
         if ((time == end) | (time == 0.0f)) {
@@ -661,8 +661,8 @@ void func_80107238_hyper_hydrants(omObjData *object) {
             }
         }
     } else {
-        pressA = (D_800D5558_main[playerData->unk57] & A_BUTTON) != 0;
-        pressB = (D_800D5558_main[playerData->unk57] & (B_BUTTON | Z_TRIG)) != 0;
+        pressA = (HuPadBtnDown[playerData->unk57] & A_BUTTON) != 0;
+        pressB = (HuPadBtnDown[playerData->unk57] & (B_BUTTON | Z_TRIG)) != 0;
     }
     if ((pressA != 0) & (pressB != 0)) {
         if (data->unk12 == 0x8000) {
@@ -895,29 +895,29 @@ void func_80107A90_hyper_hydrants(omObjData *object) {
             data->angle = 120.0f;
         }
         if (count >= 2) {
-            D_800CDA7C_main[port] |= 0x8000;
+            HuPadBtn[port] |= 0x8000;
         } else {
-            D_800CDA7C_main[port] &= 0x7FFF;
+            HuPadBtn[port] &= 0x7FFF;
         }
-    } else if (ABS(D_800CBB6E_main[port]) > 40) {
-        if (D_800CBB6E_main[port] < 0) {
+    } else if (ABS(HuPadStkX[port]) > 40) {
+        if (HuPadStkX[port] < 0) {
             data->angle += 5.0f;
             if (data->angle > 240.0f) {
                 data->angle = 240.0f;
             }
-        } else if (D_800CBB6E_main[port] > 0) {
+        } else if (HuPadStkX[port] > 0) {
             data->angle -= 5.0f;
             if (data->angle < 120.0f) {
                 data->angle = 120.0f;
             }
         }
-    } else if (ABS(D_800CBB6E_main[port]) > 20) {
-        if (D_800CBB6E_main[port] < 0) {
+    } else if (ABS(HuPadStkX[port]) > 20) {
+        if (HuPadStkX[port] < 0) {
             data->angle += 2.0f;
             if (data->angle > 240.0f) {
                 data->angle = 240.0f;
             }
-        } else if (D_800CBB6E_main[port] > 0) {
+        } else if (HuPadStkX[port] > 0) {
             data->angle -= 2.0f;
             if (data->angle < 120.0f) {
                 data->angle = 120.0f;
@@ -926,7 +926,7 @@ void func_80107A90_hyper_hydrants(omObjData *object) {
     }
     player->rot.y = data->angle;
     Hu3DModelRotSet(player->model[2], player->rot.x, player->rot.y, player->rot.z);
-    if ((u16)D_800CDA7C_main[port] & A_BUTTON) {
+    if ((u16)HuPadBtn[port] & A_BUTTON) {
         data->spread += 3;
         maxSpread = D_8010BFAC_hyper_hydrants[side] * 15;
         if (data->spread > maxSpread) {
@@ -1049,7 +1049,7 @@ void func_80108788_hyper_hydrants(s16 model) {
         characterData = D_800EC598_minigame[D_8010BFAB_hyper_hydrants]->data;
     }
     port = characterData->unk57;
-    limit = ((u16)D_800CDA7C_main[port] & A_BUTTON) ? -250.0f : -500.0f;
+    limit = ((u16)HuPadBtn[port] & A_BUTTON) ? -250.0f : -500.0f;
     for (i = 0; i < particleCount; particle++, i++) {
         if (particle->unk10 > 0.0f) {
             if (particle->unk14 < limit) {
@@ -1074,7 +1074,7 @@ void func_80108788_hyper_hydrants(s16 model) {
                         hitEnd = targetZ < nextZ;
                     }
                     if ((hit & hitEnd) && distance < data->unk10 * target->scale.x) {
-                        if ((u16)D_800CDA7C_main[port] & A_BUTTON) {
+                        if ((u16)HuPadBtn[port] & A_BUTTON) {
                             particle->unk10 = particle->unk08 = 0.0f;
                         }
                         // TODO: do-while(0) required to match (raises the hoisted 1's
@@ -1171,7 +1171,7 @@ void func_80108788_hyper_hydrants(s16 model) {
                 data->unk18++;
             }
             threshold = 15;
-            if ((u16)D_800CDA7C_main[port] & A_BUTTON) {
+            if ((u16)HuPadBtn[port] & A_BUTTON) {
                 threshold = 30;
             }
             if (data->unk04 == 0 && data->unk18 >= threshold) {

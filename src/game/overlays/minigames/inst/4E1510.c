@@ -40,7 +40,7 @@ void func_80108350_inst(void) {
     Hu3DAnimAttrSet(D_8010DC22_inst, 1, 0);
     Hu3DAnimBankSet(D_8010DC22_inst, 0);
     D_8010DC28_inst = Hu3DAnimLink(Hu3DData[object->model[0]].hmf, D_8010DC22_inst, 0, "c204n_0_DEF");
-    D_8010DC20_inst[0] = D_800D1714_main[D_8010DC20_inst[0]].animIdx;
+    D_8010DC20_inst[0] = Hu3DAnimData[D_8010DC20_inst[0]].animIdx;
     data = DataRead(0xA007F);
     D_8010DC20_inst[1] = (s16)Hu3DAnimDataCreate(data);
     HuMemMemoryFreePerm(data);
@@ -116,7 +116,7 @@ void func_80108954_inst(omObjData *object) {
     s16 model = object->model[0];
     f32 time = Hu3DData[model].motTime;
 
-    if (D_800CCF58_main[Hu3DData[model].motId].unk02 <= time) {
+    if (Hu3DMotion[Hu3DData[model].motId].unk02 <= time) {
         Hu3DMotionModelSet(model, object->motion[3]);
         Hu3DMotionAttrSet(object->model[0], 2, 2);
         func_8010C848_inst();
@@ -135,7 +135,7 @@ void func_80108A18_inst(s16 model, s16 animSlot, s16 anim) {
             Hu3DModelAnimStop(Hu3DData[model].hmf);
         } else {
             Hu3DModelAnimStart(Hu3DData[model].hmf);
-            entry = &D_800D1714_main[animSlot];
+            entry = &Hu3DAnimData[animSlot];
             entry->animIdx = anim;
             entry->rot = 0;
             entry->flags = 0;

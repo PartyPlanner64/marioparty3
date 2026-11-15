@@ -24,7 +24,7 @@
 extern u8 gEncodedSaveBuffer[220];
 
 // Encoding schemes: { bit width, count, byte offset } tuples, terminated by a zero width.
-static u8 D_800A1D70_main[] = {
+static u8 saveCommonScheme[] = {
     2, 1, 0x9F,
     2, 1, 0xA2,
     2, 1, 0x9E,
@@ -41,7 +41,7 @@ static u8 D_800A1D70_main[] = {
     0, 0, 0x00,
 };
 
-static u8 D_800A1D9C_main[] = {
+static u8 saveBoardSystemScheme[] = {
     2, 1, 0x0F,
     2, 1, 0x04,
     3, 1, 0x00,
@@ -58,7 +58,7 @@ static u8 D_800A1D9C_main[] = {
     0, 0, 0x00,
 };
 
-static u8 D_800A1DC8_main[] = {
+static u8 saveStorySystemScheme[] = {
     2, 19, 0x2A,
     2, 1, 0x04,
     2, 1, 0x0F,
@@ -77,7 +77,7 @@ static u8 D_800A1DC8_main[] = {
     0, 0, 0x00,
 };
 
-static u8 D_800A1DF8_main[] = {
+static u8 savePlayerScheme[] = {
     2, 1, 0x02,
     2, 1, 0x1D,
     2, 1, 0x01,
@@ -112,7 +112,7 @@ static u8 D_800A1DF8_main[] = {
     0, 0, 0x00,
 };
 
-static u8 D_800A1E58_main[] = {
+static u8 saveStoryScheme[] = {
     2, 1, 0x66,
     2, 6, 0x5E,
     3, 1, 0x65,
@@ -124,48 +124,48 @@ static u8 D_800A1E58_main[] = {
     0, 0, 0x00,
 };
 
-static s32 D_800BBAA0_main;
-static s32 D_800BBAA4_main;
-extern u16 D_800D04B0_main;
-extern u16 D_800CBB64_main;
-extern u16 D_800C9944_main;
-extern u16 D_800CCF54_main;
-extern u16 D_800CD6A4_main;
-extern u16 D_800CE2C0_main;
+static s32 saveBitByte;
+static s32 saveBitPos;
+extern u16 saveCommonSize;
+extern u16 saveBoardSystemSize;
+extern u16 saveStorySystemSize;
+extern u16 savePlayerSize;
+extern u16 saveStorySize;
+extern u16 saveChecksumOfs;
 
 
 // extern char D_800A7B40_main[];
 
 void SaveSchemeInit(void) {
-    SAVE_SCHEME_BYTE_SIZE(D_800D04B0_main, D_800A1D70_main);
-    SAVE_SCHEME_BYTE_SIZE(D_800CBB64_main, D_800A1D9C_main);
-    SAVE_SCHEME_BYTE_SIZE(D_800C9944_main, D_800A1DC8_main);
-    SAVE_SCHEME_BYTE_SIZE(D_800CCF54_main, D_800A1DF8_main);
-    SAVE_SCHEME_BYTE_SIZE(D_800CD6A4_main, D_800A1E58_main);
+    SAVE_SCHEME_BYTE_SIZE(saveCommonSize, saveCommonScheme);
+    SAVE_SCHEME_BYTE_SIZE(saveBoardSystemSize, saveBoardSystemScheme);
+    SAVE_SCHEME_BYTE_SIZE(saveStorySystemSize, saveStorySystemScheme);
+    SAVE_SCHEME_BYTE_SIZE(savePlayerSize, savePlayerScheme);
+    SAVE_SCHEME_BYTE_SIZE(saveStorySize, saveStoryScheme);
 
-    D_800CE2C0_main = D_800D04B0_main + (D_800CBB64_main + D_800CCF54_main * 4) +
-                      (D_800C9944_main + D_800CCF54_main * 2) +
-                      (D_800CD6A4_main + D_800C9944_main + D_800CCF54_main * 4);
+    saveChecksumOfs = saveCommonSize + (saveBoardSystemSize + savePlayerSize * 4) +
+                      (saveStorySystemSize + savePlayerSize * 2) +
+                      (saveStorySize + saveStorySystemSize + savePlayerSize * 4);
 }
 
 s32 SaveBoardSystemEncode(GW_SYSTEM *system) {
-    return SaveFileEncode((u8 *)system, D_800A1D9C_main);
+    return SaveFileEncode((u8 *)system, saveBoardSystemScheme);
 }
 
 s32 SaveStorySystemEncode(GW_SYSTEM *system) {
-    return SaveFileEncode((u8 *)system, D_800A1DC8_main);
+    return SaveFileEncode((u8 *)system, saveStorySystemScheme);
 }
 
 s32 SavePlayerStruct(GW_PLAYER *player) {
-    return SaveFileEncode((u8 *)player, D_800A1DF8_main);
+    return SaveFileEncode((u8 *)player, savePlayerScheme);
 }
 
 s32 SaveCommonEncode(GW_COMMON *common) {
-    return SaveFileEncode((u8 *)common, D_800A1D70_main);
+    return SaveFileEncode((u8 *)common, saveCommonScheme);
 }
 
 s32 SaveStoryEncode(GW_STORY *story) {
-    return SaveFileEncode((u8 *)story, D_800A1E58_main);
+    return SaveFileEncode((u8 *)story, saveStoryScheme);
 }
 
 s32 SaveFileEncode(u8 *sourceData, u8 *encodingScheme) {
@@ -178,8 +178,8 @@ s32 SaveFileEncode(u8 *sourceData, u8 *encodingScheme) {
         gEncodedSaveBuffer[schemeIndex] = 0;
     }
 
-    D_800BBAA4_main = 0;
-    D_800BBAA0_main = 0;
+    saveBitPos = 0;
+    saveBitByte = 0;
 
     while (*encodingScheme != 0) {
         currentDataPtr = (sourceData + encodingScheme[2]);
@@ -215,50 +215,50 @@ s32 SaveFileEncode(u8 *sourceData, u8 *encodingScheme) {
         encodingScheme += 3; // advance to next encoding tuplet
     }
 
-    gEncodedSaveBuffer[D_800BBAA0_main] <<= 8 - D_800BBAA4_main;
-    if (D_800BBAA4_main == 0) {
-        D_800BBAA0_main--;
+    gEncodedSaveBuffer[saveBitByte] <<= 8 - saveBitPos;
+    if (saveBitPos == 0) {
+        saveBitByte--;
     }
-    if (D_800BBAA0_main > ARRAY_COUNT(gEncodedSaveBuffer)) {
+    if (saveBitByte > ARRAY_COUNT(gEncodedSaveBuffer)) {
         osSyncPrintf("SaveCompBuffer Max Over!\n");
     }
-    return D_800BBAA0_main + 1;
+    return saveBitByte + 1;
 }
 
 void SaveBitWrite(s32 arg0) {
-    gEncodedSaveBuffer[D_800BBAA0_main] *= 2;
-    gEncodedSaveBuffer[D_800BBAA0_main] |= arg0 ? 1 : 0;
+    gEncodedSaveBuffer[saveBitByte] *= 2;
+    gEncodedSaveBuffer[saveBitByte] |= arg0 ? 1 : 0;
 
-    if (++D_800BBAA4_main >= 8) {
-        D_800BBAA0_main++;
-        D_800BBAA4_main = 0;
+    if (++saveBitPos >= 8) {
+        saveBitByte++;
+        saveBitPos = 0;
     }
 }
 
 // Only the first 0x62 bytes of GwSystem are saved.
 void SaveBoardSystemDecode(u8 *src, GW_SYSTEM *system) {
     memset(system, 0, 0x62);
-    SaveFileDecode(src, (u8 *)system, D_800A1D9C_main);
+    SaveFileDecode(src, (u8 *)system, saveBoardSystemScheme);
 }
 
 void SaveStorySystemDecode(u8 *src, GW_SYSTEM *system) {
     memset(system, 0, 0x62);
-    SaveFileDecode(src, (u8 *)system, D_800A1DC8_main);
+    SaveFileDecode(src, (u8 *)system, saveStorySystemScheme);
 }
 
 void SavePlayerDecode(u8 *src, GW_PLAYER *player) {
     memset(player, 0, sizeof(GW_PLAYER));
-    SaveFileDecode(src, (u8 *)player, D_800A1DF8_main);
+    SaveFileDecode(src, (u8 *)player, savePlayerScheme);
 }
 
 void SaveCommonDecode(u8 *src, GW_COMMON *common) {
     memset(common, 0, sizeof(GW_COMMON));
-    SaveFileDecode(src, (u8 *)common, D_800A1D70_main);
+    SaveFileDecode(src, (u8 *)common, saveCommonScheme);
 }
 
 void SaveStoryDecode(u8 *src, GW_STORY *story) {
     memset(story, 0, sizeof(GW_STORY));
-    SaveFileDecode(src, (u8 *)story, D_800A1E58_main);
+    SaveFileDecode(src, (u8 *)story, saveStoryScheme);
 }
 
 void SaveFileDecode(u8 *src, u8 *destData, u8 *encodingScheme) {
@@ -271,8 +271,8 @@ void SaveFileDecode(u8 *src, u8 *destData, u8 *encodingScheme) {
         gEncodedSaveBuffer[i] = *src++;
     }
 
-    D_800BBAA4_main = 0;
-    D_800BBAA0_main = 0;
+    saveBitPos = 0;
+    saveBitByte = 0;
 
     while (*encodingScheme != 0) {
         currentDataPtr = destData + encodingScheme[2];
@@ -309,12 +309,12 @@ void SaveFileDecode(u8 *src, u8 *destData, u8 *encodingScheme) {
 }
 
 s32 SaveBitRead(void) {
-    s32 topBit = gEncodedSaveBuffer[D_800BBAA0_main] & 0x80;
+    s32 topBit = gEncodedSaveBuffer[saveBitByte] & 0x80;
 
-    gEncodedSaveBuffer[D_800BBAA0_main] <<= 1;
-    if (++D_800BBAA4_main >= 8) {
-        D_800BBAA0_main++;
-        D_800BBAA4_main = 0;
+    gEncodedSaveBuffer[saveBitByte] <<= 1;
+    if (++saveBitPos >= 8) {
+        saveBitByte++;
+        saveBitPos = 0;
     }
     return topBit;
 }

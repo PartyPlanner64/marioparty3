@@ -3,10 +3,10 @@
 #include "game/overlays/minigame.h"
 
 extern s32 D_800A178C_main[][6];
-extern u8 D_800D2008_main;
-extern u8 D_800D6A90_main;
-extern f32 D_800D51FC_main;
-extern f32 D_800D5410_main;
+extern u8 Hu3DBufNo;
+extern u8 omAllPauseF;
+extern f32 Hu3DMatAmbScale;
+extern f32 Hu3DMatColScale;
 extern omObjData *D_800EBE70_minigame[];
 
 s32 D_8010AF80_treadmill_grill = 0;
@@ -222,7 +222,7 @@ void func_801062DC_treadmill_grill(omObjData *object) {
     s32 i;
 
     last = 0;
-    if (omPauseChk() + D_800D6A90_main != 0) {
+    if (omPauseChk() + omAllPauseF != 0) {
         return;
     }
     count = 0;
@@ -277,7 +277,7 @@ void func_801062DC_treadmill_grill(omObjData *object) {
     for (i = 0; i < D_800EC280_minigame; i++) {
         ((func_800E1BA8_minigame_ObjData *)D_800EC598_minigame[i]->data)->unk60 = CRot.y;
     }
-    if (D_800D530C_main == 1) {
+    if (omSysExitReq == 1) {
         WipeCreateOut(0, 20);
         HuAudSeqFadeOut(30);
         HuAudFXAllFadeOut(30);
@@ -324,8 +324,8 @@ const char D_8010B288_treadmill_grill[] = "c201_000-eyes";
 void func_801067A8_treadmill_grill(omObjData *object) {
     D_800EC1C0_minigame_ObjData *work;
 
-    D_800D51FC_main = 1.0f;
-    D_800D5410_main = 1.0f;
+    Hu3DMatAmbScale = 1.0f;
+    Hu3DMatColScale = 1.0f;
     object->model[0] = Hu3DModelRead2(0x360000, 0xAA9);
     object->model[1] = Hu3DModelRead2(0x360001, 0xAA9);
     object->model[2] = Hu3DModelRead2(0x360000, 0xAA9);
@@ -335,8 +335,8 @@ void func_801067A8_treadmill_grill(omObjData *object) {
     object->model[6] = Hu3DModelRead2(0x360003, 0xA99);
     object->model[7] = Hu3DModelRead2(0x360004, 0xA99);
     object->model[8] = Hu3DModelRead2(0x360004, 0xA99);
-    D_800D51FC_main = 1.0f;
-    D_800D5410_main = 1.0f;
+    Hu3DMatAmbScale = 1.0f;
+    Hu3DMatColScale = 1.0f;
     object->model[9] = Hu3DModelRead2(0x360006, 0x299);
     object->model[10] = D_8010B310_treadmill_grill[D_8010AF80_treadmill_grill++];
     object->model[11] = D_8010B310_treadmill_grill[D_8010AF80_treadmill_grill++];
@@ -405,13 +405,13 @@ void func_80106DA0_treadmill_grill(omObjData *object, s32 model, s32 motion, u16
     s32 tag;
 
     tag = 0xA99;
-    D_800D51FC_main = 1.0f;
-    D_800D5410_main = 1.0f;
+    Hu3DMatAmbScale = 1.0f;
+    Hu3DMatColScale = 1.0f;
     func_800E1BA8_minigame(object, model, motion, player, tag, tag);
     data = object->data;
     chr = GwPlayer[data->unk59].chr;
-    D_800D51FC_main = 1.0f;
-    D_800D5410_main = 1.0f;
+    Hu3DMatAmbScale = 1.0f;
+    Hu3DMatColScale = 1.0f;
     object->model[3] = Hu3DModelRead(3, 0x89D);
     object->model[4] = Hu3DModelRead(4, 0x89D);
     object->model[6] = Hu3DModelRead(5, 0x89D);
@@ -492,10 +492,10 @@ void func_80107238_treadmill_grill(omObjData *object) {
         }
     }
     if (GwPlayer[data->unk59].stat & 1) {
-        D_800D5558_main[data->unk57] = D_8010B304_treadmill_grill;
-        D_800CDA7C_main[data->unk57] = D_8010B300_treadmill_grill;
-        D_800CBB6E_main[data->unk57] = D_8010B308_treadmill_grill;
-        D_800D20A1_main[data->unk57] = D_8010B30C_treadmill_grill;
+        HuPadBtnDown[data->unk57] = D_8010B304_treadmill_grill;
+        HuPadBtn[data->unk57] = D_8010B300_treadmill_grill;
+        HuPadStkX[data->unk57] = D_8010B308_treadmill_grill;
+        HuPadStkY[data->unk57] = D_8010B30C_treadmill_grill;
     }
 }
 
@@ -616,14 +616,14 @@ void func_80107798_treadmill_grill(omObjData *object) {
     if (!(GwPlayer[data->unk59].stat & 1)) {
         return;
     }
-    D_8010B304_treadmill_grill = D_800D5558_main[pad];
-    D_8010B300_treadmill_grill = (u16)D_800CDA7C_main[pad];
-    D_8010B308_treadmill_grill = D_800CBB6E_main[pad];
-    D_8010B30C_treadmill_grill = D_800D20A1_main[pad];
-    D_800D20A1_main[pad] = 0;
-    D_800CBB6E_main[pad] = 0;
-    D_800D5558_main[pad] = 0;
-    D_800CDA7C_main[pad] = 0;
+    D_8010B304_treadmill_grill = HuPadBtnDown[pad];
+    D_8010B300_treadmill_grill = (u16)HuPadBtn[pad];
+    D_8010B308_treadmill_grill = HuPadStkX[pad];
+    D_8010B30C_treadmill_grill = HuPadStkY[pad];
+    HuPadStkY[pad] = 0;
+    HuPadStkX[pad] = 0;
+    HuPadBtnDown[pad] = 0;
+    HuPadBtn[pad] = 0;
     if (D_8010AF84_treadmill_grill[player] == 1) {
         return;
     }
@@ -631,14 +631,14 @@ void func_80107798_treadmill_grill(omObjData *object) {
     stageData = stage->data;
     difficulty = GwPlayer[data->unk59].cpu_difficulty;
     func_8010AA2C_treadmill_grill(object->trans.x, object->trans.z);
-    D_800D20A1_main[pad] = 0;
-    D_800CBB6E_main[pad] = 0;
-    D_800D5558_main[pad] = 0;
+    HuPadStkY[pad] = 0;
+    HuPadStkX[pad] = 0;
+    HuPadBtnDown[pad] = 0;
     dist = D_8010AF8C_treadmill_grill[0] / 3.0f;
     if (D_8010B0F8_treadmill_grill[player] == 32 && data->unk38 != 1000.0f) {
-        D_800CBB6E_main[pad] = D_8010B2E0_treadmill_grill[player][0];
-        D_800D20A1_main[pad] = D_8010B2E0_treadmill_grill[player][1];
-        D_800CDA7C_main[pad] |= 0x8000;
+        HuPadStkX[pad] = D_8010B2E0_treadmill_grill[player][0];
+        HuPadStkY[pad] = D_8010B2E0_treadmill_grill[player][1];
+        HuPadBtn[pad] |= 0x8000;
         for (i = 0; i < 4; i++) {
             if (D_8010AF84_treadmill_grill[i] != 1) {
                 if (i != player) {
@@ -646,7 +646,7 @@ void func_80107798_treadmill_grill(omObjData *object) {
                     x = other->trans.x - object->trans.x;
                     z = other->trans.z - object->trans.z;
                     if (HuSqrtf(x * x + z * z) < 2.0f * data->unk48) {
-                        D_800D5558_main[pad] |= 0x2000;
+                        HuPadBtnDown[pad] |= 0x2000;
                     }
                 }
             }
@@ -674,27 +674,27 @@ void func_80107798_treadmill_grill(omObjData *object) {
     }
     state = 0;
     if (x < minX) {
-        D_800CBB6E_main[pad] = D_8010B0E8_treadmill_grill[difficulty] * 60.0f;
+        HuPadStkX[pad] = D_8010B0E8_treadmill_grill[difficulty] * 60.0f;
         state = 4;
-        D_8010B2E0_treadmill_grill[player][0] = D_800CBB6E_main[pad];
+        D_8010B2E0_treadmill_grill[player][0] = HuPadStkX[pad];
     } else if (x > maxX) {
-        D_800CBB6E_main[pad] = D_8010B0E8_treadmill_grill[difficulty] * -60.0f;
+        HuPadStkX[pad] = D_8010B0E8_treadmill_grill[difficulty] * -60.0f;
         state = 4;
-        D_8010B2E0_treadmill_grill[player][0] = D_800CBB6E_main[pad];
+        D_8010B2E0_treadmill_grill[player][0] = HuPadStkX[pad];
     }
     if (z < minZ) {
-        D_800D20A1_main[pad] = D_8010B0E8_treadmill_grill[difficulty] * -60.0f;
+        HuPadStkY[pad] = D_8010B0E8_treadmill_grill[difficulty] * -60.0f;
         state = 8;
-        D_8010B2E0_treadmill_grill[player][1] = D_800D20A1_main[pad];
+        D_8010B2E0_treadmill_grill[player][1] = HuPadStkY[pad];
     } else if (z > maxZ) {
-        D_800D20A1_main[pad] = D_8010B0E8_treadmill_grill[difficulty] * 60.0f;
+        HuPadStkY[pad] = D_8010B0E8_treadmill_grill[difficulty] * 60.0f;
         state = 8;
-        D_8010B2E0_treadmill_grill[player][1] = D_800D20A1_main[pad];
+        D_8010B2E0_treadmill_grill[player][1] = HuPadStkY[pad];
     }
     if (state != 0) {
         D_8010B0F8_treadmill_grill[player] = state;
         if (D_8010B118_treadmill_grill[player] > 60 && D_8010B108_treadmill_grill[difficulty] / 4.0f >= rand8()) {
-            D_800D5558_main[pad] |= 0x8000;
+            HuPadBtnDown[pad] |= 0x8000;
             D_8010B0F8_treadmill_grill[player] = 32;
             D_8010B118_treadmill_grill[player] = 0;
         }
@@ -755,8 +755,8 @@ void func_80107798_treadmill_grill(omObjData *object) {
             dir.z = object->trans.z - D_8010B000_treadmill_grill[nearest].z;
             MapVecNormalize(&dir);
         }
-        D_800CBB6E_main[pad] = dir.x * 60.0f * D_8010B0E8_treadmill_grill[difficulty];
-        D_800D20A1_main[pad] = -dir.z * 60.0f * D_8010B0E8_treadmill_grill[difficulty];
+        HuPadStkX[pad] = dir.x * 60.0f * D_8010B0E8_treadmill_grill[difficulty];
+        HuPadStkY[pad] = -dir.z * 60.0f * D_8010B0E8_treadmill_grill[difficulty];
         D_8010B0F8_treadmill_grill[player] = 2;
         return;
     }
@@ -778,7 +778,7 @@ void func_80107798_treadmill_grill(omObjData *object) {
                     if (dist < 2.0f * data->unk48 + 80.0f) {
                         rotY = data->unk3C;
                         if (func_800E2ED4_minigame(x, z, sindf(rotY), cosdf(rotY)) < -0.8f) {
-                            D_800D5558_main[pad] = 0x4000;
+                            HuPadBtnDown[pad] = 0x4000;
                             D_8010B0F8_treadmill_grill[player] = 16;
                             break;
                         }
@@ -786,14 +786,14 @@ void func_80107798_treadmill_grill(omObjData *object) {
                 }
             }
         }
-        if (nearest != -1 && D_800D5558_main[pad] == 0) {
+        if (nearest != -1 && HuPadBtnDown[pad] == 0) {
             other = D_800EC598_minigame[nearest];
             dir.x = object->trans.x - other->trans.x;
             dir.y = 0.0f;
             dir.z = object->trans.z - other->trans.z;
             MapVecNormalize(&dir);
-            D_800CBB6E_main[pad] = -dir.x * 60.0f * D_8010B0E8_treadmill_grill[difficulty];
-            D_800D20A1_main[pad] = dir.z * 60.0f * D_8010B0E8_treadmill_grill[difficulty];
+            HuPadStkX[pad] = -dir.x * 60.0f * D_8010B0E8_treadmill_grill[difficulty];
+            HuPadStkY[pad] = dir.z * 60.0f * D_8010B0E8_treadmill_grill[difficulty];
             D_8010B0F8_treadmill_grill[player] = 16;
         }
     }
@@ -801,7 +801,7 @@ void func_80107798_treadmill_grill(omObjData *object) {
         case 4:
         case 8:
             if (D_8010B118_treadmill_grill[player] > 60 && D_8010B108_treadmill_grill[difficulty] / 4.0f >= rand8()) {
-                D_800D5558_main[pad] |= 0x8000;
+                HuPadBtnDown[pad] |= 0x8000;
                 D_8010B0F8_treadmill_grill[player] = 32;
                 D_8010B118_treadmill_grill[player] = 0;
             }
@@ -898,8 +898,8 @@ void func_801089E0_treadmill_grill(void) {
     void *data;
     s16 anim;
 
-    D_800D51FC_main = 1.0f;
-    D_800D5410_main = 1.0f;
+    Hu3DMatAmbScale = 1.0f;
+    Hu3DMatColScale = 1.0f;
     data = DataRead(0xA008A);
     D_8010B310_treadmill_grill[0] = Hu3DModelCreate(data, 0xAC1);
     anim = Hu3DAnimRead(Hu3DData[D_8010B310_treadmill_grill[0]].hmf, 0xA008C, "c201n_00_DEF");
@@ -926,8 +926,8 @@ void func_801089E0_treadmill_grill(void) {
         D_8010B310_treadmill_grill[i] = model;
     }
     HuMemMemoryFreePerm(data);
-    D_800D51FC_main = 1.0f;
-    D_800D5410_main = 1.0f;
+    Hu3DMatAmbScale = 1.0f;
+    Hu3DMatColScale = 1.0f;
 }
 
 void func_80108C64_treadmill_grill(omObjData *object, f32 x, f32 y, f32 z) {
@@ -1220,7 +1220,7 @@ void func_80109FA8_treadmill_grill(omObjData *object) {
     Hu3DModelTexScroll(object->model[2], D_8010B1A4_treadmill_grill[2], 0.0f, 32, 64);
     Hu3DModelTexScroll(object->model[3], D_8010B1A4_treadmill_grill[3], 0.0f, 32, 64);
     func_8010ACBC_treadmill_grill(object);
-    if (omPauseChk() + D_800D6A90_main != 0) {
+    if (omPauseChk() + omAllPauseF != 0) {
         return;
     }
     if (MgFlowStatGet() == MG_STATE_OPENING) {
@@ -1431,7 +1431,7 @@ void func_8010ACBC_treadmill_grill(omObjData *object) {
             group = &hmf->unkB0[j];
             if (group->normal[1] == 127) {
                 for (k = 0; k < group->count; k++) {
-                    dst = &hmf->unk44[D_800D2008_main][group->indices[k]];
+                    dst = &hmf->unk44[Hu3DBufNo][group->indices[k]];
                     src = &hmf->unk40[group->indices[k]];
                     if (src->v.ob[0] > 0) {
                         dst->v.ob[0] = D_8010AF8C_treadmill_grill[i] * 0.5f;
@@ -1441,7 +1441,7 @@ void func_8010ACBC_treadmill_grill(omObjData *object) {
                 }
             } else {
                 for (k = 0; k < group->count; k++) {
-                    dst = &hmf->unk44[D_800D2008_main][group->indices[k]];
+                    dst = &hmf->unk44[Hu3DBufNo][group->indices[k]];
                     src = &hmf->unk40[group->indices[k]];
                     dst->v.ob[0] = src->v.ob[0] * scale;
                 }

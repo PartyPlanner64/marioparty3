@@ -22,7 +22,7 @@ f32 expf(f32 x) {
     }
     term = result = 1.0f;
     for (i = 1; i < 100; i++) {
-        term *= x * D_800A46A0[i];
+        term *= x * __invFactTblF[i];
         result += term;
         if (term <= tolerance) {
             break;

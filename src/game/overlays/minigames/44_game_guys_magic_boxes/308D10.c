@@ -882,13 +882,13 @@ void func_80107B64_game_guys_magic_boxes(void) {
             break;
         case 1:
             if (D_8010C751_game_guys_magic_boxes[2] == 0) {
-                if (D_800CBB6E_main[D_8010C751_game_guys_magic_boxes[0]] > 64) {
+                if (HuPadStkX[D_8010C751_game_guys_magic_boxes[0]] > 64) {
                     dir = 1;
                 }
-                if (D_800CBB6E_main[D_8010C751_game_guys_magic_boxes[0]] < -64) {
+                if (HuPadStkX[D_8010C751_game_guys_magic_boxes[0]] < -64) {
                     dir = 2;
                 }
-                buttons = D_800CDA7C_main[D_8010C751_game_guys_magic_boxes[0]];
+                buttons = HuPadBtn[D_8010C751_game_guys_magic_boxes[0]];
                 if (buttons & A_BUTTON) {
                     confirm = TRUE;
                 }
@@ -964,7 +964,7 @@ void func_80107B64_game_guys_magic_boxes(void) {
                 D_8010C9E2_game_guys_magic_boxes = 0;
             }
             HuAudFXPlay(3);
-            D_800D6A58_main = 1;
+            omSysPauseDisableF = 1;
             GMesTimerEnd();
             D_8010C9E8_game_guys_magic_boxes = 9;
             D_8010C1FC_game_guys_magic_boxes = 0;
@@ -1436,7 +1436,7 @@ void func_80109984_game_guys_magic_boxes(omObjData *object) {
 }
 
 void func_801099E4_game_guys_magic_boxes(omObjData *object) {
-    if (D_800D530C_main == 1) {
+    if (omSysExitReq == 1) {
         object->func = func_80109884_game_guys_magic_boxes;
     }
 }
@@ -1678,7 +1678,7 @@ void func_8010A560_game_guys_magic_boxes(s16 win, s16 player, s16 mode) {
     while (HuWinStatGet(win) != 0) {
         switch (mode) {
             case 0:
-                if (D_800D5558_main[player] & 0x8000) {
+                if (HuPadBtnDown[player] & 0x8000) {
                     HuWinComKeySet(-0x8000, -0x8000, -0x8000, -0x8000);
                 }
                 break;

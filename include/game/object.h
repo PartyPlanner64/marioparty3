@@ -78,18 +78,18 @@ typedef struct UnkomOvl {
 } UnkomOvl;
 
 #ifndef NO_EXTERN_VARIABLES
-extern UnkomOvl D_800A1920_main[128]; // per-overlay arguments for omHu3DParamSet
+extern UnkomOvl omOvlHu3DParamTbl[128]; // per-overlay arguments for omHu3DParamSet
 
 extern s16 omovlevtno;
 extern s32 omprevovl;
-extern u8 D_800A175E_main;
+extern u8 omDBGPlayMode;
 extern u16 omovlstat;
 extern s16 omovlhisidx;
 extern omOvlHisData omovlhis[12];
 extern u16 omdispinfo;
-extern s16 D_800A1786_main;
+extern s16 omDBGInfoWin;
 extern f32 D_800CE17C_main[];
-extern omObjData *D_800CE194_main;
+extern omObjData *omSysTimerObj;
 #endif
 
 void omInitObjMan(s16 numOfObjs, s32 numOfPrcs);
@@ -125,7 +125,7 @@ extern Vec CRot;
 extern Vec CenterM[];
 extern Vec Center;
 extern Vec CRotM[];
-extern omCharModelData D_800A1788_main[];
+extern omCharModelData omCharModelTbl[];
 #endif
 
 void omSetObjPrio(omObjData *obj, s16 prio);

@@ -80,8 +80,8 @@ typedef struct PictureImperfectBssA230 {
 
 extern u32 D_800A178C_main[][6];
 extern s32 D_800A1790_main[][6];
-extern u8 D_800CE20A_main;
-extern u8 D_800D6A90_main;
+extern u8 storySceneNo;
+extern u8 omAllPauseF;
 
 s16 D_80109FE0_picture_imperfect = -1;
 s16 D_80109FE2_picture_imperfect = 1;
@@ -191,7 +191,7 @@ void func_801059A0_picture_imperfect(void) {
     D_800EBE28_minigame = 0;
     func_800E1804_minigame();
     func_80105EF4_picture_imperfect();
-    D_8010A150_picture_imperfect = 2 - D_800CE20A_main;
+    D_8010A150_picture_imperfect = 2 - storySceneNo;
     func_80105BA8_picture_imperfect();
     func_80105E68_picture_imperfect(&D_8010A128_picture_imperfect);
     func_800E5EA0_minigame(&D_8010A128_picture_imperfect);
@@ -298,10 +298,10 @@ void func_80105EF4_picture_imperfect(void) {
 }
 
 void func_80106154_picture_imperfect(omObjData *object) {
-    if (omPauseChk() + D_800D6A90_main == 0) {
-        if (D_8010A014_picture_imperfect == 0 && D_800D530C_main == 1) {
+    if (omPauseChk() + omAllPauseF == 0) {
+        if (D_8010A014_picture_imperfect == 0 && omSysExitReq == 1) {
             HuAudFXAllStop();
-            if (!(D_800A1906_main & 4)) {
+            if (!(HuAudStat & 4)) {
                 HuAudSeqFadeOut(30);
             } else {
                 HuAudSeqStop();
@@ -325,7 +325,7 @@ void func_80106154_picture_imperfect(omObjData *object) {
             case 5:
                 if (D_8010A010_picture_imperfect == 0) {
                     WipeCreateOut(WIPE_TYPE_NORMAL, 20);
-                } else if (WipeStatGet() == 0 && !(D_800A1906_main & 4)) {
+                } else if (WipeStatGet() == 0 && !(HuAudStat & 4)) {
                     GameMesStub();
                     omOvlReturnEx(1);
                 }
@@ -597,8 +597,8 @@ void func_80107820_picture_imperfect(omObjData *object) {
             func_800DDD94_minigame(object);
             break;
         case MG_STATE_PLAY:
-            D_800CBB6E_main[playerData->unk57] = D_800D20A1_main[playerData->unk57] = 0;
-            if (omPauseChk() + D_800D6A90_main != 0) {
+            HuPadStkX[playerData->unk57] = HuPadStkY[playerData->unk57] = 0;
+            if (omPauseChk() + omAllPauseF != 0) {
                 func_80108688_picture_imperfect(object);
                 break;
             }
@@ -648,8 +648,8 @@ void func_80107820_picture_imperfect(omObjData *object) {
                 Hu3DModelPosSet(object->model[2], object->trans.x, work->unk10, object->trans.z);
             }
             if (work->unk06 == 1 || work->unk03 != 0) {
-                D_800CDA7C_main[playerData->unk57] &= ~A_BUTTON;
-                D_800D5558_main[playerData->unk57] &= ~A_BUTTON;
+                HuPadBtn[playerData->unk57] &= ~A_BUTTON;
+                HuPadBtnDown[playerData->unk57] &= ~A_BUTTON;
             }
             func_801083C0_picture_imperfect(playerData->unk59);
             func_80108688_picture_imperfect(object);
@@ -663,7 +663,7 @@ void func_80107820_picture_imperfect(omObjData *object) {
                 D_80109FE0_picture_imperfect = -1;
                 D_80109FE2_picture_imperfect = 0;
             }
-            if (omPauseChk() + D_800D6A90_main != 0) {
+            if (omPauseChk() + omAllPauseF != 0) {
                 break;
             }
             if (work->unk03 == 0) {
@@ -840,26 +840,26 @@ void func_801081E4_picture_imperfect(omObjData *object) {
     roll = (rand8() * 100) >> 8;
     if (roll < chance1) {
         if (work->unk01 == 4) {
-            D_800D5558_main[playerData->unk57] |= A_BUTTON;
+            HuPadBtnDown[playerData->unk57] |= A_BUTTON;
             work->unk18 = ((rand8() * 15) >> 6) + 30;
         }
     } else if (roll < chance2) {
         if (work->unk01 == 3) {
-            D_800D5558_main[playerData->unk57] |= A_BUTTON;
+            HuPadBtnDown[playerData->unk57] |= A_BUTTON;
             work->unk18 = ((rand8() * 15) >> 6) + 30;
         }
     } else if (roll < chance3) {
         if (work->unk01 == 2) {
-            D_800D5558_main[playerData->unk57] |= A_BUTTON;
+            HuPadBtnDown[playerData->unk57] |= A_BUTTON;
             work->unk18 = ((rand8() * 15) >> 6) + 30;
         }
     } else if (roll < chance2) {
         if (work->unk01 == 1) {
-            D_800D5558_main[playerData->unk57] |= A_BUTTON;
+            HuPadBtnDown[playerData->unk57] |= A_BUTTON;
             work->unk18 = ((rand8() * 15) >> 6) + 30;
         }
     } else if (work->unk01 == 0) {
-        D_800D5558_main[playerData->unk57] |= A_BUTTON;
+        HuPadBtnDown[playerData->unk57] |= A_BUTTON;
         work->unk18 = ((rand8() * 15) >> 6) + 30;
     }
 }
@@ -975,7 +975,7 @@ void func_80108688_picture_imperfect(omObjData *object) {
             }
             return;
     }
-    if (omPauseChk() + D_800D6A90_main != 0) {
+    if (omPauseChk() + omAllPauseF != 0) {
         for (i = 0; i < 5; i++) {
             espDispOff(sprites[player][i]);
         }
@@ -994,7 +994,7 @@ void func_80108688_picture_imperfect(omObjData *object) {
             espDispOff(sprites[player][i]);
         }
     }
-    if (D_800D5558_main[playerData->unk57] & A_BUTTON) {
+    if (HuPadBtnDown[playerData->unk57] & A_BUTTON) {
         work->unk08 = delay - 2;
         switch (work->unk01) {
             case 0:

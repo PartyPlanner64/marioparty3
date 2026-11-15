@@ -70,7 +70,7 @@ s32 func_801078CC_koopa(void);
 extern s16 D_80109518_koopa[5][5];
 extern u8 D_8010954A_koopa[5];
 
-extern u32 D_800D2094_main;
+extern u32 scRetraceCnt;
 
 //.data
 void *D_80109350_koopa = 0;
@@ -185,9 +185,9 @@ void func_801059A0_koopa(void) {
 }
 
 void func_80105A8C_koopa(void) {
-    if (D_800D2094_main >= (D_80109414_koopa + 4)) {
+    if (scRetraceCnt >= (D_80109414_koopa + 4)) {
         HuAudFXPlay(0x104);
-        D_80109414_koopa = D_800D2094_main;
+        D_80109414_koopa = scRetraceCnt;
     }
 }
 
@@ -259,7 +259,7 @@ void func_80105AD8_koopa(omObjData *obj) {
                 if (GwPlayer[D_801094F4_koopa].stat & 1) {
                     obj->trans.z = 1.0f;
                 } else {
-                    buttons = D_800C9520_main[GwPlayer[D_801094F4_koopa].pad];
+                    buttons = ContBtnDown[GwPlayer[D_801094F4_koopa].pad];
                     if (buttons & A_BUTTON) {
                         obj->trans.z = 1.0f;
                     }
@@ -1273,7 +1273,7 @@ void func_80108D2C_koopa(void) {
         MBMotionShiftSet(D_801094F8_koopa, 3, 0, 5, 2);
     }
     HuPrcSleep(20);
-    D_800D530C_main = 1;
+    omSysExitReq = 1;
     while (1) {
         HuPrcVSleep();
     }
@@ -1292,7 +1292,7 @@ void func_801091C4_koopa(omObjData *obj) {
 }
 
 void func_80109220_koopa(omObjData *obj) {
-    if (D_800D530C_main != 0) {
+    if (omSysExitReq != 0) {
         WipeCreateOut(3, 20);
         HuAudSeqFadeOut(60);
         obj->func = func_801091C4_koopa;

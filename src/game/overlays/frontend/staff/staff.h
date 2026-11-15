@@ -240,7 +240,7 @@ extern s16 D_8011150C_staff;
 extern s16 D_8011150E_staff;
 #endif
 
-extern f32 D_800D5210_main;
-extern f32 D_800CB890_main;
+extern f32 CFanLen;
+extern f32 CFanOfs;
 
 #endif

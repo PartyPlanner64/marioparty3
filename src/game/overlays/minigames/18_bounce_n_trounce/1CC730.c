@@ -66,7 +66,7 @@ typedef struct BounceNTrounceTileWork {
 } BounceNTrounceTileWork; // Size 0xC
 
 extern s32 D_800A178C_main[][6];
-extern f32 D_800D2120_main;
+extern f32 Hu3DMotionGlobalSpeed;
 
 MinigameFlow D_8010ABB0_bounce_n_trounce = {
     MG_STATE_OPENING, MINIGAME_4P, MG_TIMER_COUNT_DOWN, MG_TIME_DISP_COUNTDOWN, FALSE, MG_GAUGE_NONE, MG_RESULT_WIN_1, 0,
@@ -344,7 +344,7 @@ void func_80105E4C_bounce_n_trounce(omObjData *object) {
     pos.x = sindf(45.0f) * 2800.0f;
     pos.y = 1400.0f;
     pos.z = cosdf(45.0f) * 2800.0f;
-    omCameraViewCreate(0x7FDA, D_800CD1DC_main[sprite].unk04, omCameraViewSprDraw, 45.0f, &pos, &target);
+    omCameraViewCreate(0x7FDA, esprite[sprite].unk04, omCameraViewSprDraw, 45.0f, &pos, &target);
     Hu3DCameraPerspectiveSet(0, 45.0f, 500.0f, 4500.0f);
     CZoom = 2100.0f;
     object->work[0] = 1;
@@ -625,9 +625,9 @@ void func_80106F78_bounce_n_trounce(omObjData *object) {
     if (GwPlayer[work->playerId].stat & 1) {
         func_80109018_bounce_n_trounce(object, &stickX, &stickY, &btn);
     } else {
-        stickX = D_800CBB6E_main[port];
-        stickY = D_800D20A1_main[port];
-        btn = D_800D5558_main[port];
+        stickX = HuPadStkX[port];
+        stickY = HuPadStkY[port];
+        btn = HuPadBtnDown[port];
     }
     if (MgFlowStatGet() == MG_STATE_OPENING || MgFlowStatGet() == MG_STATE_START || MgFlowStatGet() == MG_STATE_FINISH) {
         stickY = 0;
@@ -1065,18 +1065,18 @@ void func_80108454_bounce_n_trounce(omObjData *object, f32 vel) {
 void func_8010846C_bounce_n_trounce(omObjData *object) {
     BounceNTrounceWork *work = OM_GET_DATA_PTR(object, BounceNTrounceWork);
     f32 dir = work->motDir;
-    f32 rate = D_800D2120_main;
+    f32 rate = Hu3DMotionGlobalSpeed;
     f32 time = Hu3DData[object->model[0]].motTime;
 
     if (work->motState == 2) {
         time += dir * work->motSpeed * rate;
-        if (time > D_800CCF58_main[Hu3DData[object->model[0]].motId].unk02) {
+        if (time > Hu3DMotion[Hu3DData[object->model[0]].motId].unk02) {
             work->motDir = -1.0f;
-            time = D_800CCF58_main[Hu3DData[object->model[0]].motId].unk02;
+            time = Hu3DMotion[Hu3DData[object->model[0]].motId].unk02;
             work->motState = 4;
         }
     } else if (work->motState == 3) {
-        time += work->motDir * work->motSpeed * D_800D2120_main;
+        time += work->motDir * work->motSpeed * Hu3DMotionGlobalSpeed;
         if (time < 0.0f) {
             time = 0.0f;
             work->motState = 1;

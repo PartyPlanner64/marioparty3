@@ -5,32 +5,32 @@
 
 // EXTERN
 
-extern HuCamMtxs *D_800D0444_main;
+extern HuCamMtxs *Hu3DCurCamMtx;
 
 
 // LOCAL
 
-extern Light *D_800CB8A8_main;
-extern s16 D_800CC0B4_main;
-extern UnkLightData *D_800CE1D4_main;
-extern u8 D_800D2008_main;
+extern Light *Hu3DLightP;
+extern s16 Hu3DHiliteLightNo;
+extern UnkLightData *Hu3DLightData;
+extern u8 Hu3DBufNo;
 
 void Hu3DLighInit(void) {
     s16 var_a1;
 
-    if (D_800CE1D4_main == NULL) {
-        D_800CE1D4_main = HuMemAlloc(sizeof(UnkLightData));
+    if (Hu3DLightData == NULL) {
+        Hu3DLightData = HuMemAlloc(sizeof(UnkLightData));
     }
     for (var_a1 = 0; var_a1 < 8; var_a1++) {
-        D_800CE1D4_main->unk02[var_a1].stat = 0;
-        D_800CE1D4_main->unk02[var_a1].r =
-            D_800CE1D4_main->unk02[var_a1].g =
-                D_800CE1D4_main->unk02[var_a1].b = 0x40;
-        D_800CE1D4_main->unk02[var_a1].unk04 =
-            D_800CE1D4_main->unk02[var_a1].unk05 = 0;
-        D_800CE1D4_main->unk02[var_a1].unk06 = 100;
+        Hu3DLightData->unk02[var_a1].stat = 0;
+        Hu3DLightData->unk02[var_a1].r =
+            Hu3DLightData->unk02[var_a1].g =
+                Hu3DLightData->unk02[var_a1].b = 0x40;
+        Hu3DLightData->unk02[var_a1].unk04 =
+            Hu3DLightData->unk02[var_a1].unk05 = 0;
+        Hu3DLightData->unk02[var_a1].unk06 = 100;
     }
-    D_800CE1D4_main->unk00 = 1;
+    Hu3DLightData->unk00 = 1;
     Hu3DLightModeSet(1);
 }
 
@@ -40,24 +40,24 @@ void Hu3DLightClose(void) {
 void Hu3DLightExec(s16 arg0) {
     s16 var_s1;
 
-    D_800CB8A8_main = D_800CE1D4_main->unk40[D_800D2008_main][arg0];
-    for (var_s1 = 0; var_s1 < D_800CE1D4_main->unk00 + 1; var_s1++) {
-        Light *temp_s0 = &D_800CB8A8_main[var_s1];
+    Hu3DLightP = Hu3DLightData->unk40[Hu3DBufNo][arg0];
+    for (var_s1 = 0; var_s1 < Hu3DLightData->unk00 + 1; var_s1++) {
+        Light *temp_s0 = &Hu3DLightP[var_s1];
 
-        temp_s0->l.col[0] = temp_s0->l.colc[0] = D_800CE1D4_main->unk02[var_s1].r;
-        temp_s0->l.col[1] = temp_s0->l.colc[1] = D_800CE1D4_main->unk02[var_s1].g;
-        temp_s0->l.col[2] = temp_s0->l.colc[2] = D_800CE1D4_main->unk02[var_s1].b;
-        if (D_800CE1D4_main->unk02[var_s1].stat & 1) {
+        temp_s0->l.col[0] = temp_s0->l.colc[0] = Hu3DLightData->unk02[var_s1].r;
+        temp_s0->l.col[1] = temp_s0->l.colc[1] = Hu3DLightData->unk02[var_s1].g;
+        temp_s0->l.col[2] = temp_s0->l.colc[2] = Hu3DLightData->unk02[var_s1].b;
+        if (Hu3DLightData->unk02[var_s1].stat & 1) {
             f32 sp10[4][4];
-            f32 temp_f24 = D_800CE1D4_main->unk02[var_s1].unk04;
-            f32 temp_f26 = D_800CE1D4_main->unk02[var_s1].unk05;
-            f32 temp_f28 = D_800CE1D4_main->unk02[var_s1].unk06;
+            f32 temp_f24 = Hu3DLightData->unk02[var_s1].unk04;
+            f32 temp_f26 = Hu3DLightData->unk02[var_s1].unk05;
+            f32 temp_f28 = Hu3DLightData->unk02[var_s1].unk06;
             f32 temp_f22;
             f32 temp_f20;
             f32 temp_f24_2;
             f32 temp_f0;
 
-            guMtxL2F(sp10, &D_800D0444_main->lookAtMtx);
+            guMtxL2F(sp10, &Hu3DCurCamMtx->lookAtMtx);
             temp_f22 = temp_f24 * sp10[0][0] + temp_f26 * sp10[1][0] + temp_f28 * sp10[2][0];
             temp_f20 = temp_f24 * sp10[0][1] + temp_f26 * sp10[1][1] + temp_f28 * sp10[2][1];
             temp_f24_2 = temp_f24 * sp10[0][2] + temp_f26 * sp10[1][2] + temp_f28 * sp10[2][2];
@@ -67,9 +67,9 @@ void Hu3DLightExec(s16 arg0) {
             temp_s0->l.dir[1] = (temp_f20 / temp_f0) * 120.0f;
             temp_s0->l.dir[2] = (temp_f24_2 / temp_f0) * 120.0f;
         } else {
-            temp_s0->l.dir[0] = D_800CE1D4_main->unk02[var_s1].unk04;
-            temp_s0->l.dir[1] = D_800CE1D4_main->unk02[var_s1].unk05;
-            temp_s0->l.dir[2] = D_800CE1D4_main->unk02[var_s1].unk06;
+            temp_s0->l.dir[0] = Hu3DLightData->unk02[var_s1].unk04;
+            temp_s0->l.dir[1] = Hu3DLightData->unk02[var_s1].unk05;
+            temp_s0->l.dir[2] = Hu3DLightData->unk02[var_s1].unk06;
         }
     }
 }
@@ -77,11 +77,11 @@ void Hu3DLightExec(s16 arg0) {
 void Hu3DLightReset(void) {
     s16 var_a3;
 
-    D_800CB8A8_main = D_800CE1D4_main->unk40[D_800D2008_main][0];
-    for (var_a3 = 0; var_a3 < D_800CE1D4_main->unk00 + 1; var_a3++) {
-        D_800CB8A8_main[var_a3].l.col[0] = D_800CB8A8_main[var_a3].l.colc[0] = D_800CE1D4_main->unk02[var_a3].r;
-        D_800CB8A8_main[var_a3].l.col[1] = D_800CB8A8_main[var_a3].l.colc[1] = D_800CE1D4_main->unk02[var_a3].g;
-        D_800CB8A8_main[var_a3].l.col[2] = D_800CB8A8_main[var_a3].l.colc[2] = D_800CE1D4_main->unk02[var_a3].b;
+    Hu3DLightP = Hu3DLightData->unk40[Hu3DBufNo][0];
+    for (var_a3 = 0; var_a3 < Hu3DLightData->unk00 + 1; var_a3++) {
+        Hu3DLightP[var_a3].l.col[0] = Hu3DLightP[var_a3].l.colc[0] = Hu3DLightData->unk02[var_a3].r;
+        Hu3DLightP[var_a3].l.col[1] = Hu3DLightP[var_a3].l.colc[1] = Hu3DLightData->unk02[var_a3].g;
+        Hu3DLightP[var_a3].l.col[2] = Hu3DLightP[var_a3].l.colc[2] = Hu3DLightData->unk02[var_a3].b;
     }
 }
 
@@ -89,37 +89,37 @@ void Hu3DGLightMaxSet(s16 arg0) {
     if (arg0 >= 8) {
         arg0 = 7;
     }
-    D_800CE1D4_main->unk00 = arg0;
+    Hu3DLightData->unk00 = arg0;
 }
 
 void Hu3DGLightStatSet(s16 arg0, u8 arg1, u8 arg2) {
-    if (D_800CE1D4_main->unk00 >= arg0) {
-        D_800CE1D4_main->unk02[arg0].stat &= ~arg1;
-        D_800CE1D4_main->unk02[arg0].stat |= arg2;
+    if (Hu3DLightData->unk00 >= arg0) {
+        Hu3DLightData->unk02[arg0].stat &= ~arg1;
+        Hu3DLightData->unk02[arg0].stat |= arg2;
     }
 }
 
 void Hu3DGLightColorSet(s16 arg0, u8 arg1, u8 arg2, u8 arg3) {
-    if (D_800CE1D4_main->unk00 >= arg0) {
-        D_800CE1D4_main->unk02[arg0].r = arg1;
-        D_800CE1D4_main->unk02[arg0].g = arg2;
-        D_800CE1D4_main->unk02[arg0].b = arg3;
+    if (Hu3DLightData->unk00 >= arg0) {
+        Hu3DLightData->unk02[arg0].r = arg1;
+        Hu3DLightData->unk02[arg0].g = arg2;
+        Hu3DLightData->unk02[arg0].b = arg3;
     }
 }
 
 void Hu3DGLightDirSet(s16 arg0, f32 arg1, f32 arg2, f32 arg3) {
-    if (D_800CE1D4_main->unk00 >= arg0) {
+    if (Hu3DLightData->unk00 >= arg0) {
         f32 temp_f0 = arg1 * arg1 + arg2 * arg2 + arg3 * arg3;
 
         temp_f0 = HuSqrtf(temp_f0);
-        D_800CE1D4_main->unk02[arg0].unk04 = (arg1 / temp_f0) * 120.0f;
-        D_800CE1D4_main->unk02[arg0].unk05 = (arg2 / temp_f0) * 120.0f;
-        D_800CE1D4_main->unk02[arg0].unk06 = (arg3 / temp_f0) * 120.0f;
+        Hu3DLightData->unk02[arg0].unk04 = (arg1 / temp_f0) * 120.0f;
+        Hu3DLightData->unk02[arg0].unk05 = (arg2 / temp_f0) * 120.0f;
+        Hu3DLightData->unk02[arg0].unk06 = (arg3 / temp_f0) * 120.0f;
     }
 }
 
 void Hu3DLLightSet(HmfData_UnkD0 *arg0) {
-    Light *temp_s0 = &arg0->unk08[D_800D2008_main];
+    Light *temp_s0 = &arg0->unk08[Hu3DBufNo];
 
     temp_s0->l.col[0] = temp_s0->l.colc[0] = arg0->unk00;
     temp_s0->l.col[1] = temp_s0->l.colc[1] = arg0->unk01;
@@ -134,7 +134,7 @@ void Hu3DLLightSet(HmfData_UnkD0 *arg0) {
         f32 temp_f22_2;
         f32 temp_f0;
 
-        guMtxL2F(sp10, &D_800D0444_main->lookAtMtx);
+        guMtxL2F(sp10, &Hu3DCurCamMtx->lookAtMtx);
         temp_f24 = temp_f22 * sp10[0][0] + temp_f26 * sp10[1][0] + temp_f28 * sp10[2][0];
         temp_f20 = temp_f22 * sp10[0][1] + temp_f26 * sp10[1][1] + temp_f28 * sp10[2][1];
         temp_f22_2 = temp_f22 * sp10[0][2] + temp_f26 * sp10[1][2] + temp_f28 * sp10[2][2];
@@ -165,5 +165,5 @@ s16 Hu3DModelLightInfoSet(s16 arg0, s16 arg1) {
 }
 
 void Hu3DLightModeSet(s16 arg0) {
-    D_800CC0B4_main = arg0;
+    Hu3DHiliteLightNo = arg0;
 }

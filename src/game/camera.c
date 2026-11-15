@@ -6,7 +6,7 @@
 
 HuCamera *gCameraList = NULL;
 
-Vec D_800A0554_main[] = {
+Vec defaultViewportScale[] = {
     { 640.0f, 480.0f, 511.0f },
     { 320.0f, 240.0f, 511.0f },
     { 320.0f, 240.0f, 511.0f },
@@ -14,7 +14,7 @@ Vec D_800A0554_main[] = {
     { 320.0f, 240.0f, 511.0f },
 };
 
-Vec D_800A0590_main[] = {
+Vec defaultViewportPos[] = {
     { 640.0f, 480.0f, 511.0f },
     { 320.0f, 240.0f, 511.0f },
     { 960.0f, 240.0f, 511.0f },
@@ -22,7 +22,7 @@ Vec D_800A0590_main[] = {
     { 960.0f, 720.0f, 511.0f },
 };
 
-RectF D_800A05CC_main[] = {
+RectF defaultScissor[] = {
     { 0.0f, 0.0f, 320.0f, 240.0f },
     { 0.0f, 0.0f, 160.0f, 120.0f },
     { 160.0f, 0.0f, 320.0f, 120.0f },
@@ -32,18 +32,18 @@ RectF D_800A05CC_main[] = {
 
 // EXTERN
 
-extern s16 D_800C9932_main;
-extern HuCamMtxs *D_800D0444_main;
-extern HuCamera *D_800D10F4_main;
-extern u8 D_800D2008_main;
-extern s16 D_800D418E_main;
+extern s16 Hu3DCameraNum;
+extern HuCamMtxs *Hu3DCurCamMtx;
+extern HuCamera *Hu3DCurCamera;
+extern u8 Hu3DBufNo;
+extern s16 Hu3DCamMtxNo;
 
 void Hu3DCamInit(u32 arg0) {
     s16 var_s3;
     s16 var_s2;
 
-    D_800C9932_main = arg0;
-    D_800D418E_main = 0;
+    Hu3DCameraNum = arg0;
+    Hu3DCamMtxNo = 0;
     if (gCameraList != NULL) {
         HuMemFree(gCameraList);
     }
@@ -54,22 +54,22 @@ void Hu3DCamInit(u32 arg0) {
         gCameraList[var_s3].far = 8000.0f;
         gCameraList[var_s3].unk2 = 0;
         gCameraList[var_s3].unk4 = -1;
-        Hu3DCameraViewportSet(var_s3, D_800A0554_main, D_800A0590_main);
-        Hu3DCameraScissorSet(var_s3, D_800A05CC_main);
+        Hu3DCameraViewportSet(var_s3, defaultViewportScale, defaultViewportPos);
+        Hu3DCameraScissorSet(var_s3, defaultScissor);
         gCameraList[var_s3].unkA0 = NULL;
         gCameraList[var_s3].unkA8 = NULL;
         gCameraList[var_s3].unkAC = NULL;
-        for (var_s2 = 0; var_s2 < D_800D1FF0_main; var_s2++) {
+        for (var_s2 = 0; var_s2 < Hu3DBufNum; var_s2++) {
             func_8008A0D0_main(&gCameraList[var_s3].mtxs[var_s2].perspMtx);
             func_8008A0D0_main(&gCameraList[var_s3].mtxs[var_s2].lookAtMtx);
         }
     }
-    D_800D10F4_main = gCameraList;
-    D_800D0444_main = gCameraList->mtxs;
+    Hu3DCurCamera = gCameraList;
+    Hu3DCurCamMtx = gCameraList->mtxs;
 }
 
 void Hu3DCamMtxBufSync(void) {
-    D_800D418E_main = D_800D2008_main;
+    Hu3DCamMtxNo = Hu3DBufNo;
 }
 
 void Hu3DCameraPosSetV(s16 camIndex, Vec *pos, Vec *at, Vec *up) {
@@ -106,7 +106,7 @@ void Hu3DCamUpdateMtx(s16 camIndex) {
     HuCamMtxs *mtxs;
 
     camera = &gCameraList[camIndex];
-    mtxs = &camera->mtxs[D_800D418E_main];
+    mtxs = &camera->mtxs[Hu3DCamMtxNo];
 
     guPerspective(&mtxs->perspMtx, &camera->perspNorm, camera->fov, (SCREEN_WIDTH / SCREEN_HEIGHT), camera->near, camera->far, 1.0f);
     guLookAt(&mtxs->lookAtMtx, camera->pos.x, camera->pos.y, camera->pos.z, camera->at.x, camera->at.y, camera->at.z, camera->up.x, camera->up.y, camera->up.z);
@@ -117,15 +117,15 @@ void Hu3DCameraSet(s16 camIndex, Gfx **dispList) {
     HuCamera *camera;
 
     camera = &gCameraList[camIndex];
-    camMtx = &camera->mtxs[D_800D418E_main];
-    camera->viewports[D_800D418E_main].vp.vscale[0] = (s16)camera->screenScale.x;
-    camera->viewports[D_800D418E_main].vp.vscale[1] = (s16)camera->screenScale.y;
-    camera->viewports[D_800D418E_main].vp.vscale[2] = (s16)camera->screenScale.z;
-    camera->viewports[D_800D418E_main].vp.vtrans[0] = (s16)camera->screenPos.x;
-    camera->viewports[D_800D418E_main].vp.vtrans[1] = (s16)camera->screenPos.y;
-    camera->viewports[D_800D418E_main].vp.vtrans[2] = (s16)camera->screenPos.z;
+    camMtx = &camera->mtxs[Hu3DCamMtxNo];
+    camera->viewports[Hu3DCamMtxNo].vp.vscale[0] = (s16)camera->screenScale.x;
+    camera->viewports[Hu3DCamMtxNo].vp.vscale[1] = (s16)camera->screenScale.y;
+    camera->viewports[Hu3DCamMtxNo].vp.vscale[2] = (s16)camera->screenScale.z;
+    camera->viewports[Hu3DCamMtxNo].vp.vtrans[0] = (s16)camera->screenPos.x;
+    camera->viewports[Hu3DCamMtxNo].vp.vtrans[1] = (s16)camera->screenPos.y;
+    camera->viewports[Hu3DCamMtxNo].vp.vtrans[2] = (s16)camera->screenPos.z;
 
-    gSPViewport((*dispList)++, &camera->viewports[D_800D418E_main].vp);
+    gSPViewport((*dispList)++, &camera->viewports[Hu3DCamMtxNo].vp);
     gSPPerspNormalize((*dispList)++, camera->perspNorm);
     gSPMatrix((*dispList)++, osVirtualToPhysical(&camMtx->perspMtx), G_MTX_PROJECTION | G_MTX_LOAD);
     gSPMatrix((*dispList)++, OS_PHYSICAL_TO_K0(&camMtx->lookAtMtx), G_MTX_LOAD);

@@ -25,7 +25,7 @@ s32 D_800EB93C_minigame = 0;
 s32 D_800EB940_minigame = 0;
 
 extern s32 omovl;
-extern u8 D_800CE20A_main;
+extern u8 storySceneNo;
 extern s16 D_800EBDE4_minigame;
 extern s16 D_800EBDE6_minigame;
 extern s16 D_800EBDE8_minigame[];
@@ -48,7 +48,7 @@ void func_800E5EA0_minigame(MinigameFlow *flow) {
                 D_800EB92A_minigame = GWMgRecordGet(D_800EB92C_minigame);
                 break;
             case 0x46:
-                D_800EB92C_minigame = D_800CE20A_main + 5;
+                D_800EB92C_minigame = storySceneNo + 5;
                 D_800EB92A_minigame = GWMgRecordGet(D_800EB92C_minigame);
                 break;
         }
@@ -347,7 +347,7 @@ u8 MgFlowMain(void) {
     char *stateNames[] = { "OPENING", "PLAYING", "DIRECTION", "ENDING" };
     s16 mes;
 
-    if (D_800D530C_main == 1) {
+    if (omSysExitReq == 1) {
         MgFlowStatSet(MG_STATE_EXIT);
     }
     func_800EA518_minigame();

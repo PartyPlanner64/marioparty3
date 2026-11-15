@@ -9,13 +9,13 @@ extern GAMEMES D_8011B810_mgmode;
 extern u8 *D_8011B610_mgmode[3];
 extern s16 D_8011B61C_mgmode;
 extern s16 D_8011B61E_mgmode;
-extern u8 D_800D2008_main;
+extern u8 Hu3DBufNo;
 extern MgmodeEspriteDef D_8011A270_mgmode[];
 extern MgmodeEspriteDef D_8011A2C4_mgmode[];
 extern s16 D_8011B8A8_mgmode[];
 extern s16 D_8011B6A8_mgmode;
 extern s16 D_8011B808_mgmode;
-extern s16 D_800D1FE0_main;
+extern s16 mgModeCoinBase;
 extern s16 D_8011B794_mgmode;
 extern s16 D_8011B796_mgmode;
 extern s16 D_8011B8B8_mgmode[];
@@ -27,9 +27,9 @@ extern s16 D_8011B788_mgmode;
 extern s16 D_8011B78C_mgmode;
 extern s16 D_8011B78E_mgmode;
 extern s16 D_8011B624_mgmode;
-extern s16 D_800D0418_main[8];
-extern s16 D_800D1F2C_main;
-extern s16 D_800CE29C_main;
+extern s16 mgModeMgList[8];
+extern s16 mgModeMgListIdx;
+extern s16 mgModeMgNo;
 extern u8 D_80118EB1_mgmode;
 extern s16 D_80118EB4_mgmode;
 extern s16 D_8011B950_mgmode;
@@ -207,7 +207,7 @@ void func_80112200_mgmode(void) {
         switch (D_8011B958_mgmode) {
             case 2:
                 changed = FALSE;
-                if (D_800D5558_main[D_8011B808_mgmode] & A_BUTTON) {
+                if (HuPadBtnDown[D_8011B808_mgmode] & A_BUTTON) {
                     HuAudFXPlay(2);
                     Hu3DMotionShiftSet(D_8011B8A8_mgmode[4], D_8011B788_mgmode, 0, 8, 2);
                     func_801182B4_mgmode(0);
@@ -250,15 +250,15 @@ void func_80112200_mgmode(void) {
                     func_801182B4_mgmode(1);
                     HuWinMesSet(D_8011B6A8_mgmode, 0x5800, -1, -1);
                     HuWinExAnimIn(D_8011B6A8_mgmode);
-                } else if ((D_800C9520_main[D_8011B808_mgmode] & L_JPAD) ||
-                           (D_800D5558_main[D_8011B808_mgmode] & B_BUTTON)) {
+                } else if ((ContBtnDown[D_8011B808_mgmode] & L_JPAD) ||
+                           (HuPadBtnDown[D_8011B808_mgmode] & B_BUTTON)) {
                     HuAudFXPlay(1);
                     HuWinExAnimOut(D_8011B6A8_mgmode, 0);
                     func_8011829C_mgmode(20);
                     func_801182A8_mgmode(1);
                     func_80116ED4_mgmode(3, 20, 1, (void (*)(s16 *))-1);
                     changed = TRUE;
-                } else if (D_800C9520_main[D_8011B808_mgmode] & R_JPAD) {
+                } else if (ContBtnDown[D_8011B808_mgmode] & R_JPAD) {
                     HuAudFXPlay(1);
                     HuWinExAnimOut(D_8011B6A8_mgmode, 0);
                     func_8011829C_mgmode(30);
@@ -274,7 +274,7 @@ void func_80112200_mgmode(void) {
                 break;
             case 3:
                 changed = FALSE;
-                if (D_800D5558_main[D_8011B808_mgmode] & A_BUTTON) {
+                if (HuPadBtnDown[D_8011B808_mgmode] & A_BUTTON) {
                     HuAudFXPlay(2);
                     HuWinMesSet(D_8011B6A8_mgmode, 0x5802, -1, -1);
                     while (HuWinStatGet(D_8011B6A8_mgmode) != 0) {
@@ -305,14 +305,14 @@ void func_80112200_mgmode(void) {
                     while (TRUE) {
                         HuPrcVSleep();
                     }
-                } else if (D_800C9520_main[D_8011B808_mgmode] & R_JPAD) {
+                } else if (ContBtnDown[D_8011B808_mgmode] & R_JPAD) {
                     HuAudFXPlay(1);
                     HuWinExAnimOut(D_8011B6A8_mgmode, 0);
                     func_8011829C_mgmode(20);
                     func_801182A8_mgmode(0);
                     func_80116ED4_mgmode(2, 20, 1, (void (*)(s16 *))-1);
                     changed = TRUE;
-                } else if (D_800C9520_main[D_8011B808_mgmode] & L_JPAD) {
+                } else if (ContBtnDown[D_8011B808_mgmode] & L_JPAD) {
                     HuAudFXPlay(1);
                     HuWinExAnimOut(D_8011B6A8_mgmode, 0);
                     func_8011829C_mgmode(30);
@@ -367,25 +367,25 @@ void func_80112CF4_mgmode(void) {
 void func_80112F98_mgmode(void) {
     s16 i;
 
-    D_800D1FE0_main = 10;
-    D_800D1F2C_main = 0;
+    mgModeCoinBase = 10;
+    mgModeMgListIdx = 0;
     func_801134C0_mgmode();
-    func_80115C5C_mgmode(D_800D1FE0_main);
+    func_80115C5C_mgmode(mgModeCoinBase);
     HuPrcVSleep();
     func_801141EC_mgmode(1);
     HuWinMesSet(D_8011B6A8_mgmode, 0x5808, -1, -1);
     HuWinExAnimIn(D_8011B6A8_mgmode);
-    D_800CE29C_main = func_801149F4_mgmode();
-    HuWinInsertMesSet(D_8011B6A8_mgmode, D_800CE29C_main + 0x4700, 0);
+    mgModeMgNo = func_801149F4_mgmode();
+    HuWinInsertMesSet(D_8011B6A8_mgmode, mgModeMgNo + 0x4700, 0);
     HuWinMesSet(D_8011B6A8_mgmode, 0x580A, -1, -1);
     while (HuWinStatGet(D_8011B6A8_mgmode) != 0) {
         HuPrcVSleep();
     }
     HuWinMesSet(D_8011B6A8_mgmode, 0x580B, -1, -1);
-    D_800CB894_main = -1;
+    mgModeCoinRate = -1;
     do {
-        D_800CB894_main = func_80114C80_mgmode();
-        if (D_800CB894_main < 0) {
+        mgModeCoinRate = func_80114C80_mgmode();
+        if (mgModeCoinRate < 0) {
             HuWinMesSet(D_8011B6A8_mgmode, 0x5813, -1, -1);
             while (HuWinStatGet(D_8011B6A8_mgmode) != 0) {
                 HuPrcVSleep();
@@ -395,15 +395,15 @@ void func_80112F98_mgmode(void) {
             }
             HuWinMesSet(D_8011B6A8_mgmode, 0x580B, -1, -1);
         }
-    } while (D_800CB894_main < 0);
-    D_800D1FE0_main -= D_800CB894_main;
-    GwPlayer[0].gameCoin = D_800CB894_main;
+    } while (mgModeCoinRate < 0);
+    mgModeCoinBase -= mgModeCoinRate;
+    GwPlayer[0].gameCoin = mgModeCoinRate;
     GwPlayer[0].group = 0;
     for (i = 1; i < 4; i++) {
         GwPlayer[i].group = 1;
     }
     _SetFlag(0xD);
-    GwSystem.minigame_index = (u8)D_800CE29C_main + 1;
+    GwSystem.minigame_index = (u8)mgModeMgNo + 1;
     omOvlHisChg(0, 0x69, 5, 0x84);
     D_80118EB1_mgmode = 1;
     D_8011B95A_mgmode = 0x70;
@@ -457,29 +457,29 @@ void func_801134C0_mgmode(void) {
             counts[i] = 0;
         }
         type = rand8() & 3;
-        D_800D0418_main[0] = type;
+        mgModeMgList[0] = type;
         counts[type]++;
         for (i = 1; i < 8; i++) {
             do {
                 type = rand8() & 3;
-            } while (D_800D0418_main[i - 1] == type);
+            } while (mgModeMgList[i - 1] == type);
             counts[type]++;
             if (D_801195C4_mgmode[type] < counts[type]) {
                 break;
             }
-            D_800D0418_main[i] = type;
+            mgModeMgList[i] = type;
         }
-        if (i == 8 && D_800D0418_main[0] != D_800D0418_main[7]) {
+        if (i == 8 && mgModeMgList[0] != mgModeMgList[7]) {
             break;
         }
     }
     if (attempt == 100) {
         for (i = 0; i < 8; i++) {
-            D_800D0418_main[i] = D_801195C8_mgmode[i];
+            mgModeMgList[i] = D_801195C8_mgmode[i];
         }
     }
     for (i = 0; i < 8; i++) {
-        D_800D0418_main[i] = D_801195BC_mgmode[D_800D0418_main[i]];
+        mgModeMgList[i] = D_801195BC_mgmode[mgModeMgList[i]];
     }
 }
 
@@ -488,17 +488,17 @@ s32 func_801136EC_mgmode(void) {
     s16 choice;
     s16 i;
 
-    D_800D1F2C_main++;
-    D_800D1F2C_main %= 8;
+    mgModeMgListIdx++;
+    mgModeMgListIdx %= 8;
     func_80116E24_mgmode(6);
     func_801141EC_mgmode(0);
     D_801194C4_mgmode = func_80116B20_mgmode();
     espPriSet(D_801194C4_mgmode, 15);
     espAttrSet(D_801194C4_mgmode, 0x5008);
     espPosSet(D_801194C4_mgmode, 184, 132);
-    func_80116C18_mgmode(D_800A6D40_main[D_800CE29C_main].flags & 0x7FF);
-    func_80115E9C_mgmode(D_800CE29C_main + 0x4700, 184, 62);
-    func_80115C5C_mgmode(D_800D1FE0_main);
+    func_80116C18_mgmode(mgDataTbl[mgModeMgNo].flags & 0x7FF);
+    func_80115E9C_mgmode(mgModeMgNo + 0x4700, 184, 62);
+    func_80115C5C_mgmode(mgModeCoinBase);
     Hu3DModelPosSet(D_8011B8A8_mgmode[4], -208.0f, 63.75f, -332.0f);
     Hu3DData[D_8011B8A8_mgmode[4]].rot.y = 15.0f;
     Hu3DModelAttrSet(D_8011B8A8_mgmode[8], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
@@ -515,10 +515,10 @@ s32 func_801136EC_mgmode(void) {
     HuWinMesSet(D_8011B6A8_mgmode, 0x580C, -1, -1);
     HuWinExAnimIn(D_8011B6A8_mgmode);
     func_80114404_mgmode();
-    while (!(D_800D5558_main[D_8011B808_mgmode] & (A_BUTTON | B_BUTTON))) {
+    while (!(HuPadBtnDown[D_8011B808_mgmode] & (A_BUTTON | B_BUTTON))) {
         HuPrcVSleep();
     }
-    if (D_800D1FE0_main <= 0) {
+    if (mgModeCoinBase <= 0) {
         HuWinMesSet(D_8011B6A8_mgmode, 0x5811, -1, -1);
         while (HuWinStatGet(D_8011B6A8_mgmode) != 0) {
             HuPrcVSleep();
@@ -538,7 +538,7 @@ s32 func_801136EC_mgmode(void) {
             HuWinExAnimOut(D_8011B6A8_mgmode, 0);
             return 1;
         }
-    } else if (D_800D1FE0_main >= 1000) {
+    } else if (mgModeCoinBase >= 1000) {
         omAddPrcObj(func_801152C0_mgmode, 0x3F00, 0x800, 0);
         HuWinMesSet(D_8011B6A8_mgmode, 0x580D, -1, -1);
         while (HuWinStatGet(D_8011B6A8_mgmode) != 0) {
@@ -582,7 +582,7 @@ s32 func_801136EC_mgmode(void) {
         }
         return 0;
     } else {
-        if (D_800D5558_main[D_8011B808_mgmode] & B_BUTTON) {
+        if (HuPadBtnDown[D_8011B808_mgmode] & B_BUTTON) {
             HuAudFXPlay(4);
             if (func_80114048_mgmode()) {
                 goto cancel;
@@ -597,8 +597,8 @@ s32 func_801136EC_mgmode(void) {
             HuWinExAnimIn(D_8011B6A8_mgmode);
         }
         func_801146D8_mgmode();
-        D_800CE29C_main = func_801149F4_mgmode();
-        HuWinInsertMesSet(D_8011B6A8_mgmode, D_800CE29C_main + 0x4700, 0);
+        mgModeMgNo = func_801149F4_mgmode();
+        HuWinInsertMesSet(D_8011B6A8_mgmode, mgModeMgNo + 0x4700, 0);
         HuWinMesSet(D_8011B6A8_mgmode, 0x580A, -1, -1);
         while (HuWinStatGet(D_8011B6A8_mgmode) != 0) {
             HuPrcVSleep();
@@ -616,10 +616,10 @@ s32 func_801136EC_mgmode(void) {
         if (HuWinAttrGet(D_8011B6A8_mgmode) & 8) {
             HuWinExAnimIn(D_8011B6A8_mgmode);
         }
-        D_800CB894_main = -1;
+        mgModeCoinRate = -1;
         do {
-            D_800CB894_main = func_80114C80_mgmode();
-            if (D_800CB894_main < 0) {
+            mgModeCoinRate = func_80114C80_mgmode();
+            if (mgModeCoinRate < 0) {
                 if (func_80114048_mgmode()) {
                     goto cancel;
                 }
@@ -628,15 +628,15 @@ s32 func_801136EC_mgmode(void) {
                     HuWinExAnimIn(D_8011B6A8_mgmode);
                 }
             }
-        } while (D_800CB894_main < 0);
-        D_800D1FE0_main -= D_800CB894_main;
-        GwPlayer[0].gameCoin = D_800CB894_main;
+        } while (mgModeCoinRate < 0);
+        mgModeCoinBase -= mgModeCoinRate;
+        GwPlayer[0].gameCoin = mgModeCoinRate;
         GwPlayer[0].group = 0;
         for (i = 1; i < 4; i++) {
             GwPlayer[i].group = 1;
         }
         _SetFlag(0xD);
-        GwSystem.minigame_index = (u8)D_800CE29C_main + 1;
+        GwSystem.minigame_index = (u8)mgModeMgNo + 1;
         omOvlHisChg(0, 0x69, 5, 0x84);
         D_80118EB1_mgmode = 1;
         D_8011B95A_mgmode = 0x70;
@@ -664,7 +664,7 @@ s32 func_80114048_mgmode(void) {
         HuPrcVSleep();
     }
     if ((s16)HuWinChoiceGet(D_8011B6A8_mgmode, 0, 0) == 0) {
-        if (D_800D1FE0_main < 11) {
+        if (mgModeCoinBase < 11) {
             result = TRUE;
         } else {
             HuWinExAnimOut(D_8011B6A8_mgmode, 0);
@@ -729,7 +729,7 @@ void func_80114344_mgmode(void) {
 }
 
 void func_80114404_mgmode(void) {
-    s16 rate = D_800CB894_main;
+    s16 rate = mgModeCoinRate;
     s16 coins = GwPlayer[0].bonusCoin;
     s16 i;
 
@@ -737,19 +737,19 @@ void func_80114404_mgmode(void) {
     func_80116968_mgmode(D_801194C0_mgmode, 1, 184, 46);
     func_801169A0_mgmode(D_801194C0_mgmode, 2);
     func_80116968_mgmode(D_801194C0_mgmode, 2, 184, 98);
-    func_80115A9C_mgmode(184, 122, D_800D1FE0_main);
+    func_80115A9C_mgmode(184, 122, mgModeCoinBase);
     func_80114804_mgmode(rate, 0, 0);
-    func_80115BB8_mgmode(D_800D1FE0_main);
-    func_80115CAC_mgmode(D_800D1FE0_main);
+    func_80115BB8_mgmode(mgModeCoinBase);
+    func_80115CAC_mgmode(mgModeCoinBase);
     HuPrcSleep(10);
     for (i = 0; i <= coins; i++) {
         func_80114804_mgmode(rate, i, rate * i);
-        func_80115BB8_mgmode(D_800D1FE0_main + rate * i);
-        func_80115CAC_mgmode(D_800D1FE0_main + rate * i);
+        func_80115BB8_mgmode(mgModeCoinBase + rate * i);
+        func_80115CAC_mgmode(mgModeCoinBase + rate * i);
         HuAudFXPlay(9);
         HuPrcSleep(2);
     }
-    D_800D1FE0_main += coins * rate;
+    mgModeCoinBase += coins * rate;
     if (coins == 0) {
         Hu3DMotionShiftSet(D_8011B8B8_mgmode[0], D_8011B796_mgmode, 0, 8, 0);
         _HuAudPlayerFXPlay(GwPlayer[0].chr + 0x287, 0);
@@ -763,7 +763,7 @@ void func_80114404_mgmode(void) {
 void func_80114614_mgmode(s16 index) {
     while (Hu3DMotionShiftTimeGet(D_8011B8A8_mgmode[index]) != -1.0f ||
            Hu3DData[D_8011B8A8_mgmode[index]].motTime <
-               D_800CCF58_main[Hu3DData[D_8011B8A8_mgmode[index]].motId].unk02) {
+               Hu3DMotion[Hu3DData[D_8011B8A8_mgmode[index]].motId].unk02) {
         HuPrcVSleep();
     }
 }
@@ -829,7 +829,7 @@ s16 func_801149F4_mgmode(void) {
     }
     prev = -1;
     type = rand8() & 3;
-    func_80116C18_mgmode(D_800A6D40_main[D_801195BC_mgmode[type]].flags & 0x7FF);
+    func_80116C18_mgmode(mgDataTbl[D_801195BC_mgmode[type]].flags & 0x7FF);
     func_80115E9C_mgmode(D_801195BC_mgmode[type] + 0x4700, 184, 62);
     for (i = 0; i < 30; i++) {
         HuPrcVSleep();
@@ -838,14 +838,14 @@ s16 func_801149F4_mgmode(void) {
         }
         prev = type;
         func_80116024_mgmode();
-        func_80116C18_mgmode(D_800A6D40_main[D_801195BC_mgmode[type]].flags & 0x7FF);
+        func_80116C18_mgmode(mgDataTbl[D_801195BC_mgmode[type]].flags & 0x7FF);
         func_80115E9C_mgmode(D_801195BC_mgmode[type] + 0x4700, 184, 62);
         HuAudFXPlay(0x104);
     }
     HuPrcVSleep();
-    result = D_800D0418_main[D_800D1F2C_main];
+    result = mgModeMgList[mgModeMgListIdx];
     func_80116024_mgmode();
-    func_80116C18_mgmode(D_800A6D40_main[result].flags & 0x7FF);
+    func_80116C18_mgmode(mgDataTbl[result].flags & 0x7FF);
     func_80115E9C_mgmode(result + 0x4700, 184, 62);
     HuPrcVSleep();
     HuAudFXPlay(0x105);
@@ -859,22 +859,22 @@ s16 func_80114C80_mgmode(void) {
     func_80115A9C_mgmode(184, 126, 0);
     while (TRUE) {
         HuPrcVSleep();
-        if ((D_800D5558_main[D_8011B808_mgmode] & A_BUTTON) && value != 0) {
+        if ((HuPadBtnDown[D_8011B808_mgmode] & A_BUTTON) && value != 0) {
             HuAudFXPlay(0x247);
             break;
         }
-        if (D_800D5558_main[D_8011B808_mgmode] & B_BUTTON) {
+        if (HuPadBtnDown[D_8011B808_mgmode] & B_BUTTON) {
             HuAudFXPlay(4);
             value = -1;
             break;
         }
-        if (D_800D0590_main[D_8011B808_mgmode] & L_JPAD) {
+        if (ContBtnRep[D_8011B808_mgmode] & L_JPAD) {
             delta = 10;
-        } else if (D_800D0590_main[D_8011B808_mgmode] & R_JPAD) {
+        } else if (ContBtnRep[D_8011B808_mgmode] & R_JPAD) {
             delta = -10;
-        } else if (D_800D0590_main[D_8011B808_mgmode] & U_JPAD) {
+        } else if (ContBtnRep[D_8011B808_mgmode] & U_JPAD) {
             delta = 1;
-        } else if (D_800D0590_main[D_8011B808_mgmode] & D_JPAD) {
+        } else if (ContBtnRep[D_8011B808_mgmode] & D_JPAD) {
             delta = -1;
         } else {
             delta = 0;
@@ -882,15 +882,15 @@ s16 func_80114C80_mgmode(void) {
         if (delta != 0) {
             HuAudFXPlay(0x246);
         }
-        if ((value == D_800D1FE0_main || value == 100) && delta > 0) {
+        if ((value == mgModeCoinBase || value == 100) && delta > 0) {
             value = 0;
-        } else if (value + delta >= 100 || value + delta > D_800D1FE0_main) {
-            value = D_800D1FE0_main;
+        } else if (value + delta >= 100 || value + delta > mgModeCoinBase) {
+            value = mgModeCoinBase;
             if (value > 100) {
                 value = 100;
             }
         } else if (value + delta < 0) {
-            value = D_800D1FE0_main;
+            value = mgModeCoinBase;
             if (value > 100) {
                 value = 100;
             }
@@ -898,7 +898,7 @@ s16 func_80114C80_mgmode(void) {
             value += delta;
         }
         func_80115BB8_mgmode(value);
-        func_80115CAC_mgmode(D_800D1FE0_main - value);
+        func_80115CAC_mgmode(mgModeCoinBase - value);
     }
     return value;
 }
@@ -1222,7 +1222,7 @@ void func_801162B4_mgmode(f32 centerX, f32 angle) {
     u8 *p;
     u8 pixel;
 
-    dst = D_8011B610_mgmode[D_800D2008_main];
+    dst = D_8011B610_mgmode[Hu3DBufNo];
     spread = sindf(angle);
     for (y = 0; y < 120; y++) {
         left = centerX - spread * (y + 100);
@@ -1238,18 +1238,18 @@ void func_801162B4_mgmode(f32 centerX, f32 angle) {
             dst += x & 1;
         }
 
-        p = &D_8011B610_mgmode[D_800D2008_main][(y * 320 + left - 1) / 2];
+        p = &D_8011B610_mgmode[Hu3DBufNo][(y * 320 + left - 1) / 2];
         *p &= ((left - 1) & 1) ? 0xF0 : 0xF;
         *p |= ((left - 1) & 1) ? 0xA : 0xA0;
-        p = &D_8011B610_mgmode[D_800D2008_main][(y * 320 + right + 1) / 2];
+        p = &D_8011B610_mgmode[Hu3DBufNo][(y * 320 + right + 1) / 2];
         *p &= ((right + 1) & 1) ? 0xF0 : 0xF;
         *p |= ((right + 1) & 1) ? 0xA : 0xA0;
-        p = &D_8011B610_mgmode[D_800D2008_main][(y * 320 + left) / 2];
+        p = &D_8011B610_mgmode[Hu3DBufNo][(y * 320 + left) / 2];
         *p &= (left & 1) ? 0xF0 : 0xF;
         *p |= (left & 1) ? 0x4 : 0x40;
-        p = &D_8011B610_mgmode[D_800D2008_main][(y * 320 + right) / 2];
+        p = &D_8011B610_mgmode[Hu3DBufNo][(y * 320 + right) / 2];
         *p &= (right & 1) ? 0xF0 : 0xF;
         *p |= (right & 1) ? 0x4 : 0x40;
     }
-    HuSprGet(D_8011B61E_mgmode, 0)->data->pat->data = D_8011B610_mgmode[D_800D2008_main];
+    HuSprGet(D_8011B61E_mgmode, 0)->data->pat->data = D_8011B610_mgmode[Hu3DBufNo];
 }

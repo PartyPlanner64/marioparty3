@@ -218,9 +218,9 @@ void func_80110C84_filesel(void);
 omObjData *func_80111944_filesel(s32 duration);
 void func_80112684_filesel(void);
 
-extern SaveCommonBuf D_800D09A8_main;
-extern f32 D_800A0A7C_main;
-extern u8 D_800CE20A_main;
+extern SaveCommonBuf saveCommonBuf;
+extern f32 Hu3DVtxWaveAngle;
+extern u8 storySceneNo;
 
 extern const u8 D_80112A64_filesel[];
 extern const u8 D_80112A68_filesel[];
@@ -534,7 +534,7 @@ void func_8010684C_filesel(s32 arg0, u32 arg1) {
 
 void func_801068B0_filesel(s32 arg0) {
     while (Hu3DData[D_80113650_filesel[arg0].unk_00].motTime !=
-           D_800CCF58_main[Hu3DData[D_80113650_filesel[arg0].unk_00].motId].unk02) {
+           Hu3DMotion[Hu3DData[D_80113650_filesel[arg0].unk_00].motId].unk02) {
         HuPrcVSleep();
     }
 }
@@ -542,7 +542,7 @@ void func_801068B0_filesel(s32 arg0) {
 s32 func_80106950_filesel(s32 arg0) {
     s16 modelId = D_80113650_filesel[arg0].unk_00;
 
-    return Hu3DData[modelId].motTime == D_800CCF58_main[Hu3DData[modelId].motId].unk02;
+    return Hu3DData[modelId].motTime == Hu3DMotion[Hu3DData[modelId].motId].unk02;
 }
 
 void func_801069D8_filesel(s32 arg0, s32 arg1, s16 arg2) {
@@ -813,7 +813,7 @@ void func_8010782C_filesel(s32 arg0) {
 void func_80107880_filesel(s32 arg0) {
     do {
         HuPrcVSleep();
-    } while (!(arg0 & D_800D5558_main[0]));
+    } while (!(arg0 & HuPadBtnDown[0]));
 }
 
 void func_801078BC_filesel(s32 arg0, s16 arg1) {
@@ -826,11 +826,11 @@ u16 func_801078F4_filesel(s32 value) {
 
     HuPrcSleep(3);
     while (1) {
-        if (D_800D5558_main[0] & (A_BUTTON | B_BUTTON | START_BUTTON | R_TRIG)) {
+        if (HuPadBtnDown[0] & (A_BUTTON | B_BUTTON | START_BUTTON | R_TRIG)) {
             sprintf(text, "\n%d\n", value);
             break;
         }
-        if (D_800D5558_main[0] & Z_TRIG) {
+        if (HuPadBtnDown[0] & Z_TRIG) {
             camera = Hu3DData[gCameraList[0].unk4].hmf->unkBC;
             sprintf(text, "POS:%4.2f,%4.2f,%4.2f", camera->unk08, camera->unk0C, camera->unk10);
             print8(16, 180, text);
@@ -844,7 +844,7 @@ u16 func_801078F4_filesel(s32 value) {
         }
         HuPrcVSleep();
     }
-    return D_800D5558_main[0];
+    return HuPadBtnDown[0];
 }
 
 void func_80107AA8_filesel(void) {
@@ -880,7 +880,7 @@ void func_80107AA8_filesel(void) {
 }
 
 void func_80107C50_filesel(omObjData *object) {
-    if (D_800D5558_main[0] & B_BUTTON) {
+    if (HuPadBtnDown[0] & B_BUTTON) {
         Hu3DBGColorSet(0xFF, 0, 0);
     }
 }
@@ -972,10 +972,10 @@ void func_80107CF8_filesel(void) {
         func_8010DDC0_filesel(slot);
         func_8010DFF4_filesel(slot);
         while (1) {
-            if (D_800D5558_main[0] & A_BUTTON) {
+            if (HuPadBtnDown[0] & A_BUTTON) {
                 break;
             }
-            if (D_800D5558_main[0] & B_BUTTON) {
+            if (HuPadBtnDown[0] & B_BUTTON) {
                 break;
             }
             HuPrcVSleep();
@@ -1005,9 +1005,9 @@ void func_80107CF8_filesel(void) {
         func_8010DF58_filesel();
         HuPrcVSleep();
     }
-    D_800D09A8_main.boxNo = fileIndex;
+    saveCommonBuf.boxNo = fileIndex;
     ModeSelIntroShownSet(0);
-    D_800D09A8_main.boxNo = fileIndex;
+    saveCommonBuf.boxNo = fileIndex;
     SLSaveCommon();
     HuAudFXPlay(0x155);
     func_8010F10C_filesel();
@@ -1047,7 +1047,7 @@ void func_80107CF8_filesel(void) {
                     history->overlayID = 0x7A;
                     history->event = 0;
                     history->stat = 0x82;
-                    D_800CE20A_main = D_80112A68_filesel[story];
+                    storySceneNo = D_80112A68_filesel[story];
                     omOvlCallEx(0x75, 0, 0x81);
                     omOvlHisChg(1, 0x77, 0, 0x81);
                     break;
@@ -1566,12 +1566,12 @@ u32 func_80109570_filesel(s32 arg0) {
     unkValue = UNK_VALUE;
 
     while (1) {
-        pressedInput = D_800D1244_main[0];
+        pressedInput = HuPadBtnRep[0];
         temp_v0 = func_80111B14_filesel(0);
         if (temp_v0 != -1) {
             pressedInput |= temp_v0;
         }
-        if (D_800D5558_main[0] & A_BUTTON) {
+        if (HuPadBtnDown[0] & A_BUTTON) {
             switch (selectedOption) {
                 case OPTION_FILE0:
                     RepeatVibrator(0, 5, 0, 5);
@@ -1596,7 +1596,7 @@ u32 func_80109570_filesel(s32 arg0) {
             }
             return selectedOption;
         }
-        if ((D_800D5558_main[0] & B_BUTTON)) {
+        if ((HuPadBtnDown[0] & B_BUTTON)) {
             if (selectedOption > OPTION_MAX) {
                 goto checkIfCursorIndexChanged;
             }
@@ -1756,15 +1756,15 @@ s32 func_801099A8_filesel(s32 selection, s32 option0, s32 option1, s32 option2) 
         func_8010AB1C_filesel(18, selection);
         func_8010AB58_filesel(18, -(timer / 8));
         timer = timer < 20 ? timer + 1 : 0;
-        input = D_800D1244_main[0];
+        input = HuPadBtnRep[0];
         extraInput = func_80111B14_filesel(0);
         if (extraInput != -1) {
             input |= extraInput;
         }
-        if (D_800D5558_main[0] & B_BUTTON) {
+        if (HuPadBtnDown[0] & B_BUTTON) {
             return -1;
         }
-        if (D_800D5558_main[0] & A_BUTTON) {
+        if (HuPadBtnDown[0] & A_BUTTON) {
             HuAudFXPlay(3);
             if (options[selection] == 1) {
                 break;
@@ -1954,12 +1954,12 @@ void func_8010A028_filesel(void) {
         func_8010AB1C_filesel(18, selection);
         func_8010AB58_filesel(18, -(timer / 8));
         timer = timer < 20 ? timer + 1 : 0;
-        input = D_800D1244_main[0];
+        input = HuPadBtnRep[0];
         extraInput = func_80111B14_filesel(0);
         if (extraInput != -1) {
             input |= extraInput;
         }
-        if (D_800D5558_main[0] & A_BUTTON) {
+        if (HuPadBtnDown[0] & A_BUTTON) {
             if (D_801142D8_filesel.files[selection].unk_04 == UNK_VALUE) {
                 HuAudFXPlay(3);
                 func_80105F54_filesel(18);
@@ -2042,7 +2042,7 @@ void func_8010A028_filesel(void) {
                 func_801076D0_filesel(4, 0x2A08);
                 break;
             }
-        } else if (D_800D5558_main[0] & B_BUTTON) {
+        } else if (HuPadBtnDown[0] & B_BUTTON) {
             if (func_80108834_filesel() == 0) {
                 func_801076D0_filesel(4, 0x2A04);
             } else {
@@ -2122,7 +2122,7 @@ void func_8010A7D8_filesel(s32 arg0) {
         if (progress > 1.0f) {
             break;
         }
-        D_800A0A7C_main = angle;
+        Hu3DVtxWaveAngle = angle;
         Hu3DModelVtxWave(model, progress, scale, 2);
         angle += 46.0f;
         if (angle > 360.0f) {
@@ -2622,7 +2622,7 @@ s32 func_8010B998_filesel(u32 buttons) {
         func_8010B6F4_filesel(D_80114478_filesel.option);
         return 0;
     }
-    if (D_800D5558_main[0] & A_BUTTON) {
+    if (HuPadBtnDown[0] & A_BUTTON) {
         switch (D_80114478_filesel.option) {
             case 7:
             case 8:
@@ -2663,7 +2663,7 @@ s32 func_8010B998_filesel(u32 buttons) {
         }
         func_8010B6F4_filesel(D_80114478_filesel.option);
         func_8010B684_filesel(D_80114478_filesel.keyboard);
-    } else if (D_800D5558_main[0] & B_BUTTON) {
+    } else if (HuPadBtnDown[0] & B_BUTTON) {
         D_80114478_filesel.name[D_80114478_filesel.length] = 0;
         if (D_80114478_filesel.length > 0) {
             HuAudFXPlay(0x2EF);
@@ -2800,7 +2800,7 @@ s32 func_8010BE30_filesel(u32 buttons) {
         func_8010BDC4_filesel();
         return 0;
     }
-    if (D_800D5558_main[0] & A_BUTTON) {
+    if (HuPadBtnDown[0] & A_BUTTON) {
         if (D_80114478_filesel.length < 5) {
             HuAudFXPlay(0x2EE);
             D_80114478_filesel.name[D_80114478_filesel.length] = func_8010B4D0_filesel(D_80114478_filesel.column, D_80114478_filesel.row);
@@ -2819,7 +2819,7 @@ s32 func_8010BE30_filesel(u32 buttons) {
         }
         return 0;
     }
-    if (D_800D5558_main[0] & B_BUTTON) {
+    if (HuPadBtnDown[0] & B_BUTTON) {
         D_80114478_filesel.name[D_80114478_filesel.length] = 0;
         if (D_80114478_filesel.length > 0) {
             HuAudFXPlay(0x2EF);
@@ -2922,7 +2922,7 @@ s32 func_8010C25C_filesel(u32 buttons) {
         func_8010BDC4_filesel();
         return 0;
     }
-    if (D_800D5558_main[0] & A_BUTTON) {
+    if (HuPadBtnDown[0] & A_BUTTON) {
         if (D_80114478_filesel.length < 5) {
             HuAudFXPlay(0x2EE);
             D_80114478_filesel.name[D_80114478_filesel.length] = func_8010B4FC_filesel(D_80114478_filesel.column, D_80114478_filesel.row);
@@ -2941,7 +2941,7 @@ s32 func_8010C25C_filesel(u32 buttons) {
         }
         return 0;
     }
-    if (D_800D5558_main[0] & B_BUTTON) {
+    if (HuPadBtnDown[0] & B_BUTTON) {
         D_80114478_filesel.name[D_80114478_filesel.length] = 0;
         if (D_80114478_filesel.length > 0) {
             HuAudFXPlay(0x2EF);
@@ -3044,7 +3044,7 @@ s32 func_8010C688_filesel(u32 buttons) {
         func_8010BDC4_filesel();
         return 0;
     }
-    if (D_800D5558_main[0] & A_BUTTON) {
+    if (HuPadBtnDown[0] & A_BUTTON) {
         if (D_80114478_filesel.length < 5) {
             HuAudFXPlay(0x2EE);
             D_80114478_filesel.name[D_80114478_filesel.length] = func_8010B528_filesel(D_80114478_filesel.column, D_80114478_filesel.row);
@@ -3063,7 +3063,7 @@ s32 func_8010C688_filesel(u32 buttons) {
         }
         return 0;
     }
-    if (D_800D5558_main[0] & B_BUTTON) {
+    if (HuPadBtnDown[0] & B_BUTTON) {
         D_80114478_filesel.name[D_80114478_filesel.length] = 0;
         if (D_80114478_filesel.length > 0) {
             HuAudFXPlay(0x2EF);
@@ -3153,7 +3153,7 @@ s32 func_8010C9B4_filesel(s32 preset) {
         keyboard = D_80114478_filesel.keyboard;
         (void)keyboard; // Read but never used in the original.
         option = D_80114478_filesel.option;
-        input = D_800D1244_main[0];
+        input = HuPadBtnRep[0];
         input |= func_80111A08_filesel(0);
         if (D_80114478_filesel.mode) {
             input = func_8010B998_filesel(input);
@@ -3223,16 +3223,16 @@ s32 func_8010CCA8_filesel(s32 fileIndex) {
     func_801076D0_filesel(4, 0x2A0E);
     while (1) {
         HuPrcVSleep();
-        input = D_800D1244_main[0];
+        input = HuPadBtnRep[0];
         stick = func_80111B14_filesel(0);
         if (stick != -1) {
             input |= stick;
         }
-        if (D_800D5558_main[0] & B_BUTTON) {
+        if (HuPadBtnDown[0] & B_BUTTON) {
             input = -1;
             break;
         }
-        if (D_800D5558_main[0] & A_BUTTON) {
+        if (HuPadBtnDown[0] & A_BUTTON) {
             func_80105FA0_filesel(18);
             if (selected == 0) {
                 HuAudFXPlay(3);
@@ -3734,21 +3734,21 @@ void func_8010E864_filesel(void) {
     while (1) {
         if (D_80114500_filesel == -1 || D_80114500_filesel == 0) {
             if (D_80114500_filesel == 0) {
-                if (D_800CDA7C_main[0] & Z_TRIG) {
-                    CZoom += D_800D20A1_main[0];
+                if (HuPadBtn[0] & Z_TRIG) {
+                    CZoom += HuPadStkY[0];
                     if (CZoom < 100.0f) {
                         CZoom = 100.0f;
                     } else if (CZoom > 8000.0f) {
                         CZoom = 8000.0f;
                     }
                 } else {
-                    CRot.x += D_800D20A1_main[0] * 0.1f;
+                    CRot.x += HuPadStkY[0] * 0.1f;
                     if (CRot.x < 0.0f) {
                         CRot.x += 360.0f;
                     } else if (CRot.x >= 360.0f) {
                         CRot.x -= 360.0f;
                     }
-                    CRot.y += D_800CBB6E_main[0] * 0.1f;
+                    CRot.y += HuPadStkX[0] * 0.1f;
                     if (CRot.y < 0.0f) {
                         CRot.y += 360.0f;
                     } else if (CRot.y >= 360.0f) {
@@ -3781,13 +3781,13 @@ void func_8010E864_filesel(void) {
             D_80112EB8_filesel.z = upX * (dx * dz * (1.0f - cosdf(roll)) - dy * sindf(roll)) + upY * (dy * dz * (1.0f - cosdf(roll)) + dx * sindf(roll)) + upZ * (dz * dz + (1.0f - dz * dz) * cosdf(roll));
         } else {
             if (D_80114500_filesel != 1) {
-                D_801144D4_filesel.y += D_800D20A1_main[0];
+                D_801144D4_filesel.y += HuPadStkY[0];
                 if (D_801144D4_filesel.z < -2000.0f) {
                     D_801144D4_filesel.z = -2000.0f;
                 } else if (D_801144D4_filesel.z > 2000.0f) {
                     D_801144D4_filesel.z = 2000.0f;
                 }
-                D_801144D4_filesel.x += D_800CBB6E_main[0];
+                D_801144D4_filesel.x += HuPadStkX[0];
                 if (D_801144D4_filesel.x < -2000.0f) {
                     D_801144D4_filesel.x = -2000.0f;
                 } else if (D_801144D4_filesel.x > 2000.0f) {
@@ -4565,8 +4565,8 @@ s32 func_80111A08_filesel(s32 arg0) {
     s32 absY;
     s32 direction;
 
-    stickX = D_800CBB6E_main[arg0];
-    stickY = D_800D20A1_main[arg0];
+    stickX = HuPadStkX[arg0];
+    stickY = HuPadStkY[arg0];
 
     if (((stickX != 0) | (stickY != 0)) == 0) {
         return 0;
@@ -4604,8 +4604,8 @@ s32 func_80111B14_filesel(s32 arg0) {
     s32 absX;
     s32 absY;
 
-    stickX = D_800CBB6E_main[arg0];
-    stickY = D_800D20A1_main[arg0];
+    stickX = HuPadStkX[arg0];
+    stickY = HuPadStkY[arg0];
     if (D_801129A0_filesel != 0) {
         if ((stickX == 0) & (stickY == 0)) {
             D_801129A0_filesel = 0;
@@ -4667,7 +4667,7 @@ void func_80111C30_filesel(void) {
     for (i = 0; i < 3; i++) {
         SLCurBoxNoSet(i);
         SLLoadGameStat();
-        if (GwCommon.unk_00 == UNK_VALUE && D_800D09A8_main.boxNo == i) {
+        if (GwCommon.unk_00 == UNK_VALUE && saveCommonBuf.boxNo == i) {
             D_801142D8_filesel.selected = i;
         }
         func_801122B0_filesel(i);
@@ -4783,7 +4783,7 @@ void func_801122B0_filesel(s32 fileIndex) {
             mask = 7;
             break;
     }
-    D_801142D8_filesel.files[fileIndex].empty = (D_800D20EC_main & mask) != 0;
+    D_801142D8_filesel.files[fileIndex].empty = (SLFormatFlags & mask) != 0;
     if (D_801142D8_filesel.files[fileIndex].empty != 0) {
         for (i = 0; i < 10; i++) {
             D_801142D8_filesel.files[fileIndex].name[i] = 0;
@@ -4836,7 +4836,7 @@ void func_80112584_filesel(s32 arg0) {
     SLCurBoxNoSet(arg0);
     SLLoadGameStat();
     bcopy(D_801142D8_filesel.files[arg0].name, GwCommon.fileName, 10);
-    D_800D09A8_main.boxNo = arg0;
+    saveCommonBuf.boxNo = arg0;
     SLCommonSet(1);
 }
 

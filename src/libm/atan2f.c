@@ -43,7 +43,7 @@ f32 atan2f(f32 y, f32 x) {
         if (term <= tolerance) {
             break;
         }
-        term *= power * i * D_800A46A0[i + 1];
+        term *= power * i * __invFactTblF[i + 1];
     }
     result *= ratio * factor;
     return x > 0.0f ? result : (y > 0.0f ? M_PIf + result : -M_PIf + result);

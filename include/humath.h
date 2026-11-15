@@ -32,7 +32,7 @@ typedef struct Vec2f {
 } Vec2f;
 
 /* Application-owned default tolerance used by libhmath's epsilon helpers. */
-extern f32 D_800A12A4_main;
+extern f32 mainUnkF32;
 
 f64 HuSqrt(f64 x);
 s32 func_80089820_main(f32 value, f32 threshold);

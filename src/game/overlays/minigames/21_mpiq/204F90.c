@@ -77,7 +77,7 @@ typedef struct {
 } MpiqBssCAEC; // Size 0xC
 
 extern s32 D_800A178C_main[][6];
-extern u8 D_800D6A90_main;
+extern u8 omAllPauseF;
 
 MinigameFlow D_8010C680_mpiq = {
     MG_STATE_OPENING, MINIGAME_4P, MG_TIMER_NONE, MG_TIME_DISP_NONE, FALSE, MG_GAUGE_NONE, MG_RESULT_WIN_1, 0,
@@ -244,7 +244,7 @@ void func_801059A0_mpiq(void) {
 }
 
 void func_80105C60_mpiq(omObjData *obj) {
-    if (D_800D530C_main != 0) {
+    if (omSysExitReq != 0) {
         HuAudFXAllStop();
         HuAudSeqFadeOut(30);
         WipeCreateOut(WIPE_TYPE_NORMAL, 20);
@@ -365,15 +365,15 @@ void func_8010651C_mpiq(omObjData *obj) {
     f32 x = obj->trans.x;
     f32 z = obj->trans.z;
 
-    D_800CBB6E_main[data->unk57] = 0;
-    D_800D20A1_main[data->unk57] = 0;
+    HuPadStkX[data->unk57] = 0;
+    HuPadStkY[data->unk57] = 0;
     if (D_8010C9E8_mpiq[data->unk59] & 1) {
-        D_800CDA7C_main[data->unk57] = 0;
-        D_800D5558_main[data->unk57] = 0;
+        HuPadBtn[data->unk57] = 0;
+        HuPadBtnDown[data->unk57] = 0;
     }
     if (D_8010C9C2_mpiq == 1 && !(GwPlayer[data->unk59].stat & 1)) {
-        D_800CDA7C_main[data->unk57] &= 0x7FFF;
-        D_800D5558_main[data->unk57] &= 0x7FFF;
+        HuPadBtn[data->unk57] &= 0x7FFF;
+        HuPadBtnDown[data->unk57] &= 0x7FFF;
     }
     func_800DDD94_minigame(obj);
     data->unk60 = 0;
@@ -460,14 +460,14 @@ void func_801069F8_mpiq(s32 index) {
     if (D_8010C9C2_mpiq == 0 && D_8010CA08_mpiq[index].delay != 0) {
         D_8010CA08_mpiq[index].delay--;
         if (D_8010CA08_mpiq[index].delay == 0) {
-            D_800CDA7C_main[data->unk57] |= 0x8000;
-            D_800D5558_main[data->unk57] |= 0x8000;
+            HuPadBtn[data->unk57] |= 0x8000;
+            HuPadBtnDown[data->unk57] |= 0x8000;
         }
     } else if (index == D_8010C9BC_mpiq && D_8010CA08_mpiq[index].hold != 0) {
         D_8010CA08_mpiq[index].hold--;
         if (D_8010CA08_mpiq[index].hold == 0) {
-            D_800CDA7C_main[data->unk57] |= D_8010CA08_mpiq[index].button;
-            D_800D5558_main[data->unk57] |= D_8010CA08_mpiq[index].button;
+            HuPadBtn[data->unk57] |= D_8010CA08_mpiq[index].button;
+            HuPadBtnDown[data->unk57] |= D_8010CA08_mpiq[index].button;
         }
     }
 }
@@ -735,7 +735,7 @@ void func_80107774_mpiq(omObjData *obj) {
             Hu3DModelAttrSet(obj->model[0], 4, 4);
         }
         model = obj->model[2];
-        if (Hu3DData[model].motTime >= D_800CCF58_main[Hu3DData[model].motId].unk02) {
+        if (Hu3DData[model].motTime >= Hu3DMotion[Hu3DData[model].motId].unk02) {
             Hu3DModelAttrSet(model, 4, 4);
             work->flags &= ~0x10;
         }
@@ -830,7 +830,7 @@ void func_80107DE0_mpiq(omObjData *obj) {
 
     if (*flags & 1) {
         model = obj->model[0];
-        if (Hu3DData[model].motTime >= D_800CCF58_main[Hu3DData[model].motId].unk02) {
+        if (Hu3DData[model].motTime >= Hu3DMotion[Hu3DData[model].motId].unk02) {
             Hu3DModelAttrSet(model, 4, 4);
             *flags &= ~1;
         }
@@ -1009,7 +1009,7 @@ void func_801087F8_mpiq(omObjData *obj) {
     omSetRot(obj, 0.0f, work->rotY, 0.0f);
     if (work->flags & 1) {
         model = obj->model[0];
-        if (Hu3DData[model].motTime >= D_800CCF58_main[Hu3DData[model].motId].unk02) {
+        if (Hu3DData[model].motTime >= Hu3DMotion[Hu3DData[model].motId].unk02) {
             Hu3DMotionShiftSet(model, Hu3DData[obj->motion[0]].motId, 0, 10, 0);
             Hu3DMotionAttrSet(obj->model[0], 2, 2);
             work->flags &= ~1;
@@ -1098,8 +1098,8 @@ void func_80108D10_mpiq(void) {
     while (TRUE) {
         for (i = 0; i < 4; i++) {
             if (GwPlayer[i].stat & 1) {
-                D_800CDA7C_main[GwPlayer[i].pad] &= 0x1FFF;
-                D_800D5558_main[GwPlayer[i].pad] &= 0x1FFF;
+                HuPadBtn[GwPlayer[i].pad] &= 0x1FFF;
+                HuPadBtnDown[GwPlayer[i].pad] &= 0x1FFF;
             }
             if (MgFlowStatGet() == MG_STATE_PLAY && (GwPlayer[i].stat & 1)) {
                 func_801069F8_mpiq(i);
@@ -1160,7 +1160,7 @@ void func_80109018_mpiq(void) {
         player = D_800EC598_minigame[D_8010C9BC_mpiq];
         if (D_8010C9C2_mpiq == 1 && D_8010C6B8_mpiq == -1 && (D_8010C9C0_mpiq & 4) &&
             func_8010C4C0_mpiq(D_8010C9BC_mpiq)) {
-            buttons = D_800D5558_main[GwPlayer[D_8010C9BC_mpiq].pad];
+            buttons = HuPadBtnDown[GwPlayer[D_8010C9BC_mpiq].pad];
             work = D_8010CAE8_mpiq->data;
             pos.x = player->trans.x;
             pos.y = player->trans.y;
@@ -1173,7 +1173,7 @@ void func_80109018_mpiq(void) {
                 D_8010C6B8_mpiq = 0;
                 func_800E58F8_minigame(player, 0x26, 0);
                 func_800E5798_minigame(player, 0x27);
-                while (Hu3DData[player->model[0]].motTime < D_800CCF58_main[Hu3DData[player->model[0]].motId].unk02) {
+                while (Hu3DData[player->model[0]].motTime < Hu3DMotion[Hu3DData[player->model[0]].motId].unk02) {
                     HuPrcVSleep();
                 }
                 func_800E5798_minigame(player, 0x28);
@@ -1187,7 +1187,7 @@ void func_80109018_mpiq(void) {
                 D_8010C6B8_mpiq = 1;
                 func_800E58F8_minigame(player, 0x26, 0);
                 func_800E5798_minigame(player, 0x27);
-                while (Hu3DData[player->model[0]].motTime < D_800CCF58_main[Hu3DData[player->model[0]].motId].unk02) {
+                while (Hu3DData[player->model[0]].motTime < Hu3DMotion[Hu3DData[player->model[0]].motId].unk02) {
                     HuPrcVSleep();
                 }
                 func_800E5798_minigame(player, 0x28);
@@ -1201,7 +1201,7 @@ void func_80109018_mpiq(void) {
                 D_8010C6B8_mpiq = 2;
                 func_800E58F8_minigame(player, 0x26, 0);
                 func_800E5798_minigame(player, 0x27);
-                while (Hu3DData[player->model[0]].motTime < D_800CCF58_main[Hu3DData[player->model[0]].motId].unk02) {
+                while (Hu3DData[player->model[0]].motTime < Hu3DMotion[Hu3DData[player->model[0]].motId].unk02) {
                     HuPrcVSleep();
                 }
                 func_800E5798_minigame(player, 0x28);
@@ -2133,7 +2133,7 @@ void func_8010B900_mpiq(void) {
             if (D_8010C9E8_mpiq[i] & 1) {
                 continue;
             }
-            if (D_800D5558_main[GwPlayer[i].pad] & 0x8000) {
+            if (HuPadBtnDown[GwPlayer[i].pad] & 0x8000) {
                 pressed[count++] = i;
                 D_8010C9C0_mpiq &= ~0x10;
                 D_8010C9C0_mpiq |= 4;
@@ -2156,7 +2156,7 @@ void func_8010BA64_mpiq(omObjData *obj) {
     if (!(D_8010C9C0_mpiq & 2)) {
         count = 0;
         for (i = 0; i < 4; i++) {
-            if (D_800D5558_main[GwPlayer[i].pad] & 0x8000) {
+            if (HuPadBtnDown[GwPlayer[i].pad] & 0x8000) {
                 pressed[count++] = i;
                 D_8010C9C0_mpiq &= ~0x10;
                 D_8010C9C0_mpiq |= 4;
@@ -2368,13 +2368,13 @@ void func_8010C558_mpiq(omObjData *obj) {
 
     if (((*counter += 1) & 0x10) != 0) {
         fontcolor = FONT_COLOR_WHITE;
-        sprintf(D_800D5218_main, D_8010C988_mpiq);
-        print8(0xE8, 0x10, D_800D5218_main);
+        sprintf(omDBGStrBuf, D_8010C988_mpiq);
+        print8(0xE8, 0x10, omDBGStrBuf);
     }
 }
 
 void func_8010C5B8_mpiq(omObjData *obj) {
-    if (omPauseChk() + D_800D6A90_main != 0) {
+    if (omPauseChk() + omAllPauseF != 0) {
         if (D_8010CA00_mpiq != -1) {
             HuWinDispOff(D_8010CA00_mpiq);
         }
@@ -2388,6 +2388,6 @@ const char D_8010C9AC_mpiq[] = "";
 
 void func_8010C624_mpiq(void) {
     fontcolor = FONT_COLOR_WHITE;
-    sprintf(D_800D5218_main, D_8010C990_mpiq, D_8010C9D8_mpiq);
-    print8(0x20, 0xB0, D_800D5218_main);
+    sprintf(omDBGStrBuf, D_8010C990_mpiq, D_8010C9D8_mpiq);
+    print8(0x20, 0xB0, omDBGStrBuf);
 }

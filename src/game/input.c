@@ -6,11 +6,11 @@
 void ContDataInit(void) {
     s16 i;
     for (i = 0; i < MAXCONTROLLERS; ++i) {
-        D_800D5546_main[i] =
-            D_800D1350_main[i] =
-                D_800C9520_main[i] =
-                    D_800D0590_main[i] =
-                        D_800D10F8_main[i] = 0;
+        ContBtn[i] =
+            ContBtnOld[i] =
+                ContBtnDown[i] =
+                    ContBtnRep[i] =
+                        ContRepCnt[i] = 0;
     }
 }
 
@@ -23,9 +23,9 @@ void ContDataUpdate(void) {
     s8 temp_v0_4;
 
     for (i = 0; i < MAXCONTROLLERS; ++i) {
-        D_800D1350_main[i] = D_800D5546_main[i];
-        var_a2 = D_800CDA7C_main[i];
-        temp_v0_2 = D_800CBB6E_main[i];
+        ContBtnOld[i] = ContBtn[i];
+        var_a2 = HuPadBtn[i];
+        temp_v0_2 = HuPadStkX[i];
         temp_v0_3 = ((temp_v0_2 >> 7) | 1);
 
         if (((temp_v0_2 * temp_v0_3) - 0x1E) > 0) {
@@ -36,7 +36,7 @@ void ContDataUpdate(void) {
             }
         }
 
-        temp_v0_4 = D_800D20A1_main[i];
+        temp_v0_4 = HuPadStkY[i];
         temp_v0_5 = ((temp_v0_4 >> 7) | 1);
 
         if (((temp_v0_4 * temp_v0_5) - 0x1E) > 0) {
@@ -47,19 +47,19 @@ void ContDataUpdate(void) {
             }
         }
 
-        D_800D5546_main[i] = var_a2;
-        D_800C9520_main[i] = var_a2 & (var_a2 ^ D_800D1350_main[i]);
+        ContBtn[i] = var_a2;
+        ContBtnDown[i] = var_a2 & (var_a2 ^ ContBtnOld[i]);
 
-        if ((var_a2 & 0xFFFF) != D_800D1350_main[i]) {
-            D_800D10F8_main[i] = 0xA;
-            D_800D0590_main[i] = D_800C9520_main[i];
+        if ((var_a2 & 0xFFFF) != ContBtnOld[i]) {
+            ContRepCnt[i] = 0xA;
+            ContBtnRep[i] = ContBtnDown[i];
         } else {
-            if (D_800D10F8_main[i] > 0) {
-                D_800D10F8_main[i] = D_800D10F8_main[i] - 1;
-                D_800D0590_main[i] = D_800C9520_main[i];
+            if (ContRepCnt[i] > 0) {
+                ContRepCnt[i] = ContRepCnt[i] - 1;
+                ContBtnRep[i] = ContBtnDown[i];
             } else {
-                D_800D10F8_main[i] = 1;
-                D_800D0590_main[i] = var_a2;
+                ContRepCnt[i] = 1;
+                ContBtnRep[i] = var_a2;
             }
         }
     }

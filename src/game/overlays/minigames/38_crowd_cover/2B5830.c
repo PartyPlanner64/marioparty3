@@ -99,8 +99,8 @@ typedef struct {
 } CrowdCoverMember; // sizeof 0x44
 
 extern s32 D_800A178C_main[][6];
-extern HuSprAnimData *D_800C9530_main[];
-extern u8 D_800CE20A_main;
+extern HuSprAnimData *HuSprAnimTbl[];
+extern u8 storySceneNo;
 
 s16 D_8010C6C0_crowd_cover = 2700;
 s16 D_8010C6C4_crowd_cover[3][2] = {
@@ -363,7 +363,7 @@ void func_80105FD0_crowd_cover(f32 x, f32 y, f32 z, f32 *dst) {
 void func_801060C4_crowd_cover(void) {
     D_800EBE28_minigame = 0;
     func_800E1490_minigame(0);
-    D_8010D860_crowd_cover = D_800CE20A_main;
+    D_8010D860_crowd_cover = storySceneNo;
     D_800EC1C0_minigame[D_800EBE28_minigame++] = omAddObj(5, 1, 0, -1, func_80106144_crowd_cover);
     D_8010CFD8_crowd_cover = 0;
 }
@@ -554,7 +554,7 @@ void func_80106580_crowd_cover(omObjData *object) {
             func_8010C61C_crowd_cover();
             break;
     }
-    if (D_800D530C_main == 1 && WipeStatGet() == 0) {
+    if (omSysExitReq == 1 && WipeStatGet() == 0) {
         D_8010C6D0_crowd_cover = 0;
         D_8010CFD8_crowd_cover = 6;
     }
@@ -751,7 +751,7 @@ void func_80107554_crowd_cover(omObjData *object) {
             break;
         case 2:
             if (!work->unk2D) {
-                input = D_800D5558_main[(s8)pad];
+                input = HuPadBtnDown[(s8)pad];
             } else {
                 input = func_80107C5C_crowd_cover(object);
             }
@@ -793,7 +793,7 @@ void func_80107554_crowd_cover(omObjData *object) {
             rot = 0.0f;
             func_800E5690_minigame(object, 0x27);
             if (Hu3DData[object->model[0]].motTime ==
-                D_800CCF58_main[Hu3DData[object->model[0]].motId].unk02 - 2.0) {
+                Hu3DMotion[Hu3DData[object->model[0]].motId].unk02 - 2.0) {
                 omVibrate(data->unk59, 2, 3, 10);
             }
             break;
@@ -1071,7 +1071,7 @@ void func_80108238_crowd_cover(omObjData *object) {
                 break;
             case 5:
                 model = member->unk34;
-                if (Hu3DData[model].motTime >= D_800CCF58_main[Hu3DData[model].motId].unk02) {
+                if (Hu3DData[model].motTime >= Hu3DMotion[Hu3DData[model].motId].unk02) {
                     Hu3DModelKill(model);
                     member->state = 6;
                 }
@@ -1496,7 +1496,7 @@ s16 func_8010A12C_crowd_cover(s16 spriteId, s32 flags) {
         return -1;
     }
     crowd = &D_8010D8EC_crowd_cover[index];
-    crowd->sprite = D_800C9530_main[spriteId];
+    crowd->sprite = HuSprAnimTbl[spriteId];
     crowd->unk_28 = flags;
     crowd->unk_1A = 7;
     cel = crowd->sprite->pat;
@@ -1619,7 +1619,7 @@ void func_8010A734_crowd_cover(s16 index, s16 spriteId) {
     s32 j;
 
     crowd = &D_8010D8EC_crowd_cover[index];
-    crowd->sprite = D_800C9530_main[spriteId];
+    crowd->sprite = HuSprAnimTbl[spriteId];
     cel = crowd->sprite->pat;
     HuMemFree(crowd->vtx);
     HuMemFree(crowd->displayList);
@@ -1730,7 +1730,7 @@ void func_8010ACBC_crowd_cover(s16 index, s16 spriteId) {
 
     if (index != -1) {
         crowd = &D_8010D8EC_crowd_cover[index];
-        crowd->sprite = D_800C9530_main[spriteId];
+        crowd->sprite = HuSprAnimTbl[spriteId];
         crowd->unk_20 = 0x100;
         crowd->unk_1F = 0xFF;
         crowd->unk_1E = 0xFF;

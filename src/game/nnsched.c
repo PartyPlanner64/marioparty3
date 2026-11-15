@@ -7,84 +7,84 @@
 #include "game/graphics.h"
 #include "game/nnsched.h"
 
-static unkSchedStruct *D_800BBAC0_main;
-static OSMesgQueue D_800BBAC8_main;
-static OSMesg D_800BBAE0_main[8];
-static OSMesgQueue D_800BBB00_main;
-static OSMesg D_800BBB18_main[8];
-static OSMesgQueue D_800BBB38_main;
-static OSMesg D_800BBB50_main[8];
-static OSThread D_800BBB70_main;
+static unkSchedStruct *scClientList;
+static OSMesgQueue scEventQueue;
+static OSMesg scEventMesgBuf[8];
+static OSMesgQueue scRspQueue;
+static OSMesg scRspMesgBuf[8];
+static OSMesgQueue scRdpQueue;
+static OSMesg scRdpMesgBuf[8];
+static OSThread scEventThread;
 static u64 sSchedulerEventStack[0x80];
-static OSThread D_800BC120_main;
+static OSThread scAudioThread;
 static u64 sSchedulerAudioStack[0x80];
-static OSThread D_800BC6D0_main;
+static OSThread scGraphicsThread;
 static u64 sSchedulerGraphicsStack[0x80];
-static OSTask *D_800BCC80_main;
-static OSTask *D_800BCC84_main;
-static OSMesg D_800BCC88_main;
-static OSMesg D_800BCC90_main[8];
-static s32 D_800BCCB0_main;
-static OSMesgQueue D_800BCCB8_main;
-static OSMesg D_800BCCD0_main[1];
-static OSMesg D_800BCCD8_main[8];
-extern OSMesgQueue D_800CC3A0_main;
-extern OSMesgQueue D_800CC3C0_main;
-extern s32 D_800CCF2C_main;
-extern u32 D_800CE210_main;
-extern u32 D_800CE2C8_main;
-extern u32 D_800D2094_main;
+static OSTask *scCurAudioTask;
+static OSTask *scCurGraphicsTask;
+static OSMesg scYieldGraphicsTask;
+static OSMesg scGraphicsTaskMesgBuf[8];
+static s32 scGraphicsWaitF;
+static OSMesgQueue scAudioDoneQueue;
+static OSMesg scAudioDoneMesgBuf[1];
+static OSMesg scAudioTaskMesgBuf[8];
+extern OSMesgQueue scAudioTaskQueue;
+extern OSMesgQueue scGraphicsTaskQueue;
+extern s32 scPreNMIF;
+extern u32 scPreNMICnt;
+extern u32 scRetraceRate;
+extern u32 scRetraceCnt;
 extern s32 _osPreNMI;
 
 s32 __osAfterPreNMI(void);
 
 void InitSchedulerEvent(void) {
-    osCreateMesgQueue(&D_800BBAC8_main, D_800BBAE0_main, ARRAY_COUNT(D_800BBAE0_main));
-    osSetEventMesg(OS_EVENT_PRENMI, &D_800BBAC8_main, (OSMesg)0x29D);
+    osCreateMesgQueue(&scEventQueue, scEventMesgBuf, ARRAY_COUNT(scEventMesgBuf));
+    osSetEventMesg(OS_EVENT_PRENMI, &scEventQueue, (OSMesg)0x29D);
 }
 
 void InitScheduler(u8 mode, u8 retraceCount) {
-    D_800CE2C8_main = retraceCount;
-    D_800CCF2C_main = 0;
-    D_800CE210_main = 0;
-    D_800D2094_main = 0;
-    D_800BBAC0_main = NULL;
-    D_800BCC80_main = NULL;
-    D_800BCC84_main = NULL;
-    D_800BCC88_main = NULL;
-    D_800BCCB0_main = 0;
+    scRetraceRate = retraceCount;
+    scPreNMIF = 0;
+    scPreNMICnt = 0;
+    scRetraceCnt = 0;
+    scClientList = NULL;
+    scCurAudioTask = NULL;
+    scCurGraphicsTask = NULL;
+    scYieldGraphicsTask = NULL;
+    scGraphicsWaitF = 0;
     osCreateViManager(OS_PRIORITY_VIMGR);
     osViSetMode(&osViModeTable[mode]);
     osViSetYScale(1.0f);
     osViBlack(TRUE);
-    osCreateMesgQueue(&D_800BBB00_main, D_800BBB18_main, ARRAY_COUNT(D_800BBB18_main));
-    osCreateMesgQueue(&D_800BBB38_main, D_800BBB50_main, ARRAY_COUNT(D_800BBB50_main));
-    osCreateMesgQueue(&D_800CC3C0_main, D_800BCC90_main, ARRAY_COUNT(D_800BCC90_main));
-    osCreateMesgQueue(&D_800BCCB8_main, D_800BCCD0_main, ARRAY_COUNT(D_800BCCD0_main));
-    osCreateMesgQueue(&D_800CC3A0_main, D_800BCCD8_main, ARRAY_COUNT(D_800BCCD8_main));
-    osViSetEvent(&D_800BBAC8_main, (OSMesg)0x29A, retraceCount);
-    osSetEventMesg(OS_EVENT_SP, &D_800BBB00_main, (OSMesg)0x29B);
-    osSetEventMesg(OS_EVENT_DP, &D_800BBB38_main, (OSMesg)0x29C);
-    osCreateThread(&D_800BBB70_main, 0x13, EventHandler, NULL, &sSchedulerEventStack[ARRAY_COUNT(sSchedulerEventStack)], 0x78);
-    osStartThread(&D_800BBB70_main);
+    osCreateMesgQueue(&scRspQueue, scRspMesgBuf, ARRAY_COUNT(scRspMesgBuf));
+    osCreateMesgQueue(&scRdpQueue, scRdpMesgBuf, ARRAY_COUNT(scRdpMesgBuf));
+    osCreateMesgQueue(&scGraphicsTaskQueue, scGraphicsTaskMesgBuf, ARRAY_COUNT(scGraphicsTaskMesgBuf));
+    osCreateMesgQueue(&scAudioDoneQueue, scAudioDoneMesgBuf, ARRAY_COUNT(scAudioDoneMesgBuf));
+    osCreateMesgQueue(&scAudioTaskQueue, scAudioTaskMesgBuf, ARRAY_COUNT(scAudioTaskMesgBuf));
+    osViSetEvent(&scEventQueue, (OSMesg)0x29A, retraceCount);
+    osSetEventMesg(OS_EVENT_SP, &scRspQueue, (OSMesg)0x29B);
+    osSetEventMesg(OS_EVENT_DP, &scRdpQueue, (OSMesg)0x29C);
+    osCreateThread(&scEventThread, 0x13, EventHandler, NULL, &sSchedulerEventStack[ARRAY_COUNT(sSchedulerEventStack)], 0x78);
+    osStartThread(&scEventThread);
     while (_osPreNMI) {
     }
-    osCreateThread(&D_800BC120_main, 0x12, ScExecuteAudio, NULL, &sSchedulerAudioStack[ARRAY_COUNT(sSchedulerAudioStack)], 0x6F);
-    osStartThread(&D_800BC120_main);
-    osCreateThread(&D_800BC6D0_main, 0x11, ScExecuteGraphics, NULL, &sSchedulerGraphicsStack[ARRAY_COUNT(sSchedulerGraphicsStack)], 0x65);
-    osStartThread(&D_800BC6D0_main);
+    osCreateThread(&scAudioThread, 0x12, ScExecuteAudio, NULL, &sSchedulerAudioStack[ARRAY_COUNT(sSchedulerAudioStack)], 0x6F);
+    osStartThread(&scAudioThread);
+    osCreateThread(&scGraphicsThread, 0x11, ScExecuteGraphics, NULL, &sSchedulerGraphicsStack[ARRAY_COUNT(sSchedulerGraphicsStack)], 0x65);
+    osStartThread(&scGraphicsThread);
 }
 
 void AddSchedulerClient(unkSchedStruct *client, OSMesgQueue *queue, s32 eventMask) {
     OSIntMask mask = osSetIntMask(OS_IM_NONE);
 
-    client->unk00 = D_800BBAC0_main;
+    client->unk00 = scClientList;
     client->unk04 = queue;
     client->unk08 = eventMask;
-    D_800BBAC0_main = client;
+    scClientList = client;
     osSetIntMask(mask);
 
-    if ((eventMask & 2) && D_800CCF2C_main) {
+    if ((eventMask & 2) && scPreNMIF) {
         osSendMesg(queue, (OSMesg)2, OS_MESG_NOBLOCK);
     }
 }
@@ -92,14 +92,14 @@ void AddSchedulerClient(unkSchedStruct *client, OSMesgQueue *queue, s32 eventMas
 void RemoveSchedulerClient(unkSchedStruct *client) {
     OSIntMask mask = osSetIntMask(OS_IM_NONE);
     unkSchedStruct *prevClient = NULL;
-    unkSchedStruct *currClient = D_800BBAC0_main;
+    unkSchedStruct *currClient = scClientList;
 
     while (currClient != NULL) {
         if (currClient == client) {
             if (prevClient != NULL) {
                 prevClient->unk00 = currClient->unk00;
             } else {
-                D_800BBAC0_main = client->unk00;
+                scClientList = client->unk00;
             }
             break;
         }
@@ -111,7 +111,7 @@ void RemoveSchedulerClient(unkSchedStruct *client) {
 }
 
 void EventBroadcast(s32 msg) {
-    unkSchedStruct *client = D_800BBAC0_main;
+    unkSchedStruct *client = scClientList;
 
     while (client != NULL) {
         if (msg & client->unk08) {
@@ -125,15 +125,15 @@ void EventHandler(void *arg) {
     OSMesg msg;
 
     while (TRUE) {
-        osRecvMesg(&D_800BBAC8_main, &msg, OS_MESG_BLOCK);
+        osRecvMesg(&scEventQueue, &msg, OS_MESG_BLOCK);
         switch ((s32)msg) {
             case 0x29A:
-                D_800D2094_main++;
+                scRetraceCnt++;
                 HuProfRecordAwaitRsp();
                 EventBroadcast(1);
-                if (D_800CCF2C_main) {
-                    D_800CE210_main++;
-                    if (D_800CE210_main >= 10U / D_800CE2C8_main) {
+                if (scPreNMIF) {
+                    scPreNMICnt++;
+                    if (scPreNMICnt >= 10U / scRetraceRate) {
                         __osAfterPreNMI();
                     }
                 }
@@ -143,7 +143,7 @@ void EventHandler(void *arg) {
                 osViBlack(TRUE);
                 EventBroadcast(2);
                 PRENMICallbackVibrator();
-                D_800CCF2C_main = 1;
+                scPreNMIF = 1;
                 break;
         }
     }
@@ -161,27 +161,27 @@ void ScExecuteAudio(void *arg) {
     AddSchedulerClient(&client, &queue, 1);
     while (TRUE) {
         osRecvMesg(&queue, NULL, OS_MESG_BLOCK);
-        if (osRecvMesg(&D_800CC3A0_main, (OSMesg *)&audioTask, OS_MESG_NOBLOCK) != 0) {
+        if (osRecvMesg(&scAudioTaskQueue, (OSMesg *)&audioTask, OS_MESG_NOBLOCK) != 0) {
             continue;
         }
         osWritebackDCacheAll();
-        graphicsTask = D_800BCC84_main;
+        graphicsTask = scCurGraphicsTask;
         graphicsState = 0;
-        if (graphicsTask != NULL && D_800BCC88_main == NULL) {
+        if (graphicsTask != NULL && scYieldGraphicsTask == NULL) {
             graphicsState = 2;
             osSpTaskYield();
-            osRecvMesg(&D_800BBB00_main, NULL, OS_MESG_BLOCK);
+            osRecvMesg(&scRspQueue, NULL, OS_MESG_BLOCK);
             if (osSpTaskYielded(graphicsTask)) {
                 graphicsState = 1;
             }
         }
-        D_800BCC80_main = &audioTask->task;
+        scCurAudioTask = &audioTask->task;
         osSpTaskLoad(&audioTask->task);
         osSpTaskStartGo(&audioTask->task);
-        osRecvMesg(&D_800BBB00_main, NULL, OS_MESG_BLOCK);
-        D_800BCC80_main = NULL;
-        if (D_800BCCB0_main) {
-            osSendMesg(&D_800BCCB8_main, NULL, OS_MESG_BLOCK);
+        osRecvMesg(&scRspQueue, NULL, OS_MESG_BLOCK);
+        scCurAudioTask = NULL;
+        if (scGraphicsWaitF) {
+            osSendMesg(&scAudioDoneQueue, NULL, OS_MESG_BLOCK);
         }
         switch (graphicsState) {
             case 1:
@@ -189,7 +189,7 @@ void ScExecuteAudio(void *arg) {
                 osSpTaskStartGo(graphicsTask);
                 break;
             case 2:
-                osSendMesg(&D_800BBB00_main, (OSMesg)0x29B, OS_MESG_BLOCK);
+                osSendMesg(&scRspQueue, (OSMesg)0x29B, OS_MESG_BLOCK);
                 break;
         }
         osSendMesg(audioTask->completionQueue, audioTask->completionMsg, OS_MESG_BLOCK);
@@ -203,29 +203,29 @@ void ScExecuteGraphics(void *arg) {
     s16 rdpSample;
 
     while (TRUE) {
-        osRecvMesg(&D_800CC3C0_main, (OSMesg *)&graphicsTask, OS_MESG_BLOCK);
+        osRecvMesg(&scGraphicsTaskQueue, (OSMesg *)&graphicsTask, OS_MESG_BLOCK);
         osWritebackDCacheAll();
         mask = osSetIntMask(OS_IM_NONE);
-        if (D_800BCC80_main != NULL) {
-            D_800BCCB0_main = 1;
+        if (scCurAudioTask != NULL) {
+            scGraphicsWaitF = 1;
             osSetIntMask(mask);
-            osRecvMesg(&D_800BCCB8_main, NULL, OS_MESG_BLOCK);
+            osRecvMesg(&scAudioDoneQueue, NULL, OS_MESG_BLOCK);
             mask = osSetIntMask(OS_IM_NONE);
-            D_800BCCB0_main = 0;
+            scGraphicsWaitF = 0;
         }
-        D_800BCC84_main = &graphicsTask->task;
+        scCurGraphicsTask = &graphicsTask->task;
         osSpTaskLoad(&graphicsTask->task);
         osSpTaskStartGo(&graphicsTask->task);
         osSetIntMask(mask);
         rspSample = HuProfRspBegin(0, 0, 255);
         rdpSample = HuProfRspBegin(0, 255, 0);
-        osRecvMesg(&D_800BBB00_main, &D_800BCC88_main, OS_MESG_BLOCK);
+        osRecvMesg(&scRspQueue, &scYieldGraphicsTask, OS_MESG_BLOCK);
         HuProfRspEnd(rspSample);
         mask = osSetIntMask(OS_IM_NONE);
-        D_800BCC84_main = NULL;
-        D_800BCC88_main = NULL;
+        scCurGraphicsTask = NULL;
+        scYieldGraphicsTask = NULL;
         osSetIntMask(mask);
-        osRecvMesg(&D_800BBB38_main, NULL, OS_MESG_BLOCK);
+        osRecvMesg(&scRdpQueue, NULL, OS_MESG_BLOCK);
         HuProfRspEnd(rdpSample);
         osSendMesg(graphicsTask->completionQueue, graphicsTask->completionMsg, OS_MESG_BLOCK);
         if ((s32)graphicsTask->completionMsg & 1) {

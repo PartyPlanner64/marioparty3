@@ -19,11 +19,11 @@ extern s8 D_8010D409_inst;
 extern Vec D_8010D444_inst[4];
 extern Vec D_8010D474_inst[4];
 extern s8 D_8010D5B1_inst;
-extern u8 D_800CE20A_main;
+extern u8 storySceneNo;
 extern s32 D_8010D4A4_inst;
 extern u32 D_8010D4AC_inst;
-extern f32 D_800CB890_main;
-extern f32 D_800D5210_main;
+extern f32 CFanOfs;
+extern f32 CFanLen;
 
 extern s8 D_8010D400_inst[4];
 extern s8 D_8010D401_inst[3];
@@ -48,8 +48,8 @@ extern s32 D_8010D510_inst;
 extern s8 D_8010D40C_inst[5];
 extern u8 D_8010D4B0_inst[8];
 extern u8 D_8010D4B8_inst[8];
-extern u16 D_800A11D0_main[5];
-extern u16 D_800A11DC_main[5];
+extern u16 mgInstColumnTbl[5];
+extern u16 mgInstSlotTbl[5];
 
 
 s32 BoardGetTurnTier(s32);
@@ -116,7 +116,7 @@ void func_801059A0_inst(void) {
         }
     }
     D_8010D40B_inst = GwSystem.minigame_index - 1;
-    D_8010D40A_inst = D_800A6D40_main[D_8010D40B_inst].minigameType;
+    D_8010D40A_inst = mgDataTbl[D_8010D40B_inst].minigameType;
 
     if (_CheckFlag(FLAG_MG_PRACTICE) != 0) {
         D_8010D407_inst = 1;
@@ -315,7 +315,7 @@ void func_80105D9C_inst(omObjData *object) {
 void func_801061EC_inst(void) {
     s32 unused[6]; // Retain the original stack frame.
 
-    omOvlCallEx(D_800A6D40_main[D_8010D40B_inst].overlay, 0, 0x14);
+    omOvlCallEx(mgDataTbl[D_8010D40B_inst].overlay, 0, 0x14);
     if (D_8010D5B1_inst == 1) {
         _SetFlag(0xF);
         return;
@@ -351,7 +351,7 @@ void func_801061EC_inst(void) {
 }
 
 void func_80106310_inst(omObjData *object) {
-    if (D_800D530C_main == 1) {
+    if (omSysExitReq == 1) {
         if (D_8010D4A8_inst == 0) {
             WipeCreateOut(WIPE_TYPE_NORMAL, 20);
             D_8010D4A8_inst = 1;
@@ -406,8 +406,8 @@ void func_8010674C_inst(omObjData *object) {
     D_800CE17C_main[1] = D_8010D418_inst.z;
     D_800CE17C_main[-1] = 0.0f;
     D_800CE17C_main[2] = gCameraList->fov;
-    D_800CE17C_main[3] = D_800D5210_main;
-    D_800CE17C_main[4] = D_800CB890_main;
+    D_800CE17C_main[3] = CFanLen;
+    D_800CE17C_main[4] = CFanOfs;
     Hu3DCameraPosSetV(0, &D_8010D418_inst, &D_8010D424_inst, &D_8010D430_inst);
     Hu3DCamUpdateMtx(0);
 }
@@ -494,7 +494,7 @@ void func_80106898_inst(void) {
                 }
             }
             for (i = 0; i < 5; i++) {
-                D_800A11D0_main[i] = D_8010D40C_inst[i];
+                mgInstColumnTbl[i] = D_8010D40C_inst[i];
             }
         } else if (D_8010D407_inst == 0) {
             for (i = 0; i < 8; i++) {
@@ -532,12 +532,12 @@ void func_80106898_inst(void) {
                 }
             }
             for (i = 0; i < 5; i++) {
-                D_800A11D0_main[i] = D_8010D40C_inst[i];
+                mgInstColumnTbl[i] = D_8010D40C_inst[i];
             }
             column = D_8010D724_inst[GwPlayer[D_8010D400_inst[0]].chr];
             found = -1;
             for (i = 0; i < 5; i++) {
-                if (column == D_800A11D0_main[i]) {
+                if (column == mgInstColumnTbl[i]) {
                     found = i;
                     break;
                 }
@@ -545,20 +545,20 @@ void func_80106898_inst(void) {
             if (found >= 0) {
                 for (i = 0, j = 0; i < 5; i++) {
                     if (i == found) {
-                        D_800A11DC_main[i] = D_8010D718_inst.preferred;
+                        mgInstSlotTbl[i] = D_8010D718_inst.preferred;
                     } else {
-                        D_800A11DC_main[i] = D_8010D718_inst.replacement[j];
+                        mgInstSlotTbl[i] = D_8010D718_inst.replacement[j];
                         j++;
                     }
                 }
             } else {
                 for (i = 0; i < 5; i++) {
-                    D_800A11DC_main[i] = D_8010D718_inst.normal[i];
+                    mgInstSlotTbl[i] = D_8010D718_inst.normal[i];
                 }
             }
         } else {
             for (i = 0; i < 5; i++) {
-                D_8010D40C_inst[i] = D_800A11D0_main[i];
+                D_8010D40C_inst[i] = mgInstColumnTbl[i];
             }
         }
     }
@@ -671,29 +671,29 @@ void func_80107308_inst(void) {
 
     if (D_8010D407_inst == 1) {
         if ((D_8010D40B_inst == 29) | (D_8010D40B_inst == 55)) {
-            message = D_800A6D40_main[D_8010D40B_inst].flags & 0x7FF;
-            message += D_800CE20A_main * 2;
+            message = mgDataTbl[D_8010D40B_inst].flags & 0x7FF;
+            message += storySceneNo * 2;
             choose = 0;
         }
     }
     if (choose == 1) {
-        flags = D_800A6D40_main[D_8010D40B_inst].flags;
+        flags = mgDataTbl[D_8010D40B_inst].flags;
         message = flags & 0x7FF;
         if (flags & 0x4000) {
             if (D_8010D40B_inst != 70) {
                 count = (flags & 0x3800) >> 11;
                 variant = rand8() % count;
-                D_800CE20A_main = variant;
+                storySceneNo = variant;
             } else {
-                variant = D_800CE20A_main;
+                variant = storySceneNo;
             }
             message += variant * 2;
         } else if (D_8010D40B_inst == 71) {
-            D_800CE20A_main = 2;
+            storySceneNo = 2;
         } else if ((D_8010D40B_inst == 30) && (_CheckFlag(0x1C) != 0)) {
-            D_800CE20A_main = 1;
+            storySceneNo = 1;
         } else {
-            D_800CE20A_main = 0;
+            storySceneNo = 0;
         }
     }
     D_8010D4A4_inst = message;

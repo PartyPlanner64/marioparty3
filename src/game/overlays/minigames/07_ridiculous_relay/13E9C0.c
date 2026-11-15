@@ -149,7 +149,7 @@ void func_801059A0_ridiculous_relay(void) {
     Hu3DSprModelInit(0x30);
     omInitObjMan(50, 0);
     omGameSysInit();
-    D_800CD280_main = 1;
+    Hu3DScreenClearF = 1;
     CamSetupInit(2);
     CamSetupMapCullAddMulti(2);
     ScissorSet(0, 0.0f, 0.0f, 320.0f, 120.0f);
@@ -245,13 +245,13 @@ void func_80105F48_ridiculous_relay(omObjData *object) {
 
     D_801119D4_ridiculous_relay++;
     D_801119C8_ridiculous_relay++;
-    if (D_801119D8_ridiculous_relay == 1 && D_801119D4_ridiculous_relay == 31 && D_801119CC_ridiculous_relay == 0 && D_800D530C_main == 0) {
+    if (D_801119D8_ridiculous_relay == 1 && D_801119D4_ridiculous_relay == 31 && D_801119CC_ridiculous_relay == 0 && omSysExitReq == 0) {
         HuAudSeqPlay(0x32);
     }
     MgFlowMain();
     switch (D_801119D8_ridiculous_relay) {
         case 0:
-            if (D_801119D4_ridiculous_relay == 1 && D_801119CC_ridiculous_relay == 0 && D_800D530C_main == 0) {
+            if (D_801119D4_ridiculous_relay == 1 && D_801119CC_ridiculous_relay == 0 && omSysExitReq == 0) {
                 D_80111A30_ridiculous_relay[0] = HuAudFXPlay(0x32D);
                 D_80111A30_ridiculous_relay[1] = HuAudFXPlay(0x32E);
             }
@@ -355,15 +355,15 @@ void func_80105F48_ridiculous_relay(omObjData *object) {
             }
             break;
     }
-    if (_CheckFlag(FLAG_MG_PRACTICE) && D_800D530C_main == 0 && D_801119DA_ridiculous_relay == 0 && (u16)D_801119D8_ridiculous_relay == 2) {
+    if (_CheckFlag(FLAG_MG_PRACTICE) && omSysExitReq == 0 && D_801119DA_ridiculous_relay == 0 && (u16)D_801119D8_ridiculous_relay == 2) {
         for (j = 0; j < 2; j++) {
-            if (D_80111970_ridiculous_relay[j]->cpuDifficulty == -1 && (D_800D5558_main[D_80111970_ridiculous_relay[j]->pad] & R_TRIG)) {
+            if (D_80111970_ridiculous_relay[j]->cpuDifficulty == -1 && (HuPadBtnDown[D_80111970_ridiculous_relay[j]->pad] & R_TRIG)) {
                 D_801119DA_ridiculous_relay = 1;
             }
         }
     }
-    if (D_801119CC_ridiculous_relay != 0 || D_800D530C_main != 0 || D_801119DA_ridiculous_relay != 0) {
-        if (D_800D530C_main != 0 && D_801119DA_ridiculous_relay == 0) {
+    if (D_801119CC_ridiculous_relay != 0 || omSysExitReq != 0 || D_801119DA_ridiculous_relay != 0) {
+        if (omSysExitReq != 0 && D_801119DA_ridiculous_relay == 0) {
             D_801119DA_ridiculous_relay = 1;
         }
         if (D_801119DA_ridiculous_relay != 0) {
@@ -389,8 +389,8 @@ s16 func_80106610_ridiculous_relay(s32 file, u16 *sprite, u16 flags) {
 
     HuMemMemoryFreePerm(data);
     *sprite = idx = Hu3DSprModelCreate((void *)-1, flags, 0);
-    D_800CBB60_main[idx].unk_02 = anim;
-    return D_800CBB60_main[idx].modelId;
+    Hu3DSprModelData[idx].unk_02 = anim;
+    return Hu3DSprModelData[idx].modelId;
 }
 
 void func_801066A0_ridiculous_relay(omObjData *object) {
@@ -503,12 +503,12 @@ void func_80106D4C_ridiculous_relay(omObjData *object) {
     gDPSetAlphaCompare(gMainGfxPos++, G_AC_THRESHOLD);
     gDPSetBlendColor(gMainGfxPos++, 0, 0, 0, 224);
     idx = 0;
-    sprite = HuSprGet(D_800CD1DC_main[D_80111A58_ridiculous_relay[idx]].unk04, 0);
+    sprite = HuSprGet(esprite[D_80111A58_ridiculous_relay[idx]].unk04, 0);
     frame = &sprite->data->pat[sprite->patNo];
     for (layer = 0; layer < 3; layer++) {
         if (layer == 0) {
             idx = 0;
-            sprite = HuSprGet(D_800CD1DC_main[D_80111A58_ridiculous_relay[idx]].unk04, 0);
+            sprite = HuSprGet(esprite[D_80111A58_ridiculous_relay[idx]].unk04, 0);
             frame = &sprite->data->pat[sprite->patNo];
             if (is8Bit[idx]) {
                 gDPLoadTLUT_pal256(gMainGfxPos++, sprite->data->pal);
@@ -541,7 +541,7 @@ void func_80106D4C_ridiculous_relay(omObjData *object) {
                                 continue;
                             }
                             idx = (k < 3) ? 1 : 5;
-                            sprite = HuSprGet(D_800CD1DC_main[D_80111A58_ridiculous_relay[idx]].unk04, 0);
+                            sprite = HuSprGet(esprite[D_80111A58_ridiculous_relay[idx]].unk04, 0);
                             frame = &sprite->data->pat[sprite->patNo];
                             gDPLoadTLUT_pal256(gMainGfxPos++, sprite->data->pal);
                             gDPLoadTextureTile(gMainGfxPos++, frame->data, G_IM_FMT_CI, G_IM_SIZ_8b, 112, 0, (s32)x,
@@ -563,7 +563,7 @@ void func_80106D4C_ridiculous_relay(omObjData *object) {
                     }
                     if (layer != 0 && layer != 1) {
                         idx = (layer == 2) ? signSprites[j] : 0;
-                        sprite = HuSprGet(D_800CD1DC_main[D_80111A58_ridiculous_relay[idx]].unk04, 0);
+                        sprite = HuSprGet(esprite[D_80111A58_ridiculous_relay[idx]].unk04, 0);
                         frame = &sprite->data->pat[sprite->patNo];
                         if (is8Bit[idx]) {
                             gDPLoadTLUT_pal256(gMainGfxPos++, sprite->data->pal);
@@ -618,7 +618,7 @@ void func_80106D4C_ridiculous_relay(omObjData *object) {
                                     continue;
                                 }
                                 sprite = HuSprGet(
-                                    D_800CD1DC_main[D_80111A58_ridiculous_relay[(k == 0)   ? dist / 100 + 17
+                                    esprite[D_80111A58_ridiculous_relay[(k == 0)   ? dist / 100 + 17
                                                                                 : (k == 1) ? dist / 10 % 10 + 17
                                                                                            : 17]]
                                         .unk04,
@@ -657,7 +657,7 @@ void func_80106D4C_ridiculous_relay(omObjData *object) {
             gDPSetCombineLERP(gMainGfxPos++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0,
                               PRIMITIVE, 0);
         }
-        sprite = HuSprGet(D_800CD1DC_main[D_80111A58_ridiculous_relay[(i == 0) ? 6 : 7]].unk04, 0);
+        sprite = HuSprGet(esprite[D_80111A58_ridiculous_relay[(i == 0) ? 6 : 7]].unk04, 0);
         frame = &sprite->data->pat[sprite->patNo];
         gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->data->pal);
         for (j = 0; j < 2; j++) {
@@ -723,7 +723,7 @@ void func_80108DE8_ridiculous_relay(Gfx **gfxPos, s32 arg1, s32 arg2) {
             gDPSetCombineLERP(gMainGfxPos++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0,
                               PRIMITIVE, 0);
         }
-        sprite = HuSprGet(D_800CD1DC_main[D_80111A58_ridiculous_relay[(i == 0) ? 6 : 7]].unk04, 0);
+        sprite = HuSprGet(esprite[D_80111A58_ridiculous_relay[(i == 0) ? 6 : 7]].unk04, 0);
         frame = &sprite->data->pat[sprite->patNo];
         gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->data->pal);
         for (j = 0; j < 2; j++) {
@@ -782,7 +782,7 @@ void func_80108DE8_ridiculous_relay(Gfx **gfxPos, s32 arg1, s32 arg2) {
         if (x > 320.0f || x2 < 0.0f) {
             continue;
         }
-        sprite = HuSprGet(D_800CD1DC_main[D_80111A58_ridiculous_relay[23 + i]].unk04, 0);
+        sprite = HuSprGet(esprite[D_80111A58_ridiculous_relay[23 + i]].unk04, 0);
         frame = &sprite->data->pat[sprite->patNo];
         if (!(i >= 2 && i < 6)) {
             gDPLoadTextureTile_4b(gMainGfxPos++, frame->data, G_IM_FMT_CI, width, height, 0, 0, width, height, 0,
@@ -823,7 +823,7 @@ void func_80108DE8_ridiculous_relay(Gfx **gfxPos, s32 arg1, s32 arg2) {
             }
         }
     }
-    sprite = HuSprGet(D_800CD1DC_main[D_80111A58_ridiculous_relay[8]].unk04, 0);
+    sprite = HuSprGet(esprite[D_80111A58_ridiculous_relay[8]].unk04, 0);
     frame = &sprite->data->pat[sprite->patNo];
     gDPLoadTLUT_pal256(gMainGfxPos++, sprite->data->pal);
     gDPSetRenderMode(gMainGfxPos++, G_RM_AA_OPA_SURF, G_RM_AA_OPA_SURF2);
@@ -845,7 +845,7 @@ void func_80108DE8_ridiculous_relay(Gfx **gfxPos, s32 arg1, s32 arg2) {
     gDPSetAlphaCompare(gMainGfxPos++, G_AC_THRESHOLD);
     gDPSetBlendColor(gMainGfxPos++, 0, 0, 0, 224);
     for (i = 0; i < 4; i++) {
-        sprite = HuSprGet(D_800CD1DC_main[D_80111A58_ridiculous_relay[9 + D_80111970_ridiculous_relay[i]->chr]].unk04, 0);
+        sprite = HuSprGet(esprite[D_80111A58_ridiculous_relay[9 + D_80111970_ridiculous_relay[i]->chr]].unk04, 0);
         frame = &sprite->data->pat[sprite->patNo];
         if (D_80111970_ridiculous_relay[i]->chr == 7) {
             gDPLoadTLUT_pal256(gMainGfxPos++, sprite->data->pal);
@@ -1136,8 +1136,8 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
         omSetTra(obj, D_80111918_ridiculous_relay, D_8011191C_ridiculous_relay, 0.0f);
         omSetRot(obj, 0.0f, D_80111928_ridiculous_relay, 0.0f);
     } else {
-        stickX = (mode == 1 && player->cpuDifficulty == -1) ? D_800CBB6E_main[player->pad] : 0.0f;
-        stickY = (mode == 1 && player->cpuDifficulty == -1) ? D_800D20A1_main[player->pad] : 0.0f;
+        stickX = (mode == 1 && player->cpuDifficulty == -1) ? HuPadStkX[player->pad] : 0.0f;
+        stickY = (mode == 1 && player->cpuDifficulty == -1) ? HuPadStkY[player->pad] : 0.0f;
         if (D_80110D70_ridiculous_relay[0] != 0) {
             stickX = 0.0f;
             stickY = (D_80110DBC_ridiculous_relay[0] < -135.0f) ? 60.0f : 0.0f;
@@ -1327,7 +1327,7 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
     if (D_80110D78_ridiculous_relay == 0 || (D_80110D78_ridiculous_relay == 1 && D_80110DAC_ridiculous_relay[2] < 875.0)) {
         D_80110E0C_ridiculous_relay[0] -= D_80110D78_ridiculous_relay == 0 && D_80110E0C_ridiculous_relay[0] != 0;
         if (D_80110D78_ridiculous_relay == 0 && mode == 1) {
-            u16 btn = D_800D5558_main[player->pad];
+            u16 btn = HuPadBtnDown[player->pad];
 
             if ((D_80110DEC_ridiculous_relay[1] ? (btn & (B_BUTTON | Z_TRIG)) : (btn & A_BUTTON)) || (player->cpuDifficulty != -1 && D_80110E0C_ridiculous_relay[0] == 0)) {
                 D_80110DEC_ridiculous_relay[1] = 1 - D_80110DEC_ridiculous_relay[1];
@@ -1406,7 +1406,7 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
         f32 step;
 
         D_80110E0C_ridiculous_relay[1] -= D_80110D78_ridiculous_relay == 1 && D_80110E0C_ridiculous_relay[1] != 0;
-        if (D_80110D78_ridiculous_relay == 1 && mode == 1 && (((D_800D5558_main[player->pad] & ((D_80110DEC_ridiculous_relay[2] / 2) ? B_BUTTON : A_BUTTON)) && ((D_80110DEC_ridiculous_relay[2] & 1) ? -1 : 1) * D_800D20A1_main[player->pad] > 32) || (player->cpuDifficulty != -1 && D_80110E0C_ridiculous_relay[1] == 0))) {
+        if (D_80110D78_ridiculous_relay == 1 && mode == 1 && (((HuPadBtnDown[player->pad] & ((D_80110DEC_ridiculous_relay[2] / 2) ? B_BUTTON : A_BUTTON)) && ((D_80110DEC_ridiculous_relay[2] & 1) ? -1 : 1) * HuPadStkY[player->pad] > 32) || (player->cpuDifficulty != -1 && D_80110E0C_ridiculous_relay[1] == 0))) {
             D_80110E0F_ridiculous_relay = D_80110E10_ridiculous_relay;
             D_80110E10_ridiculous_relay = D_80110DEC_ridiculous_relay[2];
             D_80110E11_ridiculous_relay = 0;
@@ -1436,7 +1436,7 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
             if (player->cpuDifficulty != -1) {
                 D_80110E0C_ridiculous_relay[1] = cpuParams[0][1][player->cpuDifficulty] + rand8() % cpuParams[1][1][player->cpuDifficulty];
             }
-        } else if (D_80110D78_ridiculous_relay == 1 && mode == 1 && D_80110E10_ridiculous_relay != 4 && player->cpuDifficulty == -1 && (D_800D5558_main[player->pad] & (A_BUTTON | B_BUTTON))) {
+        } else if (D_80110D78_ridiculous_relay == 1 && mode == 1 && D_80110E10_ridiculous_relay != 4 && player->cpuDifficulty == -1 && (HuPadBtnDown[player->pad] & (A_BUTTON | B_BUTTON))) {
             D_80110E0F_ridiculous_relay = D_80110E10_ridiculous_relay;
             D_80110E10_ridiculous_relay = 4;
             D_80110E11_ridiculous_relay = 0;
@@ -1574,7 +1574,7 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
 
         D_80110E0C_ridiculous_relay[2] -= D_80110D78_ridiculous_relay == 2 && D_80110E0C_ridiculous_relay[2] != 0;
         if (D_80110D78_ridiculous_relay >= 2 && mode == 1) {
-            if ((D_800D5558_main[player->pad] & A_BUTTON) || (player->cpuDifficulty != -1 && D_80110E0C_ridiculous_relay[2] == 0)) {
+            if ((HuPadBtnDown[player->pad] & A_BUTTON) || (player->cpuDifficulty != -1 && D_80110E0C_ridiculous_relay[2] == 0)) {
                 D_80110DCC_ridiculous_relay[3] += 5.0f;
                 if (player->cpuDifficulty != -1) {
                     D_80110E0C_ridiculous_relay[2] = cpuParams[0][2][player->cpuDifficulty] + rand8() % cpuParams[1][2][player->cpuDifficulty];
@@ -1739,7 +1739,7 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
 }
 
 s16 func_80110BF4_ridiculous_relay(s16 arg0, s16 arg1) {
-    if (D_800A1902_main == 0) {
+    if (HuAudSeEnableF == 0) {
         return 0;
     }
     if (arg0 == 0) {
@@ -1749,7 +1749,7 @@ s16 func_80110BF4_ridiculous_relay(s16 arg0, s16 arg1) {
 }
 
 s16 func_80110C3C_ridiculous_relay(s16 seId, s16 playerIdx) {
-    if (D_800A1902_main == 0) {
+    if (HuAudSeEnableF == 0) {
         return 0;
     }
     if (seId == 0) {

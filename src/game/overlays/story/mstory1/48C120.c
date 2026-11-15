@@ -1,8 +1,8 @@
 #include "common.h"
 #include "game/hmfmath.h"
 
-extern f32 D_800CB890_main;
-extern f32 D_800D5210_main;
+extern f32 CFanOfs;
+extern f32 CFanLen;
 
 extern s16 D_801158B0_mstory1;
 extern s16 D_801158B2_mstory1;
@@ -46,7 +46,7 @@ void func_80105C90_mstory1(omObjData *obj) {
             break;
         case 2:
             if (D_80114A84_mstory1 == 1) {
-                btn = D_800D5558_main[D_801158B4_mstory1] & START_BUTTON;
+                btn = HuPadBtnDown[D_801158B4_mstory1] & START_BUTTON;
                 state += btn != 0;
             }
             break;
@@ -67,7 +67,7 @@ void func_80105C90_mstory1(omObjData *obj) {
 }
 
 void func_80105D80_mstory1(omObjData *obj) {
-    if (D_800D530C_main == 1) {
+    if (omSysExitReq == 1) {
         if (D_80114A88_mstory1 == 0) {
             WipeCreateOut(2, 20);
             HuAudSeqFadeOut(30);
@@ -105,8 +105,8 @@ void func_80105F28_mstory1(omObjData *obj) {
     D_800CE17C_main[1] = D_80114A8C_mstory1.z;
     D_800CE17C_main[-1] = 0.0f;
     D_800CE17C_main[2] = 35.0f;
-    D_800CE17C_main[3] = D_800D5210_main;
-    D_800CE17C_main[4] = D_800CB890_main;
+    D_800CE17C_main[3] = CFanLen;
+    D_800CE17C_main[4] = CFanOfs;
     Hu3DCameraPosSetV(0, &D_80114A8C_mstory1, &D_80114A98_mstory1, &D_80114AA4_mstory1);
     Hu3DCamUpdateMtx(0);
 }
@@ -261,7 +261,7 @@ void func_801068B0_mstory1(s16 model, s16 animSlot, s16 anim) {
             Hu3DModelAnimStop(Hu3DData[model].hmf);
         } else {
             Hu3DModelAnimStart(Hu3DData[model].hmf);
-            entry = &D_800D1714_main[animSlot];
+            entry = &Hu3DAnimData[animSlot];
             entry->animIdx = anim;
             entry->rot = 0;
             entry->flags = 0;
@@ -470,7 +470,7 @@ s32 func_8010726C_mstory1(s16 model) {
     f32 time = Hu3DMotionShiftTimeGet(model);
     s32 ret = 0;
 
-    if (time == -1.0f && D_800CCF58_main[Hu3DData[model].motId].unk02 <= Hu3DData[model].motTime) {
+    if (time == -1.0f && Hu3DMotion[Hu3DData[model].motId].unk02 <= Hu3DData[model].motTime) {
         ret = -1;
     }
     return ret;

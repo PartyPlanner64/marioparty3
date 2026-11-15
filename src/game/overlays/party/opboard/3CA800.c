@@ -315,7 +315,7 @@ void func_801061FC_opboard(omObjData *obj) {
 
     for (i = 0; i < 4; i++) {
         if (!(GwPlayer[i].stat & PLAYER_IS_CPU)) {
-            if (D_800C9520_main[GwPlayer[i].pad] & START_BUTTON) {
+            if (ContBtnDown[GwPlayer[i].pad] & START_BUTTON) {
                 break;
             }
         }
@@ -510,7 +510,7 @@ void func_80106CFC_opboard(void) {
         for (i = 0; i < 4; i++) {
             delay[i]--;
             if (state[i] == 1) {
-                if ((GwPlayer[i].stat & PLAYER_IS_CPU) ? delay[i] <= 0 : (D_800C9520_main[GwPlayer[i].pad] & A_BUTTON)) {
+                if ((GwPlayer[i].stat & PLAYER_IS_CPU) ? delay[i] <= 0 : (ContBtnDown[GwPlayer[i].pad] & A_BUTTON)) {
                     state[i] = 2;
                     MBMotionSet(D_80109068_opboard[i]->player_obj, 2, 0);
                     func_800EE884_shared_board(D_80109068_opboard[i]->player_obj, -1, 2);
@@ -1008,7 +1008,7 @@ void func_80108B3C_opboard(void) {
     HuPrcChildLink(HuPrcCurrentGet(), D_80108F30_opboard);
     HuPrcChildWatch();
     func_80107E58_opboard();
-    D_800D530C_main = 1;
+    omSysExitReq = 1;
     while (1) {
         HuPrcVSleep();
     }
@@ -1027,7 +1027,7 @@ void func_80108BB0_opboard(omObjData *obj) {
 }
 
 void func_80108C0C_opboard(omObjData *obj) {
-    if (D_800D530C_main != 0) {
+    if (omSysExitReq != 0) {
         WipeCreateOut(2, 20);
         HuAudSeqFadeOut(60);
         obj->func = func_80108BB0_opboard;

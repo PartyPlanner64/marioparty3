@@ -142,8 +142,8 @@ void func_801059A0_meschk() {
     omSetStatBit(temp_v0, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     if (omdispinfo != 0) {
         omdispinfo = 0;
-        pfWinKill(D_800A1786_main);
-        D_800A1786_main = -1;
+        pfWinKill(omDBGInfoWin);
+        omDBGInfoWin = -1;
     }
     omAddObj(0x2710, 0, 0, -1, func_80106334_meschk);
     Hu3DGLightMaxSet(3);
@@ -155,7 +155,7 @@ void func_801059A0_meschk() {
     omAddPrcObj(func_80105B50_meschk, 0x3F00, 0x800, 0);
     omAddPrcObj(func_801063BC_meschk, 0x3F00, 0x800, 0);
     WipeCreateIn(WIPE_TYPE_NORMAL, 0);
-    D_800CD280_main = 1;
+    Hu3DScreenClearF = 1;
     Hu3DBGColorSet(0xFF, 0xFF, 0xFF);
 }
 
@@ -261,18 +261,18 @@ void func_80105B8C_meschk() {
             if (winData[window].num_choices != 0) {
                 HuWinChoiceGet(window, 0, 0);
             } else if (hasChoice == 0) {
-                while (!(D_800D5558_main[0] & (A_BUTTON | B_BUTTON | L_TRIG | R_TRIG | U_CBUTTONS | D_CBUTTONS | L_CBUTTONS | R_CBUTTONS))) {
+                while (!(HuPadBtnDown[0] & (A_BUTTON | B_BUTTON | L_TRIG | R_TRIG | U_CBUTTONS | D_CBUTTONS | L_CBUTTONS | R_CBUTTONS))) {
                     HuPrcVSleep();
                 }
             }
-            if ((winData[window].input & B_BUTTON) || (D_800D5558_main[0] & B_BUTTON)) {
+            if ((winData[window].input & B_BUTTON) || (HuPadBtnDown[0] & B_BUTTON)) {
                 if ((u32)message > check->firstMessage) {
                     message -= 2;
                 } else {
                     message--;
                 }
             }
-            if ((winData[window].input & U_CBUTTONS) || (D_800D5558_main[0] & U_CBUTTONS)) {
+            if ((winData[window].input & U_CBUTTONS) || (HuPadBtnDown[0] & U_CBUTTONS)) {
                 if (entry != 0) {
                     entry -= 2;
                 } else {
@@ -280,10 +280,10 @@ void func_80105B8C_meschk() {
                 }
                 break;
             }
-            if ((winData[window].input & D_CBUTTONS) || (D_800D5558_main[0] & D_CBUTTONS)) {
+            if ((winData[window].input & D_CBUTTONS) || (HuPadBtnDown[0] & D_CBUTTONS)) {
                 break;
             }
-            if ((winData[window].input & L_CBUTTONS) || (D_800D5558_main[0] & L_CBUTTONS)) {
+            if ((winData[window].input & L_CBUTTONS) || (HuPadBtnDown[0] & L_CBUTTONS)) {
                 if (entry - 5 >= 0) {
                     entry -= 6;
                 } else {
@@ -291,7 +291,7 @@ void func_80105B8C_meschk() {
                 }
                 break;
             }
-            if ((winData[window].input & R_CBUTTONS) || (D_800D5558_main[0] & R_CBUTTONS)) {
+            if ((winData[window].input & R_CBUTTONS) || (HuPadBtnDown[0] & R_CBUTTONS)) {
                 if (entry + 5 < count) {
                     entry += 4;
                 } else {
@@ -299,7 +299,7 @@ void func_80105B8C_meschk() {
                 }
                 break;
             }
-            if ((D_800CDA7C_main[0] & (L_TRIG | R_TRIG)) == 0x30) {
+            if ((HuPadBtn[0] & (L_TRIG | R_TRIG)) == 0x30) {
                 done = 1;
                 break;
             }
@@ -314,7 +314,7 @@ void func_80105B8C_meschk() {
 }
 
 void func_80106334_meschk(omObjData *arg0) {
-    if ((D_80106500_meschk.finished != 0) || (D_800D530C_main != 0)) {
+    if ((D_80106500_meschk.finished != 0) || (omSysExitReq != 0)) {
         WipeCreateOut(WIPE_TYPE_NORMAL, 8);
         arg0->func = &func_80106390_meschk;
         HuAudSeqFadeOut(0x3C);
@@ -345,7 +345,7 @@ void func_801063BC_meschk() {
             break;
         }
         Hu3DMotionBakeApply(model, animation, frame);
-        if (frame >= D_800CCF58_main[Hu3DData[motion].motId].unk02) {
+        if (frame >= Hu3DMotion[Hu3DData[motion].motId].unk02) {
             frame = 0;
         }
         frame += 2;

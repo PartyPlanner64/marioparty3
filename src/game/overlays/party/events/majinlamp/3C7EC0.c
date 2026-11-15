@@ -434,7 +434,7 @@ void func_80106E74_majinlamp(void) {
         obj->rot.y = 0.0f;
         obj->scale.x = 0.0f;
     }
-    D_800C9930_main = HuAudSubSeqPlay(0x3C);
+    mbSubMusNo = HuAudSubSeqPlay(0x3C);
     HuAudFXPlay(0x129);
     WipeColorSet(0xFF, 0xFF, 0xFF);
     WipeCreateIn(0xB, 0x10);
@@ -603,7 +603,7 @@ void func_8010771C_majinlamp(void) {
 void func_80107D98_majinlamp(void) {
     func_80106E74_majinlamp();
     func_8010771C_majinlamp();
-    D_800D530C_main = 1;
+    omSysExitReq = 1;
     while (1) {
         HuPrcVSleep();
     }
@@ -619,7 +619,7 @@ void func_80107DD8_majinlamp(omObjData *arg0) {
 }
 
 void func_80107E1C_majinlamp(omObjData *arg0) {
-    if (D_800D530C_main != 0) {
+    if (omSysExitReq != 0) {
         arg0->func = func_80107DD8_majinlamp;
     }
 }

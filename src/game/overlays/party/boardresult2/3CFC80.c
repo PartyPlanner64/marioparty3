@@ -121,7 +121,7 @@ s16 func_80105A8C_boardresult2(s16 model, s32 dataNum, char *name) {
     D_80109A4C_boardresult2 = anim;
     Hu3DAnimAttrSet(anim, 1, 1);
     DataClose(data);
-    animIdx = D_800D1714_main[(s16)anim].animIdx;
+    animIdx = Hu3DAnimData[(s16)anim].animIdx;
     D_80109A4E_boardresult2 = Hu3DAnimLink(Hu3DData[model].hmf, anim, 0, name);
     Hu3DModelRemakeStatic(model);
     return animIdx;
@@ -135,7 +135,7 @@ void func_80105B98_boardresult2(s16 model, s16 animIdx) {
             Hu3DModelAnimStop(Hu3DData[model].hmf);
         } else {
             Hu3DModelAnimStart(Hu3DData[model].hmf);
-            anim = &D_800D1714_main[D_80109A4E_boardresult2];
+            anim = &Hu3DAnimData[D_80109A4E_boardresult2];
             anim->animIdx = animIdx;
             anim->rot = 0;
             anim->flags = 0;
@@ -1061,7 +1061,7 @@ void func_80108E1C_boardresult2(void) {
                     if (rightWindow == NULL) {
                         rightWindow = func_800E172C_name_81(0x17, 200, 207, 1);
                     }
-                    if (D_800C9520_main[GwPlayer[i].pad] & START_BUTTON) {
+                    if (ContBtnDown[GwPlayer[i].pad] & START_BUTTON) {
                         showingDetails = 1;
                         func_801069A4_boardresult2();
                         func_8010879C_boardresult2();
@@ -1073,24 +1073,24 @@ void func_80108E1C_boardresult2(void) {
                             func_800E1854_name_81(rightWindow);
                             rightWindow = NULL;
                         }
-                    } else if (D_800C9520_main[GwPlayer[i].pad] & A_BUTTON) {
+                    } else if (ContBtnDown[GwPlayer[i].pad] & A_BUTTON) {
                         goto exit;
                     }
                 } else {
                     prevRow = D_801097B4_boardresult2;
                     prevPage = D_801097B0_boardresult2;
-                    if (D_800C9520_main[GwPlayer[i].pad] & START_BUTTON) {
+                    if (ContBtnDown[GwPlayer[i].pad] & START_BUTTON) {
                         showingDetails = 0;
                         func_801085F8_boardresult2();
                         func_80106A9C_boardresult2();
-                    } else if (D_800D0590_main[GwPlayer[i].pad] & R_JPAD) {
+                    } else if (ContBtnRep[GwPlayer[i].pad] & R_JPAD) {
                         if (++D_801097B4_boardresult2 >= 4) {
                             D_801097B4_boardresult2 = 3;
                             if (++D_801097B0_boardresult2 >= 10) {
                                 D_801097B0_boardresult2 = 9;
                             }
                         }
-                    } else if (D_800D0590_main[GwPlayer[i].pad] & L_JPAD) {
+                    } else if (ContBtnRep[GwPlayer[i].pad] & L_JPAD) {
                         if (--D_801097B4_boardresult2 < 0) {
                             D_801097B4_boardresult2 = 0;
                             if (--D_801097B0_boardresult2 < 0) {
@@ -1136,7 +1136,7 @@ exit:
     func_80106924_boardresult2();
     func_80108548_boardresult2();
     func_800F4584_name_81(D_801099A0_boardresult2);
-    D_800D530C_main = 1;
+    omSysExitReq = 1;
     while (1) {
         HuPrcVSleep();
     }
@@ -1152,7 +1152,7 @@ void func_801096AC_boardresult2(omObjData *obj) {
 }
 
 void func_801096F0_boardresult2(omObjData *arg0) {
-    if (D_800D530C_main != 0) {
+    if (omSysExitReq != 0) {
         arg0->func = func_801096AC_boardresult2;
     }
 }

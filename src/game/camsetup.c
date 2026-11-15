@@ -5,70 +5,70 @@
 #include "game/hmfcoll.h"
 #include "game/camera.h"
 
-u8 D_80097660_main = 0;
-u8 D_80097661_main = 0;
-Vec D_80097664_main[] = {
+u8 camSetupNum = 0;
+u8 camSetupHookNo = 0;
+Vec camSetupViewportScale[] = {
     { 640.0f, 480.0f, 511.0f },
     { 640.0f, 480.0f, 511.0f },
     { 640.0f, 480.0f, 511.0f },
     { 640.0f, 480.0f, 511.0f },
 };
-Vec D_80097694_main[] = {
+Vec camSetupViewportPos[] = {
     { 640.0f, 480.0f, 511.0f },
     { 640.0f, 480.0f, 511.0f },
     { 640.0f, 480.0f, 511.0f },
     { 640.0f, 480.0f, 511.0f },
 };
-RectF D_800976C4_main[] = {
+RectF camSetupScissor[] = {
     { 0.0f, 0.0f, 320.0f, 240.0f },
     { 0.0f, 0.0f, 320.0f, 240.0f },
     { 0.0f, 0.0f, 320.0f, 240.0f },
     { 0.0f, 0.0f, 320.0f, 240.0f },
 };
-extern s32 D_800CE178_main; // TODO: type correctly
+extern s32 CFan; // TODO: type correctly
 
 typedef struct UnkC1F0 {
     char unk_00[0x18];
 } UnkC1F0;
 
-extern UnkC1F0 D_800D04B8_main[];
+extern UnkC1F0 CFanM[];
 
 void CamSetupInit(u8 arg0) {
-    D_80097660_main = arg0;
-    Hu3DCamInit(D_80097660_main);
+    camSetupNum = arg0;
+    Hu3DCamInit(camSetupNum);
     gCameraList[0].fov = 45.0f;
-    D_80097661_main = 0;
+    camSetupHookNo = 0;
 }
 
 s32 CamSetupMapCullAdd(void) {
     s32 temp_s0;
 
-    temp_s0 = D_80097661_main;
-    Hu3DCameraModelHookSet(D_80097661_main, (void (*)(void *, struct HmfModel *))MapCullFan, &D_800CE178_main);
-    D_80097661_main++;
+    temp_s0 = camSetupHookNo;
+    Hu3DCameraModelHookSet(camSetupHookNo, (void (*)(void *, struct HmfModel *))MapCullFan, &CFan);
+    camSetupHookNo++;
     return temp_s0;
 }
 
 void CamSetupInitMulti(s32 arg0) {
     s32 i;
 
-    D_80097660_main = arg0;
-    Hu3DCamInit(D_80097660_main);
+    camSetupNum = arg0;
+    Hu3DCamInit(camSetupNum);
 
-    for (i = 0; i < D_80097660_main; i++) {
+    for (i = 0; i < camSetupNum; i++) {
         gCameraList[i].fov = 45.0f;
     }
 
-    D_80097661_main = 0;
+    camSetupHookNo = 0;
 }
 
 s32 CamSetupMapCullAddMulti(s32 arg0) {
     s32 i;
 
     for (i = 0; i < arg0; i++) {
-        Hu3DCameraModelHookSet(i, (void (*)(void *, struct HmfModel *))MapCullFan, &D_800D04B8_main[i]);
-        D_80097661_main++;
+        Hu3DCameraModelHookSet(i, (void (*)(void *, struct HmfModel *))MapCullFan, &CFanM[i]);
+        camSetupHookNo++;
     }
 
-    return D_80097661_main;
+    return camSetupHookNo;
 }

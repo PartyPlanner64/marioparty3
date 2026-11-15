@@ -13,7 +13,7 @@ extern u32 gISVFlag;
 extern u16 gISVChk;
 extern ISVDbg *gISVDbgPrnAdrs;
 extern u32 leoComuBuffAdd;
-extern __osExceptionVector D_800CD1A0_main; // __isExpJP save
+extern __osExceptionVector __isExpJPSave; // __isExpJP save
 
 extern void func_80081A20_main(void);
 
@@ -129,11 +129,11 @@ void __osInitialize_isv(void) {
         }
         if (gISVChk & 2) {
             hnd = osCartRomInit();
-            D_800CD1A0_main = *(__osExceptionVector *)E_VEC;
+            __isExpJPSave = *(__osExceptionVector *)E_VEC;
             *(__osExceptionVector *)E_VEC = __isExpJP;
 
-            osWritebackDCache(&D_800CD1A0_main, sizeof(__osExceptionVector));
-            osInvalICache(&D_800CD1A0_main, sizeof(__osExceptionVector));
+            osWritebackDCache(&__isExpJPSave, sizeof(__osExceptionVector));
+            osInvalICache(&__isExpJPSave, sizeof(__osExceptionVector));
             osWritebackDCache((void *)UT_VEC, E_VEC - UT_VEC + sizeof(__osExceptionVector));
             osInvalICache((void *)UT_VEC, E_VEC - UT_VEC + sizeof(__osExceptionVector));
             osEPiReadIo(hnd, 0xBFF00010, (u32 *)&fn);

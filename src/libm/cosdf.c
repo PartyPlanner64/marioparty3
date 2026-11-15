@@ -36,8 +36,8 @@ f32 cosdf(f32 angle) {
     fraction = angle - wholeAngle;
     fraction *= M_DTORf;
     square = fraction * fraction;
-    result = D_800A4830_main[index] * (1.0f - (0.125f * square * (4.0f + square))) +
-             D_800A4830_main[90 - index] * fraction;
+    result = __sinTblF[index] * (1.0f - (0.125f * square * (4.0f + square))) +
+             __sinTblF[90 - index] * fraction;
     if (sign != 0) {
         fraction = -result;
     } else {

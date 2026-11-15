@@ -36,7 +36,7 @@ typedef struct {
 } AllFiredUpBssAF0; // Size 0xC
 
 extern s32 D_800A178C_main[][6];
-extern u8 D_800D6A90_main;
+extern u8 omAllPauseF;
 extern f32 D_800EB76C_minigame;
 
 u8 D_80109930_all_fired_up[24][4] = {
@@ -221,10 +221,10 @@ void func_80105CE8_all_fired_up(void) {
 }
 
 void func_80105E1C_all_fired_up(omObjData *object) {
-    if (omPauseChk() + D_800D6A90_main == 0) {
-        if (D_801099FC_all_fired_up == 0 && D_800D530C_main == 1) {
+    if (omPauseChk() + omAllPauseF == 0) {
+        if (D_801099FC_all_fired_up == 0 && omSysExitReq == 1) {
             HuAudFXAllStop();
-            if (!(D_800A1906_main & 4)) {
+            if (!(HuAudStat & 4)) {
                 HuAudSeqFadeOut(30);
             } else {
                 HuAudSeqStop();
@@ -248,7 +248,7 @@ void func_80105E1C_all_fired_up(omObjData *object) {
             case 5:
                 if (D_801099F8_all_fired_up == 0) {
                     WipeCreateOut(WIPE_TYPE_NORMAL, 20);
-                } else if (WipeStatGet() == 0 && !(D_800A1906_main & 4)) {
+                } else if (WipeStatGet() == 0 && !(HuAudStat & 4)) {
                     omOvlReturnEx(1);
                 }
                 D_801099F8_all_fired_up++;
@@ -337,7 +337,7 @@ void func_80106348_all_fired_up(omObjData *object) {
 void func_80106584_all_fired_up(omObjData *object) {
     AllFiredUpWork *work;
 
-    if (omPauseChk() + D_800D6A90_main == 0) {
+    if (omPauseChk() + omAllPauseF == 0) {
         work = object->data;
         switch (MgFlowStatGet()) {
             case MG_STATE_OPENING:
@@ -818,7 +818,7 @@ void func_801080C8_all_fired_up(omObjData *object) {
     s32 count;
     s32 rank;
 
-    if (omPauseChk() + D_800D6A90_main == 0) {
+    if (omPauseChk() + omAllPauseF == 0) {
         switch (MgFlowStatGet()) {
             case MG_STATE_OPENING:
                 func_801085A4_all_fired_up(object);
@@ -1223,12 +1223,12 @@ void func_80108AA0_all_fired_up(omObjData *object) {
         }
         stick *= 0.8f;
     }
-    D_800CBB6E_main[data->unk57] = sindf(work->unk0C) * stick;
-    D_800D20A1_main[data->unk57] = -cosdf(work->unk0C) * stick;
+    HuPadStkX[data->unk57] = sindf(work->unk0C) * stick;
+    HuPadStkY[data->unk57] = -cosdf(work->unk0C) * stick;
     if (jump == 1) {
-        D_800D5558_main[data->unk57] |= 0x8000;
+        HuPadBtnDown[data->unk57] |= 0x8000;
     } else {
-        D_800D5558_main[data->unk57] &= 0x7FFF;
+        HuPadBtnDown[data->unk57] &= 0x7FFF;
     }
 }
 

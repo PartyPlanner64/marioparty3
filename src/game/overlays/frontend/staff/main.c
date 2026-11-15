@@ -12,7 +12,7 @@ void func_801059A0_staff(void) {
     omInitObjMan(51, 25);
     HuWinInit();
     omGameSysInit();
-    D_800CD280_main = 0;
+    Hu3DScreenClearF = 0;
     D_80111564_staff = 80.0f;
     D_80111560_staff = 6000.0f;
     D_80110534_staff = 58.0f;
@@ -50,12 +50,12 @@ void func_801059A0_staff(void) {
 }
 
 void func_80105BD4_staff(omObjData *object) {
-    if (D_80111512_staff == 0 && (D_800D5558_main[D_80111510_staff] & 0x1000)) {
+    if (D_80111512_staff == 0 && (HuPadBtnDown[D_80111510_staff] & 0x1000)) {
         D_8011155C_staff = 0;
         D_80110530_staff = 1;
     }
     if (D_80110530_staff == 0) {
-        if (D_800D530C_main != 0) {
+        if (omSysExitReq != 0) {
             goto createWipe;
         }
     } else if (D_80110530_staff == 1) {
@@ -223,8 +223,8 @@ void func_8010615C_staff(void) {
     D_800CE17C_main[1] = pos.z;
     D_800CE17C_main[-1] = CRot.y;
     D_800CE17C_main[2] = gCameraList->fov;
-    D_800CE17C_main[3] = D_800D5210_main;
-    D_800CE17C_main[4] = D_800CB890_main;
+    D_800CE17C_main[3] = CFanLen;
+    D_800CE17C_main[4] = CFanOfs;
     Hu3DCameraPosSetV(0, &pos, &at, &up);
     Hu3DCamUpdateMtx(0);
 }
@@ -332,7 +332,7 @@ void func_8010674C_staff(MsetupCameraKeyframe *keys, f32 speed, void (*callback)
     Center.y = keys[segment].values.preset.center.y;
     Center.z = keys[segment].values.preset.center.z;
     gCameraList->fov = D_80110534_staff = keys[segment].values.preset.fov;
-    D_800CB99C_main = 0;
+    winPauseF = 0;
 }
 
 void func_80106C50_staff(void) {

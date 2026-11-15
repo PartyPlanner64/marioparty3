@@ -128,7 +128,7 @@ void func_801059A0_thwomp_pull(void) {
     Hu3DSprModelInit(0x20);
     omInitObjMan(50, 0);
     omGameSysInit();
-    D_800CD280_main = 1;
+    Hu3DScreenClearF = 1;
     CamSetupInit(2);
     CamSetupMapCullAddMulti(2);
     ScissorSet(0, 0.0f, 0.0f, 140.0f, 240.0f);
@@ -225,7 +225,7 @@ void func_80105F14_thwomp_pull(omObjData *object) {
     MgFlowMain();
     switch (D_8010F530_thwomp_pull) {
         case 0:
-            if (D_8010F5A4_thwomp_pull == 1 && D_8010F570_thwomp_pull == 0 && D_800D530C_main == 0) {
+            if (D_8010F5A4_thwomp_pull == 1 && D_8010F570_thwomp_pull == 0 && omSysExitReq == 0) {
                 HuAudFXPlay(0x335);
             }
             if (MgFlowStatGet() == MG_STATE_START) {
@@ -234,7 +234,7 @@ void func_80105F14_thwomp_pull(omObjData *object) {
             }
             break;
         case 1:
-            if (D_8010F5A4_thwomp_pull == 31 && D_8010F570_thwomp_pull == 0 && D_800D530C_main == 0) {
+            if (D_8010F5A4_thwomp_pull == 31 && D_8010F570_thwomp_pull == 0 && omSysExitReq == 0) {
                 HuAudSeqPlay(0x2E);
             }
             if (MgFlowStatGet() == MG_STATE_PLAY) {
@@ -398,16 +398,16 @@ void func_80105F14_thwomp_pull(omObjData *object) {
             }
             break;
     }
-    if (_CheckFlag(15) && D_800D530C_main == 0 && D_8010F5A8_thwomp_pull == 0 && (u16)D_8010F530_thwomp_pull == 2) {
+    if (_CheckFlag(15) && omSysExitReq == 0 && D_8010F5A8_thwomp_pull == 0 && (u16)D_8010F530_thwomp_pull == 2) {
         for (k = 0; k < 2; k++) {
             if (D_8010F4F8_thwomp_pull[k]->cpuDifficulty == -1 &&
-                (D_800D5558_main[D_8010F4F8_thwomp_pull[k]->pad] & R_TRIG)) {
+                (HuPadBtnDown[D_8010F4F8_thwomp_pull[k]->pad] & R_TRIG)) {
                 D_8010F5A8_thwomp_pull = 1;
             }
         }
     }
-    if (D_8010F570_thwomp_pull != 0 || D_800D530C_main != 0 || D_8010F5A8_thwomp_pull != 0) {
-        if (D_800D530C_main != 0 && D_8010F5A8_thwomp_pull == 0) {
+    if (D_8010F570_thwomp_pull != 0 || omSysExitReq != 0 || D_8010F5A8_thwomp_pull != 0) {
+        if (omSysExitReq != 0 && D_8010F5A8_thwomp_pull == 0) {
             D_8010F5A8_thwomp_pull = 1;
         }
         if (D_8010F5A8_thwomp_pull != 0) {
@@ -668,7 +668,7 @@ void func_80107FF4_thwomp_pull(s16 *left, s16 *top, s16 *right, s16 *bottom) {
 
     gSPDisplayList(gMainGfxPos++, D_8010ED90_thwomp_pull);
     gDPSetTextureLUT(gMainGfxPos++, G_TT_RGBA16);
-    sprite = HuSprGet(D_800CD1DC_main[D_8010F590_thwomp_pull[0]].unk04, 0);
+    sprite = HuSprGet(esprite[D_8010F590_thwomp_pull[0]].unk04, 0);
     frame = &sprite->data->pat[sprite->patNo];
     gDPLoadTLUT_pal256(gMainGfxPos++, sprite->data->pal);
     for (j = 0; j < 3; j++) {
@@ -731,7 +731,7 @@ void func_801089B4_thwomp_pull(Gfx **gfxPos, s32 arg1, s32 arg2) {
     }
     gSPDisplayList(gMainGfxPos++, D_8010ED90_thwomp_pull);
     gDPSetTextureLUT(gMainGfxPos++, G_TT_RGBA16);
-    sprite = HuSprGet(D_800CD1DC_main[D_8010F590_thwomp_pull[1]].unk04, 0);
+    sprite = HuSprGet(esprite[D_8010F590_thwomp_pull[1]].unk04, 0);
     frame = &sprite->data->pat[sprite->patNo];
     gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->data->pal);
     gDPSetRenderMode(gMainGfxPos++, G_RM_AA_OPA_SURF, G_RM_AA_OPA_SURF2);
@@ -756,7 +756,7 @@ void func_801089B4_thwomp_pull(Gfx **gfxPos, s32 arg1, s32 arg2) {
         s32 order[4] = { 3, 1, 2, 0 };
 
         group = order[i];
-        sprite = HuSprGet(D_800CD1DC_main[D_8010F590_thwomp_pull[2 + D_8010F4F8_thwomp_pull[group]->chr]].unk04, 0);
+        sprite = HuSprGet(esprite[D_8010F590_thwomp_pull[2 + D_8010F4F8_thwomp_pull[group]->chr]].unk04, 0);
         frame = &sprite->data->pat[sprite->patNo];
         if (D_8010F4F8_thwomp_pull[group]->chr == 7) {
             gDPLoadTLUT_pal256(gMainGfxPos++, sprite->data->pal);
@@ -1109,7 +1109,7 @@ void func_8010AF88_thwomp_pull(omObjData *object) {
                                         rand8() % cpuParams[1][D_8010F4F8_thwomp_pull[i]->cpuDifficulty];
         }
     }
-    D_800CD280_main = (D_8010F530_thwomp_pull < 2 || D_8010F588_thwomp_pull > 0.0f);
+    Hu3DScreenClearF = (D_8010F530_thwomp_pull < 2 || D_8010F588_thwomp_pull > 0.0f);
     for (group = 0; group < 2; group++) {
         object = D_8010F568_thwomp_pull[group];
         for (i = 0; i < 3; i++) {
@@ -1117,7 +1117,7 @@ void func_8010AF88_thwomp_pull(omObjData *object) {
                 pressed[j][i] =
                     D_8010EF40_thwomp_pull[j] == 0 && D_8010F530_thwomp_pull == 2 &&
                     ((D_8010F4F8_thwomp_pull[j]->cpuDifficulty == -1)
-                         ? (D_800D5558_main[D_8010F4F8_thwomp_pull[j]->pad] & buttons[i]) != 0
+                         ? (HuPadBtnDown[D_8010F4F8_thwomp_pull[j]->pad] & buttons[i]) != 0
                          : (D_8010EF3C_thwomp_pull[j] != 0 &&
                             i == D_8010EE48_thwomp_pull[group][D_8010EE44_thwomp_pull[group]] &&
                             D_8010EE40_thwomp_pull[group] == 1 && D_8010EE3C_thwomp_pull[group] == 18));

@@ -33,12 +33,12 @@ void func_80106BA0_mgresultbattle(void) {
     data = DataRead(0x210026);
     sprite1 = Hu3DSprModelCreate(data, 0x2BD, 8);
     DataClose(data);
-    Hu3DModelObjAttrSet(D_800CBB60_main[sprite1].modelId, 0x70000000, 0x70000000);
+    Hu3DModelObjAttrSet(Hu3DSprModelData[sprite1].modelId, 0x70000000, 0x70000000);
 
     data = DataRead(0xC);
     sprite2 = Hu3DSprModelCreate(data, 0x2BD, 8);
     DataClose(data);
-    Hu3DModelObjAttrSet(D_800CBB60_main[sprite2].modelId, 0x70000000, 0x70000000);
+    Hu3DModelObjAttrSet(Hu3DSprModelData[sprite2].modelId, 0x70000000, 0x70000000);
 
     for (i = 0; i < 40; i++) {
         D_80108A30_mgresultbattle[i].state = 1;
@@ -47,12 +47,12 @@ void func_80106BA0_mgresultbattle(void) {
         D_80108A30_mgresultbattle[i].unk08 = 0;
         D_80108A30_mgresultbattle[i].unk18 = 0.0f;
         D_80108A30_mgresultbattle[i].unk1C = 0.0f;
-        obj->model[i + 1] = D_800CBB60_main[D_80108A30_mgresultbattle[i].unk02].modelId;
+        obj->model[i + 1] = Hu3DSprModelData[D_80108A30_mgresultbattle[i].unk02].modelId;
         Hu3DMotionSpeedSet(obj->model[i + 1], 2.0f);
-        Hu3DModelScaleSet(D_800CBB60_main[i + 1].modelId, 3.0f, 3.0f, 3.0f);
+        Hu3DModelScaleSet(Hu3DSprModelData[i + 1].modelId, 3.0f, 3.0f, 3.0f);
         Hu3DModelAttrSet(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-        obj->model[i + 41] = D_800CBB60_main[D_80108A30_mgresultbattle[i].unk04].modelId;
-        Hu3DModelScaleSet(D_800CBB60_main[i + 41].modelId, 3.0f, 3.0f, 3.0f);
+        obj->model[i + 41] = Hu3DSprModelData[D_80108A30_mgresultbattle[i].unk04].modelId;
+        Hu3DModelScaleSet(Hu3DSprModelData[i + 41].modelId, 3.0f, 3.0f, 3.0f);
     }
 
     obj->trans.x = 0.0f;

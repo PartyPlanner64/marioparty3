@@ -67,7 +67,7 @@ extern Object *D_8011D314_ChillyWaters;
 extern Object *D_8011D318_ChillyWaters;
 extern Object* mb1_BankCoinBaseMdl;
 extern Object* mb1_BankCoinMdl[10];
-extern omObjData *D_800CE194_main;
+extern omObjData *omSysTimerObj;
 extern event_table_entry mb1_CommonEventTbl[]; //unknown type
 extern event_table_entry mb1_TeresaEventTbl[]; //unknown type
 extern event_table_entry mb1_TurnStatusEventTbl[]; //unknown type

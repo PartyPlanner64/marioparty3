@@ -3,7 +3,7 @@
 #include "game/mallocblock.h"
 #include "game/overlays/opening.h"
 
-extern s8 D_800D2132_main;
+extern s8 omSysPauseReadyF;
 
 
 void opObjectInit(void) {
@@ -32,7 +32,7 @@ void opObjectInit(void) {
     Hu3DGLightColorSet(1, 255, 255, 255);
     Hu3DGLightColorSet(2, 0, 0, 0);
     Hu3DGLightDirSet(1, 0.0f, 64.0f, 192.0f);
-    D_800D2132_main = 0;
+    omSysPauseReadyF = 0;
 }
 
 void opTitleObjectSetup(void) {

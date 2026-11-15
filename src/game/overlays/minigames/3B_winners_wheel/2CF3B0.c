@@ -123,8 +123,8 @@ omObjData *D_8010A4B8_winners_wheel[2] BSS;
 omObjData *D_8010A4C0_winners_wheel BSS;
 omObjData *D_8010A4C4_winners_wheel BSS;
 
-extern u16 D_800A11D0_main[];
-extern u16 D_800A11DC_main[];
+extern u16 mgInstColumnTbl[];
+extern u16 mgInstSlotTbl[];
 
 void omCameraViewSprDraw(struct CameraViewData *data);
 void func_80105AB0_winners_wheel(void);
@@ -222,7 +222,7 @@ void func_80105AB0_winners_wheel(void) {
     target.x = -0.9f;
     target.y = -21.9f;
     target.z = -253.6f;
-    omCameraViewCreate(100, D_800CD1DC_main[sprite].unk04, omCameraViewSprDraw, 11.1f, &pos, &target);
+    omCameraViewCreate(100, esprite[sprite].unk04, omCameraViewSprDraw, 11.1f, &pos, &target);
 }
 
 void func_80105BA8_winners_wheel(void) {
@@ -243,7 +243,7 @@ void func_80105C5C_winners_wheel(omObjData *obj) {
     WinnersWheelSign *sign = obj->data;
 
     if (sign->flags & 1) {
-        if (Hu3DData[obj->model[0]].motTime >= D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02) {
+        if (Hu3DData[obj->model[0]].motTime >= Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02) {
             sign->flags &= ~1;
             func_80105F18_winners_wheel();
         }
@@ -319,7 +319,7 @@ void func_80105FB0_winners_wheel(omObjData *obj) {
 }
 
 void func_80105FE4_winners_wheel(omObjData *obj) {
-    if (D_800D530C_main != 0) {
+    if (omSysExitReq != 0) {
         HuAudFXAllStop();
         HuAudSeqFadeOut(30);
         WipeCreateOut(0, 20);
@@ -339,7 +339,7 @@ void func_80105FE4_winners_wheel(omObjData *obj) {
             }
             if (D_8010A464_winners_wheel == 1) {
                 if (!(GwPlayer[D_8010A48C_winners_wheel].stat & 1)) {
-                    if (D_800D5558_main[GwPlayer[D_8010A48C_winners_wheel].pad] == 0x8000) {
+                    if (HuPadBtnDown[GwPlayer[D_8010A48C_winners_wheel].pad] == 0x8000) {
                         func_80106EB0_winners_wheel(1);
                         D_8010A464_winners_wheel = 3;
                     }
@@ -575,7 +575,7 @@ void func_80106D2C_winners_wheel(omObjData *obj) {
     omSetSca(obj, player->scale, player->scale, player->scale);
     omSetTra(obj, player->pos.x, player->pos.y, player->pos.z);
     if (player->flags & 1) {
-        if (Hu3DData[obj->model[0]].motTime >= D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02) {
+        if (Hu3DData[obj->model[0]].motTime >= Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02) {
             Hu3DMotionAttrSet(obj->model[0], 4, 4);
             if (player->result != 0) {
                 player->flags |= 2;
@@ -646,7 +646,7 @@ void func_801070CC_winners_wheel(void) {
     data = DataRead(0x5C0007);
     sprite = Hu3DSprModelCreate(data, 0x699, 8);
     DataClose(data);
-    obj->model[bowserSlot] = D_800CBB60_main[sprite].modelId;
+    obj->model[bowserSlot] = Hu3DSprModelData[sprite].modelId;
     panels->angle[bowserSlot] = bowserSlot * 60.0f + 30.0f;
     panels->rot[bowserSlot] = 0.0f;
     panels->x[bowserSlot] = sindf(panels->angle[bowserSlot]) * 70.0f;
@@ -660,14 +660,14 @@ void func_801070CC_winners_wheel(void) {
         if (i == bowserSlot) {
             continue;
         }
-        item = D_800A11D0_main[next++];
+        item = mgInstColumnTbl[next++];
         counts[item]++;
         D_8010A468_winners_wheel[i] = item;
         data = DataRead(0x21002C);
         sprite = Hu3DSprModelCreate(data, 0x699, 8);
         Hu3DSprModelPointSet(sprite, item);
         DataClose(data);
-        obj->model[i] = D_800CBB60_main[sprite].modelId;
+        obj->model[i] = Hu3DSprModelData[sprite].modelId;
         panels->angle[i] = i * 60.0f + 30.0f;
         panels->rot[i] = 0.0f;
         panels->x[i] = sindf(panels->angle[i]) * 70.0f;
@@ -683,10 +683,10 @@ void func_801070CC_winners_wheel(void) {
     if (GwPlayer[D_8010A48C_winners_wheel].stat & 1) {
         item = (u8)(rand8() % 100);
         for (j = 0, total = 0; j < 5; j++) {
-            if (item >= total && item < total + D_800A11DC_main[j]) {
+            if (item >= total && item < total + mgInstSlotTbl[j]) {
                 break;
             }
-            total += D_800A11DC_main[j];
+            total += mgInstSlotTbl[j];
         }
         if (j == 5) {
             j = 4;
@@ -1264,7 +1264,7 @@ void func_8010985C_winners_wheel(void) {
     }
     sprite = Hu3DSprModelCreate(data, 0x69D, 8);
     DataClose(data);
-    obj->model[0] = D_800CBB60_main[sprite].modelId;
+    obj->model[0] = Hu3DSprModelData[sprite].modelId;
     prize->pos.x = 0.0f;
     prize->pos.y = 0.0f;
     prize->pos.z = 2.0f;

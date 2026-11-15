@@ -1,6 +1,6 @@
 #include "libm.h"
 
-f32 D_800C9500_main;
+f32 __cosSignF;
 
 f32 sindf(f32 angle) {
     f32 period;
@@ -20,9 +20,9 @@ f32 sindf(f32 angle) {
     }
 
     if (angle < 90.0f || 270.0f < angle) {
-        D_800C9500_main = 1.0f;
+        __cosSignF = 1.0f;
     } else {
-        D_800C9500_main = -1.0f;
+        __cosSignF = -1.0f;
     }
 
     if (180.0f < angle) {
@@ -41,8 +41,8 @@ f32 sindf(f32 angle) {
     fraction *= M_DTORf;
     square = fraction * fraction;
 
-    result = D_800A4830_main[index] * (1.0f - (0.125f * square * (4.0f + square))) +
-             D_800A4830_main[90 - index] * fraction;
+    result = __sinTblF[index] * (1.0f - (0.125f * square * (4.0f + square))) +
+             __sinTblF[90 - index] * fraction;
     if (sign != 0) {
         fraction = -result;
     } else {

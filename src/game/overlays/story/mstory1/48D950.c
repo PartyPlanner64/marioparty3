@@ -538,14 +538,14 @@ void func_801085F8_mstory1(omObjData *obj) {
     Hu3DMotionModelSet(model, obj->motion[5]);
     Hu3DMotionAttrSet(model, 4, 4);
     Hu3DMotionSpeedSet(model, 2.0f);
-    Hu3DMotionTimeSet(model, D_800CCF58_main[Hu3DData[model].motId].unk02);
+    Hu3DMotionTimeSet(model, Hu3DMotion[Hu3DData[model].motId].unk02);
     do {
         time = Hu3DData[model].motTime;
         HuPrcVSleep();
     } while (time > 0.0f);
     Hu3DMotionModelSet(model, obj->motion[6]);
     Hu3DMotionAttrSet(model, 4, 4);
-    Hu3DMotionTimeSet(model, D_800CCF58_main[Hu3DData[model].motId].unk02);
+    Hu3DMotionTimeSet(model, Hu3DMotion[Hu3DData[model].motId].unk02);
     do {
         time = Hu3DData[model].motTime;
         HuPrcVSleep();
@@ -662,7 +662,7 @@ void func_80109140_mstory1(void) {
     Hu3DAnimAttrSet(D_80115A1E_mstory1, 1, 0);
     Hu3DAnimBankSet(D_80115A1E_mstory1, 0);
     D_80115A28_mstory1 = Hu3DAnimLink(Hu3DData[obj->model[1]].hmf, D_80115A1E_mstory1, 0, D_80114E58_mstory1);
-    D_80115A1C_mstory1[0] = D_800D1714_main[D_80115A1C_mstory1[0]].animIdx;
+    D_80115A1C_mstory1[0] = Hu3DAnimData[D_80115A1C_mstory1[0]].animIdx;
     data = DataRead(0xA0080);
     D_80115A1C_mstory1[1] = (s16)Hu3DAnimDataCreate(data);
     HuMemMemoryFreePerm(data);

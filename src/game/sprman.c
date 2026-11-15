@@ -48,26 +48,26 @@ typedef struct {
 f64 fmod(f64 x, f64 y);
 void func_8007E040_main(Mtx *m, Mtx *n, Mtx *res);
 
-static Vp D_800A1E90_main = {
+static Vp HuSprViewport = {
     { { 640, 480, 511, 0 }, { 640, 480, 511, 0 } },
 };
-static s32 D_800A1EA0_main = 0; // redraw?
-static Mtx D_800BD7C0_main;
-static Gfx *D_800BD800_main;
-static HuSprite *D_800BD804_main; // head of sorted draw list
-static f32 D_800BD808_main;
-extern Gfx *D_800CCF30_main;
-extern s16 D_800D0468_main;
-extern s16 D_800D418E_main;
-extern HuSprAnmDesc *D_800D0A50_main[0x100];
-extern u16 D_800D554E_main;
-extern u16 D_800CC3E6_main;
-extern u16 D_800CB8A0_main;
-extern HuSprAnimData *D_800C9530_main[];
-extern void *D_800CE1B8_main[3];
-extern u8 D_800D2008_main;
-extern s32 D_800D1FDC_main;
-extern void *D_800D59F4_main;
+static s32 HuSprOrderDirtyF = 0; // redraw?
+static Mtx HuSprOrthoMtx;
+static Gfx *HuSprBGList;
+static HuSprite *HuSprOrderTop; // head of sorted draw list
+static f32 HuSpr3DScale;
+extern Gfx *HuSprTileBuf;
+extern s16 HuSprLayerHookMdl;
+extern s16 Hu3DCamMtxNo;
+extern HuSprAnmDesc *HuSprPalAnimData[0x100];
+extern u16 HuSprPalAnimNum;
+extern u16 HuSprAnimNum;
+extern u16 HuSprOrderNum;
+extern HuSprAnimData *HuSprAnimTbl[];
+extern void *HuSprGfxBuf[3];
+extern u8 Hu3DBufNo;
+extern s32 HuSprGfxBufSize;
+extern void *HuSprVtxPos;
 extern s8 Hu3DPauseF;
 extern HuSprGrp *HuSprGrpLast;
 extern HuSprGrp *HuSprGrpFirst;
@@ -84,19 +84,19 @@ void HuSprInit(void) {
     }
     HuSprGrpFirst = NULL;
     HuSprGrpLast = NULL;
-    D_800CB8A0_main = 0;
-    D_800CE1B8_main[0] =
-        D_800CE1B8_main[1] =
-            D_800CE1B8_main[2] =
-                D_800D59F4_main = NULL;
-    D_800D1FDC_main = NULL;
-    guOrtho(&D_800BD7C0_main, -160.0f, 160.0f, -120.0f, 120.0f, 0.0f, 8000.0f, 2.0f);
-    D_800D0468_main = Hu3DHookFuncCreate(0, HuSprLayerHook, 0);
-    Hu3DModelCameraSet(D_800D0468_main, HU3D_CAM0);
-    D_800D10F2_main = Hu3DHookFuncCreate(0, HuSprBGHook, 6);
+    HuSprOrderNum = 0;
+    HuSprGfxBuf[0] =
+        HuSprGfxBuf[1] =
+            HuSprGfxBuf[2] =
+                HuSprVtxPos = NULL;
+    HuSprGfxBufSize = NULL;
+    guOrtho(&HuSprOrthoMtx, -160.0f, 160.0f, -120.0f, 120.0f, 0.0f, 8000.0f, 2.0f);
+    HuSprLayerHookMdl = Hu3DHookFuncCreate(0, HuSprLayerHook, 0);
+    Hu3DModelCameraSet(HuSprLayerHookMdl, HU3D_CAM0);
+    HuSprBGHookMdl = Hu3DHookFuncCreate(0, HuSprBGHook, 6);
     HuSprAnimInit();
     HuSprPalAnimInit();
-    D_800A1EA0_main = 1;
+    HuSprOrderDirtyF = 1;
 }
 
 HuSprGrp *HuSprGrpAlloc(s16 arg0, u16 arg1) {
@@ -119,7 +119,7 @@ HuSprGrp *HuSprGrpAlloc(s16 arg0, u16 arg1) {
     temp_v0->prev = NULL;
     HuSprGrpFirst = temp_v0;
     HuSprGrpNum++;
-    D_800A1EA0_main = 1;
+    HuSprOrderDirtyF = 1;
     return temp_v0;
 }
 
@@ -174,7 +174,7 @@ void HuSprGrpKill(s16 arg0) {
     HuMemFree(group);
     HuSprGrpData[arg0] = NULL;
     HuSprGrpNum--;
-    D_800A1EA0_main = 1;
+    HuSprOrderDirtyF = 1;
 }
 
 void HuSprGrpAllKill(void) {
@@ -188,8 +188,8 @@ void HuSprGrpAllKill(void) {
     }
     HuSprGrpFirst = NULL;
     HuSprGrpLast = NULL;
-    D_800CB8A0_main = 0;
-    D_800A1EA0_main = 1;
+    HuSprOrderNum = 0;
+    HuSprOrderDirtyF = 1;
 }
 
 s16 HuSprGrpCreate(u16 arg0, u16 arg1) {
@@ -429,11 +429,11 @@ HuSprite *HuSprPrioSort(void) {
     s32 maxBucket = 0;
     HuSprite *node = NULL;
 
-    if (D_800A1EA0_main == 0) {
-        return D_800BD804_main;
+    if (HuSprOrderDirtyF == 0) {
+        return HuSprOrderTop;
     }
-    D_800A1EA0_main = 0;
-    D_800CB8A0_main = 0;
+    HuSprOrderDirtyF = 0;
+    HuSprOrderNum = 0;
     group = HuSprGrpLast;
     bzero(buckets, sizeof(buckets));
     while (group != NULL) {
@@ -505,10 +505,10 @@ HuSprite *HuSprPrioSort(void) {
                     maxBucket = bucket;
                 }
             }
-            D_800CB8A0_main++;
+            HuSprOrderNum++;
         }
     }
-    D_800BD804_main = buckets[maxBucket].first;
+    HuSprOrderTop = buckets[maxBucket].first;
     return buckets[maxBucket].first;
 }
 
@@ -812,19 +812,19 @@ void HuSprExec(void) {
 }
 
 void HuSprGfxBufAlloc(void) {
-    if (D_800CE1B8_main[D_800D2008_main] != NULL) {
-        HuMemFree(D_800CE1B8_main[D_800D2008_main]);
+    if (HuSprGfxBuf[Hu3DBufNo] != NULL) {
+        HuMemFree(HuSprGfxBuf[Hu3DBufNo]);
     }
-    if (D_800D1FDC_main != NULL) {
-        D_800CE1B8_main[D_800D2008_main] = HuMemAlloc(D_800D1FDC_main);
+    if (HuSprGfxBufSize != NULL) {
+        HuSprGfxBuf[Hu3DBufNo] = HuMemAlloc(HuSprGfxBufSize);
     } else {
-        D_800CE1B8_main[D_800D2008_main] = NULL;
+        HuSprGfxBuf[Hu3DBufNo] = NULL;
     }
-    D_800D59F4_main = D_800CE1B8_main[D_800D2008_main];
+    HuSprVtxPos = HuSprGfxBuf[Hu3DBufNo];
 }
 
 // Model draw callback that builds the display list for all sprites. Sprites
-// without attribute 0x4000 are linked into a separate list (D_800BD800_main)
+// without attribute 0x4000 are linked into a separate list (HuSprBGList)
 // and branched over here, so that HuSprBGHook can draw them later.
 void HuSprLayerHook(Gfx **gdl, s32 arg1, s32 arg2) {
     HuCamMtxs *mtxs;
@@ -835,17 +835,17 @@ void HuSprLayerHook(Gfx **gdl, s32 arg1, s32 arg2) {
     Gfx *mainBranch = NULL;
     s16 sample;
 
-    D_800D1FDC_main = 0;
+    HuSprGfxBufSize = 0;
     sample = HuProfCpuBegin(0, 200, 0);
     HuSprExec();
     HuProfCpuEnd(sample);
     sprite = HuSprPrioSort();
     HuSprGfxBufAlloc();
-    D_800CCF30_main = HuMemAlloc(0x4000);
+    HuSprTileBuf = HuMemAlloc(0x4000);
     sample = HuProfCpuBegin(0, 0, 200);
-    gSPViewport((*gdl)++, &D_800A1E90_main);
+    gSPViewport((*gdl)++, &HuSprViewport);
     gSPPerspNormalize((*gdl)++, 0x8000);
-    gSPMatrix((*gdl)++, osVirtualToPhysical(&D_800BD7C0_main), G_MTX_PROJECTION | G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPMatrix((*gdl)++, osVirtualToPhysical(&HuSprOrthoMtx), G_MTX_PROJECTION | G_MTX_LOAD | G_MTX_NOPUSH);
     gDPSetScissor((*gdl)++, G_SC_NON_INTERLACE, 0, 0, 320, 240);
     gDPPipeSync((*gdl)++);
     gDPSetTexturePersp((*gdl)++, G_TP_NONE);
@@ -854,7 +854,7 @@ void HuSprLayerHook(Gfx **gdl, s32 arg1, s32 arg2) {
     gSPSetGeometryMode((*gdl)++, G_ZBUFFER | G_TEXTURE_GEN_LINEAR);
     gDPSetBlendColor((*gdl)++, 0, 0, 0, 1);
     gDPSetAlphaCompare((*gdl)++, G_AC_THRESHOLD);
-    D_800BD800_main = NULL;
+    HuSprBGList = NULL;
     for (; sprite != NULL; sprite = sprite->unk_118) {
         if (sprite->dispAttr & 0x4000) {
             if (inSeparate) {
@@ -870,8 +870,8 @@ void HuSprLayerHook(Gfx **gdl, s32 arg1, s32 arg2) {
                     gSPBranchList(mainBranch, *gdl + 1);
                 }
                 separateBranch = (*gdl)++;
-                if (D_800BD800_main == NULL) {
-                    D_800BD800_main = *gdl;
+                if (HuSprBGList == NULL) {
+                    HuSprBGList = *gdl;
                 }
             }
             inSeparate = TRUE;
@@ -883,11 +883,11 @@ void HuSprLayerHook(Gfx **gdl, s32 arg1, s32 arg2) {
         if (separateBranch != NULL) {
             gSPBranchList(separateBranch, *gdl);
         }
-    } else if (D_800BD800_main != NULL) {
+    } else if (HuSprBGList != NULL) {
         gSPEndDisplayList(mainBranch);
     }
     gDPSetTextureLUT((*gdl)++, G_TT_NONE);
-    HuMemFree(D_800CCF30_main);
+    HuMemFree(HuSprTileBuf);
     mtxs = (HuCamMtxs *)arg1;
     cam = (HuCamera *)arg2;
     gSPMatrix((*gdl)++, &mtxs->perspMtx, G_MTX_PROJECTION | G_MTX_LOAD | G_MTX_NOPUSH);
@@ -901,12 +901,12 @@ void HuSprBGHook(Gfx **gdl, s32 arg1, s32 arg2) {
     HuCamMtxs *mtxs = (HuCamMtxs *)arg1;
     HuCamera *cam = (HuCamera *)arg2;
 
-    if (D_800BD800_main == NULL) {
+    if (HuSprBGList == NULL) {
         return;
     }
-    gSPViewport((*gdl)++, &D_800A1E90_main);
+    gSPViewport((*gdl)++, &HuSprViewport);
     gSPPerspNormalize((*gdl)++, 0x8000);
-    gSPMatrix((*gdl)++, osVirtualToPhysical(&D_800BD7C0_main), G_MTX_PROJECTION | G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPMatrix((*gdl)++, osVirtualToPhysical(&HuSprOrthoMtx), G_MTX_PROJECTION | G_MTX_LOAD | G_MTX_NOPUSH);
     gDPSetScissor((*gdl)++, G_SC_NON_INTERLACE, 0, 0, 320, 240);
     gDPPipeSync((*gdl)++);
     gDPSetTexturePersp((*gdl)++, G_TP_NONE);
@@ -915,7 +915,7 @@ void HuSprBGHook(Gfx **gdl, s32 arg1, s32 arg2) {
     gSPSetGeometryMode((*gdl)++, G_ZBUFFER | G_TEXTURE_GEN_LINEAR);
     gDPSetBlendColor((*gdl)++, 0, 0, 0, 1);
     gDPSetAlphaCompare((*gdl)++, G_AC_THRESHOLD);
-    gSPDisplayList((*gdl)++, D_800BD800_main);
+    gSPDisplayList((*gdl)++, HuSprBGList);
     gDPSetTextureLUT((*gdl)++, G_TT_NONE);
     gSPMatrix((*gdl)++, &mtxs->perspMtx, G_MTX_PROJECTION | G_MTX_LOAD | G_MTX_NOPUSH);
     gSPMatrix((*gdl)++, &mtxs->lookAtMtx, G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH);
@@ -970,10 +970,10 @@ f32 HuSpr3Dto2D(s16 group, s16 member, s16 camera, f32 x, f32 y, f32 z) {
     HuSprMtxXformVec4(&lookAtMtx, x, y, z, 1.0f, &x1, &y1, &z1, &w1);
     HuSprMtxXformVec4(&perspMtx, x1, y1, z1, w1, &x2, &y2, &z2, &w2);
     if (w2 != 0.0f) {
-        depth = (cam->viewports[D_800D418E_main].vp.vscale[2] << 5) * z2 / w2 +
-                (cam->viewports[D_800D418E_main].vp.vtrans[2] << 5);
+        depth = (cam->viewports[Hu3DCamMtxNo].vp.vscale[2] << 5) * z2 / w2 +
+                (cam->viewports[Hu3DCamMtxNo].vp.vtrans[2] << 5);
     } else {
-        depth = cam->viewports[D_800D418E_main].vp.vtrans[2] << 5;
+        depth = cam->viewports[Hu3DCamMtxNo].vp.vtrans[2] << 5;
     }
     if (depth < 0) {
         depth = 0;
@@ -981,16 +981,16 @@ f32 HuSpr3Dto2D(s16 group, s16 member, s16 camera, f32 x, f32 y, f32 z) {
         depth = 0x7FC0;
     }
     scale = sindf(gCameraList[camera].fov * 0.5) * z1 / cosdf(gCameraList[camera].fov * 0.5);
-    D_800BD808_main = scale = fabsf(scale);
+    HuSpr3DScale = scale = fabsf(scale);
     if (scale != 0.0) {
-        sprite->pos.x = cam->viewports[D_800D418E_main].vp.vscale[0] / 4.0 * x1 / scale / (f64)(4.0f / 3.0f) +
-                         cam->viewports[D_800D418E_main].vp.vtrans[0] / 4.0;
-        sprite->pos.y = cam->viewports[D_800D418E_main].vp.vscale[1] / 4.0 * -y1 / scale +
-                         cam->viewports[D_800D418E_main].vp.vtrans[1] / 4.0;
+        sprite->pos.x = cam->viewports[Hu3DCamMtxNo].vp.vscale[0] / 4.0 * x1 / scale / (f64)(4.0f / 3.0f) +
+                         cam->viewports[Hu3DCamMtxNo].vp.vtrans[0] / 4.0;
+        sprite->pos.y = cam->viewports[Hu3DCamMtxNo].vp.vscale[1] / 4.0 * -y1 / scale +
+                         cam->viewports[Hu3DCamMtxNo].vp.vtrans[1] / 4.0;
     }
     sprite->unk_44 = depth;
     group_ptr->dirty = 1;
-    return D_800BD808_main;
+    return HuSpr3DScale;
 }
 
 // Positions the sprite at a projected 3D point and scales it by depth.
@@ -999,9 +999,9 @@ void HuSpr3DPosSet(s16 group, s16 member, s16 camera, f32 x, f32 y, f32 z) {
     HuCamera *cam = &gCameraList[camera];
 
     HuSpr3Dto2D(group, member, camera, x, y, z);
-    if (D_800BD808_main != 0.0) {
-        sprite->unk_60 = cam->viewports[D_800D418E_main].vp.vscale[0] / 4.0 / D_800BD808_main / (f64)(4.0f / 3.0f);
-        sprite->unk_64 = cam->viewports[D_800D418E_main].vp.vscale[1] / 4.0 / D_800BD808_main;
+    if (HuSpr3DScale != 0.0) {
+        sprite->unk_60 = cam->viewports[Hu3DCamMtxNo].vp.vscale[0] / 4.0 / HuSpr3DScale / (f64)(4.0f / 3.0f);
+        sprite->unk_64 = cam->viewports[Hu3DCamMtxNo].vp.vscale[1] / 4.0 / HuSpr3DScale;
     }
 }
 
@@ -1012,8 +1012,8 @@ void HuSprPatNoSet(s16 group, s16 member, s32 arg2) {
 void HuSprGrpMemberSet(s16 group, s16 member, s16 arg2, u16 arg3) {
     HuSprite *sprite_ptr = HuSprGrpData[group]->members[member];
 
-    sprite_ptr->data = D_800C9530_main[arg2];
-    if (D_800C9530_main[arg2]->bank != 0) {
+    sprite_ptr->data = HuSprAnimTbl[arg2];
+    if (HuSprAnimTbl[arg2]->bank != 0) {
         sprite_ptr->animMode = HUSPR_ANIM_MODE_BANK;
     }
     sprite_ptr->bank = arg3;
@@ -1051,7 +1051,7 @@ void HuSprBankSet(s16 group, s16 member, u16 arg2, s32 arg3) {
 }
 
 HuSprAnimData *HuSprAnimDataGet(s16 arg0) {
-    return D_800C9530_main[arg0];
+    return HuSprAnimTbl[arg0];
 }
 
 u8 HuSprAnimStatGet(s16 group, s16 member) {
@@ -1076,7 +1076,7 @@ void HuSprPriSet(s16 group, s16 member, u16 prio) {
 
     if (sprite_ptr->prio != prio) {
         sprite_ptr->prio = prio;
-        D_800A1EA0_main = 1;
+        HuSprOrderDirtyF = 1;
     }
 }
 
@@ -1094,10 +1094,10 @@ void HuSprAttrReset(s16 group, s16 member, s32 attr) {
     HuSprite *sprite_ptr = HuSprGrpData[group]->members[member];
 
     if ((sprite_ptr->attr & HUSPR_ATTR_DISPOFF) && (attr & HUSPR_ATTR_DISPOFF)) {
-        D_800A1EA0_main = 1;
+        HuSprOrderDirtyF = 1;
     }
     if ((sprite_ptr->attr & 0x4000) && (attr & 0x4000)) {
-        D_800A1EA0_main = 1;
+        HuSprOrderDirtyF = 1;
     }
     sprite_ptr->attr &= ~attr;
     sprite_ptr->dispAttr = sprite_ptr->attr;
@@ -1107,10 +1107,10 @@ void HuSprAttrSet(s16 group, s16 member, s32 attr) {
     HuSprite *sprite_ptr = HuSprGrpData[group]->members[member];
 
     if (!(sprite_ptr->attr & HUSPR_ATTR_DISPOFF) && (attr & HUSPR_ATTR_DISPOFF)) {
-        D_800A1EA0_main = 1;
+        HuSprOrderDirtyF = 1;
     }
     if (!(sprite_ptr->attr & 0x4000) && (attr & 0x4000)) {
-        D_800A1EA0_main = 1;
+        HuSprOrderDirtyF = 1;
     }
     sprite_ptr->attr |= attr;
     sprite_ptr->dispAttr = sprite_ptr->attr;
@@ -1189,14 +1189,14 @@ void HuSprScissorSet(s16 group, s16 member, u16 arg2, u16 arg3, u16 arg4, u16 ar
 void HuSprAnimInit(void) {
     s16 i;
 
-    D_800CC3E6_main = 0;
+    HuSprAnimNum = 0;
     for (i = 0; i < 0x100; i++) {
-        D_800C9530_main[i] = NULL;
+        HuSprAnimTbl[i] = NULL;
     }
 }
 
 void HuSprAnimKill(s16 arg0) {
-    HuSprAnimData *desc = D_800C9530_main[arg0];
+    HuSprAnimData *desc = HuSprAnimTbl[arg0];
     s16 i;
 
     if (desc->bank != NULL) {
@@ -1220,15 +1220,15 @@ void HuSprAnimKill(s16 arg0) {
     }
     HuMemFree(desc->pat);
     HuMemFree(desc);
-    D_800C9530_main[arg0] = NULL;
-    D_800CC3E6_main--;
+    HuSprAnimTbl[arg0] = NULL;
+    HuSprAnimNum--;
 }
 
 void HuSprAnimAllKill(void) {
     s16 i;
 
     for (i = 0; i < 0x100; i++) {
-        if (D_800C9530_main[i] != NULL) {
+        if (HuSprAnimTbl[i] != NULL) {
             HuSprAnimKill(i);
         }
     }
@@ -1254,7 +1254,7 @@ s16 HuSprAnimRead(void *arg0) {
     s16 slot;
     s16 k;
 
-    for (i = 0; i < 0x100 && D_800C9530_main[i] != NULL; i++) {
+    for (i = 0; i < 0x100 && HuSprAnimTbl[i] != NULL; i++) {
     }
     if (i == 0x100) {
         return -1;
@@ -1282,8 +1282,8 @@ s16 HuSprAnimRead(void *arg0) {
     desc->bank = NULL;
     desc->data = NULL;
     desc->pal = NULL;
-    D_800C9530_main[slot] = desc;
-    D_800CC3E6_main++;
+    HuSprAnimTbl[slot] = desc;
+    HuSprAnimNum++;
     image = HuMemAlloc(desc->patNum * sizeof(*image));
     if (image != NULL) {
         desc->pat = image;
@@ -1376,7 +1376,7 @@ s32 HuSprAnimMake(u16 sizeX, u16 sizeY, u16 pixelBits, u16 palNum, u16 patNum) {
     s16 i;
     s16 slot;
 
-    for (i = 0; i < 0x100 && D_800C9530_main[i] != NULL; i++) {
+    for (i = 0; i < 0x100 && HuSprAnimTbl[i] != NULL; i++) {
     }
     if (i == 0x100) {
         return -1;
@@ -1396,8 +1396,8 @@ s32 HuSprAnimMake(u16 sizeX, u16 sizeY, u16 pixelBits, u16 palNum, u16 patNum) {
     desc->bank = 0;
     desc->data = NULL;
     desc->pal = NULL;
-    D_800C9530_main[slot] = desc;
-    D_800CC3E6_main++;
+    HuSprAnimTbl[slot] = desc;
+    HuSprAnimNum++;
     cel = HuMemAlloc(desc->patNum * 0xC);
     if (cel != NULL) {
         desc->pat = cel;
@@ -1456,7 +1456,7 @@ HuSprAnimPat *HuSprAnimPatGet(HuSprAnimData **arg0, u16 arg1) {
 }
 
 HuSprAnimPat *HuSprAnimPatGetNum(s16 arg0, u16 arg1) {
-    return &D_800C9530_main[arg0]->pat[arg1];
+    return &HuSprAnimTbl[arg0]->pat[arg1];
 }
 
 HuSprAnimPat *HuSprAnmPatGet(HuSprAnm *arg0) {
@@ -1470,7 +1470,7 @@ void *HuSprAnimPatDataGet(HuSprAnimData **arg0, u16 arg1) {
 }
 
 void *HuSprAnimPatDataGetNum(s16 arg0, u16 arg1) {
-    HuSprAnimPat *entry = &D_800C9530_main[arg0]->pat[arg1];
+    HuSprAnimPat *entry = &HuSprAnimTbl[arg0]->pat[arg1];
 
     return entry->data;
 }
@@ -1483,7 +1483,7 @@ void HuSprAnimPatDataSet(HuSprAnimData **arg0, u16 arg1, void *arg2) {
 }
 
 void HuSprAnimPatDataSetNum(s16 arg0, u16 arg1, void *arg2) {
-    HuSprAnimPat *entry = &D_800C9530_main[arg0]->pat[arg1];
+    HuSprAnimPat *entry = &HuSprAnimTbl[arg0]->pat[arg1];
 
     HuMemDelayFree(entry->data);
     entry->data = arg2;
@@ -1500,7 +1500,7 @@ void *HuSprAnimPalGet(HuSprAnimData **arg0) {
 }
 
 void *HuSprAnimPalGetNum(s16 arg0) {
-    return D_800C9530_main[arg0]->pal;
+    return HuSprAnimTbl[arg0]->pal;
 }
 
 void HuSprAnimPalSet(HuSprAnimData **arg0, void *arg1) {
@@ -1509,8 +1509,8 @@ void HuSprAnimPalSet(HuSprAnimData **arg0, void *arg1) {
 }
 
 void HuSprAnimPalSetNum(s16 arg0, void *arg1) {
-    HuMemDelayFree(D_800C9530_main[arg0]->pal);
-    D_800C9530_main[arg0]->pal = arg1;
+    HuMemDelayFree(HuSprAnimTbl[arg0]->pal);
+    HuSprAnimTbl[arg0]->pal = arg1;
 }
 
 s16 HuSprAnmFrameGet(HuSprAnm *arg0) {
@@ -1708,7 +1708,7 @@ void HuSprTexLoad(HuSprite *sprite) {
         tiles = image->sizeY / lines;
         sprite->dispAttr |= 0x40000000;
         if (!(sprite->dispAttr & 0x8000000)) {
-            D_800D1FDC_main += !(sprite->dispAttr & 0x2000) ? (tiles + 2) << 5 : (tiles + 2) << 6;
+            HuSprGfxBufSize += !(sprite->dispAttr & 0x2000) ? (tiles + 2) << 5 : (tiles + 2) << 6;
         } else {
             changed = sprite->dispAttr ^ sprite->prevAttr;
             if (sprite->unk_124 == NULL || (changed & 0x40000000)) {
@@ -1752,8 +1752,8 @@ void HuSprClose(void) {
     HuSprAnimAllKill();
     HuSprPalAnimAllKill();
     for (i = 0; i < 3; i++) {
-        if (D_800CE1B8_main[i] != NULL) {
-            HuMemFree(D_800CE1B8_main[i]);
+        if (HuSprGfxBuf[i] != NULL) {
+            HuMemFree(HuSprGfxBuf[i]);
         }
     }
 }
@@ -1788,9 +1788,9 @@ u32 HuSprRead32(u8 **arg0) {
 void HuSprPalAnimInit(void) {
     s16 i;
 
-    D_800D554E_main = 0;
+    HuSprPalAnimNum = 0;
     for (i = 0; i < 0x100; i++) {
-        D_800D0A50_main[i] = NULL;
+        HuSprPalAnimData[i] = NULL;
     }
 }
 
@@ -1807,7 +1807,7 @@ s16 HuSprPalAnimRead(u8 *data) {
     s32 slot;
 
     for (i = 0; i < 0x100; i++) {
-        if (D_800D0A50_main[i] == NULL) {
+        if (HuSprPalAnimData[i] == NULL) {
             break;
         }
     }
@@ -1846,13 +1846,13 @@ s16 HuSprPalAnimRead(u8 *data) {
     for (i = 0; i < desc->unk08; i++) {
         desc->unk0C[i] = HuSprRead16(&data);
     }
-    D_800D0A50_main[slot] = desc;
-    D_800D554E_main++;
+    HuSprPalAnimData[slot] = desc;
+    HuSprPalAnimNum++;
     return slot;
 }
 
 void HuSprPalAnimKill(s16 arg0) {
-    HuSprAnmDesc *desc = D_800D0A50_main[arg0];
+    HuSprAnmDesc *desc = HuSprPalAnimData[arg0];
     s32 i;
 
     for (i = 0; i < desc->unk02; i++) {
@@ -1874,15 +1874,15 @@ void HuSprPalAnimKill(s16 arg0) {
     HuMemFree(desc->unk04);
     HuMemFree(desc->unk0C);
     HuMemFree(desc);
-    D_800D0A50_main[arg0] = NULL;
-    D_800D554E_main--;
+    HuSprPalAnimData[arg0] = NULL;
+    HuSprPalAnimNum--;
 }
 
 void HuSprPalAnimSet(s16 group, s16 member, s16 arg2) {
     HuSprite *sprite = HuSprGrpData[group]->members[member];
     s32 i;
 
-    sprite->unk_98.unk00 = D_800D0A50_main[arg2];
+    sprite->unk_98.unk00 = HuSprPalAnimData[arg2];
     sprite->unk_98.unk64.f = 1.0f;
     for (i = 0; i < 0x10; i++) {
         sprite->unk_98.unk04[i] = 0xFFFF;
@@ -1899,7 +1899,7 @@ void HuSprPalAnimAllKill(void) {
     s16 i;
 
     for (i = 0; i < 0x100; i++) {
-        if (D_800D0A50_main[i] != NULL) {
+        if (HuSprPalAnimData[i] != NULL) {
             HuSprPalAnimKill(i);
         }
     }

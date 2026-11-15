@@ -26,9 +26,9 @@ f64 log(f64 x) {
     squared = ratio * ratio;
     for (; i < 100; i += 2) {
         power *= squared;
-        term = D_800A4380_main[i] * power;
+        term = __invFactTbl[i] * power;
         result += term;
-        if (term <= D_800C94E0_main) {
+        if (term <= __libmPrecision) {
             break;
         }
     }

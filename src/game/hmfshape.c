@@ -26,17 +26,17 @@
         stream++;                                               \
     } while (0)
 
-extern HmfVertexAnim *D_800D59F8_main;
-extern s16 D_800CDD6A_main;
-extern u8 D_800D2008_main;
+extern HmfVertexAnim *Hu3DShapeData;
+extern s16 Hu3DModelTag;
+extern u8 Hu3DBufNo;
 
 void Hu3DShapeFrameDecode(HmfVertexAnim *, HmfData *, HmfVertexAnimCache *, s16);
 
 void Hu3DShapeInit(void) {
     s16 i;
-    D_800D59F8_main = HuMemAlloc(0x140);
+    Hu3DShapeData = HuMemAlloc(0x140);
     for (i = 0; i < 0x10; i++) {
-        D_800D59F8_main[i].frames = 0;
+        Hu3DShapeData[i].frames = 0;
     }
 }
 
@@ -45,14 +45,14 @@ s32 Hu3DShapeCreate(HmfData *model, u8 *data) {
     HmfVertexAnim *anim;
 
     for (i = 0; i < 16; i++) {
-        if (D_800D59F8_main[i].frames == NULL) {
+        if (Hu3DShapeData[i].frames == NULL) {
             break;
         }
     }
     if (i == 16) {
         return -1;
     }
-    anim = &D_800D59F8_main[i];
+    anim = &Hu3DShapeData[i];
     anim->model = model;
     anim->data = data;
     anim->duration = (data[8] << 8) + data[9];
@@ -63,14 +63,14 @@ s32 Hu3DShapeCreate(HmfData *model, u8 *data) {
 }
 
 void Hu3DShapeKill(s32 arg0) {
-    D_800D59F8_main[arg0].frames = 0;
+    Hu3DShapeData[arg0].frames = 0;
 }
 
 void Hu3DShapeAllKill(void) {
     s16 i;
 
     for (i = 0; i < 0x10; i++) {
-        if (D_800D59F8_main[i].frames != 0) {
+        if (Hu3DShapeData[i].frames != 0) {
             Hu3DShapeKill(i);
         }
     }
@@ -94,16 +94,16 @@ void Hu3DShapeCacheMake(HmfData *model) {
         HuMemFree(cache);
     }
     count = model->unk18;
-    cache = HuMemAllocTag(sizeof(*cache), D_800CDD6A_main);
+    cache = HuMemAllocTag(sizeof(*cache), Hu3DModelTag);
     model->unk58 = cache;
     cache->vertexCount = count;
-    positions = HuMemAllocTag(count * 6, D_800CDD6A_main);
+    positions = HuMemAllocTag(count * 6, Hu3DModelTag);
     cache->positions[0] = positions;
-    normals = HuMemAllocTag(count * 3, D_800CDD6A_main);
+    normals = HuMemAllocTag(count * 3, Hu3DModelTag);
     cache->normals[0] = normals;
-    cache->positions[1] = HuMemAllocTag(count * 6, D_800CDD6A_main);
-    cache->normals[1] = HuMemAllocTag(count * 3, D_800CDD6A_main);
-    cache->visited = HuMemAllocTag((count + 7) / 8, D_800CDD6A_main);
+    cache->positions[1] = HuMemAllocTag(count * 6, Hu3DModelTag);
+    cache->normals[1] = HuMemAllocTag(count * 3, Hu3DModelTag);
+    cache->visited = HuMemAllocTag((count + 7) / 8, Hu3DModelTag);
     cache->frames[0] = cache->frames[1] = -1;
     cache->currentBuffer = 0;
     vertices = (Vtx_t *)model->unk40;
@@ -143,7 +143,7 @@ void Hu3DShapeAnimExec(HmfData *model, s16 animIndex, f32 time) {
     s16 count;
     f32 weight;
 
-    anim = &D_800D59F8_main[animIndex];
+    anim = &Hu3DShapeData[animIndex];
     cache = model->unk58;
     frame = time / anim->frameStep;
     if (frame >= anim->frameCount - 1) {
@@ -187,7 +187,7 @@ void Hu3DShapeAnimExec(HmfData *model, s16 animIndex, f32 time) {
     normals = cache->normals[buffer];
     nextPositions = cache->positions[(buffer + 1) & 1];
     nextNormals = cache->normals[(buffer + 1) & 1];
-    vertices = (Vtx_tn *)model->unk44[D_800D2008_main];
+    vertices = (Vtx_tn *)model->unk44[Hu3DBufNo];
     count = model->unk18;
     for (i = 0; i < count; i++) {
         vertices->ob[0] = (*positions)[0] * (1.0f - weight) + (*nextPositions)[0] * weight;
@@ -457,14 +457,14 @@ void Hu3DShapeMorphExec(HmfData *model, f32 time) {
         return;
     }
     source = (Vtx_t *)model->unk40;
-    dest = (Vtx_t *)model->unk44[D_800D2008_main];
+    dest = (Vtx_t *)model->unk44[Hu3DBufNo];
     count = model->unk18;
     for (i = 0; i < count; i++) {
         *dest = *source;
         source++;
         dest++;
     }
-    source = (Vtx_t *)model->unk44[D_800D2008_main];
+    source = (Vtx_t *)model->unk44[Hu3DBufNo];
     if (time >= model->unkB8->unk02 - 1) {
         time = model->unkB8->unk02 - 1;
     }

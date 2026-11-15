@@ -442,7 +442,7 @@ void func_80106EA4_game_guys_roulette(omObjData *object) {
                 D_8010AB50_game_guys_roulette = 5;
                 D_8010AAE0_game_guys_roulette = 0;
                 omDelPrcObj(D_8010A924_game_guys_roulette);
-                D_800D6A58_main = 0;
+                omSysPauseDisableF = 0;
                 D_8010AB54_game_guys_roulette = GMesCreate(0x1A, 10, 156, 56);
             }
             break;
@@ -531,7 +531,7 @@ void func_8010726C_game_guys_roulette(s16 win) {
     while (HuWinStatGet(win) != 0) {
         switch (D_8010AAD6_game_guys_roulette.cpu) {
             case 0:
-                if (D_800D5558_main[D_8010AAD6_game_guys_roulette.pad] & 0x8000) {
+                if (HuPadBtnDown[D_8010AAD6_game_guys_roulette.pad] & 0x8000) {
                     HuWinComKeySet(-0x8000, -0x8000, -0x8000, -0x8000);
                 }
                 break;
@@ -561,9 +561,9 @@ void func_801073AC_game_guys_roulette(void) {
     f32 rotZ;
 
     if (D_8010AAD6_game_guys_roulette.cpu == 0) {
-        decide = D_800D5558_main[D_8010AAD6_game_guys_roulette.pad] >> 15;
-        dir = D_800D20A1_main[D_8010AAD6_game_guys_roulette.pad] > 64;
-        if (D_800D20A1_main[D_8010AAD6_game_guys_roulette.pad] < -64) {
+        decide = HuPadBtnDown[D_8010AAD6_game_guys_roulette.pad] >> 15;
+        dir = HuPadStkY[D_8010AAD6_game_guys_roulette.pad] > 64;
+        if (HuPadStkY[D_8010AAD6_game_guys_roulette.pad] < -64) {
             dir = 2;
         }
     } else if (D_8010AAD6_game_guys_roulette.cpu == 1) {
@@ -640,7 +640,7 @@ void func_801073AC_game_guys_roulette(void) {
 
     if (decide == TRUE) {
         GMesTimerEnd();
-        D_800D6A58_main = 1;
+        omSysPauseDisableF = 1;
         HuAudFXPlay(3);
         omVibrate(D_8010AAD6_game_guys_roulette.player, 10, 0, 10);
         D_8010A9B0_game_guys_roulette[D_8010AB51_game_guys_roulette].scaleX =
@@ -936,7 +936,7 @@ void func_80108998_game_guys_roulette(omObjData *object) {
 }
 
 void func_801089EC_game_guys_roulette(omObjData *object) {
-    if (D_800D530C_main == 1) {
+    if (omSysExitReq == 1) {
         object->func = func_801088B0_game_guys_roulette;
     }
 }

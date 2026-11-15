@@ -47,8 +47,8 @@ typedef struct Unk_D_800CE1DC {
 
 #ifndef NO_EXTERN_VARIABLES
 extern s32 fontcolor;
-extern Unk_D_800CC440 D_800CC440_main[4];
-extern Unk_D_800CE1DC D_800CE1DC_main;
+extern Unk_D_800CC440 printWinData[4];
+extern Unk_D_800CE1DC saftyFrameData;
 #endif
 
 s16 printWin(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);

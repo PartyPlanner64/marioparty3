@@ -218,7 +218,7 @@ s16 func_80105FA8_opboardtutorial(s16 model, s32 file, char *name) {
     D_80107784_opboardtutorial = anim;
     Hu3DAnimAttrSet(anim, 1, 1);
     DataClose(data);
-    animIdx = D_800D1714_main[(s16)anim].animIdx;
+    animIdx = Hu3DAnimData[(s16)anim].animIdx;
     D_80107786_opboardtutorial = Hu3DAnimLink(Hu3DData[model].hmf, (u16)anim, 0, name);
     Hu3DModelRemakeStatic(model);
     return animIdx;
@@ -232,7 +232,7 @@ void func_801060B4_opboardtutorial(s16 model, s16 anim) {
             Hu3DModelAnimStop(Hu3DData[model].hmf);
         } else {
             Hu3DModelAnimStart(Hu3DData[model].hmf);
-            entry = &D_800D1714_main[D_80107786_opboardtutorial];
+            entry = &Hu3DAnimData[D_80107786_opboardtutorial];
             entry->animIdx = anim;
             entry->rot = 0;
             entry->flags = 0;
@@ -587,7 +587,7 @@ void func_80106F40_opboardtutorial(void) {
 void func_80107408_opboardtutorial(void) {
     func_801063A4_opboardtutorial();
     func_80106F40_opboardtutorial();
-    D_800D530C_main = 1;
+    omSysExitReq = 1;
     while (1) {
         HuPrcVSleep();
     }
@@ -606,7 +606,7 @@ void func_80107448_opboardtutorial(omObjData *obj) {
 }
 
 void func_801074A4_opboardtutorial(omObjData *obj) {
-    if (D_800D530C_main != 0) {
+    if (omSysExitReq != 0) {
         WipeCreateOut(2, 20);
         obj->func = func_80107448_opboardtutorial;
     }

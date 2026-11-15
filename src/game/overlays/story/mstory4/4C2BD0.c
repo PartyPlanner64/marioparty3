@@ -1,8 +1,8 @@
 #include "common.h"
 #include "game/hmfmath.h"
 
-extern f32 D_800CB890_main;
-extern f32 D_800D5210_main;
+extern f32 CFanOfs;
+extern f32 CFanLen;
 
 extern s16 D_80112120_mstory4;
 extern s16 D_80112122_mstory4;
@@ -118,7 +118,7 @@ void func_80105C90_mstory4(omObjData *obj) {
             break;
         case 2:
             if (D_80111AC8_mstory4 == 1) {
-                btn = D_800D5558_main[D_80112124_mstory4] & START_BUTTON;
+                btn = HuPadBtnDown[D_80112124_mstory4] & START_BUTTON;
                 state += btn != 0;
             }
             break;
@@ -146,7 +146,7 @@ void func_80105C90_mstory4(omObjData *obj) {
 }
 
 void func_80105DA8_mstory4(omObjData *obj) {
-    if (D_800D530C_main == 1) {
+    if (omSysExitReq == 1) {
         if (D_80111ACC_mstory4 == 0) {
             if (GwPlayer[0].coin == 0) {
                 WipeCreateOut(WIPE_STARS, 20);
@@ -176,7 +176,7 @@ void func_80105E58_mstory4(void) {
 void func_80105EAC_mstory4(void) {
     Hu3DMotionAttrSet(D_80112122_mstory4, 4, 4);
     Hu3DMotionAttrSet(D_80112122_mstory4, 1, 0);
-    Hu3DMotionTimeSet(D_80112122_mstory4, D_800CCF58_main[Hu3DData[D_80112122_mstory4].motId].unk02);
+    Hu3DMotionTimeSet(D_80112122_mstory4, Hu3DMotion[Hu3DData[D_80112122_mstory4].motId].unk02);
 }
 
 void func_80105F40_mstory4(void) {
@@ -204,8 +204,8 @@ void func_80106068_mstory4(omObjData *obj) {
     D_800CE17C_main[1] = D_80111AD0_mstory4.z;
     D_800CE17C_main[-1] = 0.0f;
     D_800CE17C_main[2] = 35.0f;
-    D_800CE17C_main[3] = D_800D5210_main;
-    D_800CE17C_main[4] = D_800CB890_main;
+    D_800CE17C_main[3] = CFanLen;
+    D_800CE17C_main[4] = CFanOfs;
     Hu3DCameraPosSetV(0, &D_80111AD0_mstory4, &D_80111ADC_mstory4, &D_80111AE8_mstory4);
     Hu3DCamUpdateMtx(0);
 }
@@ -381,7 +381,7 @@ void func_80106B3C_mstory4(s16 model, s16 animSlot, s16 anim) {
             Hu3DModelAnimStop(Hu3DData[model].hmf);
         } else {
             Hu3DModelAnimStart(Hu3DData[model].hmf);
-            entry = &D_800D1714_main[animSlot];
+            entry = &Hu3DAnimData[animSlot];
             entry->animIdx = anim;
             entry->rot = 0;
             entry->flags = 0;
@@ -590,7 +590,7 @@ s32 func_801074F8_mstory4(s16 model) {
     f32 time = Hu3DMotionShiftTimeGet(model);
     s32 ret = 0;
 
-    if (time == -1.0f && D_800CCF58_main[Hu3DData[model].motId].unk02 <= Hu3DData[model].motTime) {
+    if (time == -1.0f && Hu3DMotion[Hu3DData[model].motId].unk02 <= Hu3DData[model].motTime) {
         ret = -1;
     }
     return ret;

@@ -857,24 +857,24 @@ void func_800E9170_minigame(void) {
     angle = 0;
     speed = 0;
     while (TRUE) {
-        if (D_800D5558_main[D_800EBAF0_minigame] & 0x4000) {
+        if (HuPadBtnDown[D_800EBAF0_minigame] & 0x4000) {
             HuAudFXPlay(4);
             *result = -2;
             break;
         }
-        if (D_800D5558_main[D_800EBAF0_minigame] & 0x1000) {
+        if (HuPadBtnDown[D_800EBAF0_minigame] & 0x1000) {
             HuAudFXPlay(2);
             *result = -1;
             break;
         }
         if (func_800E8FF8_minigame(prc) == 0) {
-            if ((D_800D5558_main[D_800EBAF0_minigame] & 0x100) || D_800CBB6E_main[D_800EBAF0_minigame] >= 31) {
+            if ((HuPadBtnDown[D_800EBAF0_minigame] & 0x100) || HuPadStkX[D_800EBAF0_minigame] >= 31) {
                 HuAudFXPlay(1);
                 func_800E8FE4_minigame(prc, 3);
                 angle = 180;
                 speed = -22;
                 selection = 1;
-            } else if ((D_800D5558_main[D_800EBAF0_minigame] & 0x200) || D_800CBB6E_main[D_800EBAF0_minigame] < -30) {
+            } else if ((HuPadBtnDown[D_800EBAF0_minigame] & 0x200) || HuPadStkX[D_800EBAF0_minigame] < -30) {
                 HuAudFXPlay(1);
                 func_800E8FE4_minigame(prc, 4);
                 angle = 180;

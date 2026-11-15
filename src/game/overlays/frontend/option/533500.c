@@ -24,7 +24,7 @@ typedef struct {
     /* 0x70 */ s32 duration;
 } OptCam; // sizeof 0x74
 
-extern s8 D_800D2132_main;
+extern s8 omSysPauseReadyF;
 void func_80107F50_option(s32 animFile, s16 x, s16 y);
 omObjData *func_80107758_option(Vec *, Vec *, s32);
 void func_80106508_option(Vec *, Vec *, Vec *);
@@ -72,7 +72,7 @@ void func_801059D0_option(void) {
     Hu3DGLightColorSet(2, 0, 0, 0);
     Hu3DGLightColorSet(3, 0, 0, 0);
     Hu3DGLightDirSet(1, 0.0f, 64.0f, 192.0f);
-    D_800D2132_main = 0;
+    omSysPauseReadyF = 0;
 }
 
 const char D_80113A04_option[] = "";

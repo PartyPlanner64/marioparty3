@@ -250,8 +250,8 @@ typedef struct UnkData_CD0A0 {
 } UnkData_CD0A0; //sizeof 0x44
 
 #ifndef NO_EXTERN_VARIABLES
-extern Unk800CD2A0 D_800CD2A0_main;
-extern s16 D_800D4196_main;
+extern Unk800CD2A0 ditherBak;
+extern s16 mbOvlCallF;
 
 extern s16 mbDlgWinId;
 extern s32 mbTurnOnF;
@@ -280,7 +280,7 @@ extern s16 mbItemCursorGrpId;
 extern void (*MBItemSubFunctions[22])(void);
 
 //TODO: should these be here?
-extern s16 D_800CE198_main;
+extern s16 mbBoardMusId;
 #endif
 
 #endif //_GAME_BOARD_H

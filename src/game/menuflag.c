@@ -1,20 +1,20 @@
 #include "game/menuflag.h"
 
-static s8 D_800B23B0_main;
-static s8 D_800B23B1_main;
+static s8 fileSelEnteredF;
+static s8 modeSelIntroShownF;
 
 s32 FileSelEnteredGet(void) {
-    return D_800B23B0_main;
+    return fileSelEnteredF;
 }
 
 void FileSelEnteredSet(s8 arg0) {
-    D_800B23B0_main = arg0;
+    fileSelEnteredF = arg0;
 }
 
 s32 ModeSelIntroShownGet(void) {
-    return D_800B23B1_main;
+    return modeSelIntroShownF;
 }
 
 void ModeSelIntroShownSet(s8 arg0) {
-    D_800B23B1_main = arg0;
+    modeSelIntroShownF = arg0;
 }

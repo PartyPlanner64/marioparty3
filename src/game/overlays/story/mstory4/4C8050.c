@@ -484,7 +484,7 @@ void func_8010C0BC_mstory4(void) {
     Hu3DAnimAttrSet(D_80112338_mstory4[0], 1, 0);
     Hu3DAnimBankSet(D_80112338_mstory4[0], 0);
     D_80112348_mstory4 = Hu3DAnimLink(Hu3DData[obj->model[1]].hmf, D_80112338_mstory4[0], 0, D_80111F74_mstory4);
-    D_80112338_mstory4[0] = D_800D1714_main[D_80112338_mstory4[0]].animIdx;
+    D_80112338_mstory4[0] = Hu3DAnimData[D_80112338_mstory4[0]].animIdx;
     data = DataRead(0xA0080);
     D_80112338_mstory4[1] = (s16)Hu3DAnimDataCreate(data);
     HuMemMemoryFreePerm(data);
@@ -796,7 +796,7 @@ u8 D_80111C04_mstory4[] = {
 //   `model` past it.
 // - The final wait loop needs `pad` reassigned in the for-loop increment: the
 //   register then is not single-use inside the loop, so loop.c hoists the
-//   address into s0 as in the target (plain `while (!D_800D5558_main[0])`
+//   address into s0 as in the target (plain `while (!HuPadBtnDown[0])`
 //   forms get the address substituted back into the load).
 #ifdef NON_MATCHING
 void func_8010D1A0_mstory4(omObjData *obj) {
@@ -966,7 +966,7 @@ void func_8010D1A0_mstory4(omObjData *obj) {
     Hu3DMotionAttrSet(obj1->model[1], 2, 0);
     Hu3DMotionAttrSet(obj1->model[1], 4, 4);
     Hu3DMotionShiftSet(model, Hu3DData[obj0->motion[9]].motId, 0, 10, 0);
-    Hu3DMotionTimeSet(obj1->model[1], D_800CCF58_main[Hu3DData[obj1->model[1]].motId].unk02);
+    Hu3DMotionTimeSet(obj1->model[1], Hu3DMotion[Hu3DData[obj1->model[1]].motId].unk02);
     do {
         time = Hu3DData[obj1->model[1]].motTime;
         HuPrcVSleep();
@@ -1039,7 +1039,7 @@ void func_8010D1A0_mstory4(omObjData *obj) {
     func_8010F910_mstory4();
     func_8010FC98_mstory4();
     HuPrcSleep(150);
-    for (pad = D_800D5558_main; *pad == 0; pad = D_800D5558_main) {
+    for (pad = HuPadBtnDown; *pad == 0; pad = HuPadBtnDown) {
         HuPrcVSleep();
     }
     func_801060E8_mstory4();
@@ -1273,60 +1273,60 @@ const s32 D_80112008_mstory4[8] = { 0x1D0017, 0x1D0015, 0x1D0018, 0x1D0019, 0x1D
 
 void func_8010F1F4_mstory4(void) {
     while (TRUE) {
-        if (D_800CDA7C_main[0] & 0x2000) {
-            if (D_800CDA7C_main[0] & 0x100) {
+        if (HuPadBtn[0] & 0x2000) {
+            if (HuPadBtn[0] & 0x100) {
                 D_80111AD0_mstory4.x -= 10.0f;
             }
-            if (D_800CDA7C_main[0] & 0x200) {
+            if (HuPadBtn[0] & 0x200) {
                 D_80111AD0_mstory4.x += 10.0f;
             }
         } else {
-            if (D_800CDA7C_main[0] & 0x800) {
+            if (HuPadBtn[0] & 0x800) {
                 D_80111AD0_mstory4.z -= 10.0f;
             }
-            if (D_800CDA7C_main[0] & 0x400) {
+            if (HuPadBtn[0] & 0x400) {
                 D_80111AD0_mstory4.z += 10.0f;
             }
-            if (D_800CDA7C_main[0] & 0x100) {
+            if (HuPadBtn[0] & 0x100) {
                 D_80111AD0_mstory4.y -= 10.0f;
             }
-            if (D_800CDA7C_main[0] & 0x200) {
+            if (HuPadBtn[0] & 0x200) {
                 D_80111AD0_mstory4.y += 10.0f;
             }
         }
-        if (D_800CDA7C_main[0] & 0x2000) {
-            if (D_800CDA7C_main[0] & 1) {
+        if (HuPadBtn[0] & 0x2000) {
+            if (HuPadBtn[0] & 1) {
                 D_80111ADC_mstory4.x -= 10.0f;
             }
-            if (D_800CDA7C_main[0] & 2) {
+            if (HuPadBtn[0] & 2) {
                 D_80111ADC_mstory4.x += 10.0f;
             }
         } else {
-            if (D_800CDA7C_main[0] & 8) {
+            if (HuPadBtn[0] & 8) {
                 D_80111ADC_mstory4.z -= 10.0f;
             }
-            if (D_800CDA7C_main[0] & 4) {
+            if (HuPadBtn[0] & 4) {
                 D_80111ADC_mstory4.z += 10.0f;
             }
-            if (D_800CDA7C_main[0] & 1) {
+            if (HuPadBtn[0] & 1) {
                 D_80111ADC_mstory4.y -= 10.0f;
             }
-            if (D_800CDA7C_main[0] & 2) {
+            if (HuPadBtn[0] & 2) {
                 D_80111ADC_mstory4.y += 10.0f;
             }
         }
-        sprintf(D_800D5218_main, "POSX   :[%f]", D_80111AD0_mstory4.x);
-        print8(24, 128, D_800D5218_main);
-        sprintf(D_800D5218_main, "POSY   :[%f]", D_80111AD0_mstory4.y);
-        print8(24, 136, D_800D5218_main);
-        sprintf(D_800D5218_main, "POSZ   :[%f]", D_80111AD0_mstory4.z);
-        print8(24, 144, D_800D5218_main);
-        sprintf(D_800D5218_main, "INTERX :[%f]", D_80111ADC_mstory4.x);
-        print8(24, 160, D_800D5218_main);
-        sprintf(D_800D5218_main, "INTERY :[%f]", D_80111ADC_mstory4.y);
-        print8(24, 168, D_800D5218_main);
-        sprintf(D_800D5218_main, "INTERZ :[%f]", D_80111ADC_mstory4.z);
-        print8(24, 176, D_800D5218_main);
+        sprintf(omDBGStrBuf, "POSX   :[%f]", D_80111AD0_mstory4.x);
+        print8(24, 128, omDBGStrBuf);
+        sprintf(omDBGStrBuf, "POSY   :[%f]", D_80111AD0_mstory4.y);
+        print8(24, 136, omDBGStrBuf);
+        sprintf(omDBGStrBuf, "POSZ   :[%f]", D_80111AD0_mstory4.z);
+        print8(24, 144, omDBGStrBuf);
+        sprintf(omDBGStrBuf, "INTERX :[%f]", D_80111ADC_mstory4.x);
+        print8(24, 160, omDBGStrBuf);
+        sprintf(omDBGStrBuf, "INTERY :[%f]", D_80111ADC_mstory4.y);
+        print8(24, 168, omDBGStrBuf);
+        sprintf(omDBGStrBuf, "INTERZ :[%f]", D_80111ADC_mstory4.z);
+        print8(24, 176, omDBGStrBuf);
         HuPrcVSleep();
     }
 }

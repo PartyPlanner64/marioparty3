@@ -1,10 +1,10 @@
 #include "libm.h"
 
 /* Shared Taylor-series signs and reciprocal coefficients. */
-const s32 D_800A4350_main[12] = { 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1 };
+const s32 __sinCosSignTbl[12] = { 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1 };
 
 /* Reciprocals indexed by the series term. */
-const f64 D_800A4380_main[100] = {
+const f64 __invFactTbl[100] = {
     0.0,
     1.0,
     0.5,
@@ -108,7 +108,7 @@ const f64 D_800A4380_main[100] = {
 };
 
 /* Single-precision reciprocals indexed by the series term. */
-const f32 D_800A46A0[100] = {
+const f32 __invFactTblF[100] = {
     0.0f,
     1.0f,
     0.5f,
@@ -212,7 +212,7 @@ const f32 D_800A46A0[100] = {
 };
 
 /* Sine of integer angles from 0 through 90 degrees. */
-const f32 D_800A4830_main[91] = {
+const f32 __sinTblF[91] = {
     0.0f,
     0.0174524058f,
     0.0348994955f,
@@ -307,7 +307,7 @@ const f32 D_800A4830_main[91] = {
 };
 
 /* Double-precision sine of integer angles from 0 through 90 degrees. */
-const f64 D_800A49A0_main[91] = {
+const f64 __sinTbl[91] = {
     0.0,
     0.017452406437283515,
     0.034899496702500976,
@@ -402,4 +402,4 @@ const f64 D_800A49A0_main[91] = {
 };
 
 /* Set by the libm precision initializer before evaluating double-precision series. */
-f64 D_800C94E0_main;
+f64 __libmPrecision;

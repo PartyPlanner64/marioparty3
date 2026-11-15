@@ -38,13 +38,13 @@ f64 atan2(f64 y, f64 x) {
     result = 1.0;
     term = (power + power) / 3.0;
     i = 4;
-    tolerance = D_800C94E0_main;
+    tolerance = __libmPrecision;
     for (; i < 100; i += 2) {
         result += term;
         if (term <= tolerance) {
             break;
         }
-        term *= power * i * D_800A4380_main[i + 1];
+        term *= power * i * __invFactTbl[i + 1];
     }
     result *= ratio * factor;
     return x > 0.0 ? result : (y > 0.0 ? M_PI + result : -M_PI + result);

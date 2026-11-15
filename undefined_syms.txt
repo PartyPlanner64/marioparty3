@@ -30,8 +30,8 @@ D_800EC288_minigame = minigameBssC280 + 0x8;
 D_800EC28A_minigame = minigameBssC280 + 0xA;
 
 /* Minigame table field aliases: MinigameTable (mgdata.c). */
-D_800A6D44_main = D_800A6D40_main + 0x4; /* minigameType */
-D_800A6D46_main = D_800A6D40_main + 0x6; /* flags */
+D_800A6D44_main = mgDataTbl + 0x4; /* minigameType */
+D_800A6D46_main = mgDataTbl + 0x6; /* flags */
 
 /* msetup field aliases: MsetupMenuContext, MsetupMessageWindows, MsetupPlayerConfig. */
 D_8011A880_msetup = msetupMenuContext;          /* playerCount */
@@ -92,51 +92,51 @@ D_8010DDEC_inst = D_8010DDE8_inst + 0x4; /* update */
 /* gamemes "WON" string literal, now emitted by C GameMesMgWinnerExec; still referenced by the WINNERS asm. */
 
 /* gamemes character tables offset by the first character code, referenced by the CreateFontChar asm. */
-D_800B19C6_main = D_800B1A88_main - 0x61 * 2; /* 'a' */
-D_800B1A3E_main = D_800B1AC0_main - 0x41 * 2; /* 'A' */
-D_800B1A76_main = D_800B1AF8_main - 0x41 * 2; /* 'A' */
+D_800B19C6_main = gMesFontLowerAnim - 0x61 * 2; /* 'a' */
+D_800B1A3E_main = gMesFontUpperAnim - 0x41 * 2; /* 'A' */
+D_800B1A76_main = gMesFontUpperAltAnim - 0x41 * 2; /* 'A' */
 
 /* profiler sample buffer sampleCount fields. */
-D_800B246C_main = D_800B2468_main + 0x4;
-D_800B24F4_main = D_800B24F0_main + 0x4;
+D_800B246C_main = HuProfCpuBuf + 0x4;
+D_800B24F4_main = HuProfRspBuf + 0x4;
 
 /* objmain character model table fields, referenced by overlays as separate arrays. */
-D_800A178C_main = D_800A1788_main + 0x4;
-D_800A1790_main = D_800A1788_main + 0x8;
-D_800A1794_main = D_800A1788_main + 0xC;
-D_800A1798_main = D_800A1788_main + 0x10;
+D_800A178C_main = omCharModelTbl + 0x4;
+D_800A1790_main = omCharModelTbl + 0x8;
+D_800A1794_main = omCharModelTbl + 0xC;
+D_800A1798_main = omCharModelTbl + 0x10;
 
 /* Low byte of the gamework message speed, referenced by the name overlay asm. */
-D_800A12C3_main = D_800A12C0_main + 0x3;
+D_800A12C3_main = GwMessSpeed + 0x3;
 
 /* main bss.c: arrays that sat at 2-byte or odd addresses in the original COMMON
  * layout. GCC 2.7.2 aligns array definitions to 4 bytes, so they are carved out
  * of a 4-byte aligned container that starts at the preceding variable. */
-D_800CB8B1_main = D_800CB8B0_main + 0x1;
-D_800CBB66_main = D_800CBB64_main + 0x2;
-D_800CBB6E_main = D_800CBB64_main + 0xA;
-D_800CBB72_main = D_800CBB64_main + 0xE;
-D_800D056A_main = D_800D0568_main + 0x2;
-D_800D1382_main = D_800D1380_main + 0x2;
-D_800D20A1_main = D_800D20A0_main + 0x1;
-mesWInsert = D_800D5204_main + 0x2;
-D_800D5546_main = D_800D5544_main + 0x2;
+mgPlayerTeam = Hu3DObjExtF + 0x1;
+HuPadBtnOld = saveBoardSystemSize + 0x2;
+HuPadStkX = saveBoardSystemSize + 0xA;
+Hu3DDLModelNum = saveBoardSystemSize + 0xE;
+HuPadStkXSum = D_800D0568_main + 0x2;
+HuPadStkYSum = mbWipeType + 0x2;
+HuPadStkY = Hu3DFlatShadeF + 0x1;
+mesWInsert = Hu3DModelDataTag + 0x2;
+ContBtn = matGfxSplitF + 0x2;
 
 /* main bss.c: fields and elements of larger objects, referenced separately. */
 D_800CD360_main = gMesData + 0x60;
 D_800CD364_main = gMesData + 0x64;
 D_800CE202_main = omovl + 0x2; /* low halfword */
-D_800D09A9_main = D_800D09A8_main + 0x1; /* SaveCommonBuf boxNo */
-D_800D13EE_main = D_800D1398_main + 0x56;
-D_800D1F60_main = D_800D1F5C_main + 0x4; /* WipeTexture pixels */
-D_800D52C0_main = D_800D5298_main + 0x28; /* str800D5298 unk28 */
+D_800D09A9_main = saveCommonBuf + 0x1; /* SaveCommonBuf boxNo */
+D_800D13EE_main = HuAudFadeSysConfig + 0x56;
+D_800D1F60_main = wipeTex + 0x4; /* WipeTexture pixels */
+D_800D52C0_main = HuAudSysConfig + 0x28; /* str800D5298 unk28 */
 D_800D54FC_main = CenterM + 0x4;
 D_800D5500_main = CenterM + 0x8;
-D_800D5A40_main = D_800D5A00_main + 0x40;
+D_800D5A40_main = Hu3DObjMtxStack + 0x40;
 D_800D6AE4_main = CRotM + 0x4;
 
 /* main bss.c: base of a matrix table indexed from 1. */
-D_800D41B0_main = D_800D41F0_main - 0x40;
+D_800D41B0_main = Hu3DSubMtxStack - 0x40;
 
 /* swing_n_swipe field aliases: SwingNSwipeBssC148. */
 D_8010C148_swing_n_swipe = swingNSwipeBssC148;
@@ -682,3 +682,8 @@ D_80115B66_mstory1 = D_80115B5C_mstory1 + 0xA;
 D_80115C9E_mstory1 = D_80115C9C_mstory1 + 0x2;
 D_80115CA2_mstory1 = D_80115C9C_mstory1 + 0x6;
 D_80115CA6_mstory1 = D_80115C9C_mstory1 + 0xA;
+
+/* main BSS symbols without a bss.c definition (overlay-only). */
+GameManFirstPad = 0x800D1F36;
+mbMesNum = 0x800D41C2;
+storySceneNo = 0x800CE20A;

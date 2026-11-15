@@ -82,7 +82,7 @@ typedef struct PuddlePaddleGame {
     /* 0x42 */ char unk_42[2];
 } PuddlePaddleGame; // Size 0x44
 
-extern u8 D_800D6A90_main;
+extern u8 omAllPauseF;
 extern s32 D_800A178C_main[][6];
 extern s32 D_800A1790_main[][6];
 
@@ -199,7 +199,7 @@ void func_80105B94_puddle_paddle(void) {
 }
 
 void func_80105C3C_puddle_paddle(omObjData *object) {
-    if (D_800D530C_main == 1) {
+    if (omSysExitReq == 1) {
         WipeCreateOut(WIPE_TYPE_NORMAL, 20);
         object->func = func_80105C84_puddle_paddle;
     }
@@ -309,8 +309,8 @@ void func_80106064_puddle_paddle(omObjData *object) {
             } else {
                 sprModel = Hu3DSprModelLink(srcModel, 0);
             }
-            D_80111658_puddle_paddle->items[j].model = D_800CBB60_main[sprModel].modelId;
-            Hu3DModelScaleSet(D_800CBB60_main[sprModel].modelId, 3.0f, 3.0f, 1.0f);
+            D_80111658_puddle_paddle->items[j].model = Hu3DSprModelData[sprModel].modelId;
+            Hu3DModelScaleSet(Hu3DSprModelData[sprModel].modelId, 3.0f, 3.0f, 1.0f);
         }
         base += itemCounts[i];
     }
@@ -376,7 +376,7 @@ void func_80106988_puddle_paddle(omObjData *object) {
 
 void func_801069FC_puddle_paddle(omObjData *object) {
     Hu3DModelTexScroll(object->model[0], sindf(D_80111220_puddle_paddle) * 15.0f, -D_80111224_puddle_paddle, 64, 64);
-    if (omPauseChk() + D_800D6A90_main == 0) {
+    if (omPauseChk() + omAllPauseF == 0) {
         D_80111220_puddle_paddle += 0.5f;
         if (D_80111220_puddle_paddle >= 360.0f) {
             D_80111220_puddle_paddle -= 360.0f;
@@ -738,7 +738,7 @@ void func_80108178_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
             handler->unk_1C[1] = (f32)(rand16() % 61 + 40);
         }
         time = Hu3DData[object->model[0]].motTime;
-        if (time >= D_800CCF58_main[Hu3DData[object->model[0]].motId].unk02) {
+        if (time >= Hu3DMotion[Hu3DData[object->model[0]].motId].unk02) {
             Hu3DMotionModelSet(slot->unk_04[0], object->motion[0]);
             Hu3DMotionSpeedSet(slot->unk_04[0], 1.0f);
         }
@@ -1031,14 +1031,14 @@ void func_801091F8_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
         }
         handler->unk_04 = 1;
     }
-    D_800CBB6E_main[players[0]->unk_00] = 0;
-    D_800D20A1_main[players[0]->unk_00] = 0;
-    D_800CDA7C_main[players[0]->unk_00] = 0;
+    HuPadStkX[players[0]->unk_00] = 0;
+    HuPadStkY[players[0]->unk_00] = 0;
+    HuPadBtn[players[0]->unk_00] = 0;
     if (object->work[0] == D_80111650_puddle_paddle[players[0]->team].unk_2C || (players[1]->unk_04 & 8)) {
         if (++handler->unk_1C[0] > handler->unk_1C[1]) {
             handler->unk_1C[0] = 0;
             handler->unk_1C[1] = rand16() % (handler->unk_0C[1] - handler->unk_0C[0] + 1) + handler->unk_0C[0];
-            ((u16 *)D_800CDA7C_main)[players[0]->unk_00] = A_BUTTON;
+            ((u16 *)HuPadBtn)[players[0]->unk_00] = A_BUTTON;
         }
     }
 }
@@ -1056,7 +1056,7 @@ void func_801094C4_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
             handler->unk_0C[2] = 6;
             player->unk_04 &= ~8;
         }
-        if ((u16)D_800CDA7C_main[player->unk_00] & A_BUTTON) {
+        if ((u16)HuPadBtn[player->unk_00] & A_BUTTON) {
             if (handler->unk_0C[0] == 0) {
                 handler->unk_0C[0] = 1;
                 handler->unk_0C[2] = 0;
@@ -1078,8 +1078,8 @@ void func_801094C4_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
         } else {
             handler->unk_0C[1] = 0;
         }
-        stickX = D_800CBB6E_main[player->unk_00];
-        if ((stickX == 0) & (D_800D20A1_main[player->unk_00] == 0)) {
+        stickX = HuPadStkX[player->unk_00];
+        if ((stickX == 0) & (HuPadStkY[player->unk_00] == 0)) {
             return;
         }
         if (stickX < -7) {
@@ -1109,7 +1109,7 @@ void func_80109718_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
     if (player->unk_58 == 1) {
         return;
     }
-    if (model->motTime >= D_800CCF58_main[model->motId].unk02 - 1) {
+    if (model->motTime >= Hu3DMotion[model->motId].unk02 - 1) {
         player->unk_08 = 1;
     }
     if (player->unk_08 != 0) {

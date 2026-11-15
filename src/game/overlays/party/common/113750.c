@@ -242,8 +242,8 @@ static void func_8010024C_shared_board(void) {
     if (func_800F8858_shared_board() == 0) {
         var_s7 = func_800DBEC0_shared_board(GwSystem.current_player_index);
         func_800DC024_shared_board(GwSystem.current_player_index);
-        if (D_800C9930_main != -1) {
-            msmMusSetVolume(D_800C9930_main, 0x60);
+        if (mbSubMusNo != -1) {
+            msmMusSetVolume(mbSubMusNo, 0x60);
         } else {
             HuAudSeqVolSet(0x60);
         }
@@ -263,19 +263,19 @@ static void func_8010024C_shared_board(void) {
         MBCameraPos2DGet(&sp10);
         temp = MBCameraPos2DSet(&sp10);
         func_800FFEC4_shared_board(temp_s3, temp);
-        if (D_800D5546_main[temp_s2] & 0x200) {
+        if (ContBtn[temp_s2] & 0x200) {
             sp10.x -= 16.0f;
             var_s1 = 0xF;
         }
-        if (D_800D5546_main[temp_s2] & 0x100) {
+        if (ContBtn[temp_s2] & 0x100) {
             sp10.x += temp2;
             var_s1 = 0xF;
         }
-        if (D_800D5546_main[temp_s2] & 0x800) {
+        if (ContBtn[temp_s2] & 0x800) {
             sp10.y -= temp2;
             var_s1 = 0xF;
         }
-        if (D_800D5546_main[temp_s2] & 0x400) {
+        if (ContBtn[temp_s2] & 0x400) {
             sp10.y += temp2;
             var_s1 = 0xF;
         }
@@ -294,7 +294,7 @@ static void func_8010024C_shared_board(void) {
         if (mbCameraBtnF == 0) {
             break;
         }
-        if (D_800C9520_main[temp_s2] & (A_BUTTON | B_BUTTON | Z_TRIG | R_TRIG)) {
+        if (ContBtnDown[temp_s2] & (A_BUTTON | B_BUTTON | Z_TRIG | R_TRIG)) {
             break;
         }
     }       
@@ -325,8 +325,8 @@ static void func_8010024C_shared_board(void) {
         func_800DC08C_shared_board(GwSystem.current_player_index);
         func_80100228_shared_board();
         
-        if (D_800C9930_main != -1) {
-            msmMusSetVolume(D_800C9930_main, 0x7F);
+        if (mbSubMusNo != -1) {
+            msmMusSetVolume(mbSubMusNo, 0x7F);
         } else {
             HuAudSeqVolSet(0x7F);
         }
@@ -354,7 +354,7 @@ void MBMapScrollExec(s32 arg0) {
 
     D_801056E8_shared_board = MBCameraZoomGet();
     MBCameraPos2DGet(&D_801056EC_shared_board);
-    D_800CB99C_main = 1;
+    winPauseF = 1;
     omAllPause();
     func_800E6FCC_shared_board();
     temp_v0 = omAddPrcObj(func_80100630_shared_board, 0x1005, 0, 0);
@@ -369,6 +369,6 @@ void MBMapScrollExec(s32 arg0) {
     HuPrcChildLink(temp_s0, temp_v0);
     HuPrcChildWatch();
     omAllUPause();
-    D_800CB99C_main = 0;
+    winPauseF = 0;
     func_800E6FBC_shared_board();
 }

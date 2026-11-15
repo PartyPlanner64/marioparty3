@@ -101,7 +101,7 @@ typedef struct EtchNCatchBoardWork {
 
 extern f32 D_800EB770_minigame;
 extern s32 D_800A178C_main[][6];
-extern u8 D_800D6A90_main;
+extern u8 omAllPauseF;
 
 s8 D_8010C6A0_etch_n_catch = 0;
 s16 D_8010C6A4_etch_n_catch[2][2] = { { 64, 38 }, { 281, 38 } };
@@ -274,10 +274,10 @@ void func_80105ED4_etch_n_catch(omObjData *object) {
     s32 voice;
     s8 i;
 
-    if (omPauseChk() + D_800D6A90_main == 0) {
-        if (D_8010C6D8_etch_n_catch == 0 && D_800D530C_main == 1) {
+    if (omPauseChk() + omAllPauseF == 0) {
+        if (D_8010C6D8_etch_n_catch == 0 && omSysExitReq == 1) {
             HuAudFXAllStop();
-            if (!(D_800A1906_main & 4)) {
+            if (!(HuAudStat & 4)) {
                 HuAudSeqFadeOut(30);
             } else {
                 HuAudSeqStop();
@@ -371,7 +371,7 @@ void func_80105ED4_etch_n_catch(omObjData *object) {
                 if (D_8010C6D4_etch_n_catch == 0) {
                     WipeCreateOut(WIPE_TYPE_NORMAL, 20);
                     func_8010C2F4_etch_n_catch();
-                } else if (WipeStatGet() == 0 && !(D_800A1906_main & 4)) {
+                } else if (WipeStatGet() == 0 && !(HuAudStat & 4)) {
                     omOvlReturnEx(1);
                 }
                 D_8010C6D4_etch_n_catch++;
@@ -520,7 +520,7 @@ void func_80106A64_etch_n_catch(omObjData *object) {
     s16 gridX;
     s16 gridY;
 
-    if (omPauseChk() + D_800D6A90_main != 0) {
+    if (omPauseChk() + omAllPauseF != 0) {
         return;
     }
     if (MgFlowStatGet() == MG_STATE_EXIT) {
@@ -552,16 +552,16 @@ void func_80106A64_etch_n_catch(omObjData *object) {
         }
         return;
     }
-    buttons = D_800D5558_main[data->unk57];
-    D_800D5558_main[data->unk57] = 0;
+    buttons = HuPadBtnDown[data->unk57];
+    HuPadBtnDown[data->unk57] = 0;
     if (object->trans.x < 0.0f) {
         side = 0;
     } else {
         side = 1;
     }
     if (D_8010C858_etch_n_catch[side]->work[0] >= 6 || D_8010C860_etch_n_catch[side]->work[0] != 3) {
-        D_800CBB6E_main[data->unk57] = 0;
-        D_800D20A1_main[data->unk57] = 0;
+        HuPadStkX[data->unk57] = 0;
+        HuPadStkY[data->unk57] = 0;
     }
     if (GwPlayer[data->unk59].stat & 1) {
         func_80107EA4_etch_n_catch(object);
@@ -729,7 +729,7 @@ void func_80106A64_etch_n_catch(omObjData *object) {
             newNode->unk_15 = D_8010C838_etch_n_catch->unk_02;
             D_8010C890_etch_n_catch[D_8010C838_etch_n_catch->unk_06 / 2][D_8010C838_etch_n_catch->unk_04 / 2] |=
                 D_8010C838_etch_n_catch->unk_00;
-            if ((D_800CBB6E_main[data->unk57] != 0 || D_800D20A1_main[data->unk57] != 0) &&
+            if ((HuPadStkX[data->unk57] != 0 || HuPadStkY[data->unk57] != 0) &&
                 func_80108C08_etch_n_catch(D_8010C838_etch_n_catch)) {
                 if (object->trans.x < 0.0f) {
                     D_8010C6E0_etch_n_catch = 1;
@@ -834,7 +834,7 @@ void func_80106A64_etch_n_catch(omObjData *object) {
                 }
             }
         }
-        D_800D5558_main[data->unk57] = buttons;
+        HuPadBtnDown[data->unk57] = buttons;
     }
 }
 
@@ -894,8 +894,8 @@ void func_80107EA4_etch_n_catch(omObjData *object) {
     }
     side = (object->trans.x < 0.0f) ? 0 : 1;
     if (D_8010C858_etch_n_catch[side]->work[0] >= 6 || D_8010C860_etch_n_catch[side]->work[0] != 3) {
-        D_800CBB6E_main[data->unk57] = 0;
-        D_800D20A1_main[data->unk57] = 0;
+        HuPadStkX[data->unk57] = 0;
+        HuPadStkY[data->unk57] = 0;
         return;
     }
     if (object->trans.x < 0.0f) {
@@ -915,8 +915,8 @@ void func_80107EA4_etch_n_catch(omObjData *object) {
             } else {
                 dir = func_8010C574_etch_n_catch(object->trans.x, object->trans.z, target->trans.x, target->trans.z + 75.0f);
             }
-            D_800CBB6E_main[data->unk57] = speed * dir.x;
-            D_800D20A1_main[data->unk57] = -(speed * dir.y);
+            HuPadStkX[data->unk57] = speed * dir.x;
+            HuPadStkY[data->unk57] = -(speed * dir.y);
             dx = ABS(target->trans.x - object->trans.x);
             if (work->unk_00 == 1 || work->unk_00 == 4) {
                 dz = ABS(target->trans.z - 75.0f - object->trans.z);
@@ -934,8 +934,8 @@ void func_80107EA4_etch_n_catch(omObjData *object) {
                     data->unk3C = 90.0f;
                     D_8010C6E4_etch_n_catch[data->unk59] = 2;
                 } else {
-                    D_800CBB6E_main[data->unk57] = speed / 2;
-                    D_800D20A1_main[data->unk57] = 0;
+                    HuPadStkX[data->unk57] = speed / 2;
+                    HuPadStkY[data->unk57] = 0;
                 }
             }
             if (work->unk_00 == 2 || work->unk_00 == 8) {
@@ -944,8 +944,8 @@ void func_80107EA4_etch_n_catch(omObjData *object) {
                     data->unk3C = 270.0f;
                     D_8010C6E4_etch_n_catch[data->unk59] = 2;
                 } else {
-                    D_800CBB6E_main[data->unk57] = -speed / 2;
-                    D_800D20A1_main[data->unk57] = 0;
+                    HuPadStkX[data->unk57] = -speed / 2;
+                    HuPadStkY[data->unk57] = 0;
                 }
             }
             break;
@@ -957,8 +957,8 @@ void func_80107EA4_etch_n_catch(omObjData *object) {
             x = sindf(data->unk3C) * (radius + 75.0f) + target->trans.x;
             z = cosdf(data->unk3C) * (radius + 75.0f) + target->trans.z;
             dir = func_8010C574_etch_n_catch(object->trans.x, object->trans.z, x, z);
-            D_800CBB6E_main[data->unk57] = speed * dir.x;
-            D_800D20A1_main[data->unk57] = -(speed * dir.y);
+            HuPadStkX[data->unk57] = speed * dir.x;
+            HuPadStkY[data->unk57] = -(speed * dir.y);
             break;
     }
     x = sindf(data->unk3C) * 65.0f * 0.75f + object->trans.x;
@@ -971,14 +971,14 @@ void func_80107EA4_etch_n_catch(omObjData *object) {
         x = sindf(data->unk3C) * 10.0f + object->trans.x;
         z = cosdf(data->unk3C) * 10.0f + object->trans.z;
         dir = func_8010C574_etch_n_catch(object->trans.x, object->trans.z, x, z);
-        D_800CBB6E_main[data->unk57] = speed * dir.x;
-        D_800D20A1_main[data->unk57] = -(speed * dir.y);
+        HuPadStkX[data->unk57] = speed * dir.x;
+        HuPadStkY[data->unk57] = -(speed * dir.y);
     }
 }
 
 void func_8010880C_etch_n_catch(func_800E1BA8_minigame_ObjData *data) {
-    f32 stickX = D_800CBB6E_main[data->unk57];
-    f32 stickY = -D_800D20A1_main[data->unk57];
+    f32 stickX = HuPadStkX[data->unk57];
+    f32 stickY = -HuPadStkY[data->unk57];
     f32 angle;
     f32 diff;
     f32 magnitude;
@@ -1002,8 +1002,8 @@ void func_8010880C_etch_n_catch(func_800E1BA8_minigame_ObjData *data) {
     }
     angle = func_8010C4F8_etch_n_catch(angle);
     magnitude = HuSqrtf(stickX * stickX + stickY * stickY);
-    D_800CBB6E_main[data->unk57] = sindf(angle) * magnitude;
-    D_800D20A1_main[data->unk57] = -cosdf(angle) * magnitude;
+    HuPadStkX[data->unk57] = sindf(angle) * magnitude;
+    HuPadStkY[data->unk57] = -cosdf(angle) * magnitude;
 }
 
 void func_80108B20_etch_n_catch(EtchNCatchWork *arg0) {
@@ -1541,7 +1541,7 @@ void func_80109EB8_etch_n_catch(omObjData *object) {
                     Hu3DModelAttrSet(object->model[i + 1], 4, 4);
                 }
             }
-            if (data->unk15C >= D_800CCF58_main[Hu3DData[object->model[0]].motId].unk02 / 2.0f - 2.0f) {
+            if (data->unk15C >= Hu3DMotion[Hu3DData[object->model[0]].motId].unk02 / 2.0f - 2.0f) {
                 Hu3DMotionAttrSet(object->model[0], 2, 1);
                 object->work[0] = 8;
                 data->unk15C = 0;

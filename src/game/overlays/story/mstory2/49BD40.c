@@ -2,8 +2,8 @@
 #include "game/hmfmath.h"
 #include "game/overlays/minigame.h"
 
-extern f32 D_800CB890_main;
-extern f32 D_800D5210_main;
+extern f32 CFanOfs;
+extern f32 CFanLen;
 
 extern void (*const D_8011BDE0_mstory2[])(void);
 extern const s32 D_8011BDF4_mstory2[];
@@ -63,8 +63,8 @@ void func_801059E4_mstory2(omObjData *obj) {
     D_800CE17C_main[1] = D_8011B920_mstory2.z;
     D_800CE17C_main[-1] = 0.0f;
     D_800CE17C_main[2] = 35.0f;
-    D_800CE17C_main[3] = D_800D5210_main;
-    D_800CE17C_main[4] = D_800CB890_main;
+    D_800CE17C_main[3] = CFanLen;
+    D_800CE17C_main[4] = CFanOfs;
     Hu3DCameraPosSetV(0, &D_8011B920_mstory2, &D_8011B92C_mstory2, &D_8011B938_mstory2);
     Hu3DCamUpdateMtx(0);
 }
@@ -156,7 +156,7 @@ void func_80105DB4_mstory2(omObjData *obj) {
             }
             break;
         case 2:
-            if (D_8011C640_mstory2 != 0 && D_8011B944_mstory2 == 1 && (D_800D5558_main[D_8011C642_mstory2] & START_BUTTON)) {
+            if (D_8011C640_mstory2 != 0 && D_8011B944_mstory2 == 1 && (HuPadBtnDown[D_8011C642_mstory2] & START_BUTTON)) {
                 state++;
             }
             break;
@@ -201,7 +201,7 @@ void func_80105F4C_mstory2(omObjData *obj) {
 }
 
 void func_80105F94_mstory2(omObjData *obj) {
-    if (D_800D530C_main == 1) {
+    if (omSysExitReq == 1) {
         obj->func = func_80105F4C_mstory2;
     }
 }
@@ -430,7 +430,7 @@ void func_80106D58_mstory2(s16 model, s16 animSlot, s16 anim) {
             Hu3DModelAnimStop(Hu3DData[model].hmf);
         } else {
             Hu3DModelAnimStart(Hu3DData[model].hmf);
-            entry = &D_800D1714_main[animSlot];
+            entry = &Hu3DAnimData[animSlot];
             entry->animIdx = anim;
             entry->rot = 0;
             entry->flags = 0;
@@ -546,7 +546,7 @@ s32 func_801072F8_mstory2(s16 model) {
     f32 time = Hu3DMotionShiftTimeGet(model);
     s32 ret = 0;
 
-    if (time == -1.0f && D_800CCF58_main[Hu3DData[model].motId].unk02 <= Hu3DData[model].motTime) {
+    if (time == -1.0f && Hu3DMotion[Hu3DData[model].motId].unk02 <= Hu3DData[model].motTime) {
         ret = -1;
     }
     return ret;

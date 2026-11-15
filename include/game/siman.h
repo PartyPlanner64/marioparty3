@@ -40,8 +40,8 @@ s32 RequestSIFunction(unkMesg* siMessg, void* func, void* arg, s32 type);
 void SIProc(void* arg0);
 
 #ifndef NO_EXTERN_VARIABLES
-extern OSMesgQueue D_800CE1A0_main;
-extern OSMesgQueue D_800D1220_main;
+extern OSMesgQueue siMesgQueue;
+extern OSMesgQueue siReqQueue;
 #endif
 
 #endif

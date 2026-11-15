@@ -444,7 +444,7 @@ s16 func_80106800_duelresult(s16 model, s32 dataNum, char *name) {
     D_8010D8E4_duelresult = anim;
     Hu3DAnimAttrSet(anim, 1, 1);
     DataClose(data);
-    animIdx = D_800D1714_main[(s16)anim].animIdx;
+    animIdx = Hu3DAnimData[(s16)anim].animIdx;
     D_8010D8E6_duelresult = Hu3DAnimLink(Hu3DData[model].hmf, anim, 0, name);
     Hu3DModelRemakeStatic(model);
     return animIdx;
@@ -458,7 +458,7 @@ void func_8010690C_duelresult(s16 model, s16 animIdx) {
             Hu3DModelAnimStop(Hu3DData[model].hmf);
         } else {
             Hu3DModelAnimStart(Hu3DData[model].hmf);
-            anim = &D_800D1714_main[D_8010D8E6_duelresult];
+            anim = &Hu3DAnimData[D_8010D8E6_duelresult];
             anim->animIdx = animIdx;
             anim->rot = 0;
             anim->flags = 0;
@@ -1050,7 +1050,7 @@ void func_8010856C_duelresult(void) {
                 while (1) {
                     for (i = 0; i < 2; i++) {
                         if (!(GwPlayer[i].stat & PLAYER_IS_CPU) &&
-                            (D_800C9520_main[GwPlayer[i].pad] & (A_BUTTON | B_BUTTON))) {
+                            (ContBtnDown[GwPlayer[i].pad] & (A_BUTTON | B_BUTTON))) {
                             break;
                         }
                     }
@@ -1386,7 +1386,7 @@ void func_8010856C_duelresult(void) {
         while (1) {
             for (i = 0; i < 2; i++) {
                 if (!(GwPlayer[i].stat & PLAYER_IS_CPU) &&
-                    (D_800C9520_main[GwPlayer[i].pad] & (A_BUTTON | B_BUTTON | START_BUTTON))) {
+                    (ContBtnDown[GwPlayer[i].pad] & (A_BUTTON | B_BUTTON | START_BUTTON))) {
                     break;
                 }
             }
@@ -1403,7 +1403,7 @@ void func_8010856C_duelresult(void) {
 void func_8010A938_duelresult(void) {
     func_80105BD0_duelresult();
     func_8010856C_duelresult();
-    D_800D530C_main = 1;
+    omSysExitReq = 1;
     while (1) {
         HuPrcVSleep();
     }
@@ -1439,7 +1439,7 @@ void func_8010A978_duelresult(omObjData *obj) {
 }
 
 void func_8010AA9C_duelresult(omObjData *obj) {
-    if (D_800D530C_main != 0) {
+    if (omSysExitReq != 0) {
         WipeCreateOut(2, 20);
         msmSeFadeOut(40);
         obj->func = func_8010A978_duelresult;

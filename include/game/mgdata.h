@@ -13,7 +13,7 @@ typedef struct MinigameTable {
     /* 0x12 */ s16 finalMessage;
 } MinigameTable; // sizeof 0x14
 
-extern const MinigameTable D_800A6D40_main[];
+extern const MinigameTable mgDataTbl[];
 
 s32 MgDataMaxGet(s32 minigameIndex);
 

@@ -18,7 +18,7 @@ Gfx *D_8010C184_hand_line_sinker BSS;
 HmfData **D_8010C188_hand_line_sinker BSS;
 HmfModel *D_8010C18C_hand_line_sinker BSS;
 omObjData *D_8010C190_hand_line_sinker BSS;
-extern u8 D_800D2008_main;
+extern u8 Hu3DBufNo;
 extern Gfx *gMainGfxPos;
 
 void func_8010B750_hand_line_sinker(omObjData *obj);
@@ -122,7 +122,7 @@ FishingLine *func_8010BA80_hand_line_sinker(u8 r, u8 g, u8 b) {
 
     line = HuMemAlloc(sizeof(FishingLine));
     line->model = Hu3DModelDLCreate(0x1080, NULL, 4);
-    for (i = 0; i < D_800D1FF0_main; i++) {
+    for (i = 0; i < Hu3DBufNum; i++) {
         line->vtx[i] = HuMemAlloc(32 * sizeof(Vtx));
         line->gfx[i] = HuMemAlloc(128 * sizeof(Gfx));
     }
@@ -140,8 +140,8 @@ void func_8010BB58_hand_line_sinker(FishingLine *line, Vec *points, u16 count) {
     if (line == NULL) {
         return;
     }
-    vtx = line->vtx[D_800D2008_main];
-    gfx = line->gfx[D_800D2008_main];
+    vtx = line->vtx[Hu3DBufNo];
+    gfx = line->gfx[Hu3DBufNo];
     if (count < 2) {
         osSyncPrintf("Line Count err %d\n", count);
     }
@@ -187,7 +187,7 @@ void func_8010BE6C_hand_line_sinker(FishingLine *line) {
     s16 i;
 
     Hu3DModelKill(line->model);
-    for (i = 0; i < D_800D1FF0_main; i++) {
+    for (i = 0; i < Hu3DBufNum; i++) {
         HuMemDelayFree(line->vtx[i]);
         HuMemDelayFree(line->gfx[i]);
     }

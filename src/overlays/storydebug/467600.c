@@ -13,7 +13,7 @@ RectF ScissorDimensions = { 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT };
 s16 StringBufferIndex = 0; // only used once and never written to?
 u16 TextYPos = DEFAULT_Y_POS;
 
-extern u8 D_801068C0_storydebug[512];
+u8 D_801068C0_storydebug[512] BSS;
 
 void func_80106108_storydebug(omObjData *);
 void func_80106134_storydebug(void);

@@ -2275,7 +2275,7 @@ segments:
       - [0x468310, .data, 4675D0] #801066E0
       - [0x468320, .data, 467600]
       - [0x468340, .rodata, 467600] #80106710
-      - {0x4684F0, type: bss, vram: 0x801068C0, name: storydebug_bss}
+      - {0x4684F0, type: .bss, vram: 0x801068C0, name: 467600}
 
   - type: code
     start: 0x4684F0

@@ -2,21 +2,18 @@
 #include "game/object.h"
 #include "math.h"
 #include "../ovl_81_name/ovl_81.h"
+#include "mgresultduel.h"
 
-typedef struct UnkOmData {
-    omObjData *unk_00;
-    void (*objFunc)(omObjData *); // func pointer
-} UnkOmData;
-
-extern UnkOmData D_80109338_mgresultduel;
-extern s8 D_80108E70_mgresultduel;
-extern s32 D_80108E74_mgresultduel;
 extern s8 D_80109310_mgresultduel[];
-extern s8 D_80109318_mgresultduel;
-extern s8 D_80108E78_mgresultduel;
-extern char D_80108EC0_mgresultduel[];
 extern s32 D_80109314_mgresultduel;
-extern s16 D_80109316_mgresultduel;
+extern s16 D_80109316_mgresultduel; // Low half of D_80109314_mgresultduel (see undefined_syms.txt).
+extern s8 D_80109318_mgresultduel;
+extern ResultDuelObj D_80109338_mgresultduel;
+
+s8 D_80108E70_mgresultduel = 0;
+s32 D_80108E74_mgresultduel = 0;
+s8 D_80108E78_mgresultduel = 0;
+
 const s16 D_80108EA0_mgresultduel[2][2] = { { 30, 40 }, { 194, 40 } };
 extern Addr D_128CC60;
 
@@ -202,7 +199,7 @@ void func_80106080_mgresultduel(void) {
     omObjData *temp_v0;
 
     temp_v0 = omAddObj(0x14, 5, 8, -1, NULL);
-    D_80109338_mgresultduel.unk_00 = temp_v0;
+    D_80109338_mgresultduel.obj = temp_v0;
     temp_v0->model[1] = func_8000B108_main(0xA011B, 0x2B9);
     func_8001C814_main(temp_v0->model[1], 2, 2);
     Hu3DModelScaleSet(temp_v0->model[1], 0.9f, 0.9f, 0.9f);
@@ -223,9 +220,9 @@ void func_80106080_mgresultduel(void) {
     Hu3DModelPosSet(temp_v0->model[1], 0.0f, 0.0f, 2300.0f);
     Hu3DModelPosSet(temp_v0->model[2], 0.0f, 0.0f, 2300.0f);
     omPrcSetDestructor(0, func_80106544_mgresultduel);
-    D_80109338_mgresultduel.objFunc = func_80106270_mgresultduel;
+    D_80109338_mgresultduel.func = func_80106270_mgresultduel;
     while (1) {
-        D_80109338_mgresultduel.objFunc(temp_v0);
+        D_80109338_mgresultduel.func(temp_v0);
         HuPrcVSleep();
     }
 }
@@ -258,18 +255,18 @@ void func_80106278_mgresultduel(omObjData *obj) {
     Hu3DMotionSpeedSet(obj->model[1], 2.0f);
     func_801074DC_mgresultduel(D_80109318_mgresultduel);
     func_80107C74_mgresultduel(D_80109314_mgresultduel, D_80109318_mgresultduel);
-    D_80109338_mgresultduel.objFunc = func_80106270_mgresultduel;
+    D_80109338_mgresultduel.func = func_80106270_mgresultduel;
 }
 
 void func_80106544_mgresultduel(omObjData *arg0) {
 }
 
 void func_8010654C_mgresultduel(void) {
-    D_80109338_mgresultduel.objFunc = func_80106278_mgresultduel;
+    D_80109338_mgresultduel.func = func_80106278_mgresultduel;
 }
 
 void func_80106560_mgresultduel(void) {
-    D_80109338_mgresultduel.objFunc = func_80106574_mgresultduel;
+    D_80109338_mgresultduel.func = func_80106574_mgresultduel;
 }
 
 void func_80106574_mgresultduel(omObjData *obj) {
@@ -283,18 +280,18 @@ void func_80106574_mgresultduel(omObjData *obj) {
     }
     Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[4]].motId, 0, 0x1E, 2);
     func_80106850_mgresultduel(obj, Hu3DData[obj->motion[4]].motId);
-    D_80109338_mgresultduel.objFunc = func_80106270_mgresultduel;
+    D_80109338_mgresultduel.func = func_80106270_mgresultduel;
 }
 
 void func_80106730_mgresultduel(void) {
-    D_80109338_mgresultduel.objFunc = func_80106744_mgresultduel;
+    D_80109338_mgresultduel.func = func_80106744_mgresultduel;
 }
 
 void func_80106744_mgresultduel(omObjData *obj) {
     HmfMotionNode *node;
     f32 rot;
 
-    node = func_8001D33C_main(obj->model[1], D_80108EC0_mgresultduel);
+    node = func_8001D33C_main(obj->model[1], "bell");
     node->baseRot.y = (GwSystem.bank_coins - 5) * 60;
     if (GwSystem.bank_coins == 0) {
         for (rot = 0.0f; rot >= -60.0f; rot -= 2.0f) {
@@ -305,18 +302,16 @@ void func_80106744_mgresultduel(omObjData *obj) {
         HuPrcSleep(10);
     }
     D_80108E70_mgresultduel = 4;
-    D_80109338_mgresultduel.objFunc = func_80106270_mgresultduel;
+    D_80109338_mgresultduel.func = func_80106270_mgresultduel;
 }
 
 void func_80106850_mgresultduel(omObjData *obj, s32 motId) {
     HmfMotionNode *node;
 
-    func_8002FD8C_main(obj->model[1], Hu3DData[obj->model[1]].motId, D_80108EC0_mgresultduel, 0x4C, 0x46);
+    func_8002FD8C_main(obj->model[1], Hu3DData[obj->model[1]].motId, "bell", 0x4C, 0x46);
     if ((s16)motId >= 0) {
-        func_8002FD8C_main(obj->model[1], motId, D_80108EC0_mgresultduel, 0x4C, 0x46);
+        func_8002FD8C_main(obj->model[1], motId, "bell", 0x4C, 0x46);
     }
-    node = func_8001D33C_main(obj->model[1], D_80108EC0_mgresultduel);
+    node = func_8001D33C_main(obj->model[1], "bell");
     node->baseRot.y = (GwSystem.bank_coins - 5) * 60;
 }
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgresultduel/4F01F0", D_80108EC0_mgresultduel);

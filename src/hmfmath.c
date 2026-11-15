@@ -250,7 +250,7 @@ void func_80018978_main(HuMtx4F mtx, f32 x, f32 y, f32 z) {
     mtx[3][3] = 1.0f;
 }
 
-f32 InterpolateBMLine(f32 *value, f32 *time, f32 x) {
+f32 InterpolateBMLine(f32 *value, const f32 *time, f32 x) {
     f32 slope[2];
     f32 midTime, midValue, midSlope;
     f32 crossTime;

@@ -427,6 +427,10 @@ D_8010A266_mgresultdealer = mgResultDealerBssA264 + 0x2;
 D_8010AD94_mgresultboard = mgResultBoardBssAD94;
 D_8010AD96_mgresultboard = mgResultBoardBssAD94 + 0x2;
 
+/* mgresultduel: s16 low half of D_80109314_mgresultduel, D_80109324_mgresultduel.func. */
+D_80109316_mgresultduel = D_80109314_mgresultduel + 0x2;
+D_80109328_mgresultduel = D_80109324_mgresultduel + 0x4;
+
 /* slapdown: slapdownBssAA10 fields and D_8010AAB0_slapdown[0] fields. */
 D_8010AA10_slapdown = slapdownBssAA10;
 D_8010AA12_slapdown = slapdownBssAA10 + 0x2;

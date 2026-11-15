@@ -23,28 +23,90 @@ typedef struct OpBoardPath {
 } OpBoardPath;
 
 extern s32 D_80100D90_shared_board;
-extern s32 D_80108D70_opboard;
-extern Vec D_80108D74_opboard;
-extern Vec D_80108DA4_opboard[];
-extern Vec D_80108D98_opboard;
-extern Vec D_80108DD4_opboard[];
-extern Vec D_80108E04_opboard[];
-extern u32 D_80108F14_opboard[];
-extern Object *D_80108F20_opboard;
-extern Vec D_80108F44_opboard[];
-extern omObjData *D_80108F3C_opboard;
-extern s32 D_80108F40_opboard;
-extern u32 D_80108E34_opboard[];
-extern u32 *D_80108EF4_opboard[];
-extern u8 D_80109060_opboard;
-extern Object *D_80108F1C_opboard;
-extern Object *D_80108F24_opboard;
-extern omObjData *D_80108F28_opboard;
-extern s16 D_80108F2C_opboard;
-extern Process *D_80108F30_opboard;
-extern UnkBoard8 *D_80108F34_opboard;
-extern UnkBoard8 *D_80108F38_opboard;
-extern GW_PLAYER *D_80109068_opboard[4];
+
+s32 D_80108D70_opboard = 0;
+
+Vec D_80108D74_opboard = { 0.0f, 250.0f, 0.0f };
+
+/* Unreferenced. */
+Vec D_80108D80_opboard[2] = {
+    { 0.0f, 100.0f, 0.0f },
+    { 0.0f, 0.0f, 0.0f }
+};
+
+Vec D_80108D98_opboard = { 0.0f, 0.0f, 1750.0f };
+
+Vec D_80108DA4_opboard[4] = {
+    { -18.0f, 250.0f, 0.0f },
+    { -6.0f, 250.0f, 0.0f },
+    { 6.0f, 250.0f, 0.0f },
+    { 18.0f, 250.0f, 0.0f }
+};
+
+Vec D_80108DD4_opboard[4] = {
+    { -300.0f, 0.0f, 2000.0f },
+    { -100.0f, 0.0f, 2000.0f },
+    { 100.0f, 0.0f, 2000.0f },
+    { 300.0f, 0.0f, 2000.0f }
+};
+
+Vec D_80108E04_opboard[4] = {
+    { -300.0f, 0.0f, 2250.0f },
+    { -125.0f, 0.0f, 2450.0f },
+    { 125.0f, 0.0f, 2450.0f },
+    { 300.0f, 0.0f, 2250.0f }
+};
+
+u32 D_80108E34_opboard[6] = { 5, 0x20001, 0x20002, 0x2002B, 0x20033, 0x20031 };
+
+u32 D_80108E4C_opboard[6] = { 5, 0, 0, 0, 0, 0 };
+
+u32 D_80108E64_opboard[6] = { 5, 0, 0, 0, 0, 0 };
+
+u32 D_80108E7C_opboard[6] = { 5, 0, 0, 0, 0, 0 };
+
+u32 D_80108E94_opboard[6] = { 5, 0, 0, 0, 0, 0 };
+
+u32 D_80108EAC_opboard[6] = { 5, 0, 0, 0, 0, 0 };
+
+u32 D_80108EC4_opboard[6] = { 5, 0, 0, 0, 0, 0 };
+
+u32 D_80108EDC_opboard[6] = { 5, 0, 0, 0, 0, 0 };
+
+u32 *D_80108EF4_opboard[8] = { D_80108E34_opboard, D_80108E4C_opboard, D_80108E64_opboard, D_80108E7C_opboard, D_80108E94_opboard, D_80108EAC_opboard, D_80108EC4_opboard, D_80108EDC_opboard };
+
+u32 D_80108F14_opboard[2] = { 1, 0xA0125 };
+
+Object *D_80108F1C_opboard = NULL;
+
+Object *D_80108F20_opboard = NULL;
+
+Object *D_80108F24_opboard = NULL;
+
+omObjData *D_80108F28_opboard = NULL;
+
+s16 D_80108F2C_opboard = -1;
+
+Process *D_80108F30_opboard = NULL;
+
+UnkBoard8 *D_80108F34_opboard = NULL;
+
+UnkBoard8 *D_80108F38_opboard = NULL;
+
+omObjData *D_80108F3C_opboard = NULL;
+
+s32 D_80108F40_opboard = 0;
+
+Vec D_80108F44_opboard[4] = {
+    { 0.0f, 400.0f, 1750.0f },
+    { -200.0f, 300.0f, 1550.0f },
+    { -100.0f, 480.0f, 1950.0f },
+    { 9999.0f, 9999.0f, 9999.0f }
+};
+
+u8 D_80109060_opboard BSS;
+u8 D_80109064_opboard[4] BSS; /* Unreferenced. */
+GW_PLAYER *D_80109068_opboard[4] BSS;
 
 void func_800DCCE0_shared_board(void);
 void func_80105DC4_opboard(s16 model);

@@ -157,8 +157,6 @@ D_8010B76A_swinging_with_sharks = D_8010B768_swinging_with_sharks + 0x2;
 
 /* crowd_cover: halfword following D_8010CF80. */
 D_8010CF82_crowd_cover = D_8010CF80_crowd_cover + 0x2;
-/* popgun_pickoff: halfword following D_8010C5A0. */
-D_8010C5A2_popgun_pickoff = D_8010C5A0_popgun_pickoff + 0x2;
 /* end_of_the_line: start of the per-player sound table (D_8010C622 is its first low halfword). */
 D_8010C620_end_of_the_line = D_8010C622_end_of_the_line - 0x2;
 /* bobbing_bow_loons: start of the s32 table whose low halfword is D_801097AA. */
@@ -308,3 +306,7 @@ D_80109AF2_all_fired_up = allFiredUpBssAF0 + 0x2;
 D_80111B74_rockin_raceway = rockinRacewayBssB74;
 D_80111B76_rockin_raceway = rockinRacewayBssB74 + 0x2;
 D_80111B7A_rockin_raceway = rockinRacewayBssB74 + 0x6;
+
+/* popgun_pickoff field aliases: PopgunPickoffBssCC20. */
+D_8010CC20_popgun_pickoff = popgunPickoffBssCC20;
+D_8010CC22_popgun_pickoff = popgunPickoffBssCC20 + 0x2;

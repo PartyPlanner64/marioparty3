@@ -104,48 +104,91 @@ typedef struct {
     /* 0x36 */ char unk36[0x1E];
 } PopgunPickoffPlayerWork; // Size 0x54
 
-extern PopgunPickoffPlayer *D_8010DDD8_popgun_pickoff;
-extern void *D_8010DDDC_popgun_pickoff[3];
-extern void *D_8010DDE8_popgun_pickoff;
-extern s32 D_8010DDEC_popgun_pickoff;
-extern s32 D_8010DDF0_popgun_pickoff;
-extern PopgunPickoffPlayer D_8010DE00_popgun_pickoff; // List head of opaque entries
-extern PopgunPickoffPlayer D_8010DE68_popgun_pickoff; // List head of translucent entries
-extern s32 D_8010C890_popgun_pickoff;
-extern s16 D_8010C878_popgun_pickoff[];
-extern s16 D_8010C880_popgun_pickoff[];
-extern s16 D_8010C888_popgun_pickoff[];
+typedef struct {
+    /* 0x00 */ s16 unk00;
+    /* 0x02 */ s16 unk02[2];
+} PopgunPickoffBssCC20; // Size 0x6
 
 extern HuSprite_Unk84_Struct *D_800C9530_main[];
-
-extern s32 D_8010C590_popgun_pickoff;
-extern u16 D_8010C594_popgun_pickoff;
-extern s32 D_8010C598_popgun_pickoff;
-extern s32 D_8010C59C_popgun_pickoff;
-extern s16 D_8010C5A0_popgun_pickoff;
-extern s16 D_8010C5A2_popgun_pickoff; // Separate symbol: halfword following D_8010C5A0, accessed directly
-extern s16 D_8010C5A4_popgun_pickoff;
-extern u8 D_8010C5B0_popgun_pickoff;
-extern s16 D_8010C5B8_popgun_pickoff[][3];
-extern f32 D_8010C5D0_popgun_pickoff[];
-extern s16 D_8010C5E0_popgun_pickoff[];
-extern s16 D_8010C5E8_popgun_pickoff[][3];
-extern u32 D_8010C5F4_popgun_pickoff;
-extern s32 D_8010C5F8_popgun_pickoff[];
-extern s16 D_8010C608_popgun_pickoff[];
-extern s16 D_8010C740_popgun_pickoff[];
 extern s32 D_800A178C_main[][6];
-extern u8 D_8010DDD4_popgun_pickoff;
-extern s16 D_8010CC00_popgun_pickoff[16];
+
+s32 D_8010C590_popgun_pickoff = 0;
+u16 D_8010C594_popgun_pickoff = 0;
+s32 D_8010C598_popgun_pickoff = -1;
+s32 D_8010C59C_popgun_pickoff = 25;
+s16 D_8010C5A0_popgun_pickoff = 0;
+s16 D_8010C5A2_popgun_pickoff = 1;
+s16 D_8010C5A4_popgun_pickoff = 0;
+s16 D_8010C5A8_popgun_pickoff[4] = { 0, 1, 2, 3 }; /* Unreferenced. */
+u8 D_8010C5B0_popgun_pickoff = 0;
+s32 D_8010C5B4_popgun_pickoff = 0; /* Unreferenced. */
+s16 D_8010C5B8_popgun_pickoff[4][3] = {
+    { -140, 20, 0 },
+    { 140, 20, 0 },
+    { 85, -75, -200 },
+    { 85, 75, -200 }
+};
+f32 D_8010C5D0_popgun_pickoff[4] = { 180.0f, 180.0f, -45.0f, -135.0f };
+s16 D_8010C5E0_popgun_pickoff[3] = { -20, -10, 0 };
+s16 D_8010C5E8_popgun_pickoff[2][3] = {
+    { 0, -20, -30 },
+    { 30, 20, 0 }
+};
+u32 D_8010C5F4_popgun_pickoff = 0x41C64E6D;
+s32 D_8010C5F8_popgun_pickoff[] = { 4, 3, 2, 1 };
+s16 D_8010C608_popgun_pickoff[] = {
+    0, 512, 256, 170, 128, 102, 85, 73, 64, 56, 51, 20, 42, 26, 14, 19,
+    32, 13, 28, 26, 8, 9, 4, 4, 5, 20, 13, 18, 3, 6, 3, 2,
+    16, 2, 2, 3, 14, 2, 13, 2, 1, 12, 4, 2, 2, 2, 2, 2,
+    2, 4, 10, 0, 1, 2, 9, 0, 1, 8, 0, 2, 0, 1, 0, 1,
+    8, 0, 0, 1, 0, 1, 0, 2, 0, 0, 1, 0, 6, 0, 0, 4,
+    0, 0, 6, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0,
+    0, 0, 2, 0, 0, 0, 0, 1, 0, 0, 0, 0, 4, 0, 0, 0,
+    0, 0, 1, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0,
+    0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0
+};
+s16 D_8010C740_popgun_pickoff[] = {
+    0, 512, 256, 170, 128, 102, 85, 73, 64, 56, 51, 46, 42, 39, 36, 34,
+    32, 30, 28, 26, 25, 24, 23, 22, 21, 20, 19, 19, 18, 18, 17, 17,
+    16, 16, 15, 15, 14, 14, 13, 13, 13, 12, 12, 12, 11, 11, 11, 10,
+    10, 10, 10, 10, 9, 9, 9, 9, 9, 8, 8, 8, 8, 8, 8, 8,
+    8, 7, 7, 7, 7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 6,
+    6, 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+    5, 5, 5, 5, 5, 5, 5, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3,
+    3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+    3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0
+};
+s16 D_8010C878_popgun_pickoff[] = { G_CD_DISABLE, G_CD_NOISE, G_CD_BAYER, G_CD_MAGICSQ };
+s16 D_8010C880_popgun_pickoff[] = { G_TF_POINT, G_TF_POINT, G_TF_BILERP, G_TF_AVERAGE };
+s16 D_8010C888_popgun_pickoff[] = { G_AC_THRESHOLD, G_AC_NONE, G_AC_DITHER, G_AC_NONE };
+s32 D_8010C890_popgun_pickoff = 0;
+
+s16 D_8010CBD0_popgun_pickoff[16] BSS;
+s16 D_8010CBF0_popgun_pickoff[8] BSS;
+s16 D_8010CC00_popgun_pickoff[16] BSS;
+PopgunPickoffBssCC20 popgunPickoffBssCC20 BSS;
+PopgunPickoffTarget D_8010CC28_popgun_pickoff[9] BSS;
+u8 D_8010CD48_popgun_pickoff[8] BSS; /* Unreferenced. */
+PopgunPickoffShot D_8010CD50_popgun_pickoff[128] BSS;
+f32 D_8010DD50_popgun_pickoff[4][4] BSS;
+f32 D_8010DD90_popgun_pickoff[4][4] BSS;
+f32 D_8010DDD0_popgun_pickoff BSS;
+u8 D_8010DDD4_popgun_pickoff BSS;
+PopgunPickoffPlayer *D_8010DDD8_popgun_pickoff BSS;
+void *D_8010DDDC_popgun_pickoff[3] BSS;
+void *D_8010DDE8_popgun_pickoff BSS;
+s32 D_8010DDEC_popgun_pickoff BSS;
+s32 D_8010DDF0_popgun_pickoff BSS;
+u8 D_8010DDF4_popgun_pickoff[0xC] BSS;             /* Unreferenced. */
+PopgunPickoffPlayer D_8010DE00_popgun_pickoff BSS; // List head of opaque entries
+PopgunPickoffPlayer D_8010DE68_popgun_pickoff BSS; // List head of translucent entries
+u8 D_8010DED0_popgun_pickoff[0x10] BSS;            /* Unreferenced. */
+
+/* Fields of popgunPickoffBssCC20, aliased in undefined_syms.txt. */
 extern s16 D_8010CC20_popgun_pickoff;
 extern s16 D_8010CC22_popgun_pickoff[2];
-extern f32 D_8010DD50_popgun_pickoff[4][4];
-extern f32 D_8010DD90_popgun_pickoff[4][4];
-extern f32 D_8010DDD0_popgun_pickoff;
-extern s16 D_8010CBD0_popgun_pickoff[16];
-extern s16 D_8010CBF0_popgun_pickoff[8];
-extern PopgunPickoffTarget D_8010CC28_popgun_pickoff[9];
-extern PopgunPickoffShot D_8010CD50_popgun_pickoff[];
 
 void func_80105AFC_popgun_pickoff(omObjData *object);
 s32 func_80108E1C_popgun_pickoff(void);

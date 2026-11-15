@@ -184,7 +184,7 @@ s32 D_8010EB64_fowl_play = 0;
 s16 D_8010F200_fowl_play BSS;
 s16 D_8010F202_fowl_play BSS;
 u8 D_8010F204_fowl_play[4] BSS; /* Unreferenced. */
-D_80111B50_vine_with_me_Struct D_8010F208_fowl_play BSS;
+MinigameFlow D_8010F208_fowl_play BSS;
 s16 D_8010F230_fowl_play[2] BSS;
 s16 D_8010F234_fowl_play BSS;
 s16 D_8010F236_fowl_play BSS; /* Unreferenced. */
@@ -282,7 +282,7 @@ void func_801059A0_fowl_play(void) {
     func_8010B41C_fowl_play(0x80);
     func_801068F0_fowl_play();
     memset(&D_8010F208_fowl_play, 0, sizeof(D_8010F208_fowl_play));
-    D_8010F208_fowl_play.unk01 = 4;
+    D_8010F208_fowl_play.type = MINIGAME_BATTLE;
     func_800E5EA0_minigame(&D_8010F208_fowl_play);
     func_801079B0_fowl_play();
     D_8010F2A0_fowl_play = 0;
@@ -556,7 +556,7 @@ void func_80106BD0_fowl_play(omObjData *object) {
                 HuAudSeqPlay(0x36);
             }
             if (GMesStatGet() == 0) {
-                func_800E6F0C_minigame(2);
+                func_800E6F0C_minigame(MG_STATE_PLAY);
                 D_8010F29C_fowl_play++;
                 GMesCreate(0x1A, (D_8010F29E_fowl_play + 29) / 30, 0xA0, 0x20);
                 HuAudFXPlay(0xE);
@@ -607,7 +607,7 @@ void func_80106BD0_fowl_play(omObjData *object) {
             }
             D_8010E7A4_fowl_play = 15;
             D_8010F29C_fowl_play++;
-            func_800E6F0C_minigame(4);
+            func_800E6F0C_minigame(MG_STATE_RESULT);
             break;
         case 7:
             if (GMesStatGet() != 0) {
@@ -623,7 +623,7 @@ void func_80106BD0_fowl_play(omObjData *object) {
                     D_8010F29C_fowl_play++;
                 }
             } else {
-                func_800E6F0C_minigame(5);
+                func_800E6F0C_minigame(MG_STATE_EXIT);
                 D_8010E7A4_fowl_play = 16;
                 WipeCreateOut(WIPE_TYPE_NORMAL, D_8010E7A4_fowl_play);
                 HuAudSeqFadeOut(D_8010E7A4_fowl_play);

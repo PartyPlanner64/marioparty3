@@ -66,11 +66,14 @@ typedef struct HandLineSinkerFollowWork {
 extern omObjData *D_8010C190_hand_line_sinker;
 extern const s16 D_8010BFB0_hand_line_sinker[];
 
-D_80111B50_vine_with_me_Struct D_8010BF00_hand_line_sinker = {
-    0, 2, 1, 2, 0, 0, 0, 0, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0, 0, 0, 0 }, -1, 1800, -1, -1, 150
+MinigameFlow D_8010BF00_hand_line_sinker = {
+    MG_STATE_OPENING, MINIGAME_2V2, MG_TIMER_COUNT_DOWN, MG_TIME_DISP_COUNTDOWN, FALSE, MG_GAUGE_NONE, MG_RESULT_WIN_1, 0,
+    { 0.0f, 0.0f, 0.0f, 0.0f },
+    { 0, 0, 0, 0 },
+    -1, 1800, -1, -1, 150
 };
-CameraPreset D_8010BF28_hand_line_sinker = { { 0.0f, 0.0f, 270.0f }, { 306.0f, 0.0f, 0.0f }, 2190.0f };
-CameraPreset D_8010BF44_hand_line_sinker = { { 0.0f, 0.0f, 405.0f }, { 326.0f, 0.0f, 0.0f }, 1250.0f };
+MgCameraPreset D_8010BF28_hand_line_sinker = { { 0.0f, 0.0f, 270.0f }, { 306.0f, 0.0f, 0.0f }, 2190.0f };
+MgCameraPreset D_8010BF44_hand_line_sinker = { { 0.0f, 0.0f, 405.0f }, { 326.0f, 0.0f, 0.0f }, 1250.0f };
 u16 D_8010BF60_hand_line_sinker = 0;
 s32 D_8010BF64_hand_line_sinker[] = { 12, 13, 14, 15, 16, 17, 18, 19 };
 s32 D_8010BF84_hand_line_sinker = 0; /* Unreferenced. */
@@ -89,7 +92,7 @@ omObjData **D_8010C100_hand_line_sinker BSS;
 u16 D_8010C104_hand_line_sinker[2] BSS;
 f32 D_8010C108_hand_line_sinker BSS;
 u16 D_8010C10C_hand_line_sinker BSS;
-CameraPreset D_8010C110_hand_line_sinker BSS;
+MgCameraPreset D_8010C110_hand_line_sinker BSS;
 s16 D_8010C12C_hand_line_sinker BSS;
 f32 D_8010C130_hand_line_sinker BSS;
 f32 D_8010C134_hand_line_sinker BSS;
@@ -215,7 +218,7 @@ void func_80105D28_hand_line_sinker(omObjData *obj) {
                 break;
             case 2:
                 if (D_8010C10C_hand_line_sinker == 3) {
-                    func_800E6F0C_minigame(3);
+                    func_800E6F0C_minigame(MG_STATE_FINISH);
                 }
                 break;
             case 3:
@@ -230,7 +233,7 @@ void func_80105D28_hand_line_sinker(omObjData *obj) {
                     D_8010C0F8_hand_line_sinker->work[0] = 0;
                 } else if (D_8010C0F8_hand_line_sinker->work[0] == 1) {
                     omDelObj(D_8010C0F8_hand_line_sinker);
-                    func_800E6F0C_minigame(4);
+                    func_800E6F0C_minigame(MG_STATE_RESULT);
                 }
                 break;
             case 4:
@@ -417,7 +420,7 @@ void func_8010689C_hand_line_sinker(omObjData *obj) {
         stickY = D_800D20A1_main[pad];
         btn = D_800D5558_main[pad];
     }
-    if (func_800E6E8C_minigame() != 2) {
+    if (func_800E6E8C_minigame() != MG_STATE_PLAY) {
         stickX = stickY = 0;
         btn = 0;
     }
@@ -440,7 +443,7 @@ void func_8010689C_hand_line_sinker(omObjData *obj) {
                 Hu3DModelRotSet(obj->model[2], 0.0f, obj->rot.y, 0.0f);
                 Hu3DModelRotSet(obj->model[3], 0.0f, obj->rot.y, 0.0f);
                 work->unk8 = func_801092B8_hand_line_sinker(x, y);
-                if (func_800E6E8C_minigame() != 2) {
+                if (func_800E6E8C_minigame() != MG_STATE_PLAY) {
                     obj->work[0] = 0;
                 } else {
                     obj->work[0] = 1;
@@ -463,12 +466,12 @@ void func_8010689C_hand_line_sinker(omObjData *obj) {
                 Hu3DModelRotSet(obj->model[3], 0.0f, obj->rot.y, 0.0f);
                 work->unk8 = func_801092B8_hand_line_sinker(x, y);
             }
-            if (func_800E6E8C_minigame() != 2) {
+            if (func_800E6E8C_minigame() != MG_STATE_PLAY) {
                 obj->work[0] = 0;
                 break;
             }
             if (btn & A_BUTTON) {
-                if (func_800E6E8C_minigame() != 2) {
+                if (func_800E6E8C_minigame() != MG_STATE_PLAY) {
                     obj->work[0] = 0;
                     break;
                 }
@@ -485,7 +488,7 @@ void func_8010689C_hand_line_sinker(omObjData *obj) {
             if (--work->aiWait != 0) {
                 break;
             }
-            if (func_800E6E8C_minigame() != 2) {
+            if (func_800E6E8C_minigame() != MG_STATE_PLAY) {
                 obj->work[0] = 0;
                 func_8001C258_main(obj->model[1], 0x4000, 0x4000);
                 func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
@@ -852,7 +855,7 @@ omObjData *func_801080F0_hand_line_sinker(omObjData *arg0) {
     omObjData *obj;
     s32 i;
 
-    if (func_800E6E8C_minigame() != 2) {
+    if (func_800E6E8C_minigame() != MG_STATE_PLAY) {
         return NULL;
     }
     for (i = 0; i < 3; i++) {
@@ -889,7 +892,7 @@ void func_801081D0_hand_line_sinker(omObjData *obj) {
         stickY = D_800D20A1_main[pad];
         btn = D_800D5558_main[pad];
     }
-    if (func_800E6E8C_minigame() != 2) {
+    if (func_800E6E8C_minigame() != MG_STATE_PLAY) {
         stickX = stickY = 0;
         btn = 0;
     }
@@ -1278,7 +1281,7 @@ void func_801093A4_hand_line_sinker(omObjData *obj) {
                 omDelObj(D_8010C190_hand_line_sinker);
                 D_8010C190_hand_line_sinker = NULL;
                 omDelObj(D_8010C0F4_hand_line_sinker);
-                func_800E6F0C_minigame(1);
+                func_800E6F0C_minigame(MG_STATE_START);
             }
             break;
     }
@@ -1364,7 +1367,7 @@ void func_80109584_hand_line_sinker(omObjData *obj) {
                                    Hu3DData[D_8010C0FC_hand_line_sinker->motion[12]].motId, 0, 8, 0);
                 func_80045ED0_main(D_800A178C_main[GwPlayer[work->playerNo].chr][0] | 0x2F);
                 omDelObj(D_8010C190_hand_line_sinker);
-                D_8010BF00_hand_line_sinker.unk18[0] = work->playerNo;
+                D_8010BF00_hand_line_sinker.winners[0] = work->playerNo;
                 obj->work[0] = 1;
                 GwPlayer[work->playerNo].bonusCoin = 10;
             }
@@ -1519,7 +1522,7 @@ void func_80109B9C_hand_line_sinker(omObjData *obj) {
                 for (i = 0; i < 3; i++) {
                     player = D_8010C100_hand_line_sinker[i];
                     work = player->data;
-                    D_8010BF00_hand_line_sinker.unk18[i] = work->playerNo;
+                    D_8010BF00_hand_line_sinker.winners[i] = work->playerNo;
                     GwPlayer[work->playerNo].bonusCoin = 10;
                     if (player->work[0] == 2 || player->work[0] == 4) {
                         continue;
@@ -1552,7 +1555,7 @@ void func_80109B9C_hand_line_sinker(omObjData *obj) {
                 func_8010B5EC_hand_line_sinker(&D_8010BF28_hand_line_sinker, &D_8010C110_hand_line_sinker, 16);
                 D_8010C190_hand_line_sinker->work[1] = 1;
                 D_8010C190_hand_line_sinker->work[2] = 1;
-                D_8010BF00_hand_line_sinker.unk06 = 2;
+                D_8010BF00_hand_line_sinker.resultType = MG_RESULT_WIN_3;
                 obj->work[0] = 1;
             }
             break;

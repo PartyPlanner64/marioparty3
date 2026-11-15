@@ -91,7 +91,12 @@ typedef struct BobbingBowLoonsItems {
 extern u16 D_800A11D0_main[];
 extern u16 D_800A11DC_main[];
 
-D_80111B50_vine_with_me_Struct D_80109720_bobbing_bow_loons = { 0, 3, 2, 0, 0, 0, 5, 0, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0, 0, 0, 0 }, 30, 300, -1, 90, 135 };
+MinigameFlow D_80109720_bobbing_bow_loons = {
+    MG_STATE_OPENING, MINIGAME_ITEM, MG_TIMER_NONE, MG_TIME_DISP_NONE, FALSE, MG_GAUGE_NONE, MG_RESULT_GOT_ITEM, 0,
+    { 0.0f, 0.0f, 0.0f, 0.0f },
+    { 0, 0, 0, 0 },
+    30, 300, -1, 90, 135
+};
 f32 D_80109748_bobbing_bow_loons[8] = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
 s32 D_80109768_bobbing_bow_loons[8] = { 2, 3, 7, 4, 5, 6, 8, 9 };
 char *D_80109788_bobbing_bow_loons[8] = {
@@ -493,9 +498,9 @@ void func_80106A34_bobbing_bow_loons(omObjData *obj) {
             break;
         case 4:
             if (D_80109B10_bobbing_bow_loons != -1) {
-                D_80109720_bobbing_bow_loons.unk06 = 5;
+                D_80109720_bobbing_bow_loons.resultType = MG_RESULT_GOT_ITEM;
             } else {
-                D_80109720_bobbing_bow_loons.unk06 = 7;
+                D_80109720_bobbing_bow_loons.resultType = MG_RESULT_GAME_OVER;
             }
             break;
         case 5:
@@ -902,13 +907,13 @@ void func_8010817C_bobbing_bow_loons(omObjData *obj) {
         hook->x -= 23.0f;
         hit = func_80107174_bobbing_bow_loons();
         if (hit != -1) {
-            func_800E6F0C_minigame(3);
+            func_800E6F0C_minigame(MG_STATE_FINISH);
             func_801079E8_bobbing_bow_loons(hit);
             hook->flags &= ~1;
             omVibrate(D_80109B0C_bobbing_bow_loons, 2, 2, 20);
         } else if (hook->x <= -290.0f) {
             D_80109B04_bobbing_bow_loons = 0;
-            func_800E6F0C_minigame(3);
+            func_800E6F0C_minigame(MG_STATE_FINISH);
             func_80108328_bobbing_bow_loons();
             hook->flags &= ~1;
             omVibrate(D_80109B0C_bobbing_bow_loons, 20, 0, 20);
@@ -987,7 +992,7 @@ void func_80108354_bobbing_bow_loons(void) {
         HuPrcVSleep();
     }
     func_80109568_bobbing_bow_loons();
-    func_800E6F0C_minigame(3);
+    func_800E6F0C_minigame(MG_STATE_FINISH);
     omDelPrcObj(NULL);
 }
 

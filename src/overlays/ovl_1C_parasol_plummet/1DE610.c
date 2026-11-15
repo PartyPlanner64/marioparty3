@@ -105,8 +105,8 @@ typedef struct {
     /* 0x1E */ s16 unk1E[4];
 } ParasolPlummetBssACC0;
 
-D_80111B50_vine_with_me_Struct D_8010A8A0_parasol_plummet = {
-    0, 0, 1, 2, 0, 0, 9, 0,
+MinigameFlow D_8010A8A0_parasol_plummet = {
+    MG_STATE_OPENING, MINIGAME_4P, MG_TIMER_COUNT_DOWN, MG_TIME_DISP_COUNTDOWN, FALSE, MG_GAUGE_NONE, MG_RESULT_NONE, 0,
     { 0.0f, 0.0f, 0.0f, 0.0f },
     { 0, 0, 0, 0 },
     180, 900, -1, 210, 60
@@ -312,7 +312,7 @@ void func_80105B94_parasol_plummet(omObjData *object) {
                     func_8010687C_parasol_plummet(D_8010AB60_parasol_plummet[i]);
                 }
             }
-            D_8010A8A0_parasol_plummet.unk06 = 9;
+            D_8010A8A0_parasol_plummet.resultType = MG_RESULT_NONE;
             if (func_800E6E9C_minigame() == 135) {
                 HuAudSeqPlay(0x66);
             }
@@ -520,7 +520,7 @@ void func_80106788_parasol_plummet(omObjData *object) {
         func_8001C258_main(object->model[1], 4, 0);
         work->unk_10 = 1;
         work->flags &= ~4;
-        if (func_800E6E8C_minigame() == 2) {
+        if (func_800E6E8C_minigame() == MG_STATE_PLAY) {
             func_8004AC5C_main(0x3E1, work->playerIndex);
         }
     }

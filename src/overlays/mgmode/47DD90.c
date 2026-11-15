@@ -89,7 +89,7 @@ void func_80116D4C_mgmode(void) {
 
 extern f32 D_8011B6A4_mgmode;
 extern Vec D_8011B898_mgmode;
-extern CamData *D_8011B954_mgmode;
+extern ModeCameraPreset *D_8011B954_mgmode;
 extern s8 D_8011B958_mgmode;
 
 void func_80116E24_mgmode(s16 arg0) {
@@ -99,7 +99,7 @@ void func_80116E24_mgmode(s16 arg0) {
     Center = D_8011B954_mgmode[arg0].center;
     CZoom = D_8011B954_mgmode[arg0].zoom;
 
-    D_8011B6A4_mgmode = D_8011B954_mgmode[arg0].unk_1C;
+    D_8011B6A4_mgmode = D_8011B954_mgmode[arg0].fov;
     D_8011B958_mgmode = arg0;
 }
 
@@ -170,7 +170,7 @@ void func_80116ED4_mgmode(s16 presetIdx, s16 duration, s16 easeType, void (*call
     centerDelta.y = center.y - Center.y;
     centerDelta.z = center.z - Center.z;
     zoomDelta = zoom - CZoom;
-    unkDelta = D_8011B954_mgmode[presetIdx].unk_1C - D_8011B6A4_mgmode;
+    unkDelta = D_8011B954_mgmode[presetIdx].fov - D_8011B6A4_mgmode;
     cbArg[1] = duration;
     unkStart = D_8011B6A4_mgmode;
     centerStart = Center;

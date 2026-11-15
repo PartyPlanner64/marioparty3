@@ -4,7 +4,7 @@
 #include "common.h"
 #include "overlays/msetup.h"
 
-void func_801060D0_storyresult(MsetupCameraPreset *preset);
+void func_801060D0_storyresult(ModeCameraPreset *preset);
 s16 func_80106E48_storyresult(void);
 void func_80107204_storyresult(void);
 void func_8010822C_storyresult(void);

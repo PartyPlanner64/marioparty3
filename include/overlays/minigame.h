@@ -3,6 +3,7 @@
 
 #include "ultra64.h"
 #include "common_structs.h"
+#include "enums.h"
 #include "humath.h"
 #include "game/object.h"
 #include "game/process.h"
@@ -169,23 +170,66 @@ typedef struct D_800EBDF4_minigame_Entry {
     /* 0x16 */ u16 unk_16;
 } D_800EBDF4_minigame_Entry; // Size 0x18
 
-typedef struct {
-    /* 0x00 */ u8 unk00;
-    /* 0x01 */ u8 unk01;
-    /* 0x02 */ u8 unk02;
-    /* 0x03 */ u8 unk03;
-    /* 0x04 */ u8 unk04;
-    /* 0x05 */ u8 unk05;
-    /* 0x06 */ u8 unk06;
+// MinigameFlow.state
+#define MG_STATE_OPENING 0 // waiting for the wipe, then startDelay frames
+#define MG_STATE_START 1   // "Start!" message
+#define MG_STATE_PLAY 2
+#define MG_STATE_FINISH 3 // "Finish!" message, then finishDelay frames
+#define MG_STATE_RESULT 4 // winner announcement, then resultDelay frames
+#define MG_STATE_EXIT 5
+
+// MinigameFlow.timerMode
+#define MG_TIMER_COUNT_UP 0   // timer counts up to timeLimit
+#define MG_TIMER_COUNT_DOWN 1 // timer counts down to 0
+#define MG_TIMER_NONE 2
+
+// MinigameFlow.timeDisp
+#define MG_TIME_DISP_NONE 0
+#define MG_TIME_DISP_RECORD 1    // elapsed time with the saved best record
+#define MG_TIME_DISP_COUNTDOWN 2 // seconds left in timer
+
+// MinigameFlow.gauge: layout in the high nibble, segment count in the low nibble.
+#define MG_GAUGE_LAYOUT_MASK 0xF0
+#define MG_GAUGE_LENGTH_MASK 0x0F
+#define MG_GAUGE_NONE 0x00
+#define MG_GAUGE_RIGHT_2 0x20   // two gauges stacked on the right
+#define MG_GAUGE_TOP_2 0x40     // two gauges along the top
+#define MG_GAUGE_CORNERS_4 0x80 // one gauge in each corner
+
+// MinigameFlow.resultType, chooses the announcement in MG_STATE_RESULT.
+#define MG_RESULT_WIN_1 0 // winners[0]
+#define MG_RESULT_WIN_2 1 // winners[0..1]
+#define MG_RESULT_WIN_3 2 // winners[0..2]
+#define MG_RESULT_WIN_4 3 // winners[0..3]
+#define MG_RESULT_DRAW 4
+#define MG_RESULT_GOT_ITEM 5
+#define MG_RESULT_GOT_ITEM_ALT 6
+#define MG_RESULT_GAME_OVER 7
+#define MG_RESULT_LOSER 8
+#define MG_RESULT_NONE 9
+
+// Each minigame overlay defines one of these and passes it to
+// func_800E5EA0_minigame, which keeps a pointer in D_800EBDE0_minigame.
+// func_800E6F40_minigame then advances it once per frame through the
+// MG_STATE_* sequence. Delays and timers are in frames; -1 disables them
+// (a -1 delay waits until the overlay changes state itself).
+typedef struct MinigameFlow {
+    /* 0x00 */ u8 state;        // MG_STATE_*
+    /* 0x01 */ u8 type;         // MINIGAME_TYPE; picks the start/finish messages
+    /* 0x02 */ u8 timerMode;    // MG_TIMER_*
+    /* 0x03 */ u8 timeDisp;     // MG_TIME_DISP_*
+    /* 0x04 */ u8 newRecord;
+    /* 0x05 */ u8 gauge;        // MG_GAUGE_*
+    /* 0x06 */ u8 resultType;   // MG_RESULT_*
     /* 0x07 */ char unk07;
-    /* 0x08 */ f32 unk08[4];
-    /* 0x18 */ u8 unk18[4];
-    /* 0x1C */ s16 unk1C;
-    /* 0x1E */ s16 unk1E;
-    /* 0x20 */ s16 unk20;
-    /* 0x22 */ s16 unk22;
-    /* 0x24 */ s16 unk24;
-} D_80111B50_vine_with_me_Struct; // Size unknown (>= 0x26 and <= 0x28)
+    /* 0x08 */ f32 gaugeValue[4];
+    /* 0x18 */ u8 winners[4];   // player indices for MG_RESULT_WIN_*
+    /* 0x1C */ s16 startDelay;
+    /* 0x1E */ s16 timer;
+    /* 0x20 */ s16 timeLimit;   // also starts the last-30-seconds countdown
+    /* 0x22 */ s16 finishDelay;
+    /* 0x24 */ s16 resultDelay;
+} MinigameFlow; // Size 0x28
 
 typedef struct {
     /* 0x00 */ Vec pos;
@@ -374,7 +418,7 @@ u32 func_800E5E14_minigame(void);
 u32 func_800E5E3C_minigame(u32 max);
 
 // B8A20.c
-void func_800E5EA0_minigame(D_80111B50_vine_with_me_Struct *arg0);
+void func_800E5EA0_minigame(MinigameFlow *flow);
 void func_800E6248_minigame(s32 arg0, s32 arg1);
 void func_800E625C_minigame(s32 arg0);
 void func_800E6268_minigame(void);
@@ -456,7 +500,7 @@ extern u16 D_800EB918_minigame;
 extern s16 D_800EB930_minigame;
 extern s16 D_800EB932_minigame;
 extern s16 D_800EB934_minigame;
-extern D_80111B50_vine_with_me_Struct *D_800EBDE0_minigame;
+extern MinigameFlow *D_800EBDE0_minigame;
 extern s32 D_800EBE24_minigame;
 extern u16 D_800EBE28_minigame;
 extern f32 D_800EBE2C_minigame;

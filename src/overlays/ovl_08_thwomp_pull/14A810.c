@@ -14,7 +14,7 @@ typedef struct ThwompPullPlayer {
 
 extern Gfx *gMainGfxPos;
 
-D_80111B50_vine_with_me_Struct D_8010ED60_thwomp_pull = { 0 };
+MinigameFlow D_8010ED60_thwomp_pull = { 0 };
 u32 D_8010ED88_thwomp_pull = 0;
 
 Gfx D_8010ED90_thwomp_pull[] = {
@@ -168,17 +168,17 @@ void func_801059A0_thwomp_pull(void) {
     omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     func_80045010_main(D_8010EFD0_thwomp_pull, 1);
     WipeCreateIn(0xFF, 16);
-    D_8010ED60_thwomp_pull.unk01 = 2;
-    D_8010ED60_thwomp_pull.unk1C = -1;
-    D_8010ED60_thwomp_pull.unk1C = 75;
-    D_8010ED60_thwomp_pull.unk1E = 1800;
-    D_8010ED60_thwomp_pull.unk03 = 2;
-    D_8010ED60_thwomp_pull.unk02 = 1;
-    D_8010ED60_thwomp_pull.unk22 = 45;
-    D_8010ED60_thwomp_pull.unk24 = 165;
-    D_8010ED60_thwomp_pull.unk04 = 0;
-    D_8010ED60_thwomp_pull.unk05 = 0;
-    D_8010ED60_thwomp_pull.unk20 = -1;
+    D_8010ED60_thwomp_pull.type = MINIGAME_2V2;
+    D_8010ED60_thwomp_pull.startDelay = -1;
+    D_8010ED60_thwomp_pull.startDelay = 75;
+    D_8010ED60_thwomp_pull.timer = 1800;
+    D_8010ED60_thwomp_pull.timeDisp = MG_TIME_DISP_COUNTDOWN;
+    D_8010ED60_thwomp_pull.timerMode = MG_TIMER_COUNT_DOWN;
+    D_8010ED60_thwomp_pull.finishDelay = 45;
+    D_8010ED60_thwomp_pull.resultDelay = 165;
+    D_8010ED60_thwomp_pull.newRecord = FALSE;
+    D_8010ED60_thwomp_pull.gauge = MG_GAUGE_NONE;
+    D_8010ED60_thwomp_pull.timeLimit = -1;
     func_800E5EA0_minigame(&D_8010ED60_thwomp_pull);
 }
 
@@ -228,7 +228,7 @@ void func_80105F14_thwomp_pull(omObjData *object) {
             if (D_8010F5A4_thwomp_pull == 1 && D_8010F570_thwomp_pull == 0 && D_800D530C_main == 0) {
                 HuAudFXPlay(0x335);
             }
-            if (func_800E6E8C_minigame() == 1) {
+            if (func_800E6E8C_minigame() == MG_STATE_START) {
                 D_8010F530_thwomp_pull = 1;
                 D_8010F5A4_thwomp_pull = 0;
             }
@@ -237,13 +237,13 @@ void func_80105F14_thwomp_pull(omObjData *object) {
             if (D_8010F5A4_thwomp_pull == 31 && D_8010F570_thwomp_pull == 0 && D_800D530C_main == 0) {
                 HuAudSeqPlay(0x2E);
             }
-            if (func_800E6E8C_minigame() == 2) {
+            if (func_800E6E8C_minigame() == MG_STATE_PLAY) {
                 D_8010F530_thwomp_pull = 2;
                 D_8010F5A4_thwomp_pull = 0;
             }
             break;
         case 2:
-            if (D_8010F566_thwomp_pull != 5 || func_800E6E8C_minigame() == 3) {
+            if (D_8010F566_thwomp_pull != 5 || func_800E6E8C_minigame() == MG_STATE_FINISH) {
                 if (D_8010F566_thwomp_pull == 5) {
                     D_8010F530_thwomp_pull = 5;
                     D_8010F566_thwomp_pull = 4;
@@ -258,18 +258,18 @@ void func_80105F14_thwomp_pull(omObjData *object) {
         case 3:
         case 4:
             if (D_8010F5A4_thwomp_pull == 0) {
-                if (func_800E6E8C_minigame() != 3) {
+                if (func_800E6E8C_minigame() != MG_STATE_FINISH) {
                     func_800E6F1C_minigame();
                 }
                 if (D_8010F566_thwomp_pull == 0) {
-                    D_8010ED60_thwomp_pull.unk06 = 0;
-                    D_8010ED60_thwomp_pull.unk18[0] = D_8010F4F8_thwomp_pull[0]->playerNo;
+                    D_8010ED60_thwomp_pull.resultType = MG_RESULT_WIN_1;
+                    D_8010ED60_thwomp_pull.winners[0] = D_8010F4F8_thwomp_pull[0]->playerNo;
                     GwPlayer[D_8010F4F8_thwomp_pull[0]->playerNo].bonusCoin = 10;
                 } else {
-                    D_8010ED60_thwomp_pull.unk06 = 2;
-                    D_8010ED60_thwomp_pull.unk18[0] = D_8010F4F8_thwomp_pull[1]->playerNo;
-                    D_8010ED60_thwomp_pull.unk18[1] = D_8010F4F8_thwomp_pull[3]->playerNo;
-                    D_8010ED60_thwomp_pull.unk18[2] = D_8010F4F8_thwomp_pull[2]->playerNo;
+                    D_8010ED60_thwomp_pull.resultType = MG_RESULT_WIN_3;
+                    D_8010ED60_thwomp_pull.winners[0] = D_8010F4F8_thwomp_pull[1]->playerNo;
+                    D_8010ED60_thwomp_pull.winners[1] = D_8010F4F8_thwomp_pull[3]->playerNo;
+                    D_8010ED60_thwomp_pull.winners[2] = D_8010F4F8_thwomp_pull[2]->playerNo;
                     GwPlayer[D_8010F4F8_thwomp_pull[1]->playerNo].bonusCoin = 10;
                     GwPlayer[D_8010F4F8_thwomp_pull[2]->playerNo].bonusCoin = 10;
                     GwPlayer[D_8010F4F8_thwomp_pull[3]->playerNo].bonusCoin = 10;
@@ -365,27 +365,27 @@ void func_80105F14_thwomp_pull(omObjData *object) {
                     }
                 }
             }
-            if (D_8010F530_thwomp_pull == 3 && func_800E6E8C_minigame() == 4) {
+            if (D_8010F530_thwomp_pull == 3 && func_800E6E8C_minigame() == MG_STATE_RESULT) {
                 D_8010F530_thwomp_pull = 4;
             }
-            if (func_800E6E8C_minigame() == 5) {
+            if (func_800E6E8C_minigame() == MG_STATE_EXIT) {
                 D_8010F530_thwomp_pull = 7;
                 D_8010F5A4_thwomp_pull = 0;
             }
             break;
         case 5:
             if (D_8010F5A4_thwomp_pull == 1) {
-                D_8010ED60_thwomp_pull.unk06 = 4;
-                D_8010ED60_thwomp_pull.unk22 = 75;
-                D_8010ED60_thwomp_pull.unk24 = 0x90;
+                D_8010ED60_thwomp_pull.resultType = MG_RESULT_DRAW;
+                D_8010ED60_thwomp_pull.finishDelay = 75;
+                D_8010ED60_thwomp_pull.resultDelay = 0x90;
             }
-            if (func_800E6E8C_minigame() == 4) {
+            if (func_800E6E8C_minigame() == MG_STATE_RESULT) {
                 D_8010F530_thwomp_pull = 6;
                 D_8010F5A4_thwomp_pull = 0;
             }
             break;
         case 6:
-            if (func_800E6E8C_minigame() == 5) {
+            if (func_800E6E8C_minigame() == MG_STATE_EXIT) {
                 D_8010F530_thwomp_pull = 7;
                 D_8010F5A4_thwomp_pull = 0;
             }

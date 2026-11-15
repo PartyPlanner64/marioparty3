@@ -176,7 +176,12 @@ Vec D_80109C50_dizzy_dinghies[18] = {
     { 0.0f, 320.0f, 0.0f },
 };
 s8 D_80109D28_dizzy_dinghies[19] = { 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, -1 };
-D_80111B50_vine_with_me_Struct D_80109D3C_dizzy_dinghies = { 0, 7, 1, 1, 0, 0, 0, 0, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0, 0, 0, 0 }, 75, -1, 5400, 90, 135 };
+MinigameFlow D_80109D3C_dizzy_dinghies = {
+    MG_STATE_OPENING, 7, MG_TIMER_COUNT_DOWN, MG_TIME_DISP_RECORD, FALSE, MG_GAUGE_NONE, MG_RESULT_WIN_1, 0,
+    { 0.0f, 0.0f, 0.0f, 0.0f },
+    { 0, 0, 0, 0 },
+    75, -1, 5400, 90, 135
+};
 Vec D_80109D64_dizzy_dinghies = { 101.0f, -51.0f, 38.0f }; /* Unreferenced. */
 f32 D_80109D70_dizzy_dinghies = -2000.0f;
 f32 D_80109D74_dizzy_dinghies = -20.0f;
@@ -398,7 +403,7 @@ void func_8010655C_dizzy_dinghies(omObjData *object) {
         D_80109D74_dizzy_dinghies *= 0.8f;
     }
     time = func_800E6E9C_minigame();
-    if (func_800E6E8C_minigame() == 0) {
+    if (func_800E6E8C_minigame() == MG_STATE_OPENING) {
         if (time == 60) {
             func_8001C814_main(object->model[2], 1, 0);
         }
@@ -548,12 +553,12 @@ void func_80106DF4_dizzy_dinghies(omObjData *object) {
                 D_80109778_dizzy_dinghies -= 0.025f;
             }
             D_801097E0_dizzy_dinghies *= 0.95f;
-            D_80109D3C_dizzy_dinghies.unk06 = 9;
+            D_80109D3C_dizzy_dinghies.resultType = MG_RESULT_NONE;
         case 4:
             if (D_800EB934_minigame == 1) {
                 if (D_801097D4_dizzy_dinghies == 0) {
                     HuAudSeqPlay(0x6B);
-                } else if (D_80109D3C_dizzy_dinghies.unk04 == 1) {
+                } else if (D_80109D3C_dizzy_dinghies.newRecord == TRUE) {
                     HuAudSeqPlay(0x6A);
                 } else {
                     HuAudSeqPlay(0x65);
@@ -958,7 +963,7 @@ void func_801085F4_dizzy_dinghies(omObjData *object) {
     D_800CBB6E_main[pad] = 0;
     D_800CDA7C_main[pad] = 0;
     mode = func_800E6E8C_minigame();
-    if (mode == 2) {
+    if (mode == MG_STATE_PLAY) {
         stickX = D_8010A11C_dizzy_dinghies;
         stickY = 0;
         if (stickX > 60) {
@@ -1149,7 +1154,7 @@ void func_801090BC_dizzy_dinghies(omObjData *object, f32 x, f32 z) {
         D_800EBE2C_minigame = D_80109794_dizzy_dinghies.x - x;
         D_800EC5D8_minigame = D_80109794_dizzy_dinghies.z - z;
     }
-    if (func_800E6E8C_minigame() == 2) {
+    if (func_800E6E8C_minigame() == MG_STATE_PLAY) {
         if (D_80109E3C_dizzy_dinghies == 0) {
             if (0.0f < mag) {
                 if (mag < limit / 3.0f) {
@@ -1248,8 +1253,8 @@ void func_801095D4_dizzy_dinghies(omObjData *object) {
     if (HuSqrtf(dx * dx + dz * dz) > 1400.0f) {
         inside = 0;
     }
-    if (inside == 1 && func_800E6E8C_minigame() == 2) {
-        func_800E6F0C_minigame(3);
+    if (inside == 1 && func_800E6E8C_minigame() == MG_STATE_PLAY) {
+        func_800E6F0C_minigame(MG_STATE_FINISH);
         D_801097D4_dizzy_dinghies = inside;
         D_80109E40_dizzy_dinghies = HuAudFXPlay(0x425);
     }

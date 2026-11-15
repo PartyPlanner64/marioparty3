@@ -3,7 +3,7 @@
 s32 D_80110540_staff[8] = {
     0xB003E, 0xB003F, 0xB0040, 0xB0041, 0xB0042, 0xB0043, 0xB0044, 0xB0045
 };
-MsetupCameraPreset D_80110560_staff = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 1390.0f, 32.0f };
+ModeCameraPreset D_80110560_staff = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 1390.0f, 32.0f };
 
 const char D_80111208_staff[] = "MARIO PARTY 3 STAFF";
 

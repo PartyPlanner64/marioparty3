@@ -27,7 +27,7 @@ extern s16 (*D_8011A544_msetup[])[2];
 extern u8 D_8011A550_msetup[];
 extern s16 D_8011A0D0_msetup[];
 
-extern MsetupCameraPreset D_8011A554_msetup;
+extern ModeCameraPreset D_8011A554_msetup;
 extern s16 D_8011A910_msetup;
 extern s16 D_8011A948_msetup;
 extern s16 D_8011AA48_msetup;
@@ -39,7 +39,7 @@ extern u8 D_800CE20A_main;
 extern u8 D_8011A3B0_msetup[];
 extern s16 D_800D418E_main;
 
-void func_80106260_msetup(MsetupCameraPreset *);
+void func_80106260_msetup(ModeCameraPreset *);
 void func_80117A3C_msetup(void);
 
 

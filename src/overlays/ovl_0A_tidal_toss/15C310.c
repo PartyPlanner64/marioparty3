@@ -112,7 +112,7 @@ s16 D_8010ADE0_tidal_toss BSS;
 Mtx D_8010ADE8_tidal_toss[3] BSS;
 TidalTossSortEntry *D_8010AEA8_tidal_toss BSS;
 Vtx *D_8010AEAC_tidal_toss BSS;
-D_80111B50_vine_with_me_Struct D_8010AEB0_tidal_toss BSS;
+MinigameFlow D_8010AEB0_tidal_toss BSS;
 s16 D_8010AED8_tidal_toss BSS;
 s16 D_8010AEDA_tidal_toss BSS;
 u8 D_8010AEDC_tidal_toss[12] BSS; /* Unreferenced. */
@@ -176,7 +176,7 @@ void func_801059A0_tidal_toss(void) {
     func_80105B04_tidal_toss(obj);
     func_8010600C_tidal_toss();
     memset(&D_8010AEB0_tidal_toss, 0, 0x28);
-    D_8010AEB0_tidal_toss.unk01 = 4;
+    D_8010AEB0_tidal_toss.type = MINIGAME_BATTLE;
     func_800E5EA0_minigame(&D_8010AEB0_tidal_toss);
     func_801085A4_tidal_toss();
 }
@@ -420,7 +420,7 @@ void func_801065AC_tidal_toss(omObjData *object) {
                 func_8004AB0C_main(45);
             }
             if (GMesStatGet() == 0) {
-                func_800E6F0C_minigame(2);
+                func_800E6F0C_minigame(MG_STATE_PLAY);
                 D_8010AF40_tidal_toss++;
                 GMesCreate(0x1A, (D_8010AA90_tidal_toss + 29) / 30, 160, 32);
                 HuAudFXPlay(0xE);
@@ -477,7 +477,7 @@ void func_801065AC_tidal_toss(omObjData *object) {
                     }
                     D_8010AA8C_tidal_toss = 15;
                     D_8010AF40_tidal_toss++;
-                    func_800E6F0C_minigame(4);
+                    func_800E6F0C_minigame(MG_STATE_RESULT);
                 }
             }
             break;
@@ -494,7 +494,7 @@ void func_801065AC_tidal_toss(omObjData *object) {
                     D_8010AF40_tidal_toss++;
                 }
             } else {
-                func_800E6F0C_minigame(5);
+                func_800E6F0C_minigame(MG_STATE_EXIT);
                 D_8010AA8C_tidal_toss = 16;
                 WipeCreateOut(0, D_8010AA8C_tidal_toss);
                 HuAudSeqFadeOut(D_8010AA8C_tidal_toss);

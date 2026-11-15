@@ -62,7 +62,7 @@ extern s16 D_8011A9A0_msetup[];
 extern s32 D_80119424_msetup[];
 extern s32 D_80119534_msetup[];
 extern s32 D_80119548_msetup[];
-extern MsetupCameraPreset D_80119580_msetup;
+extern ModeCameraPreset D_80119580_msetup;
 extern MsetupCameraKeyframe D_801195A0_msetup[];
 extern MsetupCameraKeyframe D_801197BC_msetup[];
 extern MsetupCameraKeyframe D_801196C0_msetup[];
@@ -321,7 +321,7 @@ u32 func_80106208_msetup(u32 limit) {
     return (random & 0x7FFFFFFF) % limit;
 }
 
-void func_80106260_msetup(MsetupCameraPreset *preset) {
+void func_80106260_msetup(ModeCameraPreset *preset) {
     CRot = preset->rot;
     D_8011A994_msetup = CRot;
     Center = preset->center;

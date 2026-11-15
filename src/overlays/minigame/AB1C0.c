@@ -1572,7 +1572,7 @@ void func_800DDD94_minigame(omObjData *arg0) {
     if (data->unk104[0] != NULL) {
         data->unk104[0](arg0);
     }
-    if (func_800E6E8C_minigame() == 2 && pad >= 0 && !(data->unk50 & 1)) {
+    if (func_800E6E8C_minigame() == MG_STATE_PLAY && pad >= 0 && !(data->unk50 & 1)) {
         stickX = D_800CBB6E_main[pad];
         stickY = D_800D20A1_main[pad];
         if (stickX > 60) {

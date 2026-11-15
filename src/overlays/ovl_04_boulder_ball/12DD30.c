@@ -20,7 +20,12 @@ s32 D_80109744_boulder_ball[4] = { -1, -1, -1, -1 };
 f32 D_80109754_boulder_ball = 1000.0f;
 s32 D_80109758_boulder_ball = 1;
 s32 D_8010975C_boulder_ball = 0;
-D_80111B50_vine_with_me_Struct D_80109760_boulder_ball = { 0, 2, 1, 2, 0, 0, 0, 0, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0, 0, 0, 0 }, 135, 900, -1, 75, 150 };
+MinigameFlow D_80109760_boulder_ball = {
+    MG_STATE_OPENING, MINIGAME_2V2, MG_TIMER_COUNT_DOWN, MG_TIME_DISP_COUNTDOWN, FALSE, MG_GAUGE_NONE, MG_RESULT_WIN_1, 0,
+    { 0.0f, 0.0f, 0.0f, 0.0f },
+    { 0, 0, 0, 0 },
+    135, 900, -1, 75, 150
+};
 s32 D_80109788_boulder_ball[3] = { 0, 0, 0 }; /* Unreferenced. */
 s32 D_80109794_boulder_ball = 0;
 f32 D_80109798_boulder_ball = 0.0f;
@@ -258,18 +263,18 @@ void func_80106410_boulder_ball(omObjData *object) {
                     }
                 }
                 if (D_8010975C_boulder_ball == 0) {
-                    D_80109760_boulder_ball.unk06 = 0;
-                    D_80109760_boulder_ball.unk18[0] = D_8010989C_boulder_ball;
+                    D_80109760_boulder_ball.resultType = MG_RESULT_WIN_1;
+                    D_80109760_boulder_ball.winners[0] = D_8010989C_boulder_ball;
                     func_8001C258_main(D_801098A4_boulder_ball->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     func_8001C258_main(D_801098A4_boulder_ball->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     func_800E5798_minigame(D_801098A4_boulder_ball, 6);
                     work = D_801098A4_boulder_ball->data;
                     work->unk38 = -D_800EB744_minigame;
                 } else {
-                    D_80109760_boulder_ball.unk06 = 2;
+                    D_80109760_boulder_ball.resultType = MG_RESULT_WIN_3;
                     for (j = 0, i = 0; i < 4; i++) {
                         if (D_8010989C_boulder_ball != i) {
-                            D_80109760_boulder_ball.unk18[j++] = i;
+                            D_80109760_boulder_ball.winners[j++] = i;
                         }
                     }
                 }
@@ -443,7 +448,7 @@ s32 func_8010707C_boulder_ball(omObjData *object, omObjData *other) {
     func_800E1BA8_minigame_ObjData *data = object->data;
     f32 x, y, z;
 
-    if (func_800E6E8C_minigame() == 2) {
+    if (func_800E6E8C_minigame() == MG_STATE_PLAY) {
         if (data->unkBE != 0) {
             D_800EC288_minigame++;
         } else {
@@ -471,8 +476,8 @@ s32 func_80107194_boulder_ball(omObjData *object) {
         D_800CBB6E_main[data->unk57] = D_80109894_boulder_ball;
         D_800D20A1_main[data->unk57] = D_80109898_boulder_ball;
     }
-    if (func_800E6E8C_minigame() == 2 && object->trans.z <= -600.0f) {
-        func_800E6F0C_minigame(3);
+    if (func_800E6E8C_minigame() == MG_STATE_PLAY && object->trans.z <= -600.0f) {
+        func_800E6F0C_minigame(MG_STATE_FINISH);
         D_8010975C_boulder_ball = 1;
     }
     return 0;
@@ -496,7 +501,7 @@ s32 func_80107298_boulder_ball(omObjData *object) {
     f32 dist;
     s32 i;
 
-    if (func_800E6E8C_minigame() != 2) {
+    if (func_800E6E8C_minigame() != MG_STATE_PLAY) {
         return 0;
     }
     if (!(GwPlayer[player].stat & 1)) {
@@ -786,7 +791,7 @@ void func_801083D8_boulder_ball(omObjData *object) {
     s32 pad = data->unk57;
     A96F0_ObjData *boulderData;
 
-    if (func_800E6E8C_minigame() != 2) {
+    if (func_800E6E8C_minigame() != MG_STATE_PLAY) {
         return;
     }
     D_80109890_boulder_ball = D_800D5558_main[pad];
@@ -998,10 +1003,10 @@ s32 func_80108E5C_boulder_ball(omObjData *object) {
     s32 i;
 
     switch (func_800E6E8C_minigame()) {
-        case 0:
-        case 2:
+        case MG_STATE_OPENING:
+        case MG_STATE_PLAY:
             break;
-        case 3:
+        case MG_STATE_FINISH:
             func_80108CFC_boulder_ball(object);
             return 1;
         default:

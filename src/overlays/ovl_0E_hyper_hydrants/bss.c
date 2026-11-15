@@ -40,7 +40,7 @@ s16 D_8010BF54_hyper_hydrants BSS;
 s16 D_8010BF56_hyper_hydrants BSS;
 s16 D_8010BF58_hyper_hydrants BSS;
 u8 D_8010BF5C_hyper_hydrants[4] BSS; /* Unreferenced. */
-D_80111B50_vine_with_me_Struct D_8010BF60_hyper_hydrants BSS;
+MinigameFlow D_8010BF60_hyper_hydrants BSS;
 HyperHydrantsBssBF88 hyperHydrantsBssBF88 BSS;
 s16 D_8010BF8E_hyper_hydrants BSS;
 s16 D_8010BF90_hyper_hydrants BSS;

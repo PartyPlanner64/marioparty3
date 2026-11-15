@@ -6,8 +6,8 @@
 #include "hand_line_sinker.h"
 
 typedef struct CameraMotionData {
-    /* 0x00 */ CameraPreset *from;
-    /* 0x04 */ CameraPreset *to;
+    /* 0x00 */ MgCameraPreset *from;
+    /* 0x04 */ MgCameraPreset *to;
     /* 0x08 */ u16 duration;
     /* 0x0A */ u16 remaining;
     /* 0x0C */ f32 t;
@@ -29,7 +29,7 @@ void func_8010B5B0_hand_line_sinker(void) {
     gCameraList->fov = 40.0f;
 }
 
-void func_8010B5EC_hand_line_sinker(CameraPreset *preset, CameraPreset *to, s16 duration) {
+void func_8010B5EC_hand_line_sinker(MgCameraPreset *preset, MgCameraPreset *to, s16 duration) {
     CameraMotionData *data;
 
     Center = preset->center;
@@ -57,8 +57,8 @@ void func_8010B5EC_hand_line_sinker(CameraPreset *preset, CameraPreset *to, s16 
 
 void func_8010B750_hand_line_sinker(omObjData *obj) {
     CameraMotionData *data = obj->data;
-    CameraPreset *from;
-    CameraPreset *to;
+    MgCameraPreset *from;
+    MgCameraPreset *to;
 
     if (D_8010C190_hand_line_sinker->work[1] == 0) {
         return;

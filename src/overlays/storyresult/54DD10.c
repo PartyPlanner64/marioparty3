@@ -215,7 +215,7 @@ u32 func_80106078_storyresult(u32 limit) {
     return (random & 0x7FFFFFFF) % limit;
 }
 
-void func_801060D0_storyresult(MsetupCameraPreset *preset) {
+void func_801060D0_storyresult(ModeCameraPreset *preset) {
     CRot = preset->rot;
     D_8010AC0C_storyresult = CRot;
     Center = preset->center;

@@ -91,7 +91,12 @@ typedef struct WinnersWheelBowser {
     /* 0x14 */ f32 unk_14;
 } WinnersWheelBowser; // Size 0x18
 
-D_80111B50_vine_with_me_Struct D_8010A260_winners_wheel = { 0, 3, 2, 0, 0, 0, 5, 0, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0, 0, 0, 0 }, 240, 300, -1, 150, 150 };
+MinigameFlow D_8010A260_winners_wheel = {
+    MG_STATE_OPENING, MINIGAME_ITEM, MG_TIMER_NONE, MG_TIME_DISP_NONE, FALSE, MG_GAUGE_NONE, MG_RESULT_GOT_ITEM, 0,
+    { 0.0f, 0.0f, 0.0f, 0.0f },
+    { 0, 0, 0, 0 },
+    240, 300, -1, 150, 150
+};
 s16 D_8010A288_winners_wheel = 0;
 s32 D_8010A28C_winners_wheel[8] = { 2, 3, 7, 4, 5, 6, 8, 9 };
 s32 D_8010A2AC_winners_wheel[8] = { 0, 1, 2, 3, 4, 5, 6, 7 };
@@ -373,9 +378,9 @@ void func_80105FE4_winners_wheel(omObjData *obj) {
                 D_8010A464_winners_wheel = 0;
             }
             if (D_8010A468_winners_wheel[D_8010A480_winners_wheel] != 17) {
-                D_8010A260_winners_wheel.unk06 = 5;
+                D_8010A260_winners_wheel.resultType = MG_RESULT_GOT_ITEM;
             } else {
-                D_8010A260_winners_wheel.unk06 = 7;
+                D_8010A260_winners_wheel.resultType = MG_RESULT_GAME_OVER;
             }
             break;
         case 4:
@@ -899,14 +904,14 @@ void func_80107F4C_winners_wheel(omObjData *obj) {
                 } else {
                     omVibrate(D_8010A48C_winners_wheel, 2, 3, 10);
                 }
-                func_800E6F0C_minigame(3);
+                func_800E6F0C_minigame(MG_STATE_FINISH);
             }
         } else if (pointer->speed <= minSpeed && D_8010A468_winners_wheel[D_8010A480_winners_wheel] == 17) {
             pointer->speed = 0.0f;
             pointer->flags &= ~4;
             pointer->flags &= ~1;
             omVibrate(D_8010A48C_winners_wheel, 10, 0, 10);
-            func_800E6F0C_minigame(3);
+            func_800E6F0C_minigame(MG_STATE_FINISH);
             HuAudFXStop(D_8010A494_winners_wheel);
             HuAudFXPlay(0x4CD);
         }

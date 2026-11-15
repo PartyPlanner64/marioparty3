@@ -24,7 +24,7 @@ typedef struct RidiculousRelayPlayer {
 
 extern Gfx *gMainGfxPos;
 
-D_80111B50_vine_with_me_Struct D_80110CB0_ridiculous_relay = { 0 };
+MinigameFlow D_80110CB0_ridiculous_relay = { 0 };
 
 Gfx D_80110CD8_ridiculous_relay[] = {
     gsDPPipeSync(),
@@ -189,17 +189,17 @@ void func_801059A0_ridiculous_relay(void) {
     omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     func_80045010_main(D_80110E60_ridiculous_relay, 1);
     WipeCreateIn(0xFF, 16);
-    D_80110CB0_ridiculous_relay.unk01 = 2;
-    D_80110CB0_ridiculous_relay.unk1C = -1;
-    D_80110CB0_ridiculous_relay.unk1C = 45;
-    D_80110CB0_ridiculous_relay.unk1E = 9000;
-    D_80110CB0_ridiculous_relay.unk03 = 0;
-    D_80110CB0_ridiculous_relay.unk02 = 1;
-    D_80110CB0_ridiculous_relay.unk22 = 45;
-    D_80110CB0_ridiculous_relay.unk24 = 165;
-    D_80110CB0_ridiculous_relay.unk04 = 0;
-    D_80110CB0_ridiculous_relay.unk05 = 0;
-    D_80110CB0_ridiculous_relay.unk20 = -1;
+    D_80110CB0_ridiculous_relay.type = MINIGAME_2V2;
+    D_80110CB0_ridiculous_relay.startDelay = -1;
+    D_80110CB0_ridiculous_relay.startDelay = 45;
+    D_80110CB0_ridiculous_relay.timer = 9000;
+    D_80110CB0_ridiculous_relay.timeDisp = MG_TIME_DISP_NONE;
+    D_80110CB0_ridiculous_relay.timerMode = MG_TIMER_COUNT_DOWN;
+    D_80110CB0_ridiculous_relay.finishDelay = 45;
+    D_80110CB0_ridiculous_relay.resultDelay = 165;
+    D_80110CB0_ridiculous_relay.newRecord = FALSE;
+    D_80110CB0_ridiculous_relay.gauge = MG_GAUGE_NONE;
+    D_80110CB0_ridiculous_relay.timeLimit = -1;
     func_800E5EA0_minigame(&D_80110CB0_ridiculous_relay);
 }
 
@@ -255,19 +255,19 @@ void func_80105F48_ridiculous_relay(omObjData *object) {
                 D_80111A30_ridiculous_relay[0] = HuAudFXPlay(0x32D);
                 D_80111A30_ridiculous_relay[1] = HuAudFXPlay(0x32E);
             }
-            if (func_800E6E8C_minigame() == 1) {
+            if (func_800E6E8C_minigame() == MG_STATE_START) {
                 D_801119D8_ridiculous_relay = 1;
                 D_801119D4_ridiculous_relay = 0;
             }
             break;
         case 1:
-            if (func_800E6E8C_minigame() == 2) {
+            if (func_800E6E8C_minigame() == MG_STATE_PLAY) {
                 D_801119D8_ridiculous_relay = 2;
                 D_801119D4_ridiculous_relay = 0;
             }
             break;
         case 2:
-            if (D_801119C0_ridiculous_relay != 5 || func_800E6E8C_minigame() == 3) {
+            if (D_801119C0_ridiculous_relay != 5 || func_800E6E8C_minigame() == MG_STATE_FINISH) {
                 if (D_801119C0_ridiculous_relay == 5) {
                     D_801119D8_ridiculous_relay = 5;
                     D_801119C0_ridiculous_relay = 4;
@@ -281,7 +281,7 @@ void func_80105F48_ridiculous_relay(omObjData *object) {
             }
         case 3:
             if (D_801119D4_ridiculous_relay == 0) {
-                if (func_800E6E8C_minigame() != 3) {
+                if (func_800E6E8C_minigame() != MG_STATE_FINISH) {
                     func_800E6F1C_minigame();
                 }
                 if (D_80111A30_ridiculous_relay[2] != -1) {
@@ -289,14 +289,14 @@ void func_80105F48_ridiculous_relay(omObjData *object) {
                     D_80111A30_ridiculous_relay[2] = -1;
                 }
                 if (D_801119C0_ridiculous_relay == 0) {
-                    D_80110CB0_ridiculous_relay.unk06 = 0;
-                    D_80110CB0_ridiculous_relay.unk18[0] = D_80111970_ridiculous_relay[0]->playerNo;
+                    D_80110CB0_ridiculous_relay.resultType = MG_RESULT_WIN_1;
+                    D_80110CB0_ridiculous_relay.winners[0] = D_80111970_ridiculous_relay[0]->playerNo;
                     GwPlayer[D_80111970_ridiculous_relay[0]->playerNo].bonusCoin = 10;
                 } else {
-                    D_80110CB0_ridiculous_relay.unk06 = 2;
-                    D_80110CB0_ridiculous_relay.unk18[0] = D_80111970_ridiculous_relay[3]->playerNo;
-                    D_80110CB0_ridiculous_relay.unk18[1] = D_80111970_ridiculous_relay[1]->playerNo;
-                    D_80110CB0_ridiculous_relay.unk18[2] = D_80111970_ridiculous_relay[2]->playerNo;
+                    D_80110CB0_ridiculous_relay.resultType = MG_RESULT_WIN_3;
+                    D_80110CB0_ridiculous_relay.winners[0] = D_80111970_ridiculous_relay[3]->playerNo;
+                    D_80110CB0_ridiculous_relay.winners[1] = D_80111970_ridiculous_relay[1]->playerNo;
+                    D_80110CB0_ridiculous_relay.winners[2] = D_80111970_ridiculous_relay[2]->playerNo;
                     GwPlayer[D_80111970_ridiculous_relay[1]->playerNo].bonusCoin = 10;
                     GwPlayer[D_80111970_ridiculous_relay[2]->playerNo].bonusCoin = 10;
                     GwPlayer[D_80111970_ridiculous_relay[3]->playerNo].bonusCoin = 10;
@@ -313,18 +313,18 @@ void func_80105F48_ridiculous_relay(omObjData *object) {
                     }
                 }
             }
-            if (func_800E6E8C_minigame() == 4) {
+            if (func_800E6E8C_minigame() == MG_STATE_RESULT) {
                 D_801119D8_ridiculous_relay = 4;
                 D_801119D4_ridiculous_relay = 0;
             }
             break;
         case 5:
             if (D_801119D4_ridiculous_relay == 1) {
-                D_80110CB0_ridiculous_relay.unk06 = 4;
-                D_80110CB0_ridiculous_relay.unk22 = 75;
-                D_80110CB0_ridiculous_relay.unk24 = 0x90;
+                D_80110CB0_ridiculous_relay.resultType = MG_RESULT_DRAW;
+                D_80110CB0_ridiculous_relay.finishDelay = 75;
+                D_80110CB0_ridiculous_relay.resultDelay = 0x90;
             }
-            if (func_800E6E8C_minigame() == 4) {
+            if (func_800E6E8C_minigame() == MG_STATE_RESULT) {
                 D_801119D8_ridiculous_relay = 6;
                 D_801119D4_ridiculous_relay = 0;
             }
@@ -342,7 +342,7 @@ void func_80105F48_ridiculous_relay(omObjData *object) {
                 }
             }
         case 6:
-            if (func_800E6E8C_minigame() == 5) {
+            if (func_800E6E8C_minigame() == MG_STATE_EXIT) {
                 D_801119D8_ridiculous_relay = 7;
                 D_801119D4_ridiculous_relay = 0;
             }

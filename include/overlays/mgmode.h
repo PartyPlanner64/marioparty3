@@ -3,6 +3,7 @@
 
 #include "ultra64.h"
 #include "humath.h"
+#include "overlays/modecamera.h"
 
 #define ABS(x) ((x) < 0 ? -(x) : (x))
 
@@ -26,13 +27,6 @@ typedef struct MgmodeModelEntry {
     /* 0x0C */ Vec pos;
     /* 0x18 */ Vec rot;
 } MgmodeModelEntry; // sizeof 0x24
-
-typedef struct CamData {
-    Vec rot;
-    Vec center;
-    f32 zoom;
-    f32 unk_1C;
-} CamData;
 
 typedef struct MgmodeSpaceCoord {
     /* 0x00 */ s16 x;

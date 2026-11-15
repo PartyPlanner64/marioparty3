@@ -19,12 +19,6 @@
 // Several distances are written as a float fraction of 200 units (e.g. 0.1f * 200.0), which folds into
 // a double constant slightly off from the round value.
 
-typedef struct RockinRacewayCameraPreset {
-    /* 0x00 */ Vec center;
-    /* 0x0C */ Vec rot;
-    /* 0x18 */ f32 zoom;
-} RockinRacewayCameraPreset; // Size 0x1C
-
 // Table of 2 rows (RockinRacewaySnapshotRow) of 4 of these allocated in func_80106B28_rockin_raceway, stored in
 // D_80111B3C_rockin_raceway. func_80107E78_rockin_raceway records each racer object's transform.
 typedef struct RockinRacewaySnapshot {
@@ -364,7 +358,7 @@ f32 D_80111300_rockin_raceway[4][2] = {
 s32 D_80111320_rockin_raceway[4] = { 5, 4, 3, 2 }; // per CPU difficulty
 RockinRacewayPos16 D_80111330_rockin_raceway[4] = { { 30, 30 }, { 270, 30 }, { 30, 211 }, { 270, 211 } };
 s16 D_80111340_rockin_raceway[8] = { 118, 130, 138, 150, 162, 172, 184, 196 };
-RockinRacewayCameraPreset D_80111350_rockin_raceway[7] = {
+MgCameraPreset D_80111350_rockin_raceway[7] = {
     { { 0.0f, -288.8f, -65.0f }, { 326.0f, 0.0f, 0.0f }, 4278.0f },
     { { 0.0f, 200.8f, -65.0f }, { 326.0f, 0.0f, 0.0f }, 4278.0f },
     { { 136.0f, -94.8f, -1001.8f }, { 341.0f, 305.5f, 0.0f }, 952.0f },

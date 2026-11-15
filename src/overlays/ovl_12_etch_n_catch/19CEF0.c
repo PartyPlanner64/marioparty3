@@ -149,11 +149,11 @@ u8 D_8010C890_etch_n_catch[120][160] BSS;
 s16 D_80111390_etch_n_catch[4][3] BSS;
 u16 D_801113A8_etch_n_catch[2] BSS;
 u8 D_801113AC_etch_n_catch[4] BSS; /* Unreferenced. */
-D_80111B50_vine_with_me_Struct D_801113B0_etch_n_catch BSS;
+MinigameFlow D_801113B0_etch_n_catch BSS;
 EtchNCatchNode *D_801113D8_etch_n_catch[4] BSS;
 u16 D_801113E8_etch_n_catch[4] BSS;
 
-void func_80105CD0_etch_n_catch(D_80111B50_vine_with_me_Struct *arg0);
+void func_80105CD0_etch_n_catch(MinigameFlow *flow);
 void func_80105D5C_etch_n_catch(void);
 void func_8010C2F4_etch_n_catch(void);
 void func_80105ED4_etch_n_catch(omObjData *object);
@@ -227,25 +227,25 @@ void func_801059A0_etch_n_catch(void) {
     WipeCreateIn(WIPE_TYPE_PREV, 16);
 }
 
-void func_80105CD0_etch_n_catch(D_80111B50_vine_with_me_Struct *arg0) {
+void func_80105CD0_etch_n_catch(MinigameFlow *flow) {
     s32 i;
 
     D_800EB932_minigame = 60;
-    arg0->unk00 = 0;
-    arg0->unk01 = 1;
-    arg0->unk02 = 1;
-    arg0->unk03 = 2;
-    arg0->unk04 = 0;
-    arg0->unk05 = 0;
-    arg0->unk06 = 0;
-    arg0->unk1C = 90;
-    arg0->unk1E = 900;
-    arg0->unk20 = -1;
-    arg0->unk22 = 75;
-    arg0->unk24 = 150;
+    flow->state = MG_STATE_OPENING;
+    flow->type = MINIGAME_1V3;
+    flow->timerMode = MG_TIMER_COUNT_DOWN;
+    flow->timeDisp = MG_TIME_DISP_COUNTDOWN;
+    flow->newRecord = FALSE;
+    flow->gauge = MG_GAUGE_NONE;
+    flow->resultType = MG_RESULT_WIN_1;
+    flow->startDelay = 90;
+    flow->timer = 900;
+    flow->timeLimit = -1;
+    flow->finishDelay = 75;
+    flow->resultDelay = 150;
     for (i = 0; i < 4; i++) {
-        arg0->unk08[i] = 0;
-        arg0->unk18[i] = 0xFF;
+        flow->gaugeValue[i] = 0;
+        flow->winners[i] = 0xFF;
     }
 }
 
@@ -282,7 +282,7 @@ void func_80105ED4_etch_n_catch(omObjData *object) {
             } else {
                 HuAudSeqStop();
             }
-            func_800E6F0C_minigame(5);
+            func_800E6F0C_minigame(MG_STATE_EXIT);
             D_8010C6D8_etch_n_catch = 1;
         }
         func_800E1840_minigame();
@@ -294,28 +294,28 @@ void func_80105ED4_etch_n_catch(omObjData *object) {
                 break;
             case 2:
                 if (D_8010C6AC_etch_n_catch >= 5 || D_8010C6AD_etch_n_catch >= 5) {
-                    func_800E6F0C_minigame(3);
+                    func_800E6F0C_minigame(MG_STATE_FINISH);
                 }
                 break;
             case 3:
                 if (func_800E6E9C_minigame() == 74.0) {
                     if (D_8010C6AC_etch_n_catch == D_8010C6AD_etch_n_catch) {
-                        D_801113B0_etch_n_catch.unk06 = 4;
+                        D_801113B0_etch_n_catch.resultType = MG_RESULT_DRAW;
                     } else {
-                        D_801113B0_etch_n_catch.unk06 = 1;
+                        D_801113B0_etch_n_catch.resultType = MG_RESULT_WIN_2;
                         for (i = 0; i < 4; i++) {
                             if (D_8010C6AC_etch_n_catch > D_8010C6AD_etch_n_catch && GwPlayer[i].group == 0) {
-                                if (D_801113B0_etch_n_catch.unk18[0] == 0xFF) {
-                                    D_801113B0_etch_n_catch.unk18[0] = i;
+                                if (D_801113B0_etch_n_catch.winners[0] == 0xFF) {
+                                    D_801113B0_etch_n_catch.winners[0] = i;
                                 } else {
-                                    D_801113B0_etch_n_catch.unk18[1] = i;
+                                    D_801113B0_etch_n_catch.winners[1] = i;
                                 }
                                 GwPlayer[i].gameCoin += 10;
                             } else if (D_8010C6AC_etch_n_catch < D_8010C6AD_etch_n_catch && GwPlayer[i].group == 1) {
-                                if (D_801113B0_etch_n_catch.unk18[0] == 0xFF) {
-                                    D_801113B0_etch_n_catch.unk18[0] = i;
+                                if (D_801113B0_etch_n_catch.winners[0] == 0xFF) {
+                                    D_801113B0_etch_n_catch.winners[0] = i;
                                 } else {
-                                    D_801113B0_etch_n_catch.unk18[1] = i;
+                                    D_801113B0_etch_n_catch.winners[1] = i;
                                 }
                                 GwPlayer[i].gameCoin += 10;
                             }
@@ -326,8 +326,8 @@ void func_80105ED4_etch_n_catch(omObjData *object) {
             case 4:
                 if (D_800EB934_minigame != 0) {
                     for (i = 0; i < 4; i++) {
-                        if (D_801113B0_etch_n_catch.unk06 == 1) {
-                            if (i == D_801113B0_etch_n_catch.unk18[0] || i == D_801113B0_etch_n_catch.unk18[1]) {
+                        if (D_801113B0_etch_n_catch.resultType == MG_RESULT_WIN_2) {
+                            if (i == D_801113B0_etch_n_catch.winners[0] || i == D_801113B0_etch_n_catch.winners[1]) {
                                 func_800E5690_minigame(D_800EC598_minigame[i], 13);
                                 switch (GwPlayer[i].chr) {
                                     case 0:
@@ -523,12 +523,12 @@ void func_80106A64_etch_n_catch(omObjData *object) {
     if (omPauseChk() + D_800D6A90_main != 0) {
         return;
     }
-    if (func_800E6E8C_minigame() == 5) {
+    if (func_800E6E8C_minigame() == MG_STATE_EXIT) {
         return;
     }
     data = object->data;
     D_8010C838_etch_n_catch = D_8010C868_etch_n_catch[data->unk59];
-    if (func_800E6E8C_minigame() == 0) {
+    if (func_800E6E8C_minigame() == MG_STATE_OPENING) {
         if (D_8010C860_etch_n_catch[0]->work[0] != 3) {
             Hu3DModelScaleSet(object->model[1], 0.0f, 0.0f, 0.0f);
         } else {
@@ -585,7 +585,7 @@ void func_80106A64_etch_n_catch(omObjData *object) {
     offsetX = sindf(data->unk3C) * 65.0f * 0.75f;
     offsetZ = cosdf(data->unk3C) * 65.0f * 0.75f;
     switch (func_800E6E8C_minigame()) {
-        case 3:
+        case MG_STATE_FINISH:
             if (func_800E6E9C_minigame() == 0) {
                 func_800E1328_minigame(object, 60.0f);
                 object->trans.x -= offsetX;
@@ -597,8 +597,8 @@ void func_80106A64_etch_n_catch(omObjData *object) {
                 Hu3DModelPosSet(object->model[1], object->trans.x - offsetX, 0.0f, object->trans.z - offsetZ);
             }
             break;
-        case 4:
-        case 5:
+        case MG_STATE_RESULT:
+        case MG_STATE_EXIT:
             Hu3DModelPosSet(object->model[1], object->trans.x, 0.0f, object->trans.z);
             break;
         default:
@@ -613,12 +613,12 @@ void func_80106A64_etch_n_catch(omObjData *object) {
         func_8001C814_main(object->model[2], 2, 2);
     }
     switch (func_800E6E8C_minigame()) {
-        case 0:
-        case 1:
-        case 5:
+        case MG_STATE_OPENING:
+        case MG_STATE_START:
+        case MG_STATE_EXIT:
             func_8010C628_etch_n_catch(object, 0.75f);
             return;
-        case 3:
+        case MG_STATE_FINISH:
             if (func_800E6E9C_minigame() == 0) {
                 func_8001C258_main(object->model[2], 4, 4);
                 func_800E5690_minigame(object, 38);
@@ -650,7 +650,7 @@ void func_80106A64_etch_n_catch(omObjData *object) {
     }
     D_8010C838_etch_n_catch->unk_04 = screenPos.x;
     D_8010C838_etch_n_catch->unk_06 = screenPos.y;
-    if (func_800E6E8C_minigame() == 2) {
+    if (func_800E6E8C_minigame() == MG_STATE_PLAY) {
         if (D_8010C838_etch_n_catch->unk_12 == 0 && (data->unk5C & 4) && Hu3DData[object->model[0]].motTime == 0.0f) {
             D_8010C838_etch_n_catch->unk_10 = PlayerFXPlay(0x37F, data->unk59);
             if (D_8010C838_etch_n_catch->unk_02 == 8) {
@@ -663,11 +663,11 @@ void func_80106A64_etch_n_catch(omObjData *object) {
             HuAudFXStop(D_8010C838_etch_n_catch->unk_10);
             D_8010C838_etch_n_catch->unk_12 = 0;
         }
-    } else if (func_800E6E8C_minigame() == 3) {
+    } else if (func_800E6E8C_minigame() == MG_STATE_FINISH) {
         HuAudFXStop(D_8010C838_etch_n_catch->unk_10);
         D_8010C838_etch_n_catch->unk_12 = 0;
     }
-    if (func_800E6E8C_minigame() == 2 && D_8010C838_etch_n_catch->unk_08 != 0 && D_8010C838_etch_n_catch->unk_0A != 0) {
+    if (func_800E6E8C_minigame() == MG_STATE_PLAY && D_8010C838_etch_n_catch->unk_08 != 0 && D_8010C838_etch_n_catch->unk_0A != 0) {
         while (D_8010C838_etch_n_catch->unk_08 != D_8010C838_etch_n_catch->unk_04 ||
                D_8010C838_etch_n_catch->unk_0A != D_8010C838_etch_n_catch->unk_06) {
             newNode = func_80108B28_etch_n_catch(data->unk59);
@@ -870,7 +870,7 @@ void func_80107EA4_etch_n_catch(omObjData *object) {
     s8 speed;
     s32 side;
 
-    if (func_800E6E8C_minigame() != 2) {
+    if (func_800E6E8C_minigame() != MG_STATE_PLAY) {
         return;
     }
     switch (GwPlayer[data->unk59].cpu_difficulty) {
@@ -1587,7 +1587,7 @@ void func_80109EB8_etch_n_catch(omObjData *object) {
             Hu3DModelScaleSet(object->model[6], data->unk164, data->unk164, data->unk164);
             break;
         default:
-            if (func_800E6E8C_minigame() != 0) {
+            if (func_800E6E8C_minigame() != MG_STATE_OPENING) {
                 switch (object->work[0]) {
                     case 1:
                         if (data->unk15C > 120) {

@@ -164,7 +164,7 @@ s32 func_80106044_staff(u32 limit) {
     return (random & 0x7FFFFFFF) % limit;
 }
 
-void func_8010609C_staff(MsetupCameraPreset *preset) {
+void func_8010609C_staff(ModeCameraPreset *preset) {
     CRot = preset->rot;
     D_80111550_staff = CRot;
     Center = preset->center;

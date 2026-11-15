@@ -86,7 +86,7 @@ s8 D_8010BE38_hyper_hydrants[][16] = {
 s8 D_8010BE68_hyper_hydrants[2] = { 0, 0 };
 s8 D_8010BE6A_hyper_hydrants = 0;
 
-extern D_80111B50_vine_with_me_Struct D_8010BF60_hyper_hydrants;
+extern MinigameFlow D_8010BF60_hyper_hydrants;
 extern omObjData *D_8010BFE8_hyper_hydrants[2][5];
 
 extern s8 D_8010BFAC_hyper_hydrants[2];
@@ -126,7 +126,7 @@ extern s16 D_8010C012_hyper_hydrants[2];
 extern s16 D_8010C016_hyper_hydrants[2];
 extern s16 D_8010C01A_hyper_hydrants[2][2];
 
-void func_80105CB4_hyper_hydrants(D_80111B50_vine_with_me_Struct *arg0);
+void func_80105CB4_hyper_hydrants(MinigameFlow *flow);
 void func_80105FC8_hyper_hydrants(void);
 void func_80105D44_hyper_hydrants(omObjData *object);
 void func_801060F8_hyper_hydrants(omObjData *object);
@@ -203,25 +203,25 @@ void func_801059A0_hyper_hydrants(void) {
     WipeCreateIn(WIPE_TYPE_PREV, 0x10);
 }
 
-void func_80105CB4_hyper_hydrants(D_80111B50_vine_with_me_Struct *arg0) {
+void func_80105CB4_hyper_hydrants(MinigameFlow *flow) {
     s32 i;
 
     D_800EB932_minigame = 10;
-    arg0->unk00 = 0;
-    arg0->unk01 = 1;
-    arg0->unk02 = 1;
-    arg0->unk03 = 2;
-    arg0->unk04 = 0;
-    arg0->unk05 = 0;
-    arg0->unk06 = 9;
-    arg0->unk1C = 80;
-    arg0->unk1E = 900;
-    arg0->unk20 = -1;
-    arg0->unk22 = 75;
-    arg0->unk24 = 150;
+    flow->state = MG_STATE_OPENING;
+    flow->type = MINIGAME_1V3;
+    flow->timerMode = MG_TIMER_COUNT_DOWN;
+    flow->timeDisp = MG_TIME_DISP_COUNTDOWN;
+    flow->newRecord = FALSE;
+    flow->gauge = MG_GAUGE_NONE;
+    flow->resultType = MG_RESULT_NONE;
+    flow->startDelay = 80;
+    flow->timer = 900;
+    flow->timeLimit = -1;
+    flow->finishDelay = 75;
+    flow->resultDelay = 150;
     for (i = 0; i < 4; i++) {
-        arg0->unk08[i] = 0;
-        arg0->unk18[i] = 0xFF;
+        flow->gaugeValue[i] = 0;
+        flow->winners[i] = 0xFF;
     }
 }
 
@@ -306,7 +306,7 @@ void func_801060F8_hyper_hydrants(omObjData *object) {
             } else {
                 HuAudSeqStop();
             }
-            func_800E6F0C_minigame(5);
+            func_800E6F0C_minigame(MG_STATE_EXIT);
             D_8010BE34_hyper_hydrants = 1;
         }
         func_800E1840_minigame();
@@ -461,11 +461,11 @@ void func_80106A50_hyper_hydrants(omObjData *object) {
     s32 character;
 
     switch (func_800E6E8C_minigame()) {
-        case 0:
-        case 1:
+        case MG_STATE_OPENING:
+        case MG_STATE_START:
             Hu3DMotionTimeSet(object->model[2], Hu3DData[object->model[0]].motTime);
             break;
-        case 2:
+        case MG_STATE_PLAY:
             playerData = object->data;
             data = playerData->unk158;
             if (playerData->unk59 == D_8010BFA8_hyper_hydrants || playerData->unk59 == D_8010BFA9_hyper_hydrants) {
@@ -514,7 +514,7 @@ void func_80106A50_hyper_hydrants(omObjData *object) {
                     break;
             }
             break;
-        case 3:
+        case MG_STATE_FINISH:
             playerData = object->data;
             if (func_800E6E9C_minigame() == 0) {
                 HuAudFXStop(D_8010C022_hyper_hydrants[0]);
@@ -526,27 +526,27 @@ void func_80106A50_hyper_hydrants(omObjData *object) {
                     case 0:
                     case 1:
                         if (D_8010BE24_hyper_hydrants > D_8010BE25_hyper_hydrants) {
-                            D_8010BF60_hyper_hydrants.unk06 = 1;
-                            if (D_8010BF60_hyper_hydrants.unk18[0] == 0xFF) {
-                                D_8010BF60_hyper_hydrants.unk18[0] = playerData->unk59;
+                            D_8010BF60_hyper_hydrants.resultType = MG_RESULT_WIN_2;
+                            if (D_8010BF60_hyper_hydrants.winners[0] == 0xFF) {
+                                D_8010BF60_hyper_hydrants.winners[0] = playerData->unk59;
                             } else {
-                                D_8010BF60_hyper_hydrants.unk18[1] = playerData->unk59;
+                                D_8010BF60_hyper_hydrants.winners[1] = playerData->unk59;
                             }
                         } else if (D_8010BE24_hyper_hydrants == D_8010BE25_hyper_hydrants) {
-                            D_8010BF60_hyper_hydrants.unk06 = 4;
+                            D_8010BF60_hyper_hydrants.resultType = MG_RESULT_DRAW;
                         }
                         break;
                     case 2:
                     case 3:
                         if (D_8010BE24_hyper_hydrants < D_8010BE25_hyper_hydrants) {
-                            D_8010BF60_hyper_hydrants.unk06 = 1;
-                            if (D_8010BF60_hyper_hydrants.unk18[0] == 0xFF) {
-                                D_8010BF60_hyper_hydrants.unk18[0] = playerData->unk59;
+                            D_8010BF60_hyper_hydrants.resultType = MG_RESULT_WIN_2;
+                            if (D_8010BF60_hyper_hydrants.winners[0] == 0xFF) {
+                                D_8010BF60_hyper_hydrants.winners[0] = playerData->unk59;
                             } else {
-                                D_8010BF60_hyper_hydrants.unk18[1] = playerData->unk59;
+                                D_8010BF60_hyper_hydrants.winners[1] = playerData->unk59;
                             }
                         } else if (D_8010BE24_hyper_hydrants == D_8010BE25_hyper_hydrants) {
-                            D_8010BF60_hyper_hydrants.unk06 = 4;
+                            D_8010BF60_hyper_hydrants.resultType = MG_RESULT_DRAW;
                         }
                         break;
                 }
@@ -565,11 +565,11 @@ void func_80106A50_hyper_hydrants(omObjData *object) {
                 Hu3DModelPosSet(object->model[1], object->trans.x, 0, object->trans.z);
             }
             break;
-        case 4:
+        case MG_STATE_RESULT:
             if (D_800EB934_minigame != 0) {
                 playerData = object->data;
-                if (playerData->unk59 == D_8010BF60_hyper_hydrants.unk18[0] ||
-                    playerData->unk59 == D_8010BF60_hyper_hydrants.unk18[1]) {
+                if (playerData->unk59 == D_8010BF60_hyper_hydrants.winners[0] ||
+                    playerData->unk59 == D_8010BF60_hyper_hydrants.winners[1]) {
                     Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[3]].motId, 0, 30, 2);
                     switch (GwPlayer[playerData->unk59].chr) {
                         case 0:
@@ -607,7 +607,7 @@ void func_80106A50_hyper_hydrants(omObjData *object) {
                 func_8001C814_main(object->model[0], 1, 1);
             }
             break;
-        case 5:
+        case MG_STATE_EXIT:
             break;
     }
 }
@@ -804,7 +804,7 @@ void func_80107A90_hyper_hydrants(omObjData *object) {
     s8 particles;
     s16 maxSpread;
 
-    if (func_800E6E8C_minigame() != 2) {
+    if (func_800E6E8C_minigame() != MG_STATE_PLAY) {
         return;
     }
     if (object->work[0] == 0) {
@@ -1240,7 +1240,7 @@ void func_801091B0_hyper_hydrants(omObjData *object) {
     HyperHydrantsPlayerData *otherData;
 
     switch (func_800E6E8C_minigame()) {
-        case 0:
+        case MG_STATE_OPENING:
             if (data->unk00 == 0) {
                 position.x = object->trans.x + 50.0f;
                 position.y = object->trans.y + 120.0f;
@@ -1276,16 +1276,16 @@ void func_801091B0_hyper_hydrants(omObjData *object) {
             }
             Hu3DModelScaleSet(object->model[1], data->unk0C, data->unk0C, data->unk0C);
             break;
-        case 1:
+        case MG_STATE_START:
             object->trans.y = 0;
             data->unk03 = 0;
             break;
-        case 2:
+        case MG_STATE_PLAY:
             func_80109484_hyper_hydrants(object);
             break;
-        case 3:
-        case 4:
-        case 5:
+        case MG_STATE_FINISH:
+        case MG_STATE_RESULT:
+        case MG_STATE_EXIT:
             object->scale.x -= 0.4f;
             if (object->scale.x < 0.0f) {
                 object->scale.x = 0.0f;
@@ -1394,13 +1394,13 @@ void func_801099A0_hyper_hydrants(omObjData *object) {
     HyperHydrantsPlayerData *data = object->data;
 
     switch (func_800E6E8C_minigame()) {
-        case 0:
+        case MG_STATE_OPENING:
             func_80109B30_hyper_hydrants(object);
             break;
-        case 1:
+        case MG_STATE_START:
             object->trans.y = 0;
             break;
-        case 2:
+        case MG_STATE_PLAY:
             func_80109E44_hyper_hydrants(object);
             if (data->unk04 == 1) {
                 func_8010A458_hyper_hydrants(object);
@@ -1417,7 +1417,7 @@ void func_801099A0_hyper_hydrants(omObjData *object) {
                 }
             }
             break;
-        case 3:
+        case MG_STATE_FINISH:
             object->scale.x -= 0.1f;
             if (object->scale.x < 0.0f) {
                 object->scale.x = 0.0f;
@@ -1768,10 +1768,10 @@ void func_8010AB34_hyper_hydrants(omObjData *object) {
     s32 playerIndex;
 
     switch (func_800E6E8C_minigame()) {
-        case 0:
-        case 1:
+        case MG_STATE_OPENING:
+        case MG_STATE_START:
             break;
-        case 2:
+        case MG_STATE_PLAY:
             if (object->work[0] == 0) {
                 playerIndex = D_8010BFAA_hyper_hydrants;
                 side = 0;
@@ -1799,9 +1799,9 @@ void func_8010AB34_hyper_hydrants(omObjData *object) {
                 Hu3DModelPosSet(object->model[i], D_8010BFB0_hyper_hydrants[side][i]->position.x, D_8010BFB0_hyper_hydrants[side][i]->position.y, D_8010BFB0_hyper_hydrants[side][i]->position.z);
             }
             break;
-        case 3:
-        case 4:
-        case 5:
+        case MG_STATE_FINISH:
+        case MG_STATE_RESULT:
+        case MG_STATE_EXIT:
             for (i = 0; i < 6; i++) {
                 func_8001C258_main(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
@@ -1889,7 +1889,7 @@ void func_8010AE08_hyper_hydrants(omObjData *object) {
 }
 
 void func_8010B2FC_hyper_hydrants(omObjData *object) {
-    if (func_800E6E8C_minigame() == 0) {
+    if (func_800E6E8C_minigame() == MG_STATE_OPENING) {
         if (D_8010BFE0_hyper_hydrants[0]->trans.y > 0.0f) {
             func_8010B38C_hyper_hydrants();
         } else if (D_8010BF9C_hyper_hydrants < 240) {
@@ -1994,8 +1994,8 @@ void func_8010B8B0_hyper_hydrants(omObjData *object) {
     s32 j;
 
     switch (func_800E6E8C_minigame()) {
-        case 2:
-        case 3:
+        case MG_STATE_PLAY:
+        case MG_STATE_FINISH:
             if (D_8010BE24_hyper_hydrants < 10) {
                 espDispOn(D_8010C01A_hyper_hydrants[0][0]);
                 func_8000BD50_main(D_8010C01A_hyper_hydrants[0][0], (s8)(D_8010BE24_hyper_hydrants % 10));

@@ -202,7 +202,7 @@ s32 D_8010BCF8_baby_bowser_bonkers BSS;
 s32 D_8010BCFC_baby_bowser_bonkers BSS;
 s32 D_8010BD00_baby_bowser_bonkers BSS;
 u8 D_8010BD04_baby_bowser_bonkers[4] BSS; /* Unreferenced. */
-D_80111B50_vine_with_me_Struct D_8010BD08_baby_bowser_bonkers BSS;
+MinigameFlow D_8010BD08_baby_bowser_bonkers BSS;
 
 BabyBowserBonkersPlayer *func_8010B3AC_baby_bowser_bonkers(omObjData *object);
 void func_80109E98_baby_bowser_bonkers(s32, s16);
@@ -283,7 +283,7 @@ void func_801059A0_baby_bowser_bonkers(void) {
     D_8010BC5C_baby_bowser_bonkers = -1;
     D_8010BC38_baby_bowser_bonkers = omAddObj(0x20, 0, 0, -1, func_80105BB0_baby_bowser_bonkers);
     memset(&D_8010BD08_baby_bowser_bonkers, 0, 0x28);
-    D_8010BD08_baby_bowser_bonkers.unk01 = 4;
+    D_8010BD08_baby_bowser_bonkers.type = MINIGAME_BATTLE;
     func_800E5EA0_minigame(&D_8010BD08_baby_bowser_bonkers);
     func_80045010_main(D_8010B950_baby_bowser_bonkers, 1);
     func_80045010_main(D_8010B95C_baby_bowser_bonkers, 1);
@@ -333,7 +333,7 @@ void func_80105C0C_baby_bowser_bonkers(omObjData *object) {
         case 1:
             if (GMesStatGet() == 0) {
                 GMesCreate(0x1A, (D_8010BC48_baby_bowser_bonkers + 29) / 30, 156, 32);
-                func_800E6F0C_minigame(2);
+                func_800E6F0C_minigame(MG_STATE_PLAY);
                 if (D_8010B888_baby_bowser_bonkers == NULL) {
                     D_8010BC44_baby_bowser_bonkers = 3;
                     D_8010B888_baby_bowser_bonkers = D_8010BC68_baby_bowser_bonkers[0][0];
@@ -375,7 +375,7 @@ void func_80105C0C_baby_bowser_bonkers(omObjData *object) {
             if (D_8010BC48_baby_bowser_bonkers <= 0) {
                 func_8003F5C0_main();
                 GMesCreate(0x11);
-                func_800E6F0C_minigame(3);
+                func_800E6F0C_minigame(MG_STATE_FINISH);
                 func_80107678_baby_bowser_bonkers(D_800EC598_minigame[0], 0, 13);
                 func_80107678_baby_bowser_bonkers(D_800EC598_minigame[1], 0, 13);
                 HuAudSeqFadeOut(120);
@@ -428,7 +428,7 @@ void func_80105C0C_baby_bowser_bonkers(omObjData *object) {
                     player2->unk_04 = 1;
                     player1->unk_04 = 1;
                 }
-                func_800E6F0C_minigame(4);
+                func_800E6F0C_minigame(MG_STATE_RESULT);
                 D_8010BC44_baby_bowser_bonkers = 0;
                 D_8010BC4C_baby_bowser_bonkers++;
             }
@@ -608,7 +608,7 @@ void func_80106AA4_baby_bowser_bonkers(omObjData *object) {
     player->unk_18 = object->trans.z;
     data->unk50 |= 0x8000;
     switch (func_800E6E8C_minigame()) {
-        case 2:
+        case MG_STATE_PLAY:
             if (data->unk38 != 1000.0f) {
                 object->trans.y -= 1.5000000596046448;
             }
@@ -616,10 +616,10 @@ void func_80106AA4_baby_bowser_bonkers(omObjData *object) {
                 func_80106CEC_baby_bowser_bonkers(object);
             }
             break;
-        case 3:
+        case MG_STATE_FINISH:
             data->unk3C = func_8010B148_baby_bowser_bonkers(0.0f, data->unk3C, 15.0f);
             break;
-        case 4:
+        case MG_STATE_RESULT:
             switch (player->unk_04) {
                 case 0:
                     if (func_800E5690_minigame(object, 0xD) != 0) {

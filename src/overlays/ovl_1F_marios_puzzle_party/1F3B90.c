@@ -149,7 +149,12 @@ MarioPuzzlePartyChainColor D_801100C0_marios_puzzle_party[8] = {
     { 255, 0, 0, 1.4f },
     { 255, 0, 255, 1.5f }
 };
-D_80111B50_vine_with_me_Struct D_80110140_marios_puzzle_party = { 0, 0, 2, 0, 0, 0, 0, 0, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0, 0, 0, 0 }, -30, -30, 0, 90, 150 };
+MinigameFlow D_80110140_marios_puzzle_party = {
+    MG_STATE_OPENING, MINIGAME_4P, MG_TIMER_NONE, MG_TIME_DISP_NONE, FALSE, MG_GAUGE_NONE, MG_RESULT_WIN_1, 0,
+    { 0.0f, 0.0f, 0.0f, 0.0f },
+    { 0, 0, 0, 0 },
+    -30, -30, 0, 90, 150
+};
 MarioPuzzlePartySparkleInit D_80110168_marios_puzzle_party[8] = {
     { 0, 0, 160.0f, -20.0f, 0.0f, 3.0f },
     { 2, 2, 330.0f, -10.0f, -2.0f, 2.0f },
@@ -1853,7 +1858,7 @@ void func_8010AD20_marios_puzzle_party(void) {
     HuPrcVSleep();
     HuSprAnimModeSet(display.sprGroup, 0, HUSPR_ANIM_MODE_STOP);
     while (TRUE) {
-        if (func_800E6E8C_minigame() == 2) {
+        if (func_800E6E8C_minigame() == MG_STATE_PLAY) {
             break;
         }
         HuPrcVSleep();
@@ -2668,7 +2673,7 @@ void func_8010DB98_marios_puzzle_party(void) {
     }
     while (TRUE) {
         for (i = 0; i < 4; i++) {
-            if (stopped[i] == FALSE && func_800E6E8C_minigame() != 0) {
+            if (stopped[i] == FALSE && func_800E6E8C_minigame() != MG_STATE_OPENING) {
                 angle[i] += 8.0f;
                 offset[i] = sindf(i * 45.0f + angle[i]) * 3.0f;
                 if (angle[i] > 360.0f) {
@@ -2777,7 +2782,7 @@ void func_8010E12C_marios_puzzle_party(void) {
     HuSprAttrSet(group, 5, 8);
     HuSprPriSet(group, 5, 0x100);
     func_800554C4_main(group, 5, 0);
-    while (D_80110140_marios_puzzle_party.unk00 != 4) {
+    while (D_80110140_marios_puzzle_party.state != MG_STATE_RESULT) {
         HuPrcVSleep();
     }
 
@@ -2884,7 +2889,7 @@ void func_8010EAA0_marios_puzzle_party(void) {
         }
     }
     func_8010E868_marios_puzzle_party(group, D_80116160_marios_puzzle_party * 2);
-    while (func_800E6E8C_minigame() != 2) {
+    while (func_800E6E8C_minigame() != MG_STATE_PLAY) {
         HuPrcVSleep();
     }
     while (D_80116160_marios_puzzle_party != 0 && D_80116168_marios_puzzle_party[0] == 0) {
@@ -2941,7 +2946,7 @@ void func_8010EEB0_marios_puzzle_party(void) {
 void func_8010EF30_marios_puzzle_party(void) {
     s32 flag = FALSE; // Tie flag while picking the winner, then the "new record" flag
     s32 timer = 0;
-    D_80111B50_vine_with_me_Struct *state;
+    MinigameFlow *flow;
     s32 running;
     Process *process;
     s32 best;
@@ -2952,7 +2957,7 @@ void func_8010EF30_marios_puzzle_party(void) {
     s32 j;
 
     D_801160E4_marios_puzzle_party = -1;
-    state = &D_80110140_marios_puzzle_party;
+    flow = &D_80110140_marios_puzzle_party;
     func_800E6E4C_minigame(0);
     D_800EB932_minigame = 60;
     for (i = 0; i < 4; i++) {
@@ -3066,28 +3071,28 @@ void func_8010EF30_marios_puzzle_party(void) {
                         if (D_801160E4_marios_puzzle_party != -1) {
                             if (GWMgRecordGet(8) < D_80116128_marios_puzzle_party[0]) {
                                 flag = TRUE;
-                                state->unk04 = 1;
+                                flow->newRecord = TRUE;
                                 GWMgRecordSet(8, (u16)D_80116128_marios_puzzle_party[0]);
                                 timer = 0;
-                                D_80110140_marios_puzzle_party.unk24 = 0x73;
+                                D_80110140_marios_puzzle_party.resultDelay = 0x73;
                             } else {
                                 flag = FALSE;
                                 timer = 0;
-                                D_80110140_marios_puzzle_party.unk24 = 0x64;
+                                D_80110140_marios_puzzle_party.resultDelay = 0x64;
                             }
                         } else {
                             timer = 0;
-                            D_80110140_marios_puzzle_party.unk24 = 0x6B;
+                            D_80110140_marios_puzzle_party.resultDelay = 0x6B;
                         }
-                        state->unk06 = 9;
+                        flow->resultType = MG_RESULT_NONE;
                     } else if (D_801160E4_marios_puzzle_party != -1) {
-                        D_80110140_marios_puzzle_party.unk24 = 0x96;
-                        state->unk06 = 0;
-                        state->unk18[0] = D_801160E4_marios_puzzle_party;
+                        D_80110140_marios_puzzle_party.resultDelay = 0x96;
+                        flow->resultType = MG_RESULT_WIN_1;
+                        flow->winners[0] = D_801160E4_marios_puzzle_party;
                         GwPlayer[D_801160E4_marios_puzzle_party].bonusCoin += 10;
                     } else {
-                        D_80110140_marios_puzzle_party.unk24 = 0xA0;
-                        state->unk06 = 4;
+                        D_80110140_marios_puzzle_party.resultDelay = 0xA0;
+                        flow->resultType = MG_RESULT_DRAW;
                     }
                 }
                 break;

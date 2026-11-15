@@ -243,7 +243,7 @@ s32 D_8010E630_log_jam BSS;
 s32 D_8010E634_log_jam BSS;
 s32 D_8010E638_log_jam BSS;
 u8 D_8010E63C_log_jam[4] BSS; /* Unreferenced. */
-D_80111B50_vine_with_me_Struct D_8010E640_log_jam BSS;
+MinigameFlow D_8010E640_log_jam BSS;
 extern s32 D_800A178C_main[][6];
 extern s16 D_800CD1B0_main;
 extern u8 D_800D6A90_main;
@@ -350,7 +350,7 @@ void func_801059A0_log_jam(void) {
     D_8010E5CC_log_jam = HuMemAllocTag(0x40, TAG_OVERLAY);
     D_8010E590_log_jam = omAddObj(0x20, 0, 0, -1, func_80105B9C_log_jam);
     memset(&D_8010E640_log_jam, 0, 0x28);
-    D_8010E640_log_jam.unk01 = 4;
+    D_8010E640_log_jam.type = MINIGAME_BATTLE;
     func_800E5EA0_minigame(&D_8010E640_log_jam);
 }
 
@@ -395,7 +395,7 @@ void func_80105C10_log_jam(omObjData *object) {
             }
             if (GMesStatGet() == 0) {
                 GMesCreate(0x1A, (D_8010E5A0_log_jam + 29) / 30, 156, 32);
-                func_800E6F0C_minigame(2);
+                func_800E6F0C_minigame(MG_STATE_PLAY);
                 D_8010E5A4_log_jam++;
             }
             break;
@@ -405,7 +405,7 @@ void func_80105C10_log_jam(omObjData *object) {
             if (D_8010E5A0_log_jam <= 0) {
                 func_8003F5C0_main();
                 GMesCreate(0x10);
-                func_800E6F0C_minigame(3);
+                func_800E6F0C_minigame(MG_STATE_FINISH);
                 HuAudSeqFadeOut(120);
                 D_8010E5A0_log_jam = 0;
                 D_8010E59C_log_jam = 0;
@@ -414,7 +414,7 @@ void func_80105C10_log_jam(omObjData *object) {
             break;
         case 3:
             if (func_80108CE0_log_jam(14) && GMesStatGet() == 0) {
-                func_800E6F0C_minigame(4);
+                func_800E6F0C_minigame(MG_STATE_RESULT);
                 func_801091DC_log_jam();
                 func_80106FAC_log_jam();
                 func_80109AD8_log_jam();
@@ -628,7 +628,7 @@ void func_801065E8_log_jam(omObjData *object) {
         team->unk_12 = 29;
     }
     func_8010A6FC_log_jam(team->unk_10, team->unk_12);
-    if (func_800E6E8C_minigame() == 3 && team->unk_16 != -1) {
+    if (func_800E6E8C_minigame() == MG_STATE_FINISH && team->unk_16 != -1) {
         player = func_8010910C_log_jam(team->unk_16);
         pos.x = player->unk_10;
         pos.z = player->unk_18;
@@ -802,7 +802,7 @@ void func_80107080_log_jam(omObjData *object, LogJamTeam *team) {
     if (work->unk_1E != 0) {
         func_80108840_log_jam(object, team);
     }
-    if (func_800E6E8C_minigame() == 3 && work->unk_08 < 13) {
+    if (func_800E6E8C_minigame() == MG_STATE_FINISH && work->unk_08 < 13) {
         work->unk_08 = 13;
         work->unk_0C = 0;
     }
@@ -811,7 +811,7 @@ void func_80107080_log_jam(omObjData *object, LogJamTeam *team) {
     }
     switch (work->unk_08) {
         case 0:
-            if (work->unk_0C >= 3.0f && func_800E6E8C_minigame() == 2) {
+            if (work->unk_0C >= 3.0f && func_800E6E8C_minigame() == MG_STATE_PLAY) {
                 func_8010C5DC_log_jam(object, 7, 5);
                 func_8004AC98_main(0x38A, work->unk_18);
                 work->unk_08 = 1;
@@ -971,7 +971,7 @@ void func_80107080_log_jam(omObjData *object, LogJamTeam *team) {
             object->rot.y = func_8010C2DC_log_jam(0.0f, object->rot.y, 10.0f);
             object->trans.x = func_8010C514_log_jam(D_8010DE90_log_jam[work->unk_00].x, object->trans.x, 10.0f);
             object->trans.z = func_8010C514_log_jam(D_8010DE90_log_jam[work->unk_00].z, object->trans.z, 10.0f);
-            if (func_800E6E8C_minigame() == 4) {
+            if (func_800E6E8C_minigame() == MG_STATE_RESULT) {
                 func_8010C5DC_log_jam(object, 1, 5);
                 work->unk_10 = 32.0f;
                 work->unk_0E = func_80108D1C_log_jam(32.0f, 1.6333001f);
@@ -1043,13 +1043,13 @@ void func_80107C84_log_jam(omObjData *object, LogJamTeam *team) {
     if (work->unk_1E != 0) {
         func_80108A80_log_jam(object, team);
     }
-    if (func_800E6E8C_minigame() == 3 && work->unk_08 < 13) {
+    if (func_800E6E8C_minigame() == MG_STATE_FINISH && work->unk_08 < 13) {
         work->unk_08 = 13;
         work->unk_0C = 0;
     }
     switch (work->unk_08) {
         case 5:
-            if (func_800E6E8C_minigame() == 2) {
+            if (func_800E6E8C_minigame() == MG_STATE_PLAY) {
                 func_8010C5DC_log_jam(object, 3, 7);
                 work->unk_08 = 6;
                 work->unk_0A = 0;
@@ -1132,7 +1132,7 @@ void func_80107C84_log_jam(omObjData *object, LogJamTeam *team) {
                         func_80109350_log_jam(work->unk_22);
                         work->unk_22 = work->unk_24 = -1;
                     }
-                    if (func_800E6E8C_minigame() == 2) {
+                    if (func_800E6E8C_minigame() == MG_STATE_PLAY) {
                         team->unk_12++;
                     }
                 }
@@ -1214,7 +1214,7 @@ void func_80107C84_log_jam(omObjData *object, LogJamTeam *team) {
             object->rot.y = func_8010C2DC_log_jam(0.0f, object->rot.y, 10.0f);
             object->trans.x = func_8010C514_log_jam(D_8010DE90_log_jam[work->unk_00].x, object->trans.x, 10.0f);
             object->trans.z = func_8010C514_log_jam(D_8010DE90_log_jam[work->unk_00].z, object->trans.z, 10.0f);
-            if (func_800E6E8C_minigame() == 4) {
+            if (func_800E6E8C_minigame() == MG_STATE_RESULT) {
                 func_8010C5DC_log_jam(object, 1, 5);
                 work->unk_10 = 25.0f;
                 work->unk_0E = func_80108D1C_log_jam(25.0f, 1.6333001f);

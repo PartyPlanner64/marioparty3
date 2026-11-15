@@ -180,12 +180,6 @@ typedef struct UnkStardustBattleEffect {
     /* 0x28 */ Vec scale;
 } UnkStardustBattleEffect; // sizeof 0x34
 
-typedef struct UnkStardustBattleCamPreset {
-    /* 0x00 */ Vec center;
-    /* 0x0C */ Vec rot;
-    /* 0x18 */ f32 zoom;
-} UnkStardustBattleCamPreset; // sizeof 0x1C
-
 typedef struct UnkStardustBattlePoint {
     /* 0x00 */ s16 x;
     /* 0x02 */ s16 y;
@@ -423,13 +417,13 @@ Vec D_80113CB0_stardust_battle[] = {
 s16 D_80113CE0_stardust_battle[] = { 118, 130, 138, 150, 162, 172, 184, 196 };
 s16 D_80113CF0_stardust_battle[] = { 28, 40 };
 UnkStardustBattleColor D_80113CF4_stardust_battle = { 0xE9DDA180 };
-UnkStardustBattleCamPreset D_80113CF8_stardust_battle = { { 0.0f, 150.0f, 0.0f }, { 350.0f, 0.0f, 0.0f }, 650.0f };
-UnkStardustBattleCamPreset D_80113D14_stardust_battle = { { 0.0f, 690.0f, 0.0f }, { 350.0f, 0.0f, 0.0f }, 1250.0f };
-UnkStardustBattleCamPreset D_80113D30_stardust_battle = { { 0.0f, 690.0f, 0.0f }, { 350.0f, 0.0f, 0.0f }, 300.0f };
-UnkStardustBattleCamPreset D_80113D4C_stardust_battle = { { 0.0f, 710.0f, 0.0f }, { 350.0f, 0.0f, 0.0f }, 300.0f }; /* Unreferenced. */
-UnkStardustBattleCamPreset D_80113D68_stardust_battle = { { 0.0f, 250.0f, 0.0f }, { 330.0f, 0.0f, 0.0f }, 1550.0f };
-UnkStardustBattleCamPreset D_80113D84_stardust_battle = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 500.0f }; /* Unreferenced. */
-UnkStardustBattleCamPreset D_80113DA0_stardust_battle = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 500.0f }; /* Unreferenced. */
+MgCameraPreset D_80113CF8_stardust_battle = { { 0.0f, 150.0f, 0.0f }, { 350.0f, 0.0f, 0.0f }, 650.0f };
+MgCameraPreset D_80113D14_stardust_battle = { { 0.0f, 690.0f, 0.0f }, { 350.0f, 0.0f, 0.0f }, 1250.0f };
+MgCameraPreset D_80113D30_stardust_battle = { { 0.0f, 690.0f, 0.0f }, { 350.0f, 0.0f, 0.0f }, 300.0f };
+MgCameraPreset D_80113D4C_stardust_battle = { { 0.0f, 710.0f, 0.0f }, { 350.0f, 0.0f, 0.0f }, 300.0f }; /* Unreferenced. */
+MgCameraPreset D_80113D68_stardust_battle = { { 0.0f, 250.0f, 0.0f }, { 330.0f, 0.0f, 0.0f }, 1550.0f };
+MgCameraPreset D_80113D84_stardust_battle = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 500.0f }; /* Unreferenced. */
+MgCameraPreset D_80113DA0_stardust_battle = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 500.0f }; /* Unreferenced. */
 s16 D_80113DBC_stardust_battle[] = { 6, 3, -1, -1 };
 s16 D_80113DC4_stardust_battle[] = { 4, 2, -1, -1 };
 s16 D_80113DCC_stardust_battle[] = { 2, 1, -1, -1, 1, 1, -1, -1 };
@@ -571,7 +565,7 @@ s32 D_80114BA8_stardust_battle BSS;
 s32 D_80114BAC_stardust_battle BSS;
 s32 D_80114BB0_stardust_battle BSS;
 s32 D_80114BB4_stardust_battle BSS;
-D_80111B50_vine_with_me_Struct D_80114BB8_stardust_battle BSS;
+MinigameFlow D_80114BB8_stardust_battle BSS;
 
 void func_801059A0_stardust_battle(void) {
     u8 camIndex;
@@ -645,7 +639,7 @@ void func_801059A0_stardust_battle(void) {
     guMtxIdentF(D_80114AD0_stardust_battle);
     D_80114A98_stardust_battle = omAddObj(0x20, 0, 0, -1, func_80105D18_stardust_battle);
     memset(&D_80114BB8_stardust_battle, 0, 0x28);
-    D_80114BB8_stardust_battle.unk01 = 4;
+    D_80114BB8_stardust_battle.type = MINIGAME_BATTLE;
     func_800E5EA0_minigame(&D_80114BB8_stardust_battle);
     func_80045010_main(D_80114100_stardust_battle, 1);
     func_80045010_main(D_8011410C_stardust_battle, 1);
@@ -764,7 +758,7 @@ void func_80105DA0_stardust_battle(omObjData *object) {
         case 7:
             if (GMesStatGet() == 0) {
                 func_8010F400_stardust_battle(0, D_80114AB0_stardust_battle);
-                func_800E6F0C_minigame(2);
+                func_800E6F0C_minigame(MG_STATE_PLAY);
                 D_80114AB8_stardust_battle++;
             }
             break;
@@ -783,7 +777,7 @@ void func_80105DA0_stardust_battle(omObjData *object) {
             if (D_80114AB0_stardust_battle >= 5400 || D_80114ACE_stardust_battle != 0 || actor->unk_06 <= 0) {
                 func_8003F5C0_main();
                 GMesCreate(0x14);
-                func_800E6F0C_minigame(3);
+                func_800E6F0C_minigame(MG_STATE_FINISH);
                 func_8010C06C_stardust_battle();
                 func_8010ED7C_stardust_battle();
                 HuAudSeqFadeOut(120);
@@ -812,7 +806,7 @@ void func_80105DA0_stardust_battle(omObjData *object) {
                 (func_8010C508_stardust_battle() == 12 ||
                  (D_80114AC0_stardust_battle != 0 && D_80114ACC_stardust_battle >= 0 &&
                   D_80114AB0_stardust_battle < D_80114AB4_stardust_battle))) {
-                func_800E6F0C_minigame(4);
+                func_800E6F0C_minigame(MG_STATE_RESULT);
                 func_801080B0_stardust_battle();
                 D_80114ABC_stardust_battle = 0;
                 if (D_80114AC0_stardust_battle == 0 || D_80114ACC_stardust_battle < 0 ||
@@ -1206,7 +1200,7 @@ void func_801073F4_stardust_battle(omObjData *object) {
     D_800CBB6E_main[obj->pad] = stickX;
     D_800D20A1_main[obj->pad] = stickY;
     func_80107760_stardust_battle(object, noControl);
-    if (!noControl && obj->unk_14 == 0 && func_800E6E8C_minigame() == 2) {
+    if (!noControl && obj->unk_14 == 0 && func_800E6E8C_minigame() == MG_STATE_PLAY) {
         obj->unk_10 = func_8010E524_stardust_battle(object, 0, NULL);
         if (obj->unk_10 != -1) {
             if (obj->unk_10 == 0xFF) {
@@ -1253,7 +1247,7 @@ void func_80107760_stardust_battle(omObjData *object, s16 noControl) {
     s16 time;
     s16 item;
 
-    if (func_800E6E8C_minigame() == 2 && noControl == 0) {
+    if (func_800E6E8C_minigame() == MG_STATE_PLAY && noControl == 0) {
         item = obj->unk_66;
         switch (item) {
             case -1:
@@ -2318,7 +2312,7 @@ void func_8010AAC4_stardust_battle(omObjData *object) {
 
     switch (actor->unk_04) {
         case 0:
-            if (func_800E6E8C_minigame() == 2) {
+            if (func_800E6E8C_minigame() == MG_STATE_PLAY) {
                 actor->active = 0;
                 actor->unk_04 = 1;
             }
@@ -2445,7 +2439,7 @@ void func_8010AAC4_stardust_battle(omObjData *object) {
                 actor->unk_70 = func_80111DF8_stardust_battle(t, 0.0f, 1.0f);
                 object->rot.z = object->rot.x = 0.0f;
                 actor->active = 0;
-                if (actor->unk_06 != 0 && func_800E6E8C_minigame() == 2) {
+                if (actor->unk_06 != 0 && func_800E6E8C_minigame() == MG_STATE_PLAY) {
                     func_8010BFE4_stardust_battle(450.0f, 30);
                     actor->unk_04 = 6;
                 } else {

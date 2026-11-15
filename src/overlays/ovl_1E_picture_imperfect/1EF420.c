@@ -113,7 +113,7 @@ u8 D_8010A055_picture_imperfect = 0xFF;
 u8 D_8010A056_picture_imperfect = 0;
 
 PictureImperfectBssA110 pictureImperfectBssA110 BSS;
-D_80111B50_vine_with_me_Struct D_8010A128_picture_imperfect BSS;
+MinigameFlow D_8010A128_picture_imperfect BSS;
 u8 D_8010A150_picture_imperfect BSS;
 u8 D_8010A151_picture_imperfect BSS;
 s16 D_8010A152_picture_imperfect BSS;
@@ -163,7 +163,7 @@ extern s16 D_8010A2A8_picture_imperfect;
 extern s16 D_8010A2AA_picture_imperfect;
 
 void func_80105BA8_picture_imperfect(void);
-void func_80105E68_picture_imperfect(D_80111B50_vine_with_me_Struct *arg0);
+void func_80105E68_picture_imperfect(MinigameFlow *flow);
 void func_80105EF4_picture_imperfect(void);
 void func_80106154_picture_imperfect(omObjData *object);
 void func_8010629C_picture_imperfect(omObjData *object);
@@ -252,25 +252,25 @@ void func_80105BA8_picture_imperfect(void) {
     D_8010A26C_picture_imperfect = HuSprAnimDataRead(0x3E0019);
 }
 
-void func_80105E68_picture_imperfect(D_80111B50_vine_with_me_Struct *arg0) {
+void func_80105E68_picture_imperfect(MinigameFlow *flow) {
     s32 i;
 
     D_800EB932_minigame = 10;
-    arg0->unk00 = 0;
-    arg0->unk01 = 0;
-    arg0->unk02 = 1;
-    arg0->unk03 = 2;
-    arg0->unk04 = 0;
-    arg0->unk05 = 0;
-    arg0->unk06 = 9;
-    arg0->unk1C = -1;
-    arg0->unk1E = 1800;
-    arg0->unk20 = -1;
-    arg0->unk22 = 360;
-    arg0->unk24 = 162;
+    flow->state = MG_STATE_OPENING;
+    flow->type = MINIGAME_4P;
+    flow->timerMode = MG_TIMER_COUNT_DOWN;
+    flow->timeDisp = MG_TIME_DISP_COUNTDOWN;
+    flow->newRecord = FALSE;
+    flow->gauge = MG_GAUGE_NONE;
+    flow->resultType = MG_RESULT_NONE;
+    flow->startDelay = -1;
+    flow->timer = 1800;
+    flow->timeLimit = -1;
+    flow->finishDelay = 360;
+    flow->resultDelay = 162;
     for (i = 0; i < 4; i++) {
-        arg0->unk08[i] = 0;
-        arg0->unk18[i] = 0xFF;
+        flow->gaugeValue[i] = 0;
+        flow->winners[i] = 0xFF;
     }
 }
 
@@ -306,7 +306,7 @@ void func_80106154_picture_imperfect(omObjData *object) {
             } else {
                 HuAudSeqStop();
             }
-            func_800E6F0C_minigame(5);
+            func_800E6F0C_minigame(MG_STATE_EXIT);
             D_8010A014_picture_imperfect = 1;
         }
         func_800E1840_minigame();
@@ -593,10 +593,10 @@ void func_80107820_picture_imperfect(omObjData *object) {
     playerData = object->data;
     work = playerData->unk158;
     switch (func_800E6E8C_minigame()) {
-        case 0:
+        case MG_STATE_OPENING:
             func_800DDD94_minigame(object);
             break;
-        case 2:
+        case MG_STATE_PLAY:
             D_800CBB6E_main[playerData->unk57] = D_800D20A1_main[playerData->unk57] = 0;
             if (omPauseChk() + D_800D6A90_main != 0) {
                 func_80108688_picture_imperfect(object);
@@ -657,7 +657,7 @@ void func_80107820_picture_imperfect(omObjData *object) {
             D_800EB748_minigame = 0.7f;
             func_800DDD94_minigame(object);
             break;
-        case 3:
+        case MG_STATE_FINISH:
             if (D_80109FE0_picture_imperfect != -1) {
                 HuAudFXStop(D_80109FE0_picture_imperfect);
                 D_80109FE0_picture_imperfect = -1;
@@ -718,14 +718,14 @@ void func_80107820_picture_imperfect(omObjData *object) {
                         }
                         D_80109FE4_picture_imperfect = 16;
                         if (playerData->unk59 == 3) {
-                            func_800E6F0C_minigame(4);
+                            func_800E6F0C_minigame(MG_STATE_RESULT);
                         }
                     }
                     break;
             }
             func_800DDD94_minigame(object);
             break;
-        case 4:
+        case MG_STATE_RESULT:
             if (func_800E6E9C_minigame() == 12) {
                 if (D_80109FE4_picture_imperfect == 16) {
                     if (playerData->unk59 == D_80109FF8_picture_imperfect[0] ||
@@ -790,10 +790,10 @@ void func_80107820_picture_imperfect(omObjData *object) {
                         GMesCreate(0x20);
                         HuAudSeqPlay(0x6C);
                     }
-                    D_8010A128_picture_imperfect.unk06 = 9;
+                    D_8010A128_picture_imperfect.resultType = MG_RESULT_NONE;
                 }
             } else {
-                D_8010A128_picture_imperfect.unk06 = 9;
+                D_8010A128_picture_imperfect.resultType = MG_RESULT_NONE;
             }
             break;
     }
@@ -1221,7 +1221,7 @@ void func_80108C20_picture_imperfect(PictureImperfectWork *work, s8 player) {
             }
             D_8010A111_picture_imperfect++;
             if (rounds * 4 == D_8010A111_picture_imperfect) {
-                func_800E6F0C_minigame(3);
+                func_800E6F0C_minigame(MG_STATE_FINISH);
             }
         }
     } else {
@@ -1367,7 +1367,7 @@ void func_80109AC4_picture_imperfect(omObjData *object) {
     s32 x;
     s32 y;
 
-    if (func_800E6E8C_minigame() == 0) {
+    if (func_800E6E8C_minigame() == MG_STATE_OPENING) {
         switch (D_8010A150_picture_imperfect) {
             case 0:
             default:
@@ -1433,12 +1433,12 @@ void func_80109AC4_picture_imperfect(omObjData *object) {
                     break;
                 case 3:
                     D_8010A056_picture_imperfect = 0;
-                    func_800E6F0C_minigame(1);
+                    func_800E6F0C_minigame(MG_STATE_START);
                     HuAudFXStop(D_8010A124_picture_imperfect);
                     break;
             }
         }
-    } else if (func_800E6E8C_minigame() == 3) {
+    } else if (func_800E6E8C_minigame() == MG_STATE_FINISH) {
         if (GMesStatGet() == 0 && func_800E6E9C_minigame() > 10) {
             D_8010A050_picture_imperfect += 0.04f;
             if (D_8010A050_picture_imperfect > 0.5f) {

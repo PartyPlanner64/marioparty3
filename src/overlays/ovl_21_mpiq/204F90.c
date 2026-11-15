@@ -79,7 +79,12 @@ typedef struct {
 extern s32 D_800A178C_main[][6];
 extern u8 D_800D6A90_main;
 
-D_80111B50_vine_with_me_Struct D_8010C680_mpiq = { 0, 0, 2, 0, 0, 0, 0, 0, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0, 0, 0, 0 }, 60, 900, -1, 75, 135 };
+MinigameFlow D_8010C680_mpiq = {
+    MG_STATE_OPENING, MINIGAME_4P, MG_TIMER_NONE, MG_TIME_DISP_NONE, FALSE, MG_GAUGE_NONE, MG_RESULT_WIN_1, 0,
+    { 0.0f, 0.0f, 0.0f, 0.0f },
+    { 0, 0, 0, 0 },
+    60, 900, -1, 75, 135
+};
 f32 D_8010C6A8_mpiq[4] = { 64.0f, 128.0f, 192.0f, 256.0f };
 s32 D_8010C6B8_mpiq = -1;
 s32 D_8010C6BC_mpiq[17] = { 5, 5, 5, 5, 5, 5, 10, 10, 10, 10, 10, 10, 10, 10, 20, 30, 0 };
@@ -252,10 +257,10 @@ void func_80105C60_mpiq(omObjData *obj) {
             break;
         case 3:
             if (D_8010C9D8_mpiq != -1) {
-                D_8010C680_mpiq.unk06 = 0;
-                D_8010C680_mpiq.unk18[0] = D_8010C9D8_mpiq;
+                D_8010C680_mpiq.resultType = MG_RESULT_WIN_1;
+                D_8010C680_mpiq.winners[0] = D_8010C9D8_mpiq;
             } else {
-                D_8010C680_mpiq.unk06 = 4;
+                D_8010C680_mpiq.resultType = MG_RESULT_DRAW;
             }
             break;
         case 5:
@@ -1096,7 +1101,7 @@ void func_80108D10_mpiq(void) {
                 D_800CDA7C_main[GwPlayer[i].pad] &= 0x1FFF;
                 D_800D5558_main[GwPlayer[i].pad] &= 0x1FFF;
             }
-            if (func_800E6E8C_minigame() == 2 && (GwPlayer[i].stat & 1)) {
+            if (func_800E6E8C_minigame() == MG_STATE_PLAY && (GwPlayer[i].stat & 1)) {
                 func_801069F8_mpiq(i);
             }
         }
@@ -1947,7 +1952,7 @@ void func_8010B0CC_mpiq(void) {
     s32 wins;
     s32 tied;
 
-    while (func_800E6E8C_minigame() != 2) {
+    while (func_800E6E8C_minigame() != MG_STATE_PLAY) {
         HuPrcVSleep();
     }
     for (i = 0; i < 4; i++) {
@@ -2094,7 +2099,7 @@ void func_8010B0CC_mpiq(void) {
             }
         }
     }
-    func_800E6F0C_minigame(3);
+    func_800E6F0C_minigame(MG_STATE_FINISH);
     func_80107C74_mpiq();
     func_801089A4_mpiq(2);
     for (i = 0; i < 16; i++) {

@@ -118,7 +118,7 @@ u8 D_8010AB7C_storyresult[5] = { 0, 0, 1, 2, 3 };
 u8 D_8010AB84_storyresult[5] = { 0, 0, 1, 2, 3 };
 u8 D_8010AB8C_storyresult[4] = { 13, 26, 30, 34 };
 u8 D_8010AB90_storyresult[12] = { 1, 2, 3, 4, 4, 4, 4 };
-MsetupCameraPreset D_8010AB9C_storyresult = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 650.0f, 50.0f };
+ModeCameraPreset D_8010AB9C_storyresult = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 650.0f, 50.0f };
 
 s16 func_80106FF0_storyresult(void) {
     s16 count = GwStory.unk73 != 0;

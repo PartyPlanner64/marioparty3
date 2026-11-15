@@ -86,7 +86,12 @@ typedef struct AceHighShot {
 } AceHighShot; // sizeof 0x38
 
 extern u8 D_800D6A90_main;
-D_80111B50_vine_with_me_Struct D_8010DB40_aces_high = { 0, 0, 1, 2, 0, 0, 0, 0, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0, 0, 0, 0 }, -1, 1800, -1, -1, 135 };
+MinigameFlow D_8010DB40_aces_high = {
+    MG_STATE_OPENING, MINIGAME_4P, MG_TIMER_COUNT_DOWN, MG_TIME_DISP_COUNTDOWN, FALSE, MG_GAUGE_NONE, MG_RESULT_WIN_1, 0,
+    { 0.0f, 0.0f, 0.0f, 0.0f },
+    { 0, 0, 0, 0 },
+    -1, 1800, -1, -1, 135
+};
 u16 D_8010DB68_aces_high[4] = { 1, 2, 4, 8 };
 f32 D_8010DB70_aces_high[4][4] = {
     { 1.0f, 1.0f, 159.0f, 119.0f },
@@ -271,7 +276,7 @@ void func_80105E84_aces_high(omObjData *object) {
                 break;
             case 2:
                 if (D_8010DE8C_aces_high < 2) {
-                    func_800E6F0C_minigame(3);
+                    func_800E6F0C_minigame(MG_STATE_FINISH);
                 }
                 break;
             case 3:
@@ -586,7 +591,7 @@ void func_80106EC0_aces_high(omObjData *object) {
                     player->camObj->scale.x = CRotM[player->camIdx].x;
                     player->unk_88 = 4;
                     if (player->camIdx == 3) {
-                        func_800E6F0C_minigame(1);
+                        func_800E6F0C_minigame(MG_STATE_START);
                     }
                 }
                 break;
@@ -768,11 +773,11 @@ void func_80107654_aces_high(omObjData *object) {
     }
     func_8010843C_aces_high(object);
     mode = func_800E6E8C_minigame();
-    if (mode == 2 || mode == 3 || func_800E6E8C_minigame() == 4) {
+    if (mode == MG_STATE_PLAY || mode == MG_STATE_FINISH || func_800E6E8C_minigame() == MG_STATE_RESULT) {
         com = GwPlayer[player->camIdx].stat & 1;
-        if (com || mode == 3 || mode == 4) {
+        if (com || mode == MG_STATE_FINISH || mode == MG_STATE_RESULT) {
             func_801088A4_aces_high(object, &stickX, &stickY, &btnDown, &btn);
-            if (mode == 3 || mode == 4) {
+            if (mode == MG_STATE_FINISH || mode == MG_STATE_RESULT) {
                 btn = 0;
                 btnDown = 0;
             }
@@ -1357,7 +1362,7 @@ void func_801088A4_aces_high(omObjData *object, s8 *stickX, s8 *stickY, u16 *btn
             if ((dist < nearDist && !(result & 0x8000)) || (result & 0x4000)) {
                 *btn |= 0x4000;
             }
-            if (func_800E6E8C_minigame() == 4) {
+            if (func_800E6E8C_minigame() == MG_STATE_RESULT) {
                 player->unk_92 = 6;
                 func_8010B26C_aces_high(object);
                 player->camObj->func = func_8010B4BC_aces_high;
@@ -1925,7 +1930,7 @@ void func_8010B760_aces_high(omObjData *object) {
     s32 k;
     s32 m;
 
-    if (func_800E6E8C_minigame() != 2) {
+    if (func_800E6E8C_minigame() != MG_STATE_PLAY) {
         return;
     }
     for (i = 0; i < 4; i++) {
@@ -1998,7 +2003,7 @@ void func_8010B9F4_aces_high(omObjData *object) {
     u16 idx;
     s32 i;
 
-    if (func_800E6E8C_minigame() != 2) {
+    if (func_800E6E8C_minigame() != MG_STATE_PLAY) {
         return;
     }
     player = object->data;
@@ -2119,7 +2124,7 @@ void func_8010BF3C_aces_high(omObjData *object) {
     func_8001C258_main(object->model[1], 4, 0);
     func_8001C258_main(object->model[2], 4, 4);
     player->unk_58 = 0;
-    if (func_800E6E8C_minigame() != 2) {
+    if (func_800E6E8C_minigame() != MG_STATE_PLAY) {
         return;
     }
     player->unk_56 = 0;
@@ -2434,7 +2439,7 @@ void func_8010CD88_aces_high(omObjData *object) {
             }
             break;
         case 2:
-            if (func_800E6E8C_minigame() == 1) {
+            if (func_800E6E8C_minigame() == MG_STATE_START) {
                 omDelObj(object);
                 D_8010DE5C_aces_high = NULL;
             }
@@ -2461,8 +2466,8 @@ void func_8010CE5C_aces_high(omObjData *object) {
                     func_8010AD4C_aces_high(D_8010DE68_aces_high[D_8010DE8E_aces_high]);
                     HuAudFXPlay(0x3B4);
                 } else {
-                    func_800E6F0C_minigame(4);
-                    D_8010DB40_aces_high.unk06 = 4;
+                    func_800E6F0C_minigame(MG_STATE_RESULT);
+                    D_8010DB40_aces_high.resultType = MG_RESULT_DRAW;
                     D_8010DE8A_aces_high = 1;
                 }
             }
@@ -2471,9 +2476,9 @@ void func_8010CE5C_aces_high(omObjData *object) {
             break;
         case 2:
             if (func_8010D1D8_aces_high(D_8010DE8E_aces_high) == 1) {
-                func_800E6F0C_minigame(4);
+                func_800E6F0C_minigame(MG_STATE_RESULT);
                 D_8010DE8A_aces_high = 3;
-                D_8010DB40_aces_high.unk18[0] = D_8010DE8E_aces_high;
+                D_8010DB40_aces_high.winners[0] = D_8010DE8E_aces_high;
                 GwPlayer[D_8010DE8E_aces_high].bonusCoin = 10;
                 PlayerFXPlay(0x28F, D_8010DE8E_aces_high);
             }

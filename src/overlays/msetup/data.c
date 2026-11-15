@@ -99,7 +99,7 @@ void (*D_8011955C_msetup[])(void) = {
     func_8010AC94_msetup,
 };
 
-MsetupCameraPreset D_80119580_msetup = {{270.0f, 0.0f, 0.0f}, {0.0f, 200.0f, 0.0f}, 130.0f, 50.0f};
+ModeCameraPreset D_80119580_msetup = {{270.0f, 0.0f, 0.0f}, {0.0f, 200.0f, 0.0f}, 130.0f, 50.0f};
 
 MsetupCameraKeyframe D_801195A0_msetup[] = {
     {{{{270.0f, 0.0f, 0.0f}, {0.0f, 164.5f, 70.0f}, 130.0f, 50.0f}}, 1.0f},
@@ -563,7 +563,7 @@ s16 (*D_8011A544_msetup[])[2] = {D_8011A514_msetup, D_8011A52C_msetup, D_8011A53
 
 u8 D_8011A550_msetup[] = {0, 1, 0, 0};
 
-MsetupCameraPreset D_8011A554_msetup = {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, 650.0f, 50.0f};
+ModeCameraPreset D_8011A554_msetup = {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, 650.0f, 50.0f};
 
 /* Align the following rodata to 16 bytes. */
 s32 D_8011A574_msetup[] = {0, 0, 0};

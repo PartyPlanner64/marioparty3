@@ -95,7 +95,7 @@ s16 D_8010F586_toadstool_titan BSS;
 s16 D_8010F588_toadstool_titan[1] BSS;
 s8 D_8010F58A_toadstool_titan BSS;
 f32 D_8010F58C_toadstool_titan BSS;
-D_80111B50_vine_with_me_Struct D_8010F590_toadstool_titan BSS;
+MinigameFlow D_8010F590_toadstool_titan BSS;
 f32 D_8010F5B8_toadstool_titan BSS;
 u16 D_8010F5BC_toadstool_titan BSS;
 Vec D_8010F5C0_toadstool_titan BSS;           // camera target
@@ -199,16 +199,16 @@ void func_801059A0_toadstool_titan(void) {
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, func_8010B510_toadstool_titan), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     WipeCreateIn(0xFF, 30);
     func_80045010_main(D_8010EE80_toadstool_titan, 1);
-    D_8010F590_toadstool_titan.unk01 = 0;
-    D_8010F590_toadstool_titan.unk1C = 45;
-    D_8010F590_toadstool_titan.unk1E = 1800;
-    D_8010F590_toadstool_titan.unk03 = 2;
-    D_8010F590_toadstool_titan.unk02 = 1;
-    D_8010F590_toadstool_titan.unk22 = 60;
-    D_8010F590_toadstool_titan.unk24 = 165;
-    D_8010F590_toadstool_titan.unk04 = 0;
-    D_8010F590_toadstool_titan.unk05 = 0;
-    D_8010F590_toadstool_titan.unk20 = -1;
+    D_8010F590_toadstool_titan.type = MINIGAME_4P;
+    D_8010F590_toadstool_titan.startDelay = 45;
+    D_8010F590_toadstool_titan.timer = 1800;
+    D_8010F590_toadstool_titan.timeDisp = MG_TIME_DISP_COUNTDOWN;
+    D_8010F590_toadstool_titan.timerMode = MG_TIMER_COUNT_DOWN;
+    D_8010F590_toadstool_titan.finishDelay = 60;
+    D_8010F590_toadstool_titan.resultDelay = 165;
+    D_8010F590_toadstool_titan.newRecord = FALSE;
+    D_8010F590_toadstool_titan.gauge = MG_GAUGE_NONE;
+    D_8010F590_toadstool_titan.timeLimit = -1;
     func_800E5EA0_minigame(&D_8010F590_toadstool_titan);
 }
 
@@ -266,7 +266,7 @@ void func_801060AC_toadstool_titan(omObjData *object) {
     func_800E6F40_minigame();
     switch (D_8010F5FC_toadstool_titan) {
         case 0:
-            if (func_800E6E8C_minigame() == 1) {
+            if (func_800E6E8C_minigame() == MG_STATE_START) {
                 D_8010F5FC_toadstool_titan = 1;
                 D_8010F580_toadstool_titan = 0;
             }
@@ -276,7 +276,7 @@ void func_801060AC_toadstool_titan(omObjData *object) {
                 HuAudSeqPlay(0x38);
                 D_8010F614_toadstool_titan[0] = 1;
             }
-            if (func_800E6E8C_minigame() == 2) {
+            if (func_800E6E8C_minigame() == MG_STATE_PLAY) {
                 D_8010F5FC_toadstool_titan = 2;
                 D_8010F580_toadstool_titan = 0;
             }
@@ -285,7 +285,7 @@ void func_801060AC_toadstool_titan(omObjData *object) {
             if (D_8010F580_toadstool_titan == 1) {
                 func_80106984_toadstool_titan();
             }
-            if (D_8010F58A_toadstool_titan != 5 || func_800E6E8C_minigame() == 3) {
+            if (D_8010F58A_toadstool_titan != 5 || func_800E6E8C_minigame() == MG_STATE_FINISH) {
                 if (D_8010F58A_toadstool_titan == 5) {
                     D_8010F5FC_toadstool_titan = 6;
                     D_8010F58A_toadstool_titan = 4;
@@ -302,11 +302,11 @@ void func_801060AC_toadstool_titan(omObjData *object) {
             }
         case 3:
             if (D_8010F580_toadstool_titan == 0) {
-                if (func_800E6E8C_minigame() != 3) {
+                if (func_800E6E8C_minigame() != MG_STATE_FINISH) {
                     func_800E6F1C_minigame();
                 }
-                D_8010F590_toadstool_titan.unk06 = 0;
-                D_8010F590_toadstool_titan.unk18[0] = D_8010F568_toadstool_titan[D_8010F58A_toadstool_titan]->playerNo;
+                D_8010F590_toadstool_titan.resultType = MG_RESULT_WIN_1;
+                D_8010F590_toadstool_titan.winners[0] = D_8010F568_toadstool_titan[D_8010F58A_toadstool_titan]->playerNo;
                 GwPlayer[D_8010F568_toadstool_titan[D_8010F58A_toadstool_titan]->playerNo].bonusCoin = 10;
                 D_8010F614_toadstool_titan[0] = 0;
                 if (D_8010F614_toadstool_titan[1] != 0 && D_8010F5BC_toadstool_titan == 0 && D_800D530C_main == 0) {
@@ -316,18 +316,18 @@ void func_801060AC_toadstool_titan(omObjData *object) {
             }
             if (D_8010F580_toadstool_titan == 2) {
                 func_800E6F34_minigame(30);
-                D_8010F590_toadstool_titan.unk22 = 60;
+                D_8010F590_toadstool_titan.finishDelay = 60;
             }
-            if (func_800E6E8C_minigame() == 4) {
+            if (func_800E6E8C_minigame() == MG_STATE_RESULT) {
                 D_8010F5FC_toadstool_titan = 4;
                 D_8010F580_toadstool_titan = 0;
             }
             break;
         case 6:
             if (D_8010F580_toadstool_titan == 1) {
-                D_8010F590_toadstool_titan.unk06 = 4;
-                D_8010F590_toadstool_titan.unk22 = 90;
-                D_8010F590_toadstool_titan.unk24 = 0x90;
+                D_8010F590_toadstool_titan.resultType = MG_RESULT_DRAW;
+                D_8010F590_toadstool_titan.finishDelay = 90;
+                D_8010F590_toadstool_titan.resultDelay = 0x90;
                 D_8010F614_toadstool_titan[0] = 0;
                 if (D_8010F614_toadstool_titan[1] != 0 && D_8010F5BC_toadstool_titan == 0 && D_800D530C_main == 0) {
                     func_8004A7C4_main(60);
@@ -340,7 +340,7 @@ void func_801060AC_toadstool_titan(omObjData *object) {
             if (D_8010F580_toadstool_titan == 67 && D_8010F5BC_toadstool_titan == 0 && D_800D530C_main == 0) {
                 func_8004A72C_main(3);
             }
-            if (func_800E6E8C_minigame() == 4) {
+            if (func_800E6E8C_minigame() == MG_STATE_RESULT) {
                 D_8010F5FC_toadstool_titan = 5;
                 D_8010F580_toadstool_titan = 0;
             }
@@ -388,7 +388,7 @@ void func_801060AC_toadstool_titan(omObjData *object) {
                     }
                 }
             }
-            if (func_800E6E8C_minigame() == 5) {
+            if (func_800E6E8C_minigame() == MG_STATE_EXIT) {
                 D_8010F5FC_toadstool_titan = 7;
                 D_8010F580_toadstool_titan = 0;
             }

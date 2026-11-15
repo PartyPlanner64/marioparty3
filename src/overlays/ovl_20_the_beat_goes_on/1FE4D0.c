@@ -110,7 +110,7 @@ s16 D_8010C46C_the_beat_goes_on BSS;
 f32 D_8010C470_the_beat_goes_on BSS;
 s8 D_8010C474_the_beat_goes_on BSS;
 s8 D_8010C475_the_beat_goes_on BSS;
-D_80111B50_vine_with_me_Struct D_8010C478_the_beat_goes_on BSS;
+MinigameFlow D_8010C478_the_beat_goes_on BSS;
 BeatGoesOnButton D_8010C4A0_the_beat_goes_on[16] BSS;
 omObjData *D_8010C4E0_the_beat_goes_on BSS;
 omObjData *D_8010C4E4_the_beat_goes_on BSS;
@@ -138,7 +138,7 @@ extern u32 D_800A178C_main[][6];
 extern s32 D_800A1798_main[][6];
 extern u8 D_800D6A90_main;
 
-void func_80105C68_the_beat_goes_on(D_80111B50_vine_with_me_Struct *arg0);
+void func_80105C68_the_beat_goes_on(MinigameFlow *flow);
 void func_80105CDC_the_beat_goes_on(void);
 void func_801060B0_the_beat_goes_on(f32 speed);
 void func_80106358_the_beat_goes_on(omObjData *object);
@@ -206,24 +206,24 @@ void func_801059A0_the_beat_goes_on(void) {
     WipeCreateIn(WIPE_TYPE_PREV, 16);
 }
 
-void func_80105C68_the_beat_goes_on(D_80111B50_vine_with_me_Struct *arg0) {
+void func_80105C68_the_beat_goes_on(MinigameFlow *flow) {
     s32 i;
 
-    arg0->unk00 = 0;
-    arg0->unk01 = 0;
-    arg0->unk02 = 2;
-    arg0->unk03 = 0;
-    arg0->unk04 = 0;
-    arg0->unk05 = 0;
-    arg0->unk06 = 0;
-    arg0->unk1C = 64;
-    arg0->unk1E = -1;
-    arg0->unk20 = 0;
-    arg0->unk22 = -1;
-    arg0->unk24 = 150;
+    flow->state = MG_STATE_OPENING;
+    flow->type = MINIGAME_4P;
+    flow->timerMode = MG_TIMER_NONE;
+    flow->timeDisp = MG_TIME_DISP_NONE;
+    flow->newRecord = FALSE;
+    flow->gauge = MG_GAUGE_NONE;
+    flow->resultType = MG_RESULT_WIN_1;
+    flow->startDelay = 64;
+    flow->timer = -1;
+    flow->timeLimit = 0;
+    flow->finishDelay = -1;
+    flow->resultDelay = 150;
     for (i = 0; i < 4; i++) {
-        arg0->unk08[i] = 0;
-        arg0->unk18[i] = 0xFF;
+        flow->gaugeValue[i] = 0;
+        flow->winners[i] = 0xFF;
     }
 }
 
@@ -359,7 +359,7 @@ void func_80106358_the_beat_goes_on(omObjData *object) {
             } else {
                 HuAudSeqStop();
             }
-            func_800E6F0C_minigame(5);
+            func_800E6F0C_minigame(MG_STATE_EXIT);
             D_8010C2EC_the_beat_goes_on = 1;
         }
         func_800E1840_minigame();
@@ -379,13 +379,13 @@ void func_80106358_the_beat_goes_on(omObjData *object) {
             case 3:
                 if (D_8010C2E8_the_beat_goes_on == 0) {
                     func_8004AB0C_main(30);
-                    if (D_8010C478_the_beat_goes_on.unk06 == 0) {
-                        player = D_800EC598_minigame[D_8010C478_the_beat_goes_on.unk18[0]];
+                    if (D_8010C478_the_beat_goes_on.resultType == MG_RESULT_WIN_1) {
+                        player = D_800EC598_minigame[D_8010C478_the_beat_goes_on.winners[0]];
                         func_8001C258_main(player->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                         func_8001C258_main(player->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                         func_8001C258_main(player->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     }
-                } else if (D_8010C2E8_the_beat_goes_on == 30 && D_8010C478_the_beat_goes_on.unk06 == 4) {
+                } else if (D_8010C2E8_the_beat_goes_on == 30 && D_8010C478_the_beat_goes_on.resultType == MG_RESULT_DRAW) {
                     for (i = 0; i < 4; i++) {
                         player = D_800EC598_minigame[i];
                         if (player->work[0] == 10) {
@@ -403,9 +403,9 @@ void func_80106358_the_beat_goes_on(omObjData *object) {
                 break;
             case 4:
                 if (func_800E6E9C_minigame() == 1) {
-                    switch (D_8010C478_the_beat_goes_on.unk06) {
+                    switch (D_8010C478_the_beat_goes_on.resultType) {
                         case 0:
-                            GMesCreate(0x16, GwPlayer[D_8010C478_the_beat_goes_on.unk18[0]].chr);
+                            GMesCreate(0x16, GwPlayer[D_8010C478_the_beat_goes_on.winners[0]].chr);
                             HuAudSeqPlay(0x65);
                             break;
                         case 4:
@@ -413,7 +413,7 @@ void func_80106358_the_beat_goes_on(omObjData *object) {
                             HuAudSeqPlay(0x6C);
                             break;
                     }
-                    D_8010C478_the_beat_goes_on.unk06 = 9;
+                    D_8010C478_the_beat_goes_on.resultType = MG_RESULT_NONE;
                 }
                 break;
             case 5:
@@ -675,7 +675,7 @@ void func_8010775C_the_beat_goes_on(omObjData *obj) {
         func_8001C814_main(obj->model[3], 2, 1);
     }
     notes = D_8010C4E4_the_beat_goes_on->data;
-    if (func_800E6E8C_minigame() == 1) {
+    if (func_800E6E8C_minigame() == MG_STATE_START) {
         if (work->unk_02 >= 73) {
             notes->unk_16 = 1;
             notes->unk_17 = 1;
@@ -683,7 +683,7 @@ void func_8010775C_the_beat_goes_on(omObjData *obj) {
         } else {
             work->unk_02++;
         }
-    } else if (func_800E6E8C_minigame() == 2) {
+    } else if (func_800E6E8C_minigame() == MG_STATE_PLAY) {
         if (obj->work[0] == 6) {
             return;
         }
@@ -1174,10 +1174,10 @@ void func_80108810_the_beat_goes_on(omObjData *obj) {
                 } else if (obj->trans.x < -200.0f && D_8010C31C_the_beat_goes_on == 1) {
                     for (i = 0; i < 4; i++) {
                         if (D_800EC598_minigame[i]->work[0] == 0) {
-                            D_8010C478_the_beat_goes_on.unk06 = 0;
-                            D_8010C478_the_beat_goes_on.unk18[0] = i;
-                            D_8010C478_the_beat_goes_on.unk18[1] = 0xFF;
-                            func_800E6F0C_minigame(3);
+                            D_8010C478_the_beat_goes_on.resultType = MG_RESULT_WIN_1;
+                            D_8010C478_the_beat_goes_on.winners[0] = i;
+                            D_8010C478_the_beat_goes_on.winners[1] = 0xFF;
+                            func_800E6F0C_minigame(MG_STATE_FINISH);
                             break;
                         }
                     }
@@ -1306,7 +1306,7 @@ void func_80108810_the_beat_goes_on(omObjData *obj) {
             }
             break;
         case 8:
-            func_800E6F0C_minigame(4);
+            func_800E6F0C_minigame(MG_STATE_RESULT);
             if (D_800EB934_minigame != 0) {
                 func_80017790_main(obj->model[0], 1, GwPlayer[data->unk59].chr,
                                    func_80017BB8_main(GwPlayer[data->unk59].chr, 0xA5));
@@ -1372,15 +1372,15 @@ void func_80108810_the_beat_goes_on(omObjData *obj) {
             }
             if (work->unk_00 == 0) {
                 func_8010C14C_the_beat_goes_on();
-                D_8010C478_the_beat_goes_on.unk06 = 4;
-                func_800E6F0C_minigame(3);
+                D_8010C478_the_beat_goes_on.resultType = MG_RESULT_DRAW;
+                func_800E6F0C_minigame(MG_STATE_FINISH);
             } else {
                 if (work->unk_00 > 60 &&
                     D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02 - 2.0f <= Hu3DData[obj->model[0]].motTime) {
                     func_8001C814_main(obj->model[0], 2, 1);
                 }
                 if (work->unk_00 > 90 && (GMesStatGet() == 0 || (GMesStatGet() & 2))) {
-                    func_800E6F0C_minigame(4);
+                    func_800E6F0C_minigame(MG_STATE_RESULT);
                 }
             }
             work->unk_00++;

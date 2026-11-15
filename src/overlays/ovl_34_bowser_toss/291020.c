@@ -287,7 +287,7 @@ BowserTossBowser *D_8010FBA0_bowser_toss BSS;
 BowserTossCamera *D_8010FBA4_bowser_toss BSS;
 Vec D_8010FBA8_bowser_toss BSS;
 u8 D_8010FBB4_bowser_toss[4] BSS; /* Unreferenced. */
-D_80111B50_vine_with_me_Struct D_8010FBB8_bowser_toss BSS;
+MinigameFlow D_8010FBB8_bowser_toss BSS;
 
 void func_80105C80_bowser_toss(omObjData *object);
 void func_80105CEC_bowser_toss(omObjData *object);
@@ -385,7 +385,7 @@ void func_801059A0_bowser_toss(void) {
     D_8010FB72_bowser_toss = 0;
     D_8010FB50_bowser_toss = omAddObj(0x40, 0, 0, -1, func_80105C80_bowser_toss);
     memset(&D_8010FBB8_bowser_toss, 0, 0x28);
-    D_8010FBB8_bowser_toss.unk01 = 4;
+    D_8010FBB8_bowser_toss.type = MINIGAME_BATTLE;
     func_800E5EA0_minigame(&D_8010FBB8_bowser_toss);
     D_8010FB98_bowser_toss = HuMemAllocTag(0x20, TAG_OVERLAY);
     memset(D_8010FB98_bowser_toss, 0, 0x20);
@@ -442,7 +442,7 @@ void func_80105CEC_bowser_toss(omObjData *object) {
         case 2:
             if (GMesStatGet() == 0) {
                 GMesCreate(0x1A, (D_8010FB60_bowser_toss + 29) / 30, 156, 32);
-                func_800E6F0C_minigame(2);
+                func_800E6F0C_minigame(MG_STATE_PLAY);
                 D_8010FB64_bowser_toss++;
             }
             break;
@@ -461,7 +461,7 @@ void func_80105CEC_bowser_toss(omObjData *object) {
         case 4:
             if (func_80109F20_bowser_toss() && func_8010840C_bowser_toss()) {
                 GMesCreate(0x11);
-                func_800E6F0C_minigame(3);
+                func_800E6F0C_minigame(MG_STATE_FINISH);
                 HuAudSeqFadeOut(120);
                 func_8010847C_bowser_toss(D_800EC598_minigame[0], 0, 10);
                 func_8010847C_bowser_toss(D_800EC598_minigame[1], 0, 10);
@@ -531,7 +531,7 @@ void func_80105CEC_bowser_toss(omObjData *object) {
                     GMesCreate(0x20);
                     HuAudSeqPlay(0x6C);
                     D_8010FB68_bowser_toss = 144;
-                    func_800E6F0C_minigame(4);
+                    func_800E6F0C_minigame(MG_STATE_RESULT);
                     D_8010FB64_bowser_toss = 11;
                 } else {
                     if (D_8010FB78_bowser_toss != 0) {
@@ -565,7 +565,7 @@ void func_80105CEC_bowser_toss(omObjData *object) {
                     }
                     func_8010D250_bowser_toss(D_8010FB78_bowser_toss, x, y, CAMERA_KEEP, CAMERA_KEEP, CAMERA_KEEP,
                                               CAMERA_KEEP, zoom, 30);
-                    func_800E6F0C_minigame(4);
+                    func_800E6F0C_minigame(MG_STATE_RESULT);
                 }
                 D_8010FB5C_bowser_toss = 0;
             }
@@ -763,7 +763,7 @@ void func_80106BC4_bowser_toss(omObjData *object) {
     data = object->data;
     model = &Hu3DData[object->model[0]];
     switch (func_800E6E8C_minigame()) {
-        case 0:
+        case MG_STATE_OPENING:
             if (player->unk_0C == 0) {
                 if (player->unk_08 >= 30.0f) {
                     player->unk_08 = 0;
@@ -774,7 +774,7 @@ void func_80106BC4_bowser_toss(omObjData *object) {
                 D_8010FB68_bowser_toss++;
             }
             break;
-        case 2:
+        case MG_STATE_PLAY:
             if (player->unk_1E) {
                 func_80107E84_bowser_toss(object);
             }
@@ -1000,7 +1000,7 @@ void func_80106BC4_bowser_toss(omObjData *object) {
                     break;
             }
             break;
-        case 3:
+        case MG_STATE_FINISH:
             switch (player->unk_0C) {
                 case 5:
                     if (D_8010FB78_bowser_toss == player->index) {
@@ -1070,7 +1070,7 @@ void func_80106BC4_bowser_toss(omObjData *object) {
                     break;
             }
             break;
-        case 4:
+        case MG_STATE_RESULT:
             switch (player->unk_02) {
                 case 0:
                     if (func_800E5690_minigame(object, 7)) {

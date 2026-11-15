@@ -88,7 +88,12 @@ typedef struct EndOfTheLineBssC780 {
 
 extern s32 D_800A178C_main[][6];
 
-D_80111B50_vine_with_me_Struct D_8010C5A0_end_of_the_line = { 0, 4, 1, 0, 0, 0, 0, 0, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0, 0, 0, 0 }, -1, -1, 9000, -1, 150 };
+MinigameFlow D_8010C5A0_end_of_the_line = {
+    MG_STATE_OPENING, MINIGAME_BATTLE, MG_TIMER_COUNT_DOWN, MG_TIME_DISP_NONE, FALSE, MG_GAUGE_NONE, MG_RESULT_WIN_1, 0,
+    { 0.0f, 0.0f, 0.0f, 0.0f },
+    { 0, 0, 0, 0 },
+    -1, -1, 9000, -1, 150
+};
 s16 D_8010C5C8_end_of_the_line[2] = { 1, 2 };
 f32 D_8010C5CC_end_of_the_line = 160.0f;
 f32 D_8010C5D0_end_of_the_line[2] = { -80.0f, 80.0f };
@@ -286,7 +291,7 @@ void func_80105E88_end_of_the_line(omObjData *obj) {
                         }
                     }
                     if (count == 2) {
-                        D_8010C5A0_end_of_the_line.unk06 = 4;
+                        D_8010C5A0_end_of_the_line.resultType = MG_RESULT_DRAW;
                         D_8010C75C_end_of_the_line = 1;
                     } else if (D_8010C75A_end_of_the_line == 0) {
                         player = OM_GET_DATA_PTR(D_8010C73C_end_of_the_line[D_8010C7D0_end_of_the_line ^ 1],
@@ -299,7 +304,7 @@ void func_80105E88_end_of_the_line(omObjData *obj) {
                             player->unk86 = -1;
                         }
                     }
-                    func_800E6F0C_minigame(3);
+                    func_800E6F0C_minigame(MG_STATE_FINISH);
                 } else if (func_800E6E9C_minigame() == 9000 || D_8010C75A_end_of_the_line == 1) {
                     D_8010C75A_end_of_the_line = 1;
                     D_8010C75C_end_of_the_line = 1;
@@ -307,9 +312,9 @@ void func_80105E88_end_of_the_line(omObjData *obj) {
                     player = OM_GET_DATA_PTR(D_8010C73C_end_of_the_line[0], EndOfTheLinePlayer);
                     player2 = OM_GET_DATA_PTR(D_8010C73C_end_of_the_line[1], EndOfTheLinePlayer);
                     if (player->unk18 == 1 && player2->unk18 == player->unk18) {
-                        D_8010C5A0_end_of_the_line.unk06 = 4;
-                        func_800E6F0C_minigame(3);
-                        D_8010C5A0_end_of_the_line.unk22 = 60;
+                        D_8010C5A0_end_of_the_line.resultType = MG_RESULT_DRAW;
+                        func_800E6F0C_minigame(MG_STATE_FINISH);
+                        D_8010C5A0_end_of_the_line.finishDelay = 60;
                         D_8010C734_end_of_the_line = omAddObj(4, 0, 0, -1, func_8010B064_end_of_the_line);
                         D_8010C756_end_of_the_line = 3;
                     }
@@ -1202,7 +1207,7 @@ void func_8010937C_end_of_the_line(omObjData *obj) {
             player->unk10 = 0;
         }
         if (D_8010C75A_end_of_the_line == 0 && D_8010C758_end_of_the_line == 0 &&
-            func_800E6E8C_minigame() == 2) {
+            func_800E6E8C_minigame() == MG_STATE_PLAY) {
             if (player->unk14 != player->unk10) {
                 HuAudFXPlay(D_8010C620_end_of_the_line[player->playerIdx][0]);
             }
@@ -1474,7 +1479,7 @@ void func_8010A7D0_end_of_the_line(void) {
     omObjData *obj = D_8010C73C_end_of_the_line[D_8010C7D0_end_of_the_line];
     EndOfTheLinePlayer *player = OM_GET_DATA_PTR(obj, EndOfTheLinePlayer);
 
-    D_8010C5A0_end_of_the_line.unk18[0] = player->gwPlayerIdx;
+    D_8010C5A0_end_of_the_line.winners[0] = player->gwPlayerIdx;
     GwPlayer[player->gwPlayerIdx].bonusCoin = 10;
     Hu3DMotionShiftSet(obj->model[2], Hu3DData[obj->motion[2]].motId, 0, 6, 0);
     func_80045F1C_main(D_800A178C_main[GwPlayer[player->gwPlayerIdx].chr][0] | 0x2F, -1, 0);
@@ -1483,7 +1488,7 @@ void func_8010A7D0_end_of_the_line(void) {
 void func_8010A8B4_end_of_the_line(omObjData *obj) {
     Hu3DMotionShiftSet(obj->model[2], Hu3DData[obj->motion[3]].motId, 0, 6, 0);
     obj->func = NULL;
-    func_800E6F0C_minigame(4);
+    func_800E6F0C_minigame(MG_STATE_RESULT);
 }
 
 void func_8010A91C_end_of_the_line(omObjData *obj, s32 arg1) {
@@ -1655,7 +1660,7 @@ void func_8010AF28_end_of_the_line(omObjData *obj) {
             if (obj->work[0] == 1) {
                 omDelObj(obj);
                 D_8010C730_end_of_the_line = NULL;
-                func_800E6F0C_minigame(1);
+                func_800E6F0C_minigame(MG_STATE_START);
             }
             for (i = 0; i < 2; i++) {
                 player = OM_GET_DATA_PTR(D_8010C73C_end_of_the_line[i], EndOfTheLinePlayer);
@@ -1690,7 +1695,7 @@ void func_8010B064_end_of_the_line(omObjData *obj) {
                     func_8010A8B4_end_of_the_line(D_8010C73C_end_of_the_line[0]);
                     func_8010A8B4_end_of_the_line(D_8010C73C_end_of_the_line[1]);
                 }
-                func_800E6F0C_minigame(4);
+                func_800E6F0C_minigame(MG_STATE_RESULT);
                 D_8010C756_end_of_the_line = 2;
             }
             break;

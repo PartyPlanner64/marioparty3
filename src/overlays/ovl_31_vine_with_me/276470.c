@@ -126,7 +126,7 @@ static s32 D_8011566C_vine_with_me;
 static u8 D_80115670_vine_with_me[8];
 static u32 D_80115678_vine_with_me[8];
 
-D_80111B50_vine_with_me_Struct D_80111B50_vine_with_me = { 0 };
+MinigameFlow D_80111B50_vine_with_me = { 0 };
 
 u32 D_80111B78_vine_with_me[] = { 102, 60, -1, -1, -1, -1, 300 };
 
@@ -249,16 +249,16 @@ void func_801059A0_vine_with_me(void) {
     omSetStatBit(temp_v0_2, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     func_80045010_main(D_80111CB0_vine_with_me, 1);
     WipeCreateIn(WIPE_TYPE_PREV, 0x10);
-    D_80111B50_vine_with_me.unk01 = 4;
-    D_80111B50_vine_with_me.unk1C = -1;
-    D_80111B50_vine_with_me.unk1E = 5400;
-    D_80111B50_vine_with_me.unk03 = 0;
-    D_80111B50_vine_with_me.unk02 = 1;
-    D_80111B50_vine_with_me.unk22 = 60;
-    D_80111B50_vine_with_me.unk24 = 165;
-    D_80111B50_vine_with_me.unk04 = 0;
-    D_80111B50_vine_with_me.unk05 = 0;
-    D_80111B50_vine_with_me.unk20 = -1;
+    D_80111B50_vine_with_me.type = MINIGAME_BATTLE;
+    D_80111B50_vine_with_me.startDelay = -1;
+    D_80111B50_vine_with_me.timer = 5400;
+    D_80111B50_vine_with_me.timeDisp = MG_TIME_DISP_NONE;
+    D_80111B50_vine_with_me.timerMode = MG_TIMER_COUNT_DOWN;
+    D_80111B50_vine_with_me.finishDelay = 60;
+    D_80111B50_vine_with_me.resultDelay = 165;
+    D_80111B50_vine_with_me.newRecord = FALSE;
+    D_80111B50_vine_with_me.gauge = MG_GAUGE_NONE;
+    D_80111B50_vine_with_me.timeLimit = -1;
     func_800E5EA0_minigame(&D_80111B50_vine_with_me);
 }
 
@@ -345,9 +345,9 @@ void func_80106004_vine_with_me(omObjData *arg0) {
             }
             break;
         case 2:
-            if (D_80111B50_vine_with_me.unk1E == 900) {
+            if (D_80111B50_vine_with_me.timer == 900) {
                 GMesCreate(GMES_MES_TIMER, 0x1F, 0xA0, 0x18);
-                D_80111B50_vine_with_me.unk03 = 2;
+                D_80111B50_vine_with_me.timeDisp = MG_TIME_DISP_COUNTDOWN;
             }
             if (D_8011558C_vine_with_me == 0) {
                 break;
@@ -359,8 +359,8 @@ void func_80106004_vine_with_me(omObjData *arg0) {
             if (D_801155D0_vine_with_me < D_8011566C_vine_with_me) {
                 func_800E6F1C_minigame();
                 D_8011558C_vine_with_me--;
-                D_80111B50_vine_with_me.unk06 = 0;
-                D_80111B50_vine_with_me.unk18[0] = D_80115670_vine_with_me[D_8011558C_vine_with_me];
+                D_80111B50_vine_with_me.resultType = MG_RESULT_WIN_1;
+                D_80111B50_vine_with_me.winners[0] = D_80115670_vine_with_me[D_8011558C_vine_with_me];
             }
             if (D_801155D0_vine_with_me == 2 && D_801155D0_vine_with_me != D_8011558C_vine_with_me) {
                 func_800E6F34_minigame(0x1E);
@@ -398,25 +398,25 @@ void func_80106004_vine_with_me(omObjData *arg0) {
     func_800E6F40_minigame();
     switch (D_8011563C_vine_with_me) {
         case 2:
-            if (D_8011558C_vine_with_me != 0 || func_800E6E8C_minigame() != 3) {
+            if (D_8011558C_vine_with_me != 0 || func_800E6E8C_minigame() != MG_STATE_FINISH) {
                 break;
             }
             D_8011563C_vine_with_me = 3;
             D_801155D0_vine_with_me = 0;
             D_8011558C_vine_with_me = 2;
-            D_80111B50_vine_with_me.unk06 = 4;
-            D_80111B50_vine_with_me.unk22 = 90;
-            D_80111B50_vine_with_me.unk24 = 144;
+            D_80111B50_vine_with_me.resultType = MG_RESULT_DRAW;
+            D_80111B50_vine_with_me.finishDelay = 90;
+            D_80111B50_vine_with_me.resultDelay = 144;
             /* fallthrough */
         case 3:
-            if (func_800E6E8C_minigame() == 4) {
+            if (func_800E6E8C_minigame() == MG_STATE_RESULT) {
                 D_8011563C_vine_with_me = (D_8011558C_vine_with_me == 2) ? 5 : 4;
                 D_801155D0_vine_with_me = 0;
             }
             break;
         case 4:
         case 5:
-            if (func_800E6E8C_minigame() != 5) {
+            if (func_800E6E8C_minigame() != MG_STATE_EXIT) {
                 break;
             }
             D_8011563C_vine_with_me = 6;

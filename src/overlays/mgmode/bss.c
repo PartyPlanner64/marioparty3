@@ -98,6 +98,6 @@ f32 D_8011B938_mgmode BSS;
 u8 D_8011B93C_mgmode[4] BSS; /* Unreferenced. */
 s16 D_8011B940_mgmode[8] BSS;
 s16 D_8011B950_mgmode BSS;
-CamData *D_8011B954_mgmode BSS;
+ModeCameraPreset *D_8011B954_mgmode BSS;
 u8 D_8011B958_mgmode BSS;
 s16 D_8011B95A_mgmode BSS;

@@ -60,7 +60,12 @@ IceRinkRiskPuckHit D_801085B0_ice_rink_risk[3] = {
 s32 D_801085EC_ice_rink_risk[3] = { 0, 0, 0 };
 s32 D_801085F8_ice_rink_risk = 0;
 s32 D_801085FC_ice_rink_risk[4] = { 1, 1, 1, 1 };
-D_80111B50_vine_with_me_Struct D_8010860C_ice_rink_risk = { 0, 0, 1, 2, 0, 0, 0, 0, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0, 0, 0, 0 }, 60, 900, -1, 75, 135 };
+MinigameFlow D_8010860C_ice_rink_risk = {
+    MG_STATE_OPENING, MINIGAME_4P, MG_TIMER_COUNT_DOWN, MG_TIME_DISP_COUNTDOWN, FALSE, MG_GAUGE_NONE, MG_RESULT_WIN_1, 0,
+    { 0.0f, 0.0f, 0.0f, 0.0f },
+    { 0, 0, 0, 0 },
+    60, 900, -1, 75, 135
+};
 s32 D_80108634_ice_rink_risk = 1;
 s32 D_80108638_ice_rink_risk = 0;
 s32 D_8010863C_ice_rink_risk[4] = { 0, 0, 0, 0 };
@@ -251,7 +256,7 @@ void func_80106198_ice_rink_risk(omObjData *object) {
                     break;
             }
             if (count < 2) {
-                func_800E6F0C_minigame(3);
+                func_800E6F0C_minigame(MG_STATE_FINISH);
             }
             D_80108638_ice_rink_risk++;
             break;
@@ -260,12 +265,12 @@ void func_80106198_ice_rink_risk(omObjData *object) {
                 func_80105EA4_ice_rink_risk();
             }
             if (count == 0) {
-                D_8010860C_ice_rink_risk.unk06 = 4;
+                D_8010860C_ice_rink_risk.resultType = MG_RESULT_DRAW;
             } else {
-                D_8010860C_ice_rink_risk.unk06 = count - 1;
+                D_8010860C_ice_rink_risk.resultType = count - 1;
                 for (j = 0, i = 0; i < 4; i++) {
                     if (D_801085FC_ice_rink_risk[i] == 1) {
-                        D_8010860C_ice_rink_risk.unk18[j++] = i;
+                        D_8010860C_ice_rink_risk.winners[j++] = i;
                     }
                 }
             }
@@ -376,7 +381,7 @@ s32 func_80106A60_ice_rink_risk(omObjData *object, omObjData *other) {
     f32 x, y, z;
     f32 half;
 
-    if (func_800E6E8C_minigame() != 2) {
+    if (func_800E6E8C_minigame() != MG_STATE_PLAY) {
         return 1;
     }
     x = object->trans.x;
@@ -482,7 +487,7 @@ s32 func_80106FC0_ice_rink_risk(omObjData *object) {
     f32 angle;
     f32 dx, dy, dz;
 
-    if (func_800E6E8C_minigame() == 2 && !(GwPlayer[player].stat & 1)) {
+    if (func_800E6E8C_minigame() == MG_STATE_PLAY && !(GwPlayer[player].stat & 1)) {
         return 1;
     }
     D_801086EC_ice_rink_risk = D_800D5558_main[pad];

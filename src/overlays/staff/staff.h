@@ -153,7 +153,7 @@ void func_80105E6C_staff(MsetupModelEntry *entry, MsetupModelHandle *handle, s32
 u32 func_80105F48_staff(u32 seed);
 u32 func_8010601C_staff(void);
 s32 func_80106044_staff(u32 limit);
-void func_8010609C_staff(MsetupCameraPreset *preset);
+void func_8010609C_staff(ModeCameraPreset *preset);
 void func_8010615C_staff(void);
 void func_80106720_staff(void);
 void func_8010674C_staff(MsetupCameraKeyframe *keys, f32 speed, void (*callback)(s16, s16, s16));

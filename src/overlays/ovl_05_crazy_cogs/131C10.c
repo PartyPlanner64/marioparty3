@@ -96,7 +96,16 @@ extern s32 D_800A178C_main[][6];
 extern s32 D_800A1790_main[][6];
 
 s32 D_8010B810_crazy_cogs[8] = { 2, 3, 7, 4, 5, 6, 8, 9 };
-D_80111B50_vine_with_me_Struct D_8010B830_crazy_cogs = { 0, 0, 1, 2, 0, 0, 0, 0, { 90.0f, 900.0f, 0.0f, 30.0f }, { 150, 0, 0, 0 }, 0, 0, 0, 0, 0 };
+// The intended delays (90, 900, 0, 30, 150) landed in gaugeValue/winners, likely
+// from an initializer written without the inner braces. It doesn't matter in
+// practice: this overlay never runs func_800E6F40_minigame, so only the
+// setup in func_800E5EA0_minigame reads this struct.
+MinigameFlow D_8010B830_crazy_cogs = {
+    MG_STATE_OPENING, MINIGAME_4P, MG_TIMER_COUNT_DOWN, MG_TIME_DISP_COUNTDOWN, FALSE, MG_GAUGE_NONE, MG_RESULT_WIN_1, 0,
+    { 90.0f, 900.0f, 0.0f, 30.0f },
+    { 150, 0, 0, 0 },
+    0, 0, 0, 0, 0
+};
 s16 D_8010B858_crazy_cogs[4] = { 9, 11, 10, 12 };
 u16 D_8010B860_crazy_cogs[5] = { 10, 20, 25, 30, 40 };
 s16 D_8010B86C_crazy_cogs[8][2] = { { 0, 55 }, { 0, 55 }, { 0, 55 }, { 0, 55 }, { 0, 55 }, { 0, 56 }, { 0, 54 }, { 0, 54 } };
@@ -2035,7 +2044,7 @@ void func_8010B0F4_crazy_cogs(omObjData *arg0) {
 }
 
 void func_8010B46C_crazy_cogs(omObjData *arg0) {
-    func_800E6F0C_minigame(2);
+    func_800E6F0C_minigame(MG_STATE_PLAY);
     D_8010B99C_crazy_cogs = 0;
     D_8010B997_crazy_cogs = 0;
     D_8010DE66_crazy_cogs = 0;

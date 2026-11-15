@@ -29,11 +29,11 @@ Vec2f D_8010AFE0_treadmill_grill[4] = {
 };
 Vec D_8010B000_treadmill_grill[4] = { 0 };
 s32 D_8010B030_treadmill_grill[3] = { 1, 1, 1 };
-D_80111B50_vine_with_me_Struct D_8010B03C_treadmill_grill = {
-    0, 0, 1, 2, 0, 0, 0, 0,
+MinigameFlow D_8010B03C_treadmill_grill = {
+    MG_STATE_OPENING, MINIGAME_4P, MG_TIMER_COUNT_DOWN, MG_TIME_DISP_COUNTDOWN, FALSE, MG_GAUGE_NONE, MG_RESULT_WIN_1, 0,
     { 0.0f, 0.0f, 0.0f, 0.0f },
     { 0, 0, 0, 0 },
-    0x69, 0x384, -1, 0x4B, 0x87
+    105, 900, -1, 75, 135
 };
 f32 D_8010B064_treadmill_grill[13] = {
     0.0f, -0.5f, -1.0f, -1.5f, -2.0f, -2.5f, -3.0f, -3.5f, -4.0f, -4.5f, -5.0f, -5.5f, -6.0f
@@ -240,20 +240,20 @@ void func_801062DC_treadmill_grill(omObjData *object) {
             break;
         case 2:
             if (count < 2) {
-                func_800E6F0C_minigame(3);
+                func_800E6F0C_minigame(MG_STATE_FINISH);
             }
             break;
         case 3:
             if (count != 1) {
-                D_8010B03C_treadmill_grill.unk06 = 4;
+                D_8010B03C_treadmill_grill.resultType = MG_RESULT_DRAW;
             } else {
-                D_8010B03C_treadmill_grill.unk18[0] = last;
-                D_8010B03C_treadmill_grill.unk06 = 0;
+                D_8010B03C_treadmill_grill.winners[0] = last;
+                D_8010B03C_treadmill_grill.resultType = MG_RESULT_WIN_1;
             }
             break;
         case 4:
             if (D_800EB934_minigame == 1) {
-                if (D_8010B03C_treadmill_grill.unk06 == 4) {
+                if (D_8010B03C_treadmill_grill.resultType == MG_RESULT_DRAW) {
                     for (i = 0; i < 4; i++) {
                         player = D_800EC598_minigame[i];
                         if (D_8010AF84_treadmill_grill[i] == 0) {
@@ -610,7 +610,7 @@ void func_80107798_treadmill_grill(omObjData *object) {
         player = data->unk59;
     } while (0);
     pad = data->unk57;
-    if (func_800E6E8C_minigame() == 3) {
+    if (func_800E6E8C_minigame() == MG_STATE_FINISH) {
         data->unk3C *= 0.8f;
     }
     if (!(GwPlayer[data->unk59].stat & 1)) {
@@ -994,7 +994,7 @@ void func_80108FCC_treadmill_grill(omObjData *object) {
 
     stage = D_800EC1C0_minigame[1];
     data = object->data;
-    if (func_800E6E8C_minigame() == 2) {
+    if (func_800E6E8C_minigame() == MG_STATE_PLAY) {
         object->trans.x = D_8010B378_treadmill_grill[data->unk56].x;
         object->trans.y = D_8010B378_treadmill_grill[data->unk56].y;
         object->trans.z = D_8010B378_treadmill_grill[data->unk56].z;
@@ -1125,7 +1125,7 @@ void func_8010980C_treadmill_grill(omObjData *object) {
     f32 angle;
     s32 i;
 
-    if (func_800E6E8C_minigame() == 2 && func_800E6E9C_minigame() < 150) {
+    if (func_800E6E8C_minigame() == MG_STATE_PLAY && func_800E6E9C_minigame() < 150) {
         return;
     }
     for (i = 0; i < 3; i++) {
@@ -1223,9 +1223,9 @@ void func_80109FA8_treadmill_grill(omObjData *object) {
     if (omPauseChk() + D_800D6A90_main != 0) {
         return;
     }
-    if (func_800E6E8C_minigame() == 0) {
+    if (func_800E6E8C_minigame() == MG_STATE_OPENING) {
         func_80106034_treadmill_grill(object);
-    } else if (func_800E6E8C_minigame() == 2) {
+    } else if (func_800E6E8C_minigame() == MG_STATE_PLAY) {
         Hu3DModelRotSet(object->model[5], 0.0f, 0.0f, D_8010B1A4_treadmill_grill[0] * 1.2f);
         Hu3DModelRotSet(object->model[6], 0.0f, 0.0f, D_8010B1A4_treadmill_grill[0] * 1.2f);
         D_8010B1A4_treadmill_grill[0] += D_8010B1B4_treadmill_grill[0];
@@ -1288,7 +1288,7 @@ void func_80109FA8_treadmill_grill(omObjData *object) {
         }
         D_8010AFAC_treadmill_grill = func_800202A8_main(D_8010AFAC_treadmill_grill + 3.0f);
         func_80109108_treadmill_grill(object);
-    } else if (func_800E6E8C_minigame() == 3) {
+    } else if (func_800E6E8C_minigame() == MG_STATE_FINISH) {
         if (D_8010B224_treadmill_grill[0] != -1) {
             HuAudFXStop((s16)D_8010B224_treadmill_grill[0]);
             D_8010B224_treadmill_grill[0] = -1;

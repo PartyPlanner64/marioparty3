@@ -30,10 +30,10 @@ extern s16 D_800EBDE4_minigame;
 extern s16 D_800EBDE6_minigame;
 extern s16 D_800EBDE8_minigame[];
 
-void func_800E5EA0_minigame(D_80111B50_vine_with_me_Struct *arg0) {
-    arg0->unk00 = 0;
-    D_800EBDE0_minigame = arg0;
-    if (arg0->unk03 == 1) {
+void func_800E5EA0_minigame(MinigameFlow *flow) {
+    flow->state = MG_STATE_OPENING;
+    D_800EBDE0_minigame = flow;
+    if (flow->timeDisp == MG_TIME_DISP_RECORD) {
         func_800E62A8_minigame();
         func_800E6268_minigame();
         func_800E64B8_minigame(D_800EB91C_minigame, D_800EB920_minigame);
@@ -56,38 +56,38 @@ void func_800E5EA0_minigame(D_80111B50_vine_with_me_Struct *arg0) {
         func_800E6670_minigame(0, 0);
     }
 
-    switch (D_800EBDE0_minigame->unk05 & 0xF0) {
-        case 0x80:
-            func_800E9C20_minigame(4, D_800EBDE0_minigame->unk05 & 0xF);
+    switch (D_800EBDE0_minigame->gauge & MG_GAUGE_LAYOUT_MASK) {
+        case MG_GAUGE_CORNERS_4:
+            func_800E9C20_minigame(4, D_800EBDE0_minigame->gauge & MG_GAUGE_LENGTH_MASK);
             func_800EA0FC_minigame(0, 0.0f, 100.0f);
             func_800E9F40_minigame(0, 24, 16, 0);
             func_800EA2A8_minigame(0);
             func_800EA0FC_minigame(1, 0.0f, 100.0f);
-            func_800E9F40_minigame(1, 296 - (D_800EBDE0_minigame->unk05 & 0xF) * 10, 16, 0);
+            func_800E9F40_minigame(1, 296 - (D_800EBDE0_minigame->gauge & MG_GAUGE_LENGTH_MASK) * 10, 16, 0);
             func_800EA2A8_minigame(1);
             func_800EA0FC_minigame(2, 0.0f, 100.0f);
             func_800E9F40_minigame(2, 24, 200, 0);
             func_800EA2A8_minigame(2);
             func_800EA0FC_minigame(3, 0.0f, 100.0f);
-            func_800E9F40_minigame(3, 296 - (D_800EBDE0_minigame->unk05 & 0xF) * 10, 200, 0);
+            func_800E9F40_minigame(3, 296 - (D_800EBDE0_minigame->gauge & MG_GAUGE_LENGTH_MASK) * 10, 200, 0);
             func_800EA2A8_minigame(3);
             break;
-        case 0x40:
-            func_800E9C20_minigame(2, D_800EBDE0_minigame->unk05 & 0xF);
+        case MG_GAUGE_TOP_2:
+            func_800E9C20_minigame(2, D_800EBDE0_minigame->gauge & MG_GAUGE_LENGTH_MASK);
             func_800EA0FC_minigame(0, 0.0f, 100.0f);
             func_800E9F40_minigame(0, 24, 16, 0);
             func_800EA2A8_minigame(0);
             func_800EA0FC_minigame(1, 0.0f, 100.0f);
-            func_800E9F40_minigame(1, 296 - (D_800EBDE0_minigame->unk05 & 0xF) * 10, 16, 0);
+            func_800E9F40_minigame(1, 296 - (D_800EBDE0_minigame->gauge & MG_GAUGE_LENGTH_MASK) * 10, 16, 0);
             func_800EA2A8_minigame(1);
             break;
-        case 0x20:
-            func_800E9C20_minigame(2, D_800EBDE0_minigame->unk05 & 0xF);
+        case MG_GAUGE_RIGHT_2:
+            func_800E9C20_minigame(2, D_800EBDE0_minigame->gauge & MG_GAUGE_LENGTH_MASK);
             func_800EA0FC_minigame(0, 0.0f, 100.0f);
-            func_800E9F40_minigame(0, 296 - (D_800EBDE0_minigame->unk05 & 0xF) * 10, 16, 0);
+            func_800E9F40_minigame(0, 296 - (D_800EBDE0_minigame->gauge & MG_GAUGE_LENGTH_MASK) * 10, 16, 0);
             func_800EA2A8_minigame(0);
             func_800EA0FC_minigame(1, 0.0f, 100.0f);
-            func_800E9F40_minigame(1, 296 - (D_800EBDE0_minigame->unk05 & 0xF) * 10, 130, 0);
+            func_800E9F40_minigame(1, 296 - (D_800EBDE0_minigame->gauge & MG_GAUGE_LENGTH_MASK) * 10, 130, 0);
             func_800EA2A8_minigame(1);
             break;
     }
@@ -287,42 +287,42 @@ void func_800E6968_minigame(s16 index, s16 time) {
 }
 
 void func_800E6E4C_minigame(s16 arg0) {
-    D_800EBDE0_minigame->unk1C = arg0;
+    D_800EBDE0_minigame->startDelay = arg0;
 }
 
 void func_800E6E5C_minigame(s16 arg0) {
-    D_800EBDE0_minigame->unk1E = arg0;
+    D_800EBDE0_minigame->timer = arg0;
 }
 
 void func_800E6E6C_minigame(s16 arg0) {
-    D_800EBDE0_minigame->unk24 = arg0;
+    D_800EBDE0_minigame->resultDelay = arg0;
 }
 
 void func_800E6E7C_minigame(s8 arg0) {
-    D_800EBDE0_minigame->unk01 = arg0;
+    D_800EBDE0_minigame->type = arg0;
 }
 
 u8 func_800E6E8C_minigame(void) {
-    return D_800EBDE0_minigame->unk00;
+    return D_800EBDE0_minigame->state;
 }
 
 u16 func_800E6E9C_minigame(void) {
     s32 value;
 
-    switch (D_800EBDE0_minigame->unk00) {
-        case 0:
+    switch (D_800EBDE0_minigame->state) {
+        case MG_STATE_OPENING:
             value = D_800EB910_minigame;
             break;
-        case 1:
+        case MG_STATE_START:
             value = D_800EB912_minigame;
             break;
-        case 2:
+        case MG_STATE_PLAY:
             value = D_800EB914_minigame;
             break;
-        case 3:
+        case MG_STATE_FINISH:
             value = D_800EB916_minigame;
             break;
-        case 4:
+        case MG_STATE_RESULT:
         default:
             value = D_800EB918_minigame;
             break;
@@ -332,11 +332,11 @@ u16 func_800E6E9C_minigame(void) {
 }
 
 void func_800E6F0C_minigame(u8 arg0) {
-    D_800EBDE0_minigame->unk00 = arg0;
+    D_800EBDE0_minigame->state = arg0;
 }
 
 void func_800E6F1C_minigame(void) {
-    D_800EBDE0_minigame->unk00++;
+    D_800EBDE0_minigame->state++;
 }
 
 void func_800E6F34_minigame(s32 arg0) {
@@ -348,52 +348,52 @@ u8 func_800E6F40_minigame(void) {
     s16 mes;
 
     if (D_800D530C_main == 1) {
-        func_800E6F0C_minigame(5);
+        func_800E6F0C_minigame(MG_STATE_EXIT);
     }
     func_800EA518_minigame();
 
-    switch (D_800EBDE0_minigame->unk00) {
-        case 0:
+    switch (D_800EBDE0_minigame->state) {
+        case MG_STATE_OPENING:
             if (WipeStatGet() != 0) {
                 break;
             }
-            if (D_800EBDE0_minigame->unk1C == 0) {
-                func_800E6F0C_minigame(1);
-            } else if (D_800EBDE0_minigame->unk1C != -1) {
-                D_800EBDE0_minigame->unk1C--;
+            if (D_800EBDE0_minigame->startDelay == 0) {
+                func_800E6F0C_minigame(MG_STATE_START);
+            } else if (D_800EBDE0_minigame->startDelay != -1) {
+                D_800EBDE0_minigame->startDelay--;
             }
             D_800EB910_minigame++;
             break;
 
-        case 1:
+        case MG_STATE_START:
             if (D_800EB912_minigame == 0) {
-                switch (D_800EBDE0_minigame->unk01) {
-                    case 0:
+                switch (D_800EBDE0_minigame->type) {
+                    case MINIGAME_4P:
                         mes = 3;
                         break;
-                    case 1:
+                    case MINIGAME_1V3:
                         mes = 5;
                         break;
-                    case 2:
+                    case MINIGAME_2V2:
                         mes = 4;
                         break;
-                    case 3:
+                    case MINIGAME_ITEM:
                         mes = 8;
                         break;
-                    case 4:
+                    case MINIGAME_BATTLE:
                         mes = 6;
                         break;
                     case 6:
                         mes = 9;
                         break;
-                    case 5:
+                    case MINIGAME_1V1:
                     case 7:
                         mes = 7;
                         break;
                 }
                 GMesCreate(mes);
             } else if (D_800EB912_minigame == 75.0) {
-                func_800E6F0C_minigame(2);
+                func_800E6F0C_minigame(MG_STATE_PLAY);
             }
             if (D_800EB932_minigame == D_800EB912_minigame && D_800EB930_minigame != -1) {
                 HuAudSeqPlay(D_800EB930_minigame);
@@ -401,87 +401,87 @@ u8 func_800E6F40_minigame(void) {
             D_800EB912_minigame++;
             break;
 
-        case 2:
-            if (D_800EB914_minigame == 0 && D_800EBDE0_minigame->unk03 == 2) {
+        case MG_STATE_PLAY:
+            if (D_800EB914_minigame == 0 && D_800EBDE0_minigame->timeDisp == MG_TIME_DISP_COUNTDOWN) {
                 GMesCreate(0x1A, 30, 160, 24);
             }
-            switch (D_800EBDE0_minigame->unk03) {
-                case 0:
+            switch (D_800EBDE0_minigame->timeDisp) {
+                case MG_TIME_DISP_NONE:
                     break;
-                case 1:
+                case MG_TIME_DISP_RECORD:
                     func_800E6670_minigame(0, D_800EB914_minigame * 2);
-                    if (D_800EBDE0_minigame->unk20 == D_800EB914_minigame) {
-                        func_800E6F0C_minigame(3);
+                    if (D_800EBDE0_minigame->timeLimit == D_800EB914_minigame) {
+                        func_800E6F0C_minigame(MG_STATE_FINISH);
                     }
                     break;
-                case 2:
-                    func_8003F578_main(D_800EBDE0_minigame->unk1E / 30 + 1);
+                case MG_TIME_DISP_COUNTDOWN:
+                    func_8003F578_main(D_800EBDE0_minigame->timer / 30 + 1);
                     break;
             }
-            if (D_800EBDE0_minigame->unk20 != -1) {
-                if (D_800EBDE0_minigame->unk20 - 900 == D_800EB914_minigame) {
+            if (D_800EBDE0_minigame->timeLimit != -1) {
+                if (D_800EBDE0_minigame->timeLimit - 900 == D_800EB914_minigame) {
                     GMesCreate(0x1A, 30, 160, 24);
                     D_800EB93C_minigame = 1;
-                } else if (D_800EBDE0_minigame->unk20 - 900 < D_800EB914_minigame) {
-                    func_8003F578_main((D_800EBDE0_minigame->unk20 - D_800EB914_minigame) / 30 + 1);
+                } else if (D_800EBDE0_minigame->timeLimit - 900 < D_800EB914_minigame) {
+                    func_8003F578_main((D_800EBDE0_minigame->timeLimit - D_800EB914_minigame) / 30 + 1);
                 }
             }
-            if (D_800EBDE0_minigame->unk1E != -1) {
-                switch (D_800EBDE0_minigame->unk02) {
-                    case 0:
-                        if (D_800EBDE0_minigame->unk1E >= D_800EBDE0_minigame->unk20) {
-                            func_800E6F0C_minigame(3);
+            if (D_800EBDE0_minigame->timer != -1) {
+                switch (D_800EBDE0_minigame->timerMode) {
+                    case MG_TIMER_COUNT_UP:
+                        if (D_800EBDE0_minigame->timer >= D_800EBDE0_minigame->timeLimit) {
+                            func_800E6F0C_minigame(MG_STATE_FINISH);
                         } else {
-                            D_800EBDE0_minigame->unk1E++;
+                            D_800EBDE0_minigame->timer++;
                         }
                         break;
-                    case 1:
-                        if (D_800EBDE0_minigame->unk1E == 0) {
-                            func_800E6F0C_minigame(3);
+                    case MG_TIMER_COUNT_DOWN:
+                        if (D_800EBDE0_minigame->timer == 0) {
+                            func_800E6F0C_minigame(MG_STATE_FINISH);
                             func_8003F578_main(0);
                         } else {
-                            D_800EBDE0_minigame->unk1E--;
+                            D_800EBDE0_minigame->timer--;
                         }
                         break;
-                    case 2:
+                    case MG_TIMER_NONE:
                         break;
                 }
             }
             D_800EB914_minigame++;
             break;
 
-        case 3:
+        case MG_STATE_FINISH:
             if (D_800EB916_minigame == 0) {
                 D_800EB914_minigame--;
                 if (D_800EB914_minigame * 2 < D_800EB92A_minigame) {
-                    D_800EBDE0_minigame->unk04 = 1;
+                    D_800EBDE0_minigame->newRecord = TRUE;
                     GWMgRecordSet((s16)D_800EB92C_minigame, (u16)(D_800EB914_minigame * 2));
-                    D_800EBDE0_minigame->unk24 += 75.0;
+                    D_800EBDE0_minigame->resultDelay += 75.0;
                     D_800EB940_minigame = 1;
                 }
-                if (D_800EBDE0_minigame->unk03 == 2 || D_800EB93C_minigame != 0) {
+                if (D_800EBDE0_minigame->timeDisp == MG_TIME_DISP_COUNTDOWN || D_800EB93C_minigame != 0) {
                     func_8003F5C0_main();
                 }
-                switch (D_800EBDE0_minigame->unk01) {
-                    case 0:
+                switch (D_800EBDE0_minigame->type) {
+                    case MINIGAME_4P:
                         mes = 0xE;
                         break;
-                    case 1:
+                    case MINIGAME_1V3:
                         mes = 0x10;
                         break;
-                    case 2:
+                    case MINIGAME_2V2:
                         mes = 0xF;
                         break;
-                    case 3:
+                    case MINIGAME_ITEM:
                         mes = 0x13;
                         break;
-                    case 4:
+                    case MINIGAME_BATTLE:
                         mes = 0x11;
                         break;
                     case 6:
                         mes = 0x14;
                         break;
-                    case 5:
+                    case MINIGAME_1V1:
                     case 7:
                         mes = 0x12;
                         break;
@@ -489,82 +489,82 @@ u8 func_800E6F40_minigame(void) {
                 GMesCreate(mes);
                 HuAudSeqFadeOut(120);
             }
-            if (D_800EBDE0_minigame->unk22 == 0) {
-                func_800E6F0C_minigame(4);
-            } else if (D_800EBDE0_minigame->unk22 != -1) {
-                D_800EBDE0_minigame->unk22--;
+            if (D_800EBDE0_minigame->finishDelay == 0) {
+                func_800E6F0C_minigame(MG_STATE_RESULT);
+            } else if (D_800EBDE0_minigame->finishDelay != -1) {
+                D_800EBDE0_minigame->finishDelay--;
             }
             D_800EB916_minigame++;
             break;
 
-        case 4:
+        case MG_STATE_RESULT:
             D_800EB934_minigame = 0;
-            if (D_800EB918_minigame == 0 && D_800EBDE0_minigame->unk04 == 1) {
+            if (D_800EB918_minigame == 0 && D_800EBDE0_minigame->newRecord == TRUE) {
                 D_800EB91A_minigame = 75;
                 GMesCreate(0x1B);
             }
             if (D_800EB918_minigame == D_800EB91A_minigame) {
-                switch (D_800EBDE0_minigame->unk06) {
-                    case 0:
-                        GMesCreate(0x16, GwPlayer[D_800EBDE0_minigame->unk18[0]].chr);
-                        if (D_800EBDE0_minigame->unk04 == 1) {
+                switch (D_800EBDE0_minigame->resultType) {
+                    case MG_RESULT_WIN_1:
+                        GMesCreate(0x16, GwPlayer[D_800EBDE0_minigame->winners[0]].chr);
+                        if (D_800EBDE0_minigame->newRecord == TRUE) {
                             HuAudSeqPlay(0x6A);
-                        } else if (D_800EBDE0_minigame->unk01 == 4) {
+                        } else if (D_800EBDE0_minigame->type == MINIGAME_BATTLE) {
                             HuAudSeqPlay(0x67);
                         } else {
                             HuAudSeqPlay(0x65);
                         }
                         break;
-                    case 1:
-                        GMesCreate(0x1E, GwPlayer[D_800EBDE0_minigame->unk18[0]].chr,
-                                   GwPlayer[D_800EBDE0_minigame->unk18[1]].chr);
-                        if (D_800EBDE0_minigame->unk04 == 1) {
+                    case MG_RESULT_WIN_2:
+                        GMesCreate(0x1E, GwPlayer[D_800EBDE0_minigame->winners[0]].chr,
+                                   GwPlayer[D_800EBDE0_minigame->winners[1]].chr);
+                        if (D_800EBDE0_minigame->newRecord == TRUE) {
                             HuAudSeqPlay(0x6A);
                         } else {
                             HuAudSeqPlay(0x66);
                         }
                         break;
-                    case 2:
-                        GMesCreate(0x22, GwPlayer[D_800EBDE0_minigame->unk18[0]].chr,
-                                   GwPlayer[D_800EBDE0_minigame->unk18[1]].chr,
-                                   GwPlayer[D_800EBDE0_minigame->unk18[2]].chr);
+                    case MG_RESULT_WIN_3:
+                        GMesCreate(0x22, GwPlayer[D_800EBDE0_minigame->winners[0]].chr,
+                                   GwPlayer[D_800EBDE0_minigame->winners[1]].chr,
+                                   GwPlayer[D_800EBDE0_minigame->winners[2]].chr);
                         HuAudSeqPlay(0x66);
                         break;
-                    case 3:
-                        GMesCreate(0x23, GwPlayer[D_800EBDE0_minigame->unk18[0]].chr,
-                                   GwPlayer[D_800EBDE0_minigame->unk18[1]].chr,
-                                   GwPlayer[D_800EBDE0_minigame->unk18[2]].chr,
-                                   GwPlayer[D_800EBDE0_minigame->unk18[3]].chr);
+                    case MG_RESULT_WIN_4:
+                        GMesCreate(0x23, GwPlayer[D_800EBDE0_minigame->winners[0]].chr,
+                                   GwPlayer[D_800EBDE0_minigame->winners[1]].chr,
+                                   GwPlayer[D_800EBDE0_minigame->winners[2]].chr,
+                                   GwPlayer[D_800EBDE0_minigame->winners[3]].chr);
                         HuAudSeqPlay(0x66);
                         break;
-                    case 4:
+                    case MG_RESULT_DRAW:
                         GMesCreate(0x20);
                         HuAudSeqPlay(0x6C);
                         break;
-                    case 5:
+                    case MG_RESULT_GOT_ITEM:
                         GMesCreate(0x24);
                         HuAudSeqPlay(0x68);
                         break;
-                    case 6:
+                    case MG_RESULT_GOT_ITEM_ALT:
                         GMesCreate(0x25);
                         HuAudSeqPlay(0x69);
                         break;
-                    case 7:
+                    case MG_RESULT_GAME_OVER:
                         GMesCreate(0x1D);
                         HuAudSeqPlay(0x6B);
                         break;
-                    case 8:
+                    case MG_RESULT_LOSER:
                         GMesCreate(0x17);
                         break;
-                    case 9:
+                    case MG_RESULT_NONE:
                         break;
                 }
                 D_800EB934_minigame = 1;
             }
-            if (D_800EBDE0_minigame->unk24 == 0) {
-                func_800E6F0C_minigame(5);
-            } else if (D_800EBDE0_minigame->unk24 != -1) {
-                D_800EBDE0_minigame->unk24--;
+            if (D_800EBDE0_minigame->resultDelay == 0) {
+                func_800E6F0C_minigame(MG_STATE_EXIT);
+            } else if (D_800EBDE0_minigame->resultDelay != -1) {
+                D_800EBDE0_minigame->resultDelay--;
             }
             if (D_800EB940_minigame != 0) {
                 func_800E6968_minigame(1, D_800EB914_minigame * 2);
@@ -572,20 +572,20 @@ u8 func_800E6F40_minigame(void) {
             D_800EB918_minigame++;
             break;
 
-        case 5:
+        case MG_STATE_EXIT:
             break;
     }
 
-    switch (D_800EBDE0_minigame->unk05 & 0xF0) {
-        case 0x80:
-            func_800EA178_minigame(2, D_800EBDE0_minigame->unk08[2]);
-            func_800EA178_minigame(3, D_800EBDE0_minigame->unk08[3]);
-        case 0x40:
-        case 0x20:
-            func_800EA178_minigame(0, D_800EBDE0_minigame->unk08[0]);
-            func_800EA178_minigame(1, D_800EBDE0_minigame->unk08[1]);
+    switch (D_800EBDE0_minigame->gauge & MG_GAUGE_LAYOUT_MASK) {
+        case MG_GAUGE_CORNERS_4:
+            func_800EA178_minigame(2, D_800EBDE0_minigame->gaugeValue[2]);
+            func_800EA178_minigame(3, D_800EBDE0_minigame->gaugeValue[3]);
+        case MG_GAUGE_TOP_2:
+        case MG_GAUGE_RIGHT_2:
+            func_800EA178_minigame(0, D_800EBDE0_minigame->gaugeValue[0]);
+            func_800EA178_minigame(1, D_800EBDE0_minigame->gaugeValue[1]);
             break;
     }
 
-    return D_800EBDE0_minigame->unk00;
+    return D_800EBDE0_minigame->state;
 }

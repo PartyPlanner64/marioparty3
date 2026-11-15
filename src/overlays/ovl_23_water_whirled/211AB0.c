@@ -43,7 +43,12 @@ s32 D_8010A284_water_whirled = 0;
 s32 D_8010A288_water_whirled = 0;
 s32 D_8010A28C_water_whirled[4] = { -1, -1, -1, -1 };
 s32 D_8010A29C_water_whirled[4] = { 0, 0, 0, 0 };
-D_80111B50_vine_with_me_Struct D_8010A2AC_water_whirled = { 0, 0, 1, 1, 0, 132, 0, 0, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0, 0, 0, 0 }, 120, -1, 5400, 75, 135 };
+MinigameFlow D_8010A2AC_water_whirled = {
+    MG_STATE_OPENING, MINIGAME_4P, MG_TIMER_COUNT_DOWN, MG_TIME_DISP_RECORD, FALSE, MG_GAUGE_CORNERS_4 | 4, MG_RESULT_WIN_1, 0,
+    { 0.0f, 0.0f, 0.0f, 0.0f },
+    { 0, 0, 0, 0 },
+    120, -1, 5400, 75, 135
+};
 Vec D_8010A2D4_water_whirled = { 101.0f, -51.0f, 38.0f };
 f32 D_8010A2E0_water_whirled[4] = { 45.0f, 42.5f, 41.0f, 40.0f };
 s8 D_8010A2F0_water_whirled[4] = { -1, -1, -1, -1 };
@@ -181,7 +186,7 @@ void func_80105EA0_water_whirled(omObjData *object) {
     f32 max;
     s32 i;
 
-    if (func_800E6E8C_minigame() == 2) {
+    if (func_800E6E8C_minigame() == MG_STATE_PLAY) {
         min = 50000.0f;
         max = -50000.0f;
         for (i = 0; i < 4; i++) {
@@ -305,7 +310,7 @@ void func_80106308_water_whirled(omObjData *object) {
 void func_80106680_water_whirled(void) {
     s32 time = func_800E6E9C_minigame();
 
-    if (func_800E6E8C_minigame() == 0) {
+    if (func_800E6E8C_minigame() == MG_STATE_OPENING) {
         if (time < 15) {
             CRot.y = 100.0f;
             CRot.x = 350.0f;
@@ -470,9 +475,9 @@ void func_80106DB8_water_whirled(omObjData *object) {
             for (i = 0; i < 4; i++) {
                 if (D_8010A270_water_whirled[i] == 5) {
                     D_8010A280_water_whirled = i;
-                    func_800E6F0C_minigame(3);
-                    D_8010A2AC_water_whirled.unk18[0] = D_8010A280_water_whirled;
-                    D_8010A2AC_water_whirled.unk06 = 0;
+                    func_800E6F0C_minigame(MG_STATE_FINISH);
+                    D_8010A2AC_water_whirled.winners[0] = D_8010A280_water_whirled;
+                    D_8010A2AC_water_whirled.resultType = MG_RESULT_WIN_1;
                     work = D_800EC598_minigame[D_8010A280_water_whirled]->data;
                     GwPlayer[work->unk59].bonusCoin += 10;
                     break;
@@ -498,7 +503,7 @@ void func_80106DB8_water_whirled(omObjData *object) {
                 D_8010A28C_water_whirled[3] = -1;
             }
             if (D_8010A280_water_whirled == -1) {
-                D_8010A2AC_water_whirled.unk06 = 4;
+                D_8010A2AC_water_whirled.resultType = MG_RESULT_DRAW;
             } else {
                 D_8010A288_water_whirled += 3;
                 if (D_8010A288_water_whirled > 127) {
@@ -776,7 +781,7 @@ void func_80107F08_water_whirled(omObjData *object) {
     D_800CBB6E_main[pad] = 0;
     D_800CDA7C_main[pad] = 0;
     mode = func_800E6E8C_minigame();
-    if (mode >= 2) {
+    if (mode >= MG_STATE_PLAY) {
         func_801098AC_water_whirled(object);
         stickX = D_8010AC44_water_whirled;
         stickY = 0;
@@ -861,7 +866,7 @@ void func_80107F08_water_whirled(omObjData *object) {
             D_8010A230_water_whirled[player] = 0.0f;
         }
     }
-    D_8010A2AC_water_whirled.unk08[player] = speed;
+    D_8010A2AC_water_whirled.gaugeValue[player] = speed;
     func_801096BC_water_whirled(object);
     func_80109E2C_water_whirled(object);
     D_800CDA7C_main[pad] = D_8010AC40_water_whirled;
@@ -954,7 +959,7 @@ void func_801089C0_water_whirled(omObjData *object, f32 x, f32 z) {
         D_800EBE2C_minigame = D_8010A1D0_water_whirled[work->unk59].x - x;
         D_800EC5D8_minigame = D_8010A1D0_water_whirled[work->unk59].z - z;
     }
-    if (func_800E6E8C_minigame() == 2) {
+    if (func_800E6E8C_minigame() == MG_STATE_PLAY) {
         if (D_8010A29C_water_whirled[work->unk59] == 0) {
             if (dist > 0.0f) {
                 if (dist < radius / 3.0f) {
@@ -1191,7 +1196,7 @@ void func_801098AC_water_whirled(omObjData *object) {
     f32 dir;
     f32 radius;
 
-    if (func_800E6E8C_minigame() == 2 && !(GwPlayer[player].stat & 1)) {
+    if (func_800E6E8C_minigame() == MG_STATE_PLAY && !(GwPlayer[player].stat & 1)) {
         return;
     }
     D_8010AC40_water_whirled = 0;

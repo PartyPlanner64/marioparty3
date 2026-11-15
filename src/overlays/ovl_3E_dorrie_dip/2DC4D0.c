@@ -73,7 +73,12 @@ extern u16 D_800A11D0_main[];
 extern u16 D_800A11DC_main[];
 extern s32 D_800A178C_main[][6];
 
-D_80111B50_vine_with_me_Struct D_8010A040_dorrie_dip = { 0, 3, 2, 0, 0, 0, 5, 0, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0, 0, 0, 0 }, 210, 300, -1, 90, 135 };
+MinigameFlow D_8010A040_dorrie_dip = {
+    MG_STATE_OPENING, MINIGAME_ITEM, MG_TIMER_NONE, MG_TIME_DISP_NONE, FALSE, MG_GAUGE_NONE, MG_RESULT_GOT_ITEM, 0,
+    { 0.0f, 0.0f, 0.0f, 0.0f },
+    { 0, 0, 0, 0 },
+    210, 300, -1, 90, 135
+};
 s32 D_8010A068_dorrie_dip = 1;
 s32 D_8010A06C_dorrie_dip = 30;
 
@@ -263,9 +268,9 @@ void func_80105C7C_dorrie_dip(omObjData *obj) {
                     }
                 }
                 if (D_8010A220_dorrie_dip == -1 || D_8010A208_dorrie_dip[D_8010A220_dorrie_dip] == 17) {
-                    D_8010A040_dorrie_dip.unk06 = 7;
+                    D_8010A040_dorrie_dip.resultType = MG_RESULT_GAME_OVER;
                 } else {
-                    D_8010A040_dorrie_dip.unk06 = 5;
+                    D_8010A040_dorrie_dip.resultType = MG_RESULT_GOT_ITEM;
                 }
             }
             if (func_800E6E9C_minigame() == 15 && D_8010A220_dorrie_dip != -1 &&
@@ -496,7 +501,7 @@ void func_80106BEC_dorrie_dip(void) {
     Hu3DMotionShiftSet(D_8010A238_dorrie_dip->model[0], Hu3DData[D_8010A238_dorrie_dip->motion[0]].motId, 0, 10, 0);
     func_8001C814_main(D_8010A238_dorrie_dip->model[0], 2, 2);
     data->flags &= ~2;
-    func_800E6F0C_minigame(3);
+    func_800E6F0C_minigame(MG_STATE_FINISH);
     omDelPrcObj(NULL);
 }
 
@@ -576,7 +581,7 @@ void func_80107360_dorrie_dip(omObjData *obj) {
         D_800CDA7C_main[data->unk57] = 0;
         D_800D5558_main[data->unk57] = 0;
     }
-    if (func_800E6E8C_minigame() == 2 && (GwPlayer[data->unk59].stat & 1)) {
+    if (func_800E6E8C_minigame() == MG_STATE_PLAY && (GwPlayer[data->unk59].stat & 1)) {
         func_80109F00_dorrie_dip();
     }
     func_800DDD94_minigame(obj);
@@ -933,13 +938,13 @@ void func_8010872C_dorrie_dip(void) {
         }
         func_8003F578_main(seconds);
         HuPrcVSleep();
-        if (func_800E6E8C_minigame() == 3) {
+        if (func_800E6E8C_minigame() == MG_STATE_FINISH) {
             break;
         }
     } while (seconds > 0);
     if (D_8010A1F8_dorrie_dip == 0) {
         D_8010A1F8_dorrie_dip = 2;
-        func_800E6F0C_minigame(3);
+        func_800E6F0C_minigame(MG_STATE_FINISH);
     }
     func_8003F5C0_main();
     omDelPrcObj(NULL);

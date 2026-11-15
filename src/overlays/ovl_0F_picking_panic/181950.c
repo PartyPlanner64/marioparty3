@@ -31,7 +31,7 @@ typedef struct PickingPanicBssEF14 {
 extern Gfx *gMainGfxPos;
 extern const s16 D_8010E720_picking_panic[];
 
-D_80111B50_vine_with_me_Struct D_8010E5B0_picking_panic = { 0 };
+MinigameFlow D_8010E5B0_picking_panic = { 0 };
 s32 D_8010E5D8_picking_panic = 0;
 Gfx D_8010E5E0_picking_panic[] = {
     gsDPPipeSync(),
@@ -176,16 +176,16 @@ void func_801059A0_picking_panic(void) {
     omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     func_80045010_main(D_8010E720_picking_panic, 1);
     WipeCreateIn(WIPE_TYPE_PREV, 16);
-    D_8010E5B0_picking_panic.unk01 = 1;
-    D_8010E5B0_picking_panic.unk1C = 60;
-    D_8010E5B0_picking_panic.unk1E = 900;
-    D_8010E5B0_picking_panic.unk03 = 2;
-    D_8010E5B0_picking_panic.unk02 = 1;
-    D_8010E5B0_picking_panic.unk22 = 75;
-    D_8010E5B0_picking_panic.unk24 = 165;
-    D_8010E5B0_picking_panic.unk04 = 0;
-    D_8010E5B0_picking_panic.unk05 = 0;
-    D_8010E5B0_picking_panic.unk20 = -1;
+    D_8010E5B0_picking_panic.type = MINIGAME_1V3;
+    D_8010E5B0_picking_panic.startDelay = 60;
+    D_8010E5B0_picking_panic.timer = 900;
+    D_8010E5B0_picking_panic.timeDisp = MG_TIME_DISP_COUNTDOWN;
+    D_8010E5B0_picking_panic.timerMode = MG_TIMER_COUNT_DOWN;
+    D_8010E5B0_picking_panic.finishDelay = 75;
+    D_8010E5B0_picking_panic.resultDelay = 165;
+    D_8010E5B0_picking_panic.newRecord = FALSE;
+    D_8010E5B0_picking_panic.gauge = MG_GAUGE_NONE;
+    D_8010E5B0_picking_panic.timeLimit = -1;
     func_800E5EA0_minigame(&D_8010E5B0_picking_panic);
 }
 
@@ -263,7 +263,7 @@ void func_80106020_picking_panic(omObjData *object) {
             if (D_8010EFA8_picking_panic == 2) {
                 HuAudFXPlay(0x371);
             }
-            if (func_800E6E8C_minigame() == 1) {
+            if (func_800E6E8C_minigame() == MG_STATE_START) {
                 D_8010EF80_picking_panic = 1;
                 D_8010EFA8_picking_panic = 0;
             }
@@ -272,13 +272,13 @@ void func_80106020_picking_panic(omObjData *object) {
             if (D_8010EFA8_picking_panic == 33 && D_8010EFBE_picking_panic == 0 && D_800D530C_main == 0) {
                 HuAudSeqPlay(0x38);
             }
-            if (func_800E6E8C_minigame() == 2) {
+            if (func_800E6E8C_minigame() == MG_STATE_PLAY) {
                 D_8010EF80_picking_panic = 2;
                 D_8010EFA8_picking_panic = 0;
             }
             break;
         case 2:
-            if (D_8010EF14_picking_panic == 5 && func_800E6E8C_minigame() == 3) {
+            if (D_8010EF14_picking_panic == 5 && func_800E6E8C_minigame() == MG_STATE_FINISH) {
                 if (D_8010EF15_picking_panic[0] == D_8010EF15_picking_panic[1]) {
                     D_8010EF80_picking_panic = 4;
                     D_8010EF14_picking_panic = 4;
@@ -293,30 +293,30 @@ void func_80106020_picking_panic(omObjData *object) {
             }
         case 3:
             if (D_8010EFA8_picking_panic == 0) {
-                if (func_800E6E8C_minigame() != 3) {
+                if (func_800E6E8C_minigame() != MG_STATE_FINISH) {
                     func_800E6F1C_minigame();
                 }
-                D_8010E5B0_picking_panic.unk06 = 1;
-                D_8010E5B0_picking_panic.unk18[0] = D_8010EEE0_picking_panic[D_8010EF14_picking_panic * 2]->unk0;
-                D_8010E5B0_picking_panic.unk18[1] = D_8010EEE0_picking_panic[D_8010EF14_picking_panic * 2 + 1]->unk0;
+                D_8010E5B0_picking_panic.resultType = MG_RESULT_WIN_2;
+                D_8010E5B0_picking_panic.winners[0] = D_8010EEE0_picking_panic[D_8010EF14_picking_panic * 2]->unk0;
+                D_8010E5B0_picking_panic.winners[1] = D_8010EEE0_picking_panic[D_8010EF14_picking_panic * 2 + 1]->unk0;
                 GwPlayer[D_8010EEE0_picking_panic[D_8010EF14_picking_panic * 2]->unk0].bonusCoin = 10;
                 GwPlayer[D_8010EEE0_picking_panic[D_8010EF14_picking_panic * 2 + 1]->unk0].bonusCoin = 10;
             }
             if (D_8010EFA8_picking_panic == 2) {
                 func_800E6F34_minigame(30);
             }
-            if (func_800E6E8C_minigame() == 4) {
+            if (func_800E6E8C_minigame() == MG_STATE_RESULT) {
                 D_8010EF80_picking_panic = 5;
                 D_8010EFA8_picking_panic = 0;
             }
             break;
         case 4:
             if (D_8010EFA8_picking_panic == 1) {
-                D_8010E5B0_picking_panic.unk06 = 4;
-                D_8010E5B0_picking_panic.unk22 = 75;
-                D_8010E5B0_picking_panic.unk24 = 0x90;
+                D_8010E5B0_picking_panic.resultType = MG_RESULT_DRAW;
+                D_8010E5B0_picking_panic.finishDelay = 75;
+                D_8010E5B0_picking_panic.resultDelay = 0x90;
             }
-            if (func_800E6E8C_minigame() == 4) {
+            if (func_800E6E8C_minigame() == MG_STATE_RESULT) {
                 D_8010EF80_picking_panic = 6;
                 D_8010EFA8_picking_panic = 0;
             }
@@ -334,7 +334,7 @@ void func_80106020_picking_panic(omObjData *object) {
                 }
             }
         case 6:
-            if (func_800E6E8C_minigame() == 5) {
+            if (func_800E6E8C_minigame() == MG_STATE_EXIT) {
                 D_8010EF80_picking_panic = 7;
                 D_8010EFA8_picking_panic = 0;
             }
@@ -1216,7 +1216,7 @@ void func_8010B908_picking_panic(omObjData *object, s8 arg1) {
                                        5)) /
                           2;
             if (D_8010EF98_picking_panic[arg1] == 2 && D_8010EF15_picking_panic[arg1] == 0 &&
-                D_8010E5B0_picking_panic.unk1E < 451) {
+                D_8010E5B0_picking_panic.timer < 451) {
                 D_8010EF98_picking_panic[arg1] = 0;
             }
             D_8010E714_picking_panic[arg1] += (D_8010E714_picking_panic[arg1] < 6);

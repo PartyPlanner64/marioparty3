@@ -55,7 +55,7 @@ extern u16 D_800CC698_main;
 extern u8 D_8011B958_mgmode;
 extern MgmodeSpaceCoord D_8011AA18_mgmode[];
 extern s8 D_800D2124_main[];
-extern CamData *D_8011B954_mgmode;
+extern ModeCameraPreset *D_8011B954_mgmode;
 extern MgmodeModelEntry D_801195E0_mgmode[];
 extern s16 D_8011A700_mgmode;
 extern s16 D_8011B7A0_mgmode[];
@@ -105,7 +105,7 @@ u8 D_80118EB0_mgmode = 0;
 u8 D_80118EB1_mgmode = 0;
 u8 D_80118EB2_mgmode = 0;
 s16 D_80118EB4_mgmode = 0;
-CamData D_80118EB8_mgmode[21] = {
+ModeCameraPreset D_80118EB8_mgmode[21] = {
     { { 0.0f, 0.0f, 0.0f }, { 0.0f, 127.0f, -395.0f }, 1400.0f, 40.0f },
     { { 0.0f, 0.0f, 0.0f }, { 0.0f, 127.0f, -395.0f }, 330.0f, 40.0f },
     { { 358.0f, 0.0f, 0.0f }, { 0.0f, 217.0f, -384.7f }, 580.0f, 44.0f },

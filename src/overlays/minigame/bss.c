@@ -24,7 +24,7 @@ Vec D_800EBDC0_minigame BSS;
 u8 D_800EBDCC_minigame[4] BSS; /* Unreferenced. */
 Vec D_800EBDD0_minigame BSS;
 u8 D_800EBDDC_minigame[4] BSS; /* Unreferenced. */
-D_80111B50_vine_with_me_Struct *D_800EBDE0_minigame BSS;
+MinigameFlow *D_800EBDE0_minigame BSS;
 s16 D_800EBDE4_minigame BSS;
 s16 D_800EBDE6_minigame BSS;
 s16 D_800EBDE8_minigame[4] BSS;

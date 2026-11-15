@@ -122,7 +122,12 @@ extern s16 D_8010CF6E_storm_chasers; // low half of D_8010CF6C_storm_chasers
 extern s16 D_8010CF72_storm_chasers; // low half of D_8010CF70_storm_chasers
 extern const s16 D_8010CC8C_storm_chasers[];
 
-D_80111B50_vine_with_me_Struct D_8010C8B0_storm_chasers = { 0, 0, 1, 2, 0, 0, 0, 0, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0, 0, 0, 0 }, 90, 900, 0, 30, 150 };
+MinigameFlow D_8010C8B0_storm_chasers = {
+    MG_STATE_OPENING, MINIGAME_4P, MG_TIMER_COUNT_DOWN, MG_TIME_DISP_COUNTDOWN, FALSE, MG_GAUGE_NONE, MG_RESULT_WIN_1, 0,
+    { 0.0f, 0.0f, 0.0f, 0.0f },
+    { 0, 0, 0, 0 },
+    90, 900, 0, 30, 150
+};
 StormChaserStart D_8010C8D8_storm_chasers[4] = {
     { -200.0f, -200.0f, 45.0f, 45.0f, -5.0f },
     { 200.0f, -200.0f, 315.0f, 315.0f, 5.0f },
@@ -1970,7 +1975,7 @@ void func_8010C520_storm_chasers(void) {
 }
 
 void func_8010C57C_storm_chasers(omObjData *object) {
-    func_800E6F0C_minigame(2);
+    func_800E6F0C_minigame(MG_STATE_PLAY);
     func_8010C520_storm_chasers();
     WipeCreateIn(WIPE_TYPE_PREV, 16);
     object->func = func_8010C31C_storm_chasers;

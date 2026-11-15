@@ -3,13 +3,7 @@
 
 #include "ultra64.h"
 #include "humath.h"
-
-typedef struct MsetupCameraPreset {
-    Vec rot;
-    Vec center;
-    f32 zoom;
-    f32 fov;
-} MsetupCameraPreset;
+#include "overlays/modecamera.h"
 
 typedef struct MsetupPlayerConfig {
     u8 controllerPorts[4];
@@ -59,7 +53,7 @@ typedef struct MsetupMenuState {
 } MsetupMenuState;
 
 typedef union MsetupCameraValues {
-    MsetupCameraPreset preset;
+    ModeCameraPreset preset;
     f32 components[8];
 } MsetupCameraValues;
 

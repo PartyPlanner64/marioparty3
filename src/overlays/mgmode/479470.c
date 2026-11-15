@@ -36,7 +36,7 @@ extern s16 D_8011B950_mgmode;
 extern s16 D_8011B79A_mgmode;
 extern s16 D_8011B800_mgmode;
 extern s16 D_8011B95A_mgmode;
-extern CamData *D_8011B954_mgmode;
+extern ModeCameraPreset *D_8011B954_mgmode;
 extern f32 D_8011B888_mgmode;
 extern s16 D_8011B622_mgmode;
 extern s16 D_8011B620_mgmode;
@@ -104,7 +104,7 @@ MgmodeEsprite *D_801194C0_mgmode = (MgmodeEsprite *)-1;
 s16 D_801194C4_mgmode = -1;
 s32 D_801194C8_mgmode = 0;
 s32 D_801194CC_mgmode = 0;
-CamData D_801194D0_mgmode[7] = {
+ModeCameraPreset D_801194D0_mgmode[7] = {
     { { 0.0f, 0.0f, 0.0f }, { 0.0f, 87.0f, -395.0f }, 1490.0f, 40.0f },
     { { 0.0f, 0.0f, 0.0f }, { 0.0f, 87.0f, -395.0f }, 960.0f, 40.0f },
     { { 10.0f, 88.0f, 0.0f }, { -395.6f, 126.8f, 0.9f }, 440.0f, 40.0f },

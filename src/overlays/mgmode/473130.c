@@ -37,7 +37,7 @@ extern s16 D_8011B950_mgmode;
 extern s16 D_8011B95A_mgmode;
 extern MgmodeSpaceCoord D_8011B468_mgmode[];
 extern s16 D_8011B4C0_mgmode;
-extern CamData *D_8011B954_mgmode;
+extern ModeCameraPreset *D_8011B954_mgmode;
 extern f32 D_8011B888_mgmode;
 extern s16 D_8011B436_mgmode[4];
 extern s16 D_8011B43E_mgmode[4];
@@ -99,7 +99,7 @@ void func_8011667C_mgmode(MgmodeModelEntry *entries);
 s16 func_80118678_mgmode(f32 arg0, f32 arg1, f32 arg2, f32 arg3);
 
 s16 D_80119340_mgmode = -1;
-CamData D_80119344_mgmode[7] = {
+ModeCameraPreset D_80119344_mgmode[7] = {
     { { 4.0f, 0.0f, 0.0f }, { 0.0f, 178.9f, -391.4f }, 1480.0f, 40.0f },
     { { 4.0f, 0.0f, 0.0f }, { 0.0f, 178.9f, -391.4f }, 1060.0f, 40.0f },
     { { 0.0f, 0.0f, 0.0f }, { -36.0f, 206.8f, -390.0f }, 1190.0f, 21.0f },

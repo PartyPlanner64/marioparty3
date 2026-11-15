@@ -102,7 +102,7 @@ f32 D_80109A58_all_fired_up[4] = { 1.0f, 1.5f, 2.0f, 2.5f };
 s32 D_80109AC0_all_fired_up BSS;
 s8 D_80109AC4_all_fired_up BSS;
 s8 D_80109AC5_all_fired_up BSS;
-D_80111B50_vine_with_me_Struct D_80109AC8_all_fired_up BSS;
+MinigameFlow D_80109AC8_all_fired_up BSS;
 AllFiredUpBssAF0 allFiredUpBssAF0 BSS;
 u8 D_80109AFC_all_fired_up[4] BSS; /* Unreferenced. */
 omObjData *D_80109B00_all_fired_up[21] BSS;
@@ -117,7 +117,7 @@ s8 D_80109C59_all_fired_up BSS;
 extern u8 D_80109AF0_all_fired_up;
 extern s16 D_80109AF2_all_fired_up[];
 
-void func_80105C54_all_fired_up(D_80111B50_vine_with_me_Struct *arg0);
+void func_80105C54_all_fired_up(MinigameFlow *flow);
 void func_80105CE8_all_fired_up(void);
 void func_80105E1C_all_fired_up(omObjData *object);
 void func_80105F5C_all_fired_up(void);
@@ -182,25 +182,25 @@ void func_801059A0_all_fired_up(void) {
     WipeCreateIn(WIPE_TYPE_PREV, 16);
 }
 
-void func_80105C54_all_fired_up(D_80111B50_vine_with_me_Struct *arg0) {
+void func_80105C54_all_fired_up(MinigameFlow *flow) {
     s32 i;
 
     D_800EB932_minigame = 0xF;
-    arg0->unk00 = 0;
-    arg0->unk01 = 5;
-    arg0->unk02 = 1;
-    arg0->unk03 = 2;
-    arg0->unk04 = 0;
-    arg0->unk05 = 0;
-    arg0->unk06 = 9;
-    arg0->unk1C = 0x5A;
-    arg0->unk1E = 0x708;
-    arg0->unk20 = -1;
-    arg0->unk22 = 0x4B;
-    arg0->unk24 = 0x96;
+    flow->state = MG_STATE_OPENING;
+    flow->type = MINIGAME_1V1;
+    flow->timerMode = MG_TIMER_COUNT_DOWN;
+    flow->timeDisp = MG_TIME_DISP_COUNTDOWN;
+    flow->newRecord = FALSE;
+    flow->gauge = MG_GAUGE_NONE;
+    flow->resultType = MG_RESULT_NONE;
+    flow->startDelay = 0x5A;
+    flow->timer = 0x708;
+    flow->timeLimit = -1;
+    flow->finishDelay = 0x4B;
+    flow->resultDelay = 0x96;
     for (i = 0; i < 4; i++) {
-        arg0->unk08[i] = 0;
-        arg0->unk18[i] = 0xFF;
+        flow->gaugeValue[i] = 0;
+        flow->winners[i] = 0xFF;
     }
 }
 
@@ -229,7 +229,7 @@ void func_80105E1C_all_fired_up(omObjData *object) {
             } else {
                 HuAudSeqStop();
             }
-            func_800E6F0C_minigame(5);
+            func_800E6F0C_minigame(MG_STATE_EXIT);
             D_801099FC_all_fired_up = 1;
         }
         func_800E1840_minigame();
@@ -340,10 +340,10 @@ void func_80106584_all_fired_up(omObjData *object) {
     if (omPauseChk() + D_800D6A90_main == 0) {
         work = object->data;
         switch (func_800E6E8C_minigame()) {
-            case 0:
+            case MG_STATE_OPENING:
                 func_801067CC_all_fired_up(object);
                 break;
-            case 2:
+            case MG_STATE_PLAY:
                 if (D_801099C9_all_fired_up - 1 >= work->unk00) {
                     func_80107BD4_all_fired_up(object);
                 }
@@ -365,7 +365,7 @@ void func_80106584_all_fired_up(omObjData *object) {
                         break;
                 }
                 break;
-            case 3:
+            case MG_STATE_FINISH:
                 object->scale.x -= 0.05f;
                 if (object->scale.x < 0.0f) {
                     object->scale.x = 0.0f;
@@ -820,10 +820,10 @@ void func_801080C8_all_fired_up(omObjData *object) {
 
     if (omPauseChk() + D_800D6A90_main == 0) {
         switch (func_800E6E8C_minigame()) {
-            case 0:
+            case MG_STATE_OPENING:
                 func_801085A4_all_fired_up(object);
                 break;
-            case 2:
+            case MG_STATE_PLAY:
                 if (GwPlayer[data->unk59].stat & 1) {
                     func_80108AA0_all_fired_up(object);
                 }
@@ -841,11 +841,11 @@ void func_801080C8_all_fired_up(omObjData *object) {
                         count += D_800EC598_minigame[i]->work[0] != 0;
                     }
                     if (count >= 3) {
-                        func_800E6F0C_minigame(3);
+                        func_800E6F0C_minigame(MG_STATE_FINISH);
                     }
                 }
                 break;
-            case 3:
+            case MG_STATE_FINISH:
                 if (D_80109A08_all_fired_up[data->unk59] == 0) {
                     rank = 0;
                     for (i = 0; i < 4; i++) {
@@ -864,7 +864,7 @@ void func_801080C8_all_fired_up(omObjData *object) {
                     func_80108710_all_fired_up(object);
                 }
                 break;
-            case 4:
+            case MG_STATE_RESULT:
                 if (func_800E6E9C_minigame() == 0) {
                     if (object->work[0] == 0) {
                         switch (GwPlayer[data->unk59].chr) {
@@ -930,7 +930,7 @@ void func_801080C8_all_fired_up(omObjData *object) {
                     }
                 } else if ((D_80109A06_all_fired_up == 0 && func_800E6E9C_minigame() >= 100) ||
                            (D_80109A06_all_fired_up == 1 && func_800E6E9C_minigame() > 144)) {
-                    func_800E6F0C_minigame(5);
+                    func_800E6F0C_minigame(MG_STATE_EXIT);
                 }
                 func_800DDD94_minigame(object);
                 break;

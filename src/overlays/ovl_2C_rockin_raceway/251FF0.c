@@ -4,6 +4,7 @@
 #include "game/audio.h"
 #include "game/mallocblock.h"
 #include "overlays/minigame.h"
+#include "overlays/mgcamera.h"
 #include "gcc/memory.h"
 #include "game/data.h"
 #include "game/util.h"
@@ -15,18 +16,8 @@
 #include "game/input.h"
 #include "game/printfunc.h"
 
-#define CAMERA_KEEP 65535.0f
-
 // Several distances are written as a float fraction of 200 units (e.g. 0.1f * 200.0), which folds into
 // a double constant slightly off from the round value.
-
-typedef struct RockinRacewayCamera {
-    /* 0x00 */ Vec center;
-    /* 0x0C */ Vec rot;
-    /* 0x18 */ f32 zoom;
-    /* 0x1C */ f32 unk_1C;
-    /* 0x20 */ f32 unk_20;
-} RockinRacewayCamera; // Size 0x24
 
 typedef struct RockinRacewayCameraPreset {
     /* 0x00 */ Vec center;
@@ -520,7 +511,7 @@ s16 D_80111BD4_rockin_raceway BSS;
 s16 D_80111BD6_rockin_raceway BSS;
 omObjData *D_80111BD8_rockin_raceway BSS;
 u8 D_80111BDC_rockin_raceway[4] BSS;                  /* Unreferenced. */
-RockinRacewayCamera D_80111BE0_rockin_raceway[2] BSS; // target, origin
+MgCameraKey D_80111BE0_rockin_raceway[2] BSS;         // target, origin
 s16 D_80111C28_rockin_raceway BSS;
 s16 D_80111C2A_rockin_raceway BSS;
 s16 D_80111C2C_rockin_raceway BSS;
@@ -2606,7 +2597,7 @@ void func_8010B774_rockin_raceway(void) {
 
 // Camera debug mode: R cycles between free camera control and moving the camera info text.
 void func_8010B89C_rockin_raceway(void) {
-    RockinRacewayCamera delta = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f, 0.0f, 0.0f };
+    MgCameraKey delta = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f, 0.0f, 0.0f };
     f32 speed;
 
     speed = 1.0f;

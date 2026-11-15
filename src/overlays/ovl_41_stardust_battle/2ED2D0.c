@@ -1,11 +1,11 @@
 #include "common.h"
 #include "overlays/minigame.h"
+#include "overlays/mgcamera.h"
 #include "game/mallocblock.h"
 #include "gcc/memory.h"
 #include "game/hmfmath.h"
 #include "game/printfunc.h"
 
-#define CAMERA_KEEP 65535.0f
 #define ABS(x) ((x) < 0 ? -(x) : (x))
 
 typedef struct UnkStardustBattleStard {
@@ -179,14 +179,6 @@ typedef struct UnkStardustBattleEffect {
     /* 0x1C */ Vec vel;
     /* 0x28 */ Vec scale;
 } UnkStardustBattleEffect; // sizeof 0x34
-
-typedef struct UnkStardustBattleCamera {
-    /* 0x00 */ Vec center;
-    /* 0x0C */ Vec rot;
-    /* 0x18 */ f32 zoom;
-    /* 0x1C */ f32 unk_1C;
-    /* 0x20 */ f32 unk_20;
-} UnkStardustBattleCamera; // sizeof 0x24
 
 typedef struct UnkStardustBattleCamPreset {
     /* 0x00 */ Vec center;
@@ -574,7 +566,7 @@ omObjData *D_80114B50_stardust_battle BSS;
 s16 D_80114B54_stardust_battle BSS;
 omObjData *D_80114B58_stardust_battle BSS;
 UnkStardustBattleStard *D_80114B5C_stardust_battle BSS;
-UnkStardustBattleCamera D_80114B60_stardust_battle[2] BSS; // target, origin
+MgCameraKey D_80114B60_stardust_battle[2] BSS; // target, origin
 s32 D_80114BA8_stardust_battle BSS;
 s32 D_80114BAC_stardust_battle BSS;
 s32 D_80114BB0_stardust_battle BSS;
@@ -4149,7 +4141,7 @@ void func_801107E4_stardust_battle(void) {
 }
 
 void func_80110914_stardust_battle(void) {
-    UnkStardustBattleCamera delta = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f, 0.0f, 0.0f };
+    MgCameraKey delta = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f, 0.0f, 0.0f };
     f32 speed;
 
     speed = 1.0f;

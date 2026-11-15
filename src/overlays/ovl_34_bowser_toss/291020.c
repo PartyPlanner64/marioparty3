@@ -4,8 +4,7 @@
 #include "game/mallocblock.h"
 #include "math.h"
 #include "overlays/minigame.h"
-
-#define CAMERA_KEEP 65535.0f
+#include "overlays/mgcamera.h"
 
 typedef struct UnkBowser { // 0x64 bytes, two entries
     omObjData *unk_00;
@@ -104,17 +103,9 @@ typedef struct BowserTossEffect { // 0x30 bytes, 32 entries
     Vec unk_24;
 } BowserTossEffect;
 
-typedef struct BowserTossCameraKey { // 0x24 bytes
-    Vec center;
-    Vec rot;
-    f32 zoom;
-    f32 unk_1C;
-    f32 unk_20;
-} BowserTossCameraKey;
-
 // Per-camera interpolation state allocated in func_8010C2DC_bowser_toss
 typedef struct BowserTossCamera { // 0x54 bytes, two entries
-    BowserTossCameraKey keys[2];  // target, origin
+    MgCameraKey keys[2];          // target, origin
     s32 frame;                    // frames remaining
     s32 frames;                   // total frames
     s32 active;
@@ -2352,7 +2343,7 @@ void func_8010C2DC_bowser_toss(void) {
 }
 
 void func_8010C570_bowser_toss(void) {
-    BowserTossCameraKey delta = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f, 0.0f, 0.0f };
+    MgCameraKey delta = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f, 0.0f, 0.0f };
     f32 speed;
     s32 cam;
     s32 index;

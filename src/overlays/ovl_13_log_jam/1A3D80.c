@@ -1,5 +1,6 @@
 #include "common.h"
 #include "overlays/minigame.h"
+#include "overlays/mgcamera.h"
 #include "game/mallocblock.h"
 #include "gcc/memory.h"
 #include "game/hmfmath.h"
@@ -13,8 +14,6 @@
 #include "game/input.h"
 #include "game/printfunc.h"
 #include "game/gamemes.h"
-
-#define CAMERA_KEEP 65535.0f
 
 typedef struct UnkLogJamSprites { // 0xC bytes, two entries
     s16 unk_00;
@@ -102,14 +101,6 @@ typedef struct LogJamTeam { // 0x48 bytes, 2 entries allocated by func_80106190_
     f32 unk_40;
     f32 unk_44;
 } LogJamTeam;
-
-typedef struct LogJamCamera {
-    Vec center;
-    Vec rot;
-    f32 zoom;
-    f32 unk_1C;
-    f32 unk_20;
-} LogJamCamera;
 
 typedef union LogJamColor {
     u32 word;
@@ -247,7 +238,7 @@ omObjData *D_8010E5D8_log_jam BSS;
 LogJamEffect *D_8010E5DC_log_jam BSS;
 omObjData *D_8010E5E0_log_jam BSS;
 LogJamEffect *D_8010E5E4_log_jam BSS;
-LogJamCamera D_8010E5E8_log_jam[2] BSS; // target, origin
+MgCameraKey D_8010E5E8_log_jam[2] BSS; // target, origin
 s32 D_8010E630_log_jam BSS;
 s32 D_8010E634_log_jam BSS;
 s32 D_8010E638_log_jam BSS;
@@ -2174,7 +2165,7 @@ void func_8010B04C_log_jam(void) {
 }
 
 void func_8010B17C_log_jam(void) {
-    LogJamCamera delta = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f, 0.0f, 0.0f };
+    MgCameraKey delta = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f, 0.0f, 0.0f };
     f32 speed;
 
     speed = 1.0f;

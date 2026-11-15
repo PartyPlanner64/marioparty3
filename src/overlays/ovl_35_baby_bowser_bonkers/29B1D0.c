@@ -1,5 +1,6 @@
 #include "common.h"
 #include "overlays/minigame.h"
+#include "overlays/mgcamera.h"
 #include "gcc/memory.h"
 #include "game/mallocblock.h"
 #include "game/pause.h"
@@ -7,8 +8,6 @@
 #include "math.h"
 #include "game/data.h"
 #include "game/sprite.h"
-
-#define CAMERA_KEEP 65535.0f
 
 typedef struct UnkBabyBowserBonkers { // 0x12 bytes
     s16 unk_00;
@@ -89,14 +88,6 @@ typedef struct BabyBowserBonkersPattern {
     s16 unk_06; // spawn count
     BabyBowserBonkersSpawn *unk_08;
 } BabyBowserBonkersPattern;
-
-typedef struct BabyBowserBonkersCamera {
-    Vec center;
-    Vec rot;
-    f32 zoom;
-    f32 unk_1C;
-    f32 unk_20;
-} BabyBowserBonkersCamera;
 
 typedef union BabyBowserBonkersBytes { // packs the top byte of each work word
     u32 word;
@@ -206,7 +197,7 @@ u8 D_8010BC64_baby_bowser_bonkers[4] BSS; /* Unreferenced. */
 BabyBowserBonkersPattern *D_8010BC68_baby_bowser_bonkers[4][4] BSS;
 s16 *D_8010BCA8_baby_bowser_bonkers BSS;
 UnkBabyBowserBonkers *D_8010BCAC_baby_bowser_bonkers BSS;
-BabyBowserBonkersCamera D_8010BCB0_baby_bowser_bonkers[2] BSS; // target, origin
+MgCameraKey D_8010BCB0_baby_bowser_bonkers[2] BSS; // target, origin
 s32 D_8010BCF8_baby_bowser_bonkers BSS;
 s32 D_8010BCFC_baby_bowser_bonkers BSS;
 s32 D_8010BD00_baby_bowser_bonkers BSS;
@@ -1660,7 +1651,7 @@ void func_80109EB8_baby_bowser_bonkers(void) {
 }
 
 void func_80109FE8_baby_bowser_bonkers(void) {
-    BabyBowserBonkersCamera delta = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f, 0.0f, 0.0f };
+    MgCameraKey delta = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f, 0.0f, 0.0f };
     f32 speed;
 
     speed = 1.0f;

@@ -1,5 +1,6 @@
 #include "common.h"
 #include "overlays/minigame.h"
+#include "overlays/mgcamera.h"
 #include "game/mallocblock.h"
 #include "gcc/memory.h"
 #include "game/hmfmath.h"
@@ -13,8 +14,6 @@
 #include "game/gamemes.h"
 #include "game/input.h"
 #include "game/printfunc.h"
-
-#define CAMERA_KEEP 65535.0f
 
 typedef struct UnkSlotPlayer { // 0x30 bytes, four entries
     s16 unk_00;
@@ -38,14 +37,6 @@ typedef struct UnkSlotPlayer { // 0x30 bytes, four entries
     s16 unk_2C;
     s16 unk_2E;
 } UnkSlotPlayer;
-
-typedef struct UnkSlotCamera {
-    Vec center;
-    Vec rot;
-    f32 zoom;
-    f32 unk_1C;
-    f32 unk_20;
-} UnkSlotCamera;
 
 typedef struct UnkSlotSynch { // 0x20 bytes, two entries (one per team)
     omObjData *unk_00;
@@ -364,7 +355,7 @@ UnkSlotLight *D_8010DF90_slot_synch BSS;
 omObjData *D_8010DF94_slot_synch BSS;
 UnkSlotEffect *D_8010DF98_slot_synch BSS;
 u8 D_8010DF9C_slot_synch[4] BSS;            /* Unreferenced. */
-UnkSlotCamera D_8010DFA0_slot_synch[2] BSS; // target, origin
+MgCameraKey D_8010DFA0_slot_synch[2] BSS;   // target, origin
 s32 D_8010DFE8_slot_synch BSS;
 s32 D_8010DFEC_slot_synch BSS;
 s32 D_8010DFF0_slot_synch BSS;
@@ -2191,7 +2182,7 @@ void func_8010AF38_slot_synch(void) {
 }
 
 void func_8010B064_slot_synch(void) {
-    UnkSlotCamera delta = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f, 0.0f, 0.0f };
+    MgCameraKey delta = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f, 0.0f, 0.0f };
     f32 speed;
 
     speed = 1.0f;

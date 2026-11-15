@@ -717,24 +717,25 @@ s32 func_8010E4C4_chancetime(void) {
     return D_8010FC18_chancetime;
 }
 
-// Only diff (score 26): CSE turns the `coinAmount` load into a sign-extension of `coins`, and
-// combine then moves the `coins` table load down next to it (after the `stars` load). The
-// coins/stars loads and stack stores are therefore swapped, so the store placed in the blez
-// delay slot is coins' instead of stars'.
-// Reading the amount through a differently-shaped address, e.g.
-// `coinAmount = (&D_8010FD68_chancetime[D_801100DF_chancetime])->coins;`, defeats that CSE and
-// gives the exact target instruction order, but the frame then shrinks from 0xD0 to 0xC8: the
-// original 3->2 combine left a dead pseudo (REG_DEAD -> USE) that still got a spill slot. Every
-// table access spelling, statement order, s16/s32 type and inner-branch spelling tried yields
-// either the right order (frame 0xC8) or the right frame (wrong order), never both.
-// The missing 8 bytes are a 10th spill slot at 0x70 that is never referenced: a pseudo left
-// behind by combine's `(use (reg))` death-note insn (here: 180 from the 3->2 combine, plus
-// 189 from the GwPlayer coin compare and 674 from the `while (finished < count)` entry test).
-// An unused local array cannot restore it: arrays are laid out before reload's spill slots, so
-// it shifts every spill offset by 8 (`s32 unused[2]` anywhere in the list: score 288). Also
-// tried without success: s16 coinAmount, a separate s32 starAmount (as in
-// func_8010F984_chancetime), all orderings of the coins/coinAmount/stars statements, and
-// rewrites of the return test, isStars placement and count clamping.
+// Only diff (score 26): the coins and stars table loads are swapped. CSE makes the
+// sign-extended `coins` used by `coins > 0` a copy of the coins load, and combine (3->2,
+// keeping the load) moves that load down past the stars load. That combine also leaves the
+// dead pseudo that gets the never-referenced spill slot at 0x70, so reading the amount through
+// an address CSE cannot match (e.g. `(&D_8010FD68_chancetime[i])->coins`) fixes the order but
+// shrinks the frame to 0xC8.
+// The target needs the sign extension to happen *before* the stars load, in a short-lived
+// pseudo P, with the value actually tested living in a different, longer-lived pseudo Q
+// assigned after the stars load (CSE then emits `Q = P`, and combine folds the load into it).
+// That fully matches the ROM, but only with a dead store, e.g.:
+//     coins = D_8010FD68_chancetime[D_801100DF_chancetime].coins;
+//     coinAmount = coins; // s32, never read again
+//     stars = D_8010FD68_chancetime[D_801100DF_chancetime].stars;
+//     if (coins > 0) { if (GwPlayer[players[0]].coin < coins) ... }
+// (or `coinAmount = <table>.coins;` there with `<table>.coins` in both tests). Every
+// warning-free form tried (all orders of coins/stars/coinAmount/starAmount/count assignments
+// with every combination of coins/coinAmount/table reads in the two tests, about 650 variants)
+// either keeps the wrong order or ends up with `count` in the test register. Unused arrays
+// shift every spill offset (score 288).
 #ifdef NON_MATCHING
 void func_8010E4D0_chancetime(omObjData *object) {
     f32 coinsF[2];
@@ -750,7 +751,6 @@ void func_8010E4D0_chancetime(omObjData *object) {
     s16 coins;
     s16 stars;
     s32 count;
-    s32 coinAmount;
     f32 step;
     f32 lost;
     f32 gained;
@@ -778,9 +778,8 @@ void func_8010E4D0_chancetime(omObjData *object) {
 
     coins = D_8010FD68_chancetime[D_801100DF_chancetime].coins;
     stars = D_8010FD68_chancetime[D_801100DF_chancetime].stars;
-    coinAmount = D_8010FD68_chancetime[D_801100DF_chancetime].coins;
-    if (coinAmount > 0) {
-        if (GwPlayer[players[0]].coin < coinAmount) {
+    if (coins > 0) {
+        if (GwPlayer[players[0]].coin < coins) {
             coins = GwPlayer[players[0]].coin;
         }
         isStars = FALSE;

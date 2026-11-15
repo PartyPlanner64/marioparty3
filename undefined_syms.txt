@@ -281,3 +281,16 @@ D_8010A29E_picture_imperfect = pictureImperfectBssA230 + 0x6E;
 D_8010A2A6_picture_imperfect = pictureImperfectBssA230 + 0x76;
 D_8010A2A8_picture_imperfect = pictureImperfectBssA230 + 0x78;
 D_8010A2AA_picture_imperfect = pictureImperfectBssA230 + 0x7A;
+/* marios_puzzle_party: low halves of s32 sprite animation ids. */
+D_8011608E_marios_puzzle_party = D_8011608C_marios_puzzle_party + 0x2;
+D_80116096_marios_puzzle_party = D_80116094_marios_puzzle_party + 0x2;
+D_801160A2_marios_puzzle_party = D_801160A0_marios_puzzle_party + 0x2;
+D_801160A6_marios_puzzle_party = D_801160A4_marios_puzzle_party + 0x2;
+D_801160AA_marios_puzzle_party = D_801160A8_marios_puzzle_party + 0x2;
+D_801160AE_marios_puzzle_party = D_801160AC_marios_puzzle_party + 0x2;
+D_801160B2_marios_puzzle_party = D_801160B0_marios_puzzle_party + 0x2;
+D_801160D2_marios_puzzle_party = D_801160D0_marios_puzzle_party + 0x2;
+D_801160D6_marios_puzzle_party = D_801160D4_marios_puzzle_party + 0x2;
+D_801160DA_marios_puzzle_party = D_801160D8_marios_puzzle_party + 0x2;
+D_801160DE_marios_puzzle_party = D_801160DC_marios_puzzle_party + 0x2;
+D_801160E2_marios_puzzle_party = D_801160E0_marios_puzzle_party + 0x2;

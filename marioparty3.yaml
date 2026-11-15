@@ -1261,9 +1261,11 @@ segments:
     subsegments:
       - [0x1F3B90, c]
       - [0x1FD760, c]
-      - [0x1FE270, data, 1F3B90] #80110080
+      - [0x1FE270, .data, 1F3B90] #80110080
+      - [0x1FE420, .data, 1FD760] #80110230
       - [0x1FE490, .rodata, 1F3B90] #801102A0
-      - {0x1FE4D0, type: bss, vram: 0x801102E0, name: ovl_1F_bss}
+      - {0x1FE4D0, type: .bss, vram: 0x801102E0, name: 1F3B90}
+      - {0x1FE4D0, type: .bss, vram: 0x801168B0, name: 1FD760}
 
   - type: code
     start: 0x1FE4D0

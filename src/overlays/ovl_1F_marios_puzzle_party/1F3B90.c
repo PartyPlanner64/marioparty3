@@ -119,17 +119,6 @@ typedef struct MarioPuzzlePartyChainColor {
     /* 0x0C */ f32 scale;
 } MarioPuzzlePartyChainColor; // sizeof 0x10
 
-// screen origin of each player's board
-extern s32 D_80110080_marios_puzzle_party[4][2];
-// board origins used in the endless mode
-extern s32 D_801100A0_marios_puzzle_party[4][2];
-// indexed by chain length; entry 0 is not a colour
-extern MarioPuzzlePartyChainColor D_801100B0_marios_puzzle_party[9];
-extern D_80111B50_vine_with_me_Struct D_80110140_marios_puzzle_party;
-extern MarioPuzzlePartySparkleInit D_80110168_marios_puzzle_party[8];
-
-extern MarioPuzzlePartyPath D_801102E0_marios_puzzle_party[4][6];
-
 // per-player input state; CPU players read their input from here rather than a controller
 typedef struct MarioPuzzlePartyPlayerInput {
     /* 0x00 */ s32 heights[4];
@@ -142,36 +131,117 @@ typedef struct MarioPuzzlePartyPlayerInput {
     /* 0x42 */ u16 buttons;
 } MarioPuzzlePartyPlayerInput; // sizeof 0x44
 
-extern MarioPuzzlePartyPlayerInput D_80114DE0_marios_puzzle_party[4];
-
-extern MarioPuzzlePartyDebris D_80114EF0_marios_puzzle_party[160];
-
-// sprite animations
-extern s32 D_80116070_marios_puzzle_party[7];
-extern s32 D_8011608C_marios_puzzle_party;
-extern s32 D_80116090_marios_puzzle_party;
-extern s32 D_80116094_marios_puzzle_party;
-extern s32 D_80116098_marios_puzzle_party;
-extern s32 D_8011609C_marios_puzzle_party;
-extern s32 D_801160A0_marios_puzzle_party;
-extern s32 D_801160A4_marios_puzzle_party;
-extern s32 D_801160A8_marios_puzzle_party;
-extern s32 D_801160AC_marios_puzzle_party;
-extern s32 D_801160B0_marios_puzzle_party;
-extern s32 D_801160B4_marios_puzzle_party;
-extern s32 D_801160B8_marios_puzzle_party;
-extern s32 D_801160C0_marios_puzzle_party[4];
-extern s32 D_801160D0_marios_puzzle_party;
-extern s32 D_801160D4_marios_puzzle_party;
-extern s32 D_801160D8_marios_puzzle_party;
-extern s32 D_801160DC_marios_puzzle_party;
-extern s32 D_801160E0_marios_puzzle_party;
-
-extern s32 D_801160E4_marios_puzzle_party;
-
 extern u8 D_800CE20A_main;
 extern u8 D_800D6A90_main;
 
+// screen origin of each player's board
+s32 D_80110080_marios_puzzle_party[4][2] = { { 16, 224 }, { 84, 224 }, { 152, 224 }, { 220, 224 } };
+// board origins used in the endless mode
+s32 D_801100A0_marios_puzzle_party[4][2] = { { 118, 224 }, { 500, 224 }, { 500, 224 }, { 500, 224 } };
+// indexed by chain length - 1
+MarioPuzzlePartyChainColor D_801100C0_marios_puzzle_party[8] = {
+    { 0, 0, 255, 0.8f },
+    { 0, 255, 255, 0.9f },
+    { 0, 255, 0, 1.0f },
+    { 128, 255, 128, 1.1f },
+    { 255, 255, 0, 1.2f },
+    { 255, 128, 0, 1.3f },
+    { 255, 0, 0, 1.4f },
+    { 255, 0, 255, 1.5f }
+};
+D_80111B50_vine_with_me_Struct D_80110140_marios_puzzle_party = { 0, 0, 2, 0, 0, 0, 0, 0, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0, 0, 0, 0 }, -30, -30, 0, 90, 150 };
+MarioPuzzlePartySparkleInit D_80110168_marios_puzzle_party[8] = {
+    { 0, 0, 160.0f, -20.0f, 0.0f, 3.0f },
+    { 2, 2, 330.0f, -10.0f, -2.0f, 2.0f },
+    { 1, 1, 330.0f, 120.0f, -3.0f, 0.0f },
+    { 2, 2, 330.0f, 250.0f, -2.0f, -2.0f },
+    { 0, 0, 160.0f, 260.0f, 0.0f, -3.0f },
+    { 2, 2, -10.0f, 250.0f, 2.0f, -2.0f },
+    { 1, 1, -20.0f, 120.0f, 3.0f, 0.0f },
+    { 2, 2, -10.0f, -10.0f, 2.0f, 2.0f }
+};
+
+MarioPuzzlePartyPath D_801102E0_marios_puzzle_party[4][6] BSS;
+MarioPuzzlePartyPlayerInput D_80114DE0_marios_puzzle_party[4] BSS;
+MarioPuzzlePartyDebris D_80114EF0_marios_puzzle_party[160] BSS;
+
+// sprite animations
+s32 D_80116070_marios_puzzle_party[7] BSS;
+s32 D_8011608C_marios_puzzle_party BSS;
+s32 D_80116090_marios_puzzle_party BSS;
+s32 D_80116094_marios_puzzle_party BSS;
+s32 D_80116098_marios_puzzle_party BSS;
+s32 D_8011609C_marios_puzzle_party BSS;
+s32 D_801160A0_marios_puzzle_party BSS;
+s32 D_801160A4_marios_puzzle_party BSS;
+s32 D_801160A8_marios_puzzle_party BSS;
+s32 D_801160AC_marios_puzzle_party BSS;
+s32 D_801160B0_marios_puzzle_party BSS;
+s32 D_801160B4_marios_puzzle_party BSS;
+s32 D_801160B8_marios_puzzle_party BSS;
+u8 D_801160BC_marios_puzzle_party[4] BSS; /* Unreferenced. */
+s32 D_801160C0_marios_puzzle_party[4] BSS;
+s32 D_801160D0_marios_puzzle_party BSS;
+s32 D_801160D4_marios_puzzle_party BSS;
+s32 D_801160D8_marios_puzzle_party BSS;
+s32 D_801160DC_marios_puzzle_party BSS;
+s32 D_801160E0_marios_puzzle_party BSS;
+
+s32 D_801160E4_marios_puzzle_party BSS;
+
+// set once the minigame is ending
+s32 D_801160E8_marios_puzzle_party BSS;
+u8 D_801160EC_marios_puzzle_party[4] BSS; /* Unreferenced. */
+
+s32 D_801160F0_marios_puzzle_party[4] BSS;
+
+// number of players that took part in the game
+s32 D_80116100_marios_puzzle_party BSS;
+u8 D_80116104_marios_puzzle_party[4] BSS; /* Unreferenced. */
+
+s32 D_80116108_marios_puzzle_party[4] BSS;
+s32 D_80116118_marios_puzzle_party[4] BSS;
+s32 D_80116128_marios_puzzle_party[4] BSS;
+s32 D_80116138_marios_puzzle_party[4] BSS;
+s32 D_80116148_marios_puzzle_party[4] BSS;
+
+s32 D_80116158_marios_puzzle_party BSS;
+s32 D_8011615C_marios_puzzle_party BSS;
+s32 D_80116160_marios_puzzle_party BSS;
+u8 D_80116164_marios_puzzle_party[4] BSS; /* Unreferenced. */
+
+// per-player "still waiting for its turn to finish" flag
+s32 D_80116168_marios_puzzle_party[4] BSS;
+
+s32 D_80116178_marios_puzzle_party[4] BSS;
+s32 D_80116188_marios_puzzle_party[4] BSS;
+s32 D_80116198_marios_puzzle_party[4] BSS;
+s32 D_801161A8_marios_puzzle_party[4] BSS;
+s32 D_801161B8_marios_puzzle_party[4] BSS;
+s32 D_801161C8_marios_puzzle_party[4] BSS;
+s32 D_801161D8_marios_puzzle_party[4] BSS;
+s32 D_801161E8_marios_puzzle_party[4] BSS;
+s32 D_801161F8_marios_puzzle_party[4] BSS;
+s32 D_80116208_marios_puzzle_party[4] BSS;
+s32 D_80116218_marios_puzzle_party[4] BSS;
+s32 D_80116228_marios_puzzle_party[4] BSS;
+MarioPuzzlePartyCursor D_80116238_marios_puzzle_party[4] BSS;
+MarioPuzzlePartyCursor D_80116308_marios_puzzle_party[4] BSS;
+
+// per-player process spawned by the minigame setup
+Process *D_801163D8_marios_puzzle_party[4] BSS;
+
+// spaces queued for removal
+s32 D_801163E8_marios_puzzle_party BSS;
+u8 D_801163EC_marios_puzzle_party[4] BSS; /* Unreferenced. */
+MarioPuzzlePartyMatch D_801163F0_marios_puzzle_party[80] BSS;
+
+// sequence of block owner pairs dealt to every player
+s32 D_801167B0_marios_puzzle_party[30][2] BSS;
+// per-player position in D_801167B0_marios_puzzle_party
+s32 D_801168A0_marios_puzzle_party[4] BSS;
+
+/* Low halves of the s32 sprite animation ids above (aliased in undefined_syms.txt). */
 extern s16 D_8011608E_marios_puzzle_party;
 extern s16 D_80116096_marios_puzzle_party;
 extern s16 D_801160A2_marios_puzzle_party;
@@ -184,53 +254,6 @@ extern s16 D_801160D6_marios_puzzle_party;
 extern s16 D_801160DA_marios_puzzle_party;
 extern s16 D_801160DE_marios_puzzle_party;
 extern s16 D_801160E2_marios_puzzle_party;
-
-// set once the minigame is ending
-extern s32 D_801160E8_marios_puzzle_party;
-
-extern s32 D_801160F0_marios_puzzle_party[4];
-
-// number of players that took part in the game
-extern s32 D_80116100_marios_puzzle_party;
-
-extern s32 D_80116158_marios_puzzle_party;
-extern s32 D_8011615C_marios_puzzle_party;
-extern s32 D_80116160_marios_puzzle_party;
-
-// per-player "still waiting for its turn to finish" flag
-extern s32 D_80116168_marios_puzzle_party[4];
-
-extern s32 D_80116108_marios_puzzle_party[4];
-extern s32 D_80116118_marios_puzzle_party[4];
-extern s32 D_80116128_marios_puzzle_party[4];
-extern s32 D_80116138_marios_puzzle_party[4];
-extern s32 D_80116148_marios_puzzle_party[4];
-extern s32 D_80116178_marios_puzzle_party[4];
-extern s32 D_80116188_marios_puzzle_party[4];
-extern s32 D_80116198_marios_puzzle_party[4];
-extern s32 D_801161A8_marios_puzzle_party[4];
-extern s32 D_801161B8_marios_puzzle_party[4];
-extern s32 D_801161C8_marios_puzzle_party[4];
-extern s32 D_801161D8_marios_puzzle_party[4];
-extern s32 D_801161E8_marios_puzzle_party[4];
-extern s32 D_801161F8_marios_puzzle_party[4];
-extern s32 D_80116208_marios_puzzle_party[4];
-extern s32 D_80116218_marios_puzzle_party[4];
-extern s32 D_80116228_marios_puzzle_party[4];
-extern MarioPuzzlePartyCursor D_80116238_marios_puzzle_party[4];
-extern MarioPuzzlePartyCursor D_80116308_marios_puzzle_party[4];
-
-// per-player process spawned by the minigame setup
-extern Process *D_801163D8_marios_puzzle_party[4];
-
-// spaces queued for removal
-extern s32 D_801163E8_marios_puzzle_party;
-extern MarioPuzzlePartyMatch D_801163F0_marios_puzzle_party[80];
-
-// sequence of block owner pairs dealt to every player
-extern s32 D_801167B0_marios_puzzle_party[30][2];
-// per-player position in D_801167B0_marios_puzzle_party
-extern s32 D_801168A0_marios_puzzle_party[4];
 
 void func_80105C98_marios_puzzle_party(void);
 void func_8010604C_marios_puzzle_party(void);
@@ -966,7 +989,7 @@ void func_80107CBC_marios_puzzle_party(void) {
         if (chain > 8) {
             chain = 8;
         }
-        color = &D_801100B0_marios_puzzle_party[chain];
+        color = &D_801100C0_marios_puzzle_party[chain - 1];
         r = color->r;
         g = color->g;
         b = color->b;

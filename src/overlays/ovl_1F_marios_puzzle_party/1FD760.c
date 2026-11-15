@@ -19,13 +19,30 @@ typedef struct MarioPuzzlePartySpriteBlock {
 
 extern u8 D_800D2008_main;
 extern u8 D_800D6A90_main;
-extern Gfx D_80110230_marios_puzzle_party[];
-extern MarioPuzzlePartySpriteBlock *D_801168B0_marios_puzzle_party;
-extern s16 D_801168B4_marios_puzzle_party;     // number of sprite blocks in use
-extern s16 D_801168B6_marios_puzzle_party;     // model drawing the sprite display list
-extern Gfx *D_801168B8_marios_puzzle_party[3]; // one display list buffer per frame buffer
-extern omObjData *D_801168C4_marios_puzzle_party;
-extern s32 D_801168C8_marios_puzzle_party[4]; // per-board y offset
+
+Gfx D_80110230_marios_puzzle_party[] = {
+    gsDPPipeSync(),
+    gsDPSetCycleType(G_CYC_1CYCLE),
+    gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_DECALRGBA),
+    gsDPSetRenderMode(G_RM_TEX_EDGE, G_RM_NOOP2),
+    gsDPSetAlphaCompare(G_AC_THRESHOLD),
+    gsDPSetBlendColor(0x00, 0x00, 0x00, 0x01),
+    gsDPSetPrimColor(0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
+    gsSPClearGeometryMode(G_LIGHTING | G_CULL_BACK),
+    gsSPSetGeometryMode(G_ZBUFFER),
+    gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
+    gsDPSetTexturePersp(G_TP_NONE),
+    gsDPSetTextureFilter(G_TF_POINT),
+    gsDPPipeSync(),
+    gsSPEndDisplayList(),
+};
+
+MarioPuzzlePartySpriteBlock *D_801168B0_marios_puzzle_party BSS;
+s16 D_801168B4_marios_puzzle_party BSS;     // number of sprite blocks in use
+s16 D_801168B6_marios_puzzle_party BSS;     // model drawing the sprite display list
+Gfx *D_801168B8_marios_puzzle_party[3] BSS; // one display list buffer per frame buffer
+omObjData *D_801168C4_marios_puzzle_party BSS;
+s32 D_801168C8_marios_puzzle_party[4] BSS; // per-board y offset
 
 void func_8010F810_marios_puzzle_party(omObjData *object);
 

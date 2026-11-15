@@ -1324,6 +1324,16 @@ s32 HuWinChoiceGet(s16 winId, s16 arg1, s32 arg2) {
  * previous choice, pointer arithmetic, reversed or casted compares, block-scope
  * or `register` declarations, copies inside the macro, wrapping the stores in
  * the do/while, static inline helpers, and folded `if` blocks.
+ * Also tried: reusing `sprite` for the A_BUTTON `stat` check, indexing through
+ * `i`/`current`, pointer compares, do/while(0) around each single statement,
+ * different do/while placements (only one after the start stores keeps the
+ * score), and moving the `sprite` declaration. expand_preferences cannot help
+ * either: the only global dying in a `sprite` set would be T (the choice << 24
+ * temp in a0), and T only prefers v0/v1. So the original probably had an insn
+ * that existed during allocation and was deleted later, for example a no-op
+ * copy or a branch removed after reload. Mario Party 2 has the same code
+ * (marioparty2 func_8008BCB8_8C8B8, without the mute check) and it also keeps
+ * `sprite` in a0.
  */
 s32 HuWinChoice(s16 winId) {
     TextWindow *window = &winData[winId];

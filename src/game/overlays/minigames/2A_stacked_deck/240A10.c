@@ -1,7 +1,7 @@
 #include "common.h"
 #include "gcc/memory.h"
 #include "math.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 
 // The 4 player entries start at entry 2 of D_8010F730_stacked_deck, and the 12
 // cards laid out on the table start at entry 6.

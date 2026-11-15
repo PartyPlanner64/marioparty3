@@ -1,6 +1,6 @@
 #include "common.h"
 #include "math.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 
 // Per-chomp state at D_8010C420_merry_go_chomp, indexed by omObjData::work[0]
 typedef struct D_8010C420_merry_go_chomp_Entry {

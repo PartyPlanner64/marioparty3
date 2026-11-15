@@ -13,7 +13,7 @@
 #include "gcc/memory.h"
 #include "humath.h"
 #include "math.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 
 // Grid cell value marking a cell that was just filled.
 #define ETCH_N_CATCH_CELL_FILLED 0x21

@@ -1,7 +1,7 @@
 #ifndef MSETUP_INTERNAL_H
 #define MSETUP_INTERNAL_H
 
-#include "overlays/msetup.h"
+#include "game/overlays/msetup.h"
 #include "game/object.h"
 
 typedef MsetupLinkedModel Array2D[2];

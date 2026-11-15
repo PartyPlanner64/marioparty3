@@ -1,6 +1,6 @@
 #include "common.h"
 #include "game/overlays/duel/common/ovl_81.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 
 typedef struct BoardResult2Positions {
     s32 x[4];

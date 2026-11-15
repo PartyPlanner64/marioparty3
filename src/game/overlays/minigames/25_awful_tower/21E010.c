@@ -13,7 +13,7 @@
 #include "game/util.h"
 #include "game/wipe.h"
 #include "gcc/memory.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 
 #define ABS(x) ((x) > 0 ? (x) : -(x))
 

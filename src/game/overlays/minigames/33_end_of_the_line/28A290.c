@@ -1,6 +1,6 @@
 #include "common.h"
 #include "math.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 
 // Per-player state for this minigame. Lives in the `data` pointer (0x5C) of each
 // of the group 0 player objects.

@@ -1,4 +1,4 @@
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 #include "types.h"
 #include "gcc/memory.h"
 #include "game/gamework_data.h"

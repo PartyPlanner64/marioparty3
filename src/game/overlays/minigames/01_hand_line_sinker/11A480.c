@@ -4,7 +4,7 @@
 #include "game/pause.h"
 #include "game/util.h"
 #include "game/mallocblock.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 #include "hand_line_sinker.h"
 
 typedef struct HandLineSinkerObjWork {

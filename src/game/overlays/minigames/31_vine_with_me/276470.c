@@ -1,5 +1,5 @@
 #include "ultra64.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 #include "game/audio.h"
 #include "game/camera.h"
 #include "game/esprite.h"

@@ -12,7 +12,7 @@
 #include "game/util.h"
 #include "game/window.h"
 #include "game/wipe.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 
 // 0x14 byte entry for one space of a Mario's Puzzle Party board path
 typedef struct MarioPuzzlePartyPathSpace {

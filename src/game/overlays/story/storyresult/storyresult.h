@@ -2,7 +2,7 @@
 #define _STORYRESULT_H
 
 #include "common.h"
-#include "overlays/msetup.h"
+#include "game/overlays/msetup.h"
 
 void func_801060D0_storyresult(ModeCameraPreset *preset);
 s16 func_80106E48_storyresult(void);

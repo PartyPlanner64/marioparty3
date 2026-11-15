@@ -3,7 +3,7 @@
 #include "game/mallocblock.h"
 #include "game/hmfmath.h"
 #include "game/lightdebug.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 #include "math.h"
 
 typedef struct UnkModeSel {

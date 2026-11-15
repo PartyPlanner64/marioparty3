@@ -3,7 +3,7 @@
 #define fmod fmod_math_h
 #include "common.h"
 #undef fmod
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 #include "game/hmfmath.h"
 #include "game/mallocblock.h"
 #include "gcc/memory.h"

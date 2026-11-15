@@ -1,5 +1,5 @@
 #include "common.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 
 #define ABS(x) ((x) < 0 ? -(x) : (x))
 #define WRAP_ANGLE(angle) \

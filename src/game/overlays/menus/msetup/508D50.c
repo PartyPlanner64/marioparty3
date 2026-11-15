@@ -1,5 +1,5 @@
 #include "common.h"
-#include "overlays/msetup.h"
+#include "game/overlays/msetup.h"
 
 void func_8010CE8C_msetup(s16);
 u32 func_80106208_msetup(u32);

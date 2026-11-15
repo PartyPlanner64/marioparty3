@@ -1,5 +1,5 @@
 #include "silly_screws.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 #include "gcc/memory.h"
 #include "game/audio.h"
 #include "game/camera.h"

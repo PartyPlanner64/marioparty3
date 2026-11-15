@@ -11,7 +11,7 @@
 #include "game/wipe.h"
 #include "gcc/memory.h"
 #include "math.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 
 #define ABS(x) ((x) < 0 ? -(x) : (x))
 #define FABS(x) ((x) > 0.0f ? (x) : 0.0f - (x))

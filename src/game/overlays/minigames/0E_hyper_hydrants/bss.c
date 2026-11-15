@@ -1,5 +1,5 @@
 #include "common.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 #include "hyper_hydrants.h"
 
 /*

@@ -12,7 +12,7 @@
 #include "game/hmfspr.h"
 #include "game/wipe.h"
 #include "math.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 
 #define FUNC_GRP_MAX 8
 #define FUNC_PRIO_MAX 10

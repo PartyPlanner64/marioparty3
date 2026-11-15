@@ -8,7 +8,7 @@
 #include "game/gamemes.h"
 #include "gcc/memory.h"
 #include "game/window.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 
 // Per-player work for each of the four quads, allocated in func_80107584_mpiq
 typedef struct {

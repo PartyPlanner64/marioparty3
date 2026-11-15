@@ -1,5 +1,5 @@
 #include "common.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 
 // One entry of the 50 entry object table at D_8010B4B0_curtain_call. Layout
 // derived from the table clear in func_80105A3C_curtain_call, which walks 50

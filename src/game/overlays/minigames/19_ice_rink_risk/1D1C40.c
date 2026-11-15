@@ -2,7 +2,7 @@
 #include "game/mallocblock.h"
 #include "game/pause.h"
 #include "gcc/memory.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 
 // Per-object work block of the hockey puck objects, reached via ObjData->data
 typedef struct IceRinkRiskPuckWork {

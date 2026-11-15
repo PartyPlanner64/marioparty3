@@ -1,6 +1,6 @@
 #include "common.h"
 #include "game/hmfmath.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 
 extern f32 D_800CB890_main;
 extern f32 D_800D5210_main;

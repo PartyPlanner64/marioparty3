@@ -1,6 +1,6 @@
 #include "common.h"
 #include "math.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 
 // Sets the CPU cursor's movement direction towards its target position
 // (unk1C, unk20): 1.0f moves negatively along an axis, 2.0f positively.

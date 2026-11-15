@@ -1,4 +1,4 @@
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 #include "game/data.h"
 #include "game/gamework_data.h"
 #include "game/hu3d.h"

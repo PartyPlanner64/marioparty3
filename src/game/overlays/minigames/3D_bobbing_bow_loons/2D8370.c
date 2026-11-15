@@ -1,6 +1,6 @@
 #include "common.h"
 #include "game/mallocblock.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 
 // Per-object work block for D_80109B2C_bobbing_bow_loons, allocated in
 // func_80106CC0_bobbing_bow_loons. Holds five parallel per-item arrays.

@@ -3,7 +3,7 @@
 
 #include "ultra64.h"
 #include "humath.h"
-#include "overlays/modecamera.h"
+#include "game/overlays/modecamera.h"
 
 typedef struct MsetupPlayerConfig {
     u8 controllerPorts[4];

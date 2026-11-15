@@ -1,7 +1,7 @@
 #include "common.h"
 #include "game/mallocblock.h"
 #include "gcc/memory.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 
 typedef struct {
     /* 0x00 */ s16 unk00;

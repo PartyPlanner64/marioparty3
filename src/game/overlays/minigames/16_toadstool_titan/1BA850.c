@@ -1,7 +1,7 @@
 #include "common.h"
 #include "gcc/memory.h"
 #include "game/hmfmath.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 
 typedef struct ToadstoolTitanPlayer {
     /* 0x00 */ s8 chr;

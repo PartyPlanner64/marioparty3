@@ -1,7 +1,7 @@
 #include "common.h"
 #include "game/vibrator.h"
 #include "game/camera.h"
-#include "overlays/msetup.h"
+#include "game/overlays/msetup.h"
 #include "game/mallocblock.h"
 #include "gcc/string.h"
 #include "game/hmfmath.h"

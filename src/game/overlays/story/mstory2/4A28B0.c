@@ -1,6 +1,6 @@
 #include "common.h"
 #include "game/hmfmath.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 #include "mstory2.h"
 
 typedef struct MstoryPath {

@@ -1,6 +1,6 @@
 #include "common.h"
 #include "game/mallocblock.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 
 // Object data for the pointer object held in D_8010A4C0_winners_wheel,
 // created in func_80107D50_winners_wheel. The pointer is made of 18 models.

@@ -2,7 +2,7 @@
 #include "macros.h"
 #include "game/pad.h"
 #include "math.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 
 typedef struct AceHighPlayer {
     /* 0x00 */ u16 unk_00;

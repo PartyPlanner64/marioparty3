@@ -1,6 +1,6 @@
 #include "common.h"
 #include "math.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 
 // One entry of the 50 entry object table at D_8010D260_three_door_monty.
 // Layout derived from the table clear in func_80105A74_three_door_monty.

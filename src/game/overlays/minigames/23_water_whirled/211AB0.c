@@ -11,7 +11,7 @@
 #include "gcc/memory.h"
 #include "humath.h"
 #include "math.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 
 extern u8 D_800D2008_main;
 extern f32 D_800D5210_main;

@@ -1,5 +1,5 @@
 #include "common.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 #include "game/pause.h"
 
 typedef struct PickingPanicPlayer {

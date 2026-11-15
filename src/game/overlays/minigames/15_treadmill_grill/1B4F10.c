@@ -1,6 +1,6 @@
 #include "common.h"
 #include "gcc/memory.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 
 extern s32 D_800A178C_main[][6];
 extern u8 D_800D2008_main;

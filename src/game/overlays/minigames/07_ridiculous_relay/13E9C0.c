@@ -1,5 +1,5 @@
 #include "common.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 
 #define SPEED_SCALE 0.028935185185185185
 #define ABS(x) ((x) > 0 ? (x) : -(x))

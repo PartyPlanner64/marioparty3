@@ -2,7 +2,7 @@
 #define _HAND_LINE_SINKER_H
 
 #include "common.h"
-#include "overlays/mgcamera.h"
+#include "game/overlays/mgcamera.h"
 
 typedef struct FishingLine {
     /* 0x00 */ s16 model;

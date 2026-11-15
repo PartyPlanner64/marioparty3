@@ -3,8 +3,8 @@
 #include "game/pause.h"
 #include "gcc/memory.h"
 #include "game/mallocblock.h"
-#include "overlays/opening.h"
-#include "overlays/minigame.h"
+#include "game/overlays/opening.h"
+#include "game/overlays/minigame.h"
 #include "hyper_hydrants.h"
 
 #define ABS(x) ((x) < 0 ? -(x) : (x))

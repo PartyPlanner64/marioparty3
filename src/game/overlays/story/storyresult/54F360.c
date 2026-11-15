@@ -2,7 +2,7 @@
 #include "game/mallocblock.h"
 #include "gcc/memory.h"
 #include "game/saveload.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 #include "game/overlays/duel/common/ovl_81.h"
 #include "game/esprite.h"
 #include "game/pad.h"

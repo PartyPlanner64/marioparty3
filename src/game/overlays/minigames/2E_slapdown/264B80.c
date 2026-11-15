@@ -1,6 +1,6 @@
 #include "common.h"
 #include "math.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 
 // One entry of the 50 entry object table at D_8010AAB0_slapdown. Layout derived
 // from the table clear in func_80105A74_slapdown, which walks 50 entries of 0x84

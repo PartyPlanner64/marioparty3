@@ -1,5 +1,5 @@
 #include "common.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 
 extern s16 D_800EBDF0_minigame;
 extern D_800EBDF4_minigame_Entry *D_800EBDF4_minigame;

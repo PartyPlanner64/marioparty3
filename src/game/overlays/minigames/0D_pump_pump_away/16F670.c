@@ -1,5 +1,5 @@
 #include "common.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 
 typedef struct UnkPumpPumpAwayEntry {
     /* 0x00 */ s32 unk_00;

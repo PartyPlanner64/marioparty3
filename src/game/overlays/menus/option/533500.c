@@ -1,6 +1,6 @@
 #include "common.h"
 #include "option.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 #include "game/vibrator.h"
 #include "game/mallocblock.h"
 #include "game/pad.h"

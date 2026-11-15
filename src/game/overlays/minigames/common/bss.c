@@ -1,6 +1,6 @@
 #define NO_EXTERN_VARIABLES
 #include "common.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 
 /*
  * Some arrays in this overlay's BSS are only halfword aligned, which GCC won't

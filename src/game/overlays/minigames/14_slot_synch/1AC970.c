@@ -1,6 +1,6 @@
 #include "common.h"
-#include "overlays/minigame.h"
-#include "overlays/mgcamera.h"
+#include "game/overlays/minigame.h"
+#include "game/overlays/mgcamera.h"
 #include "game/mallocblock.h"
 #include "gcc/memory.h"
 #include "game/hmfmath.h"

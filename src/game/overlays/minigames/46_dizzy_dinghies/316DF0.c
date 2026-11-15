@@ -10,7 +10,7 @@
 #include "gcc/memory.h"
 #include "humath.h"
 #include "math.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 
 extern s32 D_800A178C_main[][6];
 extern f32 D_800CB890_main;

@@ -10,7 +10,7 @@
 #include "gcc/memory.h"
 #include "game/wipe.h"
 #include "math.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 
 typedef struct PictureImperfectWork {
     /* 0x00 */ s8 unk00;

@@ -1,7 +1,7 @@
 #include "common.h"
 #include "macros.h"
 #include "game/printfunc.h"
-#include "overlays/opening.h"
+#include "game/overlays/opening.h"
 
 void func_80105B64_sldebug(omObjData *); /* extern */
 void func_80106254_sldebug(omObjData *); /* extern */

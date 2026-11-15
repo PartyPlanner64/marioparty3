@@ -1,6 +1,6 @@
 #define NO_EXTERN_VARIABLES
 #include "common.h"
-#include "overlays/opening.h"
+#include "game/overlays/opening.h"
 
 Process *D_80114EA0_opening BSS;
 s32 D_80114EA4_opening BSS;

@@ -1,5 +1,5 @@
 #include "common.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 
 typedef struct ThwompPullPlayer {
     /* 0x00 */ s8 playerNo;

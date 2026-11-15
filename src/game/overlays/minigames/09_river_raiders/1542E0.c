@@ -7,7 +7,7 @@
 #include "game/object.h"
 #include "game/pause.h"
 #include "game/util.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 
 typedef struct RiverRaidersEntry {
     /* 0x00 */ omObjData *obj;

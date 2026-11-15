@@ -1,7 +1,7 @@
 #include "common.h"
 #include "game/overlays/party/common/FA250.h"
 #include "game/mallocblock.h"
-#include "overlays/opening.h"
+#include "game/overlays/opening.h"
 #include "game/hmfmath.h"
 
 typedef struct {

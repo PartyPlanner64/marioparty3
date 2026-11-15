@@ -1,6 +1,6 @@
 #include "motor_rooter.h"
 #include "macros.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 #include "gcc/memory.h"
 #include "game/audio.h"
 #include "game/camera.h"

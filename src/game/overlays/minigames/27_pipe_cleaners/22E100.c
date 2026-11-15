@@ -1,5 +1,5 @@
 #include "common.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 
 // Per-pipe state used by the pipe cleaners (D_8010AB30_pipe_cleaners, one entry per pipe).
 typedef struct PipeCleanerWork {

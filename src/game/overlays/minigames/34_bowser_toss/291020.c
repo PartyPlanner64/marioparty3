@@ -3,8 +3,8 @@
 #include "game/hmfmath.h"
 #include "game/mallocblock.h"
 #include "math.h"
-#include "overlays/minigame.h"
-#include "overlays/mgcamera.h"
+#include "game/overlays/minigame.h"
+#include "game/overlays/mgcamera.h"
 
 typedef struct UnkBowser { // 0x64 bytes, two entries
     omObjData *unk_00;

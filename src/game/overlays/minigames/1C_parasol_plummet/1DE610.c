@@ -1,5 +1,5 @@
 #include "common.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 
 #define FLAG_IDLE 0x1
 #define FLAG_SPINNING 0x2

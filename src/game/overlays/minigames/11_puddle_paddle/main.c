@@ -4,7 +4,7 @@
 #include "game/sprite.h"
 #include "game/wipe.h"
 #include "game/mallocblock.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 
 #define ABS(x) ((x) > 0 ? (x) : -(x))
 

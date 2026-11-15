@@ -1,6 +1,6 @@
 #include "common.h"
 #include "game/pause.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 #include "game/mallocblock.h"
 #include "humath.h"
 #include "gcc/memory.h"

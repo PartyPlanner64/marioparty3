@@ -1,6 +1,6 @@
 #include "common.h"
 #include "math.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 #include "fridged_bridges.h"
 
 // Result of the ice-floor probe performed by func_80109988.

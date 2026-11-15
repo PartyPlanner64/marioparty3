@@ -8,7 +8,7 @@
 #include "game/mallocblock.h"
 #include "game/pause.h"
 #include "gcc/memory.h"
-#include "overlays/msetup.h"
+#include "game/overlays/msetup.h"
 #include "game/overlays/duel/common/ovl_81.h"
 
 typedef struct UnkStaff { // sizeof 0x20

@@ -3,7 +3,7 @@
 #include "game/mallocblock.h"
 #include "game/pause.h"
 #include "gcc/memory.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 
 #define ABS(x) ((x) > 0.0f ? (x) : 0.0f - (x))
 

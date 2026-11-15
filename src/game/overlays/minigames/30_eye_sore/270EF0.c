@@ -1,6 +1,6 @@
 #include "common.h"
 #include "math.h"
-#include "overlays/minigame.h"
+#include "game/overlays/minigame.h"
 
 // One entry of the 50 entry object table. Layout derived from the table clear
 // in func_80105A74_eye_sore, which walks 50 entries of 0x84 bytes.

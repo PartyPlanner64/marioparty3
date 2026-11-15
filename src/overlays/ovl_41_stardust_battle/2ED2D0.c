@@ -282,103 +282,17 @@ typedef struct UnkStardustBattleObj {
     /* 0x78 */ void (*func_78)(omObjData *);
 } UnkStardustBattleObj; // sizeof 0x7C
 
-extern omObjData *D_80114B58_stardust_battle;
-extern omObjData *D_80114B18_stardust_battle;
-extern UnkStardustBattleStard *D_80114B5C_stardust_battle;
-extern UnkStardustBattleStars *D_80114B2C_stardust_battle;
-extern UnkStardustBattleScoreDisp *D_80114B44_stardust_battle;
 extern u8 D_800D2008_main;
-extern s16 D_80114B54_stardust_battle;
-extern UnkStardustBattleStage *D_80114B10_stardust_battle;
-extern UnkStardustBattleSpots *D_80114B20_stardust_battle;
-extern Vec D_80113EB8_stardust_battle;
-extern omObjData *D_80114B50_stardust_battle;
-extern u8 D_80114B38_stardust_battle[2][6];
 extern s32 D_800A178C_main[][6];
-extern s32 D_80113DFC_stardust_battle[];
-extern s32 D_80113E1C_stardust_battle[];
-extern s32 D_80113DE4_stardust_battle;
-extern s16 D_80113DE6_stardust_battle[];
-extern void (*D_80113E24_stardust_battle[])(omObjData *);
-extern void (*D_80113E30_stardust_battle[])(omObjData *);
-extern void (*D_80113E3C_stardust_battle[])(omObjData *);
-extern void (*D_80113E48_stardust_battle[])(omObjData *);
-extern s32 D_80113E54_stardust_battle[];
-extern s32 D_80113E60_stardust_battle[];
-extern s32 D_80113E6C_stardust_battle[];
-extern void (*D_80113E78_stardust_battle[])(omObjData *);
-extern void (*D_80113E84_stardust_battle[])(omObjData *);
-extern s32 D_80113EF0_stardust_battle[];
-extern s32 D_80113EFC_stardust_battle[];
-extern s32 D_80114AA0_stardust_battle;
-extern s32 D_80114AA4_stardust_battle;
-extern s32 D_80114AA8_stardust_battle;
-extern s32 D_80114AC0_stardust_battle;
-extern s32 D_80114AC4_stardust_battle;
-extern s16 D_80114ACC_stardust_battle;
-extern s16 D_80114ACE_stardust_battle;
-extern HuMtx4F D_80114AD0_stardust_battle;
-extern UnkStardustBattleActor *D_80114B1C_stardust_battle;
-extern s32 D_80114B24_stardust_battle;
-extern s16 *D_80114B28_stardust_battle;
-extern s16 D_80113DBC_stardust_battle[];
-extern s16 D_80113DC4_stardust_battle[];
-extern s16 D_80113DCC_stardust_battle[];
-extern omObjData *D_80114A98_stardust_battle;
-extern s32 D_80114A9C_stardust_battle;
-extern UnkStardustBattleStarDist D_80114A40_stardust_battle[10];
-extern UnkStardustBattleStarDist D_80114A90_stardust_battle;
-extern omObjData *D_80114B34_stardust_battle;
-extern s16 D_80113CE0_stardust_battle[];
-extern s16 D_80113CF0_stardust_battle[];
-extern s32 D_80113ED0_stardust_battle[];
-extern s32 D_80113ED8_stardust_battle[];
-extern UnkStardustBattleNearPoint D_80114940_stardust_battle[32];
+extern s16 D_80113DE6_stardust_battle[]; // low halfword of D_80113DE4
 extern s16 D_800CD1B0_main;
 extern s16 *D_800D04B4_main;
 extern HuMtx4F *D_800D1358_main;
 extern s16 D_800D138A_main;
 extern HuMtx4F D_800D5A00_main[];
-extern s32 D_80113DEC_stardust_battle[];
-extern Vec D_80113CB0_stardust_battle[];
 extern u8 D_800D6A90_main;
 extern f32 D_800EB770_minigame;
-extern D_80111B50_vine_with_me_Struct D_80114BB8_stardust_battle;
-extern s32 D_80114AAC_stardust_battle;
-extern s32 D_80114AB0_stardust_battle;
-extern s32 D_80114AB4_stardust_battle;
-extern u8 D_80113DE8_stardust_battle;
-extern s16 D_80114B14_stardust_battle;
-extern s16 *D_80114B30_stardust_battle;
-extern omObjData *D_80114B48_stardust_battle;
-extern UnkStardustBattleEffect *D_80114B4C_stardust_battle;
-extern UnkStardustBattleColor D_80113CF4_stardust_battle;
-extern UnkStardustBattleColor D_80113EC4_stardust_battle[];
-extern UnkStardustBattleCamera D_80114B60_stardust_battle[2]; // target, origin
-extern s32 D_80114BA8_stardust_battle;
-extern s32 D_80114BAC_stardust_battle;
-extern Gfx D_80114020_stardust_battle[];
-extern Vtx_t D_80114060_stardust_battle[10];
 extern s16 D_800CDD6A_main;
-extern s32 D_80113F08_stardust_battle;
-extern s32 D_80113F0C_stardust_battle;
-extern s32 D_80113F10_stardust_battle;
-extern f32 D_80113F14_stardust_battle[];
-extern s32 D_80114BB0_stardust_battle;
-extern UnkStardustBattleCamPreset D_80113CF8_stardust_battle;
-extern UnkStardustBattleCamPreset D_80113D14_stardust_battle;
-extern UnkStardustBattleCamPreset D_80113D30_stardust_battle;
-extern UnkStardustBattleCamPreset D_80113D68_stardust_battle;
-extern s16 D_80113DE0_stardust_battle;
-extern void (*D_80113DDC_stardust_battle)(); // Unprototyped: called with the object.
-extern s32 D_80114BB4_stardust_battle;
-extern s32 D_80114AB8_stardust_battle;
-extern s32 D_80114ABC_stardust_battle;
-extern UnkStardustBattleObj *D_80114AC8_stardust_battle;
-extern s16 D_80113E90_stardust_battle[];
-extern f32 D_80113E98_stardust_battle[];
-extern s16 D_80113EA8_stardust_battle[];
-extern s16 D_80113EB0_stardust_battle[];
 
 const s16 D_80114100_stardust_battle[] = {
     0x8272, 0x8273, 0x8260, 0x8271, 0x8273, 0x0000
@@ -492,6 +406,180 @@ s32 func_80112980_stardust_battle(HuSprite_Unk84_Struct *sprite, u8 *color);
 s32 func_80113568_stardust_battle(HuSprite_Unk84_Struct *sprite, u16 model, u8 *color);
 s32 func_801138A0_stardust_battle(HuSprite_Unk84_Struct *sprite, HmfData *data, f32 scale, s16 xOffset, s16 yOffset);
 void func_8011376C_stardust_battle(u16 model, HuSprite_Unk84_Struct *sprite, u16 frame, u8 *color);
+void func_80108404_stardust_battle(omObjData *object);
+void func_80108444_stardust_battle(omObjData *object);
+void func_8010844C_stardust_battle(omObjData *object);
+void func_80108454_stardust_battle(omObjData *object);
+void func_801084B0_stardust_battle(omObjData *object);
+void func_801086E8_stardust_battle(omObjData *object);
+void func_8010882C_stardust_battle(omObjData *object);
+void func_801089B4_stardust_battle(omObjData *object);
+void func_801089BC_stardust_battle(omObjData *object);
+void func_80108AC4_stardust_battle(omObjData *object);
+void func_801093CC_stardust_battle(omObjData *object);
+void func_80109424_stardust_battle(omObjData *object);
+void func_80109F94_stardust_battle(omObjData *object);
+void func_8010A5E0_stardust_battle(omObjData *object);
+
+Vec D_80113CB0_stardust_battle[] = {
+    { -0.0f, 0.0f, 0.0f },
+    { -0.0f, 0.0f, -0.0f },
+    { 0.0f, 0.0f, -0.0f },
+    { 0.0f, 0.0f, 0.0f },
+};
+
+s16 D_80113CE0_stardust_battle[] = { 118, 130, 138, 150, 162, 172, 184, 196 };
+s16 D_80113CF0_stardust_battle[] = { 28, 40 };
+UnkStardustBattleColor D_80113CF4_stardust_battle = { 0xE9DDA180 };
+UnkStardustBattleCamPreset D_80113CF8_stardust_battle = { { 0.0f, 150.0f, 0.0f }, { 350.0f, 0.0f, 0.0f }, 650.0f };
+UnkStardustBattleCamPreset D_80113D14_stardust_battle = { { 0.0f, 690.0f, 0.0f }, { 350.0f, 0.0f, 0.0f }, 1250.0f };
+UnkStardustBattleCamPreset D_80113D30_stardust_battle = { { 0.0f, 690.0f, 0.0f }, { 350.0f, 0.0f, 0.0f }, 300.0f };
+UnkStardustBattleCamPreset D_80113D4C_stardust_battle = { { 0.0f, 710.0f, 0.0f }, { 350.0f, 0.0f, 0.0f }, 300.0f }; /* Unreferenced. */
+UnkStardustBattleCamPreset D_80113D68_stardust_battle = { { 0.0f, 250.0f, 0.0f }, { 330.0f, 0.0f, 0.0f }, 1550.0f };
+UnkStardustBattleCamPreset D_80113D84_stardust_battle = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 500.0f }; /* Unreferenced. */
+UnkStardustBattleCamPreset D_80113DA0_stardust_battle = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 500.0f }; /* Unreferenced. */
+s16 D_80113DBC_stardust_battle[] = { 6, 3, -1, -1 };
+s16 D_80113DC4_stardust_battle[] = { 4, 2, -1, -1 };
+s16 D_80113DCC_stardust_battle[] = { 2, 1, -1, -1, 1, 1, -1, -1 };
+void (*D_80113DDC_stardust_battle)() = NULL; // Unprototyped: called with the object.
+s16 D_80113DE0_stardust_battle = -1;
+s32 D_80113DE4_stardust_battle = 0;
+u8 D_80113DE8_stardust_battle = 2;
+s32 D_80113DEC_stardust_battle[] = { 0, 1, 2, 3 };
+s32 D_80113DFC_stardust_battle[] = { 0x00020000, 0x00030000, 0x00070000, 0x00040000, 0x00050000, 0x00060000, 0x00080000, 0x00090000 };
+s32 D_80113E1C_stardust_battle[] = { 47, 48 };
+void (*D_80113E24_stardust_battle[])(omObjData *) = { func_80108404_stardust_battle, func_80108454_stardust_battle, func_8010882C_stardust_battle };
+void (*D_80113E30_stardust_battle[])(omObjData *) = { func_80108444_stardust_battle, func_801084B0_stardust_battle, func_801089B4_stardust_battle };
+void (*D_80113E3C_stardust_battle[])(omObjData *) = { func_8010844C_stardust_battle, func_801086E8_stardust_battle, func_801089BC_stardust_battle };
+void (*D_80113E48_stardust_battle[])(omObjData *) = { NULL, NULL, func_80108AC4_stardust_battle };
+s32 D_80113E54_stardust_battle[] = { 2, 3, 4 };
+s32 D_80113E60_stardust_battle[] = { 0, 0, 1 };
+s32 D_80113E6C_stardust_battle[] = { 0x400, 0x400, 0x800 };
+void (*D_80113E78_stardust_battle[])(omObjData *) = { func_801093CC_stardust_battle, func_80109424_stardust_battle, func_8010A5E0_stardust_battle };
+void (*D_80113E84_stardust_battle[])(omObjData *) = { NULL, func_80109F94_stardust_battle, NULL };
+s16 D_80113E90_stardust_battle[] = { 0, 1, 2, 0 };
+f32 D_80113E98_stardust_battle[] = { -16.5f, -24.750002f, -33.0f, -33.0f };
+s16 D_80113EA8_stardust_battle[] = { 32, 20, 16, 16 };
+s16 D_80113EB0_stardust_battle[] = { 0, 15, 12, 9 };
+Vec D_80113EB8_stardust_battle = { 0.0f, 0.0f, 0.0f };
+UnkStardustBattleColor D_80113EC4_stardust_battle[] = { { 0xFF6400FF }, { 0xFFFFFFFF }, { 0xFFFFFFFF } };
+s32 D_80113ED0_stardust_battle[] = { 49, 50 };
+s32 D_80113ED8_stardust_battle[] = { 0, 1, 3, 4, 6, 7 };
+s32 D_80113EF0_stardust_battle[] = { 8, 5, 0x10013 };
+s32 D_80113EFC_stardust_battle[] = { 0x1800, 0x1C00, 0x1C00 };
+s32 D_80113F08_stardust_battle = 0;
+s32 D_80113F0C_stardust_battle = 0;
+s32 D_80113F10_stardust_battle = 0;
+f32 D_80113F14_stardust_battle[] = { 0.125f, 0.0f, 0.05f, 0.0f, 0.0f, 0.0f, 0.0f };
+
+Gfx D_80113F30_stardust_battle[] = {
+    gsSPSegment(0x00, 0x00000000),
+    gsDPPipeSync(),
+    gsDPSetCycleType(G_CYC_1CYCLE),
+    gsDPPipelineMode(G_PM_1PRIMITIVE),
+    gsDPSetTextureLOD(G_TL_TILE),
+    gsDPSetTextureLUT(G_TT_NONE),
+    gsDPSetTextureDetail(G_TD_CLAMP),
+    gsDPSetTexturePersp(G_TP_NONE),
+    gsDPSetTileSize(G_TX_RENDERTILE, 0, 0, 0, 0),
+    gsDPSetTileSize(1, 0, 0, 0, 0),
+    gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_4b, 0, 0x0000, G_TX_RENDERTILE, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
+                G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD),
+    gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_4b, 0, 0x0000, 1, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD,
+                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD),
+    gsDPSetTextureFilter(G_TF_BILERP),
+    gsDPSetTextureConvert(G_TC_FILT),
+    gsDPSetCombineMode(G_CC_SHADE, G_CC_SHADE),
+    gsDPSetCombineKey(G_CK_NONE),
+    gsDPSetAlphaCompare(G_AC_NONE),
+    gsDPSetDepthSource(G_ZS_PIXEL),
+    gsDPSetRenderMode(G_RM_OPA_SURF, G_RM_OPA_SURF2),
+    gsDPNoOp(),
+    gsDPSetColorDither(G_CD_DISABLE),
+    gsDPPipeSync(),
+    gsSPEndDisplayList(),
+};
+
+Gfx D_80113FE8_stardust_battle[] = {
+    gsSPClearGeometryMode(0xFFFFFFFF),
+    gsSPTexture(0, 0, 0, G_TX_RENDERTILE, G_OFF),
+    gsSPSetGeometryMode(G_SHADE | G_SHADING_SMOOTH),
+    gsSPEndDisplayList(),
+};
+
+Gfx D_80114008_stardust_battle[] = {
+    gsSPDisplayList(D_80113FE8_stardust_battle),
+    gsSPDisplayList(D_80113F30_stardust_battle),
+    gsSPEndDisplayList(),
+};
+
+Gfx D_80114020_stardust_battle[] = {
+    gsDPPipeSync(),
+    gsSPDisplayList(D_80114008_stardust_battle),
+    gsDPSetCycleType(G_CYC_1CYCLE),
+    gsSPSetGeometryMode(G_ZBUFFER | G_CULL_BACK | G_LIGHTING | G_SHADING_SMOOTH),
+    gsDPSetBlendColor(0x00, 0x00, 0x00, 0x00),
+    gsDPSetPrimColor(0, 0, 0x00, 0x00, 0x00, 0xFF),
+    gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
+    gsSPEndDisplayList(),
+};
+
+Vtx_t D_80114060_stardust_battle[10] = {
+    { { 0, 0, 0 }, 0, { 0, 0 }, { 255, 255, 255, 255 } },
+    { { 16, 300, 0 }, 0, { 0, 0 }, { 255, 255, 255, 255 } },
+    { { -16, 300, 0 }, 0, { 0, 0 }, { 255, 255, 255, 255 } },
+    { { 32, 600, 0 }, 0, { 0, 0 }, { 255, 255, 255, 0 } },
+    { { 0, 600, 0 }, 0, { 0, 0 }, { 255, 255, 255, 0 } },
+    { { -32, 600, 0 }, 0, { 0, 0 }, { 255, 255, 255, 0 } },
+    { { 48, 900, 0 }, 0, { 0, 0 }, { 255, 255, 255, 0 } },
+    { { 24, 900, 0 }, 0, { 0, 0 }, { 255, 255, 255, 0 } },
+    { { -24, 900, 0 }, 0, { 0, 0 }, { 255, 255, 255, 0 } },
+    { { -48, 900, 0 }, 0, { 0, 0 }, { 255, 255, 255, 0 } },
+};
+
+UnkStardustBattleNearPoint D_80114940_stardust_battle[32] BSS;
+UnkStardustBattleStarDist D_80114A40_stardust_battle[10] BSS;
+UnkStardustBattleStarDist D_80114A90_stardust_battle BSS;
+omObjData *D_80114A98_stardust_battle BSS;
+s32 D_80114A9C_stardust_battle BSS;
+s32 D_80114AA0_stardust_battle BSS;
+s32 D_80114AA4_stardust_battle BSS;
+s32 D_80114AA8_stardust_battle BSS;
+s32 D_80114AAC_stardust_battle BSS;
+s32 D_80114AB0_stardust_battle BSS;
+s32 D_80114AB4_stardust_battle BSS;
+s32 D_80114AB8_stardust_battle BSS;
+s32 D_80114ABC_stardust_battle BSS;
+s32 D_80114AC0_stardust_battle BSS;
+s32 D_80114AC4_stardust_battle BSS;
+UnkStardustBattleObj *D_80114AC8_stardust_battle BSS;
+s16 D_80114ACC_stardust_battle BSS;
+s16 D_80114ACE_stardust_battle BSS;
+HuMtx4F D_80114AD0_stardust_battle BSS;
+UnkStardustBattleStage *D_80114B10_stardust_battle BSS;
+s16 D_80114B14_stardust_battle BSS;
+omObjData *D_80114B18_stardust_battle BSS;
+UnkStardustBattleActor *D_80114B1C_stardust_battle BSS;
+UnkStardustBattleSpots *D_80114B20_stardust_battle BSS;
+s32 D_80114B24_stardust_battle BSS;
+s16 *D_80114B28_stardust_battle BSS;
+UnkStardustBattleStars *D_80114B2C_stardust_battle BSS;
+s16 *D_80114B30_stardust_battle BSS;
+omObjData *D_80114B34_stardust_battle BSS;
+u8 D_80114B38_stardust_battle[2][6] BSS;
+UnkStardustBattleScoreDisp *D_80114B44_stardust_battle BSS;
+omObjData *D_80114B48_stardust_battle BSS;
+UnkStardustBattleEffect *D_80114B4C_stardust_battle BSS;
+omObjData *D_80114B50_stardust_battle BSS;
+s16 D_80114B54_stardust_battle BSS;
+omObjData *D_80114B58_stardust_battle BSS;
+UnkStardustBattleStard *D_80114B5C_stardust_battle BSS;
+UnkStardustBattleCamera D_80114B60_stardust_battle[2] BSS; // target, origin
+s32 D_80114BA8_stardust_battle BSS;
+s32 D_80114BAC_stardust_battle BSS;
+s32 D_80114BB0_stardust_battle BSS;
+s32 D_80114BB4_stardust_battle BSS;
+D_80111B50_vine_with_me_Struct D_80114BB8_stardust_battle BSS;
 
 void func_801059A0_stardust_battle(void) {
     u8 camIndex;
@@ -1432,21 +1520,21 @@ void func_801082C4_stardust_battle(omObjData *object) {
     }
 }
 
-void func_80108404_stardust_battle(void) {
+void func_80108404_stardust_battle(omObjData *object) {
     D_800EB744_minigame = 1.47f;
     D_800EB748_minigame = 0.15f;
     D_800EB774_minigame = 1.7f;
 }
 
-void func_80108444_stardust_battle(void) {
+void func_80108444_stardust_battle(omObjData *object) {
 }
 
-void func_8010844C_stardust_battle(void) {
+void func_8010844C_stardust_battle(omObjData *object) {
 }
 
 /* Like func_80107FA4, the return value of func_80111FEC_stardust_battle is
    treated as a pointer. */
-void func_80108454_stardust_battle(void) {
+void func_80108454_stardust_battle(omObjData *object) {
     UnkStardustBattleObj *obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle();
 
     D_800EB744_minigame = 1.029f;
@@ -1548,7 +1636,7 @@ void func_8010882C_stardust_battle(omObjData *object) {
     mtxScaleCat(shadow->mtx, 1.0f, -1.0f, 1.0f);
 }
 
-void func_801089B4_stardust_battle(void) {
+void func_801089B4_stardust_battle(omObjData *object) {
 }
 
 void func_801089BC_stardust_battle(omObjData *object) {

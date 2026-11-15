@@ -1,39 +1,8 @@
 #include "common.h"
+#include "macros.h"
 #include "overlays/minigame.h"
 #include "game/mallocblock.h"
 #include "gcc/memory.h"
-
-extern u32 D_80109148_eatsa_pizza;
-extern u8 D_80109101_eatsa_pizza[4][2];
-extern u8 D_80109108_eatsa_pizza;
-extern u8 D_8010910C_eatsa_pizza[4];
-extern s16 D_80109110_eatsa_pizza[4][3];
-extern f32 D_80109128_eatsa_pizza[8];
-extern s32 D_800A178C_main[][6];
-extern s32 D_800A1790_main[][6];
-extern f32 D_80109358_eatsa_pizza[4][4];
-extern f32 D_80109390_eatsa_pizza;
-extern f32 D_80109398_eatsa_pizza[4][4];
-extern f32 D_801093D8_eatsa_pizza;
-extern s16 D_80109278_eatsa_pizza;
-extern s16 D_8010927A_eatsa_pizza[2];
-extern s16 D_8010927E_eatsa_pizza[2];
-extern s16 D_80109282_eatsa_pizza[1];
-extern s16 D_80109284_eatsa_pizza;
-extern s16 D_80109288_eatsa_pizza;
-extern s16 D_8010928A_eatsa_pizza[3];
-extern s16 D_8010928E_eatsa_pizza;
-extern s16 D_80109298_eatsa_pizza[0x10];
-extern u16 D_801092B8_eatsa_pizza[4];
-extern s16 D_801092C0_eatsa_pizza[2][5][7];
-extern u16 D_8010934C_eatsa_pizza[2];
-extern s16 D_80109350_eatsa_pizza;
-extern s32 D_80109138_eatsa_pizza;
-extern s16 D_8010913A_eatsa_pizza;
-extern u16 D_8010913C_eatsa_pizza;
-extern s32 D_80109140_eatsa_pizza;
-extern s16 D_80109144_eatsa_pizza;
-extern s32 D_80109260_eatsa_pizza[2];
 
 // Per-player work allocated in func_80106504_eatsa_pizza, stored at ObjData->unk158
 typedef struct {
@@ -60,7 +29,53 @@ typedef struct {
     /* 0x37 */ u8 unk37;
 } Work; // Size 0x38
 
-extern Work *D_80109268_eatsa_pizza[4][2];
+extern s32 D_800A178C_main[][6];
+extern s32 D_800A1790_main[][6];
+
+// Aliases into the arrays below, see undefined_syms.txt.
+extern s16 D_8010913A_eatsa_pizza;
+extern s16 D_8010927A_eatsa_pizza[2];
+extern s16 D_8010927E_eatsa_pizza[2];
+extern s16 D_80109282_eatsa_pizza[1];
+extern s16 D_80109284_eatsa_pizza;
+extern s16 D_8010928A_eatsa_pizza[3];
+extern s16 D_8010928E_eatsa_pizza;
+
+u8 D_80109100_eatsa_pizza[4][2] = {
+    { 0, 0 },
+    { 0, 1 },
+    { 0, 2 },
+    { 0, 3 }
+};
+u8 D_80109108_eatsa_pizza = 0;
+u8 D_8010910C_eatsa_pizza[4] = { 0 };
+s16 D_80109110_eatsa_pizza[4][3] = {
+    { -85, -75, -200 },
+    { -85, 75, -200 },
+    { 85, -75, -200 },
+    { 85, 75, -200 }
+};
+f32 D_80109128_eatsa_pizza[4] = { 45.0f, 135.0f, -45.0f, -135.0f };
+s32 D_80109138_eatsa_pizza = 0;
+u16 D_8010913C_eatsa_pizza = 0;
+s32 D_80109140_eatsa_pizza = -1;
+s16 D_80109144_eatsa_pizza = 0;
+u32 D_80109148_eatsa_pizza = 0x41C64E6D;
+
+s32 D_80109260_eatsa_pizza[2] BSS;
+Work *D_80109268_eatsa_pizza[2][2] BSS;
+s16 D_80109278_eatsa_pizza[7] BSS; // sprite data ids
+s16 D_80109288_eatsa_pizza[4] BSS; // sprite group ids
+u8 D_80109290_eatsa_pizza[8] BSS;  /* Unreferenced. */
+s16 D_80109298_eatsa_pizza[0x10] BSS;
+u16 D_801092B8_eatsa_pizza[4] BSS;
+s16 D_801092C0_eatsa_pizza[2][5][7] BSS;
+u16 D_8010934C_eatsa_pizza[2] BSS;
+s16 D_80109350_eatsa_pizza BSS;
+u8 D_80109354_eatsa_pizza[4] BSS; /* Unreferenced. */
+f32 D_80109358_eatsa_pizza[4][4] BSS;
+f32 D_80109398_eatsa_pizza[4][4] BSS;
+f32 D_801093D8_eatsa_pizza BSS;
 
 s32 func_80107E6C_eatsa_pizza(omObjData *object);
 void func_801078C4_eatsa_pizza(omObjData *object);
@@ -196,7 +211,7 @@ void func_80105E54_eatsa_pizza(f32 *arg0, f32 *dst) {
 }
 
 void func_80105F24_eatsa_pizza(f32 x, f32 y, f32 z, f32 *dst) {
-    f32 depth = z + D_80109390_eatsa_pizza;
+    f32 depth = z + D_80109358_eatsa_pizza[3][2];
     f32 scale = __builtin_fabsf(depth * D_801093D8_eatsa_pizza);
     f32 mtx[4][4];
 
@@ -226,7 +241,7 @@ void func_80106084_eatsa_pizza(omObjData *object) {
     func_800E1BA8_minigame_ObjData *data;
     Work *work;
 
-    player = D_80109101_eatsa_pizza[D_80109108_eatsa_pizza][0];
+    player = D_80109100_eatsa_pizza[D_80109108_eatsa_pizza][1];
     group = GwPlayer[player].group;
     character = (s8)GwPlayer[player].chr;
     model = D_800A178C_main[character][0];
@@ -416,7 +431,7 @@ void func_8010679C_eatsa_pizza(omObjData *object) {
                     func_800E5690_minigame(object, 0x10);
                 }
                 if (work->unk35 == 0) {
-                    angle = atan2df((f32)dx, (f32) - dy) + 180.0;
+                    angle = atan2df((f32)dx, (f32)-dy) + 180.0;
                 } else {
                     angle = work->unk18;
                 }
@@ -1009,10 +1024,10 @@ void func_80108470_eatsa_pizza(omObjData *object) {
     s16 *groupP;
     s16 data = func_80108FA4_eatsa_pizza(0x2C0000);
 
-    D_80109278_eatsa_pizza = data;
+    D_80109278_eatsa_pizza[0] = data;
     // Group pointer must be captured as part of the store so the address is
     // computed after the call, matching the original.
-    *(groupP = &D_80109288_eatsa_pizza) = func_80108FEC_eatsa_pizza(data, 1);
+    *(groupP = &D_80109288_eatsa_pizza[0]) = func_80108FEC_eatsa_pizza(data, 1);
     HuSprPosSet(*groupP, 0, 160, 120);
     HuSprAttrSet(*groupP, 0, 0x4000);
     object->func = func_801087DC_eatsa_pizza;

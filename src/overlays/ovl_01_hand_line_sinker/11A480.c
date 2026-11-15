@@ -1682,10 +1682,17 @@ f32 func_8010AAEC_hand_line_sinker(f32 x) {
  * following mul.s. The KMC assembler's VR4300 mulmul fix inserts a nop before any mul.s that directly
  * follows a label or a blank line, so the original asm must have had a code label right after
  * `jal logf` in the second block (no other directive/nop/-g form reproduces it; the pattern is unique
- * in the ROM). GCC only keeps a label there if something still references it, e.g. a reorg leak.
+ * in the ROM). No branch in the target jumps to that mul.s, so the label is an orphan. The only
+ * orphan-label mechanism seen in this GCC (e.g. the loop-top labels in func_800EB1CC_shared_board)
+ * is reorg deleting a dead block that holds a delay-slot-filled `j LABEL` SEQUENCE: jump.c
+ * delete_insn does not decrement the label count of a jump inside a SEQUENCE. That needs an
+ * out-of-line block (loop/goto style) that jumps back to `end = t * s + ...` and that reorg
+ * threads away, which this straight-line code does not have. The rest of the RTL before reorg
+ * already matches.
  * Tried without success: if/else, ternary, inverted condition, `+ -1.0f`, compound assignment,
- * split temporaries, repeated condition tests, goto/break/while/do-while(0) wrappers, early return,
- * and static inline helpers for the whole block or for logf. */
+ * split temporaries, u = logf() / -1.0f joins, `p = t * s` hoisting, repeated condition tests,
+ * goto/break/while/do-while(0) wrappers, early-return tails, and static inline helpers for the
+ * whole block or for logf. */
 f32 func_8010ABD4_hand_line_sinker(f32 a) {
     f32 b;
     f32 t;

@@ -98,7 +98,7 @@ typedef struct {
 
 typedef struct A96F0_ObjData A96F0_ObjData;
 
-// Per-object data (omObjData.data) of the item objects driven by A96F0.c.
+// Per-object data (omObjData.data) of the item objects driven by objphys.c.
 struct A96F0_ObjData {
     /* 0x00 */ char unk00[0x21];
     /* 0x21 */ u8 unk21[4];
@@ -237,7 +237,7 @@ typedef struct {
     /* 0x10 */ Vec prev;
 } func_800DBCF4_minigame_Arg; // Size 0x1C
 
-// A96F0.c
+// objphys.c
 void func_800D6B70_minigame(omObjData *arg0);
 f32 func_800D6E14_minigame(omObjData *arg0, f32 x, f32 y, f32 z);
 void func_800D6E74_minigame(omObjData *arg0, Vec *arg1);
@@ -257,7 +257,7 @@ void func_800D83D8_minigame(omObjData *arg0, s32 arg1);
 void func_800D853C_minigame(omObjData *arg0, omObjData *arg1);
 void func_800D861C_minigame(A96F0_ObjData *arg0, s32 arg1, s32 (*arg2)(omObjData *));
 
-// AB1C0.c
+// mapcoll.c
 f32 func_800D8640_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg1, f32 arg2);
 f32 func_800D8778_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg1, f32 arg2, f32 arg3, Vec *arg4);
 f32 func_800D8818_minigame(f32 x, f32 y, f32 z, Hu3DPoint *points, Hu3DQuad *quad, Vec *dir, Vec *out);
@@ -294,7 +294,7 @@ void func_800E0430_minigame(f32 x, f32 y, f32 z);
 void func_800E048C_minigame(f32 arg0, f32 arg1, f32 arg2);
 void func_800E04C8_minigame(omObjData *arg0, s32 arg1);
 
-// B3CE0.c
+// player.c
 void func_800E1160_minigame(omObjData *arg0, u16 arg1, u16 player, s32 arg3, s32 arg4, f32 arg5);
 void func_800E123C_minigame(omObjData *arg0, u16 arg1, s32 arg2, s32 arg3, f32 arg4);
 void func_800E12B0_minigame(omObjData *arg0, f32 arg1);
@@ -368,7 +368,7 @@ void func_800E3568_minigame(func_800E1BA8_minigame_ObjData *arg0, s32 index, s32
 void func_800E3584_minigame(s16 model);
 void func_800E3628_minigame(s16 model, Vec *normal);
 
-// B63A0.c
+// playermode.c
 void func_800E3820_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg1);
 void func_800E38A4_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg1);
 void func_800E3928_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg1);
@@ -387,7 +387,7 @@ void func_800E454C_minigame(omObjData *arg0, omObjData *arg1, f32 x, f32 z, u16 
 void func_800E47D8_minigame(omObjData *arg0, f32 arg1);
 void func_800E4890_minigame(omObjData *arg0, f32 x, f32 y, f32 z, f32 groundY, Vec *normal);
 
-// B7600.c
+// motion.c
 s32 func_800E4A80_minigame(omObjData *arg0);
 u32 func_800E4A90_minigame(omObjData *arg0);
 void func_800E4BA4_minigame(s32 arg0);
@@ -412,12 +412,12 @@ s16 func_800E5A98_minigame(omObjData *arg0, s32 arg1);
 void func_800E5B08_minigame(omObjData *arg0, u16 arg1, s32 arg2, u16 arg3, u16 arg4, s16 arg5);
 void func_800E5C18_minigame(omObjData *arg0, u16 arg1, s32 arg2, s32 arg3, u16 arg4, s16 arg5);
 
-// B88C0.c
+// rand.c
 u32 func_800E5D40_minigame(u32 seed);
 u32 func_800E5E14_minigame(void);
 u32 func_800E5E3C_minigame(u32 max);
 
-// B8A20.c
+// seqman.c
 void func_800E5EA0_minigame(MinigameFlow *flow);
 void func_800E6248_minigame(s32 arg0, s32 arg1);
 void func_800E625C_minigame(s32 arg0);
@@ -439,7 +439,7 @@ void func_800E6F34_minigame(s32 arg0);
 // Unprototyped: Dorrie Dip passes an object argument that the other callers omit.
 u8 MgFlowMain();
 
-// BA4B0.c
+// pause.c
 void func_800E7930_minigame(s16 group, s16 member, s16 graphic, s16 prio, s16 x, s16 y);
 void func_800E7F60_minigame(void);
 Process *func_800E8EC4_minigame(u16 arg0, s16 arg1);
@@ -451,7 +451,7 @@ s16 func_800E905C_minigame(s16 arg0);
 void func_800E9170_minigame(void);
 void func_800E989C_minigame(void);
 
-// BC7A0.c
+// score.c
 void func_800E9C20_minigame(s16 count, u16 length);
 void func_800E9E28_minigame(void);
 void func_800E9F40_minigame(s16 arg0, s16 x, s16 y, s16 arg3);
@@ -463,7 +463,7 @@ void func_800EA2A8_minigame(s16 arg0);
 void func_800EA444_minigame(s16 arg0);
 void func_800EA518_minigame(void);
 
-// BD210.c
+// shadow.c
 void func_800EA690_minigame(void);
 omObjData *func_800EA6C4_minigame(s16 prio, s16 arg1, s16 arg2, s16 arg3, s16 arg4);
 void func_800EA7D0_minigame(omObjData *obj, f32 x, f32 y, f32 z);

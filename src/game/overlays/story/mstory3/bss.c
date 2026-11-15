@@ -21,7 +21,7 @@ typedef struct Mstory3BssC9C {
 
 /* The overlay's BSS is shared by all of its code units. Keep allocation order here. */
 
-/* 4B29E0 */
+/* main.c */
 s16 D_80115B90_mstory3 BSS;
 s16 D_80115B92_mstory3 BSS;
 u16 D_80115B94_mstory3 BSS;
@@ -31,7 +31,7 @@ s16 D_80115BA8_mstory3[8] BSS;
 s16 D_80115BB8_mstory3 BSS;
 s32 D_80115BBC_mstory3 BSS;
 
-/* 4B4DC0 */
+/* scene1.c */
 UnkMstory3Obj D_80115BC0_mstory3[6] BSS;
 u8 D_80115C38_mstory3[12] BSS; /* Unreferenced. */
 Vec D_80115C44_mstory3 BSS;
@@ -42,7 +42,7 @@ Vec D_80115C74_mstory3 BSS; /* Unreferenced. */
 Mstory3BssC80 mstory3BssC80 BSS;
 Mstory3BssC9C mstory3BssC9C BSS;
 
-/* 4B9A30 */
+/* scene0.c */
 UnkMstory3Obj D_80115CB0_mstory3[11] BSS;
 s16 D_80115D8C_mstory3 BSS;
 s16 D_80115D8E_mstory3 BSS;
@@ -55,5 +55,5 @@ s16 D_80115DAE_mstory3 BSS;
 s16 D_80115DB0_mstory3 BSS;
 u8 D_80115DB4_mstory3[12] BSS; /* Unreferenced. */
 
-/* 4B29E0 */
+/* main.c */
 s16 D_80115DC0_mstory3[4] BSS;

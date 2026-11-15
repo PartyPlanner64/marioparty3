@@ -680,28 +680,28 @@ segments:
     exclusive_ram_id: board_code
     bss_size: 0x820
     subsegments:
-      - [0xA96F0, c]
-      - [0xAB1C0, c]
-      - [0xB3CE0, c]
-      - [0xB63A0, c]
-      - [0xB7600, c]
-      - [0xB88C0, c]
-      - [0xB8A20, c]
-      - [0xBA4B0, c]
-      - [0xBC7A0, c]
-      - [0xBD210, c]
-      - [0xBE2A0, .data, A96F0] #800EB720
-      - [0xBE2B0, .data, AB1C0] #800EB730
-      - [0xBE380, .data, B3CE0] #800EB800
-      - [0xBE480, .data, B88C0] #800EB900
-      - [0xBE490, .data, B8A20] #800EB910
-      - [0xBE4D0, .data, BA4B0] #800EB950
-      - [0xBE690, .rodata, A96F0] #800EBB10
-      - [0xBE6B0, .rodata, AB1C0] #800EBB30
-      - [0xBE750, .rodata, B3CE0] #800EBBD0
-      - [0xBE760, .rodata, B63A0] #800EBBE0
-      - [0xBE770, .rodata, B7600] #800EBBF0
-      - [0xBE860, .rodata, B8A20] #800EBCE0
+      - [0xA96F0, c, objphys]
+      - [0xAB1C0, c, mapcoll]
+      - [0xB3CE0, c, player]
+      - [0xB63A0, c, playermode]
+      - [0xB7600, c, motion]
+      - [0xB88C0, c, rand]
+      - [0xB8A20, c, seqman]
+      - [0xBA4B0, c, pause]
+      - [0xBC7A0, c, score]
+      - [0xBD210, c, shadow]
+      - [0xBE2A0, .data, objphys] #800EB720
+      - [0xBE2B0, .data, mapcoll] #800EB730
+      - [0xBE380, .data, player] #800EB800
+      - [0xBE480, .data, rand] #800EB900
+      - [0xBE490, .data, seqman] #800EB910
+      - [0xBE4D0, .data, pause] #800EB950
+      - [0xBE690, .rodata, objphys] #800EBB10
+      - [0xBE6B0, .rodata, mapcoll] #800EBB30
+      - [0xBE750, .rodata, player] #800EBBD0
+      - [0xBE760, .rodata, playermode] #800EBBE0
+      - [0xBE770, .rodata, motion] #800EBBF0
+      - [0xBE860, .rodata, seqman] #800EBCE0
       - {0xBE940, type: .bss, vram: 0x800EBDC0, name: bss}
 
   - type: code
@@ -712,70 +712,70 @@ segments:
     exclusive_ram_id: board_code
     bss_size: 0x2D60
     subsegments:
-      - [0xBE940, c]
-      - [0xBECB0, c]
-      - [0xBF4A0, c]
-      - [0xBFB40, c]
-      - [0xC1580, c]
-      - [0xC1BA0, c]
-      - [0xC1D60, c]
-      - [0xC4430, c]
-      - [0xC45D0, c]
-      - [0xC5770, c]
-      - [0xC9330, c]
-      - [0xC9690, c]
-      - [0xCA640, c]
-      - [0xCCD20, c]
-      - [0xD1190, c]
-      - [0xD28F0, c]
-      - [0xD3450, c]
-      - [0xD5B20, c]
-      - [0xD6B00, c]
-      - [0xD8250, c]
-      - [0xDBE50, c]
-      - [0xDC0D0, c]
-      - [0xDC4E0, c]
-      - [0xDFD60, c]
-      - [0xE3CD0, c]
-      - [0xE78B0, c]
-      - [0xE7AE0, c]
-      - [0xE8BE0, .data, BFB40] #80100E10
-      - [0xE8BF0, .data, C1D60]
-      - [0xE8C10, .data, C45D0]
-      - [0xE8C20, .data, C5770]
-      - [0xE8D30, .data, C9330]
-      - [0xE8D90, .data, CA640]
-      - [0xE8DC0, .data, CCD20]
-      - [0xE8E30, .data, D1190]
-      - [0xE8FA0, .data, D28F0]
-      - [0xE8FB0, .data, D3450]
-      - [0xE8FC0, .data, D5B20]
-      - [0xE8FF0, .data, D6B00]
-      - [0xE9000, .data, D8250]
-      - [0xE92A0, .data, DBE50]
-      - [0xE92B0, .data, DC4E0]
-      - [0xE9440, .data, DFD60]
-      - [0xE9820, .data, E3CD0]
-      - [0xE98E0, .data, E78B0]
-      - [0xE98F0, .data, E7AE0] #80101B20
-      - [0xE99F0, .data, BE940]
-      - [0xE9A00, .rodata, BECB0]
-      - [0xE9A18, .rodata, BFB40]
-      - [0xE9FD8, .rodata, C1580]
-      - [0xEA060, .rodata, C1D60]
-      - [0xEA0D0, .rodata, C45D0]
+      - [0xBE940, c, brancharrow]
+      - [0xBECB0, c, branch]
+      - [0xBF4A0, c, vec]
+      - [0xBFB40, c, model]
+      - [0xC1580, c, com]
+      - [0xC1BA0, c, debug]
+      - [0xC1D60, c, sai]
+      - [0xC4430, c, audio]
+      - [0xC45D0, c, effect]
+      - [0xC5770, c, mgcall]
+      - [0xC9330, c, helpwin]
+      - [0xC9690, c, warp]
+      - [0xCA640, c, telop]
+      - [0xCCD20, c, back]
+      - [0xD1190, c, masu]
+      - [0xD28F0, c, window]
+      - [0xD3450, c, move]
+      - [0xD5B20, c, aura]
+      - [0xD6B00, c, comkey]
+      - [0xD8250, c, pause]
+      - [0xDBE50, c, scissor]
+      - [0xDC0D0, c, sprgrp]
+      - [0xDC4E0, c, status]
+      - [0xDFD60, c, partner]
+      - [0xE3CD0, c, main]
+      - [0xE78B0, c, vibrate]
+      - [0xE7AE0, c, scroll]
+      - [0xE8BE0, .data, model] #80100E10
+      - [0xE8BF0, .data, sai]
+      - [0xE8C10, .data, effect]
+      - [0xE8C20, .data, mgcall]
+      - [0xE8D30, .data, helpwin]
+      - [0xE8D90, .data, telop]
+      - [0xE8DC0, .data, back]
+      - [0xE8E30, .data, masu]
+      - [0xE8FA0, .data, window]
+      - [0xE8FB0, .data, move]
+      - [0xE8FC0, .data, aura]
+      - [0xE8FF0, .data, comkey]
+      - [0xE9000, .data, pause]
+      - [0xE92A0, .data, scissor]
+      - [0xE92B0, .data, status]
+      - [0xE9440, .data, partner]
+      - [0xE9820, .data, main]
+      - [0xE98E0, .data, vibrate]
+      - [0xE98F0, .data, scroll] #80101B20
+      - [0xE99F0, .data, brancharrow]
+      - [0xE9A00, .rodata, branch]
+      - [0xE9A18, .rodata, model]
+      - [0xE9FD8, .rodata, com]
+      - [0xEA060, .rodata, sai]
+      - [0xEA0D0, .rodata, effect]
       - [0xEA124, pad, pad_EA124] # zero padding: C5770's rodata is 16-byte aligned (li.d literals), but subalign is 8
-      - [0xEA130, .rodata, C5770]
-      - [0xEA220, .rodata, C9330]
-      - [0xEA228, .rodata, CA640]
-      - [0xEA330, .rodata, D5B20]
+      - [0xEA130, .rodata, mgcall]
+      - [0xEA220, .rodata, helpwin]
+      - [0xEA228, .rodata, telop]
+      - [0xEA330, .rodata, aura]
       - [0xEA348, pad, pad_EA348] # zero padding: D6B00's rodata is 16-byte aligned (li.d literals), but subalign is 8
-      - [0xEA350, .rodata, D6B00]
-      - [0xEA370, .rodata, D8250]
-      - [0xEA488, .rodata, DC4E0]
-      - [0xEA4F8, .rodata, DFD60]
-      - [0xEA5C8, .rodata, E3CD0]
-      - [0xEA778, .rodata, E78B0]
+      - [0xEA350, .rodata, comkey]
+      - [0xEA370, .rodata, pause]
+      - [0xEA488, .rodata, status]
+      - [0xEA4F8, .rodata, partner]
+      - [0xEA5C8, .rodata, main]
+      - [0xEA778, .rodata, vibrate]
       #- [0xE9A00, rodata] #80101C30
       - {0xEA790, type: .bss, vram: 0x801029C0, name: bss}
 
@@ -788,65 +788,65 @@ segments:
     exclusive_ram_id: board_code
     bss_size: 0x32A0
     subsegments:
-      - [0xEA790, c]
-      - [0xEAB00, c]
-      - [0xEB2F0, c]
-      - [0xEC3B0, c]
-      - [0xECA50, c]
-      - [0xEDDB0, c]
-      - [0xEE3B0, c]
-      - [0xEE660, c]
-      - [0xF2910, c]
-      - [0xF5070, c]
-      - [0xF5B90, c]
-      - [0xF5E80, c]
-      - [0xF9DE0, c] #new file
-      - [0xFA250, c]
-      - [0xFFB10, c]
-      - [0x1006F0, c]
-      - [0x101840, c]
-      - [0x105D50, c]
-      - [0x1063F0, c]
-      - [0x106640, c]
-      - [0x106A50, c]
-      - [0x10AD50, c]
-      - [0x10C230, c]
-      - [0x113520, c]
-      - [0x113750, c]
-      - [0x1143C0, .data, EB2F0] #801007A0
-      - [0x114470, .data, ECA50]
-      - [0x114970, .data, EDDB0]
-      - [0x114980, .data, EE660]
-      - [0x1149C0, .data, F2910]
-      - [0x114B20, .data, F5070]
-      - [0x114B40, .data, F5B90]
-      - [0x114BB0, .data, F5E80]
-      - [0x114DC0, .data, F9DE0]
-      - [0x114E60, .data, FA250]
-      - [0x1150A0, .data, FFB10]
-      - [0x1150B0, .data, 1006F0]
-      - [0x1150E0, .data, 101840]
-      - [0x115250, .data, 105D50]
-      - [0x115390, .data, 1063F0] #80101770
-      - [0x1153A0, .data, 106A50] #80101780
-      - [0x115640, .data, 10AD50] #80101A20
-      - [0x115760, .data, 10C230] #80101B40
-      - [0x115AB0, .data, 113750]
-      - [0x115B50, .rodata, EA790]
-      - [0x115B60, .rodata, EAB00]
-      - [0x115B78, .rodata, EDDB0]
-      - [0x115BD8, .rodata, EE3B0]
-      - [0x115BF0, .rodata, EE660]
-      - [0x115CB0, .rodata, F2910]
-      - [0x115DA0, .rodata, F5B90]
-      - [0x115DA8, .rodata, F5E80]
-      - [0x115E10, .rodata, F9DE0]
-      - [0x115F00, .rodata, 1006F0]
-      - [0x115F40, .rodata, 101840]
-      - [0x116060, .rodata, 106A50]
-      - [0x116140, .rodata, 10AD50]
-      - [0x116170, .rodata, 10C230]
-      - [0x116300, .rodata, 113520]
+      - [0xEA790, c, brancharrow]
+      - [0xEAB00, c, branch]
+      - [0xEB2F0, c, mapfull]
+      - [0xEC3B0, c, vec]
+      - [0xECA50, c, model]
+      - [0xEDDB0, c, com]
+      - [0xEE3B0, c, debug]
+      - [0xEE660, c, sai]
+      - [0xF2910, c, mgcall]
+      - [0xF5070, c, coinchange]
+      - [0xF5B90, c, helpwin]
+      - [0xF5E80, c, item]
+      - [0xF9DE0, c, ksuit] #new file
+      - [0xFA250, c, back]
+      - [0xFFB10, c, window]
+      - [0x1006F0, c, move]
+      - [0x101840, c, pause]
+      - [0x105D50, c, player]
+      - [0x1063F0, c, scissor]
+      - [0x106640, c, sprgrp]
+      - [0x106A50, c, status]
+      - [0x10AD50, c, itemmasu]
+      - [0x10C230, c, main]
+      - [0x113520, c, vibrate]
+      - [0x113750, c, scroll]
+      - [0x1143C0, .data, mapfull] #801007A0
+      - [0x114470, .data, model]
+      - [0x114970, .data, com]
+      - [0x114980, .data, sai]
+      - [0x1149C0, .data, mgcall]
+      - [0x114B20, .data, coinchange]
+      - [0x114B40, .data, helpwin]
+      - [0x114BB0, .data, item]
+      - [0x114DC0, .data, ksuit]
+      - [0x114E60, .data, back]
+      - [0x1150A0, .data, window]
+      - [0x1150B0, .data, move]
+      - [0x1150E0, .data, pause]
+      - [0x115250, .data, player]
+      - [0x115390, .data, scissor] #80101770
+      - [0x1153A0, .data, status] #80101780
+      - [0x115640, .data, itemmasu] #80101A20
+      - [0x115760, .data, main] #80101B40
+      - [0x115AB0, .data, scroll]
+      - [0x115B50, .rodata, brancharrow]
+      - [0x115B60, .rodata, branch]
+      - [0x115B78, .rodata, com]
+      - [0x115BD8, .rodata, debug]
+      - [0x115BF0, .rodata, sai]
+      - [0x115CB0, .rodata, mgcall]
+      - [0x115DA0, .rodata, helpwin]
+      - [0x115DA8, .rodata, item]
+      - [0x115E10, .rodata, ksuit]
+      - [0x115F00, .rodata, move]
+      - [0x115F40, .rodata, pause]
+      - [0x116060, .rodata, status]
+      - [0x116140, .rodata, itemmasu]
+      - [0x116170, .rodata, main]
+      - [0x116300, .rodata, vibrate]
       - {0x116320, type: .bss, vram: 0x80102700, name: bss}
 
   - type: code
@@ -857,11 +857,11 @@ segments:
     exclusive_ram_id: minigame # ovl_00
     bss_size: 0x220
     subsegments:
-      - [0x116320, c]
-      - [0x119560, .data, 116320] #80108BE0
+      - [0x116320, c, main]
+      - [0x119560, .data, main] #80108BE0
       - [0x119D50, .data, strings] #801093D0
-      - [0x11A430, .rodata, 116320]
-      - {0x11A480, type: .bss, vram: 0x80109B00, name: 116320}
+      - [0x11A430, .rodata, main]
+      - {0x11A480, type: .bss, vram: 0x80109B00, name: main}
 
   - type: code
     start: 0x11A480
@@ -871,13 +871,13 @@ segments:
     exclusive_ram_id: minigame # ovl_01
     bss_size: 0xC0
     subsegments:
-      - [0x11A480, c]
-      - [0x120090, c]
-      - [0x1209E0, .data, 11A480] #8010BF00
-      - [0x120A90, .rodata, 11A480] #8010BFB0
-      - [0x120BA0, .rodata, 120090] #8010C0C0
-      - {start: 0x120BC0, type: .bss, vram: 0x8010C0E0, name: 11A480}
-      - {start: 0x120BC0, type: .bss, vram: 0x8010C180, name: 120090}
+      - [0x11A480, c, main]
+      - [0x120090, c, line]
+      - [0x1209E0, .data, main] #8010BF00
+      - [0x120A90, .rodata, main] #8010BFB0
+      - [0x120BA0, .rodata, line] #8010C0C0
+      - {start: 0x120BC0, type: .bss, vram: 0x8010C0E0, name: main}
+      - {start: 0x120BC0, type: .bss, vram: 0x8010C180, name: line}
 
   - type: code
     start: 0x120BC0
@@ -887,11 +887,11 @@ segments:
     exclusive_ram_id: minigame # ovl_02
     bss_size: 0x1A10
     subsegments:
-      - [0x120BC0, c]
-      - [0x126180, .data, 120BC0] #8010AF60
+      - [0x120BC0, c, main]
+      - [0x126180, .data, main] #8010AF60
       - [0x126290, .data, strings] #8010B070
-      - [0x126310, .rodata, 120BC0] #8010B0F0
-      - {0x1263E0, type: .bss, vram: 0x8010B1C0, name: 120BC0}
+      - [0x126310, .rodata, main] #8010B0F0
+      - {0x1263E0, type: .bss, vram: 0x8010B1C0, name: main}
 
   - type: code
     start: 0x1263E0
@@ -901,10 +901,10 @@ segments:
     exclusive_ram_id: minigame # ovl_03
     bss_size: 0x1B80
     subsegments:
-      - [0x1263E0, c]
-      - [0x12D700, .data, 1263E0] #8010CCC0
-      - [0x12DC40, .rodata, 1263E0] #8010D200
-      - {0x12DD30, type: .bss, vram: 0x8010D2F0, name: 1263E0}
+      - [0x1263E0, c, main]
+      - [0x12D700, .data, main] #8010CCC0
+      - [0x12DC40, .rodata, main] #8010D200
+      - {0x12DD30, type: .bss, vram: 0x8010D2F0, name: main}
 
   - type: code
     start: 0x12DD30
@@ -914,10 +914,10 @@ segments:
     exclusive_ram_id: minigame # ovl_04
     bss_size: 0x30
     subsegments:
-      - [0x12DD30, c]
-      - [0x131A90, .data, 12DD30] #80109700
-      - [0x131B90, .rodata, 12DD30] #80109800
-      - {0x131C10, type: .bss, vram: 0x80109880, name: 12DD30}
+      - [0x12DD30, c, main]
+      - [0x131A90, .data, main] #80109700
+      - [0x131B90, .rodata, main] #80109800
+      - {0x131C10, type: .bss, vram: 0x80109880, name: main}
 
   - type: code
     start: 0x131C10
@@ -927,10 +927,10 @@ segments:
     exclusive_ram_id: minigame # ovl_05
     bss_size: 0x2530
     subsegments:
-      - [0x131C10, c]
-      - [0x137A80, .data, 131C10] #8010B810
-      - [0x137B60, .rodata, 131C10]
-      - {0x137C00, type: .bss, vram: 0x8010B990, name: 131C10}
+      - [0x131C10, c, main]
+      - [0x137A80, .data, main] #8010B810
+      - [0x137B60, .rodata, main]
+      - {0x137C00, type: .bss, vram: 0x8010B990, name: main}
 
   - type: code
     start: 0x137C00
@@ -940,10 +940,10 @@ segments:
     exclusive_ram_id: minigame # ovl_06
     bss_size: 0x1A60
     subsegments:
-      - [0x137C00, c]
-      - [0x13E5D0, .data, 137C00] #8010C370
-      - [0x13E780, .rodata, 137C00]
-      - {0x13E9C0, type: .bss, vram: 0x8010C760, name: 137C00}
+      - [0x137C00, c, main]
+      - [0x13E5D0, .data, main] #8010C370
+      - [0x13E780, .rodata, main]
+      - {0x13E9C0, type: .bss, vram: 0x8010C760, name: main}
 
   - type: code
     start: 0x13E9C0
@@ -953,10 +953,10 @@ segments:
     exclusive_ram_id: minigame # ovl_07
     bss_size: 0x2B0
     subsegments:
-      - [0x13E9C0, c]
-      - [0x149CD0, .data, 13E9C0] #80110CB0
-      - [0x149E80, .rodata, 13E9C0] #80110E60
-      - {0x14A810, type: .bss, vram: 0x801117F0, name: 13E9C0}
+      - [0x13E9C0, c, main]
+      - [0x149CD0, .data, main] #80110CB0
+      - [0x149E80, .rodata, main] #80110E60
+      - {0x14A810, type: .bss, vram: 0x801117F0, name: main}
 
   - type: code
     start: 0x14A810
@@ -966,10 +966,10 @@ segments:
     exclusive_ram_id: minigame # ovl_08
     bss_size: 0x150
     subsegments:
-      - [0x14A810, c]
-      - [0x153BD0, .data, 14A810] #8010ED60
-      - [0x153E40, .rodata, 14A810] #8010EFD0
-      - {0x1542E0, type: .bss, vram: 0x8010F470, name: 14A810}
+      - [0x14A810, c, main]
+      - [0x153BD0, .data, main] #8010ED60
+      - [0x153E40, .rodata, main] #8010EFD0
+      - {0x1542E0, type: .bss, vram: 0x8010F470, name: main}
 
   - type: code
     start: 0x1542E0
@@ -979,10 +979,10 @@ segments:
     exclusive_ram_id: minigame # ovl_09
     bss_size: 0x3420
     subsegments:
-      - [0x1542E0, c]
-      - [0x15BCF0, .data, 1542E0] #8010D3B0
-      - [0x15C240, .rodata, 1542E0] #8010D900
-      - {start: 0x15C310, type: .bss, vram: 0x8010D9D0, name: 1542E0}
+      - [0x1542E0, c, main]
+      - [0x15BCF0, .data, main] #8010D3B0
+      - [0x15C240, .rodata, main] #8010D900
+      - {start: 0x15C310, type: .bss, vram: 0x8010D9D0, name: main}
 
   - type: code
     start: 0x15C310
@@ -992,10 +992,10 @@ segments:
     exclusive_ram_id: minigame # ovl_0A
     bss_size: 0x300
     subsegments:
-      - [0x15C310, c]
-      - [0x1613E0, .data, 15C310] #8010AA70
-      - [0x161470, .rodata, 15C310] #8010AB00
-      - {0x161750, type: .bss, vram: 0x8010ADE0, name: 15C310}
+      - [0x15C310, c, main]
+      - [0x1613E0, .data, main] #8010AA70
+      - [0x161470, .rodata, main] #8010AB00
+      - {0x161750, type: .bss, vram: 0x8010ADE0, name: main}
 
   - type: code
     start: 0x161750
@@ -1005,10 +1005,10 @@ segments:
     exclusive_ram_id: minigame # ovl_0B
     bss_size: 0x180
     subsegments:
-      - [0x161750, c]
-      - [0x164EB0, .data, 161750] #80109100
-      - [0x164F00, .rodata, 161750] #80109150
-      - {start: 0x165010, type: .bss, vram: 0x80109260, name: 161750}
+      - [0x161750, c, main]
+      - [0x164EB0, .data, main] #80109100
+      - [0x164F00, .rodata, main] #80109150
+      - {start: 0x165010, type: .bss, vram: 0x80109260, name: main}
 
   - type: code
     start: 0x165010
@@ -1018,14 +1018,14 @@ segments:
     exclusive_ram_id: minigame # ovl_0C
     bss_size: 0x30
     subsegments:
-      - [0x165010, c]
-      - [0x169540, c]
-      - [0x16F3D0, .data, 165010] #8010FD60
-      - [0x16F400, .data, 169540] #8010FD90
-      - [0x16F530, .rodata, 165010] #8010FEC0
-      - [0x16F650, .rodata, 169540] #8010FFE0
-      - {0x16F670, type: .bss, vram: 0x80110000, name: 165010}
-      - {0x16F670, type: .bss, vram: 0x80110010, name: 169540}
+      - [0x165010, c, main]
+      - [0x169540, c, system]
+      - [0x16F3D0, .data, main] #8010FD60
+      - [0x16F400, .data, system] #8010FD90
+      - [0x16F530, .rodata, main] #8010FEC0
+      - [0x16F650, .rodata, system] #8010FFE0
+      - {0x16F670, type: .bss, vram: 0x80110000, name: main}
+      - {0x16F670, type: .bss, vram: 0x80110010, name: system}
 
   - type: code
     start: 0x16F670
@@ -1035,10 +1035,10 @@ segments:
     exclusive_ram_id: minigame # ovl_0D
     bss_size: 0x1F50
     subsegments:
-      - [0x16F670, c]
-      - [0x17AB40, .data, 16F670] #80110E70
-      - [0x17AE20, .rodata, 16F670] #80111150
-      - {start: 0x17B3B0, type: .bss, vram: 0x801116E0, name: 16F670}
+      - [0x16F670, c, main]
+      - [0x17AB40, .data, main] #80110E70
+      - [0x17AE20, .rodata, main] #80111150
+      - {start: 0x17B3B0, type: .bss, vram: 0x801116E0, name: main}
 
   - type: code
     start: 0x17B3B0
@@ -1048,9 +1048,9 @@ segments:
     exclusive_ram_id: minigame # ovl_0E
     bss_size: 0x100
     subsegments:
-      - [0x17B3B0, c]
-      - [0x1817F0, .data, 17B3B0] #8010BDE0
-      - [0x181880, .rodata, 17B3B0] #8010BE70
+      - [0x17B3B0, c, main]
+      - [0x1817F0, .data, main] #8010BDE0
+      - [0x181880, .rodata, main] #8010BE70
       - {0x181950, type: .bss, vram: 0x8010BF40, name: bss}
 
   - type: code
@@ -1061,10 +1061,10 @@ segments:
     exclusive_ram_id: minigame # ovl_0F
     bss_size: 0x3F0
     subsegments:
-      - [0x181950, c]
-      - [0x18A560, .data, 181950] #8010E5B0
-      - [0x18A6D0, .rodata, 181950] #8010E720
-      - {start: 0x18ABD0, type: .bss, vram: 0x8010EC20, name: 181950}
+      - [0x181950, c, main]
+      - [0x18A560, .data, main] #8010E5B0
+      - [0x18A6D0, .rodata, main] #8010E720
+      - {start: 0x18ABD0, type: .bss, vram: 0x8010EC20, name: main}
 
   - type: code
     start: 0x18ABD0
@@ -1074,12 +1074,12 @@ segments:
     exclusive_ram_id: minigame # ovl_10
     bss_size: 0x3C0
     subsegments:
-      - [0x18ABD0, c]
-      - [0x18EB30, c]
-      - [0x190D60, .data, 18ABD0] #8010BB30
-      - [0x190E00, .data, 18EB30] #8010BBD0
-      - [0x1911E0, .rodata, 18ABD0] #8010BFB0
-      - [0x191220, .rodata, 18EB30] #8010BFF0
+      - [0x18ABD0, c, main]
+      - [0x18EB30, c, stage]
+      - [0x190D60, .data, main] #8010BB30
+      - [0x190E00, .data, stage] #8010BBD0
+      - [0x1911E0, .rodata, main] #8010BFB0
+      - [0x191220, .rodata, stage] #8010BFF0
       - {0x191240, type: .bss, vram: 0x8010C010, name: bss}
 
   - type: code
@@ -1108,10 +1108,10 @@ segments:
     exclusive_ram_id: minigame # ovl_12
     bss_size: 0x4BC0
     subsegments:
-      - [0x19CEF0, c]
-      - [0x1A3BF0, .data, 19CEF0] #8010C6A0
-      - [0x1A3C50, .rodata, 19CEF0] #8010C700
-      - { start: 0x1A3D80, type: .bss, vram: 0x8010C830, name: 19CEF0 }
+      - [0x19CEF0, c, main]
+      - [0x1A3BF0, .data, main] #8010C6A0
+      - [0x1A3C50, .rodata, main] #8010C700
+      - { start: 0x1A3D80, type: .bss, vram: 0x8010C830, name: main }
 
   - type: code
     start: 0x1A3D80
@@ -1121,10 +1121,10 @@ segments:
     exclusive_ram_id: minigame # ovl_13
     bss_size: 0xE0
     subsegments:
-      - [0x1A3D80, c]
-      - [0x1AC270, .data, 1A3D80] #8010DE90
-      - [0x1AC5B0, .rodata, 1A3D80] #8010E1D0
-      - {0x1AC970, type: .bss, vram: 0x8010E590, name: 1A3D80}
+      - [0x1A3D80, c, main]
+      - [0x1AC270, .data, main] #8010DE90
+      - [0x1AC5B0, .rodata, main] #8010E1D0
+      - {0x1AC970, type: .bss, vram: 0x8010E590, name: main}
 
   - type: code
     start: 0x1AC970
@@ -1134,10 +1134,10 @@ segments:
     exclusive_ram_id: minigame # ovl_14
     bss_size: 0xE0
     subsegments:
-      - [0x1AC970, c]
-      - [0x1B47C0, .data, 1AC970] #8010D7F0
-      - [0x1B4B70, .rodata, 1AC970] #8010DBA0
-      - {start: 0x1B4F10, type: .bss, vram: 0x8010DF40, name: 1AC970}
+      - [0x1AC970, c, main]
+      - [0x1B47C0, .data, main] #8010D7F0
+      - [0x1B4B70, .rodata, main] #8010DBA0
+      - {start: 0x1B4F10, type: .bss, vram: 0x8010DF40, name: main}
 
   - type: code
     start: 0x1B4F10
@@ -1147,10 +1147,10 @@ segments:
     exclusive_ram_id: minigame # ovl_15
     bss_size: 0x190
     subsegments:
-      - [0x1B4F10, c]
-      - [0x1BA4F0, .data, 1B4F10] #8010AF80
-      - [0x1BA7E0, .rodata, 1B4F10] #8010B270
-      - {start: 0x1BA850, type: .bss, vram: 0x8010B2E0, name: 1B4F10}
+      - [0x1B4F10, c, main]
+      - [0x1BA4F0, .data, main] #8010AF80
+      - [0x1BA7E0, .rodata, main] #8010B270
+      - {start: 0x1BA850, type: .bss, vram: 0x8010B2E0, name: main}
 
   - type: code
     start: 0x1BA850
@@ -1160,10 +1160,10 @@ segments:
     exclusive_ram_id: minigame # ovl_16
     bss_size: 0x2B0
     subsegments:
-      - [0x1BA850, c]
-      - [0x1C3C50, .data, 1BA850] #8010EDA0
-      - [0x1C3D30, .rodata, 1BA850] #8010EE80
-      - {0x1C4280, type: .bss, vram: 0x8010F3D0, name: 1BA850}
+      - [0x1BA850, c, main]
+      - [0x1C3C50, .data, main] #8010EDA0
+      - [0x1C3D30, .rodata, main] #8010EE80
+      - {0x1C4280, type: .bss, vram: 0x8010F3D0, name: main}
 
   - type: code
     start: 0x1C4280
@@ -1173,11 +1173,11 @@ segments:
     exclusive_ram_id: minigame # ovl_17
     bss_size: 0xE0
     subsegments:
-      - [0x1C4280, c]
-      - [0x1CC400, c]
-      - [0x1CC420, .data, 1C4280] #8010DB40
-      - [0x1CC5C0, .rodata, 1C4280] #8010DCE0
-      - {start: 0x1CC730, type: .bss, vram: 0x8010DE50, name: 1C4280}
+      - [0x1C4280, c, main]
+      - [0x1CC400, c, exit]
+      - [0x1CC420, .data, main] #8010DB40
+      - [0x1CC5C0, .rodata, main] #8010DCE0
+      - {start: 0x1CC730, type: .bss, vram: 0x8010DE50, name: main}
 
   - type: code
     start: 0x1CC730
@@ -1187,11 +1187,11 @@ segments:
     exclusive_ram_id: minigame # ovl_18
     bss_size: 0x40
     subsegments:
-      - [0x1CC730, c]
-      - [0x1D1920, c]
-      - [0x1D1940, .data, 1CC730] #8010ABB0
-      - [0x1D1B20, .rodata, 1CC730] #8010AD90
-      - {start: 0x1D1C40, type: .bss, vram: 0x8010AEB0, name: 1CC730}
+      - [0x1CC730, c, main]
+      - [0x1D1920, c, exit]
+      - [0x1D1940, .data, main] #8010ABB0
+      - [0x1D1B20, .rodata, main] #8010AD90
+      - {start: 0x1D1C40, type: .bss, vram: 0x8010AEB0, name: main}
 
   - type: code
     start: 0x1D1C40
@@ -1201,10 +1201,10 @@ segments:
     exclusive_ram_id: minigame # ovl_19
     bss_size: 0x30
     subsegments:
-      - [0x1D1C40, c]
-      - [0x1D47F0, .data, 1D1C40] #80108550
-      - [0x1D4950, .rodata, 1D1C40] #801086B0
-      - {start: 0x1D4970, type: .bss, vram: 0x801086D0, name: 1D1C40}
+      - [0x1D1C40, c, main]
+      - [0x1D47F0, .data, main] #80108550
+      - [0x1D4950, .rodata, main] #801086B0
+      - {start: 0x1D4970, type: .bss, vram: 0x801086D0, name: main}
 
   - type: code
     start: 0x1D4970
@@ -1214,10 +1214,10 @@ segments:
     exclusive_ram_id: minigame # ovl_1A
     bss_size: 0x190
     subsegments:
-      - [0x1D4970, c]
-      - [0x1D90E0, .data, 1D4970] #8010A110
-      - [0x1D91C0, .rodata, 1D4970] #8010A1F0
-      - {start: 0x1D9550, type: .bss, vram: 0x8010A580, name: 1D4970}
+      - [0x1D4970, c, main]
+      - [0x1D90E0, .data, main] #8010A110
+      - [0x1D91C0, .rodata, main] #8010A1F0
+      - {start: 0x1D9550, type: .bss, vram: 0x8010A580, name: main}
 
   - type: code
     start: 0x1D9550
@@ -1227,10 +1227,10 @@ segments:
     exclusive_ram_id: minigame # ovl_1B
     bss_size: 0xA0
     subsegments:
-      - [0x1D9550, c]
-      - [0x1DE3D0, .data, 1D9550] #8010A820
-      - [0x1DE570, .rodata, 1D9550] #8010A9C0
-      - {start: 0x1DE610, type: .bss, vram: 0x8010AA60, name: 1D9550}
+      - [0x1D9550, c, main]
+      - [0x1DE3D0, .data, main] #8010A820
+      - [0x1DE570, .rodata, main] #8010A9C0
+      - {start: 0x1DE610, type: .bss, vram: 0x8010AA60, name: main}
 
   - type: code
     start: 0x1DE610
@@ -1240,10 +1240,10 @@ segments:
     exclusive_ram_id: minigame # ovl_1C
     bss_size: 0x1C0
     subsegments:
-      - [0x1DE610, c]
-      - [0x1E3510, .data, 1DE610] #8010A8A0
-      - [0x1E3560, .rodata, 1DE610] #8010A8F0
-      - {start: 0x1E37C0, type: .bss, vram: 0x8010AB50, name: 1DE610}
+      - [0x1DE610, c, main]
+      - [0x1E3510, .data, main] #8010A8A0
+      - [0x1E3560, .rodata, main] #8010A8F0
+      - {start: 0x1E37C0, type: .bss, vram: 0x8010AB50, name: main}
 
   - type: code
     start: 0x1E37C0
@@ -1253,10 +1253,10 @@ segments:
     exclusive_ram_id: minigame # ovl_1D
     bss_size: 0x47A0
     subsegments:
-      - [0x1E37C0, c]
-      - [0x1EEDE0, .data, 1E37C0] #80110FC0
-      - [0x1EF210, .rodata, 1E37C0] #801113F0
-      - {0x1EF420, type: .bss, vram: 0x80111600, name: 1E37C0}
+      - [0x1E37C0, c, main]
+      - [0x1EEDE0, .data, main] #80110FC0
+      - [0x1EF210, .rodata, main] #801113F0
+      - {0x1EF420, type: .bss, vram: 0x80111600, name: main}
 
   - type: code
     start: 0x1EF420
@@ -1266,10 +1266,10 @@ segments:
     exclusive_ram_id: minigame # ovl_1E
     bss_size: 0x1B0
     subsegments:
-      - [0x1EF420, c]
-      - [0x1F3A60, .data, 1EF420] #80109FE0
-      - [0x1F3AE0, .rodata, 1EF420] #8010A060
-      - {0x1F3B90, type: .bss, vram: 0x8010A110, name: 1EF420}
+      - [0x1EF420, c, main]
+      - [0x1F3A60, .data, main] #80109FE0
+      - [0x1F3AE0, .rodata, main] #8010A060
+      - {0x1F3B90, type: .bss, vram: 0x8010A110, name: main}
 
   - type: code
     start: 0x1F3B90
@@ -1279,13 +1279,13 @@ segments:
     exclusive_ram_id: minigame # ovl_1F
     bss_size: 0x6600
     subsegments:
-      - [0x1F3B90, c]
-      - [0x1FD760, c]
-      - [0x1FE270, .data, 1F3B90] #80110080
-      - [0x1FE420, .data, 1FD760] #80110230
-      - [0x1FE490, .rodata, 1F3B90] #801102A0
-      - {0x1FE4D0, type: .bss, vram: 0x801102E0, name: 1F3B90}
-      - {0x1FE4D0, type: .bss, vram: 0x801168B0, name: 1FD760}
+      - [0x1F3B90, c, main]
+      - [0x1FD760, c, sprite]
+      - [0x1FE270, .data, main] #80110080
+      - [0x1FE420, .data, sprite] #80110230
+      - [0x1FE490, .rodata, main] #801102A0
+      - {0x1FE4D0, type: .bss, vram: 0x801102E0, name: main}
+      - {0x1FE4D0, type: .bss, vram: 0x801168B0, name: sprite}
 
   - type: code
     start: 0x1FE4D0
@@ -1295,10 +1295,10 @@ segments:
     exclusive_ram_id: minigame # ovl_20
     bss_size: 0x140
     subsegments:
-      - [0x1FE4D0, c]
-      - [0x204DB0, .data, 1FE4D0] #8010C280
-      - [0x204EC0, .rodata, 1FE4D0] #8010C390
-      - {0x204F90, type: .bss, vram: 0x8010C460, name: 1FE4D0}
+      - [0x1FE4D0, c, main]
+      - [0x204DB0, .data, main] #8010C280
+      - [0x204EC0, .rodata, main] #8010C390
+      - {0x204F90, type: .bss, vram: 0x8010C460, name: main}
 
   - type: code
     start: 0x204F90
@@ -1308,10 +1308,10 @@ segments:
     exclusive_ram_id: minigame # ovl_21
     bss_size: 0x680
     subsegments:
-      - [0x204F90, c]
-      - [0x20BC70, .data, 204F90] #8010C680
-      - [0x20BCF0, .rodata, 204F90] #8010C700
-      - {0x20BFA0, type: .bss, vram: 0x8010C9B0, name: 204F90}
+      - [0x204F90, c, main]
+      - [0x20BC70, .data, main] #8010C680
+      - [0x20BCF0, .rodata, main] #8010C700
+      - {0x20BFA0, type: .bss, vram: 0x8010C9B0, name: main}
 
   - type: code
     start: 0x20BFA0
@@ -1321,10 +1321,10 @@ segments:
     exclusive_ram_id: minigame # ovl_22
     bss_size: 0x1A90
     subsegments:
-      - [0x20BFA0, c]
-      - [0x2116C0, .data, 20BFA0] #8010B0C0
-      - [0x2118B0, .rodata, 20BFA0] #8010B2B0
-      - {0x211AB0, type: .bss, vram: 0x8010B4B0, name: 20BFA0}
+      - [0x20BFA0, c, main]
+      - [0x2116C0, .data, main] #8010B0C0
+      - [0x2118B0, .rodata, main] #8010B2B0
+      - {0x211AB0, type: .bss, vram: 0x8010B4B0, name: main}
 
   - type: code
     start: 0x211AB0
@@ -1334,10 +1334,10 @@ segments:
     exclusive_ram_id: minigame # ovl_23
     bss_size: 0x730
     subsegments:
-      - [0x211AB0, c]
-      - [0x216270, .data, 211AB0] #8010A160
-      - [0x2165F0, .rodata, 211AB0] #8010A4E0
-      - {0x216670, type: .bss, vram: 0x8010A560, name: 211AB0}
+      - [0x211AB0, c, main]
+      - [0x216270, .data, main] #8010A160
+      - [0x2165F0, .rodata, main] #8010A4E0
+      - {0x216670, type: .bss, vram: 0x8010A560, name: main}
 
   - type: code
     start: 0x216670
@@ -1347,11 +1347,11 @@ segments:
     exclusive_ram_id: minigame # ovl_24
     bss_size: 0x37B0
     subsegments:
-      - [0x216670, c]
-      - [0x21CAC0, c]
-      - [0x21DBF0, .data, 216670] #8010CF20
-      - [0x21DF10, .data, 21CAC0] #8010D240
-      - [0x21DF20, .rodata, 216670] #8010D250
+      - [0x216670, c, main]
+      - [0x21CAC0, c, effect]
+      - [0x21DBF0, .data, main] #8010CF20
+      - [0x21DF10, .data, effect] #8010D240
+      - [0x21DF20, .rodata, main] #8010D250
       - {start: 0x21E010, type: .bss, vram: 0x8010D340, name: bss}
 
   - type: code
@@ -1362,10 +1362,10 @@ segments:
     exclusive_ram_id: minigame # ovl_25
     bss_size: 0x330
     subsegments:
-      - [0x21E010, c]
-      - [0x2251D0, .data, 21E010] #8010CB60
-      - [0x225330, .rodata, 21E010] #8010CCC0
-      - {start: 0x225740, type: .bss, vram: 0x8010D0D0, name: 21E010}
+      - [0x21E010, c, main]
+      - [0x2251D0, .data, main] #8010CB60
+      - [0x225330, .rodata, main] #8010CCC0
+      - {start: 0x225740, type: .bss, vram: 0x8010D0D0, name: main}
 
   - type: code
     start: 0x225740
@@ -1375,10 +1375,10 @@ segments:
     exclusive_ram_id: minigame # ovl_26
     bss_size: 0x40
     subsegments:
-      - [0x225740, c]
-      - [0x22DDB0, .data, 225740] #8010E010
-      - [0x22DDF0, .rodata, 225740] #8010E050
-      - {0x22E100, type: .bss, vram: 0x8010E360, name: 225740}
+      - [0x225740, c, main]
+      - [0x22DDB0, .data, main] #8010E010
+      - [0x22DDF0, .rodata, main] #8010E050
+      - {0x22E100, type: .bss, vram: 0x8010E360, name: main}
 
   - type: code
     start: 0x22E100
@@ -1388,10 +1388,10 @@ segments:
     exclusive_ram_id: minigame # ovl_27
     bss_size: 0xAB0
     subsegments:
-      - [0x22E100, c]
-      - [0x232620, .data, 22E100] #80109EC0
-      - [0x232850, .rodata, 22E100] #8010A0F0
-      - {start: 0x232A10, type: .bss, vram: 0x8010A2B0, name: 22E100}
+      - [0x22E100, c, main]
+      - [0x232620, .data, main] #80109EC0
+      - [0x232850, .rodata, main] #8010A0F0
+      - {start: 0x232A10, type: .bss, vram: 0x8010A2B0, name: main}
 
   - type: code
     start: 0x232A10
@@ -1401,10 +1401,10 @@ segments:
     exclusive_ram_id: minigame # ovl_28
     bss_size: 0xA20
     subsegments:
-      - [0x232A10, c]
-      - [0x23C5C0, .data, 232A10] #8010F550
-      - [0x23C6A0, .rodata, 232A10] #8010F630
-      - {start: 0x23C8F0, type: .bss, vram: 0x8010F880, name: 232A10}
+      - [0x232A10, c, main]
+      - [0x23C5C0, .data, main] #8010F550
+      - [0x23C6A0, .rodata, main] #8010F630
+      - {start: 0x23C8F0, type: .bss, vram: 0x8010F880, name: main}
 
   - type: code
     start: 0x23C8F0
@@ -1414,10 +1414,10 @@ segments:
     exclusive_ram_id: minigame # ovl_29
     bss_size: 0x1A0
     subsegments:
-      - [0x23C8F0, c]
-      - [0x240880, .data, 23C8F0] #80109930
-      - [0x2409C0, .rodata, 23C8F0] #80109A70
-      - {0x240A10, type: .bss, vram: 0x80109AC0, name: 23C8F0}
+      - [0x23C8F0, c, main]
+      - [0x240880, .data, main] #80109930
+      - [0x2409C0, .rodata, main] #80109A70
+      - {0x240A10, type: .bss, vram: 0x80109AC0, name: main}
 
   - type: code
     start: 0x240A10
@@ -1427,10 +1427,10 @@ segments:
     exclusive_ram_id: minigame # ovl_2A
     bss_size: 0x1A90
     subsegments:
-      - [0x240A10, c]
-      - [0x24A300, .data, 240A10] #8010F290
-      - [0x24A400, .rodata, 240A10] #8010F390
-      - {start: 0x24A760, type: .bss, vram: 0x8010F6F0, name: 240A10}
+      - [0x240A10, c, main]
+      - [0x24A300, .data, main] #8010F290
+      - [0x24A400, .rodata, main] #8010F390
+      - {start: 0x24A760, type: .bss, vram: 0x8010F6F0, name: main}
 
   - type: code
     start: 0x24A760
@@ -1440,10 +1440,10 @@ segments:
     exclusive_ram_id: minigame # ovl_2B
     bss_size: 0x1A30
     subsegments:
-      - [0x24A760, c]
-      - [0x251AD0, .data, 24A760] #8010CD10
-      - [0x251C20, .rodata, 24A760] #8010CE60
-      - {start: 0x251FF0, type: .bss, vram: 0x8010D230, name: 24A760}
+      - [0x24A760, c, main]
+      - [0x251AD0, .data, main] #8010CD10
+      - [0x251C20, .rodata, main] #8010CE60
+      - {start: 0x251FF0, type: .bss, vram: 0x8010D230, name: main}
 
   - type: code
     start: 0x251FF0
@@ -1453,10 +1453,10 @@ segments:
     exclusive_ram_id: minigame # ovl_2C
     bss_size: 0x1A0
     subsegments:
-      - [0x251FF0, c]
-      - [0x25D530, .data, 251FF0] #80110EE0
-      - [0x25DD90, .rodata, 251FF0] #80111740
-      - {0x25E110, type: .bss, vram: 0x80111AC0, name: 251FF0}
+      - [0x251FF0, c, main]
+      - [0x25D530, .data, main] #80110EE0
+      - [0x25DD90, .rodata, main] #80111740
+      - {0x25E110, type: .bss, vram: 0x80111AC0, name: main}
 
   - type: code
     start: 0x25E110
@@ -1466,10 +1466,10 @@ segments:
     exclusive_ram_id: minigame # ovl_2D
     bss_size: 0x1AD0
     subsegments:
-      - [0x25E110, c]
-      - [0x2648B0, .data, 25E110] #8010C140
-      - [0x264A20, .rodata, 25E110] #8010C2B0
-      - {start: 0x264B80, type: .bss, vram: 0x8010C410, name: 25E110}
+      - [0x25E110, c, main]
+      - [0x2648B0, .data, main] #8010C140
+      - [0x264A20, .rodata, main] #8010C2B0
+      - {start: 0x264B80, type: .bss, vram: 0x8010C410, name: main}
 
   - type: code
     start: 0x264B80
@@ -1479,10 +1479,10 @@ segments:
     exclusive_ram_id: minigame # ovl_2E
     bss_size: 0x1A70
     subsegments:
-      - [0x264B80, c]
-      - [0x269880, .data, 264B80] #8010A6A0
-      - [0x269AA0, .rodata, 264B80] #8010A8C0
-      - {start: 0x269BF0, type: .bss, vram: 0x8010AA10, name: 264B80}
+      - [0x264B80, c, main]
+      - [0x269880, .data, main] #8010A6A0
+      - [0x269AA0, .rodata, main] #8010A8C0
+      - {start: 0x269BF0, type: .bss, vram: 0x8010AA10, name: main}
 
   - type: code
     start: 0x269BF0
@@ -1492,10 +1492,10 @@ segments:
     exclusive_ram_id: minigame # ovl_2F
     bss_size: 0x2E0
     subsegments:
-      - [0x269BF0, c]
-      - [0x270B00, .data, 269BF0] #8010C8B0
-      - [0x270D60, .rodata, 269BF0] #8010CB10
-      - {start: 0x270EF0, type: .bss, vram: 0x8010CCA0, name: 269BF0}
+      - [0x269BF0, c, main]
+      - [0x270B00, .data, main] #8010C8B0
+      - [0x270D60, .rodata, main] #8010CB10
+      - {start: 0x270EF0, type: .bss, vram: 0x8010CCA0, name: main}
 
   - type: code
     start: 0x270EF0
@@ -1505,10 +1505,10 @@ segments:
     exclusive_ram_id: minigame # ovl_30
     bss_size: 0x1D20
     subsegments:
-      - [0x270EF0, c]
-      - [0x276160, .data, 270EF0] #8010AC10
-      - [0x276300, .rodata, 270EF0] #8010ADB0
-      - {start: 0x276470, type: .bss, vram: 0x8010AF20, name: 270EF0}
+      - [0x270EF0, c, main]
+      - [0x276160, .data, main] #8010AC10
+      - [0x276300, .rodata, main] #8010ADB0
+      - {start: 0x276470, type: .bss, vram: 0x8010AF20, name: main}
 
   - type: code
     start: 0x276470
@@ -1518,10 +1518,10 @@ segments:
     exclusive_ram_id: minigame # ovl_31
     bss_size: 0x3110
     subsegments:
-      - [0x276470, c]
-      - [0x282620, .data, 276470] #80111B50
-      - [0x282780, .rodata, 276470] #80111CB0
-      - {0x283060, type: .bss, vram: 0x80112590, name: 276470}
+      - [0x276470, c, main]
+      - [0x282620, .data, main] #80111B50
+      - [0x282780, .rodata, main] #80111CB0
+      - {0x283060, type: .bss, vram: 0x80112590, name: main}
 
   - type: code
     start: 0x283060
@@ -1531,10 +1531,10 @@ segments:
     exclusive_ram_id: minigame # ovl_32
     bss_size: 0x1310
     subsegments:
-      - [0x283060, c]
-      - [0x289C50, .data, 283060] #8010C590
-      - [0x289F60, .rodata, 283060] #8010C8A0
-      - {0x28A290, type: .bss, vram: 0x8010CBD0, name: 283060}
+      - [0x283060, c, main]
+      - [0x289C50, .data, main] #8010C590
+      - [0x289F60, .rodata, main] #8010C8A0
+      - {0x28A290, type: .bss, vram: 0x8010CBD0, name: main}
 
   - type: code
     start: 0x28A290
@@ -1545,11 +1545,11 @@ segments:
     bss_size: 0xB0
     subalign: 16
     subsegments:
-      - [0x28A290, c]
-      - [0x290E70, c]
-      - [0x290E90, .data, 28A290] #8010C5A0
-      - [0x290FD0, .rodata, 28A290] #8010C6E0
-      - {0x291020, type: .bss, vram: 0x8010C730, name: 28A290}
+      - [0x28A290, c, main]
+      - [0x290E70, c, exit]
+      - [0x290E90, .data, main] #8010C5A0
+      - [0x290FD0, .rodata, main] #8010C6E0
+      - {0x291020, type: .bss, vram: 0x8010C730, name: main}
 
   - type: code
     start: 0x291020
@@ -1559,10 +1559,10 @@ segments:
     exclusive_ram_id: minigame # ovl_34
     bss_size: 0x90
     subsegments:
-      - [0x291020, c]
-      - [0x29A7D0, .data, 291020] #8010F150
-      - [0x29ABB0, .rodata, 291020] #8010F530
-      - {0x29B1D0, type: .bss, vram: 0x8010FB50, name: 291020}
+      - [0x291020, c, main]
+      - [0x29A7D0, .data, main] #8010F150
+      - [0x29ABB0, .rodata, main] #8010F530
+      - {0x29B1D0, type: .bss, vram: 0x8010FB50, name: main}
 
   - type: code
     start: 0x29B1D0
@@ -1572,10 +1572,10 @@ segments:
     exclusive_ram_id: minigame # ovl_35
     bss_size: 0x130
     subsegments:
-      - [0x29B1D0, c]
-      - [0x2A0C30, .data, 29B1D0] #8010B400
-      - [0x2A1180, .rodata, 29B1D0] #8010B950
-      - {0x2A1430, type: .bss, vram: 0x8010BC00, name: 29B1D0}
+      - [0x29B1D0, c, main]
+      - [0x2A0C30, .data, main] #8010B400
+      - [0x2A1180, .rodata, main] #8010B950
+      - {0x2A1430, type: .bss, vram: 0x8010BC00, name: main}
 
   - type: code
     start: 0x2A1430
@@ -1617,10 +1617,10 @@ segments:
     exclusive_ram_id: minigame # ovl_38
     bss_size: 0xA70
     subsegments:
-      - [0x2B5830, c]
-      - [0x2BC550, .data, 2B5830] #8010C6C0
-      - [0x2BC930, .rodata, 2B5830] #8010CAA0
-      - {start: 0x2BCE10, type: .bss, vram: 0x8010CF80, name: 2B5830}
+      - [0x2B5830, c, main]
+      - [0x2BC550, .data, main] #8010C6C0
+      - [0x2BC930, .rodata, main] #8010CAA0
+      - {start: 0x2BCE10, type: .bss, vram: 0x8010CF80, name: main}
 
   - type: code
     start: 0x2BCE10
@@ -1648,10 +1648,10 @@ segments:
     exclusive_ram_id: minigame # ovl_3A
     bss_size: 0x240
     subsegments:
-      - [0x2C5B50, c]
-      - [0x2CE950, .data, 2C5B50] #8010E7A0
-      - [0x2CED20, .rodata, 2C5B50] #8010EB70
-      - {0x2CF3B0, type: .bss, vram: 0x8010F200, name: 2C5B50}
+      - [0x2C5B50, c, main]
+      - [0x2CE950, .data, main] #8010E7A0
+      - [0x2CED20, .rodata, main] #8010EB70
+      - {0x2CF3B0, type: .bss, vram: 0x8010F200, name: main}
 
   - type: code
     start: 0x2CF3B0
@@ -1661,10 +1661,10 @@ segments:
     exclusive_ram_id: minigame # ovl_3B
     bss_size: 0x70
     subsegments:
-      - [0x2CF3B0, c]
-      - [0x2D3C70, .data, 2CF3B0] #8010A260
-      - [0x2D3CE0, .rodata, 2CF3B0] #8010A2D0
-      - {0x2D3E70, type: .bss, vram: 0x8010A460, name: 2CF3B0}
+      - [0x2CF3B0, c, main]
+      - [0x2D3C70, .data, main] #8010A260
+      - [0x2D3CE0, .rodata, main] #8010A2D0
+      - {0x2D3E70, type: .bss, vram: 0x8010A460, name: main}
 
   - type: code
     start: 0x2D3E70
@@ -1674,10 +1674,10 @@ segments:
     exclusive_ram_id: minigame # ovl_3C
     bss_size: 0xA0
     subsegments:
-      - [0x2D3E70, c]
-      - [0x2D8030, .data, 2D3E70] #80109B60
-      - [0x2D8270, .rodata, 2D3E70] #80109DA0
-      - {0x2D8370, type: .bss, vram: 0x80109EA0, name: 2D3E70}
+      - [0x2D3E70, c, main]
+      - [0x2D8030, .data, main] #80109B60
+      - [0x2D8270, .rodata, main] #80109DA0
+      - {0x2D8370, type: .bss, vram: 0x80109EA0, name: main}
 
   - type: code
     start: 0x2D8370
@@ -1687,10 +1687,10 @@ segments:
     exclusive_ram_id: minigame # ovl_3D
     bss_size: 0x70
     subsegments:
-      - [0x2D8370, c]
-      - [0x2DC0F0, .data, 2D8370] #80109720
-      - [0x2DC1A0, .rodata, 2D8370] #801097D0
-      - {start: 0x2DC4D0, type: .bss, vram: 0x80109B00, name: 2D8370}
+      - [0x2D8370, c, main]
+      - [0x2DC0F0, .data, main] #80109720
+      - [0x2DC1A0, .rodata, main] #801097D0
+      - {start: 0x2DC4D0, type: .bss, vram: 0x80109B00, name: main}
 
   - type: code
     start: 0x2DC4D0
@@ -1700,10 +1700,10 @@ segments:
     exclusive_ram_id: minigame # ovl_3E
     bss_size: 0x80
     subsegments:
-      - [0x2DC4D0, c]
-      - [0x2E0B70, .data, 2DC4D0] #8010A040
-      - [0x2E0BA0, .rodata, 2DC4D0] #8010A070
-      - {0x2E0D20, type: .bss, vram: 0x8010A1F0, name: 2DC4D0}
+      - [0x2DC4D0, c, main]
+      - [0x2E0B70, .data, main] #8010A040
+      - [0x2E0BA0, .rodata, main] #8010A070
+      - {0x2E0D20, type: .bss, vram: 0x8010A1F0, name: main}
 
   - type: code
     start: 0x2E0D20
@@ -1713,10 +1713,10 @@ segments:
     exclusive_ram_id: minigame # ovl_3F
     bss_size: 0x360
     subsegments:
-      - [0x2E0D20, c]
-      - [0x2E6060, .data, 2E0D20] #8010ACE0
-      - [0x2E6AF0, .rodata, 2E0D20] #8010B770
-      - {0x2E6BE0, type: .bss, vram: 0x8010B860, name: 2E0D20}
+      - [0x2E0D20, c, main]
+      - [0x2E6060, .data, main] #8010ACE0
+      - [0x2E6AF0, .rodata, main] #8010B770
+      - {0x2E6BE0, type: .bss, vram: 0x8010B860, name: main}
 
   - type: code
     start: 0x2E6BE0
@@ -1726,10 +1726,10 @@ segments:
     exclusive_ram_id: minigame # ovl_40
     bss_size: 0x150
     subsegments:
-      - [0x2E6BE0, c]
-      - [0x2ECF70, .data, 2E6BE0] #8010BD30
-      - [0x2ED150, .rodata, 2E6BE0] #8010BF10
-      - {0x2ED2D0, type: .bss, vram: 0x8010C090, name: 2E6BE0}
+      - [0x2E6BE0, c, main]
+      - [0x2ECF70, .data, main] #8010BD30
+      - [0x2ED150, .rodata, main] #8010BF10
+      - {0x2ED2D0, type: .bss, vram: 0x8010C090, name: main}
 
   - type: code
     start: 0x2ED2D0
@@ -1739,10 +1739,10 @@ segments:
     exclusive_ram_id: minigame # ovl_41
     bss_size: 0x2A0
     subsegments:
-      - [0x2ED2D0, c]
-      - [0x2FB5E0, .data, 2ED2D0] #80113CB0
-      - [0x2FBA30, .rodata, 2ED2D0] #80114100
-      - {0x2FC270, type: .bss, vram: 0x80114940, name: 2ED2D0}
+      - [0x2ED2D0, c, main]
+      - [0x2FB5E0, .data, main] #80113CB0
+      - [0x2FBA30, .rodata, main] #80114100
+      - {0x2FC270, type: .bss, vram: 0x80114940, name: main}
 
   - type: code
     start: 0x2FC270
@@ -1753,14 +1753,14 @@ segments:
     bss_size: 0x440
     subalign: 16
     subsegments:
-      - [0x2FC270, c]
-      - [0x2FF5F0, c]
-      - [0x300F10, .data, 2FC270] #8010A640
-      - [0x300F80, .data, 2FF5F0] #8010A6B0
-      - [0x300F90, .rodata, 2FC270] #8010A6C0
-      - [0x3010D0, .rodata, 2FF5F0] #8010A800
-      - { start: 0x3010E0, type: .bss, vram: 0x8010A810, name: 2FC270 }
-      - { start: 0x3010E0, type: .bss, vram: 0x8010AB60, name: 2FF5F0 }
+      - [0x2FC270, c, main]
+      - [0x2FF5F0, c, intro]
+      - [0x300F10, .data, main] #8010A640
+      - [0x300F80, .data, intro] #8010A6B0
+      - [0x300F90, .rodata, main] #8010A6C0
+      - [0x3010D0, .rodata, intro] #8010A800
+      - { start: 0x3010E0, type: .bss, vram: 0x8010A810, name: main }
+      - { start: 0x3010E0, type: .bss, vram: 0x8010AB60, name: intro }
 
   - type: code
     start: 0x3010E0
@@ -1770,14 +1770,14 @@ segments:
     exclusive_ram_id: minigame # ovl_43
     bss_size: 0x330
     subsegments:
-      - [0x3010E0, c]
-      - [0x306F70, c]
-      - [0x308890, .data, 3010E0] #8010D150
-      - [0x308A40, .data, 306F70] #8010D300
-      - [0x308A50, .rodata, 3010E0] #8010D310
-      - [0x308D00, .rodata, 306F70] #8010D5C0
-      - { start: 0x308D10, type: .bss, vram: 0x8010D5D0, name: 3010E0 }
-      - { start: 0x308D10, type: .bss, vram: 0x8010D810, name: 306F70 }
+      - [0x3010E0, c, main]
+      - [0x306F70, c, intro]
+      - [0x308890, .data, main] #8010D150
+      - [0x308A40, .data, intro] #8010D300
+      - [0x308A50, .rodata, main] #8010D310
+      - [0x308D00, .rodata, intro] #8010D5C0
+      - { start: 0x308D10, type: .bss, vram: 0x8010D5D0, name: main }
+      - { start: 0x308D10, type: .bss, vram: 0x8010D810, name: intro }
 
   - type: code
     start: 0x308D10
@@ -1787,14 +1787,14 @@ segments:
     exclusive_ram_id: minigame # ovl_44
     bss_size: 0x540
     subsegments:
-      - [0x308D10, c]
-      - [0x30DC30, c]
-      - [0x30F550, .data, 308D10] #8010C1E0
-      - [0x30F5F0, .data, 30DC30] #8010C260
-      - [0x30F600, .rodata, 308D10] #8010C270
-      - [0x30F930, .rodata, 30DC30] #8010C5C0
-      - { start: 0x30F940, type: .bss, vram: 0x8010C5D0, name: 308D10 }
-      - { start: 0x30F940, type: .bss, vram: 0x8010CA20, name: 30DC30 }
+      - [0x308D10, c, main]
+      - [0x30DC30, c, intro]
+      - [0x30F550, .data, main] #8010C1E0
+      - [0x30F5F0, .data, intro] #8010C260
+      - [0x30F600, .rodata, main] #8010C270
+      - [0x30F930, .rodata, intro] #8010C5C0
+      - { start: 0x30F940, type: .bss, vram: 0x8010C5D0, name: main }
+      - { start: 0x30F940, type: .bss, vram: 0x8010CA20, name: intro }
 
   - type: code
     start: 0x30F940
@@ -1804,14 +1804,14 @@ segments:
     exclusive_ram_id: minigame # ovl_45
     bss_size: 0x2B0
     subsegments:
-      - [0x30F940, c]
-      - [0x3151F0, c]
-      - [0x316B10, .data, 30F940] #8010CB70
-      - [0x316C00, .data, 3151F0] #8010CC60
-      - [0x316C10, .rodata, 30F940] #8010CC70
-      - [0x316DE0, .rodata, 3151F0] #8010CE40
-      - { start: 0x316DF0, type: .bss, vram: 0x8010CE50, name: 30F940 }
-      - { start: 0x316DF0, type: .bss, vram: 0x8010D010, name: 3151F0 }
+      - [0x30F940, c, main]
+      - [0x3151F0, c, intro]
+      - [0x316B10, .data, main] #8010CB70
+      - [0x316C00, .data, intro] #8010CC60
+      - [0x316C10, .rodata, main] #8010CC70
+      - [0x316DE0, .rodata, intro] #8010CE40
+      - { start: 0x316DF0, type: .bss, vram: 0x8010CE50, name: main }
+      - { start: 0x316DF0, type: .bss, vram: 0x8010D010, name: intro }
 
   - type: code
     start: 0x316DF0
@@ -1821,10 +1821,10 @@ segments:
     exclusive_ram_id: minigame # ovl_46
     bss_size: 0x1F0
     subsegments:
-      - [0x316DF0, c]
-      - [0x31AB90, .data, 316DF0] #80109740
-      - [0x31B300, .rodata, 316DF0] #80109EB0
-      - {start: 0x31B3B0, type: .bss, vram: 0x80109F60, name: 316DF0}
+      - [0x316DF0, c, main]
+      - [0x31AB90, .data, main] #80109740
+      - [0x31B300, .rodata, main] #80109EB0
+      - {start: 0x31B3B0, type: .bss, vram: 0x80109F60, name: main}
 
   - type: code
     start: 0x31B3B0
@@ -1834,10 +1834,10 @@ segments:
     exclusive_ram_id: minigame # ovl_47
     bss_size: 0
     subsegments:
-      - [0x31B3B0, c]
-      - [0x31B3E0, c]
-      - [0x31B4F0, .data, 31B3B0] #80105AE0
-      - {0x31B510, type: .bss, vram: 0x80105B00, name: 31B3B0}
+      - [0x31B3B0, c, executor]
+      - [0x31B3E0, c, main]
+      - [0x31B4F0, .data, executor] #80105AE0
+      - {0x31B510, type: .bss, vram: 0x80105B00, name: executor}
 
   # Chilly Waters
   - type: code
@@ -1850,13 +1850,13 @@ segments:
     prioritized_segments:
       - shared_board
     subsegments:
-      - [0x31B510, c]
-      - [0x31B540, c]
-      - [0x31B9F0, c]
-      - [0x332DC0, .data, 31B510] #8011D250
-      - [0x332DF0, .data, 31B9F0]
-      - [0x335430, .rodata, 31B510]
-      - [0x335440, .rodata, 31B9F0] #8011F8D0
+      - [0x31B510, c, executor]
+      - [0x31B540, c, ice]
+      - [0x31B9F0, c, main]
+      - [0x332DC0, .data, executor] #8011D250
+      - [0x332DF0, .data, main]
+      - [0x335430, .rodata, executor]
+      - [0x335440, .rodata, main] #8011F8D0
       - {0x3355E0, type: .bss, vram: 0x8011FA70, name: bss}
 
   # Deep Bloober Sea
@@ -1870,12 +1870,12 @@ segments:
     prioritized_segments:
       - shared_board
     subsegments:
-      - [0x3355E0, c]
-      - [0x335610, c]
-      - [0x34C270, .data, 3355E0] #8011C630
-      - [0x34C2A0, .data, 335610] #8011C660
-      - [0x34E6B0, .rodata, 335610] #8011EA70
-      - {start: 0x34E810, type: .bss, vram: 0x8011EBD0, name: 335610}
+      - [0x3355E0, c, executor]
+      - [0x335610, c, main]
+      - [0x34C270, .data, executor] #8011C630
+      - [0x34C2A0, .data, main] #8011C660
+      - [0x34E6B0, .rodata, main] #8011EA70
+      - {start: 0x34E810, type: .bss, vram: 0x8011EBD0, name: main}
 
   # Spiny Desert
   - type: code
@@ -1888,12 +1888,12 @@ segments:
     prioritized_segments:
       - shared_board
     subsegments:
-      - [0x34E810, c]
-      - [0x34E840, c]
-      - [0x364F50, .data, 34E810] #8011C0E0
-      - [0x364F80, .data, 34E840] #8011C110
-      - [0x367780, .rodata, 34E840] #8011E910
-      - {start: 0x367930, type: .bss, vram: 0x8011EAC0, name: 34E840}
+      - [0x34E810, c, executor]
+      - [0x34E840, c, main]
+      - [0x364F50, .data, executor] #8011C0E0
+      - [0x364F80, .data, main] #8011C110
+      - [0x367780, .rodata, main] #8011E910
+      - {start: 0x367930, type: .bss, vram: 0x8011EAC0, name: main}
 
   # Woody Woods
   - type: code
@@ -1906,12 +1906,12 @@ segments:
     prioritized_segments:
       - shared_board
     subsegments:
-      - [0x367930, c]
-      - [0x367960, c]
-      - [0x37D6A0, .data, 367930] #8011B710
-      - [0x37D6D0, .data, 367960] #8011B740
-      - [0x37FD60, .rodata, 367960] #8011DDD0
-      - {0x37FF80, type: .bss, vram: 0x8011DFF0, name: 367960}
+      - [0x367930, c, executor]
+      - [0x367960, c, main]
+      - [0x37D6A0, .data, executor] #8011B710
+      - [0x37D6D0, .data, main] #8011B740
+      - [0x37FD60, .rodata, main] #8011DDD0
+      - {0x37FF80, type: .bss, vram: 0x8011DFF0, name: main}
 
   # Creepy Cavern
   - type: code
@@ -1924,12 +1924,12 @@ segments:
     prioritized_segments:
       - shared_board
     subsegments:
-      - [0x37FF80, c]
-      - [0x37FFB0, c]
-      - [0x3975F0, .data, 37FF80] #8011D010
-      - [0x397620, .data, 37FFB0] #8011D040
-      - [0x39AC00, .rodata, 37FFB0] #80120620
-      - {start: 0x39AD20, type: .bss, vram: 0x80120740, name: 37FFB0}
+      - [0x37FF80, c, executor]
+      - [0x37FFB0, c, main]
+      - [0x3975F0, .data, executor] #8011D010
+      - [0x397620, .data, main] #8011D040
+      - [0x39AC00, .rodata, main] #80120620
+      - {start: 0x39AD20, type: .bss, vram: 0x80120740, name: main}
 
   # Waluigi's Island
   - type: code
@@ -1942,12 +1942,12 @@ segments:
     prioritized_segments:
       - shared_board
     subsegments:
-      - [0x39AD20, c]
-      - [0x39AD50, c]
-      - [0x3B08D0, .data, 39AD20] #8011B550
-      - [0x3B0900, .data, 39AD50]
-      - [0x3B3460, .rodata, 39AD50] #8011E0E0
-      - {0x3B35F0, type: .bss, vram: 0x8011E270, name: 39AD50}
+      - [0x39AD20, c, executor]
+      - [0x39AD50, c, main]
+      - [0x3B08D0, .data, executor] #8011B550
+      - [0x3B0900, .data, main]
+      - [0x3B3460, .rodata, main] #8011E0E0
+      - {0x3B35F0, type: .bss, vram: 0x8011E270, name: main}
 
   - type: code
     start: 0x3B35F0
@@ -1959,12 +1959,12 @@ segments:
     prioritized_segments:
       - shared_board
     subsegments:
-      - [0x3B35F0, c]
-      - [0x3B3620, c]
-      - [0x3B9420, .data, 3B35F0] #8010B7D0
-      - [0x3B9440, .data, 3B3620]
-      - [0x3B9590, .rodata, 3B3620] #8010B940
-      - {0x3B9670, type: .bss, vram: 0x8010BA20, name: 3B3620}
+      - [0x3B35F0, c, executor]
+      - [0x3B3620, c, main]
+      - [0x3B9420, .data, executor] #8010B7D0
+      - [0x3B9440, .data, main]
+      - [0x3B9590, .rodata, main] #8010B940
+      - {0x3B9670, type: .bss, vram: 0x8010BA20, name: main}
 
   - type: code
     start: 0x3B9670
@@ -1976,12 +1976,12 @@ segments:
     #prioritized_segments: #TODO is this the correct overlay
     #  - shared_board
     subsegments:
-      - [0x3B9670, c]
-      - [0x3BFA00, c]
-      - [0x3C20B0, .data, 3B9670] #8010E3E0
-      - [0x3C2620, .data, 3BFA00] #8010E950
-      - [0x3C2630, .rodata, 3B9670] #8010E960
-      - {0x3C27C0, type: .bss, vram: 0x8010EAF0, name: 3B9670}
+      - [0x3B9670, c, main]
+      - [0x3BFA00, c, effect]
+      - [0x3C20B0, .data, main] #8010E3E0
+      - [0x3C2620, .data, effect] #8010E950
+      - [0x3C2630, .rodata, main] #8010E960
+      - {0x3C27C0, type: .bss, vram: 0x8010EAF0, name: main}
 
   - type: code
     start: 0x3C27C0
@@ -1991,10 +1991,10 @@ segments:
     exclusive_ram_id: minigame # ovl_50
     bss_size: 0x80
     subsegments:
-      - [0x3C27C0, c]
-      - [0x3C6170, .data, 3C27C0] #80109350
-      - [0x3C62A0, .rodata, 3C27C0] #80109480
-      - {0x3C6310, type: .bss, vram: 0x801094F0, name: 3C27C0}
+      - [0x3C27C0, c, main]
+      - [0x3C6170, .data, main] #80109350
+      - [0x3C62A0, .rodata, main] #80109480
+      - {0x3C6310, type: .bss, vram: 0x801094F0, name: main}
 
   - type: code
     start: 0x3C6310
@@ -2005,10 +2005,10 @@ segments:
     exclusive_ram_id: minigame # ovl_51
     bss_size: 0x30
     subsegments:
-      - [0x3C6310, c]
-      - [0x3C7DF0, .data, 3C6310] #80107480
-      - [0x3C7E80, .rodata, 3C6310]
-      - {0x3C7EC0, type: .bss, vram: 0x80107550, name: 3C6310}
+      - [0x3C6310, c, main]
+      - [0x3C7DF0, .data, main] #80107480
+      - [0x3C7E80, .rodata, main]
+      - {0x3C7EC0, type: .bss, vram: 0x80107550, name: main}
 
   - type: code
     start: 0x3C7EC0
@@ -2018,10 +2018,10 @@ segments:
     exclusive_ram_id: minigame # ovl_52
     bss_size: 0xF0
     subsegments:
-      - [0x3C7EC0, c]
-      - [0x3CA5F0, .data, 3C7EC0] #801080D0
-      - [0x3CA650, .rodata, 3C7EC0] #80108130
-      - {start: 0x3CA800, type: .bss, vram: 0x801082E0, name: 3C7EC0}
+      - [0x3C7EC0, c, main]
+      - [0x3CA5F0, .data, main] #801080D0
+      - [0x3CA650, .rodata, main] #80108130
+      - {start: 0x3CA800, type: .bss, vram: 0x801082E0, name: main}
 
   - type: code
     start: 0x3CA800
@@ -2031,10 +2031,10 @@ segments:
     exclusive_ram_id: minigame # ovl_53
     bss_size: 0x20
     subsegments:
-      - [0x3CA800, c]
-      - [0x3CDBD0, .data, 3CA800] #80108D70
-      - [0x3CDDE0, .rodata, 3CA800]
-      - {0x3CDEC0, type: .bss, vram: 0x80109060, name: 3CA800}
+      - [0x3CA800, c, main]
+      - [0x3CDBD0, .data, main] #80108D70
+      - [0x3CDDE0, .rodata, main]
+      - {0x3CDEC0, type: .bss, vram: 0x80109060, name: main}
 
   - type: code
     start: 0x3CDEC0
@@ -2044,10 +2044,10 @@ segments:
     exclusive_ram_id: minigame # ovl_54
     bss_size: 0x40
     subsegments:
-      - [0x3CDEC0, c]
-      - [0x3CFAE0, .data, 3CDEC0] #801075C0
-      - [0x3CFC60, .rodata, 3CDEC0] #80107740
-      - {0x3CFC80, type: .bss, vram: 0x80107760, name: 3CDEC0}
+      - [0x3CDEC0, c, main]
+      - [0x3CFAE0, .data, main] #801075C0
+      - [0x3CFC60, .rodata, main] #80107740
+      - {0x3CFC80, type: .bss, vram: 0x80107760, name: main}
 
   - type: code
     start: 0x3CFC80
@@ -2057,10 +2057,10 @@ segments:
     exclusive_ram_id: minigame # ovl_55
     bss_size: 0xB0
     subsegments:
-      - [0x3CFC80, c]
-      - [0x3D3A90, .data, 3CFC80] #801097B0
-      - [0x3D3B10, .rodata, 3CFC80] #80109830
-      - {0x3D3C80, type: .bss, vram: 0x801099A0, name: 3CFC80}
+      - [0x3CFC80, c, main]
+      - [0x3D3A90, .data, main] #801097B0
+      - [0x3D3B10, .rodata, main] #80109830
+      - {0x3D3C80, type: .bss, vram: 0x801099A0, name: main}
 
   - type: code
     start: 0x3D3C80
@@ -2070,10 +2070,10 @@ segments:
     exclusive_ram_id: minigame # ovl_56
     bss_size: 0x190
     subsegments:
-      - [0x3D3C80, c]
-      - [0x3D5160, .data, 3D3C80] #80106E80
-      - [0x3D5440, .rodata, 3D3C80] #80107160
-      - {0x3D5C30, type: .bss, vram: 0x80107950, name: 3D3C80}
+      - [0x3D3C80, c, main]
+      - [0x3D5160, .data, main] #80106E80
+      - [0x3D5440, .rodata, main] #80107160
+      - {0x3D5C30, type: .bss, vram: 0x80107950, name: main}
 
   - type: code
     start: 0x3D5C30
@@ -2083,10 +2083,10 @@ segments:
     exclusive_ram_id: minigame # ovl_57
     bss_size: 0x1A0
     subsegments:
-      - [0x3D5C30, c]
-      - [0x3D7040, .data, 3D5C30] #80106DB0
-      - [0x3D70A0, .rodata, 3D5C30] #80106E10
-      - {0x3D7150, type: .bss, vram: 0x80106EC0, name: 3D5C30}
+      - [0x3D5C30, c, main]
+      - [0x3D7040, .data, main] #80106DB0
+      - [0x3D70A0, .rodata, main] #80106E10
+      - {0x3D7150, type: .bss, vram: 0x80106EC0, name: main}
 
   - type: code
     start: 0x3D7150
@@ -2096,11 +2096,11 @@ segments:
     exclusive_ram_id: minigame # ovl_58
     bss_size: 0x10
     subsegments:
-      - [0x3D7150, c]
-      - [0x3D7180, c]
-      - [0x3D7690, .data, 3D7150] #80105EE0
-      - [0x3D76B0, .data, 3D7180]
-      - {0x3D76C0, type: .bss, vram: 0x80105F10, name: 3D7180}
+      - [0x3D7150, c, executor]
+      - [0x3D7180, c, main]
+      - [0x3D7690, .data, executor] #80105EE0
+      - [0x3D76B0, .data, main]
+      - {0x3D76C0, type: .bss, vram: 0x80105F10, name: main}
 
   - type: code
     start: 0x3D76C0
@@ -2110,10 +2110,10 @@ segments:
     exclusive_ram_id: minigame # ovl_59
     bss_size: 0x30
     subsegments:
-      - [0x3D76C0, c]
-      - [0x3D8680, .data, 3D76C0] #80106960
-      - [0x3D86B0, .rodata, 3D76C0] #80106990
-      - {0x3D8930, type: .bss, vram: 0x80106C10, name: 3D76C0}
+      - [0x3D76C0, c, main]
+      - [0x3D8680, .data, main] #80106960
+      - [0x3D86B0, .rodata, main] #80106990
+      - {0x3D8930, type: .bss, vram: 0x80106C10, name: main}
 
   - type: code
     start: 0x3D8930
@@ -2123,11 +2123,11 @@ segments:
     exclusive_ram_id: minigame # ovl_5A
     bss_size: 0
     subsegments:
-      - [0x3D8930, c]
-      - [0x3D8960, c]
-      - [0x3D8A70, .data, 3D8930] #80105AE0
-      - [0x3D8A90, .data, 3D8960]
-      - {0x3D8A90, type: .bss, vram: 0x80105B00, name: 3D8960}
+      - [0x3D8930, c, executor]
+      - [0x3D8960, c, main]
+      - [0x3D8A70, .data, executor] #80105AE0
+      - [0x3D8A90, .data, main]
+      - {0x3D8A90, type: .bss, vram: 0x80105B00, name: main}
 
   # Gate Guy
   - type: code
@@ -2138,12 +2138,12 @@ segments:
     exclusive_ram_id: minigame # ovl_5B
     bss_size: 0x50
     subsegments:
-      - [0x3D8A90, c]
-      - [0x3D8AC0, c]
-      - [0x3EB7D0, .data, 3D8A90] #801186E0
-      - [0x3EB800, .data, 3D8AC0]
-      - [0x3EBF50, .rodata, 3D8AC0] #80118E60
-      - {0x3EC560, type: .bss, vram: 0x80119470, name: 3D8AC0}
+      - [0x3D8A90, c, executor]
+      - [0x3D8AC0, c, main]
+      - [0x3EB7D0, .data, executor] #801186E0
+      - [0x3EB800, .data, main]
+      - [0x3EBF50, .rodata, main] #80118E60
+      - {0x3EC560, type: .bss, vram: 0x80119470, name: main}
 
   # Arrowhead
   - type: code
@@ -2154,12 +2154,12 @@ segments:
     exclusive_ram_id: minigame # ovl_5C
     bss_size: 0x40
     subsegments:
-      - [0x3EC560, c]
-      - [0x3EC590, c]
-      - [0x3FD130, .data, 3EC560] #80116570
-      - [0x3FD160, .data, 3EC590]
-      - [0x3FDC30, .rodata, 3EC590] #80117070
-      - {0x3FE1C0, type: .bss, vram: 0x80117600, name: 3EC590}
+      - [0x3EC560, c, executor]
+      - [0x3EC590, c, main]
+      - [0x3FD130, .data, executor] #80116570
+      - [0x3FD160, .data, main]
+      - [0x3FDC30, .rodata, main] #80117070
+      - {0x3FE1C0, type: .bss, vram: 0x80117600, name: main}
 
   # Pipesqueak
   - type: code
@@ -2170,12 +2170,12 @@ segments:
     exclusive_ram_id: minigame # ovl_5D
     bss_size: 0x50
     subsegments:
-      - [0x3FE1C0, c]
-      - [0x3FE1F0, c]
-      - [0x40FC20, .data, 3FE1C0] #80117400
-      - [0x40FC50, .data, 3FE1F0]
-      - [0x410340, .rodata, 3FE1F0] #80117B20
-      - {0x4108E0, type: .bss, vram: 0x801180C0, name: 3FE1F0}
+      - [0x3FE1C0, c, executor]
+      - [0x3FE1F0, c, main]
+      - [0x40FC20, .data, executor] #80117400
+      - [0x40FC50, .data, main]
+      - [0x410340, .rodata, main] #80117B20
+      - {0x4108E0, type: .bss, vram: 0x801180C0, name: main}
 
   # Blowhard
   - type: code
@@ -2186,12 +2186,12 @@ segments:
     exclusive_ram_id: minigame # ovl_5E
     bss_size: 0x40
     subsegments:
-      - [0x4108E0, c]
-      - [0x410910, c]
-      - [0x424BB0, .data, 4108E0] #80119C70
-      - [0x424BE0, .data, 410910]
-      - [0x425E10, .rodata, 410910] #8011AED0
-      - {0x426420, type: .bss, vram: 0x8011B4E0, name: 410910}
+      - [0x4108E0, c, executor]
+      - [0x410910, c, main]
+      - [0x424BB0, .data, executor] #80119C70
+      - [0x424BE0, .data, main]
+      - [0x425E10, .rodata, main] #8011AED0
+      - {0x426420, type: .bss, vram: 0x8011B4E0, name: main}
 
   - type: code
     start: 0x426420
@@ -2201,12 +2201,12 @@ segments:
     exclusive_ram_id: minigame # ovl_5F
     bss_size: 0x40
     subsegments:
-      - [0x426420, c]
-      - [0x426450, c]
-      - [0x436100, .data, 426420] #80115680
-      - [0x436130, .data, 426450]
-      - [0x436840, .rodata, 426450] #80115DC0
-      - {0x436E20, type: .bss, vram: 0x801163A0, name: 426450}
+      - [0x426420, c, executor]
+      - [0x426450, c, main]
+      - [0x436100, .data, executor] #80115680
+      - [0x436130, .data, main]
+      - [0x436840, .rodata, main] #80115DC0
+      - {0x436E20, type: .bss, vram: 0x801163A0, name: main}
 
   - type: code
     start: 0x436E20
@@ -2216,12 +2216,12 @@ segments:
     exclusive_ram_id: minigame # ovl_60
     bss_size: 0x50
     subsegments:
-      - [0x436E20, c]
-      - [0x436E50, c]
-      - [0x445900, .data, 436E20] #80114480
-      - [0x445930, .data, 436E50]
-      - [0x445C20, .rodata, 436E50] #801147A0
-      - {0x4461B0, type: .bss, vram: 0x80114D30, name: 436E50}
+      - [0x436E20, c, executor]
+      - [0x436E50, c, main]
+      - [0x445900, .data, executor] #80114480
+      - [0x445930, .data, main]
+      - [0x445C20, .rodata, main] #801147A0
+      - {0x4461B0, type: .bss, vram: 0x80114D30, name: main}
 
   - type: code
     start: 0x4461B0
@@ -2231,12 +2231,12 @@ segments:
     exclusive_ram_id: minigame # ovl_61
     bss_size: 0x40
     subsegments:
-      - [0x4461B0, c]
-      - [0x4461E0, c]
-      - [0x4551C0, .data, 4461B0] #801149B0
-      - [0x4551E0, .data, 4461E0]
-      - [0x4552D0, .rodata, 4461E0] #80114AC0
-      - {0x4554C0, type: .bss, vram: 0x80114CB0, name: 4461E0}
+      - [0x4461B0, c, executor]
+      - [0x4461E0, c, main]
+      - [0x4551C0, .data, executor] #801149B0
+      - [0x4551E0, .data, main]
+      - [0x4552D0, .rodata, main] #80114AC0
+      - {0x4554C0, type: .bss, vram: 0x80114CB0, name: main}
 
   - type: code
     start: 0x4554C0
@@ -2246,12 +2246,12 @@ segments:
     exclusive_ram_id: minigame # ovl_62
     bss_size: 0xF0
     subsegments:
-      - [0x4554C0, c]
-      - [0x45A700, c]
-      - [0x45CDB0, .data, 4554C0] #8010D290
-      - [0x45D1A0, .data, 45A700] #8010D6C0
-      - [0x45D1B0, .rodata, 4554C0] #8010D6D0
-      - {0x45D380, type: .bss, vram: 0x8010D860, name: 4554C0}
+      - [0x4554C0, c, main]
+      - [0x45A700, c, effect]
+      - [0x45CDB0, .data, main] #8010D290
+      - [0x45D1A0, .data, effect] #8010D6C0
+      - [0x45D1B0, .rodata, main] #8010D6D0
+      - {0x45D380, type: .bss, vram: 0x8010D860, name: main}
 
   - type: code
     start: 0x45D380
@@ -2261,10 +2261,10 @@ segments:
     exclusive_ram_id: minigame # ovl_63
     bss_size: 0x90
     subsegments:
-      - [0x45D380, c]
-      - [0x460610, .data, 45D380] #80108C30
-      - [0x460620, .rodata, 45D380] #80108C40
-      - {0x460790, type: .bss, vram: 0x80108DB0, name: 45D380}
+      - [0x45D380, c, main]
+      - [0x460610, .data, main] #80108C30
+      - [0x460620, .rodata, main] #80108C40
+      - {0x460790, type: .bss, vram: 0x80108DB0, name: main}
 
   - type: code
     start: 0x460790
@@ -2274,10 +2274,10 @@ segments:
     exclusive_ram_id: minigame # ovl_64
     bss_size: 0x20
     subsegments:
-      - [0x460790, c]
-      - [0x463FF0, .data, 460790] #80109200
-      - [0x464280, .rodata, 460790] #80109490
-      - {0x464360, type: .bss, vram: 0x80109570, name: 460790}
+      - [0x460790, c, main]
+      - [0x463FF0, .data, main] #80109200
+      - [0x464280, .rodata, main] #80109490
+      - {0x464360, type: .bss, vram: 0x80109570, name: main}
 
   - type: code
     start: 0x464360
@@ -2287,10 +2287,10 @@ segments:
     exclusive_ram_id: minigame # ovl_65
     bss_size: 0x40
     subsegments:
-      - [0x464360, c]
-      - [0x4672F0, .data, 464360] #80108930
-      - [0x467560, .rodata, 464360] #80108BA0
-      - {0x4675D0, type: .bss, vram: 0x80108C10, name: 464360}
+      - [0x464360, c, main]
+      - [0x4672F0, .data, main] #80108930
+      - [0x467560, .rodata, main] #80108BA0
+      - {0x4675D0, type: .bss, vram: 0x80108C10, name: main}
 
   - type: code
     start: 0x4675D0
@@ -2301,12 +2301,12 @@ segments:
     exclusive_ram_id: minigame # ovl_66
     bss_size: 0x200
     subsegments:
-      - [0x4675D0, c]
-      - [0x467600, c]
-      - [0x468310, .data, 4675D0] #801066E0
-      - [0x468320, .data, 467600]
-      - [0x468340, .rodata, 467600] #80106710
-      - {0x4684F0, type: .bss, vram: 0x801068C0, name: 467600}
+      - [0x4675D0, c, executor]
+      - [0x467600, c, main]
+      - [0x468310, .data, executor] #801066E0
+      - [0x468320, .data, main]
+      - [0x468340, .rodata, main] #80106710
+      - {0x4684F0, type: .bss, vram: 0x801068C0, name: main}
 
   - type: code
     start: 0x4684F0
@@ -2316,10 +2316,10 @@ segments:
     exclusive_ram_id: minigame # ovl_67
     bss_size: 0x10
     subsegments:
-      - [0x4684F0, c]
-      - [0x468520, c]
-      - [0x468A70, .data, 4684F0] #80105F20
-      - {0x468A90, type: .bss, vram: 0x80105F40, name: 468520}
+      - [0x4684F0, c, executor]
+      - [0x468520, c, main]
+      - [0x468A70, .data, executor] #80105F20
+      - {0x468A90, type: .bss, vram: 0x80105F40, name: main}
 
   - type: code
     start: 0x468A90
@@ -2329,14 +2329,14 @@ segments:
     exclusive_ram_id: minigame # ovl_68
     bss_size: 0x110
     subsegments:
-      - [0x468A90, c]
-      - [0x468AC0, c]
-      - [0x46BB50, c]
-      - [0x46CB70, .data, 468A90] #80109A80
-      - [0x46CB90, .data, 468AC0] #80109AA0
-      - [0x46CBA0, .data, 46BB50] #80109AB0
-      - [0x46CBB0, .rodata, 468AC0] #80109AC0
-      - [0x46CBC8, .rodata, 46BB50] #80109AD8
+      - [0x468A90, c, executor]
+      - [0x468AC0, c, main]
+      - [0x46BB50, c, camera]
+      - [0x46CB70, .data, executor] #80109A80
+      - [0x46CB90, .data, main] #80109AA0
+      - [0x46CBA0, .data, camera] #80109AB0
+      - [0x46CBB0, .rodata, main] #80109AC0
+      - [0x46CBC8, .rodata, camera] #80109AD8
       - {0x46CC10, type: .bss, vram: 0x80109B20, name: bss}
 
   - type: code
@@ -2347,20 +2347,20 @@ segments:
     exclusive_ram_id: minigame # ovl_69
     bss_size: 0x1260
     subsegments:
-      - [0x46CC10, c]
-      - [0x473130, c]
-      - [0x479470, c]
-      - [0x47D880, c]
-      - [0x47DD90, c]
-      - [0x480120, .data, 46CC10] #80118EB0
-      - [0x4805B0, .data, 473130] #80119340
-      - [0x480730, .data, 479470] #801194C0
-      - [0x480850, .data, 47D880] #801195E0
-      - [0x481650, .data, 47DD90] #8011A3E0
-      - [0x481670, .rodata, 46CC10] #8011A400
-      - [0x481810, .rodata, 473130] #80120920
-      - [0x4818E0, .rodata, 479470] #80126C60
-      - [0x481900, .rodata, 47DD90] #8012B580
+      - [0x46CC10, c, main]
+      - [0x473130, c, battle]
+      - [0x479470, c, gameguy]
+      - [0x47D880, c, datalist]
+      - [0x47DD90, c, camera]
+      - [0x480120, .data, main] #80118EB0
+      - [0x4805B0, .data, battle] #80119340
+      - [0x480730, .data, gameguy] #801194C0
+      - [0x480850, .data, datalist] #801195E0
+      - [0x481650, .data, camera] #8011A3E0
+      - [0x481670, .rodata, main] #8011A400
+      - [0x481810, .rodata, battle] #80120920
+      - [0x4818E0, .rodata, gameguy] #80126C60
+      - [0x481900, .rodata, camera] #8012B580
       - {0x481970, type: .bss, vram: 0x8011A700, name: bss}
 
   - type: code
@@ -2371,17 +2371,17 @@ segments:
     exclusive_ram_id: minigame # ovl_6A
     bss_size: 0x280
     subsegments:
-      - [0x481970, c]
-      - [0x4822F0, c]
-      - [0x4832D0, c]
-      - [0x487F50, c]
-      - [0x48BAB0, .data, 481970] #8010FAE0
-      - [0x48BAC0, .data, 4822F0] #8010FAF0
-      - [0x48BAD0, .data, 4832D0] #8010FB00
-      - [0x48BB50, .data, 487F50] #8010FB80
-      - [0x48BBF0, .rodata, 481970] #8010FC20
-      - [0x48BC50, .rodata, 4832D0] #8010FC80
-      - [0x48BC68, .rodata, 487F50] #8010FC98
+      - [0x481970, c, main]
+      - [0x4822F0, c, player]
+      - [0x4832D0, c, swap]
+      - [0x487F50, c, block]
+      - [0x48BAB0, .data, main] #8010FAE0
+      - [0x48BAC0, .data, player] #8010FAF0
+      - [0x48BAD0, .data, swap] #8010FB00
+      - [0x48BB50, .data, block] #8010FB80
+      - [0x48BBF0, .rodata, main] #8010FC20
+      - [0x48BC50, .rodata, swap] #8010FC80
+      - [0x48BC68, .rodata, block] #8010FC98
       - {0x48BE30, type: .bss, vram: 0x8010FE60, name: bss}
 
   - type: code
@@ -2392,20 +2392,20 @@ segments:
     exclusive_ram_id: minigame # ovl_6B
     bss_size: 0x410
     subsegments:
-      - [0x48BE30, c]
-      - [0x48C120, c]
-      - [0x48D950, c]
-      - [0x492250, c]
-      - [0x496990, c]
-      - [0x49AF10, .data, 48C120] #80114A80
-      - [0x49AF50, .data, 48D950] #80114AC0
-      - [0x49AFD0, .data, 492250] #80114B40
-      - [0x49B050, .data, 496990] #80114BC0
-      - [0x49B0D0, .rodata, 48BE30] #80114C40
-      - [0x49B0E8, .rodata, 48C120] #80114C58
-      - [0x49B140, .rodata, 48D950] #80114CB0
-      - [0x49B550, .rodata, 492250] #801150C0
-      - [0x49B960, .rodata, 496990] #801154D0
+      - [0x48BE30, c, main]
+      - [0x48C120, c, common]
+      - [0x48D950, c, scene0]
+      - [0x492250, c, scene1]
+      - [0x496990, c, scene2]
+      - [0x49AF10, .data, common] #80114A80
+      - [0x49AF50, .data, scene0] #80114AC0
+      - [0x49AFD0, .data, scene1] #80114B40
+      - [0x49B050, .data, scene2] #80114BC0
+      - [0x49B0D0, .rodata, main] #80114C40
+      - [0x49B0E8, .rodata, common] #80114C58
+      - [0x49B140, .rodata, scene0] #80114CB0
+      - [0x49B550, .rodata, scene1] #801150C0
+      - [0x49B960, .rodata, scene2] #801154D0
       - {0x49BD40, type: .bss, vram: 0x801158B0, name: bss}
 
   - type: code
@@ -2417,24 +2417,24 @@ segments:
     subalign: 4
     bss_size: 0x450
     subsegments:
-      - [0x49BD40, c]
-      - [0x49DF30, c]
-      - [0x4A28B0, c]
-      - [0x4A7540, c]
-      - [0x4AC200, c]
-      - [0x4B0E80, c]
-      - [0x4B1CC0, .data, 49BD40] #8011B920
-      - [0x4B1CF0, .data, 49DF30] #8011B950
-      - [0x4B1E10, .data, 4A28B0] #8011BA70
-      - [0x4B1F30, .data, 4A7540] #8011BB90
-      - [0x4B2050, .data, 4AC200] #8011BCB0
-      - [0x4B2170, .data, 4B0E80] #8011BDD0
-      - [0x4B2180, .rodata, 49BD40] #8011BDE0
-      - [0x4B2208, .rodata, 49DF30] #8011BE68
-      - [0x4B23E8, .rodata, 4A28B0] #8011C048
-      - [0x4B25D4, .rodata, 4A7540] #8011C234
-      - [0x4B27C0, .rodata, 4AC200] #8011C420
-      - [0x4B29AC, .rodata, 4B0E80] #8011C60C
+      - [0x49BD40, c, main]
+      - [0x49DF30, c, scene1]
+      - [0x4A28B0, c, scene2]
+      - [0x4A7540, c, scene3]
+      - [0x4AC200, c, scene4]
+      - [0x4B0E80, c, scene0]
+      - [0x4B1CC0, .data, main] #8011B920
+      - [0x4B1CF0, .data, scene1] #8011B950
+      - [0x4B1E10, .data, scene2] #8011BA70
+      - [0x4B1F30, .data, scene3] #8011BB90
+      - [0x4B2050, .data, scene4] #8011BCB0
+      - [0x4B2170, .data, scene0] #8011BDD0
+      - [0x4B2180, .rodata, main] #8011BDE0
+      - [0x4B2208, .rodata, scene1] #8011BE68
+      - [0x4B23E8, .rodata, scene2] #8011C048
+      - [0x4B25D4, .rodata, scene3] #8011C234
+      - [0x4B27C0, .rodata, scene4] #8011C420
+      - [0x4B29AC, .rodata, scene0] #8011C60C
       - {0x4B29E0, type: .bss, vram: 0x8011C640, name: bss}
 
   - type: code
@@ -2445,15 +2445,15 @@ segments:
     exclusive_ram_id: minigame # ovl_6D
     bss_size: 0x240
     subsegments:
-      - [0x4B29E0, c]
-      - [0x4B4DC0, c]
-      - [0x4B9A30, c]
-      - [0x4C22A0, .data, 4B29E0] #80115260
-      - [0x4C22D0, .data, 4B4DC0] #80115290
-      - [0x4C23F0, .data, 4B9A30] #801153B0
-      - [0x4C2530, .rodata, 4B29E0] #801154F0
-      - [0x4C2588, .rodata, 4B4DC0] #80115548
-      - [0x4C2780, .rodata, 4B9A30] #80115740
+      - [0x4B29E0, c, main]
+      - [0x4B4DC0, c, scene1]
+      - [0x4B9A30, c, scene0]
+      - [0x4C22A0, .data, main] #80115260
+      - [0x4C22D0, .data, scene1] #80115290
+      - [0x4C23F0, .data, scene0] #801153B0
+      - [0x4C2530, .rodata, main] #801154F0
+      - [0x4C2588, .rodata, scene1] #80115548
+      - [0x4C2780, .rodata, scene0] #80115740
       - {0x4C2BD0, type: .bss, vram: 0x80115B90, name: bss}
 
   - type: code
@@ -2464,15 +2464,15 @@ segments:
     exclusive_ram_id: minigame # ovl_6E
     bss_size: 0x2A0
     subsegments:
-      - [0x4C2BD0, c]
-      - [0x4C47E0, c]
-      - [0x4C8050, c]
-      - [0x4CECF0, .data, 4C2BD0] #80111AC0
-      - [0x4CED30, .data, 4C47E0] #80111B00
-      - [0x4CEDB0, .data, 4C8050] #80111B80
-      - [0x4CEE40, .rodata, 4C2BD0] #80111C10
-      - [0x4CEEA0, .rodata, 4C47E0] #80111C70
-      - [0x4CF140, .rodata, 4C8050] #80111F10
+      - [0x4C2BD0, c, main]
+      - [0x4C47E0, c, scene0]
+      - [0x4C8050, c, scene1]
+      - [0x4CECF0, .data, main] #80111AC0
+      - [0x4CED30, .data, scene0] #80111B00
+      - [0x4CEDB0, .data, scene1] #80111B80
+      - [0x4CEE40, .rodata, main] #80111C10
+      - [0x4CEEA0, .rodata, scene0] #80111C70
+      - [0x4CF140, .rodata, scene1] #80111F10
       - {0x4CF350, type: .bss, vram: 0x80112120, name: bss}
 
   - type: code
@@ -2483,15 +2483,15 @@ segments:
     exclusive_ram_id: minigame # ovl_6F
     bss_size: 0x520
     subsegments:
-      - [0x4CF350, c]
-      - [0x4D1200, c]
-      - [0x4D8E80, c]
-      - [0x4DE0E0, .data, 4CF350] #80114730
-      - [0x4DE120, .data, 4D1200] #80114770
-      - [0x4DE1D0, .data, 4D8E80] #80114820
-      - [0x4DE250, .rodata, 4CF350] #801148A0
-      - [0x4DE2B0, .rodata, 4D1200] #80114900
-      - [0x4DE6D0, .rodata, 4D8E80] #80114D20
+      - [0x4CF350, c, main]
+      - [0x4D1200, c, scene1]
+      - [0x4D8E80, c, scene0]
+      - [0x4DE0E0, .data, main] #80114730
+      - [0x4DE120, .data, scene1] #80114770
+      - [0x4DE1D0, .data, scene0] #80114820
+      - [0x4DE250, .rodata, main] #801148A0
+      - [0x4DE2B0, .rodata, scene1] #80114900
+      - [0x4DE6D0, .rodata, scene0] #80114D20
       - {0x4DEB60, type: .bss, vram: 0x801151B0, name: bss}
 
   - type: code
@@ -2503,23 +2503,23 @@ segments:
     exclusive_ram_id: minigame # ovl_70
     bss_size: 0x1F0
     subsegments:
-      - [0x4DEB60, c]
-      - [0x4E0630, c]
-      - [0x4E1510, c]
-      - [0x4E1CB0, c]
-      - [0x4E2670, c]
-      - [0x4E2C50, c]
-      - [0x4E3390, c]
-      - [0x4E4B50, c]
+      - [0x4DEB60, c, main]
+      - [0x4E0630, c, stage]
+      - [0x4E1510, c, host]
+      - [0x4E1CB0, c, screen]
+      - [0x4E2670, c, hostduel]
+      - [0x4E2C50, c, hostitem]
+      - [0x4E3390, c, player]
+      - [0x4E4B50, c, window]
       - [0x4E65C0, .data, data] #8010D400
-      - [0x4E6780, .rodata, 4DEB60] #8010D5C0
-      - [0x4E6930, .rodata, 4E0630] #8010D770
-      - [0x4E6B50, .rodata, 4E1510] #8010D990
-      - [0x4E6B5C, .rodata, 4E1CB0] #8010D99C
-      - [0x4E6B64, .rodata, 4E2670] #8010D9A4
-      - [0x4E6B70, .rodata, 4E2C50] #8010D9B0
-      - [0x4E6B88, .rodata, 4E3390] #8010D9C8
-      - [0x4E6CB8, .rodata, 4E4B50] #8010DAF8
+      - [0x4E6780, .rodata, main] #8010D5C0
+      - [0x4E6930, .rodata, stage] #8010D770
+      - [0x4E6B50, .rodata, host] #8010D990
+      - [0x4E6B5C, .rodata, screen] #8010D99C
+      - [0x4E6B64, .rodata, hostduel] #8010D9A4
+      - [0x4E6B70, .rodata, hostitem] #8010D9B0
+      - [0x4E6B88, .rodata, player] #8010D9C8
+      - [0x4E6CB8, .rodata, window] #8010DAF8
       - {0x4E6DC0, type: .bss, vram: 0x8010DC00, name: bss}
 
   - type: code
@@ -2530,18 +2530,18 @@ segments:
     exclusive_ram_id: minigame # ovl_71
     bss_size: 0x2F0
     subsegments:
-      - [0x4E6DC0, c]
+      - [0x4E6DC0, c, main]
       - [0x4E8F60, c]
-      - [0x4E9120, c]
+      - [0x4E9120, c, score]
       - [0x4EB420, c]
       - [0x4EBD50, c]
-      - [0x4EBF10, .data, 4E6DC0] #8010AAF0
+      - [0x4EBF10, .data, main] #8010AAF0
       - [0x4EBF30, .data, 4E8F60] #8010AB10
-      - [0x4EBF60, .data, 4E9120] #8010AB40
+      - [0x4EBF60, .data, score] #8010AB40
       - [0x4EC080, .data, 4EB420] #8010AC60
       - [0x4EC0B0, .data, 4EBD50] #8010AC90
-      - [0x4EC0E0, .rodata, 4E6DC0] #8010ACC0
-      - [0x4EC148, .rodata, 4E9120] #8010AD28
+      - [0x4EC0E0, .rodata, main] #8010ACC0
+      - [0x4EC148, .rodata, score] #8010AD28
       - [0x4EC1A0, .rodata, 4EB420] #8010AD80
       - {0x4EC1B0, type: .bss, vram: 0x8010AD90, name: bss}
 
@@ -2553,14 +2553,14 @@ segments:
     exclusive_ram_id: minigame # ovl_72
     bss_size: 0x8A0
     subsegments:
-      - [0x4EC1B0, c]
-      - [0x4ECDE0, c]
-      - [0x4EDCB0, c]
-      - [0x4F00D0, .data, 4EC1B0] #801098C0
-      - [0x4F00F0, .data, 4ECDE0] #801098E0
-      - [0x4F0120, .data, 4EDCB0] #80109910
-      - [0x4F0170, .rodata, 4EC1B0] #80109960
-      - [0x4F01B8, .rodata, 4ECDE0] #801099A8
+      - [0x4EC1B0, c, main]
+      - [0x4ECDE0, c, dealer]
+      - [0x4EDCB0, c, coin]
+      - [0x4F00D0, .data, main] #801098C0
+      - [0x4F00F0, .data, dealer] #801098E0
+      - [0x4F0120, .data, coin] #80109910
+      - [0x4F0170, .rodata, main] #80109960
+      - [0x4F01B8, .rodata, dealer] #801099A8
       - {start: 0x4F01F0, type: .bss, vram: 0x801099E0, name: bss}
 
   - type: code
@@ -2571,12 +2571,12 @@ segments:
     exclusive_ram_id: minigame # ovl_73
     bss_size: 0x420
     subsegments:
-      - [0x4F01F0, c]
-      - [0x4F1180, c]
-      - [0x4F36C0, .data, 4F01F0] #80108E70
-      - [0x4F36D0, .data, 4F1180] #80108E80
-      - [0x4F36F0, .rodata, 4F01F0] #80108EA0
-      - [0x4F3718, .rodata, 4F1180] #80108EC8
+      - [0x4F01F0, c, main]
+      - [0x4F1180, c, player]
+      - [0x4F36C0, .data, main] #80108E70
+      - [0x4F36D0, .data, player] #80108E80
+      - [0x4F36F0, .rodata, main] #80108EA0
+      - [0x4F3718, .rodata, player] #80108EC8
       - {0x4F3780, type: .bss, vram: 0x80108F30, name: bss}
 
   - type: code
@@ -2587,14 +2587,14 @@ segments:
     exclusive_ram_id: minigame # ovl_74
     bss_size: 0x570
     subsegments:
-      - [0x4F3780, c]
-      - [0x4F4980, c]
-      - [0x4F5AF0, c]
-      - [0x4F66B0, .data, 4F3780] #801088D0
-      - [0x4F66C0, .data, 4F4980] #801088E0
-      - [0x4F66D0, .rodata, 4F3780] #801088F0
-      - [0x4F6780, .rodata, 4F4980] #801089A0
-      - [0x4F67E0, .rodata, 4F5AF0] #80108A00
+      - [0x4F3780, c, main]
+      - [0x4F4980, c, host]
+      - [0x4F5AF0, c, player]
+      - [0x4F66B0, .data, main] #801088D0
+      - [0x4F66C0, .data, host] #801088E0
+      - [0x4F66D0, .rodata, main] #801088F0
+      - [0x4F6780, .rodata, host] #801089A0
+      - [0x4F67E0, .rodata, player] #80108A00
       - {start: 0x4F6810, type: .bss, vram: 0x80108A30, name: bss}
 
   - type: code
@@ -2605,9 +2605,9 @@ segments:
     exclusive_ram_id: minigame # ovl_75
     bss_size: 0x000
     subsegments:
-      - [0x4F6810, c]
-      - [0x4F69B0, .rodata, 4F6810] #80105B40
-      - {0x4F69F0, type: .bss, vram: 0x80105B80, name: 4F6810}
+      - [0x4F6810, c, main]
+      - [0x4F69B0, .rodata, main] #80105B40
+      - {0x4F69F0, type: .bss, vram: 0x80105B80, name: main}
 
   - type: code
     start: 0x4F69F0
@@ -2617,10 +2617,10 @@ segments:
     exclusive_ram_id: minigame # ovl_76
     bss_size: 0x1D0
     subsegments:
-      - [0x4F69F0, c]
-      - [0x4F7550, .data, 4F69F0] #80106500
-      - [0x4F7A30, .rodata, 4F69F0] #801069E0
-      - {0x4F7E90, type: .bss, vram: 0x80106E40, name: 4F69F0}
+      - [0x4F69F0, c, main]
+      - [0x4F7550, .data, main] #80106500
+      - [0x4F7A30, .rodata, main] #801069E0
+      - {0x4F7E90, type: .bss, vram: 0x80106E40, name: main}
 
   - type: code
     start: 0x4F7E90
@@ -2630,14 +2630,14 @@ segments:
     exclusive_ram_id: minigame # ovl_77
     bss_size: 0x16E0
     subsegments:
-      - [0x4F7E90, c]
-      - [0x4F7EC0, c]
-      - [0x4F8140, c]
-      - [0x501760, .data, 4F7E90] #8010F270
-      - [0x501780, .data, 4F8140] #8010F290
-      - [0x5018A0, .rodata, 4F7EC0] #8010F3B0
-      - [0x5018D0, .rodata, 4F8140] #8010F3E0
-      - {0x501C00, type: .bss, vram: 0x8010F710, name: 4F8140}
+      - [0x4F7E90, c, executor]
+      - [0x4F7EC0, c, main]
+      - [0x4F8140, c, modesel]
+      - [0x501760, .data, executor] #8010F270
+      - [0x501780, .data, modesel] #8010F290
+      - [0x5018A0, .rodata, main] #8010F3B0
+      - [0x5018D0, .rodata, modesel] #8010F3E0
+      - {0x501C00, type: .bss, vram: 0x8010F710, name: modesel}
 
   - type: code
     start: 0x501C00
@@ -2647,19 +2647,19 @@ segments:
     exclusive_ram_id: minigame # ovl_78
     bss_size: 0x1D0
     subsegments:
-      - [0x501C00, c]
-      - [0x506F20, c]
-      - [0x508D50, c]
-      - [0x5092C0, c]
-      - [0x50B740, c]
-      - [0x513B70, c]
+      - [0x501C00, c, main]
+      - [0x506F20, c, host]
+      - [0x508D50, c, effect]
+      - [0x5092C0, c, boardanim]
+      - [0x50B740, c, boardsel]
+      - [0x513B70, c, story]
       - [0x515670, .data, data] #80119410
-      - [0x5167E0, .rodata, 501C00] #8011A580
-      - [0x516830, .rodata, 506F20] #8011A5D0
-      - [0x5168E0, .rodata, 508D50] #8011A680
-      - [0x5168F0, .rodata, 5092C0] #8011A690
-      - [0x516938, .rodata, 50B740] #8011A6D8
-      - [0x516A90, .rodata, 513B70] #8011A830
+      - [0x5167E0, .rodata, main] #8011A580
+      - [0x516830, .rodata, host] #8011A5D0
+      - [0x5168E0, .rodata, effect] #8011A680
+      - [0x5168F0, .rodata, boardanim] #8011A690
+      - [0x516938, .rodata, boardsel] #8011A6D8
+      - [0x516A90, .rodata, story] #8011A830
       - {0x516AE0, type: .bss, vram: 0x8011A880, name: bss}
 
   - type: code
@@ -2670,15 +2670,15 @@ segments:
     exclusive_ram_id: minigame # ovl_79
     bss_size: 0x1850
     subsegments:
-      - [0x516AE0, c]
-      - [0x516B10, c]
-      - [0x516D30, c]
-      - [0x5238E0, .data, 516AE0] #801127A0
-      - [0x5238F0, .data, 516D30] #801127B0
-      - [0x523B00, .rodata, 516B10] #801129C0
-      - [0x523B30, .rodata, 516D30] #801129F0
-      - {0x523FD0, type: .bss, vram: 0x80112E90, name: 516B10}
-      - {0x523FD0, type: .bss, vram: 0x80112EA0, name: 516D30}
+      - [0x516AE0, c, executor]
+      - [0x516B10, c, main]
+      - [0x516D30, c, filesel]
+      - [0x5238E0, .data, executor] #801127A0
+      - [0x5238F0, .data, filesel] #801127B0
+      - [0x523B00, .rodata, main] #801129C0
+      - [0x523B30, .rodata, filesel] #801129F0
+      - {0x523FD0, type: .bss, vram: 0x80112E90, name: main}
+      - {0x523FD0, type: .bss, vram: 0x80112EA0, name: filesel}
 
   - type: code
     start: 0x523FD0
@@ -2689,14 +2689,14 @@ segments:
     exclusive_ram_id: minigame # ovl_7A
     bss_size: 0x28C0
     subsegments:
-      - [0x523FD0, c]
-      - [0x524000, c]
-      - [0x5242B0, c]
-      - [0x524820, c]
-      - [0x533180, .data, 523FD0] #80114B50
-      - [0x5331A0, .data, 524820] #80114B70
-      - [0x533270, .rodata, 524000] #80114C40
-      - [0x5332A0, .rodata, 524820] #80114C70
+      - [0x523FD0, c, executor]
+      - [0x524000, c, main]
+      - [0x5242B0, c, event]
+      - [0x524820, c, demo]
+      - [0x533180, .data, executor] #80114B50
+      - [0x5331A0, .data, demo] #80114B70
+      - [0x533270, .rodata, main] #80114C40
+      - [0x5332A0, .rodata, demo] #80114C70
       - {0x5334D0, type: .bss, vram: 0x80114EA0, name: bss}
 
   - type: code
@@ -2707,19 +2707,19 @@ segments:
     exclusive_ram_id: minigame # ovl_7B
     bss_size: 0x1510
     subsegments:
-      - [0x5334D0, c]
-      - [0x533500, c]
-      - [0x535A80, c]
-      - [0x53DCA0, c]
-      - [0x540FE0, .data, 5334D0] #801134B0
-      - [0x541020, .data, 535A80] #801134F0
-      - [0x541500, .data, 53DCA0] #801139D0
-      - [0x541510, .rodata, 533500] #801139E0
-      - [0x541538, .rodata, 535A80] #80113A08
-      - [0x542138, .rodata, 53DCA0] #80114608
-      - {0x542220, type: .bss, vram: 0x801146F0, name: 533500}
-      - {0x542220, type: .bss, vram: 0x80114770, name: 535A80}
-      - {0x542220, type: .bss, vram: 0x801147F0, name: 53DCA0}
+      - [0x5334D0, c, executor]
+      - [0x533500, c, scene]
+      - [0x535A80, c, option]
+      - [0x53DCA0, c, util]
+      - [0x540FE0, .data, executor] #801134B0
+      - [0x541020, .data, option] #801134F0
+      - [0x541500, .data, util] #801139D0
+      - [0x541510, .rodata, scene] #801139E0
+      - [0x541538, .rodata, option] #80113A08
+      - [0x542138, .rodata, util] #80114608
+      - {0x542220, type: .bss, vram: 0x801146F0, name: scene}
+      - {0x542220, type: .bss, vram: 0x80114770, name: option}
+      - {0x542220, type: .bss, vram: 0x801147F0, name: util}
 
   - type: code
     start: 0x542220
@@ -2730,20 +2730,20 @@ segments:
     bss_size: 0xE0
     subsegments:
       - [0x542220, c, main]
-      - [0x5436A0, c]
-      - [0x543FC0, c]
-      - [0x544E70, c]
-      - [0x5486A0, c]
+      - [0x5436A0, c, credits]
+      - [0x543FC0, c, sprite]
+      - [0x544E70, c, scene]
+      - [0x5486A0, c, creditlist]
       - [0x54CDB0, .data, main] #80110530
-      - [0x54CDC0, .data, 5436A0] #80110540
-      - [0x54CE00, .data, 543FC0] #80110580
-      - [0x54CE70, .data, 544E70] #801105F0
-      - [0x54D400, .data, 5486A0] #80110B80
+      - [0x54CDC0, .data, credits] #80110540
+      - [0x54CE00, .data, sprite] #80110580
+      - [0x54CE70, .data, scene] #801105F0
+      - [0x54D400, .data, creditlist] #80110B80
       - [0x54DA70, .rodata, main] #801111F0
-      - [0x54DA88, .rodata, 5436A0] #80111208
-      - [0x54DAA0, .rodata, 543FC0] #80111220
-      - [0x54DAB0, .rodata, 544E70] #80111230
-      - [0x54DC80, .rodata, 5486A0] #80111400
+      - [0x54DA88, .rodata, credits] #80111208
+      - [0x54DAA0, .rodata, sprite] #80111220
+      - [0x54DAB0, .rodata, scene] #80111230
+      - [0x54DC80, .rodata, creditlist] #80111400
       - {0x54DD10, type: .bss, vram: 0x80111490, name: bss}
 
   - type: code
@@ -2754,12 +2754,12 @@ segments:
     exclusive_ram_id: minigame # ovl_7D
     bss_size: 0x60
     subsegments:
-      - [0x54DD10, c]
-      - [0x54F360, c]
-      - [0x552C80, .data, 54DD10] #8010A910
-      - [0x552CB0, .data, 54F360] #8010A940
-      - [0x552F30, .rodata, 54DD10] #8010ABC0
-      - {0x552F50, type: .bss, vram: 0x8010ABE0, name: 54DD10}
+      - [0x54DD10, c, main]
+      - [0x54F360, c, result]
+      - [0x552C80, .data, main] #8010A910
+      - [0x552CB0, .data, result] #8010A940
+      - [0x552F30, .rodata, main] #8010ABC0
+      - {0x552F50, type: .bss, vram: 0x8010ABE0, name: main}
 
   #this segment is 0 in size, but we need it to populate _ovltbl correctly
   - type: code
@@ -2770,9 +2770,9 @@ segments:
     exclusive_ram_id: minigame # ovl_7E
     bss_size: 0x000
     subsegments:
-      - [0x552F50, c]
-      - [0x552F50, .data, 552F50] #801059A0
-      - {0x552F50, type: .bss, vram: 0x801059A0, name: 552F50}
+      - [0x552F50, c, empty]
+      - [0x552F50, .data, empty] #801059A0
+      - {0x552F50, type: .bss, vram: 0x801059A0, name: empty}
 
   - type: code
     start: 0x552F50
@@ -2782,11 +2782,11 @@ segments:
     exclusive_ram_id: minigame # ovl_7F
     bss_size: 0x220
     subsegments:
-      - [0x552F50, c]
-      - [0x556240, .data, 552F50] #80108C90
+      - [0x552F50, c, main]
+      - [0x556240, .data, main] #80108C90
       - [0x556DD0, .data, strings] #80109820
-      - [0x5575B0, .rodata, 552F50] #8010A000
-      - {0x557620, type: .bss, vram: 0x8010A070, name: 552F50}
+      - [0x5575B0, .rodata, main] #8010A000
+      - {0x557620, type: .bss, vram: 0x8010A070, name: main}
 
   - [0x557620, bin, debug_font_8x8] # Unreferenced 8x8 1bpp font, 256 glyphs (ASCII + JIS X 0201 kana)
   - [0x557E20, bin, mainfs]

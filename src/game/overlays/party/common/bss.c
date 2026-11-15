@@ -3,9 +3,9 @@
 #include "game/board.h"
 #include "game/gamemes.h"
 #include "game/hvq.h"
-#include "EB2F0.h"
-#include "F2910.h"
-#include "FA250.h"
+#include "mapfull.h"
+#include "mgcall.h"
+#include "back.h"
 
 /*
  * Some halfword arrays in this overlay's BSS are only halfword aligned, which
@@ -18,7 +18,7 @@ typedef struct {
     /* 0x02 */ s16 sprAnims[2]; // D_80102D3A_shared_board
 } SharedBoardBss2D38;
 
-// EB2F0.c
+// mapfull.c
 s32 D_80102700_shared_board BSS;
 s16 D_80102704_shared_board BSS;
 UnkBoard6 D_80102708_shared_board[32] BSS;
@@ -28,18 +28,18 @@ UnkBoard8 *D_80102A98_shared_board[4] BSS;
 s16 D_80102AA8_shared_board BSS;
 u8 D_80102AAC_shared_board[4] BSS; /* Unreferenced. */
 
-// ECA50.c
+// model.c
 Object *D_80102AB0_shared_board BSS;
 u16 D_80102AB4_shared_board BSS;
 s16 D_80102AB8_shared_board[128] BSS;
 u8 D_80102BB8_shared_board[8] BSS; /* Unreferenced. */
 
-// EDDB0.c
+// com.c
 s32 D_80102BC0_shared_board BSS;
 s32 (*D_80102BC4_shared_board)(void) BSS;
 u8 D_80102BC8_shared_board[8] BSS; /* Unreferenced. */
 
-// F2910.c
+// mgcall.c
 ItemSlotEntry D_80102BD0_shared_board[5] BSS; // [0].y is D_80102BD4_shared_board
 omObjData *D_80102C04_shared_board BSS;
 s8 D_80102C08_shared_board[5] BSS;
@@ -50,14 +50,14 @@ s16 D_80102C12_shared_board BSS;
 s16 D_80102C14_shared_board BSS;
 u8 D_80102C18_shared_board[8] BSS; /* Unreferenced. */
 
-// F5070.c
+// coinchange.c
 s16 D_80102C20_shared_board[4] BSS;
 s16 D_80102C28_shared_board[4][2] BSS;
 omObjData *D_80102C38_shared_board[4] BSS;
 u8 D_80102C48_shared_board BSS;
 u8 D_80102C4C_shared_board[4] BSS; /* Unreferenced. */
 
-// F5E80.c
+// item.c
 s16 D_80102C50_shared_board BSS;
 s16 D_80102C52_shared_board BSS;
 u8 D_80102C54_shared_board[4] BSS; /* Unreferenced. */
@@ -84,11 +84,11 @@ Vec D_80102D84_shared_board BSS;
 Vec D_80102D90_shared_board BSS;
 u8 D_80102D9C_shared_board[4] BSS; /* Unreferenced. */
 
-// F9DE0.c
+// ksuit.c
 s16 D_80102DA0_shared_board BSS;
 u8 D_80102DA4_shared_board[0xC] BSS; /* Unreferenced. */
 
-// FA250.c
+// back.c
 u32 D_80102DB0_shared_board BSS;
 s32 D_80102DB4_shared_board BSS;
 s32 D_80102DB8_shared_board BSS;
@@ -164,7 +164,7 @@ u8 D_801054FC_shared_board[4] BSS; /* Unreferenced. */
 s32 D_80105500_shared_board[16] BSS;
 s16 D_80105540_shared_board[8] BSS;
 
-// 101840.c
+// pause.c
 UnkMBGuideData *D_80105550_shared_board BSS;
 s16 D_80105554_shared_board BSS;
 s16 D_80105556_shared_board BSS;
@@ -174,12 +174,12 @@ s16 D_80105560_shared_board[2] BSS;
 s16 D_80105564_shared_board BSS;
 u8 D_80105568_shared_board[8] BSS; /* Unreferenced. */
 
-// 106640.c
+// sprgrp.c
 UnkBoard8 *D_80105570_shared_board BSS;
 u16 D_80105574_shared_board BSS;
 u8 D_80105578_shared_board[8] BSS; /* Unreferenced. */
 
-// 106A50.c
+// status.c
 Process *D_80105580_shared_board BSS;
 u8 D_80105584_shared_board[4] BSS; /* Unreferenced. */
 s16 D_80105588_shared_board[29] BSS;
@@ -196,7 +196,7 @@ s16 D_801055FC_shared_board[4] BSS;
 u8 D_80105604_shared_board[4] BSS; /* Unreferenced. */
 s16 D_80105608_shared_board[4][3] BSS;
 
-// 10AD50.c
+// itemmasu.c
 Object *D_80105620_shared_board BSS;
 Object *D_80105624_shared_board BSS;
 Object *D_80105628_shared_board BSS;
@@ -208,7 +208,7 @@ s32 D_80105654_shared_board BSS;
 s32 D_80105658_shared_board BSS;
 s32 D_8010565C_shared_board BSS;
 
-// 10C230.c
+// main.c
 s32 D_80105660_shared_board BSS;
 s16 D_80105664_shared_board BSS;
 s16 D_80105666_shared_board BSS;
@@ -223,7 +223,7 @@ Object *mbBattleKuriboUpperMdl BSS;
 omObjData *mbBattleKuriboObj BSS;
 u8 D_801056BC_shared_board[4] BSS; /* Unreferenced. */
 
-// 113750.c
+// scroll.c
 omObjData *D_801056C0_shared_board BSS;
 UnkBoard8 *D_801056C4_shared_board BSS;
 s16 D_801056C8_shared_board[4][2] BSS;

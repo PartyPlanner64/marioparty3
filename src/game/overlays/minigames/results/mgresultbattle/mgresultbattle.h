@@ -27,15 +27,15 @@ extern s8 D_80108F8C_mgresultbattle[4];
 extern const Vec D_801089D0_mgresultbattle[4];
 #endif
 
-/* 4F3780 */
+/* main.c */
 void func_80106918_mgresultbattle(void);
 
-/* 4F4980 */
+/* host.c */
 void func_80106BA0_mgresultbattle(void);
 void func_80107400_mgresultbattle(void);
 void func_801075FC_mgresultbattle(void);
 
-/* 4F5AF0 */
+/* player.c */
 void func_80107D10_mgresultbattle(void);
 void func_80108130_mgresultbattle(void);
 void func_801082AC_mgresultbattle(void);

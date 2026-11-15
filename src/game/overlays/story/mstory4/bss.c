@@ -15,7 +15,7 @@ typedef struct Mstory4Bss23A4 {
 
 /* The overlay's BSS is shared by all of its code units. Keep allocation order here. */
 
-/* 4C2BD0 */
+/* main.c */
 s16 D_80112120_mstory4 BSS;
 s16 D_80112122_mstory4 BSS;
 s32 D_80112124_mstory4 BSS;
@@ -27,7 +27,7 @@ s16 D_801121B0_mstory4 BSS;
 s32 D_801121B4_mstory4 BSS;
 u8 D_801121B8_mstory4[8] BSS; /* Unreferenced. */
 
-/* 4C47E0 */
+/* scene0.c */
 UnkStoryObj D_801121C0_mstory4[5] BSS;
 s32 D_80112238_mstory4[4] BSS; // [i] low halves: D_8011223A/E_mstory4, D_80112242/6_mstory4
 s16 D_80112248_mstory4 BSS;
@@ -42,7 +42,7 @@ s16 D_8011228E_mstory4 BSS;
 s16 D_80112290_mstory4[4] BSS;
 u8 D_80112298_mstory4[8] BSS; /* Unreferenced. */
 
-/* 4C8050 */
+/* scene1.c */
 UnkStoryObj D_801122A0_mstory4[4] BSS;
 Vec D_80112300_mstory4 BSS;
 Vec D_8011230C_mstory4 BSS;
@@ -61,5 +61,5 @@ s16 D_80112378_mstory4[22] BSS;
 Mstory4Bss23A4 mstory4Bss23A4 BSS;
 u8 D_801123AC_mstory4[4] BSS; /* Unreferenced. */
 
-/* 4C2BD0 */
+/* main.c */
 s32 D_801123B0_mstory4[4] BSS;

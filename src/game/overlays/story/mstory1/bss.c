@@ -3,7 +3,7 @@
 
 /* The overlay's BSS is shared by all of its code units. Keep allocation order here. */
 
-/* 48C120 */
+/* common.c */
 s16 D_801158B0_mstory1 BSS;
 s16 D_801158B2_mstory1 BSS;
 s32 D_801158B4_mstory1 BSS;
@@ -15,7 +15,7 @@ s16 D_801158E0_mstory1 BSS;
 s32 D_801158E4_mstory1 BSS;
 u8 D_801158E8_mstory1[8] BSS; /* Unreferenced. */
 
-/* 48D950 */
+/* scene0.c */
 UnkStoryObj D_801158F0_mstory1[8] BSS;
 Vec D_801159B0_mstory1 BSS;
 Vec D_801159BC_mstory1 BSS;
@@ -32,7 +32,7 @@ s32 D_80115A1C_mstory1[3] BSS; // [i] low halves: D_80115A1E/A22/A26_mstory1
 s16 D_80115A28_mstory1 BSS;
 u8 D_80115A2C_mstory1[4] BSS; /* Unreferenced. */
 
-/* 492250 */
+/* scene1.c */
 UnkStoryObj D_80115A30_mstory1[8] BSS;
 Vec D_80115AF0_mstory1 BSS;
 Vec D_80115AFC_mstory1 BSS;
@@ -49,7 +49,7 @@ s32 D_80115B5C_mstory1[3] BSS; // [i] low halves: D_80115B5E/B62/B66_mstory1
 s16 D_80115B68_mstory1 BSS;
 u8 D_80115B6C_mstory1[4] BSS; /* Unreferenced. */
 
-/* 496990 */
+/* scene2.c */
 UnkStoryObj D_80115B70_mstory1[8] BSS;
 Vec D_80115C30_mstory1 BSS;
 Vec D_80115C3C_mstory1 BSS;
@@ -66,5 +66,5 @@ s32 D_80115C9C_mstory1[3] BSS; // [i] low halves: D_80115C9E/CA2/CA6_mstory1
 s16 D_80115CA8_mstory1 BSS;
 u8 D_80115CAC_mstory1[4] BSS; /* Unreferenced. */
 
-/* 48BE30 */
+/* main.c */
 s32 D_80115CB0_mstory1[4] BSS;

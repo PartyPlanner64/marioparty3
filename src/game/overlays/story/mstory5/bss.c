@@ -10,7 +10,7 @@ typedef struct Mstory5Bss5380 {
 
 /* The overlay's BSS is shared by all of its code units. Keep allocation order here. */
 
-/* 4CF350 */
+/* main.c */
 s16 D_801151B0_mstory5 BSS;
 s16 D_801151B2_mstory5 BSS;
 s32 D_801151B4_mstory5 BSS;
@@ -22,7 +22,7 @@ s16 D_801151E0_mstory5 BSS;
 s32 D_801151E4_mstory5 BSS;
 u8 D_801151E8_mstory5[8] BSS; /* Unreferenced. */
 
-/* 4D1200 */
+/* scene1.c */
 UnkStoryObj D_801151F0_mstory5[9] BSS;
 UnkStoryObj D_801152C8_mstory5 BSS;
 UnkStoryObj D_801152E0_mstory5 BSS;
@@ -43,7 +43,7 @@ s32 D_80115370_mstory5[4] BSS; // [i] low halves: D_80115372/6/A/E_mstory5
 Mstory5Bss5380 mstory5Bss5380 BSS;
 u8 D_80115394_mstory5[12] BSS; /* Unreferenced. */
 
-/* 4D8E80 */
+/* scene0.c */
 UnkStoryObj D_801153A0_mstory5[8] BSS;
 UnkStoryObj D_80115460_mstory5 BSS;
 Vec D_80115478_mstory5 BSS;

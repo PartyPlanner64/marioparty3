@@ -21,20 +21,20 @@ typedef struct {
     /* 0x06 */ s16 sprAnims[2]; // D_80102CBE_name_81
 } NameBss2CB8;
 
-// BFB40.c
+// model.c
 Object *D_801029C0_name_81 BSS;
 u16 D_801029C4_name_81 BSS;
 s16 D_801029C8_name_81[130] BSS;
 u8 D_80102ACC_name_81[4] BSS; /* Unreferenced. */
 
-// C45D0.c
+// effect.c
 Object *D_80102AD0_name_81[32] BSS;
 s16 D_80102B50_name_81 BSS;
 omObjData *D_80102B54_name_81 BSS;
 Vec D_80102B58_name_81 BSS;
 Vec D_80102B64_name_81 BSS; /* Unreferenced. */
 
-// C5770.c
+// mgcall.c
 UnkC5770B70 D_80102B70_name_81[5] BSS;
 omObjData *D_80102BA4_name_81 BSS;
 s8 D_80102BA8_name_81[5] BSS;
@@ -53,7 +53,7 @@ u8 D_80102BD4_name_81 BSS;
 f32 D_80102BD8_name_81[2][2] BSS;
 u8 D_80102BE8_name_81[8] BSS; /* Unreferenced. */
 
-// C9690.c
+// warp.c
 s16 D_80102BF0_name_81 BSS;
 s16 D_80102BF2_name_81 BSS;
 s16 D_80102BF4_name_81 BSS;
@@ -66,7 +66,7 @@ Vec D_80102C0C_name_81 BSS;
 Vec D_80102C18_name_81 BSS;
 Vec D_80102C24_name_81 BSS; /* Unreferenced. */
 
-// CA640.c
+// telop.c
 GAMEMES D_80102C30_name_81 BSS;
 s16 D_80102CA4_name_81 BSS;
 u8 D_80102CA6_name_81 BSS;
@@ -86,7 +86,7 @@ Vec D_80102D04_name_81 BSS;
 Vec D_80102D10_name_81 BSS;
 u8 D_80102D1C_name_81[4] BSS; /* Unreferenced. */
 
-// CCD20.c
+// back.c
 u32 D_80102D20_name_81 BSS;
 s32 D_80102D24_name_81 BSS;
 u32 D_80102D28_name_81 BSS;
@@ -132,7 +132,7 @@ u8 D_80105054_name_81[4] BSS; /* Unreferenced. */
 Object *D_80105058_name_81[16] BSS;
 u8 D_80105098_name_81[8] BSS; /* Unreferenced. */
 
-// D1190.c
+// masu.c
 u16 D_801050A0_name_81 BSS;
 u16 D_801050A2_name_81 BSS;
 SpaceData *D_801050A4_name_81 BSS;
@@ -160,7 +160,7 @@ s32 D_80105378_name_81[0x13] BSS;
 u8 D_801053C4_name_81[4] BSS; /* Unreferenced. */
 s16 D_801053C8_name_81[12] BSS;
 
-// D8250.c
+// pause.c
 UnkOvl81_2 *D_801053E0_name_81 BSS;
 s16 D_801053E4_name_81 BSS;
 s16 D_801053E6_name_81 BSS;
@@ -171,13 +171,13 @@ s16 D_801053F4_name_81 BSS;
 s16 D_801053F6_name_81 BSS; /* Unreferenced. */
 u8 D_801053F8_name_81[8] BSS; /* Unreferenced. */
 
-// DC0D0.c
+// sprgrp.c
 UnkBoard4 *D_80105400_name_81 BSS;
 u16 D_80105404_name_81 BSS;
 s16 D_80105406_name_81 BSS; /* Unreferenced. */
 u8 D_80105408_name_81[8] BSS; /* Unreferenced. */
 
-// DC4E0.c
+// status.c
 Process *D_80105410_name_81 BSS;
 NameSpriteIds D_80105414_name_81 BSS;
 s16 D_80105420_name_81 BSS;
@@ -189,14 +189,14 @@ Vec2f D_80105438_name_81 BSS;
 s16 D_80105440_name_81 BSS;
 omObjData *D_80105444_name_81[3] BSS;
 
-// DFD60.c
+// partner.c
 Object *Duel_PartnerObjects[MBD_MAX_PLAYERS][PARTNEROBJINDEX_MAX] BSS;
 Vec D_80105460_name_81 BSS;
 u8 D_8010546C_name_81[4] BSS; /* Unreferenced. */
 s16 D_80105470_name_81[8] BSS;
 s16 D_80105480_name_81[8] BSS;
 
-// E3CD0.c
+// main.c
 s32 D_80105490_name_81 BSS;
 s16 D_80105494_name_81 BSS;
 s16 D_80105496_name_81 BSS;
@@ -210,7 +210,7 @@ u8 D_801054B4_name_81[4] BSS; /* Unreferenced. */
 Vec D_801054B8_name_81[2] BSS;
 Vec D_801054D0_name_81[2][2] BSS;
 
-// E7AE0.c
+// scroll.c
 omObjData *D_80105500_name_81 BSS;
 UnkBoard4 *D_80105504_name_81 BSS;
 s16 D_80105508_name_81[4][2] BSS;

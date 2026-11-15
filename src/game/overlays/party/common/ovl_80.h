@@ -4,7 +4,7 @@
 #include "game/malloc.h"
 
 //very closely resembles UnkBoard5, but member at offset 0x08 must be s16 here instead of s32?
-//this needs to be removed, already exist in 106640.h
+//this needs to be removed, already exist in sprgrp.h
 
 // void HuSprColorTPLvlSet(s16 group, s16 member, u8 arg2, u8 arg3, u8 arg4, u16 arg5);
 // u16 MBCameraPos3DSet(Vec *arg0);

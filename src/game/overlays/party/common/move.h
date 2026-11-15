@@ -1,0 +1,34 @@
+#ifndef _PARTY_COMMON_MOVE_H
+#define _PARTY_COMMON_MOVE_H
+
+#include "common_board.h"
+#include "game/board.h"
+
+void MBPlayerPosMasuSet(s16 playerNo, s16 spaceIdx);
+void MBVecDirGet(Vec *arg0, Vec *arg1, Vec *arg2);
+void func_800ECB90_shared_board(s16 playerIdx, Vec* arg1);
+void func_800ECBD0_shared_board(Object* arg0, s16 arg1);
+void MBVecForwardSet(Vec* out);
+void MBPlayerForwardSet(s16 playerNo);
+void func_800ECC54_shared_board(Object* obj);
+void MBPlayerMasuSwap(s16 playerNoOne, s16 playerNoTwo);
+void MBPlayerMasuColorSet(s16 playerNo, s16 spaceType);
+s16 MBTotalStarGet(void);
+s16 MBRandCheck100(s8 arg0);
+s16 MBTurnRemain(void);
+s16 func_800ECF18_shared_board(s16 arg0, f32 arg1);
+void func_800ECF9C_shared_board(s16 arg0);
+Process* func_800ED128_shared_board(Vec* arg0, Vec* arg1, Vec* arg2, s32 arg3);
+Process* func_800ED1E4_shared_board(Vec* arg0, Vec* arg1, Vec* arg2, s32 arg3);
+void func_800ED20C_shared_board(s16 playerNo, s32 arg1, s16 masuAbsIndex);
+Process *MBPlayerPosMoveCreate(Vec *arg0, Vec *arg1, Vec *outVec, s32 interpolationTime);
+void MBPlayerPosMoveSet(s16 playerNo, s32 interpolationFrameTotal);
+Process* func_800ED5E0_shared_board(Vec* arg0, Vec* arg1, Vec* arg2, f32 arg3);
+Process* func_800ED75C_shared_board(Vec* arg0, Vec* arg1, Vec* arg2, f32 arg3);
+void MBMoveMasuSet(s16 playerNo, s16 link, s16 idx);
+void MBMoveNextMasuSet(s16 playerNo, s16 arg1, s16 arg2);
+void MBMoveBackMasuSet(s16 playerNo, s16 arg1, s16 arg2);
+s32 func_800EDA58_shared_board(void);
+Process* func_800EDB98_shared_board(Object* arg0, f32 arg1, f32 arg2);
+
+#endif //_PARTY_COMMON_MOVE_H

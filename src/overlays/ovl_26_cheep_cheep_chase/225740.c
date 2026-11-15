@@ -133,26 +133,27 @@ typedef struct {
 extern u8 D_800D6A90_main;
 extern s32 D_800A178C_main[][6];
 
-extern f32 D_8010E014_cheep_cheep_chase;
-extern f32 D_8010E018_cheep_cheep_chase;
-extern u8 D_8010E010_cheep_cheep_chase;
-extern s16 D_8010E01C_cheep_cheep_chase;
-extern s16 D_8010E01E_cheep_cheep_chase;
-extern s16 D_8010E020_cheep_cheep_chase;
-extern s16 D_8010E022_cheep_cheep_chase;
-extern s16 D_8010E024_cheep_cheep_chase;
-extern s16 D_8010E026_cheep_cheep_chase;
-extern s32 D_8010E028_cheep_cheep_chase[8];
-extern s16 D_8010E048_cheep_cheep_chase;
+u8 D_8010E010_cheep_cheep_chase = 0;
+f32 D_8010E014_cheep_cheep_chase = 0.0f;
+f32 D_8010E018_cheep_cheep_chase = 0.0f;
+s16 D_8010E01C_cheep_cheep_chase = 0;
+s16 D_8010E01E_cheep_cheep_chase = 0;
+s16 D_8010E020_cheep_cheep_chase = 0;
+s16 D_8010E022_cheep_cheep_chase = 0;
+s16 D_8010E024_cheep_cheep_chase = 1;
+s16 D_8010E026_cheep_cheep_chase = 0;
+s32 D_8010E028_cheep_cheep_chase[8] = { 0x000200A5, 0x000300A5, 0x000700A5, 0x000400A5, 0x000500A5, 0x000600A5, 0x000800A5, 0x0009001C };
+s16 D_8010E048_cheep_cheep_chase = 0;
 
-extern CheepCheepChaseGame *D_8010E360_cheep_cheep_chase;
-extern CheepCheepChasePlayer *D_8010E364_cheep_cheep_chase;
-extern CheepCheepChaseUnk368 *D_8010E368_cheep_cheep_chase;
-extern f32 D_8010E370_cheep_cheep_chase[4];
-extern s16 D_8010E380_cheep_cheep_chase[8];
-extern SpriteData *D_8010E390_cheep_cheep_chase;
-extern AnimModelData *D_8010E394_cheep_cheep_chase;
-extern FuncGroup *D_8010E398_cheep_cheep_chase;
+CheepCheepChaseGame *D_8010E360_cheep_cheep_chase BSS;
+CheepCheepChasePlayer *D_8010E364_cheep_cheep_chase BSS;
+CheepCheepChaseUnk368 *D_8010E368_cheep_cheep_chase BSS;
+u8 D_8010E36C_cheep_cheep_chase[4] BSS; /* Unreferenced. */
+f32 D_8010E370_cheep_cheep_chase[4] BSS;
+s16 D_8010E380_cheep_cheep_chase[8] BSS;
+SpriteData *D_8010E390_cheep_cheep_chase BSS;
+AnimModelData *D_8010E394_cheep_cheep_chase BSS;
+FuncGroup *D_8010E398_cheep_cheep_chase BSS;
 
 const s16 D_8010E050_cheep_cheep_chase[] = { 0x8272, 0x8273, 0x8260, 0x8271, 0x8273, 0x0000 };
 

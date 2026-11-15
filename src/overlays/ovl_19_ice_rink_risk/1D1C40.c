@@ -731,16 +731,21 @@ f32 func_80107F24_ice_rink_risk(omObjData *object, Hu3DSphere *sphere, Vec *norm
     return floorY;
 }
 
-// NON_MATCHING: the target hoists both the 0.0f and 1000.0f compare constants
-// out of the loop (0.0f in $f24, 1000.0f in $s4), which needs loop.c's
-// threshold * savings * lifetime >= insn_count (61) test to pass for 0.0f.
-// Indexing D_800EBE70_minigame directly makes its address the first movable,
-// dropping the threshold to 58 so the 0.0f constant (life 1) stays in the loop.
-// Reading through a local pointer lets 0.0f be hoisted, but the pointer is then
-// loaded before the loop entry test and 0.0f/1000.0f swap register classes.
-// Tried: do-while(0) wrapper (fixes $f/$s assignment, 0.0f still not hoisted),
-// a redundant second `dist < 0.0f` test (hoists 0.0f but leaves an extra bc1f),
-// a `zero` local, continue/if forms, compare spellings, assignment in condition.
+// NON_MATCHING: the target hoists the D_800EBE70_minigame address (s5), 0.0f
+// ($f24) and 1000.0f (s4) out of the loop, in that order, after the entry test.
+// With direct indexing the address is the first loop.c movable (threshold
+// 61 -> 58), and the loop has at least 59 insns at loop time (56 in the final
+// loop + 3 movables), so 0.0f (savings 1, life 1) can never pass
+// threshold * savings * lifetime >= insn_count. Only something giving 0.0f
+// savings/lifetime >= 2 (e.g. a matched duplicate 0.0f compare, which leaves
+// an extra bc1f) could hoist it; none of the natural forms tried do. The
+// direct form is otherwise identical apart from that one hoist.
+// Reading through a local pointer (below) hoists 0.0f, but the pointer is set
+// before the loop entry test and 0.0f/1000.0f swap register classes. The two
+// do-while(0) wrappers only lower the diff score (740 -> 625).
+// Also tried: if/continue/early-continue forms, compare spellings, a `zero`
+// local, `unk48 * 2`/`2.0f * unk48`, splitting the dist computation,
+// `dist < 0.0f && unk38 == 1000.0f` plus a second `dist < 0.0f` block.
 #ifdef NON_MATCHING
 void func_80107F58_ice_rink_risk(omObjData *object, f32 x, f32 y, f32 z) {
     IceRinkRiskPuckWork *work = OM_GET_DATA_PTR(object, IceRinkRiskPuckWork);
@@ -762,13 +767,17 @@ void func_80107F58_ice_rink_risk(omObjData *object, f32 x, f32 y, f32 z) {
         dz = other->trans.z - (z + D_800EC5D8_minigame);
         dist = HuSqrtf(dx * dx + dy * dy + dz * dz) - (work->unk48 + work->unk48);
         if (dist < 0.0f) {
-            if (work->unk38 == 1000.0f) {
-                func_800DFCDC_minigame(dx, dz, dist);
-            }
+            do {
+                if (work->unk38 == 1000.0f) {
+                    func_800DFCDC_minigame(dx, dz, dist);
+                }
+            } while (0);
             func_80108384_ice_rink_risk(object, dx, dz);
             if (D_801085B0_ice_rink_risk[work->unk56].unk04 >= 16) {
                 D_801085B0_ice_rink_risk[work->unk56].unk00 = otherWork->unk56;
-                D_801085B0_ice_rink_risk[work->unk56].unk04 = 0;
+                do {
+                    D_801085B0_ice_rink_risk[work->unk56].unk04 = 0;
+                } while (0);
             }
         }
     }

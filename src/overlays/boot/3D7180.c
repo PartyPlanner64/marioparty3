@@ -1,4 +1,5 @@
 #include "common.h"
+#include "macros.h"
 
 void func_80105AF0_ovl_boot(omObjData *);
 void func_80105C80_ovl_boot(void);
@@ -6,12 +7,10 @@ void func_80105BA4_ovl_boot(omObjData *);
 void func_801059D0_ovl_boot(void);
 void func_80105C14_ovl_boot(omObjData *);
 
-/* .bss */
-extern Process *D_80105F10_ovl_boot;
-
-/* .data */
 s32 D_80105F00_ovl_boot = 0;
 s32 D_80105F04_ovl_boot = 0;
+
+Process *D_80105F10_ovl_boot BSS;
 
 void func_801059D0_ovl_boot(void) {
     Hu3DCamInit(1);

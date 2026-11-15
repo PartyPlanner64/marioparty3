@@ -2071,7 +2071,7 @@ segments:
       - [0x3D7180, c]
       - [0x3D7690, .data, 3D7150] #80105EE0
       - [0x3D76B0, .data, 3D7180]
-      - {0x3D76C0, type: bss, vram: 0x80105F10, name: boot_bss}
+      - {0x3D76C0, type: .bss, vram: 0x80105F10, name: 3D7180}
 
   - type: code
     start: 0x3D76C0

@@ -45,60 +45,78 @@ typedef struct {
     /* 0x28 */ f32 fov;
 } SlapdownCamera; // sizeof 0x2C
 
-extern SlapdownEntry D_8010AAB0_slapdown[50];
+// Sound handles; D_8010AA16_slapdown is misaligned for a standalone array.
+typedef struct {
+    /* 0x00 */ s16 unk_00;
+    /* 0x02 */ s16 unk_02;
+    /* 0x04 */ s16 unk_04;
+    /* 0x06 */ s16 unk_06[5];
+} SlapdownBssAA10; // sizeof 0x10
+
+extern s32 D_800A178C_main[][6];
+
+s32 D_8010A6A0_slapdown[8] = { 2, 3, 7, 4, 5, 6, 8, 9 };
+f32 D_8010A6C0_slapdown[4] = { -380.0f, 380.0f, 380.0f, -380.0f };
+f32 D_8010A6D0_slapdown[4] = { -380.0f, -380.0f, 380.0f, 380.0f };
+f32 D_8010A6E0_slapdown[4] = { -390.0f, 390.0f, 390.0f, -390.0f };
+f32 D_8010A6F0_slapdown[4] = { -390.0f, -390.0f, 390.0f, 390.0f };
+f32 D_8010A700_slapdown[4] = { -400.0f, 400.0f, 400.0f, -400.0f };
+f32 D_8010A710_slapdown[4] = { -400.0f, -400.0f, 400.0f, 400.0f };
+f32 D_8010A720_slapdown[4] = { 45.0f, 315.0f, 225.0f, 135.0f };
+f32 D_8010A730_slapdown[4] = { 45.0f, 315.0f, 225.0f, 135.0f };
+s32 D_8010A740_slapdown[4][2] = { { 0, 0x4F0007 }, { 0, 0x4F0008 }, { 0, 0x4F0009 }, { 0, 0x4F000A } };
+s16 D_8010A760_slapdown[4][2] = { { 60, 450 }, { 45, 470 }, { 30, 480 }, { 25, 500 } };
+Vec2f D_8010A770_slapdown[4] = { { -6.5f, -6.5f }, { 6.5f, -6.5f }, { 3.5f, 3.5f }, { -3.5f, 3.5f } }; /* Unreferenced. */
+Vec2f D_8010A790_slapdown[4] = { { -4.5f, -4.5f }, { 4.5f, -4.5f }, { 1.5f, 1.5f }, { -1.5f, 1.5f } }; /* Unreferenced. */
+Vec2f D_8010A7B0_slapdown[4] = { { -1.08f, -1.08f }, { 1.08f, -1.08f }, { 1.75f, 1.75f }, { -1.75f, 1.75f } };
+Vec2f D_8010A7D0_slapdown[4] = { { -0.75f, -0.75f }, { 0.75f, -0.75f }, { 0.75f, 0.75f }, { -0.75f, 0.75f } };
+f32 D_8010A7F0_slapdown[9] = { -65.0f, 65.0f, 190.0f, 190.0f, 130.0f, 0.0f, -130.0f, -190.0f, -190.0f };
+f32 D_8010A814_slapdown[9] = { -190.0f, -190.0f, 65.0f, -65.0f, 190.0f, 190.0f, 190.0f, 65.0f, -65.0f };
+Vec2f D_8010A838_slapdown[4] = { { 50.0f, 92.0f }, { 271.0f, 92.0f }, { 239.0f, 155.0f }, { 81.0f, 155.0f } };
+Vec2f D_8010A858_slapdown[4] = { { 49.0f, 92.0f }, { 272.0f, 92.0f }, { 238.0f, 155.0f }, { 82.0f, 155.0f } };
+s32 D_8010A878_slapdown[4] = { 0x4F000D, 0x4F000E, 0x4F000F, 0x4F0010 };
+s32 D_8010A888_slapdown = 0;
+SlapdownCamera D_8010A88C_slapdown[1] = {
+    { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 33.0f }
+};
+
+extern const s16 D_8010AA08_slapdown[];
+
+SlapdownBssAA10 slapdownBssAA10 BSS;
+extern s16 D_8010AA10_slapdown;    // slapdownBssAA10.unk_00
+extern s16 D_8010AA12_slapdown;    // slapdownBssAA10.unk_02
+extern s16 D_8010AA14_slapdown;    // slapdownBssAA10.unk_04
+extern s16 D_8010AA16_slapdown[5]; // slapdownBssAA10.unk_06
+void *D_8010AA20_slapdown[4] BSS;
+s16 D_8010AA30_slapdown BSS;
+s16 D_8010AA32_slapdown BSS;
+u8 D_8010AA34_slapdown[4] BSS; /* Unreferenced. */
+s16 D_8010AA38_slapdown[10] BSS;
+f32 D_8010AA4C_slapdown BSS;
+u8 D_8010AA50_slapdown BSS;
+s16 D_8010AA52_slapdown BSS;
+u8 D_8010AA54_slapdown[4] BSS; /* Unreferenced. */
+void *D_8010AA58_slapdown[5] BSS;
+s16 D_8010AA6C_slapdown BSS;
+u8 D_8010AA6E_slapdown BSS;
+s16 D_8010AA70_slapdown BSS;
+s16 D_8010AA72_slapdown BSS;
+s16 D_8010AA74_slapdown BSS;
+s16 D_8010AA76_slapdown BSS;
+void *D_8010AA78_slapdown[6] BSS;
+s16 D_8010AA90_slapdown[4] BSS;
+s16 D_8010AA98_slapdown BSS;
+s16 D_8010AA9A_slapdown BSS;
+void *D_8010AA9C_slapdown BSS;
+s16 D_8010AAA0_slapdown BSS;
+u8 D_8010AAA4_slapdown[0xC] BSS; /* Unreferenced. */
+SlapdownEntry D_8010AAB0_slapdown[50] BSS;
 // Fields of the first entry of D_8010AAB0_slapdown are accessed through these
 // separate symbols.
-extern s16 D_8010AAF0_slapdown;
-extern s16 D_8010AAF2_slapdown;
-extern f32 D_8010AAF4_slapdown;
-extern f32 D_8010AAF8_slapdown;
-extern void *D_8010AA20_slapdown[];
-extern u8 D_8010AA6E_slapdown;
-extern s16 D_8010AA90_slapdown[];
-extern s16 D_8010A760_slapdown[][2];
-extern s16 D_8010AA30_slapdown;
-extern s16 D_8010AA12_slapdown;
-extern s16 D_8010AA52_slapdown;
-extern void *D_8010AA58_slapdown[5];
-extern void *D_8010AA9C_slapdown;
-extern s32 D_800A178C_main[][6];
-extern s32 D_8010A6A0_slapdown[8];
-extern f32 D_8010A6C0_slapdown[4];
-extern f32 D_8010A6D0_slapdown[4];
-extern f32 D_8010A6E0_slapdown[4];
-extern f32 D_8010A6F0_slapdown[4];
-extern f32 D_8010A700_slapdown[4];
-extern f32 D_8010A710_slapdown[4];
-extern f32 D_8010A720_slapdown[4];
-extern f32 D_8010A730_slapdown[4];
-extern s32 D_8010A744_slapdown[4][2];
-extern Vec2f D_8010A7B0_slapdown[4];
-extern Vec2f D_8010A7D0_slapdown[4];
-extern f32 D_8010A7F0_slapdown[];
-extern f32 D_8010A814_slapdown[];
-extern void *D_8010AA8C_slapdown;
-extern Vec2f D_8010A838_slapdown[4];
-extern Vec2f D_8010A858_slapdown[4];
-extern s32 D_8010A878_slapdown[4];
-extern s16 D_8010AA72_slapdown;
-extern u8 D_8010AA50_slapdown;
-extern s16 D_8010AA38_slapdown[10];
-extern void *D_8010AA78_slapdown[6];
-extern s32 D_8010A888_slapdown;
-extern s16 D_8010AA74_slapdown;
-extern SlapdownCamera D_8010A88C_slapdown[1];
-extern const s16 D_8010AA08_slapdown[];
-extern s16 D_8010AA10_slapdown;
-extern s16 D_8010AA14_slapdown;
-extern s16 D_8010AA16_slapdown[5];
-extern s16 D_8010AA32_slapdown;
-extern f32 D_8010AA4C_slapdown;
-extern s16 D_8010AA6C_slapdown;
-extern s16 D_8010AA70_slapdown;
-extern s16 D_8010AA76_slapdown;
-extern s16 D_8010AA98_slapdown;
-extern s16 D_8010AA9A_slapdown;
-extern s16 D_8010AAA0_slapdown;
+extern s16 D_8010AAF0_slapdown; // [0].unk_40[0]
+extern s16 D_8010AAF2_slapdown; // [0].unk_40[1]
+extern f32 D_8010AAF4_slapdown; // [0].unk_44.x
+extern f32 D_8010AAF8_slapdown; // [0].unk_44.y
 
 void func_80106600_slapdown(omObjData *obj);
 void func_8010924C_slapdown(omObjData *obj);
@@ -738,7 +756,7 @@ void func_80107858_slapdown(omObjData *obj) {
     Hu3DModelRemakeStatic(obj->model[1]);
     func_8001C514_main(obj->model[1]);
     obj->model[2] = func_8000B108_main(0x4F0018, 0x2A9);
-    D_8010AA20_slapdown[obj->work[1]] = DataRead(D_8010A744_slapdown[obj->work[1]][0]);
+    D_8010AA20_slapdown[obj->work[1]] = DataRead(D_8010A740_slapdown[obj->work[1]][1]);
     D_8010AA90_slapdown[obj->work[1]] =
         Hu3DAnimCreate(Hu3DData[obj->model[2]].hmf, D_8010AA20_slapdown[obj->work[1]], 0, "s246_07_DEF");
     Hu3DModelRemakeStatic(obj->model[2]);
@@ -1122,7 +1140,7 @@ void func_80108BAC_slapdown(omObjData *obj) {
         }
         for (i = 0; i < 9; i++) {
             D_8010AA38_slapdown[objs[i]->work[0]] =
-                Hu3DAnimCreate(Hu3DData[objs[i]->model[0]].hmf, D_8010AA8C_slapdown, 0, "s246_01_DEF");
+                Hu3DAnimCreate(Hu3DData[objs[i]->model[0]].hmf, D_8010AA78_slapdown[5], 0, "s246_01_DEF");
             Hu3DModelRemakeStatic(objs[i]->model[0]);
             func_8001C514_main(objs[i]->model[0]);
         }
@@ -1675,4 +1693,4 @@ void func_8010A550_slapdown(void) {
     func_80105A74_slapdown();
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_2E_slapdown/264B80", D_8010AA08_slapdown);
+const s16 D_8010AA08_slapdown[] = { 0x8260, 0x8261, 0x8262, 0 };

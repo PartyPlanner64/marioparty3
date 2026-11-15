@@ -717,26 +717,6 @@ s32 func_8010E4C4_chancetime(void) {
     return D_8010FC18_chancetime;
 }
 
-// Only diff (score 26): the coins and stars table loads are swapped. CSE makes the
-// sign-extended `coins` used by `coins > 0` a copy of the coins load, and combine (3->2,
-// keeping the load) moves that load down past the stars load. That combine also leaves the
-// dead pseudo that gets the never-referenced spill slot at 0x70, so reading the amount through
-// an address CSE cannot match (e.g. `(&D_8010FD68_chancetime[i])->coins`) fixes the order but
-// shrinks the frame to 0xC8.
-// The target needs the sign extension to happen *before* the stars load, in a short-lived
-// pseudo P, with the value actually tested living in a different, longer-lived pseudo Q
-// assigned after the stars load (CSE then emits `Q = P`, and combine folds the load into it).
-// That fully matches the ROM, but only with a dead store, e.g.:
-//     coins = D_8010FD68_chancetime[D_801100DF_chancetime].coins;
-//     coinAmount = coins; // s32, never read again
-//     stars = D_8010FD68_chancetime[D_801100DF_chancetime].stars;
-//     if (coins > 0) { if (GwPlayer[players[0]].coin < coins) ... }
-// (or `coinAmount = <table>.coins;` there with `<table>.coins` in both tests). Every
-// warning-free form tried (all orders of coins/stars/coinAmount/starAmount/count assignments
-// with every combination of coins/coinAmount/table reads in the two tests, about 650 variants)
-// either keeps the wrong order or ends up with `count` in the test register. Unused arrays
-// shift every spill offset (score 288).
-#ifdef NON_MATCHING
 void func_8010E4D0_chancetime(omObjData *object) {
     f32 coinsF[2];
     f32 starsF[2];
@@ -750,6 +730,7 @@ void func_8010E4D0_chancetime(omObjData *object) {
     s32 delay;
     s16 coins;
     s16 stars;
+    s32 coinAmount;
     s32 count;
     f32 step;
     f32 lost;
@@ -777,6 +758,9 @@ void func_8010E4D0_chancetime(omObjData *object) {
     }
 
     coins = D_8010FD68_chancetime[D_801100DF_chancetime].coins;
+    // Set but unused; its pseudo orders the coins/stars loads and adds the spill slot at 0x70.
+    coinAmount = coins;
+    (void)coinAmount;
     stars = D_8010FD68_chancetime[D_801100DF_chancetime].stars;
     if (coins > 0) {
         if (GwPlayer[players[0]].coin < coins) {
@@ -959,9 +943,6 @@ void func_8010E4D0_chancetime(omObjData *object) {
     MBPlayerCoinAdd(players[1], 0);
     HuPrcSleep(30);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010E4D0_chancetime);
-#endif
 
 void func_8010F1DC_chancetime(void) {
     D_8010FC10_chancetime = 0;

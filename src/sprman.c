@@ -1014,7 +1014,7 @@ void HuSprGrpMemberSet(s16 group, s16 member, s16 arg2, u16 arg3) {
 
     sprite_ptr->data = D_800C9530_main[arg2];
     if (D_800C9530_main[arg2]->bank != 0) {
-        sprite_ptr->animMode = 1;
+        sprite_ptr->animMode = HUSPR_ANIM_MODE_BANK;
     }
     sprite_ptr->bank = arg3;
     sprite_ptr->time = 0.0f;
@@ -1035,7 +1035,7 @@ void HuSprSpeedSet(s16 group, s16 member, f32 arg2) {
 void func_800550F4_main(s16 group, s16 member, s32 arg2) {
     HuSprite *sprite_ptr = HuSprGrpData[group]->members[member];
 
-    sprite_ptr->animStat &= 0x7F;
+    sprite_ptr->animStat &= ~HUSPR_ANIM_STAT_INIT;
     sprite_ptr->animMode = arg2;
     func_80052E14_main(sprite_ptr);
 }
@@ -1043,7 +1043,7 @@ void func_800550F4_main(s16 group, s16 member, s32 arg2) {
 void HuSprBankSet(s16 group, s16 member, u16 arg2, s32 arg3) {
     HuSprite *sprite = HuSprGrpData[group]->members[member];
 
-    sprite->animStat &= 0x7F;
+    sprite->animStat &= ~HUSPR_ANIM_STAT_INIT;
     sprite->bank = arg2;
     sprite->animNo = arg3;
     sprite->time = 0;
@@ -1519,7 +1519,7 @@ s16 func_8005630C_main(HuSprAnm *arg0) {
     if (desc == NULL) {
         return -1;
     }
-    if (arg0->animMode == 1) {
+    if (arg0->animMode == HUSPR_ANIM_MODE_BANK) {
         HuSprAnimBank *cel;
         HuSprAnimFrame *frame;
 
@@ -1532,8 +1532,8 @@ s16 func_8005630C_main(HuSprAnm *arg0) {
         arg0->shiftX = frame->shiftX;
         arg0->shiftY = frame->shiftY;
         arg0->flip = frame->flip;
-    } else if (arg0->animMode >= 2) {
-        if (arg0->animMode < 4) {
+    } else if (arg0->animMode >= HUSPR_ANIM_MODE_PAT_LOOP) {
+        if (arg0->animMode <= HUSPR_ANIM_MODE_PAT_PINGPONG) {
             arg0->patNo = arg0->animNo;
         }
     }
@@ -1549,11 +1549,11 @@ void func_800563A4_main(HuSprAnm *arg0) {
     if (desc == NULL) {
         return;
     }
-    arg0->animStat &= 0x80;
+    arg0->animStat &= HUSPR_ANIM_STAT_INIT;
     switch (arg0->animMode) {
-        case 0:
+        case HUSPR_ANIM_MODE_STOP:
             return;
-        case 1:
+        case HUSPR_ANIM_MODE_BANK:
             if (desc->bank == NULL) {
                 return;
             }
@@ -1563,13 +1563,13 @@ void func_800563A4_main(HuSprAnm *arg0) {
             if ((s16)arg0->time > frame->time) {
                 arg0->time = 0.0f;
                 arg0->animNo++;
-                arg0->animStat |= 4;
+                arg0->animStat |= HUSPR_ANIM_STAT_FRAME;
                 if (arg0->animNo >= cel->timeNum) {
-                    arg0->animMode = 0;
-                    arg0->animStat |= 2;
+                    arg0->animMode = HUSPR_ANIM_MODE_STOP;
+                    arg0->animStat |= HUSPR_ANIM_STAT_END;
                 } else if (cel->frame[arg0->animNo].time < 0) {
                     arg0->animNo = 0;
-                    arg0->animStat |= 8;
+                    arg0->animStat |= HUSPR_ANIM_STAT_LOOP;
                 }
             }
             arg0->patNo = frame->pat;
@@ -1577,53 +1577,53 @@ void func_800563A4_main(HuSprAnm *arg0) {
             arg0->shiftY = frame->shiftY;
             arg0->flip = frame->flip;
             break;
-        case 2:
+        case HUSPR_ANIM_MODE_PAT_LOOP:
             prev = arg0->animNo;
             arg0->time += arg0->speed;
             arg0->animNo = (s32)arg0->time + arg0->animNo;
             if (arg0->animNo != prev) {
                 arg0->time -= arg0->animNo - prev;
-                arg0->animStat |= 4;
+                arg0->animStat |= HUSPR_ANIM_STAT_FRAME;
             }
             if (arg0->animNo >= arg0->data->patNum) {
                 arg0->animNo = 0;
                 arg0->time = 0.0f;
-                arg0->animStat |= 8;
+                arg0->animStat |= HUSPR_ANIM_STAT_LOOP;
             }
             arg0->patNo = arg0->animNo;
             break;
-        case 3:
+        case HUSPR_ANIM_MODE_PAT_PINGPONG:
             prev = arg0->animNo;
             arg0->time += arg0->speed;
             arg0->animNo = (s32)arg0->time + arg0->animNo;
             if (arg0->animNo != prev) {
                 arg0->time -= arg0->animNo - prev;
-                arg0->animStat |= 8;
+                arg0->animStat |= HUSPR_ANIM_STAT_LOOP;
             }
             if (arg0->animNo < 0 || arg0->animNo >= arg0->data->patNum) {
                 arg0->animNo = (arg0->speed < 0.0f) ? 1 : arg0->data->patNum - 2;
                 arg0->time = 0.0f;
                 arg0->speed = -arg0->speed;
-                arg0->animStat |= 8;
+                arg0->animStat |= HUSPR_ANIM_STAT_LOOP;
             }
             arg0->patNo = arg0->animNo;
             break;
         default:
             return;
     }
-    arg0->animStat |= 1;
+    arg0->animStat |= HUSPR_ANIM_STAT_UPDATE;
 }
 
 void func_80056650_main(HuSprite *sprite) {
     HuSprAnm *anm = &sprite->anim;
 
     func_80052E14_main(sprite);
-    if (!(sprite->anim.animStat & 0x80)) {
+    if (!(sprite->anim.animStat & HUSPR_ANIM_STAT_INIT)) {
         if (func_8005630C_main(anm) == 0) {
-            sprite->anim.animStat |= 0x80;
+            sprite->anim.animStat |= HUSPR_ANIM_STAT_INIT;
         }
     } else {
-        if (Hu3DPauseF == 0 || (sprite->dispAttr & 0x1000000)) {
+        if (Hu3DPauseF == 0 || (sprite->dispAttr & HUSPR_ATTR_NOPAUSE)) {
             func_800563A4_main(anm);
         }
     }

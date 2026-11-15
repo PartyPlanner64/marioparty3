@@ -9,6 +9,20 @@
 #define HUSPR_NONE -1
 
 #define HUSPR_ATTR_DISPOFF 0x8000
+#define HUSPR_ATTR_NOPAUSE 0x1000000
+
+// Playback modes (HuSprite.animMode)
+#define HUSPR_ANIM_MODE_STOP 0          // no animation
+#define HUSPR_ANIM_MODE_BANK 1          // play the frames of the current bank
+#define HUSPR_ANIM_MODE_PAT_LOOP 2      // step through every pattern, looping
+#define HUSPR_ANIM_MODE_PAT_PINGPONG 3  // step through every pattern, reversing at each end
+
+// Playback status flags (HuSprite.animStat)
+#define HUSPR_ANIM_STAT_UPDATE 0x1  // the animation was stepped this frame
+#define HUSPR_ANIM_STAT_END 0x2     // a bank finished playing
+#define HUSPR_ANIM_STAT_FRAME 0x4   // advanced to a new frame
+#define HUSPR_ANIM_STAT_LOOP 0x8    // looped or reversed
+#define HUSPR_ANIM_STAT_INIT 0x80   // the initial frame has been applied
 
 #define HuSprDispOff(grpId, memberNo) HuSprAttrSet(grpId, memberNo, HUSPR_ATTR_DISPOFF)
 #define HuSprDispOn(grpId, memberNo) HuSprAttrReset(grpId, memberNo, HUSPR_ATTR_DISPOFF)

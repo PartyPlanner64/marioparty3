@@ -943,7 +943,7 @@ void HuWinKeyWaitEntry(s16 winId) {
 
     HuSprGrpMemberSet(window->group, 3, D_800BDA68_main, 0);
     HuSprAttrReset(window->group, 3, 0xFFFF);
-    HuSprAttrSet(window->group, 3, 0x1000000);
+    HuSprAttrSet(window->group, 3, HUSPR_ATTR_NOPAUSE);
     HuSprPriSet(window->group, 3, window->prio - 1);
     HuSprPosSet(window->group, 3, window->unk58 - window->unk48, window->unk5A - window->unk4A);
     if (window->attr & HUWIN_ATTR_DISPOFF) {

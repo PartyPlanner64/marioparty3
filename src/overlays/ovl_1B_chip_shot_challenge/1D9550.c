@@ -47,71 +47,84 @@ typedef struct ChipShotChallengeSphere {
     /* 0x0C */ f32 radius;
 } ChipShotChallengeSphere; // Size 0x10
 
-extern s32 D_8010AAA0_chip_shot_challenge;
-extern s32 D_8010A824_chip_shot_challenge;
-extern f32 D_8010A828_chip_shot_challenge;
-extern f32 D_8010A82C_chip_shot_challenge;
-extern f32 D_8010A970_chip_shot_challenge;
-extern f32 D_8010A974_chip_shot_challenge;
-extern f32 D_8010A834_chip_shot_challenge;
-extern Vec D_8010AAA4_chip_shot_challenge;
-extern s32 D_8010A840_chip_shot_challenge;
-extern s16 D_8010A846_chip_shot_challenge;
-extern s32 D_8010AAC0_chip_shot_challenge;
-extern s32 D_8010AAC4_chip_shot_challenge;
-extern s32 D_8010AAC8_chip_shot_challenge;
-extern s32 D_8010AACC_chip_shot_challenge;
 extern f32 D_800D5410_main;
 extern f32 D_800D51FC_main;
-extern s16 D_8010AAD2_chip_shot_challenge[];
-extern s32 D_8010AAD8_chip_shot_challenge[4];
-extern s16 D_8010AAE8_chip_shot_challenge;
-extern omObjData *D_8010AAF0_chip_shot_challenge;
-extern f32 D_8010A954_chip_shot_challenge;
-extern f32 D_8010A984_chip_shot_challenge[4];
-extern f32 D_8010A994_chip_shot_challenge[4];
-extern f32 D_8010A9A4_chip_shot_challenge[];
-extern s32 D_8010A958_chip_shot_challenge;
-extern s32 D_8010A928_chip_shot_challenge[4];
-extern s32 D_8010A83C_chip_shot_challenge;
-extern s32 D_8010A844_chip_shot_challenge;
-extern f32 D_8010A8F0_chip_shot_challenge[];
-extern f32 D_8010AABC_chip_shot_challenge;
-extern f32 D_8010AA60_chip_shot_challenge;
-extern Vec D_8010AA64_chip_shot_challenge;
-extern Vec D_8010AA70_chip_shot_challenge;
-extern Vec D_8010AA7C_chip_shot_challenge;
-extern f32 D_8010A938_chip_shot_challenge;
-extern f32 D_8010A93C_chip_shot_challenge;
-extern f32 D_8010A940_chip_shot_challenge;
-extern f32 D_8010A944_chip_shot_challenge;
-extern s32 D_8010A948_chip_shot_challenge;
-extern s32 D_8010A820_chip_shot_challenge;
-extern f32 D_8010A838_chip_shot_challenge;
-extern s32 D_8010A848_chip_shot_challenge;
-extern f32 D_8010A978_chip_shot_challenge;
-extern f32 D_8010A97C_chip_shot_challenge;
-extern s32 D_8010A980_chip_shot_challenge;
-extern Vec D_8010AAB0_chip_shot_challenge;
-extern s32 D_8010AAD0_chip_shot_challenge;
-extern D_80111B50_vine_with_me_Struct D_8010A900_chip_shot_challenge;
 extern s32 D_800A178C_main[][6];
 extern u8 D_800D6A90_main;
-extern f32 D_8010A87C_chip_shot_challenge[5];
-extern f32 D_8010A890_chip_shot_challenge[5];
-extern f32 D_8010A8A4_chip_shot_challenge[5];
-extern f32 D_8010A8B8_chip_shot_challenge[5];
-extern f32 D_8010A8CC_chip_shot_challenge[5];
-extern s32 D_8010A8E0_chip_shot_challenge[4];
-extern s32 D_8010A94C_chip_shot_challenge;
-extern s32 D_8010A950_chip_shot_challenge;
-extern f32 D_8010AA88_chip_shot_challenge;
-extern Vec D_8010AA8C_chip_shot_challenge;
-extern u8 D_8010A96C_chip_shot_challenge;
-extern s32 D_8010AA98_chip_shot_challenge;
-extern s32 D_8010AA9C_chip_shot_challenge;
-extern f32 D_8010A830_chip_shot_challenge;
-extern s32 D_8010A84C_chip_shot_challenge[4][3];
+
+s32 D_8010A820_chip_shot_challenge = 0;
+s32 D_8010A824_chip_shot_challenge = 0;
+f32 D_8010A828_chip_shot_challenge = 0.0f;
+f32 D_8010A82C_chip_shot_challenge = 0.0f;
+f32 D_8010A830_chip_shot_challenge = 0.0f;
+f32 D_8010A834_chip_shot_challenge = 5.0f;
+f32 D_8010A838_chip_shot_challenge = 0.0f;
+s32 D_8010A83C_chip_shot_challenge = 0;
+s32 D_8010A840_chip_shot_challenge = 0;
+s32 D_8010A844_chip_shot_challenge = -1;
+s32 D_8010A848_chip_shot_challenge = 1;
+s32 D_8010A84C_chip_shot_challenge[4][3] = {
+    { -200, 0, 100 },
+    { -80, 0, 100 },
+    { 80, 0, 100 },
+    { 200, 0, 100 }
+};
+f32 D_8010A87C_chip_shot_challenge[5] = { 125.0f, 155.0f, 180.0f, 215.0f, 245.0f };
+f32 D_8010A890_chip_shot_challenge[5] = { 600.0f, 800.0f, 400.0f, 900.0f, 200.0f };
+f32 D_8010A8A4_chip_shot_challenge[5] = { 2500.0f, 3000.0f, 3500.0f, 4000.0f, 4500.0f };
+f32 D_8010A8B8_chip_shot_challenge[5] = { 0.075f, 0.1f, 0.15f, 0.2f, 0.15f };
+f32 D_8010A8CC_chip_shot_challenge[5] = { 0.0f, 270.0f, 180.0f, 30.0f, 190.0f };
+s32 D_8010A8E0_chip_shot_challenge[4] = { 1, 1, 1, 1 };
+f32 D_8010A8F0_chip_shot_challenge[4] = { 10000.0f, 10000.0f, 10000.0f, 10000.0f };
+D_80111B50_vine_with_me_Struct D_8010A900_chip_shot_challenge = {
+    0, 0, 1, 0, 0, 0, 0, 0,
+    { 0.0f, 0.0f, 0.0f, 0.0f },
+    { 0, 0, 0, 0 },
+    0x60, -1, -1, 0x4B, 0x87
+};
+s32 D_8010A928_chip_shot_challenge[4] = { -1, -1, -1, -1 };
+f32 D_8010A938_chip_shot_challenge = -1000.0f;
+f32 D_8010A93C_chip_shot_challenge = -30.0f;
+f32 D_8010A940_chip_shot_challenge = 0.0f;
+f32 D_8010A944_chip_shot_challenge = -0.8f;
+s32 D_8010A948_chip_shot_challenge = -1;
+s32 D_8010A94C_chip_shot_challenge = 0;
+s32 D_8010A950_chip_shot_challenge = -1;
+f32 D_8010A954_chip_shot_challenge = 0.0f;
+s32 D_8010A958_chip_shot_challenge = -1;
+f32 D_8010A95C_chip_shot_challenge[4] = { -300.0f, -600.0f, -900.0f, -1200.0f }; /* Unreferenced. */
+u8 D_8010A96C_chip_shot_challenge = 240;
+f32 D_8010A970_chip_shot_challenge = 0.0f;
+f32 D_8010A974_chip_shot_challenge = 0.0f;
+f32 D_8010A978_chip_shot_challenge = 0.0f;
+f32 D_8010A97C_chip_shot_challenge = 0.0f;
+s32 D_8010A980_chip_shot_challenge = -1;
+f32 D_8010A984_chip_shot_challenge[4] = { 1000.0f, 1000.0f, 1000.0f, 1000.0f };
+f32 D_8010A994_chip_shot_challenge[4] = { 1000.0f, 1000.0f, 1000.0f, 1000.0f };
+f32 D_8010A9A4_chip_shot_challenge[4] = { 1.0f, 0.7f, 0.5f, 0.3f };
+
+f32 D_8010AA60_chip_shot_challenge BSS;
+Vec D_8010AA64_chip_shot_challenge BSS;
+Vec D_8010AA70_chip_shot_challenge BSS;
+Vec D_8010AA7C_chip_shot_challenge BSS;
+f32 D_8010AA88_chip_shot_challenge BSS;
+Vec D_8010AA8C_chip_shot_challenge BSS;
+s32 D_8010AA98_chip_shot_challenge BSS;
+s32 D_8010AA9C_chip_shot_challenge BSS;
+s32 D_8010AAA0_chip_shot_challenge BSS;
+Vec D_8010AAA4_chip_shot_challenge BSS;
+Vec D_8010AAB0_chip_shot_challenge BSS;
+f32 D_8010AABC_chip_shot_challenge BSS;
+s32 D_8010AAC0_chip_shot_challenge BSS;
+s32 D_8010AAC4_chip_shot_challenge BSS;
+s32 D_8010AAC8_chip_shot_challenge BSS;
+s32 D_8010AACC_chip_shot_challenge BSS;
+s32 D_8010AAD0_chip_shot_challenge BSS;
+u8 D_8010AAD4_chip_shot_challenge[4] BSS; /* Unreferenced. */
+s32 D_8010AAD8_chip_shot_challenge[4] BSS;
+s16 D_8010AAE8_chip_shot_challenge BSS;
+u8 D_8010AAEC_chip_shot_challenge[4] BSS; /* Unreferenced. */
+omObjData *D_8010AAF0_chip_shot_challenge BSS;
 
 s32 func_80105DE0_chip_shot_challenge(s32 playerIndex);
 void func_80106B84_chip_shot_challenge(omObjData *object);
@@ -730,12 +743,12 @@ void func_80107BB0_chip_shot_challenge(void) {
     if (D_8010AAA4_chip_shot_challenge.y + 400.0f < Center.y) {
         Center.y = D_8010AAA4_chip_shot_challenge.y + 400.0f;
     }
-    Hu3DModelPosSet(D_8010AAD2_chip_shot_challenge[0], x, y, z);
+    Hu3DModelPosSet((s16)D_8010AAD0_chip_shot_challenge, x, y, z);
     Hu3DModelPosSet(D_8010AAC8_chip_shot_challenge, x, y, z);
-    Hu3DModelRotSet(D_8010AAD2_chip_shot_challenge[0], 0.0f, CRot.y, 0.0f);
+    Hu3DModelRotSet((s16)D_8010AAD0_chip_shot_challenge, 0.0f, CRot.y, 0.0f);
     Hu3DModelRotSet(D_8010AAC8_chip_shot_challenge, 0.0f, CRot.y, 0.0f);
     func_8001C258_main(D_8010AAC8_chip_shot_challenge, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-    func_8001C258_main(D_8010AAD2_chip_shot_challenge[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    func_8001C258_main((s16)D_8010AAD0_chip_shot_challenge, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
 }
 
 void func_80107E94_chip_shot_challenge(void) {
@@ -747,7 +760,7 @@ void func_80107E94_chip_shot_challenge(void) {
     z = dir.z = D_8010AAF0_chip_shot_challenge->trans.z;
     func_800202FC_main(&dir);
     if (D_8010A840_chip_shot_challenge == 1) {
-        func_8004AC98_main(0x3DC, D_8010A846_chip_shot_challenge);
+        func_8004AC98_main(0x3DC, (s16)D_8010A844_chip_shot_challenge);
     }
     if (D_8010A840_chip_shot_challenge < 31) {
         y = D_8010A840_chip_shot_challenge * 10.0f + -200.0f;
@@ -756,12 +769,12 @@ void func_80107E94_chip_shot_challenge(void) {
     }
     x += dir.x * 200.0f;
     z += dir.z * 200.0f;
-    Hu3DModelPosSet(D_8010AAD2_chip_shot_challenge[0], x, y, z);
+    Hu3DModelPosSet((s16)D_8010AAD0_chip_shot_challenge, x, y, z);
     Hu3DModelPosSet(D_8010AACC_chip_shot_challenge, x, y, z);
-    Hu3DModelRotSet(D_8010AAD2_chip_shot_challenge[0], 0.0f, CRot.y, 0.0f);
+    Hu3DModelRotSet((s16)D_8010AAD0_chip_shot_challenge, 0.0f, CRot.y, 0.0f);
     Hu3DModelRotSet(D_8010AACC_chip_shot_challenge, 0.0f, CRot.y, 0.0f);
     func_8001C258_main(D_8010AACC_chip_shot_challenge, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-    func_8001C258_main(D_8010AAD2_chip_shot_challenge[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    func_8001C258_main((s16)D_8010AAD0_chip_shot_challenge, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
 }
 
 void func_8010802C_chip_shot_challenge(void) {
@@ -774,7 +787,7 @@ void func_8010802C_chip_shot_challenge(void) {
     func_8001C258_main(D_8010AACC_chip_shot_challenge, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     func_8001C258_main(D_8010AAC8_chip_shot_challenge, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     if (func_800E6E8C_minigame() >= 2) {
-        func_8001C258_main(D_8010AAD2_chip_shot_challenge[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        func_8001C258_main((s16)D_8010AAD0_chip_shot_challenge, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
 }
 
@@ -1183,7 +1196,7 @@ void func_801094D8_chip_shot_challenge(omObjData *object) {
             floorY = func_80109AD0_chip_shot_challenge(object, x, y, z);
             if (y < floorY) {
                 y = floorY;
-                func_8004AC98_main(0x3DD, D_8010A846_chip_shot_challenge);
+                func_8004AC98_main(0x3DD, (s16)D_8010A844_chip_shot_challenge);
                 if (bounce) {
                     work->unk_38 = -work->unk_38 * 0.45f;
                     if (work->unk_38 >= -0.3f) {
@@ -1212,7 +1225,7 @@ void func_801094D8_chip_shot_challenge(omObjData *object) {
         } else if (D_8010A83C_chip_shot_challenge == 1) {
             func_80107BB0_chip_shot_challenge();
             if (D_8010A980_chip_shot_challenge == -1) {
-                func_8004AC98_main(0x3DE, D_8010A846_chip_shot_challenge);
+                func_8004AC98_main(0x3DE, (s16)D_8010A844_chip_shot_challenge);
                 D_8010A980_chip_shot_challenge = 0;
                 omVibrate(OM_GET_DATA_PTR(D_800EC598_minigame[D_8010A844_chip_shot_challenge], ChipShotChallengeWork)
                               ->playerIndex,

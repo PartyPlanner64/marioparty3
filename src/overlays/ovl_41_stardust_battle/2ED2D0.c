@@ -758,7 +758,7 @@ void func_80105DA0_stardust_battle(omObjData *object) {
         case 7:
             if (GMesStatGet() == 0) {
                 func_8010F400_stardust_battle(0, D_80114AB0_stardust_battle);
-                func_800E6F0C_minigame(MG_STATE_PLAY);
+                MgFlowStatSet(MG_STATE_PLAY);
                 D_80114AB8_stardust_battle++;
             }
             break;
@@ -777,7 +777,7 @@ void func_80105DA0_stardust_battle(omObjData *object) {
             if (D_80114AB0_stardust_battle >= 5400 || D_80114ACE_stardust_battle != 0 || actor->unk_06 <= 0) {
                 func_8003F5C0_main();
                 GMesCreate(0x14);
-                func_800E6F0C_minigame(MG_STATE_FINISH);
+                MgFlowStatSet(MG_STATE_FINISH);
                 func_8010C06C_stardust_battle();
                 func_8010ED7C_stardust_battle();
                 HuAudSeqFadeOut(120);
@@ -806,7 +806,7 @@ void func_80105DA0_stardust_battle(omObjData *object) {
                 (func_8010C508_stardust_battle() == 12 ||
                  (D_80114AC0_stardust_battle != 0 && D_80114ACC_stardust_battle >= 0 &&
                   D_80114AB0_stardust_battle < D_80114AB4_stardust_battle))) {
-                func_800E6F0C_minigame(MG_STATE_RESULT);
+                MgFlowStatSet(MG_STATE_RESULT);
                 func_801080B0_stardust_battle();
                 D_80114ABC_stardust_battle = 0;
                 if (D_80114AC0_stardust_battle == 0 || D_80114ACC_stardust_battle < 0 ||
@@ -1200,7 +1200,7 @@ void func_801073F4_stardust_battle(omObjData *object) {
     D_800CBB6E_main[obj->pad] = stickX;
     D_800D20A1_main[obj->pad] = stickY;
     func_80107760_stardust_battle(object, noControl);
-    if (!noControl && obj->unk_14 == 0 && func_800E6E8C_minigame() == MG_STATE_PLAY) {
+    if (!noControl && obj->unk_14 == 0 && MgFlowStatGet() == MG_STATE_PLAY) {
         obj->unk_10 = func_8010E524_stardust_battle(object, 0, NULL);
         if (obj->unk_10 != -1) {
             if (obj->unk_10 == 0xFF) {
@@ -1247,7 +1247,7 @@ void func_80107760_stardust_battle(omObjData *object, s16 noControl) {
     s16 time;
     s16 item;
 
-    if (func_800E6E8C_minigame() == MG_STATE_PLAY && noControl == 0) {
+    if (MgFlowStatGet() == MG_STATE_PLAY && noControl == 0) {
         item = obj->unk_66;
         switch (item) {
             case -1:
@@ -2312,7 +2312,7 @@ void func_8010AAC4_stardust_battle(omObjData *object) {
 
     switch (actor->unk_04) {
         case 0:
-            if (func_800E6E8C_minigame() == MG_STATE_PLAY) {
+            if (MgFlowStatGet() == MG_STATE_PLAY) {
                 actor->active = 0;
                 actor->unk_04 = 1;
             }
@@ -2439,7 +2439,7 @@ void func_8010AAC4_stardust_battle(omObjData *object) {
                 actor->unk_70 = func_80111DF8_stardust_battle(t, 0.0f, 1.0f);
                 object->rot.z = object->rot.x = 0.0f;
                 actor->active = 0;
-                if (actor->unk_06 != 0 && func_800E6E8C_minigame() == MG_STATE_PLAY) {
+                if (actor->unk_06 != 0 && MgFlowStatGet() == MG_STATE_PLAY) {
                     func_8010BFE4_stardust_battle(450.0f, 30);
                     actor->unk_04 = 6;
                 } else {

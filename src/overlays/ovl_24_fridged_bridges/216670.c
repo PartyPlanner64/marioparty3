@@ -214,7 +214,7 @@ void func_80105F34_fridged_bridges(omObjData *arg0) {
     s32 i;
 
     if (D_8010CF50_fridged_bridges == 0) {
-        switch (func_800E6F40_minigame()) {
+        switch (MgFlowMain()) {
             case 0:
                 if (D_8010D35C_fridged_bridges == NULL) {
                     D_8010D364_fridged_bridges = 0;
@@ -239,12 +239,12 @@ void func_80105F34_fridged_bridges(omObjData *arg0) {
                         }
                         D_8010CF20_fridged_bridges.winners[0] = D_8010DA60_fridged_bridges;
                     } else if (func_8010ADC0_fridged_bridges() == 1) {
-                        func_800E6F0C_minigame(MG_STATE_FINISH);
+                        MgFlowStatSet(MG_STATE_FINISH);
                     }
                 } else if (func_800E6E9C_minigame() == 5400) {
                     D_8010DA68_fridged_bridges = 1;
                     D_8010CF20_fridged_bridges.resultType = MG_RESULT_DRAW;
-                    func_800E6F0C_minigame(MG_STATE_FINISH);
+                    MgFlowStatSet(MG_STATE_FINISH);
                 }
                 break;
             case 3:
@@ -490,7 +490,7 @@ void func_801068F4_fridged_bridges(omObjData *arg0) {
     f32 angle;
     u16 count;
 
-    if (func_800E6E8C_minigame() == MG_STATE_PLAY) {
+    if (MgFlowStatGet() == MG_STATE_PLAY) {
         if (!(GwPlayer[player->playerId].stat & 1)) {
             stickX = D_800CBB6E_main[port];
             stickY = D_800D20A1_main[port];
@@ -1270,7 +1270,7 @@ void func_801091F8_fridged_bridges(omObjData *arg0) {
                 }
                 omDelObj(arg0);
                 D_8010D35C_fridged_bridges = NULL;
-                func_800E6F0C_minigame(MG_STATE_START);
+                MgFlowStatSet(MG_STATE_START);
             }
             break;
     }
@@ -1335,7 +1335,7 @@ void func_80109390_fridged_bridges(omObjData *arg0) {
             break;
         case 4:
             if (D_8010DA64_fridged_bridges[D_8010DA60_fridged_bridges]->work[0] == 1 &&
-                func_800E6E8C_minigame() == MG_STATE_RESULT) {
+                MgFlowStatGet() == MG_STATE_RESULT) {
                 player = D_8010DA64_fridged_bridges[D_8010DA60_fridged_bridges]->data;
                 func_80017954_main(D_8010DA64_fridged_bridges[D_8010DA60_fridged_bridges]->model[0], 2,
                                    GwPlayer[player->playerId].chr,
@@ -1359,7 +1359,7 @@ void func_80109390_fridged_bridges(omObjData *arg0) {
             }
             break;
         case 6:
-            if (func_800E6E8C_minigame() == MG_STATE_RESULT) {
+            if (MgFlowStatGet() == MG_STATE_RESULT) {
                 for (i = 0; i < 4; i++) {
                     obj = D_8010DA64_fridged_bridges[i];
                     player = obj->data;
@@ -1887,7 +1887,7 @@ void func_8010B3EC_fridged_bridges(omObjData *arg0) {
 
     switch (foe->state) {
         case 0:
-            if (player->state != 2 && player->state != 3 && func_800E6E8C_minigame() == MG_STATE_PLAY) {
+            if (player->state != 2 && player->state != 3 && MgFlowStatGet() == MG_STATE_PLAY) {
                 if (foe->wait == 0) {
                     foe->state = 1;
                     foe->jumpPos = 0.0f;
@@ -1943,7 +1943,7 @@ void func_8010B3EC_fridged_bridges(omObjData *arg0) {
                 if (arg0->rot.y >= 360.0f) {
                     arg0->rot.y -= 360.0f;
                 }
-            } else if (player->state != 2 && player->state != 3 && func_800E6E8C_minigame() == MG_STATE_PLAY) {
+            } else if (player->state != 2 && player->state != 3 && MgFlowStatGet() == MG_STATE_PLAY) {
                 foe->state = 0;
                 foe->wait = (u8)(rand8() % 10) * 2 + 20;
                 foe->dir ^= 1;

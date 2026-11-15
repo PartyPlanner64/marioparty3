@@ -255,7 +255,7 @@ void func_80105B94_parasol_plummet(omObjData *object) {
         HuAudSeqFadeOut(30);
         WipeCreateOut(0, 20);
     }
-    switch (D_8010AC66_parasol_plummet = func_800E6F40_minigame(object)) {
+    switch (D_8010AC66_parasol_plummet = MgFlowMain(object)) {
         case 0:
             if (func_800E6E9C_minigame() == 20) {
                 HuAudFXPlay(0x3E5);
@@ -520,7 +520,7 @@ void func_80106788_parasol_plummet(omObjData *object) {
         func_8001C258_main(object->model[1], 4, 0);
         work->unk_10 = 1;
         work->flags &= ~4;
-        if (func_800E6E8C_minigame() == MG_STATE_PLAY) {
+        if (MgFlowStatGet() == MG_STATE_PLAY) {
             func_8004AC5C_main(0x3E1, work->playerIndex);
         }
     }

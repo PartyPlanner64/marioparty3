@@ -465,7 +465,7 @@ void func_80106A34_bobbing_bow_loons(omObjData *obj) {
         HuAudSeqFadeOut(30);
         WipeCreateOut(0, 20);
     }
-    switch (func_800E6F40_minigame(obj)) {
+    switch (MgFlowMain(obj)) {
         case 0:
             if (func_800E6E9C_minigame() == 1) {
                 HuAudSeqPlay(0x44);
@@ -907,13 +907,13 @@ void func_8010817C_bobbing_bow_loons(omObjData *obj) {
         hook->x -= 23.0f;
         hit = func_80107174_bobbing_bow_loons();
         if (hit != -1) {
-            func_800E6F0C_minigame(MG_STATE_FINISH);
+            MgFlowStatSet(MG_STATE_FINISH);
             func_801079E8_bobbing_bow_loons(hit);
             hook->flags &= ~1;
             omVibrate(D_80109B0C_bobbing_bow_loons, 2, 2, 20);
         } else if (hook->x <= -290.0f) {
             D_80109B04_bobbing_bow_loons = 0;
-            func_800E6F0C_minigame(MG_STATE_FINISH);
+            MgFlowStatSet(MG_STATE_FINISH);
             func_80108328_bobbing_bow_loons();
             hook->flags &= ~1;
             omVibrate(D_80109B0C_bobbing_bow_loons, 20, 0, 20);
@@ -992,7 +992,7 @@ void func_80108354_bobbing_bow_loons(void) {
         HuPrcVSleep();
     }
     func_80109568_bobbing_bow_loons();
-    func_800E6F0C_minigame(MG_STATE_FINISH);
+    MgFlowStatSet(MG_STATE_FINISH);
     omDelPrcObj(NULL);
 }
 

@@ -98,7 +98,7 @@ extern s32 D_800A1790_main[][6];
 s32 D_8010B810_crazy_cogs[8] = { 2, 3, 7, 4, 5, 6, 8, 9 };
 // The intended delays (90, 900, 0, 30, 150) landed in gaugeValue/winners, likely
 // from an initializer written without the inner braces. It doesn't matter in
-// practice: this overlay never runs func_800E6F40_minigame, so only the
+// practice: this overlay never runs MgFlowMain, so only the
 // setup in func_800E5EA0_minigame reads this struct.
 MinigameFlow D_8010B830_crazy_cogs = {
     MG_STATE_OPENING, MINIGAME_4P, MG_TIMER_COUNT_DOWN, MG_TIME_DISP_COUNTDOWN, FALSE, MG_GAUGE_NONE, MG_RESULT_WIN_1, 0,
@@ -2044,7 +2044,7 @@ void func_8010B0F4_crazy_cogs(omObjData *arg0) {
 }
 
 void func_8010B46C_crazy_cogs(omObjData *arg0) {
-    func_800E6F0C_minigame(MG_STATE_PLAY);
+    MgFlowStatSet(MG_STATE_PLAY);
     D_8010B99C_crazy_cogs = 0;
     D_8010B997_crazy_cogs = 0;
     D_8010DE66_crazy_cogs = 0;

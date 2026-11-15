@@ -324,7 +324,7 @@ void func_80105FE4_winners_wheel(omObjData *obj) {
         HuAudSeqFadeOut(30);
         WipeCreateOut(0, 20);
     }
-    switch (func_800E6F40_minigame(obj)) {
+    switch (MgFlowMain(obj)) {
         case 0:
             if (func_800E6E9C_minigame() == 15) {
                 func_8010842C_winners_wheel();
@@ -904,14 +904,14 @@ void func_80107F4C_winners_wheel(omObjData *obj) {
                 } else {
                     omVibrate(D_8010A48C_winners_wheel, 2, 3, 10);
                 }
-                func_800E6F0C_minigame(MG_STATE_FINISH);
+                MgFlowStatSet(MG_STATE_FINISH);
             }
         } else if (pointer->speed <= minSpeed && D_8010A468_winners_wheel[D_8010A480_winners_wheel] == 17) {
             pointer->speed = 0.0f;
             pointer->flags &= ~4;
             pointer->flags &= ~1;
             omVibrate(D_8010A48C_winners_wheel, 10, 0, 10);
-            func_800E6F0C_minigame(MG_STATE_FINISH);
+            MgFlowStatSet(MG_STATE_FINISH);
             HuAudFXStop(D_8010A494_winners_wheel);
             HuAudFXPlay(0x4CD);
         }
@@ -1395,7 +1395,7 @@ void func_80109FAC_winners_wheel(void) {
         HuPrcVSleep();
     }
     HuAudFXPlay(0x4CF);
-    func_800E6F1C_minigame();
+    MgFlowStatNext();
     Hu3DMotionShiftSet(D_8010A4C4_winners_wheel->model[0], Hu3DData[D_8010A4C4_winners_wheel->motion[2]].motId, 0,
                        10, 0);
     func_8001C814_main(D_8010A4C4_winners_wheel->model[0], 2, 2);

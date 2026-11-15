@@ -186,7 +186,7 @@ void func_80105EA0_water_whirled(omObjData *object) {
     f32 max;
     s32 i;
 
-    if (func_800E6E8C_minigame() == MG_STATE_PLAY) {
+    if (MgFlowStatGet() == MG_STATE_PLAY) {
         min = 50000.0f;
         max = -50000.0f;
         for (i = 0; i < 4; i++) {
@@ -310,7 +310,7 @@ void func_80106308_water_whirled(omObjData *object) {
 void func_80106680_water_whirled(void) {
     s32 time = func_800E6E9C_minigame();
 
-    if (func_800E6E8C_minigame() == MG_STATE_OPENING) {
+    if (MgFlowStatGet() == MG_STATE_OPENING) {
         if (time < 15) {
             CRot.y = 100.0f;
             CRot.x = 350.0f;
@@ -459,7 +459,7 @@ void func_80106DB8_water_whirled(omObjData *object) {
         return;
     }
     time = func_800E6E9C_minigame();
-    switch (func_800E6F40_minigame()) {
+    switch (MgFlowMain()) {
         case 0:
             if (time == 1) {
                 D_8010A28C_water_whirled[0] = PlayerFXPlay(0x41A, 0);
@@ -475,7 +475,7 @@ void func_80106DB8_water_whirled(omObjData *object) {
             for (i = 0; i < 4; i++) {
                 if (D_8010A270_water_whirled[i] == 5) {
                     D_8010A280_water_whirled = i;
-                    func_800E6F0C_minigame(MG_STATE_FINISH);
+                    MgFlowStatSet(MG_STATE_FINISH);
                     D_8010A2AC_water_whirled.winners[0] = D_8010A280_water_whirled;
                     D_8010A2AC_water_whirled.resultType = MG_RESULT_WIN_1;
                     work = D_800EC598_minigame[D_8010A280_water_whirled]->data;
@@ -780,7 +780,7 @@ void func_80107F08_water_whirled(omObjData *object) {
     D_8010AC44_water_whirled = D_800CBB6E_main[pad];
     D_800CBB6E_main[pad] = 0;
     D_800CDA7C_main[pad] = 0;
-    mode = func_800E6E8C_minigame();
+    mode = MgFlowStatGet();
     if (mode >= MG_STATE_PLAY) {
         func_801098AC_water_whirled(object);
         stickX = D_8010AC44_water_whirled;
@@ -959,7 +959,7 @@ void func_801089C0_water_whirled(omObjData *object, f32 x, f32 z) {
         D_800EBE2C_minigame = D_8010A1D0_water_whirled[work->unk59].x - x;
         D_800EC5D8_minigame = D_8010A1D0_water_whirled[work->unk59].z - z;
     }
-    if (func_800E6E8C_minigame() == MG_STATE_PLAY) {
+    if (MgFlowStatGet() == MG_STATE_PLAY) {
         if (D_8010A29C_water_whirled[work->unk59] == 0) {
             if (dist > 0.0f) {
                 if (dist < radius / 3.0f) {
@@ -1196,7 +1196,7 @@ void func_801098AC_water_whirled(omObjData *object) {
     f32 dir;
     f32 radius;
 
-    if (func_800E6E8C_minigame() == MG_STATE_PLAY && !(GwPlayer[player].stat & 1)) {
+    if (MgFlowStatGet() == MG_STATE_PLAY && !(GwPlayer[player].stat & 1)) {
         return;
     }
     D_8010AC40_water_whirled = 0;

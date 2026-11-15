@@ -442,7 +442,7 @@ void func_80105CEC_bowser_toss(omObjData *object) {
         case 2:
             if (GMesStatGet() == 0) {
                 GMesCreate(0x1A, (D_8010FB60_bowser_toss + 29) / 30, 156, 32);
-                func_800E6F0C_minigame(MG_STATE_PLAY);
+                MgFlowStatSet(MG_STATE_PLAY);
                 D_8010FB64_bowser_toss++;
             }
             break;
@@ -461,7 +461,7 @@ void func_80105CEC_bowser_toss(omObjData *object) {
         case 4:
             if (func_80109F20_bowser_toss() && func_8010840C_bowser_toss()) {
                 GMesCreate(0x11);
-                func_800E6F0C_minigame(MG_STATE_FINISH);
+                MgFlowStatSet(MG_STATE_FINISH);
                 HuAudSeqFadeOut(120);
                 func_8010847C_bowser_toss(D_800EC598_minigame[0], 0, 10);
                 func_8010847C_bowser_toss(D_800EC598_minigame[1], 0, 10);
@@ -531,7 +531,7 @@ void func_80105CEC_bowser_toss(omObjData *object) {
                     GMesCreate(0x20);
                     HuAudSeqPlay(0x6C);
                     D_8010FB68_bowser_toss = 144;
-                    func_800E6F0C_minigame(MG_STATE_RESULT);
+                    MgFlowStatSet(MG_STATE_RESULT);
                     D_8010FB64_bowser_toss = 11;
                 } else {
                     if (D_8010FB78_bowser_toss != 0) {
@@ -565,7 +565,7 @@ void func_80105CEC_bowser_toss(omObjData *object) {
                     }
                     func_8010D250_bowser_toss(D_8010FB78_bowser_toss, x, y, CAMERA_KEEP, CAMERA_KEEP, CAMERA_KEEP,
                                               CAMERA_KEEP, zoom, 30);
-                    func_800E6F0C_minigame(MG_STATE_RESULT);
+                    MgFlowStatSet(MG_STATE_RESULT);
                 }
                 D_8010FB5C_bowser_toss = 0;
             }
@@ -762,7 +762,7 @@ void func_80106BC4_bowser_toss(omObjData *object) {
     bowser = func_80108800_bowser_toss(player->index);
     data = object->data;
     model = &Hu3DData[object->model[0]];
-    switch (func_800E6E8C_minigame()) {
+    switch (MgFlowStatGet()) {
         case MG_STATE_OPENING:
             if (player->unk_0C == 0) {
                 if (player->unk_08 >= 30.0f) {

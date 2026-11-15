@@ -241,7 +241,7 @@ void func_80105C84_bounce_n_trounce(omObjData *arg0) {
 
 void func_80105CBC_bounce_n_trounce(omObjData *object) {
     if (D_8010ABE8_bounce_n_trounce == 0) {
-        switch (func_800E6F40_minigame()) {
+        switch (MgFlowMain()) {
             case 0:
                 if (D_8010AEC0_bounce_n_trounce == NULL) {
                     D_8010AEC8_bounce_n_trounce = 0;
@@ -256,11 +256,11 @@ void func_80105CBC_bounce_n_trounce(omObjData *object) {
                 if (D_8010AEBC_bounce_n_trounce == 0) {
                     D_8010AECC_bounce_n_trounce = 0;
                     D_8010AED0_bounce_n_trounce->work[0] = 0;
-                    func_800E6F0C_minigame(MG_STATE_FINISH);
+                    MgFlowStatSet(MG_STATE_FINISH);
                 } else if (D_8010AEBC_bounce_n_trounce == 1) {
                     D_8010AECC_bounce_n_trounce = 0;
                     D_8010AED0_bounce_n_trounce->work[0] = 0;
-                    func_800E6F0C_minigame(MG_STATE_FINISH);
+                    MgFlowStatSet(MG_STATE_FINISH);
                 }
                 break;
             case 3:
@@ -359,7 +359,7 @@ void func_80106268_bounce_n_trounce(omObjData *object) {
     s16 choice;
     BounceNTrounceTileWork *work;
 
-    if (func_800E6E8C_minigame() == MG_STATE_PLAY && object->work[0] != 0) {
+    if (MgFlowStatGet() == MG_STATE_PLAY && object->work[0] != 0) {
         if (D_8010ACF6_bounce_n_trounce != 0) {
             D_8010ACF6_bounce_n_trounce--;
             return;
@@ -629,7 +629,7 @@ void func_80106F78_bounce_n_trounce(omObjData *object) {
         stickY = D_800D20A1_main[port];
         btn = D_800D5558_main[port];
     }
-    if (func_800E6E8C_minigame() == MG_STATE_OPENING || func_800E6E8C_minigame() == MG_STATE_START || func_800E6E8C_minigame() == MG_STATE_FINISH) {
+    if (MgFlowStatGet() == MG_STATE_OPENING || MgFlowStatGet() == MG_STATE_START || MgFlowStatGet() == MG_STATE_FINISH) {
         stickY = 0;
         stickX = 0;
         btn = 0;
@@ -687,7 +687,7 @@ void func_80107114_bounce_n_trounce(omObjData *object, s8 stickX, s8 stickY, u16
         case 4:
             if (work->unk_0C == 1) {
                 fx = PlayerFXPlay(0x3BE, work->playerId);
-                if (func_800E6E8C_minigame() != MG_STATE_PLAY) {
+                if (MgFlowStatGet() != MG_STATE_PLAY) {
                     HuAudFXVolSet(fx, 0x75);
                 }
                 work->unk_0A++;
@@ -700,7 +700,7 @@ void func_80107114_bounce_n_trounce(omObjData *object, s8 stickX, s8 stickY, u16
                 work->unk_0A = 0;
                 jumpVel = 37.5f;
                 fx = PlayerFXPlay(0x3B5, work->playerId);
-                if (func_800E6E8C_minigame() != MG_STATE_PLAY) {
+                if (MgFlowStatGet() != MG_STATE_PLAY) {
                     HuAudFXVolSet(fx, 0x75);
                 }
             }
@@ -722,7 +722,7 @@ void func_80107114_bounce_n_trounce(omObjData *object, s8 stickX, s8 stickY, u16
     if (work->unk_08 == 1) {
         if (work->unk_44 == 0.0f && (btn & 0x2000) && work->unk_0A != 0 && work->state == 0) {
             fx = PlayerFXPlay(0x3C7, work->playerId);
-            if (func_800E6E8C_minigame() != MG_STATE_PLAY) {
+            if (MgFlowStatGet() != MG_STATE_PLAY) {
                 HuAudFXVolSet(fx, 0x75);
             }
             work->state = 1;
@@ -1598,7 +1598,7 @@ void func_80109AF0_bounce_n_trounce(omObjData *object) {
             }
             omDelObj(object);
             D_8010AEC0_bounce_n_trounce = NULL;
-            func_800E6F0C_minigame(MG_STATE_START);
+            MgFlowStatSet(MG_STATE_START);
             break;
     }
 }
@@ -1653,7 +1653,7 @@ void func_80109F68_bounce_n_trounce(omObjData *object) {
             D_8010AD88_bounce_n_trounce = 1;
             break;
         case 2:
-            func_800E6F0C_minigame(MG_STATE_RESULT);
+            MgFlowStatSet(MG_STATE_RESULT);
             for (i = 0; i < 4; i++) {
                 work = OM_GET_DATA_PTR(D_8010AEDC_bounce_n_trounce[i], BounceNTrounceWork);
                 if (work->state == 4) {
@@ -1717,7 +1717,7 @@ void func_80109F68_bounce_n_trounce(omObjData *object) {
             Hu3DMotionShiftSet(D_8010AEDC_bounce_n_trounce[D_8010AEBE_bounce_n_trounce]->model[1],
                                Hu3DData[D_8010AEDC_bounce_n_trounce[D_8010AEBE_bounce_n_trounce]->motion[4]].motId, 0,
                                6, 0);
-            func_800E6F0C_minigame(MG_STATE_RESULT);
+            MgFlowStatSet(MG_STATE_RESULT);
             func_80045ED0_main(D_800A178C_main[GwPlayer[D_8010AEBE_bounce_n_trounce].chr][0] | 0x2F);
             GwPlayer[D_8010AEBE_bounce_n_trounce].bonusCoin = 10;
             D_8010AECA_bounce_n_trounce = 6;

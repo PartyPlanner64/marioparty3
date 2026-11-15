@@ -282,11 +282,11 @@ void func_80105ED4_etch_n_catch(omObjData *object) {
             } else {
                 HuAudSeqStop();
             }
-            func_800E6F0C_minigame(MG_STATE_EXIT);
+            MgFlowStatSet(MG_STATE_EXIT);
             D_8010C6D8_etch_n_catch = 1;
         }
         func_800E1840_minigame();
-        switch (func_800E6F40_minigame()) {
+        switch (MgFlowMain()) {
             case 0:
                 D_800EB930_minigame = 56;
                 break;
@@ -294,7 +294,7 @@ void func_80105ED4_etch_n_catch(omObjData *object) {
                 break;
             case 2:
                 if (D_8010C6AC_etch_n_catch >= 5 || D_8010C6AD_etch_n_catch >= 5) {
-                    func_800E6F0C_minigame(MG_STATE_FINISH);
+                    MgFlowStatSet(MG_STATE_FINISH);
                 }
                 break;
             case 3:
@@ -523,12 +523,12 @@ void func_80106A64_etch_n_catch(omObjData *object) {
     if (omPauseChk() + D_800D6A90_main != 0) {
         return;
     }
-    if (func_800E6E8C_minigame() == MG_STATE_EXIT) {
+    if (MgFlowStatGet() == MG_STATE_EXIT) {
         return;
     }
     data = object->data;
     D_8010C838_etch_n_catch = D_8010C868_etch_n_catch[data->unk59];
-    if (func_800E6E8C_minigame() == MG_STATE_OPENING) {
+    if (MgFlowStatGet() == MG_STATE_OPENING) {
         if (D_8010C860_etch_n_catch[0]->work[0] != 3) {
             Hu3DModelScaleSet(object->model[1], 0.0f, 0.0f, 0.0f);
         } else {
@@ -584,7 +584,7 @@ void func_80106A64_etch_n_catch(omObjData *object) {
     }
     offsetX = sindf(data->unk3C) * 65.0f * 0.75f;
     offsetZ = cosdf(data->unk3C) * 65.0f * 0.75f;
-    switch (func_800E6E8C_minigame()) {
+    switch (MgFlowStatGet()) {
         case MG_STATE_FINISH:
             if (func_800E6E9C_minigame() == 0) {
                 func_800E1328_minigame(object, 60.0f);
@@ -612,7 +612,7 @@ void func_80106A64_etch_n_catch(omObjData *object) {
     } else {
         func_8001C814_main(object->model[2], 2, 2);
     }
-    switch (func_800E6E8C_minigame()) {
+    switch (MgFlowStatGet()) {
         case MG_STATE_OPENING:
         case MG_STATE_START:
         case MG_STATE_EXIT:
@@ -650,7 +650,7 @@ void func_80106A64_etch_n_catch(omObjData *object) {
     }
     D_8010C838_etch_n_catch->unk_04 = screenPos.x;
     D_8010C838_etch_n_catch->unk_06 = screenPos.y;
-    if (func_800E6E8C_minigame() == MG_STATE_PLAY) {
+    if (MgFlowStatGet() == MG_STATE_PLAY) {
         if (D_8010C838_etch_n_catch->unk_12 == 0 && (data->unk5C & 4) && Hu3DData[object->model[0]].motTime == 0.0f) {
             D_8010C838_etch_n_catch->unk_10 = PlayerFXPlay(0x37F, data->unk59);
             if (D_8010C838_etch_n_catch->unk_02 == 8) {
@@ -663,11 +663,11 @@ void func_80106A64_etch_n_catch(omObjData *object) {
             HuAudFXStop(D_8010C838_etch_n_catch->unk_10);
             D_8010C838_etch_n_catch->unk_12 = 0;
         }
-    } else if (func_800E6E8C_minigame() == MG_STATE_FINISH) {
+    } else if (MgFlowStatGet() == MG_STATE_FINISH) {
         HuAudFXStop(D_8010C838_etch_n_catch->unk_10);
         D_8010C838_etch_n_catch->unk_12 = 0;
     }
-    if (func_800E6E8C_minigame() == MG_STATE_PLAY && D_8010C838_etch_n_catch->unk_08 != 0 && D_8010C838_etch_n_catch->unk_0A != 0) {
+    if (MgFlowStatGet() == MG_STATE_PLAY && D_8010C838_etch_n_catch->unk_08 != 0 && D_8010C838_etch_n_catch->unk_0A != 0) {
         while (D_8010C838_etch_n_catch->unk_08 != D_8010C838_etch_n_catch->unk_04 ||
                D_8010C838_etch_n_catch->unk_0A != D_8010C838_etch_n_catch->unk_06) {
             newNode = func_80108B28_etch_n_catch(data->unk59);
@@ -870,7 +870,7 @@ void func_80107EA4_etch_n_catch(omObjData *object) {
     s8 speed;
     s32 side;
 
-    if (func_800E6E8C_minigame() != MG_STATE_PLAY) {
+    if (MgFlowStatGet() != MG_STATE_PLAY) {
         return;
     }
     switch (GwPlayer[data->unk59].cpu_difficulty) {
@@ -1587,7 +1587,7 @@ void func_80109EB8_etch_n_catch(omObjData *object) {
             Hu3DModelScaleSet(object->model[6], data->unk164, data->unk164, data->unk164);
             break;
         default:
-            if (func_800E6E8C_minigame() != MG_STATE_OPENING) {
+            if (MgFlowStatGet() != MG_STATE_OPENING) {
                 switch (object->work[0]) {
                     case 1:
                         if (data->unk15C > 120) {

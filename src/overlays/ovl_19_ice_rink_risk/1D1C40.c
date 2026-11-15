@@ -238,7 +238,7 @@ void func_80106198_ice_rink_risk(omObjData *object) {
         }
     }
     time = func_800E6E9C_minigame();
-    switch (func_800E6F40_minigame()) {
+    switch (MgFlowMain()) {
         case 0:
             if (time == 5) {
                 HuAudFXPlay(0x3D5);
@@ -256,7 +256,7 @@ void func_80106198_ice_rink_risk(omObjData *object) {
                     break;
             }
             if (count < 2) {
-                func_800E6F0C_minigame(MG_STATE_FINISH);
+                MgFlowStatSet(MG_STATE_FINISH);
             }
             D_80108638_ice_rink_risk++;
             break;
@@ -381,7 +381,7 @@ s32 func_80106A60_ice_rink_risk(omObjData *object, omObjData *other) {
     f32 x, y, z;
     f32 half;
 
-    if (func_800E6E8C_minigame() != MG_STATE_PLAY) {
+    if (MgFlowStatGet() != MG_STATE_PLAY) {
         return 1;
     }
     x = object->trans.x;
@@ -487,7 +487,7 @@ s32 func_80106FC0_ice_rink_risk(omObjData *object) {
     f32 angle;
     f32 dx, dy, dz;
 
-    if (func_800E6E8C_minigame() == MG_STATE_PLAY && !(GwPlayer[player].stat & 1)) {
+    if (MgFlowStatGet() == MG_STATE_PLAY && !(GwPlayer[player].stat & 1)) {
         return 1;
     }
     D_801086EC_ice_rink_risk = D_800D5558_main[pad];

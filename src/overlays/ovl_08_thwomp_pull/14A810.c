@@ -222,13 +222,13 @@ void func_80105F14_thwomp_pull(omObjData *object) {
 
     D_8010F5A4_thwomp_pull++;
     D_8010F53C_thwomp_pull++;
-    func_800E6F40_minigame();
+    MgFlowMain();
     switch (D_8010F530_thwomp_pull) {
         case 0:
             if (D_8010F5A4_thwomp_pull == 1 && D_8010F570_thwomp_pull == 0 && D_800D530C_main == 0) {
                 HuAudFXPlay(0x335);
             }
-            if (func_800E6E8C_minigame() == MG_STATE_START) {
+            if (MgFlowStatGet() == MG_STATE_START) {
                 D_8010F530_thwomp_pull = 1;
                 D_8010F5A4_thwomp_pull = 0;
             }
@@ -237,13 +237,13 @@ void func_80105F14_thwomp_pull(omObjData *object) {
             if (D_8010F5A4_thwomp_pull == 31 && D_8010F570_thwomp_pull == 0 && D_800D530C_main == 0) {
                 HuAudSeqPlay(0x2E);
             }
-            if (func_800E6E8C_minigame() == MG_STATE_PLAY) {
+            if (MgFlowStatGet() == MG_STATE_PLAY) {
                 D_8010F530_thwomp_pull = 2;
                 D_8010F5A4_thwomp_pull = 0;
             }
             break;
         case 2:
-            if (D_8010F566_thwomp_pull != 5 || func_800E6E8C_minigame() == MG_STATE_FINISH) {
+            if (D_8010F566_thwomp_pull != 5 || MgFlowStatGet() == MG_STATE_FINISH) {
                 if (D_8010F566_thwomp_pull == 5) {
                     D_8010F530_thwomp_pull = 5;
                     D_8010F566_thwomp_pull = 4;
@@ -258,8 +258,8 @@ void func_80105F14_thwomp_pull(omObjData *object) {
         case 3:
         case 4:
             if (D_8010F5A4_thwomp_pull == 0) {
-                if (func_800E6E8C_minigame() != MG_STATE_FINISH) {
-                    func_800E6F1C_minigame();
+                if (MgFlowStatGet() != MG_STATE_FINISH) {
+                    MgFlowStatNext();
                 }
                 if (D_8010F566_thwomp_pull == 0) {
                     D_8010ED60_thwomp_pull.resultType = MG_RESULT_WIN_1;
@@ -365,10 +365,10 @@ void func_80105F14_thwomp_pull(omObjData *object) {
                     }
                 }
             }
-            if (D_8010F530_thwomp_pull == 3 && func_800E6E8C_minigame() == MG_STATE_RESULT) {
+            if (D_8010F530_thwomp_pull == 3 && MgFlowStatGet() == MG_STATE_RESULT) {
                 D_8010F530_thwomp_pull = 4;
             }
-            if (func_800E6E8C_minigame() == MG_STATE_EXIT) {
+            if (MgFlowStatGet() == MG_STATE_EXIT) {
                 D_8010F530_thwomp_pull = 7;
                 D_8010F5A4_thwomp_pull = 0;
             }
@@ -379,13 +379,13 @@ void func_80105F14_thwomp_pull(omObjData *object) {
                 D_8010ED60_thwomp_pull.finishDelay = 75;
                 D_8010ED60_thwomp_pull.resultDelay = 0x90;
             }
-            if (func_800E6E8C_minigame() == MG_STATE_RESULT) {
+            if (MgFlowStatGet() == MG_STATE_RESULT) {
                 D_8010F530_thwomp_pull = 6;
                 D_8010F5A4_thwomp_pull = 0;
             }
             break;
         case 6:
-            if (func_800E6E8C_minigame() == MG_STATE_EXIT) {
+            if (MgFlowStatGet() == MG_STATE_EXIT) {
                 D_8010F530_thwomp_pull = 7;
                 D_8010F5A4_thwomp_pull = 0;
             }

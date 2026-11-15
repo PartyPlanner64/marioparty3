@@ -306,11 +306,11 @@ void func_801060F8_hyper_hydrants(omObjData *object) {
             } else {
                 HuAudSeqStop();
             }
-            func_800E6F0C_minigame(MG_STATE_EXIT);
+            MgFlowStatSet(MG_STATE_EXIT);
             D_8010BE34_hyper_hydrants = 1;
         }
         func_800E1840_minigame();
-        switch (func_800E6F40_minigame()) {
+        switch (MgFlowMain()) {
             case 0:
                 D_800EB930_minigame = 52;
                 break;
@@ -460,7 +460,7 @@ void func_80106A50_hyper_hydrants(omObjData *object) {
     s8 side;
     s32 character;
 
-    switch (func_800E6E8C_minigame()) {
+    switch (MgFlowStatGet()) {
         case MG_STATE_OPENING:
         case MG_STATE_START:
             Hu3DMotionTimeSet(object->model[2], Hu3DData[object->model[0]].motTime);
@@ -804,7 +804,7 @@ void func_80107A90_hyper_hydrants(omObjData *object) {
     s8 particles;
     s16 maxSpread;
 
-    if (func_800E6E8C_minigame() != MG_STATE_PLAY) {
+    if (MgFlowStatGet() != MG_STATE_PLAY) {
         return;
     }
     if (object->work[0] == 0) {
@@ -1239,7 +1239,7 @@ void func_801091B0_hyper_hydrants(omObjData *object) {
     HyperHydrantsPlayerData *data = object->data;
     HyperHydrantsPlayerData *otherData;
 
-    switch (func_800E6E8C_minigame()) {
+    switch (MgFlowStatGet()) {
         case MG_STATE_OPENING:
             if (data->unk00 == 0) {
                 position.x = object->trans.x + 50.0f;
@@ -1393,7 +1393,7 @@ void func_80109588_hyper_hydrants(omObjData *object) {
 void func_801099A0_hyper_hydrants(omObjData *object) {
     HyperHydrantsPlayerData *data = object->data;
 
-    switch (func_800E6E8C_minigame()) {
+    switch (MgFlowStatGet()) {
         case MG_STATE_OPENING:
             func_80109B30_hyper_hydrants(object);
             break;
@@ -1767,7 +1767,7 @@ void func_8010AB34_hyper_hydrants(omObjData *object) {
     s32 i;
     s32 playerIndex;
 
-    switch (func_800E6E8C_minigame()) {
+    switch (MgFlowStatGet()) {
         case MG_STATE_OPENING:
         case MG_STATE_START:
             break;
@@ -1889,7 +1889,7 @@ void func_8010AE08_hyper_hydrants(omObjData *object) {
 }
 
 void func_8010B2FC_hyper_hydrants(omObjData *object) {
-    if (func_800E6E8C_minigame() == MG_STATE_OPENING) {
+    if (MgFlowStatGet() == MG_STATE_OPENING) {
         if (D_8010BFE0_hyper_hydrants[0]->trans.y > 0.0f) {
             func_8010B38C_hyper_hydrants();
         } else if (D_8010BF9C_hyper_hydrants < 240) {
@@ -1993,7 +1993,7 @@ void func_8010B8B0_hyper_hydrants(omObjData *object) {
     s32 i;
     s32 j;
 
-    switch (func_800E6E8C_minigame()) {
+    switch (MgFlowStatGet()) {
         case MG_STATE_PLAY:
         case MG_STATE_FINISH:
             if (D_8010BE24_hyper_hydrants < 10) {

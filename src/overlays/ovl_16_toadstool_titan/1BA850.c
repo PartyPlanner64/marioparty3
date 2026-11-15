@@ -263,10 +263,10 @@ void func_801060AC_toadstool_titan(omObjData *object) {
     s16 i;
 
     D_8010F580_toadstool_titan++;
-    func_800E6F40_minigame();
+    MgFlowMain();
     switch (D_8010F5FC_toadstool_titan) {
         case 0:
-            if (func_800E6E8C_minigame() == MG_STATE_START) {
+            if (MgFlowStatGet() == MG_STATE_START) {
                 D_8010F5FC_toadstool_titan = 1;
                 D_8010F580_toadstool_titan = 0;
             }
@@ -276,7 +276,7 @@ void func_801060AC_toadstool_titan(omObjData *object) {
                 HuAudSeqPlay(0x38);
                 D_8010F614_toadstool_titan[0] = 1;
             }
-            if (func_800E6E8C_minigame() == MG_STATE_PLAY) {
+            if (MgFlowStatGet() == MG_STATE_PLAY) {
                 D_8010F5FC_toadstool_titan = 2;
                 D_8010F580_toadstool_titan = 0;
             }
@@ -285,7 +285,7 @@ void func_801060AC_toadstool_titan(omObjData *object) {
             if (D_8010F580_toadstool_titan == 1) {
                 func_80106984_toadstool_titan();
             }
-            if (D_8010F58A_toadstool_titan != 5 || func_800E6E8C_minigame() == MG_STATE_FINISH) {
+            if (D_8010F58A_toadstool_titan != 5 || MgFlowStatGet() == MG_STATE_FINISH) {
                 if (D_8010F58A_toadstool_titan == 5) {
                     D_8010F5FC_toadstool_titan = 6;
                     D_8010F58A_toadstool_titan = 4;
@@ -302,8 +302,8 @@ void func_801060AC_toadstool_titan(omObjData *object) {
             }
         case 3:
             if (D_8010F580_toadstool_titan == 0) {
-                if (func_800E6E8C_minigame() != MG_STATE_FINISH) {
-                    func_800E6F1C_minigame();
+                if (MgFlowStatGet() != MG_STATE_FINISH) {
+                    MgFlowStatNext();
                 }
                 D_8010F590_toadstool_titan.resultType = MG_RESULT_WIN_1;
                 D_8010F590_toadstool_titan.winners[0] = D_8010F568_toadstool_titan[D_8010F58A_toadstool_titan]->playerNo;
@@ -318,7 +318,7 @@ void func_801060AC_toadstool_titan(omObjData *object) {
                 func_800E6F34_minigame(30);
                 D_8010F590_toadstool_titan.finishDelay = 60;
             }
-            if (func_800E6E8C_minigame() == MG_STATE_RESULT) {
+            if (MgFlowStatGet() == MG_STATE_RESULT) {
                 D_8010F5FC_toadstool_titan = 4;
                 D_8010F580_toadstool_titan = 0;
             }
@@ -340,7 +340,7 @@ void func_801060AC_toadstool_titan(omObjData *object) {
             if (D_8010F580_toadstool_titan == 67 && D_8010F5BC_toadstool_titan == 0 && D_800D530C_main == 0) {
                 func_8004A72C_main(3);
             }
-            if (func_800E6E8C_minigame() == MG_STATE_RESULT) {
+            if (MgFlowStatGet() == MG_STATE_RESULT) {
                 D_8010F5FC_toadstool_titan = 5;
                 D_8010F580_toadstool_titan = 0;
             }
@@ -388,7 +388,7 @@ void func_801060AC_toadstool_titan(omObjData *object) {
                     }
                 }
             }
-            if (func_800E6E8C_minigame() == MG_STATE_EXIT) {
+            if (MgFlowStatGet() == MG_STATE_EXIT) {
                 D_8010F5FC_toadstool_titan = 7;
                 D_8010F580_toadstool_titan = 0;
             }

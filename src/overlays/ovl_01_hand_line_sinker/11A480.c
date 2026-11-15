@@ -206,7 +206,7 @@ void func_80105D28_hand_line_sinker(omObjData *obj) {
     HandLineSinkerPlayerWork *work;
 
     if (D_8010BF60_hand_line_sinker == 0) {
-        switch (func_800E6F40_minigame()) {
+        switch (MgFlowMain()) {
             case 0:
                 if (D_8010C0F4_hand_line_sinker == NULL) {
                     D_8010C0EE_hand_line_sinker = 0;
@@ -218,7 +218,7 @@ void func_80105D28_hand_line_sinker(omObjData *obj) {
                 break;
             case 2:
                 if (D_8010C10C_hand_line_sinker == 3) {
-                    func_800E6F0C_minigame(MG_STATE_FINISH);
+                    MgFlowStatSet(MG_STATE_FINISH);
                 }
                 break;
             case 3:
@@ -233,7 +233,7 @@ void func_80105D28_hand_line_sinker(omObjData *obj) {
                     D_8010C0F8_hand_line_sinker->work[0] = 0;
                 } else if (D_8010C0F8_hand_line_sinker->work[0] == 1) {
                     omDelObj(D_8010C0F8_hand_line_sinker);
-                    func_800E6F0C_minigame(MG_STATE_RESULT);
+                    MgFlowStatSet(MG_STATE_RESULT);
                 }
                 break;
             case 4:
@@ -420,7 +420,7 @@ void func_8010689C_hand_line_sinker(omObjData *obj) {
         stickY = D_800D20A1_main[pad];
         btn = D_800D5558_main[pad];
     }
-    if (func_800E6E8C_minigame() != MG_STATE_PLAY) {
+    if (MgFlowStatGet() != MG_STATE_PLAY) {
         stickX = stickY = 0;
         btn = 0;
     }
@@ -443,7 +443,7 @@ void func_8010689C_hand_line_sinker(omObjData *obj) {
                 Hu3DModelRotSet(obj->model[2], 0.0f, obj->rot.y, 0.0f);
                 Hu3DModelRotSet(obj->model[3], 0.0f, obj->rot.y, 0.0f);
                 work->unk8 = func_801092B8_hand_line_sinker(x, y);
-                if (func_800E6E8C_minigame() != MG_STATE_PLAY) {
+                if (MgFlowStatGet() != MG_STATE_PLAY) {
                     obj->work[0] = 0;
                 } else {
                     obj->work[0] = 1;
@@ -466,12 +466,12 @@ void func_8010689C_hand_line_sinker(omObjData *obj) {
                 Hu3DModelRotSet(obj->model[3], 0.0f, obj->rot.y, 0.0f);
                 work->unk8 = func_801092B8_hand_line_sinker(x, y);
             }
-            if (func_800E6E8C_minigame() != MG_STATE_PLAY) {
+            if (MgFlowStatGet() != MG_STATE_PLAY) {
                 obj->work[0] = 0;
                 break;
             }
             if (btn & A_BUTTON) {
-                if (func_800E6E8C_minigame() != MG_STATE_PLAY) {
+                if (MgFlowStatGet() != MG_STATE_PLAY) {
                     obj->work[0] = 0;
                     break;
                 }
@@ -488,7 +488,7 @@ void func_8010689C_hand_line_sinker(omObjData *obj) {
             if (--work->aiWait != 0) {
                 break;
             }
-            if (func_800E6E8C_minigame() != MG_STATE_PLAY) {
+            if (MgFlowStatGet() != MG_STATE_PLAY) {
                 obj->work[0] = 0;
                 func_8001C258_main(obj->model[1], 0x4000, 0x4000);
                 func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
@@ -855,7 +855,7 @@ omObjData *func_801080F0_hand_line_sinker(omObjData *arg0) {
     omObjData *obj;
     s32 i;
 
-    if (func_800E6E8C_minigame() != MG_STATE_PLAY) {
+    if (MgFlowStatGet() != MG_STATE_PLAY) {
         return NULL;
     }
     for (i = 0; i < 3; i++) {
@@ -892,7 +892,7 @@ void func_801081D0_hand_line_sinker(omObjData *obj) {
         stickY = D_800D20A1_main[pad];
         btn = D_800D5558_main[pad];
     }
-    if (func_800E6E8C_minigame() != MG_STATE_PLAY) {
+    if (MgFlowStatGet() != MG_STATE_PLAY) {
         stickX = stickY = 0;
         btn = 0;
     }
@@ -1281,7 +1281,7 @@ void func_801093A4_hand_line_sinker(omObjData *obj) {
                 omDelObj(D_8010C190_hand_line_sinker);
                 D_8010C190_hand_line_sinker = NULL;
                 omDelObj(D_8010C0F4_hand_line_sinker);
-                func_800E6F0C_minigame(MG_STATE_START);
+                MgFlowStatSet(MG_STATE_START);
             }
             break;
     }

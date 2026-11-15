@@ -2352,6 +2352,11 @@ D_8011A688_msetup = 0x8011A688; //rom:0x5168E8 type:f64 size:0x8 segment:msetup
 
 D_80119F6C_msetup = 0x80119F6C; //rom:0x5161CC type:s16 size:0xC segment:msetup
 
+MgFlowStatGet = 0x800E6E8C; //rom:0xB9A0C type:func segment:minigame
+MgFlowStatSet = 0x800E6F0C; //rom:0xB9A8C type:func segment:minigame
+MgFlowStatNext = 0x800E6F1C; //rom:0xB9A9C type:func segment:minigame
+MgFlowMain = 0x800E6F40; //rom:0xB9AC0 type:func segment:minigame
+
 // Preserve alignment at boundaries between compiled C and extracted assembly.
 func_80108AF0_inst = 0x80108AF0; //rom:0x4E1CB0 type:func align:8 segment:inst
 D_8010DAF8_inst = 0x8010DAF8; //rom:0x4E6CB8 align:8 segment:inst

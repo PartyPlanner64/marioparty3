@@ -556,7 +556,7 @@ void func_80106BD0_fowl_play(omObjData *object) {
                 HuAudSeqPlay(0x36);
             }
             if (GMesStatGet() == 0) {
-                func_800E6F0C_minigame(MG_STATE_PLAY);
+                MgFlowStatSet(MG_STATE_PLAY);
                 D_8010F29C_fowl_play++;
                 GMesCreate(0x1A, (D_8010F29E_fowl_play + 29) / 30, 0xA0, 0x20);
                 HuAudFXPlay(0xE);
@@ -607,7 +607,7 @@ void func_80106BD0_fowl_play(omObjData *object) {
             }
             D_8010E7A4_fowl_play = 15;
             D_8010F29C_fowl_play++;
-            func_800E6F0C_minigame(MG_STATE_RESULT);
+            MgFlowStatSet(MG_STATE_RESULT);
             break;
         case 7:
             if (GMesStatGet() != 0) {
@@ -623,7 +623,7 @@ void func_80106BD0_fowl_play(omObjData *object) {
                     D_8010F29C_fowl_play++;
                 }
             } else {
-                func_800E6F0C_minigame(MG_STATE_EXIT);
+                MgFlowStatSet(MG_STATE_EXIT);
                 D_8010E7A4_fowl_play = 16;
                 WipeCreateOut(WIPE_TYPE_NORMAL, D_8010E7A4_fowl_play);
                 HuAudSeqFadeOut(D_8010E7A4_fowl_play);

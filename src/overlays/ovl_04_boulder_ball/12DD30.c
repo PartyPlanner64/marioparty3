@@ -243,7 +243,7 @@ void func_80106410_boulder_ball(omObjData *object) {
         return;
     }
     func_800E6E9C_minigame();
-    switch (func_800E6F40_minigame()) {
+    switch (MgFlowMain()) {
         case 0:
             func_801060D0_boulder_ball();
             break;
@@ -448,7 +448,7 @@ s32 func_8010707C_boulder_ball(omObjData *object, omObjData *other) {
     func_800E1BA8_minigame_ObjData *data = object->data;
     f32 x, y, z;
 
-    if (func_800E6E8C_minigame() == MG_STATE_PLAY) {
+    if (MgFlowStatGet() == MG_STATE_PLAY) {
         if (data->unkBE != 0) {
             D_800EC288_minigame++;
         } else {
@@ -476,8 +476,8 @@ s32 func_80107194_boulder_ball(omObjData *object) {
         D_800CBB6E_main[data->unk57] = D_80109894_boulder_ball;
         D_800D20A1_main[data->unk57] = D_80109898_boulder_ball;
     }
-    if (func_800E6E8C_minigame() == MG_STATE_PLAY && object->trans.z <= -600.0f) {
-        func_800E6F0C_minigame(MG_STATE_FINISH);
+    if (MgFlowStatGet() == MG_STATE_PLAY && object->trans.z <= -600.0f) {
+        MgFlowStatSet(MG_STATE_FINISH);
         D_8010975C_boulder_ball = 1;
     }
     return 0;
@@ -501,7 +501,7 @@ s32 func_80107298_boulder_ball(omObjData *object) {
     f32 dist;
     s32 i;
 
-    if (func_800E6E8C_minigame() != MG_STATE_PLAY) {
+    if (MgFlowStatGet() != MG_STATE_PLAY) {
         return 0;
     }
     if (!(GwPlayer[player].stat & 1)) {
@@ -791,7 +791,7 @@ void func_801083D8_boulder_ball(omObjData *object) {
     s32 pad = data->unk57;
     A96F0_ObjData *boulderData;
 
-    if (func_800E6E8C_minigame() != MG_STATE_PLAY) {
+    if (MgFlowStatGet() != MG_STATE_PLAY) {
         return;
     }
     D_80109890_boulder_ball = D_800D5558_main[pad];
@@ -1002,7 +1002,7 @@ s32 func_80108E5C_boulder_ball(omObjData *object) {
     s16 panning;
     s32 i;
 
-    switch (func_800E6E8C_minigame()) {
+    switch (MgFlowStatGet()) {
         case MG_STATE_OPENING:
         case MG_STATE_PLAY:
             break;

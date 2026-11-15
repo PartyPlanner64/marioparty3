@@ -112,7 +112,7 @@ s32 D_8010AFD0_coconut_conk[] = { 2, 3, 7, 4, 5, 6, 8, 9 };
 
 // The intended delays (90, 900, 0, 30, 150) landed in gaugeValue/winners, likely
 // from an initializer written without the inner braces. It doesn't matter in
-// practice: this overlay never runs func_800E6F40_minigame, so only the
+// practice: this overlay never runs MgFlowMain, so only the
 // setup in func_800E5EA0_minigame reads this struct.
 MinigameFlow D_8010AFF0_coconut_conk = {
     MG_STATE_OPENING, MINIGAME_4P, MG_TIMER_COUNT_DOWN, MG_TIME_DISP_COUNTDOWN, FALSE, MG_GAUGE_NONE, MG_RESULT_WIN_1, 0,
@@ -1786,7 +1786,7 @@ void func_8010A668_coconut_conk(omObjData *arg0) {
 void func_8010AB4C_coconut_conk(omObjData *arg0) {
     s16 i;
 
-    func_800E6F0C_minigame(MG_STATE_PLAY);
+    MgFlowStatSet(MG_STATE_PLAY);
     WipeCreateIn(WIPE_TYPE_PREV, 16);
     D_8010B1E0_coconut_conk = 0;
     D_8010B1C8_coconut_conk = 0;

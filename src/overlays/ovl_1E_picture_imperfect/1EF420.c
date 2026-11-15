@@ -306,11 +306,11 @@ void func_80106154_picture_imperfect(omObjData *object) {
             } else {
                 HuAudSeqStop();
             }
-            func_800E6F0C_minigame(MG_STATE_EXIT);
+            MgFlowStatSet(MG_STATE_EXIT);
             D_8010A014_picture_imperfect = 1;
         }
         func_800E1840_minigame();
-        switch (func_800E6F40_minigame()) {
+        switch (MgFlowMain()) {
             case 0:
                 D_800EB930_minigame = 49;
                 break;
@@ -592,7 +592,7 @@ void func_80107820_picture_imperfect(omObjData *object) {
 
     playerData = object->data;
     work = playerData->unk158;
-    switch (func_800E6E8C_minigame()) {
+    switch (MgFlowStatGet()) {
         case MG_STATE_OPENING:
             func_800DDD94_minigame(object);
             break;
@@ -718,7 +718,7 @@ void func_80107820_picture_imperfect(omObjData *object) {
                         }
                         D_80109FE4_picture_imperfect = 16;
                         if (playerData->unk59 == 3) {
-                            func_800E6F0C_minigame(MG_STATE_RESULT);
+                            MgFlowStatSet(MG_STATE_RESULT);
                         }
                     }
                     break;
@@ -1221,7 +1221,7 @@ void func_80108C20_picture_imperfect(PictureImperfectWork *work, s8 player) {
             }
             D_8010A111_picture_imperfect++;
             if (rounds * 4 == D_8010A111_picture_imperfect) {
-                func_800E6F0C_minigame(MG_STATE_FINISH);
+                MgFlowStatSet(MG_STATE_FINISH);
             }
         }
     } else {
@@ -1367,7 +1367,7 @@ void func_80109AC4_picture_imperfect(omObjData *object) {
     s32 x;
     s32 y;
 
-    if (func_800E6E8C_minigame() == MG_STATE_OPENING) {
+    if (MgFlowStatGet() == MG_STATE_OPENING) {
         switch (D_8010A150_picture_imperfect) {
             case 0:
             default:
@@ -1433,12 +1433,12 @@ void func_80109AC4_picture_imperfect(omObjData *object) {
                     break;
                 case 3:
                     D_8010A056_picture_imperfect = 0;
-                    func_800E6F0C_minigame(MG_STATE_START);
+                    MgFlowStatSet(MG_STATE_START);
                     HuAudFXStop(D_8010A124_picture_imperfect);
                     break;
             }
         }
-    } else if (func_800E6E8C_minigame() == MG_STATE_FINISH) {
+    } else if (MgFlowStatGet() == MG_STATE_FINISH) {
         if (GMesStatGet() == 0 && func_800E6E9C_minigame() > 10) {
             D_8010A050_picture_imperfect += 0.04f;
             if (D_8010A050_picture_imperfect > 0.5f) {

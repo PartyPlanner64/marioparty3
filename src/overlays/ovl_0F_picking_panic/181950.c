@@ -257,13 +257,13 @@ void func_80106020_picking_panic(omObjData *object) {
     CenterM[1].z = 0.0f;
     D_8010EFA8_picking_panic++;
     D_8010EF7C_picking_panic++;
-    func_800E6F40_minigame();
+    MgFlowMain();
     switch (D_8010EF80_picking_panic) {
         case 0:
             if (D_8010EFA8_picking_panic == 2) {
                 HuAudFXPlay(0x371);
             }
-            if (func_800E6E8C_minigame() == MG_STATE_START) {
+            if (MgFlowStatGet() == MG_STATE_START) {
                 D_8010EF80_picking_panic = 1;
                 D_8010EFA8_picking_panic = 0;
             }
@@ -272,13 +272,13 @@ void func_80106020_picking_panic(omObjData *object) {
             if (D_8010EFA8_picking_panic == 33 && D_8010EFBE_picking_panic == 0 && D_800D530C_main == 0) {
                 HuAudSeqPlay(0x38);
             }
-            if (func_800E6E8C_minigame() == MG_STATE_PLAY) {
+            if (MgFlowStatGet() == MG_STATE_PLAY) {
                 D_8010EF80_picking_panic = 2;
                 D_8010EFA8_picking_panic = 0;
             }
             break;
         case 2:
-            if (D_8010EF14_picking_panic == 5 && func_800E6E8C_minigame() == MG_STATE_FINISH) {
+            if (D_8010EF14_picking_panic == 5 && MgFlowStatGet() == MG_STATE_FINISH) {
                 if (D_8010EF15_picking_panic[0] == D_8010EF15_picking_panic[1]) {
                     D_8010EF80_picking_panic = 4;
                     D_8010EF14_picking_panic = 4;
@@ -293,8 +293,8 @@ void func_80106020_picking_panic(omObjData *object) {
             }
         case 3:
             if (D_8010EFA8_picking_panic == 0) {
-                if (func_800E6E8C_minigame() != MG_STATE_FINISH) {
-                    func_800E6F1C_minigame();
+                if (MgFlowStatGet() != MG_STATE_FINISH) {
+                    MgFlowStatNext();
                 }
                 D_8010E5B0_picking_panic.resultType = MG_RESULT_WIN_2;
                 D_8010E5B0_picking_panic.winners[0] = D_8010EEE0_picking_panic[D_8010EF14_picking_panic * 2]->unk0;
@@ -305,7 +305,7 @@ void func_80106020_picking_panic(omObjData *object) {
             if (D_8010EFA8_picking_panic == 2) {
                 func_800E6F34_minigame(30);
             }
-            if (func_800E6E8C_minigame() == MG_STATE_RESULT) {
+            if (MgFlowStatGet() == MG_STATE_RESULT) {
                 D_8010EF80_picking_panic = 5;
                 D_8010EFA8_picking_panic = 0;
             }
@@ -316,7 +316,7 @@ void func_80106020_picking_panic(omObjData *object) {
                 D_8010E5B0_picking_panic.finishDelay = 75;
                 D_8010E5B0_picking_panic.resultDelay = 0x90;
             }
-            if (func_800E6E8C_minigame() == MG_STATE_RESULT) {
+            if (MgFlowStatGet() == MG_STATE_RESULT) {
                 D_8010EF80_picking_panic = 6;
                 D_8010EFA8_picking_panic = 0;
             }
@@ -334,7 +334,7 @@ void func_80106020_picking_panic(omObjData *object) {
                 }
             }
         case 6:
-            if (func_800E6E8C_minigame() == MG_STATE_EXIT) {
+            if (MgFlowStatGet() == MG_STATE_EXIT) {
                 D_8010EF80_picking_panic = 7;
                 D_8010EFA8_picking_panic = 0;
             }

@@ -173,7 +173,7 @@ void func_80105DAC_cosmic_coaster(omObjData *arg0) {
     s32 i;
 
     if (D_8010BB5C_cosmic_coaster == 0) {
-        switch (func_800E6F40_minigame()) {
+        switch (MgFlowMain()) {
             case 0:
                 if (D_8010C050_cosmic_coaster == NULL) {
                     D_8010C05A_cosmic_coaster = 0;
@@ -210,7 +210,7 @@ void func_80105DAC_cosmic_coaster(omObjData *arg0) {
                 } else {
                     break;
                 }
-                func_800E6F0C_minigame(MG_STATE_FINISH);
+                MgFlowStatSet(MG_STATE_FINISH);
                 break;
             case 3:
                 car = D_8010C3B0_cosmic_coaster[D_8010C3BC_cosmic_coaster]->data;
@@ -470,7 +470,7 @@ void func_80106D10_cosmic_coaster(omObjData *object) {
         } else {
             stickX = D_800CBB6E_main[pad];
         }
-        if (func_800E6E8C_minigame() != MG_STATE_PLAY) {
+        if (MgFlowStatGet() != MG_STATE_PLAY) {
             stickX = 0;
         }
         car->x[i] += stickX * 0.4f;
@@ -484,7 +484,7 @@ void func_80106D10_cosmic_coaster(omObjData *object) {
         Hu3DModelPosSet(object->model[3 + i], car->x[i], 125.0f, D_8010BB84_cosmic_coaster[i]);
     }
     if (D_8010C3BC_cosmic_coaster == -1) {
-        if (func_800E6E8C_minigame() == MG_STATE_PLAY) {
+        if (MgFlowStatGet() == MG_STATE_PLAY) {
             D_8010BB30_cosmic_coaster.gaugeValue[car->group] += 4.0f;
             if (D_8010BB30_cosmic_coaster.gaugeValue[car->group] > maxSpeed) {
                 D_8010BB30_cosmic_coaster.gaugeValue[car->group] = maxSpeed;
@@ -721,7 +721,7 @@ void func_80107888_cosmic_coaster(omObjData *object) {
             }
             D_8010C028_cosmic_coaster->work[0] = 1;
             D_8010C028_cosmic_coaster->work[1] = 45;
-            func_800E6F0C_minigame(MG_STATE_RESULT);
+            MgFlowStatSet(MG_STATE_RESULT);
             car->endPhase = 7;
             break;
     }
@@ -950,7 +950,7 @@ void func_8010869C_cosmic_coaster(omObjData *object) {
         case 3:
             omDelObj(object);
             D_8010C050_cosmic_coaster = NULL;
-            func_800E6F0C_minigame(MG_STATE_START);
+            MgFlowStatSet(MG_STATE_START);
             break;
     }
 }

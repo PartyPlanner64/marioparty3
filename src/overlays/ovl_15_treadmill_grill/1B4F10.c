@@ -232,7 +232,7 @@ void func_801062DC_treadmill_grill(omObjData *object) {
             last = i;
         }
     }
-    switch (func_800E6F40_minigame()) {
+    switch (MgFlowMain()) {
         case 0:
             if (func_800E6E9C_minigame() == 10) {
                 HuAudSeqPlay(0);
@@ -240,7 +240,7 @@ void func_801062DC_treadmill_grill(omObjData *object) {
             break;
         case 2:
             if (count < 2) {
-                func_800E6F0C_minigame(MG_STATE_FINISH);
+                MgFlowStatSet(MG_STATE_FINISH);
             }
             break;
         case 3:
@@ -610,7 +610,7 @@ void func_80107798_treadmill_grill(omObjData *object) {
         player = data->unk59;
     } while (0);
     pad = data->unk57;
-    if (func_800E6E8C_minigame() == MG_STATE_FINISH) {
+    if (MgFlowStatGet() == MG_STATE_FINISH) {
         data->unk3C *= 0.8f;
     }
     if (!(GwPlayer[data->unk59].stat & 1)) {
@@ -994,7 +994,7 @@ void func_80108FCC_treadmill_grill(omObjData *object) {
 
     stage = D_800EC1C0_minigame[1];
     data = object->data;
-    if (func_800E6E8C_minigame() == MG_STATE_PLAY) {
+    if (MgFlowStatGet() == MG_STATE_PLAY) {
         object->trans.x = D_8010B378_treadmill_grill[data->unk56].x;
         object->trans.y = D_8010B378_treadmill_grill[data->unk56].y;
         object->trans.z = D_8010B378_treadmill_grill[data->unk56].z;
@@ -1125,7 +1125,7 @@ void func_8010980C_treadmill_grill(omObjData *object) {
     f32 angle;
     s32 i;
 
-    if (func_800E6E8C_minigame() == MG_STATE_PLAY && func_800E6E9C_minigame() < 150) {
+    if (MgFlowStatGet() == MG_STATE_PLAY && func_800E6E9C_minigame() < 150) {
         return;
     }
     for (i = 0; i < 3; i++) {
@@ -1223,9 +1223,9 @@ void func_80109FA8_treadmill_grill(omObjData *object) {
     if (omPauseChk() + D_800D6A90_main != 0) {
         return;
     }
-    if (func_800E6E8C_minigame() == MG_STATE_OPENING) {
+    if (MgFlowStatGet() == MG_STATE_OPENING) {
         func_80106034_treadmill_grill(object);
-    } else if (func_800E6E8C_minigame() == MG_STATE_PLAY) {
+    } else if (MgFlowStatGet() == MG_STATE_PLAY) {
         Hu3DModelRotSet(object->model[5], 0.0f, 0.0f, D_8010B1A4_treadmill_grill[0] * 1.2f);
         Hu3DModelRotSet(object->model[6], 0.0f, 0.0f, D_8010B1A4_treadmill_grill[0] * 1.2f);
         D_8010B1A4_treadmill_grill[0] += D_8010B1B4_treadmill_grill[0];
@@ -1288,7 +1288,7 @@ void func_80109FA8_treadmill_grill(omObjData *object) {
         }
         D_8010AFAC_treadmill_grill = func_800202A8_main(D_8010AFAC_treadmill_grill + 3.0f);
         func_80109108_treadmill_grill(object);
-    } else if (func_800E6E8C_minigame() == MG_STATE_FINISH) {
+    } else if (MgFlowStatGet() == MG_STATE_FINISH) {
         if (D_8010B224_treadmill_grill[0] != -1) {
             HuAudFXStop((s16)D_8010B224_treadmill_grill[0]);
             D_8010B224_treadmill_grill[0] = -1;

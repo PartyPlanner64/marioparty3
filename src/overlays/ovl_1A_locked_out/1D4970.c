@@ -354,7 +354,7 @@ void func_801064E0_locked_out(omObjData *object) {
                 HuAudSeqPlay(0x35);
             }
             if (GMesStatGet() == 0) {
-                func_800E6F0C_minigame(MG_STATE_PLAY);
+                MgFlowStatSet(MG_STATE_PLAY);
                 D_8010A674_locked_out++;
                 GMesCreate(0x1A, (D_8010A168_locked_out + 29) / 30, 0xA0, 0x20);
                 HuAudFXPlay(0xE);
@@ -506,7 +506,7 @@ void func_801064E0_locked_out(omObjData *object) {
                 }
                 D_8010A580_locked_out = 15;
                 D_8010A674_locked_out++;
-                func_800E6F0C_minigame(MG_STATE_RESULT);
+                MgFlowStatSet(MG_STATE_RESULT);
             }
             break;
         case 7:
@@ -527,7 +527,7 @@ void func_801064E0_locked_out(omObjData *object) {
                     D_8010A674_locked_out++;
                 }
             } else {
-                func_800E6F0C_minigame(MG_STATE_EXIT);
+                MgFlowStatSet(MG_STATE_EXIT);
                 D_8010A164_locked_out = 16;
                 WipeCreateOut(WIPE_TYPE_NORMAL, D_8010A164_locked_out);
                 HuAudSeqFadeOut(D_8010A164_locked_out);

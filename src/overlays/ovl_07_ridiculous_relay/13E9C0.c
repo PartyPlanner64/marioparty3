@@ -248,26 +248,26 @@ void func_80105F48_ridiculous_relay(omObjData *object) {
     if (D_801119D8_ridiculous_relay == 1 && D_801119D4_ridiculous_relay == 31 && D_801119CC_ridiculous_relay == 0 && D_800D530C_main == 0) {
         HuAudSeqPlay(0x32);
     }
-    func_800E6F40_minigame();
+    MgFlowMain();
     switch (D_801119D8_ridiculous_relay) {
         case 0:
             if (D_801119D4_ridiculous_relay == 1 && D_801119CC_ridiculous_relay == 0 && D_800D530C_main == 0) {
                 D_80111A30_ridiculous_relay[0] = HuAudFXPlay(0x32D);
                 D_80111A30_ridiculous_relay[1] = HuAudFXPlay(0x32E);
             }
-            if (func_800E6E8C_minigame() == MG_STATE_START) {
+            if (MgFlowStatGet() == MG_STATE_START) {
                 D_801119D8_ridiculous_relay = 1;
                 D_801119D4_ridiculous_relay = 0;
             }
             break;
         case 1:
-            if (func_800E6E8C_minigame() == MG_STATE_PLAY) {
+            if (MgFlowStatGet() == MG_STATE_PLAY) {
                 D_801119D8_ridiculous_relay = 2;
                 D_801119D4_ridiculous_relay = 0;
             }
             break;
         case 2:
-            if (D_801119C0_ridiculous_relay != 5 || func_800E6E8C_minigame() == MG_STATE_FINISH) {
+            if (D_801119C0_ridiculous_relay != 5 || MgFlowStatGet() == MG_STATE_FINISH) {
                 if (D_801119C0_ridiculous_relay == 5) {
                     D_801119D8_ridiculous_relay = 5;
                     D_801119C0_ridiculous_relay = 4;
@@ -281,8 +281,8 @@ void func_80105F48_ridiculous_relay(omObjData *object) {
             }
         case 3:
             if (D_801119D4_ridiculous_relay == 0) {
-                if (func_800E6E8C_minigame() != MG_STATE_FINISH) {
-                    func_800E6F1C_minigame();
+                if (MgFlowStatGet() != MG_STATE_FINISH) {
+                    MgFlowStatNext();
                 }
                 if (D_80111A30_ridiculous_relay[2] != -1) {
                     HuAudFXStop((s16)D_80111A30_ridiculous_relay[2]);
@@ -313,7 +313,7 @@ void func_80105F48_ridiculous_relay(omObjData *object) {
                     }
                 }
             }
-            if (func_800E6E8C_minigame() == MG_STATE_RESULT) {
+            if (MgFlowStatGet() == MG_STATE_RESULT) {
                 D_801119D8_ridiculous_relay = 4;
                 D_801119D4_ridiculous_relay = 0;
             }
@@ -324,7 +324,7 @@ void func_80105F48_ridiculous_relay(omObjData *object) {
                 D_80110CB0_ridiculous_relay.finishDelay = 75;
                 D_80110CB0_ridiculous_relay.resultDelay = 0x90;
             }
-            if (func_800E6E8C_minigame() == MG_STATE_RESULT) {
+            if (MgFlowStatGet() == MG_STATE_RESULT) {
                 D_801119D8_ridiculous_relay = 6;
                 D_801119D4_ridiculous_relay = 0;
             }
@@ -342,7 +342,7 @@ void func_80105F48_ridiculous_relay(omObjData *object) {
                 }
             }
         case 6:
-            if (func_800E6E8C_minigame() == MG_STATE_EXIT) {
+            if (MgFlowStatGet() == MG_STATE_EXIT) {
                 D_801119D8_ridiculous_relay = 7;
                 D_801119D4_ridiculous_relay = 0;
             }

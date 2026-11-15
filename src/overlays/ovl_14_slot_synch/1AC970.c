@@ -495,7 +495,7 @@ void func_80105C08_slot_synch(omObjData *object) {
             }
             if (GMesStatGet() == 0) {
                 GMesCreate(0x1A, (D_8010DF50_slot_synch + 29) / 30, 156, 32);
-                func_800E6F0C_minigame(MG_STATE_PLAY);
+                MgFlowStatSet(MG_STATE_PLAY);
                 D_8010DF54_slot_synch++;
             }
             break;
@@ -506,7 +506,7 @@ void func_80105C08_slot_synch(omObjData *object) {
                 HuAudFXAllStop();
                 func_8003F5C0_main();
                 GMesCreate(0x10);
-                func_800E6F0C_minigame(MG_STATE_FINISH);
+                MgFlowStatSet(MG_STATE_FINISH);
                 HuAudSeqFadeOut(120);
                 D_8010DF50_slot_synch = 0;
                 D_8010DF4C_slot_synch = 0;
@@ -515,7 +515,7 @@ void func_80105C08_slot_synch(omObjData *object) {
             break;
         case 3:
             if (GMesStatGet() == 0 && func_80106CF0_slot_synch(0) == 0 && func_80106CF0_slot_synch(1) == 0) {
-                func_800E6F0C_minigame(MG_STATE_RESULT);
+                MgFlowStatSet(MG_STATE_RESULT);
                 func_8010A1D0_slot_synch();
                 D_8010DF4C_slot_synch = 0;
                 D_8010DF54_slot_synch++;
@@ -756,7 +756,7 @@ void func_80106878_slot_synch(omObjData *object) {
 
     switch (team->unk_12) {
         case 0:
-            if (func_800E6E8C_minigame() == MG_STATE_PLAY) {
+            if (MgFlowStatGet() == MG_STATE_PLAY) {
                 func_801089F8_slot_synch(team->unk_08->unk_00);
                 func_801089F8_slot_synch(team->unk_0C->unk_00);
                 machine = &D_8010DF7C_slot_synch[team->unk_08->unk_00];
@@ -767,13 +767,13 @@ void func_80106878_slot_synch(omObjData *object) {
                 machine->unk_20 = HuAudFXPlay(team->unk_10 == 0 ? 0x38F : 0x395);
                 team->unk_14 = 0;
                 team->unk_12 = 1;
-            } else if (func_800E6E8C_minigame() == MG_STATE_FINISH || func_800E6E8C_minigame() == MG_STATE_RESULT) {
+            } else if (MgFlowStatGet() == MG_STATE_FINISH || MgFlowStatGet() == MG_STATE_RESULT) {
                 func_80108CD0_slot_synch(team->unk_08->unk_00);
                 func_80108CD0_slot_synch(team->unk_0C->unk_00);
             }
             break;
         case 1:
-            if (func_800E6E8C_minigame() != MG_STATE_PLAY) {
+            if (MgFlowStatGet() != MG_STATE_PLAY) {
                 team->unk_1C = 0;
                 team->unk_14 = 0;
                 team->unk_12 = 0;
@@ -786,7 +786,7 @@ void func_80106878_slot_synch(omObjData *object) {
             break;
         case 2:
             if (func_80108A7C_slot_synch(team->unk_08->unk_00) && func_80108A7C_slot_synch(team->unk_0C->unk_00)) {
-                if (func_800E6E8C_minigame() == MG_STATE_PLAY) {
+                if (MgFlowStatGet() == MG_STATE_PLAY) {
                     machine = &D_8010DF7C_slot_synch[team->unk_08->unk_00];
                     if (machine->unk_20 != -1) {
                         HuAudFXStop((s16)machine->unk_20);
@@ -796,7 +796,7 @@ void func_80106878_slot_synch(omObjData *object) {
                 team->unk_1C = 0;
                 result0 = func_80108AA8_slot_synch(team->unk_08->unk_00);
                 result1 = func_80108AA8_slot_synch(team->unk_0C->unk_00);
-                if (func_800E6E8C_minigame() == MG_STATE_FINISH) {
+                if (MgFlowStatGet() == MG_STATE_FINISH) {
                     func_80108CD0_slot_synch(team->unk_08->unk_00);
                     func_80108CD0_slot_synch(team->unk_0C->unk_00);
                 }
@@ -808,12 +808,12 @@ void func_80106878_slot_synch(omObjData *object) {
                 team->unk_18 = func_80109FA4_slot_synch(team->unk_10, team->unk_1A);
                 team->unk_14 = 0;
                 team->unk_12 = 3;
-            } else if (func_800E6E8C_minigame() != MG_STATE_PLAY) {
+            } else if (MgFlowStatGet() != MG_STATE_PLAY) {
                 team->unk_1C = 0;
                 data0 = team->unk_00->data;
                 data1 = team->unk_04->data;
                 if (data0->unk38 == 1000.0f && data1->unk38 == 1000.0f) {
-                    if (func_800E6E8C_minigame() == MG_STATE_FINISH) {
+                    if (MgFlowStatGet() == MG_STATE_FINISH) {
                         func_80108CD0_slot_synch(team->unk_08->unk_00);
                         func_80108CD0_slot_synch(team->unk_0C->unk_00);
                     }

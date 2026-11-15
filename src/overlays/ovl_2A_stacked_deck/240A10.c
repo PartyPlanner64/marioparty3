@@ -68,7 +68,7 @@ Vec2f D_8010F310_stacked_deck[3] = { { 70.0f, 20.0f }, { -10.0f, 10.0f }, { -70.
 f32 D_8010F328_stacked_deck[3] = { 2.0f, 2.0f, 2.0f };
 // The intended delays (90, 900, 0, 30, 150) landed in gaugeValue/winners, likely
 // from an initializer written without the inner braces. It doesn't matter in
-// practice: this overlay never runs func_800E6F40_minigame, so only the
+// practice: this overlay never runs MgFlowMain, so only the
 // setup in func_800E5EA0_minigame reads this struct.
 MinigameFlow D_8010F334_stacked_deck = {
     MG_STATE_OPENING, MINIGAME_4P, MG_TIMER_COUNT_DOWN, MG_TIME_DISP_COUNTDOWN, FALSE, MG_GAUGE_NONE, MG_RESULT_WIN_1, 0,
@@ -3170,7 +3170,7 @@ void func_8010ED44_stacked_deck(omObjData *object) {
     s16 i;
     s16 j;
 
-    func_800E6F0C_minigame(MG_STATE_PLAY);
+    MgFlowStatSet(MG_STATE_PLAY);
     D_8010F720_stacked_deck = 0;
     D_8010F6F4_stacked_deck = 0;
     D_80111169_stacked_deck = 0;

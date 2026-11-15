@@ -1975,7 +1975,7 @@ void func_8010C520_storm_chasers(void) {
 }
 
 void func_8010C57C_storm_chasers(omObjData *object) {
-    func_800E6F0C_minigame(MG_STATE_PLAY);
+    MgFlowStatSet(MG_STATE_PLAY);
     func_8010C520_storm_chasers();
     WipeCreateIn(WIPE_TYPE_PREV, 16);
     object->func = func_8010C31C_storm_chasers;

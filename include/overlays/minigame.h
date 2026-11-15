@@ -210,7 +210,7 @@ typedef struct D_800EBDF4_minigame_Entry {
 
 // Each minigame overlay defines one of these and passes it to
 // func_800E5EA0_minigame, which keeps a pointer in D_800EBDE0_minigame.
-// func_800E6F40_minigame then advances it once per frame through the
+// MgFlowMain then advances it once per frame through the
 // MG_STATE_* sequence. Delays and timers are in frames; -1 disables them
 // (a -1 delay waits until the overlay changes state itself).
 typedef struct MinigameFlow {
@@ -431,13 +431,13 @@ void func_800E6E4C_minigame(s16 arg0);
 void func_800E6E5C_minigame(s16 arg0);
 void func_800E6E6C_minigame(s16 arg0);
 void func_800E6E7C_minigame(s8 arg0);
-u8 func_800E6E8C_minigame(void);
+u8 MgFlowStatGet(void);
 u16 func_800E6E9C_minigame(void);
-void func_800E6F0C_minigame(u8 arg0);
-void func_800E6F1C_minigame(void);
+void MgFlowStatSet(u8 arg0);
+void MgFlowStatNext(void);
 void func_800E6F34_minigame(s32 arg0);
 // Unprototyped: Dorrie Dip passes an object argument that the other callers omit.
-u8 func_800E6F40_minigame();
+u8 MgFlowMain();
 
 // BA4B0.c
 void func_800E7930_minigame(s16 group, s16 member, s16 graphic, s16 prio, s16 x, s16 y);

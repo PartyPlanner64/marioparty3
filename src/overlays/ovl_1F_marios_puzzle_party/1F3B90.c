@@ -1858,7 +1858,7 @@ void func_8010AD20_marios_puzzle_party(void) {
     HuPrcVSleep();
     HuSprAnimModeSet(display.sprGroup, 0, HUSPR_ANIM_MODE_STOP);
     while (TRUE) {
-        if (func_800E6E8C_minigame() == MG_STATE_PLAY) {
+        if (MgFlowStatGet() == MG_STATE_PLAY) {
             break;
         }
         HuPrcVSleep();
@@ -2673,7 +2673,7 @@ void func_8010DB98_marios_puzzle_party(void) {
     }
     while (TRUE) {
         for (i = 0; i < 4; i++) {
-            if (stopped[i] == FALSE && func_800E6E8C_minigame() != MG_STATE_OPENING) {
+            if (stopped[i] == FALSE && MgFlowStatGet() != MG_STATE_OPENING) {
                 angle[i] += 8.0f;
                 offset[i] = sindf(i * 45.0f + angle[i]) * 3.0f;
                 if (angle[i] > 360.0f) {
@@ -2889,7 +2889,7 @@ void func_8010EAA0_marios_puzzle_party(void) {
         }
     }
     func_8010E868_marios_puzzle_party(group, D_80116160_marios_puzzle_party * 2);
-    while (func_800E6E8C_minigame() != MG_STATE_PLAY) {
+    while (MgFlowStatGet() != MG_STATE_PLAY) {
         HuPrcVSleep();
     }
     while (D_80116160_marios_puzzle_party != 0 && D_80116168_marios_puzzle_party[0] == 0) {
@@ -2987,9 +2987,9 @@ void func_8010EF30_marios_puzzle_party(void) {
     }
     running = TRUE;
     while (running) {
-        switch (func_800E6F40_minigame()) {
+        switch (MgFlowMain()) {
             case 0:
-                func_800E6F1C_minigame();
+                MgFlowStatNext();
                 break;
             case 1:
                 break;
@@ -3013,7 +3013,7 @@ void func_8010EF30_marios_puzzle_party(void) {
                     if (!flag) {
                         D_801160E4_marios_puzzle_party = winner;
                         func_8010EEB0_marios_puzzle_party();
-                        func_800E6F1C_minigame();
+                        MgFlowStatNext();
                     } else {
                         for (j = 0, count = 0; j < 4; j++) {
                             if (D_80116128_marios_puzzle_party[j] == best) {
@@ -3026,7 +3026,7 @@ void func_8010EF30_marios_puzzle_party(void) {
                                 if (pick == count) {
                                     D_801160E4_marios_puzzle_party = j;
                                     func_8010EEB0_marios_puzzle_party();
-                                    func_800E6F1C_minigame();
+                                    MgFlowStatNext();
                                     break;
                                 }
                                 count++;
@@ -3044,7 +3044,7 @@ void func_8010EF30_marios_puzzle_party(void) {
                     if (count == 1) {
                         D_801160E4_marios_puzzle_party = winner;
                         func_8010EEB0_marios_puzzle_party();
-                        func_800E6F1C_minigame();
+                        MgFlowStatNext();
                     }
                 }
                 for (j = 0; j < D_80116100_marios_puzzle_party; j++) {
@@ -3054,12 +3054,12 @@ void func_8010EF30_marios_puzzle_party(void) {
                 }
                 if (j >= D_80116100_marios_puzzle_party) {
                     func_8010EEB0_marios_puzzle_party();
-                    func_800E6F1C_minigame();
+                    MgFlowStatNext();
                 }
                 if (D_80116158_marios_puzzle_party == 2 && D_80116160_marios_puzzle_party == 0) {
                     D_801160E4_marios_puzzle_party = 0;
                     func_8010EEB0_marios_puzzle_party();
-                    func_800E6F1C_minigame();
+                    MgFlowStatNext();
                 }
                 break;
             case 3:

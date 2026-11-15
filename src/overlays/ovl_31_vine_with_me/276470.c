@@ -341,7 +341,7 @@ void func_80106004_vine_with_me(omObjData *arg0) {
                 HuAudSeqPlay(0x30);
             }
             if (D_801155D0_vine_with_me == 30) {
-                func_800E6F1C_minigame();
+                MgFlowStatNext();
             }
             break;
         case 2:
@@ -357,7 +357,7 @@ void func_80106004_vine_with_me(omObjData *arg0) {
             /* fallthrough */
         case 3:
             if (D_801155D0_vine_with_me < D_8011566C_vine_with_me) {
-                func_800E6F1C_minigame();
+                MgFlowStatNext();
                 D_8011558C_vine_with_me--;
                 D_80111B50_vine_with_me.resultType = MG_RESULT_WIN_1;
                 D_80111B50_vine_with_me.winners[0] = D_80115670_vine_with_me[D_8011558C_vine_with_me];
@@ -395,10 +395,10 @@ void func_80106004_vine_with_me(omObjData *arg0) {
             }
             break;
     }
-    func_800E6F40_minigame();
+    MgFlowMain();
     switch (D_8011563C_vine_with_me) {
         case 2:
-            if (D_8011558C_vine_with_me != 0 || func_800E6E8C_minigame() != MG_STATE_FINISH) {
+            if (D_8011558C_vine_with_me != 0 || MgFlowStatGet() != MG_STATE_FINISH) {
                 break;
             }
             D_8011563C_vine_with_me = 3;
@@ -409,14 +409,14 @@ void func_80106004_vine_with_me(omObjData *arg0) {
             D_80111B50_vine_with_me.resultDelay = 144;
             /* fallthrough */
         case 3:
-            if (func_800E6E8C_minigame() == MG_STATE_RESULT) {
+            if (MgFlowStatGet() == MG_STATE_RESULT) {
                 D_8011563C_vine_with_me = (D_8011558C_vine_with_me == 2) ? 5 : 4;
                 D_801155D0_vine_with_me = 0;
             }
             break;
         case 4:
         case 5:
-            if (func_800E6E8C_minigame() != MG_STATE_EXIT) {
+            if (MgFlowStatGet() != MG_STATE_EXIT) {
                 break;
             }
             D_8011563C_vine_with_me = 6;

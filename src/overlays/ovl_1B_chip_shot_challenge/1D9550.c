@@ -343,7 +343,7 @@ void func_8010646C_chip_shot_challenge(omObjData *object) {
         return;
     }
     time = func_800E6E9C_minigame();
-    switch (func_800E6F40_minigame()) {
+    switch (MgFlowMain()) {
         case 0:
             func_80105EB8_chip_shot_challenge(object);
             break;
@@ -786,7 +786,7 @@ void func_8010802C_chip_shot_challenge(void) {
     HuSprDispOff(D_8010AAC4_chip_shot_challenge, 1);
     func_8001C258_main(D_8010AACC_chip_shot_challenge, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     func_8001C258_main(D_8010AAC8_chip_shot_challenge, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    if (func_800E6E8C_minigame() >= MG_STATE_PLAY) {
+    if (MgFlowStatGet() >= MG_STATE_PLAY) {
         func_8001C258_main((s16)D_8010AAD0_chip_shot_challenge, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
 }
@@ -919,7 +919,7 @@ void func_801087AC_chip_shot_challenge(omObjData *object) {
 
     pad = data->unk57;
     player = data->unk59;
-    if (func_800E6E8C_minigame() == MG_STATE_PLAY) {
+    if (MgFlowStatGet() == MG_STATE_PLAY) {
         stickX = D_800CBB6E_main[pad];
         stickY = D_800D20A1_main[pad];
         buttons = (u16)D_800CDA7C_main[pad];
@@ -1035,7 +1035,7 @@ void func_801087AC_chip_shot_challenge(omObjData *object) {
                 ball->unk_60 = 0.0f;
                 ball->unk_64 = 0.0f;
                 if (D_8010A844_chip_shot_challenge == 4) {
-                    func_800E6F0C_minigame(MG_STATE_FINISH);
+                    MgFlowStatSet(MG_STATE_FINISH);
                     for (i = 0; i < 4; i++) {
                         D_800EC598_minigame[i]->trans.x = D_8010A84C_chip_shot_challenge[i][0];
                         D_800EC598_minigame[i]->trans.y = D_8010A84C_chip_shot_challenge[i][1];
@@ -1154,7 +1154,7 @@ void func_801094D8_chip_shot_challenge(omObjData *object) {
     u8 bounce = TRUE;
 
     func_80088800_main(Hu3DData[object->model[0]].mtx, 0.0f, 30.0f, 0.0f);
-    if (func_800E6E8C_minigame() != MG_STATE_PLAY) {
+    if (MgFlowStatGet() != MG_STATE_PLAY) {
         return;
     }
     D_800EBE2C_minigame = D_800EC5D8_minigame = 0.0f;

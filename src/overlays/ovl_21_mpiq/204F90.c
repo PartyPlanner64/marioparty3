@@ -249,7 +249,7 @@ void func_80105C60_mpiq(omObjData *obj) {
         HuAudSeqFadeOut(30);
         WipeCreateOut(WIPE_TYPE_NORMAL, 20);
     }
-    switch (func_800E6F40_minigame(obj)) {
+    switch (MgFlowMain(obj)) {
         case 0:
         case 1:
         case 2:
@@ -1101,7 +1101,7 @@ void func_80108D10_mpiq(void) {
                 D_800CDA7C_main[GwPlayer[i].pad] &= 0x1FFF;
                 D_800D5558_main[GwPlayer[i].pad] &= 0x1FFF;
             }
-            if (func_800E6E8C_minigame() == MG_STATE_PLAY && (GwPlayer[i].stat & 1)) {
+            if (MgFlowStatGet() == MG_STATE_PLAY && (GwPlayer[i].stat & 1)) {
                 func_801069F8_mpiq(i);
             }
         }
@@ -1952,7 +1952,7 @@ void func_8010B0CC_mpiq(void) {
     s32 wins;
     s32 tied;
 
-    while (func_800E6E8C_minigame() != MG_STATE_PLAY) {
+    while (MgFlowStatGet() != MG_STATE_PLAY) {
         HuPrcVSleep();
     }
     for (i = 0; i < 4; i++) {
@@ -2099,7 +2099,7 @@ void func_8010B0CC_mpiq(void) {
             }
         }
     }
-    func_800E6F0C_minigame(MG_STATE_FINISH);
+    MgFlowStatSet(MG_STATE_FINISH);
     func_80107C74_mpiq();
     func_801089A4_mpiq(2);
     for (i = 0; i < 16; i++) {

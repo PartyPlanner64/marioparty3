@@ -420,7 +420,7 @@ void func_801065AC_tidal_toss(omObjData *object) {
                 func_8004AB0C_main(45);
             }
             if (GMesStatGet() == 0) {
-                func_800E6F0C_minigame(MG_STATE_PLAY);
+                MgFlowStatSet(MG_STATE_PLAY);
                 D_8010AF40_tidal_toss++;
                 GMesCreate(0x1A, (D_8010AA90_tidal_toss + 29) / 30, 160, 32);
                 HuAudFXPlay(0xE);
@@ -477,7 +477,7 @@ void func_801065AC_tidal_toss(omObjData *object) {
                     }
                     D_8010AA8C_tidal_toss = 15;
                     D_8010AF40_tidal_toss++;
-                    func_800E6F0C_minigame(MG_STATE_RESULT);
+                    MgFlowStatSet(MG_STATE_RESULT);
                 }
             }
             break;
@@ -494,7 +494,7 @@ void func_801065AC_tidal_toss(omObjData *object) {
                     D_8010AF40_tidal_toss++;
                 }
             } else {
-                func_800E6F0C_minigame(MG_STATE_EXIT);
+                MgFlowStatSet(MG_STATE_EXIT);
                 D_8010AA8C_tidal_toss = 16;
                 WipeCreateOut(0, D_8010AA8C_tidal_toss);
                 HuAudSeqFadeOut(D_8010AA8C_tidal_toss);

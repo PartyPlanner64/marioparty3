@@ -272,26 +272,26 @@ void func_801061FC_awful_tower(omObjData *object) {
             break;
         case 3:
             if (D_8010D3FE_awful_tower >= 20) {
-                func_800E6F1C_minigame();
+                MgFlowStatNext();
             }
             break;
     }
-    func_800E6F40_minigame();
+    MgFlowMain();
     switch (D_8010D3E4_awful_tower) {
         case 0:
-            if (func_800E6E8C_minigame() == MG_STATE_START) {
+            if (MgFlowStatGet() == MG_STATE_START) {
                 D_8010D3E4_awful_tower = 1;
                 D_8010D3DC_awful_tower = 0;
             }
             break;
         case 1:
-            if (func_800E6E8C_minigame() == MG_STATE_PLAY) {
+            if (MgFlowStatGet() == MG_STATE_PLAY) {
                 D_8010D3E4_awful_tower = 2;
                 D_8010D3DC_awful_tower = 0;
             }
             break;
         case 2:
-            if (D_8010D3FC_awful_tower != 5 || func_800E6E8C_minigame() == MG_STATE_FINISH) {
+            if (D_8010D3FC_awful_tower != 5 || MgFlowStatGet() == MG_STATE_FINISH) {
                 if (D_8010D3FC_awful_tower == 5) {
                     D_8010D3E4_awful_tower = 6;
                     D_8010D3FC_awful_tower = 4;
@@ -306,8 +306,8 @@ void func_801061FC_awful_tower(omObjData *object) {
         case 3:
             if (D_8010D3DC_awful_tower == 0) {
                 D_8010CB70_awful_tower.finishDelay = 210;
-                if (func_800E6E8C_minigame() != MG_STATE_FINISH) {
-                    func_800E6F1C_minigame();
+                if (MgFlowStatGet() != MG_STATE_FINISH) {
+                    MgFlowStatNext();
                 }
                 D_8010CB70_awful_tower.resultType = MG_RESULT_WIN_1;
                 D_8010CB70_awful_tower.winners[0] = D_8010D308_awful_tower[D_8010D3FC_awful_tower]->player;
@@ -316,7 +316,7 @@ void func_801061FC_awful_tower(omObjData *object) {
             if (D_8010D3DC_awful_tower == 2) {
                 func_800E6F34_minigame(30);
             }
-            if (func_800E6E8C_minigame() == MG_STATE_RESULT) {
+            if (MgFlowStatGet() == MG_STATE_RESULT) {
                 D_8010D3E4_awful_tower = 4;
                 D_8010D3DC_awful_tower = 0;
             }
@@ -326,7 +326,7 @@ void func_801061FC_awful_tower(omObjData *object) {
                 D_8010CB70_awful_tower.resultType = MG_RESULT_DRAW;
                 D_8010CB70_awful_tower.resultDelay = 0x90;
             }
-            if (func_800E6E8C_minigame() == MG_STATE_RESULT) {
+            if (MgFlowStatGet() == MG_STATE_RESULT) {
                 D_8010D3E4_awful_tower = 5;
                 D_8010D3DC_awful_tower = 0;
             }
@@ -374,7 +374,7 @@ void func_801061FC_awful_tower(omObjData *object) {
                     func_800E5690_minigame(D_8010D3A8_awful_tower[i], 14);
                 }
             }
-            if (func_800E6E8C_minigame() == MG_STATE_EXIT) {
+            if (MgFlowStatGet() == MG_STATE_EXIT) {
                 D_8010D3E4_awful_tower = 7;
                 D_8010D3DC_awful_tower = 0;
             }

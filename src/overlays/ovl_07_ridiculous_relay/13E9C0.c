@@ -22,80 +22,105 @@ typedef struct RidiculousRelayPlayer {
     /* 0x08 */ s32 unk08; // run animation file
 } RidiculousRelayPlayer;  // sizeof 0xC
 
-extern D_80111B50_vine_with_me_Struct D_80110CB0_ridiculous_relay;
-extern Gfx D_80110CD8_ridiculous_relay[];
-extern u8 D_80110D68_ridiculous_relay;
-extern u32 D_80110D6C_ridiculous_relay;
-extern u32 D_80110D70_ridiculous_relay[2];
-extern u8 D_80110D78_ridiculous_relay;
-extern u16 D_80110D7C_ridiculous_relay[18];
-extern f32 D_80110DA0_ridiculous_relay[2];
-extern u16 D_80110DA8_ridiculous_relay;
-extern f32 D_80110DAC_ridiculous_relay[4];
-extern f32 D_80110DBC_ridiculous_relay[4];
-extern f32 D_80110DCC_ridiculous_relay[4];
-extern f32 D_80110DDC_ridiculous_relay[4];
-extern s16 D_80110DEE_ridiculous_relay[3];
-extern s16 D_80110DF4_ridiculous_relay[4];
-extern u32 D_80110DFC_ridiculous_relay[2];
-extern u8 D_80110E04_ridiculous_relay;
-extern f32 D_80110E08_ridiculous_relay;
-extern u8 D_80110E0C_ridiculous_relay[3];
-extern u8 D_80110E0F_ridiculous_relay;
-extern u8 D_80110E10_ridiculous_relay;
-extern u8 D_80110E11_ridiculous_relay;
-extern u8 D_80110E12_ridiculous_relay;
-extern f32 D_80110E14_ridiculous_relay;
-extern u8 D_80110E18_ridiculous_relay;
-extern f32 D_80110E1C_ridiculous_relay;
-extern f32 D_80110E20_ridiculous_relay[2];
-extern f32 D_80110E28_ridiculous_relay[2];
-extern f32 D_80110E30_ridiculous_relay[2];
-extern u16 D_80110E38_ridiculous_relay[2];
-extern u8 D_80110E3C_ridiculous_relay[4];
-extern u32 D_80110E40_ridiculous_relay[4];
-extern u8 D_80110E50_ridiculous_relay;
-extern f32 D_80110E54_ridiculous_relay;
-extern RidiculousRelayPlayer D_80111940_ridiculous_relay[4];
-extern RidiculousRelayPlayer *D_80111970_ridiculous_relay[4]; // players indexed by group
-extern f32 D_80111980_ridiculous_relay[7];
-extern f32 D_8011199C_ridiculous_relay[2];
-extern f32 D_801119A8_ridiculous_relay[4];
-extern u8 D_801119B8_ridiculous_relay[4]; // group of each player
-extern omObjData *D_801119BC_ridiculous_relay;
-extern s8 D_801119C0_ridiculous_relay;
-extern f32 D_801119C4_ridiculous_relay;
-extern s32 D_801119C8_ridiculous_relay;
-extern u16 D_801119CC_ridiculous_relay;
-extern f32 D_801119D0_ridiculous_relay;
-extern s32 D_801119D4_ridiculous_relay;
-extern s16 D_801119D8_ridiculous_relay;
-extern u8 D_801119DA_ridiculous_relay;
-extern f32 D_801119DC_ridiculous_relay;
-extern s16 D_801119E0_ridiculous_relay[31];
-extern omObjData *D_80111A20_ridiculous_relay[4];
-extern u16 D_80111A40_ridiculous_relay[5];
-extern u16 D_80111A4A_ridiculous_relay;
-extern u16 D_80111A4E_ridiculous_relay;
-extern s16 D_80111A58_ridiculous_relay[31];
-extern s32 D_80111A30_ridiculous_relay[3];
-extern f32 D_80111A50_ridiculous_relay;
-extern f32 D_801117F0_ridiculous_relay;
-extern f32 D_801117F8_ridiculous_relay[18];
-extern f32 D_80111840_ridiculous_relay[18];
-extern f32 D_80111888_ridiculous_relay[18];
-extern f32 D_801118D0_ridiculous_relay[18];
-extern f32 D_80111918_ridiculous_relay;
-extern f32 D_8011191C_ridiculous_relay;
-extern f32 D_80111920_ridiculous_relay;
-extern f32 D_80111924_ridiculous_relay;
-extern f32 D_80111928_ridiculous_relay;
-extern f32 D_8011192C_ridiculous_relay;
-extern f32 D_80111930_ridiculous_relay;
-extern f32 D_80111934_ridiculous_relay;
-extern f32 D_80111938_ridiculous_relay;
-extern f32 D_8011193C_ridiculous_relay;
 extern Gfx *gMainGfxPos;
+
+D_80111B50_vine_with_me_Struct D_80110CB0_ridiculous_relay = { 0 };
+
+Gfx D_80110CD8_ridiculous_relay[] = {
+    gsDPPipeSync(),
+    gsDPSetCycleType(G_CYC_1CYCLE),
+    gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_DECALRGBA),
+    gsDPSetRenderMode(G_RM_OPA_SURF, G_RM_OPA_SURF2),
+    gsDPSetAlphaCompare(G_AC_NONE),
+    gsDPSetTexturePersp(G_TP_NONE),
+    gsDPSetTextureFilter(G_TF_BILERP),
+    gsDPSetScissor(G_SC_NON_INTERLACE, 0, 0, 320, 240),
+    gsSPEndDisplayList(),
+    gsDPPipeSync(),
+    gsDPSetCycleType(G_CYC_1CYCLE),
+    gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_DECALRGBA),
+    gsDPSetRenderMode(G_RM_AA_OPA_SURF, G_RM_AA_OPA_SURF2),
+    gsDPSetAlphaCompare(G_AC_NONE),
+    gsDPSetTexturePersp(G_TP_NONE),
+    gsDPSetTextureFilter(G_TF_BILERP),
+    gsDPSetScissor(G_SC_NON_INTERLACE, 0, 0, 320, 240),
+    gsSPEndDisplayList(),
+};
+
+u8 D_80110D68_ridiculous_relay = 0;
+u32 D_80110D6C_ridiculous_relay = 0;
+u32 D_80110D70_ridiculous_relay[2] = { 0, 0 };
+u8 D_80110D78_ridiculous_relay = 0;
+u16 D_80110D7C_ridiculous_relay[18] = { 0 };
+f32 D_80110DA0_ridiculous_relay[2] = { 0.0f, 0.0f };
+u16 D_80110DA8_ridiculous_relay = 0;
+f32 D_80110DAC_ridiculous_relay[4] = { -142.5f, -142.5f, 653.125f, 1278.125f };
+f32 D_80110DBC_ridiculous_relay[4] = { -60.0f, 0.0f, 0.0f, 0.0f };
+f32 D_80110DCC_ridiculous_relay[4] = { 40.0f, 40.0f, 0.0f, 0.0f };
+f32 D_80110DDC_ridiculous_relay[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+s16 D_80110DEC_ridiculous_relay[4] = { 0, 0, 0, 0 };
+s16 D_80110DF4_ridiculous_relay[4] = { 0, 0, 0, 0 };
+u32 D_80110DFC_ridiculous_relay[2] = { 0, 0 };
+u8 D_80110E04_ridiculous_relay = 1;
+f32 D_80110E08_ridiculous_relay = 16384.0f;
+u8 D_80110E0C_ridiculous_relay[3] = { 0, 0, 0 };
+u8 D_80110E0F_ridiculous_relay = 0;
+u8 D_80110E10_ridiculous_relay = 0;
+u8 D_80110E11_ridiculous_relay = 0;
+u8 D_80110E12_ridiculous_relay = 1;
+f32 D_80110E14_ridiculous_relay = 0.0f;
+u8 D_80110E18_ridiculous_relay = 0;
+f32 D_80110E1C_ridiculous_relay = 0.0f;
+f32 D_80110E20_ridiculous_relay[2] = { -1000.0f, -1000.0f };
+f32 D_80110E28_ridiculous_relay[2] = { 0.0f, 0.0f };
+f32 D_80110E30_ridiculous_relay[2] = { 75.0f, 75.0f };
+u16 D_80110E38_ridiculous_relay[2] = { 0, 40 };
+u8 D_80110E3C_ridiculous_relay[4] = { 0, 0, 0, 0 };
+u32 D_80110E40_ridiculous_relay[4] = { 0, 0, 0, 0 };
+u8 D_80110E50_ridiculous_relay = 0;
+f32 D_80110E54_ridiculous_relay = 0.0f;
+
+f32 D_801117F0_ridiculous_relay BSS;
+u8 D_801117F4_ridiculous_relay[4] BSS; /* Unreferenced. */
+f32 D_801117F8_ridiculous_relay[18] BSS;
+f32 D_80111840_ridiculous_relay[18] BSS;
+f32 D_80111888_ridiculous_relay[18] BSS;
+f32 D_801118D0_ridiculous_relay[18] BSS;
+f32 D_80111918_ridiculous_relay BSS;
+f32 D_8011191C_ridiculous_relay BSS;
+f32 D_80111920_ridiculous_relay BSS;
+f32 D_80111924_ridiculous_relay BSS;
+f32 D_80111928_ridiculous_relay BSS;
+f32 D_8011192C_ridiculous_relay BSS;
+f32 D_80111930_ridiculous_relay BSS;
+f32 D_80111934_ridiculous_relay BSS;
+f32 D_80111938_ridiculous_relay BSS;
+f32 D_8011193C_ridiculous_relay BSS;
+RidiculousRelayPlayer D_80111940_ridiculous_relay[4] BSS;
+RidiculousRelayPlayer *D_80111970_ridiculous_relay[4] BSS; // players indexed by group
+f32 D_80111980_ridiculous_relay[7] BSS;
+f32 D_8011199C_ridiculous_relay[2] BSS;
+u8 D_801119A4_ridiculous_relay[4] BSS; /* Unreferenced. */
+f32 D_801119A8_ridiculous_relay[4] BSS;
+u8 D_801119B8_ridiculous_relay[4] BSS; // group of each player
+omObjData *D_801119BC_ridiculous_relay BSS;
+s8 D_801119C0_ridiculous_relay BSS;
+f32 D_801119C4_ridiculous_relay BSS;
+s32 D_801119C8_ridiculous_relay BSS;
+u16 D_801119CC_ridiculous_relay BSS;
+f32 D_801119D0_ridiculous_relay BSS;
+s32 D_801119D4_ridiculous_relay BSS;
+s16 D_801119D8_ridiculous_relay BSS;
+u8 D_801119DA_ridiculous_relay BSS;
+f32 D_801119DC_ridiculous_relay BSS;
+s16 D_801119E0_ridiculous_relay[31] BSS;
+omObjData *D_80111A20_ridiculous_relay[4] BSS;
+s32 D_80111A30_ridiculous_relay[3] BSS;
+u8 D_80111A3C_ridiculous_relay[4] BSS; /* Unreferenced. */
+u16 D_80111A40_ridiculous_relay[8] BSS;
+f32 D_80111A50_ridiculous_relay BSS;
+u8 D_80111A54_ridiculous_relay[4] BSS; /* Unreferenced. */
+s16 D_80111A58_ridiculous_relay[31] BSS;
 
 const s16 D_80110E60_ridiculous_relay[] = {
     0x8260, 0x8261, 0x8262, 0x8263, 0x8264, 0x8265, 0x8266, 0x8267, 0x8268, 0x8269, 0x826A, 0x826B, 0x826C, 0x826D,
@@ -399,11 +424,11 @@ void func_801066A0_ridiculous_relay(omObjData *object) {
         Hu3DModelScaleSet(object->model[12 + i], 0.7565625f, 0.7565625f, 0.7565625f);
     }
     for (i = 0; i < 2; i++) {
-        object->model[10 + i] = func_80106610_ridiculous_relay(0x280012, &D_80111A4A_ridiculous_relay, 0x639);
+        object->model[10 + i] = func_80106610_ridiculous_relay(0x280012, &D_80111A40_ridiculous_relay[5], 0x639);
         Hu3DModelCameraSet(object->model[10 + i], 1);
         Hu3DModelScaleSet(object->model[10 + i], 0.7565625f, 0.7565625f, 0.7565625f);
     }
-    object->model[4] = func_80106610_ridiculous_relay(0xB, &D_80111A4E_ridiculous_relay, 0x639);
+    object->model[4] = func_80106610_ridiculous_relay(0xB, &D_80111A40_ridiculous_relay[7], 0x639);
     func_8001C258_main(object->model[4], 4, 4);
     Hu3DModelScaleSet(object->model[4], 1.6549804f, 0.9457031f, 0.9457031f);
     Hu3DModelCameraSet(object->model[4], 1);
@@ -1304,8 +1329,8 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
         if (D_80110D78_ridiculous_relay == 0 && mode == 1) {
             u16 btn = D_800D5558_main[player->pad];
 
-            if ((D_80110DEE_ridiculous_relay[0] ? (btn & (B_BUTTON | Z_TRIG)) : (btn & A_BUTTON)) || (player->cpuDifficulty != -1 && D_80110E0C_ridiculous_relay[0] == 0)) {
-                D_80110DEE_ridiculous_relay[0] = 1 - D_80110DEE_ridiculous_relay[0];
+            if ((D_80110DEC_ridiculous_relay[1] ? (btn & (B_BUTTON | Z_TRIG)) : (btn & A_BUTTON)) || (player->cpuDifficulty != -1 && D_80110E0C_ridiculous_relay[0] == 0)) {
+                D_80110DEC_ridiculous_relay[1] = 1 - D_80110DEC_ridiculous_relay[1];
                 D_80110DF4_ridiculous_relay[1] = (D_80110DF4_ridiculous_relay[1] != 0) ? D_80110DF4_ridiculous_relay[1] : 60;
                 D_80110DCC_ridiculous_relay[1] += 40.0 / 9.0;
                 if (player->cpuDifficulty != -1) {
@@ -1358,7 +1383,7 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
         }
         Hu3DMotionTimeSet(obj->model[0], (D_80110DF4_ridiculous_relay[1] != 0) ? (f32)(60 - D_80110DF4_ridiculous_relay[1]) : 0.0f);
         if (D_80110D78_ridiculous_relay == 0 && mode == 1) {
-            D_80111980_ridiculous_relay[D_80110DEE_ridiculous_relay[0]] = obj->trans.x;
+            D_80111980_ridiculous_relay[D_80110DEC_ridiculous_relay[1]] = obj->trans.x;
         }
     } else {
         func_8001C258_main(obj->model[0], 4, 4);
@@ -1381,16 +1406,16 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
         f32 step;
 
         D_80110E0C_ridiculous_relay[1] -= D_80110D78_ridiculous_relay == 1 && D_80110E0C_ridiculous_relay[1] != 0;
-        if (D_80110D78_ridiculous_relay == 1 && mode == 1 && (((D_800D5558_main[player->pad] & ((D_80110DEE_ridiculous_relay[1] / 2) ? B_BUTTON : A_BUTTON)) && ((D_80110DEE_ridiculous_relay[1] & 1) ? -1 : 1) * D_800D20A1_main[player->pad] > 32) || (player->cpuDifficulty != -1 && D_80110E0C_ridiculous_relay[1] == 0))) {
+        if (D_80110D78_ridiculous_relay == 1 && mode == 1 && (((D_800D5558_main[player->pad] & ((D_80110DEC_ridiculous_relay[2] / 2) ? B_BUTTON : A_BUTTON)) && ((D_80110DEC_ridiculous_relay[2] & 1) ? -1 : 1) * D_800D20A1_main[player->pad] > 32) || (player->cpuDifficulty != -1 && D_80110E0C_ridiculous_relay[1] == 0))) {
             D_80110E0F_ridiculous_relay = D_80110E10_ridiculous_relay;
-            D_80110E10_ridiculous_relay = D_80110DEE_ridiculous_relay[1];
+            D_80110E10_ridiculous_relay = D_80110DEC_ridiculous_relay[2];
             D_80110E11_ridiculous_relay = 0;
             D_80110E12_ridiculous_relay = 2;
-            Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[D_80110DEE_ridiculous_relay[1] + 7]].motId,
-                               (D_80110DEE_ridiculous_relay[1] == 3) ? 7 : 5, 4, 0);
-            D_80110DEE_ridiculous_relay[1]++;
-            D_80110DEE_ridiculous_relay[1] %= 4;
-            if (D_80110DEE_ridiculous_relay[1] == 0) {
+            Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[D_80110DEC_ridiculous_relay[2] + 7]].motId,
+                               (D_80110DEC_ridiculous_relay[2] == 3) ? 7 : 5, 4, 0);
+            D_80110DEC_ridiculous_relay[2]++;
+            D_80110DEC_ridiculous_relay[2] %= 4;
+            if (D_80110DEC_ridiculous_relay[2] == 0) {
                 D_80110DF4_ridiculous_relay[2] = 50;
                 D_80110DCC_ridiculous_relay[2] = 53.0f;
                 if (D_80110D78_ridiculous_relay == 1) {
@@ -1498,7 +1523,7 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
         func_8001C814_main(obj->model[0], 3, 2);
         func_8001C814_main(obj->model[2], 3, 1);
         if (D_80110D78_ridiculous_relay == 1 && mode == 1) {
-            D_80111980_ridiculous_relay[D_80110DEE_ridiculous_relay[1] + 2] = Hu3DData[obj->model[1]].pos.x;
+            D_80111980_ridiculous_relay[D_80110DEC_ridiculous_relay[2] + 2] = Hu3DData[obj->model[1]].pos.x;
         }
         if (D_80110E0F_ridiculous_relay == 4 && (D_80110E11_ridiculous_relay == 0 || D_80110E11_ridiculous_relay == 4)) {
             for (i = (D_80110E11_ridiculous_relay != 0) ? 9 : 0; i < ((D_80110E11_ridiculous_relay == 0) ? 9 : 18); i++) {
@@ -1588,10 +1613,10 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
                 CenterM[1].x = camX;
             }
         }
-        D_80110DEE_ridiculous_relay[2] = D_80110DEE_ridiculous_relay[2] * 0.875 + D_80110DCC_ridiculous_relay[3] / 50.0 * 10.0 * 1000.0 * 0.125;
+        D_80110DEC_ridiculous_relay[3] = D_80110DEC_ridiculous_relay[3] * 0.875 + D_80110DCC_ridiculous_relay[3] / 50.0 * 10.0 * 1000.0 * 0.125;
         func_8001C258_main(obj->model[0], 4, 0);
         omSetTra(obj, 2.0 * D_80110DAC_ridiculous_relay[3], D_801119DC_ridiculous_relay * 100.0f * 0.125 + -25.0, 0.0f);
-        omSetRot(obj, 0.0f, 90.0f, D_80110DEE_ridiculous_relay[2] / 1000.0);
+        omSetRot(obj, 0.0f, 90.0f, D_80110DEC_ridiculous_relay[3] / 1000.0);
         func_8001C258_main(obj->model[1], 4, 0);
         Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
         Hu3DModelRotSet(obj->model[1], obj->rot.x, obj->rot.y, obj->rot.z);

@@ -934,9 +934,9 @@ segments:
     bss_size: 0x2B0
     subsegments:
       - [0x13E9C0, c]
-      - [0x149CD0, data, 13E9C0] #80110CB0
+      - [0x149CD0, .data, 13E9C0] #80110CB0
       - [0x149E80, .rodata, 13E9C0] #80110E60
-      - {0x14A810, type: bss, vram: 0x801117F0, name: ovl_07_bss}
+      - {0x14A810, type: .bss, vram: 0x801117F0, name: 13E9C0}
 
   - type: code
     start: 0x14A810

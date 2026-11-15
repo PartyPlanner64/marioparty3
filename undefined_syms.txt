@@ -536,3 +536,13 @@ D_80105638_shared_board = D_80105630_shared_board + 0x8; /* [2] */
 
 /* duel03: func_8011454C_duel03 (INCLUDE_ASM) */
 D_80117664_duel03 = D_80117654_duel03 + 0x10; /* [2] */
+
+/* duel04: func_80115DA8_duel04, func_801163C0_duel04 (INCLUDE_ASM) */
+D_80119EC2_duel04 = D_80119EC4_duel04 - 0x2;
+D_80119ECA_duel04 = D_80119ECC_duel04 - 0x2;
+D_80119ED2_duel04 = D_80119ED4_duel04 - 0x2;
+D_80119EDA_duel04 = D_80119EDC_duel04 - 0x2;
+D_80119EE2_duel04 = D_80119EE4_duel04 - 0x2;
+D_80119EEA_duel04 = D_80119EEC_duel04 - 0x2;
+D_80119EF2_duel04 = D_80119EF4_duel04 - 0x2;
+D_80119EFA_duel04 = D_80119EFC_duel04 - 0x2;

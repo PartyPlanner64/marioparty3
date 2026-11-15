@@ -1577,7 +1577,7 @@ s32 HuWinChoice(s16 winId) {
     return 1;
 }
 #else
-INCLUDE_ASM("asm/nonmatchings/window", HuWinChoice);
+INCLUDE_ASM("asm/nonmatchings/game/window", HuWinChoice);
 #endif
 
 void func_8005EEE4_main(TextWindow *window, TextWindowSprite *sprite) {

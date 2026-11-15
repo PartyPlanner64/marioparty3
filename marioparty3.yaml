@@ -69,64 +69,64 @@ segments:
     follows_vram: entry
     bss_size: 0x2E080
     subsegments:
-      - [0x1060, c, boot]
-      - [0x1140, c, msm]
-      - [0x8F20, c, audiomgr]
-      - [0x99D0, c, pad]
-      - [0xA480, c, input]
-      - [0xA6C0, c, data]
-      - [0xAE30, c, decode]
-      - [0xBCA0, c, util]
-      - [0xC1F0, c, camsetup]
-      - [0xC3A0, c, esprite]
-      - [0xCE10, c, eeprom]
-      - [0xD7A0, c, effect]
-      - [0xE560, c, mapspace]
-      - [0xEFB0, c, stubbed]
-      - [0xEFC0, c, gameman]
-      - [0xF610, c, graphics]
-      - [0xFCA0, c, hmfload]
-      - [0x12E20, c, camera]
-      - [0x13F90, c, hmfparticle]
-      - [0x14EA0, c, hmfspr]
-      - [0x18810, c, hmfmath]
-      - [0x19C30, c, hmflight]
-      - [0x1A580, c, mallocblock]
-      - [0x1AC70, c, hmfman]
-      - [0x20A20, c, hmfcoll]
-      - [0x22EB0, c, hmfdraw]
-      - [0x30C40, c, hmfshape]
-      - [0x32160, c, hmfanim]
-      - [0x34DC0, c, mgdata] # Separate file, not part of hmfanim: hmfanim ends with nop padding at 0x34DBC; this is one function (func_800341C0_main, returns 0x70) padded to 0x34DD0. Its rodata is the minigame table at 0x800A6D40 (overlay 0x70 is special-cased by the option overlay).
-      - [0x34DD0, c, texload]
-      - [0x360A0, c, main]
-      - [0x36440, c, mallocperm]
-      - [0x36510, c, malloctemp]
-      - [0x365E0, c, ovlEvent]
-      - [0x36650, c, gamework]
-      - [0x36CD0, c, malloc]
-      - [0x36F80, c, messdata]
-      - [0x37210, c, gamemes]
-      - [0x45F50, c, pause]
-      - [0x46C30, c, aura]
-      - [0x471D0, c, lightdebug]
-      - [0x47D60, c, objmain]
-      - [0x4B120, c, audio]
-      - [0x4BF40, c, objsysobj]
-      - [0x4E010, c, profiler]
-      - [0x4E5A0, c, rom]
-      - [0x4E800, c, printfunc]
-      - [0x4F720, c, process]
-      - [0x4FE90, c, saveEncode]
-      - [0x508F0, c, saveload]
+      - [0x1060, c, game/boot]
+      - [0x1140, c, game/msm]
+      - [0x8F20, c, game/audiomgr]
+      - [0x99D0, c, game/pad]
+      - [0xA480, c, game/input]
+      - [0xA6C0, c, game/data]
+      - [0xAE30, c, game/decode]
+      - [0xBCA0, c, game/util]
+      - [0xC1F0, c, game/camsetup]
+      - [0xC3A0, c, game/esprite]
+      - [0xCE10, c, game/eeprom]
+      - [0xD7A0, c, game/effect]
+      - [0xE560, c, game/mapspace]
+      - [0xEFB0, c, game/stubbed]
+      - [0xEFC0, c, game/gameman]
+      - [0xF610, c, game/graphics]
+      - [0xFCA0, c, game/hmfload]
+      - [0x12E20, c, game/camera]
+      - [0x13F90, c, game/hmfparticle]
+      - [0x14EA0, c, game/hmfspr]
+      - [0x18810, c, game/hmfmath]
+      - [0x19C30, c, game/hmflight]
+      - [0x1A580, c, game/mallocblock]
+      - [0x1AC70, c, game/hmfman]
+      - [0x20A20, c, game/hmfcoll]
+      - [0x22EB0, c, game/hmfdraw]
+      - [0x30C40, c, game/hmfshape]
+      - [0x32160, c, game/hmfanim]
+      - [0x34DC0, c, game/mgdata] # Separate file, not part of hmfanim: hmfanim ends with nop padding at 0x34DBC; this is one function (func_800341C0_main, returns 0x70) padded to 0x34DD0. Its rodata is the minigame table at 0x800A6D40 (overlay 0x70 is special-cased by the option overlay).
+      - [0x34DD0, c, game/texload]
+      - [0x360A0, c, game/main]
+      - [0x36440, c, game/mallocperm]
+      - [0x36510, c, game/malloctemp]
+      - [0x365E0, c, game/ovlEvent]
+      - [0x36650, c, game/gamework]
+      - [0x36CD0, c, game/malloc]
+      - [0x36F80, c, game/messdata]
+      - [0x37210, c, game/gamemes]
+      - [0x45F50, c, game/pause]
+      - [0x46C30, c, game/aura]
+      - [0x471D0, c, game/lightdebug]
+      - [0x47D60, c, game/objmain]
+      - [0x4B120, c, game/audio]
+      - [0x4BF40, c, game/objsysobj]
+      - [0x4E010, c, game/profiler]
+      - [0x4E5A0, c, game/rom]
+      - [0x4E800, c, game/printfunc]
+      - [0x4F720, c, game/process]
+      - [0x4FE90, c, game/saveEncode]
+      - [0x508F0, c, game/saveload]
       - [0x51B50, c, nnsched]
-      - [0x52350, c, siman]
+      - [0x52350, c, game/siman]
       - [0x527E0, c, sndplayer]
-      - [0x52F30, c, sprman]
-      - [0x58000, c, sprput]
-      - [0x5ACF0, c, vibrator]
-      - [0x5B2B0, c, window]
-      - [0x62750, c, wipe]
+      - [0x52F30, c, game/sprman]
+      - [0x58000, c, game/sprput]
+      - [0x5ACF0, c, game/vibrator]
+      - [0x5B2B0, c, game/window]
+      - [0x62750, c, game/wipe]
       - [0x66E70, c, n_synstartvoiceparam]
       - [0x67000, c, n_synsetpan]
       - [0x67100, hasm, setjmp]
@@ -466,41 +466,41 @@ segments:
       - [0x93670, bin, gspS2DEX2_fifo]
       - [0x94F30, bin, gspL3DEX2_fifo]
       - [0x960C0, bin, n_aspMain_code]
-      - [0x96EF0, .data, overlay_table]
-      - [0x98160, .data, util]
-      - [0x98260, .data, camsetup]
-      - [0x98310, .data, eeprom]
-      - [0x98320, .data, effect]
+      - [0x96EF0, .data, game/overlay_table]
+      - [0x98160, .data, game/util]
+      - [0x98260, .data, game/camsetup]
+      - [0x98310, .data, game/eeprom]
+      - [0x98320, .data, game/effect]
       - [0x98330, databin, debug_font_rgba16] # Unreferenced 8x8 RGBA16 font, 256 glyphs
       - [0xA0330, databin, pf_font_ci4] # printfunc 8x8 glyph CI4 font texture
       - [0xA0F30, databin, pf_font_palettes] # printfunc font palettes
-      - [0xA1130, .data, graphics]
-      - [0xA1140, .data, hmfload]
-      - [0xA1150, .data, camera]
-      - [0xA1220, .data, hmfspr]
-      - [0xA14A0, .data, mallocblock]
-      - [0xA14B0, .data, hmfman]
-      - [0xA1680, .data, hmfdraw]
-      - [0xA1D70, .data, hmfanim]
-      - [0xA1DD0, .data, mgdata]
-      - [0xA1DF0, .data, texload]
-      - [0xA1E40, .data, main]
-      - [0xA1EB0, .data, ovlEvent]
-      - [0xA1EC0, .data, gamework]
-      - [0xA1EE0, .data, gamemes]
-      - [0xA2190, .data, pause]
-      - [0xA2240, .data, aura]
-      - [0xA2260, .data, lightdebug]
-      - [0xA22B0, .data, objmain]
-      - [0xA2500, .data, audio]
-      - [0xA2520, .data, objsysobj]
-      - [0xA2920, .data, printfunc]
-      - [0xA2970, .data, saveEncode]
-      - [0xA2A80, .data, saveload]
-      - [0xA2A90, .data, sprman]
-      - [0xA2AB0, .data, sprput]
-      - [0xA2D50, .data, window]
-      - [0xA32D0, .data, wipe]
+      - [0xA1130, .data, game/graphics]
+      - [0xA1140, .data, game/hmfload]
+      - [0xA1150, .data, game/camera]
+      - [0xA1220, .data, game/hmfspr]
+      - [0xA14A0, .data, game/mallocblock]
+      - [0xA14B0, .data, game/hmfman]
+      - [0xA1680, .data, game/hmfdraw]
+      - [0xA1D70, .data, game/hmfanim]
+      - [0xA1DD0, .data, game/mgdata]
+      - [0xA1DF0, .data, game/texload]
+      - [0xA1E40, .data, game/main]
+      - [0xA1EB0, .data, game/ovlEvent]
+      - [0xA1EC0, .data, game/gamework]
+      - [0xA1EE0, .data, game/gamemes]
+      - [0xA2190, .data, game/pause]
+      - [0xA2240, .data, game/aura]
+      - [0xA2260, .data, game/lightdebug]
+      - [0xA22B0, .data, game/objmain]
+      - [0xA2500, .data, game/audio]
+      - [0xA2520, .data, game/objsysobj]
+      - [0xA2920, .data, game/printfunc]
+      - [0xA2970, .data, game/saveEncode]
+      - [0xA2A80, .data, game/saveload]
+      - [0xA2A90, .data, game/sprman]
+      - [0xA2AB0, .data, game/sprput]
+      - [0xA2D50, .data, game/window]
+      - [0xA32D0, .data, game/wipe]
       - [0xA3380, .data, 2.0L/n_audio/n_env]
       - [0xA3480, .data, 2.0L/n_audio/n_sl]
       - [0xA3490, .data, 2.0L/n_audio/n_drvrNew]
@@ -550,27 +550,27 @@ segments:
       - [0xA64D0, rodatabin, gspS2DEX2_fifo_data]
       - [0xA6860, rodatabin, gspL3DEX2_fifo_data]
       - [0xA6C50, rodatabin, n_aspMain_data]
-      - [0xA6F00, .rodata, msm]
-      - [0xA7580, .rodata, audiomgr]
-      - [0xA7590, .rodata, decode]
-      - [0xA75A8, .rodata, hmfload]
-      - [0xA7660, .rodata, hmfparticle]
-      - [0xA7670, .rodata, hmfspr]
-      - [0xA77B8, .rodata, hmfman]
-      - [0xA7828, .rodata, hmfdraw]
-      - [0xA78E0, .rodata, hmfanim]
-      - [0xA7940, .rodata, mgdata]
+      - [0xA6F00, .rodata, game/msm]
+      - [0xA7580, .rodata, game/audiomgr]
+      - [0xA7590, .rodata, game/decode]
+      - [0xA75A8, .rodata, game/hmfload]
+      - [0xA7660, .rodata, game/hmfparticle]
+      - [0xA7670, .rodata, game/hmfspr]
+      - [0xA77B8, .rodata, game/hmfman]
+      - [0xA7828, .rodata, game/hmfdraw]
+      - [0xA78E0, .rodata, game/hmfanim]
+      - [0xA7940, .rodata, game/mgdata]
       - [0xA7EF4, pad, pad_A7EF4] # zero padding: texload's rodata is 16-byte aligned, but subalign is 8
-      - [0xA7F00, .rodata, texload]
-      - [0xA7F20, .rodata, gamemes]
-      - [0xA8620, .rodata, aura]
-      - [0xA8628, .rodata, lightdebug]
-      - [0xA8698, .rodata, objmain]
-      - [0xA8740, .rodata, saveEncode]
+      - [0xA7F00, .rodata, game/texload]
+      - [0xA7F20, .rodata, game/gamemes]
+      - [0xA8620, .rodata, game/aura]
+      - [0xA8628, .rodata, game/lightdebug]
+      - [0xA8698, .rodata, game/objmain]
+      - [0xA8740, .rodata, game/saveEncode]
       - [0xA8760, .rodata, sndplayer]
-      - [0xA87A0, .rodata, sprman]
-      - [0xA8800, .rodata, sprput]
-      - [0xA8810, .rodata, window]
+      - [0xA87A0, .rodata, game/sprman]
+      - [0xA8800, .rodata, game/sprput]
+      - [0xA8810, .rodata, game/window]
       - [0xA8B50, .rodata, lib/hvq]
       - [0xA8B90, .rodata, 2.0L/n_audio/n_env]
       - [0xA8C00, .rodata, 2.0L/n_audio/n_resample]
@@ -616,40 +616,40 @@ segments:
       - [0xA96A0, .rodata, libm/logf]
       - [0xA96B0, .rodata, libm/sind]
       - [0xA96E0, .rodata, libm/sindf]
-      - { start: 0xA96F0, type: .bss, vram: 0x800A8AF0, name: boot }
-      - { start: 0xA96F0, type: .bss, vram: 0x800A9650, name: msm }
-      - { start: 0xA96F0, type: .bss, vram: 0x800A97C0, name: audiomgr }
-      - { start: 0xA96F0, type: .bss, vram: 0x800ABE40, name: pad }
-      - { start: 0xA96F0, type: .bss, vram: 0x800ABFC0, name: data }
-      - { start: 0xA96F0, type: .bss, vram: 0x800ABFF0, name: decode }
-      - { start: 0xA96F0, type: .bss, vram: 0x800AC7F0, name: eeprom }
-      - { start: 0xA96F0, type: .bss, vram: 0x800AC800, name: graphics }
-      - { start: 0xA96F0, type: .bss, vram: 0x800B19B0, name: hmfload }
-      - { start: 0xA96F0, type: .bss, vram: 0x800B19E0, name: hmfcoll }
-      - { start: 0xA96F0, type: .bss, vram: 0x800B19F0, name: hmfdraw }
-      - { start: 0xA96F0, type: .bss, vram: 0x800B1A10, name: mallocperm }
-      - { start: 0xA96F0, type: .bss, vram: 0x800B1A20, name: malloctemp }
-      - { start: 0xA96F0, type: .bss, vram: 0x800B1A30, name: gamework }
-      - { start: 0xA96F0, type: .bss, vram: 0x800B1A40, name: messdata }
-      - { start: 0xA96F0, type: .bss, vram: 0x800B1A50, name: gamemes }
-      - { start: 0xA96F0, type: .bss, vram: 0x800B2340, name: pause }
-      - { start: 0xA96F0, type: .bss, vram: 0x800B23A0, name: aura }
-      - { start: 0xA96F0, type: .bss, vram: 0x800B23B0, name: lightdebug }
-      - { start: 0xA96F0, type: .bss, vram: 0x800B23C0, name: objmain }
-      - { start: 0xA96F0, type: .bss, vram: 0x800B23D0, name: audio }
-      - { start: 0xA96F0, type: .bss, vram: 0x800B23E0, name: profiler }
-      - { start: 0xA96F0, type: .bss, vram: 0x800B29F0, name: rom }
-      - { start: 0xA96F0, type: .bss, vram: 0x800B2A30, name: printfunc }
-      - { start: 0xA96F0, type: .bss, vram: 0x800BBA30, name: process }
-      - { start: 0xA96F0, type: .bss, vram: 0x800BBAA0, name: saveEncode }
-      - { start: 0xA96F0, type: .bss, vram: 0x800BBAB0, name: saveload }
+      - { start: 0xA96F0, type: .bss, vram: 0x800A8AF0, name: game/boot }
+      - { start: 0xA96F0, type: .bss, vram: 0x800A9650, name: game/msm }
+      - { start: 0xA96F0, type: .bss, vram: 0x800A97C0, name: game/audiomgr }
+      - { start: 0xA96F0, type: .bss, vram: 0x800ABE40, name: game/pad }
+      - { start: 0xA96F0, type: .bss, vram: 0x800ABFC0, name: game/data }
+      - { start: 0xA96F0, type: .bss, vram: 0x800ABFF0, name: game/decode }
+      - { start: 0xA96F0, type: .bss, vram: 0x800AC7F0, name: game/eeprom }
+      - { start: 0xA96F0, type: .bss, vram: 0x800AC800, name: game/graphics }
+      - { start: 0xA96F0, type: .bss, vram: 0x800B19B0, name: game/hmfload }
+      - { start: 0xA96F0, type: .bss, vram: 0x800B19E0, name: game/hmfcoll }
+      - { start: 0xA96F0, type: .bss, vram: 0x800B19F0, name: game/hmfdraw }
+      - { start: 0xA96F0, type: .bss, vram: 0x800B1A10, name: game/mallocperm }
+      - { start: 0xA96F0, type: .bss, vram: 0x800B1A20, name: game/malloctemp }
+      - { start: 0xA96F0, type: .bss, vram: 0x800B1A30, name: game/gamework }
+      - { start: 0xA96F0, type: .bss, vram: 0x800B1A40, name: game/messdata }
+      - { start: 0xA96F0, type: .bss, vram: 0x800B1A50, name: game/gamemes }
+      - { start: 0xA96F0, type: .bss, vram: 0x800B2340, name: game/pause }
+      - { start: 0xA96F0, type: .bss, vram: 0x800B23A0, name: game/aura }
+      - { start: 0xA96F0, type: .bss, vram: 0x800B23B0, name: game/lightdebug }
+      - { start: 0xA96F0, type: .bss, vram: 0x800B23C0, name: game/objmain }
+      - { start: 0xA96F0, type: .bss, vram: 0x800B23D0, name: game/audio }
+      - { start: 0xA96F0, type: .bss, vram: 0x800B23E0, name: game/profiler }
+      - { start: 0xA96F0, type: .bss, vram: 0x800B29F0, name: game/rom }
+      - { start: 0xA96F0, type: .bss, vram: 0x800B2A30, name: game/printfunc }
+      - { start: 0xA96F0, type: .bss, vram: 0x800BBA30, name: game/process }
+      - { start: 0xA96F0, type: .bss, vram: 0x800BBAA0, name: game/saveEncode }
+      - { start: 0xA96F0, type: .bss, vram: 0x800BBAB0, name: game/saveload }
       - { start: 0xA96F0, type: .bss, vram: 0x800BBAC0, name: nnsched }
-      - { start: 0xA96F0, type: .bss, vram: 0x800BCD00, name: siman }
-      - { start: 0xA96F0, type: .bss, vram: 0x800BD7C0, name: sprman }
-      - { start: 0xA96F0, type: .bss, vram: 0x800BD810, name: sprput }
-      - { start: 0xA96F0, type: .bss, vram: 0x800BD860, name: vibrator }
-      - { start: 0xA96F0, type: .bss, vram: 0x800BDA50, name: window }
-      - { start: 0xA96F0, type: .bss, vram: 0x800BDA70, name: wipe }
+      - { start: 0xA96F0, type: .bss, vram: 0x800BCD00, name: game/siman }
+      - { start: 0xA96F0, type: .bss, vram: 0x800BD7C0, name: game/sprman }
+      - { start: 0xA96F0, type: .bss, vram: 0x800BD810, name: game/sprput }
+      - { start: 0xA96F0, type: .bss, vram: 0x800BD860, name: game/vibrator }
+      - { start: 0xA96F0, type: .bss, vram: 0x800BDA50, name: game/window }
+      - { start: 0xA96F0, type: .bss, vram: 0x800BDA70, name: game/wipe }
       - { start: 0xA96F0, type: .bss, vram: 0x800BDA90, name: lib/hvq }
       - { start: 0xA96F0, type: .bss, vram: 0x800C1560, name: libleo/bootgame }
       - { start: 0xA96F0, type: .bss, vram: 0x800C2180, name: 2.0L/io/pimgr }

@@ -300,9 +300,9 @@ build/src/88CF0.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force
 
 # Files that have scommon
 build/src/2.0L/gu/lookathil.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
-build/src/gamemes.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
-build/src/hmflight.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
-build/src/pause.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
+build/src/game/gamemes.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
+build/src/game/hmflight.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
+build/src/game/pause.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
 build/src/game/overlays/minigames/31_vine_with_me/%.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
 build/src/game/overlays/minigames/36_motor_rooter/system.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
 build/src/game/overlays/minigames/37_silly_screws/%.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align

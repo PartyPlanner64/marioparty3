@@ -4595,6 +4595,24 @@ s32 func_80114030_duel03(void) {
 // forms of this block (380-1920). Every matched sibling (duel01/02/03/05)
 // fills that slot with `li v1, 4`, so the target's v1-live condition is
 // specific to this function's return-1 layout.
+// Verified via -dj/-dJ/-dd dumps: for the early-return form, fill_eager tries
+// the fallthrough first (EQ branch => mostly_true_jump returns 0). The target
+// result follows if, at reorg time, the RTL is
+// `beqz A; v0 = 1; lb frontID; li 4; bne` (v0 = 1 *before* the frontID load).
+// reorg then takes `v0 = 1` for the beqz slot, the bne slot gets nothing (nop),
+// and the beqz is redirected past the redundant `li v0, 1`. Our jump.c
+// "x = b; if (...) x = a" move (jump.c ~line 725) puts `v0 = 1` right before
+// the first jump of the chain (the bne), i.e. after `lb`/`li 4`. A redundant
+// leading `walkNum == 3 &&` in the BOO test proves it: that block then matches,
+// apart from the leftover compare (score 410). Other ways to get the same slot:
+// a live label right after the beqz (own_fallthrough = 0), or a beqz target
+// label that is not a flow basic-block head (find_basic_block returns -1, so
+// all registers count as live there).
+// Also tried without success: `?:` forms with a constant arm (the temp gets
+// v1/a0 plus a move), a local `ret` variable, static inline helpers (whole
+// body or BOO part; results land in a pseudo), `do {} while (0)` in each
+// position, flat or repeated `walkNum == 3` tests, and restructured tails
+// (else-return, no final return, falling out of the block).
 // The frame is 0x28 bytes bigger than in the sibling callbacks; the 40-byte
 // local that causes this is never referenced.
 s32 func_8011454C_duel03(void) {

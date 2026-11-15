@@ -1334,6 +1334,11 @@ s32 HuWinChoiceGet(s16 winId, s16 arg1, s32 arg2) {
  * copy or a branch removed after reload. Mario Party 2 has the same code
  * (marioparty2 func_8008BCB8_8C8B8, without the mute check) and it also keeps
  * `sprite` in a0.
+ * Also tried: static inline cursor setters (the unused return label is
+ * removed before CSE, so they give no block boundary), a static inline
+ * `&choice_data[n]` getter, and reusing `sprite` in a switch loop, at the
+ * initial x/y read, or for the A_BUTTON `stat` read. Each of these changes
+ * other code (folded 0xF4/0xF6 offsets become explicit pointer offsets).
  */
 s32 HuWinChoice(s16 winId) {
     TextWindow *window = &winData[winId];

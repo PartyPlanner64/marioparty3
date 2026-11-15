@@ -30,40 +30,92 @@ typedef struct {
     /* 0x0C */ f32 unk0C; // Stick angle
 } AllFiredUpPlayerWork;   // Size 0x10
 
+typedef struct {
+    /* 0x00 */ u8 unk00;
+    /* 0x02 */ s16 unk02[4];
+} AllFiredUpBssAF0; // Size 0xC
+
 extern s32 D_800A178C_main[][6];
 extern u8 D_800D6A90_main;
 extern f32 D_800EB76C_minigame;
 
-extern u8 D_80109930_all_fired_up[][4];
-extern Vec D_80109990_all_fired_up[];
-extern u16 D_801099C0_all_fired_up[];
-extern s8 D_801099C8_all_fired_up;
-extern f32 D_801099CC_all_fired_up;
-extern s8 D_801099D0_all_fired_up;
-extern u8 D_801099D4_all_fired_up[][6];
+u8 D_80109930_all_fired_up[24][4] = {
+    { 0, 1, 2, 3 },
+    { 0, 1, 3, 2 },
+    { 0, 2, 1, 3 },
+    { 0, 2, 3, 1 },
+    { 0, 3, 1, 2 },
+    { 0, 3, 2, 1 },
+    { 1, 0, 2, 3 },
+    { 1, 0, 3, 2 },
+    { 1, 2, 3, 0 },
+    { 1, 2, 0, 3 },
+    { 1, 3, 0, 2 },
+    { 1, 3, 2, 0 },
+    { 2, 0, 1, 3 },
+    { 2, 0, 3, 1 },
+    { 2, 1, 0, 3 },
+    { 2, 1, 3, 0 },
+    { 2, 3, 0, 1 },
+    { 2, 3, 1, 0 },
+    { 3, 0, 1, 2 },
+    { 3, 0, 2, 1 },
+    { 3, 1, 0, 2 },
+    { 3, 1, 2, 0 },
+    { 3, 2, 0, 1 },
+    { 3, 2, 1, 0 }
+};
+Vec D_80109990_all_fired_up[4] = {
+    { 60.0f, 0.0f, -60.0f },
+    { 60.0f, 0.0f, 60.0f },
+    { -60.0f, 0.0f, 60.0f },
+    { -60.0f, 0.0f, -60.0f }
+};
+u16 D_801099C0_all_fired_up[4] = { 1800, 1800, 1800, 1800 };
+s8 D_801099C8_all_fired_up = 0;
+s8 D_801099C9_all_fired_up = 15;
+f32 D_801099CC_all_fired_up = 400.0f;
+s8 D_801099D0_all_fired_up = 0;
+u8 D_801099D4_all_fired_up[6][6] = {
+    { 0, 1, 2, 1, 0, 2 },
+    { 0, 2, 1, 0, 1, 2 },
+    { 0, 2, 0, 1, 2, 1 },
+    { 2, 0, 2, 1, 2, 0 },
+    { 2, 0, 1, 0, 2, 1 },
+    { 2, 1, 0, 2, 0, 1 }
+};
+s32 D_801099F8_all_fired_up = 0;
+s8 D_801099FC_all_fired_up = 0;
+f32 D_80109A00_all_fired_up = 1.0f;
+s8 D_80109A04_all_fired_up = 0;
+s8 D_80109A05_all_fired_up = 0;
+s8 D_80109A06_all_fired_up = -1;
+s32 D_80109A08_all_fired_up[4] = { 0 };
+s32 D_80109A18_all_fired_up[4][4] = {
+    { 0, -2, -4, -6 },
+    { 0, -2, -4, -6 },
+    { 0, -2, -4, -6 },
+    { 0, -2, -4, -6 }
+};
+f32 D_80109A58_all_fired_up[4] = { 1.0f, 1.5f, 2.0f, 2.5f };
 
-extern s32 D_801099F8_all_fired_up;
-extern s8 D_801099C9_all_fired_up;
-extern s8 D_801099FC_all_fired_up;
-extern f32 D_80109A00_all_fired_up;
-extern s8 D_80109A04_all_fired_up;
-extern s8 D_80109A05_all_fired_up;
-extern s8 D_80109A06_all_fired_up;
-extern s32 D_80109A08_all_fired_up[];
-extern s32 D_80109A18_all_fired_up[][4];
-extern f32 D_80109A58_all_fired_up[];
-extern s32 D_80109AC0_all_fired_up;
-extern s8 D_80109AC4_all_fired_up;
-extern s8 D_80109AC5_all_fired_up;
-extern D_80111B50_vine_with_me_Struct D_80109AC8_all_fired_up;
+s32 D_80109AC0_all_fired_up BSS;
+s8 D_80109AC4_all_fired_up BSS;
+s8 D_80109AC5_all_fired_up BSS;
+D_80111B50_vine_with_me_Struct D_80109AC8_all_fired_up BSS;
+AllFiredUpBssAF0 allFiredUpBssAF0 BSS;
+u8 D_80109AFC_all_fired_up[4] BSS; /* Unreferenced. */
+omObjData *D_80109B00_all_fired_up[21] BSS;
+u8 D_80109B54_all_fired_up[4] BSS; /* Unreferenced. */
+Vec D_80109B58_all_fired_up[21] BSS;
+s8 D_80109C54_all_fired_up BSS;
+s16 D_80109C56_all_fired_up BSS;
+s8 D_80109C58_all_fired_up BSS;
+s8 D_80109C59_all_fired_up BSS;
+
+/* Fields of allFiredUpBssAF0, aliased in undefined_syms.txt. */
 extern u8 D_80109AF0_all_fired_up;
 extern s16 D_80109AF2_all_fired_up[];
-extern omObjData *D_80109B00_all_fired_up[];
-extern Vec D_80109B58_all_fired_up[];
-extern s8 D_80109C54_all_fired_up;
-extern s16 D_80109C56_all_fired_up;
-extern s8 D_80109C58_all_fired_up;
-extern s8 D_80109C59_all_fired_up;
 
 void func_80105C54_all_fired_up(D_80111B50_vine_with_me_Struct *arg0);
 void func_80105CE8_all_fired_up(void);

@@ -299,3 +299,7 @@ D_8010C9BE_mpiq = D_8010C9BC_mpiq + 0x2;
 D_8010CAEC_mpiq = mpiqBssCAEC;
 D_8010CAF2_mpiq = mpiqBssCAEC + 0x6;
 D_8010CAFA_mpiq = D_8010CAF8_mpiq + 0x2;
+
+/* all_fired_up field aliases: AllFiredUpBssAF0. */
+D_80109AF0_all_fired_up = allFiredUpBssAF0;
+D_80109AF2_all_fired_up = allFiredUpBssAF0 + 0x2;

@@ -4573,16 +4573,20 @@ s32 func_80114030_duel03(void) {
 }
 
 #ifdef NON_MATCHING
-// The walkNum == 3 block is the only mismatch. The target fills the first
-// beqz delay slot with `li v0, 1` (stolen from the shared return-1 block),
-// leaving a nop after the frontID bne. With the early-return form
-// (`if (!(c1)) return 1; if (BOO && !c2) return 0; return 1;`) everything
-// else matches, but reorg instead fills that slot with the fallthrough
-// `li v1, 4` (score 550). This nested form gets the delay slots right, but
-// CSE then reuses the first backPower load (held in a2) instead of reloading
-// it, and the c1 slt lands in v1 (score 380). Tried: ternary/||/else-if
-// variants of this block, splitting the tail and the Boo block, inner
-// do-while(0); none produce both the reload and the stolen delay slot.
+// The walkNum == 3 block is the only mismatch. This nested form, with a
+// do-while(0) CSE boundary so backPower is reloaded, gets every instruction
+// right, but jump.c hoists the return-1 `v0 = 1` above the first beqz, so the
+// first slt/backPower land in v1 instead of v0 (score 40). The target is more
+// likely the early-return form (`if (!(c1)) return 1; if (BOO && !c2) return
+// 0; return 1;`, as in duel02): there the hoisted `v0 = 1` sits before the
+// frontID bne and the registers match, but reorg fills the first beqz delay
+// slot with the fallthrough `li v1, 4` (score 550). In the target, reorg
+// rejects that because it treats v1 as live at the shared return-1 block
+// (40d060), and it steals the hoisted `li v0, 1` instead, leaving a nop after
+// the bne. Our return-1 label is a flow basic-block head, so v1 is dead
+// there. Tried: tail forms (scc/else/nested), else-if and early-return
+// cidx range checks, ternary/||/else-if forms of this block, and do-while
+// placements. None change that fill.
 // The frame is 0x28 bytes bigger than in the sibling callbacks; the 40-byte
 // local that causes this is never referenced.
 s32 func_8011454C_duel03(void) {
@@ -4633,9 +4637,12 @@ s32 func_8011454C_duel03(void) {
         }
         if (walkNum == 3) {
             if (player->stats.partners.backPower < other->stats.partners.frontHp + other->star) {
-                if (other->stats.partners.frontID == PARTNER_BOO &&
-                    !(player->stats.partners.backPower < stars + player->stats.partners.backHp)) {
-                    return 0;
+                if (other->stats.partners.frontID == PARTNER_BOO) {
+                    do {
+                    } while (0); // CSE boundary: reload backPower.
+                    if (!(player->stats.partners.backPower < stars + player->stats.partners.backHp)) {
+                        return 0;
+                    }
                 }
             }
             return 1;

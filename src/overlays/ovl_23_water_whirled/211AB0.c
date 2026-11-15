@@ -17,59 +17,71 @@ extern u8 D_800D2008_main;
 extern f32 D_800D5210_main;
 extern u8 D_800D6A90_main;
 
-extern Vec D_8010A160_water_whirled[];
-extern f32 D_8010A190_water_whirled[4];
-extern Vec D_8010A1A0_water_whirled[];
-extern Vec D_8010A1D0_water_whirled[];
-extern Vec D_8010A200_water_whirled[];
-extern f32 D_8010A230_water_whirled[4];
-extern s32 D_8010A240_water_whirled[4];
-extern f32 D_8010A250_water_whirled;
-extern f32 D_8010A254_water_whirled;
-extern f32 D_8010A258_water_whirled;
-extern f32 D_8010A25C_water_whirled;
-extern f32 D_8010A260_water_whirled;
-extern f32 D_8010A264_water_whirled;
-extern f32 D_8010A268_water_whirled;
-extern f32 D_8010A26C_water_whirled;
-extern s32 D_8010A280_water_whirled;
-extern s32 D_8010A284_water_whirled;
-extern s32 D_8010A270_water_whirled[4];
-extern s32 D_8010A288_water_whirled;
-extern s32 D_8010A28C_water_whirled[4];
-extern s32 D_8010A29C_water_whirled[4];
-extern D_80111B50_vine_with_me_Struct D_8010A2AC_water_whirled;
-extern Vec D_8010A2D4_water_whirled;
-extern f32 D_8010A2E0_water_whirled[4];
-extern s8 D_8010A2F0_water_whirled[4];
-extern s16 D_8010A2F4_water_whirled;
-extern s16 D_8010A2F6_water_whirled;
-extern s16 D_8010A2F8_water_whirled;
-extern s32 D_8010A2FC_water_whirled[4];
-extern s16 D_8010A30C_water_whirled[][20];
-extern s32 D_8010A3AC_water_whirled[];
-extern s32 D_8010A3BC_water_whirled[];
-extern f32 D_8010A3CC_water_whirled[4];
-extern s32 D_8010A3DC_water_whirled[4];
-extern s32 D_8010A3EC_water_whirled[];
-extern f32 D_8010A3FC_water_whirled[4];
-extern f32 D_8010A40C_water_whirled[4];
-extern f32 D_8010A41C_water_whirled[];
-extern s32 D_8010A42C_water_whirled[4];
-extern s32 D_8010A43C_water_whirled[4];
-extern Vec D_8010A44C_water_whirled[][3];
-extern Vec D_8010A560_water_whirled[4][6];
-extern f32 D_8010A680_water_whirled[4][6];
-extern Vec D_8010A6E0_water_whirled[4][6];
-extern f32 D_8010A800_water_whirled[4][6];
-extern Vec2f D_8010A860_water_whirled;
-extern s32 D_8010AC40_water_whirled;
-extern s32 D_8010AC44_water_whirled;
-extern Vec D_8010A880_water_whirled[][20];
-extern s32 D_8010AC48_water_whirled[4];
-extern s32 D_8010AC58_water_whirled[4];
-extern s32 D_8010AC68_water_whirled[4];
-extern s32 D_8010AC78_water_whirled[4];
+Vec D_8010A160_water_whirled[4] = {
+    { -300.0f, 0.0f, 325.0f },
+    { -250.0f, 0.0f, 575.0f },
+    { -200.0f, 0.0f, 825.0f },
+    { -150.0f, 0.0f, 1075.0f }
+};
+f32 D_8010A190_water_whirled[4] = { 40.0f, 40.0f, 40.0f, 40.0f };
+Vec D_8010A1A0_water_whirled[4] = { 0 };
+Vec D_8010A1D0_water_whirled[4] = { 0 };
+Vec D_8010A200_water_whirled[4] = { 0 };
+f32 D_8010A230_water_whirled[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+s32 D_8010A240_water_whirled[4] = { -1, -1, -1, -1 };
+f32 D_8010A250_water_whirled = 0.0f;
+f32 D_8010A254_water_whirled = 0.15f;
+f32 D_8010A258_water_whirled = 30.0f;
+f32 D_8010A25C_water_whirled = 80.0f;
+f32 D_8010A260_water_whirled = 0.0f;
+f32 D_8010A264_water_whirled = 0.13f;
+f32 D_8010A268_water_whirled = 40.0f;
+f32 D_8010A26C_water_whirled = 40.0f;
+s32 D_8010A270_water_whirled[4] = { 0, 0, 0, 0 };
+s32 D_8010A280_water_whirled = -1;
+s32 D_8010A284_water_whirled = 0;
+s32 D_8010A288_water_whirled = 0;
+s32 D_8010A28C_water_whirled[4] = { -1, -1, -1, -1 };
+s32 D_8010A29C_water_whirled[4] = { 0, 0, 0, 0 };
+D_80111B50_vine_with_me_Struct D_8010A2AC_water_whirled = { 0, 0, 1, 1, 0, 132, 0, 0, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0, 0, 0, 0 }, 120, -1, 5400, 75, 135 };
+Vec D_8010A2D4_water_whirled = { 101.0f, -51.0f, 38.0f };
+f32 D_8010A2E0_water_whirled[4] = { 45.0f, 42.5f, 41.0f, 40.0f };
+s8 D_8010A2F0_water_whirled[4] = { -1, -1, -1, -1 };
+s16 D_8010A2F4_water_whirled = -1;
+s16 D_8010A2F6_water_whirled = -1;
+s16 D_8010A2F8_water_whirled = -1;
+s32 D_8010A2FC_water_whirled[4] = { 0, 0, 0, 0 };
+s16 D_8010A30C_water_whirled[4][20] = { 0 };
+s32 D_8010A3AC_water_whirled[4] = { 0, 0, 0, 0 };
+s32 D_8010A3BC_water_whirled[4] = { 0, 0, 0, 0 };
+f32 D_8010A3CC_water_whirled[4] = { 0.1f, 0.1f, 0.1f, 0.1f };
+s32 D_8010A3DC_water_whirled[4] = { 0, 0, 0, 0 };
+s32 D_8010A3EC_water_whirled[4] = { 0, 0, 0, 0 };
+f32 D_8010A3FC_water_whirled[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+f32 D_8010A40C_water_whirled[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+f32 D_8010A41C_water_whirled[4] = { 2.5f, 0.9f, 0.5f, 0.2f };
+s32 D_8010A42C_water_whirled[4] = { 0, 0, 0, 0 };
+s32 D_8010A43C_water_whirled[4] = { 0, 0, 0, 0 };
+Vec D_8010A44C_water_whirled[4][3] = {
+    { { 0.0f, 100.0f, 0.0f }, { 0.0f, 100.0f, 800.0f }, { 0.0f, -500.0f, 800.0f } },
+    { { 1000.0f, 100.0f, 0.0f }, { 1800.0f, 100.0f, 0.0f }, { 1800.0f, -500.0f, 0.0f } },
+    { { 0.0f, 100.0f, 0.0f }, { 0.0f, 100.0f, -800.0f }, { 0.0f, -500.0f, -800.0f } },
+    { { -1000.0f, 100.0f, 0.0f }, { -1800.0f, 100.0f, 0.0f }, { -1800.0f, -500.0f, 0.0f } }
+};
+
+Vec D_8010A560_water_whirled[4][6] BSS;
+f32 D_8010A680_water_whirled[4][6] BSS;
+Vec D_8010A6E0_water_whirled[4][6] BSS;
+f32 D_8010A800_water_whirled[4][6] BSS;
+Vec2f D_8010A860_water_whirled BSS;
+u8 D_8010A868_water_whirled[0x18] BSS; /* Unreferenced. */
+Vec D_8010A880_water_whirled[4][20] BSS;
+s32 D_8010AC40_water_whirled BSS;
+s32 D_8010AC44_water_whirled BSS;
+s32 D_8010AC48_water_whirled[4] BSS;
+s32 D_8010AC58_water_whirled[4] BSS;
+s32 D_8010AC68_water_whirled[4] BSS;
+s32 D_8010AC78_water_whirled[4] BSS;
 
 void func_80105EA0_water_whirled(omObjData *object);
 void func_8010616C_water_whirled(omObjData *object);

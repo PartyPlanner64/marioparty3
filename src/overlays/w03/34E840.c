@@ -29,189 +29,6 @@ typedef struct HatenaPlayerWork {
     /* 0x04 */ s32 order;
 } HatenaPlayerWork;
 
-extern s16 D_8011C110_w03[];
-extern s16 D_8011C120_w03[];
-extern s16 D_8011C130_w03[];
-extern s16 D_8011C140_w03[];
-extern s16 D_8011C150_w03[];
-extern s16 D_8011C164_w03[];
-extern s16 D_8011C16C_w03[];
-extern s32 D_8011C160_w03;
-extern s16 D_8011C180_w03[][2];
-extern s16 D_8011C1A8_w03[][2];
-extern s16 D_8011C1B0_w03[][2];
-extern s16 D_8011C1C8_w03[];
-extern s16 D_8011C1D8_w03[];
-extern s32 D_8011C2E4_w03[];
-extern s32 D_8011C308_w03[];
-extern s16 D_8011C350_w03[];
-extern s16 D_8011C368_w03[];
-extern s16 D_8011C378_w03[];
-extern s16 D_8011C388_w03[];
-extern s16 D_8011C398_w03[];
-extern s16 D_8011C3A8_w03[];
-extern s16 D_8011C3B8_w03[];
-extern s16 D_8011C3C8_w03[];
-extern DecisionTreeNonLeafNode *D_8011CABC_w03[];
-extern s16 D_8011CDF0_w03[];
-extern s16 D_8011CDF8_w03[];
-extern s16 D_8011CE00_w03[];
-extern s16 D_8011CE08_w03[];
-extern s16 D_8011CB20_w03[][3];
-extern BranchPair D_8011CB34_w03[];
-extern s16 D_8011CB68_w03[][3];
-extern BranchPair D_8011CB7C_w03[];
-extern s16 D_8011CBB0_w03[][3];
-extern BranchPair D_8011CBC4_w03[];
-extern s16 D_8011CBF8_w03[][3];
-extern BranchPair D_8011CC0C_w03[];
-extern s16 D_8011CC40_w03[][3];
-extern BranchPair D_8011CC54_w03[];
-extern s16 D_8011CC88_w03[][3];
-extern BranchPair D_8011CC9C_w03[];
-extern s16 D_8011CCD0_w03[][3];
-extern BranchPair D_8011CCE4_w03[];
-extern s16 D_8011CD18_w03[][3];
-extern BranchPair D_8011CD2C_w03[];
-extern s16 D_8011CD60_w03[][3];
-extern BranchPair D_8011CD74_w03[];
-extern s16 D_8011CDA8_w03[][3];
-extern BranchPair D_8011CDBC_w03[];
-extern DecisionTreeNonLeafNode *D_8011C4C8_w03[];
-extern DecisionTreeNonLeafNode *D_8011C528_w03[];
-extern DecisionTreeNonLeafNode *D_8011C5F4_w03[];
-extern DecisionTreeNonLeafNode *D_8011C6D8_w03[];
-extern DecisionTreeNonLeafNode *D_8011C774_w03[];
-extern DecisionTreeNonLeafNode *D_8011C804_w03[];
-extern DecisionTreeNonLeafNode *D_8011C864_w03[];
-extern DecisionTreeNonLeafNode *D_8011C8D0_w03[];
-extern DecisionTreeNonLeafNode *D_8011C924_w03[];
-extern s16 D_8011CAD8_w03[][3];
-extern BranchPair D_8011CAEC_w03[];
-extern s16 D_8011C354_w03[];
-extern s16 D_8011C358_w03[];
-extern s8 D_8011CF98_w03[][5][7];
-extern Object *D_8011EAC0_w03;
-extern Object *D_8011EAC8_w03[];
-extern Process *D_8011EAE8_w03[8];
-extern Process *D_8011EB08_w03;
-extern Object *D_8011EB0C_w03;
-extern Unk3 *D_8011EB10_w03;
-extern Unk3 *D_8011EB14_w03;
-extern Unk3 *D_8011EB18_w03;
-extern Unk3 *D_8011EB1C_w03;
-extern Unk3 *D_8011EB20_w03;
-extern s32 D_8011EB24_w03;
-extern s32 D_8011EB28_w03;
-extern Object *D_8011EB30_w03;
-extern SpaceData *D_8011EB3C_w03;
-extern s32 D_8011EB40_w03[];
-extern s32 D_8011EB50_w03;
-extern Vec2f D_8011D438_w03[];
-extern s16 D_8011D3F8_w03[];
-extern s16 D_8011D404_w03[];
-extern s16 D_8011D41C_w03[];
-extern s16 D_8011D458_w03[];
-extern s16 D_8011D460_w03[];
-extern DecisionTreeNonLeafNode D_8011C948_w03[];
-extern DecisionTreeNonLeafNode D_8011C99C_w03[];
-extern Object *D_8011EB34_w03;
-extern Object *D_8011EB38_w03;
-extern Process *D_8011EB2C_w03;
-extern DecisionTreeNonLeafNode D_8011C9FC_w03[];
-extern DecisionTreeNonLeafNode D_8011CA44_w03[];
-extern DecisionTreeNonLeafNode D_8011CA68_w03[];
-extern s16 D_8011D3E0_w03[];
-extern s16 D_8011D3E8_w03[];
-extern s16 D_8011D3F0_w03[];
-extern Object *D_8011EB54_w03;
-extern Object *D_8011EB58_w03[1];
-extern Object *D_8011EB5C_w03;
-extern Object *D_8011EB60_w03[10];
-extern Object *D_8011EB88_w03;
-extern Object *D_8011EB8C_w03[2];
-extern s16 D_8011C1A0_w03[][2];
-extern s16 D_8011C1B8_w03[][2];
-extern s16 D_8011C1C0_w03[][2];
-extern s16 D_8011C1E8_w03[];
-extern s16 D_8011C1EC_w03[];
-extern Vec D_8011C1F0_w03[];
-extern Vec D_8011C22C_w03[];
-extern s16 D_8011C268_w03[];
-extern s16 D_8011C26C_w03[];
-extern u32 *D_8011C2A8_w03[];
-extern s32 D_8011C2C0_w03[];
-extern s32 D_8011C32C_w03[];
-extern s32 D_8011EB94_w03;
-extern s32 D_8011EB98_w03;
-extern u8 *D_8011EB9C_w03;
-extern Object *D_8011EBE0_w03[4];
-extern omObjData *D_8011EBF0_w03[4];
-extern s32 D_8011D0D0_w03;
-extern s32 D_8011E7A8_w03;
-extern DecisionTreeNonLeafNode *D_8011E8FC_w03[];
-extern Object *D_8011EBA0_w03;
-extern Object *D_8011EBB0_w03;
-extern DecisionTreeNonLeafNode D_8011DB30_w03[];
-extern DecisionTreeNonLeafNode D_8011DB9C_w03[];
-extern DecisionTreeNonLeafNode D_8011DDD0_w03[];
-extern DecisionTreeNonLeafNode D_8011DF68_w03[];
-extern DecisionTreeNonLeafNode D_8011E184_w03[];
-extern DecisionTreeNonLeafNode D_8011E568_w03[];
-extern DecisionTreeNonLeafNode D_8011E6B8_w03[];
-extern s32 D_8011EBB8_w03;
-extern s32 D_8011EBBC_w03;
-extern s32 D_8011EC00_w03;
-extern s32 D_8011EC04_w03;
-extern u8 *D_8011E82C_w03[];
-extern s8 *D_8011E8CC_w03[];
-extern DecisionTreeNonLeafNode *D_8011E8EC_w03[];
-extern DecisionTreeNonLeafNode *D_8011E8F4_w03[];
-extern Object *D_8011EBB4_w03;
-extern Object *D_8011EBD8_w03;
-extern s32 D_8011D388_w03;
-extern Object *D_8011EBC0_w03;
-extern RGB D_8011D3B0_w03[];
-extern s32 D_8011EBC8_w03[4];
-extern Vec2f D_8011D0E4_w03[];
-extern Vec2f D_8011D104_w03[];
-extern u8 D_8011D124_w03[6][3];
-extern u8 D_8011D138_w03[14][3];
-extern DecisionTreeNonLeafNode D_8011CF50_w03[];
-extern u32 D_8011CF68_w03[];
-extern u8 D_8011CF80_w03[2][3][4];
-extern u8 D_8011CFE0_w03[2][3][4];
-extern s8 D_8011CFF8_w03[2][5][10];
-extern u8 D_8011D05C_w03[2][10];
-extern s32 D_8011D070_w03[5][2];
-extern s32 D_8011D098_w03[2];
-extern s32 D_8011D0A0_w03[2];
-extern s32 D_8011D0A8_w03[2];
-extern s32 D_8011D0B0_w03[2];
-extern s32 D_8011D0B8_w03[2];
-extern u32 D_8011D0C0_w03[];
-extern u32 D_8011D0C8_w03[];
-extern u8 D_8011D164_w03[];
-extern s32 D_8011D16C_w03[];
-extern s32 D_8011D178_w03[];
-extern Vec2f D_8011D26C_w03[];
-extern Vec2f D_8011D24C_w03[];
-extern DecisionTreeNonLeafNode D_8011D34C_w03[];
-extern Vec2f D_8011D28C_w03[];
-extern Vec2f D_8011D2AC_w03[];
-extern DecisionTreeNonLeafNode D_8011E0DC_w03;
-extern DecisionTreeNonLeafNode D_8011E3A0_w03;
-extern DecisionTreeNonLeafNode D_8011E64C_w03;
-extern s32 D_8011D338_w03[];
-extern s32 D_8011EBA4_w03;
-extern DecisionTreeNonLeafNode D_8011D2CC_w03[];
-extern Vec2f D_8011D358_w03[];
-extern s32 D_8011EBA8_w03;
-extern s32 D_8011EBAC_w03;
-extern u8 D_8011D38C_w03[];
-extern u8 D_8011D390_w03[];
-extern GameGuyReward D_8011D394_w03[];
-
 void func_80105DB0_w03(void);
 void func_80107D54_w03(s16 arg0);
 void func_80107ECC_w03(void);
@@ -260,6 +77,1869 @@ s32 func_8011B470_w03(void);
 s32 func_8011B51C_w03(void);
 void func_801128B0_w03(void);
 void func_80113080_w03(void);
+s32 func_801089AC_w03(void);
+void func_80108AB8_w03(void);
+void func_80108ADC_w03(void);
+void func_80108B98_w03(void);
+void func_80108C48_w03(void);
+void func_80108C80_w03(void);
+void func_80108CB8_w03(void);
+void func_80108CF0_w03(void);
+void func_80108DA0_w03(void);
+void func_80108DD8_w03(void);
+void func_80108E30_w03(void);
+void func_80108E88_w03(void);
+void func_80108EE0_w03(void);
+void func_80108F38_w03(void);
+void func_80109268_w03(void);
+void func_801092C8_w03(void);
+void func_80109328_w03(void);
+void func_80109388_w03(void);
+void func_801093E8_w03(void);
+void func_80109448_w03(void);
+void func_801094A8_w03(void);
+void func_80109508_w03(void);
+void func_80109568_w03(void);
+void func_801095C8_w03(void);
+void func_80109628_w03(void);
+void func_80109688_w03(void);
+void func_801096E8_w03(void);
+void func_80109748_w03(void);
+void func_801097A8_w03(void);
+void func_80109808_w03(void);
+void func_80109868_w03(void);
+void func_80109AD8_w03(void);
+void func_8010A2C4_w03(void);
+void func_8010A930_w03(void);
+void func_8010B734_w03(void);
+void func_8010F128_w03(void);
+void func_8010F144_w03(void);
+void func_80116C78_w03(void);
+void func_801175AC_w03(void);
+void func_8011B1FC_w03(void);
+
+s16 D_8011C110_w03[] = { 0, 1, 2, 3, 4, 5, 6, 7 };
+
+s16 D_8011C120_w03[] = { 0, 0, 0, 0, 0, 0, 0, 1 };
+
+s16 D_8011C130_w03[] = { 6, 7, 8, 9, 10, 11, 12, 13 };
+
+s16 D_8011C140_w03[] = { 4, 90, 20, 30, 40, 79, 2, 62 };
+
+s16 D_8011C150_w03[] = { 100, 101, 102, 103, 104, 105, 106, 107 };
+
+s32 D_8011C160_w03 = 0;
+
+s16 D_8011C164_w03[] = { 54, 57, -1, 0 };
+
+s16 D_8011C16C_w03[] = {
+    4, 90, 20, 30, 40, 79, 2, 62,
+    -1, 0
+};
+
+s16 D_8011C180_w03[][2] = {
+    { 7, -8 },
+    { 7, -1 },
+    { 8, -5 },
+    { 5, -9 },
+    { -1, -8 },
+    { 7, 0 },
+    { 0, -7 },
+    { -3, -6 }
+};
+
+s16 D_8011C1A0_w03[][2] = {
+    { 2, 0 },
+    { 2, 0 }
+};
+
+s16 D_8011C1A8_w03[][2] = {
+    { 0, -2 },
+    { 4, -1 }
+};
+
+s16 D_8011C1B0_w03[][2] = {
+    { 2, -2 },
+    { 2, -3 }
+};
+
+s16 D_8011C1B8_w03[][2] = {
+    { -1, -2 },
+    { 0, -3 }
+};
+
+s16 D_8011C1C0_w03[][2] = {
+    { 116, 117 },
+    { 140, 141 }
+};
+
+s16 D_8011C1C8_w03[] = { 100, 101, 102, 103, 104, 105, 106, 107 };
+
+s16 D_8011C1D8_w03[] = { 6, 7, 8, 9, 10, 11, 12, 13 };
+
+s16 D_8011C1E8_w03[] = { 108, 0 };
+
+s16 D_8011C1EC_w03[] = { 124, 122 };
+
+Vec D_8011C1F0_w03[] = {
+    { -3.0f, 0.0f, -2.0f },
+    { 0.0f, 2.0f, 2.0f },
+    { 1.0f, 5.5f, -3.0f },
+    { 3.5f, 8.0f, 4.0f },
+    { -1.0f, 12.0f, 11.0f }
+};
+
+Vec D_8011C22C_w03[] = {
+    { 0.0f, 0.0f, 0.0f },
+    { 0.0f, 0.0f, 0.0f },
+    { -15.0f, 0.0f, 0.0f },
+    { 20.0f, 0.0f, -30.0f },
+    { 45.0f, 0.0f, 45.0f }
+};
+
+s16 D_8011C268_w03[] = { 125, 126 };
+
+s16 D_8011C26C_w03[] = { 38, 39, 40, 41, 42, 43 };
+
+u32 D_8011C278_w03[] = { 1, 0x130163 };
+
+u32 D_8011C280_w03[] = { 1, 0x130168 };
+
+u32 D_8011C288_w03[] = { 1, 0x13016F };
+
+u32 D_8011C290_w03[] = { 1, 0x130176 };
+
+u32 D_8011C298_w03[] = { 1, 0x130180 };
+
+u32 D_8011C2A0_w03[] = { 1, 0x130184 };
+
+u32 *D_8011C2A8_w03[] = { D_8011C278_w03, D_8011C280_w03, D_8011C288_w03, D_8011C290_w03, D_8011C298_w03, D_8011C2A0_w03 };
+
+s32 D_8011C2C0_w03[] = {
+    328, 328, 328, 328, 328, 328, -1, -1,
+    -1
+};
+
+s32 D_8011C2E4_w03[] = {
+    -1, -1, -1, -1, -1, -1, -1, -1,
+    -1
+};
+
+s32 D_8011C308_w03[] = {
+    -1, -1, -1, -1, -1, -1, -1, -1,
+    -1
+};
+
+s32 D_8011C32C_w03[] = {
+    -1, -1, -1, -1, -1, -1, -1, -1,
+    -1
+};
+
+s16 D_8011C350_w03[] = { 123, 120 };
+
+s16 D_8011C354_w03[] = { 118, 119 };
+
+s16 D_8011C358_w03[] = { 6, 7, 8, 9, 10, 11, 12, 13 };
+
+s16 D_8011C368_w03[] = { 0, 1, 2, 3, 4, 6, 5, 7 };
+
+s16 D_8011C378_w03[] = { 0, 1, 2, 3, 4, 6, 5, 7 };
+
+s16 D_8011C388_w03[] = { 1, 2, 3, 4, 6, 5, 7, 0 };
+
+s16 D_8011C398_w03[] = { 4, 6, 1, 5, 7, 3, 0, 2 };
+
+s16 D_8011C3A8_w03[] = { 6, 1, 5, 7, 3, 4, 0, 2 };
+
+s16 D_8011C3B8_w03[] = { 6, 7, 1, 5, 3, 0, 4, 2 };
+
+s16 D_8011C3C8_w03[] = { 1, 6, 5, 7, 3, 4, 0, 2 };
+
+DecisionTreeNonLeafNode D_8011C3D8_w03[] = {
+    { 3, { .data = 0x00000028 }, { .data = 0x1C96A33C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0C96A33C } }
+};
+
+DecisionTreeNonLeafNode D_8011C3F0_w03[] = {
+    { 3, { .data = 0x00000280 }, { .data = 0x1C96A33C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0C96A33C } }
+};
+
+DecisionTreeNonLeafNode D_8011C408_w03[] = {
+    { 2, { .data = 0x000000EA }, { .data = 0x1BF6A33C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0C96A33C } }
+};
+
+DecisionTreeNonLeafNode D_8011C420_w03[] = {
+    { 6, { .func = func_801089AC_w03 }, { .data = 0x00000000 } },
+    { 8, { .data = 0x00000001 }, { .node_data = D_8011C408_w03 } },
+    { 2, { .data = 0x0000000F }, { .node_data = D_8011C3D8_w03 } },
+    { 2, { .data = 0x000000F0 }, { .node_data = D_8011C3F0_w03 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x064C9932 } }
+};
+
+DecisionTreeNonLeafNode D_8011C45C_w03[] = {
+    { 2, { .data = 0x00000020 }, { .data = 0x1B541E32 } },
+    { 0, { .data = 0x00000000 }, { .node_data = D_8011C3F0_w03 } }
+};
+
+DecisionTreeNonLeafNode D_8011C474_w03[] = {
+    { 8, { .data = 0x00000001 }, { .node_data = D_8011C45C_w03 } },
+    { 2, { .data = 0x0000000F }, { .data = 0x1B541E32 } },
+    { 2, { .data = 0x000000F0 }, { .data = 0x0B541E32 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x064C9932 } }
+};
+
+DecisionTreeNonLeafNode D_8011C4A4_w03[] = {
+    { 2, { .data = 0x0000000F }, { .data = 0x1B541E32 } },
+    { 2, { .data = 0x00000030 }, { .node_data = D_8011C3D8_w03 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x064C9932 } }
+};
+
+DecisionTreeNonLeafNode *D_8011C4C8_w03[] = { D_8011C420_w03, D_8011C474_w03, D_8011C4A4_w03 };
+
+DecisionTreeNonLeafNode D_8011C4D4_w03[] = {
+    { 6, { .func = func_801089AC_w03 }, { .data = 0x00000000 } },
+    { 2, { .data = 0x0000000E }, { .data = 0x1C96A33C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0BF6A33C } }
+};
+
+DecisionTreeNonLeafNode D_8011C4F8_w03[] = {
+    { 2, { .data = 0x0000000E }, { .data = 0x1C96A33C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0BF6A33C } }
+};
+
+DecisionTreeNonLeafNode D_8011C510_w03[] = {
+    { 2, { .data = 0x00000001 }, { .data = 0x1C96A33C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x064C9932 } }
+};
+
+DecisionTreeNonLeafNode *D_8011C528_w03[] = { D_8011C4D4_w03, D_8011C4F8_w03, D_8011C510_w03 };
+
+DecisionTreeNonLeafNode D_8011C534_w03[] = {
+    { 3, { .data = 0x00000002 }, { .data = 0x1B541E32 } },
+    { 3, { .data = 0x00000020 }, { .data = 0x0B541E32 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x1B541E32 } }
+};
+
+DecisionTreeNonLeafNode D_8011C558_w03[] = {
+    { 6, { .func = func_801089AC_w03 }, { .data = 0x00000000 } },
+    { 2, { .data = 0x00000002 }, { .data = 0x1C96A33C } },
+    { 2, { .data = 0x00000004 }, { .data = 0x0C96A33C } },
+    { 3, { .data = 0x00004000 }, { .data = 0x1B542332 } },
+    { 3, { .data = 0x00000008 }, { .data = 0x1A119E32 } },
+    { 12, { .data = 0x0000000A }, { .node_data = D_8011C534_w03 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x1B541E32 } }
+};
+
+DecisionTreeNonLeafNode D_8011C5AC_w03[] = {
+    { 2, { .data = 0x00000005 }, { .data = 0x0C96A33C } },
+    { 2, { .data = 0x0000000A }, { .data = 0x1C96A33C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x064C9932 } }
+};
+
+DecisionTreeNonLeafNode D_8011C5D0_w03[] = {
+    { 2, { .data = 0x00000003 }, { .data = 0x0C96A33C } },
+    { 2, { .data = 0x0000000C }, { .data = 0x1C96A33C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x064C9932 } }
+};
+
+DecisionTreeNonLeafNode *D_8011C5F4_w03[] = { D_8011C558_w03, D_8011C5AC_w03, D_8011C5D0_w03 };
+
+DecisionTreeNonLeafNode D_8011C600_w03[] = {
+    { 12, { .data = 0x00000014 }, { .data = 0x0A119E32 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x1BF6A33C } }
+};
+
+DecisionTreeNonLeafNode D_8011C618_w03[] = {
+    { 6, { .func = func_801089AC_w03 }, { .data = 0x00000000 } },
+    { 2, { .data = 0x00000015 }, { .data = 0x0BF6A33C } },
+    { 2, { .data = 0x000000E0 }, { .data = 0x1BF6A33C } },
+    { 2, { .data = 0x0000000A }, { .node_data = D_8011C600_w03 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x064C9932 } }
+};
+
+DecisionTreeNonLeafNode D_8011C654_w03[] = {
+    { 0, { .data = 0x00000000 }, { .node_data = D_8011C618_w03 } }
+};
+
+DecisionTreeNonLeafNode D_8011C660_w03[] = {
+    { 3, { .data = 0x0000000C }, { .data = 0x0B54233C } },
+    { 3, { .data = 0x00000022 }, { .data = 0x1B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x08D1A346 } }
+};
+
+DecisionTreeNonLeafNode D_8011C684_w03[] = {
+    { 3, { .data = 0x00000033 }, { .data = 0x0A119E32 } },
+    { 3, { .data = 0x000000C8 }, { .data = 0x1A119E32 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x08D1A346 } }
+};
+
+DecisionTreeNonLeafNode D_8011C6A8_w03[] = {
+    { 2, { .data = 0x0000000F }, { .node_data = D_8011C660_w03 } },
+    { 2, { .data = 0x000000E0 }, { .node_data = D_8011C684_w03 } },
+    { 12, { .data = 0x00000014 }, { .node_data = D_8011C684_w03 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0C97ED50 } }
+};
+
+DecisionTreeNonLeafNode *D_8011C6D8_w03[] = { D_8011C618_w03, D_8011C654_w03, D_8011C6A8_w03 };
+
+DecisionTreeNonLeafNode D_8011C6E4_w03[] = {
+    { 6, { .func = func_801089AC_w03 }, { .data = 0x00000000 } },
+    { 8, { .data = 0x00000001 }, { .data = 0x1C96A33C } },
+    { 3, { .data = 0x00000004 }, { .data = 0x0B541E32 } },
+    { 3, { .data = 0x00000100 }, { .data = 0x1B541E32 } },
+    { 3, { .data = 0x00000212 }, { .data = 0x1B541E32 } },
+    { 3, { .data = 0x00000008 }, { .data = 0x0B541E32 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0BF6A332 } }
+};
+
+DecisionTreeNonLeafNode D_8011C738_w03[] = {
+    { 2, { .data = 0x00000015 }, { .data = 0x0C96A33C } },
+    { 8, { .data = 0x00000001 }, { .data = 0x1B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x064C9932 } }
+};
+
+DecisionTreeNonLeafNode D_8011C75C_w03[] = {
+    { 2, { .data = 0x00000015 }, { .data = 0x0C96A33C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x1B54233C } }
+};
+
+DecisionTreeNonLeafNode *D_8011C774_w03[] = { D_8011C6E4_w03, D_8011C738_w03, D_8011C75C_w03 };
+
+DecisionTreeNonLeafNode D_8011C780_w03[] = {
+    { 1, { .data = 0x00000014 }, { .data = 0x1BF6A83C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0BF6A5BC } }
+};
+
+DecisionTreeNonLeafNode D_8011C798_w03[] = {
+    { 2, { .data = 0x00000040 }, { .node_data = D_8011C780_w03 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0BF6A5BC } }
+};
+
+DecisionTreeNonLeafNode D_8011C7B0_w03[] = {
+    { 6, { .func = func_801089AC_w03 }, { .data = 0x00000000 } },
+    { 2, { .data = 0x00000085 }, { .data = 0x0C96A33C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x1BF6A5BC } }
+};
+
+DecisionTreeNonLeafNode D_8011C7D4_w03[] = {
+    { 1, { .data = 0x00000014 }, { .data = 0x0BF6A83C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x1BF6A5BC } }
+};
+
+DecisionTreeNonLeafNode D_8011C7EC_w03[] = {
+    { 2, { .data = 0x00000080 }, { .node_data = D_8011C7D4_w03 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x1BF6A5BC } }
+};
+
+DecisionTreeNonLeafNode *D_8011C804_w03[] = { D_8011C798_w03, D_8011C7B0_w03, D_8011C7EC_w03 };
+
+DecisionTreeNonLeafNode D_8011C810_w03[] = {
+    { 2, { .data = 0x00000002 }, { .data = 0x1BF6A5BC } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0BF6A5BC } }
+};
+
+DecisionTreeNonLeafNode D_8011C828_w03[] = {
+    { 2, { .data = 0x00000002 }, { .data = 0x1BF6A5BC } },
+    { 2, { .data = 0x00000004 }, { .data = 0x0BF6A5BC } },
+    { 0, { .data = 0x00000000 }, { .data = 0x1A119E32 } }
+};
+
+DecisionTreeNonLeafNode D_8011C84C_w03[] = {
+    { 2, { .data = 0x00000004 }, { .data = 0x0BF6A5BC } },
+    { 0, { .data = 0x00000000 }, { .data = 0x1B541E32 } }
+};
+
+DecisionTreeNonLeafNode *D_8011C864_w03[] = { D_8011C810_w03, D_8011C828_w03, D_8011C84C_w03 };
+
+DecisionTreeNonLeafNode D_8011C870_w03[] = {
+    { 9, { .data = 0x00000008 }, { .data = 0x1BF6A33C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0B541E32 } }
+};
+
+DecisionTreeNonLeafNode D_8011C888_w03[] = {
+    { 2, { .data = 0x00000020 }, { .node_data = D_8011C870_w03 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0B541E32 } }
+};
+
+DecisionTreeNonLeafNode D_8011C8A0_w03[] = {
+    { 2, { .data = 0x00000020 }, { .node_data = D_8011C870_w03 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0BF6A33C } }
+};
+
+DecisionTreeNonLeafNode D_8011C8B8_w03[] = {
+    { 2, { .data = 0x00000008 }, { .data = 0x0BF6A33C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x064C9932 } }
+};
+
+DecisionTreeNonLeafNode *D_8011C8D0_w03[] = { D_8011C888_w03, D_8011C8A0_w03, D_8011C8B8_w03 };
+
+DecisionTreeNonLeafNode D_8011C8DC_w03[] = {
+    { 9, { .data = 0x00000004 }, { .data = 0x0B541E32 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x064C9932 } }
+};
+
+DecisionTreeNonLeafNode D_8011C8F4_w03[] = {
+    { 2, { .data = 0x00000028 }, { .data = 0x0BF6A33C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x1B54233C } }
+};
+
+DecisionTreeNonLeafNode D_8011C90C_w03[] = {
+    { 2, { .data = 0x00000028 }, { .data = 0x0BF6A33C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x1B54233C } }
+};
+
+DecisionTreeNonLeafNode *D_8011C924_w03[] = { D_8011C8DC_w03, D_8011C8F4_w03, D_8011C90C_w03 };
+
+DecisionTreeNonLeafNode D_8011C930_w03[] = {
+    { 12, { .data = 0x00000014 }, { .data = 0x0BF6A33C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x1BF6A33C } }
+};
+
+DecisionTreeNonLeafNode D_8011C948_w03[] = {
+    { 6, { .func = func_801089AC_w03 }, { .data = 0x00000000 } },
+    { 2, { .data = 0x00000010 }, { .data = 0x1BF6A33C } },
+    { 2, { .data = 0x00000020 }, { .node_data = D_8011C930_w03 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0BF6A33C } }
+};
+
+DecisionTreeNonLeafNode D_8011C978_w03[] = {
+    { 12, { .data = 0x00000005 }, { .data = 0x1BF6A33C } },
+    { 9, { .data = 0x00000008 }, { .data = 0x0BF6A33C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x1BF6A33C } }
+};
+
+DecisionTreeNonLeafNode D_8011C99C_w03[] = {
+    { 2, { .data = 0x00000030 }, { .node_data = D_8011C978_w03 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0BF6A33C } }
+};
+
+DecisionTreeNonLeafNode D_8011C9B4_w03[] = {
+    { 12, { .data = 0x00000014 }, { .data = 0x1BF6A33C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0BF6A33C } }
+};
+
+DecisionTreeNonLeafNode D_8011C9CC_w03[] = {
+    { 12, { .data = 0x00000014 }, { .data = 0x1BF6A33C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0BF6A33C } }
+};
+
+DecisionTreeNonLeafNode D_8011C9E4_w03[] = {
+    { 5, { .data = 0x0000000C }, { .data = 0x0BF6A33C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x1BF6A33C } }
+};
+
+DecisionTreeNonLeafNode D_8011C9FC_w03[] = {
+    { 2, { .data = 0x000000C5 }, { .data = 0x1BF6A33C } },
+    { 2, { .data = 0x00000002 }, { .node_data = D_8011C9B4_w03 } },
+    { 3, { .data = 0x00000004 }, { .data = 0x0BF6A33C } },
+    { 2, { .data = 0x00000008 }, { .node_data = D_8011C9CC_w03 } },
+    { 3, { .data = 0x00000001 }, { .node_data = D_8011C9E4_w03 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x1BF6A33C } }
+};
+
+DecisionTreeNonLeafNode D_8011CA44_w03[] = {
+    { 2, { .data = 0x00000002 }, { .data = 0x0BF6A33C } },
+    { 3, { .data = 0x00000001 }, { .node_data = D_8011C9E4_w03 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x1BF6A33C } }
+};
+
+DecisionTreeNonLeafNode D_8011CA68_w03[] = {
+    { 2, { .data = 0x00000005 }, { .data = 0x0BF6A33C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x1BF6A33C } }
+};
+
+DecisionTreeNonLeafNode D_8011CA80_w03[] = {
+    { 2, { .data = 0x00000005 }, { .data = 0x1BF6A33C } },
+    { 9, { .data = 0x00000100 }, { .data = 0x0BF6A33C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x1BF6A33C } }
+};
+
+DecisionTreeNonLeafNode D_8011CAA4_w03[] = {
+    { 0, { .data = 0x00000000 }, { .data = 0x0BF6A33C } }
+};
+
+DecisionTreeNonLeafNode D_8011CAB0_w03[] = {
+    { 0, { .data = 0x00000000 }, { .data = 0x064C9932 } }
+};
+
+DecisionTreeNonLeafNode *D_8011CABC_w03[] = { D_8011CA80_w03, D_8011CAA4_w03, D_8011CAB0_w03 };
+
+event_list_entry D_8011CAC8_w03[] = {
+    { 8, 1, func_80108AB8_w03 },
+    { 0, 0, NULL }
+};
+
+s16 D_8011CAD8_w03[][3] = {
+    { 64, 12, -1 },
+    { 45, 65, -1 },
+    { 45, 56, -1 }
+};
+
+BranchLink D_8011CAEC_w03[][2] = {
+    { { 1, 6, 1 }, { 1, 8, 0 } },
+    { { 1, 12, 1 }, { 10, 0, 0 } },
+    { { 1, 12, 1 }, { 2, 0, 0 } }
+};
+
+event_list_entry D_8011CB10_w03[] = {
+    { 1, 1, func_80108ADC_w03 },
+    { 0, 0, NULL }
+};
+
+s16 D_8011CB20_w03[][3] = {
+    { 56, 65, -1 },
+    { 45, 65, -1 },
+    { 45, 56, -1 }
+};
+
+BranchLink D_8011CB34_w03[][2] = {
+    { { 2, 0, 0 }, { 10, 0, 0 } },
+    { { 1, 12, 1 }, { 10, 0, 0 } },
+    { { 1, 12, 1 }, { 2, 0, 0 } }
+};
+
+event_list_entry D_8011CB58_w03[] = {
+    { 1, 2, func_80108B98_w03 },
+    { 0, 0, NULL }
+};
+
+s16 D_8011CB68_w03[][3] = {
+    { 7, 11, -1 },
+    { 6, 11, -1 },
+    { 6, 7, -1 }
+};
+
+BranchLink D_8011CB7C_w03[][2] = {
+    { { 3, 0, 0 }, { 4, 0, 0 } },
+    { { 2, 8, 1 }, { 4, 0, 0 } },
+    { { 2, 8, 1 }, { 3, 0, 0 } }
+};
+
+event_list_entry D_8011CBA0_w03[] = {
+    { 1, 2, func_80108C48_w03 },
+    { 0, 0, NULL }
+};
+
+s16 D_8011CBB0_w03[][3] = {
+    { 14, 83, -1 },
+    { 13, 83, -1 },
+    { 13, 14, -1 }
+};
+
+BranchLink D_8011CBC4_w03[][2] = {
+    { { 5, 0, 0 }, { 6, 0, 0 } },
+    { { 4, 1, 1 }, { 6, 0, 0 } },
+    { { 4, 1, 1 }, { 5, 0, 0 } }
+};
+
+event_list_entry D_8011CBE8_w03[] = {
+    { 1, 2, func_80108C80_w03 },
+    { 0, 0, NULL }
+};
+
+s16 D_8011CBF8_w03[][3] = {
+    { 41, 49, -1 },
+    { 40, 49, -1 },
+    { 40, 41, -1 }
+};
+
+BranchLink D_8011CC0C_w03[][2] = {
+    { { 7, 0, 0 }, { 8, 0, 0 } },
+    { { 5, 24, 1 }, { 8, 0, 0 } },
+    { { 5, 24, 1 }, { 7, 0, 0 } }
+};
+
+event_list_entry D_8011CC30_w03[] = {
+    { 1, 2, func_80108CB8_w03 },
+    { 0, 0, NULL }
+};
+
+s16 D_8011CC40_w03[][3] = {
+    { 93, 50, -1 },
+    { 49, 50, -1 },
+    { 49, 93, -1 }
+};
+
+BranchLink D_8011CC54_w03[][2] = {
+    { { 9, 0, 0 }, { 11, 0, 0 } },
+    { { 8, 0, 1 }, { 11, 0, 0 } },
+    { { 8, 0, 1 }, { 9, 0, 0 } }
+};
+
+event_list_entry D_8011CC78_w03[] = {
+    { 1, 2, func_80108CF0_w03 },
+    { 0, 0, NULL }
+};
+
+s16 D_8011CC88_w03[][3] = {
+    { 57, 99, -1 },
+    { 58, 99, -1 },
+    { 58, 57, -1 }
+};
+
+BranchLink D_8011CC9C_w03[][2] = {
+    { { 11, 10, 1 }, { 12, 0, 0 } },
+    { { 1, 0, 0 }, { 12, 0, 0 } },
+    { { 1, 0, 0 }, { 11, 10, 1 } }
+};
+
+event_list_entry D_8011CCC0_w03[] = {
+    { 1, 2, func_80108DA0_w03 },
+    { 0, 0, NULL }
+};
+
+s16 D_8011CCD0_w03[][3] = {
+    { 89, 10, -1 },
+    { 67, 10, -1 },
+    { 67, 89, -1 }
+};
+
+BranchLink D_8011CCE4_w03[][2] = {
+    { { 2, 3, 0 }, { 3, 3, 1 } },
+    { { 2, 1, 1 }, { 3, 3, 1 } },
+    { { 2, 1, 1 }, { 2, 3, 0 } }
+};
+
+event_list_entry D_8011CD08_w03[] = {
+    { 1, 1, func_80108DD8_w03 },
+    { 0, 0, NULL }
+};
+
+s16 D_8011CD18_w03[][3] = {
+    { 26, 92, -1 },
+    { 24, 92, -1 },
+    { 24, 26, -1 }
+};
+
+BranchLink D_8011CD2C_w03[][2] = {
+    { { 5, 11, 0 }, { 6, 9, 1 } },
+    { { 5, 9, 1 }, { 6, 9, 1 } },
+    { { 5, 9, 1 }, { 5, 11, 0 } }
+};
+
+event_list_entry D_8011CD50_w03[] = {
+    { 1, 1, func_80108E30_w03 },
+    { 0, 0, NULL }
+};
+
+s16 D_8011CD60_w03[][3] = {
+    { 35, 82, -1 },
+    { 32, 82, -1 },
+    { 32, 35, -1 }
+};
+
+BranchLink D_8011CD74_w03[][2] = {
+    { { 5, 19, 0 }, { 9, 20, 1 } },
+    { { 5, 17, 1 }, { 9, 20, 1 } },
+    { { 5, 17, 1 }, { 5, 19, 0 } }
+};
+
+event_list_entry D_8011CD98_w03[] = {
+    { 1, 1, func_80108E88_w03 },
+    { 0, 0, NULL }
+};
+
+s16 D_8011CDA8_w03[][3] = {
+    { 37, 48, -1 },
+    { 35, 48, -1 },
+    { 35, 37, -1 }
+};
+
+BranchLink D_8011CDBC_w03[][2] = {
+    { { 5, 21, 0 }, { 7, 6, 1 } },
+    { { 5, 19, 1 }, { 7, 6, 1 } },
+    { { 5, 19, 1 }, { 5, 21, 0 } }
+};
+
+event_list_entry D_8011CDE0_w03[] = {
+    { 1, 1, func_80108EE0_w03 },
+    { 0, 0, NULL }
+};
+
+s16 D_8011CDF0_w03[] = { 70, 69, 2, -1 };
+
+s16 D_8011CDF8_w03[] = { 98, 69, 2, -1 };
+
+s16 D_8011CE00_w03[] = { 98, 70, 2, -1 };
+
+s16 D_8011CE08_w03[] = { 98, 70, 69, -1 };
+
+event_list_entry D_8011CE10_w03[] = {
+    { 1, 1, func_80108F38_w03 },
+    { 0, 0, NULL }
+};
+
+event_list_entry D_8011CE20_w03[] = {
+    { 1, 1, func_80109268_w03 },
+    { 0, 0, NULL }
+};
+
+event_list_entry D_8011CE30_w03[] = {
+    { 1, 1, func_801092C8_w03 },
+    { 0, 0, NULL }
+};
+
+event_list_entry D_8011CE40_w03[] = {
+    { 1, 1, func_80109328_w03 },
+    { 0, 0, NULL }
+};
+
+event_list_entry D_8011CE50_w03[] = {
+    { 1, 1, func_80109388_w03 },
+    { 0, 0, NULL }
+};
+
+event_list_entry D_8011CE60_w03[] = {
+    { 1, 1, func_801093E8_w03 },
+    { 0, 0, NULL }
+};
+
+event_list_entry D_8011CE70_w03[] = {
+    { 1, 1, func_80109448_w03 },
+    { 0, 0, NULL }
+};
+
+event_list_entry D_8011CE80_w03[] = {
+    { 1, 1, func_801094A8_w03 },
+    { 0, 0, NULL }
+};
+
+event_list_entry D_8011CE90_w03[] = {
+    { 1, 1, func_80109508_w03 },
+    { 0, 0, NULL }
+};
+
+event_list_entry D_8011CEA0_w03[] = {
+    { 1, 1, func_80109568_w03 },
+    { 0, 0, NULL }
+};
+
+event_list_entry D_8011CEB0_w03[] = {
+    { 1, 1, func_801095C8_w03 },
+    { 0, 0, NULL }
+};
+
+event_list_entry D_8011CEC0_w03[] = {
+    { 1, 1, func_80109628_w03 },
+    { 0, 0, NULL }
+};
+
+event_list_entry D_8011CED0_w03[] = {
+    { 1, 1, func_80109688_w03 },
+    { 0, 0, NULL }
+};
+
+event_list_entry D_8011CEE0_w03[] = {
+    { 1, 1, func_801096E8_w03 },
+    { 0, 0, NULL }
+};
+
+event_list_entry D_8011CEF0_w03[] = {
+    { 1, 1, func_80109748_w03 },
+    { 0, 0, NULL }
+};
+
+event_list_entry D_8011CF00_w03[] = {
+    { 1, 1, func_801097A8_w03 },
+    { 0, 0, NULL }
+};
+
+event_list_entry D_8011CF10_w03[] = {
+    { 1, 1, func_80109808_w03 },
+    { 0, 0, NULL }
+};
+
+event_list_entry D_8011CF20_w03[] = {
+    { 1, 1, func_80109868_w03 },
+    { 0, 0, NULL }
+};
+
+event_list_entry D_8011CF30_w03[] = {
+    { 1, 2, func_80109AD8_w03 },
+    { 0, 0, NULL }
+};
+
+event_list_entry D_8011CF40_w03[] = {
+    { 1, 1, func_8010A2C4_w03 },
+    { 0, 0, NULL }
+};
+
+DecisionTreeNonLeafNode D_8011CF50_w03[] = {
+    { 4, { .data = 0x00F50014 }, { .data = 0x0B541E1E } },
+    { 0, { .data = 0x00000000 }, { .data = 0x1B541E1E } }
+};
+
+u32 D_8011CF68_w03[] = { 1, 0xA009D };
+
+event_list_entry D_8011CF70_w03[] = {
+    { 1, 1, func_8010A930_w03 },
+    { 0, 0, NULL }
+};
+
+u8 D_8011CF80_w03[][3][4] = {
+    { { 0, 0, 0, 0 }, { 1, 0, 0, 0 }, { 2, 3, 4, 4 } },
+    { { 0, 0, 0, 0 }, { 1, 0, 0, 0 }, { 2, 3, 4, 4 } }
+};
+
+s8 D_8011CF98_w03[][5][7] = {
+    { { 0, 1, 4, 5, 10, 14, 19 }, { 0, 1, 4, 5, 10, 12, 19 }, { 0, 1, 4, 5, 10, 19, -1 }, { 0, 1, 4, 8, 10, 12, 19 }, { 0, 1, 8, 10, 12, 14, 19 } },
+    { { 1, 2, 3, 6, 13, 11, 19 }, { 1, 2, 3, 6, 9, 13, 19 }, { 1, 2, 3, 7, 13, 19, -1 }, { 1, 3, 6, 7, 9, 13, 19 }, { 1, 3, 6, 7, 9, 11, 19 } }
+};
+
+u8 D_8011CFE0_w03[][3][4] = {
+    { { 0, 0, 1, 1 }, { 1, 2, 2, 3 }, { 2, 3, 3, 4 } },
+    { { 0, 0, 1, 1 }, { 1, 2, 2, 3 }, { 2, 3, 3, 4 } }
+};
+
+s8 D_8011CFF8_w03[][5][10] = {
+    { { 25, 55, 65, 76, 81, 86, 91, 96, 98, 100 }, { 30, 50, 60, 70, 75, 85, 90, 95, 97, 100 }, { 25, 45, 52, 62, 67, 82, 88, 95, 97, 100 }, { 20, 35, 40, 45, 55, 75, 85, 95, 97, 100 }, { 15, 25, 30, 40, 45, 70, 80, 92, 95, 100 } },
+    { { 33, 53, 68, 73, 78, 83, 93, 98, 100, 0 }, { 25, 40, 55, 63, 73, 81, 91, 98, 100, 0 }, { 20, 38, 58, 68, 75, 82, 90, 98, 100, 0 }, { 15, 35, 55, 65, 72, 79, 85, 97, 100, 0 }, { 15, 25, 45, 55, 65, 75, 80, 95, 100, 0 } }
+};
+
+u8 D_8011D05C_w03[][10] = {
+    { 0, 1, 4, 5, 8, 10, 12, 14, 15, 16 },
+    { 1, 2, 3, 6, 7, 9, 13, 11, 17, 1 }
+};
+
+s32 D_8011D070_w03[][2] = {
+    { 0x3B05, 0x3D05 },
+    { 0x3B06, 0x3D06 },
+    { 0x3B07, 0x3D07 },
+    { 0x3B08, 0x3D08 },
+    { 0x3B09, 0x3D09 }
+};
+
+s32 D_8011D098_w03[] = { 0x3B00, 0x3D00 };
+
+s32 D_8011D0A0_w03[] = { 0x3B01, 0x3D01 };
+
+s32 D_8011D0A8_w03[] = { 0x3B02, 0x3D02 };
+
+s32 D_8011D0B0_w03[] = { 0x3B03, 0x3D03 };
+
+s32 D_8011D0B8_w03[] = { 0x3B04, 0x3D04 };
+
+u32 D_8011D0C0_w03[] = { 1, 0xA0017 };
+
+u32 D_8011D0C8_w03[] = { 1, 0xA00F0 };
+
+s32 D_8011D0D0_w03 = 0;
+
+event_list_entry D_8011D0D4_w03[] = {
+    { 1, 1, func_8010B734_w03 },
+    { 0, 0, NULL }
+};
+
+Vec2f D_8011D0E4_w03[] = {
+    { 76.0f, 52.0f },
+    { 244.0f, 52.0f },
+    { 76.0f, 192.0f },
+    { 244.0f, 192.0f }
+};
+
+Vec2f D_8011D104_w03[] = {
+    { -1.0f, -1.0f },
+    { 1.0f, -1.0f },
+    { -1.0f, 1.0f },
+    { 1.0f, 1.0f }
+};
+
+u8 D_8011D124_w03[][3] = {
+    { 1, 5, 15 },
+    { 6, 15, 25 },
+    { 16, 25, 27 },
+    { 26, 35, 30 },
+    { 36, 45, 32 },
+    { 46, 50, 35 }
+};
+
+u8 D_8011D138_w03[][3] = {
+    { 0, 0, 0 },
+    { 1, 10, 1 },
+    { 11, 11, 4 },
+    { 12, 14, 2 },
+    { 15, 15, 4 },
+    { 16, 23, 3 },
+    { 24, 33, 4 },
+    { 34, 37, 5 },
+    { 38, 39, 2 },
+    { 40, 49, 6 },
+    { 50, 54, 5 },
+    { 55, 63, 7 },
+    { 64, 64, 8 },
+    { 65, 255, 9 }
+};
+
+u8 D_8011D164_w03[] = { 9, 7, 4, 1, 0, 0, 0, 0 };
+
+s32 D_8011D16C_w03[] = { 50, 80, 100 };
+
+s32 D_8011D178_w03[] = { 1, 0, 1, 0, 0, 1, 0 };
+
+event_list_entry D_8011D194_w03[] = {
+    { 1, 1, func_8010DF54_w03 },
+    { 0, 0, NULL }
+};
+
+event_list_entry D_8011D1A4_w03[] = {
+    { 1, 1, func_8010F128_w03 },
+    { 0, 0, NULL }
+};
+
+event_list_entry D_8011D1B4_w03[] = {
+    { 1, 1, func_8010F144_w03 },
+    { 0, 0, NULL }
+};
+
+event_table_entry D_8011D1C4_w03[] = {
+    { 4, D_8011CF40_w03 },
+    { 90, D_8011CF40_w03 },
+    { 20, D_8011CF40_w03 },
+    { 30, D_8011CF40_w03 },
+    { 40, D_8011CF40_w03 },
+    { 79, D_8011CF40_w03 },
+    { 2, D_8011CF40_w03 },
+    { 62, D_8011CF40_w03 },
+    { 28, D_8011CF70_w03 },
+    { 95, D_8011CF70_w03 },
+    { 110, D_8011D0D4_w03 },
+    { 113, D_8011D0D4_w03 },
+    { 125, D_8011D1A4_w03 },
+    { 126, D_8011D1B4_w03 },
+    { -1, NULL }
+};
+
+event_table_entry D_8011D23C_w03[] = {
+    { 142, D_8011D194_w03 },
+    { -1, NULL }
+};
+
+Vec2f D_8011D24C_w03[] = {
+    { 164.0f, 76.0f },
+    { 140.0f, 76.0f },
+    { 164.0f, 76.0f },
+    { 140.0f, 76.0f }
+};
+
+Vec2f D_8011D26C_w03[] = {
+    { 132.0f, 62.0f },
+    { 220.0f, 62.0f },
+    { 132.0f, 180.0f },
+    { 220.0f, 180.0f }
+};
+
+Vec2f D_8011D28C_w03[] = {
+    { 164.0f, 66.0f },
+    { 164.0f, 66.0f },
+    { 164.0f, 66.0f },
+    { 164.0f, 66.0f }
+};
+
+Vec2f D_8011D2AC_w03[] = {
+    { 164.0f, 76.0f },
+    { 164.0f, 76.0f },
+    { 164.0f, 76.0f },
+    { 164.0f, 76.0f }
+};
+
+DecisionTreeNonLeafNode D_8011D2CC_w03[] = {
+    { 13, { .data = 0x00000000 }, { .data = 0x0A142850 } },
+    { 13, { .data = 0x00000001 }, { .data = 0x064C9932 } },
+    { 13, { .data = 0x00000002 }, { .data = 0x03C78F1E } },
+    { 13, { .data = 0x00000003 }, { .data = 0x08D1A346 } },
+    { 13, { .data = 0x00000004 }, { .data = 0x078F1E3C } },
+    { 13, { .data = 0x00000005 }, { .data = 0x064C9932 } },
+    { 13, { .data = 0x00000006 }, { .data = 0x03C78F1E } },
+    { 13, { .data = 0x00000007 }, { .data = 0x078F1E3C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x064C9932 } }
+};
+
+s32 D_8011D338_w03[] = { 20, 60, 30, 50, 70 };
+
+DecisionTreeNonLeafNode D_8011D34C_w03[] = {
+    { 0, { .data = 0x00000000 }, { .data = 0x0C993264 } }
+};
+
+Vec2f D_8011D358_w03[] = {
+    { -10.0f, 0.0f },
+    { 10.0f, -5.0f },
+    { 10.0f, 5.0f },
+    { -5.0f, -5.0f },
+    { 10.0f, 0.0f },
+    { -5.0f, 5.0f }
+};
+
+s32 D_8011D388_w03 = -1;
+
+u8 D_8011D38C_w03[] = { 67, 68, 69, 0 };
+
+u8 D_8011D390_w03[] = { 20, 60, 100, 0 };
+
+GameGuyReward D_8011D394_w03[] = {
+    { 0, 50 },
+    { 2, 80 },
+    { 4, 90 },
+    { 8, 94 },
+    { 16, 97 },
+    { 32, 99 },
+    { 64, 100 }
+};
+
+RGB D_8011D3B0_w03[] = {
+    { 240, 222, 53 },
+    { 247, 26, 66 }
+};
+
+event_list_entry D_8011D3B8_w03[] = {
+    { 7, 1, func_80116C78_w03 },
+    { 7, 1, func_801175AC_w03 },
+    { 0, 0, NULL }
+};
+
+event_table_entry D_8011D3D0_w03[] = {
+    { -5, D_8011D3B8_w03 },
+    { -1, NULL }
+};
+
+s16 D_8011D3E0_w03[] = { 58, 57, 99, -1 };
+
+s16 D_8011D3E8_w03[] = { 24, 26, 92, -1 };
+
+s16 D_8011D3F0_w03[] = { 86, 87, -1, 0 };
+
+s16 D_8011D3F8_w03[] = { 89, 3, 9, 10, -1, 0 };
+
+s16 D_8011D404_w03[] = {
+    78, 89, 1, 3, 4, 5, 6, 7,
+    8, 9, 10, -1
+};
+
+s16 D_8011D41C_w03[] = {
+    36, 37, 38, 39, 40, 41, 42, 43,
+    44, 46, 47, 48, -1, 0
+};
+
+Vec2f D_8011D438_w03[] = {
+    { 0.0f, 0.0f },
+    { -10.0f, 0.0f },
+    { 0.0f, -10.0f },
+    { 10.0f, 0.0f }
+};
+
+s16 D_8011D458_w03[] = { 115, 75, -1, 0 };
+
+s16 D_8011D460_w03[] = { 115, 74, -1, 0 };
+
+event_list_entry D_8011D468_w03[] = {
+    { 1, 2, func_8011B1FC_w03 },
+    { 0, 0, NULL }
+};
+
+event_table_entry D_8011D478_w03[] = {
+    { 109, D_8011CAC8_w03 },
+    { 0, D_8011CB10_w03 },
+    { 121, D_8011CB58_w03 },
+    { 132, D_8011CBA0_w03 },
+    { 137, D_8011CBE8_w03 },
+    { 138, D_8011CC30_w03 },
+    { 139, D_8011CC78_w03 },
+    { 111, D_8011CCC0_w03 },
+    { 78, D_8011CD08_w03 },
+    { 25, D_8011CD50_w03 },
+    { 33, D_8011CD98_w03 },
+    { 36, D_8011CDE0_w03 },
+    { 112, D_8011CE10_w03 },
+    { 58, D_8011CE20_w03 },
+    { 56, D_8011CE30_w03 },
+    { 7, D_8011CE40_w03 },
+    { 10, D_8011CE50_w03 },
+    { 11, D_8011CE60_w03 },
+    { 14, D_8011CE70_w03 },
+    { 83, D_8011CE80_w03 },
+    { 92, D_8011CE90_w03 },
+    { 41, D_8011CEA0_w03 },
+    { 48, D_8011CEB0_w03 },
+    { 49, D_8011CEC0_w03 },
+    { 93, D_8011CED0_w03 },
+    { 82, D_8011CEE0_w03 },
+    { 65, D_8011CEF0_w03 },
+    { 69, D_8011CF00_w03 },
+    { 50, D_8011CF10_w03 },
+    { 99, D_8011CF20_w03 },
+    { 116, D_8011CF30_w03 },
+    { 140, D_8011CF30_w03 },
+    { 117, D_8011CF30_w03 },
+    { 141, D_8011CF30_w03 },
+    { 114, D_8011D468_w03 },
+    { -1, NULL }
+};
+
+RectF D_8011D598_w03 = { 0.0f, 0.0f, 320.0f, 240.0f };
+
+DecisionTreeNonLeafNode D_8011D5A8_w03[] = {
+    { 12, { .data = 0x00000014 }, { .data = 0x00000000 } },
+    { 10, { .data = 0x00020000 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x0001000C }, { .data = 0x0C96A846 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011D5D8_w03[] = {
+    { 12, { .data = 0x00000014 }, { .data = 0x00000000 } },
+    { 10, { .data = 0x00060000 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x00040001 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x00020008 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x00030003 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x00010A0C }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x00090208 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x000B000A }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x000C0001 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x000A0506 }, { .data = 0x0C96A846 } },
+    { 12, { .data = 0x00000019 }, { .data = 0x00000000 } },
+    { 10, { .data = 0x00090001 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x00080000 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x00051418 }, { .data = 0x0C96A846 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011D68C_w03[] = {
+    { 12, { .data = 0x00000014 }, { .data = 0x00000000 } },
+    { 10, { .data = 0x00050000 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x00040001 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x00020008 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x00030003 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x00010A0C }, { .data = 0x0C96A846 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011D6E0_w03[] = {
+    { 10, { .data = 0x000A0506 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x0001050C }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x000B0002 }, { .data = 0x0C96A846 } },
+    { 12, { .data = 0x0000001E }, { .data = 0x00000000 } },
+    { 10, { .data = 0x00090001 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x00080000 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x00051718 }, { .data = 0x0C96A846 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011D740_w03[] = {
+    { 12, { .data = 0x00000019 }, { .data = 0x00000000 } },
+    { 10, { .data = 0x00050009 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x00060009 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x00040001 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x00020608 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x0009020C }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x000B080A }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x000C0001 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x000A0506 }, { .data = 0x0C96A846 } },
+    { 8, { .data = 0x00000001 }, { .node_data = D_8011D6E0_w03 } },
+    { 12, { .data = 0x0000001E }, { .data = 0x00000000 } },
+    { 10, { .data = 0x00090001 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x000B0002 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x00080000 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x00051718 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x000A0506 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x0001050C }, { .data = 0x0C96A846 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011D818_w03[] = {
+    { 12, { .data = 0x00000014 }, { .data = 0x00000000 } },
+    { 10, { .data = 0x00050412 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x00070005 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x00090414 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x000C0001 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x000A0506 }, { .data = 0x0C96A846 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011D86C_w03[] = {
+    { 10, { .data = 0x000A0001 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x0001040C }, { .data = 0x0C96A846 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011D890_w03[] = {
+    { 12, { .data = 0x00000014 }, { .data = 0x00000000 } },
+    { 10, { .data = 0x0009020A }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x000C0001 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x000A0506 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x000B000A }, { .data = 0x0C96A846 } },
+    { 12, { .data = 0x00000019 }, { .data = 0x00000000 } },
+    { 10, { .data = 0x00090001 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x00080000 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x00051418 }, { .data = 0x0C96A846 } },
+    { 8, { .data = 0x00000001 }, { .node_data = D_8011D86C_w03 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011D914_w03[] = {
+    { 10, { .data = 0x000B0002 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x00080000 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x00070006 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x00050E18 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x00091114 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x000A0001 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x0001020C }, { .data = 0x0C96A846 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011D974_w03[] = {
+    { 12, { .data = 0x0000000F }, { .data = 0x00000000 } },
+    { 8, { .data = 0x00000001 }, { .node_data = D_8011D914_w03 } },
+    { 12, { .data = 0x00000014 }, { .data = 0x00000000 } },
+    { 10, { .data = 0x0009020C }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x000A0506 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x000C0101 }, { .data = 0x0C96A846 } },
+    { 12, { .data = 0x00000019 }, { .data = 0x00000000 } },
+    { 10, { .data = 0x00090001 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x00051218 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x00070506 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x000B0002 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x000A0001 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x0001020C }, { .data = 0x0C96A846 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011DA1C_w03[] = {
+    { 10, { .data = 0x000B0002 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x00080000 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x00070406 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x00051118 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x00091414 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x000A0001 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x00010205 }, { .data = 0x0C96A846 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011DA7C_w03[] = {
+    { 12, { .data = 0x0000000F }, { .data = 0x00000000 } },
+    { 8, { .data = 0x00000001 }, { .node_data = D_8011DA1C_w03 } },
+    { 10, { .data = 0x000B0606 }, { .data = 0x0C96A846 } },
+    { 12, { .data = 0x00000014 }, { .data = 0x00000000 } },
+    { 10, { .data = 0x000B0809 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x0009020C }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x000A0506 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x000C0101 }, { .data = 0x0C96A846 } },
+    { 12, { .data = 0x00000019 }, { .data = 0x00000000 } },
+    { 10, { .data = 0x00090001 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x00051418 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x000B0002 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x000A0001 }, { .data = 0x0C96A846 } },
+    { 10, { .data = 0x00010205 }, { .data = 0x0C96A846 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011DB30_w03[] = {
+    { 2, { .data = 0x00000001 }, { .node_data = D_8011D5A8_w03 } },
+    { 2, { .data = 0x00000002 }, { .node_data = D_8011D5D8_w03 } },
+    { 2, { .data = 0x00000004 }, { .node_data = D_8011D68C_w03 } },
+    { 2, { .data = 0x00000008 }, { .node_data = D_8011D740_w03 } },
+    { 2, { .data = 0x00000010 }, { .node_data = D_8011D818_w03 } },
+    { 2, { .data = 0x00000020 }, { .node_data = D_8011D890_w03 } },
+    { 2, { .data = 0x00000040 }, { .node_data = D_8011D974_w03 } },
+    { 2, { .data = 0x00000080 }, { .node_data = D_8011DA7C_w03 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011DB9C_w03[] = {
+    { 0, { .data = 0x00000000 }, { .data = 0x0A119E32 } }
+};
+
+DecisionTreeNonLeafNode D_8011DBA8_w03[] = {
+    { 12, { .data = 0x00000014 }, { .data = 0x00028F1E } },
+    { 10, { .data = 0x00020105 }, { .data = 0x0000028A } },
+    { 11, { .data = 0x00020105 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x02878F1E } }
+};
+
+DecisionTreeNonLeafNode D_8011DBD8_w03[] = {
+    { 12, { .data = 0x00000014 }, { .data = 0x00028F1E } },
+    { 10, { .data = 0x00060106 }, { .data = 0x0000028A } },
+    { 10, { .data = 0x00090A0C }, { .data = 0x0000028A } },
+    { 11, { .data = 0x00060106 }, { .data = 0x0B54233C } },
+    { 11, { .data = 0x00090A0C }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x02878F1E } }
+};
+
+DecisionTreeNonLeafNode D_8011DC20_w03[] = {
+    { 12, { .data = 0x00000014 }, { .data = 0x00028F1E } },
+    { 10, { .data = 0x00050105 }, { .data = 0x0000028A } },
+    { 11, { .data = 0x00050105 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x02878F1E } }
+};
+
+DecisionTreeNonLeafNode D_8011DC50_w03[] = {
+    { 12, { .data = 0x00000014 }, { .data = 0x00028F1E } },
+    { 10, { .data = 0x00050A0E }, { .data = 0x0000028A } },
+    { 11, { .data = 0x00050D0E }, { .data = 0x0B54233C } },
+    { 12, { .data = 0x00000019 }, { .data = 0x00028A1E } },
+    { 11, { .data = 0x00050A0C }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x02878F1E } }
+};
+
+DecisionTreeNonLeafNode D_8011DC98_w03[] = {
+    { 12, { .data = 0x00000014 }, { .data = 0x00028F1E } },
+    { 10, { .data = 0x00051317 }, { .data = 0x0000028A } },
+    { 10, { .data = 0x00070606 }, { .data = 0x0000028A } },
+    { 11, { .data = 0x00051317 }, { .data = 0x0B54233C } },
+    { 11, { .data = 0x00070606 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x02878F1E } }
+};
+
+DecisionTreeNonLeafNode D_8011DCE0_w03[] = {
+    { 12, { .data = 0x00000014 }, { .data = 0x00028F1E } },
+    { 10, { .data = 0x00090B10 }, { .data = 0x0000028A } },
+    { 11, { .data = 0x00090B10 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x02878F1E } }
+};
+
+DecisionTreeNonLeafNode D_8011DD10_w03[] = {
+    { 12, { .data = 0x00000014 }, { .data = 0x00028F1E } },
+    { 10, { .data = 0x000C0000 }, { .data = 0x0000028A } },
+    { 10, { .data = 0x000B060A }, { .data = 0x0000028A } },
+    { 10, { .data = 0x0009080C }, { .data = 0x0000028A } },
+    { 11, { .data = 0x000C0000 }, { .data = 0x0B54233C } },
+    { 11, { .data = 0x000B060A }, { .data = 0x0B54233C } },
+    { 11, { .data = 0x0009080C }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x02878F1E } }
+};
+
+DecisionTreeNonLeafNode D_8011DD70_w03[] = {
+    { 12, { .data = 0x00000014 }, { .data = 0x00028F1E } },
+    { 10, { .data = 0x00010003 }, { .data = 0x0000028A } },
+    { 10, { .data = 0x000B0A0A }, { .data = 0x0000028A } },
+    { 10, { .data = 0x00090C0C }, { .data = 0x0000028A } },
+    { 11, { .data = 0x00010003 }, { .data = 0x0B54233C } },
+    { 11, { .data = 0x000B0A0A }, { .data = 0x0B54233C } },
+    { 11, { .data = 0x00090C0C }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x02878F1E } }
+};
+
+DecisionTreeNonLeafNode D_8011DDD0_w03[] = {
+    { 2, { .data = 0x00000001 }, { .node_data = D_8011DBA8_w03 } },
+    { 2, { .data = 0x00000002 }, { .node_data = D_8011DBD8_w03 } },
+    { 2, { .data = 0x00000004 }, { .node_data = D_8011DC20_w03 } },
+    { 2, { .data = 0x00000008 }, { .node_data = D_8011DC50_w03 } },
+    { 2, { .data = 0x00000010 }, { .node_data = D_8011DC98_w03 } },
+    { 2, { .data = 0x00000020 }, { .node_data = D_8011DCE0_w03 } },
+    { 2, { .data = 0x00000040 }, { .node_data = D_8011DD10_w03 } },
+    { 2, { .data = 0x00000080 }, { .node_data = D_8011DD70_w03 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011DE3C_w03[] = {
+    { 10, { .data = 0x00020105 }, { .data = 0x0000028A } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0BF6A83C } }
+};
+
+DecisionTreeNonLeafNode D_8011DE54_w03[] = {
+    { 10, { .data = 0x00060106 }, { .data = 0x0000028A } },
+    { 10, { .data = 0x00090A0C }, { .data = 0x0000028A } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0BF6A83C } }
+};
+
+DecisionTreeNonLeafNode D_8011DE78_w03[] = {
+    { 10, { .data = 0x00050105 }, { .data = 0x0000028A } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0BF6A83C } }
+};
+
+DecisionTreeNonLeafNode D_8011DE90_w03[] = {
+    { 1, { .data = 0x00000019 }, { .data = 0x0000028A } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0BF6A83C } }
+};
+
+DecisionTreeNonLeafNode D_8011DEA8_w03[] = {
+    { 10, { .data = 0x00050A0E }, { .data = 0x0000028A } },
+    { 11, { .data = 0x00090C0C }, { .node_data = D_8011DE90_w03 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0BF6A83C } }
+};
+
+DecisionTreeNonLeafNode D_8011DECC_w03[] = {
+    { 10, { .data = 0x00051317 }, { .data = 0x0000028A } },
+    { 10, { .data = 0x00070606 }, { .data = 0x0000028A } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0BF6A83C } }
+};
+
+DecisionTreeNonLeafNode D_8011DEF0_w03[] = {
+    { 10, { .data = 0x00090B10 }, { .data = 0x0000028A } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0BF6A83C } }
+};
+
+DecisionTreeNonLeafNode D_8011DF08_w03[] = {
+    { 10, { .data = 0x000C0000 }, { .data = 0x0000028A } },
+    { 10, { .data = 0x000B060A }, { .data = 0x0000028A } },
+    { 10, { .data = 0x0009080C }, { .data = 0x0000028A } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0BF6A83C } }
+};
+
+DecisionTreeNonLeafNode D_8011DF38_w03[] = {
+    { 10, { .data = 0x00010003 }, { .data = 0x0000028A } },
+    { 10, { .data = 0x000B0A0A }, { .data = 0x0000028A } },
+    { 10, { .data = 0x00090C0C }, { .data = 0x0000028A } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0BF6A83C } }
+};
+
+DecisionTreeNonLeafNode D_8011DF68_w03[] = {
+    { 2, { .data = 0x00000001 }, { .node_data = D_8011DE3C_w03 } },
+    { 2, { .data = 0x00000002 }, { .node_data = D_8011DE54_w03 } },
+    { 2, { .data = 0x00000004 }, { .node_data = D_8011DE78_w03 } },
+    { 2, { .data = 0x00000008 }, { .node_data = D_8011DEA8_w03 } },
+    { 2, { .data = 0x00000010 }, { .node_data = D_8011DECC_w03 } },
+    { 2, { .data = 0x00000020 }, { .node_data = D_8011DEF0_w03 } },
+    { 2, { .data = 0x00000040 }, { .node_data = D_8011DF08_w03 } },
+    { 2, { .data = 0x00000080 }, { .node_data = D_8011DF38_w03 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011DFD4_w03[] = {
+    { 11, { .data = 0x00020105 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011DFEC_w03[] = {
+    { 11, { .data = 0x00060106 }, { .data = 0x0B54233C } },
+    { 11, { .data = 0x00090A0C }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011E010_w03[] = {
+    { 11, { .data = 0x00050105 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011E028_w03[] = {
+    { 11, { .data = 0x00050A0E }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011E040_w03[] = {
+    { 11, { .data = 0x00051317 }, { .data = 0x0B54233C } },
+    { 11, { .data = 0x00070606 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011E064_w03[] = {
+    { 11, { .data = 0x00090B10 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011E07C_w03[] = {
+    { 11, { .data = 0x000C0000 }, { .data = 0x0B54233C } },
+    { 11, { .data = 0x000B060A }, { .data = 0x0B54233C } },
+    { 11, { .data = 0x0009080C }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011E0AC_w03[] = {
+    { 11, { .data = 0x00010003 }, { .data = 0x0B54233C } },
+    { 11, { .data = 0x000B0A0A }, { .data = 0x0B54233C } },
+    { 11, { .data = 0x00090C0C }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011E0DC_w03[] = {
+    { 2, { .data = 0x00000001 }, { .node_data = D_8011DFD4_w03 } },
+    { 2, { .data = 0x00000002 }, { .node_data = D_8011DFEC_w03 } },
+    { 2, { .data = 0x00000004 }, { .node_data = D_8011E010_w03 } },
+    { 2, { .data = 0x00000008 }, { .node_data = D_8011E028_w03 } },
+    { 2, { .data = 0x00000010 }, { .node_data = D_8011E040_w03 } },
+    { 2, { .data = 0x00000020 }, { .node_data = D_8011E064_w03 } },
+    { 2, { .data = 0x00000040 }, { .node_data = D_8011E07C_w03 } },
+    { 2, { .data = 0x00000080 }, { .node_data = D_8011E0AC_w03 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011E148_w03[] = {
+    { 10, { .data = 0x00050A0C }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00090C0C }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00090C0C }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00080000 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011E184_w03[] = {
+    { 0, { .data = 0x00000000 }, { .node_data = D_8011E0DC_w03 } },
+    { 0, { .data = 0x00000000 }, { .node_data = D_8011E148_w03 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011E1A8_w03[] = {
+    { 10, { .data = 0x00040001 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00050000 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00060000 }, { .data = 0x0B54233C } },
+    { 12, { .data = 0x00000014 }, { .data = 0x00028F1E } },
+    { 10, { .data = 0x00020708 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00030001 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011E1FC_w03[] = {
+    { 12, { .data = 0x0000000A }, { .data = 0x00028F1E } },
+    { 10, { .data = 0x00050A0C }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00060809 }, { .data = 0x0B54233C } },
+    { 12, { .data = 0x00000014 }, { .data = 0x00028F1E } },
+    { 10, { .data = 0x00090E10 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011E244_w03[] = {
+    { 12, { .data = 0x0000000A }, { .data = 0x00028F1E } },
+    { 10, { .data = 0x0005070B }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00090E0F }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011E274_w03[] = {
+    { 12, { .data = 0x0000000A }, { .data = 0x00028F1E } },
+    { 10, { .data = 0x00051014 }, { .data = 0x0B54233C } },
+    { 12, { .data = 0x00000019 }, { .data = 0x00028F1E } },
+    { 10, { .data = 0x00090E10 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011E2B0_w03[] = {
+    { 10, { .data = 0x00080000 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x000B0002 }, { .data = 0x0A119E32 } },
+    { 10, { .data = 0x00090003 }, { .data = 0x0B54233C } },
+    { 12, { .data = 0x00000014 }, { .data = 0x00028F1E } },
+    { 10, { .data = 0x00070004 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011E2F8_w03[] = {
+    { 12, { .data = 0x0000000A }, { .data = 0x00028F1E } },
+    { 10, { .data = 0x00091214 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00051313 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011E328_w03[] = {
+    { 10, { .data = 0x00010003 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00090E11 }, { .data = 0x0B54233C } },
+    { 12, { .data = 0x0000000A }, { .data = 0x00028F1E } },
+    { 10, { .data = 0x0009070C }, { .data = 0x0B54233C } },
+    { 8, { .data = 0x00000001 }, { .data = 0x00000000 } },
+    { 10, { .data = 0x000A0506 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011E37C_w03[] = {
+    { 12, { .data = 0x0000000A }, { .data = 0x00028F1E } },
+    { 10, { .data = 0x0001050A }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011E3A0_w03[] = {
+    { 2, { .data = 0x00000040 }, { .node_data = D_8011E328_w03 } },
+    { 2, { .data = 0x00000080 }, { .node_data = D_8011E37C_w03 } },
+    { 12, { .data = 0x00000005 }, { .data = 0x00028F1E } },
+    { 10, { .data = 0x000B080A }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x000C0001 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00010001 }, { .data = 0x0B54233C } },
+    { 2, { .data = 0x00000001 }, { .node_data = D_8011E1A8_w03 } },
+    { 2, { .data = 0x00000002 }, { .node_data = D_8011E1FC_w03 } },
+    { 2, { .data = 0x00000004 }, { .node_data = D_8011E244_w03 } },
+    { 2, { .data = 0x00000008 }, { .node_data = D_8011E274_w03 } },
+    { 2, { .data = 0x00000010 }, { .node_data = D_8011E2B0_w03 } },
+    { 2, { .data = 0x00000020 }, { .node_data = D_8011E2F8_w03 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011E43C_w03[] = {
+    { 11, { .data = 0x00020105 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x01450F1E } }
+};
+
+DecisionTreeNonLeafNode D_8011E454_w03[] = {
+    { 11, { .data = 0x00060106 }, { .data = 0x0B54233C } },
+    { 11, { .data = 0x00090A0C }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x01450F1E } }
+};
+
+DecisionTreeNonLeafNode D_8011E478_w03[] = {
+    { 11, { .data = 0x00050105 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x01450F1E } }
+};
+
+DecisionTreeNonLeafNode D_8011E490_w03[] = {
+    { 11, { .data = 0x00050A0E }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x01450F1E } }
+};
+
+DecisionTreeNonLeafNode D_8011E4A8_w03[] = {
+    { 11, { .data = 0x00051317 }, { .data = 0x0B54233C } },
+    { 11, { .data = 0x00070606 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x01450F1E } }
+};
+
+DecisionTreeNonLeafNode D_8011E4CC_w03[] = {
+    { 11, { .data = 0x00090B10 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x01450F1E } }
+};
+
+DecisionTreeNonLeafNode D_8011E4E4_w03[] = {
+    { 0, { .data = 0x00000000 }, { .data = 0x00028A1E } }
+};
+
+DecisionTreeNonLeafNode D_8011E4F0_w03[] = {
+    { 0, { .data = 0x00000000 }, { .data = 0x00028A1E } }
+};
+
+DecisionTreeNonLeafNode D_8011E4FC_w03[] = {
+    { 2, { .data = 0x00000001 }, { .node_data = D_8011E43C_w03 } },
+    { 2, { .data = 0x00000002 }, { .node_data = D_8011E454_w03 } },
+    { 2, { .data = 0x00000004 }, { .node_data = D_8011E478_w03 } },
+    { 2, { .data = 0x00000008 }, { .node_data = D_8011E490_w03 } },
+    { 2, { .data = 0x00000010 }, { .node_data = D_8011E4A8_w03 } },
+    { 2, { .data = 0x00000020 }, { .node_data = D_8011E4CC_w03 } },
+    { 2, { .data = 0x00000040 }, { .node_data = D_8011E4E4_w03 } },
+    { 2, { .data = 0x00000080 }, { .node_data = D_8011E4F0_w03 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011E568_w03[] = {
+    { 0, { .data = 0x00000000 }, { .node_data = D_8011E3A0_w03 } },
+    { 0, { .data = 0x00000000 }, { .node_data = D_8011E4FC_w03 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011E58C_w03[] = {
+    { 15, { .data = 0x00020105 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00028A1E } }
+};
+
+DecisionTreeNonLeafNode D_8011E5A4_w03[] = {
+    { 15, { .data = 0x00060106 }, { .data = 0x0B54233C } },
+    { 15, { .data = 0x00090A0C }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00028A1E } }
+};
+
+DecisionTreeNonLeafNode D_8011E5C8_w03[] = {
+    { 15, { .data = 0x00050105 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00028A1E } }
+};
+
+DecisionTreeNonLeafNode D_8011E5E0_w03[] = {
+    { 15, { .data = 0x00050A0E }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00028A1E } }
+};
+
+DecisionTreeNonLeafNode D_8011E5F8_w03[] = {
+    { 15, { .data = 0x00051317 }, { .data = 0x0B54233C } },
+    { 15, { .data = 0x00070606 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00028A1E } }
+};
+
+DecisionTreeNonLeafNode D_8011E61C_w03[] = {
+    { 15, { .data = 0x00090B10 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00028A1E } }
+};
+
+DecisionTreeNonLeafNode D_8011E634_w03[] = {
+    { 0, { .data = 0x00000000 }, { .data = 0x00028A1E } }
+};
+
+DecisionTreeNonLeafNode D_8011E640_w03[] = {
+    { 0, { .data = 0x00000000 }, { .data = 0x00028A1E } }
+};
+
+DecisionTreeNonLeafNode D_8011E64C_w03[] = {
+    { 2, { .data = 0x00000001 }, { .node_data = D_8011E58C_w03 } },
+    { 2, { .data = 0x00000002 }, { .node_data = D_8011E5A4_w03 } },
+    { 2, { .data = 0x00000004 }, { .node_data = D_8011E5C8_w03 } },
+    { 2, { .data = 0x00000008 }, { .node_data = D_8011E5E0_w03 } },
+    { 2, { .data = 0x00000010 }, { .node_data = D_8011E5F8_w03 } },
+    { 2, { .data = 0x00000020 }, { .node_data = D_8011E61C_w03 } },
+    { 2, { .data = 0x00000040 }, { .node_data = D_8011E634_w03 } },
+    { 2, { .data = 0x00000080 }, { .node_data = D_8011E640_w03 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011E6B8_w03[] = {
+    { 0, { .data = 0x00000000 }, { .node_data = D_8011E4FC_w03 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011E6D0_w03[] = {
+    { 8, { .data = 0x00000001 }, { .data = 0x00000514 } },
+    { 2, { .data = 0x000000EA }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011E6F4_w03[] = {
+    { 8, { .data = 0x00000001 }, { .data = 0x00000514 } },
+    { 2, { .data = 0x0000007A }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011E718_w03[] = {
+    { 1, { .data = 0x00000032 }, { .data = 0x0C96A846 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011E730_w03[] = {
+    { 1, { .data = 0x00000037 }, { .data = 0x0C96A846 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011E748_w03[] = {
+    { 2, { .data = 0x000000FA }, { .data = 0x0B54233C } },
+    { 1, { .data = 0x00000019 }, { .data = 0x0C96A846 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0000051E } }
+};
+
+DecisionTreeNonLeafNode D_8011E76C_w03[] = {
+    { 1, { .data = 0x0000001E }, { .data = 0x0C96A846 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0000051E } }
+};
+
+DecisionTreeNonLeafNode D_8011E784_w03[] = {
+    { 2, { .data = 0x00000008 }, { .node_data = D_8011E76C_w03 } },
+    { 1, { .data = 0x00000019 }, { .data = 0x0C96A846 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0000051E } }
+};
+
+s32 D_8011E7A8_w03 = 0;
+
+u8 D_8011E7AC_w03[] = {
+    14, 10, 0, 3, 2, 4, 19, 11,
+    5, 6, 12, 13, 9, 7, 8, 1
+};
+
+u8 D_8011E7BC_w03[] = {
+    14, 1, 11, 10, 19, 12, 0, 6,
+    9, 3, 13, 4, 8, 7, 2, 5
+};
+
+u8 D_8011E7CC_w03[] = {
+    14, 11, 6, 9, 12, 7, 3, 13,
+    2, 4, 10, 19, 0, 8, 5, 1
+};
+
+u8 D_8011E7DC_w03[] = {
+    14, 5, 9, 10, 11, 7, 19, 12,
+    0, 6, 3, 13, 4, 8, 2, 1
+};
+
+u8 D_8011E7EC_w03[] = {
+    14, 8, 13, 11, 10, 19, 6, 7,
+    12, 0, 9, 3, 4, 2, 5, 1
+};
+
+u8 D_8011E7FC_w03[] = {
+    14, 3, 11, 10, 19, 12, 0, 6,
+    9, 13, 4, 8, 7, 2, 5, 1
+};
+
+u8 D_8011E80C_w03[] = {
+    14, 2, 9, 3, 6, 7, 8, 5,
+    4, 19, 11, 13, 10, 12, 0, 1
+};
+
+u8 D_8011E81C_w03[] = {
+    14, 4, 19, 9, 11, 10, 3, 12,
+    7, 0, 1, 6, 13, 8, 2, 5
+};
+
+u8 *D_8011E82C_w03[] = { D_8011E7AC_w03, D_8011E7BC_w03, D_8011E7CC_w03, D_8011E7DC_w03, D_8011E7EC_w03, D_8011E7FC_w03, D_8011E80C_w03, D_8011E81C_w03 };
+
+s8 D_8011E84C_w03[] = {
+    90, 70, 60, 30, 20, 20, 20, 20,
+    10, 10, 10, 10, 10, 10, 10, 10
+};
+
+s8 D_8011E85C_w03[] = {
+    80, 50, 20, 20, 20, 10, 20, 10,
+    10, 10, 20, 10, 10, 10, 10, 0
+};
+
+s8 D_8011E86C_w03[] = {
+    80, 30, 50, 30, 30, 20, 20, 20,
+    20, 20, 30, 20, 30, 10, 10, 10
+};
+
+s8 D_8011E87C_w03[] = {
+    90, 50, 20, 30, 20, 10, 20, 10,
+    30, 10, 10, 10, 10, 10, 10, 10
+};
+
+s8 D_8011E88C_w03[] = {
+    90, 50, 30, 30, 30, 20, 20, 20,
+    10, 30, 10, 10, 10, 10, 10, 10
+};
+
+s8 D_8011E89C_w03[] = {
+    90, 50, 30, 60, 20, 20, 30, 20,
+    10, 10, 10, 10, 10, 10, 10, 10
+};
+
+s8 D_8011E8AC_w03[] = {
+    70, 40, 40, 40, 30, 20, 30, 30,
+    20, 40, 40, 30, 40, 10, 40, 10
+};
+
+s8 D_8011E8BC_w03[] = {
+    80, 50, 60, 20, 20, 30, 20, 30,
+    10, 30, 20, 10, 10, 10, 10, 10
+};
+
+s8 *D_8011E8CC_w03[] = { D_8011E84C_w03, D_8011E85C_w03, D_8011E86C_w03, D_8011E87C_w03, D_8011E88C_w03, D_8011E89C_w03, D_8011E8AC_w03, D_8011E8BC_w03 };
+
+DecisionTreeNonLeafNode *D_8011E8EC_w03[] = { D_8011E6D0_w03, D_8011E6F4_w03 };
+
+DecisionTreeNonLeafNode *D_8011E8F4_w03[] = { D_8011E718_w03, D_8011E730_w03 };
+
+DecisionTreeNonLeafNode *D_8011E8FC_w03[2] = { D_8011E748_w03, D_8011E784_w03 };
+
+Object *D_8011EAC0_w03 BSS;
+u8 D_8011EAC4_w03[4] BSS; /* Unreferenced. */
+Object *D_8011EAC8_w03[8] BSS;
+Process *D_8011EAE8_w03[8] BSS;
+Process *D_8011EB08_w03 BSS;
+Object *D_8011EB0C_w03 BSS;
+Unk3 *D_8011EB10_w03 BSS;
+Unk3 *D_8011EB14_w03 BSS;
+Unk3 *D_8011EB18_w03 BSS;
+Unk3 *D_8011EB1C_w03 BSS;
+Unk3 *D_8011EB20_w03 BSS;
+s32 D_8011EB24_w03 BSS;
+s32 D_8011EB28_w03 BSS;
+Process *D_8011EB2C_w03 BSS;
+Object *D_8011EB30_w03 BSS;
+Object *D_8011EB34_w03 BSS;
+Object *D_8011EB38_w03 BSS;
+SpaceData *D_8011EB3C_w03 BSS;
+s32 D_8011EB40_w03[4] BSS;
+s32 D_8011EB50_w03 BSS;
+Object *D_8011EB54_w03 BSS;
+Object *D_8011EB58_w03[1] BSS;
+Object *D_8011EB5C_w03 BSS;
+Object *D_8011EB60_w03[10] BSS;
+Object *D_8011EB88_w03 BSS;
+Object *D_8011EB8C_w03[2] BSS;
+s32 D_8011EB94_w03 BSS;
+s32 D_8011EB98_w03 BSS;
+u8 *D_8011EB9C_w03 BSS;
+Object *D_8011EBA0_w03 BSS;
+s32 D_8011EBA4_w03 BSS;
+s32 D_8011EBA8_w03 BSS;
+s32 D_8011EBAC_w03 BSS;
+Object *D_8011EBB0_w03 BSS;
+Object *D_8011EBB4_w03 BSS;
+s32 D_8011EBB8_w03 BSS;
+s32 D_8011EBBC_w03 BSS;
+Object *D_8011EBC0_w03 BSS;
+u8 D_8011EBC4_w03[4] BSS; /* Unreferenced. */
+s32 D_8011EBC8_w03[4] BSS;
+Object *D_8011EBD8_w03 BSS;
+u8 D_8011EBDC_w03[4] BSS; /* Unreferenced. */
+Object *D_8011EBE0_w03[4] BSS;
+omObjData *D_8011EBF0_w03[4] BSS;
+s32 D_8011EC00_w03 BSS;
+s32 D_8011EC04_w03 BSS;
 
 s16 func_801059D0_w03(void) {
     return D_8011C150_w03[GwSystem.star_spawn_indices[GwSystem.current_star_spawn]];
@@ -7914,7 +9594,7 @@ s32 func_8011B470_w03(void) {
     for (i = 0, bestRank = 99, best = MBPlayerTurnGet(); i < 4; i++) {
         if (i != MBPlayerTurnGet()) {
             func_800DA778_shared_board(i);
-            if ((MBComTreeExec(&D_8011E0DC_w03) == 0) && (BoardPlayerRankCalc(i) < bestRank)) {
+            if ((MBComTreeExec(D_8011E0DC_w03) == 0) && (BoardPlayerRankCalc(i) < bestRank)) {
                 bestRank = BoardPlayerRankCalc(i);
                 best = i;
             }
@@ -7929,11 +9609,11 @@ s32 func_8011B51C_w03(void) {
     s32 i;
 
     best = MBPlayerTurnGet();
-    if (MBComTreeExec(&D_8011E3A0_w03) != 0) {
+    if (MBComTreeExec(D_8011E3A0_w03) != 0) {
         for (i = 0, bestRank = 99; i < 4; i++) {
             if (i != MBPlayerTurnGet()) {
                 func_800DA778_shared_board(i);
-                if ((MBComTreeExec(&D_8011E64C_w03) == 0) && (BoardPlayerRankCalc(i) < bestRank)) {
+                if ((MBComTreeExec(D_8011E64C_w03) == 0) && (BoardPlayerRankCalc(i) < bestRank)) {
                     bestRank = BoardPlayerRankCalc(i);
                     best = i;
                 }

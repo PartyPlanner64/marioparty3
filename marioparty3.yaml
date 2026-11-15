@@ -2547,7 +2547,7 @@ segments:
     subsegments:
       - [0x4F6810, c]
       - [0x4F69B0, .rodata, 4F6810] #80105B40
-      - {0x4F69F0, type: bss, vram: 0x80105B80, name: storycall_bss}
+      - {0x4F69F0, type: .bss, vram: 0x80105B80, name: 4F6810}
 
   - type: code
     start: 0x4F69F0

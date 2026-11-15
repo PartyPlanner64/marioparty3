@@ -861,6 +861,11 @@ void func_80107A64_eatsa_pizza(omObjData *object) {
 // and pairwise variable type changes, centerX/centerY as s16/s32/f32,
 // alternative clamp forms, for/while loop forms and orderings, u16/s32 types
 // for the D_8010927A/7E/82 arrays, and nibble/pattern temporaries per branch.
+// Set-but-unused locals (`tmp = <var or expr>; (void)tmp;`, s32/u8/s16/u16)
+// after or before every assignment in the function do not add slots: flow
+// deletes the dead store before reg_n_refs is counted. The two pseudos must
+// be live across the calls (all s-regs busy) with every reference removed by
+// combine, which only happens for a value live at entry whose read folds away.
 s32 func_80107E6C_eatsa_pizza(omObjData *object) {
     func_800E1BA8_minigame_ObjData *data;
     Work *work;

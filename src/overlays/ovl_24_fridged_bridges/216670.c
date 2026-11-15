@@ -49,42 +49,36 @@ extern omObjData **D_8010DA64_fridged_bridges;
 extern omObjData *D_8010DA70_fridged_bridges;
 extern omObjData *D_8010DA6C_fridged_bridges;
 extern FridgedBridgesCamCollWork D_8010DA90_fridged_bridges[4];
-extern D_80111B50_vine_with_me_Struct D_8010CF20_fridged_bridges;
-extern u16 D_8010CF50_fridged_bridges;
 extern u16 D_8010D364_fridged_bridges;
 extern u16 D_8010D366_fridged_bridges;
-extern s16 D_8010CF48_fridged_bridges[4];
-extern s32 D_8010CF54_fridged_bridges[4];
-extern s32 D_8010CF64_fridged_bridges[4];
-extern char *D_8010CF94_fridged_bridges[4];
 extern u16 D_8010D368_fridged_bridges[4][2];
 extern Vec2f D_8010D378_fridged_bridges[4];
 extern u8 D_800D6A90_main;
-extern Vec D_8010CFA4_fridged_bridges[4];
-extern f32 D_8010CFD4_fridged_bridges[];
 extern s32 D_800A178C_main[][6];
-extern u16 D_8010CFF4_fridged_bridges[];
-extern Vec2f D_8010CFFC_fridged_bridges[3][12];
-extern Vec2f D_8010D11C_fridged_bridges[12];
 extern Vec2f D_8010D3A0_fridged_bridges[4][3][12];
 extern Vec2f D_8010D820_fridged_bridges[4][12];
 extern f32 D_800CCF98_main[];
 extern f32 D_800D4198_main[];
 extern omObjData *D_8010DA78_fridged_bridges[4];
-extern Vec2f D_8010D17C_fridged_bridges[3];
-extern s16 D_8010D19C_fridged_bridges;
-extern s32 D_8010D1A0_fridged_bridges;
-extern Vec D_8010D1A4_fridged_bridges[4];
 extern f32 D_8010D340_fridged_bridges;
 extern Vec D_8010D344_fridged_bridges;
 extern u16 D_8010D350_fridged_bridges;
-extern Vec2f D_8010D194_fridged_bridges;
 extern Vec2f D_8010D9A0_fridged_bridges[4][3];
 extern Vec2f D_8010DA00_fridged_bridges[4];
 extern u16 D_8010DA20_fridged_bridges;
-extern u16 D_8010D1F4_fridged_bridges[4];
-extern Vec2f D_8010D1D4_fridged_bridges[4];
-extern Vec2f D_8010D1FC_fridged_bridges[4][2];
+
+D_80111B50_vine_with_me_Struct D_8010CF20_fridged_bridges = { 0, 0, 1, 0, 0, 0, 0, 0, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0, 0, 0, 0 }, -1, -1, 5400, 75, 135 };
+s16 D_8010CF48_fridged_bridges[4] = { 1, 2, 4, 8 };
+u16 D_8010CF50_fridged_bridges = 0;
+s32 D_8010CF54_fridged_bridges[4] = { 0x00450004, 0x00450005, 0x00450006, 0x00450007 };
+s32 D_8010CF64_fridged_bridges[4] = { 0x00450008, 0x00450009, 0x0045000A, 0x0045000B };
+/* Unreferenced. */
+Vec2f D_8010CF74_fridged_bridges[4] = {
+    { -550.0f, -200.0f },
+    { 550.0f, -200.0f },
+    { -550.0f, 200.0f },
+    { 550.0f, 200.0f },
+};
 
 void func_80105F34_fridged_bridges(omObjData *arg0);
 void func_80108FBC_fridged_bridges(omObjData *arg0);
@@ -272,13 +266,96 @@ void func_80105F34_fridged_bridges(omObjData *arg0) {
     }
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", D_8010D268_fridged_bridges);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", D_8010D27C_fridged_bridges);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", D_8010D290_fridged_bridges);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", D_8010D2A4_fridged_bridges);
+char *D_8010CF94_fridged_bridges[4] = { "m236_004b-cube50", "m236_004b-cube52", "m236_004b-cube42", "m236_004b-cube51" };
+Vec D_8010CFA4_fridged_bridges[4] = {
+    { -1300.0f, 0.0f, -780.0f },
+    { 1300.0f, 0.0f, -780.0f },
+    { -1300.0f, 0.0f, 780.0f },
+    { 1300.0f, 0.0f, 780.0f },
+};
+f32 D_8010CFD4_fridged_bridges[8] = { 1.1f, 1.1f, 1.1f, 1.1f, 1.1f, 1.0f, 1.1f, 1.1f };
+u16 D_8010CFF4_fridged_bridges[4] = { 0x200, 0x300, 0x400, 0 };
+Vec2f D_8010CFFC_fridged_bridges[3][12] = {
+    {
+        { -1300.0f, -900.0f },
+        { -1250.0f, -565.0f },
+        { -1200.9f, -326.8f },
+        { -1080.0f, -302.5f },
+        { -981.5f, -389.5f },
+        { -875.8f, -591.5f },
+        { -791.0f, -798.3f },
+        { -636.5f, -860.4f },
+        { -464.6f, -839.5f },
+        { -345.8f, -799.0f },
+        { -298.7f, -600.0f },
+        { -267.7f, -220.0f },
+    },
+    {
+        { -1300.0f, -900.0f },
+        { -1305.0f, -565.0f },
+        { -1240.9f, -351.8f },
+        { -1135.0f, -244.5f },
+        { -960.5f, -325.5f },
+        { -836.8f, -594.5f },
+        { -757.0f, -782.3f },
+        { -636.5f, -831.4f },
+        { -464.6f, -832.5f },
+        { -357.8f, -734.0f },
+        { -267.7f, -600.0f },
+        { -267.7f, -220.0f },
+    },
+    {
+        { -1300.0f, -900.0f },
+        { -1250.0f, -565.0f },
+        { -1170.9f, -338.0f },
+        { -1090.0f, -309.0f },
+        { -1005.0f, -379.0f },
+        { -910.8f, -593.0f },
+        { -830.0f, -816.3f },
+        { -636.5f, -910.4f },
+        { -410.6f, -890.5f },
+        { -300.0f, -786.8f },
+        { -267.7f, -600.0f },
+        { -267.7f, -220.0f },
+    },
+};
+Vec2f D_8010D11C_fridged_bridges[12] = {
+    { -1300.0f, -780.0f },
+    { -1250.0f, -565.0f },
+    { -1156.9f, -331.8f },
+    { -1080.0f, -302.5f },
+    { -981.5f, -389.5f },
+    { -875.8f, -591.5f },
+    { -791.0f, -798.3f },
+    { -636.5f, -860.4f },
+    { -464.6f, -839.5f },
+    { -345.8f, -799.0f },
+    { -320.0f, -420.0f },
+    { -267.7f, -220.0f },
+};
+Vec2f D_8010D17C_fridged_bridges[3] = { { -272.0f, -498.0f }, { -272.0f, -431.0f }, { -272.0f, -364.0f } };
+Vec2f D_8010D194_fridged_bridges = { -1300.0f, -900.0f };
+s16 D_8010D19C_fridged_bridges = 0;
+s32 D_8010D1A0_fridged_bridges = 0;
+Vec D_8010D1A4_fridged_bridges[4] = {
+    { -150.0f, 0.0f, 100.0f },
+    { 150.0f, 0.0f, 100.0f },
+    { 0.0f, 0.0f, 0.0f },
+    { 0.0f, 0.0f, 0.0f },
+};
+Vec2f D_8010D1D4_fridged_bridges[4] = {
+    { 0.0f, 0.0f },
+    { 160.0f, 0.0f },
+    { 0.0f, 120.0f },
+    { 160.0f, 120.0f },
+};
+u16 D_8010D1F4_fridged_bridges[4] = { 0, 0, 0, 0 };
+Vec2f D_8010D1FC_fridged_bridges[4][2] = {
+    { { -593.0f, -1088.0f }, { -588.0f, -708.0f } },
+    { { 593.0f, -1088.0f }, { 588.0f, -708.0f } },
+    { { -593.0f, 1088.0f }, { -588.0f, 708.0f } },
+    { { 593.0f, 1088.0f }, { 588.0f, 708.0f } },
+};
 
 void func_801061C4_fridged_bridges(omObjData *arg0) {
     s32 i;

@@ -17,11 +17,6 @@ typedef struct FridgedBridgesCameraTarget {
 } FridgedBridgesCameraTarget; // sizeof 0x8
 
 extern s16 D_8010CF48_fridged_bridges[4];
-// Effect model file, object function and lifetime for each effect type. These
-// are separate arrays of one entry each.
-extern s32 D_8010D240_fridged_bridges[1];
-extern omObjFunc D_8010D244_fridged_bridges[1];
-extern s32 D_8010D248_fridged_bridges[1];
 extern s16 D_8010DA30_fridged_bridges[1][12];
 extern u16 D_8010DA48_fridged_bridges[1][12];
 extern omObjData *D_8010DA88_fridged_bridges;
@@ -37,8 +32,15 @@ extern s16 MTXBufNum;
 extern f32 D_800D4198_main[];
 
 void func_8010BE88_fridged_bridges(omObjData *arg0);
+void func_8010C178_fridged_bridges(omObjData *arg0);
 void func_8010C46C_fridged_bridges(HmfModel *model, HuMtx4F mtx);
 void func_8010CDE4_fridged_bridges(u16 index, FridgedBridgesCamCollWork *work, HmfData *hmf, u16 object);
+
+// Effect model file, object function and lifetime for each effect type. These
+// are separate arrays of one entry each.
+s32 D_8010D240_fridged_bridges[1] = { 0x0045000C };
+omObjFunc D_8010D244_fridged_bridges[1] = { func_8010C178_fridged_bridges };
+s32 D_8010D248_fridged_bridges[1] = { 35 };
 
 void func_8010BDF0_fridged_bridges(void) {
     omOvlReturnEx(1);

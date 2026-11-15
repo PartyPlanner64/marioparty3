@@ -533,3 +533,6 @@ D_80102BD4_shared_board = D_80102BD0_shared_board + 0x4; /* [0].y */
 D_80102D3A_shared_board = D_80102D38_shared_board + 0x2; /* SharedBoardBss2D38.sprAnims */
 D_80105634_shared_board = D_80105630_shared_board + 0x4; /* [1] */
 D_80105638_shared_board = D_80105630_shared_board + 0x8; /* [2] */
+
+/* duel03: func_8011454C_duel03 (INCLUDE_ASM) */
+D_80117664_duel03 = D_80117654_duel03 + 0x10; /* [2] */

@@ -1056,10 +1056,11 @@ segments:
     subsegments:
       - [0x18ABD0, c]
       - [0x18EB30, c]
-      - [0x190D60, data, 18ABD0] #8010BB30
+      - [0x190D60, .data, 18ABD0] #8010BB30
+      - [0x190E00, .data, 18EB30] #8010BBD0
       - [0x1911E0, .rodata, 18ABD0] #8010BFB0
       - [0x191220, .rodata, 18EB30] #8010BFF0
-      - {0x191240, type: bss, vram: 0x8010C010, name: ovl_10_bss}
+      - {0x191240, type: .bss, vram: 0x8010C010, name: bss}
 
   - type: code
     start: 0x191240

@@ -12,22 +12,7 @@ typedef struct CosmicCoasterCloudState { // 0x10 bytes
     f32 heightRate;
 } CosmicCoasterCloudState;
 
-// Track object placement entry. Lists are terminated by a 0xFFFF type, and
-// each entry is spawned once a car comes within range of its z distance.
-typedef struct CosmicCoasterSpawn { // 0x10 bytes
-    u16 type;
-    f32 x;
-    f32 y;
-    f32 z;
-} CosmicCoasterSpawn;
-
-extern CosmicCoasterSpawn D_8010BBD0_cosmic_coaster[];
-extern s32 D_8010BEE0_cosmic_coaster[11];
-extern s32 D_8010BF0C_cosmic_coaster[11];
-extern omObjFunc D_8010BF38_cosmic_coaster[9]; // per type object update
-extern omObjFunc D_8010BF5C_cosmic_coaster[9]; // per type object setup
-extern s32 D_8010BF80_cosmic_coaster[9];       // per type object priority
-extern CosmicCoasterSpawn D_8010C060_cosmic_coaster[];
+extern CosmicCoasterSpawn D_8010C060_cosmic_coaster[51];
 extern u16 D_8010C390_cosmic_coaster[2];
 extern u16 D_8010C394_cosmic_coaster[2];
 extern s16 D_8010C398_cosmic_coaster[11];
@@ -38,6 +23,85 @@ void func_8010ABE0_cosmic_coaster(void);
 void func_8010A434_cosmic_coaster(omObjData *object);
 void func_8010A744_cosmic_coaster(omObjData *object);
 void func_8010B5C4_cosmic_coaster(omObjData *arg0);
+void func_8010A244_cosmic_coaster(omObjData *object);
+void func_8010A528_cosmic_coaster(omObjData *object);
+void func_8010A838_cosmic_coaster(omObjData *object);
+void func_8010AF04_cosmic_coaster(omObjData *object);
+void func_8010B04C_cosmic_coaster(omObjData *object);
+void func_8010B1DC_cosmic_coaster(omObjData *arg0);
+void func_8010B234_cosmic_coaster(omObjData *object);
+
+CosmicCoasterSpawn D_8010BBD0_cosmic_coaster[] = {
+    { 0, 0.0f, 10.0f, 43.0f },
+    { 0, -160.0f, 10.0f, 59.0f },
+    { 0, 0.0f, 10.0f, 75.0f },
+    { 0, 160.0f, 10.0f, 91.0f },
+    { 4, -160.0f, 270.0f, 91.0f },
+    { 1, -80.0f, 10.0f, 107.0f },
+    { 0, -160.0f, 10.0f, 123.0f },
+    { 0, 160.0f, 10.0f, 123.0f },
+    { 1, 80.0f, 10.0f, 139.0f },
+    { 0, -160.0f, 10.0f, 155.0f },
+    { 0, 160.0f, 10.0f, 171.0f },
+    { 4, -160.0f, 270.0f, 179.0f },
+    { 1, -80.0f, 10.0f, 187.0f },
+    { 0, 0.0f, 10.0f, 203.0f },
+    { 1, 80.0f, 10.0f, 219.0f },
+    { 0, -160.0f, 10.0f, 235.0f },
+    { 0, 0.0f, 10.0f, 251.0f },
+    { 0, -160.0f, 10.0f, 267.0f },
+    { 0, 160.0f, 10.0f, 267.0f },
+    { 0, 0.0f, 10.0f, 283.0f },
+    { 4, -160.0f, 270.0f, 291.0f },
+    { 1, -80.0f, 10.0f, 299.0f },
+    { 1, 80.0f, 10.0f, 315.0f },
+    { 0, -160.0f, 10.0f, 331.0f },
+    { 0, 0.0f, 10.0f, 347.0f },
+    { 0, -160.0f, 10.0f, 363.0f },
+    { 0, 160.0f, 10.0f, 363.0f },
+    { 1, -80.0f, 10.0f, 379.0f },
+    { 1, 80.0f, 10.0f, 395.0f },
+    { 0, -160.0f, 10.0f, 411.0f },
+    { 0, 0.0f, 10.0f, 427.0f },
+    { 4, 160.0f, 270.0f, 435.0f },
+    { 1, 80.0f, 10.0f, 443.0f },
+    { 0, -160.0f, 10.0f, 459.0f },
+    { 0, 160.0f, 10.0f, 459.0f },
+    { 0, 0.0f, 10.0f, 475.0f },
+    { 0, -160.0f, 10.0f, 491.0f },
+    { 0, 160.0f, 10.0f, 491.0f },
+    { 1, -80.0f, 10.0f, 507.0f },
+    { 1, 80.0f, 10.0f, 523.0f },
+    { 4, -160.0f, 270.0f, 530.0f },
+    { 1, -80.0f, 10.0f, 539.0f },
+    { 0, 160.0f, 10.0f, 555.0f },
+    { 0, -160.0f, 10.0f, 571.0f },
+    { 0, 0.0f, 10.0f, 587.0f },
+    { 0, -160.0f, 10.0f, 603.0f },
+    { 0, 160.0f, 10.0f, 603.0f },
+    { 6, 0.0f, 0.0f, 630.0f },
+    { 0xFFFF, 0.0f, 0.0f, 100000.0f },
+};
+
+s32 D_8010BEE0_cosmic_coaster[11] = {
+    0x00310004, 0x00310005, 0x0031000B, 0x0031000C, 0x00210024, 0x00310007,
+    0x00310008, 0x00310009, 0x0031000A, 0x00310006, 0x0031000D
+};
+
+s32 D_8010BF0C_cosmic_coaster[11] = { 0x6D9, 0x6D9, 0x6D9, 0x6D9, 0x6D9, 0x206D9, 0x206D9, 0x6D9, 0x6D9, 0x6D9, 0x6D9 };
+
+// Per type object update.
+omObjFunc D_8010BF38_cosmic_coaster[9] = {
+    func_8010A244_cosmic_coaster, func_8010A528_cosmic_coaster, NULL, NULL,
+    func_8010A838_cosmic_coaster, func_8010B04C_cosmic_coaster, func_8010B234_cosmic_coaster, NULL,
+    NULL
+};
+
+// Per type object setup.
+omObjFunc D_8010BF5C_cosmic_coaster[9] = { NULL, NULL, NULL, NULL, NULL, func_8010AF04_cosmic_coaster, func_8010B1DC_cosmic_coaster, NULL, NULL };
+
+// Per type object priority.
+s32 D_8010BF80_cosmic_coaster[9] = { 21, 21, 21, 21, 22, 21, 21, 21, 21 };
 
 void func_80109900_cosmic_coaster(void) {
     omOvlReturnEx(1);

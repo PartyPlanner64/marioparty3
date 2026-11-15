@@ -7,6 +7,15 @@
 // holds the distance to the nearest light source as an f32.
 #define COSMIC_COASTER_LIGHT_DIST(object) (*(f32 *)&(object)->motion)
 
+// Track object placement entry. Lists are terminated by a 0xFFFF type, and
+// each entry is spawned once a car comes within range of its z distance.
+typedef struct CosmicCoasterSpawn { // 0x10 bytes
+    u16 type;
+    f32 x;
+    f32 y;
+    f32 z;
+} CosmicCoasterSpawn;
+
 // Object data of the two coaster cars, with per-rider state for both riders.
 // targetX is the lane x position a rider steers toward; it holds the 100000.0f
 // sentinel while no target is assigned. carried is the track object that the
@@ -32,9 +41,11 @@ typedef struct CosmicCoasterCarData { // 0x54 bytes
     s16 rollSfx;                      // 0x52 rolling sound, -1 when not playing
 } CosmicCoasterCarData;
 
+#ifndef NO_EXTERN_VARIABLES
 extern omObjData *D_8010C3B0_cosmic_coaster[2];
 extern s16 D_8010C3BC_cosmic_coaster;
 extern omObjData *D_8010C3C4_cosmic_coaster; // track object manager
+#endif
 
 void func_80109900_cosmic_coaster(void);
 void func_8010991C_cosmic_coaster(omObjData *object);

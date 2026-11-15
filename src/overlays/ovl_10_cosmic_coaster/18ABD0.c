@@ -46,16 +46,27 @@ typedef struct CosmicCoasterCamKey { // 0x20 bytes
     Vec center;
 } CosmicCoasterCamKey;
 
+D_80111B50_vine_with_me_Struct D_8010BB30_cosmic_coaster = {
+    0, 1, 1, 1, 0, 0x45, 1, 0, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0, 0, 0, 0 }, -1, -1, 30000, -1, 135
+};
+s16 D_8010BB58_cosmic_coaster[2] = { 32, 96 }; // sound panning per car
+u16 D_8010BB5C_cosmic_coaster = 0;
+u16 D_8010BB5E_cosmic_coaster = 0;
+s32 D_8010BB60_cosmic_coaster = 0; /* Unreferenced. */
+s32 D_8010BB64_cosmic_coaster[8] = {
+    0x00210008, 0x00210009, 0x0021000A, 0x0021000B,
+    0x0021000C, 0x0021000D, 0x0021000E, 0x0021000F
+};
+f32 D_8010BB84_cosmic_coaster[2] = { -100.0f, 100.0f };
+s32 D_8010BB8C_cosmic_coaster = 20;
+CosmicCoasterCamKey D_8010BB90_cosmic_coaster[2] = {
+    { 30, -700.0f, { 0.0f, 90.0f, 0.0f }, { 0.0f, 200.0f, -150.0f } },
+    { 30, 970.0f, { -11.0f, 0.0f, 0.0f }, { 0.0f, 200.0f, -500.0f } },
+};
+
 extern s32 D_8010C054_cosmic_coaster;
-extern s32 D_8010BB8C_cosmic_coaster;
 extern s16 D_8010C058_cosmic_coaster;
 extern omObjData *D_8010C3C0_cosmic_coaster;
-extern D_80111B50_vine_with_me_Struct D_8010BB30_cosmic_coaster;
-extern u16 D_8010BB5C_cosmic_coaster;
-extern s32 D_8010BB64_cosmic_coaster[8];
-extern f32 D_8010BB84_cosmic_coaster[2];
-extern s16 D_8010BB58_cosmic_coaster[2]; // sound panning per car
-extern CosmicCoasterCamKey D_8010BB90_cosmic_coaster[2];
 extern f32 D_8010C02C_cosmic_coaster; // zoom at the start of the current key
 // Per-frame camera steps toward the current key.
 extern f32 D_8010C030_cosmic_coaster; // rotation x
@@ -73,7 +84,6 @@ extern s32 D_8010C020_cosmic_coaster;        // victory sequence countdown
 extern omObjData *D_8010C024_cosmic_coaster; // victory camera helper object
 extern omObjData *D_8010C028_cosmic_coaster; // losing car object
 extern s32 D_800A178C_main[][6];
-extern u16 D_8010BB5E_cosmic_coaster;
 extern u16 D_8010C05A_cosmic_coaster;
 
 void func_80105D80_cosmic_coaster(omObjData *arg0);

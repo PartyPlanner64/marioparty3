@@ -145,8 +145,6 @@ D_8010C14A_swing_n_swipe = swingNSwipeBssC148 + 0x2;
 /* stardust_battle: low halfword of the s32 D_80113DE4. */
 D_80113DE6_stardust_battle = D_80113DE4_stardust_battle + 0x2;
 
-/* crowd_cover: halfword following D_8010CF80. */
-D_8010CF82_crowd_cover = D_8010CF80_crowd_cover + 0x2;
 /* end_of_the_line field aliases: EndOfTheLineBssC75C, EndOfTheLineBssC780. */
 D_8010C75C_end_of_the_line = endOfTheLineBssC75C;
 D_8010C75E_end_of_the_line = endOfTheLineBssC75C + 0x2;

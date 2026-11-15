@@ -1,4 +1,5 @@
 #include "common.h"
+#include "macros.h"
 #include "overlays/minigame.h"
 #include "game/hmfmath.h"
 #include "game/mallocblock.h"
@@ -97,53 +98,97 @@ typedef struct {
     /* 0x40 */ f32 unk40;
 } CrowdCoverMember; // sizeof 0x44
 
-extern f32 D_8010D868_crowd_cover[4][4];
-extern f32 D_8010D8A0_crowd_cover;
-extern f32 D_8010D8A8_crowd_cover[4][4];
-extern f32 D_8010D8E8_crowd_cover;
-extern UnkCrowdCover *D_8010D8EC_crowd_cover;
-extern void *D_8010D8F0_crowd_cover[3];
-extern UnkCrowdCover D_8010D918_crowd_cover; // List head of opaque entries
-extern UnkCrowdCover D_8010D980_crowd_cover; // List head of translucent entries
-extern void *D_8010D8FC_crowd_cover;
-extern s32 D_8010D900_crowd_cover;
-extern s32 D_8010D904_crowd_cover;
-extern s32 D_8010CA9C_crowd_cover;
-
-extern HuSprite_Unk84_Struct *D_800C9530_main[];
-
-extern u32 D_8010C800_crowd_cover;
-
-extern UnkCrowdCoverVec D_8010CC70_crowd_cover;
-
-extern u8 D_800CE20A_main;
-extern s16 D_8010C6C0_crowd_cover;
-extern s16 D_8010C6C4_crowd_cover[3][2];
-extern s32 D_8010C6D0_crowd_cover;
-extern s32 D_8010C6D4_crowd_cover;
-extern s32 D_8010C6D8_crowd_cover;
-extern u8 D_8010C6E4_crowd_cover;
-extern s16 D_8010C6EC_crowd_cover[][3];
-extern f32 D_8010C704_crowd_cover[];
 extern s32 D_800A178C_main[][6];
-extern s16 D_8010C714_crowd_cover[][13];
-extern s32 D_8010C804_crowd_cover[];
-extern s16 D_8010C814_crowd_cover[];
-extern s16 D_8010C94C_crowd_cover[];
-extern s16 D_8010CA84_crowd_cover[];
-extern s16 D_8010CA8C_crowd_cover[];
-extern s16 D_8010CA94_crowd_cover[];
-extern s16 D_8010CF80_crowd_cover;
-extern s16 D_8010CF82_crowd_cover;
-extern s16 D_8010CF88_crowd_cover[];
-extern s16 D_8010CFA8_crowd_cover[];
-extern s16 D_8010CFB8_crowd_cover[16];
-extern s16 D_8010CFD8_crowd_cover;
-extern s16 D_8010D860_crowd_cover;
-extern s16 D_8010D862_crowd_cover;
-extern s16 D_8010D864_crowd_cover;
-extern s16 D_8010D866_crowd_cover;
-extern CrowdCoverMember D_8010CFE0_crowd_cover[];
+extern HuSprite_Unk84_Struct *D_800C9530_main[];
+extern u8 D_800CE20A_main;
+
+s16 D_8010C6C0_crowd_cover = 2700;
+s16 D_8010C6C4_crowd_cover[3][2] = {
+    { 116, 202 },
+    { 160, 202 },
+    { 202, 202 }
+};
+s32 D_8010C6D0_crowd_cover = 0;
+s32 D_8010C6D4_crowd_cover = -1;
+s32 D_8010C6D8_crowd_cover = 0;
+s16 D_8010C6DC_crowd_cover[4] = { 0, 1, 2, 3 }; /* Unreferenced. */
+u8 D_8010C6E4_crowd_cover = 0;
+u8 D_8010C6E8_crowd_cover[4] = { 0 }; /* Unreferenced. */
+s16 D_8010C6EC_crowd_cover[4][3] = {
+    { -160, 10, 60 },
+    { 160, 10, 60 },
+    { 85, -75, -200 },
+    { 85, 75, -200 }
+};
+f32 D_8010C704_crowd_cover[4] = { 180.0f, 180.0f, -45.0f, -135.0f };
+s16 D_8010C714_crowd_cover[9][13] = {
+    { 3, 2, 1, 0, 1, 2, 3, 4, 5, 6, 5, 4, -1 },
+    { 10, 9, 8, 7, 8, 9, 10, 11, 12, 13, 12, 11, -1 },
+    { 17, 16, 15, 14, 15, 16, 17, 18, 19, 20, 19, 18, -1 },
+    { 24, 23, 22, 21, 22, 23, 24, 25, 26, 27, 26, 25, -1 },
+    { 31, 30, 29, 28, 29, 30, 31, 32, 33, 34, 33, 32, -1 },
+    { 38, 37, 36, 35, 36, 37, 38, 39, 40, 41, 40, 39, -1 },
+    { 45, 44, 43, 42, 43, 44, 45, 46, 47, 48, 47, 46, -1 },
+    { 52, 51, 50, 49, 50, 51, 52, 53, 54, 55, 54, 53, -1 },
+    { 56, 57, 58, 59, 60, 61, 62, 63, -1, -1, -1, -1, -1 }
+};
+u32 D_8010C800_crowd_cover = 0x41C64E6D;
+s32 D_8010C804_crowd_cover[] = { 4, 3, 2, 1 };
+s16 D_8010C814_crowd_cover[] = {
+    0, 512, 256, 170, 128, 102, 85, 73, 64, 56, 51, 20, 42, 26, 14, 19,
+    32, 13, 28, 26, 8, 9, 4, 4, 5, 20, 13, 18, 3, 6, 3, 2,
+    16, 2, 2, 3, 14, 2, 13, 2, 1, 12, 4, 2, 2, 2, 2, 2,
+    2, 4, 10, 0, 1, 2, 9, 0, 1, 8, 0, 2, 0, 1, 0, 1,
+    8, 0, 0, 1, 0, 1, 0, 2, 0, 0, 1, 0, 6, 0, 0, 4,
+    0, 0, 6, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0,
+    0, 0, 2, 0, 0, 0, 0, 1, 0, 0, 0, 0, 4, 0, 0, 0,
+    0, 0, 1, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0,
+    0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0
+};
+s16 D_8010C94C_crowd_cover[] = {
+    0, 512, 256, 170, 128, 102, 85, 73, 64, 56, 51, 46, 42, 39, 36, 34,
+    32, 30, 28, 26, 25, 24, 23, 22, 21, 20, 19, 19, 18, 18, 17, 17,
+    16, 16, 15, 15, 14, 14, 13, 13, 13, 12, 12, 12, 11, 11, 11, 10,
+    10, 10, 10, 10, 9, 9, 9, 9, 9, 8, 8, 8, 8, 8, 8, 8,
+    8, 7, 7, 7, 7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 6,
+    6, 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+    5, 5, 5, 5, 5, 5, 5, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3,
+    3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+    3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0
+};
+s16 D_8010CA84_crowd_cover[] = { G_CD_DISABLE, G_CD_NOISE, G_CD_BAYER, G_CD_MAGICSQ };
+s16 D_8010CA8C_crowd_cover[] = { G_TF_POINT, G_TF_POINT, G_TF_BILERP, G_TF_AVERAGE };
+s16 D_8010CA94_crowd_cover[] = { G_AC_THRESHOLD, G_AC_NONE, G_AC_DITHER, G_AC_NONE };
+s32 D_8010CA9C_crowd_cover = 0;
+
+s16 D_8010CF80_crowd_cover BSS;
+s16 D_8010CF82_crowd_cover BSS;
+u8 D_8010CF84_crowd_cover[4] BSS; /* Unreferenced. */
+s16 D_8010CF88_crowd_cover[16] BSS;
+s16 D_8010CFA8_crowd_cover[8] BSS;
+s16 D_8010CFB8_crowd_cover[16] BSS;
+s16 D_8010CFD8_crowd_cover BSS;
+u8 D_8010CFDC_crowd_cover[4] BSS; /* Unreferenced. */
+CrowdCoverMember D_8010CFE0_crowd_cover[32] BSS;
+s16 D_8010D860_crowd_cover BSS;
+s16 D_8010D862_crowd_cover BSS;
+s16 D_8010D864_crowd_cover BSS;
+s16 D_8010D866_crowd_cover BSS;
+f32 D_8010D868_crowd_cover[4][4] BSS;
+f32 D_8010D8A8_crowd_cover[4][4] BSS;
+f32 D_8010D8E8_crowd_cover BSS;
+UnkCrowdCover *D_8010D8EC_crowd_cover BSS;
+void *D_8010D8F0_crowd_cover[3] BSS;
+void *D_8010D8FC_crowd_cover BSS;
+s32 D_8010D900_crowd_cover BSS;
+s32 D_8010D904_crowd_cover BSS;
+u8 D_8010D908_crowd_cover[0x10] BSS;      /* Unreferenced. */
+UnkCrowdCover D_8010D918_crowd_cover BSS; // List head of opaque entries
+UnkCrowdCover D_8010D980_crowd_cover BSS; // List head of translucent entries
+
+extern const UnkCrowdCoverVec D_8010CC70_crowd_cover;
 
 void func_80105B58_crowd_cover(omObjData *object);
 void func_80105CD4_crowd_cover(HuMtx4F src, HuMtx4F dst);
@@ -302,7 +347,7 @@ void func_80105EC4_crowd_cover(f32 *pos, f32 *dst) {
 }
 
 void func_80105FD0_crowd_cover(f32 x, f32 y, f32 z, f32 *dst) {
-    f32 depth = z + D_8010D8A0_crowd_cover;
+    f32 depth = z + D_8010D868_crowd_cover[3][2];
     f32 scale = fabsf(depth * D_8010D8E8_crowd_cover);
     f32 mtx[4][4];
 
@@ -840,7 +885,7 @@ void func_80107E0C_crowd_cover(void) {
     omAddObj(3, 0xB, 0x32, -1, func_80107E40_crowd_cover);
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_38_crowd_cover/2B5830", D_8010CC70_crowd_cover);
+const UnkCrowdCoverVec D_8010CC70_crowd_cover = { { -1, -1, -1, -1, -1, -1, -1, -1, -1 } };
 
 void func_80107E40_crowd_cover(omObjData *object) {
     Vec positions[30] = {

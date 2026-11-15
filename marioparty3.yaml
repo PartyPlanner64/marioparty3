@@ -2575,9 +2575,11 @@ segments:
       - [0x4F7E90, c]
       - [0x4F7EC0, c]
       - [0x4F8140, c]
-      - [0x501760, data, 4F8140] #8010F270
+      - [0x501760, .data, 4F7E90] #8010F270
+      - [0x501780, .data, 4F8140] #8010F290
+      - [0x5018A0, .rodata, 4F7EC0] #8010F3B0
       - [0x5018D0, .rodata, 4F8140] #8010F3E0
-      - {0x501C00, type: bss, vram: 0x8010F710, name: modesel_bss}
+      - {0x501C00, type: .bss, vram: 0x8010F710, name: 4F8140}
 
   - type: code
     start: 0x501C00

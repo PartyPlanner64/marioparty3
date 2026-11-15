@@ -113,53 +113,85 @@ typedef struct UnkModeSelStorySave {
     s32 totalTurns;
 } UnkModeSelStorySave; // sizeof 0x1C
 
-extern UnkModeSelStar D_80110B18_modesel[3];
-extern s32 D_8010F2C8_modesel;
-extern s32 D_80110BD8_modesel;
-extern s16 D_80110BDA_modesel;
+extern s16 D_800EBAF0_minigame;
+extern const char D_8010F454_modesel[];
+
+s32 D_8010F290_modesel = 28; /* Unreferenced. */
+s32 D_8010F294_modesel = 208;
+s32 D_8010F298_modesel = 24; /* Unreferenced. */
+s32 D_8010F29C_modesel = 2;  /* Unreferenced. */
+u8 D_8010F2A0_modesel[16] = { 0, 6, 1, 7, 2, 8, 3, 9, 4, 10, 11, 5 };
+u8 D_8010F2B0_modesel[12] = { 0, 1, 2, 3, 4, 5, 7, 6 };
+f32 D_8010F2BC_modesel = 55.0f;
+f32 D_8010F2C0_modesel = 100.0f;
+f32 D_8010F2C4_modesel = 2080.0f;
+s32 D_8010F2C8_modesel = 0;
 // Position tables, one entry per spinner position.
-extern Vec D_8010F2CC_modesel[];
-extern Vec D_8010F304_modesel[];
-extern u8 D_8010F2A0_modesel[];
-extern u8 D_8010F2B0_modesel[];
+Vec D_8010F2CC_modesel[3] = {
+    { 250.0f, 25.0f, 355.0f },
+    { -250.0f, 25.0f, 355.0f },
+    { 0.0f, 25.0f, 70.0f },
+};
+u32 D_8010F2F0_modesel[5] = { 0x3121, 0x3120, 0x311D, 0x311C, 0x311B };
+Vec D_8010F304_modesel[14] = {
+    { 250.0f, 45.0f, 355.0f },
+    { -250.0f, 45.0f, 355.0f },
+    { 0.0f, 45.0f, 70.0f },
+    { 0.0f, 200.0f, 0.0f },
+    { 325.0f, 102.5f, 45.0f },
+    { 0.0f, 360.0f, -355.0f },
+    { 50.0f, 25.0f, 300.0f },
+    { -250.0f, 225.0f, 300.0f },
+    { -500.0f, 440.0f, -355.0f },
+    { -300.0f, 590.0f, -355.0f },
+    { -100.0f, 590.0f, -355.0f },
+    { 150.0f, 590.0f, -355.0f },
+    { 425.0f, 590.0f, -355.0f },
+    { 575.0f, 440.0f, -355.0f }
+};
+
+UnkModeSel2 D_8010F710_modesel[0x40] BSS;
 // the one-column second dimension keeps these indexed stores addressing the array base symbolically
-extern s16 D_8010FE10_modesel[0x40][1];
-extern UnkModeSel D_8010FE90_modesel[0x40];
-extern UnkModeSel4 D_8010FEA0_modesel[0x40];
-extern UnkModeSel2 D_8010F710_modesel[0x40];
-extern s16 D_80110990_modesel;
-extern u16 D_80110992_modesel;
-extern s16 D_80110998_modesel[0x20][6];
+s16 D_8010FE10_modesel[0x40][1] BSS;
+UnkModeSel D_8010FE90_modesel[0x40] BSS;
+s16 D_80110990_modesel BSS;
+u16 D_80110992_modesel BSS;
+u8 D_80110994_modesel[4] BSS; /* Unreferenced. */
+s16 D_80110998_modesel[0x20][6] BSS;
+UnkModeSelStar D_80110B18_modesel[3] BSS;
+u8 D_80110B6C_modesel[4] BSS; /* Unreferenced. */
+s32 D_80110B70_modesel[6] BSS;
+UnkModeSelBoardSave D_80110B88_modesel BSS;
+UnkModeSelStorySave D_80110BB4_modesel BSS;
+omObjData *D_80110BD0_modesel BSS;
+HmfMotionNode *D_80110BD4_modesel BSS;
+s32 D_80110BD8_modesel BSS;
+Process *D_80110BDC_modesel BSS;
+Process *D_80110BE0_modesel BSS;
+u8 D_80110BE4_modesel[4] BSS; /* Unreferenced. */
+UnkModeSel3 D_80110BE8_modesel BSS;
+u8 D_80110C0C_modesel[4] BSS; /* Unreferenced. */
+UnkModeSel7 D_80110C10_modesel BSS;
+UnkModeSel6 D_80110C38_modesel BSS;
+UnkModeSel5 D_80110C68_modesel[3] BSS;
+Vec D_80110CB0_modesel BSS;
+Vec D_80110CBC_modesel BSS;
+u8 D_80110CC8_modesel[0xC] BSS; /* Unreferenced. */
+f32 D_80110CD4_modesel BSS;
+// Start and end positions for the model 10 hop animation.
+Vec D_80110CD8_modesel[2] BSS;
+// Three interleaved parallel arrays covering the same 21 slots; each element is 0xC bytes apart.
+s32 D_80110CF0_modesel[21][3] BSS;
+s32 D_80110DEC_modesel BSS;
+
+/* Views into the BSS arrays above, aliased in undefined_syms.txt. */
+extern s16 D_8010F296_modesel;               // low half of D_8010F294_modesel
+extern s16 D_80110BDA_modesel;               // low half of D_80110BD8_modesel
+extern UnkModeSel4 D_8010FEA0_modesel[0x40]; // D_8010FE90_modesel[i].unk_10
 extern s32 D_8011099C_modesel[0x20][3];
 extern s32 D_801109A0_modesel[0x20][3];
-extern UnkModeSel7 D_80110C10_modesel;
-extern UnkModeSel6 D_80110C38_modesel;
-extern UnkModeSel5 D_80110C68_modesel[3];
-extern UnkModeSel3 D_80110BE8_modesel;
-extern Vec D_80110CB0_modesel;
-extern Vec D_80110CBC_modesel;
-extern f32 D_80110CD4_modesel;
-// Start and end positions for the model 10 hop animation.
-extern Vec D_80110CD8_modesel[2];
-// Three interleaved parallel arrays covering the same 21 slots; each element is 0xC bytes apart.
-extern s32 D_80110CF0_modesel[][3];
 extern s32 D_80110CF4_modesel[][3];
 extern omObjData *D_80110CF8_modesel[][3];
-extern s32 D_80110DEC_modesel;
-extern Process *D_80110BDC_modesel;
-extern Process *D_80110BE0_modesel;
-extern s16 D_8010F296_modesel;
-extern omObjData *D_80110BD0_modesel;
-extern HmfMotionNode *D_80110BD4_modesel;
-extern f32 D_8010F2BC_modesel;
-extern f32 D_8010F2C0_modesel;
-extern f32 D_8010F2C4_modesel;
-extern s32 D_80110B70_modesel[6];
-extern UnkModeSelBoardSave D_80110B88_modesel;
-extern UnkModeSelStorySave D_80110BB4_modesel;
-extern u32 D_8010F2F0_modesel[];
-extern s16 D_800EBAF0_minigame;
-extern char D_8010F454_modesel[];
 
 void func_80105C7C_modesel(void);
 void func_80105F84_modesel(s32);
@@ -854,7 +886,7 @@ void func_80107CB0_modesel(void) {
     D_80110BDC_modesel = omAddPrcObj(func_80107CEC_modesel, 0x5000, 0x2000, 0);
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/modesel/4F8140", D_8010F454_modesel);
+const char D_8010F454_modesel[] = "";
 
 void func_80107CEC_modesel(void) {
     s32 i;

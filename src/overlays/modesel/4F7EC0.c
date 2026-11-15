@@ -1,9 +1,11 @@
 #include "common.h"
 
-extern Vec D_8010F3B0_modesel;
-extern Vec D_8010F3BC_modesel;
-extern Vec D_8010F3C8_modesel;
 extern u8 D_800D2132_main;
+
+const Vec D_8010F3B0_modesel = { 0.0f, 0.0f, 100.0f };
+const Vec D_8010F3BC_modesel = { 0.0f, 0.0f, 0.0f };
+const Vec D_8010F3C8_modesel = { 0.0f, 1.0f, 0.0f };
+const Vec D_8010F3D4_modesel = { 0.0f, 0.0f, 0.0f }; /* Unreferenced. */
 
 void func_80107CB0_modesel(void);
 

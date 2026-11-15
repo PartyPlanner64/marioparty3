@@ -473,3 +473,13 @@ D_8010F616_toadstool_titan = toadstoolTitanBssF614 + 0x2;
 D_8010F650_toadstool_titan = toadstoolTitanBssF650;
 D_8010F659_toadstool_titan = toadstoolTitanBssF650 + 0x9;
 D_8010F65D_toadstool_titan = toadstoolTitanBssF650 + 0xD;
+
+/* modesel aliases: s16 low halves, parallel-array views; func_8010ACA8_modesel (INCLUDE_ASM) uses D_80110CE4. */
+D_8010F296_modesel = D_8010F294_modesel + 0x2;
+D_80110BDA_modesel = D_80110BD8_modesel + 0x2;
+D_8010FEA0_modesel = D_8010FE90_modesel + 0x10;
+D_8011099C_modesel = D_80110998_modesel + 0x4;
+D_801109A0_modesel = D_80110998_modesel + 0x8;
+D_80110CF4_modesel = D_80110CF0_modesel + 0x4;
+D_80110CF8_modesel = D_80110CF0_modesel + 0x8;
+D_80110CE4_modesel = D_80110CD8_modesel + 0xC;

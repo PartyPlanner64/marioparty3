@@ -489,3 +489,22 @@ D_801109A0_modesel = D_80110998_modesel + 0x8;
 D_80110CF4_modesel = D_80110CF0_modesel + 0x4;
 D_80110CF8_modesel = D_80110CF0_modesel + 0x8;
 D_80110CE4_modesel = D_80110CD8_modesel + 0xC;
+
+/* hide_and_sneak field aliases: HideAndSneakBssE174, HideAndSneakBssE1A8. */
+D_8010E174_hide_and_sneak = hideAndSneakBssE174;
+D_8010E175_hide_and_sneak = hideAndSneakBssE174 + 0x1;
+D_8010E17A_hide_and_sneak = hideAndSneakBssE174 + 0x6;
+D_8010E17C_hide_and_sneak = hideAndSneakBssE174 + 0x8;
+D_8010E17D_hide_and_sneak = hideAndSneakBssE174 + 0x9;
+D_8010E180_hide_and_sneak = hideAndSneakBssE174 + 0xC;
+D_8010E181_hide_and_sneak = hideAndSneakBssE174 + 0xD;
+D_8010E182_hide_and_sneak = hideAndSneakBssE174 + 0xE;
+D_8010E186_hide_and_sneak = hideAndSneakBssE174 + 0x12;
+D_8010E1A8_hide_and_sneak = hideAndSneakBssE1A8;
+D_8010E1A9_hide_and_sneak = hideAndSneakBssE1A8 + 0x1;
+D_8010E1AC_hide_and_sneak = hideAndSneakBssE1A8 + 0x4;
+D_8010E1AD_hide_and_sneak = hideAndSneakBssE1A8 + 0x5;
+D_8010E1AE_hide_and_sneak = hideAndSneakBssE1A8 + 0x6;
+D_8010E1B1_hide_and_sneak = hideAndSneakBssE1A8 + 0x9;
+D_8010E1B2_hide_and_sneak = hideAndSneakBssE1A8 + 0xA;
+D_8010E1B3_hide_and_sneak = hideAndSneakBssE1A8 + 0xB;

@@ -36,9 +36,6 @@ wipeStat = 0x800CCF84; //type:u8
 wipeTime = 0x800D51F4; //type:f32
 wipeDuration = 0x800D0A3C; //type:f32
 
-//chancetime
-D_8010FD20_chancetime = 0x8010FD20; //rom:0x48BCF0 type:s32 size:0x18 force_migration:False
-
 //mstory1
 D_80114DE4_mstory1 = 0x80114DE4; //rom:0x49B274 type:f32 size:0xC force_migration:True
 D_80114DF0_mstory1 = 0x80114DF0; //rom:0x49B280 type:f32 size:0xC force_migration:True

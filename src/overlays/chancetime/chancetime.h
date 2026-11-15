@@ -8,9 +8,30 @@ typedef struct ChanceTimeObjState {
     /* 0x04 */ void (*func)(omObjData *);
 } ChanceTimeObjState;
 
+typedef struct ChanceTimeUnkFED0 {
+    /* 0x00 */ s8 unk00;
+    /* 0x01 */ char unk01[3];
+    /* 0x04 */ f32 unk04;
+    /* 0x08 */ f32 unk08;
+    /* 0x0C */ f32 unk0C;
+    /* 0x10 */ s16 unk10;
+    /* 0x12 */ s16 unk12;
+    /* 0x14 */ s16 unk14[3];
+    /* 0x1A */ s8 unk1A;
+    /* 0x1B */ s8 unk1B[4];
+    /* 0x1F */ char unk1F[9];
+} ChanceTimeUnkFED0; // size = 0x28
+
+typedef struct ChanceTimeTransfer {
+    /* 0x00 */ s32 state;
+    /* 0x04 */ s32 timer;
+} ChanceTimeTransfer; // size = 0x8
+
+#ifndef NO_EXTERN_VARIABLES
 extern s32 D_8010FAE4_chancetime;
 extern s8 D_801100D0_chancetime[4];
 extern s8 D_801100DC_chancetime;
+#endif
 
 void func_80106320_chancetime(void);
 void func_80106B18_chancetime(void);

@@ -1,10 +1,6 @@
 #include "common.h"
 #include "chancetime.h"
 
-extern s32 D_8010FAF0_chancetime;
-extern f32 D_8010FAF4_chancetime;
-extern f32 D_8010FAF8_chancetime;
-extern f32 D_8010FAFC_chancetime;
 extern s32 D_8010FE70_chancetime;
 extern s32 D_8010FE74_chancetime;
 extern s8 D_8010FE78_chancetime;
@@ -18,6 +14,11 @@ void func_80106770_chancetime(omObjData *object);
 void func_8010684C_chancetime(omObjData *object);
 void func_80106A2C_chancetime(omObjData *object);
 void func_80106BEC_chancetime(omObjData *object);
+
+s32 D_8010FAF0_chancetime = 0;
+f32 D_8010FAF4_chancetime = 360.0f;
+f32 D_8010FAF8_chancetime = 0.0f;
+f32 D_8010FAFC_chancetime = 0.2f;
 
 void func_80106320_chancetime(void) {
     omObjData *obj;

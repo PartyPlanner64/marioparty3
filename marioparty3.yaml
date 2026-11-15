@@ -2370,11 +2370,14 @@ segments:
       - [0x4822F0, c]
       - [0x4832D0, c]
       - [0x487F50, c]
-      - [0x48BAB0, data, 481970] #8010FAE0
+      - [0x48BAB0, .data, 481970] #8010FAE0
+      - [0x48BAC0, .data, 4822F0] #8010FAF0
+      - [0x48BAD0, .data, 4832D0] #8010FB00
+      - [0x48BB50, .data, 487F50] #8010FB80
       - [0x48BBF0, .rodata, 481970] #8010FC20
       - [0x48BC50, .rodata, 4832D0] #8010FC80
       - [0x48BC68, .rodata, 487F50] #8010FC98
-      - {0x48BE30, type: bss, vram: 0x8010FE60, name: chancetime_bss}
+      - {0x48BE30, type: .bss, vram: 0x8010FE60, name: bss}
 
   - type: code
     start: 0x48BE30

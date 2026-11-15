@@ -1,28 +1,9 @@
 #include "common.h"
 #include "chancetime.h"
 
-extern s32 D_8010FB00_chancetime;
-extern s32 D_8010FB04_chancetime;
-extern s32 D_8010FB08_chancetime;
-extern Vec D_8010FB0C_chancetime;
-extern Vec D_8010FB18_chancetime[4];
-extern Vec D_8010FB48_chancetime;
-extern Vec D_8010FB54_chancetime;
-extern s32 D_8010FB60_chancetime;
-extern f32 D_8010FB64_chancetime;
-extern s32 D_8010FB68_chancetime;
-extern f32 D_8010FB6C_chancetime;
-extern f32 D_8010FB70_chancetime;
-extern f32 D_8010FB74_chancetime;
-extern f32 D_8010FB78_chancetime;
-extern f32 D_8010FB7C_chancetime;
-extern char D_8010FC80_chancetime[];
-extern char D_8010FC8C_chancetime[];
 extern s16 D_8010FE80_chancetime[];
 extern s32 D_8010FE84_chancetime[2];
 extern s32 D_8010FE8C_chancetime;
-extern s16 D_8010FE8A_chancetime;
-extern s16 D_8010FE8E_chancetime;
 extern ChanceTimeObjState D_80110088_chancetime[];
 extern ChanceTimeObjState D_801100B0_chancetime;
 extern ChanceTimeObjState D_801100B8_chancetime;
@@ -56,6 +37,27 @@ void func_8010BD40_chancetime(void);
 void func_80107A88_chancetime(omObjData *object);
 void func_80107A90_chancetime(void);
 
+s32 D_8010FB00_chancetime = 0;
+s32 D_8010FB04_chancetime = 0;
+s32 D_8010FB08_chancetime = 0;
+Vec D_8010FB0C_chancetime = { 0.0f, 80.0f, -300.0f };
+Vec D_8010FB18_chancetime[4] = {
+    { -210.0f, 0.0f, -50.0f },
+    { -70.0f, 0.0f, -50.0f },
+    { 70.0f, 0.0f, -50.0f },
+    { 210.0f, 0.0f, -50.0f },
+};
+Vec D_8010FB48_chancetime = { -200.0f, 80.0f, -300.0f };
+Vec D_8010FB54_chancetime = { 200.0f, 80.0f, -300.0f };
+s32 D_8010FB60_chancetime = 0;
+f32 D_8010FB64_chancetime = 0.0f;
+s32 D_8010FB68_chancetime = 0;
+f32 D_8010FB6C_chancetime = 0.0f;
+f32 D_8010FB70_chancetime = 0.0f;
+f32 D_8010FB74_chancetime = 0.0f;
+f32 D_8010FB78_chancetime = 0.0f;
+f32 D_8010FB7C_chancetime = 0.0f;
+
 void func_80107300_chancetime(void) {
     omObjData *object;
     void *data;
@@ -73,13 +75,13 @@ void func_80107300_chancetime(void) {
     Hu3DModelPosSet(object->model[2], -200.0f, -5.0f, -50.0f);
     Hu3DModelCameraSet(object->model[2], 2);
     data = DataRead(0xA002A);
-    D_8010FE84_chancetime[0] = (s16)Hu3DAnimCreate(Hu3DData[object->model[1]].hmf, data, 0, D_8010FC80_chancetime);
+    D_8010FE84_chancetime[0] = (s16)Hu3DAnimCreate(Hu3DData[object->model[1]].hmf, data, 0, "c160n_0_DEF");
     HuMemMemoryFreePerm(data);
     Hu3DModelRemakeStatic(object->model[1]);
     func_8001C514_main(object->model[1]);
     func_80032FC0_main(D_8010FE84_chancetime[0], 1, 0);
     Hu3DAnimBankSet(D_8010FE84_chancetime[0], 0);
-    D_8010FE8C_chancetime = Hu3DAnimLink(Hu3DData[object->model[1]].hmf, D_8010FE84_chancetime[0], 0, D_8010FC80_chancetime);
+    D_8010FE8C_chancetime = Hu3DAnimLink(Hu3DData[object->model[1]].hmf, D_8010FE84_chancetime[0], 0, "c160n_0_DEF");
     data = DataRead(0xA002B);
     D_8010FE84_chancetime[1] = (s16)func_800329B4_main(data);
     HuMemMemoryFreePerm(data);
@@ -88,7 +90,7 @@ void func_80107300_chancetime(void) {
     Hu3DModelPosSet(object->model[3], 200.0f, 0.0f, -50.0f);
     Hu3DModelCameraSet(object->model[3], 2);
     data = DataRead(0xA002A);
-    anim = (s16)Hu3DAnimCreate(Hu3DData[object->model[3]].hmf, data, 0, D_8010FC80_chancetime);
+    anim = (s16)Hu3DAnimCreate(Hu3DData[object->model[3]].hmf, data, 0, "c160n_0_DEF");
     HuMemMemoryFreePerm(data);
     Hu3DModelRemakeStatic(object->model[3]);
     func_8001C514_main(object->model[3]);
@@ -196,10 +198,10 @@ void func_80107C84_chancetime(omObjData *object) {
 
 void func_80107D60_chancetime(omObjData *object) {
     if (Hu3DMotionShiftTimeGet(object->model[1]) >= 5.0f) {
-        Hu3DModelHookSet(object->model[5], object->model[1], D_8010FC8C_chancetime);
+        Hu3DModelHookSet(object->model[5], object->model[1], "item_hook");
         func_8001C258_main(object->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         func_8001C814_main(object->model[5], 1, 0);
-        Hu3DModelHookSet(object->model[6], object->model[3], D_8010FC8C_chancetime);
+        Hu3DModelHookSet(object->model[6], object->model[3], "item_hook");
         func_8001C258_main(object->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         func_8001C814_main(object->model[6], 1, 0);
         func_80108738_chancetime(object);
@@ -236,7 +238,7 @@ void func_80107F58_chancetime(omObjData *object) {
         Hu3DMotionShiftSet(object->model[1], Hu3DData[object->motion[0]].motId, 0, 30, 2);
         Hu3DMotionShiftSet(object->model[3], Hu3DData[object->motion[1]].motId, 0, 30, 2);
         D_8010FB68_chancetime = 0;
-        func_80108C08_chancetime(object->model[1], D_8010FE8E_chancetime, D_8010FE8A_chancetime);
+        func_80108C08_chancetime(object->model[1], D_8010FE8C_chancetime, D_8010FE84_chancetime[1]);
         D_801100D4_chancetime.func = func_801080EC_chancetime;
     }
 }
@@ -341,7 +343,7 @@ void func_80108738_chancetime(omObjData *object) {
     f32 rot;
 
     time = Hu3DData[object->model[1]].motTime;
-    func_80016B00_main(object->model[1], time, D_8010FC8C_chancetime, &mtx);
+    func_80016B00_main(object->model[1], time, "item_hook", &mtx);
     rot = -Hu3DData[object->model[1]].rot.y;
     pos.x = cosdf(rot) * mtx[3][0] - sindf(rot) * mtx[3][2];
     pos.y = mtx[3][1];
@@ -355,7 +357,7 @@ void func_80108738_chancetime(omObjData *object) {
     func_80014714_main(D_8010FE80_chancetime[0], 0);
 
     time = Hu3DData[object->model[3]].motTime;
-    func_80016B00_main(object->model[3], time, D_8010FC8C_chancetime, &mtx);
+    func_80016B00_main(object->model[3], time, "item_hook", &mtx);
     rot = -Hu3DData[object->model[3]].rot.y;
     pos.x = cosdf(rot) * mtx[3][0] - sindf(rot) * mtx[3][2];
     pos.y = mtx[3][1];
@@ -417,7 +419,7 @@ void func_80108CDC_chancetime(void) {
     Hu3DModelPosSet(object->model[1], D_8010FB0C_chancetime.x, D_8010FB0C_chancetime.y, D_8010FB0C_chancetime.z);
     Hu3DModelCameraSet(object->model[1], 2);
     data = DataRead(0xA002A);
-    anim = (s16)Hu3DAnimCreate(Hu3DData[object->model[1]].hmf, data, 0, D_8010FC80_chancetime);
+    anim = (s16)Hu3DAnimCreate(Hu3DData[object->model[1]].hmf, data, 0, "c160n_0_DEF");
     HuMemMemoryFreePerm(data);
     Hu3DModelRemakeStatic(object->model[1]);
     func_8001C514_main(object->model[1]);
@@ -1122,7 +1124,3 @@ void func_8010BF48_chancetime(void) {
 
     func_8010BC10_chancetime(object, 0.0f, 45.0f, 0.0f, 10);
 }
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/chancetime/4832D0", D_8010FC80_chancetime);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/chancetime/4832D0", D_8010FC8C_chancetime);

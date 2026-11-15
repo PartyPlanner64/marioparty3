@@ -4,8 +4,6 @@
 #include "../ovl_80_shared_board/106A50.h"
 #include "../ovl_80_shared_board/10C230.h"
 
-extern s8 D_8010FAE0_chancetime;
-extern s8 D_8010FAE8_chancetime;
 extern s32 D_8010FE60_chancetime;
 extern s8 D_8010FE64_chancetime[3];
 
@@ -26,6 +24,10 @@ void func_80105E08_chancetime(omObjData *object);
 void func_80106154_chancetime(void);
 void func_801061B8_chancetime(omObjData *object);
 void func_80106240_chancetime(void);
+
+s8 D_8010FAE0_chancetime = 0;
+s32 D_8010FAE4_chancetime = 0;
+s8 D_8010FAE8_chancetime = 0;
 
 void func_801059A0_chancetime(void) {
     omObjData *obj;

@@ -5,20 +5,6 @@
 #include "../ovl_80_shared_board/105D50.h"
 #include "../ovl_80_shared_board/106A50.h"
 
-typedef struct ChanceTimeUnkFED0 {
-    /* 0x00 */ s8 unk00;
-    /* 0x01 */ char unk01[3];
-    /* 0x04 */ f32 unk04;
-    /* 0x08 */ f32 unk08;
-    /* 0x0C */ f32 unk0C;
-    /* 0x10 */ s16 unk10;
-    /* 0x12 */ s16 unk12;
-    /* 0x14 */ s16 unk14[3];
-    /* 0x1A */ s8 unk1A;
-    /* 0x1B */ s8 unk1B[4];
-    /* 0x1F */ char unk1F[9];
-} ChanceTimeUnkFED0; // size = 0x28
-
 typedef struct ChanceTimeUnkFE3C {
     /* 0x00 */ s16 coins;
     /* 0x02 */ s16 stars;
@@ -29,35 +15,33 @@ typedef struct ChanceTimeReelSpeed {
     /* 0x04 */ f32 max;
 } ChanceTimeReelSpeed; // size = 0x8
 
-typedef struct ChanceTimeTransfer {
-    /* 0x00 */ s32 state;
-    /* 0x04 */ s32 timer;
-} ChanceTimeTransfer; // size = 0x8
-
-extern s8 D_8010FB80_chancetime;
-extern s8 D_8010FB81_chancetime;
-extern s16 D_8010FB84_chancetime[2];
-extern f32 D_8010FB88_chancetime;
-extern f32 D_8010FB8C_chancetime;
-extern Vec D_8010FB94_chancetime[];
-extern s32 D_8010FC00_chancetime;
+extern char *D_8010FBD8_chancetime[3];
 extern s32 D_8010FBF0_chancetime;
 extern s32 D_8010FBF4_chancetime[3];
+extern s32 D_8010FC00_chancetime;
 extern s32 D_8010FC10_chancetime;
 extern s32 D_8010FC14_chancetime;
 extern s32 D_8010FC18_chancetime;
 extern s32 D_8010FC1C_chancetime;
+extern const u8 D_8010FC98_chancetime[3][13];
+extern const ChanceTimeReelSpeed D_8010FD08_chancetime[3];
+extern const Vec D_8010FD38_chancetime[3];
+extern const u32 D_8010FD5C_chancetime[3];
+extern const ChanceTimeUnkFE3C D_8010FD68_chancetime[9];
+extern const u32 D_8010FD8C_chancetime[9];
+extern const u32 D_8010FDB0_chancetime[9];
+extern const u32 D_8010FDD4_chancetime[9];
+extern const u32 D_8010FDF8_chancetime[9];
+extern const u32 D_8010FE1C_chancetime[8];
+extern const ChanceTimeUnkFE3C D_8010FE3C_chancetime[9];
 extern s16 D_8010FE94_chancetime[3];
 extern u16 D_8010FE9A_chancetime;
 extern s32 D_8010FEC4_chancetime;
-extern ChanceTimeUnkFE3C D_8010FE3C_chancetime[];
-extern const ChanceTimeUnkFE3C D_8010FD68_chancetime[];
 extern ChanceTimeTransfer D_8010FF60_chancetime[20];
 extern ChanceTimeUnkFED0 D_8010FED0_chancetime[3];
 extern s16 D_8010FEB0_chancetime[3][3];
 extern s8 D_8010FF3A_chancetime;
 extern u8 D_8010FF3B_chancetime[];
-extern u8 D_8010FC98_chancetime[][13];
 extern s32 D_8010FF48_chancetime[3];
 extern s8 D_8010FEC8_chancetime;
 extern s8 D_8010FEC9_chancetime;
@@ -67,20 +51,11 @@ extern s16 D_80110010_chancetime[10];
 extern s16 D_80110028_chancetime[20];
 extern omObjData *D_80110080_chancetime;
 extern s32 D_80110008_chancetime;
-extern u32 D_8010FD5C_chancetime[];
-extern u32 D_8010FD8C_chancetime[];
-extern u32 D_8010FDB0_chancetime[];
-extern u32 D_8010FDD4_chancetime[];
-extern u32 D_8010FDF8_chancetime[];
-extern u32 D_8010FE1C_chancetime[];
 extern void (*D_80110084_chancetime)();
 extern omObjData *D_801100C8_chancetime;
 extern s8 D_801100DD_chancetime[3];
 extern s8 D_801100DF_chancetime;
 extern void (*D_801100CC_chancetime)(omObjData *);
-extern const ChanceTimeReelSpeed D_8010FD08_chancetime[3];
-extern Vec D_8010FD38_chancetime[3];
-extern char *D_8010FBD8_chancetime[3];
 extern s16 D_8010FE90_chancetime;
 extern s16 D_8010FE92_chancetime;
 extern HuSprite *D_8010FE9C_chancetime;
@@ -110,6 +85,20 @@ void func_8010E4D0_chancetime(omObjData *object);
 void func_8010F984_chancetime(omObjData *object);
 void func_8010F1F8_chancetime(void);
 void func_8010F42C_chancetime(void);
+
+s8 D_8010FB80_chancetime = 0;
+s8 D_8010FB81_chancetime = 0;
+s16 D_8010FB84_chancetime[2] = { 0, -240 };
+f32 D_8010FB88_chancetime = 600.0f;
+f32 D_8010FB8C_chancetime = 0.0f;
+Vec D_8010FB90_chancetime[6] = {
+    { -138.0f, 406.0f, -216.0f },
+    { 152.0f, 406.0f, -216.0f },
+    { 7.0f, 146.0f, -216.0f },
+    { -150.0f, -30.0f, -216.0f },
+    { 0.0f, -30.0f, -216.0f },
+    { 150.0f, -30.0f, -216.0f },
+};
 
 void func_8010BF80_chancetime(void) {
     omObjData *obj;
@@ -233,8 +222,8 @@ void func_8010C610_chancetime(omObjData *object) {
         }
     }
     pos.x = 0.0f;
-    pos.y = D_8010FB94_chancetime[0].x + D_8010FB88_chancetime - 168.0f;
-    pos.z = D_8010FB94_chancetime[0].y;
+    pos.y = D_8010FB90_chancetime[0].y + D_8010FB88_chancetime - 168.0f;
+    pos.z = D_8010FB90_chancetime[0].z;
     Hu3D3Dto2D(0, &pos, &screen);
     D_8010FB84_chancetime[0] = 74;
     D_8010FB84_chancetime[1] = screen.y - 120.0f + 25.0f;
@@ -382,19 +371,22 @@ void func_8010CF78_chancetime(s8 arg0) {
     }
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/chancetime/487F50", D_8010FC98_chancetime);
+const u8 D_8010FC98_chancetime[3][13] = {
+    { 4, 2, 8, 3, 7, 4, 8, 2, 3, 0, 3, 5, 8 },
+    { 0, 3, 6, 1, 8, 7, 2, 8, 4, 5, 0, 7, 2 },
+    { 1, 7, 5, 4, 7, 1, 0, 6, 2, 0, 7, 8, 6 },
+};
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/chancetime/487F50", D_8010FCC0_chancetime);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/chancetime/487F50", D_8010FCC8_chancetime);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/chancetime/487F50", D_8010FCD0_chancetime);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/chancetime/487F50", D_8010FCD8_chancetime);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/chancetime/487F50", D_8010FCE8_chancetime);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/chancetime/487F50", D_8010FCF8_chancetime);
+char *D_8010FBD8_chancetime[3] = { "mar_DEF", "rui_DEF", "pie_DEF" };
+char *D_8010FBE4_chancetime[3] = { "coin_all_DEF", "coin_x30_DEF", "coin_x20_DEF" }; /* Unreferenced. */
+s32 D_8010FBF0_chancetime = 0;
+s32 D_8010FBF4_chancetime[3] = { 0 };
+s32 D_8010FC00_chancetime = 0;
+s32 D_8010FC04_chancetime[3] = { 0 }; /* Unreferenced. */
+s32 D_8010FC10_chancetime = 0;
+s32 D_8010FC14_chancetime = 0;
+s32 D_8010FC18_chancetime = 0;
+s32 D_8010FC1C_chancetime = 0;
 
 void func_8010D320_chancetime(omObjData *object) {
     ChanceTimeUnkFED0 *reel;
@@ -1103,26 +1095,46 @@ void func_8010F984_chancetime(omObjData *object) {
 
 const ChanceTimeReelSpeed D_8010FD08_chancetime[3] = { { 10.0f, 10.0f }, { 20.0f, 20.0f }, { 40.0f, 40.0f } };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/chancetime/487F50", D_8010FD20_chancetime);
+const s32 D_8010FD20_chancetime[6] = { 125, 71, 198, 71, 161, 141 }; /* Unreferenced. */
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/chancetime/487F50", D_8010FD38_chancetime);
+const Vec D_8010FD38_chancetime[3] = {
+    { -111.0f, 486.0f, -541.0f },
+    { 119.0f, 486.0f, -541.0f },
+    { 3.0f, 265.0f, -541.0f },
+};
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/chancetime/487F50", D_8010FD3C_chancetime);
+const u32 D_8010FD5C_chancetime[3] = { 0x1B01, 0x1B02, 0x1B03 };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/chancetime/487F50", D_8010FD40_chancetime);
+const ChanceTimeUnkFE3C D_8010FD68_chancetime[9] = {
+    { 1000, 0 },
+    { 30, 0 },
+    { 20, 0 },
+    { 10, 0 },
+    { 1, 0 },
+    { 0, 1000 },
+    { 0, 3 },
+    { 0, 2 },
+    { 0, 1 },
+};
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/chancetime/487F50", D_8010FD5C_chancetime);
+const u32 D_8010FD8C_chancetime[9] = { 0x1B0C, 0x1B06, 0x1B06, 0x1B06, 0x1B04, 0x1B0E, 0x1B09, 0x1B09, 0x1B09 };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/chancetime/487F50", D_8010FD68_chancetime);
+const u32 D_8010FDB0_chancetime[9] = { 0, 0x1B07, 0x1B07, 0x1B07, 0, 0, 0x1B0A, 0x1B0A, 0x1B0A };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/chancetime/487F50", D_8010FD8C_chancetime);
+const u32 D_8010FDD4_chancetime[9] = { 0x1B0D, 0x1B08, 0x1B08, 0x1B08, 0x1B05, 0x1B0F, 0x1B0B, 0x1B0B, 0x1B0B };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/chancetime/487F50", D_8010FDB0_chancetime);
+const u32 D_8010FDF8_chancetime[9] = { 0, 0x1B1A, 0x1B19, 0x1B18, 0, 0, 0x1B1D, 0x1B1C, 0x1B1B };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/chancetime/487F50", D_8010FDD4_chancetime);
+const u32 D_8010FE1C_chancetime[8] = { 0x1B10, 0x1B11, 0x1B12, 0x1B13, 0x1B14, 0x1B15, 0x1B16, 0x1B17 };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/chancetime/487F50", D_8010FDF8_chancetime);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/chancetime/487F50", D_8010FE1C_chancetime);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/chancetime/487F50", D_8010FE3C_chancetime);
+const ChanceTimeUnkFE3C D_8010FE3C_chancetime[9] = {
+    { 1000, 0 },
+    { 30, 0 },
+    { 20, 0 },
+    { 10, 0 },
+    { 1, 0 },
+    { 0, 1000 },
+    { 0, 3 },
+    { 0, 2 },
+    { 0, 1 },
+};

@@ -63,43 +63,44 @@ typedef struct HandLineSinkerFollowWork {
     /* 0x10 */ Vec unk10;
 } HandLineSinkerFollowWork; // sizeof 0x1C
 
-extern s16 D_8010C0EC_hand_line_sinker;
-extern s16 D_8010C0F0_hand_line_sinker;
-extern omObjData *D_8010C0F4_hand_line_sinker;
-extern omObjData *D_8010C0F8_hand_line_sinker;
-extern u16 D_8010C10C_hand_line_sinker;
-extern u16 D_8010C0E8_hand_line_sinker;
-extern u16 D_8010BF60_hand_line_sinker;
-extern omObjData **D_8010C100_hand_line_sinker;
-extern s32 D_8010BFA0_hand_line_sinker[];
-extern s16 D_8010C148_hand_line_sinker[2][6];
-extern omObjData *D_8010C160_hand_line_sinker[];
-extern omObjFunc D_8010BFA8_hand_line_sinker[];
-extern u16 D_8010C104_hand_line_sinker[2];
-extern f32 D_8010C108_hand_line_sinker;
-extern u8 D_800D6A90_main;
-extern f32 D_8010C130_hand_line_sinker;
-extern f32 D_8010C134_hand_line_sinker;
-extern f32 D_8010C138_hand_line_sinker;
-extern f32 D_8010C13C_hand_line_sinker;
-extern f32 D_8010C140_hand_line_sinker;
-extern omObjData *D_8010C0E0_hand_line_sinker;
-extern u16 D_8010C0EE_hand_line_sinker;
-extern omObjData *D_8010C0FC_hand_line_sinker;
-extern CameraPreset D_8010C110_hand_line_sinker;
 extern omObjData *D_8010C190_hand_line_sinker;
-extern CameraPreset D_8010BF28_hand_line_sinker;
-extern s16 D_8010C12C_hand_line_sinker;
-extern u16 D_8010C0EA_hand_line_sinker;
-extern D_80111B50_vine_with_me_Struct D_8010BF00_hand_line_sinker;
 extern const s16 D_8010BFB0_hand_line_sinker[];
-extern f32 D_8010C0E4_hand_line_sinker;
-extern CameraPreset D_8010BF44_hand_line_sinker;
-extern u8 D_8010BF18_hand_line_sinker;
+
+D_80111B50_vine_with_me_Struct D_8010BF00_hand_line_sinker = {
+    0, 2, 1, 2, 0, 0, 0, 0, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0, 0, 0, 0 }, -1, 1800, -1, -1, 150
+};
+CameraPreset D_8010BF28_hand_line_sinker = { { 0.0f, 0.0f, 270.0f }, { 306.0f, 0.0f, 0.0f }, 2190.0f };
+CameraPreset D_8010BF44_hand_line_sinker = { { 0.0f, 0.0f, 405.0f }, { 326.0f, 0.0f, 0.0f }, 1250.0f };
+u16 D_8010BF60_hand_line_sinker = 0;
+s32 D_8010BF64_hand_line_sinker[] = { 12, 13, 14, 15, 16, 17, 18, 19 };
+s32 D_8010BF84_hand_line_sinker = 0; /* Unreferenced. */
+
+omObjData *D_8010C0E0_hand_line_sinker BSS;
+f32 D_8010C0E4_hand_line_sinker BSS;
+u16 D_8010C0E8_hand_line_sinker BSS;
+u16 D_8010C0EA_hand_line_sinker BSS;
+s16 D_8010C0EC_hand_line_sinker BSS;
+u16 D_8010C0EE_hand_line_sinker BSS;
+s16 D_8010C0F0_hand_line_sinker BSS;
+omObjData *D_8010C0F4_hand_line_sinker BSS;
+omObjData *D_8010C0F8_hand_line_sinker BSS;
+omObjData *D_8010C0FC_hand_line_sinker BSS;
+omObjData **D_8010C100_hand_line_sinker BSS;
+u16 D_8010C104_hand_line_sinker[2] BSS;
+f32 D_8010C108_hand_line_sinker BSS;
+u16 D_8010C10C_hand_line_sinker BSS;
+CameraPreset D_8010C110_hand_line_sinker BSS;
+s16 D_8010C12C_hand_line_sinker BSS;
+f32 D_8010C130_hand_line_sinker BSS;
+f32 D_8010C134_hand_line_sinker BSS;
+f32 D_8010C138_hand_line_sinker BSS;
+f32 D_8010C13C_hand_line_sinker BSS;
+f32 D_8010C140_hand_line_sinker BSS;
+u8 D_8010C144_hand_line_sinker[4] BSS; /* Unreferenced. */
+s16 D_8010C148_hand_line_sinker[2][6] BSS;
+omObjData *D_8010C160_hand_line_sinker[8] BSS;
+extern u8 D_800D6A90_main;
 extern s32 D_800A178C_main[][6];
-extern s32 D_8010BF64_hand_line_sinker[];
-extern char *D_8010BF88_hand_line_sinker;
-extern u16 D_8010BF9C_hand_line_sinker;
 
 void func_80105D28_hand_line_sinker(omObjData *);
 void func_80105CF0_hand_line_sinker(omObjData *arg0);
@@ -131,6 +132,8 @@ void func_8010AD7C_hand_line_sinker(omObjData *obj, f32 length, f32 x0, f32 y0, 
 void func_8010B0FC_hand_line_sinker(omObjData *arg0, f32 arg1);
 void func_8010BB58_hand_line_sinker(FishingLine *line, Vec *points, u16 count);
 void func_8010B1E4_hand_line_sinker(omObjData *obj);
+void func_8010A904_hand_line_sinker(omObjData *obj);
+void func_8010A9F8_hand_line_sinker(omObjData *obj);
 
 void func_801059A0_hand_line_sinker(void) {
     omObjData *players[4];
@@ -194,7 +197,7 @@ void func_80105CF0_hand_line_sinker(omObjData *arg0) {
     arg0->func = func_80105D28_hand_line_sinker;
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", D_8010BFB0_hand_line_sinker);
+const s16 D_8010BFB0_hand_line_sinker[] = { 0x8260, 0x8261, 0x8262, 0 };
 
 void func_80105D28_hand_line_sinker(omObjData *obj) {
     HandLineSinkerPlayerWork *work;
@@ -287,9 +290,10 @@ void func_801060D0_hand_line_sinker(omObjData *obj) {
     func_80106100_hand_line_sinker(obj, 3);
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", D_8010BFF0_hand_line_sinker);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", D_8010C008_hand_line_sinker);
+char *D_8010BF88_hand_line_sinker[] = { "Lure-Line_2", "c000_049_long-Lure-Line", NULL, NULL, NULL };
+u16 D_8010BF9C_hand_line_sinker = 0;
+s32 D_8010BFA0_hand_line_sinker[] = { 0x220004, 0x220005 };
+omObjFunc D_8010BFA8_hand_line_sinker[] = { func_8010A904_hand_line_sinker, func_8010A9F8_hand_line_sinker };
 
 void func_80106100_hand_line_sinker(omObjData *obj, u16 playerNo) {
     HandLineSinkerPlayerWork *work;
@@ -344,7 +348,7 @@ void func_80106100_hand_line_sinker(omObjData *obj, u16 playerNo) {
         func_8001C5B4_main(obj->model[0], obj->motion[4]);
         func_8001C814_main(obj->model[0], 2, 2);
         func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-        Hu3DModelHookSet(obj->model[3], obj->model[1], D_8010BF88_hand_line_sinker);
+        Hu3DModelHookSet(obj->model[3], obj->model[1], D_8010BF88_hand_line_sinker[0]);
         func_8001C258_main(obj->model[3], 0x4000, 0x4000);
         func_8001C258_main(obj->model[1], 0x4000, 0x4000);
         omSetTra(obj, 0.0f, 100.0f, 900.0f);
@@ -1360,7 +1364,7 @@ void func_80109584_hand_line_sinker(omObjData *obj) {
                                    Hu3DData[D_8010C0FC_hand_line_sinker->motion[12]].motId, 0, 8, 0);
                 func_80045ED0_main(D_800A178C_main[GwPlayer[work->playerNo].chr][0] | 0x2F);
                 omDelObj(D_8010C190_hand_line_sinker);
-                D_8010BF18_hand_line_sinker = work->playerNo;
+                D_8010BF00_hand_line_sinker.unk18[0] = work->playerNo;
                 obj->work[0] = 1;
                 GwPlayer[work->playerNo].bonusCoin = 10;
             }

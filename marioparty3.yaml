@@ -854,10 +854,11 @@ segments:
     subsegments:
       - [0x11A480, c]
       - [0x120090, c]
-      - [0x1209E0, data, 11A480] #8010BF00
+      - [0x1209E0, .data, 11A480] #8010BF00
       - [0x120A90, .rodata, 11A480] #8010BFB0
       - [0x120BA0, .rodata, 120090] #8010C0C0
-      - {0x120BC0, type: bss, vram: 0x8010C0E0, name: ovl_01_bss}
+      - {start: 0x120BC0, type: .bss, vram: 0x8010C0E0, name: 11A480}
+      - {start: 0x120BC0, type: .bss, vram: 0x8010C180, name: 120090}
 
   - type: code
     start: 0x120BC0

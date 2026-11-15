@@ -13,11 +13,11 @@ typedef struct CameraMotionData {
     /* 0x0C */ f32 t;
 } CameraMotionData; // sizeof 0x10
 
-extern omObjData *D_8010C190_hand_line_sinker;
-extern FishingLine *D_8010C180_hand_line_sinker;
-extern Gfx *D_8010C184_hand_line_sinker;
-extern HmfData **D_8010C188_hand_line_sinker;
-extern HmfModel *D_8010C18C_hand_line_sinker;
+FishingLine *D_8010C180_hand_line_sinker BSS;
+Gfx *D_8010C184_hand_line_sinker BSS;
+HmfData **D_8010C188_hand_line_sinker BSS;
+HmfModel *D_8010C18C_hand_line_sinker BSS;
+omObjData *D_8010C190_hand_line_sinker BSS;
 extern u8 D_800D2008_main;
 extern Gfx *gMainGfxPos;
 

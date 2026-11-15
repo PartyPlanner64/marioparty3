@@ -508,3 +508,14 @@ D_8010E1AE_hide_and_sneak = hideAndSneakBssE1A8 + 0x6;
 D_8010E1B1_hide_and_sneak = hideAndSneakBssE1A8 + 0x9;
 D_8010E1B2_hide_and_sneak = hideAndSneakBssE1A8 + 0xA;
 D_8010E1B3_hide_and_sneak = hideAndSneakBssE1A8 + 0xB;
+
+/* messy_memory: MessyMemoryBss5D70 fields and D_80111700_messy_memory work pool sub-ranges. */
+D_80115D70_messy_memory = messyMemoryBss5D70;
+D_80115D72_messy_memory = messyMemoryBss5D70 + 0x2;
+D_80115D76_messy_memory = messyMemoryBss5D70 + 0x6;
+D_80111910_messy_memory = D_80111700_messy_memory + 0x210; /* [4] */
+D_80111A9C_messy_memory = D_80111700_messy_memory + 0x39C; /* [7] */
+D_801134E8_messy_memory = D_80111700_messy_memory + 0x1DE8; /* [58] */
+D_80113884_messy_memory = D_80111700_messy_memory + 0x2184; /* [65] */
+D_80113A94_messy_memory = D_80111700_messy_memory + 0x2394; /* [69] */
+D_80113B18_messy_memory = D_80111700_messy_memory + 0x2418; /* [70] */

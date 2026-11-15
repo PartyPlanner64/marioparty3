@@ -77,65 +77,26 @@ typedef struct {
     /* 0x28 */ f32 fov;
 } MessyMemoryCamera; // sizeof 0x2C
 
-extern s32 D_80110FC0_messy_memory[8];
-extern s16 D_80110FE0_messy_memory[5][2];
-extern s16 D_80110FF4_messy_memory[21][2];
-extern s16 D_80111044_messy_memory[21][2];
-extern s16 D_80111094_messy_memory[4][2];
-extern f32 D_801110A4_messy_memory[20][2];
-extern MessyMemorySpriteEntry D_80111148_messy_memory[];
-extern MessyMemorySpriteEntry D_80111198_messy_memory[];
-extern s32 D_801111EC_messy_memory[][2];
-extern f32 D_80111228_messy_memory[7][4];
-extern f32 D_80111298_messy_memory[4][2];
-extern f32 D_801112B8_messy_memory[4][6]; // x/y pairs
-extern s16 D_80111338_messy_memory;
-extern s16 D_8011133A_messy_memory;
-extern s16 D_8011133C_messy_memory;
-extern MessyMemoryCamera D_80111340_messy_memory[2];
-extern const s16 D_801115F4_messy_memory[];
-extern f32 D_80111600_messy_memory;
-extern s32 D_80111608_messy_memory[10];
-extern u8 D_80111630_messy_memory[4];
-extern s32 D_80111634_messy_memory;
-extern u8 D_80111638_messy_memory;
-extern u8 D_80111639_messy_memory;
-extern u8 D_8011163A_messy_memory;
-extern u8 D_8011163B_messy_memory;
-extern s32 D_8011163C_messy_memory;
-extern s32 D_80111640_messy_memory[4];
-extern s16 D_80111650_messy_memory;
-extern HuSprite_Unk84_Struct *D_80111654_messy_memory;
-extern u8 D_80111658_messy_memory[4];
-extern f32 D_8011165C_messy_memory;
-extern HuSprite_Unk84_Struct *D_80111660_messy_memory[4];
-extern u8 D_80111670_messy_memory[4];
-extern u8 D_80111674_messy_memory;
-extern u8 D_80111675_messy_memory;
-extern u8 D_80111678_messy_memory[4][10];
-extern f32 D_801116A0_messy_memory;
-extern u8 D_801116A4_messy_memory[10];
-extern u8 D_801116B0_messy_memory[40];
-extern HuSprite_Unk84_Struct *D_801116D8_messy_memory;
-extern u8 D_801116E0_messy_memory[20];
-extern MessyMemoryWork D_80111700_messy_memory[0x88];
+typedef struct {
+    /* 0x00 */ s16 unk00;   // D_80115D70
+    /* 0x02 */ u8 unk02[4]; // D_80115D72
+    /* 0x06 */ u8 unk06[4]; // D_80115D76
+} MessyMemoryBss5D70;       // sizeof 0xA
+
+// Fields of messyMemoryBss5D70 (aliased in undefined_syms.txt).
+extern s16 D_80115D70_messy_memory;
+extern u8 D_80115D72_messy_memory[4];
+extern u8 D_80115D76_messy_memory[4];
+
+// Sub-ranges of the D_80111700_messy_memory work pool (aliased in undefined_syms.txt).
 extern MessyMemoryWork D_80111910_messy_memory[2];
 extern MessyMemoryWork D_80111A9C_messy_memory[1];
 extern MessyMemoryWork D_801134E8_messy_memory[7];
 extern MessyMemoryWork D_80113884_messy_memory[4];
 extern MessyMemoryWork D_80113A94_messy_memory[1];
 extern MessyMemoryWork D_80113B18_messy_memory[4];
-extern f32 D_80115D20_messy_memory[10][2];
-extern s16 D_80115D70_messy_memory;
-extern u8 D_80115D72_messy_memory[4];
-extern u8 D_80115D76_messy_memory[4];
-extern f32 D_80115D7C_messy_memory;
-extern u8 D_80115D80_messy_memory[4];
-extern s16 D_80115D84_messy_memory[4];
-extern u8 D_80115D8C_messy_memory;
-extern s16 D_80115D8E_messy_memory;
-extern u8 D_80115D90_messy_memory[10];
-extern u8 D_80115D9A_messy_memory;
+
+extern const s16 D_801115F4_messy_memory[];
 
 void func_80105B88_messy_memory(Gfx **gfxPos, s32 arg1, s32 arg2);
 void func_8010622C_messy_memory(omObjData *obj);
@@ -166,6 +127,217 @@ void func_8010FDF0_messy_memory(omObjData *obj);
 void func_801109BC_messy_memory(omObjData *obj);
 void func_80110D50_messy_memory(void);
 void func_80110EC4_messy_memory(void);
+
+s32 D_80110FC0_messy_memory[8] = { 2, 3, 7, 4, 5, 6, 8, 9 };
+
+s16 D_80110FE0_messy_memory[5][2] = {
+    { 0, 0 },
+    { 144, 0 },
+    { 0, 112 },
+    { 144, 112 },
+    { 0, 0 },
+};
+
+s16 D_80110FF4_messy_memory[20][2] = {
+    { 46, 67 },
+    { 112, 59 },
+    { 160, 59 },
+    { 208, 59 },
+    { 274, 67 },
+    { 46, 125 },
+    { 112, 117 },
+    { 160, 117 },
+    { 208, 117 },
+    { 274, 125 },
+    { 72, 160 },
+    { 122, 153 },
+    { 176, 155 },
+    { 222, 153 },
+    { 264, 160 },
+    { 52, 196 },
+    { 102, 190 },
+    { 146, 196 },
+    { 204, 194 },
+    { 248, 196 },
+};
+
+s16 D_80111044_messy_memory[20][2] = {
+    { 31, 38 },
+    { 64, 34 },
+    { 88, 34 },
+    { 112, 34 },
+    { 145, 38 },
+    { 31, 67 },
+    { 64, 63 },
+    { 88, 63 },
+    { 112, 63 },
+    { 145, 67 },
+    { 44, 87 },
+    { 69, 82 },
+    { 96, 86 },
+    { 119, 83 },
+    { 140, 88 },
+    { 34, 102 },
+    { 59, 99 },
+    { 81, 102 },
+    { 110, 101 },
+    { 132, 102 },
+};
+
+s16 D_80111094_messy_memory[4][2] = {
+    { 46, 107 },
+    { 70, 107 },
+    { 95, 107 },
+    { 121, 107 },
+};
+
+f32 D_801110A4_messy_memory[20][2] = {
+    { 1.14f, 0.53f },
+    { 0.48f, 0.61f },
+    { 0.0f, 0.61f },
+    { -0.48f, 0.61f },
+    { -1.14f, 0.53f },
+    { 1.14f, -0.05f },
+    { 0.48f, 0.03f },
+    { 0.0f, 0.03f },
+    { -0.48f, 0.03f },
+    { -1.14f, -0.05f },
+    { 0.88f, -0.4f },
+    { 0.38f, -0.33f },
+    { -0.16f, -0.35f },
+    { -0.62f, -0.33f },
+    { -1.04f, -0.4f },
+    { 1.08f, -0.76f },
+    { 0.58f, -0.7f },
+    { 0.14f, -0.76f },
+    { -0.44f, -0.74f },
+    { -0.88f, -0.76f },
+};
+
+s32 D_80111144_messy_memory = 0; /* Unreferenced. */
+
+MessyMemorySpriteEntry D_80111148_messy_memory[10] = {
+    { 0, 0x3E000F },
+    { 0, 0x3E0010 },
+    { 0, 0x3E0011 },
+    { 0, 0x3E0012 },
+    { 0, 0x3E0013 },
+    { 0, 0x3E0014 },
+    { 0, 0x3E0015 },
+    { 0, 0x3E0016 },
+    { 0, 0x3E0017 },
+    { 0, 0x3E0018 },
+};
+
+MessyMemorySpriteEntry D_80111198_messy_memory[10] = {
+    { 0, 0x3E0005 },
+    { 0, 0x3E0006 },
+    { 0, 0x3E0007 },
+    { 0, 0x3E0008 },
+    { 0, 0x3E0009 },
+    { 0, 0x3E000A },
+    { 0, 0x3E000B },
+    { 0, 0x3E000C },
+    { 0, 0x3E000D },
+    { 0, 0x3E000E },
+};
+
+MessyMemorySpriteEntry D_801111E8_messy_memory[8] = {
+    { 0, 0x6A },
+    { 0, 0x6B },
+    { 0, 0x6C },
+    { 0, 0x6D },
+    { 0, 0x6E },
+    { 0, 0x6F },
+    { 0, 0x70 },
+    { 0, 0x71 },
+};
+
+f32 D_80111228_messy_memory[7][4] = {
+    { -5.0f, -3.0f, -170.0f, 240.0f },
+    { -5.0f, 2.5f, -170.0f, 120.0f },
+    { -5.0f, -0.5f, -200.0f, 200.0f },
+    { -5.0f, 0.5f, -200.0f, 160.0f },
+    { -5.0f, -1.5f, -70.0f, 240.0f },
+    { -5.0f, 0.0f, -130.0f, 180.0f },
+    { -5.0f, 1.5f, -70.0f, 140.0f },
+};
+
+f32 D_80111298_messy_memory[4][2] = {
+    { 10.0f, -300.0f },
+    { -10.0f, 300.0f },
+    { 10.0f, -250.0f },
+    { -10.0f, 250.0f },
+};
+
+// x/y pairs
+f32 D_801112B8_messy_memory[4][6] = {
+    { 65.0f, 40.0f, 85.0f, 40.0f, 115.0f, 45.0f },
+    { 210.0f, 40.0f, 230.0f, 40.0f, 260.0f, 45.0f },
+    { 65.0f, 150.0f, 85.0f, 150.0f, 115.0f, 155.0f },
+    { 210.0f, 150.0f, 230.0f, 150.0f, 260.0f, 155.0f },
+};
+
+char *D_80111318_messy_memory[8] = {
+    "\x82\x6C\x82\x60\x82\x71\x82\x68\x82\x6E",                 // ＭＡＲＩＯ
+    "\x82\x6B\x82\x74\x82\x68\x82\x66\x82\x68",                 // ＬＵＩＧＩ
+    "\x82\x6F\x82\x64\x82\x60\x82\x62\x82\x67",                 // ＰＥＡＣＨ
+    "\x82\x78\x82\x6E\x82\x72\x82\x67\x82\x68",                 // ＹＯＳＨＩ
+    "\x82\x76\x82\x60\x82\x71\x82\x68\x82\x6E",                 // ＷＡＲＩＯ
+    "\x82\x63\x82\x6E\x82\x6D\x82\x6A\x82\x64\x82\x78",         // ＤＯＮＫＥＹ
+    "\x82\x76\x82\x60\x82\x6B\x82\x74\x82\x68\x82\x66\x82\x68", // ＷＡＬＵＩＧＩ
+    "\x82\x63\x82\x60\x82\x68\x82\x72\x82\x78",                 // ＤＡＩＳＹ
+}; /* Unreferenced. */
+
+s16 D_80111338_messy_memory = 999;
+s16 D_8011133A_messy_memory = 1000;
+s16 D_8011133C_messy_memory = 40;
+
+// Only the first two cameras are used.
+MessyMemoryCamera D_80111340_messy_memory[4] = {
+    { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 34.71f },
+    { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 34.71f },
+    { 0.0f, 120.0f, 160.0f, 240.0f, { 320.0f, 240.0f, 511.0f }, { 320.0f, 720.0f, 511.0f }, 45.0f },
+    { 160.0f, 120.0f, 320.0f, 240.0f, { 320.0f, 240.0f, 511.0f }, { 960.0f, 720.0f, 511.0f }, 45.0f },
+};
+
+f32 D_80111600_messy_memory BSS;
+u8 D_80111604_messy_memory[4] BSS; /* Unreferenced. */
+s32 D_80111608_messy_memory[10] BSS;
+u8 D_80111630_messy_memory[4] BSS;
+s32 D_80111634_messy_memory BSS;
+u8 D_80111638_messy_memory BSS;
+u8 D_80111639_messy_memory BSS;
+u8 D_8011163A_messy_memory BSS;
+u8 D_8011163B_messy_memory BSS;
+s32 D_8011163C_messy_memory BSS;
+s32 D_80111640_messy_memory[4] BSS;
+s16 D_80111650_messy_memory BSS;
+HuSprite_Unk84_Struct *D_80111654_messy_memory BSS;
+u8 D_80111658_messy_memory[4] BSS;
+f32 D_8011165C_messy_memory BSS;
+HuSprite_Unk84_Struct *D_80111660_messy_memory[4] BSS;
+u8 D_80111670_messy_memory[4] BSS;
+u8 D_80111674_messy_memory BSS;
+u8 D_80111675_messy_memory BSS;
+u8 D_80111678_messy_memory[4][10] BSS;
+f32 D_801116A0_messy_memory BSS;
+u8 D_801116A4_messy_memory[10] BSS;
+u8 D_801116B0_messy_memory[40] BSS;
+HuSprite_Unk84_Struct *D_801116D8_messy_memory BSS;
+u8 D_801116DC_messy_memory[4] BSS; /* Unreferenced. */
+u8 D_801116E0_messy_memory[20] BSS;
+u8 D_801116F4_messy_memory[12] BSS; /* Unreferenced. */
+MessyMemoryWork D_80111700_messy_memory[0x88] BSS;
+f32 D_80115D20_messy_memory[10][2] BSS;
+MessyMemoryBss5D70 messyMemoryBss5D70 BSS;
+f32 D_80115D7C_messy_memory BSS;
+u8 D_80115D80_messy_memory[4] BSS;
+s16 D_80115D84_messy_memory[4] BSS;
+u8 D_80115D8C_messy_memory BSS;
+s16 D_80115D8E_messy_memory BSS;
+u8 D_80115D90_messy_memory[10] BSS;
+u8 D_80115D9A_messy_memory BSS;
 
 void func_801059A0_messy_memory(void) {
     func_80110EC4_messy_memory();
@@ -301,22 +473,6 @@ void func_801061AC_messy_memory(void) {
     obj->work[0] = 0;
     D_80111A9C_messy_memory[0].obj = obj;
 }
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1D_messy_memory/1E37C0", D_801113F0_messy_memory);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1D_messy_memory/1E37C0", D_801113FC_messy_memory);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1D_messy_memory/1E37C0", D_8011140C_messy_memory);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1D_messy_memory/1E37C0", D_8011141C_messy_memory);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1D_messy_memory/1E37C0", D_80111428_messy_memory);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1D_messy_memory/1E37C0", D_80111434_messy_memory);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1D_messy_memory/1E37C0", D_80111440_messy_memory);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1D_messy_memory/1E37C0", D_8011144C_messy_memory);
 
 void func_8010622C_messy_memory(omObjData *obj) {
     MessyMemoryWork *work;
@@ -1404,7 +1560,7 @@ void func_8010B32C_messy_memory(omObjData *obj) {
     MessyMemoryWork *work = &D_80111700_messy_memory[obj->work[0]];
     s16 i;
 
-    work->unk40 = func_8000B838_main(D_801111EC_messy_memory[chr][0]);
+    work->unk40 = func_8000B838_main(D_801111E8_messy_memory[chr].fileId);
     D_80111660_messy_memory[obj->work[0]] = func_80055194_main(work->unk40);
     for (i = 0; i < 4; i++) {
         if (obj->work[0] == i) {
@@ -3041,4 +3197,4 @@ void func_80110EC4_messy_memory(void) {
     func_80105A3C_messy_memory();
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1D_messy_memory/1E37C0", D_801115F4_messy_memory);
+const s16 D_801115F4_messy_memory[] = { 0x8260, 0x8261, 0x8262, 0 };

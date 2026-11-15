@@ -370,3 +370,7 @@ D_8010CD04_merry_go_chomp = D_8010C500_merry_go_chomp + 0x804;
 D_8010CD08_merry_go_chomp = D_8010C500_merry_go_chomp + 0x808;
 D_8010D1E4_merry_go_chomp = D_8010C500_merry_go_chomp + 0xCE4;
 D_8010D478_merry_go_chomp = D_8010C500_merry_go_chomp + 0xF78;
+
+/* mgresultdealer: mgResultDealerBssA264 fields. */
+D_8010A264_mgresultdealer = mgResultDealerBssA264;
+D_8010A266_mgresultdealer = mgResultDealerBssA264 + 0x2;

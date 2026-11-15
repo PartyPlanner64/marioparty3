@@ -4,9 +4,11 @@
 #include "game/wipe.h"
 #include "mgresultdealer.h"
 
-extern s8 D_801098C0_mgresultdealer;
-extern s32 D_801098CC_mgresultdealer;
-extern s8 D_801098D0_mgresultdealer;
+s8 D_801098C0_mgresultdealer = 0;
+u8 D_801098C4_mgresultdealer[8] = { 0 }; /* Unreferenced. */
+s32 D_801098CC_mgresultdealer = 0;
+s8 D_801098D0_mgresultdealer = 0;
+
 extern s16 D_8010A258_mgresultdealer;
 extern s16 D_8010A264_mgresultdealer;
 extern s8 D_8010A266_mgresultdealer[4];

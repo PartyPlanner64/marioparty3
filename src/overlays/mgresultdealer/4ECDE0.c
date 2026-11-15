@@ -1,17 +1,18 @@
 #include "common.h"
 #include "mgresultdealer.h"
 
+s8 D_801098E0_mgresultdealer = 0;
+u8 D_801098E1_mgresultdealer = 0;
+s8 D_801098E2_mgresultdealer = 0;
+Vec D_801098E4_mgresultdealer = { 0.0f, 0.0f, 0.0f };
+Vec D_801098F0_mgresultdealer = { 0.0f, 0.0f, 0.0f };
+s32 D_801098FC_mgresultdealer[4] = { 0xB002B, 0xB002C, 0xB002D, 0xB002E };
+s16 D_8010990C_mgresultdealer = 0;
+
 extern s16 D_80109A64_mgresultdealer[4];
 extern s8 D_8010A266_mgresultdealer[4];
-extern s8 D_801098E0_mgresultdealer;
-extern u8 D_801098E1_mgresultdealer;
-extern s8 D_801098E2_mgresultdealer;
-extern Vec D_801098E4_mgresultdealer;
-extern Vec D_801098F0_mgresultdealer;
 extern f32 D_80109A60_mgresultdealer;
-extern s32 D_801098FC_mgresultdealer[];
-extern s16 D_8010990C_mgresultdealer;
-extern s16 D_801099F8_mgresultdealer[];
+extern s16 D_801099F8_mgresultdealer[4];
 extern s32 D_800A178C_main[][6];
 extern const s16 D_801099A8_mgresultdealer[][2];
 
@@ -180,7 +181,7 @@ void func_80106EC0_mgresultdealer(omObjData *obj) {
     D_8010A250_mgresultdealer.func = func_80106A50_mgresultdealer;
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgresultdealer/4ECDE0", D_801099A8_mgresultdealer);
+const s16 D_801099A8_mgresultdealer[][2] = { { 0, 0x36 }, { 0, 0x37 }, { 0, 0x3A }, { 0, 0x37 }, { 0, 0x36 }, { 0, 0x37 }, { 0, 0x36 }, { 0, 0x37 } };
 
 void func_80106EEC_mgresultdealer(void) {
     s16 model;

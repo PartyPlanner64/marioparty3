@@ -1,50 +1,29 @@
 #include "common.h"
+#include "mgresultdealer.h"
 
-typedef struct {
-    /* 0x00 */ u16 unk_00;
-    /* 0x02 */ s16 unk_02[3];
-    /* 0x08 */ u16 unk_08[3];
-} UnkDealerSprGroup; // Size 0xE
 
-typedef struct {
-    /* 0x00 */ UnkDealerSprGroup groups[3];
-    /* 0x2A */ u16 unk_2A;
-    /* 0x2C */ u16 unk_2C;
-} UnkDealerSprites;
+s8 D_80109910_mgresultdealer = 0;
+s8 D_80109911_mgresultdealer = 0;
+s32 D_80109914_mgresultdealer = 0;
+s32 D_80109918_mgresultdealer = 0;
+s32 D_8010991C_mgresultdealer = 0;
+s32 D_80109920_mgresultdealer = 0;
+s32 D_80109924_mgresultdealer = 0;
+s32 D_80109928_mgresultdealer = 0;
+s32 D_8010992C_mgresultdealer = 0;
+s8 D_80109930_mgresultdealer = 0;
+s8 D_80109931_mgresultdealer = 0;
+s32 D_80109934_mgresultdealer = 0;
+s8 D_80109938_mgresultdealer = 0;
+s16 D_8010993A_mgresultdealer = 0;
+u8 D_8010993C_mgresultdealer[4] = { 0 }; /* Unreferenced. */
+s8 D_80109940_mgresultdealer = 0;
+s8 D_80109941_mgresultdealer = 0;
+s32 D_80109944_mgresultdealer = 0;
+s32 D_80109948_mgresultdealer = 0;
+s32 D_8010994C_mgresultdealer = 0;
+s32 D_80109950_mgresultdealer = 0;
 
-typedef struct {
-    /* 0x00 */ omObjData *obj;
-    /* 0x04 */ omObjFunc objFunc;
-} UnkDealerFadeProc;
-
-typedef struct {
-    /* 0x00 */ u8 unk_00;
-    /* 0x02 */ u16 unk_02;
-    /* 0x04 */ s32 unk_04;
-    /* 0x08 */ Vec unk_08;
-    /* 0x14 */ f32 unk_14;
-} UnkDealerCoin; // Size 0x18
-
-extern s8 D_80109910_mgresultdealer;
-extern s8 D_80109911_mgresultdealer;
-extern s32 D_80109914_mgresultdealer;
-extern s32 D_80109918_mgresultdealer;
-extern s32 D_8010991C_mgresultdealer;
-extern s32 D_80109920_mgresultdealer;
-extern s32 D_80109924_mgresultdealer;
-extern s32 D_80109928_mgresultdealer;
-extern s32 D_8010992C_mgresultdealer;
-extern s8 D_80109930_mgresultdealer;
-extern s8 D_80109931_mgresultdealer;
-extern s32 D_80109934_mgresultdealer;
-extern s8 D_80109938_mgresultdealer;
-extern s16 D_8010993A_mgresultdealer;
-extern s8 D_80109940_mgresultdealer;
-extern s8 D_80109941_mgresultdealer;
-extern s32 D_80109944_mgresultdealer;
-extern s32 D_80109948_mgresultdealer;
-extern s32 D_8010994C_mgresultdealer;
-extern s32 D_80109950_mgresultdealer;
 extern s16 D_8010A200_mgresultdealer;
 extern s32 D_8010A204_mgresultdealer;
 extern HuSprite *D_8010A208_mgresultdealer;

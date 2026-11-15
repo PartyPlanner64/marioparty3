@@ -1342,9 +1342,9 @@ segments:
     bss_size: 0x330
     subsegments:
       - [0x21E010, c]
-      - [0x2251D0, data, 21E010] #8010CB60
+      - [0x2251D0, .data, 21E010] #8010CB60
       - [0x225330, .rodata, 21E010] #8010CCC0
-      - {0x225740, type: bss, vram: 0x8010D0D0, name: ovl_25_bss}
+      - {start: 0x225740, type: .bss, vram: 0x8010D0D0, name: 21E010}
 
   - type: code
     start: 0x225740

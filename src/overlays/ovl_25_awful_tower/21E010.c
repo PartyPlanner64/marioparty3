@@ -1,4 +1,5 @@
 #include "common.h"
+#include "macros.h"
 #include "game/audio.h"
 #include "game/data.h"
 #include "game/effect.h"
@@ -33,72 +34,92 @@ extern f32 D_800EB760_minigame;
 extern Gfx *gMainGfxPos;
 extern omObjData *D_800EBE70_minigame[];
 
-extern s32 D_8010CB60_awful_tower[];
-extern D_80111B50_vine_with_me_Struct D_8010CB70_awful_tower;
-extern s32 D_8010CB98_awful_tower[];
-extern Gfx D_8010CBA0_awful_tower[];
-extern u32 D_8010CBE8_awful_tower;
-extern f32 D_8010CBEC_awful_tower[4];
-extern s8 D_8010CBFC_awful_tower[4];
-extern s8 D_8010CC00_awful_tower[4];
-extern s8 D_8010CC04_awful_tower[4];
-extern s8 D_8010CC08_awful_tower[4];
-extern u8 D_8010CC0C_awful_tower[4];
-extern u8 D_8010CC10_awful_tower[4];
-extern u8 D_8010CC14_awful_tower[4];
-extern f32 D_8010CC18_awful_tower[4];
-extern u8 D_8010CC28_awful_tower[4];
-extern f32 D_8010CC2C_awful_tower[4];
-extern s8 D_8010CC3C_awful_tower[4];
-extern u8 D_8010CC40_awful_tower[4];
-extern u8 D_8010CC44_awful_tower;
-extern f32 D_8010CC48_awful_tower;
-extern u8 D_8010CC4C_awful_tower[4];
-extern f32 D_8010CC50_awful_tower[4];
-extern f32 D_8010CC60_awful_tower[4];
-extern u8 D_8010CC70_awful_tower[4];
-extern s8 D_8010CC74_awful_tower[4];
-extern s8 D_8010CC78_awful_tower[4];
-extern s8 D_8010CC7C_awful_tower[];
-extern s8 D_8010CC8F_awful_tower[];
-extern u8 D_8010CCA4_awful_tower[4];
-extern f32 D_8010CCA8_awful_tower[];
-extern f32 D_8010CCB4_awful_tower[];
+s32 D_8010CB60_awful_tower[] = { 1, 2, 4, 8 };
+D_80111B50_vine_with_me_Struct D_8010CB70_awful_tower = { 0 };
+s32 D_8010CB98_awful_tower[] = { -1, -1 };
+
+Gfx D_8010CBA0_awful_tower[] = {
+    gsDPPipeSync(),
+    gsDPSetCycleType(G_CYC_1CYCLE),
+    gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_DECALRGBA),
+    gsDPSetRenderMode(G_RM_OPA_SURF, G_RM_OPA_SURF2),
+    gsDPSetAlphaCompare(G_AC_NONE),
+    gsDPSetTexturePersp(G_TP_NONE),
+    gsDPSetTextureFilter(G_TF_BILERP),
+    gsDPSetScissor(G_SC_NON_INTERLACE, 0, 0, 320, 240),
+    gsSPEndDisplayList(),
+};
+
+u32 D_8010CBE8_awful_tower = 40;
+f32 D_8010CBEC_awful_tower[4] = { 32000.0f, 32000.0f, 32000.0f, 32000.0f };
+s8 D_8010CBFC_awful_tower[4] = { -1, -1, -1, -1 };
+s8 D_8010CC00_awful_tower[4] = { -1, -1, -1, -1 };
+s8 D_8010CC04_awful_tower[4] = { 0 };
+s8 D_8010CC08_awful_tower[4] = { 0 };
+u8 D_8010CC0C_awful_tower[4] = { 0 };
+u8 D_8010CC10_awful_tower[4] = { 0 };
+u8 D_8010CC14_awful_tower[4] = { 0 };
+f32 D_8010CC18_awful_tower[4] = { -1000.0f, -1000.0f, -1000.0f, -1000.0f };
+u8 D_8010CC28_awful_tower[4] = { 1, 1, 1, 1 };
+f32 D_8010CC2C_awful_tower[4] = { 1000.0f, 1000.0f, 1000.0f, 1000.0f };
+s8 D_8010CC3C_awful_tower[4] = { -1, -1, -1, -1 };
+u8 D_8010CC40_awful_tower[4] = { 0 };
+u8 D_8010CC44_awful_tower = 0;
+f32 D_8010CC48_awful_tower = 1000.0f;
+u8 D_8010CC4C_awful_tower[4] = { 0 };
+f32 D_8010CC50_awful_tower[4] = { 0 };
+f32 D_8010CC60_awful_tower[4] = { 0 };
+u8 D_8010CC70_awful_tower[4] = { 0 };
+s8 D_8010CC74_awful_tower[4] = { 0 };
+s8 D_8010CC78_awful_tower[4] = { 0 };
+s8 D_8010CC7C_awful_tower[20] = { 0, 0, 0, 0, 3, 0, 0, 0, 0, 6, 0, 0, 0, 0, 2, 6, 60, 0, 0, 0 };
+s8 D_8010CC90_awful_tower[20] = { 0, 0, 0, 0, 3, 0, 0, 2, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0 };
+u8 D_8010CCA4_awful_tower[4] = { 0 };
+f32 D_8010CCA8_awful_tower[] = { -10.0f, -16.0f, -18.0f };
+f32 D_8010CCB4_awful_tower[] = { 22.0f, 24.0f, 60.0f };
+
+f32 D_8010D0D0_awful_tower[16] BSS;
+f32 D_8010D110_awful_tower[16] BSS;
+f32 D_8010D150_awful_tower[4] BSS;
+f32 D_8010D160_awful_tower[4] BSS;
+f32 D_8010D170_awful_tower[4] BSS;
+f32 D_8010D180_awful_tower[4] BSS;
+f32 D_8010D190_awful_tower[4] BSS;
+f32 D_8010D1A0_awful_tower[4] BSS;
+f32 D_8010D1B0_awful_tower[4] BSS;
+f32 D_8010D1C0_awful_tower[4] BSS;
+f32 D_8010D1D0_awful_tower[4] BSS;
+f32 D_8010D1E0_awful_tower[4] BSS;
+f32 D_8010D1F0_awful_tower[55] BSS;
+s16 D_8010D2CC_awful_tower[4] BSS;
+u8 D_8010D2D4_awful_tower[4] BSS; /* Unreferenced. */
+AwfulTowerPlayer D_8010D2D8_awful_tower[4] BSS;
+AwfulTowerPlayer *D_8010D308_awful_tower[4] BSS;
+u8 D_8010D318_awful_tower[8] BSS; /* Unreferenced. */
+f32 D_8010D320_awful_tower[4] BSS;
+u8 D_8010D330_awful_tower[4][5] BSS;
+omObjData *D_8010D344_awful_tower BSS;
+u16 D_8010D348_awful_tower[4][3] BSS;
+omObjData *D_8010D360_awful_tower[4][3] BSS;
+omObjData *D_8010D390_awful_tower[5] BSS;
+u8 D_8010D3A4_awful_tower[4] BSS; /* Unreferenced. */
+omObjData *D_8010D3A8_awful_tower[4] BSS;
+s16 D_8010D3B8_awful_tower[4] BSS;
+u8 D_8010D3C0_awful_tower[0xC] BSS; /* Unreferenced. */
+u8 D_8010D3CC_awful_tower[4] BSS;
+s16 D_8010D3D0_awful_tower[4] BSS;
+u16 D_8010D3D8_awful_tower BSS;
+u32 D_8010D3DC_awful_tower BSS;
+u8 D_8010D3E0_awful_tower[4] BSS; /* Unreferenced. */
+s16 D_8010D3E4_awful_tower BSS;
+omObjData *D_8010D3E8_awful_tower BSS;
+s16 D_8010D3EC_awful_tower[2] BSS;
+u8 D_8010D3F0_awful_tower[0xC] BSS; /* Unreferenced. */
+s8 D_8010D3FC_awful_tower BSS;
+u8 D_8010D3FD_awful_tower BSS;
+u8 D_8010D3FE_awful_tower BSS;
+
 extern const s16 D_8010CCE0_awful_tower[];
-extern f32 D_8010D0D0_awful_tower[16];
-extern f32 D_8010D110_awful_tower[16];
-extern f32 D_8010D150_awful_tower[4];
-extern f32 D_8010D160_awful_tower[4];
-extern f32 D_8010D170_awful_tower[4];
-extern f32 D_8010D180_awful_tower[4];
-extern f32 D_8010D190_awful_tower[4];
-extern f32 D_8010D1A0_awful_tower[4];
-extern f32 D_8010D1B0_awful_tower[4];
-extern f32 D_8010D1C0_awful_tower[4];
-extern f32 D_8010D1D0_awful_tower[4];
-extern f32 D_8010D1E0_awful_tower[4];
-extern f32 D_8010D1F0_awful_tower[55];
-extern s16 D_8010D2CC_awful_tower[4];
-extern AwfulTowerPlayer D_8010D2D8_awful_tower[4];
-extern AwfulTowerPlayer *D_8010D308_awful_tower[4];
-extern f32 D_8010D320_awful_tower[4];
-extern omObjData *D_8010D344_awful_tower;
-extern u16 D_8010D348_awful_tower[4][3];
-extern omObjData *D_8010D360_awful_tower[4][3];
-extern omObjData *D_8010D390_awful_tower[5];
-extern omObjData *D_8010D3A8_awful_tower[4];
-extern s16 D_8010D3B8_awful_tower[4];
-extern s16 D_8010D3D0_awful_tower[4];
-extern u8 D_8010D330_awful_tower[4][5];
-extern u8 D_8010D3CC_awful_tower[4];
-extern u16 D_8010D3D8_awful_tower;
-extern u32 D_8010D3DC_awful_tower;
-extern s16 D_8010D3E4_awful_tower;
-extern omObjData *D_8010D3E8_awful_tower;
-extern s16 D_8010D3EC_awful_tower[2];
-extern s8 D_8010D3FC_awful_tower;
-extern u8 D_8010D3FD_awful_tower;
-extern u8 D_8010D3FE_awful_tower;
 
 void func_80106028_awful_tower(omObjData *object);
 void func_801061FC_awful_tower(omObjData *object);
@@ -226,7 +247,11 @@ void func_80106028_awful_tower(omObjData *object) {
     object->func = func_801061FC_awful_tower;
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_25_awful_tower/21E010", D_8010CCE0_awful_tower);
+const s16 D_8010CCE0_awful_tower[] = {
+    0x8260, 0x8261, 0x8262, 0x8263, 0x8264, 0x8265, 0x8266, 0x8267, 0x8268, 0x8269, 0x826A, 0x826B, 0x826C,
+    0x826D, 0x826E, 0x826F, 0x8270, 0x8271, 0x8272, 0x8273, 0x8274, 0x8275, 0x8276, 0x8277, 0x8278, 0x8279,
+    0x824F, 0x8250, 0x8251, 0x8252, 0x8253, 0x8254, 0x8255, 0x8256, 0x8257, 0x8258, 0x0000
+};
 
 void func_801061FC_awful_tower(omObjData *object) {
     u8 motions[8] = { 0, 1, 2, 3, 4, 5, 6, 7 };
@@ -1040,10 +1065,10 @@ void func_80108E8C_awful_tower(omObjData *object) {
                 }
             }
         }
-        if (D_8010CC40_awful_tower[group] == D_8010CC8F_awful_tower[D_8010CC3C_awful_tower[group]] + 3) {
+        if (D_8010CC40_awful_tower[group] == D_8010CC90_awful_tower[D_8010CC3C_awful_tower[group] - 1] + 3) {
             D_800CDA7C_main[player->pad] |= 0x8000;
             D_800D5558_main[player->pad] = 0x8000;
-        } else if (D_8010CC40_awful_tower[group] > D_8010CC8F_awful_tower[D_8010CC3C_awful_tower[group]] + 3) {
+        } else if (D_8010CC40_awful_tower[group] > D_8010CC90_awful_tower[D_8010CC3C_awful_tower[group] - 1] + 3) {
             D_800CDA7C_main[player->pad] |= 0x8000;
         }
         if (D_8010CC40_awful_tower[group] != 0) {

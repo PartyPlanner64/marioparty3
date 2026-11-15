@@ -196,68 +196,180 @@ typedef struct UnkSlotSpin { // 0x58 bytes, five entries
     f32 unk_34[9];
 } UnkSlotSpin;
 
-extern omObjData *D_8010DF40_slot_synch;
-extern s32 D_8010DF44_slot_synch;
-extern s32 D_8010DF48_slot_synch;
-extern s32 D_8010DF4C_slot_synch;
-extern s32 D_8010DF50_slot_synch;
-extern s32 D_8010DF54_slot_synch;
-extern s32 D_8010DF58_slot_synch;
-extern UnkSlotSynch *D_8010DF5C_slot_synch;
-extern s16 D_8010DF64_slot_synch;
-extern s16 *D_8010DF8C_slot_synch;
-extern UnkSlotLight *D_8010DF90_slot_synch;
-extern D_80111B50_vine_with_me_Struct D_8010DFF8_slot_synch;
-extern s32 D_8010D8B0_slot_synch;
-extern Vec D_8010D7F0_slot_synch[4];
-extern s32 D_8010D8B4_slot_synch[4];
-extern s16 D_8010D8C4_slot_synch[4][2][2];
-extern s16 D_8010D8E4_slot_synch[4];
-extern UnkSlotPlayer *D_8010DF60_slot_synch;
-extern s32 D_8010D8EC_slot_synch[8];
-extern s32 D_8010D90C_slot_synch[4];
-extern s32 D_8010D870_slot_synch[8];
-extern u16 D_8010D91C_slot_synch[6];
-extern u16 D_8010D928_slot_synch[8];
-extern s32 D_8010DA40_slot_synch[8];
-extern f32 D_8010DA20_slot_synch[4];
-extern s32 D_8010DA30_slot_synch[4];
-extern s16 D_8010D85C_slot_synch[4];
-extern Vec D_8010D820_slot_synch[2];
-extern s32 D_8010D9F0_slot_synch[4];
-extern s32 D_8010DA00_slot_synch[4];
-extern s32 D_8010DA10_slot_synch[4];
-extern f32 D_8010D9D0_slot_synch[8];
-extern s16 D_8010D9C8_slot_synch[4];
-extern UnkSlotSpritePos D_8010D938_slot_synch[12];
-extern UnkSlotSpritePos D_8010D980_slot_synch[12];
-extern u16 D_8010DF66_slot_synch[4];
-extern s32 D_8010D890_slot_synch[8];
+typedef struct UnkSlotPriority {
+    s16 unk_00;
+    u16 unk_02[4]; // sprite priorities, aliased as D_8010DF66_slot_synch
+} UnkSlotPriority;
+
 extern s32 D_800A178C_main[][6];
-extern UnkSlotOvlData D_8010DF70_slot_synch;
-extern UnkSlotMachine *D_8010DF7C_slot_synch;
-extern UnkSlotReel *D_8010DF80_slot_synch;
-extern omObjData *D_8010DF84_slot_synch;
-extern omObjData *D_8010DF94_slot_synch;
-extern UnkSlotEffect *D_8010DF98_slot_synch;
-extern UnkSlotColor D_8010D868_slot_synch;
-extern UnkSlotColor D_8010D86C_slot_synch;
-extern UnkSlotColor D_8010D864_slot_synch;
-extern f32 D_8010D840_slot_synch[5];
-extern UnkSlotCamera D_8010DFA0_slot_synch[2]; // target, origin
-extern s32 D_8010DFE8_slot_synch;
-extern s32 D_8010DA60_slot_synch;
-extern s32 D_8010DA64_slot_synch;
-extern s32 D_8010DA68_slot_synch;
-extern s32 D_8010DFEC_slot_synch;
-extern s32 D_8010DFF0_slot_synch;
 extern u8 D_800D6A90_main;
-extern UnkSlotSpin *D_8010DF88_slot_synch;
-extern UnkSlotPos D_8010D838_slot_synch[2];
-extern u8 D_8010D854_slot_synch[2][4];
-extern Gfx D_8010DB60_slot_synch[];
 extern s16 D_800CDD6A_main;
 extern u8 D_800D2008_main;
+
+extern u16 D_8010DF66_slot_synch[4];
+
+Vec D_8010D7F0_slot_synch[4] = {
+    { -300.0f, 0.0f, 0.0f },
+    { -125.0f, 0.0f, -0.0f },
+    { 125.0f, 0.0f, -0.0f },
+    { 300.0f, 0.0f, 0.0f }
+};
+Vec D_8010D820_slot_synch[2] = {
+    { -255.0f, 0.0f, -300.0f },
+    { 255.0f, 0.0f, -300.0f }
+};
+UnkSlotPos D_8010D838_slot_synch[2] = { { 70, 40 }, { 250, 40 } };
+f32 D_8010D840_slot_synch[5] = { 0.0f, 90.0f, 180.0f, 270.0f, 0.0f };
+u8 D_8010D854_slot_synch[2][4] = { { 0, 1, 2, 3 }, { 2, 3, 1, 0 } };
+s16 D_8010D85C_slot_synch[4] = { 3, 1, 2, -1 };
+UnkSlotColor D_8010D864_slot_synch = { 0xE9DDA180 };
+UnkSlotColor D_8010D868_slot_synch = { 0xFFFFFF80 };
+UnkSlotColor D_8010D86C_slot_synch = { 0xFFFFFFFF };
+s32 D_8010D870_slot_synch[8] = {
+    0x000200A5, 0x000300A5, 0x000700A5, 0x000400A5,
+    0x000500A5, 0x000600A5, 0x000800A5, 0x0009001C
+};
+s32 D_8010D890_slot_synch[8] = {
+    0x000200A6, 0x000300A6, 0x000700A6, 0x000400A6,
+    0x000500A6, 0x000600A6, 0x000800A6, 0x0009001D
+};
+s32 D_8010D8B0_slot_synch = 0;
+s32 D_8010D8B4_slot_synch[4] = { 0, 1, 2, 3 };
+s16 D_8010D8C4_slot_synch[4][2][2] = {
+    { { 0, 1 }, { 2, 3 } },
+    { { 3, 0 }, { 1, 2 } },
+    { { 2, 3 }, { 0, 1 } },
+    { { 1, 2 }, { 3, 0 } }
+};
+s16 D_8010D8E4_slot_synch[4] = { 0x12, 0x13, 0x15, 0x14 };
+s32 D_8010D8EC_slot_synch[8] = {
+    0x00020000, 0x00030000, 0x00070000, 0x00040000,
+    0x00050000, 0x00060000, 0x00080000, 0x00090000
+};
+s32 D_8010D90C_slot_synch[4] = { 0x2F, 0x30, 0x36, 0x37 };
+u16 D_8010D91C_slot_synch[6] = { 0, 2, 1, 3, 0, 0 };
+u16 D_8010D928_slot_synch[8] = { 3, 3, 3, 3, 2, 3, 3, 0 };
+UnkSlotSpritePos D_8010D938_slot_synch[12] = {
+    { 16, 92, 0, 0 },
+    { 40, 92, 0, 1 },
+    { 64, 92, 0, 2 },
+    { 88, 92, 0, 3 },
+    { 30, 108, 0, 3 },
+    { 54, 108, 0, 2 },
+    { 78, 108, 0, 1 },
+    { 102, 108, 0, 0 },
+    { 16, 124, 0, 3 },
+    { 40, 124, 0, 0 },
+    { 64, 124, 0, 1 },
+    { 88, 124, 0, 2 }
+};
+UnkSlotSpritePos D_8010D980_slot_synch[12] = {
+    { 304, 92, 0, 0 },
+    { 280, 92, 0, 1 },
+    { 256, 92, 0, 2 },
+    { 232, 92, 0, 3 },
+    { 290, 108, 0, 3 },
+    { 266, 108, 0, 2 },
+    { 242, 108, 0, 1 },
+    { 218, 108, 0, 0 },
+    { 304, 124, 0, 3 },
+    { 280, 124, 0, 0 },
+    { 256, 124, 0, 1 },
+    { 232, 124, 0, 2 }
+};
+s16 D_8010D9C8_slot_synch[4] = { 0, 1, 1, 0 };
+f32 D_8010D9D0_slot_synch[8] = { 150.0f, 150.0f, 150.0f, 150.0f, 150.0f, 180.0f, 150.0f, 150.0f };
+s32 D_8010D9F0_slot_synch[4] = { 0x000A0000, 0x000A00A5, 0x000A008E, 0x000A00EE };
+s32 D_8010DA00_slot_synch[4] = { 0x000A0018, 0x000A00B3, 0x000A00A0, 0x000A00FA };
+s32 D_8010DA10_slot_synch[4] = { 0x000A0002, 0x000A00A9, 0x000A0090, 0x000A00F1 };
+f32 D_8010DA20_slot_synch[4] = { 1.5f, 1.75f, 1.0f, 1.2f };
+s32 D_8010DA30_slot_synch[4] = { 0x393, 0x391, 0x392, 0x394 };
+s32 D_8010DA40_slot_synch[8] = {
+    0x00210008, 0x00210009, 0x0021000A, 0x0021000B,
+    0x0021000C, 0x0021000D, 0x0021000E, 0x0021000F
+};
+s32 D_8010DA60_slot_synch = 0;
+s32 D_8010DA64_slot_synch = 0;
+s32 D_8010DA68_slot_synch = 0;
+
+Gfx D_8010DA70_slot_synch[] = {
+    gsSPSegment(0x00, 0x00000000),
+    gsDPPipeSync(),
+    gsDPSetCycleType(G_CYC_1CYCLE),
+    gsDPPipelineMode(G_PM_1PRIMITIVE),
+    gsDPSetTextureLOD(G_TL_TILE),
+    gsDPSetTextureLUT(G_TT_NONE),
+    gsDPSetTextureDetail(G_TD_CLAMP),
+    gsDPSetTexturePersp(G_TP_NONE),
+    gsDPSetTileSize(G_TX_RENDERTILE, 0, 0, 0, 0),
+    gsDPSetTileSize(1, 0, 0, 0, 0),
+    gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_4b, 0, 0x0000, G_TX_RENDERTILE, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
+                G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD),
+    gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_4b, 0, 0x0000, 1, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD,
+                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD),
+    gsDPSetTextureFilter(G_TF_BILERP),
+    gsDPSetTextureConvert(G_TC_FILT),
+    gsDPSetCombineMode(G_CC_SHADE, G_CC_SHADE),
+    gsDPSetCombineKey(G_CK_NONE),
+    gsDPSetAlphaCompare(G_AC_NONE),
+    gsDPSetDepthSource(G_ZS_PIXEL),
+    gsDPSetRenderMode(G_RM_OPA_SURF, G_RM_OPA_SURF2),
+    gsDPNoOp(),
+    gsDPSetColorDither(G_CD_DISABLE),
+    gsDPPipeSync(),
+    gsSPEndDisplayList(),
+};
+
+Gfx D_8010DB28_slot_synch[] = {
+    gsSPClearGeometryMode(0xFFFFFFFF),
+    gsSPTexture(0, 0, 0, G_TX_RENDERTILE, G_OFF),
+    gsSPSetGeometryMode(G_SHADE | G_SHADING_SMOOTH),
+    gsSPEndDisplayList(),
+};
+
+Gfx D_8010DB48_slot_synch[] = {
+    gsSPDisplayList(D_8010DB28_slot_synch),
+    gsSPDisplayList(D_8010DA70_slot_synch),
+    gsSPEndDisplayList(),
+};
+
+Gfx D_8010DB60_slot_synch[] = {
+    gsDPPipeSync(),
+    gsSPDisplayList(D_8010DB48_slot_synch),
+    gsDPSetCycleType(G_CYC_1CYCLE),
+    gsSPSetGeometryMode(G_ZBUFFER | G_CULL_BACK | G_LIGHTING | G_SHADING_SMOOTH),
+    gsDPSetBlendColor(0x00, 0x00, 0x00, 0x00),
+    gsDPSetPrimColor(0, 0, 0x00, 0x00, 0x00, 0xFF),
+    gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
+    gsSPEndDisplayList(),
+};
+
+omObjData *D_8010DF40_slot_synch BSS;
+s32 D_8010DF44_slot_synch BSS;
+s32 D_8010DF48_slot_synch BSS;
+s32 D_8010DF4C_slot_synch BSS;
+s32 D_8010DF50_slot_synch BSS;
+s32 D_8010DF54_slot_synch BSS;
+s32 D_8010DF58_slot_synch BSS;
+UnkSlotSynch *D_8010DF5C_slot_synch BSS;
+UnkSlotPlayer *D_8010DF60_slot_synch BSS;
+UnkSlotPriority D_8010DF64_slot_synch BSS;
+UnkSlotOvlData D_8010DF70_slot_synch BSS;
+UnkSlotMachine *D_8010DF7C_slot_synch BSS;
+UnkSlotReel *D_8010DF80_slot_synch BSS;
+omObjData *D_8010DF84_slot_synch BSS;
+UnkSlotSpin *D_8010DF88_slot_synch BSS;
+s16 *D_8010DF8C_slot_synch BSS;
+UnkSlotLight *D_8010DF90_slot_synch BSS;
+omObjData *D_8010DF94_slot_synch BSS;
+UnkSlotEffect *D_8010DF98_slot_synch BSS;
+u8 D_8010DF9C_slot_synch[4] BSS;            /* Unreferenced. */
+UnkSlotCamera D_8010DFA0_slot_synch[2] BSS; // target, origin
+s32 D_8010DFE8_slot_synch BSS;
+s32 D_8010DFEC_slot_synch BSS;
+s32 D_8010DFF0_slot_synch BSS;
+u8 D_8010DFF4_slot_synch[4] BSS; /* Unreferenced. */
+D_80111B50_vine_with_me_Struct D_8010DFF8_slot_synch BSS;
 
 void func_80105B98_slot_synch(omObjData *object);
 void func_80105C08_slot_synch(omObjData *object);
@@ -351,7 +463,7 @@ void func_801059A0_slot_synch(void) {
     D_8010DF48_slot_synch = 0;
     D_8010DF54_slot_synch = 0;
     D_8010DF58_slot_synch = 0;
-    D_8010DF64_slot_synch = -1;
+    D_8010DF64_slot_synch.unk_00 = -1;
     D_8010DF8C_slot_synch = HuMemAllocTag(0x40, TAG_OVERLAY);
     D_8010DF40_slot_synch = omAddObj(0x20, 0, 0, -1, func_80105B98_slot_synch);
     memset(&D_8010DFF8_slot_synch, 0, 0x28);

@@ -209,12 +209,12 @@ void func_80107204_storyresult(void) {
     MBDBackLoad(D_8010A940_storyresult[GwStory.unk0]);
     func_800E8180_name_81(1000.0f, 10000.0f);
     if (GwStory.unk0 == 12) {
-        sprite = espEntry(func_8000B838_main(0x1D0012), 0, 0);
+        sprite = espEntry(HuSprAnimDataRead(0x1D0012), 0, 0);
         espAttrSet(sprite, 0x4000);
         espPriSet(sprite, 0xF001);
         espPosSet(sprite, 160, 120);
     }
-    sprite = espEntry(func_8000B838_main(0x140064), 0, 1);
+    sprite = espEntry(HuSprAnimDataRead(0x140064), 0, 1);
     espAttrSet(sprite, 0x4000);
     espPriSet(sprite, 0xF000);
     espScaleSet(sprite, 10.0f, 8.0f);
@@ -223,7 +223,7 @@ void func_80107204_storyresult(void) {
     espTPLvlSet(sprite, 64);
     D_800CD280_main = 1;
 
-    cursor = espEntry(func_8000B838_main(0x150001), 0, 1);
+    cursor = espEntry(HuSprAnimDataRead(0x150001), 0, 1);
     espPriSet(cursor, 600);
     espPosSet(cursor, x, y + 84);
     espTPLvlSet(cursor, 0);
@@ -362,7 +362,7 @@ void func_80107920_storyresult(void) {
 
     result = HuPrcCurrentGet()->user_data;
 
-    cursorAnim = func_8000B838_main(0x150001);
+    cursorAnim = HuSprAnimDataRead(0x150001);
     cursor = espEntry(cursorAnim, 0, 1);
     espPriSet(cursor, 600);
     espPosSet(cursor, 160, 204);
@@ -385,7 +385,7 @@ void func_80107920_storyresult(void) {
     pos[0].x = 25;
     pos[1].x = 295;
     pos[0].y = pos[1].y = 130;
-    arrowAnim = func_8000B838_main(0x150003);
+    arrowAnim = HuSprAnimDataRead(0x150003);
     for (i = 0; i < 2; i++) {
         sprites[i] = espEntry(arrowAnim, 0, 1);
         espPriSet(sprites[i], 100);
@@ -620,7 +620,7 @@ void func_801083A4_storyresult(void) {
 
     D_800CD280_main = 0;
     func_801060D0_storyresult(&D_8010AB9C_storyresult);
-    sprite = espEntry(func_8000B838_main(0x140067), 0, 0);
+    sprite = espEntry(HuSprAnimDataRead(0x140067), 0, 0);
     espAttrSet(sprite, 0x4000);
     espPosSet(sprite, 160, 120);
     WipeCreateIn(D_8010AC2A_storyresult, 16);
@@ -683,7 +683,7 @@ void func_801085E8_storyresult(s16 group, s16 member, s16 graphic, s16 prio, s16
     HuSprAttrReset(group, member, 0xFFFF);
     HuSprAttrSet(group, member, 0x9000);
     HuSprScaleSet(group, member, 1.0f, 1.0f);
-    func_800550F4_main(group, member, 0);
+    HuSprAnimModeSet(group, member, 0);
     HuSprGrpMemberSet(group, member, graphic, 0);
     HuSprPriSet(group, member, prio);
     HuSprPosSet(group, member, x, y);
@@ -982,7 +982,7 @@ void func_80108F0C_storyresult(void) {
     def = D_8010A9E4_storyresult;
     for (elem = work->elems, i = 0; i < ARRAY_COUNTU(D_8010A9E4_storyresult); i++, member++, def++, elem++) {
         temp = 1200;
-        graphic = func_8000B838_main(def->file);
+        graphic = HuSprAnimDataRead(def->file);
         elem->unk04 = graphic;
         elem->pos = def->pos;
         x = elem->pos.x + data->x;
@@ -1004,7 +1004,7 @@ void func_80108F0C_storyresult(void) {
     work->elems[1].unk06 = 255;
     work->group = group;
 
-    graphic = func_8000B838_main(D_8010AA78_storyresult[data->unk_02]);
+    graphic = HuSprAnimDataRead(D_8010AA78_storyresult[data->unk_02]);
     work->elems[15].unk04 = graphic;
     work->elems[15].pos.x = -96;
     work->elems[15].pos.y = -74;
@@ -1012,7 +1012,7 @@ void func_80108F0C_storyresult(void) {
     y = work->elems[15].pos.y + data->y;
     func_801085E8_storyresult(group, 15, graphic, 1200, x, y);
     if (hasPartner) {
-        graphic = func_8000B838_main(D_8010AA78_storyresult[GwStory.unk65]);
+        graphic = HuSprAnimDataRead(D_8010AA78_storyresult[GwStory.unk65]);
         work->elems[23].unk04 = graphic;
         work->elems[23].pos.x = -96;
         work->elems[23].pos.y = -74;
@@ -1021,10 +1021,10 @@ void func_80108F0C_storyresult(void) {
         func_801085E8_storyresult(group, 23, graphic, 1200, x, y);
     }
     for (gfx = work->graphics, i = 0; i < 4; i++, gfx++) {
-        *gfx = func_8000B838_main(D_8010AA5C_storyresult[i]);
+        *gfx = HuSprAnimDataRead(D_8010AA5C_storyresult[i]);
     }
     work->unk148 = HuSprGrpCreate(13, 0);
-    work->unk14A = func_8000B838_main(0x15001D);
+    work->unk14A = HuSprAnimDataRead(0x15001D);
     y = data->y - 28;
     for (i = 0; i < 13; i++) {
         markX = data->x + (s16)(i * 12 - 24);

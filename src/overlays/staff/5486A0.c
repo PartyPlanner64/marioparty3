@@ -458,7 +458,7 @@ void func_8010BF84_staff(void) {
         func_8001C258_main(link, 4, 4);
     }
     for (i = 0; i < 1; i++) {
-        anims[i] = func_8000B838_main(D_80110B80_staff[i]);
+        anims[i] = HuSprAnimDataRead(D_80110B80_staff[i]);
         sprites[i] = espEntry(anims[i], 0, 0);
         espDispOff(sprites[i]);
     }
@@ -1052,7 +1052,7 @@ void func_8010D998_staff(void) {
 
     stat = HuPrcCurrentGet()->user_data;
     Hu3DGLightDirSet(1, -21.0f, 235.0f, 181.0f);
-    esp = espEntry(func_8000B838_main(0x160024), 0, 0);
+    esp = espEntry(HuSprAnimDataRead(0x160024), 0, 0);
     espAttrSet(esp, 0x4000);
     espPosSet(esp, 160, 120);
     espPriSet(esp, 0xFFF0);
@@ -1079,7 +1079,7 @@ void func_8010D998_staff(void) {
     Hu3DModelPosSet(model, work.pos.x, work.pos.y + 22.0f, work.pos.z);
     func_8010D450_staff(shadow, &work.pos);
     for (i = 0; i < 3; i++) {
-        work.anims[i] = func_8000B838_main(D_80110FE8_staff[i]);
+        work.anims[i] = HuSprAnimDataRead(D_80110FE8_staff[i]);
     }
     grp = HuSprGrpCreate(3, 0);
     for (x = 268, i = 0; i < 3; i++, x += 12) {
@@ -1093,7 +1093,7 @@ void func_8010D998_staff(void) {
 
             HuSprGrpMemberSet(grp, i, w->anims[i], 0);
         }
-        func_800550F4_main(grp, i, 0);
+        HuSprAnimModeSet(grp, i, 0);
         HuSprPriSet(grp, i, 400);
         HuSprPosSet(grp, i, x, 214);
     }
@@ -1369,7 +1369,7 @@ void func_8010F04C_staff(s16 model, s32 dataNum) {
     s16 x;
     s16 y;
 
-    anim = func_8000B838_main(dataNum);
+    anim = HuSprAnimDataRead(dataNum);
     grp = HuSprGrpCreate(1, 0);
     HuSprGrpMemberSet(grp, 0, anim, 0);
     sprite = HuSprGet(grp, 0);

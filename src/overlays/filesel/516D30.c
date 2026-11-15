@@ -307,7 +307,7 @@ s16 func_80105CC4_filesel(s32 arg0) {
 }
 
 void func_80105CE0_filesel(s32 arg0, s32 arg1) {
-    D_801135D0_filesel[arg0][0] = func_8000B838_main(arg1);
+    D_801135D0_filesel[arg0][0] = HuSprAnimDataRead(arg1);
 }
 
 void func_80105D18_filesel(s32 arg0) {
@@ -554,7 +554,7 @@ void func_801069D8_filesel(s32 arg0, s32 arg1, s16 arg2) {
 }
 
 void func_80106A48_filesel(s32 arg0) {
-    D_80114150_filesel = func_8000B838_main(arg0);
+    D_80114150_filesel = HuSprAnimDataRead(arg0);
     D_80114152_filesel = espEntry(D_80114150_filesel, 0, 0);
     espAttrSet(D_80114152_filesel, 0x4000);
     espPosSet(D_80114152_filesel, 0xA0, 0x78);

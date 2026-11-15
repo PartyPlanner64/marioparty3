@@ -620,7 +620,7 @@ void func_801074B4_boardresult2(void) {
                 HuSprPosSet(D_801099F0_boardresult2->unk_0A, row * 16 + j * 4 + k,
                             row * 44 + (s16)(k * 10 + 145) + offsets[digits], j * 22 + 73);
                 HuSprBankSet(D_801099F0_boardresult2->unk_0A, row * 16 + j * 4 + k, buf[k] - '0', 0);
-                func_800550F4_main(D_801099F0_boardresult2->unk_0A, row * 16 + j * 4 + k, 1);
+                HuSprAnimModeSet(D_801099F0_boardresult2->unk_0A, row * 16 + j * 4 + k, 1);
             }
         }
     }

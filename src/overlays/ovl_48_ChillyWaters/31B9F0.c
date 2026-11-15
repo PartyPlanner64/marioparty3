@@ -4343,7 +4343,7 @@ itemSelect:
             DataClose(data);
             HuSprGrpMemberSet(grp, 0, spriteId, 0);
             HuSprPriSet(grp, 0, 0xA);
-            func_800550F4_main(grp, 0, 0);
+            HuSprAnimModeSet(grp, 0, 0);
             HuSprAttrSet(grp, 0, 0x180C);
             HuSprPosSet(grp, 0, 0xA0, 0x5A);
             HuSprTPLvlSet(grp, 0, 0);
@@ -4408,7 +4408,7 @@ itemSelect:
                     DataClose(data);
                     HuSprGrpMemberSet(grp2, 0, spriteId2, 0);
                     HuSprPriSet(grp2, 0, 0xB);
-                    func_800550F4_main(grp2, 0, 0);
+                    HuSprAnimModeSet(grp2, 0, 0);
                     HuSprAttrSet(grp2, 0, 0x1000);
                     HuSprPosSet(grp2, 0, 0xA0, 0x5A);
                     HuSprTPLvlSet(grp2, 0, 0);
@@ -4555,7 +4555,7 @@ s32 func_8010CA54_ChillyWaters(s32 arg0) {
     DataClose(data);
     HuSprGrpMemberSet(grpId, 0, sprId, 0);
     HuSprPriSet(grpId, 0, 0xA);
-    func_800550F4_main(grpId, 0, 0);
+    HuSprAnimModeSet(grpId, 0, 0);
     HuSprAttrSet(grpId, 0, 0x1000);
     HuSprPosSet(grpId, 0,
                         D_8011E1EC_ChillyWaters[arg0][0],
@@ -4648,7 +4648,7 @@ s32 MB1Ev_TeresaSteal(s32 arg0) {
     DataClose(file);
     HuSprGrpMemberSet(booGrp, 0, booSpr, 0);
     HuSprPriSet(booGrp, 0, 0xA);
-    func_800550F4_main(booGrp, 0, 0);
+    HuSprAnimModeSet(booGrp, 0, 0);
     HuSprAttrSet(booGrp, 0, 0x1000);
     HuSprPosSet(booGrp, 0,
                         D_8011E1EC_ChillyWaters[arg0][0],
@@ -4662,7 +4662,7 @@ s32 MB1Ev_TeresaSteal(s32 arg0) {
     DataClose(file);
     HuSprGrpMemberSet(chrGrp, 0, chrSpr, 0);
     HuSprPriSet(chrGrp, 0, 0xA);
-    func_800550F4_main(chrGrp, 0, 1);
+    HuSprAnimModeSet(chrGrp, 0, 1);
 
     if (arg0 & 1) {
         HuSprAttrSet(chrGrp, 0, 0x1001);
@@ -4781,7 +4781,7 @@ s32 MB1Ev_TeresaSteal(s32 arg0) {
                 hold = 0xA;
                 if (pulled == 0) {
                     HuSprBankSet(chrGrp, 0, 1, 0);
-                    func_800550F4_main(chrGrp, 0, 1);
+                    HuSprAnimModeSet(chrGrp, 0, 1);
                     pulled = 1;
                     HuSprPosSet(chrGrp, 0,
                         D_8011E1EC_ChillyWaters[arg0][0] - 8.0f,
@@ -4794,7 +4794,7 @@ s32 MB1Ev_TeresaSteal(s32 arg0) {
         dummy:
         if ((hold == 0) && (pulled == 1)) {
             HuSprBankSet(chrGrp, 0, 0, 0);
-            func_800550F4_main(chrGrp, 0, 1);
+            HuSprAnimModeSet(chrGrp, 0, 1);
             pulled = 0;
             HuSprPosSet(chrGrp, 0,
                 (D_8011E1EC_ChillyWaters[arg0][0] -
@@ -4837,7 +4837,7 @@ s32 MB1Ev_TeresaSteal(s32 arg0) {
         }
 
         HuSprBankSet(chrGrp, 0, 0, 0);
-        func_800550F4_main(chrGrp, 0, 1);
+        HuSprAnimModeSet(chrGrp, 0, 1);
         for (i = 0x10; i >= 0; i -= 2, HuPrcVSleep()) {
             HuSprTPLvlSet(booGrp, 0, i * 0x10);
         }
@@ -5651,7 +5651,7 @@ void MB1Ev_ItemKinoko(void) {
     GW_SYSTEM *system = &GwSystem;
 
     HuSprBankSet(mbItemCursorGrpId, 0, 1, 0);
-    func_800550F4_main(mbItemCursorGrpId, 0, 1);
+    HuSprAnimModeSet(mbItemCursorGrpId, 0, 1);
     HuPrcSleep(20);
     HuAudFXPlay(0x145);
     MBStatusSprPosGet(mbItemCursorGrpId, 0, &sp18[0], &sp18[1]);
@@ -5660,7 +5660,7 @@ void MB1Ev_ItemKinoko(void) {
     HuPrcChildWatch();
     HuPrcSleep(0xA);
     HuSprBankSet(mbItemCursorGrpId, 0, 0, 0);
-    func_800550F4_main(mbItemCursorGrpId, 0, 1);
+    HuSprAnimModeSet(mbItemCursorGrpId, 0, 1);
 
     for (i = 1; i < 10; i++) {
         MBStatusItemTPLvlSet(system->current_player_index, MBItemSelNoGet(), (255 - (i * 25)));
@@ -5682,7 +5682,7 @@ void func_8010FE54_ChillyWaters(void) {
     s32 i;
 
     HuSprBankSet(mbItemCursorGrpId, 0, 1, 0);
-    func_800550F4_main(mbItemCursorGrpId, 0, 1);
+    HuSprAnimModeSet(mbItemCursorGrpId, 0, 1);
     HuPrcSleep(0x14);
     HuAudFXPlay(0x145);
     MBStatusSprPosGet(mbItemCursorGrpId, 0, &sp18[0], &sp18[1]);
@@ -5707,7 +5707,7 @@ void func_80110024_ChillyWaters(void) {
     s32 i;
 
     HuSprBankSet(mbItemCursorGrpId, 0, 1U, 0);
-    func_800550F4_main(mbItemCursorGrpId, 0, 1);
+    HuSprAnimModeSet(mbItemCursorGrpId, 0, 1);
     HuPrcSleep(0x14);
     HuAudFXPlay(0x145);
     func_800F6848_shared_board(GwSystem.current_player_index, MBItemSelNoGet(), &sp18[0], &sp18[1]);
@@ -5730,7 +5730,7 @@ void MB1Ev_ItemShake(void) {
     GW_SYSTEM* system = &GwSystem;
 
     HuSprBankSet(mbItemCursorGrpId, 0, 1, 0);
-    func_800550F4_main(mbItemCursorGrpId, 0, 1);
+    HuSprAnimModeSet(mbItemCursorGrpId, 0, 1);
     HuPrcSleep(0x14);
     HuAudFXPlay(0x145);
     MBStatusSprPosGet(mbItemCursorGrpId, 0, &sp18[0], &sp18[1]);
@@ -5747,7 +5747,7 @@ void MB1Ev_ItemShake(void) {
     HuPrcSleep(0xA);
 
     HuSprBankSet(mbItemCursorGrpId, 0, 0, 0);
-    func_800550F4_main(mbItemCursorGrpId, 0, 1);
+    HuSprAnimModeSet(mbItemCursorGrpId, 0, 1);
 
     for (i = 1; i < 10; i++, HuPrcVSleep()) {
         HuSprTPLvlSet(mbItemCursorGrpId, 0, (255 - (i * 25)));
@@ -5781,7 +5781,7 @@ void MB1Ev_ItemPhoneMove(void) {
     s32 i;
 
     HuSprBankSet(mbItemCursorGrpId, 0, 1, 0);
-    func_800550F4_main(mbItemCursorGrpId, 0, 1);
+    HuSprAnimModeSet(mbItemCursorGrpId, 0, 1);
     HuPrcSleep(0x14);
     HuAudFXPlay(0x145);
     MBStatusSprPosGet(mbItemCursorGrpId, 0, &sp18[0], &sp18[1]);
@@ -5790,7 +5790,7 @@ void MB1Ev_ItemPhoneMove(void) {
     HuPrcChildWatch();
     HuPrcSleep(0xA);
     HuSprBankSet(mbItemCursorGrpId, 0, 0, 0);
-    func_800550F4_main(mbItemCursorGrpId, 0, 1);
+    HuSprAnimModeSet(mbItemCursorGrpId, 0, 1);
     
     for (i = 1; i < 0xA; i++, HuPrcVSleep()) {
         HuSprTPLvlSet(mbItemCursorGrpId, 0, (255 - (i * 25)));
@@ -6365,7 +6365,7 @@ void MB1Ev_ItemKeyManUse(void) {
     HuSprAttrSet(grpId, 0, 0x9000);
 
     HuSprBankSet(mbItemCursorGrpId, 0, 1, 0);
-    func_800550F4_main(mbItemCursorGrpId, 0, 1);
+    HuSprAnimModeSet(mbItemCursorGrpId, 0, 1);
     HuPrcSleep(0x14);
     HuAudFXPlay(0x145);
     MBStatusSprPosGet(mbItemCursorGrpId, 0, &sp20[0], &sp20[1]);
@@ -6380,7 +6380,7 @@ void MB1Ev_ItemKeyManUse(void) {
     HuPrcSleep(0xA);
 
     HuSprBankSet(mbItemCursorGrpId, 0, 0, 0);
-    func_800550F4_main(mbItemCursorGrpId, 0, 1);
+    HuSprAnimModeSet(mbItemCursorGrpId, 0, 1);
 
     for (i = 1; i < 0xA; i++, HuPrcVSleep()) {
         HuSprTPLvlSet(mbItemCursorGrpId, 0, (255 - (i * 25)));
@@ -6506,7 +6506,7 @@ void func_801127D8_ChillyWaters(void) {
     DataClose(file);
 
     grpId = HuSprGrpCreate(2, 2);
-    func_800550F4_main(grpId, 0, 1);
+    HuSprAnimModeSet(grpId, 0, 1);
     HuSprGrpMemberSet(grpId, 0, booSpr, 0xC);
     HuSprPriSet(grpId, 0, 9);
     HuSprAttrSet(grpId, 0, 0x1000);
@@ -6701,7 +6701,7 @@ void func_80112FA8_ChillyWaters(void) {
     DataClose(file);
     HuSprGrpMemberSet(mbItemCursorGrpId, 0, sprId, 0);
     HuSprPriSet(mbItemCursorGrpId, 0, 0xA);
-    func_800550F4_main(mbItemCursorGrpId, 0, 1);
+    HuSprAnimModeSet(mbItemCursorGrpId, 0, 1);
     HuSprDispOff(mbItemCursorGrpId, 0);
     MBStatusItemPosGet(-1, 0, &pos[0], &pos[1]);
     HuSprPosSet(mbItemCursorGrpId, 0, pos[0], pos[1]);
@@ -9238,7 +9238,7 @@ void MB1Ev_ActionTimeSpr(void) {
     for (i = 0; i < 4; i++) {
         grp = grpId[i] = HuSprGrpCreate(6, 5);
         HuSprGrpMemberSet(grp, 0, markAnim, 0);
-        func_800550F4_main(grp, 0, 0);
+        HuSprAnimModeSet(grp, 0, 0);
         HuSprAttrReset(grp, 0, 0xFFFF);
         if (D_8011FAF8_ChillyWaters[i] != 0) {
             HuSprAttrSet(grp, 0, 8);
@@ -9248,7 +9248,7 @@ void MB1Ev_ActionTimeSpr(void) {
         HuSprPriSet(grp, 0, 0x1000);
         func_800554C4_main(grp, 0, -1);
         HuSprGrpMemberSet(grp, 1, charAnim[i], 0);
-        func_800550F4_main(grp, 1, 0);
+        HuSprAnimModeSet(grp, 1, 0);
         HuSprAttrReset(grp, 1, 0xFFFF);
         if (D_8011FAF8_ChillyWaters[i] != 0) {
             HuSprAttrSet(grp, 1, 8);
@@ -9260,7 +9260,7 @@ void MB1Ev_ActionTimeSpr(void) {
         func_800554C4_main(grp, 1, 0);
         for (j = 0; j < 4; j++) {
             HuSprGrpMemberSet(grp, j + 2, numAnim[j], 0);
-            func_800550F4_main(grp, j + 2, 1);
+            HuSprAnimModeSet(grp, j + 2, 1);
             HuSprAttrReset(grp, j + 2, 0xFFFF);
             if (D_8011FAF8_ChillyWaters[i] == j + 1) {
                 HuSprAttrSet(grp, j + 2, 8);

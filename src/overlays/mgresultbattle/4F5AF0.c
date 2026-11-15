@@ -90,13 +90,13 @@ void func_80108130_mgresultbattle(void) {
     obj = omAddObj(0x14, 0, 0, -1, NULL);
     D_80108F84_mgresultbattle = obj;
 
-    sprite = func_8000B838_main(0x1B0006);
+    sprite = HuSprAnimDataRead(0x1B0006);
     for (j = 0; j < 4; j++) {
         D_80108F30_mgresultbattle[j] = espEntry(sprite, 0, 0);
         espDispOff(D_80108F30_mgresultbattle[j]);
     }
 
-    sprite = func_8000B838_main(0x1B0007);
+    sprite = HuSprAnimDataRead(0x1B0007);
     for (i = 0; i < 4; i++) {
         for (j = 0; j < 3; j++) {
             D_80108F38_mgresultbattle[i][j] = espEntry(sprite, 0, 0);

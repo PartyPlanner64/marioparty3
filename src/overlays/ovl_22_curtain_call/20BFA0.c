@@ -338,7 +338,7 @@ void func_80106500_curtain_call(omObjData *obj) {
     D_8010B4F4_curtain_call = 160.0f;
     D_8010B4F8_curtain_call = 120.0f;
     D_8010B4FC_curtain_call = 45.0f;
-    D_8010B4F0_curtain_call = func_8000B838_main(0x430000);
+    D_8010B4F0_curtain_call = HuSprAnimDataRead(0x430000);
     D_8010B4F2_curtain_call = espEntry(D_8010B4F0_curtain_call, 0, 0);
     espAttrSet(D_8010B4F2_curtain_call, 0x5000);
     espPosSet(D_8010B4F2_curtain_call, D_8010B4F4_curtain_call, D_8010B4F8_curtain_call);

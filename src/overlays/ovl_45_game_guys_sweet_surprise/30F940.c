@@ -1035,7 +1035,7 @@ void func_80108218_game_guys_sweet_surprise(void) {
         } else {
             HuSprAttrReset(D_8010CF78_game_guys_sweet_surprise[base + i], 0, 0x8000);
             HuSprBankSet(D_8010CF78_game_guys_sweet_surprise[base + i], 0, D_8010CFE4_game_guys_sweet_surprise[i], 0);
-            func_800550F4_main(D_8010CF78_game_guys_sweet_surprise[base + i], 0, 1);
+            HuSprAnimModeSet(D_8010CF78_game_guys_sweet_surprise[base + i], 0, 1);
         }
     }
     if (D_8010CFE2_game_guys_sweet_surprise == 1) {
@@ -1684,7 +1684,7 @@ void func_8010AD04_game_guys_sweet_surprise(omObjData *object) {
 }
 
 s16 func_8010AD94_game_guys_sweet_surprise(s32 dataNum, u16 attr, u16 priority, s16 x, s16 y) {
-    s16 sprite = espEntry(func_8000B838_main(dataNum), 0, 0);
+    s16 sprite = espEntry(HuSprAnimDataRead(dataNum), 0, 0);
 
     espAttrSet(sprite, attr | 8);
     espPriSet(sprite, priority);

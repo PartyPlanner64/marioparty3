@@ -183,7 +183,7 @@ s16 func_801095F4_mgenter(void) {
     s16 sprGrp;
     s16 i;
 
-    D_80109B40_mgenter = func_8000B838_main(0x12000E);
+    D_80109B40_mgenter = HuSprAnimDataRead(0x12000E);
     sprGrp = espEntry(D_80109B40_mgenter, 0, 1);
     D_80109B42_mgenter = sprGrp;
     for (i = 0; i < ARRAY_COUNT(D_80109B48_mgenter); i++) {

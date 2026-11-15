@@ -1450,7 +1450,7 @@ void func_80109A54_etch_n_catch(omObjData *object) {
     data->unk178[3].z = 0.5f;
     data->unk178[4].x = -0.8660254f;
     data->unk178[4].z = -0.5f;
-    D_801113E8_etch_n_catch[data->unk160] = espEntry(func_8000B838_main(0x330005), 0, 1);
+    D_801113E8_etch_n_catch[data->unk160] = espEntry(HuSprAnimDataRead(0x330005), 0, 1);
     espAttrSet(D_801113E8_etch_n_catch[data->unk160], 0x5000);
     espPosSet(D_801113E8_etch_n_catch[data->unk160], 0, 0);
     espScaleSet(D_801113E8_etch_n_catch[data->unk160], 0.5f, 0.5f);
@@ -1928,15 +1928,15 @@ void func_8010BBE4_etch_n_catch(omObjData *object) {
     s16 sprite;
     s16 i;
 
-    sprite = func_8000B838_main(0x21002A);
+    sprite = HuSprAnimDataRead(0x21002A);
     for (i = 0; i < 2; i++) {
         espPosSet(espEntry(sprite, 0, 1), pos[i][0], pos[i][1]);
     }
-    sprite = func_8000B838_main(0x21001B);
+    sprite = HuSprAnimDataRead(0x21001B);
     for (i = 0; i < 2; i++) {
         espPosSet(espEntry(sprite, 0, 1), pos[i][0] + 16, pos[i][1]);
     }
-    sprite = func_8000B838_main(0x31);
+    sprite = HuSprAnimDataRead(0x31);
     for (i = 0; i < 2; i++) {
         D_801113A8_etch_n_catch[i] = espEntry(sprite, 0, 1);
         espPosSet(D_801113A8_etch_n_catch[i], D_8010C6A4_etch_n_catch[i][0], D_8010C6A4_etch_n_catch[i][1]);
@@ -1960,13 +1960,13 @@ void func_8010BE84_etch_n_catch(omObjData *object) {
     s16 spriteId2;
     s32 i;
 
-    spriteId1 = func_8000B838_main(0x330003);
+    spriteId1 = HuSprAnimDataRead(0x330003);
     D_8010C842_etch_n_catch = HuSprGrpCreate(1, 0);
     HuSprGrpMemberSet(D_8010C842_etch_n_catch, 0, spriteId1, 0);
     HuSprAttrReset(D_8010C842_etch_n_catch, 0, 0xFFFF);
     HuSprAttrSet(D_8010C842_etch_n_catch, 0, 0x5000);
     HuSprPosSet(D_8010C842_etch_n_catch, 0, 160, 120);
-    spriteId2 = func_8000B838_main(0x330004);
+    spriteId2 = HuSprAnimDataRead(0x330004);
     D_8010C844_etch_n_catch = HuSprGrpCreate(1, 0);
     HuSprGrpMemberSet(D_8010C844_etch_n_catch, 0, spriteId2, 0);
     HuSprAttrReset(D_8010C844_etch_n_catch, 0, 0xFFFF);

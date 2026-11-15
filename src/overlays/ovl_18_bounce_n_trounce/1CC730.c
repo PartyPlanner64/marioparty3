@@ -336,7 +336,7 @@ void func_80105E4C_bounce_n_trounce(omObjData *object) {
         deco->work[0] = 0;
         deco->work[1] = D_8010ACC8_bounce_n_trounce[i];
     }
-    sprite = espEntry(func_8000B838_main(0x390002), 0, 1);
+    sprite = espEntry(HuSprAnimDataRead(0x390002), 0, 1);
     espDispOff(sprite);
     target.x = 0.0f;
     target.y = 120.0f;

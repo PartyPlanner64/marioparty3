@@ -246,7 +246,7 @@ void func_80106234_mgresultdealer(omObjData *obj) {
 void func_801062B4_mgresultdealer(void) {
     u16 espriteSlot;
 
-    espriteSlot = espEntry(func_8000B838_main(0x190000), 0, 0);
+    espriteSlot = espEntry(HuSprAnimDataRead(0x190000), 0, 0);
     espPosSet(espriteSlot, 0xA0, 0x78);
     espAttrSet(espriteSlot, 0x4000);
 }

@@ -316,7 +316,7 @@ s16 func_80105D24_modesel(s32 arg0) {
 }
 
 void func_80105D40_modesel(s32 arg0, s32 arg1) {
-    D_8010FE10_modesel[arg0][0] = func_8000B838_main(arg1);
+    D_8010FE10_modesel[arg0][0] = HuSprAnimDataRead(arg1);
 }
 
 void func_80105D78_modesel(s32 arg0) {
@@ -564,7 +564,7 @@ void func_80106A38_modesel(s32 arg0, s32 arg1, s16 arg2) {
 
 void func_80106AA8_modesel(void) {
     // The original call omits the resource id.
-    D_80110990_modesel = ((s16 (*)())func_8000B838_main)();
+    D_80110990_modesel = ((s16 (*)())HuSprAnimDataRead)();
     D_80110992_modesel = espEntry(D_80110990_modesel, 0, 0);
     espAttrSet(D_80110992_modesel, 0x4000);
     espPosSet(D_80110992_modesel, 0xA0, 0x78);

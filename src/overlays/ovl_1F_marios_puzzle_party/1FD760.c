@@ -68,7 +68,7 @@ void func_8010F678_marios_puzzle_party(s32 spriteData, s16 count) {
 
     D_801168B0_marios_puzzle_party[D_801168B4_marios_puzzle_party].sprites = sprite =
         HuMemAllocTag(count * sizeof(MarioPuzzlePartySprite), 0x7918);
-    groupId = func_8000B838_main(spriteData);
+    groupId = HuSprAnimDataRead(spriteData);
     D_801168B0_marios_puzzle_party[D_801168B4_marios_puzzle_party].groupId = groupId;
     groupHandle = HuSprGrpCreate(1, 0);
     D_801168B0_marios_puzzle_party[D_801168B4_marios_puzzle_party].groupHandle = groupHandle;

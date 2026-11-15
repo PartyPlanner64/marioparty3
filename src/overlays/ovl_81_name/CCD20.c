@@ -1200,7 +1200,7 @@ s32 func_800E8D54_name_81(s32 arg0, Vec *arg1) {
         DataClose(data);
     
         HuSprGrpMemberSet(obj->unk_02, 0, obj->unk_04, 0);
-        func_800550F4_main(obj->unk_02, 0, 1);
+        HuSprAnimModeSet(obj->unk_02, 0, 1);
         HuSprPriSet(obj->unk_02, 0, 0x8000);
         HuSprAttrSet(obj->unk_02, 0, 0x9000);
         HuSprScissorSet(obj->unk_02, 0, 0x10, 0xC, 0x130, 0xE4);
@@ -1238,7 +1238,7 @@ s32 func_800E8EE8_name_81(s32 arg0, Vec *arg1) {
 
         HuSprGrpMemberSet(unkBoard7->unk_02, 0,
                             D_80104850_name_81[arg0].unk_04, 0);
-        func_800550F4_main(unkBoard7->unk_02, 0, 1);
+        HuSprAnimModeSet(unkBoard7->unk_02, 0, 1);
         HuSprPriSet(unkBoard7->unk_02, 0, 0x8000);
         HuSprAttrSet(unkBoard7->unk_02, 0, 0x9000);
         HuSprScissorSet(unkBoard7->unk_02, 0, 0x10, 0xC, 0x130, 0xE4);

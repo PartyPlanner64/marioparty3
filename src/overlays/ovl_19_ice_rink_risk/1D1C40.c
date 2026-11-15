@@ -141,7 +141,7 @@ void func_801059A0_ice_rink_risk(void) {
     D_801086D0_ice_rink_risk.x = 0.0f;
     D_801086D0_ice_rink_risk.y = 1100.0f;
     D_801086D0_ice_rink_risk.z = 710.785f;
-    sprite = espEntry(func_8000B838_main(0x3A0003), 0, 1);
+    sprite = espEntry(HuSprAnimDataRead(0x3A0003), 0, 1);
     espDispOn(sprite);
     espPosSet(sprite, 160, 120);
     espAttrSet(sprite, 0x4000);

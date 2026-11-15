@@ -209,7 +209,7 @@ void func_80105AB0_winners_wheel(void) {
     Vec target;
     s16 sprite;
 
-    sprite = espEntry(func_8000B838_main(0x5C0006), 0, 1);
+    sprite = espEntry(HuSprAnimDataRead(0x5C0006), 0, 1);
     espDispOff(sprite);
     pos.x = 0.0f;
     pos.y = 200.0f;

@@ -384,7 +384,7 @@ void func_8010664C_picking_panic(omObjData *object) {
     s16 j;
 
     for (i = 0; i < 10; i++) {
-        D_8010EFF8_picking_panic[i] = func_8000B838_main(fileIds[i]);
+        D_8010EFF8_picking_panic[i] = HuSprAnimDataRead(fileIds[i]);
         D_8010EFD0_picking_panic[i] = espEntry(D_8010EFF8_picking_panic[i], 0, 0);
         espDispOff(D_8010EFD0_picking_panic[i]);
     }

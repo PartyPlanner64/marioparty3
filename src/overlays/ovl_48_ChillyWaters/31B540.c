@@ -85,7 +85,7 @@ void func_80105A64_ChillyWaters(void) {
     u8 growth[] = {2, 2, 16, 6, 8, 6, 20, 4};
     s16 new_var;
 
-    sprId = func_8000B838_main(0xB004A);
+    sprId = HuSprAnimDataRead(0xB004A);
     work->unk8 = sprId;
     grpId = HuSprGrpCreate(1, 0);
     work->unkA = grpId;

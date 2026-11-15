@@ -108,7 +108,7 @@ s16 func_80110244_option(s32 arg0) {
 }
 
 void func_80110260_option(s32 arg0, s32 arg1) {
-    D_80114EF0_option[arg0].espriteSlot = func_8000B838_main(arg1);
+    D_80114EF0_option[arg0].espriteSlot = HuSprAnimDataRead(arg1);
 }
 
 void func_80110298_option(s32 arg0) {
@@ -355,7 +355,7 @@ void func_80110F58_option(s32 arg0, s32 arg1, s32 arg2) {
 
 void func_80110FC8_option(void) {
     // The original call omits the resource id.
-    D_80115A70_option = ((s16 (*)())func_8000B838_main)();
+    D_80115A70_option = ((s16 (*)())HuSprAnimDataRead)();
     D_80115A72_option = espEntry(D_80115A70_option, 0, 0);
     espAttrSet(D_80115A72_option, 0x4000);
     espPosSet(D_80115A72_option, 0xA0, 0x78);

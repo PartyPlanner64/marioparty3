@@ -247,12 +247,12 @@ void func_80105FEC_cosmic_coaster(omObjData *object) {
 
     omSetStat(object, 0x100);
     hud = object->data = HuMemAllocTag(sizeof(CosmicCoasterHudData), TAG_OVERLAY);
-    frameSprite = func_8000B838_main(0x31000E);
-    labelSprite = func_8000B838_main(0x31000F);
-    meterSprite = func_8000B838_main(0x310011);
-    bannerSprite = func_8000B838_main(0x310010);
+    frameSprite = HuSprAnimDataRead(0x31000E);
+    labelSprite = HuSprAnimDataRead(0x31000F);
+    meterSprite = HuSprAnimDataRead(0x310011);
+    bannerSprite = HuSprAnimDataRead(0x310010);
     for (i = 0; i < 4; i++) {
-        portraits[i] = func_8000B838_main(D_8010BB64_cosmic_coaster[GwPlayer[((CosmicCoasterCarData *)D_8010C3B0_cosmic_coaster[i / 2]->data)->player[i % 2]].chr]);
+        portraits[i] = HuSprAnimDataRead(D_8010BB64_cosmic_coaster[GwPlayer[((CosmicCoasterCarData *)D_8010C3B0_cosmic_coaster[i / 2]->data)->player[i % 2]].chr]);
     }
     hud->banner = espEntry(bannerSprite, 0, 0);
     espPosSet(hud->banner, 160, 40);
@@ -1017,8 +1017,8 @@ void func_801090C0_cosmic_coaster(omObjData *object) {
     s32 i;
 
     data = object->data = HuMemAllocTag(sizeof(CosmicCoasterEffectData), TAG_OVERLAY);
-    sprite = func_8000B838_main(0x310012);
-    sprite2 = func_8000B838_main(0x310013);
+    sprite = HuSprAnimDataRead(0x310012);
+    sprite2 = HuSprAnimDataRead(0x310013);
     for (i = 0; i < 6; i++) {
         data->sprite[i] = espEntry(sprite, 0, 0);
         espPriSet(data->sprite[i], 0x815E);

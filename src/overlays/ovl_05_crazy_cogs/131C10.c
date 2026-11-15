@@ -388,7 +388,7 @@ void func_80106270_crazy_cogs(omObjData *arg0) {
 
     D_8010BA34_crazy_cogs = 160.0f;
     D_8010BA38_crazy_cogs = 120.0f;
-    D_8010BA30_crazy_cogs = func_8000B838_main(0x260000);
+    D_8010BA30_crazy_cogs = HuSprAnimDataRead(0x260000);
     D_8010BA32_crazy_cogs = espEntry(D_8010BA30_crazy_cogs, 0, 0);
     espAttrSet(D_8010BA32_crazy_cogs, 0x5000);
     espPosSet(D_8010BA32_crazy_cogs, D_8010BA34_crazy_cogs, D_8010BA38_crazy_cogs);

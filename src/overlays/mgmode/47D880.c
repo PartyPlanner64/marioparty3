@@ -207,7 +207,7 @@ MgmodeEsprite *func_80116794_mgmode(MgmodeEspriteDef *defs) {
     }
     sprites = HuMemAllocTag((count + 1) * sizeof(MgmodeEsprite), 0x7918);
     for (i = 0; i < count; i++, defs++) {
-        sprites[i].spriteGroup = func_8000B838_main(defs->dataNum);
+        sprites[i].spriteGroup = HuSprAnimDataRead(defs->dataNum);
         slot = sprites[i].espriteSlot = espEntry(sprites[i].spriteGroup, 0, 1);
         espPosSet(slot, defs->x, defs->y);
         espAttrReset(slot, 0xFFFF);

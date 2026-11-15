@@ -692,7 +692,7 @@ void func_801076A0_boardresult(void) {
 
         for (j = 0; j < count; j++) {
             HuSprGrpMemberSet(D_8010EB88_boardresult[i], j, D_8010EB98_boardresult, 0);
-            func_800550F4_main(D_8010EB88_boardresult[i], j, 1);
+            HuSprAnimModeSet(D_8010EB88_boardresult[i], j, 1);
             HuSprBankSet(D_8010EB88_boardresult[i], j, digits[j], 0);
             HuSprPriSet(D_8010EB88_boardresult[i], j, 0x4790);
             HuSprAttrSet(D_8010EB88_boardresult[i], j, 0x1000);
@@ -767,7 +767,7 @@ void func_80107B50_boardresult(void) {
 
         for (j = 0; j < count; j++) {
             HuSprGrpMemberSet(D_8010EB88_boardresult[i], j, D_8010EB98_boardresult, 0);
-            func_800550F4_main(D_8010EB88_boardresult[i], j, 1);
+            HuSprAnimModeSet(D_8010EB88_boardresult[i], j, 1);
             HuSprBankSet(D_8010EB88_boardresult[i], j, digits[j], 0);
             HuSprPriSet(D_8010EB88_boardresult[i], j, 0x4790);
             HuSprAttrSet(D_8010EB88_boardresult[i], j, 0x1000);

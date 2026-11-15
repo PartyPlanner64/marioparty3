@@ -876,7 +876,7 @@ void func_80054218_main(Gfx **gdl, s32 arg1, s32 arg2) {
             }
             inSeparate = TRUE;
         }
-        func_800579E4_main(gdl, sprite, arg2);
+        HuSprDisp(gdl, sprite, arg2);
     }
     if (inSeparate) {
         gSPEndDisplayList((*gdl)++);
@@ -1032,11 +1032,11 @@ void HuSprSpeedSet(s16 group, s16 member, f32 arg2) {
     func_80052E14_main(sprite_ptr);
 }
 
-void func_800550F4_main(s16 group, s16 member, s32 arg2) {
+void HuSprAnimModeSet(s16 group, s16 member, s32 mode) {
     HuSprite *sprite_ptr = HuSprGrpData[group]->members[member];
 
     sprite_ptr->animStat &= ~HUSPR_ANIM_STAT_INIT;
-    sprite_ptr->animMode = arg2;
+    sprite_ptr->animMode = mode;
     func_80052E14_main(sprite_ptr);
 }
 
@@ -1143,11 +1143,11 @@ void func_800554C4_main(s16 group, s16 member, s16 arg2) {
     HuSprGrpData[group]->members[member]->unk_2E = arg2;
 }
 
-void func_800554F0_main(s16 group, s16 member, u8 arg2, u8 arg3) {
+void HuSprShiftSet(s16 group, s16 member, u8 shiftX, u8 shiftY) {
     HuSprite *sprite = HuSprGrpData[group]->members[member];
 
-    sprite->shiftX = arg2;
-    sprite->shiftY = arg3;
+    sprite->shiftX = shiftX;
+    sprite->shiftY = shiftY;
 }
 
 HuSprite *HuSprGet(s16 group, s16 member) {
@@ -1370,7 +1370,7 @@ s16 HuSprAnimRead(void *arg0) {
     return slot;
 }
 
-s32 func_80055DBC_main(u16 arg0, u16 arg1, u16 arg2, u16 arg3, u16 arg4) {
+s32 HuSprAnimMake(u16 sizeX, u16 sizeY, u16 pixelBits, u16 palNum, u16 patNum) {
     HuSprAnimData *desc;
     HuSprAnimPat *cel;
     s16 i;
@@ -1386,12 +1386,12 @@ s32 func_80055DBC_main(u16 arg0, u16 arg1, u16 arg2, u16 arg3, u16 arg4) {
     if (desc == NULL) {
         return -1;
     }
-    desc->patNum = arg4;
+    desc->patNum = patNum;
     desc->bankNum = 0;
-    desc->sizeX = arg0;
-    desc->sizeY = arg1 * arg4;
-    desc->pixelBits = arg2;
-    desc->palNum = arg3;
+    desc->sizeX = sizeX;
+    desc->sizeY = sizeY * patNum;
+    desc->pixelBits = pixelBits;
+    desc->palNum = palNum;
     desc->pat = NULL;
     desc->bank = 0;
     desc->data = NULL;
@@ -1408,10 +1408,10 @@ s32 func_80055DBC_main(u16 arg0, u16 arg1, u16 arg2, u16 arg3, u16 arg4) {
     for (i = 0; i < desc->patNum; i++) {
         s32 size;
 
-        cel->sizeX = arg0;
-        cel->sizeY = arg1;
-        cel->centerX = arg0 >> 1;
-        cel->centerY = arg1 >> 1;
+        cel->sizeX = sizeX;
+        cel->sizeY = sizeY;
+        cel->centerX = sizeX >> 1;
+        cel->centerY = sizeY >> 1;
         size = cel->sizeX * cel->sizeY * (desc->pixelBits & 0x7FFF);
         cel->data = HuMemAlloc(size / 8);
         if (cel->data == NULL) {

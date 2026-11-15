@@ -515,8 +515,8 @@ void func_80106FDC_awful_tower(omObjData *object) {
     s16 k;
 
     for (i = 0; i < 4; i++) {
-        D_8010D3B8_awful_tower[i] = func_8000B838_main(sprFiles[i]);
-        D_8010D3B8_awful_tower[i] = func_8000B838_main(sprFiles[i]);
+        D_8010D3B8_awful_tower[i] = HuSprAnimDataRead(sprFiles[i]);
+        D_8010D3B8_awful_tower[i] = HuSprAnimDataRead(sprFiles[i]);
         D_8010D3D0_awful_tower[i] = espEntry(D_8010D3B8_awful_tower[i], 0, 0);
         espDispOff(D_8010D3D0_awful_tower[i]);
     }

@@ -230,16 +230,16 @@ void func_801059A0_end_of_the_line(void) {
         D_8010C73C_end_of_the_line[i] = obj = omAddObj(20, 6, 12, -1, func_801082D8_end_of_the_line);
         obj->work[0] = i;
     }
-    D_8010C76E_end_of_the_line = func_8000B838_main(0x54001A);
-    D_8010C770_end_of_the_line = func_8000B838_main(0x540018);
-    D_8010C772_end_of_the_line = func_8000B838_main(0x540019);
-    D_8010C774_end_of_the_line = func_8000B838_main(0x540013);
-    D_8010C776_end_of_the_line = func_8000B838_main(0x54001B);
-    D_8010C778_end_of_the_line[0] = func_8000B838_main(0x540015);
-    D_8010C778_end_of_the_line[1] = func_8000B838_main(0x540014);
-    D_8010C77C_end_of_the_line[0] = func_8000B838_main(0x540017);
-    D_8010C77C_end_of_the_line[1] = func_8000B838_main(0x540016);
-    D_8010C780_end_of_the_line = func_8000B838_main(0x38001F);
+    D_8010C76E_end_of_the_line = HuSprAnimDataRead(0x54001A);
+    D_8010C770_end_of_the_line = HuSprAnimDataRead(0x540018);
+    D_8010C772_end_of_the_line = HuSprAnimDataRead(0x540019);
+    D_8010C774_end_of_the_line = HuSprAnimDataRead(0x540013);
+    D_8010C776_end_of_the_line = HuSprAnimDataRead(0x54001B);
+    D_8010C778_end_of_the_line[0] = HuSprAnimDataRead(0x540015);
+    D_8010C778_end_of_the_line[1] = HuSprAnimDataRead(0x540014);
+    D_8010C77C_end_of_the_line[0] = HuSprAnimDataRead(0x540017);
+    D_8010C77C_end_of_the_line[1] = HuSprAnimDataRead(0x540016);
+    D_8010C780_end_of_the_line = HuSprAnimDataRead(0x38001F);
     func_80107F0C_end_of_the_line();
     func_8010C3F4_end_of_the_line();
     func_800E5EA0_minigame(&D_8010C5A0_end_of_the_line);

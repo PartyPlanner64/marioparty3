@@ -217,39 +217,39 @@ void func_80105BA8_picture_imperfect(void) {
 
     switch (D_8010A150_picture_imperfect) {
         case 0:
-            D_8010A230_picture_imperfect = func_8000B838_main(0x3F0005);
+            D_8010A230_picture_imperfect = HuSprAnimDataRead(0x3F0005);
             for (i = 0; i < 5; i++) {
-                D_8010A232_picture_imperfect[i] = func_8000B838_main((i + 14) | 0x3F0000);
-                D_8010A23C_picture_imperfect[i] = func_8000B838_main((i + 19) | 0x3F0000);
-                D_8010A246_picture_imperfect[i] = func_8000B838_main((i + 24) | 0x3F0000);
-                D_8010A250_picture_imperfect[i] = func_8000B838_main((i + 29) | 0x3F0000);
-                D_8010A25A_picture_imperfect[i] = func_8000B838_main((i + 34) | 0x3F0000);
+                D_8010A232_picture_imperfect[i] = HuSprAnimDataRead((i + 14) | 0x3F0000);
+                D_8010A23C_picture_imperfect[i] = HuSprAnimDataRead((i + 19) | 0x3F0000);
+                D_8010A246_picture_imperfect[i] = HuSprAnimDataRead((i + 24) | 0x3F0000);
+                D_8010A250_picture_imperfect[i] = HuSprAnimDataRead((i + 29) | 0x3F0000);
+                D_8010A25A_picture_imperfect[i] = HuSprAnimDataRead((i + 34) | 0x3F0000);
             }
             break;
         case 1:
-            D_8010A230_picture_imperfect = func_8000B838_main(0x3F0006);
+            D_8010A230_picture_imperfect = HuSprAnimDataRead(0x3F0006);
             for (i = 0; i < 5; i++) {
-                D_8010A232_picture_imperfect[i] = func_8000B838_main((i + 39) | 0x3F0000);
-                D_8010A23C_picture_imperfect[i] = func_8000B838_main((i + 44) | 0x3F0000);
-                D_8010A246_picture_imperfect[i] = func_8000B838_main((i + 49) | 0x3F0000);
-                D_8010A250_picture_imperfect[i] = func_8000B838_main((i + 54) | 0x3F0000);
+                D_8010A232_picture_imperfect[i] = HuSprAnimDataRead((i + 39) | 0x3F0000);
+                D_8010A23C_picture_imperfect[i] = HuSprAnimDataRead((i + 44) | 0x3F0000);
+                D_8010A246_picture_imperfect[i] = HuSprAnimDataRead((i + 49) | 0x3F0000);
+                D_8010A250_picture_imperfect[i] = HuSprAnimDataRead((i + 54) | 0x3F0000);
             }
             break;
         case 2:
         default:
-            D_8010A230_picture_imperfect = func_8000B838_main(0x3F0007);
+            D_8010A230_picture_imperfect = HuSprAnimDataRead(0x3F0007);
             for (i = 0; i < 5; i++) {
-                D_8010A232_picture_imperfect[i] = func_8000B838_main((i + 59) | 0x3F0000);
-                D_8010A23C_picture_imperfect[i] = func_8000B838_main((i + 64) | 0x3F0000);
-                D_8010A246_picture_imperfect[i] = func_8000B838_main((i + 69) | 0x3F0000);
+                D_8010A232_picture_imperfect[i] = HuSprAnimDataRead((i + 59) | 0x3F0000);
+                D_8010A23C_picture_imperfect[i] = HuSprAnimDataRead((i + 64) | 0x3F0000);
+                D_8010A246_picture_imperfect[i] = HuSprAnimDataRead((i + 69) | 0x3F0000);
             }
             break;
     }
-    D_8010A264_picture_imperfect = func_8000B838_main(0x40001C);
-    D_8010A266_picture_imperfect = func_8000B838_main(0x40001B);
-    D_8010A268_picture_imperfect = func_8000B838_main(0x40001D);
-    D_8010A26A_picture_imperfect = func_8000B838_main(0x2E);
-    D_8010A26C_picture_imperfect = func_8000B838_main(0x3E0019);
+    D_8010A264_picture_imperfect = HuSprAnimDataRead(0x40001C);
+    D_8010A266_picture_imperfect = HuSprAnimDataRead(0x40001B);
+    D_8010A268_picture_imperfect = HuSprAnimDataRead(0x40001D);
+    D_8010A26A_picture_imperfect = HuSprAnimDataRead(0x2E);
+    D_8010A26C_picture_imperfect = HuSprAnimDataRead(0x3E0019);
 }
 
 void func_80105E68_picture_imperfect(D_80111B50_vine_with_me_Struct *arg0) {
@@ -1280,7 +1280,7 @@ void func_80109608_picture_imperfect(omObjData *object) {
     object->func = func_80109AC4_picture_imperfect;
     for (i = 0; i < 4; i++) {
         if (i == 0) {
-            D_8010A122_picture_imperfect = func_8000B838_main(0x3F0002);
+            D_8010A122_picture_imperfect = HuSprAnimDataRead(0x3F0002);
         }
         D_8010A152_picture_imperfect = HuSprGrpCreate(1, 0);
         HuSprGrpMemberSet(D_8010A152_picture_imperfect, 0, D_8010A122_picture_imperfect, 0);
@@ -1290,14 +1290,14 @@ void func_80109608_picture_imperfect(omObjData *object) {
                     D_80109FE8_picture_imperfect[i].y);
         HuSprPriSet(D_8010A152_picture_imperfect, 0, 0xFF);
     }
-    D_8010A122_picture_imperfect = func_8000B838_main(0x3F0003);
+    D_8010A122_picture_imperfect = HuSprAnimDataRead(0x3F0003);
     D_8010A154_picture_imperfect = HuSprGrpCreate(1, 0);
     HuSprGrpMemberSet(D_8010A154_picture_imperfect, 0, D_8010A122_picture_imperfect, 0);
     HuSprAttrReset(D_8010A154_picture_imperfect, 0, 0xFFFF);
     HuSprAttrSet(D_8010A154_picture_imperfect, 0, 0x1000);
     HuSprPosSet(D_8010A154_picture_imperfect, 0, 160, 120);
     HuSprPriSet(D_8010A154_picture_imperfect, 0, 0xF0);
-    D_8010A122_picture_imperfect = func_8000B838_main(0x3F0001);
+    D_8010A122_picture_imperfect = HuSprAnimDataRead(0x3F0001);
     D_8010A156_picture_imperfect = espEntry(D_8010A122_picture_imperfect, 0, 1);
     espPosSet(D_8010A156_picture_imperfect, 160, 120);
     espAttrSet(D_8010A156_picture_imperfect, 0x1000);
@@ -1308,13 +1308,13 @@ void func_80109608_picture_imperfect(omObjData *object) {
     switch (D_8010A150_picture_imperfect) {
         case 0:
         default:
-            D_8010A122_picture_imperfect = func_8000B838_main(0x3F0008);
+            D_8010A122_picture_imperfect = HuSprAnimDataRead(0x3F0008);
             break;
         case 1:
-            D_8010A122_picture_imperfect = func_8000B838_main(0x3F000A);
+            D_8010A122_picture_imperfect = HuSprAnimDataRead(0x3F000A);
             break;
         case 2:
-            D_8010A122_picture_imperfect = func_8000B838_main(0x3F000C);
+            D_8010A122_picture_imperfect = HuSprAnimDataRead(0x3F000C);
             break;
     }
     D_8010A158_picture_imperfect = espEntry(D_8010A122_picture_imperfect, 0, 1);
@@ -1325,13 +1325,13 @@ void func_80109608_picture_imperfect(omObjData *object) {
     switch (D_8010A150_picture_imperfect) {
         case 0:
         default:
-            D_8010A122_picture_imperfect = func_8000B838_main(0x3F0009);
+            D_8010A122_picture_imperfect = HuSprAnimDataRead(0x3F0009);
             break;
         case 1:
-            D_8010A122_picture_imperfect = func_8000B838_main(0x3F000B);
+            D_8010A122_picture_imperfect = HuSprAnimDataRead(0x3F000B);
             break;
         case 2:
-            D_8010A122_picture_imperfect = func_8000B838_main(0x3F000D);
+            D_8010A122_picture_imperfect = HuSprAnimDataRead(0x3F000D);
             break;
     }
     D_8010A15A_picture_imperfect = espEntry(D_8010A122_picture_imperfect, 0, 1);

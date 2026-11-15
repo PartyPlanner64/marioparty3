@@ -250,13 +250,13 @@ s16 func_8010A598_baby_bowser_broadside(s16 priority, s32 directory, s32 file, s
 
     for (i = 0; i < 14; i++, sprite++) {
         if (sprite->unk_00 == 0) {
-            sprite->unk_02 = func_8000B838_main((directory << 16) | file);
+            sprite->unk_02 = HuSprAnimDataRead((directory << 16) | file);
             sprite->unk_01 = HuSprGrpCreate(1, 0);
             sprite->unk_06 = 255;
             HuSprAttrReset(sprite->unk_01, 0, -1);
             HuSprGrpMemberSet(sprite->unk_01, 0, sprite->unk_02, 0);
             HuSprAttrSet(sprite->unk_01, 0, attr);
-            func_800550F4_main(sprite->unk_01, 0, animation);
+            HuSprAnimModeSet(sprite->unk_01, 0, animation);
             HuSprPriSet(sprite->unk_01, 0, (u16)priority);
             func_80054FF8_main(sprite->unk_01, 0, 0);
             HuSprSpeedSet(sprite->unk_01, 0, 1.0f);
@@ -454,7 +454,7 @@ s16 func_8010AE60_baby_bowser_broadside(s32 directory, s32 file, s16 type, s32 f
 
     for (i = 0; i < 8; i++, work++) {
         if (work->unk_00 == 0) {
-            frame = func_8000B838_main((directory << 16) | file);
+            frame = HuSprAnimDataRead((directory << 16) | file);
             work->unk_0A = frame;
             if (flags & 1) {
                 work->unk_0C = func_8010C8D4_baby_bowser_broadside(func_80055194_main(frame), color.rgba);

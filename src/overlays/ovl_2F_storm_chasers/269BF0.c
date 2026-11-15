@@ -403,7 +403,7 @@ void func_80106218_storm_chasers(omObjData *object) {
 
     D_8010CF0C_storm_chasers = 160.0f;
     D_8010CF10_storm_chasers = 120.0f;
-    D_8010CF08_storm_chasers = func_8000B838_main(0x500000);
+    D_8010CF08_storm_chasers = HuSprAnimDataRead(0x500000);
     D_8010CF0A_storm_chasers = espEntry(D_8010CF08_storm_chasers, 0, 0);
     espAttrSet(D_8010CF0A_storm_chasers, 0x5000);
     espPosSet(D_8010CF0A_storm_chasers, D_8010CF0C_storm_chasers, D_8010CF10_storm_chasers);
@@ -449,7 +449,7 @@ void func_80106624_storm_chasers(omObjData *object) {
 }
 
 void func_8010662C_storm_chasers(omObjData *object) {
-    D_8010CF6C_storm_chasers = func_8000B838_main(0x500001);
+    D_8010CF6C_storm_chasers = HuSprAnimDataRead(0x500001);
     D_8010CF74_storm_chasers = func_80055194_main(D_8010CF6E_storm_chasers);
     D_8010CF70_storm_chasers =
         Hu3DHookFuncCreate(0, func_801063B0_storm_chasers, 2);

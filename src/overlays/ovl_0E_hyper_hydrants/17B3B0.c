@@ -1824,7 +1824,7 @@ void func_8010AE08_hyper_hydrants(omObjData *object) {
 
     object->func = func_8010B2FC_hyper_hydrants;
     object->trans.x = object->trans.y = object->trans.z = 0.0f;
-    D_8010BF56_hyper_hydrants = func_8000B838_main(0x2F0009);
+    D_8010BF56_hyper_hydrants = HuSprAnimDataRead(0x2F0009);
     D_8010BF58_hyper_hydrants = HuSprGrpCreate(1, 0);
     HuSprGrpMemberSet(D_8010BF58_hyper_hydrants, 0, D_8010BF56_hyper_hydrants, 0);
     HuSprPriSet(D_8010BF58_hyper_hydrants, 0, 0x10);
@@ -1832,7 +1832,7 @@ void func_8010AE08_hyper_hydrants(omObjData *object) {
     HuSprAttrSet(D_8010BF58_hyper_hydrants, 0, 0x1000);
     HuSprPosSet(D_8010BF58_hyper_hydrants, 0, 160, 120);
     for (i = 0; i < 2; i++) {
-        D_8010BF52_hyper_hydrants = func_8000B838_main(0x2F0000);
+        D_8010BF52_hyper_hydrants = HuSprAnimDataRead(0x2F0000);
         D_8010BF88_hyper_hydrants = HuSprGrpCreate(1, 0);
         HuSprGrpMemberSet(D_8010BF88_hyper_hydrants, 0, D_8010BF52_hyper_hydrants, 0);
         HuSprAttrReset(D_8010BF88_hyper_hydrants, 0, 0xFFFF);
@@ -1851,7 +1851,7 @@ void func_8010AE08_hyper_hydrants(omObjData *object) {
     data->unk08 = 0.5f;
     func_800E1370_minigame(object, 2, 0.0f);
     for (i = 0; i < 2; i++) {
-        D_8010BF54_hyper_hydrants = func_8000B838_main(0x2F0001);
+        D_8010BF54_hyper_hydrants = HuSprAnimDataRead(0x2F0001);
         D_8010BF8A_hyper_hydrants[i] = HuSprGrpCreate(1, 0);
         HuSprGrpMemberSet(D_8010BF8A_hyper_hydrants[i], 0, D_8010BF54_hyper_hydrants, 0);
         HuSprPriSet(D_8010BF58_hyper_hydrants, 0, 0x20);
@@ -1966,19 +1966,19 @@ void func_8010B658_hyper_hydrants(omObjData *object) {
     s16 i;
     s16 j;
 
-    sprite = func_8000B838_main(0x2F000A);
+    sprite = HuSprAnimDataRead(0x2F000A);
     for (i = 0; i < 2; i++) {
         D_8010C012_hyper_hydrants[i] = espEntry(sprite, 0, 1);
         espPosSet(D_8010C012_hyper_hydrants[i], positions[i][0], positions[i][1]);
         espDispOff(D_8010C012_hyper_hydrants[i]);
     }
-    sprite = func_8000B838_main(0x21001B);
+    sprite = HuSprAnimDataRead(0x21001B);
     for (i = 0; i < 2; i++) {
         D_8010C016_hyper_hydrants[i] = espEntry(sprite, 0, 1);
         espPosSet(D_8010C016_hyper_hydrants[i], positions[i][0] + 12, positions[i][1]);
         espDispOff(D_8010C016_hyper_hydrants[i]);
     }
-    sprite = func_8000B838_main(0x31);
+    sprite = HuSprAnimDataRead(0x31);
     for (i = 0; i < 2; i++) {
         for (j = 0; j < 2; j++) {
             D_8010C01A_hyper_hydrants[i][j] = espEntry(sprite, 0, 1);

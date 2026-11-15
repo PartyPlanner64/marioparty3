@@ -1140,7 +1140,7 @@ void func_801098DC_hey_batter_batter(f32 startZoom, Vec startRot, Vec startCente
 s16 func_80109A78_hey_batter_batter(s32 spriteId, u16 attr, u16 priority, s16 x, s16 y) {
     s16 espriteSlot;
 
-    espriteSlot = espEntry(func_8000B838_main(spriteId), 0, 0);
+    espriteSlot = espEntry(HuSprAnimDataRead(spriteId), 0, 0);
     espAttrSet(espriteSlot, attr);
     espPriSet(espriteSlot, priority);
     espPosSet(espriteSlot, x, y);

@@ -247,7 +247,7 @@ static void MBStatusNumUpdate(s32 playerIndex) {
         }
         for (i = 0; i < ARRAY_COUNT(coinDigits.digits); i++) {
             HuSprBankSet(playerBoardStatus->playerIndex, i + COINS_HUNDREDS_DIGIT, coinDigits.digits[i], 0);
-            func_800550F4_main(playerBoardStatus->playerIndex, i + COINS_HUNDREDS_DIGIT, 1);
+            HuSprAnimModeSet(playerBoardStatus->playerIndex, i + COINS_HUNDREDS_DIGIT, 1);
         }
 
         playerBoardStatus->prevCoins = GwPlayer[playerIndex].coin;
@@ -265,8 +265,8 @@ static void MBStatusNumUpdate(s32 playerIndex) {
             }
             HuSprBankSet(playerBoardStatus->playerIndex, STARS_ONES_DIGIT, GwPlayer[playerIndex].star % 10, 0);
         }
-        func_800550F4_main(playerBoardStatus->playerIndex, STARS_TENS_DIGIT, 1);
-        func_800550F4_main(playerBoardStatus->playerIndex, STARS_ONES_DIGIT, 1);
+        HuSprAnimModeSet(playerBoardStatus->playerIndex, STARS_TENS_DIGIT, 1);
+        HuSprAnimModeSet(playerBoardStatus->playerIndex, STARS_ONES_DIGIT, 1);
 
         playerBoardStatus->prevStars = GwPlayer[playerIndex].star;
     }
@@ -287,7 +287,7 @@ static void MBStatusNumUpdate(s32 playerIndex) {
                 if (i != 0 || D_801055E8_shared_board[playerIndex] == NULL) {
                     HuSprBankSet(playerBoardStatus->playerIndex, i + 2, 0, 0);
                     HuSprSpeedSet(playerBoardStatus->playerIndex, i + 2, 0.0f);
-                    func_800550F4_main(playerBoardStatus->playerIndex, i + 2, 1);
+                    HuSprAnimModeSet(playerBoardStatus->playerIndex, i + 2, 1);
                 }
             }
         }
@@ -295,12 +295,12 @@ static void MBStatusNumUpdate(s32 playerIndex) {
     }
     if (playerBoardStatus->unk1 != -1) {
         HuSprBankSet(playerBoardStatus->playerIndex, DIGIT_X, playerBoardStatus->unk1, 0);
-        func_800550F4_main(playerBoardStatus->playerIndex, DIGIT_X, 1);
+        HuSprAnimModeSet(playerBoardStatus->playerIndex, DIGIT_X, 1);
         return;
     }
     if (playerBoardStatus->prevRank != BoardPlayerRankCalc(playerIndex)) {
         HuSprBankSet(playerBoardStatus->playerIndex, DIGIT_X, BoardPlayerRankCalc(playerIndex), 0);
-        func_800550F4_main(playerBoardStatus->playerIndex, DIGIT_X, 1);
+        HuSprAnimModeSet(playerBoardStatus->playerIndex, DIGIT_X, 1);
         playerBoardStatus->prevRank = BoardPlayerRankCalc(playerIndex);
     }
 }
@@ -356,7 +356,7 @@ static void MBStatusMain(omObjData *obj) {
                                 }
 
                                 HuSprGrpMemberSet(temp_s2->playerIndex, j, D_80105588_shared_board[GwPlayer[i].itemNo[j - 11] + 10], 0);
-                                func_800550F4_main(temp_s2->playerIndex, j, 0);
+                                HuSprAnimModeSet(temp_s2->playerIndex, j, 0);
                                 HuSprPriSet(temp_s2->playerIndex, j, (i * 5) + 0x478E);
                                 HuSprAttrSet(temp_s2->playerIndex, j, 0);
                                 var_v1 = j;
@@ -448,7 +448,7 @@ static void MBStatusCharSprCreate(s32 playerIndex) {
 
     temp_s1 = mbStatusData[playerIndex].playerIndex;
     HuSprGrpMemberSet(temp_s1, 1, D_80105588_shared_board[playerIndex + 1], 0);
-    func_800550F4_main(temp_s1, 1, 0);
+    HuSprAnimModeSet(temp_s1, 1, 0);
     HuSprPriSet(temp_s1, 1, ((playerIndex * 5) + 0x4790));
     HuSprAttrSet(temp_s1, 1, 0);
     HuSprPosSet(temp_s1, 1, D_801018E4_shared_board[1][0], D_801018E4_shared_board[1][1]);
@@ -483,7 +483,7 @@ static void MBStatusNumSprCreate(s32 arg0) {
     temp_s2 = temp_s4->playerIndex;
     for (i = 0; i < 5; i++) {
         HuSprGrpMemberSet(temp_s2, i + 4, temp_s4->unk_3A, 0);
-        func_800550F4_main(temp_s2, i + 4, 1);
+        HuSprAnimModeSet(temp_s2, i + 4, 1);
         HuSprBankSet(temp_s2, i + 4, 0xA, 0);
         HuSprPriSet(temp_s2, i + 4, ((arg0 * 5) + 0x4790));
         HuSprAttrReset(temp_s2, i + 4, 0xFFFF);
@@ -514,7 +514,7 @@ static void MBStatusRankSprCreate(s32 playerNo) {
     temp_v0->prevRank = -1;
     temp_s0 = temp_v0->playerIndex;
     HuSprGrpMemberSet(temp_s0, 0xA, D_80105588_shared_board[8], 0);
-    func_800550F4_main(temp_s0, 0xA, 1);
+    HuSprAnimModeSet(temp_s0, 0xA, 1);
     HuSprBankSet(temp_s0, 0xA, 0, 0);
     HuSprPriSet(temp_s0, 0xA, ((playerNo * 5) + 0x478F));
     HuSprAttrSet(temp_s0, 0xA, 0);
@@ -526,7 +526,7 @@ static void MBStatusComSprCreate(s32 playerNo) {
 
     temp_s2 = mbStatusData[playerNo].playerIndex;
     HuSprGrpMemberSet(temp_s2, 9, D_80105588_shared_board[9], 0);
-    func_800550F4_main(temp_s2, 9, 0);
+    HuSprAnimModeSet(temp_s2, 9, 0);
     HuSprPriSet(temp_s2, 9, ((playerNo * 5) + 0x478E));
     HuSprAttrSet(temp_s2, 9, 0);
     HuSprPosSet(temp_s2, 9, D_801018E4_shared_board[9][0], D_801018E4_shared_board[9][1]);
@@ -545,7 +545,7 @@ static void MBStatusItemIconSprCreate(s32 playerNo) {
         curItem = GwPlayer[playerNo].itemNo[i];
         curItem = (curItem == -1) ? 0 : curItem;
         HuSprGrpMemberSet(temp_s3, i + 0xB, D_80105588_shared_board[curItem + 10], 0);
-        func_800550F4_main(temp_s3, i + 0xB, 0);
+        HuSprAnimModeSet(temp_s3, i + 0xB, 0);
         HuSprPriSet(temp_s3, i + 0xB, ((playerNo * 5) + 0x478E));
         HuSprAttrSet(temp_s3, i + 0xB, 0);
         var_s1 = i + 0xB;
@@ -1409,23 +1409,23 @@ void MBStatusItemDispSet(s32 playerNo, s32 arg1) {
             case TRUE:
                 for (i = 0; i < 2; i++) {
                     HuSprDispOff(temp_s2->playerIndex, i + 2);
-                    func_800550F4_main(temp_s2->playerIndex, i + 2, 0);
+                    HuSprAnimModeSet(temp_s2->playerIndex, i + 2, 0);
                 }
 
                 HuSprAnimKill(temp_s2->unk_3A);
 
                 for (i = 0; i < 5; i++) {
                     HuSprDispOff(temp_s2->playerIndex, i + 4);
-                    func_800550F4_main(temp_s2->playerIndex, i + 4, 0);
+                    HuSprAnimModeSet(temp_s2->playerIndex, i + 4, 0);
                 }
 
                 temp_s2->unk_3A = -1;
                 HuSprDispOff(temp_s2->playerIndex, 0xA);
-                func_800550F4_main(temp_s2->playerIndex, 0xA, 0);
+                HuSprAnimModeSet(temp_s2->playerIndex, 0xA, 0);
 
                 for (i = 0; i < ARRAY_COUNT(GwPlayer->itemNo); i++) {
                     HuSprDispOff(temp_s2->playerIndex, i + 0x0B);
-                    func_800550F4_main(temp_s2->playerIndex, i + 0x0B, 0);
+                    HuSprAnimModeSet(temp_s2->playerIndex, i + 0x0B, 0);
                 }
                 MBStatusItemSprCreate(playerNo, 0);
                 break;

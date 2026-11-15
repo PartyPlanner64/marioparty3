@@ -1153,7 +1153,7 @@ void func_80106508_motor_rooter(omObjData *object) {
     view = &m254_minigame->views[object->work[0]];
     for (i = 0, fileIds = sprites.fileIds; i < 3; i++) {
         for (j = 0; j < 7; j++) {
-            spriteId = func_8000B838_main(fileIds[j] | 0x570000);
+            spriteId = HuSprAnimDataRead(fileIds[j] | 0x570000);
             m254_minigame->views[object->work[0]].obstacleSprites[i * 7 + j] = spriteId;
             object->model[i * 7 + j] = func_8010EFF8_motor_rooter(func_80055194_main(spriteId), 1.0f);
             Hu3DModelScaleSet(object->model[i * 7 + j], 2.0f, 2.0f, 2.0f);
@@ -1428,7 +1428,7 @@ void func_801079E8_motor_rooter(omObjData *object) {
 
     object->work[0] = m254_minigame->runtime.counters.initialization.itemViewCount;
     for (i = 0; i < 4; i++) {
-        m254_minigame->views[object->work[0]].itemSprites[i] = spriteId = func_8000B838_main(0x570010);
+        m254_minigame->views[object->work[0]].itemSprites[i] = spriteId = HuSprAnimDataRead(0x570010);
         sprite = func_80055194_main(spriteId);
         object->model[i] = func_8010FC10_motor_rooter(sprite, &D_80113470_motor_rooter);
         Hu3DModelScaleSet(object->model[i], 2.0f, 2.0f, 1.0f);
@@ -1438,7 +1438,7 @@ void func_801079E8_motor_rooter(omObjData *object) {
         m254_minigame->views[object->work[0]].itemStates[i] = 0;
     }
     m254_minigame->views[object->work[0]].itemTimer = 0;
-    m254_minigame->views[object->work[0]].itemSprites[i] = spriteId = func_8000B838_main(0x57000F);
+    m254_minigame->views[object->work[0]].itemSprites[i] = spriteId = HuSprAnimDataRead(0x57000F);
     sprite = func_80055194_main(spriteId);
     object->model[i] = func_8010EFF8_motor_rooter(sprite, 1.0f);
     Hu3DModelScaleSet(object->model[i], 1.5f, 1.5f, 1.0f);

@@ -497,13 +497,13 @@ void func_80106738_hide_and_sneak(omObjData *object) {
 
     work->unk_44.x = 160.0f;
     work->unk_44.y = 120.0f;
-    work->unk_40 = func_8000B838_main(0x270000);
+    work->unk_40 = HuSprAnimDataRead(0x270000);
     work->unk_42 = espEntry(work->unk_40, 0, 0);
     espAttrSet(work->unk_42, 0x5000);
     espPosSet(work->unk_42, work->unk_44.x, work->unk_44.y);
     work->unk_44.x = 160.0f;
     work->unk_44.y = 231.0f;
-    work->unk_40 = func_8000B838_main(0x270001);
+    work->unk_40 = HuSprAnimDataRead(0x270001);
     work->unk_42 = espEntry(work->unk_40, 0, 0);
     espAttrSet(work->unk_42, 0x1000);
     espPosSet(work->unk_42, work->unk_44.x, work->unk_44.y);
@@ -2140,7 +2140,7 @@ void func_8010AFA0_hide_and_sneak(omObjData *object) {
     s8 i;
 
     for (i = 0; i < 4; i++) {
-        D_8010C760_hide_and_sneak[i].sprite = func_8000B838_main(D_8010C49C_hide_and_sneak[i] | 0x270000);
+        D_8010C760_hide_and_sneak[i].sprite = HuSprAnimDataRead(D_8010C49C_hide_and_sneak[i] | 0x270000);
         D_8010C760_hide_and_sneak[i].x = D_8010C4A4_hide_and_sneak[i].x;
         D_8010C760_hide_and_sneak[i].y = D_8010C4A4_hide_and_sneak[i].y;
         D_8010C760_hide_and_sneak[i].unk_06 = 0;

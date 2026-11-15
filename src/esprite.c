@@ -31,14 +31,14 @@ void espInit(void) {
     D_800D5438_main = 0;
 }
 
-s16 func_8000B838_main(s32 arg0) {
-    void *temp_v0;
-    s16 temp_s0;
+s16 HuSprAnimDataRead(s32 dataNum) {
+    void *data;
+    s16 slot;
 
-    temp_v0 = DataRead(arg0);
-    temp_s0 = HuSprAnimRead(temp_v0);
-    HuMemMemoryFreePerm(temp_v0);
-    return temp_s0;
+    data = DataRead(dataNum);
+    slot = HuSprAnimRead(data);
+    HuMemMemoryFreePerm(data);
+    return slot;
 }
 
 void func_8000B880_main(s16 arg0, f32 r, f32 g, f32 b) {
@@ -165,7 +165,7 @@ void func_8000BDDC_main(u16 spriteId, s32 arg1) {
     ESPRITE *sprite;
 
     sprite = D_800CD1DC_main + spriteId;
-    func_800550F4_main(sprite->unk04, 0, (u16)arg1);
+    HuSprAnimModeSet(sprite->unk04, 0, (u16)arg1);
 }
 
 u8 func_8000BE1C_main(u16 spriteId) {
@@ -243,7 +243,7 @@ s16 espEntry(s16 arg0, s16 arg1, u16 arg2) {
     HuSprAttrReset(temp_v0, 0, 0xFFFF);
     HuSprAttrSet(temp_v0, 0, 0x1000);
     HuSprScaleSet(temp_v0, 0, 1.0f, 1.0f);
-    func_800550F4_main(temp_v0, 0, arg2);
+    HuSprAnimModeSet(temp_v0, 0, arg2);
     HuSprGrpMemberSet(temp_v0, 0, arg0, arg1);
     HuSprPriSet(temp_v0, 0, 10);
     if (arg2 == 0) {

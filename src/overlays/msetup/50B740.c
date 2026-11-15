@@ -443,7 +443,7 @@ void func_8011035C_msetup(void) {
         sprites.windows[i] = -1;
     }
     for (i = 0; i < 8; i++) {
-        sprites.portraits[i] = func_8000B838_main(D_80119BA0_msetup[i]);
+        sprites.portraits[i] = HuSprAnimDataRead(D_80119BA0_msetup[i]);
         if (i & 1) {
             HuPrcVSleep();
         }
@@ -453,14 +453,14 @@ void func_8011035C_msetup(void) {
         if (member == 7) {
             sprite = sprites.portraits[state->unk02];
         } else {
-            sprite = func_8000B838_main(D_80119B44_msetup[member]);
+            sprite = HuSprAnimDataRead(D_80119B44_msetup[member]);
             sprites.sprites[member] = sprite;
         }
         HuSprTPLvlSet(group, member, 256);
         HuSprAttrReset(group, member, 0xFFFF);
         HuSprAttrSet(group, member, 0x9000);
         HuSprScaleSet(group, member, 1.0f, 1.0f);
-        func_800550F4_main(group, member, 1);
+        HuSprAnimModeSet(group, member, 1);
         HuSprGrpMemberSet(group, member, sprite, 0);
         HuSprPriSet(group, member, 15000);
         HuSprPosSet(group, member, D_80119B60_msetup[member][0], D_80119B60_msetup[member][1]);
@@ -608,10 +608,10 @@ void func_80110954_msetup(void) {
             break;
     }
     if (cursor->priority < 0) {
-        sprite = func_8000B838_main(0x11000E);
+        sprite = HuSprAnimDataRead(0x11000E);
         slot = espEntry(sprite, 0, 1);
     } else {
-        sprite = func_8000B838_main(0x140042);
+        sprite = HuSprAnimDataRead(0x140042);
         slot = espEntry(sprite, cursor->priority, 1);
     }
     espPriSet(slot, 1);
@@ -648,7 +648,7 @@ void func_80110954_msetup(void) {
         data.sprites[i] = data.slots[i] = -1;
     }
     for (i = 0; i < cursor->count; i++) {
-        data.sprites[i] = func_8000B838_main(D_80119AD0_msetup[cursor->priority]);
+        data.sprites[i] = HuSprAnimDataRead(D_80119AD0_msetup[cursor->priority]);
         data.slots[i] = espEntry(data.sprites[i], 0, 1);
         espPriSet(data.slots[i], 2);
         espScaleSet(data.slots[i], 0.75f, 0.75f);
@@ -950,13 +950,13 @@ s16 func_80111650_msetup(MsetupMenuState *state) {
         positions[i][0] = position.x + 6;
         positions[i][1] = position.y - 2;
         for (j = 0, member = i; j < 2; j++, member += 8) {
-            characterSprite = func_8000B838_main(spriteIds[j]);
+            characterSprite = HuSprAnimDataRead(spriteIds[j]);
             sprites[member] = characterSprite;
             HuSprTPLvlSet(group, member, 0x100);
             HuSprAttrReset(group, member, 0xFFFF);
             HuSprAttrSet(group, member, 0x9000);
             HuSprScaleSet(group, member, 1.0f, 1.0f);
-            func_800550F4_main(group, member, 0);
+            HuSprAnimModeSet(group, member, 0);
             HuSprGrpMemberSet(group, member, characterSprite, 0);
             HuSprPriSet(group, member, 600);
             HuSprPosSet(group, member, position.x, position.y);
@@ -1051,7 +1051,7 @@ s16 func_80111650_msetup(MsetupMenuState *state) {
             }
             index = index < 8 ? index : 0;
             entries[index].flags = 1;
-            sprite = func_8000B838_main(D_80119AD0_msetup[0]);
+            sprite = HuSprAnimDataRead(D_80119AD0_msetup[0]);
             slot = espEntry(sprite, 0, 1);
             espPriSet(slot, 2);
             espScaleSet(slot, 0.75f, 0.75f);
@@ -1339,13 +1339,13 @@ void func_80112804_msetup(void) {
     model = state->unk02;
     group = HuSprGrpCreate(6, 0);
     for (; i < 6; i++) {
-        index = func_8000B838_main(D_80119E38_msetup[i]);
+        index = HuSprAnimDataRead(D_80119E38_msetup[i]);
         sprites.sprites[i] = index;
         HuSprTPLvlSet(group, i, 0);
         HuSprAttrReset(group, i, 0xFFFF);
         HuSprAttrSet(group, i, 0x9000);
         HuSprScaleSet(group, i, 1.0f, 1.0f);
-        func_800550F4_main(group, i, 0);
+        HuSprAnimModeSet(group, i, 0);
         HuSprGrpMemberSet(group, i, index, 0);
         HuSprPriSet(group, i, 600);
     }

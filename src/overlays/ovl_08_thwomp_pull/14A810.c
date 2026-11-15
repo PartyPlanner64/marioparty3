@@ -434,7 +434,7 @@ void func_80106D5C_thwomp_pull(omObjData *object) {
     s16 i;
 
     for (i = 0; i < 10; i++) {
-        D_8010F590_thwomp_pull[i] = espEntry(D_8010F550_thwomp_pull[i] = func_8000B838_main(spriteFiles[i]), 0, 0);
+        D_8010F590_thwomp_pull[i] = espEntry(D_8010F550_thwomp_pull[i] = HuSprAnimDataRead(spriteFiles[i]), 0, 0);
         espDispOff(D_8010F590_thwomp_pull[i]);
     }
     object->func = func_80106E78_thwomp_pull;

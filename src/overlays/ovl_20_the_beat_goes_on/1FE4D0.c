@@ -1617,7 +1617,7 @@ void func_8010B17C_the_beat_goes_on(omObjData *obj) {
     s32 i;
     s32 j;
 
-    sprAnim = func_8000B838_main(0x41000C);
+    sprAnim = HuSprAnimDataRead(0x41000C);
     HuSprGrpMemberSet(D_8010C4F4_the_beat_goes_on = HuSprGrpCreate(1, 0), 0, sprAnim, 0);
     HuSprAttrReset(D_8010C4F4_the_beat_goes_on, 0, 0xFFFF);
     HuSprAttrSet(D_8010C4F4_the_beat_goes_on, 0, 0x5000);
@@ -1631,7 +1631,7 @@ void func_8010B17C_the_beat_goes_on(omObjData *obj) {
     notes->unk_06 = 30;
     notes->unk_0E = 265;
     notes->unk_10 = 50;
-    anim = func_8000B838_main(0x410011);
+    anim = HuSprAnimDataRead(0x410011);
     for (i = 0; i < 2; i++) {
         D_8010C508_the_beat_goes_on[i] = espEntry(anim, 0, 1);
         espPriSet(D_8010C508_the_beat_goes_on[i], 0x30);
@@ -1640,12 +1640,12 @@ void func_8010B17C_the_beat_goes_on(omObjData *obj) {
         espDispOff(D_8010C508_the_beat_goes_on[i]);
         notes->unk_16 = 0;
     }
-    D_8010C510_the_beat_goes_on = espEntry(func_8000B838_main(0x410015), 0, 1);
+    D_8010C510_the_beat_goes_on = espEntry(HuSprAnimDataRead(0x410015), 0, 1);
     espPriSet(D_8010C50C_the_beat_goes_on, 0x10);
     espPosSet(D_8010C510_the_beat_goes_on, notes->unk_12, notes->unk_14);
     espDispOff(D_8010C510_the_beat_goes_on);
     notes->unk_19 = 0;
-    D_8010C50C_the_beat_goes_on = espEntry(func_8000B838_main(0x410014), 0, 1);
+    D_8010C50C_the_beat_goes_on = espEntry(HuSprAnimDataRead(0x410014), 0, 1);
     espPriSet(D_8010C50C_the_beat_goes_on, 0x10);
     espPosSet(D_8010C50C_the_beat_goes_on, notes->unk_04, notes->unk_06);
     espDispOff(D_8010C50C_the_beat_goes_on);
@@ -1654,12 +1654,12 @@ void func_8010B17C_the_beat_goes_on(omObjData *obj) {
     notes->unk_09 = 0;
     notes->unk_0C = 0;
     notes->unk_0A = 0;
-    D_8010C50E_the_beat_goes_on = espEntry(func_8000B838_main(0x410012), 0, 1);
+    D_8010C50E_the_beat_goes_on = espEntry(HuSprAnimDataRead(0x410012), 0, 1);
     espPriSet(D_8010C50E_the_beat_goes_on, 0x20);
     espPosSet(D_8010C50E_the_beat_goes_on, notes->unk_0E, notes->unk_10);
     espDispOff(D_8010C50E_the_beat_goes_on);
     notes->unk_18 = 0;
-    anim = func_8000B838_main(0x410013);
+    anim = HuSprAnimDataRead(0x410013);
     for (i = 0; i < 15; i++) {
         D_8010C518_the_beat_goes_on[i] = espEntry(anim, 0, 1);
         espPriSet(D_8010C518_the_beat_goes_on[i], 0x20);
@@ -1671,9 +1671,9 @@ void func_8010B17C_the_beat_goes_on(omObjData *obj) {
         espDispOff(D_8010C518_the_beat_goes_on[i]);
         notes->noteFlags[i] = 0;
     }
-    animA = func_8000B838_main(0x41000E);
-    animB = func_8000B838_main(0x41000F);
-    animZ = func_8000B838_main(0x410010);
+    animA = HuSprAnimDataRead(0x41000E);
+    animB = HuSprAnimDataRead(0x41000F);
+    animZ = HuSprAnimDataRead(0x410010);
     for (j = 0; j < 2; j++) {
         for (i = 0; i < 8; i++) {
             D_8010C538_the_beat_goes_on[j * 8 + i] = espEntry(animA, 0, 1);

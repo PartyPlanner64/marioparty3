@@ -233,7 +233,7 @@ void func_80105C50_pipe_cleaners(omObjData *obj) {
     work = &D_8010A300_pipe_cleaners[1];
     work->pos.x = 160.0f;
     work->pos.y = 120.0f;
-    work->spriteFileId = func_8000B838_main(0x48000C);
+    work->spriteFileId = HuSprAnimDataRead(0x48000C);
     work->espId = espEntry(work->spriteFileId, 0, 0);
     espAttrSet(work->espId, 0x5000);
     espPosSet(work->espId, work->pos.x, work->pos.y);
@@ -241,7 +241,7 @@ void func_80105C50_pipe_cleaners(omObjData *obj) {
     work = &D_8010A300_pipe_cleaners[0];
     work->pos.x = 160.0f;
     work->pos.y = 120.0f;
-    work->spriteFileId = func_8000B838_main(0x48000A);
+    work->spriteFileId = HuSprAnimDataRead(0x48000A);
     work->espId = espEntry(work->spriteFileId, 0, 0);
     espAttrSet(work->espId, 0x1000);
     espPosSet(work->espId, work->pos.x, work->pos.y);
@@ -1288,9 +1288,9 @@ void func_80108F18_pipe_cleaners(omObjData *obj) {
     s32 digitFile;
     s32 i;
 
-    frameFile = func_8000B838_main(0x48000B);
-    crossFile = func_8000B838_main(0x21001B);
-    digitFile = func_8000B838_main(0x2E);
+    frameFile = HuSprAnimDataRead(0x48000B);
+    crossFile = HuSprAnimDataRead(0x21001B);
+    digitFile = HuSprAnimDataRead(0x2E);
     for (i = 0; i < 4; i++) {
         sign = &D_8010AC18_pipe_cleaners[i * 4 + 0];
         sign->espId = espEntry(frameFile, 0, 0);

@@ -1231,7 +1231,7 @@ void func_80110554_mgmode(void) {
     s16 y;
     f32 scaleX;
 
-    D_8011B484_mgmode = func_8000B838_main(0x12002C);
+    D_8011B484_mgmode = HuSprAnimDataRead(0x12002C);
     for (i = 0; i < 28; i++) {
         sprite = D_8011B488_mgmode[i] = espEntry(D_8011B484_mgmode, 0, 1);
         espDispOff(sprite);

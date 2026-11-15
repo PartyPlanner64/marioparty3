@@ -1022,18 +1022,18 @@ void func_80108DF8_water_whirled(omObjData *object) {
     s32 i;
     s32 j;
 
-    sprite = espEntry(func_8000B838_main(0x440011), 0, 1);
+    sprite = espEntry(HuSprAnimDataRead(0x440011), 0, 1);
     espDispOn(sprite);
     espPosSet(sprite, 160, 120);
     espAttrSet(sprite, 0x4000);
     espScaleSet(sprite, 2.0f, 2.0f);
     // do-while(0) needed to match register allocation.
     do {
-        frameSprite = func_8000B838_main(0x440012);
+        frameSprite = HuSprAnimDataRead(0x440012);
     } while (0);
-    lapSprite = func_8000B838_main(0x440014);
-    finalLapSprite = func_8000B838_main(0x440015);
-    goalSprite = func_8000B838_main(0x440016);
+    lapSprite = HuSprAnimDataRead(0x440014);
+    finalLapSprite = HuSprAnimDataRead(0x440015);
+    goalSprite = HuSprAnimDataRead(0x440016);
     data = DataRead(0x440013);
     digitAnim = HuSprAnimRead(data);
     DataClose(data);
@@ -1043,7 +1043,7 @@ void func_80108DF8_water_whirled(omObjData *object) {
         espPosSet(sprite, framePos[i][0], framePos[i][1]);
         espPriSet(sprite, 0xFFFF);
         espTPLvlSet(sprite, 200);
-        sprite = espEntry(func_8000B838_main((GwPlayer[i].chr + 8) | 0x210000), 0, 1);
+        sprite = espEntry(HuSprAnimDataRead((GwPlayer[i].chr + 8) | 0x210000), 0, 1);
         espDispOn(sprite);
         espPosSet(sprite, iconPos[i][0] - 10, iconPos[i][1] + 4);
         espPriSet(sprite, 100);
@@ -1089,13 +1089,13 @@ void func_80109340_water_whirled(s16 player, s16 bank) {
     espDispOn(D_8010AC68_water_whirled[player]);
     HuSprDispOn(grp, 0);
     HuSprBankSet(grp, 0, bank, 0);
-    func_800550F4_main(grp, 0, 1);
+    HuSprAnimModeSet(grp, 0, 1);
     HuSprDispOn(grp, 1);
     HuSprBankSet(grp, 1, 10, 0);
-    func_800550F4_main(grp, 1, 1);
+    HuSprAnimModeSet(grp, 1, 1);
     HuSprDispOn(grp, 2);
     HuSprBankSet(grp, 2, 5, 0);
-    func_800550F4_main(grp, 2, 1);
+    HuSprAnimModeSet(grp, 2, 1);
     espDispOff(D_8010AC58_water_whirled[player]);
     espDispOff(D_8010AC78_water_whirled[player]);
 }

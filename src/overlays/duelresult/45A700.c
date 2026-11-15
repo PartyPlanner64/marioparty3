@@ -254,7 +254,7 @@ void func_8010ACC4_duelresult(void) {
 }
 
 void func_8010BDA4_duelresult(s16 model, s32 dataNum) {
-    s16 anim = func_8000B838_main(dataNum);
+    s16 anim = HuSprAnimDataRead(dataNum);
     s16 group = HuSprGrpCreate(1, 0);
     HuSprite *sprite;
     u16 *pixels;

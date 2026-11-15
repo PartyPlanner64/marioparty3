@@ -1241,7 +1241,7 @@ s16 func_80108D1C_eatsa_pizza(s16 arg0, s16 arg1, s16 arg2, f32 arg3) {
     D_80109298_eatsa_pizza[i] = 1;
     group = D_8010928E_eatsa_pizza;
     HuSprGrpMemberSet(group, i, arg0, 0);
-    func_800550F4_main(group, i, 2);
+    HuSprAnimModeSet(group, i, 2);
     HuSprPosSet(group, i, arg1, arg2);
     HuSprZRotSet(group, i, arg3);
     HuSprDispOn(group, i);

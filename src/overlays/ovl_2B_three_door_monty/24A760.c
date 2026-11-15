@@ -535,12 +535,12 @@ void func_801071F4_three_door_monty(omObjData *obj) {
 }
 
 void func_801071FC_three_door_monty(omObjData *obj) {
-    D_8010EC34_three_door_monty = func_80055194_main(func_8000B838_main(0x4C0004));
+    D_8010EC34_three_door_monty = func_80055194_main(HuSprAnimDataRead(0x4C0004));
     Hu3DModelCameraSet(Hu3DHookFuncCreate(0, func_80106B98_three_door_monty, 2), 2);
-    D_8010D24C_three_door_monty = func_80055194_main(func_8000B838_main(0x4C0003));
+    D_8010D24C_three_door_monty = func_80055194_main(HuSprAnimDataRead(0x4C0003));
     Hu3DModelCameraSet(Hu3DHookFuncCreate(0, func_80106868_three_door_monty, 2), 1);
-    D_8010EC28_three_door_monty[0] = func_80055194_main(func_8000B838_main(0x4C0005));
-    D_8010EC28_three_door_monty[1] = func_80055194_main(func_8000B838_main(0x4C0006));
+    D_8010EC28_three_door_monty[0] = func_80055194_main(HuSprAnimDataRead(0x4C0005));
+    D_8010EC28_three_door_monty[1] = func_80055194_main(HuSprAnimDataRead(0x4C0006));
     Hu3DModelCameraSet(Hu3DHookFuncCreate(0, func_80106EDC_three_door_monty, 2), 2);
     obj->model[0] = func_8000B108_main(0x4C000F, 0x289);
     Hu3DModelCameraSet(obj->model[0], 2);
@@ -1968,7 +1968,7 @@ void func_8010BC08_three_door_monty(omObjData *obj) {
         entries[i] = &D_8010D260_three_door_monty[1 + i];
         objs[i] = entries[i]->obj;
     }
-    entry->unk_40[0] = func_8000B838_main(0x31);
+    entry->unk_40[0] = HuSprAnimDataRead(0x31);
     entry->unk_40[1] = espEntry(entry->unk_40[0], 0, 0);
     if (obj->work[1] == 1) {
         entry->unk_04 = 11;

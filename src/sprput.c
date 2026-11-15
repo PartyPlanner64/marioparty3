@@ -167,7 +167,7 @@ s32 func_800575D8_main(f32 vertices[][2]) {
     return 1;
 }
 
-void func_800579E4_main(Gfx **gfx, HuSprite *sprite, s32 arg2) {
+void HuSprDisp(Gfx **gfx, HuSprite *sprite, s32 arg2) {
     Gfx *gdl;
     HuSprAnimPat *cel;
     s32 alignedWidth;

@@ -179,7 +179,7 @@ s16 opEspIdGet(s32 slot) {
 }
 
 void opAnimCreate(s32 arg0, s32 arg1) {
-    D_801155B0_opening[arg0].animId = func_8000B838_main(arg1);
+    D_801155B0_opening[arg0].animId = HuSprAnimDataRead(arg1);
 }
 
 void opAnimKill(s32 arg0) {
@@ -425,7 +425,7 @@ void opMotionSet(s32 modelId, s32 motionId, s16 arg2) {
 
 void func_80107048_opening(void) {
     // The original call omits the resource id.
-    D_801171B0_opening = ((s16 (*)())func_8000B838_main)();
+    D_801171B0_opening = ((s16 (*)())HuSprAnimDataRead)();
     D_801171B2_opening = espEntry(D_801171B0_opening, 0, 0);
     espAttrSet(D_801171B2_opening, 0x4000);
     espPosSet(D_801171B2_opening, 0xA0, 0x78);
@@ -4086,7 +4086,7 @@ void opSleep(s32 frames) {
 
 void opContErrorCreate(void) {
     if (GWContErrorGet() == 0) {
-        D_80117750_opening.animId = func_8000B838_main(0x100005);
+        D_80117750_opening.animId = HuSprAnimDataRead(0x100005);
         D_80117750_opening.espriteSlot = espEntry(D_80117750_opening.animId, 0, 1);
         espPosSet(D_80117750_opening.espriteSlot, 0xA0, 0xA8);
         espPriSet(D_80117750_opening.espriteSlot, 0);

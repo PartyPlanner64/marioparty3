@@ -311,18 +311,18 @@ void func_80105D1C_river_raiders(omObjData *obj) {
 
     switch (obj->work[1]) {
         case 0:
-            entry->sprite = func_8000B838_main(0x2A0013);
+            entry->sprite = HuSprAnimDataRead(0x2A0013);
             entry->esp = espEntry(entry->sprite, 0, 0);
             espAttrSet(entry->esp, 0x1000);
             break;
         case 1:
-            entry->sprite = func_8000B838_main(0x2A0012);
+            entry->sprite = HuSprAnimDataRead(0x2A0012);
             entry->esp = espEntry(entry->sprite, 0, 0);
             espAttrSet(entry->esp, 0x1000);
             break;
         case 2:
         case 3:
-            entry->sprite = func_8000B838_main(0x31);
+            entry->sprite = HuSprAnimDataRead(0x31);
             entry->esp = espEntry(entry->sprite, 0, 0);
             espAttrSet(entry->esp, 0x1000);
             if (obj->work[1] == 2) {
@@ -944,7 +944,7 @@ void func_80108188_river_raiders(omObjData *obj) {
     func_8001C2FC_main(obj->model[4], 0x80000000, 0);
     Hu3DModelRemakeStatic(obj->model[4]);
     func_8001C514_main(obj->model[4]);
-    D_8010DED4_river_raiders = func_8000B838_main(D_8010D3D0_river_raiders[chr]);
+    D_8010DED4_river_raiders = HuSprAnimDataRead(D_8010D3D0_river_raiders[chr]);
     D_8010DED6_river_raiders = espEntry(D_8010DED4_river_raiders, 0, 0);
     espAttrSet(D_8010DED6_river_raiders, 0x1000);
     espPosSet(D_8010DED6_river_raiders, 30, 210);
@@ -1582,7 +1582,7 @@ void func_8010A6A8_river_raiders(omObjData *obj) {
     func_8001C2FC_main(obj->model[3], 0x80000000, 0);
     Hu3DModelRemakeStatic(obj->model[3]);
     func_8001C514_main(obj->model[3]);
-    entry->sprite = func_8000B838_main(D_8010D3D0_river_raiders[chr]);
+    entry->sprite = HuSprAnimDataRead(D_8010D3D0_river_raiders[chr]);
     entry->esp = espEntry(entry->sprite, 0, 0);
     espAttrSet(entry->esp, 0x1000);
     espPosSet(entry->esp, D_8010D870_river_raiders[obj->work[2]].x, D_8010D870_river_raiders[obj->work[2]].y);

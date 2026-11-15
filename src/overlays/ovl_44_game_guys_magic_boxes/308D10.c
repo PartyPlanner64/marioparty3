@@ -1491,7 +1491,7 @@ void func_80109B10_game_guys_magic_boxes(GameGuysMagicBoxesCamera *cam) {
 
 void func_80109C98_game_guys_magic_boxes(GameGuysMagicBoxesSprite *sprite, s32 spriteIndex, u16 numSlots,
                                          u16 visibility) {
-    sprite->unk_00 = espEntry(func_8000B838_main(spriteIndex), 0, numSlots);
+    sprite->unk_00 = espEntry(HuSprAnimDataRead(spriteIndex), 0, numSlots);
     espAttrSet(sprite->unk_00, visibility);
 }
 
@@ -1583,7 +1583,7 @@ void func_8010A000_game_guys_magic_boxes(void) {
     s32 i;
     s32 j;
 
-    spriteIndex = func_8000B838_main(0x650005);
+    spriteIndex = HuSprAnimDataRead(0x650005);
     D_8010C9F0_game_guys_magic_boxes = HuSprGrpCreate(1, 0);
     HuSprGrpMemberSet(D_8010C9F0_game_guys_magic_boxes, 0, spriteIndex, 0);
     HuSprAttrReset(D_8010C9F0_game_guys_magic_boxes, 0, 0xFFFF);

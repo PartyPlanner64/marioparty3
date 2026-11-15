@@ -484,7 +484,7 @@ void func_80106C98_toadstool_titan(omObjData *object) {
     func_800E1468_minigame(object);
     work->unk04 = 0;
     for (i = 0; i < 1; i++) {
-        D_8010F588_toadstool_titan[i] = espEntry(D_8010F60C_toadstool_titan[i] = func_8000B838_main(spriteFiles[i]), 0, 0);
+        D_8010F588_toadstool_titan[i] = espEntry(D_8010F60C_toadstool_titan[i] = HuSprAnimDataRead(spriteFiles[i]), 0, 0);
         espDispOff(D_8010F588_toadstool_titan[i]);
     }
     object->model[1] = func_8000B108_main(0x370002, 0x4BD);

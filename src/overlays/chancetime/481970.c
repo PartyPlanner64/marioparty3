@@ -279,11 +279,11 @@ void func_801061B8_chancetime(omObjData *object) {
 void func_80106240_chancetime(void) {
     u16 sprite;
 
-    sprite = espEntry(func_8000B838_main(0x1C0001), 0, 0);
+    sprite = espEntry(HuSprAnimDataRead(0x1C0001), 0, 0);
     espPosSet(sprite, 160, 180);
     espAttrSet(sprite, 0x4000);
 
-    sprite = espEntry(func_8000B838_main(0x1C0005), 0, 0);
+    sprite = espEntry(HuSprAnimDataRead(0x1C0005), 0, 0);
     espPosSet(sprite, 160, 60);
     espAttrSet(sprite, 0x4000);
 }

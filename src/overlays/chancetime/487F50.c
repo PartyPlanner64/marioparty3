@@ -157,7 +157,7 @@ void func_8010BF80_chancetime(void) {
     func_8001C814_main(obj->model[3], 2, 0);
     Hu3DModelCameraSet(obj->model[3], 1);
 
-    spriteId = func_8000B838_main(0x1C0000);
+    spriteId = HuSprAnimDataRead(0x1C0000);
     D_8010FE92_chancetime = spriteId;
     grp = HuSprGrpCreate(1, 0);
     HuSprAttrSet(grp, 0, HUSPR_ATTR_DISPOFF);
@@ -176,7 +176,7 @@ void func_8010BF80_chancetime(void) {
         espDispOff(D_8010FE94_chancetime[i]);
     }
     HuMemMemoryFreePerm(data);
-    spriteId = func_8000B838_main(0x1C0004);
+    spriteId = HuSprAnimDataRead(0x1C0004);
     D_8010FE9A_chancetime = espEntry(spriteId, 0, 0);
     espDispOff(D_8010FE9A_chancetime);
 
@@ -554,7 +554,7 @@ void func_8010DBB0_chancetime(void) {
     model = &Hu3DData[D_800D10F2_main];
     model->unk00 = (model->unk00 & 0xF9) | 3;
     Hu3DModelCameraSet(D_800D10F2_main, 2);
-    sprId = func_8000B838_main(0x210026);
+    sprId = HuSprAnimDataRead(0x210026);
     for (i = 0; i < 20; i++) {
         D_80110028_chancetime[i] = espEntry(sprId, 0, 1);
         espPriSet(D_80110028_chancetime[i], 0);

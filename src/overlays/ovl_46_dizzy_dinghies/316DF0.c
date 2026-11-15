@@ -1209,9 +1209,9 @@ void func_80109420_dizzy_dinghies(omObjData *object) {
     pos[1] = 32;
     pos[2] = 44;
     pos[3] = 28;
-    frameSprite = func_8000B838_main(0x670008);
-    func_8000B838_main(0x440014);
-    func_8000B838_main(0x440015);
+    frameSprite = HuSprAnimDataRead(0x670008);
+    HuSprAnimDataRead(0x440014);
+    HuSprAnimDataRead(0x440015);
     data = DataRead(0x440013);
     HuSprAnimRead(data);
     DataClose(data);
@@ -1221,7 +1221,7 @@ void func_80109420_dizzy_dinghies(omObjData *object) {
         espPosSet(sprite, pos[0], pos[1]);
         espPriSet(sprite, 0xFFFF);
         espTPLvlSet(sprite, 200);
-        sprite = espEntry(func_8000B838_main((GwPlayer[i].chr + 8) | 0x210000), 0, 1);
+        sprite = espEntry(HuSprAnimDataRead((GwPlayer[i].chr + 8) | 0x210000), 0, 1);
         espDispOn(sprite);
         espPosSet(sprite, pos[2] - 10, pos[3] + 4);
         espPriSet(sprite, 100);

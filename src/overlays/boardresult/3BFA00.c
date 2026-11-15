@@ -255,7 +255,7 @@ void func_8010BE14_boardresult(void) {
 }
 
 void func_8010CEF4_boardresult(s16 model, s32 dataNum) {
-    s16 anim = func_8000B838_main(dataNum);
+    s16 anim = HuSprAnimDataRead(dataNum);
     s16 group = HuSprGrpCreate(1, 0);
     HuSprite *sprite;
     u16 *pixels;

@@ -795,7 +795,7 @@ void func_80107D0C_mgmode(s32 dataNum, s16 x, s16 y) {
     f32 scale;
 
     HuPrcSleep(3);
-    anim = func_8000B838_main(dataNum);
+    anim = HuSprAnimDataRead(dataNum);
     sprite = espEntry(anim, 0, 1);
     espPosSet(sprite, x, y);
     espPriSet(sprite, 0x8000);
@@ -1086,7 +1086,7 @@ void func_801090C4_mgmode(s16 arg0) {
     espAttrSet(icon, 8);
     espPosSet(icon, 76, 56);
     espScaleSet(icon, 0.75f, 0.75f);
-    spriteGrp = func_8000B838_main(0x120013);
+    spriteGrp = HuSprAnimDataRead(0x120013);
     badge = espEntry(spriteGrp, 0, 1);
     espPriSet(badge, 1);
     espDispOff(badge);

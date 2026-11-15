@@ -72,7 +72,7 @@ void func_8010B990_inst(void) {
     object = omAddObj(20, 5, 0, -1, NULL);
     D_8010DCA0_inst = object;
     D_8010DCD0_inst = &D_800A6D40_main[D_8010D40B_inst];
-    D_8010DCC0_inst[0] = espEntry(func_8000B838_main(0x170008), 0, 1);
+    D_8010DCC0_inst[0] = espEntry(HuSprAnimDataRead(0x170008), 0, 1);
     espAttrSet(D_8010DCC0_inst[0], 0x1000);
     espTPLvlSet(D_8010DCC0_inst[0], 255);
     espPosSet(D_8010DCC0_inst[0], 160, -100);
@@ -80,12 +80,12 @@ void func_8010B990_inst(void) {
     func_8010CF14_inst();
     func_8010CFF4_inst();
     if (D_8010D40A_inst == 3) {
-        D_8010DCC0_inst[1] = espEntry(func_8000B838_main(0x17000E), 0, 1);
+        D_8010DCC0_inst[1] = espEntry(HuSprAnimDataRead(0x17000E), 0, 1);
         espAttrSet(D_8010DCC0_inst[1], 0x1000);
         espTPLvlSet(D_8010DCC0_inst[1], 255);
         espPosSet(D_8010DCC0_inst[1], 160, -78);
         score = D_800CC698_main;
-        sprite = func_8000B838_main(0x1300CF);
+        sprite = HuSprAnimDataRead(0x1300CF);
         if (score >= 1000) {
             score = 999;
         } else if (score < 0) {

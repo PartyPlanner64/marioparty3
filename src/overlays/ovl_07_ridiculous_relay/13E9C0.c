@@ -401,7 +401,7 @@ void func_801066A0_ridiculous_relay(omObjData *object) {
     s16 i;
 
     for (i = 0; i < 31; i++) {
-        D_80111A58_ridiculous_relay[i] = espEntry(D_801119E0_ridiculous_relay[i] = func_8000B838_main(files[i]), 0, 0);
+        D_80111A58_ridiculous_relay[i] = espEntry(D_801119E0_ridiculous_relay[i] = HuSprAnimDataRead(files[i]), 0, 0);
         espDispOff(D_80111A58_ridiculous_relay[i]);
     }
     object->model[0] = func_8000B108_main(0xA00E7, 0x4B9);

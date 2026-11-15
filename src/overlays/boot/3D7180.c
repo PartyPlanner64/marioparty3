@@ -82,7 +82,7 @@ void func_80105C80_ovl_boot(void) {
     u16 temp_v0_2;
     u16 temp_v0_4;
 
-    temp_v0 = func_8000B838_main(0x00110000);
+    temp_v0 = HuSprAnimDataRead(0x00110000);
     temp_v0_2 = espEntry(temp_v0, 0, 1);
     espPosSet(temp_v0_2, 0xA0, 0x78);
     espDispOn(temp_v0_2);
@@ -103,7 +103,7 @@ void func_80105C80_ovl_boot(void) {
     espKill(temp_v0_2);
     HuSprAnimKill(temp_v0);
     HuPrcSleep(9);
-    temp_v0_3 = func_8000B838_main(0x00110001);
+    temp_v0_3 = HuSprAnimDataRead(0x00110001);
     temp_v0_4 = espEntry(temp_v0_3, 0, 1);
     espPosSet(temp_v0_4, 0xA0, 0x78);
     espDispOn(temp_v0_4);
@@ -124,7 +124,7 @@ void func_80105C80_ovl_boot(void) {
     espKill(temp_v0_4);
     HuSprAnimKill(temp_v0_3);
     HuPrcSleep(9);
-    temp_s0_3 = espEntry(func_8000B838_main(0x110002), 0, 1);
+    temp_s0_3 = espEntry(HuSprAnimDataRead(0x110002), 0, 1);
     espPosSet(temp_s0_3, 0xA0, 0x78);
     espDispOn(temp_s0_3);
     espPriSet(temp_s0_3, 0xFFFF);

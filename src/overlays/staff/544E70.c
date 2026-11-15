@@ -1154,7 +1154,7 @@ void func_8010B514_staff(s16 arg0, s16 arg1) {
     }
 
     for (i = 0, anims = animTbl; i < animCount; i++, anims++) {
-        *anims = func_8000B838_main(*files++);
+        *anims = HuSprAnimDataRead(*files++);
     }
     recs = HuMemAllocTag(arg1 * sizeof(UnkStaff_6), TAG_OVERLAY);
     for (i = 0, rec = recs; i < arg1; i++, rec++) {
@@ -1167,7 +1167,7 @@ void func_8010B514_staff(s16 arg0, s16 arg1) {
             HuSprAttrReset(grpId, j, 0xFFFF);
             HuSprAttrSet(grpId, j, 0x9000);
             HuSprScaleSet(grpId, j, 1.0f, 1.0f);
-            func_800550F4_main(grpId, j, 0);
+            HuSprAnimModeSet(grpId, j, 0);
             HuSprPriSet(grpId, j, 400);
             HuSprColorSet(grpId, j, 255, 255, 255);
             if (j != 0) {

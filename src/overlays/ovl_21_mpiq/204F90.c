@@ -487,35 +487,35 @@ void func_80106B5C_mpiq(void) {
     work->header.unk08 = 0.5f;
     work->header.unk04 = 0;
 
-    sprite = espEntry(func_8000B838_main(0x420000), 0, 1);
+    sprite = espEntry(HuSprAnimDataRead(0x420000), 0, 1);
     espAttrSet(sprite, 0x4008);
     espPosSet(sprite, 160, 120);
     espDispOn(sprite);
     espScaleSet(sprite, 1.0f, 1.0f);
     espPriSet(sprite, 255);
 
-    D_8010C9DC_mpiq[0] = espEntry(func_8000B838_main(0x42000C), 0, 1);
+    D_8010C9DC_mpiq[0] = espEntry(HuSprAnimDataRead(0x42000C), 0, 1);
     espAttrSet(D_8010C9DC_mpiq[0], 0x4008);
     espPosSet(D_8010C9DC_mpiq[0], 158, 86);
     espDispOff(D_8010C9DC_mpiq[0]);
     espScaleSet(D_8010C9DC_mpiq[0], 1.0f, 1.0f);
     espPriSet(D_8010C9DC_mpiq[0], 3);
 
-    D_8010C9DC_mpiq[1] = espEntry(func_8000B838_main(0x42000D), 0, 1);
+    D_8010C9DC_mpiq[1] = espEntry(HuSprAnimDataRead(0x42000D), 0, 1);
     espAttrSet(D_8010C9DC_mpiq[1], 0x4008);
     espPosSet(D_8010C9DC_mpiq[1], 158, 86);
     espDispOff(D_8010C9DC_mpiq[1]);
     espScaleSet(D_8010C9DC_mpiq[1], 1.0f, 1.0f);
     espPriSet(D_8010C9DC_mpiq[1], 3);
 
-    D_8010C9E0_mpiq = espEntry(func_8000B838_main(0x420001), 0, 1);
+    D_8010C9E0_mpiq = espEntry(HuSprAnimDataRead(0x420001), 0, 1);
     espAttrSet(D_8010C9E0_mpiq, 0x4008);
     espPosSet(D_8010C9E0_mpiq, 160, -90);
     espDispOn(D_8010C9E0_mpiq);
     espScaleSet(D_8010C9E0_mpiq, 1.0f, 1.0f);
     espPriSet(D_8010C9E0_mpiq, 254);
 
-    D_8010C9E2_mpiq = espEntry(func_8000B838_main(0x420002), 0, 1);
+    D_8010C9E2_mpiq = espEntry(HuSprAnimDataRead(0x420002), 0, 1);
     espAttrSet(D_8010C9E2_mpiq, 0x4008);
     espPosSet(D_8010C9E2_mpiq, 160, -90);
     espDispOn(D_8010C9E2_mpiq);
@@ -1075,7 +1075,7 @@ void func_80108B74_mpiq(void) {
     work->x = 0.0f;
     work->y = 0.0f;
     for (i = 0; i < 3; i++) {
-        D_8010CAF2_mpiq[i] = func_8000B838_main(images[i] | 0x420000);
+        D_8010CAF2_mpiq[i] = HuSprAnimDataRead(images[i] | 0x420000);
         D_8010CAEC_mpiq[i] = espEntry(D_8010CAF2_mpiq[i], 0, 1);
         espAttrSet(D_8010CAEC_mpiq[i], 8);
         espPosSet(D_8010CAEC_mpiq[i], 160, 120);

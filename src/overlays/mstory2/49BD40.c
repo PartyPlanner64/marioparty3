@@ -279,7 +279,7 @@ void func_801062F4_mstory2(void) {
 }
 
 void func_801063B0_mstory2(void) {
-    D_8011C646_mstory2 = espEntry(func_8000B838_main(0x1D0012), 0, 0);
+    D_8011C646_mstory2 = espEntry(HuSprAnimDataRead(0x1D0012), 0, 0);
     espPosSet(D_8011C646_mstory2, 160, 120);
     espAttrSet(D_8011C646_mstory2, 0x4000);
     D_8011C648_mstory2 = func_8000B108_main(0x1D0014, 0x2B9);
@@ -303,11 +303,11 @@ void func_801064AC_mstory2(void) {
     s32 i;
     s32 j;
 
-    D_8011C650_mstory2[0] = espEntry(func_8000B838_main(0x1D0001), 0, 0);
+    D_8011C650_mstory2[0] = espEntry(HuSprAnimDataRead(0x1D0001), 0, 0);
     espPosSet(D_8011C650_mstory2[0], 160, 120);
     espDispOff(D_8011C650_mstory2[0]);
     for (i = 0; i < 7; i++) {
-        D_8011C650_mstory2[i + 1] = espEntry(func_8000B838_main(D_8011BE2C_mstory2[i]), 0, 0);
+        D_8011C650_mstory2[i + 1] = espEntry(HuSprAnimDataRead(D_8011BE2C_mstory2[i]), 0, 0);
         espPosSet(D_8011C650_mstory2[i + 1], D_8011BE48_mstory2[i][0] + 48, D_8011BE48_mstory2[i][1] + 48);
         espAttrSet(D_8011C650_mstory2[i + 1], 8);
         espDispOff(D_8011C650_mstory2[i + 1]);
@@ -329,7 +329,7 @@ void func_801064AC_mstory2(void) {
         espDispOff(D_8011C660_mstory2[i]);
     }
     HuMemMemoryFreePerm(data);
-    D_8011C670_mstory2 = espEntry(func_8000B838_main(0x1D0000), 0, 0);
+    D_8011C670_mstory2 = espEntry(HuSprAnimDataRead(0x1D0000), 0, 0);
     espPosSet(D_8011C670_mstory2, 160, 120);
     espScaleSet(D_8011C670_mstory2, 40.0f, 30.0f);
     espAttrSet(D_8011C670_mstory2, 0);

@@ -1101,7 +1101,7 @@ void func_80107FD8_game_guys_lucky_7(void) {
     u16 i;
 
     for (i = 0; i < 3; i++) {
-        D_8010D6EA_game_guys_lucky_7[i] = espEntry(func_8000B838_main(defs[i].dataNum), 0, 0);
+        D_8010D6EA_game_guys_lucky_7[i] = espEntry(HuSprAnimDataRead(defs[i].dataNum), 0, 0);
         espAttrSet(D_8010D6EA_game_guys_lucky_7[i], 0x4000);
         espPriSet(D_8010D6EA_game_guys_lucky_7[i], (u16)defs[i].priority);
         espPosSet(D_8010D6EA_game_guys_lucky_7[i], defs[i].x, defs[i].y);
@@ -1123,7 +1123,7 @@ void func_801080E8_game_guys_lucky_7(void) {
     u16 i;
 
     for (i = 0; i < 7; i++) {
-        D_8010D6F0_game_guys_lucky_7[i] = espEntry(func_8000B838_main(defs[i].dataNum), 0, 0);
+        D_8010D6F0_game_guys_lucky_7[i] = espEntry(HuSprAnimDataRead(defs[i].dataNum), 0, 0);
         if (i != 0) {
             espAttrSet(D_8010D6F0_game_guys_lucky_7[i], 0x4000);
         }
@@ -1147,7 +1147,7 @@ void func_8010826C_game_guys_lucky_7(void) {
     u16 i;
 
     for (i = 0; i < 5; i++) {
-        D_8010D71C_game_guys_lucky_7[i] = espEntry(func_8000B838_main(defs[i].dataNum), 0, 0);
+        D_8010D71C_game_guys_lucky_7[i] = espEntry(HuSprAnimDataRead(defs[i].dataNum), 0, 0);
         espPriSet(D_8010D71C_game_guys_lucky_7[i], 700);
         espPosSet(D_8010D71C_game_guys_lucky_7[i], defs[i].x, defs[i].y);
     }

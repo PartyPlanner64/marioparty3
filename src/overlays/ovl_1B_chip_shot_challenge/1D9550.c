@@ -186,7 +186,7 @@ void func_801059A0_chip_shot_challenge(void) {
     omAddObj(3, 25, 10, -1, func_80107520_chip_shot_challenge);
     D_8010AAF0_chip_shot_challenge = omAddObj(3, 10, 0, -1, func_80108108_chip_shot_challenge);
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    sprite = espEntry(func_8000B838_main(0x3C001E), 0, 1);
+    sprite = espEntry(HuSprAnimDataRead(0x3C001E), 0, 1);
     espDispOn(sprite);
     espPosSet(sprite, 160, 120);
     espAttrSet(sprite, 0x4000);
@@ -685,22 +685,22 @@ void func_80107960_chip_shot_challenge(s16 value) {
     if ((s16)(value / 1000) != 0) {
         HuSprDispOn(D_8010AAC0_chip_shot_challenge, 0);
         HuSprBankSet(D_8010AAC0_chip_shot_challenge, 0, value / 1000, 0);
-        func_800550F4_main(D_8010AAC0_chip_shot_challenge, 0, 1);
+        HuSprAnimModeSet(D_8010AAC0_chip_shot_challenge, 0, 1);
     }
     value -= (s16)(value / 1000) * 1000;
     HuSprDispOn(D_8010AAC0_chip_shot_challenge, 1);
     digit = value / 100;
     HuSprBankSet(D_8010AAC0_chip_shot_challenge, 1, digit, 0);
-    func_800550F4_main(D_8010AAC0_chip_shot_challenge, 1, 1);
+    HuSprAnimModeSet(D_8010AAC0_chip_shot_challenge, 1, 1);
     value -= digit * 100;
     HuSprDispOn(D_8010AAC0_chip_shot_challenge, 2);
     digit = value / 10;
     HuSprBankSet(D_8010AAC0_chip_shot_challenge, 2, digit, 0);
-    func_800550F4_main(D_8010AAC0_chip_shot_challenge, 2, 1);
+    HuSprAnimModeSet(D_8010AAC0_chip_shot_challenge, 2, 1);
     value -= digit * 10;
     HuSprDispOn(D_8010AAC0_chip_shot_challenge, 3);
     HuSprBankSet(D_8010AAC0_chip_shot_challenge, 3, value, 0);
-    func_800550F4_main(D_8010AAC0_chip_shot_challenge, 3, 1);
+    HuSprAnimModeSet(D_8010AAC0_chip_shot_challenge, 3, 1);
     HuSprDispOn(D_8010AAC4_chip_shot_challenge, 0);
     func_80054FF8_main(D_8010AAC4_chip_shot_challenge, 0, 1);
     HuSprDispOn(D_8010AAC4_chip_shot_challenge, 1);

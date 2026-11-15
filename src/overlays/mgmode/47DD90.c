@@ -37,7 +37,7 @@ s16 func_80116B20_mgmode(void) {
     s16 sprGrp;
     s16 i;
 
-    D_8011A3E0_mgmode = func_8000B838_main(0x12000E);
+    D_8011A3E0_mgmode = HuSprAnimDataRead(0x12000E);
     sprGrp = espEntry(D_8011A3E0_mgmode, 0, 1);
     D_8011B650_mgmode = sprGrp;
     for (i = 0; i < ARRAY_COUNT(D_8011B654_mgmode); i++) {
@@ -283,7 +283,7 @@ void func_80117DD0_mgmode(void) {
     f32 t;
 
     D_8011B66E_mgmode = 0;
-    D_8011B66C_mgmode = espEntry(func_8000B838_main(0x11000E), 0, 1);
+    D_8011B66C_mgmode = espEntry(HuSprAnimDataRead(0x11000E), 0, 1);
     espPriSet(D_8011B66C_mgmode, 1);
     espPosSet(D_8011B66C_mgmode, 160, 120);
     espDispOff(D_8011B66C_mgmode);

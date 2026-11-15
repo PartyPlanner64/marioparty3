@@ -132,7 +132,7 @@ void func_800E7930_minigame(s16 group, s16 member, s16 graphic, s16 prio, s16 x,
     HuSprAttrReset(group, member, 0xFFFF);
     HuSprAttrSet(group, member, 0x9000);
     HuSprScaleSet(group, member, 1.0f, 1.0f);
-    func_800550F4_main(group, member, 0);
+    HuSprAnimModeSet(group, member, 0);
     HuSprGrpMemberSet(group, member, graphic, 0);
     HuSprPriSet(group, member, prio);
     HuSprPosSet(group, member, x, y);
@@ -365,7 +365,7 @@ void func_800E7F60_minigame(void) {
     for (elem = work->elems, i = 0; i < ARRAY_COUNTU(D_800EB950_minigame);
          i++, member++, def++, elem++) {
         prio = 1200;
-        graphic = func_8000B838_main(def->file);
+        graphic = HuSprAnimDataRead(def->file);
         elem->unk04 = graphic;
         elem->pos = def->pos;
         x = elem->pos.x + data->x;
@@ -381,7 +381,7 @@ void func_800E7F60_minigame(void) {
     work->elems[1].unk06 = 255;
     work->group = group;
 
-    graphic = func_8000B838_main(D_800EB9E4_minigame[data->unk02]);
+    graphic = HuSprAnimDataRead(D_800EB9E4_minigame[data->unk02]);
     work->elems[15].unk04 = graphic;
     work->elems[15].pos.x = -96;
     work->elems[15].pos.y = -74;
@@ -389,10 +389,10 @@ void func_800E7F60_minigame(void) {
     y = work->elems[15].pos.y + data->y;
     func_800E7930_minigame(group, 15, graphic, 1200, x, y);
     for (gfx = work->graphics, i = 0; i < 4; i++, gfx++) {
-        *gfx = func_8000B838_main(D_800EB9C8_minigame[i]);
+        *gfx = HuSprAnimDataRead(D_800EB9C8_minigame[i]);
     }
     work->unk13C = HuSprGrpCreate(13, 0);
-    work->unk13E = func_8000B838_main(0x15001D);
+    work->unk13E = HuSprAnimDataRead(0x15001D);
     y = data->y - 28;
     for (i = 0; i < 13; i++) {
         markX = data->x + (s16)(i * 12 - 24);
@@ -787,7 +787,7 @@ void func_800E9170_minigame(void) {
 
     result = HuPrcCurrentGet()->user_data;
 
-    frameAnim = func_8000B838_main(0x140064);
+    frameAnim = HuSprAnimDataRead(0x140064);
     frame = espEntry(frameAnim, 0, 1);
     espPriSet(frame, 0x4BA);
     espScaleSet(frame, 10.0f, 8.0f);
@@ -796,7 +796,7 @@ void func_800E9170_minigame(void) {
     espTPLvlSet(frame, 0);
     espDispOff(frame);
 
-    cursorAnim = func_8000B838_main(0x150001);
+    cursorAnim = HuSprAnimDataRead(0x150001);
     cursor = espEntry(cursorAnim, 0, 1);
     espPriSet(cursor, 600);
     espPosSet(cursor, 160, 204);
@@ -819,7 +819,7 @@ void func_800E9170_minigame(void) {
     pos[0].x = 25;
     pos[1].x = 295;
     pos[0].y = pos[1].y = 130;
-    arrowAnim = func_8000B838_main(0x150003);
+    arrowAnim = HuSprAnimDataRead(0x150003);
     for (i = 0; i < 2; i++) {
         sprites[i] = espEntry(arrowAnim, 0, 1);
         espPriSet(sprites[i], 100);

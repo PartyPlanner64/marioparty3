@@ -298,7 +298,7 @@ void func_80107F50_option(s32 animFile, s16 x, s16 y) {
     f32 scale;
 
     HuPrcSleep(3);
-    anim = func_8000B838_main(animFile);
+    anim = HuSprAnimDataRead(animFile);
     sprite = espEntry(anim, 0, 1);
     espPosSet(sprite, x, y);
     espPriSet(sprite, 0x8000);
@@ -1956,12 +1956,12 @@ void func_8010C3E4_option(s32 animFile, s16 x, s16 y) {
 
     page = 0;
     HuPrcSleep(3);
-    anim = func_8000B838_main(animFile);
+    anim = HuSprAnimDataRead(animFile);
     sprite = espEntry(anim, 0, 1);
     espPosSet(sprite, x, y);
     espPriSet(sprite, 0x8000);
     espScaleSet(sprite, 0.0f, 0.0f);
-    iconAnim = func_8000B838_main(0x1F0004);
+    iconAnim = HuSprAnimDataRead(0x1F0004);
     for (i = 0; i < 8; i++) {
         icons[i] = espEntry(iconAnim, 0, 1);
         espPosSet(icons[i], x + i * 24 - 84, y + 12);
@@ -1971,7 +1971,7 @@ void func_8010C3E4_option(s32 animFile, s16 x, s16 y) {
         espBankSet(icons[i], (u16)D_801138C8_option[i], 0);
         espDispOff(icons[i]);
     }
-    digitAnim = func_8000B838_main(0x1F0007);
+    digitAnim = HuSprAnimDataRead(0x1F0007);
     for (i = 0; i < 8; i++) {
         s32 offsetX;
 
@@ -2186,12 +2186,12 @@ void func_8010D5B0_option(s32 animFile, s16 x, s16 y) {
 
     page = 0;
     HuPrcSleep(3);
-    anim = func_8000B838_main(animFile);
+    anim = HuSprAnimDataRead(animFile);
     sprite = espEntry(anim, 0, 1);
     espPosSet(sprite, x, y);
     espPriSet(sprite, 0x8000);
     espScaleSet(sprite, 0.0f, 0.0f);
-    iconAnim = func_8000B838_main(0x1F0004);
+    iconAnim = HuSprAnimDataRead(0x1F0004);
     for (i = 0; i < 8; i++) {
         icons[i] = espEntry(iconAnim, 0, 1);
         espPosSet(icons[i], x + i * 24 - 84, y + 12);
@@ -2201,7 +2201,7 @@ void func_8010D5B0_option(s32 animFile, s16 x, s16 y) {
         espBankSet(icons[i], (u16)D_8011394C_option[i], 0);
         espDispOff(icons[i]);
     }
-    digitAnim = func_8000B838_main(0x1F0007);
+    digitAnim = HuSprAnimDataRead(0x1F0007);
     for (i = 0; i < 8; i++) {
         s32 offsetX;
 

@@ -559,7 +559,7 @@ void func_80106F7C_duelresult2(void) {
                 HuSprPosSet(D_80108DE0_duelresult2->unk_0A, row * 16 + j * 4 + k,
                             row * 44 + (s16)(k * 10 + 145) + offsets[digits], j * 26 + 99);
                 HuSprBankSet(D_80108DE0_duelresult2->unk_0A, row * 16 + j * 4 + k, buf[k] - '0', 0);
-                func_800550F4_main(D_80108DE0_duelresult2->unk_0A, row * 16 + j * 4 + k, 1);
+                HuSprAnimModeSet(D_80108DE0_duelresult2->unk_0A, row * 16 + j * 4 + k, 1);
             }
         }
     }

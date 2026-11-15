@@ -467,8 +467,8 @@ void func_80106140_messy_memory(omObjData *obj) {
 
 void func_801061AC_messy_memory(void) {
     omObjData *obj;
-    D_80111654_messy_memory = func_80055194_main(func_8000B838_main(0x3E0002));
-    D_801116D8_messy_memory = func_80055194_main(func_8000B838_main(0x3E0004));
+    D_80111654_messy_memory = func_80055194_main(HuSprAnimDataRead(0x3E0002));
+    D_801116D8_messy_memory = func_80055194_main(HuSprAnimDataRead(0x3E0004));
     obj = omAddObj(0xC8, 1, 0, -1, func_80106140_messy_memory);
     obj->work[0] = 0;
     D_80111A9C_messy_memory[0].obj = obj;
@@ -519,7 +519,7 @@ void func_801063FC_messy_memory(omObjData *obj) {
     if (obj->work[0] == 0) {
         work->unk44.x = 160.0f;
         work->unk44.y = 120.0f;
-        work->unk40 = func_8000B838_main(0x3E0000);
+        work->unk40 = HuSprAnimDataRead(0x3E0000);
         work->unk42 = espEntry(work->unk40, 0, 0);
         espAttrSet(work->unk42, 0x4000);
         espPosSet(work->unk42, work->unk44.x, work->unk44.y);
@@ -528,7 +528,7 @@ void func_801063FC_messy_memory(omObjData *obj) {
     if (obj->work[0] == 1) {
         work->unk44.x = 160.0f;
         work->unk44.y = 120.0f;
-        work->unk40 = func_8000B838_main(0x3E0001);
+        work->unk40 = HuSprAnimDataRead(0x3E0001);
         work->unk42 = espEntry(work->unk40, 0, 0);
         espAttrSet(work->unk42, 0x4000);
         espPosSet(work->unk42, work->unk44.x, work->unk44.y);
@@ -1560,7 +1560,7 @@ void func_8010B32C_messy_memory(omObjData *obj) {
     MessyMemoryWork *work = &D_80111700_messy_memory[obj->work[0]];
     s16 i;
 
-    work->unk40 = func_8000B838_main(D_801111E8_messy_memory[chr].fileId);
+    work->unk40 = HuSprAnimDataRead(D_801111E8_messy_memory[chr].fileId);
     D_80111660_messy_memory[obj->work[0]] = func_80055194_main(work->unk40);
     for (i = 0; i < 4; i++) {
         if (obj->work[0] == i) {
@@ -2132,7 +2132,7 @@ void func_8010D55C_messy_memory(omObjData *obj) {
     if (obj->work[1] == 0) {
         for (i = 0; i < 10; i++) {
             if (obj->work[0] == i) {
-                D_80111608_messy_memory[i] = func_8000B838_main((&D_80111148_messy_memory[i])->fileId);
+                D_80111608_messy_memory[i] = HuSprAnimDataRead((&D_80111148_messy_memory[i])->fileId);
             }
         }
     }
@@ -2145,7 +2145,7 @@ void func_8010D55C_messy_memory(omObjData *obj) {
     } else {
         for (i = 0; i < 10; i++) {
             if (obj->work[0] == i) {
-                work->unk40 = func_8000B838_main((&D_80111198_messy_memory[i])->fileId);
+                work->unk40 = HuSprAnimDataRead((&D_80111198_messy_memory[i])->fileId);
                 work->unk42 = espEntry(work->unk40, 0, 0);
             }
         }
@@ -2328,7 +2328,7 @@ void func_8010E29C_messy_memory(omObjData *obj) {
     s16 i;
 
     if (obj->work[0] == 0 && obj->work[1] == 0) {
-        D_80111634_messy_memory = func_8000B838_main(0x3E0003);
+        D_80111634_messy_memory = HuSprAnimDataRead(0x3E0003);
     }
     work->unk42 = espEntry(D_80111634_messy_memory, 0, 0);
     if (obj->work[1] == 4) {
@@ -2759,13 +2759,13 @@ void func_8010FA38_messy_memory(omObjData *obj) {
     switch (obj->work[0]) {
         case 0:
         case 1:
-            work->unk40 = func_8000B838_main(0x2E);
+            work->unk40 = HuSprAnimDataRead(0x2E);
             work->unk42 = espEntry(work->unk40, 0, 0);
             espAttrSet(work->unk42, 0x1000);
             espPriSet(work->unk42, 0);
             break;
         case 2:
-            work->unk40 = func_8000B838_main(0x3E0019);
+            work->unk40 = HuSprAnimDataRead(0x3E0019);
             work->unk42 = espEntry(work->unk40, 0, 0);
             espAttrSet(work->unk42, 0x1000);
             espPriSet(work->unk42, 0x500);

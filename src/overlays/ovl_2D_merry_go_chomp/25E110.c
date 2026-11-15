@@ -341,12 +341,12 @@ void func_8010637C_merry_go_chomp(omObjData *obj) {
 void func_80106384_merry_go_chomp(omObjData *obj) {
     D_8010C544_merry_go_chomp = 160.0f;
     D_8010C548_merry_go_chomp = 107.0f;
-    D_8010C540_merry_go_chomp = func_8000B838_main(0x4E0000);
+    D_8010C540_merry_go_chomp = HuSprAnimDataRead(0x4E0000);
     D_8010C542_merry_go_chomp = espEntry(D_8010C540_merry_go_chomp, 0, 0);
     espAttrSet(D_8010C542_merry_go_chomp, 0x5000);
     espPosSet(D_8010C542_merry_go_chomp, D_8010C544_merry_go_chomp,
               D_8010C548_merry_go_chomp);
-    D_8010C414_merry_go_chomp = func_80055194_main(func_8000B838_main(0x4E0001));
+    D_8010C414_merry_go_chomp = func_80055194_main(HuSprAnimDataRead(0x4E0001));
     Hu3DModelCameraSet(Hu3DHookFuncCreate(0, func_80106054_merry_go_chomp, 2), 1);
     obj->model[0] = -1;
     obj->func = func_8010637C_merry_go_chomp;

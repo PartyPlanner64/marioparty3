@@ -40,7 +40,7 @@ UnkStaff_7 *func_80107740_staff(void) {
         vel = HuMemAllocTag(count * sizeof(f32), TAG_OVERLAY);
         speed = HuMemAllocTag(count * sizeof(f32), TAG_OVERLAY);
         grpId = HuSprGrpCreate(count, 0);
-        animId = func_8000B838_main(D_8011058C_staff[i]);
+        animId = HuSprAnimDataRead(D_8011058C_staff[i]);
         pri = D_801105A0_staff[i];
         ptr->unk_00 = pos;
         ptr->unk_0C = grpId;
@@ -54,7 +54,7 @@ UnkStaff_7 *func_80107740_staff(void) {
             HuSprAttrReset(grpId, j, 0xFFFF);
             HuSprAttrSet(grpId, j, 0x5000);
             HuSprScaleSet(grpId, j, 1.0f, 1.0f);
-            func_800550F4_main(grpId, j, 0);
+            HuSprAnimModeSet(grpId, j, 0);
             HuSprGrpMemberSet(grpId, j, animId, 0);
             HuSprPriSet(grpId, j, pri);
             random = func_8010601C_staff();
@@ -214,7 +214,7 @@ void func_80107EB8_staff(void) {
 
     snow = func_80107740_staff();
     for (i = 0; i < 2; i++) {
-        starAnimIds[i] = func_8000B838_main(D_801105E0_staff[i]);
+        starAnimIds[i] = HuSprAnimDataRead(D_801105E0_staff[i]);
         starSprIds[i] = espEntry(starAnimIds[i], 0, 0);
         espColorSet(starSprIds[i], 255, 255, 255);
         espAttrSet(starSprIds[i], 0x4000);
@@ -222,14 +222,14 @@ void func_80107EB8_staff(void) {
         starTimers[i] = (rand8() & 0x7F) + 120;
     }
     espColorSet(starSprIds[1], 255, 200, 200);
-    titleAnim = func_8000B838_main(0x16001A);
+    titleAnim = HuSprAnimDataRead(0x16001A);
     titleSpr = espEntry(titleAnim, 0, 0);
     espAttrSet(titleSpr, 0x4000);
     espPosSet(titleSpr, 160, 120);
     espPriSet(titleSpr, 0xFFF0);
     titleActive = TRUE;
     for (i = 0; i < 3; i++) {
-        animIds[i] = func_8000B838_main(D_801105D4_staff[i]);
+        animIds[i] = HuSprAnimDataRead(D_801105D4_staff[i]);
         sprIds[i] = temp = espEntry(animIds[i], 0, 0);
         espPriSet(temp, D_801105C0_staff[i]);
         xs[i] = D_801105C8_staff[i].x;

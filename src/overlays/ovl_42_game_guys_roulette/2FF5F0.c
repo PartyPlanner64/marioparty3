@@ -254,7 +254,7 @@ s16 func_80109D98_game_guys_roulette(s32 dataNum, s32 attr, s32 priority, s32 tp
     s16 sprite;
     s16 group;
 
-    sprite = func_8000B838_main(dataNum);
+    sprite = HuSprAnimDataRead(dataNum);
     group = HuSprGrpCreate(1, 0);
     HuSprGrpMemberSet(group, 0, sprite, 0);
     HuSprAttrReset(group, 0, 0xFFFF);

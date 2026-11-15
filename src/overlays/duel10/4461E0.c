@@ -4241,7 +4241,7 @@ void func_80111FDC_duel10(void) {
         for (i = 0; i <= max; i++) {
             HuAudFXPlay(0x1C8);
             HuSprBankSet(spr->unk_0A, 2, order[i], 0);
-            func_800550F4_main(spr->unk_0A, 2, 1);
+            HuSprAnimModeSet(spr->unk_0A, 2, 1);
             for (delay = (state == 2) ? 15 : 1; delay != 0; delay--) {
                 if (count > 0) {
                     if (--count == 0) {

@@ -1564,7 +1564,7 @@ void func_8010B23C_swing_n_swipe(omObjData *object) {
 }
 
 s16 func_8010B840_swing_n_swipe(s32 dataNum, u16 attr, u16 pri, s16 x, s16 y) {
-    s16 sprite = espEntry(func_8000B838_main(dataNum), 0, 0);
+    s16 sprite = espEntry(HuSprAnimDataRead(dataNum), 0, 0);
 
     espAttrSet(sprite, attr);
     espPriSet(sprite, pri);

@@ -352,7 +352,7 @@ void func_80106428_game_guys_roulette(omObjData *object) {
     func_80108A14_game_guys_roulette(&D_8010AAB0_game_guys_roulette.slot, 0x21001B, 8);
     func_80108A6C_game_guys_roulette(&D_8010AAB0_game_guys_roulette, 500, 36, 16, 12, 12, 1.0f, 1.0f);
     func_80108A9C_game_guys_roulette(&D_8010AAB0_game_guys_roulette, 1);
-    sprite = func_8000B838_main(0x31);
+    sprite = HuSprAnimDataRead(0x31);
     D_8010AAD0_game_guys_roulette[0] = espEntry(sprite, 0, 1);
     espPosSet(D_8010AAD0_game_guys_roulette[0], 54, 22);
     espPriSet(D_8010AAD0_game_guys_roulette[0], 500);
@@ -942,7 +942,7 @@ void func_801089EC_game_guys_roulette(omObjData *object) {
 }
 
 void func_80108A14_game_guys_roulette(u8 *espriteSlot, s32 spriteIndex, u16 visibility) {
-    *espriteSlot = espEntry(func_8000B838_main(spriteIndex), 0, 1);
+    *espriteSlot = espEntry(HuSprAnimDataRead(spriteIndex), 0, 1);
     espAttrSet(*espriteSlot, visibility);
 }
 

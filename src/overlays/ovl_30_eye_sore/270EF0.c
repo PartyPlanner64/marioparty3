@@ -316,13 +316,13 @@ void func_8010605C_eye_sore(omObjData *obj) {
     func_8001C814_main(obj->model[1], 2, 2);
     D_8010AFB4_eye_sore = 160.0f;
     D_8010AFB8_eye_sore = 120.0f;
-    D_8010AFB0_eye_sore = func_8000B838_main(0x510004);
+    D_8010AFB0_eye_sore = HuSprAnimDataRead(0x510004);
     D_8010AFB2_eye_sore = espEntry(D_8010AFB0_eye_sore, 0, 0);
     espAttrSet(D_8010AFB2_eye_sore, 0x1000);
     espPosSet(D_8010AFB2_eye_sore, D_8010AFB4_eye_sore, D_8010AFB8_eye_sore);
     D_8010AFB4_eye_sore = 160.0f;
     D_8010AFB8_eye_sore = 120.0f;
-    D_8010AFB0_eye_sore = func_8000B838_main(0x510005);
+    D_8010AFB0_eye_sore = HuSprAnimDataRead(0x510005);
     D_8010AFB2_eye_sore = espEntry(D_8010AFB0_eye_sore, 0, 0);
     espAttrSet(D_8010AFB2_eye_sore, 0x1000);
     espPosSet(D_8010AFB2_eye_sore, D_8010AFB4_eye_sore, D_8010AFB8_eye_sore);

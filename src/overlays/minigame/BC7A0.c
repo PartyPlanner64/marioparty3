@@ -14,8 +14,8 @@ void func_800E9C20_minigame(s16 count, u16 length) {
     D_800EBDF0_minigame = count;
     D_800EBDFC_minigame = length;
     D_800EBDF4_minigame = HuMemAllocTag(count * sizeof(D_800EBDF4_minigame_Entry), 0x7918);
-    D_800EBDF8_minigame = func_8000B838_main(0x210018);
-    D_800EBDFA_minigame = func_8000B838_main(0x210019);
+    D_800EBDF8_minigame = HuSprAnimDataRead(0x210018);
+    D_800EBDFA_minigame = HuSprAnimDataRead(0x210019);
     for (i = 0; i < count; i++) {
         D_800EBDF4_minigame[i].unk_00 = HuMemAllocTag(length * sizeof(s16), 0x7918);
         D_800EBDF4_minigame[i].unk_04 = HuMemAllocTag(length * sizeof(s16), 0x7918);

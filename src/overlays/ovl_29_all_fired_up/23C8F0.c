@@ -1262,13 +1262,13 @@ void func_801097B0_all_fired_up(omObjData *object) {
     s16 group2;
 
     object->func = NULL;
-    sprite1 = func_8000B838_main(0x4A0001);
+    sprite1 = HuSprAnimDataRead(0x4A0001);
     group1 = HuSprGrpCreate(1, 0);
     HuSprGrpMemberSet(group1, 0, sprite1, 0);
     HuSprAttrReset(group1, 0, 0xFFFF);
     HuSprAttrSet(group1, 0, 0x5000);
     HuSprPosSet(group1, 0, 160, 120);
-    sprite2 = func_8000B838_main(0x4A0002);
+    sprite2 = HuSprAnimDataRead(0x4A0002);
     group2 = HuSprGrpCreate(1, 0);
     HuSprGrpMemberSet(group2, 0, sprite2, 0);
     HuSprAttrReset(group2, 0, 0xFFFF);

@@ -227,7 +227,7 @@ void func_80105B64_bobbing_bow_loons(void) {
     Vec target;
     s16 sprite;
 
-    sprite = espEntry(func_8000B838_main(0x5E0000), 0, 1);
+    sprite = espEntry(HuSprAnimDataRead(0x5E0000), 0, 1);
     espDispOff(sprite);
     pos.x = 0.0f;
     pos.y = 1.0f;

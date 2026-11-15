@@ -581,12 +581,12 @@ void func_8010705C_mgresultboard(Gfx **gfx, s32 arg1, s32 arg2) {
 void func_80107188_mgresultboard(void) {
     u16 temp_s0;
 
-    temp_s0 = espEntry(func_8000B838_main(0x18000A), 0, 0);
+    temp_s0 = espEntry(HuSprAnimDataRead(0x18000A), 0, 0);
     espPosSet(temp_s0, 0xA0, 0x20);
     espAttrSet(temp_s0, 0x1000);
     espTPLvlSet(temp_s0, 0xFF);
     espColorSet(temp_s0, 0xFF, 0xFF, 0xFF);
-    espPosSet(espEntry(func_8000B838_main(0x180009), 0, 0), 0xA0, 0x20);
+    espPosSet(espEntry(HuSprAnimDataRead(0x180009), 0, 0), 0xA0, 0x20);
 }
 
 void func_80107234_mgresultboard(void) {

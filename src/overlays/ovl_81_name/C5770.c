@@ -1202,7 +1202,7 @@ void func_800E0E70_name_81(s32 arg0, s32 coins, s32 arg2, s32 arg3) {
 
         count = 2;
         HuSprGrpMemberSet(grp, 2, D_80102BC4_name_81[arg0][1], 0);
-        func_800550F4_main(grp, 2, 1);
+        HuSprAnimModeSet(grp, 2, 1);
 
         if (coins > 0) {
             HuSprBankSet(grp, count, 10, 0);
@@ -1218,7 +1218,7 @@ void func_800E0E70_name_81(s32 arg0, s32 coins, s32 arg2, s32 arg3) {
 
         if (coins >= 100) {
             HuSprGrpMemberSet(grp, count, D_80102BC4_name_81[arg0][1], 0);
-            func_800550F4_main(grp, count, 1);
+            HuSprAnimModeSet(grp, count, 1);
             HuSprBankSet(grp, count, coins / 100, 0);
             HuSprPriSet(grp, count, 0x2010);
             HuSprAttrSet(grp, count, 0x1000);
@@ -1227,7 +1227,7 @@ void func_800E0E70_name_81(s32 arg0, s32 coins, s32 arg2, s32 arg3) {
 
         if (coins >= 10) {
             HuSprGrpMemberSet(grp, count, D_80102BC4_name_81[arg0][1], 0);
-            func_800550F4_main(grp, count, 1);
+            HuSprAnimModeSet(grp, count, 1);
             HuSprBankSet(grp, count, (coins / 10) % 10, 0);
             HuSprPriSet(grp, count, 0x2010);
             HuSprAttrSet(grp, count, 0x1000);
@@ -1237,7 +1237,7 @@ void func_800E0E70_name_81(s32 arg0, s32 coins, s32 arg2, s32 arg3) {
         coins = coins % 10;
 
         HuSprGrpMemberSet(grp, count, D_80102BC4_name_81[arg0][1], 0);
-        func_800550F4_main(grp, count, 1);
+        HuSprAnimModeSet(grp, count, 1);
         HuSprBankSet(grp, count, coins, 0);
         HuSprPriSet(grp, count, 0x2010);
         HuSprAttrSet(grp, count, 0x1000);

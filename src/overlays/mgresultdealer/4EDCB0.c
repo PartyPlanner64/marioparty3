@@ -252,7 +252,7 @@ void func_80108040_mgresultdealer(void) {
 
     obj = omAddObj(0x14, 1, 0, -1, NULL);
     D_8010A26C_mgresultdealer.obj = obj;
-    sprite = func_8000B838_main(0x190001);
+    sprite = HuSprAnimDataRead(0x190001);
     D_8010A204_mgresultdealer = sprite;
     group = HuSprGrpCreate(1, 0);
     HuSprAttrSet(group, 0, 0x8000);
@@ -365,19 +365,19 @@ void func_80108570_mgresultdealer(void) {
     D_8010A210_mgresultdealer.groups[2].unk_02[1] = 0;
     D_8010A210_mgresultdealer.groups[2].unk_02[2] = 0;
 
-    sprite = func_8000B838_main(0x190005);
+    sprite = HuSprAnimDataRead(0x190005);
     D_8010A210_mgresultdealer.unk_2C = espEntry(sprite, 0, 1);
     espTPLvlSet(D_8010A210_mgresultdealer.unk_2C, 0x7F);
     espPosSet(D_8010A210_mgresultdealer.unk_2C, 0xA9, 0x60);
     espDispOff(D_8010A210_mgresultdealer.unk_2C);
     x = 0x5C;
 
-    sprite = func_8000B838_main(0x190004);
+    sprite = HuSprAnimDataRead(0x190004);
     D_8010A210_mgresultdealer.unk_2A = espEntry(sprite, 0, 1);
     espPosSet(D_8010A210_mgresultdealer.unk_2A, 0xA3, 0x5A);
     espDispOff(D_8010A210_mgresultdealer.unk_2A);
 
-    sprite = func_8000B838_main(0x190009);
+    sprite = HuSprAnimDataRead(0x190009);
     D_8010A210_mgresultdealer.groups[0].unk_00 = espEntry(sprite, 0, 1);
     espPosSet(D_8010A210_mgresultdealer.groups[0].unk_00, 0x4C, 0x5A);
     espBankSet(D_8010A210_mgresultdealer.groups[0].unk_00, 0, 0);
@@ -385,7 +385,7 @@ void func_80108570_mgresultdealer(void) {
     func_8000BDDC_main(D_8010A210_mgresultdealer.groups[0].unk_00, 0);
     espDispOff(D_8010A210_mgresultdealer.groups[0].unk_00);
 
-    sprite = func_8000B838_main(0xC0086);
+    sprite = HuSprAnimDataRead(0xC0086);
     for (i = 0; i < 3; i++) {
         D_8010A210_mgresultdealer.groups[0].unk_08[i] = espEntry(sprite, 0, 0);
         espPosSet(D_8010A210_mgresultdealer.groups[0].unk_08[i], x, 0x5A);
@@ -394,7 +394,7 @@ void func_80108570_mgresultdealer(void) {
         x += 16;
     }
 
-    multSprite = func_8000B838_main(0xC008C);
+    multSprite = HuSprAnimDataRead(0xC008C);
     D_8010A210_mgresultdealer.groups[1].unk_00 = espEntry(multSprite, 0, 0);
     espPosSet(D_8010A210_mgresultdealer.groups[1].unk_00, x, 0x5A);
     espBankSet(D_8010A210_mgresultdealer.groups[1].unk_00, 0, 0);

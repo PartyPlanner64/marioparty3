@@ -1085,7 +1085,7 @@ void func_8010BD40_chancetime(void) {
     s32 i;
 
     scale = 0.0f;
-    anim = func_8000B838_main(0x1C0006);
+    anim = HuSprAnimDataRead(0x1C0006);
     sprite = espEntry(anim, 0, 0);
     espPosSet(sprite, 160, 120);
     espDispOff(sprite);

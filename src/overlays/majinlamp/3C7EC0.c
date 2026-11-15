@@ -407,7 +407,7 @@ void func_80106E74_majinlamp(void) {
     DataClose(temp_v0);
     HuSprGrpMemberSet(D_80108338_majinlamp, 0, D_8010833A_majinlamp, 0);
     HuSprPriSet(D_80108338_majinlamp, 0, 0xA);
-    func_800550F4_main(D_80108338_majinlamp, 0, 1);
+    HuSprAnimModeSet(D_80108338_majinlamp, 0, 1);
     HuSprAttrSet(D_80108338_majinlamp, 0, 0x5000);
     HuSprPosSet(D_80108338_majinlamp, 0, 0xA0, 0x78);
     HuSprScaleSet(D_80108338_majinlamp, 0, 50.0f, 50.0f);

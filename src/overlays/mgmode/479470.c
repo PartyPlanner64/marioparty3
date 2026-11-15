@@ -1189,7 +1189,7 @@ void func_801160A0_mgmode(s16 arg0) {
 void func_8011611C_mgmode(void) {
     HuSprite *sprite;
 
-    D_8011B61C_mgmode = func_8000B838_main(0x12003D);
+    D_8011B61C_mgmode = HuSprAnimDataRead(0x12003D);
     D_8011B61E_mgmode = HuSprGrpCreate(5, 0);
     HuSprGrpMemberSet(D_8011B61E_mgmode, 0, D_8011B61C_mgmode, 0);
     HuSprAttrReset(D_8011B61E_mgmode, 0, 0xFFFF);

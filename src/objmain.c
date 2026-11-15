@@ -1443,7 +1443,7 @@ void func_8004A208_main(void) {
     }
     func_8004CF30_main();
     if (_CheckFlag(FLAG_MG_PRACTICE) != 0) {
-        D_800B23C2_main = func_8000B838_main(0x94);
+        D_800B23C2_main = HuSprAnimDataRead(0x94);
         D_800B23C4_main = espEntry(D_800B23C2_main, 0, 1);
         espTPLvlSet(D_800B23C4_main, 0x100);
         espPriSet(D_800B23C4_main, 1);

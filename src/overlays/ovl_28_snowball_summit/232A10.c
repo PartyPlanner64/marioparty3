@@ -385,7 +385,7 @@ void func_80106184_snowball_summit(omObjData *object) {
 void func_801061DC_snowball_summit(omObjData *object) {
     D_801101F4_snowball_summit = 160.0f;
     D_801101F8_snowball_summit = 33.0f;
-    D_801101F0_snowball_summit = func_8000B838_main(0x490002);
+    D_801101F0_snowball_summit = HuSprAnimDataRead(0x490002);
     D_801101F2_snowball_summit = espEntry(D_801101F0_snowball_summit, 0, 0);
     espAttrSet(D_801101F2_snowball_summit, 0x5000);
     espPosSet(D_801101F2_snowball_summit, D_801101F4_snowball_summit, D_801101F8_snowball_summit);
@@ -429,8 +429,8 @@ void func_80106758_snowball_summit(omObjData *object) {
 }
 
 void func_80106760_snowball_summit(omObjData *object) {
-    D_8010F8CC_snowball_summit = func_80055194_main(func_8000B838_main(0x490000));
-    D_8010F8D4_snowball_summit = func_80055194_main(func_8000B838_main(0x490001));
+    D_8010F8CC_snowball_summit = func_80055194_main(HuSprAnimDataRead(0x490000));
+    D_8010F8D4_snowball_summit = func_80055194_main(HuSprAnimDataRead(0x490001));
     D_8010F8C8_snowball_summit = Hu3DHookFuncCreate(0, func_801062E0_snowball_summit, 2);
     Hu3DModelCameraSet(D_8010F8CA_snowball_summit, HU3D_CAM0);
     D_8010F8C0_snowball_summit = 0;

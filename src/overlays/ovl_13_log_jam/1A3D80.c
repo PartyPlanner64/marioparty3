@@ -1744,14 +1744,14 @@ void func_80109B8C_log_jam(omObjData *object) {
     group = HuSprGrpCreate(3, 0);
     HuSprGrpMemberSet(group, 0, D_8010E5CC_log_jam[0], 0);
     HuSprPosSet(group, 0, 160, 120);
-    func_800550F4_main(group, 0, 0);
+    HuSprAnimModeSet(group, 0, 0);
     func_80054FF8_main(group, 0, 0);
     HuSprAttrSet(group, 0, 0x4000580C);
     HuSprPriSet(group, 0, 0xFF00);
     D_8010E5CC_log_jam[4] = func_8010A300_log_jam(0x340010);
     HuSprGrpMemberSet(group, 1, D_8010E5CC_log_jam[4], 0);
     HuSprPosSet(group, 1, 0, 40);
-    func_800550F4_main(group, 1, 0);
+    HuSprAnimModeSet(group, 1, 0);
     func_80054FF8_main(group, 1, 0);
     HuSprAttrSet(group, 1, 0x4000580C);
     HuSprPriSet(group, 1, 0xFF01);
@@ -1759,7 +1759,7 @@ void func_80109B8C_log_jam(omObjData *object) {
     D_8010E5CC_log_jam[1] = func_8010A300_log_jam(0x34000D);
     HuSprGrpMemberSet(group, 2, D_8010E5CC_log_jam[1], 0);
     HuSprPosSet(group, 2, 0, 0);
-    func_800550F4_main(group, 2, 0);
+    HuSprAnimModeSet(group, 2, 0);
     func_80054FF8_main(group, 2, 0);
     HuSprAttrSet(group, 2, 0x403C);
     HuSprPriSet(group, 2, 0xFFFF);
@@ -1785,7 +1785,7 @@ void func_80109B8C_log_jam(omObjData *object) {
                 HuSprGrpMemberSet(cloud->group, j, D_8010E5CC_log_jam[5], 0);
                 HuSprTPLvlSet(cloud->group, j, 190);
             }
-            func_800550F4_main(cloud->group, j, 0);
+            HuSprAnimModeSet(cloud->group, j, 0);
             func_80054FF8_main(cloud->group, j, 0);
             HuSprAttrSet(cloud->group, j, 0x2000583C);
             HuSprPosSet(cloud->group, j, cloud->pos.x, cloud->pos.y);
@@ -1851,7 +1851,7 @@ void func_8010A344_log_jam(void) {
         sprites->unk_02 = HuSprGrpCreate(10, 0);
         for (j = 0; j < 10; j++) {
             HuSprGrpMemberSet(sprites->unk_02, j, D_8010E5CC_log_jam[3], 0);
-            func_800550F4_main(sprites->unk_02, j, 0);
+            HuSprAnimModeSet(sprites->unk_02, j, 0);
             func_80054FF8_main(sprites->unk_02, j, 0);
             HuSprTPLvlSet(sprites->unk_02, j, 0x100);
             HuSprAttrSet(sprites->unk_02, j, 0x9000);

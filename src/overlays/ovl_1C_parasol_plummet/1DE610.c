@@ -1175,7 +1175,7 @@ void func_80108178_parasol_plummet(omObjData *object) {
     work = OM_GET_DATA_PTR(object, ParasolPlummetBgWork);
     work->posY[0] = 120.0f;
     work->posY[1] = 359.0f;
-    work->spriteFileId = func_8000B838_main(0x3D0002);
+    work->spriteFileId = HuSprAnimDataRead(0x3D0002);
     for (i = 0; i < 2; i++) {
         work->espId[i] = espEntry(work->spriteFileId, 0, 1);
         espAttrSet(work->espId[i], 0x4008);
@@ -1240,7 +1240,7 @@ void func_801083F8_parasol_plummet(void) {
 void func_8010856C_parasol_plummet(void) {
     s32 i;
 
-    D_8010ACFA_parasol_plummet = func_8000B838_main(0x210028);
+    D_8010ACFA_parasol_plummet = HuSprAnimDataRead(0x210028);
     for (i = 0; i < 5; i++) {
         D_8010ACFC_parasol_plummet[i] = 0;
         D_8010ACF0_parasol_plummet[i] = espEntry(D_8010ACFA_parasol_plummet, 0, 1);
@@ -1321,8 +1321,8 @@ void func_801089E0_parasol_plummet(omObjData *object) {
 
     object->data = HuMemAllocTag(sizeof(ParasolPlummetBg2Work), 0x7918);
     work = OM_GET_DATA_PTR(object, ParasolPlummetBg2Work);
-    spriteIds[0] = func_8000B838_main(0x3D0005);
-    spriteIds[1] = func_8000B838_main(0x3D0003);
+    spriteIds[0] = HuSprAnimDataRead(0x3D0005);
+    spriteIds[1] = HuSprAnimDataRead(0x3D0003);
     for (i = 0; i < 6; i++) {
         work->espId[i] = espEntry(spriteIds[spriteIndex[i % 3]], 0, 1);
         work->x[i] = posX[i / 3];
@@ -1820,13 +1820,13 @@ void func_8010A160_parasol_plummet(void) {
     s16 x;
     s16 y;
 
-    D_8010ACC0_parasol_plummet = func_8000B838_main(0x31);
-    D_8010ACDC_parasol_plummet = func_8000B838_main(0x21001B);
-    D_8010ACD2_parasol_plummet = func_8000B838_main(0x21001A);
+    D_8010ACC0_parasol_plummet = HuSprAnimDataRead(0x31);
+    D_8010ACDC_parasol_plummet = HuSprAnimDataRead(0x21001B);
+    D_8010ACD2_parasol_plummet = HuSprAnimDataRead(0x21001A);
     for (i = 0; i < 4; i++) {
         x = posX[i];
         y = posY[i];
-        D_8010ACC2_parasol_plummet[i] = func_8000B838_main(0x210000 | charIcons[GwPlayer[i].chr]);
+        D_8010ACC2_parasol_plummet[i] = HuSprAnimDataRead(0x210000 | charIcons[GwPlayer[i].chr]);
         D_8010ACCA_parasol_plummet[i] = espEntry(D_8010ACC2_parasol_plummet[i], 0, 1);
         espPosSet(D_8010ACCA_parasol_plummet[i], x, y);
         D_8010ACD4_parasol_plummet[i] = espEntry(D_8010ACD2_parasol_plummet, 0, 1);

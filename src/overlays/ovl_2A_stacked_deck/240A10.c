@@ -390,7 +390,7 @@ void func_80106694_stacked_deck(omObjData *object) {
 void func_8010669C_stacked_deck(omObjData *object) {
     StackedDeckCard *card = &D_8010F730_stacked_deck[1];
 
-    card->unk_40[0] = func_8000B838_main(0x4B0000);
+    card->unk_40[0] = HuSprAnimDataRead(0x4B0000);
     card->unk_40[1] = espEntry(card->unk_40[0], 0, 0);
     espAttrSet(card->unk_40[1], 0x4000);
     card->unk_44.x = 160.0f;

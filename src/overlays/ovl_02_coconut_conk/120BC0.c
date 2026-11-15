@@ -327,13 +327,13 @@ void func_801060C0_coconut_conk(omObjData *arg0) {
 }
 
 void func_801060C8_coconut_conk(omObjData *arg0) {
-    D_8010B2B4_coconut_conk = func_8000B838_main(0x23000D);
+    D_8010B2B4_coconut_conk = HuSprAnimDataRead(0x23000D);
     D_8010B2B6_coconut_conk = espEntry(D_8010B2B4_coconut_conk, 0, 0);
     espAttrSet(D_8010B2B6_coconut_conk, 0x4000);
     D_8010B2B8_coconut_conk = 160.0f;
     D_8010B2BC_coconut_conk = 67.0f;
     espPosSet(D_8010B2B6_coconut_conk, 160, 67);
-    D_8010B1C4_coconut_conk = func_80055194_main(func_8000B838_main(0x23000E));
+    D_8010B1C4_coconut_conk = func_80055194_main(HuSprAnimDataRead(0x23000E));
     Hu3DModelCameraSet(Hu3DHookFuncCreate(0, func_80105D98_coconut_conk, 2), HU3D_CAM0);
     arg0->func = func_801060C0_coconut_conk;
 }
@@ -348,7 +348,7 @@ void func_801061EC_coconut_conk(omObjData *arg0) {
 }
 
 void func_801061F4_coconut_conk(omObjData *arg0) {
-    D_8010B3BC_coconut_conk = func_8000B838_main(0x23000F);
+    D_8010B3BC_coconut_conk = HuSprAnimDataRead(0x23000F);
     D_8010B3BE_coconut_conk = espEntry(D_8010B3BC_coconut_conk, 0, 0);
     espAttrSet(D_8010B3BE_coconut_conk, 0);
     D_8010B3C0_coconut_conk = 160.0f;

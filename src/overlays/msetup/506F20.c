@@ -555,7 +555,7 @@ void func_8010BEF8_msetup(void) {
                 }
                 index = i;
                 kill[index] = 0;
-                sprites[index] = func_8000B838_main(dataId);
+                sprites[index] = HuSprAnimDataRead(dataId);
                 slots[index] = espEntry(sprites[index], 0, 1);
                 espPriSet(slots[index], 1);
                 func_80012B14_main(0, pos, &projected);

@@ -26,7 +26,7 @@ void func_801059D0_slerror(void) {
     HuWinInit();
     if (D_800D20EC_main == 0xF) {
         count = 1;
-        D_80105F48_slerror[0] = sprite = espEntry(D_80105F40_slerror[0] = func_8000B838_main(0x200000), 0, 1);
+        D_80105F48_slerror[0] = sprite = espEntry(D_80105F40_slerror[0] = HuSprAnimDataRead(0x200000), 0, 1);
         espPosSet(sprite, 160, 120);
         espAttrReset(sprite, 0xFFFF);
         espAttrSet(sprite, 0x1000);
@@ -35,7 +35,7 @@ void func_801059D0_slerror(void) {
     } else {
         count = 0;
         if (D_800D20EC_main & 8) {
-            D_80105F40_slerror[0] = anim = func_8000B838_main(0x200004);
+            D_80105F40_slerror[0] = anim = HuSprAnimDataRead(0x200004);
             D_80105F48_slerror[0] = sprite = espEntry(anim, 0, 1);
             espPosSet(sprite, 160, 120);
             espAttrReset(sprite, 0xFFFF);
@@ -45,7 +45,7 @@ void func_801059D0_slerror(void) {
             count = 1;
         }
         if (D_800D20EC_main & 1) {
-            D_80105F40_slerror[count] = anim = func_8000B838_main(0x200001);
+            D_80105F40_slerror[count] = anim = HuSprAnimDataRead(0x200001);
             D_80105F48_slerror[count] = sprite = espEntry(anim, 0, 1);
             espPosSet(sprite, 160, 120);
             espAttrReset(sprite, 0xFFFF);
@@ -55,7 +55,7 @@ void func_801059D0_slerror(void) {
             count++;
         }
         if (D_800D20EC_main & 2) {
-            D_80105F40_slerror[count] = anim = func_8000B838_main(0x200002);
+            D_80105F40_slerror[count] = anim = HuSprAnimDataRead(0x200002);
             D_80105F48_slerror[count] = sprite = espEntry(anim, 0, 1);
             espPosSet(sprite, 160, 120);
             espAttrReset(sprite, 0xFFFF);
@@ -65,7 +65,7 @@ void func_801059D0_slerror(void) {
             count++;
         }
         if (D_800D20EC_main & 4) {
-            D_80105F40_slerror[count] = anim = func_8000B838_main(0x200003);
+            D_80105F40_slerror[count] = anim = HuSprAnimDataRead(0x200003);
             D_80105F48_slerror[count] = sprite = espEntry(anim, 0, 1);
             espPosSet(sprite, 160, 120);
             espAttrReset(sprite, 0xFFFF);

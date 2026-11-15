@@ -219,7 +219,7 @@ void func_8010D6D0_msetup(void) {
 
     cursor = HuPrcCurrentGet()->user_data;
     position = cursor->pos;
-    sprite = func_8000B838_main(cursor->dataId);
+    sprite = HuSprAnimDataRead(cursor->dataId);
     slot = espEntry(sprite, cursor->priority, 1);
     espPriSet(slot, 1);
     x = targetX = cursor->pos[0];
@@ -440,7 +440,7 @@ omObjData *func_8010DE38_msetup(s32 leftX, s32 rightX, s32 y) {
     memset(anim, 0, sizeof(MsetupPairSpriteAnim));
     object->data = anim;
 
-    sprite = func_8000B838_main(0x140012);
+    sprite = HuSprAnimDataRead(0x140012);
     i = espEntry(sprite, 0, 1);
     object->model[0] = i;
     object->model[2] = sprite;
@@ -450,7 +450,7 @@ omObjData *func_8010DE38_msetup(s32 leftX, s32 rightX, s32 y) {
     anim->pos[0][0] = leftX;
     anim->pos[0][1] = y;
 
-    sprite = func_8000B838_main(0x140013);
+    sprite = HuSprAnimDataRead(0x140013);
     i = espEntry(sprite, 0, 1);
     object->model[1] = i;
     object->model[3] = sprite;

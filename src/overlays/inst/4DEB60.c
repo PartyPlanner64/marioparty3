@@ -370,7 +370,7 @@ void func_80106388_inst(void) {
     };
     u16 espriteSlot;
 
-    espriteSlot = espEntry(func_8000B838_main(D_8010D658_inst[D_8010D40A_inst]), 0, 0);
+    espriteSlot = espEntry(HuSprAnimDataRead(D_8010D658_inst[D_8010D40A_inst]), 0, 0);
     espPosSet(espriteSlot, 0xA0, 0x78);
     espAttrSet(espriteSlot, 0x4000);
 }

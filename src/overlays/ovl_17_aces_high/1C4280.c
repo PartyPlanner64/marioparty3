@@ -245,8 +245,8 @@ void func_801059A0_aces_high(void) {
     }
     func_8010C9DC_aces_high();
     func_8010B618_aces_high();
-    D_8010DEA4_aces_high = func_8000B838_main(0x380027);
-    D_8010DEA6_aces_high = func_8000B838_main(0x380028);
+    D_8010DEA4_aces_high = HuSprAnimDataRead(0x380027);
+    D_8010DEA6_aces_high = HuSprAnimDataRead(0x380028);
 }
 
 void func_80105E44_aces_high(omObjData *object) {
@@ -310,10 +310,10 @@ void func_80105FC8_aces_high(omObjData *object) {
     Hu3DData[object->model[3]].hmf->unk84->unk0[2] = 0;
     Hu3DModelRemakeStatic(object->model[3]);
     func_8001C514_main(object->model[3]);
-    D_8010DE92_aces_high = sprite = espEntry(func_8000B838_main(0x38001E), 0, 0);
+    D_8010DE92_aces_high = sprite = espEntry(HuSprAnimDataRead(0x38001E), 0, 0);
     espPosSet(sprite, 160, 120);
     espPriSet(sprite, 0x8096);
-    D_8010DE94_aces_high = sprite = espEntry(func_8000B838_main(0x38001F), 0, 0);
+    D_8010DE94_aces_high = sprite = espEntry(HuSprAnimDataRead(0x38001F), 0, 0);
     espPosSet(sprite, 160, 120);
     espPriSet(sprite, 0x8096);
     D_8010DE54_aces_high[0] = D_8010DE54_aces_high[1] = 0.0f;
@@ -377,11 +377,11 @@ void func_801062DC_aces_high(omObjData *object) {
     omSetRot(object, 0.0f, atan2df(-object->trans.x, -object->trans.z), 0.0f);
     Hu3DModelPosSet(object->model[1], object->trans.x, object->trans.y, object->trans.z);
     Hu3DModelRotSet(object->model[1], object->rot.x, object->rot.y, object->rot.z);
-    spr = func_8000B838_main(D_8010DC30_aces_high[chr]);
+    spr = HuSprAnimDataRead(D_8010DC30_aces_high[chr]);
     player->unk_1C = espEntry(spr, 0, 0);
     player->unk_1E = espEntry(spr, 0, 0);
     espDispOff(player->unk_1E);
-    spr = func_8000B838_main(0x38001D);
+    spr = HuSprAnimDataRead(0x38001D);
     for (i = 0; i < 2; i++) {
         player->espriteSlots[i] = espEntry(spr, 0, 0);
         espPosSet(player->espriteSlots[i], D_8010DC50_aces_high[idx][i][0], D_8010DC50_aces_high[idx][i][1]);
@@ -2359,7 +2359,7 @@ void func_8010C9DC_aces_high(void) {
 
     D_8010DE80_aces_high = obj;
     obj->work[0] = 1;
-    D_8010DF20_aces_high = espEntry(func_8000B838_main(0x38001C), 0, 0);
+    D_8010DF20_aces_high = espEntry(HuSprAnimDataRead(0x38001C), 0, 0);
     espPosSet(D_8010DF20_aces_high, 0xA0, 0x78);
     espPriSet(D_8010DF20_aces_high, 0x8064);
 }

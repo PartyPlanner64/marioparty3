@@ -268,13 +268,13 @@ s16 m257_SetSprite(u16 prio, s32 dir, s32 file, u16 arg3, s32 attr) {
     sprite = m257_sprites;
     for (i = 0; i < SPRITES_MAX; i++, sprite++) {
         if (sprite->state == SPRITE_STATE_NOTSET) {
-            sprite->unk02 = func_8000B838_main((dir << 16) | file); // esprite.
+            sprite->unk02 = HuSprAnimDataRead((dir << 16) | file); // esprite.
             sprite->groupId = HuSprGrpCreate(1, 0);
             sprite->unk06 = 0xFF;
             HuSprAttrReset(sprite->groupId, 0, -1);
             HuSprGrpMemberSet(sprite->groupId, 0, sprite->unk02, 0);
             HuSprAttrSet(sprite->groupId, 0, attr);
-            func_800550F4_main(sprite->groupId, 0, arg3);
+            HuSprAnimModeSet(sprite->groupId, 0, arg3);
             HuSprPriSet(sprite->groupId, 0, prio);
             func_80054FF8_main(sprite->groupId, 0, 0);
             HuSprSpeedSet(sprite->groupId, 0, 1.0f);
@@ -433,7 +433,7 @@ s32 m257_SetBill(s32 dir, s32 file, s32 attr) {
     bill = m257_billboards;
     for (i = 0; i < BILLS_MAX; i++, bill++) {
         if (!bill->set) {
-            bill->unk08 = temp_v0_2 = func_8000B838_main((dir << 16) | file);
+            bill->unk08 = temp_v0_2 = HuSprAnimDataRead((dir << 16) | file);
             if (attr & BILL_ATTR_01) {
                 bill->modelId = func_8010B4D0_tick_tock_hop(func_80055194_main(temp_v0_2), 1.0f);
             } else {

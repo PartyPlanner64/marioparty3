@@ -751,8 +751,8 @@ void func_80108590_mgenter(void) {
 
     D_80109B22_mgenter = 0;
     D_80109B20_mgenter = 0;
-    data1 = func_8000B838_main(0x140012);
-    data2 = func_8000B838_main(0x140013);
+    data1 = HuSprAnimDataRead(0x140012);
+    data2 = HuSprAnimDataRead(0x140013);
     sprite1 = espEntry(data1, 0, 1);
     sprite2 = espEntry(data2, 0, 1);
     espPriSet(sprite1, 0x4800);

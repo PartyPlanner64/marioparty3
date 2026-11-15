@@ -1156,7 +1156,7 @@ void func_8010EC38_mstory4(void) {
     s32 i;
     s32 j;
 
-    D_80112352_mstory4 = func_8000B838_main(0x1D0028);
+    D_80112352_mstory4 = HuSprAnimDataRead(0x1D0028);
     for (i = 0; i < 2; i++) {
         for (j = 0; j < 2; j++) {
             D_8011234A_mstory4[i][j] = espEntry(D_80112352_mstory4, 0, 0);
@@ -1191,7 +1191,7 @@ void func_8010EE3C_mstory4(void) {
     s32 i;
 
     for (i = 0; i < 8; i++) {
-        D_80112358_mstory4[i] = func_8000B838_main(D_80112008_mstory4[i]);
+        D_80112358_mstory4[i] = HuSprAnimDataRead(D_80112008_mstory4[i]);
         D_80112368_mstory4[i] = espEntry(D_80112358_mstory4[i], 0, 0);
         espPosSet(D_80112368_mstory4[i], 160, 120);
         espAttrSet(D_80112368_mstory4[i], 0x4000);
@@ -1550,8 +1550,8 @@ void func_80110270_mstory4(void) {
     s8 chr = GwStory.unk1;
     s8 i;
 
-    D_801123A6_mstory4[0] = espEntry(func_8000B838_main(D_801120D4_mstory4[chr]), 0, 0);
-    D_801123A6_mstory4[1] = espEntry(func_8000B838_main(0x1D001E), 0, 0);
+    D_801123A6_mstory4[0] = espEntry(HuSprAnimDataRead(D_801120D4_mstory4[chr]), 0, 0);
+    D_801123A6_mstory4[1] = espEntry(HuSprAnimDataRead(0x1D001E), 0, 0);
     for (i = 0; i < 2; i++) {
         espPosSet(D_801123A6_mstory4[i], D_801120F4_mstory4[chr][i] + D_80112114_mstory4[i] / 2, 194);
     }

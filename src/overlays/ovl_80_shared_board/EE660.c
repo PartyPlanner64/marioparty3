@@ -182,11 +182,11 @@ static void func_800DAF1C_shared_board(omObjData *arg0) {
 
     roll = arg0->work[1];
     HuSprBankSet(entry->sprites[roll], 0, entry->rollValue[roll] % 10, 0);
-    func_800550F4_main(entry->sprites[arg0->work[1]], 0, 1);
+    HuSprAnimModeSet(entry->sprites[arg0->work[1]], 0, 1);
 
     roll = arg0->work[1];
     HuSprBankSet(entry->sprites[roll], 1, entry->rollValue[roll] / 10, 0);
-    func_800550F4_main(entry->sprites[arg0->work[1]], 1, 1);
+    HuSprAnimModeSet(entry->sprites[arg0->work[1]], 1, 1);
 
     pos.x = GwPlayer[arg0->work[3]].player_obj->coords.x;
     pos.y = GwPlayer[arg0->work[3]].player_obj->coords.y + D_80105708_shared_board + arg0->trans.y;
@@ -230,7 +230,7 @@ static void func_800DB318_shared_board(omObjData *arg0) {
 
     roll = entry->rollValueIdx;
     HuSprBankSet(entry->sprites[roll], 0, entry->rollValue[roll], 0);
-    func_800550F4_main(entry->sprites[entry->rollValueIdx], 0, 1);
+    HuSprAnimModeSet(entry->sprites[entry->rollValueIdx], 0, 1);
 
     pos.x = GwPlayer[arg0->work[3]].player_obj->coords.x;
     pos.y = GwPlayer[arg0->work[3]].player_obj->coords.y + D_80105708_shared_board + arg0->trans.y;
@@ -315,7 +315,7 @@ void func_800DB6A8_shared_board(s32 arg0) {
         HuSprSpeedSet(entry->sprites[entry->rollValueIdx], i, 0.0f);
         HuSprScaleSet(entry->sprites[entry->rollValueIdx], i, 0.0f, 0.0f);
         HuSprBankSet(entry->sprites[entry->rollValueIdx], i, 0, 0);
-        func_800550F4_main(entry->sprites[entry->rollValueIdx], i, 1);
+        HuSprAnimModeSet(entry->sprites[entry->rollValueIdx], i, 1);
     }
 
     entry->unk_0B = 1;
@@ -344,7 +344,7 @@ void func_800DB884_shared_board(s32 arg0) {
                 roll = entry->rollValueIdx;
                 HuSprBankSet(entry->sprites[roll], 0, entry->rollValue[roll], 0);
                 HuSprPriSet(entry->sprites[entry->rollValueIdx], 0, 0x4000);
-                func_800550F4_main(entry->sprites[entry->rollValueIdx], 0, 1);
+                HuSprAnimModeSet(entry->sprites[entry->rollValueIdx], 0, 1);
             }
 
             if ((func_800F8858_shared_board() == 0) && (D_8010570F_shared_board == 0)) {
@@ -1297,7 +1297,7 @@ static void func_800DDE3C_shared_board(void) {
                 DataClose(data);
                 HuSprGrpMemberSet(grp, 0, anim, 0);
                 HuSprPriSet(grp, 0, 0xB);
-                func_800550F4_main(grp, 0, 0);
+                HuSprAnimModeSet(grp, 0, 0);
                 HuSprAttrSet(grp, 0, 0x180C);
                 HuSprPosSet(grp, 0, 160, 90);
                 HuSprTPLvlSet(grp, 0, 0);

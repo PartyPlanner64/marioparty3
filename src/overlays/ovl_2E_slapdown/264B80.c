@@ -382,7 +382,7 @@ void func_80106600_slapdown(omObjData *obj) {
 }
 
 void func_80106608_slapdown(omObjData *obj) {
-    D_8010AAF0_slapdown = func_8000B838_main(0x4F0000);
+    D_8010AAF0_slapdown = HuSprAnimDataRead(0x4F0000);
     D_8010AAF2_slapdown = espEntry(D_8010AAF0_slapdown, 0, 0);
     espAttrSet(D_8010AAF2_slapdown, 0x4000);
     D_8010AAF4_slapdown = 160.0f;
@@ -1237,13 +1237,13 @@ void func_8010924C_slapdown(omObjData *obj) {
     s16 i;
 
     if (obj->work[0] == 0 || obj->work[0] == 3) {
-        entry->unk_40[0] = func_8000B838_main(0x4F000C);
+        entry->unk_40[0] = HuSprAnimDataRead(0x4F000C);
         entry->unk_40[1] = espEntry(entry->unk_40[0], 0, 0);
         if (obj->work[0] == 3) {
             espZRotSet(entry->unk_40[1], 180.0f);
         }
     } else {
-        entry->unk_40[0] = func_8000B838_main(0x4F000B);
+        entry->unk_40[0] = HuSprAnimDataRead(0x4F000B);
         entry->unk_40[1] = espEntry(entry->unk_40[0], 0, 0);
         if (obj->work[0] == 2) {
             espZRotSet(entry->unk_40[1], 180.0f);
@@ -1254,7 +1254,7 @@ void func_8010924C_slapdown(omObjData *obj) {
     espDispOff(entry->unk_40[1]);
     espPriSet(entry->unk_40[1], 0xEEEE);
     for (i = 0; i < 4; i++) {
-        entry->unk_40[0] = func_8000B838_main(D_8010A878_slapdown[i]);
+        entry->unk_40[0] = HuSprAnimDataRead(D_8010A878_slapdown[i]);
         switch (i) {
             case 0:
                 entry->unk_06 = espEntry(entry->unk_40[0], 0, 0);

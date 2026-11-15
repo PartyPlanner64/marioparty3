@@ -460,7 +460,7 @@ void func_801059A0_selmenu(void) {
         D_8010A1FC_selmenu[i] = 0;
         D_8010A1F8_selmenu[i] = 0;
     }
-    D_8010A202_selmenu = func_8000B838_main(0x10020);
+    D_8010A202_selmenu = HuSprAnimDataRead(0x10020);
     func_8000B880_main(D_8010A202_selmenu, 0.3f, 0.3f, 0.3f);
     for (i = 0; i < 35; i++) {
         sprite = espEntry(D_8010A202_selmenu, i % 6, 1);
@@ -470,7 +470,7 @@ void func_801059A0_selmenu(void) {
         espTPLvlSet(sprite, 0xFF);
         espPosSet(sprite, (i % 7) * 48, (i / 7) * 48);
     }
-    D_8010A204_selmenu = func_8000B838_main(10);
+    D_8010A204_selmenu = HuSprAnimDataRead(10);
     D_8010A206_selmenu = espEntry(D_8010A204_selmenu, 0, 1);
     espDispOn(D_8010A206_selmenu);
     espPosSet(D_8010A206_selmenu, 0x80, 0x80);
@@ -478,7 +478,7 @@ void func_801059A0_selmenu(void) {
     for (i = 0; i < 40; i++) {
         D_8010A210_selmenu[i] = -1;
     }
-    D_8010A208_selmenu = func_8000B838_main(12);
+    D_8010A208_selmenu = HuSprAnimDataRead(12);
     for (i = 0; i < 4; i++) {
         D_8010A27C_selmenu[i] = 0;
         D_8010A284_selmenu[i] = 0;

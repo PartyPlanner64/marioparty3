@@ -26,39 +26,52 @@ typedef struct BoardResult2StatFiles {
     s32 files[13];
 } BoardResult2StatFiles;
 
-extern BoardResult2Positions D_801097C0_boardresult2;
-extern BoardResult2PlayerFiles D_801097D0_boardresult2;
-extern BoardResult2Portraits D_80109800_boardresult2;
-extern BoardResult2Positions D_80109820_boardresult2;
-extern BoardResult2Files4 D_801098B4_boardresult2;
-extern BoardResult2BoardFiles D_801098C4_boardresult2;
-extern BoardResult2Portraits D_801098DC_boardresult2;
-extern BoardResult2Portraits D_801098FC_boardresult2;
-extern BoardResult2Files4 D_8010991C_boardresult2;
-extern BoardResult2StatFiles D_8010992C_boardresult2;
-
-extern UnkBoard4 *D_801099A0_boardresult2;
-extern UnkBoard4 *D_801099A4_boardresult2;
-extern UnkBoard4 *D_801099A8_boardresult2;
-extern UnkBoard4 *D_801099B0_boardresult2[4];
-extern UnkBoard4 *D_801099C0_boardresult2;
-extern UnkBoard4 *D_801099C4_boardresult2;
-extern UnkOvl81_2 *D_801099C8_boardresult2;
-extern UnkBoard4 *D_801099CC_boardresult2;
-extern UnkBoard4 *D_801099D0_boardresult2;
-extern UnkBoard4 *D_801099D4_boardresult2;
-extern UnkBoard4 *D_801099D8_boardresult2[4];
-extern UnkBoard4 *D_801099E8_boardresult2;
-extern UnkBoard4 *D_801099EC_boardresult2;
-extern UnkBoard4 *D_801099F0_boardresult2;
-extern UnkBoard4 *D_801099F4_boardresult2;
-extern s32 D_801099F8_boardresult2[16];
-extern s16 D_80109A38_boardresult2[10];
-extern s16 D_80109A4C_boardresult2;
-extern s16 D_80109A4E_boardresult2;
-extern s32 D_801097B0_boardresult2;
-extern s32 D_801097B4_boardresult2;
 extern s16 kakusiMasuItemHis[10];
+
+s32 D_801097B0_boardresult2 = 0;
+s32 D_801097B4_boardresult2 = 0;
+s32 D_801097B8_boardresult2[2] = { 0 }; /* Unreferenced. */
+
+BoardResult2Positions D_801097C0_boardresult2 = {
+    { 55, 111, 171, 252 }
+};
+
+BoardResult2PlayerFiles D_801097D0_boardresult2 = {
+    { { 0x00130032, 0x0013003E, 0x00130042 },
+      { 0x00130033, 0x0013003F, 0x00130043 },
+      { 0x00130034, 0x00130040, 0x00130044 },
+      { 0x00130035, 0x00130041, 0x00130045 } }
+};
+
+BoardResult2Portraits D_80109800_boardresult2 = {
+    { 0x00130036, 0x00130037, 0x00130038, 0x00130039,
+      0x0013003A, 0x0013003B, 0x0013003C, 0x0013003D }
+};
+
+BoardResult2Positions D_80109820_boardresult2 = {
+    { 0, 60, 142, 0 }
+};
+
+UnkBoard4 *D_801099A0_boardresult2 BSS;
+UnkBoard4 *D_801099A4_boardresult2 BSS;
+UnkBoard4 *D_801099A8_boardresult2 BSS;
+u8 D_801099AC_boardresult2[4] BSS; /* Unreferenced. */
+UnkBoard4 *D_801099B0_boardresult2[4] BSS;
+UnkBoard4 *D_801099C0_boardresult2 BSS;
+UnkBoard4 *D_801099C4_boardresult2 BSS;
+UnkOvl81_2 *D_801099C8_boardresult2 BSS;
+UnkBoard4 *D_801099CC_boardresult2 BSS;
+UnkBoard4 *D_801099D0_boardresult2 BSS;
+UnkBoard4 *D_801099D4_boardresult2 BSS;
+UnkBoard4 *D_801099D8_boardresult2[4] BSS;
+UnkBoard4 *D_801099E8_boardresult2 BSS;
+UnkBoard4 *D_801099EC_boardresult2 BSS;
+UnkBoard4 *D_801099F0_boardresult2 BSS;
+UnkBoard4 *D_801099F4_boardresult2 BSS;
+s32 D_801099F8_boardresult2[16] BSS;
+s16 D_80109A38_boardresult2[10] BSS;
+s16 D_80109A4C_boardresult2 BSS;
+s16 D_80109A4E_boardresult2 BSS;
 
 void func_80105B98_boardresult2(s16 model, s16 animIdx);
 void func_80105CB0_boardresult2(void);
@@ -615,17 +628,35 @@ void func_801074B4_boardresult2(void) {
     HuSprPosSet(D_801099F4_boardresult2->unk_0A, 0, D_801097B4_boardresult2 * 44 + 146, 96);
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/boardresult2/3CFC80", D_801098B4_boardresult2);
+const BoardResult2Files4 D_801098B4_boardresult2 = {
+    { 0x00130047, 0x00130048, 0x00130049, 0x0013004A }
+};
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/boardresult2/3CFC80", D_801098C4_boardresult2);
+const BoardResult2BoardFiles D_801098C4_boardresult2 = {
+    { 0x00130069, 0x0013006A, 0x0013006B, 0x0013006C,
+      0x0013006D, 0x0013006E }
+};
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/boardresult2/3CFC80", D_801098DC_boardresult2);
+const BoardResult2Portraits D_801098DC_boardresult2 = {
+    { 0x00210008, 0x00210009, 0x0021000A, 0x0021000B,
+      0x0021000C, 0x0021000D, 0x0021000E, 0x0021000F }
+};
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/boardresult2/3CFC80", D_801098FC_boardresult2);
+const BoardResult2Portraits D_801098FC_boardresult2 = {
+    { 0x001301D5, 0x001301D6, 0x001301D7, 0x001301D8,
+      0x001301D9, 0x001301DA, 0x001301DB, 0x001301DC }
+};
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/boardresult2/3CFC80", D_8010991C_boardresult2);
+const BoardResult2Files4 D_8010991C_boardresult2 = {
+    { 0x00130072, 0x00130073, 0x00130074, 0x00130075 }
+};
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/boardresult2/3CFC80", D_8010992C_boardresult2);
+const BoardResult2StatFiles D_8010992C_boardresult2 = {
+    { 0x0013004D, 0x0013004E, 0x0013004F, 0x00130050,
+      0x00130051, 0x00130052, 0x00130053, 0x00130054,
+      0x00130055, 0x00130056, 0x00130057, 0x00130058,
+      0x00130059 }
+};
 
 void func_80107964_boardresult2(void) {
     BoardResult2Files4 rankFiles = D_801098B4_boardresult2;

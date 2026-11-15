@@ -812,10 +812,19 @@ segments:
       - [0x10C230, c]
       - [0x113520, c]
       - [0x113750, c]
-      - [0x1143C0, data, EA790] #801007A0
+      - [0x1143C0, .data, EB2F0] #801007A0
+      - [0x114470, .data, ECA50]
+      - [0x114970, .data, EDDB0]
+      - [0x114980, .data, EE660]
+      - [0x1149C0, .data, F2910]
+      - [0x114B20, .data, F5070]
       - [0x114B40, .data, F5B90]
-      - [0x114BB0, data, F5E80]
-      - [0x114DC0, data, F9DE0]
+      - [0x114BB0, .data, F5E80]
+      - [0x114DC0, .data, F9DE0]
+      - [0x114E60, .data, FA250]
+      - [0x1150A0, .data, FFB10]
+      - [0x1150B0, .data, 1006F0]
+      - [0x1150E0, .data, 101840]
       - [0x115250, .data, 105D50]
       - [0x115390, .data, 1063F0] #80101770
       - [0x1153A0, .data, 106A50] #80101780
@@ -837,12 +846,7 @@ segments:
       - [0x116140, .rodata, 10AD50]
       - [0x116170, .rodata, 10C230]
       - [0x116300, .rodata, 113520]
-      # - [0x115BF0, rodata]
-      - {0x116320, type: bss, vram: 0x80102700, name: ovl_80_bss}
-      # - {0x116320, type: bss, vram: 0x80105620, name: 10AD50}
-      # - {0x116320, type: bss, vram: 0x80105660, name: 10C230}
-      # - {0x116320, type: bss, vram: 0x801056C0, name: 113750}
-      # - {0x116320, type: bss, vram: 0x80105700, name: ovl_80_bss_2}
+      - {0x116320, type: .bss, vram: 0x80102700, name: bss}
 
   - type: code
     start: 0x116320

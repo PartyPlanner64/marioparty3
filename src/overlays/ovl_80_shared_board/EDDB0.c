@@ -7,8 +7,7 @@
 
 extern s32 (*D_80102BC4_shared_board)(void);
 extern s32 D_80102BC0_shared_board;
-extern s16 D_80102BC2_shared_board;
-extern s16 D_80100D50_shared_board[];
+s16 D_80100D50_shared_board[] = { 6, 7, 8, 9, 10, 11, 12, 13 };
 
 // main CPU decision logic function
 s16 MBComTreeExec(DecisionTreeNonLeafNode *arg0) {
@@ -201,7 +200,7 @@ s16 MBComTreeExec(DecisionTreeNonLeafNode *arg0) {
                 clink = node->node_data1.data_u8[1];
                 cidxMin = node->node_data1.data_u8[2];
                 cidxMax = node->node_data1.data_u8[3];
-                player = MBPlayerGet(D_80102BC2_shared_board);
+                player = MBPlayerGet((s16)D_80102BC0_shared_board);
                 if (player->clink != clink) {
                     continue;
                 }

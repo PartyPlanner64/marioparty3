@@ -4,6 +4,12 @@
 #include "common_board.h"
 #include "game/board.h"
 
+typedef struct UnkFAF78 {
+    /* 0x00 */ s32 unk_00;   /* count */
+    /* 0x04 */ s32 *unk_04;  /* id list */
+    /* 0x08 */ char pad08[4];
+} UnkFAF78; /* size = 0xC */
+
 void func_800E6630_shared_board(u32 arg0);
 void func_800E66D4_shared_board(void);
 void MBBackClose(void);

@@ -3,6 +3,14 @@
 
 #include "common_board.h"
 
+typedef struct ItemSlotEntry {
+    /* 0x00 */ s16 obj;
+    /* 0x02 */ s16 x;
+    /* 0x04 */ s16 y;
+    /* 0x06 */ s16 w;
+    /* 0x08 */ s16 h;
+} ItemSlotEntry; // sizeof 0xA
+
 void MBMgCallHisInit(void);
 void func_800DF854_shared_board(void);
 void MBMgCallClose(void);

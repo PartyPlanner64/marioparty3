@@ -527,3 +527,9 @@ D_8010AFB8_eye_sore = D_8010AF70_eye_sore + 0x48; /* [0].unk_44.y */
 D_80102CAA_name_81 = D_80102CA8_name_81 + 0x2;
 D_80102CBA_name_81 = D_80102CB8_name_81 + 0x2;
 D_80102CBE_name_81 = D_80102CB8_name_81 + 0x6;
+
+/* shared_board: field aliases into BSS defined in ovl_80_shared_board/bss.c. */
+D_80102BD4_shared_board = D_80102BD0_shared_board + 0x4; /* [0].y */
+D_80102D3A_shared_board = D_80102D38_shared_board + 0x2; /* SharedBoardBss2D38.sprAnims */
+D_80105634_shared_board = D_80105630_shared_board + 0x4; /* [1] */
+D_80105638_shared_board = D_80105630_shared_board + 0x8; /* [2] */

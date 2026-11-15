@@ -16,66 +16,58 @@ typedef struct UnkPauseMesWork {
     /* 0x04 */ u16 unk_04;
 } UnkPauseMesWork;
 
-extern s16 D_80105564_shared_board;
-extern s16 D_801015FC_shared_board[];
-extern s16 D_80101604_shared_board[];
+u8 D_801014C0_shared_board[MB_MAX_PLAYERS] = { 34, 62, 84, 100 };
+// The zero gap here suggests 101840.c is two files split at MBPauseMesNumGet (cf. name_81 D6B00/D8250).
+u8 D_801014C4_shared_board[12] = { 0 }; /* Unreferenced. */
+s32 D_801014D0_shared_board[] = { 0x13007D, 0x13007E, 0x13007F, 0x130080, 0x130081, 0x130082 };
+s16 D_801014E8_shared_board = 0;
+s16 D_801014EA_shared_board = 0;
+s32 D_801014EC_shared_board = 0;
+s32 D_801014F0_shared_board = 0;
+u8 D_801014F4_shared_board[][3] = {
+    { 254, 255, 164 },
+    { 176, 255, 164 },
+    { 255, 164, 172 },
+    { 164, 231, 255 },
+    { 204, 255, 131 }
+};
+s32 D_80101504_shared_board[] = { 0x130084, 0x130085, 0x130086, 0x130087 };
+s32 D_80101514_shared_board[] = { 0x3001, 0x300A, 0x3004 };
+s32 D_80101520_shared_board[] = { 0x5101, 0x5105, 0x5127, 0x512C, 0x5121, 0x5108, 0x510C, 0x5110 };
+s32 D_80101540_shared_board[] = { 0x13008C, 0x13008D, 0x13008F, 0x130092, 0x130095, 0x130099, 0x13009B, 0x13009A };
+s32 D_80101560_shared_board[] = { 0x13008D, 0x13008E };
+s32 D_80101568_shared_board[] = { 0x13008F, 0x130090 };
+s32 D_80101570_shared_board[] = { 0x130091, 0x130092, 0x130093 };
+s32 D_8010157C_shared_board[] = { 0x130094, 0x130095, 0x130096 };
+s32 D_80101588_shared_board[] = { 0x130097, 0x130098, 0x130099 };
+s32 D_80101594_shared_board = 0x1300B1;
+s32 D_80101598_shared_board = 0x1300B2;
+s32 D_8010159C_shared_board = 0x13009D;
+s32 D_801015A0_shared_board[] = { 0x511F, 0x5120 };
+s32 D_801015A8_shared_board[] = { 0x130107, 0x130108, 0x130109, 0x13010A, 0x13010B, 0x13010C, 0x13010D, 0x13010E };
+s32 D_801015C8_shared_board[] = { 0x13009E, 0x13009F, 0x1300A0, 0x1300A1, 0x1300A2, 0x1300A6, 0x1300A5, 0x1300A4, 0x1300A3 };
+s8 D_801015EC_shared_board[8] = { 0, -1, 1, -1, 2, -1, 3, -1 };
+s8 D_801015F4_shared_board[8] = { 4, 8, 4, 7, 4, 6, 4, 5 };
+s16 D_801015FC_shared_board[4] = { 100, 236, 100, 236 };
+s16 D_80101604_shared_board[4] = { 50, 50, 122, 122 };
+s16 D_8010160C_shared_board[4][4] = {
+    { 0, 2, 0, 1 },
+    { 0, 2, -1, 0 },
+    { -2, 0, 0, 1 },
+    { -2, 0, -1, 0 }
+};
+
 extern s16 D_80105564_shared_board;
 extern s16 D_80105560_shared_board[];
-extern s32 D_80101514_shared_board[];
 extern s32 D_800A12C0_main;
 extern s32 D_800A12C4_main;
-extern s16 D_801014EA_shared_board;
-extern s32 D_801014EC_shared_board;
-extern s16 D_8010555A_shared_board;
-extern s16 D_8010555E_shared_board;
 extern UnkMBGuideData* D_80105550_shared_board;
 extern s32 D_80105558_shared_board;
 extern s32 D_8010555C_shared_board;
-extern s32 D_80101560_shared_board[];
-extern s32 D_80101568_shared_board[];
-extern s32 D_80101570_shared_board[];
-extern s32 D_8010157C_shared_board[];
-extern s32 D_80101588_shared_board[];
-extern s32 D_80101594_shared_board;
-extern s32 D_80101598_shared_board;
-extern s8 D_801015EC_shared_board[8];
-extern s8 D_801015F4_shared_board[8];
-extern s16 D_801015FC_shared_board[4];
-extern s16 D_80101604_shared_board[4];
-extern s16 D_8010160C_shared_board[4][4];
-extern s32 D_801015A8_shared_board[];
-extern s32 D_801015C8_shared_board[];
-extern s32 D_80101520_shared_board[];
-extern s32 D_80101540_shared_board[];
-extern s32 D_8010159C_shared_board;
 extern s16 D_80105556_shared_board;
-extern s32 D_801015A0_shared_board;
-extern s16 D_80105560_shared_board[];
-extern s32 D_80101514_shared_board[];
-extern s32 D_800A12C0_main;
-extern s32 D_800A12C4_main;
-extern s16 D_801014E8_shared_board;
-extern s16 D_801014EA_shared_board;
-extern s32 D_801014EC_shared_board;
-extern s16 D_8010555A_shared_board;
-extern s16 D_8010555E_shared_board;
-extern s32 D_80105558_shared_board;
-extern s32 D_8010555C_shared_board;
-extern s32 D_80101560_shared_board[];
-extern s32 D_80101568_shared_board[];
-extern s32 D_80101570_shared_board[];
-extern s32 D_8010157C_shared_board[];
-extern s32 D_80101588_shared_board[];
-extern s32 D_80101594_shared_board;
-extern s32 D_80101598_shared_board;
-extern s32 D_801014F0_shared_board;
-extern u8 D_801014F4_shared_board[][3];
-extern s32 D_801014D0_shared_board[];
-extern s32 D_80101504_shared_board[];
 extern s8 D_800A176D_main;
 extern s16 D_80105554_shared_board;
 extern UnkBoard D_80105718_shared_board[16];
-extern u8 D_801014C0_shared_board[];
 
 static void func_800EDC4C_shared_board(s32 arg0);
 static void func_800EDC90_shared_board(s32, s32, s32);
@@ -914,8 +906,8 @@ static Process* MBPauseMesCreate(s32* arg0, s32 arg1, s16 arg2) {
 
 static void func_800EFE0C_shared_board(Process* arg0) {
     if (D_801014EC_shared_board != 0) {
-        HuWinKill(D_8010555A_shared_board);
-        HuWinKill(D_8010555E_shared_board);
+        HuWinKill(D_80105558_shared_board);
+        HuWinKill(D_8010555C_shared_board);
     }
     omDelPrcObj(arg0);
 }
@@ -1252,7 +1244,7 @@ static s32 MBPauseQuitWinExec(s32 arg0) {
         HuPrcVSleep();
     }
     
-    temp_s3 = MBPauseMesCreate(&D_801015A0_shared_board, 0, temp_v0);
+    temp_s3 = MBPauseMesCreate(D_801015A0_shared_board, 0, temp_v0);
     HuWinActivePlayerSet(temp_v0, 1 << arg0);
     temp = HuWinChoiceGet(temp_v0, 0, 0);
     if (temp == 1) {

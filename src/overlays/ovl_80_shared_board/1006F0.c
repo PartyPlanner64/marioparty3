@@ -12,7 +12,8 @@ typedef struct UnkProcess {
     /* 0x1C */ s32 interpolationTime;
 } UnkProcess;
 
-extern s32 D_80101490_shared_board[];
+s32 D_80101490_shared_board[] = { 5, 25, 60, 0 };
+s32 mbCharNameMesTbl[] = { 0x1C00, 0x1C01, 0x1C02, 0x1C03, 0x1C04, 0x1C05, 0x1C06, 0x1C07 };
 
 void MBMasuPosGet(s16 playerNo, s16 spaceIdx, Vec* out) {
     SpaceData* space = MBMasuGet(spaceIdx);

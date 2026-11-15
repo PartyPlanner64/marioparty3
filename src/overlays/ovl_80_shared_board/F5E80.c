@@ -53,17 +53,11 @@ typedef struct TelopData {
 // s16 func_8003A308_main(char* arg0, char* arg1, s32 arg2, s16 arg3, u16 arg4);
 // s32 func_800F52C4_shared_board(void);
 
-extern char* D_80101170_shared_board[];
 extern Vec D_8010125C_shared_board;
-extern s8 D_80101194_shared_board[];
-extern f32 D_80102D94_shared_board;
 extern u8 D_80102D36_shared_board;
 extern s16 D_80102C50_shared_board;
 extern s16 D_80102C52_shared_board;
 extern f32 D_801049F8_shared_board[2];
-extern s32 D_80101060_shared_board[];
-extern s32 D_801010F8_shared_board[];
-extern s16 D_80101148_shared_board[];
 extern s16 D_80102D34_shared_board;
 extern s16 D_80102D38_shared_board;
 extern s16 D_80102D3A_shared_board[];
@@ -82,14 +76,9 @@ extern Vec D_80102D78_shared_board;
 extern Vec D_80102D84_shared_board;
 extern Vec D_80102D90_shared_board;
 extern Object* D_80102D54_shared_board;
-extern s16 D_80102CE0_shared_board[];
 extern s32 D_80102D58_shared_board;
-extern s8 D_8010118C_shared_board[];
-extern s32 D_80100F90_shared_board;
 extern s32 D_80102CB4_shared_board;
-extern s16 D_801010E8_shared_board[][2];
 extern s32 D_80102CB0_shared_board;
-extern s32 (*MBItemFunctions[])(void);
 extern s32 D_800D41B0_main[];
 
 typedef struct SomeStruct {
@@ -105,18 +94,33 @@ typedef struct SomeStruct2 {
 
 extern SomeStruct2 D_8010225C_shared_board;
 
-// s32 D_80100F90_shared_board = -1;
-// s8 D_80100F94_shared_board[] = {5, 5, 5, 5, 5, 5, 10, 10, 10, 10, 10, 15, 10, 10, 20, -1, -1, -1, -1, 30};
-// s32 D_80100FA8_shared_board[] = {3, 1, 2, 4, 3, 2, 4, 2, 3, 5, 5, 6, 3, 3, 7, 4, 6, 6, 6};
-// s32 D_80100FF4_shared_board[] = {3, 1, 2, 4, 3, 2, 4, 2, 3, 5, 5, 8, 1, 3, 10, 1, 7, 6, 9};
-// s32 D_80101040_shared_board[] = {0x6A, 0x6B, 0x6C, 0x6D, 0x6E, 0x6F, 0x70, 0x71};
+s32 D_80100F90_shared_board = -1;
+u8 D_80100F94_shared_board[] = { 5, 5, 5, 5, 5, 5, 10, 10, 10, 10, 10, 15, 10, 10, 20, 255, 255, 255, 255, 30 };
+s32 D_80100FA8_shared_board[] = { 3, 1, 2, 4, 3, 2, 4, 2, 3, 5, 5, 6, 3, 3, 7, 4, 6, 6, 6 };
+s32 D_80100FF4_shared_board[] = { 3, 1, 2, 4, 3, 2, 4, 2, 3, 5, 5, 8, 1, 3, 10, 1, 7, 6, 9 };
+s32 D_80101040_shared_board[] = { 0x6A, 0x6B, 0x6C, 0x6D, 0x6E, 0x6F, 0x70, 0x71 };
+extern char *D_80101060_shared_board[];
+extern s32 (*MBItemFunctions[])(void);
+extern s16 D_801010E8_shared_board[][2];
+extern s32 D_801010F8_shared_board[];
+extern s16 D_80101148_shared_board[];
+extern char *D_80101170_shared_board[];
+extern s8 D_8010118C_shared_board[];
+extern s8 D_80101194_shared_board[];
+
+extern const char D_801021F0_shared_board[];
+extern const char D_80102200_shared_board[];
+extern const char D_80102210_shared_board[];
+extern const char D_80102220_shared_board[];
+extern const char D_80102230_shared_board[];
+extern const char D_80102240_shared_board[];
 
 // TODO: fix (u8*)arg1 hack
 void func_800E2260_shared_board(s32 arg0, char *arg1) {
     if (arg0 == CUR_PLAYER) {
         arg0 = GwSystem.current_player_index;
     }
-    func_8005FBA4_main((u8 *)arg1, D_80101060_shared_board[GwPlayer[arg0].chr]);
+    func_8005FBA4_main((u8 *)arg1, (s32)D_80101060_shared_board[GwPlayer[arg0].chr]);
 }
 
 void MBItemWarpBlockSwapInit(void) {
@@ -920,21 +924,57 @@ void MBItemDescExec(s32 arg0) {
     HuPrcChildWatch();
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_80_shared_board/F5E80", D_80102188_shared_board);
+char *D_80101060_shared_board[] = {
+    "\x82\x6C\x82\x60\x82\x71\x82\x68\x82\x6E",                 // ＭＡＲＩＯ
+    "\x82\x6B\x82\x74\x82\x68\x82\x66\x82\x68",                 // ＬＵＩＧＩ
+    "\x82\x6F\x82\x64\x82\x60\x82\x62\x82\x67",                 // ＰＥＡＣＨ
+    "\x82\x78\x82\x6E\x82\x72\x82\x67\x82\x68",                 // ＹＯＳＨＩ
+    "\x82\x76\x82\x60\x82\x71\x82\x68\x82\x6E",                 // ＷＡＲＩＯ
+    "\x82\x63\x82\x6A",                                         // ＤＫ
+    "\x82\x76\x82\x60\x82\x6B\x82\x74\x82\x68\x82\x66\x82\x68", // ＷＡＬＵＩＧＩ
+    "\x82\x63\x82\x60\x82\x68\x82\x72\x82\x78",                 // ＤＡＩＳＹ
+};
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_80_shared_board/F5E80", D_80102194_shared_board);
+s32 (*MBItemFunctions[])(void) = {
+    MBItemNullExec,
+    MBItemKinokoExec,
+    MBItemKeymanExec,
+    MBItemNKinokoExec,
+    MBItemRKinokoExec,
+    MBItemShopPhoneExec,
+    MBItemWarpBlockExec,
+    MBItemRobBoxExec,
+    MBItemKoopaPhoneExec,
+    MBItemKettouExec,
+    MBItemStarYokeExec,
+    MBItemSKinokoExec,
+    MBItemTereBellExec,
+    MBItemTereYokeSprayExec,
+    MBItemKSuitExec,
+    MBItemMajinLampExec,
+    MBItemKoopaCardExec,
+    MBItemExchangeBoxExec,
+    MBItemGambleCoinExec,
+    MBItemAfter5Exec,
+};
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_80_shared_board/F5E80", D_801021A4_shared_board);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_80_shared_board/F5E80", D_801021AC_shared_board);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_80_shared_board/F5E80", D_801021B8_shared_board);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_80_shared_board/F5E80", D_801021C4_shared_board);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_80_shared_board/F5E80", D_801021D0_shared_board);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_80_shared_board/F5E80", D_801021DC_shared_board);
+Unk3 *D_801010D0_shared_board = NULL;
+Unk3 *D_801010D4_shared_board = NULL;
+Unk3 *D_801010D8_shared_board = NULL;
+Unk3 *D_801010DC_shared_board = NULL;
+Unk3 *D_801010E0_shared_board = NULL;
+Unk3 *D_801010E4_shared_board = NULL;
+s16 D_801010E8_shared_board[][2] = {
+    { 5, 5 },
+    { -20, 10 },
+    { 5, 5 },
+    { -20, 10 }
+};
+s32 D_801010F8_shared_board[] = {
+    0x3E00, 0x3E01, 0x3E02, 0x3E03, 0x3E04, 0x3E05, 0x3E06, 0x3E07, 0x3E08, 0x3E09,
+    0x3E0A, 0x3E0D, 0x3E0C, 0x3E0B, 0x3E0E, 0x3E10, 0x3E11, 0x3E12, 0x3E13, 0x3E0F
+};
+s16 D_80101148_shared_board[] = { 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 51, 52, 53, 54, 50 };
 
 void MBItemKSuitWalkExec(void) {
     s8 sp20[4];
@@ -1272,13 +1312,13 @@ static void MBTelopMgTypeMain(omObjData *obj) {
         }
     }
 
-    HuSprPosSet(D_80102CE0_shared_board[D_80102D34_shared_board],
+    HuSprPosSet(D_80102CC0_shared_board.strGId[D_80102D34_shared_board],
         0,
         (obj->rot.x + 80.0f),
         (D_80102D58_shared_board + 2.0f * sindf(obj->rot.z)));
 
     for (i = 1; D_8010118C_shared_board[obj->work[0]] >= i; i++) {
-        HuSprTPLvlSet(D_80102CE0_shared_board[D_80102D34_shared_board], i, (obj->scale.x * 256.0f));
+        HuSprTPLvlSet(D_80102CC0_shared_board.strGId[D_80102D34_shared_board], i, (obj->scale.x * 256.0f));
     }
 }
 
@@ -1397,10 +1437,10 @@ void MBTelopMgTypeCreate(s32 arg0, u32 arg1) {
         MBCamera3Dto2D(&D_80102D54_shared_board->coords, sp18);
         D_80102D58_shared_board = (sp18[1] - 14.0f);
         D_80102D58_shared_board = D_80102D58_shared_board + ((1.3f - MBCameraZoomGet()) * 50.0f);
-        HuSprPosSet(D_80102CE0_shared_board[D_80102D34_shared_board], 0, (D_80101194_shared_board[var_s1] + 0x50), D_80102D58_shared_board);
+        HuSprPosSet(D_80102CC0_shared_board.strGId[D_80102D34_shared_board], 0, (D_80101194_shared_board[var_s1] + 0x50), D_80102D58_shared_board);
         
         for (i = 1; D_8010118C_shared_board[var_s1] >= i; i++) {
-            HuSprTPLvlSet(D_80102CE0_shared_board[D_80102D34_shared_board], i, 0);
+            HuSprTPLvlSet(D_80102CC0_shared_board.strGId[D_80102D34_shared_board], i, 0);
         }
         
         temp_v0_2 = omAddObj(-0x8000, 0, 0, -1, MBTelopMgTypeMain);
@@ -1602,7 +1642,7 @@ void MBGuidePosSet(UnkMBGuideData* arg0, s16 arg1, s16 arg2) {
     s16 var2;
 
     arg0->spriteGroup = arg1;
-    D_80102D94_shared_board = (arg1 * 4.0f) + 480.0f;
+    D_80102D90_shared_board.y = (arg1 * 4.0f) + 480.0f;
     if ((arg2) != 0) {
         var1 = 0x5B;
         var2 = 0x50;
@@ -1614,5 +1654,14 @@ void MBGuidePosSet(UnkMBGuideData* arg0, s16 arg1, s16 arg2) {
     }
 }
 
-//this should not be alone; probably belongs with strings like D_801021F0_shared_board " 1 VS 1 GAME";
-const char D_801021EC_shared_board[] = "";
+char *D_80101170_shared_board[] = {
+    (char *)D_80102240_shared_board, // "4=PLAYER GAME"
+    (char *)D_80102230_shared_board, // " 1 VS 3 GAME"
+    (char *)D_80102220_shared_board, // " 2 VS 2 GAME"
+    (char *)D_80102210_shared_board, // " ITEM   GAME"
+    (char *)D_80102200_shared_board, // " BATTLE GAME"
+    (char *)D_801021F0_shared_board, // " 1 VS 1 GAME"
+    "",
+};
+s8 D_8010118C_shared_board[] = { 13, 12, 12, 12, 12, 12, 0 };
+s8 D_80101194_shared_board[] = { -6, 0, 0, 0, 0, 0, 0 };

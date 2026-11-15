@@ -10,7 +10,6 @@
 #include "ECA50.h"
 
 extern u32 D_800D2094_main;
-extern u32 D_80100EE8_shared_board;
 typedef struct ItemRect {
     s16 x;
     s16 y;
@@ -36,13 +35,58 @@ typedef struct Sp18Struct {
     DefinitelyNotItemRectTable notRectTable2;
 } Sp18Struct;
 
-typedef struct ItemSlotEntry {
-    /* 0x00 */ s16 obj;
-    /* 0x02 */ s16 x;
-    /* 0x04 */ s16 y;
-    /* 0x06 */ s16 w;
-    /* 0x08 */ s16 h;
-} ItemSlotEntry; // sizeof 0xA
+u8 D_80100DA0_shared_board[] = { 21, 22, 23, 24, 25, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 44 };
+u8 D_80100DB4_shared_board[] = { 21, 25, 28, 29, 30, 33, 34, 38, 40 };
+u8 D_80100DC0_shared_board[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+u8 D_80100DCC_shared_board[] = { 2, 3, 4, 5, 6, 9, 10 };
+u8 D_80100DD4_shared_board[] = { 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 };
+u8 D_80100DE0_shared_board[] = { 11, 12, 16, 17, 19 };
+u8 D_80100DE8_shared_board[] = { 26, 41, 42, 43, 45, 46, 47, 48 };
+u8 D_80100DF0_shared_board[] = { 42, 43, 45, 46 };
+u8 D_80100DF4_shared_board[] = { 59, 60, 61, 62, 63, 64 };
+u8 D_80100DFC_shared_board[] = { 59, 60, 61, 62, 63, 64 };
+u8 D_80100E04_shared_board[] = { 49, 50, 51, 52, 53, 54, 55, 56, 57, 58 };
+u8 D_80100E10_shared_board[] = { 49, 50, 51, 53, 55, 56, 57 };
+u8 D_80100E18_shared_board[] = { 5, 3, 3, 3, 3, 5 };
+u8 D_80100E20_shared_board[] = { 10, 5, 5, 3, 3, 5 }; /* normal mode: recent minigame avoid count per category */
+u8 D_80100E28_shared_board[] = { 3, 3, 1, 3, 1, 2 }; /* hard mode: recent minigame avoid count per category */
+u8 D_80100E30_shared_board[][3] = {
+    { 25, 163, 92 },
+    { 52, 86, 206 },
+    { 219, 42, 106 },
+    { 222, 119, 31 },
+    { 26, 142, 177 },
+    { 215, 61, 109 }
+};
+ItemRect D_80100E44_shared_board[] = {
+    { 60, 348, 200, 20 },
+    { 60, 368, 200, 20 },
+    { 60, 388, 200, 20 }
+};
+ItemRect D_80100E5C_shared_board[] = {
+    { 60, 328, 200, 20 },
+    { 60, 348, 200, 20 },
+    { 60, 368, 200, 20 },
+    { 60, 388, 200, 20 },
+    { 60, 408, 200, 20 }
+};
+u8 D_80100E84_shared_board[] = { 50, 30, 30, 30, 30, 50 };
+u8 D_80100E8C_shared_board[] = { 114, 134, 134, 134, 134, 114 };
+s8 D_80100E94_shared_board[][2] = {
+    { 1, 0 },
+    { 9, 15 },
+    { 11, 8 },
+    { 13, 0 }
+};
+// Indexed by minigame ID, starting at 1.
+u8 D_80100E9C_shared_board[] = {
+    7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+    7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+    7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7
+};
+u32 D_80100EE8_shared_board = 0;
+u8 D_80100EEC_shared_board[] = { 20, 10, 10, 6, 8, 10 };
+u8 D_80100EF4_shared_board[] = { 9, 7, 5, 6, 4, 7 };
 
 extern Vec D_8010125C_shared_board;
 extern ItemRectTable const D_801020B0_shared_board;
@@ -51,28 +95,7 @@ extern DefinitelyNotItemRectTable const D_801020E0_shared_board;
 extern ItemSlotEntry D_80102BD0_shared_board[5];
 extern s8 D_80102C08_shared_board[5]; // generated minigame list
 extern s8 D_80102C0D_shared_board;
-extern u8 D_80100E18_shared_board[];
-extern u8 D_80100EEC_shared_board[];
-extern u8 D_80100EF4_shared_board[];
-extern u8 D_80100E20_shared_board[]; /* normal mode: recent minigame avoid count per category */
-extern u8 D_80100E28_shared_board[]; /* hard mode: recent minigame avoid count per category */
-extern u8 D_80100E9B_shared_board[];
-extern u8 D_80100E30_shared_board[][3];
-extern u8 D_80100DA0_shared_board[];
-extern u8 D_80100DC0_shared_board[];
-extern u8 D_80100DD4_shared_board[];
-extern u8 D_80100DF4_shared_board[];
-extern u8 D_80100DE8_shared_board[];
-extern u8 D_80100E04_shared_board[];
-extern u8 D_80100DB4_shared_board[];
-extern u8 D_80100DCC_shared_board[];
-extern u8 D_80100DE0_shared_board[];
-extern u8 D_80100DFC_shared_board[];
-extern u8 D_80100DF0_shared_board[];
-extern u8 D_80100E10_shared_board[];
 
-extern ItemRect D_80100E44_shared_board;
-extern ItemRect D_80100E5C_shared_board;
 
 typedef struct Unk800CC3DC {
     char unk_00[4];
@@ -86,12 +109,6 @@ extern s16 D_80102C0E_shared_board;
 extern s16 D_80102C10_shared_board;
 extern s16 D_80102C14_shared_board;
 extern u8 D_800CC3E0_main[];
-extern u8 D_80100E18_shared_board[];
-extern u8 D_80100E20_shared_board[];
-extern u8 D_80100E28_shared_board[];
-extern u8 D_80100E84_shared_board[];
-extern u8 D_80100E8C_shared_board[];
-extern s8 D_80100E94_shared_board[][2];
 extern u16 D_80102BD4_shared_board;
 extern s16 D_80102C12_shared_board;
 
@@ -494,7 +511,7 @@ void MBMgCallListCreate(s32 arg0) {
             HuWinMesSet(entry->obj, 0x4748, HUWIN_POS_CENTER, 4);
         }
 
-        HuWinMesColSet(entry->obj, D_80100E9B_shared_board[D_80102C08_shared_board[i]]);
+        HuWinMesColSet(entry->obj, D_80100E9C_shared_board[D_80102C08_shared_board[i] - 1]);
         HuWinMesSpeedSet(entry->obj, 0);
     }
 
@@ -695,12 +712,12 @@ static void MBMgCallColorGet(u8 *outSpaceTypes) {
 }
 
 ItemRectTable const D_801020B0_shared_board = {
-    { &D_80100E5C_shared_board,
-      &D_80100E44_shared_board,
-      &D_80100E44_shared_board,
-      &D_80100E44_shared_board,
-      &D_80100E44_shared_board,
-      &D_80100E5C_shared_board }
+    { D_80100E5C_shared_board,
+      D_80100E44_shared_board,
+      D_80100E44_shared_board,
+      D_80100E44_shared_board,
+      D_80100E44_shared_board,
+      D_80100E5C_shared_board }
 };
 
 DefinitelyNotItemRectTable const D_801020C8_shared_board = {

@@ -37,13 +37,64 @@ typedef struct UnkModelStruct {
     /* 0x38 */ f32 unk38;
 } UnkModelStruct; //sizeof 0x3C
 
-extern UnkModelStruct* D_80101248_shared_board;
-
-typedef struct UnkFAF78 {
-    /* 0x00 */ s32 unk_00;   /* count */
-    /* 0x04 */ s32 *unk_04;  /* id list */
-    /* 0x08 */ char pad08[4];
-} UnkFAF78; /* size = 0xC */
+s32 *D_80101240_shared_board = NULL; //TODO: fix type
+u32 *D_80101244_shared_board = NULL;
+UnkModelStruct *D_80101248_shared_board = NULL;
+u8 D_8010124C_shared_board = 255;
+f32 D_80101250_shared_board = 1.0f;
+f32 D_80101254_shared_board = 0.0f;
+f32 D_80101258_shared_board = 0.0f;
+Vec D_8010125C_shared_board = { 0.0f, 0.0f, 0.0f };
+s32 D_80101268_shared_board = 0;
+u8 D_8010126C_shared_board = 255;
+Gfx D_80101270_shared_board[] = {
+    gsDPPipeSync(),
+    gsDPSetCycleType(G_CYC_1CYCLE),
+    gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_DECALRGBA),
+    gsDPSetPrimColor(0, 0, 255, 255, 255, 255),
+    gsDPSetTexturePersp(G_TP_NONE),
+    gsDPSetTextureFilter(G_TF_AVERAGE),
+    gsDPSetTextureLUT(G_TT_NONE),
+    gsDPSetAlphaDither(G_AD_DISABLE),
+    gsSPEndDisplayList(),
+};
+Process *D_801012B8_shared_board = NULL;
+s32 D_801012BC_shared_board = 1;
+void *D_801012C0_shared_board = NULL;
+u8 (*D_801012C4_shared_board)[SPACES_MAX] = NULL;
+s32 D_801012C8_shared_board[] = { 0, 0x130215, 0x130216, 0, 0x130219, 0x13021F, 0x130218, 0x13021D, 0, 0x130217, 0, 0, 0x13021E, 0x130222, 0x13021B, 0x13021A };
+u8 D_80101308_shared_board[] = { 0, 2, 2, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1 }; //u8 array that links space type to render type
+s32 D_80101318_shared_board[] = { 0, 0x130248, 0x130249, 0, 0x13024B, 0x13024C, 0x130250, 0x13024D, 0, 0x13024F, 0, 0, 0x130251, 0x13024E, 0x130252, 0x13024A };
+Vtx D_80101358_shared_board[] = {
+    { { { 100, 0, -100 }, 0, { 992, 992 }, { 0, 0, 127, 255 } } },
+    { { { -100, 0, -100 }, 0, { 0, 992 }, { 0, 0, 127, 255 } } },
+    { { { -100, 0, 100 }, 0, { 0, 0 }, { 0, 0, 127, 255 } } },
+    { { { 100, 0, 100 }, 0, { 992, 0 }, { 0, 0, 127, 255 } } },
+};
+Vtx D_80101398_shared_board[] = {
+    { { { 100, 0, -100 }, 0, { 224, 224 }, { 0, 0, 127, 255 } } },
+    { { { -100, 0, -100 }, 0, { 0, 224 }, { 0, 0, 127, 255 } } },
+    { { { -100, 0, 100 }, 0, { 0, 0 }, { 0, 0, 127, 255 } } },
+    { { { 100, 0, 100 }, 0, { 224, 0 }, { 0, 0, 127, 255 } } },
+};
+Gfx D_801013D8_shared_board[] = {
+    gsSPSegment(0x00, 0x00000000),
+    gsSPClipRatio(FRUSTRATIO_2),
+    gsSPClearGeometryMode(0xFFFFFFFF),
+    gsSPSetGeometryMode(G_SHADE | G_CULL_BACK | G_SHADING_SMOOTH),
+    gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
+    gsDPPipeSync(),
+    gsDPSetCycleType(G_CYC_1CYCLE),
+    gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_DECALRGBA),
+    gsDPSetRenderMode(G_RM_XLU_SURF, G_RM_XLU_SURF2),
+    gsDPSetTexturePersp(G_TP_PERSP),
+    gsDPSetTextureFilter(G_TF_AVERAGE),
+    gsDPSetTextureLUT(G_TT_NONE),
+    gsDPSetAlphaCompare(G_AC_NONE),
+    gsDPSetAlphaDither(G_AD_DISABLE),
+    gsSPEndDisplayList(),
+};
+u8 D_80101468_shared_board[] = { 1, 2, 4, 1, 16, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 
 extern u16 D_80102DC0_shared_board;
 extern OverlayBgEntry *D_801030A8_shared_board[6][6];
@@ -51,33 +102,26 @@ extern OverlayBgEntry D_80102DD8_shared_board[36];
 extern OverlayBgEntry D_80103140_shared_board[];
 extern OSMesgQueue D_80103468_shared_board;
 extern u16 D_80105212_shared_board;
-extern u8 D_8010124C_shared_board;
-extern s32 D_801012C8_shared_board[];
-extern s32 D_80101318_shared_board[];
-extern s32* D_80101240_shared_board;
 extern u32 D_80102DB0_shared_board;
 extern s32 D_80102DB4_shared_board;
-extern u32* D_80101244_shared_board;
 extern u16 D_80102DC0_shared_board;
 extern f32 D_8010341C_shared_board;
 extern Vec2f D_801049F0_shared_board;
-extern f32 D_80101250_shared_board;
 extern f32 D_801049F8_shared_board[];
 extern OSMesgQueue D_80103468_shared_board;
-extern void* D_80103480_shared_board;
+extern OSMesg D_80103480_shared_board[36];
 extern OSThread D_80103510_shared_board;
 extern OSThread D_80103EC0_shared_board;
 extern s32 D_80104070_shared_board;
-extern void* D_80104898_shared_board;
-extern void* D_80104940_shared_board;
-extern void* D_801049E8_shared_board;
+extern OSMesg D_80104898_shared_board[36];
+extern OSMesg D_80104940_shared_board[36];
+extern OSMesg D_801049E8_shared_board[2];
 extern OSThread D_80103EC0_shared_board;
 extern s32 D_80104070_shared_board;
 extern s16 D_80102DC2_shared_board;
 extern s16 D_80102DC4_shared_board;
 extern s16 D_80102DC6_shared_board;
 extern s16 D_80102DC8_shared_board;
-extern f32 D_80101250_shared_board;
 extern Process* D_80103414_shared_board;
 extern Process* D_80103410_shared_board;
 extern f32 D_80103418_shared_board;
@@ -85,18 +129,10 @@ extern Vec D_80103420_shared_board;
 extern Vec D_8010342C_shared_board;
 extern Vec D_80103438_shared_board;
 extern Vec D_80103444_shared_board;
-extern Vec D_8010125C_shared_board;
-extern s32 D_80101268_shared_board;
-extern u8 D_8010126C_shared_board;
-extern Gfx D_80101270_shared_board[];
-extern s32 D_801012BC_shared_board;
-extern Process* D_801012B8_shared_board;
 extern f32 D_80102DBC_shared_board;
-extern void* D_801012C0_shared_board;
 extern s32 D_80105500_shared_board[];
 extern s16 D_80105540_shared_board[];
 extern s16 D_801054F8_shared_board;
-extern u8 D_80101468_shared_board[];
 extern s16 D_801054B6_shared_board;
 extern s16 D_801054B8_shared_board[];
 extern s16 D_801052B8_shared_board[];
@@ -106,12 +142,8 @@ extern void* D_80105280_shared_board;
 extern void* D_80105284_shared_board;
 extern s32 D_80105288_shared_board;
 extern s32 D_80105990_shared_board;
-extern s32* D_80101240_shared_board; //TODO: fix type
 extern Vec D_80103450_shared_board;
-extern f32 D_80101254_shared_board;
-extern f32 D_80101258_shared_board;
 extern s32 D_8010345C_shared_board;
-extern u16 D_8010345E_shared_board;
 extern s32 D_80103460_shared_board;
 extern UnkFAF78 *D_80103464_shared_board;
 extern u8* D_80102DCC_shared_board;
@@ -394,10 +426,10 @@ static void func_800E6DEC_shared_board(void) {
 }
 
 static void func_800E6EC8_shared_board(void) {
-    osCreateMesgQueue(&D_80103468_shared_board, &D_80103480_shared_board, 0x24);
-    osCreateMesgQueue(&D_80104880_shared_board, &D_80104898_shared_board, 0x24);
-    osCreateMesgQueue(&D_80104928_shared_board, &D_80104940_shared_board, 0x24);
-    osCreateMesgQueue(&D_801049D0_shared_board, &D_801049E8_shared_board, 2);
+    osCreateMesgQueue(&D_80103468_shared_board, D_80103480_shared_board, 0x24);
+    osCreateMesgQueue(&D_80104880_shared_board, D_80104898_shared_board, 0x24);
+    osCreateMesgQueue(&D_80104928_shared_board, D_80104940_shared_board, 0x24);
+    osCreateMesgQueue(&D_801049D0_shared_board, D_801049E8_shared_board, 2);
     D_80104070_shared_board = 1;
     osCreateThread(&D_80103EC0_shared_board, 0x64, (void (*)(void*)) func_800E6DEC_shared_board, NULL, &D_80104880_shared_board, 1);
     osStartThread(&D_80103EC0_shared_board);
@@ -1463,18 +1495,13 @@ void MBMasuStarSet(s32 arg0, s16 arg1) {
 
 extern s16 D_80105260_shared_board;
 extern u16 D_80105262_shared_board;
-extern u8 (*D_801012C4_shared_board)[SPACES_MAX];
-extern Gfx D_801013D8_shared_board[];
-extern Addr D_101358;
-extern Addr D_101398;
-extern u8 D_80101308_shared_board[]; //u8 array that links space type to render type
 
 static void MBMasuDraw(Gfx **arg0, Mtx *arg1, s32 arg2) {
     Gfx **gfxPos = arg0;
     HuMtx4F sp10;
     Vec2f sp50;
     Mtx *sp5C;
-    u8 *sp64;
+    Vtx *sp64;
     u8 *sp6C;
     s32 sp74;
     u16 sp7E;
@@ -1498,12 +1525,12 @@ static void MBMasuDraw(Gfx **arg0, Mtx *arg1, s32 arg2) {
 
         if ((D_80105260_shared_board == 0) || (var_v0 = 8, (D_80105260_shared_board != 1))) {
             var_v0 = 0x10;
-            sp64 = D_101358;
+            sp64 = (Vtx *)OS_K0_TO_PHYSICAL(D_80101358_shared_board);
             sp6C = D_80101308_shared_board;
             sp74 = 0;
         } else {
             var_v0 = 8;
-            sp64 = D_101398;
+            sp64 = (Vtx *)OS_K0_TO_PHYSICAL(D_80101398_shared_board);
             sp6C = NULL;
             sp74 = 1;
         }

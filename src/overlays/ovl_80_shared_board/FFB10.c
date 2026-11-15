@@ -2,8 +2,8 @@
 #include "game/board.h"
 #include "101840.h"
 
-extern s16 D_80101480_shared_board;
-extern s16 D_80101482_shared_board;
+s16 D_80101480_shared_board = 0;
+s16 D_80101482_shared_board = 0;
 
 static void func_800EBEF0_shared_board(s16 arg0) {
     if ((GwSystem.current_player_index == 4) || (D_80101482_shared_board != 0)) {

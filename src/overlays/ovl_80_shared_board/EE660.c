@@ -35,13 +35,18 @@ typedef struct UnkSharedBoard2 {
     Vec unk_0C;
 } UnkSharedBoard2;
 
-extern s32 D_80100D90_shared_board;
-extern s16 D_80100D94_shared_board[3][2];
+s32 D_80100D60_shared_board[6] = { 0x130207, 0x130207, 0x130207, 0x130207, 0x130207, 0x130208 };
+s32 D_80100D78_shared_board[6] = { 0x1300FE, 0x130206, 0x1301E7, 0x130266, 0x1301E8, 0x13020B };
+s32 D_80100D90_shared_board = 1;
+s16 D_80100D94_shared_board[3][2] = {
+    { 110, 64 },
+    { 210, 64 },
+    { 160, 64 }
+};
+
 extern u8 D_801057D9_shared_board;
 extern f32 D_800A0A7C_main;
 extern u8 D_80105700_shared_board;
-extern s32 D_80100D60_shared_board[6];
-extern s32 D_80100D78_shared_board[6];
 extern s8 D_80105704_shared_board;
 extern u8 D_8010570E_shared_board;
 extern f32 D_80105708_shared_board;

@@ -1,5 +1,6 @@
 #include "common_board.h"
 #include "game/board.h"
+#include "EB2F0.h"
 #include "EC3B0.h"
 #include "FA250.h"
 #include "106A50.h"
@@ -8,23 +9,26 @@
 #include "EE660.h"
 #include "F5B90.h"
 
-typedef struct UnkBoard6 {
-    /* 0x00 */ s8 unk_00;
-    /* 0x04 */ Object* unk4;
-    /* 0x08 */ Process *process;
-    /* 0x0C */ s16 unkC;
-    /* 0x0E */ s16 unkE;
-    /* 0x10 */ Vec unk10;
-} UnkBoard6;
-
 typedef struct StarGlowData {
     s16 x;
     s16 y;
 } StarGlowData; //sizeof 0x4
 
+s32 D_801007A0_shared_board[] = {
+    0x210008, 0x210009, 0x21000A, 0x21000B, 0x21000C, 0x21000D, 0x21000E, 0x21000F,
+    0x1301CF, 0x1301D0, 0x1301D1, 0x1301D2, 0x1301DD
+};
+s16 D_801007D4_shared_board[][4] = {
+    { 0, 2, 0, 1 },
+    { 0, 2, -1, 0 },
+    { -2, 0, 0, 1 },
+    { -2, 0, -1, 0 }
+};
+s16 D_801007F4_shared_board[] = { 66, 252, 66, 252 };
+s16 D_801007FC_shared_board[] = { 30, 30, 210, 210 };
+s32 D_80100804_shared_board[] = { 0x210008, 0x210009, 0x21000A, 0x21000B, 0x21000C, 0x21000D, 0x21000E, 0x21000F };
+s32 D_80100824_shared_board[] = { 0x1301D5, 0x1301D6, 0x1301D7, 0x1301D8, 0x1301D9, 0x1301DA, 0x1301DB, 0x1301DC };
 
-extern s16 D_801007F4_shared_board[];
-extern s16 D_801007FC_shared_board[];
 extern s32 D_80102700_shared_board;
 extern s16 D_80102704_shared_board;
 extern UnkBoard6 D_80102708_shared_board[32];
@@ -32,10 +36,6 @@ extern s16 D_80102A88_shared_board[];
 extern s16 D_80102A90_shared_board[];
 extern UnkBoard8* D_80102A98_shared_board[];
 extern s16 D_80102AA8_shared_board;
-extern s32 D_801007A0_shared_board[];
-extern s16 D_801007D4_shared_board[][4];
-extern s32 D_80100804_shared_board[];
-extern s32 D_80100824_shared_board[];
 extern s32 D_80105990_shared_board;
 
 void func_800D76D0_shared_board(s32 arg0) {

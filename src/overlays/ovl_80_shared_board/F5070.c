@@ -4,7 +4,13 @@
 #define UNK_SIZE 4
 #define UNK_SIZE2 2
 
-extern f32 D_80100F00_shared_board[UNK_SIZE][UNK_SIZE2];
+f32 D_80100F00_shared_board[UNK_SIZE][UNK_SIZE2] = {
+    { 78.0f, 64.0f },
+    { 245.0f, 64.0f },
+    { 78.0f, 170.0f },
+    { 245.0f, 170.0f }
+};
+
 extern s16 D_80102C20_shared_board[UNK_SIZE];
 extern u8 D_80102C48_shared_board;
 extern s16 D_80102C28_shared_board[UNK_SIZE][UNK_SIZE2];

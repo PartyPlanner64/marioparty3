@@ -160,8 +160,6 @@ Hu3DCameraSet = 0x80012640;
 Hu3D3Dto2D = 0x8001291C;
 Hu3D2Dto3D = 0x80012D0C;
 
-MBItemFunctions = 0x80101080; //rom:0x114CA0 size:0x50 segment:shared_board
-MBItemSubFunctions = 0x80102C58; //size:0x58 segment:shared_board
 MBBattleKuriboObjMain = 0x800F9CA0; //rom:0x10D8C0 segment:shared_board
 MBBattleKuriboEnd = 0x800FA388; //rom:0x10DFA8 segment:shared_board
 MBKettouResultExec = 0x800FA448; //rom:0x10E068 segment:shared_board
@@ -169,9 +167,6 @@ MBBattleKuriboStart = 0x800FA640; //rom:0x10E260 segment:shared_board
 MBKettouPlayerBitGet = 0x800FA818; //rom:0x10E438 segment:shared_board
 MBKettouComResultSet = 0x800FA95C; //rom:0x10E57C segment:shared_board
 MBKettouExec = 0x800FAB98; //rom:0x10E7B8 segment:shared_board
-mbBattleKuriboMdl = 0x801056B0; //segment:shared_board
-mbBattleKuriboUpperMdl = 0x801056B4; //segment:shared_board
-mbBattleKuriboObj = 0x801056B8; //segment:shared_board
 MBWinCreate = 0x800EBFE8; //rom:0xFFC08 segment:shared_board
 MBWinOpen = 0x800EC134; //rom:0xFFD54 segment:shared_board
 MBWinInsertOpen = 0x800EC1E8; //rom:0xFFE08 segment:shared_board
@@ -193,8 +188,6 @@ MBNextPlayerTurn = 0x800F92A0; //rom:0x10CEC0 segment:shared_board
 MBLast5Check = 0x800F933C; //rom:0x10CF5C segment:shared_board
 MBBlockMasuUpdate = 0x800FC594; //rom:0x1101B4 segment:shared_board
 MBStart = 0x800FF41C; //rom:0x11303C segment:shared_board
-mbDlgWinId = 0x80105702; //segment:shared_board type:s16
-mbWinId = 0x80105714; //segment:shared_board type:s16
 D_800CE194_main = 0x800CE194; //segment:main size:0x04
 
 // hmfman
@@ -1117,7 +1110,6 @@ MBDMasuLinkNumGet = 0x800E9EB0; //rom:0xD1C80 segment:name_81
 MBMasuCreate = 0x800EAE10; //rom:0xFEA30
 SaveFileEncode = 0x8004F5A4; //rom:0x501A4
 gEncodedSaveBuffer = 0x800CD0C0;
-gTotalSpaces = 0x80105210; // type:u16 segment:shared_board
 kakusiMasuCoin = 0x800CE1C4; // type:s16 size:0x2
 kakusiMasuStar = 0x800D124E; // type:s16 size:0x2
 D_800CC3DC_main = 0x800CC3DC; //type:s32 size:0x4
@@ -1825,9 +1817,7 @@ n_aspMainTextStart = 0x800954C0; //rom:0x960C0 size:0xC60
 n_aspMainDataStart = 0x800A6050; //rom:0xA6C50 size:0x2B0
 
 //ovl_80
-mbStatusData = 0x801057E0; //size:0x1B0 segment:shared_board
 D_80101A74_shared_board = 0x80101A74; //rom:0x115694 size:0x20 segment:shared_board
-D_80105658_shared_board = 0x80105658; //size:0x04 type:s32 segment:shared_board
 D_800CC0BC_main = 0x800CC0BC; //size:0x04 type:s32
 D_800CC0C0_main = 0x800CC0C0; //size:0x01 type:u8
 MBItemHookSet = 0x800E2960; //rom:0xF6580 segment:shared_board
@@ -1842,23 +1832,6 @@ MBMain = 0x800FCA7C; //rom:0x11069C segment:shared_board
 MBMasuBlockGet = 0x800EB5DC; //rom:0xFF1FC segment:shared_board
 MBMasuKakusiBlockGet = 0x800EBCD4; //rom:0xFF8F4 segment:shared_board
 MBMasuBlockTblSet = 0x800EBD54; //rom:0xFF974 segment:shared_board
-
-D_80100DA0_shared_board = 0x80100DA0; //segment:shared_board
-D_80100DC0_shared_board = 0x80100DC0; //segment:shared_board
-D_80100DD4_shared_board = 0x80100DD4; //segment:shared_board
-D_80100DF4_shared_board = 0x80100DF4; //segment:shared_board
-D_80100DE8_shared_board = 0x80100DE8; //segment:shared_board
-D_80100E04_shared_board = 0x80100E04; //segment:shared_board
-
-D_80100DB4_shared_board = 0x80100DB4; //segment:shared_board
-D_80100DCC_shared_board = 0x80100DCC; //segment:shared_board
-D_80100DE0_shared_board = 0x80100DE0; //segment:shared_board
-D_80100DFC_shared_board = 0x80100DFC; //segment:shared_board
-D_80100DF0_shared_board = 0x80100DF0; //segment:shared_board
-D_80100E10_shared_board = 0x80100E10; //segment:shared_board
-
-D_80100E5C_shared_board = 0x80100E5C; //segment:shared_board
-D_80100E44_shared_board = 0x80100E44; //segment:shared_board
 
 MBVecRotateZ = 0x800D8A90; //rom:0xEC6B0 segment:shared_board
 
@@ -1879,8 +1852,6 @@ D_80101B20_name_81 = 0x80101B20; //rom:0xE98F0 type:f32 segment:name_81
 D_80101B70_name_81 = 0x80101B70; //rom:0xE9940 type:f32 segment:name_81
 
 D_8010197C_shared_board = 0x8010197C; //rom:0x11559C size:0x54 segment:shared_board
-
-D_80105588_shared_board = 0x80105588; //size:0x3A segment:shared_board
 
 MBDBackClose = 0x800E5000; //rom:0xCCDD0 segment:name_81
 MBDBackCreate = 0x800E5040; //rom:0xCCE10 segment:name_81
@@ -1948,13 +1919,10 @@ D_800D1244_main = 0x800D1244; //size:0x8
 D_800C9938_main = 0x800C9938; // type:f32
 D_800CB894_main = 0x800CB894; // type:s16
 
-D_80105718_shared_board = 0x80105718; //size:0xC0 segment:shared_board
-
 D_801018E4_shared_board = 0x801018E4; //rom:0x115504 size:0x44 segment:shared_board
 PlayerBoardStatusRootPosition = 0x80101794; //rom:0x1153B4 size:0x20 segment:shared_board
 MBStatusNumUpdate = 0x800F2E30; //rom:0x106A50 segment:shared_board
 MB1Ev_ItemAfter5 = 0x80115B80; //rom:0x32B6F0 segment:ChillyWaters
-D_80100F94_shared_board = 0x80100F94; //rom:0x114BB4 segment:shared_board size:0x14
 MBDlgWinInsertCreate = 0x800EC8EC; //rom:0x10050C segment:shared_board
 D_8011D41C_ChillyWaters = 0x8011D41C; //rom:0x332F8C segment:ChillyWaters size:0x4
 D_8011D420_ChillyWaters = 0x8011D420; //rom:0x332F90 segment:ChillyWaters size:0xC
@@ -2247,8 +2215,6 @@ MBPlayerVibrate = 0x800FF900; //rom:0x113520 segment:shared_board
 MBPlayerVibrateObjCreate = 0x800FFA4C; //rom:0x11366C segment:shared_board
 MBPlayerVibrateObjKill = 0x800FFAEC; //rom:0x11370C segment:shared_board
 MBMapScrollExec = 0x8010067C; //rom:0x11429C segment:shared_board
-mbCharNameMesTbl = 0x801014A0; //rom:0x1150C0 segment:shared_board
-mbItemCursorGrpId = 0x8010570C; //rom:0x11932C segment:shared_board
 MB1Ev_StarMasuInit = 0x8010603C; //rom:0x31BBAC segment:ChillyWaters
 MB1Ev_StarCheck = 0x801060E0; //rom:0x31BC50 segment:ChillyWaters
 MB1Ev_StarGuideIn = 0x80106154; //rom:0x31BCC4 segment:ChillyWaters

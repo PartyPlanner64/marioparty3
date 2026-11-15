@@ -1,31 +1,7 @@
 #include "common_duel.h"
+#include "macros.h"
 #include "../ovl_81_name/ovl_81.h"
 
-extern u32 D_80108A64_opdueltutorial[];
-extern u32 *D_80108B24_opdueltutorial[];
-extern s32 D_80108930_opdueltutorial;
-extern Process *D_80108934_opdueltutorial;
-extern u8 D_80108C10_opdueltutorial;
-extern s16 D_80108C44_opdueltutorial;
-extern s16 D_80108C46_opdueltutorial;
-extern GW_PLAYER *D_80108C14_opdueltutorial[2];
-extern Object *D_80108C1C_opdueltutorial;
-extern Vec D_80108944_opdueltutorial;
-extern Vec D_80108974_opdueltutorial[];
-extern Vec D_80108938_opdueltutorial;
-extern Vec D_80108968_opdueltutorial;
-extern Vec D_801089A4_opdueltutorial[];
-extern Vec D_801089BC_opdueltutorial[];
-extern Vec D_801089EC_opdueltutorial[];
-extern Vec D_80108A04_opdueltutorial[];
-extern Vec D_80108A1C_opdueltutorial[];
-extern Vec D_80108A34_opdueltutorial[];
-extern s32 *D_80108B74_opdueltutorial[];
-extern s32 D_80108B94_opdueltutorial[];
-extern Object *D_80108C20_opdueltutorial[2];
-extern Object *D_80108C28_opdueltutorial;
-extern s16 D_80108C2C_opdueltutorial;
-extern s16 D_80108C30_opdueltutorial[];
 extern u8 D_80101960[];
 
 void func_800F3C98_name_81(s16, u32 *, s16);
@@ -52,6 +28,106 @@ void func_80108880_opdueltutorial(void);
 void func_80108908_opdueltutorial(void);
 void func_80108854_opdueltutorial(void);
 void func_801088C4_opdueltutorial(void);
+
+s32 D_80108930_opdueltutorial = 0;
+Process *D_80108934_opdueltutorial = NULL;
+
+Vec D_80108938_opdueltutorial = { -170.0f, 125.0f, 3000.0f };
+
+Vec D_80108944_opdueltutorial = { 0.0f, 250.0f, 0.0f };
+
+/* Unreferenced. */
+Vec D_80108950_opdueltutorial[2] = {
+    { 0.0f, 100.0f, 0.0f },
+    { 0.0f, 0.0f, 0.0f }
+};
+
+Vec D_80108968_opdueltutorial = { 0.0f, 0.0f, 1500.0f };
+
+Vec D_80108974_opdueltutorial[4] = {
+    { -10.0f, 250.0f, 0.0f },
+    { 10.0f, 250.0f, 0.0f },
+    { -500.0f, 0.0f, 2360.0f },
+    { 500.0f, 0.0f, 2360.0f }
+};
+
+Vec D_801089A4_opdueltutorial[2] = {
+    { -200.0f, 0.0f, 2360.0f },
+    { 200.0f, 0.0f, 2360.0f }
+};
+
+Vec D_801089BC_opdueltutorial[4] = {
+    { -175.0f, 0.0f, 2250.0f },
+    { 175.0f, 0.0f, 2250.0f },
+    { 0.0f, 0.0f, 2150.0f },
+    { 0.0f, 0.0f, 2350.0f }
+};
+
+Vec D_801089EC_opdueltutorial[2] = {
+    { -125.0f, 0.0f, 2000.0f },
+    { 125.0f, 0.0f, 2000.0f }
+};
+
+Vec D_80108A04_opdueltutorial[2] = {
+    { -750.0f, 0.0f, 1750.0f },
+    { 750.0f, 0.0f, 1750.0f }
+};
+
+Vec D_80108A1C_opdueltutorial[2] = {
+    { -100.0f, 0.0f, 1750.0f },
+    { 100.0f, 0.0f, 1750.0f }
+};
+
+Vec D_80108A34_opdueltutorial[4] = {
+    { -100.0f, 0.0f, 2000.0f },
+    { 100.0f, 0.0f, 2000.0f },
+    { -300.0f, 0.0f, 2000.0f },
+    { 300.0f, 0.0f, 2000.0f }
+};
+
+u32 D_80108A64_opdueltutorial[6] = { 5, 0x20000, 0x20001, 0x20002, 0x20033, 0x20031 };
+
+u32 D_80108A7C_opdueltutorial[6] = { 5, 0, 0, 0, 0, 0 };
+
+u32 D_80108A94_opdueltutorial[6] = { 5, 0, 0, 0, 0, 0 };
+
+u32 D_80108AAC_opdueltutorial[6] = { 5, 0, 0, 0, 0, 0 };
+
+u32 D_80108AC4_opdueltutorial[6] = { 5, 0, 0, 0, 0, 0 };
+
+u32 D_80108ADC_opdueltutorial[6] = { 5, 0, 0, 0, 0, 0 };
+
+u32 D_80108AF4_opdueltutorial[6] = { 5, 0, 0, 0, 0, 0 };
+
+u32 D_80108B0C_opdueltutorial[6] = { 5, 0, 0, 0, 0, 0 };
+
+u32 *D_80108B24_opdueltutorial[8] = { D_80108A64_opdueltutorial, D_80108A7C_opdueltutorial, D_80108A94_opdueltutorial, D_80108AAC_opdueltutorial, D_80108AC4_opdueltutorial, D_80108ADC_opdueltutorial, D_80108AF4_opdueltutorial, D_80108B0C_opdueltutorial };
+
+s32 D_80108B44_opdueltutorial[2] = { 1, 0xA0090 };
+
+s32 D_80108B4C_opdueltutorial[2] = { 1, 0xA00A7 };
+
+s32 D_80108B54_opdueltutorial[2] = { 1, 0xA0002 };
+
+s32 D_80108B5C_opdueltutorial[2] = { 1, 0xA00BD };
+
+s32 D_80108B64_opdueltutorial[2] = { 1, 0xA00D0 };
+
+s32 D_80108B6C_opdueltutorial[2] = { 1, 0xA010F };
+
+s32 *D_80108B74_opdueltutorial[8] = { D_80108B44_opdueltutorial, D_80108B4C_opdueltutorial, D_80108B54_opdueltutorial, NULL, D_80108B5C_opdueltutorial, D_80108B64_opdueltutorial, D_80108B6C_opdueltutorial, NULL };
+
+s32 D_80108B94_opdueltutorial[2] = { 1, 0xA0125 };
+
+u8 D_80108C10_opdueltutorial BSS;
+GW_PLAYER *D_80108C14_opdueltutorial[2] BSS;
+Object *D_80108C1C_opdueltutorial BSS;
+Object *D_80108C20_opdueltutorial[2] BSS;
+Object *D_80108C28_opdueltutorial BSS;
+s16 D_80108C2C_opdueltutorial BSS;
+s16 D_80108C30_opdueltutorial[10] BSS;
+s16 D_80108C44_opdueltutorial BSS;
+s16 D_80108C46_opdueltutorial BSS;
 
 void func_801059A0_opdueltutorial(void) {
     GW_PLAYER *player;

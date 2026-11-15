@@ -7594,16 +7594,27 @@ void func_8011A550_w03(void) {
 #ifdef NON_MATCHING
 // Matches except for the if/else right after the hatena space search loop: the
 // target tests *hatena != -1 (-> 0x47 branch), reloads *hatena, and tests it
-// again (== -1 -> 0x48 branch); we emit a single test. The second test survives
-// only if the first one reads *hatena through an RTL address that differs from
-// the loop's test (blocks pre-CSE jump threading) and from the second test
-// (blocks CSE). The meaningless form
+// again (== -1 -> 0x48 branch, no extra `li -1`); we emit a single test.
+// RTL analysis (-O1): the second test survives only if, at CSE time, a label
+// separates it from the first test (CSE blocks end at labels); the pre-CSE
+// thread_jumps pass creates exactly such a label when it threads the loop
+// entry test through the first test. The label must then vanish before the
+// final jump pass (post-loop thread_jumps redirecting the entry test on to
+// the 0x48 branch, which needs the second test to be RTL-identical to the
+// entry test by then), so that the final jump pass deletes the second test's
+// redundant `li -1` (find_equiv_reg). So the source must have two tests in
+// `if (T1 || T2)` shape, T1 == entry test, and T2 differing before CSE but
+// identical after CSE. Closest forms (both meaningless, not acceptable):
 //     if (D_8011D3F8_w03[hatena - D_8011D3F8_w03] != -1 || *hatena != -1)
-// produces both tests (score 805 -> 220); it still differs in v0/v1 for the
-// second test, and the empty-list branch goes to the first test instead of the
-// 0x48 branch. Identical-operand forms (||, &&, nested else-if, goto, casts,
-// hatena[0]) are folded or CSE'd into one test. Also tried: for/while/do-while
-// and flag variable forms of the search loop, switch, ternaries.
+//         -> 220: v0/v1 swapped in 2nd test, entry branch lands on 1st test
+//     if (*hatena != -1 || D_8011D3F8_w03[hatena - D_8011D3F8_w03] != -1)
+//         -> 2325: right threading, but extra `li v0,-1` and `li a0,0x47`
+// Identical-operand forms (||, &&, nested else-if, goto, casts, hatena[0],
+// *(hatena + 0), (u16)/+1 variants, a copy pointer in T2) are folded by the
+// tree folder, threaded pre-CSE or CSE'd into one test. Also tried: for/while/
+// do-while/continue/goto/compound-condition search loops, an if-wrapped
+// do-while, index-based loops (break strength reduction), switch, ternaries,
+// flag variables.
 void func_8011A704_w03(void) {
     Vec pos;
     UnkVibrateProcess *vibrate[4];

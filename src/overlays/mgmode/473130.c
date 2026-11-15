@@ -770,7 +770,13 @@ void func_8010E40C_mgmode(void) {
 // combine folds both to 0. It isn't used because the expression is
 // meaningless. `count & 1`, `count % 2`, `count >> 3`, `count / 8`,
 // `(4 - count) & 1`, `(4 - count) % 2`, and `(count & 1) << 1` leave the
-// computation in place.
+// computation in place, as do `count == 1`, `count > 6`, `count % 2 * 2`,
+// `(count & 1) * 80`, `((4 - count) & 1) * 2`, and `(count & 1) ? 1 : 0`
+// (`* 4` also matches). Combine only applies nonzero_bits when it merges a
+// second insn into the `and`, so a lone test of count is never folded.
+// The start really is 0 at runtime (`move a2,zero`), count is only 2 or 4 by
+// construction, so no centering offset like `(4 - count) / 2` fits, and no
+// similar ranking loop was found in marioparty2 or marioparty4.
 void func_8010E494_mgmode(s16 arg0) {
     Vec pos[4];
     s16 order[4];

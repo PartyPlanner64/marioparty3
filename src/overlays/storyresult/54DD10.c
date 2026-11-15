@@ -3,6 +3,7 @@
 #include "game/pause.h"
 #include "overlays/minigame.h"
 #include "../ovl_81_name/ovl_81.h"
+#define NO_EXTERN_VARIABLES
 #include "storyresult.h"
 
 void func_80105C30_storyresult(omObjData *object);
@@ -12,18 +13,31 @@ u32 func_80105F7C_storyresult(u32 seed);
 void func_80106190_storyresult(void);
 void func_80106754_storyresult(void);
 void func_80106C84_storyresult(void);
-extern f32 D_8010A918_storyresult;
-extern s8 D_8010A91C_storyresult;
-extern u32 D_8010A920_storyresult;
-extern MsetupPlayerConfig D_8010ABE8_storyresult;
-extern Vec D_8010AC00_storyresult;
-extern Vec D_8010AC0C_storyresult;
-extern Vec D_8010AC18_storyresult;
-extern f32 D_8010AC24_storyresult;
-extern f32 D_8010AC2C_storyresult;
 extern f32 D_800D5210_main;
 extern f32 D_800CB890_main;
 extern s16 kakusiMasuItemHis[10];
+
+u16 D_8010A910_storyresult = 0;
+s16 D_8010A912_storyresult = 0;
+s16 D_8010A914_storyresult = 1;
+f32 D_8010A918_storyresult = 58.0f;
+s8 D_8010A91C_storyresult = 0;
+u32 D_8010A920_storyresult = 0;
+u8 D_8010A924_storyresult[14] = { 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 2, 2 };
+
+s16 D_8010ABE0_storyresult BSS;
+s16 D_8010ABE2_storyresult BSS;
+u8 D_8010ABE4_storyresult[4] BSS; /* Unreferenced. */
+MsetupPlayerConfig D_8010ABE8_storyresult BSS;
+Vec D_8010AC00_storyresult BSS;
+Vec D_8010AC0C_storyresult BSS;
+Vec D_8010AC18_storyresult BSS;
+f32 D_8010AC24_storyresult BSS;
+s16 D_8010AC28_storyresult BSS;
+s16 D_8010AC2A_storyresult BSS;
+f32 D_8010AC2C_storyresult BSS;
+s16 D_8010AC30_storyresult BSS;
+s16 D_8010AC32_storyresult BSS;
 
 void func_801059A0_storyresult(void) {
     omInitObjMan(51, 25);

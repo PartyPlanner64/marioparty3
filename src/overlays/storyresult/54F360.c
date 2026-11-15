@@ -69,32 +69,56 @@ s16 func_8010A5C4_storyresult(s16 playerIdx);
 s16 func_8010A738_storyresult(s16 playerIdx);
 s16 func_8010A7B0_storyresult(s16 playerIdx);
 s16 func_8010A7EC_storyresult(void);
-extern StoryResultSprDef D_8010A9E4_storyresult[15];
-extern s32 D_8010AA5C_storyresult[];
-extern s32 D_8010AA78_storyresult[];
-extern u32 D_8010AA90_storyresult[];
-extern u32 D_8010AAA8_storyresult[];
-extern u32 D_8010AAB8_storyresult[];
-extern u8 D_8010AAD4_storyresult[];
-extern u8 D_8010AAE0_storyresult[];
-extern u8 D_8010AAEC_storyresult[][3];
-extern StoryResultWinDef D_8010AB04_storyresult[6];
-extern StoryResultPos D_8010AB34_storyresult[];
-extern u32 D_8010AB50_storyresult[];
-extern u8 D_8010AB6C_storyresult[];
-extern u8 D_8010AB74_storyresult[];
-extern u8 D_8010AB7C_storyresult[];
-extern u8 D_8010AB84_storyresult[];
-extern u8 D_8010AB8C_storyresult[];
-extern u8 D_8010AB90_storyresult[];
-extern MsetupCameraPreset D_8010AB9C_storyresult;
 extern s16 D_800EBAF0_minigame;
 extern s16 winPrio;
-extern s32 D_8010A940_storyresult[];
-extern u32 D_8010A974_storyresult[];
-extern u32 D_8010A9A8_storyresult[];
-extern u8 D_8010A9C8_storyresult[];
-extern u16 D_8010A9D8_storyresult[];
+
+s32 D_8010A940_storyresult[13] = { 4, 23, 7, 23, 10, 23, 13, 23, 16, 23, 23, 19, 23 };
+u32 D_8010A974_storyresult[13] = { 0x6119, 0x611F, 0x611A, 0x6120, 0x611B, 0x6121, 0x611C, 0x6122, 0x611D, 0x6123, 0x6124, 0x611E, 0x612B };
+u32 D_8010A9A8_storyresult[8] = { 0x610A, 0x610D, 0x610E, 0x610F, 0x6110, 0x610A, 0x610A, 0x610A };
+u8 D_8010A9C8_storyresult[16] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0 };
+u16 D_8010A9D8_storyresult[6] = { 0x21, 0x22, 0x23, 0x24, 0x25, 0x26 };
+StoryResultSprDef D_8010A9E4_storyresult[15] = {
+    { 0x00150000, { 0, -75 } },
+    { 0x00150002, { 0, 8 } },
+    { 0x00150011, { -86, -22 } },
+    { 0x00150012, { 0, -22 } },
+    { 0x00150013, { 86, -22 } },
+    { 0x00150014, { -86, 24 } },
+    { 0x00150015, { 0, 24 } },
+    { 0x00150016, { 86, 24 } },
+    { 0x00150017, { -86, -22 } },
+    { 0x00150018, { 0, -22 } },
+    { 0x00150019, { 86, -22 } },
+    { 0x0015001A, { -86, 24 } },
+    { 0x0015001B, { 0, 24 } },
+    { 0x0015001C, { 86, 24 } },
+    { 0x0015001E, { 0, 1 } },
+};
+s32 D_8010AA5C_storyresult[7] = { 0x15000D, 0x15000C, 0x15000B, 0x15000A, 0x150010, 0x15000F, 0x15000E };
+s32 D_8010AA78_storyresult[6] = { 0x150004, 0x150005, 0x150006, 0x150007, 0x150008, 0x150009 };
+u32 D_8010AA90_storyresult[6] = { 0x1C00, 0x1C01, 0x1C02, 0x1C03, 0x1C04, 0x1C05 };
+u32 D_8010AAA8_storyresult[4] = { 0x6102, 0x6103, 0x6104, 0x6105 };
+u32 D_8010AAB8_storyresult[7] = { 0x6112, 0x6113, 0x6116, 0x6117, 0x6118, 0x6114, 0x6115 };
+u8 D_8010AAD4_storyresult[12] = { 0xFF, 0x50, 0x50, 0x50, 0xFF, 0x50, 0xFF, 0xFF, 0x50, 0, 0, 0 };
+u8 D_8010AAE0_storyresult[9] = { 0xFF, 0x50, 0x50, 0xFF, 0xFF, 0xFF, 0, 0, 0 };
+u8 D_8010AAEC_storyresult[7][3] = { { 0x8C, 0x87, 0x87 }, { 0x7B, 0x2A, 0xBF }, { 0xF0, 0xD9, 0x12 }, { 0xFF, 0xFF, 0xFF }, { 0xFF, 0xFF, 0xFF }, { 0xFF, 0xFF, 0xFF }, { 0xFF, 0xFF, 0xFF } };
+StoryResultWinDef D_8010AB04_storyresult[6] = {
+    { -72, -98, 80, 48 },
+    { 6, -98, 112, 20 },
+    { 6, -84, 112, 20 },
+    { 6, -70, 112, 20 },
+    { -120, -50, 240, 20 },
+    { -104, -18, 112, 105 },
+};
+StoryResultPos D_8010AB34_storyresult[7] = { { -86, -3 }, { 0, -3 }, { 86, -3 }, { -86, 43 }, { 0, 43 }, { 86, 43 }, { 0, 20 } };
+u32 D_8010AB50_storyresult[7] = { 0x6106, 0x6107, 0x6108, 0x6109, 0x6109, 0x6109, 0x6109 };
+u8 D_8010AB6C_storyresult[6] = { 0, 2, 4, 6, 8, 11 };
+u8 D_8010AB74_storyresult[6] = { 1, 3, 5, 7, 9, 10 };
+u8 D_8010AB7C_storyresult[5] = { 0, 0, 1, 2, 3 };
+u8 D_8010AB84_storyresult[5] = { 0, 0, 1, 2, 3 };
+u8 D_8010AB8C_storyresult[4] = { 13, 26, 30, 34 };
+u8 D_8010AB90_storyresult[12] = { 1, 2, 3, 4, 4, 4, 4 };
+MsetupCameraPreset D_8010AB9C_storyresult = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 650.0f, 50.0f };
 
 s16 func_80106FF0_storyresult(void) {
     s16 count = GwStory.unk73 != 0;

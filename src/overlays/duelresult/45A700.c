@@ -28,7 +28,12 @@ typedef struct DuelResultWork {
     /* 0x48 */ f32 unk_48;
 } DuelResultWork; // sizeof 0x4C
 
-extern u8 D_8010D6C0_duelresult[][4];
+u8 D_8010D6C0_duelresult[4][4] = {
+    { 0, 255, 255, 0 },
+    { 255, 160, 40, 0 },
+    { 255, 255, 0, 0 },
+    { 0, 255, 0, 0 }
+};
 
 void func_8010ACC4_duelresult(void); /* extern */
 void func_8010BDA4_duelresult(s16 model, s32 dataNum);

@@ -37,65 +37,9 @@ typedef struct DuelResultCharHeights {
     f32 heights[8];
 } DuelResultCharHeights;
 
-extern s32 D_8010D290_duelresult;
-extern Vec D_8010D294_duelresult;
-extern Vec D_8010D2A0_duelresult;
-extern Vec D_8010D2AC_duelresult;
-extern Vec D_8010D2B8_duelresult;
-extern Vec D_8010D2D0_duelresult;
-extern Vec D_8010D2DC_duelresult[3];
-extern Vec D_8010D300_duelresult[3];
-extern Vec D_8010D324_duelresult;
-extern Vec D_8010D330_duelresult;
-extern Vec D_8010D33C_duelresult;
-extern Vec D_8010D348_duelresult;
-extern Vec D_8010D354_duelresult;
-extern Vec D_8010D360_duelresult;
-extern Vec D_8010D36C_duelresult;
-extern Vec D_8010D378_duelresult[];
-extern Vec D_8010D390_duelresult[];
-extern Vec D_8010D3C0_duelresult[2];
-extern Vec D_8010D3D8_duelresult[2];
-extern Vec D_8010D420_duelresult[2];
-extern Vec D_8010D438_duelresult[8];
-extern Vec D_8010D498_duelresult[2];
-extern Vec D_8010D4B0_duelresult[2];
-extern s32 D_8010D4C8_duelresult[];
-extern u32 D_8010D4D4_duelresult[];
-extern s32 *D_8010D608_duelresult[];
-extern s32 *D_8010D628_duelresult[];
-extern omObjData *D_8010D668_duelresult[2];
-extern s32 D_8010D678_duelresult;
-extern f32 D_8010D67C_duelresult;
-extern s32 D_8010D680_duelresult[6];
-extern s32 D_8010D65C_duelresult[];
-extern s32 D_8010D698_duelresult[];
-extern s32 D_8010D648_duelresult[5];
-extern DuelResultSprFiles D_8010D6D0_duelresult;
-extern DuelResultSprPositions D_8010D6E0_duelresult;
-extern DuelResultSprPositions D_8010D700_duelresult;
-extern DuelResultCharHeights D_8010D720_duelresult;
-extern DuelResultCharMotions D_8010D7F0_duelresult;
-extern DuelResultCharMotions D_8010D810_duelresult;
-extern DuelResultCharActors D_8010D83C_duelresult;
-extern u8 D_8010D860_duelresult;
-extern Object *D_8010D864_duelresult;
-extern s16 D_8010D868_duelresult[2][8];
-extern GW_PLAYER *D_8010D8A8_duelresult[2];
-extern Object *D_8010D8B0_duelresult[];
-extern Object *D_8010D8C8_duelresult[2];
-extern Object *D_8010D8D0_duelresult[2];
-extern Object *D_8010D8D8_duelresult[2];
-extern Object *D_8010D8E0_duelresult;
-extern s16 D_8010D8E4_duelresult;
-extern s16 D_8010D8E6_duelresult;
-extern s16 D_8010D8E8_duelresult[5];
-extern s32 D_8010D900_duelresult[2];
-extern s32 D_8010D910_duelresult;
-extern f32 D_8010D930_duelresult[6];
-extern Object *D_8010D914_duelresult[2];
-extern void *D_8010D91C_duelresult[2];
-extern s32 D_8010D924_duelresult[2];
+extern const DuelResultCharMotions D_8010D7F0_duelresult;
+extern const DuelResultCharMotions D_8010D810_duelresult;
+extern const DuelResultCharActors D_8010D83C_duelresult;
 extern s16 kakusiMasuItemHis[10];
 extern s32 D_80101200_shared_board[];
 
@@ -121,6 +65,169 @@ void func_800F3EC0_name_81(s16);
 void func_800EB164_name_81(s32, s32);
 void func_800EF9C4_name_81(Object *, s32, s32);
 void func_800EFC28_name_81(void);
+
+s32 D_8010D290_duelresult = 0;
+
+Vec D_8010D294_duelresult = { -750.0f, 400.0f, 2000.0f };
+
+Vec D_8010D2A0_duelresult = { 750.0f, 400.0f, 2000.0f };
+
+Vec D_8010D2AC_duelresult = { -750.0f, 500.0f, 4000.0f };
+
+Vec D_8010D2B8_duelresult = { -250.0f, 0.0f, 2500.0f };
+
+Vec D_8010D2C4_duelresult = { -250.0f, -400.0f, 2500.0f }; /* Unreferenced. */
+
+Vec D_8010D2D0_duelresult = { -500.0f, 400.0f, 3500.0f };
+
+Vec D_8010D2DC_duelresult[3] = {
+    { 750.0f, 250.0f, 4000.0f },
+    { -150.0f, 250.0f, 2000.0f },
+    { 150.0f, 250.0f, 2000.0f }
+};
+
+Vec D_8010D300_duelresult[3] = {
+    { 0.0f, -700.0f, 1500.0f },
+    { 0.0f, -500.0f, 1000.0f },
+    { 0.0f, -300.0f, 500.0f }
+};
+
+Vec D_8010D324_duelresult = { -200.0f, 400.0f, -150.0f };
+
+Vec D_8010D330_duelresult = { 0.0f, 750.0f, 2500.0f };
+
+Vec D_8010D33C_duelresult = { 0.0f, 250.0f, 2500.0f };
+
+Vec D_8010D348_duelresult = { 0.0f, 400.0f, 2500.0f };
+
+Vec D_8010D354_duelresult = { 0.0f, 1000.0f, 2500.0f };
+
+Vec D_8010D360_duelresult = { 0.0f, 100.0f, 2500.0f };
+
+Vec D_8010D36C_duelresult = { 500.0f, 50.0f, 500.0f };
+
+Vec D_8010D378_duelresult[16] = {
+    { -150.0f, 750.0f, 2000.0f },
+    { 150.0f, 750.0f, 2000.0f },
+    { -150.0f, 250.0f, 2000.0f },
+    { 150.0f, 250.0f, 2000.0f },
+    { -150.0f, 100.0f, 2000.0f },
+    { 150.0f, 100.0f, 2000.0f },
+    { -150.0f, 0.0f, 2000.0f },
+    { 150.0f, 0.0f, 2000.0f },
+    { -150.0f, -500.0f, 2000.0f },
+    { 150.0f, -500.0f, 2000.0f },
+    { -150.0f, 800.0f, 2000.0f },
+    { 150.0f, 800.0f, 2000.0f },
+    { -150.0f, 150.0f, 2000.0f },
+    { 150.0f, 150.0f, 2000.0f },
+    { -150.0f, 350.0f, 2000.0f },
+    { 150.0f, 350.0f, 2000.0f }
+};
+
+Vec D_8010D438_duelresult[8] = {
+    { 0.0f, 270.0f, 3000.0f },
+    { 0.0f, 250.0f, 3000.0f },
+    { 0.0f, 260.0f, 3000.0f },
+    { 0.0f, 270.0f, 3000.0f },
+    { 0.0f, 260.0f, 3000.0f },
+    { 0.0f, 240.0f, 3000.0f },
+    { 0.0f, 250.0f, 3000.0f },
+    { 0.0f, 260.0f, 3000.0f }
+};
+
+Vec D_8010D498_duelresult[2] = {
+    { -750.0f, 150.0f, 1500.0f },
+    { 750.0f, 150.0f, 1500.0f }
+};
+
+Vec D_8010D4B0_duelresult[2] = {
+    { -225.0f, 150.0f, 2500.0f },
+    { 225.0f, 150.0f, 2500.0f }
+};
+
+s32 D_8010D4C8_duelresult[3] = { 2, 0x2001B, 0x20024 };
+
+s32 D_8010D4D4_duelresult[7] = { 6, 0x2001F, 0x20030, 0x20034, 0x20039, 0x20029, 0x2008F };
+
+s32 D_8010D4F0_duelresult[3] = { 2, 0, 0 };
+
+s32 D_8010D4FC_duelresult[7] = { 6, 0, 0, 0, 0, 0, 0 };
+
+s32 D_8010D518_duelresult[3] = { 2, 0, 0 };
+
+s32 D_8010D524_duelresult[7] = { 6, 0, 0, 0, 0, 0, 0 };
+
+s32 D_8010D540_duelresult[3] = { 2, 0, 0 };
+
+s32 D_8010D54C_duelresult[7] = { 6, 0, 0, 0, 0, 0, 0 };
+
+s32 D_8010D568_duelresult[3] = { 2, 0, 0 };
+
+s32 D_8010D574_duelresult[7] = { 6, 0, 0, 0, 0, 0, 0 };
+
+s32 D_8010D590_duelresult[3] = { 2, 0, 0 };
+
+s32 D_8010D59C_duelresult[7] = { 6, 0, 0, 0, 0, 0, 0 };
+
+s32 D_8010D5B8_duelresult[3] = { 2, 0, 0 };
+
+s32 D_8010D5C4_duelresult[7] = { 6, 0, 0, 0, 0, 0, 0 };
+
+s32 D_8010D5E0_duelresult[3] = { 2, 0, 0 };
+
+s32 D_8010D5EC_duelresult[7] = { 6, 0, 0, 0, 0, 0, 0 };
+
+s32 *D_8010D608_duelresult[8] = { D_8010D4C8_duelresult, D_8010D4F0_duelresult, D_8010D518_duelresult, D_8010D540_duelresult, D_8010D568_duelresult, D_8010D590_duelresult, D_8010D5B8_duelresult, D_8010D5E0_duelresult };
+
+s32 *D_8010D628_duelresult[8] = { D_8010D4D4_duelresult, D_8010D4FC_duelresult, D_8010D524_duelresult, D_8010D54C_duelresult, D_8010D574_duelresult, D_8010D59C_duelresult, D_8010D5C4_duelresult, D_8010D5EC_duelresult };
+
+s32 D_8010D648_duelresult[5] = { 0x13015C, 0x13015D, 0x13015E, 0x13015F, 0x130160 };
+
+s32 D_8010D65C_duelresult[3] = { 2, 0xA0077, 0xA0078 };
+
+omObjData *D_8010D668_duelresult[4] = { NULL, NULL, NULL, NULL };
+
+s32 D_8010D678_duelresult = 0;
+
+f32 D_8010D67C_duelresult = 50.0f;
+
+s32 D_8010D680_duelresult[6] = { 0, 0, 0, 0, 0, 0 };
+
+s32 D_8010D698_duelresult[8] = { 0xB003E, 0xB003F, 0xB0040, 0xB0041, 0xB0042, 0xB0043, 0xB0044, 0xB0045 };
+
+const DuelResultSprFiles D_8010D6D0_duelresult = { { 0x1301C1, 0x1301C2, 0x1301C3, 0x1301C4 } };
+
+const DuelResultSprPositions D_8010D6E0_duelresult = { { { 200.0f, 60.0f },
+                                                         { 80.0f, 0.0f },
+                                                         { 0.0f, 120.0f },
+                                                         { 80.0f, 120.0f } } };
+
+const DuelResultSprPositions D_8010D700_duelresult = { { { 120.0f, 60.0f },
+                                                         { -80.0f, 0.0f },
+                                                         { 0.0f, 120.0f },
+                                                         { -80.0f, 120.0f } } };
+
+const DuelResultCharHeights D_8010D720_duelresult = { { 120.0f, 120.0f, 180.0f, 160.0f, 160.0f, 190.0f, 120.0f, 180.0f } };
+
+u8 D_8010D860_duelresult BSS;
+Object *D_8010D864_duelresult BSS;
+s16 D_8010D868_duelresult[4][8] BSS;
+GW_PLAYER *D_8010D8A8_duelresult[2] BSS;
+Object *D_8010D8B0_duelresult[6] BSS;
+Object *D_8010D8C8_duelresult[2] BSS;
+Object *D_8010D8D0_duelresult[2] BSS;
+Object *D_8010D8D8_duelresult[2] BSS;
+Object *D_8010D8E0_duelresult BSS;
+s16 D_8010D8E4_duelresult BSS;
+s16 D_8010D8E6_duelresult BSS;
+s16 D_8010D8E8_duelresult[12] BSS;
+s32 D_8010D900_duelresult[4] BSS;
+s32 D_8010D910_duelresult BSS;
+Object *D_8010D914_duelresult[2] BSS;
+void *D_8010D91C_duelresult[2] BSS;
+s32 D_8010D924_duelresult[3] BSS;
+f32 D_8010D930_duelresult[8] BSS;
 
 void func_801059A0_duelresult(void) {
     s32 i;
@@ -451,7 +558,7 @@ void func_8010709C_duelresult(void) {
     index = *(s32 *)HuPrcCurrentGet()->user_data;
     process = HuPrcCurrentGet();
     HuPrcChildLink(process, func_800EBF2C_name_81(&D_8010D8A8_duelresult[index]->player_obj->coords,
-                                                  &D_8010D390_duelresult[index],
+                                                  &D_8010D378_duelresult[index + 2],
                                                   &D_8010D8A8_duelresult[index]->player_obj->coords, 10));
     MBDMotionSet(D_8010D8A8_duelresult[index]->player_obj, 0, 0);
 
@@ -728,9 +835,9 @@ void func_801082C0_duelresult(void) {
     }
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/duelresult/4554C0", D_8010D7F0_duelresult);
+const DuelResultCharMotions D_8010D7F0_duelresult = { { 0x200A4, 0x300A4, 0x700A4, 0x400A4, 0x500A4, 0x600A4, 0x800A4, 0x9001B } };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/duelresult/4554C0", D_8010D810_duelresult);
+const DuelResultCharMotions D_8010D810_duelresult = { { 0x200AB, 0x300AB, 0x700AB, 0x400AB, 0x500AB, 0x600AB, 0x800AB, 0x90027 } };
 
 void func_8010856C_duelresult(void) {
     s32 values[4];
@@ -1052,9 +1159,9 @@ void func_8010856C_duelresult(void) {
     HuAudFXPlay(0x16E);
     omDelObj(swayObj);
     for (i = 0; i < 2; i++) {
-        func_800EBF2C_name_81(&D_8010D8A8_duelresult[i]->player_obj->coords, &D_8010D420_duelresult[i],
+        func_800EBF2C_name_81(&D_8010D8A8_duelresult[i]->player_obj->coords, &D_8010D378_duelresult[i + 14],
                               &D_8010D8A8_duelresult[i]->player_obj->coords, 20);
-        func_800EBF2C_name_81(&D_8010D8C8_duelresult[1 - i]->coords, &D_8010D420_duelresult[i],
+        func_800EBF2C_name_81(&D_8010D8C8_duelresult[1 - i]->coords, &D_8010D378_duelresult[i + 14],
                               &D_8010D8C8_duelresult[1 - i]->coords, 20);
     }
     HuPrcChildLink(HuPrcCurrentGet(), func_800EBF2C_name_81(&D_8010D864_duelresult->coords, &D_8010D360_duelresult,
@@ -1072,7 +1179,7 @@ void func_8010856C_duelresult(void) {
     HuPrcSleep(18);
     for (i = 0; i < 2; i++) {
         HuPrcChildLink(HuPrcCurrentGet(),
-                       func_800EBF2C_name_81(&D_8010D8C8_duelresult[1 - i]->coords, &D_8010D3D8_duelresult[i],
+                       func_800EBF2C_name_81(&D_8010D8C8_duelresult[1 - i]->coords, &D_8010D378_duelresult[i + 8],
                                              &D_8010D8C8_duelresult[1 - i]->coords, 20));
     }
     HuPrcSleep(5);
@@ -1086,7 +1193,7 @@ void func_8010856C_duelresult(void) {
         D_8010D67C_duelresult += 1.0f;
         if (j == 20) {
             for (i = 0; i < 2; i++) {
-                func_800EBF2C_name_81(&D_8010D8A8_duelresult[i]->player_obj->coords, &D_8010D3C0_duelresult[i],
+                func_800EBF2C_name_81(&D_8010D8A8_duelresult[i]->player_obj->coords, &D_8010D378_duelresult[i + 6],
                                       &D_8010D8A8_duelresult[i]->player_obj->coords, 10);
             }
             HuPrcChildLink(HuPrcCurrentGet(),
@@ -1171,10 +1278,10 @@ void func_8010856C_duelresult(void) {
     swayObj->rot.z = 10.0f;
     HuPrcSleep(20);
     HuPrcChildLink(HuPrcCurrentGet(), func_800EBF2C_name_81(&star->coords,
-                                                            &D_8010D3C0_duelresult[kakusiMasuItemHis[0]],
+                                                            &D_8010D378_duelresult[kakusiMasuItemHis[0] + 6],
                                                             &star->coords, 60));
     func_800EBF2C_name_81(&D_8010D8A8_duelresult[kakusiMasuItemHis[0]]->player_obj->coords,
-                          &D_8010D3C0_duelresult[kakusiMasuItemHis[0]],
+                          &D_8010D378_duelresult[kakusiMasuItemHis[0] + 6],
                           &D_8010D8A8_duelresult[kakusiMasuItemHis[0]]->player_obj->coords, 60);
     HuPrcChildWatch();
 
@@ -1366,4 +1473,4 @@ void func_8010ABB0_duelresult() {
     MBDBackClose();
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/duelresult/4554C0", D_8010D83C_duelresult);
+const DuelResultCharActors D_8010D83C_duelresult = { { 37, 12, 9, 10, 38, 11, 44, 36 } };

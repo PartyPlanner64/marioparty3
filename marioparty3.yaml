@@ -2218,9 +2218,10 @@ segments:
     subsegments:
       - [0x4554C0, c]
       - [0x45A700, c]
-      - [0x45CDB0, data, 4554C0] #8010D290
-      - [0x45D260, .rodata, 4554C0] #8010D740
-      - {0x45D380, type: bss, vram: 0x8010D860, name: duelresult_bss}
+      - [0x45CDB0, .data, 4554C0] #8010D290
+      - [0x45D1A0, .data, 45A700] #8010D6C0
+      - [0x45D1B0, .rodata, 4554C0] #8010D6D0
+      - {0x45D380, type: .bss, vram: 0x8010D860, name: 4554C0}
 
   - type: code
     start: 0x45D380

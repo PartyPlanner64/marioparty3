@@ -798,7 +798,7 @@ void func_80107F58_ice_rink_risk(omObjData *object, f32 x, f32 y, f32 z) {
     }
 }
 #else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_19_ice_rink_risk/1D1C40", func_80107F58_ice_rink_risk);
+INCLUDE_ASM("asm/nonmatchings/game/overlays/minigames/19_ice_rink_risk/1D1C40", func_80107F58_ice_rink_risk);
 #endif
 
 void func_80108134_ice_rink_risk(omObjData *object, Hu3DSphere *arg1) {

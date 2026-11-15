@@ -1735,7 +1735,7 @@ f32 func_8010ABD4_hand_line_sinker(f32 a) {
     return end;
 }
 #else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_8010ABD4_hand_line_sinker);
+INCLUDE_ASM("asm/nonmatchings/game/overlays/minigames/01_hand_line_sinker/11A480", func_8010ABD4_hand_line_sinker);
 #endif
 
 void func_8010AD7C_hand_line_sinker(omObjData *obj, f32 length, f32 x0, f32 y0, f32 z0, f32 x1, f32 y1, f32 z1) {

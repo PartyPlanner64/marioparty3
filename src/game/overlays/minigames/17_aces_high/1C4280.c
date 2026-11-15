@@ -2621,7 +2621,7 @@ u16 func_8010D1D8_aces_high(u16 winner) {
            D_8010DCB4_aces_high.y == D_8010DCBC_aces_high[winner].y;
 }
 #else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_17_aces_high/1C4280", func_8010D1D8_aces_high);
+INCLUDE_ASM("asm/nonmatchings/game/overlays/minigames/17_aces_high/1C4280", func_8010D1D8_aces_high);
 #endif
 
 void func_8010D6D4_aces_high(omObjData *object) {

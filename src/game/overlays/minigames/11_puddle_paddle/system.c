@@ -1,4 +1,4 @@
-#include "overlays/ovl_11_puddle_paddle/puddle_paddle.h"
+#include "game/overlays/minigames/11_puddle_paddle/puddle_paddle.h"
 #include "gcc/memory.h"
 #include "game/hu3d.h"
 #include "game/sprite.h"

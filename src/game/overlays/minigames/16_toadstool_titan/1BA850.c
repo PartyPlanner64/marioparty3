@@ -2083,5 +2083,5 @@ const s16 D_8010F278_toadstool_titan[22][4] = {
     { 1, 1, 1, 1 }
 };
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_16_toadstool_titan/1BA850", func_8010BD2C_toadstool_titan);
+INCLUDE_ASM("asm/nonmatchings/game/overlays/minigames/16_toadstool_titan/1BA850", func_8010BD2C_toadstool_titan);
 #endif

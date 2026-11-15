@@ -1004,7 +1004,7 @@ s32 func_80107E6C_eatsa_pizza(omObjData *object) {
     return result;
 }
 #else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0B_eatsa_pizza/161750", func_80107E6C_eatsa_pizza);
+INCLUDE_ASM("asm/nonmatchings/game/overlays/minigames/0B_eatsa_pizza/161750", func_80107E6C_eatsa_pizza);
 #endif
 
 void func_801083A8_eatsa_pizza(omObjData *arg0, func_800E1BA8_minigame_ObjData **arg1, void **arg2) {

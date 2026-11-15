@@ -91,35 +91,35 @@ typedef struct WinnersWheelBowser {
     /* 0x14 */ f32 unk_14;
 } WinnersWheelBowser; // Size 0x18
 
-extern D_80111B50_vine_with_me_Struct D_8010A260_winners_wheel;
-extern s32 D_8010A460_winners_wheel;
-extern s16 D_8010A288_winners_wheel;
-extern s32 D_8010A28C_winners_wheel[];
-extern s32 D_8010A2AC_winners_wheel[];
-extern s32 D_8010A468_winners_wheel[];
-extern s32 D_8010A480_winners_wheel;
-extern s32 D_8010A484_winners_wheel;
-extern s32 D_8010A48C_winners_wheel;
-extern s32 D_8010A490_winners_wheel;
-extern s16 D_8010A494_winners_wheel;
-extern omObjData *D_8010A498_winners_wheel;
-extern omObjData *D_8010A49C_winners_wheel;
-extern omObjData *D_8010A4A0_winners_wheel;
-extern omObjData *D_8010A4A4_winners_wheel;
-extern omObjData *D_8010A4A8_winners_wheel;
-extern s16 D_8010A4AC_winners_wheel[3];
-extern omObjData *D_8010A4B4_winners_wheel;
-extern omObjData *D_8010A4B8_winners_wheel[2];
-extern omObjData *D_8010A4C0_winners_wheel;
-extern omObjData *D_8010A4C4_winners_wheel;
+D_80111B50_vine_with_me_Struct D_8010A260_winners_wheel = { 0, 3, 2, 0, 0, 0, 5, 0, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0, 0, 0, 0 }, 240, 300, -1, 150, 150 };
+s16 D_8010A288_winners_wheel = 0;
+s32 D_8010A28C_winners_wheel[8] = { 2, 3, 7, 4, 5, 6, 8, 9 };
+s32 D_8010A2AC_winners_wheel[8] = { 0, 1, 2, 3, 4, 5, 6, 7 };
 
-extern u8 D_8010A464_winners_wheel;
+s32 D_8010A460_winners_wheel BSS;
+u8 D_8010A464_winners_wheel BSS;
+s16 D_8010A466_winners_wheel BSS;
+s32 D_8010A468_winners_wheel[6] BSS;
+s32 D_8010A480_winners_wheel BSS;
+s32 D_8010A484_winners_wheel BSS;
+s16 D_8010A488_winners_wheel BSS;
+s16 D_8010A48A_winners_wheel BSS;
+s32 D_8010A48C_winners_wheel BSS;
+s32 D_8010A490_winners_wheel BSS;
+s16 D_8010A494_winners_wheel BSS;
+omObjData *D_8010A498_winners_wheel BSS;
+omObjData *D_8010A49C_winners_wheel BSS;
+omObjData *D_8010A4A0_winners_wheel BSS;
+omObjData *D_8010A4A4_winners_wheel BSS;
+omObjData *D_8010A4A8_winners_wheel BSS;
+s16 D_8010A4AC_winners_wheel[3] BSS;
+omObjData *D_8010A4B4_winners_wheel BSS;
+omObjData *D_8010A4B8_winners_wheel[2] BSS;
+omObjData *D_8010A4C0_winners_wheel BSS;
+omObjData *D_8010A4C4_winners_wheel BSS;
 
 extern u16 D_800A11D0_main[];
 extern u16 D_800A11DC_main[];
-extern s16 D_8010A466_winners_wheel;
-extern s16 D_8010A488_winners_wheel;
-extern s16 D_8010A48A_winners_wheel;
 
 void func_8004BCE4_main(struct CameraViewData *data);
 void func_80105AB0_winners_wheel(void);

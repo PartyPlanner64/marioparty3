@@ -44,55 +44,83 @@ typedef struct {
     /* 0x28 */ f32 fov;
 } ThreeDoorMontyCamera; // sizeof 0x2C
 
+typedef struct {
+    /* 0x00 */ s16 unk_00;
+    /* 0x02 */ s16 unk_02[3];
+} ThreeDoorMontyBssEC48; // sizeof 0x8
+
 extern u8 D_800D6A90_main;
 extern s32 D_800A178C_main[][6];
-// walking speeds, indexed by obj->work[0]
-extern f32 D_8010CD10_three_door_monty[3];
-extern f32 D_8010CD1C_three_door_monty[3];
-extern s32 D_8010CD28_three_door_monty[][2];
-extern Vec2f D_8010CD40_three_door_monty[3];
-extern s32 D_8010CD58_three_door_monty[3];
-extern s32 D_8010CD64_three_door_monty[][4];
-// per-character voice bank
-extern s32 D_8010CDA4_three_door_monty[8];
-extern s16 D_8010CDC4_three_door_monty[2][2];
-extern s32 D_8010CDCC_three_door_monty;
-extern ThreeDoorMontyCamera D_8010CDD0_three_door_monty[3];
 extern const s16 D_8010D228_three_door_monty[];
-extern s16 D_8010D230_three_door_monty;
-extern s16 D_8010D232_three_door_monty;
-extern u16 D_8010D234_three_door_monty[2];
-extern void *D_8010D238_three_door_monty[];
-extern s16 D_8010D244_three_door_monty[4];
-extern HuSprite_Unk84_Struct *D_8010D24C_three_door_monty;
-extern s16 D_8010D250_three_door_monty;
-extern s16 D_8010D252_three_door_monty;
-extern s16 D_8010D254_three_door_monty;
-extern s16 D_8010D256_three_door_monty;
-extern s16 D_8010D258_three_door_monty;
-extern ThreeDoorMontyEntry D_8010D260_three_door_monty[50];
-extern HuSprite_Unk84_Struct *D_8010EC28_three_door_monty[2];
-extern u8 D_8010EC30_three_door_monty;
-extern s16 D_8010EC32_three_door_monty;
-extern HuSprite_Unk84_Struct *D_8010EC34_three_door_monty;
-extern u16 D_8010EC38_three_door_monty;
-extern s16 D_8010EC3A_three_door_monty;
-extern s16 D_8010EC3C_three_door_monty;
-extern s16 D_8010EC3E_three_door_monty;
-extern s16 D_8010EC40_three_door_monty;
-extern u8 D_8010EC42_three_door_monty;
-extern s16 D_8010EC44_three_door_monty;
-extern s16 D_8010EC46_three_door_monty;
-extern u8 D_8010EC47_three_door_monty;
-extern s16 D_8010EC48_three_door_monty;
-extern s16 D_8010EC4A_three_door_monty[3];
-extern s16 D_8010EC50_three_door_monty;
-// unk_18 of D_8010D260_three_door_monty[12], accessed through a separate symbol.
-extern f32 D_8010D8A8_three_door_monty;
+// obj of D_8010D260_three_door_monty[8], accessed through a separate symbol.
+extern omObjData *D_8010D680_three_door_monty;
 // unk_18 of D_8010D260_three_door_monty[8], accessed through a separate symbol.
 extern f32 D_8010D698_three_door_monty;
-extern omObjData *D_8010D680_three_door_monty;
+// obj of D_8010D260_three_door_monty[12], accessed through a separate symbol.
 extern omObjData *D_8010D890_three_door_monty;
+// unk_18 of D_8010D260_three_door_monty[12], accessed through a separate symbol.
+extern f32 D_8010D8A8_three_door_monty;
+extern u8 D_8010EC47_three_door_monty; // low byte of D_8010EC46_three_door_monty
+extern s16 D_8010EC48_three_door_monty;    // threeDoorMontyBssEC48.unk_00
+extern s16 D_8010EC4A_three_door_monty[3]; // threeDoorMontyBssEC48.unk_02
+
+// walking speeds, indexed by obj->work[0]
+f32 D_8010CD10_three_door_monty[3] = { 13.0f, 14.0f, 15.0f };
+f32 D_8010CD1C_three_door_monty[3] = { 20.0f, 21.0f, 22.0f };
+s32 D_8010CD28_three_door_monty[3][2] = {
+    { 1, 6 },
+    { 143, 145 },
+    { 199, 199 },
+};
+Vec2f D_8010CD40_three_door_monty[3] = {
+    { -345.0f, -775.0f },
+    { 0.0f, -775.0f },
+    { 345.0f, -775.0f },
+};
+s32 D_8010CD58_three_door_monty[3] = { 7, 8, 9 };
+s32 D_8010CD64_three_door_monty[4][4] = {
+    { 44, 54, 64, 74 },
+    { 108, 118, 128, 138 },
+    { 172, 182, 192, 202 },
+    { 236, 246, 256, 266 },
+};
+// per-character voice bank
+s32 D_8010CDA4_three_door_monty[8] = { 2, 3, 7, 4, 5, 6, 8, 9 };
+s16 D_8010CDC4_three_door_monty[2][2] = { { 99, 51 }, { 212, 51 } };
+s32 D_8010CDCC_three_door_monty = 0;
+ThreeDoorMontyCamera D_8010CDD0_three_door_monty[3] = {
+    { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 30.0f },
+    { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 30.0f },
+    { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 30.0f },
+};
+
+s16 D_8010D230_three_door_monty BSS;
+s16 D_8010D232_three_door_monty BSS;
+u16 D_8010D234_three_door_monty[2] BSS;
+void *D_8010D238_three_door_monty[3] BSS;
+s16 D_8010D244_three_door_monty[4] BSS;
+HuSprite_Unk84_Struct *D_8010D24C_three_door_monty BSS;
+s16 D_8010D250_three_door_monty BSS;
+s16 D_8010D252_three_door_monty BSS;
+s16 D_8010D254_three_door_monty BSS;
+s16 D_8010D256_three_door_monty BSS;
+s16 D_8010D258_three_door_monty BSS;
+u8 D_8010D25C_three_door_monty[4] BSS; /* Unreferenced. */
+ThreeDoorMontyEntry D_8010D260_three_door_monty[50] BSS;
+HuSprite_Unk84_Struct *D_8010EC28_three_door_monty[2] BSS;
+u8 D_8010EC30_three_door_monty BSS;
+s16 D_8010EC32_three_door_monty BSS;
+HuSprite_Unk84_Struct *D_8010EC34_three_door_monty BSS;
+u16 D_8010EC38_three_door_monty BSS;
+s16 D_8010EC3A_three_door_monty BSS;
+s16 D_8010EC3C_three_door_monty BSS;
+s16 D_8010EC3E_three_door_monty BSS;
+s16 D_8010EC40_three_door_monty BSS;
+u8 D_8010EC42_three_door_monty BSS;
+s16 D_8010EC44_three_door_monty BSS;
+s16 D_8010EC46_three_door_monty BSS;
+ThreeDoorMontyBssEC48 threeDoorMontyBssEC48 BSS;
+s16 D_8010EC50_three_door_monty BSS;
 
 void func_8010642C_three_door_monty(f32 x0, f32 z0, f32 x1, f32 z1, f32 *velX, f32 *velZ, f32 speed);
 void func_801071F4_three_door_monty(omObjData *obj);
@@ -2301,4 +2329,4 @@ void func_8010CBBC_three_door_monty(void) {
     func_80105A74_three_door_monty();
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_2B_three_door_monty/24A760", D_8010D228_three_door_monty);
+const s16 D_8010D228_three_door_monty[] = { 0x8260, 0x8261, 0x8262, 0 };

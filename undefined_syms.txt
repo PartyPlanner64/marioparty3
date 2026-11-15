@@ -454,3 +454,12 @@ D_80111142_stacked_deck = stackedDeckBss11140 + 0x2;
 D_8010CF24_storm_chasers = D_8010CF20_storm_chasers + 0x4;
 D_8010CF6E_storm_chasers = D_8010CF6C_storm_chasers + 0x2;
 D_8010CF72_storm_chasers = D_8010CF70_storm_chasers + 0x2;
+
+/* three_door_monty */
+D_8010D680_three_door_monty = D_8010D260_three_door_monty + 0x420;
+D_8010D698_three_door_monty = D_8010D260_three_door_monty + 0x438;
+D_8010D890_three_door_monty = D_8010D260_three_door_monty + 0x630;
+D_8010D8A8_three_door_monty = D_8010D260_three_door_monty + 0x648;
+D_8010EC47_three_door_monty = D_8010EC46_three_door_monty + 0x1;
+D_8010EC48_three_door_monty = threeDoorMontyBssEC48;
+D_8010EC4A_three_door_monty = threeDoorMontyBssEC48 + 0x2;

@@ -25,81 +25,122 @@ typedef struct HeyBatterBatterCamera {
     /* 0x10 */ Vec center;
 } HeyBatterBatterCamera; // Size 0x1C
 
-extern s16 D_80109EA0_hey_batter_batter;
-extern s16 D_80109EA2_hey_batter_batter;
-extern s16 D_80109EA4_hey_batter_batter;
-extern s16 D_80109EA6_hey_batter_batter;
-extern s16 D_80109EA8_hey_batter_batter;
-extern s16 D_80109EAA_hey_batter_batter;
-extern s16 D_80109EAC_hey_batter_batter;
-extern s16 D_80109EAE_hey_batter_batter;
-extern HeyBatterBatterCamera D_80109EB4_hey_batter_batter;
+typedef struct HeyBatterBatterBssEE4 {
+    /* 0x00 */ s16 unk00;
+    /* 0x02 */ s16 unk02[2];
+    /* 0x06 */ s16 unk06[2];
+    /* 0x0A */ s16 unk0A;
+} HeyBatterBatterBssEE4; // Size 0xC
+
 extern s32 D_800A178C_main[][6];
 extern u16 D_800A11D0_main[5];
 extern u16 D_800A11DC_main[5];
 
-extern s16 D_80109C40_hey_batter_batter;
-extern s16 D_80109C42_hey_batter_batter;
-extern s16 D_80109C44_hey_batter_batter;
-extern s16 D_80109C46_hey_batter_batter;
-extern s16 D_80109C48_hey_batter_batter;
-extern s16 D_80109C4A_hey_batter_batter;
-extern s16 D_80109B60_hey_batter_batter;
-extern Vec D_80109B64_hey_batter_batter[4];
-extern Vec D_80109B94_hey_batter_batter[4];
-extern Vec D_80109BC4_hey_batter_batter[2];
-extern Vec D_80109BDC_hey_batter_batter[2];
-extern Vec D_80109BF4_hey_batter_batter[5];
-extern s16 D_80109C30_hey_batter_batter;
-extern s16 D_80109C32_hey_batter_batter;
-extern s16 D_80109C34_hey_batter_batter;
-extern s16 D_80109C36_hey_batter_batter;
-extern s16 D_80109C38_hey_batter_batter;
-extern f32 D_80109C3C_hey_batter_batter;
-extern Vec D_80109C4C_hey_batter_batter[5];
-extern s16 D_80109C88_hey_batter_batter;
-extern s16 D_80109C8A_hey_batter_batter;
-extern s16 D_80109C8C_hey_batter_batter;
-extern s16 D_80109C8E_hey_batter_batter;
-extern f32 D_80109C90_hey_batter_batter;
-extern s16 D_80109C94_hey_batter_batter;
-extern s16 D_80109C96_hey_batter_batter;
-extern f32 D_80109C98_hey_batter_batter;
-extern f32 D_80109C9C_hey_batter_batter;
-extern f32 D_80109CA0_hey_batter_batter;
-extern s16 D_80109CA4_hey_batter_batter;
-extern Vec D_80109CA8_hey_batter_batter[7];
-extern s16 D_80109CFC_hey_batter_batter;
-extern f32 D_80109D00_hey_batter_batter;
-extern Vec D_80109D04_hey_batter_batter[5];
-extern s32 D_80109D40_hey_batter_batter[20];
-extern s16 D_80109D90_hey_batter_batter;
-extern s16 D_80109D92_hey_batter_batter;
-extern s16 D_80109D94_hey_batter_batter;
-extern s16 D_80109D96_hey_batter_batter;
-extern s16 D_80109D98_hey_batter_batter;
+s16 D_80109B60_hey_batter_batter = 0;
+Vec D_80109B64_hey_batter_batter[4] = { { -15.0f, 0.0f, 0.0f }, { 5.0f, 90.0f, 0.0f }, { 5.0f, -90.0f, 0.0f }, { 10.0f, 0.0f, 0.0f } };
+Vec D_80109B94_hey_batter_batter[4] = { { 0.0f, 175.0f, -200.0f }, { -800.0f, 170.0f, 0.0f }, { 890.0f, 170.0f, -10.0f }, { 0.0f, 225.0f, -1700.0f } };
+Vec D_80109BC4_hey_batter_batter[2] = { { 5.0f, 0.0f, 0.0f }, { 5.0f, 0.0f, 0.0f } };
+Vec D_80109BDC_hey_batter_batter[2] = { { -110.0f, 200.0f, -575.0f }, { 110.0f, 200.0f, -575.0f } };
+Vec D_80109BF4_hey_batter_batter[5] = {
+    { 600.0f, 250.0f, -1000.0f },
+    { 400.0f, 250.0f, -1400.0f },
+    { 0.0f, 250.0f, -1600.0f },
+    { -400.0f, 250.0f, -1400.0f },
+    { -600.0f, 250.0f, -1000.0f },
+};
+s16 D_80109C30_hey_batter_batter = 0;
+s16 D_80109C32_hey_batter_batter = 0;
+s16 D_80109C34_hey_batter_batter = 0;
+s16 D_80109C36_hey_batter_batter = 0;
+s16 D_80109C38_hey_batter_batter = 0;
+f32 D_80109C3C_hey_batter_batter = 0.0f;
+s16 D_80109C40_hey_batter_batter = 0;
+s16 D_80109C42_hey_batter_batter = 0;
+s16 D_80109C44_hey_batter_batter = 0;
+s16 D_80109C46_hey_batter_batter = 4;
+s16 D_80109C48_hey_batter_batter = 0;
+s16 D_80109C4A_hey_batter_batter = 0;
+Vec D_80109C4C_hey_batter_batter[5] = {
+    { 600.0f, 500.0f, -2200.0f },
+    { -600.0f, 700.0f, -2200.0f },
+    { -2000.0f, 500.0f, -700.0f },
+    { -2000.0f, 1000.0f, 0.0f },
+    { -2000.0f, 800.0f, 800.0f },
+};
+s16 D_80109C88_hey_batter_batter = 999;
+s16 D_80109C8A_hey_batter_batter = 0;
+s16 D_80109C8C_hey_batter_batter = 0;
+s16 D_80109C8E_hey_batter_batter = 999;
+f32 D_80109C90_hey_batter_batter = 0.0f;
+s16 D_80109C94_hey_batter_batter = 0;
+s16 D_80109C96_hey_batter_batter = 0;
+f32 D_80109C98_hey_batter_batter = 30.0f;
+f32 D_80109C9C_hey_batter_batter = 1000.0f;
+f32 D_80109CA0_hey_batter_batter = 100.0f;
+s16 D_80109CA4_hey_batter_batter = 0;
+Vec D_80109CA8_hey_batter_batter[7] = {
+    { 4.0f, 0.0f, 0.05f },
+    { 575.0f, 225.0f, -999.0f },
+    { 375.0f, 225.0f, -1399.0f },
+    { 0.0f, 225.0f, -1599.0f },
+    { -375.0f, 225.0f, -1399.0f },
+    { -575.0f, 225.0f, -999.0f },
+    { -3.0f, 0.0f, 2.0f },
+};
+s16 D_80109CFC_hey_batter_batter = 0;
+f32 D_80109D00_hey_batter_batter = 1.47f;
+Vec D_80109D04_hey_batter_batter[5] = {
+    { 600.0f, 5.0f, -1000.0f },
+    { 400.0f, 5.0f, -1400.0f },
+    { 0.0f, 5.0f, -1600.0f },
+    { -400.0f, 5.0f, -1400.0f },
+    { -600.0f, 5.0f, -1000.0f },
+};
+s32 D_80109D40_hey_batter_batter[20] = {
+    0x0021002D, 0x0021002E, 0x0021002F, 0x00210030, 0x00210031,
+    0x00210032, 0x00210033, 0x00210034, 0x00210035, 0x00210036,
+    0x00210037, 0x00210038, 0x00210039, 0x0021003A, 0x0021003B,
+    0x0021003C, 0x0021003D, 0x0021003E, 0x0021003F, 0x00210040
+};
+s16 D_80109D90_hey_batter_batter = 0;
+s16 D_80109D92_hey_batter_batter = 0;
+s16 D_80109D94_hey_batter_batter = 0;
+s16 D_80109D96_hey_batter_batter = 0;
+s16 D_80109D98_hey_batter_batter = 0;
 
-extern s16 D_80109ED0_hey_batter_batter;
-extern s16 D_80109ED2_hey_batter_batter;
-extern s16 D_80109ED4_hey_batter_batter;
-extern s16 D_80109ED6_hey_batter_batter;
-extern s16 D_80109ED8_hey_batter_batter;
-extern s16 D_80109EDA_hey_batter_batter;
-extern s16 D_80109EDC_hey_batter_batter;
-extern s16 D_80109EDE_hey_batter_batter;
-extern s16 D_80109EE0_hey_batter_batter;
-extern s16 D_80109EE2_hey_batter_batter;
+s16 D_80109EA0_hey_batter_batter BSS;
+s16 D_80109EA2_hey_batter_batter BSS;
+s16 D_80109EA4_hey_batter_batter BSS;
+s16 D_80109EA6_hey_batter_batter BSS;
+s16 D_80109EA8_hey_batter_batter BSS;
+s16 D_80109EAA_hey_batter_batter BSS;
+s16 D_80109EAC_hey_batter_batter BSS;
+s16 D_80109EAE_hey_batter_batter BSS;
+u8 D_80109EB0_hey_batter_batter[4] BSS; /* Unreferenced. */
+HeyBatterBatterCamera D_80109EB4_hey_batter_batter BSS;
+s16 D_80109ED0_hey_batter_batter BSS;
+s16 D_80109ED2_hey_batter_batter BSS;
+s16 D_80109ED4_hey_batter_batter BSS;
+s16 D_80109ED6_hey_batter_batter BSS;
+s16 D_80109ED8_hey_batter_batter BSS;
+s16 D_80109EDA_hey_batter_batter BSS;
+s16 D_80109EDC_hey_batter_batter BSS;
+s16 D_80109EDE_hey_batter_batter BSS;
+s16 D_80109EE0_hey_batter_batter BSS;
+s16 D_80109EE2_hey_batter_batter BSS;
+HeyBatterBatterBssEE4 heyBatterBatterBssEE4 BSS;
+s16 D_80109EF0_hey_batter_batter BSS;
+omObjData *D_80109EF4_hey_batter_batter BSS;
+s16 D_80109EF8_hey_batter_batter[4] BSS;
+s16 D_80109F00_hey_batter_batter[5] BSS;
+s16 D_80109F0C_hey_batter_batter[5] BSS;
+HeyBatterBatterBase D_80109F18_hey_batter_batter[5] BSS;
+s16 D_80109F2C_hey_batter_batter[5] BSS;
+
 extern s16 D_80109EE4_hey_batter_batter;
 extern s16 D_80109EE6_hey_batter_batter[2];
 extern s16 D_80109EEA_hey_batter_batter[2];
 extern s16 D_80109EEE_hey_batter_batter;
-extern s16 D_80109EF0_hey_batter_batter;
-extern omObjData *D_80109EF4_hey_batter_batter;
-extern s16 D_80109EF8_hey_batter_batter[4];
-extern s16 D_80109F00_hey_batter_batter[5];
-extern s16 D_80109F0C_hey_batter_batter[5];
-extern HeyBatterBatterBase D_80109F18_hey_batter_batter[5];
-extern s16 D_80109F2C_hey_batter_batter[5];
 
 void func_801059BC_hey_batter_batter(void);
 void func_80105A4C_hey_batter_batter(void);

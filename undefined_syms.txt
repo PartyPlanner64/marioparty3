@@ -305,3 +305,9 @@ D_80111B7A_rockin_raceway = rockinRacewayBssB74 + 0x6;
 /* popgun_pickoff field aliases: PopgunPickoffBssCC20. */
 D_8010CC20_popgun_pickoff = popgunPickoffBssCC20;
 D_8010CC22_popgun_pickoff = popgunPickoffBssCC20 + 0x2;
+
+/* hey_batter_batter: misaligned s16 arrays grouped in heyBatterBatterBssEE4. */
+D_80109EE4_hey_batter_batter = heyBatterBatterBssEE4;
+D_80109EE6_hey_batter_batter = heyBatterBatterBssEE4 + 0x2;
+D_80109EEA_hey_batter_batter = heyBatterBatterBssEE4 + 0x6;
+D_80109EEE_hey_batter_batter = heyBatterBatterBssEE4 + 0xA;

@@ -157,8 +157,11 @@ D_8010B76A_swinging_with_sharks = D_8010B768_swinging_with_sharks + 0x2;
 
 /* crowd_cover: halfword following D_8010CF80. */
 D_8010CF82_crowd_cover = D_8010CF80_crowd_cover + 0x2;
-/* end_of_the_line: start of the per-player sound table (D_8010C622 is its first low halfword). */
-D_8010C620_end_of_the_line = D_8010C622_end_of_the_line - 0x2;
+/* end_of_the_line field aliases: EndOfTheLineBssC75C, EndOfTheLineBssC780. */
+D_8010C75C_end_of_the_line = endOfTheLineBssC75C;
+D_8010C75E_end_of_the_line = endOfTheLineBssC75C + 0x2;
+D_8010C780_end_of_the_line = endOfTheLineBssC780;
+D_8010C782_end_of_the_line = endOfTheLineBssC780 + 0x2;
 /* bobbing_bow_loons: start of the s32 table whose low halfword is D_801097AA. */
 D_801097A8_bobbing_bow_loons = D_801097AA_bobbing_bow_loons - 0x2;
 /* game_guys_magic_boxes: state bytes and timer halfwords packed after the preceding data symbol. */

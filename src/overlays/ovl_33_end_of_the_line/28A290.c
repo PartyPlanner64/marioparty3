@@ -75,59 +75,78 @@ typedef struct EndOfTheLinePlayerSubWork {
     /* 0x10 */ u16 unk10;
 } EndOfTheLinePlayerSubWork; // sizeof 0x14
 
-extern omObjData *D_8010C738_end_of_the_line;
-extern omObjData *D_8010C744_end_of_the_line[2];
+// Grouped BSS variables; individual fields are aliased in undefined_syms.txt.
+typedef struct EndOfTheLineBssC75C {
+    /* 0x00 */ u16 unk00;
+    /* 0x02 */ u16 unk02[2];
+} EndOfTheLineBssC75C; // sizeof 0x6
 
-extern omObjData *D_8010C730_end_of_the_line;
-extern omObjData *D_8010C734_end_of_the_line;
-extern u16 D_8010C650_end_of_the_line;
-extern u16 D_8010C754_end_of_the_line;
-extern u16 D_8010C756_end_of_the_line;
-extern u16 D_8010C758_end_of_the_line;
-extern u16 D_8010C75A_end_of_the_line;
-extern u16 D_8010C75C_end_of_the_line;
-extern u16 D_8010C75E_end_of_the_line[2];
-extern s16 D_8010C762_end_of_the_line;
+typedef struct EndOfTheLineBssC780 {
+    /* 0x00 */ s16 unk00;
+    /* 0x02 */ s16 unk02[3];
+} EndOfTheLineBssC780; // sizeof 0x8
+
 extern s32 D_800A178C_main[][6];
-extern s16 D_8010C764_end_of_the_line;
-extern u16 D_8010C766_end_of_the_line;
-extern s16 D_8010C782_end_of_the_line[3];
-extern s16 D_8010C7D0_end_of_the_line;
 
-extern s16 D_8010C5C8_end_of_the_line[2];
-extern f32 D_8010C5CC_end_of_the_line;
-extern s32 D_8010C5D8_end_of_the_line[5];
-extern s32 D_8010C5EC_end_of_the_line[5];
-extern s32 D_8010C658_end_of_the_line[3];
-extern u16 D_8010C768_end_of_the_line[3];
-extern f32 D_8010C5D0_end_of_the_line[2];
-
-extern D_80111B50_vine_with_me_Struct D_8010C5A0_end_of_the_line;
+D_80111B50_vine_with_me_Struct D_8010C5A0_end_of_the_line = { 0, 4, 1, 0, 0, 0, 0, 0, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0, 0, 0, 0 }, -1, -1, 9000, -1, 150 };
+s16 D_8010C5C8_end_of_the_line[2] = { 1, 2 };
+f32 D_8010C5CC_end_of_the_line = 160.0f;
+f32 D_8010C5D0_end_of_the_line[2] = { -80.0f, 80.0f };
+s32 D_8010C5D8_end_of_the_line[5] = { 0x0054000B, 0x0054000C, 0x0054000D, 0x0054000E, 0x0054000F };
+s32 D_8010C5EC_end_of_the_line[5] = { 0x6DD, 0xADD, 0xADD, 0xADD, 0xADD };
 // Per-camera scissor (x, y, width, height) and viewport (scale x/y, translate
 // x/y) settings.
-extern s16 D_8010C600_end_of_the_line[2][4];
+s16 D_8010C600_end_of_the_line[2][4] = { { 0, 0, 159, 240 }, { 161, 0, 320, 240 } };
+s16 D_8010C610_end_of_the_line[2][4] = { { 640, 480, 320, 480 }, { 640, 480, 960, 480 } };
 // Per-player sound effect IDs.
-extern s32 D_8010C620_end_of_the_line[2][6];
-extern s16 D_8010C610_end_of_the_line[2][4];
-extern omObjData *D_8010C73C_end_of_the_line[2];
-extern s16 D_8010C76E_end_of_the_line;
-extern s16 D_8010C770_end_of_the_line;
-extern s16 D_8010C772_end_of_the_line;
-extern s16 D_8010C774_end_of_the_line;
-extern s16 D_8010C776_end_of_the_line;
-extern s16 D_8010C778_end_of_the_line[2];
-extern s16 D_8010C77C_end_of_the_line[2];
+s32 D_8010C620_end_of_the_line[2][6] = {
+    { 0x49A, 0x49B, 0x49C, 0x49D, 0x49E, 0x4A4 },
+    { 0x49F, 0x4A0, 0x4A1, 0x4A2, 0x4A3, 0x4A5 }
+};
+u16 D_8010C650_end_of_the_line = 0;
+s32 D_8010C654_end_of_the_line[1] = { 0 }; /* Unreferenced. */
+s32 D_8010C658_end_of_the_line[3] = { 0x00540005, 0x00540006, 0x00540007 };
+u16 D_8010C664_end_of_the_line[2] = { 110, 50 };
+f32 D_8010C668_end_of_the_line = 1.0f;
+f32 D_8010C66C_end_of_the_line = 1.0f;
+f32 D_8010C670_end_of_the_line[2][5] = { { 100.0f, 3300.0f, 3650.0f, 3800.0f, 3850.0f },
+                                         { 200.0f, 4000.0f, 4100.0f, 4300.0f, 4500.0f } };
+f32 D_8010C698_end_of_the_line[2][5] = { { 3.2f, 0.6f, 1.2f, 1.0f, 1.0f }, { 5.0f, 0.8f, 2.0f, 3.0f, 1.5f } };
+Vec D_8010C6C0_end_of_the_line[2] = { { 1.0f, 0.99f, 0.9f }, { 0.4f, 0.8f, 0.7f } };
+
+omObjData *D_8010C730_end_of_the_line BSS;
+omObjData *D_8010C734_end_of_the_line BSS;
+omObjData *D_8010C738_end_of_the_line BSS;
+omObjData *D_8010C73C_end_of_the_line[2] BSS;
+omObjData *D_8010C744_end_of_the_line[2] BSS;
+omObjData *D_8010C74C_end_of_the_line[2] BSS;
+u16 D_8010C754_end_of_the_line BSS;
+u16 D_8010C756_end_of_the_line BSS;
+u16 D_8010C758_end_of_the_line BSS;
+u16 D_8010C75A_end_of_the_line BSS;
+EndOfTheLineBssC75C endOfTheLineBssC75C BSS;
+s16 D_8010C762_end_of_the_line BSS;
+s16 D_8010C764_end_of_the_line BSS;
+u16 D_8010C766_end_of_the_line BSS;
+u16 D_8010C768_end_of_the_line[3] BSS;
+s16 D_8010C76E_end_of_the_line BSS;
+s16 D_8010C770_end_of_the_line BSS;
+s16 D_8010C772_end_of_the_line BSS;
+s16 D_8010C774_end_of_the_line BSS;
+s16 D_8010C776_end_of_the_line BSS;
+s16 D_8010C778_end_of_the_line[2] BSS;
+s16 D_8010C77C_end_of_the_line[2] BSS;
+EndOfTheLineBssC780 endOfTheLineBssC780 BSS;
+Vec D_8010C788_end_of_the_line[2] BSS;
+Vec D_8010C7A0_end_of_the_line[2] BSS;
+Vec D_8010C7B8_end_of_the_line[2] BSS;
+s16 D_8010C7D0_end_of_the_line BSS;
+
+/* Fields of endOfTheLineBssC75C and endOfTheLineBssC780 (aliased in undefined_syms.txt). */
+extern u16 D_8010C75C_end_of_the_line;
+extern u16 D_8010C75E_end_of_the_line[2];
 extern s16 D_8010C780_end_of_the_line;
-extern Vec D_8010C788_end_of_the_line[2];
-extern Vec D_8010C7A0_end_of_the_line[2];
-extern Vec D_8010C7B8_end_of_the_line[2];
-extern u16 D_8010C664_end_of_the_line[2];
-extern f32 D_8010C668_end_of_the_line;
-extern f32 D_8010C66C_end_of_the_line;
-extern f32 D_8010C670_end_of_the_line[2][5];
-extern f32 D_8010C698_end_of_the_line[2][5];
-extern Vec D_8010C6C0_end_of_the_line[2];
-extern omObjData *D_8010C74C_end_of_the_line[2];
+extern s16 D_8010C782_end_of_the_line[3];
 
 void func_80105E0C_end_of_the_line(omObjData *obj);
 void func_80106CDC_end_of_the_line(omObjData *arg0, omObjData *arg1, s32 arg2);

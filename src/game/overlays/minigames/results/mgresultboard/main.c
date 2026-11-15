@@ -314,7 +314,7 @@ void func_80105CE8_mgresultboard(omObjData *arg0) {
             D_8010AD94_mgresultboard = 0;
             for (i = 0; i < MB_MAX_PLAYERS; i++) {
                 var_a0 = 0;
-                if (D_8010B048_mgresultboard[i].unk_01 != D_8010B018_mgresultboard[i].unk_01) {
+                if (D_8010B048_mgresultboard[i].rank != D_8010B018_mgresultboard[i].rank) {
                     D_8010AD94_mgresultboard++;
                     var_a0 = 1;
                 }
@@ -350,7 +350,7 @@ void func_80105CE8_mgresultboard(omObjData *arg0) {
         case 13:
             var_s3 = 0;
             for (i = 0; i < MB_MAX_PLAYERS; i++) {
-                var_a1 = D_8010B048_mgresultboard[i].unk_01 != D_8010B018_mgresultboard[i].unk_01;
+                var_a1 = D_8010B048_mgresultboard[i].rank != D_8010B018_mgresultboard[i].rank;
                 if (D_8010B048_mgresultboard[i].idx != D_8010B018_mgresultboard[i].idx) {
                     var_a1 = 1;
                 }
@@ -376,7 +376,7 @@ void func_80105CE8_mgresultboard(omObjData *arg0) {
             break;
         case 14:
             for (i = 0; i < MB_MAX_PLAYERS; i++) {
-                var_a1 = D_8010B048_mgresultboard[i].unk_01 != D_8010B018_mgresultboard[i].unk_01;
+                var_a1 = D_8010B048_mgresultboard[i].rank != D_8010B018_mgresultboard[i].rank;
                 if (D_8010B048_mgresultboard[i].idx != D_8010B018_mgresultboard[i].idx) {
                     var_a1 = 1;
                 }
@@ -465,7 +465,7 @@ s32 func_80106A80_mgresultboard(s8 arg0) {
         var_s3 = 1;
         var_s0 = rand16();
     }
-    if (func_80108250_mgresultboard(D_8010AFA8_mgresultboard, arg0, D_8010B048_mgresultboard[var_s0 & 3].unk_02, ((var_s0 / 8) % 3)) == 1) {
+    if (func_80108250_mgresultboard(D_8010AFA8_mgresultboard, arg0, D_8010B048_mgresultboard[var_s0 & 3].chr, ((var_s0 / 8) % 3)) == 1) {
         var_s0 = rand16();
     }
     if (func_801092E0_mgresultboard(D_8010AEA0_mgresultboard.unk_00, arg0, ((var_s0) % 100)) == 1) {
@@ -481,9 +481,9 @@ s32 func_80106A80_mgresultboard(s8 arg0) {
 s32 func_80106C80_mgresultboard(s8 arg0) {
     s32 temp_s3;
 
-    temp_s3 = func_8010A864_mgresultboard(D_8010AFE0_mgresultboard, arg0, D_8010B048_mgresultboard[arg0].unk_01) == 1;
-    func_80108250_mgresultboard(D_8010AFA8_mgresultboard, arg0, D_8010B048_mgresultboard[arg0].unk_02, D_8010B048_mgresultboard[arg0].unk_03);
-    func_801092E0_mgresultboard(D_8010AEA0_mgresultboard.unk_00, arg0, D_8010B048_mgresultboard[arg0].score);
+    temp_s3 = func_8010A864_mgresultboard(D_8010AFE0_mgresultboard, arg0, D_8010B048_mgresultboard[arg0].rank) == 1;
+    func_80108250_mgresultboard(D_8010AFA8_mgresultboard, arg0, D_8010B048_mgresultboard[arg0].chr, D_8010B048_mgresultboard[arg0].unk_03);
+    func_801092E0_mgresultboard(D_8010AEA0_mgresultboard.unk_00, arg0, D_8010B048_mgresultboard[arg0].star);
     func_80109878_mgresultboard(D_8010AEA0_mgresultboard.unk_00, arg0, D_8010B048_mgresultboard[arg0].coin);
     return temp_s3;
 }
@@ -601,10 +601,10 @@ void func_80107234_mgresultboard(void) {
 
     for (i = 0; i < 4; i++) {
         D_8010B048_mgresultboard[i].idx = i;
-        D_8010B048_mgresultboard[i].unk_01 = 0;
+        D_8010B048_mgresultboard[i].rank = 0;
         D_8010B048_mgresultboard[i].unk_03 = 0;
-        D_8010B048_mgresultboard[i].unk_02 = GwPlayer[i].chr;
-        D_8010B048_mgresultboard[i].score = GwPlayer[i].star;
+        D_8010B048_mgresultboard[i].chr = GwPlayer[i].chr;
+        D_8010B048_mgresultboard[i].star = GwPlayer[i].star;
         D_8010B048_mgresultboard[i].coin = GwPlayer[i].coin;
         D_8010B048_mgresultboard[i].gameCoin = GwPlayer[i].gameCoin;
         D_8010B048_mgresultboard[i].gameCoin += GwPlayer[i].bonusCoin;
@@ -613,8 +613,8 @@ void func_80107234_mgresultboard(void) {
 
     for (i = 0; i < 3; i++) {
         for (j = i + 1; j < 4; j++) {
-            values[0] = D_8010B048_mgresultboard[i].score * 1000 + D_8010B048_mgresultboard[i].coin;
-            values[1] = D_8010B048_mgresultboard[j].score * 1000 + D_8010B048_mgresultboard[j].coin;
+            values[0] = D_8010B048_mgresultboard[i].star * 1000 + D_8010B048_mgresultboard[i].coin;
+            values[1] = D_8010B048_mgresultboard[j].star * 1000 + D_8010B048_mgresultboard[j].coin;
             if (values[0] < values[1]) {
                 temp = D_8010B048_mgresultboard[i];
                 D_8010B048_mgresultboard[i] = D_8010B048_mgresultboard[j];
@@ -628,20 +628,20 @@ void func_80107234_mgresultboard(void) {
     }
 
     rank = 0;
-    D_8010B048_mgresultboard[0].unk_01 = 0;
+    D_8010B048_mgresultboard[0].rank = 0;
     D_8010B048_mgresultboard[0].unk_03 = D_8010AD24_mgresultboard[0];
     for (i = 1; i < 4; i++) {
-        values[0] = D_8010B048_mgresultboard[i - 1].score * 1000 + D_8010B048_mgresultboard[i - 1].coin;
-        values[1] = D_8010B048_mgresultboard[i].score * 1000 + D_8010B048_mgresultboard[i].coin;
+        values[0] = D_8010B048_mgresultboard[i - 1].star * 1000 + D_8010B048_mgresultboard[i - 1].coin;
+        values[1] = D_8010B048_mgresultboard[i].star * 1000 + D_8010B048_mgresultboard[i].coin;
         rank += (values[0] != values[1]);
-        D_8010B048_mgresultboard[i].unk_01 = rank;
+        D_8010B048_mgresultboard[i].rank = rank;
     }
 
     place = 0;
     count = 0;
     for (j = 0; j < 4; j++) {
         for (i = 0; i < 4; i++) {
-            if (j == D_8010B048_mgresultboard[i].unk_01) {
+            if (j == D_8010B048_mgresultboard[i].rank) {
                 count++;
                 ranks[i] = place;
             }
@@ -651,7 +651,7 @@ void func_80107234_mgresultboard(void) {
     }
 
     for (i = 0; i < 4; i++) {
-        D_8010B048_mgresultboard[i].unk_01 = ranks[i];
+        D_8010B048_mgresultboard[i].rank = ranks[i];
         D_8010B048_mgresultboard[i].unk_03 = D_8010AD24_mgresultboard[ranks[i]];
     }
 }

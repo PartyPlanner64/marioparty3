@@ -105,11 +105,11 @@ void func_80107D00_mgresultboard(void) {
         if (i < 4) {
             Hu3DMotionTimeSet(obj->model[i + 1], 40.0f);
             Hu3DAnimBankSet(D_8010ADB0_mgresultboard[i],
-                            D_8010AD28_mgresultboard[D_8010B048_mgresultboard[i].unk_02][D_8010B048_mgresultboard[i].unk_03]);
+                            D_8010AD28_mgresultboard[D_8010B048_mgresultboard[i].chr][D_8010B048_mgresultboard[i].unk_03]);
         } else {
             Hu3DMotionTimeSet(obj->model[i + 1], 20.0f);
             Hu3DAnimBankSet(D_8010ADB0_mgresultboard[i],
-                            D_8010AD28_mgresultboard[D_8010B048_mgresultboard[rand8() & 3].unk_02][rand8() % 3]);
+                            D_8010AD28_mgresultboard[D_8010B048_mgresultboard[rand8() & 3].chr][rand8() % 3]);
         }
     }
     HuMemMemoryFreePerm(modelData);
@@ -146,7 +146,7 @@ void func_80108150_mgresultboard(omObjData *arg0) {
     s8 i;
 
     for (i = 0; i < 4; i++) {
-        func_801081F0_mgresultboard(arg0, i, D_8010B048_mgresultboard[i].unk_02, D_8010B048_mgresultboard[i].unk_03);
+        func_801081F0_mgresultboard(arg0, i, D_8010B048_mgresultboard[i].chr, D_8010B048_mgresultboard[i].unk_03);
     }
 }
 
@@ -315,7 +315,7 @@ void func_80108BC4_mgresultboard(omObjData *arg0) {
     s8 i;
 
     for (i = 0; i < 4; i++) {
-        func_80109744_mgresultboard(arg0, i, D_8010B048_mgresultboard[i].score);
+        func_80109744_mgresultboard(arg0, i, D_8010B048_mgresultboard[i].star);
         func_80109DAC_mgresultboard(arg0, i, D_8010B048_mgresultboard[i].coin);
     }
 }

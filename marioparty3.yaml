@@ -2531,18 +2531,18 @@ segments:
     bss_size: 0x2F0
     subsegments:
       - [0x4E6DC0, c, main]
-      - [0x4E8F60, c]
+      - [0x4E8F60, c, coinicon]
       - [0x4E9120, c, score]
-      - [0x4EB420, c]
-      - [0x4EBD50, c]
+      - [0x4EB420, c, rank]
+      - [0x4EBD50, c, staricon]
       - [0x4EBF10, .data, main] #8010AAF0
-      - [0x4EBF30, .data, 4E8F60] #8010AB10
+      - [0x4EBF30, .data, coinicon] #8010AB10
       - [0x4EBF60, .data, score] #8010AB40
-      - [0x4EC080, .data, 4EB420] #8010AC60
-      - [0x4EC0B0, .data, 4EBD50] #8010AC90
+      - [0x4EC080, .data, rank] #8010AC60
+      - [0x4EC0B0, .data, staricon] #8010AC90
       - [0x4EC0E0, .rodata, main] #8010ACC0
       - [0x4EC148, .rodata, score] #8010AD28
-      - [0x4EC1A0, .rodata, 4EB420] #8010AD80
+      - [0x4EC1A0, .rodata, rank] #8010AD80
       - {0x4EC1B0, type: .bss, vram: 0x8010AD90, name: bss}
 
   - type: code

@@ -56,7 +56,7 @@ void func_8010A000_mgresultboard(void) {
         Hu3DModelDynamicFree(obj->model[i + 1]);
         if (i < 4) {
             Hu3DMotionTimeSet(obj->model[i + 1], 40.0f);
-            Hu3DAnimBankSet(D_8010AE80_mgresultboard[i], D_8010B048_mgresultboard[i].unk_01);
+            Hu3DAnimBankSet(D_8010AE80_mgresultboard[i], D_8010B048_mgresultboard[i].rank);
         } else {
             Hu3DMotionTimeSet(obj->model[i + 1], 20.0f);
             Hu3DAnimBankSet(D_8010AE80_mgresultboard[i], rand8() & 3);
@@ -103,7 +103,7 @@ void func_8010A3E4_mgresultboard(omObjData *arg0) {
     s8 i;
 
     for (i = 0; i < 4; i++) {
-        func_8010A454_mgresultboard(arg0, i, D_8010B048_mgresultboard[i].unk_01);
+        func_8010A454_mgresultboard(arg0, i, D_8010B048_mgresultboard[i].rank);
     }
 }
 

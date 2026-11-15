@@ -24,7 +24,6 @@ typedef struct {
 typedef struct {
     s32 message;
     s16 sound;
-    s16 padding;
 } OptSoundEntry;
 
 typedef struct {
@@ -48,70 +47,8 @@ typedef struct {
     /* 0x0C */ f32 h;
 } OptRecordWinRect; // sizeof 0x10
 
-extern OptSoundMenu D_80113DA8_option;
-extern OptMusicMenu D_8011421C_option;
-
-extern Vec D_80113A80_option;
-extern Vec D_80113A8C_option;
-extern Vec D_80113AA4_option;
-extern Vec D_80113AB0_option;
-extern Vec D_80113ABC_option;
-extern Vec D_80113AC8_option;
-extern Vec D_80113AD4_option;
-extern Vec D_80113AE0_option;
-extern Vec D_80113AEC_option;
-extern Vec D_80113AF8_option;
-extern Vec D_80113B04_option;
-extern Vec D_80113B10_option;
-extern Vec D_80113B1C_option;
-extern Vec D_801136F4_option;
-extern Vec D_80113700_option;
-extern Vec D_8011370C_option;
-extern Vec D_80113718_option;
-extern Vec D_80113724_option;
-extern Vec D_80113730_option;
-extern Vec D_8011373C_option;
-extern Vec D_80113748_option;
-extern Vec D_80113A98_option;
-extern Vec D_80113580_option[6][2];
-extern Vec D_801135E0_option[2];
-extern Vec D_801135F8_option[2];
-extern Vec D_801137FC_option;
-extern Vec D_80113808_option;
-extern Vec D_80113814_option;
-extern Vec D_80113820_option;
-extern Vec D_801138B0_option;
-extern Vec D_801138BC_option;
-extern Vec D_80113508_option[2];
-extern Vec D_801146BC_option;
-extern Vec D_801146C8_option;
-extern Vec D_801146D4_option;
-extern Vec D_801146E0_option;
-extern Vec D_80114674_option;
-extern Vec D_80114680_option;
-extern Vec D_80113B90_option;
-extern Vec D_80113B9C_option;
-extern Vec D_80113BA8_option;
-extern Vec D_80113BB4_option;
-extern Vec D_80113BC0_option;
-extern Vec D_80113BCC_option;
-extern Vec D_8011376C_option[];
-extern Vec D_8011367C_option[2];
-extern Vec D_80113694_option[2];
-extern Vec D_801136B8_option;
-extern Vec D_801136AC_option[2];
-extern Vec D_8011379C_option[2];
-extern Vec D_801137B4_option[2];
-extern Vec D_801137CC_option[2];
-extern Vec D_801137E4_option[2];
-extern Vec D_8011388C_option;
-extern Vec D_80113898_option;
-extern Vec D_801138A4_option;
-extern s32 D_80114778_option[4];
-extern Process *D_80114770_option;
-extern OptCursor D_80114788_option[2];
-extern OptSeObj D_801147E0_option;
-extern s32 D_801147E8_option;
+extern const OptSoundMenu D_80113DA8_option;
+extern const OptMusicMenu D_8011421C_option;
 extern OptSprSlot D_80114EF0_option[0x40];
 extern OptSpr D_801147F0_option[0x40];
 extern UnkOption D_80114F70_option[0x40];
@@ -120,14 +57,6 @@ extern u16 D_80115A72_option;
 extern OptWinEntry D_80115A78_option[0x20];
 extern SaveCommonBuf D_800D09A8_main;
 extern s32 D_801139D0_option;
-extern Vec D_8011382C_option[2];
-extern Vec D_80113844_option[2];
-extern Vec D_8011385C_option[2];
-extern Vec D_80113874_option[2];
-extern s32 D_801138C8_option[9];
-extern OptRecordWinRect D_801138EC_option[6];
-extern s32 D_8011394C_option[9];
-extern OptRecordWinRect D_80113970_option[6];
 
 s32 func_80113204_option(s32 arg0);
 s32 func_8010FE00_option(void);
@@ -214,6 +143,142 @@ void func_80112E14_option(void);
 void func_8010FFDC_option(void);
 void func_8010E8E0_option(void);
 void func_8010F138_option(void);
+
+Vec D_801134F0_option[2] = {
+    { 0.0f, 271.19f, 350.0f },
+    { 0.0f, 228.72f, -550.0f },
+}; /* Unreferenced. */
+Vec D_80113508_option[2] = {
+    { 0.0f, 250.0f, 350.0f },
+    { 0.0f, 228.72f, 1275.0f },
+};
+Vec D_80113520_option[4][2] = {
+    { { 0.0f, 271.19f, 350.0f }, { 0.0f, 228.72f, -550.0f } },
+    { { 0.0f, 271.19f, 350.0f }, { -535.0f, 228.72f, -550.0f } },
+    { { 0.0f, 271.19f, 350.0f }, { 535.0f, 228.72f, -550.0f } },
+    { { 0.0f, 250.0f, -400.0f }, { 0.0f, 228.72f, 1275.0f } },
+}; /* Unreferenced. */
+Vec D_80113580_option[6][2] = {
+    { { 0.0f, 264.9f, 364.27f }, { 0.0f, 184.59999f, 61.300003f } },
+    { { 0.0f, 224.46501f, -293.5f }, { 0.0f, 123.75f, -61.300003f } },
+    { { 0.0f, 224.46501f, 364.27f }, { -242.5f, 123.75f, -358.5f } },
+    { { 0.0f, 224.46501f, 364.27f }, { 240.0f, 123.75f, -358.5f } },
+    { { 0.0f, 224.46501f, -293.5f }, { -265.7f, 105.85f, 725.0f } },
+    { { 0.0f, 224.46501f, -293.5f }, { 265.7f, 105.85f, 725.0f } },
+};
+Vec D_80113610_option[9] = {
+    { 0.0f, 184.59999f, -61.300003f },
+    { 0.0f, 184.59999f, -61.300003f },
+    { 0.0f, 123.75f, -640.0f },
+    { -242.5f, 201.0f, -358.5f },
+    { 535.0f, 228.72f, -550.0f },
+    { -265.7f, 105.85f, 725.0f },
+    { 265.7f, 105.85f, 725.0f },
+    { 0.0f, 225.0f, 0.0f },
+    { 0.0f, 200.0f, -220.0f },
+}; /* Unreferenced. */
+Vec D_8011367C_option[2] = {
+    { 0.0f, 225.0f, 0.0f },
+    { -75.0f, 200.0f, -680.0f },
+};
+Vec D_80113694_option[2] = {
+    { 0.0f, 225.0f, 0.0f },
+    { 75.0f, 200.0f, -680.0f },
+};
+Vec D_801136AC_option[2] = {
+    { 0.0f, 225.0f, 0.0f },
+    { 0.0f, 225.0f, 475.0f },
+};
+Vec D_801136C4_option[4] = {
+    { 0.0f, 170.0f, -7.64f },
+    { -195.0f, -165.0f, -220.0f },
+    { 195.0f, 165.0f, -220.0f },
+    { -50.0f, 0.0f, 475.0f },
+}; /* Unreferenced. */
+Vec D_801136F4_option = { 0.0f, 410.0f, -450.0f };
+Vec D_80113700_option = { 0.0f, 410.0f, -550.0f };
+Vec D_8011370C_option = { -535.0f, 88.70001f, -450.0f };
+Vec D_80113718_option = { -535.0f, 88.70001f, -550.0f };
+Vec D_80113724_option = { 535.0f, 88.70001f, -450.0f };
+Vec D_80113730_option = { 535.0f, 88.70001f, -550.0f };
+Vec D_8011373C_option = { 0.0f, 128.70001f, 1175.0f };
+Vec D_80113748_option = { 0.0f, 128.70001f, 1275.0f };
+Vec D_80113754_option[2] = {
+    { 0.0f, 93.70001f, -450.0f },
+    { 0.0f, 93.70001f, -525.0f },
+}; /* Unreferenced. */
+Vec D_8011376C_option[4] = {
+    { 0.0f, 430.0f, -550.0f },
+    { -535.0f, 100.0f, -550.0f },
+    { 535.0f, 100.0f, -550.0f },
+    { 0.0f, 100.0f, 1275.0f },
+};
+Vec D_8011379C_option[2] = {
+    { 0.0f, 271.19f, 350.0f },
+    { 0.0f, 228.72f, -550.0f },
+};
+Vec D_801137B4_option[2] = {
+    { 0.0f, 250.0f, 350.0f },
+    { 0.0f, 228.72f, 1275.0f },
+};
+Vec D_801137CC_option[2] = {
+    { 0.0f, 228.72f, 350.0f },
+    { -535.0f, 228.72f, -550.0f },
+};
+Vec D_801137E4_option[2] = {
+    { 0.0f, 228.72f, 350.0f },
+    { 535.0f, 228.72f, -550.0f },
+};
+Vec D_801137FC_option = { -265.7f, 105.85f, 625.0f };
+Vec D_80113808_option = { -265.7f, 105.85f, 725.0f };
+Vec D_80113814_option = { 265.7f, 105.85f, 625.0f };
+Vec D_80113820_option = { 265.7f, 105.85f, 725.0f };
+Vec D_8011382C_option[2] = {
+    { -228.75f, 123.75f, 41.500015f },
+    { -323.75f, 98.75f, -358.5f },
+};
+Vec D_80113844_option[2] = {
+    { 0.0f, 224.46501f, 364.27f },
+    { -242.5f, 123.75f, -358.5f },
+};
+Vec D_8011385C_option[2] = {
+    { 228.75f, 123.75f, 41.500015f },
+    { 323.75f, 98.75f, -358.5f },
+};
+Vec D_80113874_option[2] = {
+    { 0.0f, 224.46501f, 364.27f },
+    { 242.5f, 123.75f, -358.5f },
+};
+Vec D_8011388C_option = { -195.0f, 165.0f, -695.0f };
+Vec D_80113898_option = { 195.0f, 165.0f, -695.0f };
+Vec D_801138A4_option = { -50.0f, 225.0f, 475.0f };
+Vec D_801138B0_option = { 0.0f, 225.0f, 275.0f };
+Vec D_801138BC_option = { 0.0f, 225.0f, 575.0f };
+s32 D_801138C8_option[9] = { 0, 1, 2, 3, 4, 5, 7, 6, 8 };
+OptRecordWinRect D_801138EC_option[6] = {
+    { 0.0f, 0.0f, 213.0f, 20.0f },
+    { 0.0f, 19.0f, 213.0f, 20.0f },
+    { 0.0f, 34.0f, 213.0f, 20.0f },
+    { 0.0f, 53.0f, 213.0f, 20.0f },
+    { 0.0f, 105.0f, 213.0f, 20.0f },
+    { 0.0f, 120.0f, 213.0f, 20.0f },
+};
+s32 D_8011394C_option[9] = { 0, 1, 2, 3, 4, 5, 7, 6, 8 };
+OptRecordWinRect D_80113970_option[6] = {
+    { 0.0f, 0.0f, 213.0f, 20.0f },
+    { 0.0f, 19.0f, 213.0f, 20.0f },
+    { 0.0f, 34.0f, 213.0f, 20.0f },
+    { 0.0f, 53.0f, 213.0f, 20.0f },
+    { 0.0f, 105.0f, 213.0f, 20.0f },
+    { 0.0f, 120.0f, 213.0f, 20.0f },
+};
+
+Process *D_80114770_option BSS;
+u8 D_80114774_option[4] BSS; /* Unreferenced. */
+s32 D_80114778_option[4] BSS;
+OptCursor D_80114788_option[2] BSS;
+OptSeObj D_801147E0_option BSS;
+s32 D_801147E8_option BSS;
 
 void func_80107F50_option(s32 animFile, s16 x, s16 y) {
     s16 wins[10];
@@ -376,33 +441,33 @@ void func_80108B34_option(void) {
     func_8010FDF4_option();
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/option/535A80", D_80113A80_option);
+const Vec D_80113A80_option = { 0.0f, 271.19f, 1191.11f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/option/535A80", D_80113A8C_option);
+const Vec D_80113A8C_option = { 0.0f, 228.72f, -550.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/option/535A80", D_80113A98_option);
+const Vec D_80113A98_option = { 0.0f, 1.0f, 0.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/option/535A80", D_80113AA4_option);
+const Vec D_80113AA4_option = { 0.0f, 271.19f, 350.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/option/535A80", D_80113AB0_option);
+const Vec D_80113AB0_option = { -535.0f, 228.72f, -550.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/option/535A80", D_80113ABC_option);
+const Vec D_80113ABC_option = { 0.0f, 228.72f, 350.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/option/535A80", D_80113AC8_option);
+const Vec D_80113AC8_option = { -160.0f, 228.72f, 50.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/option/535A80", D_80113AD4_option);
+const Vec D_80113AD4_option = { 450.0f, 228.72f, 1191.11f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/option/535A80", D_80113AE0_option);
+const Vec D_80113AE0_option = { 535.0f, 228.72f, -550.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/option/535A80", D_80113AEC_option);
+const Vec D_80113AEC_option = { 160.0f, 228.72f, 50.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/option/535A80", D_80113AF8_option);
+const Vec D_80113AF8_option = { -450.0f, 228.72f, 1191.11f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/option/535A80", D_80113B04_option);
+const Vec D_80113B04_option = { 0.0f, 410.0f, -550.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/option/535A80", D_80113B10_option);
+const Vec D_80113B10_option = { 0.0f, 228.72f, 50.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/option/535A80", D_80113B1C_option);
+const Vec D_80113B1C_option = { 0.0f, 228.72f, 1191.11f };
 
 void func_80108B58_option(void) {
     s32 selection;
@@ -812,17 +877,17 @@ void func_80109CB0_option(s32 arg0, s32 *arg1, s32 *arg2) {
     *arg2 = val2;
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/option/535A80", D_80113B90_option);
+const Vec D_80113B90_option = { 0.0f, 430.0f, -150.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/option/535A80", D_80113B9C_option);
+const Vec D_80113B9C_option = { 0.0f, 430.0f, -550.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/option/535A80", D_80113BA8_option);
+const Vec D_80113BA8_option = { -535.0f, 128.72f, -150.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/option/535A80", D_80113BB4_option);
+const Vec D_80113BB4_option = { -535.0f, 78.72f, -550.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/option/535A80", D_80113BC0_option);
+const Vec D_80113BC0_option = { 535.0f, 128.72f, -150.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/option/535A80", D_80113BCC_option);
+const Vec D_80113BCC_option = { 535.0f, 78.72f, -550.0f };
 
 s32 func_80109D04_option(s32 selection, s32 buttons) {
     switch (selection) {
@@ -1033,15 +1098,15 @@ s32 func_8010A498_option(void) {
                 case 1:
                 case 2:
                     selection = 4;
-                    HuVecCopy3F(&pos, &D_801135E0_option[0]);
-                    HuVecCopy3F(&at, &D_801135E0_option[1]);
+                    HuVecCopy3F(&pos, &D_80113580_option[4][0]);
+                    HuVecCopy3F(&at, &D_80113580_option[4][1]);
                     func_80107758_option(&pos, &at, 20);
                     HuPrcSleep(20);
                     break;
                 case 3:
                     selection = 5;
-                    HuVecCopy3F(&pos, &D_801135F8_option[0]);
-                    HuVecCopy3F(&at, &D_801135F8_option[1]);
+                    HuVecCopy3F(&pos, &D_80113580_option[5][0]);
+                    HuVecCopy3F(&at, &D_80113580_option[5][1]);
                     func_80107758_option(&pos, &at, 20);
                     HuPrcSleep(20);
                     break;
@@ -1536,7 +1601,7 @@ s32 func_8010B68C_option(s32 selection, s32 buttons) {
             if (buttons & 0x200) {
                 selection = 3;
                 HuVecCopy3F(&pos, &D_80113694_option[0]);
-                HuVecCopy3F(&at, &D_801136B8_option);
+                HuVecCopy3F(&at, &D_801136AC_option[1]);
                 func_80107758_option(&pos, &at, 30);
                 func_801133A0_option(0);
                 func_80113440_option(0);
@@ -1566,7 +1631,7 @@ s32 func_8010B68C_option(s32 selection, s32 buttons) {
             } else if (buttons & 0x100) {
                 selection = 3;
                 HuVecCopy3F(&pos, &D_80113694_option[0]);
-                HuVecCopy3F(&at, &D_801136B8_option);
+                HuVecCopy3F(&at, &D_801136AC_option[1]);
                 func_80107758_option(&pos, &at, 30);
                 func_801133A0_option(0);
                 func_80113440_option(0);
@@ -2747,9 +2812,393 @@ void func_8010FB40_option(s32 index, s32 model) {
     D_80114788_option[index].obj->work[0] = index;
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/option/535A80", D_80113DA8_option);
+const OptSoundMenu D_80113DA8_option = {
+    {
+        {
+            0x4C01,
+            {
+                { 0x4C10, 0x2B5 },
+                { 0x4C11, 0x263 },
+                { 0x4C14, 0x275 },
+                { 0x4C12, 0x290 },
+                { 0x4C13, 0x27E },
+                { 0x4C15, 0x26C },
+                { 0x4C16, 0x287 },
+                { 0x4C17, 0x2AC },
+                { -1, -1 },
+            },
+        },
+        {
+            0x4C02,
+            {
+                { 0x4C10, 0x2B6 },
+                { 0x4C11, 0x264 },
+                { 0x4C14, 0x276 },
+                { 0x4C12, 0x291 },
+                { 0x4C13, 0x27F },
+                { 0x4C15, 0x26D },
+                { 0x4C16, 0x288 },
+                { 0x4C17, 0x2AD },
+                { -1, -1 },
+            },
+        },
+        {
+            0x4C03,
+            {
+                { 0x4C10, 0x2B7 },
+                { 0x4C11, 0x265 },
+                { 0x4C14, 0x277 },
+                { 0x4C12, 0x292 },
+                { 0x4C13, 0x280 },
+                { 0x4C15, 0x26E },
+                { 0x4C16, 0x289 },
+                { 0x4C17, 0x2AE },
+                { -1, -1 },
+            },
+        },
+        {
+            0x4C04,
+            {
+                { 0x4C10, 0x2B8 },
+                { 0x4C11, 0x266 },
+                { 0x4C14, 0x278 },
+                { 0x4C12, 0x293 },
+                { 0x4C13, 0x281 },
+                { 0x4C15, 0x26F },
+                { 0x4C16, 0x28A },
+                { 0x4C17, 0x2AF },
+                { -1, -1 },
+            },
+        },
+        {
+            0x4C05,
+            {
+                { 0x4C10, 0x2B9 },
+                { 0x4C11, 0x267 },
+                { 0x4C14, 0x279 },
+                { 0x4C12, 0x294 },
+                { 0x4C13, 0x282 },
+                { 0x4C15, 0x270 },
+                { 0x4C16, 0x28B },
+                { 0x4C17, 0x2B0 },
+                { -1, -1 },
+            },
+        },
+        {
+            0x4C06,
+            {
+                { 0x4C10, 0x2BA },
+                { 0x4C11, 0x268 },
+                { 0x4C14, 0x27A },
+                { 0x4C12, 0x295 },
+                { 0x4C13, 0x283 },
+                { 0x4C15, 0x271 },
+                { 0x4C16, 0x28C },
+                { 0x4C17, 0x2B1 },
+                { -1, -1 },
+            },
+        },
+        {
+            0x4C07,
+            {
+                { 0x4C10, 0x2BC },
+                { 0x4C11, 0x26A },
+                { 0x4C14, 0x27C },
+                { 0x4C12, 0x297 },
+                { 0x4C13, 0x285 },
+                { 0x4C15, 0x273 },
+                { 0x4C16, 0x28E },
+                { 0x4C17, 0x2B3 },
+                { -1, -1 },
+            },
+        },
+        {
+            0x4C08,
+            {
+                { 0x4C10, 0x2BB },
+                { 0x4C11, 0x269 },
+                { 0x4C14, 0x27B },
+                { 0x4C12, 0x296 },
+                { 0x4C13, 0x284 },
+                { 0x4C15, 0x272 },
+                { 0x4C16, 0x28D },
+                { 0x4C17, 0x2B2 },
+                { -1, -1 },
+            },
+        },
+        {
+            0x4C09,
+            {
+                { 0x4C18, 0x2A6 },
+                { 0x4C19, 0x2A7 },
+                { 0x4C1A, 0x2A8 },
+                { 0x4C1B, 0x2A9 },
+                { 0x4C1C, 0x2AA },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+            },
+        },
+        {
+            0x4C0A,
+            {
+                { 0x4C1D, 0x29B },
+                { 0x4C1E, 0x298 },
+                { 0x4C1F, 0x299 },
+                { 0x4C20, 0x29A },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+            },
+        },
+        {
+            0x4C0B,
+            {
+                { 0x4C21, 0x29C },
+                { 0x4C22, 0x29D },
+                { 0x4C23, 0x29E },
+                { 0x4C24, 0x29F },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+            },
+        },
+        {
+            0x4C0C,
+            {
+                { 0x4C25, 0x259 },
+                { 0x4C26, 0x25B },
+                { 0x4C27, 0x256 },
+                { 0x4C28, 0x257 },
+                { 0x4C29, 0x25D },
+                { 0x4C2A, 0x2A3 },
+                { 0x4C2B, 0x2A4 },
+                { 0x4C2C, 0x2A2 },
+                { -1, -1 },
+            },
+        },
+        {
+            0x4C0D,
+            {
+                { 0x4C2D, 0x258 },
+                { 0x4C2E, 0x2A5 },
+                { 0x4C2F, 0x2A0 },
+                { 0x4C30, 0x2A1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+            },
+        },
+        {
+            0x4C0E,
+            {
+                { 0x4C31, 0x251 },
+                { 0x4C32, 0x253 },
+                { 0x4C33, 0x252 },
+                { 0x4C34, 0x254 },
+                { 0x4C35, 0x255 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+            },
+        },
+        {
+            0x4C0F,
+            {
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+            },
+        },
+    },
+};
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/option/535A80", D_8011421C_option);
+const OptMusicMenu D_8011421C_option = {
+    {
+        {
+            0x5D01,
+            {
+                { 0x5D0F, 0x3 },
+                { 0x5D10, 0x9 },
+                { 0x5D11, 0xB },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+            },
+        },
+        {
+            0x5D02,
+            {
+                { 0x5D12, 0x4 },
+                { 0x5D13, 0x7 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+            },
+        },
+        {
+            0x5D03,
+            {
+                { 0x5D14, 0x8 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+            },
+        },
+        {
+            0x5D04,
+            {
+                { 0x5D17, 0x18 },
+                { 0x5D18, 0x19 },
+                { 0x5D19, 0x1A },
+                { 0x5D1A, 0x1B },
+                { 0x5D1B, 0x1C },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+            },
+        },
+        {
+            0x5D05,
+            {
+                { 0x5D1D, 0x1E },
+                { 0x5D1E, 0x1F },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+            },
+        },
+        {
+            0x5D06,
+            {
+                { 0x5D20, 0xD },
+                { 0x5D21, 0x12 },
+                { 0x5D22, 0x17 },
+                { 0x5D23, 0x24 },
+                { 0x5D24, 0x13 },
+                { 0x5D25, 0xF },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+            },
+        },
+        {
+            0x5D07,
+            {
+                { 0x5D26, 0x10 },
+                { 0x5D27, 0x3E },
+                { 0x5D28, 0x14 },
+                { 0x5D29, 0x15 },
+                { 0x5D2A, 0x16 },
+                { 0x5D2B, 0x46 },
+                { 0x5D2C, 0x47 },
+                { -1, -1 },
+                { -1, -1 },
+            },
+        },
+        {
+            0x5D08,
+            {
+                { 0x5D2D, 0x2D },
+                { 0x5D2E, 0x2E },
+                { 0x5D2F, 0x2F },
+                { 0x5D30, 0x30 },
+                { 0x5D31, 0x31 },
+                { 0x5D32, 0x32 },
+                { 0x5D33, 0x33 },
+                { 0x5D34, 0x34 },
+                { -1, -1 },
+            },
+        },
+        {
+            0x5D09,
+            {
+                { 0x5D35, 0x35 },
+                { 0x5D36, 0x36 },
+                { 0x5D37, 0x37 },
+                { 0x5D38, 0x38 },
+                { 0x5D39, 0x44 },
+                { 0x5D3A, 0x43 },
+                { 0x5D3B, 0x42 },
+                { -1, -1 },
+                { -1, -1 },
+            },
+        },
+        {
+            0x5D0A,
+            {
+                { 0x5D3D, 0xA },
+                { 0x5D3E, 0x39 },
+                { 0x5D3F, 0x3A },
+                { 0x5D40, 0x3B },
+                { 0x5D41, 0x26 },
+                { 0x5D42, 0x21 },
+                { 0x5D43, 0x2C },
+                { -1, -1 },
+                { -1, -1 },
+            },
+        },
+        {
+            0x5D0B,
+            {
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+            },
+        },
+        {
+            0x5D0C,
+            {
+                { 0x5D48, 0x3C },
+                { 0x5D49, 0x3D },
+                { 0x5D4A, 0x48 },
+                { 0x5D4B, 0x45 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+                { -1, -1 },
+            },
+        },
+    },
+};
 
 u16 func_8010FC40_option(s32 value) {
     char text[256];

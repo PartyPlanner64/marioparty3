@@ -2693,11 +2693,15 @@ segments:
       - [0x533500, c]
       - [0x535A80, c]
       - [0x53DCA0, c]
-      - [0x540FE0, data, 533500] #801134B0
+      - [0x540FE0, .data, 5334D0] #801134B0
+      - [0x541020, .data, 535A80] #801134F0
+      - [0x541500, .data, 53DCA0] #801139D0
       - [0x541510, .rodata, 533500] #801139E0
       - [0x541538, .rodata, 535A80] #80113A08
       - [0x542138, .rodata, 53DCA0] #80114608
-      - {0x542220, type: bss, vram: 0x801146F0, name: option_bss}
+      - {0x542220, type: .bss, vram: 0x801146F0, name: 533500}
+      - {0x542220, type: .bss, vram: 0x80114770, name: 535A80}
+      - {0x542220, type: .bss, vram: 0x801147F0, name: 53DCA0}
 
   - type: code
     start: 0x542220

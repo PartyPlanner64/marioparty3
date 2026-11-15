@@ -25,8 +25,6 @@ typedef struct {
 } OptCam; // sizeof 0x74
 
 extern s8 D_800D2132_main;
-extern OptCam D_801146F0_option;
-extern s32 D_80114764_option;
 void func_80107F50_option(s32 animFile, s16 x, s16 y);
 omObjData *func_80107758_option(Vec *, Vec *, s32);
 void func_80106508_option(Vec *, Vec *, Vec *);
@@ -44,6 +42,9 @@ void func_80108A68_option(void);
 void func_80108AAC_option(void);
 void func_80108AF0_option(void);
 omObjData *func_8010737C_option(Vec *, Vec *, s32);
+
+OptCam D_801146F0_option BSS;
+s32 D_80114764_option BSS;
 
 void func_801059D0_option(void) {
     omInitObjMan(0x40, 0x20);

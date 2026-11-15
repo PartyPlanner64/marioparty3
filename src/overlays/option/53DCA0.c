@@ -2,20 +2,13 @@
 #include "overlays/option.h"
 #include "game/mallocblock.h"
 
-extern Vec D_801146BC_option;
-extern Vec D_801146C8_option;
-extern Vec D_801146D4_option;
-extern Vec D_801146E0_option;
-extern Vec D_80114674_option;
-extern Vec D_80114680_option;
-extern OptSprSlot D_80114EF0_option[0x40];
-extern OptSpr D_801147F0_option[0x40];
-extern UnkOption D_80114F70_option[0x40];
-extern s16 D_80115A70_option;
-extern u16 D_80115A72_option;
-extern OptWinEntry D_80115A78_option[0x20];
+extern const Vec D_801146BC_option;
+extern const Vec D_801146C8_option;
+extern const Vec D_801146D4_option;
+extern const Vec D_801146E0_option;
+extern const Vec D_80114674_option;
+extern const Vec D_80114680_option;
 extern u8 D_800D09A8_main;
-extern s32 D_801139D0_option;
 
 void func_801133BC_option(s32, u32);
 void func_80113368_option(s32, s32 *, s32 *);
@@ -70,6 +63,16 @@ void func_80105D10_option(void);
 void func_80105D5C_option(f32 fov, f32 nearPlane, f32 farPlane);
 void func_80105DA0_option(s32 camId, f32 fov);
 void func_80105F08_option(f32 fov);
+
+s32 D_801139D0_option = 0;
+
+OptSpr D_801147F0_option[0x40] BSS;
+OptSprSlot D_80114EF0_option[0x40] BSS;
+UnkOption D_80114F70_option[0x40] BSS;
+s16 D_80115A70_option BSS;
+u16 D_80115A72_option BSS;
+u8 D_80115A74_option[4] BSS; /* Unreferenced. */
+OptWinEntry D_80115A78_option[0x20] BSS;
 
 void func_80110170_option(void) {
     func_8011019C_option();
@@ -707,9 +710,9 @@ void func_8011239C_option(void) {
     func_80111AF4_option();
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/option/53DCA0", D_80114674_option);
+const Vec D_80114674_option = { 0.0f, 271.19f, 841.11f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/option/53DCA0", D_80114680_option);
+const Vec D_80114680_option = { 0.0f, 228.72f, -550.0f };
 
 void func_801123D8_option(void) {
     static const char parrot[] = "oumu0_1_DEF";
@@ -1045,10 +1048,10 @@ void func_80113490_option(s32 arg0) {
     func_80111DAC_option(arg0);
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/option/53DCA0", D_801146BC_option);
+const Vec D_801146BC_option = { 0.0f, 264.9f, 364.27f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/option/53DCA0", D_801146C8_option);
+const Vec D_801146C8_option = { 0.0f, 184.59999f, 61.300003f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/option/53DCA0", D_801146D4_option);
+const Vec D_801146D4_option = { 0.0f, 225.0f, 0.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/option/53DCA0", D_801146E0_option);
+const Vec D_801146E0_option = { 0.0f, 225.0f, -220.0f };

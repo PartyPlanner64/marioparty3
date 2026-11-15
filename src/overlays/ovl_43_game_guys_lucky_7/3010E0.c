@@ -18,101 +18,73 @@ typedef struct GameGuysLucky7PadValues {
     /* 0x00 */ s16 v[4]; // one entry per controller port
 } GameGuysLucky7PadValues;
 
-extern s16 D_8010D150_game_guys_lucky_7[][3]; // window x, y, lines
-extern s16 D_8010D188_game_guys_lucky_7[];    // COM key wait frames, indexed by CPU difficulty
-extern u16 D_8010D18E_game_guys_lucky_7;      // main state
-extern u16 D_8010D190_game_guys_lucky_7;      // main state timer
-extern char *D_8010D194_game_guys_lucky_7[];  // character names
-extern s16 D_8010D1B4_game_guys_lucky_7;      // state
-extern s16 D_8010D1B6_game_guys_lucky_7;      // timer
-extern u16 D_8010D1B8_game_guys_lucky_7;      // state
-extern u16 D_8010D1BA_game_guys_lucky_7;
-extern f32 D_8010D1BC_game_guys_lucky_7;
-extern u16 D_8010D1C0_game_guys_lucky_7;
-extern u16 D_8010D1C2_game_guys_lucky_7; // state
-extern u16 D_8010D1C4_game_guys_lucky_7;
-extern u16 D_8010D1C6_game_guys_lucky_7; // state
-extern u16 D_8010D1C8_game_guys_lucky_7; // timer
-extern u16 D_8010D1CA_game_guys_lucky_7; // countdown tick timer
-extern u16 D_8010D1CC_game_guys_lucky_7; // countdown seconds
-extern u16 D_8010D1CE_game_guys_lucky_7;
-extern u16 D_8010D1D0_game_guys_lucky_7;
-extern u16 D_8010D1D2_game_guys_lucky_7; // state
-extern u16 D_8010D1D4_game_guys_lucky_7; // state
-extern f32 D_8010D1D8_game_guys_lucky_7;
-extern u16 D_8010D1DC_game_guys_lucky_7; // state
-extern f32 D_8010D1E0_game_guys_lucky_7;
-extern u16 D_8010D1E4_game_guys_lucky_7;
-extern u16 D_8010D1E6_game_guys_lucky_7; // timer
-extern u16 D_8010D1E8_game_guys_lucky_7; // state
-extern u16 D_8010D1EA_game_guys_lucky_7; // previous player motion
-extern u16 D_8010D1EC_game_guys_lucky_7; // state
-extern u16 D_8010D1EE_game_guys_lucky_7; // timer
-extern f32 D_8010D1F0_game_guys_lucky_7;
-extern u16 D_8010D1F4_game_guys_lucky_7;
-extern Vec D_8010D1FC_game_guys_lucky_7[];
-extern u16 D_8010D258_game_guys_lucky_7; // previous motion
-extern u16 D_8010D25A_game_guys_lucky_7; // state
-extern u16 D_8010D25C_game_guys_lucky_7; // timer
-extern f32 D_8010D260_game_guys_lucky_7;
-extern u16 D_8010D264_game_guys_lucky_7;
-extern Vec D_8010D26C_game_guys_lucky_7[];
-extern u16 D_8010D2C8_game_guys_lucky_7;
-extern f32 D_8010D2CC_game_guys_lucky_7;
-extern f32 D_8010D2D0_game_guys_lucky_7;
-extern f32 D_8010D2D4_game_guys_lucky_7;
-extern f32 D_8010D2D8_game_guys_lucky_7;
-extern f32 D_8010D2DC_game_guys_lucky_7;
-extern u16 D_8010D2E0_game_guys_lucky_7;
-extern f32 D_8010D2E4_game_guys_lucky_7;
-extern f32 D_8010D2E8_game_guys_lucky_7;
-extern u16 D_8010D2EC_game_guys_lucky_7;
-extern s32 D_8010D2F0_game_guys_lucky_7[]; // spark model files
-extern char D_8010D5D0_game_guys_lucky_7[];
-extern s16 D_8010D6D0_game_guys_lucky_7;
-extern Process *D_8010D6D4_game_guys_lucky_7;
-extern Process *D_8010D6D8_game_guys_lucky_7;
+typedef struct GameGuysLucky7BssD6DC { // 0x14 bytes
+    /* 0x00 */ u16 playerInfo[7];
+    /* 0x0E */ u16 sprites[3];
+} GameGuysLucky7BssD6DC;
+
+s16 D_8010D150_game_guys_lucky_7[9][3] = {
+    { 190, 150, 13 },
+    { 220, 165, 15 },
+    { 195, 150, 15 },
+    { 170, 140, 15 },
+    { 190, 115, 13 },
+    { 155, 115, 14 },
+    { 130, 105, 14 },
+    { 100, 100, 14 },
+    { 50, 190, 14 },
+}; // window x, y, lines
+s16 D_8010D188_game_guys_lucky_7[3] = { 5, 25, 60 }; // COM key wait frames, indexed by CPU difficulty
+u16 D_8010D18E_game_guys_lucky_7 = 0;                // main state
+u16 D_8010D190_game_guys_lucky_7 = 0;                // main state timer
+
+char D_8010D5D0_game_guys_lucky_7[0x100] BSS;
+s16 D_8010D6D0_game_guys_lucky_7 BSS;
+Process *D_8010D6D4_game_guys_lucky_7 BSS;
+Process *D_8010D6D8_game_guys_lucky_7 BSS;
 // [0] player index, [1] pad, [2] chr, [3] cpu flag, [4] cpu difficulty, [5] coins, [6] coins
-extern u16 D_8010D6DC_game_guys_lucky_7[7];
-extern u16 D_8010D6EA_game_guys_lucky_7[3];
-extern u16 D_8010D6F0_game_guys_lucky_7[7];
-extern f32 D_8010D700_game_guys_lucky_7[7];
-extern u16 D_8010D71C_game_guys_lucky_7[5];
-extern u16 D_8010D726_game_guys_lucky_7;
-extern u16 D_8010D728_game_guys_lucky_7;
-extern f32 D_8010D72C_game_guys_lucky_7;
-extern f32 D_8010D730_game_guys_lucky_7;
-extern f32 D_8010D734_game_guys_lucky_7;
-extern f32 D_8010D738_game_guys_lucky_7;
-extern u16 D_8010D73C_game_guys_lucky_7;
-extern u16 D_8010D73E_game_guys_lucky_7;
-extern s16 D_8010D740_game_guys_lucky_7;
-extern u16 D_8010D742_game_guys_lucky_7;
-extern u16 D_8010D744_game_guys_lucky_7;
-extern u16 D_8010D746_game_guys_lucky_7; // player motion
-extern f32 D_8010D748_game_guys_lucky_7;
-extern f32 D_8010D74C_game_guys_lucky_7;
-extern f32 D_8010D750_game_guys_lucky_7;
-extern f32 D_8010D754_game_guys_lucky_7;
-extern u16 D_8010D758_game_guys_lucky_7;
-extern f32 D_8010D75C_game_guys_lucky_7;
-extern f32 D_8010D760_game_guys_lucky_7;
-extern f32 D_8010D764_game_guys_lucky_7;
-extern u16 D_8010D768_game_guys_lucky_7;
-extern u16 D_8010D76A_game_guys_lucky_7;
-extern u16 D_8010D76C_game_guys_lucky_7;
-extern u16 D_8010D76E_game_guys_lucky_7;
-extern u16 D_8010D770_game_guys_lucky_7;
-extern u16 D_8010D772_game_guys_lucky_7;
-extern u16 D_8010D774_game_guys_lucky_7;
-extern u16 D_8010D776_game_guys_lucky_7;
-extern u16 D_8010D778_game_guys_lucky_7;
-extern u16 D_8010D77A_game_guys_lucky_7;
-extern u16 D_8010D77C_game_guys_lucky_7;
-extern s16 D_8010D798_game_guys_lucky_7[]; // spark models
-extern s16 D_8010D800_game_guys_lucky_7;
-extern s16 D_8010D802_game_guys_lucky_7;
-extern s16 D_8010D804_game_guys_lucky_7;
+GameGuysLucky7BssD6DC gameGuysLucky7BssD6DC BSS;
+extern u16 D_8010D6DC_game_guys_lucky_7[7]; // gameGuysLucky7BssD6DC.playerInfo
+extern u16 D_8010D6EA_game_guys_lucky_7[3]; // gameGuysLucky7BssD6DC.sprites
+u16 D_8010D6F0_game_guys_lucky_7[7] BSS;
+f32 D_8010D700_game_guys_lucky_7[7] BSS;
+u16 D_8010D71C_game_guys_lucky_7[5] BSS;
+u16 D_8010D726_game_guys_lucky_7 BSS;
+u16 D_8010D728_game_guys_lucky_7 BSS;
+f32 D_8010D72C_game_guys_lucky_7 BSS;
+f32 D_8010D730_game_guys_lucky_7 BSS;
+f32 D_8010D734_game_guys_lucky_7 BSS;
+f32 D_8010D738_game_guys_lucky_7 BSS;
+u16 D_8010D73C_game_guys_lucky_7 BSS;
+u16 D_8010D73E_game_guys_lucky_7 BSS;
+s16 D_8010D740_game_guys_lucky_7 BSS;
+u16 D_8010D742_game_guys_lucky_7 BSS;
+u16 D_8010D744_game_guys_lucky_7 BSS;
+u16 D_8010D746_game_guys_lucky_7 BSS; // player motion
+f32 D_8010D748_game_guys_lucky_7 BSS;
+f32 D_8010D74C_game_guys_lucky_7 BSS;
+f32 D_8010D750_game_guys_lucky_7 BSS;
+f32 D_8010D754_game_guys_lucky_7 BSS;
+u16 D_8010D758_game_guys_lucky_7 BSS;
+f32 D_8010D75C_game_guys_lucky_7 BSS;
+f32 D_8010D760_game_guys_lucky_7 BSS;
+f32 D_8010D764_game_guys_lucky_7 BSS;
+u16 D_8010D768_game_guys_lucky_7 BSS;
+u16 D_8010D76A_game_guys_lucky_7 BSS;
+u16 D_8010D76C_game_guys_lucky_7 BSS;
+u16 D_8010D76E_game_guys_lucky_7 BSS;
+u16 D_8010D770_game_guys_lucky_7 BSS;
+u16 D_8010D772_game_guys_lucky_7 BSS;
+u16 D_8010D774_game_guys_lucky_7 BSS;
+u16 D_8010D776_game_guys_lucky_7 BSS;
+u16 D_8010D778_game_guys_lucky_7 BSS;
+u16 D_8010D77A_game_guys_lucky_7 BSS;
+u16 D_8010D77C_game_guys_lucky_7 BSS;
+u8 D_8010D780_game_guys_lucky_7[0x18] BSS; /* Unreferenced. */
+s16 D_8010D798_game_guys_lucky_7[52] BSS;  // spark models
+s16 D_8010D800_game_guys_lucky_7 BSS;
+s16 D_8010D802_game_guys_lucky_7 BSS;
+s16 D_8010D804_game_guys_lucky_7 BSS;
 extern const GameGuysLucky7PadValues D_8010D598_game_guys_lucky_7; // COM keys
 extern const GameGuysLucky7PadValues D_8010D5A0_game_guys_lucky_7; // active players
 extern s32 D_800A178C_main[][6];
@@ -287,21 +259,82 @@ void func_80105E34_game_guys_lucky_7(omObjData *object) {
     object->func = func_80105F70_game_guys_lucky_7;
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_43_game_guys_lucky_7/3010E0", D_8010D310_game_guys_lucky_7);
+char *D_8010D194_game_guys_lucky_7[] = {
+    "\x82\x6C\x82\x60\x82\x71\x82\x68\x82\x6E",                 // ＭＡＲＩＯ
+    "\x82\x6B\x82\x74\x82\x68\x82\x66\x82\x68",                 // ＬＵＩＧＩ
+    "\x82\x6F\x82\x64\x82\x60\x82\x62\x82\x67",                 // ＰＥＡＣＨ
+    "\x82\x78\x82\x6E\x82\x72\x82\x67\x82\x68",                 // ＹＯＳＨＩ
+    "\x82\x76\x82\x60\x82\x71\x82\x68\x82\x6E",                 // ＷＡＲＩＯ
+    "\x82\x63\x82\x6A",                                         // ＤＫ
+    "\x82\x76\x82\x60\x82\x6B\x82\x74\x82\x68\x82\x66\x82\x68", // ＷＡＬＵＩＧＩ
+    "\x82\x63\x82\x60\x82\x68\x82\x72\x82\x78",                 // ＤＡＩＳＹ
+}; // character names
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_43_game_guys_lucky_7/3010E0", D_8010D31C_game_guys_lucky_7);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_43_game_guys_lucky_7/3010E0", D_8010D32C_game_guys_lucky_7);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_43_game_guys_lucky_7/3010E0", D_8010D334_game_guys_lucky_7);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_43_game_guys_lucky_7/3010E0", D_8010D340_game_guys_lucky_7);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_43_game_guys_lucky_7/3010E0", D_8010D34C_game_guys_lucky_7);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_43_game_guys_lucky_7/3010E0", D_8010D358_game_guys_lucky_7);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_43_game_guys_lucky_7/3010E0", D_8010D364_game_guys_lucky_7);
+s16 D_8010D1B4_game_guys_lucky_7 = 0; // state
+s16 D_8010D1B6_game_guys_lucky_7 = 0; // timer
+u16 D_8010D1B8_game_guys_lucky_7 = 0; // state
+u16 D_8010D1BA_game_guys_lucky_7 = 0;
+f32 D_8010D1BC_game_guys_lucky_7 = 0.0f;
+u16 D_8010D1C0_game_guys_lucky_7 = 0;
+u16 D_8010D1C2_game_guys_lucky_7 = 0; // state
+u16 D_8010D1C4_game_guys_lucky_7 = 0;
+u16 D_8010D1C6_game_guys_lucky_7 = 0;  // state
+u16 D_8010D1C8_game_guys_lucky_7 = 0;  // timer
+u16 D_8010D1CA_game_guys_lucky_7 = 0;  // countdown tick timer
+u16 D_8010D1CC_game_guys_lucky_7 = 10; // countdown seconds
+u16 D_8010D1CE_game_guys_lucky_7 = 0;
+u16 D_8010D1D0_game_guys_lucky_7 = 0;
+u16 D_8010D1D2_game_guys_lucky_7 = 0; // state
+u16 D_8010D1D4_game_guys_lucky_7 = 0; // state
+f32 D_8010D1D8_game_guys_lucky_7 = 0.0f;
+u16 D_8010D1DC_game_guys_lucky_7 = 1; // state
+f32 D_8010D1E0_game_guys_lucky_7 = 0.0f;
+u16 D_8010D1E4_game_guys_lucky_7 = 0;
+u16 D_8010D1E6_game_guys_lucky_7 = 0;   // timer
+u16 D_8010D1E8_game_guys_lucky_7 = 0;   // state
+u16 D_8010D1EA_game_guys_lucky_7 = 999; // previous player motion
+u16 D_8010D1EC_game_guys_lucky_7 = 0;   // state
+u16 D_8010D1EE_game_guys_lucky_7 = 0;   // timer
+f32 D_8010D1F0_game_guys_lucky_7 = 0.0f;
+u16 D_8010D1F4_game_guys_lucky_7 = 0;
+f32 D_8010D1F8_game_guys_lucky_7 = 250.0f; /* Unreferenced. */
+Vec D_8010D1FC_game_guys_lucky_7[7] = {
+    { 75.0f, 0.0f, 150.0f },
+    { 125.0f, 0.0f, 50.0f },
+    { 175.0f, 0.0f, -50.0f },
+    { 225.0f, 0.0f, -150.0f },
+    { 275.0f, 0.0f, -250.0f },
+    { 325.0f, 0.0f, -350.0f },
+    { 375.0f, 0.0f, -450.0f },
+};
+f32 D_8010D250_game_guys_lucky_7[2] = { 425.0f, 0.0f }; // read as D_8010D1FC[7].x
+u16 D_8010D258_game_guys_lucky_7 = 999;                 // previous motion
+u16 D_8010D25A_game_guys_lucky_7 = 0;                   // state
+u16 D_8010D25C_game_guys_lucky_7 = 0;                   // timer
+f32 D_8010D260_game_guys_lucky_7 = 0.0f;
+u16 D_8010D264_game_guys_lucky_7 = 0;
+f32 D_8010D268_game_guys_lucky_7 = 300.0f; /* Unreferenced. */
+Vec D_8010D26C_game_guys_lucky_7[7] = {
+    { 100.0f, -100.0f, 200.0f },
+    { 150.0f, -100.0f, 100.0f },
+    { 200.0f, -100.0f, 0.0f },
+    { 250.0f, -100.0f, -100.0f },
+    { 300.0f, -100.0f, -200.0f },
+    { 350.0f, -100.0f, -300.0f },
+    { 375.0f, -100.0f, -450.0f },
+};
+f32 D_8010D2C0_game_guys_lucky_7[2] = { 425.0f, -100.0f }; // read as D_8010D26C[7].x
+u16 D_8010D2C8_game_guys_lucky_7 = 0;
+f32 D_8010D2CC_game_guys_lucky_7 = 0.0f;
+f32 D_8010D2D0_game_guys_lucky_7 = 0.0f;
+f32 D_8010D2D4_game_guys_lucky_7 = 0.0f;
+f32 D_8010D2D8_game_guys_lucky_7 = 0.0f;
+f32 D_8010D2DC_game_guys_lucky_7 = 0.0f;
+u16 D_8010D2E0_game_guys_lucky_7 = 0;
+f32 D_8010D2E4_game_guys_lucky_7 = 0.0f;
+f32 D_8010D2E8_game_guys_lucky_7 = 0.0f;
+u16 D_8010D2EC_game_guys_lucky_7 = 0;
+s32 D_8010D2F0_game_guys_lucky_7[] = { 0xB002B, 0xB002C, 0xB002D, 0xB002E }; // spark model files
 
 void func_80105F70_game_guys_lucky_7(omObjData *object) {
     switch (D_8010D18E_game_guys_lucky_7) {
@@ -1911,9 +1944,9 @@ s16 func_8010B13C_game_guys_lucky_7(s16 win, s16 player, s16 mode, s16 count) {
     return HuWinChoiceGet(win, 1, 1);
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_43_game_guys_lucky_7/3010E0", D_8010D598_game_guys_lucky_7);
+const GameGuysLucky7PadValues D_8010D598_game_guys_lucky_7 = { { 0, 0, 0, 0 } }; // COM keys
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_43_game_guys_lucky_7/3010E0", D_8010D5A0_game_guys_lucky_7);
+const GameGuysLucky7PadValues D_8010D5A0_game_guys_lucky_7 = { { 1, 2, 4, 8 } }; // active players
 
 void func_8010B334_game_guys_lucky_7(void) {
     s16 i;

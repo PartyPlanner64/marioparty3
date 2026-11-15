@@ -161,15 +161,9 @@ D_8010C24A_game_guys_magic_boxes = D_8010C248_game_guys_magic_boxes + 0x2;
 D_8010C251_game_guys_magic_boxes = D_8010C250_game_guys_magic_boxes + 0x1;
 D_8010C252_game_guys_magic_boxes = D_8010C250_game_guys_magic_boxes + 0x2;
 D_8010C253_game_guys_magic_boxes = D_8010C250_game_guys_magic_boxes + 0x3;
-/* game_guys_lucky_7: state/timer halfwords packed after the preceding data symbol. */
-D_8010D1B6_game_guys_lucky_7 = D_8010D1B4_game_guys_lucky_7 + 0x2;
-D_8010D1C2_game_guys_lucky_7 = D_8010D1C0_game_guys_lucky_7 + 0x2;
-D_8010D1C6_game_guys_lucky_7 = D_8010D1C4_game_guys_lucky_7 + 0x2;
-D_8010D1CE_game_guys_lucky_7 = D_8010D1CC_game_guys_lucky_7 + 0x2;
-D_8010D1D2_game_guys_lucky_7 = D_8010D1D0_game_guys_lucky_7 + 0x2;
-D_8010D1EA_game_guys_lucky_7 = D_8010D1E8_game_guys_lucky_7 + 0x2;
-D_8010D1EE_game_guys_lucky_7 = D_8010D1EC_game_guys_lucky_7 + 0x2;
-D_8010D25A_game_guys_lucky_7 = D_8010D258_game_guys_lucky_7 + 0x2;
+/* game_guys_lucky_7 field aliases: GameGuysLucky7BssD6DC. */
+D_8010D6DC_game_guys_lucky_7 = gameGuysLucky7BssD6DC;
+D_8010D6EA_game_guys_lucky_7 = gameGuysLucky7BssD6DC + 0xE;
 
 /* game_guys_roulette field aliases: GameGuysRouletteBssAAD0. */
 D_8010AAD0_game_guys_roulette = gameGuysRouletteBssAAD0;

@@ -32,19 +32,22 @@ typedef struct GameGuysLucky7RingFreq {
     /* 0x02 */ s16 y;
 } GameGuysLucky7RingFreq;
 
-extern s16 D_8010D300_game_guys_lucky_7; // intro timer
-extern s16 D_8010D302_game_guys_lucky_7; // intro start y
-extern s16 D_8010D304_game_guys_lucky_7; // outro timer
-extern GameGuysLucky7Ring D_8010D810_game_guys_lucky_7[3];
-extern s16 D_8010D858_game_guys_lucky_7; // center x
-extern s16 D_8010D85A_game_guys_lucky_7; // center y
-extern s16 D_8010D85C_game_guys_lucky_7; // radius
-extern s16 D_8010D85E_game_guys_lucky_7; // target x
-extern s16 D_8010D860_game_guys_lucky_7; // target y
-extern GameGuysLucky7RingHistory D_8010D868_game_guys_lucky_7[3]; // per-buffer ring state
-extern GameGuysLucky7Banner D_8010D8D0_game_guys_lucky_7;
-extern s16 D_8010D8E4_game_guys_lucky_7; // current buffer index
-extern GameGuysLucky7Banner D_8010D8E8_game_guys_lucky_7;
+s16 D_8010D300_game_guys_lucky_7 = 0;   // intro timer
+s16 D_8010D302_game_guys_lucky_7 = 120; // intro start y
+s16 D_8010D304_game_guys_lucky_7 = 0;   // outro timer
+
+GameGuysLucky7Ring D_8010D810_game_guys_lucky_7[3] BSS;
+s16 D_8010D858_game_guys_lucky_7 BSS;                          // center x
+s16 D_8010D85A_game_guys_lucky_7 BSS;                          // center y
+s16 D_8010D85C_game_guys_lucky_7 BSS;                          // radius
+s16 D_8010D85E_game_guys_lucky_7 BSS;                          // target x
+s16 D_8010D860_game_guys_lucky_7 BSS;                          // target y
+u8 D_8010D864_game_guys_lucky_7[4] BSS;                        /* Unreferenced. */
+GameGuysLucky7RingHistory D_8010D868_game_guys_lucky_7[3] BSS; // per-buffer ring state
+u8 D_8010D8C8_game_guys_lucky_7[8] BSS;                        /* Unreferenced. */
+GameGuysLucky7Banner D_8010D8D0_game_guys_lucky_7 BSS;
+s16 D_8010D8E4_game_guys_lucky_7 BSS; // current buffer index
+GameGuysLucky7Banner D_8010D8E8_game_guys_lucky_7 BSS;
 
 void func_8010C97C_game_guys_lucky_7(void);
 void func_8010CAE0_game_guys_lucky_7(void);

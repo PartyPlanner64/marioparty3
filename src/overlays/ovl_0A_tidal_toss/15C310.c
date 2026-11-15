@@ -81,45 +81,58 @@ typedef struct {
     f32 unk20;
 } TidalTossSpriteWork;
 
-extern u32 D_8010AAFC_tidal_toss;
-extern u8 D_8010AA70_tidal_toss;
-extern u8 D_8010AAB1_tidal_toss[];
-extern u8 D_8010AAB8_tidal_toss;
-extern u8 D_8010AAB9_tidal_toss;
-extern f32 D_8010AABC_tidal_toss[4][3];
-extern f32 D_8010AAEC_tidal_toss[4];
 extern s32 D_800A178C_main[][6];
 extern s32 D_800A1790_main[][6];
-extern f32 D_8010B090_tidal_toss;
-extern f32 D_8010B058_tidal_toss[4][4];
-extern f32 D_8010B098_tidal_toss[4][4];
-extern f32 D_8010B0D8_tidal_toss;
-extern s16 D_8010AA74_tidal_toss[3][2];
-extern f32 D_8010AA80_tidal_toss[3];
-
-extern TidalTossStruct D_8010AF48_tidal_toss[8];
-extern s16 D_8010AF40_tidal_toss;
-extern s16 D_8010AED8_tidal_toss;
-extern s16 D_8010AEDA_tidal_toss;
-extern s16 D_8010AEE8_tidal_toss;
-extern s16 D_8010AEEC_tidal_toss;
-extern s16 D_8010AF38_tidal_toss;
-extern s16 D_8010AF3A_tidal_toss;
-extern TidalTossSpriteWork D_8010AFE8_tidal_toss[3];
-extern D_80111B50_vine_with_me_Struct D_8010AEB0_tidal_toss;
-extern s32 D_8010AA8C_tidal_toss;
-extern u16 D_8010AA90_tidal_toss;
-extern s32 D_8010AA94_tidal_toss;
-extern s16 D_8010ADE0_tidal_toss;
-extern Gfx *D_8010AF3C_tidal_toss;
-extern u8 D_8010AA9C_tidal_toss[8];
-extern s32 D_8010AAA4_tidal_toss;
-extern s32 D_8010AAA8_tidal_toss;
-extern f32 D_8010AAAC_tidal_toss;
-extern Mtx D_8010ADE8_tidal_toss[3];
-extern TidalTossSortEntry *D_8010AEA8_tidal_toss;
-extern Vtx *D_8010AEAC_tidal_toss;
 extern u8 D_800D2008_main;
+
+u8 D_8010AA70_tidal_toss = 0;
+s16 D_8010AA74_tidal_toss[3][2] = { { 55, 30 }, { 198, 38 }, { 294, 24 } };
+f32 D_8010AA80_tidal_toss[3] = { 1.0f, 0.8f, 1.2f };
+s32 D_8010AA8C_tidal_toss = 0;
+u16 D_8010AA90_tidal_toss = 0;
+s32 D_8010AA94_tidal_toss = -1;
+s16 D_8010AA98_tidal_toss[2] = { 180, 0 }; /* Unreferenced. */
+u8 D_8010AA9C_tidal_toss[8] = { 0x1C, 0x1C, 0x3C, 0x3C, 0x1C, 0x1C, 0x1C, 0x3C };
+s32 D_8010AAA4_tidal_toss = 0;
+s32 D_8010AAA8_tidal_toss = 0;
+f32 D_8010AAAC_tidal_toss = 0.0f;
+u8 D_8010AAB0_tidal_toss[4][2] = { { 0, 0 }, { 0, 1 }, { 0, 2 }, { 0, 3 } };
+u8 D_8010AAB8_tidal_toss = 0;
+u8 D_8010AAB9_tidal_toss = 0;
+f32 D_8010AABC_tidal_toss[4][3] = {
+    { 0.0f, 20.0f, -20.0f },
+    { -240.0f, 0.0f, 0.0f },
+    { 240.0f, 0.0f, 0.0f },
+    { 0.0f, 0.0f, 240.0f },
+};
+f32 D_8010AAEC_tidal_toss[4] = { 0.0f, 90.0f, -90.0f, 180.0f };
+u32 D_8010AAFC_tidal_toss = 0x41C64E6D;
+
+s16 D_8010ADE0_tidal_toss BSS;
+Mtx D_8010ADE8_tidal_toss[3] BSS;
+TidalTossSortEntry *D_8010AEA8_tidal_toss BSS;
+Vtx *D_8010AEAC_tidal_toss BSS;
+D_80111B50_vine_with_me_Struct D_8010AEB0_tidal_toss BSS;
+s16 D_8010AED8_tidal_toss BSS;
+s16 D_8010AEDA_tidal_toss BSS;
+u8 D_8010AEDC_tidal_toss[12] BSS; /* Unreferenced. */
+s16 D_8010AEE8_tidal_toss BSS;
+s16 D_8010AEEA_tidal_toss BSS; /* Unreferenced. */
+s16 D_8010AEEC_tidal_toss BSS;
+s16 D_8010AEEE_tidal_toss BSS;      /* Unreferenced. */
+u8 D_8010AEF0_tidal_toss[0x48] BSS; /* Unreferenced. */
+s16 D_8010AF38_tidal_toss BSS;
+s16 D_8010AF3A_tidal_toss BSS;
+Gfx *D_8010AF3C_tidal_toss BSS;
+s16 D_8010AF40_tidal_toss BSS;
+s16 D_8010AF42_tidal_toss BSS; /* Unreferenced. */
+s32 D_8010AF44_tidal_toss BSS; /* Unreferenced. */
+TidalTossStruct D_8010AF48_tidal_toss[8] BSS;
+TidalTossSpriteWork D_8010AFE8_tidal_toss[3] BSS;
+s32 D_8010B054_tidal_toss BSS; /* Unreferenced. */
+f32 D_8010B058_tidal_toss[4][4] BSS;
+f32 D_8010B098_tidal_toss[4][4] BSS;
+f32 D_8010B0D8_tidal_toss BSS;
 
 s32 fmod(f64 x, f64 y);
 void func_80108638_tidal_toss(omObjData *);
@@ -256,7 +269,7 @@ void func_80105E70_tidal_toss(f32 *arg0, f32 *dst) {
 }
 
 void func_80105F40_tidal_toss(f32 x, f32 y, f32 z, f32 *dst) {
-    f32 depth = z + D_8010B090_tidal_toss;
+    f32 depth = z + D_8010B058_tidal_toss[3][2];
     f32 scale = __builtin_fabsf(depth * D_8010B0D8_tidal_toss);
     f32 mtx[4][4];
 
@@ -932,7 +945,7 @@ void func_80108638_tidal_toss(omObjData *object) {
     f32 scale;
 
     playerSlot = D_8010AAB8_tidal_toss;
-    playerIndex = D_8010AAB1_tidal_toss[playerSlot * 2];
+    playerIndex = D_8010AAB0_tidal_toss[playerSlot][1];
     character = (s8)GwPlayer[playerIndex].chr;
     model = D_800A178C_main[character][0];
     motion = D_800A1790_main[character][0];

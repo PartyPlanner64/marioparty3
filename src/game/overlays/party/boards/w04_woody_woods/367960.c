@@ -1,126 +1,203 @@
-#include "WaluigisIsland.h"
+#include "common_board.h"
+#include "game/overlays/party/common/1006F0.h"
+#include "game/overlays/party/common/105D50.h"
+#include "game/overlays/party/common/1063F0.h"
+#include "game/overlays/party/common/113520.h"
+#include "game/overlays/party/common/106A50.h"
+#include "game/overlays/party/common/F5B90.h"
+#include "game/overlays/party/common/F5E80.h"
+#include "game/overlays/party/common/101840.h"
+#include "game/overlays/party/common/113750.h"
+#include "game/overlays/party/common/ECA50.h"
+#include "game/overlays/party/common/FA250.h"
+#include "game/overlays/party/common/10C230.h"
+#include "game/overlays/party/common/EDDB0.h"
+#include "game/overlays/party/common/EB2F0.h"
+#include "game/overlays/party/common/FFB10.h"
+#include "game/object.h"
+#include "game/overlays/party/common/EA790.h"
+#include "game/overlays/party/common/EAB00.h"
+#include "game/overlays/party/common/EE660.h"
+#include "game/overlays/party/common/F5070.h"
+#include "game/overlays/party/common/F9DE0.h"
+#include "game/overlays/party/common/F2910.h"
+#include "game/overlays/party/common/EC3B0.h"
 #include "gcc/memory.h"
 #include "game/mallocblock.h"
-#include "overlays/ovl_80_shared_board/1006F0.h"
-#include "overlays/ovl_80_shared_board/101840.h"
-#include "overlays/ovl_80_shared_board/105D50.h"
-#include "overlays/ovl_80_shared_board/106A50.h"
-#include "overlays/ovl_80_shared_board/106A50.h"
-#include "overlays/ovl_80_shared_board/10C230.h"
-#include "overlays/ovl_80_shared_board/113520.h"
-#include "overlays/ovl_80_shared_board/113750.h"
-#include "overlays/ovl_80_shared_board/EA790.h"
-#include "overlays/ovl_80_shared_board/EAB00.h"
-#include "overlays/ovl_80_shared_board/EB2F0.h"
-#include "overlays/ovl_80_shared_board/EC3B0.h"
-#include "overlays/ovl_80_shared_board/ECA50.h"
-#include "overlays/ovl_80_shared_board/EDDB0.h"
-#include "overlays/ovl_80_shared_board/EE660.h"
-#include "overlays/ovl_80_shared_board/F5070.h"
-#include "overlays/ovl_80_shared_board/F5B90.h"
-#include "overlays/ovl_80_shared_board/F5E80.h"
-#include "overlays/ovl_80_shared_board/F9DE0.h"
-#include "overlays/ovl_80_shared_board/F9DE0.h"
-#include "overlays/ovl_80_shared_board/FA250.h"
-#include "overlays/ovl_80_shared_board/FFB10.h"
 
-typedef s16 SpaceTriple[3];
-typedef s16 SpacePair[2];
+#define GET_STAR_MODEL() D_8011DFF8_w04[GwSystem.star_spawn_indices[GwSystem.current_star_spawn]]
 
-typedef struct ChanceTable {
-    /* 0x00 */ s32 entries[4];
-} ChanceTable; // size 0x10
+void func_801064DC_w04(void);
+void func_80108558_w04(void);
+void func_80117EA8_w04(void);
+void func_801183D4_w04(void);
+void func_801191B8_w04(void);
+void func_8011A858_w04(void);
+void func_80107828_w04(void);
+void func_80116024_w04(s16 (*masu)[3], BranchPair *links, DecisionTreeNonLeafNode **trees);
+void func_8010D88C_w04(void);
+void func_8010ED84_w04(omObjData *arg0);
+s32 func_80109CD4_w04(s32 arg0, s32 arg1);
+void func_8011297C_w04(Object *arg);
+void func_80106120_w04(void);
+s32 func_80107438_w04(u8 *arg0, s32 arg1, s32 arg2);
+void func_80108268_w04(s16 arg0);
+void func_80112378_w04(void);
+void func_8010B1FC_w04(void);
+void func_80112828_w04(void);
+void func_801165A4_w04(s32 arg);
+s32 func_8011B350_w04(void);
+s32 func_8011B6B4_w04(void);
+void func_8010F9F4_w04(void);
+void func_80110244_w04(s32 arg0, s32 arg1, s32 duration, f32 *target, s32 mode);
+void func_80119FCC_w04(s32 arg0, s32 arg1);
+s32 func_8010CA60_w04(s32 playerIndex);
+void func_800D9F5C_shared_board(Object *arg0, Vec *arg1, s32 arg2);
+void func_80112B48_w04(void);
+void func_80107D70_w04(void);
+void func_80107F3C_w04(void);
+void func_80108200_w04(void);
+void func_801083D4_w04(void);
+void func_80108644_w04(void);
+void func_801086C4_w04(void);
+void func_8010886C_w04(void);
+void func_8010DA1C_w04(void);
+void func_8010EE9C_w04(void);
+void func_8010F264_w04(void);
+void func_8010F2D0_w04(void);
+void func_8010F7C4_w04(void);
+void func_8010FD34_w04(void);
+void func_801104DC_w04(void);
+void func_80110768_w04(void);
+void func_80110BB8_w04(void);
+void func_80110E78_w04(void);
+void func_80111218_w04(void);
+void func_80111C14_w04(void);
+void func_8011276C_w04(void);
+void func_80113484_w04(void);
+void func_80114720_w04(void);
+void func_80115720_w04(void);
+void func_80116640_w04(void);
+void func_8011694C_w04(void);
+void func_80116AFC_w04(void);
+void func_80117244_w04(void);
+void func_8011737C_w04(void);
+void func_80117800_w04(void);
+s32 func_8011AD48_w04(void);
+void func_80110080_w04(void);
+void func_801088C8_w04(void);
+void func_801088FC_w04(void);
+void func_80108934_w04(void);
+void func_801089B0_w04(void);
+void func_80108A58_w04(void);
+void func_80108AD4_w04(void);
+void func_80108B4C_w04(void);
+void func_80108C00_w04(void);
+void func_80108CA8_w04(void);
+void func_80108D00_w04(void);
+void func_80108D58_w04(void);
+void func_80108DB0_w04(void);
+void func_80108E08_w04(void);
+void func_80108E60_w04(void);
+void func_80108EB8_w04(void);
+void func_80108F10_w04(void);
+void func_80108F70_w04(void);
+void func_80108FD0_w04(void);
+void func_80109030_w04(void);
+void func_80109090_w04(void);
+void func_801090F0_w04(void);
+void func_80109150_w04(void);
+void func_801091B0_w04(void);
+void func_80109210_w04(void);
+void func_80109270_w04(void);
+void func_801092D0_w04(void);
+void func_80109330_w04(void);
+void func_80109390_w04(void);
+void func_801093F0_w04(void);
+void func_80109450_w04(void);
+void func_801094B0_w04(void);
+void func_80109510_w04(void);
+void func_80109570_w04(void);
+void func_801095D0_w04(void);
+void func_80109630_w04(void);
+void func_801098A0_w04(void);
+void func_8010A054_w04(void);
+void func_8010A400_w04(void);
+void func_8010EBF0_w04(void);
+void func_8010EC0C_w04(void);
+void func_80116740_w04(void);
+void func_80117074_w04(void);
+void func_8011A5DC_w04(void);
+void func_8011A91C_w04(void);
 
-typedef struct StarChaseWork {
-    /* 0x00 */ Vec dir;
-    /* 0x0C */ char pad0C[4];
-    /* 0x10 */ Vec pos;
-    /* 0x1C */ char pad1C[4];
-    /* 0x20 */ ChanceTable chaseChanceA;
-    /* 0x30 */ ChanceTable chaseChanceB;
-    /* 0x40 */ ChanceTable eventTableA;
-    /* 0x50 */ ChanceTable eventTableB;
-} StarChaseWork; // size 0x60
+s16 D_8011B740_w04[] = { 0, 1, 2, 4, 6, 3, 5, 7 };
 
-/* Star-space order and board model resources. */
-s16 D_8011B580_w06[] = { 2, 3, 4, 5, 6, 7, 0, 1 };
-s16 D_8011B590_w06[] = { 0, 0, 0, 0, 0, 0, 1, 1 };
-s16 D_8011B5A0_w06[] = { 6, 7, 8, 9, 10, 11, 12, 13 };
-s16 D_8011B5B0_w06[] = { 22, 9, 19, 39, 47, 78, 69, 85 };
-s16 D_8011B5C0_w06[] = { 99, 100, 101, 102, 103, 104, 105, 106 };
-s32 D_8011B5D0_w06[] = {
-    0x000A007E,
-    0x000A007F,
-    0x000A0080,
-    0x000A0081,
-    0x000A0082,
-    0x000A0083,
-    0x000A0084,
+s16 D_8011B750_w04[] = { 0, 0, 0, 0, 0, 1, 1, 1 };
+
+s16 D_8011B760_w04[] = { 6, 7, 8, 9, 10, 11, 12, 13 };
+
+s16 D_8011B770_w04[] = { 75, 70, 22, 37, 53, 48, 9, 3 };
+
+s16 D_8011B780_w04[] = { 99, 100, 98, 97, 96, 95, 101, 94 };
+
+s32 D_8011B790_w04[] = { 0xA007E, 0xA007F, 0xA0080, 0xA0081, 0xA0082, 0xA0083, 0xA0084 };
+
+s32 D_8011B7AC_w04[] = { 0x5E02, 0x5E03, 0x5E04, 0x5E05, 0x5E06, 0x5E07, 0x5E08 };
+
+s32 D_8011B7C8_w04 = 0;
+
+s16 D_8011B7CC_w04[] = { -1, 0 };
+
+s16 D_8011B7D0_w04[] = {
+    75, 70, 22, 37, 53, 48, 9, 3,
+    -1, 0
 };
-s32 D_8011B5EC_w06[] = {
-    0x00005E02,
-    0x00005E03,
-    0x00005E04,
-    0x00005E05,
-    0x00005E06,
-    0x00005E07,
-    0x00005E08,
-};
-s32 D_8011B608_w06 = 0;
-s16 D_8011B60C_w06[] = { 0x5F, -1 };
 
-/* Blocked spaces, board links, and model placement. */
-s16 D_8011B610_w06[] = {
-    22, 9, 19, 39, 47, 78, 69, 85,
-    41, 42, 43, 45, 46, 36, 48, 49,
-    50, 32, 35, 37, 38, 40, 51, -1
-};
-
-s16 D_8011B640_w06[][2] = {
-    { 1, -4 },
-    { 1, -4 },
+s16 D_8011B7E4_w04[][2] = {
+    { 4, -4 },
+    { 0, 0 },
+    { 2, -4 },
     { 0, -4 },
-    { 6, 0 },
-    { -4, 0 },
-    { -4, 4 },
-    { 6, 0 },
+    { 0, 0 },
+    { 6, -6 },
+    { 1, -2 },
+    { 2, 0 }
+};
+
+s16 D_8011B804_w04[][2] = {
+    { 2, -4 },
+    { 0, 0 }
+};
+
+s16 D_8011B80C_w04[][2] = {
+    { 0, 0 },
+    { 2, 0 }
+};
+
+s16 D_8011B814_w04[][2] = {
+    { 0, -2 },
     { 0, -2 }
 };
 
-s16 D_8011B660_w06[][2] = {
-    { 2, -2 },
-    { 0, 0 }
-};
-
-s16 D_8011B668_w06[][2] = {
+s16 D_8011B81C_w04[][2] = {
     { 0, 0 },
     { 0, 0 }
 };
 
-s16 D_8011B670_w06[][2] = {
-    { 2, -2 },
-    { 0, 0 }
+s16 D_8011B824_w04[][2] = {
+    { 112, 136 },
+    { 105, 107 }
 };
 
-s16 D_8011B678_w06[][2] = {
-    { 0, 0 },
-    { 0, 0 }
-};
+s16 D_8011B82C_w04[] = { 99, 100, 98, 97, 96, 95, 101, 94 };
 
-s16 D_8011B680_w06[][2] = {
-    { 131, 137 },
-    { 150, 130 }
-};
+s16 D_8011B83C_w04[] = { 6, 7, 8, 9, 10, 11, 12, 13 };
 
-s16 D_8011B688_w06[] = { 99, 100, 101, 102, 103, 104, 105, 106 };
+s16 D_8011B84C_w04[] = { 125, 0 };
 
-s16 D_8011B698_w06[] = { 6, 7, 8, 9, 10, 11, 12, 13 };
+s16 D_8011B850_w04[] = { 120, 110 };
 
-s16 D_8011B6A8_w06[] = { 128, 0 };
-
-s16 D_8011B6AC_w06[] = { 147, 146 };
-
-Vec D_8011B6B0_w06[] = {
+Vec D_8011B854_w04[] = {
     { -3.0f, 0.0f, -2.0f },
     { 0.0f, 2.0f, 2.0f },
     { 1.0f, 5.5f, -3.0f },
@@ -128,7 +205,7 @@ Vec D_8011B6B0_w06[] = {
     { -1.0f, 12.0f, 11.0f }
 };
 
-Vec D_8011B6EC_w06[] = {
+Vec D_8011B890_w04[] = {
     { 0.0f, 0.0f, 0.0f },
     { 0.0f, 0.0f, 0.0f },
     { -15.0f, 0.0f, 0.0f },
@@ -136,891 +213,729 @@ Vec D_8011B6EC_w06[] = {
     { 45.0f, 0.0f, 45.0f }
 };
 
-s16 D_8011B728_w06[] = { 136, 141 };
+s16 D_8011B8CC_w04[] = { 111, 106 };
 
-s16 D_8011B72C_w06[] = { 38, 39, 40, 41, 42, 43 };
+s16 D_8011B8D0_w04[] = { 38, 39, 40, 41, 42, 43 };
 
-u32 D_8011B738_w06[] = { 1, 0x130163 };
+u32 D_8011B8DC_w04[] = { 1, 0x130163 };
 
-u32 D_8011B740_w06[] = { 1, 0x130168 };
+u32 D_8011B8E4_w04[] = { 1, 0x130168 };
 
-u32 D_8011B748_w06[] = { 1, 0x13016F };
+u32 D_8011B8EC_w04[] = { 1, 0x13016F };
 
-u32 D_8011B750_w06[] = { 1, 0x130176 };
+u32 D_8011B8F4_w04[] = { 1, 0x130176 };
 
-u32 D_8011B758_w06[] = { 1, 0x130180 };
+u32 D_8011B8FC_w04[] = { 1, 0x130180 };
 
-u32 D_8011B760_w06[] = { 1, 0x130184 };
+u32 D_8011B904_w04[] = { 1, 0x130184 };
 
-u32 *D_8011B768_w06[] = { D_8011B738_w06, D_8011B740_w06, D_8011B748_w06, D_8011B750_w06, D_8011B758_w06, D_8011B760_w06 };
+u32 *D_8011B90C_w04[] = { D_8011B8DC_w04, D_8011B8E4_w04, D_8011B8EC_w04, D_8011B8F4_w04, D_8011B8FC_w04, D_8011B904_w04 };
 
-s32 D_8011B780_w06[] = {
+s32 D_8011B924_w04[] = {
     328, 328, 328, 328, 328, 328, -1, -1,
     -1
 };
 
-s32 D_8011B7A4_w06[] = {
+s32 D_8011B948_w04[] = {
     -1, -1, -1, -1, -1, -1, -1, -1,
     -1
 };
 
-s32 D_8011B7C8_w06[] = {
+s32 D_8011B96C_w04[] = {
     -1, -1, -1, -1, -1, -1, -1, -1,
     -1
 };
 
-s32 D_8011B7EC_w06[] = {
+s32 D_8011B990_w04[] = {
     -1, -1, -1, -1, -1, -1, -1, -1,
     -1
 };
 
-s16 D_8011B810_w06[] = { 143, 142 };
+s16 D_8011B9B4_w04[] = { 119, 109 };
 
-s16 D_8011B814_w06[] = { 144, 140 };
+s16 D_8011B9B8_w04[] = { 117, 118 };
 
-Object *D_8011B818_w06 = NULL;
+s16 D_8011B9BC_w04[] = { 122, 121, 123, 0 };
 
-s16 D_8011B81C_w06[] = { 133, 120, 135, 0 };
+s16 D_8011B9C4_w04[] = { 0, 1, 2, 0 };
 
-Object *D_8011B824_w06 = NULL;
-
-u8 *D_8011B828_w06 = NULL;
-
-s16 D_8011B82C_w06 = -1;
-
-s16 D_8011B830_w06[] = { 117, 112 };
-
-s16 D_8011B834_w06[][2] = {
-    { 115, 116 },
-    { 113, 151 }
-};
-
-Object *D_8011B83C_w06 = NULL;
-
-/* CPU decisions for the board junctions. */
-DecisionTreeNonLeafNode D_8011B840_w06[] = {
-    { 2, { .data = 0x00000002 }, { .data = 0x1B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x0B54233C } }
-};
-
-DecisionTreeNonLeafNode D_8011B858_w06[] = {
-    { 0, { .data = 0x00000000 }, { .data = 0x064C9932 } }
-};
-
-DecisionTreeNonLeafNode D_8011B864_w06[] = {
-    { 0, { .data = 0x00000000 }, { .data = 0x164C9932 } }
-};
-
-DecisionTreeNonLeafNode *D_8011B870_w06[] = { D_8011B840_w06, D_8011B858_w06, D_8011B864_w06 };
-
-DecisionTreeNonLeafNode D_8011B87C_w06[] = {
-    { 12, { .data = 0x00000019 }, { .data = 0x1B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x0B54233C } }
-};
-
-DecisionTreeNonLeafNode D_8011B894_w06[] = {
-    { 3, { .data = 0x00000001 }, { .data = 0x0B54233C } },
-    { 2, { .data = 0x00000080 }, { .node_data = D_8011B87C_w06 } },
-    { 3, { .data = 0x00000010 }, { .data = 0x1B54233C } },
-    { 8, { .data = 0x00000001 }, { .data = 0x1B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x0B54233C } }
-};
-
-DecisionTreeNonLeafNode D_8011B8D0_w06[] = {
-    { 2, { .data = 0x0000007C }, { .data = 0x0B54233C } },
-    { 8, { .data = 0x00000001 }, { .data = 0x1B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x064C9932 } }
-};
-
-DecisionTreeNonLeafNode D_8011B8F4_w06[] = {
-    { 2, { .data = 0x0000007C }, { .data = 0x0B54233C } },
+DecisionTreeNonLeafNode D_8011B9CC_w04[] = {
     { 2, { .data = 0x00000080 }, { .data = 0x1B54233C } },
-    { 3, { .data = 0x00000001 }, { .data = 0x1B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0B54233C } }
+};
+
+DecisionTreeNonLeafNode D_8011B9E4_w04[] = {
+    { 2, { .data = 0x00000080 }, { .data = 0x1B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x064C9932 } }
+};
+
+DecisionTreeNonLeafNode D_8011B9FC_w04[] = {
     { 0, { .data = 0x00000000 }, { .data = 0x164C9932 } }
 };
 
-DecisionTreeNonLeafNode *D_8011B924_w06[] = { D_8011B894_w06, D_8011B8D0_w06, D_8011B8F4_w06 };
+DecisionTreeNonLeafNode *D_8011BA08_w04[] = { D_8011B9CC_w04, D_8011B9E4_w04, D_8011B9FC_w04 };
 
-DecisionTreeNonLeafNode D_8011B930_w06[] = {
-    { 2, { .data = 0x00000060 }, { .data = 0x0B54233C } },
-    { 2, { .data = 0x00000018 }, { .data = 0x1B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x064C9932 } }
-};
-
-DecisionTreeNonLeafNode D_8011B954_w06[] = {
-    { 2, { .data = 0x00000084 }, { .data = 0x0B54233C } },
-    { 2, { .data = 0x00000018 }, { .data = 0x1B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x064C9932 } }
-};
-
-DecisionTreeNonLeafNode D_8011B978_w06[] = {
-    { 2, { .data = 0x0000009C }, { .data = 0x0B54233C } },
-    { 2, { .data = 0x00000060 }, { .data = 0x1B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x1B54233C } }
-};
-
-DecisionTreeNonLeafNode *D_8011B99C_w06[] = { D_8011B930_w06, D_8011B954_w06, D_8011B978_w06 };
-
-DecisionTreeNonLeafNode D_8011B9A8_w06[] = {
-    { 12, { .data = 0x00000014 }, { .data = 0x1B54233C } },
+DecisionTreeNonLeafNode D_8011BA14_w04[] = {
+    { 2, { .data = 0x0000000F }, { .data = 0x1B54233C } },
+    { 2, { .data = 0x00000030 }, { .data = 0x164C9932 } },
     { 0, { .data = 0x00000000 }, { .data = 0x0B54233C } }
 };
 
-DecisionTreeNonLeafNode D_8011B9C0_w06[] = {
-    { 2, { .data = 0x00000040 }, { .data = 0x1B54233C } },
-    { 2, { .data = 0x00000020 }, { .node_data = D_8011B9A8_w06 } },
-    { 0, { .data = 0x00000000 }, { .data = 0x1B54233C } }
-};
-
-DecisionTreeNonLeafNode D_8011B9E4_w06[] = {
-    { 2, { .data = 0x00000040 }, { .data = 0x1B54233C } },
-    { 2, { .data = 0x0000001C }, { .data = 0x0B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x1B54233C } }
-};
-
-DecisionTreeNonLeafNode D_8011BA08_w06[] = {
-    { 2, { .data = 0x00000020 }, { .data = 0x1B54233C } },
-    { 2, { .data = 0x0000001C }, { .data = 0x0B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x164C9932 } }
-};
-
-DecisionTreeNonLeafNode *D_8011BA2C_w06[] = { D_8011B9C0_w06, D_8011B9E4_w06, D_8011BA08_w06 };
-
-DecisionTreeNonLeafNode D_8011BA38_w06[] = {
-    { 2, { .data = 0x00000018 }, { .data = 0x1B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x0B54233C } }
-};
-
-DecisionTreeNonLeafNode D_8011BA50_w06[] = {
-    { 2, { .data = 0x00000018 }, { .data = 0x1B54233C } },
-    { 2, { .data = 0x00000060 }, { .data = 0x0B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x0B54233C } }
-};
-
-DecisionTreeNonLeafNode D_8011BA74_w06[] = {
-    { 2, { .data = 0x00000060 }, { .data = 0x0B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x164C9932 } }
-};
-
-DecisionTreeNonLeafNode *D_8011BA8C_w06[] = { D_8011BA38_w06, D_8011BA50_w06, D_8011BA74_w06 };
-
-DecisionTreeNonLeafNode D_8011BA98_w06[] = {
-    { 2, { .data = 0x00000019 }, { .data = 0x1B54233C } },
-    { 2, { .data = 0x00000006 }, { .data = 0x0B54233C } },
-    { 3, { .data = 0x00000002 }, { .data = 0x1B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x064C9932 } }
-};
-
-DecisionTreeNonLeafNode D_8011BAC8_w06[] = {
-    { 2, { .data = 0x00000019 }, { .data = 0x1B54233C } },
-    { 3, { .data = 0x00000002 }, { .data = 0x1B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x0B54233C } }
-};
-
-DecisionTreeNonLeafNode D_8011BAEC_w06[] = {
-    { 2, { .data = 0x00000006 }, { .data = 0x1B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x0B54233C } }
-};
-
-DecisionTreeNonLeafNode *D_8011BB04_w06[] = { D_8011BA98_w06, D_8011BAC8_w06, D_8011BAEC_w06 };
-
-DecisionTreeNonLeafNode D_8011BB10_w06[] = {
-    { 2, { .data = 0x00000018 }, { .data = 0x0B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x1B54233C } }
-};
-
-DecisionTreeNonLeafNode D_8011BB28_w06[] = {
-    { 2, { .data = 0x00000018 }, { .data = 0x0B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x1B54233C } }
-};
-
-DecisionTreeNonLeafNode D_8011BB40_w06[] = {
-    { 0, { .data = 0x00000000 }, { .data = 0x164C9932 } }
-};
-
-DecisionTreeNonLeafNode *D_8011BB4C_w06[] = { D_8011BB10_w06, D_8011BB28_w06, D_8011BB40_w06 };
-
-DecisionTreeNonLeafNode D_8011BB58_w06[] = {
-    { 2, { .data = 0x00000004 }, { .data = 0x1B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x0B54233C } }
-};
-
-DecisionTreeNonLeafNode D_8011BB70_w06[] = {
-    { 2, { .data = 0x00000004 }, { .data = 0x1B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x0B54233C } }
-};
-
-DecisionTreeNonLeafNode D_8011BB88_w06[] = {
-    { 2, { .data = 0x00000004 }, { .data = 0x0B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x1B54233C } }
-};
-
-DecisionTreeNonLeafNode *D_8011BBA0_w06[] = { D_8011BB58_w06, D_8011BB70_w06, D_8011BB88_w06 };
-
-DecisionTreeNonLeafNode D_8011BBAC_w06[] = {
-    { 0, { .data = 0x00000000 }, { .data = 0x064C9932 } }
-};
-
-DecisionTreeNonLeafNode *D_8011BBB8_w06[] = { D_8011BBAC_w06, D_8011BBAC_w06, D_8011BBAC_w06 };
-
-DecisionTreeNonLeafNode D_8011BBC4_w06[] = {
-    { 0, { .data = 0x00000000 }, { .data = 0x064C9932 } }
-};
-
-DecisionTreeNonLeafNode *D_8011BBD0_w06[] = { D_8011BBC4_w06, D_8011BBC4_w06, D_8011BBC4_w06 };
-
-DecisionTreeNonLeafNode D_8011BBDC_w06[] = {
-    { 2, { .data = 0x00000018 }, { .data = 0x0B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x1B54233C } }
-};
-
-DecisionTreeNonLeafNode D_8011BBF4_w06[] = {
-    { 2, { .data = 0x00000018 }, { .data = 0x0B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x1B54233C } }
-};
-
-DecisionTreeNonLeafNode D_8011BC0C_w06[] = {
-    { 9, { .data = 0x00000007 }, { .data = 0x0B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x1B54233C } }
-};
-
-DecisionTreeNonLeafNode D_8011BC24_w06[] = {
-    { 12, { .data = 0x00000014 }, { .data = 0x0B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x1B54233C } }
-};
-
-DecisionTreeNonLeafNode D_8011BC3C_w06[] = {
-    { 9, { .data = 0x00000003 }, { .node_data = D_8011BC24_w06 } },
-    { 0, { .data = 0x00000000 }, { .data = 0x1B54233C } }
-};
-
-DecisionTreeNonLeafNode D_8011BC54_w06[] = {
-    { 2, { .data = 0x00000008 }, { .node_data = D_8011BC0C_w06 } },
-    { 2, { .data = 0x00000010 }, { .node_data = D_8011BC3C_w06 } },
-    { 0, { .data = 0x00000000 }, { .data = 0x0B54233C } }
-};
-
-DecisionTreeNonLeafNode *D_8011BC78_w06[] = { D_8011BBDC_w06, D_8011BBF4_w06, D_8011BC54_w06 };
-
-DecisionTreeNonLeafNode D_8011BC84_w06[] = {
-    { 2, { .data = 0x00000006 }, { .data = 0x1B54233C } },
-    { 2, { .data = 0x00000019 }, { .data = 0x0B54233C } },
-    { 3, { .data = 0x00000002 }, { .data = 0x0B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x064C9932 } }
-};
-
-DecisionTreeNonLeafNode D_8011BCB4_w06[] = {
-    { 2, { .data = 0x00000006 }, { .data = 0x1B54233C } },
-    { 2, { .data = 0x00000019 }, { .data = 0x0B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x064C9932 } }
-};
-
-DecisionTreeNonLeafNode D_8011BCD8_w06[] = {
-    { 1, { .data = 0x00000019 }, { .data = 0x1B54233C } },
-    { 9, { .data = 0x00000005 }, { .data = 0x0B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x1B54233C } }
-};
-
-DecisionTreeNonLeafNode D_8011BCFC_w06[] = {
-    { 9, { .data = 0x00000004 }, { .data = 0x0B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x1B54233C } }
-};
-
-DecisionTreeNonLeafNode D_8011BD14_w06[] = {
-    { 2, { .data = 0x00000008 }, { .node_data = D_8011BCD8_w06 } },
-    { 2, { .data = 0x00000010 }, { .node_data = D_8011BCFC_w06 } },
-    { 0, { .data = 0x00000000 }, { .data = 0x1B54233C } }
-};
-
-DecisionTreeNonLeafNode *D_8011BD38_w06[] = { D_8011BC84_w06, D_8011BCB4_w06, D_8011BD14_w06 };
-
-DecisionTreeNonLeafNode D_8011BD44_w06[] = {
-    { 2, { .data = 0x00000002 }, { .data = 0x1B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x0B54233C } }
-};
-
-DecisionTreeNonLeafNode D_8011BD5C_w06[] = {
-    { 2, { .data = 0x00000001 }, { .data = 0x0B54233C } },
-    { 2, { .data = 0x00000002 }, { .data = 0x1B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x0B54233C } }
-};
-
-DecisionTreeNonLeafNode D_8011BD80_w06[] = {
-    { 2, { .data = 0x00000001 }, { .data = 0x0B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x1B54233C } }
-};
-
-DecisionTreeNonLeafNode *D_8011BD98_w06[] = { D_8011BD44_w06, D_8011BD5C_w06, D_8011BD80_w06 };
-
-DecisionTreeNonLeafNode D_8011BDA4_w06[] = {
-    { 2, { .data = 0x00000002 }, { .data = 0x0B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x1B54233C } }
-};
-
-DecisionTreeNonLeafNode D_8011BDBC_w06[] = {
-    { 2, { .data = 0x00000002 }, { .data = 0x1B54233C } },
-    { 2, { .data = 0x00000004 }, { .data = 0x0B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x064C9932 } }
-};
-
-DecisionTreeNonLeafNode D_8011BDE0_w06[] = {
-    { 2, { .data = 0x00000002 }, { .data = 0x1B54233C } },
-    { 2, { .data = 0x00000004 }, { .data = 0x0B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x164C9932 } }
-};
-
-DecisionTreeNonLeafNode *D_8011BE04_w06[] = { D_8011BDA4_w06, D_8011BDBC_w06, D_8011BDE0_w06 };
-
-DecisionTreeNonLeafNode D_8011BE10_w06[] = {
-    { 2, { .data = 0x00000081 }, { .data = 0x0B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x1B54233C } }
-};
-
-DecisionTreeNonLeafNode D_8011BE28_w06[] = {
-    { 2, { .data = 0x00000020 }, { .data = 0x0B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x1B54233C } }
-};
-
-DecisionTreeNonLeafNode D_8011BE40_w06[] = {
-    { 2, { .data = 0x00000020 }, { .data = 0x0B54233C } },
-    { 2, { .data = 0x00000081 }, { .data = 0x1B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x164C9932 } }
-};
-
-DecisionTreeNonLeafNode *D_8011BE64_w06[] = { D_8011BE10_w06, D_8011BE28_w06, D_8011BE40_w06 };
-
-DecisionTreeNonLeafNode D_8011BE70_w06[] = {
-    { 2, { .data = 0x00000001 }, { .data = 0x0B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x1B54233C } }
-};
-
-DecisionTreeNonLeafNode D_8011BE88_w06[] = {
-    { 2, { .data = 0x00000080 }, { .data = 0x0B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x1B54233C } }
-};
-
-DecisionTreeNonLeafNode D_8011BEA0_w06[] = {
-    { 2, { .data = 0x00000080 }, { .data = 0x0B54233C } },
+DecisionTreeNonLeafNode D_8011BA38_w04[] = {
     { 2, { .data = 0x00000001 }, { .data = 0x1B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x164C9932 } }
-};
-
-DecisionTreeNonLeafNode *D_8011BEC4_w06[] = { D_8011BE70_w06, D_8011BE88_w06, D_8011BEA0_w06 };
-
-DecisionTreeNonLeafNode D_8011BED0_w06[] = {
-    { 2, { .data = 0x00000080 }, { .data = 0x1B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x0B54233C } }
-};
-
-DecisionTreeNonLeafNode *D_8011BEE8_w06[] = { D_8011BED0_w06, D_8011BED0_w06, D_8011BED0_w06 };
-
-DecisionTreeNonLeafNode D_8011BEF4_w06[] = {
-    { 2, { .data = 0x00000078 }, { .data = 0x0B54233C } },
-    { 2, { .data = 0x00000080 }, { .data = 0x1B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x0B54233C } }
-};
-
-DecisionTreeNonLeafNode D_8011BF18_w06[] = {
-    { 2, { .data = 0x0000001C }, { .data = 0x0B54233C } },
-    { 2, { .data = 0x00000080 }, { .data = 0x1B54233C } },
     { 0, { .data = 0x00000000 }, { .data = 0x064C9932 } }
 };
 
-DecisionTreeNonLeafNode D_8011BF3C_w06[] = {
+DecisionTreeNonLeafNode D_8011BA50_w04[] = {
+    { 2, { .data = 0x000000C0 }, { .data = 0x1B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x164C9932 } }
+};
+
+DecisionTreeNonLeafNode *D_8011BA68_w04[] = { D_8011BA14_w04, D_8011BA38_w04, D_8011BA50_w04 };
+
+DecisionTreeNonLeafNode D_8011BA74_w04[] = {
+    { 4, { .data = 0x00100000 }, { .data = 0x1B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x08D1A346 } }
+};
+
+DecisionTreeNonLeafNode D_8011BA8C_w04[] = {
+    { 4, { .data = 0x00100000 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x08D1A346 } }
+};
+
+DecisionTreeNonLeafNode D_8011BAA4_w04[] = {
+    { 2, { .data = 0x00000030 }, { .node_data = D_8011BA74_w04 } },
+    { 2, { .data = 0x00000040 }, { .node_data = D_8011BA8C_w04 } },
+    { 8, { .data = 0x00000001 }, { .data = 0x1B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x08D1A346 } }
+};
+
+DecisionTreeNonLeafNode D_8011BAD4_w04[] = {
+    { 0, { .data = 0x00000000 }, { .data = 0x064C9932 } }
+};
+
+DecisionTreeNonLeafNode D_8011BAE0_w04[] = {
+    { 0, { .data = 0x00000000 }, { .data = 0x164C9932 } }
+};
+
+DecisionTreeNonLeafNode *D_8011BAEC_w04[] = { D_8011BAA4_w04, D_8011BAD4_w04, D_8011BAE0_w04 };
+
+DecisionTreeNonLeafNode D_8011BAF8_w04[] = {
+    { 2, { .data = 0x000000CF }, { .data = 0x0B54233C } },
     { 0, { .data = 0x00000000 }, { .data = 0x1B54233C } }
 };
 
-DecisionTreeNonLeafNode D_8011BF48_w06[] = {
-    { 4, { .data = 0x00000000 }, { .node_data = D_8011BF3C_w06 } },
-    { 3, { .data = 0x00000008 }, { .data = 0x1A119E32 } },
+DecisionTreeNonLeafNode D_8011BB10_w04[] = {
+    { 2, { .data = 0x00000030 }, { .data = 0x1B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x064C9932 } }
+};
+
+DecisionTreeNonLeafNode D_8011BB28_w04[] = {
+    { 2, { .data = 0x00000030 }, { .data = 0x1B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x164C9932 } }
+};
+
+DecisionTreeNonLeafNode *D_8011BB40_w04[] = { D_8011BAF8_w04, D_8011BB10_w04, D_8011BB28_w04 };
+
+DecisionTreeNonLeafNode D_8011BB4C_w04[] = {
+    { 2, { .data = 0x00000003 }, { .data = 0x0B54233C } },
+    { 2, { .data = 0x000000C0 }, { .data = 0x08D19E3C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x1B54233C } }
+};
+
+DecisionTreeNonLeafNode D_8011BB70_w04[] = {
+    { 2, { .data = 0x00000001 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x064C9932 } }
+};
+
+DecisionTreeNonLeafNode D_8011BB88_w04[] = {
+    { 2, { .data = 0x00000001 }, { .data = 0x0B54233C } },
+    { 2, { .data = 0x00000002 }, { .data = 0x1B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x164C9932 } }
+};
+
+DecisionTreeNonLeafNode *D_8011BBAC_w04[] = { D_8011BB4C_w04, D_8011BB70_w04, D_8011BB88_w04 };
+
+DecisionTreeNonLeafNode D_8011BBB8_w04[] = {
+    { 2, { .data = 0x00000014 }, { .data = 0x0B54233C } },
+    { 2, { .data = 0x00000008 }, { .data = 0x1B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x18D19E3C } }
+};
+
+DecisionTreeNonLeafNode D_8011BBDC_w04[] = {
+    { 2, { .data = 0x00000008 }, { .data = 0x1B54233C } },
+    { 2, { .data = 0x00000003 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x18D19E3C } }
+};
+
+DecisionTreeNonLeafNode D_8011BC00_w04[] = {
+    { 2, { .data = 0x00000014 }, { .data = 0x1B54233C } },
+    { 2, { .data = 0x00000003 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x164C9932 } }
+};
+
+DecisionTreeNonLeafNode *D_8011BC24_w04[] = { D_8011BBB8_w04, D_8011BBDC_w04, D_8011BC00_w04 };
+
+DecisionTreeNonLeafNode D_8011BC30_w04[] = {
+    { 2, { .data = 0x0000001C }, { .data = 0x1B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x08D1A346 } }
+};
+
+DecisionTreeNonLeafNode D_8011BC48_w04[] = {
+    { 2, { .data = 0x00000008 }, { .data = 0x0B54233C } },
+    { 2, { .data = 0x00000014 }, { .data = 0x1B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x164C9932 } }
+};
+
+DecisionTreeNonLeafNode D_8011BC6C_w04[] = {
+    { 2, { .data = 0x00000008 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x18D1A346 } }
+};
+
+DecisionTreeNonLeafNode *D_8011BC84_w04[] = { D_8011BC30_w04, D_8011BC48_w04, D_8011BC6C_w04 };
+
+DecisionTreeNonLeafNode D_8011BC90_w04[] = {
+    { 2, { .data = 0x00000070 }, { .data = 0x1B54233C } },
+    { 2, { .data = 0x00000080 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x08D1A346 } }
+};
+
+DecisionTreeNonLeafNode D_8011BCB4_w04[] = {
+    { 2, { .data = 0x00000070 }, { .data = 0x1B54233C } },
+    { 2, { .data = 0x00000080 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x08D1A346 } }
+};
+
+DecisionTreeNonLeafNode D_8011BCD8_w04[] = {
+    { 2, { .data = 0x00000080 }, { .data = 0x1B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x164C9932 } }
+};
+
+DecisionTreeNonLeafNode *D_8011BCF0_w04[] = { D_8011BC90_w04, D_8011BCB4_w04, D_8011BCD8_w04 };
+
+DecisionTreeNonLeafNode D_8011BCFC_w04[] = {
+    { 3, { .data = 0x00000002 }, { .data = 0x1B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x08D1A346 } }
+};
+
+DecisionTreeNonLeafNode D_8011BD14_w04[] = {
+    { 3, { .data = 0x00000002 }, { .data = 0x1B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x064C9932 } }
+};
+
+DecisionTreeNonLeafNode D_8011BD2C_w04[] = {
+    { 0, { .data = 0x00000000 }, { .data = 0x164C9932 } }
+};
+
+DecisionTreeNonLeafNode *D_8011BD38_w04[] = { D_8011BCFC_w04, D_8011BD14_w04, D_8011BD2C_w04 };
+
+DecisionTreeNonLeafNode D_8011BD44_w04[] = {
+    { 0, { .data = 0x00000000 }, { .data = 0x08D1A346 } }
+};
+
+DecisionTreeNonLeafNode D_8011BD50_w04[] = {
+    { 0, { .data = 0x00000000 }, { .data = 0x08D1A346 } }
+};
+
+DecisionTreeNonLeafNode D_8011BD5C_w04[] = {
+    { 0, { .data = 0x00000000 }, { .data = 0x18D1A346 } }
+};
+
+DecisionTreeNonLeafNode *D_8011BD68_w04[] = { D_8011BD44_w04, D_8011BD50_w04, D_8011BD5C_w04 };
+
+DecisionTreeNonLeafNode D_8011BD74_w04[] = {
+    { 2, { .data = 0x00000030 }, { .data = 0x0B54233C } },
+    { 2, { .data = 0x00000040 }, { .data = 0x1B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x064C9932 } }
+};
+
+DecisionTreeNonLeafNode D_8011BD98_w04[] = {
+    { 2, { .data = 0x00000004 }, { .data = 0x0B54233C } },
+    { 2, { .data = 0x00000040 }, { .data = 0x1B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x064C9932 } }
+};
+
+DecisionTreeNonLeafNode D_8011BDBC_w04[] = {
+    { 2, { .data = 0x00000004 }, { .data = 0x0B54233C } },
+    { 2, { .data = 0x00000030 }, { .data = 0x1B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x064C9932 } }
+};
+
+DecisionTreeNonLeafNode *D_8011BDE0_w04[] = { D_8011BD74_w04, D_8011BD98_w04, D_8011BDBC_w04 };
+
+DecisionTreeNonLeafNode D_8011BDEC_w04[] = {
+    { 2, { .data = 0x00000010 }, { .data = 0x1B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x08D1A346 } }
+};
+
+DecisionTreeNonLeafNode D_8011BE04_w04[] = {
+    { 2, { .data = 0x00000010 }, { .data = 0x1B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0A142346 } }
+};
+
+DecisionTreeNonLeafNode D_8011BE1C_w04[] = {
+    { 0, { .data = 0x00000000 }, { .data = 0x0A142346 } }
+};
+
+DecisionTreeNonLeafNode *D_8011BE28_w04[] = { D_8011BDEC_w04, D_8011BE04_w04, D_8011BE1C_w04 };
+
+DecisionTreeNonLeafNode D_8011BE34_w04[] = {
+    { 2, { .data = 0x00000050 }, { .data = 0x1B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x08D1A346 } }
+};
+
+DecisionTreeNonLeafNode D_8011BE4C_w04[] = {
+    { 2, { .data = 0x00000050 }, { .data = 0x1B54233C } },
+    { 2, { .data = 0x00000020 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x064C9932 } }
+};
+
+DecisionTreeNonLeafNode D_8011BE70_w04[] = {
+    { 2, { .data = 0x00000020 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x18D1A346 } }
+};
+
+DecisionTreeNonLeafNode *D_8011BE88_w04[] = { D_8011BE34_w04, D_8011BE4C_w04, D_8011BE70_w04 };
+
+DecisionTreeNonLeafNode D_8011BE94_w04[] = {
+    { 2, { .data = 0x00000008 }, { .data = 0x1B54233C } },
+    { 2, { .data = 0x00000014 }, { .data = 0x0B54233C } },
+    { 8, { .data = 0x00000001 }, { .data = 0x1B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x08D1A346 } }
+};
+
+DecisionTreeNonLeafNode D_8011BEC4_w04[] = {
+    { 2, { .data = 0x00000008 }, { .data = 0x0B54233C } },
+    { 8, { .data = 0x00000001 }, { .data = 0x1B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x064C9932 } }
+};
+
+DecisionTreeNonLeafNode D_8011BEE8_w04[] = {
+    { 2, { .data = 0x00000008 }, { .data = 0x0B54233C } },
+    { 2, { .data = 0x00000014 }, { .data = 0x1B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x164C9932 } }
+};
+
+DecisionTreeNonLeafNode *D_8011BF0C_w04[] = { D_8011BE94_w04, D_8011BEC4_w04, D_8011BEE8_w04 };
+
+DecisionTreeNonLeafNode D_8011BF18_w04[] = {
+    { 4, { .data = 0x00000000 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x1B54233C } }
+};
+
+DecisionTreeNonLeafNode D_8011BF30_w04[] = {
+    { 2, { .data = 0x00000001 }, { .node_data = D_8011BF18_w04 } },
+    { 4, { .data = 0x00000000 }, { .data = 0x1B54233C } },
     { 0, { .data = 0x00000000 }, { .data = 0x0B54233C } }
 };
 
-DecisionTreeNonLeafNode D_8011BF6C_w06[] = {
-    { 2, { .data = 0x00000060 }, { .data = 0x1B54233C } },
-    { 2, { .data = 0x00000004 }, { .data = 0x0B54233C } },
-    { 2, { .data = 0x00000018 }, { .node_data = D_8011BF48_w06 } },
-    { 0, { .data = 0x00000000 }, { .data = 0x164C9932 } }
+DecisionTreeNonLeafNode D_8011BF54_w04[] = {
+    { 4, { .data = 0x00000000 }, { .data = 0x1B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0B54233C } }
 };
 
-DecisionTreeNonLeafNode *D_8011BF9C_w06[] = { D_8011BEF4_w06, D_8011BF18_w06, D_8011BF6C_w06 };
-
-DecisionTreeNonLeafNode D_8011BFA8_w06[] = {
-    { 2, { .data = 0x00000002 }, { .data = 0x1B54233C } },
-    { 2, { .data = 0x00000004 }, { .data = 0x0B54233C } },
+DecisionTreeNonLeafNode D_8011BF6C_w04[] = {
+    { 9, { .data = 0x00000006 }, { .node_data = D_8011BF30_w04 } },
+    { 2, { .data = 0x00000001 }, { .node_data = D_8011BF54_w04 } },
+    { 4, { .data = 0x00000000 }, { .data = 0x0B54233C } },
     { 0, { .data = 0x00000000 }, { .data = 0x1B54233C } }
 };
 
-DecisionTreeNonLeafNode D_8011BFCC_w06[] = {
-    { 2, { .data = 0x00000002 }, { .data = 0x1B54233C } },
-    { 2, { .data = 0x00000018 }, { .data = 0x0B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x1B54233C } }
+DecisionTreeNonLeafNode D_8011BF9C_w04[] = {
+    { 0, { .data = 0x00000000 }, { .data = 0x03C78F1E } }
 };
 
-DecisionTreeNonLeafNode D_8011BFF0_w06[] = {
-    { 2, { .data = 0x00000018 }, { .data = 0x0B54233C } },
-    { 2, { .data = 0x00000004 }, { .data = 0x1B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x164C9932 } }
-};
-
-DecisionTreeNonLeafNode *D_8011C014_w06[] = { D_8011BFA8_w06, D_8011BFCC_w06, D_8011BFF0_w06 };
-
-event_list_entry D_8011C020_w06[] = {
-    { 8, 1, func_80108B9C_w06 },
+event_list_entry D_8011BFA8_w04[] = {
+    { 8, 1, func_801088C8_w04 },
     { 0, 0, NULL }
 };
 
-DecisionTreeNonLeafNode D_8011C030_w06[] = {
-    { 4, { .data = 0x00000000 }, { .data = 0x0C97ED55 } },
-    { 3, { .data = 0x00000008 }, { .data = 0x0C97ED55 } },
-    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+s16 D_8011BFB8_w04[][3] = {
+    { 43, 54, -1 },
+    { 32, 54, -1 },
+    { 32, 43, -1 }
 };
 
-DecisionTreeNonLeafNode D_8011C054_w06[] = {
-    { 2, { .data = 0x00000018 }, { .node_data = D_8011C030_w06 } },
-    { 2, { .data = 0x00000060 }, { .data = 0x0C97ED55 } },
-    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+BranchLink D_8011BFCC_w04[][2] = {
+    { { 2, 0, 0 }, { 3, 0, 0 } },
+    { { 1, 24, 1 }, { 3, 0, 0 } },
+    { { 1, 24, 1 }, { 2, 0, 0 } }
 };
 
-DecisionTreeNonLeafNode D_8011C078_w06[] = {
-    { 2, { .data = 0x00000080 }, { .data = 0x0C97ED55 } },
-    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
-};
-
-s16 D_8011C090_w06[] = {
-    153, 3, -1, 1, 3, -1, 1, 153,
-    -1, 0
-};
-
-s32 D_8011C0A4_w06[] = {
-    0x150000, 2, 0, 0x2000C, 0x10002, 0, 0x2000C, 0x10015,
-    0
-};
-
-event_list_entry D_8011C0C8_w06[] = {
-    { 1, 2, func_8010980C_w06 },
+event_list_entry D_8011BFF0_w04[] = {
+    { 1, 2, func_801088FC_w04 },
     { 0, 0, NULL }
 };
 
-s16 D_8011C0D8_w06[] = {
-    89, 92, -1, 91, 92, -1, 91, 89,
-    -1, 0
+s16 D_8011C000_w04[][3] = {
+    { 80, 78, -1 },
+    { 79, 78, -1 },
+    { 79, 80, -1 }
 };
 
-s32 D_8011C0EC_w06[] = {
-    0x30004, 1, 0, 0x30002, 0x10001, 0, 0x30002, 0x10003,
-    0x40000
+BranchLink D_8011C014_w04[][2] = {
+    { { 4, 0, 0 }, { 9, 0, 0 } },
+    { { 2, 6, 1 }, { 9, 0, 0 } },
+    { { 2, 6, 1 }, { 4, 0, 0 } }
 };
 
-event_list_entry D_8011C110_w06[] = {
-    { 1, 1, func_80109870_w06 },
+event_list_entry D_8011C038_w04[] = {
+    { 1, 2, func_80108934_w04 },
     { 0, 0, NULL }
 };
 
-s16 D_8011C120_w06[] = {
-    60, 59, -1, 2, 59, -1, 2, 60,
-    -1, 0
+s16 D_8011C048_w04[][3] = {
+    { 15, 92, -1 },
+    { 83, 92, -1 },
+    { 83, 15, -1 }
 };
 
-s32 D_8011C134_w06[] = {
-    0xF0000, 13, 0, 0x40002, 0x1000D, 0, 0x40002, 0x1000F,
-    0
+BranchLink D_8011C05C_w04[][2] = {
+    { { 6, 0, 0 }, { 5, 0, 0 } },
+    { { 4, 3, 1 }, { 5, 0, 0 } },
+    { { 4, 3, 1 }, { 6, 0, 0 } }
 };
 
-event_list_entry D_8011C158_w06[] = {
-    { 1, 2, func_80109918_w06 },
+event_list_entry D_8011C080_w04[] = {
+    { 1, 1, func_801089B0_w04 },
     { 0, 0, NULL }
 };
 
-s16 D_8011C168_w06[] = {
-    80, 63, -1, 62, 63, -1, 62, 80,
-    -1, 0
+s16 D_8011C090_w04[][3] = {
+    { 11, 13, -1 },
+    { 12, 13, -1 },
+    { 12, 11, -1 }
 };
 
-s32 D_8011C17C_w06[] = {
-    0x100000, 17, 0, 0xF0003, 0x10011, 0, 0xF0003, 0x10010,
-    0
+BranchLink D_8011C0A4_w04[][2] = {
+    { { 7, 0, 0 }, { 8, 0, 0 } },
+    { { 6, 1, 1 }, { 8, 0, 0 } },
+    { { 6, 1, 1 }, { 7, 0, 0 } }
 };
 
-event_list_entry D_8011C1A0_w06[] = {
-    { 1, 2, func_80109950_w06 },
+event_list_entry D_8011C0C8_w04[] = {
+    { 1, 2, func_80108A58_w04 },
     { 0, 0, NULL }
 };
 
-s16 D_8011C1B0_w06[] = {
-    52, 117, -1, 56, 117, -1, 56, 52,
-    -1, 0
+s16 D_8011C0D8_w04[][3] = {
+    { 64, 62, -1 },
+    { 63, 62, -1 },
+    { 63, 64, -1 }
 };
 
-s32 D_8011C1C4_w06[] = {
-    0xE0000, 10, 0, 0xD0003, 0x1000A, 0, 0xD0003, 0x1000E,
-    0
+BranchLink D_8011C0EC_w04[][2] = {
+    { { 10, 0, 0 }, { 11, 0, 0 } },
+    { { 9, 5, 1 }, { 11, 0, 0 } },
+    { { 9, 5, 1 }, { 10, 0, 0 } }
 };
 
-event_list_entry D_8011C1E8_w06[] = {
-    { 1, 2, func_80109988_w06 },
+event_list_entry D_8011C110_w04[] = {
+    { 1, 2, func_80108AD4_w04 },
     { 0, 0, NULL }
 };
 
-s16 D_8011C1F8_w06[] = {
-    27, 112, -1, 28, 112, -1, 28, 27,
-    -1, 0
+s16 D_8011C120_w04[][3] = {
+    { 26, 27, -1 },
+    { 59, 27, -1 },
+    { 59, 26, -1 }
 };
 
-s32 D_8011C20C_w06[] = {
-    0x60000, 9, 0, 0x50004, 0x10009, 0, 0x50004, 0x10006,
-    0
+BranchLink D_8011C134_w04[][2] = {
+    { { 12, 0, 0 }, { 13, 0, 0 } },
+    { { 11, 3, 1 }, { 13, 0, 0 } },
+    { { 11, 3, 1 }, { 12, 0, 0 } }
 };
 
-event_list_entry D_8011C230_w06[] = {
-    { 1, 2, func_80109A50_w06 },
+event_list_entry D_8011C158_w04[] = {
+    { 1, 2, func_80108B4C_w04 },
     { 0, 0, NULL }
 };
 
-s16 D_8011C240_w06[] = {
-    41, 134, -1, 51, 134, -1, 51, 41,
-    -1, 0
+s16 D_8011C168_w04[][3] = {
+    { 39, 57, -1 },
+    { 38, 57, -1 },
+    { 38, 39, -1 }
 };
 
-s32 D_8011C254_w06[] = {
-    0xB0000, 12, 0, 0xB0013, 0x1000C, 0, 0xB0013, 0x1000B,
-    0
+BranchLink D_8011C17C_w04[][2] = {
+    { { 1, 0, 0 }, { 14, 0, 0 } },
+    { { 13, 10, 1 }, { 14, 0, 0 } },
+    { { 13, 10, 1 }, { 1, 0, 0 } }
 };
 
-event_list_entry D_8011C278_w06[] = {
-    { 1, 2, func_80109B1C_w06 },
+event_list_entry D_8011C1A0_w04[] = {
+    { 1, 1, func_80108C00_w04 },
     { 0, 0, NULL }
 };
 
-s16 D_8011C288_w06[] = {
-    11, 150, -1, 13, 150, -1, 13, 11,
-    -1, 0
+s16 D_8011C1B0_w04[][3] = {
+    { 87, 136, -1 },
+    { 65, 136, -1 },
+    { 65, 87, -1 }
 };
 
-s32 D_8011C29C_w06[] = {
-    0x70000, 8, 0, 0x6000D, 0x10008, 0, 0x6000D, 0x10007,
-    0
+BranchLink D_8011C1C4_w04[][2] = {
+    { { 3, 3, 0 }, { 5, 3, 1 } },
+    { { 3, 1, 1 }, { 5, 3, 1 } },
+    { { 3, 1, 1 }, { 3, 3, 0 } }
 };
 
-event_list_entry D_8011C2C0_w06[] = {
-    { 1, 2, func_80109B54_w06 },
+event_list_entry D_8011C1E8_w04[] = {
+    { 1, 1, func_80108CA8_w04 },
     { 0, 0, NULL }
 };
 
-s16 D_8011C2D0_w06[] = {
-    124, 125, -1, 124, 125, -1, 124, 125,
-    -1, 0
+s16 D_8011C1F8_w04[][3] = {
+    { 3, 5, -1 },
+    { 1, 5, -1 },
+    { 1, 3, -1 }
 };
 
-s32 D_8011C2E4_w06[] = {
-    0x140000, 19, 0, 0x140000, 19, 0, 0x140000, 19,
-    0
+BranchLink D_8011C20C_w04[][2] = {
+    { { 1, 19, 0 }, { 1, 17, 1 } },
+    { { 3, 4, 1 }, { 1, 17, 1 } },
+    { { 3, 4, 1 }, { 1, 19, 0 } }
 };
 
-event_list_entry D_8011C308_w06[] = {
-    { 1, 1, func_80109C04_w06 },
+event_list_entry D_8011C230_w04[] = {
+    { 1, 1, func_80108D00_w04 },
     { 0, 0, NULL }
 };
 
-s16 D_8011C318_w06[] = {
-    124, 125, -1, 124, 125, -1, 124, 125,
-    -1, 0
+s16 D_8011C240_w04[][3] = {
+    { 84, 86, -1 },
+    { 90, 86, -1 },
+    { 90, 84, -1 }
 };
 
-s32 D_8011C32C_w06[] = {
-    0x140000, 19, 0, 0x140000, 19, 0, 0x140000, 19,
-    0
+BranchLink D_8011C254_w04[][2] = {
+    { { 2, 5, 0 }, { 10, 11, 1 } },
+    { { 2, 3, 1 }, { 10, 11, 1 } },
+    { { 2, 3, 1 }, { 2, 5, 0 } }
 };
 
-event_list_entry D_8011C350_w06[] = {
-    { 1, 1, func_80109CA4_w06 },
+event_list_entry D_8011C278_w04[] = {
+    { 1, 1, func_80108D58_w04 },
     { 0, 0, NULL }
 };
 
-s16 D_8011C360_w06[] = {
-    46, 117, -1, 45, 117, -1, 45, 46,
-    -1, 0
+s16 D_8011C288_w04[][3] = {
+    { 104, 17, -1 },
+    { 19, 17, -1 },
+    { 19, 104, -1 }
 };
 
-s32 D_8011C374_w06[] = {
-    0xB0005, 10, 0, 0xB0003, 0x1000A, 0, 0xB0003, 0x1000B,
-    0x50000
+BranchLink D_8011C29C_w04[][2] = {
+    { { 12, 8, 0 }, { 8, 3, 1 } },
+    { { 12, 6, 1 }, { 8, 3, 1 } },
+    { { 12, 6, 1 }, { 12, 8, 0 } }
 };
 
-event_list_entry D_8011C398_w06[] = {
-    { 1, 2, func_80109D44_w06 },
+event_list_entry D_8011C2C0_w04[] = {
+    { 1, 1, func_80108DB0_w04 },
     { 0, 0, NULL }
 };
 
-s16 D_8011C3A8_w06[] = {
-    32, 112, -1, 50, 112, -1, 50, 32,
-    -1, 0
+s16 D_8011C2D0_w04[][3] = {
+    { 45, 56, -1 },
+    { 42, 56, -1 },
+    { 42, 45, -1 }
 };
 
-s32 D_8011C3BC_w06[] = {
-    0xB000C, 9, 0, 0xB000A, 0x10009, 0, 0xB000A, 0x1000B,
-    0xC0000
+BranchLink D_8011C2E4_w04[][2] = {
+    { { 1, 6, 0 }, { 12, 12, 1 } },
+    { { 1, 4, 1 }, { 12, 12, 1 } },
+    { { 1, 4, 1 }, { 1, 6, 0 } }
 };
 
-event_list_entry D_8011C3E0_w06[] = {
-    { 1, 2, func_80109E28_w06 },
+event_list_entry D_8011C308_w04[] = {
+    { 1, 1, func_80108E08_w04 },
     { 0, 0, NULL }
 };
 
-s16 D_8011C3F0_w06[] = {
-    66, 10, -1, 44, 10, -1, 44, 66,
-    -1, 0
+s16 D_8011C318_w04[][3] = {
+    { 7, 8, -1 },
+    { 50, 8, -1 },
+    { 50, 7, -1 }
 };
 
-s32 D_8011C404_w06[] = {
-    0x20009, 2, 0x70001, 0x1000F, 0x10002, 0x70001, 0x1000F, 0x10002,
-    0x90000
+BranchLink D_8011C32C_w04[][2] = {
+    { { 1, 15, 0 }, { 7, 2, 1 } },
+    { { 1, 13, 1 }, { 7, 2, 1 } },
+    { { 1, 13, 1 }, { 1, 15, 0 } }
 };
 
-event_list_entry D_8011C428_w06[] = {
-    { 1, 1, func_80109F10_w06 },
+event_list_entry D_8011C350_w04[] = {
+    { 1, 1, func_80108E60_w04 },
     { 0, 0, NULL }
 };
 
-s16 D_8011C438_w06[] = {
-    8, 6, -1, 11, 6, -1, 11, 8,
-    -1, 0
+s16 D_8011C360_w04[][3] = {
+    { 23, 107, -1 },
+    { 25, 107, -1 },
+    { 25, 23, -1 }
 };
 
-s32 D_8011C44C_w06[] = {
-    0x20005, 2, 0x30001, 0x70000, 0x10002, 0x30001, 0x70000, 0x10002,
-    0x50000
+BranchLink D_8011C374_w04[][2] = {
+    { { 12, 3, 0 }, { 14, 4, 1 } },
+    { { 12, 1, 1 }, { 14, 4, 1 } },
+    { { 12, 1, 1 }, { 12, 3, 0 } }
 };
 
-event_list_entry D_8011C470_w06[] = {
-    { 1, 1, func_80109F68_w06 },
+event_list_entry D_8011C398_w04[] = {
+    { 1, 1, func_80108EB8_w04 },
     { 0, 0, NULL }
 };
 
-s16 D_8011C480_w06[] = {
-    81, 70, -1, 72, 70, -1, 72, 81,
-    -1, 0
-};
-
-s32 D_8011C494_w06[] = {
-    0x100009, 18, 0x70001, 0x100007, 0x10012, 0x70001, 0x100007, 0x10010,
-    0x90000
-};
-
-event_list_entry D_8011C4B8_w06[] = {
-    { 1, 1, func_80109FC0_w06 },
+event_list_entry D_8011C3A8_w04[] = {
+    { 1, 1, func_80108F10_w04 },
     { 0, 0, NULL }
 };
 
-s16 D_8011C4C8_w06[] = {
-    83, 81, -1, 85, 81, -1, 85, 83,
-    -1, 0
-};
-
-s32 D_8011C4DC_w06[] = {
-    0x30009, 16, 0x90001, 0x30007, 0x10010, 0x90001, 0x30007, 0x10003,
-    0x90000
-};
-
-event_list_entry D_8011C500_w06[] = {
-    { 1, 1, func_8010A018_w06 },
+event_list_entry D_8011C3B8_w04[] = {
+    { 1, 1, func_80108F70_w04 },
     { 0, 0, NULL }
 };
 
-s16 D_8011C510_w06[] = {
-    97, 95, -1, 97, 95, -1, 97, 95,
-    -1, 0
-};
-
-s32 D_8011C524_w06[] = {
-    0x10008, 1, 0x60001, 0x10008, 1, 0x60001, 0x10008, 1,
-    0x60001
-};
-
-s16 D_8011C548_w06[] = {
-    110, 111, -1, 109, 111, -1, 109, 110,
-    -1, 0
-};
-
-s32 D_8011C55C_w06[] = {
-    0x40000, 3, 0, 0x50000, 3, 0, 0x50000, 4,
-    0
-};
-
-event_list_entry D_8011C580_w06[] = {
-    { 1, 1, func_8010A0C8_w06 },
+event_list_entry D_8011C3C8_w04[] = {
+    { 1, 1, func_80108FD0_w04 },
     { 0, 0, NULL }
 };
 
-s16 D_8011C590_w06[] = {
-    20, 130, -1, 23, 130, -1, 23, 20,
-    -1, 0
-};
-
-s32 D_8011C5A4_w06[] = {
-    0x60006, 8, 0x20001, 0x60004, 0x10008, 0x20001, 0x60004, 0x10006,
-    0x60000
-};
-
-event_list_entry D_8011C5C8_w06[] = {
-    { 1, 1, func_8010A120_w06 },
+event_list_entry D_8011C3D8_w04[] = {
+    { 1, 1, func_80109030_w04 },
     { 0, 0, NULL }
 };
 
-event_list_entry D_8011C5D8_w06[] = {
-    { 1, 1, func_8010A178_w06 },
+event_list_entry D_8011C3E8_w04[] = {
+    { 1, 1, func_80109090_w04 },
     { 0, 0, NULL }
 };
 
-event_list_entry D_8011C5E8_w06[] = {
-    { 1, 1, func_8010A1D8_w06 },
+event_list_entry D_8011C3F8_w04[] = {
+    { 1, 1, func_801090F0_w04 },
     { 0, 0, NULL }
 };
 
-event_list_entry D_8011C5F8_w06[] = {
-    { 1, 1, func_8010A238_w06 },
+event_list_entry D_8011C408_w04[] = {
+    { 1, 1, func_80109150_w04 },
     { 0, 0, NULL }
 };
 
-event_list_entry D_8011C608_w06[] = {
-    { 1, 1, func_8010A298_w06 },
+event_list_entry D_8011C418_w04[] = {
+    { 1, 1, func_801091B0_w04 },
     { 0, 0, NULL }
 };
 
-event_list_entry D_8011C618_w06[] = {
-    { 1, 1, func_8010A2F8_w06 },
+event_list_entry D_8011C428_w04[] = {
+    { 1, 1, func_80109210_w04 },
     { 0, 0, NULL }
 };
 
-event_list_entry D_8011C628_w06[] = {
-    { 1, 1, func_8010A358_w06 },
+event_list_entry D_8011C438_w04[] = {
+    { 1, 1, func_80109270_w04 },
     { 0, 0, NULL }
 };
 
-event_list_entry D_8011C638_w06[] = {
-    { 1, 1, func_8010A3B8_w06 },
+event_list_entry D_8011C448_w04[] = {
+    { 1, 1, func_801092D0_w04 },
     { 0, 0, NULL }
 };
 
-event_list_entry D_8011C648_w06[] = {
-    { 1, 1, func_8010A418_w06 },
+event_list_entry D_8011C458_w04[] = {
+    { 1, 1, func_80109330_w04 },
     { 0, 0, NULL }
 };
 
-event_list_entry D_8011C658_w06[] = {
-    { 1, 1, func_8010A488_w06 },
+event_list_entry D_8011C468_w04[] = {
+    { 1, 1, func_80109390_w04 },
     { 0, 0, NULL }
 };
 
-event_list_entry D_8011C668_w06[] = {
-    { 1, 1, func_8010A4F8_w06 },
+event_list_entry D_8011C478_w04[] = {
+    { 1, 1, func_801093F0_w04 },
     { 0, 0, NULL }
 };
 
-event_list_entry D_8011C678_w06[] = {
-    { 1, 1, func_8010A560_w06 },
+event_list_entry D_8011C488_w04[] = {
+    { 1, 1, func_80109450_w04 },
     { 0, 0, NULL }
 };
 
-event_list_entry D_8011C688_w06[] = {
-    { 1, 1, func_8010A5C0_w06 },
+event_list_entry D_8011C498_w04[] = {
+    { 1, 1, func_801094B0_w04 },
     { 0, 0, NULL }
 };
 
-event_list_entry D_8011C698_w06[] = {
-    { 1, 1, func_8010A620_w06 },
+event_list_entry D_8011C4A8_w04[] = {
+    { 1, 1, func_80109510_w04 },
     { 0, 0, NULL }
 };
 
-event_list_entry D_8011C6A8_w06[] = {
-    { 1, 1, func_8010A680_w06 },
+event_list_entry D_8011C4B8_w04[] = {
+    { 1, 1, func_80109570_w04 },
     { 0, 0, NULL }
 };
 
-event_list_entry D_8011C6B8_w06[] = {
-    { 1, 1, func_8010A6E0_w06 },
+event_list_entry D_8011C4C8_w04[] = {
+    { 1, 1, func_801095D0_w04 },
     { 0, 0, NULL }
 };
 
-event_list_entry D_8011C6C8_w06[] = {
-    { 1, 1, func_8010A740_w06 },
+event_list_entry D_8011C4D8_w04[] = {
+    { 1, 1, func_80109630_w04 },
     { 0, 0, NULL }
 };
 
-event_list_entry D_8011C6D8_w06[] = {
-    { 1, 1, func_8010A7A0_w06 },
+event_list_entry D_8011C4E8_w04[] = {
+    { 1, 2, func_801098A0_w04 },
     { 0, 0, NULL }
 };
 
-event_list_entry D_8011C6E8_w06[] = {
-    { 1, 1, func_8010A800_w06 },
+event_list_entry D_8011C4F8_w04[] = {
+    { 1, 1, func_8010A054_w04 },
     { 0, 0, NULL }
 };
 
-event_list_entry D_8011C6F8_w06[] = {
-    { 1, 1, func_8010A860_w06 },
-    { 0, 0, NULL }
-};
-
-event_list_entry D_8011C708_w06[] = {
-    { 1, 1, func_8010A860_w06 },
-    { 0, 0, NULL }
-};
-
-event_list_entry D_8011C718_w06[] = {
-    { 1, 1, func_8010AE18_w06 },
-    { 0, 0, NULL }
-};
-
-event_list_entry D_8011C728_w06[] = {
-    { 1, 2, func_8010B088_w06 },
-    { 0, 0, NULL }
-};
-
-event_list_entry D_8011C738_w06[] = {
-    { 1, 1, func_8010B844_w06 },
-    { 0, 0, NULL }
-};
-
-DecisionTreeNonLeafNode D_8011C748_w06[] = {
+DecisionTreeNonLeafNode D_8011C508_w04[] = {
     { 4, { .data = 0x00F50014 }, { .data = 0x0B541E1E } },
     { 0, { .data = 0x00000000 }, { .data = 0x1B541E1E } }
 };
 
-u32 D_8011C760_w06[] = { 1, 0xA009D };
+u32 D_8011C520_w04[] = { 1, 0xA009D };
 
-event_list_entry D_8011C768_w06[] = {
-    { 1, 1, func_8010BBF0_w06 },
+event_list_entry D_8011C528_w04[] = {
+    { 1, 1, func_8010A400_w04 },
     { 0, 0, NULL }
 };
 
-/* Item shop selection tables, indexed by shop and difficulty/rank. */
-u8 D_8011C778_w06[2][3][4] = {
+u8 D_8011C538_w04[][3][4] = {
     { { 0, 0, 0, 0 }, { 1, 0, 0, 0 }, { 2, 3, 4, 4 } },
     { { 0, 0, 0, 0 }, { 1, 0, 0, 0 }, { 2, 3, 4, 4 } }
 };
 
-s8 D_8011C790_w06[][5][7] = {
+s8 D_8011C550_w04[][5][7] = {
     { { 0, 1, 4, 5, 10, 14, 19 }, { 0, 1, 4, 5, 10, 12, 19 }, { 0, 1, 4, 5, 10, 19, -1 }, { 0, 1, 4, 8, 10, 12, 19 }, { 0, 1, 8, 10, 12, 14, 19 } },
     { { 1, 2, 3, 6, 13, 11, 19 }, { 1, 2, 3, 6, 9, 13, 19 }, { 1, 2, 3, 7, 13, 19, -1 }, { 1, 3, 6, 7, 9, 13, 19 }, { 1, 3, 6, 7, 9, 11, 19 } }
 };
 
-u8 D_8011C7D8_w06[2][3][4] = {
+u8 D_8011C598_w04[][3][4] = {
     { { 0, 0, 1, 1 }, { 1, 2, 2, 3 }, { 2, 3, 3, 4 } },
     { { 0, 0, 1, 1 }, { 1, 2, 2, 3 }, { 2, 3, 3, 4 } }
 };
 
-s8 D_8011C7F0_w06[2][5][10] = {
+s8 D_8011C5B0_w04[][5][10] = {
     { { 25, 55, 65, 76, 81, 86, 91, 96, 98, 100 }, { 30, 50, 60, 70, 75, 85, 90, 95, 97, 100 }, { 25, 45, 52, 62, 67, 82, 88, 95, 97, 100 }, { 20, 35, 40, 45, 55, 75, 85, 95, 97, 100 }, { 15, 25, 30, 40, 45, 70, 80, 92, 95, 100 } },
     { { 33, 53, 68, 73, 78, 83, 93, 98, 100, 0 }, { 25, 40, 55, 63, 73, 81, 91, 98, 100, 0 }, { 20, 38, 58, 68, 75, 82, 90, 98, 100, 0 }, { 15, 35, 55, 65, 72, 79, 85, 97, 100, 0 }, { 15, 25, 45, 55, 65, 75, 80, 95, 100, 0 } }
 };
 
-u8 D_8011C854_w06[2][10] = {
+u8 D_8011C614_w04[][10] = {
     { 0, 1, 4, 5, 8, 10, 12, 14, 15, 16 },
     { 1, 2, 3, 6, 7, 9, 13, 11, 17, 1 }
 };
 
-s32 D_8011C868_w06[5][2] = {
+s32 D_8011C628_w04[][2] = {
     { 0x3B05, 0x3D05 },
     { 0x3B06, 0x3D06 },
     { 0x3B07, 0x3D07 },
@@ -1028,42 +943,42 @@ s32 D_8011C868_w06[5][2] = {
     { 0x3B09, 0x3D09 }
 };
 
-s32 D_8011C890_w06[2] = { 0x3B00, 0x3D00 };
+s32 D_8011C650_w04[] = { 0x3B00, 0x3D00 };
 
-s32 D_8011C898_w06[2] = { 0x3B01, 0x3D01 };
+s32 D_8011C658_w04[] = { 0x3B01, 0x3D01 };
 
-s32 D_8011C8A0_w06[2] = { 0x3B02, 0x3D02 };
+s32 D_8011C660_w04[] = { 0x3B02, 0x3D02 };
 
-s32 D_8011C8A8_w06[2] = { 0x3B03, 0x3D03 };
+s32 D_8011C668_w04[] = { 0x3B03, 0x3D03 };
 
-s32 D_8011C8B0_w06[2] = { 0x3B04, 0x3D04 };
+s32 D_8011C670_w04[] = { 0x3B04, 0x3D04 };
 
-u32 D_8011C8B8_w06[] = { 1, 0xA0017 };
+u32 D_8011C678_w04[] = { 1, 0xA0017 };
 
-u32 D_8011C8C0_w06[] = { 1, 0xA00F0 };
+u32 D_8011C680_w04[] = { 1, 0xA00F0 };
 
-s32 D_8011C8C8_w06 = 0;
+s32 D_8011C688_w04 = 0;
 
-event_list_entry D_8011C8CC_w06[] = {
-    { 1, 1, func_8010C9EC_w06 },
+event_list_entry D_8011C68C_w04[] = {
+    { 1, 1, func_8010B1FC_w04 },
     { 0, 0, NULL }
 };
 
-Vec2f D_8011C8DC_w06[] = {
+Vec2f D_8011C69C_w04[] = {
     { 76.0f, 52.0f },
     { 244.0f, 52.0f },
     { 76.0f, 192.0f },
     { 244.0f, 192.0f }
 };
 
-Vec2f D_8011C8FC_w06[] = {
+Vec2f D_8011C6BC_w04[] = {
     { -1.0f, -1.0f },
     { 1.0f, -1.0f },
     { -1.0f, 1.0f },
     { 1.0f, 1.0f }
 };
 
-u8 D_8011C91C_w06[][3] = {
+u8 D_8011C6DC_w04[][3] = {
     { 1, 5, 15 },
     { 6, 15, 25 },
     { 16, 25, 27 },
@@ -1072,7 +987,7 @@ u8 D_8011C91C_w06[][3] = {
     { 46, 50, 35 }
 };
 
-u8 D_8011C930_w06[][3] = {
+u8 D_8011C6F0_w04[][3] = {
     { 0, 0, 0 },
     { 1, 10, 1 },
     { 11, 11, 4 },
@@ -1089,79 +1004,79 @@ u8 D_8011C930_w06[][3] = {
     { 65, 255, 9 }
 };
 
-u8 D_8011C95C_w06[] = { 9, 7, 4, 1, 0, 0, 0, 0 };
+u8 D_8011C71C_w04[] = { 9, 7, 4, 1, 0, 0, 0, 0 };
 
-s32 D_8011C964_w06[] = { 50, 80, 100 };
+s32 D_8011C724_w04[] = { 50, 80, 100 };
 
-s32 D_8011C970_w06[] = { 1, 0, 1, 0, 0, 1, 0 };
+s32 D_8011C730_w04[] = { 1, 0, 1, 0, 0, 1, 0 };
 
-event_list_entry D_8011C98C_w06[] = {
-    { 1, 1, func_8010F20C_w06 },
+event_list_entry D_8011C74C_w04[] = {
+    { 1, 1, func_8010DA1C_w04 },
     { 0, 0, NULL }
 };
 
-event_list_entry D_8011C99C_w06[] = {
-    { 1, 1, func_801103E0_w06 },
+event_list_entry D_8011C75C_w04[] = {
+    { 1, 1, func_8010EBF0_w04 },
     { 0, 0, NULL }
 };
 
-event_list_entry D_8011C9AC_w06[] = {
-    { 1, 1, func_801103FC_w06 },
+event_list_entry D_8011C76C_w04[] = {
+    { 1, 1, func_8010EC0C_w04 },
     { 0, 0, NULL }
 };
 
-event_table_entry D_8011C9BC_w06[] = {
-    { 22, D_8011C738_w06 },
-    { 9, D_8011C738_w06 },
-    { 19, D_8011C738_w06 },
-    { 39, D_8011C738_w06 },
-    { 47, D_8011C738_w06 },
-    { 78, D_8011C738_w06 },
-    { 69, D_8011C738_w06 },
-    { 85, D_8011C738_w06 },
-    { 89, D_8011C768_w06 },
-    { 34, D_8011C768_w06 },
-    { 108, D_8011C8CC_w06 },
-    { 121, D_8011C8CC_w06 },
-    { 136, D_8011C99C_w06 },
-    { 141, D_8011C9AC_w06 },
+event_table_entry D_8011C77C_w04[] = {
+    { 75, D_8011C4F8_w04 },
+    { 70, D_8011C4F8_w04 },
+    { 22, D_8011C4F8_w04 },
+    { 37, D_8011C4F8_w04 },
+    { 53, D_8011C4F8_w04 },
+    { 48, D_8011C4F8_w04 },
+    { 9, D_8011C4F8_w04 },
+    { 3, D_8011C4F8_w04 },
+    { 61, D_8011C528_w04 },
+    { 6, D_8011C528_w04 },
+    { 113, D_8011C68C_w04 },
+    { 140, D_8011C68C_w04 },
+    { 111, D_8011C75C_w04 },
+    { 106, D_8011C76C_w04 },
     { -1, NULL }
 };
 
-event_table_entry D_8011CA34_w06[] = {
-    { 127, D_8011C98C_w06 },
+event_table_entry D_8011C7F4_w04[] = {
+    { 141, D_8011C74C_w04 },
     { -1, NULL }
 };
 
-Vec2f D_8011CA44_w06[] = {
+Vec2f D_8011C804_w04[] = {
     { 164.0f, 76.0f },
     { 140.0f, 76.0f },
     { 164.0f, 76.0f },
     { 140.0f, 76.0f }
 };
 
-Vec2f D_8011CA64_w06[] = {
+Vec2f D_8011C824_w04[] = {
     { 132.0f, 62.0f },
     { 220.0f, 62.0f },
     { 132.0f, 180.0f },
     { 220.0f, 180.0f }
 };
 
-Vec2f D_8011CA84_w06[] = {
+Vec2f D_8011C844_w04[] = {
     { 164.0f, 66.0f },
     { 164.0f, 66.0f },
     { 164.0f, 66.0f },
     { 164.0f, 66.0f }
 };
 
-Vec2f D_8011CAA4_w06[] = {
+Vec2f D_8011C864_w04[] = {
     { 164.0f, 76.0f },
     { 164.0f, 76.0f },
     { 164.0f, 76.0f },
     { 164.0f, 76.0f }
 };
 
-DecisionTreeNonLeafNode D_8011CAC4_w06[] = {
+DecisionTreeNonLeafNode D_8011C884_w04[] = {
     { 13, { .data = 0x00000000 }, { .data = 0x0A142850 } },
     { 13, { .data = 0x00000001 }, { .data = 0x064C9932 } },
     { 13, { .data = 0x00000002 }, { .data = 0x03C78F1E } },
@@ -1173,13 +1088,13 @@ DecisionTreeNonLeafNode D_8011CAC4_w06[] = {
     { 0, { .data = 0x00000000 }, { .data = 0x064C9932 } }
 };
 
-s32 D_8011CB30_w06[] = { 20, 60, 30, 50, 70 };
+s32 D_8011C8F0_w04[] = { 20, 60, 30, 50, 70 };
 
-DecisionTreeNonLeafNode D_8011CB44_w06[] = {
+DecisionTreeNonLeafNode D_8011C904_w04[] = {
     { 0, { .data = 0x00000000 }, { .data = 0x0C993264 } }
 };
 
-Vec2f D_8011CB50_w06[] = {
+Vec2f D_8011C910_w04[] = {
     { -10.0f, 0.0f },
     { 10.0f, -5.0f },
     { 10.0f, 5.0f },
@@ -1188,13 +1103,13 @@ Vec2f D_8011CB50_w06[] = {
     { -5.0f, 5.0f }
 };
 
-s32 D_8011CB80_w06 = -1;
+s32 D_8011C940_w04 = -1;
 
-u8 D_8011CB84_w06[] = { 67, 68, 69, 0 };
+u8 D_8011C944_w04[] = { 67, 68, 69, 0 };
 
-u8 D_8011CB88_w06[] = { 20, 60, 100, 0 };
+u8 D_8011C948_w04[] = { 20, 60, 100, 0 };
 
-GameGuyReward D_8011CB8C_w06[] = {
+GameGuyReward D_8011C94C_w04[] = {
     { 0, 50 },
     { 2, 80 },
     { 4, 90 },
@@ -1204,897 +1119,846 @@ GameGuyReward D_8011CB8C_w06[] = {
     { 64, 100 }
 };
 
-RGB D_8011CBA8_w06[] = {
+RGB D_8011C968_w04[] = {
     { 240, 222, 53 },
     { 247, 26, 66 }
 };
 
-event_list_entry D_8011CBB0_w06[] = {
-    { 7, 1, func_80117F30_w06 },
-    { 7, 1, func_80118864_w06 },
+event_list_entry D_8011C970_w04[] = {
+    { 7, 1, func_80116740_w04 },
+    { 7, 1, func_80117074_w04 },
     { 0, 0, NULL }
 };
 
-event_table_entry D_8011CBC8_w06[] = {
-    { -5, D_8011CBB0_w06 },
+event_table_entry D_8011C988_w04[] = {
+    { -5, D_8011C970_w04 },
     { -1, NULL }
 };
 
-s16 D_8011CBD8_w06[] = {
-    3, 4, 5, 6, 7, 8, 9, 10,
-    55, 66, 77, 88, 1, 119, -1, 0
-};
+s16 D_8011C998_w04[] = { 133, 132 };
 
-s16 D_8011CBF8_w06[] = {
-    32, 35, 36, 37, 38, 39, 40, 41,
-    42, 43, 45, 46, 47, 48, 49, 50,
-    51, -1
-};
+s16 D_8011C99C_w04[] = { 134, 135 };
 
-u8 D_8011CC1C_w06[] = {
-    1, 1, 2, 2, 6, 6, 12, 9,
-    15, 5, 0, 0
-};
-
-event_list_entry D_8011CC28_w06[] = {
-    { 7, 1, func_8011A1E8_w06 },
+event_list_entry D_8011C9A0_w04[] = {
+    { 1, 1, func_8011A5DC_w04 },
     { 0, 0, NULL }
 };
 
-event_list_entry D_8011CC38_w06[] = {
-    { 7, 1, func_8011A2A0_w06 },
+event_list_entry D_8011C9B0_w04[] = {
+    { 7, 1, func_8011A91C_w04 },
     { 0, 0, NULL }
 };
 
-event_list_entry D_8011CC48_w06[] = {
-    { 1, 1, func_8011A30C_w06 },
-    { 0, 0, NULL }
-};
-
-event_table_entry D_8011CC58_w06[] = {
-    { 107, D_8011C020_w06 },
-    { 119, D_8011C0C8_w06 },
-    { 129, D_8011C110_w06 },
-    { 145, D_8011C158_w06 },
-    { 122, D_8011C1A0_w06 },
-    { 116, D_8011C1E8_w06 },
-    { 151, D_8011C230_w06 },
-    { 114, D_8011C278_w06 },
-    { 149, D_8011C2C0_w06 },
-    { 123, D_8011C308_w06 },
-    { 126, D_8011C350_w06 },
-    { 115, D_8011C398_w06 },
-    { 113, D_8011C3E0_w06 },
-    { 55, D_8011C428_w06 },
-    { 7, D_8011C470_w06 },
-    { 71, D_8011C4B8_w06 },
-    { 82, D_8011C500_w06 },
-    { 153, D_8011C580_w06 },
-    { 21, D_8011C5C8_w06 },
-    { 92, D_8011C5D8_w06 },
-    { 44, D_8011C5E8_w06 },
-    { 3, D_8011C5F8_w06 },
-    { 111, D_8011C608_w06 },
-    { 110, D_8011C618_w06 },
-    { 109, D_8011C628_w06 },
-    { 27, D_8011C638_w06 },
-    { 11, D_8011C648_w06 },
-    { 112, D_8011C658_w06 },
-    { 117, D_8011C668_w06 },
-    { 41, D_8011C678_w06 },
-    { 59, D_8011C688_w06 },
-    { 52, D_8011C698_w06 },
-    { 60, D_8011C6A8_w06 },
-    { 80, D_8011C6B8_w06 },
-    { 81, D_8011C6C8_w06 },
-    { 63, D_8011C6D8_w06 },
-    { 70, D_8011C6E8_w06 },
-    { 124, D_8011C6F8_w06 },
-    { 125, D_8011C708_w06 },
-    { 0, D_8011C718_w06 },
-    { 131, D_8011C728_w06 },
-    { 150, D_8011C728_w06 },
-    { 137, D_8011C728_w06 },
-    { 130, D_8011C728_w06 },
-    { -2, D_8011CC28_w06 },
-    { -3, D_8011CC38_w06 },
-    { 132, D_8011CC48_w06 },
-    { 118, D_8011CC48_w06 },
-    { 134, D_8011CC48_w06 },
+event_table_entry D_8011C9C0_w04[] = {
+    { 102, D_8011BFA8_w04 },
+    { 103, D_8011BFF0_w04 },
+    { 116, D_8011C038_w04 },
+    { 114, D_8011C080_w04 },
+    { 139, D_8011C0C8_w04 },
+    { 108, D_8011C110_w04 },
+    { 143, D_8011C158_w04 },
+    { 142, D_8011C1A0_w04 },
+    { 76, D_8011C1E8_w04 },
+    { 2, D_8011C230_w04 },
+    { 85, D_8011C278_w04 },
+    { 18, D_8011C2C0_w04 },
+    { 44, D_8011C308_w04 },
+    { 51, D_8011C350_w04 },
+    { 24, D_8011C398_w04 },
+    { 39, D_8011C3A8_w04 },
+    { 43, D_8011C3B8_w04 },
+    { 54, D_8011C3C8_w04 },
+    { 1, D_8011C3D8_w04 },
+    { 80, D_8011C3E8_w04 },
+    { 92, D_8011C3F8_w04 },
+    { 15, D_8011C408_w04 },
+    { 11, D_8011C418_w04 },
+    { 8, D_8011C428_w04 },
+    { 13, D_8011C438_w04 },
+    { 17, D_8011C448_w04 },
+    { 78, D_8011C458_w04 },
+    { 64, D_8011C468_w04 },
+    { 86, D_8011C478_w04 },
+    { 62, D_8011C488_w04 },
+    { 26, D_8011C498_w04 },
+    { 56, D_8011C4A8_w04 },
+    { 27, D_8011C4B8_w04 },
+    { 57, D_8011C4C8_w04 },
+    { 0, D_8011C4D8_w04 },
+    { 112, D_8011C4E8_w04 },
+    { 105, D_8011C4E8_w04 },
+    { 136, D_8011C4E8_w04 },
+    { 107, D_8011C4E8_w04 },
+    { -2, D_8011C9B0_w04 },
+    { 115, D_8011C9A0_w04 },
+    { 104, D_8011C9A0_w04 },
     { -1, NULL }
 };
 
-RectF D_8011CDE8_w06 = { 0.0f, 0.0f, 320.0f, 240.0f };
+RectF D_8011CB18_w04 = { 0.0f, 0.0f, 320.0f, 240.0f };
 
-/* CPU item-use and player-target decisions. */
-DecisionTreeNonLeafNode D_8011CDF8_w06[] = {
-    { 12, { .data = 0x00000005 }, { .data = 0x00000000 } },
-    { 10, { .data = 0x00120003 }, { .data = 0x0B54233C } },
-    { 12, { .data = 0x00000014 }, { .data = 0x01428A1E } },
-    { 10, { .data = 0x0003050B }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x00040003 }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x000B0D14 }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x000D0004 }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x000E0003 }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x00100009 }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x00120407 }, { .data = 0x0B54233C } },
+DecisionTreeNonLeafNode D_8011CB28_w04[] = {
     { 12, { .data = 0x00000019 }, { .data = 0x01428A1E } },
-    { 10, { .data = 0x00010001 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x000A0007 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00090306 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x01428A1E } }
+};
+
+DecisionTreeNonLeafNode D_8011CB58_w04[] = {
+    { 12, { .data = 0x00000014 }, { .data = 0x01428A1E } },
+    { 4, { .data = 0x00000000 }, { .node_data = D_8011CB28_w04 } },
+    { 10, { .data = 0x00020003 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x000A000B }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00090306 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00011019 }, { .data = 0x0B54233C } },
     { 10, { .data = 0x00030004 }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x000B050C }, { .data = 0x0B54233C } },
     { 0, { .data = 0x00000000 }, { .data = 0x01428A1E } }
 };
 
-DecisionTreeNonLeafNode D_8011CEAC_w06[] = {
+DecisionTreeNonLeafNode D_8011CBB8_w04[] = {
+    { 12, { .data = 0x00000019 }, { .data = 0x01428A1E } },
+    { 10, { .data = 0x000A0507 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x01428A1E } }
+};
+
+DecisionTreeNonLeafNode D_8011CBDC_w04[] = {
     { 12, { .data = 0x00000014 }, { .data = 0x01428A1E } },
-    { 10, { .data = 0x0001050F }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x0002000D }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x0006000E }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x00070000 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00090006 }, { .data = 0x0B54233C } },
+    { 4, { .data = 0x00000000 }, { .node_data = D_8011CBB8_w04 } },
+    { 10, { .data = 0x00020007 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x000A080B }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x000A0507 }, { .data = 0x0B54233C } },
     { 0, { .data = 0x00000000 }, { .data = 0x01428A1E } }
 };
 
-DecisionTreeNonLeafNode D_8011CEF4_w06[] = {
+DecisionTreeNonLeafNode D_8011CC30_w04[] = {
     { 12, { .data = 0x00000014 }, { .data = 0x01428A1E } },
-    { 10, { .data = 0x0002000D }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x00050005 }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x00060001 }, { .data = 0x0B54233C } },
+    { 4, { .data = 0x00200001 }, { .data = 0x01428A1E } },
+    { 10, { .data = 0x000B0103 }, { .data = 0x0B54233C } },
+    { 12, { .data = 0x00000019 }, { .data = 0x01428A1E } },
+    { 10, { .data = 0x000B0000 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00090006 }, { .data = 0x0B54233C } },
     { 0, { .data = 0x00000000 }, { .data = 0x01428A1E } }
 };
 
-DecisionTreeNonLeafNode D_8011CF30_w06[] = {
-    { 10, { .data = 0x00040003 }, { .data = 0x0B54233C } },
+DecisionTreeNonLeafNode D_8011CC84_w04[] = {
+    { 12, { .data = 0x00000014 }, { .data = 0x01428A1E } },
     { 10, { .data = 0x000D0004 }, { .data = 0x0B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x01428A1E } }
-};
-
-DecisionTreeNonLeafNode D_8011CF54_w06[] = {
+    { 4, { .data = 0x00200000 }, { .data = 0x01428A1E } },
+    { 10, { .data = 0x000B0103 }, { .data = 0x0B54233C } },
     { 12, { .data = 0x00000019 }, { .data = 0x01428A1E } },
-    { 10, { .data = 0x000B000B }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x000B1114 }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x0002000D }, { .data = 0x0B54233C } },
-    { 4, { .data = 0x00000000 }, { .node_data = D_8011CF30_w06 } },
-    { 10, { .data = 0x00050005 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x000B0000 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00090006 }, { .data = 0x0B54233C } },
     { 0, { .data = 0x00000000 }, { .data = 0x01428A1E } }
 };
 
-DecisionTreeNonLeafNode D_8011CFA8_w06[] = {
-    { 10, { .data = 0x00040003 }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x000D0004 }, { .data = 0x0B54233C } },
+DecisionTreeNonLeafNode D_8011CCE4_w04[] = {
+    { 4, { .data = 0x00100000 }, { .data = 0x01428A1E } },
+    { 10, { .data = 0x00040004 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00050000 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00060002 }, { .data = 0x0B54233C } },
     { 0, { .data = 0x00000000 }, { .data = 0x01428A1E } }
 };
 
-DecisionTreeNonLeafNode D_8011CFCC_w06[] = {
+DecisionTreeNonLeafNode D_8011CD20_w04[] = {
+    { 10, { .data = 0x000B0103 }, { .data = 0x0B54233C } },
+    { 12, { .data = 0x00000019 }, { .data = 0x01428A1E } },
+    { 10, { .data = 0x000B0000 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00090006 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x01428A1E } }
+};
+
+DecisionTreeNonLeafNode D_8011CD5C_w04[] = {
     { 12, { .data = 0x00000014 }, { .data = 0x01428A1E } },
-    { 10, { .data = 0x000B0D14 }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x0002000D }, { .data = 0x0B54233C } },
-    { 4, { .data = 0x00000000 }, { .node_data = D_8011CFA8_w06 } },
+    { 10, { .data = 0x000C0003 }, { .data = 0x0B54233C } },
+    { 4, { .data = 0x00200001 }, { .node_data = D_8011CCE4_w04 } },
+    { 4, { .data = 0x00100000 }, { .node_data = D_8011CD20_w04 } },
+    { 10, { .data = 0x000B0103 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00040004 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00050000 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00060002 }, { .data = 0x0B54233C } },
     { 12, { .data = 0x00000019 }, { .data = 0x01428A1E } },
-    { 10, { .data = 0x000B070C }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x00050005 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x000B0000 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00090006 }, { .data = 0x0B54233C } },
     { 0, { .data = 0x00000000 }, { .data = 0x01428A1E } }
 };
 
-DecisionTreeNonLeafNode D_8011D02C_w06[] = {
+DecisionTreeNonLeafNode D_8011CDEC_w04[] = {
+    { 12, { .data = 0x00000005 }, { .data = 0x00000000 } },
+    { 10, { .data = 0x00010001 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x000E0001 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x000D000B }, { .data = 0x0B54233C } },
     { 12, { .data = 0x00000014 }, { .data = 0x01428A1E } },
-    { 10, { .data = 0x00010B0F }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x0002000D }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x00040003 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x000C000C }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00010304 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00080003 }, { .data = 0x0B54233C } },
     { 0, { .data = 0x00000000 }, { .data = 0x01428A1E } }
 };
 
-DecisionTreeNonLeafNode D_8011D068_w06[] = {
-    { 12, { .data = 0x00000005 }, { .data = 0x01428A1E } },
-    { 10, { .data = 0x0002000D }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x00040003 }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x000F0004 }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x00110001 }, { .data = 0x0B54233C } },
+DecisionTreeNonLeafNode D_8011CE58_w04[] = {
+    { 12, { .data = 0x00000014 }, { .data = 0x01428A1E } },
+    { 4, { .data = 0x00100001 }, { .data = 0x01428A1E } },
+    { 4, { .data = 0x00000001 }, { .data = 0x01428A1E } },
+    { 10, { .data = 0x00020007 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00011219 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x000A090B }, { .data = 0x0B54233C } },
     { 0, { .data = 0x00000000 }, { .data = 0x01428A1E } }
 };
 
-DecisionTreeNonLeafNode D_8011D0B0_w06[] = {
+DecisionTreeNonLeafNode D_8011CEAC_w04[] = {
+    { 12, { .data = 0x0000000A }, { .data = 0x01428A1E } },
+    { 10, { .data = 0x00010001 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x000D090A }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x000E0001 }, { .data = 0x0B54233C } },
     { 12, { .data = 0x00000019 }, { .data = 0x01428A1E } },
-    { 10, { .data = 0x00010B0F }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x0002000D }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x0001030D }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00070002 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x000C070C }, { .data = 0x0B54233C } },
+    { 4, { .data = 0x00100001 }, { .data = 0x01428A1E } },
+    { 10, { .data = 0x00040004 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00050000 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00060002 }, { .data = 0x0B54233C } },
     { 0, { .data = 0x00000000 }, { .data = 0x01428A1E } }
 };
 
-DecisionTreeNonLeafNode D_8011D0E0_w06[] = {
-    { 2, { .data = 0x00000001 }, { .node_data = D_8011CDF8_w06 } },
-    { 2, { .data = 0x00000002 }, { .node_data = D_8011CEAC_w06 } },
-    { 2, { .data = 0x00000004 }, { .node_data = D_8011CEF4_w06 } },
-    { 2, { .data = 0x00000008 }, { .node_data = D_8011CF54_w06 } },
-    { 2, { .data = 0x00000010 }, { .node_data = D_8011CFCC_w06 } },
-    { 2, { .data = 0x00000020 }, { .node_data = D_8011D02C_w06 } },
-    { 2, { .data = 0x00000040 }, { .node_data = D_8011D068_w06 } },
-    { 2, { .data = 0x00000080 }, { .node_data = D_8011D0B0_w06 } },
+DecisionTreeNonLeafNode D_8011CF48_w04[] = {
+    { 2, { .data = 0x00000001 }, { .node_data = D_8011CB58_w04 } },
+    { 2, { .data = 0x00000002 }, { .node_data = D_8011CBDC_w04 } },
+    { 2, { .data = 0x00000004 }, { .node_data = D_8011CC30_w04 } },
+    { 2, { .data = 0x00000008 }, { .node_data = D_8011CC84_w04 } },
+    { 2, { .data = 0x00000010 }, { .node_data = D_8011CD5C_w04 } },
+    { 2, { .data = 0x00000020 }, { .node_data = D_8011CDEC_w04 } },
+    { 2, { .data = 0x00000040 }, { .node_data = D_8011CE58_w04 } },
+    { 2, { .data = 0x00000080 }, { .node_data = D_8011CEAC_w04 } },
     { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
 };
 
-DecisionTreeNonLeafNode D_8011D14C_w06[] = {
+DecisionTreeNonLeafNode D_8011CFB4_w04[] = {
     { 0, { .data = 0x00000000 }, { .data = 0x0A141932 } }
 };
 
-DecisionTreeNonLeafNode D_8011D158_w06[] = {
-    { 10, { .data = 0x0001050C }, { .data = 0x0001038A } },
-    { 11, { .data = 0x0001050C }, { .data = 0x0B54233C } },
+DecisionTreeNonLeafNode D_8011CFC0_w04[] = {
+    { 10, { .data = 0x00090001 }, { .data = 0x0001038A } },
+    { 10, { .data = 0x00020007 }, { .data = 0x0001038A } },
+    { 10, { .data = 0x000A090B }, { .data = 0x0001038A } },
+    { 11, { .data = 0x00090001 }, { .data = 0x0B54233C } },
+    { 11, { .data = 0x00020007 }, { .data = 0x0B54233C } },
+    { 11, { .data = 0x000A090B }, { .data = 0x0B54233C } },
     { 0, { .data = 0x00000000 }, { .data = 0x01428A1E } }
 };
 
-DecisionTreeNonLeafNode D_8011D17C_w06[] = {
-    { 10, { .data = 0x0002000D }, { .data = 0x0001038A } },
-    { 11, { .data = 0x0002000D }, { .data = 0x0B54233C } },
+DecisionTreeNonLeafNode D_8011D014_w04[] = {
+    { 10, { .data = 0x000A0004 }, { .data = 0x0001038A } },
+    { 10, { .data = 0x00090305 }, { .data = 0x0001038A } },
+    { 11, { .data = 0x000A0004 }, { .data = 0x0B54233C } },
+    { 11, { .data = 0x00090305 }, { .data = 0x0B54233C } },
     { 0, { .data = 0x00000000 }, { .data = 0x01428A1E } }
 };
 
-DecisionTreeNonLeafNode D_8011D1A0_w06[] = {
-    { 10, { .data = 0x00060006 }, { .data = 0x0001038A } },
-    { 11, { .data = 0x00060006 }, { .data = 0x0B54233C } },
+DecisionTreeNonLeafNode D_8011D050_w04[] = {
+    { 10, { .data = 0x000C0003 }, { .data = 0x0001038A } },
+    { 10, { .data = 0x000B0004 }, { .data = 0x0001038A } },
+    { 11, { .data = 0x000C0003 }, { .data = 0x0B54233C } },
+    { 11, { .data = 0x000B0004 }, { .data = 0x0B54233C } },
     { 0, { .data = 0x00000000 }, { .data = 0x01428A1E } }
 };
 
-DecisionTreeNonLeafNode D_8011D1C4_w06[] = {
-    { 10, { .data = 0x000B0A10 }, { .data = 0x0001038A } },
-    { 11, { .data = 0x000B0A10 }, { .data = 0x0B54233C } },
+DecisionTreeNonLeafNode D_8011D08C_w04[] = {
+    { 10, { .data = 0x000D0008 }, { .data = 0x0001038A } },
+    { 11, { .data = 0x000D0008 }, { .data = 0x0B54233C } },
     { 0, { .data = 0x00000000 }, { .data = 0x01428A1E } }
 };
 
-DecisionTreeNonLeafNode D_8011D1E8_w06[] = {
-    { 10, { .data = 0x000B0006 }, { .data = 0x0001038A } },
-    { 11, { .data = 0x000B0006 }, { .data = 0x0B54233C } },
+DecisionTreeNonLeafNode D_8011D0B0_w04[] = {
+    { 10, { .data = 0x000C0109 }, { .data = 0x0001038A } },
+    { 10, { .data = 0x00080003 }, { .data = 0x0001038A } },
+    { 11, { .data = 0x000C0109 }, { .data = 0x0B54233C } },
+    { 11, { .data = 0x00080003 }, { .data = 0x0B54233C } },
     { 0, { .data = 0x00000000 }, { .data = 0x01428A1E } }
 };
 
-DecisionTreeNonLeafNode D_8011D20C_w06[] = {
-    { 10, { .data = 0x00040003 }, { .data = 0x0001038A } },
-    { 10, { .data = 0x000F0004 }, { .data = 0x0001038A } },
-    { 10, { .data = 0x00100001 }, { .data = 0x0001038A } },
-    { 11, { .data = 0x00040003 }, { .data = 0x0B54233C } },
-    { 11, { .data = 0x000F0004 }, { .data = 0x0B54233C } },
-    { 11, { .data = 0x00100001 }, { .data = 0x0B54233C } },
+DecisionTreeNonLeafNode D_8011D0EC_w04[] = {
+    { 10, { .data = 0x0001020A }, { .data = 0x0001038A } },
+    { 10, { .data = 0x000C0A0C }, { .data = 0x0001038A } },
+    { 11, { .data = 0x0001020A }, { .data = 0x0B54233C } },
+    { 11, { .data = 0x000C0A0C }, { .data = 0x0B54233C } },
     { 0, { .data = 0x00000000 }, { .data = 0x01428A1E } }
 };
 
-DecisionTreeNonLeafNode D_8011D260_w06[] = {
-    { 10, { .data = 0x000F0004 }, { .data = 0x0001038A } },
-    { 10, { .data = 0x00110001 }, { .data = 0x0001038A } },
-    { 10, { .data = 0x00120005 }, { .data = 0x0001038A } },
-    { 11, { .data = 0x000F0004 }, { .data = 0x0B54233C } },
-    { 11, { .data = 0x00110001 }, { .data = 0x0B54233C } },
-    { 11, { .data = 0x00120005 }, { .data = 0x0B54233C } },
+DecisionTreeNonLeafNode D_8011D128_w04[] = {
+    { 10, { .data = 0x00070000 }, { .data = 0x0001038A } },
+    { 10, { .data = 0x00060002 }, { .data = 0x0001038A } },
+    { 10, { .data = 0x00040004 }, { .data = 0x0001038A } },
+    { 10, { .data = 0x00050000 }, { .data = 0x0001038A } },
+    { 11, { .data = 0x00070000 }, { .data = 0x0B54233C } },
+    { 11, { .data = 0x00060002 }, { .data = 0x0B54233C } },
+    { 11, { .data = 0x00040004 }, { .data = 0x0B54233C } },
+    { 11, { .data = 0x00050000 }, { .data = 0x0B54233C } },
     { 0, { .data = 0x00000000 }, { .data = 0x01428A1E } }
 };
 
-DecisionTreeNonLeafNode D_8011D2B4_w06[] = {
-    { 10, { .data = 0x00030006 }, { .data = 0x0001038A } },
-    { 10, { .data = 0x00010001 }, { .data = 0x0001038A } },
-    { 11, { .data = 0x00030006 }, { .data = 0x0B54233C } },
-    { 11, { .data = 0x00010001 }, { .data = 0x0B54233C } },
+DecisionTreeNonLeafNode D_8011D194_w04[] = {
+    { 10, { .data = 0x00010A12 }, { .data = 0x0001038A } },
+    { 10, { .data = 0x00030004 }, { .data = 0x0001038A } },
+    { 11, { .data = 0x00010A12 }, { .data = 0x0B54233C } },
+    { 11, { .data = 0x00030004 }, { .data = 0x0B54233C } },
     { 0, { .data = 0x00000000 }, { .data = 0x01428A1E } }
 };
 
-DecisionTreeNonLeafNode D_8011D2F0_w06[] = {
-    { 2, { .data = 0x00000001 }, { .node_data = D_8011D158_w06 } },
-    { 2, { .data = 0x00000002 }, { .node_data = D_8011D17C_w06 } },
-    { 2, { .data = 0x00000004 }, { .node_data = D_8011D1A0_w06 } },
-    { 2, { .data = 0x00000008 }, { .node_data = D_8011D1C4_w06 } },
-    { 2, { .data = 0x00000010 }, { .node_data = D_8011D1E8_w06 } },
-    { 2, { .data = 0x00000020 }, { .node_data = D_8011D20C_w06 } },
-    { 2, { .data = 0x00000040 }, { .node_data = D_8011D260_w06 } },
-    { 2, { .data = 0x00000080 }, { .node_data = D_8011D2B4_w06 } },
+DecisionTreeNonLeafNode D_8011D1D0_w04[] = {
+    { 2, { .data = 0x00000001 }, { .node_data = D_8011CFC0_w04 } },
+    { 2, { .data = 0x00000002 }, { .node_data = D_8011D014_w04 } },
+    { 2, { .data = 0x00000004 }, { .node_data = D_8011D050_w04 } },
+    { 2, { .data = 0x00000008 }, { .node_data = D_8011D08C_w04 } },
+    { 2, { .data = 0x00000010 }, { .node_data = D_8011D0B0_w04 } },
+    { 2, { .data = 0x00000020 }, { .node_data = D_8011D0EC_w04 } },
+    { 2, { .data = 0x00000040 }, { .node_data = D_8011D128_w04 } },
+    { 2, { .data = 0x00000080 }, { .node_data = D_8011D194_w04 } },
     { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
 };
 
-DecisionTreeNonLeafNode D_8011D35C_w06[] = {
-    { 10, { .data = 0x0001050C }, { .data = 0x0001038A } },
+DecisionTreeNonLeafNode D_8011D23C_w04[] = {
+    { 10, { .data = 0x00090001 }, { .data = 0x0001038A } },
     { 0, { .data = 0x00000000 }, { .data = 0x0C992D50 } }
 };
 
-DecisionTreeNonLeafNode D_8011D374_w06[] = {
-    { 10, { .data = 0x00020005 }, { .data = 0x0001038A } },
+DecisionTreeNonLeafNode D_8011D254_w04[] = {
+    { 10, { .data = 0x000A0004 }, { .data = 0x0001038A } },
     { 0, { .data = 0x00000000 }, { .data = 0x0C992D50 } }
 };
 
-DecisionTreeNonLeafNode D_8011D38C_w06[] = {
-    { 10, { .data = 0x00060006 }, { .data = 0x0001038A } },
+DecisionTreeNonLeafNode D_8011D26C_w04[] = {
+    { 10, { .data = 0x000C0003 }, { .data = 0x0001038A } },
     { 0, { .data = 0x00000000 }, { .data = 0x0C992D50 } }
 };
 
-DecisionTreeNonLeafNode D_8011D3A4_w06[] = {
-    { 10, { .data = 0x000B0A10 }, { .data = 0x0001038A } },
+DecisionTreeNonLeafNode D_8011D284_w04[] = {
+    { 10, { .data = 0x000D0308 }, { .data = 0x0001038A } },
     { 0, { .data = 0x00000000 }, { .data = 0x0C992D50 } }
 };
 
-DecisionTreeNonLeafNode D_8011D3BC_w06[] = {
-    { 10, { .data = 0x000B0006 }, { .data = 0x0001038A } },
+DecisionTreeNonLeafNode D_8011D29C_w04[] = {
+    { 10, { .data = 0x000C0409 }, { .data = 0x0001038A } },
+    { 10, { .data = 0x00080003 }, { .data = 0x0001038A } },
     { 0, { .data = 0x00000000 }, { .data = 0x0C992D50 } }
 };
 
-DecisionTreeNonLeafNode D_8011D3D4_w06[] = {
-    { 10, { .data = 0x00040003 }, { .data = 0x0001038A } },
-    { 10, { .data = 0x000F0004 }, { .data = 0x0001038A } },
-    { 10, { .data = 0x00100001 }, { .data = 0x0001038A } },
+DecisionTreeNonLeafNode D_8011D2C0_w04[] = {
+    { 10, { .data = 0x0001050A }, { .data = 0x0001038A } },
     { 0, { .data = 0x00000000 }, { .data = 0x0C992D50 } }
 };
 
-DecisionTreeNonLeafNode D_8011D404_w06[] = {
-    { 10, { .data = 0x00110001 }, { .data = 0x0001038A } },
-    { 10, { .data = 0x00120005 }, { .data = 0x0001038A } },
+DecisionTreeNonLeafNode D_8011D2D8_w04[] = {
+    { 10, { .data = 0x00070000 }, { .data = 0x0001038A } },
     { 0, { .data = 0x00000000 }, { .data = 0x0C992D50 } }
 };
 
-DecisionTreeNonLeafNode D_8011D428_w06[] = {
-    { 10, { .data = 0x00030006 }, { .data = 0x0001038A } },
-    { 10, { .data = 0x00010001 }, { .data = 0x0001038A } },
+DecisionTreeNonLeafNode D_8011D2F0_w04[] = {
+    { 10, { .data = 0x00010D12 }, { .data = 0x0001038A } },
+    { 10, { .data = 0x00030004 }, { .data = 0x0001038A } },
     { 0, { .data = 0x00000000 }, { .data = 0x0C992D50 } }
 };
 
-DecisionTreeNonLeafNode D_8011D44C_w06[] = {
-    { 2, { .data = 0x00000001 }, { .node_data = D_8011D35C_w06 } },
-    { 2, { .data = 0x00000002 }, { .node_data = D_8011D374_w06 } },
-    { 2, { .data = 0x00000004 }, { .node_data = D_8011D38C_w06 } },
-    { 2, { .data = 0x00000008 }, { .node_data = D_8011D3A4_w06 } },
-    { 2, { .data = 0x00000010 }, { .node_data = D_8011D3BC_w06 } },
-    { 2, { .data = 0x00000020 }, { .node_data = D_8011D3D4_w06 } },
-    { 2, { .data = 0x00000040 }, { .node_data = D_8011D404_w06 } },
-    { 2, { .data = 0x00000080 }, { .node_data = D_8011D428_w06 } },
+DecisionTreeNonLeafNode D_8011D314_w04[] = {
+    { 2, { .data = 0x00000001 }, { .node_data = D_8011D23C_w04 } },
+    { 2, { .data = 0x00000002 }, { .node_data = D_8011D254_w04 } },
+    { 2, { .data = 0x00000004 }, { .node_data = D_8011D26C_w04 } },
+    { 2, { .data = 0x00000008 }, { .node_data = D_8011D284_w04 } },
+    { 2, { .data = 0x00000010 }, { .node_data = D_8011D29C_w04 } },
+    { 2, { .data = 0x00000020 }, { .node_data = D_8011D2C0_w04 } },
+    { 2, { .data = 0x00000040 }, { .node_data = D_8011D2D8_w04 } },
+    { 2, { .data = 0x00000080 }, { .node_data = D_8011D2F0_w04 } },
     { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
 };
 
-DecisionTreeNonLeafNode D_8011D4B8_w06[] = {
-    { 11, { .data = 0x00010509 }, { .data = 0x0B54233C } },
-    { 11, { .data = 0x0003080B }, { .data = 0x0B54233C } },
-    { 11, { .data = 0x000B1114 }, { .data = 0x0B54233C } },
-    { 11, { .data = 0x000E0003 }, { .data = 0x0B54233C } },
+DecisionTreeNonLeafNode D_8011D380_w04[] = {
+    { 4, { .data = 0x00000000 }, { .data = 0x1B54233C } },
+    { 11, { .data = 0x00020305 }, { .data = 0x0B54233C } },
     { 0, { .data = 0x00000000 }, { .data = 0x01428A14 } }
 };
 
-DecisionTreeNonLeafNode D_8011D4F4_w06[] = {
-    { 11, { .data = 0x0002000D }, { .data = 0x0B54233C } },
+DecisionTreeNonLeafNode D_8011D3A4_w04[] = {
+    { 11, { .data = 0x000A0002 }, { .data = 0x0B54233C } },
     { 0, { .data = 0x00000000 }, { .data = 0x01428A14 } }
 };
 
-DecisionTreeNonLeafNode D_8011D50C_w06[] = {
-    { 11, { .data = 0x00060005 }, { .data = 0x0B54233C } },
+DecisionTreeNonLeafNode D_8011D3BC_w04[] = {
+    { 11, { .data = 0x000C0001 }, { .data = 0x0B54233C } },
+    { 4, { .data = 0x00200001 }, { .data = 0x1B54233C } },
+    { 11, { .data = 0x000B0102 }, { .data = 0x0B54233C } },
     { 0, { .data = 0x00000000 }, { .data = 0x01428A14 } }
 };
 
-DecisionTreeNonLeafNode D_8011D524_w06[] = {
-    { 11, { .data = 0x000B0D0F }, { .data = 0x0B54233C } },
+DecisionTreeNonLeafNode D_8011D3EC_w04[] = {
+    { 11, { .data = 0x000D0106 }, { .data = 0x0B54233C } },
     { 0, { .data = 0x00000000 }, { .data = 0x01428A14 } }
 };
 
-DecisionTreeNonLeafNode D_8011D53C_w06[] = {
-    { 11, { .data = 0x000B0005 }, { .data = 0x0B54233C } },
+DecisionTreeNonLeafNode D_8011D404_w04[] = {
+    { 11, { .data = 0x00080003 }, { .data = 0x0B54233C } },
+    { 11, { .data = 0x000C0306 }, { .data = 0x0B54233C } },
     { 0, { .data = 0x00000000 }, { .data = 0x01428A14 } }
 };
 
-DecisionTreeNonLeafNode D_8011D554_w06[] = {
-    { 11, { .data = 0x000F0004 }, { .data = 0x0B54233C } },
-    { 11, { .data = 0x00100000 }, { .data = 0x0B54233C } },
+DecisionTreeNonLeafNode D_8011D428_w04[] = {
+    { 11, { .data = 0x00010306 }, { .data = 0x0B54233C } },
     { 0, { .data = 0x00000000 }, { .data = 0x01428A14 } }
 };
 
-DecisionTreeNonLeafNode D_8011D578_w06[] = {
-    { 11, { .data = 0x00110001 }, { .data = 0x0B54233C } },
-    { 11, { .data = 0x00120004 }, { .data = 0x0B54233C } },
+DecisionTreeNonLeafNode D_8011D440_w04[] = {
+    { 4, { .data = 0x00100001 }, { .data = 0x1B54233C } },
+    { 11, { .data = 0x00050000 }, { .data = 0x0B54233C } },
+    { 11, { .data = 0x00040103 }, { .data = 0x0B54233C } },
     { 0, { .data = 0x00000000 }, { .data = 0x01428A14 } }
 };
 
-DecisionTreeNonLeafNode D_8011D59C_w06[] = {
-    { 11, { .data = 0x00010001 }, { .data = 0x0B54233C } },
-    { 11, { .data = 0x00030005 }, { .data = 0x0B54233C } },
+DecisionTreeNonLeafNode D_8011D470_w04[] = {
+    { 11, { .data = 0x00011010 }, { .data = 0x0B54233C } },
+    { 11, { .data = 0x00030003 }, { .data = 0x0B54233C } },
     { 0, { .data = 0x00000000 }, { .data = 0x01428A14 } }
 };
 
-DecisionTreeNonLeafNode D_8011D5C0_w06[] = {
-    { 10, { .data = 0x00010001 }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x00030002 }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x000B090C }, { .data = 0x0B54233C } },
-    { 2, { .data = 0x00000001 }, { .node_data = D_8011D4B8_w06 } },
-    { 2, { .data = 0x00000002 }, { .node_data = D_8011D4F4_w06 } },
-    { 2, { .data = 0x00000004 }, { .node_data = D_8011D50C_w06 } },
-    { 2, { .data = 0x00000008 }, { .node_data = D_8011D524_w06 } },
-    { 2, { .data = 0x00000010 }, { .node_data = D_8011D53C_w06 } },
-    { 2, { .data = 0x00000020 }, { .node_data = D_8011D554_w06 } },
-    { 2, { .data = 0x00000040 }, { .node_data = D_8011D578_w06 } },
-    { 2, { .data = 0x00000080 }, { .node_data = D_8011D59C_w06 } },
-    { 0, { .data = 0x00000000 }, { .data = 0x01428A14 } }
-};
-
-DecisionTreeNonLeafNode D_8011D650_w06[] = {
-    { 15, { .data = 0x00010001 }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x00030002 }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x000B090C }, { .data = 0x0C993264 } },
-    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
-};
-
-DecisionTreeNonLeafNode D_8011D680_w06[] = {
-    { 15, { .data = 0x00010509 }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x0003080B }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x000B1114 }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x000E0003 }, { .data = 0x0C993264 } },
-    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
-};
-
-DecisionTreeNonLeafNode D_8011D6BC_w06[] = {
-    { 15, { .data = 0x0002000D }, { .data = 0x0C993264 } },
-    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
-};
-
-DecisionTreeNonLeafNode D_8011D6D4_w06[] = {
-    { 15, { .data = 0x00060005 }, { .data = 0x0C993264 } },
-    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
-};
-
-DecisionTreeNonLeafNode D_8011D6EC_w06[] = {
-    { 15, { .data = 0x000B0D0F }, { .data = 0x0C993264 } },
-    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
-};
-
-DecisionTreeNonLeafNode D_8011D704_w06[] = {
-    { 15, { .data = 0x000B0005 }, { .data = 0x0C993264 } },
-    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
-};
-
-DecisionTreeNonLeafNode D_8011D71C_w06[] = {
-    { 15, { .data = 0x000F0004 }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x00100000 }, { .data = 0x0C993264 } },
-    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
-};
-
-DecisionTreeNonLeafNode D_8011D740_w06[] = {
-    { 15, { .data = 0x00110001 }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x00120004 }, { .data = 0x0C993264 } },
-    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
-};
-
-DecisionTreeNonLeafNode D_8011D764_w06[] = {
-    { 15, { .data = 0x00010001 }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x00030005 }, { .data = 0x0C993264 } },
-    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
-};
-
-DecisionTreeNonLeafNode *D_8011D788_w06[] = { D_8011D680_w06, D_8011D6BC_w06, D_8011D6D4_w06, D_8011D6EC_w06, D_8011D704_w06, D_8011D71C_w06, D_8011D740_w06, D_8011D764_w06 };
-
-DecisionTreeNonLeafNode D_8011D7A8_w06[] = {
+DecisionTreeNonLeafNode D_8011D494_w04[] = {
     { 10, { .data = 0x00010D0F }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x0002090D }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x00100909 }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x00120407 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00070202 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x000B0000 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00090405 }, { .data = 0x0B54233C } },
+    { 2, { .data = 0x00000001 }, { .node_data = D_8011D380_w04 } },
+    { 2, { .data = 0x00000002 }, { .node_data = D_8011D3A4_w04 } },
+    { 2, { .data = 0x00000004 }, { .node_data = D_8011D3BC_w04 } },
+    { 2, { .data = 0x00000008 }, { .node_data = D_8011D3EC_w04 } },
+    { 2, { .data = 0x00000010 }, { .node_data = D_8011D404_w04 } },
+    { 2, { .data = 0x00000020 }, { .node_data = D_8011D428_w04 } },
+    { 2, { .data = 0x00000040 }, { .node_data = D_8011D440_w04 } },
+    { 2, { .data = 0x00000080 }, { .node_data = D_8011D470_w04 } },
     { 0, { .data = 0x00000000 }, { .data = 0x01428A14 } }
 };
 
-DecisionTreeNonLeafNode D_8011D7E4_w06[] = {
-    { 10, { .data = 0x0002060A }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x00100909 }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x00120407 }, { .data = 0x0B54233C } },
-    { 11, { .data = 0x00020005 }, { .data = 0x0B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x01428A14 } }
-};
-
-DecisionTreeNonLeafNode D_8011D820_w06[] = {
-    { 10, { .data = 0x0006070C }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x00100909 }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x00120407 }, { .data = 0x0B54233C } },
-    { 11, { .data = 0x00060006 }, { .data = 0x0B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x01428A14 } }
-};
-
-DecisionTreeNonLeafNode D_8011D85C_w06[] = {
-    { 10, { .data = 0x00030003 }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x00040003 }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x00060004 }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x000B1114 }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x000B0003 }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x00100909 }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x00120407 }, { .data = 0x0B54233C } },
-    { 11, { .data = 0x000B0A10 }, { .data = 0x0B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x01428A14 } }
-};
-
-DecisionTreeNonLeafNode D_8011D8C8_w06[] = {
-    { 10, { .data = 0x000B070D }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x000E0003 }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x000F0003 }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x00100909 }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x00120407 }, { .data = 0x0B54233C } },
-    { 11, { .data = 0x000B0006 }, { .data = 0x0B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x01428A14 } }
-};
-
-DecisionTreeNonLeafNode D_8011D91C_w06[] = {
-    { 10, { .data = 0x00030003 }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x00050005 }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x000D0004 }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x00100208 }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x00110001 }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x00100909 }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x00120407 }, { .data = 0x0B54233C } },
-    { 11, { .data = 0x000F0004 }, { .data = 0x0B54233C } },
-    { 11, { .data = 0x00100001 }, { .data = 0x0B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x01428A14 } }
-};
-
-DecisionTreeNonLeafNode D_8011D994_w06[] = {
-    { 10, { .data = 0x0003080A }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x00100809 }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x00120607 }, { .data = 0x0B54233C } },
-    { 11, { .data = 0x000F0004 }, { .data = 0x0B54233C } },
-    { 11, { .data = 0x00110001 }, { .data = 0x0B54233C } },
-    { 11, { .data = 0x00120002 }, { .data = 0x0B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x01428A14 } }
-};
-
-DecisionTreeNonLeafNode D_8011D9E8_w06[] = {
-    { 10, { .data = 0x0003070A }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x00040003 }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x00050005 }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x00100909 }, { .data = 0x0B54233C } },
-    { 10, { .data = 0x00120407 }, { .data = 0x0B54233C } },
-    { 11, { .data = 0x00030006 }, { .data = 0x0B54233C } },
-    { 0, { .data = 0x00000000 }, { .data = 0x01428A14 } }
-};
-
-DecisionTreeNonLeafNode D_8011DA3C_w06[] = {
-    { 2, { .data = 0x00000001 }, { .node_data = D_8011D7A8_w06 } },
-    { 2, { .data = 0x00000002 }, { .node_data = D_8011D7E4_w06 } },
-    { 2, { .data = 0x00000004 }, { .node_data = D_8011D820_w06 } },
-    { 2, { .data = 0x00000008 }, { .node_data = D_8011D85C_w06 } },
-    { 2, { .data = 0x00000010 }, { .node_data = D_8011D8C8_w06 } },
-    { 2, { .data = 0x00000020 }, { .node_data = D_8011D91C_w06 } },
-    { 2, { .data = 0x00000040 }, { .node_data = D_8011D994_w06 } },
-    { 2, { .data = 0x00000080 }, { .node_data = D_8011D9E8_w06 } },
-    { 0, { .data = 0x00000000 }, { .data = 0x01428A14 } }
-};
-
-DecisionTreeNonLeafNode D_8011DAA8_w06[] = {
+DecisionTreeNonLeafNode D_8011D530_w04[] = {
     { 15, { .data = 0x00010D0F }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x0002090D }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x00100909 }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x00120407 }, { .data = 0x0C993264 } },
+    { 15, { .data = 0x00070202 }, { .data = 0x0C993264 } },
+    { 15, { .data = 0x000B0000 }, { .data = 0x0C993264 } },
+    { 15, { .data = 0x00090405 }, { .data = 0x0C993264 } },
     { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
 };
 
-DecisionTreeNonLeafNode D_8011DAE4_w06[] = {
-    { 15, { .data = 0x0002060A }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x00100909 }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x00120407 }, { .data = 0x0C993264 } },
+DecisionTreeNonLeafNode D_8011D56C_w04[] = {
+    { 15, { .data = 0x00020305 }, { .data = 0x0C993264 } },
     { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
 };
 
-DecisionTreeNonLeafNode D_8011DB14_w06[] = {
-    { 15, { .data = 0x0006070C }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x00100909 }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x00120407 }, { .data = 0x0C993264 } },
+DecisionTreeNonLeafNode D_8011D584_w04[] = {
+    { 15, { .data = 0x000A0002 }, { .data = 0x0C993264 } },
     { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
 };
 
-DecisionTreeNonLeafNode D_8011DB44_w06[] = {
+DecisionTreeNonLeafNode D_8011D59C_w04[] = {
+    { 15, { .data = 0x000C0001 }, { .data = 0x0C993264 } },
+    { 15, { .data = 0x000B0102 }, { .data = 0x0C993264 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011D5C0_w04[] = {
+    { 15, { .data = 0x000D0106 }, { .data = 0x0C993264 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011D5D8_w04[] = {
+    { 15, { .data = 0x00080003 }, { .data = 0x0C993264 } },
+    { 15, { .data = 0x000C0306 }, { .data = 0x0C993264 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011D5FC_w04[] = {
+    { 15, { .data = 0x00010306 }, { .data = 0x0C993264 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011D614_w04[] = {
+    { 15, { .data = 0x00050000 }, { .data = 0x0C993264 } },
+    { 15, { .data = 0x00040103 }, { .data = 0x0C993264 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011D638_w04[] = {
+    { 15, { .data = 0x00011010 }, { .data = 0x0C993264 } },
     { 15, { .data = 0x00030003 }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x00040003 }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x00060004 }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x000B1114 }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x000B0003 }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x00100909 }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x00120407 }, { .data = 0x0C993264 } },
     { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
 };
 
-DecisionTreeNonLeafNode D_8011DBA4_w06[] = {
-    { 15, { .data = 0x000B070D }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x000E0003 }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x000F0003 }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x00100909 }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x00120407 }, { .data = 0x0C993264 } },
+DecisionTreeNonLeafNode *D_8011D65C_w04[] = { D_8011D56C_w04, D_8011D584_w04, D_8011D59C_w04, D_8011D5C0_w04, D_8011D5D8_w04, D_8011D5FC_w04, D_8011D614_w04, D_8011D638_w04 };
+
+DecisionTreeNonLeafNode D_8011D67C_w04[] = {
+    { 10, { .data = 0x00090305 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x000A0002 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x000B0002 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00010309 }, { .data = 0x0B54233C } },
+    { 11, { .data = 0x00090001 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x01428A14 } }
+};
+
+DecisionTreeNonLeafNode D_8011D6C4_w04[] = {
+    { 10, { .data = 0x000A060B }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00010309 }, { .data = 0x0B54233C } },
+    { 11, { .data = 0x000A0004 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x01428A14 } }
+};
+
+DecisionTreeNonLeafNode D_8011D6F4_w04[] = {
+    { 10, { .data = 0x000C050B }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00010309 }, { .data = 0x0B54233C } },
+    { 11, { .data = 0x000C0003 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x01428A14 } }
+};
+
+DecisionTreeNonLeafNode D_8011D724_w04[] = {
+    { 10, { .data = 0x000D0A0A }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x000E0001 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00010009 }, { .data = 0x0B54233C } },
+    { 11, { .data = 0x000D0008 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x01428A14 } }
+};
+
+DecisionTreeNonLeafNode D_8011D760_w04[] = {
+    { 10, { .data = 0x000C0B0C }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x0001060A }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00010309 }, { .data = 0x0B54233C } },
+    { 11, { .data = 0x000C0409 }, { .data = 0x0B54233C } },
+    { 11, { .data = 0x00080003 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x01428A14 } }
+};
+
+DecisionTreeNonLeafNode D_8011D7A8_w04[] = {
+    { 10, { .data = 0x00010C12 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x01428A14 } }
+};
+
+DecisionTreeNonLeafNode D_8011D7C0_w04[] = {
+    { 10, { .data = 0x00070202 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00010F14 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00010309 }, { .data = 0x0B54233C } },
+    { 11, { .data = 0x00070000 }, { .data = 0x0B54233C } },
+    { 11, { .data = 0x00040004 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x01428A14 } }
+};
+
+DecisionTreeNonLeafNode D_8011D808_w04[] = {
+    { 10, { .data = 0x00011417 }, { .data = 0x0B54233C } },
+    { 10, { .data = 0x00010309 }, { .data = 0x0B54233C } },
+    { 11, { .data = 0x00010C12 }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x01428A14 } }
+};
+
+DecisionTreeNonLeafNode D_8011D838_w04[] = {
+    { 2, { .data = 0x00000001 }, { .node_data = D_8011D67C_w04 } },
+    { 2, { .data = 0x00000002 }, { .node_data = D_8011D6C4_w04 } },
+    { 2, { .data = 0x00000004 }, { .node_data = D_8011D6F4_w04 } },
+    { 2, { .data = 0x00000008 }, { .node_data = D_8011D724_w04 } },
+    { 2, { .data = 0x00000010 }, { .node_data = D_8011D760_w04 } },
+    { 2, { .data = 0x00000020 }, { .node_data = D_8011D7A8_w04 } },
+    { 2, { .data = 0x00000040 }, { .node_data = D_8011D7C0_w04 } },
+    { 2, { .data = 0x00000080 }, { .node_data = D_8011D808_w04 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x01428A14 } }
+};
+
+DecisionTreeNonLeafNode D_8011D8A4_w04[] = {
+    { 15, { .data = 0x00090305 }, { .data = 0x0C993264 } },
+    { 15, { .data = 0x000A0002 }, { .data = 0x0C993264 } },
+    { 15, { .data = 0x000B0002 }, { .data = 0x0C993264 } },
+    { 15, { .data = 0x00010309 }, { .data = 0x0C993264 } },
     { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
 };
 
-DecisionTreeNonLeafNode D_8011DBEC_w06[] = {
-    { 15, { .data = 0x00030003 }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x00050005 }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x000D0004 }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x00100208 }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x00110001 }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x00100909 }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x00120407 }, { .data = 0x0C993264 } },
+DecisionTreeNonLeafNode D_8011D8E0_w04[] = {
+    { 15, { .data = 0x000A060B }, { .data = 0x0C993264 } },
+    { 15, { .data = 0x00010309 }, { .data = 0x0C993264 } },
     { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
 };
 
-DecisionTreeNonLeafNode D_8011DC4C_w06[] = {
-    { 15, { .data = 0x0003080A }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x00100809 }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x00120607 }, { .data = 0x0C993264 } },
+DecisionTreeNonLeafNode D_8011D904_w04[] = {
+    { 15, { .data = 0x000C050B }, { .data = 0x0C993264 } },
+    { 15, { .data = 0x00010309 }, { .data = 0x0C993264 } },
     { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
 };
 
-DecisionTreeNonLeafNode D_8011DC7C_w06[] = {
-    { 15, { .data = 0x0003070A }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x00040003 }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x00050005 }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x00100909 }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x00120407 }, { .data = 0x0C993264 } },
+DecisionTreeNonLeafNode D_8011D928_w04[] = {
+    { 15, { .data = 0x000D0A0A }, { .data = 0x0C993264 } },
+    { 15, { .data = 0x000E0001 }, { .data = 0x0C993264 } },
+    { 15, { .data = 0x00010009 }, { .data = 0x0C993264 } },
     { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
 };
 
-DecisionTreeNonLeafNode D_8011DCC4_w06[] = {
+DecisionTreeNonLeafNode D_8011D958_w04[] = {
+    { 15, { .data = 0x000C0B0C }, { .data = 0x0C993264 } },
+    { 15, { .data = 0x0001060A }, { .data = 0x0C993264 } },
+    { 15, { .data = 0x00010309 }, { .data = 0x0C993264 } },
     { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
 };
 
-DecisionTreeNonLeafNode D_8011DCD0_w06[] = {
-    { 15, { .data = 0x00020005 }, { .data = 0x0C993264 } },
+DecisionTreeNonLeafNode D_8011D988_w04[] = {
+    { 15, { .data = 0x00010C12 }, { .data = 0x0C993264 } },
     { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
 };
 
-DecisionTreeNonLeafNode D_8011DCE8_w06[] = {
-    { 15, { .data = 0x00060006 }, { .data = 0x0C993264 } },
+DecisionTreeNonLeafNode D_8011D9A0_w04[] = {
+    { 15, { .data = 0x00070202 }, { .data = 0x0C993264 } },
+    { 15, { .data = 0x00010F14 }, { .data = 0x0C993264 } },
+    { 15, { .data = 0x00010309 }, { .data = 0x0C993264 } },
     { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
 };
 
-DecisionTreeNonLeafNode D_8011DD00_w06[] = {
-    { 15, { .data = 0x000B0A10 }, { .data = 0x0C993264 } },
+DecisionTreeNonLeafNode D_8011D9D0_w04[] = {
+    { 15, { .data = 0x00011417 }, { .data = 0x0C993264 } },
+    { 15, { .data = 0x00010309 }, { .data = 0x0C993264 } },
     { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
 };
 
-DecisionTreeNonLeafNode D_8011DD18_w06[] = {
-    { 15, { .data = 0x000B0006 }, { .data = 0x0C993264 } },
+DecisionTreeNonLeafNode D_8011D9F4_w04[] = {
+    { 15, { .data = 0x00090001 }, { .data = 0x0C993264 } },
     { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
 };
 
-DecisionTreeNonLeafNode D_8011DD30_w06[] = {
-    { 15, { .data = 0x000F0004 }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x00100001 }, { .data = 0x0C993264 } },
+DecisionTreeNonLeafNode D_8011DA0C_w04[] = {
+    { 15, { .data = 0x000A0004 }, { .data = 0x0C993264 } },
     { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
 };
 
-DecisionTreeNonLeafNode D_8011DD54_w06[] = {
-    { 15, { .data = 0x000F0004 }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x00110001 }, { .data = 0x0C993264 } },
-    { 15, { .data = 0x00120002 }, { .data = 0x0C993264 } },
+DecisionTreeNonLeafNode D_8011DA24_w04[] = {
+    { 15, { .data = 0x000C0003 }, { .data = 0x0C993264 } },
     { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
 };
 
-DecisionTreeNonLeafNode D_8011DD84_w06[] = {
-    { 15, { .data = 0x00030006 }, { .data = 0x0C993264 } },
+DecisionTreeNonLeafNode D_8011DA3C_w04[] = {
+    { 15, { .data = 0x000D0008 }, { .data = 0x0C993264 } },
     { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
 };
 
-DecisionTreeNonLeafNode *D_8011DD9C_w06[] = { D_8011DAA8_w06, D_8011DAE4_w06, D_8011DB14_w06, D_8011DB44_w06, D_8011DBA4_w06, D_8011DBEC_w06, D_8011DC4C_w06, D_8011DC7C_w06 };
-
-DecisionTreeNonLeafNode *D_8011DDBC_w06[] = { D_8011DCC4_w06, D_8011DCD0_w06, D_8011DCE8_w06, D_8011DD00_w06, D_8011DD18_w06, D_8011DD30_w06, D_8011DD54_w06, D_8011DD84_w06 };
-
-DecisionTreeNonLeafNode D_8011DDDC_w06[] = {
-    { 0, { .data = 0x00000000 }, { .node_data = D_8011D2F0_w06 } }
-};
-
-DecisionTreeNonLeafNode D_8011DDE8_w06[] = {
+DecisionTreeNonLeafNode D_8011DA54_w04[] = {
+    { 15, { .data = 0x000C0409 }, { .data = 0x0C993264 } },
+    { 15, { .data = 0x00080003 }, { .data = 0x0C993264 } },
     { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
 };
 
-DecisionTreeNonLeafNode D_8011DDF4_w06[] = {
+DecisionTreeNonLeafNode D_8011DA78_w04[] = {
     { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
 };
 
-DecisionTreeNonLeafNode D_8011DE00_w06[] = {
-    { 2, { .data = 0x00000058 }, { .data = 0x0B54233C } },
+DecisionTreeNonLeafNode D_8011DA84_w04[] = {
+    { 15, { .data = 0x00070000 }, { .data = 0x0C993264 } },
+    { 15, { .data = 0x00040004 }, { .data = 0x0C993264 } },
     { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
 };
 
-DecisionTreeNonLeafNode D_8011DE18_w06[] = {
-    { 2, { .data = 0x0000009F }, { .data = 0x0B54233C } },
+DecisionTreeNonLeafNode D_8011DAA8_w04[] = {
+    { 15, { .data = 0x00010C12 }, { .data = 0x0C993264 } },
     { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
 };
 
-DecisionTreeNonLeafNode D_8011DE30_w06[] = {
+DecisionTreeNonLeafNode *D_8011DAC0_w04[] = { D_8011D8A4_w04, D_8011D8E0_w04, D_8011D904_w04, D_8011D928_w04, D_8011D958_w04, D_8011D988_w04, D_8011D9A0_w04, D_8011D9D0_w04 };
+
+DecisionTreeNonLeafNode *D_8011DAE0_w04[] = { D_8011D9F4_w04, D_8011DA0C_w04, D_8011DA24_w04, D_8011DA3C_w04, D_8011DA54_w04, D_8011DA78_w04, D_8011DA84_w04, D_8011DAA8_w04 };
+
+DecisionTreeNonLeafNode D_8011DB00_w04[] = {
+    { 0, { .data = 0x00000000 }, { .node_data = D_8011D1D0_w04 } }
+};
+
+DecisionTreeNonLeafNode D_8011DB0C_w04[] = {
+    { 8, { .data = 0x00000001 }, { .data = 0x00000514 } },
+    { 2, { .data = 0x00000080 }, { .data = 0x01450F28 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011DB30_w04[] = {
+    { 8, { .data = 0x00000001 }, { .data = 0x00000514 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011DB48_w04[] = {
+    { 2, { .data = 0x000000BC }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011DB60_w04[] = {
+    { 2, { .data = 0x0000005F }, { .data = 0x0B54233C } },
+    { 0, { .data = 0x00000000 }, { .data = 0x00000000 } }
+};
+
+DecisionTreeNonLeafNode D_8011DB78_w04[] = {
     { 1, { .data = 0x00000028 }, { .data = 0x0C96A846 } },
     { 0, { .data = 0x00000000 }, { .data = 0x00028A1E } }
 };
 
-DecisionTreeNonLeafNode D_8011DE48_w06[] = {
-    { 9, { .data = 0x00000002 }, { .node_data = D_8011DE30_w06 } },
+DecisionTreeNonLeafNode D_8011DB90_w04[] = {
+    { 9, { .data = 0x00000007 }, { .node_data = D_8011DB78_w04 } },
     { 1, { .data = 0x00000032 }, { .data = 0x0C96A846 } },
     { 1, { .data = 0x00000028 }, { .data = 0x0A11A0BC } },
     { 1, { .data = 0x0000001E }, { .data = 0x064C9932 } },
     { 0, { .data = 0x00000000 }, { .data = 0x02879432 } }
 };
 
-DecisionTreeNonLeafNode D_8011DE84_w06[] = {
-    { 2, { .data = 0x00000001 }, { .node_data = D_8011DE48_w06 } },
+DecisionTreeNonLeafNode D_8011DBCC_w04[] = {
+    { 2, { .data = 0x00000001 }, { .node_data = D_8011DB90_w04 } },
     { 1, { .data = 0x00000019 }, { .data = 0x0C96A846 } },
     { 0, { .data = 0x00000000 }, { .data = 0x0B54233C } }
 };
 
-DecisionTreeNonLeafNode D_8011DEA8_w06[] = {
-    { 1, { .data = 0x00000019 }, { .data = 0x0C96A846 } },
-    { 0, { .data = 0x00000000 }, { .data = 0x00028A1E } }
-};
-
-DecisionTreeNonLeafNode D_8011DEC0_w06[] = {
-    { 9, { .data = 0x00000007 }, { .node_data = D_8011DEA8_w06 } },
-    { 1, { .data = 0x00000032 }, { .data = 0x0C96A846 } },
-    { 1, { .data = 0x00000028 }, { .data = 0x0A11A0BC } },
-    { 1, { .data = 0x0000001E }, { .data = 0x064C9932 } },
-    { 0, { .data = 0x00000000 }, { .data = 0x02879432 } }
-};
-
-DecisionTreeNonLeafNode D_8011DEFC_w06[] = {
+DecisionTreeNonLeafNode D_8011DBF0_w04[] = {
     { 1, { .data = 0x00000028 }, { .data = 0x0C96A846 } },
     { 0, { .data = 0x00000000 }, { .data = 0x00028A1E } }
 };
 
-DecisionTreeNonLeafNode D_8011DF14_w06[] = {
-    { 9, { .data = 0x00000004 }, { .node_data = D_8011DEFC_w06 } },
+DecisionTreeNonLeafNode D_8011DC08_w04[] = {
+    { 9, { .data = 0x00000004 }, { .node_data = D_8011DBF0_w04 } },
     { 1, { .data = 0x00000032 }, { .data = 0x0C96A846 } },
     { 1, { .data = 0x00000028 }, { .data = 0x0A11A0BC } },
     { 1, { .data = 0x0000001E }, { .data = 0x064C9932 } },
     { 0, { .data = 0x00000000 }, { .data = 0x02879432 } }
 };
 
-DecisionTreeNonLeafNode D_8011DF50_w06[] = {
-    { 2, { .data = 0x00000020 }, { .node_data = D_8011DF14_w06 } },
-    { 2, { .data = 0x00000040 }, { .node_data = D_8011DEC0_w06 } },
+DecisionTreeNonLeafNode D_8011DC44_w04[] = {
+    { 2, { .data = 0x00000020 }, { .node_data = D_8011DC08_w04 } },
     { 1, { .data = 0x00000019 }, { .data = 0x0C96A846 } },
     { 0, { .data = 0x00000000 }, { .data = 0x0B54233C } }
 };
 
-s32 D_8011DF80_w06 = 0;
+s32 D_8011DC68_w04 = 0;
 
-/* Item priorities and weights for each star position. */
-u8 D_8011DF84_w06[] = {
+u8 D_8011DC6C_w04[] = {
     14, 10, 0, 3, 2, 4, 19, 11,
     5, 6, 12, 13, 9, 7, 8, 1
 };
 
-u8 D_8011DF94_w06[] = {
+u8 D_8011DC7C_w04[] = {
     14, 1, 11, 10, 19, 12, 0, 6,
     9, 3, 13, 4, 8, 7, 2, 5
 };
 
-u8 D_8011DFA4_w06[] = {
+u8 D_8011DC8C_w04[] = {
     14, 11, 6, 9, 12, 7, 3, 13,
     2, 4, 10, 19, 0, 8, 5, 1
 };
 
-u8 D_8011DFB4_w06[] = {
+u8 D_8011DC9C_w04[] = {
     14, 5, 9, 10, 11, 7, 19, 12,
     0, 6, 3, 13, 4, 8, 2, 1
 };
 
-u8 D_8011DFC4_w06[] = {
+u8 D_8011DCAC_w04[] = {
     14, 8, 13, 11, 10, 19, 6, 7,
     12, 0, 9, 3, 4, 2, 5, 1
 };
 
-u8 D_8011DFD4_w06[] = {
+u8 D_8011DCBC_w04[] = {
     14, 3, 11, 10, 19, 12, 0, 6,
     9, 13, 4, 8, 7, 2, 5, 1
 };
 
-u8 D_8011DFE4_w06[] = {
+u8 D_8011DCCC_w04[] = {
     14, 2, 9, 3, 6, 7, 8, 5,
     4, 19, 11, 13, 10, 12, 0, 1
 };
 
-u8 D_8011DFF4_w06[] = {
+u8 D_8011DCDC_w04[] = {
     14, 4, 19, 9, 11, 10, 3, 12,
     7, 0, 1, 6, 13, 8, 2, 5
 };
 
-u8 *D_8011E004_w06[] = { D_8011DF84_w06, D_8011DF94_w06, D_8011DFA4_w06, D_8011DFB4_w06, D_8011DFC4_w06, D_8011DFD4_w06, D_8011DFE4_w06, D_8011DFF4_w06 };
+u8 *D_8011DCEC_w04[] = { D_8011DC6C_w04, D_8011DC7C_w04, D_8011DC8C_w04, D_8011DC9C_w04, D_8011DCAC_w04, D_8011DCBC_w04, D_8011DCCC_w04, D_8011DCDC_w04 };
 
-s8 D_8011E024_w06[] = {
+s8 D_8011DD0C_w04[] = {
     90, 70, 60, 30, 20, 20, 20, 20,
     10, 10, 10, 10, 10, 10, 10, 10
 };
 
-s8 D_8011E034_w06[] = {
+s8 D_8011DD1C_w04[] = {
     80, 50, 20, 20, 20, 10, 20, 10,
     10, 10, 20, 10, 10, 10, 10, 0
 };
 
-s8 D_8011E044_w06[] = {
+s8 D_8011DD2C_w04[] = {
     80, 30, 50, 30, 30, 20, 20, 20,
     20, 20, 30, 20, 30, 10, 10, 10
 };
 
-s8 D_8011E054_w06[] = {
+s8 D_8011DD3C_w04[] = {
     90, 50, 20, 30, 20, 10, 20, 10,
     30, 10, 10, 10, 10, 10, 10, 10
 };
 
-s8 D_8011E064_w06[] = {
+s8 D_8011DD4C_w04[] = {
     90, 50, 30, 30, 30, 20, 20, 20,
     10, 30, 10, 10, 10, 10, 10, 10
 };
 
-s8 D_8011E074_w06[] = {
+s8 D_8011DD5C_w04[] = {
     90, 50, 30, 60, 20, 20, 30, 20,
     10, 10, 10, 10, 10, 10, 10, 10
 };
 
-s8 D_8011E084_w06[] = {
+s8 D_8011DD6C_w04[] = {
     70, 40, 40, 40, 30, 20, 30, 30,
     20, 40, 40, 30, 40, 10, 40, 10
 };
 
-s8 D_8011E094_w06[] = {
+s8 D_8011DD7C_w04[] = {
     80, 50, 60, 20, 20, 30, 20, 30,
     10, 30, 20, 10, 10, 10, 10, 10
 };
 
-s8 *D_8011E0A4_w06[] = { D_8011E024_w06, D_8011E034_w06, D_8011E044_w06, D_8011E054_w06, D_8011E064_w06, D_8011E074_w06, D_8011E084_w06, D_8011E094_w06 };
+s8 *D_8011DD8C_w04[] = { D_8011DD0C_w04, D_8011DD1C_w04, D_8011DD2C_w04, D_8011DD3C_w04, D_8011DD4C_w04, D_8011DD5C_w04, D_8011DD6C_w04, D_8011DD7C_w04 };
 
-DecisionTreeNonLeafNode *D_8011E0C4_w06[] = { D_8011DDE8_w06, D_8011DDF4_w06 };
+DecisionTreeNonLeafNode *D_8011DDAC_w04[] = { D_8011DB0C_w04, D_8011DB30_w04 };
 
-DecisionTreeNonLeafNode *D_8011E0CC_w06[] = { D_8011DE00_w06, D_8011DE18_w06 };
+DecisionTreeNonLeafNode *D_8011DDB4_w04[] = { D_8011DB48_w04, D_8011DB60_w04 };
 
-DecisionTreeNonLeafNode *D_8011E0D4_w06[] = { D_8011DE84_w06, D_8011DF50_w06, NULL };
+DecisionTreeNonLeafNode *D_8011DDBC_w04[2] = { D_8011DBCC_w04, D_8011DC44_w04 };
 
-/* Runtime board state. */
-static Object *D_8011E270_w06;
-static s32 D_8011E274_w06; /* Unused word between model state and the following array. */
-static Object *D_8011E278_w06[8];
-static Process *D_8011E298_w06[8];
-static s32 D_8011E2B8_w06;
-static Object *D_8011E2BC_w06;
-static Unk3 *D_8011E2C0_w06;
-static Unk3 *D_8011E2C4_w06;
-static Unk3 *D_8011E2C8_w06;
-static Unk3 *D_8011E2CC_w06;
-static Unk3 *D_8011E2D0_w06;
-static s32 D_8011E2D4_w06;
-static s32 D_8011E2D8_w06;
-static Object *D_8011E2DC_w06;
-static Object *D_8011E2E0_w06[1];
-static Object *D_8011E2E4_w06;
-static Object *D_8011E2E8_w06[10];
-static Object *D_8011E310_w06;
-static Object *D_8011E314_w06[2];
-static Object *D_8011E31C_w06[3];
-static Object *D_8011E328_w06;
-static Object *D_8011E32C_w06[2];
-static s32 D_8011E334_w06;
-static s32 D_8011E338_w06;
-static s32 D_8011E33C_w06;
-static s32 D_8011E340_w06;
-static u8 *D_8011E344_w06;
-static Object *D_8011E348_w06;
-static s32 D_8011E34C_w06;
-static s32 D_8011E350_w06;
-static s32 D_8011E354_w06;
-static Object *D_8011E358_w06;
-static Object *D_8011E35C_w06;
-static s32 D_8011E360_w06;
-static s32 D_8011E364_w06;
-static Object *D_8011E368_w06;
-static s32 D_8011E36C_w06; /* Unused word between model state and the following array. */
-static s32 D_8011E370_w06[4];
-static Object *D_8011E380_w06;
-static s32 D_8011E384_w06; /* Unused word between model state and the following array. */
-static Object *D_8011E388_w06[4];
-static omObjData *D_8011E398_w06[4];
-static s32 D_8011E3A8_w06;
-static s32 D_8011E3AC_w06;
+Object *D_8011DFF0_w04 BSS;
+u8 D_8011DFF4_w04[4] BSS; /* Unreferenced. */
+Object *D_8011DFF8_w04[8] BSS;
+Process *D_8011E018_w04[8] BSS;
+Process *D_8011E038_w04 BSS;
+Object *D_8011E03C_w04 BSS;
+Unk3 *D_8011E040_w04 BSS;
+Unk3 *D_8011E044_w04 BSS;
+Unk3 *D_8011E048_w04 BSS;
+Unk3 *D_8011E04C_w04 BSS;
+Unk3 *D_8011E050_w04 BSS;
+s32 D_8011E054_w04 BSS;
+s32 D_8011E058_w04 BSS;
+Object *D_8011E05C_w04 BSS;
+Object *D_8011E060_w04[1] BSS;
+Object *D_8011E064_w04 BSS;
+Object *D_8011E068_w04[10] BSS;
+Object *D_8011E090_w04 BSS;
+Object *D_8011E094_w04[2] BSS;
+Object *D_8011E09C_w04[3] BSS;
+s32 D_8011E0A8_w04 BSS;
+s32 D_8011E0AC_w04 BSS;
+u8 *D_8011E0B0_w04 BSS;
+Object *D_8011E0B4_w04 BSS;
+s32 D_8011E0B8_w04 BSS;
+s32 D_8011E0BC_w04 BSS;
+s32 D_8011E0C0_w04 BSS;
+Object *D_8011E0C4_w04 BSS;
+Object *D_8011E0C8_w04 BSS;
+s32 D_8011E0CC_w04 BSS;
+s32 D_8011E0D0_w04 BSS;
+Object *D_8011E0D4_w04 BSS;
+s32 D_8011E0D8_w04[4] BSS;
+Object *D_8011E0E8_w04 BSS;
+u8 D_8011E0EC_w04[4] BSS; /* Unreferenced. */
+Object *D_8011E0F0_w04[4] BSS;
+omObjData *D_8011E100_w04[4] BSS;
+s32 D_8011E110_w04 BSS;
+s32 D_8011E114_w04 BSS;
+Object *D_8011E118_w04[2] BSS;
 
-/* Definitions stay beside their users to preserve the order of .rodata literals. */
-extern const u8 D_8011E0E0_w06[];
-extern const ChanceTable D_8011E10C_w06;
-extern const ChanceTable D_8011E11C_w06;
-extern const ChanceTable D_8011E12C_w06;
-extern const ChanceTable D_8011E13C_w06;
-extern const char D_8011E14C_w06[];
-extern const ModelIdTable D_8011E1F8_w06;
-extern const MessageTable D_8011E204_w06;
-extern const MasuIdTable D_8011E214_w06;
-
-void func_800D9F5C_name_81(Object *arg0, Vec *arg1, s32 arg2);
-void func_80108A10_w06(void);
-
-s16 func_801059D0_w06(void) {
-    return D_8011B5C0_w06[GwSystem.star_spawn_indices[GwSystem.current_star_spawn]];
+s16 func_801059D0_w04(void) {
+    return D_8011B780_w04[GwSystem.star_spawn_indices[GwSystem.current_star_spawn]];
 }
 
-void func_801059F8_w06(void) {
+void func_801059F8_w04(void) {
     s32 i;
     s32 idx1;
     s32 idx2;
@@ -2105,29 +1969,29 @@ void func_801059F8_w06(void) {
         idx2 = rand8() & 7;
 
         if (idx1 != idx2) {
-            if (idx1 < D_8011B590_w06[idx2]) {
+            if (idx1 < D_8011B750_w04[idx2]) {
                 continue;
             }
-            if (idx2 < D_8011B590_w06[idx1]) {
+            if (idx2 < D_8011B750_w04[idx1]) {
                 continue;
             }
             {
-                s32 temp = D_8011B580_w06[idx1];
-                D_8011B580_w06[idx1] = D_8011B580_w06[idx2];
-                D_8011B580_w06[idx2] = temp;
-                temp = D_8011B590_w06[idx1];
-                D_8011B590_w06[idx1] = D_8011B590_w06[idx2];
-                D_8011B590_w06[idx2] = temp;
+                s32 temp = D_8011B740_w04[idx1];
+                D_8011B740_w04[idx1] = D_8011B740_w04[idx2];
+                D_8011B740_w04[idx2] = temp;
+                temp = D_8011B750_w04[idx1];
+                D_8011B750_w04[idx1] = D_8011B750_w04[idx2];
+                D_8011B750_w04[idx2] = temp;
             }
         }
     }
 
     for (i = 0; i < 8; i++) {
-        loc->star_spawn_indices[i] = D_8011B580_w06[i];
+        loc->star_spawn_indices[i] = D_8011B740_w04[i];
     }
 }
 
-void func_80105B00_w06(void) {
+void func_80105B00_w04(void) {
     GW_SYSTEM *loc;
     s32 sp7;
     s32 sp0;
@@ -2138,7 +2002,7 @@ void func_80105B00_w06(void) {
         sp7 = loc->star_spawn_indices[7];
         loc->current_star_spawn = 0;
         GWBoardFlagSet(4);
-        func_801059F8_w06();
+        func_801059F8_w04();
         sp0 = loc->star_spawn_indices[0];
         if ((sp7 ^ sp0) == 0) {
             loc->star_spawn_indices[0] = loc->star_spawn_indices[7];
@@ -2147,25 +2011,25 @@ void func_80105B00_w06(void) {
     }
 }
 
-void func_80105B8C_w06(void) {
+void func_80105B8C_w04(void) {
     s32 i;
     GW_SYSTEM *loc = &GwSystem;
 
     for (i = 0; i < 8; i++) {
-        GWBoardFlagSet(D_8011B5A0_w06[i]);
+        GWBoardFlagSet(D_8011B760_w04[i]);
     }
-    MBMasuTypeSet(D_8011B5B0_w06[loc->star_spawn_indices[loc->current_star_spawn]], 0xE);
-    GWBoardFlagClear(D_8011B5A0_w06[loc->star_spawn_indices[loc->current_star_spawn]]);
+    MBMasuTypeSet(D_8011B770_w04[loc->star_spawn_indices[loc->current_star_spawn]], 0xE);
+    GWBoardFlagClear(D_8011B760_w04[loc->star_spawn_indices[loc->current_star_spawn]]);
 }
 
-s32 func_80105C30_w06(s16 arg0) {
+s16 func_80105C30_w04(s16 arg0) {
     s32 i;
-    GW_SYSTEM *loc = &GwSystem;
+    GW_SYSTEM *system = &GwSystem;
 
-    for (i = 0; i < 8; i++) {
-        if (arg0 == D_8011B5B0_w06[i]) {
-            if (i == loc->star_spawn_indices[loc->current_star_spawn]) {
-                loc->unk_0E = D_8011B5A0_w06[i];
+    for (i = 0; i < STAR_POSITIONS_TOTAL; i++) {
+        if (arg0 == D_8011B770_w04[i]) {
+            if (i == system->star_spawn_indices[system->current_star_spawn]) {
+                system->unk_0E = D_8011B760_w04[i];
                 return 1;
             }
             break;
@@ -2174,7 +2038,7 @@ s32 func_80105C30_w06(s16 arg0) {
     return 0;
 }
 
-void func_80105CA4_w06(void) {
+void func_80105CA4_w04(void) {
     SpaceData *space = HuPrcCurrentGet()->user_data;
     Object *model;
     s32 obj;
@@ -2183,8 +2047,8 @@ void func_80105CA4_w06(void) {
     s32 i;
 
     HuAudFXPlay(0x11B);
-    D_8011E2BC_w06 = MBModelCreate(0x3A, NULL);
-    model = D_8011E2BC_w06;
+    D_8011E03C_w04 = MBModelCreate(0x3A, NULL);
+    model = D_8011E03C_w04;
     func_800461B4_main(model->omObj1->model[0]);
     model->flags |= 4;
     func_800ECC54_shared_board(model);
@@ -2241,54 +2105,67 @@ void func_80105CA4_w06(void) {
 
     func_8008A2A0_main(Hu3DData[model->omObj1->model[0]].mtx, 0.0f);
     func_8000D044_main(obj);
-    D_8011E2B8_w06 = 0;
+    D_8011E038_w04 = 0;
     omDelPrcObj(NULL);
 }
 
-void func_80106094_w06(omObjData **arg) {
-    omObjData *s0 = *arg;
+void func_80106094_w04(UnkMBGuideData *guide) {
+    Object *obj = guide->obj;
 
-    s0->scale.y = 4.0f;
-    s0->scale.z = -0.6f;
+    obj->velocity.y = 4.0f;
+    obj->velocity.z = -0.6f;
     HuPrcSleep(3);
-    while (s0->scale.z != 0.0f) {
+    while (obj->velocity.z != 0.0f) {
         HuPrcVSleep();
     }
 }
 
-void func_80106120_w06(void) {
-    struct UnkMBGuideData *data;
-    GW_SYSTEM *loc = &GwSystem;
+void func_80106120_w04(void) {
+    UnkMBGuideData *guide;
+    Process *proc;
     SpaceData *space;
-    s32 idx;
+    s32 face;
+    s32 mesNum;
+    GW_SYSTEM *system = &GwSystem;
 
     D_800A12D4_main = 0;
-    data = MBGuideCreate(0, 0);
+    guide = MBGuideCreate(0, 0);
     HuAudSeqPlay(0x12);
-    MBGuideFaceCreate(data->obj, 2, 0xF, D_8011B5D0_w06[0]);
+    MBGuideFaceCreate(guide->obj, 2, 0xF, D_8011B790_w04[0]);
     func_800FFF44_shared_board();
-    MBModelDispOff(D_8011E278_w06[GwSystem.star_spawn_indices[GwSystem.current_star_spawn]]);
+    MBModelDispOff(GET_STAR_MODEL());
     WipeCreateIn(2, 0x10);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
+
     func_800E6FCC_shared_board();
     func_800E9730_shared_board(3.0f);
-    func_80106094_w06((omObjData **)data);
-    HuWinMesSet(
-        data->amount,
-        (loc->current_star_spawn == 0 && GWBoardFlagCheck(4) == 0)
-            ? (((loc->current_board_index == 2) ? 0x5E09 : 0) | 0x5E00)
-            : (((loc->current_board_index == 2) ? 0x5E09 : 0) | 0x5E01),
-        -1, -1);
-    func_80060C14_main(data->amount, 1);
+    func_80106094_w04(guide);
+
+    if ((system->current_star_spawn == 0) && (GWBoardFlagCheck(4) == 0)) {
+        if (system->current_board_index == 2) {
+            mesNum = 0x5E09;
+        } else {
+            mesNum = 0x5E00;
+        }
+    } else {
+        if (system->current_board_index == 2) {
+            mesNum = 0x5E09;
+        } else {
+            mesNum = 0x5E01;
+        }
+    }
+    HuWinMesSet(guide->amount, mesNum, -1, -1);
+    func_80060C14_main(guide->amount, 1);
     HuAudFXPlay(0x2A7);
-    func_800EE2C0_shared_board(data->amount);
-    MBMotionShiftSet(data->obj, -1, 0, 6, 2);
-    func_80060EA8_main(data->amount, 1);
-    func_8001FDE8_main(data->obj->omObj1->model[0]);
-    if (loc->current_board_index != 2 || (rand8() & 1)) {
-        space = MBMasuGet(D_8011B5C0_w06[loc->star_spawn_indices[loc->current_star_spawn]]);
+    func_800EE2C0_shared_board(guide->amount);
+    MBMotionShiftSet(guide->obj, -1, 0, 6, 2);
+    func_80060EA8_main(guide->amount, 1);
+    func_8001FDE8_main(guide->obj->omObj1->model[0]);
+
+    if ((system->current_board_index != SPINY_DESERT) || (rand8() & 1)) {
+        space = MBMasuGet(D_8011B780_w04[system->star_spawn_indices[system->current_star_spawn]]);
     }
     MBCameraPos3DSet(&space->coords);
     MBCameraSpeedSet(5.0f);
@@ -2297,39 +2174,43 @@ void func_80106120_w06(void) {
         HuPrcVSleep();
     }
     HuPrcSleep(5);
-    idx = MBRand(7.0f);
-    MBGuideFaceSet(data->obj, D_8011B5D0_w06[idx]);
-    MBMotionSet(data->obj, -1, 2);
-    if (loc->current_board_index != 2) {
-        Process *prc = omAddPrcObj(func_80105CA4_w06, 0x4800, 0, 0);
-        D_8011E2B8_w06 = (s32)prc;
-        prc->user_data = space;
+
+    face = MBRand(7.0f);
+    MBGuideFaceSet(guide->obj, D_8011B790_w04[face]);
+    MBMotionSet(guide->obj, -1, 2);
+
+    if (system->current_board_index != 2) {
+        proc = omAddPrcObj(func_80105CA4_w04, 0x4800, 0, 0);
+        D_8011E038_w04 = proc;
+        proc->user_data = space;
         HuPrcSleep(30);
     } else {
-        D_8011E2B8_w06 = 0;
+        D_8011E038_w04 = NULL;
     }
-    HuWinMesSet(data->amount, D_8011B5EC_w06[idx], -1, -1);
-    func_80060C14_main(data->amount, 1);
-    func_800EE2C0_shared_board(data->amount);
-    MBMotionShiftSet(data->obj, -1, 0, 6, 2);
-    func_80060EA8_main(data->amount, 1);
+
+    HuWinMesSet(guide->amount, D_8011B7AC_w04[face], -1, -1);
+    func_80060C14_main(guide->amount, 1);
+    func_800EE2C0_shared_board(guide->amount);
+    MBMotionShiftSet(guide->obj, -1, 0, 6, 2);
+    func_80060EA8_main(guide->amount, 1);
+
     HuAudSeqFadeOut(0x5A);
     HuPrcSleep(30);
     WipeCreateOut(2, 0x10);
     HuPrcSleep(0x11);
     D_800A12D4_main = 1;
     func_80100130_shared_board();
-    func_80046558_main(D_8011E2BC_w06->omObj1->model[0]);
-    MBModelKill(D_8011E2BC_w06);
-    MBModelDispOn(D_8011E278_w06[GwSystem.star_spawn_indices[GwSystem.current_star_spawn]]);
-    MBGuideKill(data);
+    func_80046558_main(D_8011E03C_w04->omObj1->model[0]);
+    MBModelKill(D_8011E03C_w04);
+    MBModelDispOn(GET_STAR_MODEL());
+    MBGuideKill(guide);
     MBExit();
     omOvlReturnEx(1);
     omOvlKill();
     HuPrcVSleep();
 }
 
-void func_801064DC_w06(void) {
+void func_801064DC_w04(void) {
     Object *playerModel = HuPrcCurrentGet()->user_data;
     GW_PLAYER *player = MBPlayerGet(-1);
     Object *model;
@@ -2343,7 +2224,7 @@ void func_801064DC_w06(void) {
     model = MBModelCreate(0x1A, NULL);
     model->flags |= 4;
     func_800ECC54_shared_board(model);
-    if (MBMasuLinkMasuIdGet(MBPlayerGet(-1)->clink, MBPlayerGet(-1)->cidx) == 0x7F) {
+    if (MBMasuLinkMasuIdGet(MBPlayerGet(-1)->clink, MBPlayerGet(-1)->cidx) == 0x8D) {
         HuVecCopyXYZ(&model->coords, playerModel->coords.x, playerModel->coords.y + 10.0f, playerModel->coords.z);
         HuVecCopyXYZ(&camPos, gCameraList->pos.x, gCameraList->pos.y, gCameraList->pos.z);
         model->velocity.x = 15.0f;
@@ -2399,7 +2280,7 @@ void func_801064DC_w06(void) {
     func_8000D044_main(obj);
     MBVecForwardSet(&player->player_obj->rot);
     MBPlayerVibrate(-1, 5);
-    if (D_8011B608_w06 != 0) {
+    if (D_8011B7C8_w04 != 0) {
         func_8004A670_main(0xE);
     } else {
         HuAudSeqPlay(0x6F);
@@ -2412,7 +2293,7 @@ void func_801064DC_w06(void) {
 
     MBPlayerMotionSet(-1, 6, 0);
     PlayerFXPlay(0x262, GwSystem.current_player_index);
-    if (D_8011B608_w06 != 0) {
+    if (D_8011B7C8_w04 != 0) {
         HuPrcSleep(16);
         func_80003A70_main(D_800CDBC8_main);
         func_8004A918_main(0x6F);
@@ -2426,18 +2307,18 @@ void func_801064DC_w06(void) {
     omDelPrcObj(NULL);
 }
 
-void func_80106A3C_w06(Object *arg) {
+void func_80106A3C_w04(Object *arg) {
     Process *prc;
 
     mbItemBtnF = 0;
-    prc = omAddPrcObj(func_801064DC_w06, 0x4800, 0, 0);
+    prc = omAddPrcObj(func_801064DC_w04, 0x4800, 0, 0);
     prc->user_data = arg;
     HuPrcChildLink(HuPrcCurrentGet(), prc);
     HuPrcChildWatch();
     mbItemBtnF = 1;
 }
 
-void func_80106AB0_w06(void) {
+void func_80106AB0_w04(void) {
     mbCameraBtnF = 1;
     mbItemBtnF = 0;
     omPrcSetStatBit(HuPrcCurrentGet(), OM_STAT_NOALLPAUSE);
@@ -2447,51 +2328,54 @@ void func_80106AB0_w06(void) {
     mbItemBtnF = 1;
 }
 
-void func_80106B38_w06(void) {
+void func_80106B38_w04(void) {
     mbItemBtnF = 0;
     omPrcSetStatBit(HuPrcCurrentGet(), OM_STAT_NOALLPAUSE);
     MBMapScrollExec(GwPlayer[GwSystem.current_player_index].pad);
     mbItemBtnF = 1;
 }
 
-void func_80106B94_w06(void) {
+void func_80106B94_w04(void) {
     while (MBCameraStopCheck() != 0) {
         HuPrcVSleep();
     }
     HuPrcVSleep();
-    D_8011E2C0_w06 = func_800E210C_shared_board(0, 0x92, 1);
-    D_8011E2C4_w06 = func_800E210C_shared_board(1, 0xA0, 1);
-    D_8011E2D0_w06 = func_800E210C_shared_board(0xD, 0xAE, 1);
-    D_8011E2C8_w06 = func_800E210C_shared_board(3, 0xBC, 1);
-    D_8011E2CC_w06 = func_800E210C_shared_board(0xB, 0xCA, 1);
+    D_8011E040_w04 = func_800E210C_shared_board(0, 0x92, 1);
+    D_8011E044_w04 = func_800E210C_shared_board(1, 0xA0, 1);
+    D_8011E050_w04 = func_800E210C_shared_board(0xD, 0xAE, 1);
+    D_8011E048_w04 = func_800E210C_shared_board(3, 0xBC, 1);
+    D_8011E04C_w04 = func_800E210C_shared_board(0xB, 0xCA, 1);
     HuPrcSleep(3);
     mbCameraBtnF = 1;
     D_800D51F8_main = 1;
 }
 
-void func_80106C64_w06(void) {
+void func_80106C64_w04(void) {
     mbCameraBtnF = 0;
     D_800D51F8_main = 0;
-    MBHelpWinKill(D_8011E2C0_w06);
-    MBHelpWinKill(D_8011E2C4_w06);
-    MBHelpWinKill(D_8011E2D0_w06);
-    MBHelpWinKill(D_8011E2C8_w06);
-    MBHelpWinKill(D_8011E2CC_w06);
+    MBHelpWinKill(D_8011E040_w04);
+    MBHelpWinKill(D_8011E044_w04);
+    MBHelpWinKill(D_8011E050_w04);
+    MBHelpWinKill(D_8011E048_w04);
+    MBHelpWinKill(D_8011E04C_w04);
 }
 
-s32 func_80106CC4_w06(u8 *arg0) {
+// Keep rodata definitions interleaved with functions to preserve the original constant order.
+const u8 D_8011DDD0_w04[4] = { 1, 2, 4, 8 };
+
+s32 func_80106CC4_w04(u8 *arg0) {
     s32 var_s2 = 0;
     s16 sp18[MB_MAX_PLAYERS];
     u8 sp20[MB_MAX_PLAYERS];
     s32 i;
     s32 j;
 
-    *(Unk4Bytes *)sp20 = *(Unk4Bytes *)D_8011E0E0_w06;
+    *(Unk4Bytes *)sp20 = *(Unk4Bytes *)D_8011DDD0_w04;
 
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         if (i == GwSystem.current_player_index) {
             if (GwPlayer[i].stat & 1) {
-                var_s2 = func_8011B188_w06();
+                var_s2 = func_8011B350_w04();
                 sp18[GwPlayer[GwSystem.current_player_index].pad] = 0x400;
             } else {
                 HuWinActivePlayerSet(mbDlgWinId, sp20[GwPlayer[i].pad]);
@@ -2534,20 +2418,20 @@ s32 func_80106CC4_w06(u8 *arg0) {
     return i;
 }
 
-s32 func_80106F58_w06(void) {
+s32 func_80106F58_w04(void) {
     s32 var_s2 = 0;
     s16 sp18[MB_MAX_PLAYERS];
     u8 sp20[MB_MAX_PLAYERS];
     s32 i;
     s32 j;
 
-    *(Unk4Bytes *)sp20 = *(Unk4Bytes *)D_8011E0E0_w06;
+    *(Unk4Bytes *)sp20 = *(Unk4Bytes *)D_8011DDD0_w04;
 
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         if (i == GwSystem.current_player_index) {
             if (GwPlayer[i].stat & 1) {
                 var_s2 = 1; // dead store; matches func_800FA104_shared_board
-                var_s2 = func_8011B4EC_w06();
+                var_s2 = func_8011B6B4_w04();
                 sp18[GwPlayer[i].pad] = 0x400;
             } else {
                 HuWinActivePlayerSet(mbDlgWinId, sp20[GwPlayer[i].pad]);
@@ -2577,7 +2461,7 @@ s32 func_80106F58_w06(void) {
     HuWinChoiceGet(mbDlgWinId, 0, 1);
 }
 
-void func_80107170_w06(void) {
+void func_80107170_w04(void) {
     s32 i;
     s32 cur = GwSystem.current_player_index;
 
@@ -2589,7 +2473,7 @@ void func_80107170_w06(void) {
     if (i != 4) {
         if (GwPlayer[cur].coin >= 50) {
             if (MBRand(100.0f) < GwPlayer[cur].coin + 10) {
-                D_8011E2D4_w06 = 1;
+                D_8011E054_w04 = 1;
                 if (GwPlayer[cur].star < 99) {
                     return;
                 }
@@ -2602,13 +2486,13 @@ void func_80107170_w06(void) {
         }
     }
     if (i != 4) {
-        D_8011E2D4_w06 = 0;
+        D_8011E054_w04 = 0;
     } else {
-        D_8011E2D4_w06 = 2;
+        D_8011E054_w04 = 2;
     }
 }
 
-void func_801072A0_w06(void) {
+void func_801072A0_w04(void) {
     s32 order[4];
     s32 i;
     s32 j;
@@ -2627,44 +2511,44 @@ void func_801072A0_w06(void) {
         }
         order[j] = i;
     }
-    func_80107170_w06();
-    if (D_8011E2D4_w06 == 1) {
+    func_80107170_w04();
+    if (D_8011E054_w04 == 1) {
         for (i = 0; i < 4; i++) {
             if (order[i] != cur && GwPlayer[order[i]].star != 0) {
-                D_8011E2D8_w06 = order[i];
+                D_8011E058_w04 = order[i];
                 break;
             }
         }
-    } else if (D_8011E2D4_w06 == 0) {
+    } else if (D_8011E054_w04 == 0) {
         for (i = 0; i < 4; i++) {
             if (order[i] != cur && GwPlayer[order[i]].coin >= 5) {
-                D_8011E2D8_w06 = order[i];
+                D_8011E058_w04 = order[i];
                 break;
             }
         }
     }
     if (i == 4) {
-        D_8011E2D4_w06 = 2;
+        D_8011E054_w04 = 2;
     }
 }
 
-s32 func_80107438_w06(u8 *arg0, s32 arg1, s32 arg2) {
+s32 func_80107438_w04(u8 *arg0, s32 arg1, s32 arg2) {
     s32 var_s2 = 0;
     s16 sp18[MB_MAX_PLAYERS];
     u8 sp20[MB_MAX_PLAYERS];
     s32 i;
     s32 j;
 
-    *(Unk4Bytes *)sp20 = *(Unk4Bytes *)D_8011E0E0_w06;
+    *(Unk4Bytes *)sp20 = *(Unk4Bytes *)D_8011DDD0_w04;
 
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         if (i == GwSystem.current_player_index) {
             if (GwPlayer[i].stat & 1) {
                 if (arg1 == 0) {
-                    func_801072A0_w06();
-                    var_s2 = D_8011E2D4_w06 + 1;
+                    func_801072A0_w04();
+                    var_s2 = D_8011E054_w04 + 1;
                 } else {
-                    var_s2 = D_8011E2D8_w06 + 1;
+                    var_s2 = D_8011E058_w04 + 1;
                 }
                 sp18[GwPlayer[GwSystem.current_player_index].pad] = 0x400;
             } else {
@@ -2712,40 +2596,41 @@ s32 func_80107438_w06(u8 *arg0, s32 arg1, s32 arg2) {
     }
 }
 
-s32 func_80107704_w06(u8 *arg0) {
-    return func_80107438_w06(arg0, 0, 1);
+s32 func_80107704_w04(u8 *arg0) {
+    return func_80107438_w04(arg0, 0, 1);
 }
 
-s32 func_80107724_w06(u8 *arg0) {
-    return func_80107438_w06(arg0, 1, 0);
+s32 func_80107724_w04(u8 *arg0) {
+    return func_80107438_w04(arg0, 1, 0);
 }
 
-void func_80107744_w06(void) {
-    GwSystem.current_board_index = 5;
+void func_80107744_w04(void) {
+    GwSystem.current_board_index = 3;
     omInitObjMan(0xA, 0);
     omOvlGotoEx(0x47, 0, 0x192);
 }
 
-void func_80107780_w06(void) {
+void func_80107780_w04(void) {
     omInitObjMan(0xA, 0);
     MBMoveMasuSet(0, 0, 0);
     MBMoveMasuSet(1, 0, 0);
     MBMoveMasuSet(2, 0, 0);
     MBMoveMasuSet(3, 0, 0);
     GWBoardFlagSet(3);
-    func_801059F8_w06();
+    func_801059F8_w04();
     GwSystem.bank_coins = 0;
     GwSystem.slow_dice_flags = 0;
     GwSystem.forceShopHost = 0;
     GwSystem.wackyWatchUsedState = 0;
-    GwSystem.boardData.halfWordBytes[0] = 0;
-    GwSystem.boardData.halfWordBytes[1] = 5;
-    GwSystem.boardData.halfWordBytes[2] = -1;
-    func_8011A2A0_w06();
+    GwSystem.boardData.halfWordBytes[0] = 1;
+    GwSystem.boardData.halfWordBytes[1] = 1;
+    GwSystem.boardData.halfWordBytes[2] = 1;
+    GwSystem.boardData.halfWordBytes[3] = 0;
+    GwSystem.boardData.halfWordBytes[4] = 0;
     omOvlReturnEx(1);
 }
 
-void func_80107828_w06(void) {
+void func_80107828_w04(void) {
     Vec sp10;
     SpaceData *space;
     s32 i;
@@ -2753,165 +2638,157 @@ void func_80107828_w06(void) {
     omInitObjMan(0xA0, 0x28);
     Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
     Hu3DGLightColorSet(2, 0xC8, 0xC8, 0xC8);
-    MBObjectSetup(0x12, 0x23F, 0x14, 0);
-    MBMasuBlockTblExtSet(D_8011B60C_w06);
-    MBMasuBlockTblSet(D_8011B610_w06);
-    space = MBMasuGet(0x6C);
-    MBVecDirGet(&space->coords, &MBMasuGet(0x90)->coords, &sp10);
+    MBObjectSetup(0xC, 0x23D, 0xE, 0);
+    MBMasuBlockTblExtSet(D_8011B7CC_w04);
+    MBMasuBlockTblSet(D_8011B7D0_w04);
+    space = MBMasuGet(0x71);
+    MBVecDirGet(&space->coords, &MBMasuGet(0x75)->coords, &sp10);
     MBMasuArrowAngleAdd(MBVecAngleGet(&sp10) + 180.0f);
-    space = MBMasuGet(0x79);
-    MBVecDirGet(&space->coords, &MBMasuGet(0x8C)->coords, &sp10);
+    space = MBMasuGet(0x8C);
+    MBVecDirGet(&space->coords, &MBMasuGet(0x76)->coords, &sp10);
     MBMasuArrowAngleAdd(MBVecAngleGet(&sp10) + 180.0f);
-    MBItemHookSet(0, &func_8010F20C_w06); // boo event
-    MBItemHookSet(1, &func_8011068C_w06); // magic lamp
-    MBItemHookSet(9, &func_80110A54_w06);
-    MBItemHookSet(2, &func_80110AC0_w06); // warp block
-    MBItemHookSet(3, &func_80118FF0_w06); // plunder chest
-    MBItemHookSet(4, &func_80111CCC_w06); // activate bowser suit
-    MBItemHookSet(5, &func_80111F58_w06); // when landing on a space as bowser suit
-    MBItemHookSet(6, &func_80110FB4_w06); // mushroom/golden mushroom/bowser suit
-    MBItemHookSet(7, &func_80111524_w06); // dueling glove/boo bell (?)
-    MBItemHookSet(8, &func_80111870_w06);
-    MBItemHookSet(0xA, &func_801182EC_w06); // poison mushroom
-    MBItemHookSet(0xB, &func_80118B6C_w06); // reverse mushroom
-    MBItemHookSet(0xE, &func_801123A8_w06);
-    MBItemHookSet(0xF, &func_80112668_w06);  // bowser phone
-    MBItemHookSet(0x10, &func_80112A08_w06); // lucky lamp
-    MBItemHookSet(0x11, &func_80113404_w06); // skeleton key throw away event
-    MBItemHookSet(0x12, &func_80113F5C_w06); // boo repellant/koopa kard thrown away
-    MBItemHookSet(0x13, &func_80114C74_w06); // barter box
-    MBItemHookSet(0x14, &func_80115F10_w06); // game guy coin
-    MBItemHookSet(0x15, &func_80116F10_w06); // wacky watch
-    MBItemHookSet(0xC, &func_8011813C_w06);
-    MBItemHookSet(0xD, &func_80118A34_w06);
-    MBComItemDecideHookSet(func_8011AB80_w06);
+    MBItemHookSet(0, &func_8010DA1C_w04);
+    MBItemHookSet(1, &func_8010EE9C_w04);
+    MBItemHookSet(9, &func_8010F264_w04);
+    MBItemHookSet(2, &func_8010F2D0_w04);
+    MBItemHookSet(3, &func_80117800_w04);
+    MBItemHookSet(4, &func_801104DC_w04);
+    MBItemHookSet(5, &func_80110768_w04);
+    MBItemHookSet(6, &func_8010F7C4_w04);
+    MBItemHookSet(7, &func_8010FD34_w04);
+    MBItemHookSet(8, &func_80110080_w04);
+    MBItemHookSet(0xA, &func_80116AFC_w04);
+    MBItemHookSet(0xB, &func_8011737C_w04);
+    MBItemHookSet(0xE, &func_80110BB8_w04);
+    MBItemHookSet(0xF, &func_80110E78_w04);
+    MBItemHookSet(0x10, &func_80111218_w04);
+    MBItemHookSet(0x11, &func_80111C14_w04);
+    MBItemHookSet(0x12, &func_8011276C_w04);
+    MBItemHookSet(0x13, &func_80113484_w04);
+    MBItemHookSet(0x14, &func_80114720_w04);
+    MBItemHookSet(0x15, &func_80115720_w04);
+    MBItemHookSet(0xC, &func_8011694C_w04);
+    MBItemHookSet(0xD, &func_80117244_w04);
+    MBComItemDecideHookSet(func_8011AD48_w04);
 
-    for (i = 0; i < ARRAY_COUNT(D_8011B5C0_w06); i++) {
-        MBMasuStarSet(i, D_8011B5C0_w06[i]);
+    for (i = 0; i < 8; i++) {
+        MBMasuStarSet(i, D_8011B780_w04[i]);
     }
-
     if (GWBoardFlagCheck(0xE) != 0) {
         GWBoardFlagClear(0xE);
-        func_80105B00_w06();
+        func_80105B00_w04();
     }
 
-    func_80105B8C_w06();
-    func_80107D98_w06();
-    func_80107F64_w06();
-    func_80108228_w06();
-    func_801083FC_w06();
-    func_8010866C_w06();
-    func_801086EC_w06();
-    func_80108764_w06();
-    func_801087DC_w06();
-    func_80108950_w06();
-    func_80108A2C_w06();
-    func_8011A1E8_w06();
-    func_80117E30_w06();
+    func_80105B8C_w04();
+    func_80107D70_w04();
+    func_80107F3C_w04();
+    func_80108200_w04();
+    func_801083D4_w04();
+    func_80108644_w04();
+    func_801086C4_w04();
+    func_8010886C_w04();
+    func_80116640_w04();
     func_800EBDAC_shared_board();
 }
 
-void func_80107B54_w06(void) {
-    HuAudSeqPlay(0x1D);
-    D_800CE198_main = 0x1D;
-    func_800F8D6C_shared_board(0x1D);
+void func_80107B34_w04(void) {
+    HuAudSeqPlay(0x1B);
+    D_800CE198_main = 0x1B;
+    func_800F8D6C_shared_board(0x1B);
     Hu3DCamInit(2);
-    func_80107828_w06();
-    MBMasuEventTblAdd(D_8011C9BC_w06);
-    MBMasuEventTblAdd(D_8011CC58_w06);
-    MBHatenaFuncSet(&func_8011A110_w06);
-    MBMasuEventTblAdd(D_8011CA34_w06);
-    MBMasuEventTblAdd(D_8011CBC8_w06);
+    func_80107828_w04();
+    MBMasuEventTblAdd(D_8011C77C_w04);
+    MBMasuEventTblAdd(D_8011C9C0_w04);
+    MBHatenaFuncSet(&func_8011A858_w04);
+    MBMasuEventTblAdd(D_8011C7F4_w04);
+    MBMasuEventTblAdd(D_8011C988_w04);
     MBStart(0);
 }
 
-void func_80107BD8_w06(void) {
+void func_80107BB8_w04(void) {
     Hu3DCamInit(1);
-    func_80107828_w06();
+    func_80107828_w04();
     MBStart(1);
 }
 
-void func_80107C04_w06(s16 arg0) {
+void func_80107BE4_w04(s16 arg0) {
     Object *obj;
 
-    if (D_8011E278_w06[arg0] != NULL) {
+    if (D_8011DFF8_w04[arg0] != NULL) {
         return;
     }
     obj = MBModelCreate(0x3A, NULL);
     func_800461B4_main(obj->omObj1->model[0]);
-    if (D_8011E270_w06 == NULL) {
-        D_8011E270_w06 = obj;
+    if (D_8011DFF0_w04 == NULL) {
+        D_8011DFF0_w04 = obj;
     }
-    D_8011E278_w06[arg0] = obj;
+    D_8011DFF8_w04[arg0] = obj;
     obj->flags |= 2;
     HuVecCopyXYZ(&obj->scale, 0.6f, 0.6f, 0.6f);
     obj->velocity.x = 10.0f;
-    D_8011E298_w06[arg0] = func_800EDB98_shared_board(obj, 6.0f, 2.0f);
-    HuVecCopy3F(&obj->coords, &MBMasuGet(D_8011B688_w06[arg0])->coords);
-    func_800D771C_shared_board(0xB, obj, D_8011B640_w06[arg0][0], D_8011B640_w06[arg0][1]);
+    D_8011E018_w04[arg0] = func_800EDB98_shared_board(obj, 6.0f, 2.0f);
+    HuVecCopy3F(&obj->coords, &MBMasuGet(D_8011B82C_w04[arg0])->coords);
+    func_800D771C_shared_board(0xB, obj, D_8011B7E4_w04[arg0][0], D_8011B7E4_w04[arg0][1]);
 }
 
-void func_80107D2C_w06(void) {
+void func_80107D0C_w04(void) {
     s32 i;
 
     for (i = 0; i < 8; i++) {
-        Process *prc = D_8011E298_w06[i];
-
-        if (prc != NULL) {
-            omDelPrcObj(prc);
-            D_8011E298_w06[i] = NULL;
-        }
-    }
-    func_80108A10_w06();
-}
-
-void func_80107D98_w06(void) {
-    s32 i;
-
-    D_8011E270_w06 = 0;
-    for (i = 0; i < 8; i++) {
-        D_8011E278_w06[i] = 0;
-        D_8011E298_w06[i] = NULL;
-        MBKinokoEffKillHookSet(func_80107D2C_w06);
-        if (!GWBoardFlagCheck(D_8011B698_w06[i])) {
-            func_80107C04_w06(i);
+        if (D_8011E018_w04[i] != NULL) {
+            omDelPrcObj(D_8011E018_w04[i]);
+            D_8011E018_w04[i] = NULL;
         }
     }
 }
 
-void func_80107E44_w06(s16 arg0) {
+void func_80107D70_w04(void) {
+    s32 i;
+
+    D_8011DFF0_w04 = 0;
+    for (i = 0; i < 8; i++) {
+        D_8011DFF8_w04[i] = 0;
+        D_8011E018_w04[i] = NULL;
+        MBKinokoEffKillHookSet(func_80107D0C_w04);
+        if (!GWBoardFlagCheck(D_8011B83C_w04[i])) {
+            func_80107BE4_w04(i);
+        }
+    }
+}
+
+void func_80107E1C_w04(s16 arg0) {
     Object *obj;
 
-    if (D_8011E2E0_w06[arg0] != NULL) {
+    if (D_8011E060_w04[arg0] != NULL) {
         return;
     }
-    if (D_8011E2DC_w06 == NULL) {
+    if (D_8011E05C_w04 == NULL) {
         obj = MBModelCreate(0xA, NULL);
         func_8001FA68_main(obj->omObj1->model[0]);
         func_8001FA68_main(obj->omObj2->model[0]);
-        D_8011E2DC_w06 = obj;
+        D_8011E05C_w04 = obj;
     } else {
-        obj = MBModelLinkCreate(D_8011E2DC_w06);
+        obj = MBModelLinkCreate(D_8011E05C_w04);
     }
     MBModelDispOff(obj);
-    D_8011E2E0_w06[arg0] = obj;
+    D_8011E060_w04[arg0] = obj;
     obj->flags |= 2;
     obj->velocity.x = 15.0f;
-    HuVecCopy3F(&obj->coords, &MBMasuGet(D_8011B6A8_w06[arg0])->coords);
-    func_800D771C_shared_board(0xA, obj, D_8011B660_w06[arg0][0], D_8011B660_w06[arg0][1]);
+    HuVecCopy3F(&obj->coords, &MBMasuGet(D_8011B84C_w04[arg0])->coords);
+    func_800D771C_shared_board(0xA, obj, D_8011B804_w04[arg0][0], D_8011B804_w04[arg0][1]);
 }
 
-void func_80107F64_w06(void) {
+void func_80107F3C_w04(void) {
     s32 i;
 
-    D_8011E2DC_w06 = 0;
+    D_8011E05C_w04 = 0;
     for (i = 0; i <= 0; i++) {
-        D_8011E2E0_w06[i] = NULL;
-        func_80107E44_w06(i);
+        D_8011E060_w04[i] = NULL;
+        func_80107E1C_w04(i);
     }
 }
 
-void func_80107FC0_w06(void) {
+void func_80107F98_w04(void) {
     s32 i;
     s32 j;
     s32 count;
@@ -2922,105 +2799,105 @@ void func_80107FC0_w06(void) {
             count = 5;
         }
         for (j = 0; j < count; j++) {
-            MBModelDispOn(D_8011E2E8_w06[i * 5 + j]);
+            MBModelDispOn(D_8011E068_w04[i * 5 + j]);
         }
         for (; j < 5; j++) {
-            MBModelDispOff(D_8011E2E8_w06[i * 5 + j]);
+            MBModelDispOff(D_8011E068_w04[i * 5 + j]);
         }
     }
 }
 
-void func_801080BC_w06(s16 arg0) {
+void func_80108094_w04(s16 arg0) {
     Object *obj;
 
-    if (D_8011E2E8_w06[arg0] != NULL) {
+    if (D_8011E068_w04[arg0] != NULL) {
         return;
     }
-    if (D_8011E2E4_w06 == NULL) {
+    if (D_8011E064_w04 == NULL) {
         obj = MBModelCreate(0x1E, NULL);
         MBModelTempAllocFree(obj);
-        D_8011E2E4_w06 = obj;
+        D_8011E064_w04 = obj;
     } else {
-        obj = MBModelLinkCreate(D_8011E2E4_w06);
+        obj = MBModelLinkCreate(D_8011E064_w04);
     }
-    D_8011E2E8_w06[arg0] = obj;
+    D_8011E068_w04[arg0] = obj;
     obj->flags |= 2;
-    HuVecCopy3F(&obj->coords, &MBMasuGet(D_8011B6AC_w06[arg0 / 5])->coords);
-    HuVecAdd(&obj->coords, &D_8011B6B0_w06[arg0 % 5], &obj->coords);
-    obj->omObj1->rot.x = D_8011B6EC_w06[arg0 % 5].x;
-    obj->omObj1->rot.z = D_8011B6EC_w06[arg0 % 5].z;
+    HuVecCopy3F(&obj->coords, &MBMasuGet(D_8011B850_w04[arg0 / 5])->coords);
+    HuVecAdd(&obj->coords, &D_8011B854_w04[arg0 % 5], &obj->coords);
+    obj->omObj1->rot.x = D_8011B890_w04[arg0 % 5].x;
+    obj->omObj1->rot.z = D_8011B890_w04[arg0 % 5].z;
     MBModelDispOff(obj);
 }
 
-void func_80108228_w06(void) {
+void func_80108200_w04(void) {
     s32 i;
 
-    D_8011E2E4_w06 = 0;
+    D_8011E064_w04 = 0;
     for (i = 0; i < 0xA; i++) {
-        D_8011E2E8_w06[i] = NULL;
-        func_801080BC_w06(i);
+        D_8011E068_w04[i] = NULL;
+        func_80108094_w04(i);
     }
-    func_80107FC0_w06();
+    func_80107F98_w04();
 }
 
-void func_80108290_w06(s16 arg0) {
+void func_80108268_w04(s16 arg0) {
     Object *obj;
     s32 unk[2]; // unreferenced; preserves an 8-byte stack slot
 
-    if (D_8011E314_w06[arg0] != NULL) {
+    if (D_8011E094_w04[arg0] != NULL) {
         return;
     }
-    if (D_8011E310_w06 == NULL) {
+    if (D_8011E090_w04 == NULL) {
         s32 board = GwSystem.current_board_index;
 
-        obj = MBModelCreate(D_8011B72C_w06[board], D_8011B768_w06[board]);
+        obj = MBModelCreate(D_8011B8D0_w04[board], D_8011B90C_w04[board]);
         MBModelTempAllocFree(obj);
-        D_8011E310_w06 = obj;
+        D_8011E090_w04 = obj;
     } else {
-        obj = MBModelLinkCreate(D_8011E310_w06);
+        obj = MBModelLinkCreate(D_8011E090_w04);
     }
-    D_8011E314_w06[arg0] = obj;
+    D_8011E094_w04[arg0] = obj;
     obj->flags |= 2;
     func_8001C814_main(obj->omObj1->model[0], 2, 1);
-    HuVecCopy3F(&obj->coords, &MBMasuGet(D_8011B728_w06[arg0])->coords);
+    HuVecCopy3F(&obj->coords, &MBMasuGet(D_8011B8CC_w04[arg0])->coords);
     {
-        SpaceData *masuA = MBMasuGet(D_8011B680_w06[arg0][0]);
-        SpaceData *masuB = MBMasuGet(D_8011B680_w06[arg0][1]);
+        SpaceData *masuA = MBMasuGet(D_8011B824_w04[arg0][0]);
+        SpaceData *masuB = MBMasuGet(D_8011B824_w04[arg0][1]);
 
         MBVecDirGet(&masuB->coords, &masuA->coords, &obj->rot);
     }
-    func_800D771C_shared_board(0xC, obj, D_8011B678_w06[arg0][0], D_8011B678_w06[arg0][1]);
+    func_800D771C_shared_board(0xC, obj, D_8011B81C_w04[arg0][0], D_8011B81C_w04[arg0][1]);
 }
 
-void func_801083FC_w06(void) {
+void func_801083D4_w04(void) {
     s32 i;
 
-    D_8011E310_w06 = 0;
+    D_8011E090_w04 = 0;
     for (i = 0; i < 2; i++) {
-        D_8011E314_w06[i] = NULL;
-        func_80108290_w06(i);
+        D_8011E094_w04[i] = NULL;
+        func_80108268_w04(i);
     }
 }
 
-void func_8010845C_w06(void) {
-    HuPrcSleep(D_8011B7C8_w06[GwSystem.current_board_index]);
-    HuAudFXPlay((s16)D_8011B7A4_w06[GwSystem.current_board_index]);
+void func_80108434_w04(void) {
+    HuPrcSleep(D_8011B96C_w04[GwSystem.current_board_index]);
+    HuAudFXPlay((s16)D_8011B948_w04[GwSystem.current_board_index]);
     omDelPrcObj(NULL);
 }
 
-void func_801084B8_w06(s32 arg0, s32 arg1) {
-    MBMotionSet(D_8011E314_w06[arg0], arg1 - 1, 0);
-    func_8001C814_main(D_8011E314_w06[arg0]->omObj1->model[0], 5, 0);
-    if (D_8011B780_w06[GwSystem.current_board_index] != -1) {
-        HuAudFXPlay(D_8011B780_w06[GwSystem.current_board_index]);
+void func_80108490_w04(s32 arg0, s32 arg1) {
+    MBMotionSet(D_8011E094_w04[arg0], arg1 - 1, 0);
+    func_8001C814_main(D_8011E094_w04[arg0]->omObj1->model[0], 5, 0);
+    if (D_8011B924_w04[GwSystem.current_board_index] != -1) {
+        HuAudFXPlay(D_8011B924_w04[GwSystem.current_board_index]);
     }
 
-    if (D_8011B7A4_w06[GwSystem.current_board_index] != -1) {
-        omAddPrcObj(func_8010845C_w06, 0x1000, 0, 0);
+    if (D_8011B948_w04[GwSystem.current_board_index] != -1) {
+        omAddPrcObj(func_80108434_w04, 0x1000, 0, 0);
     }
 }
 
-void func_80108580_w06(void) {
+void func_80108558_w04(void) {
     s32 index;
     s32 sleep;
 
@@ -3039,141 +2916,5434 @@ void func_80108580_w06(void) {
     }
 
     HuPrcSleep(sleep);
-    func_8001C814_main(D_8011E314_w06[index]->omObj1->model[0], 1, 4);
+    func_8001C814_main(D_8011E094_w04[index]->omObj1->model[0], 1, 4);
 
-    if (D_8011B7EC_w06[GwSystem.current_board_index] != -1) {
-        HuAudFXPlay(D_8011B7EC_w06[GwSystem.current_board_index]);
+    if (D_8011B990_w04[GwSystem.current_board_index] != -1) {
+        HuAudFXPlay(D_8011B990_w04[GwSystem.current_board_index]);
     }
 
     omDelPrcObj(NULL);
 }
 
-void func_80108630_w06(s32 arg) {
-    Process *temp = omAddPrcObj(func_80108580_w06, 0x1000, 0, 0);
+void func_80108608_w04(s32 arg) {
+    Process *prc = omAddPrcObj(func_80108558_w04, 0x1000, 0, 0);
 
-    temp->user_data = (void *)arg;
+    prc->user_data = (void *)arg;
 }
 
-void func_8010866C_w06(void) {
+void func_80108644_w04(void) {
     s32 i;
 
-    D_8011E310_w06 = 0;
+    D_8011E090_w04 = 0;
     for (i = 0; i < 2; i++) {
-        func_800D7790_shared_board(8, &MBMasuGet(D_8011B810_w06[i])->coords,
-                                         D_8011B668_w06[i][0], D_8011B668_w06[i][1]);
+        func_800D7790_shared_board(8, &MBMasuGet(D_8011B9B4_w04[i])->coords,
+                                   D_8011B80C_w04[i][0], D_8011B80C_w04[i][1]);
     }
 }
 
-void func_801086EC_w06(void) {
+void func_801086C4_w04(void) {
     s32 i;
 
     for (i = 0; i < 2; i++) {
-        func_800D7790_shared_board(9, &MBMasuGet(D_8011B814_w06[i])->coords,
-                                         D_8011B670_w06[i][0], D_8011B670_w06[i][1]);
+        func_800D7790_shared_board(9, &MBMasuGet(D_8011B9B8_w04[i])->coords,
+                                   D_8011B814_w04[i][0], D_8011B814_w04[i][1]);
     }
 }
 
-void func_80108764_w06(void) {
-    SpaceData *masu = MBMasuGet(0x8B);
-    Object *obj = MBModelFileCreate(0x130186, -1, 1.0f, 0, 0);
-
-    MBModelTempAllocFree(obj);
-    D_8011B818_w06 = obj;
-    obj->flags |= 2;
-    HuVecCopy3F(&obj->coords, &masu->coords);
-}
-
-void func_801087DC_w06(void) {
+void func_8010873C_w04(void) {
     s32 i;
-    Object *obj;
 
     for (i = 0; i < 3; i++) {
-        if (i == 0) {
-            obj = MBModelFileCreate(0x130185, -1, 1.0f, 0, 0);
-            MBModelTempAllocFree(obj);
-            D_8011B824_w06 = obj;
+        if (GwSystem.boardData.halfWordBytes[D_8011B9C4_w04[i]] == 0) {
+            D_8011E09C_w04[i]->rot.x = 0.0f;
+            D_8011E09C_w04[i]->rot.z = -1.0f;
         } else {
-            obj = MBModelLinkCreate(D_8011B824_w06);
+            D_8011E09C_w04[i]->rot.x = 0.0f;
+            D_8011E09C_w04[i]->rot.z = 1.0f;
         }
-        D_8011E31C_w06[i] = obj;
-        obj->flags |= 2;
-        HuVecCopy3F(&obj->coords, &MBMasuGet(D_8011B81C_w06[i])->coords);
     }
 }
 
-void func_801088B4_w06(void) {
-    Hu3DAnimBankSet(D_8011B82C_w06, (u8)GwSystem.boardData.bytes[3]);
-    Hu3DModelRemakeStatic(D_8011E328_w06->omObj1->model[0]);
-}
-
-void func_801088F4_w06(void) {
-    if (D_8011B828_w06 != NULL) {
-        DataClose(D_8011B828_w06);
-        D_8011B828_w06 = NULL;
-    }
-    if (D_8011B82C_w06 != -1) {
-        func_80033430_main(D_8011B82C_w06);
-        D_8011B82C_w06 = -1;
-    }
-}
-
-// Keep rodata definitions interleaved with functions to preserve the original constant order.
-const u8 D_8011E0E0_w06[4] = { 1, 2, 4, 8 };
-
-void func_80108950_w06(void) {
-    Object *obj = MBModelFileCreate(0x130189, -1, 1.0f, 0, 0);
-    void *data;
-
-    D_8011E328_w06 = obj;
-    obj->flags |= 2;
-    HuVecCopy3F(&obj->coords, &MBMasuGet(0x94)->coords);
-    data = DataRead(0x13018A);
-    D_8011B828_w06 = data;
-    D_8011B82C_w06 = Hu3DAnimCreate(Hu3DData[obj->omObj1->model[0]].hmf, data, 0, "count_1_DEF");
-    func_801088B4_w06();
-}
-
-void func_80108A10_w06(void) {
-    func_801088F4_w06();
-}
-
-void func_80108A2C_w06(void) {
-    s32 i;
+void func_801087CC_w04(s32 index) {
     Object *obj;
-    SpaceData *masuA;
 
-    for (i = 0; i < 2; i++) {
-        Object **objArr = D_8011E32C_w06;
-        s16 *coordsArr = D_8011B830_w06;
-        SpacePair *masuAArr = D_8011B834_w06;
-        SpacePair *masuBArr = (SpacePair *)&D_8011B834_w06[0][1];
-
-        if (i == 0) {
-            obj = MBModelFileCreate(0x130187, -1, 1.0f, 0, 0);
-            MBModelTempAllocFree(obj);
-            D_8011B83C_w06 = obj;
-        } else {
-            obj = MBModelLinkCreate(D_8011B83C_w06);
-        }
-        objArr[i] = obj;
+    if (D_8011E09C_w04[index] == NULL) {
+        obj = MBModelFileCreate(0x130177, 0, 3.0f, 0, NULL);
+        MBModelTempAllocFree(obj);
+        D_8011E09C_w04[index] = obj;
         obj->flags |= 2;
-        masuA = MBMasuGet(coordsArr[i]);
-        HuVecCopy3F(&obj->coords, &masuA->coords);
-        masuA = MBMasuGet(masuAArr[i][0]);
-        MBVecDirGet(&masuA->coords, &MBMasuGet(masuBArr[i][0])->coords, &obj->rot);
-        if (GwSystem.boardData.halfWordBytes[0] == i) {
-            Hu3DMotionTimeSet(obj->omObj1->model[0], 1000.0f);
-        }
-        func_8001C814_main(obj->omObj1->model[0], 6, 1);
+        HuVecCopy3F(&obj->coords, &MBMasuGet(D_8011B9BC_w04[index])->coords);
     }
 }
 
-void func_80108B9C_w06(void) {
-    MBMoveNextMasuSet(-1, 1, 0xA);
-    MBMoveBackMasuSet(-1, 1, 0xA);
+void func_8010886C_w04(void) {
+    s32 i;
+
+    for (i = 0; i < 3; i++) {
+        D_8011E09C_w04[i] = NULL;
+        func_801087CC_w04(i);
+    }
+    func_8010873C_w04();
 }
 
-void func_80108BD0_w06(void) {
+void func_801088C8_w04(void) {
+    MBMoveNextMasuSet(-1, 1, 0x15);
+    MBMoveBackMasuSet(-1, 1, 0x15);
+}
+
+void func_801088FC_w04(void) {
+    func_80116024_w04(D_8011BFB8_w04, D_8011BFCC_w04, D_8011BA08_w04);
+    omDelPrcObj(NULL);
+}
+
+void func_80108934_w04(void) {
+    if (MBPlayerGet(-1)->rev & 0x80) {
+        func_80116024_w04(D_8011C000_w04, D_8011C014_w04, D_8011BA68_w04);
+    } else {
+        if (GwSystem.boardData.halfWordBytes[0] == 0) {
+            MBMoveNextMasuSet(-1, 4, 0);
+        } else {
+            MBMoveNextMasuSet(-1, 9, 0);
+        }
+    }
+    omDelPrcObj(NULL);
+}
+
+void func_801089B0_w04(void) {
+    GW_PLAYER *player = MBPlayerGet(-1);
+    s16 masu = MBMasuLinkMasuIdGet(player->blink, player->bidx);
+
+    if (masu == 0x5C && !(player->rev & 0x80)) {
+        MBMoveNextMasuSet(-1, 6, 0);
+        player->rev &= ~1;
+    } else {
+        func_80116024_w04(D_8011C048_w04, D_8011C05C_w04, D_8011BAEC_w04);
+    }
+}
+
+void func_80108A58_w04(void) {
+    if (MBPlayerGet(-1)->rev & 0x80) {
+        func_80116024_w04(D_8011C090_w04, D_8011C0A4_w04, D_8011BB40_w04);
+    } else {
+        if (GwSystem.boardData.halfWordBytes[1] == 0) {
+            MBMoveNextMasuSet(-1, 7, 0);
+        } else {
+            MBMoveNextMasuSet(-1, 8, 0);
+        }
+    }
+    omDelPrcObj(NULL);
+}
+
+void func_80108AD4_w04(void) {
+    GW_PLAYER *player = MBPlayerGet(-1);
+
+    if (GwSystem.boardData.halfWordBytes[4] != 0) {
+        MBMoveNextMasuSet(-1, 9, 5);
+        player->rev |= 1;
+    } else {
+        func_80116024_w04(D_8011C0D8_w04, D_8011C0EC_w04, D_8011BBAC_w04);
+    }
+    omDelPrcObj(NULL);
+}
+
+void func_80108B4C_w04(void) {
+    GW_PLAYER *player = MBPlayerGet(-1);
+
+    if (GwSystem.boardData.halfWordBytes[4] != 0) {
+        MBMoveNextMasuSet(-1, 0xB, 3);
+        player->rev |= 1;
+    } else if (player->rev & 0x80) {
+        func_80116024_w04(D_8011C120_w04, D_8011C134_w04, D_8011BC24_w04);
+    } else if (GwSystem.boardData.halfWordBytes[2] == 0) {
+        MBMoveNextMasuSet(-1, 0xC, 0);
+    } else {
+        MBMoveNextMasuSet(-1, 0xD, 0);
+    }
+    omDelPrcObj(NULL);
+}
+
+void func_80108C00_w04(void) {
+    GW_PLAYER *player = MBPlayerGet(-1);
+    s16 masu = MBMasuLinkMasuIdGet(player->blink, player->bidx);
+
+    if (masu == 0x39 && !(player->rev & 0x80)) {
+        MBMoveNextMasuSet(-1, 1, 0);
+        player->rev &= ~1;
+    } else {
+        func_80116024_w04(D_8011C168_w04, D_8011C17C_w04, D_8011BC84_w04);
+    }
+}
+
+void func_80108CA8_w04(void) {
+    GW_PLAYER *player = MBPlayerGet(-1);
+
+    if ((player->rev & 0x80) && mbWalkNum != 0) {
+        func_80116024_w04(D_8011C1B0_w04, D_8011C1C4_w04, D_8011BCF0_w04);
+    }
+}
+
+void func_80108D00_w04(void) {
+    GW_PLAYER *player = MBPlayerGet(-1);
+
+    if ((player->rev & 0x80) && mbWalkNum != 0) {
+        func_80116024_w04(D_8011C1F8_w04, D_8011C20C_w04, D_8011BD38_w04);
+    }
+}
+
+void func_80108D58_w04(void) {
+    GW_PLAYER *player = MBPlayerGet(-1);
+
+    if ((player->rev & 0x80) && mbWalkNum != 0) {
+        func_80116024_w04(D_8011C240_w04, D_8011C254_w04, D_8011BD68_w04);
+    }
+}
+
+void func_80108DB0_w04(void) {
+    GW_PLAYER *player = MBPlayerGet(-1);
+
+    if ((player->rev & 0x80) && mbWalkNum != 0) {
+        func_80116024_w04(D_8011C288_w04, D_8011C29C_w04, D_8011BDE0_w04);
+    }
+}
+
+void func_80108E08_w04(void) {
+    GW_PLAYER *player = MBPlayerGet(-1);
+
+    if ((player->rev & 0x80) && mbWalkNum != 0) {
+        func_80116024_w04(D_8011C2D0_w04, D_8011C2E4_w04, D_8011BE28_w04);
+    }
+}
+
+void func_80108E60_w04(void) {
+    GW_PLAYER *player = MBPlayerGet(-1);
+
+    if ((player->rev & 0x80) && mbWalkNum != 0) {
+        func_80116024_w04(D_8011C318_w04, D_8011C32C_w04, D_8011BE88_w04);
+    }
+}
+
+void func_80108EB8_w04(void) {
+    GW_PLAYER *player = MBPlayerGet(-1);
+
+    if ((player->rev & 0x80) && mbWalkNum != 0) {
+        func_80116024_w04(D_8011C360_w04, D_8011C374_w04, D_8011BF0C_w04);
+    }
+}
+
+void func_80108F10_w04(void) {
+    GW_PLAYER *player = MBPlayerGet(CUR_PLAYER);
+
+    if (MBMasuLinkMasuIdGet(player->blink, player->bidx) == 0x28) {
+        MBMoveNextMasuSet(-1, 0xD, 0xB);
+    }
+}
+
+void func_80108F70_w04(void) {
+    GW_PLAYER *player = MBPlayerGet(CUR_PLAYER);
+
+    if (MBMasuLinkMasuIdGet(player->blink, player->bidx) == 0x5B) {
+        MBMoveNextMasuSet(-1, 1, 0x19);
+    }
+}
+
+void func_80108FD0_w04(void) {
+    GW_PLAYER *player = MBPlayerGet(CUR_PLAYER);
+
+    if (MBMasuLinkMasuIdGet(player->blink, player->bidx) == 0x41) {
+        MBMoveNextMasuSet(-1, 1, 0x19);
+    }
+}
+
+void func_80109030_w04(void) {
+    GW_PLAYER *player = MBPlayerGet(CUR_PLAYER);
+
+    if (MBMasuLinkMasuIdGet(player->blink, player->bidx) == 0x57) {
+        MBMoveNextMasuSet(-1, 1, 0x12);
+    }
+}
+
+void func_80109090_w04(void) {
+    GW_PLAYER *player = MBPlayerGet(CUR_PLAYER);
+
+    if (MBMasuLinkMasuIdGet(player->blink, player->bidx) == 0x51) {
+        MBMoveNextMasuSet(-1, 2, 7);
+    }
+}
+
+void func_801090F0_w04(void) {
+    GW_PLAYER *player = MBPlayerGet(CUR_PLAYER);
+
+    if (MBMasuLinkMasuIdGet(player->blink, player->bidx) == 0x70) {
+        MBMoveNextMasuSet(-1, 4, 4);
+    }
+}
+
+void func_80109150_w04(void) {
+    GW_PLAYER *player = MBPlayerGet(CUR_PLAYER);
+
+    if (MBMasuLinkMasuIdGet(player->blink, player->bidx) == 0xC) {
+        MBMoveNextMasuSet(-1, 4, 4);
+    }
+}
+
+void func_801091B0_w04(void) {
+    GW_PLAYER *player = MBPlayerGet(CUR_PLAYER);
+
+    if (MBMasuLinkMasuIdGet(player->blink, player->bidx) == 9) {
+        MBMoveNextMasuSet(-1, 6, 2);
+    }
+}
+
+void func_80109210_w04(void) {
+    GW_PLAYER *player = MBPlayerGet(CUR_PLAYER);
+
+    if (MBMasuLinkMasuIdGet(player->blink, player->bidx) == 9) {
+        MBMoveNextMasuSet(-1, 1, 0xE);
+    }
+}
+
+void func_80109270_w04(void) {
+    GW_PLAYER *player = MBPlayerGet(CUR_PLAYER);
+
+    if (MBMasuLinkMasuIdGet(player->blink, player->bidx) == 0xE) {
+        MBMoveNextMasuSet(-1, 6, 2);
+    }
+}
+
+void func_801092D0_w04(void) {
+    GW_PLAYER *player = MBPlayerGet(CUR_PLAYER);
+
+    if (MBMasuLinkMasuIdGet(player->blink, player->bidx) == 0x10) {
+        MBMoveNextMasuSet(-1, 0xC, 7);
+    }
+}
+
+void func_80109330_w04(void) {
+    GW_PLAYER *player = MBPlayerGet(CUR_PLAYER);
+
+    if (MBMasuLinkMasuIdGet(player->blink, player->bidx) == 0x4D) {
+        MBMoveNextMasuSet(-1, 2, 7);
+    }
+}
+
+void func_80109390_w04(void) {
+    GW_PLAYER *player = MBPlayerGet(CUR_PLAYER);
+
+    if (MBMasuLinkMasuIdGet(player->blink, player->bidx) == 0x42) {
+        MBMoveNextMasuSet(-1, 9, 6);
+    }
+}
+
+void func_801093F0_w04(void) {
+    GW_PLAYER *player = MBPlayerGet(CUR_PLAYER);
+
+    if (MBMasuLinkMasuIdGet(player->blink, player->bidx) == 0x58) {
+        MBMoveNextMasuSet(-1, 2, 4);
+    }
+}
+
+void func_80109450_w04(void) {
+    GW_PLAYER *player = MBPlayerGet(CUR_PLAYER);
+
+    if (MBMasuLinkMasuIdGet(player->blink, player->bidx) == 0x3D) {
+        MBMoveNextMasuSet(-1, 9, 6);
+    }
+}
+
+void func_801094B0_w04(void) {
+    GW_PLAYER *player = MBPlayerGet(CUR_PLAYER);
+
+    if (MBMasuLinkMasuIdGet(player->blink, player->bidx) == 0x19) {
+        MBMoveNextMasuSet(-1, 0xB, 4);
+    }
+}
+
+void func_80109510_w04(void) {
+    GW_PLAYER *player = MBPlayerGet(CUR_PLAYER);
+
+    if (MBMasuLinkMasuIdGet(player->blink, player->bidx) == 0x37) {
+        MBMoveNextMasuSet(-1, 1, 5);
+    }
+}
+
+void func_80109570_w04(void) {
+    GW_PLAYER *player = MBPlayerGet(CUR_PLAYER);
+
+    if (MBMasuLinkMasuIdGet(player->blink, player->bidx) == 0x1C) {
+        MBMoveNextMasuSet(-1, 0xB, 4);
+    }
+}
+
+void func_801095D0_w04(void) {
+    GW_PLAYER *player = MBPlayerGet(CUR_PLAYER);
+
+    if (MBMasuLinkMasuIdGet(player->blink, player->bidx) == 0x3A) {
+        MBMoveNextMasuSet(-1, 0xD, 0xB);
+    }
+}
+
+void func_80109630_w04(void) {
+    GW_PLAYER *player = MBPlayerGet(CUR_PLAYER);
+
+    if (MBMasuLinkMasuIdGet(player->blink, player->bidx) == 0x66) {
+        MBMoveBackMasuSet(-1, 1, 0x14);
+    }
+}
+
+s32 func_80109690_w04(s32 arg0) {
+    s32 var_s2 = 0;
+    s16 sp18[MB_MAX_PLAYERS];
+    u8 sp20[MB_MAX_PLAYERS];
+    s32 i;
+    s32 j;
+
+    *(Unk4Bytes *)sp20 = *(Unk4Bytes *)D_8011DDD0_w04;
+
+    for (i = 0; i < MB_MAX_PLAYERS; i++) {
+        if (i == GwSystem.current_player_index) {
+            if (GwPlayer[i].stat & 1) {
+                var_s2 = 1;
+                sp18[GwPlayer[i].pad] = 0x400;
+            } else {
+                HuWinActivePlayerSet(mbDlgWinId, sp20[GwPlayer[i].pad]);
+                sp18[GwPlayer[i].pad] = -1;
+            }
+        } else {
+            sp18[GwPlayer[i].pad] = 0;
+        }
+    }
+
+    if (var_s2 != 0) {
+        func_8005B63C_main(mbDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
+        for (j = 0; var_s2 != 0; j++) {
+            if (--var_s2 == 0) {
+                sp18[GwPlayer[GwSystem.current_player_index].pad] = -0x8000;
+            }
+            if (j == 0) {
+                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], func_800EDC40_shared_board());
+            } else {
+                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], 0x10);
+            }
+        }
+    } else {
+        HuWinComKeySet(sp18[0], sp18[1], sp18[2], sp18[3]);
+    }
+
+    HuWinChoiceGet(mbDlgWinId, 0, 1);
+}
+
+void func_801098A0_w04(void) {
+    GW_SYSTEM *loc;
+    GW_PLAYER *player;
+    s32 flag;
+    s32 choice;
+    void *prc;
+    s16 sp18;
+    s16 masuId;
+
+    loc = &GwSystem;
+    player = MBPlayerGet(GwSystem.current_player_index);
+    flag = 1;
+
+    if (MBMasuLinkMasuIdGet(player->blink, player->bidx) != 0x6F) {
+        if (MBMasuLinkMasuIdGet(player->blink, player->bidx) != 0x6A) {
+            if (MBItemFind(GwSystem.current_player_index, 1) != -1) {
+                func_800DBEC0_shared_board(GwSystem.current_player_index);
+                MBPlayerMotionSet(-1, -1, 2);
+                sp18 = MBMasuLinkMasuIdGet(player->clink, player->cidx);
+                switch (sp18) {
+                    case 0x70:
+                    case 0x88:
+                        func_800ED20C_shared_board(-1, 8, 0x6F);
+                        break;
+                    default:
+                        func_800ED20C_shared_board(-1, 8, 0x6A);
+                        break;
+                }
+                HuPrcChildLink(HuPrcCurrentGet(), MBCameraZoomMotStart(1.6f));
+                HuPrcChildWatch();
+                MBPlayerVibrate(-1, 1);
+
+                while (1) {
+                    MBDlgWinCreate(0x38, 0x4103);
+                    choice = func_80109690_w04(0);
+                    MBDlgWinClose();
+                    MBDlgWinKill();
+
+                    switch (choice) {
+                        case 0:
+                            MBDlgWinExec(0x38, 0x4104);
+                            GwPlayer[loc->current_player_index].itemNo[MBItemFind(loc->current_player_index, 1)] = -1;
+                            MBItemRemoveEmpty(GwSystem.current_player_index);
+                            MBStatusItemIconSprReinit(-1);
+                            sp18 = MBMasuLinkMasuIdGet(player->clink, player->cidx);
+                            switch (sp18) {
+                                case 0x70:
+                                    func_80108490_w04(0, 0);
+                                    break;
+                                case 0x88:
+                                    func_80108490_w04(0, 1);
+                                    break;
+                                case 0x69:
+                                    func_80108490_w04(1, 0);
+                                    break;
+                                default:
+                                    func_80108490_w04(1, 1);
+                                    break;
+                            }
+                            flag = 0;
+                            prc = MBPlayerVibrateObjCreate(-1, 2, 5);
+                            HuPrcSleep(0x14);
+                            MBPlayerVibrateObjKill(prc);
+                            break;
+                        case 1:
+                            MBDlgWinExec(0x38, 0x4105);
+                            break;
+                        case 2:
+                            func_80106AB0_w04();
+                            continue;
+                        default:
+                            break;
+                    }
+                    break;
+                }
+
+                func_800DB884_shared_board(loc->current_player_index);
+                HuPrcChildLink(HuPrcCurrentGet(), MBCameraZoomMotStart(1.3f));
+                HuPrcChildWatch();
+            } else {
+                MBDlgWinExec(-1, 0x4106);
+            }
+        }
+    }
+
+    if (flag != 0) {
+        masuId = MBMasuLinkMasuIdGet(player->clink, player->cidx);
+        switch (masuId) {
+            case 0x70:
+                MBMoveNextMasuSet(-1, 5, 0);
+                player->rev |= 1;
+                break;
+            case 0x88:
+                MBMoveNextMasuSet(-1, 3, 2);
+                player->rev &= ~1;
+                break;
+            case 0x69:
+                MBMoveNextMasuSet(-1, 0xE, 1);
+                player->rev |= 1;
+                break;
+            default:
+                MBMoveNextMasuSet(-1, 0xC, 2);
+                player->rev &= ~1;
+                break;
+        }
+    }
+
+    omDelPrcObj(NULL);
+}
+
+void func_80109CBC_w04(void) {
+}
+
+void func_80109CC4_w04(void) {
+}
+
+void func_80109CCC_w04(void) {
+}
+
+s32 func_80109CD4_w04(s32 arg0, s32 arg1) {
+    s32 var_s2 = 0;
+    s16 sp18[MB_MAX_PLAYERS];
+    u8 sp20[MB_MAX_PLAYERS];
+    s32 i;
+    s32 j;
+
+    *(Unk4Bytes *)sp20 = *(Unk4Bytes *)D_8011DDD0_w04;
+
+    for (i = 0; i < MB_MAX_PLAYERS; i++) {
+        if (i == GwSystem.current_player_index) {
+            if (GwPlayer[i].stat & 1) {
+                switch (arg0) {
+                    case 0:
+                        var_s2 = func_800EF0D8_shared_board(0) + 1;
+                        break;
+                    case 1:
+                        var_s2 = func_800EF0D8_shared_board(1) + 1;
+                        break;
+                    case 2:
+                        var_s2 = arg1 + 1;
+                        break;
+                    default:
+                        var_s2 = MBComTreeExec((void *)arg0) + 1;
+                        break;
+                }
+                sp18[GwPlayer[i].pad] = 0x400;
+            } else {
+                HuWinActivePlayerSet(mbDlgWinId, sp20[GwPlayer[i].pad]);
+                sp18[GwPlayer[i].pad] = -1;
+            }
+        } else {
+            sp18[GwPlayer[i].pad] = 0;
+        }
+    }
+
+    if (var_s2 != 0) {
+        func_8005B63C_main(mbDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
+        for (j = 0; var_s2 != 0; j++) {
+            if (--var_s2 == 0) {
+                sp18[GwPlayer[GwSystem.current_player_index].pad] = -0x8000;
+            }
+            if (j == 0) {
+                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], func_800EDC40_shared_board());
+            } else {
+                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], 5);
+            }
+        }
+    } else {
+        HuWinComKeySet(sp18[0], sp18[1], sp18[2], sp18[3]);
+    }
+
+    return HuWinChoiceGet(mbDlgWinId, 0, 1);
+}
+
+void func_80109F58_w04(s16 arg0, s32 arg1, s16 arg2, s32 arg3) {
+    s16 sp10[2];
+    s16 winId;
+
+    HuWinMesMaxSizeGet(1, sp10, arg1);
+    winId = MBWinCreate(arg0, sp10, arg2);
+    mbDlgWinId = winId;
+    HuWinMesSet(winId, arg1, -1, -1);
+    HuWinExAnimIn(winId);
+    func_800EBF98_shared_board(winId, arg3);
+    HuWinExAnimOut(winId, 0);
+    HuWinKill(winId);
+}
+
+void func_8010A014_w04(void) {
+    while (1) {
+        MBStatusItemAttrSet(GwSystem.current_player_index, MBItemSelNoGet(), 0x8000);
+        HuPrcVSleep();
+    }
+}
+
+void func_8010A054_w04(void) {
+    GW_SYSTEM *loc;
+    s16 spaceIdx;
+    s16 choice;
+
+    spaceIdx = MBMasuCurGet();
+    loc = &GwSystem;
+    spaceIdx = func_80105C30_w04(spaceIdx);
+    if (spaceIdx == 1) {
+        func_800DBEC0_shared_board(loc->current_player_index);
+        MBPlayerMotionSet(-1, -1, 2);
+        func_800ED20C_shared_board(-1, 8, func_801059D0_w04());
+        HuPrcChildLink(HuPrcCurrentGet(), MBCameraZoomMotStart(1.6f));
+        HuPrcChildWatch();
+        HuAudFXPlay(0x159);
+
+        if (GwPlayer[loc->current_player_index].itemTurn != 0) {
+            MBDlgWinInsertCreate(0x16, 0x4805, GwPlayer[loc->current_player_index].chr + 0x1C00, 0, 0, 0, 0);
+            func_800EC9DC_shared_board();
+            MBDlgWinClose();
+            MBDlgWinKill();
+        }
+
+        if (GwPlayer[loc->current_player_index].star >= 99) {
+            MBDlgWinExec(0x16, 0x4804);
+        } else {
+            if (GwPlayer[loc->current_player_index].coin >= 20) {
+            purchaseMenu:
+                MBDlgWinInsertCreate(0x16, 0x4800, GwPlayer[loc->current_player_index].chr + 0x1C00, 0, 0, 0, 0);
+                choice = func_80109CD4_w04(2, 0);
+                MBDlgWinClose();
+                MBDlgWinKill();
+
+                switch (choice) {
+                    case 0:
+                        MBCoinChangeCreate(loc->current_player_index, -20);
+                        MBCoinTakeCreate(loc->current_player_index, -20);
+                        HuPrcSleep(30);
+                        MBDlgWinExec(0x16, 0x4802);
+                        if (D_800A12D0_main != 0) {
+                            HuAudSeqStop();
+                            func_800039A4_main(D_800C9930_main, 60);
+                            D_800C9930_main = -1;
+                        } else {
+                            HuAudSeqFadeOut(0x5A);
+                        }
+                        func_80106A3C_w04(D_8011DFF0_w04);
+                        HuPrcSleep(30);
+                        func_800EDA58_shared_board();
+                        func_800FF7F0_shared_board(2);
+                        func_80109CC4_w04();
+                        return;
+                    case 1:
+                        if (D_800A12D0_main != 0) {
+                            func_800039A4_main(D_800C9930_main, 60);
+                            msmMusPlayDefault(D_800CE198_main);
+                            func_8004A670_main(0);
+                            func_8004A72C_main(0x5A);
+                            D_800C9930_main = -1;
+                        }
+                        MBDlgWinExec(0x16, 0x4803);
+                        func_800DB884_shared_board(loc->current_player_index);
+                        HuPrcChildLink(HuPrcCurrentGet(), MBCameraZoomMotStart(1.3f));
+                        HuPrcChildWatch();
+                        func_80109CC4_w04();
+                        return;
+                    case 2:
+                        func_80106AB0_w04();
+                        goto purchaseMenu;
+                    default:
+                        func_80109CC4_w04();
+                        return;
+                }
+            } else {
+                MBDlgWinExec(0x16, 0x4801);
+            }
+        }
+
+        if (D_800A12D0_main != 0) {
+            func_800039A4_main(D_800C9930_main, 60);
+            msmMusPlayDefault(D_800CE198_main);
+            func_8004A670_main(0);
+            func_8004A72C_main(0x5A);
+            D_800C9930_main = -1;
+        }
+
+        func_800DB884_shared_board(loc->current_player_index);
+        HuPrcChildLink(HuPrcCurrentGet(), MBCameraZoomMotStart(1.3f));
+        HuPrcChildWatch();
+    }
+
+    func_80109CC4_w04();
+}
+
+const char D_8011DDD4_w04[] = "%d";
+
+void func_8010A400_w04(void) {
+    Object *model;
+    Object *effectModel;
+    SpaceData *spaceA;
+    SpaceData *spaceB;
+    GW_SYSTEM *sys;
+    Vec *vec;
+    s16 mgId;
+    s32 choice;
+    s32 flag;
+    f32 angle;
+    f32 speed;
+    f32 scaleK;
+    f32 scaleBase;
+    f32 scaleStep;
+    f32 scaleLimit;
+    f32 sp38;
+    char sp20[0x10];
+    char sp30[0x10];
+    Vec sp40;
+
+    flag = 0;
+    mgId = MBMasuCurGet();
+    sys = &GwSystem;
+    spaceA = NULL;
+    spaceB = NULL;
+    if (func_800DCD9C_shared_board(sys->current_player_index) <= 0) {
+        MBPlayerVibrate(-1, 3);
+    }
+    MBPlayerMotionSet(-1, -1, 2);
+
+    switch (mgId) {
+        case 0x3D:
+            func_800ED20C_shared_board(-1, 8, 0x77);
+            spaceA = MBMasuGet(0x77);
+            spaceB = MBMasuGet(0x3D);
+            break;
+        case 0x6:
+            func_800ED20C_shared_board(-1, 8, 0x6D);
+            spaceA = MBMasuGet(0x6D);
+            spaceB = MBMasuGet(0x6);
+            break;
+    }
+
+    HuPrcSleep(8);
+    if (func_800DCD9C_shared_board(sys->current_player_index) > 0) {
+        func_800DBEC0_shared_board(sys->current_player_index);
+    }
+    HuAudFXPlay(0x114);
+
+    model = MBModelCreate(0x32, NULL);
+    MBModelTempAllocFree(model);
+    vec = &sp40;
+    HuVecSubtract(vec, &spaceB->coords, &spaceA->coords);
+    MBVecNormalize(vec);
+    HuVecCopy3F(&model->rot, vec);
+    model->scale.y = 0.0f;
+    HuVecCopy3F(&model->coords, &spaceA->coords);
+    MBMotionSet(model, -1, 1);
+    func_800D9A40_shared_board(model);
+
+    effectModel = MBModelCreate(0x35, D_8011C520_w04);
+    MBModelTempAllocFree(effectModel);
+    HuVecCopy3F(&effectModel->rot, vec);
+    HuVecCopy3F(&effectModel->coords, &spaceA->coords);
+    effectModel->scale.y = effectModel->scale.x = effectModel->scale.z = 1.2f;
+    MBModelDispOff(effectModel);
+
+    speed = 1.0f / sindf(50.0f);
+    angle = 0.0f;
+    scaleK = 0.2f;
+    scaleBase = 0.8f;
+    scaleStep = 11.25f;
+    scaleLimit = 90.0f;
+    for (; angle < scaleLimit; angle += scaleStep) {
+        model->scale.y = sindf(angle) * speed;
+        sp38 = sindf(angle) * speed;
+        model->scale.x = sp38 * scaleK + scaleBase;
+        sp38 = sindf(angle) * speed;
+        model->scale.z = sp38 * scaleK + scaleBase;
+        HuPrcVSleep();
+    }
+
+    if (50.0f < angle) {
+        scaleK = 0.2f;
+        scaleBase = 0.8f;
+        scaleStep = 11.25f;
+        do {
+            model->scale.y = sindf(angle) * speed;
+            sp38 = sindf(angle) * speed;
+            model->scale.x = sp38 * scaleK + scaleBase;
+            sp38 = sindf(angle) * speed;
+            model->scale.z = sp38 * scaleK + scaleBase;
+            HuPrcVSleep();
+            angle -= scaleStep;
+        } while (50.0f < angle);
+    }
+
+    model->scale.z = model->scale.x = model->scale.y = 1.0f;
+    func_800D9A40_shared_board(effectModel);
+
+    if (MBItemFind(-1, 0xF) != -1) {
+    dialogLoop:
+        MBDlgWinInsertCreate(-1, 0x3A1D, 0, 0, 0, 0, 0);
+        choice = func_80109CD4_w04((s32)D_8011C508_w04, 0);
+        MBDlgWinClose();
+        MBDlgWinKill();
+        switch (choice) {
+            case 0:
+                flag = 1;
+                break;
+            case 2:
+                func_80106AB0_w04();
+                goto dialogLoop;
+        }
+    }
+
+    MBMotionSet(model, -1, 0);
+    Hu3DMotionSpeedSet(model->omObj1->model[0], 1.2f);
+    while (MBMotionCheck(model) == 0) {
+        HuPrcVSleep();
+    }
+    HuAudFXPlay(0x259);
+    MBMotionSet(effectModel, 0, 0);
+    while (MBMotionCheck(effectModel) == 0) {
+        HuPrcVSleep();
+    }
+    MBMotionSet(effectModel, -1, 2);
+
+    if (flag != 0) {
+        sprintf(sp20, D_8011DDD4_w04, GwSystem.bank_coins);
+        if (GwSystem.bank_coins != 0) {
+            MBDlgWinInsertCreate(2, 0x3A1E, (s32)sp20, 0, 0, 0, 0);
+        } else {
+            MBDlgWinInsertCreate(2, 0x3A1F, 0, 0, 0, 0, 0);
+        }
+        func_800EC9DC_shared_board();
+        MBDlgWinClose();
+        MBDlgWinKill();
+
+        if (GwSystem.bank_coins != 0) {
+            mbItemBtnF = 0;
+            func_80112B48_w04();
+            mbItemBtnF = 1;
+        } else {
+            MBDlgWinInsertCreate(2, 0x3A21, 0, 0, 0, 0, 0);
+            func_800EC9DC_shared_board();
+            MBDlgWinClose();
+            MBDlgWinKill();
+            GwPlayer[sys->current_player_index].itemNo[MBItemFind(-1, 0xF)] = -1;
+            MBItemRemoveEmpty(sys->current_player_index);
+            MBStatusItemIconSprReinit(sys->current_player_index);
+        }
+
+        if (func_800DCD9C_shared_board(sys->current_player_index) > 0) {
+            func_800DB884_shared_board(sys->current_player_index);
+        }
+    } else {
+        if (func_800DCD9C_shared_board(sys->current_player_index) > 0) {
+            if ((GwPlayer[sys->current_player_index].coin != 0) && (GwPlayer[sys->current_player_index].coin < 5)) {
+                sprintf(sp20, D_8011DDD4_w04, GwPlayer[sys->current_player_index].coin);
+                sprintf(sp30, D_8011DDD4_w04, GwSystem.bank_coins + GwPlayer[sys->current_player_index].coin);
+                MBDlgWinInsertCreate(2, 0x1201, (s32)sp20, (s32)sp30, 0, 0, 0);
+                MBDlgWinClose();
+                GwSystem.bank_coins += GwPlayer[sys->current_player_index].coin;
+                func_80107F98_w04();
+                MBCoinChangeCreate(sys->current_player_index, -GwPlayer[sys->current_player_index].coin);
+                MBCoinTakeCreate(sys->current_player_index, -GwPlayer[sys->current_player_index].coin);
+                HuPrcSleep(30);
+                func_800EC6A8_shared_board();
+            } else if (GwPlayer[sys->current_player_index].coin == 0) {
+                sprintf(sp20, D_8011DDD4_w04, GwSystem.bank_coins);
+                MBDlgWinInsertCreate(2, 0x1202, (s32)sp20, 0, 0, 0, 0);
+            } else {
+                sprintf(sp20, D_8011DDD4_w04, GwSystem.bank_coins + 5);
+                MBDlgWinInsertCreate(2, 0x1200, (s32)sp20, 0, 0, 0, 0);
+                MBDlgWinClose();
+                GwSystem.bank_coins += 5;
+                func_80107F98_w04();
+                MBCoinChangeCreate(sys->current_player_index, -5);
+                MBCoinTakeCreate(sys->current_player_index, -5);
+                HuPrcSleep(30);
+                func_800EC6A8_shared_board();
+            }
+            func_800EC9DC_shared_board();
+            MBDlgWinClose();
+            MBDlgWinKill();
+            func_800DB884_shared_board(sys->current_player_index);
+            HuPrcSleep(10);
+        } else {
+            if (GwSystem.bank_coins != 0) {
+                sprintf(sp20, D_8011DDD4_w04, GwSystem.bank_coins);
+                MBDlgWinInsertCreate(2, 0x1203, (s32)sp20, 0, 0, 0, 0);
+                func_800EC9DC_shared_board();
+                MBDlgWinClose();
+                MBCoinChangeCreate(sys->current_player_index, GwSystem.bank_coins);
+                MBCoinTakeCreate(sys->current_player_index, GwSystem.bank_coins);
+                GwSystem.bank_coins = 0;
+                func_80107F98_w04();
+                MBVecForwardSet(&MBPlayerGet(-1)->player_obj->rot);
+                MBPlayerMotionSet(-1, 5, 0);
+                PlayerFXPlay(0x274, sys->current_player_index);
+                HuPrcSleep(30);
+                MBPlayerMotionSet(-1, -1, 2);
+                func_800EC6A8_shared_board();
+                func_800EC9DC_shared_board();
+                MBDlgWinClose();
+                MBDlgWinKill();
+            } else {
+                MBDlgWinExec(2, 0x1204);
+            }
+        }
+    }
+
+    HuAudFXPlay(0x115);
+    MBMotionSet(model, -1, 4);
+    Hu3DMotionSpeedSet(model->omObj1->model[0], 1.2f);
+    Hu3DMotionTimeSet(
+        model->omObj1->model[0], D_800CCF58_main[Hu3DData[model->omObj1->model[0]].motId].unk02);
+    while (func_800D9E80_shared_board(model) == 0) {
+        HuPrcVSleep();
+    }
+    MBModelDispOff(effectModel);
+
+    speed = 1.0f / sindf(50.0f);
+    angle = 50.0f;
+    scaleK = 0.2f;
+    scaleBase = 0.8f;
+    scaleStep = 11.25f;
+    scaleLimit = 90.0f;
+    for (; angle < scaleLimit; angle += scaleStep) {
+        model->scale.y = sindf(angle) * speed;
+        sp38 = sindf(angle) * speed;
+        model->scale.x = sp38 * scaleK + scaleBase;
+        sp38 = sindf(angle) * speed;
+        model->scale.z = sp38 * scaleK + scaleBase;
+        HuPrcVSleep();
+    }
+
+    angle = 90.0f;
+    scaleK = 0.2f;
+    scaleBase = 0.8f;
+    scaleStep = 11.25f;
+    scaleLimit = 0.0f;
+    for (; scaleLimit < angle; angle -= scaleStep) {
+        model->scale.y = sindf(angle) * speed;
+        sp38 = sindf(angle) * speed;
+        model->scale.x = sp38 * scaleK + scaleBase;
+        sp38 = sindf(angle) * speed;
+        model->scale.z = sp38 * scaleK + scaleBase;
+        HuPrcVSleep();
+    }
+
+    model->scale.y = 0;
+    model->scale.x = 0;
+    model->scale.z = 0;
+    MBModelKill(model);
+    MBModelKill(effectModel);
+    func_80109CBC_w04();
+}
+
+s32 func_8010AF34_w04(s32 arg0) {
+    s32 i;
+
+    for (i = 0; i < 7; i++) {
+        if (D_8011E0B0_w04[i] != 0 && D_8011C550_w04[D_8011E0A8_w04][D_8011E0AC_w04][i] == arg0) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+s32 func_8010AFBC_w04(void) {
+    s32 i;
+
+    for (i = 0; i < 7; i++) {
+        if (D_8011C550_w04[D_8011E0A8_w04][D_8011E0AC_w04][i] == -1) {
+            break;
+        }
+    }
+    return i;
+}
+
+void func_8010B024_w04(void) {
+    s32 grp = (s32)HuPrcCurrentGet()->user_data;
+    f32 angle;
+    f32 scaleX;
+
+    MBPlayerGet(GwSystem.current_player_index);
+    MBPlayerVibrate(-1, 2);
+    HuAudFXPlay(0x15A);
+
+    for (angle = 0.0f; angle < 180.0f; angle += 20.0f) {
+        scaleX = sindf(angle) * 1.5f + 1.0f;
+        HuSprScaleSet(grp, 0, scaleX, 1.0f - sindf(angle) * 0.5f);
+        HuPrcVSleep();
+    }
+
+    for (; angle < 360.0f; angle += 20.0f) {
+        scaleX = sindf(angle) * 0.5f + 1.0f;
+        HuSprScaleSet(grp, 0, scaleX, 1.0f - sindf(angle) * 0.25f);
+        HuPrcVSleep();
+    }
+
+    HuSprScaleSet(grp, 0, 1.0f, 1.0f);
+    omDelPrcObj(NULL);
+}
+
+void func_8010B1FC_w04(void) {
+    GW_SYSTEM *system = &GwSystem;
+    SpaceData *spaceA;
+    SpaceData *spaceB;
+    Object *model;
+    Object *playerObj;
+    Unk3 *helpWin;
+    void *data;
+    Process *prc;
+    u8 enabled[9];
+    u8 itemFlags[6][4];
+    Vec sp48;
+    s32 dlgWin;
+    s16 shopIdx;
+    s32 flag2;
+    s32 id;
+    s32 slot;
+    s32 row;
+    s32 row2;
+    s32 sel;
+    s32 choice;
+    s32 count;
+    s32 item;
+    s8 *itemPtr;
+    s8(*shopTable)[5][7];
+    s8(*shopItems)[7];
+    s32 timer;
+    s32 randVal;
+    s32 i;
+    s32 j;
+    s32 grp;
+    s32 grp2;
+    s16 spriteId;
+    s32 spriteId2;
+    s16 sprY;
+    s16 masuId;
+    s16 camMasu;
+    GW_PLAYER *player;
+    Object *effectModel;
+    f32 angle;
+    f32 speed;
+    f32 scaleK;
+    f32 scaleBase;
+    f32 scaleStep;
+    f32 scaleLimit;
+    f32 sp38;
+    f32 scale;
+    player = MBPlayerGet(-1);
+    spaceA = NULL;
+    spaceB = NULL;
+    model = NULL;
+    effectModel = NULL;
+    MBPlayerMotionSet(-1, -1, 2);
+
+    masuId = MBMasuLinkMasuIdGet(player->clink, player->cidx);
+    switch (masuId) {
+        case 0x71:
+            camMasu = 0x75;
+            spaceA = MBMasuGet(0x75);
+            spaceB = MBMasuGet(0x71);
+            D_8011C688_w04 = 0;
+            break;
+        case 0x8C:
+            camMasu = 0x76;
+            spaceA = MBMasuGet(0x76);
+            spaceB = MBMasuGet(0x8C);
+            D_8011C688_w04 = 1;
+            break;
+        default:
+            camMasu = -1;
+            break;
+    }
+
+    if (camMasu != -1) {
+        func_800ED20C_shared_board(-1, 8, camMasu);
+        HuPrcSleep(8);
+    }
+    func_800DBEC0_shared_board(system->current_player_index);
+
+    switch (GwSystem.forceShopHost) {
+        case 0:
+            shopIdx = !MBRandCheck100(0x42);
+            break;
+        case 1:
+            shopIdx = 0;
+            break;
+        default:
+            shopIdx = 1;
+            break;
+    }
+
+    dlgWin = 3;
+    if (shopIdx != 0) {
+        dlgWin = 5;
+    }
+
+    if (camMasu != -1) {
+        flag2 = (shopIdx << 1) >> 1;
+        id = (-shopIdx & 0x31) | 0x30;
+        HuAudFXPlay(0x114);
+        model = MBModelCreate(id, NULL);
+        MBModelTempAllocFree(model);
+        HuVecSubtract(&sp48, &spaceB->coords, &spaceA->coords);
+        MBVecNormalize(&sp48);
+        HuVecCopy3F(&model->rot, &sp48);
+        model->scale.y = 0.0f;
+        MBMotionSet(model, -1, 1);
+        func_800D9A40_shared_board(model);
+        HuVecCopy3F(&model->coords, &spaceA->coords);
+
+        if (flag2 != 0) {
+            effectModel = MBModelCreate(0x39, D_8011C680_w04);
+        } else {
+            effectModel = MBModelCreate(0x1B, D_8011C678_w04);
+        }
+        MBModelTempAllocFree(effectModel);
+        HuVecCopy3F(&effectModel->rot, &sp48);
+        HuVecCopy3F(&effectModel->coords, &spaceA->coords);
+        effectModel->scale.y = effectModel->scale.x = effectModel->scale.z = 1.2f;
+        MBModelDispOff(effectModel);
+
+        speed = 1.0f / sindf(50.0f);
+        angle = 0.0f;
+        scaleK = 0.2f;
+        scaleBase = 0.8f;
+        scaleStep = 11.25f;
+        scaleLimit = 90.0f;
+        for (; angle < scaleLimit; angle += scaleStep) {
+            model->scale.y = sindf(angle) * speed;
+            sp38 = sindf(angle) * speed;
+            model->scale.x = sp38 * scaleK + scaleBase;
+            sp38 = sindf(angle) * speed;
+            model->scale.z = sp38 * scaleK + scaleBase;
+            HuPrcVSleep();
+        }
+
+        for (; 50.0f < angle; angle -= scaleStep) {
+            scaleK = 0.2f;
+            scaleBase = 0.8f;
+            scaleStep = 11.25f;
+            model->scale.y = sindf(angle) * speed;
+            sp38 = sindf(angle) * speed;
+            model->scale.x = sp38 * scaleK + scaleBase;
+            sp38 = sindf(angle) * speed;
+            model->scale.z = sp38 * scaleK + scaleBase;
+            HuPrcVSleep();
+        }
+
+        model->scale.y = model->scale.x = model->scale.z = 1.0f;
+        func_800D9A40_shared_board(effectModel);
+        MBMotionSet(model, -1, 0);
+        Hu3DMotionSpeedSet(model->omObj1->model[0], 1.2f);
+        while (MBMotionCheck(model) == 0) {
+            HuPrcVSleep();
+        }
+        MBMotionSet(effectModel, 0, 0);
+
+        if (shopIdx != 0) {
+            HuAudFXPlay(0x2A0);
+        } else {
+            if (GwPlayer[system->current_player_index].coin < 5 || MBItemFindEmpty(system->current_player_index) == -1) {
+                HuAudFXPlay(0x29A);
+            } else if (system->current_turn != system->total_turns) {
+                HuAudFXPlay(0x298);
+            } else {
+                HuAudFXPlay(0x29A);
+            }
+        }
+
+        while (MBMotionCheck(effectModel) == 0) {
+            HuPrcVSleep();
+        }
+        MBMotionSet(effectModel, -1, 2);
+    }
+
+    if (system->current_turn == system->total_turns) {
+        MBDlgWinExec(dlgWin, D_8011C668_w04[shopIdx]);
+        goto end;
+    }
+    if (MBItemFindEmpty(system->current_player_index) == -1) {
+        MBDlgWinExec(dlgWin, D_8011C660_w04[shopIdx]);
+        goto end;
+    }
+    if (GwPlayer[system->current_player_index].coin < 5) {
+        MBDlgWinExec(dlgWin, D_8011C658_w04[shopIdx]);
+        goto end;
+    }
+
+itemSelect:
+    MBDlgWinCreate(dlgWin, D_8011C650_w04[shopIdx]);
+    choice = func_80106F58_w04();
+    MBDlgWinClose();
+    MBDlgWinKill();
+
+    switch (choice) {
+        case 0:
+
+        restart:
+            i = BoardGetTurnTier(-1);
+            row = D_8011C538_w04[shopIdx][i][BoardPlayerRankCalc(system->current_player_index)];
+            count = 0;
+            for (j = 0; j < 7; j++) {
+                if (D_8011C550_w04[shopIdx][row][j] == -1) {
+                    continue;
+                }
+                if (D_8011C550_w04[shopIdx][row][j] >= 6) {
+                    break;
+                }
+                enabled[j] = 1;
+                count++;
+            }
+            i = 0;
+            for (; j < 7; j++, i++) {
+                enabled[j] = 1;
+                itemFlags[i][0] = 0;
+                if (D_8011C550_w04[shopIdx][row][j] == -1) {
+                    continue;
+                }
+                if (D_80100F94_shared_board[D_8011C550_w04[shopIdx][row][j]] >
+                    GwPlayer[system->current_player_index].coin) {
+                    enabled[j] = 0;
+                    itemFlags[i][0] = 1;
+                }
+                itemFlags[i][1] = 0;
+                count++;
+            }
+            for (; j < 9; j++) {
+                enabled[j] = 1;
+            }
+
+            MBDlgWinInsertCreate(dlgWin, D_8011C628_w04[row][slot = shopIdx], (s32)itemFlags[0],
+                                 (s32)itemFlags[1], (s32)itemFlags[2], (s32)itemFlags[3], (s32)itemFlags[4]);
+            func_800ECAA8_shared_board(0);
+            D_8011E0A8_w04 = slot;
+            D_8011E0AC_w04 = row;
+            D_8011E0B0_w04 = enabled;
+            sel = func_80106CC4_w04(enabled);
+            MBDlgWinClose();
+            MBDlgWinKill();
+
+            if (sel == count) {
+                mbItemBtnF = 0;
+                MBItemSelNoClear();
+                MBItemDescExec(system->current_player_index);
+                mbItemBtnF = 1;
+                goto restart;
+            }
+            if (sel == count + 1 || sel == -1) {
+                goto itemSelect;
+            }
+
+            playerObj = player->player_obj;
+            i = shopIdx;
+            shopTable = D_8011C550_w04;
+            shopItems = shopTable[i];
+            itemPtr = (s8 *)(row * 7);
+            itemPtr += (s32)shopItems;
+            itemPtr += sel;
+            MBCoinChangeCreate(system->current_player_index, -D_80100F94_shared_board[*itemPtr]);
+            MBCoinTakeCreate(system->current_player_index, -D_80100F94_shared_board[*itemPtr]);
+            HuPrcSleep(30);
+
+            if (*itemPtr == 0x13) {
+                item = i + 0x13;
+            } else {
+                GwPlayer[system->current_player_index].itemNo[MBItemFindEmpty(system->current_player_index)] =
+                    D_8011C550_w04[shopIdx][row][sel];
+                item = D_8011C550_w04[shopIdx][row][sel];
+            }
+
+            grp = HuSprGrpCreate(1, 5);
+            i = 0;
+            data = DataRead(D_8010197C_shared_board[item]);
+            spriteId = HuSprAnimRead(data);
+            DataClose(data);
+            HuSprGrpMemberSet(grp, 0, spriteId, 0);
+            HuSprPriSet(grp, 0, 0xA);
+            HuSprAnimModeSet(grp, 0, HUSPR_ANIM_MODE_STOP);
+            HuSprAttrSet(grp, 0, 0x180C);
+            HuSprPosSet(grp, 0, 0xA0, 0x5A);
+            HuSprTPLvlSet(grp, 0, 0);
+            MBVecForwardSet(&sp48);
+            func_800ED128_shared_board(&player->player_obj->rot, &sp48, &player->player_obj->rot, 0xA);
+            HuAudFXPlay(0x19);
+            for (; i < 10; i++) {
+                HuSprTPLvlSet(grp, 0, i * 25);
+                HuPrcVSleep();
+            }
+            HuSprTPLvlSet(grp, 0, 0x100);
+
+            if (D_8011C550_w04[shopIdx][row][sel] == 0x13) {
+                while (MBItemFindEmpty(system->current_player_index) != -1) {
+                    row2 = D_8011C598_w04[shopIdx][BoardGetTurnTier(-1)]
+                                         [BoardPlayerRankCalc(system->current_player_index)];
+                    randVal = MBRand(100.0f);
+                    for (i = 0; i < 10; i++) {
+                        if (randVal < D_8011C5B0_w04[shopIdx][row2][i]) {
+                            break;
+                        }
+                    }
+                    item = D_8011C614_w04[shopIdx][i];
+
+                    if (camMasu != -1) {
+                        helpWin = func_800E210C_shared_board(0x15, 0xA0, 1);
+                    } else {
+                        playerObj->flags |= 0x10;
+                        helpWin = func_800E210C_shared_board(0x15, 0xA0, 0);
+                    }
+                    timer = 30;
+
+                    if ((*(u16 *)((u8 *)D_800C9520_main + (GwPlayer[system->current_player_index].pad << 1)) & 0x8000) == 0) {
+                        row = (s32)D_800C9520_main;
+                        while (1) {
+                            if (MBPlayerComCheck(-1) != 0) {
+                                timer--;
+                                if (timer == -1) {
+                                    break;
+                                }
+                            }
+                            HuPrcVSleep();
+                            if (((u16 *)row)[GwPlayer[system->current_player_index].pad] & 0x8000) {
+                                break;
+                            }
+                        }
+                    }
+                    MBHelpWinKill(helpWin);
+
+                    MBPlayerMotionSet(system->current_player_index, 2, 0);
+                    func_800EE688_shared_board(playerObj, 2.0f, -0.3f);
+                    HuPrcSleep(5);
+                    prc = omAddPrcObj(func_8010B024_w04, 0x4002, 0, 0);
+                    prc->user_data = (void *)grp;
+                    func_800EE6C0_shared_board(playerObj);
+                    MBPlayerMotionSet(-1, -1, 2);
+
+                    grp2 = HuSprGrpCreate(1, 5);
+                    i = 0;
+                    data = DataRead(D_8010197C_shared_board[item]);
+                    spriteId2 = HuSprAnimRead(data);
+                    DataClose(data);
+                    HuSprGrpMemberSet(grp2, 0, spriteId2, 0);
+                    HuSprPriSet(grp2, 0, 0xB);
+                    HuSprAnimModeSet(grp2, 0, HUSPR_ANIM_MODE_STOP);
+                    HuSprAttrSet(grp2, 0, 0x1000);
+                    HuSprPosSet(grp2, 0, 0xA0, 0x5A);
+                    HuSprTPLvlSet(grp2, 0, 0);
+                    MBVecForwardSet(&sp48);
+                    func_800ED128_shared_board(&player->player_obj->rot, &sp48, &player->player_obj->rot, 0xA);
+
+                    sprY = 0x5A;
+                    scale = 0.0f;
+                    do {
+                        HuSprPosSet(grp2, 0, 0xA0, sprY);
+                        HuSprTPLvlSet(grp2, 0, i * 25);
+                        HuSprScaleSet(grp2, 0, scale, scale);
+                        i++;
+                        HuPrcVSleep();
+                        sprY -= 3;
+                        scale += 0.1f;
+                    } while (i < 10);
+                    HuSprScaleSet(grp2, 0, 1.0f, 1.0f);
+                    HuSprTPLvlSet(grp2, 0, 0x100);
+                    HuPrcSleep(10);
+                    GwPlayer[system->current_player_index].itemNo[MBItemFindEmpty(system->current_player_index)] = item;
+                    HuSprGrpKill(grp2);
+                    HuSprAnimKill(spriteId2);
+                }
+                if (camMasu == -1) {
+                    playerObj->flags &= ~0x10;
+                }
+            }
+
+            HuPrcSleep(5);
+            MBPlayerMotionSet(-1, 5, 0);
+            HuPrcSleep(5);
+            PlayerFXPlay(0x274, system->current_player_index);
+            HuPrcSleep(20);
+            HuPrcVSleep();
+            func_800F2388_shared_board(-1, -1, 0, 5, 2);
+            HuPrcSleep(10);
+            HuSprGrpKill(grp);
+            HuSprAnimKill(spriteId);
+            break;
+        case 1:
+            MBDlgWinExec(dlgWin, D_8011C670_w04[shopIdx]);
+            break;
+        case 2:
+            if (camMasu == -1) {
+                func_80106B38_w04();
+                D_800CB99C_main = 1;
+                omAllPause();
+            } else {
+                func_80106AB0_w04();
+            }
+            goto itemSelect;
+    }
+
+end:
+    if (camMasu != -1) {
+        HuAudFXPlay(0x115);
+        MBMotionSet(model, -1, 4);
+        Hu3DMotionSpeedSet(model->omObj1->model[0], 1.2f);
+        Hu3DMotionTimeSet(
+            model->omObj1->model[0], D_800CCF58_main[Hu3DData[model->omObj1->model[0]].motId].unk02);
+        while (func_800D9E80_shared_board(model) == 0) {
+            HuPrcVSleep();
+        }
+        MBModelDispOff(effectModel);
+
+        speed = 1.0f / sindf(50.0f);
+        angle = 50.0f;
+        scaleK = 0.2f;
+        scaleBase = 0.8f;
+        scaleStep = 11.25f;
+        scaleLimit = 90.0f;
+        for (; angle < scaleLimit; angle += scaleStep) {
+            model->scale.y = sindf(angle) * speed;
+            sp38 = sindf(angle) * speed;
+            model->scale.x = sp38 * scaleK + scaleBase;
+            sp38 = sindf(angle) * speed;
+            model->scale.z = sp38 * scaleK + scaleBase;
+            HuPrcVSleep();
+        }
+
+        angle = 90.0f;
+        scaleK = 0.2f;
+        scaleBase = 0.8f;
+        scaleStep = 11.25f;
+        scaleLimit = 0.0f;
+        for (; scaleLimit < angle; angle -= scaleStep) {
+            model->scale.y = sindf(angle) * speed;
+            sp38 = sindf(angle) * speed;
+            model->scale.x = sp38 * scaleK + scaleBase;
+            sp38 = sindf(angle) * speed;
+            model->scale.z = sp38 * scaleK + scaleBase;
+            HuPrcVSleep();
+        }
+
+        model->scale.y = 0;
+        model->scale.x = 0;
+        model->scale.z = 0;
+        MBModelKill(model);
+        MBModelKill(effectModel);
+    }
+    func_800DB884_shared_board(system->current_player_index);
+    HuPrcSleep(10);
+}
+
+void func_8010C4B4_w04(Object *obj) {
+    s32 i;
+
+    MBModelDispOn(obj);
+    for (i = 0; i < 0x100; i += 0xC) {
+        func_8001F9E4_main(obj->omObj1->model[0], i);
+        func_8001F9E4_main(obj->omObj2->model[0], i);
+        HuPrcVSleep();
+    }
+    func_8001F9E4_main(obj->omObj1->model[0], 0xFF);
+    func_8001F9E4_main(obj->omObj2->model[0], 0xFF);
+}
+
+void func_8010C554_w04(Object *obj) {
+    s32 i;
+
+    for (i = 0xFF; i >= 0; i -= 0xC) {
+        func_8001F9E4_main(obj->omObj1->model[0], i);
+        func_8001F9E4_main(obj->omObj2->model[0], i);
+        HuPrcVSleep();
+    }
+    func_8001F9E4_main(obj->omObj1->model[0], 0);
+    func_8001F9E4_main(obj->omObj2->model[0], 0);
+    MBModelDispOff(obj);
+}
+
+s32 func_8010C5F4_w04(s32 playerIndex) {
+    s32 hasRareItem = 0;
+    s16 grp;
+    void *data;
+    s16 spriteId;
+    s32 i;
+    s32 duration;
+    Process *process;
+
+    grp = HuSprGrpCreate(1, 5);
+    data = DataRead(0x13020E);
+    spriteId = HuSprAnimRead(data);
+    DataClose(data);
+    HuSprGrpMemberSet(grp, 0, spriteId, 0);
+    HuSprPriSet(grp, 0, 0xA);
+    HuSprAnimModeSet(grp, 0, HUSPR_ANIM_MODE_STOP);
+    HuSprAttrSet(grp, 0, 0x1000);
+    HuSprPosSet(grp, 0, D_8011C69C_w04[playerIndex].x,
+                D_8011C69C_w04[playerIndex].y);
+    HuSprTPLvlSet(grp, 0, 0);
+    HuAudFXPlay(0x134);
+
+    for (i = 0; i < 0x11; i++) {
+        HuSprPosSet(grp, 0,
+                    (i * D_8011C6BC_w04[playerIndex].x) +
+                        D_8011C69C_w04[playerIndex].x,
+                    (i * D_8011C6BC_w04[playerIndex].y) +
+                        D_8011C69C_w04[playerIndex].y);
+        HuSprTPLvlSet(grp, 0, i << 4);
+        HuPrcVSleep();
+    }
+    HuSprTPLvlSet(grp, 0, 0xFF);
+
+    if (MBItemFind(playerIndex, 0xC) != -1) {
+        hasRareItem = 1;
+        process = omAddPrcObj(func_80112378_w04, 0x4002, 0, 0);
+        process->user_data = (void *)playerIndex;
+    }
+
+    if (!hasRareItem) {
+        GwPlayer[playerIndex].star--;
+    }
+    MBPlayerVibrate(playerIndex, 5);
+    HuAudFXPlay(0x257);
+
+    duration = hasRareItem ? 0x78 : 0x1E;
+    for (i = 0; i < duration; i++) {
+        HuSprPosSet(grp, 0,
+                    (D_8011C6BC_w04[playerIndex].x * 16.0f) +
+                        D_8011C69C_w04[playerIndex].x,
+                    (D_8011C6BC_w04[playerIndex].y * 16.0f) +
+                        D_8011C69C_w04[playerIndex].y +
+                        (sindf(i * 90) * 4.0f));
+        HuPrcVSleep();
+    }
+
+    for (i = 0x10; i >= 0; i--) {
+        HuSprPosSet(grp, 0,
+                    (i * D_8011C6BC_w04[playerIndex].x) +
+                        D_8011C69C_w04[playerIndex].x,
+                    (i * D_8011C6BC_w04[playerIndex].y) +
+                        D_8011C69C_w04[playerIndex].y);
+        HuSprTPLvlSet(grp, 0, i << 4);
+        HuPrcVSleep();
+    }
+    HuSprGrpKill(grp);
+    HuSprAnimKill(spriteId);
+    return !hasRareItem;
+}
+
+void func_8010CA3C_w04(void) {
+    func_800EC3E4_shared_board();
+    omDelPrcObj(NULL);
+}
+
+s32 func_8010CA60_w04(s32 playerIndex) {
+    s32 hasRareItem;
+    s16 grp;
+    void *data;
+    s16 spriteId;
+    s16 playerGrp;
+    s16 playerSpriteId;
+    s32 i;
+    s32 state;
+    s32 playerSpriteVisible;
+    s16 delay;
+    s32 angle;
+    s32 attempts;
+    void *dialog;
+    Process *process;
+
+    hasRareItem = 0;
+    grp = HuSprGrpCreate(1, 5);
+    data = DataRead(0x13020E);
+    spriteId = HuSprAnimRead(data);
+    DataClose(data);
+    HuSprGrpMemberSet(grp, 0, spriteId, 0);
+    HuSprPriSet(grp, 0, 0xA);
+    HuSprAnimModeSet(grp, 0, HUSPR_ANIM_MODE_STOP);
+    HuSprAttrSet(grp, 0, 0x1000);
+    HuSprPosSet(grp, 0, D_8011C69C_w04[playerIndex].x,
+                D_8011C69C_w04[playerIndex].y);
+    HuSprTPLvlSet(grp, 0, 0);
+
+    {
+        playerGrp = HuSprGrpCreate(1, 5);
+        playerSpriteVisible = 0;
+        data = DataRead(D_80101040_shared_board[GwPlayer[playerIndex].chr]);
+        playerSpriteId = HuSprAnimRead(data);
+        DataClose(data);
+        HuSprGrpMemberSet(playerGrp, 0, playerSpriteId, 0);
+        HuSprPriSet(playerGrp, 0, 0xA);
+        HuSprAnimModeSet(playerGrp, 0, HUSPR_ANIM_MODE_BANK);
+        if (playerIndex & 1) {
+            HuSprAttrSet(playerGrp, 0, 0x1001);
+        } else {
+            HuSprAttrSet(playerGrp, 0, 0x1000);
+        }
+        if (MBItemFind(playerIndex, 0xC) != -1) {
+            HuSprDispOff(playerGrp, 0);
+        }
+        HuSprPosSet(playerGrp, 0,
+                    D_8011C69C_w04[playerIndex].x -
+                        (D_8011C6BC_w04[playerIndex].x * 16.0f) - 8.0f,
+                    D_8011C69C_w04[playerIndex].y +
+                        (D_8011C6BC_w04[playerIndex].y * 16.0f));
+        HuSprTPLvlSet(playerGrp, 0, 0);
+        HuAudFXPlay(0x133);
+
+        for (i = 0; i < 0x11; i++) {
+            HuSprPosSet(grp, 0,
+                        (i * D_8011C6BC_w04[playerIndex].x) +
+                            D_8011C69C_w04[playerIndex].x,
+                        (i * D_8011C6BC_w04[playerIndex].y) +
+                            D_8011C69C_w04[playerIndex].y);
+            HuSprTPLvlSet(grp, 0, i << 4);
+            HuSprTPLvlSet(playerGrp, 0, i << 4);
+            HuPrcVSleep();
+        }
+        HuSprTPLvlSet(grp, 0, 0xFF);
+        HuSprTPLvlSet(playerGrp, 0, 0xFF);
+
+        MBWinInsertOpen(MBItemFind(playerIndex, 0xC) == -1 ? 0x620E : 0x620F,
+                        (char *)mbCharNameMesTbl[GwPlayer[playerIndex].chr], 0, 0, 0, 0);
+        MBPlayerVibrate(playerIndex, 2);
+        func_800EC3C0_shared_board(playerIndex);
+        if (MBItemFind(playerIndex, 0xC) != -1) {
+            omAddPrcObj(func_8010CA3C_w04, 0x1000, 0, 0);
+            HuPrcSleep(0x14);
+        }
+
+        attempts = 0;
+        state = 0;
+        if (MBItemFind(playerIndex, 0xC) != -1) {
+            attempts = 1;
+            hasRareItem = 1;
+            process = omAddPrcObj(func_80112378_w04, 0x4002, 0, 0);
+            process->user_data = (void *)playerIndex;
+        }
+        HuAudFXPlay(0x133);
+        dialog = MBPlayerVibrateObjCreate(playerIndex, 3, 5);
+        delay = MBRand(10.0f) + 1;
+        i = 0;
+        angle = 0;
+
+        for (; i < 0x78; i++, delay--) {
+            if (delay == 0) {
+                HuAudFXPlay(0x257);
+                delay = MBRand(15.0f) + 0x1E;
+            }
+            state -= !(state < 2);
+            if (state == 0) {
+                HuSprPosSet(
+                    grp, 0,
+                    (D_8011C6BC_w04[playerIndex].x * 16.0f) +
+                        D_8011C69C_w04[playerIndex].x,
+                    (D_8011C6BC_w04[playerIndex].y * 16.0f) +
+                        D_8011C69C_w04[playerIndex].y + (sindf(i * 90) * 2.0f));
+            } else if (state == 9) {
+                HuSprPosSet(
+                    grp, 0,
+                    (D_8011C6BC_w04[playerIndex].x * 16.0f) +
+                        D_8011C69C_w04[playerIndex].x + (sindf(angle * 90) * 2.0f),
+                    (D_8011C6BC_w04[playerIndex].y * 16.0f) +
+                        D_8011C69C_w04[playerIndex].y);
+                HuSprPosSet(
+                    playerGrp, 0,
+                    D_8011C69C_w04[playerIndex].x - 8.0f +
+                        (sindf(angle * 90) * 2.0f),
+                    (D_8011C6BC_w04[playerIndex].y * 16.0f) +
+                        D_8011C69C_w04[playerIndex].y);
+                angle++;
+            }
+
+            if (GwPlayer[playerIndex].stat & 1) {
+                if (state == 0) {
+                    goto tryInput;
+                } else {
+                    if (GwPlayer[playerIndex].cpu_difficulty == 0) {
+                        if ((6 - MBRand(3.0f)) >= state) {
+                            goto tryInput;
+                        }
+                    } else if (GwPlayer[playerIndex].cpu_difficulty == 1) {
+                        if ((7 - MBRand(3.0f)) >= state) {
+                            goto tryInput;
+                        }
+                    } else if (GwPlayer[playerIndex].cpu_difficulty == 2) {
+                        if ((8 - MBRand(3.0f)) >= state) {
+                            goto tryInput;
+                        }
+                    } else if ((9 - MBRand(2.0f)) >= state) {
+                        goto tryInput;
+                    }
+                }
+            } else if (D_800C9520_main[GwPlayer[playerIndex].pad] & A_BUTTON) {
+            tryInput:
+                if (!hasRareItem) {
+                    attempts++;
+                    state = 10;
+                    if (!playerSpriteVisible) {
+                        HuSprBankSet(playerGrp, 0, 1, 0);
+                        HuSprAnimModeSet(playerGrp, 0, HUSPR_ANIM_MODE_BANK);
+                        playerSpriteVisible = 1;
+                        HuSprPosSet(
+                            playerGrp, 0, D_8011C69C_w04[playerIndex].x - 8.0f,
+                            (D_8011C6BC_w04[playerIndex].y * 16.0f) +
+                                D_8011C69C_w04[playerIndex].y);
+                    }
+                }
+            }
+            if ((state == 0) && (playerSpriteVisible == 1)) {
+                HuSprBankSet(playerGrp, 0, 0, 0);
+                HuSprAnimModeSet(playerGrp, 0, HUSPR_ANIM_MODE_BANK);
+                playerSpriteVisible = 0;
+                HuSprPosSet(
+                    playerGrp, 0,
+                    D_8011C69C_w04[playerIndex].x -
+                        (D_8011C6BC_w04[playerIndex].x * 16.0f) - 8.0f,
+                    (D_8011C6BC_w04[playerIndex].y * 16.0f) +
+                        D_8011C69C_w04[playerIndex].y);
+            }
+            HuPrcVSleep();
+        }
+    }
+
+    MBPlayerVibrateObjKill(dialog);
+    if (!hasRareItem) {
+        omAddPrcObj(func_8010CA3C_w04, 0x1000, 0, 0);
+    }
+
+    if (attempts == 0) {
+        for (i = 0x10; i >= 0; i -= 2) {
+            HuSprPosSet(grp, 0,
+                        (i * D_8011C6BC_w04[playerIndex].x) +
+                            D_8011C69C_w04[playerIndex].x,
+                        (i * D_8011C6BC_w04[playerIndex].y) +
+                            D_8011C69C_w04[playerIndex].y);
+            HuSprTPLvlSet(grp, 0, i << 4);
+            HuSprTPLvlSet(playerGrp, 0, i << 4);
+            HuPrcVSleep();
+        }
+    } else {
+        for (i = 0x10; i >= -0x10; i -= 2) {
+            HuSprPosSet(grp, 0,
+                        (i * D_8011C6BC_w04[playerIndex].x) +
+                            D_8011C69C_w04[playerIndex].x,
+                        (i * D_8011C6BC_w04[playerIndex].y) +
+                            D_8011C69C_w04[playerIndex].y);
+            HuSprPosSet(playerGrp, 0,
+                        ((i - 0x10) * D_8011C6BC_w04[playerIndex].x) +
+                            D_8011C69C_w04[playerIndex].x - 8.0f,
+                        (i * D_8011C6BC_w04[playerIndex].y) +
+                            D_8011C69C_w04[playerIndex].y);
+            if (hasRareItem) {
+                i -= 2;
+            }
+            HuPrcVSleep();
+        }
+        HuSprBankSet(playerGrp, 0, 0, 0);
+        HuSprAnimModeSet(playerGrp, 0, HUSPR_ANIM_MODE_BANK);
+        for (i = 0x10; i >= 0; i -= 2) {
+            HuSprTPLvlSet(grp, 0, i << 4);
+            HuPrcVSleep();
+        }
+    }
+
+    HuSprGrpKill(grp);
+    HuSprAnimKill(spriteId);
+    HuSprGrpKill(playerGrp);
+    HuSprAnimKill(playerSpriteId);
+
+    playerSpriteVisible = -2;
+    if (!hasRareItem) {
+        for (i = 0; i < ARRAY_COUNTU(D_8011C6DC_w04); i++) {
+            if ((GwSystem.current_turn >= D_8011C6DC_w04[i][0]) &&
+                (GwSystem.current_turn <= D_8011C6DC_w04[i][1])) {
+                break;
+            }
+        }
+        playerSpriteVisible = D_8011C6DC_w04[i][2];
+        for (i = 0; i < ARRAY_COUNTU(D_8011C6F0_w04); i++) {
+            if ((attempts >= D_8011C6F0_w04[i][0]) &&
+                (attempts <= D_8011C6F0_w04[i][1])) {
+                break;
+            }
+        }
+        playerSpriteVisible -= D_8011C6F0_w04[i][2];
+        if (playerSpriteVisible >= GwPlayer[playerIndex].coin) {
+            playerSpriteVisible = -1;
+        }
+    }
+    return playerSpriteVisible;
+}
+
+void func_8010D88C_w04(void) {
+    Object *src = HuPrcCurrentGet()->user_data;
+    Object *obj = MBModelLinkCreate(D_8011E0B4_w04);
+    f32 angle;
+
+    HuVecCopy3F(&obj->coords, &src->coords);
+    HuVecCopyXYZ(&obj->scale, 2.0f, 2.0f, 2.0f);
+    obj->velocity.x = src->velocity.x + 10.0f;
+    MBModelDispOn(obj);
+    angle = MBRand(360.0f);
+    while (1) {
+        HuPrcVSleep();
+        obj->velocity.x += 1.5;
+        if (src->velocity.x + 35.0f <= obj->velocity.x) {
+            break;
+        }
+        angle += 40.0f;
+        func_8008A2A0_main(Hu3DData[obj->omObj1->model[0]].mtx, angle);
+    }
+    MBModelKill(obj);
+    omDelPrcObj(NULL);
+}
+
+void func_8010D9E0_w04(Object *arg) {
+    Process *temp = omAddPrcObj(func_8010D88C_w04, 0x1000, 0, 0);
+
+    temp->user_data = arg;
+}
+
+void func_8010DA1C_w04(void) {
+    char inserts[4][16];
+    u8 choices[8];
+    Vec direction;
+    s32 rankedPlayers[3];
+    Object *model = NULL;
+    SpaceData *space;
+    Vec *spaceCoords;
+    GW_PLAYER *player;
+    GW_SYSTEM *sys;
+    Process *process;
+    void *coinEffect;
+    s32 resultAmount;
+    s32 selectedByCpu;
+    s16 target;
+    s32 menuResult;
+    s32 playerChoice;
+    s32 rank;
+    s32 count;
+    s32 i;
+    s32 j;
+    s32 amountDifference;
+    s16 spaceId;
+    f32 angle;
+    f32 scale;
+    f32 rate;
+    f32 booVelocity;
+    Object *boo;
+    s32 modelIsLinked;
+    s32 estimatedAmount;
+    s16 camMasu;
+    s16 menu;
+    s32 cameraSet;
+
+    resultAmount = 0;
+    estimatedAmount = resultAmount;
+    MBMasuCurGet();
+    sys = &GwSystem;
+    player = MBPlayerGet(-1);
+    cameraSet = func_800DBEC0_shared_board(sys->current_player_index);
+    MBPlayerMotionSet(-1, -1, 2);
+    menu = 0;
+    spaceId = MBMasuLinkMasuIdGet(player->clink, player->cidx);
+    if (spaceId != 0x8D) {
+        modelIsLinked = -1;
+        camMasu = -1;
+        boo = MBModelLinkCreate(D_8011E05C_w04);
+        MBModelDispOff(boo);
+        booVelocity = 30.0f;
+        boo->velocity.x = booVelocity;
+        space = MBMasuGet(spaceId);
+        HuVecCopyXYZ(&boo->coords, space->coords.x, space->coords.y + 10.0f, space->coords.z);
+    } else {
+        modelIsLinked = 0;
+        camMasu = 0x7D;
+        space = MBMasuGet(0x7D);
+        boo = D_8011E060_w04[0];
+        HuAudFXPlay(0x125);
+        model = MBModelCreate(0x33, NULL);
+        if (D_8011C730_w04[sys->current_board_index] != 0) {
+            func_8001ED54_main(model->omObj1->model[0]);
+        }
+        Hu3DModelRemakeStatic(model->omObj1->model[0]);
+        MBModelTempAllocFree(model);
+        spaceCoords = &space->coords;
+        HuVecSubtract(&direction, &MBMasuGet(spaceId)->coords, spaceCoords);
+        MBVecNormalize(&direction);
+        HuVecCopy3F(&model->rot, &direction);
+        model->scale.y = 0.0f;
+        HuVecCopy3F(&model->coords, spaceCoords);
+        MBMotionSet(model, -1, 1);
+        MBModelDispOn(model);
+        scale = 1.0f / sindf(50.0f);
+        for (angle = 0.0f; angle < 90.0f; angle += 11.25f) {
+            model->scale.y = sindf(angle) * scale;
+            model->scale.x = sindf(angle) * scale * 0.99f + 0.01f;
+            model->scale.z = sindf(angle) * scale * 0.99f + 0.01f;
+            if (D_8011C730_w04[sys->current_board_index] != 0) {
+                model->scale.x = -model->scale.x;
+            }
+            HuPrcVSleep();
+        }
+        for (; angle > 50.0f; angle -= 11.25f) {
+            model->scale.y = sindf(angle) * scale;
+            model->scale.x = sindf(angle) * scale * 0.99f + 0.01f;
+            model->scale.z = sindf(angle) * scale * 0.99f + 0.01f;
+            if (D_8011C730_w04[sys->current_board_index] != 0) {
+                model->scale.x = -model->scale.x;
+            }
+            HuPrcVSleep();
+        }
+        model->scale.y = 1.0f;
+        model->scale.x = 1.0f;
+        model->scale.z = 1.0f;
+        if (D_8011C730_w04[sys->current_board_index] != 0) {
+            model->scale.x = -1.0f;
+        }
+        MBMotionSet(model, -1, 0);
+        Hu3DMotionSpeedSet(model->omObj1->model[0], 1.2f);
+        while (MBMotionCheck(model) == 0) {
+            HuPrcVSleep();
+        }
+    }
+    HuAudFXPlay(0x257);
+    func_8010C4B4_w04(boo);
+    space = MBMasuGet(spaceId);
+    spaceId = camMasu;
+    if (spaceId != -1) {
+        func_800D9F5C_shared_board(boo, &space->coords, 5);
+        func_800ED20C_shared_board(-1, 5, spaceId);
+        HuPrcSleep(5);
+        process = HuPrcCurrentGet();
+        HuPrcChildLink(process, MBCameraZoomMotStart(1.6f));
+        HuPrcChildWatch();
+    }
+
+    if (GwPlayer[sys->current_player_index].coin < 5) {
+        MBDlgWinExec(7, 0x6201);
+        goto finishMenu;
+    }
+
+restartMenu:
+    for (i = 0; i < 4; i++) {
+        if (i != sys->current_player_index &&
+            (GwPlayer[i].coin != 0 || GwPlayer[i].star != 0)) {
+            break;
+        }
+    }
+    if (i >= 4) {
+        MBDlgWinExec(7, 0x6202);
+        goto finishMenu;
+    }
+    for (i = 0; i < 4; i++) {
+        if (i != sys->current_player_index && GwPlayer[i].coin != 0) {
+            break;
+        }
+    }
+    if (i == 4) {
+        inserts[0][0] = 1;
+        choices[0] = 0;
+    } else {
+        inserts[0][0] = 8;
+        choices[0] = 1;
+    }
+    inserts[0][1] = 0;
+    for (i = 0; i < 4; i++) {
+        if (i != sys->current_player_index && GwPlayer[i].star != 0) {
+            break;
+        }
+    }
+    if (i == 4) {
+        goto starChoiceUnavailable;
+    }
+    if (GwPlayer[sys->current_player_index].coin < 50) {
+        goto starChoiceUnavailable;
+    }
+    if (GwPlayer[sys->current_player_index].star < 99) {
+        goto starChoiceAvailable;
+    }
+
+starChoiceUnavailable:
+    {
+        inserts[1][0] = 1;
+        choices[1] = 0;
+        goto starChoiceDone;
+    }
+
+starChoiceAvailable:
+    {
+        inserts[1][0] = 8;
+        choices[1] = 1;
+    }
+
+starChoiceDone:
+    inserts[1][1] = 0;
+    choices[3] = 1;
+    choices[2] = 1;
+    MBDlgWinInsertCreate(7, 0x6200, (s32)inserts[0], (s32)inserts[1], 0, 0, 0);
+    menuResult = func_80107704_w04(choices);
+    menu = menuResult;
+    MBDlgWinClose();
+    MBDlgWinKill();
+    switch ((s16)menuResult) {
+        case 0:
+        case 1:
+            goto selectPlayer;
+        case 2:
+            goto menuResultTwo;
+        case 3:
+            goto menuResultThree;
+        default:
+            goto finishMenu;
+    }
+
+selectPlayer:
+    i = 0;
+    j = 0;
+    while (i < 4) {
+        if (i == sys->current_player_index) {
+            choices[j] = 0;
+            inserts[j][0] = 1;
+        } else if (menu == 0) {
+            if (GwPlayer[i].coin == 0) {
+                choices[j] = 0;
+                inserts[j][0] = 1;
+            } else {
+                choices[j] = 1;
+                inserts[j][0] = 8;
+            }
+        } else {
+            if (GwPlayer[i].star == 0) {
+                choices[j] = 0;
+                inserts[j][0] = 1;
+            } else {
+                choices[j] = 1;
+                inserts[j][0] = 8;
+            }
+        }
+        func_800E2260_shared_board(i, &inserts[j][1]);
+        i++;
+        j++;
+    }
+    choices[4] = 1;
+    choices[5] = 1;
+    MBDlgWinInsertCreate(7, 0x5C02, (s32)inserts[0], (s32)inserts[1], (s32)inserts[2], (s32)inserts[3], 0);
+    playerChoice = func_80107724_w04(choices);
+    target = playerChoice;
+    MBDlgWinClose();
+    selectedByCpu = 0;
+    MBDlgWinKill();
+    switch ((s16)playerChoice) {
+        case -1:
+            goto restartMenu;
+        case 4:
+            goto selectCpuPlayer;
+        case 5:
+            if (modelIsLinked == -1) {
+                func_80106B38_w04();
+                D_800CB99C_main = 1;
+                omAllPause();
+            } else {
+                func_80106AB0_w04();
+            }
+            goto selectPlayer;
+        default:
+            goto playerSelected;
+    }
+
+selectCpuPlayer:
+    {
+        i = 0;
+        count = 0;
+        while (i < 4) {
+            for (j = 0; j < 4; j++) {
+                if (i == BoardPlayerRankCalc(j) && sys->current_player_index != j) {
+                    rankedPlayers[count++] = j;
+                }
+            }
+            i++;
+        }
+        rank = MBRand(100.0f);
+        for (i = 0; i < 3; i++) {
+            if (rank < D_8011C724_w04[i]) {
+                break;
+            }
+        }
+        if (menu != 0) {
+            while (GwPlayer[rankedPlayers[i]].star == 0 || rankedPlayers[i] == sys->current_player_index) {
+                i--;
+            }
+        } else {
+            while (i >= 0 &&
+                   (GwPlayer[rankedPlayers[i]].coin == 0 || rankedPlayers[i] == sys->current_player_index)) {
+                i--;
+            }
+            i = 2;
+            while (i >= 0 &&
+                   (GwPlayer[rankedPlayers[i]].coin == 0 || rankedPlayers[i] == sys->current_player_index)) {
+                i--;
+            }
+        }
+        target = rankedPlayers[i];
+        selectedByCpu = 1;
+    }
+
+playerSelected:
+    if (menu == 0) {
+        MBCoinChangeCreate(sys->current_player_index, -5);
+        MBCoinTakeCreate(sys->current_player_index, -5);
+    } else {
+        MBCoinChangeCreate(sys->current_player_index, -50);
+        MBCoinTakeCreate(sys->current_player_index, -50);
+    }
+    HuPrcSleep(30);
+    if (menu == 1) {
+        if (selectedByCpu != 0) {
+            MBDlgWinExec(7, 0x6206);
+        }
+    } else {
+        for (i = 0; (u32)i < 6; i++) {
+            if (GwSystem.current_turn >= D_8011C6DC_w04[i][0] &&
+                GwSystem.current_turn <= D_8011C6DC_w04[i][1]) {
+                break;
+            }
+        }
+        estimatedAmount = D_8011C6DC_w04[i][2];
+        if (selectedByCpu == 0) {
+            MBDlgWinExec(7, MBRand(6.0f) + 0x6207);
+        } else {
+            MBDlgWinExec(7, 0x620D);
+        }
+    }
+    func_8010C554_w04(boo);
+    if (menu == 0) {
+        resultAmount = func_8010CA60_w04(target);
+        func_8010C4B4_w04(boo);
+        if (resultAmount != -2) {
+            if (resultAmount == -1) {
+                resultAmount = GwPlayer[target].coin;
+                sprintf(inserts[0], D_8011DDD4_w04, resultAmount);
+                MBDlgWinInsertCreate(7, 0x6214, (s32)inserts[0], 0, 0, 0, 0);
+            } else {
+                sprintf(inserts[0], D_8011DDD4_w04, resultAmount);
+                amountDifference = estimatedAmount - resultAmount;
+                for (i = 0; i < 4; i++) {
+                    if (amountDifference >= D_8011C71C_w04[i]) {
+                        break;
+                    }
+                }
+                MBDlgWinInsertCreate(7, i + 0x6210, (s32)inserts[0], 0, 0, 0, 0);
+            }
+            MBDlgWinClose();
+            MBDlgWinKill();
+        }
+        if (resultAmount != -2) {
+            mbItemBtnF = 0;
+            rate = (f32)resultAmount / 90.0f;
+            angle = 0.0f;
+            D_8011E0B4_w04 = MBModelCreate(0x19, NULL);
+            MBModelTempAllocFree(D_8011E0B4_w04);
+            MBModelDispOff(D_8011E0B4_w04);
+            coinEffect = MBPlayerVibrateObjCreate(target, 3, 5);
+            while (resultAmount != 0) {
+                angle += rate;
+                if (angle >= 1.0f) {
+                    angle -= 1.0f;
+                    func_8010D9E0_w04(boo);
+                    MBCoinTakeCreate(sys->current_player_index, 1);
+                    MBCoinTakeCreateSound(target, -1, 0);
+                    resultAmount--;
+                }
+                HuPrcVSleep();
+            }
+            MBPlayerVibrateObjKill(coinEffect);
+            HuPrcSleep(20);
+            MBModelKill(D_8011E0B4_w04);
+            MBVecForwardSet(&MBPlayerGet(-1)->player_obj->rot);
+            MBPlayerMotionSet(-1, 5, 0);
+            HuPrcSleep(5);
+            PlayerFXPlay(0x274, sys->current_player_index);
+            HuPrcSleep(45);
+            mbItemBtnF = 1;
+            goto outcomeDone;
+        }
+    } else {
+        i = func_8010C5F4_w04(target);
+        func_8010C4B4_w04(boo);
+        if (i != 0) {
+            MBDlgWinExec(7, 0x6205);
+            D_8011B7C8_w04 = 1;
+            func_80106A3C_w04(boo);
+            D_8011B7C8_w04 = 0;
+            goto outcomeDone;
+        } else {
+            resultAmount = -2;
+        }
+    }
+
+outcomeDone:
+    if (modelIsLinked == -1) {
+        HuPrcSleep(20);
+        MBPlayerMotionSet(-1, -1, 2);
+    }
+    if (resultAmount == -2) {
+        HuPrcSleep(30);
+        MBDlgWinExec(7, 0x6215);
+    }
+    goto finishMenu;
+
+menuResultTwo:
+    func_8010C554_w04(boo);
+    MBDlgWinExec(7, 0x6203);
+    goto finishMenu;
+
+menuResultThree:
+    if (modelIsLinked == -1) {
+        func_80106B38_w04();
+        D_800CB99C_main = 1;
+        omAllPause();
+    } else {
+        func_80106AB0_w04();
+    }
+    goto restartMenu;
+
+finishMenu:
+    if (menu != 2) {
+        func_8010C554_w04(boo);
+    }
+    MBVecForwardSet(&boo->rot);
+    if (modelIsLinked == -1) {
+        MBModelKill(boo);
+    }
+    if (camMasu != -1) {
+        HuAudFXPlay(0x126);
+        MBMotionSet(model, -1, 4);
+        Hu3DMotionSpeedSet(model->omObj1->model[0], 1.2f);
+        Hu3DMotionTimeSet(
+            model->omObj1->model[0], D_800CCF58_main[Hu3DData[model->omObj1->model[0]].motId].unk02);
+        while (func_800D9E80_shared_board(model) == 0) {
+            HuPrcVSleep();
+        }
+        scale = 1.0f / sindf(50.0f);
+        for (angle = 50.0f; angle < 90.0f; angle += 11.25f) {
+            model->scale.y = sindf(angle) * scale;
+            model->scale.x = sindf(angle) * scale * 0.2f + 0.8f;
+            model->scale.z = sindf(angle) * scale * 0.2f + 0.8f;
+            if (D_8011C730_w04[sys->current_board_index] != 0) {
+                model->scale.x = -model->scale.x;
+            }
+            HuPrcVSleep();
+        }
+        for (angle = 90.0f; angle > 0.0f; angle -= 11.25f) {
+            model->scale.y = sindf(angle) * scale;
+            model->scale.x = sindf(angle) * scale * 0.2f + 0.8f;
+            model->scale.z = sindf(angle) * scale * 0.2f + 0.8f;
+            if (D_8011C730_w04[sys->current_board_index] != 0) {
+                model->scale.x = -model->scale.x;
+            }
+            HuPrcVSleep();
+        }
+        model->scale.y = 0.0f;
+        model->scale.x = 0.0f;
+        model->scale.z = 0.0f;
+        MBModelKill(model);
+    }
+    if (cameraSet != 0) {
+        func_800DB884_shared_board(sys->current_player_index);
+    }
+    if (modelIsLinked != -1) {
+        process = HuPrcCurrentGet();
+        HuPrcChildLink(process, MBCameraZoomMotStart(1.3f));
+        HuPrcChildWatch();
+    }
+    func_80109CCC_w04();
+}
+
+void func_8010EBF0_w04(void) {
+    func_80108608_w04(0);
+}
+
+void func_8010EC0C_w04(void) {
+    func_80108608_w04(1);
+}
+
+omObjData *func_8010EC28_w04(Vec *arg0, f32 arg1, f32 arg2, s16 arg3, Vec *arg4, s32 arg5) {
+    omObjData *obj;
+    ModelFadeWork *data;
+    Object *model;
+
+    obj = omAddObj(0x1F4, 0, 0, -1, func_8010ED84_w04);
+    data = obj->data = HuMemAllocTag(0x20, TAG_OVERLAY);
+    data->unk0C = 255.0f;
+    data->unk10 = arg1;
+    data->unk14 = arg2;
+    HuVecCopy3F(&data->unk00, arg4);
+    if (arg5 != 0) {
+        model = MBModelFileCreate(0x1301F8, 0, 1.0f, 0, 0);
+    } else {
+        model = MBModelFileCreate(0x1301F7, 0, 1.0f, 0, 0);
+    }
+    Hu3DModelScaleSet(model->omObj1->model[0], 0.0f, 0.0f, 0.0f);
+    model->coords.x = arg0->x;
+    model->coords.y = arg0->y;
+    model->coords.z = arg0->z;
+    func_8001FA68_main(model->omObj1->model[0]);
+    func_8001F9E4_main(model->omObj1->model[0], 0xFF);
+    data->model = model;
+    data->unk1C = arg3;
+    return obj;
+}
+
+void func_8010ED84_w04(omObjData *arg0) {
+    ModelFadeWork *data = arg0->data;
+    Object *model = data->model;
+    f32 scale;
+    f32 alpha;
+
+    HuVecAdd(&model->coords, &model->coords, &data->unk00);
+    scale = model->scale.z + data->unk10;
+    model->scale.z = scale;
+    model->scale.y = scale;
+    model->scale.x = scale;
+    alpha = data->unk0C - data->unk14;
+    data->unk0C = alpha;
+    if (alpha < 0.0f) {
+        data->unk0C = 0.0f;
+        if (data->unk1C != 0) {
+            MBModelKill(data->model);
+            omDelObj(arg0);
+            return;
+        }
+        omSetStatBit(arg0, OM_STAT_FUNCOFF);
+    }
+    func_8001F9E4_main(model->omObj1->model[0], (u8)data->unk0C);
+}
+
+void func_8010EE9C_w04(void) {
+    Vec pos;
+    s8 link;
+    s8 index;
+    GW_PLAYER *player;
+    Object *lamp;
+    UnkVibrateProcess *vib;
+    s32 angle;
+    s32 i;
+    GW_SYSTEM *system = &GwSystem;
+
+    player = MBPlayerGet(CUR_PLAYER);
+    func_8010F9F4_w04();
+    lamp = MBModelCreate(0x24, NULL);
+    Hu3DModelScaleSet(lamp->omObj1->model[0], 0.0f, 0.0f, 0.0f);
+    HuVecCopy3F(&lamp->coords, &player->player_obj->coords);
+    for (lamp->coords.y = 100.0f; lamp->coords.y > 30.0f;) {
+        lamp->coords.y -= 1.0f;
+        HuPrcVSleep();
+    }
+
+    HuAudFXPlay(0x127);
+    func_8004A7C4_main(0xB4);
+    vib = MBPlayerVibrateObjCreate(CUR_PLAYER, 4, 5);
+
+    angle = 0xB4;
+    i = 0;
+    while (angle < 0x438) {
+        Vec particleDir[8] = {
+            {
+                1.0f,
+                1.0f,
+                1.0f,
+            },
+            { 1.0f, 2.0f, 1.0f },
+            { 0.0f, 2.0f, 1.0f },
+            { -1.0f, 1.0f, 1.0f },
+            { -1.0f, -1.0f, 1.0f },
+            { 0.0f, -1.0f, 1.0f },
+            { -1.0f, 2.0f, 1.0f },
+            { 1.0f, -1.0f, 1.0f }
+        };
+
+        lamp->coords.y = (2.0f * sindf(angle)) + 30.0f;
+        if (i & 1) {
+            HuVecCopyXYZ(&pos, lamp->coords.x, lamp->coords.y, lamp->coords.z);
+            pos.x -= 15.0f;
+            pos.y += 15.0f;
+            func_8010EC28_w04(&pos, 0.1f, 2.0f, 1, &particleDir[(i / 2) & 7], 0);
+        }
+        angle += 0x14;
+        HuPrcVSleep();
+        i++;
+    }
+
+    MBPlayerVibrateObjKill(vib);
+    WipeColorSet(0xFF, 0xFF, 0xFF);
+    func_800EB24C_shared_board(
+        D_8011B770_w04[system->star_spawn_indices[system->current_star_spawn]], &link, &index);
+    player->clink = link;
+    player->cidx = index;
+    player->nlink = link;
+    player->nidx = index + 1;
+    player->blink = link;
+    player->bidx = index - 1;
+    player->rev &= ~FLAG_REV;
+    func_800FC9E0_shared_board();
+    HuAudFXPlay(0x128);
+    omAllUPause();
+
+    while (1) {
+        Vec particleDir2[8] = {
+            {
+                1.0f,
+                1.0f,
+                1.0f,
+            },
+            { 1.0f, 2.0f, 1.0f },
+            { 0.0f, 2.0f, 1.0f },
+            { -1.0f, 1.0f, 1.0f },
+            { -1.0f, -1.0f, 1.0f },
+            { 0.0f, -1.0f, 1.0f },
+            { -1.0f, 2.0f, 1.0f },
+            { 1.0f, -1.0f, 1.0f }
+        };
+
+        lamp->coords.y = (2.0f * sindf(angle)) + 30.0f;
+        if (i & 1) {
+            HuVecCopyXYZ(&pos, lamp->coords.x, lamp->coords.y, lamp->coords.z);
+            pos.x -= 15.0f;
+            pos.y += 15.0f;
+            func_8010EC28_w04(&pos, 0.1f, 2.0f, 1, &particleDir2[(i / 2) & 7], 0);
+        }
+        i++;
+        HuPrcVSleep();
+        angle += 0x14;
+        if (angle == 0x500) {
+            func_80003A70_main(0);
+        }
+    }
+}
+
+void func_8010F264_w04(void) {
+    s16 ret;
+
+    D_800A12D0_main = 1;
+    MBMasuEventCall(D_8011B770_w04[GwSystem.star_spawn_indices[GwSystem.current_star_spawn]], 1);
+    D_800A12D0_main = 0;
+    ret = func_800FF834_shared_board();
+    if (ret >= 0) {
+        HuPrcSleep(-1);
+    }
+}
+
+void func_8010F2D0_w04(void) {
+    s32 currentPlayerIndex;
+    GW_PLAYER *player;
+    s16 playerIndex;
+    s16 spaceIndex;
+    s16 fxId;
+    s16 ret;
+
+    currentPlayerIndex = GwSystem.current_player_index;
+    player = MBPlayerGet(CUR_PLAYER);
+    func_8010F9F4_w04();
+    func_800DCA64_shared_board(currentPlayerIndex);
+    MBPlayerVibrate(CUR_PLAYER, 3);
+    GWBoardFlagSet(0x11);
+    func_800DC128_shared_board(currentPlayerIndex);
+    playerIndex = func_800EF0D8_shared_board(1);
+    omAllUPause();
+    func_800FC8A4_shared_board();
+    HuPrcSleep(5);
+    HuPrcSleep(25);
+    MBPlayerMotionSet(currentPlayerIndex, 2, 0);
+    func_800EE688_shared_board(GwPlayer[currentPlayerIndex].player_obj, 2.0f, -0.3f);
+    HuPrcSleep(5);
+    func_800DCBCC_shared_board(currentPlayerIndex);
+    func_800F2388_shared_board(currentPlayerIndex, CUR_PLAYER, 0, 10, 2);
+    HuPrcSleep(20);
+    MBItemWarpBlockSwapInit();
+    MBItemWarpBlockSwapPlayerSet(playerIndex);
+    MBItemWarpBlockSwapCreate();
+    GWBoardFlagClear(0x11);
+    fxId = func_800DC128_shared_board(currentPlayerIndex);
+    HuAudFXStop(fxId);
+    func_800DC06C_shared_board(currentPlayerIndex);
+    MBStatusShrink(CUR_PLAYER);
+    MBStatusItemDispSetAll(0);
+    MBStatusGrow(CUR_PLAYER);
+    func_800DCD2C_shared_board(currentPlayerIndex, CUR_PLAYER);
+    spaceIndex = MBMasuLinkMasuIdGet(player->clink, player->cidx);
+    MBMasuCurSet(spaceIndex);
+    MBMasuEventCall(spaceIndex, 1);
+    ret = func_800FF834_shared_board();
+    if (ret >= 0) {
+        HuPrcSleep(CUR_PLAYER);
+    }
+    func_800DAA40_shared_board(currentPlayerIndex);
+}
+
+void func_8010F490_w04(void) {
+    Process *process = HuPrcCurrentGet();
+    WarpBlockSwapWork *work = process->user_data;
+    f32 deltaX;
+    f32 deltaY;
+    f32 spriteX;
+    f32 spriteY;
+    s32 i;
+
+    deltaX = (f32)(work->endX - work->startX) / (f32)work->duration;
+    deltaY = (f32)(work->endY - work->startY) / (f32)work->duration;
+    func_800F6848_shared_board(GwSystem.current_player_index, MBItemSelNoGet(), &spriteX, &spriteY);
+
+    for (i = 1; i <= work->duration; i++) {
+        if (work->spriteGroup != -1) {
+            HuSprPosSet(work->spriteGroup, 0,
+                        work->startX + (deltaX * i), work->startY + (deltaY * i));
+        }
+
+        MBStatusItemPosSet(GwSystem.current_player_index, MBItemSelNoGet(),
+                           spriteX + (deltaX * i), spriteY + (deltaY * i));
+        HuPrcVSleep();
+    }
+
+    if (work->spriteGroup != -1) {
+        HuSprPosSet(work->spriteGroup, 0, work->endX, work->endY);
+    }
+
+    MBStatusItemPosSet(GwSystem.current_player_index, MBItemSelNoGet(),
+                       work->endX + spriteX - work->startX,
+                       work->endY + spriteY - work->startY);
+    omDelPrcObj(NULL);
+}
+
+Process *func_8010F6F4_w04(s32 spriteGroup, s16 startX, s16 startY, s16 endX, s16 endY,
+                           s16 duration) {
+    Process *process;
+    WarpBlockSwapWork *work;
+
+    process = omAddPrcObj(func_8010F490_w04, 0x4002, 0, 0x40);
+    work = HuMemMemoryAlloc(process->heap, 0x10);
+    process->user_data = work;
+    work->startX = startX;
+    work->startY = startY;
+    work->endX = endX;
+    work->endY = endY;
+    if (duration == -1) {
+        duration = 25;
+    }
+    work->duration = duration;
+    work->spriteGroup = spriteGroup;
+    return process;
+}
+
+void func_8010F7C4_w04(void) {
+    GW_SYSTEM *system = &GwSystem;
+    Process *process;
+    f32 position[2];
+    s32 i;
+
+    HuSprBankSet(mbItemCursorGrpId, 0, 1, 0);
+    HuSprAnimModeSet(mbItemCursorGrpId, 0, HUSPR_ANIM_MODE_BANK);
+    HuPrcSleep(20);
+    HuAudFXPlay(0x145);
+    MBStatusSprPosGet(mbItemCursorGrpId, 0, &position[0], &position[1]);
+    process = HuPrcCurrentGet();
+    HuPrcChildLink(process, func_8010F6F4_w04(
+                                mbItemCursorGrpId, position[0], position[1],
+                                D_8011C804_w04[system->current_player_index].x,
+                                D_8011C804_w04[system->current_player_index].y, -1));
+    HuPrcChildWatch();
+    HuPrcSleep(10);
+    HuSprBankSet(mbItemCursorGrpId, 0, 0, 0);
+    HuSprAnimModeSet(mbItemCursorGrpId, 0, HUSPR_ANIM_MODE_BANK);
+
+    for (i = 1; i < 10; i++) {
+        MBStatusItemTPLvlSet(system->current_player_index,
+                             MBItemSelNoGet(), 255 - (i * 25));
+        MBStatusItemOfsApply(system->current_player_index,
+                             MBItemSelNoGet(), 0, 2.0f);
+        HuPrcVSleep();
+    }
+
+    MBStatusItemTPLvlSet(system->current_player_index,
+                         MBItemSelNoGet(), 0);
+    MBPlayerMotionSet(-1, 5, 0);
+    PlayerFXPlay(0x274, system->current_player_index);
+    HuPrcSleep(50);
+    MBPlayerMotionSet(-1, -1, 2);
+    HuSprDispOff(mbItemCursorGrpId, 0);
+}
+
+void func_8010F9F4_w04(void) {
+    GW_SYSTEM *system = &GwSystem;
+    f32 position[2];
+    s32 i;
+
+    HuSprBankSet(mbItemCursorGrpId, 0, 1, 0);
+    HuSprAnimModeSet(mbItemCursorGrpId, 0, HUSPR_ANIM_MODE_BANK);
+    HuPrcSleep(20);
+    HuAudFXPlay(0x145);
+    MBStatusSprPosGet(mbItemCursorGrpId, 0, &position[0], &position[1]);
+    func_8010F6F4_w04(
+        mbItemCursorGrpId, position[0], position[1],
+        D_8011C824_w04[system->current_player_index].x,
+        D_8011C824_w04[system->current_player_index].y, -1);
+    HuPrcSleep(20);
+
+    for (i = 1; i < 10; i++) {
+        MBStatusItemTPLvlSet(system->current_player_index,
+                             MBItemSelNoGet(), 255 - (i * 25));
+        HuSprTPLvlSet(mbItemCursorGrpId, 0, 255 - (i * 25));
+        HuPrcVSleep();
+    }
+
+    MBStatusItemTPLvlSet(system->current_player_index,
+                         MBItemSelNoGet(), 0);
+    HuSprTPLvlSet(mbItemCursorGrpId, 0, 0);
+    HuPrcSleep(2);
+    HuSprDispOff(mbItemCursorGrpId, 0);
+}
+
+void func_8010FBC4_w04(void) {
+    f32 position[2];
+    s32 targetX;
+    s32 targetY;
+    Process *process;
+    s32 i;
+
+    HuSprBankSet(mbItemCursorGrpId, 0, 1, 0);
+    HuSprAnimModeSet(mbItemCursorGrpId, 0, HUSPR_ANIM_MODE_BANK);
+    HuPrcSleep(20);
+    HuAudFXPlay(0x145);
+    func_800F6848_shared_board(GwSystem.current_player_index,
+                               MBItemSelNoGet(), &position[0], &position[1]);
+    MBStatusItemPosGet(-1, MBItemSelNoGet(), &targetX, &targetY);
+    process = HuPrcCurrentGet();
+    HuPrcChildLink(process,
+                   func_8010F6F4_w04(mbItemCursorGrpId, position[0], position[1],
+                                     targetX, targetY, -1));
+    HuPrcChildWatch();
+
+    for (i = 1; i < 10; i++) {
+        HuSprTPLvlSet(mbItemCursorGrpId, 0, 255 - (i * 25));
+        HuPrcVSleep();
+    }
+
+    HuSprTPLvlSet(mbItemCursorGrpId, 0, 0);
+    HuSprDispOff(mbItemCursorGrpId, 0);
+}
+
+void func_8010FD34_w04(void) {
+    GW_SYSTEM *system = &GwSystem;
+    f32 position[2];
+    Process *process;
+    s32 i;
+    s32 j;
+
+    HuSprBankSet(mbItemCursorGrpId, 0, 1, 0);
+    HuSprAnimModeSet(mbItemCursorGrpId, 0, HUSPR_ANIM_MODE_BANK);
+    HuPrcSleep(20);
+    HuAudFXPlay(0x145);
+    MBStatusSprPosGet(mbItemCursorGrpId, 0, &position[0], &position[1]);
+    process = HuPrcCurrentGet();
+    HuPrcChildLink(process,
+                   func_8010F6F4_w04(mbItemCursorGrpId, position[0], position[1],
+                                     D_8011C804_w04[system->current_player_index].x,
+                                     D_8011C804_w04[system->current_player_index].y, -1));
+    HuPrcChildWatch();
+    HuPrcSleep(10);
+    HuSprBankSet(mbItemCursorGrpId, 0, 0, 0);
+    HuSprAnimModeSet(mbItemCursorGrpId, 0, HUSPR_ANIM_MODE_BANK);
+
+    for (i = 1; i < 10; i++) {
+        HuSprTPLvlSet(mbItemCursorGrpId, 0, 255 - (i * 25));
+        HuPrcVSleep();
+    }
+
+    HuSprTPLvlSet(mbItemCursorGrpId, 0, 0);
+    if ((GwPlayer[system->current_player_index].itemNo[MBItemSelNoGet()] == 0xB) ||
+        (GwPlayer[system->current_player_index].itemNo[MBItemSelNoGet()] == 8)) {
+        HuAudFXPlay(0x141);
+    }
+
+    for (i = 0; i <= 1080; i += 30) {
+        MBStatusItemRotSet(system->current_player_index,
+                           MBItemSelNoGet(), sindf(i) * 30.0f);
+        HuPrcVSleep();
+    }
+
+    for (j = 1; j < 10; j++) {
+        MBStatusItemTPLvlSet(system->current_player_index,
+                             MBItemSelNoGet(), 255 - (j * 25));
+        MBStatusItemRotSet(system->current_player_index,
+                           MBItemSelNoGet(), sindf(i) * 30.0f);
+        HuPrcVSleep();
+        i += 30;
+    }
+
+    MBStatusItemTPLvlSet(system->current_player_index,
+                         MBItemSelNoGet(), 0);
+    HuSprDispOff(mbItemCursorGrpId, 0);
+}
+
+void func_80110080_w04(void) {
+    GW_SYSTEM *system = &GwSystem;
+    f32 position[2];
+    Process *process;
+    s32 i;
+
+    HuSprBankSet(mbItemCursorGrpId, 0, 1, 0);
+    HuSprAnimModeSet(mbItemCursorGrpId, 0, HUSPR_ANIM_MODE_BANK);
+    HuPrcSleep(20);
+    HuAudFXPlay(0x145);
+    MBStatusSprPosGet(mbItemCursorGrpId, 0, &position[0], &position[1]);
+    process = HuPrcCurrentGet();
+    HuPrcChildLink(process,
+                   func_8010F6F4_w04(mbItemCursorGrpId, position[0], position[1],
+                                     D_8011C804_w04[system->current_player_index].x,
+                                     D_8011C804_w04[system->current_player_index].y, -1));
+    HuPrcChildWatch();
+    HuPrcSleep(10);
+    HuSprBankSet(mbItemCursorGrpId, 0, 0, 0);
+    HuSprAnimModeSet(mbItemCursorGrpId, 0, HUSPR_ANIM_MODE_BANK);
+
+    for (i = 1; i < 10; i++) {
+        HuSprTPLvlSet(mbItemCursorGrpId, 0, 255 - (i * 25));
+        HuPrcVSleep();
+    }
+
+    HuSprTPLvlSet(mbItemCursorGrpId, 0, 0);
+    HuSprDispOff(mbItemCursorGrpId, 0);
+}
+
+void func_80110244_w04(s32 arg0, s32 arg1, s32 duration, f32 *target, s32 mode) {
+    f32 position[2];
+    f32 stepX;
+    f32 stepY;
+    f32 scale;
+    s32 i;
+
+    if (mode == 2) {
+        HuAudFXPlay(0x145);
+    }
+
+    func_800F6848_shared_board(arg0, arg1, &position[0], &position[1]);
+    stepX = (target[0] - position[0]) / duration;
+    stepY = (target[1] - position[1]) / duration;
+
+    for (i = 2; duration != 0; duration--, i++) {
+        position[0] += stepX;
+        position[1] += stepY;
+        MBStatusItemPosSet(arg0, arg1, position[0], position[1]);
+
+        if ((mode == 1) && (i < 11)) {
+            MBStatusItemTPLvlSet(arg0, arg1, i * 25);
+            scale = i * 0.07f;
+            MBStatusItemScaleSet(arg0, arg1, scale + 0.3f,
+                                 (f32)((f64)scale + 0.3));
+        }
+        HuPrcVSleep();
+    }
+
+    MBStatusItemPosSet(arg0, arg1, target[0], target[1]);
+
+    if (mode == 0) {
+        for (i = 1; i < 10; i++) {
+            MBStatusItemTPLvlSet(arg0, arg1, 255 - (i * 25));
+            MBStatusItemScaleSet(arg0, arg1, 1.0f - (i * 0.1f), 1.0f - (i * 0.1f));
+            HuPrcVSleep();
+        }
+        MBStatusItemTPLvlSet(arg0, arg1, 0);
+    }
+}
+
+void func_801104DC_w04(void) {
+    GW_PLAYER *player;
+    Object *model;
+    f32 scale;
+    f32 angle;
+
+    player = MBPlayerGet(-1);
+    MBKSuitCreate();
+    MBModelDispOff(D_801011FC_shared_board);
+    D_801011FC_shared_board->omObj1->scale.x = 0.0f;
+    D_801011FC_shared_board->omObj1->scale.y = 0.0f;
+    D_801011FC_shared_board->omObj1->scale.z = 0.0f;
+    MBPlayerVibrate(-1, 3);
+    HuAudFXPlay(0x143);
+
+    model = MBModelCreate(0x22, NULL);
+    func_8001C258_main(model->omObj1->model[0], 0x180, 0);
+    Hu3DModelLayerSet(model->omObj1->model[0], 0x1800);
+    Hu3DModelRemakeStatic(model->omObj1->model[0]);
+    HuVecCopy3F(&model->coords, &player->player_obj->coords);
+
+    angle = 0.0f;
+    for (scale = 1.0f; scale < 10.0f; scale = (f32)((f64)scale + 0.5)) {
+        HuVecCopyXYZ(&model->scale, scale, scale, scale);
+        func_8008A430_main(Hu3DData[model->omObj1->model[0]].mtx, angle);
+        angle += 20.0f;
+        HuPrcVSleep();
+    }
+
+    MBModelDispOff(player->player_obj);
+    MBModelDispOn(D_801011FC_shared_board);
+
+    for (; scale >= 1.0f; scale = (f32)((f64)scale - 0.5)) {
+        HuVecCopyXYZ(&model->scale, scale, scale, scale);
+        func_8008A430_main(Hu3DData[model->omObj1->model[0]].mtx, angle);
+        angle += 20.0f;
+        HuPrcVSleep();
+    }
+
+    MBModelKill(model);
+    HuPrcSleep(20);
+    PlayerFXPlay(0x274, GwSystem.current_player_index);
+    MBKSuitMotionSet(5, 2);
+    HuPrcSleep(40);
+    MBKSuitMotionSet(-1, 2);
+    MBDlgResultWinExec(0x3A14);
+}
+
+void func_80110768_w04(void) {
+    Vec direction;
+    GW_PLAYER *player;
+    Object *model;
+    f32 scale;
+    f32 angle;
+
+    player = MBPlayerGet(-1);
+    MBKSuitMotionSet(-1, 2);
+    MBVecForwardSet(&direction);
+    func_800ED128_shared_board(&player->player_obj->rot, &direction, &player->player_obj->rot, 8);
+    HuPrcSleep(8);
+    HuAudFXPlay(0x143);
+
+    model = MBModelCreate(0x22, NULL);
+    func_8001C258_main(model->omObj1->model[0], 0x180, 0);
+    Hu3DModelLayerSet(model->omObj1->model[0], 0x1800);
+    Hu3DModelRemakeStatic(model->omObj1->model[0]);
+    HuVecCopy3F(&model->coords, &player->player_obj->coords);
+
+    angle = 0.0f;
+    for (scale = 1.0f; scale < 10.0f; scale = (f32)((f64)scale + 0.5)) {
+        HuVecCopyXYZ(&model->scale, scale, scale, scale);
+        func_8008A430_main(Hu3DData[model->omObj1->model[0]].mtx, angle);
+        angle += 20.0f;
+        HuPrcVSleep();
+    }
+
+    MBModelDispOn(player->player_obj);
+    MBKSuitKill();
+
+    for (; scale >= 1.0f; scale = (f32)((f64)scale - 0.5)) {
+        HuVecCopyXYZ(&model->scale, scale, scale, scale);
+        func_8008A430_main(Hu3DData[model->omObj1->model[0]].mtx, angle);
+        angle += 20.0f;
+        HuPrcVSleep();
+    }
+
+    MBModelKill(model);
+}
+
+void func_801109A8_w04(void) {
+    s32 index;
+    s32 group;
+    s32 alpha;
+    void *dialog;
+    f32 x;
+    f32 y;
+    f32 angle;
+
+    index = (s32)HuPrcCurrentGet()->user_data;
+    dialog = MBPlayerVibrateObjCreate(-1, 1, 5);
+    group = HuSprGrpCreate(1, 0);
+    HuSprGrpMemberSet(group, 0, D_8011E0B8_w04, 0);
+    HuSprPriSet(group, 0, 0x4780);
+    HuSprAttrSet(group, 0, 0x1000);
+    func_800F6848_shared_board(GwSystem.current_player_index, MBItemSelNoGet(), &x, &y);
+    x += 20.0f;
+    y -= 20.0f;
+    HuSprPosSet(group, 0, x, y);
+    HuSprColorSet(group, 0, 0xFF, 0xFF, 0);
+
+    alpha = 0xFF;
+    angle = (f32)D_8011C8F0_w04[index];
+    for (; alpha >= 0; alpha -= 0x14) {
+        x += cosdf(angle) * 5.0f;
+        y -= sindf(angle) * 5.0f;
+        HuSprPosSet(group, 0, x, y);
+        HuSprTPLvlSet(group, 0, alpha);
+        HuPrcVSleep();
+    }
+
+    HuSprTPLvlSet(group, 0, 0);
+    MBPlayerVibrateObjKill(dialog);
+    HuSprGrpKill(group);
+    omDelPrcObj(0);
+}
+
+void func_80110BB8_w04(void) {
+    GW_SYSTEM *loc;
+    void *data;
+    s32 choice;
+    Process *process;
+    s32 one;
+
+    loc = &GwSystem;
+    data = DataRead(0x001301B8);
+    D_8011E0B8_w04 = HuSprAnimRead(data);
+    DataClose(data);
+    func_80110080_w04();
+
+    while (1) {
+        MBDlgWinInsertCreate(-1, 0x3A01, 0, 0, 0, 0, 0);
+        choice = func_80109CD4_w04((s32)D_8011C884_w04, 0);
+        MBDlgWinClose();
+        MBDlgWinKill();
+
+        if (choice < 2) {
+            if (choice < 0) {
+                process = omAddPrcObj(func_8010A014_w04, 0, 0, 0);
+                omPrcSetStatBit(process, OM_STAT_NOALLPAUSE);
+                func_80106B38_w04();
+                one = 1;
+                D_800CB99C_main = one;
+                omAllPause();
+                omDelPrcObj(process);
+                func_800FC8A4_shared_board();
+                continue;
+            }
+            GwSystem.forceShopHost = choice + 1;
+            break;
+        }
+
+        process = omAddPrcObj(func_8010A014_w04, 0, 0, 0);
+        omPrcSetStatBit(process, OM_STAT_NOALLPAUSE);
+        func_80106B38_w04();
+        one = 1;
+        D_800CB99C_main = one;
+        omAllPause();
+        omDelPrcObj(process);
+        func_800FC8A4_shared_board();
+        continue;
+    }
+
+    {
+        s32 i;
+
+        HuPrcSleep(30);
+        HuAudFXPlay(0x147);
+        for (i = 0; i < 5; i++) {
+            process = omAddPrcObj(func_801109A8_w04, 0x4002, 0, 0);
+            process->user_data = (void *)i;
+            HuPrcChildLink(HuPrcCurrentGet(), process);
+            HuPrcSleep(3);
+        }
+        HuPrcChildWatch();
+        HuPrcSleep(20);
+
+        for (i = 0; i < 5; i++) {
+            process = omAddPrcObj(func_801109A8_w04, 0x4002, 0, 0);
+            process->user_data = (void *)i;
+            HuPrcChildLink(HuPrcCurrentGet(), process);
+            HuPrcSleep(3);
+        }
+        HuPrcChildWatch();
+        HuPrcSleep(20);
+    }
+
+    GwPlayer[loc->current_player_index].itemNo[MBItemSelNoGet()] = -1;
+    MBItemRemoveEmpty(loc->current_player_index);
+    MBStatusItemTPLvlSet(loc->current_player_index,
+                         MBItemSelNoGet(), 0);
+    HuSprAnimKill(D_8011E0B8_w04);
+    MBStatusShrink(-1);
+    MBStatusItemDispSetAll(0);
+    MBStatusGrow(-1);
+
+    if (choice != 0) {
+        HuAudFXPlay(0x2A0);
+    } else if (GwPlayer[loc->current_player_index].coin < 5 ||
+               loc->current_turn == loc->total_turns) {
+        HuAudFXPlay(0x29A);
+    } else {
+        HuAudFXPlay(0x298);
+    }
+    func_8010B1FC_w04();
+    GwSystem.forceShopHost = 0;
+}
+
+void func_80110E78_w04(void) {
+    GW_SYSTEM *loc;
+    void *data;
+    s32 choice;
+    Process *process;
+    s32 i;
+
+    loc = &GwSystem;
+    data = DataRead(0x001301B8);
+    D_8011E0B8_w04 = HuSprAnimRead(data);
+    DataClose(data);
+    func_80110080_w04();
+
+    HuPrcSleep(30);
+    HuAudFXPlay(0x147);
+    for (i = 0; i < 5; i++) {
+        process = omAddPrcObj(func_801109A8_w04, 0x4002, 0, 0);
+        process->user_data = (void *)i;
+        HuPrcChildLink(HuPrcCurrentGet(), process);
+        HuPrcSleep(3);
+    }
+    HuPrcChildWatch();
+    HuPrcSleep(20);
+
+    for (i = 0; i < 5; i++) {
+        process = omAddPrcObj(func_801109A8_w04, 0x4002, 0, 0);
+        process->user_data = (void *)i;
+        HuPrcChildLink(HuPrcCurrentGet(), process);
+        HuPrcSleep(3);
+    }
+    HuPrcChildWatch();
+    HuPrcSleep(20);
+    HuAudFXPlay(0x29F);
+
+selectPlayer:
+    MBDlgWinInsertCreate(4, 0x3A0A, mbCharNameMesTbl[GwPlayer[0].chr], mbCharNameMesTbl[GwPlayer[1].chr],
+                         mbCharNameMesTbl[GwPlayer[2].chr], mbCharNameMesTbl[GwPlayer[3].chr], 0);
+    if (GwPlayer[loc->current_player_index].coin != 0) {
+        choice = func_80109CD4_w04(1, 0);
+    } else {
+        choice = func_80109CD4_w04(2, loc->current_player_index);
+    }
+    MBDlgWinClose();
+    MBDlgWinKill();
+
+    switch (choice) {
+        case 4:
+            choice = func_800EF0D8_shared_board(0);
+            MBDlgWinInsertCreate(4, 0x3A0C, 0, 0, 0, 0, 0);
+            break;
+        case 5:
+            process = omAddPrcObj(func_8010A014_w04, 0, 0, 0);
+            omPrcSetStatBit(process, OM_STAT_NOALLPAUSE);
+            func_80106B38_w04();
+            D_800CB99C_main = 1;
+            omAllPause();
+            omDelPrcObj(process);
+            func_800FC8A4_shared_board();
+            goto selectPlayer;
+        default:
+            MBDlgWinInsertCreate(4, 0x3A0B, mbCharNameMesTbl[GwPlayer[choice].chr], 0, 0, 0, 0);
+            break;
+    }
+
+    MBDlgWinClose();
+    MBDlgWinKill();
+    HuAudFXPlay(0x29C);
+    GwPlayer[loc->current_player_index].itemNo[MBItemSelNoGet()] = -1;
+    MBItemRemoveEmpty(loc->current_player_index);
+    MBStatusItemTPLvlSet(loc->current_player_index, MBItemSelNoGet(), 0);
+    HuSprAnimKill(D_8011E0B8_w04);
+
+    if (func_800DEB2C_shared_board(loc->current_player_index) == 3) {
+        GWBoardFlagSet(0x17);
+    } else {
+        GWBoardFlagClear(0x17);
+    }
+    GwSystem.playerIndexVisitingBowser = choice;
+    func_800FCA4C_shared_board();
+    func_800FF794_shared_board(0x50, 0, 3, 1);
+    func_800FC8A4_shared_board();
+    func_800FF7F0_shared_board(2);
+    omAllUPause();
+    HuPrcSleep(-1);
+}
+
+void func_80111218_w04(void) {
+    s32 i;
+    s32 j;
+    s32 wipeStarted;
+    GW_SYSTEM *system = &GwSystem;
+    Object *lamp;
+    Object *starModel;
+    Object *targetStar;
+    Process *process;
+    Process *dialogProcess;
+    Vec direction;
+    Vec pos;
+    Vec destination;
+    s32 angle;
+    s32 alpha;
+    f32 speed;
+    f32 rotation;
+    void *dialog;
+
+    {
+        GW_PLAYER *player;
+
+        player = MBPlayerGet(-1);
+        lamp = MBModelCreate(0x3C, NULL);
+        MBMotionSet(lamp, -1, 1);
+        Hu3DModelScaleSet(lamp->omObj1->model[0], 0.0f, 0.0f, 0.0f);
+        HuVecCopy3F(&lamp->coords, &player->player_obj->coords);
+        lamp->velocity.x = 30.0f;
+        lamp->flags |= 1;
+        HuVecCopyXYZ(&lamp->scale, 0.0f, 0.0f, 0.0f);
+        MBModelDispOff(lamp);
+        func_8010F9F4_w04();
+
+        {
+            s32 itemSlot = MBItemFind(-1, 9);
+
+            GwPlayer[system->current_player_index].itemNo[itemSlot] = -1;
+        }
+        MBItemRemoveEmpty(system->current_player_index);
+
+        starModel = MBModelCreate(0x3D, NULL);
+        func_8001FA68_main(starModel->omObj1->model[0]);
+        func_8001F9E4_main(starModel->omObj1->model[0], 0xFF);
+        Hu3DModelScaleSet(starModel->omObj1->model[0], 0.0f, 0.0f, 0.0f);
+        HuVecCopy3F(&starModel->coords, &player->player_obj->coords);
+        starModel->coords.y = 100.0f;
+        while (starModel->coords.y > 30.0f) {
+            starModel->coords.y -= 1.0f;
+            HuPrcVSleep();
+        }
+    }
+
+    HuAudFXPlay(0x127);
+    func_800039A4_main(D_800CDBC8_main, 0xB4);
+    dialog = MBPlayerVibrateObjCreate(-1, 3, 5);
+
+    for (angle = 180, i = 0; angle < 1080; angle += 20, i++) {
+        Vec velocities[8] = {
+            {
+                1.0f,
+                1.0f,
+                1.0f,
+            },
+            { 1.0f, 2.0f, 1.0f },
+            { 0.0f, 2.0f, 1.0f },
+            { -1.0f, 1.0f, 1.0f },
+            { -1.0f, -1.0f, 1.0f },
+            { 0.0f, -1.0f, 1.0f },
+            { -1.0f, 2.0f, 1.0f },
+            { 1.0f, -1.0f, 1.0f }
+        };
+
+        starModel->coords.y = sindf((f32)angle) * 2.0f + 30.0f;
+        if (i & 1) {
+            HuVecCopyXYZ(&pos, starModel->coords.x, starModel->coords.y, starModel->coords.z);
+            pos.x -= 15.0f;
+            pos.y += 15.0f;
+            func_8010EC28_w04(&pos, 0.1f, 2.0f, 1,
+                              &velocities[(i / 2) & 7], 1);
+        }
+        HuPrcVSleep();
+    }
+
+    alpha = 0xFF;
+    speed = 0.0f;
+    while (1) {
+        Vec velocities2[8] = {
+            {
+                1.0f,
+                1.0f,
+                1.0f,
+            },
+            { 1.0f, 2.0f, 1.0f },
+            { 0.0f, 2.0f, 1.0f },
+            { -1.0f, 1.0f, 1.0f },
+            { -1.0f, -1.0f, 1.0f },
+            { 0.0f, -1.0f, 1.0f },
+            { -1.0f, 2.0f, 1.0f },
+            { 1.0f, -1.0f, 1.0f }
+        };
+
+        starModel->coords.y = sindf((f32)angle) * 2.0f + 30.0f;
+        if (i & 1) {
+            HuVecCopyXYZ(&pos, starModel->coords.x, starModel->coords.y, starModel->coords.z);
+            pos.x -= 15.0f;
+            pos.y += 15.0f;
+            func_8010EC28_w04(&pos, 0.1f, 2.0f, 1,
+                              &velocities2[(i / 2) & 7], 1);
+        }
+
+        if (alpha > 0) {
+            func_8001F9E4_main(starModel->omObj1->model[0], alpha & 0xFF);
+            alpha -= 12;
+        } else {
+            MBModelDispOff(starModel);
+            func_800D9A40_shared_board(lamp);
+            speed += 0.1f;
+            lamp->scale.z = speed;
+            lamp->scale.y = speed;
+            lamp->scale.x = speed;
+            if (speed > 1.0f) {
+                HuAudSeqPlay(0x3D);
+                break;
+            }
+        }
+        i++;
+        HuPrcVSleep();
+    }
+
+    lamp->scale.x = lamp->scale.y = lamp->scale.z = 1.0f;
+    dialogProcess = func_800EDB98_shared_board(lamp, 3.0f, 2.0f);
+    MBPlayerVibrateObjKill(dialog);
+    HuPrcSleep(30);
+    MBDlgWinExec(0x3C, 0x3A2F);
+    omDelPrcObj(dialogProcess);
+
+    i = 1;
+    lamp->coords.y -= lamp->velocity.x;
+    HuVecSubtract(&direction, &gCameraList->pos, &lamp->coords);
+    MBVecNormalize(&direction);
+    lamp->coords.y += lamp->velocity.x;
+
+    while (lamp->velocity.x < 1800.0f) {
+        lamp->coords.x += direction.x * 40.2f;
+        lamp->velocity.x += direction.y * 40.0f;
+        lamp->coords.z += direction.z * 40.2f;
+        if ((lamp->velocity.x > 300.0f) && (i != 0)) {
+            i = 0;
+            WipeColorSet(0xFF, 0xFF, 0xFF);
+            WipeCreateOut(0xB, 0x32);
+            HuAudFXPlay(0x128);
+        }
+        HuPrcVSleep();
+    }
+
+    while (WipeStatGet() != 0) {
+        HuPrcVSleep();
+    }
+
+    {
+        SpaceData *space;
+        SpaceData *nextSpace;
+
+        space = MBMasuGet(D_8011B770_w04[system->star_spawn_indices[system->current_star_spawn]]);
+        nextSpace = MBMasuGet(D_8011B780_w04[system->star_spawn_indices[system->current_star_spawn]]);
+        HuVecCopy3F(&destination, &space->coords);
+        MBCameraPos3DSet(&destination);
+        MBCameraFocusModeSet(4);
+        MBCameraFocusVecSet(&destination);
+        lamp->flags &= ~1;
+        HuVecCopy3F(&lamp->coords, &space->coords);
+        HuVecSubtract(&direction, &nextSpace->coords, &space->coords);
+        MBVecNormalize(&direction);
+        lamp->coords.x -= direction.x * 20.0f;
+        lamp->coords.z -= direction.z * 20.0f;
+    }
+
+    HuAudFXPlay(0x129);
+    WipeCreateIn(0xB, 0x32);
+    lamp->velocity.x = 100.0f;
+    while (lamp->velocity.x > 30.0f) {
+        HuPrcVSleep();
+        lamp->velocity.x -= 3.0f;
+    }
+
+    while (WipeStatGet() != 0) {
+        HuPrcVSleep();
+    }
+
+    process = HuPrcCurrentGet();
+    HuPrcChildLink(process,
+                   func_800ED128_shared_board(&lamp->rot,
+                                              &direction,
+                                              &lamp->rot, 0x10));
+    i = 0;
+    HuPrcChildWatch();
+    dialogProcess = func_800EDB98_shared_board(lamp, 3.0f, 2.0f);
+    MBDlgWinExec(0x3C, 0x3A30);
+    HuAudFXPlay(0x12C);
+    MBMotionSet(lamp, -1, 0);
+    HuPrcSleep(20);
+
+    wipeStarted = 1;
+    for (j = 0; j < 8; j++) {
+        if (D_8011E018_w04[j] != NULL) {
+            omDelPrcObj(D_8011E018_w04[j]);
+            D_8011E018_w04[j] = NULL;
+        }
+    }
+
+    targetStar = D_8011DFF8_w04[system->star_spawn_indices[system->current_star_spawn]];
+    HuAudSeqFadeOut(0x5A);
+    rotation = 0.0f;
+    while (targetStar->velocity.x < 400.0f) {
+        targetStar->velocity.x += 3.0f;
+        targetStar->coords.x += direction.x * 3.0f;
+        targetStar->coords.z += direction.z * 3.0f;
+        targetStar->rot.x = -sindf(rotation);
+        targetStar->rot.z = cosdf(rotation);
+        rotation += 45.0f;
+        if (rotation > 360.0f) {
+            rotation -= 360.0f;
+        }
+        if ((targetStar->velocity.x > 50.0f) && (wipeStarted != 0)) {
+            if (func_800DEB2C_shared_board(system->current_player_index) == 3) {
+                GWBoardFlagSet(0x17);
+            } else {
+                GWBoardFlagClear(0x17);
+            }
+            wipeStarted = 0;
+            WipeColorSet(0, 0, 0);
+            omDelPrcObj(dialogProcess);
+            func_800EDA58_shared_board();
+            func_800FC8A4_shared_board();
+            func_800FF7F0_shared_board(2);
+            func_800FCA14_shared_board();
+            omAllUPause();
+        }
+        HuPrcVSleep();
+    }
+    HuPrcSleep(-1);
+}
+
+void func_80111C14_w04(void) {
+    GW_SYSTEM *system = &GwSystem;
+    s32 player;
+    Process *process;
+    s32 group;
+    void *sprite;
+    s32 spriteCount;
+    s32 i;
+    f32 position[2];
+    s32 result;
+
+    player = GwSystem.current_player_index;
+    group = HuSprGrpCreate(1, 0);
+    sprite = DataRead(D_8010197C_shared_board[1]);
+    spriteCount = HuSprAnimRead(sprite);
+    DataClose(sprite);
+    HuSprGrpMemberSet(group, 0, spriteCount, 0);
+    HuSprPriSet(group, 0, 0x4780);
+    HuSprAttrSet(group, 0, 0x9000);
+    HuSprBankSet(mbItemCursorGrpId, 0, 1, 0);
+    HuSprAnimModeSet(mbItemCursorGrpId, 0, HUSPR_ANIM_MODE_BANK);
+    HuPrcSleep(20);
+    HuAudFXPlay(0x145);
+    MBStatusSprPosGet(mbItemCursorGrpId, 0, &position[0], &position[1]);
+    process = HuPrcCurrentGet();
+    HuPrcChildLink(process,
+                   func_8010F6F4_w04(mbItemCursorGrpId, position[0], position[1],
+                                     D_8011C804_w04[system->current_player_index].x,
+                                     D_8011C804_w04[system->current_player_index].y, -1));
+    HuPrcChildWatch();
+    HuPrcSleep(10);
+    HuSprBankSet(mbItemCursorGrpId, 0, 0, 0);
+    HuSprAnimModeSet(mbItemCursorGrpId, 0, HUSPR_ANIM_MODE_BANK);
+    for (i = 1; i < 10; i++) {
+        HuSprTPLvlSet(mbItemCursorGrpId, 0, 255 - i * 25);
+        HuPrcVSleep();
+    }
+    HuSprTPLvlSet(mbItemCursorGrpId, 0, 0);
+    HuSprDispOff(mbItemCursorGrpId, 0);
+    GwPlayer[player].itemNo[MBItemSelNoGet()] = -1;
+    MBStatusItemTPLvlSet(player, MBItemSelNoGet(), 0);
+    func_800F6848_shared_board(player, MBItemSelNoGet(), &position[0], &position[1]);
+    HuSprPosSet(group, 0, position[0], position[1]);
+    HuSprDispOn(group, 0);
+    MBItemRemoveEmpty(player);
+    MBStatusShrink(-1);
+    MBStatusItemDispSetAll(0);
+    MBStatusGrow(-1);
+retry:
+    MBDlgWinInsertCreate(0x38, 0x4100, 0, 0, 0, 0, 0);
+    result = func_80109CD4_w04((s32)&D_8011C904_w04, 0);
+    MBDlgWinClose();
+    MBDlgWinKill();
+    switch (result) {
+        case 0:
+            MBDlgWinInsertCreate(0x38, 0x4101, 0, 0, 0, 0, 0);
+            break;
+        case 1:
+            MBDlgWinInsertCreate(0x38, 0x4102, 0, 0, 0, 0, 0);
+            HuSprDispOff(group, 0);
+            GwPlayer[player].itemNo[MBItemFindEmpty(player)] = 1;
+            MBItemRemoveEmpty(player);
+            GwSystem.cur_player_used_item &= ~1;
+            break;
+        default:
+            HuSprDispOff(group, 0);
+            func_80106B38_w04();
+            D_800CB99C_main = 1;
+            omAllPause();
+            HuSprDispOn(group, 0);
+            goto retry;
+    }
+    MBDlgWinClose();
+    MBDlgWinKill();
+    if (result == 0) {
+        HuPrcSleep(10);
+        for (i = 1; i < 0x40; i++) {
+            HuSprTPLvlSet(group, 0, (u16)(255.0f - (f32)i * 3.984f));
+            HuPrcVSleep();
+        }
+        HuSprTPLvlSet(group, 0, 0);
+    }
+    HuSprGrpKill(group);
+    HuSprAnimKill(spriteCount);
+}
+
+void func_8011215C_w04(void) {
+    s32 playerIndex;
+    s32 group;
+    s16 setupGroup;
+    s32 xPos;
+    s16 fadeGroup;
+    s32 yPos;
+    f32 scale;
+    s32 alpha;
+
+    playerIndex = (s32)HuPrcCurrentGet()->user_data;
+    group = HuSprGrpCreate(1, 0);
+    setupGroup = group;
+    HuSprGrpMemberSet(setupGroup, 0, D_8011E0C0_w04, 0);
+    HuSprPriSet(setupGroup, 0, 9);
+    HuSprAttrSet(setupGroup, 0, 0x1000);
+    MBStatusItemPosGet(D_8011E0BC_w04, 0, &xPos, &yPos);
+
+    xPos = (s32)((D_8011C6BC_w04[D_8011E0BC_w04].x * 16.0f) +
+                 D_8011C69C_w04[D_8011E0BC_w04].x);
+    yPos = (s32)((D_8011C6BC_w04[D_8011E0BC_w04].y * 16.0f) +
+                 D_8011C69C_w04[D_8011E0BC_w04].y);
+    HuSprPosSet(
+        setupGroup, 0, (f32)xPos + D_8011C910_w04[playerIndex].x,
+        (f32)yPos + D_8011C910_w04[playerIndex].y);
+    HuSprColorSet(group, 0, 0xFF, 0xFF, 0xFF);
+    HuSprTPLvlSet(group, 0, 0xFF);
+
+    scale = 0.0f;
+    alpha = 0xFF;
+    while (alpha >= 0) {
+        HuSprScaleSet(group, 0, scale, scale);
+        HuSprTPLvlSet(group, 0, alpha);
+        HuPrcVSleep();
+        alpha -= 10;
+        scale += 0.1f;
+    }
+
+    HuSprTPLvlSet(group, 0, 0);
+    HuSprGrpKill(group);
+    omDelPrcObj(NULL);
+}
+
+void func_80112378_w04(void) {
+    s32 playerIndex;
+    void *data;
+    s32 itemSpriteId;
+    s32 auraSpriteId;
+    s32 group;
+    s16 setupGroup;
+    s32 xPos;
+    s16 fadeGroup;
+    s32 yPos;
+    s32 i;
+    s32 j;
+    Process *childProcess;
+    s32 fxId;
+
+    playerIndex = (s32)HuPrcCurrentGet()->user_data;
+    data = DataRead(0x21002C);
+    itemSpriteId = HuSprAnimRead(data);
+    DataClose(data);
+    data = DataRead(0x1301BA);
+    auraSpriteId = HuSprAnimRead(data);
+    DataClose(data);
+    data = DataRead(0x1301B9);
+    D_8011E0C0_w04 = HuSprAnimRead(data);
+    DataClose(data);
+
+    group = HuSprGrpCreate(2, 2);
+    setupGroup = group;
+    HuSprAnimModeSet(setupGroup, 0, HUSPR_ANIM_MODE_BANK);
+    HuSprGrpMemberSet(setupGroup, 0, itemSpriteId, 0xC);
+    HuSprPriSet(setupGroup, 0, 9);
+    HuSprAttrSet(setupGroup, 0, 0x1000);
+    func_800554C4_main(setupGroup, 0, -1);
+    HuSprGrpMemberSet(setupGroup, 1, auraSpriteId, 0);
+    HuSprPriSet(setupGroup, 1, 9);
+    HuSprAttrSet(setupGroup, 1, 0x9000);
+    HuSprColorSet(setupGroup, 1, 0xFF, 0xFF, 0xFF);
+    HuSprTPLvlSet(setupGroup, 1, 0xFF);
+    HuSprScaleSet(setupGroup, 1, 2.0f, 2.0f);
+    func_800554C4_main(setupGroup, 1, 0);
+
+    yPos = 0xC8;
+    if (playerIndex & 1) {
+        HuSprAttrSet(setupGroup, 0, 1);
+        HuSprAttrSet(setupGroup, 1, 1);
+        HuSprPosSet(setupGroup, 1, 0x14, -5);
+    } else {
+        yPos = 0x78;
+        HuSprPosSet(group, 1, -0x14, -5);
+    }
+
+    xPos = (playerIndex < 2) ? -0x20 : 0x110;
+    HuPrcSleep(0x14);
+    GwPlayer[playerIndex].itemNo[MBItemFind(playerIndex, 0xC)] = -1;
+    MBItemRemoveEmpty(playerIndex);
+    MBStatusItemIconSprReinit(playerIndex);
+
+    do {
+        if (playerIndex < 2) {
+            xPos += 5;
+            if (xPos >= 0x33) {
+                break;
+            }
+        } else {
+            xPos -= 5;
+            if (xPos < 0xD2) {
+                break;
+            }
+        }
+        HuSprPosSet(group, 0, yPos, xPos);
+        HuPrcVSleep();
+    } while (1);
+
+    HuPrcSleep(0xA);
+    HuSprDispOn(group, 1);
+    fxId = HuAudFXPlay(0x14C);
+    D_8011E0BC_w04 = playerIndex;
+
+    for (j = 0; j < 4; j++) {
+        for (i = 0; i < 6; i++) {
+            childProcess = omAddPrcObj(func_8011215C_w04, 0x4002, 0, 0);
+            childProcess->user_data = (void *)i;
+            HuPrcSleep(2);
+        }
+        HuPrcSleep(5);
+    }
+
+    HuPrcChildLink(HuPrcCurrentGet(), childProcess);
+    HuPrcChildWatch();
+    HuAudFXStop(fxId);
+    HuSprTPLvlSet(group, 1, 0);
+
+    for (i = 0xFF; i >= 0; i -= 0x1E) {
+        HuSprTPLvlSet(group, 0, i);
+        HuPrcVSleep();
+    }
+
+    HuSprTPLvlSet(group, 0, 0);
+    HuSprGrpKill(group);
+    HuSprAnimKill(D_8011E0C0_w04);
+    HuSprAnimKill(auraSpriteId);
+    HuSprAnimKill(itemSpriteId);
+    omDelPrcObj(NULL);
+}
+
+void func_8011276C_w04(void) {
+    s32 i;
+
+    HuPrcSleep(10);
+    for (i = 1; i < 64; i++) {
+        MBStatusItemTPLvlSet(GwSystem.current_player_index, MBItemSelNoGet(), 255.0f - (i * 3.984f));
+        HuPrcVSleep();
+    }
+    MBStatusItemTPLvlSet(GwSystem.current_player_index, MBItemSelNoGet(), 0);
+}
+
+void func_80112828_w04(void) {
+    Object *src = HuPrcCurrentGet()->user_data;
+    Object *obj = MBModelLinkCreate(D_8011E0C4_w04);
+    f32 angle;
+
+    HuVecCopy3F(&obj->coords, &src->coords);
+    HuVecCopyXYZ(&obj->scale, 2.0f, 2.0f, 2.0f);
+    obj->velocity.x = src->velocity.x + 10.0f;
+    MBModelDispOn(obj);
+    angle = MBRand(360.0f);
+    while (1) {
+        HuPrcVSleep();
+        obj->velocity.x += 1.5;
+        if (src->velocity.x + 35.0f <= obj->velocity.x) {
+            break;
+        }
+        angle += 40.0f;
+        func_8008A2A0_main(Hu3DData[obj->omObj1->model[0]].mtx, angle);
+    }
+    MBModelKill(obj);
+    omDelPrcObj(NULL);
+}
+
+void func_8011297C_w04(Object *arg) {
+    Process *temp = omAddPrcObj(func_80112828_w04, 0x1000, 0, 0);
+
+    temp->user_data = arg;
+}
+
+void func_801129B8_w04(void) {
+    s32 *flag = HuPrcCurrentGet()->user_data;
+    f32 angle = 0.0f;
+    f32 scale = 1.0f;
+    GW_SYSTEM *loc = &GwSystem;
+
+    while (1) {
+        D_8011E0C8_w04->rot.x = -sindf(angle);
+        D_8011E0C8_w04->rot.z = cosdf(angle);
+        angle += 30.0f;
+        if (angle > 360.0f) {
+            angle -= 360.0f;
+        }
+        if (*flag != 0) {
+            D_8011E0C8_w04->scale.z = scale;
+            D_8011E0C8_w04->scale.y = scale;
+            D_8011E0C8_w04->scale.x = scale;
+            scale -= 0.1f;
+            if (scale <= 0.0f) {
+                break;
+            }
+        }
+        HuPrcVSleep();
+    }
+    D_8011E0C8_w04->scale.x = D_8011E0C8_w04->scale.y = D_8011E0C8_w04->scale.z = 0.0f;
+    GwPlayer[loc->current_player_index].itemNo[MBItemFind(-1, 0xF)] = -1;
+    MBItemRemoveEmpty(loc->current_player_index);
+    MBStatusItemIconSprReinit(loc->current_player_index);
+    MBModelKill(D_8011E0C8_w04);
+    omDelPrcObj(0);
+}
+
+void func_80112B48_w04(void) {
+    s32 flag = 0;
+    GW_SYSTEM *system = &GwSystem;
+    void *data;
+    UnkVibrateProcess *process;
+    s32 positionX;
+    s32 positionY;
+    s32 bankCoins;
+    s32 coinCount;
+    s32 spriteId;
+    f32 coinStep;
+    f32 coinProgress;
+
+    mbItemCursorGrpId = HuSprGrpCreate(1, 5);
+    data = DataRead(D_80101040_shared_board[GwPlayer[system->current_player_index].chr]);
+    spriteId = HuSprAnimRead(data);
+    DataClose(data);
+    HuSprGrpMemberSet(mbItemCursorGrpId, 0, spriteId, 0);
+    HuSprPriSet(mbItemCursorGrpId, 0, 10);
+    HuSprAnimModeSet(mbItemCursorGrpId, 0, HUSPR_ANIM_MODE_BANK);
+    HuSprDispOff(mbItemCursorGrpId, 0);
+    MBStatusItemPosGet(-1, 0, &positionX, &positionY);
+    HuSprPosSet(mbItemCursorGrpId, 0, positionX, positionY);
+    MBStatusShrink(-1);
+    MBStatusItemDispSetAll(1);
+    MBStatusGrow(-1);
+    MBItemSelNoSet(MBItemFind(-1, 0xF));
+    func_8010F9F4_w04();
+
+    D_8011E0C8_w04 = MBModelCreate(0x44, NULL);
+    HuVecCopy3F(&D_8011E0C8_w04->coords, &MBPlayerGet(-1)->player_obj->coords);
+    D_8011E0C8_w04->velocity.x = 100.0f;
+    while (30.0f < D_8011E0C8_w04->velocity.x) {
+        D_8011E0C8_w04->velocity.x -= 1.0f;
+        HuPrcVSleep();
+    }
+    MBStatusShrink(-1);
+    MBStatusItemDispSetAll(0);
+    MBStatusGrow(-1);
+    omAddPrcObj(func_801129B8_w04, 0x4002, 0, 0)->user_data = &flag;
+    process = MBPlayerVibrateObjCreate(-1, 4, 5);
+
+    bankCoins = GwSystem.bank_coins;
+    coinStep = (f32)bankCoins / 30.0f;
+    coinProgress = 0.0f;
+    D_8011E0C4_w04 = MBModelCreate(0x19, NULL);
+    MBModelTempAllocFree(D_8011E0C4_w04);
+    MBModelDispOff(D_8011E0C4_w04);
+    if (bankCoins != 0) {
+        while (bankCoins != 0) {
+            coinProgress += coinStep;
+            coinCount = 0;
+            while (coinProgress >= 1.0f) {
+                coinProgress -= 1.0f;
+                coinCount++;
+            }
+            if (coinCount != 0) {
+                func_8011297C_w04(D_8011E0C8_w04);
+                if (bankCoins - coinCount < 0) {
+                    coinCount = bankCoins;
+                }
+                bankCoins -= coinCount;
+                MBPlayerCoinAdd(system->current_player_index, coinCount);
+                HuAudFXPlay(0x106);
+                GwSystem.bank_coins -= coinCount;
+                func_80107F98_w04();
+                HuPrcSleep(5);
+            }
+        }
+    }
+
+    MBPlayerVibrateObjKill(process);
+    flag = 1;
+    HuPrcSleep(20);
+    MBModelKill(D_8011E0C4_w04);
+    MBVecForwardSet(&MBPlayerGet(-1)->player_obj->rot);
+    MBPlayerMotionSet(-1, 5, 0);
+    HuPrcSleep(5);
+    PlayerFXPlay(0x274, system->current_player_index);
+    HuPrcSleep(0x2D);
+    MBPlayerMotionSet(-1, -1, 2);
+}
+
+s32 func_80112F04_w04(u8 *arg0, s32 arg1) {
+    s32 delay = 0;
+    s16 inputs[MB_MAX_PLAYERS];
+    u8 buttons[MB_MAX_PLAYERS];
+    s32 i;
+    s32 j;
+
+    *(Unk4Bytes *)buttons = *(Unk4Bytes *)D_8011DDD0_w04;
+
+    for (i = 0; i < MB_MAX_PLAYERS; i++) {
+        if (i == GwSystem.current_player_index) {
+            if (GwPlayer[i].stat & 1) {
+                delay = 1; // Required for matching register allocation.
+                if (arg1 != 0) {
+                    delay = D_8011E0CC_w04 + 1;
+                } else {
+                    delay = D_8011E0D0_w04 + 1;
+                }
+                inputs[GwPlayer[i].pad] = 0x400;
+            } else {
+                HuWinActivePlayerSet(mbDlgWinId, buttons[GwPlayer[i].pad]);
+                inputs[GwPlayer[i].pad] = -1;
+            }
+        } else {
+            inputs[GwPlayer[i].pad] = 0;
+        }
+    }
+
+    if (delay != 0) {
+        func_8005B63C_main(mbDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
+        for (j = 0; delay != 0; j++) {
+            if (--delay == 0) {
+                inputs[GwPlayer[GwSystem.current_player_index].pad] = 0x8000;
+            }
+            if (j == 0) {
+                HuWinComKeyWait(inputs[0], inputs[1], inputs[2], inputs[3],
+                                func_800EDC40_shared_board());
+            } else {
+                HuWinComKeyWait(inputs[0], inputs[1], inputs[2], inputs[3], 5);
+            }
+        }
+    } else {
+        HuWinComKeySet(inputs[0], inputs[1], inputs[2], inputs[3]);
+    }
+
+    for (i = 0; i < MB_MAX_PLAYERS; i++) {
+        if (arg0[i] == 0) {
+            HuWinChoiceDisable(mbDlgWinId, i);
+        }
+    }
+
+    i = 0;
+    do {
+        i = HuWinChoiceGet(mbDlgWinId, i, 1);
+    } while (arg0[i] == 0);
+    return i;
+}
+
+void func_8011319C_w04(void) {
+    Process *prc = HuPrcCurrentGet();
+    s32 playerIdx = (s32)prc->user_data;
+    s32 j;
+    s32 val;
+    s32 unk[2]; // unreferenced; preserves an 8-byte stack slot
+
+    MBPlayerVibrate(((s16 *)&prc->user_data)[1], 4);
+
+    for (val = 0x80; val > 0; val -= 0xA) {
+        for (j = 0; j < 3; j++) {
+            if (GwPlayer[playerIdx].itemNo[j] != -1) {
+                MBStatusItemTPLvlSet(playerIdx, j, val);
+            }
+        }
+        HuPrcVSleep();
+    }
+
+    for (j = 0; j < 3; j++) {
+        if (GwPlayer[playerIdx].itemNo[j] != -1) {
+            MBStatusItemTPLvlSet(playerIdx, j, 0);
+        }
+    }
+    omDelPrcObj(NULL);
+}
+
+void func_801132A8_w04(void) {
+    Process *process = HuPrcCurrentGet();
+    s32 playerIndex = (s32)process->user_data;
+    GW_SYSTEM *system = &GwSystem;
+    s32 i;
+    s32 alpha;
+    s32 itemIndex;
+    s32 xPos;
+    s16 fadeGroup;
+    s32 yPos;
+
+    for (i = 0, itemIndex = 0; i < 3; i++) {
+        if (GwPlayer[system->current_player_index].itemNo[i] != -1) {
+            MBStatusItemScaleSet(system->current_player_index, i, 1.0f, 1.0f);
+            MBStatusItemPosGet(playerIndex, itemIndex, &xPos, &yPos);
+            MBStatusItemPosSet(system->current_player_index, i, xPos, yPos);
+            itemIndex += (i != MBItemSelNoGet());
+        }
+    }
+
+    for (alpha = 0; alpha < 0x80; alpha += 0x14) {
+        for (i = 0; i < 3; i++) {
+            if (GwPlayer[system->current_player_index].itemNo[i] != -1) {
+                if (i != MBItemSelNoGet()) {
+                    MBStatusItemTPLvlSet(system->current_player_index, i, alpha);
+                }
+            }
+        }
+        HuPrcVSleep();
+    }
+
+    for (i = 0; i < 3; i++) {
+        if (GwPlayer[system->current_player_index].itemNo[i] != -1) {
+            if (i != MBItemSelNoGet()) {
+                MBStatusItemTPLvlSet(system->current_player_index, i, 0x80);
+            }
+        }
+    }
+    omDelPrcObj(NULL);
+}
+
+void func_80113484_w04(void) {
+    char playerNames[4][16];
+    u8 choices[16];
+    Vec2f position;
+    Vec2f target;
+    s32 xPos;
+    s16 fadeGroup;
+    s32 yPos;
+    u16 spriteId;
+    Object *box;
+    Process *process;
+    GW_SYSTEM *system = &GwSystem;
+    s32 targetPlayer;
+    s32 noAnimation = 0;
+    s32 itemCount;
+    s32 itemSlot;
+    s32 sleepTime;
+    s32 i;
+    s32 j;
+    s32 item;
+    f32 angle;
+    f32 angleStep;
+    f32 spinStep;
+    f32 scale;
+    f32 scaleY;
+    f32 itemAngle;
+    f32 scaleZ;
+    f32 finalScale;
+
+    func_8010F9F4_w04();
+    box = MBModelCreate(0x20, NULL);
+    func_8001C2FC_main(box->omObj1->model[0], 0x20000, 0x20000);
+    Hu3DModelRemakeStatic(box->omObj1->model[0]);
+    func_8001C954_main(box->omObj1->model[0]);
+    func_8001C514_main(box->omObj1->model[0]);
+    Hu3DModelScaleSet(box->omObj1->model[0], 0.0f, 0.0f, 0.0f);
+    HuVecCopy3F(&box->coords, &MBPlayerGet(-1)->player_obj->coords);
+    func_8001C814_main(box->omObj1->model[0], 2, 1);
+    box->velocity.x = 100.0f;
+    HuAudFXPlay(0x142);
+    while (box->velocity.x > 30.0f) {
+        box->velocity.x -= 1.0f;
+        HuPrcVSleep();
+    }
+
+    for (itemSlot = 0; itemSlot < 4; itemSlot++) {
+        if (GwSystem.current_player_index == itemSlot) {
+            playerNames[itemSlot][0] = 1;
+            choices[itemSlot] = 0;
+        } else {
+            playerNames[itemSlot][0] = 8;
+            choices[itemSlot] = 1;
+        }
+        func_800E2260_shared_board(itemSlot, &playerNames[itemSlot][1]);
+    }
+    choices[4] = 1;
+    choices[5] = 1;
+    MBDlgWinInsertCreate(-1, 0x5C01, (s32)playerNames[0], (s32)playerNames[1], (s32)playerNames[2],
+                         (s32)playerNames[3], 0);
+    targetPlayer = func_80112F04_w04(choices, 1);
+    MBDlgWinClose();
+    MBDlgWinKill();
+    if (targetPlayer == 4) {
+        targetPlayer = func_800EF0D8_shared_board(1);
+    }
+
+    itemSlot = MBItemSelNoGet();
+    if (GwPlayer[GwSystem.current_player_index].itemNo[itemSlot] == 0x10 &&
+        MBItemFindEmpty(GwSystem.current_player_index) == 1 && MBItemFindEmpty(targetPlayer) == 0) {
+        noAnimation = 1;
+    }
+
+    if (!noAnimation) {
+        HuAudFXPlay(0x149);
+        func_8001C814_main(box->omObj1->model[0], 1, 0);
+        HuPrcSleep(20);
+        position.x = 160.0f;
+        position.y = 84.0f;
+        for (itemSlot = 0; itemSlot < 3; itemSlot++) {
+            for (j = 0; j < 3; j++) {
+                spriteId = 0x4790;
+                if (j == itemSlot) {
+                    spriteId = 0x4786;
+                }
+                MBStatusItemPriSet(system->current_player_index, j, spriteId);
+            }
+            if (GwPlayer[system->current_player_index].itemNo[itemSlot] != -1) {
+                if (itemSlot != MBItemSelNoGet()) {
+                    func_80110244_w04(system->current_player_index, itemSlot, 10, &position.x, 0);
+                    HuPrcSleep(2);
+                }
+            }
+        }
+        func_8001C814_main(box->omObj1->model[0], 4, 4);
+        while (Hu3DData[box->omObj1->model[0]].motTime != 0.0f) {
+            HuPrcVSleep();
+        }
+        HuAudFXPlay(0x150);
+        HuPrcSleep(20);
+        process = omAddPrcObj(func_8011319C_w04, 0x4800, 0, 0);
+        process->user_data = (void *)targetPlayer;
+        HuAudFXPlay(0x151);
+
+        angle = 0.0f;
+        spinStep = 5.0f;
+        i = 0;
+        while (1) {
+            box->rot.x = -sindf(angle);
+            box->rot.z = cosdf(angle);
+            angle += spinStep;
+            if (angle > 360.0f) {
+                angle -= 360.0f;
+            }
+            spinStep += 2.0f;
+            if (spinStep > 45.0f) {
+                spinStep = 45.0f;
+                if (i++ >= 31) {
+                    break;
+                }
+            }
+            HuPrcVSleep();
+        }
+
+        i = 0;
+        while (1) {
+            box->rot.x = -sindf(angle);
+            box->rot.z = cosdf(angle);
+            angle += spinStep;
+            if (angle > 360.0f) {
+                angle -= 360.0f;
+                if (++i >= 2) {
+                    break;
+                }
+            }
+            spinStep -= 2.0f;
+            if (spinStep < 5.0f) {
+                spinStep = 5.0f;
+            }
+            HuPrcVSleep();
+        }
+        box->rot.x = 0.0f;
+        box->rot.z = 1.0f;
+        HuAudFXPlay(0x152);
+        for (itemSlot = 0; itemSlot < 1441; itemSlot += 40) {
+            scale = itemSlot;
+            angleStep = sindf(scale) / 1.5f + 1.0f;
+            scaleY = sindf(scale) / 1.5f + 1.0f;
+            scaleZ = sindf(scale) / 1.5f + 1.0f;
+            HuVecCopyXYZ(&box->scale, angleStep, scaleY, scaleZ);
+            HuPrcVSleep();
+        }
+
+        HuAudFXPlay(0x149);
+        func_8001C814_main(box->omObj1->model[0], 4, 0);
+        HuPrcSleep(20);
+        process = omAddPrcObj(func_801132A8_w04, 0x4800, 0, 0);
+        process->user_data = (void *)targetPlayer;
+        itemCount = MBItemFindEmpty(targetPlayer);
+        target.y = 70.0f;
+
+        switch (itemCount) {
+            case 0:
+                break;
+            case 1:
+                target.x = 160.0f;
+                MBStatusItemPosSet(targetPlayer, 0, 160, 84);
+                func_80110244_w04(targetPlayer, 0, 10, &target.x, 1);
+                HuPrcSleep(20);
+                MBStatusItemPosGet(system->current_player_index, 0, &xPos, &yPos);
+                target.x = xPos;
+                target.y = yPos;
+                MBStatusItemPriSet(targetPlayer, 0, 0x4790);
+                func_80110244_w04(targetPlayer, 0, 7, &target.x, 2);
+                break;
+            case 2:
+                target.x = 130.0f;
+                MBStatusItemPosSet(targetPlayer, 0, 160, 84);
+                func_80110244_w04(targetPlayer, 0, 10, &target.x, 1);
+                target.x = 190.0f;
+                MBStatusItemPosSet(targetPlayer, 1, 160, 84);
+                func_80110244_w04(targetPlayer, 1, 10, &target.x, 1);
+                HuPrcSleep(20);
+                MBStatusItemPosGet(system->current_player_index, 0, &xPos, &yPos);
+                target.x = xPos;
+                target.y = yPos;
+                MBStatusItemPriSet(targetPlayer, 0, 0x4790);
+                func_80110244_w04(targetPlayer, 0, 7, &target.x, 2);
+                MBStatusItemPosGet(system->current_player_index, 1, &xPos, &yPos);
+                target.x = xPos;
+                target.y = yPos;
+                MBStatusItemPriSet(targetPlayer, 1, 0x478F);
+                func_80110244_w04(targetPlayer, 1, 7, &target.x, 2);
+                break;
+            default:
+                target.x = 110.0f;
+                MBStatusItemPosSet(targetPlayer, 0, 160, 84);
+                func_80110244_w04(targetPlayer, 0, 10, &target.x, 1);
+                target.x = 210.0f;
+                MBStatusItemPosSet(targetPlayer, 1, 160, 84);
+                func_80110244_w04(targetPlayer, 1, 10, &target.x, 1);
+                target.x = 160.0f;
+                MBStatusItemPosSet(targetPlayer, 2, 160, 84);
+                func_80110244_w04(targetPlayer, 2, 10, &target.x, 1);
+                HuPrcSleep(20);
+                MBStatusItemPosGet(system->current_player_index, 0, &xPos, &yPos);
+                target.x = xPos;
+                target.y = yPos;
+                MBStatusItemPriSet(targetPlayer, 0, 0x4790);
+                func_80110244_w04(targetPlayer, 0, 7, &target.x, 2);
+                MBStatusItemPosGet(system->current_player_index, 1, &xPos, &yPos);
+                target.x = xPos;
+                target.y = yPos;
+                MBStatusItemPriSet(targetPlayer, 1, 0x478F);
+                func_80110244_w04(targetPlayer, 1, 7, &target.x, 2);
+                MBStatusItemPosGet(system->current_player_index, 2, &xPos, &yPos);
+                target.x = xPos;
+                target.y = yPos;
+                MBStatusItemPriSet(targetPlayer, 2, 0x478E);
+                func_80110244_w04(targetPlayer, 2, 7, &target.x, 2);
+                break;
+        }
+        HuPrcSleep(2);
+    }
+
+    itemSlot = MBItemSelNoGet();
+    GwPlayer[system->current_player_index].itemNo[itemSlot] = -1;
+    MBItemRemoveEmpty(system->current_player_index);
+    for (itemSlot = 0; itemSlot < 3; itemSlot++) {
+        item = GwPlayer[targetPlayer].itemNo[itemSlot];
+        GwPlayer[targetPlayer].itemNo[itemSlot] = GwPlayer[system->current_player_index].itemNo[itemSlot];
+        GwPlayer[system->current_player_index].itemNo[itemSlot] = item;
+    }
+    if (!noAnimation) {
+        MBStatusItemSprKill(-1);
+        MBStatusItemSprKill(targetPlayer);
+        sleepTime = 10;
+    } else {
+        sleepTime = 20;
+    }
+    HuPrcSleep(sleepTime);
+    HuAudFXPlay(0x15B);
+    finalScale = 0.1f;
+    for (i = 0; i < 20; i++) {
+        finalScale += 0.044999998f;
+        func_8001D558_main(box->omObj1->model[0], finalScale, finalScale * 10.0f, 1);
+        HuPrcVSleep();
+    }
+    MBModelKill(box);
+
+    if (noAnimation) {
+        PlayerFXPlay(0x286, system->current_player_index);
+        MBPlayerMotionSet(-1, 3, 0);
+        HuPrcSleep(70);
+    } else {
+        PlayerFXPlay(0x274, system->current_player_index);
+        MBPlayerMotionSet(-1, 5, 0);
+        HuPrcSleep(50);
+    }
+    func_800F2388_shared_board(-1, -1, 0, 10, 2);
+    MBDlgWinInsertCreate(-1, noAnimation ? 0x3A2E : 0x3A2D,
+                         mbCharNameMesTbl[GwPlayer[system->current_player_index].chr],
+                         mbCharNameMesTbl[GwPlayer[targetPlayer].chr], 0, 0, 0);
+    MBDlgWinClose();
+    MBDlgWinKill();
+}
+
+void func_80114130_w04(void) {
+    ModelAnimWork *data = HuPrcCurrentGet()->user_data;
+    Object *obj1 = data->obj1;
+    Object *obj2 = data->obj2;
+
+    MBMotionSet(obj1, -1, data->state);
+    HuVecCopy3F(&obj1->coords, &obj2->coords);
+    obj1->coords.y += obj2->velocity.x - 10.0f;
+    func_800D9A40_shared_board(obj1);
+    while (MBMotionCheck(obj1) == 0 && data->flag == 0) {
+        HuPrcVSleep();
+    }
+    MBModelKill(obj1);
+    omDelPrcObj(0);
+}
+
+void func_801141F0_w04(void) {
+    s32 *processFlag = HuPrcCurrentGet()->user_data;
+    Object *gameGuyModel = D_8011E0D4_w04;
+    Object *model;
+    Process *process;
+    ModelAnimWork *work;
+    s32 effect;
+    f32 angle;
+    f32 angleStep;
+    f32 fallSpeed;
+    f32 scale;
+    s32 i;
+
+    model = MBModelCreate(0x45, NULL);
+    MBModelDispOff(model);
+    effect = func_8000CED8_main(0xB0004, 0xAA9);
+    func_8000CD00_main(effect, 1.0f, 20.0f, 1.0f);
+    func_8000D018_main(effect, 10.0f);
+    Hu3DModelCameraSet(effect, HU3D_CAM0);
+    HuAudFXPlay(0x24C);
+
+    angle = 0.0f;
+    angleStep = 2.0f;
+    while (angleStep < 80.0f) {
+        gameGuyModel->rot.x = -sindf(angle);
+        gameGuyModel->rot.z = cosdf(angle);
+        angle += angleStep;
+        if (angle > 360.0f) {
+            angle -= 360.0f;
+        }
+        angleStep += 1.0f;
+        if (angleStep > 80.0f) {
+            angleStep = 80.0f;
+        }
+        func_8000CFA4_main(effect, gameGuyModel->coords.x,
+                           gameGuyModel->coords.y + gameGuyModel->velocity.x, gameGuyModel->coords.z);
+        HuPrcVSleep();
+    }
+
+    HuAudFXPlay(0x14A);
+    while (gameGuyModel->velocity.x < 110.0f) {
+        gameGuyModel->velocity.x += 7.0f;
+        gameGuyModel->rot.x = -sindf(angle);
+        gameGuyModel->rot.z = cosdf(angle);
+        angle += angleStep;
+        if (angle > 360.0f) {
+            angle -= 360.0f;
+        }
+        func_8000CFA4_main(effect, gameGuyModel->coords.x,
+                           gameGuyModel->coords.y + gameGuyModel->velocity.x, gameGuyModel->coords.z);
+        HuPrcVSleep();
+    }
+
+    *processFlag = 0;
+    while (*processFlag == 0) {
+        if (D_8011C940_w04 != -1) {
+            HuVecCopy3F(&gameGuyModel->coords,
+                        &MBPlayerGet(D_8011C940_w04)->player_obj->coords);
+            func_8000CFA4_main(effect, gameGuyModel->coords.x,
+                               gameGuyModel->coords.y + gameGuyModel->velocity.x, gameGuyModel->coords.z);
+        }
+        HuPrcVSleep();
+    }
+
+    HuAudFXPlay(0x14B);
+    fallSpeed = 3.0f;
+    while (gameGuyModel->velocity.x > 30.0f) {
+        gameGuyModel->velocity.x -= fallSpeed;
+        if (fallSpeed > 1.0f) {
+            fallSpeed -= 0.2f;
+        }
+        gameGuyModel->rot.x = -sindf(angle);
+        gameGuyModel->rot.z = cosdf(angle);
+        angle += angleStep;
+        if (angle > 360.0f) {
+            angle -= 360.0f;
+        }
+        func_8000CFA4_main(effect, gameGuyModel->coords.x,
+                           gameGuyModel->coords.y + gameGuyModel->velocity.x, gameGuyModel->coords.z);
+        HuPrcVSleep();
+    }
+
+    while (1) {
+        gameGuyModel->rot.x = -sindf(angle);
+        gameGuyModel->rot.z = cosdf(angle);
+        angle += angleStep;
+        if (angle > 360.0f) {
+            angle -= 360.0f;
+        }
+        if (angleStep > 15.0f) {
+            angleStep -= 3.0f;
+        } else {
+            angleStep -= 0.5f;
+        }
+        if (angleStep < 1.0f) {
+            break;
+        }
+        func_8000CFA4_main(effect, gameGuyModel->coords.x,
+                           gameGuyModel->coords.y + gameGuyModel->velocity.x, gameGuyModel->coords.z);
+        HuPrcVSleep();
+    }
+
+    func_8000D044_main(effect);
+    process = omAddPrcObj(func_80114130_w04, 0x4800, 0, 0x40);
+    work = HuMemMemoryAlloc(process->heap, 0x20);
+    process->user_data = work;
+    work->obj1 = model;
+    work->obj2 = gameGuyModel;
+    work->state = 0;
+    work->flag = 0;
+    HuPrcSleep(3);
+    *processFlag = 0;
+    HuAudFXPlay(0x24D);
+
+    i = 0;
+    scale = 0.1f;
+    for (; i < 20; i++) {
+        scale += 0.044999998f;
+        func_8001D558_main(gameGuyModel->omObj1->model[0], scale, scale * 10.0f, 1);
+        HuPrcVSleep();
+    }
+    MBModelKill(gameGuyModel);
+    omDelPrcObj(NULL);
+}
+
+void func_80114720_w04(void) {
+    Object *coinModel;
+    Object *gameGuyModel;
+    Object *playerObj;
+    Process *process;
+    GW_SYSTEM *system;
+    s32 choice;
+    s32 itemSlot;
+    s32 rewardIndex;
+    s32 randomValue;
+    s32 rewardAmount;
+    s32 i;
+    struct {
+        s32 processFlag;
+        s32 pad;
+        char rewardText[0x10];
+    } locals;
+
+    system = &GwSystem;
+    func_8010F9F4_w04();
+    itemSlot = MBItemFind(-1, 0x11);
+    GwPlayer[system->current_player_index].itemNo[itemSlot] = -1;
+    MBItemRemoveEmpty(system->current_player_index);
+    MBStatusItemIconSprReinit(system->current_player_index);
+    MBStatusShrink(-1);
+    MBStatusItemDispSetAll(0);
+    MBStatusGrow(-1);
+
+    coinModel = MBModelCreate(0x3E, 0);
+    Hu3DModelScaleSet(coinModel->omObj1->model[0], 0, 0, 0);
+    MBModelTempAllocFree(coinModel);
+    coinModel->velocity.x = 30.0f;
+    MBModelDispOff(coinModel);
+
+    gameGuyModel = MBModelCreate(0x43, 0);
+    D_8011E0D4_w04 = gameGuyModel;
+    func_8001C2FC_main(gameGuyModel->omObj1->model[0], 0x20000, 0x20000);
+    Hu3DModelRemakeStatic(gameGuyModel->omObj1->model[0]);
+    func_8001C954_main(gameGuyModel->omObj1->model[0]);
+    func_8001C514_main(gameGuyModel->omObj1->model[0]);
+    HuVecCopy3F(&gameGuyModel->coords, &MBPlayerGet(-1)->player_obj->coords);
+    func_8001C814_main(gameGuyModel->omObj1->model[0], 2, 1);
+    gameGuyModel->velocity.x = 100.0f;
+    HuAudFXPlay(0x14B);
+    while (gameGuyModel->velocity.x > 30.0f) {
+        gameGuyModel->velocity.x -= 1.0f;
+        HuPrcVSleep();
+    }
+
+selectPlayer:
+    MBDlgWinInsertCreate(-1, 0x5C00, GwPlayer[0].chr + 0x1C00, GwPlayer[1].chr + 0x1C00,
+                         GwPlayer[2].chr + 0x1C00, GwPlayer[3].chr + 0x1C00, 0);
+    choice = func_80109CD4_w04(0, 0);
+    MBDlgWinClose();
+    MBDlgWinKill();
+    if (choice >= 0) {
+        if (choice < 4) {
+            goto validChoice;
+        }
+        if (choice == 4) {
+            choice = func_800EF0D8_shared_board(0);
+            goto validChoice;
+        }
+    }
+    func_80106B38_w04();
+    D_800CB99C_main = 1;
+    omAllPause();
+    goto selectPlayer;
+
+validChoice:
+    locals.processFlag = 1;
+    process = omAddPrcObj(func_801141F0_w04, 0x4002, 0, 0);
+    process->user_data = &locals.processFlag;
+    while (locals.processFlag != 0) {
+        HuPrcVSleep();
+    }
+
+    if (choice != system->current_player_index) {
+        WipeCreateOut(WIPE_TYPE_NORMAL, 0x10);
+        HuPrcSleep(0x10);
+        D_8011C940_w04 = choice;
+        MBCameraFocusModeSet(2);
+        MBCameraFocusStaticPosSet(&MBPlayerGet(choice)->player_obj->coords);
+        MBCameraPos3DSet(&MBPlayerGet(choice)->player_obj->coords);
+        HuPrcVSleep();
+        HuPrcSleep(10);
+        WipeCreateIn(WIPE_TYPE_NORMAL, 0x10);
+        HuPrcSleep(0x10);
+    } else {
+        HuPrcSleep(30);
+        D_8011C940_w04 = choice;
+    }
+
+    locals.processFlag = 1;
+    while (locals.processFlag != 0) {
+        HuPrcVSleep();
+    }
+
+    playerObj = MBPlayerGet(choice)->player_obj;
+    process = func_800EDB98_shared_board(coinModel, 5.0f, 2.0f);
+    HuVecCopy3F(&coinModel->coords, &playerObj->coords);
+    func_800D9A40_shared_board(coinModel);
+    coinModel->scale.x = coinModel->scale.y = coinModel->scale.z = 0.0f;
+    while (coinModel->scale.x < 1.0f) {
+        coinModel->scale.x = coinModel->scale.y = coinModel->scale.z += 0.2f;
+        HuPrcVSleep();
+    }
+
+    MBPlayerVibrate(choice, 4);
+    HuAudFXPlay(0x2A1);
+    if (GwPlayer[choice].coin != 0) {
+        func_80109F58_w04(10, 0x2F00, -1, choice);
+        GwPlayer[choice].gameCoin = GwPlayer[choice].coin;
+        MBCoinChangeCreate(choice, -GwPlayer[choice].coin);
+        MBCoinTakeCreate(choice, -GwPlayer[choice].coin);
+        HuPrcSleep(30);
+        func_80109F58_w04(10, 0x2F02, -1, choice);
+        omDelPrcObj(process);
+        while (coinModel->velocity.x >= 10.0f) {
+            coinModel->velocity.x -= 2.0f;
+            HuPrcVSleep();
+        }
+        HuPrcSleep(30);
+        while (coinModel->velocity.x < 100.0f) {
+            coinModel->velocity.x += 4.0f;
+            playerObj->velocity.x += 4.0f;
+            HuPrcVSleep();
+        }
+    } else {
+        func_80109F58_w04(10, 0x2F01, -1, choice);
+        omDelPrcObj(process);
+        while (coinModel->velocity.x <= 100.0f) {
+            coinModel->velocity.x += 4.0f;
+            HuPrcVSleep();
+        }
+        MBModelKill(coinModel);
+        WipeCreateOut(9, 0x10);
+        HuPrcSleep(0x11);
+        MBCameraFocusModeSet(1);
+        MBCameraPos3DSet(&MBPlayerGet(-1)->player_obj->coords);
+        HuPrcSleep(5);
+        WipeCreateIn(9, 0x10);
+        HuPrcSleep(0x11);
+        return;
+    }
+
+    if (MBPlayerComCheck((s16)choice) != 0 && system->show_com_minigames != 0) {
+        WipeCreateOut(9, 0x10);
+        HuPrcSleep(0x11);
+        MBModelKill(coinModel);
+        func_800EE688_shared_board(playerObj, 0, 0);
+        playerObj->velocity.x = 0.0f;
+        HuPrcSleep(5);
+        WipeCreateIn(9, 0x10);
+        HuPrcSleep(0x11);
+        randomValue = MBRand(100.0f) + 1;
+        for (rewardIndex = 0; rewardIndex < 7; rewardIndex++) {
+            if (randomValue <= D_8011C94C_w04[rewardIndex].threshold) {
+                break;
+            }
+        }
+        if (D_8011C94C_w04[rewardIndex].multiplier != 0) {
+            rewardAmount = GwPlayer[choice].gameCoin * D_8011C94C_w04[rewardIndex].multiplier;
+            if (rewardAmount >= 1000) {
+                rewardAmount = 999;
+            }
+            sprintf(locals.rewardText, D_8011DDD4_w04, rewardAmount);
+            MBDlgWinInsertCreate(-1, 0x2F03, (s32)locals.rewardText, 0, 0, 0, 0);
+            MBDlgWinClose();
+            MBDlgWinKill();
+            MBCoinChangeCreate(choice, rewardAmount);
+            MBCoinTakeCreate(choice, rewardAmount);
+            HuPrcSleep(20);
+        } else {
+            MBDlgWinExec(-1, 0x2F04);
+        }
+        HuPrcSleep(10);
+        WipeCreateOut(9, 0x10);
+        HuPrcSleep(0x11);
+        MBCameraFocusModeSet(1);
+        MBCameraPos3DSet(&MBPlayerGet(-1)->player_obj->coords);
+        HuPrcSleep(5);
+        WipeCreateIn(9, 0x10);
+        HuPrcSleep(0x11);
+        return;
+    }
+
+    if (func_800DEB2C_shared_board(system->current_player_index) == 3) {
+        GWBoardFlagSet(0x17);
+    } else {
+        GWBoardFlagClear(0x17);
+    }
+    for (i = 0; i < 4; i++) {
+        GwPlayer[i].group = 1;
+    }
+    MBPlayerGet(choice)->group = 0;
+    randomValue = MBRand(100.0f);
+    for (rewardIndex = 0; (u32)rewardIndex < 3; rewardIndex++) {
+        if (randomValue < D_8011C948_w04[rewardIndex]) {
+            break;
+        }
+    }
+    if (rewardIndex == 3) {
+        rewardIndex = 2;
+    }
+    system->minigame_index = D_8011C944_w04[rewardIndex];
+    GwSystem.playerIndexVisitingBowser = choice;
+    func_800FC998_shared_board();
+    omAllUPause();
+    func_800FF7F0_shared_board(2);
+    HuPrcSleep(-1);
+}
+
+void func_8011502C_w04(s32 arg0, s32 arg1, f32 *arg2) {
+    f32 curX;
+    f32 curY;
+    f32 stepX;
+    f32 stepY;
+
+    MBStatusSprPosGet((s16)arg0, 0, &curX, &curY);
+    stepX = (arg2[0] - curX) / arg1;
+    stepY = (arg2[1] - curY) / arg1;
+    while (arg1 != 0) {
+        curX += stepX;
+        curY += stepY;
+        HuSprPosSet(arg0, 0, curX, curY);
+        HuPrcVSleep();
+        arg1--;
+    }
+    HuSprPosSet(arg0, 0, arg2[0], arg2[1]);
+}
+
+void func_80115164_w04(void) {
+    s32 idx;
+    s32 divisor;
+    s32 i;
+
+    idx = (s32)HuPrcCurrentGet()->user_data;
+    divisor = 10;
+
+    switch (idx) {
+        case 0:
+            HuSprPosSet(D_8011E0D8_w04[idx], 0, 0xB1, 0x2C);
+            break;
+        case 1:
+            HuSprPosSet(D_8011E0D8_w04[idx], 0, 0x7A, 0x39);
+            break;
+        default:
+            HuSprPosSet(D_8011E0D8_w04[idx], 0, 0xA0, 0x98);
+            divisor = 30;
+            break;
+    }
+
+    HuSprDispOn(D_8011E0D8_w04[idx], 0);
+    for (i = 0; i < 255; i += 255 / divisor) {
+        HuSprTPLvlSet(D_8011E0D8_w04[idx], 0, i & 0xFFFF);
+        HuPrcVSleep();
+    }
+
+    HuSprTPLvlSet(D_8011E0D8_w04[idx], 0, 0xFF);
+    omDelPrcObj(0);
+}
+
+void func_801152D4_w04(omObjData *obj) {
+    RGB2 sp18;
+    RGB2 sp28;
+    s32 i;
+    s32 j;
+
+    for (i = 0; i <= 0; i++) {
+        sp18.r = D_8011C968_w04[i].r;
+        sp18.g = D_8011C968_w04[i].g;
+        sp18.b = D_8011C968_w04[i].b;
+
+        sp28.r = (D_8011C968_w04[i + 1].r - sp18.r) / 30;
+        sp28.g = (D_8011C968_w04[i + 1].g - sp18.g) / 30;
+        sp28.b = (D_8011C968_w04[i + 1].b - sp18.b) / 30;
+
+        for (j = 0; j < 30; j++) {
+            HuSprColorSet(D_8011E0D8_w04[3], 0, sp18.r, sp18.g, sp18.b);
+            sp18.r += sp28.r;
+            sp18.g += sp28.g;
+            sp18.b += sp28.b;
+            HuPrcVSleep();
+        }
+        HuSprColorSet(D_8011E0D8_w04[3], 0, D_8011C968_w04[i + 1].r, D_8011C968_w04[i + 1].g, D_8011C968_w04[i + 1].b);
+        HuPrcSleep(0xA);
+    }
+
+    omDelPrcObj(0);
+}
+
+void func_8011549C_w04(void) {
+    s32 *state = HuPrcCurrentGet()->user_data;
+    Object *model;
+    f32 scale;
+    f32 angle;
+    f32 wait_angle_step;
+
+    HuAudFXPlay(0x143);
+    model = D_8011E0E8_w04;
+    func_800D9A40_shared_board(model);
+
+    angle = 0.0f;
+    for (scale = 1.0f; scale < 18.0f; scale = (f32)((f64)scale + 0.8)) {
+        HuVecCopyXYZ(&model->scale, scale, scale, scale);
+        func_8008A430_main(Hu3DData[model->omObj1->model[0]].mtx, angle);
+        angle += 20.0f;
+        HuPrcVSleep();
+    }
+
+    if (*state != 1) {
+        wait_angle_step = 20.0f;
+        while (*state != 1) {
+            func_8008A430_main(Hu3DData[model->omObj1->model[0]].mtx, angle);
+            angle += wait_angle_step;
+            HuPrcVSleep();
+        }
+    }
+
+    for (; scale < 40.0f; scale = (f32)((f64)scale + 0.8)) {
+        HuVecCopyXYZ(&model->scale, scale, scale, scale);
+        func_8008A430_main(Hu3DData[model->omObj1->model[0]].mtx, angle);
+        angle += 20.0f;
+        HuPrcVSleep();
+    }
+
+    if (*state != 2) {
+        scale = 20.0f;
+        while (*state != 2) {
+            func_8008A430_main(Hu3DData[model->omObj1->model[0]].mtx, angle);
+            angle += scale;
+            HuPrcVSleep();
+        }
+    }
+
+    MBModelKill(model);
+    omDelPrcObj(0);
+}
+
+void func_80115720_w04(void) {
+    s32 sp18[4];
+    f32 sp28[2];
+    s32 sp30;
+    s32 sp34;
+    f32 sp38;
+    f32 sp3C;
+    s32 sp40;
+    Process *temp_v0_4;
+    f32 temp_f20;
+    f32 var_f20;
+    s32 temp_s0_3;
+    s32 temp_s4;
+    s32 temp_s7;
+    void *temp_s1_2;
+    s32 var_s1;
+    s32 var_v0;
+    s32 var_v1;
+    void *temp_v0;
+    Object *temp_v0_3;
+    s32 i;
+    s32 j;
+    GW_SYSTEM *system = &GwSystem;
+    s32 temp;
+
+    temp_s4 = HuSprGrpCreate(1, 0);
+    temp_v0 = DataRead(D_8010197C_shared_board[18]);
+    temp_s7 = HuSprAnimRead(temp_v0);
+    DataClose(temp_v0);
+    HuSprGrpMemberSet(temp_s4, 0, temp_s7, 0);
+    HuSprPriSet(temp_s4, 0, 0x4776U);
+    HuSprAttrSet(temp_s4, 0, 0x1000U);
+    for (i = 0; i < 4; i++) {
+        D_8011E0D8_w04[i] = HuSprGrpCreate(1, 0);
+        temp_v0 = DataRead((i + 0x1BB) | 0x130000);
+        sp18[i] = HuSprAnimRead(temp_v0);
+        DataClose(temp_v0);
+        HuSprGrpMemberSet(D_8011E0D8_w04[i], 0, sp18[i], 0);
+        HuSprPriSet(D_8011E0D8_w04[i], 0, 0x4780U);
+        HuSprAttrSet(D_8011E0D8_w04[i], 0, 0x980CU);
+        HuSprTPLvlSet(D_8011E0D8_w04[i], 0, 0U);
+        HuSprColorSet(D_8011E0D8_w04[i], 0, 0xFF, 0xFF, 0);
+    }
+    temp_v0_3 = MBModelCreate(0x46, NULL);
+    D_8011E0E8_w04 = temp_v0_3;
+    func_8001C258_main(temp_v0_3->omObj1->model[0], 0x180, 0);
+    Hu3DModelLayerSet(temp_v0_3->omObj1->model[0], 0x1800);
+    Hu3DModelRemakeStatic(temp_v0_3->omObj1->model[0]);
+    Hu3DModelScaleSet(temp_v0_3->omObj1->model[0], 0.0f, 0.0f, 0.0f);
+    HuVecCopy3F(&temp_v0_3->coords, &MBPlayerGet(CUR_PLAYER)->player_obj->coords);
+    MBModelTempAllocFree(temp_v0_3);
+    MBModelDispOff(temp_v0_3);
+    HuSprDispOff(mbItemCursorGrpId, 0);
+    MBStatusItemTPLvlSet(system->current_player_index, MBItemSelNoGet(), 0);
+    MBStatusItemPosGet(system->current_player_index, MBItemSelNoGet(), &sp30, &sp34);
+    HuSprPosSet(temp_s4, 0, sp30, sp34);
+    sp28[0] = 160.0f;
+    sp28[1] = 76.0f;
+    HuAudFXPlay(0x145);
+    func_8011502C_w04(temp_s4, 0x1E, sp28);
+    GwPlayer[system->current_player_index].itemNo[MBItemSelNoGet()] = -1;
+    MBItemRemoveEmpty(system->current_player_index);
+    MBStatusShrink(CUR_PLAYER);
+    MBStatusItemDispSetAll(0);
+    MBStatusGrow(CUR_PLAYER);
+    HuPrcSleep(0x1E);
+    sp28[0] = 203.0f;
+    sp28[1] = 44.0f;
+    func_8011502C_w04(temp_s4, 0xA, sp28);
+    temp_v0_4 = omAddPrcObj(func_80115164_w04, 0x4002U, 0, 0);
+    temp_v0_4->user_data = NULL;
+    HuPrcChildLink(HuPrcCurrentGet(), temp_v0_4);
+    sp28[0] -= 76.0f;
+    HuAudFXPlay(0x14D);
+    func_8011502C_w04(temp_s4, 0xA, sp28);
+    HuPrcChildWatch();
+    HuPrcSleep(0xA);
+    temp_v0_4 = omAddPrcObj(func_80115164_w04, 0x4002U, 0, 0);
+    temp_v0_4->user_data = (void *)1;
+    HuPrcChildLink(HuPrcCurrentGet(), temp_v0_4);
+    sp28[1] += 64.0f;
+    HuAudFXPlay(0x14D);
+    func_8011502C_w04(temp_s4, 0xA, sp28);
+    HuPrcChildWatch();
+    HuPrcSleep(0xA);
+    HuAudFXPlay(0x14E);
+    MBStatusSprPosGet(temp_s4, 0, &sp38, &sp3C);
+    for (var_f20 = 0.0f, var_s1 = 0; var_f20 < 90.0f; var_f20 += 3.6f) {
+        HuSprPosSet(temp_s4, 0, ((cosdf((2.0f * var_f20) + 270.0f) * 80.0f) + sp38), (((1.0f - cosdf(var_f20)) * 90.0f) + sp3C));
+        if (!(var_f20 > 54.0f)) {
+            var_v1 = 0;
+        } else {
+            var_v1 = 1;
+        }
+        temp = var_v1 != 0;
+        if (temp && var_s1 == 0) {
+            var_s1 = 1;
+            temp_v0_4 = omAddPrcObj(func_80115164_w04, 0x4002U, 0, 0);
+            temp_v0_4->user_data = (void *)2;
+            HuPrcChildLink(HuPrcCurrentGet(), temp_v0_4);
+        }
+        HuPrcVSleep();
+    }
+
+    temp_s0_3 = (s16)(s32)((cosdf(450.0f) * 80.0f) + sp38);
+    HuSprPosSet(temp_s4, 0, temp_s0_3, (((1.0f - cosdf(90.0f)) * 90.0f) + sp3C));
+
+    for (j = 255; j > 0; j -= 0x19, HuPrcVSleep()) {
+        HuSprTPLvlSet(temp_s4, 0, j);
+    }
+
+    HuSprGrpKill(temp_s4);
+    HuSprAnimKill(temp_s7);
+    HuPrcChildWatch();
+
+    for (i = 0; i < 3; i++) {
+        HuSprDispOff(D_8011E0D8_w04[i], 0);
+    }
+
+    HuSprDispOn(D_8011E0D8_w04[3], 0);
+    HuSprTPLvlSet(D_8011E0D8_w04[3], 0, 0xFFU);
+    HuSprPosSet(D_8011E0D8_w04[3], 0, 0xA0, 0x78);
+    HuPrcChildLink(HuPrcCurrentGet(), omAddPrcObj(func_801152D4_w04, 0x4002U, 0, 0));
+    sp40 = 0;
+    omAddPrcObj(func_8011549C_w04, 0x4002U, 0, 0)->user_data = &sp40;
+    HuPrcChildWatch();
+    HuAudFXPlay(0x14F);
+    temp_s1_2 = MBPlayerVibrateObjCreate(-1, 4, 5);
+
+    for (i = 0; i <= 2880; i += 50) {
+        temp_f20 = (sindf(i) / 2.0f) + 1.0f;
+        HuSprScaleSet(D_8011E0D8_w04[3], 0, temp_f20, (sindf(i) / 3.0f) + 1.0f);
+        if (i >= (2880 / 2 + 1)) {
+            sp40 = 1;
+        }
+        HuPrcVSleep();
+    }
+
+    HuAudFXPlay(0x129);
+    WipeColorSet(0xFF, 0xFF, 0xFF);
+    WipeCreateOut(0xB, 0x32);
+    MBPlayerVibrateObjKill(temp_s1_2);
+
+    for (var_f20 = 0.0f; WipeStatGet() != 0; var_f20 += 0.1f) {
+        HuSprScaleSet(D_8011E0D8_w04[3], 0, var_f20, var_f20);
+        HuPrcVSleep();
+    }
+
+    while (WipeStatGet() != 0) {
+        HuPrcVSleep();
+    }
+
+    sp40 = 2;
+    for (i = 0; i < 4; i++) {
+        HuSprGrpKill(D_8011E0D8_w04[i]);
+        HuSprAnimKill(sp18[i]);
+    }
+
+    WipeCreateIn(0xB, 0x5A);
+    while (WipeStatGet() != 0) {
+        HuPrcVSleep();
+    }
+
+    MBDlgResultWinExec(0x3A23);
+    GwSystem.wackyWatchUsedState = 2;
+}
+
+void func_80116024_w04(s16 (*masu)[3], BranchPair *links, DecisionTreeNonLeafNode **trees) {
+    GW_PLAYER *player;
+    UnkEA790Struct *win;
+    BranchLink *link;
+    s32 back;
+    s32 sel;
+    s32 count;
+    s32 row;
+    s32 col;
+    s32 i;
+    s16 *temp;
+    DecisionTreeNonLeafNode **tree;
+
+    link = links[0];
+    tree = trees;
+    MBPlayerMotionSet(-1, -1, 2);
+    HuPrcVSleep();
+    func_80106B94_w04();
+    player = MBPlayerGet(GwSystem.current_player_index);
+    back = MBMasuLinkMasuIdGet(player->blink, player->bidx);
+
+    for (row = 0; row < 3; row++) {
+        for (col = 0; col < 2; col++) {
+            if (masu[row][col] == back) {
+                break;
+            }
+        }
+        if (col == 2) {
+            break;
+        }
+    }
+
+    temp = masu[row];
+    link += row * 2;
+    win = func_800D76A0_shared_board(GwSystem.current_player_index, temp);
+    func_800D742C_shared_board(win, GwSystem.current_player_index, 0);
+
+    if (MBPlayerComCheck(-1)) {
+        count = MBComTreeExec(tree[row]);
+        for (i = 0; i < count; i++) {
+            func_800D7250_shared_board(win, -2);
+        }
+        func_800D7250_shared_board(win, -4);
+    }
+
+    sel = func_800D7518_shared_board(win);
+    func_800D6CA0_shared_board(win);
+    func_80106C64_w04();
+
+    if (sel) {
+        link++;
+    }
+
+    MBMoveNextMasuSet(-1, link->link, link->idx);
+    switch (link->rev) {
+        case 0:
+            player->rev &= ~1;
+            break;
+        case 1:
+            player->rev |= 1;
+            break;
+    }
+}
+
+void func_8011621C_w04(s32 arg0) {
+    {
+        omObjData *obj = D_8011E100_w04[arg0];
+
+        if (obj != NULL) {
+            omDelObj(obj);
+            D_8011E100_w04[arg0] = NULL;
+        }
+    }
+
+    {
+        Object *model = D_8011E0F0_w04[arg0];
+
+        if (model != NULL) {
+            MBModelKill(model);
+            D_8011E0F0_w04[arg0] = NULL;
+        }
+    }
+}
+
+void func_80116294_w04(void) {
+    s32 i;
+
+    for (i = 0; i < 4; i++) {
+        omObjData *obj = D_8011E100_w04[i];
+
+        if (obj != NULL) {
+            omDelObj(obj);
+            D_8011E100_w04[i] = NULL;
+        }
+    }
+}
+
+void func_801162F8_w04(omObjData *obj) {
+    s32 playerIdx = obj->work[0];
+
+    if (GwSystem.current_player_index == 4) {
+        if (obj->work[2] == 0) {
+            if (obj->work[1] != 0) {
+                obj->work[1] -= 1;
+                if (obj->work[1] != 0) {
+                    return;
+                }
+                obj->work[2] = 1;
+            } else {
+                obj->work[1] = 40;
+                return;
+            }
+        }
+    }
+
+    {
+        GW_PLAYER *player = MBPlayerGet(playerIdx);
+        Object *effectObj = D_8011E0F0_w04[playerIdx];
+
+        HuVecCopy3F(&effectObj->coords, &player->player_obj->coords);
+        effectObj->velocity.x = player->player_obj->velocity.x + 20.0f;
+        HuVecCopy3F(&effectObj->rot, &player->player_obj->rot);
+        effectObj->coords.x += sindf(obj->rot.x) * obj->trans.x;
+        effectObj->coords.z += cosdf(obj->rot.x) * obj->trans.x;
+        obj->rot.x += 5.0f;
+        if (obj->rot.x >= 360.0f) {
+            obj->rot.x -= 360.0f;
+        }
+        if (obj->trans.x <= 5.0f) {
+            obj->trans.x += 0.25f;
+        }
+        if (player->player_obj->flags & 8) {
+            func_800D9A40_shared_board(effectObj);
+        } else {
+            MBModelDispOff(effectObj);
+        }
+    }
+}
+
+void func_801164A4_w04(s32 playerNo, s32 type) {
+    GW_PLAYER *player;
+    Object *obj;
+    s32 modelId;
+
+    player = MBPlayerGet(playerNo);
+
+    if (D_8011E0F0_w04[playerNo] == NULL) {
+        switch (type) {
+            case 0:
+                modelId = 0x3F;
+                break;
+            case 1:
+                modelId = 0x40;
+                break;
+            case 2:
+                modelId = 0x41;
+                break;
+            default:
+                modelId = 0x42;
+                break;
+        }
+
+        obj = MBModelCreate(modelId, NULL);
+        MBModelTempAllocFree(obj);
+        D_8011E0F0_w04[playerNo] = obj;
+        obj->flags |= 2;
+        HuVecCopy3F(&obj->coords, &player->player_obj->coords);
+        obj->velocity.x = 20.0f;
+        MBVecForwardSet(&obj->rot);
+    } else {
+        func_800D9A40_shared_board(D_8011E0F0_w04[playerNo]);
+    }
+}
+
+void func_801165A4_w04(s32 arg) {
+    D_8011E100_w04[arg] = omAddObj(0x3FFF, 0, 0, -1, func_801162F8_w04);
+    D_8011E100_w04[arg]->work[0] = arg;
+    D_8011E100_w04[arg]->work[1] = 0;
+    D_8011E100_w04[arg]->work[2] = 0;
+    D_8011E100_w04[arg]->rot.x = (f32)MBRand(360.0f);
+    D_8011E100_w04[arg]->trans.x = 0;
+}
+
+void func_80116640_w04(void) {
+    s32 i;
+    s32 idx;
+
+    for (i = 0; i < 4; i++) {
+        D_8011E100_w04[i] = NULL;
+        D_8011E0F0_w04[i] = NULL;
+        idx = -!(MBPlayerGet(i)->rev & 0x2);
+        if (MBPlayerGet(i)->rev & 0x4) {
+            idx = 1;
+        }
+        if (MBPlayerGet(i)->rev & 0x20) {
+            idx = 2;
+        }
+        if (MBPlayerGet(i)->rev & 0x40) {
+            idx = 3;
+        }
+        if (idx != -1) {
+            func_801164A4_w04(i, idx);
+            func_801165A4_w04(i);
+        }
+    }
+    func_800F8D54_shared_board(func_80116294_w04);
+}
+
+void func_80116740_w04(void) {
+    GW_SYSTEM *loc = &GwSystem;
+    GW_PLAYER *player = MBPlayerGet(-1);
+    s16 *slowDiceFlags = &loc->slow_dice_flags;
+    f32 scale;
+
+    if ((((*slowDiceFlags >> loc->current_player_index) & 1))) {
+        GWBoardFlagSet(0x10);
+        *slowDiceFlags &= ~(1 << loc->current_player_index);
+        if ((player->rev & 0x20) || ((player->rev & 8) && !(player->rev & 2))) {
+            MBDlgWinExec(-1, 0x4219);
+        } else {
+            MBDlgWinExec(-1, 0x3A07);
+        }
+
+        if (player->rev & 2) {
+            if (D_8011E0F0_w04[loc->current_player_index] != NULL) {
+                for (scale = 1.0f; scale >= 0.0f; scale -= 0.08f) {
+                    HuVecCopyXYZ(&D_8011E0F0_w04[loc->current_player_index]->scale, scale, scale, scale);
+                    HuPrcVSleep();
+                }
+            }
+            func_8011621C_w04(loc->current_player_index);
+        }
+        if (player->rev & 8) {
+            if (D_8011E0F0_w04[loc->current_player_index] != NULL) {
+                for (scale = 1.0f; scale >= 0.0f; scale -= 0.08f) {
+                    HuVecCopyXYZ(&D_8011E0F0_w04[loc->current_player_index]->scale, scale, scale, scale);
+                    HuPrcVSleep();
+                }
+            }
+            func_8011621C_w04(loc->current_player_index);
+        }
+        player->rev &= 0xD5;
+    }
+}
+
+void func_8011694C_w04(void) {
+    GW_SYSTEM *loc = &GwSystem;
+    s16 *slowDiceFlags = &loc->slow_dice_flags;
+    GW_PLAYER *player = MBPlayerGet(-1);
+    f32 scale;
+
+    if (player->rev & 8) {
+        func_800DCA64_shared_board(loc->current_player_index);
+        GWBoardFlagSet(0x10);
+        *slowDiceFlags &= ~(1 << loc->current_player_index);
+        MBDlgWinExec(-1, 0x4219);
+        if (D_8011E0F0_w04[loc->current_player_index] != NULL) {
+            for (scale = 1.0f; scale >= 0.0f; scale -= 0.08f) {
+                HuVecCopyXYZ(&D_8011E0F0_w04[loc->current_player_index]->scale, scale, scale, scale);
+                HuPrcVSleep();
+            }
+        }
+        func_8011621C_w04(loc->current_player_index);
+        player->rev &= 0xD7;
+        MBPlayerVibrate(-1, 2);
+        func_800DC128_shared_board(loc->current_player_index);
+        HuPrcSleep(0xF);
+    }
+}
+
+void func_80116AAC_w04(void) {
+    s32 i = 0x3C;
+    UnkVibrateProcess *vib = HuPrcCurrentGet()->user_data;
+
+    do {
+        i--;
+        HuPrcVSleep();
+    } while (i != 0);
+
+    MBPlayerVibrateObjKill(vib);
+    omDelPrcObj(NULL);
+}
+
+void func_80116AFC_w04(void) {
+    GW_SYSTEM *loc = &GwSystem;
+    GW_PLAYER *player;
+    s32 choice;
+    s16 targetPlayer;
+    UnkVibrateProcess *vib;
+    s16 previousPlayer;
+    f32 scale;
+    f32 hudScale;
+
+    MBDlgWinInsertCreate(-1, 0x5C01, GwPlayer[0].chr + 0x1C00, GwPlayer[1].chr + 0x1C00,
+                         GwPlayer[2].chr + 0x1C00, GwPlayer[3].chr + 0x1C00, 0);
+    choice = func_80109CD4_w04(2, D_8011E114_w04);
+    MBDlgWinClose();
+    MBDlgWinKill();
+
+    if (choice >= MB_MAX_PLAYERS) {
+        targetPlayer = func_800EF0D8_shared_board(0);
+    } else if (choice < 0) {
+        targetPlayer = func_800EF0D8_shared_board(0);
+    } else {
+        targetPlayer = choice;
+    }
+
+    GwSystem.slow_dice_flags |= 1 << targetPlayer;
+    player = MBPlayerGet(targetPlayer);
+
+    for (scale = 1.0f, hudScale = 1.0f; scale > 0.0f;) {
+        scale -= 0.1f;
+        hudScale += 0.07f;
+        MBStatusItemScaleSet(loc->current_player_index, MBItemSelNoGet(), scale, hudScale);
+        HuPrcVSleep();
+    }
+
+    MBStatusItemTPLvlSet(loc->current_player_index, MBItemSelNoGet(), 0);
+    MBStatusShrink(-1);
+    MBStatusItemDispSetAll(0);
+    MBStatusGrow(-1);
+
+    if (targetPlayer != loc->current_player_index) {
+        WipeCreateOut(WIPE_TYPE_NORMAL, 0x10);
+        HuPrcSleep(0x10);
+        MBCameraFocusModeSet(2);
+        MBCameraFocusStaticPosSet(&player->player_obj->coords);
+        MBCameraPos3DSet(&player->player_obj->coords);
+        HuPrcVSleep();
+        WipeCreateIn(WIPE_TYPE_NORMAL, 0x10);
+        D_800A12D8_main = 1;
+        HuPrcSleep(0x10);
+    }
+
+    func_8011621C_w04(targetPlayer);
+    player->rev = (player->rev & 0x99) | 2;
+    func_801164A4_w04(targetPlayer, 0);
+    for (scale = 0.0f; scale <= 1.0f; scale += 0.08f) {
+        HuVecCopyXYZ(&D_8011E0F0_w04[targetPlayer]->scale, scale, scale, scale);
+        HuPrcVSleep();
+    }
+    HuVecCopyXYZ(&D_8011E0F0_w04[targetPlayer]->scale, 1.0f, 1.0f, 1.0f);
+
+    if (targetPlayer == loc->current_player_index) {
+        MBPlayerMotionSet(targetPlayer, 4, 2);
+    } else {
+        MBMotionSet(MBPlayerGet(targetPlayer)->player_obj, 4, 2);
+    }
+    CharFXPlay(0x286, GwPlayer[targetPlayer].chr);
+    func_801165A4_w04(targetPlayer);
+    vib = MBPlayerVibrateObjCreate(targetPlayer, 1, 5);
+    omAddPrcObj(func_80116AAC_w04, 0x4002, 0, 0)->user_data = vib;
+    HuPrcSleep(0x14);
+
+    previousPlayer = loc->current_player_index;
+    loc->current_player_index = targetPlayer;
+    if (player->rev & 0x80) {
+        MBDlgWinExec(-1, 0x3A09);
+    }
+    MBDlgWinExec(-1, 0x3A06);
+    loc->current_player_index = previousPlayer;
+    if (targetPlayer == (s8)previousPlayer) {
+        MBPlayerMotionSet(-1, -1, 2);
+    } else {
+        MBMotionSet(MBPlayerGet(targetPlayer)->player_obj, -1, 2);
+        D_800A12D8_main = 0;
+    }
+
+    if (targetPlayer != loc->current_player_index) {
+        WipeCreateOut(WIPE_TYPE_NORMAL, 0x10);
+        HuPrcSleep(0x10);
+        MBCameraFocusModeSet(1);
+        MBCameraPos3DSet(&MBPlayerGet(-1)->player_obj->coords);
+        HuPrcVSleep();
+        WipeCreateIn(WIPE_TYPE_NORMAL, 0x10);
+        HuPrcSleep(0x10);
+    }
+
+    if (targetPlayer == loc->current_player_index) {
+        GWBoardFlagSet(0x10);
+        MBDlgWinExec(-1, 0x3A07);
+        for (scale = 1.0f; scale >= 0.0f; scale -= 0.08f) {
+            HuVecCopyXYZ(&D_8011E0F0_w04[targetPlayer]->scale, scale, scale, scale);
+            HuPrcVSleep();
+        }
+        HuVecCopyXYZ(&D_8011E0F0_w04[targetPlayer]->scale, 0.0f, 0.0f, 0.0f);
+        func_8011621C_w04(loc->current_player_index);
+        func_800DCA64_shared_board(GwSystem.current_player_index);
+        MBPlayerVibrate(-1, 2);
+        func_800DC128_shared_board(GwSystem.current_player_index);
+        HuPrcSleep(0xF);
+        GwSystem.slow_dice_flags &= ~(1 << GwSystem.current_player_index);
+        player->rev &= ~2;
+    }
+}
+
+void func_80117074_w04(void) {
+    GW_SYSTEM *loc = &GwSystem;
+    GW_PLAYER *player = MBPlayerGet(-1);
+    f32 scale;
+
+    if (player->rev & 0x80) {
+        if ((player->rev & 0x40) || ((player->rev & 0x10) && !(player->rev & 4))) {
+            MBDlgWinExec(-1, 0x421C);
+        } else {
+            MBDlgWinExec(-1, 0x3A03);
+        }
+        if (player->rev & 4) {
+            if (D_8011E0F0_w04[loc->current_player_index] != NULL) {
+                for (scale = 1.0f; scale >= 0.0f; scale -= 0.08f) {
+                    HuVecCopyXYZ(&D_8011E0F0_w04[loc->current_player_index]->scale, scale, scale, scale);
+                    HuPrcVSleep();
+                }
+            }
+            func_8011621C_w04(loc->current_player_index);
+        }
+        if (player->rev & 0x10) {
+            if (D_8011E0F0_w04[loc->current_player_index] != NULL) {
+                for (scale = 1.0f; scale >= 0.0f; scale -= 0.08f) {
+                    HuVecCopyXYZ(&D_8011E0F0_w04[loc->current_player_index]->scale, scale, scale, scale);
+                    HuPrcVSleep();
+                }
+            }
+            func_8011621C_w04(loc->current_player_index);
+        }
+        player->rev &= 0xAB;
+    }
+}
+
+void func_80117244_w04(void) {
+    GW_SYSTEM *loc = &GwSystem;
+    GW_PLAYER *player = MBPlayerGet(-1);
+    f32 scale;
+
+    if (player->rev & 0x10) {
+        func_800DCA64_shared_board(loc->current_player_index);
+        MBDlgWinExec(-1, 0x421C);
+        if (D_8011E0F0_w04[loc->current_player_index] != NULL) {
+            for (scale = 1.0f; scale >= 0.0f; scale -= 0.08f) {
+                HuVecCopyXYZ(&D_8011E0F0_w04[loc->current_player_index]->scale, scale, scale, scale);
+                HuPrcVSleep();
+            }
+        }
+        func_8011621C_w04(loc->current_player_index);
+        player->rev &= 0xAF;
+        MBPlayerVibrate(-1, 2);
+        func_800DC128_shared_board(loc->current_player_index);
+        HuPrcSleep(0xF);
+    }
+}
+
+void func_8011737C_w04(void) {
+    GW_SYSTEM *loc = &GwSystem;
+    GW_PLAYER *player;
+    s32 choice;
+    s16 targetPlayer;
+    s16 previousPlayer;
+    f32 scale;
+    f32 hudScale;
+    UnkVibrateProcess *vib;
+
+    MBDlgWinInsertCreate(-1, 0x5C01, GwPlayer[0].chr + 0x1C00, GwPlayer[1].chr + 0x1C00,
+                         GwPlayer[2].chr + 0x1C00, GwPlayer[3].chr + 0x1C00, 0);
+    choice = func_80109CD4_w04(2, D_8011E110_w04);
+    MBDlgWinClose();
+    MBDlgWinKill();
+
+    if (choice >= MB_MAX_PLAYERS) {
+        targetPlayer = func_800EF0D8_shared_board(0);
+    } else if (choice < 0) {
+        targetPlayer = func_800EF0D8_shared_board(0);
+    } else {
+        targetPlayer = choice;
+    }
+
+    player = MBPlayerGet(targetPlayer);
+    player->rev |= 0x80;
+
+    for (scale = 1.0f, hudScale = 1.0f; scale > 0.0f;) {
+        scale -= 0.1f;
+        hudScale += 0.07f;
+        MBStatusItemScaleSet(loc->current_player_index, MBItemSelNoGet(), scale, hudScale);
+        HuPrcVSleep();
+    }
+    MBStatusItemTPLvlSet(loc->current_player_index, MBItemSelNoGet(), 0);
+
+    if (targetPlayer != loc->current_player_index) {
+        WipeCreateOut(WIPE_TYPE_NORMAL, 0x10);
+        HuPrcSleep(0x10);
+        MBCameraFocusModeSet(2);
+        MBCameraFocusStaticPosSet(&player->player_obj->coords);
+        MBCameraPos3DSet(&player->player_obj->coords);
+        HuPrcVSleep();
+        WipeCreateIn(WIPE_TYPE_NORMAL, 0x10);
+        D_800A12D8_main = 1;
+        HuPrcSleep(0x10);
+    }
+
+    func_8011621C_w04(targetPlayer);
+    player->rev = (player->rev & 0x99) | 4;
+    MBPlayerVibrate(targetPlayer, 3);
+    func_801164A4_w04(targetPlayer, 1);
+    for (scale = 0.0f; scale <= 1.0f; scale += 0.08f) {
+        HuVecCopyXYZ(&D_8011E0F0_w04[targetPlayer]->scale, scale, scale, scale);
+        HuPrcVSleep();
+    }
+    HuVecCopyXYZ(&D_8011E0F0_w04[targetPlayer]->scale, 1.0f, 1.0f, 1.0f);
+
+    if (targetPlayer == loc->current_player_index) {
+        MBPlayerMotionSet(targetPlayer, 4, 2);
+    } else {
+        MBMotionSet(MBPlayerGet(targetPlayer)->player_obj, 4, 2);
+    }
+    CharFXPlay(0x286, GwPlayer[targetPlayer].chr);
+    vib = MBPlayerVibrateObjCreate(targetPlayer, 1, 5);
+    func_801165A4_w04(targetPlayer);
+    omAddPrcObj(func_80116AAC_w04, 0x4002, 0, 0)->user_data = vib;
+    HuPrcSleep(0x14);
+
+    previousPlayer = loc->current_player_index;
+    loc->current_player_index = targetPlayer;
+    if (((previousPlayer == targetPlayer) && (func_800DEB2C_shared_board(previousPlayer) == 3)) ||
+        ((GwSystem.slow_dice_flags >> targetPlayer) & 1)) {
+        MBDlgWinExec(-1, 0x3A05);
+    }
+    MBDlgWinExec(-1, 0x3A02);
+    loc->current_player_index = previousPlayer;
+    if (targetPlayer == (s8)previousPlayer) {
+        MBPlayerMotionSet(-1, -1, 2);
+    } else {
+        MBMotionSet(MBPlayerGet(targetPlayer)->player_obj, -1, 2);
+        D_800A12D8_main = 0;
+    }
+
+    if (targetPlayer != loc->current_player_index) {
+        WipeCreateOut(WIPE_TYPE_NORMAL, 0x10);
+        HuPrcSleep(0x10);
+        MBCameraFocusModeSet(1);
+        MBCameraPos3DSet(&MBPlayerGet(-1)->player_obj->coords);
+        HuPrcVSleep();
+        WipeCreateIn(WIPE_TYPE_NORMAL, 0x10);
+        HuPrcSleep(0x10);
+    }
+
+    if (targetPlayer == loc->current_player_index) {
+        func_80117074_w04();
+    }
+}
+
+void func_80117800_w04(void) {
+    char playerNames[4][16];
+    u8 choices[16];
+    Object *chest;
+    Process *process;
+    GW_SYSTEM *system = &GwSystem;
+    s32 targetPlayer = 0;
+    s32 itemSlot;
+    s32 i;
+    f32 angle;
+    u32 *motion;
+
+    func_8010F9F4_w04();
+    chest = MBModelCreate(0x21, NULL);
+    Hu3DModelScaleSet(chest->omObj1->model[0], 0.0f, 0.0f, 0.0f);
+    HuVecCopy3F(&chest->coords, &MBPlayerGet(-1)->player_obj->coords);
+    func_8001C814_main(chest->omObj1->model[0], 2, 1);
+    chest->velocity.x = 100.0f;
+    HuAudFXPlay(0x142);
+    while (chest->velocity.x > 30.0f) {
+        chest->velocity.x -= 1.0f;
+        HuPrcVSleep();
+    }
+
+    if (targetPlayer != 0) {
+        for (i = 0; i < 1081; i += 30) {
+            angle = sindf((f32)i) / 2.0f + 1.0f;
+            HuVecCopyXYZ(&chest->scale, angle, sindf((f32)i) / 2.0f + 1.0f,
+                         sindf((f32)i) / 2.0f + 1.0f);
+            HuPrcVSleep();
+        }
+    }
+
+    HuAudFXPlay(0x149);
+    func_8001C814_main(chest->omObj1->model[0], 1, 0);
+    HuPrcSleep(20);
+
+    for (i = 0; i < 4; i++) {
+        if (GwSystem.current_player_index == i) {
+            playerNames[i][0] = 1;
+            choices[i] = 0;
+        } else {
+            playerNames[i][0] = 8;
+            choices[i] = 1;
+        }
+        func_800E2260_shared_board(i, &playerNames[i][1]);
+    }
+    choices[4] = 1;
+    choices[5] = 1;
+    MBDlgWinInsertCreate(-1, 0x5C01, (s32)playerNames[0], (s32)playerNames[1], (s32)playerNames[2],
+                         (s32)playerNames[3], 0);
+    targetPlayer = func_80112F04_w04(choices, 0);
+    MBDlgWinClose();
+    MBDlgWinKill();
+    if (targetPlayer == 4) {
+        targetPlayer = func_800EF0D8_shared_board(1);
+    }
+
+    if (GwPlayer[targetPlayer].itemNo[0] == -1) {
+        MBPlayerMotionSet(-1, 3, 0);
+        PlayerFXPlay(0x286, system->current_player_index);
+        HuPrcSleep(60);
+        func_800E2260_shared_board(targetPlayer, playerNames[0]);
+        MBWinInsertOpen(0x3A0F, playerNames[0], 0, 0, 0, 0);
+        func_800EC3C0_shared_board(system->current_player_index);
+        func_800EC3E4_shared_board();
+        func_800F2388_shared_board(-1, -1, 0, 10, 2);
+        MBModelKill(chest);
+        GwPlayer[system->current_player_index].itemNo[MBItemSelNoGet()] = -1;
+        MBItemRemoveEmpty(system->current_player_index);
+        return;
+    }
+
+    itemSlot = MBItemFindEmpty(targetPlayer);
+    if (itemSlot == -1) {
+        itemSlot = 3;
+    }
+    itemSlot = MBRand((f32)itemSlot);
+    GwPlayer[system->current_player_index].itemNo[MBItemSelNoGet()] =
+        GwPlayer[targetPlayer].itemNo[itemSlot];
+    GwPlayer[targetPlayer].itemNo[itemSlot] = -1;
+    MBItemRemoveEmpty(targetPlayer);
+    MBPlayerVibrate((s16)targetPlayer, 3);
+    if (MBItemSelNoGet() == itemSlot) {
+        MBStatusItemTPLvlSet(targetPlayer, MBItemSelNoGet(), 0);
+    }
+    MBStatusItemSprKill(-1);
+    MBStatusItemPosSet(system->current_player_index, MBItemSelNoGet(),
+                       D_8011C864_w04[system->current_player_index].x,
+                       D_8011C864_w04[system->current_player_index].y);
+    MBStatusItemTPLvlSet(system->current_player_index, MBItemSelNoGet(), 0x100);
+    MBStatusItemTPLvlSet(targetPlayer, itemSlot, 0);
+    MBStatusItemPriSet(system->current_player_index, MBItemSelNoGet(), 0x4786);
+    process = HuPrcCurrentGet();
+    HuPrcChildLink(process,
+                   func_8010F6F4_w04(-1,
+                                     D_8011C864_w04[system->current_player_index].x,
+                                     D_8011C864_w04[system->current_player_index].y,
+                                     D_8011C844_w04[system->current_player_index].x,
+                                     D_8011C844_w04[system->current_player_index].y, 5));
+    HuPrcChildWatch();
+    PlayerFXPlay(0x274, system->current_player_index);
+    MBPlayerMotionLoad(system->current_player_index, 5, 0x31);
+    MBPlayerMotionSet(-1, 5, 0);
+    HuPrcSleep(50);
+    func_800F2388_shared_board(system->current_player_index, -1, 0, 10, 2);
+    HuPrcSleep(11);
+    motion = D_80101734_shared_board[0];
+    for (i = 6; i != 0; i--) {
+        motion++;
+    }
+    MBPlayerMotionLoad(system->current_player_index, 5, ((u16 *)motion)[1]);
+    MBModelKill(chest);
+    MBDlgWinInsertCreate(-1, 0x3A0D, GwPlayer[targetPlayer].chr + 0x1C00,
+                         GwPlayer[system->current_player_index].chr + 0x1C00, 0, 0, 0);
+    MBDlgWinClose();
+    MBDlgWinKill();
+    func_8010FBC4_w04();
+}
+
+void func_80117EA8_w04(void) {
     void *data;
     s32 spriteId;
     s32 grp;
@@ -3267,6157 +8437,782 @@ void func_80108BD0_w06(void) {
     omDelPrcObj(NULL);
 }
 
-Process *func_80108F68_w06(void) {
-    return omAddPrcObj(func_80108BD0_w06, 0x1000, 0, 0);
+Process *func_80118240_w04(void) {
+    return omAddPrcObj(func_80117EA8_w04, 0x1000, 0, 0);
 }
 
-void func_80108F94_w06(void) {
-    s32 masuTable[4] = { 0x6E, 0x6F, 0x98, 0x6D };
-    u8 delayTable[10] = { 2, 4, 4, 4, 8, 8, 8, 8, 8, 8 };
-    Process *prc = HuPrcCurrentGet();
-    Object *model;
-    SpaceData *space;
-    s32 idx;
-    s32 playedSfx = 0;
-    s32 delay;
-
-    model = MBModelFileCreate(0x130188, -1, 1.1f, 0, 0);
-    MBModelTempAllocFree(model);
-    delay = delayTable[MBRand(10.0f)];
-    idx = MBRand(4.0f);
-
-    while (prc->user_data == NULL) {
-        idx++;
-        idx &= 3;
-        D_8011E338_w06 = idx;
-        space = MBMasuGet(masuTable[idx]);
-        HuVecCopy3F(&model->coords, &space->coords);
-        model->coords.z -= 1.0f;
-        model->rot.x = sindf(180 - (idx * 90));
-        model->rot.z = cosdf(180 - (idx * 90));
-        HuAudFXPlay(0x1B6);
-        HuPrcSleep(delay - 1);
-    }
-
-    D_8011E334_w06 = idx;
-    HuPrcSleep(10);
-    idx = 0;
-
-    if ((s32)prc->user_data != 2) {
-        while ((s32)prc->user_data != 2) {
-            if (playedSfx == 0) {
-                HuAudFXPlay(0x1B7);
-                playedSfx = 1;
-            }
-            idx++;
-            if (idx & 2) {
-                MBModelDispOff(model);
-            } else {
-                MBModelDispOn(model);
-            }
-            HuPrcVSleep();
-        }
-    }
-
-    MBModelKill(model);
-    prc->user_data = NULL;
-    omDelPrcObj(NULL);
-}
-
-void func_801091EC_w06(void) {
-    StarChaseWork work;
-    Unk3 *helpWin;
-    s16 msgWin;
-    SpaceData *starMasu = MBMasuGet(0x99);
-    GW_PLAYER *player = MBPlayerGet(-1);
-    Process *starPrc;
-    s16 comResult;
-    s32 playerIdx;
+void func_8011826C_w04(omObjData *obj) {
     s32 i;
 
-    playerIdx = GwSystem.current_player_index;
-
-    work.chaseChanceA = D_8011E10C_w06;
-    work.chaseChanceB = D_8011E11C_w06;
-    comResult = 0;
-    MBStatusHideAll();
-    func_800DBEC0_shared_board(playerIdx);
-    MBVecDirGet(&player->player_obj->coords, &starMasu->coords, &work.dir);
-    HuPrcChildLink(HuPrcCurrentGet(), func_800ED128_shared_board(&player->player_obj->rot, &work.dir, &player->player_obj->rot, 5));
-    HuPrcChildLink(HuPrcCurrentGet(), MBCameraZoomMotStart(1.0f));
-    HuPrcChildWatch();
-    HuVecCopy3F(&work.pos, &player->player_obj->coords);
-    MBCameraFocusModeSet(4);
-    MBCameraFocusVecSet(&work.pos);
-    HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&work.pos, &starMasu->coords, &work.pos, 30));
-    HuPrcChildWatch();
-    starPrc = omAddPrcObj(func_80108F94_w06, 0x1000, 0, 0);
-    HuPrcChildLink(HuPrcCurrentGet(), func_80108F68_w06());
-    HuPrcSleep(30);
-    msgWin = HuWinCreate(0x6E, 0xB2, 0x64, 0x18, 0, 0);
-    HuWinBGTPLvlSet(msgWin, 0x100);
-    HuWinBGColSet(msgWin, 0x8C, 0xC8, 0x3C);
-    helpWin = func_800E210C_shared_board(0x14, 0xB4, 1);
-    HuPrcChildWatch();
-
-    if (MBPlayerComCheck(-1) != 0) {
-        if (MBComTreeExec(D_8011C054_w06) != 0) {
-            comResult = 1;
-            if (MBComTreeExec(D_8011C078_w06) != 0) {
-                comResult |= 2;
-            } else {
-                comResult = 1;
-            }
-        } else {
-            comResult = 0;
+    if (obj->work[0] == 0) {
+        for (i = 0; i < 2; i++) {
+            HuVecCopy3F(&D_8011E118_w04[i]->coords, &MBMasuGet(D_8011C998_w04[i])->coords);
+            D_8011E118_w04[i]->coords.x += MBRand(30.0f) / 10.0f - 1.5f;
         }
-    }
-    i = 0;
-
-    while (1) {
-        if (MBPlayerComCheck(-1) != 0) {
-            if ((D_8011E338_w06 == comResult && MBRand(100.0f) < work.chaseChanceA.entries[player->cpu_difficulty])) {
-                goto move;
-            }
-            if (MBRand(100.0f) < work.chaseChanceB.entries[player->cpu_difficulty]) {
-                goto move;
-            }
-            goto sleep;
-        }
-        if (!(D_800C9520_main[GwPlayer[playerIdx].pad] & A_BUTTON)) {
-            goto sleep;
-        }
-
-    move:
-        PlayerFXPlay(0x3A, playerIdx);
-        MBPlayerMotionSet(-1, 2, 0);
-        func_800EE688_shared_board(player->player_obj, 16.0f, -0.95f);
-        HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(
-                                              &player->player_obj->coords, &starMasu->coords, &player->player_obj->coords, 31));
-        break;
-
-    sleep:
-        HuPrcVSleep();
-        i++;
-        if (i >= 150) {
-            break;
-        }
-    }
-
-    MBHelpWinKill(helpWin);
-    HuWinKill(msgWin);
-
-    if (i == 150) {
-        starPrc->user_data = (void *)2;
-        MBDlgResultWinExec(0x1000);
     } else {
-
-        HuPrcChildWatch();
-        MBPlayerVibrate(-1, 2);
-        MBPlayerMotionSet(-1, -1, 2);
-        PlayerFXPlay(0x31, playerIdx);
-        starPrc->user_data = (void *)1;
-        HuPrcSleep(40);
-        starPrc->user_data = (void *)2;
-
-        if (D_8011E334_w06 != 2) {
-            s16 eventId;
-            s16 eventArg;
-
-            MBMoveMasuSet(-1, 0x15, 0);
-            work.eventTableA = D_8011E12C_w06;
-            work.eventTableB = D_8011E13C_w06;
-            eventId = ((s16 *)work.eventTableA.entries)[D_8011E334_w06 * 2 + 1];
-            eventArg = ((s16 *)work.eventTableB.entries)[D_8011E334_w06 * 2 + 1];
-            MBMoveNextMasuSet(-1, eventId, eventArg);
-            MBCameraFocusModeSet(1);
-            MBStatusShowAll();
-            func_800DB884_shared_board(playerIdx);
-            HuPrcChildLink(HuPrcCurrentGet(), MBCameraZoomMotStart(1.3f));
-            HuPrcChildWatch();
-            return;
-        } else {
-            starMasu = MBMasuGet(0x77);
-            MBVecDirGet(&player->player_obj->coords, &starMasu->coords, &player->player_obj->rot);
-            PlayerFXPlay(0x3A, playerIdx);
-            MBPlayerMotionSet(-1, 2, 0);
-            func_800EE688_shared_board(player->player_obj, 15.0f, -2.0f);
-            HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(
-                                                  &player->player_obj->coords, &starMasu->coords, &player->player_obj->coords, 14));
-            HuPrcChildWatch();
-            MBPlayerMotionSet(-1, -1, 2);
-            PlayerFXPlay(0x31, playerIdx);
+        for (i = 0; i < 2; i++) {
+            HuVecCopy3F(&D_8011E118_w04[i]->coords, &MBMasuGet(D_8011C99C_w04[i])->coords);
+            D_8011E118_w04[i]->coords.x += MBRand(30.0f) / 10.0f - 1.5f;
         }
     }
-
-    MBMoveNextMasuSet(-1, 2, 0);
-    HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&work.pos, &player->player_obj->coords, &work.pos, 20));
-    HuPrcChildWatch();
-
-    MBCameraFocusModeSet(1);
-    MBStatusShowAll();
-    func_800DB884_shared_board(playerIdx);
-    HuPrcChildLink(HuPrcCurrentGet(), MBCameraZoomMotStart(1.3f));
-    HuPrcChildWatch();
 }
 
-void func_8010980C_w06(void) {
+void func_801183D4_w04(void) {
     GW_PLAYER *player = MBPlayerGet(-1);
-
-    func_80117814_w06((SpaceTriple *)D_8011C090_w06, (BranchPair *)D_8011C0A4_w06, D_8011B870_w06);
-    if (player->nlink == 0x15) {
-        func_801091EC_w06();
-    }
-    omDelPrcObj(NULL);
-}
-
-void func_80109870_w06(void) {
-    GW_PLAYER *player = MBPlayerGet(-1);
-    s16 masu = MBMasuLinkMasuIdGet(player->blink, player->bidx);
-
-    if (masu == 0x5C && !(player->rev & 0x80)) {
-        MBMoveNextMasuSet(-1, 3, 4);
-        player->rev &= ~1;
-    } else {
-        func_80117814_w06((SpaceTriple *)D_8011C0D8_w06, (BranchPair *)D_8011C0EC_w06, D_8011B924_w06);
-    }
-}
-
-void func_80109918_w06(void) {
-    func_80117814_w06((SpaceTriple *)D_8011C120_w06, (BranchPair *)D_8011C134_w06, D_8011B99C_w06);
-    omDelPrcObj(NULL);
-}
-
-void func_80109950_w06(void) {
-    func_80117814_w06((SpaceTriple *)D_8011C168_w06, (BranchPair *)D_8011C17C_w06, D_8011BA2C_w06);
-    omDelPrcObj(NULL);
-}
-
-void func_80109988_w06(void) {
-    GW_PLAYER *player = MBPlayerGet(-1);
-
-    if (GwSystem.boardData.halfWordBytes[0] == 0) {
-        func_80117814_w06((SpaceTriple *)D_8011C1B0_w06, (BranchPair *)D_8011C1C4_w06, D_8011BA8C_w06);
-    } else {
-        s16 masu = MBMasuLinkMasuIdGet(player->blink, player->bidx);
-
-        if (masu == 0x38) {
-            MBMoveNextMasuSet(-1, 0xE, 0);
-        } else {
-            MBMoveNextMasuSet(-1, 0xD, 3);
-            player->rev |= 1;
-        }
-    }
-    omDelPrcObj(NULL);
-}
-
-void func_80109A50_w06(void) {
-    GW_PLAYER *player = MBPlayerGet(-1);
-
-    if (GwSystem.boardData.halfWordBytes[0] == 1) {
-        func_80117814_w06((SpaceTriple *)D_8011C1F8_w06, (BranchPair *)D_8011C20C_w06, D_8011BB04_w06);
-    } else {
-        s16 masu = MBMasuLinkMasuIdGet(player->blink, player->bidx);
-
-        if (masu == 0x1C) {
-            MBMoveNextMasuSet(-1, 6, 0);
-        } else {
-            MBMoveNextMasuSet(-1, 5, 4);
-            player->rev |= 1;
-        }
-    }
-    omDelPrcObj(NULL);
-}
-
-void func_80109B1C_w06(void) {
-    func_80117814_w06((SpaceTriple *)D_8011C240_w06, (BranchPair *)D_8011C254_w06, D_8011BB4C_w06);
-    omDelPrcObj(NULL);
-}
-
-void func_80109B54_w06(void) {
-    GW_PLAYER *player = MBPlayerGet(-1);
-    s16 masu = MBMasuLinkMasuIdGet(player->blink, player->bidx);
-
-    if (masu == 0x96 && !(player->rev & 0x80)) {
-        MBMoveNextMasuSet(-1, 7, 0);
-        player->rev &= ~1;
-    } else {
-        func_80117814_w06((SpaceTriple *)D_8011C288_w06, (BranchPair *)D_8011C29C_w06, D_8011BBA0_w06);
-    }
-    omDelPrcObj(NULL);
-}
-
-void func_80109C04_w06(void) {
-    GW_PLAYER *player = MBPlayerGet(-1);
-    s16 masu = MBMasuLinkMasuIdGet(player->blink, player->bidx);
-
-    if (masu != 0x3F) {
-        MBMoveNextMasuSet(-1, 0x11, 0);
-        player->rev |= 1;
-    } else {
-        MBDlgResultWinExec(0xE01);
-        func_80117814_w06((SpaceTriple *)D_8011C2D0_w06, (BranchPair *)D_8011C2E4_w06, D_8011BBB8_w06);
-    }
-}
-
-void func_80109CA4_w06(void) {
-    GW_PLAYER *player = MBPlayerGet(-1);
-    s16 masu = MBMasuLinkMasuIdGet(player->blink, player->bidx);
-
-    if (masu != 0x40) {
-        MBMoveNextMasuSet(-1, 0x12, 1);
-        player->rev &= ~1;
-    } else {
-        MBDlgResultWinExec(0xE01);
-        func_80117814_w06((SpaceTriple *)D_8011C318_w06, (BranchPair *)D_8011C32C_w06, D_8011BBD0_w06);
-    }
-}
-
-void func_80109D44_w06(void) {
-    GW_PLAYER *player;
-    s32 masu;
-
-    player = MBPlayerGet(-1);
-
-    if (GwSystem.boardData.halfWordBytes[0] == 0 && (player->rev & 0x80)) {
-        func_80117814_w06((SpaceTriple *)D_8011C360_w06, (BranchPair *)D_8011C374_w06, D_8011BC78_w06);
-    } else {
-        masu = MBMasuLinkMasuIdGet(player->blink, player->bidx);
-        if (masu == 0x2D) {
-            MBMoveNextMasuSet(-1, 0xB, 5);
-        } else if (masu == 0x75) {
-            MBMoveNextMasuSet(-1, 0xB, 5);
-        } else {
-            MBMoveNextMasuSet(-1, 0xB, 3);
-            player->rev |= 1;
-        }
-    }
-    omDelPrcObj(0);
-}
-
-void func_80109E28_w06(void) {
-    GW_PLAYER *player;
-    s32 masu;
-
-    player = MBPlayerGet(-1);
-
-    if (GwSystem.boardData.halfWordBytes[0] == 1 && (player->rev & 0x80)) {
-        func_80117814_w06((SpaceTriple *)D_8011C3A8_w06, (BranchPair *)D_8011C3BC_w06, D_8011BD38_w06);
-    } else {
-        masu = MBMasuLinkMasuIdGet(player->blink, player->bidx);
-        if (masu == 0x32) {
-            MBMoveNextMasuSet(-1, 0xB, 0xC);
-        } else if (masu == 0x70) {
-            MBMoveNextMasuSet(-1, 0xB, 0xC);
-        } else {
-            MBMoveNextMasuSet(-1, 0xB, 0xA);
-            player->rev |= 1;
-        }
-    }
-    omDelPrcObj(0);
-}
-
-void func_80109F10_w06(void) {
-    GW_PLAYER *player = MBPlayerGet(-1);
-
-    if ((player->rev & 0x80) && mbWalkNum != 0) {
-        func_80117814_w06((SpaceTriple *)D_8011C3F0_w06, (BranchPair *)D_8011C404_w06, D_8011BD98_w06);
-    }
-}
-
-void func_80109F68_w06(void) {
-    GW_PLAYER *player = MBPlayerGet(-1);
-
-    if ((player->rev & 0x80) && mbWalkNum != 0) {
-        func_80117814_w06((SpaceTriple *)D_8011C438_w06, (BranchPair *)D_8011C44C_w06, D_8011BE04_w06);
-    }
-}
-
-void func_80109FC0_w06(void) {
-    GW_PLAYER *player = MBPlayerGet(-1);
-
-    if ((player->rev & 0x80) && mbWalkNum != 0) {
-        func_80117814_w06((SpaceTriple *)D_8011C480_w06, (BranchPair *)D_8011C494_w06, D_8011BE64_w06);
-    }
-}
-
-void func_8010A018_w06(void) {
-    GW_PLAYER *player = MBPlayerGet(-1);
-
-    if ((player->rev & 0x80) && mbWalkNum != 0) {
-        func_80117814_w06((SpaceTriple *)D_8011C4C8_w06, (BranchPair *)D_8011C4DC_w06, D_8011BEC4_w06);
-    }
-}
-
-void func_8010A070_w06(void) {
-    GW_PLAYER *player = MBPlayerGet(-1);
-
-    if ((player->rev & 0x80) && mbWalkNum != 0) {
-        func_80117814_w06((SpaceTriple *)D_8011C510_w06, (BranchPair *)D_8011C524_w06, D_8011BEE8_w06);
-    }
-}
-
-void func_8010A0C8_w06(void) {
-    GW_PLAYER *player = MBPlayerGet(-1);
-
-    if ((player->rev & 0x80) && mbWalkNum != 0) {
-        func_80117814_w06((SpaceTriple *)D_8011C548_w06, (BranchPair *)D_8011C55C_w06, D_8011BF9C_w06);
-    }
-}
-
-void func_8010A120_w06(void) {
-    GW_PLAYER *player = MBPlayerGet(-1);
-
-    if ((player->rev & 0x80) && mbWalkNum != 0) {
-        func_80117814_w06((SpaceTriple *)D_8011C590_w06, (BranchPair *)D_8011C5A4_w06, D_8011C014_w06);
-    }
-}
-
-void func_8010A178_w06(void) {
-    GW_PLAYER *player = MBPlayerGet(-1);
-    s16 masu = MBMasuLinkMasuIdGet(player->blink, player->bidx);
-
-    if (masu == 0x5D) {
-        MBMoveNextMasuSet(-1, 3, 3);
-    }
-}
-
-void func_8010A1D8_w06(void) {
-    GW_PLAYER *player = MBPlayerGet(-1);
-    s16 masu = MBMasuLinkMasuIdGet(player->blink, player->bidx);
-
-    if (masu == 0x21) {
-        MBMoveNextMasuSet(-1, 2, 8);
-    }
-}
-
-void func_8010A238_w06(void) {
-    GW_PLAYER *player = MBPlayerGet(-1);
-    s16 masu = MBMasuLinkMasuIdGet(player->blink, player->bidx);
-
-    if (masu == 0x04) {
-        MBMoveNextMasuSet(-1, 2, 0xD);
-    }
-}
-
-void func_8010A298_w06(void) {
-    GW_PLAYER *player = MBPlayerGet(-1);
-    s16 masu = MBMasuLinkMasuIdGet(player->blink, player->bidx);
-
-    if (masu == 0x5A) {
-        MBMoveNextMasuSet(-1, 0x15, 0);
-    }
-}
-
-void func_8010A2F8_w06(void) {
-    GW_PLAYER *player = MBPlayerGet(-1);
-    s16 masu = MBMasuLinkMasuIdGet(player->blink, player->bidx);
-
-    if (masu == 0x62) {
-        MBMoveNextMasuSet(-1, 0x15, 0);
-    }
-}
-
-void func_8010A358_w06(void) {
-    GW_PLAYER *player = MBPlayerGet(-1);
-    s16 masu = MBMasuLinkMasuIdGet(player->blink, player->bidx);
-
-    if (masu == 0x1F) {
-        MBMoveNextMasuSet(-1, 0x15, 0);
-    }
-}
-
-void func_8010A3B8_w06(void) {
-    GW_PLAYER *player = MBPlayerGet(-1);
-    s16 masu = MBMasuLinkMasuIdGet(player->blink, player->bidx);
-
-    if (masu == 0x1A) {
-        MBMoveNextMasuSet(-1, 5, 5);
-    }
-}
-
-void func_8010A418_w06(void) {
-    GW_PLAYER *player = MBPlayerGet(-1);
-    s16 masu = MBMasuLinkMasuIdGet(player->blink, player->bidx);
-
-    if (masu == 7) {
-        MBMoveNextMasuSet(-1, 6, 0xE);
-    } else {
-        MBMoveNextMasuSet(-1, 2, 4);
-    }
-}
-
-void func_8010A488_w06(void) {
-    GW_PLAYER *player = MBPlayerGet(-1);
-    s16 masu = MBMasuLinkMasuIdGet(player->blink, player->bidx);
-
-    if (masu == 0x97) {
-        MBMoveNextMasuSet(-1, 0xB, 0xB);
-    } else {
-        MBMoveNextMasuSet(-1, 5, 5);
-    }
-}
-
-void func_8010A4F8_w06(void) {
-    GW_PLAYER *player = MBPlayerGet(-1);
-    s16 masu = MBMasuLinkMasuIdGet(player->blink, player->bidx);
-
-    if (masu == 0x74) {
-        MBMoveNextMasuSet(-1, 0xB, 4);
-    } else {
-        MBMoveNextMasuSet(-1, 0xD, 4);
-    }
-}
-
-void func_8010A560_w06(void) {
-    GW_PLAYER *player = MBPlayerGet(-1);
-    s16 masu = MBMasuLinkMasuIdGet(player->blink, player->bidx);
-
-    if (masu == 0x2A) {
-        MBMoveNextMasuSet(-1, 0xB, 0x14);
-    }
-}
-
-void func_8010A5C0_w06(void) {
-    GW_PLAYER *player = MBPlayerGet(-1);
-    s16 masu = MBMasuLinkMasuIdGet(player->blink, player->bidx);
-
-    if (masu == 0x3A) {
-        MBMoveNextMasuSet(-1, 4, 3);
-    }
-}
-
-void func_8010A620_w06(void) {
-    GW_PLAYER *player = MBPlayerGet(-1);
-    s16 masu = MBMasuLinkMasuIdGet(player->blink, player->bidx);
-
-    if (masu == 0x35) {
-        MBMoveNextMasuSet(-1, 0xD, 4);
-    }
-}
-
-void func_8010A680_w06(void) {
-    GW_PLAYER *player = MBPlayerGet(-1);
-    s16 masu = MBMasuLinkMasuIdGet(player->blink, player->bidx);
-
-    if (masu == 0x3D) {
-        MBMoveNextMasuSet(-1, 4, 3);
-    }
-}
-
-void func_8010A6E0_w06(void) {
-    GW_PLAYER *player = MBPlayerGet(-1);
-    s16 masu = MBMasuLinkMasuIdGet(player->blink, player->bidx);
-
-    if (masu == 0x4F) {
-        MBMoveNextMasuSet(-1, 0xF, 4);
-    }
-}
-
-void func_8010A740_w06(void) {
-    GW_PLAYER *player = MBPlayerGet(-1);
-    s16 masu = MBMasuLinkMasuIdGet(player->blink, player->bidx);
-
-    if (masu == 0x47) {
-        MBMoveNextMasuSet(-1, 3, 8);
-    }
-}
-
-void func_8010A7A0_w06(void) {
-    GW_PLAYER *player = MBPlayerGet(-1);
-    s16 masu = MBMasuLinkMasuIdGet(player->blink, player->bidx);
-
-    if (masu == 0x7B) {
-        MBMoveNextMasuSet(-1, 0xF, 4);
-    }
-}
-
-void func_8010A800_w06(void) {
-    GW_PLAYER *player = MBPlayerGet(-1);
-    s16 masu = MBMasuLinkMasuIdGet(player->blink, player->bidx);
-
-    if (masu == 0x45) {
-        MBMoveNextMasuSet(-1, 0x10, 8);
-    }
-}
-
-void func_8010A860_w06(void) {
-    Vec sp18;
-    GW_PLAYER *player;
-    Object *model1;
-    Object *model2;
-    SpaceData *masu;
-    f32 scale;
-    s32 playerIdx = GwSystem.current_player_index;
-
-    player = MBPlayerGet(-1);
-    MBPlayerMotionSet(-1, -1, 2);
-    MBVecForwardSet(&sp18);
-    HuPrcChildLink(HuPrcCurrentGet(),
-                   func_800ED128_shared_board(&player->player_obj->rot, &sp18, &player->player_obj->rot, 5));
-    HuPrcSleep(0x1E);
-    if (MBRand(2.0f) == 0) {
-        func_800DBEC0_shared_board(playerIdx);
-        model1 = MBModelFileCreate(0x13018B, -1, 1.0f, 0, 0);
-        func_8001C258_main(model1->omObj1->model[0], 0x180, 0);
-        Hu3DModelLayerSet(model1->omObj1->model[0], 0);
-        Hu3DModelRemakeStatic(model1->omObj1->model[0]);
-        MBModelTempAllocFree(model1);
-        HuVecCopy3F(&model1->coords, &player->player_obj->coords);
-        model2 = MBModelFileCreate(0x13018C, -1, 1.0f, 0, 0);
-        Hu3DModelLayerSet(model2->omObj1->model[0], 0);
-        func_8001C258_main(model2->omObj1->model[0], 0x80000, 0x80000);
-        Hu3DModelRemakeStatic(model2->omObj1->model[0]);
-        MBModelTempAllocFree(model2);
-        HuVecCopy3F(&model2->coords, &player->player_obj->coords);
-        HuAudFXPlay(0x1BD);
-        PlayerFXPlay(0x286, playerIdx);
-        MBPlayerVibrate(-1, 4);
-        scale = 1.0f;
-        player->stat |= 4;
-        while (player->player_obj->velocity.x >= -25.0f) {
-            player->player_obj->velocity.x -= 3.0f;
-            HuVecCopyXYZ(&player->player_obj->scale, scale, scale, scale);
-            scale -= 0.1f;
-            if (scale < 0.0f) {
-                scale = 0.0f;
-            }
-            HuPrcVSleep();
-        }
-        scale = 0.0f;
-        HuVecCopyXYZ(&player->player_obj->scale, scale, scale, scale);
-        HuPrcChildWatch();
-        WipeCreateOut(WIPE_TYPE_NORMAL, 0x10);
-        while (WipeStatGet() != 0) {
-            HuPrcVSleep();
-        }
-        MBModelKill(model2);
-        MBModelKill(model1);
-        HuVecCopy3F(&player->player_obj->coords, &MBMasuGet(0x8B)->coords);
-        player->player_obj->velocity.x = -4.0f;
-        MBVecForwardSet(&player->player_obj->rot);
-        HuPrcSleep(2);
-        WipeCreateIn(WIPE_TYPE_NORMAL, 0x10);
-        while (WipeStatGet() != 0) {
-            HuPrcVSleep();
-        }
-        HuAudFXPlay(0x1BC);
-        while (player->player_obj->velocity.x <= 15.0f) {
-            player->player_obj->velocity.x += 1.5f;
-            HuVecCopyXYZ(&player->player_obj->scale, scale, scale, scale);
-            scale += 0.08f;
-            if (scale > 1.0f) {
-                scale = 1.0f;
-            }
-            HuPrcVSleep();
-        }
-        HuVecCopyXYZ(&player->player_obj->scale, 1.0f, 1.0f, 1.0f);
-        player->stat &= ~4;
-        masu = MBMasuGet(0x8A);
-        MBVecDirGet(&player->player_obj->coords, &masu->coords, &player->player_obj->rot);
-        MBPlayerMotionSet(-1, 2, 0);
-        func_800EE688_shared_board(player->player_obj, 10.0f, -1.5f);
-        HuPrcChildLink(HuPrcCurrentGet(),
-                       MBPlayerPosMoveCreate(&player->player_obj->coords, &masu->coords, &player->player_obj->coords, 0xE));
-        HuPrcChildWatch();
-        MBPlayerMotionSet(-1, -1, 2);
-        MBVecForwardSet(&sp18);
-        HuPrcChildLink(HuPrcCurrentGet(),
-                       func_800ED128_shared_board(&player->player_obj->rot, &sp18, &player->player_obj->rot, 5));
-        HuPrcChildWatch();
-        MBDlgResultWinExec(0xE00);
-        MBMoveMasuSet(-1, 1, 7);
-        MBMoveBackMasuSet(-1, 1, 0);
-        func_800DB884_shared_board(playerIdx);
-        HuPrcSleep(0xA);
-        func_8010A070_w06();
-    } else {
-        s16 masuId = MBMasuLinkMasuIdGet(player->blink, player->bidx);
-
-        if (masuId == 0x7B) {
-            MBMoveNextMasuSet(-1, 0x12, 0);
-        } else {
-            MBMoveNextMasuSet(-1, 0x11, 1);
-        }
-    }
-}
-
-void func_8010AE18_w06(void) {
-    GW_PLAYER *player = MBPlayerGet(-1);
-    s16 masu = MBMasuLinkMasuIdGet(player->blink, player->bidx);
-
-    if (masu == 0x6B) {
-        MBMoveBackMasuSet(-1, 1, 9);
-    }
-}
-
-s32 func_8010AE78_w06(s32 arg0) {
-    s32 var_s2 = 0;
-    s16 sp18[MB_MAX_PLAYERS];
-    u8 sp20[MB_MAX_PLAYERS];
-    s32 i;
-    s32 j;
-
-    *(Unk4Bytes *)sp20 = *(Unk4Bytes *)D_8011E0E0_w06;
-
-    for (i = 0; i < MB_MAX_PLAYERS; i++) {
-        if (i == GwSystem.current_player_index) {
-            if (GwPlayer[i].stat & 1) {
-                var_s2 = 1;
-                sp18[GwPlayer[i].pad] = 0x400;
-            } else {
-                HuWinActivePlayerSet(mbDlgWinId, sp20[GwPlayer[i].pad]);
-                sp18[GwPlayer[i].pad] = -1;
-            }
-        } else {
-            sp18[GwPlayer[i].pad] = 0;
-        }
-    }
-
-    if (var_s2 != 0) {
-        func_8005B63C_main(mbDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
-        for (j = 0; var_s2 != 0; j++) {
-            if (--var_s2 == 0) {
-                sp18[GwPlayer[GwSystem.current_player_index].pad] = -0x8000;
-            }
-            if (j == 0) {
-                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], func_800EDC40_shared_board());
-            } else {
-                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], 0x10);
-            }
-        }
-    } else {
-        HuWinComKeySet(sp18[0], sp18[1], sp18[2], sp18[3]);
-    }
-
-    HuWinChoiceGet(mbDlgWinId, 0, 1);
-}
-
-void func_8010B088_w06(void) {
-    GW_SYSTEM *loc;
-    GW_PLAYER *player;
-    s32 flag;
-    s32 choice;
-    void *prc;
-    s16 sp18;
-    s16 masuId;
-
-    loc = &GwSystem;
-    player = MBPlayerGet(GwSystem.current_player_index);
-    flag = 1;
-
-    if (MBMasuLinkMasuIdGet(player->blink, player->bidx) != 0x88) {
-        if (MBMasuLinkMasuIdGet(player->blink, player->bidx) != 0x8D) {
-            if (MBItemFind(GwSystem.current_player_index, 1) != -1) {
-                func_800DBEC0_shared_board(GwSystem.current_player_index);
-                MBPlayerMotionSet(-1, -1, 2);
-                sp18 = MBMasuLinkMasuIdGet(player->clink, player->cidx);
-                switch (sp18) {
-                    case 0x83:
-                    case 0x89:
-                        func_800ED20C_shared_board(-1, 8, 0x88);
-                        break;
-                    default:
-                        func_800ED20C_shared_board(-1, 8, 0x8D);
-                        break;
-                }
-                HuPrcChildLink(HuPrcCurrentGet(), MBCameraZoomMotStart(1.6f));
-                HuPrcChildWatch();
-                MBPlayerVibrate(-1, 1);
-
-                while (1) {
-                    MBDlgWinCreate(0x38, 0x4103);
-                    choice = func_8010AE78_w06(0);
-                    MBDlgWinClose();
-                    MBDlgWinKill();
-
-                    switch (choice) {
-                        case 0:
-                            MBDlgWinExec(0x38, 0x4104);
-                            GwPlayer[loc->current_player_index].itemNo[MBItemFind(loc->current_player_index, 1)] = -1;
-                            MBItemRemoveEmpty(GwSystem.current_player_index);
-                            MBStatusItemIconSprReinit(-1);
-                            sp18 = MBMasuLinkMasuIdGet(player->clink, player->cidx);
-                            switch (sp18) {
-                                case 0x83:
-                                    func_801084B8_w06(0, 0);
-                                    break;
-                                case 0x89:
-                                    func_801084B8_w06(0, 1);
-                                    break;
-                                case 0x96:
-                                    func_801084B8_w06(1, 0);
-                                    break;
-                                default:
-                                    func_801084B8_w06(1, 1);
-                                    break;
-                            }
-                            flag = 0;
-                            prc = MBPlayerVibrateObjCreate(-1, 2, 5);
-                            HuPrcSleep(0x14);
-                            MBPlayerVibrateObjKill(prc);
-                            break;
-                        case 1:
-                            MBDlgWinExec(0x38, 0x4105);
-                            break;
-                        case 2:
-                            func_80106AB0_w06();
-                            continue;
-                        default:
-                            break;
-                    }
-                    break;
-                }
-
-                func_800DB884_shared_board(loc->current_player_index);
-                HuPrcChildLink(HuPrcCurrentGet(), MBCameraZoomMotStart(1.3f));
-                HuPrcChildWatch();
-            } else {
-                MBDlgWinExec(-1, 0x4106);
-            }
-        }
-    }
-
-    if (flag != 0) {
-        masuId = MBMasuLinkMasuIdGet(player->clink, player->cidx);
-        switch (masuId) {
-            case 0x83:
-                MBMoveNextMasuSet(-1, 1, 1);
-                player->rev |= 1;
-                break;
-            case 0x89:
-                MBMoveNextMasuSet(-1, 1, 5);
-                player->rev &= ~1;
-                break;
-            case 0x96:
-                MBMoveNextMasuSet(-1, 6, 0xE);
-                player->rev |= 1;
-                break;
-            default:
-                MBMoveNextMasuSet(-1, 6, 5);
-                player->rev &= ~1;
-                break;
-        }
-    }
-
-    omDelPrcObj(NULL);
-}
-
-void func_8010B4AC_w06(void) {
-}
-
-void func_8010B4B4_w06(void) {
-}
-
-void func_8010B4BC_w06(void) {
-}
-
-s32 func_8010B4C4_w06(s32 arg0, s32 arg1) {
-    s32 var_s2 = 0;
-    s16 sp18[MB_MAX_PLAYERS];
-    u8 sp20[MB_MAX_PLAYERS];
-    s32 i;
-    s32 j;
-
-    *(Unk4Bytes *)sp20 = *(Unk4Bytes *)D_8011E0E0_w06;
-
-    for (i = 0; i < MB_MAX_PLAYERS; i++) {
-        if (i == GwSystem.current_player_index) {
-            if (GwPlayer[i].stat & 1) {
-                switch (arg0) {
-                    case 0:
-                        var_s2 = func_800EF0D8_shared_board(0) + 1;
-                        break;
-                    case 1:
-                        var_s2 = func_800EF0D8_shared_board(1) + 1;
-                        break;
-                    case 2:
-                        var_s2 = arg1 + 1;
-                        break;
-                    default:
-                        var_s2 = MBComTreeExec((void *)arg0) + 1;
-                        break;
-                }
-                sp18[GwPlayer[i].pad] = 0x400;
-            } else {
-                HuWinActivePlayerSet(mbDlgWinId, sp20[GwPlayer[i].pad]);
-                sp18[GwPlayer[i].pad] = -1;
-            }
-        } else {
-            sp18[GwPlayer[i].pad] = 0;
-        }
-    }
-
-    if (var_s2 != 0) {
-        func_8005B63C_main(mbDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
-        for (j = 0; var_s2 != 0; j++) {
-            if (--var_s2 == 0) {
-                sp18[GwPlayer[GwSystem.current_player_index].pad] = -0x8000;
-            }
-            if (j == 0) {
-                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], func_800EDC40_shared_board());
-            } else {
-                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], 5);
-            }
-        }
-    } else {
-        HuWinComKeySet(sp18[0], sp18[1], sp18[2], sp18[3]);
-    }
-
-    return HuWinChoiceGet(mbDlgWinId, 0, 1);
-}
-
-void func_8010B748_w06(s16 arg0, s32 arg1, s16 arg2, s32 arg3) {
-    s16 sp10[2];
-    s16 winId;
-
-    HuWinMesMaxSizeGet(1, sp10, arg1);
-    winId = MBWinCreate(arg0, sp10, arg2);
-    mbDlgWinId = winId;
-    HuWinMesSet(winId, arg1, -1, -1);
-    HuWinExAnimIn(winId);
-    func_800EBF98_shared_board(winId, arg3);
-    HuWinExAnimOut(winId, 0);
-    HuWinKill(winId);
-}
-
-void func_8010B804_w06(void) {
-    while (1) {
-        MBStatusItemAttrSet(GwSystem.current_player_index, MBItemSelNoGet(), 0x8000);
-        HuPrcVSleep();
-    }
-}
-
-void func_8010B844_w06(void) {
-    GW_SYSTEM *loc;
-    s16 spaceIdx;
-    s16 choice;
-
-    spaceIdx = MBMasuCurGet();
-    loc = &GwSystem;
-    spaceIdx = func_80105C30_w06(spaceIdx);
-    if (spaceIdx == 1) {
-        func_800DBEC0_shared_board(loc->current_player_index);
-        MBPlayerMotionSet(-1, -1, 2);
-        func_800ED20C_shared_board(-1, 8, func_801059D0_w06());
-        HuPrcChildLink(HuPrcCurrentGet(), MBCameraZoomMotStart(1.6f));
-        HuPrcChildWatch();
-        HuAudFXPlay(0x159);
-
-        if (GwPlayer[loc->current_player_index].itemTurn != 0) {
-            MBDlgWinInsertCreate(0x16, 0x4805, GwPlayer[loc->current_player_index].chr + 0x1C00, 0, 0, 0, 0);
-            func_800EC9DC_shared_board();
-            MBDlgWinClose();
-            MBDlgWinKill();
-        }
-
-        if (GwPlayer[loc->current_player_index].star >= 99) {
-            MBDlgWinExec(0x16, 0x4804);
-        } else {
-            if (GwPlayer[loc->current_player_index].coin >= 20) {
-            purchaseMenu:
-                MBDlgWinInsertCreate(0x16, 0x4800, GwPlayer[loc->current_player_index].chr + 0x1C00, 0, 0, 0, 0);
-                choice = func_8010B4C4_w06(2, 0);
-                MBDlgWinClose();
-                MBDlgWinKill();
-
-                switch (choice) {
-                    case 0:
-                        MBCoinChangeCreate(loc->current_player_index, -20);
-                        MBCoinTakeCreate(loc->current_player_index, -20);
-                        HuPrcSleep(30);
-                        MBDlgWinExec(0x16, 0x4802);
-                        if (D_800A12D0_main != 0) {
-                            HuAudSeqStop();
-                            func_800039A4_main(D_800C9930_main, 60);
-                            D_800C9930_main = -1;
-                        } else {
-                            HuAudSeqFadeOut(0x5A);
-                        }
-                        func_80106A3C_w06(D_8011E270_w06);
-                        HuPrcSleep(30);
-                        func_800EDA58_shared_board();
-                        func_800FF7F0_shared_board(2);
-                        func_8010B4B4_w06();
-                        return;
-                    case 1:
-                        if (D_800A12D0_main != 0) {
-                            func_800039A4_main(D_800C9930_main, 60);
-                            msmMusPlayDefault(D_800CE198_main);
-                            func_8004A670_main(0);
-                            func_8004A72C_main(0x5A);
-                            D_800C9930_main = -1;
-                        }
-                        MBDlgWinExec(0x16, 0x4803);
-                        func_800DB884_shared_board(loc->current_player_index);
-                        HuPrcChildLink(HuPrcCurrentGet(), MBCameraZoomMotStart(1.3f));
-                        HuPrcChildWatch();
-                        func_8010B4B4_w06();
-                        return;
-                    case 2:
-                        func_80106AB0_w06();
-                        goto purchaseMenu;
-                    default:
-                        func_8010B4B4_w06();
-                        return;
-                }
-            } else {
-                MBDlgWinExec(0x16, 0x4801);
-            }
-        }
-
-        if (D_800A12D0_main != 0) {
-            func_800039A4_main(D_800C9930_main, 60);
-            msmMusPlayDefault(D_800CE198_main);
-            func_8004A670_main(0);
-            func_8004A72C_main(0x5A);
-            D_800C9930_main = -1;
-        }
-
-        func_800DB884_shared_board(loc->current_player_index);
-        HuPrcChildLink(HuPrcCurrentGet(), MBCameraZoomMotStart(1.3f));
-        HuPrcChildWatch();
-    }
-
-    func_8010B4B4_w06();
-}
-
-void func_8010BBF0_w06(void) {
-    Object *model;
-    Object *effectModel;
-    SpaceData *spaceA;
-    SpaceData *spaceB;
-    GW_SYSTEM *sys;
-    Vec *vec;
-    s16 mgId;
-    s32 choice;
-    s32 flag;
-    f32 angle;
-    f32 speed;
-    f32 scaleK;
-    f32 scaleBase;
-    f32 scaleStep;
-    f32 scaleLimit;
-    f32 sp38;
-    char sp20[0x10];
-    char sp30[0x10];
-    Vec sp40;
-
-    flag = 0;
-    mgId = MBMasuCurGet();
-    sys = &GwSystem;
-    spaceA = NULL;
-    spaceB = NULL;
-    if (func_800DCD9C_shared_board(sys->current_player_index) <= 0) {
-        MBPlayerVibrate(-1, 3);
-    }
-    MBPlayerMotionSet(-1, -1, 2);
-
-    switch (mgId) {
-        case 0x59:
-            func_800ED20C_shared_board(-1, 8, 0x8F);
-            spaceA = MBMasuGet(0x8F);
-            spaceB = MBMasuGet(0x59);
-            break;
-        case 0x22:
-            func_800ED20C_shared_board(-1, 8, 0x8E);
-            spaceA = MBMasuGet(0x8E);
-            spaceB = MBMasuGet(0x22);
-            break;
-    }
-
-    HuPrcSleep(8);
-    if (func_800DCD9C_shared_board(sys->current_player_index) > 0) {
-        func_800DBEC0_shared_board(sys->current_player_index);
-    }
-    HuAudFXPlay(0x114);
-
-    model = MBModelCreate(0x32, NULL);
-    MBModelTempAllocFree(model);
-    vec = &sp40;
-    HuVecSubtract(vec, &spaceB->coords, &spaceA->coords);
-    MBVecNormalize(vec);
-    HuVecCopy3F(&model->rot, vec);
-    model->scale.y = 0.0f;
-    HuVecCopy3F(&model->coords, &spaceA->coords);
-    MBMotionSet(model, -1, 1);
-    func_800D9A40_shared_board(model);
-
-    effectModel = MBModelCreate(0x35, D_8011C760_w06);
-    MBModelTempAllocFree(effectModel);
-    HuVecCopy3F(&effectModel->rot, vec);
-    HuVecCopy3F(&effectModel->coords, &spaceA->coords);
-    effectModel->scale.y = effectModel->scale.x = effectModel->scale.z = 1.2f;
-    MBModelDispOff(effectModel);
-
-    speed = 1.0f / sindf(50.0f);
-    angle = 0.0f;
-    scaleK = 0.2f;
-    scaleBase = 0.8f;
-    scaleStep = 11.25f;
-    scaleLimit = 90.0f;
-    for (; angle < scaleLimit; angle += scaleStep) {
-        model->scale.y = sindf(angle) * speed;
-        sp38 = sindf(angle) * speed;
-        model->scale.x = sp38 * scaleK + scaleBase;
-        sp38 = sindf(angle) * speed;
-        model->scale.z = sp38 * scaleK + scaleBase;
-        HuPrcVSleep();
-    }
-
-    if (50.0f < angle) {
-        scaleK = 0.2f;
-        scaleBase = 0.8f;
-        scaleStep = 11.25f;
-        do {
-            model->scale.y = sindf(angle) * speed;
-            sp38 = sindf(angle) * speed;
-            model->scale.x = sp38 * scaleK + scaleBase;
-            sp38 = sindf(angle) * speed;
-            model->scale.z = sp38 * scaleK + scaleBase;
-            HuPrcVSleep();
-            angle -= scaleStep;
-        } while (50.0f < angle);
-    }
-
-    model->scale.z = model->scale.x = model->scale.y = 1.0f;
-    func_800D9A40_shared_board(effectModel);
-
-    if (MBItemFind(-1, 0xF) != -1) {
-    dialogLoop:
-        MBDlgWinInsertCreate(-1, 0x3A1D, 0, 0, 0, 0, 0);
-        choice = func_8010B4C4_w06((s32)D_8011C748_w06, 0);
-        MBDlgWinClose();
-        MBDlgWinKill();
-        switch (choice) {
-            case 0:
-                flag = 1;
-                break;
-            case 2:
-                func_80106AB0_w06();
-                goto dialogLoop;
-        }
-    }
-
-    MBMotionSet(model, -1, 0);
-    Hu3DMotionSpeedSet(model->omObj1->model[0], 1.2f);
-    while (MBMotionCheck(model) == 0) {
-        HuPrcVSleep();
-    }
-    HuAudFXPlay(0x259);
-    MBMotionSet(effectModel, 0, 0);
-    while (MBMotionCheck(effectModel) == 0) {
-        HuPrcVSleep();
-    }
-    MBMotionSet(effectModel, -1, 2);
-
-    if (flag != 0) {
-        sprintf(sp20, D_8011E14C_w06, GwSystem.bank_coins);
-        if (GwSystem.bank_coins != 0) {
-            MBDlgWinInsertCreate(2, 0x3A1E, (s32)sp20, 0, 0, 0, 0);
-        } else {
-            MBDlgWinInsertCreate(2, 0x3A1F, 0, 0, 0, 0, 0);
-        }
-        func_800EC9DC_shared_board();
-        MBDlgWinClose();
-        MBDlgWinKill();
-
-        if (GwSystem.bank_coins != 0) {
-            mbItemBtnF = 0;
-            func_80114338_w06();
-            mbItemBtnF = 1;
-        } else {
-            MBDlgWinInsertCreate(2, 0x3A21, 0, 0, 0, 0, 0);
-            func_800EC9DC_shared_board();
-            MBDlgWinClose();
-            MBDlgWinKill();
-            GwPlayer[sys->current_player_index].itemNo[MBItemFind(-1, 0xF)] = -1;
-            MBItemRemoveEmpty(sys->current_player_index);
-            MBStatusItemIconSprReinit(sys->current_player_index);
-        }
-
-        if (func_800DCD9C_shared_board(sys->current_player_index) > 0) {
-            func_800DB884_shared_board(sys->current_player_index);
-        }
-    } else {
-        if (func_800DCD9C_shared_board(sys->current_player_index) > 0) {
-            if ((GwPlayer[sys->current_player_index].coin != 0) && (GwPlayer[sys->current_player_index].coin < 5)) {
-                sprintf(sp20, D_8011E14C_w06, GwPlayer[sys->current_player_index].coin);
-                sprintf(sp30, D_8011E14C_w06, GwSystem.bank_coins + GwPlayer[sys->current_player_index].coin);
-                MBDlgWinInsertCreate(2, 0x1201, (s32)sp20, (s32)sp30, 0, 0, 0);
-                MBDlgWinClose();
-                GwSystem.bank_coins += GwPlayer[sys->current_player_index].coin;
-                func_80107FC0_w06();
-                MBCoinChangeCreate(sys->current_player_index, -GwPlayer[sys->current_player_index].coin);
-                MBCoinTakeCreate(sys->current_player_index, -GwPlayer[sys->current_player_index].coin);
-                HuPrcSleep(30);
-                func_800EC6A8_shared_board();
-            } else if (GwPlayer[sys->current_player_index].coin == 0) {
-                sprintf(sp20, D_8011E14C_w06, GwSystem.bank_coins);
-                MBDlgWinInsertCreate(2, 0x1202, (s32)sp20, 0, 0, 0, 0);
-            } else {
-                sprintf(sp20, D_8011E14C_w06, GwSystem.bank_coins + 5);
-                MBDlgWinInsertCreate(2, 0x1200, (s32)sp20, 0, 0, 0, 0);
-                MBDlgWinClose();
-                GwSystem.bank_coins += 5;
-                func_80107FC0_w06();
-                MBCoinChangeCreate(sys->current_player_index, -5);
-                MBCoinTakeCreate(sys->current_player_index, -5);
-                HuPrcSleep(30);
-                func_800EC6A8_shared_board();
-            }
-            func_800EC9DC_shared_board();
-            MBDlgWinClose();
-            MBDlgWinKill();
-            func_800DB884_shared_board(sys->current_player_index);
-            HuPrcSleep(10);
-        } else {
-            if (GwSystem.bank_coins != 0) {
-                sprintf(sp20, D_8011E14C_w06, GwSystem.bank_coins);
-                MBDlgWinInsertCreate(2, 0x1203, (s32)sp20, 0, 0, 0, 0);
-                func_800EC9DC_shared_board();
-                MBDlgWinClose();
-                MBCoinChangeCreate(sys->current_player_index, GwSystem.bank_coins);
-                MBCoinTakeCreate(sys->current_player_index, GwSystem.bank_coins);
-                GwSystem.bank_coins = 0;
-                func_80107FC0_w06();
-                MBVecForwardSet(&MBPlayerGet(-1)->player_obj->rot);
-                MBPlayerMotionSet(-1, 5, 0);
-                PlayerFXPlay(0x274, sys->current_player_index);
-                HuPrcSleep(30);
-                MBPlayerMotionSet(-1, -1, 2);
-                func_800EC6A8_shared_board();
-                func_800EC9DC_shared_board();
-                MBDlgWinClose();
-                MBDlgWinKill();
-            } else {
-                MBDlgWinExec(2, 0x1204);
-            }
-        }
-    }
-
-    HuAudFXPlay(0x115);
-    MBMotionSet(model, -1, 4);
-    Hu3DMotionSpeedSet(model->omObj1->model[0], 1.2f);
-    Hu3DMotionTimeSet(
-        model->omObj1->model[0], D_800CCF58_main[Hu3DData[model->omObj1->model[0]].motId].unk02);
-    while (func_800D9E80_shared_board(model) == 0) {
-        HuPrcVSleep();
-    }
-    MBModelDispOff(effectModel);
-
-    speed = 1.0f / sindf(50.0f);
-    angle = 50.0f;
-    scaleK = 0.2f;
-    scaleBase = 0.8f;
-    scaleStep = 11.25f;
-    scaleLimit = 90.0f;
-    for (; angle < scaleLimit; angle += scaleStep) {
-        model->scale.y = sindf(angle) * speed;
-        sp38 = sindf(angle) * speed;
-        model->scale.x = sp38 * scaleK + scaleBase;
-        sp38 = sindf(angle) * speed;
-        model->scale.z = sp38 * scaleK + scaleBase;
-        HuPrcVSleep();
-    }
-
-    angle = 90.0f;
-    scaleK = 0.2f;
-    scaleBase = 0.8f;
-    scaleStep = 11.25f;
-    scaleLimit = 0.0f;
-    for (; scaleLimit < angle; angle -= scaleStep) {
-        model->scale.y = sindf(angle) * speed;
-        sp38 = sindf(angle) * speed;
-        model->scale.x = sp38 * scaleK + scaleBase;
-        sp38 = sindf(angle) * speed;
-        model->scale.z = sp38 * scaleK + scaleBase;
-        HuPrcVSleep();
-    }
-
-    model->scale.y = 0;
-    model->scale.x = 0;
-    model->scale.z = 0;
-    MBModelKill(model);
-    MBModelKill(effectModel);
-    func_8010B4AC_w06();
-}
-
-s32 func_8010C724_w06(s32 arg0) {
-    s32 i;
-
-    for (i = 0; i < 7; i++) {
-        if (D_8011E344_w06[i] != 0) {
-            if (D_8011C790_w06[D_8011E33C_w06][D_8011E340_w06][i] == arg0) {
-                return i;
-            }
-        }
-    }
-    return -1;
-}
-
-s32 func_8010C7AC_w06(void) {
-    s32 i;
-
-    for (i = 0; i < 7; i++) {
-        if (D_8011C790_w06[D_8011E33C_w06][D_8011E340_w06][i] == -1) {
-            break;
-        }
-    }
-    return i;
-}
-
-void func_8010C814_w06(void) {
-    s32 grp = (s32)HuPrcCurrentGet()->user_data;
-    f32 angle;
-    f32 scaleX;
-
-    MBPlayerGet(GwSystem.current_player_index);
-    MBPlayerVibrate(-1, 2);
-    HuAudFXPlay(0x15A);
-
-    for (angle = 0.0f; angle < 180.0f; angle += 20.0f) {
-        scaleX = sindf(angle) * 1.5f + 1.0f;
-        HuSprScaleSet(grp, 0, scaleX, 1.0f - sindf(angle) * 0.5f);
-        HuPrcVSleep();
-    }
-
-    for (; angle < 360.0f; angle += 20.0f) {
-        scaleX = sindf(angle) * 0.5f + 1.0f;
-        HuSprScaleSet(grp, 0, scaleX, 1.0f - sindf(angle) * 0.25f);
-        HuPrcVSleep();
-    }
-
-    HuSprScaleSet(grp, 0, 1.0f, 1.0f);
-    omDelPrcObj(NULL);
-}
-
-void func_8010C9EC_w06(void) {
-    GW_SYSTEM *system = &GwSystem;
-    SpaceData *spaceA;
-    SpaceData *spaceB;
-    Object *model;
-    Object *playerObj;
-    Unk3 *helpWin;
-    void *data;
-    Process *prc;
-    u8 enabled[9];
-    u8 itemFlags[6][4];
-    Vec sp48;
-    s32 dlgWin;
-    s16 shopIdx;
-    s32 flag2;
-    s32 id;
-    s32 slot;
-    s32 row;
-    s32 row2;
-    s32 sel;
-    s32 choice;
-    s32 count;
-    s32 item;
-    s8 *itemPtr;
-    s8(*shopTable)[5][7];
-    s8(*shopItems)[7];
-    s32 timer;
-    s32 randVal;
-    s32 i;
-    s32 j;
-    s32 grp;
-    s32 grp2;
-    s16 spriteId;
-    s32 spriteId2;
-    s16 sprY;
-    s16 masuId;
-    s16 camMasu;
-    GW_PLAYER *player;
-    Object *effectModel;
-    f32 angle;
-    f32 speed;
-    f32 scaleK;
-    f32 scaleBase;
-    f32 scaleStep;
-    f32 scaleLimit;
-    f32 sp38;
-    f32 scale;
-    player = MBPlayerGet(-1);
-    spaceA = NULL;
-    spaceB = NULL;
-    model = NULL;
-    effectModel = NULL;
-    MBPlayerMotionSet(-1, -1, 2);
-
-    masuId = MBMasuLinkMasuIdGet(player->clink, player->cidx);
-    switch (masuId) {
-        case 0x6C:
-            camMasu = 0x90;
-            spaceA = MBMasuGet(0x90);
-            spaceB = MBMasuGet(0x6C);
-            D_8011C8C8_w06 = 0;
-            break;
-        case 0x79:
-            camMasu = 0x8C;
-            spaceA = MBMasuGet(0x8C);
-            spaceB = MBMasuGet(0x79);
-            D_8011C8C8_w06 = 1;
-            break;
-        default:
-            camMasu = -1;
-            break;
-    }
-
-    if (camMasu != -1) {
-        func_800ED20C_shared_board(-1, 8, camMasu);
-        HuPrcSleep(8);
-    }
-    func_800DBEC0_shared_board(system->current_player_index);
-
-    switch (GwSystem.forceShopHost) {
-        case 0:
-            shopIdx = !MBRandCheck100(0x42);
-            break;
-        case 1:
-            shopIdx = 0;
-            break;
-        default:
-            shopIdx = 1;
-            break;
-    }
-
-    dlgWin = 3;
-    if (shopIdx != 0) {
-        dlgWin = 5;
-    }
-
-    if (camMasu != -1) {
-        flag2 = (shopIdx << 1) >> 1;
-        id = (-shopIdx & 0x31) | 0x30;
-        HuAudFXPlay(0x114);
-        model = MBModelCreate(id, NULL);
-        MBModelTempAllocFree(model);
-        HuVecSubtract(&sp48, &spaceB->coords, &spaceA->coords);
-        MBVecNormalize(&sp48);
-        HuVecCopy3F(&model->rot, &sp48);
-        model->scale.y = 0.0f;
-        MBMotionSet(model, -1, 1);
-        func_800D9A40_shared_board(model);
-        HuVecCopy3F(&model->coords, &spaceA->coords);
-
-        if (flag2 != 0) {
-            effectModel = MBModelCreate(0x39, D_8011C8C0_w06);
-        } else {
-            effectModel = MBModelCreate(0x1B, D_8011C8B8_w06);
-        }
-        MBModelTempAllocFree(effectModel);
-        HuVecCopy3F(&effectModel->rot, &sp48);
-        HuVecCopy3F(&effectModel->coords, &spaceA->coords);
-        effectModel->scale.y = effectModel->scale.x = effectModel->scale.z = 1.2f;
-        MBModelDispOff(effectModel);
-
-        speed = 1.0f / sindf(50.0f);
-        angle = 0.0f;
-        scaleK = 0.2f;
-        scaleBase = 0.8f;
-        scaleStep = 11.25f;
-        scaleLimit = 90.0f;
-        for (; angle < scaleLimit; angle += scaleStep) {
-            model->scale.y = sindf(angle) * speed;
-            sp38 = sindf(angle) * speed;
-            model->scale.x = sp38 * scaleK + scaleBase;
-            sp38 = sindf(angle) * speed;
-            model->scale.z = sp38 * scaleK + scaleBase;
-            HuPrcVSleep();
-        }
-
-        for (; 50.0f < angle; angle -= scaleStep) {
-            scaleK = 0.2f;
-            scaleBase = 0.8f;
-            scaleStep = 11.25f;
-            model->scale.y = sindf(angle) * speed;
-            sp38 = sindf(angle) * speed;
-            model->scale.x = sp38 * scaleK + scaleBase;
-            sp38 = sindf(angle) * speed;
-            model->scale.z = sp38 * scaleK + scaleBase;
-            HuPrcVSleep();
-        }
-
-        model->scale.y = model->scale.x = model->scale.z = 1.0f;
-        func_800D9A40_shared_board(effectModel);
-        MBMotionSet(model, -1, 0);
-        Hu3DMotionSpeedSet(model->omObj1->model[0], 1.2f);
-        while (MBMotionCheck(model) == 0) {
-            HuPrcVSleep();
-        }
-        MBMotionSet(effectModel, 0, 0);
-
-        if (shopIdx != 0) {
-            HuAudFXPlay(0x2A0);
-        } else {
-            if (GwPlayer[system->current_player_index].coin < 5 || MBItemFindEmpty(system->current_player_index) == -1) {
-                HuAudFXPlay(0x29A);
-            } else if (system->current_turn != system->total_turns) {
-                HuAudFXPlay(0x298);
-            } else {
-                HuAudFXPlay(0x29A);
-            }
-        }
-
-        while (MBMotionCheck(effectModel) == 0) {
-            HuPrcVSleep();
-        }
-        MBMotionSet(effectModel, -1, 2);
-    }
-
-    if (system->current_turn == system->total_turns) {
-        MBDlgWinExec(dlgWin, D_8011C8A8_w06[shopIdx]);
-        goto end;
-    }
-    if (MBItemFindEmpty(system->current_player_index) == -1) {
-        MBDlgWinExec(dlgWin, D_8011C8A0_w06[shopIdx]);
-        goto end;
-    }
-    if (GwPlayer[system->current_player_index].coin < 5) {
-        MBDlgWinExec(dlgWin, D_8011C898_w06[shopIdx]);
-        goto end;
-    }
-
-itemSelect:
-    MBDlgWinCreate(dlgWin, D_8011C890_w06[shopIdx]);
-    choice = func_80106F58_w06();
-    MBDlgWinClose();
-    MBDlgWinKill();
-
-    switch (choice) {
-        case 0:
-
-        restart:
-            i = BoardGetTurnTier(-1);
-            row = D_8011C778_w06[shopIdx][i][BoardPlayerRankCalc(system->current_player_index)];
-            count = 0;
-            for (j = 0; j < 7; j++) {
-                if (D_8011C790_w06[shopIdx][row][j] == -1) {
-                    continue;
-                }
-                if (D_8011C790_w06[shopIdx][row][j] >= 6) {
-                    break;
-                }
-                enabled[j] = 1;
-                count++;
-            }
-            i = 0;
-            for (; j < 7; j++, i++) {
-                enabled[j] = 1;
-                itemFlags[i][0] = 0;
-                if (D_8011C790_w06[shopIdx][row][j] == -1) {
-                    continue;
-                }
-                if (D_80100F94_shared_board[D_8011C790_w06[shopIdx][row][j]] >
-                    GwPlayer[system->current_player_index].coin) {
-                    enabled[j] = 0;
-                    itemFlags[i][0] = 1;
-                }
-                itemFlags[i][1] = 0;
-                count++;
-            }
-            for (; j < 9; j++) {
-                enabled[j] = 1;
-            }
-
-            MBDlgWinInsertCreate(dlgWin, D_8011C868_w06[row][slot = shopIdx], (s32)itemFlags[0],
-                                 (s32)itemFlags[1], (s32)itemFlags[2], (s32)itemFlags[3], (s32)itemFlags[4]);
-            func_800ECAA8_shared_board(0);
-            D_8011E33C_w06 = slot;
-            D_8011E340_w06 = row;
-            D_8011E344_w06 = enabled;
-            sel = func_80106CC4_w06(enabled);
-            MBDlgWinClose();
-            MBDlgWinKill();
-
-            if (sel == count) {
-                mbItemBtnF = 0;
-                MBItemSelNoClear();
-                MBItemDescExec(system->current_player_index);
-                mbItemBtnF = 1;
-                goto restart;
-            }
-            if (sel == count + 1 || sel == -1) {
-                goto itemSelect;
-            }
-
-            playerObj = player->player_obj;
-            i = shopIdx;
-            shopTable = D_8011C790_w06;
-            shopItems = shopTable[i];
-            itemPtr = (s8 *)(row * 7);
-            itemPtr += (s32)shopItems;
-            itemPtr += sel;
-            MBCoinChangeCreate(system->current_player_index, -D_80100F94_shared_board[*itemPtr]);
-            MBCoinTakeCreate(system->current_player_index, -D_80100F94_shared_board[*itemPtr]);
-            HuPrcSleep(30);
-
-            if (*itemPtr == 0x13) {
-                item = i + 0x13;
-            } else {
-                GwPlayer[system->current_player_index].itemNo[MBItemFindEmpty(system->current_player_index)] =
-                    D_8011C790_w06[shopIdx][row][sel];
-                item = D_8011C790_w06[shopIdx][row][sel];
-            }
-
-            grp = HuSprGrpCreate(1, 5);
-            i = 0;
-            data = DataRead(D_8010197C_shared_board[item]);
-            spriteId = HuSprAnimRead(data);
-            DataClose(data);
-            HuSprGrpMemberSet(grp, 0, spriteId, 0);
-            HuSprPriSet(grp, 0, 0xA);
-            HuSprAnimModeSet(grp, 0, HUSPR_ANIM_MODE_STOP);
-            HuSprAttrSet(grp, 0, 0x180C);
-            HuSprPosSet(grp, 0, 0xA0, 0x5A);
-            HuSprTPLvlSet(grp, 0, 0);
-            MBVecForwardSet(&sp48);
-            func_800ED128_shared_board(&player->player_obj->rot, &sp48, &player->player_obj->rot, 0xA);
-            HuAudFXPlay(0x19);
-            for (; i < 10; i++) {
-                HuSprTPLvlSet(grp, 0, i * 25);
-                HuPrcVSleep();
-            }
-            HuSprTPLvlSet(grp, 0, 0x100);
-
-            if (D_8011C790_w06[shopIdx][row][sel] == 0x13) {
-                while (MBItemFindEmpty(system->current_player_index) != -1) {
-                    row2 = D_8011C7D8_w06[shopIdx][BoardGetTurnTier(-1)]
-                                                [BoardPlayerRankCalc(system->current_player_index)];
-                    randVal = MBRand(100.0f);
-                    for (i = 0; i < 10; i++) {
-                        if (randVal < D_8011C7F0_w06[shopIdx][row2][i]) {
-                            break;
-                        }
-                    }
-                    item = D_8011C854_w06[shopIdx][i];
-
-                    if (camMasu != -1) {
-                        helpWin = func_800E210C_shared_board(0x15, 0xA0, 1);
-                    } else {
-                        playerObj->flags |= 0x10;
-                        helpWin = func_800E210C_shared_board(0x15, 0xA0, 0);
-                    }
-                    timer = 30;
-
-                    if ((*(u16 *)((u8 *)D_800C9520_main + (GwPlayer[system->current_player_index].pad << 1)) & 0x8000) == 0) {
-                        row = (s32)D_800C9520_main;
-                        while (1) {
-                            if (MBPlayerComCheck(-1) != 0) {
-                                timer--;
-                                if (timer == -1) {
-                                    break;
-                                }
-                            }
-                            HuPrcVSleep();
-                            if (((u16 *)row)[GwPlayer[system->current_player_index].pad] & 0x8000) {
-                                break;
-                            }
-                        }
-                    }
-                    MBHelpWinKill(helpWin);
-
-                    MBPlayerMotionSet(system->current_player_index, 2, 0);
-                    func_800EE688_shared_board(playerObj, 2.0f, -0.3f);
-                    HuPrcSleep(5);
-                    prc = omAddPrcObj(func_8010C814_w06, 0x4002, 0, 0);
-                    prc->user_data = (void *)grp;
-                    func_800EE6C0_shared_board(playerObj);
-                    MBPlayerMotionSet(-1, -1, 2);
-
-                    grp2 = HuSprGrpCreate(1, 5);
-                    i = 0;
-                    data = DataRead(D_8010197C_shared_board[item]);
-                    spriteId2 = HuSprAnimRead(data);
-                    DataClose(data);
-                    HuSprGrpMemberSet(grp2, 0, spriteId2, 0);
-                    HuSprPriSet(grp2, 0, 0xB);
-                    HuSprAnimModeSet(grp2, 0, HUSPR_ANIM_MODE_STOP);
-                    HuSprAttrSet(grp2, 0, 0x1000);
-                    HuSprPosSet(grp2, 0, 0xA0, 0x5A);
-                    HuSprTPLvlSet(grp2, 0, 0);
-                    MBVecForwardSet(&sp48);
-                    func_800ED128_shared_board(&player->player_obj->rot, &sp48, &player->player_obj->rot, 0xA);
-
-                    sprY = 0x5A;
-                    scale = 0.0f;
-                    do {
-                        HuSprPosSet(grp2, 0, 0xA0, sprY);
-                        HuSprTPLvlSet(grp2, 0, i * 25);
-                        HuSprScaleSet(grp2, 0, scale, scale);
-                        i++;
-                        HuPrcVSleep();
-                        sprY -= 3;
-                        scale += 0.1f;
-                    } while (i < 10);
-                    HuSprScaleSet(grp2, 0, 1.0f, 1.0f);
-                    HuSprTPLvlSet(grp2, 0, 0x100);
-                    HuPrcSleep(10);
-                    GwPlayer[system->current_player_index].itemNo[MBItemFindEmpty(system->current_player_index)] = item;
-                    HuSprGrpKill(grp2);
-                    HuSprAnimKill(spriteId2);
-                }
-                if (camMasu == -1) {
-                    playerObj->flags &= ~0x10;
-                }
-            }
-
-            HuPrcSleep(5);
-            MBPlayerMotionSet(-1, 5, 0);
-            HuPrcSleep(5);
-            PlayerFXPlay(0x274, system->current_player_index);
-            HuPrcSleep(20);
-            HuPrcVSleep();
-            func_800F2388_shared_board(-1, -1, 0, 5, 2);
-            HuPrcSleep(10);
-            HuSprGrpKill(grp);
-            HuSprAnimKill(spriteId);
-            break;
-        case 1:
-            MBDlgWinExec(dlgWin, D_8011C8B0_w06[shopIdx]);
-            break;
-        case 2:
-            if (camMasu == -1) {
-                func_80106B38_w06();
-                D_800CB99C_main = 1;
-                omAllPause();
-            } else {
-                func_80106AB0_w06();
-            }
-            goto itemSelect;
-    }
-
-end:
-    if (camMasu != -1) {
-        HuAudFXPlay(0x115);
-        MBMotionSet(model, -1, 4);
-        Hu3DMotionSpeedSet(model->omObj1->model[0], 1.2f);
-        Hu3DMotionTimeSet(
-            model->omObj1->model[0], D_800CCF58_main[Hu3DData[model->omObj1->model[0]].motId].unk02);
-        while (func_800D9E80_shared_board(model) == 0) {
-            HuPrcVSleep();
-        }
-        MBModelDispOff(effectModel);
-
-        speed = 1.0f / sindf(50.0f);
-        angle = 50.0f;
-        scaleK = 0.2f;
-        scaleBase = 0.8f;
-        scaleStep = 11.25f;
-        scaleLimit = 90.0f;
-        for (; angle < scaleLimit; angle += scaleStep) {
-            model->scale.y = sindf(angle) * speed;
-            sp38 = sindf(angle) * speed;
-            model->scale.x = sp38 * scaleK + scaleBase;
-            sp38 = sindf(angle) * speed;
-            model->scale.z = sp38 * scaleK + scaleBase;
-            HuPrcVSleep();
-        }
-
-        angle = 90.0f;
-        scaleK = 0.2f;
-        scaleBase = 0.8f;
-        scaleStep = 11.25f;
-        scaleLimit = 0.0f;
-        for (; scaleLimit < angle; angle -= scaleStep) {
-            model->scale.y = sindf(angle) * speed;
-            sp38 = sindf(angle) * speed;
-            model->scale.x = sp38 * scaleK + scaleBase;
-            sp38 = sindf(angle) * speed;
-            model->scale.z = sp38 * scaleK + scaleBase;
-            HuPrcVSleep();
-        }
-
-        model->scale.y = 0;
-        model->scale.x = 0;
-        model->scale.z = 0;
-        MBModelKill(model);
-        MBModelKill(effectModel);
-    }
-    func_800DB884_shared_board(system->current_player_index);
-    HuPrcSleep(10);
-}
-
-void func_8010DCA4_w06(Object *obj) {
-    s32 i;
-
-    MBModelDispOn(obj);
-    for (i = 0; i < 0x100; i += 0xC) {
-        func_8001F9E4_main(obj->omObj1->model[0], i);
-        func_8001F9E4_main(obj->omObj2->model[0], i);
-        HuPrcVSleep();
-    }
-    func_8001F9E4_main(obj->omObj1->model[0], 0xFF);
-    func_8001F9E4_main(obj->omObj2->model[0], 0xFF);
-}
-
-void func_8010DD44_w06(Object *obj) {
-    s32 i;
-
-    for (i = 0xFF; i >= 0; i -= 0xC) {
-        func_8001F9E4_main(obj->omObj1->model[0], i);
-        func_8001F9E4_main(obj->omObj2->model[0], i);
-        HuPrcVSleep();
-    }
-    func_8001F9E4_main(obj->omObj1->model[0], 0);
-    func_8001F9E4_main(obj->omObj2->model[0], 0);
-    MBModelDispOff(obj);
-}
-
-s32 func_8010DDE4_w06(s32 playerIndex) {
-    s32 hasRareItem = 0;
-    s16 grp;
-    void *data;
-    s16 spriteId;
-    s32 i;
-    s32 duration;
-    Process *process;
-
-    grp = HuSprGrpCreate(1, 5);
-    data = DataRead(0x13020E);
-    spriteId = HuSprAnimRead(data);
-    DataClose(data);
-    HuSprGrpMemberSet(grp, 0, spriteId, 0);
-    HuSprPriSet(grp, 0, 0xA);
-    HuSprAnimModeSet(grp, 0, HUSPR_ANIM_MODE_STOP);
-    HuSprAttrSet(grp, 0, 0x1000);
-    HuSprPosSet(grp, 0, D_8011C8DC_w06[playerIndex].x,
-                        D_8011C8DC_w06[playerIndex].y);
-    HuSprTPLvlSet(grp, 0, 0);
-    HuAudFXPlay(0x134);
-
-    for (i = 0; i < 0x11; i++) {
-        HuSprPosSet(grp, 0,
-                            (i * D_8011C8FC_w06[playerIndex].x) +
-                                D_8011C8DC_w06[playerIndex].x,
-                            (i * D_8011C8FC_w06[playerIndex].y) +
-                                D_8011C8DC_w06[playerIndex].y);
-        HuSprTPLvlSet(grp, 0, i << 4);
-        HuPrcVSleep();
-    }
-    HuSprTPLvlSet(grp, 0, 0xFF);
-
-    if (MBItemFind(playerIndex, 0xC) != -1) {
-        hasRareItem = 1;
-        process = omAddPrcObj(func_80113B68_w06, 0x4002, 0, 0);
-        process->user_data = (void *)playerIndex;
-    }
-
-    if (!hasRareItem) {
-        GwPlayer[playerIndex].star--;
-    }
-    MBPlayerVibrate(playerIndex, 5);
-    HuAudFXPlay(0x257);
-
-    duration = hasRareItem ? 0x78 : 0x1E;
-    for (i = 0; i < duration; i++) {
-        HuSprPosSet(grp, 0,
-                            (D_8011C8FC_w06[playerIndex].x * 16.0f) +
-                                D_8011C8DC_w06[playerIndex].x,
-                            (D_8011C8FC_w06[playerIndex].y * 16.0f) +
-                                D_8011C8DC_w06[playerIndex].y +
-                                (sindf(i * 90) * 4.0f));
-        HuPrcVSleep();
-    }
-
-    for (i = 0x10; i >= 0; i--) {
-        HuSprPosSet(grp, 0,
-                            (i * D_8011C8FC_w06[playerIndex].x) +
-                                D_8011C8DC_w06[playerIndex].x,
-                            (i * D_8011C8FC_w06[playerIndex].y) +
-                                D_8011C8DC_w06[playerIndex].y);
-        HuSprTPLvlSet(grp, 0, i << 4);
-        HuPrcVSleep();
-    }
-    HuSprGrpKill(grp);
-    HuSprAnimKill(spriteId);
-    return !hasRareItem;
-}
-
-void func_8010E22C_w06(void) {
-    func_800EC3E4_shared_board();
-    omDelPrcObj(NULL);
-}
-
-s32 func_8010E250_w06(s32 playerIndex) {
-    s32 hasRareItem;
-    s16 grp;
-    void *data;
-    s16 spriteId;
-    s16 playerGrp;
-    s16 playerSpriteId;
-    s32 i;
-    s32 state;
-    s32 playerSpriteVisible;
-    s16 delay;
-    s32 angle;
-    s32 attempts;
-    void *dialog;
-    Process *process;
-
-    hasRareItem = 0;
-    grp = HuSprGrpCreate(1, 5);
-    data = DataRead(0x13020E);
-    spriteId = HuSprAnimRead(data);
-    DataClose(data);
-    HuSprGrpMemberSet(grp, 0, spriteId, 0);
-    HuSprPriSet(grp, 0, 0xA);
-    HuSprAnimModeSet(grp, 0, HUSPR_ANIM_MODE_STOP);
-    HuSprAttrSet(grp, 0, 0x1000);
-    HuSprPosSet(grp, 0, D_8011C8DC_w06[playerIndex].x,
-                        D_8011C8DC_w06[playerIndex].y);
-    HuSprTPLvlSet(grp, 0, 0);
-
-    {
-        playerGrp = HuSprGrpCreate(1, 5);
-        playerSpriteVisible = 0;
-        data = DataRead(D_80101040_shared_board[GwPlayer[playerIndex].chr]);
-        playerSpriteId = HuSprAnimRead(data);
-        DataClose(data);
-        HuSprGrpMemberSet(playerGrp, 0, playerSpriteId, 0);
-        HuSprPriSet(playerGrp, 0, 0xA);
-        HuSprAnimModeSet(playerGrp, 0, HUSPR_ANIM_MODE_BANK);
-        if (playerIndex & 1) {
-            HuSprAttrSet(playerGrp, 0, 0x1001);
-        } else {
-            HuSprAttrSet(playerGrp, 0, 0x1000);
-        }
-        if (MBItemFind(playerIndex, 0xC) != -1) {
-            HuSprDispOff(playerGrp, 0);
-        }
-        HuSprPosSet(playerGrp, 0,
-                            D_8011C8DC_w06[playerIndex].x -
-                                (D_8011C8FC_w06[playerIndex].x * 16.0f) - 8.0f,
-                            D_8011C8DC_w06[playerIndex].y +
-                                (D_8011C8FC_w06[playerIndex].y * 16.0f));
-        HuSprTPLvlSet(playerGrp, 0, 0);
-        HuAudFXPlay(0x133);
-
-        for (i = 0; i < 0x11; i++) {
-            HuSprPosSet(grp, 0,
-                                (i * D_8011C8FC_w06[playerIndex].x) +
-                                    D_8011C8DC_w06[playerIndex].x,
-                                (i * D_8011C8FC_w06[playerIndex].y) +
-                                    D_8011C8DC_w06[playerIndex].y);
-            HuSprTPLvlSet(grp, 0, i << 4);
-            HuSprTPLvlSet(playerGrp, 0, i << 4);
-            HuPrcVSleep();
-        }
-        HuSprTPLvlSet(grp, 0, 0xFF);
-        HuSprTPLvlSet(playerGrp, 0, 0xFF);
-
-        MBWinInsertOpen(MBItemFind(playerIndex, 0xC) == -1 ? 0x620E : 0x620F,
-                        (char *)mbCharNameMesTbl[GwPlayer[playerIndex].chr], 0, 0, 0, 0);
-        MBPlayerVibrate(playerIndex, 2);
-        func_800EC3C0_shared_board(playerIndex);
-        if (MBItemFind(playerIndex, 0xC) != -1) {
-            omAddPrcObj(func_8010E22C_w06, 0x1000, 0, 0);
-            HuPrcSleep(0x14);
-        }
-
-        attempts = 0;
-        state = 0;
-        if (MBItemFind(playerIndex, 0xC) != -1) {
-            attempts = 1;
-            hasRareItem = 1;
-            process = omAddPrcObj(func_80113B68_w06, 0x4002, 0, 0);
-            process->user_data = (void *)playerIndex;
-        }
-        HuAudFXPlay(0x133);
-        dialog = MBPlayerVibrateObjCreate(playerIndex, 3, 5);
-        delay = MBRand(10.0f) + 1;
-        i = 0;
-        angle = 0;
-
-        for (; i < 0x78; i++, delay--) {
-            if (delay == 0) {
-                HuAudFXPlay(0x257);
-                delay = MBRand(15.0f) + 0x1E;
-            }
-            state -= !(state < 2);
-            if (state == 0) {
-                HuSprPosSet(
-                    grp, 0,
-                    (D_8011C8FC_w06[playerIndex].x * 16.0f) +
-                        D_8011C8DC_w06[playerIndex].x,
-                    (D_8011C8FC_w06[playerIndex].y * 16.0f) +
-                        D_8011C8DC_w06[playerIndex].y + (sindf(i * 90) * 2.0f));
-            } else if (state == 9) {
-                HuSprPosSet(
-                    grp, 0,
-                    (D_8011C8FC_w06[playerIndex].x * 16.0f) +
-                        D_8011C8DC_w06[playerIndex].x + (sindf(angle * 90) * 2.0f),
-                    (D_8011C8FC_w06[playerIndex].y * 16.0f) +
-                        D_8011C8DC_w06[playerIndex].y);
-                HuSprPosSet(
-                    playerGrp, 0,
-                    D_8011C8DC_w06[playerIndex].x - 8.0f +
-                        (sindf(angle * 90) * 2.0f),
-                    (D_8011C8FC_w06[playerIndex].y * 16.0f) +
-                        D_8011C8DC_w06[playerIndex].y);
-                angle++;
-            }
-
-            if (GwPlayer[playerIndex].stat & 1) {
-                if (state == 0) {
-                    goto tryInput;
-                } else {
-                    if (GwPlayer[playerIndex].cpu_difficulty == 0) {
-                        if ((6 - MBRand(3.0f)) >= state) {
-                            goto tryInput;
-                        }
-                    } else if (GwPlayer[playerIndex].cpu_difficulty == 1) {
-                        if ((7 - MBRand(3.0f)) >= state) {
-                            goto tryInput;
-                        }
-                    } else if (GwPlayer[playerIndex].cpu_difficulty == 2) {
-                        if ((8 - MBRand(3.0f)) >= state) {
-                            goto tryInput;
-                        }
-                    } else if ((9 - MBRand(2.0f)) >= state) {
-                        goto tryInput;
-                    }
-                }
-            } else if (D_800C9520_main[GwPlayer[playerIndex].pad] & A_BUTTON) {
-            tryInput:
-                if (!hasRareItem) {
-                    attempts++;
-                    state = 10;
-                    if (!playerSpriteVisible) {
-                        HuSprBankSet(playerGrp, 0, 1, 0);
-                        HuSprAnimModeSet(playerGrp, 0, HUSPR_ANIM_MODE_BANK);
-                        playerSpriteVisible = 1;
-                        HuSprPosSet(
-                            playerGrp, 0, D_8011C8DC_w06[playerIndex].x - 8.0f,
-                            (D_8011C8FC_w06[playerIndex].y * 16.0f) +
-                                D_8011C8DC_w06[playerIndex].y);
-                    }
-                }
-            }
-            if ((state == 0) && (playerSpriteVisible == 1)) {
-                HuSprBankSet(playerGrp, 0, 0, 0);
-                HuSprAnimModeSet(playerGrp, 0, HUSPR_ANIM_MODE_BANK);
-                playerSpriteVisible = 0;
-                HuSprPosSet(
-                    playerGrp, 0,
-                    D_8011C8DC_w06[playerIndex].x -
-                        (D_8011C8FC_w06[playerIndex].x * 16.0f) - 8.0f,
-                    (D_8011C8FC_w06[playerIndex].y * 16.0f) +
-                        D_8011C8DC_w06[playerIndex].y);
-            }
-            HuPrcVSleep();
-        }
-    }
-
-    MBPlayerVibrateObjKill(dialog);
-    if (!hasRareItem) {
-        omAddPrcObj(func_8010E22C_w06, 0x1000, 0, 0);
-    }
-
-    if (attempts == 0) {
-        for (i = 0x10; i >= 0; i -= 2) {
-            HuSprPosSet(grp, 0,
-                                (i * D_8011C8FC_w06[playerIndex].x) +
-                                    D_8011C8DC_w06[playerIndex].x,
-                                (i * D_8011C8FC_w06[playerIndex].y) +
-                                    D_8011C8DC_w06[playerIndex].y);
-            HuSprTPLvlSet(grp, 0, i << 4);
-            HuSprTPLvlSet(playerGrp, 0, i << 4);
-            HuPrcVSleep();
-        }
-    } else {
-        for (i = 0x10; i >= -0x10; i -= 2) {
-            HuSprPosSet(grp, 0,
-                                (i * D_8011C8FC_w06[playerIndex].x) +
-                                    D_8011C8DC_w06[playerIndex].x,
-                                (i * D_8011C8FC_w06[playerIndex].y) +
-                                    D_8011C8DC_w06[playerIndex].y);
-            HuSprPosSet(playerGrp, 0,
-                                ((i - 0x10) * D_8011C8FC_w06[playerIndex].x) +
-                                    D_8011C8DC_w06[playerIndex].x - 8.0f,
-                                (i * D_8011C8FC_w06[playerIndex].y) +
-                                    D_8011C8DC_w06[playerIndex].y);
-            if (hasRareItem) {
-                i -= 2;
-            }
-            HuPrcVSleep();
-        }
-        HuSprBankSet(playerGrp, 0, 0, 0);
-        HuSprAnimModeSet(playerGrp, 0, HUSPR_ANIM_MODE_BANK);
-        for (i = 0x10; i >= 0; i -= 2) {
-            HuSprTPLvlSet(grp, 0, i << 4);
-            HuPrcVSleep();
-        }
-    }
-
-    HuSprGrpKill(grp);
-    HuSprAnimKill(spriteId);
-    HuSprGrpKill(playerGrp);
-    HuSprAnimKill(playerSpriteId);
-
-    playerSpriteVisible = -2;
-    if (!hasRareItem) {
-        for (i = 0; i < ARRAY_COUNTU(D_8011C91C_w06); i++) {
-            if ((GwSystem.current_turn >= D_8011C91C_w06[i][0]) &&
-                (GwSystem.current_turn <= D_8011C91C_w06[i][1])) {
-                break;
-            }
-        }
-        playerSpriteVisible = D_8011C91C_w06[i][2];
-        for (i = 0; i < ARRAY_COUNTU(D_8011C930_w06); i++) {
-            if ((attempts >= D_8011C930_w06[i][0]) &&
-                (attempts <= D_8011C930_w06[i][1])) {
-                break;
-            }
-        }
-        playerSpriteVisible -= D_8011C930_w06[i][2];
-        if (playerSpriteVisible >= GwPlayer[playerIndex].coin) {
-            playerSpriteVisible = -1;
-        }
-    }
-    return playerSpriteVisible;
-}
-
-const ChanceTable D_8011E10C_w06 = { { 50, 70, 90, 100 } };
-
-const ChanceTable D_8011E11C_w06 = { { 10, 7, 3, 0 } };
-
-const ChanceTable D_8011E12C_w06 = { { 4, 3, 2, 5 } };
-
-const ChanceTable D_8011E13C_w06 = { { 0, 0, 13, 0 } };
-
-const char D_8011E14C_w06[] = "%d";
-
-void func_8010F07C_w06(void) {
-    Object *src = HuPrcCurrentGet()->user_data;
-    Object *obj = MBModelLinkCreate(D_8011E348_w06);
-    f32 angle;
-
-    HuVecCopy3F(&obj->coords, &src->coords);
-    HuVecCopyXYZ(&obj->scale, 2.0f, 2.0f, 2.0f);
-    obj->velocity.x = src->velocity.x + 10.0f;
-    MBModelDispOn(obj);
-    angle = MBRand(360.0f);
-    while (1) {
-        HuPrcVSleep();
-        obj->velocity.x += 1.5;
-        if (src->velocity.x + 35.0f <= obj->velocity.x) {
-            break;
-        }
-        angle += 40.0f;
-        func_8008A2A0_main(Hu3DData[obj->omObj1->model[0]].mtx, angle);
-    }
-    MBModelKill(obj);
-    omDelPrcObj(NULL);
-}
-
-void func_8010F1D0_w06(s32 arg) {
-    Process *temp = omAddPrcObj(func_8010F07C_w06, 0x1000, 0, 0);
-
-    temp->user_data = (void *)arg;
-}
-
-void func_8010F20C_w06(void) {
-    char inserts[4][16];
-    u8 choices[8];
-    Vec direction;
-    s32 rankedPlayers[3];
-    Object *model = NULL;
-    SpaceData *space;
-    Vec *spaceCoords;
-    GW_PLAYER *player;
-    GW_SYSTEM *sys;
-    Process *process;
-    void *coinEffect;
-    s32 resultAmount;
-    s32 selectedByCpu;
-    s16 target;
-    s32 menuResult;
-    s32 playerChoice;
-    s32 rank;
-    s32 count;
-    s32 i;
-    s32 j;
-    s32 amountDifference;
-    s16 spaceId;
-    f32 angle;
-    f32 scale;
-    f32 rate;
-    f32 booVelocity;
-    Object *boo;
-    s32 modelIsLinked;
-    s32 estimatedAmount;
-    s16 camMasu;
-    s16 menu;
-    s32 cameraSet;
-
-    resultAmount = 0;
-    estimatedAmount = resultAmount;
-    MBMasuCurGet();
-    sys = &GwSystem;
-    player = MBPlayerGet(-1);
-    cameraSet = func_800DBEC0_shared_board(sys->current_player_index);
-    MBPlayerMotionSet(-1, -1, 2);
-    menu = 0;
-    spaceId = MBMasuLinkMasuIdGet(player->clink, player->cidx);
-    if (spaceId != 0x7F) {
-        modelIsLinked = -1;
-        camMasu = -1;
-        boo = MBModelLinkCreate(D_8011E2DC_w06);
-        MBModelDispOff(boo);
-        booVelocity = 30.0f;
-        boo->velocity.x = booVelocity;
-        space = MBMasuGet(spaceId);
-        HuVecCopyXYZ(&boo->coords, space->coords.x, space->coords.y + 10.0f, space->coords.z);
-    } else {
-        modelIsLinked = 0;
-        camMasu = 0x80;
-        space = MBMasuGet(0x80);
-        boo = D_8011E2E0_w06[0];
-        HuAudFXPlay(0x125);
-        model = MBModelCreate(0x33, NULL);
-        if (D_8011C970_w06[sys->current_board_index] != 0) {
-            func_8001ED54_main(model->omObj1->model[0]);
-        }
-        Hu3DModelRemakeStatic(model->omObj1->model[0]);
-        MBModelTempAllocFree(model);
-        spaceCoords = &space->coords;
-        HuVecSubtract(&direction, &MBMasuGet(spaceId)->coords, spaceCoords);
-        MBVecNormalize(&direction);
-        HuVecCopy3F(&model->rot, &direction);
-        model->scale.y = 0.0f;
-        HuVecCopy3F(&model->coords, spaceCoords);
-        MBMotionSet(model, -1, 1);
-        MBModelDispOn(model);
-        scale = 1.0f / sindf(50.0f);
-        for (angle = 0.0f; angle < 90.0f; angle += 11.25f) {
-            model->scale.y = sindf(angle) * scale;
-            model->scale.x = sindf(angle) * scale * 0.99f + 0.01f;
-            model->scale.z = sindf(angle) * scale * 0.99f + 0.01f;
-            if (D_8011C970_w06[sys->current_board_index] != 0) {
-                model->scale.x = -model->scale.x;
-            }
-            HuPrcVSleep();
-        }
-        for (; angle > 50.0f; angle -= 11.25f) {
-            model->scale.y = sindf(angle) * scale;
-            model->scale.x = sindf(angle) * scale * 0.99f + 0.01f;
-            model->scale.z = sindf(angle) * scale * 0.99f + 0.01f;
-            if (D_8011C970_w06[sys->current_board_index] != 0) {
-                model->scale.x = -model->scale.x;
-            }
-            HuPrcVSleep();
-        }
-        model->scale.y = 1.0f;
-        model->scale.x = 1.0f;
-        model->scale.z = 1.0f;
-        if (D_8011C970_w06[sys->current_board_index] != 0) {
-            model->scale.x = -1.0f;
-        }
-        MBMotionSet(model, -1, 0);
-        Hu3DMotionSpeedSet(model->omObj1->model[0], 1.2f);
-        while (MBMotionCheck(model) == 0) {
-            HuPrcVSleep();
-        }
-    }
-    HuAudFXPlay(0x257);
-    func_8010DCA4_w06(boo);
-    space = MBMasuGet(spaceId);
-    spaceId = camMasu;
-    if (spaceId != -1) {
-        func_800D9F5C_name_81(boo, &space->coords, 5);
-        func_800ED20C_shared_board(-1, 5, spaceId);
-        HuPrcSleep(5);
-        process = HuPrcCurrentGet();
-        HuPrcChildLink(process, MBCameraZoomMotStart(1.6f));
-        HuPrcChildWatch();
-    }
-
-    if (GwPlayer[sys->current_player_index].coin < 5) {
-        MBDlgWinExec(7, 0x6201);
-        goto finishMenu;
-    }
-
-restartMenu:
-    for (i = 0; i < 4; i++) {
-        if (i != sys->current_player_index &&
-            (GwPlayer[i].coin != 0 || GwPlayer[i].star != 0)) {
-            break;
-        }
-    }
-    if (i >= 4) {
-        MBDlgWinExec(7, 0x6202);
-        goto finishMenu;
-    }
-    for (i = 0; i < 4; i++) {
-        if (i != sys->current_player_index && GwPlayer[i].coin != 0) {
-            break;
-        }
-    }
-    if (i == 4) {
-        inserts[0][0] = 1;
-        choices[0] = 0;
-    } else {
-        inserts[0][0] = 8;
-        choices[0] = 1;
-    }
-    inserts[0][1] = 0;
-    for (i = 0; i < 4; i++) {
-        if (i != sys->current_player_index && GwPlayer[i].star != 0) {
-            break;
-        }
-    }
-    if (i == 4) {
-        goto starChoiceUnavailable;
-    }
-    if (GwPlayer[sys->current_player_index].coin < 50) {
-        goto starChoiceUnavailable;
-    }
-    if (GwPlayer[sys->current_player_index].star < 99) {
-        goto starChoiceAvailable;
-    }
-
-starChoiceUnavailable: {
-    inserts[1][0] = 1;
-    choices[1] = 0;
-    goto starChoiceDone;
-}
-
-starChoiceAvailable: {
-    inserts[1][0] = 8;
-    choices[1] = 1;
-}
-
-starChoiceDone:
-    inserts[1][1] = 0;
-    choices[3] = 1;
-    choices[2] = 1;
-    MBDlgWinInsertCreate(7, 0x6200, (s32)inserts[0], (s32)inserts[1], 0, 0, 0);
-    menuResult = func_80107704_w06(choices);
-    menu = menuResult;
-    MBDlgWinClose();
-    MBDlgWinKill();
-    switch ((s16)menuResult) {
-        case 0:
-        case 1:
-            goto selectPlayer;
-        case 2:
-            goto menuResultTwo;
-        case 3:
-            goto menuResultThree;
-        default:
-            goto finishMenu;
-    }
-
-selectPlayer:
-    i = 0;
-    j = 0;
-    while (i < 4) {
-        if (i == sys->current_player_index) {
-            choices[j] = 0;
-            inserts[j][0] = 1;
-        } else if (menu == 0) {
-            if (GwPlayer[i].coin == 0) {
-                choices[j] = 0;
-                inserts[j][0] = 1;
-            } else {
-                choices[j] = 1;
-                inserts[j][0] = 8;
-            }
-        } else {
-            if (GwPlayer[i].star == 0) {
-                choices[j] = 0;
-                inserts[j][0] = 1;
-            } else {
-                choices[j] = 1;
-                inserts[j][0] = 8;
-            }
-        }
-        func_800E2260_shared_board(i, &inserts[j][1]);
-        i++;
-        j++;
-    }
-    choices[4] = 1;
-    choices[5] = 1;
-    MBDlgWinInsertCreate(7, 0x5C02, (s32)inserts[0], (s32)inserts[1], (s32)inserts[2], (s32)inserts[3], 0);
-    playerChoice = func_80107724_w06(choices);
-    target = playerChoice;
-    MBDlgWinClose();
-    selectedByCpu = 0;
-    MBDlgWinKill();
-    switch ((s16)playerChoice) {
-        case -1:
-            goto restartMenu;
-        case 4:
-            goto selectCpuPlayer;
-        case 5:
-            if (modelIsLinked == -1) {
-                func_80106B38_w06();
-                D_800CB99C_main = 1;
-                omAllPause();
-            } else {
-                func_80106AB0_w06();
-            }
-            goto selectPlayer;
-        default:
-            goto playerSelected;
-    }
-
-selectCpuPlayer: {
-    i = 0;
-    count = 0;
-    while (i < 4) {
-        for (j = 0; j < 4; j++) {
-            if (i == BoardPlayerRankCalc(j) && sys->current_player_index != j) {
-                rankedPlayers[count++] = j;
-            }
-        }
-        i++;
-    }
-    rank = MBRand(100.0f);
-    for (i = 0; i < 3; i++) {
-        if (rank < D_8011C964_w06[i]) {
-            break;
-        }
-    }
-    if (menu != 0) {
-        while (GwPlayer[rankedPlayers[i]].star == 0 || rankedPlayers[i] == sys->current_player_index) {
-            i--;
-        }
-    } else {
-        while (i >= 0 &&
-               (GwPlayer[rankedPlayers[i]].coin == 0 || rankedPlayers[i] == sys->current_player_index)) {
-            i--;
-        }
-        i = 2;
-        while (i >= 0 &&
-               (GwPlayer[rankedPlayers[i]].coin == 0 || rankedPlayers[i] == sys->current_player_index)) {
-            i--;
-        }
-    }
-    target = rankedPlayers[i];
-    selectedByCpu = 1;
-}
-
-playerSelected:
-    if (menu == 0) {
-        MBCoinChangeCreate(sys->current_player_index, -5);
-        MBCoinTakeCreate(sys->current_player_index, -5);
-    } else {
-        MBCoinChangeCreate(sys->current_player_index, -50);
-        MBCoinTakeCreate(sys->current_player_index, -50);
-    }
-    HuPrcSleep(30);
-    if (menu == 1) {
-        if (selectedByCpu != 0) {
-            MBDlgWinExec(7, 0x6206);
-        }
-    } else {
-        for (i = 0; (u32)i < 6; i++) {
-            if (GwSystem.current_turn >= D_8011C91C_w06[i][0] &&
-                GwSystem.current_turn <= D_8011C91C_w06[i][1]) {
-                break;
-            }
-        }
-        estimatedAmount = D_8011C91C_w06[i][2];
-        if (selectedByCpu == 0) {
-            MBDlgWinExec(7, MBRand(6.0f) + 0x6207);
-        } else {
-            MBDlgWinExec(7, 0x620D);
-        }
-    }
-    func_8010DD44_w06(boo);
-    if (menu == 0) {
-        resultAmount = func_8010E250_w06(target);
-        func_8010DCA4_w06(boo);
-        if (resultAmount != -2) {
-            if (resultAmount == -1) {
-                resultAmount = GwPlayer[target].coin;
-                sprintf(inserts[0], D_8011E14C_w06, resultAmount);
-                MBDlgWinInsertCreate(7, 0x6214, (s32)inserts[0], 0, 0, 0, 0);
-            } else {
-                sprintf(inserts[0], D_8011E14C_w06, resultAmount);
-                amountDifference = estimatedAmount - resultAmount;
-                for (i = 0; i < 4; i++) {
-                    if (amountDifference >= D_8011C95C_w06[i]) {
-                        break;
-                    }
-                }
-                MBDlgWinInsertCreate(7, i + 0x6210, (s32)inserts[0], 0, 0, 0, 0);
-            }
-            MBDlgWinClose();
-            MBDlgWinKill();
-        }
-        if (resultAmount != -2) {
-            mbItemBtnF = 0;
-            rate = (f32)resultAmount / 90.0f;
-            angle = 0.0f;
-            D_8011E348_w06 = MBModelCreate(0x19, NULL);
-            MBModelTempAllocFree(D_8011E348_w06);
-            MBModelDispOff(D_8011E348_w06);
-            coinEffect = MBPlayerVibrateObjCreate(target, 3, 5);
-            while (resultAmount != 0) {
-                angle += rate;
-                if (angle >= 1.0f) {
-                    angle -= 1.0f;
-                    func_8010F1D0_w06((s32)boo);
-                    MBCoinTakeCreate(sys->current_player_index, 1);
-                    MBCoinTakeCreateSound(target, -1, 0);
-                    resultAmount--;
-                }
-                HuPrcVSleep();
-            }
-            MBPlayerVibrateObjKill(coinEffect);
-            HuPrcSleep(20);
-            MBModelKill(D_8011E348_w06);
-            MBVecForwardSet(&MBPlayerGet(-1)->player_obj->rot);
-            MBPlayerMotionSet(-1, 5, 0);
-            HuPrcSleep(5);
-            PlayerFXPlay(0x274, sys->current_player_index);
-            HuPrcSleep(45);
-            mbItemBtnF = 1;
-            goto outcomeDone;
-        }
-    } else {
-        i = func_8010DDE4_w06(target);
-        func_8010DCA4_w06(boo);
-        if (i != 0) {
-            MBDlgWinExec(7, 0x6205);
-            D_8011B608_w06 = 1;
-            func_80106A3C_w06(boo);
-            D_8011B608_w06 = 0;
-            goto outcomeDone;
-        } else {
-            resultAmount = -2;
-        }
-    }
-
-outcomeDone:
-    if (modelIsLinked == -1) {
-        HuPrcSleep(20);
-        MBPlayerMotionSet(-1, -1, 2);
-    }
-    if (resultAmount == -2) {
-        HuPrcSleep(30);
-        MBDlgWinExec(7, 0x6215);
-    }
-    goto finishMenu;
-
-menuResultTwo:
-    func_8010DD44_w06(boo);
-    MBDlgWinExec(7, 0x6203);
-    goto finishMenu;
-
-menuResultThree:
-    if (modelIsLinked == -1) {
-        func_80106B38_w06();
-        D_800CB99C_main = 1;
-        omAllPause();
-    } else {
-        func_80106AB0_w06();
-    }
-    goto restartMenu;
-
-finishMenu:
-    if (menu != 2) {
-        func_8010DD44_w06(boo);
-    }
-    MBVecForwardSet(&boo->rot);
-    if (modelIsLinked == -1) {
-        MBModelKill(boo);
-    }
-    if (camMasu != -1) {
-        HuAudFXPlay(0x126);
-        MBMotionSet(model, -1, 4);
-        Hu3DMotionSpeedSet(model->omObj1->model[0], 1.2f);
-        Hu3DMotionTimeSet(
-            model->omObj1->model[0], D_800CCF58_main[Hu3DData[model->omObj1->model[0]].motId].unk02);
-        while (func_800D9E80_shared_board(model) == 0) {
-            HuPrcVSleep();
-        }
-        scale = 1.0f / sindf(50.0f);
-        for (angle = 50.0f; angle < 90.0f; angle += 11.25f) {
-            model->scale.y = sindf(angle) * scale;
-            model->scale.x = sindf(angle) * scale * 0.2f + 0.8f;
-            model->scale.z = sindf(angle) * scale * 0.2f + 0.8f;
-            if (D_8011C970_w06[sys->current_board_index] != 0) {
-                model->scale.x = -model->scale.x;
-            }
-            HuPrcVSleep();
-        }
-        for (angle = 90.0f; angle > 0.0f; angle -= 11.25f) {
-            model->scale.y = sindf(angle) * scale;
-            model->scale.x = sindf(angle) * scale * 0.2f + 0.8f;
-            model->scale.z = sindf(angle) * scale * 0.2f + 0.8f;
-            if (D_8011C970_w06[sys->current_board_index] != 0) {
-                model->scale.x = -model->scale.x;
-            }
-            HuPrcVSleep();
-        }
-        model->scale.y = 0.0f;
-        model->scale.x = 0.0f;
-        model->scale.z = 0.0f;
-        MBModelKill(model);
-    }
-    if (cameraSet != 0) {
-        func_800DB884_shared_board(sys->current_player_index);
-    }
-    if (modelIsLinked != -1) {
-        process = HuPrcCurrentGet();
-        HuPrcChildLink(process, MBCameraZoomMotStart(1.3f));
-        HuPrcChildWatch();
-    }
-    func_8010B4BC_w06();
-}
-
-void func_801103E0_w06(void) {
-    func_80108630_w06(0);
-}
-
-void func_801103FC_w06(void) {
-    func_80108630_w06(1);
-}
-
-omObjData *func_80110418_w06(Vec *arg0, f32 arg1, f32 arg2, s16 arg3, Vec *arg4, s32 arg5) {
-    omObjData *obj;
-    ModelFadeWork *data;
-    Object *model;
-
-    obj = omAddObj(0x1F4, 0, 0, -1, func_80110574_w06);
-    data = obj->data = HuMemAllocTag(0x20, TAG_OVERLAY);
-    data->unk0C = 255.0f;
-    data->unk10 = arg1;
-    data->unk14 = arg2;
-    HuVecCopy3F(&data->unk00, arg4);
-    if (arg5 != 0) {
-        model = MBModelFileCreate(0x1301F8, 0, 1.0f, 0, 0);
-    } else {
-        model = MBModelFileCreate(0x1301F7, 0, 1.0f, 0, 0);
-    }
-    Hu3DModelScaleSet(model->omObj1->model[0], 0.0f, 0.0f, 0.0f);
-    model->coords.x = arg0->x;
-    model->coords.y = arg0->y;
-    model->coords.z = arg0->z;
-    func_8001FA68_main(model->omObj1->model[0]);
-    func_8001F9E4_main(model->omObj1->model[0], 0xFF);
-    data->model = model;
-    data->unk1C = arg3;
-    return obj;
-}
-
-void func_80110574_w06(omObjData *arg0) {
-    ModelFadeWork *data = arg0->data;
-    Object *model = data->model;
-    f32 scale;
-    f32 alpha;
-
-    HuVecAdd(&model->coords, &model->coords, &data->unk00);
-    scale = model->scale.z + data->unk10;
-    model->scale.z = scale;
-    model->scale.y = scale;
-    model->scale.x = scale;
-    alpha = data->unk0C - data->unk14;
-    data->unk0C = alpha;
-    if (alpha < 0.0f) {
-        data->unk0C = 0.0f;
-        if (data->unk1C != 0) {
-            MBModelKill(data->model);
-            omDelObj(arg0);
-            return;
-        }
-        omSetStatBit(arg0, OM_STAT_FUNCOFF);
-    }
-    func_8001F9E4_main(model->omObj1->model[0], (u8)data->unk0C);
-}
-
-void func_8011068C_w06(void) {
-    Vec pos;
-    s8 link;
-    s8 index;
-    GW_PLAYER *player;
-    Object *lamp;
-    UnkVibrateProcess *vib;
-    s32 angle;
-    s32 i;
-    GW_SYSTEM *system = &GwSystem;
-
-    player = MBPlayerGet(CUR_PLAYER);
-    func_801111E4_w06();
-    lamp = MBModelCreate(0x24, NULL);
-    Hu3DModelScaleSet(lamp->omObj1->model[0], 0.0f, 0.0f, 0.0f);
-    HuVecCopy3F(&lamp->coords, &player->player_obj->coords);
-    for (lamp->coords.y = 100.0f; lamp->coords.y > 30.0f;) {
-        lamp->coords.y -= 1.0f;
-        HuPrcVSleep();
-    }
-
-    HuAudFXPlay(0x127);
-    func_8004A7C4_main(0xB4);
-    vib = MBPlayerVibrateObjCreate(CUR_PLAYER, 4, 5);
-
-    angle = 0xB4;
-    i = 0;
-    while (angle < 0x438) {
-        Vec particleDir[8] = {
-            {
-                1.0f,
-                1.0f,
-                1.0f,
-            },
-            { 1.0f, 2.0f, 1.0f },
-            { 0.0f, 2.0f, 1.0f },
-            { -1.0f, 1.0f, 1.0f },
-            { -1.0f, -1.0f, 1.0f },
-            { 0.0f, -1.0f, 1.0f },
-            { -1.0f, 2.0f, 1.0f },
-            { 1.0f, -1.0f, 1.0f }
-        };
-
-        lamp->coords.y = (2.0f * sindf(angle)) + 30.0f;
-        if (i & 1) {
-            HuVecCopyXYZ(&pos, lamp->coords.x, lamp->coords.y, lamp->coords.z);
-            pos.x -= 15.0f;
-            pos.y += 15.0f;
-            func_80110418_w06(&pos, 0.1f, 2.0f, 1, &particleDir[(i / 2) & 7], 0);
-        }
-        angle += 0x14;
-        HuPrcVSleep();
-        i++;
-    }
-
-    MBPlayerVibrateObjKill(vib);
-    WipeColorSet(0xFF, 0xFF, 0xFF);
-    func_800EB24C_shared_board(
-        D_8011B5B0_w06[system->star_spawn_indices[system->current_star_spawn]], &link, &index);
-    player->clink = link;
-    player->cidx = index;
-    player->nlink = link;
-    player->nidx = index + 1;
-    player->blink = link;
-    player->bidx = index - 1;
-    player->rev &= ~FLAG_REV;
-    func_800FC9E0_shared_board();
-    HuAudFXPlay(0x128);
-    omAllUPause();
-
-    while (1) {
-        Vec particleDir2[8] = {
-            {
-                1.0f,
-                1.0f,
-                1.0f,
-            },
-            { 1.0f, 2.0f, 1.0f },
-            { 0.0f, 2.0f, 1.0f },
-            { -1.0f, 1.0f, 1.0f },
-            { -1.0f, -1.0f, 1.0f },
-            { 0.0f, -1.0f, 1.0f },
-            { -1.0f, 2.0f, 1.0f },
-            { 1.0f, -1.0f, 1.0f }
-        };
-
-        lamp->coords.y = (2.0f * sindf(angle)) + 30.0f;
-        if (i & 1) {
-            HuVecCopyXYZ(&pos, lamp->coords.x, lamp->coords.y, lamp->coords.z);
-            pos.x -= 15.0f;
-            pos.y += 15.0f;
-            func_80110418_w06(&pos, 0.1f, 2.0f, 1, &particleDir2[(i / 2) & 7], 0);
-        }
-        i++;
-        HuPrcVSleep();
-        angle += 0x14;
-        if (angle == 0x500) {
-            func_80003A70_main(0);
-        }
-    }
-}
-
-void func_80110A54_w06(void) {
-    s16 ret;
-
-    D_800A12D0_main = 1;
-    MBMasuEventCall(D_8011B5B0_w06[GwSystem.star_spawn_indices[GwSystem.current_star_spawn]], 1);
-    D_800A12D0_main = 0;
-    ret = func_800FF834_shared_board();
-    if (ret >= 0) {
-        HuPrcSleep(-1);
-    }
-}
-
-void func_80110AC0_w06(void) {
-    s32 currentPlayerIndex;
-    GW_PLAYER *player;
-    s16 playerIndex;
-    s16 spaceIndex;
-    s16 fxId;
-    s16 ret;
-
-    currentPlayerIndex = GwSystem.current_player_index;
-    player = MBPlayerGet(CUR_PLAYER);
-    func_801111E4_w06();
-    func_800DCA64_shared_board(currentPlayerIndex);
-    MBPlayerVibrate(CUR_PLAYER, 3);
-    GWBoardFlagSet(0x11);
-    func_800DC128_shared_board(currentPlayerIndex);
-    playerIndex = func_800EF0D8_shared_board(1);
-    omAllUPause();
-    func_800FC8A4_shared_board();
-    HuPrcSleep(5);
-    HuPrcSleep(25);
-    MBPlayerMotionSet(currentPlayerIndex, 2, 0);
-    func_800EE688_shared_board(GwPlayer[currentPlayerIndex].player_obj, 2.0f, -0.3f);
-    HuPrcSleep(5);
-    func_800DCBCC_shared_board(currentPlayerIndex);
-    func_800F2388_shared_board(currentPlayerIndex, CUR_PLAYER, 0, 10, 2);
-    HuPrcSleep(20);
-    MBItemWarpBlockSwapInit();
-    MBItemWarpBlockSwapPlayerSet(playerIndex);
-    MBItemWarpBlockSwapCreate();
-    GWBoardFlagClear(0x11);
-    fxId = func_800DC128_shared_board(currentPlayerIndex);
-    HuAudFXStop(fxId);
-    func_800DC06C_shared_board(currentPlayerIndex);
-    MBStatusShrink(CUR_PLAYER);
-    MBStatusItemDispSetAll(0);
-    MBStatusGrow(CUR_PLAYER);
-    func_800DCD2C_shared_board(currentPlayerIndex, CUR_PLAYER);
-    spaceIndex = MBMasuLinkMasuIdGet(player->clink, player->cidx);
-    MBMasuCurSet(spaceIndex);
-    MBMasuEventCall(spaceIndex, 1);
-    ret = func_800FF834_shared_board();
-    if (ret >= 0) {
-        HuPrcSleep(CUR_PLAYER);
-    }
-    func_800DAA40_shared_board(currentPlayerIndex);
-}
-
-void func_80110C80_w06(void) {
-    Process *process = HuPrcCurrentGet();
-    WarpBlockSwapWork *work = process->user_data;
-    f32 deltaX;
-    f32 deltaY;
-    f32 spriteX;
-    f32 spriteY;
-    s32 i;
-
-    deltaX = (f32)(work->endX - work->startX) / (f32)work->duration;
-    deltaY = (f32)(work->endY - work->startY) / (f32)work->duration;
-    func_800F6848_shared_board(GwSystem.current_player_index, MBItemSelNoGet(), &spriteX, &spriteY);
-
-    for (i = 1; i <= work->duration; i++) {
-        if (work->spriteGroup != -1) {
-            HuSprPosSet(work->spriteGroup, 0,
-                                work->startX + (deltaX * i), work->startY + (deltaY * i));
-        }
-
-        MBStatusItemPosSet(GwSystem.current_player_index, MBItemSelNoGet(),
-                           spriteX + (deltaX * i), spriteY + (deltaY * i));
-        HuPrcVSleep();
-    }
-
-    if (work->spriteGroup != -1) {
-        HuSprPosSet(work->spriteGroup, 0, work->endX, work->endY);
-    }
-
-    MBStatusItemPosSet(GwSystem.current_player_index, MBItemSelNoGet(),
-                       work->endX + spriteX - work->startX,
-                       work->endY + spriteY - work->startY);
-    omDelPrcObj(NULL);
-}
-
-Process *func_80110EE4_w06(s32 spriteGroup, s16 startX, s16 startY, s16 endX, s16 endY,
-                                  s16 duration) {
-    Process *process;
-    WarpBlockSwapWork *work;
-
-    process = omAddPrcObj(func_80110C80_w06, 0x4002, 0, 0x40);
-    work = HuMemMemoryAlloc(process->heap, 0x10);
-    process->user_data = work;
-    work->startX = startX;
-    work->startY = startY;
-    work->endX = endX;
-    work->endY = endY;
-    if (duration == -1) {
-        duration = 25;
-    }
-    work->duration = duration;
-    work->spriteGroup = spriteGroup;
-    return process;
-}
-
-void func_80110FB4_w06(void) {
-    GW_SYSTEM *system = &GwSystem;
-    Process *process;
-    f32 position[2];
-    s32 i;
-
-    HuSprBankSet(mbItemCursorGrpId, 0, 1, 0);
-    HuSprAnimModeSet(mbItemCursorGrpId, 0, HUSPR_ANIM_MODE_BANK);
-    HuPrcSleep(20);
-    HuAudFXPlay(0x145);
-    MBStatusSprPosGet(mbItemCursorGrpId, 0, &position[0], &position[1]);
-    process = HuPrcCurrentGet();
-    HuPrcChildLink(process, func_80110EE4_w06(
-                                mbItemCursorGrpId, position[0], position[1],
-                                D_8011CA44_w06[system->current_player_index].x,
-                                D_8011CA44_w06[system->current_player_index].y, -1));
-    HuPrcChildWatch();
-    HuPrcSleep(10);
-    HuSprBankSet(mbItemCursorGrpId, 0, 0, 0);
-    HuSprAnimModeSet(mbItemCursorGrpId, 0, HUSPR_ANIM_MODE_BANK);
-
-    for (i = 1; i < 10; i++) {
-        MBStatusItemTPLvlSet(system->current_player_index,
-                             MBItemSelNoGet(), 255 - (i * 25));
-        MBStatusItemOfsApply(system->current_player_index,
-                             MBItemSelNoGet(), 0, 2.0f);
-        HuPrcVSleep();
-    }
-
-    MBStatusItemTPLvlSet(system->current_player_index,
-                         MBItemSelNoGet(), 0);
-    MBPlayerMotionSet(-1, 5, 0);
-    PlayerFXPlay(0x274, system->current_player_index);
-    HuPrcSleep(50);
-    MBPlayerMotionSet(-1, -1, 2);
-    HuSprDispOff(mbItemCursorGrpId, 0);
-}
-
-void func_801111E4_w06(void) {
-    GW_SYSTEM *system = &GwSystem;
-    f32 position[2];
-    s32 i;
-
-    HuSprBankSet(mbItemCursorGrpId, 0, 1, 0);
-    HuSprAnimModeSet(mbItemCursorGrpId, 0, HUSPR_ANIM_MODE_BANK);
-    HuPrcSleep(20);
-    HuAudFXPlay(0x145);
-    MBStatusSprPosGet(mbItemCursorGrpId, 0, &position[0], &position[1]);
-    func_80110EE4_w06(
-        mbItemCursorGrpId, position[0], position[1],
-        D_8011CA64_w06[system->current_player_index].x,
-        D_8011CA64_w06[system->current_player_index].y, -1);
-    HuPrcSleep(20);
-
-    for (i = 1; i < 10; i++) {
-        MBStatusItemTPLvlSet(system->current_player_index,
-                             MBItemSelNoGet(), 255 - (i * 25));
-        HuSprTPLvlSet(mbItemCursorGrpId, 0, 255 - (i * 25));
-        HuPrcVSleep();
-    }
-
-    MBStatusItemTPLvlSet(system->current_player_index,
-                         MBItemSelNoGet(), 0);
-    HuSprTPLvlSet(mbItemCursorGrpId, 0, 0);
-    HuPrcSleep(2);
-    HuSprDispOff(mbItemCursorGrpId, 0);
-}
-
-void func_801113B4_w06(void) {
-    f32 position[2];
-    s32 targetX;
-    s32 targetY;
-    Process *process;
-    s32 i;
-
-    HuSprBankSet(mbItemCursorGrpId, 0, 1, 0);
-    HuSprAnimModeSet(mbItemCursorGrpId, 0, HUSPR_ANIM_MODE_BANK);
-    HuPrcSleep(20);
-    HuAudFXPlay(0x145);
-    func_800F6848_shared_board(GwSystem.current_player_index,
-                                      MBItemSelNoGet(), &position[0], &position[1]);
-    MBStatusItemPosGet(-1, MBItemSelNoGet(), &targetX, &targetY);
-    process = HuPrcCurrentGet();
-    HuPrcChildLink(process,
-                   func_80110EE4_w06(mbItemCursorGrpId, position[0], position[1],
-                                            targetX, targetY, -1));
-    HuPrcChildWatch();
-
-    for (i = 1; i < 10; i++) {
-        HuSprTPLvlSet(mbItemCursorGrpId, 0, 255 - (i * 25));
-        HuPrcVSleep();
-    }
-
-    HuSprTPLvlSet(mbItemCursorGrpId, 0, 0);
-    HuSprDispOff(mbItemCursorGrpId, 0);
-}
-
-void func_80111524_w06(void) {
-    GW_SYSTEM *system = &GwSystem;
-    f32 position[2];
-    Process *process;
-    s32 i;
-    s32 j;
-
-    HuSprBankSet(mbItemCursorGrpId, 0, 1, 0);
-    HuSprAnimModeSet(mbItemCursorGrpId, 0, HUSPR_ANIM_MODE_BANK);
-    HuPrcSleep(20);
-    HuAudFXPlay(0x145);
-    MBStatusSprPosGet(mbItemCursorGrpId, 0, &position[0], &position[1]);
-    process = HuPrcCurrentGet();
-    HuPrcChildLink(process,
-                   func_80110EE4_w06(mbItemCursorGrpId, position[0], position[1],
-                                            D_8011CA44_w06[system->current_player_index].x,
-                                            D_8011CA44_w06[system->current_player_index].y, -1));
-    HuPrcChildWatch();
-    HuPrcSleep(10);
-    HuSprBankSet(mbItemCursorGrpId, 0, 0, 0);
-    HuSprAnimModeSet(mbItemCursorGrpId, 0, HUSPR_ANIM_MODE_BANK);
-
-    for (i = 1; i < 10; i++) {
-        HuSprTPLvlSet(mbItemCursorGrpId, 0, 255 - (i * 25));
-        HuPrcVSleep();
-    }
-
-    HuSprTPLvlSet(mbItemCursorGrpId, 0, 0);
-    if ((GwPlayer[system->current_player_index].itemNo[MBItemSelNoGet()] == 0xB) ||
-        (GwPlayer[system->current_player_index].itemNo[MBItemSelNoGet()] == 8)) {
-        HuAudFXPlay(0x141);
-    }
-
-    for (i = 0; i <= 1080; i += 30) {
-        MBStatusItemRotSet(system->current_player_index,
-                           MBItemSelNoGet(), sindf(i) * 30.0f);
-        HuPrcVSleep();
-    }
-
-    for (j = 1; j < 10; j++) {
-        MBStatusItemTPLvlSet(system->current_player_index,
-                             MBItemSelNoGet(), 255 - (j * 25));
-        MBStatusItemRotSet(system->current_player_index,
-                           MBItemSelNoGet(), sindf(i) * 30.0f);
-        HuPrcVSleep();
-        i += 30;
-    }
-
-    MBStatusItemTPLvlSet(system->current_player_index,
-                         MBItemSelNoGet(), 0);
-    HuSprDispOff(mbItemCursorGrpId, 0);
-}
-
-void func_80111870_w06(void) {
-    GW_SYSTEM *system = &GwSystem;
-    f32 position[2];
-    Process *process;
-    s32 i;
-
-    HuSprBankSet(mbItemCursorGrpId, 0, 1, 0);
-    HuSprAnimModeSet(mbItemCursorGrpId, 0, HUSPR_ANIM_MODE_BANK);
-    HuPrcSleep(20);
-    HuAudFXPlay(0x145);
-    MBStatusSprPosGet(mbItemCursorGrpId, 0, &position[0], &position[1]);
-    process = HuPrcCurrentGet();
-    HuPrcChildLink(process,
-                   func_80110EE4_w06(mbItemCursorGrpId, position[0], position[1],
-                                            D_8011CA44_w06[system->current_player_index].x,
-                                            D_8011CA44_w06[system->current_player_index].y, -1));
-    HuPrcChildWatch();
-    HuPrcSleep(10);
-    HuSprBankSet(mbItemCursorGrpId, 0, 0, 0);
-    HuSprAnimModeSet(mbItemCursorGrpId, 0, HUSPR_ANIM_MODE_BANK);
-
-    for (i = 1; i < 10; i++) {
-        HuSprTPLvlSet(mbItemCursorGrpId, 0, 255 - (i * 25));
-        HuPrcVSleep();
-    }
-
-    HuSprTPLvlSet(mbItemCursorGrpId, 0, 0);
-    HuSprDispOff(mbItemCursorGrpId, 0);
-}
-
-void func_80111A34_w06(s32 arg0, s32 arg1, s32 duration, f32 *target, s32 mode) {
-    f32 position[2];
-    f32 stepX;
-    f32 stepY;
-    f32 scale;
-    s32 i;
-
-    if (mode == 2) {
-        HuAudFXPlay(0x145);
-    }
-
-    func_800F6848_shared_board(arg0, arg1, &position[0], &position[1]);
-    stepX = (target[0] - position[0]) / duration;
-    stepY = (target[1] - position[1]) / duration;
-
-    for (i = 2; duration != 0; duration--, i++) {
-        position[0] += stepX;
-        position[1] += stepY;
-        MBStatusItemPosSet(arg0, arg1, position[0], position[1]);
-
-        if ((mode == 1) && (i < 11)) {
-            MBStatusItemTPLvlSet(arg0, arg1, i * 25);
-            scale = i * 0.07f;
-            MBStatusItemScaleSet(arg0, arg1, scale + 0.3f,
-                                 (f32)((f64)scale + 0.3));
-        }
-        HuPrcVSleep();
-    }
-
-    MBStatusItemPosSet(arg0, arg1, target[0], target[1]);
-
-    if (mode == 0) {
-        for (i = 1; i < 10; i++) {
-            MBStatusItemTPLvlSet(arg0, arg1, 255 - (i * 25));
-            MBStatusItemScaleSet(arg0, arg1, 1.0f - (i * 0.1f), 1.0f - (i * 0.1f));
-            HuPrcVSleep();
-        }
-        MBStatusItemTPLvlSet(arg0, arg1, 0);
-    }
-}
-
-void func_80111CCC_w06(void) {
-    GW_PLAYER *player;
-    Object *model;
-    f32 scale;
-    f32 angle;
-
-    player = MBPlayerGet(-1);
-    MBKSuitCreate();
-    MBModelDispOff(D_801011FC_shared_board);
-    D_801011FC_shared_board->omObj1->scale.x = 0.0f;
-    D_801011FC_shared_board->omObj1->scale.y = 0.0f;
-    D_801011FC_shared_board->omObj1->scale.z = 0.0f;
-    MBPlayerVibrate(-1, 3);
-    HuAudFXPlay(0x143);
-
-    model = MBModelCreate(0x22, NULL);
-    func_8001C258_main(model->omObj1->model[0], 0x180, 0);
-    Hu3DModelLayerSet(model->omObj1->model[0], 0x1800);
-    Hu3DModelRemakeStatic(model->omObj1->model[0]);
-    HuVecCopy3F(&model->coords, &player->player_obj->coords);
-
-    angle = 0.0f;
-    for (scale = 1.0f; scale < 10.0f; scale = (f32)((f64)scale + 0.5)) {
-        HuVecCopyXYZ(&model->scale, scale, scale, scale);
-        func_8008A430_main(Hu3DData[model->omObj1->model[0]].mtx, angle);
-        angle += 20.0f;
-        HuPrcVSleep();
-    }
-
-    MBModelDispOff(player->player_obj);
-    MBModelDispOn(D_801011FC_shared_board);
-
-    for (; scale >= 1.0f; scale = (f32)((f64)scale - 0.5)) {
-        HuVecCopyXYZ(&model->scale, scale, scale, scale);
-        func_8008A430_main(Hu3DData[model->omObj1->model[0]].mtx, angle);
-        angle += 20.0f;
-        HuPrcVSleep();
-    }
-
-    MBModelKill(model);
-    HuPrcSleep(20);
-    PlayerFXPlay(0x274, GwSystem.current_player_index);
-    MBKSuitMotionSet(5, 2);
-    HuPrcSleep(40);
-    MBKSuitMotionSet(-1, 2);
-    MBDlgResultWinExec(0x3A14);
-}
-
-void func_80111F58_w06(void) {
-    Vec direction;
-    GW_PLAYER *player;
-    Object *model;
-    f32 scale;
-    f32 angle;
-
-    player = MBPlayerGet(-1);
-    MBKSuitMotionSet(-1, 2);
-    MBVecForwardSet(&direction);
-    func_800ED128_shared_board(&player->player_obj->rot, &direction, &player->player_obj->rot, 8);
-    HuPrcSleep(8);
-    HuAudFXPlay(0x143);
-
-    model = MBModelCreate(0x22, NULL);
-    func_8001C258_main(model->omObj1->model[0], 0x180, 0);
-    Hu3DModelLayerSet(model->omObj1->model[0], 0x1800);
-    Hu3DModelRemakeStatic(model->omObj1->model[0]);
-    HuVecCopy3F(&model->coords, &player->player_obj->coords);
-
-    angle = 0.0f;
-    for (scale = 1.0f; scale < 10.0f; scale = (f32)((f64)scale + 0.5)) {
-        HuVecCopyXYZ(&model->scale, scale, scale, scale);
-        func_8008A430_main(Hu3DData[model->omObj1->model[0]].mtx, angle);
-        angle += 20.0f;
-        HuPrcVSleep();
-    }
-
-    MBModelDispOn(player->player_obj);
-    MBKSuitKill();
-
-    for (; scale >= 1.0f; scale = (f32)((f64)scale - 0.5)) {
-        HuVecCopyXYZ(&model->scale, scale, scale, scale);
-        func_8008A430_main(Hu3DData[model->omObj1->model[0]].mtx, angle);
-        angle += 20.0f;
-        HuPrcVSleep();
-    }
-
-    MBModelKill(model);
-}
-
-void func_80112198_w06(void) {
-    s32 index;
-    s32 group;
-    s32 alpha;
-    void *dialog;
-    f32 x;
-    f32 y;
-    f32 angle;
-
-    index = (s32)HuPrcCurrentGet()->user_data;
-    dialog = MBPlayerVibrateObjCreate(-1, 1, 5);
-    group = HuSprGrpCreate(1, 0);
-    HuSprGrpMemberSet(group, 0, D_8011E34C_w06, 0);
-    HuSprPriSet(group, 0, 0x4780);
-    HuSprAttrSet(group, 0, 0x1000);
-    func_800F6848_shared_board(GwSystem.current_player_index, MBItemSelNoGet(), &x, &y);
-    x += 20.0f;
-    y -= 20.0f;
-    HuSprPosSet(group, 0, x, y);
-    HuSprColorSet(group, 0, 0xFF, 0xFF, 0);
-
-    alpha = 0xFF;
-    angle = (f32)D_8011CB30_w06[index];
-    for (; alpha >= 0; alpha -= 0x14) {
-        x += cosdf(angle) * 5.0f;
-        y -= sindf(angle) * 5.0f;
-        HuSprPosSet(group, 0, x, y);
-        HuSprTPLvlSet(group, 0, alpha);
-        HuPrcVSleep();
-    }
-
-    HuSprTPLvlSet(group, 0, 0);
-    MBPlayerVibrateObjKill(dialog);
-    HuSprGrpKill(group);
-    omDelPrcObj(0);
-}
-
-void func_801123A8_w06(void) {
-    GW_SYSTEM *loc;
-    void *data;
-    s32 choice;
-    Process *process;
-    s32 one;
-
-    loc = &GwSystem;
-    data = DataRead(0x001301B8);
-    D_8011E34C_w06 = HuSprAnimRead(data);
-    DataClose(data);
-    func_80111870_w06();
-
-    while (1) {
-        MBDlgWinInsertCreate(-1, 0x3A01, 0, 0, 0, 0, 0);
-        choice = func_8010B4C4_w06((s32)D_8011CAC4_w06, 0);
-        MBDlgWinClose();
-        MBDlgWinKill();
-
-        if (choice < 2) {
-            if (choice < 0) {
-                process = omAddPrcObj(func_8010B804_w06, 0, 0, 0);
-                omPrcSetStatBit(process, OM_STAT_NOALLPAUSE);
-                func_80106B38_w06();
-                one = 1;
-                D_800CB99C_main = one;
-                omAllPause();
-                omDelPrcObj(process);
-                func_800FC8A4_shared_board();
-                continue;
-            }
-            GwSystem.forceShopHost = choice + 1;
-            break;
-        }
-
-        process = omAddPrcObj(func_8010B804_w06, 0, 0, 0);
-        omPrcSetStatBit(process, OM_STAT_NOALLPAUSE);
-        func_80106B38_w06();
-        one = 1;
-        D_800CB99C_main = one;
-        omAllPause();
-        omDelPrcObj(process);
-        func_800FC8A4_shared_board();
-        continue;
-    }
-
-    {
-        s32 i;
-
-        HuPrcSleep(30);
-        HuAudFXPlay(0x147);
-        for (i = 0; i < 5; i++) {
-            process = omAddPrcObj(func_80112198_w06, 0x4002, 0, 0);
-            process->user_data = (void *)i;
-            HuPrcChildLink(HuPrcCurrentGet(), process);
-            HuPrcSleep(3);
-        }
-        HuPrcChildWatch();
-        HuPrcSleep(20);
-
-        for (i = 0; i < 5; i++) {
-            process = omAddPrcObj(func_80112198_w06, 0x4002, 0, 0);
-            process->user_data = (void *)i;
-            HuPrcChildLink(HuPrcCurrentGet(), process);
-            HuPrcSleep(3);
-        }
-        HuPrcChildWatch();
-        HuPrcSleep(20);
-    }
-
-    GwPlayer[loc->current_player_index].itemNo[MBItemSelNoGet()] = -1;
-    MBItemRemoveEmpty(loc->current_player_index);
-    MBStatusItemTPLvlSet(loc->current_player_index,
-                         MBItemSelNoGet(), 0);
-    HuSprAnimKill(D_8011E34C_w06);
-    MBStatusShrink(-1);
-    MBStatusItemDispSetAll(0);
-    MBStatusGrow(-1);
-
-    if (choice != 0) {
-        HuAudFXPlay(0x2A0);
-    } else if (GwPlayer[loc->current_player_index].coin < 5 ||
-               loc->current_turn == loc->total_turns) {
-        HuAudFXPlay(0x29A);
-    } else {
-        HuAudFXPlay(0x298);
-    }
-    func_8010C9EC_w06();
-    GwSystem.forceShopHost = 0;
-}
-
-void func_80112668_w06(void) {
-    GW_SYSTEM *loc;
-    void *data;
-    s32 choice;
-    Process *process;
-    s32 one;
-
-    loc = &GwSystem;
-    data = DataRead(0x001301B8);
-    D_8011E34C_w06 = HuSprAnimRead(data);
-    DataClose(data);
-    func_80111870_w06();
-
-    {
-        s32 i;
-
-        HuPrcSleep(30);
-        HuAudFXPlay(0x147);
-        for (i = 0; i < 5; i++) {
-            process = omAddPrcObj(func_80112198_w06, 0x4002, 0, 0);
-            process->user_data = (void *)i;
-            HuPrcChildLink(HuPrcCurrentGet(), process);
-            HuPrcSleep(3);
-        }
-        HuPrcChildWatch();
-        HuPrcSleep(20);
-
-        for (i = 0; i < 5; i++) {
-            process = omAddPrcObj(func_80112198_w06, 0x4002, 0, 0);
-            process->user_data = (void *)i;
-            HuPrcChildLink(HuPrcCurrentGet(), process);
-            HuPrcSleep(3);
-        }
-        HuPrcChildWatch();
-        HuPrcSleep(20);
-    }
-
-    HuAudFXPlay(0x29F);
-retry:
-    MBDlgWinInsertCreate(4, 0x3A0A,
-                         mbCharNameMesTbl[GwPlayer[0].chr],
-                         mbCharNameMesTbl[GwPlayer[1].chr],
-                         mbCharNameMesTbl[GwPlayer[2].chr],
-                         mbCharNameMesTbl[GwPlayer[3].chr], 0);
-    if (GwPlayer[loc->current_player_index].coin != 0) {
-        choice = func_8010B4C4_w06(1, 0);
-    } else {
-        choice = func_8010B4C4_w06(2, loc->current_player_index);
-    }
-    MBDlgWinClose();
-    MBDlgWinKill();
-
-    switch (choice) {
-        case 4:
-            choice = func_800EF0D8_shared_board(0);
-            MBDlgWinInsertCreate(4, 0x3A0C, 0, 0, 0, 0, 0);
-            break;
-        case 5:
-            process = omAddPrcObj(func_8010B804_w06, 0, 0, 0);
-            omPrcSetStatBit(process, OM_STAT_NOALLPAUSE);
-            func_80106B38_w06();
-            one = 1;
-            D_800CB99C_main = one;
-            omAllPause();
-            omDelPrcObj(process);
-            func_800FC8A4_shared_board();
-            goto retry;
-        default:
-            MBDlgWinInsertCreate(4, 0x3A0B,
-                                 (s32)((char **)0x801014A0)[GwPlayer[choice].chr],
-                                 0, 0, 0, 0);
-            break;
-    }
-    MBDlgWinClose();
-    MBDlgWinKill();
-
-    HuAudFXPlay(0x29C);
-    GwPlayer[loc->current_player_index].itemNo[MBItemSelNoGet()] = -1;
-    MBItemRemoveEmpty(loc->current_player_index);
-    MBStatusItemTPLvlSet(loc->current_player_index,
-                         MBItemSelNoGet(), 0);
-    HuSprAnimKill(D_8011E34C_w06);
-
-    if (func_800DEB2C_shared_board(loc->current_player_index) == 3) {
-        GWBoardFlagSet(0x17);
-    } else {
-        GWBoardFlagClear(0x17);
-    }
-    GwSystem.playerIndexVisitingBowser = choice;
-    func_800FCA4C_shared_board();
-    func_800FF794_shared_board(0x50, 0, 3, 1);
-    func_800FC8A4_shared_board();
-    func_800FF7F0_shared_board(2);
-    omAllUPause();
-    HuPrcSleep(-1);
-}
-
-void func_80112A08_w06(void) {
-    s32 i;
-    s32 j;
-    s32 wipeStarted;
-    GW_SYSTEM *system = &GwSystem;
-    Object *lamp;
-    Object *starModel;
-    Object *targetStar;
-    Process *process;
-    Process *dialogProcess;
-    Vec direction;
-    Vec pos;
-    Vec destination;
-    s32 angle;
-    s32 alpha;
-    f32 speed;
-    f32 rotation;
-    void *dialog;
-
-    {
-        GW_PLAYER *player;
-
-        player = MBPlayerGet(-1);
-        lamp = MBModelCreate(0x3C, NULL);
-        MBMotionSet(lamp, -1, 1);
-        Hu3DModelScaleSet(lamp->omObj1->model[0], 0.0f, 0.0f, 0.0f);
-        HuVecCopy3F(&lamp->coords, &player->player_obj->coords);
-        lamp->velocity.x = 30.0f;
-        lamp->flags |= 1;
-        HuVecCopyXYZ(&lamp->scale, 0.0f, 0.0f, 0.0f);
-        MBModelDispOff(lamp);
-        func_801111E4_w06();
-
-        {
-            s32 itemSlot = MBItemFind(-1, 9);
-
-            GwPlayer[system->current_player_index].itemNo[itemSlot] = -1;
-        }
-        MBItemRemoveEmpty(system->current_player_index);
-
-        starModel = MBModelCreate(0x3D, NULL);
-        func_8001FA68_main(starModel->omObj1->model[0]);
-        func_8001F9E4_main(starModel->omObj1->model[0], 0xFF);
-        Hu3DModelScaleSet(starModel->omObj1->model[0], 0.0f, 0.0f, 0.0f);
-        HuVecCopy3F(&starModel->coords, &player->player_obj->coords);
-        starModel->coords.y = 100.0f;
-        while (starModel->coords.y > 30.0f) {
-            starModel->coords.y -= 1.0f;
-            HuPrcVSleep();
-        }
-    }
-
-    HuAudFXPlay(0x127);
-    func_800039A4_main(D_800CDBC8_main, 0xB4);
-    dialog = MBPlayerVibrateObjCreate(-1, 3, 5);
-
-    for (angle = 180, i = 0; angle < 1080; angle += 20, i++) {
-        Vec velocities[8] = {
-            {
-                1.0f,
-                1.0f,
-                1.0f,
-            },
-            { 1.0f, 2.0f, 1.0f },
-            { 0.0f, 2.0f, 1.0f },
-            { -1.0f, 1.0f, 1.0f },
-            { -1.0f, -1.0f, 1.0f },
-            { 0.0f, -1.0f, 1.0f },
-            { -1.0f, 2.0f, 1.0f },
-            { 1.0f, -1.0f, 1.0f }
-        };
-
-        starModel->coords.y = sindf((f32)angle) * 2.0f + 30.0f;
-        if (i & 1) {
-            HuVecCopyXYZ(&pos, starModel->coords.x, starModel->coords.y, starModel->coords.z);
-            pos.x -= 15.0f;
-            pos.y += 15.0f;
-            func_80110418_w06(&pos, 0.1f, 2.0f, 1,
-                                     &velocities[(i / 2) & 7], 1);
-        }
-        HuPrcVSleep();
-    }
-
-    alpha = 0xFF;
-    speed = 0.0f;
-    while (1) {
-        Vec velocities2[8] = {
-            {
-                1.0f,
-                1.0f,
-                1.0f,
-            },
-            { 1.0f, 2.0f, 1.0f },
-            { 0.0f, 2.0f, 1.0f },
-            { -1.0f, 1.0f, 1.0f },
-            { -1.0f, -1.0f, 1.0f },
-            { 0.0f, -1.0f, 1.0f },
-            { -1.0f, 2.0f, 1.0f },
-            { 1.0f, -1.0f, 1.0f }
-        };
-
-        starModel->coords.y = sindf((f32)angle) * 2.0f + 30.0f;
-        if (i & 1) {
-            HuVecCopyXYZ(&pos, starModel->coords.x, starModel->coords.y, starModel->coords.z);
-            pos.x -= 15.0f;
-            pos.y += 15.0f;
-            func_80110418_w06(&pos, 0.1f, 2.0f, 1,
-                                     &velocities2[(i / 2) & 7], 1);
-        }
-
-        if (alpha > 0) {
-            func_8001F9E4_main(starModel->omObj1->model[0], alpha & 0xFF);
-            alpha -= 12;
-        } else {
-            MBModelDispOff(starModel);
-            func_800D9A40_shared_board(lamp);
-            speed += 0.1f;
-            lamp->scale.z = speed;
-            lamp->scale.y = speed;
-            lamp->scale.x = speed;
-            if (speed > 1.0f) {
-                HuAudSeqPlay(0x3D);
-                break;
-            }
-        }
-        i++;
-        HuPrcVSleep();
-    }
-
-    lamp->scale.x = lamp->scale.y = lamp->scale.z = 1.0f;
-    dialogProcess = func_800EDB98_shared_board(lamp, 3.0f, 2.0f);
-    MBPlayerVibrateObjKill(dialog);
-    HuPrcSleep(30);
-    MBDlgWinExec(0x3C, 0x3A2F);
-    omDelPrcObj(dialogProcess);
-
-    i = 1;
-    lamp->coords.y -= lamp->velocity.x;
-    HuVecSubtract(&direction, &gCameraList->pos, &lamp->coords);
-    MBVecNormalize(&direction);
-    lamp->coords.y += lamp->velocity.x;
-
-    while (lamp->velocity.x < 1800.0f) {
-        lamp->coords.x += direction.x * 40.2f;
-        lamp->velocity.x += direction.y * 40.0f;
-        lamp->coords.z += direction.z * 40.2f;
-        if ((lamp->velocity.x > 300.0f) && (i != 0)) {
-            i = 0;
-            WipeColorSet(0xFF, 0xFF, 0xFF);
-            WipeCreateOut(0xB, 0x32);
-            HuAudFXPlay(0x128);
-        }
-        HuPrcVSleep();
-    }
-
-    while (WipeStatGet() != 0) {
-        HuPrcVSleep();
-    }
-
-    {
-        SpaceData *space;
-        SpaceData *nextSpace;
-
-        space = MBMasuGet(D_8011B5B0_w06[system->star_spawn_indices[system->current_star_spawn]]);
-        nextSpace = MBMasuGet(D_8011B5C0_w06[system->star_spawn_indices[system->current_star_spawn]]);
-        HuVecCopy3F(&destination, &space->coords);
-        MBCameraPos3DSet(&destination);
-        MBCameraFocusModeSet(4);
-        MBCameraFocusVecSet(&destination);
-        lamp->flags &= ~1;
-        HuVecCopy3F(&lamp->coords, &space->coords);
-        HuVecSubtract(&direction, &nextSpace->coords, &space->coords);
-        MBVecNormalize(&direction);
-        lamp->coords.x -= direction.x * 20.0f;
-        lamp->coords.z -= direction.z * 20.0f;
-    }
-
-    HuAudFXPlay(0x129);
-    WipeCreateIn(0xB, 0x32);
-    lamp->velocity.x = 100.0f;
-    while (lamp->velocity.x > 30.0f) {
-        HuPrcVSleep();
-        lamp->velocity.x -= 3.0f;
-    }
-
-    while (WipeStatGet() != 0) {
-        HuPrcVSleep();
-    }
-
-    process = HuPrcCurrentGet();
-    HuPrcChildLink(process,
-                   func_800ED128_shared_board(&lamp->rot,
-                                                     &direction,
-                                                     &lamp->rot, 0x10));
-    i = 0;
-    HuPrcChildWatch();
-    dialogProcess = func_800EDB98_shared_board(lamp, 3.0f, 2.0f);
-    MBDlgWinExec(0x3C, 0x3A30);
-    HuAudFXPlay(0x12C);
-    MBMotionSet(lamp, -1, 0);
-    HuPrcSleep(20);
-
-    wipeStarted = 1;
-    for (j = 0; j < 8; j++) {
-        if (D_8011E298_w06[j] != NULL) {
-            omDelPrcObj(D_8011E298_w06[j]);
-            D_8011E298_w06[j] = NULL;
-        }
-    }
-
-    targetStar = D_8011E278_w06[system->star_spawn_indices[system->current_star_spawn]];
-    HuAudSeqFadeOut(0x5A);
-    rotation = 0.0f;
-    while (targetStar->velocity.x < 400.0f) {
-        targetStar->velocity.x += 3.0f;
-        targetStar->coords.x += direction.x * 3.0f;
-        targetStar->coords.z += direction.z * 3.0f;
-        targetStar->rot.x = -sindf(rotation);
-        targetStar->rot.z = cosdf(rotation);
-        rotation += 45.0f;
-        if (rotation > 360.0f) {
-            rotation -= 360.0f;
-        }
-        if ((targetStar->velocity.x > 50.0f) && (wipeStarted != 0)) {
-            if (func_800DEB2C_shared_board(system->current_player_index) == 3) {
-                GWBoardFlagSet(0x17);
-            } else {
-                GWBoardFlagClear(0x17);
-            }
-            wipeStarted = 0;
-            WipeColorSet(0, 0, 0);
-            omDelPrcObj(dialogProcess);
-            func_800EDA58_shared_board();
-            func_800FC8A4_shared_board();
-            func_800FF7F0_shared_board(2);
-            func_800FCA14_shared_board();
-            omAllUPause();
-        }
-        HuPrcVSleep();
-    }
-    HuPrcSleep(-1);
-}
-
-void func_80113404_w06(void) {
-    GW_SYSTEM *system = &GwSystem;
-    s32 player;
-    Process *process;
-    s32 group;
-    void *sprite;
-    s32 spriteCount;
-    s32 i;
-    f32 position[2];
-    s32 result;
-
-    player = GwSystem.current_player_index;
-    group = HuSprGrpCreate(1, 0);
-    sprite = DataRead(D_8010197C_shared_board[1]);
-    spriteCount = HuSprAnimRead(sprite);
-    DataClose(sprite);
-    HuSprGrpMemberSet(group, 0, spriteCount, 0);
-    HuSprPriSet(group, 0, 0x4780);
-    HuSprAttrSet(group, 0, 0x9000);
-    HuSprBankSet(mbItemCursorGrpId, 0, 1, 0);
-    HuSprAnimModeSet(mbItemCursorGrpId, 0, HUSPR_ANIM_MODE_BANK);
-    HuPrcSleep(20);
-    HuAudFXPlay(0x145);
-    MBStatusSprPosGet(mbItemCursorGrpId, 0, &position[0], &position[1]);
-    process = HuPrcCurrentGet();
-    HuPrcChildLink(process,
-                   func_80110EE4_w06(mbItemCursorGrpId, position[0], position[1],
-                                            D_8011CA44_w06[system->current_player_index].x,
-                                            D_8011CA44_w06[system->current_player_index].y, -1));
-    HuPrcChildWatch();
-    HuPrcSleep(10);
-    HuSprBankSet(mbItemCursorGrpId, 0, 0, 0);
-    HuSprAnimModeSet(mbItemCursorGrpId, 0, HUSPR_ANIM_MODE_BANK);
-    for (i = 1; i < 10; i++) {
-        HuSprTPLvlSet(mbItemCursorGrpId, 0, 255 - i * 25);
-        HuPrcVSleep();
-    }
-    HuSprTPLvlSet(mbItemCursorGrpId, 0, 0);
-    HuSprDispOff(mbItemCursorGrpId, 0);
-    GwPlayer[player].itemNo[MBItemSelNoGet()] = -1;
-    MBStatusItemTPLvlSet(player, MBItemSelNoGet(), 0);
-    func_800F6848_shared_board(player, MBItemSelNoGet(), &position[0], &position[1]);
-    HuSprPosSet(group, 0, position[0], position[1]);
-    HuSprDispOn(group, 0);
-    MBItemRemoveEmpty(player);
-    MBStatusShrink(-1);
-    MBStatusItemDispSetAll(0);
-    MBStatusGrow(-1);
-retry:
-    MBDlgWinInsertCreate(0x38, 0x4100, 0, 0, 0, 0, 0);
-    result = func_8010B4C4_w06((s32)&D_8011CB44_w06, 0);
-    MBDlgWinClose();
-    MBDlgWinKill();
-    switch (result) {
-        case 0:
-            MBDlgWinInsertCreate(0x38, 0x4101, 0, 0, 0, 0, 0);
-            break;
-        case 1:
-            MBDlgWinInsertCreate(0x38, 0x4102, 0, 0, 0, 0, 0);
-            HuSprDispOff(group, 0);
-            GwPlayer[player].itemNo[MBItemFindEmpty(player)] = 1;
-            MBItemRemoveEmpty(player);
-            GwSystem.cur_player_used_item &= ~1;
-            break;
-        default:
-            HuSprDispOff(group, 0);
-            func_80106B38_w06();
-            D_800CB99C_main = 1;
-            omAllPause();
-            HuSprDispOn(group, 0);
-            goto retry;
-    }
-    MBDlgWinClose();
-    MBDlgWinKill();
-    if (result == 0) {
-        HuPrcSleep(10);
-        for (i = 1; i < 0x40; i++) {
-            HuSprTPLvlSet(group, 0, (u16)(255.0f - (f32)i * 3.984f));
-            HuPrcVSleep();
-        }
-        HuSprTPLvlSet(group, 0, 0);
-    }
-    HuSprGrpKill(group);
-    HuSprAnimKill(spriteCount);
-}
-
-void func_8011394C_w06(void) {
-    s32 playerIndex;
-    s32 group;
-    s16 setupGroup;
-    s32 xPos;
-    s16 fadeGroup;
-    s32 yPos;
-    f32 scale;
-    s32 alpha;
-
-    playerIndex = (s32)HuPrcCurrentGet()->user_data;
-    group = HuSprGrpCreate(1, 0);
-    setupGroup = group;
-    HuSprGrpMemberSet(setupGroup, 0, D_8011E354_w06, 0);
-    HuSprPriSet(setupGroup, 0, 9);
-    HuSprAttrSet(setupGroup, 0, 0x1000);
-    MBStatusItemPosGet(D_8011E350_w06, 0, &xPos, &yPos);
-
-    xPos = (s32)((D_8011C8FC_w06[D_8011E350_w06].x * 16.0f) +
-                 D_8011C8DC_w06[D_8011E350_w06].x);
-    yPos = (s32)((D_8011C8FC_w06[D_8011E350_w06].y * 16.0f) +
-                 D_8011C8DC_w06[D_8011E350_w06].y);
-    HuSprPosSet(
-        setupGroup, 0, (f32)xPos + D_8011CB50_w06[playerIndex].x,
-        (f32)yPos + D_8011CB50_w06[playerIndex].y);
-    HuSprColorSet(group, 0, 0xFF, 0xFF, 0xFF);
-    HuSprTPLvlSet(group, 0, 0xFF);
-
-    scale = 0.0f;
-    alpha = 0xFF;
-    while (alpha >= 0) {
-        HuSprScaleSet(group, 0, scale, scale);
-        HuSprTPLvlSet(group, 0, alpha);
-        HuPrcVSleep();
-        alpha -= 10;
-        scale += 0.1f;
-    }
-
-    HuSprTPLvlSet(group, 0, 0);
-    HuSprGrpKill(group);
-    omDelPrcObj(NULL);
-}
-
-void func_80113B68_w06(void) {
-    s32 playerIndex;
-    void *data;
-    s32 itemSpriteId;
-    s32 auraSpriteId;
-    s32 group;
-    s16 setupGroup;
-    s32 xPos;
-    s16 fadeGroup;
-    s32 yPos;
-    s32 i;
-    s32 j;
-    Process *childProcess;
-    s32 fxId;
-
-    playerIndex = (s32)HuPrcCurrentGet()->user_data;
-    data = DataRead(0x21002C);
-    itemSpriteId = HuSprAnimRead(data);
-    DataClose(data);
-    data = DataRead(0x1301BA);
-    auraSpriteId = HuSprAnimRead(data);
-    DataClose(data);
-    data = DataRead(0x1301B9);
-    D_8011E354_w06 = HuSprAnimRead(data);
-    DataClose(data);
-
-    group = HuSprGrpCreate(2, 2);
-    setupGroup = group;
-    HuSprAnimModeSet(setupGroup, 0, HUSPR_ANIM_MODE_BANK);
-    HuSprGrpMemberSet(setupGroup, 0, itemSpriteId, 0xC);
-    HuSprPriSet(setupGroup, 0, 9);
-    HuSprAttrSet(setupGroup, 0, 0x1000);
-    func_800554C4_main(setupGroup, 0, -1);
-    HuSprGrpMemberSet(setupGroup, 1, auraSpriteId, 0);
-    HuSprPriSet(setupGroup, 1, 9);
-    HuSprAttrSet(setupGroup, 1, 0x9000);
-    HuSprColorSet(setupGroup, 1, 0xFF, 0xFF, 0xFF);
-    HuSprTPLvlSet(setupGroup, 1, 0xFF);
-    HuSprScaleSet(setupGroup, 1, 2.0f, 2.0f);
-    func_800554C4_main(setupGroup, 1, 0);
-
-    yPos = 0xC8;
-    if (playerIndex & 1) {
-        HuSprAttrSet(setupGroup, 0, 1);
-        HuSprAttrSet(setupGroup, 1, 1);
-        HuSprPosSet(setupGroup, 1, 0x14, -5);
-    } else {
-        yPos = 0x78;
-        HuSprPosSet(group, 1, -0x14, -5);
-    }
-
-    xPos = (playerIndex < 2) ? -0x20 : 0x110;
-    HuPrcSleep(0x14);
-    GwPlayer[playerIndex].itemNo[MBItemFind(playerIndex, 0xC)] = -1;
-    MBItemRemoveEmpty(playerIndex);
-    MBStatusItemIconSprReinit(playerIndex);
-
-    do {
-        if (playerIndex < 2) {
-            xPos += 5;
-            if (xPos >= 0x33) {
-                break;
-            }
-        } else {
-            xPos -= 5;
-            if (xPos < 0xD2) {
-                break;
-            }
-        }
-        HuSprPosSet(group, 0, yPos, xPos);
-        HuPrcVSleep();
-    } while (1);
-
-    HuPrcSleep(0xA);
-    HuSprDispOn(group, 1);
-    fxId = HuAudFXPlay(0x14C);
-    D_8011E350_w06 = playerIndex;
-
-    for (j = 0; j < 4; j++) {
-        for (i = 0; i < 6; i++) {
-            childProcess = omAddPrcObj(func_8011394C_w06, 0x4002, 0, 0);
-            childProcess->user_data = (void *)i;
-            HuPrcSleep(2);
-        }
-        HuPrcSleep(5);
-    }
-
-    HuPrcChildLink(HuPrcCurrentGet(), childProcess);
-    HuPrcChildWatch();
-    HuAudFXStop(fxId);
-    HuSprTPLvlSet(group, 1, 0);
-
-    for (i = 0xFF; i >= 0; i -= 0x1E) {
-        HuSprTPLvlSet(group, 0, i);
-        HuPrcVSleep();
-    }
-
-    HuSprTPLvlSet(group, 0, 0);
-    HuSprGrpKill(group);
-    HuSprAnimKill(D_8011E354_w06);
-    HuSprAnimKill(auraSpriteId);
-    HuSprAnimKill(itemSpriteId);
-    omDelPrcObj(NULL);
-}
-
-void func_80113F5C_w06(void) {
-    s32 i;
-
-    HuPrcSleep(10);
-    for (i = 1; i < 64; i++) {
-        MBStatusItemTPLvlSet(GwSystem.current_player_index, MBItemSelNoGet(), 255.0f - (i * 3.984f));
-        HuPrcVSleep();
-    }
-    MBStatusItemTPLvlSet(GwSystem.current_player_index, MBItemSelNoGet(), 0);
-}
-
-void func_80114018_w06(void) {
-    Object *src = HuPrcCurrentGet()->user_data;
-    Object *obj = MBModelLinkCreate(D_8011E358_w06);
-    f32 angle;
-
-    HuVecCopy3F(&obj->coords, &src->coords);
-    HuVecCopyXYZ(&obj->scale, 2.0f, 2.0f, 2.0f);
-    obj->velocity.x = src->velocity.x + 10.0f;
-    MBModelDispOn(obj);
-    angle = MBRand(360.0f);
-    while (1) {
-        HuPrcVSleep();
-        obj->velocity.x += 1.5;
-        if (src->velocity.x + 35.0f <= obj->velocity.x) {
-            break;
-        }
-        angle += 40.0f;
-        func_8008A2A0_main(Hu3DData[obj->omObj1->model[0]].mtx, angle);
-    }
-    MBModelKill(obj);
-    omDelPrcObj(NULL);
-}
-
-void func_8011416C_w06(Object *arg) {
-    Process *temp = omAddPrcObj(func_80114018_w06, 0x1000, 0, 0);
-
-    temp->user_data = arg;
-}
-
-void func_801141A8_w06(void) {
-    s32 *flag = HuPrcCurrentGet()->user_data;
-    f32 angle = 0.0f;
-    f32 scale = 1.0f;
-    GW_SYSTEM *loc = &GwSystem;
-
-    while (1) {
-        D_8011E35C_w06->rot.x = -sindf(angle);
-        D_8011E35C_w06->rot.z = cosdf(angle);
-        angle += 30.0f;
-        if (angle > 360.0f) {
-            angle -= 360.0f;
-        }
-        if (*flag != 0) {
-            D_8011E35C_w06->scale.z = scale;
-            D_8011E35C_w06->scale.y = scale;
-            D_8011E35C_w06->scale.x = scale;
-            scale -= 0.1f;
-            if (scale <= 0.0f) {
-                break;
-            }
-        }
-        HuPrcVSleep();
-    }
-    D_8011E35C_w06->scale.x = D_8011E35C_w06->scale.y = D_8011E35C_w06->scale.z = 0.0f;
-    GwPlayer[loc->current_player_index].itemNo[MBItemFind(-1, 0xF)] = -1;
-    MBItemRemoveEmpty(loc->current_player_index);
-    MBStatusItemIconSprReinit(loc->current_player_index);
-    MBModelKill(D_8011E35C_w06);
-    omDelPrcObj(0);
-}
-
-void func_80114338_w06(void) {
-    s32 flag = 0;
-    GW_SYSTEM *system = &GwSystem;
-    void *data;
-    UnkVibrateProcess *process;
-    s32 positionX;
-    s32 positionY;
-    s32 bankCoins;
-    s32 coinCount;
-    s32 spriteId;
-    f32 coinStep;
-    f32 coinProgress;
-
-    mbItemCursorGrpId = HuSprGrpCreate(1, 5);
-    data = DataRead(D_80101040_shared_board[GwPlayer[system->current_player_index].chr]);
-    spriteId = HuSprAnimRead(data);
-    DataClose(data);
-    HuSprGrpMemberSet(mbItemCursorGrpId, 0, spriteId, 0);
-    HuSprPriSet(mbItemCursorGrpId, 0, 10);
-    HuSprAnimModeSet(mbItemCursorGrpId, 0, HUSPR_ANIM_MODE_BANK);
-    HuSprDispOff(mbItemCursorGrpId, 0);
-    MBStatusItemPosGet(-1, 0, &positionX, &positionY);
-    HuSprPosSet(mbItemCursorGrpId, 0, positionX, positionY);
-    MBStatusShrink(-1);
-    MBStatusItemDispSetAll(1);
-    MBStatusGrow(-1);
-    MBItemSelNoSet(MBItemFind(-1, 0xF));
-    func_801111E4_w06();
-
-    D_8011E35C_w06 = MBModelCreate(0x44, NULL);
-    HuVecCopy3F(&D_8011E35C_w06->coords, &MBPlayerGet(-1)->player_obj->coords);
-    D_8011E35C_w06->velocity.x = 100.0f;
-    while (30.0f < D_8011E35C_w06->velocity.x) {
-        D_8011E35C_w06->velocity.x -= 1.0f;
-        HuPrcVSleep();
-    }
-    MBStatusShrink(-1);
-    MBStatusItemDispSetAll(0);
-    MBStatusGrow(-1);
-    omAddPrcObj(func_801141A8_w06, 0x4002, 0, 0)->user_data = &flag;
-    process = MBPlayerVibrateObjCreate(-1, 4, 5);
-
-    bankCoins = GwSystem.bank_coins;
-    coinStep = (f32)bankCoins / 30.0f;
-    coinProgress = 0.0f;
-    D_8011E358_w06 = MBModelCreate(0x19, NULL);
-    MBModelTempAllocFree(D_8011E358_w06);
-    MBModelDispOff(D_8011E358_w06);
-    if (bankCoins != 0) {
-        while (bankCoins != 0) {
-            coinProgress += coinStep;
-            coinCount = 0;
-            while (coinProgress >= 1.0f) {
-                coinProgress -= 1.0f;
-                coinCount++;
-            }
-            if (coinCount != 0) {
-                func_8011416C_w06(D_8011E35C_w06);
-                if (bankCoins - coinCount < 0) {
-                    coinCount = bankCoins;
-                }
-                bankCoins -= coinCount;
-                MBPlayerCoinAdd(system->current_player_index, coinCount);
-                HuAudFXPlay(0x106);
-                GwSystem.bank_coins -= coinCount;
-                func_80107FC0_w06();
-                HuPrcSleep(5);
-            }
-        }
-    }
-
-    MBPlayerVibrateObjKill(process);
-    flag = 1;
-    HuPrcSleep(20);
-    MBModelKill(D_8011E358_w06);
-    MBVecForwardSet(&MBPlayerGet(-1)->player_obj->rot);
-    MBPlayerMotionSet(-1, 5, 0);
-    HuPrcSleep(5);
-    PlayerFXPlay(0x274, system->current_player_index);
-    HuPrcSleep(0x2D);
-    MBPlayerMotionSet(-1, -1, 2);
-}
-
-s32 func_801146F4_w06(u8 *arg0, s32 arg1) {
-    s32 delay = 0;
-    s16 inputs[MB_MAX_PLAYERS];
-    u8 buttons[MB_MAX_PLAYERS];
-    s32 i;
-    s32 j;
-
-    *(Unk4Bytes *)buttons = *(Unk4Bytes *)D_8011E0E0_w06;
-
-    for (i = 0; i < MB_MAX_PLAYERS; i++) {
-        if (i == GwSystem.current_player_index) {
-            if (GwPlayer[i].stat & 1) {
-                delay = 1; // Required for matching register allocation.
-                if (arg1 != 0) {
-                    delay = D_8011E360_w06 + 1;
-                } else {
-                    delay = D_8011E364_w06 + 1;
-                }
-                inputs[GwPlayer[i].pad] = 0x400;
-            } else {
-                HuWinActivePlayerSet(mbDlgWinId, buttons[GwPlayer[i].pad]);
-                inputs[GwPlayer[i].pad] = -1;
-            }
-        } else {
-            inputs[GwPlayer[i].pad] = 0;
-        }
-    }
-
-    if (delay != 0) {
-        func_8005B63C_main(mbDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
-        for (j = 0; delay != 0; j++) {
-            if (--delay == 0) {
-                inputs[GwPlayer[GwSystem.current_player_index].pad] = 0x8000;
-            }
-            if (j == 0) {
-                HuWinComKeyWait(inputs[0], inputs[1], inputs[2], inputs[3],
-                                    func_800EDC40_shared_board());
-            } else {
-                HuWinComKeyWait(inputs[0], inputs[1], inputs[2], inputs[3], 5);
-            }
-        }
-    } else {
-        HuWinComKeySet(inputs[0], inputs[1], inputs[2], inputs[3]);
-    }
-
-    for (i = 0; i < MB_MAX_PLAYERS; i++) {
-        if (arg0[i] == 0) {
-            HuWinChoiceDisable(mbDlgWinId, i);
-        }
-    }
-
-    i = 0;
-    do {
-        i = HuWinChoiceGet(mbDlgWinId, i, 1);
-    } while (arg0[i] == 0);
-    return i;
-}
-
-void func_8011498C_w06(void) {
-    Process *prc = HuPrcCurrentGet();
-    s32 playerIdx = (s32)prc->user_data;
-    s32 j;
-    s32 val;
-    s32 unk[2]; // unreferenced; preserves an 8-byte stack slot
-
-    MBPlayerVibrate(((s16 *)&prc->user_data)[1], 4);
-
-    for (val = 0x80; val > 0; val -= 0xA) {
-        for (j = 0; j < 3; j++) {
-            if (GwPlayer[playerIdx].itemNo[j] != -1) {
-                MBStatusItemTPLvlSet(playerIdx, j, val);
-            }
-        }
-        HuPrcVSleep();
-    }
-
-    for (j = 0; j < 3; j++) {
-        if (GwPlayer[playerIdx].itemNo[j] != -1) {
-            MBStatusItemTPLvlSet(playerIdx, j, 0);
-        }
-    }
-    omDelPrcObj(NULL);
-}
-
-void func_80114A98_w06(void) {
-    Process *process = HuPrcCurrentGet();
-    s32 playerIndex = (s32)process->user_data;
-    GW_SYSTEM *system = &GwSystem;
-    s32 i;
-    s32 alpha;
-    s32 itemIndex;
-    s32 xPos;
-    s16 fadeGroup;
-    s32 yPos;
-
-    for (i = 0, itemIndex = 0; i < 3; i++) {
-        if (GwPlayer[system->current_player_index].itemNo[i] != -1) {
-            MBStatusItemScaleSet(system->current_player_index, i, 1.0f, 1.0f);
-            MBStatusItemPosGet(playerIndex, itemIndex, &xPos, &yPos);
-            MBStatusItemPosSet(system->current_player_index, i, xPos, yPos);
-            itemIndex += (i != MBItemSelNoGet());
-        }
-    }
-
-    for (alpha = 0; alpha < 0x80; alpha += 0x14) {
-        for (i = 0; i < 3; i++) {
-            if (GwPlayer[system->current_player_index].itemNo[i] != -1) {
-                if (i != MBItemSelNoGet()) {
-                    MBStatusItemTPLvlSet(system->current_player_index, i, alpha);
-                }
-            }
-        }
-        HuPrcVSleep();
-    }
-
-    for (i = 0; i < 3; i++) {
-        if (GwPlayer[system->current_player_index].itemNo[i] != -1) {
-            if (i != MBItemSelNoGet()) {
-                MBStatusItemTPLvlSet(system->current_player_index, i, 0x80);
-            }
-        }
-    }
-    omDelPrcObj(NULL);
-}
-
-void func_80114C74_w06(void) {
-    char playerNames[4][16];
-    u8 choices[16];
-    Vec2f position;
-    Vec2f target;
-    s32 xPos;
-    s16 fadeGroup;
-    s32 yPos;
-    u16 spriteId;
-    Object *box;
-    Process *process;
-    GW_SYSTEM *system = &GwSystem;
-    s32 targetPlayer;
-    s32 noAnimation = 0;
-    s32 itemCount;
-    s32 itemSlot;
-    s32 sleepTime;
-    s32 i;
-    s32 j;
-    s32 item;
-    f32 angle;
-    f32 angleStep;
-    f32 spinStep;
-    f32 scale;
-    f32 scaleY;
-    f32 itemAngle;
-    f32 scaleZ;
-    f32 finalScale;
-
-    func_801111E4_w06();
-    box = MBModelCreate(0x20, NULL);
-    func_8001C2FC_main(box->omObj1->model[0], 0x20000, 0x20000);
-    Hu3DModelRemakeStatic(box->omObj1->model[0]);
-    func_8001C954_main(box->omObj1->model[0]);
-    func_8001C514_main(box->omObj1->model[0]);
-    Hu3DModelScaleSet(box->omObj1->model[0], 0.0f, 0.0f, 0.0f);
-    HuVecCopy3F(&box->coords, &MBPlayerGet(-1)->player_obj->coords);
-    func_8001C814_main(box->omObj1->model[0], 2, 1);
-    box->velocity.x = 100.0f;
-    HuAudFXPlay(0x142);
-    while (box->velocity.x > 30.0f) {
-        box->velocity.x -= 1.0f;
-        HuPrcVSleep();
-    }
-
-    for (itemSlot = 0; itemSlot < 4; itemSlot++) {
-        if (GwSystem.current_player_index == itemSlot) {
-            playerNames[itemSlot][0] = 1;
-            choices[itemSlot] = 0;
-        } else {
-            playerNames[itemSlot][0] = 8;
-            choices[itemSlot] = 1;
-        }
-        func_800E2260_shared_board(itemSlot, &playerNames[itemSlot][1]);
-    }
-    choices[4] = 1;
-    choices[5] = 1;
-    MBDlgWinInsertCreate(-1, 0x5C01, (s32)playerNames[0], (s32)playerNames[1], (s32)playerNames[2],
-                         (s32)playerNames[3], 0);
-    targetPlayer = func_801146F4_w06(choices, 1);
-    MBDlgWinClose();
-    MBDlgWinKill();
-    if (targetPlayer == 4) {
-        targetPlayer = func_800EF0D8_shared_board(1);
-    }
-
-    itemSlot = MBItemSelNoGet();
-    if (GwPlayer[GwSystem.current_player_index].itemNo[itemSlot] == 0x10 &&
-        MBItemFindEmpty(GwSystem.current_player_index) == 1 && MBItemFindEmpty(targetPlayer) == 0) {
-        noAnimation = 1;
-    }
-
-    if (!noAnimation) {
-        HuAudFXPlay(0x149);
-        func_8001C814_main(box->omObj1->model[0], 1, 0);
-        HuPrcSleep(20);
-        position.x = 160.0f;
-        position.y = 84.0f;
-        for (itemSlot = 0; itemSlot < 3; itemSlot++) {
-            for (j = 0; j < 3; j++) {
-                spriteId = 0x4790;
-                if (j == itemSlot) {
-                    spriteId = 0x4786;
-                }
-                MBStatusItemPriSet(system->current_player_index, j, spriteId);
-            }
-            if (GwPlayer[system->current_player_index].itemNo[itemSlot] != -1) {
-                if (itemSlot != MBItemSelNoGet()) {
-                    func_80111A34_w06(system->current_player_index, itemSlot, 10, &position.x, 0);
-                    HuPrcSleep(2);
-                }
-            }
-        }
-        func_8001C814_main(box->omObj1->model[0], 4, 4);
-        while (Hu3DData[box->omObj1->model[0]].motTime != 0.0f) {
-            HuPrcVSleep();
-        }
-        HuAudFXPlay(0x150);
-        HuPrcSleep(20);
-        process = omAddPrcObj(func_8011498C_w06, 0x4800, 0, 0);
-        process->user_data = (void *)targetPlayer;
-        HuAudFXPlay(0x151);
-
-        angle = 0.0f;
-        spinStep = 5.0f;
-        i = 0;
-        while (1) {
-            box->rot.x = -sindf(angle);
-            box->rot.z = cosdf(angle);
-            angle += spinStep;
-            if (angle > 360.0f) {
-                angle -= 360.0f;
-            }
-            spinStep += 2.0f;
-            if (spinStep > 45.0f) {
-                spinStep = 45.0f;
-                if (i++ >= 31) {
-                    break;
-                }
-            }
-            HuPrcVSleep();
-        }
-
-        i = 0;
-        while (1) {
-            box->rot.x = -sindf(angle);
-            box->rot.z = cosdf(angle);
-            angle += spinStep;
-            if (angle > 360.0f) {
-                angle -= 360.0f;
-                if (++i >= 2) {
-                    break;
-                }
-            }
-            spinStep -= 2.0f;
-            if (spinStep < 5.0f) {
-                spinStep = 5.0f;
-            }
-            HuPrcVSleep();
-        }
-        box->rot.x = 0.0f;
-        box->rot.z = 1.0f;
-        HuAudFXPlay(0x152);
-        for (itemSlot = 0; itemSlot < 1441; itemSlot += 40) {
-            scale = itemSlot;
-            angleStep = sindf(scale) / 1.5f + 1.0f;
-            scaleY = sindf(scale) / 1.5f + 1.0f;
-            scaleZ = sindf(scale) / 1.5f + 1.0f;
-            HuVecCopyXYZ(&box->scale, angleStep, scaleY, scaleZ);
-            HuPrcVSleep();
-        }
-
-        HuAudFXPlay(0x149);
-        func_8001C814_main(box->omObj1->model[0], 4, 0);
-        HuPrcSleep(20);
-        process = omAddPrcObj(func_80114A98_w06, 0x4800, 0, 0);
-        process->user_data = (void *)targetPlayer;
-        itemCount = MBItemFindEmpty(targetPlayer);
-        target.y = 70.0f;
-
-        switch (itemCount) {
-            case 0:
-                break;
-            case 1:
-                target.x = 160.0f;
-                MBStatusItemPosSet(targetPlayer, 0, 160, 84);
-                func_80111A34_w06(targetPlayer, 0, 10, &target.x, 1);
-                HuPrcSleep(20);
-                MBStatusItemPosGet(system->current_player_index, 0, &xPos, &yPos);
-                target.x = xPos;
-                target.y = yPos;
-                MBStatusItemPriSet(targetPlayer, 0, 0x4790);
-                func_80111A34_w06(targetPlayer, 0, 7, &target.x, 2);
-                break;
-            case 2:
-                target.x = 130.0f;
-                MBStatusItemPosSet(targetPlayer, 0, 160, 84);
-                func_80111A34_w06(targetPlayer, 0, 10, &target.x, 1);
-                target.x = 190.0f;
-                MBStatusItemPosSet(targetPlayer, 1, 160, 84);
-                func_80111A34_w06(targetPlayer, 1, 10, &target.x, 1);
-                HuPrcSleep(20);
-                MBStatusItemPosGet(system->current_player_index, 0, &xPos, &yPos);
-                target.x = xPos;
-                target.y = yPos;
-                MBStatusItemPriSet(targetPlayer, 0, 0x4790);
-                func_80111A34_w06(targetPlayer, 0, 7, &target.x, 2);
-                MBStatusItemPosGet(system->current_player_index, 1, &xPos, &yPos);
-                target.x = xPos;
-                target.y = yPos;
-                MBStatusItemPriSet(targetPlayer, 1, 0x478F);
-                func_80111A34_w06(targetPlayer, 1, 7, &target.x, 2);
-                break;
-            default:
-                target.x = 110.0f;
-                MBStatusItemPosSet(targetPlayer, 0, 160, 84);
-                func_80111A34_w06(targetPlayer, 0, 10, &target.x, 1);
-                target.x = 210.0f;
-                MBStatusItemPosSet(targetPlayer, 1, 160, 84);
-                func_80111A34_w06(targetPlayer, 1, 10, &target.x, 1);
-                target.x = 160.0f;
-                MBStatusItemPosSet(targetPlayer, 2, 160, 84);
-                func_80111A34_w06(targetPlayer, 2, 10, &target.x, 1);
-                HuPrcSleep(20);
-                MBStatusItemPosGet(system->current_player_index, 0, &xPos, &yPos);
-                target.x = xPos;
-                target.y = yPos;
-                MBStatusItemPriSet(targetPlayer, 0, 0x4790);
-                func_80111A34_w06(targetPlayer, 0, 7, &target.x, 2);
-                MBStatusItemPosGet(system->current_player_index, 1, &xPos, &yPos);
-                target.x = xPos;
-                target.y = yPos;
-                MBStatusItemPriSet(targetPlayer, 1, 0x478F);
-                func_80111A34_w06(targetPlayer, 1, 7, &target.x, 2);
-                MBStatusItemPosGet(system->current_player_index, 2, &xPos, &yPos);
-                target.x = xPos;
-                target.y = yPos;
-                MBStatusItemPriSet(targetPlayer, 2, 0x478E);
-                func_80111A34_w06(targetPlayer, 2, 7, &target.x, 2);
-                break;
-        }
-        HuPrcSleep(2);
-    }
-
-    itemSlot = MBItemSelNoGet();
-    GwPlayer[system->current_player_index].itemNo[itemSlot] = -1;
-    MBItemRemoveEmpty(system->current_player_index);
-    for (itemSlot = 0; itemSlot < 3; itemSlot++) {
-        item = GwPlayer[targetPlayer].itemNo[itemSlot];
-        GwPlayer[targetPlayer].itemNo[itemSlot] = GwPlayer[system->current_player_index].itemNo[itemSlot];
-        GwPlayer[system->current_player_index].itemNo[itemSlot] = item;
-    }
-    if (!noAnimation) {
-        MBStatusItemSprKill(-1);
-        MBStatusItemSprKill(targetPlayer);
-        sleepTime = 10;
-    } else {
-        sleepTime = 20;
-    }
-    HuPrcSleep(sleepTime);
-    HuAudFXPlay(0x15B);
-    finalScale = 0.1f;
-    for (i = 0; i < 20; i++) {
-        finalScale += 0.044999998f;
-        func_8001D558_main(box->omObj1->model[0], finalScale, finalScale * 10.0f, 1);
-        HuPrcVSleep();
-    }
-    MBModelKill(box);
-
-    if (noAnimation) {
-        PlayerFXPlay(0x286, system->current_player_index);
-        MBPlayerMotionSet(-1, 3, 0);
-        HuPrcSleep(70);
-    } else {
-        PlayerFXPlay(0x274, system->current_player_index);
-        MBPlayerMotionSet(-1, 5, 0);
-        HuPrcSleep(50);
-    }
-    func_800F2388_shared_board(-1, -1, 0, 10, 2);
-    MBDlgWinInsertCreate(-1, noAnimation ? 0x3A2E : 0x3A2D,
-                         mbCharNameMesTbl[GwPlayer[system->current_player_index].chr],
-                         mbCharNameMesTbl[GwPlayer[targetPlayer].chr], 0, 0, 0);
-    MBDlgWinClose();
-    MBDlgWinKill();
-}
-
-void func_80115920_w06(void) {
-    ModelAnimWork *data = HuPrcCurrentGet()->user_data;
-    Object *obj1 = data->obj1;
-    Object *obj2 = data->obj2;
-
-    MBMotionSet(obj1, -1, data->state);
-    HuVecCopy3F(&obj1->coords, &obj2->coords);
-    obj1->coords.y += obj2->velocity.x - 10.0f;
-    func_800D9A40_shared_board(obj1);
-    while (MBMotionCheck(obj1) == 0 && data->flag == 0) {
-        HuPrcVSleep();
-    }
-    MBModelKill(obj1);
-    omDelPrcObj(0);
-}
-
-void func_801159E0_w06(void) {
-    s32 *processFlag = HuPrcCurrentGet()->user_data;
-    Object *gameGuyModel = D_8011E368_w06;
-    Object *model;
-    Process *process;
-    ModelAnimWork *work;
-    s32 effect;
-    f32 angle;
-    f32 angleStep;
-    f32 fallSpeed;
-    f32 scale;
-    s32 i;
-
-    model = MBModelCreate(0x45, NULL);
-    MBModelDispOff(model);
-    effect = func_8000CED8_main(0xB0004, 0xAA9);
-    func_8000CD00_main(effect, 1.0f, 20.0f, 1.0f);
-    func_8000D018_main(effect, 10.0f);
-    Hu3DModelCameraSet(effect, HU3D_CAM0);
-    HuAudFXPlay(0x24C);
-
-    angle = 0.0f;
-    angleStep = 2.0f;
-    while (angleStep < 80.0f) {
-        gameGuyModel->rot.x = -sindf(angle);
-        gameGuyModel->rot.z = cosdf(angle);
-        angle += angleStep;
-        if (angle > 360.0f) {
-            angle -= 360.0f;
-        }
-        angleStep += 1.0f;
-        if (angleStep > 80.0f) {
-            angleStep = 80.0f;
-        }
-        func_8000CFA4_main(effect, gameGuyModel->coords.x,
-                           gameGuyModel->coords.y + gameGuyModel->velocity.x, gameGuyModel->coords.z);
-        HuPrcVSleep();
-    }
-
-    HuAudFXPlay(0x14A);
-    while (gameGuyModel->velocity.x < 110.0f) {
-        gameGuyModel->velocity.x += 7.0f;
-        gameGuyModel->rot.x = -sindf(angle);
-        gameGuyModel->rot.z = cosdf(angle);
-        angle += angleStep;
-        if (angle > 360.0f) {
-            angle -= 360.0f;
-        }
-        func_8000CFA4_main(effect, gameGuyModel->coords.x,
-                           gameGuyModel->coords.y + gameGuyModel->velocity.x, gameGuyModel->coords.z);
-        HuPrcVSleep();
-    }
-
-    *processFlag = 0;
-    while (*processFlag == 0) {
-        if (D_8011CB80_w06 != -1) {
-            HuVecCopy3F(&gameGuyModel->coords,
-                        &MBPlayerGet(D_8011CB80_w06)->player_obj->coords);
-            func_8000CFA4_main(effect, gameGuyModel->coords.x,
-                               gameGuyModel->coords.y + gameGuyModel->velocity.x, gameGuyModel->coords.z);
-        }
-        HuPrcVSleep();
-    }
-
-    HuAudFXPlay(0x14B);
-    fallSpeed = 3.0f;
-    while (gameGuyModel->velocity.x > 30.0f) {
-        gameGuyModel->velocity.x -= fallSpeed;
-        if (fallSpeed > 1.0f) {
-            fallSpeed -= 0.2f;
-        }
-        gameGuyModel->rot.x = -sindf(angle);
-        gameGuyModel->rot.z = cosdf(angle);
-        angle += angleStep;
-        if (angle > 360.0f) {
-            angle -= 360.0f;
-        }
-        func_8000CFA4_main(effect, gameGuyModel->coords.x,
-                           gameGuyModel->coords.y + gameGuyModel->velocity.x, gameGuyModel->coords.z);
-        HuPrcVSleep();
-    }
-
-    while (1) {
-        gameGuyModel->rot.x = -sindf(angle);
-        gameGuyModel->rot.z = cosdf(angle);
-        angle += angleStep;
-        if (angle > 360.0f) {
-            angle -= 360.0f;
-        }
-        if (angleStep > 15.0f) {
-            angleStep -= 3.0f;
-        } else {
-            angleStep -= 0.5f;
-        }
-        if (angleStep < 1.0f) {
-            break;
-        }
-        func_8000CFA4_main(effect, gameGuyModel->coords.x,
-                           gameGuyModel->coords.y + gameGuyModel->velocity.x, gameGuyModel->coords.z);
-        HuPrcVSleep();
-    }
-
-    func_8000D044_main(effect);
-    process = omAddPrcObj(func_80115920_w06, 0x4800, 0, 0x40);
-    work = HuMemMemoryAlloc(process->heap, 0x20);
-    process->user_data = work;
-    work->obj1 = model;
-    work->obj2 = gameGuyModel;
-    work->state = 0;
-    work->flag = 0;
-    HuPrcSleep(3);
-    *processFlag = 0;
-    HuAudFXPlay(0x24D);
-
-    i = 0;
-    scale = 0.1f;
-    for (; i < 20; i++) {
-        scale += 0.044999998f;
-        func_8001D558_main(gameGuyModel->omObj1->model[0], scale, scale * 10.0f, 1);
-        HuPrcVSleep();
-    }
-    MBModelKill(gameGuyModel);
-    omDelPrcObj(NULL);
-}
-
-void func_80115F10_w06(void) {
-    Object *coinModel;
-    Object *gameGuyModel;
-    Object *playerObj;
-    Process *process;
-    GW_SYSTEM *system;
-    s32 choice;
-    s32 itemSlot;
-    s32 rewardIndex;
-    s32 randomValue;
-    s32 rewardAmount;
-    s32 i;
-    struct {
-        s32 processFlag;
-        s32 pad;
-        char rewardText[0x10];
-    } locals;
-
-    system = &GwSystem;
-    func_801111E4_w06();
-    itemSlot = MBItemFind(-1, 0x11);
-    GwPlayer[system->current_player_index].itemNo[itemSlot] = -1;
-    MBItemRemoveEmpty(system->current_player_index);
-    MBStatusItemIconSprReinit(system->current_player_index);
-    MBStatusShrink(-1);
-    MBStatusItemDispSetAll(0);
-    MBStatusGrow(-1);
-
-    coinModel = MBModelCreate(0x3E, 0);
-    Hu3DModelScaleSet(coinModel->omObj1->model[0], 0, 0, 0);
-    MBModelTempAllocFree(coinModel);
-    coinModel->velocity.x = 30.0f;
-    MBModelDispOff(coinModel);
-
-    gameGuyModel = MBModelCreate(0x43, 0);
-    D_8011E368_w06 = gameGuyModel;
-    func_8001C2FC_main(gameGuyModel->omObj1->model[0], 0x20000, 0x20000);
-    Hu3DModelRemakeStatic(gameGuyModel->omObj1->model[0]);
-    func_8001C954_main(gameGuyModel->omObj1->model[0]);
-    func_8001C514_main(gameGuyModel->omObj1->model[0]);
-    HuVecCopy3F(&gameGuyModel->coords, &MBPlayerGet(-1)->player_obj->coords);
-    func_8001C814_main(gameGuyModel->omObj1->model[0], 2, 1);
-    gameGuyModel->velocity.x = 100.0f;
-    HuAudFXPlay(0x14B);
-    while (gameGuyModel->velocity.x > 30.0f) {
-        gameGuyModel->velocity.x -= 1.0f;
-        HuPrcVSleep();
-    }
-
-selectPlayer:
-    MBDlgWinInsertCreate(-1, 0x5C00, GwPlayer[0].chr + 0x1C00, GwPlayer[1].chr + 0x1C00,
-                         GwPlayer[2].chr + 0x1C00, GwPlayer[3].chr + 0x1C00, 0);
-    choice = func_8010B4C4_w06(0, 0);
-    MBDlgWinClose();
-    MBDlgWinKill();
-    if (choice >= 0) {
-        if (choice < 4) {
-            goto validChoice;
-        }
-        if (choice == 4) {
-            choice = func_800EF0D8_shared_board(0);
-            goto validChoice;
-        }
-    }
-    func_80106B38_w06();
-    D_800CB99C_main = 1;
-    omAllPause();
-    goto selectPlayer;
-
-validChoice:
-    locals.processFlag = 1;
-    process = omAddPrcObj(func_801159E0_w06, 0x4002, 0, 0);
-    process->user_data = &locals.processFlag;
-    while (locals.processFlag != 0) {
-        HuPrcVSleep();
-    }
-
-    if (choice != system->current_player_index) {
-        WipeCreateOut(WIPE_TYPE_NORMAL, 0x10);
-        HuPrcSleep(0x10);
-        D_8011CB80_w06 = choice;
-        MBCameraFocusModeSet(2);
-        MBCameraFocusStaticPosSet(&MBPlayerGet(choice)->player_obj->coords);
-        MBCameraPos3DSet(&MBPlayerGet(choice)->player_obj->coords);
-        HuPrcVSleep();
-        HuPrcSleep(10);
-        WipeCreateIn(WIPE_TYPE_NORMAL, 0x10);
-        HuPrcSleep(0x10);
-    } else {
-        HuPrcSleep(30);
-        D_8011CB80_w06 = choice;
-    }
-
-    locals.processFlag = 1;
-    while (locals.processFlag != 0) {
-        HuPrcVSleep();
-    }
-
-    playerObj = MBPlayerGet(choice)->player_obj;
-    process = func_800EDB98_shared_board(coinModel, 5.0f, 2.0f);
-    HuVecCopy3F(&coinModel->coords, &playerObj->coords);
-    func_800D9A40_shared_board(coinModel);
-    coinModel->scale.x = coinModel->scale.y = coinModel->scale.z = 0.0f;
-    while (coinModel->scale.x < 1.0f) {
-        coinModel->scale.x = coinModel->scale.y = coinModel->scale.z += 0.2f;
-        HuPrcVSleep();
-    }
-
-    MBPlayerVibrate(choice, 4);
-    HuAudFXPlay(0x2A1);
-    if (GwPlayer[choice].coin != 0) {
-        func_8010B748_w06(10, 0x2F00, -1, choice);
-        GwPlayer[choice].gameCoin = GwPlayer[choice].coin;
-        MBCoinChangeCreate(choice, -GwPlayer[choice].coin);
-        MBCoinTakeCreate(choice, -GwPlayer[choice].coin);
-        HuPrcSleep(30);
-        func_8010B748_w06(10, 0x2F02, -1, choice);
-        omDelPrcObj(process);
-        while (coinModel->velocity.x >= 10.0f) {
-            coinModel->velocity.x -= 2.0f;
-            HuPrcVSleep();
-        }
-        HuPrcSleep(30);
-        while (coinModel->velocity.x < 100.0f) {
-            coinModel->velocity.x += 4.0f;
-            playerObj->velocity.x += 4.0f;
-            HuPrcVSleep();
-        }
-    } else {
-        func_8010B748_w06(10, 0x2F01, -1, choice);
-        omDelPrcObj(process);
-        while (coinModel->velocity.x <= 100.0f) {
-            coinModel->velocity.x += 4.0f;
-            HuPrcVSleep();
-        }
-        MBModelKill(coinModel);
-        WipeCreateOut(9, 0x10);
-        HuPrcSleep(0x11);
-        MBCameraFocusModeSet(1);
-        MBCameraPos3DSet(&MBPlayerGet(-1)->player_obj->coords);
-        HuPrcSleep(5);
-        WipeCreateIn(9, 0x10);
-        HuPrcSleep(0x11);
-        return;
-    }
-
-    if (MBPlayerComCheck((s16)choice) != 0 && system->show_com_minigames != 0) {
-        WipeCreateOut(9, 0x10);
-        HuPrcSleep(0x11);
-        MBModelKill(coinModel);
-        func_800EE688_shared_board(playerObj, 0, 0);
-        playerObj->velocity.x = 0.0f;
-        HuPrcSleep(5);
-        WipeCreateIn(9, 0x10);
-        HuPrcSleep(0x11);
-        randomValue = MBRand(100.0f) + 1;
-        for (rewardIndex = 0; rewardIndex < 7; rewardIndex++) {
-            if (randomValue <= D_8011CB8C_w06[rewardIndex].threshold) {
-                break;
-            }
-        }
-        if (D_8011CB8C_w06[rewardIndex].multiplier != 0) {
-            rewardAmount = GwPlayer[choice].gameCoin * D_8011CB8C_w06[rewardIndex].multiplier;
-            if (rewardAmount >= 1000) {
-                rewardAmount = 999;
-            }
-            sprintf(locals.rewardText, D_8011E14C_w06, rewardAmount);
-            MBDlgWinInsertCreate(-1, 0x2F03, (s32)locals.rewardText, 0, 0, 0, 0);
-            MBDlgWinClose();
-            MBDlgWinKill();
-            MBCoinChangeCreate(choice, rewardAmount);
-            MBCoinTakeCreate(choice, rewardAmount);
-            HuPrcSleep(20);
-        } else {
-            MBDlgWinExec(-1, 0x2F04);
-        }
-        HuPrcSleep(10);
-        WipeCreateOut(9, 0x10);
-        HuPrcSleep(0x11);
-        MBCameraFocusModeSet(1);
-        MBCameraPos3DSet(&MBPlayerGet(-1)->player_obj->coords);
-        HuPrcSleep(5);
-        WipeCreateIn(9, 0x10);
-        HuPrcSleep(0x11);
-        return;
-    }
-
-    if (func_800DEB2C_shared_board(system->current_player_index) == 3) {
-        GWBoardFlagSet(0x17);
-    } else {
-        GWBoardFlagClear(0x17);
-    }
-    for (i = 0; i < 4; i++) {
-        GwPlayer[i].group = 1;
-    }
-    MBPlayerGet(choice)->group = 0;
-    randomValue = MBRand(100.0f);
-    for (rewardIndex = 0; (u32)rewardIndex < 3; rewardIndex++) {
-        if (randomValue < D_8011CB88_w06[rewardIndex]) {
-            break;
-        }
-    }
-    if (rewardIndex == 3) {
-        rewardIndex = 2;
-    }
-    system->minigame_index = D_8011CB84_w06[rewardIndex];
-    GwSystem.playerIndexVisitingBowser = choice;
-    func_800FC998_shared_board();
-    omAllUPause();
-    func_800FF7F0_shared_board(2);
-    HuPrcSleep(-1);
-}
-
-void func_8011681C_w06(s32 arg0, s32 arg1, f32 *arg2) {
-    f32 curX;
-    f32 curY;
-    f32 stepX;
-    f32 stepY;
-
-    MBStatusSprPosGet((s16)arg0, 0, &curX, &curY);
-    stepX = (arg2[0] - curX) / arg1;
-    stepY = (arg2[1] - curY) / arg1;
-    while (arg1 != 0) {
-        curX += stepX;
-        curY += stepY;
-        HuSprPosSet(arg0, 0, curX, curY);
-        HuPrcVSleep();
-        arg1--;
-    }
-    HuSprPosSet(arg0, 0, arg2[0], arg2[1]);
-}
-
-void func_80116954_w06(void) {
-    s32 idx;
-    s32 divisor;
-    s32 i;
-
-    idx = (s32)HuPrcCurrentGet()->user_data;
-    divisor = 10;
-
-    switch (idx) {
-        case 0:
-            HuSprPosSet(D_8011E370_w06[idx], 0, 0xB1, 0x2C);
-            break;
-        case 1:
-            HuSprPosSet(D_8011E370_w06[idx], 0, 0x7A, 0x39);
-            break;
-        default:
-            HuSprPosSet(D_8011E370_w06[idx], 0, 0xA0, 0x98);
-            divisor = 30;
-            break;
-    }
-
-    HuSprDispOn(D_8011E370_w06[idx], 0);
-    for (i = 0; i < 255; i += 255 / divisor) {
-        HuSprTPLvlSet(D_8011E370_w06[idx], 0, i & 0xFFFF);
-        HuPrcVSleep();
-    }
-
-    HuSprTPLvlSet(D_8011E370_w06[idx], 0, 0xFF);
-    omDelPrcObj(0);
-}
-
-void func_80116AC4_w06(omObjData *obj) {
-    RGB2 sp18;
-    RGB2 sp28;
-    s32 i;
-    s32 j;
-
-    for (i = 0; i <= 0; i++) {
-        sp18.r = D_8011CBA8_w06[i].r;
-        sp18.g = D_8011CBA8_w06[i].g;
-        sp18.b = D_8011CBA8_w06[i].b;
-
-        sp28.r = (D_8011CBA8_w06[i + 1].r - sp18.r) / 30;
-        sp28.g = (D_8011CBA8_w06[i + 1].g - sp18.g) / 30;
-        sp28.b = (D_8011CBA8_w06[i + 1].b - sp18.b) / 30;
-
-        for (j = 0; j < 30; j++) {
-            HuSprColorSet(D_8011E370_w06[3], 0, sp18.r, sp18.g, sp18.b);
-            sp18.r += sp28.r;
-            sp18.g += sp28.g;
-            sp18.b += sp28.b;
-            HuPrcVSleep();
-        }
-        HuSprColorSet(D_8011E370_w06[3], 0, D_8011CBA8_w06[i + 1].r, D_8011CBA8_w06[i + 1].g, D_8011CBA8_w06[i + 1].b);
-        HuPrcSleep(0xA);
-    }
-
-    omDelPrcObj(0);
-}
-
-void func_80116C8C_w06(void) {
-    s32 *state = HuPrcCurrentGet()->user_data;
-    Object *model;
-    f32 scale;
-    f32 angle;
-    f32 wait_angle_step;
-
-    HuAudFXPlay(0x143);
-    model = D_8011E380_w06;
-    func_800D9A40_shared_board(model);
-
-    angle = 0.0f;
-    for (scale = 1.0f; scale < 18.0f; scale = (f32)((f64)scale + 0.8)) {
-        HuVecCopyXYZ(&model->scale, scale, scale, scale);
-        func_8008A430_main(Hu3DData[model->omObj1->model[0]].mtx, angle);
-        angle += 20.0f;
-        HuPrcVSleep();
-    }
-
-    if (*state != 1) {
-        wait_angle_step = 20.0f;
-        while (*state != 1) {
-            func_8008A430_main(Hu3DData[model->omObj1->model[0]].mtx, angle);
-            angle += wait_angle_step;
-            HuPrcVSleep();
-        }
-    }
-
-    for (; scale < 40.0f; scale = (f32)((f64)scale + 0.8)) {
-        HuVecCopyXYZ(&model->scale, scale, scale, scale);
-        func_8008A430_main(Hu3DData[model->omObj1->model[0]].mtx, angle);
-        angle += 20.0f;
-        HuPrcVSleep();
-    }
-
-    if (*state != 2) {
-        scale = 20.0f;
-        while (*state != 2) {
-            func_8008A430_main(Hu3DData[model->omObj1->model[0]].mtx, angle);
-            angle += scale;
-            HuPrcVSleep();
-        }
-    }
-
-    MBModelKill(model);
-    omDelPrcObj(0);
-}
-
-void func_80116F10_w06(void) {
-    s32 sp18[4];
-    f32 sp28[2];
-    s32 sp30;
-    s32 sp34;
-    f32 sp38;
-    f32 sp3C;
-    s32 sp40;
-    Process *temp_v0_4;
-    f32 temp_f20;
-    f32 var_f20;
-    s32 temp_s0_3;
-    s32 temp_s4;
-    s32 temp_s7;
-    void *temp_s1_2;
-    s32 var_s1;
-    s32 var_v0;
-    s32 var_v1;
-    void *temp_v0;
-    Object *temp_v0_3;
-    s32 i;
-    s32 j;
-    GW_SYSTEM *system = &GwSystem;
-    s32 temp;
-
-    temp_s4 = HuSprGrpCreate(1, 0);
-    temp_v0 = DataRead(D_8010197C_shared_board[18]);
-    temp_s7 = HuSprAnimRead(temp_v0);
-    DataClose(temp_v0);
-    HuSprGrpMemberSet(temp_s4, 0, temp_s7, 0);
-    HuSprPriSet(temp_s4, 0, 0x4776U);
-    HuSprAttrSet(temp_s4, 0, 0x1000U);
-    for (i = 0; i < 4; i++) {
-        D_8011E370_w06[i] = HuSprGrpCreate(1, 0);
-        temp_v0 = DataRead((i + 0x1BB) | 0x130000);
-        sp18[i] = HuSprAnimRead(temp_v0);
-        DataClose(temp_v0);
-        HuSprGrpMemberSet(D_8011E370_w06[i], 0, sp18[i], 0);
-        HuSprPriSet(D_8011E370_w06[i], 0, 0x4780U);
-        HuSprAttrSet(D_8011E370_w06[i], 0, 0x980CU);
-        HuSprTPLvlSet(D_8011E370_w06[i], 0, 0U);
-        HuSprColorSet(D_8011E370_w06[i], 0, 0xFF, 0xFF, 0);
-    }
-    temp_v0_3 = MBModelCreate(0x46, NULL);
-    D_8011E380_w06 = temp_v0_3;
-    func_8001C258_main(temp_v0_3->omObj1->model[0], 0x180, 0);
-    Hu3DModelLayerSet(temp_v0_3->omObj1->model[0], 0x1800);
-    Hu3DModelRemakeStatic(temp_v0_3->omObj1->model[0]);
-    Hu3DModelScaleSet(temp_v0_3->omObj1->model[0], 0.0f, 0.0f, 0.0f);
-    HuVecCopy3F(&temp_v0_3->coords, &MBPlayerGet(CUR_PLAYER)->player_obj->coords);
-    MBModelTempAllocFree(temp_v0_3);
-    MBModelDispOff(temp_v0_3);
-    HuSprDispOff(mbItemCursorGrpId, 0);
-    MBStatusItemTPLvlSet(system->current_player_index, MBItemSelNoGet(), 0);
-    MBStatusItemPosGet(system->current_player_index, MBItemSelNoGet(), &sp30, &sp34);
-    HuSprPosSet(temp_s4, 0, sp30, sp34);
-    sp28[0] = 160.0f;
-    sp28[1] = 76.0f;
-    HuAudFXPlay(0x145);
-    func_8011681C_w06(temp_s4, 0x1E, sp28);
-    GwPlayer[system->current_player_index].itemNo[MBItemSelNoGet()] = -1;
-    MBItemRemoveEmpty(system->current_player_index);
-    MBStatusShrink(CUR_PLAYER);
-    MBStatusItemDispSetAll(0);
-    MBStatusGrow(CUR_PLAYER);
-    HuPrcSleep(0x1E);
-    sp28[0] = 203.0f;
-    sp28[1] = 44.0f;
-    func_8011681C_w06(temp_s4, 0xA, sp28);
-    temp_v0_4 = omAddPrcObj(func_80116954_w06, 0x4002U, 0, 0);
-    temp_v0_4->user_data = NULL;
-    HuPrcChildLink(HuPrcCurrentGet(), temp_v0_4);
-    sp28[0] -= 76.0f;
-    HuAudFXPlay(0x14D);
-    func_8011681C_w06(temp_s4, 0xA, sp28);
-    HuPrcChildWatch();
-    HuPrcSleep(0xA);
-    temp_v0_4 = omAddPrcObj(func_80116954_w06, 0x4002U, 0, 0);
-    temp_v0_4->user_data = (void *)1;
-    HuPrcChildLink(HuPrcCurrentGet(), temp_v0_4);
-    sp28[1] += 64.0f;
-    HuAudFXPlay(0x14D);
-    func_8011681C_w06(temp_s4, 0xA, sp28);
-    HuPrcChildWatch();
-    HuPrcSleep(0xA);
-    HuAudFXPlay(0x14E);
-    MBStatusSprPosGet(temp_s4, 0, &sp38, &sp3C);
-    for (var_f20 = 0.0f, var_s1 = 0; var_f20 < 90.0f; var_f20 += 3.6f) {
-        HuSprPosSet(temp_s4, 0, ((cosdf((2.0f * var_f20) + 270.0f) * 80.0f) + sp38), (((1.0f - cosdf(var_f20)) * 90.0f) + sp3C));
-        if (!(var_f20 > 54.0f)) {
-            var_v1 = 0;
-        } else {
-            var_v1 = 1;
-        }
-        temp = var_v1 != 0;
-        if (temp && var_s1 == 0) {
-            var_s1 = 1;
-            temp_v0_4 = omAddPrcObj(func_80116954_w06, 0x4002U, 0, 0);
-            temp_v0_4->user_data = (void *)2;
-            HuPrcChildLink(HuPrcCurrentGet(), temp_v0_4);
-        }
-        HuPrcVSleep();
-    }
-
-    temp_s0_3 = (s16)(s32)((cosdf(450.0f) * 80.0f) + sp38);
-    HuSprPosSet(temp_s4, 0, temp_s0_3, (((1.0f - cosdf(90.0f)) * 90.0f) + sp3C));
-
-    for (j = 255; j > 0; j -= 0x19, HuPrcVSleep()) {
-        HuSprTPLvlSet(temp_s4, 0, j);
-    }
-
-    HuSprGrpKill(temp_s4);
-    HuSprAnimKill(temp_s7);
-    HuPrcChildWatch();
-
-    for (i = 0; i < 3; i++) {
-        HuSprDispOff(D_8011E370_w06[i], 0);
-    }
-
-    HuSprDispOn(D_8011E370_w06[3], 0);
-    HuSprTPLvlSet(D_8011E370_w06[3], 0, 0xFFU);
-    HuSprPosSet(D_8011E370_w06[3], 0, 0xA0, 0x78);
-    HuPrcChildLink(HuPrcCurrentGet(), omAddPrcObj(func_80116AC4_w06, 0x4002U, 0, 0));
-    sp40 = 0;
-    omAddPrcObj(func_80116C8C_w06, 0x4002U, 0, 0)->user_data = &sp40;
-    HuPrcChildWatch();
-    HuAudFXPlay(0x14F);
-    temp_s1_2 = MBPlayerVibrateObjCreate(-1, 4, 5);
-
-    for (i = 0; i <= 2880; i += 50) {
-        temp_f20 = (sindf(i) / 2.0f) + 1.0f;
-        HuSprScaleSet(D_8011E370_w06[3], 0, temp_f20, (sindf(i) / 3.0f) + 1.0f);
-        if (i >= (2880 / 2 + 1)) {
-            sp40 = 1;
-        }
-        HuPrcVSleep();
-    }
-
-    HuAudFXPlay(0x129);
-    WipeColorSet(0xFF, 0xFF, 0xFF);
-    WipeCreateOut(0xB, 0x32);
-    MBPlayerVibrateObjKill(temp_s1_2);
-
-    for (var_f20 = 0.0f; WipeStatGet() != 0; var_f20 += 0.1f) {
-        HuSprScaleSet(D_8011E370_w06[3], 0, var_f20, var_f20);
-        HuPrcVSleep();
-    }
-
-    while (WipeStatGet() != 0) {
-        HuPrcVSleep();
-    }
-
-    sp40 = 2;
-    for (i = 0; i < 4; i++) {
-        HuSprGrpKill(D_8011E370_w06[i]);
-        HuSprAnimKill(sp18[i]);
-    }
-
-    WipeCreateIn(0xB, 0x5A);
-    while (WipeStatGet() != 0) {
-        HuPrcVSleep();
-    }
-
-    MBDlgResultWinExec(0x3A23);
-    GwSystem.wackyWatchUsedState = 2;
-}
-
-void func_80117814_w06(SpaceTriple *masu, BranchPair *links, DecisionTreeNonLeafNode **trees) {
-    GW_PLAYER *player;
-    UnkEA790Struct *win;
-    BranchLink *link;
-    s32 back;
-    s32 sel;
-    s32 count;
-    s32 row;
-    s32 col;
-    s32 i;
-    s16 *temp;
-    DecisionTreeNonLeafNode **tree;
-
-    link = links[0];
-    tree = trees;
-    MBPlayerMotionSet(-1, -1, 2);
-    HuPrcVSleep();
-    func_80106B94_w06();
-    player = MBPlayerGet(GwSystem.current_player_index);
-    back = MBMasuLinkMasuIdGet(player->blink, player->bidx);
-
-    for (row = 0; row < 3; row++) {
-        for (col = 0; col < 2; col++) {
-            if (masu[row][col] == back) {
-                break;
-            }
-        }
-        if (col == 2) {
-            break;
-        }
-    }
-
-    temp = masu[row];
-    link += row * 2;
-    win = func_800D76A0_shared_board(GwSystem.current_player_index, temp);
-    func_800D742C_shared_board(win, GwSystem.current_player_index, 0);
-
-    if (MBPlayerComCheck(-1)) {
-        count = MBComTreeExec(tree[row]);
-        for (i = 0; i < count; i++) {
-            func_800D7250_shared_board(win, -2);
-        }
-        func_800D7250_shared_board(win, -4);
-    }
-
-    sel = func_800D7518_shared_board(win);
-    func_800D6CA0_shared_board(win);
-    func_80106C64_w06();
-
-    if (sel) {
-        link++;
-    }
-
-    MBMoveNextMasuSet(-1, link->link, link->idx);
-    switch (link->rev) {
-        case 0:
-            player->rev &= ~1;
-            break;
-        case 1:
-            player->rev |= 1;
-            break;
-    }
-}
-
-void func_80117A0C_w06(s32 arg0) {
-    if (D_8011E398_w06[arg0] != NULL) {
-        omDelObj(D_8011E398_w06[arg0]);
-        D_8011E398_w06[arg0] = NULL;
-    }
-    if (D_8011E388_w06[arg0] != NULL) {
-        MBModelKill(D_8011E388_w06[arg0]);
-        D_8011E388_w06[arg0] = NULL;
-    }
-}
-
-void func_80117A84_w06(void) {
-    s32 i;
-
-    for (i = 0; i < 4; i++) {
-        omObjData *obj = D_8011E398_w06[i];
-
-        if (obj != NULL) {
-            omDelObj(obj);
-            D_8011E398_w06[i] = NULL;
-        }
-    }
-}
-
-void func_80117AE8_w06(omObjData *obj) {
-    s32 playerIdx = obj->work[0];
-
-    if (GwSystem.current_player_index == 4) {
-        if (obj->work[2] == 0) {
-            if (obj->work[1] != 0) {
-                obj->work[1] -= 1;
-                if (obj->work[1] != 0) {
-                    return;
-                }
-                obj->work[2] = 1;
-            } else {
-                obj->work[1] = 40;
-                return;
-            }
-        }
-    }
-
-    {
-        GW_PLAYER *player = MBPlayerGet(playerIdx);
-        Object *effectObj = D_8011E388_w06[playerIdx];
-
-        HuVecCopy3F(&effectObj->coords, &player->player_obj->coords);
-        effectObj->velocity.x = player->player_obj->velocity.x + 20.0f;
-        HuVecCopy3F(&effectObj->rot, &player->player_obj->rot);
-        effectObj->coords.x += sindf(obj->rot.x) * obj->trans.x;
-        effectObj->coords.z += cosdf(obj->rot.x) * obj->trans.x;
-        obj->rot.x += 5.0f;
-        if (obj->rot.x >= 360.0f) {
-            obj->rot.x -= 360.0f;
-        }
-        if (obj->trans.x <= 5.0f) {
-            obj->trans.x += 0.25f;
-        }
-        if (player->player_obj->flags & 8) {
-            func_800D9A40_shared_board(effectObj);
-        } else {
-            MBModelDispOff(effectObj);
-        }
-    }
-}
-
-void func_80117C94_w06(s32 arg0, s32 arg1) {
-    GW_PLAYER *player = MBPlayerGet(arg0);
-    Object *obj;
-    u8 modelId;
-
-    if (D_8011E388_w06[arg0] == NULL) {
-        switch (arg1) {
-            case 0:
-                modelId = 0x3F;
-                break;
-            case 1:
-                modelId = 0x40;
-                break;
-            case 2:
-                modelId = 0x41;
-                break;
-            default:
-                modelId = 0x42;
-                break;
-        }
-
-        obj = MBModelCreate(modelId, NULL);
-        MBModelTempAllocFree(obj);
-        D_8011E388_w06[arg0] = obj;
-        obj->flags |= 2;
-        HuVecCopy3F(&obj->coords, &player->player_obj->coords);
-        obj->velocity.x = 20.0f;
-        MBVecForwardSet(&obj->rot);
-    } else {
-        func_800D9A40_shared_board(D_8011E388_w06[arg0]);
-    }
-}
-
-void func_80117D94_w06(s32 arg) {
-    D_8011E398_w06[arg] = omAddObj(0x3FFF, 0, 0, -1, func_80117AE8_w06);
-    D_8011E398_w06[arg]->work[0] = arg;
-    D_8011E398_w06[arg]->work[1] = 0;
-    D_8011E398_w06[arg]->work[2] = 0;
-    D_8011E398_w06[arg]->rot.x = (f32)MBRand(360.0f);
-    D_8011E398_w06[arg]->trans.x = 0;
-}
-
-void func_80117E30_w06(void) {
-    s32 i;
-    s32 idx;
-
-    for (i = 0; i < 4; i++) {
-        D_8011E398_w06[i] = NULL;
-        D_8011E388_w06[i] = NULL;
-        idx = -!(MBPlayerGet(i)->rev & 0x2);
-        if (MBPlayerGet(i)->rev & 0x4) {
-            idx = 1;
-        }
-        if (MBPlayerGet(i)->rev & 0x20) {
-            idx = 2;
-        }
-        if (MBPlayerGet(i)->rev & 0x40) {
-            idx = 3;
-        }
-        if (idx != -1) {
-            func_80117C94_w06(i, idx);
-            func_80117D94_w06(i);
-        }
-    }
-    func_800F8D54_shared_board(func_80117A84_w06);
-}
-
-void func_80117F30_w06(void) {
-    GW_SYSTEM *loc = &GwSystem;
-    GW_PLAYER *player = MBPlayerGet(-1);
-    s16 *slowDiceFlags = &loc->slow_dice_flags;
-    f32 scale;
-
-    if ((((*slowDiceFlags >> loc->current_player_index) & 1))) {
-        GWBoardFlagSet(0x10);
-        *slowDiceFlags &= ~(1 << loc->current_player_index);
-        if ((player->rev & 0x20) || ((player->rev & 8) && !(player->rev & 2))) {
-            MBDlgWinExec(-1, 0x4219);
-        } else {
-            MBDlgWinExec(-1, 0x3A07);
-        }
-
-        if (player->rev & 2) {
-            if (D_8011E388_w06[loc->current_player_index] != NULL) {
-                for (scale = 1.0f; scale >= 0.0f; scale -= 0.08f) {
-                    HuVecCopyXYZ(&D_8011E388_w06[loc->current_player_index]->scale, scale, scale, scale);
-                    HuPrcVSleep();
-                }
-            }
-            func_80117A0C_w06(loc->current_player_index);
-        }
-        if (player->rev & 8) {
-            if (D_8011E388_w06[loc->current_player_index] != NULL) {
-                for (scale = 1.0f; scale >= 0.0f; scale -= 0.08f) {
-                    HuVecCopyXYZ(&D_8011E388_w06[loc->current_player_index]->scale, scale, scale, scale);
-                    HuPrcVSleep();
-                }
-            }
-            func_80117A0C_w06(loc->current_player_index);
-        }
-        player->rev &= 0xD5;
-    }
-}
-
-void func_8011813C_w06(void) {
-    GW_SYSTEM *loc = &GwSystem;
-    s16 *slowDiceFlags = &loc->slow_dice_flags;
-    GW_PLAYER *player = MBPlayerGet(-1);
-    f32 scale;
-
-    if (player->rev & 8) {
-        func_800DCA64_shared_board(loc->current_player_index);
-        GWBoardFlagSet(0x10);
-        *slowDiceFlags &= ~(1 << loc->current_player_index);
-        MBDlgWinExec(-1, 0x4219);
-        if (D_8011E388_w06[loc->current_player_index] != NULL) {
-            for (scale = 1.0f; scale >= 0.0f; scale -= 0.08f) {
-                HuVecCopyXYZ(&D_8011E388_w06[loc->current_player_index]->scale, scale, scale, scale);
-                HuPrcVSleep();
-            }
-        }
-        func_80117A0C_w06(loc->current_player_index);
-        player->rev &= 0xD7;
-        MBPlayerVibrate(-1, 2);
-        func_800DC128_shared_board(loc->current_player_index);
-        HuPrcSleep(0xF);
-    }
-}
-
-void func_8011829C_w06(void) {
-    void *data;
-    s32 i;
-
-    i = 0x3C;
-    data = HuPrcCurrentGet()->user_data;
-
-    while (i != 0) {
-        HuPrcVSleep();
-        i--;
-    }
-
-    MBPlayerVibrateObjKill(data);
-    omDelPrcObj(NULL);
-}
-
-void func_801182EC_w06(void) {
-    GW_SYSTEM *loc = &GwSystem;
-    GW_PLAYER *player;
-    s32 choice;
-    s16 targetPlayer;
-    UnkVibrateProcess *vib;
-    s16 previousPlayer;
-    f32 scale;
-    f32 hudScale;
-
-    MBDlgWinInsertCreate(-1, 0x5C01, GwPlayer[0].chr + 0x1C00, GwPlayer[1].chr + 0x1C00,
-                         GwPlayer[2].chr + 0x1C00, GwPlayer[3].chr + 0x1C00, 0);
-    choice = func_8010B4C4_w06(2, D_8011E3AC_w06);
-    MBDlgWinClose();
-    MBDlgWinKill();
-
-    if (choice >= MB_MAX_PLAYERS) {
-        targetPlayer = func_800EF0D8_shared_board(0);
-    } else if (choice < 0) {
-        targetPlayer = func_800EF0D8_shared_board(0);
-    } else {
-        targetPlayer = choice;
-    }
-
-    GwSystem.slow_dice_flags |= 1 << targetPlayer;
-    player = MBPlayerGet(targetPlayer);
-
-    for (scale = 1.0f, hudScale = 1.0f; scale > 0.0f;) {
-        scale -= 0.1f;
-        hudScale += 0.07f;
-        MBStatusItemScaleSet(loc->current_player_index, MBItemSelNoGet(), scale, hudScale);
-        HuPrcVSleep();
-    }
-
-    MBStatusItemTPLvlSet(loc->current_player_index, MBItemSelNoGet(), 0);
-    MBStatusShrink(-1);
-    MBStatusItemDispSetAll(0);
-    MBStatusGrow(-1);
-
-    if (targetPlayer != loc->current_player_index) {
-        WipeCreateOut(WIPE_TYPE_NORMAL, 0x10);
-        HuPrcSleep(0x10);
-        MBCameraFocusModeSet(2);
-        MBCameraFocusStaticPosSet(&player->player_obj->coords);
-        MBCameraPos3DSet(&player->player_obj->coords);
-        HuPrcVSleep();
-        WipeCreateIn(WIPE_TYPE_NORMAL, 0x10);
-        D_800A12D8_main = 1;
-        HuPrcSleep(0x10);
-    }
-
-    func_80117A0C_w06(targetPlayer);
-    player->rev = (player->rev & 0x99) | 2;
-    func_80117C94_w06(targetPlayer, 0);
-    for (scale = 0.0f; scale <= 1.0f; scale += 0.08f) {
-        HuVecCopyXYZ(&D_8011E388_w06[targetPlayer]->scale, scale, scale, scale);
-        HuPrcVSleep();
-    }
-    HuVecCopyXYZ(&D_8011E388_w06[targetPlayer]->scale, 1.0f, 1.0f, 1.0f);
-
-    if (targetPlayer == loc->current_player_index) {
-        MBPlayerMotionSet(targetPlayer, 4, 2);
-    } else {
-        MBMotionSet(MBPlayerGet(targetPlayer)->player_obj, 4, 2);
-    }
-    CharFXPlay(0x286, GwPlayer[targetPlayer].chr);
-    func_80117D94_w06(targetPlayer);
-    vib = MBPlayerVibrateObjCreate(targetPlayer, 1, 5);
-    omAddPrcObj(func_8011829C_w06, 0x4002, 0, 0)->user_data = vib;
-    HuPrcSleep(0x14);
-
-    previousPlayer = loc->current_player_index;
-    loc->current_player_index = targetPlayer;
-    if (player->rev & 0x80) {
-        MBDlgWinExec(-1, 0x3A09);
-    }
-    MBDlgWinExec(-1, 0x3A06);
-    loc->current_player_index = previousPlayer;
-    if (targetPlayer == (s8)previousPlayer) {
-        MBPlayerMotionSet(-1, -1, 2);
-    } else {
-        MBMotionSet(MBPlayerGet(targetPlayer)->player_obj, -1, 2);
-        D_800A12D8_main = 0;
-    }
-
-    if (targetPlayer != loc->current_player_index) {
-        WipeCreateOut(WIPE_TYPE_NORMAL, 0x10);
-        HuPrcSleep(0x10);
-        MBCameraFocusModeSet(1);
-        MBCameraPos3DSet(&MBPlayerGet(-1)->player_obj->coords);
-        HuPrcVSleep();
-        WipeCreateIn(WIPE_TYPE_NORMAL, 0x10);
-        HuPrcSleep(0x10);
-    }
-
-    if (targetPlayer == loc->current_player_index) {
-        GWBoardFlagSet(0x10);
-        MBDlgWinExec(-1, 0x3A07);
-        for (scale = 1.0f; scale >= 0.0f; scale -= 0.08f) {
-            HuVecCopyXYZ(&D_8011E388_w06[targetPlayer]->scale, scale, scale, scale);
-            HuPrcVSleep();
-        }
-        HuVecCopyXYZ(&D_8011E388_w06[targetPlayer]->scale, 0.0f, 0.0f, 0.0f);
-        func_80117A0C_w06(loc->current_player_index);
-        func_800DCA64_shared_board(GwSystem.current_player_index);
-        MBPlayerVibrate(-1, 2);
-        func_800DC128_shared_board(GwSystem.current_player_index);
-        HuPrcSleep(0xF);
-        GwSystem.slow_dice_flags &= ~(1 << GwSystem.current_player_index);
-        player->rev &= ~2;
-    }
-}
-
-void func_80118864_w06(void) {
-    GW_SYSTEM *loc = &GwSystem;
-    GW_PLAYER *player = MBPlayerGet(-1);
-    f32 scale;
-
-    if (player->rev & 0x80) {
-        if ((player->rev & 0x40) || ((player->rev & 0x10) && !(player->rev & 4))) {
-            MBDlgWinExec(-1, 0x421C);
-        } else {
-            MBDlgWinExec(-1, 0x3A03);
-        }
-        if (player->rev & 4) {
-            if (D_8011E388_w06[loc->current_player_index] != NULL) {
-                for (scale = 1.0f; scale >= 0.0f; scale -= 0.08f) {
-                    HuVecCopyXYZ(&D_8011E388_w06[loc->current_player_index]->scale, scale, scale, scale);
-                    HuPrcVSleep();
-                }
-            }
-            func_80117A0C_w06(loc->current_player_index);
-        }
-        if (player->rev & 0x10) {
-            if (D_8011E388_w06[loc->current_player_index] != NULL) {
-                for (scale = 1.0f; scale >= 0.0f; scale -= 0.08f) {
-                    HuVecCopyXYZ(&D_8011E388_w06[loc->current_player_index]->scale, scale, scale, scale);
-                    HuPrcVSleep();
-                }
-            }
-            func_80117A0C_w06(loc->current_player_index);
-        }
-        player->rev &= 0xAB;
-    }
-}
-
-void func_80118A34_w06(void) {
-    GW_SYSTEM *loc = &GwSystem;
-    GW_PLAYER *player = MBPlayerGet(-1);
-    f32 scale;
-
-    if (player->rev & 0x10) {
-        func_800DCA64_shared_board(loc->current_player_index);
-        MBDlgWinExec(-1, 0x421C);
-        if (D_8011E388_w06[loc->current_player_index] != NULL) {
-            for (scale = 1.0f; scale >= 0.0f; scale -= 0.08f) {
-                HuVecCopyXYZ(&D_8011E388_w06[loc->current_player_index]->scale, scale, scale, scale);
-                HuPrcVSleep();
-            }
-        }
-        func_80117A0C_w06(loc->current_player_index);
-        player->rev &= 0xAF;
-        MBPlayerVibrate(-1, 2);
-        func_800DC128_shared_board(loc->current_player_index);
-        HuPrcSleep(0xF);
-    }
-}
-
-void func_80118B6C_w06(void) {
-    GW_SYSTEM *loc = &GwSystem;
-    GW_PLAYER *player;
-    s32 choice;
-    s16 targetPlayer;
-    s16 previousPlayer;
-    f32 scale;
-    f32 hudScale;
-    UnkVibrateProcess *vib;
-
-    MBDlgWinInsertCreate(-1, 0x5C01, GwPlayer[0].chr + 0x1C00, GwPlayer[1].chr + 0x1C00,
-                         GwPlayer[2].chr + 0x1C00, GwPlayer[3].chr + 0x1C00, 0);
-    choice = func_8010B4C4_w06(2, D_8011E3A8_w06);
-    MBDlgWinClose();
-    MBDlgWinKill();
-
-    if (choice >= MB_MAX_PLAYERS) {
-        targetPlayer = func_800EF0D8_shared_board(0);
-    } else if (choice < 0) {
-        targetPlayer = func_800EF0D8_shared_board(0);
-    } else {
-        targetPlayer = choice;
-    }
-
-    player = MBPlayerGet(targetPlayer);
-    player->rev |= 0x80;
-
-    for (scale = 1.0f, hudScale = 1.0f; scale > 0.0f;) {
-        scale -= 0.1f;
-        hudScale += 0.07f;
-        MBStatusItemScaleSet(loc->current_player_index, MBItemSelNoGet(), scale, hudScale);
-        HuPrcVSleep();
-    }
-    MBStatusItemTPLvlSet(loc->current_player_index, MBItemSelNoGet(), 0);
-
-    if (targetPlayer != loc->current_player_index) {
-        WipeCreateOut(WIPE_TYPE_NORMAL, 0x10);
-        HuPrcSleep(0x10);
-        MBCameraFocusModeSet(2);
-        MBCameraFocusStaticPosSet(&player->player_obj->coords);
-        MBCameraPos3DSet(&player->player_obj->coords);
-        HuPrcVSleep();
-        WipeCreateIn(WIPE_TYPE_NORMAL, 0x10);
-        D_800A12D8_main = 1;
-        HuPrcSleep(0x10);
-    }
-
-    func_80117A0C_w06(targetPlayer);
-    player->rev = (player->rev & 0x99) | 4;
-    MBPlayerVibrate(targetPlayer, 3);
-    func_80117C94_w06(targetPlayer, 1);
-    for (scale = 0.0f; scale <= 1.0f; scale += 0.08f) {
-        HuVecCopyXYZ(&D_8011E388_w06[targetPlayer]->scale, scale, scale, scale);
-        HuPrcVSleep();
-    }
-    HuVecCopyXYZ(&D_8011E388_w06[targetPlayer]->scale, 1.0f, 1.0f, 1.0f);
-
-    if (targetPlayer == loc->current_player_index) {
-        MBPlayerMotionSet(targetPlayer, 4, 2);
-    } else {
-        MBMotionSet(MBPlayerGet(targetPlayer)->player_obj, 4, 2);
-    }
-    CharFXPlay(0x286, GwPlayer[targetPlayer].chr);
-    vib = MBPlayerVibrateObjCreate(targetPlayer, 1, 5);
-    func_80117D94_w06(targetPlayer);
-    omAddPrcObj(func_8011829C_w06, 0x4002, 0, 0)->user_data = vib;
-    HuPrcSleep(0x14);
-
-    previousPlayer = loc->current_player_index;
-    loc->current_player_index = targetPlayer;
-    if (((previousPlayer == targetPlayer) && (func_800DEB2C_shared_board(previousPlayer) == 3)) ||
-        ((GwSystem.slow_dice_flags >> targetPlayer) & 1)) {
-        MBDlgWinExec(-1, 0x3A05);
-    }
-    MBDlgWinExec(-1, 0x3A02);
-    loc->current_player_index = previousPlayer;
-    if (targetPlayer == (s8)previousPlayer) {
-        MBPlayerMotionSet(-1, -1, 2);
-    } else {
-        MBMotionSet(MBPlayerGet(targetPlayer)->player_obj, -1, 2);
-        D_800A12D8_main = 0;
-    }
-
-    if (targetPlayer != loc->current_player_index) {
-        WipeCreateOut(WIPE_TYPE_NORMAL, 0x10);
-        HuPrcSleep(0x10);
-        MBCameraFocusModeSet(1);
-        MBCameraPos3DSet(&MBPlayerGet(-1)->player_obj->coords);
-        HuPrcVSleep();
-        WipeCreateIn(WIPE_TYPE_NORMAL, 0x10);
-        HuPrcSleep(0x10);
-    }
-
-    if (targetPlayer == loc->current_player_index) {
-        func_80118864_w06();
-    }
-}
-
-void func_80118FF0_w06(void) {
-    char playerNames[4][16];
-    u8 choices[16];
-    Object *chest;
-    Process *process;
-    GW_SYSTEM *system = &GwSystem;
-    s32 targetPlayer = 0;
-    s32 itemSlot;
-    s32 i;
-    f32 angle;
-    u32 *motion;
-
-    func_801111E4_w06();
-    chest = MBModelCreate(0x21, NULL);
-    Hu3DModelScaleSet(chest->omObj1->model[0], 0.0f, 0.0f, 0.0f);
-    HuVecCopy3F(&chest->coords, &MBPlayerGet(-1)->player_obj->coords);
-    func_8001C814_main(chest->omObj1->model[0], 2, 1);
-    chest->velocity.x = 100.0f;
-    HuAudFXPlay(0x142);
-    while (chest->velocity.x > 30.0f) {
-        chest->velocity.x -= 1.0f;
-        HuPrcVSleep();
-    }
-
-    if (targetPlayer != 0) {
-        for (i = 0; i < 1081; i += 30) {
-            angle = sindf((f32)i) / 2.0f + 1.0f;
-            HuVecCopyXYZ(&chest->scale, angle, sindf((f32)i) / 2.0f + 1.0f,
-                         sindf((f32)i) / 2.0f + 1.0f);
-            HuPrcVSleep();
-        }
-    }
-
-    HuAudFXPlay(0x149);
-    func_8001C814_main(chest->omObj1->model[0], 1, 0);
-    HuPrcSleep(20);
-
-    for (i = 0; i < 4; i++) {
-        if (GwSystem.current_player_index == i) {
-            playerNames[i][0] = 1;
-            choices[i] = 0;
-        } else {
-            playerNames[i][0] = 8;
-            choices[i] = 1;
-        }
-        func_800E2260_shared_board(i, &playerNames[i][1]);
-    }
-    choices[4] = 1;
-    choices[5] = 1;
-    MBDlgWinInsertCreate(-1, 0x5C01, (s32)playerNames[0], (s32)playerNames[1], (s32)playerNames[2],
-                         (s32)playerNames[3], 0);
-    targetPlayer = func_801146F4_w06(choices, 0);
-    MBDlgWinClose();
-    MBDlgWinKill();
-    if (targetPlayer == 4) {
-        targetPlayer = func_800EF0D8_shared_board(1);
-    }
-
-    if (GwPlayer[targetPlayer].itemNo[0] == -1) {
-        MBPlayerMotionSet(-1, 3, 0);
-        PlayerFXPlay(0x286, system->current_player_index);
-        HuPrcSleep(60);
-        func_800E2260_shared_board(targetPlayer, playerNames[0]);
-        MBWinInsertOpen(0x3A0F, playerNames[0], 0, 0, 0, 0);
-        func_800EC3C0_shared_board(system->current_player_index);
-        func_800EC3E4_shared_board();
-        func_800F2388_shared_board(-1, -1, 0, 10, 2);
-        MBModelKill(chest);
-        GwPlayer[system->current_player_index].itemNo[MBItemSelNoGet()] = -1;
-        MBItemRemoveEmpty(system->current_player_index);
-        return;
-    }
-
-    itemSlot = MBItemFindEmpty(targetPlayer);
-    if (itemSlot == -1) {
-        itemSlot = 3;
-    }
-    itemSlot = MBRand((f32)itemSlot);
-    GwPlayer[system->current_player_index].itemNo[MBItemSelNoGet()] =
-        GwPlayer[targetPlayer].itemNo[itemSlot];
-    GwPlayer[targetPlayer].itemNo[itemSlot] = -1;
-    MBItemRemoveEmpty(targetPlayer);
-    MBPlayerVibrate((s16)targetPlayer, 3);
-    if (MBItemSelNoGet() == itemSlot) {
-        MBStatusItemTPLvlSet(targetPlayer, MBItemSelNoGet(), 0);
-    }
-    MBStatusItemSprKill(-1);
-    MBStatusItemPosSet(system->current_player_index, MBItemSelNoGet(),
-                       D_8011CAA4_w06[system->current_player_index].x,
-                       D_8011CAA4_w06[system->current_player_index].y);
-    MBStatusItemTPLvlSet(system->current_player_index, MBItemSelNoGet(), 0x100);
-    MBStatusItemTPLvlSet(targetPlayer, itemSlot, 0);
-    MBStatusItemPriSet(system->current_player_index, MBItemSelNoGet(), 0x4786);
-    process = HuPrcCurrentGet();
-    HuPrcChildLink(process,
-                   func_80110EE4_w06(-1,
-                                            D_8011CAA4_w06[system->current_player_index].x,
-                                            D_8011CAA4_w06[system->current_player_index].y,
-                                            D_8011CA84_w06[system->current_player_index].x,
-                                            D_8011CA84_w06[system->current_player_index].y, 5));
-    HuPrcChildWatch();
-    PlayerFXPlay(0x274, system->current_player_index);
-    MBPlayerMotionLoad(system->current_player_index, 5, 0x31);
-    MBPlayerMotionSet(-1, 5, 0);
-    HuPrcSleep(50);
-    func_800F2388_shared_board(system->current_player_index, -1, 0, 10, 2);
-    HuPrcSleep(11);
-    motion = D_80101734_shared_board[0];
-    for (i = 6; i != 0; i--) {
-        motion++;
-    }
-    MBPlayerMotionLoad(system->current_player_index, 5, ((u16 *)motion)[1]);
-    MBModelKill(chest);
-    MBDlgWinInsertCreate(-1, 0x3A0D, GwPlayer[targetPlayer].chr + 0x1C00,
-                         GwPlayer[system->current_player_index].chr + 0x1C00, 0, 0, 0);
-    MBDlgWinClose();
-    MBDlgWinKill();
-    func_801113B4_w06();
-}
-
-void func_80119698_w06(void) {
-    Object *obj = *(Object **)HuPrcCurrentGet()->user_data;
-
-    func_8001C814_main(obj->omObj1->model[0], 3, 0);
-    MBModelMotionWait(obj);
-    MBModelKill(obj);
-    omDelPrcObj(NULL);
-}
-
-void func_801196F0_w06(Object *arg) {
-    Process *temp = omAddPrcObj(func_80119698_w06, 0, 0, 0x40);
-    s32 *data = HuMemMemoryAlloc(temp->heap, 0x10);
-
-    temp->user_data = data;
-    *data = (s32)arg;
-}
-
-void func_80119748_w06(void) {
+    SpaceData *space = MBMasuGet(0x89);
+    SpaceData *curSpace = MBMasuGet(MBMasuCurGet());
+    s32 curPlayer = GwSystem.current_player_index;
+    Vec dir;
     Vec camPos;
-    Vec targetPos;
-    Object *models[3];
-    ModelIdTable animIds;
-    void *data[4];
-    s8 link;
-    s8 index;
+    s32 signFiles[2] = { 0x130179, 0x13017A };
+    Object *boxes[2];
+    Object *effects[2] = { NULL, NULL };
+    s32 boxFiles[2] = { 0x13017B, 0x13017C };
+    u8 order[2];
+    s32 choice;
     s32 i;
-    s32 j;
-    s32 mask;
-    s32 maxCoins;
+    s32 count;
+    omObjData *obj;
+    Unk3 *helpWin1;
+    Unk3 *helpWin2;
+    s16 window;
+    UnkVibrateProcess *vibrate;
+    f32 speed;
     f32 scale;
-    SpaceData *masu;
-    GW_PLAYER *player;
 
-    masu = MBMasuGet(0x94);
-    player = MBPlayerGet(-1);
-    animIds = D_8011E1F8_w06;
-    func_800E6FCC_shared_board();
-    if (GwSystem.boardData.halfWordBytes[1] == 1) {
-        HuAudFXPlay(0x1BA);
-    }
+    choice = -1;
+    MBDlgWinInsertCreate(0x3E, 0x900, mbCharNameMesTbl[GwPlayer[curPlayer].chr], 0, 0, 0, 0);
+    func_800EC9DC_shared_board();
+    func_800EC9DC_shared_board();
+    MBDlgWinClose();
+    MBDlgWinKill();
+    MBVecDirGet(&player->player_obj->coords, &space->coords, &dir);
+    HuPrcChildLink(HuPrcCurrentGet(),
+                   func_800ED128_shared_board(&player->player_obj->rot, &dir, &player->player_obj->rot, 5));
+    HuPrcChildWatch();
+    MBPlayerMotionSet(curPlayer, 0, 2);
+    HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&player->player_obj->coords, &space->coords,
+                                                            &player->player_obj->coords, 15));
+    player->player_obj->velocity.y = 6.0f;
+    player->player_obj->velocity.z = -0.75f;
+    HuPrcChildWatch();
+    MBPlayerMotionSet(curPlayer, -1, 2);
+    space = MBMasuGet(0x7C);
+    MBVecDirGet(&player->player_obj->coords, &space->coords, &dir);
+    HuPrcChildLink(HuPrcCurrentGet(),
+                   func_800ED128_shared_board(&player->player_obj->rot, &dir, &player->player_obj->rot, 5));
+    HuPrcChildWatch();
     HuVecCopy3F(&camPos, &player->player_obj->coords);
     MBCameraFocusModeSet(4);
     MBCameraFocusVecSet(&camPos);
-    HuVecCopy3F(&targetPos, &masu->coords);
-    targetPos.z += 10.0f;
-    HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&camPos, &targetPos, &camPos, 0x1E));
+    HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&camPos, &space->coords, &camPos, 10));
     HuPrcChildWatch();
-    HuPrcSleep(5);
+    MBStatusHideAll();
 
-    GwSystem.boardData.halfWordBytes[1]--;
-    func_801088B4_w06();
-    if (GwSystem.boardData.halfWordBytes[1] != 0) {
-        HuAudFXPlay(0x1B8);
-        for (i = 0; i < 4; i++) {
-            player = MBPlayerGet(i);
-
-            for (j = 0; D_8011CBD8_w06[j] != -1; j++) {
-                func_800EB24C_shared_board(D_8011CBD8_w06[j], &link, &index);
-                if (player->clink == link && player->cidx == index) {
-                    MBPlayerVibrate(i, 3);
-                    break;
-                }
-            }
-        }
-    } else {
-        HuAudFXPlay(0x1B9);
-        HuPrcChildLink(HuPrcCurrentGet(), MBCameraZoomMotStart(1.0f));
-        HuPrcChildWatch();
+    for (i = 0; i < 2; i++) {
+        D_8011E118_w04[i] = MBModelFileCreate(signFiles[0], -1, 1.0f, 0.0f, NULL);
+        func_8001C258_main(D_8011E118_w04[i]->omObj1->model[0], 0x180, 0);
+        Hu3DModelLayerSet(D_8011E118_w04[i]->omObj1->model[0], 0x1800);
+        Hu3DModelRemakeStatic(D_8011E118_w04[i]->omObj1->model[0]);
+        MBModelTempAllocFree(D_8011E118_w04[i]);
+        HuVecCopy3F(&D_8011E118_w04[i]->coords, &MBMasuGet(D_8011C998_w04[i])->coords);
     }
-    HuPrcSleep(0x14);
-
-    if (GwSystem.boardData.halfWordBytes[1] == 0) {
-        mask = 0;
-        MBStatusHideAll();
-        D_800A12D8_main = 1;
-        for (i = 0; i < 4; i++) {
-            player = MBPlayerGet(i);
-
-            for (j = 0; D_8011CBD8_w06[j] != -1; j++) {
-                func_800EB24C_shared_board(D_8011CBD8_w06[j], &link, &index);
-                if (player->clink == link && player->cidx == index) {
-                    s32 bit = 1 << i;
-
-                    mask |= bit;
-                    data[i] = MBPlayerVibrateObjCreate(i, 4, 5);
-                    break;
-                }
-            }
-            if (D_8011CBD8_w06[j] == -1) {
-                data[i] = MBPlayerVibrateObjCreate(i, 2, 5);
-            }
-        }
-        HuAudFXPlay(0x1BB);
-        for (i = 0; i < 3; i++) {
-            scale = 25.0f;
-            models[i] = MBModelFileCreate(animIds.entries[i], -1, 1.0f, 0, 0);
-            func_8001C258_main(models[i]->omObj1->model[0], 0x180, 0);
-            Hu3DModelLayerSet(models[i]->omObj1->model[0], 0x1800);
-            Hu3DModelRemakeStatic(models[i]->omObj1->model[0]);
-            func_801196F0_w06(models[i]);
-            MBModelTempAllocFree(models[i]);
-            HuVecCopy3F(&models[i]->coords, &masu->coords);
-            HuVecCopyXYZ(&models[i]->scale, scale, scale, scale);
-            HuPrcSleep(0xC);
-        }
-        for (i = 0; i < 4; i++) {
-            if ((mask & (1 << i)) != 0) {
-                MBMotionSet(MBPlayerGet(i)->player_obj, 4, 2);
-                PlayerFXPlay(0x286, i);
-            }
-        }
-        HuPrcSleep(0x28);
-        MBStatusShowAll();
-        maxCoins = -1;
-        D_800A12D8_main = 0;
-        j = -1;
-        for (i = 0; i < 4; i++) {
-            MBPlayerVibrateObjKill(data[i]);
-            if ((mask & (1 << i)) != 0 && maxCoins < GwPlayer[i].coin) {
-                maxCoins = GwPlayer[i].coin;
-                j = i;
-            }
-        }
-        for (i = 0; i < 4; i++) {
-            if ((mask & (1 << i)) != 0) {
-                MBCoinChangeStatusCreate(i, -GwPlayer[i].coin);
-                if (i == j) {
-                    MBCoinTakeCreateSound(i, -GwPlayer[i].coin, 1);
-                } else {
-                    MBCoinTakeCreateSound(i, -GwPlayer[i].coin, 0);
-                }
-            }
-        }
-        HuPrcSleep(0x1E);
-        GwSystem.boardData.halfWordBytes[1] = 5;
-        func_801088B4_w06();
-    } else {
-        MessageTable msgs;
-
-        msgs = D_8011E204_w06;
-        MBWinInsertOpen(0xF00, (char *)msgs.entries[GwSystem.boardData.halfWordBytes[1] - 1], 0, 0, 0, 0);
-        func_800EC39C_shared_board(GwSystem.current_player_index);
-        func_800EC3E4_shared_board();
+    obj = omAddObj(0x1000, 0, 0, -1, func_8011826C_w04);
+    obj->work[0] = 0;
+    MBArrayShuffle(order, 1);
+    for (i = 0; i < 2; i++) {
+        boxes[i] = MBModelFileCreate(boxFiles[order[i]], -1, 1.0f, 0.0f, NULL);
+        MBModelTempAllocFree(boxes[i]);
+        HuVecCopy3F(&boxes[i]->coords, &MBMasuGet(D_8011C998_w04[i])->coords);
     }
-
-    if (MBKettouPlayerBitGet(0) == 0) {
-        MBCameraFocusModeSet(3);
-    } else {
-        player = MBPlayerGet(-1);
-        HuPrcChildLink(HuPrcCurrentGet(),
-                       MBPlayerPosMoveCreate(&camPos, &player->player_obj->coords, &camPos, 0x14));
-        HuPrcChildWatch();
-        MBCameraFocusModeSet(1);
-    }
-    func_800E6FBC_shared_board();
-}
-
-void func_80119E00_w06(s32 arg0) {
-    Vec cameraPos;
-    s32 masuIds[2];
-    s32 index;
-    SpaceData *masu;
-    GW_PLAYER *player;
-    Process *process;
-    Object *model;
-
-    player = MBPlayerGet(-1);
-    masuIds[0] = 0x75;
-    masuIds[1] = 0x70;
-    switch (arg0) {
-        case 0x34:
-        case 0x38:
-            index = 0;
-            break;
-        default:
-            index = 1;
-            break;
-    }
-
-    masu = MBMasuGet(masuIds[index]);
-    HuVecCopy3F(&cameraPos, &player->player_obj->coords);
-    MBCameraFocusModeSet(4);
-    MBCameraFocusVecSet(&cameraPos);
-    process = HuPrcCurrentGet();
-    HuPrcChildLink(process, MBPlayerPosMoveCreate(&cameraPos, &masu->coords, &cameraPos, 0x1E));
+    HuAudFXPlay(0x1A5);
+    vibrate = MBPlayerVibrateObjCreate(-1, 1, 5);
+    HuPrcChildLink(HuPrcCurrentGet(), func_80118240_w04());
+    HuPrcSleep(30);
+    window = HuWinCreate(90, 180, 140, 42, 0, 0);
+    HuWinBGTPLvlSet(window, 0x100);
+    HuWinBGColSet(window, 140, 60, 200);
+    helpWin1 = func_800E210C_shared_board(0x18, 0xB6, 1);
+    helpWin2 = func_800E210C_shared_board(0x19, 0xC8, 1);
     HuPrcChildWatch();
 
-    model = D_8011E32C_w06[index];
-    if (GwSystem.boardData.halfWordBytes[0] == index) {
-        HuAudFXPlay(0x1BE);
-        func_8001C814_main(model->omObj1->model[0], 3, 4);
-        while (func_800D9E80_shared_board(model) == 0) {
-            HuPrcVSleep();
+    count = MBRand(20.0f) + 20;
+    for (i = 0; i < count; i++) {
+        if (choice == -1) {
+            if (!MBPlayerComCheck(-1)) {
+                if (D_800D5546_main[GwPlayer[curPlayer].pad] & 0x200) {
+                    choice = 0;
+                } else if (D_800D5546_main[GwPlayer[curPlayer].pad] & 0x100) {
+                    choice = 1;
+                }
+            }
+            if (choice != -1) {
+                HuVecCopy3F(&dir, &MBMasuGet(D_8011C998_w04[choice])->coords);
+                dir.y = 0.0f;
+                MBVecDirGet(&player->player_obj->coords, &dir, &player->player_obj->rot);
+                HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&player->player_obj->coords, &dir,
+                                                                        &player->player_obj->coords, 10));
+                MBPlayerMotionSet(curPlayer, 1, 2);
+            }
         }
-    } else {
-        HuAudFXPlay(0x1BF);
-        func_8001C814_main(model->omObj1->model[0], 7, 0);
-        MBModelMotionWait(model);
-    }
-
-    WipeCreateOut(4, 0x10);
-    while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
 
-    index ^= 1;
-    masu = MBMasuGet(masuIds[index]);
-    HuVecCopy3F(&cameraPos, &masu->coords);
-    HuPrcSleep(2);
-    WipeCreateIn(4, 0x10);
-    while (WipeStatGet() != 0) {
-        HuPrcVSleep();
-    }
-
-    model = D_8011E32C_w06[index];
-    if (GwSystem.boardData.halfWordBytes[0] == index) {
-        HuAudFXPlay(0x1BE);
-        func_8001C814_main(model->omObj1->model[0], 3, 4);
-        while (func_800D9E80_shared_board(model) == 0) {
-            HuPrcVSleep();
-        }
-    } else {
-        HuAudFXPlay(0x1BF);
-        func_8001C814_main(model->omObj1->model[0], 7, 0);
-        MBModelMotionWait(model);
-    }
-
-    MBDlgResultWinExec(0x1100);
-    GwSystem.boardData.halfWordBytes[0] ^= 1;
-    if (MBKettouPlayerBitGet(0) == 0) {
-        MBCameraFocusModeSet(3);
-    } else {
-        WipeCreateOut(4, 0x10);
-        while (WipeStatGet() != 0) {
-            HuPrcVSleep();
-        }
-        MBCameraFocusModeSet(1);
-        HuPrcSleep(2);
-        WipeCreateIn(4, 0x10);
-        while (WipeStatGet() != 0) {
-            HuPrcVSleep();
-        }
-    }
-}
-
-void func_8011A110_w06(void) {
-    GW_PLAYER *player = MBPlayerGet(-1);
-    s16 masu = MBMasuLinkMasuIdGet(player->clink, player->cidx);
-
-    HuPrcSleep(8);
-    switch (masu) {
-        case 1:
-        case 4:
-        case 6:
-        case 8:
-        case 0x37:
-        case 0x4D:
-            func_80119748_w06();
-            break;
-        default:
-            func_80119E00_w06(masu);
-            break;
-    }
-    omDelPrcObj(0);
-}
-
-void func_8011A1E8_w06(void) {
-    s32 i;
-
-    for (i = 0; D_8011CBF8_w06[i] != -1; i++) {
-        if (MBMasuGet(D_8011CBF8_w06[i])->space_type != 0xE) {
-            MBMasuTypeSet(D_8011CBF8_w06[i], D_8011CC1C_w06[GwSystem.boardData.halfWordBytes[2]]);
-        }
-    }
-    func_800EBDAC_shared_board();
-}
-
-void func_8011A2A0_w06(void) {
-    s32 next;
-    s32 prev;
-
-    do {
-        next = MBRand(10.0f);
-        prev = GwSystem.boardData.halfWordBytes[2];
-    } while (prev != -1 && D_8011CC1C_w06[prev] == D_8011CC1C_w06[next]);
-    GwSystem.boardData.halfWordBytes[2] = next;
-}
-
-void func_8011A30C_w06(void) {
-    MasuIdTable masuIds;
-    Vec rotation;
-    GW_PLAYER *player;
-    SpaceData *masu;
-    void *dialog;
-    f32 scale;
-    s32 playerIdx;
-    s32 index;
-
-    player = MBPlayerGet(-1);
-    playerIdx = GwSystem.current_player_index;
-    masuIds = D_8011E214_w06;
-    func_800DBEC0_shared_board(playerIdx);
-    switch (MBMasuLinkMasuIdGet(player->clink, player->cidx)) {
-        case 0x84:
-            index = 0;
-            break;
-        case 0x76:
-            index = 1;
-            break;
-        case 0x85:
-        default:
-            index = 2;
-            break;
-    }
-    masu = MBMasuGet(masuIds.entries[index]);
-    MBVecDirGet(&player->player_obj->coords, &masu->coords, &player->player_obj->rot);
-    MBPlayerMotionSet(-1, 2, 0);
-    func_800EE688_shared_board(player->player_obj, 10.0f, -1.4f);
-    HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&player->player_obj->coords,
-                                                            &masu->coords,
-                                                            &player->player_obj->coords, 10));
-    HuPrcChildWatch();
-    player->player_obj->velocity.y = player->player_obj->velocity.z = 0.0f;
-    MBPlayerMotionSet(-1, -1, 2);
-    MBVecForwardSet(&rotation);
-    HuPrcChildLink(HuPrcCurrentGet(),
-                   func_800ED128_shared_board(&player->player_obj->rot, &rotation,
-                                                     &player->player_obj->rot, 10));
-    HuAudFXPlay(0x1BC);
-    dialog = MBPlayerVibrateObjCreate(-1, 2, 5);
+    speed = 0.5f;
     scale = 1.0f;
-    player->stat |= 4;
-    while (player->player_obj->velocity.x >= -3.0f) {
-        player->player_obj->velocity.x -= 1.0f;
-        HuVecCopyXYZ(&player->player_obj->scale, scale, scale, scale);
-        scale -= 0.1f;
+    while (boxes[0]->coords.y >= 20.0f) {
+        for (i = 0; i < 2; i++) {
+            boxes[i]->coords.y -= speed;
+            HuVecCopyXYZ(&boxes[i]->scale, scale, scale, scale);
+        }
+        scale -= 0.01f;
+        speed += 0.2f;
+        // Must stay brace-less: a braced block changes loop-invariant hoisting.
+        if (speed >= 2.0f)
+            speed = 2.0f;
+        if (choice == -1) {
+            if (MBPlayerComCheck(-1)) {
+                if (MBRand(10.0f) == 0) {
+                    choice = MBRand(2.0f) != 0;
+                }
+            } else if (D_800D5546_main[GwPlayer[curPlayer].pad] & 0x200) {
+                choice = 0;
+            } else if (D_800D5546_main[GwPlayer[curPlayer].pad] & 0x100) {
+                choice = 1;
+            }
+            if (choice != -1) {
+                HuVecCopy3F(&dir, &MBMasuGet(D_8011C998_w04[choice])->coords);
+                dir.y = 0.0f;
+                MBVecDirGet(&player->player_obj->coords, &dir, &player->player_obj->rot);
+                HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&player->player_obj->coords, &dir,
+                                                                        &player->player_obj->coords, 10));
+                MBPlayerMotionSet(curPlayer, 1, 2);
+            }
+        }
+        HuPrcVSleep();
+    }
+
+    MBHelpWinKill(helpWin1);
+    MBHelpWinKill(helpWin2);
+    HuWinKill(window);
+    while (boxes[0]->scale.x > 0.0f) {
+        for (i = 0; i < 2; i++) {
+            if (choice != i) {
+                MBModelDispOff(boxes[i]);
+                if (effects[i] == NULL) {
+                    effects[i] = MBModelFileCreate(0xB003C, -1, 2.0f, 0.0f, NULL);
+                    MBModelTempAllocFree(effects[i]);
+                    HuVecCopy3F(&effects[i]->coords, &boxes[i]->coords);
+                    func_8001C814_main(effects[i]->omObj1->model[0], 2, 0);
+                    if (choice == -1 && i == 0) {
+                        HuAudFXPlay(0x1A8);
+                    }
+                }
+            }
+            boxes[i]->coords.y -= 0.75f;
+            HuVecCopyXYZ(&boxes[i]->scale, scale, scale, scale);
+        }
+        scale -= 0.075f;
         if (scale < 0.0f) {
             scale = 0.0f;
         }
         HuPrcVSleep();
     }
-    scale = 0.0f;
-    HuVecCopyXYZ(&player->player_obj->scale, scale, scale, scale);
+    MBPlayerVibrateObjKill(vibrate);
+
+    for (i = 0; i < 2; i++) {
+        if (choice == i) {
+            effects[choice] = MBModelFileCreate(0xB003B, -1, 2.0f, 0.0f, NULL);
+            func_8001C258_main(effects[choice]->omObj1->model[0], 0x180, 0);
+            Hu3DModelLayerSet(effects[choice]->omObj1->model[0], 0x1800);
+            Hu3DModelRemakeStatic(effects[choice]->omObj1->model[0]);
+            HuVecCopy3F(&effects[choice]->coords, &boxes[choice]->coords);
+            func_8001C814_main(effects[choice]->omObj1->model[0], 2, 0);
+            HuAudFXPlay(0x1A6);
+            MBPlayerVibrate(-1, 3);
+        }
+    }
+    if (effects[0] != NULL) {
+        MBModelMotionWait(effects[0]);
+    }
+    if (effects[1] != NULL) {
+        MBModelMotionWait(effects[1]);
+    }
+    omDelObj(obj);
+    for (i = 0; i < 2; i++) {
+        MBModelKill(D_8011E118_w04[i]);
+        MBModelKill(boxes[i]);
+        if (effects[i] != NULL) {
+            MBModelKill(effects[i]);
+        }
+    }
+    MBVecForwardSet(&player->player_obj->rot);
+
+    if (choice == -1) {
+        MBDlgWinExec(0x3E, 0x903);
+        boxes[0] = MBModelFileCreate(boxFiles[1], -1, 1.0f, 0.0f, NULL);
+        func_8001FA68_main(boxes[0]->omObj1->model[0]);
+        HuVecCopy3F(&boxes[0]->coords, &player->player_obj->coords);
+        boxes[0]->velocity.x = 60.0f;
+        boxes[0]->coords.x += 3.0f;
+        HuAudFXPlay(0x19);
+        for (i = 0; i < 256; i += 12) {
+            func_8001F9E4_main(boxes[0]->omObj1->model[0], i);
+            HuPrcVSleep();
+        }
+        func_8001F9E4_main(boxes[0]->omObj1->model[0], 0xFF);
+        PlayerFXPlay(0x274, curPlayer);
+        MBPlayerMotionSet(curPlayer, 5, 0);
+        MBModelMotionWait(player->player_obj);
+        choice = 0;
+        MBDlgResultWinExec(0x904);
+        MBModelKill(boxes[0]);
+        order[0] = 1;
+    } else {
+        PlayerFXPlay(0x274, curPlayer);
+        MBPlayerMotionSet(curPlayer, 5, 0);
+        MBModelMotionWait(player->player_obj);
+        MBDlgResultWinExec(order[choice] == 1 ? 0x902 : 0x901);
+    }
+
+    HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&camPos, &player->player_obj->coords, &camPos, 10));
     HuPrcChildWatch();
-    MBPlayerVibrateObjKill(dialog);
-    WipeCreateOut(WIPE_TYPE_NORMAL, 0x10);
-    while (WipeStatGet() != 0) {
-        HuPrcVSleep();
+    MBCameraFocusModeSet(1);
+    MBVecDirGet(&player->player_obj->coords, &curSpace->coords, &player->player_obj->rot);
+    MBPlayerMotionSet(curPlayer, 0, 2);
+    HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&player->player_obj->coords, &curSpace->coords,
+                                                            &player->player_obj->coords, 20));
+    player->player_obj->velocity.y = 6.0f;
+    player->player_obj->velocity.z = -0.6f;
+    HuPrcChildWatch();
+    MBPlayerMotionSet(curPlayer, -1, 2);
+    MBVecForwardSet(&dir);
+    HuPrcChildLink(HuPrcCurrentGet(),
+                   func_800ED128_shared_board(&player->player_obj->rot, &dir, &player->player_obj->rot, 5));
+    HuPrcChildWatch();
+    MBStatusShowAll();
+
+    if (choice != -1) {
+        if (order[choice] == 1) {
+            GwSystem.boardData.halfWordBytes[3] = 1;
+            GwSystem.cur_player_used_item = 1;
+        } else {
+            MBCoinChangeCreate(curPlayer, 5);
+            MBCoinTakeCreate(curPlayer, 5);
+            HuPrcSleep(30);
+        }
     }
-    HuVecCopy3F(&player->player_obj->coords, &MBMasuGet(0x8B)->coords);
-    HuPrcSleep(2);
-    WipeCreateIn(WIPE_TYPE_NORMAL, 0x10);
-    while (WipeStatGet() != 0) {
-        HuPrcVSleep();
+}
+
+void func_801191B8_w04(void) {
+    GW_PLAYER *player = MBPlayerGet(-1);
+    SpaceData *space = MBMasuGet(0x8A);
+    SpaceData *curSpace = MBMasuGet(MBMasuCurGet());
+    s32 curPlayer = GwSystem.current_player_index;
+    Vec dir;
+    Vec camPos;
+    s32 signFiles[2] = { 0x130179, 0x13017A };
+    Object *boxes[2];
+    Object *effects[2] = { NULL, NULL };
+    s32 boxFiles[2] = { 0x13017D, 0x13017E };
+    u8 order[2];
+    s32 choice;
+    s32 i;
+    s32 count;
+    omObjData *obj;
+    Unk3 *helpWin1;
+    Unk3 *helpWin2;
+    s16 window;
+    UnkVibrateProcess *vibrate;
+    f32 speed;
+    f32 scale;
+
+    choice = -1;
+    MBDlgWinInsertCreate(0x3F, 0x905, mbCharNameMesTbl[GwPlayer[curPlayer].chr], 0, 0, 0, 0);
+    func_800EC9DC_shared_board();
+    func_800EC9DC_shared_board();
+    MBDlgWinClose();
+    MBDlgWinKill();
+    MBVecDirGet(&player->player_obj->coords, &space->coords, &dir);
+    HuPrcChildLink(HuPrcCurrentGet(),
+                   func_800ED128_shared_board(&player->player_obj->rot, &dir, &player->player_obj->rot, 5));
+    HuPrcChildWatch();
+    MBPlayerMotionSet(curPlayer, 0, 2);
+    HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&player->player_obj->coords, &space->coords,
+                                                            &player->player_obj->coords, 15));
+    player->player_obj->velocity.y = 6.0f;
+    player->player_obj->velocity.z = -0.75f;
+    HuPrcChildWatch();
+    MBPlayerMotionSet(curPlayer, -1, 2);
+    space = MBMasuGet(0x7E);
+    MBVecDirGet(&player->player_obj->coords, &space->coords, &dir);
+    HuPrcChildLink(HuPrcCurrentGet(),
+                   func_800ED128_shared_board(&player->player_obj->rot, &dir, &player->player_obj->rot, 5));
+    HuPrcChildWatch();
+    HuVecCopy3F(&camPos, &player->player_obj->coords);
+    MBCameraFocusModeSet(4);
+    MBCameraFocusVecSet(&camPos);
+    HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&camPos, &space->coords, &camPos, 10));
+    HuPrcChildWatch();
+    MBStatusHideAll();
+
+    for (i = 0; i < 2; i++) {
+        D_8011E118_w04[i] = MBModelFileCreate(signFiles[1], -1, 1.0f, 0.0f, NULL);
+        func_8001C258_main(D_8011E118_w04[i]->omObj1->model[0], 0x180, 0);
+        Hu3DModelLayerSet(D_8011E118_w04[i]->omObj1->model[0], 0x1800);
+        Hu3DModelRemakeStatic(D_8011E118_w04[i]->omObj1->model[0]);
+        MBModelTempAllocFree(D_8011E118_w04[i]);
+        HuVecCopy3F(&D_8011E118_w04[i]->coords, &MBMasuGet(D_8011C99C_w04[i])->coords);
     }
-    HuAudFXPlay(0x1BC);
-    while (player->player_obj->velocity.x <= 15.0f) {
-        player->player_obj->velocity.x += 1.5f;
-        HuVecCopyXYZ(&player->player_obj->scale, scale, scale, scale);
-        scale += 0.08f;
-        if (scale > 1.0f) {
-            scale = 1.0f;
+    obj = omAddObj(0x1000, 0, 0, -1, func_8011826C_w04);
+    obj->work[0] = 1;
+    MBArrayShuffle(order, 1);
+    for (i = 0; i < 2; i++) {
+        boxes[i] = MBModelFileCreate(boxFiles[order[i]], -1, 1.0f, 0.0f, NULL);
+        MBModelTempAllocFree(boxes[i]);
+        HuVecCopy3F(&boxes[i]->coords, &MBMasuGet(D_8011C99C_w04[i])->coords);
+    }
+    HuAudFXPlay(0x1A5);
+    vibrate = MBPlayerVibrateObjCreate(-1, 1, 5);
+    HuPrcChildLink(HuPrcCurrentGet(), func_80118240_w04());
+    HuPrcSleep(30);
+    window = HuWinCreate(90, 180, 140, 42, 0, 0);
+    HuWinBGTPLvlSet(window, 0x100);
+    HuWinBGColSet(window, 140, 60, 200);
+    helpWin1 = func_800E210C_shared_board(0x18, 0xB6, 1);
+    helpWin2 = func_800E210C_shared_board(0x19, 0xC8, 1);
+    HuPrcChildWatch();
+
+    count = MBRand(20.0f) + 20;
+    for (i = 0; i < count; i++) {
+        if (choice == -1) {
+            if (!MBPlayerComCheck(-1)) {
+                if (D_800D5546_main[GwPlayer[curPlayer].pad] & 0x200) {
+                    choice = 0;
+                } else if (D_800D5546_main[GwPlayer[curPlayer].pad] & 0x100) {
+                    choice = 1;
+                }
+            }
+            if (choice != -1) {
+                HuVecCopy3F(&dir, &MBMasuGet(D_8011C99C_w04[choice])->coords);
+                dir.y = 0.0f;
+                MBVecDirGet(&player->player_obj->coords, &dir, &player->player_obj->rot);
+                HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&player->player_obj->coords, &dir,
+                                                                        &player->player_obj->coords, 10));
+                MBPlayerMotionSet(curPlayer, 1, 2);
+            }
         }
         HuPrcVSleep();
     }
-    HuVecCopyXYZ(&player->player_obj->scale, 1.0f, 1.0f, 1.0f);
-    player->stat &= ~4;
-    masu = MBMasuGet(0x8A);
-    MBVecDirGet(&player->player_obj->coords, &masu->coords, &player->player_obj->rot);
-    MBPlayerMotionSet(-1, 2, 0);
-    func_800EE688_shared_board(player->player_obj, 10.0f, -1.5f);
-    HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&player->player_obj->coords,
-                                                            &masu->coords,
-                                                            &player->player_obj->coords, 14));
+
+    speed = 0.5f;
+    scale = 1.0f;
+    while (boxes[0]->coords.y >= 20.0f) {
+        for (i = 0; i < 2; i++) {
+            boxes[i]->coords.y -= speed;
+            HuVecCopyXYZ(&boxes[i]->scale, scale, scale, scale);
+        }
+        scale -= 0.01f;
+        speed += 0.2f;
+        if (speed >= 2.0f)
+            speed = 2.0f;
+        if (choice == -1) {
+            if (MBPlayerComCheck(-1)) {
+                if (MBRand(10.0f) == 0) {
+                    choice = MBRand(2.0f) != 0;
+                }
+            } else if (D_800D5546_main[GwPlayer[curPlayer].pad] & 0x200) {
+                choice = 0;
+            } else if (D_800D5546_main[GwPlayer[curPlayer].pad] & 0x100) {
+                choice = 1;
+            }
+            if (choice != -1) {
+                HuVecCopy3F(&dir, &MBMasuGet(D_8011C99C_w04[choice])->coords);
+                dir.y = 0.0f;
+                MBVecDirGet(&player->player_obj->coords, &dir, &player->player_obj->rot);
+                HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&player->player_obj->coords, &dir,
+                                                                        &player->player_obj->coords, 10));
+                MBPlayerMotionSet(curPlayer, 1, 2);
+            }
+        }
+        HuPrcVSleep();
+    }
+
+    MBHelpWinKill(helpWin1);
+    MBHelpWinKill(helpWin2);
+    HuWinKill(window);
+    while (boxes[0]->scale.x > 0.0f) {
+        for (i = 0; i < 2; i++) {
+            if (choice != i) {
+                MBModelDispOff(boxes[i]);
+                if (effects[i] == NULL) {
+                    effects[i] = MBModelFileCreate(0xB003C, -1, 2.0f, 0.0f, NULL);
+                    MBModelTempAllocFree(effects[i]);
+                    HuVecCopy3F(&effects[i]->coords, &boxes[i]->coords);
+                    func_8001C814_main(effects[i]->omObj1->model[0], 2, 0);
+                    if (choice == -1 && i == 0) {
+                        HuAudFXPlay(0x1A8);
+                    }
+                }
+            }
+            boxes[i]->coords.y -= 0.75f;
+            HuVecCopyXYZ(&boxes[i]->scale, scale, scale, scale);
+        }
+        scale -= 0.075f;
+        if (scale < 0.0f) {
+            scale = 0.0f;
+        }
+        HuPrcVSleep();
+    }
+    MBPlayerVibrateObjKill(vibrate);
+
+    for (i = 0; i < 2; i++) {
+        if (choice == i) {
+            effects[choice] = MBModelFileCreate(0xB003B, -1, 2.0f, 0.0f, NULL);
+            func_8001C258_main(effects[choice]->omObj1->model[0], 0x180, 0);
+            Hu3DModelLayerSet(effects[choice]->omObj1->model[0], 0x1800);
+            Hu3DModelRemakeStatic(effects[choice]->omObj1->model[0]);
+            HuVecCopy3F(&effects[choice]->coords, &boxes[choice]->coords);
+            func_8001C814_main(effects[choice]->omObj1->model[0], 2, 0);
+            HuAudFXPlay(0x1A7);
+            MBPlayerVibrate(-1, 3);
+        }
+    }
+    if (effects[0] != NULL) {
+        MBModelMotionWait(effects[0]);
+    }
+    if (effects[1] != NULL) {
+        MBModelMotionWait(effects[1]);
+    }
+    omDelObj(obj);
+    for (i = 0; i < 2; i++) {
+        MBModelKill(D_8011E118_w04[i]);
+        MBModelKill(boxes[i]);
+        if (effects[i] != NULL) {
+            MBModelKill(effects[i]);
+        }
+    }
+    MBVecForwardSet(&player->player_obj->rot);
+
+    if (choice == -1) {
+        MBDlgWinExec(0x3F, 0x908);
+        boxes[0] = MBModelFileCreate(boxFiles[1], -1, 1.0f, 0.0f, NULL);
+        func_8001FA68_main(boxes[0]->omObj1->model[0]);
+        HuVecCopy3F(&boxes[0]->coords, &player->player_obj->coords);
+        boxes[0]->velocity.x = 60.0f;
+        boxes[0]->coords.x += 3.0f;
+        HuAudFXPlay(0x19);
+        for (i = 0; i < 256; i += 12) {
+            func_8001F9E4_main(boxes[0]->omObj1->model[0], i);
+            HuPrcVSleep();
+        }
+        func_8001F9E4_main(boxes[0]->omObj1->model[0], 0xFF);
+        PlayerFXPlay(0x286, curPlayer);
+        MBPlayerMotionSet(curPlayer, 3, 0);
+        MBModelMotionWait(player->player_obj);
+        choice = 0;
+        MBDlgResultWinExec(0x909);
+        MBModelKill(boxes[0]);
+        order[0] = 1;
+    } else {
+        PlayerFXPlay(0x286, curPlayer);
+        MBPlayerMotionSet(curPlayer, 3, 0);
+        MBModelMotionWait(player->player_obj);
+        if (order[choice] == 1) {
+            MBDlgResultWinExec(0x907);
+        } else {
+            MBDlgResultWinExec(0x906);
+        }
+    }
+
+    HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&camPos, &player->player_obj->coords, &camPos, 10));
     HuPrcChildWatch();
-    MBPlayerMotionSet(-1, -1, 2);
-    MBVecForwardSet(&rotation);
+    MBCameraFocusModeSet(1);
+    MBVecDirGet(&player->player_obj->coords, &curSpace->coords, &player->player_obj->rot);
+    MBPlayerMotionSet(curPlayer, 0, 2);
+    HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&player->player_obj->coords, &curSpace->coords,
+                                                            &player->player_obj->coords, 20));
+    player->player_obj->velocity.y = 6.0f;
+    player->player_obj->velocity.z = -0.6f;
+    HuPrcChildWatch();
+    MBPlayerMotionSet(curPlayer, -1, 2);
+    MBVecForwardSet(&dir);
     HuPrcChildLink(HuPrcCurrentGet(),
-                   func_800ED128_shared_board(&player->player_obj->rot, &rotation,
-                                                     &player->player_obj->rot, 5));
+                   func_800ED128_shared_board(&player->player_obj->rot, &dir, &player->player_obj->rot, 5));
     HuPrcChildWatch();
-    MBMoveMasuSet(-1, 1, 7);
-    MBMoveBackMasuSet(-1, 1, 0);
-    func_800DB884_shared_board(playerIdx);
+    MBStatusShowAll();
+
+    if (choice != -1) {
+        if (order[choice] == 1) {
+            GwSystem.boardData.halfWordBytes[3] = 1;
+            GwSystem.cur_player_used_item = 1;
+            GwSystem.boardData.halfWordBytes[4] = 1;
+            player->rev |= 0x80;
+            func_800DC104_shared_board(MBPlayerTurnGet(), 1);
+        } else {
+            MBCoinChangeCreate(curPlayer, -5);
+            MBCoinTakeCreate(curPlayer, -5);
+            HuPrcSleep(30);
+        }
+    }
+}
+
+void func_80119FCC_w04(s32 arg0, s32 arg1) {
+    s16 spaces[3] = { 0x81, 0x83, 0x82 };
+    Object *base;
+    Object *hammer;
+    Object *target;
+    SpaceData *space;
+    HmfModel *hmfModel;
+    s32 played = 0;
+    s32 i;
+    f32 angle;
+    f32 startAngle;
+
+    base = MBModelFileCreate(0x130178, -1, 1.0f, 0.0f, NULL);
+    Hu3DModelLayerSet(base->omObj1->model[0], 0);
+    func_8001C258_main(base->omObj1->model[0], 0x80000, 0x80000);
+    Hu3DModelRemakeStatic(base->omObj1->model[0]);
+    MBModelTempAllocFree(base);
+    if (arg0 == -1) {
+        space = MBMasuGet(spaces[0]);
+        target = D_8011E09C_w04[0];
+    } else {
+        space = MBMasuGet(spaces[arg0]);
+        target = D_8011E09C_w04[arg0];
+    }
+    HuVecCopy3F(&base->coords, &space->coords);
+
+    hammer = MBModelFileCreate(0xA0156, -1, 0.9f, 0.0f, NULL);
+    HuVecCopyXYZ(&hammer->scale, 1.8f, 1.8f, 1.8f);
+    MBModelTempAllocFree(hammer);
+    HuVecCopy3F(&hammer->coords, &space->coords);
+    hammer->velocity.x = -30.0f;
+    HuAudFXPlay(0x1A2);
+    for (angle = 0.0f; angle <= 135.0f; angle += 15.0f) {
+        hammer->velocity.x = sindf(angle) * 35.0f - 30.0f;
+        HuPrcVSleep();
+    }
     HuPrcSleep(10);
-    func_8010A070_w06();
+
+    angle = startAngle = MBVecAngleGet(&target->rot);
+    for (i = 0; i <= 360; i += 20) {
+        hmfModel = &Hu3DData[hammer->omObj1->model[0]];
+        sincosdf(i, &hmfModel->mtx[2][0], &hmfModel->mtx[2][2]);
+        Hu3DData[hammer->omObj1->model[0]].mtx[0][2] = -Hu3DData[hammer->omObj1->model[0]].mtx[2][0];
+        Hu3DData[hammer->omObj1->model[0]].mtx[0][0] = Hu3DData[hammer->omObj1->model[0]].mtx[2][2];
+        Hu3DData[hammer->omObj1->model[0]].mtx[0][1] = Hu3DData[hammer->omObj1->model[0]].mtx[0][3] =
+            Hu3DData[hammer->omObj1->model[0]].mtx[1][0] = Hu3DData[hammer->omObj1->model[0]].mtx[1][2] =
+                Hu3DData[hammer->omObj1->model[0]].mtx[1][3] = Hu3DData[hammer->omObj1->model[0]].mtx[2][1] =
+                    Hu3DData[hammer->omObj1->model[0]].mtx[2][3] =
+                        Hu3DData[hammer->omObj1->model[0]].mtx[3][0] =
+                            Hu3DData[hammer->omObj1->model[0]].mtx[3][1] =
+                                Hu3DData[hammer->omObj1->model[0]].mtx[3][2] = 0.0f;
+        Hu3DData[hammer->omObj1->model[0]].mtx[1][1] = Hu3DData[hammer->omObj1->model[0]].mtx[3][3] = 1.0f;
+        if (i > 180) {
+            angle -= 20.0f;
+            if (!played) {
+                HuAudFXPlay(0x1A4);
+                played = 1;
+            }
+        }
+        target->rot.x = sindf(angle);
+        target->rot.z = cosdf(angle);
+        HuPrcVSleep();
+    }
+    while (angle >= startAngle - 180.0f) {
+        target->rot.x = sindf(angle);
+        target->rot.z = cosdf(angle);
+        HuPrcVSleep();
+        angle -= 20.0f;
+    }
+
+    HuAudFXPlay(0x1A3);
+    for (angle = 135.0f; angle >= 0.0f; angle -= 20.0f) {
+        hammer->velocity.x = sindf(angle) * 25.0f - 20.0f;
+        HuPrcVSleep();
+    }
+    MBModelKill(hammer);
+    MBModelKill(base);
+    HuPrcSleep(5);
+
+    if (arg0 == -1) {
+        for (i = 0; i < 3; i++) {
+            GwSystem.boardData.halfWordBytes[D_8011B9C4_w04[i]] ^= 1;
+        }
+        func_8010873C_w04();
+        if (arg1 == 0) {
+            MBDlgResultWinExec(0xB03);
+        } else {
+            func_800EC5B4_shared_board(-1, 0xB05);
+        }
+    } else {
+        GwSystem.boardData.halfWordBytes[D_8011B9C4_w04[arg0]] ^= 1;
+        func_8010873C_w04();
+        MBDlgResultWinExec(0xA00);
+    }
 }
 
-void func_8011A848_w06(void) {
+void func_8011A4E0_w04(s32 arg0) {
+    Vec pos;
+    SpaceData *space = MBMasuGet(D_8011B9BC_w04[arg0]);
+    GW_PLAYER *player = MBPlayerGet(CUR_PLAYER);
+
+    HuVecCopy3F(&pos, &player->player_obj->coords);
+    MBCameraFocusModeSet(4);
+    MBCameraFocusVecSet(&pos);
+    HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&pos, &space->coords, &pos, 15));
+    HuPrcChildWatch();
+    func_80119FCC_w04(arg0, 0);
+    HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&pos, &player->player_obj->coords, &pos, 10));
+    HuPrcChildWatch();
+    MBCameraFocusModeSet(1);
+}
+
+void func_8011A5DC_w04(void) {
+    GW_SYSTEM *system;
+    SpaceData *space = MBMasuGet(D_8011B9BC_w04[0]);
+    DecisionTreeNonLeafNode *tree;
+    s32 masu;
+    s32 choice;
+
+    masu = MBMasuCurGet();
+    system = &GwSystem;
+    if (masu == 0x73) {
+        tree = D_8011BF6C_w04;
+        masu = 0x7F;
+    } else {
+        tree = D_8011BF9C_w04;
+        masu = 0x80;
+    }
+
+    func_800DBEC0_shared_board(system->current_player_index);
+    MBPlayerMotionSet(-1, -1, 2);
+    func_800ED20C_shared_board(-1, 8, masu);
+    HuPrcSleep(8);
+
+    if (GwPlayer[system->current_player_index].coin < 5) {
+        MBDlgWinExec(0x3D, 0xB01);
+    } else {
+    dialogLoop:
+        MBDlgWinInsertCreate(0x3D, 0xB00, 0, 0, 0, 0, 0);
+        choice = func_80109CD4_w04((s32)tree, 0);
+        MBDlgWinClose();
+        MBDlgWinKill();
+        switch (choice) {
+            case 0:
+                MBCoinChangeCreate(system->current_player_index, -5);
+                MBCoinTakeCreate(system->current_player_index, -5);
+                HuPrcSleep(30);
+                MBDlgWinExec(0x3D, 0xB02);
+                WipeCreateOut(0xB, 0x10);
+                while (WipeStatGet() != 0) {
+                    HuPrcVSleep();
+                }
+                MBCameraFocusModeSet(0);
+                func_800E9AF0_shared_board(&space->coords, 0);
+                HuPrcSleep(5);
+                WipeCreateIn(0xB, 0x10);
+                while (WipeStatGet() != 0) {
+                    HuPrcVSleep();
+                }
+                func_80119FCC_w04(-1, 0);
+                WipeCreateOut(0xB, 0x10);
+                while (WipeStatGet() != 0) {
+                    HuPrcVSleep();
+                }
+                MBCameraFocusModeSet(1);
+                HuPrcSleep(5);
+                WipeCreateIn(0xB, 0x10);
+                while (WipeStatGet() != 0) {
+                    HuPrcVSleep();
+                }
+                break;
+            case 1:
+                MBDlgWinExec(0x3D, 0xB04);
+                break;
+            default:
+                func_80106AB0_w04();
+                goto dialogLoop;
+        }
+    }
+
+    func_800DB884_shared_board(system->current_player_index);
+    HuPrcSleep(10);
+}
+
+// main func for reroll event in woody woods
+void func_8011A858_w04(void) {
+    GW_PLAYER *curPlayer;
+    s16 curPlayerSpace;
+
+    curPlayer = MBPlayerGet(CUR_PLAYER);
+    curPlayerSpace = MBMasuLinkMasuIdGet(curPlayer->clink, curPlayer->cidx);
+    HuPrcSleep(8);
+    switch (curPlayerSpace) {
+        // space IDs for reroll event
+        case 0x3F:
+        case 0x49:
+        case 0x4A:
+            func_801183D4_w04();
+            break;
+        case 0x1F:
+        case 0x21:
+        case 0x22:
+            func_801191B8_w04();
+            break;
+        case 0x4F:
+            func_8011A4E0_w04(0);
+            break;
+        case 0xC:
+            func_8011A4E0_w04(1);
+            break;
+        case 0x3B:
+            func_8011A4E0_w04(2);
+            break;
+    }
+    omDelPrcObj(NULL);
+}
+
+void func_8011A91C_w04(void) {
+    Vec pos;
+    SpaceData *space = MBMasuGet(D_8011B9BC_w04[0]);
+
+    if (GwSystem.current_turn >= 2) {
+        HuVecCopy3F(&pos, &space->coords);
+        MBCameraFocusModeSet(4);
+        MBCameraFocusVecSet(&pos);
+        HuPrcSleep(2);
+        MBPlayerPosFixSet(0, 1);
+        MBPlayerPosFixSet(1, 1);
+        MBPlayerPosFixSet(2, 1);
+        MBPlayerPosFixSet(3, 1);
+        HuPrcChildLink(HuPrcCurrentGet(), func_800F29EC_shared_board());
+        HuPrcChildWatch();
+        func_80119FCC_w04(-1, 1);
+        HuPrcChildLink(HuPrcCurrentGet(), func_800F292C_shared_board());
+        HuPrcChildWatch();
+        MBCameraFocusModeSet(1);
+        HuPrcSleep(5);
+    }
+}
+
+void func_8011AA10_w04(void) {
     Hu3DCamInit(2);
-    Hu3DCameraScissorSet(1, &D_8011CDE8_w06);
-    func_80107828_w06();
+    Hu3DCameraScissorSet(1, &D_8011CB18_w04);
+    func_80107828_w04();
     MBStart(2);
-    omAddPrcObj(func_80106120_w06, 0x1005, 0x1000, 0);
+    omAddPrcObj(func_80106120_w04, 0x1005, 0x1000, 0);
 }
 
-s32 func_8011A89C_w06(void) {
+s32 func_8011AA64_w04(void) {
     s32 i;
     DecisionTreeNonLeafNode *data;
     GW_SYSTEM *loc = &GwSystem;
 
-    data = D_8011D788_w06[loc->star_spawn_indices[loc->current_star_spawn]];
+    data = D_8011D65C_w04[loc->star_spawn_indices[loc->current_star_spawn]];
     func_800DA778_shared_board(loc->current_player_index);
-    if (MBComTreeExec(D_8011D650_w06) == 0) {
+    if (MBComTreeExec(D_8011D530_w04) == 0) {
         return loc->current_player_index;
     }
     for (i = 0; i < 4; i++) {
@@ -9431,14 +9226,14 @@ s32 func_8011A89C_w06(void) {
     MBRand(4.0f);
 }
 
-s32 func_8011A96C_w06(void) {
+s32 func_8011AB34_w04(void) {
     s32 i;
     DecisionTreeNonLeafNode *data1;
     DecisionTreeNonLeafNode *data2;
     GW_SYSTEM *loc = &GwSystem;
 
-    data1 = D_8011DD9C_w06[loc->star_spawn_indices[loc->current_star_spawn]];
-    data2 = D_8011DDBC_w06[loc->star_spawn_indices[loc->current_star_spawn]];
+    data1 = D_8011DAC0_w04[loc->star_spawn_indices[loc->current_star_spawn]];
+    data2 = D_8011DAE0_w04[loc->star_spawn_indices[loc->current_star_spawn]];
     func_800DA778_shared_board(loc->current_player_index);
     if (MBComTreeExec(data1) == 0) {
         return loc->current_player_index;
@@ -9454,23 +9249,18 @@ s32 func_8011A96C_w06(void) {
     MBRand(4.0f);
 }
 
-s32 func_8011AA44_w06(void) {
-    s32 temp_s0;
-    s32 phi_v1;
-    GW_SYSTEM *loc;
-    loc = &GwSystem;
+s32 func_8011AC0C_w04(void) {
+    GW_SYSTEM *system = &GwSystem;
+    s32 turnsLeft = system->total_turns - system->current_turn + 1;
+    s32 emptyItemSlot = MBItemFindEmpty(-1);
 
-    temp_s0 = loc->total_turns - loc->current_turn + 1;
-
-    phi_v1 = MBItemFindEmpty(-1);
-    if (phi_v1 == -1) {
-        phi_v1 = 3;
+    if (emptyItemSlot == ITEM_NONE) {
+        emptyItemSlot = 3;
     }
-
-    return (phi_v1 < temp_s0) ? 0 : 1;
+    return emptyItemSlot >= turnsLeft;
 }
 
-s32 func_8011AA98_w06(s32 arg0, s32 arg1) {
+s32 func_8011AC60_w04(s32 arg0, s32 arg1) {
     s32 result = 1;
     s32 i;
 
@@ -9495,13 +9285,7 @@ s32 func_8011AA98_w06(s32 arg0, s32 arg1) {
     return result;
 }
 
-const ModelIdTable D_8011E1F8_w06 = { { 0x000B0010, 0x000B0011, 0x000B001B } };
-
-const MessageTable D_8011E204_w06 = { { 0xF04, 0xF03, 0xF02, 0xF01 } };
-
-const MasuIdTable D_8011E214_w06 = { { 0x85, 0x78, 0x87 } };
-
-s32 func_8011AB80_w06(void) {
+s32 func_8011AD48_w04(void) {
     s32 curPlayer = MBPlayerTurnGet();
     GW_SYSTEM *loc = &GwSystem;
     s32 results[3];
@@ -9548,7 +9332,7 @@ s32 func_8011AB80_w06(void) {
                 continue;
             case ITEM_MUSHROOM:
             case ITEM_LUCKY_CHARM:
-                if (func_8011AA44_w06() != 0) {
+                if (func_8011AC0C_w04() != 0) {
                     break;
                 }
                 if (MBRandCheck100(80) == 0) {
@@ -9567,36 +9351,36 @@ s32 func_8011AB80_w06(void) {
                 if (i >= 4) {
                     break;
                 }
-                if (MBRandCheck100(70) != 0 && func_8011AA44_w06() == 0) {
+                if (MBRandCheck100(70) != 0 && func_8011AC0C_w04() == 0) {
                     continue;
                 }
                 break;
             case ITEM_GOLDEN_MUSHROOM:
-                if (func_8011AA44_w06() != 0) {
+                if (func_8011AC0C_w04() != 0) {
                     break;
                 }
-                if (MBComTreeExec(D_8011D0E0_w06) != 0) {
+                if (MBComTreeExec(D_8011CF48_w04) != 0) {
                     continue;
                 }
                 break;
             case ITEM_BOWSER_SUIT:
-                if (func_8011AA44_w06() != 0) {
+                if (func_8011AC0C_w04() != 0) {
                     break;
                 }
-                if (MBComTreeExec(D_8011D14C_w06) != 0) {
+                if (MBComTreeExec(D_8011CFB4_w04) != 0) {
                     continue;
                 }
                 break;
             case ITEM_WARP_BLOCK:
-                if (MBComTreeExec(D_8011D2F0_w06) != 0) {
+                if (MBComTreeExec(D_8011D1D0_w04) != 0) {
                     continue;
                 }
                 break;
             case ITEM_POISON_MUSHROOM:
-                if (MBComTreeExec(D_8011D5C0_w06) == 0) {
-                    s32 target = func_8011A89C_w06();
+                if (MBComTreeExec(D_8011D494_w04) == 0) {
+                    s32 target = func_8011AA64_w04();
 
-                    D_8011E3AC_w06 = target;
+                    D_8011E114_w04 = target;
                     if ((GwSystem.slow_dice_flags >> target) & 1) {
                         continue;
                     }
@@ -9604,10 +9388,10 @@ s32 func_8011AB80_w06(void) {
                 }
                 continue;
             case ITEM_REVERSE_MUSHROOM:
-                if (MBComTreeExec(D_8011DA3C_w06) == 0) {
-                    s32 target = func_8011A96C_w06();
+                if (MBComTreeExec(D_8011D838_w04) == 0) {
+                    s32 target = func_8011AB34_w04();
 
-                    D_8011E3A8_w06 = target;
+                    D_8011E110_w04 = target;
                     if (GwPlayer[target].rev & 0x80) {
                         continue;
                     }
@@ -9615,7 +9399,7 @@ s32 func_8011AB80_w06(void) {
                 }
                 continue;
             case ITEM_PLUNDER_CHEST:
-                for (i = 0, best = 0, D_8011E364_w06 = -1; i < 4; i++) {
+                for (i = 0, best = 0, D_8011E0D0_w04 = -1; i < 4; i++) {
                     if (i != curPlayer) {
                         for (j = 0; j < 3; j++) {
                             s8 it = GwPlayer[i].itemNo[j];
@@ -9623,13 +9407,13 @@ s32 func_8011AB80_w06(void) {
                             if (it != -1) {
                                 if (best < D_80100FA8_shared_board[it]) {
                                     best = D_80100FA8_shared_board[it];
-                                    D_8011E364_w06 = i;
+                                    D_8011E0D0_w04 = i;
                                 }
                             }
                         }
                     }
                 }
-                if (D_8011E364_w06 == -1) {
+                if (D_8011E0D0_w04 == -1) {
                     continue;
                 }
                 if (best >= 4) {
@@ -9649,7 +9433,7 @@ s32 func_8011AB80_w06(void) {
                         }
                     }
                 }
-                for (i = 0, D_8011E360_w06 = -1; i < 4; i++) {
+                for (i = 0, D_8011E0CC_w04 = -1; i < 4; i++) {
                     if (i != curPlayer) {
                         count = 0;
                         for (j = 0; j < 3; j++) {
@@ -9660,17 +9444,17 @@ s32 func_8011AB80_w06(void) {
                             }
                         }
                         if (best < count) {
-                            D_8011E360_w06 = i;
+                            D_8011E0CC_w04 = i;
                             best = count;
                         }
                     }
                 }
-                if (D_8011E360_w06 == -1) {
+                if (D_8011E0CC_w04 == -1) {
                     continue;
                 }
                 break;
             case ITEM_BOO_BELL:
-                if (func_8011AA98_w06(0x32, 0xA) == 0) {
+                if (func_8011AC60_w04(0x32, 0xA) == 0) {
                     break;
                 }
                 if (GwPlayer[curPlayer].coin < 5) {
@@ -9686,23 +9470,23 @@ s32 func_8011AB80_w06(void) {
                 }
                 break;
             case ITEM_MAGIC_LAMP:
-                if (func_8011AA98_w06(0x3C, 0xA) == 0) {
+                if (func_8011AC60_w04(0x3C, 0xA) == 0) {
                     break;
                 }
                 if (GwPlayer[curPlayer].coin < 20) {
                     continue;
                 }
-                if (MBComTreeExec(D_8011D44C_w06) != 0) {
+                if (MBComTreeExec(D_8011D314_w04) != 0) {
                     continue;
                 }
                 break;
             case ITEM_DUEL_GLOVE:
-                if (GwPlayer[curPlayer].coin < 10 && func_8011AA44_w06() == 0) {
+                if (GwPlayer[curPlayer].coin < 10 && func_8011AC0C_w04() == 0) {
                     continue;
                 }
                 break;
             case ITEM_LUCKY_LAMP:
-                if (MBComTreeExec(D_8011DDDC_w06) != 0) {
+                if (MBComTreeExec(D_8011DB00_w04) != 0) {
                     continue;
                 }
                 break;
@@ -9732,7 +9516,7 @@ s32 func_8011AB80_w06(void) {
     return i;
 }
 
-s32 func_8011B188_w06(void) {
+s32 func_8011B350_w04(void) {
     GW_SYSTEM *loc = &GwSystem;
     GW_PLAYER *player = MBPlayerGet(-1);
     s32 found;
@@ -9740,16 +9524,16 @@ s32 func_8011B188_w06(void) {
     u32 flag = 1;
 
     for (i = 0; i < 16; i++) {
-        u8 val = D_8011E004_w06[player->chr][i];
+        u8 val = D_8011DCEC_w04[player->chr][i];
 
-        found = func_8010C724_w06(val);
+        found = func_8010AF34_w04(val);
         if (found == -1) {
             continue;
         }
         if (D_80100F94_shared_board[val] + 20 > GwPlayer[loc->current_player_index].coin) {
             continue;
         }
-        if (MBRandCheck100(D_8011E0A4_w06[player->chr][i]) != 0) {
+        if (MBRandCheck100(D_8011DD8C_w04[player->chr][i]) != 0) {
             break;
         }
     }
@@ -9758,20 +9542,20 @@ s32 func_8011B188_w06(void) {
     }
 
     if (found != -1) {
-        if (func_8010C724_w06(0xE) == found) {
+        if (func_8010AF34_w04(0xE) == found) {
             return found + 1;
         }
-        if (func_8010C724_w06(0xB) == found && D_80100F94_shared_board[0xB] + 50 <= GwPlayer[loc->current_player_index].coin) {
+        if (func_8010AF34_w04(0xB) == found && D_80100F94_shared_board[0xB] + 50 <= GwPlayer[loc->current_player_index].coin) {
             return found + 1;
         }
-        if (func_8010C724_w06(0x4) == found && MBItemFind(loc->current_player_index, 0x4) != -1) {
+        if (func_8010AF34_w04(0x4) == found && MBItemFind(loc->current_player_index, 0x4) != -1) {
             found = -1;
             flag = 0;
         }
     }
 
-    if (MBComTreeExec(D_8011E0C4_w06[D_8011C8C8_w06]) == 0 && GwPlayer[loc->current_player_index].coin >= D_80100F94_shared_board[1]) {
-        s32 route = func_8010C724_w06(1);
+    if (MBComTreeExec(D_8011DDAC_w04[D_8011C688_w04]) == 0 && GwPlayer[loc->current_player_index].coin >= D_80100F94_shared_board[1]) {
+        s32 route = func_8010AF34_w04(1);
 
         if (route != -1) {
             return route + 1;
@@ -9781,39 +9565,39 @@ s32 func_8011B188_w06(void) {
         return found + 1;
     }
 
-    i = MBComTreeExec(D_8011E0CC_w06[D_8011C8C8_w06]);
+    i = MBComTreeExec(D_8011DDB4_w04[D_8011C688_w04]);
     if (i == 0) {
         for (; i < 16; i++) {
-            u8 val = D_8011E004_w06[player->chr][i];
+            u8 val = D_8011DCEC_w04[player->chr][i];
 
             if (val == 4 && flag == 0) {
                 continue;
             }
-            found = func_8010C724_w06(val);
+            found = func_8010AF34_w04(val);
             if (found == -1) {
                 continue;
             }
             if (D_80100F94_shared_board[val] > GwPlayer[loc->current_player_index].coin) {
                 continue;
             }
-            if (MBRandCheck100(D_8011E0A4_w06[player->chr][i]) != 0) {
+            if (MBRandCheck100(D_8011DD8C_w04[player->chr][i]) != 0) {
                 return found + 1;
             }
         }
     }
 
-    found = func_8010C724_w06(0);
+    found = func_8010AF34_w04(0);
     if (found != -1) {
         return found + 1;
     }
-    D_8011DF80_w06 = 1;
-    return func_8010C7AC_w06() + 2;
+    D_8011DC68_w04 = 1;
+    return func_8010AFBC_w04() + 2;
 }
 
-s32 func_8011B4EC_w06(void) {
-    if (D_8011DF80_w06 != 0) {
-        D_8011DF80_w06 = 0;
+s32 func_8011B6B4_w04(void) {
+    if (D_8011DC68_w04 != 0) {
+        D_8011DC68_w04 = 0;
         return 2;
     }
-    return MBComTreeExec(D_8011E0D4_w06[D_8011C8C8_w06]) + 1;
+    return MBComTreeExec(D_8011DDBC_w04[D_8011C688_w04]) + 1;
 }

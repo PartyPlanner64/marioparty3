@@ -1,8 +1,8 @@
 #include "common.h"
 #include "chancetime.h"
 #include "game/window.h"
-#include "overlays/ovl_80_shared_board/106A50.h"
-#include "overlays/ovl_80_shared_board/10C230.h"
+#include "game/overlays/party/common/106A50.h"
+#include "game/overlays/party/common/10C230.h"
 
 extern s32 D_8010FE60_chancetime;
 extern s8 D_8010FE64_chancetime[3];

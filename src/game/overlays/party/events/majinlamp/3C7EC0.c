@@ -1,8 +1,8 @@
 #include "common_board.h"
-#include "overlays/ovl_80_shared_board/ECA50.h"
-#include "overlays/ovl_80_shared_board/EC3B0.h"
-#include "overlays/ovl_80_shared_board/1006F0.h"
-#include "overlays/ovl_80_shared_board/105D50.h"
+#include "game/overlays/party/common/ECA50.h"
+#include "game/overlays/party/common/EC3B0.h"
+#include "game/overlays/party/common/1006F0.h"
+#include "game/overlays/party/common/105D50.h"
 
 void MBDlgResultWinExec(s32);
 void MBDlgWinExecY(s16, s32, s32);

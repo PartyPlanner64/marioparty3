@@ -781,7 +781,7 @@ segments:
   - type: code
     start: 0xEA790
     vram: 0x800D6B70
-    dir: overlays/ovl_80_shared_board
+    dir: game/overlays/party/common
     name: shared_board
     subalign: 8
     exclusive_ram_id: board_code
@@ -1828,7 +1828,7 @@ segments:
   - type: code
     start: 0x31B3B0
     vram: 0x801059A0
-    dir: overlays/boardcall
+    dir: game/overlays/party/boardcall
     name: boardcall
     exclusive_ram_id: minigame # ovl_47
     bss_size: 0
@@ -1842,7 +1842,7 @@ segments:
   - type: code
     start: 0x31B510
     vram: 0x801059A0
-    dir: overlays/ovl_48_ChillyWaters
+    dir: game/overlays/party/boards/w01_chilly_waters
     name: ChillyWaters
     exclusive_ram_id: minigame # ovl_48
     bss_size: 0x150
@@ -1862,7 +1862,7 @@ segments:
   - type: code
     start: 0x3355E0
     vram: 0x801059A0
-    dir: overlays/w02
+    dir: game/overlays/party/boards/w02_deep_bloober_sea
     name: w02
     exclusive_ram_id: minigame # ovl_49
     bss_size: 0x140
@@ -1880,7 +1880,7 @@ segments:
   - type: code
     start: 0x34E810
     vram: 0x801059A0
-    dir: overlays/w03
+    dir: game/overlays/party/boards/w03_spiny_desert
     name: w03
     exclusive_ram_id: minigame # ovl_4A
     bss_size: 0x150
@@ -1898,7 +1898,7 @@ segments:
   - type: code
     start: 0x367930
     vram: 0x801059A0
-    dir: overlays/w04
+    dir: game/overlays/party/boards/w04_woody_woods
     name: w04
     exclusive_ram_id: minigame # ovl_4B
     bss_size: 0x130
@@ -1916,7 +1916,7 @@ segments:
   - type: code
     start: 0x37FF80
     vram: 0x801059A0
-    dir: overlays/w05
+    dir: game/overlays/party/boards/w05_creepy_cavern
     name: w05
     exclusive_ram_id: minigame # ovl_4C
     bss_size: 0x160
@@ -1934,7 +1934,7 @@ segments:
   - type: code
     start: 0x39AD20
     vram: 0x801059A0
-    dir: overlays/w06
+    dir: game/overlays/party/boards/w06_waluigis_island
     name: w06
     exclusive_ram_id: minigame # ovl_4D
     bss_size: 0x140
@@ -1951,7 +1951,7 @@ segments:
   - type: code
     start: 0x3B35F0
     vram: 0x801059A0
-    dir: overlays/w10
+    dir: game/overlays/party/boards/w10_tutorial
     name: w10
     exclusive_ram_id: minigame # ovl_4E
     bss_size: 0x80
@@ -1968,7 +1968,7 @@ segments:
   - type: code
     start: 0x3B9670
     vram: 0x801059A0
-    dir: overlays/boardresult
+    dir: game/overlays/party/boardresult
     name: boardresult
     exclusive_ram_id: minigame # ovl_4F
     bss_size: 0xE0
@@ -1985,7 +1985,7 @@ segments:
   - type: code
     start: 0x3C27C0
     vram: 0x801059A0
-    dir: overlays/koopa
+    dir: game/overlays/party/events/koopa
     name: koopa
     exclusive_ram_id: minigame # ovl_50
     bss_size: 0x80
@@ -1998,7 +1998,7 @@ segments:
   - type: code
     start: 0x3C6310
     vram: 0x801059A0
-    dir: overlays/last5
+    dir: game/overlays/party/events/last5
     name: last5
     subalign: 16
     exclusive_ram_id: minigame # ovl_51
@@ -2012,7 +2012,7 @@ segments:
   - type: code
     start: 0x3C7EC0
     vram: 0x801059A0
-    dir: overlays/majinlamp
+    dir: game/overlays/party/events/majinlamp
     name: majinlamp
     exclusive_ram_id: minigame # ovl_52
     bss_size: 0xF0
@@ -2025,7 +2025,7 @@ segments:
   - type: code
     start: 0x3CA800
     vram: 0x801059A0
-    dir: overlays/opboard
+    dir: game/overlays/party/opboard
     name: opboard
     exclusive_ram_id: minigame # ovl_53
     bss_size: 0x20
@@ -2038,7 +2038,7 @@ segments:
   - type: code
     start: 0x3CDEC0
     vram: 0x801059A0
-    dir: overlays/opboardtutorial
+    dir: game/overlays/party/opboardtutorial
     name: opboardtutorial
     exclusive_ram_id: minigame # ovl_54
     bss_size: 0x40
@@ -2051,7 +2051,7 @@ segments:
   - type: code
     start: 0x3CFC80
     vram: 0x801059A0
-    dir: overlays/boardresult2
+    dir: game/overlays/party/boardresult2
     name: boardresult2
     exclusive_ram_id: minigame # ovl_55
     bss_size: 0xB0
@@ -2365,7 +2365,7 @@ segments:
   - type: code
     start: 0x481970
     vram: 0x801059A0
-    dir: overlays/chancetime
+    dir: game/overlays/party/events/chancetime
     name: chancetime
     exclusive_ram_id: minigame # ovl_6A
     bss_size: 0x280

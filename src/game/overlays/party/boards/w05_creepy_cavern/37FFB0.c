@@ -1,24 +1,24 @@
 #include "common_board.h"
-#include "overlays/ovl_80_shared_board/1006F0.h"
-#include "overlays/ovl_80_shared_board/113520.h"
-#include "overlays/ovl_80_shared_board/106A50.h"
-#include "overlays/ovl_80_shared_board/F5B90.h"
-#include "overlays/ovl_80_shared_board/F5E80.h"
-#include "overlays/ovl_80_shared_board/FFB10.h"
-#include "overlays/ovl_80_shared_board/EDDB0.h"
-#include "overlays/ovl_80_shared_board/EA790.h"
-#include "overlays/ovl_80_shared_board/EAB00.h"
-#include "overlays/ovl_80_shared_board/EB2F0.h"
-#include "overlays/ovl_80_shared_board/101840.h"
-#include "overlays/ovl_80_shared_board/105D50.h"
-#include "overlays/ovl_80_shared_board/113750.h"
-#include "overlays/ovl_80_shared_board/FA250.h"
-#include "overlays/ovl_80_shared_board/10C230.h"
-#include "overlays/ovl_80_shared_board/ECA50.h"
-#include "overlays/ovl_80_shared_board/EC3B0.h"
-#include "overlays/ovl_80_shared_board/EE660.h"
-#include "overlays/ovl_80_shared_board/F5070.h"
-#include "overlays/ovl_80_shared_board/F9DE0.h"
+#include "game/overlays/party/common/1006F0.h"
+#include "game/overlays/party/common/113520.h"
+#include "game/overlays/party/common/106A50.h"
+#include "game/overlays/party/common/F5B90.h"
+#include "game/overlays/party/common/F5E80.h"
+#include "game/overlays/party/common/FFB10.h"
+#include "game/overlays/party/common/EDDB0.h"
+#include "game/overlays/party/common/EA790.h"
+#include "game/overlays/party/common/EAB00.h"
+#include "game/overlays/party/common/EB2F0.h"
+#include "game/overlays/party/common/101840.h"
+#include "game/overlays/party/common/105D50.h"
+#include "game/overlays/party/common/113750.h"
+#include "game/overlays/party/common/FA250.h"
+#include "game/overlays/party/common/10C230.h"
+#include "game/overlays/party/common/ECA50.h"
+#include "game/overlays/party/common/EC3B0.h"
+#include "game/overlays/party/common/EE660.h"
+#include "game/overlays/party/common/F5070.h"
+#include "game/overlays/party/common/F9DE0.h"
 #include "gcc/memory.h"
 #include "game/mallocblock.h"
 
@@ -9558,7 +9558,7 @@ void func_801192AC_w05(void) {
     omDelPrcObj(NULL);
 }
 #else
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_801192AC_w05);
+INCLUDE_ASM("asm/nonmatchings/game/overlays/party/boards/w05_creepy_cavern/37FFB0", func_801192AC_w05);
 #endif
 
 void func_80119610_w05(void) {

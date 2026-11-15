@@ -1,9 +1,9 @@
 #include "common.h"
 #include "chancetime.h"
 #include "game/window.h"
-#include "overlays/ovl_80_shared_board/101840.h"
-#include "overlays/ovl_80_shared_board/105D50.h"
-#include "overlays/ovl_80_shared_board/106A50.h"
+#include "game/overlays/party/common/101840.h"
+#include "game/overlays/party/common/105D50.h"
+#include "game/overlays/party/common/106A50.h"
 
 typedef struct ChanceTimeUnkFE3C {
     /* 0x00 */ s16 coins;

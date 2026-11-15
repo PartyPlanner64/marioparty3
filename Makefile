@@ -307,7 +307,7 @@ build/src/game/overlays/minigames/31_vine_with_me/%.c.o: CFLAGS = -G0 -mips3 -mg
 build/src/game/overlays/minigames/36_motor_rooter/system.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
 build/src/game/overlays/minigames/37_silly_screws/%.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
 build/src/game/overlays/minigames/39_tick_tock_hop/%.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
-build/src/overlays/ovl_80_shared_board/ECA50.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
+build/src/game/overlays/party/common/ECA50.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
 
 # libm and libleo use IDO 5.3.
 IDO_OBJECTS := $(sort $(filter $(BUILD_DIR)/src/libm/%.c.o $(BUILD_DIR)/src/libleo/%.c.o,$(OBJECTS)))

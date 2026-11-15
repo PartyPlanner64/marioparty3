@@ -1,5 +1,5 @@
 #include "common.h"
-#include "overlays/ovl_80_shared_board/105D50.h"
+#include "game/overlays/party/common/105D50.h"
 #include "mgresultboard.h"
 
 extern PlayerResult D_8010B018_mgresultboard[4];

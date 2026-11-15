@@ -1,13 +1,13 @@
 #include "common_board.h"
 #include "game/malloc.h"
-#include "overlays/ovl_80_shared_board/FA250.h"
-#include "overlays/ovl_80_shared_board/ECA50.h"
-#include "overlays/ovl_80_shared_board/105D50.h"
-#include "overlays/ovl_80_shared_board/101840.h"
-#include "overlays/ovl_80_shared_board/106640.h"
-#include "overlays/ovl_80_shared_board/106A50.h"
-#include "overlays/ovl_80_shared_board/EE660.h"
-#include "overlays/ovl_80_shared_board/F5B90.h"
+#include "game/overlays/party/common/FA250.h"
+#include "game/overlays/party/common/ECA50.h"
+#include "game/overlays/party/common/105D50.h"
+#include "game/overlays/party/common/101840.h"
+#include "game/overlays/party/common/106640.h"
+#include "game/overlays/party/common/106A50.h"
+#include "game/overlays/party/common/EE660.h"
+#include "game/overlays/party/common/F5B90.h"
 
 extern s32 D_80100D90_shared_board;
 

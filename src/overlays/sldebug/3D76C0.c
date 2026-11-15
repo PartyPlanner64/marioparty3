@@ -1,4 +1,5 @@
 #include "common.h"
+#include "macros.h"
 #include "game/printfunc.h"
 #include "overlays/opening.h"
 
@@ -9,19 +10,21 @@ s32 func_8010612C_sldebug(void);
 void func_80106850_sldebug(void);        /* extern */
 void func_801068D4_sldebug(omObjData *); /* extern */
 void func_80106930_sldebug(omObjData *); /* extern */
-extern u16 D_80106960_sldebug;
-extern s16 D_8010698C_sldebug;
-extern s32 D_80106978_sldebug;
-extern s32 D_80106980_sldebug;
-extern s32 D_80106964_sldebug;
-extern u8 D_80106968_sldebug[];
-extern s32 D_8010697C_sldebug;
-extern s32 D_80106984_sldebug;
-extern s32 D_80106988_sldebug;
-extern Vec D_80106C10_sldebug;
-extern f32 D_80106C1C_sldebug;
-extern Vec D_80106C20_sldebug;
-extern Vec D_80106C2C_sldebug;
+
+u16 D_80106960_sldebug = 0;
+s32 D_80106964_sldebug = 4;
+u8 D_80106968_sldebug[13] = { 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 2 };
+s32 D_80106978_sldebug = 0;
+s32 D_8010697C_sldebug = 0;
+s32 D_80106980_sldebug = 0;
+s32 D_80106984_sldebug = 0;
+s32 D_80106988_sldebug = 0;
+s16 D_8010698C_sldebug = 0;
+
+Vec D_80106C10_sldebug BSS;
+f32 D_80106C1C_sldebug BSS;
+Vec D_80106C20_sldebug BSS;
+Vec D_80106C2C_sldebug BSS;
 
 void func_801059A0_sldebug(void) {
     Hu3DCamInit(1);

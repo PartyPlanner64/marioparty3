@@ -17,88 +17,129 @@ typedef struct SwingNSwipeCpuSpeeds {
     f32 speeds[4];
 } SwingNSwipeCpuSpeeds;
 
+typedef struct SwingNSwipeBssC148 {
+    /* 0x00 */ s16 unk00; // D_8010C148
+    /* 0x02 */ s16 unk02[5]; // D_8010C14A
+} SwingNSwipeBssC148; // sizeof 0xC
+
 extern u16 D_800A11D0_main[];
 extern s32 D_800A178C_main[][6];
 extern u16 D_800A11DC_main[];
-extern f32 D_8010BD30_swing_n_swipe; // min x
-extern f32 D_8010BD34_swing_n_swipe; // min z
-extern f32 D_8010BD38_swing_n_swipe; // max x
-extern f32 D_8010BD3C_swing_n_swipe; // max z
-extern s16 D_8010BD40_swing_n_swipe; // state
-extern s16 D_8010BD42_swing_n_swipe; // timer
-extern s16 D_8010BD44_swing_n_swipe;
-extern s16 D_8010BD46_swing_n_swipe;
-extern s16 D_8010BD48_swing_n_swipe;
-extern s16 D_8010BD4A_swing_n_swipe;
-extern s16 D_8010BD4C_swing_n_swipe;
-extern s16 D_8010BD4E_swing_n_swipe;
-extern s16 D_8010BD50_swing_n_swipe;
-extern s16 D_8010BD52_swing_n_swipe;
-extern s16 D_8010BD54_swing_n_swipe;
-extern f32 D_8010BD58_swing_n_swipe;
-extern s16 D_8010BD5C_swing_n_swipe;
-extern f32 D_8010BD60_swing_n_swipe;
-extern s16 D_8010BD64_swing_n_swipe;
-extern Vec2f D_8010BD68_swing_n_swipe[10];
-extern s16 D_8010BDB8_swing_n_swipe;
-extern s16 D_8010BDBA_swing_n_swipe;
-extern s16 D_8010BDBC_swing_n_swipe[5];
-extern s16 D_8010BDC8_swing_n_swipe[5];
-extern s16 D_8010BDD4_swing_n_swipe[5];
-extern s16 D_8010BDE0_swing_n_swipe[5];
-extern Vec2f D_8010BDEC_swing_n_swipe[5];
-extern s16 D_8010BE14_swing_n_swipe[5];
-extern s16 D_8010BE20_swing_n_swipe[5];
-extern f32 D_8010BE2C_swing_n_swipe;
-extern f32 D_8010BE30_swing_n_swipe;
-extern s16 D_8010BE34_swing_n_swipe[5];
-extern s16 D_8010BE40_swing_n_swipe[5];
-extern s16 D_8010BE4C_swing_n_swipe[5];
-extern Vec D_8010BE58_swing_n_swipe[5];
-extern s32 D_8010BE94_swing_n_swipe[];
-extern s16 D_8010BEE4_swing_n_swipe;
-extern s16 D_8010BEE6_swing_n_swipe;
-extern s16 D_8010BEE8_swing_n_swipe;
-extern s16 D_8010BEEA_swing_n_swipe;
-extern SwingNSwipeGroupOrder D_8010BEF0_swing_n_swipe;
-extern SwingNSwipeCpuOffsets D_8010BEF8_swing_n_swipe;
-extern SwingNSwipeCpuSpeeds D_8010BF00_swing_n_swipe;
-extern f32 D_8010C090_swing_n_swipe;
-extern f32 D_8010C094_swing_n_swipe;
-extern Vec D_8010C098_swing_n_swipe;
-extern f32 D_8010C0A4_swing_n_swipe;
-extern f32 D_8010C0A8_swing_n_swipe;
-extern f32 D_8010C0AC_swing_n_swipe;
-extern f32 D_8010C0B0_swing_n_swipe;
-extern f32 D_8010C0B4_swing_n_swipe;
-extern f32 D_8010C0B8_swing_n_swipe;
-extern f32 D_8010C0BC_swing_n_swipe;
-extern Vec D_8010C0C0_swing_n_swipe[5];
-extern Vec D_8010C100_swing_n_swipe[5];
-extern s16 D_8010C13C_swing_n_swipe;
-extern omObjData *D_8010C140_swing_n_swipe;
-extern s16 D_8010C144_swing_n_swipe;
-extern s16 D_8010C146_swing_n_swipe;
-extern s16 D_8010C148_swing_n_swipe;
-extern s16 D_8010C14A_swing_n_swipe[5];
-extern s16 D_8010C154_swing_n_swipe;
-extern s16 D_8010C156_swing_n_swipe;
-extern s16 D_8010C158_swing_n_swipe;
-extern s16 D_8010C15A_swing_n_swipe;
-extern s16 D_8010C15C_swing_n_swipe;
-extern s16 D_8010C15E_swing_n_swipe;
-extern s16 D_8010C166_swing_n_swipe;
-extern s16 D_8010C168_swing_n_swipe;
-extern s16 D_8010C160_swing_n_swipe;
-extern s16 D_8010C162_swing_n_swipe;
-extern s16 D_8010C164_swing_n_swipe;
-extern s16 D_8010C170_swing_n_swipe[5][2];
-extern s16 D_8010C184_swing_n_swipe[5];
-extern s16 D_8010C190_swing_n_swipe[5][4];
-extern s16 D_8010C1B8_swing_n_swipe[4];
-extern s16 D_8010C1C0_swing_n_swipe[5];
-extern s16 D_8010C1CC_swing_n_swipe[2];
-extern s16 D_8010C1D0_swing_n_swipe[3];
+extern s16 D_8010C148_swing_n_swipe; // swingNSwipeBssC148.unk00
+extern s16 D_8010C14A_swing_n_swipe[5]; // swingNSwipeBssC148.unk02
+f32 D_8010BD30_swing_n_swipe = -400.0f; // min x
+f32 D_8010BD34_swing_n_swipe = -275.0f; // min z
+f32 D_8010BD38_swing_n_swipe = 400.0f; // max x
+f32 D_8010BD3C_swing_n_swipe = 600.0f; // max z
+s16 D_8010BD40_swing_n_swipe = 0; // state
+s16 D_8010BD42_swing_n_swipe = 0; // timer
+s16 D_8010BD44_swing_n_swipe = 0;
+s16 D_8010BD46_swing_n_swipe = 0;
+s16 D_8010BD48_swing_n_swipe = 301;
+s16 D_8010BD4A_swing_n_swipe = 0;
+s16 D_8010BD4C_swing_n_swipe = 0;
+s16 D_8010BD4E_swing_n_swipe = 0;
+s16 D_8010BD50_swing_n_swipe = 0;
+s16 D_8010BD52_swing_n_swipe = 0;
+s16 D_8010BD54_swing_n_swipe = 0;
+f32 D_8010BD58_swing_n_swipe = -1.47f;
+s16 D_8010BD5C_swing_n_swipe = 0;
+f32 D_8010BD60_swing_n_swipe = 99.0f;
+s16 D_8010BD64_swing_n_swipe = 0;
+Vec2f D_8010BD68_swing_n_swipe[10] = { 0 };
+s16 D_8010BDB8_swing_n_swipe = 0;
+s16 D_8010BDBA_swing_n_swipe = 0;
+s16 D_8010BDBC_swing_n_swipe[5] = { 999, 999, 999, 999, 999 };
+s16 D_8010BDC8_swing_n_swipe[5] = { 0 };
+s16 D_8010BDD4_swing_n_swipe[5] = { 0 };
+s16 D_8010BDE0_swing_n_swipe[5] = { 0 };
+Vec2f D_8010BDEC_swing_n_swipe[5] = { 0 };
+s16 D_8010BE14_swing_n_swipe[5] = { 0 };
+s16 D_8010BE20_swing_n_swipe[5] = { 1, 1, 1, 1, 1 };
+f32 D_8010BE2C_swing_n_swipe = 0.0f;
+f32 D_8010BE30_swing_n_swipe = 0.0f;
+s16 D_8010BE34_swing_n_swipe[5] = { 0 };
+s16 D_8010BE40_swing_n_swipe[5] = { 1, 1, 1, 1, 1 };
+s16 D_8010BE4C_swing_n_swipe[5] = { 0 };
+
+Vec D_8010BE58_swing_n_swipe[5] = {
+    { 0.0f, 0.0f, -150.0f },
+    { -190.0f, 0.0f, 100.0f },
+    { -370.0f, 0.0f, 325.0f },
+    { 190.0f, 0.0f, 100.0f },
+    { 370.0f, 0.0f, 325.0f },
+};
+
+s32 D_8010BE94_swing_n_swipe[] = {
+    0x0021002D,
+    0x0021002E,
+    0x0021002F,
+    0x00210030,
+    0x00210031,
+    0x00210032,
+    0x00210033,
+    0x00210034,
+    0x00210035,
+    0x00210036,
+    0x00210037,
+    0x00210038,
+    0x00210039,
+    0x0021003A,
+    0x0021003B,
+    0x0021003C,
+    0x0021003D,
+    0x0021003E,
+    0x0021003F,
+    0x00210040,
+};
+
+s16 D_8010BEE4_swing_n_swipe = 0;
+s16 D_8010BEE6_swing_n_swipe = 0;
+s16 D_8010BEE8_swing_n_swipe = 0;
+s16 D_8010BEEA_swing_n_swipe = 0;
+s32 D_8010BEEC_swing_n_swipe = 0; /* Unreferenced. */
+SwingNSwipeGroupOrder D_8010BEF0_swing_n_swipe = { { 0, 1, 2, 3 } };
+SwingNSwipeCpuOffsets D_8010BEF8_swing_n_swipe = { { 45, 30, 15, 5 } };
+SwingNSwipeCpuSpeeds D_8010BF00_swing_n_swipe = { { 10.0f, 11.0f, 12.0f, 13.0f } };
+
+f32 D_8010C090_swing_n_swipe BSS;
+f32 D_8010C094_swing_n_swipe BSS;
+Vec D_8010C098_swing_n_swipe BSS;
+f32 D_8010C0A4_swing_n_swipe BSS;
+f32 D_8010C0A8_swing_n_swipe BSS;
+f32 D_8010C0AC_swing_n_swipe BSS;
+f32 D_8010C0B0_swing_n_swipe BSS;
+f32 D_8010C0B4_swing_n_swipe BSS;
+f32 D_8010C0B8_swing_n_swipe BSS;
+f32 D_8010C0BC_swing_n_swipe BSS;
+Vec D_8010C0C0_swing_n_swipe[5] BSS;
+u8 D_8010C0FC_swing_n_swipe[4] BSS; /* Unreferenced. */
+Vec D_8010C100_swing_n_swipe[5] BSS;
+s16 D_8010C13C_swing_n_swipe BSS;
+omObjData *D_8010C140_swing_n_swipe BSS;
+s16 D_8010C144_swing_n_swipe BSS;
+s16 D_8010C146_swing_n_swipe BSS;
+SwingNSwipeBssC148 swingNSwipeBssC148 BSS;
+s16 D_8010C154_swing_n_swipe BSS;
+s16 D_8010C156_swing_n_swipe BSS;
+s16 D_8010C158_swing_n_swipe BSS;
+s16 D_8010C15A_swing_n_swipe BSS;
+s16 D_8010C15C_swing_n_swipe BSS;
+s16 D_8010C15E_swing_n_swipe BSS;
+s16 D_8010C160_swing_n_swipe BSS;
+s16 D_8010C162_swing_n_swipe BSS;
+s16 D_8010C164_swing_n_swipe BSS;
+s16 D_8010C166_swing_n_swipe BSS;
+s16 D_8010C168_swing_n_swipe BSS;
+s16 D_8010C16A_swing_n_swipe BSS; /* Unreferenced. */
+u8 D_8010C16C_swing_n_swipe[4] BSS; /* Unreferenced. */
+s16 D_8010C170_swing_n_swipe[5][2] BSS;
+s16 D_8010C184_swing_n_swipe[5] BSS;
+s16 D_8010C190_swing_n_swipe[5][4] BSS;
+s16 D_8010C1B8_swing_n_swipe[4] BSS;
+s16 D_8010C1C0_swing_n_swipe[5] BSS;
+s16 D_8010C1CC_swing_n_swipe[2] BSS;
+s16 D_8010C1D0_swing_n_swipe[3] BSS;
 
 void func_801059BC_swing_n_swipe(void);
 void func_80105C08_swing_n_swipe(omObjData *object);

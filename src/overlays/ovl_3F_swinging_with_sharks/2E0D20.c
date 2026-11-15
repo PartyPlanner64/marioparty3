@@ -36,68 +36,182 @@ typedef struct {
 extern u16 D_800A11D0_main[];
 extern u8 D_800D6A90_main;
 
-extern u8 D_8010ACE0_swinging_with_sharks;
-extern u8 D_8010ACE1_swinging_with_sharks;
-extern f32 D_8010ACE4_swinging_with_sharks;
-extern f32 D_8010ACE8_swinging_with_sharks;
-extern SharkEntry D_8010ACEC_swinging_with_sharks[];
-extern u16 D_8010B418_swinging_with_sharks[];
-extern u8 D_8010B420_swinging_with_sharks[];
-extern s16 D_8010B428_swinging_with_sharks;
-extern s16 D_8010B42A_swinging_with_sharks;
-extern s16 D_8010B42C_swinging_with_sharks;
-extern s32 D_8010B430_swinging_with_sharks[];
-extern s16 D_8010B480_swinging_with_sharks;
-extern f32 D_8010B484_swinging_with_sharks;
-extern SharkPathPoint *D_8010B760_swinging_with_sharks[2];
-extern s16 D_8010B768_swinging_with_sharks;
-extern s16 D_8010B76A_swinging_with_sharks;
-extern s16 D_8010B76C_swinging_with_sharks;
-extern HuMtx4F D_8010B860_swinging_with_sharks;
-extern HuMtx4F D_8010B8A0_swinging_with_sharks;
-extern s16 D_8010B8E0_swinging_with_sharks[50]; // model ids, indexed like D_8010ACEC
-extern s16 D_8010B948_swinging_with_sharks[50]; // motion ids, indexed like D_8010ACEC
-extern Vec D_8010B9AC_swinging_with_sharks;
-extern Vec D_8010B9B8_swinging_with_sharks;
-extern Vec D_8010B9C4_swinging_with_sharks;
-extern f32 D_8010B9D0_swinging_with_sharks;
-extern f32 D_8010B9D4_swinging_with_sharks;
-extern s16 D_8010B9D8_swinging_with_sharks;
-extern s16 D_8010B9DA_swinging_with_sharks;
-extern s16 D_8010B9DC_swinging_with_sharks;
-extern s16 D_8010B9DE_swinging_with_sharks;
-extern s16 D_8010B9E0_swinging_with_sharks;
-extern s16 D_8010B9E2_swinging_with_sharks;
-extern s16 D_8010B9E4_swinging_with_sharks;
-extern s16 D_8010B9E6_swinging_with_sharks;
-extern s16 D_8010B9E8_swinging_with_sharks;
-extern s16 D_8010B9EA_swinging_with_sharks;
-extern s16 D_8010B9EC_swinging_with_sharks;
-extern s16 D_8010B9EE_swinging_with_sharks;
-extern SharkState D_8010B9F0_swinging_with_sharks[5];
-extern s16 D_8010BAE0_swinging_with_sharks;
-extern s16 D_8010BAE2_swinging_with_sharks;
-extern s16 D_8010BAE4_swinging_with_sharks;
-extern s16 D_8010BAE6_swinging_with_sharks;
-extern f32 D_8010BAE8_swinging_with_sharks;
-extern s16 D_8010BAEC_swinging_with_sharks;
-extern s16 D_8010BAEE_swinging_with_sharks;
-extern s16 D_8010BAF0_swinging_with_sharks[];
-extern s16 D_8010BAF8_swinging_with_sharks[20];
-extern s16 D_8010BB20_swinging_with_sharks[20];
-extern s16 D_8010BB48_swinging_with_sharks;
-extern s16 D_8010BB50_swinging_with_sharks;
-extern Vec D_8010BB54_swinging_with_sharks;
-extern Vec D_8010BB60_swinging_with_sharks;
-extern Vec D_8010BB6C_swinging_with_sharks;
-extern Vec D_8010BB78_swinging_with_sharks;
-extern Vec D_8010BB84_swinging_with_sharks;
-extern Vec D_8010BB90_swinging_with_sharks;
-extern f32 D_8010BB9C_swinging_with_sharks;
-extern f32 D_8010BBA0_swinging_with_sharks;
-extern f32 D_8010BBA4_swinging_with_sharks;
-extern Vec D_8010BBA8_swinging_with_sharks;
-extern f32 D_8010BBB4_swinging_with_sharks;
+u8 D_8010ACE0_swinging_with_sharks = 0;
+u8 D_8010ACE1_swinging_with_sharks = 0;
+f32 D_8010ACE4_swinging_with_sharks = 0.0f;
+f32 D_8010ACE8_swinging_with_sharks = 0.0f;
+
+SharkEntry D_8010ACEC_swinging_with_sharks[] = {
+    { 0x00600001, 0x00000211, 0, 0, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0x00600000, 0x00000231, 0, 0, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0x00600005, 0x00000231, 0, 0, { -700.0f, 600.0f, -200.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0x00600002, 0x00000231, 0, 0, { -230.0f, 0.0f, -200.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0x00600002, 0x00000231, 0, 0, { 0.0f, 0.0f, -200.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0x00600002, 0x00000231, 0, 0, { 230.0f, 0.0f, -200.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0x00600002, 0x00000231, 0, 0, { 460.0f, 0.0f, -200.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0x00600002, 0x00000231, 0, 0, { 690.0f, 0.0f, -200.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0x00600003, 0x00000229, 0, 0, { -300.0f, 0.0f, -280.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0x00600003, 0x00000229, 0, 0, { 0.0f, 0.0f, -280.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0x00600003, 0x00000229, 0, 0, { 300.0f, 0.0f, -280.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0x00600003, 0x00000229, 0, 0, { 600.0f, 0.0f, -280.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0x00600003, 0x00000229, 0, 0, { 900.0f, 0.0f, -280.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0x00600004, 0x00000A51, 0, 0, { -300.0f, 0.0f, -280.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0x00600004, 0x00000A51, 0, 0, { 0.0f, 0.0f, -280.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0x00600004, 0x00000A51, 0, 0, { 300.0f, 0.0f, -280.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0x00600004, 0x00000A51, 0, 0, { 600.0f, 0.0f, -280.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0x00600004, 0x00000A51, 0, 0, { 900.0f, 0.0f, -280.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0x000B0030, 0x00000A01, 0, 2, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0x000B0030, 0x00000A01, 0, 0, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0x000B0030, 0x00000A01, 0, 2, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0x000B0030, 0x00000A01, 0, 2, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0x000B0030, 0x00000A01, 0, 2, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0x00220004, 0x00000A35, 0, 0, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0x00220004, 0x00000A35, 0, 0, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0x00220004, 0x00000A35, 0, 0, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0x00220004, 0x00000A35, 0, 0, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0x00220004, 0x00000A35, 0, 0, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0x00600006, 0x00000A51, 0, 0, { -700.0f, 0.0f, -200.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0x000B0049, 0x00000A35, 0, 0, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0x00220004, 0x00000A35, 0, 0, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0x000B0030, 0x00000A25, 0, 2, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0xFFFF00A1, 0x00000231, 0, 0, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0x00600008, 0x00000A20, 0, 0, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0xFFFF0004, 0x00000231, 0, 0, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0xFFFF000D, 0x00000231, 0, 0, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0xFFFF0010, 0x00000231, 0, 0, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0xFFFF000E, 0x00000231, 0, 0, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0xFFFF0001, 0x00000231, 0, 0, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0xFFFF0035, 0x00000231, 0, 0, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0xFFFF0038, 0x00000231, 0, 0, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0xFFFF0071, 0x00000231, 0, 0, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0x0000007F, 0x00000A15, 0, 0, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0x000B0002, 0x00000A35, 0, 0, { 0.0f, 500.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0x000A0154, 0x00000231, 0, 2, { 110.0f, 0.0f, -1170.0f }, { -25.0f, -28.0f, 0.0f } },
+    { 0x000A0155, 0x00000231, 0, 2, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0x000B0030, 0x00000A20, 0, 0, { 110.0f, 0.0f, -1170.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0x000A00EE, 0x00000231, 0, 2, { 110.0f, 60.0f, -1170.0f }, { 0.0f, -28.0f, 0.0f } },
+    { 0x000A00F6, 0x00000A35, 0, 0, { 0.0f, 500.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0x000A00FC, 0x00000A35, 0, 0, { 0.0f, 500.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
+    { -1, 0, 0, 0, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } }
+};
+
+u16 D_8010B418_swinging_with_sharks[] = { 76, 51, 25, 12 };
+u8 D_8010B420_swinging_with_sharks[] = { 2, 3, 7, 4, 5, 6, 8, 9 };
+s16 D_8010B428_swinging_with_sharks = 0;
+s16 D_8010B42A_swinging_with_sharks = 0;
+s16 D_8010B42C_swinging_with_sharks = -1;
+
+s32 D_8010B430_swinging_with_sharks[] = {
+    0x0021002D,
+    0x0021002E,
+    0x0021002F,
+    0x00210030,
+    0x00210031,
+    0x00210032,
+    0x00210033,
+    0x00210034,
+    0x00210035,
+    0x00210036,
+    0x00210037,
+    0x00210038,
+    0x00210039,
+    0x0021003A,
+    0x0021003B,
+    0x0021003C,
+    0x0021003D,
+    0x0021003E,
+    0x0021003F,
+    0x00210040,
+};
+
+s16 D_8010B480_swinging_with_sharks = 0;
+f32 D_8010B484_swinging_with_sharks = 0.017453292f;
+
+SharkPathPoint D_8010B488_swinging_with_sharks[] = {
+    { { 110.0f, -75.0f, -790.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f },
+    { { 110.0f, -75.0f, -790.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f },
+    { { -720.0f, -75.0f, -1230.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f },
+    { { -1330.0f, -75.0f, -750.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f },
+    { { -780.0f, -75.0f, 50.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f },
+    { { 40.0f, -50.0f, 230.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f },
+    { { 910.0f, -75.0f, 20.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f },
+    { { 1240.0f, -75.0f, -420.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f },
+    { { 670.0f, -75.0f, -880.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f },
+    { { 110.0f, -75.0f, -790.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f },
+    { { 110.0f, -75.0f, -790.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f },
+    { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f },
+};
+
+SharkPathPoint D_8010B5D8_swinging_with_sharks[] = {
+    { { -750.0f, -75.0f, 50.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f },
+    { { -750.0f, -75.0f, 50.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f },
+    { { -740.0f, -75.0f, 50.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f },
+    { { 40.0f, -50.0f, 230.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f },
+    { { 910.0f, -75.0f, 20.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f },
+    { { 1240.0f, -75.0f, -420.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f },
+    { { 670.0f, -75.0f, -880.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f },
+    { { 110.0f, -75.0f, -790.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f },
+    { { -720.0f, -75.0f, -1230.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f },
+    { { -1330.0f, -75.0f, -750.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f },
+    { { -790.0f, -75.0f, 50.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f },
+    { { -780.0f, -75.0f, 50.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f },
+    { { -780.0f, -75.0f, 50.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f },
+    { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f },
+};
+
+SharkPathPoint *D_8010B760_swinging_with_sharks[2] = { D_8010B488_swinging_with_sharks, D_8010B5D8_swinging_with_sharks };
+s16 D_8010B768_swinging_with_sharks = 0;
+s16 D_8010B76A_swinging_with_sharks = 0;
+s16 D_8010B76C_swinging_with_sharks = 0;
+
+HuMtx4F D_8010B860_swinging_with_sharks BSS;
+HuMtx4F D_8010B8A0_swinging_with_sharks BSS;
+s16 D_8010B8E0_swinging_with_sharks[50] BSS; // model ids, indexed like D_8010ACEC
+u8 D_8010B944_swinging_with_sharks[4] BSS; /* Unreferenced. */
+s16 D_8010B948_swinging_with_sharks[50] BSS; // motion ids, indexed like D_8010ACEC
+Vec D_8010B9AC_swinging_with_sharks BSS;
+Vec D_8010B9B8_swinging_with_sharks BSS;
+Vec D_8010B9C4_swinging_with_sharks BSS;
+f32 D_8010B9D0_swinging_with_sharks BSS;
+f32 D_8010B9D4_swinging_with_sharks BSS;
+s16 D_8010B9D8_swinging_with_sharks BSS;
+s16 D_8010B9DA_swinging_with_sharks BSS;
+s16 D_8010B9DC_swinging_with_sharks BSS;
+s16 D_8010B9DE_swinging_with_sharks BSS;
+s16 D_8010B9E0_swinging_with_sharks BSS;
+s16 D_8010B9E2_swinging_with_sharks BSS;
+s16 D_8010B9E4_swinging_with_sharks BSS;
+s16 D_8010B9E6_swinging_with_sharks BSS;
+s16 D_8010B9E8_swinging_with_sharks BSS;
+s16 D_8010B9EA_swinging_with_sharks BSS;
+s16 D_8010B9EC_swinging_with_sharks BSS;
+s16 D_8010B9EE_swinging_with_sharks BSS;
+SharkState D_8010B9F0_swinging_with_sharks[5] BSS;
+s16 D_8010BAE0_swinging_with_sharks BSS;
+s16 D_8010BAE2_swinging_with_sharks BSS;
+s16 D_8010BAE4_swinging_with_sharks BSS;
+s16 D_8010BAE6_swinging_with_sharks BSS;
+f32 D_8010BAE8_swinging_with_sharks BSS;
+s16 D_8010BAEC_swinging_with_sharks BSS;
+s16 D_8010BAEE_swinging_with_sharks BSS;
+s16 D_8010BAF0_swinging_with_sharks[4] BSS;
+s16 D_8010BAF8_swinging_with_sharks[20] BSS;
+s16 D_8010BB20_swinging_with_sharks[20] BSS;
+s16 D_8010BB48_swinging_with_sharks BSS;
+s16 D_8010BB4A_swinging_with_sharks BSS; /* Unreferenced. */
+u8 D_8010BB4C_swinging_with_sharks[4] BSS; /* Unreferenced. */
+s16 D_8010BB50_swinging_with_sharks BSS;
+Vec D_8010BB54_swinging_with_sharks BSS;
+Vec D_8010BB60_swinging_with_sharks BSS;
+Vec D_8010BB6C_swinging_with_sharks BSS;
+Vec D_8010BB78_swinging_with_sharks BSS;
+Vec D_8010BB84_swinging_with_sharks BSS;
+Vec D_8010BB90_swinging_with_sharks BSS;
+f32 D_8010BB9C_swinging_with_sharks BSS;
+f32 D_8010BBA0_swinging_with_sharks BSS;
+f32 D_8010BBA4_swinging_with_sharks BSS;
+Vec D_8010BBA8_swinging_with_sharks BSS;
+f32 D_8010BBB4_swinging_with_sharks BSS;
 
 const s16 D_8010B770_swinging_with_sharks[] = {
     0x8272, 0x8273, 0x8260, 0x8271, 0x8273, 0x8265, 0x8268, 0x826D, 0x8268, 0x8272, 0x8267, 0x0000

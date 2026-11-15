@@ -2468,7 +2468,6 @@ D_8010E172_hide_and_sneak = 0x8010E172; //size:0x2 type:s16 segment:hide_and_sne
 D_8010C960_storm_chasers = 0x8010C960; //rom:0x270BB0 size:0x64 type:s32 segment:storm_chasers
 D_8010C9C4_storm_chasers = 0x8010C9C4; //rom:0x270C14 size:0x64 type:s32 segment:storm_chasers
 D_8010CA28_storm_chasers = 0x8010CA28; //rom:0x270C78 size:0x64 type:s32 segment:storm_chasers
-D_8010F590_toadstool_titan = 0x8010F590; //size:0x28 segment:toadstool_titan
 D_80110E0F_ridiculous_relay = 0x80110E0F; //size:0x1 type:u8 segment:ridiculous_relay
 D_80110E11_ridiculous_relay = 0x80110E11; //size:0x1 type:u8 segment:ridiculous_relay
 D_80110E12_ridiculous_relay = 0x80110E12; //size:0x1 type:u8 segment:ridiculous_relay

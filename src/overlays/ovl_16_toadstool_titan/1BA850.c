@@ -14,6 +14,17 @@ typedef struct ToadstoolTitanPlayer {
     /* 0x0C */ s32 unk_0C;
 } ToadstoolTitanPlayer; // sizeof 0x10
 
+typedef struct ToadstoolTitanBssF614 {
+    /* 0x00 */ u8 unk00[2];
+    /* 0x02 */ u8 unk02[4];
+} ToadstoolTitanBssF614; // sizeof 0x6
+
+typedef struct ToadstoolTitanBssF650 {
+    /* 0x00 */ u8 unk00[9];
+    /* 0x09 */ u8 unk09[4];
+    /* 0x0D */ u8 unk0D[4]; // group of each player
+} ToadstoolTitanBssF650;    // sizeof 0x11
+
 extern s32 D_800A178C_main[][6];
 extern s16 D_800CDBC8_main;
 extern s16 D_800D037E_main;
@@ -28,75 +39,97 @@ extern f32 D_800EB75C_minigame;
 extern u8 D_800CD6A6_main;
 extern s16 D_800D418E_main;
 extern u8 D_800D6A90_main;
-extern f32 D_8010EDA4_toadstool_titan; // screen rect left
-extern f32 D_8010EDA8_toadstool_titan; // screen rect top
-extern f32 D_8010EDAC_toadstool_titan; // screen rect right
-extern f32 D_8010EDB0_toadstool_titan; // screen rect bottom
-extern u8 D_8010EDB4_toadstool_titan[14];
-extern u8 D_8010EDC4_toadstool_titan[9];
-extern u8 D_8010EE3C_toadstool_titan;
-extern u8 D_8010EE40_toadstool_titan[4];
-extern s16 D_8010EE44_toadstool_titan[4];
-extern s16 D_8010EE4C_toadstool_titan[4];
-extern f32 D_8010EE54_toadstool_titan[4];
-extern f32 D_8010EE64_toadstool_titan[4];
-extern f32 D_8010F520_toadstool_titan;
-extern s16 D_8010F634_toadstool_titan[4];
-extern u8 D_8010EDCD_toadstool_titan;
-extern s16 D_8010EDCE_toadstool_titan;
-extern s16 D_8010EDD0_toadstool_titan;
-extern f32 D_8010EDD4_toadstool_titan;
-extern f32 D_8010EDD8_toadstool_titan;
-extern f32 D_8010EDDC_toadstool_titan;
-extern f32 D_8010EDE0_toadstool_titan;
-extern s16 D_8010EDE4_toadstool_titan;
-extern s16 D_8010EDE8_toadstool_titan[3];
-extern f32 D_8010F3D0_toadstool_titan[14];
-extern f32 D_8010F408_toadstool_titan[14];
-extern f32 D_8010F440_toadstool_titan[14];
-extern f32 D_8010F478_toadstool_titan[14];
-extern f32 D_8010F4B0_toadstool_titan[14];
-extern f32 D_8010F4E8_toadstool_titan[14];
-extern f32 D_8010F58C_toadstool_titan;
-extern f32 D_8010F5B8_toadstool_titan;
-extern f32 D_8010F604_toadstool_titan;
-extern f32 D_8010F608_toadstool_titan;
-extern f32 D_8010F610_toadstool_titan;
-extern u8 D_8010F620_toadstool_titan;
-extern u8 D_8010F659_toadstool_titan[4];
-extern f32 D_8010F664_toadstool_titan;
-extern f32 D_8010F670_toadstool_titan;
-extern ToadstoolTitanPlayer D_8010F528_toadstool_titan[4];
-extern ToadstoolTitanPlayer *D_8010F568_toadstool_titan[4]; // players indexed by group
-extern u32 D_8010F580_toadstool_titan;
-extern u8 D_8010F584_toadstool_titan;
-extern s16 D_8010F586_toadstool_titan;
-extern s16 D_8010F588_toadstool_titan[1];
-extern Gfx D_8010EDF0_toadstool_titan[];
 extern Gfx *gMainGfxPos;
-extern s8 D_8010F58A_toadstool_titan;
-extern D_80111B50_vine_with_me_Struct D_8010F590_toadstool_titan;
-extern u16 D_8010F5BC_toadstool_titan;
-extern u8 D_8010F5F4_toadstool_titan;
-extern omObjData *D_8010F5F8_toadstool_titan;
-extern s16 D_8010F5FC_toadstool_titan;
-extern s16 D_8010F60C_toadstool_titan[1];
-extern s8 D_8010F60E_toadstool_titan;
+
+u8 D_8010EDA0_toadstool_titan = 0;       // number of mushrooms created so far
+f32 D_8010EDA4_toadstool_titan = 0.0f;   // screen rect left
+f32 D_8010EDA8_toadstool_titan = 0.0f;   // screen rect top
+f32 D_8010EDAC_toadstool_titan = 320.0f; // screen rect right
+f32 D_8010EDB0_toadstool_titan = 240.0f; // screen rect bottom
+u8 D_8010EDB4_toadstool_titan[14] = { 0 };
+u8 D_8010EDC4_toadstool_titan[9] = { 0 };
+u8 D_8010EDCD_toadstool_titan = 0;
+s16 D_8010EDCE_toadstool_titan = 0;
+s16 D_8010EDD0_toadstool_titan = 0;
+f32 D_8010EDD4_toadstool_titan = 0.0f;
+f32 D_8010EDD8_toadstool_titan = 0.0f;
+f32 D_8010EDDC_toadstool_titan = 0.0f;
+f32 D_8010EDE0_toadstool_titan = 0.0f;
+s16 D_8010EDE4_toadstool_titan = 0;
+s16 D_8010EDE8_toadstool_titan[3] = { 0 };
+
+Gfx D_8010EDF0_toadstool_titan[] = {
+    gsDPPipeSync(),
+    gsDPSetCycleType(G_CYC_1CYCLE),
+    gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_DECALRGBA),
+    gsDPSetRenderMode(G_RM_OPA_SURF, G_RM_OPA_SURF2),
+    gsDPSetAlphaCompare(G_AC_NONE),
+    gsDPSetTexturePersp(G_TP_NONE),
+    gsDPSetTextureFilter(G_TF_BILERP),
+    gsDPSetScissor(G_SC_NON_INTERLACE, 0, 0, 320, 240),
+    gsSPEndDisplayList(),
+};
+
+s32 D_8010EE38_toadstool_titan = 0; // set once the camera has been initialized
+u8 D_8010EE3C_toadstool_titan = 0;
+u8 D_8010EE40_toadstool_titan[4] = { 0 };
+s16 D_8010EE44_toadstool_titan[4] = { 0 };
+s16 D_8010EE4C_toadstool_titan[4] = { 0 };
+f32 D_8010EE54_toadstool_titan[4] = { 0.0f };
+f32 D_8010EE64_toadstool_titan[4] = { 0.0f };
+
+f32 D_8010F3D0_toadstool_titan[14] BSS;
+f32 D_8010F408_toadstool_titan[14] BSS;
+f32 D_8010F440_toadstool_titan[14] BSS;
+f32 D_8010F478_toadstool_titan[14] BSS;
+f32 D_8010F4B0_toadstool_titan[14] BSS;
+f32 D_8010F4E8_toadstool_titan[14] BSS;
+f32 D_8010F520_toadstool_titan BSS;
+u8 D_8010F524_toadstool_titan[4] BSS; /* Unreferenced. */
+ToadstoolTitanPlayer D_8010F528_toadstool_titan[4] BSS;
+ToadstoolTitanPlayer *D_8010F568_toadstool_titan[4] BSS; // players indexed by group
+u8 D_8010F578_toadstool_titan[8] BSS;                    /* Unreferenced. */
+u32 D_8010F580_toadstool_titan BSS;
+u8 D_8010F584_toadstool_titan BSS;
+s16 D_8010F586_toadstool_titan BSS;
+s16 D_8010F588_toadstool_titan[1] BSS;
+s8 D_8010F58A_toadstool_titan BSS;
+f32 D_8010F58C_toadstool_titan BSS;
+D_80111B50_vine_with_me_Struct D_8010F590_toadstool_titan BSS;
+f32 D_8010F5B8_toadstool_titan BSS;
+u16 D_8010F5BC_toadstool_titan BSS;
+Vec D_8010F5C0_toadstool_titan BSS;           // camera target
+u8 D_8010F5CC_toadstool_titan[4] BSS;         /* Unreferenced. */
+omObjData *D_8010F5D0_toadstool_titan[9] BSS; // mushroom objects
+u8 D_8010F5F4_toadstool_titan BSS;
+omObjData *D_8010F5F8_toadstool_titan BSS;
+s16 D_8010F5FC_toadstool_titan BSS;
+f32 D_8010F600_toadstool_titan BSS; // music volume
+f32 D_8010F604_toadstool_titan BSS;
+f32 D_8010F608_toadstool_titan BSS;
+s16 D_8010F60C_toadstool_titan[1] BSS;
+s8 D_8010F60E_toadstool_titan BSS;
+f32 D_8010F610_toadstool_titan BSS;
+ToadstoolTitanBssF614 toadstoolTitanBssF614 BSS;
+u32 D_8010F61C_toadstool_titan BSS;
+u8 D_8010F620_toadstool_titan BSS;
+f32 D_8010F624_toadstool_titan BSS; // camera fov
+Vec D_8010F628_toadstool_titan BSS; // camera position
+s16 D_8010F634_toadstool_titan[4] BSS;
+u8 D_8010F63C_toadstool_titan[4] BSS; /* Unreferenced. */
+omObjData *D_8010F640_toadstool_titan[4] BSS;
+ToadstoolTitanBssF650 toadstoolTitanBssF650 BSS;
+f32 D_8010F664_toadstool_titan BSS;
+u8 D_8010F668_toadstool_titan[4] BSS; // start corner of each group
+u8 D_8010F66C_toadstool_titan BSS;    // number of human players
+f32 D_8010F670_toadstool_titan BSS;
+
+/* Fields of toadstoolTitanBssF614/toadstoolTitanBssF650, aliased in undefined_syms.txt. */
 extern u8 D_8010F614_toadstool_titan[2];
 extern u8 D_8010F616_toadstool_titan[4];
-extern u32 D_8010F61C_toadstool_titan;
-extern omObjData *D_8010F640_toadstool_titan[4];
 extern u8 D_8010F650_toadstool_titan[9];
-extern u8 D_8010F65D_toadstool_titan[4];         // group of each player
-extern u8 D_8010F668_toadstool_titan[4];         // start corner of each group
-extern u8 D_8010F66C_toadstool_titan;            // number of human players
-extern u8 D_8010EDA0_toadstool_titan;            // number of mushrooms created so far
-extern s32 D_8010EE38_toadstool_titan;           // set once the camera has been initialized
-extern Vec D_8010F5C0_toadstool_titan;           // camera target
-extern omObjData *D_8010F5D0_toadstool_titan[9]; // mushroom objects
-extern f32 D_8010F600_toadstool_titan;           // music volume
-extern f32 D_8010F624_toadstool_titan;           // camera fov
-extern Vec D_8010F628_toadstool_titan;           // camera position
+extern u8 D_8010F659_toadstool_titan[4];
+extern u8 D_8010F65D_toadstool_titan[4]; // group of each player
 
 const s16 D_8010EE80_toadstool_titan[] = {
     0x8260, 0x8261, 0x8262, 0x8263, 0x8264, 0x8265, 0x8266, 0x8267, 0x8268, 0x8269, 0x826A, 0x826B, 0x826C,
@@ -2024,7 +2057,31 @@ void func_8010BD2C_toadstool_titan(omObjData *object) {
     }
 }
 #else
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_16_toadstool_titan/1BA850", D_8010F278_toadstool_titan);
+// Initializer of the CPU params table copied onto the stack in func_8010BD2C_toadstool_titan.
+const s16 D_8010F278_toadstool_titan[22][4] = {
+    { 0, 0, 0, 0 },
+    { 300, 300, 200, 150 },
+    { 11, 9, 6, 3 },
+    { 6, 6, 6, 6 },
+    { 11, 9, 5, 2 },
+    { 4, 4, 3, 1 },
+    { -30, -40, -40, -200 },
+    { 15, 20, 20, 100 },
+    { 45, 35, 25, 25 },
+    { 1, 1, 1, 15 },
+    { 36, 46, 56, 66 },
+    { 1, 1, 1, 1 },
+    { 20, 20, 15, 15 },
+    { 35, 25, 12, 8 },
+    { 0, 0, 6, 6 },
+    { 1, 8, 4, 5 },
+    { 0, 24, 16, 32 },
+    { 1, 8, 24, 1 },
+    { 14, 9, 6, 0 },
+    { 6, 8, 5, 7 },
+    { 0, 0, 0, 0 },
+    { 1, 1, 1, 1 }
+};
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_16_toadstool_titan/1BA850", func_8010BD2C_toadstool_titan);
 #endif

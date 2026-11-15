@@ -65,7 +65,8 @@ static Vec2f D_800A1380_main[] = {
     { -248.0f, -208.0f }, { 248.0f, 208.0f }, { 248.0f, -240.0f }, { -248.0f, 32.0f }, { -248.0f, -98.0f }, { 0.0f, 0.0f },
 };
 
-u8 D_800A13B0_main[] = {
+/* volatile is required to match: CreateFontChar's search loop re-extends each loaded byte (lbu + andi). */
+volatile u8 D_800A13B0_main[] = {
     0x91, 0x92, 0x93, 0x94, 0x95, 0x96, 0x97, 0x98, 0x99, 0x9A, 0x9B, 0x9C, 0x9D, 0x9E, 0x9F, 0xD1,
     0xD2, 0xD3, 0xD4, 0xD5, 0xD6, 0xD7, 0xD8, 0xD9, 0xDA, 0xDB, 0xDC, 0xDD, 0xDE, 0xDF, 0xE0, 0xE1,
     0xE2, 0xE3, 0xE4, 0xE5, 0xE6,
@@ -1810,19 +1811,6 @@ s16 func_8003AE44_main(s16 fileNo) {
     return animId;
 }
 
-#ifdef NON_MATCHING
-/* Only diff: target has an extra andi 0xFF after the lbu from D_800A13B0_main in the search loop.
-   That means the load and its zero-extension were never combined. Declaring the table as
-   `volatile u8 D_800A13B0_main[]` matches exactly, because combine rejects volatile MEMs. No
-   non-volatile form tried so far reproduces it: u8/s8 casts, u8/s32/u16/s16 temporaries, reusing the
-   flags param, pointer indexing, and while/do-while/condition-in-for loop shapes. Also no effect:
-   (u16)/(s16) casts on either side, assignment inside the condition, xor/subtract compares, a const
-   table, a struct-of-bitfield table, and static inline helpers (getter, compare, or whole search).
-   Also no effect: `& 0xFF` masks, an s8 table with a (u8) cast, a separate loop counter copied to
-   idx, goto-to-label exit, do-while/while(1) forms, and reusing fileNo as the temp. A union temp
-   (u8 member of an s32 union) does block combine via the SUBREG dest, but emits sll/and/or merges.
-   Combine only keeps the andi if the loaded QI value is not dead at the extension, crosses a block
-   boundary, or a store/call/address-reg update sits between the load and the compare. */
 s16 CreateFontChar(u8 c, u8 flags) {
     s16 *animId;
     s32 fileNo;
@@ -1900,9 +1888,6 @@ s16 CreateFontChar(u8 c, u8 flags) {
     DataCloseTemp(data);
     return id;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/gamemes", CreateFontChar);
-#endif
 
 void func_8003B128_main(GAMEMES *gMes) {
     GMesSprKill(gMes);

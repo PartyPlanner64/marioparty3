@@ -117,46 +117,69 @@ typedef struct StormChaserPlayer {
 
 extern s32 D_800A178C_main[][6];
 extern u8 D_800D6A90_main;
-extern D_80111B50_vine_with_me_Struct D_8010C8B0_storm_chasers;
-extern StormChaserStart D_8010C8D8_storm_chasers[4];
-extern StormChaserGoal D_8010C928_storm_chasers[4];
-extern s32 D_8010C958_storm_chasers;
-extern s32 D_8010C95C_storm_chasers;
-extern s32 D_8010C960_storm_chasers[25]; // lightning texture frame sequences, each terminated by -1
-extern s32 D_8010C9C4_storm_chasers[25];
-extern s32 D_8010CA28_storm_chasers[25];
-extern StormChaserHome D_8010CA8C_storm_chasers[4];
-extern s32 D_8010CAAC_storm_chasers;
-extern s32 D_8010CAB0_storm_chasers;
-extern s16 D_8010CAB4_storm_chasers;
-extern StormChaserCamera D_8010CAB8_storm_chasers[2];
-extern const s16 D_8010CC8C_storm_chasers[];
-extern s32 D_8010CCA0_storm_chasers;
-extern s32 D_8010CCA4_storm_chasers;
-extern u16 D_8010CCA8_storm_chasers;
-extern s32 D_8010CCAC_storm_chasers;
-extern u8 D_8010CCB0_storm_chasers;
-extern StormChaserCloud D_8010CCC0_storm_chasers;
-extern StormChaserPlayer D_8010CD80_storm_chasers[4];
-extern StormChaserData D_8010CCE0_storm_chasers[4];
-extern StormChaserState D_8010CEE0_storm_chasers[2];
-extern s32 D_8010CF30_storm_chasers; // lightning texture animation ids, shared by both lightning objects
-extern s32 D_8010CF34_storm_chasers;
-extern StormChaserEntry D_8010CF38_storm_chasers[4];
-extern s16 D_8010CF08_storm_chasers;
-extern u16 D_8010CF0A_storm_chasers;
-extern f32 D_8010CF0C_storm_chasers;
-extern f32 D_8010CF10_storm_chasers;
-extern s32 D_8010CF18_storm_chasers;
-extern u16 D_8010CF1C_storm_chasers[2];
-extern StormChaserRain D_8010CF20_storm_chasers;
 extern f32 D_8010CF24_storm_chasers; // D_8010CF20_storm_chasers.unk_04; func_801075F8_storm_chasers accesses it as a separate symbol
-extern s32 D_8010CF68_storm_chasers;
-extern s32 D_8010CF6C_storm_chasers;
-extern s16 D_8010CF6E_storm_chasers;
-extern s32 D_8010CF70_storm_chasers;
-extern s16 D_8010CF72_storm_chasers;
-extern HuSprite_Unk84_Struct *D_8010CF74_storm_chasers;
+extern s16 D_8010CF6E_storm_chasers; // low half of D_8010CF6C_storm_chasers
+extern s16 D_8010CF72_storm_chasers; // low half of D_8010CF70_storm_chasers
+extern const s16 D_8010CC8C_storm_chasers[];
+
+D_80111B50_vine_with_me_Struct D_8010C8B0_storm_chasers = { 0, 0, 1, 2, 0, 0, 0, 0, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0, 0, 0, 0 }, 90, 900, 0, 30, 150 };
+StormChaserStart D_8010C8D8_storm_chasers[4] = {
+    { -200.0f, -200.0f, 45.0f, 45.0f, -5.0f },
+    { 200.0f, -200.0f, 315.0f, 315.0f, 5.0f },
+    { -200.0f, 200.0f, 135.0f, 45.0f, -15.0f },
+    { 200.0f, 200.0f, 225.0f, 315.0f, 15.0f },
+};
+StormChaserGoal D_8010C928_storm_chasers[4] = {
+    { -220.0f, -220.0f, 0.0f },
+    { 220.0f, -220.0f, 0.0f },
+    { -220.0f, 220.0f, 0.0f },
+    { 220.0f, 220.0f, 0.0f },
+};
+s32 D_8010C958_storm_chasers = 300;
+s32 D_8010C95C_storm_chasers = -1;
+// lightning texture frame sequences, each terminated by -1
+s32 D_8010C960_storm_chasers[25] = { 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 2, 2, 1, 1, 0, 0, -1 };
+s32 D_8010C9C4_storm_chasers[25] = { 0, 0, 1, 1, 2, 2, 1, 1, 0, 0, 1, 1, 2, 2, 1, 1, 0, 0, 1, 1, 2, 2, 1, 1, -1 };
+s32 D_8010CA28_storm_chasers[25] = { 3, 3, 4, 4, 5, 5, 4, 4, 3, 3, 4, 4, 5, 5, 4, 4, 3, 3, 4, 4, 5, 5, 4, 4, -1 };
+StormChaserHome D_8010CA8C_storm_chasers[4] = {
+    { -110.0f, -110.0f },
+    { 110.0f, -110.0f },
+    { -110.0f, 110.0f },
+    { 110.0f, 110.0f },
+};
+s32 D_8010CAAC_storm_chasers = 0;
+s32 D_8010CAB0_storm_chasers = 0;
+s16 D_8010CAB4_storm_chasers = -1;
+StormChaserCamera D_8010CAB8_storm_chasers[2] = {
+    { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 26.0f },
+    { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 26.0f },
+};
+
+s32 D_8010CCA0_storm_chasers BSS;
+s32 D_8010CCA4_storm_chasers BSS;
+u16 D_8010CCA8_storm_chasers BSS;
+s32 D_8010CCAC_storm_chasers BSS;
+u8 D_8010CCB0_storm_chasers BSS;
+u8 D_8010CCB4_storm_chasers[0xC] BSS; /* Unreferenced. */
+StormChaserCloud D_8010CCC0_storm_chasers BSS;
+StormChaserData D_8010CCE0_storm_chasers[4] BSS;
+StormChaserPlayer D_8010CD80_storm_chasers[4] BSS;
+StormChaserState D_8010CEE0_storm_chasers[2] BSS;
+s16 D_8010CF08_storm_chasers BSS;
+u16 D_8010CF0A_storm_chasers BSS;
+f32 D_8010CF0C_storm_chasers BSS;
+f32 D_8010CF10_storm_chasers BSS;
+u8 D_8010CF14_storm_chasers[4] BSS; /* Unreferenced. */
+s32 D_8010CF18_storm_chasers BSS;
+u16 D_8010CF1C_storm_chasers[2] BSS;
+StormChaserRain D_8010CF20_storm_chasers BSS;
+s32 D_8010CF30_storm_chasers BSS; // lightning texture animation ids, shared by both lightning objects
+s32 D_8010CF34_storm_chasers BSS;
+StormChaserEntry D_8010CF38_storm_chasers[4] BSS;
+s32 D_8010CF68_storm_chasers BSS;
+s32 D_8010CF6C_storm_chasers BSS;
+s32 D_8010CF70_storm_chasers BSS;
+HuSprite_Unk84_Struct *D_8010CF74_storm_chasers BSS;
 
 void func_801061C0_storm_chasers(omObjData *);
 void func_80106218_storm_chasers(omObjData *);
@@ -1998,4 +2021,4 @@ void func_8010C780_storm_chasers(void) {
     func_800E5EA0_minigame(&D_8010C8B0_storm_chasers);
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_2F_storm_chasers/269BF0", D_8010CC8C_storm_chasers);
+const s16 D_8010CC8C_storm_chasers[] = { 0x8260, 0x8261, 0x8262, 0 };

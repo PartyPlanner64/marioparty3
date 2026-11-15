@@ -43,29 +43,95 @@ typedef struct PictureImperfectScorePos {
     /* 0x02 */ s16 y;
 } PictureImperfectScorePos; // Size 0x4
 
+// Grouped BSS variables; individual fields are aliased in undefined_syms.txt.
+typedef struct PictureImperfectBssA110 {
+    /* 0x00 */ s8 unk00;
+    /* 0x01 */ s8 unk01;
+    /* 0x02 */ s8 unk02[4];
+    /* 0x06 */ s8 unk06[4];
+    /* 0x0A */ s16 unk0A[4];
+    /* 0x12 */ s16 unk12;
+    /* 0x14 */ s16 unk14;
+} PictureImperfectBssA110; // Size 0x18
+
+typedef struct PictureImperfectBssA230 {
+    /* 0x00 */ s16 unk00;
+    /* 0x02 */ s16 unk02[5];
+    /* 0x0C */ s16 unk0C[5];
+    /* 0x16 */ s16 unk16[5];
+    /* 0x20 */ s16 unk20[5];
+    /* 0x2A */ s16 unk2A[5];
+    /* 0x34 */ s16 unk34;
+    /* 0x36 */ s16 unk36;
+    /* 0x38 */ s16 unk38;
+    /* 0x3A */ s16 unk3A;
+    /* 0x3C */ s16 unk3C;
+    /* 0x3E */ s16 unk3E[4];
+    /* 0x46 */ s16 unk46[4];
+    /* 0x4E */ s16 unk4E[4];
+    /* 0x56 */ s16 unk56[4];
+    /* 0x5E */ s16 unk5E[4];
+    /* 0x66 */ s16 unk66[4];
+    /* 0x6E */ s16 unk6E[4];
+    /* 0x76 */ s16 unk76;
+    /* 0x78 */ s16 unk78;
+    /* 0x7A */ s16 unk7A;
+} PictureImperfectBssA230; // Size 0x7C
+
 extern u32 D_800A178C_main[][6];
 extern s32 D_800A1790_main[][6];
 extern u8 D_800CE20A_main;
 extern u8 D_800D6A90_main;
 
-extern s16 D_80109FE0_picture_imperfect;
-extern s16 D_80109FE2_picture_imperfect;
-extern u8 D_80109FE4_picture_imperfect;
-extern PictureImperfectScorePos D_80109FE8_picture_imperfect[4];
-extern s8 D_80109FF8_picture_imperfect[4];
-extern s8 D_80109FFC_picture_imperfect[4][5];
-extern s32 D_8010A010_picture_imperfect;
-extern s32 D_8010A02C_picture_imperfect;
-extern u8 D_8010A030_picture_imperfect[][5];
-extern u32 D_8010A044_picture_imperfect;
-extern s8 D_8010A048_picture_imperfect[8];
-extern f32 D_8010A050_picture_imperfect;
-extern u8 D_8010A054_picture_imperfect;
-extern u8 D_8010A055_picture_imperfect;
-extern u8 D_8010A056_picture_imperfect;
-extern s8 D_8010A014_picture_imperfect;
-extern PictureImperfectScorePos D_8010A018_picture_imperfect[4];
-extern s8 D_8010A028_picture_imperfect;
+s16 D_80109FE0_picture_imperfect = -1;
+s16 D_80109FE2_picture_imperfect = 1;
+u8 D_80109FE4_picture_imperfect = 0;
+PictureImperfectScorePos D_80109FE8_picture_imperfect[4] = { { 80, 60 }, { 240, 60 }, { 80, 180 }, { 240, 180 } };
+s8 D_80109FF8_picture_imperfect[4] = { -1, -1, -1, -1 };
+s8 D_80109FFC_picture_imperfect[4][5] = {
+    { -1, -1, -1, -1, -1 },
+    { -1, -1, -1, -1, -1 },
+    { -1, -1, -1, -1, -1 },
+    { -1, -1, -1, -1, -1 }
+};
+s32 D_8010A010_picture_imperfect = 0;
+s8 D_8010A014_picture_imperfect = 0;
+PictureImperfectScorePos D_8010A018_picture_imperfect[4] = { { 59, 55 }, { 219, 55 }, { 59, 175 }, { 219, 175 } };
+s8 D_8010A028_picture_imperfect = 0;
+s32 D_8010A02C_picture_imperfect = 0;
+u8 D_8010A030_picture_imperfect[4][5] = {
+    { 0, 1, 2, 3, 4 },
+    { 4, 2, 0, 3, 1 },
+    { 2, 3, 1, 4, 0 },
+    { 1, 4, 2, 0, 3 }
+};
+u32 D_8010A044_picture_imperfect = 0;
+s8 D_8010A048_picture_imperfect[8] = { -20, -10, 0, 10, 20, 0, 0, 0 };
+f32 D_8010A050_picture_imperfect = 1.0f;
+u8 D_8010A054_picture_imperfect = 0;
+u8 D_8010A055_picture_imperfect = 0xFF;
+u8 D_8010A056_picture_imperfect = 0;
+
+PictureImperfectBssA110 pictureImperfectBssA110 BSS;
+D_80111B50_vine_with_me_Struct D_8010A128_picture_imperfect BSS;
+u8 D_8010A150_picture_imperfect BSS;
+u8 D_8010A151_picture_imperfect BSS;
+s16 D_8010A152_picture_imperfect BSS;
+s16 D_8010A154_picture_imperfect BSS;
+s16 D_8010A156_picture_imperfect BSS;
+s16 D_8010A158_picture_imperfect BSS;
+s16 D_8010A15A_picture_imperfect BSS;
+s16 D_8010A15C_picture_imperfect[4] BSS;
+u8 D_8010A164_picture_imperfect[4] BSS; /* Unreferenced. */
+s16 D_8010A168_picture_imperfect[4][5] BSS;
+s16 D_8010A190_picture_imperfect[4][5] BSS;
+s16 D_8010A1B8_picture_imperfect[4][5] BSS;
+s16 D_8010A1E0_picture_imperfect[4][5] BSS;
+s16 D_8010A208_picture_imperfect[4][5] BSS;
+PictureImperfectBssA230 pictureImperfectBssA230 BSS;
+s8 D_8010A2AC_picture_imperfect[5] BSS;
+
+/* Fields of pictureImperfectBssA110, D_8010A128_picture_imperfect and pictureImperfectBssA230 (aliased in undefined_syms.txt). */
 extern s8 D_8010A110_picture_imperfect;
 extern s8 D_8010A111_picture_imperfect;
 extern s8 D_8010A112_picture_imperfect[4];
@@ -73,21 +139,7 @@ extern s8 D_8010A116_picture_imperfect[4];
 extern s16 D_8010A11A_picture_imperfect[4];
 extern s16 D_8010A122_picture_imperfect;
 extern s16 D_8010A124_picture_imperfect;
-extern D_80111B50_vine_with_me_Struct D_8010A128_picture_imperfect;
 extern u8 D_8010A140_picture_imperfect[4];
-extern u8 D_8010A150_picture_imperfect;
-extern u8 D_8010A151_picture_imperfect;
-extern s16 D_8010A152_picture_imperfect;
-extern s16 D_8010A154_picture_imperfect;
-extern s16 D_8010A156_picture_imperfect;
-extern s16 D_8010A158_picture_imperfect;
-extern s16 D_8010A15A_picture_imperfect;
-extern s16 D_8010A15C_picture_imperfect[4];
-extern s16 D_8010A168_picture_imperfect[4][5];
-extern s16 D_8010A190_picture_imperfect[4][5];
-extern s16 D_8010A1B8_picture_imperfect[4][5];
-extern s16 D_8010A1E0_picture_imperfect[4][5];
-extern s16 D_8010A208_picture_imperfect[4][5];
 extern s16 D_8010A230_picture_imperfect;
 extern s16 D_8010A232_picture_imperfect[5];
 extern s16 D_8010A23C_picture_imperfect[5];
@@ -109,7 +161,6 @@ extern s16 D_8010A29E_picture_imperfect[4];
 extern s16 D_8010A2A6_picture_imperfect;
 extern s16 D_8010A2A8_picture_imperfect;
 extern s16 D_8010A2AA_picture_imperfect;
-extern s8 D_8010A2AC_picture_imperfect[5];
 
 void func_80105BA8_picture_imperfect(void);
 void func_80105E68_picture_imperfect(D_80111B50_vine_with_me_Struct *arg0);

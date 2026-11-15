@@ -583,3 +583,23 @@ D_8011B8B6_mgmode = D_8011B8A8_mgmode + 0xE;
 D_8011B8B8_mgmode = D_8011B8A8_mgmode + 0x10;
 D_8011B8C4_mgmode = D_8011B8A8_mgmode + 0x1C;
 D_8011B8E8_mgmode = D_8011B8A8_mgmode + 0x40;
+
+/* mstory4: interior Vec labels (func_8010D1A0_mstory4), s16 low halves of s32 arrays, UnkStoryObj fields, misaligned BSS groups. */
+D_80111AD4_mstory4 = D_80111AD0_mstory4 + 0x4;
+D_80111AE0_mstory4 = D_80111ADC_mstory4 + 0x4;
+D_8011223A_mstory4 = D_80112238_mstory4 + 0x2;
+D_8011223E_mstory4 = D_80112238_mstory4 + 0x6;
+D_80112242_mstory4 = D_80112238_mstory4 + 0xA;
+D_80112246_mstory4 = D_80112238_mstory4 + 0xE;
+D_801122A4_mstory4 = D_801122A0_mstory4 + 0x4;
+D_801122BC_mstory4 = D_801122A0_mstory4 + 0x1C;
+D_801122D0_mstory4 = D_801122A0_mstory4 + 0x30;
+D_801122EC_mstory4 = D_801122A0_mstory4 + 0x4C;
+D_8011232C_mstory4 = D_80112328_mstory4 + 0x4;
+D_80112346_mstory4 = D_80112338_mstory4 + 0xE;
+D_80112348_mstory4 = mstory4Bss2348;
+D_8011234A_mstory4 = mstory4Bss2348 + 0x2;
+D_80112366_mstory4 = D_80112358_mstory4 + 0xE;
+D_80112376_mstory4 = D_80112368_mstory4 + 0xE;
+D_801123A4_mstory4 = mstory4Bss23A4;
+D_801123A6_mstory4 = mstory4Bss23A4 + 0x2;

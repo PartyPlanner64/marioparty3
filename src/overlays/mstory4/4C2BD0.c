@@ -3,15 +3,7 @@
 
 extern f32 D_800CB890_main;
 extern f32 D_800D5210_main;
-extern Vec D_80111AD0_mstory4;
-extern Vec D_80111ADC_mstory4;
-extern Vec D_80111AE8_mstory4;
 
-extern s32 D_80111AC0_mstory4;
-extern s32 D_80111AC4_mstory4;
-extern s32 D_80111AC8_mstory4;
-extern s8 D_80111ACC_mstory4;
-extern s32 D_80111AF4_mstory4;
 extern s16 D_80112120_mstory4;
 extern s16 D_80112122_mstory4;
 extern s32 D_80112124_mstory4;
@@ -26,6 +18,17 @@ extern s32 D_801123B0_mstory4[4];
 extern void (*const D_80111C10_mstory4[])(void);
 extern const s32 D_80111C18_mstory4[];
 
+s32 D_80111AC0_mstory4 = 0;
+s32 D_80111AC4_mstory4 = 0;
+s32 D_80111AC8_mstory4 = 0;
+s8 D_80111ACC_mstory4 = 0;
+Vec D_80111AD0_mstory4 = { 14.0f, 193.0f, 1400.0f };
+Vec D_80111ADC_mstory4 = { -25.0f, 0.0f, -650.0f };
+Vec D_80111AE8_mstory4 = { 0.0f, 1.0f, -0.0001f };
+s32 D_80111AF4_mstory4 = 0;
+
+void func_8010818C_mstory4(void);
+void func_8010B9FC_mstory4(void);
 void MBDBackKill(void);
 void MBDBackClose(void);
 void func_80106134_mstory4(void);
@@ -97,9 +100,9 @@ void func_801059A0_mstory4(void) {
     WipeCreateIn(2, 16);
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory4/4C2BD0", D_80111C10_mstory4);
+void (*const D_80111C10_mstory4[])(void) = { func_8010818C_mstory4, func_8010B9FC_mstory4 };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory4/4C2BD0", D_80111C18_mstory4);
+const s32 D_80111C18_mstory4[] = { 62, 63 };
 
 void func_80105C90_mstory4(omObjData *obj) {
     u32 state = D_80111AC0_mstory4;
@@ -593,6 +596,14 @@ s32 func_801074F8_mstory4(s16 model) {
     return ret;
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory4/4C2BD0", D_80111C34_mstory4);
+const s32 D_80111C34_mstory4[7] = { 0x1D000B, 0x1D000C, 0x1D000D, 0x1D000E, 0x1D000F, 0x1D0010, 0x1D0011 };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory4/4C2BD0", D_80111C50_mstory4);
+const s16 D_80111C50_mstory4[][2] = {
+    { 57, 20 },
+    { 129, 36 },
+    { 200, 22 },
+    { 215, 91 },
+    { 150, 124 },
+    { 81, 105 },
+    { 12, 122 },
+};

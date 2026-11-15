@@ -310,3 +310,6 @@ D_80109EEE_hey_batter_batter = heyBatterBatterBssEE4 + 0xA;
 
 /* dorrie_dip: low halfword of the s32 player index at D_8010A1FC. */
 D_8010A1FE_dorrie_dip = D_8010A1FC_dorrie_dip + 0x2;
+/* koopa: under-aligned u8 array after the s16 window table. */
+D_80109518_koopa = koopaBss9518;
+D_8010954A_koopa = koopaBss9518 + 0x32;

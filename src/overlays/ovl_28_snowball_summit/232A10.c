@@ -5,30 +5,6 @@
 #define WRAP_ANGLE(angle) \
     ((angle) >= 360.0f ? (angle) - 360.0f : ((angle) < 0.0f ? (angle) + 360.0f : (angle)))
 
-extern s32 D_8010F880_snowball_summit;
-extern s32 D_8010F884_snowball_summit;
-extern u16 D_8010F888_snowball_summit;
-extern s32 D_8010F88C_snowball_summit;
-extern s32 D_80110044_snowball_summit;
-extern s32 D_801101E8_snowball_summit;
-extern u16 D_801101F2_snowball_summit;
-extern f32 D_801101F4_snowball_summit;
-extern f32 D_801101F8_snowball_summit;
-extern s32 D_80110248_snowball_summit;
-extern s32 D_8011024C_snowball_summit;
-extern s16 D_80110030_snowball_summit;
-extern s16 D_801101F0_snowball_summit;
-extern s16 D_8010F8AC_snowball_summit;
-extern s16 D_8010F8AE_snowball_summit;
-extern s16 D_8010F8B0_snowball_summit;
-extern s32 D_800A178C_main[][6];
-extern s16 D_8010F890_snowball_summit;
-extern u8 D_8010F892_snowball_summit;
-extern s32 D_8010F898_snowball_summit[4];
-extern s32 D_8010F8A8_snowball_summit;
-extern s32 D_8010F5C8_snowball_summit;
-extern Vec D_8010F598_snowball_summit[4]; // x: trans.x, y: trans.z, z: rot.y
-
 typedef struct SnowballSummitCamera {
     f32 scissorX;
     f32 scissorY;
@@ -39,15 +15,10 @@ typedef struct SnowballSummitCamera {
     f32 fov;
 } SnowballSummitCamera; // sizeof 0x2C
 
-extern SnowballSummitCamera D_8010F5CC_snowball_summit[];
-extern const s16 D_8010F870_snowball_summit[];
-
 typedef struct UnkSnowballSummitPath {
     /* 0x00 */ Vec start;
     /* 0x0C */ Vec end;
 } UnkSnowballSummitPath; // sizeof 0x18
-
-extern UnkSnowballSummitPath D_8010F550_snowball_summit[3];
 
 typedef struct SnowballSummitBackdrop {
     /* 0x00 */ s32 state; // -1 when not drawn
@@ -58,13 +29,6 @@ typedef struct SnowballSummitBackdrop {
     /* 0x14 */ HuSprite_Unk84_Struct *rightSprite;
 } SnowballSummitBackdrop; // sizeof 0x18
 
-// func_80106760_snowball_summit accesses the backdrop fields as separate symbols.
-extern s32 D_8010F8C0_snowball_summit;
-extern s32 D_8010F8C8_snowball_summit;
-extern s16 D_8010F8CA_snowball_summit;
-extern HuSprite_Unk84_Struct *D_8010F8CC_snowball_summit;
-extern HuSprite_Unk84_Struct *D_8010F8D4_snowball_summit;
-
 typedef struct UnkSnowballSummitSnowball {
     /* 0x00 */ s32 state; // -1 when the slot is unused, 0 when the snowball is dead, 1 or 2 while in use
     /* 0x04 */ s32 unk_04;
@@ -74,8 +38,6 @@ typedef struct UnkSnowballSummitSnowball {
     /* 0x14 */ f32 unk_14;
     /* 0x18 */ omObjData *unk_18; // minigame object that owns the slot
 } UnkSnowballSummitSnowball;      // sizeof 0x1C
-
-extern UnkSnowballSummitSnowball D_8010F8D8_snowball_summit[8];
 
 typedef struct UnkSnowballSummitSlot {
     /* 0x00 */ s32 id; // -1 when the slot is unused
@@ -96,8 +58,6 @@ typedef struct UnkSnowballSummitSlot {
     /* 0x3C */ omObjData *unk_3C;
 } UnkSnowballSummitSlot; // sizeof 0x40
 
-extern UnkSnowballSummitSlot D_8010FC30_snowball_summit[16];
-
 typedef struct UnkSnowballSummitRoll {
     /* 0x00 */ s32 state; // -1 when the slot is unused, 0 when the roll is dead, 1 or 2 while in use
     /* 0x04 */ s32 unk_04;
@@ -107,14 +67,10 @@ typedef struct UnkSnowballSummitRoll {
     /* 0x14 */ omObjData *unk_14; // minigame object that owns the slot
 } UnkSnowballSummitRoll;          // sizeof 0x18
 
-extern UnkSnowballSummitRoll D_80110048_snowball_summit[16];
-
 typedef struct UnkSnowballSummitObjSlot {
     /* 0x00 */ s32 id;       // -1 when the slot is unused
     /* 0x04 */ void *unk_04; // minigame object that owns the slot
 } UnkSnowballSummitObjSlot;  // sizeof 0x8
-
-extern UnkSnowballSummitObjSlot D_801101C8_snowball_summit[4];
 
 typedef struct UnkSnowballSummitThrow {
     /* 0x00 */ s32 state; // -1 when the slot is unused
@@ -124,8 +80,6 @@ typedef struct UnkSnowballSummitThrow {
     /* 0x10 */ f32 unk_10;
     /* 0x14 */ f32 unk_14;
 } UnkSnowballSummitThrow; // sizeof 0x18
-
-extern UnkSnowballSummitThrow D_80110200_snowball_summit[3];
 
 typedef struct UnkSnowballSummitMover {
     /* 0x00 */ s32 id;     // -1 when the slot is unused
@@ -167,8 +121,6 @@ typedef struct UnkSnowballSummitMover {
     /* 0x98 */ f32 unk_98;
 } UnkSnowballSummitMover; // sizeof 0x9C
 
-extern UnkSnowballSummitMover D_8010F9B8_snowball_summit[4];
-
 typedef struct UnkSnowballSummitNode {
     /* 0x00 */ s32 id; // -1 when the slot is unused, 0 when the node is dead, 1 when it is in use
     /* 0x04 */ s32 unk_04;
@@ -176,7 +128,69 @@ typedef struct UnkSnowballSummitNode {
     /* 0x0C */ omObjData *unk_0C;
 } UnkSnowballSummitNode; // sizeof 0x10
 
-extern UnkSnowballSummitNode D_80110250_snowball_summit[4];
+extern s32 D_800A178C_main[][6];
+
+UnkSnowballSummitPath D_8010F550_snowball_summit[3] = {
+    { { -50.0f, 500.0f, -800.0f }, { -1200.0f, -330.0f, -800.0f } },
+    { { 700.0f, 500.0f, -800.0f }, { -900.0f, -375.0f, -800.0f } },
+    { { 1100.0f, 500.0f, -800.0f }, { 200.0f, -350.0f, -800.0f } },
+};
+// x: trans.x, y: trans.z, z: rot.y
+Vec D_8010F598_snowball_summit[4] = {
+    { -400.0f, -400.0f, 45.0f },
+    { 400.0f, -400.0f, 315.0f },
+    { 400.0f, 400.0f, 225.0f },
+    { -400.0f, 400.0f, 135.0f },
+};
+s32 D_8010F5C8_snowball_summit = -1;
+SnowballSummitCamera D_8010F5CC_snowball_summit[2] = {
+    { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 24.0f },
+    { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 24.0f },
+};
+
+extern const s16 D_8010F870_snowball_summit[];
+
+s32 D_8010F880_snowball_summit BSS;
+s32 D_8010F884_snowball_summit BSS;
+u16 D_8010F888_snowball_summit BSS;
+s32 D_8010F88C_snowball_summit BSS;
+s16 D_8010F890_snowball_summit BSS;
+u8 D_8010F892_snowball_summit BSS;
+u8 D_8010F894_snowball_summit[4] BSS; /* Unreferenced. */
+s32 D_8010F898_snowball_summit[4] BSS;
+s32 D_8010F8A8_snowball_summit BSS;
+s16 D_8010F8AC_snowball_summit BSS;
+s16 D_8010F8AE_snowball_summit BSS;
+s16 D_8010F8B0_snowball_summit BSS;
+u8 D_8010F8B4_snowball_summit[0xC] BSS; /* Unreferenced. */
+SnowballSummitBackdrop snowballSummitBackdrop BSS;
+// func_80106760_snowball_summit accesses the backdrop fields as separate symbols.
+extern s32 D_8010F8C0_snowball_summit;                    // snowballSummitBackdrop.state
+extern s32 D_8010F8C8_snowball_summit;                    // snowballSummitBackdrop.hookId
+extern s16 D_8010F8CA_snowball_summit;                    // snowballSummitBackdrop.hookId (low half)
+extern HuSprite_Unk84_Struct *D_8010F8CC_snowball_summit; // snowballSummitBackdrop.leftSprite
+extern HuSprite_Unk84_Struct *D_8010F8D4_snowball_summit; // snowballSummitBackdrop.rightSprite
+UnkSnowballSummitSnowball D_8010F8D8_snowball_summit[8] BSS;
+UnkSnowballSummitMover D_8010F9B8_snowball_summit[4] BSS;
+u8 D_8010FC28_snowball_summit[8] BSS; /* Unreferenced. */
+UnkSnowballSummitSlot D_8010FC30_snowball_summit[16] BSS;
+s16 D_80110030_snowball_summit BSS;
+u8 D_80110034_snowball_summit[0x10] BSS; /* Unreferenced. */
+s32 D_80110044_snowball_summit BSS;
+UnkSnowballSummitRoll D_80110048_snowball_summit[16] BSS;
+UnkSnowballSummitObjSlot D_801101C8_snowball_summit[4] BSS;
+s32 D_801101E8_snowball_summit BSS;
+u8 D_801101EC_snowball_summit[4] BSS; /* Unreferenced. */
+s16 D_801101F0_snowball_summit BSS;
+u16 D_801101F2_snowball_summit BSS;
+f32 D_801101F4_snowball_summit BSS;
+f32 D_801101F8_snowball_summit BSS;
+u8 D_801101FC_snowball_summit[4] BSS; /* Unreferenced. */
+UnkSnowballSummitThrow D_80110200_snowball_summit[3] BSS;
+s32 D_80110248_snowball_summit BSS;
+s32 D_8011024C_snowball_summit BSS;
+UnkSnowballSummitNode D_80110250_snowball_summit[4] BSS;
+u8 D_80110290_snowball_summit[0x10] BSS; /* Unreferenced. */
 
 void func_8010F42C_snowball_summit(void);
 void func_801062E0_snowball_summit(Gfx **gfxPos, s32 arg1, s32 arg2);
@@ -2836,4 +2850,4 @@ void func_8010F42C_snowball_summit(void) {
     omAddObj(1000, 0, 0, -1, func_8010CA18_snowball_summit);
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_28_snowball_summit/232A10", D_8010F870_snowball_summit);
+const s16 D_8010F870_snowball_summit[] = { 0x8260, 0x8261, 0x8262, 0 };

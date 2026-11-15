@@ -432,3 +432,10 @@ D_8010AAF0_slapdown = D_8010AAB0_slapdown + 0x40;
 D_8010AAF2_slapdown = D_8010AAB0_slapdown + 0x42;
 D_8010AAF4_slapdown = D_8010AAB0_slapdown + 0x44;
 D_8010AAF8_slapdown = D_8010AAB0_slapdown + 0x48;
+
+/* snowball_summit: snowballSummitBackdrop fields. */
+D_8010F8C0_snowball_summit = snowballSummitBackdrop;
+D_8010F8C8_snowball_summit = snowballSummitBackdrop + 0x8;
+D_8010F8CA_snowball_summit = snowballSummitBackdrop + 0xA;
+D_8010F8CC_snowball_summit = snowballSummitBackdrop + 0xC;
+D_8010F8D4_snowball_summit = snowballSummitBackdrop + 0x14;

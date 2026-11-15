@@ -2097,8 +2097,8 @@ segments:
       - [0x3D8930, c]
       - [0x3D8960, c]
       - [0x3D8A70, .data, 3D8930] #80105AE0
-      - [0x3D8A90, data, 3D8960]
-      - {0x3D8A90, type: bss, vram: 0x80105B00, name: duelcall_bss}
+      - [0x3D8A90, .data, 3D8960]
+      - {0x3D8A90, type: .bss, vram: 0x80105B00, name: 3D8960}
 
   # Gate Guy
   - type: code

@@ -1818,6 +1818,9 @@ s16 func_8003AE44_main(s16 fileNo) {
    flags param, pointer indexing, and while/do-while/condition-in-for loop shapes. Also no effect:
    (u16)/(s16) casts on either side, assignment inside the condition, xor/subtract compares, a const
    table, a struct-of-bitfield table, and static inline helpers (getter, compare, or whole search).
+   Also no effect: `& 0xFF` masks, an s8 table with a (u8) cast, a separate loop counter copied to
+   idx, goto-to-label exit, do-while/while(1) forms, and reusing fileNo as the temp. A union temp
+   (u8 member of an s32 union) does block combine via the SUBREG dest, but emits sll/and/or merges.
    Combine only keeps the andi if the loaded QI value is not dead at the extension, crosses a block
    boundary, or a store/call/address-reg update sits between the load and the compare. */
 s16 CreateFontChar(u8 c, u8 flags) {

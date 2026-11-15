@@ -303,3 +303,8 @@ D_8010CAFA_mpiq = D_8010CAF8_mpiq + 0x2;
 /* all_fired_up field aliases: AllFiredUpBssAF0. */
 D_80109AF0_all_fired_up = allFiredUpBssAF0;
 D_80109AF2_all_fired_up = allFiredUpBssAF0 + 0x2;
+
+/* rockin_raceway field aliases: RockinRacewayBssB74. */
+D_80111B74_rockin_raceway = rockinRacewayBssB74;
+D_80111B76_rockin_raceway = rockinRacewayBssB74 + 0x2;
+D_80111B7A_rockin_raceway = rockinRacewayBssB74 + 0x6;

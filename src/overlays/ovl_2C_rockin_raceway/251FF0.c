@@ -250,101 +250,295 @@ typedef struct {
     /* 0x20 */ f32 velZ;
 } RockinRacewayFx; // Size 0x24
 
+typedef struct {
+    /* 0x00 */ s16 unk00;
+    /* 0x02 */ s16 unk02[2];
+    /* 0x06 */ s16 unk06;
+} RockinRacewayBssB74; // Size 0x8
+
 extern GAMEMES gMesData[];
 extern s16 D_800CDD6A_main;
 extern s16 D_800D418E_main;
 extern u8 D_800D6A90_main;
 extern u8 D_800D2008_main;
-extern f32 (*D_801112A0_rockin_raceway[4])[3]; // node positions of each track
-// Node count per track; the first element of each pair sits at D_801112B0_rockin_raceway.
-extern u16 D_801112B2_rockin_raceway[][2];
-extern s32 D_801112C0_rockin_raceway[];
-// Pairs of track node indices per racer; the first element of each pair sits at D_801112D0_rockin_raceway.
-extern u16 D_801112D2_rockin_raceway[][2];
-extern f32 D_801112E0_rockin_raceway[];
-extern f32 D_801112F0_rockin_raceway[];
-extern f32 D_80111300_rockin_raceway[4][2]; // per CPU difficulty
-extern s32 D_80111320_rockin_raceway[4];    // per CPU difficulty
-extern RockinRacewayCameraPreset D_80111350_rockin_raceway[7];
-extern s16 D_80111340_rockin_raceway[8];
-extern RockinRacewayPos16 D_80111330_rockin_raceway[4];
-extern Vec D_80111414_rockin_raceway[4];
-extern Vec D_80111444_rockin_raceway[12];
-extern u8 D_801114D4_rockin_raceway[4];
-extern s32 D_80111558_rockin_raceway; // state on the previous frame
-extern s32 D_8011155C_rockin_raceway;
-// Racer slot per racer; the first element of each pair sits at D_80111560_rockin_raceway.
-extern u16 D_80111562_rockin_raceway[][2];
-extern s32 D_80111570_rockin_raceway[4]; // racer slot occupying each track, or -1
-extern u16 D_80111580_rockin_raceway[];  // model file per character
-extern s32 D_80111590_rockin_raceway[3];
-extern RockinRacewayQuad D_801114D8_rockin_raceway;
-extern RockinRacewayQuad D_80111518_rockin_raceway;
-extern RockinRacewayHudValues D_8011159C_rockin_raceway;
-extern u8 D_801115B4_rockin_raceway[];
-extern s32 D_801115F0_rockin_raceway;    // camera debug mode
-extern s32 D_801115F4_rockin_raceway;    // camera debug text x
-extern s32 D_801115F8_rockin_raceway;    // camera debug text y
-extern s32 D_801115FC_rockin_raceway;    // replay frame last played back
-extern s32 D_801115B8_rockin_raceway[];  // sprite file per character
-extern s32 D_801115D8_rockin_raceway[6]; // sprite member of each time digit
-extern Gfx D_801116F0_rockin_raceway[];
-extern u8 D_80111730_rockin_raceway[4];
-extern u8 D_80111734_rockin_raceway[4];
-extern s32 D_80111AC0_rockin_raceway; // frames spent on the current replay frame
-extern s32 D_80111AC8_rockin_raceway;
-extern s32 D_80111B00_rockin_raceway[2][6];
-extern omObjData *D_80111AC4_rockin_raceway;
-extern s32 D_80111ACC_rockin_raceway;
-extern s32 D_80111AD0_rockin_raceway;
-extern s32 D_80111AD4_rockin_raceway;
-extern s32 D_80111AD8_rockin_raceway;
-extern s32 D_80111ADC_rockin_raceway;
-extern s16 D_80111AE0_rockin_raceway;
-extern s32 D_80111AE4_rockin_raceway;
-extern s32 D_80111AE8_rockin_raceway;
-extern s32 D_80111AEC_rockin_raceway;
-extern s32 D_80111AF0_rockin_raceway[4];
-extern RockinRacewayRacer *D_80111B30_rockin_raceway;
-extern s16 D_80111B34_rockin_raceway;
-extern s16 D_80111B36_rockin_raceway;
-extern s16 D_80111B38_rockin_raceway;
-extern s16 D_80111B3A_rockin_raceway;
-extern RockinRacewaySnapshotRow *D_80111B3C_rockin_raceway;
-extern Track *D_80111B40_rockin_raceway;
-extern f32 D_80111B44_rockin_raceway;
-extern RockinRacewayFx *D_80111B48_rockin_raceway;
-extern omObjData *D_80111B4C_rockin_raceway;
-extern RockinRacewayModelState *D_80111B50_rockin_raceway;
-extern s16 D_80111B54_rockin_raceway;
-extern omObjData *D_80111B58_rockin_raceway;
-extern RockinRacewayEffect *D_80111B5C_rockin_raceway;
-extern RockinRacewayEffectState *D_80111B60_rockin_raceway;
-extern s16 D_80111B64_rockin_raceway;
-extern s16 *D_80111B68_rockin_raceway;
-extern s16 D_80111B6C_rockin_raceway[4];
+f32 D_80110EE0_rockin_raceway[20][3] = {
+    { 704.785f, 0.0f, -699.55f },
+    { 201.485f, 0.0f, -705.05f },
+    { -294.435f, 0.0f, -705.05f },
+    { -801.855f, 0.0f, -710.0f },
+    { -986.52f, 0.0f, -629.3f },
+    { -1153.55f, 0.0f, -519.15f },
+    { -1278.255f, 0.0f, -365.4f },
+    { -1350.875f, 0.0f, -188.65f },
+    { -1376.325f, 0.0f, 1.4f },
+    { -1353.34f, 0.0f, 186.6f },
+    { -1275.89f, 0.0f, 363.35f },
+    { -1152.43f, 0.0f, 513.45f },
+    { -989.035f, 0.0f, 632.1f },
+    { -800.13f, 0.0f, 698.7f },
+    { -308.055f, 0.0f, 699.75f },
+    { 299.445f, 0.0f, 699.75f },
+    { 787.435f, 0.0f, 704.75f },
+    { 980.315f, 0.0f, 633.85f },
+    { 1143.355f, 0.0f, 515.55f },
+    { 1268.58f, 0.0f, 364.75f }
+};
+f32 D_80110FD0_rockin_raceway[20][3] = {
+    { 698.385f, 0.0f, -607.55f },
+    { 202.65f, 0.0f, -613.3f },
+    { -292.17f, 0.0f, -624.85f },
+    { -777.295f, 0.0f, -619.1f },
+    { -937.375f, 0.0f, -547.5f },
+    { -1076.53f, 0.0f, -442.5f },
+    { -1183.765f, 0.0f, -312.4f },
+    { -1254.48f, 0.0f, -161.75f },
+    { -1275.04f, 0.0f, -6.5f },
+    { -1249.91f, 0.0f, 162.4f },
+    { -1183.76f, 0.0f, 315.35f },
+    { -1081.105f, 0.0f, 445.45f },
+    { -937.39f, 0.0f, 548.2f },
+    { -773.115f, 0.0f, 609.8f },
+    { -305.52f, 0.0f, 611.15f },
+    { 301.515f, 0.0f, 616.5f },
+    { 765.37f, 0.0f, 610.85f },
+    { 932.645f, 0.0f, 550.75f },
+    { 1069.645f, 0.0f, 447.45f },
+    { 1180.59f, 0.0f, 316.0f }
+};
+f32 D_801110C0_rockin_raceway[20][3] = {
+    { 699.23f, 0.0f, -517.35f },
+    { 203.075f, 0.0f, -525.15f },
+    { -299.32f, 0.0f, -530.1f },
+    { -748.01f, 0.0f, -515.15f },
+    { -882.0f, 0.0f, -463.1f },
+    { -1005.37f, 0.0f, -380.85f },
+    { -1095.59f, 0.0f, -266.7f },
+    { -1148.435f, 0.0f, -138.95f },
+    { -1172.27f, 0.0f, 0.65f },
+    { -1155.245f, 0.0f, 135.25f },
+    { -1095.645f, 0.0f, 268.1f },
+    { -1003.655f, 0.0f, 377.15f },
+    { -886.2f, 0.0f, 465.7f },
+    { -748.21f, 0.0f, 520.25f },
+    { -297.04f, 0.0f, 523.75f },
+    { 295.995f, 0.0f, 519.85f },
+    { 740.775f, 0.0f, 523.75f },
+    { 877.835f, 0.0f, 464.55f },
+    { 992.225f, 0.0f, 376.9f },
+    { 1088.745f, 0.0f, 269.6f }
+};
+f32 D_801111B0_rockin_raceway[20][3] = {
+    { 701.125f, 0.0f, -421.1f },
+    { 202.54f, 0.0f, -419.7f },
+    { -303.185f, 0.0f, -424.85f },
+    { -716.595f, 0.0f, -419.3f },
+    { -833.05f, 0.0f, -380.45f },
+    { -931.415f, 0.0f, -309.8f },
+    { -1004.03f, 0.0f, -220.2f },
+    { -1050.36f, 0.0f, -113.6f },
+    { -1067.345f, 0.0f, -0.8f },
+    { -1051.89f, 0.0f, 113.5f },
+    { -1007.115f, 0.0f, 218.55f },
+    { -931.46f, 0.0f, 309.75f },
+    { -835.715f, 0.0f, 377.7f },
+    { -719.915f, 0.0f, 428.7f },
+    { -303.6f, 0.0f, 429.95f },
+    { 302.365f, 0.0f, 429.95f },
+    { 711.44f, 0.0f, 429.95f },
+    { 826.63f, 0.0f, 385.3f },
+    { 925.47f, 0.0f, 314.3f },
+    { 1000.045f, 0.0f, 220.2f }
+};
+// Node positions of each track.
+f32 (*D_801112A0_rockin_raceway[4])[3] = {
+    D_80110EE0_rockin_raceway,
+    D_80110FD0_rockin_raceway,
+    D_801110C0_rockin_raceway,
+    D_801111B0_rockin_raceway
+};
+// Node count per track is [i][1].
+u16 D_801112B0_rockin_raceway[4][2] = { { 0, 20 }, { 0, 20 }, { 0, 20 }, { 0, 20 } };
+s32 D_801112C0_rockin_raceway[4] = { 15, 15, 15, 15 };
+// Pairs of track node indices per racer; [i][1] is used.
+u16 D_801112D0_rockin_raceway[4][2] = { { 8, 14 }, { 8, 14 }, { 8, 14 }, { 8, 14 } };
+f32 D_801112E0_rockin_raceway[4] = { 1.0f, 1.1f, 1.2f, 1.4f };
+f32 D_801112F0_rockin_raceway[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+// Per CPU difficulty.
+f32 D_80111300_rockin_raceway[4][2] = {
+    { 0.6f, 0.7f },
+    { 0.7f, 0.8f },
+    { 0.8f, 0.9f },
+    { 0.9f, 0.99f }
+};
+s32 D_80111320_rockin_raceway[4] = { 5, 4, 3, 2 }; // per CPU difficulty
+RockinRacewayPos16 D_80111330_rockin_raceway[4] = { { 30, 30 }, { 270, 30 }, { 30, 211 }, { 270, 211 } };
+s16 D_80111340_rockin_raceway[8] = { 118, 130, 138, 150, 162, 172, 184, 196 };
+RockinRacewayCameraPreset D_80111350_rockin_raceway[7] = {
+    { { 0.0f, -288.8f, -65.0f }, { 326.0f, 0.0f, 0.0f }, 4278.0f },
+    { { 0.0f, 200.8f, -65.0f }, { 326.0f, 0.0f, 0.0f }, 4278.0f },
+    { { 136.0f, -94.8f, -1001.8f }, { 341.0f, 305.5f, 0.0f }, 952.0f },
+    { { 1126.0f, -94.8f, -721.8f }, { 341.0f, 305.5f, 0.0f }, 952.0f },
+    { { 246.0f, 33.2f, -693.8f }, { 350.3f, 285.4f, 0.0f }, 1140.0f },
+    { { 0.0f, 200.8f, -65.0f }, { 326.0f, 0.0f, 0.0f }, 3278.0f },
+    { { 340.0f, -200.0f, 165.0f }, { 326.0f, 0.0f, 0.0f }, 1678.0f }
+};
+Vec D_80111414_rockin_raceway[4] = {
+    { -384.5f, 56.6f, -88.4f },
+    { -387.95f, 39.8f, 85.75f },
+    { -129.3f, 56.6f, -88.4f },
+    { -129.3f, 39.8f, 85.75f }
+};
+Vec D_80111444_rockin_raceway[12] = {
+    { 58.4f, 58.75f, -92.85f },
+    { 126.8f, 58.75f, -92.85f },
+    { 222.3f, 58.75f, -92.85f },
+    { 290.7f, 58.75f, -92.85f },
+    { 397.8f, 58.75f, -92.85f },
+    { 466.15f, 58.75f, -92.85f },
+    { 58.4f, 43.75f, 82.0f },
+    { 126.8f, 43.75f, 82.0f },
+    { 222.3f, 43.75f, 82.0f },
+    { 290.7f, 43.75f, 82.0f },
+    { 397.8f, 43.75f, 82.0f },
+    { 466.15f, 43.75f, 82.0f }
+};
+u8 D_801114D4_rockin_raceway[4] = { 0xE9, 0xDD, 0xA1, 0xFF };
+RockinRacewayQuad D_801114D8_rockin_raceway = { { { { 67, -67, 0 }, 0, { 0x7C0, 0 }, { 0, 0, 0, 255 } },
+                                                  { { 67, 67, 0 }, 0, { 0x7C0, 0x7C0 }, { 0, 0, 0, 255 } },
+                                                  { { -65, -67, 0 }, 0, { 0, 0 }, { 0, 0, 0, 255 } },
+                                                  { { -67, 67, 0 }, 0, { 0, 0x7C0 }, { 0, 0, 0, 255 } } } };
+RockinRacewayQuad D_80111518_rockin_raceway = { { { { 29, -62, 0 }, 0, { 0x3C0, 0 }, { 0, 0, 0, 255 } },
+                                                  { { 29, 62, 0 }, 0, { 0x3C0, 0x7C0 }, { 0, 0, 0, 255 } },
+                                                  { { -29, -62, 0 }, 0, { 0, 0 }, { 0, 0, 0, 255 } },
+                                                  { { -29, 62, 0 }, 0, { 0, 0x7C0 }, { 0, 0, 0, 255 } } } };
+s32 D_80111558_rockin_raceway = -1; // state on the previous frame
+s32 D_8011155C_rockin_raceway = 0;
+// Racer slot per racer is [i][1].
+u16 D_80111560_rockin_raceway[4][2] = { { 0, 0 }, { 0, 1 }, { 0, 2 }, { 0, 3 } };
+s32 D_80111570_rockin_raceway[4] = { -1, -1, -1, -1 };           // racer slot occupying each track, or -1
+u16 D_80111580_rockin_raceway[8] = { 1, 2, 3, 4, 5, 6, 12, 13 }; // model file per character
+s32 D_80111590_rockin_raceway[3] = { 0, 0x400, 0x800 };
+RockinRacewayHudValues D_8011159C_rockin_raceway = { { -1, -1, -1, -1 }, { 0, 0 } };
+u8 D_801115B4_rockin_raceway[4] = { 0xFF, 0xFF, 0xFF, 0xFF };
+// Sprite file per character.
+s32 D_801115B8_rockin_raceway[8] = {
+    0x00210008, 0x00210009, 0x0021000A, 0x0021000B, 0x0021000C, 0x0021000D, 0x0021000E, 0x0021000F
+};
+s32 D_801115D8_rockin_raceway[6] = { 0, 1, 3, 4, 6, 7 }; // sprite member of each time digit
+s32 D_801115F0_rockin_raceway = 0;                       // camera debug mode
+s32 D_801115F4_rockin_raceway = 0;                       // camera debug text x
+s32 D_801115F8_rockin_raceway = 0;                       // camera debug text y
+s32 D_801115FC_rockin_raceway = -1;                      // replay frame last played back
+Gfx D_80111600_rockin_raceway[] = {
+    gsSPSegment(0x00, 0x00000000),
+    gsDPPipeSync(),
+    gsDPSetCycleType(G_CYC_1CYCLE),
+    gsDPPipelineMode(G_PM_1PRIMITIVE),
+    gsDPSetTextureLOD(G_TL_TILE),
+    gsDPSetTextureLUT(G_TT_NONE),
+    gsDPSetTextureDetail(G_TD_CLAMP),
+    gsDPSetTexturePersp(G_TP_NONE),
+    gsDPSetTileSize(G_TX_RENDERTILE, 0, 0, 0, 0),
+    gsDPSetTileSize(1, 0, 0, 0, 0),
+    gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_4b, 0, 0x0000, G_TX_RENDERTILE, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
+                G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD),
+    gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_4b, 0, 0x0000, 1, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD,
+                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD),
+    gsDPSetTextureFilter(G_TF_BILERP),
+    gsDPSetTextureConvert(G_TC_FILT),
+    gsDPSetCombineMode(G_CC_SHADE, G_CC_SHADE),
+    gsDPSetCombineKey(G_CK_NONE),
+    gsDPSetAlphaCompare(G_AC_NONE),
+    gsDPSetDepthSource(G_ZS_PIXEL),
+    gsDPSetRenderMode(G_RM_OPA_SURF, G_RM_OPA_SURF2),
+    gsDPNoOp(),
+    gsDPSetColorDither(G_CD_DISABLE),
+    gsDPPipeSync(),
+    gsSPEndDisplayList(),
+};
+Gfx D_801116B8_rockin_raceway[] = {
+    gsSPClearGeometryMode(0xFFFFFFFF),
+    gsSPTexture(0, 0, 0, G_TX_RENDERTILE, G_OFF),
+    gsSPSetGeometryMode(G_SHADE | G_SHADING_SMOOTH),
+    gsSPEndDisplayList(),
+};
+Gfx D_801116D8_rockin_raceway[] = {
+    gsSPDisplayList(D_801116B8_rockin_raceway),
+    gsSPDisplayList(D_80111600_rockin_raceway),
+    gsSPEndDisplayList(),
+};
+Gfx D_801116F0_rockin_raceway[] = {
+    gsDPPipeSync(),
+    gsSPDisplayList(D_801116D8_rockin_raceway),
+    gsDPSetCycleType(G_CYC_1CYCLE),
+    gsSPSetGeometryMode(G_ZBUFFER | G_CULL_BACK | G_LIGHTING | G_SHADING_SMOOTH),
+    gsDPSetBlendColor(0x00, 0x00, 0x00, 0x00),
+    gsDPSetPrimColor(0, 0, 0x00, 0x00, 0x00, 0xFF),
+    gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
+    gsSPEndDisplayList(),
+};
+u8 D_80111730_rockin_raceway[4] = { 0xFF, 0xFF, 0xFF, 0xFF };
+u8 D_80111734_rockin_raceway[4] = { 0xFF, 0xFF, 0xFF, 0xFF };
+
+s32 D_80111AC0_rockin_raceway BSS; // frames spent on the current replay frame
+omObjData *D_80111AC4_rockin_raceway BSS;
+s32 D_80111AC8_rockin_raceway BSS;
+s32 D_80111ACC_rockin_raceway BSS;
+s32 D_80111AD0_rockin_raceway BSS;
+s32 D_80111AD4_rockin_raceway BSS;
+s32 D_80111AD8_rockin_raceway BSS;
+s32 D_80111ADC_rockin_raceway BSS;
+s16 D_80111AE0_rockin_raceway BSS;
+s32 D_80111AE4_rockin_raceway BSS;
+s32 D_80111AE8_rockin_raceway BSS;
+s32 D_80111AEC_rockin_raceway BSS;
+s32 D_80111AF0_rockin_raceway[4] BSS;
+s32 D_80111B00_rockin_raceway[2][6] BSS;
+RockinRacewayRacer *D_80111B30_rockin_raceway BSS;
+s16 D_80111B34_rockin_raceway BSS;
+s16 D_80111B36_rockin_raceway BSS;
+s16 D_80111B38_rockin_raceway BSS;
+s16 D_80111B3A_rockin_raceway BSS;
+RockinRacewaySnapshotRow *D_80111B3C_rockin_raceway BSS;
+Track *D_80111B40_rockin_raceway BSS;
+f32 D_80111B44_rockin_raceway BSS;
+RockinRacewayFx *D_80111B48_rockin_raceway BSS;
+omObjData *D_80111B4C_rockin_raceway BSS;
+RockinRacewayModelState *D_80111B50_rockin_raceway BSS;
+s16 D_80111B54_rockin_raceway BSS;
+omObjData *D_80111B58_rockin_raceway BSS;
+RockinRacewayEffect *D_80111B5C_rockin_raceway BSS;
+RockinRacewayEffectState *D_80111B60_rockin_raceway BSS;
+s16 D_80111B64_rockin_raceway BSS;
+s16 *D_80111B68_rockin_raceway BSS;
+s16 D_80111B6C_rockin_raceway[4] BSS;
+RockinRacewayBssB74 rockinRacewayBssB74 BSS;
+u8 D_80111B7C_rockin_raceway[4] BSS; /* Unreferenced. */
+RockinRacewayMeter D_80111B80_rockin_raceway[4] BSS;
+RockinRacewaySfx *D_80111BD0_rockin_raceway BSS;
+s16 D_80111BD4_rockin_raceway BSS;
+s16 D_80111BD6_rockin_raceway BSS;
+omObjData *D_80111BD8_rockin_raceway BSS;
+u8 D_80111BDC_rockin_raceway[4] BSS;                  /* Unreferenced. */
+RockinRacewayCamera D_80111BE0_rockin_raceway[2] BSS; // target, origin
+s16 D_80111C28_rockin_raceway BSS;
+s16 D_80111C2A_rockin_raceway BSS;
+s16 D_80111C2C_rockin_raceway BSS;
+s16 D_80111C2E_rockin_raceway BSS;
+omObjData *D_80111C30_rockin_raceway BSS;
+s16 D_80111C34_rockin_raceway BSS;
+RockinRacewayFocus D_80111C38_rockin_raceway BSS;
+RockinRacewayVec *D_80111C4C_rockin_raceway BSS;
+// Ring buffer of 30 replay frames, see func_8010D600_rockin_raceway and func_8010D944_rockin_raceway.
+// D_80111C54_rockin_raceway counts recorded frames and D_80111C58_rockin_raceway is the next slot.
+RockinRacewayReplayFrame *D_80111C50_rockin_raceway BSS;
+s32 D_80111C54_rockin_raceway BSS;
+s32 D_80111C58_rockin_raceway BSS;
+
+/* Fields of rockinRacewayBssB74, aliased in undefined_syms.txt. */
 extern s16 D_80111B74_rockin_raceway;
 extern s16 D_80111B76_rockin_raceway[2];
 extern s16 D_80111B7A_rockin_raceway;
-extern RockinRacewayMeter D_80111B80_rockin_raceway[4];
-extern RockinRacewaySfx *D_80111BD0_rockin_raceway;
-extern s16 D_80111BD4_rockin_raceway;
-extern s16 D_80111BD6_rockin_raceway;
-extern omObjData *D_80111BD8_rockin_raceway;
-extern RockinRacewayCamera D_80111BE0_rockin_raceway[2]; // target, origin
-extern s16 D_80111C28_rockin_raceway;
-extern s16 D_80111C2A_rockin_raceway;
-extern s16 D_80111C2C_rockin_raceway;
-extern s16 D_80111C2E_rockin_raceway;
-extern omObjData *D_80111C30_rockin_raceway;
-extern s16 D_80111C34_rockin_raceway;
-extern RockinRacewayFocus D_80111C38_rockin_raceway;
-extern RockinRacewayVec *D_80111C4C_rockin_raceway;
-// Ring buffer of 30 replay frames, see func_8010D600_rockin_raceway and func_8010D944_rockin_raceway.
-// D_80111C54_rockin_raceway counts recorded frames and D_80111C58_rockin_raceway is the next slot.
-extern RockinRacewayReplayFrame *D_80111C50_rockin_raceway;
-extern s32 D_80111C54_rockin_raceway;
-extern s32 D_80111C58_rockin_raceway;
 
 const s16 D_80111740_rockin_raceway[] = { 0x8272, 0x8273, 0x8260, 0x8271, 0x8273, 0x0000 };
 const s16 D_8011174C_rockin_raceway[] = { 0x8265, 0x8268, 0x826D, 0x8268, 0x8272, 0x8267, 0x0000 };
@@ -869,7 +1063,7 @@ void func_80106B28_rockin_raceway(void) {
     for (i = 0, racer = D_80111B30_rockin_raceway; i < 4; i++, racer++) {
         memset(racer, 0, sizeof(RockinRacewayRacer));
         racer->unk00 = i;
-        racer->unk0A = D_80111562_rockin_raceway[i][0];
+        racer->unk0A = D_80111560_rockin_raceway[i][1];
         racer->unk0C = GwPlayer[racer->unk0A].pad;
         racer->unk0E = GwPlayer[racer->unk0A].chr;
         if (GwPlayer[racer->unk0A].stat & 1) {
@@ -1399,7 +1593,7 @@ void func_80108578_rockin_raceway(void) {
     for (i = 0, racer = D_80111B30_rockin_raceway; i < 4; i++, racer++) {
         func_8010A258_rockin_raceway(racer->unk2E, racer->unk30, 1500.0f, 0.0f, NULL, NULL, &pos, &rot);
         func_80108760_rockin_raceway(&pos, 0, 90);
-        func_80108760_rockin_raceway((Vec *)D_80111B40_rockin_raceway[i].unk0C[D_801112D2_rockin_raceway[i][0]], 0,
+        func_80108760_rockin_raceway((Vec *)D_80111B40_rockin_raceway[i].unk0C[D_801112D0_rockin_raceway[i][1]], 0,
                                      30);
     }
     omSetStatBit(omAddObj(30, 0, 0, -1, func_80108864_rockin_raceway), 0xA0);
@@ -1988,7 +2182,7 @@ void func_80109DA8_rockin_raceway(void) {
         track->unk00 = i;
         track->unk04 = track->unk08 = 0.0f;
         track->unk0C = D_801112A0_rockin_raceway[i];
-        track->numNodes = D_801112B2_rockin_raceway[i][0];
+        track->numNodes = D_801112B0_rockin_raceway[i][1];
         track->unk0C[D_801112C0_rockin_raceway[i]][0] = 340.0f;
         track->unk10 = HuMemAllocTag(track->numNodes * sizeof(*track->unk10), TAG_OVERLAY);
         track->unk14 = HuMemAllocTag(track->numNodes * sizeof(f32), TAG_OVERLAY);

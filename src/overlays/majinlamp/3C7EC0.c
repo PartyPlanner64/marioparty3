@@ -4,45 +4,6 @@
 #include "../ovl_80_shared_board/1006F0.h"
 #include "../ovl_80_shared_board/105D50.h"
 
-extern omObjData *D_80108350_majinlamp[32];
-extern s16 D_80108338_majinlamp;
-extern s16 D_8010833A_majinlamp;
-extern s32 D_8010833C_majinlamp;
-extern f32 D_801080D0_majinlamp;
-extern f32 D_801080D4_majinlamp;
-extern f32 D_801080D8_majinlamp;
-extern f32 D_801080DC_majinlamp;
-extern f32 D_801080E0_majinlamp;
-extern f32 D_801080E4_majinlamp;
-extern s16 D_801080E8_majinlamp;
-extern s16 D_801080EA_majinlamp;
-extern s16 D_801080EC_majinlamp;
-extern f32 D_801080F0_majinlamp;
-extern Vec D_801080F4_majinlamp[];
-extern Vec D_80108118_majinlamp;
-extern Object *D_8010832C_majinlamp;
-extern Object *D_80108330_majinlamp;
-extern GW_PLAYER *D_80108334_majinlamp;
-extern Vec D_801082E4_majinlamp;
-extern Vec D_801082F0_majinlamp;
-extern Vec D_801082FC_majinlamp;
-extern Vec D_80108308_majinlamp;
-extern Vec D_80108314_majinlamp;
-extern Vec D_80108320_majinlamp;
-extern Process *D_801082E0_majinlamp;
-extern s32 D_80108124_majinlamp;
-extern s16 D_8010833E_majinlamp;
-extern s16 D_80108340_majinlamp[];
-extern s16 D_80108342_majinlamp;
-extern s32 D_80108270_majinlamp[];
-extern s32 D_80108290_majinlamp[];
-extern Vec D_801082B0_majinlamp;
-extern Vec D_801082BC_majinlamp;
-extern Vec D_801082C8_majinlamp;
-extern Vec D_801082D4_majinlamp;
-extern const char D_80108260_majinlamp[];
-extern const char D_80108268_majinlamp[];
-
 void MBDlgResultWinExec(s32);
 void MBDlgWinExecY(s16, s32, s32);
 void *memcpy(void *, const void *, unsigned int);
@@ -58,6 +19,52 @@ void func_801080C4_majinlamp(void);
 void func_80105B14_majinlamp(omObjData *arg0);
 void func_80105E2C_majinlamp(omObjData *arg0);
 void func_801067EC_majinlamp(omObjData *arg0);
+
+f32 D_801080D0_majinlamp = 20.0f;
+f32 D_801080D4_majinlamp = 200.0f;
+f32 D_801080D8_majinlamp = 10000.0f;
+f32 D_801080DC_majinlamp = 20.0f;
+f32 D_801080E0_majinlamp = 200.0f;
+f32 D_801080E4_majinlamp = 10000.0f;
+s16 D_801080E8_majinlamp = 0;
+s16 D_801080EA_majinlamp = 0;
+s16 D_801080EC_majinlamp = 1;
+f32 D_801080F0_majinlamp = 0.0f;
+
+Vec D_801080F4_majinlamp[] = {
+    { 0.0f, 0.0f, -2000.0f },
+    { -100.0f, -100.0f, 2000.0f },
+    { 0.0f, -50.0f, 4500.0f },
+};
+
+Vec D_80108118_majinlamp = { -500.0f, 500.0f, 5500.0f };
+s32 D_80108124_majinlamp = 1;
+
+Process *D_801082E0_majinlamp BSS;
+Vec D_801082E4_majinlamp BSS;
+Vec D_801082F0_majinlamp BSS;
+Vec D_801082FC_majinlamp BSS;
+Vec D_80108308_majinlamp BSS;
+Vec D_80108314_majinlamp BSS;
+Vec D_80108320_majinlamp BSS;
+Object *D_8010832C_majinlamp BSS;
+Object *D_80108330_majinlamp BSS;
+GW_PLAYER *D_80108334_majinlamp BSS;
+s16 D_80108338_majinlamp BSS;
+s16 D_8010833A_majinlamp BSS;
+s32 D_8010833C_majinlamp BSS;
+s16 D_80108340_majinlamp[2] BSS;
+u8 D_80108344_majinlamp[0xC] BSS; /* Unreferenced. */
+omObjData *D_80108350_majinlamp[32] BSS;
+
+extern const char D_80108260_majinlamp[];
+extern const char D_80108268_majinlamp[];
+extern const s32 D_80108270_majinlamp[];
+extern const s32 D_80108290_majinlamp[];
+extern const Vec D_801082B0_majinlamp;
+extern const Vec D_801082BC_majinlamp;
+extern const Vec D_801082C8_majinlamp;
+extern const Vec D_801082D4_majinlamp;
 
 void func_801059A0_majinlamp(void) {
     D_8010833C_majinlamp = GwSystem.current_player_index;
@@ -405,7 +412,7 @@ void func_80106E74_majinlamp(void) {
     HuSprPosSet(D_80108338_majinlamp, 0, 0xA0, 0x78);
     HuSprScaleSet(D_80108338_majinlamp, 0, 50.0f, 50.0f);
     D_80108334_majinlamp = MBPlayerGet(D_8010833C_majinlamp);
-    MBPlayerModelCreate(D_8010833E_majinlamp, D_80101734_shared_board[GwPlayer[D_8010833C_majinlamp].chr], 2);
+    MBPlayerModelCreate(D_8010833C_majinlamp, D_80101734_shared_board[GwPlayer[D_8010833C_majinlamp].chr], 2);
     memcpy(&sp18, D_80108270_majinlamp, 0x20);
     memcpy(&sp38, D_80108290_majinlamp, 0x20);
     D_80108340_majinlamp[0] = func_80017790_main(
@@ -568,9 +575,9 @@ void func_8010771C_majinlamp(void) {
                                                                  &D_80108334_majinlamp->player_obj->rot, 0xA));
     HuPrcChildWatch();
     msmSeStop(sound);
-    PlayerFXPlay(0x2BD, D_8010833E_majinlamp);
+    PlayerFXPlay(0x2BD, D_8010833C_majinlamp);
     func_80017954_main(D_80108334_majinlamp->player_obj->omObj1->model[0], 2,
-                       GwPlayer[D_8010833C_majinlamp].chr, D_80108342_majinlamp);
+                       GwPlayer[D_8010833C_majinlamp].chr, D_80108340_majinlamp[1]);
     MBPlayerMotionSet(D_8010833C_majinlamp, 5, 2);
     HuPrcSleep(0x32);
     MBVecDirGet(&D_80108334_majinlamp->player_obj->coords, &D_80108118_majinlamp, direction);
@@ -667,14 +674,29 @@ void func_801080C4_majinlamp(void) {
 const char D_80108260_majinlamp[8] = "bg_in";
 const char D_80108268_majinlamp[8] = "bg_out";
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/majinlamp/3C7EC0", D_80108270_majinlamp);
+const s32 D_80108270_majinlamp[] = {
+    0x000200A4,
+    0x000300A4,
+    0x000700A4,
+    0x000400A4,
+    0x000500A4,
+    0x000600A4,
+    0x000800A4,
+    0x0009001B,
+};
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/majinlamp/3C7EC0", D_80108290_majinlamp);
+const s32 D_80108290_majinlamp[] = {
+    0x000200AB,
+    0x000300AB,
+    0x000700AB,
+    0x000400AB,
+    0x000500AB,
+    0x000600AB,
+    0x000800AB,
+    0x00090027,
+};
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/majinlamp/3C7EC0", D_801082B0_majinlamp);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/majinlamp/3C7EC0", D_801082BC_majinlamp);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/majinlamp/3C7EC0", D_801082C8_majinlamp);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/majinlamp/3C7EC0", D_801082D4_majinlamp);
+const Vec D_801082B0_majinlamp = { 0.0f, -90.0f, 3200.0f };
+const Vec D_801082BC_majinlamp = { 500.0f, 0.0f, 4000.0f };
+const Vec D_801082C8_majinlamp = { 200.0f, 200.0f, 5000.0f };
+const Vec D_801082D4_majinlamp = { 0.0f, 0.0f, -200.0f };

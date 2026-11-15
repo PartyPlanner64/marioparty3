@@ -4587,6 +4587,14 @@ s32 func_80114030_duel03(void) {
 // there. Tried: tail forms (scc/else/nested), else-if and early-return
 // cidx range checks, ternary/||/else-if forms of this block, and do-while
 // placements. None change that fill.
+// Also tried, without effect on the fill: inverting the cidx 15..20 check
+// into an early `return 1` (breaks the cidx CSE, 1690), dropping the inner
+// trailing `return 1` / merging the tail into one condition / else-return
+// (breaks the scc tail, 955-1405), letting walkNum == 3 fall to the shared
+// final `return 1` via an else (1155-1975), and `?:`/`||`/single-condition
+// forms of this block (380-1920). Every matched sibling (duel01/02/03/05)
+// fills that slot with `li v1, 4`, so the target's v1-live condition is
+// specific to this function's return-1 layout.
 // The frame is 0x28 bytes bigger than in the sibling callbacks; the 40-byte
 // local that causes this is never referenced.
 s32 func_8011454C_duel03(void) {

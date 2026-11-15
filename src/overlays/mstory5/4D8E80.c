@@ -1,14 +1,6 @@
 #include "common.h"
 #include "game/hmfmath.h"
-
-typedef struct UnkStoryObj {
-    /* 0x00 */ omObjData *obj;
-    /* 0x04 */ void (*func)(omObjData *);
-    /* 0x08 */ s32 unk_08;
-    /* 0x0C */ s32 unk_0C;
-    /* 0x10 */ s32 unk_10;
-    /* 0x14 */ s32 unk_14;
-} UnkStoryObj; // sizeof 0x18
+#include "mstory5.h"
 
 typedef struct MstoryPath {
     /* 0x00 */ s16 count;
@@ -18,29 +10,18 @@ typedef struct MstoryPath {
     /* 0x0C */ f32 (*intervals)[2];
 } MstoryPath; // sizeof 0x10
 
-typedef struct UnkMstory5Particle {
-    /* 0x00 */ f32 time;
-    /* 0x04 */ Vec pos;
-    /* 0x10 */ Vec vel;
-} UnkMstory5Particle; // sizeof 0x1C
-
-extern Vec D_80114828_mstory5[];
-extern Vec D_80114858_mstory5[];
-
-extern s32 D_80114820_mstory5;
-extern s32 D_80114824_mstory5;
 extern const Vec D_80114D5C_mstory5;
-extern Vec D_80114E00_mstory5;
-extern Vec D_80114E0C_mstory5;
-extern Vec D_80114E18_mstory5;
-extern Vec D_80114E30_mstory5;
-extern Vec D_80114EB8_mstory5;
-extern Vec D_80114EC4_mstory5;
-extern Vec D_80114F78_mstory5;
-extern Vec D_80114F84_mstory5;
-extern Vec D_80114F90_mstory5;
-extern Vec D_80114F9C_mstory5;
-extern Vec D_80115134_mstory5;
+extern const Vec D_80114E00_mstory5;
+extern const Vec D_80114E0C_mstory5;
+extern const Vec D_80114E18_mstory5;
+extern const Vec D_80114E30_mstory5;
+extern const Vec D_80114EB8_mstory5;
+extern const Vec D_80114EC4_mstory5;
+extern const Vec D_80114F78_mstory5;
+extern const Vec D_80114F84_mstory5;
+extern const Vec D_80114F90_mstory5;
+extern const Vec D_80114F9C_mstory5;
+extern const Vec D_80115134_mstory5;
 extern void (*const D_801148A0_mstory5[])(void);
 extern UnkStoryObj D_801153A0_mstory5[8];
 extern UnkStoryObj D_80115460_mstory5;
@@ -59,20 +40,20 @@ extern s32 D_801154E4_mstory5[3];
 extern s16 D_801154E6_mstory5;
 extern Vec D_80115484_mstory5;
 extern const Vec D_80114D2C_mstory5;
-extern Vec D_801150E0_mstory5;
-extern Vec D_801150EC_mstory5;
-extern Vec D_801150F8_mstory5;
-extern Vec D_80115110_mstory5;
-extern Vec D_8011511C_mstory5;
-extern Vec D_80115128_mstory5;
+extern const Vec D_801150E0_mstory5;
+extern const Vec D_801150EC_mstory5;
+extern const Vec D_801150F8_mstory5;
+extern const Vec D_80115110_mstory5;
+extern const Vec D_8011511C_mstory5;
+extern const Vec D_80115128_mstory5;
 extern Vec D_801154CC_mstory5;
 extern const Vec D_80114D74_mstory5;
 extern s16 D_801154DA_mstory5;
 extern const s32 D_8011514C_mstory5[];
 extern Vec D_801154C0_mstory5;
 extern const Vec D_80114D68_mstory5;
-extern Vec D_80115038_mstory5;
-extern Vec D_80115080_mstory5;
+extern const Vec D_80115038_mstory5;
+extern const Vec D_80115080_mstory5;
 extern const Vec D_80114FC0_mstory5;
 extern const Vec D_80114FD8_mstory5;
 extern const Vec D_80114FE4_mstory5;
@@ -80,22 +61,22 @@ extern const Vec D_80114FF0_mstory5;
 extern const Vec D_80115014_mstory5;
 extern const Vec D_80115020_mstory5;
 extern const Vec D_8011502C_mstory5;
-extern Vec D_80115098_mstory5;
-extern Vec D_801150B0_mstory5;
-extern Vec D_801150BC_mstory5;
-extern Vec D_80115050_mstory5;
-extern Vec D_80115068_mstory5;
-extern Vec D_80115074_mstory5;
-extern Vec D_80114EDC_mstory5;
-extern Vec D_80114EF4_mstory5;
-extern Vec D_80114F0C_mstory5;
-extern Vec D_80114F18_mstory5;
-extern Vec D_80114F24_mstory5;
-extern Vec D_80114F30_mstory5;
-extern Vec D_80114F3C_mstory5;
-extern Vec D_80114F48_mstory5;
-extern Vec D_80114F60_mstory5;
-extern Vec D_80114F6C_mstory5;
+extern const Vec D_80115098_mstory5;
+extern const Vec D_801150B0_mstory5;
+extern const Vec D_801150BC_mstory5;
+extern const Vec D_80115050_mstory5;
+extern const Vec D_80115068_mstory5;
+extern const Vec D_80115074_mstory5;
+extern const Vec D_80114EDC_mstory5;
+extern const Vec D_80114EF4_mstory5;
+extern const Vec D_80114F0C_mstory5;
+extern const Vec D_80114F18_mstory5;
+extern const Vec D_80114F24_mstory5;
+extern const Vec D_80114F30_mstory5;
+extern const Vec D_80114F3C_mstory5;
+extern const Vec D_80114F48_mstory5;
+extern const Vec D_80114F60_mstory5;
+extern const Vec D_80114F6C_mstory5;
 extern s16 D_801154EA_mstory5;
 extern s32 D_800A178C_main[][6];
 extern Vec D_80115478_mstory5;
@@ -105,6 +86,23 @@ extern const s32 D_80114DA0_mstory5[];
 extern const s32 D_80114DC0_mstory5[];
 extern const s32 D_80114DE0_mstory5[];
 extern s16 D_801154DC_mstory5[4];
+
+s32 D_80114820_mstory5 = 3;
+s32 D_80114824_mstory5 = 0;
+Vec D_80114828_mstory5[4] = {
+    { 0.0f, 200.0f, 100.0f },
+    { -200.0f, 100.0f, -100.0f },
+    { -100.0f, 300.0f, 300.0f },
+    { 9999.0f, 9999.0f, 9999.0f },
+};
+Vec D_80114858_mstory5[6] = {
+    { -100.0f, 300.0f, 300.0f },
+    { -200.0f, 200.0f, 100.0f },
+    { 0.0f, 300.0f, -100.0f },
+    { 400.0f, 400.0f, 200.0f },
+    { -50.0f, 120.0f, 450.0f },
+    { 9999.0f, 9999.0f, 9999.0f },
+};
 
 void func_8010F7D4_mstory5(MstoryPath *path, f32 time, Vec *result);
 void func_80106B64_mstory5(omObjData *obj, const Vec *pos, s32 frames, s32 arg3);
@@ -446,37 +444,38 @@ void func_80110208_mstory5(void) {
 void func_80110618_mstory5(void) {
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80114D20_mstory5);
+const Vec D_80114D20_mstory5 = { -120.0f, 0.0f, 480.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80114D2C_mstory5);
+const Vec D_80114D2C_mstory5 = { 38.0f, 100.0f, 214.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80114D38_mstory5);
+const Vec D_80114D38_mstory5 = { 150.0f, 0.0f, 384.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80114D44_mstory5);
+const Vec D_80114D44_mstory5 = { 800.0f, 0.0f, 380.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80114D50_mstory5);
+const Vec D_80114D50_mstory5 = { -700.0f, 0.0f, 300.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80114D5C_mstory5);
+const Vec D_80114D5C_mstory5 = { -800.0f, 0.0f, 500.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80114D68_mstory5);
+const Vec D_80114D68_mstory5 = { 0.0f, 200.0f, 150.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80114D74_mstory5);
+const Vec D_80114D74_mstory5 = { 0.0f, 200.0f, 100.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80114D80_mstory5);
+const s32 D_80114D80_mstory5[8] = { 0x1D003E, 0x1D0048, 0x1D0052, 0x1D005B, 0x1D0065, 0x1D006E, 0x1D003E, 0x1D003E };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80114DA0_mstory5);
+const s32 D_80114DA0_mstory5[8] = { 0x1D0040, 0x1D004B, 0x1D0054, 0x1D005D, 0x1D0067, 0x1D0070, 0x1D0040, 0x1D0040 };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80114DC0_mstory5);
+const s32 D_80114DC0_mstory5[8] = { 0x1D0041, 0x1D004C, 0x1D0055, 0x1D005E, 0x1D0068, 0x1D0071, 0x1D0041, 0x1D0041 };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80114DE0_mstory5);
+const s32 D_80114DE0_mstory5[8] = { 0x1D0043, 0x1D004E, 0x1D0057, 0x1D0060, 0x1D006A, 0x1D0073, 0x1D0043, 0x1D0043 };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80114E00_mstory5);
+const Vec D_80114E00_mstory5 = { 0.0f, 0.0f, 0.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80114E0C_mstory5);
+const Vec D_80114E0C_mstory5 = { 0.0f, 180.0f, 0.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80114E18_mstory5);
+const Vec D_80114E18_mstory5 = { 0.0f, 90.0f, 0.0f };
+const Vec D_80114E24_mstory5 = { 0.0f, -90.0f, 0.0f }; /* Unreferenced. */
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80114E30_mstory5);
+const Vec D_80114E30_mstory5 = { 0.0f, 135.0f, 0.0f };
 
 const Vec D_80114E3C_mstory5 = { 230.0f, 0.0f, 480.0f };
 const Vec D_80114E48_mstory5 = { 680.0f, 0.0f, 480.0f };
@@ -665,9 +664,9 @@ void func_801114B4_mstory5(omObjData *obj) {
     D_801153A0_mstory5[0].func = func_80110200_mstory5;
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80114EB8_mstory5);
+const Vec D_80114EB8_mstory5 = { 0.0f, 150.0f, 0.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80114EC4_mstory5);
+const Vec D_80114EC4_mstory5 = { 0.0f, 162.4f, 0.0f };
 
 const char D_80114ED0_mstory5[] = "c204n_0_DEF";
 
@@ -720,7 +719,7 @@ void func_801114E8_mstory5(void) {
 void func_80111818_mstory5(void) {
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80114EDC_mstory5);
+const Vec D_80114EDC_mstory5 = { -5.0f, 300.0f, 0.0f };
 
 const Vec D_80114EE8_mstory5 = { 10.0f, 378.9f, 0.0f };
 
@@ -843,31 +842,34 @@ void func_80111DB8_mstory5(void) {
 void func_80111FE0_mstory5(void) {
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80114EF4_mstory5);
+const Vec D_80114EF4_mstory5 = { 20.0f, 320.0f, 0.0f };
+const Vec D_80114F00_mstory5 = { 0.0f, 450.0f, 0.0f }; /* Unreferenced. */
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80114F0C_mstory5);
+const Vec D_80114F0C_mstory5 = { 0.0f, 225.0f, 0.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80114F18_mstory5);
+const Vec D_80114F18_mstory5 = { 0.0f, 134.2f, 0.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80114F24_mstory5);
+const Vec D_80114F24_mstory5 = { 0.0f, 320.0f, 0.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80114F30_mstory5);
+const Vec D_80114F30_mstory5 = { -30.0f, 260.0f, 0.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80114F3C_mstory5);
+const Vec D_80114F3C_mstory5 = { 238.0f, 100.0f, 214.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80114F48_mstory5);
+const Vec D_80114F48_mstory5 = { 88.0f, 100.0f, 360.0f };
+const Vec D_80114F54_mstory5 = { 0.0f, 0.0f, 0.0f }; /* Unreferenced. */
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80114F60_mstory5);
+const Vec D_80114F60_mstory5 = { 30.0f, -20.0f, 0.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80114F6C_mstory5);
+const Vec D_80114F6C_mstory5 = { 0.0f, 0.0f, 0.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80114F78_mstory5);
+const Vec D_80114F78_mstory5 = { 388.0f, 100.0f, 214.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80114F84_mstory5);
+const Vec D_80114F84_mstory5 = { 818.0f, 100.0f, 214.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80114F90_mstory5);
+const Vec D_80114F90_mstory5 = { -12.0f, 100.0f, 214.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80114F9C_mstory5);
+const Vec D_80114F9C_mstory5 = { 0.0f, 90.0f, 0.0f };
+const Vec D_80114FA8_mstory5 = { 0.0f, 270.0f, 0.0f }; /* Unreferenced. */
 
 const Vec D_80114FB4_mstory5 = { 200.0f, 0.0f, 1200.0f };
 
@@ -1289,35 +1291,42 @@ void func_80113974_mstory5(void) {
 void func_80113B64_mstory5(void) {
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80114FC0_mstory5);
+const Vec D_80114FC0_mstory5 = { 350.0f, 0.0f, 380.0f };
+const Vec D_80114FCC_mstory5 = { 1350.0f, 0.0f, 380.0f }; /* Unreferenced. */
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80114FD8_mstory5);
+const Vec D_80114FD8_mstory5 = { 350.0f, 0.0f, 0.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80114FE4_mstory5);
+const Vec D_80114FE4_mstory5 = { 150.0f, 0.0f, 400.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80114FF0_mstory5);
+const Vec D_80114FF0_mstory5 = { 0.0f, 0.0f, 0.0f };
+const Vec D_80114FFC_mstory5 = { 0.0f, 90.0f, 0.0f };  /* Unreferenced. */
+const Vec D_80115008_mstory5 = { 0.0f, -90.0f, 0.0f }; /* Unreferenced. */
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80115014_mstory5);
+const Vec D_80115014_mstory5 = { 0.0f, -26.565f, 0.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80115020_mstory5);
+const Vec D_80115020_mstory5 = { 0.0f, 20.0f, 0.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_8011502C_mstory5);
+const Vec D_8011502C_mstory5 = { 68.0f, 100.0f, 214.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80115038_mstory5);
+const Vec D_80115038_mstory5 = { -280.0f, 0.0f, 300.0f };
+const Vec D_80115044_mstory5 = { 820.0f, 0.0f, 300.0f }; /* Unreferenced. */
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80115050_mstory5);
+const Vec D_80115050_mstory5 = { -180.0f, 0.0f, 300.0f };
+const Vec D_8011505C_mstory5 = { 0.0f, 0.0f, 0.0f }; /* Unreferenced. */
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80115068_mstory5);
+const Vec D_80115068_mstory5 = { 0.0f, 90.0f, 0.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80115074_mstory5);
+const Vec D_80115074_mstory5 = { 0.0f, 135.0f, 0.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80115080_mstory5);
+const Vec D_80115080_mstory5 = { -300.0f, 0.0f, 500.0f };
+const Vec D_8011508C_mstory5 = { 800.0f, 0.0f, 500.0f }; /* Unreferenced. */
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80115098_mstory5);
+const Vec D_80115098_mstory5 = { -200.0f, 0.0f, 500.0f };
+const Vec D_801150A4_mstory5 = { 0.0f, 0.0f, 0.0f }; /* Unreferenced. */
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_801150B0_mstory5);
+const Vec D_801150B0_mstory5 = { 0.0f, 90.0f, 0.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_801150BC_mstory5);
+const Vec D_801150BC_mstory5 = { 0.0f, 125.0f, 0.0f };
 
 const Vec D_801150C8_mstory5 = { 250.0f, 0.0f, 150.0f };
 const Vec D_801150D4_mstory5 = { 800.0f, 0.0f, 350.0f };
@@ -1475,21 +1484,23 @@ void func_80114334_mstory5(omObjData *obj, omObjData *target) {
     Hu3DModelRotSet(model[0], rot.x, rot.y, rot.z);
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_801150E0_mstory5);
+const Vec D_801150E0_mstory5 = { -150.0f, 0.0f, 150.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_801150EC_mstory5);
+const Vec D_801150EC_mstory5 = { 50.0f, 0.0f, 350.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_801150F8_mstory5);
+const Vec D_801150F8_mstory5 = { 0.0f, 90.0f, 0.0f };
+const Vec D_80115104_mstory5 = { 0.0f, -90.0f, 0.0f }; /* Unreferenced. */
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80115110_mstory5);
+const Vec D_80115110_mstory5 = { 0.0f, 0.0f, 0.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_8011511C_mstory5);
+const Vec D_8011511C_mstory5 = { 0.0f, 0.0f, -20.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80115128_mstory5);
+const Vec D_80115128_mstory5 = { 0.0f, 135.0f, 0.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_80115134_mstory5);
+const Vec D_80115134_mstory5 = { 0.0f, 10.0f, 0.0f };
+const s32 D_80115140_mstory5[3] = { 0x1D0003, 0x1D0004, 0x1D0005 }; /* Unreferenced. */
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4D8E80", D_8011514C_mstory5);
+const s32 D_8011514C_mstory5[4] = { 0x1D0006, 0x1D0007, 0x1D0008, 0x1D0009 };
 
 void func_8011447C_mstory5(s32 index, s32 seNo) {
     if (D_801153A0_mstory5[index].unk_0C == 0) {

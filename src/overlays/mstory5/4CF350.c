@@ -4,14 +4,6 @@
 extern f32 D_800CB890_main;
 extern f32 D_800D5210_main;
 
-extern Vec D_8011473C_mstory5;
-extern Vec D_80114748_mstory5;
-extern Vec D_80114754_mstory5;
-
-extern s32 D_80114730_mstory5;
-extern s32 D_80114734_mstory5;
-extern s8 D_80114738_mstory5;
-extern s32 D_80114760_mstory5;
 extern s16 D_801151B0_mstory5;
 extern s16 D_801151B2_mstory5;
 extern s32 D_801151B4_mstory5;
@@ -25,6 +17,16 @@ extern s16 D_801151E0_mstory5;
 extern const s32 D_801148C4_mstory5[7];
 extern const s16 D_801148E0_mstory5[][2];
 
+s32 D_80114730_mstory5 = 0;
+s32 D_80114734_mstory5 = 0;
+s8 D_80114738_mstory5 = 0;
+Vec D_8011473C_mstory5 = { 14.0f, 193.0f, 1400.0f };
+Vec D_80114748_mstory5 = { -25.0f, 0.0f, -650.0f };
+Vec D_80114754_mstory5 = { 0.0f, 1.0f, -0.0001f };
+s32 D_80114760_mstory5 = 0;
+
+void func_8010842C_mstory5(void);
+void func_801100AC_mstory5(void);
 void func_80106028_mstory5(void);
 void func_801068D4_mstory5(void);
 void func_80106B64_mstory5(omObjData *obj, const Vec *pos, s32 frames, s32 arg3);
@@ -79,9 +81,9 @@ void func_801059A0_mstory5(void) {
     WipeCreateIn(2, 16);
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4CF350", D_801148A0_mstory5);
+void (*const D_801148A0_mstory5[])(void) = { func_801100AC_mstory5, func_8010842C_mstory5 };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4CF350", D_801148A8_mstory5);
+const s32 D_801148A8_mstory5[] = { 58, 60 };
 
 void func_80105BDC_mstory5(omObjData *obj) {
     u32 state = D_80114730_mstory5;
@@ -620,6 +622,14 @@ void func_801074E8_mstory5(omObjData *obj, f32 x, f32 y, f32 z, s32 frames, s32 
     HuPrcVSleep();
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4CF350", D_801148C4_mstory5);
+const s32 D_801148C4_mstory5[7] = { 0x1D000B, 0x1D000C, 0x1D000D, 0x1D000E, 0x1D000F, 0x1D0010, 0x1D0011 };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4CF350", D_801148E0_mstory5);
+const s16 D_801148E0_mstory5[7][2] = {
+    { 57, 20 },
+    { 129, 36 },
+    { 200, 22 },
+    { 215, 91 },
+    { 150, 124 },
+    { 81, 105 },
+    { 12, 122 },
+};

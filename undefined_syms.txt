@@ -603,3 +603,16 @@ D_80112366_mstory4 = D_80112358_mstory4 + 0xE;
 D_80112376_mstory4 = D_80112368_mstory4 + 0xE;
 D_801123A4_mstory4 = mstory4Bss23A4;
 D_801123A6_mstory4 = mstory4Bss23A4 + 0x2;
+
+/* mstory5: s16 low halves of s32 arrays, misaligned BSS group. */
+D_80115372_mstory5 = D_80115370_mstory5 + 0x2;
+D_80115376_mstory5 = D_80115370_mstory5 + 0x6;
+D_8011537A_mstory5 = D_80115370_mstory5 + 0xA;
+D_8011537E_mstory5 = D_80115370_mstory5 + 0xE;
+D_80115380_mstory5 = mstory5Bss5380;
+D_80115382_mstory5 = mstory5Bss5380 + 0x2;
+D_80115384_mstory5 = mstory5Bss5380 + 0x4;
+D_8011538A_mstory5 = mstory5Bss5380 + 0xA;
+D_801154E6_mstory5 = D_801154E4_mstory5 + 0x2;
+D_801154EA_mstory5 = D_801154E4_mstory5 + 0x6;
+D_801154EE_mstory5 = D_801154E4_mstory5 + 0xA;

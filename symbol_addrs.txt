@@ -71,10 +71,8 @@ D_80111BF0_mstory4 = 0x80111BF0; //rom:0x4CEE20 type:s16 size:0xC
 //mstory5
 D_80114A24_mstory5 = 0x80114A24; //rom:0x4DE3D4 type:f32 size:0x0C force_migration:True
 D_80114A30_mstory5 = 0x80114A30; //rom:0x4DE3E0 type:f32 size:0x0C force_migration:True
-D_80114AF4_mstory5 = 0x80114AF4; //rom:0x4DE4A4 type:f32 size:0x0C force_migration:True
 D_80114E60_mstory5 = 0x80114E60; //rom:0x4DE810 type:f32 size:0x0C
 D_80114E6C_mstory5 = 0x80114E6C; //rom:0x4DE81C type:f32 size:0x0C
-D_80114F30_mstory5 = 0x80114F30; //rom:0x4DE8E0 type:f32 size:0x0C
 
 omVibrate = 0x8004B25C; //rom:0x4BE5C
 

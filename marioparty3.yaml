@@ -1783,10 +1783,12 @@ segments:
     subsegments:
       - [0x30F940, c]
       - [0x3151F0, c]
-      - [0x316B10, data, 30F940] #8010CB70
-      - [0x316C30, .rodata, 30F940] #8010CC90
+      - [0x316B10, .data, 30F940] #8010CB70
+      - [0x316C00, .data, 3151F0] #8010CC60
+      - [0x316C10, .rodata, 30F940] #8010CC70
       - [0x316DE0, .rodata, 3151F0] #8010CE40
-      - {0x316DF0, type: bss, vram: 0x8010CE50, name: ovl_45_bss}
+      - { start: 0x316DF0, type: .bss, vram: 0x8010CE50, name: 30F940 }
+      - { start: 0x316DF0, type: .bss, vram: 0x8010D010, name: 3151F0 }
 
   - type: code
     start: 0x316DF0

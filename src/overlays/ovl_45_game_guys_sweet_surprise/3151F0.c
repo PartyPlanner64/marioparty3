@@ -32,19 +32,23 @@ typedef struct GameGuysSweetSurpriseRingFreq {
     /* 0x02 */ s16 y;
 } GameGuysSweetSurpriseRingFreq;
 
-extern s16 D_8010CC60_game_guys_sweet_surprise; // intro timer
-extern s16 D_8010CC62_game_guys_sweet_surprise; // intro start y
-extern s16 D_8010CC64_game_guys_sweet_surprise; // outro timer
-extern GameGuysSweetSurpriseRing D_8010D010_game_guys_sweet_surprise[3];
-extern s16 D_8010D058_game_guys_sweet_surprise;                                 // center x
-extern s16 D_8010D05A_game_guys_sweet_surprise;                                 // center y
-extern s16 D_8010D05C_game_guys_sweet_surprise;                                 // radius
-extern s16 D_8010D05E_game_guys_sweet_surprise;                                 // target x
-extern s16 D_8010D060_game_guys_sweet_surprise;                                 // target y
-extern GameGuysSweetSurpriseRingHistory D_8010D068_game_guys_sweet_surprise[3]; // per-buffer ring state
-extern GameGuysSweetSurpriseBanner D_8010D0D0_game_guys_sweet_surprise;
-extern s16 D_8010D0FC_game_guys_sweet_surprise; // current buffer index
-extern GameGuysSweetSurpriseBanner D_8010D0E8_game_guys_sweet_surprise;
+s16 D_8010CC60_game_guys_sweet_surprise = 0;   // intro timer
+s16 D_8010CC62_game_guys_sweet_surprise = 120; // intro start y
+s16 D_8010CC64_game_guys_sweet_surprise = 0;   // outro timer
+
+GameGuysSweetSurpriseRing D_8010D010_game_guys_sweet_surprise[3] BSS;
+s16 D_8010D058_game_guys_sweet_surprise BSS;                                 // center x
+s16 D_8010D05A_game_guys_sweet_surprise BSS;                                 // center y
+s16 D_8010D05C_game_guys_sweet_surprise BSS;                                 // radius
+s16 D_8010D05E_game_guys_sweet_surprise BSS;                                 // target x
+s16 D_8010D060_game_guys_sweet_surprise BSS;                                 // target y
+u8 D_8010D064_game_guys_sweet_surprise[4] BSS;                               /* Unreferenced. */
+GameGuysSweetSurpriseRingHistory D_8010D068_game_guys_sweet_surprise[3] BSS; // per-buffer ring state
+u8 D_8010D0C8_game_guys_sweet_surprise[8] BSS;                               /* Unreferenced. */
+GameGuysSweetSurpriseBanner D_8010D0D0_game_guys_sweet_surprise BSS;
+u8 D_8010D0E4_game_guys_sweet_surprise[4] BSS; /* Unreferenced. */
+GameGuysSweetSurpriseBanner D_8010D0E8_game_guys_sweet_surprise BSS;
+s16 D_8010D0FC_game_guys_sweet_surprise BSS; // current buffer index
 
 void func_8010C39C_game_guys_sweet_surprise(void);
 void func_8010C500_game_guys_sweet_surprise(void);

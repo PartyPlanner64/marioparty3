@@ -14,107 +14,60 @@ typedef struct GameGuysSweetSurpriseRewardTable {
     /* 0x00 */ s16 v[6];
 } GameGuysSweetSurpriseRewardTable;
 
-extern s16 D_8010CB70_game_guys_sweet_surprise[];   // COM key wait frames, indexed by CPU difficulty
-extern s16 D_8010CB76_game_guys_sweet_surprise;     // main state
-extern s16 D_8010CB78_game_guys_sweet_surprise;     // main state timer
-extern s16 D_8010CB7A_game_guys_sweet_surprise;     // message window
-extern char *D_8010CB7C_game_guys_sweet_surprise[]; // character names
-extern s16 D_8010CB9C_game_guys_sweet_surprise;     // state
-extern s16 D_8010CB9E_game_guys_sweet_surprise;     // state
-extern s16 D_8010CBA0_game_guys_sweet_surprise;     // input cooldown
-extern s16 D_8010CBA2_game_guys_sweet_surprise;     // countdown seconds
-extern s16 D_8010CBA4_game_guys_sweet_surprise;     // countdown tick timer
-extern s16 D_8010CBA6_game_guys_sweet_surprise;     // state
-extern s16 D_8010CBA8_game_guys_sweet_surprise;     // state
-extern s16 D_8010CBAA_game_guys_sweet_surprise;     // timer
-extern s16 D_8010CBAC_game_guys_sweet_surprise;     // sound counter
-extern s16 D_8010CBAE_game_guys_sweet_surprise;     // timer
-extern s16 D_8010CBB0_game_guys_sweet_surprise;     // state
-extern s16 D_8010CBB2_game_guys_sweet_surprise;
-extern s16 D_8010CBB4_game_guys_sweet_surprise; // state
-extern s16 D_8010CBB6_game_guys_sweet_surprise; // timer
-extern f32 D_8010CBB8_game_guys_sweet_surprise; // scale
-extern s16 D_8010CBBC_game_guys_sweet_surprise; // state
-extern s16 D_8010CBBE_game_guys_sweet_surprise;
-extern s16 D_8010CBC0_game_guys_sweet_surprise; // previous choice
-extern f32 D_8010CBC4_game_guys_sweet_surprise; // scale
-extern s16 D_8010CBC8_game_guys_sweet_surprise; // state
-extern GameGuysSweetSurprisePos D_8010CBCC_game_guys_sweet_surprise[2];
-extern s16 D_8010CBDC_game_guys_sweet_surprise; // state
-extern f32 D_8010CBE0_game_guys_sweet_surprise; // time
-extern f32 D_8010CBE4_game_guys_sweet_surprise; // y position
-extern s16 D_8010CBE8_game_guys_sweet_surprise; // state
-extern f32 D_8010CBEC_game_guys_sweet_surprise; // velocity
-extern Vec D_8010CBF0_game_guys_sweet_surprise[2];
-extern s16 D_8010CC08_game_guys_sweet_surprise;                            // previous motion
-extern s16 D_8010CC0A_game_guys_sweet_surprise;                            // state
-extern s16 D_8010CC0C_game_guys_sweet_surprise;                            // timer
-extern f32 D_8010CC10_game_guys_sweet_surprise;                            // velocity
-extern f32 D_8010CC14_game_guys_sweet_surprise;                            // shadow scale
-extern s16 D_8010CC18_game_guys_sweet_surprise;                            // bob direction
-extern s16 D_8010CC1A_game_guys_sweet_surprise;                            // bob offset
-extern s16 D_8010CC1C_game_guys_sweet_surprise;                            // previous motion
-extern f32 D_8010CC20_game_guys_sweet_surprise;                            // shadow scale
-extern s16 D_8010CC24_game_guys_sweet_surprise;                            // state
-extern s16 D_8010CC26_game_guys_sweet_surprise;                            // timer
-extern f32 D_8010CC28_game_guys_sweet_surprise;                            // sway speed
-extern f32 D_8010CC2C_game_guys_sweet_surprise;                            // sway angle
-extern f32 D_8010CC30_game_guys_sweet_surprise;                            // start x
-extern s16 D_8010CC34_game_guys_sweet_surprise;                            // bob direction
-extern s16 D_8010CC36_game_guys_sweet_surprise;                            // bob offset
-extern f32 D_8010CC38_game_guys_sweet_surprise;                            // segment spacing
-extern f32 D_8010CC3C_game_guys_sweet_surprise;                            // bob amplitude
-extern s16 D_8010CC40_game_guys_sweet_surprise;                            // previous motion
-extern f32 D_8010CC44_game_guys_sweet_surprise;                            // shadow scale
-extern s16 D_8010CC48_game_guys_sweet_surprise;                            // state
-extern s16 D_8010CC4A_game_guys_sweet_surprise;                            // timer
-extern f32 D_8010CC4C_game_guys_sweet_surprise;                            // sway speed
-extern f32 D_8010CC50_game_guys_sweet_surprise;                            // sway angle
-extern f32 D_8010CC54_game_guys_sweet_surprise;                            // start x
-extern s16 D_8010CC58_game_guys_sweet_surprise;                            // state
-extern s16 D_8010CC5A_game_guys_sweet_surprise;                            // timer
-extern f32 D_8010CC5C_game_guys_sweet_surprise;                            // scale
-extern GameGuysSweetSurprisePadValues D_8010CC70_game_guys_sweet_surprise; // player slots
-extern GameGuysSweetSurpriseRewardTable D_8010CC78_game_guys_sweet_surprise;
-extern GameGuysSweetSurpriseRewardTable D_8010CC84_game_guys_sweet_surprise;
-extern s16 D_8010CF58_game_guys_sweet_surprise[7]; // player, pad, chr, is CPU, CPU difficulty, coins, coins
-extern s16 D_8010CF66_game_guys_sweet_surprise;
-extern s16 D_8010CF68_game_guys_sweet_surprise;
-extern s16 D_8010CF6A_game_guys_sweet_surprise;
-extern s16 D_8010CF6C_game_guys_sweet_surprise; // winning side
-extern s16 D_8010CF6E_game_guys_sweet_surprise[2];
-extern s16 D_8010CF72_game_guys_sweet_surprise[2];
-extern s16 D_8010CF78_game_guys_sweet_surprise[]; // sprite IDs
-extern char D_8010CE50_game_guys_sweet_surprise[];
-extern Process *D_8010CF50_game_guys_sweet_surprise;
-extern Process *D_8010CF54_game_guys_sweet_surprise;
-extern omObjData *D_8010CFC0_game_guys_sweet_surprise;
-extern omObjData *D_8010CFC4_game_guys_sweet_surprise;
-extern omObjData *D_8010CFC8_game_guys_sweet_surprise;
-extern omObjData *D_8010CFCC_game_guys_sweet_surprise;
-extern omObjData *D_8010CFD0_game_guys_sweet_surprise;
-extern omObjData *D_8010CFD4_game_guys_sweet_surprise;
-extern omObjData *D_8010CFD8_game_guys_sweet_surprise;
-extern s16 D_8010CFDC_game_guys_sweet_surprise; // process done flag
-extern s16 D_8010CFDE_game_guys_sweet_surprise;
-extern s16 D_8010CFE0_game_guys_sweet_surprise; // choice active
-extern s16 D_8010CFE2_game_guys_sweet_surprise;
-extern s16 D_8010CFE4_game_guys_sweet_surprise[2]; // per-side score
-extern s16 D_8010CFE8_game_guys_sweet_surprise;
-extern s16 D_8010CFEA_game_guys_sweet_surprise;
-extern s16 D_8010CFEC_game_guys_sweet_surprise;
-extern s16 D_8010CFEE_game_guys_sweet_surprise;
-extern s16 D_8010CFF0_game_guys_sweet_surprise;
-extern s16 D_8010CFF2_game_guys_sweet_surprise;
-extern s16 D_8010CFF4_game_guys_sweet_surprise;
-extern s16 D_8010CFF6_game_guys_sweet_surprise;
-extern s16 D_8010CFF8_game_guys_sweet_surprise;
-extern s16 D_8010CFFA_game_guys_sweet_surprise;
-extern s16 D_8010CFFC_game_guys_sweet_surprise;
-extern s16 D_8010CFFE_game_guys_sweet_surprise;
-extern s16 D_8010D000_game_guys_sweet_surprise;
-extern s16 D_8010D002_game_guys_sweet_surprise; // COM difficulty
-extern s16 D_8010D004_game_guys_sweet_surprise; // linked model source
+typedef struct GameGuysSweetSurpriseBssCF6C { // 0xC bytes
+    /* 0x00 */ s16 winningSide;
+    /* 0x02 */ s16 unk_02[2];
+    /* 0x06 */ s16 unk_06[3];
+} GameGuysSweetSurpriseBssCF6C;
+
+s16 D_8010CB70_game_guys_sweet_surprise[3] = { 5, 25, 60 }; // COM key wait frames, indexed by CPU difficulty
+s16 D_8010CB76_game_guys_sweet_surprise = 0;                // main state
+s16 D_8010CB78_game_guys_sweet_surprise = 0;                // main state timer
+s16 D_8010CB7A_game_guys_sweet_surprise = 0;                // message window
+
+const GameGuysSweetSurprisePadValues D_8010CC70_game_guys_sweet_surprise = { { 0, 1, 2, 3 } }; // player slots
+const GameGuysSweetSurpriseRewardTable D_8010CC78_game_guys_sweet_surprise = { { 2, 4, 8, 16, 32, 64 } };
+const GameGuysSweetSurpriseRewardTable D_8010CC84_game_guys_sweet_surprise = { { 0, 5, 6, 7, 8, 9 } };
+
+char D_8010CE50_game_guys_sweet_surprise[0x100] BSS;
+Process *D_8010CF50_game_guys_sweet_surprise BSS;
+Process *D_8010CF54_game_guys_sweet_surprise BSS;
+s16 D_8010CF58_game_guys_sweet_surprise[7] BSS; // player, pad, chr, is CPU, CPU difficulty, coins, coins
+s16 D_8010CF66_game_guys_sweet_surprise BSS;
+s16 D_8010CF68_game_guys_sweet_surprise BSS;
+s16 D_8010CF6A_game_guys_sweet_surprise BSS;
+GameGuysSweetSurpriseBssCF6C gameGuysSweetSurpriseBssCF6C BSS;
+extern s16 D_8010CF6C_game_guys_sweet_surprise;    // gameGuysSweetSurpriseBssCF6C.winningSide
+extern s16 D_8010CF6E_game_guys_sweet_surprise[2]; // gameGuysSweetSurpriseBssCF6C.unk_02
+extern s16 D_8010CF72_game_guys_sweet_surprise[2]; // gameGuysSweetSurpriseBssCF6C.unk_06
+s16 D_8010CF78_game_guys_sweet_surprise[36] BSS;   // sprite IDs
+omObjData *D_8010CFC0_game_guys_sweet_surprise BSS;
+omObjData *D_8010CFC4_game_guys_sweet_surprise BSS;
+omObjData *D_8010CFC8_game_guys_sweet_surprise BSS;
+omObjData *D_8010CFCC_game_guys_sweet_surprise BSS;
+omObjData *D_8010CFD0_game_guys_sweet_surprise BSS;
+omObjData *D_8010CFD4_game_guys_sweet_surprise BSS;
+omObjData *D_8010CFD8_game_guys_sweet_surprise BSS;
+s16 D_8010CFDC_game_guys_sweet_surprise BSS; // process done flag
+s16 D_8010CFDE_game_guys_sweet_surprise BSS;
+s16 D_8010CFE0_game_guys_sweet_surprise BSS; // choice active
+s16 D_8010CFE2_game_guys_sweet_surprise BSS;
+s16 D_8010CFE4_game_guys_sweet_surprise[2] BSS; // per-side score
+s16 D_8010CFE8_game_guys_sweet_surprise BSS;
+s16 D_8010CFEA_game_guys_sweet_surprise BSS;
+s16 D_8010CFEC_game_guys_sweet_surprise BSS;
+s16 D_8010CFEE_game_guys_sweet_surprise BSS;
+s16 D_8010CFF0_game_guys_sweet_surprise BSS;
+s16 D_8010CFF2_game_guys_sweet_surprise BSS;
+s16 D_8010CFF4_game_guys_sweet_surprise BSS;
+s16 D_8010CFF6_game_guys_sweet_surprise BSS;
+s16 D_8010CFF8_game_guys_sweet_surprise BSS;
+s16 D_8010CFFA_game_guys_sweet_surprise BSS;
+s16 D_8010CFFC_game_guys_sweet_surprise BSS;
+s16 D_8010CFFE_game_guys_sweet_surprise BSS;
+s16 D_8010D000_game_guys_sweet_surprise BSS;
+s16 D_8010D002_game_guys_sweet_surprise BSS; // COM difficulty
+s16 D_8010D004_game_guys_sweet_surprise BSS; // linked model source
 
 void func_80105A28_game_guys_sweet_surprise(void);
 void func_80105AB8_game_guys_sweet_surprise(void);
@@ -301,21 +254,72 @@ void func_80105F24_game_guys_sweet_surprise(void) {
     D_8010D000_game_guys_sweet_surprise = table2.v[index];
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", D_8010CC90_game_guys_sweet_surprise);
+char *D_8010CB7C_game_guys_sweet_surprise[] = {
+    "\x82\x6C\x82\x60\x82\x71\x82\x68\x82\x6E",                 // ＭＡＲＩＯ
+    "\x82\x6B\x82\x74\x82\x68\x82\x66\x82\x68",                 // ＬＵＩＧＩ
+    "\x82\x6F\x82\x64\x82\x60\x82\x62\x82\x67",                 // ＰＥＡＣＨ
+    "\x82\x78\x82\x6E\x82\x72\x82\x67\x82\x68",                 // ＹＯＳＨＩ
+    "\x82\x76\x82\x60\x82\x71\x82\x68\x82\x6E",                 // ＷＡＲＩＯ
+    "\x82\x63\x82\x6A",                                         // ＤＫ
+    "\x82\x76\x82\x60\x82\x6B\x82\x74\x82\x68\x82\x66\x82\x68", // ＷＡＬＵＩＧＩ
+    "\x82\x63\x82\x60\x82\x68\x82\x72\x82\x78",                 // ＤＡＩＳＹ
+}; // character names
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", D_8010CC9C_game_guys_sweet_surprise);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", D_8010CCAC_game_guys_sweet_surprise);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", D_8010CCB4_game_guys_sweet_surprise);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", D_8010CCC0_game_guys_sweet_surprise);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", D_8010CCCC_game_guys_sweet_surprise);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", D_8010CCD8_game_guys_sweet_surprise);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", D_8010CCE4_game_guys_sweet_surprise);
+s16 D_8010CB9C_game_guys_sweet_surprise = 0;  // state
+s16 D_8010CB9E_game_guys_sweet_surprise = 0;  // state
+s16 D_8010CBA0_game_guys_sweet_surprise = 30; // input cooldown
+s16 D_8010CBA2_game_guys_sweet_surprise = 10; // countdown seconds
+s16 D_8010CBA4_game_guys_sweet_surprise = 0;  // countdown tick timer
+s16 D_8010CBA6_game_guys_sweet_surprise = 0;  // state
+s16 D_8010CBA8_game_guys_sweet_surprise = 0;  // state
+s16 D_8010CBAA_game_guys_sweet_surprise = 0;  // timer
+s16 D_8010CBAC_game_guys_sweet_surprise = 0;  // sound counter
+s16 D_8010CBAE_game_guys_sweet_surprise = 0;  // timer
+s16 D_8010CBB0_game_guys_sweet_surprise = 0;  // state
+s16 D_8010CBB2_game_guys_sweet_surprise = 0;
+s16 D_8010CBB4_game_guys_sweet_surprise = 0;    // state
+s16 D_8010CBB6_game_guys_sweet_surprise = 0;    // timer
+f32 D_8010CBB8_game_guys_sweet_surprise = 1.1f; // scale
+s16 D_8010CBBC_game_guys_sweet_surprise = 0;    // state
+s16 D_8010CBBE_game_guys_sweet_surprise = 0;
+s16 D_8010CBC0_game_guys_sweet_surprise = 999;  // previous choice
+f32 D_8010CBC4_game_guys_sweet_surprise = 0.0f; // scale
+s16 D_8010CBC8_game_guys_sweet_surprise = 0;    // state
+GameGuysSweetSurprisePos D_8010CBCC_game_guys_sweet_surprise[2] = { { 230, 23 }, { 230, 46 } };
+s16 D_8010CBDC_game_guys_sweet_surprise = 0;      // state
+f32 D_8010CBE0_game_guys_sweet_surprise = 0.0f;   // time
+f32 D_8010CBE4_game_guys_sweet_surprise = 600.0f; // y position
+s16 D_8010CBE8_game_guys_sweet_surprise = 0;      // state
+f32 D_8010CBEC_game_guys_sweet_surprise = 0.0f;   // velocity
+Vec D_8010CBF0_game_guys_sweet_surprise[2] = { { -362.5f, 200.0f, -150.0f }, { 362.5f, 150.0f, -150.0f } };
+s16 D_8010CC08_game_guys_sweet_surprise = 999;  // previous motion
+s16 D_8010CC0A_game_guys_sweet_surprise = 0;    // state
+s16 D_8010CC0C_game_guys_sweet_surprise = 0;    // timer
+f32 D_8010CC10_game_guys_sweet_surprise = 0.0f; // velocity
+f32 D_8010CC14_game_guys_sweet_surprise = 1.0f; // shadow scale
+s16 D_8010CC18_game_guys_sweet_surprise = -1;   // bob direction
+s16 D_8010CC1A_game_guys_sweet_surprise = 0;    // bob offset
+s16 D_8010CC1C_game_guys_sweet_surprise = 999;  // previous motion
+f32 D_8010CC20_game_guys_sweet_surprise = 2.0f; // shadow scale
+s16 D_8010CC24_game_guys_sweet_surprise = 0;    // state
+s16 D_8010CC26_game_guys_sweet_surprise = 0;    // timer
+f32 D_8010CC28_game_guys_sweet_surprise = 2.0f; // sway speed
+f32 D_8010CC2C_game_guys_sweet_surprise = 0.0f; // sway angle
+f32 D_8010CC30_game_guys_sweet_surprise = 0.0f; // start x
+s16 D_8010CC34_game_guys_sweet_surprise = -1;   // bob direction
+s16 D_8010CC36_game_guys_sweet_surprise = 0;    // bob offset
+f32 D_8010CC38_game_guys_sweet_surprise = 0.0f; // segment spacing
+f32 D_8010CC3C_game_guys_sweet_surprise = 0.0f; // bob amplitude
+s16 D_8010CC40_game_guys_sweet_surprise = 999;  // previous motion
+f32 D_8010CC44_game_guys_sweet_surprise = 2.0f; // shadow scale
+s16 D_8010CC48_game_guys_sweet_surprise = 0;    // state
+s16 D_8010CC4A_game_guys_sweet_surprise = 0;    // timer
+f32 D_8010CC4C_game_guys_sweet_surprise = 2.0f; // sway speed
+f32 D_8010CC50_game_guys_sweet_surprise = 0.0f; // sway angle
+f32 D_8010CC54_game_guys_sweet_surprise = 0.0f; // start x
+s16 D_8010CC58_game_guys_sweet_surprise = 0;    // state
+s16 D_8010CC5A_game_guys_sweet_surprise = 0;    // timer
+f32 D_8010CC5C_game_guys_sweet_surprise = 1.5f; // scale
 
 void func_8010612C_game_guys_sweet_surprise(omObjData *object) {
     switch (D_8010CB76_game_guys_sweet_surprise) {

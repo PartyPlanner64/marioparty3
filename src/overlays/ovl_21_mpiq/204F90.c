@@ -70,59 +70,76 @@ typedef struct {
     /* 0x04 */ s32 timer;
 } MpiqMarkerObjWork; // Size 0x8
 
-extern s32 D_8010CA90_mpiq[];
-extern s32 D_8010CAA0_mpiq[];
-extern omObjData *D_8010CA78_mpiq;
-extern omObjData *D_8010CAC0_mpiq[];
-extern omObjData *D_8010CA80_mpiq[];
-extern f32 D_8010CAB0_mpiq[];
-extern omObjData *D_8010CAD0_mpiq;
-extern omObjData *D_8010CAD4_mpiq;
-extern omObjData *D_8010CAD8_mpiq[];
-extern omObjData *D_8010CAE8_mpiq;
-extern s32 D_8010CAF8_mpiq;
-extern s16 D_8010CAFA_mpiq;
-extern s16 D_8010CAFC_mpiq;
-extern u16 D_8010CAEC_mpiq[3];
-extern s16 D_8010CAF2_mpiq[3];
-extern s32 D_8010C9D8_mpiq;
-extern s32 D_8010C6B8_mpiq;
-extern MpiqCpuInput D_8010CA08_mpiq[];
-extern s16 D_8010CA38_mpiq[];
-extern s16 D_8010CA4C_mpiq;
-extern s32 D_8010CA50_mpiq[];
-extern s32 D_8010CB00_mpiq[][4];
-extern s16 D_8010CBA0_mpiq[];
-extern s16 D_8010CBB8_mpiq[];
-extern s32 D_8010CC04_mpiq;
-extern s32 D_8010CC10_mpiq[256];
-extern s32 D_8010C6BC_mpiq[];
-extern s32 D_8010CBCC_mpiq;
-extern s32 D_8010CBD0_mpiq[];
-extern s32 D_8010CBF8_mpiq[];
-extern s32 D_8010CBFC_mpiq[];
-extern s32 D_8010D010_mpiq;
+// Sprite IDs for the result images created in func_80108D10_mpiq
+typedef struct {
+    /* 0x00 */ u16 espIds[3];
+    /* 0x06 */ s16 imageIds[3];
+} MpiqBssCAEC; // Size 0xC
+
 extern s32 D_800A178C_main[][6];
 extern u8 D_800D6A90_main;
-extern f32 D_8010C6A8_mpiq[];
-extern s32 D_8010C9C8_mpiq[];
-extern s32 D_8010C9E8_mpiq[];
-extern D_80111B50_vine_with_me_Struct D_8010C680_mpiq;
-extern f32 D_8010C9B0_mpiq;
-extern s32 D_8010C9B4_mpiq;
-extern u8 D_8010C9B8_mpiq;
-extern s32 D_8010C9BC_mpiq;
+
+D_80111B50_vine_with_me_Struct D_8010C680_mpiq = { 0, 0, 2, 0, 0, 0, 0, 0, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0, 0, 0, 0 }, 60, 900, -1, 75, 135 };
+f32 D_8010C6A8_mpiq[4] = { 64.0f, 128.0f, 192.0f, 256.0f };
+s32 D_8010C6B8_mpiq = -1;
+s32 D_8010C6BC_mpiq[17] = { 5, 5, 5, 5, 5, 5, 10, 10, 10, 10, 10, 10, 10, 10, 20, 30, 0 };
+
+f32 D_8010C9B0_mpiq BSS;
+s32 D_8010C9B4_mpiq BSS;
+u8 D_8010C9B8_mpiq BSS;
+s16 D_8010C9BA_mpiq BSS;
+s32 D_8010C9BC_mpiq BSS;
+s16 D_8010C9C0_mpiq BSS;
+s16 D_8010C9C2_mpiq BSS;
+u8 D_8010C9C4_mpiq[4] BSS; /* Unreferenced. */
+s32 D_8010C9C8_mpiq[4] BSS;
+s32 D_8010C9D8_mpiq BSS;
+u16 D_8010C9DC_mpiq[2] BSS;
+u16 D_8010C9E0_mpiq BSS;
+u16 D_8010C9E2_mpiq BSS;
+u8 D_8010C9E4_mpiq[4] BSS; /* Unreferenced. */
+s32 D_8010C9E8_mpiq[4] BSS;
+s32 D_8010C9F8_mpiq BSS;
+s32 D_8010C9FC_mpiq BSS;
+s16 D_8010CA00_mpiq BSS;
+u8 D_8010CA04_mpiq[4] BSS; /* Unreferenced. */
+MpiqCpuInput D_8010CA08_mpiq[4] BSS;
+s16 D_8010CA38_mpiq[10] BSS;
+s16 D_8010CA4C_mpiq BSS;
+s32 D_8010CA50_mpiq[10] BSS;
+omObjData *D_8010CA78_mpiq BSS;
+u8 D_8010CA7C_mpiq[4] BSS; /* Unreferenced. */
+omObjData *D_8010CA80_mpiq[4] BSS;
+s32 D_8010CA90_mpiq[4] BSS;
+s32 D_8010CAA0_mpiq[4] BSS;
+f32 D_8010CAB0_mpiq[4] BSS;
+omObjData *D_8010CAC0_mpiq[4] BSS;
+omObjData *D_8010CAD0_mpiq BSS;
+omObjData *D_8010CAD4_mpiq BSS;
+omObjData *D_8010CAD8_mpiq[4] BSS;
+omObjData *D_8010CAE8_mpiq BSS;
+MpiqBssCAEC mpiqBssCAEC BSS;
+s32 D_8010CAF8_mpiq BSS;
+s16 D_8010CAFC_mpiq BSS;
+s32 D_8010CB00_mpiq[10][4] BSS;
+s16 D_8010CBA0_mpiq[12] BSS;
+s16 D_8010CBB8_mpiq[10] BSS;
+s32 D_8010CBCC_mpiq BSS;
+s32 D_8010CBD0_mpiq[10] BSS;
+s32 D_8010CBF8_mpiq[1] BSS;
+s32 D_8010CBFC_mpiq[2] BSS;
+s32 D_8010CC04_mpiq BSS;
+u8 D_8010CC08_mpiq[8] BSS; /* Unreferenced. */
+s32 D_8010CC10_mpiq[256] BSS;
+s32 D_8010D010_mpiq BSS;
+u8 D_8010D014_mpiq[12] BSS; /* Unreferenced. */
+s32 D_8010D020_mpiq BSS;
+
+// Aliases into the variables above, see undefined_syms.txt.
 extern s16 D_8010C9BE_mpiq;
-extern s16 D_8010C9C0_mpiq;
-extern s16 D_8010C9BA_mpiq;
-extern s16 D_8010C9C2_mpiq;
-extern u16 D_8010C9DC_mpiq[2];
-extern u16 D_8010C9E0_mpiq;
-extern u16 D_8010C9E2_mpiq;
-extern s32 D_8010C9F8_mpiq;
-extern s32 D_8010C9FC_mpiq;
-extern s16 D_8010CA00_mpiq;
-extern s32 D_8010D020_mpiq;
+extern u16 D_8010CAEC_mpiq[3];
+extern s16 D_8010CAF2_mpiq[3];
+extern s16 D_8010CAFA_mpiq;
 
 void func_80105C60_mpiq(omObjData *obj);
 void func_80105D60_mpiq(omObjData *obj);

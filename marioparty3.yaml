@@ -1289,9 +1289,9 @@ segments:
     bss_size: 0x680
     subsegments:
       - [0x204F90, c]
-      - [0x20BC70, data, 204F90] #8010C680
+      - [0x20BC70, .data, 204F90] #8010C680
       - [0x20BCF0, .rodata, 204F90] #8010C700
-      - {0x20BFA0, type: bss, vram: 0x8010C9B0, name: ovl_21_bss}
+      - {0x20BFA0, type: .bss, vram: 0x8010C9B0, name: 204F90}
 
   - type: code
     start: 0x20BFA0

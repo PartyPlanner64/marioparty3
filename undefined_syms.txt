@@ -294,3 +294,8 @@ D_801160D6_marios_puzzle_party = D_801160D4_marios_puzzle_party + 0x2;
 D_801160DA_marios_puzzle_party = D_801160D8_marios_puzzle_party + 0x2;
 D_801160DE_marios_puzzle_party = D_801160DC_marios_puzzle_party + 0x2;
 D_801160E2_marios_puzzle_party = D_801160E0_marios_puzzle_party + 0x2;
+/* mpiq aliases: s16 halves of s32 vars, MpiqBssCAEC fields. */
+D_8010C9BE_mpiq = D_8010C9BC_mpiq + 0x2;
+D_8010CAEC_mpiq = mpiqBssCAEC;
+D_8010CAF2_mpiq = mpiqBssCAEC + 0x6;
+D_8010CAFA_mpiq = D_8010CAF8_mpiq + 0x2;

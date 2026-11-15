@@ -150,8 +150,6 @@ D_8010C75C_end_of_the_line = endOfTheLineBssC75C;
 D_8010C75E_end_of_the_line = endOfTheLineBssC75C + 0x2;
 D_8010C780_end_of_the_line = endOfTheLineBssC780;
 D_8010C782_end_of_the_line = endOfTheLineBssC780 + 0x2;
-/* bobbing_bow_loons: start of the s32 table whose low halfword is D_801097AA. */
-D_801097A8_bobbing_bow_loons = D_801097AA_bobbing_bow_loons - 0x2;
 /* game_guys_magic_boxes: state bytes and timer halfwords packed after the preceding data symbol. */
 D_8010C1EF_game_guys_magic_boxes = D_8010C1EE_game_guys_magic_boxes + 0x1;
 D_8010C1FE_game_guys_magic_boxes = D_8010C1FC_game_guys_magic_boxes + 0x2;

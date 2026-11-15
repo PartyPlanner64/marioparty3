@@ -88,34 +88,49 @@ typedef struct BobbingBowLoonsItems {
     /* 0x58 */ f32 heldY;
 } BobbingBowLoonsItems; // Size 0x5C
 
-extern f32 D_80109748_bobbing_bow_loons[];
-extern s32 D_80109768_bobbing_bow_loons[];
-extern char *D_80109788_bobbing_bow_loons[];
-extern s32 D_801097A8_bobbing_bow_loons[];
-extern s32 D_80109B0C_bobbing_bow_loons;
-extern s16 D_80109B20_bobbing_bow_loons[2];
-extern omObjData *D_80109B28_bobbing_bow_loons;
-extern s16 D_80109B18_bobbing_bow_loons;
-extern omObjData *D_80109B1C_bobbing_bow_loons;
-extern omObjData *D_80109B2C_bobbing_bow_loons;
-extern omObjData *D_80109B58_bobbing_bow_loons;
-extern omObjData *D_80109B5C_bobbing_bow_loons;
-extern omObjData *D_80109B64_bobbing_bow_loons;
-extern omObjData *D_80109B60_bobbing_bow_loons;
-extern D_80111B50_vine_with_me_Struct D_80109720_bobbing_bow_loons;
-extern u8 D_80109B04_bobbing_bow_loons;
-extern s16 D_80109B06_bobbing_bow_loons;
-extern s32 D_80109B10_bobbing_bow_loons;
 extern u16 D_800A11D0_main[];
 extern u16 D_800A11DC_main[];
-extern s16 D_80109B08_bobbing_bow_loons;
-extern s16 D_80109B0E_bobbing_bow_loons;
-extern s32 D_80109B14_bobbing_bow_loons;
-extern omObjData *D_80109B30_bobbing_bow_loons;
-extern omObjData *D_80109B34_bobbing_bow_loons;
-extern omObjData *D_80109B38_bobbing_bow_loons;
-extern s32 D_80109B40_bobbing_bow_loons[5];
-extern s32 D_80109B54_bobbing_bow_loons;
+
+D_80111B50_vine_with_me_Struct D_80109720_bobbing_bow_loons = { 0, 3, 2, 0, 0, 0, 5, 0, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0, 0, 0, 0 }, 30, 300, -1, 90, 135 };
+f32 D_80109748_bobbing_bow_loons[8] = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
+s32 D_80109768_bobbing_bow_loons[8] = { 2, 3, 7, 4, 5, 6, 8, 9 };
+char *D_80109788_bobbing_bow_loons[8] = {
+    "migi-te3_2_1",
+    "c001_000-migi-te2_3",
+    "C002_000b-bmerge16",
+    "c003_000-bmerge1_8",
+    "Luigi1-migi-te1_1",
+    "c005_000-bmerge6",
+    "c001_000-migi-te2_3",
+    "C002_000b-bmerge16",
+};
+s32 D_801097A8_bobbing_bow_loons[8] = { 0, 1, 2, 3, 4, 5, 6, 7 };
+
+u8 D_80109B00_bobbing_bow_loons[4] BSS; /* Unreferenced. */
+u8 D_80109B04_bobbing_bow_loons BSS;
+s16 D_80109B06_bobbing_bow_loons BSS;
+s16 D_80109B08_bobbing_bow_loons BSS;
+s16 D_80109B0A_bobbing_bow_loons BSS; /* Unreferenced. */
+s32 D_80109B0C_bobbing_bow_loons BSS;
+s32 D_80109B10_bobbing_bow_loons BSS;
+s32 D_80109B14_bobbing_bow_loons BSS;
+s16 D_80109B18_bobbing_bow_loons BSS;
+s16 D_80109B1A_bobbing_bow_loons BSS; /* Unreferenced. */
+omObjData *D_80109B1C_bobbing_bow_loons BSS;
+s16 D_80109B20_bobbing_bow_loons[2] BSS;
+u8 D_80109B24_bobbing_bow_loons[4] BSS; /* Unreferenced. */
+omObjData *D_80109B28_bobbing_bow_loons BSS;
+omObjData *D_80109B2C_bobbing_bow_loons BSS;
+omObjData *D_80109B30_bobbing_bow_loons BSS;
+omObjData *D_80109B34_bobbing_bow_loons BSS;
+omObjData *D_80109B38_bobbing_bow_loons BSS;
+u8 D_80109B3C_bobbing_bow_loons[4] BSS; /* Unreferenced. */
+s32 D_80109B40_bobbing_bow_loons[5] BSS;
+s32 D_80109B54_bobbing_bow_loons BSS;
+omObjData *D_80109B58_bobbing_bow_loons BSS;
+omObjData *D_80109B5C_bobbing_bow_loons BSS;
+omObjData *D_80109B60_bobbing_bow_loons BSS;
+omObjData *D_80109B64_bobbing_bow_loons BSS;
 
 void func_8004BCE4_main(struct CameraViewData *data);
 void func_80105AE8_bobbing_bow_loons(void);
@@ -231,18 +246,6 @@ void func_80105B64_bobbing_bow_loons(void) {
     Hu3DModelPosSet(obj->model[2], 340.0f, -50.0f, -100.0f);
     Hu3DModelScaleSet(obj->model[2], 1.0f, 2.0f, 1.0f);
 }
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_3D_bobbing_bow_loons/2D8370", D_801097D0_bobbing_bow_loons);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_3D_bobbing_bow_loons/2D8370", D_801097E4_bobbing_bow_loons);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_3D_bobbing_bow_loons/2D8370", D_801097F8_bobbing_bow_loons);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_3D_bobbing_bow_loons/2D8370", D_8010980C_bobbing_bow_loons);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_3D_bobbing_bow_loons/2D8370", D_80109820_bobbing_bow_loons);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_3D_bobbing_bow_loons/2D8370", D_80109834_bobbing_bow_loons);
 
 void func_80105D04_bobbing_bow_loons(void) {
     // Copied onto the stack but never read.
@@ -902,13 +905,13 @@ void func_8010817C_bobbing_bow_loons(omObjData *obj) {
             func_800E6F0C_minigame(3);
             func_801079E8_bobbing_bow_loons(hit);
             hook->flags &= ~1;
-            omVibrate(D_80109B0E_bobbing_bow_loons, 2, 2, 20);
+            omVibrate(D_80109B0C_bobbing_bow_loons, 2, 2, 20);
         } else if (hook->x <= -290.0f) {
             D_80109B04_bobbing_bow_loons = 0;
             func_800E6F0C_minigame(3);
             func_80108328_bobbing_bow_loons();
             hook->flags &= ~1;
-            omVibrate(D_80109B0E_bobbing_bow_loons, 20, 0, 20);
+            omVibrate(D_80109B0C_bobbing_bow_loons, 20, 0, 20);
         }
     }
 }
@@ -975,7 +978,7 @@ void func_80108354_bobbing_bow_loons(void) {
     player->pos.z -= offsetZ[GwPlayer[D_80109B0C_bobbing_bow_loons].chr];
     func_801064C0_bobbing_bow_loons();
     HuPrcSleep(30);
-    func_8004AC98_main(GwPlayer[D_80109B0C_bobbing_bow_loons].chr + 0x287, D_80109B0E_bobbing_bow_loons);
+    func_8004AC98_main(GwPlayer[D_80109B0C_bobbing_bow_loons].chr + 0x287, D_80109B0C_bobbing_bow_loons);
     func_8001C814_main(D_80109B1C_bobbing_bow_loons->model[3], 1, 1);
     speed = -20.0f;
     while (player->pos.y >= -500.0f) {

@@ -826,21 +826,6 @@ void func_80054170_main(void) {
 // Model draw callback that builds the display list for all sprites. Sprites
 // without attribute 0x4000 are linked into a separate list (D_800BD800_main)
 // and branched over here, so that func_80054658_main can draw them later.
-// Model draw callback that builds the display list for all sprites. Sprites
-// without attribute 0x4000 are linked into a separate list (D_800BD800_main)
-// and branched over here, so that func_80054658_main can draw them later.
-// Model draw callback that builds the display list for all sprites. Sprites
-// without attribute 0x4000 are linked into a separate list (D_800BD800_main)
-// and branched over here, so that func_80054658_main can draw them later.
-// Model draw callback that builds the display list for all sprites. Sprites
-// without attribute 0x4000 are linked into a separate list (D_800BD800_main)
-// and branched over here, so that func_80054658_main can draw them later.
-// Model draw callback that builds the display list for all sprites. Sprites
-// without attribute 0x4000 are linked into a separate list (D_800BD800_main)
-// and branched over here, so that func_80054658_main can draw them later.
-// Model draw callback that builds the display list for all sprites. Sprites
-// without attribute 0x4000 are linked into a separate list (D_800BD800_main)
-// and branched over here, so that func_80054658_main can draw them later.
 void func_80054218_main(Gfx **gdl, s32 arg1, s32 arg2) {
     HuCamMtxs *mtxs;
     HuCamera *cam;
@@ -1658,15 +1643,6 @@ void func_80056650_main(HuSprite *sprite) {
     }
 }
 
-// Computes the texture tiling of a sprite and reserves display list space.
-// Computes the texture tiling of a sprite and reserves display list space.
-// Computes the texture tiling of a sprite and reserves display list space.
-// Computes the texture tiling of a sprite and reserves display list space.
-// Computes the texture tiling of a sprite and reserves display list space.
-// Computes the texture tiling of a sprite and reserves display list space.
-// Computes the texture tiling of a sprite and reserves display list space.
-// Computes the texture tiling of a sprite and reserves display list space.
-// Computes the texture tiling of a sprite and reserves display list space.
 // Computes the texture tiling of a sprite and reserves display list space.
 void func_80056758_main(HuSprite *sprite) {
     HuSprite_Unk84_Unk00_Struct *image;

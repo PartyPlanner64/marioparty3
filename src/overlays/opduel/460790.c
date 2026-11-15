@@ -1,34 +1,7 @@
 #include "common_duel.h"
+#include "macros.h"
 #include "../ovl_81_name/ovl_81.h"
 
-extern u32 D_8010934C_opduel[];
-extern u32 *D_8010940C_opduel[];
-extern s32 D_80109200_opduel;
-extern Process *D_80109204_opduel;
-extern Object *D_80109208_opduel;
-extern Object *D_8010920C_opduel;
-extern omObjData *D_80109210_opduel;
-extern s16 D_80109214_opduel;
-extern Process *D_80109218_opduel;
-extern UnkBoard4 *D_8010921C_opduel;
-extern UnkBoard4 *D_80109220_opduel;
-extern omObjData *D_80109224_opduel;
-extern s32 D_80109228_opduel;
-extern Vec D_8010922C_opduel;
-extern Vec D_80109250_opduel;
-extern Vec D_8010925C_opduel[];
-extern Vec D_8010928C_opduel[];
-extern Vec D_801092A4_opduel[];
-extern Vec D_801092BC_opduel[];
-extern Vec D_801092D4_opduel[];
-extern Vec D_801092EC_opduel[];
-extern Vec D_80109304_opduel[];
-extern Vec D_8010931C_opduel[];
-extern u8 D_80109570_opduel;
-extern s32 *D_80109464_opduel[];
-extern s32 D_80109484_opduel[];
-extern GW_PLAYER *D_80109574_opduel[2];
-extern Object *D_8010957C_opduel[2];
 extern s32 D_80101200_shared_board[];
 extern u8 D_80101960[];
 
@@ -58,6 +31,112 @@ void func_801090F8_opduel(void);
 void func_8010911C_opduel(void);
 void func_80109158_opduel(void);
 void func_801091DC_opduel(void);
+
+s32 D_80109200_opduel = 0;
+Process *D_80109204_opduel = NULL;
+Object *D_80109208_opduel = NULL;
+Object *D_8010920C_opduel = NULL;
+omObjData *D_80109210_opduel = NULL;
+s16 D_80109214_opduel = -1;
+Process *D_80109218_opduel = NULL;
+UnkBoard4 *D_8010921C_opduel = NULL;
+UnkBoard4 *D_80109220_opduel = NULL;
+omObjData *D_80109224_opduel = NULL;
+s32 D_80109228_opduel = 0;
+
+Vec D_8010922C_opduel = { 0.0f, 250.0f, 0.0f };
+
+/* Unreferenced. */
+Vec D_80109238_opduel[2] = {
+    { 0.0f, 100.0f, 0.0f },
+    { 0.0f, 0.0f, 0.0f }
+};
+
+Vec D_80109250_opduel = { 0.0f, 0.0f, 1500.0f };
+
+Vec D_8010925C_opduel[4] = {
+    { -10.0f, 250.0f, 0.0f },
+    { 10.0f, 250.0f, 0.0f },
+    { -500.0f, 0.0f, 2360.0f },
+    { 500.0f, 0.0f, 2360.0f }
+};
+
+Vec D_8010928C_opduel[2] = {
+    { -200.0f, 0.0f, 2360.0f },
+    { 200.0f, 0.0f, 2360.0f }
+};
+
+Vec D_801092A4_opduel[2] = {
+    { -175.0f, 0.0f, 2250.0f },
+    { 175.0f, 0.0f, 2250.0f }
+};
+
+Vec D_801092BC_opduel[2] = {
+    { 0.0f, 0.0f, 2150.0f },
+    { 0.0f, 0.0f, 2350.0f }
+};
+
+Vec D_801092D4_opduel[2] = {
+    { -125.0f, 0.0f, 2000.0f },
+    { 125.0f, 0.0f, 2000.0f }
+};
+
+Vec D_801092EC_opduel[2] = {
+    { -750.0f, 0.0f, 1750.0f },
+    { 750.0f, 0.0f, 1750.0f }
+};
+
+Vec D_80109304_opduel[2] = {
+    { -100.0f, 0.0f, 1750.0f },
+    { 100.0f, 0.0f, 1750.0f }
+};
+
+Vec D_8010931C_opduel[4] = {
+    { -100.0f, 0.0f, 2000.0f },
+    { 100.0f, 0.0f, 2000.0f },
+    { -300.0f, 0.0f, 2000.0f },
+    { 300.0f, 0.0f, 2000.0f }
+};
+
+u32 D_8010934C_opduel[6] = { 5, 0x20000, 0x20001, 0x20002, 0x20033, 0x20031 };
+
+u32 D_80109364_opduel[6] = { 5, 0, 0, 0, 0, 0 };
+
+u32 D_8010937C_opduel[6] = { 5, 0, 0, 0, 0, 0 };
+
+u32 D_80109394_opduel[6] = { 5, 0, 0, 0, 0, 0 };
+
+u32 D_801093AC_opduel[6] = { 5, 0, 0, 0, 0, 0 };
+
+u32 D_801093C4_opduel[6] = { 5, 0, 0, 0, 0, 0 };
+
+u32 D_801093DC_opduel[6] = { 5, 0, 0, 0, 0, 0 };
+
+u32 D_801093F4_opduel[6] = { 5, 0, 0, 0, 0, 0 };
+
+u32 *D_8010940C_opduel[8] = { D_8010934C_opduel, D_80109364_opduel, D_8010937C_opduel, D_80109394_opduel, D_801093AC_opduel, D_801093C4_opduel, D_801093DC_opduel, D_801093F4_opduel };
+
+s32 D_8010942C_opduel[2] = { 1, 0xA0090 };
+
+s32 D_80109434_opduel[2] = { 1, 0xA00A7 };
+
+s32 D_8010943C_opduel[2] = { 1, 0xA0002 };
+
+s32 D_80109444_opduel[2] = { 1, 0xA00BD };
+
+s32 D_8010944C_opduel[2] = { 1, 0xA00D0 };
+
+s32 D_80109454_opduel[2] = { 1, 0xA0138 };
+
+s32 D_8010945C_opduel[2] = { 1, 0xA010F };
+
+s32 *D_80109464_opduel[8] = { D_8010942C_opduel, D_80109434_opduel, D_8010943C_opduel, NULL, D_80109444_opduel, D_8010944C_opduel, D_8010945C_opduel, D_80109454_opduel };
+
+s32 D_80109484_opduel[2] = { 1, 0xA0125 };
+
+u8 D_80109570_opduel BSS;
+GW_PLAYER *D_80109574_opduel[2] BSS;
+Object *D_8010957C_opduel[2] BSS;
 
 void func_801059A0_opduel(void) {
     GW_PLAYER *player;

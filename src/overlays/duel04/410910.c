@@ -5457,6 +5457,15 @@ s32 func_80116168_duel04(void) {
 // always 1 there, so it should not be kept if this is matched another way.
 // The second switch's case 2/case 3 tails have the same shape as
 // func_80115DA8_duel04's case 1/case 2 tails (see the jump.c notes there).
+// Later findings: all-`return X` arms (no ret) give the same result as the
+// ret/break form. Case 2 `return curIndex == 0 ? 1 : <other fp> != 0;` with
+// case 3 `if (curIndex == 0) { ret = 1; } else { return <other fp> != 0; }`
+// gives exactly the target second-switch shape (both li-1 blocks kept apart
+// on different labels, the fp != 0 block shared in case 3), but the first
+// switch's case 1 `return 1` then merges into case 2's: the ternary's join
+// jump to the return label is in that label's jump chain from the start of
+// jump2. A 288-variant search (ret/return per arm, return ret per case,
+// ternary return/assign tails for cases 2 and 3) found nothing better.
 s32 func_801163C0_duel04(void) {
     s32 curIndex = MBDGetCurrentPlayerIndex();
     s32 otherIndex = (s16)(MBDGetCurrentPlayerIndex() ^ 1);

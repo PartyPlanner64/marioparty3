@@ -1,6 +1,5 @@
 #include "common.h"
 #include "overlays/minigame.h"
-#include "overlays/ovl_27.h"
 
 // Per-pipe state used by the pipe cleaners (D_8010AB30_pipe_cleaners, one entry per pipe).
 typedef struct PipeCleanerWork {
@@ -96,34 +95,8 @@ typedef struct {
 
 extern s32 D_800A178C_main[][6];
 
-extern s32 D_80109EC0_pipe_cleaners[4][3];
-extern PipeCleanerPipePlacement D_80109EF0_pipe_cleaners[4];
-extern u16 D_80109F30_pipe_cleaners[8][3];
 extern char *D_80109F60_pipe_cleaners[];
-extern PipeCleanerSpawnPos D_80109F80_pipe_cleaners[4];
-extern f32 D_80109FD0_pipe_cleaners[16];
-extern s32 D_8010A010_pipe_cleaners[4][2];
-extern s16 D_8010A030_pipe_cleaners;
-extern s32 D_8010A034_pipe_cleaners;
-extern s32 D_8010A038_pipe_cleaners;
-extern s32 D_8010A03C_pipe_cleaners;
-extern PipeCleanerCamera D_8010A040_pipe_cleaners[4];
 extern const s16 D_8010A2A8_pipe_cleaners[];
-extern void *D_8010A2B0_pipe_cleaners[4][3];
-extern s16 D_8010A2E0_pipe_cleaners[4];
-extern s32 D_8010A2F0_pipe_cleaners;
-extern PipeCleanerSpriteWork D_8010A300_pipe_cleaners[10];
-extern s32 D_8010A828_pipe_cleaners;
-extern s32 D_8010A82C_pipe_cleaners;
-extern s16 D_8010A830_pipe_cleaners[4];
-extern s8 D_8010A838_pipe_cleaners[4][60];
-extern PipeCleanerSlot D_8010A968_pipe_cleaners[16];
-extern omObjData *D_8010AB28_pipe_cleaners;
-extern PipeCleanerWork D_8010AB30_pipe_cleaners[4];
-extern s32 D_8010AC10_pipe_cleaners;
-extern s32 D_8010AC14_pipe_cleaners;
-extern PipeCleanerSign D_8010AC18_pipe_cleaners[16];
-extern s32 D_8010AD58_pipe_cleaners;
 
 void func_80105C50_pipe_cleaners(omObjData *obj);
 void func_801066E4_pipe_cleaners(omObjData *obj);
@@ -132,6 +105,51 @@ void func_80107598_pipe_cleaners(omObjData *obj);
 void func_80108708_pipe_cleaners(void);
 void func_80108964_pipe_cleaners(PipeCleanerSign *sign, s32 arg1);
 void func_80109D70_pipe_cleaners(void);
+
+s32 D_80109EC0_pipe_cleaners[4][3] = {
+    { 20, 20, 5 },
+    { 5, 3, 4 },
+    { 2, 2, 2 },
+    { 1, 2, 1 },
+};
+
+PipeCleanerPipePlacement D_80109EF0_pipe_cleaners[4] = {
+    { -135.0f, 270.0f, 45.0f, 180.0f },
+    { 135.0f, 270.0f, 45.0f, 180.0f },
+    { -135.0f, 50.0f, 45.0f, 0.0f },
+    { 135.0f, 50.0f, 45.0f, 0.0f },
+};
+
+u16 D_80109F30_pipe_cleaners[8][3] = {
+    { 0xA4, 0xA5, 0xA6 },
+    { 0xA4, 0xA5, 0xA6 },
+    { 0xA4, 0xA5, 0xA6 },
+    { 0xA4, 0xA5, 0xA6 },
+    { 0xA4, 0xA5, 0xA6 },
+    { 0xA4, 0xA5, 0xA6 },
+    { 0xA4, 0xA5, 0xA6 },
+    { 0x1A, 0x1C, 0x1D },
+};
+
+void *D_8010A2B0_pipe_cleaners[4][3] BSS;
+s16 D_8010A2E0_pipe_cleaners[4] BSS;
+u8 D_8010A2E8_pipe_cleaners[8] BSS; /* Unreferenced. */
+s32 D_8010A2F0_pipe_cleaners BSS;
+u8 D_8010A2F4_pipe_cleaners[12] BSS; /* Unreferenced. */
+PipeCleanerSpriteWork D_8010A300_pipe_cleaners[10] BSS;
+s32 D_8010A828_pipe_cleaners BSS;
+s32 D_8010A82C_pipe_cleaners BSS;
+s16 D_8010A830_pipe_cleaners[4] BSS;
+s8 D_8010A838_pipe_cleaners[4][60] BSS;
+s32 D_8010A928_pipe_cleaners[16] BSS;
+PipeCleanerSlot D_8010A968_pipe_cleaners[16] BSS;
+omObjData *D_8010AB28_pipe_cleaners BSS;
+u8 D_8010AB2C_pipe_cleaners[4] BSS; /* Unreferenced. */
+PipeCleanerWork D_8010AB30_pipe_cleaners[4] BSS;
+s32 D_8010AC10_pipe_cleaners BSS;
+s32 D_8010AC14_pipe_cleaners BSS;
+PipeCleanerSign D_8010AC18_pipe_cleaners[16] BSS;
+s32 D_8010AD58_pipe_cleaners BSS;
 
 void func_801059A0_pipe_cleaners(void) {
     func_80109D70_pipe_cleaners();
@@ -499,21 +517,44 @@ void func_80106B18_pipe_cleaners(omObjData *obj, PipeCleanerWork *work) {
     work->state = 1;
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", D_8010A134_pipe_cleaners);
+char *D_80109F60_pipe_cleaners[] = {
+    "c000l_0_DEF",
+    "c001l_0_DEF",
+    "c002l_0_DEF",
+    "c003l_0_DEF",
+    "c004l_0_DEF",
+    "c005l_0_DEF",
+    "c300l_0_DEF",
+    "c301l_0_DEF",
+};
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", D_8010A140_pipe_cleaners);
+PipeCleanerSpawnPos D_80109F80_pipe_cleaners[4] = {
+    { { -135.0f, 320.0f, 45.0f }, 180.0f, -1 },
+    { { 135.0f, 320.0f, 45.0f }, 180.0f, -1 },
+    { { -135.0f, 0.0f, 45.0f }, 0.0f, 1 },
+    { { 135.0f, 0.0f, 45.0f }, 0.0f, 1 },
+};
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", D_8010A14C_pipe_cleaners);
+f32 D_80109FD0_pipe_cleaners[16] = { 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", D_8010A158_pipe_cleaners);
+s32 D_8010A010_pipe_cleaners[4][2] = {
+    { 81, 40 },
+    { 241, 40 },
+    { 81, 160 },
+    { 241, 160 },
+};
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", D_8010A164_pipe_cleaners);
+s16 D_8010A030_pipe_cleaners = -1;
+s32 D_8010A034_pipe_cleaners = 0;
+s32 D_8010A038_pipe_cleaners = 0;
+s32 D_8010A03C_pipe_cleaners = 0;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", D_8010A170_pipe_cleaners);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", D_8010A17C_pipe_cleaners);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", D_8010A188_pipe_cleaners);
+PipeCleanerCamera D_8010A040_pipe_cleaners[4] = {
+    { 0.0f, 0.0f, 160.0f, 120.0f, { 320.0f, 240.0f, 511.0f }, { 350.0f, 240.0f, 511.0f }, 15.0f },
+    { 160.0f, 0.0f, 320.0f, 120.0f, { 320.0f, 240.0f, 511.0f }, { 930.0f, 240.0f, 511.0f }, 15.0f },
+    { 0.0f, 120.0f, 160.0f, 240.0f, { 320.0f, 240.0f, 511.0f }, { 350.0f, 700.0f, 511.0f }, 15.0f },
+    { 160.0f, 120.0f, 320.0f, 240.0f, { 320.0f, 240.0f, 511.0f }, { 930.0f, 700.0f, 511.0f }, 15.0f },
+};
 
 void func_80106BF8_pipe_cleaners(omObjData *obj, PipeCleanerWork *work) {
     work->pos.y += 10.0;
@@ -1562,4 +1603,4 @@ void func_80109D70_pipe_cleaners(void) {
     func_80105A74_pipe_cleaners();
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", D_8010A2A8_pipe_cleaners);
+const s16 D_8010A2A8_pipe_cleaners[] = { 0x8260, 0x8261, 0x8262, 0 };

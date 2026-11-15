@@ -199,9 +199,6 @@ D_8010BF80_cosmic_coaster = D_8010BF82_cosmic_coaster - 0x2;
 
 
 
-/* pipe_cleaners: s32 position table whose low halfwords splat labeled. */
-D_8010A010_pipe_cleaners = D_8010A012_pipe_cleaners - 0x2;
-
 /* slot_synch: priority array inside the D_8010DF64 struct. */
 D_8010DF66_slot_synch = D_8010DF64_slot_synch + 0x2;
 

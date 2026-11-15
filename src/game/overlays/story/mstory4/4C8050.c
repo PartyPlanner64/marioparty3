@@ -1046,7 +1046,7 @@ void func_8010D1A0_mstory4(omObjData *obj) {
     D_801122A0_mstory4[3].func = func_8010BAF0_mstory4;
 }
 #else
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C8050", func_8010D1A0_mstory4);
+INCLUDE_ASM("asm/nonmatchings/game/overlays/story/mstory4/4C8050", func_8010D1A0_mstory4);
 #endif
 
 void func_8010E5C4_mstory4(omObjData *obj, f32 x, f32 y, f32 z, s32 frames, s32 faceDir) {

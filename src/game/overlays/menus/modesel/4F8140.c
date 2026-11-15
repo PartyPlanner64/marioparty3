@@ -1973,7 +1973,7 @@ void func_8010ACA8_modesel(omObjData *obj) {
     obj->work[0] = timer;
 }
 #else
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F8140", func_8010ACA8_modesel);
+INCLUDE_ASM("asm/nonmatchings/game/overlays/menus/modesel/4F8140", func_8010ACA8_modesel);
 #endif
 
 void func_8010AD74_modesel(omObjData *obj) {

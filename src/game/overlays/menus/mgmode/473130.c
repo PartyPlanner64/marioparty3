@@ -1547,7 +1547,7 @@ s32 func_80111380_mgmode(void) {
     return D_8011B434_mgmode != 0;
 }
 #else
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_80111380_mgmode);
+INCLUDE_ASM("asm/nonmatchings/game/overlays/menus/mgmode/473130", func_80111380_mgmode);
 #endif
 
 s32 func_80111B08_mgmode(void) {

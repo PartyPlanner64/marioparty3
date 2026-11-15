@@ -706,7 +706,7 @@ segments:
   - type: code
     start: 0xBE940
     vram: 0x800D6B70
-    dir: overlays/ovl_81_name
+    dir: game/overlays/duel/common
     name: name_81
     exclusive_ram_id: board_code
     bss_size: 0x2D60
@@ -2117,7 +2117,7 @@ segments:
   - type: code
     start: 0x3D8930
     vram: 0x801059A0
-    dir: overlays/duelcall
+    dir: game/overlays/duel/duelcall
     name: duelcall
     exclusive_ram_id: minigame # ovl_5A
     bss_size: 0
@@ -2132,7 +2132,7 @@ segments:
   - type: code
     start: 0x3D8A90
     vram: 0x801059A0
-    dir: overlays/duel01
+    dir: game/overlays/duel/boards/duel01_gate_guy
     name: duel01
     exclusive_ram_id: minigame # ovl_5B
     bss_size: 0x50
@@ -2148,7 +2148,7 @@ segments:
   - type: code
     start: 0x3EC560
     vram: 0x801059A0
-    dir: overlays/duel02
+    dir: game/overlays/duel/boards/duel02_arrowhead
     name: duel02
     exclusive_ram_id: minigame # ovl_5C
     bss_size: 0x40
@@ -2164,7 +2164,7 @@ segments:
   - type: code
     start: 0x3FE1C0
     vram: 0x801059A0
-    dir: overlays/duel03
+    dir: game/overlays/duel/boards/duel03_pipesqueak
     name: duel03
     exclusive_ram_id: minigame # ovl_5D
     bss_size: 0x50
@@ -2180,7 +2180,7 @@ segments:
   - type: code
     start: 0x4108E0
     vram: 0x801059A0
-    dir: overlays/duel04
+    dir: game/overlays/duel/boards/duel04_blowhard
     name: duel04
     exclusive_ram_id: minigame # ovl_5E
     bss_size: 0x40
@@ -2195,7 +2195,7 @@ segments:
   - type: code
     start: 0x426420
     vram: 0x801059A0
-    dir: overlays/duel05
+    dir: game/overlays/duel/boards/duel05_mr_mover
     name: duel05
     exclusive_ram_id: minigame # ovl_5F
     bss_size: 0x40
@@ -2210,7 +2210,7 @@ segments:
   - type: code
     start: 0x436E20
     vram: 0x801059A0
-    dir: overlays/duel06
+    dir: game/overlays/duel/boards/duel06_backtrack
     name: duel06
     exclusive_ram_id: minigame # ovl_60
     bss_size: 0x50
@@ -2225,7 +2225,7 @@ segments:
   - type: code
     start: 0x4461B0
     vram: 0x801059A0
-    dir: overlays/duel10
+    dir: game/overlays/duel/boards/duel10_tutorial
     name: duel10
     exclusive_ram_id: minigame # ovl_61
     bss_size: 0x40
@@ -2240,7 +2240,7 @@ segments:
   - type: code
     start: 0x4554C0
     vram: 0x801059A0
-    dir: overlays/duelresult
+    dir: game/overlays/duel/duelresult
     name: duelresult
     exclusive_ram_id: minigame # ovl_62
     bss_size: 0xF0
@@ -2255,7 +2255,7 @@ segments:
   - type: code
     start: 0x45D380
     vram: 0x801059A0
-    dir: overlays/duelresult2
+    dir: game/overlays/duel/duelresult2
     name: duelresult2
     exclusive_ram_id: minigame # ovl_63
     bss_size: 0x90
@@ -2268,7 +2268,7 @@ segments:
   - type: code
     start: 0x460790
     vram: 0x801059A0
-    dir: overlays/opduel
+    dir: game/overlays/duel/opduel
     name: opduel
     exclusive_ram_id: minigame # ovl_64
     bss_size: 0x20
@@ -2281,7 +2281,7 @@ segments:
   - type: code
     start: 0x464360
     vram: 0x801059A0
-    dir: overlays/opdueltutorial
+    dir: game/overlays/duel/opdueltutorial
     name: opdueltutorial
     exclusive_ram_id: minigame # ovl_65
     bss_size: 0x40

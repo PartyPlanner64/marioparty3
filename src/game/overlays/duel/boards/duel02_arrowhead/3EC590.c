@@ -1,5 +1,5 @@
 #include "common_duel.h"
-#include "overlays/ovl_81_name/ovl_81.h"
+#include "game/overlays/duel/common/ovl_81.h"
 
 // Inlined Z rotation matrix build (same as MTX_ROTZ in w02).
 #define MTX_ROTZ(mtx, angle)                                                                \
@@ -34,61 +34,66 @@
         (mtx)[0][0] = (mtx)[3][3] = 1.0f;                                                   \
     }
 
-typedef struct Duel06CamShakeWork {
+typedef struct Duel02ModelWaitWork {
+    /* 0x00 */ s32 index;
+    /* 0x04 */ char unk_04[0xC];
+} Duel02ModelWaitWork; // sizeof 0x10
+
+typedef struct Duel02CamShakeWork {
     /* 0x00 */ s32 magnitude;
     /* 0x04 */ s32 decay;
     /* 0x08 */ char unk_08[0x8];
-} Duel06CamShakeWork; // sizeof 0x10
+} Duel02CamShakeWork; // sizeof 0x10
 
-typedef struct Duel06SpriteWork {
+typedef struct Duel02SpriteWork {
     /* 0x00 */ Vec pos;
     /* 0x0C */ char unk_0C[0x4];
-} Duel06SpriteWork; // sizeof 0x10
+} Duel02SpriteWork; // sizeof 0x10
 
-typedef struct Duel06PartnerAttackWork {
+typedef struct Duel02PartnerAttackWork {
     /* 0x00 */ GW_PLAYER *player;
     /* 0x04 */ Object *obj;
     /* 0x08 */ s32 delay;
     /* 0x0C */ s32 waitTime;
-} Duel06PartnerAttackWork; // sizeof 0x10
+} Duel02PartnerAttackWork; // sizeof 0x10
 
-typedef struct Duel06WinColorWork {
+typedef struct Duel02WinColorWork {
     /* 0x00 */ s32 window;
     /* 0x04 */ char unk_04[0xC];
-} Duel06WinColorWork; // sizeof 0x10
+} Duel02WinColorWork; // sizeof 0x10
 
-typedef struct Duel06PartnerRouletteWork {
+typedef struct Duel02PartnerRouletteWork {
     /* 0x00 */ s32 player;
     /* 0x04 */ char unk_04[0xC];
-} Duel06PartnerRouletteWork; // sizeof 0x10
+} Duel02PartnerRouletteWork; // sizeof 0x10
 
 // Board space indices used when a player picks up a partner.
-typedef struct Duel06PartnerSpaces {
+typedef struct Duel02PartnerSpaces {
     /* 0x00 */ s32 returnSpace;
     /* 0x04 */ s32 startSpace;
     /* 0x08 */ s32 partnerSpace;
-} Duel06PartnerSpaces; // sizeof 0xC
+} Duel02PartnerSpaces; // sizeof 0xC
 
-typedef struct Duel06SwayWork {
+typedef struct Duel02SwayWork {
     /* 0x00 */ s32 angle;
     /* 0x04 */ char unk_04[0xC];
-} Duel06SwayWork; // sizeof 0x10
+} Duel02SwayWork; // sizeof 0x10
 
 
 void *memcpy(void *, const void *, unsigned int);
-extern const Vec D_80114930_duel06[];
-void func_80114324_duel06(void);
-s32 func_8010ED04_duel06(void);
-void func_8010F184_duel06(void);
+extern const Vec D_80117200_duel02[];
+void func_80116414_duel02(void);
+s32 func_8010EBC8_duel02(void);
+void func_8010EFFC_duel02(void);
 Process *func_800EBC60_name_81(Vec *, Vec *, Vec *, s32);
 void func_800EB7BC_name_81(Vec *);
 void func_800FC8DC_name_81(Object *);
-void func_8010F2F4_duel06(void);
+void func_8010F16C_duel02(void);
 Process *func_800FAB68_name_81(Object *, s32, s32, s32, s32);
 Process *func_800DCE40_name_81(s32, Vec *, Vec *, f32);
 Process *func_800E0924_name_81(void);
 extern s32 D_80101200_shared_board[];
-void func_8010B138_duel06(omObjData *);
+void func_8010B134_duel02(omObjData *);
 Object *func_800EDD50_name_81(Vec *);
 void func_800EE0F4_name_81(s32);
 void func_800EDF48_name_81(void);
@@ -101,275 +106,633 @@ void func_800EDDBC_name_81(void);
 void func_800F3880_name_81(s32, s32, s32);
 void func_800FADB4_name_81(void);
 void func_800FAE18_name_81(Object *, s32, s32);
-void func_8010E1BC_duel06(void);
-extern void func_80105CC8_duel06(void);
-extern void func_80106310_duel06(void);
-extern void func_8010E7C8_duel06(void);
-void func_8010D9FC_duel06(void);
-void func_8010DCB0_duel06(void);
-void func_8010DD44_duel06(void);
-void func_8010E350_duel06(void);
-void func_8010EAD0_duel06(void);
-void func_8010E95C_duel06(s16);
+void func_800D6CA0_name_81(UnkEA790Struct *win);
+extern void func_8010E1B8_duel02(void);
+extern void func_80105CC4_duel02(void);
+extern void func_8010630C_duel02(void);
+extern void func_8010E7C4_duel02(void);
+extern void func_8010EA68_duel02(void);
+void func_8010D9F8_duel02(void);
+void func_8010DCAC_duel02(void);
+void func_8010DD40_duel02(void);
+void func_8010E34C_duel02(void);
+void func_8010E958_duel02(s16);
+void func_8010EA10_duel02(void);
 void func_800FF640_name_81(s32);
 f32 MBDVecAngleGet(Vec *);
 s32 func_800E88FC_name_81(void);
 void MBDVecDirGet(Vec *, Vec *, Vec *);
 Process *func_800EBF2C_name_81(Vec *, Vec *, Vec *, s32);
 void func_800F38DC_name_81(s32, s32, s32);
-void func_80110230_duel06(s32);
-void func_8011402C_duel06(s8 *, s8 *);
+void func_801100A8_duel02(s32);
+void func_8011639C_duel02(s8 *, s8 *);
 void func_800E18C0_name_81(void);
 void func_800E1960_name_81(void);
 void func_800E1F38_name_81(void);
 void func_800E14D8_name_81(s32, s32);
 void func_800F7378_name_81(s32, s32);
-void func_80105F28_duel06(void);
-void func_8010DDF4_duel06(void);
-void func_8010E400_duel06(void);
+void func_80105F24_duel02(void);
+void func_8010DDF0_duel02(void);
+void func_8010E3FC_duel02(void);
 void func_800EA46C_name_81(event_table_entry *);
 void func_800FC59C_name_81(s32 (*)(void));
 void func_800FC5A8_name_81(process_func);
-void func_80113AD4_duel06(void);
-s32 func_80114034_duel06(void);
+void func_8011394C_duel02(void);
+s32 func_801163A4_duel02(void);
 void func_800FAC94_name_81(PartnerFunc *, PartnerFunc *);
-void func_80106830_duel06(s32, s32, Object *, Object *, s32, s32);
-void func_80107190_duel06(s32, s32, Object *, Object *, s32, s32);
-void func_801079C0_duel06(s32, s32, Object *, Object *, s32, s32);
-void func_80107EC4_duel06(s32, s32, Object *, Object *, s32, s32);
-void func_801084AC_duel06(s32, s32, Object *, Object *, s32, s32);
-void func_80108558_duel06(s32, s32, Object *, Object *, s32, s32);
-void func_80109890_duel06(s32, s32, Object *, Object *, s32, s32);
-void func_8010A218_duel06(s32, s32, Object *, Object *, s32, s32);
-void func_8010B554_duel06(s32, s32, Object *, Object *, s32, s32);
-void func_8010BCDC_duel06(s32, s32, Object *, Object *, s32, s32);
-void func_8010CE70_duel06(s32, s32, Object *, Object *, s32, s32);
-void func_8010D42C_duel06(s32, s32, Object *, Object *, s32, s32);
+void func_8010682C_duel02(s32, s32, Object *, Object *, s32, s32);
+void func_8010718C_duel02(s32, s32, Object *, Object *, s32, s32);
+void func_801079BC_duel02(s32, s32, Object *, Object *, s32, s32);
+void func_80107EC0_duel02(s32, s32, Object *, Object *, s32, s32);
+void func_801084A8_duel02(s32, s32, Object *, Object *, s32, s32);
+void func_80108554_duel02(s32, s32, Object *, Object *, s32, s32);
+void func_8010988C_duel02(s32, s32, Object *, Object *, s32, s32);
+void func_8010A214_duel02(s32, s32, Object *, Object *, s32, s32);
+void func_8010B550_duel02(s32, s32, Object *, Object *, s32, s32);
+void func_8010BCD8_duel02(s32, s32, Object *, Object *, s32, s32);
+void func_8010CE6C_duel02(s32, s32, Object *, Object *, s32, s32);
+void func_8010D428_duel02(s32, s32, Object *, Object *, s32, s32);
 
-void func_80110D44_duel06(void);
-void func_80110DA0_duel06(void);
-void func_80110E04_duel06(void);
-void func_80111FC4_duel06(void);
-void func_80114474_duel06(void);
-void func_801125B0_duel06(void);
-void func_801126A0_duel06(void);
-void func_801126DC_duel06(void);
-void func_80112758_duel06(void);
-void func_80112794_duel06(void);
-void func_80112814_duel06(void);
-void func_80112B90_duel06(void);
-void func_80112D7C_duel06(void);
-void func_80112F68_duel06(void);
-void func_801137A0_duel06(void);
-void func_80113A98_duel06(void);
-void func_80113F14_duel06(void);
-void func_80113FB4_duel06(void);
-void func_80113FF0_duel06(void);
-void func_80114174_duel06(void);
-void func_80113E74_duel06(void);
+void func_80110BBC_duel02(void);
+void func_80110C18_duel02(void);
+void func_80110C7C_duel02(void);
+void func_80111E3C_duel02(void);
+void func_80116564_duel02(void);
+void func_80112428_duel02(void);
+void func_80112518_duel02(void);
+void func_80112554_duel02(void);
+void func_801125D0_duel02(void);
+void func_8011260C_duel02(void);
+void func_8011268C_duel02(void);
+void func_80112A08_duel02(void);
+void func_80112BF4_duel02(void);
+void func_80112DE0_duel02(void);
+void func_80113618_duel02(void);
+void func_80113910_duel02(void);
+s32 func_80113CEC_duel02(void);
+s32 func_80114630_duel02(void);
+s32 func_80114B94_duel02(void);
+s32 func_801154DC_duel02(void);
+void func_80115A54_duel02(void);
+void func_80115BDC_duel02(void);
+void func_80115D64_duel02(void);
+void func_80115EE4_duel02(void);
+void func_80116064_duel02(void);
+void func_8011611C_duel02(void);
+void func_801161D4_duel02(void);
+void func_80116240_duel02(void);
+void func_8011628C_duel02(void);
+void func_801162F8_duel02(void);
+void func_80116344_duel02(void);
+void func_80116370_duel02(void);
 
-s32 D_801144B0_duel06[] = { 55, 57 };
+s32 D_801165A0_duel02[] = { 55, 57 };
 
-s32 D_801144B8_duel06[] = { 4, 0xA0035, 0xA003A, 0xA003B, 0xA003F };
+s32 D_801165A8_duel02[] = { 4, 0xA0035, 0xA003A, 0xA003B, 0xA003F };
 
-f32 D_801144CC_duel06 = 3.0f;
+f32 D_801165BC_duel02 = 3.0f;
 
-s32 D_801144D0_duel06[] = { 3, 0xA011D, 0xA011E, 0xA0121 };
+s32 D_801165C0_duel02[] = { 3, 0xA011D, 0xA011E, 0xA0121 };
 
-s16 D_801144E0_duel06 = 27;
+s16 D_801165D0_duel02 = 34;
 
-s16 D_801144E2_duel06 = 26;
+s16 D_801165D2_duel02 = 33;
 
-Process *D_801144E4_duel06 = NULL;
+Process *D_801165D4_duel02 = NULL;
 
-s16 D_801144E8_duel06 = 30;
+s16 D_801165D8_duel02 = 36;
 
-s16 D_801144EA_duel06 = 29;
+s16 D_801165DA_duel02 = 35;
 
-Process *D_801144EC_duel06 = NULL;
+Process *D_801165DC_duel02 = NULL;
 
-s16 D_801144F0_duel06[] = { 31, 25, 24, 33, 32 };
+s16 D_801165E0_duel02[] = { 37, 39 };
 
-f32 D_801144FC_duel06[] = { 0.0f, -12.0f, 192.0f, -192.0f, 12.0f };
+Vec D_801165E4_duel02[] = {
+    { 0.0f, 0.0f, 1.0f },
+    { 0.0f, 0.0f, -1.0f }
+};
 
-s8 D_80114510_duel06[] = {
+s32 D_801165FC_duel02[] = { 1, 0x13014B };
+
+s8 D_80116604_duel02[] = {
     7, 30, 6, 30, 4, 30, 1, 30,
     11, 30, 8, 20, 3, 20, 10, 20,
     0, 20, 2, 20, 9, 20, 5, 20,
     -1, -1
 };
 
-s8 D_8011452C_duel06[] = {
+s8 D_80116620_duel02[] = {
     0, 50, 7, 20, 6, 20, 4, 20,
     1, 20, 11, 20, 8, 10, 3, 10,
     10, 10, 0, 10, 2, 10, 9, 10,
     5, 10, -1, -1
 };
 
-s8 D_80114548_duel06[] = {
+s8 D_8011663C_duel02[] = {
     1, 50, 7, 20, 6, 20, 4, 20,
     1, 20, 11, 20, 8, 10, 3, 10,
     10, 10, 0, 10, 2, 10, 9, 10,
     5, 10, -1, -1
 };
 
-s8 D_80114564_duel06[] = {
+s8 D_80116658_duel02[] = {
     2, 50, 7, 20, 6, 20, 4, 20,
     1, 20, 11, 20, 8, 10, 3, 10,
     10, 10, 0, 10, 2, 10, 9, 10,
     5, 10, -1, -1
 };
 
-s8 D_80114580_duel06[] = {
+s8 D_80116674_duel02[] = {
     4, 50, 7, 20, 6, 20, 4, 20,
     1, 20, 11, 20, 8, 10, 3, 10,
     10, 10, 0, 10, 2, 10, 9, 10,
     5, 10, -1, -1
 };
 
-s8 D_8011459C_duel06[] = {
+s8 D_80116690_duel02[] = {
     3, 50, 7, 20, 6, 20, 4, 20,
     1, 20, 11, 20, 8, 10, 3, 10,
     10, 10, 0, 10, 2, 10, 9, 10,
     5, 10, -1, -1
 };
 
-s8 D_801145B8_duel06[] = {
+s8 D_801166AC_duel02[] = {
     5, 50, 7, 20, 6, 20, 4, 20,
     1, 20, 11, 20, 8, 10, 3, 10,
     10, 10, 0, 10, 2, 10, 9, 10,
     5, 10, -1, -1
 };
 
-s8 D_801145D4_duel06[] = {
+s8 D_801166C8_duel02[] = {
     7, 50, 7, 20, 6, 20, 4, 20,
     1, 20, 11, 20, 8, 10, 3, 10,
     10, 10, 0, 10, 2, 10, 9, 10,
     5, 10, -1, -1
 };
 
-s8 D_801145F0_duel06[] = {
+s8 D_801166E4_duel02[] = {
     6, 50, 7, 20, 6, 20, 4, 20,
     1, 20, 11, 20, 8, 10, 3, 10,
     10, 10, 0, 10, 2, 10, 9, 10,
     5, 10, -1, -1
 };
 
-s8 *D_8011460C_duel06[] = { D_8011452C_duel06, D_80114548_duel06, D_80114564_duel06, D_80114580_duel06, D_8011459C_duel06, D_801145B8_duel06, D_801145D4_duel06, D_801145F0_duel06 };
+s8 *D_80116700_duel02[] = { D_80116620_duel02, D_8011663C_duel02, D_80116658_duel02, D_80116674_duel02, D_80116690_duel02, D_801166AC_duel02, D_801166C8_duel02, D_801166E4_duel02 };
 
-Duel06PartnerSpaces D_8011462C_duel06[] = {
-    { 21, 26, 27 },
-    { 22, 29, 30 }
+Duel02PartnerSpaces D_80116720_duel02[] = {
+    { 30, 33, 34 },
+    { 29, 35, 36 }
 };
 
-s32 D_80114644_duel06 = -1;
+s32 D_80116738_duel02 = -1;
 
-Object *D_80114648_duel06 = NULL;
+Object *D_8011673C_duel02 = NULL;
 
-s32 D_8011464C_duel06 = 0;
+s32 D_80116740_duel02 = 0;
 
-event_list_entry D_80114650_duel06[] = {
-    { 1, 1, func_80110D44_duel06 },
+event_list_entry D_80116744_duel02[] = {
+    { 1, 1, func_80110BBC_duel02 },
     { 0, 0, NULL }
 };
 
-event_list_entry D_80114660_duel06[] = {
-    { 1, 1, func_80110DA0_duel06 },
+event_list_entry D_80116754_duel02[] = {
+    { 1, 1, func_80110C18_duel02 },
     { 0, 0, NULL }
 };
 
-event_list_entry D_80114670_duel06[] = {
-    { 7, 1, func_80110E04_duel06 },
+event_list_entry D_80116764_duel02[] = {
+    { 7, 1, func_80110C7C_duel02 },
     { 0, 0, NULL }
 };
 
-event_list_entry D_80114680_duel06[] = {
-    { 1, 1, func_80111FC4_duel06 },
-    { 8, 1, func_80114474_duel06 },
+event_list_entry D_80116774_duel02[] = {
+    { 1, 1, func_80111E3C_duel02 },
+    { 8, 1, func_80116564_duel02 },
     { 0, 0, NULL }
 };
 
-void (*D_80114698_duel06[])(void) = {
-    func_801125B0_duel06,
-    func_801126A0_duel06,
-    func_801126DC_duel06,
-    func_80112758_duel06,
-    func_80112794_duel06,
-    func_80112814_duel06,
-    func_80112B90_duel06,
-    func_80112D7C_duel06,
-    func_80112F68_duel06,
-    func_801137A0_duel06,
-    func_80113A98_duel06
+void (*D_8011678C_duel02[])(void) = {
+    func_80112428_duel02,
+    func_80112518_duel02,
+    func_80112554_duel02,
+    func_801125D0_duel02,
+    func_8011260C_duel02,
+    func_8011268C_duel02,
+    func_80112A08_duel02,
+    func_80112BF4_duel02,
+    func_80112DE0_duel02,
+    func_80113618_duel02,
+    func_80113910_duel02
 };
 
-event_table_entry D_801146C4_duel06[] = {
-    { 21, D_80114650_duel06 },
-    { 22, D_80114660_duel06 },
-    { -5, D_80114670_duel06 },
-    { 23, D_80114680_duel06 },
+event_table_entry D_801167B8_duel02[] = {
+    { 30, D_80116744_duel02 },
+    { 29, D_80116754_duel02 },
+    { -5, D_80116764_duel02 },
+    { 42, D_80116774_duel02 },
     { -1, NULL }
 };
 
-event_list_entry D_801146EC_duel06[] = {
-    { 1, 1, func_80113F14_duel06 },
+u8 D_801167E0_duel02[] = {
+    0xFF, 0, 1, 2, 3, 4, 5, 7,
+    8, 9, 10
+};
+
+u8 D_801167EC_duel02[] = {
+    0xFF, 0, 1, 2, 3, 4, 5, 7,
+    8, 9, 10
+};
+
+u8 D_801167F8_duel02[] = { 0xFF, 0, 1, 2, 4 };
+
+u8 D_80116800_duel02[] = { 0xFF, 0, 1, 2, 3, 4 };
+
+DecisionTreeNonLeafNode D_80116808_duel02[] = {
+    { 5, { .func = func_80113CEC_duel02 }, { .data = 0x0C993264 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x1C993264 } }
+};
+
+DecisionTreeNonLeafNode D_80116820_duel02[] = {
+    { 21, { .data = 0x00000001 }, { .node_data = D_80116808_duel02 } },
+    { 5, { .func = func_80114630_duel02 }, { .data = 0x0C993264 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x1C993264 } }
+};
+
+DecisionTreeNonLeafNode D_80116844_duel02[] = {
+    { 11, { .data = 0x00020005 }, { .data = 0x1B56AD5A } },
+    { 11, { .data = 0x00030005 }, { .data = 0x1B56AD5A } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0B56AD5A } }
+};
+
+DecisionTreeNonLeafNode D_80116868_duel02[] = {
+    { 11, { .data = 0x00020005 }, { .data = 0x1B56AD5A } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0B56AD5A } }
+};
+
+DecisionTreeNonLeafNode D_80116880_duel02[] = {
+    { 25, { .data = 0x00000001 }, { .data = 0x0A142850 } },
+    { 7, { .data = 0x00000009 }, { .node_data = D_80116844_duel02 } },
+    { 7, { .data = 0x00000009 }, { .node_data = D_80116868_duel02 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0B56AD5A } }
+};
+
+DecisionTreeNonLeafNode D_801168B0_duel02[] = {
+    { 21, { .data = 0x00000001 }, { .node_data = D_80116880_duel02 } },
+    { 2, { .data = 0x00000008 }, { .data = 0x1B56AD5A } },
+    { 11, { .data = 0x00020005 }, { .data = 0x1B56AD5A } },
+    { 11, { .data = 0x00030005 }, { .data = 0x1B56AD5A } },
+    { 11, { .data = 0x0001060B }, { .data = 0x1B56AD5A } },
+    { 11, { .data = 0x0000000B }, { .data = 0x1B56AD5A } },
+    { 0, { .data = 0x00000000 }, { .data = 0x08D1A346 } }
+};
+
+DecisionTreeNonLeafNode D_80116904_duel02[] = {
+    { 25, { .data = 0x00000001 }, { .data = 0x0A142850 } },
+    { 7, { .data = 0x00000007 }, { .data = 0x0A142850 } },
+    { 11, { .data = 0x00020005 }, { .data = 0x164C9932 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0A142850 } }
+};
+
+DecisionTreeNonLeafNode D_80116934_duel02[] = {
+    { 25, { .data = 0x00000001 }, { .data = 0x0A142850 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x078F1E3C } }
+};
+
+DecisionTreeNonLeafNode D_8011694C_duel02[] = {
+    { 11, { .data = 0x00020005 }, { .data = 0x1A142850 } },
+    { 11, { .data = 0x00030005 }, { .data = 0x1A142850 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x078F1E3C } }
+};
+
+DecisionTreeNonLeafNode D_80116970_duel02[] = {
+    { 21, { .data = 0x00000001 }, { .node_data = D_80116904_duel02 } },
+    { 7, { .data = 0x00000004 }, { .node_data = D_8011694C_duel02 } },
+    { 11, { .data = 0x00020005 }, { .node_data = D_80116934_duel02 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x078F1E3C } }
+};
+
+DecisionTreeNonLeafNode D_801169A0_duel02[] = {
+    { 22, { .data = 0x00000003 }, { .node_data = D_80116820_duel02 } },
+    { 22, { .data = 0x00000002 }, { .node_data = D_801168B0_duel02 } },
+    { 22, { .data = 0x00000001 }, { .node_data = D_80116970_duel02 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x064C9932 } }
+};
+
+DecisionTreeNonLeafNode D_801169D0_duel02[] = {
+    { 5, { .func = func_80114B94_duel02 }, { .data = 0x0C993264 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x1C993264 } }
+};
+
+DecisionTreeNonLeafNode D_801169E8_duel02[] = {
+    { 21, { .data = 0x00000000 }, { .node_data = D_801169D0_duel02 } },
+    { 5, { .func = func_801154DC_duel02 }, { .data = 0x0C993264 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x1C993264 } }
+};
+
+DecisionTreeNonLeafNode D_80116A0C_duel02[] = {
+    { 11, { .data = 0x00030005 }, { .data = 0x1B56AD5A } },
+    { 11, { .data = 0x00020005 }, { .data = 0x1B56AD5A } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0B56AD5A } }
+};
+
+DecisionTreeNonLeafNode D_80116A30_duel02[] = {
+    { 11, { .data = 0x00030005 }, { .data = 0x1B56AD5A } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0B56AD5A } }
+};
+
+DecisionTreeNonLeafNode D_80116A48_duel02[] = {
+    { 25, { .data = 0x00000001 }, { .data = 0x0A142850 } },
+    { 7, { .data = 0x00000009 }, { .node_data = D_80116A0C_duel02 } },
+    { 7, { .data = 0x00000009 }, { .node_data = D_80116A30_duel02 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0B56AD5A } }
+};
+
+DecisionTreeNonLeafNode D_80116A78_duel02[] = {
+    { 21, { .data = 0x00000000 }, { .node_data = D_80116A48_duel02 } },
+    { 2, { .data = 0x00000008 }, { .data = 0x1B56AD5A } },
+    { 11, { .data = 0x00030005 }, { .data = 0x1B56AD5A } },
+    { 11, { .data = 0x00020005 }, { .data = 0x1B56AD5A } },
+    { 11, { .data = 0x0000060B }, { .data = 0x1B56AD5A } },
+    { 11, { .data = 0x0001000B }, { .data = 0x1B56AD5A } },
+    { 0, { .data = 0x00000000 }, { .data = 0x08D1A346 } }
+};
+
+DecisionTreeNonLeafNode D_80116ACC_duel02[] = {
+    { 25, { .data = 0x00000001 }, { .data = 0x0A142850 } },
+    { 7, { .data = 0x00000007 }, { .data = 0x0A142850 } },
+    { 11, { .data = 0x00030005 }, { .data = 0x164C9932 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0A142850 } }
+};
+
+DecisionTreeNonLeafNode D_80116AFC_duel02[] = {
+    { 25, { .data = 0x00000001 }, { .data = 0x0A142850 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x078F1E3C } }
+};
+
+DecisionTreeNonLeafNode D_80116B14_duel02[] = {
+    { 11, { .data = 0x00030005 }, { .data = 0x1A142850 } },
+    { 11, { .data = 0x00020005 }, { .data = 0x1A142850 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x078F1E3C } }
+};
+
+DecisionTreeNonLeafNode D_80116B38_duel02[] = {
+    { 21, { .data = 0x00000000 }, { .node_data = D_80116ACC_duel02 } },
+    { 7, { .data = 0x00000004 }, { .node_data = D_80116B14_duel02 } },
+    { 11, { .data = 0x00030005 }, { .node_data = D_80116AFC_duel02 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x078F1E3C } }
+};
+
+DecisionTreeNonLeafNode D_80116B68_duel02[] = {
+    { 22, { .data = 0x00000003 }, { .node_data = D_801169E8_duel02 } },
+    { 22, { .data = 0x00000002 }, { .node_data = D_80116A78_duel02 } },
+    { 22, { .data = 0x00000001 }, { .node_data = D_80116B38_duel02 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x064C9932 } }
+};
+
+DecisionTreeNonLeafNode D_80116B98_duel02[] = {
+    { 5, { .func = func_80114B94_duel02 }, { .data = 0x1C993264 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0C993264 } }
+};
+
+DecisionTreeNonLeafNode D_80116BB0_duel02[] = {
+    { 21, { .data = 0x00000000 }, { .node_data = D_80116B98_duel02 } },
+    { 5, { .func = func_801154DC_duel02 }, { .data = 0x1C993264 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0C993264 } }
+};
+
+DecisionTreeNonLeafNode D_80116BD4_duel02[] = {
+    { 11, { .data = 0x00030005 }, { .data = 0x0B56AD5A } },
+    { 11, { .data = 0x00020005 }, { .data = 0x0B56AD5A } },
+    { 0, { .data = 0x00000000 }, { .data = 0x1B56AD5A } }
+};
+
+DecisionTreeNonLeafNode D_80116BF8_duel02[] = {
+    { 11, { .data = 0x00030005 }, { .data = 0x0B56AD5A } },
+    { 0, { .data = 0x00000000 }, { .data = 0x1B56AD5A } }
+};
+
+DecisionTreeNonLeafNode D_80116C10_duel02[] = {
+    { 25, { .data = 0x00000001 }, { .data = 0x1A142850 } },
+    { 7, { .data = 0x00000009 }, { .node_data = D_80116BD4_duel02 } },
+    { 7, { .data = 0x00000009 }, { .node_data = D_80116BF8_duel02 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x1B56AD5A } }
+};
+
+DecisionTreeNonLeafNode D_80116C40_duel02[] = {
+    { 21, { .data = 0x00000000 }, { .node_data = D_80116C10_duel02 } },
+    { 2, { .data = 0x00000008 }, { .data = 0x0B56AD5A } },
+    { 11, { .data = 0x00030005 }, { .data = 0x0B56AD5A } },
+    { 11, { .data = 0x00020005 }, { .data = 0x0B56AD5A } },
+    { 11, { .data = 0x0000060B }, { .data = 0x0B56AD5A } },
+    { 11, { .data = 0x0001000B }, { .data = 0x0B56AD5A } },
+    { 0, { .data = 0x00000000 }, { .data = 0x18D1A346 } }
+};
+
+DecisionTreeNonLeafNode D_80116C94_duel02[] = {
+    { 25, { .data = 0x00000001 }, { .data = 0x1A142850 } },
+    { 7, { .data = 0x00000007 }, { .data = 0x1A142850 } },
+    { 11, { .data = 0x00030005 }, { .data = 0x064C9932 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x1A142850 } }
+};
+
+DecisionTreeNonLeafNode D_80116CC4_duel02[] = {
+    { 25, { .data = 0x00000001 }, { .data = 0x1A142850 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x178F1E3C } }
+};
+
+DecisionTreeNonLeafNode D_80116CDC_duel02[] = {
+    { 11, { .data = 0x00030005 }, { .data = 0x0A142850 } },
+    { 11, { .data = 0x00020005 }, { .data = 0x0A142850 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x178F1E3C } }
+};
+
+DecisionTreeNonLeafNode D_80116D00_duel02[] = {
+    { 21, { .data = 0x00000000 }, { .node_data = D_80116C94_duel02 } },
+    { 7, { .data = 0x00000004 }, { .node_data = D_80116CDC_duel02 } },
+    { 11, { .data = 0x00030005 }, { .node_data = D_80116CC4_duel02 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x178F1E3C } }
+};
+
+DecisionTreeNonLeafNode D_80116D30_duel02[] = {
+    { 22, { .data = 0x00000003 }, { .node_data = D_80116BB0_duel02 } },
+    { 22, { .data = 0x00000002 }, { .node_data = D_80116C40_duel02 } },
+    { 22, { .data = 0x00000001 }, { .node_data = D_80116D00_duel02 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x164C9932 } }
+};
+
+DecisionTreeNonLeafNode D_80116D60_duel02[] = {
+    { 5, { .func = func_80113CEC_duel02 }, { .data = 0x1C993264 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0C993264 } }
+};
+
+DecisionTreeNonLeafNode D_80116D78_duel02[] = {
+    { 21, { .data = 0x00000001 }, { .node_data = D_80116D60_duel02 } },
+    { 5, { .func = func_80114630_duel02 }, { .data = 0x1C993264 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x0C993264 } }
+};
+
+DecisionTreeNonLeafNode D_80116D9C_duel02[] = {
+    { 11, { .data = 0x00020005 }, { .data = 0x0B56AD5A } },
+    { 11, { .data = 0x00030005 }, { .data = 0x0B56AD5A } },
+    { 0, { .data = 0x00000000 }, { .data = 0x1B56AD5A } }
+};
+
+DecisionTreeNonLeafNode D_80116DC0_duel02[] = {
+    { 11, { .data = 0x00020005 }, { .data = 0x0B56AD5A } },
+    { 0, { .data = 0x00000000 }, { .data = 0x1B56AD5A } }
+};
+
+DecisionTreeNonLeafNode D_80116DD8_duel02[] = {
+    { 25, { .data = 0x00000001 }, { .data = 0x1A142850 } },
+    { 7, { .data = 0x00000009 }, { .node_data = D_80116D9C_duel02 } },
+    { 7, { .data = 0x00000009 }, { .node_data = D_80116DC0_duel02 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x1B56AD5A } }
+};
+
+DecisionTreeNonLeafNode D_80116E08_duel02[] = {
+    { 21, { .data = 0x00000001 }, { .node_data = D_80116DD8_duel02 } },
+    { 2, { .data = 0x00000008 }, { .data = 0x0B56AD5A } },
+    { 11, { .data = 0x00020005 }, { .data = 0x0B56AD5A } },
+    { 11, { .data = 0x00030005 }, { .data = 0x0B56AD5A } },
+    { 11, { .data = 0x0001060B }, { .data = 0x0B56AD5A } },
+    { 11, { .data = 0x0000000B }, { .data = 0x0B56AD5A } },
+    { 0, { .data = 0x00000000 }, { .data = 0x18D1A346 } }
+};
+
+DecisionTreeNonLeafNode D_80116E5C_duel02[] = {
+    { 25, { .data = 0x00000001 }, { .data = 0x1A142850 } },
+    { 7, { .data = 0x00000007 }, { .data = 0x1A142850 } },
+    { 11, { .data = 0x00020005 }, { .data = 0x064C9932 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x1A142850 } }
+};
+
+DecisionTreeNonLeafNode D_80116E8C_duel02[] = {
+    { 25, { .data = 0x00000001 }, { .data = 0x1A142850 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x178F1E3C } }
+};
+
+DecisionTreeNonLeafNode D_80116EA4_duel02[] = {
+    { 11, { .data = 0x00020005 }, { .data = 0x0A142850 } },
+    { 11, { .data = 0x00030005 }, { .data = 0x0A142850 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x178F1E3C } }
+};
+
+DecisionTreeNonLeafNode D_80116EC8_duel02[] = {
+    { 21, { .data = 0x00000001 }, { .node_data = D_80116E5C_duel02 } },
+    { 7, { .data = 0x00000004 }, { .node_data = D_80116EA4_duel02 } },
+    { 11, { .data = 0x00020005 }, { .node_data = D_80116E8C_duel02 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x178F1E3C } }
+};
+
+DecisionTreeNonLeafNode D_80116EF8_duel02[] = {
+    { 22, { .data = 0x00000003 }, { .node_data = D_80116D78_duel02 } },
+    { 22, { .data = 0x00000002 }, { .node_data = D_80116E08_duel02 } },
+    { 22, { .data = 0x00000001 }, { .node_data = D_80116EC8_duel02 } },
+    { 0, { .data = 0x00000000 }, { .data = 0x164C9932 } }
+};
+
+s16 D_80116F28_duel02[] = { 7, 40, -1 };
+
+event_list_entry D_80116F30_duel02[] = {
+    { 1, 1, func_80115A54_duel02 },
     { 0, 0, NULL }
 };
 
-event_list_entry D_801146FC_duel06[] = {
-    { 1, 1, func_80113FB4_duel06 },
+s16 D_80116F40_duel02[] = { 25, 38, -1 };
+
+event_list_entry D_80116F48_duel02[] = {
+    { 1, 1, func_80115BDC_duel02 },
     { 0, 0, NULL }
 };
 
-event_list_entry D_8011470C_duel06[] = {
-    { 1, 1, func_80113FF0_duel06 },
+s16 D_80116F58_duel02[] = { 14, 31, -1 };
+
+event_list_entry D_80116F60_duel02[] = {
+    { 1, 1, func_80115D64_duel02 },
     { 0, 0, NULL }
 };
 
-s16 D_8011471C_duel06[] = { 20, 4, 8, 0, 16 };
+s16 D_80116F70_duel02[] = { 19, 41, -1 };
 
-event_list_entry D_80114728_duel06[] = {
-    { 3, 1, func_80114174_duel06 },
+event_list_entry D_80116F78_duel02[] = {
+    { 1, 1, func_80115EE4_duel02 },
     { 0, 0, NULL }
 };
 
-event_list_entry D_80114738_duel06[] = {
-    { 3, 1, func_80114174_duel06 },
-    { 1, 1, func_80113E74_duel06 },
+event_list_entry D_80116F88_duel02[] = {
+    { 1, 1, func_80116064_duel02 },
     { 0, 0, NULL }
 };
 
-event_table_entry D_80114750_duel06[] = {
-    { 19, D_801146EC_duel06 },
-    { 18, D_801146FC_duel06 },
-    { 1, D_8011470C_duel06 },
-    { 20, D_80114738_duel06 },
-    { 4, D_80114728_duel06 },
-    { 8, D_80114728_duel06 },
-    { 0, D_80114728_duel06 },
-    { 16, D_80114728_duel06 },
+event_list_entry D_80116F98_duel02[] = {
+    { 1, 1, func_8011611C_duel02 },
+    { 0, 0, NULL }
+};
+
+event_list_entry D_80116FA8_duel02[] = {
+    { 1, 1, func_801161D4_duel02 },
+    { 0, 0, NULL }
+};
+
+event_list_entry D_80116FB8_duel02[] = {
+    { 1, 1, func_80116240_duel02 },
+    { 0, 0, NULL }
+};
+
+event_list_entry D_80116FC8_duel02[] = {
+    { 1, 1, func_8011628C_duel02 },
+    { 0, 0, NULL }
+};
+
+event_list_entry D_80116FD8_duel02[] = {
+    { 1, 1, func_801162F8_duel02 },
+    { 0, 0, NULL }
+};
+
+event_list_entry D_80116FE8_duel02[] = {
+    { 1, 1, func_80116344_duel02 },
+    { 0, 0, NULL }
+};
+
+event_list_entry D_80116FF8_duel02[] = {
+    { 1, 1, func_80116370_duel02 },
+    { 0, 0, NULL }
+};
+
+event_table_entry D_80117008_duel02[] = {
+    { 41, D_80116F30_duel02 },
+    { 31, D_80116F48_duel02 },
+    { 38, D_80116F60_duel02 },
+    { 40, D_80116F78_duel02 },
+    { 25, D_80116F88_duel02 },
+    { 7, D_80116F98_duel02 },
+    { 24, D_80116FA8_duel02 },
+    { 26, D_80116FB8_duel02 },
+    { 6, D_80116FC8_duel02 },
+    { 8, D_80116FD8_duel02 },
+    { 18, D_80116FE8_duel02 },
+    { 23, D_80116FF8_duel02 },
     { -1, NULL }
 };
 
-DuelHelpWin *D_80114D30_duel06 BSS;
-DuelHelpWin *D_80114D34_duel06 BSS;
-DuelHelpWin *D_80114D38_duel06 BSS;
-DuelHelpWin *D_80114D3C_duel06 BSS;
-Object *D_80114D40_duel06 BSS;
-Object *D_80114D44_duel06 BSS;
-Object *D_80114D48_duel06 BSS;
-omObjData *D_80114D4C_duel06 BSS;
-Object *D_80114D50_duel06 BSS;
-Process *D_80114D54_duel06 BSS;
-Object *D_80114D58_duel06 BSS;
-f32 D_80114D5C_duel06 BSS;
-Object *D_80114D60_duel06 BSS;
-f32 D_80114D64_duel06 BSS;
-s16 D_80114D68_duel06[6] BSS;
+DuelHelpWin *D_80117600_duel02 BSS;
+DuelHelpWin *D_80117604_duel02 BSS;
+DuelHelpWin *D_80117608_duel02 BSS;
+DuelHelpWin *D_8011760C_duel02 BSS;
+Object *D_80117610_duel02 BSS;
+Object *D_80117614_duel02 BSS;
+Object *D_80117618_duel02 BSS;
+omObjData *D_8011761C_duel02 BSS;
+Object *D_80117620_duel02 BSS;
+Process *D_80117624_duel02 BSS;
+Object *D_80117628_duel02 BSS;
+f32 D_8011762C_duel02 BSS;
+Object *D_80117630_duel02 BSS;
+f32 D_80117634_duel02 BSS;
+Object *D_80117638_duel02[2] BSS;
 
-extern s16 D_80114D72_duel06[]; // D_80114D68_duel06[5]
-
-void func_801059D0_duel06(void) {
+void func_801059D0_duel02(void) {
     mbCameraBtnF = 1;
     mbItemBtnF = 0;
     omPrcSetStatBit(HuPrcCurrentGet(), OM_STAT_NOALLPAUSE);
@@ -379,45 +742,45 @@ void func_801059D0_duel06(void) {
     mbItemBtnF = 1;
 }
 
-void func_80105A58_duel06(void) {
+void func_80105A58_duel02(void) {
     while (func_800E88FC_name_81() != 0) {
         HuPrcVSleep();
     }
     HuPrcVSleep();
-    D_80114D30_duel06 = func_800E1824_name_81(0, 0xA0, 1);
-    D_80114D34_duel06 = func_800E1824_name_81(0xD, 0xAE, 1);
-    D_80114D38_duel06 = func_800E1824_name_81(1, 0xBC, 1);
-    D_80114D3C_duel06 = func_800E1824_name_81(3, 0xCA, 1);
+    D_80117600_duel02 = func_800E1824_name_81(0, 0xA0, 1);
+    D_80117604_duel02 = func_800E1824_name_81(0xD, 0xAE, 1);
+    D_80117608_duel02 = func_800E1824_name_81(1, 0xBC, 1);
+    D_8011760C_duel02 = func_800E1824_name_81(3, 0xCA, 1);
     HuPrcSleep(3);
     mbCameraBtnF = 1;
     D_800D51F8_main = 1;
 }
 
-void func_80105B10_duel06(void) {
+void func_80105B10_duel02(void) {
     mbCameraBtnF = 0;
     D_800D51F8_main = 0;
-    func_800E1854_name_81(D_80114D30_duel06);
-    func_800E1854_name_81(D_80114D34_duel06);
-    func_800E1854_name_81(D_80114D38_duel06);
-    func_800E1854_name_81(D_80114D3C_duel06);
+    func_800E1854_name_81(D_80117600_duel02);
+    func_800E1854_name_81(D_80117604_duel02);
+    func_800E1854_name_81(D_80117608_duel02);
+    func_800E1854_name_81(D_8011760C_duel02);
 }
 
-void func_80105B64_duel06(void) {
-    GwSystem.current_board_index = 5;
+void func_80105B64_duel02(void) {
+    GwSystem.current_board_index = 1;
     omInitObjMan(0xA, 0);
     omOvlGotoEx(0x5A, 0, 0x4190);
 }
 
-void func_80105BA0_duel06(void) {
+void func_80105BA0_duel02(void) {
     s8 sp10;
     s8 sp11;
 
     omInitObjMan(0xA, 0);
     func_800E94D0_name_81();
-    func_800E9B10_name_81(0x13, 0x246);
-    func_800E9F4C_name_81(0x15, &sp10, &sp11);
+    func_800E9B10_name_81(0x13, 0x242);
+    func_800E9F4C_name_81(0x1E, &sp10, &sp11);
     func_800ECD0C_name_81(0, sp10, sp11);
-    func_800E9F4C_name_81(0x16, &sp10, &sp11);
+    func_800E9F4C_name_81(0x1D, &sp10, &sp11);
     func_800ECD0C_name_81(1, sp10, sp11);
     GwPlayer[0].nnlink = -1;
     GwPlayer[0].nnidx = -1;
@@ -427,12 +790,11 @@ void func_80105BA0_duel06(void) {
     func_800E9564_name_81();
     GwSystem.bank_coins = 5;
     GwSystem.playerIndexVisitingBowser = 0;
-    GwSystem.boardData.halfWordBytes[0] = 0;
     func_800EA760_name_81();
     omOvlReturnEx(1);
 }
 
-void func_80105C6C_duel06(Vec *arg0, Vec *arg1, Vec *arg2) {
+void func_80105C68_duel02(Vec *arg0, Vec *arg1, Vec *arg2) {
     f32 angle;
 
     MBDVecDirGet(arg0, arg1, arg2);
@@ -441,8 +803,8 @@ void func_80105C6C_duel06(Vec *arg0, Vec *arg1, Vec *arg2) {
     arg2->z = cosdf(angle);
 }
 
-void func_80105CC8_duel06(void) {
-    Duel06SpriteWork *work = HuPrcCurrentGet()->user_data;
+void func_80105CC4_duel02(void) {
+    Duel02SpriteWork *work = HuPrcCurrentGet()->user_data;
     f32 x = work->pos.x;
     f32 y = work->pos.y;
     f32 z = work->pos.z;
@@ -478,12 +840,12 @@ void func_80105CC8_duel06(void) {
     omDelPrcObj(NULL);
 }
 
-Process *func_80105EB8_duel06(Object *object) {
+Process *func_80105EB4_duel02(Object *object) {
     Process *process;
-    Duel06SpriteWork *work;
+    Duel02SpriteWork *work;
 
-    process = omAddPrcObj(func_80105CC8_duel06, 0xA, 0, 0x40);
-    work = HuMemMemoryAlloc(process->heap, sizeof(Duel06SpriteWork));
+    process = omAddPrcObj(func_80105CC4_duel02, 0xA, 0, 0x40);
+    work = HuMemMemoryAlloc(process->heap, sizeof(Duel02SpriteWork));
     process->user_data = work;
     work->pos.x = object->coords.x;
     work->pos.y = object->coords.y;
@@ -491,9 +853,9 @@ Process *func_80105EB8_duel06(Object *object) {
     return process;
 }
 
-void func_80105F28_duel06(void) {
+void func_80105F24_duel02(void) {
     Process *process = HuPrcCurrentGet();
-    Duel06PartnerAttackWork *work = HuPrcCurrentGet()->user_data;
+    Duel02PartnerAttackWork *work = HuPrcCurrentGet()->user_data;
     GW_PLAYER *player = work->player;
     Object *obj = work->obj;
     s32 delay = work->delay;
@@ -505,7 +867,7 @@ void func_80105F28_duel06(void) {
     if (delay > 0) {
         HuPrcSleep(delay);
     }
-    func_80105EB8_duel06(obj);
+    func_80105EB4_duel02(obj);
     HuVecSubtract(&offset, &obj->coords, &player->player_obj->coords);
     if (D_80105620_name_81 == 3 || D_80105620_name_81 == 1) {
         MBDVecRotateY(&offset, -90.0f);
@@ -528,12 +890,12 @@ void func_80105F28_duel06(void) {
     omDelPrcObj(NULL);
 }
 
-Process *func_801060D8_duel06(GW_PLAYER *player, Object *obj, s32 delay, s32 waitTime) {
+Process *func_801060D4_duel02(GW_PLAYER *player, Object *obj, s32 delay, s32 waitTime) {
     Process *process;
-    Duel06PartnerAttackWork *work;
+    Duel02PartnerAttackWork *work;
 
-    process = omAddPrcObj(func_80105F28_duel06, 0xA, 0, 0x40);
-    work = HuMemMemoryAlloc(process->heap, sizeof(Duel06PartnerAttackWork));
+    process = omAddPrcObj(func_80105F24_duel02, 0xA, 0, 0x40);
+    work = HuMemMemoryAlloc(process->heap, sizeof(Duel02PartnerAttackWork));
     process->user_data = work;
     work->player = player;
     work->obj = obj;
@@ -542,7 +904,7 @@ Process *func_801060D8_duel06(GW_PLAYER *player, Object *obj, s32 delay, s32 wai
     return process;
 }
 
-void func_80106164_duel06(Object *obj, Object *target, GW_PLAYER *player, Vec *targetPos, Vec *origPos, f32 dist) {
+void func_80106160_duel02(Object *obj, Object *target, GW_PLAYER *player, Vec *targetPos, Vec *origPos, f32 dist) {
     Vec offset;
     f32 angle;
 
@@ -560,11 +922,11 @@ void func_80106164_duel06(Object *obj, Object *target, GW_PLAYER *player, Vec *t
     HuVecAdd(targetPos, targetPos, &offset);
 }
 
-void func_80106248_duel06(void) {
+void func_80106244_duel02(void) {
     func_800FC8C4_name_81(&D_80105540_name_81);
 }
 
-Process *func_80106268_duel06(Object *arg0, GW_PLAYER *arg1, s32 arg2, f32 arg3) {
+Process *func_80106264_duel02(Object *arg0, GW_PLAYER *arg1, s32 arg2, f32 arg3) {
     Process *process;
 
     arg3 = arg3 + 0.5f;
@@ -576,7 +938,7 @@ Process *func_80106268_duel06(Object *arg0, GW_PLAYER *arg1, s32 arg2, f32 arg3)
     return process;
 }
 
-void func_801062C8_duel06(Object *arg0, GW_PLAYER *arg1, s32 arg2, s32 arg3) {
+void func_801062C4_duel02(Object *arg0, GW_PLAYER *arg1, s32 arg2, s32 arg3) {
     if (arg2 & 9) {
         func_800EBF2C_name_81(&D_80105540_name_81, &arg0->coords, &D_80105540_name_81, arg3);
     } else {
@@ -584,8 +946,8 @@ void func_801062C8_duel06(Object *arg0, GW_PLAYER *arg1, s32 arg2, s32 arg3) {
     }
 }
 
-void func_80106310_duel06(void) {
-    Duel06CamShakeWork *work = HuPrcCurrentGet()->user_data;
+void func_8010630C_duel02(void) {
+    Duel02CamShakeWork *work = HuPrcCurrentGet()->user_data;
     s32 magnitude = work->magnitude;
     s32 decay = work->decay;
     Vec2f base;
@@ -607,19 +969,19 @@ void func_80106310_duel06(void) {
     omDelPrcObj(NULL);
 }
 
-Process *func_80106464_duel06(s32 magnitude, s32 decay) {
+Process *func_80106460_duel02(s32 magnitude, s32 decay) {
     Process *process;
-    Duel06CamShakeWork *work;
+    Duel02CamShakeWork *work;
 
-    process = omAddPrcObj(func_80106310_duel06, 0xA, 0, 0x40);
-    work = HuMemMemoryAlloc(process->heap, sizeof(Duel06CamShakeWork));
+    process = omAddPrcObj(func_8010630C_duel02, 0xA, 0, 0x40);
+    work = HuMemMemoryAlloc(process->heap, sizeof(Duel02CamShakeWork));
     process->user_data = work;
     work->magnitude = magnitude;
     work->decay = decay;
     return process;
 }
 
-void func_801064D0_duel06(s32 playerIndex, s32 mode) {
+void func_801064CC_duel02(s32 playerIndex, s32 mode) {
     GW_PLAYER *player;
     Object *partner;
     Object *model;
@@ -630,7 +992,7 @@ void func_801064D0_duel06(s32 playerIndex, s32 mode) {
             if (player->stats.partners.frontID == PARTNER_BOB_OMB) {
                 partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_FRONT);
                 model = func_800D8010_name_81(0x28, NULL);
-                D_80114D40_duel06 = model;
+                D_80117610_duel02 = model;
                 HuVecCopy3F(&model->coords, &partner->coords);
                 HuVecCopy3F(&model->rot, &partner->rot);
                 MBDModelDispOff(partner);
@@ -638,7 +1000,7 @@ void func_801064D0_duel06(s32 playerIndex, s32 mode) {
             if (player->stats.partners.backID == PARTNER_BOB_OMB) {
                 partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_BACK);
                 model = func_800D8010_name_81(0x28, NULL);
-                D_80114D44_duel06 = model;
+                D_80117614_duel02 = model;
                 HuVecCopy3F(&model->coords, &partner->coords);
                 HuVecCopy3F(&model->rot, &partner->rot);
                 MBDModelDispOff(partner);
@@ -647,12 +1009,12 @@ void func_801064D0_duel06(s32 playerIndex, s32 mode) {
         case 1:
             if (player->stats.partners.frontID == PARTNER_BOB_OMB) {
                 partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_FRONT);
-                MBDModelKill(D_80114D40_duel06);
+                MBDModelKill(D_80117610_duel02);
                 MBDModelDispOn(partner);
             }
             if (player->stats.partners.backID == PARTNER_BOB_OMB) {
                 partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_BACK);
-                MBDModelKill(D_80114D44_duel06);
+                MBDModelKill(D_80117614_duel02);
                 MBDModelDispOn(partner);
             }
             break;
@@ -663,7 +1025,7 @@ void func_801064D0_duel06(s32 playerIndex, s32 mode) {
                     if (player->stats.partners.frontID == PARTNER_BOB_OMB) {
                         partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_FRONT);
                         model = func_800D8010_name_81(0x28, NULL);
-                        D_80114D40_duel06 = model;
+                        D_80117610_duel02 = model;
                         HuVecCopy3F(&model->coords, &partner->coords);
                         HuVecCopy3F(&model->rot, &partner->rot);
                         MBDModelDispOff(partner);
@@ -674,7 +1036,7 @@ void func_801064D0_duel06(s32 playerIndex, s32 mode) {
                     if (player->stats.partners.backID == PARTNER_BOB_OMB) {
                         partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_BACK);
                         model = func_800D8010_name_81(0x28, NULL);
-                        D_80114D44_duel06 = model;
+                        D_80117614_duel02 = model;
                         HuVecCopy3F(&model->coords, &partner->coords);
                         HuVecCopy3F(&model->rot, &partner->rot);
                         MBDModelDispOff(partner);
@@ -688,7 +1050,7 @@ void func_801064D0_duel06(s32 playerIndex, s32 mode) {
                 case 3:
                     if (player->stats.partners.frontID == PARTNER_BOB_OMB) {
                         partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_FRONT);
-                        MBDModelKill(D_80114D40_duel06);
+                        MBDModelKill(D_80117610_duel02);
                         MBDModelDispOn(partner);
                     }
                     break;
@@ -696,7 +1058,7 @@ void func_801064D0_duel06(s32 playerIndex, s32 mode) {
                 case 2:
                     if (player->stats.partners.backID == PARTNER_BOB_OMB) {
                         partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_BACK);
-                        MBDModelKill(D_80114D44_duel06);
+                        MBDModelKill(D_80117614_duel02);
                         MBDModelDispOn(partner);
                     }
                     break;
@@ -705,7 +1067,7 @@ void func_801064D0_duel06(s32 playerIndex, s32 mode) {
     }
 }
 
-Object *func_80106748_duel06(s32 arg0) {
+Object *func_80106744_duel02(s32 arg0) {
     Object *obj;
 
     obj = func_800D8010_name_81(arg0 & 0xFF, 0);
@@ -718,13 +1080,13 @@ Object *func_80106748_duel06(s32 arg0) {
     return obj;
 }
 
-void func_801067DC_duel06(Object *arg0, Vec *arg1) {
+void func_801067D8_duel02(Object *arg0, Vec *arg1) {
     MBDModelDispOn(arg0);
     func_8001C814_main(arg0->omObj1->model[0], 3, 0);
     HuVecCopy3F(&arg0->coords, arg1);
 }
 
-void func_80106830_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
+void func_8010682C_duel02(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
     GW_PLAYER *player;
     Process *process;
     Object *effect;
@@ -749,9 +1111,9 @@ void func_80106830_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     model = -1;
     func_800FAD04_name_81(0);
     if (mode == 1) {
-        effect = func_80106748_duel06(0x45);
+        effect = func_80106744_duel02(0x45);
     }
-    partner = func_800D8010_name_81(D_801144B0_duel06[mode - 1], NULL);
+    partner = func_800D8010_name_81(D_801165A0_duel02[mode - 1], NULL);
     Hu3DModelLayerSet(partner->omObj1->model[0], 0);
     Hu3DModelRemakeStatic(partner->omObj1->model[0]);
     MBDModelTempAllocFree(partner);
@@ -761,7 +1123,7 @@ void func_80106830_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
         MBDModelTempAllocFree(extra);
         MBDModelDispOff(extra);
     }
-    func_80106248_duel06();
+    func_80106244_duel02();
     HuAudFXPlay(0x25A);
     func_800FAE18_name_81(obj, 0, 0);
     func_800EFABC_name_81(obj);
@@ -780,7 +1142,7 @@ void func_80106830_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
         spinProcesses[1] = func_800D9668_name_81(extra, 0.0f, 30.0f, -1);
         HuPrcSleep(20);
     }
-    func_80106164_duel06(obj, target, player, &targetPos, &origPos, 6.0f);
+    func_80106160_duel02(obj, target, player, &targetPos, &origPos, 6.0f);
     HuPrcChildLink(process, func_800EC1E4_name_81(&obj->coords, &targetPos, &obj->coords, 3.0f));
     HuVecSubtract(&delta, &obj->coords, &targetPos);
     MBDModelDispOn(partner);
@@ -791,16 +1153,16 @@ void func_80106830_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     if (mode == 2) {
         HuPrcChildLink(process, func_800EC1E4_name_81(&extra->coords, &targetPos, &extra->coords, 3.0f));
     }
-    func_80106268_duel06(target, player, flags, 3.0f);
+    func_80106264_duel02(target, player, flags, 3.0f);
     if (flags & 8) {
-        func_801060D8_duel06(player, target, HuVecGetLength3F(&delta) / 3.0f, 20);
+        func_801060D4_duel02(player, target, HuVecGetLength3F(&delta) / 3.0f, 20);
         HuPrcChildWatch();
         MBDModelDispOff(partner);
     } else {
         HuPrcChildWatch();
         MBDModelDispOff(partner);
         if (mode == 1) {
-            func_801067DC_duel06(effect, &obj->coords);
+            func_801067D8_duel02(effect, &obj->coords);
         }
         mid = &midPos;
         if (flags & 1) {
@@ -808,8 +1170,8 @@ void func_80106830_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
             HuVecMulScalar(mid, 0.5f, mid);
             func_800DCE40_name_81(0x4A, mid, 0, 2.0f);
             if (mode == 1) {
-                func_80105C6C_duel06(&target->coords, &effect->coords, &effect->rot);
-                func_801067DC_duel06(effect, &target->coords);
+                func_80105C68_duel02(&target->coords, &effect->coords, &effect->rot);
+                func_801067D8_duel02(effect, &target->coords);
             } else {
                 model = func_800DD1E0_name_81(0xB0025, "obj1");
                 func_800DD2DC_name_81(model, &midPos);
@@ -819,8 +1181,8 @@ void func_80106830_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
             HuVecMulScalar(mid, 0.5f, mid);
             func_800DCE40_name_81(0x4A, mid, 0, 2.0f);
             if (mode == 1) {
-                func_80105C6C_duel06(&player->player_obj->coords, &effect->coords, &effect->rot);
-                func_801067DC_duel06(effect, &player->player_obj->coords);
+                func_80105C68_duel02(&player->player_obj->coords, &effect->coords, &effect->rot);
+                func_801067D8_duel02(effect, &player->player_obj->coords);
             } else {
                 model = func_800DD1E0_name_81(0xB0025, "obj1");
                 func_800DD2DC_name_81(model, &midPos);
@@ -880,7 +1242,7 @@ void func_80106830_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     func_800FADB4_name_81();
 }
 
-void func_80107190_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
+void func_8010718C_duel02(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
     GW_PLAYER *player;
     Process *process;
     Object *effect;
@@ -902,8 +1264,8 @@ void func_80107190_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     effectModels[0] = 0x48;
     effectModels[1] = 0x49;
     extraProcess = NULL;
-    effect = func_80106748_duel06(effectModels[mode - 1]);
-    partner = func_800D8010_name_81(D_801144B0_duel06[mode - 1], NULL);
+    effect = func_80106744_duel02(effectModels[mode - 1]);
+    partner = func_800D8010_name_81(D_801165A0_duel02[mode - 1], NULL);
     Hu3DModelLayerSet(partner->omObj1->model[0], 0);
     Hu3DModelRemakeStatic(partner->omObj1->model[0]);
     MBDModelTempAllocFree(partner);
@@ -915,9 +1277,9 @@ void func_80107190_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     }
     func_800FAD04_name_81(1);
     MBDMotionSet(obj, 0, 2);
-    func_80106164_duel06(obj, target, player, &targetPos, &origPos, 7.0f);
-    func_80106248_duel06();
-    func_80106268_duel06(target, player, flags, 3.0f);
+    func_80106160_duel02(obj, target, player, &targetPos, &origPos, 7.0f);
+    func_80106244_duel02();
+    func_80106264_duel02(target, player, flags, 3.0f);
     HuPrcChildLink(process, func_800EC1E4_name_81(&obj->coords, &targetPos, &obj->coords, 3.0f));
     MBDModelDispOn(partner);
     Hu3DMotionTimeSet(partner->omObj1->model[0], 0.0f);
@@ -957,10 +1319,10 @@ void func_80107190_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
         MBDModelDispOff(partner);
     }
     if (flags & 8) {
-        func_801060D8_duel06(player, target, 0, 20);
+        func_801060D4_duel02(player, target, 0, 20);
     } else {
         HuPrcSleep(3);
-        func_801067DC_duel06(effect, &obj->coords);
+        func_801067D8_duel02(effect, &obj->coords);
         HuAudFXPlay(0x25B);
         mid = &midPos;
         if (flags & 1) {
@@ -970,7 +1332,7 @@ void func_80107190_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
         }
         HuVecMulScalar(mid, 0.5f, mid);
         midPos.y += obj->velocity.x;
-        func_801067DC_duel06(effect, mid);
+        func_801067D8_duel02(effect, mid);
         if (mode == 2) {
             func_800DCE40_name_81(0x4B, &midPos, 0, 2.0f);
         }
@@ -1008,7 +1370,7 @@ void func_80107190_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     func_800FADB4_name_81();
 }
 
-void func_801079C0_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
+void func_801079BC_duel02(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
     GW_PLAYER *player;
     Process *process;
     Object *effect;
@@ -1028,8 +1390,8 @@ void func_801079C0_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     effectIds[0] = 0x4E;
     effectIds[1] = 0x4A;
     func_800FAD04_name_81(2);
-    effect = func_80106748_duel06(effectModels[mode - 1]);
-    partner = func_800D8010_name_81(D_801144B0_duel06[mode - 1], NULL);
+    effect = func_80106744_duel02(effectModels[mode - 1]);
+    partner = func_800D8010_name_81(D_801165A0_duel02[mode - 1], NULL);
     Hu3DModelLayerSet(partner->omObj1->model[0], 0);
     Hu3DModelRemakeStatic(partner->omObj1->model[0]);
     MBDModelTempAllocFree(partner);
@@ -1038,9 +1400,9 @@ void func_801079C0_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     MBDModelDispOff(hook);
     func_800F0378_name_81(obj, "item_hook", hook->omObj1->model[0]);
     MBDMotionSet(obj, 0, 2);
-    func_80106164_duel06(obj, target, player, &targetPos, &origPos, 6.0f);
-    func_80106248_duel06();
-    func_80106268_duel06(target, player, flags, 3.0f);
+    func_80106160_duel02(obj, target, player, &targetPos, &origPos, 6.0f);
+    func_80106244_duel02();
+    func_80106264_duel02(target, player, flags, 3.0f);
     HuPrcChildLink(process, func_800EC1E4_name_81(&obj->coords, &targetPos, &obj->coords, 3.0f));
     MBDModelDispOn(partner);
     Hu3DMotionTimeSet(partner->omObj1->model[0], 0.0f);
@@ -1065,7 +1427,7 @@ void func_801079C0_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     func_800FAE18_name_81(obj, 0, 0);
     HuAudFXPlay(0x1D8);
     if (flags & 8) {
-        func_801060D8_duel06(player, target, 0, 20);
+        func_801060D4_duel02(player, target, 0, 20);
     } else {
         HuPrcSleep(9);
         HuAudFXPlay(0x1D7);
@@ -1082,7 +1444,7 @@ void func_801079C0_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
         // The do-while(0) block is needed to match register allocation.
         do {
             func_800EB804_name_81(effect);
-            func_801067DC_duel06(effect, mid);
+            func_801067D8_duel02(effect, mid);
         } while (0);
         func_800DCE40_name_81(effectIds[mode - 1], &midPos, 0, 2.0f);
         func_800FAC1C_name_81(&D_80105540_name_81);
@@ -1112,7 +1474,7 @@ void func_801079C0_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     func_800FADB4_name_81();
 }
 
-void func_80107EC4_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
+void func_80107EC0_duel02(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
     GW_PLAYER *player;
     Process *process;
     Object *effect;
@@ -1131,14 +1493,14 @@ void func_80107EC4_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     extra = NULL;
     effectModels[0] = 0x4F;
     effectModels[1] = 0x52;
-    effect = func_80106748_duel06(effectModels[mode - 1]);
+    effect = func_80106744_duel02(effectModels[mode - 1]);
     HuVecCopyXYZ(&effect->scale, 2.0f, 2.0f, 2.0f);
     if (mode == 2) {
         HuPrcVSleep();
-        extra = func_80106748_duel06(0x5B);
+        extra = func_80106744_duel02(0x5B);
         HuPrcVSleep();
     }
-    partner = func_800D8010_name_81(D_801144B0_duel06[mode - 1], NULL);
+    partner = func_800D8010_name_81(D_801165A0_duel02[mode - 1], NULL);
     Hu3DModelLayerSet(partner->omObj1->model[0], 0);
     Hu3DModelRemakeStatic(partner->omObj1->model[0]);
     MBDModelTempAllocFree(partner);
@@ -1154,8 +1516,8 @@ void func_80107EC4_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     func_800FAE98_name_81(obj, 0, 0, 5, 2);
     HuAudFXPlay(0x1DC);
     HuPrcSleep(20);
-    func_80106248_duel06();
-    func_80106268_duel06(target, player, flags, 2.0f);
+    func_80106244_duel02();
+    func_80106264_duel02(target, player, flags, 2.0f);
     if (target != NULL) {
         HuVecCopy3F(&targetPos, &target->coords);
         MBDVecDirGet(&obj->coords, &targetPos, &obj->rot);
@@ -1202,7 +1564,7 @@ void func_80107EC4_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     HuVecAdd(mid, &player->player_obj->coords, &obj->coords);
     HuVecMulScalar(mid, 0.5f, mid);
     if (mode == 2) {
-        func_801067DC_duel06(extra, &obj->coords);
+        func_801067D8_duel02(extra, &obj->coords);
         Hu3DMotionSpeedSet(extra->omObj1->model[0], 2.0f);
         MBDBackTPLvlSet(0xFF);
         HuPrcVSleep();
@@ -1210,12 +1572,12 @@ void func_80107EC4_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
         HuPrcVSleep();
         MBDBackTPLvlSet(0xFF);
         HuPrcVSleep();
-        func_801067DC_duel06(effect, mid);
+        func_801067D8_duel02(effect, mid);
         MBDBackTPLvlSet(0x40);
         HuPrcVSleep();
     }
     if (mode == 1) {
-        func_801067DC_duel06(effect, &midPos);
+        func_801067D8_duel02(effect, &midPos);
         HuAudFXPlay(0x1DD);
     } else {
         HuAudFXPlay(0x1DE);
@@ -1235,7 +1597,7 @@ void func_80107EC4_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     func_800FADB4_name_81();
 }
 
-void func_801084AC_duel06(s32 playerIndex, s32 arg1, Object *arg2, Object *arg3, s32 arg4, s32 arg5) {
+void func_801084A8_duel02(s32 playerIndex, s32 arg1, Object *arg2, Object *arg3, s32 arg4, s32 arg5) {
     func_800FAD04_name_81(5);
     if (arg5 == 2) {
         HuAudFXPlay(0x25D);
@@ -1250,7 +1612,7 @@ void func_801084AC_duel06(s32 playerIndex, s32 arg1, Object *arg2, Object *arg3,
     func_800FADB4_name_81();
 }
 
-void func_80108558_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
+void func_80108554_duel02(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
     GW_PLAYER *player;
     Process *process;
     Object *effect;
@@ -1271,15 +1633,15 @@ void func_80108558_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
         HuPrcSleep(20);
         return;
     }
-    effect = func_80106748_duel06(0x55);
-    func_80106164_duel06(obj, target, player, &targetPos, &origPos, 9.0f);
+    effect = func_80106744_duel02(0x55);
+    func_80106160_duel02(obj, target, player, &targetPos, &origPos, 9.0f);
     for (height = 0.0f; height <= 20.0f; height += 2.0f) {
         obj->velocity.x = height;
         HuPrcVSleep();
     }
     HuPrcSleep(5);
-    func_80106248_duel06();
-    func_80106268_duel06(target, player, flags, 3.0f);
+    func_80106244_duel02();
+    func_80106264_duel02(target, player, flags, 3.0f);
     MTX_ROTX(Hu3DData[obj->omObj1->model[0]].mtx, 20.0f);
     HuVecSubtract(&delta, &targetPos, &obj->coords);
     HuPrcChildLink(process, func_800EBF2C_name_81(&obj->coords, &targetPos, &obj->coords, 10));
@@ -1309,9 +1671,9 @@ void func_80108558_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
         HuPrcSleep(10);
         if (flags & 8) {
             if (mode == 1) {
-                func_801060D8_duel06(player, target, 0, 55);
+                func_801060D4_duel02(player, target, 0, 55);
             } else {
-                func_801060D8_duel06(player, target, 0, 120);
+                func_801060D4_duel02(player, target, 0, 120);
             }
             for (height = 24.0f; height >= 0.0f; height -= 8.0f) {
                 obj->velocity.x = height;
@@ -1343,10 +1705,10 @@ void func_80108558_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
                 HuAudFXPlay(0x1E9);
             }
             HuVecCopyXYZ(&target->scale, 1.0f, 0.1f, 1.0f);
-            func_801064D0_duel06(targetPlayer, 2);
+            func_801064CC_duel02(targetPlayer, 2);
             if (mode == 1) {
                 func_800EB804_name_81(effect);
-                func_801067DC_duel06(effect, &target->coords);
+                func_801067D8_duel02(effect, &target->coords);
                 func_800DCE40_name_81(0x47, &target->coords, NULL, 1.0f);
             } else {
                 smoke = func_800D8010_name_81(0x5A, NULL);
@@ -1357,10 +1719,10 @@ void func_80108558_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
             }
         }
         if (mode == 1) {
-            func_80106464_duel06(10, 1);
+            func_80106460_duel02(10, 1);
             HuPrcSleep(40);
         } else {
-            HuPrcChildLink(process, func_80106464_duel06(5, 2));
+            HuPrcChildLink(process, func_80106460_duel02(5, 2));
             HuPrcChildWatch();
             for (i = 0; i < 3; i++) {
                 for (height = 0.0f; height < 9.0f; height += 3.0f) {
@@ -1374,7 +1736,7 @@ void func_80108558_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
                 if (i == 2) {
                     HuAudFXPlay(0x1F3);
                     func_800EB804_name_81(effect);
-                    func_801067DC_duel06(effect, &obj->coords);
+                    func_801067D8_duel02(effect, &obj->coords);
                     func_800DCE40_name_81(0x47, &obj->coords, NULL, 1.0f);
                 } else {
                     HuAudFXPlay(0x1E9);
@@ -1382,7 +1744,7 @@ void func_80108558_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
                     func_800D974C_name_81(smoke);
                     HuVecCopy3F(&smoke->coords, &obj->coords);
                 }
-                HuPrcChildLink(process, func_80106464_duel06(5, 2));
+                HuPrcChildLink(process, func_80106460_duel02(5, 2));
                 HuPrcChildWatch();
             }
             angle = MBDVecAngleGet(&obj->rot);
@@ -1419,7 +1781,7 @@ void func_80108558_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     func_800DCB04_name_81(0x5A, 1, &obj->coords, 1.0f, 0);
     func_800ED214_name_81(playerIndex);
     if (target != NULL && !(flags & 8)) {
-        func_801064D0_duel06(targetPlayer, 3);
+        func_801064CC_duel02(targetPlayer, 3);
         angle = 1.0f;
         for (i = 0; i < 1080; i += 54) {
             HuVecCopyXYZ(&target->scale, 1.0f, sindf(i) * angle + 1.0f, 1.0f);
@@ -1439,7 +1801,7 @@ void func_80108558_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     }
 }
 
-void func_8010940C_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
+void func_80109408_duel02(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
     GW_PLAYER *player;
     Process *process;
     Vec targetPos;
@@ -1453,16 +1815,16 @@ void func_8010940C_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     process = HuPrcCurrentGet();
     HuAudFXPlay(0x1F4);
     MBDMotionSet(obj, 0, 2);
-    func_80106164_duel06(obj, target, player, &targetPos, &origPos, 0.0f);
+    func_80106160_duel02(obj, target, player, &targetPos, &origPos, 0.0f);
     HuVecSubtract(&dir, &obj->coords, &targetPos);
-    func_80106248_duel06();
-    func_80106268_duel06(target, player, flags, 3.0f);
+    func_80106244_duel02();
+    func_80106264_duel02(target, player, flags, 3.0f);
     targetPos.y -= 5.0f;
     HuPrcChildLink(process, func_800EC1E4_name_81(&obj->coords, &targetPos, &obj->coords, 3.0f));
     steps = HuVecGetLength3F(&dir) / 3.0f;
     obj->flags |= 1;
     if (flags & 8) {
-        func_801060D8_duel06(player, target, HuVecGetLength3F(&dir) / 3.0f, 20);
+        func_801060D4_duel02(player, target, HuVecGetLength3F(&dir) / 3.0f, 20);
         for (i = 0; i < steps; i++) {
             func_8001F9E4_main(obj->omObj1->model[0], ~((i * 128) / steps));
             HuVecCopyXYZ(&obj->scale, i * 2.0f / steps + 1.0f, i * 2.0f / steps + 1.0f, i * 2.0f / steps + 1.0f);
@@ -1509,7 +1871,7 @@ void func_8010940C_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     }
 }
 
-void func_80109890_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
+void func_8010988C_duel02(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
     GW_PLAYER *player;
     Process *process;
     s32 sound;
@@ -1528,14 +1890,14 @@ void func_80109890_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     process = HuPrcCurrentGet();
     sound = -1;
     if (mode & 0x10) {
-        func_8010940C_duel06(playerIndex, targetPlayer, obj, target, flags, 1);
+        func_80109408_duel02(playerIndex, targetPlayer, obj, target, flags, 1);
         return;
     }
     mode &= ~0x10;
     MBDMotionSet(obj, 0, 2);
-    func_80106164_duel06(obj, target, player, &targetPos, &origPos, 6.0f);
-    func_80106164_duel06(obj, target, player, &nearPos, &origPos, 8.0f);
-    func_80106248_duel06();
+    func_80106160_duel02(obj, target, player, &targetPos, &origPos, 6.0f);
+    func_80106160_duel02(obj, target, player, &nearPos, &origPos, 8.0f);
+    func_80106244_duel02();
     for (i = 0; i < 10; i++) {
         func_8001F9E4_main(obj->omObj1->model[0], ~((i * 255) / 10));
         func_8001F9E4_main(obj->omObj2->model[0], ~((i * 255) / 10));
@@ -1543,7 +1905,7 @@ void func_80109890_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     }
     func_8001F9E4_main(obj->omObj1->model[0], 0);
     func_8001F9E4_main(obj->omObj2->model[0], 0);
-    HuPrcChildLink(process, func_80106268_duel06(target, player, flags, 3.0f));
+    HuPrcChildLink(process, func_80106264_duel02(target, player, flags, 3.0f));
     HuPrcChildWatch();
     if (mode == 2) {
         sound = HuAudFXPlay(0x1DF);
@@ -1605,9 +1967,9 @@ void func_80109890_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     HuPrcChildLink(process, func_800EBF2C_name_81(&obj->coords, &targetPos, &obj->coords, 3));
     if (flags & 8) {
         if (mode == 1) {
-            func_801060D8_duel06(player, target, 0, 20);
+            func_801060D4_duel02(player, target, 0, 20);
         } else {
-            func_801060D8_duel06(player, target, 0, 40);
+            func_801060D4_duel02(player, target, 0, 40);
         }
         HuPrcChildWatch();
         if (mode == 2) {
@@ -1669,7 +2031,7 @@ void func_80109890_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     func_8001F9E4_main(obj->omObj2->model[0], 255);
 }
 
-void func_8010A218_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
+void func_8010A214_duel02(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
     GW_PLAYER *player;
     Process *process;
     Object *extra;
@@ -1690,11 +2052,11 @@ void func_8010A218_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     extra = NULL;
     func_800FAD04_name_81(10);
     if (mode == 2) {
-        extra = func_80106748_duel06(0x51);
+        extra = func_80106744_duel02(0x51);
         HuVecCopyXYZ(&extra->scale, 2.0f, 2.0f, 2.0f);
         HuPrcVSleep();
     }
-    effect = func_80106748_duel06(0x4C);
+    effect = func_80106744_duel02(0x4C);
     HuVecCopyXYZ(&effect->scale, 2.0f, 2.0f, 2.0f);
     HuPrcVSleep();
     if (target != NULL) {
@@ -1733,12 +2095,12 @@ void func_8010A218_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
         }
     }
     HuAudFXPlay(0x1E1);
-    func_80106248_duel06();
-    func_801062C8_duel06(target, player, flags, 30);
+    func_80106244_duel02();
+    func_801062C4_duel02(target, player, flags, 30);
     if (flags & 8) {
         HuVecCopy3F(&effectPos, &target->coords);
         effectPos.y += 5.0f;
-        func_801060D8_duel06(player, target, 25, 40);
+        func_801060D4_duel02(player, target, 25, 40);
         if (mode == 1) {
             HuPrcSleep(32);
         } else {
@@ -1757,9 +2119,9 @@ void func_8010A218_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
             HuAudFXPlay(0x1E2);
             HuPrcChildWatch();
         }
-        func_801067DC_duel06(effect, &effectPos);
+        func_801067D8_duel02(effect, &effectPos);
         if (mode == 2) {
-            func_801067DC_duel06(extra, &effectPos);
+            func_801067D8_duel02(extra, &effectPos);
         }
     } else {
         if (mode != 1) {
@@ -1790,9 +2152,9 @@ void func_8010A218_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
             HuVecCopy3F(&effectPos, &player->player_obj->coords);
         }
         effectPos.y += 5.0f;
-        func_801067DC_duel06(effect, &effectPos);
+        func_801067D8_duel02(effect, &effectPos);
         if (mode == 2) {
-            func_801067DC_duel06(extra, &effectPos);
+            func_801067D8_duel02(extra, &effectPos);
         }
         func_800FAC1C_name_81(&D_80105540_name_81);
         if (flags & 1) {
@@ -1835,15 +2197,15 @@ void func_8010A218_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     func_800FADB4_name_81();
 }
 
-void func_8010AAB8_duel06(Object *obj, s32 swap) {
+void func_8010AAB4_duel02(Object *obj, s32 swap) {
     Object *model;
     f32 scale;
     f32 angle;
 
     if (swap) {
-        D_80114D48_duel06 = func_800D8010_name_81(8, D_801144B8_duel06);
-        MBDModelTempAllocFree(D_80114D48_duel06);
-        MBDModelDispOff(D_80114D48_duel06);
+        D_80117618_duel02 = func_800D8010_name_81(8, D_801165A8_duel02);
+        MBDModelTempAllocFree(D_80117618_duel02);
+        MBDModelDispOff(D_80117618_duel02);
     } else {
         HuPrcSleep(3);
     }
@@ -1864,9 +2226,9 @@ void func_8010AAB8_duel06(Object *obj, s32 swap) {
     }
 
     if (swap) {
-        HuVecCopy3F(&D_80114D48_duel06->coords, &obj->coords);
-        HuVecCopy3F(&D_80114D48_duel06->rot, &obj->rot);
-        MBDModelDispOn(D_80114D48_duel06);
+        HuVecCopy3F(&D_80117618_duel02->coords, &obj->coords);
+        HuVecCopy3F(&D_80117618_duel02->rot, &obj->rot);
+        MBDModelDispOn(D_80117618_duel02);
         MBDModelDispOff(obj);
     }
 
@@ -1880,7 +2242,7 @@ void func_8010AAB8_duel06(Object *obj, s32 swap) {
     MBDModelKill(model);
 }
 
-void func_8010AD50_duel06(Object *obj) {
+void func_8010AD4C_duel02(Object *obj) {
     Object *model;
     f32 scale;
     f32 angle;
@@ -1889,7 +2251,7 @@ void func_8010AD50_duel06(Object *obj) {
     func_8001C258_main(model->omObj1->model[0], 0x180, 0);
     Hu3DModelLayerSet(model->omObj1->model[0], 0x800);
     Hu3DModelRemakeStatic(model->omObj1->model[0]);
-    HuVecCopy3F(&model->coords, &D_80114D48_duel06->coords);
+    HuVecCopy3F(&model->coords, &D_80117618_duel02->coords);
     model->coords.y += 5.0f;
     if (GwSystem.current_board_index == 6) {
         HuAudFXPlay(0x1E3);
@@ -1903,9 +2265,9 @@ void func_8010AD50_duel06(Object *obj) {
         HuPrcVSleep();
     }
 
-    HuVecCopy3F(&obj->coords, &D_80114D48_duel06->coords);
-    HuVecCopy3F(&obj->rot, &D_80114D48_duel06->rot);
-    MBDModelKill(D_80114D48_duel06);
+    HuVecCopy3F(&obj->coords, &D_80117618_duel02->coords);
+    HuVecCopy3F(&obj->rot, &D_80117618_duel02->rot);
+    MBDModelKill(D_80117618_duel02);
     MBDModelDispOn(obj);
     obj->flags &= ~1;
 
@@ -1919,14 +2281,14 @@ void func_8010AD50_duel06(Object *obj) {
     MBDModelKill(model);
 }
 
-void func_8010AFBC_duel06(void) {
+void func_8010AFB8_duel02(void) {
     UnkDuelObjData *data;
     void *sprData;
     s32 i;
 
     func_800142A0_main(0x1A);
-    D_80114D4C_duel06 = omAddObj(0x1F4, 0, 0, -1, func_8010B138_duel06);
-    data = D_80114D4C_duel06->data = HuMemAllocTag(sizeof(UnkDuelObjData), 0x7918);
+    D_8011761C_duel02 = omAddObj(0x1F4, 0, 0, -1, func_8010B134_duel02);
+    data = D_8011761C_duel02->data = HuMemAllocTag(sizeof(UnkDuelObjData), 0x7918);
     sprData = DataRead(0xB0047);
     for (i = 0; i < ARRAY_COUNT(data->sprId); i++) {
         if (i == 0) {
@@ -1944,11 +2306,11 @@ void func_8010AFBC_duel06(void) {
     for (i = 0; i < ARRAY_COUNT(data->active); i++) {
         data->active[i] = 0;
     }
-    D_80114D4C_duel06->work[0] = 0;
+    D_8011761C_duel02->work[0] = 0;
     data->spawnTimer = 0;
 }
 
-void func_8010B138_duel06(omObjData *object) {
+void func_8010B134_duel02(omObjData *object) {
     UnkDuelObjData *data = object->data;
     s32 i;
 
@@ -1984,16 +2346,16 @@ void func_8010B138_duel06(omObjData *object) {
             if (i != ARRAY_COUNT(data->active)) {
                 data->active[i] = 1;
                 data->spawnTimer = 1;
-                data->vel[i].x = D_80114D48_duel06->rot.x;
+                data->vel[i].x = D_80117618_duel02->rot.x;
                 data->vel[i].y = -0.8f;
-                data->vel[i].z = D_80114D48_duel06->rot.z;
+                data->vel[i].z = D_80117618_duel02->rot.z;
                 MBDVecNormalize(&data->vel[i]);
                 data->vel[i].x *= 2.0f;
                 data->vel[i].y *= 2.0f;
                 data->vel[i].z *= 2.0f;
-                data->pos[i].x = D_80114D48_duel06->rot.x * 10.0f + D_80114D48_duel06->coords.x;
-                data->pos[i].z = D_80114D48_duel06->rot.z * 10.0f + D_80114D48_duel06->coords.z;
-                data->pos[i].y = D_80114D48_duel06->coords.y + 6.0f;
+                data->pos[i].x = D_80117618_duel02->rot.x * 10.0f + D_80117618_duel02->coords.x;
+                data->pos[i].z = D_80117618_duel02->rot.z * 10.0f + D_80117618_duel02->coords.z;
+                data->pos[i].y = D_80117618_duel02->coords.y + 6.0f;
                 data->life[i] = 15.0f;
                 data->scale[i] = 0.1f;
                 func_8001C258_main(data->modelId[i], 4, 0);
@@ -2008,8 +2370,8 @@ void func_8010B138_duel06(omObjData *object) {
     }
 }
 
-s16 func_8010B488_duel06(void) {
-    UnkDuelObjData *data = D_80114D4C_duel06->data;
+s16 func_8010B484_duel02(void) {
+    UnkDuelObjData *data = D_8011761C_duel02->data;
     s32 i;
 
     for (i = 0; i < ARRAY_COUNT(data->active); i++) {
@@ -2020,26 +2382,26 @@ s16 func_8010B488_duel06(void) {
     return 0;
 }
 
-void func_8010B4C8_duel06(void) {
-    UnkDuelObjData *data = D_80114D4C_duel06->data;
+void func_8010B4C4_duel02(void) {
+    UnkDuelObjData *data = D_8011761C_duel02->data;
     s32 i;
 
     for (i = 0; i < ARRAY_COUNT(data->sprId); i++) {
         func_80016638_main(data->sprId[i]);
     }
-    omDelObj(D_80114D4C_duel06);
+    omDelObj(D_8011761C_duel02);
     func_800166D0_main();
 }
 
-void func_8010B530_duel06(void) {
-    D_80114D4C_duel06->work[0] = 1;
+void func_8010B52C_duel02(void) {
+    D_8011761C_duel02->work[0] = 1;
 }
 
-void func_8010B544_duel06(void) {
-    D_80114D4C_duel06->work[0] = 0;
+void func_8010B540_duel02(void) {
+    D_8011761C_duel02->work[0] = 0;
 }
 
-void func_8010B554_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
+void func_8010B550_duel02(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
     GW_PLAYER *player;
     Process *process;
     Object *partner;
@@ -2057,25 +2419,25 @@ void func_8010B554_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     model = -1;
     func_800FAD04_name_81(11);
     if (flags != 0) {
-        partner = func_800D8010_name_81(D_801144B0_duel06[mode - 1], NULL);
+        partner = func_800D8010_name_81(D_801165A0_duel02[mode - 1], NULL);
         Hu3DModelLayerSet(partner->omObj1->model[0], 0);
         Hu3DModelRemakeStatic(partner->omObj1->model[0]);
         MBDModelTempAllocFree(partner);
         MBDModelDispOff(partner);
         func_800FAE18_name_81(obj, 0, 0);
         func_800EFABC_name_81(obj);
-        func_8010AAB8_duel06(obj, 1);
+        func_8010AAB4_duel02(obj, 1);
         HuAudFXPlay(0x29C);
-        MBDMotionSet(D_80114D48_duel06, 0, 2);
-        HuVecCopy3F(&origPos, &D_80114D48_duel06->coords);
-        HuVecCopy3F(&origRot, &D_80114D48_duel06->rot);
+        MBDMotionSet(D_80117618_duel02, 0, 2);
+        HuVecCopy3F(&origPos, &D_80117618_duel02->coords);
+        HuVecCopy3F(&origRot, &D_80117618_duel02->rot);
         if (target != NULL) {
             HuVecCopy3F(&targetPos, &target->coords);
         } else {
             HuVecCopy3F(&targetPos, &player->player_obj->coords);
         }
-        MBDVecDirGet(&D_80114D48_duel06->coords, &targetPos, &D_80114D48_duel06->rot);
-        angle = MBDVecAngleGet(&D_80114D48_duel06->rot) + 180.0f;
+        MBDVecDirGet(&D_80117618_duel02->coords, &targetPos, &D_80117618_duel02->rot);
+        angle = MBDVecAngleGet(&D_80117618_duel02->rot) + 180.0f;
         if (mode == 1) {
             offset.x = sindf(angle) * 6.0f * 2.5f;
             offset.y = 0.0f;
@@ -2086,27 +2448,27 @@ void func_8010B554_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
             offset.z = cosdf(angle) * 6.0f * 3.0f;
         }
         HuVecAdd(&targetPos, &targetPos, &offset);
-        HuPrcChildLink(process, func_800EC1E4_name_81(&D_80114D48_duel06->coords, &targetPos, &D_80114D48_duel06->coords, 0.5f));
-        func_80106248_duel06();
-        func_80106268_duel06(target, player, flags, 0.8f);
+        HuPrcChildLink(process, func_800EC1E4_name_81(&D_80117618_duel02->coords, &targetPos, &D_80117618_duel02->coords, 0.5f));
+        func_80106244_duel02();
+        func_80106264_duel02(target, player, flags, 0.8f);
         MBDModelDispOn(partner);
         Hu3DMotionTimeSet(partner->omObj1->model[0], 0.0f);
-        HuVecCopy3F(&partner->coords, &D_80114D48_duel06->coords);
+        HuVecCopy3F(&partner->coords, &D_80117618_duel02->coords);
         MBDVecDirGet(&partner->coords, &targetPos, &partner->rot);
         HuPrcChildLink(process, func_800EC1E4_name_81(&partner->coords, &targetPos, &partner->coords, 0.5f));
         HuPrcChildWatch();
         MBDModelDispOff(partner);
         if (mode == 1) {
-            MBDMotionSet(D_80114D48_duel06, 3, 0);
+            MBDMotionSet(D_80117618_duel02, 3, 0);
             if (flags & 8) {
-                func_801060D8_duel06(player, target, 0, 50);
+                func_801060D4_duel02(player, target, 0, 50);
             } else {
                 HuPrcSleep(8);
                 mid = &midPos;
                 if (flags & 1) {
-                    HuVecAdd(mid, &target->coords, &D_80114D48_duel06->coords);
+                    HuVecAdd(mid, &target->coords, &D_80117618_duel02->coords);
                 } else {
-                    HuVecAdd(mid, &player->player_obj->coords, &D_80114D48_duel06->coords);
+                    HuVecAdd(mid, &player->player_obj->coords, &D_80117618_duel02->coords);
                 }
                 HuVecMulScalar(mid, 0.5f, mid);
                 midPos.y += 5.0f;
@@ -2132,20 +2494,20 @@ void func_8010B554_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
                     }
                 }
             }
-            func_800EFABC_name_81(D_80114D48_duel06);
-            MBDMotionSet(D_80114D48_duel06, -1, 2);
+            func_800EFABC_name_81(D_80117618_duel02);
+            MBDMotionSet(D_80117618_duel02, -1, 2);
             HuPrcSleep(20);
         } else {
-            MBDMotionSet(D_80114D48_duel06, 1, 0);
+            MBDMotionSet(D_80117618_duel02, 1, 0);
             HuPrcSleep(30);
-            func_8010AFBC_duel06();
-            func_8010B530_duel06();
+            func_8010AFB8_duel02();
+            func_8010B52C_duel02();
             HuAudFXPlay(0x1E4);
             if (flags & 8) {
-                func_801060D8_duel06(player, target, 0, 50);
+                func_801060D4_duel02(player, target, 0, 50);
             }
-            func_800EFABC_name_81(D_80114D48_duel06);
-            MBDMotionSet(D_80114D48_duel06, 2, 2);
+            func_800EFABC_name_81(D_80117618_duel02);
+            MBDMotionSet(D_80117618_duel02, 2, 2);
             if (!(flags & 8)) {
                 func_800FAC1C_name_81(&D_80105540_name_81);
                 if (flags & 1) {
@@ -2156,15 +2518,15 @@ void func_8010B554_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
                 }
             }
             HuPrcSleep(30);
-            func_8010B544_duel06();
-            while (func_8010B488_duel06()) {
+            func_8010B540_duel02();
+            while (func_8010B484_duel02()) {
                 HuPrcVSleep();
             }
-            MBDMotionShiftSet(D_80114D48_duel06, -1, 0, 5, 2);
+            MBDMotionShiftSet(D_80117618_duel02, -1, 0, 5, 2);
             HuPrcSleep(10);
-            func_8010B4C8_duel06();
+            func_8010B4C4_duel02();
         }
-        func_8010AD50_duel06(obj);
+        func_8010AD4C_duel02(obj);
         MBDVecDirGet(&obj->coords, &origPos, &obj->rot);
         MBDMotionSet(obj, 0, 2);
         HuPrcChildLink(process, func_800EC1E4_name_81(&obj->coords, &origPos, &obj->coords, 3.0f));
@@ -2188,9 +2550,9 @@ void func_8010B554_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     } else {
         func_800FAE18_name_81(obj, 0, 0);
         func_800EFABC_name_81(obj);
-        func_8010AAB8_duel06(obj, 0);
+        func_8010AAB4_duel02(obj, 0);
         HuAudFXPlay(0x2A0);
-        func_80105EB8_duel06(obj);
+        func_80105EB4_duel02(obj);
         HuPrcSleep(10);
         func_800FAE18_name_81(obj, 1, 0);
         func_800EFABC_name_81(obj);
@@ -2199,7 +2561,7 @@ void func_8010B554_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     func_800FADB4_name_81();
 }
 
-void func_8010BCDC_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
+void func_8010BCD8_duel02(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
     GW_PLAYER *player = MBDGetPlayerStruct(targetPlayer);
     Process *process = HuPrcCurrentGet();
     Object *frontPartner = NULL;
@@ -2218,7 +2580,7 @@ void func_8010BCDC_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     Vec effectPos;
 
     func_800FAD04_name_81(8);
-    partner = func_800D8010_name_81(D_801144B0_duel06[mode - 1], NULL);
+    partner = func_800D8010_name_81(D_801165A0_duel02[mode - 1], NULL);
     Hu3DModelLayerSet(partner->omObj1->model[0], 0);
     Hu3DModelRemakeStatic(partner->omObj1->model[0]);
     MBDModelTempAllocFree(partner);
@@ -2249,8 +2611,8 @@ void func_8010BCDC_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
             hitDelays[2] = 0;
         }
     }
-    func_80106248_duel06();
-    func_80106268_duel06(target, player, 0, 7.0f);
+    func_80106244_duel02();
+    func_80106264_duel02(target, player, 0, 7.0f);
     if (mode == 1) {
         func_800FAE18_name_81(obj, 0, 2);
         HuPrcChildLink(process, func_800EC1E4_name_81(&obj->coords, &targetPos, &obj->coords, 7.0f));
@@ -2384,10 +2746,10 @@ void func_8010BCDC_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
             }
             HuPrcVSleep();
         }
-        func_801064D0_duel06(targetPlayer, 0);
+        func_801064CC_duel02(targetPlayer, 0);
         func_800EF800_name_81(obj);
         HuAudFXPlay(0x1F0);
-        HuPrcChildLink(process, func_80106464_duel06(10, 1));
+        HuPrcChildLink(process, func_80106460_duel02(10, 1));
         HuPrcChildWatch();
         HuPrcSleep(10);
         for (i = 20; i >= 0; i -= 2) {
@@ -2404,7 +2766,7 @@ void func_8010BCDC_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
         MBDMotionSet(obj, -1, 2);
         func_800ED214_name_81(playerIndex);
         MBDModelKill(partner);
-        func_801064D0_duel06(targetPlayer, 1);
+        func_801064CC_duel02(targetPlayer, 1);
         amplitude = 1.0f;
         for (i = 0; i < 1080; i += 54) {
             HuVecCopyXYZ(&player->player_obj->scale, 1.0f, sindf(i) * amplitude + 1.0f, 1.0f);
@@ -2455,7 +2817,7 @@ void func_8010BCDC_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     func_800FADB4_name_81();
 }
 
-void func_8010CE70_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
+void func_8010CE6C_duel02(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
     GW_PLAYER *player;
     Process *process;
     Object *partner;
@@ -2476,9 +2838,9 @@ void func_8010CE70_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     effect2 = NULL;
     func_800FAD04_name_81(6);
     if (mode == 2) {
-        effect1 = func_80106748_duel06(0x4C);
+        effect1 = func_80106744_duel02(0x4C);
         HuPrcVSleep();
-        effect2 = func_80106748_duel06(0x53);
+        effect2 = func_80106744_duel02(0x53);
         HuPrcVSleep();
     }
     if (target != NULL) {
@@ -2506,10 +2868,10 @@ void func_8010CE70_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     HuVecCopy3F(&partner->coords, &obj->coords);
     partner->velocity.x = 5.0f;
     MBDModelDispOff(partner);
-    func_80106248_duel06();
+    func_80106244_duel02();
     MBDModelDispOn(partner);
     HuPrcChildLink(process, func_800EC36C_name_81(&partner->coords, &targetPos, &partner->coords, 4.0f));
-    HuPrcChildLink(process, func_80106268_duel06(target, player, flags, 4.0f));
+    HuPrcChildLink(process, func_80106264_duel02(target, player, flags, 4.0f));
     HuVecCopy3F(&pos, &obj->rot);
     MBDVecNormalize(&pos);
     HuVecMulScalar(&pos, 6.0f, &pos);
@@ -2528,7 +2890,7 @@ void func_8010CE70_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
         HuAudFXPlay(0x1D9);
     }
     if (flags & 8) {
-        func_801060D8_duel06(player, target, 0, 20);
+        func_801060D4_duel02(player, target, 0, 20);
         HuPrcChildWatch();
         func_800FC888_name_81(3);
         MBDModelDispOff(partner);
@@ -2550,9 +2912,9 @@ void func_8010CE70_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
         if (mode == 1) {
             func_800DCE40_name_81(effectIds[0], &pos, 0, 2.0f);
         } else {
-            func_801067DC_duel06(effect1, &pos);
+            func_801067D8_duel02(effect1, &pos);
             HuVecCopyXYZ(&effect1->scale, 2.0f, 2.0f, 2.0f);
-            func_801067DC_duel06(effect2, &pos);
+            func_801067D8_duel02(effect2, &pos);
             HuVecCopyXYZ(&effect2->scale, 2.0f, 2.0f, 2.0f);
         }
         func_800FAC1C_name_81(&D_80105540_name_81);
@@ -2611,7 +2973,7 @@ void func_8010CE70_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     func_800FADB4_name_81();
 }
 
-void func_8010D42C_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
+void func_8010D428_duel02(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
     GW_PLAYER *player;
     Process *process;
     Object *effect;
@@ -2627,18 +2989,18 @@ void func_8010D42C_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     model = -1;
     effect = NULL;
     if (mode == 1) {
-        effect = func_80106748_duel06(0x45);
+        effect = func_80106744_duel02(0x45);
     }
-    partner = func_800D8010_name_81(D_801144B0_duel06[mode - 1], NULL);
+    partner = func_800D8010_name_81(D_801165A0_duel02[mode - 1], NULL);
     Hu3DModelLayerSet(partner->omObj1->model[0], 0);
     Hu3DModelRemakeStatic(partner->omObj1->model[0]);
     MBDModelTempAllocFree(partner);
     MBDModelDispOff(partner);
     func_800FAD04_name_81(7);
     MBDMotionSet(obj, 0, 2);
-    func_80106164_duel06(obj, target, player, &targetPos, &origPos, 7.5f);
-    func_80106248_duel06();
-    func_80106268_duel06(target, player, flags, 3.0f);
+    func_80106160_duel02(obj, target, player, &targetPos, &origPos, 7.5f);
+    func_80106244_duel02();
+    func_80106264_duel02(target, player, flags, 3.0f);
     HuPrcChildLink(process, func_800EC1E4_name_81(&obj->coords, &targetPos, &obj->coords, 3.0f));
     MBDModelDispOn(partner);
     Hu3DMotionTimeSet(partner->omObj1->model[0], 0.0f);
@@ -2656,7 +3018,7 @@ void func_8010D42C_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
         if (mode == 2) {
             HuPrcSleep(10);
         }
-        func_801060D8_duel06(player, target, 0, 30);
+        func_801060D4_duel02(player, target, 0, 30);
         if (mode == 1) {
             HuPrcSleep(30);
         } else {
@@ -2679,7 +3041,7 @@ void func_8010D42C_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
         if (mode == 1) {
             func_800DCE40_name_81(0x4B, &midPos, 0, 2.0f);
             func_800EB804_name_81(effect);
-            func_801067DC_duel06(effect, &midPos);
+            func_801067D8_duel02(effect, &midPos);
         } else {
             model = func_800DD1E0_name_81(0xB0024, "obj1");
             func_800DD2DC_name_81(model, &midPos);
@@ -2736,65 +3098,65 @@ void func_8010D42C_duel06(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     func_800FADB4_name_81();
 }
 
-void func_8010D964_duel06(void) {
+void func_8010D960_duel02(void) {
     PartnerFunc attackFuncs[12] = {
-        func_80106830_duel06, func_80107190_duel06, func_801079C0_duel06, func_80107EC4_duel06,
-        func_80109890_duel06, func_801084AC_duel06, func_8010CE70_duel06, func_8010D42C_duel06,
-        func_8010BCDC_duel06, func_80108558_duel06, func_8010A218_duel06, func_8010B554_duel06,
+        func_8010682C_duel02, func_8010718C_duel02, func_801079BC_duel02, func_80107EC0_duel02,
+        func_8010988C_duel02, func_801084A8_duel02, func_8010CE6C_duel02, func_8010D428_duel02,
+        func_8010BCD8_duel02, func_80108554_duel02, func_8010A214_duel02, func_8010B550_duel02,
     };
     PartnerFunc otherFuncs[12] = {
         NULL, NULL, NULL, NULL,
-        func_80109890_duel06, NULL, NULL, NULL,
+        func_8010988C_duel02, NULL, NULL, NULL,
         NULL, NULL, NULL, NULL,
     };
 
     func_800FAC94_name_81(attackFuncs, otherFuncs);
 }
 
-void func_8010D9FC_duel06(void) {
+void func_8010D9F8_duel02(void) {
     omInitObjMan(0xA0, 0x50);
     Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
     Hu3DGLightColorSet(2, 0xC8, 0xC8, 0xC8);
-    func_800FC260_name_81(0x1D, 0x246, 0);
+    func_800FC260_name_81(0x19, 0x242, 0);
     func_800EA7D4_name_81();
     func_800EA97C_name_81();
-    func_8010DCB0_duel06();
-    func_8010DD44_duel06();
-    func_8010E350_duel06();
-    func_8010EAD0_duel06();
-    func_8010D964_duel06();
+    func_8010DCAC_duel02();
+    func_8010DD40_duel02();
+    func_8010E34C_duel02();
+    func_8010EA10_duel02();
+    func_8010D960_duel02();
 }
 
-void func_8010DA8C_duel06(void) {
+void func_8010DA88_duel02(void) {
     if (GwSystem.playMode & 4) {
-        HuAudSeqPlay(0x20);
+        HuAudSeqPlay(0x1F);
     } else {
         HuAudSeqPlay(0x1E);
     }
     Hu3DCamInit(2);
-    func_8010D9FC_duel06();
-    func_800EA46C_name_81(D_801146C4_duel06);
-    func_800EA46C_name_81(D_80114750_duel06);
-    func_800FC5A8_name_81(func_80113AD4_duel06);
-    func_800FC59C_name_81(func_80114034_duel06);
+    func_8010D9F8_duel02();
+    func_800EA46C_name_81(D_801167B8_duel02);
+    func_800EA46C_name_81(D_80117008_duel02);
+    func_800FC5A8_name_81(func_8011394C_duel02);
+    func_800FC59C_name_81(func_801163A4_duel02);
     func_800FF640_name_81(0);
 }
 
-void func_8010DB08_duel06(void) {
+void func_8010DB04_duel02(void) {
     Hu3DCamInit(1);
-    func_8010D9FC_duel06();
+    func_8010D9F8_duel02();
     func_800FF640_name_81(1);
 }
 
-void func_8010DB34_duel06(void) {
+void func_8010DB30_duel02(void) {
     HmfMotionNode *node;
     f32 angle;
 
     angle = 0.0f;
     while (TRUE) {
-        func_8002FD8C_main(D_80114D50_duel06->omObj1->model[0], Hu3DData[D_80114D50_duel06->omObj1->model[0]].motId, "neji", 0x4C, 0x46);
-        node = func_8001D33C_main(D_80114D50_duel06->omObj1->model[0], "neji");
-        angle += D_801144CC_duel06;
+        func_8002FD8C_main(D_80117620_duel02->omObj1->model[0], Hu3DData[D_80117620_duel02->omObj1->model[0]].motId, "neji", 0x4C, 0x46);
+        node = func_8001D33C_main(D_80117620_duel02->omObj1->model[0], "neji");
+        angle += D_801165BC_duel02;
         if (angle >= 360.0f) {
             angle -= 360.0f;
         }
@@ -2803,48 +3165,48 @@ void func_8010DB34_duel06(void) {
     }
 }
 
-void func_8010DC0C_duel06(void) {
+void func_8010DC08_duel02(void) {
     HmfMotionNode *node;
 
-    func_8002FD8C_main(D_80114D50_duel06->omObj1->model[0], Hu3DData[D_80114D50_duel06->omObj1->model[0]].motId, "bell", 0x4C, 0x46);
-    node = func_8001D33C_main(D_80114D50_duel06->omObj1->model[0], "bell");
+    func_8002FD8C_main(D_80117620_duel02->omObj1->model[0], Hu3DData[D_80117620_duel02->omObj1->model[0]].motId, "bell", 0x4C, 0x46);
+    node = func_8001D33C_main(D_80117620_duel02->omObj1->model[0], "bell");
     node->baseRot.y = (GwSystem.bank_coins - 5) * 60;
 }
 
-void func_8010DCB0_duel06(void) {
-    Object *obj = func_800D8010_name_81(0x34, D_801144D0_duel06);
+void func_8010DCAC_duel02(void) {
+    Object *obj = func_800D8010_name_81(0x34, D_801165C0_duel02);
 
     MBDModelTempAllocFree(obj);
-    D_80114D50_duel06 = obj;
+    D_80117620_duel02 = obj;
     obj->flags |= 2;
-    HuVecCopy3F(&obj->coords, &MBDMasuGet(0x1C)->coords);
-    func_8010DC0C_duel06();
-    D_80114D54_duel06 = omAddPrcObj(func_8010DB34_duel06, 0xA, 0, 0);
-    omPrcSetStatBit(D_80114D54_duel06, 0xA0);
+    HuVecCopy3F(&obj->coords, &MBDMasuGet(0x20)->coords);
+    func_8010DC08_duel02();
+    D_80117624_duel02 = omAddPrcObj(func_8010DB30_duel02, 0xA, 0, 0);
+    omPrcSetStatBit(D_80117624_duel02, 0xA0);
 }
 
-void func_8010DD44_duel06(void) {
+void func_8010DD40_duel02(void) {
     Object *obj;
     SpaceData *space1;
     SpaceData *space2;
 
     obj = func_800D8010_name_81(0x32, NULL);
     MBDModelTempAllocFree(obj);
-    D_80114D58_duel06 = obj;
+    D_80117628_duel02 = obj;
     obj->flags |= 2;
     func_8001C814_main(obj->omObj1->model[0], 2, 1);
-    space1 = MBDMasuGet(D_801144E0_duel06);
-    space2 = MBDMasuGet(D_801144E2_duel06);
+    space1 = MBDMasuGet(D_801165D0_duel02);
+    space2 = MBDMasuGet(D_801165D2_duel02);
     HuVecCopy3F(&obj->coords, &space1->coords);
     MBDVecDirGet(&space1->coords, &space2->coords, &obj->rot);
 }
 
-void func_8010DDF4_duel06(void) {
-    Duel06SwayWork *work = HuPrcCurrentGet()->user_data;
+void func_8010DDF0_duel02(void) {
+    Duel02SwayWork *work = HuPrcCurrentGet()->user_data;
     s32 angle = work->angle;
 
     while (TRUE) {
-        MTX_ROTZ(Hu3DData[D_80114D58_duel06->omObj1->model[0]].mtx, sindf(angle) * D_80114D5C_duel06);
+        MTX_ROTZ(Hu3DData[D_80117628_duel02->omObj1->model[0]].mtx, sindf(angle) * D_8011762C_duel02);
         angle += 45;
         if (angle >= 360) {
             angle -= 360;
@@ -2853,82 +3215,82 @@ void func_8010DDF4_duel06(void) {
     }
 }
 
-void func_8010DF70_duel06(Vec *pos) {
+void func_8010DF6C_duel02(Vec *pos) {
     Process *process;
-    Duel06SwayWork *work;
+    Duel02SwayWork *work;
 
-    D_80114D5C_duel06 = 10.0f;
-    process = omAddPrcObj(func_8010DDF4_duel06, 0xA, 0, 0x40);
-    D_801144E4_duel06 = process;
-    work = HuMemMemoryAlloc(process->heap, sizeof(Duel06SwayWork));
+    D_8011762C_duel02 = 10.0f;
+    process = omAddPrcObj(func_8010DDF0_duel02, 0xA, 0, 0x40);
+    D_801165D4_duel02 = process;
+    work = HuMemMemoryAlloc(process->heap, sizeof(Duel02SwayWork));
     process->user_data = work;
-    if (pos->x <= D_80114D58_duel06->coords.x) {
+    if (pos->x <= D_80117628_duel02->coords.x) {
         work->angle = 180;
     } else {
         work->angle = 0;
     }
 }
 
-void func_8010E010_duel06(void) {
-    if (D_801144E4_duel06 != NULL) {
-        while (D_80114D5C_duel06 >= 0.0f) {
-            D_80114D5C_duel06 -= 1.0f;
+void func_8010E00C_duel02(void) {
+    if (D_801165D4_duel02 != NULL) {
+        while (D_8011762C_duel02 >= 0.0f) {
+            D_8011762C_duel02 -= 1.0f;
             HuPrcVSleep();
         }
-        omDelPrcObj(D_801144E4_duel06);
-        MTX_ROTZ(Hu3DData[D_80114D58_duel06->omObj1->model[0]].mtx, 0.0f);
+        omDelPrcObj(D_801165D4_duel02);
+        MTX_ROTZ(Hu3DData[D_80117628_duel02->omObj1->model[0]].mtx, 0.0f);
     }
 }
 
-void func_8010E1BC_duel06(void) {
+void func_8010E1B8_duel02(void) {
     f32 amplitude;
     s32 angle;
     f32 offset;
 
-    func_8001C814_main(D_80114D58_duel06->omObj1->model[0], 5, 0);
-    Hu3DMotionSpeedSet(D_80114D58_duel06->omObj1->model[0], 1.5f);
-    func_800EFABC_name_81(D_80114D58_duel06);
+    func_8001C814_main(D_80117628_duel02->omObj1->model[0], 5, 0);
+    Hu3DMotionSpeedSet(D_80117628_duel02->omObj1->model[0], 1.5f);
+    func_800EFABC_name_81(D_80117628_duel02);
     for (angle = 0, amplitude = 0.5f; angle < 2160; angle += 60) {
         offset = 1.0f - cosdf(angle) * amplitude;
         amplitude -= 1.0 / 72;
-        HuVecCopyXYZ(&D_80114D58_duel06->scale, 1.0f, offset, 1.0f);
+        HuVecCopyXYZ(&D_80117628_duel02->scale, 1.0f, offset, 1.0f);
         HuPrcVSleep();
     }
-    HuVecCopyXYZ(&D_80114D58_duel06->scale, 1.0f, 1.0f, 1.0f);
+    HuVecCopyXYZ(&D_80117628_duel02->scale, 1.0f, 1.0f, 1.0f);
     omDelPrcObj(NULL);
 }
 
-void func_8010E2D4_duel06(void) {
-    omAddPrcObj(func_8010E1BC_duel06, 0xA, 0, 0);
+void func_8010E2D0_duel02(void) {
+    omAddPrcObj(func_8010E1B8_duel02, 0xA, 0, 0);
 }
 
-void func_8010E300_duel06(void) {
-    func_8001C814_main(D_80114D58_duel06->omObj1->model[0], 1, 4);
-    Hu3DMotionSpeedSet(D_80114D58_duel06->omObj1->model[0], 1.0f);
+void func_8010E2FC_duel02(void) {
+    func_8001C814_main(D_80117628_duel02->omObj1->model[0], 1, 4);
+    Hu3DMotionSpeedSet(D_80117628_duel02->omObj1->model[0], 1.0f);
 }
 
-void func_8010E350_duel06(void) {
+void func_8010E34C_duel02(void) {
     Object *obj;
     SpaceData *space1;
     SpaceData *space2;
 
     obj = func_800D8010_name_81(0x33, NULL);
     MBDModelTempAllocFree(obj);
-    D_80114D60_duel06 = obj;
+    D_80117630_duel02 = obj;
     obj->flags |= 2;
     func_8001C814_main(obj->omObj1->model[0], 2, 1);
-    space1 = MBDMasuGet(D_801144E8_duel06);
-    space2 = MBDMasuGet(D_801144EA_duel06);
+    space1 = MBDMasuGet(D_801165D8_duel02);
+    space2 = MBDMasuGet(D_801165DA_duel02);
     HuVecCopy3F(&obj->coords, &space1->coords);
     MBDVecDirGet(&space1->coords, &space2->coords, &obj->rot);
 }
 
-void func_8010E400_duel06(void) {
-    Duel06SwayWork *work = HuPrcCurrentGet()->user_data;
+void func_8010E3FC_duel02(void) {
+    Duel02SwayWork *work = HuPrcCurrentGet()->user_data;
     s32 angle = work->angle;
 
     while (TRUE) {
-        MTX_ROTZ(Hu3DData[D_80114D60_duel06->omObj1->model[0]].mtx, sindf(angle) * D_80114D64_duel06);
+        MTX_ROTZ(Hu3DData[D_80117630_duel02->omObj1->model[0]].mtx, sindf(angle) * D_80117634_duel02);
         angle += 45;
         if (angle >= 360) {
             angle -= 360;
@@ -2937,142 +3299,117 @@ void func_8010E400_duel06(void) {
     }
 }
 
-void func_8010E57C_duel06(Vec *pos) {
+void func_8010E578_duel02(Vec *pos) {
     Process *process;
-    Duel06SwayWork *work;
+    Duel02SwayWork *work;
 
-    D_80114D64_duel06 = 10.0f;
-    process = omAddPrcObj(func_8010E400_duel06, 0xA, 0, 0x40);
-    D_801144EC_duel06 = process;
-    work = HuMemMemoryAlloc(process->heap, sizeof(Duel06SwayWork));
+    D_80117634_duel02 = 10.0f;
+    process = omAddPrcObj(func_8010E3FC_duel02, 0xA, 0, 0x40);
+    D_801165DC_duel02 = process;
+    work = HuMemMemoryAlloc(process->heap, sizeof(Duel02SwayWork));
     process->user_data = work;
-    if (pos->x <= D_80114D60_duel06->coords.x) {
+    if (pos->x <= D_80117630_duel02->coords.x) {
         work->angle = 180;
     } else {
         work->angle = 0;
     }
 }
 
-void func_8010E61C_duel06(void) {
-    if (D_801144EC_duel06 != NULL) {
-        while (D_80114D64_duel06 >= 0.0f) {
-            D_80114D64_duel06 -= 1.0f;
+void func_8010E618_duel02(void) {
+    if (D_801165DC_duel02 != NULL) {
+        while (D_80117634_duel02 >= 0.0f) {
+            D_80117634_duel02 -= 1.0f;
             HuPrcVSleep();
         }
-        omDelPrcObj(D_801144EC_duel06);
-        MTX_ROTZ(Hu3DData[D_80114D60_duel06->omObj1->model[0]].mtx, 0.0f);
+        omDelPrcObj(D_801165DC_duel02);
+        MTX_ROTZ(Hu3DData[D_80117630_duel02->omObj1->model[0]].mtx, 0.0f);
     }
 }
 
-void func_8010E7C8_duel06(void) {
+void func_8010E7C4_duel02(void) {
     f32 amplitude;
     s32 angle;
     f32 offset;
 
-    func_8001C814_main(D_80114D60_duel06->omObj1->model[0], 5, 0);
-    Hu3DMotionSpeedSet(D_80114D60_duel06->omObj1->model[0], 1.5f);
-    func_800EFABC_name_81(D_80114D60_duel06);
+    func_8001C814_main(D_80117630_duel02->omObj1->model[0], 5, 0);
+    Hu3DMotionSpeedSet(D_80117630_duel02->omObj1->model[0], 1.5f);
+    func_800EFABC_name_81(D_80117630_duel02);
     for (angle = 0, amplitude = 0.5f; angle < 2160; angle += 60) {
         offset = 1.0f - cosdf(angle) * amplitude;
         amplitude -= 1.0 / 72;
-        HuVecCopyXYZ(&D_80114D60_duel06->scale, 1.0f, offset, 1.0f);
+        HuVecCopyXYZ(&D_80117630_duel02->scale, 1.0f, offset, 1.0f);
         HuPrcVSleep();
     }
-    HuVecCopyXYZ(&D_80114D60_duel06->scale, 1.0f, 1.0f, 1.0f);
+    HuVecCopyXYZ(&D_80117630_duel02->scale, 1.0f, 1.0f, 1.0f);
     omDelPrcObj(NULL);
 }
 
-void func_8010E8E0_duel06(void) {
-    omAddPrcObj(func_8010E7C8_duel06, 0xA, 0, 0);
+void func_8010E8DC_duel02(void) {
+    omAddPrcObj(func_8010E7C4_duel02, 0xA, 0, 0);
 }
 
-void func_8010E90C_duel06(void) {
-    func_8001C814_main(D_80114D60_duel06->omObj1->model[0], 1, 4);
-    Hu3DMotionSpeedSet(D_80114D60_duel06->omObj1->model[0], 1.0f);
+void func_8010E908_duel02(void) {
+    func_8001C814_main(D_80117630_duel02->omObj1->model[0], 1, 4);
+    Hu3DMotionSpeedSet(D_80117630_duel02->omObj1->model[0], 1.0f);
 }
 
-void func_8010E95C_duel06(s16 index) {
-    s16 model;
-    SpaceData *space;
+void func_8010E958_duel02(s16 index) {
+    Object *obj;
 
-    if (D_80114D68_duel06[index] == -1) {
-        if (index == 0) {
-            model = D_80114D68_duel06[0] = func_8000B108_main(0x130153, 0x4026A9);
-            D_80114D72_duel06[0] = func_8000B5BC_main(0x130154);
-            func_8001C954_main(model);
-            func_8001F974_main(model, D_80114D72_duel06[0]);
-            func_8001C814_main(model, 2, 1);
-            Hu3DModelCameraSet(model, 1);
-            func_8001C514_main(model);
-        } else {
-            model = D_80114D68_duel06[index] = Hu3DModelLink(D_80114D68_duel06[0]);
-        }
-        Hu3DModelScaleSet(model, 0.1f, 0.1f, 0.1f);
-        space = MBDMasuGet(D_801144F0_duel06[index]);
-        Hu3DModelPosSet(model, space->coords.x, space->coords.y, space->coords.z);
-        Hu3DModelRotSet(model, 0.0f, D_801144FC_duel06[index], 0.0f);
+    if (D_80117638_duel02[index] == NULL) {
+        obj = func_800D8010_name_81(0x2E, D_801165FC_duel02);
+        MBDModelTempAllocFree(obj);
+        D_80117638_duel02[index] = obj;
+        obj->flags |= 2;
+        HuVecCopy3F(&obj->coords, &MBDMasuGet(D_801165E0_duel02[index])->coords);
+        HuVecCopy3F(&obj->rot, &D_801165E4_duel02[index]);
     }
 }
 
-void func_8010EAD0_duel06(void) {
+void func_8010EA10_duel02(void) {
     s32 i;
 
-    for (i = 0; i < 5; i++) {
-        D_80114D68_duel06[i] = -1;
-        func_8010E95C_duel06(i);
-    }
-    if (GwSystem.boardData.halfWordBytes[0] == 0) {
-        Hu3DMotionTimeSet(D_80114D68_duel06[0], D_800CCF58_main[Hu3DData[D_80114D68_duel06[0]].motId].unk02);
-    } else {
-        Hu3DMotionTimeSet(D_80114D68_duel06[0], 0.0f);
+    for (i = 0; i < 2; i++) {
+        D_80117638_duel02[i] = NULL;
+        func_8010E958_duel02(i);
     }
 }
 
-void func_8010EBAC_duel06(void) {
-    HuAudFXPlay(0x1ED);
-    if (GwSystem.boardData.halfWordBytes[0] != 0) {
-        func_8001C814_main(D_80114D68_duel06[0], 5, 0);
-        while (Hu3DData[D_80114D68_duel06[0]].motTime != D_800CCF58_main[Hu3DData[D_80114D68_duel06[0]].motId].unk02) {
-            HuPrcVSleep();
-        }
-    } else {
-        func_8001C814_main(D_80114D68_duel06[0], 1, 4);
-        while (Hu3DData[D_80114D68_duel06[0]].motTime != 0.0f) {
-            HuPrcVSleep();
-        }
+void func_8010EA68_duel02(void) {
+    Duel02ModelWaitWork *work = HuPrcCurrentGet()->user_data;
+
+    MBDMotionSet(D_80117638_duel02[work->index], 0, 4);
+    // The model index is compared against 0 here, so this always reads Hu3DData[0] or Hu3DData[1].
+    while (Hu3DData[D_80117638_duel02[work->index]->omObj1->model[0] != 0].motTime != 0.0f) {
+        HuPrcVSleep();
     }
-    HuPrcSleep(5);
+    MBDMotionSet(D_80117638_duel02[work->index], -1, 2);
+    omDelPrcObj(NULL);
 }
 
-s32 func_8010ED04_duel06(void) {
+void func_8010EB40_duel02(s32 arg0) {
+    Process *process;
+    Duel02ModelWaitWork *work;
+
+    process = omAddPrcObj(func_8010EA68_duel02, 0x1000, 0, 0x40);
+    work = HuMemMemoryAlloc(process->heap, sizeof(Duel02ModelWaitWork));
+    process->user_data = work;
+    work->index = arg0;
+}
+
+void func_8010EB98_duel02(s32 index) {
+    MBDMotionSet(D_80117638_duel02[index], 0, 0);
+}
+
+s32 func_8010EBC8_duel02(void) {
     GW_SYSTEM *sys = &GwSystem;
     GW_PLAYER *player = MBDGetPlayerStruct(sys->current_player_index ^ 1);
     s32 curPlayer = sys->current_player_index;
     s32 chance = (5 - GwPlayer[curPlayer].star) * 10;
 
-    if (mbWalkNum < 6) {
+    if (mbWalkNum < 5) {
         if (curPlayer == 0) {
-            if (GwSystem.boardData.halfWordBytes[curPlayer] == 0) {
-                s32 dist = player->cidx - 18;
-
-                if (dist == mbWalkNum) {
-                    chance = 0;
-                }
-                if (dist < mbWalkNum) {
-                    chance += 20;
-                }
-            } else {
-                s32 dist = 18 - player->cidx;
-
-                if (dist == mbWalkNum) {
-                    chance = 0;
-                }
-                if (dist < mbWalkNum) {
-                    chance += 20;
-                }
-            }
-        } else {
-            if (GwSystem.boardData.halfWordBytes[0] == 0) {
+            if (player->clink == 0) {
                 s32 dist = player->cidx - 6;
 
                 if (dist == mbWalkNum) {
@@ -3081,22 +3418,22 @@ s32 func_8010ED04_duel06(void) {
                 if (dist < mbWalkNum) {
                     chance += 20;
                 }
-            } else {
-                s32 dist = 6 - player->cidx;
+            }
+        } else if (player->clink == 1) {
+            s32 dist = player->cidx - 6;
 
-                if (dist == mbWalkNum) {
-                    chance = 0;
-                }
-                if (dist < mbWalkNum) {
-                    chance += 20;
-                }
+            if (dist == mbWalkNum) {
+                chance = 0;
+            }
+            if (dist < mbWalkNum) {
+                chance += 20;
             }
         }
     }
     return chance;
 }
 
-s32 func_8010EE40_duel06(void) {
+s32 func_8010ECB8_duel02(void) {
     GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
     s16 partnerValues[12] = { 40, 90, 30, 50, 90, 10, 80, 15, 60, 80, 70, 90 };
 
@@ -3106,13 +3443,13 @@ s32 func_8010EE40_duel06(void) {
     return partnerValues[player->stats.partners.frontID];
 }
 
-s32 func_8010EEE8_duel06(s32 index) {
+s32 func_8010ED60_duel02(s32 index) {
     s16 shakeAngles[12] = { 70, 10, 50, 20, 30, 90, 10, 10, 20, 80, 60, 30 };
 
     return shakeAngles[index];
 }
 
-s32 func_8010EF68_duel06(void) {
+s32 func_8010EDE0_duel02(void) {
     GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
     s32 partner = -1;
     s32 roll = func_800EFE20_name_81(10.0f);
@@ -3135,21 +3472,21 @@ s32 func_8010EF68_duel06(void) {
                     break;
                 }
                 if (roll < 8) {
-                    for (i = 0; D_80114510_duel06[i * 2] != -1; i++) {
-                        if (D_80114510_duel06[i * 2 + 1] > func_800EFE20_name_81(100.0f)) {
+                    for (i = 0; D_80116604_duel02[i * 2] != -1; i++) {
+                        if (D_80116604_duel02[i * 2 + 1] > func_800EFE20_name_81(100.0f)) {
                             break;
                         }
                     }
-                    partner = D_80114510_duel06[i * 2];
+                    partner = D_80116604_duel02[i * 2];
                     break;
                 }
             }
-            for (i = 0; D_8011460C_duel06[player->chr][i * 2] != -1; i++) {
-                if (D_8011460C_duel06[player->chr][i * 2 + 1] > func_800EFE20_name_81(100.0f)) {
+            for (i = 0; D_80116700_duel02[player->chr][i * 2] != -1; i++) {
+                if (D_80116700_duel02[player->chr][i * 2 + 1] > func_800EFE20_name_81(100.0f)) {
                     break;
                 }
             }
-            partner = D_8011460C_duel06[player->chr][i * 2];
+            partner = D_80116700_duel02[player->chr][i * 2];
             break;
     }
     if (partner == -1) {
@@ -3161,8 +3498,8 @@ s32 func_8010EF68_duel06(void) {
     return partner;
 }
 
-void func_8010F184_duel06(void) {
-    Duel06WinColorWork *work = HuPrcCurrentGet()->user_data;
+void func_8010EFFC_duel02(void) {
+    Duel02WinColorWork *work = HuPrcCurrentGet()->user_data;
     s32 unused[2]; // Unreferenced, but present in the original stack frame
     s32 window;
     u8 red = 0x43;
@@ -3175,7 +3512,7 @@ void func_8010F184_duel06(void) {
     window = work->window;
     HuWinBGColSet(work->window, 0x43, 0x80, 1);
     while (TRUE) {
-        if (D_8011464C_duel06 != 0) {
+        if (D_80116740_duel02 != 0) {
             value = (s16)(sindf(greenAngle) * 128.0f);
             if (value < 0) {
                 value = -value;
@@ -3197,7 +3534,7 @@ void func_8010F184_duel06(void) {
     }
 }
 
-void func_8010F2F4_duel06(void) {
+void func_8010F16C_duel02(void) {
     s16 pos[3][2] = { { 160, -80 }, { 160, -160 }, { 160, -80 } };
     s32 files[6] = { 0x13011C, 0x13011F, 0x13011E, 0x13011D, 0x130120, 0x13011E };
     u8 order[32]; // Only 12 are used; the size matches the original stack frame.
@@ -3207,7 +3544,7 @@ void func_8010F2F4_duel06(void) {
     Process *colorProcess;
     s32 state;
     s32 cpuPartner;
-    Duel06WinColorWork *colorWork;
+    Duel02WinColorWork *colorWork;
     UnkBoard4 *spr;
     void *data;
     s32 i;
@@ -3217,7 +3554,7 @@ void func_8010F2F4_duel06(void) {
     s32 max;
     s32 delay;
 
-    player = ((Duel06PartnerRouletteWork *)HuPrcCurrentGet()->user_data)->player;
+    player = ((Duel02PartnerRouletteWork *)HuPrcCurrentGet()->user_data)->player;
     colorProcess = NULL;
     cpuPartner = -1;
     mbItemBtnF = 0;
@@ -3230,8 +3567,8 @@ void func_8010F2F4_duel06(void) {
     HuWinBGColSet(window, 0x43, 5, 1);
     HuWinBGTPLvlSet(window, 0xC0);
     if (state == 2) {
-        colorProcess = omAddPrcObj(func_8010F184_duel06, 10, 0, 0x40);
-        colorWork = HuMemMemoryAlloc(colorProcess->heap, sizeof(Duel06WinColorWork));
+        colorProcess = omAddPrcObj(func_8010EFFC_duel02, 10, 0, 0x40);
+        colorWork = HuMemMemoryAlloc(colorProcess->heap, sizeof(Duel02WinColorWork));
         colorProcess->user_data = colorWork;
         colorWork->window = window;
     }
@@ -3272,7 +3609,7 @@ void func_8010F2F4_duel06(void) {
     max = 11;
     if (func_800F37B8_name_81(-1)) {
         count = func_800EFE20_name_81(10.0f) + 10;
-        cpuPartner = func_8010EF68_duel06();
+        cpuPartner = func_8010EDE0_duel02();
         if (state == 2 && cpuPartner != -1) {
             count = 5;
         }
@@ -3280,7 +3617,7 @@ void func_8010F2F4_duel06(void) {
         count = -1;
     }
     msgWindow = func_800E1824_name_81(0x13, 0xB9, 0);
-    D_8011464C_duel06 = 1;
+    D_80116740_duel02 = 1;
     last = 0xFF;
     do {
         func_800E0310_name_81(order, max);
@@ -3317,7 +3654,7 @@ void func_8010F2F4_duel06(void) {
 
         HuAudFXPlay(sfx[order[i]]);
     }
-    D_8011464C_duel06 = 0;
+    D_80116740_duel02 = 0;
     if (player == 0) {
         if (state == 2) {
             GwSystem.playerIndexVisitingBowser &= 0xFF00;
@@ -3330,7 +3667,7 @@ void func_8010F2F4_duel06(void) {
         GwSystem.playerIndexVisitingBowser += 0x100;
     }
     HuPrcSleep(30);
-    D_80114644_duel06 = order[i];
+    D_80116738_duel02 = order[i];
     func_800E1854_name_81(msgWindow);
     if (colorProcess != NULL) {
         omDelPrcObj(colorProcess);
@@ -3341,14 +3678,14 @@ void func_8010F2F4_duel06(void) {
     omDelPrcObj(NULL);
 }
 
-const Vec D_801148F4_duel06[] = {
+const Vec D_801171C4_duel02[] = {
     { 4.0f, 4.0f, -4.0f },
     { -4.0f, -2.0f, -4.0f },
     { 4.0f, 0.0f, 4.0f },
     { -4.0f, 2.0f, 4.0f }
 };
 
-s32 func_8010FB64_duel06(s32 index) {
+s32 func_8010F9DC_duel02(s32 index) {
     Vec camPos;
     Vec pos;
     Vec target;
@@ -3359,7 +3696,7 @@ s32 func_8010FB64_duel06(s32 index) {
     SpaceData *partnerSpace;
     GW_PLAYER *player;
     Process *process;
-    Duel06PartnerRouletteWork *work;
+    Duel02PartnerRouletteWork *work;
     Object *model;
     Object *partner;
     SpaceData *returnSpace;
@@ -3367,8 +3704,8 @@ s32 func_8010FB64_duel06(s32 index) {
     s32 i;
     s32 state;
 
-    startSpace = MBDMasuGet(D_8011462C_duel06[index].startSpace);
-    partnerSpace = MBDMasuGet(D_8011462C_duel06[index].partnerSpace);
+    startSpace = MBDMasuGet(D_80116720_duel02[index].startSpace);
+    partnerSpace = MBDMasuGet(D_80116720_duel02[index].partnerSpace);
     player = MBDGetPlayerStruct(index);
     if (index == 0) {
         state = GwSystem.playerIndexVisitingBowser & 0xFF;
@@ -3394,18 +3731,18 @@ s32 func_8010FB64_duel06(s32 index) {
     HuPrcSleep(8);
     HuAudFXPlay(0x1C9);
     if (index == 0) {
-        func_8010DF70_duel06(&player->player_obj->coords);
+        func_8010DF6C_duel02(&player->player_obj->coords);
     } else {
-        func_8010E57C_duel06(&player->player_obj->coords);
+        func_8010E578_duel02(&player->player_obj->coords);
     }
     func_800EFABC_name_81(player->player_obj);
     func_800F3880_name_81(-1, -1, 2);
-    D_80114644_duel06 = -1;
-    process = omAddPrcObj(func_8010F2F4_duel06, 0xA, 0, 0x40);
-    work = HuMemMemoryAlloc(process->heap, sizeof(Duel06PartnerRouletteWork));
+    D_80116738_duel02 = -1;
+    process = omAddPrcObj(func_8010F16C_duel02, 0xA, 0, 0x40);
+    work = HuMemMemoryAlloc(process->heap, sizeof(Duel02PartnerRouletteWork));
     process->user_data = work;
     work->player = index;
-    returnSpace = MBDMasuGet(D_8011462C_duel06[index].returnSpace);
+    returnSpace = MBDMasuGet(D_80116720_duel02[index].returnSpace);
     MBDVecDirGet(&player->player_obj->coords, &returnSpace->coords, &player->player_obj->rot);
     func_800F3880_name_81(-1, 0, 2);
     HuPrcChildLink(HuPrcCurrentGet(),
@@ -3415,7 +3752,7 @@ s32 func_8010FB64_duel06(s32 index) {
     func_800EB7BC_name_81(&camPos);
     func_800EBC60_name_81(&player->player_obj->rot, &camPos, &player->player_obj->rot, 8);
     HuPrcSleep(8);
-    while (D_80114644_duel06 == -1) {
+    while (D_80116738_duel02 == -1) {
         HuPrcVSleep();
     }
     HuVecCopy3F(&target, &partnerSpace->coords);
@@ -3423,24 +3760,24 @@ s32 func_8010FB64_duel06(s32 index) {
     HuPrcChildLink(HuPrcCurrentGet(), func_800EC1E4_name_81(&pos, &target, &pos, 2.0f));
     HuPrcChildWatch();
     if (index == 0) {
-        func_8010E010_duel06();
+        func_8010E00C_duel02();
     } else {
-        func_8010E61C_duel06();
+        func_8010E618_duel02();
     }
     model = func_800D8010_name_81(0x35, NULL);
     MBDModelDispOff(model);
-    partner = func_800F8050_name_81(D_80114644_duel06);
+    partner = func_800F8050_name_81(D_80116738_duel02);
     HuVecCopy3F(&partner->coords, &partnerSpace->coords);
     partner->coords.y += 26.0f;
     MBDModelDispOff(partner);
     HuAudFXPlay(0x1CA);
     if (index == 0) {
-        func_8010E2D4_duel06();
+        func_8010E2D0_duel02();
     } else {
-        func_8010E8E0_duel06();
+        func_8010E8DC_duel02();
     }
     HuPrcSleep(20);
-    memcpy(offsets, D_801148F4_duel06, sizeof(offsets));
+    memcpy(offsets, D_801171C4_duel02, sizeof(offsets));
     for (i = 0; i < 4; i++) {
         copies[i] = func_800D8B18_name_81(model);
         Hu3DModelLayerSet(copies[i]->omObj1->model[0], 0x800);
@@ -3463,7 +3800,7 @@ s32 func_8010FB64_duel06(s32 index) {
     MBDModelKill(model);
     func_800FC888_name_81(5);
     func_800FC8DC_name_81(partner);
-    destSpace = MBDMasuGet(D_8011462C_duel06[index].startSpace);
+    destSpace = MBDMasuGet(D_80116720_duel02[index].startSpace);
     MBDVecDirGet(&partner->coords, &destSpace->coords, &partner->rot);
     partner->velocity.x = partner->coords.y;
     partner->coords.y = 0.0f;
@@ -3472,9 +3809,9 @@ s32 func_8010FB64_duel06(s32 index) {
     HuPrcChildWatch();
     func_800EF800_name_81(partner);
     if (index == 0) {
-        func_8010E300_duel06();
+        func_8010E2FC_duel02();
     } else {
-        func_8010E90C_duel06();
+        func_8010E908_duel02();
     }
     func_800FC888_name_81(4);
     func_800FC8C4_name_81(&pos);
@@ -3482,11 +3819,11 @@ s32 func_8010FB64_duel06(s32 index) {
     HuPrcChildLink(HuPrcCurrentGet(), func_800EC1E4_name_81(&pos, &player->player_obj->coords, &pos, 2.0f));
     HuPrcChildWatch();
     func_800FC888_name_81(1);
-    D_80114648_duel06 = partner;
-    return D_80114644_duel06;
+    D_8011673C_duel02 = partner;
+    return D_80116738_duel02;
 }
 
-void func_80110230_duel06(s32 index) {
+void func_801100A8_duel02(s32 index) {
     Vec pos;
     GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
     u8 playerBits[4] = { 1, 2, 4, 8 };
@@ -3512,7 +3849,7 @@ void func_80110230_duel06(s32 index) {
         func_800EAFC4_name_81(0x1F00);
         Duel_PowerDownPartners(index);
     }
-    func_800EDD50_name_81(&MBDMasuGet(D_8011462C_duel06[index].returnSpace)->coords);
+    func_800EDD50_name_81(&MBDMasuGet(D_80116720_duel02[index].returnSpace)->coords);
     func_800EE0D0_name_81(0);
     func_800EDF48_name_81();
     HuAudFXPlay(0x159);
@@ -3524,7 +3861,7 @@ void func_80110230_duel06(s32 index) {
     func_800F3880_name_81(-1, -1, 2);
     if (player->stats.partners.frontID == PARTNER_NONE && player->stats.partners.backID == PARTNER_NONE) {
         func_800EB140_name_81(0x16, 0x1F04);
-        partnerId = func_8010FB64_duel06(index);
+        partnerId = func_8010F9DC_duel02(index);
     retryA:
         func_800EB1D8_name_81(0x16, 0x1F05);
         if (!func_800F37B8_name_81(index)) {
@@ -3532,8 +3869,8 @@ void func_80110230_duel06(s32 index) {
             comKeys[GwPlayer[index].pad] = -1;
             HuWinComKeySet(comKeys[0], comKeys[1], comKeys[2], comKeys[3]);
         } else {
-            if (func_8010ED04_duel06() >= func_800EFE20_name_81(100.0f) ||
-                func_8010EEE8_duel06(partnerId) >= func_800EFE20_name_81(100.0f)) {
+            if (func_8010EBC8_duel02() >= func_800EFE20_name_81(100.0f) ||
+                func_8010ED60_duel02(partnerId) >= func_800EFE20_name_81(100.0f)) {
                 comKeys[GwPlayer[index].pad] = 0x400;
                 HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], func_800EED50_name_81());
             }
@@ -3546,7 +3883,7 @@ void func_80110230_duel06(s32 index) {
         func_800EB278_name_81();
         func_800EB29C_name_81();
         if (choice == 2) {
-            func_801059D0_duel06();
+            func_801059D0_duel02();
             goto retryA;
         }
         if (choice == 3) {
@@ -3565,7 +3902,7 @@ void func_80110230_duel06(s32 index) {
             HuWinComKeySet(comKeys[0], comKeys[1], comKeys[2], comKeys[3]);
         } else {
             if (player->stats.partners.backID == PARTNER_NONE ||
-                func_8010EE40_duel06() >= func_800EFE20_name_81(100.0f)) {
+                func_8010ECB8_duel02() >= func_800EFE20_name_81(100.0f)) {
                 comKeys[GwPlayer[index].pad] = 0x400;
                 HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], func_800EED50_name_81());
             }
@@ -3578,7 +3915,7 @@ void func_80110230_duel06(s32 index) {
         func_800EB278_name_81();
         func_800EB29C_name_81();
         if (choice == 2) {
-            func_801059D0_duel06();
+            func_801059D0_duel02();
             goto retryB;
         }
         if (choice == 3) {
@@ -3591,7 +3928,7 @@ void func_80110230_duel06(s32 index) {
         if (partner != NULL) {
             HuVecCopy3F(&pos, &partner->coords);
             pos.y += 2.0f;
-            memcpy(offsets, D_80114930_duel06, sizeof(offsets));
+            memcpy(offsets, D_80117200_duel02, sizeof(offsets));
             for (i = 0; i < 3; i++) {
                 HuPrcChildLink(HuPrcCurrentGet(), func_800DCE40_name_81(0x4E, &pos, &offsets[i], 3.0f));
             }
@@ -3604,33 +3941,33 @@ void func_80110230_duel06(s32 index) {
             func_800F57B0_name_81(index);
             func_800F5E2C_name_81(index);
         }
-        partnerId = func_8010FB64_duel06(index);
+        partnerId = func_8010F9DC_duel02(index);
     }
     func_800ECF1C_name_81(index, &frontPos, &backPos);
     func_800ED118_name_81(index, &frontRot, &backRot);
-    MBDMotionShiftSet(D_80114648_duel06, 0, 0, 5, 2);
+    MBDMotionShiftSet(D_8011673C_duel02, 0, 0, 5, 2);
     if (GwSystem.current_board_index == 2) {
-        func_800EF7C8_name_81(D_80114648_duel06, 2.0f, -0.2f);
+        func_800EF7C8_name_81(D_8011673C_duel02, 2.0f, -0.2f);
     }
     if (choice == 0) {
         HuVecAdd(&frontPos, &player->player_obj->coords, &frontPos);
-        MBDVecDirGet(&D_80114648_duel06->coords, &frontPos, &D_80114648_duel06->rot);
-        HuPrcChildLink(HuPrcCurrentGet(), func_800EC1E4_name_81(&D_80114648_duel06->coords, &frontPos,
-                                                                &D_80114648_duel06->coords, 3.0f));
+        MBDVecDirGet(&D_8011673C_duel02->coords, &frontPos, &D_8011673C_duel02->rot);
+        HuPrcChildLink(HuPrcCurrentGet(), func_800EC1E4_name_81(&D_8011673C_duel02->coords, &frontPos,
+                                                                &D_8011673C_duel02->coords, 3.0f));
         HuPrcChildWatch();
-        HuPrcChildLink(HuPrcCurrentGet(), func_800EBC60_name_81(&D_80114648_duel06->rot, &frontRot,
-                                                                &D_80114648_duel06->rot, 7));
+        HuPrcChildLink(HuPrcCurrentGet(), func_800EBC60_name_81(&D_8011673C_duel02->rot, &frontRot,
+                                                                &D_8011673C_duel02->rot, 7));
     } else {
         HuVecAdd(&backPos, &player->player_obj->coords, &backPos);
-        MBDVecDirGet(&D_80114648_duel06->coords, &backPos, &D_80114648_duel06->rot);
-        HuPrcChildLink(HuPrcCurrentGet(), func_800EC1E4_name_81(&D_80114648_duel06->coords, &backPos,
-                                                                &D_80114648_duel06->coords, 3.0f));
+        MBDVecDirGet(&D_8011673C_duel02->coords, &backPos, &D_8011673C_duel02->rot);
+        HuPrcChildLink(HuPrcCurrentGet(), func_800EC1E4_name_81(&D_8011673C_duel02->coords, &backPos,
+                                                                &D_8011673C_duel02->coords, 3.0f));
         HuPrcChildWatch();
-        HuPrcChildLink(HuPrcCurrentGet(), func_800EBC60_name_81(&D_80114648_duel06->rot, &backRot,
-                                                                &D_80114648_duel06->rot, 7));
+        HuPrcChildLink(HuPrcCurrentGet(), func_800EBC60_name_81(&D_8011673C_duel02->rot, &backRot,
+                                                                &D_8011673C_duel02->rot, 7));
     }
     HuPrcChildWatch();
-    MBDModelKill(D_80114648_duel06);
+    MBDModelKill(D_8011673C_duel02);
     func_800F8418_name_81(index, partnerId, choice);
     func_800F821C_name_81(index, choice);
     func_800F89D0_name_81(index, PARTNER_FRONT, -1, 2);
@@ -3682,34 +4019,34 @@ void func_80110230_duel06(s32 index) {
     HuPrcChildWatch();
 }
 
-void func_80110D44_duel06(void) {
+void func_80110BBC_duel02(void) {
     GW_PLAYER *player;
 
     player = MBDGetPlayerStruct(CUR_PLAYER);
     if (MBDGetCurrentPlayerIndex() == 0 && !(player->rev & 4)) {
         func_800F38DC_name_81(-1, -1, 2);
-        func_80110230_duel06(0);
+        func_801100A8_duel02(0);
     }
 }
 
-void func_80110DA0_duel06(void) {
+void func_80110C18_duel02(void) {
     GW_PLAYER *player;
 
     player = MBDGetPlayerStruct(CUR_PLAYER);
     if (MBDGetCurrentPlayerIndex() == 1 && !(player->rev & 4)) {
         func_800F38DC_name_81(-1, -1, 2);
-        func_80110230_duel06(1);
+        func_801100A8_duel02(1);
     }
 }
 
-const Vec D_80114930_duel06[] = {
+const Vec D_80117200_duel02[] = {
     { 0.0f, 0.5f, 0.0f },
     { -0.5f, 0.5f, 0.0f },
     { 0.5f, 0.5f, 0.0f }
 };
 
 // なにをつけますか？１Ｐまえ行　＜ノコノコ＞　　＜クリホ゛ー＞行　＜キノヒオ＞　　＜ホ゛ムへい＞行　＜テレサ　＞　　＜ハ゛ッタン＞行　＜ムーチョ＞　　＜フラワー＞行　＜ワンワン＞　　＜ト゛ッスン＞行　＜スノーマ＞　　＜ミニクハ＞行
-const u8 D_80114954_duel06[] = "\x82\xC8\x82\xC9\x82\xF0\x82\xC2\x82\xAF\x82\xDC\x82\xB7\x82\xA9\x81\x48\x82\x50\x82\x6F\x82\xDC\x82\xA6\x8D\x73"
+const u8 D_80117224_duel02[] = "\x82\xC8\x82\xC9\x82\xF0\x82\xC2\x82\xAF\x82\xDC\x82\xB7\x82\xA9\x81\x48\x82\x50\x82\x6F\x82\xDC\x82\xA6\x8D\x73"
     "\x81\x40\x81\x83\x83\x6D\x83\x52\x83\x6D\x83\x52\x81\x84\x81\x40\x81\x40\x81\x83\x83\x4E\x83\x8A\x83\x7A\x81\x4A\x81\x5B\x81\x84\x8D\x73"
     "\x81\x40\x81\x83\x83\x4C\x83\x6D\x83\x71\x83\x49\x81\x84\x81\x40\x81\x40\x81\x83\x83\x7A\x81\x4A\x83\x80\x82\xD6\x82\xA2\x81\x84\x8D\x73"
     "\x81\x40\x81\x83\x83\x65\x83\x8C\x83\x54\x81\x40\x81\x84\x81\x40\x81\x40\x81\x83\x83\x6E\x81\x4A\x83\x62\x83\x5E\x83\x93\x81\x84\x8D\x73"
@@ -3718,7 +4055,7 @@ const u8 D_80114954_duel06[] = "\x82\xC8\x82\xC9\x82\xF0\x82\xC2\x82\xAF\x82\xDC
     "\x81\x40\x81\x83\x83\x58\x83\x6D\x81\x5B\x83\x7D\x81\x84\x81\x40\x81\x40\x81\x83\x83\x7E\x83\x6A\x83\x4E\x83\x6E\x81\x84\x8D\x73";
 
 // なにをつけますか？１Ｐうしろ行　＜ノコノコ＞　　＜クリホ゛ー＞行　＜キノヒオ＞　　＜ホ゛ムへい＞行　＜テレサ　＞　　＜ハ゛ッタン＞行　＜ムーチョ＞　　＜フラワー＞行　＜ワンワン＞　　＜ト゛ッスン＞行　＜スノーマ＞　　＜ミニクハ＞行
-const u8 D_80114A3C_duel06[] = "\x82\xC8\x82\xC9\x82\xF0\x82\xC2\x82\xAF\x82\xDC\x82\xB7\x82\xA9\x81\x48\x82\x50\x82\x6F\x82\xA4\x82\xB5\x82\xEB\x8D\x73"
+const u8 D_8011730C_duel02[] = "\x82\xC8\x82\xC9\x82\xF0\x82\xC2\x82\xAF\x82\xDC\x82\xB7\x82\xA9\x81\x48\x82\x50\x82\x6F\x82\xA4\x82\xB5\x82\xEB\x8D\x73"
     "\x81\x40\x81\x83\x83\x6D\x83\x52\x83\x6D\x83\x52\x81\x84\x81\x40\x81\x40\x81\x83\x83\x4E\x83\x8A\x83\x7A\x81\x4A\x81\x5B\x81\x84\x8D\x73"
     "\x81\x40\x81\x83\x83\x4C\x83\x6D\x83\x71\x83\x49\x81\x84\x81\x40\x81\x40\x81\x83\x83\x7A\x81\x4A\x83\x80\x82\xD6\x82\xA2\x81\x84\x8D\x73"
     "\x81\x40\x81\x83\x83\x65\x83\x8C\x83\x54\x81\x40\x81\x84\x81\x40\x81\x40\x81\x83\x83\x6E\x81\x4A\x83\x62\x83\x5E\x83\x93\x81\x84\x8D\x73"
@@ -3727,7 +4064,7 @@ const u8 D_80114A3C_duel06[] = "\x82\xC8\x82\xC9\x82\xF0\x82\xC2\x82\xAF\x82\xDC
     "\x81\x40\x81\x83\x83\x58\x83\x6D\x81\x5B\x83\x7D\x81\x84\x81\x40\x81\x40\x81\x83\x83\x7E\x83\x6A\x83\x4E\x83\x6E\x81\x84\x8D\x73";
 
 // なにをつけますか？２Ｐまえ行　＜ノコノコ＞　　＜クリホ゛ー＞行　＜キノヒオ＞　　＜ホ゛ムへい＞行　＜テレサ　＞　　＜ハ゛ッタン＞行　＜ムーチョ＞　　＜フラワー＞行　＜ワンワン＞　　＜ト゛ッスン＞行　＜スノーマ＞　　＜ミニクハ＞行
-const u8 D_80114B24_duel06[] = "\x82\xC8\x82\xC9\x82\xF0\x82\xC2\x82\xAF\x82\xDC\x82\xB7\x82\xA9\x81\x48\x82\x51\x82\x6F\x82\xDC\x82\xA6\x8D\x73"
+const u8 D_801173F4_duel02[] = "\x82\xC8\x82\xC9\x82\xF0\x82\xC2\x82\xAF\x82\xDC\x82\xB7\x82\xA9\x81\x48\x82\x51\x82\x6F\x82\xDC\x82\xA6\x8D\x73"
     "\x81\x40\x81\x83\x83\x6D\x83\x52\x83\x6D\x83\x52\x81\x84\x81\x40\x81\x40\x81\x83\x83\x4E\x83\x8A\x83\x7A\x81\x4A\x81\x5B\x81\x84\x8D\x73"
     "\x81\x40\x81\x83\x83\x4C\x83\x6D\x83\x71\x83\x49\x81\x84\x81\x40\x81\x40\x81\x83\x83\x7A\x81\x4A\x83\x80\x82\xD6\x82\xA2\x81\x84\x8D\x73"
     "\x81\x40\x81\x83\x83\x65\x83\x8C\x83\x54\x81\x40\x81\x84\x81\x40\x81\x40\x81\x83\x83\x6E\x81\x4A\x83\x62\x83\x5E\x83\x93\x81\x84\x8D\x73"
@@ -3736,7 +4073,7 @@ const u8 D_80114B24_duel06[] = "\x82\xC8\x82\xC9\x82\xF0\x82\xC2\x82\xAF\x82\xDC
     "\x81\x40\x81\x83\x83\x58\x83\x6D\x81\x5B\x83\x7D\x81\x84\x81\x40\x81\x40\x81\x83\x83\x7E\x83\x6A\x83\x4E\x83\x6E\x81\x84\x8D\x73";
 
 // なにをつけますか？２Ｐうしろ行　＜ノコノコ＞　　＜クリホ゛ー＞行　＜キノヒオ＞　　＜ホ゛ムへい＞行　＜テレサ　＞　　＜ハ゛ッタン＞行　＜ムーチョ＞　　＜フラワー＞行　＜ワンワン＞　　＜ト゛ッスン＞行　＜スノーマ＞　　＜ミニクハ＞行
-const u8 D_80114C0C_duel06[] = "\x82\xC8\x82\xC9\x82\xF0\x82\xC2\x82\xAF\x82\xDC\x82\xB7\x82\xA9\x81\x48\x82\x51\x82\x6F\x82\xA4\x82\xB5\x82\xEB\x8D\x73"
+const u8 D_801174DC_duel02[] = "\x82\xC8\x82\xC9\x82\xF0\x82\xC2\x82\xAF\x82\xDC\x82\xB7\x82\xA9\x81\x48\x82\x51\x82\x6F\x82\xA4\x82\xB5\x82\xEB\x8D\x73"
     "\x81\x40\x81\x83\x83\x6D\x83\x52\x83\x6D\x83\x52\x81\x84\x81\x40\x81\x40\x81\x83\x83\x4E\x83\x8A\x83\x7A\x81\x4A\x81\x5B\x81\x84\x8D\x73"
     "\x81\x40\x81\x83\x83\x4C\x83\x6D\x83\x71\x83\x49\x81\x84\x81\x40\x81\x40\x81\x83\x83\x7A\x81\x4A\x83\x80\x82\xD6\x82\xA2\x81\x84\x8D\x73"
     "\x81\x40\x81\x83\x83\x65\x83\x8C\x83\x54\x81\x40\x81\x84\x81\x40\x81\x40\x81\x83\x83\x6E\x81\x4A\x83\x62\x83\x5E\x83\x93\x81\x84\x8D\x73"
@@ -3744,7 +4081,7 @@ const u8 D_80114C0C_duel06[] = "\x82\xC8\x82\xC9\x82\xF0\x82\xC2\x82\xAF\x82\xDC
     "\x81\x40\x81\x83\x83\x8F\x83\x93\x83\x8F\x83\x93\x81\x84\x81\x40\x81\x40\x81\x83\x83\x67\x81\x4A\x83\x62\x83\x58\x83\x93\x81\x84\x8D\x73"
     "\x81\x40\x81\x83\x83\x58\x83\x6D\x81\x5B\x83\x7D\x81\x84\x81\x40\x81\x40\x81\x83\x83\x7E\x83\x6A\x83\x4E\x83\x6E\x81\x84\x8D\x73";
 
-void func_80110E04_duel06(void) {
+void func_80110C7C_duel02(void) {
     s32 index = GwSystem.current_player_index;
     GW_PLAYER *player = MBDGetPlayerStruct(index);
     u8 mes[0x200];
@@ -3775,7 +4112,7 @@ void func_80110E04_duel06(void) {
         win = HuWinExCreate(-1, 80, 80, 160, 105, 0);
         func_8005B63C_main(win, 64, 64);
         HuWinExAnimIn(win);
-        func_8005FBA4_main(mes, (s32)D_80114954_duel06);
+        func_8005FBA4_main(mes, (s32)D_80117224_duel02);
         HuWinMesSet(win, (u32)mes, -1, -1);
         while (HuWinStatGet(win) != 0) {
             HuPrcVSleep();
@@ -3800,7 +4137,7 @@ void func_80110E04_duel06(void) {
         win = HuWinExCreate(-1, 80, 80, 160, 105, 0);
         func_8005B63C_main(win, 64, 64);
         HuWinExAnimIn(win);
-        func_8005FBA4_main(mes, (s32)D_80114A3C_duel06);
+        func_8005FBA4_main(mes, (s32)D_8011730C_duel02);
         HuWinMesSet(win, (u32)mes, -1, -1);
         while (HuWinStatGet(win) != 0) {
             HuPrcVSleep();
@@ -3834,7 +4171,7 @@ void func_80110E04_duel06(void) {
         win = HuWinExCreate(-1, 80, 80, 160, 105, 0);
         func_8005B63C_main(win, 64, 64);
         HuWinExAnimIn(win);
-        func_8005FBA4_main(mes, (s32)D_80114B24_duel06);
+        func_8005FBA4_main(mes, (s32)D_801173F4_duel02);
         HuWinMesSet(win, (u32)mes, -1, -1);
         while (HuWinStatGet(win) != 0) {
             HuPrcVSleep();
@@ -3859,7 +4196,7 @@ void func_80110E04_duel06(void) {
         win = HuWinExCreate(-1, 80, 80, 160, 105, 0);
         func_8005B63C_main(win, 64, 64);
         HuWinExAnimIn(win);
-        func_8005FBA4_main(mes, (s32)D_80114C0C_duel06);
+        func_8005FBA4_main(mes, (s32)D_801174DC_duel02);
         HuWinMesSet(win, (u32)mes, -1, -1);
         while (HuWinStatGet(win) != 0) {
             HuPrcVSleep();
@@ -4003,7 +4340,7 @@ void func_80110E04_duel06(void) {
                 if (ref != NULL) {
                     HuVecCopy3F(&pos, &ref->coords);
                     pos.y += 2.0f;
-                    memcpy(offsets, D_80114930_duel06, sizeof(offsets));
+                    memcpy(offsets, D_80117200_duel02, sizeof(offsets));
                     for (k = 0; k < 3; k++) {
                         HuPrcChildLink(HuPrcCurrentGet(), func_800DCE40_name_81(0x4E, &pos, &offsets[k], 3.0f));
                     }
@@ -4027,7 +4364,7 @@ void func_80110E04_duel06(void) {
     }
 }
 
-void func_80111FC4_duel06(void) {
+void func_80111E3C_duel02(void) {
     GW_SYSTEM *sys = &GwSystem;
     GW_PLAYER *player;
     SpaceData *space;
@@ -4038,7 +4375,7 @@ void func_80111FC4_duel06(void) {
     char text[8];
 
     player = MBDGetPlayerStruct(CUR_PLAYER);
-    space = MBDMasuGet(0x1C);
+    space = MBDMasuGet(0x20);
     func_800DB3E0_name_81(sys->current_player_index);
     func_800F38DC_name_81(-1, -1, 2);
     HuPrcChildLink(HuPrcCurrentGet(), MBDCameraZoomMotStart(2.0f));
@@ -4046,20 +4383,20 @@ void func_80111FC4_duel06(void) {
     func_800FC888_name_81(4);
     func_800FC8C4_name_81(&pos);
     HuPrcChildLink(HuPrcCurrentGet(), func_800EC1E4_name_81(&pos, &space->coords, &pos, 4.0f));
-    MBDMotionSet(D_80114D50_duel06, 2, 0);
-    func_8002FD8C_main(D_80114D50_duel06->omObj1->model[0], Hu3DData[D_80114D50_duel06->omObj1->model[0]].motId, "bell", 0x4C, 0x46);
-    func_8002FD8C_main(D_80114D50_duel06->omObj1->model[0], D_80114D50_duel06->omObj1->motion[2], "bell", 0x4C, 0x46);
-    node = func_8001D33C_main(D_80114D50_duel06->omObj1->model[0], "bell");
+    MBDMotionSet(D_80117620_duel02, 2, 0);
+    func_8002FD8C_main(D_80117620_duel02->omObj1->model[0], Hu3DData[D_80117620_duel02->omObj1->model[0]].motId, "bell", 0x4C, 0x46);
+    func_8002FD8C_main(D_80117620_duel02->omObj1->model[0], D_80117620_duel02->omObj1->motion[2], "bell", 0x4C, 0x46);
+    node = func_8001D33C_main(D_80117620_duel02->omObj1->model[0], "bell");
     node->baseRot.y = (GwSystem.bank_coins - 5) * 60;
     i = 0;
-    while (!(MBDMotionCheck(D_80114D50_duel06) & 1)) {
+    while (!(MBDMotionCheck(D_80117620_duel02) & 1)) {
         if (++i == 8) {
             HuAudFXPlay(0x1C5);
         }
         HuPrcVSleep();
     }
-    func_8002FD8C_main(D_80114D50_duel06->omObj1->model[0], Hu3DData[D_80114D50_duel06->omObj1->model[0]].motId, "bell", 0x4C, 0x46);
-    node = func_8001D33C_main(D_80114D50_duel06->omObj1->model[0], "bell");
+    func_8002FD8C_main(D_80117620_duel02->omObj1->model[0], Hu3DData[D_80117620_duel02->omObj1->model[0]].motId, "bell", 0x4C, 0x46);
+    node = func_8001D33C_main(D_80117620_duel02->omObj1->model[0], "bell");
     node->baseRot.y = (GwSystem.bank_coins - 5) * 60;
     HuAudFXPlay(0x1C7);
     for (offset = 0.0f; offset >= -60.0f; offset -= 4.0f) {
@@ -4070,21 +4407,21 @@ void func_80111FC4_duel06(void) {
     if (GwSystem.bank_coins != 0) {
         GwSystem.bank_coins--;
     }
-    func_8010DC0C_duel06();
-    D_801144CC_duel06 = 12.0f;
+    func_8010DC08_duel02();
+    D_801165BC_duel02 = 12.0f;
     if (GwSystem.bank_coins != 0) {
         HuAudFXPlay(0x207);
-        MBDMotionShiftSet(D_80114D50_duel06, 0, 0, 5, 2);
-        func_8002FD8C_main(D_80114D50_duel06->omObj1->model[0], D_80114D50_duel06->omObj1->motion[0], "bell", 0x4C, 0x46);
-        Hu3DMotionSpeedSet(D_80114D50_duel06->omObj1->model[0], (5.0f - GwSystem.bank_coins) / 4.0f + 1.0f);
+        MBDMotionShiftSet(D_80117620_duel02, 0, 0, 5, 2);
+        func_8002FD8C_main(D_80117620_duel02->omObj1->model[0], D_80117620_duel02->omObj1->motion[0], "bell", 0x4C, 0x46);
+        Hu3DMotionSpeedSet(D_80117620_duel02->omObj1->model[0], (5.0f - GwSystem.bank_coins) / 4.0f + 1.0f);
         HuPrcSleep(24);
-        MBDMotionSet(D_80114D50_duel06, -1, 2);
+        MBDMotionSet(D_80117620_duel02, -1, 2);
     } else {
         HuAudFXPlay(0x1C6);
-        MBDMotionShiftSet(D_80114D50_duel06, 1, 0, 5, 2);
-        func_8002FD8C_main(D_80114D50_duel06->omObj1->model[0], D_80114D50_duel06->omObj1->motion[1], "bell", 0x4C, 0x46);
-        Hu3DMotionSpeedSet(D_80114D50_duel06->omObj1->model[0], 1.0f);
-        func_8010DC0C_duel06();
+        MBDMotionShiftSet(D_80117620_duel02, 1, 0, 5, 2);
+        func_8002FD8C_main(D_80117620_duel02->omObj1->model[0], D_80117620_duel02->omObj1->motion[1], "bell", 0x4C, 0x46);
+        Hu3DMotionSpeedSet(D_80117620_duel02->omObj1->model[0], 1.0f);
+        func_8010DC08_duel02();
         func_800F74E4_name_81(-1);
         func_800EEC40_name_81(&pos);
         if (sys->current_turn < 11) {
@@ -4099,12 +4436,12 @@ void func_80111FC4_duel06(void) {
         func_800EB58C_name_81();
         func_800EB278_name_81();
         func_800EB29C_name_81();
-        func_80114324_duel06();
-        D_80100F44_name_81 = D_80114D50_duel06;
+        func_80116414_duel02();
+        D_80100F44_name_81 = D_80117620_duel02;
         func_800FD620_name_81();
         HuPrcSleep(-1);
     }
-    D_801144CC_duel06 = 3.0f;
+    D_801165BC_duel02 = 3.0f;
     HuPrcChildLink(HuPrcCurrentGet(), func_800EC1E4_name_81(&pos, &player->player_obj->coords, &pos, 4.0f));
     func_800DADA0_name_81(sys->current_player_index);
     HuPrcChildLink(HuPrcCurrentGet(), MBDCameraZoomMotStart(1.7f));
@@ -4112,7 +4449,7 @@ void func_80111FC4_duel06(void) {
     func_800FC888_name_81(1);
 }
 
-void func_801125B0_duel06(void) {
+void func_80112428_duel02(void) {
     GW_PLAYER *player;
     void *handle;
 
@@ -4134,7 +4471,7 @@ void func_801125B0_duel06(void) {
     GwPlayer[GwSystem.current_player_index].star = 5;
 }
 
-void func_801126A0_duel06(void) {
+void func_80112518_duel02(void) {
     func_800E18C0_name_81();
     func_800E1960_name_81();
     func_800E1F38_name_81();
@@ -4142,7 +4479,7 @@ void func_801126A0_duel06(void) {
     func_800ED214_name_81(1);
 }
 
-void func_801126DC_duel06(void) {
+void func_80112554_duel02(void) {
     GW_SYSTEM *sys = &GwSystem;
     s32 coins = GwPlayer[sys->current_player_index].coin;
 
@@ -4154,7 +4491,7 @@ void func_801126DC_duel06(void) {
     HuPrcSleep(30);
 }
 
-void func_80112758_duel06(void) {
+void func_801125D0_duel02(void) {
     GW_SYSTEM *sys = &GwSystem;
 
     func_800E14D8_name_81(sys->current_player_index, 10);
@@ -4162,24 +4499,24 @@ void func_80112758_duel06(void) {
     HuPrcSleep(30);
 }
 
-void func_80112794_duel06(void) {
+void func_8011260C_duel02(void) {
     s8 nnlink;
     s8 nnidx;
     s8 link2 = -1;
     s8 idx2 = -1;
 
     if (MBDGetCurrentPlayerIndex() == 0) {
-        func_800E9F4C_name_81(0x15, &nnlink, &nnidx);
+        func_800E9F4C_name_81(0x1E, &nnlink, &nnidx);
     } else {
-        func_800E9F4C_name_81(0x16, &nnlink, &nnidx);
+        func_800E9F4C_name_81(0x1D, &nnlink, &nnidx);
     }
-    func_8011402C_duel06(&link2, &idx2);
+    func_8011639C_duel02(&link2, &idx2);
     func_800E24AC_name_81(nnlink, nnidx, link2, idx2);
     func_800ED214_name_81(GwSystem.current_player_index);
-    func_80110230_duel06(MBDGetCurrentPlayerIndex());
+    func_801100A8_duel02(MBDGetCurrentPlayerIndex());
 }
 
-void func_80112814_duel06(void) {
+void func_8011268C_duel02(void) {
     GW_PLAYER *player;
     Object *obj;
     void *handles[2];
@@ -4240,7 +4577,7 @@ void func_80112814_duel06(void) {
     func_800F3880_name_81(-1, -1, 2);
 }
 
-void func_80112B90_duel06(void) {
+void func_80112A08_duel02(void) {
     GW_SYSTEM *sys = &GwSystem;
     GW_PLAYER *player;
     void *handle;
@@ -4285,7 +4622,7 @@ void func_80112B90_duel06(void) {
     func_800EDDBC_name_81();
 }
 
-void func_80112D7C_duel06(void) {
+void func_80112BF4_duel02(void) {
     GW_SYSTEM *sys = &GwSystem;
     GW_PLAYER *player;
     void *handle;
@@ -4330,7 +4667,7 @@ void func_80112D7C_duel06(void) {
     func_800EDDBC_name_81();
 }
 
-void func_80112F68_duel06(void) {
+void func_80112DE0_duel02(void) {
     GW_PLAYER *player;
     s32 playerIndex;
     void *handle;
@@ -4395,7 +4732,7 @@ void func_80112F68_duel06(void) {
     func_800EDDBC_name_81();
 }
 
-void func_801137A0_duel06(void) {
+void func_80113618_duel02(void) {
     GW_PLAYER *player;
     Object *obj;
     void *handles[2];
@@ -4448,7 +4785,7 @@ void func_801137A0_duel06(void) {
     func_800EFABC_name_81(player->player_obj);
 }
 
-void func_80113A98_duel06(void) {
+void func_80113910_duel02(void) {
     GW_SYSTEM *sys = &GwSystem;
 
     func_800E14D8_name_81(sys->current_player_index, 20);
@@ -4456,7 +4793,7 @@ void func_80113A98_duel06(void) {
     HuPrcSleep(30);
 }
 
-void func_80113AD4_duel06(void) {
+void func_8011394C_duel02(void) {
     UnkBoard4 *sprite;
     void *data;
     s32 i;
@@ -4506,157 +4843,1039 @@ void func_80113AD4_duel06(void) {
     HuPrcChildWatch();
     func_800F4584_name_81(sprite);
     func_800F75EC_name_81(-1);
-    D_80114698_duel06[GwSystem.minigame_index - 1]();
+    D_8011678C_duel02[GwSystem.minigame_index - 1]();
     mbItemBtnF = 1;
     omDelPrcObj(NULL);
 }
 
-void func_80113E74_duel06(void) {
+s32 func_80113CEC_duel02(void) {
+    s32 curIndex = MBDGetCurrentPlayerIndex();
+    s32 otherIndex = MBDGetCurrentPlayerIndex() ^ 1;
     GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
-    s32 spaceIndex = MBDMasuLinkMasuIdGet(player->blink, player->bidx);
+    GW_PLAYER *other = MBDGetPlayerStruct(otherIndex);
+    s32 walkNum = mbWalkNum;
+    s32 stars;
+    s32 coins;
 
-    if (spaceIndex == MBDMasuLinkMasuIdGet(player->clink, player->cidx + 1)) {
-        func_800E9F4C_name_81(0x13, &player->nlink, &player->nidx);
+    switch (other->clink) {
+        case 0:
+            if (walkNum < 5) {
+                return 1;
+            }
+            if (player->stats.partners.frontPower == 0) {
+                return 1;
+            }
+            if (other->cidx == D_801167E0_duel02[walkNum - 4]) {
+                if (other->stats.partners.backID == PARTNER_BOO &&
+                    !(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                    return 1;
+                }
+                return 0;
+            }
+            if (other->cidx < D_801167E0_duel02[walkNum - 4]) {
+                if (player->stats.partners.frontID == PARTNER_CHOMP && other->star < 2) {
+                    return 0;
+                }
+                if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
+                    return 0;
+                }
+                if ((player->stats.partners.frontID == PARTNER_MR_BLIZZARD)
+                        ? !(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)
+                        : !(other->stats.partners.backHp + other->star > player->stats.partners.frontPower)) {
+                    return 0;
+                }
+                if (other->stats.partners.backID == PARTNER_BOO) {
+                    if (!(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                        return 1;
+                    }
+                }
+                if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
+                    if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
+                        return 1;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_BOB_OMB && !(player->star > other->stats.partners.frontPoweredUp)) {
+                        return 1;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                        return !(player->stats.partners.frontHp + player->star > other->stats.partners.frontPower);
+                    }
+                    if (other->stats.partners.frontPower > player->stats.partners.backHp + player->star) {
+                        return 1;
+                    }
+                }
+                if (player->stats.partners.backID == PARTNER_BOO) {
+                    return 0;
+                }
+                return 1;
+            }
+            return 1;
+        case 1:
+            if (other->cidx == D_801167EC_duel02[walkNum]) {
+                if (other->stats.partners.backID == PARTNER_BOO &&
+                    !(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                    return 0;
+                }
+                return 1;
+            }
+            if (other->cidx < D_801167EC_duel02[walkNum]) {
+                stars = player->star;
+                if (player->stats.partners.frontID == PARTNER_CHOMP && other->star < 2) {
+                    return 1;
+                }
+                if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
+                    return 1;
+                }
+                if ((player->stats.partners.frontID == PARTNER_MR_BLIZZARD)
+                        ? !(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)
+                        : !(other->stats.partners.backHp + other->star > player->stats.partners.frontPower)) {
+                    return 1;
+                }
+                if (other->stats.partners.backID == PARTNER_BOO) {
+                    if (!(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                        return 0;
+                    }
+                    if (player->stats.partners.frontPower > player->stats.partners.frontHp) {
+                        stars -= player->stats.partners.frontPower - player->stats.partners.frontHp;
+                    }
+                }
+                if (walkNum == 9) {
+                    if (!(player->stats.partners.backPower < other->stats.partners.frontHp + other->star)) {
+                        return 1;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_BOO &&
+                        !(player->stats.partners.backPower < stars + player->stats.partners.backHp)) {
+                        return 0;
+                    }
+                    return 1;
+                }
+                if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
+                    if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
+                        return 0;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_BOB_OMB && !(player->star > other->stats.partners.frontPoweredUp)) {
+                        return 0;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                        return player->stats.partners.frontHp + player->star > other->stats.partners.frontPower;
+                    }
+                    if (other->stats.partners.frontPower > player->stats.partners.backHp + player->star) {
+                        return 0;
+                    }
+                }
+                return 1;
+            }
+            if (player->stats.partners.frontPower == 0) {
+                return 1;
+            }
+            if (other->cidx < 6) {
+                return 1;
+            }
+            if (func_800F8980_name_81(curIndex) == 0) {
+                coins = 0;
+            } else {
+                coins = GwPlayer[curIndex].coin / func_800F8980_name_81(curIndex);
+            }
+            if (coins >= 3 && walkNum < 6 && func_800EFE20_name_81(100.0f) < 50) {
+                return 0;
+            }
+            return 1;
+        case 2:
+            if (walkNum < 5 && other->cidx == D_801167F8_duel02[walkNum]) {
+                if (other->stats.partners.backID == PARTNER_BOO &&
+                    !(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                    return 1;
+                }
+                return 0;
+            }
+            if (walkNum >= 5 || other->cidx < D_801167F8_duel02[walkNum]) {
+                if (player->stats.partners.frontID == PARTNER_CHOMP && other->star < 2) {
+                    return 0;
+                }
+                if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
+                    return 0;
+                }
+                if ((player->stats.partners.frontID == PARTNER_MR_BLIZZARD)
+                        ? !(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)
+                        : !(other->stats.partners.backHp + other->star > player->stats.partners.frontPower)) {
+                    return 0;
+                }
+                if (other->stats.partners.backID == PARTNER_BOO) {
+                    if (!(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                        return 1;
+                    }
+                }
+                if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
+                    if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
+                        return 1;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_BOB_OMB && !(player->star > other->stats.partners.frontPoweredUp)) {
+                        return 1;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                        return !(player->stats.partners.frontHp + player->star > other->stats.partners.frontPower);
+                    }
+                    if (other->stats.partners.frontPower > player->stats.partners.backHp + player->star) {
+                        return 1;
+                    }
+                }
+                if (player->stats.partners.frontPower != 0 || player->stats.partners.backID == PARTNER_BOO) {
+                    return 0;
+                }
+                return 1;
+            }
+            if (other->stats.partners.frontPower != 0) {
+                return 1;
+            }
+            if (player->stats.partners.frontPower == 0) {
+                return 1;
+            }
+            if (func_800F8980_name_81(curIndex) == 0) {
+                coins = 0;
+            } else {
+                coins = GwPlayer[curIndex].coin / func_800F8980_name_81(curIndex);
+            }
+            return coins < 3;
+        case 3:
+            if (walkNum < 5) {
+                return 1;
+            }
+            if (player->stats.partners.frontPower == 0) {
+                return 1;
+            }
+            if (walkNum < 10 && other->cidx == D_80116800_duel02[walkNum - 4]) {
+                if (other->stats.partners.backID == PARTNER_BOO &&
+                    !(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                    return 1;
+                }
+                return 0;
+            }
+            if (walkNum >= 10 || other->cidx < D_80116800_duel02[walkNum - 4]) {
+                if (player->stats.partners.frontID == PARTNER_CHOMP && other->star < 2) {
+                    return 0;
+                }
+                if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
+                    return 0;
+                }
+                if ((player->stats.partners.frontID == PARTNER_MR_BLIZZARD && !(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)) ||
+                    (player->stats.partners.frontID != PARTNER_MR_BLIZZARD && !(other->stats.partners.backHp + other->star > player->stats.partners.frontPower))) {
+                    return 0;
+                }
+                if (other->stats.partners.backID == PARTNER_BOO) {
+                    if (!(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                        return 1;
+                    }
+                }
+                if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
+                    if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
+                        return 1;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_BOB_OMB && !(player->star > other->stats.partners.frontPoweredUp)) {
+                        return 1;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                        return !(player->stats.partners.frontHp + player->star > other->stats.partners.frontPower);
+                    }
+                    if (other->stats.partners.frontPower > player->stats.partners.backHp + player->star) {
+                        return 1;
+                    }
+                }
+                if (player->stats.partners.backID == PARTNER_BOO) {
+                    return 0;
+                }
+                return 1;
+            }
+            return 1;
     }
+    return 1;
 }
 
-void func_80113F14_duel06(void) {
+s32 func_80114630_duel02(void) {
+    s32 curIndex = MBDGetCurrentPlayerIndex();
+    s32 otherIndex = MBDGetCurrentPlayerIndex() ^ 1;
     GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
-    s32 spaceIndex = MBDMasuLinkMasuIdGet(player->blink, player->bidx);
+    GW_PLAYER *other = MBDGetPlayerStruct(otherIndex);
+    s32 walkNum = mbWalkNum;
+    s32 stars;
+    s32 coins;
 
-    if (spaceIndex == MBDMasuLinkMasuIdGet(player->clink, player->cidx - 1)) {
-        func_800E9F4C_name_81(0x14, &player->nlink, &player->nidx);
+    switch (other->clink) {
+        case 1:
+            if (other->cidx == D_801167EC_duel02[walkNum]) {
+                if (other->stats.partners.backID == PARTNER_BOO &&
+                    !(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                    return 0;
+                }
+                return 1;
+            }
+            if (other->cidx < D_801167EC_duel02[walkNum]) {
+                stars = player->star;
+                if (player->stats.partners.frontID == PARTNER_CHOMP && other->star < 2) {
+                    return 1;
+                }
+                if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
+                    return 1;
+                }
+                if (player->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                    if (!(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)) {
+                        return 1;
+                    }
+                } else if (!(other->stats.partners.backHp + other->star > player->stats.partners.frontPower)) {
+                    return 1;
+                }
+                if (other->stats.partners.backID == PARTNER_BOO) {
+                    if (!(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                        return 0;
+                    }
+                    if (player->stats.partners.frontPower > player->stats.partners.frontHp) {
+                        stars -= player->stats.partners.frontPower - player->stats.partners.frontHp;
+                    }
+                }
+                if (walkNum == 9) {
+                    if (!(player->stats.partners.backPower < other->stats.partners.frontHp + other->star)) {
+                        return 1;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_BOO &&
+                        !(player->stats.partners.backPower < stars + player->stats.partners.backHp)) {
+                        return 0;
+                    }
+                    return 1;
+                }
+                if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
+                    if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
+                        return 0;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_BOB_OMB && !(player->star > other->stats.partners.frontPoweredUp)) {
+                        return 0;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                        return player->stats.partners.frontHp + player->star > other->stats.partners.frontPower;
+                    }
+                    if (other->stats.partners.frontPower > player->stats.partners.backHp + player->star) {
+                        return 0;
+                    }
+                }
+                if (player->stats.partners.frontPower != 0 || player->stats.partners.backID == PARTNER_BOO) {
+                    return 1;
+                }
+                return 0;
+            }
+            if (walkNum == 4) {
+                return func_800EFE20_name_81(100.0f) < 50;
+            }
+            return walkNum >= 6;
+        case 0:
+            return 0;
+        case 2:
+            if (walkNum < 5 && other->cidx == D_801167F8_duel02[walkNum]) {
+                if (other->stats.partners.backID == PARTNER_BOO &&
+                    !(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                    return 1;
+                }
+                return 0;
+            }
+            if (walkNum >= 5 || other->cidx < D_801167F8_duel02[walkNum]) {
+                if (player->stats.partners.frontID == PARTNER_CHOMP && other->star < 2) {
+                    return 0;
+                }
+                if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
+                    return 0;
+                }
+                if ((player->stats.partners.frontID == PARTNER_MR_BLIZZARD)
+                        ? !(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)
+                        : !(other->stats.partners.backHp + other->star > player->stats.partners.frontPower)) {
+                    return 0;
+                }
+                if (other->stats.partners.backID == PARTNER_BOO) {
+                    if (!(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                        return 1;
+                    }
+                }
+                if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
+                    if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
+                        return 1;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_BOB_OMB && !(player->star > other->stats.partners.frontPoweredUp)) {
+                        return 1;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                        return !(player->stats.partners.frontHp + player->star > other->stats.partners.frontPower);
+                    }
+                    if (other->stats.partners.frontPower > player->stats.partners.backHp + player->star) {
+                        return 1;
+                    }
+                }
+                if (player->stats.partners.frontPower != 0 || player->stats.partners.backID == PARTNER_BOO) {
+                    return 0;
+                }
+                return 1;
+            }
+            if (other->stats.partners.frontPower == 0) {
+                return 0;
+            }
+            if (walkNum != 2) {
+                return 0;
+            }
+            if (player->stats.partners.frontPoweredUp == walkNum) {
+                return 0;
+            }
+            if (func_800F8980_name_81(curIndex) == 0) {
+                coins = 0;
+            } else {
+                coins = GwPlayer[curIndex].coin / (func_800F8980_name_81(curIndex) * 2);
+            }
+            if (coins >= 3 && player->stats.partners.frontPower != 0) {
+                return 1;
+            }
+            return 0;
     }
+    return 0;
 }
 
-void func_80113FB4_duel06(void) {
+s32 func_80114B94_duel02(void) {
+    s32 curIndex = MBDGetCurrentPlayerIndex();
+    s32 otherIndex = MBDGetCurrentPlayerIndex() ^ 1;
     GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    GW_PLAYER *other = MBDGetPlayerStruct(otherIndex);
+    s32 walkNum = mbWalkNum;
+    s32 stars;
+    s32 coins;
 
-    if (!(player->rev & 1)) {
-        func_800E9F4C_name_81(0x14, &player->nnlink, &player->nnidx);
+    switch (other->clink) {
+        case 1:
+            if (walkNum < 6) {
+                return 1;
+            }
+            if (player->stats.partners.frontPower == 0) {
+                return 1;
+            }
+            if (other->cidx == D_801167EC_duel02[walkNum - 5]) {
+                if (other->stats.partners.backID == PARTNER_BOO &&
+                    !(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                    return 1;
+                }
+                return 0;
+            }
+            if (other->cidx < D_801167EC_duel02[walkNum - 5]) {
+                if (player->stats.partners.frontID == PARTNER_CHOMP && other->star < 2) {
+                    return 0;
+                }
+                if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
+                    return 0;
+                }
+                if ((player->stats.partners.frontID == PARTNER_MR_BLIZZARD)
+                        ? !(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)
+                        : !(other->stats.partners.backHp + other->star > player->stats.partners.frontPower)) {
+                    return 0;
+                }
+                if (other->stats.partners.backID == PARTNER_BOO) {
+                    if (!(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                        return 1;
+                    }
+                }
+                if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
+                    if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
+                        return 1;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_BOB_OMB && !(player->star > other->stats.partners.frontPoweredUp)) {
+                        return 1;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                        return !(player->stats.partners.frontHp + player->star > other->stats.partners.frontPower);
+                    }
+                    if (other->stats.partners.frontPower > player->stats.partners.backHp + player->star) {
+                        return 1;
+                    }
+                }
+                if (player->stats.partners.backID == PARTNER_BOO) {
+                    return 0;
+                }
+                return 1;
+            }
+            return 1;
+        case 0:
+            if (other->cidx == D_801167E0_duel02[walkNum]) {
+                if (other->stats.partners.backID == PARTNER_BOO &&
+                    !(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                    return 0;
+                }
+                return 1;
+            }
+            if (other->cidx < D_801167E0_duel02[walkNum]) {
+                stars = player->star;
+                if (player->stats.partners.frontID == PARTNER_CHOMP && other->star < 2) {
+                    return 1;
+                }
+                if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
+                    return 1;
+                }
+                if ((player->stats.partners.frontID == PARTNER_MR_BLIZZARD)
+                        ? !(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)
+                        : !(other->stats.partners.backHp + other->star > player->stats.partners.frontPower)) {
+                    return 1;
+                }
+                if (other->stats.partners.backID == PARTNER_BOO) {
+                    if (!(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                        return 0;
+                    }
+                    if (player->stats.partners.frontPower > player->stats.partners.frontHp) {
+                        stars -= player->stats.partners.frontPower - player->stats.partners.frontHp;
+                    }
+                }
+                if (walkNum == 9) {
+                    if (!(player->stats.partners.backPower < other->stats.partners.frontHp + other->star)) {
+                        return 1;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_BOO &&
+                        !(player->stats.partners.backPower < stars + player->stats.partners.backHp)) {
+                        return 0;
+                    }
+                    return 1;
+                }
+                if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
+                    if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
+                        return 0;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_BOB_OMB && !(player->star > other->stats.partners.frontPoweredUp)) {
+                        return 0;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                        return player->stats.partners.frontHp + player->star > other->stats.partners.frontPower;
+                    }
+                    if (other->stats.partners.frontPower > player->stats.partners.backHp + player->star) {
+                        return 0;
+                    }
+                }
+                return 1;
+            }
+            if (player->stats.partners.frontPower == 0) {
+                return 1;
+            }
+            if (other->cidx < 6) {
+                return 1;
+            }
+            if (func_800F8980_name_81(curIndex) == 0) {
+                coins = 0;
+            } else {
+                coins = GwPlayer[curIndex].coin / func_800F8980_name_81(curIndex);
+            }
+            if (coins >= 3 && walkNum < 6 && func_800EFE20_name_81(100.0f) < 50) {
+                return 0;
+            }
+            return 1;
+        case 3:
+            if (walkNum < 6 && other->cidx == D_80116800_duel02[walkNum]) {
+                if (other->stats.partners.backID == PARTNER_BOO &&
+                    !(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                    return 1;
+                }
+                return 0;
+            }
+            if (walkNum >= 6 || other->cidx < D_80116800_duel02[walkNum]) {
+                if (player->stats.partners.frontID == PARTNER_CHOMP && other->star < 2) {
+                    return 0;
+                }
+                if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
+                    return 0;
+                }
+                if ((player->stats.partners.frontID == PARTNER_MR_BLIZZARD)
+                        ? !(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)
+                        : !(other->stats.partners.backHp + other->star > player->stats.partners.frontPower)) {
+                    return 0;
+                }
+                if (other->stats.partners.backID == PARTNER_BOO) {
+                    if (!(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                        return 1;
+                    }
+                }
+                if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
+                    if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
+                        return 1;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_BOB_OMB && !(player->star > other->stats.partners.frontPoweredUp)) {
+                        return 1;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                        return !(player->stats.partners.frontHp + player->star > other->stats.partners.frontPower);
+                    }
+                    if (other->stats.partners.frontPower > player->stats.partners.backHp + player->star) {
+                        return 1;
+                    }
+                }
+                if (player->stats.partners.frontPower != 0 || player->stats.partners.backID == PARTNER_BOO) {
+                    return 0;
+                }
+                return 1;
+            }
+            if (other->stats.partners.frontPower != 0) {
+                return 1;
+            }
+            if (player->stats.partners.frontPower == 0) {
+                return 1;
+            }
+            if (func_800F8980_name_81(curIndex) == 0) {
+                coins = 0;
+            } else {
+                coins = GwPlayer[curIndex].coin / func_800F8980_name_81(curIndex);
+            }
+            return coins < 3;
+        case 2:
+            if (walkNum < 6) {
+                return 1;
+            }
+            if (player->stats.partners.frontPower == 0) {
+                return 1;
+            }
+            if (walkNum < 10 && other->cidx == D_801167F8_duel02[walkNum - 5]) {
+                if (other->stats.partners.backID == PARTNER_BOO &&
+                    !(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                    return 1;
+                }
+                return 0;
+            }
+            if (walkNum >= 10 || other->cidx < D_801167F8_duel02[walkNum - 5]) {
+                if (player->stats.partners.frontID == PARTNER_CHOMP && other->star < 2) {
+                    return 0;
+                }
+                if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
+                    return 0;
+                }
+                if ((player->stats.partners.frontID == PARTNER_MR_BLIZZARD && !(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)) ||
+                    (player->stats.partners.frontID != PARTNER_MR_BLIZZARD && !(other->stats.partners.backHp + other->star > player->stats.partners.frontPower))) {
+                    return 0;
+                }
+                if (other->stats.partners.backID == PARTNER_BOO) {
+                    if (!(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                        return 1;
+                    }
+                }
+                if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
+                    if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
+                        return 1;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_BOB_OMB && !(player->star > other->stats.partners.frontPoweredUp)) {
+                        return 1;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                        return !(player->stats.partners.frontHp + player->star > other->stats.partners.frontPower);
+                    }
+                    if (other->stats.partners.frontPower > player->stats.partners.backHp + player->star) {
+                        return 1;
+                    }
+                }
+                if (player->stats.partners.backID == PARTNER_BOO) {
+                    return 0;
+                }
+                return 1;
+            }
+            return 1;
     }
+    return 1;
 }
 
-void func_80113FF0_duel06(void) {
+s32 func_801154DC_duel02(void) {
+    s32 curIndex = MBDGetCurrentPlayerIndex();
+    s32 otherIndex = MBDGetCurrentPlayerIndex() ^ 1;
     GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    GW_PLAYER *other = MBDGetPlayerStruct(otherIndex);
+    s32 walkNum = mbWalkNum;
+    s32 stars;
+    s32 coins;
 
-    if (player->rev & 1) {
+    switch (other->clink) {
+        case 0:
+            if (other->cidx == D_801167E0_duel02[walkNum]) {
+                if (other->stats.partners.backID == PARTNER_BOO &&
+                    !(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                    return 0;
+                }
+                return 1;
+            }
+            if (other->cidx < D_801167E0_duel02[walkNum]) {
+                stars = player->star;
+                if (player->stats.partners.frontID == PARTNER_CHOMP && other->star < 2) {
+                    return 1;
+                }
+                if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
+                    return 1;
+                }
+                if (player->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                    if (!(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)) {
+                        return 1;
+                    }
+                } else if (!(other->stats.partners.backHp + other->star > player->stats.partners.frontPower)) {
+                    return 1;
+                }
+                if (other->stats.partners.backID == PARTNER_BOO) {
+                    if (!(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                        return 0;
+                    }
+                    if (player->stats.partners.frontPower > player->stats.partners.frontHp) {
+                        stars -= player->stats.partners.frontPower - player->stats.partners.frontHp;
+                    }
+                }
+                if (walkNum == 9) {
+                    if (!(player->stats.partners.backPower < other->stats.partners.frontHp + other->star)) {
+                        return 1;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_BOO &&
+                        !(player->stats.partners.backPower < stars + player->stats.partners.backHp)) {
+                        return 0;
+                    }
+                    return 1;
+                }
+                if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
+                    if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
+                        return 0;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_BOB_OMB && !(player->star > other->stats.partners.frontPoweredUp)) {
+                        return 0;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                        return player->stats.partners.frontHp + player->star > other->stats.partners.frontPower;
+                    }
+                    if (other->stats.partners.frontPower > player->stats.partners.backHp + player->star) {
+                        return 0;
+                    }
+                }
+                if (player->stats.partners.frontPower != 0 || player->stats.partners.backID == PARTNER_BOO) {
+                    return 1;
+                }
+                return 0;
+            }
+            if (walkNum == 4) {
+                return func_800EFE20_name_81(100.0f) < 50;
+            }
+            return walkNum >= 6;
+        case 1:
+            return 0;
+        case 2:
+            return 0;
+        case 3:
+            if (walkNum < 6 && other->cidx == D_80116800_duel02[walkNum]) {
+                if (other->stats.partners.backID == PARTNER_BOO &&
+                    !(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                    return 1;
+                }
+                return 0;
+            }
+            if (walkNum >= 6 || other->cidx < D_80116800_duel02[walkNum]) {
+                if (player->stats.partners.frontID == PARTNER_CHOMP && other->star < 2) {
+                    return 0;
+                }
+                if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
+                    return 0;
+                }
+                if ((player->stats.partners.frontID == PARTNER_MR_BLIZZARD)
+                        ? !(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)
+                        : !(other->stats.partners.backHp + other->star > player->stats.partners.frontPower)) {
+                    return 0;
+                }
+                if (other->stats.partners.backID == PARTNER_BOO) {
+                    if (!(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                        return 1;
+                    }
+                }
+                if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
+                    if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
+                        return 1;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_BOB_OMB && !(player->star > other->stats.partners.frontPoweredUp)) {
+                        return 1;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                        return !(player->stats.partners.frontHp + player->star > other->stats.partners.frontPower);
+                    }
+                    if (other->stats.partners.frontPower > player->stats.partners.backHp + player->star) {
+                        return 1;
+                    }
+                }
+                if (player->stats.partners.frontPower != 0 || player->stats.partners.backID == PARTNER_BOO) {
+                    return 0;
+                }
+                return 1;
+            }
+            if (other->stats.partners.frontPower == 0) {
+                return 0;
+            }
+            if (walkNum != 2) {
+                return 0;
+            }
+            if (player->stats.partners.frontPoweredUp == walkNum) {
+                return 0;
+            }
+            if (func_800F8980_name_81(curIndex) == 0) {
+                coins = 0;
+            } else {
+                coins = GwPlayer[curIndex].coin / (func_800F8980_name_81(curIndex) * 2);
+            }
+            if (coins >= 3 && player->stats.partners.frontPower != 0) {
+                return 1;
+            }
+            return 0;
+    }
+    return 0;
+}
+
+void func_80115A54_duel02(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    s32 space = MBDMasuLinkMasuIdGet(player->blink, player->bidx);
+    UnkEA790Struct *win;
+    s32 count;
+    s32 sel;
+    s32 i;
+
+    if (space == 7) {
+        return;
+    }
+    if (space == 0x28) {
+        func_800ECD88_name_81(CUR_PLAYER, 1, 0);
+        return;
+    }
+    func_800F38DC_name_81(-1, -1, 2);
+    func_800ECD88_name_81(CUR_PLAYER, 1, 0);
+    HuPrcVSleep();
+    func_80105A58_duel02();
+    win = func_800D76A0_name_81(GwSystem.current_player_index, D_80116F28_duel02);
+    func_800D742C_name_81(win, GwSystem.current_player_index, 0);
+    if (func_800F37B8_name_81(CUR_PLAYER)) {
+        count = func_800D97B0_name_81(D_801169A0_duel02);
+        for (i = 0; i < count; i++) {
+            func_800D7250_name_81(win, -2);
+        }
+        func_800D7250_name_81(win, -4);
+    }
+    sel = func_800D7518_name_81(win);
+    func_800D6CA0_name_81(win);
+    func_80105B10_duel02();
+    if (sel != 0) {
+        func_800E9F4C_name_81(0x28, &player->nlink, &player->nidx);
+        func_800ED788_name_81(GwSystem.current_player_index);
         func_800E9F4C_name_81(0x13, &player->nnlink, &player->nnidx);
     }
 }
 
-void func_8011402C_duel06(s8 *arg0, s8 *arg1) {
+void func_80115BDC_duel02(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    s32 space = MBDMasuLinkMasuIdGet(player->blink, player->bidx);
+    UnkEA790Struct *win;
+    s32 count;
+    s32 sel;
+    s32 i;
+
+    if (space == 0x19) {
+        return;
+    }
+    if (space == 0x26) {
+        func_800ECD88_name_81(CUR_PLAYER, 0, 0);
+        return;
+    }
+    func_800F38DC_name_81(-1, -1, 2);
+    func_800ECD88_name_81(CUR_PLAYER, 0, 0);
+    HuPrcVSleep();
+    func_80105A58_duel02();
+    win = func_800D76A0_name_81(GwSystem.current_player_index, D_80116F40_duel02);
+    func_800D742C_name_81(win, GwSystem.current_player_index, 0);
+    if (func_800F37B8_name_81(CUR_PLAYER)) {
+        count = func_800D97B0_name_81(D_80116B68_duel02);
+        for (i = 0; i < count; i++) {
+            func_800D7250_name_81(win, -2);
+        }
+        func_800D7250_name_81(win, -4);
+    }
+    sel = func_800D7518_name_81(win);
+    func_800D6CA0_name_81(win);
+    func_80105B10_duel02();
+    if (sel != 0) {
+        func_800E9F4C_name_81(0x26, &player->nlink, &player->nidx);
+        func_800ED788_name_81(GwSystem.current_player_index);
+        func_800E9F4C_name_81(0xE, &player->nnlink, &player->nnidx);
+    }
 }
 
-s32 func_80114034_duel06(void) {
+void func_80115D64_duel02(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    s32 space = MBDMasuLinkMasuIdGet(player->blink, player->bidx);
+    UnkEA790Struct *win;
+    s32 count;
+    s32 sel;
+    s32 i;
+
+    if (space == 0x1F) {
+        func_800ECD88_name_81(CUR_PLAYER, 3, 0);
+        return;
+    }
+    func_800F38DC_name_81(-1, -1, 2);
+    func_800ECD88_name_81(CUR_PLAYER, 3, 0);
+    HuPrcVSleep();
+    func_80105A58_duel02();
+    win = func_800D76A0_name_81(GwSystem.current_player_index, D_80116F58_duel02);
+    func_800D742C_name_81(win, GwSystem.current_player_index, 0);
+    if (func_800F37B8_name_81(CUR_PLAYER)) {
+        count = func_800D97B0_name_81(D_80116D30_duel02);
+        for (i = 0; i < count; i++) {
+            func_800D7250_name_81(win, -2);
+        }
+        func_800D7250_name_81(win, -4);
+    }
+    sel = func_800D7518_name_81(win);
+    func_800D6CA0_name_81(win);
+    func_80105B10_duel02();
+    if (sel != 0) {
+        func_800E9F4C_name_81(0x1F, &player->nlink, &player->nidx);
+        func_800ED788_name_81(GwSystem.current_player_index);
+        func_800E9F4C_name_81(0x19, &player->nnlink, &player->nnidx);
+    }
+}
+
+void func_80115EE4_duel02(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    s32 space = MBDMasuLinkMasuIdGet(player->blink, player->bidx);
+    UnkEA790Struct *win;
+    s32 count;
+    s32 sel;
+    s32 i;
+
+    if (space == 0x29) {
+        func_800ECD88_name_81(CUR_PLAYER, 2, 0);
+        return;
+    }
+    func_800F38DC_name_81(-1, -1, 2);
+    func_800ECD88_name_81(CUR_PLAYER, 2, 0);
+    HuPrcVSleep();
+    func_80105A58_duel02();
+    win = func_800D76A0_name_81(GwSystem.current_player_index, D_80116F70_duel02);
+    func_800D742C_name_81(win, GwSystem.current_player_index, 0);
+    if (func_800F37B8_name_81(CUR_PLAYER)) {
+        count = func_800D97B0_name_81(D_80116EF8_duel02);
+        for (i = 0; i < count; i++) {
+            func_800D7250_name_81(win, -2);
+        }
+        func_800D7250_name_81(win, -4);
+    }
+    sel = func_800D7518_name_81(win);
+    func_800D6CA0_name_81(win);
+    func_80105B10_duel02();
+    if (sel != 0) {
+        func_800E9F4C_name_81(0x29, &player->nlink, &player->nidx);
+        func_800ED788_name_81(GwSystem.current_player_index);
+        func_800E9F4C_name_81(7, &player->nnlink, &player->nnidx);
+    }
+}
+
+void func_80116064_duel02(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    s32 spaceIndex = MBDMasuLinkMasuIdGet(player->blink, player->bidx);
+
+    if (spaceIndex == MBDMasuLinkMasuIdGet(player->clink, player->cidx + 1)) {
+        func_800E9F4C_name_81(0x1F, &player->nlink, &player->nidx);
+        if (mbWalkNum != 0) {
+            func_8010EB98_duel02(1);
+        }
+    }
+}
+
+void func_8011611C_duel02(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    s32 spaceIndex = MBDMasuLinkMasuIdGet(player->blink, player->bidx);
+
+    if (spaceIndex == MBDMasuLinkMasuIdGet(player->clink, player->cidx + 1)) {
+        func_800E9F4C_name_81(0x29, &player->nlink, &player->nidx);
+        if (mbWalkNum != 0) {
+            func_8010EB98_duel02(0);
+        }
+    }
+}
+
+void func_801161D4_duel02(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+
+    if (!(player->rev & 1) || mbWalkNum == 0) {
+        func_800E9F4C_name_81(0x19, &player->nnlink, &player->nnidx);
+    }
+    if (player->rev & 1) {
+        func_8010EB40_duel02(1);
+    }
+}
+
+void func_80116240_duel02(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+
+    if ((player->rev & 1) && mbWalkNum != 0) {
+        func_800E9F4C_name_81(0x1F, &player->nnlink, &player->nnidx);
+    }
+}
+
+void func_8011628C_duel02(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+
+    if (!(player->rev & 1) || mbWalkNum == 0) {
+        func_800E9F4C_name_81(7, &player->nnlink, &player->nnidx);
+    }
+    if (player->rev & 1) {
+        func_8010EB40_duel02(0);
+    }
+}
+
+void func_801162F8_duel02(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+
+    if ((player->rev & 1) && mbWalkNum != 0) {
+        func_800E9F4C_name_81(0x29, &player->nnlink, &player->nnidx);
+    }
+}
+
+void func_80116344_duel02(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+
+    func_800E9F4C_name_81(0x13, &player->nnlink, &player->nnidx);
+}
+
+void func_80116370_duel02(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+
+    func_800E9F4C_name_81(0xE, &player->nnlink, &player->nnidx);
+}
+
+void func_8011639C_duel02(s8 *arg0, s8 *arg1) {
+}
+
+s32 func_801163A4_duel02(void) {
     s32 playerIndex = GwSystem.current_player_index;
     s32 otherIndex = (playerIndex + 1) & 1;
     GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
     GW_PLAYER *otherPlayer = MBDGetPlayerStruct(otherIndex);
 
-    if (player->nlink == otherPlayer->clink && player->nidx == otherPlayer->cidx) {
-        return 0;
+    if (player->nlink != otherPlayer->clink) {
+        return -1;
     }
-    return -1;
+    if (player->nidx != otherPlayer->cidx) {
+        return -1;
+    }
+    return player->rev & 1;
 }
 
-void func_801140A0_duel06(s32 playerIndex) {
-    s8 link[2];
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
-
-    link[0] = player->nlink;
-    link[1] = player->nidx;
-    player->nlink = player->blink;
-    player->nidx = player->bidx;
-    player->blink = link[0];
-    player->bidx = link[1];
-    if (GwSystem.boardData.halfWordBytes[0] != 0) {
-        player->rev = 1;
-        func_800E9F4C_name_81(1, &link[0], &link[1]);
-        if (player->cidx == link[1]) {
-            func_800E9F4C_name_81(0x13, &player->nnlink, &player->nnidx);
-        } else {
-            player->nnlink = -1;
-            player->nnidx = -1;
-        }
-    } else {
-        player->rev = 0;
-        func_800E9F4C_name_81(0x12, &link[0], &link[1]);
-        if (player->cidx == link[1]) {
-            func_800E9F4C_name_81(0x14, &player->nnlink, &player->nnidx);
-        } else {
-            player->nnlink = -1;
-            player->nnidx = -1;
-        }
-    }
-}
-
-void func_80114174_duel06(void) {
-    Vec pos;
-    Vec rot;
-    s16 spaceIndex = func_800EA6A4_name_81();
-    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
-    SpaceData *space;
-    s32 i;
-
-    func_800F3880_name_81(-1, -1, 2);
-    func_800EB7BC_name_81(&rot);
-    func_800EBC60_name_81(&player->player_obj->rot, &rot, &player->player_obj->rot, 8);
-    HuPrcSleep(8);
-    func_800F74E4_name_81(-1);
-    for (i = 0; i < 5; i++) {
-        if (D_8011471C_duel06[i] == spaceIndex) {
-            break;
-        }
-    }
-    space = MBDMasuGet(D_801144F0_duel06[i]);
-    HuVecCopy3F(&pos, &player->player_obj->coords);
-    func_800FC888_name_81(4);
-    func_800FC8C4_name_81(&pos);
-    HuPrcChildLink(HuPrcCurrentGet(), func_800EC1E4_name_81(&pos, &space->coords, &pos, 4.0f));
-    HuPrcChildWatch();
-    func_8010EBAC_duel06();
-    GwSystem.boardData.halfWordBytes[0] ^= 1;
-    func_801140A0_duel06(0);
-    func_801140A0_duel06(1);
-    Duel_SwapPartnerPositions(0);
-    Duel_SwapPartnerPositions(1);
-    HuPrcChildLink(HuPrcCurrentGet(), func_800EC1E4_name_81(&pos, &player->player_obj->coords, &pos, 4.0f));
-    HuPrcChildWatch();
-    func_800FC888_name_81(1);
-    func_800F75EC_name_81(-1);
-    func_800EAFC4_name_81(0x2300);
-}
-
-void func_80114324_duel06(void) {
+void func_80116414_duel02(void) {
     s8 link[2];
     Vec pos[3];
-    s32 playerIndex = (s8)(GwSystem.current_player_index ^ 1);
+    s8 playerIndex = GwSystem.current_player_index ^ 1;
     GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
     SpaceData *space;
 
-    func_800E9F4C_name_81(0x17, &link[0], &link[1]);
+    func_800E9F4C_name_81(0x2A, &link[0], &link[1]);
     func_800ECD0C_name_81(playerIndex, link[0], link[1]);
     player->rev = 0;
     player->nnlink = -1;
     player->nnidx = -1;
-    if (GwSystem.boardData.halfWordBytes[0] != 0) {
-        func_801140A0_duel06(playerIndex);
-    }
-    space = MBDMasuGet(0x17);
-    HuVecAdd(&pos[0], &space->coords, &MBDMasuGet(0x1C)->coords);
+    space = MBDMasuGet(0x2A);
+    HuVecAdd(&pos[0], &space->coords, &MBDMasuGet(0x20)->coords);
     HuVecMulScalar(&pos[0], 0.5f, &pos[0]);
     HuVecCopy3F(&pos[1], &pos[0]);
+    pos[1].x += 12.0f;
     HuVecCopy3F(&pos[2], &pos[0]);
-    if (GwSystem.boardData.halfWordBytes[0] != 0) {
-        pos[1].x += 12.0f;
-        pos[2].x -= 12.0f;
-    } else {
-        pos[1].x -= 12.0f;
-        pos[2].x += 12.0f;
-    }
+    pos[2].x -= sindf(60.0f) * 12.0f;
+    pos[2].z -= cosdf(60.0f) * 12.0f;
     func_800E27D4_name_81(playerIndex, &pos[0], &pos[1], &pos[2]);
 }
 
-void func_80114474_duel06(void) {
+void func_80116564_duel02(void) {
 }

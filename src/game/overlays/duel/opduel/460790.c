@@ -1,6 +1,6 @@
 #include "common_duel.h"
 #include "macros.h"
-#include "overlays/ovl_81_name/ovl_81.h"
+#include "game/overlays/duel/common/ovl_81.h"
 
 extern s32 D_80101200_shared_board[];
 extern u8 D_80101960[];

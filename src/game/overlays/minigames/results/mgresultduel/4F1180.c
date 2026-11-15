@@ -5,7 +5,7 @@
 #include "game/hmfspr.h"
 #include "game/hmfmath.h"
 #include "math.h"
-#include "overlays/ovl_81_name/ovl_81.h"
+#include "game/overlays/duel/common/ovl_81.h"
 #include "mgresultduel.h"
 
 extern s8 D_80109310_mgresultduel[];

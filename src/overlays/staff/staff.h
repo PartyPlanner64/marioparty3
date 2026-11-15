@@ -9,7 +9,7 @@
 #include "game/pause.h"
 #include "gcc/memory.h"
 #include "overlays/msetup.h"
-#include "overlays/ovl_81_name/ovl_81.h"
+#include "game/overlays/duel/common/ovl_81.h"
 
 typedef struct UnkStaff { // sizeof 0x20
     /* 0x00 */ Vec pos;

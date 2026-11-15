@@ -1,5 +1,5 @@
 #include "common_duel.h"
-#include "overlays/ovl_81_name/ovl_81.h"
+#include "game/overlays/duel/common/ovl_81.h"
 
 // In duel mode, GW_SYSTEM's board data (from halfWordBytes[2] onward, running
 // past the end of the union) holds six per-player duel records, one s16 for

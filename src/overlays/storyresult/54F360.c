@@ -3,7 +3,7 @@
 #include "gcc/memory.h"
 #include "game/saveload.h"
 #include "overlays/minigame.h"
-#include "overlays/ovl_81_name/ovl_81.h"
+#include "game/overlays/duel/common/ovl_81.h"
 #include "game/esprite.h"
 #include "game/pad.h"
 #include "storyresult.h"

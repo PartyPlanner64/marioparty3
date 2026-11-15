@@ -1,5 +1,5 @@
 #include "common_duel.h"
-#include "overlays/ovl_81_name/ovl_81.h"
+#include "game/overlays/duel/common/ovl_81.h"
 
 // Inlined Z rotation matrix build (same as MTX_ROTZ in w02).
 #define MTX_ROTZ(mtx, angle)                                                                \
@@ -6242,7 +6242,7 @@ s32 func_80115DA8_duel04(void) {
     return ret;
 }
 #else
-INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_80115DA8_duel04);
+INCLUDE_ASM("asm/nonmatchings/game/overlays/duel/boards/duel04_blowhard/410910", func_80115DA8_duel04);
 #endif
 
 s32 func_80116168_duel04(void) {
@@ -6477,7 +6477,7 @@ s32 func_801163C0_duel04(void) {
     return ret;
 }
 #else
-INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_801163C0_duel04);
+INCLUDE_ASM("asm/nonmatchings/game/overlays/duel/boards/duel04_blowhard/410910", func_801163C0_duel04);
 #endif
 
 s32 func_8011678C_duel04(void) {

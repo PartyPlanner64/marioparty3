@@ -1089,13 +1089,13 @@ void func_80109340_water_whirled(s16 player, s16 bank) {
     espDispOn(D_8010AC68_water_whirled[player]);
     HuSprDispOn(grp, 0);
     HuSprBankSet(grp, 0, bank, 0);
-    HuSprAnimModeSet(grp, 0, 1);
+    HuSprAnimModeSet(grp, 0, HUSPR_ANIM_MODE_BANK);
     HuSprDispOn(grp, 1);
     HuSprBankSet(grp, 1, 10, 0);
-    HuSprAnimModeSet(grp, 1, 1);
+    HuSprAnimModeSet(grp, 1, HUSPR_ANIM_MODE_BANK);
     HuSprDispOn(grp, 2);
     HuSprBankSet(grp, 2, 5, 0);
-    HuSprAnimModeSet(grp, 2, 1);
+    HuSprAnimModeSet(grp, 2, HUSPR_ANIM_MODE_BANK);
     espDispOff(D_8010AC58_water_whirled[player]);
     espDispOff(D_8010AC78_water_whirled[player]);
 }

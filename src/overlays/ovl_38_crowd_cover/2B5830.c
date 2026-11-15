@@ -874,7 +874,7 @@ s16 func_80107CE0_crowd_cover(s16 spriteId, s16 x, s16 y, f32 rot) {
     }
     D_8010CFB8_crowd_cover[i] = 1;
     HuSprGrpMemberSet(group, i, spriteId, 0);
-    HuSprAnimModeSet(group, i, 2);
+    HuSprAnimModeSet(group, i, HUSPR_ANIM_MODE_PAT_LOOP);
     HuSprPosSet(group, i, x, y);
     HuSprZRotSet(group, i, rot);
     HuSprAttrReset(group, i, 0x8000);

@@ -685,22 +685,22 @@ void func_80107960_chip_shot_challenge(s16 value) {
     if ((s16)(value / 1000) != 0) {
         HuSprDispOn(D_8010AAC0_chip_shot_challenge, 0);
         HuSprBankSet(D_8010AAC0_chip_shot_challenge, 0, value / 1000, 0);
-        HuSprAnimModeSet(D_8010AAC0_chip_shot_challenge, 0, 1);
+        HuSprAnimModeSet(D_8010AAC0_chip_shot_challenge, 0, HUSPR_ANIM_MODE_BANK);
     }
     value -= (s16)(value / 1000) * 1000;
     HuSprDispOn(D_8010AAC0_chip_shot_challenge, 1);
     digit = value / 100;
     HuSprBankSet(D_8010AAC0_chip_shot_challenge, 1, digit, 0);
-    HuSprAnimModeSet(D_8010AAC0_chip_shot_challenge, 1, 1);
+    HuSprAnimModeSet(D_8010AAC0_chip_shot_challenge, 1, HUSPR_ANIM_MODE_BANK);
     value -= digit * 100;
     HuSprDispOn(D_8010AAC0_chip_shot_challenge, 2);
     digit = value / 10;
     HuSprBankSet(D_8010AAC0_chip_shot_challenge, 2, digit, 0);
-    HuSprAnimModeSet(D_8010AAC0_chip_shot_challenge, 2, 1);
+    HuSprAnimModeSet(D_8010AAC0_chip_shot_challenge, 2, HUSPR_ANIM_MODE_BANK);
     value -= digit * 10;
     HuSprDispOn(D_8010AAC0_chip_shot_challenge, 3);
     HuSprBankSet(D_8010AAC0_chip_shot_challenge, 3, value, 0);
-    HuSprAnimModeSet(D_8010AAC0_chip_shot_challenge, 3, 1);
+    HuSprAnimModeSet(D_8010AAC0_chip_shot_challenge, 3, HUSPR_ANIM_MODE_BANK);
     HuSprDispOn(D_8010AAC4_chip_shot_challenge, 0);
     func_80054FF8_main(D_8010AAC4_chip_shot_challenge, 0, 1);
     HuSprDispOn(D_8010AAC4_chip_shot_challenge, 1);

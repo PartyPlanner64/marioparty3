@@ -1820,7 +1820,7 @@ void func_8010A500_bowser_toss(omObjData *object) {
     group = HuSprGrpCreate(1, 0);
     HuSprGrpMemberSet(group, 0, D_8010FB98_bowser_toss[4], 0);
     HuSprPosSet(group, 0, 160, 120);
-    HuSprAnimModeSet(group, 0, 0);
+    HuSprAnimModeSet(group, 0, HUSPR_ANIM_MODE_STOP);
     func_80054FF8_main(group, 0, 0);
     HuSprAttrSet(group, 0, 0x1000);
     object->func = func_8010A908_bowser_toss;
@@ -1913,7 +1913,7 @@ void func_8010AD98_bowser_toss(void) {
         for (j = 0; j < 4; j++) {
             HuSprGrpMemberSet(group, j, D_8010FB98_bowser_toss[1], 0);
             HuSprPosSet(group, j, D_8010F33C_bowser_toss[i].x, D_8010F33C_bowser_toss[i].y);
-            HuSprAnimModeSet(group, j, 0);
+            HuSprAnimModeSet(group, j, HUSPR_ANIM_MODE_STOP);
             func_80054FF8_main(group, j, 0);
             HuSprAttrSet(group, j, 0x483C);
             HuSprScissorSet(group, j, D_8010F33C_bowser_toss[i].x, D_8010F33C_bowser_toss[i].y,
@@ -2057,7 +2057,7 @@ void func_8010B41C_bowser_toss(void) {
                     HuSprScaleSet(bowser->spriteId, j, 0.75f, 0.75f);
                     break;
             }
-            HuSprAnimModeSet(bowser->spriteId, j, 0);
+            HuSprAnimModeSet(bowser->spriteId, j, HUSPR_ANIM_MODE_STOP);
             func_80054FF8_main(bowser->spriteId, j, 0);
             HuSprAttrSet(bowser->spriteId, j, 0x903C);
         }

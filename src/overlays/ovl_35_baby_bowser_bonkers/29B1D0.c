@@ -1618,7 +1618,7 @@ void func_80109BFC_baby_bowser_bonkers(s32 index, s32 chr) {
                 func_80055484_main(group, i, 0, 0, 255, 160);
                 break;
         }
-        HuSprAnimModeSet(group, i, 0);
+        HuSprAnimModeSet(group, i, HUSPR_ANIM_MODE_STOP);
         func_80054FF8_main(group, i, 0);
         HuSprAttrSet(group, i, 0x1000);
         HuSprPriSet(group, i, i - 16);

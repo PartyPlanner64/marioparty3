@@ -54,7 +54,7 @@ UnkStaff_7 *func_80107740_staff(void) {
             HuSprAttrReset(grpId, j, 0xFFFF);
             HuSprAttrSet(grpId, j, 0x5000);
             HuSprScaleSet(grpId, j, 1.0f, 1.0f);
-            HuSprAnimModeSet(grpId, j, 0);
+            HuSprAnimModeSet(grpId, j, HUSPR_ANIM_MODE_STOP);
             HuSprGrpMemberSet(grpId, j, animId, 0);
             HuSprPriSet(grpId, j, pri);
             random = func_8010601C_staff();

@@ -487,9 +487,9 @@ u8 func_801068D0_popgun_pickoff(s16 x, s16 y) {
     HuSprAttrSet(group, 0, 0x1000);
     HuSprAttrSet(group, 1, 0x1000);
     HuSprAttrSet(group, 2, 0x1000);
-    HuSprAnimModeSet(group, 0, 0);
-    HuSprAnimModeSet(group, 1, 0);
-    HuSprAnimModeSet(group, 2, 0);
+    HuSprAnimModeSet(group, 0, HUSPR_ANIM_MODE_STOP);
+    HuSprAnimModeSet(group, 1, HUSPR_ANIM_MODE_STOP);
+    HuSprAnimModeSet(group, 2, HUSPR_ANIM_MODE_STOP);
     HuSprPosSet(group, 0, x, y);
     HuSprPosSet(group, 1, 12, 0);
     HuSprPosSet(group, 2, -12, 0);
@@ -1173,7 +1173,7 @@ s16 func_80108CF0_popgun_pickoff(s16 spriteId, s16 x, s16 y, f32 rot) {
     }
     D_8010CC00_popgun_pickoff[i] = 1;
     HuSprGrpMemberSet(group, i, spriteId, 0);
-    HuSprAnimModeSet(group, i, 2);
+    HuSprAnimModeSet(group, i, HUSPR_ANIM_MODE_PAT_LOOP);
     HuSprPosSet(group, i, x, y);
     HuSprZRotSet(group, i, rot);
     HuSprAttrReset(group, i, 0x8000);

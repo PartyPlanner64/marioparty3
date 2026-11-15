@@ -460,7 +460,7 @@ void func_8011035C_msetup(void) {
         HuSprAttrReset(group, member, 0xFFFF);
         HuSprAttrSet(group, member, 0x9000);
         HuSprScaleSet(group, member, 1.0f, 1.0f);
-        HuSprAnimModeSet(group, member, 1);
+        HuSprAnimModeSet(group, member, HUSPR_ANIM_MODE_BANK);
         HuSprGrpMemberSet(group, member, sprite, 0);
         HuSprPriSet(group, member, 15000);
         HuSprPosSet(group, member, D_80119B60_msetup[member][0], D_80119B60_msetup[member][1]);
@@ -956,7 +956,7 @@ s16 func_80111650_msetup(MsetupMenuState *state) {
             HuSprAttrReset(group, member, 0xFFFF);
             HuSprAttrSet(group, member, 0x9000);
             HuSprScaleSet(group, member, 1.0f, 1.0f);
-            HuSprAnimModeSet(group, member, 0);
+            HuSprAnimModeSet(group, member, HUSPR_ANIM_MODE_STOP);
             HuSprGrpMemberSet(group, member, characterSprite, 0);
             HuSprPriSet(group, member, 600);
             HuSprPosSet(group, member, position.x, position.y);
@@ -1345,7 +1345,7 @@ void func_80112804_msetup(void) {
         HuSprAttrReset(group, i, 0xFFFF);
         HuSprAttrSet(group, i, 0x9000);
         HuSprScaleSet(group, i, 1.0f, 1.0f);
-        HuSprAnimModeSet(group, i, 0);
+        HuSprAnimModeSet(group, i, HUSPR_ANIM_MODE_STOP);
         HuSprGrpMemberSet(group, i, index, 0);
         HuSprPriSet(group, i, 600);
     }

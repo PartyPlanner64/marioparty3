@@ -283,7 +283,7 @@ s16 HuWinCreate(s16 x, s16 y, s16 width, s16 height, s32 arg4, s16 flags) {
     HuSprAttrReset(group, 0, 0xFFFF);
     HuSprAttrSet(group, 0, 0x1009000);
     HuSprGrpMemberSet(group, 0, window->unk66, 0);
-    HuSprAnimModeSet(group, 0, 0);
+    HuSprAnimModeSet(group, 0, HUSPR_ANIM_MODE_STOP);
     func_800554C4_main(group, 0, -1);
     HuSprPosSet(group, 0, window->pos_x, window->pos_y);
     HuSprColorSet(window->group, 0, 64, 32, 176);
@@ -306,17 +306,17 @@ s16 HuWinCreate(s16 x, s16 y, s16 width, s16 height, s32 arg4, s16 flags) {
         }
         HuSprTPLvlSet(group, 0, 100);
         HuSprDispOn(group, 0);
-        HuSprAnimModeSet(group, 0, 0);
+        HuSprAnimModeSet(group, 0, HUSPR_ANIM_MODE_STOP);
     } else {
         HuSprTPLvlSet(group, 0, 0);
         HuSprDispOff(group, 0);
-        HuSprAnimModeSet(group, 0, 0);
+        HuSprAnimModeSet(group, 0, HUSPR_ANIM_MODE_STOP);
     }
     HuSprTPLvlSet(group, 1, 0x100);
     HuSprAttrReset(group, 1, 0xFFFF);
     HuSprAttrSet(group, 1, 0x1009000);
     HuSprGrpMemberSet(group, 1, window->unk68, 0);
-    HuSprAnimModeSet(group, 1, 0);
+    HuSprAnimModeSet(group, 1, HUSPR_ANIM_MODE_STOP);
     HuSprPosSet(group, 1, 0, 0);
     func_800554C4_main(group, 1, 0);
     bcopy(D_800A2174_main, window, 32);

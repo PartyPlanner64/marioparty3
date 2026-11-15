@@ -1035,7 +1035,7 @@ void func_80108218_game_guys_sweet_surprise(void) {
         } else {
             HuSprAttrReset(D_8010CF78_game_guys_sweet_surprise[base + i], 0, 0x8000);
             HuSprBankSet(D_8010CF78_game_guys_sweet_surprise[base + i], 0, D_8010CFE4_game_guys_sweet_surprise[i], 0);
-            HuSprAnimModeSet(D_8010CF78_game_guys_sweet_surprise[base + i], 0, 1);
+            HuSprAnimModeSet(D_8010CF78_game_guys_sweet_surprise[base + i], 0, HUSPR_ANIM_MODE_BANK);
         }
     }
     if (D_8010CFE2_game_guys_sweet_surprise == 1) {

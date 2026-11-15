@@ -2717,7 +2717,7 @@ void func_8010CEE8_pump_pump_away(omObjData *obj) {
         HuSprScaleSet(record->group, 0, record->unk_20 / 12.0f + 1.0f, record->unk_20 / 12.0f + 1.0f);
         HuSprPosSet(record->group, 0, record->unk_20 / 4 + 32, record->unk_20 / 4 + 22);
         HuSprGrpMemberSet(record->group, 0, record->spriteData, 0);
-        HuSprAnimModeSet(record->group, 0, 0);
+        HuSprAnimModeSet(record->group, 0, HUSPR_ANIM_MODE_STOP);
         func_80054FF8_main(record->group, 0, (s16)record->digits[0]);
         HuSprAttrSet(record->group, 0, 0x1000);
         HuSprAttrSet(record->group, 0, 0);
@@ -2725,7 +2725,7 @@ void func_8010CEE8_pump_pump_away(omObjData *obj) {
             HuSprScaleSet(record->group, i, record->unk_20 / 12.0f + 1.0f, record->unk_20 / 12.0f + 1.0f);
             HuSprPosSet(record->group, i, i * 12, 0);
             HuSprGrpMemberSet(record->group, i, record->spriteData, 0);
-            HuSprAnimModeSet(record->group, i, 0);
+            HuSprAnimModeSet(record->group, i, HUSPR_ANIM_MODE_STOP);
             func_80054FF8_main(record->group, i, (s16)record->digits[i]);
             HuSprAttrSet(record->group, i, 0x1000);
             HuSprAttrSet(record->group, i, 0);
@@ -2745,7 +2745,7 @@ void func_8010D1B8_pump_pump_away(omObjData *obj) {
     D_801135B8_pump_pump_away = HuSprGrpCreate(4, 5);
     HuSprPosSet(D_801135B8_pump_pump_away, 0, 32, 22);
     HuSprGrpMemberSet(D_801135B8_pump_pump_away, 0, D_801135B4_pump_pump_away, 0);
-    HuSprAnimModeSet(D_801135B8_pump_pump_away, 0, 0);
+    HuSprAnimModeSet(D_801135B8_pump_pump_away, 0, HUSPR_ANIM_MODE_STOP);
     func_80054FF8_main(D_801135B8_pump_pump_away, 0, D_801135BE_pump_pump_away);
     HuSprAttrSet(D_801135B8_pump_pump_away, 0, 0x1000);
     HuSprAttrSet(D_801135B8_pump_pump_away, 0, 0);
@@ -2755,14 +2755,14 @@ void func_8010D1B8_pump_pump_away(omObjData *obj) {
         if (record->digits[i] != -1) {
             HuSprPosSet(record->group, i, i * 12, 0);
             HuSprGrpMemberSet(record->group, i, record->spriteData, 0);
-            HuSprAnimModeSet(record->group, i, 0);
+            HuSprAnimModeSet(record->group, i, HUSPR_ANIM_MODE_STOP);
             func_80054FF8_main(record->group, i, (s16)record->digits[i]);
             HuSprAttrSet(record->group, i, 0x1000);
             HuSprAttrSet(record->group, i, 0);
         } else {
             HuSprPosSet(record->group, i, i * 12, 0);
             HuSprGrpMemberSet(record->group, i, record->spriteData, 0);
-            HuSprAnimModeSet(record->group, i, 0);
+            HuSprAnimModeSet(record->group, i, HUSPR_ANIM_MODE_STOP);
             func_80054FF8_main(record->group, i, 0);
             HuSprAttrSet(record->group, i, 0x1000);
             HuSprDispOff(record->group, i);

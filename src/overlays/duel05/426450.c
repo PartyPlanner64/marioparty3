@@ -3488,7 +3488,7 @@ void func_8010F0FC_duel05(void) {
             HuAudFXPlay(0x1C8);
             last = order[i];
             HuSprBankSet(spr->unk_0A, 2, order[i], 0);
-            HuSprAnimModeSet(spr->unk_0A, 2, 1);
+            HuSprAnimModeSet(spr->unk_0A, 2, HUSPR_ANIM_MODE_BANK);
             for (delay = (state == 2) ? 15 : 1; delay != 0; delay--) {
                 if (count > 0) {
                     if (state != 2 || cpuPartner == -1 || cpuPartner == order[i]) {

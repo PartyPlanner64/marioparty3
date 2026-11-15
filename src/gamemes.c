@@ -3027,10 +3027,10 @@ s32 GMesTimerExec(GAMEMES *gMes, Gfx **arg1) {
         HuSprDispOn(gMes->strGId[0], 1);
     }
     HuSprBankSet(gMes->strGId[0], 1, temp_s0, 0);
-    HuSprAnimModeSet(gMes->strGId[0], 1, 1);
+    HuSprAnimModeSet(gMes->strGId[0], 1, HUSPR_ANIM_MODE_BANK);
     temp_s0 = temp_s2 % 10;
     HuSprBankSet(gMes->strGId[0], 2, temp_s0, 0);
-    HuSprAnimModeSet(gMes->strGId[0], 2, 1);
+    HuSprAnimModeSet(gMes->strGId[0], 2, HUSPR_ANIM_MODE_BANK);
     switch (gMes->work) {
         case 0:
             if (gMes->time < 14) {

@@ -1167,7 +1167,7 @@ void func_8010B514_staff(s16 arg0, s16 arg1) {
             HuSprAttrReset(grpId, j, 0xFFFF);
             HuSprAttrSet(grpId, j, 0x9000);
             HuSprScaleSet(grpId, j, 1.0f, 1.0f);
-            HuSprAnimModeSet(grpId, j, 0);
+            HuSprAnimModeSet(grpId, j, HUSPR_ANIM_MODE_STOP);
             HuSprPriSet(grpId, j, 400);
             HuSprColorSet(grpId, j, 255, 255, 255);
             if (j != 0) {

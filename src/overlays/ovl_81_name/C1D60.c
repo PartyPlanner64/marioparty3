@@ -154,11 +154,11 @@ void func_800DA460_name_81(omObjData *arg0) {
 
     roll = arg0->work[1];
     HuSprBankSet(entry->sprites[roll], 0, entry->rollValue[roll] % 10, 0);
-    HuSprAnimModeSet(entry->sprites[arg0->work[1]], 0, 1);
+    HuSprAnimModeSet(entry->sprites[arg0->work[1]], 0, HUSPR_ANIM_MODE_BANK);
 
     roll = arg0->work[1];
     HuSprBankSet(entry->sprites[roll], 1, entry->rollValue[roll] / 10, 0);
-    HuSprAnimModeSet(entry->sprites[arg0->work[1]], 1, 1);
+    HuSprAnimModeSet(entry->sprites[arg0->work[1]], 1, HUSPR_ANIM_MODE_BANK);
 
     pos.x = GwPlayer[arg0->work[3]].player_obj->coords.x;
     pos.y = GwPlayer[arg0->work[3]].player_obj->coords.y + D_80105708_name_81 + arg0->trans.y;
@@ -199,7 +199,7 @@ void func_800DA85C_name_81(omObjData *arg0) {
 
     roll = entry->rollValueIdx;
     HuSprBankSet(entry->sprites[roll], 0, entry->rollValue[roll], 0);
-    HuSprAnimModeSet(entry->sprites[entry->rollValueIdx], 0, 1);
+    HuSprAnimModeSet(entry->sprites[entry->rollValueIdx], 0, HUSPR_ANIM_MODE_BANK);
 
     pos.x = GwPlayer[arg0->work[3]].player_obj->coords.x;
     pos.y = GwPlayer[arg0->work[3]].player_obj->coords.y + D_80105708_name_81 + arg0->trans.y;
@@ -282,7 +282,7 @@ void func_800DABE0_name_81(s32 arg0) {
         HuSprSpeedSet(entry->sprites[entry->rollValueIdx], i, 0.0f);
         HuSprScaleSet(entry->sprites[entry->rollValueIdx], i, 0.0f, 0.0f);
         HuSprBankSet(entry->sprites[entry->rollValueIdx], i, 0, 0);
-        HuSprAnimModeSet(entry->sprites[entry->rollValueIdx], i, 1);
+        HuSprAnimModeSet(entry->sprites[entry->rollValueIdx], i, HUSPR_ANIM_MODE_BANK);
     }
 
     entry->unk_0B = 1;
@@ -311,7 +311,7 @@ void func_800DADA0_name_81(s32 arg0) {
                 roll = entry->rollValueIdx;
                 HuSprBankSet(entry->sprites[roll], 0, entry->rollValue[roll], 0);
                 HuSprPriSet(entry->sprites[entry->rollValueIdx], 0, 0x4000);
-                HuSprAnimModeSet(entry->sprites[entry->rollValueIdx], 0, 1);
+                HuSprAnimModeSet(entry->sprites[entry->rollValueIdx], 0, HUSPR_ANIM_MODE_BANK);
             }
 
             if ((func_800FC114_name_81() == 0) && (D_80105554_name_81 == 0)) {

@@ -647,7 +647,7 @@ static void MBItemSel(void) {
 
     HuSprGrpMemberSet(mbItemCursorGrpId, 0, sp1C, 0);
     HuSprPriSet(mbItemCursorGrpId, 0, 0xA);
-    HuSprAnimModeSet(mbItemCursorGrpId, 0, 1);
+    HuSprAnimModeSet(mbItemCursorGrpId, 0, HUSPR_ANIM_MODE_BANK);
 
     if (GwSystem.current_player_index & 1) {
         HuSprAttrSet(mbItemCursorGrpId, 0, 0x1001);

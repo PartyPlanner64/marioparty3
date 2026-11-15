@@ -1282,7 +1282,7 @@ s32 func_800E9F24_shared_board(s32 arg0, Vec *arg1) {
         DataClose(data);
     
         HuSprGrpMemberSet(obj->unk_02, 0, obj->unk_04, 0);
-        HuSprAnimModeSet(obj->unk_02, 0, 1);
+        HuSprAnimModeSet(obj->unk_02, 0, HUSPR_ANIM_MODE_BANK);
         HuSprPriSet(obj->unk_02, 0, 0x8000);
         HuSprAttrSet(obj->unk_02, 0, 0x9000);
         HuSprScissorSet(obj->unk_02, 0, 0x10, 0xC, 0x130, 0xE4);
@@ -1320,7 +1320,7 @@ s32 func_800EA0B8_shared_board(s32 arg0, Vec *arg1) {
 
         HuSprGrpMemberSet(unkBoard7->unk_02, 0,
                             D_80104A00_shared_board[arg0].unk_04, 0);
-        HuSprAnimModeSet(unkBoard7->unk_02, 0, 1);
+        HuSprAnimModeSet(unkBoard7->unk_02, 0, HUSPR_ANIM_MODE_BANK);
         HuSprPriSet(unkBoard7->unk_02, 0, 0x8000);
         HuSprAttrSet(unkBoard7->unk_02, 0, 0x9000);
         HuSprScissorSet(unkBoard7->unk_02, 0, 0x10, 0xC, 0x130, 0xE4);

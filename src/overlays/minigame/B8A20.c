@@ -197,38 +197,38 @@ void func_800E6670_minigame(s16 index, s16 time) {
     HuSprDispOn(group, 0);
     digit = time / 3600;
     HuSprBankSet(group, 0, digit, 0);
-    HuSprAnimModeSet(group, 0, 1);
+    HuSprAnimModeSet(group, 0, HUSPR_ANIM_MODE_BANK);
     time -= digit * 3600;
 
     HuSprDispOn(group, 1);
     HuSprBankSet(group, 1, 10, 0);
-    HuSprAnimModeSet(group, 1, 1);
+    HuSprAnimModeSet(group, 1, HUSPR_ANIM_MODE_BANK);
 
     HuSprDispOn(group, 2);
     digit = time / 600;
     HuSprBankSet(group, 2, digit, 0);
-    HuSprAnimModeSet(group, 2, 1);
+    HuSprAnimModeSet(group, 2, HUSPR_ANIM_MODE_BANK);
     time -= digit * 600;
 
     seconds = time / 60;
     digit = seconds;
     HuSprDispOn(group, 3);
     HuSprBankSet(group, 3, seconds, 0);
-    HuSprAnimModeSet(group, 3, 1);
+    HuSprAnimModeSet(group, 3, HUSPR_ANIM_MODE_BANK);
     time = time * 100 / 60 - digit * 100;
 
     HuSprDispOn(group, 4);
     HuSprBankSet(group, 4, 11, 0);
-    HuSprAnimModeSet(group, 4, 1);
+    HuSprAnimModeSet(group, 4, HUSPR_ANIM_MODE_BANK);
 
     HuSprDispOn(group, 5);
     HuSprBankSet(group, 5, time / 10, 0);
-    HuSprAnimModeSet(group, 5, 1);
+    HuSprAnimModeSet(group, 5, HUSPR_ANIM_MODE_BANK);
     time %= 10;
 
     HuSprDispOn(group, 6);
     HuSprBankSet(group, 6, time, 0);
-    HuSprAnimModeSet(group, 6, 1);
+    HuSprAnimModeSet(group, 6, HUSPR_ANIM_MODE_BANK);
 }
 
 void func_800E6968_minigame(s16 index, s16 time) {
@@ -252,38 +252,38 @@ void func_800E6968_minigame(s16 index, s16 time) {
     HuSprDispOn(group, 0);
     digit = time / 3600;
     HuSprBankSet(group, 0, digit, 0);
-    HuSprAnimModeSet(group, 0, 1);
+    HuSprAnimModeSet(group, 0, HUSPR_ANIM_MODE_BANK);
     time -= digit * 3600;
 
     HuSprDispOn(group, 1);
     HuSprBankSet(group, 1, 10, 0);
-    HuSprAnimModeSet(group, 1, 1);
+    HuSprAnimModeSet(group, 1, HUSPR_ANIM_MODE_BANK);
 
     HuSprDispOn(group, 2);
     digit = time / 600;
     HuSprBankSet(group, 2, digit, 0);
-    HuSprAnimModeSet(group, 2, 1);
+    HuSprAnimModeSet(group, 2, HUSPR_ANIM_MODE_BANK);
     time -= digit * 600;
 
     seconds = time / 60;
     digit = seconds;
     HuSprDispOn(group, 3);
     HuSprBankSet(group, 3, seconds, 0);
-    HuSprAnimModeSet(group, 3, 1);
+    HuSprAnimModeSet(group, 3, HUSPR_ANIM_MODE_BANK);
     time = time * 100 / 60 - digit * 100;
 
     HuSprDispOn(group, 4);
     HuSprBankSet(group, 4, 11, 0);
-    HuSprAnimModeSet(group, 4, 1);
+    HuSprAnimModeSet(group, 4, HUSPR_ANIM_MODE_BANK);
 
     HuSprDispOn(group, 5);
     HuSprBankSet(group, 5, time / 10, 0);
-    HuSprAnimModeSet(group, 5, 1);
+    HuSprAnimModeSet(group, 5, HUSPR_ANIM_MODE_BANK);
     time %= 10;
 
     HuSprDispOn(group, 6);
     HuSprBankSet(group, 6, time, 0);
-    HuSprAnimModeSet(group, 6, 1);
+    HuSprAnimModeSet(group, 6, HUSPR_ANIM_MODE_BANK);
 }
 
 void func_800E6E4C_minigame(s16 arg0) {

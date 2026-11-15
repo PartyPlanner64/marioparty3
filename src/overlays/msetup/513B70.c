@@ -143,7 +143,7 @@ void func_80117A3C_msetup(void) {
         HuSprAttrReset(backgroundGroup, i, 0xFFFF);
         HuSprAttrSet(backgroundGroup, i, 0x1000);
         HuSprScaleSet(backgroundGroup, i, 1.0f, 1.0f);
-        HuSprAnimModeSet(backgroundGroup, i, 0);
+        HuSprAnimModeSet(backgroundGroup, i, HUSPR_ANIM_MODE_STOP);
         HuSprGrpMemberSet(backgroundGroup, i, sprites[i], 0);
         HuSprPriSet(backgroundGroup, i, 600);
         HuSprColorSet(backgroundGroup, i, 255, 255, 255);
@@ -159,7 +159,7 @@ void func_80117A3C_msetup(void) {
         optionSprites[i] = HuSprAnimDataRead(options[i].dataId);
         HuSprAttrReset(group, i, 0xFFFF);
         HuSprAttrSet(group, i, 0x1000);
-        HuSprAnimModeSet(group, i, 0);
+        HuSprAnimModeSet(group, i, HUSPR_ANIM_MODE_STOP);
         HuSprGrpMemberSet(group, i, optionSprites[i], 0);
         HuSprTPLvlSet(group, i, 0x100);
         if (i != 0) {
@@ -184,7 +184,7 @@ void func_80117A3C_msetup(void) {
         for (i = 0; i < optionCount; i++) {
             HuSprAttrReset(shadowGroup, i, 0xFFFF);
             HuSprAttrSet(shadowGroup, i, 0x9000);
-            HuSprAnimModeSet(shadowGroup, i, 0);
+            HuSprAnimModeSet(shadowGroup, i, HUSPR_ANIM_MODE_STOP);
             HuSprGrpMemberSet(shadowGroup, i, sprite, 0);
             HuSprTPLvlSet(shadowGroup, i, 0x80);
             HuSprPriSet(shadowGroup, i, 450);

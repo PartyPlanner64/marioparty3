@@ -2149,7 +2149,7 @@ void func_80109A04_rockin_raceway(omObjData *object) {
     HuSprScaleSet(group, 0, 1.0f, 1.0f);
     HuSprPosSet(group, 0, 160, 120);
     HuSprPriSet(group, 0, 0xFFFF);
-    HuSprAnimModeSet(group, 0, 0);
+    HuSprAnimModeSet(group, 0, HUSPR_ANIM_MODE_STOP);
     WipeCreateIn(WIPE_TYPE_PREV, 16);
 }
 
@@ -2306,7 +2306,7 @@ void func_8010A504_rockin_raceway(void) {
     D_80111B74_rockin_raceway = group;
     HuSprPosSet(group, 0, 160, 60);
     HuSprGrpMemberSet(group, 0, D_80111B68_rockin_raceway[5], 0);
-    HuSprAnimModeSet(group, 0, 0);
+    HuSprAnimModeSet(group, 0, HUSPR_ANIM_MODE_STOP);
     func_80054FF8_main(group, 0, 0);
     HuSprAttrSet(group, 0, HUSPR_ATTR_DISPOFF | 0x1000);
 }
@@ -2364,7 +2364,7 @@ void func_8010A5E4_rockin_raceway(s16 track, s16 character) {
             HuSprGrpMemberSet(group, i, D_80111B68_rockin_raceway[1], 0);
             x += 8;
         }
-        HuSprAnimModeSet(group, i, 0);
+        HuSprAnimModeSet(group, i, HUSPR_ANIM_MODE_STOP);
         func_80054FF8_main(group, i, 0);
         HuSprAttrSet(group, i, 0x1000);
         if (i != 6) {
@@ -2498,7 +2498,7 @@ void func_8010B124_rockin_raceway(void) {
             HuSprGrpMemberSet(group, j, D_80111B68_rockin_raceway[6 + i], 0);
             func_80054FF8_main(group, j, 0);
             HuSprAttrSet(group, j, 0x1000);
-            HuSprAnimModeSet(group, j, 0);
+            HuSprAnimModeSet(group, j, HUSPR_ANIM_MODE_STOP);
         }
         func_80054FF8_main(group, 2, 10);
         func_80054FF8_main(group, 5, 11);

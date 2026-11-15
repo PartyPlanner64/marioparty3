@@ -947,7 +947,7 @@ void func_80107CBC_marios_puzzle_party(void) {
 
     group = HuSprGrpCreate(6, 5);
     HuSprGrpMemberSet(group, 1, D_801160DE_marios_puzzle_party, 0);
-    HuSprAnimModeSet(group, 1, 0);
+    HuSprAnimModeSet(group, 1, HUSPR_ANIM_MODE_STOP);
     HuSprPosSet(group, 1, 0, 0);
     HuSprAttrReset(group, 1, 0xFFFF);
     HuSprAttrSet(group, 1, 0x1008);
@@ -957,7 +957,7 @@ void func_80107CBC_marios_puzzle_party(void) {
     func_800554C4_main(group, 1, 0);
     for (i = 2; i < 5; i++) {
         HuSprGrpMemberSet(group, i, D_801160DA_marios_puzzle_party, 0);
-        HuSprAnimModeSet(group, i, 0);
+        HuSprAnimModeSet(group, i, HUSPR_ANIM_MODE_STOP);
         HuSprPosSet(group, i, 0, 0);
         HuSprAttrReset(group, i, 0xFFFF);
         HuSprAttrSet(group, i, 0x1008);
@@ -967,7 +967,7 @@ void func_80107CBC_marios_puzzle_party(void) {
         func_800554C4_main(group, i, 0);
     }
     HuSprGrpMemberSet(group, 5, D_801160E2_marios_puzzle_party, 0);
-    HuSprAnimModeSet(group, 5, 0);
+    HuSprAnimModeSet(group, 5, HUSPR_ANIM_MODE_STOP);
     HuSprPosSet(group, 5, 0, 0);
     HuSprAttrReset(group, 5, 0xFFFF);
     HuSprAttrSet(group, 5, 0x1008);
@@ -1707,7 +1707,7 @@ void func_8010A958_marios_puzzle_party(void) {
     }
     if (D_801160E8_marios_puzzle_party == 0) {
         HuSprBankSet(D_801161D8_marios_puzzle_party[board], 0, 0, 2);
-        HuSprAnimModeSet(D_801161D8_marios_puzzle_party[board], 0, 1);
+        HuSprAnimModeSet(D_801161D8_marios_puzzle_party[board], 0, HUSPR_ANIM_MODE_BANK);
         HuSprAttrReset(D_801161D8_marios_puzzle_party[board], 0, HUSPR_ATTR_DISPOFF);
         HuSprAttrSet(D_801161D8_marios_puzzle_party[board], 9, HUSPR_ATTR_DISPOFF);
         if (D_801160E8_marios_puzzle_party == 0) {
@@ -1783,14 +1783,14 @@ void func_8010AD20_marios_puzzle_party(void) {
     omPrcSetDestructor(HuPrcCurrentGet(), func_8010A958_marios_puzzle_party);
     D_801161D8_marios_puzzle_party[board] = display.sprGroup = HuSprGrpCreate(10, 5);
     HuSprGrpMemberSet(display.sprGroup, 0, D_801160B4_marios_puzzle_party, 0);
-    HuSprAnimModeSet(display.sprGroup, 0, 0);
+    HuSprAnimModeSet(display.sprGroup, 0, HUSPR_ANIM_MODE_STOP);
     HuSprPosSet(display.sprGroup, 0, D_80110080_marios_puzzle_party[board][0] + 42,
                 D_80110080_marios_puzzle_party[board][1] - 182 + D_801161A8_marios_puzzle_party[board]);
     HuSprAttrReset(display.sprGroup, 0, 0xFFFF);
     HuSprAttrSet(display.sprGroup, 0, 0x4000);
     HuSprPriSet(display.sprGroup, 0, 0x200);
     HuSprGrpMemberSet(display.sprGroup, 9, D_801160B8_marios_puzzle_party, 0);
-    HuSprAnimModeSet(display.sprGroup, 9, 0);
+    HuSprAnimModeSet(display.sprGroup, 9, HUSPR_ANIM_MODE_STOP);
     HuSprPosSet(display.sprGroup, 9, 0, 0);
     HuSprAttrReset(display.sprGroup, 9, 0xFFFF);
     HuSprAttrSet(display.sprGroup, 9, 0xC000);
@@ -1849,9 +1849,9 @@ void func_8010AD20_marios_puzzle_party(void) {
     espPriSet(cursor->sprite, 0x200);
     espDispOn(cursor->sprite);
     HuSprBankSet(display.sprGroup, 0, 0, 2);
-    HuSprAnimModeSet(display.sprGroup, 0, 1);
+    HuSprAnimModeSet(display.sprGroup, 0, HUSPR_ANIM_MODE_BANK);
     HuPrcVSleep();
-    HuSprAnimModeSet(display.sprGroup, 0, 0);
+    HuSprAnimModeSet(display.sprGroup, 0, HUSPR_ANIM_MODE_STOP);
     while (TRUE) {
         if (func_800E6E8C_minigame() == 2) {
             break;
@@ -1865,18 +1865,18 @@ void func_8010AD20_marios_puzzle_party(void) {
     HuPrcVSleep();
     if (next->blockOwners[0] != 7) {
         HuSprBankSet(display.sprGroup, 0, 0, 0);
-        HuSprAnimModeSet(display.sprGroup, 0, 1);
+        HuSprAnimModeSet(display.sprGroup, 0, HUSPR_ANIM_MODE_BANK);
         HuSprAttrReset(display.sprGroup, 0, HUSPR_ATTR_DISPOFF);
         HuSprAttrSet(display.sprGroup, 9, HUSPR_ATTR_DISPOFF);
         HuPrcVSleep();
-        HuSprAnimModeSet(display.sprGroup, 0, 0);
+        HuSprAnimModeSet(display.sprGroup, 0, HUSPR_ANIM_MODE_STOP);
     } else {
         HuSprBankSet(display.sprGroup, 9, 0, 0);
-        HuSprAnimModeSet(display.sprGroup, 9, 1);
+        HuSprAnimModeSet(display.sprGroup, 9, HUSPR_ANIM_MODE_BANK);
         HuSprAttrReset(display.sprGroup, 9, HUSPR_ATTR_DISPOFF);
         HuSprAttrSet(display.sprGroup, 0, HUSPR_ATTR_DISPOFF);
         HuPrcVSleep();
-        HuSprAnimModeSet(display.sprGroup, 9, 0);
+        HuSprAnimModeSet(display.sprGroup, 9, HUSPR_ANIM_MODE_STOP);
     }
     HuPrcChildWatch();
     while (TRUE) {
@@ -2000,9 +2000,9 @@ void func_8010AD20_marios_puzzle_party(void) {
         stepX = (i - cursor->x) / 10.0f;
         stepY = (j - cursor->y) / 10.0f;
         if (next->blockOwners[0] != 7) {
-            HuSprAnimModeSet(display.sprGroup, 0, 1);
+            HuSprAnimModeSet(display.sprGroup, 0, HUSPR_ANIM_MODE_BANK);
         } else {
-            HuSprAnimModeSet(display.sprGroup, 9, 1);
+            HuSprAnimModeSet(display.sprGroup, 9, HUSPR_ANIM_MODE_BANK);
         }
         do {
             next->x = nextStepX + next->x;
@@ -2043,16 +2043,16 @@ void func_8010AD20_marios_puzzle_party(void) {
         HuPrcVSleep();
         if (next->blockOwners[0] != 7) {
             HuSprBankSet(display.sprGroup, 0, 0, 0);
-            HuSprAnimModeSet(display.sprGroup, 0, 1);
+            HuSprAnimModeSet(display.sprGroup, 0, HUSPR_ANIM_MODE_BANK);
             HuPrcVSleep();
-            HuSprAnimModeSet(display.sprGroup, 0, 0);
+            HuSprAnimModeSet(display.sprGroup, 0, HUSPR_ANIM_MODE_STOP);
             HuSprAttrReset(display.sprGroup, 0, HUSPR_ATTR_DISPOFF);
             HuSprAttrSet(display.sprGroup, 9, HUSPR_ATTR_DISPOFF);
         } else {
             HuSprBankSet(display.sprGroup, 9, 0, 0);
-            HuSprAnimModeSet(display.sprGroup, 9, 1);
+            HuSprAnimModeSet(display.sprGroup, 9, HUSPR_ANIM_MODE_BANK);
             HuPrcVSleep();
-            HuSprAnimModeSet(display.sprGroup, 9, 0);
+            HuSprAnimModeSet(display.sprGroup, 9, HUSPR_ANIM_MODE_STOP);
             HuSprAttrReset(display.sprGroup, 9, HUSPR_ATTR_DISPOFF);
             HuSprAttrSet(display.sprGroup, 0, HUSPR_ATTR_DISPOFF);
         }
@@ -2744,7 +2744,7 @@ void func_8010E12C_marios_puzzle_party(void) {
     // j is the place value divisor, i is the digit sprite member.
     for (i = 1, j = 1000, started = FALSE; i < 5; i++, j /= 10) {
         HuSprGrpMemberSet(group, i, D_801160A2_marios_puzzle_party, (record / j) % 10);
-        HuSprAnimModeSet(group, i, 1);
+        HuSprAnimModeSet(group, i, HUSPR_ANIM_MODE_BANK);
         HuSprAttrReset(group, i, 0xFFFF);
         HuSprAttrSet(group, i, 8);
         if (!started) {
@@ -2772,7 +2772,7 @@ void func_8010E12C_marios_puzzle_party(void) {
     HuSprPosSet(group, 0, 90 - (j >> 1), 30);
 
     HuSprGrpMemberSet(group, 5, D_801160A6_marios_puzzle_party, 0);
-    HuSprAnimModeSet(group, 5, 0);
+    HuSprAnimModeSet(group, 5, HUSPR_ANIM_MODE_STOP);
     HuSprAttrReset(group, 5, 0xFFFF);
     HuSprAttrSet(group, 5, 8);
     HuSprPriSet(group, 5, 0x100);
@@ -2785,7 +2785,7 @@ void func_8010E12C_marios_puzzle_party(void) {
         record = D_80116128_marios_puzzle_party[0];
         for (i = 1, j = 1000, started = FALSE; i < 5; i++, j /= 10) {
             HuSprGrpMemberSet(group, i, D_801160A2_marios_puzzle_party, (record / j) % 10);
-            HuSprAnimModeSet(group, i, 1);
+            HuSprAnimModeSet(group, i, HUSPR_ANIM_MODE_BANK);
             HuSprAttrReset(group, i, 0xFFFF);
             HuSprAttrSet(group, i, 8);
             if (!started) {
@@ -2833,22 +2833,22 @@ void func_8010E868_marios_puzzle_party(s32 group, s32 time) {
     s32 tenths;
 
     HuSprBankSet(group, 1, minutes = time / 3600, 0);
-    HuSprAnimModeSet(group, 1, 1);
+    HuSprAnimModeSet(group, 1, HUSPR_ANIM_MODE_BANK);
     time -= minutes * 3600;
     HuSprBankSet(group, 2, 10, 0);
-    HuSprAnimModeSet(group, 2, 1);
+    HuSprAnimModeSet(group, 2, HUSPR_ANIM_MODE_BANK);
     HuSprBankSet(group, 3, tens = time / 600, 0);
-    HuSprAnimModeSet(group, 3, 1);
+    HuSprAnimModeSet(group, 3, HUSPR_ANIM_MODE_BANK);
     time -= tens * 600;
     HuSprBankSet(group, 4, seconds = time / 60, 0);
-    HuSprAnimModeSet(group, 4, 1);
+    HuSprAnimModeSet(group, 4, HUSPR_ANIM_MODE_BANK);
     time = time * 100 / 60 - seconds * 100;
     HuSprBankSet(group, 5, 11, 0);
-    HuSprAnimModeSet(group, 5, 1);
+    HuSprAnimModeSet(group, 5, HUSPR_ANIM_MODE_BANK);
     HuSprBankSet(group, 6, tenths = time / 10, 0);
-    HuSprAnimModeSet(group, 6, 1);
+    HuSprAnimModeSet(group, 6, HUSPR_ANIM_MODE_BANK);
     HuSprBankSet(group, 7, time - tenths * 10, 0);
-    HuSprAnimModeSet(group, 7, 1);
+    HuSprAnimModeSet(group, 7, HUSPR_ANIM_MODE_BANK);
 }
 
 void func_8010EAA0_marios_puzzle_party(void) {
@@ -2864,7 +2864,7 @@ void func_8010EAA0_marios_puzzle_party(void) {
     HuSprPosSet(group, 0, 215, 30);
     D_80116160_marios_puzzle_party = 5400;
     for (i = 1, x = 0; i < 8; i++) {
-        HuSprAnimModeSet(group, i, 1);
+        HuSprAnimModeSet(group, i, HUSPR_ANIM_MODE_BANK);
         HuSprGrpMemberSet(group, i, D_801160AA_marios_puzzle_party, 0);
         HuSprAttrReset(group, i, 0xFFFF);
         HuSprAttrSet(group, i, 8);

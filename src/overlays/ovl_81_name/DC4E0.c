@@ -130,7 +130,7 @@ void func_800F4710_name_81(s32 playerIndex) {
             }
             for (i = 0; i < ARRAY_COUNT(coinDigits); i++) {
                 HuSprBankSet(player->spriteGroup, i + 3, coinDigits[i], 0);
-                HuSprAnimModeSet(player->spriteGroup, i + 3, 1);
+                HuSprAnimModeSet(player->spriteGroup, i + 3, HUSPR_ANIM_MODE_BANK);
             }
 
             player->unk_02 = GwPlayer[playerIndex].coin;
@@ -142,7 +142,7 @@ void func_800F4710_name_81(s32 playerIndex) {
             } else {
                 HuSprBankSet(player->spriteGroup, 2, GwPlayer[playerIndex].star, 0);
             }
-            HuSprAnimModeSet(player->spriteGroup, 2, 1);
+            HuSprAnimModeSet(player->spriteGroup, 2, HUSPR_ANIM_MODE_BANK);
             player->unk_01 = GwPlayer[playerIndex].star;
         }
 
@@ -169,7 +169,7 @@ void func_800F4710_name_81(s32 playerIndex) {
             }
             player->unk_6A = gwPlayer->stats.partners.frontCost;
             for (i = 5; i < 10; i++) {
-                HuSprAnimModeSet(player->spriteGroup, i + 7, 1);
+                HuSprAnimModeSet(player->spriteGroup, i + 7, HUSPR_ANIM_MODE_BANK);
             }
         }
 
@@ -196,7 +196,7 @@ void func_800F4710_name_81(s32 playerIndex) {
             }
             player->unk_6B = gwPlayer->stats.partners.backCost;
             for (i = 5; i < 10; i++) {
-                HuSprAnimModeSet(player->spriteGroup, i + 0x12, 1);
+                HuSprAnimModeSet(player->spriteGroup, i + 0x12, HUSPR_ANIM_MODE_BANK);
             }
         }
     }
@@ -316,7 +316,7 @@ void func_800F52B8_name_81(s32 playerIndex) {
     s16 group = D_80105630_name_81[playerIndex].spriteGroup;
 
     HuSprGrpMemberSet(group, 1, D_80105414_name_81.unk_02[playerIndex], 0);
-    HuSprAnimModeSet(group, 1, 0);
+    HuSprAnimModeSet(group, 1, HUSPR_ANIM_MODE_STOP);
     HuSprPriSet(group, 1, playerIndex * 5 + 0x4790);
     HuSprAttrSet(group, 1, 0);
     HuSprPosSet(group, 1, D_801015BC_name_81[playerIndex][1][0], D_801015BC_name_81[playerIndex][1][1]);
@@ -350,7 +350,7 @@ void func_800F54A4_name_81(s32 playerIndex) {
     group = player->spriteGroup;
     for (i = 0; i < 3; i++) {
         HuSprGrpMemberSet(group, i + 3, player->unk_34, 0);
-        HuSprAnimModeSet(group, i + 3, 1);
+        HuSprAnimModeSet(group, i + 3, HUSPR_ANIM_MODE_BANK);
         HuSprBankSet(group, i + 3, 0xA, 0);
         HuSprPriSet(group, i + 3, playerIndex * 5 + 0x4790);
         HuSprAttrSet(group, i + 3, 0);
@@ -374,7 +374,7 @@ void func_800F56C0_name_81(s32 playerIndex) {
     s16 group = D_80105630_name_81[playerIndex].spriteGroup;
 
     HuSprGrpMemberSet(group, 6, D_80105414_name_81.unk_0A, 0);
-    HuSprAnimModeSet(group, 6, 0);
+    HuSprAnimModeSet(group, 6, HUSPR_ANIM_MODE_STOP);
     HuSprPriSet(group, 6, playerIndex * 5 + 0x478E);
     HuSprAttrSet(group, 6, 0);
     HuSprPosSet(group, 6, D_801015BC_name_81[playerIndex][6][0], D_801015BC_name_81[playerIndex][6][1]);
@@ -434,7 +434,7 @@ void func_800F5834_name_81(s32 playerIndex, s32 partnerID, s16 *anims, s32 baseM
         }
 
         HuSprGrpMemberSet(group, baseMember + i, anims[i], 0);
-        HuSprAnimModeSet(group, baseMember + i, 1);
+        HuSprAnimModeSet(group, baseMember + i, HUSPR_ANIM_MODE_BANK);
         if (i == 0) {
             HuSprPriSet(group, baseMember, playerIndex * 5 + 0x4793);
         } else {

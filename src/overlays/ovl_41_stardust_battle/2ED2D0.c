@@ -3648,7 +3648,7 @@ void func_8010EE7C_stardust_battle(void) {
             HuSprGrpMemberSet(sprGrp, j, D_80114B30_stardust_battle[i + 3], 0);
             func_80054FF8_main(sprGrp, j, 0);
             HuSprAttrSet(sprGrp, j, 0x1000);
-            HuSprAnimModeSet(sprGrp, j, 0);
+            HuSprAnimModeSet(sprGrp, j, HUSPR_ANIM_MODE_STOP);
         }
         HuSprAttrSet(sprGrp, 0, 0x8000);
         func_80054FF8_main(sprGrp, 2, 10);
@@ -4011,7 +4011,7 @@ void func_8010FE74_stardust_battle(s16 arg0) {
     D_80114B30_stardust_battle[2] = func_8010EE38_stardust_battle(0x62000B);
     object->work[3] = sprGrp = HuSprGrpCreate(1, 0);
     HuSprGrpMemberSet(sprGrp, 0, D_80114B30_stardust_battle[2], 0);
-    HuSprAnimModeSet(sprGrp, 0, 0);
+    HuSprAnimModeSet(sprGrp, 0, HUSPR_ANIM_MODE_STOP);
     func_80054FF8_main(sprGrp, 0, 0);
     HuSprPosSet(sprGrp, 0, 160, 120);
     HuSprScaleSet(sprGrp, 0, 4.0f, 4.0f);

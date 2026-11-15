@@ -1082,7 +1082,7 @@ void func_801084CC_w10(void) {
     for (i = 0; i < 4; i++) {
         box = sprites[2][i] = HuSprGrpCreate(6, 5);
         HuSprGrpMemberSet(box, 0, boxAnim, 0);
-        HuSprAnimModeSet(box, 0, 0);
+        HuSprAnimModeSet(box, 0, HUSPR_ANIM_MODE_STOP);
         HuSprAttrReset(box, 0, 0xFFFF);
         if (D_8010BA80_w10[i] != 0) {
             HuSprAttrSet(box, 0, 8);
@@ -1092,7 +1092,7 @@ void func_801084CC_w10(void) {
         HuSprPriSet(box, 0, 0x1000);
         func_800554C4_main(box, 0, -1);
         HuSprGrpMemberSet(box, 1, sprites[1][i], 0);
-        HuSprAnimModeSet(box, 1, 0);
+        HuSprAnimModeSet(box, 1, HUSPR_ANIM_MODE_STOP);
         HuSprAttrReset(box, 1, 0xFFFF);
         if (D_8010BA80_w10[i] != 0) {
             HuSprAttrSet(box, 1, 8);
@@ -1104,7 +1104,7 @@ void func_801084CC_w10(void) {
         func_800554C4_main(box, 1, 0);
         for (j = 0; j < 4; j++) {
             HuSprGrpMemberSet(box, j + 2, sprites[0][j], 0);
-            HuSprAnimModeSet(box, j + 2, 1);
+            HuSprAnimModeSet(box, j + 2, HUSPR_ANIM_MODE_BANK);
             HuSprAttrReset(box, j + 2, 0xFFFF);
             if (D_8010BA80_w10[i] == j + 1) {
                 HuSprAttrSet(box, j + 2, 8);

@@ -1093,7 +1093,7 @@ void func_8010D998_staff(void) {
 
             HuSprGrpMemberSet(grp, i, w->anims[i], 0);
         }
-        HuSprAnimModeSet(grp, i, 0);
+        HuSprAnimModeSet(grp, i, HUSPR_ANIM_MODE_STOP);
         HuSprPriSet(grp, i, 400);
         HuSprPosSet(grp, i, x, 214);
     }

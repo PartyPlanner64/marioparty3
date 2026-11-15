@@ -132,7 +132,7 @@ void func_800E7930_minigame(s16 group, s16 member, s16 graphic, s16 prio, s16 x,
     HuSprAttrReset(group, member, 0xFFFF);
     HuSprAttrSet(group, member, 0x9000);
     HuSprScaleSet(group, member, 1.0f, 1.0f);
-    HuSprAnimModeSet(group, member, 0);
+    HuSprAnimModeSet(group, member, HUSPR_ANIM_MODE_STOP);
     HuSprGrpMemberSet(group, member, graphic, 0);
     HuSprPriSet(group, member, prio);
     HuSprPosSet(group, member, x, y);

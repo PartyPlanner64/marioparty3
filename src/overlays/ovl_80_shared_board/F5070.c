@@ -160,7 +160,7 @@ static void func_800E1934_shared_board(s32 arg0, s32 arg1) {
 
         var_s2 = 2;
         HuSprGrpMemberSet(temp_v0_2, 2, D_80102C28_shared_board[arg0][1], 0);
-        HuSprAnimModeSet(temp_v0_2, 2, 1);
+        HuSprAnimModeSet(temp_v0_2, 2, HUSPR_ANIM_MODE_BANK);
 
         if (var_s3 > 0) {
             HuSprBankSet(temp_v0_2, var_s2, 0xA, 0);
@@ -176,7 +176,7 @@ static void func_800E1934_shared_board(s32 arg0, s32 arg1) {
 
         if (var_s3 >= 100) {
             HuSprGrpMemberSet(temp_v0_2, var_s2, D_80102C28_shared_board[arg0][1], 0);
-            HuSprAnimModeSet(temp_v0_2, var_s2, 1);
+            HuSprAnimModeSet(temp_v0_2, var_s2, HUSPR_ANIM_MODE_BANK);
             HuSprBankSet(temp_v0_2, var_s2, (var_s3 / 100), 0);
             HuSprPriSet(temp_v0_2, var_s2, 0x2010);
             HuSprAttrSet(temp_v0_2, var_s2, 0x1000);
@@ -185,7 +185,7 @@ static void func_800E1934_shared_board(s32 arg0, s32 arg1) {
 
         if (var_s3 >= 10) {
             HuSprGrpMemberSet(temp_v0_2, var_s2, D_80102C28_shared_board[arg0][1], 0);
-            HuSprAnimModeSet(temp_v0_2, var_s2, 1);
+            HuSprAnimModeSet(temp_v0_2, var_s2, HUSPR_ANIM_MODE_BANK);
             HuSprBankSet(temp_v0_2, var_s2, ((var_s3 / 10) % 10), 0);
             HuSprPriSet(temp_v0_2, var_s2, 0x2010U);
             HuSprAttrSet(temp_v0_2, var_s2, 0x1000);
@@ -195,7 +195,7 @@ static void func_800E1934_shared_board(s32 arg0, s32 arg1) {
         var_s3 = var_s3 % 10;
 
         HuSprGrpMemberSet(temp_v0_2, var_s2, D_80102C28_shared_board[arg0][1], 0);
-        HuSprAnimModeSet(temp_v0_2, var_s2, 1);
+        HuSprAnimModeSet(temp_v0_2, var_s2, HUSPR_ANIM_MODE_BANK);
         HuSprBankSet(temp_v0_2, var_s2, var_s3, 0);
         HuSprPriSet(temp_v0_2, var_s2, 0x2010U);
         HuSprAttrSet(temp_v0_2, var_s2, 0x1000);

@@ -119,16 +119,16 @@ segments:
       - [0x4F720, c, game/process]
       - [0x4FE90, c, game/saveEncode]
       - [0x508F0, c, game/saveload]
-      - [0x51B50, c, nnsched]
+      - [0x51B50, c, game/nnsched]
       - [0x52350, c, game/siman]
-      - [0x527E0, c, sndplayer]
+      - [0x527E0, c, game/sndplayer]
       - [0x52F30, c, game/sprman]
       - [0x58000, c, game/sprput]
       - [0x5ACF0, c, game/vibrator]
       - [0x5B2B0, c, game/window]
       - [0x62750, c, game/wipe]
-      - [0x66E70, c, n_synstartvoiceparam]
-      - [0x67000, c, n_synsetpan]
+      - [0x66E70, c, game/n_synstartvoiceparam]
+      - [0x67000, c, game/n_synsetpan]
       - [0x67100, hasm, setjmp]
       - [0x671E0, c, lib/hvq]
       # libultra n_audio (libn_audio). The standard audio library starts at 0x73FE0.
@@ -567,7 +567,7 @@ segments:
       - [0xA8628, .rodata, game/lightdebug]
       - [0xA8698, .rodata, game/objmain]
       - [0xA8740, .rodata, game/saveEncode]
-      - [0xA8760, .rodata, sndplayer]
+      - [0xA8760, .rodata, game/sndplayer]
       - [0xA87A0, .rodata, game/sprman]
       - [0xA8800, .rodata, game/sprput]
       - [0xA8810, .rodata, game/window]
@@ -643,7 +643,7 @@ segments:
       - { start: 0xA96F0, type: .bss, vram: 0x800BBA30, name: game/process }
       - { start: 0xA96F0, type: .bss, vram: 0x800BBAA0, name: game/saveEncode }
       - { start: 0xA96F0, type: .bss, vram: 0x800BBAB0, name: game/saveload }
-      - { start: 0xA96F0, type: .bss, vram: 0x800BBAC0, name: nnsched }
+      - { start: 0xA96F0, type: .bss, vram: 0x800BBAC0, name: game/nnsched }
       - { start: 0xA96F0, type: .bss, vram: 0x800BCD00, name: game/siman }
       - { start: 0xA96F0, type: .bss, vram: 0x800BD7C0, name: game/sprman }
       - { start: 0xA96F0, type: .bss, vram: 0x800BD810, name: game/sprput }
@@ -669,7 +669,7 @@ segments:
       - { start: 0xA96F0, type: .bss, vram: 0x800C94E0, name: libm/tables }
       - { start: 0xA96F0, type: .bss, vram: 0x800C94F0, name: libm/sind }
       - { start: 0xA96F0, type: .bss, vram: 0x800C9500, name: libm/sindf }
-      - { start: 0xA96F0, type: .bss, vram: 0x800C9510, name: bss }
+      - { start: 0xA96F0, type: .bss, vram: 0x800C9510, name: game/bss }
 
   - type: code
     start: 0xA96F0

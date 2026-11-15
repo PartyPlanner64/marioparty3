@@ -15,8 +15,8 @@ A file will typically have a code segment, such as:
 # Results in a C file at `src/6B050.c`
 - [0x6B050, c]
 
-# Results in a C file at `src/decode.c`
-- [0xAE30, c, decode]
+# Results in a C file at `src/game/decode.c`
+- [0xAE30, c, game/decode]
 
 # Results in a C file at `src/2.0L/audio/cseq.c`
 - [0x6EC30, c, 2.0L/audio/cseq]

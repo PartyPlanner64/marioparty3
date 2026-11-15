@@ -181,12 +181,12 @@ build/src/2.0L/n_audio/%.c.o: CPPFLAGS = -I include -I include/PR -I include/gcc
 build/src/2.0L/rmon/%.c.o: CFLAGS_CHECK += -Wno-unused-but-set-variable
 build/src/8A6B0.c.o: OPTFLAGS = -O2 #Could also be -O3?
 # n_synstartvoiceparam and n_synsetpan were built unoptimized; -Wa,-g keeps gas from filling delay slots.
-build/src/n_synstartvoiceparam.c.o: OPTFLAGS = -O0
-build/src/n_synstartvoiceparam.c.o: NO_STRIP_NOP = 1
-build/src/n_synstartvoiceparam.c.o: CFLAGS += -Wa,-g
-build/src/n_synsetpan.c.o: OPTFLAGS = -O0
-build/src/n_synsetpan.c.o: NO_STRIP_NOP = 1
-build/src/n_synsetpan.c.o: CFLAGS += -Wa,-g
+build/src/game/n_synstartvoiceparam.c.o: OPTFLAGS = -O0
+build/src/game/n_synstartvoiceparam.c.o: NO_STRIP_NOP = 1
+build/src/game/n_synstartvoiceparam.c.o: CFLAGS += -Wa,-g
+build/src/game/n_synsetpan.c.o: OPTFLAGS = -O0
+build/src/game/n_synsetpan.c.o: NO_STRIP_NOP = 1
+build/src/game/n_synsetpan.c.o: CFLAGS += -Wa,-g
 # libkmc fmod was built without the post-call nop strip.
 build/src/libkmc/fmod.c.o: NO_STRIP_NOP = 1
 build/src/2.0L/debug/kdebugserver.c.o: OPTFLAGS = -O3

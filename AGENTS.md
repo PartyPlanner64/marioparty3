@@ -22,7 +22,7 @@ As more matching C code is written in `src`, the MIPS code under `asm/nonmatchin
   - `party` party boards (`boards/w01_chilly_waters`, ...), the shared board library (`common`), board events, intros, and results.
   - `duel` duel boards (`boards/duel01_gate_guy`, ...), the shared duel board library (`common`), intros, and results.
   - `story`, `menus`, `debug` story mode, front-end screens, and debug tools.
-- `src/2.0L`, `src/libhmath`, `src/libkmc`, `src/libleo`, `src/libm`, `src/lib` libultra and other library code. A few SDK-derived and segment-wide files remain at the top of `src`.
+- `src/2.0L`, `src/libhmath`, `src/libkmc`, `src/libleo`, `src/libm`, `src/lib` libultra and other library code.
 
 Overlay directories are set with `dir:` in `marioparty3.yaml`; the segment `name:` is independent and determines symbol suffixes (e.g. `_shared_board`), so moving a directory does not rename symbols.
 

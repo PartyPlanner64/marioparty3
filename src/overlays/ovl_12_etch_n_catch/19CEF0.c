@@ -75,22 +75,6 @@ typedef struct EtchNCatchPlayerOffsets {
     /* 0x30 */ f32 z[4];
 } EtchNCatchPlayerOffsets; // sizeof 0x40
 
-// Byte grid of player slots: D_8010C84C_etch_n_catch is the base address and
-// D_8010C846_etch_n_catch the row stride in bytes.
-extern u8 *D_8010C84C_etch_n_catch;
-extern s16 D_8010C846_etch_n_catch;
-extern s16 D_8010C848_etch_n_catch; // Grid height
-extern EtchNCatchNode *D_801113D8_etch_n_catch[4];
-
-// Heap-allocated list of grid cells touched this frame, one pointer per entry.
-extern u8 **D_8010C878_etch_n_catch;
-
-// Two heap-allocated queues of grid cells, swapped between fill passes.
-extern u8 **D_8010C87C_etch_n_catch[2];
-
-// Per-player region bits of each grid cell pair, 160 cells per row.
-extern u8 D_8010C890_etch_n_catch[][160];
-
 // Per-object data of the player objects created by func_80109A54_etch_n_catch.
 typedef struct EtchNCatchPlayerData {
     /* 0x000 */ func_800E1BA8_minigame_ObjData base;
@@ -115,43 +99,59 @@ typedef struct EtchNCatchBoardWork {
     /* 0x08 */ f32 unk08;
 } EtchNCatchBoardWork; // sizeof 0xC
 
-extern s8 D_8010C6A0_etch_n_catch;
-extern f32 D_8010C6DC_etch_n_catch;
-extern u8 D_8010C6E0_etch_n_catch;
-extern u8 D_8010C6E1_etch_n_catch;
-extern u8 D_8010C6E2_etch_n_catch;
-extern f32 D_8010C834_etch_n_catch;
 extern f32 D_800EB770_minigame;
-extern EtchNCatchWork *D_8010C838_etch_n_catch;
 extern s32 D_800A178C_main[][6];
 extern u8 D_800D6A90_main;
-extern s16 D_8010C6A4_etch_n_catch[2][2];
-extern s32 D_8010C6D4_etch_n_catch;
-extern s8 D_8010C6D9_etch_n_catch;
-extern s8 D_8010C6DA_etch_n_catch; // Team 0 players placed so far
-extern s8 D_8010C6DB_etch_n_catch; // Team 1 players placed so far
-extern s8 D_8010C6D8_etch_n_catch;
-extern Vec D_8010C6B0_etch_n_catch[3];
-extern u8 D_8010C6E4_etch_n_catch[4];
-extern u8 D_8010C6E8_etch_n_catch[4][3];
-extern u8 D_8010C6F4_etch_n_catch[4];
-extern u8 D_8010C6F8_etch_n_catch[2];
-extern s16 D_8010C83C_etch_n_catch;
-extern s16 D_8010C83E_etch_n_catch;
-extern u8 D_8010C830_etch_n_catch;
-extern u8 D_8010C840_etch_n_catch;
-extern s16 D_8010C842_etch_n_catch;
-extern s16 D_8010C844_etch_n_catch;
-extern u16 D_801113E8_etch_n_catch[4];
-extern s8 D_8010C6AC_etch_n_catch;
-extern s8 D_8010C6AD_etch_n_catch;
-extern s16 D_8010C850_etch_n_catch[2][2];
-extern omObjData *D_8010C858_etch_n_catch[2];
-extern omObjData *D_8010C860_etch_n_catch[2];
-extern EtchNCatchWork *D_8010C868_etch_n_catch[4];
-extern s16 D_80111390_etch_n_catch[4][3];
-extern u16 D_801113A8_etch_n_catch[2];
-extern D_80111B50_vine_with_me_Struct D_801113B0_etch_n_catch;
+
+s8 D_8010C6A0_etch_n_catch = 0;
+s16 D_8010C6A4_etch_n_catch[2][2] = { { 64, 38 }, { 281, 38 } };
+s8 D_8010C6AC_etch_n_catch = 0;
+s8 D_8010C6AD_etch_n_catch = 0;
+Vec D_8010C6B0_etch_n_catch[3] = { { -235.0f, 0.0f, -50.0f }, { -235.0f, 0.0f, 125.0f }, { -235.0f, 0.0f, -225.0f } };
+s32 D_8010C6D4_etch_n_catch = 0;
+s8 D_8010C6D8_etch_n_catch = 0;
+s8 D_8010C6D9_etch_n_catch = 0;
+s8 D_8010C6DA_etch_n_catch = 0; // Team 0 players placed so far
+s8 D_8010C6DB_etch_n_catch = 0; // Team 1 players placed so far
+f32 D_8010C6DC_etch_n_catch = 0.2f;
+u8 D_8010C6E0_etch_n_catch = 0;
+u8 D_8010C6E1_etch_n_catch = 0;
+u8 D_8010C6E2_etch_n_catch = 0;
+u8 D_8010C6E4_etch_n_catch[4] = { 0 };
+u8 D_8010C6E8_etch_n_catch[4][3] = { 0 };
+u8 D_8010C6F4_etch_n_catch[4] = { 0 };
+u8 D_8010C6F8_etch_n_catch[2] = { 0 };
+
+u8 D_8010C830_etch_n_catch BSS;
+f32 D_8010C834_etch_n_catch BSS;
+EtchNCatchWork *D_8010C838_etch_n_catch BSS;
+s16 D_8010C83C_etch_n_catch BSS;
+s16 D_8010C83E_etch_n_catch BSS;
+u8 D_8010C840_etch_n_catch BSS;
+s16 D_8010C842_etch_n_catch BSS;
+s16 D_8010C844_etch_n_catch BSS;
+// Byte grid of player slots: D_8010C84C_etch_n_catch is the base address and
+// D_8010C846_etch_n_catch the row stride in bytes.
+s16 D_8010C846_etch_n_catch BSS;
+s16 D_8010C848_etch_n_catch BSS; // Grid height
+u8 *D_8010C84C_etch_n_catch BSS;
+s16 D_8010C850_etch_n_catch[2][2] BSS;
+omObjData *D_8010C858_etch_n_catch[2] BSS;
+omObjData *D_8010C860_etch_n_catch[2] BSS;
+EtchNCatchWork *D_8010C868_etch_n_catch[4] BSS;
+// Heap-allocated list of grid cells touched this frame, one pointer per entry.
+u8 **D_8010C878_etch_n_catch BSS;
+// Two heap-allocated queues of grid cells, swapped between fill passes.
+u8 **D_8010C87C_etch_n_catch[2] BSS;
+u8 D_8010C884_etch_n_catch[0xC] BSS; /* Unreferenced. */
+// Per-player region bits of each grid cell pair, 160 cells per row.
+u8 D_8010C890_etch_n_catch[120][160] BSS;
+s16 D_80111390_etch_n_catch[4][3] BSS;
+u16 D_801113A8_etch_n_catch[2] BSS;
+u8 D_801113AC_etch_n_catch[4] BSS; /* Unreferenced. */
+D_80111B50_vine_with_me_Struct D_801113B0_etch_n_catch BSS;
+EtchNCatchNode *D_801113D8_etch_n_catch[4] BSS;
+u16 D_801113E8_etch_n_catch[4] BSS;
 
 void func_80105CD0_etch_n_catch(D_80111B50_vine_with_me_Struct *arg0);
 void func_80105D5C_etch_n_catch(void);

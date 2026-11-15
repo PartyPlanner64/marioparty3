@@ -219,10 +219,6 @@ D_8010DCB2_aces_high = D_8010DCB0_aces_high + 0x2;
 /* pipe_cleaners: s32 position table whose low halfwords splat labeled. */
 D_8010A010_pipe_cleaners = D_8010A012_pipe_cleaners - 0x2;
 
-/* etch_n_catch: folded D_8010C890[row - 1] base in the asm of func_80108DD0, which splat
-   labeled inside the jump table of func_80109EB8. */
-D_8010C7F0_etch_n_catch = D_8010C890_etch_n_catch - 0xA0;
-
 /* slot_synch: s32 sound table whose low halfwords splat labeled. */
 D_8010DA30_slot_synch = D_8010DA32_slot_synch - 0x2;
 

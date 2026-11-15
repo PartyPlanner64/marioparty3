@@ -7,9 +7,11 @@ extern u16 D_80108F38_mgresultbattle[4][3];
 extern omObjData *D_80108F7C_mgresultbattle;
 extern omObjData *D_80108F84_mgresultbattle;
 extern omObjFunc D_80108F88_mgresultbattle;
-extern s32 D_80108A00_mgresultbattle[4];
-extern f32 D_80108A10_mgresultbattle[4];
 extern omObjFunc D_80108F80_mgresultbattle;
+
+const s32 D_80108A00_mgresultbattle[4] = { 0x001B0001, 0x001B0002, 0x001B0003, 0x001B0004 };
+
+const f32 D_80108A10_mgresultbattle[4] = { 10.0f, 2.0f, -2.0f, -10.0f };
 
 void func_80107F94_mgresultbattle(void);
 void func_80107F9C_mgresultbattle(omObjData *obj);

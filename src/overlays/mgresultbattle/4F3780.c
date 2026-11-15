@@ -19,13 +19,14 @@ void func_80106908_mgresultbattle(void);
 void func_80106910_mgresultbattle(omObjData *obj);
 
 extern s32 D_800A178C_main[][6];
-extern s32 D_80108908_mgresultbattle[];
-extern s8 D_801088D8_mgresultbattle;
-extern s8 D_801088D0_mgresultbattle;
-extern s32 D_801088D4_mgresultbattle;
+extern const s32 D_80108908_mgresultbattle[];
 extern const s8 D_801089A0_mgresultbattle[];
 extern const f32 D_80108920_mgresultbattle[][4];
 extern u16 D_800CC698_main;
+
+s8 D_801088D0_mgresultbattle = 0;
+s32 D_801088D4_mgresultbattle = 0;
+s8 D_801088D8_mgresultbattle = 0;
 
 void func_801059A0_mgresultbattle(void) {
     s16 var_a0_2;
@@ -424,6 +425,15 @@ void func_801069FC_mgresultbattle(omObjData *obj) {
     D_80108F50_mgresultbattle[0].func = func_80106910_mgresultbattle;
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgresultbattle/4F3780", D_80108908_mgresultbattle);
+const s32 D_80108908_mgresultbattle[] = { 4, 7, 10, 13, 16, 19 };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgresultbattle/4F3780", D_80108920_mgresultbattle);
+const f32 D_80108920_mgresultbattle[][4] = {
+    { 0.7f, 0.3f, 0.0f, 0.0f },
+    { 0.5f, 0.0f, 0.0f, 0.0f },
+    { 0.5f, 0.0f, 0.0f, 0.0f },
+    { 3.0f, 0.0f, 0.0f, 0.0f },
+    { 0.6f, 0.2f, 0.0f, 0.0f },
+    { 0.7f, 0.1f, 0.0f, 0.0f },
+    { 0.7f, 0.3f, 0.0f, 0.0f },
+    { 0.25f, 0.0f, 0.0f, 0.0f }
+};

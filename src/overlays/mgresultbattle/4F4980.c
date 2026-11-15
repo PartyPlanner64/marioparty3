@@ -2,18 +2,6 @@
 #include "game/hmfspr.h"
 #include "mgresultbattle.h"
 
-typedef struct {
-    /* 0x00 */ u8 state;
-    /* 0x02 */ u16 unk02;
-    /* 0x04 */ u16 unk04;
-    /* 0x08 */ s32 unk08;
-    /* 0x0C */ f32 x;
-    /* 0x10 */ f32 y;
-    /* 0x14 */ f32 z;
-    /* 0x18 */ f32 unk18;
-    /* 0x1C */ f32 unk1C;
-} ResultBattleEffect; /* size = 0x20 */
-
 void func_80106E98_mgresultbattle(void);
 void func_80106ED0_mgresultbattle(omObjData *);
 void func_80107610_mgresultbattle(omObjData *);
@@ -25,11 +13,12 @@ void func_80107C44_mgresultbattle(void);
 void func_80107CA4_mgresultbattle(void);
 
 extern ResultBattlePlayerObj D_80108F90_mgresultbattle;
-extern s32 D_801088E0_mgresultbattle[];
 extern ResultBattleEffect D_80108A30_mgresultbattle[40];
 extern omObjData *D_80108F74_mgresultbattle;
 extern omObjFunc D_80108F78_mgresultbattle;
 extern const s32 D_801089C0_mgresultbattle[];
+
+s32 D_801088E0_mgresultbattle[4] = { 0 };
 
 void func_80106BA0_mgresultbattle(void) {
     omObjData *obj;
@@ -162,7 +151,9 @@ void func_80107260_mgresultbattle(f32 x, f32 y, f32 z, s32 count, f32 arg4) {
     }
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgresultbattle/4F4980", D_801089A0_mgresultbattle);
+const s8 D_801089A0_mgresultbattle[8] = { 0, 0, 0, 1, 0, 0, 0, 0 };
+
+const Vec D_801089A8_mgresultbattle = { 0.0f, 300.0f, 0.0f }; /* Unreferenced. */
 
 void func_80107400_mgresultbattle(void) {
     omObjData *itemObj;
@@ -328,14 +319,11 @@ void func_80107CA4_mgresultbattle(void) {
     func_8001C258_main(itemObj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgresultbattle/4F4980", D_801089C0_mgresultbattle);
+const s32 D_801089C0_mgresultbattle[] = { 10, 20, 30, 40 };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgresultbattle/4F4980", D_801089D0_mgresultbattle);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgresultbattle/4F4980", D_801089D4_mgresultbattle);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgresultbattle/4F4980", D_801089D8_mgresultbattle);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgresultbattle/4F4980", D_80108A00_mgresultbattle);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgresultbattle/4F4980", D_80108A10_mgresultbattle);
+const Vec D_801089D0_mgresultbattle[4] = {
+    { -450.0f, 0.0f, 0.0f },
+    { -150.0f, 0.0f, 0.0f },
+    { 150.0f, 0.0f, 0.0f },
+    { 450.0f, 0.0f, 0.0f }
+};

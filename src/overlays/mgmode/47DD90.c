@@ -10,16 +10,12 @@ extern s16 D_8011B650_mgmode;
 extern s16 D_8011B652_mgmode;
 extern u16 *D_8011B654_mgmode[3];
 extern void *D_8011B660_mgmode;
-extern s16 D_8011A3E0_mgmode;
 extern s16 D_8011B664_mgmode;
 extern s16 D_8011B666_mgmode;
 extern s16 D_8011B668_mgmode;
 extern s16 D_8011B66A_mgmode;
 extern s16 D_8011B66C_mgmode;
 extern s16 D_8011B66E_mgmode;
-extern s32 D_8011A3E4_mgmode[4];
-extern s16 D_8011A3F4_mgmode;
-extern s16 D_8011A3F8_mgmode[];
 extern MgmodeSpaceCoord *D_8011B670_mgmode;
 extern s16 D_8011B678_mgmode[4][4];
 extern s16 D_8011B698_mgmode[4];
@@ -29,6 +25,13 @@ void func_801180A4_mgmode(void);
 void func_801188BC_mgmode(omObjData *obj);
 void func_801189C4_mgmode(s16 model);
 void func_80118B8C_mgmode(s16 model);
+
+s16 D_8011A3E0_mgmode = -1;
+s32 D_8011A3E4_mgmode[4] = {
+    0xB002B, 0xB002C, 0xB002D, 0xB002E
+};
+s16 D_8011A3F4_mgmode = 0;
+s16 D_8011A3F8_mgmode[4] = { 0 };
 
 s16 func_80116B20_mgmode(void) {
     s16 sprGrp;

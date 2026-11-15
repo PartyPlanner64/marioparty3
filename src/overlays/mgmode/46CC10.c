@@ -2,22 +2,14 @@
 #include "overlays/mgmode.h"
 #include "game/hmfmath.h"
 
-extern u8 D_80118EB1_mgmode;
-extern u8 D_80118EB2_mgmode;
-extern s16 D_80118EB4_mgmode;
 extern s16 D_8011B950_mgmode;
 extern s16 D_8011B95A_mgmode;
 extern s16 D_8011B884_mgmode;
-extern Gfx D_80119290_mgmode[];
 extern s16 D_8011B3E4_mgmode;
 extern MgmodeEsprite *D_8011B3EC_mgmode;
 extern s16 D_8011B8B2_mgmode;
 extern u16 *D_8011B3E0_mgmode;
 extern s8 D_8011B3E6_mgmode[];
-extern s32 D_80119190_mgmode[];
-extern s32 D_801191E4_mgmode[];
-extern char D_8011A400_mgmode[];
-extern char D_8011A430_mgmode[];
 extern char D_8011A708_mgmode[];
 extern s16 D_8011B6A0_mgmode;
 extern s16 D_8011B928_mgmode[];
@@ -31,27 +23,16 @@ extern u8 D_8011AA10_mgmode[];
 extern u8 D_8011B6B0_mgmode[][25];
 extern s16 D_8011B6A8_mgmode;
 extern u8 D_800D20B0_main;
-extern MgmodeSpaceCoord D_80119158_mgmode[];
 extern Vec D_8011AA80_mgmode[][25];
 extern s16 D_8011B8B6_mgmode[];
 extern s16 D_8011B8C4_mgmode;
-extern MgmodeSpaceCoord D_80119170_mgmode[];
 extern s16 D_8011B808_mgmode;
 extern s16 D_8011B8B4_mgmode;
 extern HuMtx4F D_8011A808_mgmode;
-extern char D_8011A46C_mgmode[];
-extern char D_8011A404_mgmode[];
-extern char D_8011A40C_mgmode[];
 extern HuMtx4F D_8011A848_mgmode;
 extern HuMtx4F D_8011A888_mgmode;
 extern s16 D_8011B8A8_mgmode[];
-extern char *D_801192D8_mgmode[];
-extern u8 D_801192F4_mgmode[];
 extern u8 D_800D1FF0_main;
-extern s8 D_801192FC_mgmode[];
-extern s8 D_80119310_mgmode[];
-extern u16 D_80119320_mgmode[];
-extern u16 D_8011932C_mgmode[];
 extern MgmodeEspriteDef D_8011988C_mgmode[];
 extern u8 D_800CB8B1_main[];
 extern f32 D_8011B6A4_mgmode;
@@ -71,13 +52,10 @@ extern s16 D_800D0468_main;
 extern s16 D_800D1FE0_main;
 extern s16 D_800CB894_main;
 extern u16 D_800CC698_main;
-extern u8 D_80118EB0_mgmode;
 extern u8 D_8011B958_mgmode;
 extern MgmodeSpaceCoord D_8011AA18_mgmode[];
-extern u16 D_80119200_mgmode[];
 extern s8 D_800D2124_main[];
 extern CamData *D_8011B954_mgmode;
-extern CamData D_80118EB8_mgmode[];
 extern MgmodeModelEntry D_801195E0_mgmode[];
 extern s16 D_8011A700_mgmode;
 extern s16 D_8011B7A0_mgmode[];
@@ -122,6 +100,70 @@ void func_80107610_mgmode(void);
 s16 func_80107298_mgmode(void);
 void func_80108824_mgmode(s32 arg0);
 void func_80108C88_mgmode(void);
+
+u8 D_80118EB0_mgmode = 0;
+u8 D_80118EB1_mgmode = 0;
+u8 D_80118EB2_mgmode = 0;
+s16 D_80118EB4_mgmode = 0;
+CamData D_80118EB8_mgmode[21] = {
+    { { 0.0f, 0.0f, 0.0f }, { 0.0f, 127.0f, -395.0f }, 1400.0f, 40.0f },
+    { { 0.0f, 0.0f, 0.0f }, { 0.0f, 127.0f, -395.0f }, 330.0f, 40.0f },
+    { { 358.0f, 0.0f, 0.0f }, { 0.0f, 217.0f, -384.7f }, 580.0f, 44.0f },
+    { { 0.0f, 144.0f, 0.0f }, { -442.7f, 106.2f, 848.7f }, 590.0f, 40.0f },
+    { { 4.0f, 218.0f, 0.0f }, { 364.0f, 104.9f, 741.4f }, 450.0f, 40.0f },
+    { { 6.0f, 180.0f, 0.0f }, { 0.0f, 151.5f, 888.0f }, 580.0f, 40.0f },
+    { { 0.0f, 0.0f, 0.0f }, { 91.0f, 115.0f, -395.0f }, 60.0f, 29.0f },
+    { { 0.0f, 38.0f, 0.0f }, { -221.4f, 397.1f, -540.6f }, 280.0f, 24.0f },
+    { { 0.0f, 2.0f, 0.0f }, { 8.7f, 425.1f, -506.1f }, 730.0f, 20.0f },
+    { { 0.0f, 322.0f, 0.0f }, { 107.8f, 397.1f, -397.5f }, 20.0f, 29.0f },
+    { { 0.0f, 38.0f, 0.0f }, { -221.4f, 239.1f, -540.6f }, 280.0f, 24.0f },
+    { { 0.0f, 0.0f, 0.0f }, { -111.7f, 237.1f, -430.4f }, 50.0f, 29.0f },
+    { { 0.0f, 0.0f, 0.0f }, { 110.3f, 237.1f, -430.4f }, 50.0f, 29.0f },
+    { { 0.0f, 322.0f, 0.0f }, { 107.8f, 237.1f, -397.5f }, 20.0f, 29.0f },
+    { { 4.0f, 218.0f, 0.0f }, { 364.0f, 104.9f, 741.4f }, 80.0f, 40.0f },
+    { { 0.0f, 144.0f, 0.0f }, { -442.7f, 94.2f, 848.7f }, 200.0f, 40.0f },
+    { { 10.0f, 180.0f, 0.0f }, { 0.0f, 45.2f, 907.5f }, 20.0f, 40.0f },
+    { { 4.0f, 38.0f, 0.0f }, { 363.5f, 92.9f, 740.7f }, 170.0f, 40.0f },
+    { { 2.0f, 40.0f, 0.0f }, { 243.7f, 64.7f, 572.9f }, 50.0f, 40.0f },
+    { { 4.0f, 322.0f, 0.0f }, { -194.9f, 88.0f, 522.6f }, 490.0f, 40.0f },
+    { { 0.0f, 322.0f, 0.0f }, { -194.9f, 88.0f, 522.6f }, 40.0f, 40.0f }
+};
+MgmodeSpaceCoord D_80119158_mgmode[6] = {
+    { 160, 97 }, { 234, 133 }, { 157, 109 }, { 157, 118 }, { 157, 106 }, { -1, -1 }
+};
+MgmodeSpaceCoord D_80119170_mgmode[8] = {
+    { 45, 64 }, { 158, 68 }, { 271, 64 }, { 45, 121 }, { 123, 120 }, { 194, 120 }, { 271, 121 }, { -1, -1 }
+};
+s32 D_80119190_mgmode[21] = {
+    0x5718, 0x5714, 0x5719, 0x5715, 0x5716, 0x5717, 0x571A,
+    0x571F, 0x571B, 0x5720, 0x571C, 0x571D, 0x571E, 0x5721,
+    0x5726, 0x5722, 0x5727, 0x5723, 0x5724, 0x5725, 0x5728
+};
+s32 D_801191E4_mgmode[7] = {
+    4, 0, 5, 2, 1, 3, 7
+};
+u16 D_80119200_mgmode[72] = {
+    0x4401, 0x4402, 0x4403, 0x4404, 0x4405, 0x4406, 0x4407, 0x4408,
+    0x4409, 0x440A, 0x440B, 0x440C, 0x440D, 0x440E, 0x440F, 0x4410,
+    0x4411, 0x4412, 0x4413, 0x4414, 0x4415, 0x4416, 0x4417, 0x4418,
+    0x4419, 0x4429, 0x441A, 0x441B, 0x441C, 0x441D, 0x441E, 0x441F,
+    0x4420, 0x4421, 0x4422, 0x4423, 0x4424, 0x4425, 0x4426, 0x4427,
+    0x442A, 0x442B, 0x442C, 0x4428, 0x442D, 0x442E, 0x442F, 0x4430,
+    0x4431, 0x4432, 0x4433, 0x4434, 0x4435, 0x4436, 0x4437, 0x4438,
+    0x4439, 0x443A, 0x443B, 0x443C, 0x443D, 0x443E, 0x443F, 0x4440,
+    0, 0x4441, 0, 0, 0, 0, 0x4442, 0x4443
+};
+Gfx D_80119290_mgmode[] = {
+    gsDPPipeSync(),
+    gsDPSetCycleType(G_CYC_FILL),
+    gsDPSetRenderMode(G_RM_NOOP, G_RM_NOOP2),
+    gsDPSetFillColor(0xFFFCFFFC),
+    gsDPFillRectangle(0, 0, 319, 239),
+    gsDPPipeSync(),
+    gsDPSetCycleType(G_CYC_1CYCLE),
+    gsDPSetColorImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 320, 0x02000000),
+    gsSPEndDisplayList(),
+};
 
 void func_801059A0_mgmode(void) {
     HmfModel *model;
@@ -234,12 +276,6 @@ void func_801059A0_mgmode(void) {
     }
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgmode/46CC10", D_8011A400_mgmode);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgmode/46CC10", D_8011A404_mgmode);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgmode/46CC10", D_8011A40C_mgmode);
-
 void func_8010606C_mgmode(void) {
     s16 size[2];
     HmfMotionNode *node;
@@ -254,7 +290,7 @@ void func_8010606C_mgmode(void) {
     HuWinMesMaxSizeBetGet(size, 0x5700, 0x570A);
     D_8011B6A8_mgmode = HuWinExCreate(-1, (320 - size[0]) / 2, 224 - size[1], size[0], size[1], 0);
     HuWinActivePlayerSet(D_8011B6A8_mgmode, 1 << D_8011B808_mgmode);
-    HuWinInsertMesSizeGet((u32)D_8011A400_mgmode, 0);
+    HuWinInsertMesSizeGet((u32) "00", 0);
     HuWinMesMaxSizeBetGet(size, 0x570B, 0x5728);
     D_8011B6A0_mgmode = HuWinExCreate(-1, (320 - size[0]) / 2, 224 - size[1], size[0], size[1], 0);
     HuWinActivePlayerSet(D_8011B6A0_mgmode, 1 << D_8011B808_mgmode);
@@ -278,7 +314,7 @@ void func_8010606C_mgmode(void) {
             while (WipeStatGet()) {
                 HuPrcVSleep();
             }
-            node = func_8001D33C_main(D_8011B8A8_mgmode[3], D_8011A404_mgmode);
+            node = func_8001D33C_main(D_8011B8A8_mgmode[3], "door_b");
             RepeatVibrator(D_8011B808_mgmode, 5, 0, 5);
             HuAudFXPlay(0x2EB);
             for (i = 0; i < 19; i++) {
@@ -294,7 +330,7 @@ void func_8010606C_mgmode(void) {
             while (WipeStatGet()) {
                 HuPrcVSleep();
             }
-            node = func_8001D33C_main(D_8011B8A8_mgmode[3], D_8011A40C_mgmode);
+            node = func_8001D33C_main(D_8011B8A8_mgmode[3], "door_g");
             RepeatVibrator(D_8011B808_mgmode, 5, 0, 5);
             HuAudFXPlay(0x2EB);
             for (i = 0; i < 19; i++) {
@@ -403,7 +439,7 @@ void func_8010606C_mgmode(void) {
                     } else {
                         func_801182B4_mgmode(0);
                         HuWinExAnimOut(D_8011B6A8_mgmode, 0);
-                        node = func_8001D33C_main(D_8011B8A8_mgmode[3], D_8011A40C_mgmode);
+                        node = func_8001D33C_main(D_8011B8A8_mgmode[3], "door_g");
                         RepeatVibrator(D_8011B808_mgmode, 5, 0, 5);
                         HuAudFXPlay(0x2EB);
                         for (i = 0; i < 19; i++) {
@@ -454,7 +490,7 @@ void func_8010606C_mgmode(void) {
                     } else {
                         func_801182B4_mgmode(0);
                         HuWinExAnimOut(D_8011B6A8_mgmode, 0);
-                        node = func_8001D33C_main(D_8011B8A8_mgmode[3], D_8011A404_mgmode);
+                        node = func_8001D33C_main(D_8011B8A8_mgmode[3], "door_b");
                         RepeatVibrator(D_8011B808_mgmode, 5, 0, 5);
                         HuAudFXPlay(0x2EB);
                         for (i = 0; i < 19; i++) {
@@ -579,8 +615,8 @@ s16 func_80107298_mgmode(void) {
     if (count == 0) {
         return 0;
     }
-    HuWinInsertMesSizeGet((u32)D_8011A400_mgmode, 0);
-    HuWinInsertMesSizeGet((u32)D_8011A400_mgmode, 1);
+    HuWinInsertMesSizeGet((u32) "00", 0);
+    HuWinInsertMesSizeGet((u32) "00", 1);
     HuWinMesMaxSizeBetGet(size, 0x570D, 0x5710);
     win = HuWinExCreate(-1, (320 - size[0]) / 2, 224 - size[1], size[0], size[1], 0);
     HuWinActivePlayerSet(win, 1 << D_8011B808_mgmode);
@@ -592,7 +628,7 @@ s16 func_80107298_mgmode(void) {
     if (count == 3) {
         HuWinMesSet(win, 0x570F, -1, -1);
     } else {
-        sprintf(D_8011A708_mgmode, D_8011A430_mgmode, count);
+        sprintf(D_8011A708_mgmode, "%d", count);
         HuWinInsertMesSet(win, (u32)D_8011A708_mgmode, 0);
         HuWinMesSet(win, 0x570E, -1, -1);
     }
@@ -605,7 +641,7 @@ s16 func_80107298_mgmode(void) {
     if (remaining == 0) {
         HuWinMesSet(win, 0x5711, -1, -1);
     } else {
-        sprintf(D_8011A708_mgmode, D_8011A430_mgmode, total);
+        sprintf(D_8011A708_mgmode, "%d", total);
         HuWinInsertMesSet(win, (u32)D_8011A708_mgmode, 0);
         HuWinMesSet(win, 0x5710, -1, -1);
     }
@@ -632,23 +668,29 @@ void func_80107610_mgmode(void) {
     }
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgmode/46CC10", D_8011A430_mgmode);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgmode/46CC10", D_8011A434_mgmode);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgmode/46CC10", D_8011A43C_mgmode);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgmode/46CC10", D_8011A444_mgmode);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgmode/46CC10", D_8011A44C_mgmode);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgmode/46CC10", D_8011A454_mgmode);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgmode/46CC10", D_8011A45C_mgmode);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgmode/46CC10", D_8011A464_mgmode);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgmode/46CC10", D_8011A46C_mgmode);
+char *D_801192D8_mgmode[] = { "book_1", "book_2", "book_3", "book_4", "book_5", "book_6", "book_7" };
+u8 D_801192F4_mgmode[8] = {
+    2, 0, 5, 1, 3, 4, 6, 0
+};
+s8 D_801192FC_mgmode[20] = {
+    0, 1, 2, 3,
+    1, 0, 2, 3,
+    2, 0, 1, 3,
+    3, 0, 1, 2,
+    -1, -1, -1, -1
+};
+s8 D_80119310_mgmode[16] = {
+    0, 1, 2, 3,
+    0, 2, 1, 3,
+    0, 3, 1, 2,
+    -1, -1, -1, -1
+};
+u16 D_80119320_mgmode[5] = {
+    16, 72, 112, 152, 44
+};
+u16 D_8011932C_mgmode[5] = {
+    16, 56, 112, 152, 84
+};
 
 void func_801076B0_mgmode(void) {
     s16 order[20];
@@ -670,11 +712,11 @@ void func_801076B0_mgmode(void) {
     void *data;
 
     func_8002367C_main(D_8011A808_mgmode,
-                       ((HmfMotionNode *)func_8001D33C_main(D_8011B8A8_mgmode[6], D_8011A46C_mgmode))->unk58);
+                       ((HmfMotionNode *)func_8001D33C_main(D_8011B8A8_mgmode[6], "moniter_R"))->unk58);
     func_8002367C_main(D_8011A848_mgmode,
-                       ((HmfMotionNode *)func_8001D33C_main(D_8011B8A8_mgmode[3], D_8011A404_mgmode))->unk58);
+                       ((HmfMotionNode *)func_8001D33C_main(D_8011B8A8_mgmode[3], "door_b"))->unk58);
     func_8002367C_main(D_8011A888_mgmode,
-                       ((HmfMotionNode *)func_8001D33C_main(D_8011B8A8_mgmode[3], D_8011A40C_mgmode))->unk58);
+                       ((HmfMotionNode *)func_8001D33C_main(D_8011B8A8_mgmode[3], "door_g"))->unk58);
     model = D_8011B8A8_mgmode[2];
     func_8001C2FC_main(model, 0x20000, 0x20000);
     Hu3DModelRemakeStatic(model);
@@ -785,7 +827,7 @@ void func_80107D0C_mgmode(s32 dataNum, s16 x, s16 y) {
             case 5:
             case 6:
             case 7:
-                sprintf((char *)buf, D_8011A430_mgmode, (s16)(rec / 3600));
+                sprintf((char *)buf, "%d", (s16)(rec / 3600));
                 HuWinInsertMesSet(wins[i], (u32)buf, 0);
                 rec %= 3600;
                 sprintf((char *)buf2, "%2d", (s16)(rec / 60));
@@ -811,7 +853,7 @@ void func_80107D0C_mgmode(s32 dataNum, s16 x, s16 y) {
                 break;
             case 3:
             case 9:
-                sprintf((char *)buf, D_8011A430_mgmode, (s16)(rec / 1800));
+                sprintf((char *)buf, "%d", (s16)(rec / 1800));
                 HuWinInsertMesSet(wins[i], (u32)buf, 0);
                 rec %= 1800;
                 sprintf((char *)buf2, "%2d", (s16)(rec / 30));
@@ -882,7 +924,7 @@ void func_80108824_mgmode(s32 arg0) {
     if (total < 0) {
         total = 0;
     }
-    sprintf(D_8011A708_mgmode, D_8011A430_mgmode, total);
+    sprintf(D_8011A708_mgmode, "%d", total);
     HuWinInsertMesSet(D_8011B6A0_mgmode, (u32)D_8011A708_mgmode, 0);
     if (arg0 == 0) {
         HuWinMesSet(D_8011B6A0_mgmode, 0x570B, -1, -1);
@@ -920,7 +962,7 @@ void func_80108824_mgmode(s32 arg0) {
         func_80108DDC_mgmode(0);
     } else if (choice == 1) {
         func_801182B4_mgmode(0);
-        node = func_8001D33C_main(D_8011B8B4_mgmode, D_8011A46C_mgmode);
+        node = func_8001D33C_main(D_8011B8B4_mgmode, "moniter_R");
         HuAudFXPlay(0x245);
         for (i = 0; i < 11; i++) {
             HuPrcVSleep();
@@ -961,7 +1003,7 @@ void func_80108CF4_mgmode(s16 arg0) {
     if (D_8011B928_mgmode[D_801191E4_mgmode[arg0]] == D_8011B940_mgmode[D_801191E4_mgmode[arg0]]) {
         mesOffset = 14;
     }
-    sprintf(D_8011A708_mgmode, D_8011A430_mgmode, D_8011B928_mgmode[D_801191E4_mgmode[arg0]]);
+    sprintf(D_8011A708_mgmode, "%d", D_8011B928_mgmode[D_801191E4_mgmode[arg0]]);
     HuWinInsertMesSet(D_8011B6A0_mgmode, (u32)D_8011A708_mgmode, 0);
     HuWinMesSet(D_8011B6A0_mgmode, D_80119190_mgmode[mesOffset + arg0], -1, -1);
 }

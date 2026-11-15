@@ -10,9 +10,6 @@ extern u8 *D_8011B610_mgmode[3];
 extern s16 D_8011B61C_mgmode;
 extern s16 D_8011B61E_mgmode;
 extern u8 D_800D2008_main;
-extern MgmodeEsprite *D_801194C0_mgmode;
-extern s16 D_801194C4_mgmode;
-extern MgmodeEsprite *D_801195D0_mgmode;
 extern MgmodeEspriteDef D_8011A270_mgmode[];
 extern MgmodeEspriteDef D_8011A2C4_mgmode[];
 extern s16 D_8011B8A8_mgmode[];
@@ -30,11 +27,7 @@ extern s16 D_8011B788_mgmode;
 extern s16 D_8011B78C_mgmode;
 extern s16 D_8011B78E_mgmode;
 extern s16 D_8011B624_mgmode;
-extern s32 D_801194C8_mgmode;
 extern s16 D_800D0418_main[8];
-extern s16 D_801195BC_mgmode[];
-extern u8 D_801195C4_mgmode[4];
-extern u8 D_801195C8_mgmode[8];
 extern s16 D_800D1F2C_main;
 extern s16 D_800CE29C_main;
 extern u8 D_80118EB1_mgmode;
@@ -42,10 +35,8 @@ extern s16 D_80118EB4_mgmode;
 extern s16 D_8011B950_mgmode;
 extern s16 D_8011B79A_mgmode;
 extern s16 D_8011B800_mgmode;
-extern s32 D_801194CC_mgmode;
 extern s16 D_8011B95A_mgmode;
 extern CamData *D_8011B954_mgmode;
-extern CamData D_801194D0_mgmode[];
 extern f32 D_8011B888_mgmode;
 extern s16 D_8011B622_mgmode;
 extern s16 D_8011B620_mgmode;
@@ -53,7 +44,6 @@ extern MgmodeModelEntry D_80119FA0_mgmode[];
 extern HuMtx4F D_8011B4D0_mgmode;
 extern s16 D_8011B884_mgmode;
 extern u8 D_8011B958_mgmode;
-extern MgmodeSpaceCoord D_801195B0_mgmode[];
 extern s16 D_8011B78A_mgmode;
 
 void func_80115BB8_mgmode(s16 value);
@@ -109,6 +99,33 @@ void func_8011829C_mgmode(s16 arg0);
 void func_801182A8_mgmode(s16 arg0);
 void func_80112CF4_mgmode(void);
 s32 func_801136EC_mgmode(void);
+
+MgmodeEsprite *D_801194C0_mgmode = (MgmodeEsprite *)-1;
+s16 D_801194C4_mgmode = -1;
+s32 D_801194C8_mgmode = 0;
+s32 D_801194CC_mgmode = 0;
+CamData D_801194D0_mgmode[7] = {
+    { { 0.0f, 0.0f, 0.0f }, { 0.0f, 87.0f, -395.0f }, 1490.0f, 40.0f },
+    { { 0.0f, 0.0f, 0.0f }, { 0.0f, 87.0f, -395.0f }, 960.0f, 40.0f },
+    { { 10.0f, 88.0f, 0.0f }, { -395.6f, 126.8f, 0.9f }, 440.0f, 40.0f },
+    { { 6.0f, 180.0f, 0.0f }, { 1.6f, 98.0f, 717.7f }, 360.0f, 40.0f },
+    { { 0.0f, 184.0f, 0.0f }, { 11.7f, 90.9f, 978.7f }, 120.0f, 40.0f },
+    { { 8.0f, 356.0f, 0.0f }, { 38.7f, 126.8f, -118.8f }, 610.0f, 40.0f },
+    { { 0.0f, 0.0f, 0.0f }, { -41.0f, 202.8f, -80.4f }, 320.0f, 40.0f }
+};
+MgmodeSpaceCoord D_801195B0_mgmode[3] = {
+    { 97, 142 }, { 160, 120 }, { -1, -1 }
+};
+s16 D_801195BC_mgmode[4] = {
+    0x42, 0x43, 0x44, 0x45
+};
+u8 D_801195C4_mgmode[4] = {
+    2, 1, 3, 2
+};
+u8 D_801195C8_mgmode[8] = {
+    2, 0, 3, 2, 3, 1, 2, 0
+};
+MgmodeEsprite *D_801195D0_mgmode = (MgmodeEsprite *)-1;
 
 void func_80112200_mgmode(void) {
     s16 size[2];

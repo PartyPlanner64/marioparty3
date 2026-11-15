@@ -1000,8 +1000,12 @@ segments:
     subsegments:
       - [0x165010, c]
       - [0x169540, c]
-      - [0x16F3D0, data, 165010] #8010FD60
-      - {0x16F670, type: bss, vram: 0x80110000, name: ovl_0C_bss}
+      - [0x16F3D0, .data, 165010] #8010FD60
+      - [0x16F400, .data, 169540] #8010FD90
+      - [0x16F530, .rodata, 165010] #8010FEC0
+      - [0x16F650, .rodata, 169540] #8010FFE0
+      - {0x16F670, type: .bss, vram: 0x80110000, name: 165010}
+      - {0x16F670, type: .bss, vram: 0x80110010, name: 169540}
 
   - type: code
     start: 0x16F670

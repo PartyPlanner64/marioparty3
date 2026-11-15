@@ -77,10 +77,6 @@ typedef struct BabyBowserBroadsideGame {
     /* 0x62 */ char unk_62[2];
 } BabyBowserBroadsideGame; // Size 0x64
 
-extern BabyBowserBroadsideTeam *D_80110000_baby_bowser_broadside;
-extern unk_80109EBC *D_80110004_baby_bowser_broadside;
-extern BabyBowserBroadsideGame *D_80110008_baby_bowser_broadside;
-
 extern u8 D_800CB8B1_main[];
 
 typedef struct BabyBowserBroadsidePositions {
@@ -91,9 +87,35 @@ typedef struct BabyBowserBroadsidePortraits {
     s32 files[8];
 } BabyBowserBroadsidePortraits;
 
-extern Vec D_8010FEE8_baby_bowser_broadside;
-extern BabyBowserBroadsidePositions D_8010FEF4_baby_bowser_broadside;
-extern BabyBowserBroadsidePortraits D_8010FFB4_baby_bowser_broadside;
+s16 D_8010FD60_baby_bowser_broadside = 0;
+f32 D_8010FD64_baby_bowser_broadside = 0.0f;
+f32 D_8010FD68_baby_bowser_broadside = 0.0f;
+f32 D_8010FD6C_baby_bowser_broadside = 180.0f;
+s16 D_8010FD70_baby_bowser_broadside = 0;
+s16 D_8010FD72_baby_bowser_broadside = 0;
+s16 D_8010FD74_baby_bowser_broadside = 0;
+s16 D_8010FD76_baby_bowser_broadside = 0;
+s16 D_8010FD78_baby_bowser_broadside[6] = { 0, 0, 60, 0, -60, 0 };
+s16 D_8010FD84_baby_bowser_broadside[6] = { 0, 60, 0, -60, 0, 0 };
+
+const s16 D_8010FEC0_baby_bowser_broadside[] = { 0x8272, 0x8273, 0x8260, 0x8271, 0x8273, 0x0000 };
+const s16 D_8010FECC_baby_bowser_broadside[] = { 0x8265, 0x8268, 0x826D, 0x8268, 0x8272, 0x8267, 0x0000, 0x0000 };
+const s16 D_8010FEDC_baby_bowser_broadside[] = { 0x8263, 0x8271, 0x8260, 0x8276, 0x0000, 0x0000 };
+const Vec D_8010FEE8_baby_bowser_broadside = { 0.0f, 0.0f, 0.0f };
+const BabyBowserBroadsidePositions D_8010FEF4_baby_bowser_broadside = { {
+    { { -50.0f, 100.0f, 170.0f }, { 50.0f, 100.0f, 170.0f }, { 50.0f, 200.0f, 170.0f }, { -50.0f, 200.0f, 170.0f } },
+    { { 170.0f, 100.0f, 50.0f }, { 170.0f, 100.0f, -50.0f }, { 170.0f, 200.0f, -50.0f }, { 170.0f, 200.0f, 50.0f } },
+    { { 50.0f, 100.0f, -170.0f }, { -50.0f, 100.0f, -170.0f }, { -50.0f, 200.0f, -170.0f }, { 50.0f, 200.0f, -170.0f } },
+    { { -170.0f, 100.0f, -50.0f }, { -170.0f, 100.0f, 50.0f }, { -170.0f, 200.0f, 50.0f }, { -170.0f, 200.0f, -50.0f } },
+} };
+const BabyBowserBroadsidePortraits D_8010FFB4_baby_bowser_broadside = { { 8, 9, 10, 11, 12, 13, 14, 15 } };
+const s32 D_8010FFD4_baby_bowser_broadside[3] = { 0 }; /* Unreferenced. */
+
+BabyBowserBroadsideTeam *D_80110000_baby_bowser_broadside BSS;
+unk_80109EBC *D_80110004_baby_bowser_broadside BSS;
+BabyBowserBroadsideGame *D_80110008_baby_bowser_broadside BSS;
+s16 D_8011000C_baby_bowser_broadside BSS;
+
 
 void func_80106E40_baby_bowser_broadside(omObjData *object);
 void func_80106EC4_baby_bowser_broadside(omObjData *object);
@@ -111,15 +133,6 @@ void func_8010F250_baby_bowser_broadside(omObjData *object);
 void func_8010F6F8_baby_bowser_broadside(f32 *start, f32 *end);
 
 extern u8 D_800D6A90_main;
-extern s16 D_8010FD60_baby_bowser_broadside;
-extern s16 D_8010FD76_baby_bowser_broadside;
-extern s16 D_8010FD74_baby_bowser_broadside;
-extern s16 D_8010FD70_baby_bowser_broadside;
-extern s16 D_8010FD72_baby_bowser_broadside;
-extern s16 D_8011000C_baby_bowser_broadside;
-extern f32 D_8010FD64_baby_bowser_broadside;
-extern f32 D_8010FD68_baby_bowser_broadside;
-extern f32 D_8010FD6C_baby_bowser_broadside;
 
 extern s32 D_800A178C_main[][6];
 extern s32 D_800A1790_main[][6];
@@ -149,13 +162,6 @@ s32 func_80109058_baby_bowser_broadside(omObjData *object, unk_80109EBC *player)
 void func_80108860_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBowserBroadsideHandler *handler);
 BabyBowserBroadsideGroup *func_80109F64_baby_bowser_broadside(omObjData *object, s8 group, s16 count, s16 handlers);
 s16 func_8010A0B4_baby_bowser_broadside(s8 index, s32 flags, s32 arg2, void (*callback)(), s32 arg4); // Declared with s32 arg4: this caller does not narrow to u8.
-
-extern s16 D_8010FD78_baby_bowser_broadside[];
-extern s16 D_8010FD84_baby_bowser_broadside[];
-
-extern const s16 D_8010FEC0_baby_bowser_broadside[];
-extern const s16 D_8010FECC_baby_bowser_broadside[];
-extern const s16 D_8010FEDC_baby_bowser_broadside[];
 
 void func_801059BC_baby_bowser_broadside(void);
 void func_80105B94_baby_bowser_broadside(void);

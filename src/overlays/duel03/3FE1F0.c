@@ -5137,17 +5137,15 @@ s32 func_801152E0_duel03(void) {
 }
 
 #ifdef NON_MATCHING
-// Only remaining diff is a delay slot in the walkNum == 5 block. The registers
-// and the hoisted v0 = 1 match, but reorg fills the backPower beqz delay slot
-// with `li v1, 4` (target: `li v0, 1`, then a nop after the frontID bne), so
-// this is one instruction short. The matched sibling func_80115B18_duel03 has
-// the same body and the same `li v1, 4` fill, so the difference comes from the
-// surrounding layout: the target's reorg treats v1 as live at the final
-// return-1 block, which happens when mark_target_live_regs can't find that
-// label as a flow basic-block head (e.g. a label made by cross-jumping).
-// Tried: nested/else-if/ternary/do-while/while forms of the walkNum block
-// (nested forms fix the delay slot but CSE the backPower reload), early
-// return for the cidx range check, else-if chain, other tail forms.
+// The walkNum == 5 block is the only mismatch. This nested form, with a
+// do-while(0) CSE boundary so backPower is reloaded, gets every instruction
+// right, but jump.c hoists the return-1 `v0 = 1` above the first beqz, so the
+// first slt/backPower land in v1 instead of v0 (score 40). The early-return
+// form (as in the matched sibling func_80115B18_duel03) gets the registers
+// right, but reorg fills the first beqz delay slot with the fallthrough
+// `li v1, 4` (score 515); the target's reorg treats v1 as live at the shared
+// return-1 block and steals the hoisted `li v0, 1` instead. See
+// func_8011454C_duel03 for the same issue.
 // The frame is 0x28 bytes bigger than in the sibling callbacks; the 40-byte
 // local that causes this is never referenced.
 s32 func_8011580C_duel03(void) {
@@ -5197,12 +5195,14 @@ s32 func_8011580C_duel03(void) {
             }
         }
         if (walkNum == 5) {
-            if (!(player->stats.partners.backPower < other->stats.partners.frontHp + other->star)) {
-                return 1;
-            }
-            if (other->stats.partners.frontID == PARTNER_BOO &&
-                !(player->stats.partners.backPower < stars + player->stats.partners.backHp)) {
-                return 0;
+            if (player->stats.partners.backPower < other->stats.partners.frontHp + other->star) {
+                if (other->stats.partners.frontID == PARTNER_BOO) {
+                    do {
+                    } while (0); // CSE boundary: reload backPower.
+                    if (!(player->stats.partners.backPower < stars + player->stats.partners.backHp)) {
+                        return 0;
+                    }
+                }
             }
             return 1;
         }

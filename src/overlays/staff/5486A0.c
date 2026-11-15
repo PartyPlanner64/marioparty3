@@ -31,8 +31,363 @@ typedef struct StaffCreditSlot { // sizeof 0x20
     /* 0x1E */ s16 type;
 } StaffCreditSlot;
 
-extern s32 D_80110B80_staff[];
-extern StaffCreditEntry *D_80110F04_staff[];
+s32 D_80110B80_staff[1] = { 0x160042 };
+StaffCreditEntry D_80110B84_staff[] = {
+    { 4, 0, 0x6400 },
+    { 1, 0, 0x4B00 },
+    { -1, 0, 0 },
+};
+StaffCreditEntry D_80110B90_staff[] = {
+    { 4, 0, 0x6401 },
+    { 1, 0, 0x4B01 },
+    { -1, 0, 0 },
+};
+StaffCreditEntry D_80110B9C_staff[] = {
+    { 4, 0, 0x6402 },
+    { 1, 0, 0x4B02 },
+    { -1, 0, 0 },
+};
+StaffCreditEntry D_80110BA8_staff[] = {
+    { 4, 0, 0x6403 },
+    { 3, 0, 0x6425 },
+    { 1, 0, 0x4B02 },
+    { 3, 0, 0x6426 },
+    { 1, 0, 0x4B03 },
+    { 1, 15, 0x4B04 },
+    { 1, 0, 0x4B05 },
+    { 1, 15, 0x4B06 },
+    { 1, 0, 0x4B07 },
+    { 1, 0, 0x4B08 },
+    { 3, 0, 0x6427 },
+    { 1, 0, 0x4B01 },
+    { -1, 0, 0 },
+};
+StaffCreditEntry D_80110BDC_staff[] = {
+    { 4, 0, 0x6404 },
+    { 1, 0, 0x4B09 },
+    { 1, 0, 0x4B0A },
+    { -1, 0, 0 },
+};
+StaffCreditEntry D_80110BEC_staff[] = {
+    { 4, 0, 0x6405 },
+    { 1, 0, 0x4B0B },
+    { -1, 0, 0 },
+};
+StaffCreditEntry D_80110BF8_staff[] = {
+    { 4, 0, 0x6406 },
+    { 3, 0, 0x6425 },
+    { 1, 0, 0x4B0C },
+    { 3, 0, 0x6426 },
+    { 1, 0, 0x4B0D },
+    { 3, 0, 0x6427 },
+    { 1, 0, 0x4B0E },
+    { -1, 0, 0 },
+};
+StaffCreditEntry D_80110C18_staff[] = {
+    { 4, 0, 0x6407 },
+    { 3, 0, 0x6425 },
+    { 1, 0, 0x4B0F },
+    { 3, 0, 0x6426 },
+    { 1, 0, 0x4B10 },
+    { 1, 0, 0x4B11 },
+    { 1, 0, 0x4B12 },
+    { 1, 0, 0x4B13 },
+    { 1, 15, 0x4B14 },
+    { 1, 0, 0x4B15 },
+    { 1, 0, 0x4B16 },
+    { 1, 0, 0x4B17 },
+    { 1, 0, 0x4B18 },
+    { 1, 15, 0x4B19 },
+    { 1, 0, 0x4B1A },
+    { 1, 0, 0x4B1B },
+    { 1, 0, 0x4B1C },
+    { 3, 0, 0x6427 },
+    { 1, 0, 0x4B1D },
+    { 1, 0, 0x4B1E },
+    { -1, 0, 0 },
+};
+StaffCreditEntry D_80110C6C_staff[] = {
+    { 4, 0, 0x6408 },
+    { 1, 0, 0x4B1F },
+    { -1, 0, 0 },
+};
+StaffCreditEntry D_80110C78_staff[] = {
+    { 4, 0, 0x6409 },
+    { 1, 0, 0x4B20 },
+    { -1, 0, 0 },
+};
+StaffCreditEntry D_80110C84_staff[] = {
+    { 4, 0, 0x640A },
+    { 3, 0, 0x6425 },
+    { 1, 0, 0x4B21 },
+    { 3, 0, 0x6426 },
+    { 1, 0, 0x4B22 },
+    { 3, 0, 0x6427 },
+    { 1, 0, 0x4B23 },
+    { -1, 0, 0 },
+};
+StaffCreditEntry D_80110CA4_staff[] = {
+    { 4, 0, 0x640B },
+    { 3, 0, 0x6425 },
+    { 1, 0, 0x4B24 },
+    { 3, 0, 0x6426 },
+    { 1, 0, 0x4B25 },
+    { 3, 0, 0x6427 },
+    { 1, 0, 0x4B26 },
+    { 1, 0, 0x4B27 },
+    { -1, 0, 0 },
+};
+StaffCreditEntry D_80110CC8_staff[] = {
+    { 4, 0, 0x640C },
+    { 1, 0, 0x4B28 },
+    { -1, 0, 0 },
+};
+StaffCreditEntry D_80110CD4_staff[] = {
+    { 4, 0, 0x640D },
+    { 3, 0, 0x6428 },
+    { 1, 0, 0x4B29 },
+    { 3, 0, 0x6425 },
+    { 1, 0, 0x4B2A },
+    { 3, 0, 0x6426 },
+    { 1, 0, 0x4B2B },
+    { 3, 0, 0x6427 },
+    { 1, 0, 0x4B2C },
+    { -1, 0, 0 },
+};
+StaffCreditEntry D_80110CFC_staff[] = {
+    { 4, 0, 0x640E },
+    { 3, 0, 0x6428 },
+    { 1, 0, 0x4B2D },
+    { 1, 0, 0x4B2E },
+    { 3, 0, 0x6425 },
+    { 1, 0, 0x4B2F },
+    { 3, 0, 0x6426 },
+    { 1, 0, 0x4B30 },
+    { 1, 0, 0x4B31 },
+    { 1, 15, 0x4B32 },
+    { 1, 0, 0x4B33 },
+    { 1, 0, 0x4B34 },
+    { 1, 0, 0x4B35 },
+    { 1, 0, 0x4B36 },
+    { 1, 15, 0x4B37 },
+    { 1, 0, 0x4B38 },
+    { 1, 0, 0x4B39 },
+    { 1, 0, 0x4B3A },
+    { 3, 0, 0x6427 },
+    { 1, 0, 0x4B3B },
+    { 1, 0, 0x4B3C },
+    { -1, 0, 0 },
+};
+StaffCreditEntry D_80110D54_staff[] = {
+    { 4, 0, 0x640F },
+    { 1, 0, 0x4B3D },
+    { 1, 0, 0x4B3E },
+    { 1, 0, 0x4B3F },
+    { 1, 0, 0x4B40 },
+    { -1, 0, 0 },
+};
+StaffCreditEntry D_80110D6C_staff[] = {
+    { 4, 0, 0x6410 },
+    { 1, 0, 0x4B41 },
+    { 1, 0, 0x4B42 },
+    { -1, 0, 0 },
+};
+StaffCreditEntry D_80110D7C_staff[] = {
+    { 4, 0, 0x6411 },
+    { 1, 0, 0x4B43 },
+    { -1, 0, 0 },
+};
+StaffCreditEntry D_80110D88_staff[] = {
+    { 4, 0, 0x6412 },
+    { 1, 0, 0x4B44 },
+    { -1, 0, 0 },
+};
+StaffCreditEntry D_80110D94_staff[] = {
+    { 4, 0, 0x6413 },
+    { 1, 0, 0x4B45 },
+    { -1, 0, 0 },
+};
+StaffCreditEntry D_80110DA0_staff[] = {
+    { 4, 0, 0x6414 },
+    { 1, 0, 0x4B46 },
+    { 1, 0, 0x4B4A },
+    { -1, 0, 0 },
+};
+StaffCreditEntry D_80110DB0_staff[] = {
+    { 4, 0, 0x6415 },
+    { 1, 0, 0x4B47 },
+    { -1, 0, 0 },
+};
+StaffCreditEntry D_80110DBC_staff[] = {
+    { 4, 0, 0x6416 },
+    { 1, 0, 0x4B48 },
+    { 1, 0, 0x4B4B },
+    { -1, 0, 0 },
+};
+StaffCreditEntry D_80110DCC_staff[] = {
+    { 4, 0, 0x6417 },
+    { 1, 0, 0x4B49 },
+    { -1, 0, 0 },
+};
+StaffCreditEntry D_80110DD8_staff[] = {
+    { 4, 0, 0x6418 },
+    { 1, 0, 0x4B4C },
+    { -1, 0, 0 },
+};
+StaffCreditEntry D_80110DE4_staff[] = {
+    { 4, 0, 0x6419 },
+    { 1, 22, 0x4B4D },
+    { 2, 15, 0x0 },
+    { 1, 0, 0x4B4E },
+    { 1, 0, 0x4B4F },
+    { -1, 0, 0 },
+};
+StaffCreditEntry D_80110DFC_staff[] = {
+    { 4, 0, 0x641A },
+    { 1, 0, 0x4B50 },
+    { 1, 0, 0x4B51 },
+    { -1, 0, 0 },
+};
+StaffCreditEntry D_80110E0C_staff[] = {
+    { 4, 0, 0x641B },
+    { 1, 0, 0x4B52 },
+    { -1, 0, 0 },
+};
+StaffCreditEntry D_80110E18_staff[] = {
+    { 4, 0, 0x641C },
+    { 1, 0, 0x4B53 },
+    { -1, 0, 0 },
+};
+StaffCreditEntry D_80110E24_staff[] = {
+    { 4, 0, 0x641D },
+    { 1, 0, 0x4B54 },
+    { -1, 0, 0 },
+};
+StaffCreditEntry D_80110E30_staff[] = {
+    { 4, 0, 0x641E },
+    { 3, 0, 0x642B },
+    { 1, 0, 0x4B6C },
+    { 1, 0, 0x4B6D },
+    { 3, 0, 0x642C },
+    { 1, 0, 0x4B6E },
+    { 1, 0, 0x4B6F },
+    { 3, 0, 0x642D },
+    { 1, 0, 0x4B70 },
+    { 1, 0, 0x4B71 },
+    { 3, 0, 0x642E },
+    { 1, 0, 0x4B72 },
+    { 1, 0, 0x4B73 },
+    { 1, 0, 0x4B74 },
+    { -1, 0, 0 },
+};
+StaffCreditEntry D_80110E6C_staff[] = {
+    { 4, 0, 0x641F },
+    { 1, 0, 0x4B56 },
+    { 1, 0, 0x4B57 },
+    { 1, 15, 0x4B58 },
+    { 1, 15, 0x4B59 },
+    { 1, 15, 0x4B5A },
+    { 1, 0, 0x4B6A },
+    { 1, 15, 0x4B6B },
+    { 1, 0, 0x4B5B },
+    { 1, 15, 0x4B5C },
+    { 1, 15, 0x4B5D },
+    { 1, 15, 0x4B5E },
+    { 1, 15, 0x4B75 },
+    { 1, 0, 0x4B76 },
+    { 1, 15, 0x4B5F },
+    { 1, 15, 0x4B60 },
+    { 1, 0, 0x4B61 },
+    { -1, 0, 0 },
+};
+StaffCreditEntry D_80110EB4_staff[] = {
+    { 4, 0, 0x6420 },
+    { 1, 0, 0x4B62 },
+    { 1, 0, 0x4B0A },
+    { -1, 0, 0 },
+};
+StaffCreditEntry D_80110EC4_staff[] = {
+    { 4, 0, 0x6421 },
+    { 1, 0, 0x4B63 },
+    { 1, 0, 0x4B64 },
+    { -1, 0, 0 },
+};
+StaffCreditEntry D_80110ED4_staff[] = {
+    { 4, 0, 0x6422 },
+    { 1, 0, 0x4B41 },
+    { 1, 0, 0x4B65 },
+    { -1, 0, 0 },
+};
+StaffCreditEntry D_80110EE4_staff[] = {
+    { 4, 0, 0x6423 },
+    { 1, 0, 0x4B66 },
+    { 1, 0, 0x4B67 },
+    { -1, 0, 0 },
+};
+StaffCreditEntry D_80110EF4_staff[] = {
+    { 4, 0, 0x6424 },
+    { 1, 0, 0x4B68 },
+    { 1, 30, 0x4B69 },
+    { -1, 0, 0 },
+};
+StaffCreditEntry *D_80110F04_staff[] = {
+    D_80110B84_staff,
+    D_80110B90_staff,
+    D_80110B9C_staff,
+    D_80110BA8_staff,
+    D_80110BDC_staff,
+    D_80110BEC_staff,
+    D_80110BF8_staff,
+    D_80110C18_staff,
+    D_80110C6C_staff,
+    D_80110C78_staff,
+    D_80110C84_staff,
+    D_80110CA4_staff,
+    D_80110CC8_staff,
+    D_80110CD4_staff,
+    D_80110CFC_staff,
+    D_80110D54_staff,
+    D_80110D6C_staff,
+    D_80110D7C_staff,
+    D_80110D88_staff,
+    D_80110D94_staff,
+    D_80110DA0_staff,
+    D_80110DB0_staff,
+    D_80110DBC_staff,
+    D_80110DCC_staff,
+    D_80110DD8_staff,
+    D_80110DE4_staff,
+    D_80110DFC_staff,
+    D_80110E0C_staff,
+    D_80110E18_staff,
+    D_80110E24_staff,
+    D_80110E30_staff,
+    D_80110E6C_staff,
+    D_80110EB4_staff,
+    D_80110EC4_staff,
+    D_80110ED4_staff,
+    D_80110EE4_staff,
+    D_80110EF4_staff,
+    NULL,
+    NULL,
+};
+Vec D_80110FA0_staff[5] = {
+    { -77.0f, 202.0f, 1762.0f },
+    { -135.0f, 170.0f, 2500.0f },
+    { -135.0f, 140.0f, 2500.0f },
+    { 115.0f, 400.0f, -115.0f },
+    { 52.0f, 0.0f, 135.0f },
+};
+Vec D_80110FDC_staff = { 52.0f, 340.0f, 400.0f };
+s32 D_80110FE8_staff[3] = { 0x160004, 0x16000D, 0x160003 };
+MsetupModelEntry D_80110FF4_staff[4] = {
+    { 0xF0004, 0x2B9, 0, 0, 1, { -41.0f, 0.0f, 2893.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0xF0003, 0x2B9, 0, 0, 1, { 96.0f, 0.0f, 3072.0f }, { 0.0f, -30.0f, 0.0f } },
+    { 0xF0005, 0x2B9, 0, 0, 1, { -59.0f, 45.0f, 2907.0f }, { 0.0f, 0.0f, 0.0f } },
+    { 0xA015E, 0x2B9, 0, 2, 1, { -77.0f, 202.0f, 1216.0f }, { 0.0f, 0.0f, 0.0f } },
+};
+
+extern StaffDecoEntry D_80111094_staff[8];
 extern u8 D_801111E0_staff[4][4];
 
 void func_8010BE20_staff(s16 *windows, s16 count) {
@@ -1333,18 +1688,15 @@ void func_8010FB88_staff(void) {
     }
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/staff/5486A0", D_80111430_staff);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/staff/5486A0", D_8011143C_staff);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/staff/5486A0", D_80111448_staff);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/staff/5486A0", D_80111454_staff);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/staff/5486A0", D_80111460_staff);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/staff/5486A0", D_8011146C_staff);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/staff/5486A0", D_80111478_staff);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/staff/5486A0", D_80111484_staff);
+StaffDecoEntry D_80111094_staff[8] = {
+    { 0x200A1, 0xF000B, 0x200A4, "c000l_0_DEF", { 100.0f, -14.0f, 3072.0f }, { 0.0f, -30.0f, 0.0f } },
+    { 0x300A1, 0x160043, 0x300AB, "c001l_0_DEF", { 205.0f, 0.0f, 2869.0f }, { 0.0f, 46.0f, 0.0f } },
+    { 0x700A1, 0x160044, 0x700AB, "c002l_0_DEF", { 299.0f, 0.0f, 2950.0f }, { 0.0f, -122.0f, 0.0f } },
+    { 0x400A1, 0x160045, 0x400A3, "c003l_0_DEF", { -150.0f, 0.0f, 1762.0f }, { 0.0f, 83.0f, 0.0f } },
+    { 0x500A1, 0x160046, 0x500AA, "c004l_0_DEF", { -626.0f, 0.0f, 2245.0f }, { 0.0f, 79.0f, 0.0f } },
+    { 0x600A1, 0x160047, 0x600A4, "c005l_0_DEF", { -203.0f, 0.0f, 3066.0f }, { 0.0f, 39.0f, 0.0f } },
+    { 0x800A1, 0x160048, 0x800AA, "c300l_0_DEF", { -346.0f, 0.0f, 2356.0f }, { 0.0f, -103.0f, -8.0f } },
+    { 0x90001, 0x160049, 0x9001A, "c301l_0_DEF", { -133.0f, 0.0f, 2460.0f }, { 0.0f, 0.0f, 0.0f } },
+};
+s32 D_801111D4_staff[3] = { 0 }; /* Unreferenced. */
+u8 D_801111E0_staff[4][4] = { { 0, 255, 255, 0 }, { 255, 160, 40, 0 }, { 255, 255, 0, 0 }, { 0, 255, 0, 0 } };

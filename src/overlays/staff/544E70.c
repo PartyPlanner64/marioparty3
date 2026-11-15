@@ -1,5 +1,26 @@
 #include "staff.h"
 
+s32 D_801105F0_staff[2] = { 0xA0075, 0xA0122 };
+Vec D_801105F8_staff[2] = {
+    { -755.0f, 580.0f, 0.0f },
+    { 755.0f, 580.0f, 0.0f },
+};
+f32 D_80110610_staff[2] = { 360.0f, 180.0f };
+Vec D_80110618_staff[4] = {
+    { 0.0f, 70.0f, 546.0f },
+    { 0.0f, 200.0f, 315.0f },
+    { -402.0f, 296.0f, -37.0f },
+    { 9999.0f, 9999.0f, 9999.0f },
+};
+Vec D_80110648_staff[3] = {
+    { -402.0f, 296.0f, -37.0f },
+    { 48.0f, 4.0f, 1298.0f },
+    { 9999.0f, 9999.0f, 9999.0f },
+};
+s16 D_8011066C_staff[4] = { -160, -80, 80, 160 };
+
+extern StaffAnimEntry D_80110674_staff[18];
+extern StaffModelEntry D_80110704_staff[38];
 extern s32 D_80110AA0_staff[27];
 extern s32 D_80110B0C_staff[28];
 
@@ -1377,34 +1398,123 @@ void func_8010BA30_staff(s16 arg0, s16 arg1, u32 arg2, s16 arg3, s16 arg4) {
     (void)allocated; // Unused, but its store keeps the call result in v0.
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/staff/544E70", D_8011133C_staff);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/staff/544E70", D_80111348_staff);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/staff/544E70", D_80111354_staff);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/staff/544E70", D_80111360_staff);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/staff/544E70", D_8011136C_staff);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/staff/544E70", D_80111378_staff);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/staff/544E70", D_80111384_staff);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/staff/544E70", D_80111390_staff);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/staff/544E70", D_8011139C_staff);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/staff/544E70", D_801113A8_staff);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/staff/544E70", D_801113B4_staff);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/staff/544E70", D_801113C0_staff);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/staff/544E70", D_801113CC_staff);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/staff/544E70", D_801113D8_staff);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/staff/544E70", D_801113E4_staff);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/staff/544E70", D_801113F0_staff);
+StaffAnimEntry D_80110674_staff[18] = {
+    { 0x200A4, "c000l_0_DEF" },
+    { 0x300A4, "c001l_0_DEF" },
+    { 0x700AB, "c002l_0_DEF" },
+    { 0x400A4, "c003l_0_DEF" },
+    { 0x500A9, "c004l_0_DEF" },
+    { 0x600A4, "c005l_0_DEF" },
+    { 0x90027, "c301l_0_DEF" },
+    { 0x800A4, "c300l_0_DEF" },
+    { 0xA0046, "c161n_0_DEF" },
+    { 0xA0100, "c162n_0_DEF" },
+    { 0xA00A3, "c103m_0_DEF" },
+    { 0xA00B7, "c164m_0_DEF" },
+    { 0xA002B, "c160n_0_DEF" },
+    { 0xA00E5, "c165n_4_DEF" },
+    { 0xA00A3, "c103m_0_DEF" },
+    { 0xA00B7, "c164m_0_DEF" },
+    { 0xA002B, "c180n_0_DEF" },
+    { 0xA007E, "c204n_0_DEF" },
+};
+StaffModelEntry D_80110704_staff[38] = {
+    { 0.8f, 0x200A0, 0x2009D, { 0, 0, 0 }, 0, 0, 1 },
+    { 0.8f, 0x300A0, 0x3009D, { 0, 0, 0 }, 0, 0, 2 },
+    { 0.8f, 0x700A0, 0x7009D, { 0, 0, 0 }, 0, 0, 3 },
+    { 0.8f, 0x400A0, 0x4009D, { 0, 0, 0 }, 0, 0, 4 },
+    { 0.8f, 0x500A0, 0x5009D, { -26, 2, 0 }, 0, 0, 5 },
+    { 0.8f, 0x600A0, 0x6009D, { 30, 0, 0 }, 0, 0, 6 },
+    { 0.8f, 0x90001, 0x90019, { 28, 0, 0 }, 0, 0, 7 },
+    { 0.8f, 0x16004B, 0x8009D, { 0, 0, 0 }, 0, 0, 8 },
+    { 0.6f, 0xA002E, 0xA0040, { 0, 30, 0 }, 0, 0, 9 },
+    { 0.8f, 0xA00EE, 0xA00F4, { 0, -2, 0 }, 0, 0, 10 },
+    { 0.8f, 0xA008E, 0xA00A1, { 0, 0, 0 }, 0, 0, 11 },
+    { 0.8f, 0xA00A5, 0, { 0, 32, 0 }, 1, 0, 12 },
+    { 0.8f, 0xA0000, 0xA000A, { 0, -45, -80 }, 0, 0, 13 },
+    { 0.55f, 0xA00C4, 0xA00CB, { 0, 100, 0 }, 3, 0, 0 },
+    { 0.9f, 0xA00BA, 0xA00C3, { 0, 30, 0 }, 4, 160, 0 },
+    { 0.8f, 0xA00CE, 0xA00D8, { 0, 0, 0 }, 0, 0, 0 },
+    { 0.8f, 0xA0136, 0xA0138, { 0, 30, 0 }, 1, 0, 0 },
+    { 0.5f, 0xA010D, 0xA0116, { 0, 30, 0 }, 0, -15, 0 },
+    { 0.5f, 0xA00D9, 0xA00DD, { 0, 30, 0 }, 1, 0, 0 },
+    { 0.8f, 0xA00E7, 0, { 0, 35, 0 }, 2, 140, 0 },
+    { 1.2f, 0xA013F, 0xA0141, { 0, 30, 0 }, 0, 0, 0 },
+    { 0.6f, 0xA011B, 0xA011D, { 0, 30, 0 }, 0, 0, 0 },
+    { 0.8f, 0xA0089, 0, { 0, 110, 0 }, 5, 0, 0 },
+    { 0.8f, 0xA00A2, 0xA0090, { 0, 30, 0 }, 1, 0, 15 },
+    { 0.8f, 0xA00B0, 0xA00B1, { 0, 30, 0 }, 0, 0, 16 },
+    { 0.8f, 0xA0028, 0xA0019, { 0, 30, 0 }, 0, 0, 17 },
+    { 0.8f, 0xA0063, 0xA006C, { 0, 30, 0 }, 0, 0, 0 },
+    { 0.6f, 0xA0086, 0xA0088, { 0, 10, -80 }, 1, 0, 0 },
+    { 0.4f, 0xA0154, 0, { 0, 30, -40 }, 8, 140, 0 },
+    { 0.8f, 0xA014D, 0xA0153, { 0, 0, 0 }, 0, 0, 0 },
+    { 0.8f, 0xA0156, 0, { 0, -25, -50 }, 6, 0, 0 },
+    { 0.8f, 0xA008B, 0, { 0, 30, 0 }, 7, 0, 0 },
+    { 0.75f, 0xA0117, 0, { 0, 30, -20 }, 10, 165, 0 },
+    { 0.38f, 0x1301F4, 0, { 0, 116, 0 }, 11, 0, 0 },
+    { 0.5f, 0x1301F5, 0, { 0, 45, 0 }, 0, 0, 0 },
+    { 0.95f, 0xA0122, 0xA0128, { 0, 138, 0 }, 12, 0, 0 },
+    { 0.8f, 0xA0075, 0x1D0084, { 0, 30, 0 }, 0, 0, 18 },
+    { 0.0f, 0, 0, { 0, 0, 0 }, -1, 0, 0 },
+};
+s32 D_80110A94_staff[3] = { 0 }; /* Unreferenced. */
+s32 D_80110AA0_staff[27] = {
+    0x160000,
+    0x160001,
+    0x160002,
+    0x160003,
+    0x160004,
+    0x160005,
+    0x160006,
+    0x160007,
+    0x160008,
+    0x160009,
+    0x16000A,
+    0x16000B,
+    0x16000C,
+    0x16000D,
+    0x16000E,
+    0x16000F,
+    0x160010,
+    0x160011,
+    0x160012,
+    0x160013,
+    0x160014,
+    0x160015,
+    0x160016,
+    0x160017,
+    0x160018,
+    0x160019,
+    0x16004A,
+};
+s32 D_80110B0C_staff[28] = {
+    0x160026,
+    0x160027,
+    0x160028,
+    0x160029,
+    0x16002A,
+    0x16002B,
+    0x16002C,
+    0x16002D,
+    0x16002E,
+    0x16002F,
+    0x160030,
+    0x160031,
+    0x160032,
+    0x160033,
+    0x160034,
+    0x160035,
+    0x160036,
+    0x160037,
+    0x160038,
+    0x160039,
+    0x16003A,
+    0x16003B,
+    0x16003C,
+    0x16003D,
+    0x16003E,
+    0x16003F,
+    0x160041,
+    0x160040,
+};

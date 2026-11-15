@@ -1,5 +1,10 @@
 #include "staff.h"
 
+u16 D_80110530_staff = 0;
+f32 D_80110534_staff = 58.0f;
+s8 D_80110538_staff = 0;
+u32 D_8011053C_staff = 0;
+
 void func_801059A0_staff(void) {
     Hu3DCamInit(1);
     func_8001FE20_main(1);

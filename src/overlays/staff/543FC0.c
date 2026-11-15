@@ -1,5 +1,16 @@
 #include "staff.h"
 
+u32 D_80110580_staff[3] = { 0xFFFFFFC8, 0xFFFFFFFF, 0xC8F07109 }; /* Unreferenced. */
+s32 D_8011058C_staff[4] = { 0x16001E, 0x16001F, 0x160020, 0x160021 };
+u8 D_8011059C_staff[4] = { 6, 8, 16, 32 };
+u16 D_801105A0_staff[4] = { 0xF000, 0xF001, 0xF002, 0xF003 };
+f32 D_801105A8_staff[4] = { 6.0f, 4.0f, 2.0f, 1.0f };
+s16 D_801105B8_staff[4] = { 2, 6, 6, 0 };
+u16 D_801105C0_staff[4] = { 402, 400, 400, 0 };
+StaffPos2s D_801105C8_staff[3] = { { 160, 175 }, { 38, 185 }, { 286, 194 } };
+s32 D_801105D4_staff[3] = { 0x16001B, 0x16001C, 0x16001D };
+s32 D_801105E0_staff[2] = { 0x160022, 0x160023 };
+
 UnkStaff_7 *func_80107740_staff(void) {
     UnkStaff_7 *work;
     UnkStaff_7 *ptr;

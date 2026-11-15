@@ -216,31 +216,8 @@ void func_8010FB88_staff(void);
 extern u16 D_80110530_staff;
 extern f32 D_80110534_staff;
 extern s8 D_80110538_staff;
-extern u32 D_8011053C_staff;
-extern s32 D_80110540_staff[6];
-extern MsetupCameraPreset D_80110560_staff;
-extern s32 D_8011058C_staff[4];
-extern s16 D_801105B8_staff[4];
-extern u16 D_801105C0_staff[4];
-extern StaffPos2s D_801105C8_staff[3];
-extern s32 D_801105D4_staff[3];
-extern s32 D_801105E0_staff[4];
-extern s32 D_801105F0_staff[2];
-extern Vec D_801105F8_staff[2];
-extern f32 D_80110610_staff[2];
-extern Vec D_80110618_staff[];
-extern Vec D_80110648_staff[];
-extern s16 D_8011066C_staff[4];
-extern StaffAnimEntry D_80110674_staff[];
-extern StaffModelEntry D_80110704_staff[];
-extern u8 D_8011059C_staff[4];
-extern u16 D_801105A0_staff[4];
-extern f32 D_801105A8_staff[4];
-extern MsetupModelEntry D_80110FF4_staff[];
-extern Vec D_80110FA0_staff[3];
-extern Vec D_80110FDC_staff;
-extern s32 D_80110FE8_staff[3];
-extern StaffDecoEntry D_80111094_staff[];
+
+#ifndef NO_EXTERN_VARIABLES
 extern s16 D_80111510_staff;
 extern s16 D_80111512_staff;
 extern s16 D_80111514_staff;
@@ -261,6 +238,8 @@ extern s16 D_801114D0_staff[28];
 extern UnkStaff_6 *D_80111508_staff;
 extern s16 D_8011150C_staff;
 extern s16 D_8011150E_staff;
+#endif
+
 extern f32 D_800D5210_main;
 extern f32 D_800CB890_main;
 

@@ -2712,13 +2712,17 @@ segments:
       - [0x543FC0, c]
       - [0x544E70, c]
       - [0x5486A0, c]
-      - [0x54CDB0, data, 542220] #80110530
+      - [0x54CDB0, .data, 542220] #80110530
+      - [0x54CDC0, .data, 5436A0] #80110540
+      - [0x54CE00, .data, 543FC0] #80110580
+      - [0x54CE70, .data, 544E70] #801105F0
+      - [0x54D400, .data, 5486A0] #80110B80
       - [0x54DA70, .rodata, 542220] #801111F0
       - [0x54DA88, .rodata, 5436A0] #80111208
       - [0x54DAA0, .rodata, 543FC0] #80111220
       - [0x54DAB0, .rodata, 544E70] #80111230
       - [0x54DC80, .rodata, 5486A0] #80111400
-      - {0x54DD10, type: bss, vram: 0x80111490, name: staff_bss}
+      - {0x54DD10, type: .bss, vram: 0x80111490, name: bss}
 
   - type: code
     start: 0x54DD10

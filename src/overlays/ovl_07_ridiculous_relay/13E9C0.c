@@ -947,14 +947,13 @@ f32 func_8010B474_ridiculous_relay(f32 x) {
     return out.x;
 }
 
-// Close to matching (same size and structure). Remaining differences:
-// - The original reuses the zero-tested value of several unsigned timers for the following decrement or mask
-//   (D_80110E38[j], D_80110E18 twice, D_80110E3C[0], D_80110E3C[1]); this code reloads them, adding about 10
-//   instructions. Tried --, -= 1, x = x - 1, ternaries, casts and MAX forms; only signed types or
-//   -fexpensive-optimizations reuse the value at -O1.
-// - Small register allocation differences in the obstacle spawn offset (D_80110E28) and the CPU obstacle
-//   look-ahead math.
 // `float best` and `int i` (instead of f32/s32) are deliberate: the typedef variants change fold/cross-jumping.
+// Matches fully if the two decrements guarded by an enclosing `!= 0` test (D_80110E38[j] and
+// D_80110E18) use the same saturating form as the unguarded timers and the thwomp_pull sibling:
+//     x -= (x != 0) ? 1 : 0;
+// Inside the guard that test is always true, so the plain `x--` is kept here (pending a decision on
+// whether the redundant form, likely a decrement-to-zero macro in the original, is acceptable).
+// With `x--` the zero-tested value is reloaded for the decrement instead of reused.
 #ifdef NON_MATCHING
 void func_8010B4A8_ridiculous_relay(omObjData *object) {
     f32 hurdleX[18] = { 0.0f, 32.0f, 64.0f, 96.0f, 128.0f, 128.0f, 160.0f, 192.0f, 224.0f,
@@ -1018,7 +1017,7 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
 
     for (j = 0; j < 2; j++) {
         if (D_80110E20_ridiculous_relay[j] <= -1000.0f && D_80110E38_ridiculous_relay[j] != 0 && D_801119D8_ridiculous_relay == 2 && D_80110DAC_ridiculous_relay[0] >= 50.0 && D_80110DAC_ridiculous_relay[0] < 1775.0) {
-            D_80110E38_ridiculous_relay[j] -= 1;
+            D_80110E38_ridiculous_relay[j]--;
         }
         if (D_80110E20_ridiculous_relay[j] <= -1000.0f && D_80110E38_ridiculous_relay[j] == 0 && D_801119D8_ridiculous_relay == 2 && D_80110DAC_ridiculous_relay[0] >= 50.0 && D_80110DAC_ridiculous_relay[0] < 1775.0) {
             D_80110E20_ridiculous_relay[j] = CenterM[0].x + 125.0;
@@ -1050,7 +1049,7 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
                     i = rand8() % 9;
                 }
             }
-            D_80110E28_ridiculous_relay[j] = (((i / 3 - 1) * 25 + (i % 3 - 1) * 5) * 8) * 0.125;
+            D_80110E28_ridiculous_relay[j] = ((i / 3 - 1) * 200 + (i % 3 - 1) * 40) * 0.125;
         }
         D_80110E20_ridiculous_relay[j] -= D_80110E30_ridiculous_relay[j] * SPEED_SCALE;
         if (D_80110E20_ridiculous_relay[j] <= CenterM[0].x - 137.5 && D_80110E20_ridiculous_relay[j] > -1000.0f) {
@@ -1148,7 +1147,8 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
                     lane = (D_80110E28_ridiculous_relay[j] < -12.5) ? 0 : (D_80110E28_ridiculous_relay[j] < 12.5) ? 1
                                                                                                                   : 2;
                     dx = D_80110E20_ridiculous_relay[j] - obj->trans.x;
-                    move = (f32)(dx / ((D_80110DCC_ridiculous_relay[0] + D_80110E30_ridiculous_relay[j]) * SPEED_SCALE)) * -D_80110E30_ridiculous_relay[j] * SPEED_SCALE;
+                    move = dx / ((D_80110DCC_ridiculous_relay[0] + D_80110E30_ridiculous_relay[j]) * SPEED_SCALE);
+                    move = move * -D_80110E30_ridiculous_relay[j] * SPEED_SCALE;
                     // No braces: keeps range[] alive in this scope, which the original stack layout needs.
                     // NOLINTBEGIN(readability-braces-around-statements)
                     if (move < 0.0f && obj->trans.x < move + D_80110E20_ridiculous_relay[j] + 12.5 && dx < range[player->cpuDifficulty])
@@ -1289,7 +1289,7 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
                 D_80110DAC_ridiculous_relay[0] -= (1.0f - sindf((60 - D_80110E18_ridiculous_relay) / 30.0 * 90.0)) / 2.0f * (D_80110E50_ridiculous_relay ? 4.0 : 2.5);
             }
             if (D_80110E18_ridiculous_relay < 31) {
-                func_8001C258_main(obj->model[0], 4, (D_80110E18_ridiculous_relay & 1) * 4);
+                func_8001C258_main(obj->model[0], 4, (D_80110E18_ridiculous_relay % 2) * 4);
             }
         } else {
             func_8001C258_main(obj->model[0], 4, 0);
@@ -1373,7 +1373,7 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
     if (D_80110E3C_ridiculous_relay[0] == 1) {
         func_8001C258_main(D_801119BC_ridiculous_relay->model[7], 4, 4);
     }
-    D_80110E3C_ridiculous_relay[0] = (D_80110E3C_ridiculous_relay[0] != 0) ? D_80110E3C_ridiculous_relay[0] - 1 : 0;
+    D_80110E3C_ridiculous_relay[0] -= (D_80110E3C_ridiculous_relay[0] != 0) ? 1 : 0;
     D_801119A8_ridiculous_relay[1] = (D_80110D78_ridiculous_relay != 0)        ? 1.0f
                                      : (D_80110DAC_ridiculous_relay[1] < 0.0f) ? 0.0f
                                                                                : D_80110DAC_ridiculous_relay[1] / 626.5625f;
@@ -1424,7 +1424,8 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
             Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[11]].motId, 0, 6, 0);
             omVibrate(D_80111970_ridiculous_relay[2]->playerNo, 10, 0, 10);
         }
-        step = D_80110DCC_ridiculous_relay[2] / 60.0 * (125.0 / 60.0);
+        // About 125 / 60, but the original constant is one ulp below the correctly rounded quotient.
+        step = D_80110DCC_ridiculous_relay[2] / 60.0 * 2.083333333333333;
         D_80110DAC_ridiculous_relay[2] += step;
         D_80110DCC_ridiculous_relay[2] = (D_80110DCC_ridiculous_relay[2] > 1.0f)    ? D_80110DCC_ridiculous_relay[2] - 1.0f
                                          : (D_80110DCC_ridiculous_relay[2] < -1.0f) ? D_80110DCC_ridiculous_relay[2] + 1.0f
@@ -1523,7 +1524,7 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
         func_8001C258_main(D_801119BC_ridiculous_relay->model[8], 4, 4);
         func_8001C258_main(D_801119BC_ridiculous_relay->model[9], 4, 4);
     }
-    D_80110E3C_ridiculous_relay[1] = (D_80110E3C_ridiculous_relay[1] != 0) ? D_80110E3C_ridiculous_relay[1] - 1 : 0;
+    D_80110E3C_ridiculous_relay[1] -= (D_80110E3C_ridiculous_relay[1] != 0) ? 1 : 0;
     D_801119A8_ridiculous_relay[2] = (D_80110D78_ridiculous_relay >= 2)        ? 1.0f
                                      : (D_80110DAC_ridiculous_relay[2] < 0.0f) ? 0.0f
                                                                                : (D_80110DAC_ridiculous_relay[2] - 650.0) / 601.5625;
@@ -1718,23 +1719,14 @@ void func_8010B4A8_ridiculous_relay(omObjData *object) {
 }
 #else
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", D_8011108C_ridiculous_relay);
-
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", D_801110D4_ridiculous_relay);
-
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", D_8011111C_ridiculous_relay);
-
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", D_80111164_ridiculous_relay);
-
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", D_80111178_ridiculous_relay);
-
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", D_80111184_ridiculous_relay);
-
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", D_80111194_ridiculous_relay);
-
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", D_801111A4_ridiculous_relay);
-
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", D_801111B4_ridiculous_relay);
-
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", func_8010B4A8_ridiculous_relay);
 #endif
 

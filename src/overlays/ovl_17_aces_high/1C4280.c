@@ -1,4 +1,5 @@
 #include "common.h"
+#include "macros.h"
 #include "game/pad.h"
 #include "math.h"
 #include "overlays/minigame.h"
@@ -85,50 +86,67 @@ typedef struct AceHighShot {
 } AceHighShot; // sizeof 0x38
 
 extern u8 D_800D6A90_main;
-extern D_80111B50_vine_with_me_Struct D_8010DB40_aces_high;
-extern u16 D_8010DB68_aces_high[4];
-extern f32 D_8010DB70_aces_high[4][4];
-extern f32 D_8010DBB0_aces_high[4][4];
-extern Vec D_8010DBF0_aces_high[2];
-extern u16 D_8010DC08_aces_high;
-extern f32 D_8010DC0C_aces_high;
-extern s32 D_8010DC10_aces_high[];
-extern s32 D_8010DC30_aces_high[];
-extern s16 D_8010DC50_aces_high[4][2][2];
-extern s16 D_8010DC70_aces_high[4][2];
-extern f32 D_8010DC80_aces_high[];
-extern s32 D_8010DC90_aces_high[];
-extern u16 D_8010DCB0_aces_high;
-extern u16 D_8010DCB2_aces_high;
-extern Vec2f D_8010DCB4_aces_high;
-extern Vec2f D_8010DCBC_aces_high[4];
-extern u16 D_8010DE50_aces_high[2];
-extern f32 D_8010DE54_aces_high[2];
-extern omObjData *D_8010DE5C_aces_high;
-extern omObjData *D_8010DE60_aces_high;
-extern omObjData *D_8010DE64_aces_high;
-extern omObjData **D_8010DE68_aces_high;
-extern omObjData *D_8010DE6C_aces_high;
-extern omObjData **D_8010DE70_aces_high[4];
-extern omObjData *D_8010DE80_aces_high;
-extern omObjData *D_8010DE84_aces_high;
-extern u16 D_8010DE88_aces_high;
-extern u16 D_8010DE8A_aces_high;
-extern s16 D_8010DE8C_aces_high;
-extern s16 D_8010DE8E_aces_high;
-extern s16 D_8010DE90_aces_high;
-extern s16 D_8010DE92_aces_high;
-extern s16 D_8010DE94_aces_high;
-extern s16 D_8010DE96_aces_high;
-extern Vec D_8010DE98_aces_high;
-extern s16 D_8010DEA4_aces_high;
-extern s16 D_8010DEA6_aces_high;
-extern Vec D_8010DEA8_aces_high;
-extern Vec D_8010DEB4_aces_high;
-extern Vec D_8010DEC0_aces_high;
-extern u16 D_8010DED0_aces_high[20];
-extern u16 D_8010DEF8_aces_high[20];
-extern s16 D_8010DF20_aces_high;
+D_80111B50_vine_with_me_Struct D_8010DB40_aces_high = { 0, 0, 1, 2, 0, 0, 0, 0, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0, 0, 0, 0 }, -1, 1800, -1, -1, 135 };
+u16 D_8010DB68_aces_high[4] = { 1, 2, 4, 8 };
+f32 D_8010DB70_aces_high[4][4] = {
+    { 1.0f, 1.0f, 159.0f, 119.0f },
+    { 161.0f, 1.0f, 319.0f, 119.0f },
+    { 1.0f, 121.0f, 159.0f, 239.0f },
+    { 161.0f, 121.0f, 319.0f, 239.0f },
+};
+f32 D_8010DBB0_aces_high[4][4] = {
+    { 640.0f, 480.0f, 320.0f, 240.0f },
+    { 640.0f, 480.0f, 960.0f, 240.0f },
+    { 640.0f, 480.0f, 320.0f, 720.0f },
+    { 640.0f, 480.0f, 960.0f, 720.0f },
+};
+Vec D_8010DBF0_aces_high[2] = { { 20.0f, 130.0f, 255.0f }, { 255.0f, 130.0f, 20.0f } };
+u16 D_8010DC08_aces_high = 0;
+f32 D_8010DC0C_aces_high = 0.0f;
+s32 D_8010DC10_aces_high[8] = { 0x38000C, 0x38000D, 0x38000E, 0x38000F, 0x380010, 0x380011, 0x380012, 0x380013 };
+s32 D_8010DC30_aces_high[8] = { 0x380014, 0x380015, 0x380016, 0x380017, 0x380018, 0x380019, 0x38001A, 0x38001B };
+s16 D_8010DC50_aces_high[4][2][2] = {
+    { { 28, 100 }, { 28, 92 } },
+    { { 292, 100 }, { 292, 92 } },
+    { { 28, 220 }, { 28, 212 } },
+    { { 292, 220 }, { 292, 212 } },
+};
+s16 D_8010DC70_aces_high[4][2] = { { 32, 24 }, { 288, 24 }, { 32, 144 }, { 288, 144 } };
+f32 D_8010DC80_aces_high[4] = { 90.0f, 180.0f, 270.0f, 0.0f };
+s32 D_8010DC90_aces_high[8] = { 0x380000, 0x380001, 0x380002, 0x380003, 0x380004, 0x380005, 0x380006, 0x380007 };
+u16 D_8010DCB0_aces_high = 0;
+u16 D_8010DCB2_aces_high = 45;
+Vec2f D_8010DCB4_aces_high = { 160.0f, 120.0f };
+Vec2f D_8010DCBC_aces_high[4] = { { 319.0f, 239.0f }, { 1.0f, 239.0f }, { 319.0f, 1.0f }, { 1.0f, 1.0f } };
+
+u16 D_8010DE50_aces_high[2] BSS;
+f32 D_8010DE54_aces_high[2] BSS;
+omObjData *D_8010DE5C_aces_high BSS;
+omObjData *D_8010DE60_aces_high BSS;
+omObjData *D_8010DE64_aces_high BSS;
+omObjData **D_8010DE68_aces_high BSS;
+omObjData *D_8010DE6C_aces_high BSS;
+omObjData **D_8010DE70_aces_high[4] BSS;
+omObjData *D_8010DE80_aces_high BSS;
+omObjData *D_8010DE84_aces_high BSS;
+u16 D_8010DE88_aces_high BSS;
+u16 D_8010DE8A_aces_high BSS;
+s16 D_8010DE8C_aces_high BSS;
+s16 D_8010DE8E_aces_high BSS;
+s16 D_8010DE90_aces_high BSS;
+s16 D_8010DE92_aces_high BSS;
+s16 D_8010DE94_aces_high BSS;
+s16 D_8010DE96_aces_high BSS;
+Vec D_8010DE98_aces_high BSS;
+s16 D_8010DEA4_aces_high BSS;
+s16 D_8010DEA6_aces_high BSS;
+Vec D_8010DEA8_aces_high BSS;
+Vec D_8010DEB4_aces_high BSS;
+Vec D_8010DEC0_aces_high BSS;
+u8 D_8010DECC_aces_high[4] BSS; /* Unreferenced. */
+u16 D_8010DED0_aces_high[20] BSS;
+u16 D_8010DEF8_aces_high[20] BSS;
+s16 D_8010DF20_aces_high BSS;
 
 void func_80105E44_aces_high(omObjData *object);
 void func_80105E84_aces_high(omObjData *object);

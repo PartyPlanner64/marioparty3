@@ -202,8 +202,6 @@ D_8010BB5E_cosmic_coaster = D_8010BB5C_cosmic_coaster + 0x2;
 D_8010BF80_cosmic_coaster = D_8010BF82_cosmic_coaster - 0x2;
 
 
-/* aces_high: second halfword of the timer pair at D_8010DCB0. */
-D_8010DCB2_aces_high = D_8010DCB0_aces_high + 0x2;
 
 /* pipe_cleaners: s32 position table whose low halfwords splat labeled. */
 D_8010A010_pipe_cleaners = D_8010A012_pipe_cleaners - 0x2;
@@ -327,3 +325,20 @@ D_801173B4_opening = D_80117388_opening + 0x2C;
 D_801173B8_opening = D_80117388_opening + 0x30;
 D_801173BC_opening = D_80117388_opening + 0x34;
 D_801173C0_opening = D_80117388_opening + 0x38;
+
+/* aces_high: labels inside data tables, referenced by the INCLUDE_ASM function
+   func_8010D1D8_aces_high. Remove once that function is decompiled. */
+D_8010DB74_aces_high = D_8010DB70_aces_high + 0x4;
+D_8010DB78_aces_high = D_8010DB70_aces_high + 0x8;
+D_8010DB7C_aces_high = D_8010DB70_aces_high + 0xC;
+D_8010DB84_aces_high = D_8010DB70_aces_high + 0x14;
+D_8010DB88_aces_high = D_8010DB70_aces_high + 0x18;
+D_8010DB8C_aces_high = D_8010DB70_aces_high + 0x1C;
+D_8010DB94_aces_high = D_8010DB70_aces_high + 0x24;
+D_8010DB98_aces_high = D_8010DB70_aces_high + 0x28;
+D_8010DB9C_aces_high = D_8010DB70_aces_high + 0x2C;
+D_8010DBA4_aces_high = D_8010DB70_aces_high + 0x34;
+D_8010DBA8_aces_high = D_8010DB70_aces_high + 0x38;
+D_8010DBAC_aces_high = D_8010DB70_aces_high + 0x3C;
+D_8010DCB8_aces_high = D_8010DCB4_aces_high + 0x4;
+D_8010DCC0_aces_high = D_8010DCBC_aces_high + 0x4;

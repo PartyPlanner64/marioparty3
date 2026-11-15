@@ -2696,8 +2696,8 @@ segments:
     bss_size: 0x000
     subsegments:
       - [0x552F50, c]
-      - [0x552F50, data, 552F50] #801059A0
-      - {0x552F50, type: bss, vram: 0x801059A0, name: ovl_7E_bss}
+      - [0x552F50, .data, 552F50] #801059A0
+      - {0x552F50, type: .bss, vram: 0x801059A0, name: 552F50}
 
   - type: code
     start: 0x552F50

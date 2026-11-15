@@ -354,3 +354,19 @@ D_8010928E_eatsa_pizza = D_80109288_eatsa_pizza + 0x6;
 
 /* ice_rink_risk: unk04 of the first puck hit entry, referenced by the INCLUDE_ASM function func_80107F58_ice_rink_risk. */
 D_801085B4_ice_rink_risk = D_801085B0_ice_rink_risk + 0x4;
+
+/* merry_go_chomp: merryGoChompBssC4BC fields and D_8010C500_merry_go_chomp entries/fields. */
+D_8010C4BC_merry_go_chomp = merryGoChompBssC4BC;
+D_8010C4BD_merry_go_chomp = merryGoChompBssC4BC + 0x1;
+D_8010C4BE_merry_go_chomp = merryGoChompBssC4BC + 0x2;
+D_8010C540_merry_go_chomp = D_8010C500_merry_go_chomp + 0x40;
+D_8010C542_merry_go_chomp = D_8010C500_merry_go_chomp + 0x42;
+D_8010C544_merry_go_chomp = D_8010C500_merry_go_chomp + 0x44;
+D_8010C548_merry_go_chomp = D_8010C500_merry_go_chomp + 0x48;
+D_8010C794_merry_go_chomp = D_8010C500_merry_go_chomp + 0x294;
+D_8010CA28_merry_go_chomp = D_8010C500_merry_go_chomp + 0x528;
+D_8010CCBC_merry_go_chomp = D_8010C500_merry_go_chomp + 0x7BC;
+D_8010CD04_merry_go_chomp = D_8010C500_merry_go_chomp + 0x804;
+D_8010CD08_merry_go_chomp = D_8010C500_merry_go_chomp + 0x808;
+D_8010D1E4_merry_go_chomp = D_8010C500_merry_go_chomp + 0xCE4;
+D_8010D478_merry_go_chomp = D_8010C500_merry_go_chomp + 0xF78;

@@ -60,60 +60,78 @@ typedef struct {
     /* 0x28 */ f32 fov;
 } MerryGoChompCamera; // sizeof 0x2C
 
-extern D_8010C420_merry_go_chomp_Entry D_8010C420_merry_go_chomp[];
-extern MerryGoChompEntry D_8010C500_merry_go_chomp[50];
-extern MerryGoChompEntry D_8010C794_merry_go_chomp[];
+// Group of misaligned byte variables (see undefined_syms.txt for aliases).
+typedef struct MerryGoChompBssC4BC {
+    /* 0x00 */ s8 unk00; // D_8010C4BC_merry_go_chomp
+    /* 0x01 */ s8 unk01; // D_8010C4BD_merry_go_chomp
+    /* 0x02 */ s8 unk02[5]; // D_8010C4BE_merry_go_chomp
+} MerryGoChompBssC4BC; // sizeof 0x08
 
 extern s32 D_800A178C_main[][6];
-extern s32 D_8010C140_merry_go_chomp[];
-extern s8 D_8010C160_merry_go_chomp[];
-extern f32 D_8010C174_merry_go_chomp[];
-extern f32 D_8010C1B8_merry_go_chomp[];
-extern f32 D_8010C1C8_merry_go_chomp[];
-extern f32 D_8010C1D8_merry_go_chomp[][5];
-extern Vec2f D_8010C214_merry_go_chomp;
-extern f32 D_8010C21C_merry_go_chomp[];
-extern f32 D_8010C228_merry_go_chomp[];
-extern s16 D_8010C234_merry_go_chomp[8];
-extern s16 D_8010C244_merry_go_chomp[8];
-extern HuSprite_Unk84_Struct *D_8010C414_merry_go_chomp;
-// Fields of the first entry of D_8010C500_merry_go_chomp are accessed through
-// these separate symbols.
-extern s16 D_8010C540_merry_go_chomp;
-extern s16 D_8010C542_merry_go_chomp;
-extern f32 D_8010C544_merry_go_chomp;
-extern f32 D_8010C548_merry_go_chomp;
-// Fields of D_8010C500_merry_go_chomp[15].
-extern f32 D_8010CD04_merry_go_chomp;
-extern f32 D_8010CD08_merry_go_chomp;
-extern s8 D_8010C4B0_merry_go_chomp;
-extern s16 D_8010C4B2_merry_go_chomp;
-extern Vec2f D_8010C4D0_merry_go_chomp[6];
+
+s32 D_8010C140_merry_go_chomp[8] = { 2, 3, 7, 4, 5, 6, 8, 9 };
+s8 D_8010C160_merry_go_chomp[17] = { 60, 30, 20, 15, 10, 5, 0, 0, 0, 0, -15, -15, -20, -40, -50, -60, -65 };
+f32 D_8010C174_merry_go_chomp[17] = { 1.0f, 0.95f, 0.9f, 0.85f, 0.8f, 0.75f, 0.7f, 0.65f, 0.7f, 0.75f, 0.8f, 0.85f, 0.9f, 0.95f, 1.0f, 1.0f, 1.0f };
+f32 D_8010C1B8_merry_go_chomp[4] = { 345.0f, 450.0f, 555.0f, 660.0f };
+f32 D_8010C1C8_merry_go_chomp[4] = { -200.0f, -260.0f, -320.0f, -380.0f };
+f32 D_8010C1D8_merry_go_chomp[3][5] = {
+    { 0.0f, 72.0f, 144.0f, 216.0f, 288.0f },
+    { 0.0f, 90.0f, 180.0f, 270.0f, 0.0f },
+    { 0.0f, 120.0f, 240.0f, 0.0f, 0.0f },
+};
+Vec2f D_8010C214_merry_go_chomp = { -800.0f, 0.0f };
+f32 D_8010C21C_merry_go_chomp[3] = { -500.0f, -600.0f, -400.0f };
+f32 D_8010C228_merry_go_chomp[3] = { -475.0f, -300.0f, -300.0f };
+s16 D_8010C234_merry_go_chomp[8] = { -700, -500, -700, -500, -600, -500, -600, -600 };
+s16 D_8010C244_merry_go_chomp[8] = { -50, -50, 150, 150, 350, 350, 25, 225 };
+s32 D_8010C254_merry_go_chomp = 0;
+MerryGoChompCamera D_8010C258_merry_go_chomp[2] = {
+    { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 34.5f },
+    { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 34.5f },
+};
+
+s16 D_8010C410_merry_go_chomp BSS;
+HuSprite_Unk84_Struct *D_8010C414_merry_go_chomp BSS;
+s8 D_8010C418_merry_go_chomp BSS;
+u8 D_8010C41C_merry_go_chomp[4] BSS; /* Unreferenced. */
+D_8010C420_merry_go_chomp_Entry D_8010C420_merry_go_chomp[4] BSS;
+s8 D_8010C4B0_merry_go_chomp BSS;
+s16 D_8010C4B2_merry_go_chomp BSS;
+f32 D_8010C4B4_merry_go_chomp[2] BSS;
+MerryGoChompBssC4BC merryGoChompBssC4BC BSS;
+s16 D_8010C4C4_merry_go_chomp BSS;
+omObjData *D_8010C4C8_merry_go_chomp BSS;
+s16 D_8010C4CC_merry_go_chomp BSS;
+s8 D_8010C4CE_merry_go_chomp BSS;
+Vec2f D_8010C4D0_merry_go_chomp[6] BSS;
+MerryGoChompEntry D_8010C500_merry_go_chomp[50] BSS;
+s8 D_8010DEC8_merry_go_chomp BSS;
+s16 D_8010DECA_merry_go_chomp BSS;
+u8 D_8010DECC_merry_go_chomp[8] BSS;
+f32 D_8010DED4_merry_go_chomp BSS;
+s8 D_8010DED8_merry_go_chomp BSS;
+s16 D_8010DEDA_merry_go_chomp BSS;
+s8 D_8010DEDC_merry_go_chomp BSS;
+s8 D_8010DEDD_merry_go_chomp BSS;
+
+// Aliases into merryGoChompBssC4BC (see undefined_syms.txt).
+extern s8 D_8010C4BC_merry_go_chomp;
 extern s8 D_8010C4BD_merry_go_chomp;
 extern s8 D_8010C4BE_merry_go_chomp[5];
-extern omObjData *D_8010C4C8_merry_go_chomp;
-extern s8 D_8010C4CE_merry_go_chomp;
-extern u8 D_8010DECC_merry_go_chomp[];
-extern f32 D_8010DED4_merry_go_chomp;
-extern s8 D_8010DEDC_merry_go_chomp;
-extern s8 D_8010DEDD_merry_go_chomp;
-extern omObjData *D_8010CA28_merry_go_chomp;
-extern omObjData *D_8010CCBC_merry_go_chomp;
-extern omObjData *D_8010D1E4_merry_go_chomp;
-extern omObjData *D_8010D478_merry_go_chomp;
-extern s32 D_8010C254_merry_go_chomp;
-extern MerryGoChompCamera D_8010C258_merry_go_chomp[2];
+// Entries and entry fields of D_8010C500_merry_go_chomp, accessed through
+// separate symbols (see undefined_syms.txt).
+extern s16 D_8010C540_merry_go_chomp; // [0].unk_40[0]
+extern s16 D_8010C542_merry_go_chomp; // [0].unk_40[1]
+extern f32 D_8010C544_merry_go_chomp; // [0].unk_44.x
+extern f32 D_8010C548_merry_go_chomp; // [0].unk_44.y
+extern MerryGoChompEntry D_8010C794_merry_go_chomp[]; // &[5]
+extern omObjData *D_8010CA28_merry_go_chomp; // [10].obj
+extern omObjData *D_8010CCBC_merry_go_chomp; // [15].obj
+extern f32 D_8010CD04_merry_go_chomp; // [15].unk_44.y
+extern f32 D_8010CD08_merry_go_chomp; // [15].unk_44.z
+extern omObjData *D_8010D1E4_merry_go_chomp; // [25].obj
+extern omObjData *D_8010D478_merry_go_chomp; // [30].obj
 extern const s16 D_8010C400_merry_go_chomp[];
-extern s16 D_8010C410_merry_go_chomp;
-extern s8 D_8010C418_merry_go_chomp;
-extern f32 D_8010C4B4_merry_go_chomp[2];
-extern s8 D_8010C4BC_merry_go_chomp;
-extern s16 D_8010C4CC_merry_go_chomp;
-extern s16 D_8010C4C4_merry_go_chomp;
-extern s8 D_8010DEC8_merry_go_chomp;
-extern s16 D_8010DECA_merry_go_chomp;
-extern s16 D_8010DEDA_merry_go_chomp;
-extern s8 D_8010DED8_merry_go_chomp;
 
 void func_80106384_merry_go_chomp(omObjData *);
 void func_801064E0_merry_go_chomp(omObjData *obj);
@@ -2032,4 +2050,4 @@ void func_8010C030_merry_go_chomp(void) {
     func_80105A74_merry_go_chomp();
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_2D_merry_go_chomp/25E110", D_8010C400_merry_go_chomp);
+const s16 D_8010C400_merry_go_chomp[] = { 0x8260, 0x8261, 0x8262, 0 };

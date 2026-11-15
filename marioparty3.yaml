@@ -1446,9 +1446,9 @@ segments:
     bss_size: 0x1AD0
     subsegments:
       - [0x25E110, c]
-      - [0x2648B0, data, 25E110] #8010C140
+      - [0x2648B0, .data, 25E110] #8010C140
       - [0x264A20, .rodata, 25E110] #8010C2B0
-      - {0x264B80, type: bss, vram: 0x8010C410, name: ovl_2D_bss}
+      - {start: 0x264B80, type: .bss, vram: 0x8010C410, name: 25E110}
 
   - type: code
     start: 0x264B80

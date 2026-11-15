@@ -2203,9 +2203,9 @@ segments:
       - [0x426420, c]
       - [0x426450, c]
       - [0x436100, .data, 426420] #80115680
-      - [0x436130, data, 426450]
+      - [0x436130, .data, 426450]
       - [0x436840, .rodata, 426450] #80115DC0
-      - {0x436E20, type: bss, vram: 0x801163A0, name: duel05_bss}
+      - {0x436E20, type: .bss, vram: 0x801163A0, name: 426450}
 
   - type: code
     start: 0x436E20

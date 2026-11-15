@@ -1235,7 +1235,6 @@ D_8011D96C_w02 = 0x8011D96C; //size:0xC segment:w02
 D_8011D978_w02 = 0x8011D978; //size:0xC segment:w02
 D_8011D984_w02 = 0x8011D984; //size:0x20 segment:w02
 D_8011B8D0_w04 = 0x8011B8D0; //size:0xC segment:w04
-D_80115818_duel05 = 0x80115818; //size:0x18 segment:duel05
 D_8011462C_duel06 = 0x8011462C; //size:0x18 segment:duel06
 _RemoveSIClient = 0x800518FC; //rom:0x524FC
 RemoveSIClient = 0x80051968; //rom:0x52568

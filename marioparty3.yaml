@@ -1042,9 +1042,9 @@ segments:
     bss_size: 0x3F0
     subsegments:
       - [0x181950, c]
-      - [0x18A560, data, 181950] #8010E5B0
+      - [0x18A560, .data, 181950] #8010E5B0
       - [0x18A6D0, .rodata, 181950] #8010E720
-      - {0x18ABD0, type: bss, vram: 0x8010EC20, name: ovl_0F_bss}
+      - {start: 0x18ABD0, type: .bss, vram: 0x8010EC20, name: 181950}
 
   - type: code
     start: 0x18ABD0

@@ -355,6 +355,10 @@ D_8010928E_eatsa_pizza = D_80109288_eatsa_pizza + 0x6;
 /* ice_rink_risk: unk04 of the first puck hit entry, referenced by the INCLUDE_ASM function func_80107F58_ice_rink_risk. */
 D_801085B4_ice_rink_risk = D_801085B0_ice_rink_risk + 0x4;
 
+/* picking_panic: pickingPanicBssEF14 fields. */
+D_8010EF14_picking_panic = pickingPanicBssEF14;
+D_8010EF15_picking_panic = pickingPanicBssEF14 + 0x1;
+
 /* merry_go_chomp: merryGoChompBssC4BC fields and D_8010C500_merry_go_chomp entries/fields. */
 D_8010C4BC_merry_go_chomp = merryGoChompBssC4BC;
 D_8010C4BD_merry_go_chomp = merryGoChompBssC4BC + 0x1;

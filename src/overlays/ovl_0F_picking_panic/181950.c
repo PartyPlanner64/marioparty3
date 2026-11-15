@@ -22,74 +22,97 @@ typedef struct PickingPanicCpuState {
     /* 0x06 */ s16 unk6;
 } PickingPanicCpuState; // sizeof 0x08
 
-extern D_80111B50_vine_with_me_Struct D_8010E5B0_picking_panic;
+// Group of misaligned byte variables (see undefined_syms.txt for aliases).
+typedef struct PickingPanicBssEF14 {
+    /* 0x00 */ s8 unk00; // D_8010EF14_picking_panic
+    /* 0x01 */ u8 unk01[2]; // D_8010EF15_picking_panic
+} PickingPanicBssEF14; // sizeof 0x03
+
 extern Gfx *gMainGfxPos;
-extern Gfx D_8010E5E0_picking_panic[];
 extern const s16 D_8010E720_picking_panic[];
-extern s16 D_8010E5CE_picking_panic;
-extern f32 D_8010E62C_picking_panic[3][16];
-extern u32 D_8010E6EC_picking_panic;
-extern s8 D_8010E6F0_picking_panic[2][4];
-extern u8 D_8010E6F8_picking_panic[4];
-extern u8 D_8010E6FC_picking_panic[4];
-extern s8 D_8010E700_picking_panic[4];
-extern PickingPanicCpuState D_8010E704_picking_panic[2];
-extern u8 D_8010E714_picking_panic[4];
-extern u8 D_8010E718_picking_panic[8];
-extern f32 D_8010EC20_picking_panic[3][16];
-extern f32 D_8010ECE0_picking_panic[3][16];
-extern u8 D_8010EDA0_picking_panic[2][4];
-extern u8 D_8010EDA8_picking_panic[2][4];
-extern f32 D_8010EDB0_picking_panic[2][4];
-extern f32 D_8010EDD0_picking_panic[2][4];
-extern f32 D_8010EDF0_picking_panic[2][4];
-extern f32 D_8010EE10_picking_panic[2][4];
-extern f32 D_8010EE30_picking_panic[2][4];
-extern f32 D_8010EE50_picking_panic[2][4];
-extern f32 D_8010EE70_picking_panic;
-extern f32 D_8010EE74_picking_panic;
-extern f32 D_8010EE78_picking_panic;
-extern f32 D_8010EE7C_picking_panic;
-extern f32 D_8010EE80_picking_panic;
-extern f32 D_8010EE84_picking_panic;
-extern f32 D_8010EE88_picking_panic;
-extern f32 D_8010EE8C_picking_panic;
-extern f32 D_8010EE90_picking_panic;
-extern f32 D_8010EE94_picking_panic;
-extern f32 D_8010EE98_picking_panic;
-extern PickingPanicPlayer D_8010EEA0_picking_panic[4];
-extern PickingPanicPlayer *D_8010EEE0_picking_panic[4];
-extern s32 D_8010E5D8_picking_panic;
-extern u8 D_8010E628_picking_panic;
-extern u8 D_8010EEF0_picking_panic[2];
-extern f32 D_8010EEF4_picking_panic[2];
-extern omObjData *D_8010EEFC_picking_panic;
-extern omObjData *D_8010EF00_picking_panic[4];
-extern u16 D_8010EF10_picking_panic[2];
+
+D_80111B50_vine_with_me_Struct D_8010E5B0_picking_panic = { 0 };
+s32 D_8010E5D8_picking_panic = 0;
+Gfx D_8010E5E0_picking_panic[] = {
+    gsDPPipeSync(),
+    gsDPSetCycleType(G_CYC_1CYCLE),
+    gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_DECALRGBA),
+    gsDPSetRenderMode(G_RM_OPA_SURF, G_RM_OPA_SURF2),
+    gsDPSetAlphaCompare(G_AC_NONE),
+    gsDPSetTexturePersp(G_TP_NONE),
+    gsDPSetTextureFilter(G_TF_BILERP),
+    gsDPSetScissor(G_SC_NON_INTERLACE, 0, 0, 320, 240),
+    gsSPEndDisplayList(),
+};
+u8 D_8010E628_picking_panic = 0;
+f32 D_8010E62C_picking_panic[3][16] = { 0 };
+u32 D_8010E6EC_picking_panic = 45;
+s8 D_8010E6F0_picking_panic[2][4] = { 0 };
+u8 D_8010E6F8_picking_panic[4] = { 0 };
+u8 D_8010E6FC_picking_panic[4] = { 0 };
+s8 D_8010E700_picking_panic[4] = { -1, -1, -1, -1 };
+PickingPanicCpuState D_8010E704_picking_panic[2] = { 0 };
+u8 D_8010E714_picking_panic[4] = { 0 };
+u8 D_8010E718_picking_panic[6] = { 0, 0, 1, 0, 1, 1 };
+
+f32 D_8010EC20_picking_panic[3][16] BSS;
+f32 D_8010ECE0_picking_panic[3][16] BSS;
+u8 D_8010EDA0_picking_panic[2][4] BSS;
+u8 D_8010EDA8_picking_panic[2][4] BSS;
+f32 D_8010EDB0_picking_panic[2][4] BSS;
+f32 D_8010EDD0_picking_panic[2][4] BSS;
+f32 D_8010EDF0_picking_panic[2][4] BSS;
+f32 D_8010EE10_picking_panic[2][4] BSS;
+f32 D_8010EE30_picking_panic[2][4] BSS;
+f32 D_8010EE50_picking_panic[2][4] BSS;
+f32 D_8010EE70_picking_panic BSS;
+f32 D_8010EE74_picking_panic BSS;
+f32 D_8010EE78_picking_panic BSS;
+f32 D_8010EE7C_picking_panic BSS;
+f32 D_8010EE80_picking_panic BSS;
+f32 D_8010EE84_picking_panic BSS;
+f32 D_8010EE88_picking_panic BSS;
+f32 D_8010EE8C_picking_panic BSS;
+f32 D_8010EE90_picking_panic BSS;
+f32 D_8010EE94_picking_panic BSS;
+f32 D_8010EE98_picking_panic BSS;
+u8 D_8010EE9C_picking_panic[4] BSS; /* Unreferenced. */
+PickingPanicPlayer D_8010EEA0_picking_panic[4] BSS;
+PickingPanicPlayer *D_8010EEE0_picking_panic[4] BSS;
+u8 D_8010EEF0_picking_panic[2] BSS;
+f32 D_8010EEF4_picking_panic[2] BSS;
+omObjData *D_8010EEFC_picking_panic BSS;
+omObjData *D_8010EF00_picking_panic[4] BSS;
+u16 D_8010EF10_picking_panic[2] BSS;
+PickingPanicBssEF14 pickingPanicBssEF14 BSS;
+s16 *D_8010EF18_picking_panic[2][4][3] BSS;
+f32 D_8010EF78_picking_panic BSS;
+s32 D_8010EF7C_picking_panic BSS;
+s16 D_8010EF80_picking_panic BSS;
+f32 D_8010EF84_picking_panic[2] BSS;
+f32 D_8010EF8C_picking_panic[2] BSS;
+f32 D_8010EF94_picking_panic BSS;
+s8 D_8010EF98_picking_panic[2] BSS;
+f32 D_8010EF9C_picking_panic[2] BSS;
+u8 D_8010EFA4_picking_panic BSS;
+u8 D_8010EFA5_picking_panic BSS;
+s32 D_8010EFA8_picking_panic BSS;
+f32 D_8010EFAC_picking_panic[2] BSS;
+f32 D_8010EFB4_picking_panic[2] BSS;
+s8 D_8010EFBC_picking_panic[2] BSS;
+u16 D_8010EFBE_picking_panic BSS;
+u8 D_8010EFC0_picking_panic[4] BSS;
+f32 D_8010EFC4_picking_panic[2] BSS;
+u8 D_8010EFCC_picking_panic[4] BSS; /* Unreferenced. */
+s16 D_8010EFD0_picking_panic[10] BSS;
+f32 D_8010EFE4_picking_panic[2] BSS;
+f32 D_8010EFEC_picking_panic[2] BSS;
+u8 D_8010EFF4_picking_panic[4] BSS; /* Unreferenced. */
+s16 D_8010EFF8_picking_panic[10] BSS;
+
+// Aliases into pickingPanicBssEF14 (see undefined_syms.txt).
 extern s8 D_8010EF14_picking_panic;
 extern u8 D_8010EF15_picking_panic[2];
-extern s16 *D_8010EF18_picking_panic[2][4][3];
-extern f32 D_8010EF78_picking_panic;
-extern s32 D_8010EF7C_picking_panic;
-extern s16 D_8010EF80_picking_panic;
-extern f32 D_8010EF84_picking_panic[2];
-extern f32 D_8010EF8C_picking_panic[2];
-extern f32 D_8010EF94_picking_panic;
-extern s8 D_8010EF98_picking_panic[2];
-extern f32 D_8010EF9C_picking_panic[2];
-extern u8 D_8010EFA4_picking_panic;
-extern u8 D_8010EFA5_picking_panic;
-extern s32 D_8010EFA8_picking_panic;
-extern f32 D_8010EFAC_picking_panic[2];
-extern f32 D_8010EFB4_picking_panic[2];
-extern s8 D_8010EFBC_picking_panic[2];
-extern u16 D_8010EFBE_picking_panic;
-extern u8 D_8010EFC0_picking_panic[4];
-extern f32 D_8010EFC4_picking_panic[2];
-extern s16 D_8010EFD0_picking_panic[10];
-extern f32 D_8010EFE4_picking_panic[2];
-extern f32 D_8010EFEC_picking_panic[2];
-extern s16 D_8010EFF8_picking_panic[10];
 
 void func_80105D3C_picking_panic(omObjData *object);
 void func_80106020_picking_panic(omObjData *object);
@@ -217,7 +240,10 @@ void func_80105D3C_picking_panic(omObjData *object) {
     object->func = func_80106020_picking_panic;
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010E720_picking_panic);
+const s16 D_8010E720_picking_panic[] = {
+    0x8260, 0x8261, 0x8262, 0x8263, 0x8264, 0x8265, 0x8266, 0x8267, 0x8268, 0x8269, 0x826A, 0x826B, 0x826C, 0x826D,
+    0x826E, 0x826F, 0x8270, 0x8271, 0x8272, 0x8273, 0x8274, 0x8275, 0x8276, 0x8277, 0x8278, 0x8279, 0x8149, 0x0000
+};
 
 void func_80106020_picking_panic(omObjData *object) {
     s32 i;
@@ -1190,7 +1216,7 @@ void func_8010B908_picking_panic(omObjData *object, s8 arg1) {
                                        5)) /
                           2;
             if (D_8010EF98_picking_panic[arg1] == 2 && D_8010EF15_picking_panic[arg1] == 0 &&
-                D_8010E5CE_picking_panic < 451) {
+                D_8010E5B0_picking_panic.unk1E < 451) {
                 D_8010EF98_picking_panic[arg1] = 0;
             }
             D_8010E714_picking_panic[arg1] += (D_8010E714_picking_panic[arg1] < 6);

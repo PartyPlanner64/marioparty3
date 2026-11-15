@@ -4,14 +4,6 @@
 extern f32 D_800CB890_main;
 extern f32 D_800D5210_main;
 
-extern Vec D_80114A8C_mstory1;
-extern Vec D_80114A98_mstory1;
-extern Vec D_80114AA4_mstory1;
-
-extern s32 D_80114A80_mstory1;
-extern s32 D_80114A84_mstory1;
-extern s8 D_80114A88_mstory1;
-extern s32 D_80114AB0_mstory1;
 extern s16 D_801158B0_mstory1;
 extern s16 D_801158B2_mstory1;
 extern u16 D_801158B8_mstory1;
@@ -23,6 +15,14 @@ extern s16 D_801158E0_mstory1;
 extern const s32 D_80114C6C_mstory1[7];
 extern const s16 D_80114C88_mstory1[][2];
 
+s32 D_80114A80_mstory1 = 0;
+s32 D_80114A84_mstory1 = 0;
+s8 D_80114A88_mstory1 = 0;
+Vec D_80114A8C_mstory1 = { 14.0f, 193.0f, 1400.0f };
+Vec D_80114A98_mstory1 = { -25.0f, 0.0f, -650.0f };
+Vec D_80114AA4_mstory1 = { 0.0f, 1.0f, -0.0001f };
+s32 D_80114AB0_mstory1 = 0;
+
 void func_80105FF4_mstory1(void);
 void func_801068A0_mstory1(void);
 void func_80106B14_mstory1(omObjData *obj, const Vec *pos, s32 frames);
@@ -31,8 +31,6 @@ void func_80106D80_mstory1(omObjData *obj, Vec *pos, s32 frames, s32 arg3);
 void func_8010704C_mstory1(omObjData *obj, const Vec *pos, s32 frames);
 s32 func_8010726C_mstory1(s16 model);
 void func_80106984_mstory1(void);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory1/48C120", D_80114C50_mstory1);
 
 void func_80105C90_mstory1(omObjData *obj) {
     u32 state = D_80114A80_mstory1;
@@ -492,6 +490,16 @@ void func_80107318_mstory1(omObjData *obj, f32 speed, s16 frames) {
     }
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory1/48C120", D_80114C6C_mstory1);
+const s32 D_80114C6C_mstory1[7] = { 0x1D000B, 0x1D000C, 0x1D000D, 0x1D000E, 0x1D000F, 0x1D0010, 0x1D0011 };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory1/48C120", D_80114C88_mstory1);
+const s16 D_80114C88_mstory1[][2] = {
+    { 57, 20 },
+    { 129, 36 },
+    { 200, 22 },
+    { 215, 91 },
+    { 150, 124 },
+    { 81, 105 },
+    { 12, 122 },
+};
+
+const s32 D_80114CA4_mstory1[3] = { 0 }; /* Unreferenced. */

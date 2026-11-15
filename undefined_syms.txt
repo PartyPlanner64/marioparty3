@@ -671,3 +671,14 @@ D_8011C9F8_mstory2 = mstory2BssC9E0 + 0x18;
 D_8011C9FA_mstory2 = mstory2BssC9E0 + 0x1A;
 D_8011C9FC_mstory2 = mstory2BssC9E0 + 0x1C;
 D_8011C9FE_mstory2 = mstory2BssC9E0 + 0x1E;
+
+/* mstory1: s16 low halves of s32 BSS arrays. */
+D_80115A1E_mstory1 = D_80115A1C_mstory1 + 0x2;
+D_80115A22_mstory1 = D_80115A1C_mstory1 + 0x6;
+D_80115A26_mstory1 = D_80115A1C_mstory1 + 0xA;
+D_80115B5E_mstory1 = D_80115B5C_mstory1 + 0x2;
+D_80115B62_mstory1 = D_80115B5C_mstory1 + 0x6;
+D_80115B66_mstory1 = D_80115B5C_mstory1 + 0xA;
+D_80115C9E_mstory1 = D_80115C9C_mstory1 + 0x2;
+D_80115CA2_mstory1 = D_80115C9C_mstory1 + 0x6;
+D_80115CA6_mstory1 = D_80115C9C_mstory1 + 0xA;

@@ -7,6 +7,9 @@ extern void (*const D_80114C40_mstory1[])(void);
 extern const s32 D_80114C4C_mstory1[];
 
 void func_80105C90_mstory1(omObjData *obj);
+void func_8010809C_mstory1(void);
+void func_8010C99C_mstory1(void);
+void func_801110DC_mstory1(void);
 void func_80105D80_mstory1(omObjData *obj);
 void func_80105E00_mstory1(void);
 void func_80105F28_mstory1(omObjData *obj);
@@ -67,6 +70,6 @@ void func_801059A0_mstory1(void) {
     WipeCreateIn(2, 16);
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory1/48BE30", D_80114C40_mstory1);
+void (*const D_80114C40_mstory1[])(void) = { func_8010809C_mstory1, func_8010C99C_mstory1, func_801110DC_mstory1 };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory1/48BE30", D_80114C4C_mstory1);
+const s32 D_80114C4C_mstory1[] = { 52, 54, 56 };

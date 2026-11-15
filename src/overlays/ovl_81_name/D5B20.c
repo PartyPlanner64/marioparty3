@@ -15,9 +15,11 @@ typedef struct UnkNameWobbleData {
     /* 0x0C */ f32 unk_0C;
 } UnkNameWobbleData; // sizeof 0x10
 
-extern Object *D_801011F0_name_81;
-extern s16 D_801011F8_name_81;
-extern s32 D_801011FC_name_81;
+Object *D_801011F0_name_81 = NULL;
+Process *D_801011F4_name_81 = NULL;
+s16 D_801011F8_name_81 = -1;
+s32 D_801011FC_name_81 = 1;
+s32 D_80101200_name_81[] = { 0x1C00, 0x1C01, 0x1C02, 0x1C03, 0x1C04, 0x1C05, 0x1C06, 0x1C07 }; /* Unreferenced. */
 
 Object *func_800EDD50_name_81(Vec *pos) {
     D_801011F0_name_81 = func_800D8010_name_81(0x3B, NULL);

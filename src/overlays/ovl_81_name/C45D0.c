@@ -22,7 +22,7 @@ typedef struct EffectMoveWork {
 } EffectMoveWork; // sizeof 0x20
 
 extern Object *D_80102AD0_name_81[];
-extern s32 D_80100E40_name_81;
+s32 D_80100E40_name_81 = 1;
 extern s16 D_80102B50_name_81;
 extern omObjData *D_80102B54_name_81;
 extern Vec D_80102B58_name_81;

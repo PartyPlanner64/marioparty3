@@ -37,7 +37,7 @@ typedef struct UnkD3450StepData {
     /* 0x1C */ f32 speed;
 } UnkD3450StepData; // sizeof 0x20
 
-extern s32 D_801011E0_name_81[];
+s32 D_801011E0_name_81[] = { 5, 25, 60 };
 
 void func_800EED30_name_81(s32);
 

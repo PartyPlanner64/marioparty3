@@ -3,17 +3,6 @@
 #include "game/pause.h"
 
 // this file is a duplicate of 10C230.c in ovl_80_shared_board
-typedef struct UnkE3CD0 {
-    char unk_00[0xC];
-    Vec unk_0C;
-    char unk_18[0x18];
-    f32 unk_30;
-} UnkE3CD0;
-
-extern DuelHelpWin *D_80101AF8_name_81;
-extern DuelHelpWin *D_80101AFC_name_81;
-extern DuelHelpWin *D_80101B00_name_81;
-extern DuelHelpWin *D_80101B04_name_81;
 extern UnkE3CD0 *D_801054B0_name_81;
 extern Vec *D_801054AC_name_81;
 extern Vec D_801054A0_name_81;
@@ -21,24 +10,31 @@ extern s16 D_8010549E_name_81;
 extern s16 D_800A12C8_main;
 extern f32 D_800C9938_main;
 extern s16 D_800CE1D0_main;
-extern s16 D_800CE206;
 extern s16 D_800D124C_main;
 extern s16 D_800D1380_main;
-extern s16 D_80101A50_name_81;
-extern void (*D_80101A8C_name_81)(void);
-extern s32 D_80101A70_name_81[];
-extern s32 D_80101A54_name_81[];
 extern s16 D_800CE206;
 extern s32 D_80105498_name_81;
 extern s16 D_8010549C_name_81;
-extern u8 D_80101AF4_name_81[];
 extern Vec D_801054B8_name_81[];
 extern Vec D_801054D0_name_81[][2];
-extern f32 D_80101AA4_name_81[][2];
-extern f32 D_80101ACC_name_81[][2];
 extern s32 D_80105490_name_81;
-extern u8 D_80101A9C_name_81[4];
-extern u8 D_80101AA0_name_81[4];
+
+s16 D_80101A50_name_81 = 0;
+s32 D_80101A54_name_81[] = { 91, 92, 93, 94, 95, 96, 97 };
+s32 D_80101A70_name_81[] = { 100, 100, 100, 100, 100, 100, 101 };
+void (*D_80101A8C_name_81)(void) = NULL;
+process_func D_80101A90_name_81 = NULL;
+s32 (*D_80101A94_name_81)(void) = NULL;
+void (*D_80101A98_name_81)(void) = NULL;
+u8 D_80101A9C_name_81[4] = { 67, 68, 69, 70 };
+u8 D_80101AA0_name_81[4] = { 5, 30, 65, 100 };
+f32 D_80101AA4_name_81[][2] = { { 0.0f, 0.0f }, { 200.0f, 250.0f }, { 110.0f, 250.0f }, { 70.0f, 290.0f }, { 0.0f, 360.0f } };
+f32 D_80101ACC_name_81[][2] = { { 0.0f, 0.0f }, { 20.0f, 70.0f }, { -70.0f, 70.0f }, { 70.0f, 290.0f }, { 0.0f, 360.0f } };
+u8 D_80101AF4_name_81[] = { 3, 5, 8, 10 };
+DuelHelpWin *D_80101AF8_name_81 = NULL;
+DuelHelpWin *D_80101AFC_name_81 = NULL;
+DuelHelpWin *D_80101B00_name_81 = NULL;
+DuelHelpWin *D_80101B04_name_81 = NULL;
 
 void func_800FD6F4_name_81(void);
 void func_800FFA28_name_81(Vec *arg0);

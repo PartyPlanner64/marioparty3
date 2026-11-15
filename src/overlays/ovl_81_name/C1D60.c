@@ -13,10 +13,11 @@ extern u8 D_80105555_name_81;
 extern f32 D_80105708_name_81;
 extern u8 D_80105710_name_81;
 extern u8 D_8010562C_name_81;
-extern u8 D_80100E20_name_81;
 extern f32 D_800A0A7C_main;
-extern s32 D_80100E24_name_81[3];
-extern s32 D_80100E30_name_81[4];
+
+u8 D_80100E20_name_81 = 0;
+s32 D_80100E24_name_81[] = { 0x130207, 0x130207, 0x130207 };
+s32 D_80100E30_name_81[] = { 0x1300FE, 0x1300FF, 0x130100 };
 
 void func_800DA00C_name_81(omObjData *arg0);
 void func_800DA460_name_81(omObjData *arg0);

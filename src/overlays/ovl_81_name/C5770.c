@@ -7,14 +7,6 @@ typedef struct UnkC5770 {
     /* 0x04 */ char unk_04[0xC];
 } UnkC5770; // sizeof 0x10
 
-typedef struct UnkC5770B70 {
-    /* 0x00 */ s16 windowId;
-    /* 0x02 */ s16 x;
-    /* 0x04 */ s16 y;
-    /* 0x06 */ s16 w;
-    /* 0x08 */ s16 h;
-} UnkC5770B70; // sizeof 0xA
-
 typedef struct UnkC5770Rect {
     /* 0x00 */ s16 x;
     /* 0x02 */ s16 y;
@@ -25,24 +17,49 @@ typedef struct UnkC5770Rect {
 extern u32 D_800D2094_main;
 extern UnkData_CD0A0 D_800CC4A0_main;
 extern s8 D_800CC3E0_main[];
-extern u8 D_80100E84_name_81[];
-extern u8 D_80100E88_name_81[];
-extern UnkC5770Rect D_80100E8C_name_81[];
-extern UnkC5770Rect D_80100EB4_name_81[];
-extern u8 D_80100E50_name_81[];
-extern u8 D_80100E5C_name_81[];
-extern u8 D_80100E64_name_81[];
-extern u8 D_80100ECC_name_81[];
-extern u8 D_80100ED0_name_81[];
-extern u8 D_80100ED4_name_81[];
-extern u8 D_80100ED8_name_81[];
-extern s8 D_80100EDC_name_81[][2];
-extern s32 D_80100EE4_name_81[];
-extern u8 D_80100EEB_name_81[];
-extern u32 D_80100F38_name_81;
-extern s32 D_80100F3C_name_81;
-extern DuelHelpWin *D_80100F40_name_81;
-extern f32 D_80100F50_name_81[2][2];
+u8 D_80100E50_name_81[] = { 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 0 };
+u8 D_80100E5C_name_81[] = { 49, 50, 51, 53, 55, 56, 57, 0 };
+u8 D_80100E64_name_81[] = {
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
+    2, 3, 4, 5, 6, 7, 8, 9, 11,
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 11,
+    0
+};
+u8 D_80100E84_name_81[] = { 5, 3 };
+u8 D_80100E88_name_81[] = { 5, 1, 2, 1 };
+UnkC5770Rect D_80100E8C_name_81[] = {
+    { 60, 328, 200, 20 },
+    { 60, 348, 200, 20 },
+    { 60, 368, 200, 20 },
+    { 60, 388, 200, 20 },
+    { 60, 408, 200, 20 },
+};
+UnkC5770Rect D_80100EB4_name_81[] = {
+    { 95, 330, 130, 20 },
+    { 95, 354, 130, 20 },
+    { 95, 378, 130, 20 },
+};
+u8 D_80100ECC_name_81[] = { 50, 34 };
+u8 D_80100ED0_name_81[] = { 50, 80 };
+u8 D_80100ED4_name_81[] = { 20, 24 };
+u8 D_80100ED8_name_81[] = { 114, 116 };
+s8 D_80100EDC_name_81[][2] = { { 1, 0 }, { 9, 15 }, { 11, 8 }, { 13, 0 } };
+s32 D_80100EE4_name_81[] = { 0x4700, 0x1F20 };
+// Indexed by minigame number - 1.
+u8 D_80100EEC_name_81[] = {
+    7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+    7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+    7, 7, 7, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+    7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+    7, 7, 7, 7, 7, 7, 6, 6, 7, 7, 7
+};
+u32 D_80100F38_name_81 = 0;
+s32 D_80100F3C_name_81 = 0;
+DuelHelpWin *D_80100F40_name_81 = NULL;
+Object *D_80100F44_name_81 = NULL;
+s32 D_80100F48_name_81[2] = { 0 }; /* Unreferenced. */
+f32 D_80100F50_name_81[2][2] = { { 70.0f, 64.0f }, { 250.0f, 160.0f } };
+
 extern UnkC5770B70 D_80102B70_name_81[5];
 extern omObjData *D_80102BA4_name_81;
 extern s8 D_80102BA8_name_81[5];
@@ -681,7 +698,7 @@ void func_800DF594_name_81(s32 arg0) {
                 } while (0);
             }
 
-            HuWinMesColSet(entry->windowId, D_80100EEB_name_81[D_80102BA8_name_81[i]]);
+            HuWinMesColSet(entry->windowId, D_80100EEC_name_81[D_80102BA8_name_81[i] - 1]);
             HuWinMesSpeedSet(entry->windowId, 0);
             break;
         }
@@ -828,7 +845,7 @@ void func_800DFBF4_name_81(void) {
                 } while (0);
             }
 
-            HuWinMesColSet(entry->windowId, D_80100EEB_name_81[D_80102BA8_name_81[i]]);
+            HuWinMesColSet(entry->windowId, D_80100EEC_name_81[D_80102BA8_name_81[i] - 1]);
             HuWinMesSpeedSet(entry->windowId, 0);
             break;
         }

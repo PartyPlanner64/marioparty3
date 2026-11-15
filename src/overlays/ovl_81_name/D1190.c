@@ -5,17 +5,6 @@
 // Texel data follows the palette, which is padded to a multiple of 4 colors.
 #define MASU_BMP_TEXELS(bmp) (&(bmp)->data[((bmp)->palCount + 3) / 4 * 4])
 
-// Space form image: a CI texture with a header, palette and texels.
-typedef struct MasuBmp {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ u32 palCount;
-    /* 0x08 */ s32 unk_08;
-    /* 0x0C */ s32 unk_0C;
-    /* 0x10 */ u16 data[1];
-} MasuBmp;
-
-extern void *D_80101060_name_81;
-extern u8 *D_80101064_name_81;
 extern u16 D_801050A0_name_81;
 extern SpaceData *D_801050A4_name_81;
 extern LinkData *D_801050A8_name_81;
@@ -28,8 +17,6 @@ extern s16 D_8010534E_name_81;
 extern s16 D_80105350_name_81[16];
 extern s16 D_80105370_name_81;
 extern s32 D_80105378_name_81[0x13];
-extern s32 D_80101068_name_81[0x13];
-extern s32 D_801010B4_name_81[0x13];
 extern u16 D_801050A2_name_81;
 extern s16 D_801050FC_name_81;
 extern u16 D_801050FE_name_81;
@@ -39,10 +26,48 @@ extern event_list_entry *D_8010511C_name_81;
 extern event_list_entry *D_80105120_name_81;
 extern s32 D_80105124_name_81;
 extern s16 D_801053C8_name_81[];
-extern Gfx D_80101140_name_81[];
-extern Vtx D_101100[];
 extern Mtx *MTXBuf;
 extern s16 MTXBufNum;
+
+void *D_80101060_name_81 = NULL;
+u8 *D_80101064_name_81 = NULL;
+s32 D_80101068_name_81[0x13] = {
+    0, 0, 0x13022E, 0x13022C, 0,
+    0x13022F, 0x13022B, 0, 0x13022D, 0,
+    0x130230, 0x130231, 0x130232, 0x130233, 0x130234,
+    0x130235, 0x130236, 0x130237, 0x130238
+};
+s32 D_801010B4_name_81[0x13] = {
+    0, 0, 0x13022E, 0x13022C, 0,
+    0x130239, 0x13022B, 0, 0x13022D, 0,
+    0x130230, 0x130231, 0x130232, 0x130233, 0x130234,
+    0x130235, 0x130236, 0x130237, 0x130238
+};
+
+Vtx D_80101100_name_81[] = {
+    { { { 100, 0, -100 }, 0, { 1024, 992 }, { 0, 0, 127, 255 } } },
+    { { { -100, 0, -100 }, 0, { 0, 992 }, { 0, 0, 127, 255 } } },
+    { { { -100, 0, 100 }, 0, { 0, -32 }, { 0, 0, 127, 255 } } },
+    { { { 100, 0, 100 }, 0, { 1024, -32 }, { 0, 0, 127, 255 } } },
+};
+
+Gfx D_80101140_name_81[] = {
+    gsSPSegment(0, 0),
+    gsSPClipRatio(FRUSTRATIO_2),
+    gsSPClearGeometryMode(0xFFFFFFFF),
+    gsSPSetGeometryMode(G_SHADE | G_CULL_BACK | G_SHADING_SMOOTH),
+    gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
+    gsDPPipeSync(),
+    gsDPSetCycleType(G_CYC_1CYCLE),
+    gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_DECALRGBA),
+    gsDPSetRenderMode(G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2),
+    gsDPSetTexturePersp(G_TP_PERSP),
+    gsDPSetTextureFilter(G_TF_AVERAGE),
+    gsDPSetTextureLUT(G_TT_RGBA16),
+    gsDPSetAlphaCompare(G_AC_NONE),
+    gsDPSetAlphaDither(G_AD_DISABLE),
+    gsSPEndDisplayList(),
+};
 
 void func_800E93C0_name_81(s16);
 void func_800E95C4_name_81(Gfx **arg0, Mtx *arg1, s32 arg2);
@@ -140,7 +165,7 @@ void func_800E95C4_name_81(Gfx **arg0, Mtx *arg1, s32 arg2) {
         Hu3DCameraSet(0, gfxPos);
         func_800127C4_main(0, gfxPos);
         MBDCameraPos3DGet(&sp50);
-        vtx = D_101100;
+        vtx = (Vtx *)OS_K0_TO_PHYSICAL(D_80101100_name_81);
 
         for (i = 0; i < 0x13; i++) {
             if (D_801050B0_name_81[i] != NULL) {

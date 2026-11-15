@@ -1,41 +1,6 @@
 #include "common_duel.h"
 #include "ovl_81.h"
 
-typedef struct NameSpriteIds {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02[2];
-    /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s16 unk_08;
-    /* 0x0A */ s16 unk_0A;
-} NameSpriteIds; // sizeof 0xC
-
-typedef struct NamePlayerData {
-    /* 0x00 */ u8 unk_00;
-    /* 0x01 */ s8 unk_01;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 spriteGroup;
-    /* 0x06 */ char unk_06[0x2];
-    /* 0x08 */ s16 unk_08;
-    /* 0x0A */ char unk_0A[0x2];
-    /* 0x0C */ f32 xPos;
-    /* 0x10 */ f32 yPos;
-    /* 0x14 */ f32 unk_14;
-    /* 0x18 */ f32 unk_18;
-    /* 0x1C */ f32 unk_1C;
-    /* 0x20 */ f32 unk_20;
-    /* 0x24 */ f32 unk_24;
-    /* 0x28 */ f32 unk_28;
-    /* 0x2C */ omObjData *unk_2C;
-    /* 0x30 */ char unk_30[0x4];
-    /* 0x34 */ s16 unk_34;
-    /* 0x36 */ char unk_36[0x4];
-    /* 0x3A */ s16 unk_3A[11];
-    /* 0x50 */ s16 unk_50[11];
-    /* 0x66 */ char unk_66[0x4];
-    /* 0x6A */ s8 unk_6A;
-    /* 0x6B */ s8 unk_6B;
-} NamePlayerData; // sizeof 0x6C
-
 extern NameSpriteIds D_80105414_name_81;
 extern s16 D_80105420_name_81;
 extern s16 D_80105422_name_81;
@@ -45,19 +10,78 @@ extern Vec2f D_80105430_name_81;
 extern Vec2f D_80105438_name_81;
 extern s16 D_80105440_name_81;
 extern NamePlayerData D_80105630_name_81[];
-extern s32 D_801014E0_name_81;
-extern s32 D_801014E4_name_81;
-extern s16 D_801014E8_name_81[][2];
 extern Process *D_80105410_name_81;
 extern omObjData *D_80105444_name_81[];
-extern s16 D_801015A4_name_81[3][2];
-extern s16 D_801015B0_name_81[3][2];
-extern s16 (*D_801015BC_name_81[])[2];
-extern u8 D_801015C4_name_81[];
-extern s32 D_80101620_name_81[];
-extern s16 (*D_80101650_name_81[])[2];
-extern s8 D_80101660_name_81[][3];
-extern s32 D_801015E0_name_81[];
+
+s32 D_801014E0_name_81 = 1;
+s32 D_801014E4_name_81 = 1;
+s16 D_801014E8_name_81[][2] = {
+    { 24, 36 },
+    { 200, 155 },
+    { -192, 36 },
+    { 416, 155 },
+    { 48, 96 },
+    { 176, 96 },
+    { 112, 110 },
+    { 416, 155 },
+    { -192, 16 },
+    { 416, 155 },
+    { 512, 24 },
+    { 512, 174 },
+    { 200, 24 },
+    { 200, 174 }
+};
+s16 D_80101520_name_81[][2] = { { 30, 138 }, { 194, 138 } };
+s16 D_80101528_name_81[][2] = { { 30, 138 }, { 194, 138 } };
+s16 D_80101530_name_81[][2] = {
+    { 0, 0 },
+    { 0, 0 },
+    { -30, 0 },
+    { 20, 0 },
+    { 30, 0 },
+    { 40, 0 },
+    { 0, 13 },
+    { 0, -31 },
+    { 0, -31 },
+    { -32, -25 },
+    { -32, -37 },
+    { 20, -31 },
+    { -20, -25 },
+    { -20, -37 },
+    { 30, -31 },
+    { 40, -31 },
+    { 40, -31 },
+    { 0, -31 },
+    { 0, 31 },
+    { 0, 31 },
+    { -32, 37 },
+    { -32, 25 },
+    { 20, 31 },
+    { -20, 37 },
+    { -20, 25 },
+    { 30, 31 },
+    { 40, 31 },
+    { 40, 31 },
+    { 0, 31 }
+};
+s16 D_801015A4_name_81[3][2] = { { 20, 31 }, { 30, 31 }, { 40, 31 } };
+s16 D_801015B0_name_81[3][2] = { { 30, 31 }, { 40, 31 }, { 40, 31 } };
+s16 (*D_801015BC_name_81[])[2] = { D_80101530_name_81, D_80101530_name_81 };
+u8 D_801015C4_name_81[] = {
+    0, 2, 0, 0, 4, 0, 6, 8, 10, 12, 0, 0, 0, 0,
+    16, 16, 16, 16, 14, 14, 14, 14, 0, 0, 0, 2, 0, 0
+};
+s32 D_801015E0_name_81[] = {
+    0x1300D8, 0x1300D9, 0x1300DB, 0x1300DC, 0x1300DD, 0x1300DE, 0x1300DF, 0x1300E1,
+    0x1300D8, 0x1300DA, 0x1300DB, 0x1300DC, 0x1300DD, 0x1300DE, 0x1300E0, 0x1300E1
+};
+s32 D_80101620_name_81[] = {
+    0x1300E2, 0x1300E3, 0x1300E4, 0x1300E5, 0x1300E6, 0x1300E7,
+    0x1300E8, 0x1300E9, 0x1300EA, 0x1300EB, 0x1300EC, 0x1300ED
+};
+s16 (*D_80101650_name_81[])[2] = { D_80101528_name_81, D_80101528_name_81, D_80101528_name_81, D_80101520_name_81 };
+// -1 terminated sprite member lists; the second list continues into the third row.
+s8 D_80101660_name_81[][3] = { { 13, 24, -1 }, { 14, 15, 25 }, { 26, -1 } };
 
 void func_800F4710_name_81(s32 playerIndex);
 void func_800F4F20_name_81(void);

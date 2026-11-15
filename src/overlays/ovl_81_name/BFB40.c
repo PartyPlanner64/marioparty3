@@ -22,9 +22,10 @@ typedef struct ModelSpinWork {
 
 extern u16 D_801029C4_name_81;
 extern s16 D_80105624_name_81;
-extern f32 D_80100E10_name_81;
-extern f32 D_80100E14_name_81;
 extern u8 D_800D6A90_main;
+
+f32 D_80100E10_name_81 = 1.0f;
+f32 D_80100E14_name_81 = 100.0f;
 
 const UnkTemp D_80101C48_name_81[] = {
     { 0x000200A2, 0x00000009, 1.0f, 0.9f },

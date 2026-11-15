@@ -5,6 +5,117 @@ void func_800EED68_name_81(s16, s32);
 void func_800EF3B4_name_81(s16);
 void *func_800FFC2C_name_81(s16, s16, s32);
 void func_800FFCCC_name_81(void *);
+void func_800FB148_name_81(void);
+void func_800FB158_name_81(void);
+
+s32 D_80101670_name_81[] = { 4, 0xA0090, 0xA009A, 0xA009B, 0xA009C };
+s32 D_80101684_name_81[] = { 2, 0xA0094, 0xA0096 };
+s32 D_80101690_name_81[] = { 4, 0xA00A7, 0xA00AB, 0xA00AC, 0xA00AD };
+s32 D_801016A4_name_81[] = { 2, 0xA00AE, 0xA00AF };
+s32 D_801016B0_name_81[] = { 4, 0xA0002, 0xA0012, 0xA0013, 0xA0014 };
+s32 D_801016C4_name_81[] = { 2, 0xA0015, 0xA0016 };
+s32 D_801016D0_name_81[] = { 4, 0xA00BD, 0xA00BE, 0xA00BF, 0xA00C0 };
+s32 D_801016E4_name_81[] = { 1, 0xA00BC };
+s32 D_801016EC_name_81[] = { 4, 0xA00C7, 0xA00C8, 0xA00C9, 0xA00CA };
+s32 D_80101700_name_81[] = { 4, 0xA00D0, 0xA00D1, 0xA00D2, 0xA00D3 };
+s32 D_80101714_name_81[] = { 1, 0xA00D4 };
+s32 D_8010171C_name_81[] = { 4, 0xA0138, 0xA0139, 0xA013A, 0xA013B };
+s32 D_80101730_name_81[] = { 3, 0xA013C, 0xA013D, 0xA013E };
+s32 D_80101740_name_81[] = { 4, 0xA00E9, 0xA00EA, 0xA00EB, 0xA00EC };
+s32 D_80101754_name_81[] = { 4, 0xA0103, 0xA0104, 0xA0105, 0xA0106 };
+s32 D_80101768_name_81[] = { 2, 0xA0107, 0xA0108 };
+s32 D_80101774_name_81[] = { 4, 0xA00DD, 0xA00DE, 0xA00DF, 0xA00E0 };
+s32 D_80101788_name_81[] = { 1, 0xA00E1 };
+s32 D_80101790_name_81[] = { 4, 0xA0141, 0xA0142, 0xA0143, 0xA0144 };
+s32 D_801017A4_name_81[] = { 1, 0xA0145 };
+s32 D_801017AC_name_81[] = { 2, 0xA010F, 0xA0110 };
+s32 D_801017B8_name_81[] = { 4, 0xA0113, 0xA0114, 0xA0115, 0xA0116 };
+s32 D_801017CC_name_81[] = { 3, 0xA0110, 0xA0111, 0xA0112 };
+
+s32 *D_801017DC_name_81[] = {
+    D_80101670_name_81,
+    D_80101690_name_81,
+    D_801016B0_name_81,
+    D_801016D0_name_81,
+    D_801016EC_name_81,
+    D_80101700_name_81,
+    D_8010171C_name_81,
+    D_801017AC_name_81,
+    D_80101774_name_81,
+    D_80101740_name_81,
+    D_80101790_name_81,
+    D_80101754_name_81,
+};
+s32 *D_8010180C_name_81[] = {
+    D_80101684_name_81,
+    D_801016A4_name_81,
+    D_801016C4_name_81,
+    D_801016E4_name_81,
+    NULL,
+    D_80101714_name_81,
+    D_80101730_name_81,
+    D_801017B8_name_81,
+    D_80101788_name_81,
+    NULL,
+    D_801017A4_name_81,
+    D_80101768_name_81,
+};
+s32 *D_8010183C_name_81[] = {
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    D_801017CC_name_81,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+};
+
+PartnerBaseAttributes PartnersBaseStats[] = {
+    { 37, 2, 1, 1, NULL, NULL, NULL, NULL },
+    { 12, 1, 2, 2, NULL, NULL, NULL, NULL },
+    { 9, 1, 1, 1, NULL, NULL, NULL, NULL },
+    { 38, 1, 1, 3, NULL, NULL, func_800FB148_name_81, NULL },
+    { 10, 1, 2, 3, NULL, NULL, NULL, func_800FB158_name_81 },
+    { 11, 4, 0, 3, NULL, NULL, NULL, NULL },
+    { 36, 2, 2, 5, NULL, NULL, NULL, NULL },
+    { 44, 1, 3, 5, NULL, NULL, NULL, NULL },
+    { 42, 2, 1, 6, NULL, NULL, NULL, NULL },
+    { 13, 2, 0, 4, NULL, NULL, NULL, NULL },
+    { 43, 3, 1, 2, NULL, NULL, NULL, NULL },
+    { 41, 1, 1, 3, NULL, NULL, NULL, NULL },
+};
+
+Process *D_8010195C_name_81 = NULL;
+u8 D_80101960_name_81[] = { 0, 1, 2, 4, 3, 5, 7, 6 }; /* Unreferenced. */
+s8 *D_80101968_name_81 = NULL;
+s8 *D_8010196C_name_81 = NULL;
+s8 *D_80101970_name_81 = NULL;
+s8 *D_80101974_name_81 = NULL;
+s8 *D_80101978_name_81 = NULL;
+s8 *D_8010197C_name_81 = NULL;
+s32 D_80101980_name_81 = 0;
+s32 D_80101984_name_81 = 0;
+Object *D_80101988_name_81 = NULL;
+void (*D_8010198C_name_81)(void) = NULL;
+s16 D_80101990_name_81 = 0;
+s16 D_80101992_name_81 = 0;
+s16 D_80101994_name_81 = 0;
+s32 D_80101998_name_81[] = {
+    0x4F00, 0x4F01, 0x4F02, 0x4F03, 0x4F04, 0x4F05,
+    0x4F06, 0x4F07, 0x4F08, 0x4F09, 0x4F0A, 0x4F0B
+};
+s16 D_801019C8_name_81[] = { 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F, 0x20, 0x21, 0x22 };
+s32 D_801019E0_name_81[][2] = { { 4, 10 }, { 3, 8 }, { 5, 9 }, { 0, 2 }, { 6, 10 } };
+s32 D_80101A08_name_81[] = { 0x1F16, 0x1F17, 0x1F18, 0x1F19, 0x1F1A };
+s32 D_80101A1C_name_81[] = {
+    0x1F0A, 0x1F0B, 0x1F0C, 0x1F0D, 0x1F0E, 0x1F0F,
+    0x1F10, 0x1F11, 0x1F12, 0x1F13, 0x1F14, 0x1F15
+};
 
 void Duel_ClearPartnerObjects(void) {
     s32 i, j;

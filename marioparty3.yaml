@@ -738,9 +738,23 @@ segments:
       - [0xE3CD0, c]
       - [0xE78B0, c]
       - [0xE7AE0, c]
-      - [0xE8BE0, data] #80100E10
+      - [0xE8BE0, .data, BFB40] #80100E10
+      - [0xE8BF0, .data, C1D60]
+      - [0xE8C10, .data, C45D0]
+      - [0xE8C20, .data, C5770]
       - [0xE8D30, .data, C9330]
-      - [0xE8D90, data]
+      - [0xE8D90, .data, CA640]
+      - [0xE8DC0, .data, CCD20]
+      - [0xE8E30, .data, D1190]
+      - [0xE8FA0, .data, D28F0]
+      - [0xE8FB0, .data, D3450]
+      - [0xE8FC0, .data, D5B20]
+      - [0xE8FF0, .data, D6B00]
+      - [0xE9000, .data, D8250]
+      - [0xE92A0, .data, DBE50]
+      - [0xE92B0, .data, DC4E0]
+      - [0xE9440, .data, DFD60]
+      - [0xE9820, .data, E3CD0]
       - [0xE98E0, .data, E78B0]
       - [0xE98F0, .data, E7AE0] #80101B20
       - [0xE99F0, .data, BE940]
@@ -762,7 +776,7 @@ segments:
       - [0xEA5C8, .rodata, E3CD0]
       - [0xEA778, .rodata, E78B0]
       #- [0xE9A00, rodata] #80101C30
-      - {0xEA790, type: bss, vram: 0x801029C0, name: ovl_81_bss}
+      - {0xEA790, type: .bss, vram: 0x801029C0, name: bss}
 
   - type: code
     start: 0xEA790

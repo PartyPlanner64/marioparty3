@@ -70,6 +70,73 @@ typedef struct DuelHelpWin {
     /* 0x10 */ char* unk_10;
 } DuelHelpWin; //sizeof 0x14
 
+typedef struct UnkC5770B70 {
+    /* 0x00 */ s16 windowId;
+    /* 0x02 */ s16 x;
+    /* 0x04 */ s16 y;
+    /* 0x06 */ s16 w;
+    /* 0x08 */ s16 h;
+} UnkC5770B70; // sizeof 0xA
+
+// Space form image: a CI texture with a header, palette and texels.
+typedef struct MasuBmp {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ u32 palCount;
+    /* 0x08 */ s32 unk_08;
+    /* 0x0C */ s32 unk_0C;
+    /* 0x10 */ u16 data[1];
+} MasuBmp;
+
+typedef struct UnkD6B00 {
+    /* 0x00 */ s16 unk_00;
+    /* 0x02 */ s16 unk_02;
+    /* 0x04 */ Object *unk_04;
+    /* 0x08 */ omObjData *unk_08;
+} UnkD6B00; // sizeof 0xC
+
+typedef struct NameSpriteIds {
+    /* 0x00 */ s16 unk_00;
+    /* 0x02 */ s16 unk_02[2];
+    /* 0x06 */ s16 unk_06;
+    /* 0x08 */ s16 unk_08;
+    /* 0x0A */ s16 unk_0A;
+} NameSpriteIds; // sizeof 0xC
+
+typedef struct NamePlayerData {
+    /* 0x00 */ u8 unk_00;
+    /* 0x01 */ s8 unk_01;
+    /* 0x02 */ s16 unk_02;
+    /* 0x04 */ s16 spriteGroup;
+    /* 0x06 */ char unk_06[0x2];
+    /* 0x08 */ s16 unk_08;
+    /* 0x0A */ char unk_0A[0x2];
+    /* 0x0C */ f32 xPos;
+    /* 0x10 */ f32 yPos;
+    /* 0x14 */ f32 unk_14;
+    /* 0x18 */ f32 unk_18;
+    /* 0x1C */ f32 unk_1C;
+    /* 0x20 */ f32 unk_20;
+    /* 0x24 */ f32 unk_24;
+    /* 0x28 */ f32 unk_28;
+    /* 0x2C */ omObjData *unk_2C;
+    /* 0x30 */ char unk_30[0x4];
+    /* 0x34 */ s16 unk_34;
+    /* 0x36 */ char unk_36[0x4];
+    /* 0x3A */ s16 unk_3A[11];
+    /* 0x50 */ s16 unk_50[11];
+    /* 0x66 */ char unk_66[0x4];
+    /* 0x6A */ s8 unk_6A;
+    /* 0x6B */ s8 unk_6B;
+} NamePlayerData; // sizeof 0x6C
+
+typedef struct UnkE3CD0 {
+    char unk_00[0xC];
+    Vec unk_0C;
+    char unk_18[0x18];
+    f32 unk_30;
+} UnkE3CD0;
+
+#ifndef NO_EXTERN_VARIABLES
 extern UnkBoard4* D_80105400_name_81;
 extern u16 D_80105404_name_81;
 extern PartnerBaseAttributes PartnersBaseStats[];
@@ -110,6 +177,7 @@ extern Vec D_80102C00_name_81;
 extern Vec D_80102C0C_name_81;
 extern Vec D_80102C18_name_81;
 extern s16 D_800CE1D0_main;
+#endif
 
 void MBDBackKill(void);
 void MBDBackClose(void);
@@ -323,6 +391,7 @@ Process *func_800DCE40_name_81(s32, Vec *, Vec *, f32);
 void func_800FC8C4_name_81(Vec *arg0);
 void func_800EAB6C_name_81(s16, s32);
 
+#ifndef NO_EXTERN_VARIABLES
 extern Vec D_80105460_name_81;
 extern s32 D_801019E0_name_81[][2];
 extern s32 D_80101A08_name_81[];
@@ -343,6 +412,7 @@ extern s32 D_80105620_name_81;
 extern s32 D_8010570C_name_81;
 extern s32 D_80105718_name_81;
 extern s32 D_8010571C_name_81;
+#endif
 
 Process *func_800D9668_name_81(Object *, f32, f32, s32);
 void func_800E3C6C_name_81(void);
@@ -453,4 +523,6 @@ void func_800F7378_name_81(s32 playerIndex, s32 coins);
 void func_800F924C_name_81(s32 attackType);
 void func_800FADB4_name_81(void);
 
+#ifndef NO_EXTERN_VARIABLES
 extern Object *D_80100F44_name_81;
+#endif

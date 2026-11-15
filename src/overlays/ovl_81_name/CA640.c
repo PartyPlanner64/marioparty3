@@ -22,9 +22,6 @@ typedef struct UnkOvl81_3 {
     /* 0x14 */ char unk_14[0xC];
 } UnkOvl81_3; // sizeof 0x20
 
-extern SomeStruct D_80102478_name_81;
-extern SomeStruct3 D_80102494_name_81;
-extern SomeStruct2 D_80102484_name_81;
 extern s16 D_80102CA4_name_81;
 extern u8 D_80102CA6_name_81;
 extern s16 D_80102CA8_name_81;
@@ -40,15 +37,19 @@ extern Vec D_80102CEC_name_81;
 extern Vec D_80102CF8_name_81;
 extern Vec D_80102D04_name_81;
 extern Vec D_80102D10_name_81;
-extern f32 D_80102D14_name_81;
 extern s32 D_80102CC4_name_81;
 extern s32 D_80102CC8_name_81;
-extern char *D_80100FC0_name_81[];
-extern s8 D_80100FC8_name_81[];
-extern s8 D_80100FCC_name_81[];
-extern s16 D_80100FD4_name_81[];
 extern UnkBoard4 *D_80102CCC_name_81;
 extern UnkBoard4 *D_80102CD0_name_81;
+
+char *D_80100FC0_name_81[] = { "  1 VS 1 GAME ", "  HAPPENING!  " };
+s8 D_80100FC8_name_81[] = { 14, 14 };
+s8 D_80100FCC_name_81[] = { -8, -8, -8, -8, -8, -8 };
+s16 D_80100FD4_name_81[] = { 60, 93, 126, 159, 192, 225, 258 };
+
+const SomeStruct D_80102478_name_81 = { { 0, 0, 1, 2, 3, 3, 3, 3, 3, 4 } };
+const SomeStruct2 D_80102484_name_81 = { { 0xEE, 0xEF, 0xF0, 0xF1, 0xF2, 0xF3, 0xF4, 0xF5 } };
+const SomeStruct3 D_80102494_name_81 = { { 0, 1, 2, 2, 3, 4, 5, 2, 1, 6, 2 } };
 
 void func_800E31A0_name_81(void);
 void func_800E02B4_name_81(s32 arg0);
@@ -57,16 +58,6 @@ void func_800E2AD0_name_81(omObjData *arg0);
 void func_800E38B0_name_81(void);
 void func_800E4914_name_81(void);
 void func_800E4188_name_81(void);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_81_name/CA640", D_80102458_name_81);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_81_name/CA640", D_80102468_name_81);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_81_name/CA640", D_80102478_name_81);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_81_name/CA640", D_80102484_name_81);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_81_name/CA640", D_80102494_name_81);
 
 void func_800E2870_name_81(void) {
     D_80102CA4_name_81 = -1;
@@ -825,7 +816,7 @@ void func_800E4E64_name_81(UnkOvl81_2 *arg0) {
 
 void func_800E4EAC_name_81(UnkOvl81_2 *arg0, s16 arg1, s16 arg2) {
     arg0->unk_0A = arg1;
-    D_80102D14_name_81 = arg1 * 4.0f + 480.0f;
+    D_80102D10_name_81.y = arg1 * 4.0f + 480.0f;
     if (arg2 != 0) {
         HuWinPosSet(arg0->win_id, 91, arg0->unk_0A + 80 + arg2);
     } else {

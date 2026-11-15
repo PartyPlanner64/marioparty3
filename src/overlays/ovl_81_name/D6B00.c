@@ -1,13 +1,6 @@
 #include "common_duel.h"
 #include "ovl_81.h"
 
-typedef struct UnkD6B00 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ Object *unk_04;
-    /* 0x08 */ omObjData *unk_08;
-} UnkD6B00; // sizeof 0xC
-
 typedef struct UnkNameVecEntry {
     /* 0x00 */ Object *obj;
     /* 0x04 */ u16 count; // number of points
@@ -17,7 +10,7 @@ typedef struct UnkNameVecEntry {
 } UnkNameVecEntry;          // sizeof 0x10
 
 extern UnkD6B00 D_80105560_name_81[16];
-extern s32 D_80101220_name_81;
+s32 D_80101220_name_81 = 2;
 extern s32 D_800A12C0_main;
 extern s32 D_800A12C4_main;
 

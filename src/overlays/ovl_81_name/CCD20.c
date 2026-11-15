@@ -21,20 +21,12 @@ typedef struct UnkModelStruct {
     /* 0x38 */ f32 unk38;
 } UnkModelStruct; //sizeof 0x3C
 
-extern f32 D_80104848_name_81[2];
-extern u8 D_80100FFC_name_81;
-extern f32 D_80101000_name_81;
 extern f32 D_801031D0_name_81;
 extern f32 D_80104848_name_81[2];
 extern f32 D_80102D2C_name_81; // Camera speed
 extern u32 D_80102D20_name_81;
 extern s32 D_80102D24_name_81;
 extern u32 D_80102D28_name_81;
-extern s32* D_80100FF0_name_81;
-extern u32* D_80100FF4_name_81;
-extern UnkModelStruct* D_80100FF8_name_81;
-extern f32 D_80101004_name_81;
-extern f32 D_80101008_name_81;
 extern u8* D_80102D3C_name_81;
 extern u16 D_80102D30_name_81;
 extern s16 D_80102D32_name_81;
@@ -58,8 +50,6 @@ extern OSThread D_80103CA0_name_81;
 extern OSThread D_801032F0_name_81;
 extern OverlayBgEntry D_80102D48_name_81[50];
 extern OverlayBgEntry *D_80103130_name_81[6][6];
-extern u32 D_8010100C_name_81;
-extern Gfx D_80101010_name_81[];
 extern Process* D_801031C8_name_81;
 extern Vec D_801031D4_name_81;
 extern Vec D_801031E0_name_81;
@@ -69,10 +59,32 @@ extern Vec2f D_80104840_name_81;
 extern f32 D_801031CC_name_81;
 extern Process* D_801031C4_name_81;
 extern UnkBoard7 D_80104850_name_81[64];
-extern s32 D_8010105C_name_81;
 extern s32 D_80105050_name_81;
-extern Process* D_80101058_name_81;
 extern Object* D_80105058_name_81[16];
+
+s32 *D_80100FF0_name_81 = NULL;
+u32 *D_80100FF4_name_81 = NULL;
+UnkModelStruct *D_80100FF8_name_81 = NULL;
+u8 D_80100FFC_name_81 = 0xFF;
+f32 D_80101000_name_81 = 1.0f;
+f32 D_80101004_name_81 = 0.0f;
+f32 D_80101008_name_81 = 0.0f;
+u32 D_8010100C_name_81 = 0;
+
+Gfx D_80101010_name_81[] = {
+    gsDPPipeSync(),
+    gsDPSetCycleType(G_CYC_1CYCLE),
+    gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_DECALRGBA),
+    gsDPSetPrimColor(0, 0, 255, 255, 255, 255),
+    gsDPSetTexturePersp(G_TP_NONE),
+    gsDPSetTextureFilter(G_TF_AVERAGE),
+    gsDPSetTextureLUT(G_TT_NONE),
+    gsDPSetAlphaDither(G_AD_DISABLE),
+    gsSPEndDisplayList(),
+};
+
+Process *D_80101058_name_81 = NULL;
+s32 D_8010105C_name_81 = 1;
 
 static s32 func_800E5CC4_name_81(u16);
 void func_800E77D8_name_81(Gfx** arg0, s32 arg1, u8 arg2);

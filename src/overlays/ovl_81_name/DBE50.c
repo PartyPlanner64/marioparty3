@@ -1,7 +1,7 @@
 #include "common_duel.h"
 #include "ovl_81.h"
 
-extern RectF D_801014D0_name_81;
+RectF D_801014D0_name_81 = { 16.0f, 12.0f, 304.0f, 228.0f };
 
 void func_800F413C_name_81(void);
 

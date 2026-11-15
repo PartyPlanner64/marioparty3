@@ -58,21 +58,92 @@ typedef struct {
     /* 0x28 */ f32 fov;
 } CoconutConkCamera; // sizeof 0x2C
 
-extern u16 D_8010AF68_coconut_conk[][3];
-extern char *D_8010AF98_coconut_conk[];
-extern D_80111B50_vine_with_me_Struct D_8010AFF0_coconut_conk;
-extern CoconutConkCamera D_8010B018_coconut_conk[2];
-extern const s16 D_8010B1B8_coconut_conk[];
-extern f32 D_8010AFB8_coconut_conk[];
-extern u8 D_800D6A90_main;
+typedef struct {
+    /* 0x00 */ u8 unk00;
+    /* 0x01 */ u8 unk01[3];
+} CoconutConkBssB1C8; // sizeof 0x4
+
+typedef struct {
+    /* 0x00 */ s16 unk00;
+    /* 0x02 */ u16 unk02[2];
+} CoconutConkBssB1E0; // sizeof 0x6
+
+extern char D_8010B070_coconut_conk[];
+extern char D_8010B07C_coconut_conk[];
+extern char D_8010B088_coconut_conk[];
+extern char D_8010B094_coconut_conk[];
+extern char D_8010B0A0_coconut_conk[];
+extern char D_8010B0AC_coconut_conk[];
+extern char D_8010B0B8_coconut_conk[];
+extern char D_8010B0C4_coconut_conk[];
 extern char D_8010B0D0_coconut_conk[];
 extern char D_8010B0E4_coconut_conk[];
-extern HuSprite_Unk84_Struct *D_8010B1C4_coconut_conk;
+
+s16 D_8010AF60_coconut_conk = 0xC1;
+s16 D_8010AF62_coconut_conk = 0x310;
+s16 D_8010AF64_coconut_conk = 0x312;
+s16 D_8010AF66_coconut_conk = 0x311;
+
+u16 D_8010AF68_coconut_conk[][3] = {
+    { 0xA4, 0xA5, 0xA8 },
+    { 0xA4, 0xA5, 0xA9 },
+    { 0xA4, 0xA5, 0xA9 },
+    { 0xA4, 0xA5, 0xA8 },
+    { 0xA4, 0xA5, 0xA8 },
+    { 0xA4, 0xA5, 0xA8 },
+    { 0xA4, 0xA5, 0xA9 },
+    { 0x1A, 0x1C, 0x25 },
+};
+
+char *D_8010AF98_coconut_conk[] = {
+    D_8010B0C4_coconut_conk,
+    D_8010B0B8_coconut_conk,
+    D_8010B0AC_coconut_conk,
+    D_8010B0A0_coconut_conk,
+    D_8010B094_coconut_conk,
+    D_8010B088_coconut_conk,
+    D_8010B07C_coconut_conk,
+    D_8010B070_coconut_conk,
+};
+
+f32 D_8010AFB8_coconut_conk[] = { -425.0f, -255.0f, -85.0f, 85.0f, 255.0f, 425.0f };
+
+s32 D_8010AFD0_coconut_conk[] = { 2, 3, 7, 4, 5, 6, 8, 9 };
+
+D_80111B50_vine_with_me_Struct D_8010AFF0_coconut_conk = { 0, 0, 1, 2, 0, 0, 0, 0, { 90.0f, 900.0f, 0.0f, 30.0f }, { 150, 0, 0, 0 }, 0, 0, 0, 0, 0 };
+
+CoconutConkCamera D_8010B018_coconut_conk[2] = {
+    { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 43.0f },
+    { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 43.0f },
+};
+
+s16 D_8010B1C0_coconut_conk BSS;
+s16 D_8010B1C2_coconut_conk BSS;
+HuSprite_Unk84_Struct *D_8010B1C4_coconut_conk BSS;
+CoconutConkBssB1C8 coconutConkBssB1C8 BSS;
+u8 D_8010B1CC_coconut_conk BSS;
+void *D_8010B1D0_coconut_conk[3] BSS;
+s16 D_8010B1DC_coconut_conk BSS;
+u8 D_8010B1DE_coconut_conk BSS;
+CoconutConkBssB1E0 coconutConkBssB1E0 BSS;
+s16 D_8010B1E6_coconut_conk BSS;
+u8 D_8010B1E8_coconut_conk[8] BSS; /* Unreferenced. */
+CoconutConkData D_8010B1F0_coconut_conk[50] BSS;
+s16 D_8010CBB8_coconut_conk BSS;
+u8 D_8010CBBA_coconut_conk BSS;
+u8 D_8010CBBB_coconut_conk BSS;
+s16 D_8010CBBC_coconut_conk BSS;
+u8 D_8010CBBE_coconut_conk BSS;
+s16 D_8010CBC0_coconut_conk BSS;
+u8 D_8010CBC4_coconut_conk[0xC] BSS; /* Unreferenced. */
+
+extern const s16 D_8010B1B8_coconut_conk[];
+/* Aliases of coconutConkBssB1C8 and coconutConkBssB1E0 fields (undefined_syms.txt). */
 extern u8 D_8010B1C8_coconut_conk;
-extern void *D_8010B1D0_coconut_conk[3];
-extern s16 D_8010B1DC_coconut_conk;
+extern u8 D_8010B1C9_coconut_conk[3];
+extern s16 D_8010B1E0_coconut_conk;
 extern u16 D_8010B1E2_coconut_conk[2];
-extern CoconutConkData D_8010B1F0_coconut_conk[50];
+/* Aliases of D_8010B1F0_coconut_conk element fields (undefined_syms.txt). */
 extern omObjData *D_8010B274_coconut_conk;
 extern s16 D_8010B2B4_coconut_conk;
 extern u16 D_8010B2B6_coconut_conk;
@@ -84,32 +155,11 @@ extern u16 D_8010B3BE_coconut_conk;
 extern f32 D_8010B3C0_coconut_conk;
 extern f32 D_8010B3C4_coconut_conk;
 extern omObjData *D_8010B400_coconut_conk;
-extern omObjData *D_8010B484_coconut_conk;
 extern f32 D_8010B418_coconut_conk;
+extern omObjData *D_8010B484_coconut_conk;
 extern f32 D_8010B4A0_coconut_conk;
 extern f32 D_8010B4A4_coconut_conk;
-extern CoconutConkData D_8010B508_coconut_conk[6];
-extern CoconutConkData D_8010B820_coconut_conk[9];
-extern CoconutConkData D_8010BCC4_coconut_conk;
-extern CoconutConkData D_8010BD48_coconut_conk[];
-extern s16 D_8010B1C0_coconut_conk;
-extern s16 D_8010B1C2_coconut_conk;
-extern u8 D_8010B1C9_coconut_conk[3];
-extern u8 D_8010B1CC_coconut_conk;
-extern u8 D_8010B1DE_coconut_conk;
-extern s16 D_8010AF60_coconut_conk;
-extern s16 D_8010AF62_coconut_conk;
-extern s16 D_8010AF64_coconut_conk;
-extern s16 D_8010AF66_coconut_conk;
-extern s16 D_8010B1E0_coconut_conk;
-extern s16 D_8010B1E6_coconut_conk;
-extern s16 D_8010CBB8_coconut_conk;
-extern u8 D_8010CBBA_coconut_conk;
-extern s32 D_8010AFD0_coconut_conk[];
-extern u8 D_8010CBBB_coconut_conk;
-extern s16 D_8010CBBC_coconut_conk;
-extern u8 D_8010CBBE_coconut_conk;
-extern s16 D_8010CBC0_coconut_conk;
+extern u8 D_800D6A90_main;
 extern s32 D_800A178C_main[][6];
 extern s32 D_800A1790_main[][6];
 
@@ -215,7 +265,7 @@ void func_80105BA4_coconut_conk(omObjData *arg0, u8 arg1) {
 
     Hu3DAnimKill(D_8010B1DC_coconut_conk);
     D_8010B1DC_coconut_conk = Hu3DAnimCreate(Hu3DData[arg0->model[0]].hmf, D_8010B1D0_coconut_conk[arg1], 0,
-                                            D_8010AF98_coconut_conk[character]);
+                                             D_8010AF98_coconut_conk[character]);
 }
 
 void func_80105C58_coconut_conk(omObjData *arg0) {
@@ -389,7 +439,7 @@ void func_801066A4_coconut_conk(void) {
 }
 
 void func_801066E4_coconut_conk(omObjData *arg0) {
-    CoconutConkData *data = &D_8010B508_coconut_conk[arg0->work[0]];
+    CoconutConkData *data = &D_8010B1F0_coconut_conk[6 + arg0->work[0]];
 
     switch (data->unk04) {
         case 0:
@@ -427,7 +477,7 @@ void func_80106924_coconut_conk(void) {
     u8 i;
 
     for (i = 0; i < 6; i++) {
-        CoconutConkData *data = &D_8010B508_coconut_conk[i];
+        CoconutConkData *data = &D_8010B1F0_coconut_conk[6 + i];
         omObjData *obj = omAddObj(0x352, 1, 0xA, -1, func_801067E0_coconut_conk);
 
         obj->work[0] = i;
@@ -436,7 +486,7 @@ void func_80106924_coconut_conk(void) {
 }
 
 void func_801069BC_coconut_conk(omObjData *arg0) {
-    CoconutConkData *data = &D_8010B820_coconut_conk[arg0->work[0]];
+    CoconutConkData *data = &D_8010B1F0_coconut_conk[12 + arg0->work[0]];
     s16 sound;
     s16 pan;
 
@@ -550,7 +600,7 @@ void func_80106E80_coconut_conk(void) {
     u8 i;
 
     for (i = 0; i < 9; i++) {
-        CoconutConkData *data = &D_8010B820_coconut_conk[i];
+        CoconutConkData *data = &D_8010B1F0_coconut_conk[12 + i];
         omObjData *obj = omAddObj(0x320, 5, 0xA, -1, func_80106D5C_coconut_conk);
 
         obj->work[0] = i;
@@ -559,7 +609,7 @@ void func_80106E80_coconut_conk(void) {
 }
 
 void func_80106F18_coconut_conk(omObjData *arg0) {
-    CoconutConkData *data = &D_8010BCC4_coconut_conk;
+    CoconutConkData *data = &D_8010B1F0_coconut_conk[21];
     u16 player = arg0->work[0];
     f32 target = 0.0f;
     f32 gaps[4];
@@ -585,7 +635,7 @@ void func_80106F18_coconut_conk(omObjData *arg0) {
         ((GwPlayer[player].cpu_difficulty == 2) & (input < 180)) ||
         ((GwPlayer[player].cpu_difficulty == 3) & (input < 255))) {
         for (i = 0; i < 3; i++) {
-            CoconutConkData *e = &D_8010BD48_coconut_conk[i];
+            CoconutConkData *e = &D_8010B1F0_coconut_conk[22 + i];
             omObjData *o = e->unk00;
 
             pos[i] = o->trans.x;
@@ -594,7 +644,7 @@ void func_80106F18_coconut_conk(omObjData *arg0) {
             }
         }
         for (i = 0; i < 3; i++) {
-            entry = &D_8010B820_coconut_conk[i];
+            entry = &D_8010B1F0_coconut_conk[12 + i];
             obj = entry->unk00;
             if (entry->unk04 == 1 || entry->unk04 == 2) {
                 if (obj->trans.x + 29.0f > arg0->trans.x - 40.0f && obj->trans.x - 29.0f < arg0->trans.x + 40.0f) {
@@ -718,7 +768,7 @@ void func_80107674_coconut_conk(omObjData *arg0) {
 }
 
 void func_80107690_coconut_conk(omObjData *arg0) {
-    CoconutConkData *data = &D_8010BCC4_coconut_conk;
+    CoconutConkData *data = &D_8010B1F0_coconut_conk[21];
 
     data->unk04 = 0;
     if (D_800CBB6E_main[arg0->work[3]] <= -30) {
@@ -730,7 +780,7 @@ void func_80107690_coconut_conk(omObjData *arg0) {
 }
 
 void func_801076EC_coconut_conk(omObjData *arg0) {
-    CoconutConkData *data = &D_8010BCC4_coconut_conk;
+    CoconutConkData *data = &D_8010B1F0_coconut_conk[21];
 
     switch (data->unk04) {
         case 0:
@@ -767,7 +817,7 @@ void func_801076EC_coconut_conk(omObjData *arg0) {
 }
 
 void func_801078BC_coconut_conk(omObjData *arg0) {
-    CoconutConkData *data = &D_8010BCC4_coconut_conk;
+    CoconutConkData *data = &D_8010B1F0_coconut_conk[21];
     f32 nextX;
 
     switch (data->unk04) {
@@ -817,12 +867,12 @@ void func_801078BC_coconut_conk(omObjData *arg0) {
 }
 
 void func_80107B8C_coconut_conk(omObjData *arg0) {
-    CoconutConkData *data = &D_8010BCC4_coconut_conk;
+    CoconutConkData *data = &D_8010B1F0_coconut_conk[21];
     s16 i;
     s16 sound;
 
     for (i = 0; i < 9; i++) {
-        CoconutConkData *coconut = &D_8010B820_coconut_conk[i];
+        CoconutConkData *coconut = &D_8010B1F0_coconut_conk[12 + i];
         omObjData *obj = coconut->unk00;
 
         if (coconut->unk04 == 2 && obj->trans.x + 29.0f >= arg0->trans.x - 40.0f &&
@@ -905,7 +955,7 @@ void func_80107B8C_coconut_conk(omObjData *arg0) {
 }
 
 void func_8010815C_coconut_conk(omObjData *arg0) {
-    CoconutConkData *data = &D_8010BCC4_coconut_conk;
+    CoconutConkData *data = &D_8010B1F0_coconut_conk[21];
     u16 player = arg0->work[0];
     s16 pan;
 
@@ -1063,7 +1113,7 @@ void func_8010815C_coconut_conk(omObjData *arg0) {
 }
 
 void func_801089DC_coconut_conk(omObjData *obj) {
-    CoconutConkData *data = &D_8010BCC4_coconut_conk;
+    CoconutConkData *data = &D_8010B1F0_coconut_conk[21];
     s8 chr = GwPlayer[obj->work[0]].chr;
     s32 model = D_800A178C_main[chr][0];
     s16 i;
@@ -1073,7 +1123,7 @@ void func_801089DC_coconut_conk(omObjData *obj) {
         D_8010B1D0_coconut_conk[i] = DataRead(model | D_8010AF68_coconut_conk[chr][i]);
     }
     D_8010B1DC_coconut_conk = Hu3DAnimCreate(Hu3DData[obj->model[0]].hmf, D_8010B1D0_coconut_conk[0], 0,
-                                            D_8010AF98_coconut_conk[chr]);
+                                             D_8010AF98_coconut_conk[chr]);
     Hu3DModelRemakeStatic(obj->model[0]);
     func_8001C514_main(obj->model[0]);
     func_8000B460_main(obj, 0, func_80017BB8_main(chr, 0x62));
@@ -1159,7 +1209,7 @@ void func_80108FA0_coconut_conk(void) {
             obj = omAddObj(0x2BC, 9, 0x3C, -1, func_801089DC_coconut_conk);
             obj->work[0] = player;
             obj->work[3] = GwPlayer[player].pad;
-            D_8010BCC4_coconut_conk.unk00 = obj;
+            D_8010B1F0_coconut_conk[21].unk00 = obj;
         }
     }
 }
@@ -1167,10 +1217,10 @@ void func_80108FA0_coconut_conk(void) {
 void func_801090C4_coconut_conk(omObjData *arg0) {
     CoconutConkData *coconuts[3];
     omObjData *objs[3];
-    CoconutConkData *data = &D_8010BD48_coconut_conk[arg0->work[1]];
+    CoconutConkData *data = &D_8010B1F0_coconut_conk[22 + arg0->work[1]];
     u16 player = arg0->work[0];
     u8 dir = rand8();
-    omObjData *target = D_8010BD48_coconut_conk[-1].unk00;
+    omObjData *target = D_8010B1F0_coconut_conk[21].unk00;
     f32 minDist;
     s16 closest;
     s16 i;
@@ -1191,7 +1241,7 @@ void func_801090C4_coconut_conk(omObjData *arg0) {
         closest = 0;
         minDist = 5000.0f;
         for (i = 0; i < 3; i++) {
-            coconuts[i] = &D_8010BD48_coconut_conk[i];
+            coconuts[i] = &D_8010B1F0_coconut_conk[22 + i];
             objs[i] = coconuts[i]->unk00;
         }
         for (i = 0; i < 3; i++) {
@@ -1253,7 +1303,7 @@ void func_801095C0_coconut_conk(omObjData *arg0) {
 }
 
 void func_801095C8_coconut_conk(omObjData *arg0) {
-    CoconutConkData *data = &D_8010BD48_coconut_conk[arg0->work[1]];
+    CoconutConkData *data = &D_8010B1F0_coconut_conk[22 + arg0->work[1]];
     func_800E1BA8_minigame_ObjData *work = arg0->data;
     CoconutConkData *target;
     f32 minDist;
@@ -1285,7 +1335,7 @@ void func_801095C8_coconut_conk(omObjData *arg0) {
                     closest = i;
                 }
             }
-            target = &D_8010B508_coconut_conk[closest];
+            target = &D_8010B1F0_coconut_conk[6 + closest];
             if (target->unk04 == 0) {
                 target->unk04 = 1;
                 data->unk16 = 1;
@@ -1294,7 +1344,7 @@ void func_801095C8_coconut_conk(omObjData *arg0) {
                 case 0:
                 case 3:
                     for (i = 0; i < 3; i++) {
-                        CoconutConkData *coconut = &D_8010B820_coconut_conk[i];
+                        CoconutConkData *coconut = &D_8010B1F0_coconut_conk[12 + i];
                         omObjData *obj = coconut->unk00;
 
                         if (coconut->unk04 == 0) {
@@ -1307,7 +1357,7 @@ void func_801095C8_coconut_conk(omObjData *arg0) {
                 case 1:
                 case 4:
                     for (i = 3; i < 6; i++) {
-                        CoconutConkData *coconut = &D_8010B820_coconut_conk[i];
+                        CoconutConkData *coconut = &D_8010B1F0_coconut_conk[12 + i];
                         omObjData *obj = coconut->unk00;
 
                         if (coconut->unk04 == 0) {
@@ -1320,7 +1370,7 @@ void func_801095C8_coconut_conk(omObjData *arg0) {
                 case 2:
                 case 5:
                     for (i = 6; i < 9; i++) {
-                        CoconutConkData *coconut = &D_8010B820_coconut_conk[i];
+                        CoconutConkData *coconut = &D_8010B1F0_coconut_conk[12 + i];
                         omObjData *obj = coconut->unk00;
 
                         if (coconut->unk04 == 0) {
@@ -1342,7 +1392,7 @@ void func_80109940_coconut_conk(omObjData *arg0) {
     func_800E1BA8_minigame_ObjData *works[3];
     CoconutConkData *datas[3];
     omObjData *objs[3];
-    CoconutConkData *data = &D_8010BD48_coconut_conk[arg0->work[1]];
+    CoconutConkData *data = &D_8010B1F0_coconut_conk[22 + arg0->work[1]];
     func_800E1BA8_minigame_ObjData *work = arg0->data;
     s16 i;
 
@@ -1382,7 +1432,7 @@ void func_80109940_coconut_conk(omObjData *arg0) {
                 D_800D20A1_main[arg0->work[3]] = -40;
             }
             for (i = 0; i < 3; i++) {
-                datas[i] = &D_8010BD48_coconut_conk[i];
+                datas[i] = &D_8010B1F0_coconut_conk[22 + i];
                 objs[i] = datas[i]->unk00;
                 works[i] = objs[i]->data;
             }
@@ -1553,7 +1603,7 @@ void func_8010A344_coconut_conk(void) {
                     player = 3;
                     break;
             }
-            data = &D_8010BD48_coconut_conk[count];
+            data = &D_8010B1F0_coconut_conk[22 + count];
             obj = omAddObj(0x28A, 9, 0x3C, -1, func_80109DEC_coconut_conk);
             obj->work[0] = player;
             obj->work[3] = GwPlayer[player].pad;
@@ -1610,12 +1660,12 @@ void func_8010A668_coconut_conk(omObjData *arg0) {
     u8 chars[8];
     CoconutConkData *datas[3];
     omObjData *objs[3];
-    omObjData *obj = D_8010BCC4_coconut_conk.unk00;
+    omObjData *obj = D_8010B1F0_coconut_conk[21].unk00;
     s16 i;
     s16 j;
 
     for (i = 0; i < 3; i++) {
-        datas[i] = &D_8010BD48_coconut_conk[i];
+        datas[i] = &D_8010B1F0_coconut_conk[22 + i];
         objs[i] = datas[i]->unk00;
     }
 

@@ -61,6 +61,28 @@ D_8010C016_hyper_hydrants = hyperHydrantsBssC010 + 0x6;
 D_8010C01A_hyper_hydrants = hyperHydrantsBssC010 + 0xA;
 D_8010C022_hyper_hydrants = hyperHydrantsBssC010 + 0x12;
 
+/* coconut_conk field aliases: CoconutConkBssB1C8, CoconutConkBssB1E0. */
+D_8010B1C8_coconut_conk = coconutConkBssB1C8;
+D_8010B1C9_coconut_conk = coconutConkBssB1C8 + 0x1;
+D_8010B1E0_coconut_conk = coconutConkBssB1E0;
+D_8010B1E2_coconut_conk = coconutConkBssB1E0 + 0x2;
+/* coconut_conk CoconutConkData fields within D_8010B1F0_coconut_conk[50]. */
+D_8010B274_coconut_conk = D_8010B1F0_coconut_conk + 0x84; /* [1].unk00 */
+D_8010B2B4_coconut_conk = D_8010B1F0_coconut_conk + 0xC4; /* [1].unk40 */
+D_8010B2B6_coconut_conk = D_8010B1F0_coconut_conk + 0xC6; /* [1].unk42 */
+D_8010B2B8_coconut_conk = D_8010B1F0_coconut_conk + 0xC8; /* [1].unk44.x */
+D_8010B2BC_coconut_conk = D_8010B1F0_coconut_conk + 0xCC; /* [1].unk44.y */
+D_8010B37C_coconut_conk = D_8010B1F0_coconut_conk + 0x18C; /* [3].unk00 */
+D_8010B3BC_coconut_conk = D_8010B1F0_coconut_conk + 0x1CC; /* [3].unk40 */
+D_8010B3BE_coconut_conk = D_8010B1F0_coconut_conk + 0x1CE; /* [3].unk42 */
+D_8010B3C0_coconut_conk = D_8010B1F0_coconut_conk + 0x1D0; /* [3].unk44.x */
+D_8010B3C4_coconut_conk = D_8010B1F0_coconut_conk + 0x1D4; /* [3].unk44.y */
+D_8010B400_coconut_conk = D_8010B1F0_coconut_conk + 0x210; /* [4].unk00 */
+D_8010B418_coconut_conk = D_8010B1F0_coconut_conk + 0x228; /* [4].unk18 */
+D_8010B484_coconut_conk = D_8010B1F0_coconut_conk + 0x294; /* [5].unk00 */
+D_8010B4A0_coconut_conk = D_8010B1F0_coconut_conk + 0x2B0; /* [5].unk1C */
+D_8010B4A4_coconut_conk = D_8010B1F0_coconut_conk + 0x2B4; /* [5].unk20 */
+
 /* inst array elements, low halfwords of word state, and object callbacks. */
 D_8010D401_inst = D_8010D400_inst + 0x1;
 D_8010D402_inst = D_8010D400_inst + 0x2;

@@ -447,8 +447,8 @@ D_8010EC47_three_door_monty = D_8010EC46_three_door_monty + 0x1;
 D_8010EC48_three_door_monty = threeDoorMontyBssEC48;
 D_8010EC4A_three_door_monty = threeDoorMontyBssEC48 + 0x2;
 
-/* w03: func_8011A704_w03 (INCLUDE_ASM) */
-D_8011D43C_w03 = D_8011D438_w03 + 0x4;
+/* w03: MB3Ev_Quicksand (INCLUDE_ASM) */
+D_8011D43C_w03 = mb3ev_quicksandExitOfsTbl + 0x4;
 
 /* toadstool_titan field aliases: ToadstoolTitanBssF614, ToadstoolTitanBssF650. */
 D_8010F614_toadstool_titan = toadstoolTitanBssF614;

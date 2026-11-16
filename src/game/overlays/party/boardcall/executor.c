@@ -1,16 +1,16 @@
 #include "common.h"
 
-void func_801059D0_boardcall(void);
-void func_80105A44_boardcall(void);
-void func_80105A98_boardcall(void);
+void boardcall_Start(void);
+void boardcall_Exec(void);
+void boardcall_ObjectSetup(void);
 
-OvlEntrypoint D_80105AE0_boardcall[] = {
-    { 0, func_801059D0_boardcall },
-    { 1, func_80105A44_boardcall },
-    { 2, func_80105A98_boardcall },
+OvlEntrypoint boardcall_ovlEntryTbl[] = {
+    { 0, boardcall_Start },
+    { 1, boardcall_Exec },
+    { 2, boardcall_ObjectSetup },
     { -1, NULL },
 };
 
-void func_801059A0_boardcall(void) {
-    ovlEventCall(D_80105AE0_boardcall, omovlevtno);
+void boardcall_Executor(void) {
+    ovlEventCall(boardcall_ovlEntryTbl, omovlevtno);
 }

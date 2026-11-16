@@ -11,89 +11,89 @@
 
 extern s32 mbSaiSeF;
 
-s32 D_801075C0_opboardtutorial = 0;
+s32 opboardtutorial_statusCreateF = 0;
 
-Vec D_801075C4_opboardtutorial = { -170.0f, 125.0f, 3000.0f };
+Vec opboardtutorial_guidePos = { -170.0f, 125.0f, 3000.0f };
 
-Vec D_801075D0_opboardtutorial = { 0.0f, 250.0f, 0.0f };
+Vec opboardtutorial_platformPos = { 0.0f, 250.0f, 0.0f };
 
 /* Unreferenced. */
-Vec D_801075DC_opboardtutorial[2] = {
+Vec opboardtutorial_unusedPosTbl[2] = {
     { 0.0f, 100.0f, 0.0f },
     { 0.0f, 0.0f, 0.0f }
 };
 
-Vec D_801075F4_opboardtutorial = { 0.0f, 0.0f, 1750.0f };
+Vec opboardtutorial_starPos = { 0.0f, 0.0f, 1750.0f };
 
-Vec D_80107600_opboardtutorial[4] = {
+Vec opboardtutorial_playerStartPosTbl[4] = {
     { -18.0f, 250.0f, 0.0f },
     { -6.0f, 250.0f, 0.0f },
     { 6.0f, 250.0f, 0.0f },
     { 18.0f, 250.0f, 0.0f }
 };
 
-Vec D_80107630_opboardtutorial[4] = {
+Vec opboardtutorial_playerPosTbl[4] = {
     { -175.0f, 0.0f, 2000.0f },
     { 0.0f, 0.0f, 2000.0f },
     { 175.0f, 0.0f, 2000.0f },
     { 350.0f, 0.0f, 2000.0f }
 };
 
-u32 D_80107660_opboardtutorial[6] = { 5, 0x20001, 0x20002, 0x2002B, 0x20033, 0x20031 };
+u32 opboardtutorial_playerMotMario[6] = { 5, 0x20001, 0x20002, 0x2002B, 0x20033, 0x20031 };
 
-u32 D_80107678_opboardtutorial[6] = { 5, 0, 0, 0, 0, 0 };
+u32 opboardtutorial_playerMotLuigi[6] = { 5, 0, 0, 0, 0, 0 };
 
-u32 D_80107690_opboardtutorial[6] = { 5, 0, 0, 0, 0, 0 };
+u32 opboardtutorial_playerMotPeach[6] = { 5, 0, 0, 0, 0, 0 };
 
-u32 D_801076A8_opboardtutorial[6] = { 5, 0, 0, 0, 0, 0 };
+u32 opboardtutorial_playerMotYoshi[6] = { 5, 0, 0, 0, 0, 0 };
 
-u32 D_801076C0_opboardtutorial[6] = { 5, 0, 0, 0, 0, 0 };
+u32 opboardtutorial_playerMotWario[6] = { 5, 0, 0, 0, 0, 0 };
 
-u32 D_801076D8_opboardtutorial[6] = { 5, 0, 0, 0, 0, 0 };
+u32 opboardtutorial_playerMotDk[6] = { 5, 0, 0, 0, 0, 0 };
 
-u32 D_801076F0_opboardtutorial[6] = { 5, 0, 0, 0, 0, 0 };
+u32 opboardtutorial_playerMotWaluigi[6] = { 5, 0, 0, 0, 0, 0 };
 
-u32 D_80107708_opboardtutorial[6] = { 5, 0, 0, 0, 0, 0 };
+u32 opboardtutorial_playerMotDaisy[6] = { 5, 0, 0, 0, 0, 0 };
 
-u32 *D_80107720_opboardtutorial[8] = { D_80107660_opboardtutorial, D_80107678_opboardtutorial, D_80107690_opboardtutorial, D_801076A8_opboardtutorial, D_801076C0_opboardtutorial, D_801076D8_opboardtutorial, D_801076F0_opboardtutorial, D_80107708_opboardtutorial };
+u32 *opboardtutorial_playerMotTbl[8] = { opboardtutorial_playerMotMario, opboardtutorial_playerMotLuigi, opboardtutorial_playerMotPeach, opboardtutorial_playerMotYoshi, opboardtutorial_playerMotWario, opboardtutorial_playerMotDk, opboardtutorial_playerMotWaluigi, opboardtutorial_playerMotDaisy };
 
-u8 D_80107760_opboardtutorial BSS;
-Object *D_80107764_opboardtutorial BSS;
-s16 D_80107768_opboardtutorial BSS;
-u8 D_8010776C_opboardtutorial[4] BSS; /* Unreferenced. */
-s16 D_80107770_opboardtutorial[10] BSS;
-s16 D_80107784_opboardtutorial BSS;
-s16 D_80107786_opboardtutorial BSS;
-GW_PLAYER *D_80107788_opboardtutorial[4] BSS;
-Object *D_80107798_opboardtutorial BSS;
+u8 opboardtutorial_boardNo BSS;
+Object *opboardtutorial_guideMdl BSS;
+s16 opboardtutorial_guideWin BSS;
+u8 opboardtutorial_guideWinPad[4] BSS; /* Unreferenced. */
+s16 opboardtutorial_guideAnimTbl[10] BSS;
+s16 opboardtutorial_guideAnim BSS;
+s16 opboardtutorial_guideAnimLink BSS;
+GW_PLAYER *opboardtutorial_playerTbl[4] BSS;
+Object *opboardtutorial_centerMdl BSS;
 
 void MBSaiOrderModeSet(void);
 void MBSaiValueForceSet(s32 player, s32 value);
 void MBWinComKeyAnyWait(s32 window);
-void func_80105DE0_opboardtutorial(s16 model);
-void func_80107408_opboardtutorial(void);
-void func_801074A4_opboardtutorial(omObjData *obj);
-void func_801074E8_opboardtutorial(void);
-void func_80107550_opboardtutorial(void);
-void func_80107448_opboardtutorial(omObjData *obj);
-void func_8010751C_opboardtutorial(void);
-void func_80107594_opboardtutorial(void);
+void opboardtutorial_SpiralEffHook(s16 model);
+void opboardtutorial_MainProc(void);
+void opboardtutorial_ExitCheckObjMain(omObjData *obj);
+void opboardtutorial_SysInit(void);
+void opboardtutorial_BackInit(void);
+void opboardtutorial_ExitObjMain(omObjData *obj);
+void opboardtutorial_SysClose(void);
+void opboardtutorial_BackClose(void);
 
-void func_801059A0_opboardtutorial(void) {
+void opboardtutorial_ObjectSetup(void) {
     s32 i;
     u32 j;
 
-    D_80107760_opboardtutorial = GwSystem.current_board_index;
+    opboardtutorial_boardNo = GwSystem.current_board_index;
     omInitObjMan(50, 50);
-    func_80107550_opboardtutorial();
-    func_801074E8_opboardtutorial();
+    opboardtutorial_BackInit();
+    opboardtutorial_SysInit();
     MBShadowHeightMaxSet(1000.0f);
     HuWinInit();
-    omAddPrcObj(func_80107408_opboardtutorial, 0x300, 0x2000, 0);
-    omAddObj(0x1000, 0, 0, -1, func_801074A4_opboardtutorial);
+    omAddPrcObj(opboardtutorial_MainProc, 0x300, 0x2000, 0);
+    omAddObj(0x1000, 0, 0, -1, opboardtutorial_ExitCheckObjMain);
     for (i = 1; i < 8; i++) {
-        for (j = 0; j < D_80107660_opboardtutorial[0]; j++) {
-            D_80107720_opboardtutorial[i][j + 1] = CharMotionDataNumGet(i, D_80107660_opboardtutorial[j + 1]);
+        for (j = 0; j < opboardtutorial_playerMotMario[0]; j++) {
+            opboardtutorial_playerMotTbl[i][j + 1] = CharMotionDataNumGet(i, opboardtutorial_playerMotMario[j + 1]);
         }
     }
     GwPlayer[0].chr = 3;
@@ -103,7 +103,7 @@ void func_801059A0_opboardtutorial(void) {
     omGameSysInit();
 }
 
-s16 func_80105AFC_opboardtutorial(s32 file, s32 flags) {
+s16 opboardtutorial_SpiralEffCreate(s32 file, s32 flags) {
     s16 model;
     HmfData *hmf;
     HmfModelData_UnkBC_Struct *effect;
@@ -119,7 +119,7 @@ s16 func_80105AFC_opboardtutorial(s32 file, s32 flags) {
     Hu3DModelRemakeStatic(model);
     Hu3DModelVtxBufMake(model);
     Hu3DModelDynamicFree(model);
-    Hu3DParticleCreate(model, -1, 0, func_80105DE0_opboardtutorial);
+    Hu3DParticleCreate(model, -1, 0, opboardtutorial_SpiralEffHook);
     hmf = Hu3DData[model].hmf;
     effect = Hu3DData[model].unkBC;
     particle = effect->unk58;
@@ -144,7 +144,7 @@ s16 func_80105AFC_opboardtutorial(s32 file, s32 flags) {
     return model;
 }
 
-s32 func_80105C7C_opboardtutorial(s16 model, f32 x, f32 y, f32 z) {
+s32 opboardtutorial_SpiralEffAdd(s16 model, f32 x, f32 y, f32 z) {
     HmfData *hmf = Hu3DData[model].hmf;
     HmfModelData_UnkBC_Struct *effect = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle = effect->unk58;
@@ -173,7 +173,7 @@ s32 func_80105C7C_opboardtutorial(s16 model, f32 x, f32 y, f32 z) {
     return 0;
 }
 
-void func_80105DE0_opboardtutorial(s16 model) {
+void opboardtutorial_SpiralEffHook(s16 model) {
     HmfData *hmf = Hu3DData[model].hmf;
     HmfModelData_UnkBC_Struct *effect = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle = effect->unk58;
@@ -208,31 +208,31 @@ void func_80105DE0_opboardtutorial(s16 model) {
     effect->unk02++;
 }
 
-s16 func_80105FA8_opboardtutorial(s16 model, s32 file, char *name) {
+s16 opboardtutorial_ModelAnimCreate(s16 model, s32 file, char *name) {
     void *data;
     s32 anim;
     s16 animIdx;
 
     data = DataRead(file);
     anim = Hu3DAnimCreate(Hu3DData[model].hmf, data, 0, name);
-    D_80107784_opboardtutorial = anim;
+    opboardtutorial_guideAnim = anim;
     Hu3DAnimAttrSet(anim, 1, 1);
     DataClose(data);
     animIdx = Hu3DAnimData[(s16)anim].animIdx;
-    D_80107786_opboardtutorial = Hu3DAnimLink(Hu3DData[model].hmf, (u16)anim, 0, name);
+    opboardtutorial_guideAnimLink = Hu3DAnimLink(Hu3DData[model].hmf, (u16)anim, 0, name);
     Hu3DModelRemakeStatic(model);
     return animIdx;
 }
 
-void func_801060B4_opboardtutorial(s16 model, s16 anim) {
+void opboardtutorial_ModelAnimSet(s16 model, s16 anim) {
     HmfAnim *entry;
 
-    if (D_80107786_opboardtutorial != 0xFF) {
+    if (opboardtutorial_guideAnimLink != 0xFF) {
         if (anim == -1) {
             Hu3DModelAnimStop(Hu3DData[model].hmf);
         } else {
             Hu3DModelAnimStart(Hu3DData[model].hmf);
-            entry = &Hu3DAnimData[D_80107786_opboardtutorial];
+            entry = &Hu3DAnimData[opboardtutorial_guideAnimLink];
             entry->animIdx = anim;
             entry->rot = 0;
             entry->flags = 0;
@@ -242,7 +242,7 @@ void func_801060B4_opboardtutorial(s16 model, s16 anim) {
     }
 }
 
-s16 func_80106184_opboardtutorial(s32 file) {
+s16 opboardtutorial_AnimDataRead(s32 file) {
     void *data = DataRead(file);
     s32 anim = Hu3DAnimDataCreate(data);
 
@@ -250,7 +250,7 @@ s16 func_80106184_opboardtutorial(s32 file) {
     return anim;
 }
 
-void func_801061CC_opboardtutorial(s32 player1, s32 player2) {
+void opboardtutorial_PlayerSwap(s32 player1, s32 player2) {
     GW_PLAYER *first = MBPlayerGet(player1);
     GW_PLAYER *second = MBPlayerGet(player2);
     GW_PLAYER *temp = HuMemMemoryAllocPerm(sizeof(GW_PLAYER));
@@ -261,25 +261,25 @@ void func_801061CC_opboardtutorial(s32 player1, s32 player2) {
     HuMemMemoryFreePerm(temp);
 }
 
-void func_80106254_opboardtutorial(void) {
+void opboardtutorial_PlayerTurnSort(void) {
     s32 i;
     s32 j;
 
     for (i = 3; i > 0; i--) {
         for (j = 0; j < i; j++) {
             if (GwPlayer[j].turn > GwPlayer[j + 1].turn) {
-                func_801061CC_opboardtutorial(j, j + 1);
+                opboardtutorial_PlayerSwap(j, j + 1);
             }
         }
     }
 }
 
-void func_801062E8_opboardtutorial(omObjData *obj) {
+void opboardtutorial_CenterBobObjMain(omObjData *obj) {
     s32 i;
 
-    D_80107798_opboardtutorial->coords.y = sindf(obj->rot.x) * 5.0f + obj->rot.z;
+    opboardtutorial_centerMdl->coords.y = sindf(obj->rot.x) * 5.0f + obj->rot.z;
     for (i = 0; i < 4; i++) {
-        D_80107788_opboardtutorial[i]->player_obj->coords.y = D_80107798_opboardtutorial->coords.y;
+        opboardtutorial_playerTbl[i]->player_obj->coords.y = opboardtutorial_centerMdl->coords.y;
     }
     obj->rot.x += obj->rot.y;
     if (obj->rot.x >= 360.0f) {
@@ -287,7 +287,7 @@ void func_801062E8_opboardtutorial(omObjData *obj) {
     }
 }
 
-void func_801063A4_opboardtutorial(void) {
+void opboardtutorial_ArriveExec(void) {
     s32 i;
     Object *shadow;
     omObjData *bob;
@@ -296,16 +296,16 @@ void func_801063A4_opboardtutorial(void) {
     f32 shadowScale;
 
     for (i = 0; i < 4; i++) {
-        D_80107788_opboardtutorial[i] = MBPlayerGet(i);
-        MBPlayerModelCreate(i, D_80107720_opboardtutorial[GwPlayer[i].chr], 2);
-        HuVecCopy3F(&D_80107788_opboardtutorial[i]->player_obj->coords, &D_80107600_opboardtutorial[i]);
-        MBModelTempAllocFree(D_80107788_opboardtutorial[i]->player_obj);
-        D_80107788_opboardtutorial[i]->stat |= PLAYER_UNK_04;
+        opboardtutorial_playerTbl[i] = MBPlayerGet(i);
+        MBPlayerModelCreate(i, opboardtutorial_playerMotTbl[GwPlayer[i].chr], 2);
+        HuVecCopy3F(&opboardtutorial_playerTbl[i]->player_obj->coords, &opboardtutorial_playerStartPosTbl[i]);
+        MBModelTempAllocFree(opboardtutorial_playerTbl[i]->player_obj);
+        opboardtutorial_playerTbl[i]->stat |= PLAYER_UNK_04;
     }
-    D_80107798_opboardtutorial = MBModelFileCreate(0x1301FE, -1, 1.0f, 0, NULL);
+    opboardtutorial_centerMdl = MBModelFileCreate(0x1301FE, -1, 1.0f, 0, NULL);
     shadow = MBModelFileCreate(0x1301FD, -1, 1.0f, 0, NULL);
-    HuVecCopy3F(&D_80107798_opboardtutorial->coords, &D_801075D0_opboardtutorial);
-    HuVecCopy3F(&shadow->coords, &D_801075D0_opboardtutorial);
+    HuVecCopy3F(&opboardtutorial_centerMdl->coords, &opboardtutorial_platformPos);
+    HuVecCopy3F(&shadow->coords, &opboardtutorial_platformPos);
     shadow->coords.y = 0;
     HuVecCopyXYZ(&shadow->scale, shadow->coords.y, shadow->coords.y, shadow->coords.y);
     effect = EffectCreate(0xB0004, 0x6A9);
@@ -321,38 +321,38 @@ void func_801063A4_opboardtutorial(void) {
     }
     MBBackTPLvlSet(255);
     HuAudFXPlay(0x2ED);
-    while (D_80107798_opboardtutorial->coords.y >= 10.0f) {
-        D_80107798_opboardtutorial->coords.y -= 3.0f;
+    while (opboardtutorial_centerMdl->coords.y >= 10.0f) {
+        opboardtutorial_centerMdl->coords.y -= 3.0f;
         for (i = 0; i < 4; i++) {
-            D_80107788_opboardtutorial[i]->player_obj->coords.y -= 3.0f;
+            opboardtutorial_playerTbl[i]->player_obj->coords.y -= 3.0f;
         }
-        shadowScale = 1.0f - D_80107798_opboardtutorial->coords.y / 250.0f;
+        shadowScale = 1.0f - opboardtutorial_centerMdl->coords.y / 250.0f;
         HuVecCopyXYZ(&shadow->scale, shadowScale, shadowScale, shadowScale);
         HuPrcVSleep();
     }
-    bob = omAddObj(0x1000, 0, 0, -1, func_801062E8_opboardtutorial);
+    bob = omAddObj(0x1000, 0, 0, -1, opboardtutorial_CenterBobObjMain);
     bob->rot.x = 180.0f;
     bob->rot.y = 5.0f;
-    bob->rot.z = D_80107798_opboardtutorial->coords.y;
+    bob->rot.z = opboardtutorial_centerMdl->coords.y;
     HuPrcSleep(30);
-    EffectPosSet(effect, D_80107798_opboardtutorial->coords.x,
-                       D_80107798_opboardtutorial->coords.y + 40.0f, D_80107798_opboardtutorial->coords.z);
+    EffectPosSet(effect, opboardtutorial_centerMdl->coords.x,
+                       opboardtutorial_centerMdl->coords.y + 40.0f, opboardtutorial_centerMdl->coords.z);
     Hu3DParticleAttrSet(effect, 0, 1);
     HuAudFXPlay(0x2E4);
     HuPrcSleep(30);
     for (scale = 1.0f; scale >= 0.0f; scale -= 0.1f) {
         for (i = 0; i < 4; i++) {
-            HuVecCopyXYZ(&D_80107788_opboardtutorial[i]->player_obj->scale, scale, 1.0f, scale);
+            HuVecCopyXYZ(&opboardtutorial_playerTbl[i]->player_obj->scale, scale, 1.0f, scale);
         }
         HuPrcVSleep();
     }
     for (i = 0; i < 4; i++) {
-        MBModelDispOff(D_80107788_opboardtutorial[i]->player_obj);
+        MBModelDispOff(opboardtutorial_playerTbl[i]->player_obj);
     }
     Hu3DParticleAttrSet(effect, 1, 0);
     HuPrcSleep(20);
     for (i = 0, scale = 1.0f; scale < 10.0f; i++, scale += 0.5f) {
-        HuVecCopyXYZ(&D_80107798_opboardtutorial->scale, scale, scale, scale);
+        HuVecCopyXYZ(&opboardtutorial_centerMdl->scale, scale, scale, scale);
         HuPrcVSleep();
         if (i == 5) {
             WipeColorSet(255, 255, 255);
@@ -363,25 +363,25 @@ void func_801063A4_opboardtutorial(void) {
         HuPrcVSleep();
     }
     EffectStop(effect);
-    MBModelKill(D_80107798_opboardtutorial);
+    MBModelKill(opboardtutorial_centerMdl);
     MBModelKill(shadow);
     omDelObj(bob);
 }
 
-void func_801068E4_opboardtutorial(Object *obj) {
+void opboardtutorial_GuideJump(Object *obj) {
     HuPrcSleep(5);
     obj->velocity.y = 20.0f;
     obj->velocity.z = -2.5f;
     HuPrcSleep(10);
     obj->velocity.y = 0;
     obj->velocity.z = 0;
-    HuWinExCleanup(D_80107768_opboardtutorial);
-    D_80107768_opboardtutorial = HuWinExCreateStyled(75, 159, 16);
-    HuWinMesPalSet(D_80107768_opboardtutorial, 4, 0, 224, 224);
-    HuWinMesSpeedSet(D_80107768_opboardtutorial, 0);
+    HuWinExCleanup(opboardtutorial_guideWin);
+    opboardtutorial_guideWin = HuWinExCreateStyled(75, 159, 16);
+    HuWinMesPalSet(opboardtutorial_guideWin, 4, 0, 224, 224);
+    HuWinMesSpeedSet(opboardtutorial_guideWin, 0);
 }
 
-void func_80106990_opboardtutorial(void) {
+void opboardtutorial_TurnOrderExec(void) {
     s32 state[4];
     s32 frames[4];
     s32 order[4];
@@ -402,10 +402,10 @@ void func_80106990_opboardtutorial(void) {
     }
     MBSaiOrderModeSet();
     HuPrcSleep(20);
-    HuWinMesSet(D_80107768_opboardtutorial, 0x1601, -1, -1);
-    HuWinExOpen(D_80107768_opboardtutorial, 1);
-    MBWinComKeyAnyWait(D_80107768_opboardtutorial);
-    HuWinExClose(D_80107768_opboardtutorial, 1);
+    HuWinMesSet(opboardtutorial_guideWin, 0x1601, -1, -1);
+    HuWinExOpen(opboardtutorial_guideWin, 1);
+    MBWinComKeyAnyWait(opboardtutorial_guideWin);
+    HuWinExClose(opboardtutorial_guideWin, 1);
     help = MBHelpWinCreate(2, 190, 1);
     for (i = 0; i < 4; i++) {
         switch (i) {
@@ -436,8 +436,8 @@ void func_80106990_opboardtutorial(void) {
         for (i = 0; i < 4; i++) {
             if (state[i] == 1) {
                 state[i] = 2;
-                MBMotionSet(D_80107788_opboardtutorial[i]->player_obj, 2, 0);
-                MBMotionEndShiftSet(D_80107788_opboardtutorial[i]->player_obj, -1, 2);
+                MBMotionSet(opboardtutorial_playerTbl[i]->player_obj, 2, 0);
+                MBMotionEndShiftSet(opboardtutorial_playerTbl[i]->player_obj, -1, 2);
             } else if (state[i] == 2) {
                 if (++frames[i] == 5) {
                     MBSaiHit(i);
@@ -477,33 +477,33 @@ void func_80106990_opboardtutorial(void) {
         GwPlayer[order[i]].turn = i;
         MBSaiNumObjKill(i);
     }
-    func_80106254_opboardtutorial();
+    opboardtutorial_PlayerTurnSort();
     MBStatusCreate();
-    D_801075C0_opboardtutorial = 1;
+    opboardtutorial_statusCreateF = 1;
     for (i = 0; i < 4; i++) {
         MBStatusDispSideSet(i, 1);
     }
     HuPrcSleep(5);
-    HuWinMesPalSet(D_80107768_opboardtutorial, 4, 0, 255, 255);
-    HuWinMesSet(D_80107768_opboardtutorial, 0x1602, -1, -1);
-    HuWinExOpen(D_80107768_opboardtutorial, 1);
-    MBWinComKeyAnyWait(D_80107768_opboardtutorial);
+    HuWinMesPalSet(opboardtutorial_guideWin, 4, 0, 255, 255);
+    HuWinMesSet(opboardtutorial_guideWin, 0x1602, -1, -1);
+    HuWinExOpen(opboardtutorial_guideWin, 1);
+    MBWinComKeyAnyWait(opboardtutorial_guideWin);
     for (i = 0; i < 4; i++) {
         s32 messages[4] = { 0x1603, 0x1604, 0x1605, 0x1606 };
 
-        func_801060B4_opboardtutorial(D_80107764_opboardtutorial->omObj1->model[0], D_80107770_opboardtutorial[motion[i]]);
-        HuWinMesSet(D_80107768_opboardtutorial, messages[i], -1, -1);
+        opboardtutorial_ModelAnimSet(opboardtutorial_guideMdl->omObj1->model[0], opboardtutorial_guideAnimTbl[motion[i]]);
+        HuWinMesSet(opboardtutorial_guideWin, messages[i], -1, -1);
         if (i != 0) {
-            HuWinExOpen(D_80107768_opboardtutorial, 1);
+            HuWinExOpen(opboardtutorial_guideWin, 1);
         }
-        MBWinComKeyAnyWait(D_80107768_opboardtutorial);
-        HuWinExClose(D_80107768_opboardtutorial, 1);
+        MBWinComKeyAnyWait(opboardtutorial_guideWin);
+        HuWinExClose(opboardtutorial_guideWin, 1);
         PlayerFXPlay(0x274, i);
-        MBMotionShiftSetDef(D_80107788_opboardtutorial[i]->player_obj, 3, 0);
-        MBMotionEndShiftSet(D_80107788_opboardtutorial[i]->player_obj, -1, 2);
+        MBMotionShiftSetDef(opboardtutorial_playerTbl[i]->player_obj, 3, 0);
+        MBMotionEndShiftSet(opboardtutorial_playerTbl[i]->player_obj, -1, 2);
         MBSaiNumKill(order[i]);
         if (i == 2) {
-            func_801068E4_opboardtutorial(D_80107764_opboardtutorial);
+            opboardtutorial_GuideJump(opboardtutorial_guideMdl);
         }
         MBStatusDispMoveSet(i + 10);
         while (MBStatusMoveCheck() != 0) {
@@ -511,10 +511,10 @@ void func_80106990_opboardtutorial(void) {
         }
         HuPrcSleep(20);
     }
-    func_801060B4_opboardtutorial(D_80107764_opboardtutorial->omObj1->model[0], D_80107770_opboardtutorial[0]);
+    opboardtutorial_ModelAnimSet(opboardtutorial_guideMdl->omObj1->model[0], opboardtutorial_guideAnimTbl[0]);
 }
 
-void func_80106F40_opboardtutorial(void) {
+void opboardtutorial_GuideTalkExec(void) {
     s16 effects[4];
     s32 i;
     s32 j;
@@ -523,29 +523,29 @@ void func_80106F40_opboardtutorial(void) {
     MBBackKill();
     MBBackLoad(22);
     MBCameraNearFarSet(1000.0f, 10000.0f);
-    D_80107764_opboardtutorial = MBModelCreate(59, NULL);
-    HuVecCopy3F(&D_80107764_opboardtutorial->coords, &D_801075C4_opboardtutorial);
-    HuVecCopyXYZ(&D_80107764_opboardtutorial->scale, 0.9f, 0.9f, 0.9f);
-    D_80107764_opboardtutorial->rot.x = sindf(10.0f);
-    D_80107764_opboardtutorial->rot.z = cosdf(10.0f);
-    D_80107764_opboardtutorial->flags |= 1;
-    D_80107768_opboardtutorial = HuWinExCreateStyled(75, 197, 16);
-    HuWinMesSpeedSet(D_80107768_opboardtutorial, 0);
-    D_80107770_opboardtutorial[0] = func_80105FA8_opboardtutorial(D_80107764_opboardtutorial->omObj1->model[0], 0xA007E, "c204n_0_DEF");
-    D_80107770_opboardtutorial[1] = func_80106184_opboardtutorial(0xA007F);
-    D_80107770_opboardtutorial[2] = func_80106184_opboardtutorial(0xA0080);
-    D_80107770_opboardtutorial[3] = func_80106184_opboardtutorial(0xA0081);
-    D_80107770_opboardtutorial[4] = func_80106184_opboardtutorial(0xA0082);
-    D_80107770_opboardtutorial[5] = func_80106184_opboardtutorial(0xA0083);
-    D_80107770_opboardtutorial[6] = func_80106184_opboardtutorial(0xA0084);
-    func_801060B4_opboardtutorial(D_80107764_opboardtutorial->omObj1->model[0], D_80107770_opboardtutorial[0]);
-    D_80107798_opboardtutorial = MBModelCreate(58, NULL);
-    AuraCreate(D_80107798_opboardtutorial->omObj1->model[0]);
-    HuVecCopy3F(&D_80107798_opboardtutorial->coords, &D_801075F4_opboardtutorial);
-    D_80107798_opboardtutorial->velocity.x = 1000.0f;
+    opboardtutorial_guideMdl = MBModelCreate(59, NULL);
+    HuVecCopy3F(&opboardtutorial_guideMdl->coords, &opboardtutorial_guidePos);
+    HuVecCopyXYZ(&opboardtutorial_guideMdl->scale, 0.9f, 0.9f, 0.9f);
+    opboardtutorial_guideMdl->rot.x = sindf(10.0f);
+    opboardtutorial_guideMdl->rot.z = cosdf(10.0f);
+    opboardtutorial_guideMdl->flags |= 1;
+    opboardtutorial_guideWin = HuWinExCreateStyled(75, 197, 16);
+    HuWinMesSpeedSet(opboardtutorial_guideWin, 0);
+    opboardtutorial_guideAnimTbl[0] = opboardtutorial_ModelAnimCreate(opboardtutorial_guideMdl->omObj1->model[0], 0xA007E, "c204n_0_DEF");
+    opboardtutorial_guideAnimTbl[1] = opboardtutorial_AnimDataRead(0xA007F);
+    opboardtutorial_guideAnimTbl[2] = opboardtutorial_AnimDataRead(0xA0080);
+    opboardtutorial_guideAnimTbl[3] = opboardtutorial_AnimDataRead(0xA0081);
+    opboardtutorial_guideAnimTbl[4] = opboardtutorial_AnimDataRead(0xA0082);
+    opboardtutorial_guideAnimTbl[5] = opboardtutorial_AnimDataRead(0xA0083);
+    opboardtutorial_guideAnimTbl[6] = opboardtutorial_AnimDataRead(0xA0084);
+    opboardtutorial_ModelAnimSet(opboardtutorial_guideMdl->omObj1->model[0], opboardtutorial_guideAnimTbl[0]);
+    opboardtutorial_centerMdl = MBModelCreate(58, NULL);
+    AuraCreate(opboardtutorial_centerMdl->omObj1->model[0]);
+    HuVecCopy3F(&opboardtutorial_centerMdl->coords, &opboardtutorial_starPos);
+    opboardtutorial_centerMdl->velocity.x = 1000.0f;
     for (j = 0; j < 4; j++) {
-        HuVecCopy3F(&D_80107788_opboardtutorial[j]->player_obj->coords, &D_80107630_opboardtutorial[j]);
-        effects[j] = func_80105AFC_opboardtutorial(0xB0004, 0x689);
+        HuVecCopy3F(&opboardtutorial_playerTbl[j]->player_obj->coords, &opboardtutorial_playerPosTbl[j]);
+        effects[j] = opboardtutorial_SpiralEffCreate(0xB0004, 0x689);
     }
     WipeColorSet(255, 255, 255);
     WipeCreateIn(11, 16);
@@ -555,85 +555,85 @@ void func_80106F40_opboardtutorial(void) {
     HuAudFXPlay(0x2DB);
     for (i = 0; i < 20; i++) {
         for (j = 0; j < 4; j++) {
-            func_80105C7C_opboardtutorial(effects[j], D_80107788_opboardtutorial[j]->player_obj->coords.x,
-                                          D_80107788_opboardtutorial[j]->player_obj->coords.y + 50.0f, D_80107788_opboardtutorial[j]->player_obj->coords.z);
+            opboardtutorial_SpiralEffAdd(effects[j], opboardtutorial_playerTbl[j]->player_obj->coords.x,
+                                          opboardtutorial_playerTbl[j]->player_obj->coords.y + 50.0f, opboardtutorial_playerTbl[j]->player_obj->coords.z);
         }
         HuPrcVSleep();
     }
     for (scale = 0.0f; scale <= 1.0f; scale += 0.1f) {
         for (j = 0; j < 4; j++) {
-            MBModelDispOn(D_80107788_opboardtutorial[j]->player_obj);
-            HuVecCopyXYZ(&D_80107788_opboardtutorial[j]->player_obj->scale, scale, 1.0f, scale);
+            MBModelDispOn(opboardtutorial_playerTbl[j]->player_obj);
+            HuVecCopyXYZ(&opboardtutorial_playerTbl[j]->player_obj->scale, scale, 1.0f, scale);
         }
         HuPrcVSleep();
     }
     for (j = 0; j < 4; j++) {
-        HuVecCopyXYZ(&D_80107788_opboardtutorial[j]->player_obj->scale, 1.0f, 1.0f, 1.0f);
+        HuVecCopyXYZ(&opboardtutorial_playerTbl[j]->player_obj->scale, 1.0f, 1.0f, 1.0f);
     }
     HuPrcSleep(20);
     HuAudSeqPlay(11);
-    HuWinMesSet(D_80107768_opboardtutorial, 0x1600, -1, -1);
-    HuWinExOpen(D_80107768_opboardtutorial, 1);
-    MBWinComKeyAnyWait(D_80107768_opboardtutorial);
-    HuWinExClose(D_80107768_opboardtutorial, 1);
-    func_80106990_opboardtutorial();
-    HuWinMesSet(D_80107768_opboardtutorial, 0x1607, -1, -1);
-    HuWinExOpen(D_80107768_opboardtutorial, 1);
-    MBWinComKeyAnyWait(D_80107768_opboardtutorial);
-    HuWinExClose(D_80107768_opboardtutorial, 1);
-    HuWinExCleanup(D_80107768_opboardtutorial);
+    HuWinMesSet(opboardtutorial_guideWin, 0x1600, -1, -1);
+    HuWinExOpen(opboardtutorial_guideWin, 1);
+    MBWinComKeyAnyWait(opboardtutorial_guideWin);
+    HuWinExClose(opboardtutorial_guideWin, 1);
+    opboardtutorial_TurnOrderExec();
+    HuWinMesSet(opboardtutorial_guideWin, 0x1607, -1, -1);
+    HuWinExOpen(opboardtutorial_guideWin, 1);
+    MBWinComKeyAnyWait(opboardtutorial_guideWin);
+    HuWinExClose(opboardtutorial_guideWin, 1);
+    HuWinExCleanup(opboardtutorial_guideWin);
 }
 
-void func_80107408_opboardtutorial(void) {
-    func_801063A4_opboardtutorial();
-    func_80106F40_opboardtutorial();
+void opboardtutorial_MainProc(void) {
+    opboardtutorial_ArriveExec();
+    opboardtutorial_GuideTalkExec();
     omSysExitReq = 1;
     while (1) {
         HuPrcVSleep();
     }
 }
 
-void func_80107448_opboardtutorial(omObjData *obj) {
+void opboardtutorial_ExitObjMain(omObjData *obj) {
     if (WipeStatGet() == 0) {
-        func_80107594_opboardtutorial();
-        func_8010751C_opboardtutorial();
+        opboardtutorial_BackClose();
+        opboardtutorial_SysClose();
         HuWinAllKill();
-        if (D_801075C0_opboardtutorial != 0) {
+        if (opboardtutorial_statusCreateF != 0) {
             MBStatusKill();
         }
         omOvlReturnEx(1);
     }
 }
 
-void func_801074A4_opboardtutorial(omObjData *obj) {
+void opboardtutorial_ExitCheckObjMain(omObjData *obj) {
     if (omSysExitReq != 0) {
         WipeCreateOut(2, 20);
-        obj->func = func_80107448_opboardtutorial;
+        obj->func = opboardtutorial_ExitObjMain;
     }
 }
 
-void func_801074E8_opboardtutorial(void) {
+void opboardtutorial_SysInit(void) {
     MBModelInit();
     MBPlayerMotInit();
     MBMotShiftInit();
     MBSprGrpInit();
 }
 
-void func_8010751C_opboardtutorial(void) {
+void opboardtutorial_SysClose(void) {
     MBSprGrpClose();
     MBMotShiftClose();
     MBPlayerClose();
     MBModelClose();
 }
 
-void func_80107550_opboardtutorial(void) {
+void opboardtutorial_BackInit(void) {
     Hu3DCamInit(1);
     Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
     MBBackArcInit((u32)hvq_data_ROM_START);
     MBBackLoad(0x15);
 }
 
-void func_80107594_opboardtutorial() {
+void opboardtutorial_BackClose() {
     MBBackKill();
     MBBackClose();
 }

@@ -1,20 +1,20 @@
 #include "common_board.h"
 
-void func_80107744_w02(void);
-void func_80107780_w02(void);
-void func_80107B4C_w02(void);
-void func_80107BD0_w02(void);
-void func_8011B934_w02(void);
+void MB2_BoardInit(void);
+void MB2_SaveInit(void);
+void MB2_Create(void);
+void MB2_BoardReload(void);
+void MB2Ev_OpStarMapView(void);
 
-OvlEntrypoint D_8011C630_w02[] = {
-    { 0, func_80107744_w02 },
-    { 1, func_80107780_w02 },
-    { 2, func_80107B4C_w02 },
-    { 3, func_80107BD0_w02 },
-    { 4, func_8011B934_w02 },
+OvlEntrypoint mb2_ovlEntryTbl[] = {
+    { 0, MB2_BoardInit },
+    { 1, MB2_SaveInit },
+    { 2, MB2_Create },
+    { 3, MB2_BoardReload },
+    { 4, MB2Ev_OpStarMapView },
     { -1, NULL },
 };
 
-void func_801059A0_w02(void) {
-    ovlEventCall(D_8011C630_w02, omovlevtno);
+void MB2_Executor(void) {
+    ovlEventCall(mb2_ovlEntryTbl, omovlevtno);
 }

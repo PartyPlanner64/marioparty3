@@ -1,16 +1,16 @@
 #include "common_board.h"
 
-void func_801059D0_w10(void);
-void func_80105A0C_w10(void);
-void func_8010B5A4_w10(void);
+void MB10_BoardInit(void);
+void MB10_SaveInit(void);
+void MB10_Create(void);
 
-OvlEntrypoint D_8010B7D0_w10[] = {
-    { 0, func_801059D0_w10 },
-    { 1, func_80105A0C_w10 },
-    { 2, func_8010B5A4_w10 },
+OvlEntrypoint mb10_ovlEntryTbl[] = {
+    { 0, MB10_BoardInit },
+    { 1, MB10_SaveInit },
+    { 2, MB10_Create },
     { -1, NULL },
 };
 
-void func_801059A0_w10(void) {
-    ovlEventCall(D_8010B7D0_w10, omovlevtno);
+void MB10_Executor(void) {
+    ovlEventCall(mb10_ovlEntryTbl, omovlevtno);
 }

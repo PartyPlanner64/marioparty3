@@ -24,124 +24,124 @@ typedef struct OpBoardPath {
 
 extern s32 mbSaiSeF;
 
-s32 D_80108D70_opboard = 0;
+s32 opboard_statusCreateF = 0;
 
-Vec D_80108D74_opboard = { 0.0f, 250.0f, 0.0f };
+Vec opboard_platformPos = { 0.0f, 250.0f, 0.0f };
 
 /* Unreferenced. */
-Vec D_80108D80_opboard[2] = {
+Vec opboard_unusedPosTbl[2] = {
     { 0.0f, 100.0f, 0.0f },
     { 0.0f, 0.0f, 0.0f }
 };
 
-Vec D_80108D98_opboard = { 0.0f, 0.0f, 1750.0f };
+Vec opboard_starPos = { 0.0f, 0.0f, 1750.0f };
 
-Vec D_80108DA4_opboard[4] = {
+Vec opboard_playerStartPosTbl[4] = {
     { -18.0f, 250.0f, 0.0f },
     { -6.0f, 250.0f, 0.0f },
     { 6.0f, 250.0f, 0.0f },
     { 18.0f, 250.0f, 0.0f }
 };
 
-Vec D_80108DD4_opboard[4] = {
+Vec opboard_playerPosTbl[4] = {
     { -300.0f, 0.0f, 2000.0f },
     { -100.0f, 0.0f, 2000.0f },
     { 100.0f, 0.0f, 2000.0f },
     { 300.0f, 0.0f, 2000.0f }
 };
 
-Vec D_80108E04_opboard[4] = {
+Vec opboard_playerNearPosTbl[4] = {
     { -300.0f, 0.0f, 2250.0f },
     { -125.0f, 0.0f, 2450.0f },
     { 125.0f, 0.0f, 2450.0f },
     { 300.0f, 0.0f, 2250.0f }
 };
 
-u32 D_80108E34_opboard[6] = { 5, 0x20001, 0x20002, 0x2002B, 0x20033, 0x20031 };
+u32 opboard_playerMotMario[6] = { 5, 0x20001, 0x20002, 0x2002B, 0x20033, 0x20031 };
 
-u32 D_80108E4C_opboard[6] = { 5, 0, 0, 0, 0, 0 };
+u32 opboard_playerMotLuigi[6] = { 5, 0, 0, 0, 0, 0 };
 
-u32 D_80108E64_opboard[6] = { 5, 0, 0, 0, 0, 0 };
+u32 opboard_playerMotPeach[6] = { 5, 0, 0, 0, 0, 0 };
 
-u32 D_80108E7C_opboard[6] = { 5, 0, 0, 0, 0, 0 };
+u32 opboard_playerMotYoshi[6] = { 5, 0, 0, 0, 0, 0 };
 
-u32 D_80108E94_opboard[6] = { 5, 0, 0, 0, 0, 0 };
+u32 opboard_playerMotWario[6] = { 5, 0, 0, 0, 0, 0 };
 
-u32 D_80108EAC_opboard[6] = { 5, 0, 0, 0, 0, 0 };
+u32 opboard_playerMotDk[6] = { 5, 0, 0, 0, 0, 0 };
 
-u32 D_80108EC4_opboard[6] = { 5, 0, 0, 0, 0, 0 };
+u32 opboard_playerMotWaluigi[6] = { 5, 0, 0, 0, 0, 0 };
 
-u32 D_80108EDC_opboard[6] = { 5, 0, 0, 0, 0, 0 };
+u32 opboard_playerMotDaisy[6] = { 5, 0, 0, 0, 0, 0 };
 
-u32 *D_80108EF4_opboard[8] = { D_80108E34_opboard, D_80108E4C_opboard, D_80108E64_opboard, D_80108E7C_opboard, D_80108E94_opboard, D_80108EAC_opboard, D_80108EC4_opboard, D_80108EDC_opboard };
+u32 *opboard_playerMotTbl[8] = { opboard_playerMotMario, opboard_playerMotLuigi, opboard_playerMotPeach, opboard_playerMotYoshi, opboard_playerMotWario, opboard_playerMotDk, opboard_playerMotWaluigi, opboard_playerMotDaisy };
 
-u32 D_80108F14_opboard[2] = { 1, 0xA0125 };
+u32 opboard_starMot[2] = { 1, 0xA0125 };
 
-Object *D_80108F1C_opboard = NULL;
+Object *opboard_centerMdl = NULL;
 
-Object *D_80108F20_opboard = NULL;
+Object *opboard_stampMdl = NULL;
 
-Object *D_80108F24_opboard = NULL;
+Object *opboard_shadowMdl = NULL;
 
-omObjData *D_80108F28_opboard = NULL;
+omObjData *opboard_centerBobObj = NULL;
 
-s16 D_80108F2C_opboard = -1;
+s16 opboard_effNo = -1;
 
-Process *D_80108F30_opboard = NULL;
+Process *opboard_arriveProc = NULL;
 
-UnkBoard8 *D_80108F34_opboard = NULL;
+UnkBoard8 *opboard_titleGrp = NULL;
 
-UnkBoard8 *D_80108F38_opboard = NULL;
+UnkBoard8 *opboard_subtitleGrp = NULL;
 
-omObjData *D_80108F3C_opboard = NULL;
+omObjData *opboard_skipObj = NULL;
 
-s32 D_80108F40_opboard = 0;
+s32 opboard_skipF = 0;
 
-Vec D_80108F44_opboard[4] = {
+Vec opboard_stampPathPosTbl[4] = {
     { 0.0f, 400.0f, 1750.0f },
     { -200.0f, 300.0f, 1550.0f },
     { -100.0f, 480.0f, 1950.0f },
     { 9999.0f, 9999.0f, 9999.0f }
 };
 
-u8 D_80109060_opboard BSS;
-u8 D_80109064_opboard[4] BSS; /* Unreferenced. */
-GW_PLAYER *D_80109068_opboard[4] BSS;
+u8 opboard_boardNo BSS;
+u8 opboard_boardNoPad[4] BSS; /* Unreferenced. */
+GW_PLAYER *opboard_playerTbl[4] BSS;
 
 void MBSaiOrderModeSet(void);
-void func_80105DC4_opboard(s16 model);
+void opboard_SpiralEffHook(s16 model);
 
-void func_801066F0_opboard(void);
-void func_80107E58_opboard(void);
-void func_80108B3C_opboard(void);
-void func_80108C0C_opboard(omObjData *obj);
-void func_80108C58_opboard(void);
-void func_80108CC0_opboard(void);
-void func_80108BB0_opboard(omObjData *obj);
-void func_80108D44_opboard(void);
-void func_80108C8C_opboard(void);
+void opboard_ArriveProc(void);
+void opboard_StarTalkExec(void);
+void opboard_MainProc(void);
+void opboard_ExitCheckObjMain(omObjData *obj);
+void opboard_SysInit(void);
+void opboard_BackInit(void);
+void opboard_ExitObjMain(omObjData *obj);
+void opboard_BackClose(void);
+void opboard_SysClose(void);
 
-void func_801059A0_opboard(void) {
+void opboard_ObjectSetup(void) {
     s32 i;
     u32 j;
 
-    D_80109060_opboard = GwSystem.current_board_index;
+    opboard_boardNo = GwSystem.current_board_index;
     omInitObjMan(50, 50);
-    func_80108CC0_opboard();
-    func_80108C58_opboard();
+    opboard_BackInit();
+    opboard_SysInit();
     MBShadowHeightMaxSet(1000.0f);
     HuWinInit();
-    omAddPrcObj(func_80108B3C_opboard, 0x300, 0x2000, 0);
-    omAddObj(0x1000, 0, 0, -1, func_80108C0C_opboard);
+    omAddPrcObj(opboard_MainProc, 0x300, 0x2000, 0);
+    omAddObj(0x1000, 0, 0, -1, opboard_ExitCheckObjMain);
     for (i = 1; i < 8; i++) {
-        for (j = 0; j < D_80108E34_opboard[0]; j++) {
-            D_80108EF4_opboard[i][j + 1] = CharMotionDataNumGet(i, D_80108E34_opboard[j + 1]);
+        for (j = 0; j < opboard_playerMotMario[0]; j++) {
+            opboard_playerMotTbl[i][j + 1] = CharMotionDataNumGet(i, opboard_playerMotMario[j + 1]);
         }
     }
     omGameSysInit();
 }
 
-s16 func_80105AE0_opboard(s32 file, s32 flags) {
+s16 opboard_SpiralEffCreate(s32 file, s32 flags) {
     s16 model;
     HmfData *hmf;
     HmfModelData_UnkBC_Struct *effect;
@@ -157,7 +157,7 @@ s16 func_80105AE0_opboard(s32 file, s32 flags) {
     Hu3DModelRemakeStatic(model);
     Hu3DModelVtxBufMake(model);
     Hu3DModelDynamicFree(model);
-    Hu3DParticleCreate(model, -1, 0, func_80105DC4_opboard);
+    Hu3DParticleCreate(model, -1, 0, opboard_SpiralEffHook);
     hmf = Hu3DData[model].hmf;
     effect = Hu3DData[model].unkBC;
     particle = effect->unk58;
@@ -182,7 +182,7 @@ s16 func_80105AE0_opboard(s32 file, s32 flags) {
     return model;
 }
 
-s32 func_80105C60_opboard(s16 model, f32 x, f32 y, f32 z) {
+s32 opboard_SpiralEffAdd(s16 model, f32 x, f32 y, f32 z) {
     HmfData *hmf = Hu3DData[model].hmf;
     HmfModelData_UnkBC_Struct *effect = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle = effect->unk58;
@@ -211,7 +211,7 @@ s32 func_80105C60_opboard(s16 model, f32 x, f32 y, f32 z) {
     return 0;
 }
 
-void func_80105DC4_opboard(s16 model) {
+void opboard_SpiralEffHook(s16 model) {
     HmfData *hmf = Hu3DData[model].hmf;
     HmfModelData_UnkBC_Struct *effect = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle = effect->unk58;
@@ -246,7 +246,7 @@ void func_80105DC4_opboard(s16 model) {
     effect->unk02++;
 }
 
-void func_80105F8C_opboard(s32 player1, s32 player2) {
+void opboard_PlayerSwap(s32 player1, s32 player2) {
     GW_PLAYER *first = MBPlayerGet(player1);
     GW_PLAYER *second = MBPlayerGet(player2);
     GW_PLAYER *temp = HuMemMemoryAllocPerm(sizeof(GW_PLAYER));
@@ -257,60 +257,60 @@ void func_80105F8C_opboard(s32 player1, s32 player2) {
     HuMemMemoryFreePerm(temp);
 }
 
-void func_80106014_opboard(void) {
+void opboard_PlayerTurnSort(void) {
     s32 i;
     s32 j;
 
     for (i = 3; i > 0; i--) {
         for (j = 0; j < i; j++) {
             if (GwPlayer[j].turn > GwPlayer[j + 1].turn) {
-                func_80105F8C_opboard(j, j + 1);
+                opboard_PlayerSwap(j, j + 1);
             }
         }
     }
 }
 
-void func_801060A8_opboard(omObjData *obj) {
+void opboard_SkipObjMain(omObjData *obj) {
     s32 i;
 
     if (WipeStatGet() != 0) {
         return;
     }
-    if (D_80108F2C_opboard != -1) {
-        EffectStop(D_80108F2C_opboard);
-        D_80108F2C_opboard = -1;
+    if (opboard_effNo != -1) {
+        EffectStop(opboard_effNo);
+        opboard_effNo = -1;
     }
-    if (D_80108F1C_opboard != NULL) {
-        MBModelKill(D_80108F1C_opboard);
-        D_80108F1C_opboard = NULL;
+    if (opboard_centerMdl != NULL) {
+        MBModelKill(opboard_centerMdl);
+        opboard_centerMdl = NULL;
     }
-    if (D_80108F24_opboard != NULL) {
-        MBModelKill(D_80108F24_opboard);
-        D_80108F24_opboard = NULL;
+    if (opboard_shadowMdl != NULL) {
+        MBModelKill(opboard_shadowMdl);
+        opboard_shadowMdl = NULL;
     }
-    if (D_80108F28_opboard != NULL) {
-        omDelObj(D_80108F28_opboard);
-        D_80108F28_opboard = NULL;
+    if (opboard_centerBobObj != NULL) {
+        omDelObj(opboard_centerBobObj);
+        opboard_centerBobObj = NULL;
     }
-    if (D_80108F30_opboard != NULL) {
-        omDelPrcObj(D_80108F30_opboard);
-        D_80108F30_opboard = NULL;
+    if (opboard_arriveProc != NULL) {
+        omDelPrcObj(opboard_arriveProc);
+        opboard_arriveProc = NULL;
     }
-    if (D_80108F34_opboard != NULL) {
-        MBSprGrpKill(D_80108F34_opboard);
-        D_80108F34_opboard = NULL;
+    if (opboard_titleGrp != NULL) {
+        MBSprGrpKill(opboard_titleGrp);
+        opboard_titleGrp = NULL;
     }
-    if (D_80108F38_opboard != NULL) {
-        MBSprGrpKill(D_80108F38_opboard);
-        D_80108F38_opboard = NULL;
+    if (opboard_subtitleGrp != NULL) {
+        MBSprGrpKill(opboard_subtitleGrp);
+        opboard_subtitleGrp = NULL;
     }
     for (i = 0; i < 4; i++) {
-        MBModelDispOff(D_80109068_opboard[i]->player_obj);
+        MBModelDispOff(opboard_playerTbl[i]->player_obj);
     }
     omDelObj(obj);
 }
 
-void func_801061FC_opboard(omObjData *obj) {
+void opboard_SkipCheckObjMain(omObjData *obj) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
@@ -321,21 +321,21 @@ void func_801061FC_opboard(omObjData *obj) {
         }
     }
     if (i != 4) {
-        D_80108F40_opboard = 1;
+        opboard_skipF = 1;
         WipeColorSet(255, 255, 255);
         WipeCreateOut(11, 16);
         HuAudSeqFadeOut(32);
         msmSeFadeOut(32);
-        obj->func = func_801060A8_opboard;
+        obj->func = opboard_SkipObjMain;
     }
 }
 
-void func_801062CC_opboard(omObjData *obj) {
+void opboard_CenterBobObjMain(omObjData *obj) {
     s32 i;
 
-    D_80108F1C_opboard->coords.y = sindf(obj->rot.x) * 5.0f + obj->rot.z;
+    opboard_centerMdl->coords.y = sindf(obj->rot.x) * 5.0f + obj->rot.z;
     for (i = 0; i < 4; i++) {
-        D_80109068_opboard[i]->player_obj->coords.y = D_80108F1C_opboard->coords.y;
+        opboard_playerTbl[i]->player_obj->coords.y = opboard_centerMdl->coords.y;
     }
     obj->rot.x += obj->rot.y;
     if (obj->rot.x >= 360.0f) {
@@ -343,7 +343,7 @@ void func_801062CC_opboard(omObjData *obj) {
     }
 }
 
-void func_80106388_opboard(void) {
+void opboard_BoardTitleExec(void) {
     s32 titleFiles[] = { 0x130016, 0x130017, 0x130018, 0x130019, 0x13001A, 0x13001B };
     s32 subtitleFiles[] = { 0x13001C, 0x13001D, 0x13001E, 0x13001F, 0x130020, 0x130021 };
     void *data;
@@ -351,17 +351,17 @@ void func_80106388_opboard(void) {
     f32 angle;
 
     HuPrcSleep(10);
-    D_80108F34_opboard = MBSprGrpCreate(1, 0);
+    opboard_titleGrp = MBSprGrpCreate(1, 0);
     data = DataRead(titleFiles[GwSystem.current_board_index]);
-    D_80108F34_opboard->model[0] = HuSprAnimRead(data);
+    opboard_titleGrp->model[0] = HuSprAnimRead(data);
     DataClose(data);
-    HuSprGrpMemberSet(D_80108F34_opboard->spriteGroup, 0, D_80108F34_opboard->model[0], 0);
-    HuSprPriSet(D_80108F34_opboard->spriteGroup, 0, 10);
-    HuSprAttrSet(D_80108F34_opboard->spriteGroup, 0, 0);
-    HuSprPosSet(D_80108F34_opboard->spriteGroup, 0, 160, 100);
-    HuSprScaleSet(D_80108F34_opboard->spriteGroup, 0, 0.0f, 0.0f);
+    HuSprGrpMemberSet(opboard_titleGrp->spriteGroup, 0, opboard_titleGrp->model[0], 0);
+    HuSprPriSet(opboard_titleGrp->spriteGroup, 0, 10);
+    HuSprAttrSet(opboard_titleGrp->spriteGroup, 0, 0);
+    HuSprPosSet(opboard_titleGrp->spriteGroup, 0, 160, 100);
+    HuSprScaleSet(opboard_titleGrp->spriteGroup, 0, 0.0f, 0.0f);
     for (amplitude = 0.5f, angle = 0.0f; angle <= 720.0f; angle += 45.0f) {
-        HuSprScaleSet(D_80108F34_opboard->spriteGroup, 0,
+        HuSprScaleSet(opboard_titleGrp->spriteGroup, 0,
                       sindf(angle) * amplitude + 1.0f, sindf(angle) * amplitude + 1.0f);
         amplitude -= 0.03125f;
         if (amplitude < 0.0f) {
@@ -370,95 +370,95 @@ void func_80106388_opboard(void) {
         HuPrcVSleep();
     }
     HuPrcSleep(20);
-    HuSprScaleSet(D_80108F34_opboard->spriteGroup, 0, 1.0f, 1.0f);
-    D_80108F38_opboard = MBSprGrpCreate(1, 0);
+    HuSprScaleSet(opboard_titleGrp->spriteGroup, 0, 1.0f, 1.0f);
+    opboard_subtitleGrp = MBSprGrpCreate(1, 0);
     data = DataRead(subtitleFiles[GwSystem.current_board_index]);
-    D_80108F38_opboard->model[0] = HuSprAnimRead(data);
+    opboard_subtitleGrp->model[0] = HuSprAnimRead(data);
     DataClose(data);
-    HuSprGrpMemberSet(D_80108F38_opboard->spriteGroup, 0, D_80108F38_opboard->model[0], 0);
-    HuSprPriSet(D_80108F38_opboard->spriteGroup, 0, 9);
-    HuSprAttrSet(D_80108F38_opboard->spriteGroup, 0, 0);
-    HuSprPosSet(D_80108F38_opboard->spriteGroup, 0, 160, 70);
+    HuSprGrpMemberSet(opboard_subtitleGrp->spriteGroup, 0, opboard_subtitleGrp->model[0], 0);
+    HuSprPriSet(opboard_subtitleGrp->spriteGroup, 0, 9);
+    HuSprAttrSet(opboard_subtitleGrp->spriteGroup, 0, 0);
+    HuSprPosSet(opboard_subtitleGrp->spriteGroup, 0, 160, 70);
     HuPrcSleep(75);
-    MBSprGrpKill(D_80108F38_opboard);
-    MBSprGrpKill(D_80108F34_opboard);
-    D_80108F38_opboard = NULL;
-    D_80108F34_opboard = NULL;
+    MBSprGrpKill(opboard_subtitleGrp);
+    MBSprGrpKill(opboard_titleGrp);
+    opboard_subtitleGrp = NULL;
+    opboard_titleGrp = NULL;
 }
 
-void func_801066F0_opboard(void) {
+void opboard_ArriveProc(void) {
     s32 i;
     f32 scale;
 
     for (i = 0; i < 4; i++) {
-        D_80109068_opboard[i] = MBPlayerGet(i);
-        MBPlayerModelCreate(i, D_80108EF4_opboard[GwPlayer[i].chr], 2);
-        HuVecCopy3F(&D_80109068_opboard[i]->player_obj->coords, &D_80108DA4_opboard[i]);
-        MBModelTempAllocFree(D_80109068_opboard[i]->player_obj);
-        D_80109068_opboard[i]->stat |= PLAYER_UNK_04;
+        opboard_playerTbl[i] = MBPlayerGet(i);
+        MBPlayerModelCreate(i, opboard_playerMotTbl[GwPlayer[i].chr], 2);
+        HuVecCopy3F(&opboard_playerTbl[i]->player_obj->coords, &opboard_playerStartPosTbl[i]);
+        MBModelTempAllocFree(opboard_playerTbl[i]->player_obj);
+        opboard_playerTbl[i]->stat |= PLAYER_UNK_04;
     }
-    D_80108F1C_opboard = MBModelFileCreate(0x1301FE, -1, 1.0f, 0, NULL);
-    D_80108F24_opboard = MBModelFileCreate(0x1301FD, -1, 1.0f, 0, NULL);
-    HuVecCopy3F(&D_80108F1C_opboard->coords, &D_80108D74_opboard);
-    HuVecCopy3F(&D_80108F24_opboard->coords, &D_80108D74_opboard);
-    D_80108F24_opboard->coords.y = 0;
-    HuVecCopyXYZ(&D_80108F24_opboard->scale, D_80108F24_opboard->coords.y, D_80108F24_opboard->coords.y, D_80108F24_opboard->coords.y);
-    D_80108F2C_opboard = EffectCreate(0xB0004, 0x6A9);
-    EffectParamSet(D_80108F2C_opboard, 2.0f, 20.0f, 1.0f);
-    EffectRangeSet(D_80108F2C_opboard, 40.0f);
-    Hu3DParticleAttrSet(D_80108F2C_opboard, 1, 0);
+    opboard_centerMdl = MBModelFileCreate(0x1301FE, -1, 1.0f, 0, NULL);
+    opboard_shadowMdl = MBModelFileCreate(0x1301FD, -1, 1.0f, 0, NULL);
+    HuVecCopy3F(&opboard_centerMdl->coords, &opboard_platformPos);
+    HuVecCopy3F(&opboard_shadowMdl->coords, &opboard_platformPos);
+    opboard_shadowMdl->coords.y = 0;
+    HuVecCopyXYZ(&opboard_shadowMdl->scale, opboard_shadowMdl->coords.y, opboard_shadowMdl->coords.y, opboard_shadowMdl->coords.y);
+    opboard_effNo = EffectCreate(0xB0004, 0x6A9);
+    EffectParamSet(opboard_effNo, 2.0f, 20.0f, 1.0f);
+    EffectRangeSet(opboard_effNo, 40.0f);
+    Hu3DParticleAttrSet(opboard_effNo, 1, 0);
     MBBackTPLvlSet(128);
     WipeCreateIn(2, 16);
     HuPrcSleep(17);
-    D_80108F3C_opboard = omAddObj(0x1000, 0, 0, -1, func_801061FC_opboard);
+    opboard_skipObj = omAddObj(0x1000, 0, 0, -1, opboard_SkipCheckObjMain);
     HuAudSeqPlay(110);
-    func_80106388_opboard();
+    opboard_BoardTitleExec();
     for (i = 128; i < 256; i += 8) {
         MBBackTPLvlSet(i);
         HuPrcVSleep();
     }
     MBBackTPLvlSet(255);
     HuAudFXPlay(0x2ED);
-    while (D_80108F1C_opboard->coords.y >= 10.0f) {
-        D_80108F1C_opboard->coords.y -= 3.0f;
+    while (opboard_centerMdl->coords.y >= 10.0f) {
+        opboard_centerMdl->coords.y -= 3.0f;
         for (i = 0; i < 4; i++) {
-            D_80109068_opboard[i]->player_obj->coords.y -= 3.0f;
+            opboard_playerTbl[i]->player_obj->coords.y -= 3.0f;
         }
-        HuVecCopyXYZ(&D_80108F24_opboard->scale,
-                     1.0f - D_80108F1C_opboard->coords.y / 250.0f,
-                     1.0f - D_80108F1C_opboard->coords.y / 250.0f,
-                     1.0f - D_80108F1C_opboard->coords.y / 250.0f);
+        HuVecCopyXYZ(&opboard_shadowMdl->scale,
+                     1.0f - opboard_centerMdl->coords.y / 250.0f,
+                     1.0f - opboard_centerMdl->coords.y / 250.0f,
+                     1.0f - opboard_centerMdl->coords.y / 250.0f);
         HuPrcVSleep();
     }
-    D_80108F28_opboard = omAddObj(0x1000, 0, 0, -1, func_801062CC_opboard);
-    D_80108F28_opboard->rot.x = 180.0f;
-    D_80108F28_opboard->rot.y = 5.0f;
-    D_80108F28_opboard->rot.z = D_80108F1C_opboard->coords.y;
+    opboard_centerBobObj = omAddObj(0x1000, 0, 0, -1, opboard_CenterBobObjMain);
+    opboard_centerBobObj->rot.x = 180.0f;
+    opboard_centerBobObj->rot.y = 5.0f;
+    opboard_centerBobObj->rot.z = opboard_centerMdl->coords.y;
     HuPrcSleep(30);
-    EffectPosSet(D_80108F2C_opboard, D_80108F1C_opboard->coords.x,
-                       D_80108F1C_opboard->coords.y + 40.0f, D_80108F1C_opboard->coords.z);
-    Hu3DParticleAttrSet(D_80108F2C_opboard, 0, 1);
+    EffectPosSet(opboard_effNo, opboard_centerMdl->coords.x,
+                       opboard_centerMdl->coords.y + 40.0f, opboard_centerMdl->coords.z);
+    Hu3DParticleAttrSet(opboard_effNo, 0, 1);
     HuAudFXPlay(0x2E4);
     HuPrcSleep(30);
     for (scale = 1.0f; scale >= 0.0f; scale -= 0.1f) {
         for (i = 0; i < 4; i++) {
-            HuVecCopyXYZ(&D_80109068_opboard[i]->player_obj->scale, scale, 1.0f, scale);
+            HuVecCopyXYZ(&opboard_playerTbl[i]->player_obj->scale, scale, 1.0f, scale);
         }
         HuPrcVSleep();
     }
     for (i = 0; i < 4; i++) {
-        MBModelDispOff(D_80109068_opboard[i]->player_obj);
+        MBModelDispOff(opboard_playerTbl[i]->player_obj);
     }
-    Hu3DParticleAttrSet(D_80108F2C_opboard, 1, 0);
+    Hu3DParticleAttrSet(opboard_effNo, 1, 0);
     HuPrcSleep(20);
-    if (D_80108F40_opboard != 0) {
+    if (opboard_skipF != 0) {
         HuPrcSleep(-1);
     } else {
-        omDelObj(D_80108F3C_opboard);
-        D_80108F3C_opboard = NULL;
+        omDelObj(opboard_skipObj);
+        opboard_skipObj = NULL;
     }
     for (i = 0, scale = 1.0f; scale < 10.0f; i++, scale += 0.5f) {
-        HuVecCopyXYZ(&D_80108F1C_opboard->scale, scale, scale, scale);
+        HuVecCopyXYZ(&opboard_centerMdl->scale, scale, scale, scale);
         HuPrcVSleep();
         if (i == 5) {
             WipeColorSet(255, 255, 255);
@@ -468,18 +468,18 @@ void func_801066F0_opboard(void) {
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
-    EffectStop(D_80108F2C_opboard);
-    D_80108F2C_opboard = -1;
-    MBModelKill(D_80108F1C_opboard);
-    D_80108F1C_opboard = NULL;
-    MBModelKill(D_80108F24_opboard);
-    D_80108F24_opboard = NULL;
-    omDelObj(D_80108F28_opboard);
-    D_80108F28_opboard = NULL;
+    EffectStop(opboard_effNo);
+    opboard_effNo = -1;
+    MBModelKill(opboard_centerMdl);
+    opboard_centerMdl = NULL;
+    MBModelKill(opboard_shadowMdl);
+    opboard_shadowMdl = NULL;
+    omDelObj(opboard_centerBobObj);
+    opboard_centerBobObj = NULL;
     omDelPrcObj(NULL);
 }
 
-void func_80106CFC_opboard(void) {
+void opboard_TurnOrderExec(void) {
     s32 state[4];
     s32 frames[4];
     s32 delay[4];
@@ -512,8 +512,8 @@ void func_80106CFC_opboard(void) {
             if (state[i] == 1) {
                 if ((GwPlayer[i].stat & PLAYER_IS_CPU) ? delay[i] <= 0 : (ContBtnDown[GwPlayer[i].pad] & A_BUTTON)) {
                     state[i] = 2;
-                    MBMotionSet(D_80109068_opboard[i]->player_obj, 2, 0);
-                    MBMotionEndShiftSet(D_80109068_opboard[i]->player_obj, -1, 2);
+                    MBMotionSet(opboard_playerTbl[i]->player_obj, 2, 0);
+                    MBMotionEndShiftSet(opboard_playerTbl[i]->player_obj, -1, 2);
                 }
             } else if (state[i] == 2) {
                 if (++frames[i] == 5) {
@@ -554,9 +554,9 @@ void func_80106CFC_opboard(void) {
         GwPlayer[order[i]].turn = i;
         MBSaiNumObjKill(i);
     }
-    func_80106014_opboard();
+    opboard_PlayerTurnSort();
     MBStatusCreate();
-    D_80108D70_opboard = 1;
+    opboard_statusCreateF = 1;
     for (i = 0; i < 4; i++) {
         MBStatusDispSideSet(i, 1);
     }
@@ -564,14 +564,14 @@ void func_80106CFC_opboard(void) {
     for (i = 0; i < 4; i++) {
         s32 messages[4] = { 0x1812, 0x1813, 0x1814, 0x1815 };
 
-        MBMotionShiftSet(D_80108F1C_opboard, 0, 0, 5, 2);
+        MBMotionShiftSet(opboard_centerMdl, 0, 0, 5, 2);
         MBDlgWinInsertCreateAllKey(-1, messages[i], mbCharNameMesTbl[GwPlayer[i].chr], 0, 0, 0, 0);
         MBDlgWinClose();
         MBDlgWinKill();
-        MBMotionShiftSet(D_80108F1C_opboard, -1, 0, 5, 2);
+        MBMotionShiftSet(opboard_centerMdl, -1, 0, 5, 2);
         PlayerFXPlay(0x274, i);
-        MBMotionShiftSetDef(D_80109068_opboard[i]->player_obj, 3, 0);
-        MBMotionEndShiftSet(D_80109068_opboard[i]->player_obj, -1, 2);
+        MBMotionShiftSetDef(opboard_playerTbl[i]->player_obj, 3, 0);
+        MBMotionEndShiftSet(opboard_playerTbl[i]->player_obj, -1, 2);
         MBSaiNumKill(order[i]);
         MBStatusDispMoveSet(i + 10);
         while (MBStatusMoveCheck() != 0) {
@@ -582,15 +582,15 @@ void func_80106CFC_opboard(void) {
     }
 }
 
-void func_801071F4_opboard(omObjData *obj) {
-    D_80108F1C_opboard->velocity.x = sindf(obj->rot.x) * 20.0f + obj->rot.y;
+void opboard_CenterHoverObjMain(omObjData *obj) {
+    opboard_centerMdl->velocity.x = sindf(obj->rot.x) * 20.0f + obj->rot.y;
     obj->rot.x += 5.0f;
     if (obj->rot.x >= 360.0f) {
         obj->rot.x -= 360.0f;
     }
 }
 
-OpBoardPath *func_8010727C_opboard(Vec *points, s32 flags) {
+OpBoardPath *opboard_PathCreate(Vec *points, s32 flags) {
     OpBoardPath *path;
     Vec *current;
     Vec *next;
@@ -650,7 +650,7 @@ OpBoardPath *func_8010727C_opboard(Vec *points, s32 flags) {
     return path;
 }
 
-void func_80107580_opboard(OpBoardPath *path, f32 time, Vec *result) {
+void opboard_PathPosGet(OpBoardPath *path, f32 time, Vec *result) {
     f32 values[4];
     f32 times[4];
     Vec *points;
@@ -798,12 +798,12 @@ void func_80107580_opboard(OpBoardPath *path, f32 time, Vec *result) {
     }
 }
 
-void func_80107E28_opboard(OpBoardPath *path) {
+void opboard_PathKill(OpBoardPath *path) {
     HuMemFree(path->intervals);
     HuMemFree(path);
 }
 
-void func_80107E58_opboard(void) {
+void opboard_StarTalkExec(void) {
     s32 backgrounds[] = { 4, 7, 10, 13, 16, 19 };
     Vec directions[4];
     s16 effects[4];
@@ -815,17 +815,17 @@ void func_80107E58_opboard(void) {
     MBBackKill();
     MBBackLoad(backgrounds[GwSystem.current_board_index]);
     MBCameraNearFarSet(1000.0f, 10000.0f);
-    D_80108F1C_opboard = MBModelCreate(58, D_80108F14_opboard);
-    AuraCreate(D_80108F1C_opboard->omObj1->model[0]);
-    HuVecCopy3F(&D_80108F1C_opboard->coords, &D_80108D98_opboard);
-    D_80108F1C_opboard->velocity.x = 1000.0f;
-    D_80108F2C_opboard = EffectCreate(0xB0004, 0x6A9);
-    EffectParamSet(D_80108F2C_opboard, 10.0f, 20.0f, 10.0f);
-    EffectRangeSet(D_80108F2C_opboard, 300.0f);
-    Hu3DParticleAttrSet(D_80108F2C_opboard, 1, 0);
+    opboard_centerMdl = MBModelCreate(58, opboard_starMot);
+    AuraCreate(opboard_centerMdl->omObj1->model[0]);
+    HuVecCopy3F(&opboard_centerMdl->coords, &opboard_starPos);
+    opboard_centerMdl->velocity.x = 1000.0f;
+    opboard_effNo = EffectCreate(0xB0004, 0x6A9);
+    EffectParamSet(opboard_effNo, 10.0f, 20.0f, 10.0f);
+    EffectRangeSet(opboard_effNo, 300.0f);
+    Hu3DParticleAttrSet(opboard_effNo, 1, 0);
     for (j = 0; j < 4; j++) {
-        HuVecCopy3F(&D_80109068_opboard[j]->player_obj->coords, &D_80108DD4_opboard[j]);
-        effects[j] = func_80105AE0_opboard(0xB0004, 0x689);
+        HuVecCopy3F(&opboard_playerTbl[j]->player_obj->coords, &opboard_playerPosTbl[j]);
+        effects[j] = opboard_SpiralEffCreate(0xB0004, 0x689);
     }
     WipeColorSet(255, 255, 255);
     WipeCreateIn(11, 16);
@@ -835,9 +835,9 @@ void func_80107E58_opboard(void) {
     HuAudFXPlay(0x2DB);
     for (i = 0; i < 20; i++) {
         for (j = 0; j < 4; j++) {
-            func_80105C60_opboard(effects[j], D_80109068_opboard[j]->player_obj->coords.x,
-                                  D_80109068_opboard[j]->player_obj->coords.y + 50.0f,
-                                  D_80109068_opboard[j]->player_obj->coords.z);
+            opboard_SpiralEffAdd(effects[j], opboard_playerTbl[j]->player_obj->coords.x,
+                                  opboard_playerTbl[j]->player_obj->coords.y + 50.0f,
+                                  opboard_playerTbl[j]->player_obj->coords.z);
             if (i == 0) {
                 MBPlayerVibrate(j, 1);
             }
@@ -846,54 +846,54 @@ void func_80107E58_opboard(void) {
     }
     for (scale = 0.0f; scale <= 1.0f; scale += 0.1f) {
         for (j = 0; j < 4; j++) {
-            MBModelDispOn(D_80109068_opboard[j]->player_obj);
-            HuVecCopyXYZ(&D_80109068_opboard[j]->player_obj->scale, scale, 1.0f, scale);
+            MBModelDispOn(opboard_playerTbl[j]->player_obj);
+            HuVecCopyXYZ(&opboard_playerTbl[j]->player_obj->scale, scale, 1.0f, scale);
         }
         HuPrcVSleep();
     }
     for (j = 0; j < 4; j++) {
-        HuVecCopyXYZ(&D_80109068_opboard[j]->player_obj->scale, 1.0f, 1.0f, 1.0f);
+        HuVecCopyXYZ(&opboard_playerTbl[j]->player_obj->scale, 1.0f, 1.0f, 1.0f);
     }
-    Hu3DParticleAttrSet(D_80108F2C_opboard, 1, 0);
+    Hu3DParticleAttrSet(opboard_effNo, 1, 0);
     HuPrcSleep(20);
-    EffectParamSet(D_80108F2C_opboard, 10.0f, 20.0f, 15.0f);
-    EffectRangeSet(D_80108F2C_opboard, 300.0f);
-    Hu3DParticleAttrSet(D_80108F2C_opboard, 0, 1);
+    EffectParamSet(opboard_effNo, 10.0f, 20.0f, 15.0f);
+    EffectRangeSet(opboard_effNo, 300.0f);
+    Hu3DParticleAttrSet(opboard_effNo, 0, 1);
     HuAudFXPlay(0x157);
     i = 0;
-    while (D_80108F1C_opboard->velocity.x >= 400.0f) {
-        D_80108F1C_opboard->velocity.x -= 10.0f;
-        EffectPosSet(D_80108F2C_opboard, D_80108F1C_opboard->coords.x,
-                           D_80108F1C_opboard->velocity.x - 100.0f, D_80108F1C_opboard->coords.z);
+    while (opboard_centerMdl->velocity.x >= 400.0f) {
+        opboard_centerMdl->velocity.x -= 10.0f;
+        EffectPosSet(opboard_effNo, opboard_centerMdl->coords.x,
+                           opboard_centerMdl->velocity.x - 100.0f, opboard_centerMdl->coords.z);
         i++;
         if (i == 20) {
             for (j = 0; j < 4; j++) {
-                MBVecDirGet(&D_80109068_opboard[j]->player_obj->coords, &D_80108E04_opboard[j],
-                            &D_80109068_opboard[j]->player_obj->rot);
-                MBPlayerPosMoveCreate(&D_80109068_opboard[j]->player_obj->coords, &D_80108E04_opboard[j],
-                                      &D_80109068_opboard[j]->player_obj->coords, 20);
-                MBMotionSet(D_80109068_opboard[j]->player_obj, 1, 2);
+                MBVecDirGet(&opboard_playerTbl[j]->player_obj->coords, &opboard_playerNearPosTbl[j],
+                            &opboard_playerTbl[j]->player_obj->rot);
+                MBPlayerPosMoveCreate(&opboard_playerTbl[j]->player_obj->coords, &opboard_playerNearPosTbl[j],
+                                      &opboard_playerTbl[j]->player_obj->coords, 20);
+                MBMotionSet(opboard_playerTbl[j]->player_obj, 1, 2);
             }
         }
         if (i == 40) {
             for (j = 0; j < 4; j++) {
-                MBVecDirGet(&D_80109068_opboard[j]->player_obj->coords, &D_80108F1C_opboard->coords, &directions[j]);
-                MBVecRotLerpCreate(&D_80109068_opboard[j]->player_obj->rot, &directions[j],
-                                           &D_80109068_opboard[j]->player_obj->rot, 10);
-                MBMotionShiftSet(D_80109068_opboard[j]->player_obj, -1, 0, 5, 2);
+                MBVecDirGet(&opboard_playerTbl[j]->player_obj->coords, &opboard_centerMdl->coords, &directions[j]);
+                MBVecRotLerpCreate(&opboard_playerTbl[j]->player_obj->rot, &directions[j],
+                                           &opboard_playerTbl[j]->player_obj->rot, 10);
+                MBMotionShiftSet(opboard_playerTbl[j]->player_obj, -1, 0, 5, 2);
             }
         }
         HuPrcVSleep();
     }
-    obj = omAddObj(0x1000, 0, 0, -1, func_801071F4_opboard);
-    obj->rot.y = D_80108F1C_opboard->velocity.x;
+    obj = omAddObj(0x1000, 0, 0, -1, opboard_CenterHoverObjMain);
+    obj->rot.y = opboard_centerMdl->velocity.x;
     obj->rot.x = 180.0f;
     HuAudSeqPlay(13);
     HuAudFXPlay(0x159);
     if (GwSystem.playMode & 4) {
         s32 messages[] = { 0x1800, 0x1802, 0x1804, 0x1806, 0x1808, 0x180A };
 
-        MBMotionShiftSet(D_80108F1C_opboard, 0, 0, 5, 2);
+        MBMotionShiftSet(opboard_centerMdl, 0, 0, 5, 2);
         MBDlgWinInsertCreateAllKey(-1, messages[GwSystem.current_board_index], mbCharNameMesTbl[GwStory.unk1], 0, 0, 0, 0);
         MBDlgWinMesWaitAllKey();
         MBDlgWinMesWaitAllKey();
@@ -902,7 +902,7 @@ void func_80107E58_opboard(void) {
         }
         MBDlgWinClose();
         MBDlgWinKill();
-        MBMotionShiftSet(D_80108F1C_opboard, -1, 0, 5, 2);
+        MBMotionShiftSet(opboard_centerMdl, -1, 0, 5, 2);
         {
             s32 files[] = { 0x1D0003, 0x1D0004, 0x1D0005, 0x1D0006, 0x1D0007, 0x1D0008 };
 
@@ -913,8 +913,8 @@ void func_80107E58_opboard(void) {
                 f32 time;
                 s32 k;
 
-                D_80108F20_opboard = MBModelFileCreate(files[GwSystem.current_board_index], -1, 1.0f, 0, NULL);
-                path = func_8010727C_opboard(D_80108F44_opboard, 0);
+                opboard_stampMdl = MBModelFileCreate(files[GwSystem.current_board_index], -1, 1.0f, 0, NULL);
+                path = opboard_PathCreate(opboard_stampPathPosTbl, 0);
                 effect = EffectCreate(0xB0004, 0x6A9);
                 EffectParamSet(effect, 4.0f, 20.0f, 4.0f);
                 EffectRangeSet(effect, 60.0f);
@@ -923,12 +923,12 @@ void func_80107E58_opboard(void) {
                 HuAudFXPlay(0x215);
                 for (k = 0; k < 50; k++) {
                     time = k * 0.02f;
-                    func_80107580_opboard(path, time * time, &pos);
-                    HuVecCopy3F(&D_80108F20_opboard->coords, &pos);
+                    opboard_PathPosGet(path, time * time, &pos);
+                    HuVecCopy3F(&opboard_stampMdl->coords, &pos);
                     EffectPosSet(effect, pos.x, pos.y - 50.0f, pos.z);
                     HuPrcVSleep();
                 }
-                func_80107E28_opboard(path);
+                opboard_PathKill(path);
             }
         }
         {
@@ -936,12 +936,12 @@ void func_80107E58_opboard(void) {
                 s32 messages[] = { 0x1801, 0x1803, 0x1805, 0x1807, 0x1809, 0x180B };
 
                 if (GwSystem.current_board_index != 5) {
-                    MBMotionShiftSet(D_80108F1C_opboard, 0, 0, 5, 2);
+                    MBMotionShiftSet(opboard_centerMdl, 0, 0, 5, 2);
                     MBDlgWinInsertCreateAllKey(-1, messages[GwSystem.current_board_index], 0, 0, 0, 0, 0);
                     MBDlgWinMesWaitAllKey();
                     MBDlgWinClose();
                     MBDlgWinKill();
-                    MBMotionShiftSet(D_80108F1C_opboard, -1, 0, 5, 2);
+                    MBMotionShiftSet(opboard_centerMdl, -1, 0, 5, 2);
                 }
             }
         }
@@ -949,21 +949,21 @@ void func_80107E58_opboard(void) {
         {
             s32 messages[] = { 0x180C, 0x180D, 0x180E, 0x180F, 0x1810, 0x1811 };
 
-            MBMotionShiftSet(D_80108F1C_opboard, 0, 0, 5, 2);
+            MBMotionShiftSet(opboard_centerMdl, 0, 0, 5, 2);
             MBDlgWinInsertCreateAllKey(-1, messages[GwSystem.current_board_index], 0, 0, 0, 0, 0);
             MBDlgWinMesWaitAllKey();
             MBDlgWinMesWaitAllKey();
             MBDlgWinClose();
             MBDlgWinKill();
-            MBMotionShiftSet(D_80108F1C_opboard, -1, 0, 5, 2);
+            MBMotionShiftSet(opboard_centerMdl, -1, 0, 5, 2);
         }
     }
     for (j = 0; j < 4; j++) {
-        MBVecDirGet(&D_80109068_opboard[j]->player_obj->coords, &D_80108DD4_opboard[j],
-                    &D_80109068_opboard[j]->player_obj->rot);
-        HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&D_80109068_opboard[j]->player_obj->coords,
-                                                                &D_80108DD4_opboard[j], &D_80109068_opboard[j]->player_obj->coords, 20));
-        MBMotionSet(D_80109068_opboard[j]->player_obj, 1, 2);
+        MBVecDirGet(&opboard_playerTbl[j]->player_obj->coords, &opboard_playerPosTbl[j],
+                    &opboard_playerTbl[j]->player_obj->rot);
+        HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&opboard_playerTbl[j]->player_obj->coords,
+                                                                &opboard_playerPosTbl[j], &opboard_playerTbl[j]->player_obj->coords, 20));
+        MBMotionSet(opboard_playerTbl[j]->player_obj, 1, 2);
     }
     HuPrcChildWatch();
     for (j = 0; j < 4; j++) {
@@ -972,83 +972,83 @@ void func_80107E58_opboard(void) {
         directions[j].x = sindf(angles[j]);
         directions[j].z = cosdf(angles[j]);
         directions[j].y = 0;
-        HuPrcChildLink(HuPrcCurrentGet(), MBVecRotLerpCreate(&D_80109068_opboard[j]->player_obj->rot,
-                                                                     &directions[j], &D_80109068_opboard[j]->player_obj->rot, 10));
-        MBMotionShiftSet(D_80109068_opboard[j]->player_obj, -1, 0, 5, 2);
+        HuPrcChildLink(HuPrcCurrentGet(), MBVecRotLerpCreate(&opboard_playerTbl[j]->player_obj->rot,
+                                                                     &directions[j], &opboard_playerTbl[j]->player_obj->rot, 10));
+        MBMotionShiftSet(opboard_playerTbl[j]->player_obj, -1, 0, 5, 2);
     }
     HuPrcChildWatch();
-    func_80106CFC_opboard();
-    MBMotionShiftSet(D_80108F1C_opboard, 0, 0, 5, 2);
+    opboard_TurnOrderExec();
+    MBMotionShiftSet(opboard_centerMdl, 0, 0, 5, 2);
     MBDlgWinInsertCreateAllKey(-1, 0x1816, 0, 0, 0, 0, 0);
     MBDlgWinClose();
     MBDlgWinKill();
-    MBMotionShiftSet(D_80108F1C_opboard, -1, 0, 5, 2);
+    MBMotionShiftSet(opboard_centerMdl, -1, 0, 5, 2);
     for (j = 0; j < 4; j++) {
         if (j == 0) {
             MBCoinTakeCreate(0, 10);
         } else {
             MBCoinTakeCreateSound(j, 10, 0);
         }
-        MBMotionShiftSetDef(D_80109068_opboard[j]->player_obj, 4, 0);
+        MBMotionShiftSetDef(opboard_playerTbl[j]->player_obj, 4, 0);
     }
     HuPrcSleep(60);
     for (j = 0; j < 4; j++) {
-        MBMotionShiftSetDef(D_80109068_opboard[j]->player_obj, -1, 2);
+        MBMotionShiftSetDef(opboard_playerTbl[j]->player_obj, -1, 2);
     }
-    MBMotionShiftSet(D_80108F1C_opboard, 0, 0, 5, 2);
+    MBMotionShiftSet(opboard_centerMdl, 0, 0, 5, 2);
     MBDlgWinInsertCreateAllKey(-1, 0x1817, 0, 0, 0, 0, 0);
     MBDlgWinClose();
     MBDlgWinKill();
-    MBMotionShiftSet(D_80108F1C_opboard, -1, 0, 5, 2);
-    EffectStop(D_80108F2C_opboard);
+    MBMotionShiftSet(opboard_centerMdl, -1, 0, 5, 2);
+    EffectStop(opboard_effNo);
 }
 
-void func_80108B3C_opboard(void) {
-    D_80108F30_opboard = omAddPrcObj(func_801066F0_opboard, 0x300, 0x2000, 0);
-    HuPrcChildLink(HuPrcCurrentGet(), D_80108F30_opboard);
+void opboard_MainProc(void) {
+    opboard_arriveProc = omAddPrcObj(opboard_ArriveProc, 0x300, 0x2000, 0);
+    HuPrcChildLink(HuPrcCurrentGet(), opboard_arriveProc);
     HuPrcChildWatch();
-    func_80107E58_opboard();
+    opboard_StarTalkExec();
     omSysExitReq = 1;
     while (1) {
         HuPrcVSleep();
     }
 }
 
-void func_80108BB0_opboard(omObjData *obj) {
+void opboard_ExitObjMain(omObjData *obj) {
     if (WipeStatGet() == 0) {
-        func_80108D44_opboard();
-        func_80108C8C_opboard();
+        opboard_BackClose();
+        opboard_SysClose();
         HuWinAllKill();
-        if (D_80108D70_opboard != 0) {
+        if (opboard_statusCreateF != 0) {
             MBStatusKill();
         }
         omOvlReturnEx(1);
     }
 }
 
-void func_80108C0C_opboard(omObjData *obj) {
+void opboard_ExitCheckObjMain(omObjData *obj) {
     if (omSysExitReq != 0) {
         WipeCreateOut(2, 20);
         HuAudSeqFadeOut(60);
-        obj->func = func_80108BB0_opboard;
+        obj->func = opboard_ExitObjMain;
     }
 }
 
-void func_80108C58_opboard(void) {
+void opboard_SysInit(void) {
     MBModelInit();
     MBPlayerMotInit();
     MBMotShiftInit();
     MBSprGrpInit();
 }
 
-void func_80108C8C_opboard(void) {
+void opboard_SysClose(void) {
     MBSprGrpClose();
     MBMotShiftClose();
     MBPlayerClose();
     MBModelClose();
 }
 
-void func_80108CC0_opboard(void) {
+void opboard_BackInit(void) {
     s32 sp10[] = { 3, 6, 9, 0xC, 0xF, 0x12 };
 
     Hu3DCamInit(1);
@@ -1056,7 +1056,7 @@ void func_80108CC0_opboard(void) {
     MBBackLoad(sp10[GwSystem.current_board_index]);
 }
 
-void func_80108D44_opboard() {
+void opboard_BackClose() {
     MBBackKill();
     MBBackClose();
 }

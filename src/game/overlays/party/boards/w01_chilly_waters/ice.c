@@ -14,7 +14,7 @@ typedef struct IceWork {
     /* 0x14 */ Process *unk14;
 } IceWork; /* size 0x18 */
 
-typedef struct unkfunc_801059D0 {
+typedef struct IceCrackCreateWork {
     f32 unk0;
     f32 unk4;
     s16 unk8;
@@ -22,7 +22,7 @@ typedef struct unkfunc_801059D0 {
     void* imgData; // may or may not include palette data and form header, unsure
     u32 unk10;
     Process *unk14;
-} unkfunc_801059D0;
+} IceCrackCreateWork;
 
 typedef struct ESprite3 {
     u8 *rasterData; // is this actually correct?
@@ -48,22 +48,22 @@ typedef struct ESprite {
     ESprite2 *unk_10[4]; // unknown size
 } ESprite;               // unknown size
 
-void func_80105A64_ChillyWaters(void);
+void MB1Ev_IceCrackProc(void);
 void func_8010BCA4_boardresult(void);
 
-void func_801059D0_ChillyWaters(s16 arg0, s16 arg1) {
+void MB1Ev_IceCrackCreate(s16 arg0, s16 arg1) {
     Process *process;
-    unkfunc_801059D0 *temp_v0;
+    IceCrackCreateWork *temp_v0;
 
-    process = omAddPrcObj(func_80105A64_ChillyWaters, 0x3F00, 0x1000, 0);
-    temp_v0 = HuMemAllocTag(sizeof(unkfunc_801059D0), TAG_OVERLAY);
+    process = omAddPrcObj(MB1Ev_IceCrackProc, 0x3F00, 0x1000, 0);
+    temp_v0 = HuMemAllocTag(sizeof(IceCrackCreateWork), TAG_OVERLAY);
     process->user_data = temp_v0;
     temp_v0->unk14 = process;
     temp_v0->unk0 = arg0;
     temp_v0->unk4 = arg1;
 }
 
-void func_80105A64_ChillyWaters(void) {
+void MB1Ev_IceCrackProc(void) {
     HuSprite *spr;
     HuSprAnimPat *img;
     u8 *src;
@@ -135,7 +135,7 @@ void func_80105A64_ChillyWaters(void) {
 
 const s32 pad4[] = {0,0};
 
-void func_80105DB8_ChillyWaters(IceWork* arg0) {
+void MB1Ev_IceCrackKill(IceWork* arg0) {
     HuSprGet(arg0->unkA, 0)->data->pat->data = arg0->unk10;
     HuSprGrpKill(arg0->unkA);
     HuSprAnimKill(arg0->unk8);
@@ -144,7 +144,7 @@ void func_80105DB8_ChillyWaters(IceWork* arg0) {
     omDelPrcObj(arg0->unk14);
 }
 
-void func_80105E20_ChillyWaters(IceWork* arg0, f32 x, f32 y) {
+void MB1Ev_IceCrackPosSet(IceWork* arg0, f32 x, f32 y) {
     arg0->unk0 = x;
     arg0->unk4 = y;
     HuSprPosSet(arg0->unkA, 0, arg0->unk0, arg0->unk4);

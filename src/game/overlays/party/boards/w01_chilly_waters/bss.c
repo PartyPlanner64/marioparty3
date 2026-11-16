@@ -1,51 +1,51 @@
 #define NO_EXTERN_VARIABLES
 #include "ChillyWaters.h"
 
-Object *D_8011FA70_ChillyWaters BSS;
-u8 D_8011FA74_ChillyWaters[4] BSS; /* Unreferenced. */
-Object *D_8011FA78_ChillyWaters[8] BSS;
-Process *D_8011FA98_ChillyWaters[8] BSS;
-Process *D_8011FAB8_ChillyWaters BSS;
-Object *D_8011FABC_ChillyWaters BSS;
-Unk3 *mb1_BranchStickHelp BSS;
-Unk3 *mb1_BranchBtnHelp BSS;
-Unk3 *mb1_BranchMapScrollHelp BSS;
-Unk3 *mb1_BranchMapOverheadHelp BSS;
-Unk3 *mb1_BranchItemHelp BSS;
-s32 D_8011FAD4_ChillyWaters BSS;
-s32 D_8011FAD8_ChillyWaters BSS;
-f32 D_8011FADC_ChillyWaters BSS;
-f32 D_8011FAE0_ChillyWaters BSS;
-Object *D_8011FAE4_ChillyWaters BSS;
-Object *D_8011FAE8_ChillyWaters BSS;
-Object *D_8011FAEC_ChillyWaters BSS;
-Process *D_8011FAF0_ChillyWaters BSS;
-u8 D_8011FAF4_ChillyWaters[4] BSS; /* Unreferenced. */
-s32 D_8011FAF8_ChillyWaters[4] BSS;
-Object *D_8011FB08_ChillyWaters BSS;
-Object *D_8011FB0C_ChillyWaters[1] BSS;
-Object *mb1_BankCoinBaseMdl BSS;
-u8 D_8011FB14_ChillyWaters[4] BSS; /* Unreferenced. */
-Object *mb1_BankCoinMdl[10] BSS;
-Object *D_8011FB40_ChillyWaters BSS;
-Object *D_8011FB44_ChillyWaters[2] BSS;
-s32 D_8011FB4C_ChillyWaters BSS;
-s32 D_8011FB50_ChillyWaters BSS;
-u8 *D_8011FB54_ChillyWaters BSS;
-Object *D_8011FB58_ChillyWaters BSS;
-s32 D_8011FB5C_ChillyWaters BSS;
-s32 D_8011FB60_ChillyWaters BSS;
-s32 D_8011FB64_ChillyWaters BSS;
-Object *D_8011FB68_ChillyWaters BSS;
-Object *D_8011FB6C_ChillyWaters BSS;
-s32 D_8011FB70_ChillyWaters BSS;
-s32 D_8011FB74_ChillyWaters BSS;
-Object *D_8011FB78_ChillyWaters BSS;
-u8 D_8011FB7C_ChillyWaters[4] BSS; /* Unreferenced. */
-s32 mb1_After5GrpId[4] BSS;
-void *D_8011FB90_ChillyWaters BSS;
-u8 D_8011FB94_ChillyWaters[4] BSS; /* Unreferenced. */
-Object *D_8011FB98_ChillyWaters[4] BSS;
-omObjData *D_8011FBA8_ChillyWaters[4] BSS;
-s32 D_8011FBB8_ChillyWaters BSS;
-s32 D_8011FBBC_ChillyWaters BSS;
+Object *mb1_starGuideBaseMdl BSS;
+u8 mb1_starGuideBaseMdlPad[4] BSS; /* Unreferenced. */
+Object *mb1_starGuideMdl[8] BSS;
+Process *mb1_starGuideHoverProc[8] BSS;
+Process *mb1ev_starGuideInProc BSS;
+Object *mb1ev_starGuideInMdl BSS;
+Unk3 *mb1_branchStickHelp BSS;
+Unk3 *mb1_branchBtnHelp BSS;
+Unk3 *mb1_branchMapScrollHelp BSS;
+Unk3 *mb1_branchMapOverheadHelp BSS;
+Unk3 *mb1_branchItemHelp BSS;
+s32 mb1_comTeresaType BSS;
+s32 mb1_comTeresaTarget BSS;
+f32 mb1ev_snowmanSpeed BSS;
+f32 mb1ev_snowmanCurSpeed BSS;
+Object *mb1ev_snowmanRollMdl BSS;
+Object *mb1ev_snowmanMdl BSS;
+Object *mb1ev_snowmanEffMdl BSS;
+Process *mb1ev_actionTimeProc BSS;
+u8 mb1ev_actionTimeProcPad[4] BSS; /* Unreferenced. */
+s32 mb1ev_snowmanHitTbl[4] BSS;
+Object *mb1_teresaGuideBaseMdl BSS;
+Object *mb1_teresaGuideMdl[1] BSS;
+Object *mb1_bankCoinBaseMdl BSS;
+u8 mb1_bankCoinBaseMdlPad[4] BSS; /* Unreferenced. */
+Object *mb1_bankCoinMdl[10] BSS;
+Object *mb1_gateBaseMdl BSS;
+Object *mb1_gateMdl[2] BSS;
+s32 mb1ev_shopHostNo BSS;
+s32 mb1ev_shopItemRow BSS;
+u8 *mb1ev_shopItemEnableTbl BSS;
+Object *mb1ev_teresaCoinMdl BSS;
+s32 mb1ev_itemPhoneWaveSpr BSS;
+s32 mb1ev_tereYokePlayer BSS;
+s32 mb1ev_tereYokeSparkSpr BSS;
+Object *mb1ev_koopaCardCoinMdl BSS;
+Object *mb1ev_koopaCardMdl BSS;
+s32 mb1_comExchangeBoxTarget BSS;
+s32 mb1_comRobBoxTarget BSS;
+Object *mb1ev_gambleCoinMdl BSS;
+u8 mb1ev_gambleCoinMdlPad[4] BSS; /* Unreferenced. */
+s32 mb1ev_after5GrpId[4] BSS;
+void *mb1ev_after5EffMdl BSS;
+u8 mb1ev_after5EffMdlPad[4] BSS; /* Unreferenced. */
+Object *mb1ev_kinokoMarkMdl[4] BSS;
+omObjData *mb1ev_kinokoMarkObj[4] BSS;
+s32 mb1_comRKinokoTarget BSS;
+s32 mb1_comNKinokoTarget BSS;

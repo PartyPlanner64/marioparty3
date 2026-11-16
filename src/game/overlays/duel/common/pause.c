@@ -1463,7 +1463,7 @@ void func_800F3F4C_name_81(void) {
     for (j = 0; j < 3; j++) {
         MBDGetPlayerStruct(j)->player_obj = NULL;
     }
-    Duel_ClearPartnerObjects();
+    MBDPartnerObjClear();
 
     for (i = 1; i < 8; i++) {
         for (j = 0; j < D_80101374_name_81[0]; j++) {

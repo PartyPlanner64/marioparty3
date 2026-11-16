@@ -169,7 +169,7 @@ void func_80105E64_mgresultbattle(omObjData *obj) {
 void func_80105EF4_mgresultbattle(void) {
     GW_SYSTEM *system = &GwSystem;
 
-    func_800E6630_shared_board((u32)hvq_data_ROM_START);
+    MBBackArcInit((u32)hvq_data_ROM_START);
 
     if (!(system->playMode & 2)) {
         MBBackCreate(D_80108908_mgresultbattle[system->current_board_index], 0);

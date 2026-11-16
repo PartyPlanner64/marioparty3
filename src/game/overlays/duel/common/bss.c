@@ -190,7 +190,7 @@ s16 D_80105440_name_81 BSS;
 omObjData *D_80105444_name_81[3] BSS;
 
 // partner.c
-Object *Duel_PartnerObjects[MBD_MAX_PLAYERS][PARTNEROBJINDEX_MAX] BSS;
+Object *mbdPartnerObj[MBD_MAX_PLAYERS][PARTNEROBJINDEX_MAX] BSS;
 Vec D_80105460_name_81 BSS;
 u8 D_8010546C_name_81[4] BSS; /* Unreferenced. */
 s16 D_80105470_name_81[8] BSS;

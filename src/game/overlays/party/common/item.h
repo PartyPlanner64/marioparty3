@@ -4,12 +4,12 @@
 #include "common_board.h"
 #include "game/board.h"
 
-extern u8 D_80100F94_shared_board[];
-extern s32 D_80100FA8_shared_board[];
-extern s32 D_80100FF4_shared_board[];
-extern s32 D_80101040_shared_board[];
+extern u8 mbItemPriceTbl[];
+extern s32 mbItemComWeightTbl[];
+extern s32 mbItemComShopWeightTbl[];
+extern s32 mbItemCharSprTbl[];
 
-void func_800E2260_shared_board(s32 arg0, char *arg1);
+void MBCharNameMesConv(s32 arg0, char *arg1);
 void MBItemWarpBlockSwapInit(void);
 s32 MBItemWarpBlockSwapPlayerSet(s16 arg0);
 void MBItemWarpBlockSwapCreate(void);

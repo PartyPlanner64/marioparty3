@@ -19,7 +19,7 @@ typedef struct UnkTemp {
     f32 unk_0C;
 } UnkTemp; //sizeof 0x10
 
-UnkTemp D_80100850_shared_board[] = {
+UnkTemp mbModelDataTbl[] = {
     { 0x200A2, 9, 0.9f, 0.8f },
     { 0x300A2, 9, 0.9f, 0.8f },
     { 0x700A2, 9, 0.9f, 1.1f },
@@ -100,80 +100,80 @@ UnkTemp D_80100850_shared_board[] = {
     { 0x130182, 9, 1.0f, 0.0f },
     { 0x13018D, 9, 1.0f, 0.0f }
 };
-f32 D_80100D40_shared_board = 100.0f;
+f32 mbShadowHeightMax = 100.0f;
 
-extern Object* D_80102AB0_shared_board;
-extern u16 D_80102AB4_shared_board;
+extern Object* mbModelListHead;
+extern u16 mbModelNum;
 extern u8 omAllPauseF;
-extern s16 D_80102AB8_shared_board[128];
+extern s16 mbMotionRefTbl[128];
 
-static void func_800D93C0_shared_board(omObjData *playerObj);
-static void func_800D95D0_shared_board(omObjData* arg0);
+static void MBModelObjMain(omObjData *playerObj);
+static void MBShadowObjMain(omObjData* arg0);
 
-static void func_800D8E30_shared_board(void) {
+static void MBMotionRefTblInit(void) {
     s32 i;
     
-    for (i = 0; i < ARRAY_COUNT(D_80102AB8_shared_board); i++) {
-        D_80102AB8_shared_board[i] = 0;
+    for (i = 0; i < ARRAY_COUNT(mbMotionRefTbl); i++) {
+        mbMotionRefTbl[i] = 0;
     }
 }
 
 static s16 MBMotionLock(s16 arg0) {
-    D_80102AB8_shared_board[arg0]++;
+    mbMotionRefTbl[arg0]++;
     return arg0;
 }
 
-s16 func_800D8E88_shared_board(s32 arg0) {
+s16 MBMotionCreate(s32 arg0) {
     s16 res = Hu3DMotionCreate(DataRead(arg0), 8);
-    D_80102AB8_shared_board[res]++;
+    mbMotionRefTbl[res]++;
     return res;
 }
 
 void MBMotionKill(s16 arg0) {
     if (arg0 != -1) {
-        if (D_80102AB8_shared_board[arg0] != 0) {
-            D_80102AB8_shared_board[arg0]--;
-            if (D_80102AB8_shared_board[arg0] == 0) {
+        if (mbMotionRefTbl[arg0] != 0) {
+            mbMotionRefTbl[arg0]--;
+            if (mbMotionRefTbl[arg0] == 0) {
                 Hu3DMotionKill(arg0);
             }
         }
     }
 }
 
-static s16 func_800D8F30_shared_board(s16 arg0) {
-    if (D_80102AB8_shared_board[arg0] != 0){
-        D_80102AB8_shared_board[arg0]++;
+static s16 MBMotionRefCopy(s16 arg0) {
+    if (mbMotionRefTbl[arg0] != 0){
+        mbMotionRefTbl[arg0]++;
         return arg0;
     }
     return -1;
 }
 
 void MBModelInit(void) {
-    D_80102AB0_shared_board = NULL;
-    D_80102AB4_shared_board = 0;
-    D_80105706_shared_board = 1;
-    func_800D8E30_shared_board();
-    func_800D95C4_shared_board(100.0f);
+    mbModelListHead = NULL;
+    mbModelNum = 0;
+    mbModelDispFlag = 1;
+    MBMotionRefTblInit();
+    MBShadowHeightMaxSet(100.0f);
 }
 
 void MBModelClose(void) {
-    while (D_80102AB0_shared_board != NULL) {
-        MBModelKill(D_80102AB0_shared_board);
+    while (mbModelListHead != NULL) {
+        MBModelKill(mbModelListHead);
     }
 }
 
-static Object *func_800D9004_shared_board(void) {
+static Object *MBModelAlloc(void) {
     Object *temp_v0;
 
     temp_v0 = HuMemMemoryAllocTemp(sizeof(Object));
     if (temp_v0 != NULL) {
-        D_80102AB4_shared_board++;
-        temp_v0->prev = D_80102AB0_shared_board;
+        mbModelNum++;
+        temp_v0->prev = mbModelListHead;
         temp_v0->next = NULL;
-        if (D_80102AB0_shared_board != NULL) {
-            D_80102AB0_shared_board->next = temp_v0;
+        if (mbModelListHead != NULL) {
+            mbModelListHead->next = temp_v0;
         }
-        D_80102AB0_shared_board = temp_v0;
+        mbModelListHead = temp_v0;
         temp_v0->flags = 8;
         HuVecCopyXYZ(&temp_v0->coords, 0.0f, 0.0f, 0.0f);
         HuVecCopyXYZ(&temp_v0->rot, 0.0f, 0.0f, 1.0f);
@@ -191,10 +191,10 @@ Object* MBModelCreate(u8 arg0, u32* arg1) {
     Object* temp_v0;
 
     temp_v0 = MBModelFileCreate(
-        D_80100850_shared_board[arg0].unk_00,
-        D_80100850_shared_board[arg0].unk_04,
-        D_80100850_shared_board[arg0].unk_08,
-        D_80100850_shared_board[arg0].unk_0C, arg1);
+        mbModelDataTbl[arg0].unk_00,
+        mbModelDataTbl[arg0].unk_04,
+        mbModelDataTbl[arg0].unk_08,
+        mbModelDataTbl[arg0].unk_0C, arg1);
     temp_v0->unk8 = arg0;
     return temp_v0;
 }
@@ -213,7 +213,7 @@ Object *MBModelFileCreate(s32 arg0, s32 arg1, f32 arg2, f32 arg3, u32 *arg4) {
     dataPtr = arg4;
     motionCnt = 0;
 
-    object = func_800D9004_shared_board();
+    object = MBModelAlloc();
     if (object != NULL) {
         object->unk8 = 0xFF;
 
@@ -222,7 +222,7 @@ Object *MBModelFileCreate(s32 arg0, s32 arg1, f32 arg2, f32 arg3, u32 *arg4) {
             dataPtr++;
         }
 
-        objData = object->omObj1 = omAddObj(0x4000, 1, motionCnt, -1, func_800D93C0_shared_board);
+        objData = object->omObj1 = omAddObj(0x4000, 1, motionCnt, -1, MBModelObjMain);
 
         mdlIdx = Hu3DModelRead(arg0, 0x6A9);
         omSetStatBit(objData, OM_STAT_NOALLPAUSE);
@@ -241,11 +241,11 @@ Object *MBModelFileCreate(s32 arg0, s32 arg1, f32 arg2, f32 arg3, u32 *arg4) {
         work->unk_04 = arg2;
 
         for (i = 0; i < motionCnt; i++) {
-            objData->motion[i] = func_800D8E88_shared_board(*dataPtr++);
+            objData->motion[i] = MBMotionCreate(*dataPtr++);
         }
 
         if ((arg1 >= 0) && (arg3 > 0.0f)) {
-            objData = object->omObj2 = omAddObj(0x4000, 1, 0, -1, func_800D95D0_shared_board);
+            objData = object->omObj2 = omAddObj(0x4000, 1, 0, -1, MBShadowObjMain);
             mdlIdx = Hu3DModelRead(arg1, 0x229);
             omSetStatBit(objData, OM_STAT_NOALLPAUSE);
             objData->model[0] = mdlIdx;
@@ -264,7 +264,7 @@ Object *MBModelFileCreate(s32 arg0, s32 arg1, f32 arg2, f32 arg3, u32 *arg4) {
     return object;
 }
 
-static void func_800D93C0_shared_board(omObjData *playerObj) {
+static void MBModelObjMain(omObjData *playerObj) {
     f32 sp10[2];
     Object *temp_s0;
     UnkObj *temp_s2;
@@ -298,7 +298,7 @@ static void func_800D93C0_shared_board(omObjData *playerObj) {
     playerObj->scale.y = temp_s0->scale.y * temp_s2->unk_04 * MBBackMdlScaleGet();
     playerObj->scale.z = temp_s0->scale.z * temp_s2->unk_04 * MBBackMdlScaleGet();
 
-    if (!(D_80105706_shared_board & 1)) {
+    if (!(mbModelDispFlag & 1)) {
         MBModelAttrSetDispOff(temp_s0);
         return;
     }
@@ -322,11 +322,11 @@ static void func_800D93C0_shared_board(omObjData *playerObj) {
 }
 
 
-void func_800D95C4_shared_board(f32 arg0) {
-    D_80100D40_shared_board = arg0;
+void MBShadowHeightMaxSet(f32 arg0) {
+    mbShadowHeightMax = arg0;
 }
 
-static void func_800D95D0_shared_board(omObjData* arg0) {
+static void MBShadowObjMain(omObjData* arg0) {
     f32 var_f20;
     Object* temp_s0;
     UnkObj* temp_s2;
@@ -339,7 +339,7 @@ static void func_800D95D0_shared_board(omObjData* arg0) {
         var_f20 = 0.0f;
     } else {
         if (temp_s0->velocity.x != 0.0f) {
-            var_f20 = 1.0f - (temp_s0->velocity.x / D_80100D40_shared_board);
+            var_f20 = 1.0f - (temp_s0->velocity.x / mbShadowHeightMax);
             if (var_f20 <= 0.0f) {
                 var_f20 = 0.0f;
             }
@@ -372,11 +372,11 @@ Object *MBModelLinkCreate(Object *src) {
     s16 mdlIdx;
     s16 i;
 
-    object = func_800D9004_shared_board();
+    object = MBModelAlloc();
     if (object != NULL) {
         object->unk8 = src->unk8;
 
-        objData = object->omObj1 = omAddObj(0x4000, 1, src->omObj1->mtncnt, -1, func_800D93C0_shared_board);
+        objData = object->omObj1 = omAddObj(0x4000, 1, src->omObj1->mtncnt, -1, MBModelObjMain);
 
         mdlIdx = Hu3DModelLink(src->omObj1->model[0]);
         omSetStatBit(objData, OM_STAT_NOALLPAUSE);
@@ -387,25 +387,25 @@ Object *MBModelLinkCreate(Object *src) {
         Hu3DModelScaleSet(mdlIdx, 0.0f, 0.0f, 0.0f);
 
         if (Hu3DData[mdlIdx].motId != 0xFF) {
-            object->unk44 = func_800D8F30_shared_board(Hu3DData[mdlIdx].motId);
+            object->unk44 = MBMotionRefCopy(Hu3DData[mdlIdx].motId);
         }
 
         work = HuMemMemoryAllocTemp(sizeof(UnkObj));
         objData->data = work;
         work->unk_00 = object;
         if (object->unk8 != 0xFF) {
-            work->unk_04 = D_80100850_shared_board[object->unk8].unk_08;
+            work->unk_04 = mbModelDataTbl[object->unk8].unk_08;
         } else {
             work->unk_04 = 1.0f;
         }
 
         for (i = 0; i < src->omObj1->mtncnt; i++) {
-            objData->motion[i] = func_800D8F30_shared_board(src->omObj1->motion[i]);
+            objData->motion[i] = MBMotionRefCopy(src->omObj1->motion[i]);
         }
 
         if ((src->omObj2 != NULL) && (object->unk8 != 0xFF) &&
-            (D_80100850_shared_board[object->unk8].unk_0C > 0.0f)) {
-            objData = object->omObj2= omAddObj(0x4000, 1, 0, -1, func_800D95D0_shared_board);
+            (mbModelDataTbl[object->unk8].unk_0C > 0.0f)) {
+            objData = object->omObj2= omAddObj(0x4000, 1, 0, -1, MBShadowObjMain);
 
             mdlIdx = Hu3DModelLink(src->omObj2->model[0]);
             omSetStatBit(objData, OM_STAT_NOALLPAUSE);
@@ -417,7 +417,7 @@ Object *MBModelLinkCreate(Object *src) {
             work = HuMemMemoryAllocTemp(sizeof(UnkObj));
             objData->data = work;
             work->unk_00 = object;
-            work->unk_04 = D_80100850_shared_board[object->unk8].unk_0C;
+            work->unk_04 = mbModelDataTbl[object->unk8].unk_0C;
         } else {
             object->omObj2 = NULL;
         }
@@ -425,7 +425,7 @@ Object *MBModelLinkCreate(Object *src) {
     return object;
 }
 
-void func_800D9A40_shared_board(Object* arg0) {
+void MBModelDispFlagSet(Object* arg0) {
     arg0->flags |= 8;
 }
 
@@ -438,7 +438,7 @@ void MBModelAttrSetDispOn(Object* arg0) {
 
 void MBModelDispOn(Object* arg0) {
     MBModelAttrSetDispOn(arg0);
-    func_800D9A40_shared_board(arg0);
+    MBModelDispFlagSet(arg0);
 }
 
 void MBModelAttrSetDispOff(Object* arg0) {
@@ -456,14 +456,14 @@ void MBModelDispOff(Object* arg0) {
 void MBModelKill(Object* arg0) {
     s32 i;
 
-    if (D_80102AB0_shared_board != NULL) {
+    if (mbModelListHead != NULL) {
         if (arg0->prev != NULL) {
             arg0->prev->next = arg0->next;
         }
         if (arg0->next != NULL) {
             arg0->next->prev = arg0->prev;
         } else {
-            D_80102AB0_shared_board = arg0->prev;
+            mbModelListHead = arg0->prev;
         }
         Hu3DMotionSet(arg0->omObj1->model[0], -1);
         Hu3DModelKill(arg0->omObj1->model[0]);
@@ -490,16 +490,16 @@ void MBModelKill(Object* arg0) {
             omDelObj(arg0->omObj2);
         }
         HuMemMemoryFreeTemp(arg0);
-        D_80102AB4_shared_board -= 1;
+        mbModelNum -= 1;
     }
 }
 
 //return 1 if object is found in linked list, 0 if we step the whole linked list and never find it
 //unused
-s32 func_800D9CB0_shared_board(Object* arg0) {
+s32 MBModelExistCheck(Object* arg0) {
     Object* var_v0;
 
-    var_v0 = D_80102AB0_shared_board;
+    var_v0 = mbModelListHead;
     
     while (var_v0 != NULL) {
         if (var_v0 == arg0) {
@@ -548,7 +548,7 @@ u16 MBMotionCheck(Object* arg0) {
     return ret;
 }
 
-u16 func_800D9E80_shared_board(Object* arg0) {
+u16 MBMotionStartCheck(Object* arg0) {
     u16 ret;
 
     ret = 0;
@@ -558,7 +558,7 @@ u16 func_800D9E80_shared_board(Object* arg0) {
     return ret;
 }
 
-static void func_800D9ED0_shared_board(omObjData* arg0) {
+static void MBModelTurnObjMain(omObjData* arg0) {
     Object* temp_s1;
 
     temp_s1 = arg0->data;
@@ -579,14 +579,14 @@ static void func_800D9ED0_shared_board(omObjData* arg0) {
 }
 
 //unused
-omObjData* func_800D9F5C_shared_board(Object* arg0, Vec* arg1, s32 arg2) {
+omObjData* MBModelTurnCreate(Object* arg0, Vec* arg1, s32 arg2) {
     Vec sp18;
     f32 var_f20;
     f32 var_f4;
     omObjData* temp_v0;
 
     MBVecDirGet(&arg0->coords, arg1, &sp18);
-    temp_v0 = omAddObj(0x1000, 0, 0, -1, func_800D9ED0_shared_board);
+    temp_v0 = omAddObj(0x1000, 0, 0, -1, MBModelTurnObjMain);
     temp_v0->work[1] = arg2;
     temp_v0->rot.x = sp18.x;
     temp_v0->rot.y = sp18.y;
@@ -625,5 +625,5 @@ void MBPlayerMotionLoad(s32 arg0, s32 arg1, s32 arg2) {
         MBMotionKill(playerOmObjData->motion[arg1]);
     }
 
-    playerOmObjData->motion[arg1] = func_800D8E88_shared_board(temp_s0);
+    playerOmObjData->motion[arg1] = MBMotionCreate(temp_s0);
 }

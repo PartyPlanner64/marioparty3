@@ -8,14 +8,14 @@ typedef struct UnkData {
     s16 unk_08;
 } UnkData;
 
-static void func_800DA790_shared_board(u16 arg0, u16 arg1, char *arg2, u8 arg3, u8 arg4) {
+static void MBDebugPrintShadow(u16 arg0, u16 arg1, char *arg2, u8 arg3, u8 arg4) {
     fontcolor = arg4;
     print8((arg0 + 1), (arg1 + 1), arg2);
     fontcolor = arg3;
     print8(arg0, arg1, arg2);
 }
 
-static void func_800DA810_shared_board(void) {
+static void MBDebugCheatProc(void) {
     s16 temp_v0;
     s16 temp_v0_2;
     UnkData *temp_s0;
@@ -39,11 +39,11 @@ static void func_800DA810_shared_board(void) {
     }
 }
 
-void func_800DA8BC_shared_board(u16 *arg0) {
+void MBDebugCheatCreate(u16 *arg0) {
     Process *process;
     UnkData *temp_v0_2;
 
-    process = omAddPrcObj(func_800DA810_shared_board, 0xEFFF, 0, 0x40);
+    process = omAddPrcObj(MBDebugCheatProc, 0xEFFF, 0, 0x40);
     temp_v0_2 = HuMemMemoryAlloc(process->heap, sizeof(UnkData));
     process->user_data = temp_v0_2;
     temp_v0_2->unk_04 = arg0;
@@ -51,11 +51,11 @@ void func_800DA8BC_shared_board(u16 *arg0) {
     temp_v0_2->unk_00 = process;
 }
 
-void func_800DA91C_shared_board(Process* arg0) {
+void MBDebugCheatKill(Process* arg0) {
     omDelPrcObj(arg0->next);
 }
 
-s32 func_800DA938_shared_board(UnkData* arg0) {
+s32 MBDebugCheatCheck(UnkData* arg0) {
     if (~arg0->unk_08) {
         return 0;
     } else {
@@ -63,30 +63,30 @@ s32 func_800DA938_shared_board(UnkData* arg0) {
     }
 }
 
-void func_800DA948_shared_board(void) {
+void MBDebugStub1(void) {
 }
 
 // this needs a \0 due to rodata splitting problems
-void func_800DA950_shared_board(s32 arg0, s16 arg1) {
+void MBDebugKakusiMasuPrint(s32 arg0, s16 arg1) {
 
     sprintf(omDBGStrBuf, "KMS: %d", kakusiMasuStar);
     arg0 = (arg0 * 8) & 0xFFF8;
-    func_800DA790_shared_board(arg0, (arg1 * 8), omDBGStrBuf, 0xF, 9);
+    MBDebugPrintShadow(arg0, (arg1 * 8), omDBGStrBuf, 0xF, 9);
     sprintf(omDBGStrBuf, "KMC: %d\0", kakusiMasuCoin);
-    func_800DA790_shared_board(arg0, ((arg1 + 1) * 8), omDBGStrBuf, 0xF, 9);
+    MBDebugPrintShadow(arg0, ((arg1 + 1) * 8), omDBGStrBuf, 0xF, 9);
 }
 
-void func_800DAA14_shared_board(void) {
+void MBDebugStub2(void) {
 }
 
-void func_800DAA1C_shared_board(void) {
+void MBDebugStub3(void) {
 }
 
-void func_800DAA24_shared_board(void) {
+void MBDebugStub4(void) {
 }
 
-void func_800DAA2C_shared_board(void) {
+void MBDebugStub5(void) {
 }
 
-void func_800DAA34_shared_board(void) {
+void MBDebugStub6(void) {
 }

@@ -41,7 +41,7 @@ extern const DuelResultCharMotions D_8010D7F0_duelresult;
 extern const DuelResultCharMotions D_8010D810_duelresult;
 extern const DuelResultCharActors D_8010D83C_duelresult;
 extern s16 kakusiMasuItemHis[10];
-extern s32 D_80101200_shared_board[];
+extern s32 mbKSuitObj[];
 
 void func_80105BD0_duelresult(void);
 DuelResultWork *func_8010ABE0_duelresult(s32);
@@ -1285,7 +1285,7 @@ void func_8010856C_duelresult(void) {
                           &D_8010D8A8_duelresult[kakusiMasuItemHis[0]]->player_obj->coords, 60);
     HuPrcChildWatch();
 
-    func_800EB4DC_name_81(-1, 0x2006, D_80101200_shared_board[GwPlayer[kakusiMasuItemHis[0]].chr], 0, 0, 0, 0);
+    func_800EB4DC_name_81(-1, 0x2006, mbKSuitObj[GwPlayer[kakusiMasuItemHis[0]].chr], 0, 0, 0, 0);
     func_800EB278_name_81();
     func_800EB29C_name_81();
     for (i = 0; i < 2; i++) {

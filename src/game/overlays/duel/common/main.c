@@ -1514,7 +1514,7 @@ void func_800FD6F4_name_81(void) {
                             MBDModelKill(partnerObj[1]);
                         }
 
-                        Duel_PowerUpPartners(system->current_player_index);
+                        MBDPartnerPowerUp(system->current_player_index);
                         HuPrcChildLink(curProc, func_800E4A74_name_81(0));
                         HuPrcChildWatch();
                         break;

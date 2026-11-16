@@ -35,27 +35,27 @@ typedef struct UnkSharedBoard2 {
     Vec unk_0C;
 } UnkSharedBoard2;
 
-s32 D_80100D60_shared_board[6] = { 0x130207, 0x130207, 0x130207, 0x130207, 0x130207, 0x130208 };
-s32 D_80100D78_shared_board[6] = { 0x1300FE, 0x130206, 0x1301E7, 0x130266, 0x1301E8, 0x13020B };
-s32 D_80100D90_shared_board = 1;
-s16 D_80100D94_shared_board[3][2] = {
+s32 mbSaiMdlTbl[6] = { 0x130207, 0x130207, 0x130207, 0x130207, 0x130207, 0x130208 };
+s32 mbSaiAnimTbl[6] = { 0x1300FE, 0x130206, 0x1301E7, 0x130266, 0x1301E8, 0x13020B };
+s32 mbSaiSeF = 1;
+s16 mbSaiNumMultiPosTbl[3][2] = {
     { 110, 64 },
     { 210, 64 },
     { 160, 64 }
 };
 
-extern u8 D_801057D9_shared_board;
+extern u8 mbKakusiWaitF;
 extern f32 Hu3DVtxWaveAngle;
-extern u8 D_80105700_shared_board;
-extern s8 D_80105704_shared_board;
-extern u8 D_8010570E_shared_board;
-extern f32 D_80105708_shared_board;
-extern u8 D_8010570F_shared_board;
-extern u8 D_801057D8_shared_board;
+extern u8 mbSaiRotDir;
+extern s8 mbSaiIdleF;
+extern u8 mbSaiNum;
+extern f32 mbSaiHeight;
+extern u8 mbSaiMode;
+extern u8 mbSaiDispF;
 
-static void func_800DE9B8_shared_board(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
+static void MBSaiNumPosSet(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
 
-void func_800DAA40_shared_board(s32 arg0) {
+void MBSaiSePlay(s32 arg0) {
     UnkDiceRelated* temp_s0;
 
     temp_s0 = &mbDiceData[arg0];
@@ -64,7 +64,7 @@ void func_800DAA40_shared_board(s32 arg0) {
     }
 }
 
-static void func_800DAAAC_shared_board(omObjData *arg0) {
+static void MBSaiObjMain(omObjData *arg0) {
     UnkDiceRelated *entry;
     f32 base;
     f32 scale;
@@ -72,7 +72,7 @@ static void func_800DAAAC_shared_board(omObjData *arg0) {
     s32 i;
 
     entry = &mbDiceData[arg0->work[3]];
-    if (D_8010570F_shared_board == 1) {
+    if (mbSaiMode == 1) {
         base = 1.0f;
     } else {
         base = 0.1f;
@@ -83,12 +83,12 @@ static void func_800DAAAC_shared_board(omObjData *arg0) {
             if (Hu3DPauseF != 0) {
                 return;
             }
-            arg0->trans.y = GwPlayer[arg0->work[3]].player_obj->coords.y + D_80105708_shared_board;
+            arg0->trans.y = GwPlayer[arg0->work[3]].player_obj->coords.y + mbSaiHeight;
 
             scale = (sindf(arg0->work[1] * 2) * entry->unk48 * base) + base;
             arg0->scale.x = arg0->scale.y = arg0->scale.z = scale;
 
-            if (D_80105700_shared_board == 0) {
+            if (mbSaiRotDir == 0) {
                 arg0->rot.y += 22.5f;
             } else {
                 arg0->rot.y -= 22.5f;
@@ -103,7 +103,7 @@ static void func_800DAAAC_shared_board(omObjData *arg0) {
                 arg0->work[1] = 0;
                 arg0->work[0] = 1;
 
-                if (D_8010570F_shared_board == 1) {
+                if (mbSaiMode == 1) {
                     for (i = 0; i < 4; i++) {
                         if (mbDiceData[i].unk28 != -1) {
                             break;
@@ -120,8 +120,8 @@ static void func_800DAAAC_shared_board(omObjData *arg0) {
                     }
                     entry->unk28 = mbDiceData[i].unk28;
                 } else if ((entry->unk2A == 0) && (entry->unk_0A != 5) &&
-                           (D_8010570F_shared_board != 2) &&
-                           (D_801057D8_shared_board != 0)) {
+                           (mbSaiMode != 2) &&
+                           (mbSaiDispF != 0)) {
                     entry->unk28 = HuAudFXPlay(0x100);
                     return;
                 }
@@ -131,7 +131,7 @@ static void func_800DAAAC_shared_board(omObjData *arg0) {
         case 1:
             if (Hu3DPauseF == 0) {
                 arg0->trans.y = GwPlayer[arg0->work[3]].player_obj->coords.y
-                              + D_80105708_shared_board
+                              + mbSaiHeight
                               + (sindf(arg0->work[1] * 2) * 10.0f * base);
                 arg0->work[1] = (arg0->work[1] + 5) % 180;
                 return;
@@ -147,14 +147,14 @@ static void func_800DAAAC_shared_board(omObjData *arg0) {
                 entry->unk40 += 0.05f;
                 entry->unk44 = ((10.0f - entry->unk44) / 30.0f) + entry->unk44;
                 if (entry->unk40 > 1.0f) {
-                    func_800DCA64_shared_board(arg0->work[3]);
+                    MBSaiKill(arg0->work[3]);
                 }
             }
             break;
     }
 }
 
-static void func_800DAF1C_shared_board(omObjData *arg0) {
+static void MBSaiNumObjMain(omObjData *arg0) {
     UnkDiceRelated *entry;
     Vec pos;
     f32 pos2d[2];
@@ -189,7 +189,7 @@ static void func_800DAF1C_shared_board(omObjData *arg0) {
     HuSprAnimModeSet(entry->sprites[arg0->work[1]], 1, HUSPR_ANIM_MODE_BANK);
 
     pos.x = GwPlayer[arg0->work[3]].player_obj->coords.x;
-    pos.y = GwPlayer[arg0->work[3]].player_obj->coords.y + D_80105708_shared_board + arg0->trans.y;
+    pos.y = GwPlayer[arg0->work[3]].player_obj->coords.y + mbSaiHeight + arg0->trans.y;
     pos.z = GwPlayer[arg0->work[3]].player_obj->coords.z;
     MBCamera3Dto2D(&pos, pos2d);
 
@@ -197,12 +197,12 @@ static void func_800DAF1C_shared_board(omObjData *arg0) {
 
     if ((pos2d[0] >= 0.0f) && (pos2d[0] <= 320.0f) &&
         (pos2d[1] >= 0.0f) && (pos2d[1] <= 240.0f)) {
-        func_800DE9B8_shared_board(arg0->work[3], arg0->work[1], 160,
+        MBSaiNumPosSet(arg0->work[3], arg0->work[1], 160,
                                          120 - (s32)(MBCameraZoomGet() * 24.0f));
     }
 }
 
-static void func_800DB318_shared_board(omObjData *arg0) {
+static void MBSaiNumSingleObjMain(omObjData *arg0) {
     UnkDiceRelated *entry;
     Vec pos;
     f32 pos2d[2];
@@ -233,14 +233,14 @@ static void func_800DB318_shared_board(omObjData *arg0) {
     HuSprAnimModeSet(entry->sprites[entry->rollValueIdx], 0, HUSPR_ANIM_MODE_BANK);
 
     pos.x = GwPlayer[arg0->work[3]].player_obj->coords.x;
-    pos.y = GwPlayer[arg0->work[3]].player_obj->coords.y + D_80105708_shared_board + arg0->trans.y;
+    pos.y = GwPlayer[arg0->work[3]].player_obj->coords.y + mbSaiHeight + arg0->trans.y;
     pos.z = GwPlayer[arg0->work[3]].player_obj->coords.z;
     MBCamera3Dto2D(&pos, pos2d);
 
     HuSprPosSet(entry->sprites[entry->rollValueIdx], 0, pos2d[0], pos2d[1]);
 }
 
-void func_800DB56C_shared_board(void) {
+void MBSaiValueClear(void) {
     s32 i;
     s32 j;
 
@@ -253,7 +253,7 @@ void func_800DB56C_shared_board(void) {
     mbDiceUnkF = 0;
 }
 
-void func_800DB5DC_shared_board(void) {
+void MBSaiInit(void) {
     UnkDiceRelated *entry;
     s32 i;
     s32 j;
@@ -282,14 +282,14 @@ void func_800DB5DC_shared_board(void) {
         entry->unk_09 = -1;
     }
 
-    D_8010570F_shared_board = 0;
-    D_80105704_shared_board = 1;
-    D_80105708_shared_board = 25.0f;
-    D_801057D8_shared_board = 1;
-    D_8010570E_shared_board = 1;
+    mbSaiMode = 0;
+    mbSaiIdleF = 1;
+    mbSaiHeight = 25.0f;
+    mbSaiDispF = 1;
+    mbSaiNum = 1;
 }
 
-void func_800DB6A8_shared_board(s32 arg0) {
+void MBSaiNumSprCreate(s32 arg0) {
     UnkDiceRelated *entry;
     void *data;
     s32 i;
@@ -299,7 +299,7 @@ void func_800DB6A8_shared_board(s32 arg0) {
     if ((arg0 != 0) && (mbDiceData[0].unk_14 != -1)) {
         entry->unk_14 = mbDiceData[0].unk_14;
         mbDiceData[0].unk_0C++;
-    } else if ((entry->rollValueIdx == 0) || (D_8010570E_shared_board == 1)) {
+    } else if ((entry->rollValueIdx == 0) || (mbSaiNum == 1)) {
         data = DataRead(0x13020D);
         entry->unk_14 = HuSprAnimRead(data);
         entry->unk_0C = 1;
@@ -321,7 +321,7 @@ void func_800DB6A8_shared_board(s32 arg0) {
     entry->unk_0B = 1;
 }
 
-void func_800DB884_shared_board(s32 arg0) {
+void MBSaiNumShow(s32 arg0) {
     UnkDiceRelated *entry;
     omObjData *obj;
     Vec pos;
@@ -333,12 +333,12 @@ void func_800DB884_shared_board(s32 arg0) {
     if (entry->rollValue[entry->rollValueIdx] != 0) {
         if ((entry->dice == NULL) || (entry->dice->work[0] == 2)) {
             pos.x = GwPlayer[arg0].player_obj->coords.x;
-            pos.y = GwPlayer[arg0].player_obj->coords.y + D_80105708_shared_board;
+            pos.y = GwPlayer[arg0].player_obj->coords.y + mbSaiHeight;
             pos.z = GwPlayer[arg0].player_obj->coords.z;
             MBCamera3Dto2D(&pos, pos2d);
 
             if (entry->sprites[entry->rollValueIdx] == -1) {
-                func_800DB6A8_shared_board(arg0);
+                MBSaiNumSprCreate(arg0);
                 entry->unk_0B = 0;
             } else {
                 roll = entry->rollValueIdx;
@@ -347,8 +347,8 @@ void func_800DB884_shared_board(s32 arg0) {
                 HuSprAnimModeSet(entry->sprites[entry->rollValueIdx], 0, HUSPR_ANIM_MODE_BANK);
             }
 
-            if ((func_800F8858_shared_board() == 0) && (D_8010570F_shared_board == 0)) {
-                func_800DE9B8_shared_board(arg0, entry->rollValueIdx, pos2d[0], pos2d[1] - 8.0f);
+            if ((MBOvlCallCheck() == 0) && (mbSaiMode == 0)) {
+                MBSaiNumPosSet(arg0, entry->rollValueIdx, pos2d[0], pos2d[1] - 8.0f);
             } else {
                 HuSprPosSet(entry->sprites[entry->rollValueIdx], 0, pos2d[0], pos2d[1]);
             }
@@ -362,13 +362,13 @@ void func_800DB884_shared_board(s32 arg0) {
             HuSprDispOn(entry->sprites[entry->rollValueIdx], 0);
 
             if (entry->omObj == NULL) {
-                if ((func_800F8858_shared_board() == 0) && (D_8010570F_shared_board == 0)) {
-                    obj = omAddObj(-0x8000, 0, 0, -1, func_800DAF1C_shared_board);
+                if ((MBOvlCallCheck() == 0) && (mbSaiMode == 0)) {
+                    obj = omAddObj(-0x8000, 0, 0, -1, MBSaiNumObjMain);
                     entry->omObj = obj;
                     obj->scale.z = 3.0f;
                     obj->work[1] = entry->rollValueIdx;
                 } else {
-                    obj = omAddObj(-0x8000, 0, 0, -1, func_800DB318_shared_board);
+                    obj = omAddObj(-0x8000, 0, 0, -1, MBSaiNumSingleObjMain);
                     entry->omObj = obj;
                     obj->scale.z = 1.0f;
                 }
@@ -382,20 +382,20 @@ void func_800DB884_shared_board(s32 arg0) {
     }
 }
 
-static void func_800DBC2C_shared_board(s32 arg0) {
+static void MBSaiValueDecide(s32 arg0) {
     UnkDiceRelated *entry = &mbDiceData[arg0];
     s8 forcedRoll;
     s32 i;
 
     if ((entry->unk_0B == 0) ) {
         if ((entry->rollValueIdx == 0)) {
-            func_800DBEC0_shared_board(arg0);
+            MBSaiNumKill(arg0);
         }
     }
 
     entry->unk_0B = 0;
 
-    if (D_8010570F_shared_board == 1) {
+    if (mbSaiMode == 1) {
         do {
             if (entry->predecidedRollValue[entry->rollValueIdx] != 0) {
                 entry->rollValue[entry->rollValueIdx] = entry->predecidedRollValue[entry->rollValueIdx];
@@ -438,10 +438,10 @@ static void func_800DBC2C_shared_board(s32 arg0) {
         }
     }
 
-    func_800DB884_shared_board(arg0);
+    MBSaiNumShow(arg0);
 }
 
-void func_800DBE6C_shared_board(s32 arg0) {
+void MBSaiNumObjKill(s32 arg0) {
     UnkDiceRelated* dice = &mbDiceData[arg0];
 
     if (dice->omObj != NULL) {
@@ -450,7 +450,7 @@ void func_800DBE6C_shared_board(s32 arg0) {
     }
 }
 
-s32 func_800DBEC0_shared_board(s32 arg0) {
+s32 MBSaiNumKill(s32 arg0) {
     s32 count = 0;
     UnkDiceRelated *entry = &mbDiceData[arg0];
     s32 i;
@@ -483,44 +483,44 @@ s32 func_800DBEC0_shared_board(s32 arg0) {
     return count;
 }
 
-void func_800DBFBC_shared_board(s32 arg0) {
+void MBSaiNumCountDown(s32 arg0) {
     UnkDiceRelated* dice = &mbDiceData[arg0];
 
     dice->rollValue[dice->rollValueIdx]--;
     if (dice->rollValue[dice->rollValueIdx] <= 0) {
-        func_800DBEC0_shared_board(arg0);
+        MBSaiNumKill(arg0);
     }
 }
 
-void func_800DC024_shared_board(s32 arg0) {
+void MBSaiMdlDispOff(s32 arg0) {
     if (mbDiceData[arg0].unk_16 != -1) {
         Hu3DModelAttrSet(mbDiceData[arg0].unk_16, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
 }
 
-void func_800DC06C_shared_board(s32 arg0) {
-    D_801057D8_shared_board = 0;
-    func_800DC024_shared_board(arg0);
+void MBSaiDispOff(s32 arg0) {
+    mbSaiDispF = 0;
+    MBSaiMdlDispOff(arg0);
 }
 
-void func_800DC08C_shared_board(s32 arg0) {
-    if (D_801057D8_shared_board != 0) {
+void MBSaiMdlDispOn(s32 arg0) {
+    if (mbSaiDispF != 0) {
         if (mbDiceData[arg0].unk_16 != -1) {
             Hu3DModelAttrSet(mbDiceData[arg0].unk_16, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         }
     }
 }
 
-void func_800DC0E0_shared_board(s32 arg0) {
-    D_801057D8_shared_board = 1;
-    func_800DC08C_shared_board(arg0);
+void MBSaiDispOn(s32 arg0) {
+    mbSaiDispF = 1;
+    MBSaiMdlDispOn(arg0);
 }
 
-void func_800DC104_shared_board(s32 arg0, s8 arg1) {
+void MBSaiTypeSet(s32 arg0, s8 arg1) {
     mbDiceData[arg0].unk_09 = arg1;
 }
 
-s16 func_800DC128_shared_board(s32 arg0) {
+s16 MBSaiCreate(s32 arg0) {
     UnkDiceRelated *entry;
     omObjData *dice;
     f32 chance;
@@ -533,7 +533,7 @@ s16 func_800DC128_shared_board(s32 arg0) {
     s16 ret;
     s32* temp;
 
-    D_80105700_shared_board = 0;
+    mbSaiRotDir = 0;
     entry = &mbDiceData[arg0];
     
     if (entry->unk_16 != -1) {
@@ -541,7 +541,7 @@ s16 func_800DC128_shared_board(s32 arg0) {
     }
     
     if (entry->rollValueIdx == 0) {
-        func_800DBEC0_shared_board(arg0);
+        MBSaiNumKill(arg0);
     }
 
     if (entry->unk_09 != -1) {
@@ -553,9 +553,9 @@ s16 func_800DC128_shared_board(s32 arg0) {
             entry->unk_0A = 3;
             GWBoardFlagClear(0x10);
         }
-        if (D_8010570E_shared_board == 2) {
+        if (mbSaiNum == 2) {
             entry->unk_0A = 2;
-        } else if (D_8010570E_shared_board == 3) {
+        } else if (mbSaiNum == 3) {
             entry->unk_0A = 4;
             if (entry->rollValueIdx == 0) {
                 if (mbDiceUnkF != 0) {
@@ -567,7 +567,7 @@ s16 func_800DC128_shared_board(s32 arg0) {
                     val = (rand8() % 10) + 1;
                     entry->predecidedRollValue[1] = val;
                     entry->predecidedRollValue[0] = val;
-                    D_80105700_shared_board = 1;
+                    mbSaiRotDir = 1;
                 }
             }
         }
@@ -576,13 +576,13 @@ s16 func_800DC128_shared_board(s32 arg0) {
         }
     }
 
-    entry->unk_16 = Hu3DModelCreate(DataRead(D_80100D60_shared_board[entry->unk_0A]), 0x6A9);
+    entry->unk_16 = Hu3DModelCreate(DataRead(mbSaiMdlTbl[entry->unk_0A]), 0x6A9);
     Hu3DModelCameraSet(entry->unk_16, HU3D_CAM0);
     Hu3DModelScaleSet(entry->unk_16, 0.0f, 0.0f, 0.0f);
     Hu3DModelObjAttrSet(entry->unk_16, 0x20000, 0x20000);
 
     if (entry->unk_0A != 5) {
-        entry->unk_2C = DataRead(D_80100D78_shared_board[entry->unk_0A]);
+        entry->unk_2C = DataRead(mbSaiAnimTbl[entry->unk_0A]);
         entry->unk_1A[0] = Hu3DAnimCreate(Hu3DData[entry->unk_16].hmf, entry->unk_2C, 0, "tile01_DEF");
         entry->unk_1A[1] = Hu3DAnimLink(Hu3DData[entry->unk_16].hmf, entry->unk_1A[0], 0, "tile02_DEF");
         entry->unk_1A[2] = Hu3DAnimLink(Hu3DData[entry->unk_16].hmf, entry->unk_1A[0], 0, "tile03_DEF");
@@ -611,16 +611,16 @@ s16 func_800DC128_shared_board(s32 arg0) {
     Hu3DModelRemakeStatic(entry->unk_16);
     Hu3DModelVtxBufMake(entry->unk_16);
 
-    dice = omAddObj(-0x8000, 1, 1, -1, func_800DAAAC_shared_board);
+    dice = omAddObj(-0x8000, 1, 1, -1, MBSaiObjMain);
     entry->dice = dice;
     *dice->model = entry->unk_16;
     omSetStatBit(dice, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
 
     dice->trans.x = GwPlayer[arg0].player_obj->coords.x;
-    dice->trans.y = GwPlayer[arg0].player_obj->coords.y + D_80105708_shared_board;
+    dice->trans.y = GwPlayer[arg0].player_obj->coords.y + mbSaiHeight;
     dice->trans.z = GwPlayer[arg0].player_obj->coords.z;
 
-    if (D_80105700_shared_board == 0) {
+    if (mbSaiRotDir == 0) {
         dice->rot.y = -90.0f;
     } else {
         dice->rot.y = 90.0f;
@@ -639,12 +639,12 @@ s16 func_800DC128_shared_board(s32 arg0) {
     entry->unk40 = 0.0f;
     entry->unk44 = 1.0f;
 
-    D_8010570F_shared_board = 0;
+    mbSaiMode = 0;
     ret = -1;
-    if (D_80100D90_shared_board != 0) {
+    if (mbSaiSeF != 0) {
         switch (entry->unk_0A) {
             case 0:
-                if (D_8010570F_shared_board != 2) {
+                if (mbSaiMode != 2) {
                     ret = HuAudFXPlay(0x102);
                 } else {
                     HuAudFXPlay(0x10E);
@@ -671,24 +671,24 @@ s16 func_800DC128_shared_board(s32 arg0) {
         }
     }
 
-    D_80100D90_shared_board = 1;
+    mbSaiSeF = 1;
     return ret;
 }
 
-static void func_800DC718_shared_board(s32 arg0, s32 arg1, s32 arg2, char *arg3[]) {
+static void MBSaiCreateEx(s32 arg0, s32 arg1, s32 arg2, char *arg3[]) {
     UnkDiceRelated *entry = &mbDiceData[arg0];
     omObjData *dice;
     f32 height;
     s32 i;
 
     if (entry->unk_16 == -1) {
-        if (D_8010570F_shared_board == 1) {
-            D_80105708_shared_board = 250.0f;
+        if (mbSaiMode == 1) {
+            mbSaiHeight = 250.0f;
         } else {
-            D_80105708_shared_board = 25.0f;
+            mbSaiHeight = 25.0f;
         }
 
-        func_800DBEC0_shared_board(arg0);
+        MBSaiNumKill(arg0);
         entry->unk_0A = 0;
 
         entry->unk_16 = Hu3DModelCreate(DataRead(arg1), 0x6A9);
@@ -717,14 +717,14 @@ static void func_800DC718_shared_board(s32 arg0, s32 arg1, s32 arg2, char *arg3[
 
         Hu3DModelRemakeStatic(entry->unk_16);
         Hu3DModelVtxBufMake(entry->unk_16);
-        D_80105700_shared_board = 0;
+        mbSaiRotDir = 0;
 
-        dice = omAddObj(-0x8000, 1, 1, -1, func_800DAAAC_shared_board);
+        dice = omAddObj(-0x8000, 1, 1, -1, MBSaiObjMain);
         entry->dice = dice;
         dice->model[0] = entry->unk_16;
         omSetStatBit(dice, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
         dice->trans.x = GwPlayer[arg0].player_obj->coords.x;
-        dice->trans.y = GwPlayer[arg0].player_obj->coords.y + D_80105708_shared_board;
+        dice->trans.y = GwPlayer[arg0].player_obj->coords.y + mbSaiHeight;
         dice->trans.z = GwPlayer[arg0].player_obj->coords.z;
         dice->rot.y = -90.0f;
         dice->scale.z =
@@ -745,16 +745,16 @@ static void func_800DC718_shared_board(s32 arg0, s32 arg1, s32 arg2, char *arg3[
     }
 }
 
-static void func_800DC9F8_shared_board(s32 arg0) {
+static void MBSaiBlankCreate(s32 arg0) {
     char* anims[6] =  {NULL, NULL, NULL, NULL, NULL, NULL}; //TODO: is this right?
 
-    func_800DC718_shared_board(arg0, 0x1301FB, -1, anims);
-    D_8010570F_shared_board = 2;
+    MBSaiCreateEx(arg0, 0x1301FB, -1, anims);
+    mbSaiMode = 2;
 }
 
 s32 const pad2[2] = {0 , 0};
 
-void func_800DCA64_shared_board(s32 arg0) {
+void MBSaiKill(s32 arg0) {
     UnkDiceRelated *entry = &mbDiceData[arg0];
     s16 id;
     s32 i;
@@ -794,16 +794,16 @@ void func_800DCA64_shared_board(s32 arg0) {
     }
 }
 
-void func_800DCB8C_shared_board(void) {
+void MBSaiClose(void) {
     s32 i;
 
     for (i = 0; i < 5; i++) {
-        func_800DCA64_shared_board(i);
-        func_800DBEC0_shared_board(i);
+        MBSaiKill(i);
+        MBSaiNumKill(i);
     }
 }
 
-void func_800DCBCC_shared_board(s32 arg0) {
+void MBSaiHit(s32 arg0) {
     UnkDiceRelated *entry;
     s16 sound;
     s32 count;
@@ -814,12 +814,12 @@ void func_800DCBCC_shared_board(s32 arg0) {
     if (entry->unk_16 != -1) {
         entry->dice->work[0] = 2;
 
-        if (D_8010570F_shared_board != 2) {
-            func_800DBC2C_shared_board(arg0);
+        if (mbSaiMode != 2) {
+            MBSaiValueDecide(arg0);
         }
 
         
-        if (D_8010570F_shared_board == 1) {
+        if (mbSaiMode == 1) {
             count = 0;
             for (i = 0; i < 4; i++) {
                 if (mbDiceData[i].unk28 != -1) {
@@ -836,7 +836,7 @@ void func_800DCBCC_shared_board(s32 arg0) {
         entry->unk28 = -1;
         entry->unk2A = 0;
 
-        if ((D_8010570F_shared_board == 2) || (entry->unk_0A == 5)) {
+        if ((mbSaiMode == 2) || (entry->unk_0A == 5)) {
             HuAudFXPlay(0x10D);
         } else {
             HuAudFXPlay(0x103);
@@ -845,12 +845,12 @@ void func_800DCBCC_shared_board(s32 arg0) {
     }
 }
 
-void func_800DCCE0_shared_board(void) {
-    D_8010570F_shared_board = 1;
-    D_80105708_shared_board = 250.0f;
+void MBSaiOrderModeSet(void) {
+    mbSaiMode = 1;
+    mbSaiHeight = 250.0f;
 }
 
-s32 func_800DCD00_shared_board(s32 arg0) {
+s32 MBSaiExistCheck(s32 arg0) {
     if (~mbDiceData[arg0].unk_16) {
         return 1;
     } else {
@@ -858,19 +858,19 @@ s32 func_800DCD00_shared_board(s32 arg0) {
     }
 }
 
-void func_800DCD2C_shared_board(s32 arg0, s32 arg1) {
+void MBSaiValueSet(s32 arg0, s32 arg1) {
     mbDiceData[arg0].rollValue[mbDiceData[arg0].rollValueIdx] = arg1;
 }
 
-void func_800DCD64_shared_board(s32 arg0, s32 arg1) {
+void MBSaiValueForceSet(s32 arg0, s32 arg1) {
     mbDiceData[arg0].predecidedRollValue[mbDiceData[arg0].rollValueIdx] = arg1;
 }
 
-s32 func_800DCD9C_shared_board(s32 arg0) {
+s32 MBSaiValueGet(s32 arg0) {
     return mbDiceData[arg0].rollValue[mbDiceData[arg0].rollValueIdx];
 }
 
-static void func_800DCDD4_shared_board(void) {
+static void MBSaiPlayerProc(void) {
     f32 temp_f20;
     f32 temp_f20_2;
     f32 temp_f20_3;
@@ -899,9 +899,9 @@ static void func_800DCDD4_shared_board(void) {
     while (1) {
         switch (temp_s3->unk4) {
             case 0:
-                D_80105704_shared_board = 0;
-                func_800DC128_shared_board(temp_s3->unk0);
-                D_80105704_shared_board = 1;
+                mbSaiIdleF = 0;
+                MBSaiCreate(temp_s3->unk0);
+                mbSaiIdleF = 1;
                 temp_s3->unk4++;
                 HuPrcSleep(0x14);
                 break;
@@ -909,43 +909,43 @@ static void func_800DCDD4_shared_board(void) {
                 if (((GwPlayer[temp_s3->unk0].stat & 1) || (HuPadBtnDown[GwPlayer[temp_s3->unk0].pad] & A_BUTTON)) && !(Hu3DData[mbDiceData[temp_s3->unk0].unk_16].attr & 4) && (GWBoardFlagCheck(0x11) == 0)) {
                     temp_s3->unk4++;
                     MBPlayerMotionSet(temp_s3->unk0, 2, 0);
-                    func_800EE688_shared_board(GwPlayer[temp_s3->unk0].player_obj, 2.0f, -0.3f);
+                    MBModelJumpSet(GwPlayer[temp_s3->unk0].player_obj, 2.0f, -0.3f);
                     mbCameraBtnF = 0;
                     mbDiceBtnF = 0;
                 }
                 break;
             case 2:
                 if (++var_s1 >= 5) {
-                    func_800DCBCC_shared_board(temp_s3->unk0);
-                    func_800F2388_shared_board(temp_s3->unk0, -1, 0, 0xA, 2);
+                    MBSaiHit(temp_s3->unk0);
+                    MBPlayerMotionShiftSet(temp_s3->unk0, -1, 0, 0xA, 2);
                     temp_s3->unk4++;
                 }
                 break;
             case 3:
                 HuPrcSleep(20);
                 var_s5++;
-                if (var_s5 != D_8010570E_shared_board) {
+                if (var_s5 != mbSaiNum) {
                     HuPrcSleep(10);
                     var_s1 = 0;
-                    func_800DBE6C_shared_board(temp_s3->unk0);
+                    MBSaiNumObjKill(temp_s3->unk0);
                     {
-                        s16 *temp0 = &D_80100D94_shared_board[var_s5-1][0];
-                        s16 *temp1 = &D_80100D94_shared_board[var_s5-1][1];
-                        func_800DE9B8_shared_board(temp_s3->unk0, temp_s4->rollValueIdx, *temp0, *temp1);
+                        s16 *temp0 = &mbSaiNumMultiPosTbl[var_s5-1][0];
+                        s16 *temp1 = &mbSaiNumMultiPosTbl[var_s5-1][1];
+                        MBSaiNumPosSet(temp_s3->unk0, temp_s4->rollValueIdx, *temp0, *temp1);
                     }
                     temp_s4->rollValueIdx++;
                     temp_s3->unk4 = 0;
                 } else {
-                    if (D_8010570E_shared_board != 1) {
+                    if (mbSaiNum != 1) {
                         HuPrcSleep(10);
-                        func_800DBE6C_shared_board(temp_s3->unk0);
+                        MBSaiNumObjKill(temp_s3->unk0);
                         {
-                            s16 *temp0 = &D_80100D94_shared_board[var_s5-1][0];
-                            s16 *temp1 = &D_80100D94_shared_board[var_s5-1][1];
-                            func_800DE9B8_shared_board(temp_s3->unk0, temp_s4->rollValueIdx, *temp0, *temp1);
+                            s16 *temp0 = &mbSaiNumMultiPosTbl[var_s5-1][0];
+                            s16 *temp1 = &mbSaiNumMultiPosTbl[var_s5-1][1];
+                            MBSaiNumPosSet(temp_s3->unk0, temp_s4->rollValueIdx, *temp0, *temp1);
                         }
                         HuPrcSleep(20);
-                        if (D_8010570E_shared_board == 2) {
+                        if (mbSaiNum == 2) {
                             if (temp_s4->rollValue[0] != temp_s4->rollValue[1]) {
                             } else {
                                 HuAudFXPlay(0x15D);
@@ -983,7 +983,7 @@ static void func_800DCDD4_shared_board(void) {
                                 MBPlayerMotionSet(temp_s3->unk0, -1, 2);
                             }
                         } else {
-                            if (D_8010570E_shared_board == 3) {
+                            if (mbSaiNum == 3) {
                                 if ((temp_s4->rollValue[0] == temp_s4->rollValue[1]) && (temp_s4->rollValue[0] == temp_s4->rollValue[2])) {
                                     if (temp_s4->rollValue[0] == 7) {
                                         mbItemBtnF = 0;
@@ -1037,24 +1037,24 @@ static void func_800DCDD4_shared_board(void) {
                             }
                         }
                         for (var_s1 = 0; var_s1 < 50; HuPrcVSleep(), var_s1 += 2) {
-                            func_800DE9B8_shared_board(temp_s3->unk0, 0, D_80100D94_shared_board[0][0] + var_s1, D_80100D94_shared_board[0][1] + (var_s1 / 2));
-                            func_800DE9B8_shared_board(temp_s3->unk0, 1, D_80100D94_shared_board[1][0] - var_s1, D_80100D94_shared_board[1][1] + (var_s1 / 2));
-                            if (D_8010570E_shared_board == 3) {
-                                func_800DE9B8_shared_board(temp_s3->unk0, 2, D_80100D94_shared_board[2][0], D_80100D94_shared_board[2][1] + (var_s1 / 2));
+                            MBSaiNumPosSet(temp_s3->unk0, 0, mbSaiNumMultiPosTbl[0][0] + var_s1, mbSaiNumMultiPosTbl[0][1] + (var_s1 / 2));
+                            MBSaiNumPosSet(temp_s3->unk0, 1, mbSaiNumMultiPosTbl[1][0] - var_s1, mbSaiNumMultiPosTbl[1][1] + (var_s1 / 2));
+                            if (mbSaiNum == 3) {
+                                MBSaiNumPosSet(temp_s3->unk0, 2, mbSaiNumMultiPosTbl[2][0], mbSaiNumMultiPosTbl[2][1] + (var_s1 / 2));
                             }
                         }
-                        if (D_8010570E_shared_board == 2) {
+                        if (mbSaiNum == 2) {
                             HuAudFXPlay(0x140);
-                        } else if (D_8010570E_shared_board == 3) {
+                        } else if (mbSaiNum == 3) {
                             HuAudFXPlay(0x146);
                         }
-                        D_8010570E_shared_board = 1;
+                        mbSaiNum = 1;
                         temp_s4->rollValueIdx = 0;
                         temp_s4->rollValue[0] += temp_s4->rollValue[1] + temp_s4->rollValue[2];
                         temp_s4->rollValue[2] = 0;
                         temp_s4->rollValue[1] = 0;
-                        func_800DBEC0_shared_board(temp_s3->unk0);
-                        func_800DB884_shared_board(temp_s3->unk0);
+                        MBSaiNumKill(temp_s3->unk0);
+                        MBSaiNumShow(temp_s3->unk0);
                         HuPrcSleep(20);
                     }
                     omDelPrcObj(0);
@@ -1065,8 +1065,8 @@ static void func_800DCDD4_shared_board(void) {
     }
 }
 
-Process* func_800DD6C4_shared_board(s32 playerNo) {
-    Process* proc = omAddPrcObj(func_800DCDD4_shared_board, 0, 0, 0x40);
+Process* MBSaiPlayerCreate(s32 playerNo) {
+    Process* proc = omAddPrcObj(MBSaiPlayerProc, 0, 0, 0x40);
     UnkSharedBoard* temp_v0_2 = HuMemMemoryAlloc(proc->heap, sizeof(UnkSharedBoard));
 
     proc->user_data = temp_v0_2;
@@ -1075,7 +1075,7 @@ Process* func_800DD6C4_shared_board(s32 playerNo) {
     return proc;
 }
 
-static void func_800DD724_shared_board(void) {
+static void MBKakusiStarProc(void) {
     Vec sp10;
     GW_PLAYER* temp_s4;
     Object* temp_v0;
@@ -1097,7 +1097,7 @@ static void func_800DD724_shared_board(void) {
     HuAudFXPlay(0x11B);
     temp_v0 = MBModelCreate(0x1AU, NULL);
     temp_v0->flags |= 4;
-    func_800ECC54_shared_board(temp_v0);
+    MBModelBillboardSet(temp_v0);
     HuVecCopyXYZ(&temp_v0->coords, temp_s0->unk_0C.x, temp_s0->unk_0C.y + 10.0f, temp_s0->unk_0C.z - 10.0f);
     HuVecCopyXYZ(&sp10, gCameraList->pos.x, gCameraList->pos.y, gCameraList->pos.z);
     temp_v0->velocity.x = 15.0f;
@@ -1123,11 +1123,11 @@ static void func_800DD724_shared_board(void) {
 
     EffectRangeSet(temp_v0_2, var_f20 * 15.0f);
     HuPrcSleep(0x14);
-    func_800DE858_shared_board();
+    MBKakusiWaitOn();
 
     //? this seems overlay complex for how simple it is
     while (1) {
-        if (D_801057D9_shared_board != 0) {
+        if (mbKakusiWaitF != 0) {
             HuPrcVSleep();
         } else {
             break;
@@ -1180,18 +1180,18 @@ static void func_800DD724_shared_board(void) {
     omDelPrcObj(NULL);
 }
 
-static void func_800DDBC8_shared_board(void* arg0) {
+static void MBKakusiStarExec(void* arg0) {
     Process* temp_v0;
 
     mbItemBtnF = 0;
-    temp_v0 = omAddPrcObj(func_800DD724_shared_board, 0x4800U, 0, 0);
+    temp_v0 = omAddPrcObj(MBKakusiStarProc, 0x4800U, 0, 0);
     temp_v0->user_data = arg0;
     HuPrcChildLink(HuPrcCurrentGet(), temp_v0);
     HuPrcChildWatch();
     mbItemBtnF = 1;
 }
 
-static void func_800DDC3C_shared_board(void) {
+static void MBKakusiStarBlockProc(void) {
     UnkCoinProc *work;
     s32 timer;
 
@@ -1201,18 +1201,18 @@ static void func_800DDC3C_shared_board(void) {
     while (TRUE) {
         switch (work->state) {
             case 0:
-                D_80105704_shared_board = 0;
-                func_800DC9F8_shared_board(work->playerNo);
-                D_80105704_shared_board = 1;
+                mbSaiIdleF = 0;
+                MBSaiBlankCreate(work->playerNo);
+                mbSaiIdleF = 1;
                 work->state++;
                 HuPrcSleep(20);
                 break;
 
             case 1:
-                if (D_801057D9_shared_board == 0) {
+                if (mbKakusiWaitF == 0) {
                     work->state++;
                     MBPlayerMotionSet(work->playerNo, 2, 0);
-                    func_800EE688_shared_board(GwPlayer[work->playerNo].player_obj, 2.0f, -0.3f);
+                    MBModelJumpSet(GwPlayer[work->playerNo].player_obj, 2.0f, -0.3f);
                     mbCameraBtnF = 0;
                     mbDiceBtnF = 0;
                 }
@@ -1221,14 +1221,14 @@ static void func_800DDC3C_shared_board(void) {
             case 2:
                 timer++;
                 if (timer >= 5) {
-                    func_800DCBCC_shared_board(work->playerNo);
-                    func_800F2388_shared_board(work->playerNo, -1, 0, 10, 2);
+                    MBSaiHit(work->playerNo);
+                    MBPlayerMotionShiftSet(work->playerNo, -1, 0, 10, 2);
                     work->state++;
                 }
                 break;
 
             case 3:
-                func_800DDBC8_shared_board(GwPlayer[work->playerNo].player_obj);
+                MBKakusiStarExec(GwPlayer[work->playerNo].player_obj);
                 omDelPrcObj(NULL);
                 break;
         }
@@ -1236,20 +1236,20 @@ static void func_800DDC3C_shared_board(void) {
     }
 }
 
-Process* func_800DDDD4_shared_board(s32 arg0) {
+Process* MBKakusiStarBlockCreate(s32 arg0) {
     Process* temp_v0;
     UnkCoinProc* temp_v0_2;
 
-    temp_v0 = omAddPrcObj(func_800DDC3C_shared_board, 0, 0, 0x40);
+    temp_v0 = omAddPrcObj(MBKakusiStarBlockProc, 0, 0, 0x40);
     temp_v0_2 = HuMemMemoryAlloc(temp_v0->heap, sizeof(UnkCoinProc));
     temp_v0->user_data = temp_v0_2;
     temp_v0_2->playerNo = arg0;
     temp_v0_2->state = 0;
-    D_801057D9_shared_board = 0;
+    mbKakusiWaitF = 0;
     return temp_v0;
 }
 
-static void func_800DDE3C_shared_board(void) {
+static void MBKakusiItemBlockProc(void) {
     UnkCoinProc *work;
     f32 scale, amp, angle;
     s32 grp, anim, motion;
@@ -1263,18 +1263,18 @@ static void func_800DDE3C_shared_board(void) {
     while (TRUE) {
         switch (work->state) {
             case 0:
-                D_80105704_shared_board = 0;
-                func_800DC9F8_shared_board(work->playerNo);
-                D_80105704_shared_board = 1;
+                mbSaiIdleF = 0;
+                MBSaiBlankCreate(work->playerNo);
+                mbSaiIdleF = 1;
                 work->state++;
                 HuPrcSleep(20);
                 break;
 
             case 1:
-                if (D_801057D9_shared_board == 0) {
+                if (mbKakusiWaitF == 0) {
                     work->state++;
                     MBPlayerMotionSet(work->playerNo, 2, 0);
-                    func_800EE688_shared_board(GwPlayer[work->playerNo].player_obj, 2.0f, -0.3f);
+                    MBModelJumpSet(GwPlayer[work->playerNo].player_obj, 2.0f, -0.3f);
                     mbCameraBtnF = 0;
                     mbDiceBtnF = 0;
                 }
@@ -1283,8 +1283,8 @@ static void func_800DDE3C_shared_board(void) {
             case 2:
                 timer++;
                 if (timer >= 5) {
-                    func_800DCBCC_shared_board(work->playerNo);
-                    func_800F2388_shared_board(work->playerNo, -1, 0, 10, 2);
+                    MBSaiHit(work->playerNo);
+                    MBPlayerMotionShiftSet(work->playerNo, -1, 0, 10, 2);
                     work->state++;
                 }
                 break;
@@ -1292,7 +1292,7 @@ static void func_800DDE3C_shared_board(void) {
             case 3:
                 HuAudFXPlay(0x19);
                 grp = HuSprGrpCreate(1, 5);
-                data = DataRead(D_8010197C_shared_board[work->unk_08]);
+                data = DataRead(mbItemIconSprTbl[work->unk_08]);
                 anim = HuSprAnimRead(data);
                 DataClose(data);
                 HuSprGrpMemberSet(grp, 0, anim, 0);
@@ -1323,12 +1323,12 @@ static void func_800DDE3C_shared_board(void) {
                 HuSprScaleSet(grp, 0, 1.0f, 1.0f);
                 HuSprTPLvlSet(grp, 0, 0x100);
 
-                func_800DE858_shared_board();
+                MBKakusiWaitOn();
                 HuPrcSleep(5);
-                while (!func_800DE84C_shared_board()) {
+                while (!MBKakusiWaitCheck()) {
                     HuPrcVSleep();
                 }
-                func_800DE868_shared_board();
+                MBKakusiWaitOff();
                 HuPrcSleep(10);
 
                 if (MBItemFindEmpty(work->playerNo) != -1) {
@@ -1355,8 +1355,8 @@ static void func_800DDE3C_shared_board(void) {
                 }
                 
                 MBPlayerMotionWait(work->playerNo);
-                func_800F2388_shared_board(work->playerNo, -1, 0, 10, 2);
-                func_800DE858_shared_board();
+                MBPlayerMotionShiftSet(work->playerNo, -1, 0, 10, 2);
+                MBKakusiWaitOn();
                 omDelPrcObj(NULL);
                 break;
         }
@@ -1364,21 +1364,21 @@ static void func_800DDE3C_shared_board(void) {
     }
 }
 
-Process* func_800DE414_shared_board(s32 arg0, s32 arg1) {
+Process* MBKakusiItemBlockCreate(s32 arg0, s32 arg1) {
     Process* temp_v0;
     UnkCoinProc* temp_v0_2;
 
-    temp_v0 = omAddPrcObj(func_800DDE3C_shared_board, 0, 0, 0x40);
+    temp_v0 = omAddPrcObj(MBKakusiItemBlockProc, 0, 0, 0x40);
     temp_v0_2 = HuMemMemoryAlloc(temp_v0->heap, sizeof(UnkCoinProc));
     temp_v0->user_data = temp_v0_2;
     temp_v0_2->playerNo = arg0;
     temp_v0_2->state = 0;
     temp_v0_2->unk_08 = arg1;
-    D_801057D9_shared_board = 0;
+    mbKakusiWaitF = 0;
     return temp_v0;
 }
 
-static void func_800DE48C_shared_board(void) {
+static void MBKakusiCoinEffProc(void) {
     Object* temp_v0;
     Object* temp_s0;
     f32 var_f20;
@@ -1402,11 +1402,11 @@ static void func_800DE48C_shared_board(void) {
     omDelPrcObj(NULL);
 }
 
-static void func_800DE5B0_shared_board(void* arg0) {
-    omAddPrcObj(func_800DE48C_shared_board, 0x4800, 0, 0)->user_data = arg0;
+static void MBKakusiCoinEffCreate(void* arg0) {
+    omAddPrcObj(MBKakusiCoinEffProc, 0x4800, 0, 0)->user_data = arg0;
 }
 
-static void func_800DE5EC_shared_board(void) {
+static void MBKakusiCoinBlockProc(void) {
     UnkCoinProc *work;
     s32 i;
 
@@ -1415,15 +1415,15 @@ static void func_800DE5EC_shared_board(void) {
     while (TRUE) {
         switch (work->state) {
             case 0:
-                D_80105704_shared_board = 0;
-                func_800DC9F8_shared_board(work->playerNo);
-                D_80105704_shared_board = 1;
+                mbSaiIdleF = 0;
+                MBSaiBlankCreate(work->playerNo);
+                mbSaiIdleF = 1;
                 work->state++;
                 HuPrcSleep(20);
                 break;
 
             case 1:
-                if (D_801057D9_shared_board == 0) {
+                if (mbKakusiWaitF == 0) {
                     work->state++;
                     mbCameraBtnF = 0;
                     mbDiceBtnF = 0;
@@ -1431,17 +1431,17 @@ static void func_800DE5EC_shared_board(void) {
                 break;
 
             case 2:
-                func_800DE858_shared_board();
+                MBKakusiWaitOn();
                 for (i = 0; i < 20; i++) {
                     MBPlayerMotionSet(work->playerNo, 2, 0);
-                    func_800EE688_shared_board(GwPlayer[work->playerNo].player_obj, 8.0f, -2.4f);
+                    MBModelJumpSet(GwPlayer[work->playerNo].player_obj, 8.0f, -2.4f);
                     HuPrcSleep(2);
-                    func_800DE5B0_shared_board(GwPlayer[work->playerNo].player_obj);
+                    MBKakusiCoinEffCreate(GwPlayer[work->playerNo].player_obj);
                     MBCoinTakeCreate(work->playerNo, 1);
                     if (i == 19) {
-                        func_800DCBCC_shared_board(work->playerNo);
+                        MBSaiHit(work->playerNo);
                     }
-                    func_800EE6C0_shared_board(GwPlayer[work->playerNo].player_obj);
+                    MBModelJumpWait(GwPlayer[work->playerNo].player_obj);
                 }
                 PlayerFXPlay(0x274, work->playerNo);
                 MBPlayerMotionSet(work->playerNo, 5, 0);
@@ -1458,33 +1458,33 @@ static void func_800DE5EC_shared_board(void) {
     }
 }
 
-Process* func_800DE7E4_shared_board(s32 arg0) {
+Process* MBKakusiCoinBlockCreate(s32 arg0) {
     Process* temp_v0;
     UnkCoinProc* temp_v0_2;
 
-    temp_v0 = omAddPrcObj(func_800DE5EC_shared_board, 0, 0, 0x40);
+    temp_v0 = omAddPrcObj(MBKakusiCoinBlockProc, 0, 0, 0x40);
     temp_v0_2 = HuMemMemoryAlloc(temp_v0->heap, sizeof(UnkCoinProc));
     temp_v0->user_data = temp_v0_2;
     temp_v0_2->playerNo = arg0;
     temp_v0_2->state = 0;
-    D_801057D9_shared_board = 0;
+    mbKakusiWaitF = 0;
     return temp_v0;
 }
 
-u8 func_800DE84C_shared_board(void) {
-    return D_801057D9_shared_board;
+u8 MBKakusiWaitCheck(void) {
+    return mbKakusiWaitF;
 }
 
-void func_800DE858_shared_board(void) {
-    D_801057D9_shared_board = 1;
+void MBKakusiWaitOn(void) {
+    mbKakusiWaitF = 1;
 }
 
-void func_800DE868_shared_board(void) {
-    D_801057D9_shared_board = 0;
+void MBKakusiWaitOff(void) {
+    mbKakusiWaitF = 0;
 }
 
 
-void func_800DE874_shared_board(s32 arg0) {
+void MBSaiSeStop(s32 arg0) {
     UnkDiceRelated* temp_s0 = &mbDiceData[arg0];
 
     if (temp_s0->unk28 != -1) {
@@ -1494,32 +1494,32 @@ void func_800DE874_shared_board(s32 arg0) {
     temp_s0->unk2A = 1;
 }
 
-void func_800DE8D8_shared_board(s32 arg0) {
+void MBSaiSeResume(s32 arg0) {
     UnkDiceRelated* temp_s0;
     
     temp_s0 = &mbDiceData[arg0];
     if ((temp_s0->unk2A == 1) && (temp_s0->unk_16 != -1)) {
-        if ((temp_s0->dice != NULL) && (temp_s0->dice->work[0] != 2) && (temp_s0->unk_0A != 5) && (D_8010570F_shared_board != 2)) {
+        if ((temp_s0->dice != NULL) && (temp_s0->dice->work[0] != 2) && (temp_s0->unk_0A != 5) && (mbSaiMode != 2)) {
             temp_s0->unk28 = HuAudFXPlay(0x100);
         }
     }
     temp_s0->unk2A = 0;
 }
 
-void func_800DE97C_shared_board(s8 arg0) {
-    D_8010570F_shared_board = arg0;
+void MBSaiModeSet(s8 arg0) {
+    mbSaiMode = arg0;
 }
 
 //unused
-void func_800DE988_shared_board(s32 arg0, s32 arg1) {
+void MBSaiValueNoSet(s32 arg0, s32 arg1) {
     mbDiceData[arg0].rollValueIdx = arg1;
 }
 
-void func_800DE9AC_shared_board(s32 arg0, s32 arg1) {
-    D_8010570E_shared_board = arg1;
+void MBSaiNumSet(s32 arg0, s32 arg1) {
+    mbSaiNum = arg1;
 }
 
-static void func_800DE9B8_shared_board(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+static void MBSaiNumPosSet(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     UnkDiceRelated *entry;
 
     entry = &mbDiceData[arg0];
@@ -1534,21 +1534,21 @@ static void func_800DE9B8_shared_board(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     }
 }
 
-void func_800DEAA0_shared_board(s32 arg0) {
+void MBSaiPosSet(s32 arg0) {
     UnkDiceRelated* temp_a1 = &mbDiceData[arg0];
     
     if (temp_a1->dice != NULL) {
         temp_a1->dice->trans.x = GwPlayer[arg0].player_obj->coords.x;
-        temp_a1->dice->trans.y = GwPlayer[arg0].player_obj->coords.y + D_80105708_shared_board;
+        temp_a1->dice->trans.y = GwPlayer[arg0].player_obj->coords.y + mbSaiHeight;
         temp_a1->dice->trans.z = GwPlayer[arg0].player_obj->coords.z;
     }
 }
 
-s32 func_800DEB2C_shared_board(s32 arg0) {
+s32 MBSaiTypeGet(s32 arg0) {
     return mbDiceData[arg0].unk_0A;
 }
 
-static void func_800DEB50_shared_board(void) {
+static void MBSeqVolUpProc(void) {
     f32 var_f20 = 96.0f;
 
     HuAudSeqVolSet(0x60);
@@ -1564,7 +1564,7 @@ static void func_800DEB50_shared_board(void) {
     omDelPrcObj(NULL);
 }
 
-static void func_800DEBF0_shared_board(void) {
+static void MBSeqVolDownProc(void) {
     f32 var_f20 = 127.0f;
     
     HuAudSeqVolSet(0x7F);
@@ -1579,10 +1579,10 @@ static void func_800DEBF0_shared_board(void) {
     omDelPrcObj(NULL);
 }
 
-void func_800DEC90_shared_board(void) {
-    omAddPrcObj(func_800DEBF0_shared_board, 0xEFFF, 0, 0);
+void MBSeqVolDownStart(void) {
+    omAddPrcObj(MBSeqVolDownProc, 0xEFFF, 0, 0);
 }
 
-void func_800DECBC_shared_board(void) {
-    omAddPrcObj(func_800DEB50_shared_board, 0xEFFF, 0, 0);
+void MBSeqVolUpStart(void) {
+    omAddPrcObj(MBSeqVolUpProc, 0xEFFF, 0, 0);
 }

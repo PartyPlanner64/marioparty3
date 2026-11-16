@@ -8,56 +8,56 @@
 #include "sprgrp.h"
 #include "window.h"
 
-extern Object *D_80105620_shared_board;
-extern Object *D_80105624_shared_board;
-extern Object* D_80105628_shared_board;
+extern Object *mbItemMasuNpcMdl;
+extern Object *mbItemMasuCloudMdl;
+extern Object* mbItemMasuBoxMdl;
 
-extern s32 D_80105630_shared_board[3];
-extern s32 D_80105634_shared_board; //TODO: fake symbol
-extern s32 D_80105638_shared_board; //TODO: fake symbol
-extern f32 D_80105650_shared_board;
-extern s32 D_80105654_shared_board;
-extern s32 D_80105658_shared_board;
-extern s32 D_8010565C_shared_board;
+extern s32 mbItemMasuGiveTbl[3];
+extern s32 mbItemMasuGive1; //TODO: fake symbol
+extern s32 mbItemMasuGive2; //TODO: fake symbol
+extern f32 mbItemMasuBoxRot;
+extern s32 mbItemMasuKinopioF;
+extern s32 mbItemMasuEff;
+extern s32 mbItemMasuRareItem;
 
-static void func_800F7CF0_shared_board(void);
-static void func_800F7D10_shared_board(void);
-static void func_800F7D4C_shared_board(void);
-static void func_800F7D98_shared_board(void);
-static void func_800F7DD4_shared_board(void);
-static void func_800F7E1C_shared_board(void);
-static void func_800F7E64_shared_board(void);
-static void func_800F7EAC_shared_board(void);
-static void func_800F7EF4_shared_board(void);
-static void func_800F7F30_shared_board(void);
-static void func_800F7F7C_shared_board(void);
-static void func_800F7FC8_shared_board(void);
+static void MBItemMasuKinopioNoneExec(void);
+static void MBItemMasuKinopioItemExec(void);
+static void MBItemMasuKinopioKeyExec(void);
+static void MBItemMasuKinopioRareExec(void);
+static void MBItemMasuKinopioItem2Exec(void);
+static void MBItemMasuKinopioKinokoExec(void);
+static void MBItemMasuKoopaJrItemExec(void);
+static void MBItemMasuKoopaJrItem2Exec(void);
+static void MBItemMasuKoopaJrItem3Exec(void);
+static void MBItemMasuKoopaJrKeyExec(void);
+static void MBItemMasuKoopaJrWarpExec(void);
+static void MBItemMasuKoopaJrNoneExec(void);
 
 
 // item ids
-s32 D_80101A20_shared_board[] = {
+s32 mbItemMasuItemTbl[] = {
     ITEM_MUSHROOM, ITEM_SKELETON_KEY, ITEM_BOO_REPELLENT,
     ITEM_DUEL_GLOVE, ITEM_WARP_BLOCK, ITEM_GOLDEN_MUSHROOM,
     ITEM_MAGIC_LAMP, ITEM_CELLULAR_SHOPPER
 };
 
 // rare item ids?
-s32 D_80101A40_shared_board[] = {
+s32 mbItemMasuRareTbl[] = {
     ITEM_KOOPA_KARD, ITEM_BARTER_BOX, ITEM_LUCKY_CHARM,
     ITEM_WACKY_WATCH
 };
 
-s32 D_80101A50_shared_board[] = {
+s32 mbItemMasuKoopaJrTbl[] = {
     ITEM_SKELETON_KEY, ITEM_PLUNDER_CHEST, ITEM_BOWSER_PHONE,
     ITEM_WARP_BLOCK, ITEM_BOO_BELL, ITEM_BOWSER_SUIT,
     ITEM_POISON_MUSHROOM, ITEM_REVERSE_MUSHROOM, ITEM_LUCKY_LAMP
 };
 
-f32 D_80101A74_shared_board[][2] = {
+f32 mbItemMasuStatusPosTbl[][2] = {
     { 88.0f, 44.0f }, { 245.0f, 44.0f }, { 88.0f, 220.0f }, { 245.0f, 220.0f }
 };
 
-s32 D_80101A94_shared_board[] = {
+s32 mbItemMasuRareMesTbl[] = {
     [ITEM_MUSHROOM] 0,
     [ITEM_SKELETON_KEY] 0,
     [ITEM_POISON_MUSHROOM] 0,
@@ -79,49 +79,49 @@ s32 D_80101A94_shared_board[] = {
     [ITEM_WACKY_WATCH] 0x00003C0F
 };
 
-void (*D_80101AE0_shared_board[])(void) = {
-    func_800F7CF0_shared_board,
-    func_800F7D10_shared_board,
-    func_800F7D4C_shared_board,
-    func_800F7D98_shared_board,
-    func_800F7DD4_shared_board,
-    func_800F7E1C_shared_board
+void (*mbItemMasuKinopioFuncTbl[])(void) = {
+    MBItemMasuKinopioNoneExec,
+    MBItemMasuKinopioItemExec,
+    MBItemMasuKinopioKeyExec,
+    MBItemMasuKinopioRareExec,
+    MBItemMasuKinopioItem2Exec,
+    MBItemMasuKinopioKinokoExec
 };
 
-void (*D_80101AF8_shared_board[])(void) = {
-    func_800F7E64_shared_board,
-    func_800F7EAC_shared_board,
-    func_800F7EF4_shared_board,
-    func_800F7F30_shared_board,
-    func_800F7F7C_shared_board,
-    func_800F7FC8_shared_board
+void (*mbItemMasuKoopaJrFuncTbl[])(void) = {
+    MBItemMasuKoopaJrItemExec,
+    MBItemMasuKoopaJrItem2Exec,
+    MBItemMasuKoopaJrItem3Exec,
+    MBItemMasuKoopaJrKeyExec,
+    MBItemMasuKoopaJrWarpExec,
+    MBItemMasuKoopaJrNoneExec
 };
 
-s32 D_80101B10_shared_board[] = {
+s32 mbItemMasuKinopioMesTbl[] = {
     0x00003C03, 0x00003C04, 0x00003C05, 0x00003C06, 0x00003C07
 };
 
-s32 D_80101B24_shared_board[] = {
+s32 mbItemMasuKoopaJrMesTbl[] = {
     0x00003C15, 0x00003C16, 0x00003C17,
     0x00003C18, 0x00003C19, 0x00003C1A
 };
 
-static void func_800F7130_shared_board(omObjData *arg0) {
-    D_80105620_shared_board->coords.y = -sindf(arg0->rot.x) * 3.0f;
-    D_80105624_shared_board->coords.y = -sindf(arg0->rot.x) * 3.0f;
+static void MBItemMasuFloatObjMain(omObjData *arg0) {
+    mbItemMasuNpcMdl->coords.y = -sindf(arg0->rot.x) * 3.0f;
+    mbItemMasuCloudMdl->coords.y = -sindf(arg0->rot.x) * 3.0f;
     arg0->rot.x += 3.0f;
 }
 
-static void func_800F71A8_shared_board(omObjData *obj) {
-    D_80105650_shared_board += 20.0f;
-    if (D_80105650_shared_board >= 360.0f) {
-        D_80105650_shared_board -= 360.0f;
+static void MBItemMasuBoxObjMain(omObjData *obj) {
+    mbItemMasuBoxRot += 20.0f;
+    if (mbItemMasuBoxRot >= 360.0f) {
+        mbItemMasuBoxRot -= 360.0f;
     }
 
-    func_8008A430_main(Hu3DData[D_80105628_shared_board->omObj1->model[0]].mtx, D_80105650_shared_board);
+    func_8008A430_main(Hu3DData[mbItemMasuBoxMdl->omObj1->model[0]].mtx, mbItemMasuBoxRot);
 }
 
-static s32 func_800F7240_shared_board(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+static s32 MBItemMasuChoiceGet(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     s16 sp18[MB_MAX_PLAYERS];
     u8 sp20[MB_MAX_PLAYERS] = { 1, 2, 4, 8 };
     s32 var_v0;
@@ -149,7 +149,7 @@ static s32 func_800F7240_shared_board(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
                 sp18[GwPlayer[GwSystem.current_player_index].pad] = -0x8000;
             }
             if (j == 0) {
-                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], func_800EDC40_shared_board());
+                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], MBMesWaitGet());
             } else {
                 HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], 0x10);
             }
@@ -182,16 +182,16 @@ static s32 func_800F7240_shared_board(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 }
 
 // All items you can carry from item space
-void func_800F74E4_shared_board(void) {
+void MBItemMasuItemDecide(void) {
     s32 prev;
     s32 i;
     s32 *boardItemIds;
 
     prev = -1;
     for (i = 0; i < ARRAY_COUNT(GwPlayer->itemNo); i++) {
-        boardItemIds = &D_80105630_shared_board[i];
+        boardItemIds = &mbItemMasuGiveTbl[i];
         while (1) {
-            *boardItemIds = D_80101A20_shared_board[MBRand(ARRAY_COUNT(D_80101A20_shared_board))];
+            *boardItemIds = mbItemMasuItemTbl[MBRand(ARRAY_COUNT(mbItemMasuItemTbl))];
             if (*boardItemIds != prev) {
                 prev = *boardItemIds;
                 break;
@@ -202,13 +202,13 @@ void func_800F74E4_shared_board(void) {
 
 #ifdef NON_MATCHING
 // more readable version of the function as the matching version is very jank
-void func_800F7578_shared_board(void) {
-    s32 *temp2 = D_80101A40_shared_board;
+void MBItemMasuRareDecide(void) {
+    s32 *temp2 = mbItemMasuRareTbl;
     s32 itemID;
 
     while (1) {
-        itemID = temp2[MBRand(ARRAY_COUNT(D_80101A40_shared_board))];
-        D_80105630_shared_board[0] = itemID;
+        itemID = temp2[MBRand(ARRAY_COUNT(mbItemMasuRareTbl))];
+        mbItemMasuGiveTbl[0] = itemID;
 
         if (itemID == ITEM_WACKY_WATCH && GwSystem.unk_52 == WATCH_AVAILABLE) {
             GwSystem.unk_52 = 1;
@@ -220,16 +220,16 @@ void func_800F7578_shared_board(void) {
         }
     }
 
-    D_80105634_shared_board = -1;
-    D_8010565C_shared_board = itemID;
+    mbItemMasuGive1 = -1;
+    mbItemMasuRareItem = itemID;
 }
 #else
 // TODO: cleanup this jank function
-void func_800F7578_shared_board(void) {
+void MBItemMasuRareDecide(void) {
     s32 itemID;
     
     while (1) {
-        itemID = D_80105630_shared_board[0] = D_80101A40_shared_board[MBRand(ARRAY_COUNT(D_80101A40_shared_board))];
+        itemID = mbItemMasuGiveTbl[0] = mbItemMasuRareTbl[MBRand(ARRAY_COUNT(mbItemMasuRareTbl))];
         if (itemID != ITEM_WACKY_WATCH) {
             break;
         }
@@ -246,22 +246,22 @@ void func_800F7578_shared_board(void) {
         }
     }
 
-    D_80105634_shared_board = -1;
-    D_8010565C_shared_board = itemID;
+    mbItemMasuGive1 = -1;
+    mbItemMasuRareItem = itemID;
 }
 #endif
 
 // All items you can carry from item space
-void func_800F7610_shared_board(void) {
+void MBItemMasuKoopaJrDecide(void) {
     s32 prev;
     s32 i;
     s32 *boardItemIds;
 
     prev = -1;
     for (i = 0; i < ARRAY_COUNT(GwPlayer->itemNo); i++) {
-        boardItemIds = &D_80105630_shared_board[i];
+        boardItemIds = &mbItemMasuGiveTbl[i];
         while (1) {
-            *boardItemIds = D_80101A50_shared_board[MBRand(ARRAY_COUNT(D_80101A50_shared_board))];
+            *boardItemIds = mbItemMasuKoopaJrTbl[MBRand(ARRAY_COUNT(mbItemMasuKoopaJrTbl))];
             if (*boardItemIds != prev) {
                 prev = *boardItemIds;
                 break;
@@ -270,7 +270,7 @@ void func_800F7610_shared_board(void) {
     }
 }
 
-void func_800F76A4_shared_board(s32 arg0) {
+void MBItemMasuGiveExec(s32 arg0) {
     f32 sp20[2];
     GW_PLAYER *player;
     UnkBoard8 *temp_s2;
@@ -296,33 +296,33 @@ void func_800F76A4_shared_board(s32 arg0) {
         var_f28 = 10.0f;
     }
 
-    while ((MBItemFindEmpty(playerNo) != ITEM_NONE) && (D_80105630_shared_board[var_s4] != -1)) {
-        if (D_80105654_shared_board != 0) {
-            D_80105628_shared_board = MBModelCreate(0x22, NULL);
+    while ((MBItemFindEmpty(playerNo) != ITEM_NONE) && (mbItemMasuGiveTbl[var_s4] != -1)) {
+        if (mbItemMasuKinopioF != 0) {
+            mbItemMasuBoxMdl = MBModelCreate(0x22, NULL);
         } else {
-            D_80105628_shared_board = MBModelFileCreate(0xB0036, -1, 1.0f, 0, 0);
+            mbItemMasuBoxMdl = MBModelFileCreate(0xB0036, -1, 1.0f, 0, 0);
         }
-        Hu3DModelAttrSet(D_80105628_shared_board->omObj1->model[0], 0x180, 0);
-        Hu3DModelLayerSet(D_80105628_shared_board->omObj1->model[0], 0x1800);
-        Hu3DModelRemakeStatic(D_80105628_shared_board->omObj1->model[0]);
-        HuVecCopy3F(&D_80105628_shared_board->coords, &player->player_obj->coords);
-        D_80105628_shared_board->coords.y += 25.0f;
-        MBCamera3Dto2D(&D_80105628_shared_board->coords, sp20);
+        Hu3DModelAttrSet(mbItemMasuBoxMdl->omObj1->model[0], 0x180, 0);
+        Hu3DModelLayerSet(mbItemMasuBoxMdl->omObj1->model[0], 0x1800);
+        Hu3DModelRemakeStatic(mbItemMasuBoxMdl->omObj1->model[0]);
+        HuVecCopy3F(&mbItemMasuBoxMdl->coords, &player->player_obj->coords);
+        mbItemMasuBoxMdl->coords.y += 25.0f;
+        MBCamera3Dto2D(&mbItemMasuBoxMdl->coords, sp20);
         HuAudFXPlay(0x143);
-        D_80105650_shared_board = 0;
+        mbItemMasuBoxRot = 0;
 
-        obj = omAddObj(0x1F4, 0, 0, -1, func_800F71A8_shared_board);
+        obj = omAddObj(0x1F4, 0, 0, -1, MBItemMasuBoxObjMain);
         for (var_f20 = 1.0f; var_f20 < var_f28; var_f20 += 0.5) {
-            HuVecCopyXYZ(&D_80105628_shared_board->scale, var_f20, var_f20, var_f20);
+            HuVecCopyXYZ(&mbItemMasuBoxMdl->scale, var_f20, var_f20, var_f20);
             HuPrcVSleep();
         }
 
         var_f20 = var_f20 - 0.5f;
 
         HuAudFXPlay(0x11C);
-        temp_s6 = D_80105630_shared_board[var_s4++];
-        temp_s2 = func_800F2C48_shared_board(1, 0);
-        temp_v0 = DataRead(D_8010197C_shared_board[temp_s6]);
+        temp_s6 = mbItemMasuGiveTbl[var_s4++];
+        temp_s2 = MBSprGrpCreate(1, 0);
+        temp_v0 = DataRead(mbItemIconSprTbl[temp_s6]);
         temp_s2->model[0] = HuSprAnimRead(temp_v0);
         DataClose(temp_v0);
         HuSprGrpMemberSet(temp_s2->spriteGroup, 0, temp_s2->model[0], 0);
@@ -339,29 +339,29 @@ void func_800F76A4_shared_board(s32 arg0) {
         HuSprTPLvlSet(temp_s2->spriteGroup, 0, 0xFF);
 
         if (arg0 == 1) {
-            MBDlgWinInsertCreateY(-1, 0x3C0D, D_80101A94_shared_board[D_8010565C_shared_board], 0, 0, 0, 0, 0x8C);
+            MBDlgWinInsertCreateY(-1, 0x3C0D, mbItemMasuRareMesTbl[mbItemMasuRareItem], 0, 0, 0, 0, 0x8C);
             MBDlgWinClose();
             MBDlgWinKill();
         }
         for (i = 0; i < 70; i += 5) {
             // this sure is a line of code
-            HuSprPosSet(temp_s2->spriteGroup, 0, (((sindf(i) * (D_80101A74_shared_board[playerNo][0] - sp20[0])) + sp20[0])), ((sp20[1] - (sindf((i + 0x5A)) * (D_80101A74_shared_board[playerNo][1] - sp20[1]))) + (D_80101A74_shared_board[playerNo][1] - sp20[1])));
+            HuSprPosSet(temp_s2->spriteGroup, 0, (((sindf(i) * (mbItemMasuStatusPosTbl[playerNo][0] - sp20[0])) + sp20[0])), ((sp20[1] - (sindf((i + 0x5A)) * (mbItemMasuStatusPosTbl[playerNo][1] - sp20[1]))) + (mbItemMasuStatusPosTbl[playerNo][1] - sp20[1])));
             HuSprTPLvlSet(temp_s2->spriteGroup, 0, (256.0 - (i * 1.5)));
             HuSprScaleSet(temp_s2->spriteGroup, 0, (1.0f - (i / 200.0f)), (1.0f - (i / 200.0f)));
             HuPrcVSleep();
         }
 
-        func_800F2CA4_shared_board(temp_s2);
+        MBSprGrpKill(temp_s2);
         GwPlayer[playerNo].itemNo[MBItemFindEmpty(playerNo)] = temp_s6;
         MBStatusItemSprKill(playerNo);
 
         for (; var_f20 >= 1.0f; var_f20 -= 0.5) {
-            HuVecCopyXYZ(&D_80105628_shared_board->scale, var_f20, var_f20, var_f20);
+            HuVecCopyXYZ(&mbItemMasuBoxMdl->scale, var_f20, var_f20, var_f20);
             HuPrcVSleep();
         }
 
         omDelObj(obj);
-        MBModelKill(D_80105628_shared_board);
+        MBModelKill(mbItemMasuBoxMdl);
     }
 
     MBStatusShrink(-1);
@@ -370,99 +370,99 @@ void func_800F76A4_shared_board(s32 arg0) {
 }
 
 // probably a file split here
-static void func_800F7CF0_shared_board(void) {
+static void MBItemMasuKinopioNoneExec(void) {
     MBDlgWinExec(CHAR_TOAD, 0x3C08);
 }
 
-static void func_800F7D10_shared_board(void) {
+static void MBItemMasuKinopioItemExec(void) {
     MBDlgWinExec(CHAR_TOAD, 0x3C09);
-    func_800F74E4_shared_board();
-    func_800F76A4_shared_board(0);
+    MBItemMasuItemDecide();
+    MBItemMasuGiveExec(0);
     MBDlgWinExec(CHAR_TOAD, 0x3C0A);
 }
 
 // Toad gives all skeleton keys
-static void func_800F7D4C_shared_board(void) {
+static void MBItemMasuKinopioKeyExec(void) {
     MBDlgWinExec(CHAR_TOAD, 0x3C0B);
-    D_80105630_shared_board[0] =
-        D_80105630_shared_board[1] =
-            D_80105630_shared_board[2] = ITEM_SKELETON_KEY;
-    func_800F76A4_shared_board(0);
+    mbItemMasuGiveTbl[0] =
+        mbItemMasuGiveTbl[1] =
+            mbItemMasuGiveTbl[2] = ITEM_SKELETON_KEY;
+    MBItemMasuGiveExec(0);
     MBDlgWinExec(CHAR_TOAD, 0x3C0A);
 }
 
-static void func_800F7D98_shared_board(void) {
+static void MBItemMasuKinopioRareExec(void) {
     MBDlgWinExec(CHAR_TOAD, 0x3C0C);
-    func_800F7578_shared_board();
-    func_800F76A4_shared_board(1);
+    MBItemMasuRareDecide();
+    MBItemMasuGiveExec(1);
     MBDlgWinExec(CHAR_TOAD, 0x3C0A);
 }
 
-static void func_800F7DD4_shared_board(void) {
+static void MBItemMasuKinopioItem2Exec(void) {
     MBDlgWinExec(CHAR_TOAD, 0x3C12);
-    func_800F74E4_shared_board();
-    D_80105638_shared_board = -1;
-    func_800F76A4_shared_board(0);
+    MBItemMasuItemDecide();
+    mbItemMasuGive2 = -1;
+    MBItemMasuGiveExec(0);
     MBDlgWinExec(CHAR_TOAD, 0x3C0A);
 }
 
-static void func_800F7E1C_shared_board(void) {
+static void MBItemMasuKinopioKinokoExec(void) {
     MBDlgWinExec(CHAR_TOAD, 0x3C13);
-    D_80105630_shared_board[0] =
-        D_80105630_shared_board[1] =
-            D_80105630_shared_board[2] = ITEM_MUSHROOM;
-    func_800F76A4_shared_board(0);
+    mbItemMasuGiveTbl[0] =
+        mbItemMasuGiveTbl[1] =
+            mbItemMasuGiveTbl[2] = ITEM_MUSHROOM;
+    MBItemMasuGiveExec(0);
     MBDlgWinExec(CHAR_TOAD, 0x3C0A);
 }
 
-static void func_800F7E64_shared_board(void) {
+static void MBItemMasuKoopaJrItemExec(void) {
     MBDlgWinExec(CHAR_BABY_BOWSER, 0x3C1C);
-    func_800F7610_shared_board();
-    D_80105634_shared_board = -1;
-    func_800F76A4_shared_board(0);
+    MBItemMasuKoopaJrDecide();
+    mbItemMasuGive1 = -1;
+    MBItemMasuGiveExec(0);
     MBDlgWinExec(CHAR_BABY_BOWSER, 0x3C1D);
 }
 
-static void func_800F7EAC_shared_board(void) {
+static void MBItemMasuKoopaJrItem2Exec(void) {
     MBDlgWinExec(CHAR_BABY_BOWSER, 0x3C1E);
-    func_800F7610_shared_board();
-    D_80105638_shared_board = -1;
-    func_800F76A4_shared_board(0);
+    MBItemMasuKoopaJrDecide();
+    mbItemMasuGive2 = -1;
+    MBItemMasuGiveExec(0);
     MBDlgWinExec(CHAR_BABY_BOWSER, 0x3C1D);
 }
 
-static void func_800F7EF4_shared_board(void) {
+static void MBItemMasuKoopaJrItem3Exec(void) {
     MBDlgWinExec(CHAR_BABY_BOWSER, 0x3C1F);
-    func_800F7610_shared_board();
-    func_800F76A4_shared_board(0);
+    MBItemMasuKoopaJrDecide();
+    MBItemMasuGiveExec(0);
     MBDlgWinExec(CHAR_BABY_BOWSER, 0x3C1D);
 }
 
 // Baby bowser gives all skeleton keys
-static void func_800F7F30_shared_board(void) {
+static void MBItemMasuKoopaJrKeyExec(void) {
     MBDlgWinExec(CHAR_BABY_BOWSER, 0x3C20);
-    D_80105630_shared_board[0] =
-        D_80105630_shared_board[1] =
-            D_80105630_shared_board[2] = ITEM_SKELETON_KEY;
-    func_800F76A4_shared_board(0);
+    mbItemMasuGiveTbl[0] =
+        mbItemMasuGiveTbl[1] =
+            mbItemMasuGiveTbl[2] = ITEM_SKELETON_KEY;
+    MBItemMasuGiveExec(0);
     MBDlgWinExec(CHAR_BABY_BOWSER, 0x3C1D);
 }
 
 // Baby bowser gives warp blocks from item space
-static void func_800F7F7C_shared_board(void) {
+static void MBItemMasuKoopaJrWarpExec(void) {
     MBDlgWinExec(CHAR_BABY_BOWSER, 0x3C21);
-    D_80105630_shared_board[0] =
-        D_80105630_shared_board[1] =
-            D_80105630_shared_board[2] = ITEM_WARP_BLOCK;
-    func_800F76A4_shared_board(0);
+    mbItemMasuGiveTbl[0] =
+        mbItemMasuGiveTbl[1] =
+            mbItemMasuGiveTbl[2] = ITEM_WARP_BLOCK;
+    MBItemMasuGiveExec(0);
     MBDlgWinExec(CHAR_BABY_BOWSER, 0x3C1D);
 }
 
-static void func_800F7FC8_shared_board(void) {
+static void MBItemMasuKoopaJrNoneExec(void) {
     MBDlgWinExec(CHAR_BABY_BOWSER, 0x3C1B);
 }
 
-static void func_800F7FE8_shared_board(void) {
+static void MBItemMasuExec(void) {
     GW_PLAYER *temp_s1;
     Object *temp_a0;
     f32 var_f12;
@@ -478,45 +478,45 @@ static void func_800F7FE8_shared_board(void) {
 
     temp_s1 = MBPlayerGet(CUR_PLAYER);
 
-    if (D_80105654_shared_board != 0) {
-        D_80105620_shared_board = MBModelCreate(9, NULL);
-        D_80105624_shared_board = MBModelFileCreate(0x1301C8, -1, 1.0f, 0, 0);
-        D_80105658_shared_board = EffectCreate(0xB0004, 0xAA9);
+    if (mbItemMasuKinopioF != 0) {
+        mbItemMasuNpcMdl = MBModelCreate(9, NULL);
+        mbItemMasuCloudMdl = MBModelFileCreate(0x1301C8, -1, 1.0f, 0, 0);
+        mbItemMasuEff = EffectCreate(0xB0004, 0xAA9);
         HuAudFXPlay(0x119);
     } else {
-        D_80105620_shared_board = MBModelCreate(0x39, NULL);
-        D_80105624_shared_board = MBModelFileCreate(0x130203, -1, 1.0f, 0, 0);
-        D_80105658_shared_board = EffectCreate(0xB0005, 0xAA9);
+        mbItemMasuNpcMdl = MBModelCreate(0x39, NULL);
+        mbItemMasuCloudMdl = MBModelFileCreate(0x130203, -1, 1.0f, 0, 0);
+        mbItemMasuEff = EffectCreate(0xB0005, 0xAA9);
         HuAudFXPlay(0x11A);
     }
 
-    Hu3DModelCameraSet(D_80105658_shared_board, HU3D_CAM0);
-    EffectParamSet(D_80105658_shared_board, 1.0f, 20.0f, 1.0f);
-    EffectRangeSet(D_80105658_shared_board, 15.0f);
-    MBModelTempAllocFree(D_80105620_shared_board);
-    D_80105620_shared_board->flags |= 1;
-    MBModelTempAllocFree(D_80105624_shared_board);
-    HuVecCopy3F(&D_80105620_shared_board->coords, &temp_s1->player_obj->coords);
-    HuVecCopy3F(&D_80105624_shared_board->coords, &temp_s1->player_obj->coords);
+    Hu3DModelCameraSet(mbItemMasuEff, HU3D_CAM0);
+    EffectParamSet(mbItemMasuEff, 1.0f, 20.0f, 1.0f);
+    EffectRangeSet(mbItemMasuEff, 15.0f);
+    MBModelTempAllocFree(mbItemMasuNpcMdl);
+    mbItemMasuNpcMdl->flags |= 1;
+    MBModelTempAllocFree(mbItemMasuCloudMdl);
+    HuVecCopy3F(&mbItemMasuNpcMdl->coords, &temp_s1->player_obj->coords);
+    HuVecCopy3F(&mbItemMasuCloudMdl->coords, &temp_s1->player_obj->coords);
 
-    D_80105620_shared_board->velocity.x = 120.0f;
-    D_80105624_shared_board->velocity.x = 120.0f;
+    mbItemMasuNpcMdl->velocity.x = 120.0f;
+    mbItemMasuCloudMdl->velocity.x = 120.0f;
 
-    while (D_80105620_shared_board->velocity.x > 50.0f) {
-        EffectPosSet(D_80105658_shared_board, D_80105620_shared_board->coords.x, D_80105620_shared_board->velocity.x - 10.0f, D_80105620_shared_board->coords.z);
+    while (mbItemMasuNpcMdl->velocity.x > 50.0f) {
+        EffectPosSet(mbItemMasuEff, mbItemMasuNpcMdl->coords.x, mbItemMasuNpcMdl->velocity.x - 10.0f, mbItemMasuNpcMdl->coords.z);
         HuPrcVSleep();
-        D_80105620_shared_board->velocity.x -= 2.0f;
-        D_80105624_shared_board->velocity.x -= 2.0f;
+        mbItemMasuNpcMdl->velocity.x -= 2.0f;
+        mbItemMasuCloudMdl->velocity.x -= 2.0f;
     }
 
-    temp_v0 = omAddObj(0x1F4, 0, 0, -1, func_800F7130_shared_board);
+    temp_v0 = omAddObj(0x1F4, 0, 0, -1, MBItemMasuFloatObjMain);
     temp_v0->rot.x = 180.0f;
     var_s0 = 0;
 
-    if (D_80105654_shared_board != 0) {
+    if (mbItemMasuKinopioF != 0) {
         HuAudFXPlay(0x298);
         MBDlgWinExec(CHAR_TOAD, 0x3C02);
-        MBDlgWinCreate(CHAR_TOAD, D_80101B10_shared_board[MBRand(ARRAY_COUNT(D_80101B10_shared_board))]);
+        MBDlgWinCreate(CHAR_TOAD, mbItemMasuKinopioMesTbl[MBRand(ARRAY_COUNT(mbItemMasuKinopioMesTbl))]);
         if (temp_s1->stat & PLAYER_IS_CPU) {
             var_f12 = 3.0f;
             var_s0 = MBRand(var_f12) + 1;
@@ -524,18 +524,18 @@ static void func_800F7FE8_shared_board(void) {
     } else {
         HuAudFXPlay(0x2A0);
         MBDlgWinExec(CHAR_BABY_BOWSER, 0x3C14);
-        MBDlgWinCreate(CHAR_BABY_BOWSER, D_80101B24_shared_board[MBRand(ARRAY_COUNT(D_80101B24_shared_board))]);
+        MBDlgWinCreate(CHAR_BABY_BOWSER, mbItemMasuKoopaJrMesTbl[MBRand(ARRAY_COUNT(mbItemMasuKoopaJrMesTbl))]);
         if (temp_s1->stat & PLAYER_IS_CPU) {
             var_f12 = 2.0f;
             var_s0 = MBRand(var_f12) + 1;
         }
     }
 
-    temp_s0 = func_800F7240_shared_board(0, 1, var_s0, -1);
+    temp_s0 = MBItemMasuChoiceGet(0, 1, var_s0, -1);
     MBDlgWinClose();
     MBDlgWinKill();
     temp_v1 = MBRand(10.0f);
-    if (D_80105654_shared_board != 0) {
+    if (mbItemMasuKinopioF != 0) {
         switch (temp_s0) {
             case 0:
                 if (temp_v1 < 4) {
@@ -575,7 +575,7 @@ static void func_800F7FE8_shared_board(void) {
                 break;
         }
 
-        dispatch_func = D_80101AE0_shared_board[var_a0_2];
+        dispatch_func = mbItemMasuKinopioFuncTbl[var_a0_2];
     } else {
         if (temp_s0 == 0) {
             if (temp_v1 < 2) {
@@ -605,30 +605,30 @@ static void func_800F7FE8_shared_board(void) {
             }
         }
 
-        dispatch_func = D_80101AF8_shared_board[var_a0_2];
+        dispatch_func = mbItemMasuKoopaJrFuncTbl[var_a0_2];
     }
 
     dispatch_func();
     omDelObj(temp_v0);
 
-    while (D_80105620_shared_board->velocity.x < 120.0f) {
-        EffectPosSet(D_80105658_shared_board, D_80105620_shared_board->coords.x, D_80105620_shared_board->velocity.x - 10.0f, D_80105620_shared_board->coords.z);
+    while (mbItemMasuNpcMdl->velocity.x < 120.0f) {
+        EffectPosSet(mbItemMasuEff, mbItemMasuNpcMdl->coords.x, mbItemMasuNpcMdl->velocity.x - 10.0f, mbItemMasuNpcMdl->coords.z);
         HuPrcVSleep();
-        D_80105620_shared_board->velocity.x += 4.0f;
-        D_80105624_shared_board->velocity.x += 4.0f;
+        mbItemMasuNpcMdl->velocity.x += 4.0f;
+        mbItemMasuCloudMdl->velocity.x += 4.0f;
     }
 
-    EffectStop(D_80105658_shared_board);
-    MBModelKill(D_80105620_shared_board);
-    MBModelKill(D_80105624_shared_board);
+    EffectStop(mbItemMasuEff);
+    MBModelKill(mbItemMasuNpcMdl);
+    MBModelKill(mbItemMasuCloudMdl);
 }
 
-void func_800F85C0_shared_board(void) {
-    D_80105654_shared_board = 1;
-    func_800F7FE8_shared_board();
+void MBItemMasuKinopioExec(void) {
+    mbItemMasuKinopioF = 1;
+    MBItemMasuExec();
 }
 
-void func_800F85E4_shared_board(void) {
-    D_80105654_shared_board = 0;
-    func_800F7FE8_shared_board();
+void MBItemMasuKoopaJrExec(void) {
+    mbItemMasuKinopioF = 0;
+    MBItemMasuExec();
 }

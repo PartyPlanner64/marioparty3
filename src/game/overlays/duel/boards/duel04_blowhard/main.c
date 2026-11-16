@@ -87,7 +87,7 @@ void func_8010F1E8_duel04(void);
 Process *func_800FAB68_name_81(Object *, s32, s32, s32, s32);
 Process *func_800DCE40_name_81(s32, Vec *, Vec *, f32);
 Process *func_800E0924_name_81(void);
-extern s32 D_80101200_shared_board[];
+extern s32 mbKSuitObj[];
 void func_8010B134_duel04(omObjData *);
 Object *func_800EDD50_name_81(Vec *);
 void func_800EE0F4_name_81(s32);
@@ -4258,7 +4258,7 @@ void func_80110124_duel04(s32 index) {
     if ((player->stats.partners.frontID != PARTNER_NONE && player->stats.partners.frontPoweredUp == POWERUP_ACTIVE) ||
         (player->stats.partners.backID != PARTNER_NONE && player->stats.partners.backPoweredUp == POWERUP_ACTIVE)) {
         func_800EAFC4_name_81(0x1F00);
-        Duel_PowerDownPartners(index);
+        MBDPartnerPowerDown(index);
     }
     func_800EDD50_name_81(&MBDMasuGet(D_80119E04_duel04[index].returnSpace)->coords);
     func_800EE0D0_name_81(0);
@@ -4576,7 +4576,7 @@ void func_80110CF8_duel04(void) {
         func_800F5BB4_name_81(index);
         func_800F5EB0_name_81(index);
         if (ContBtn[0] & 0x1000) {
-            Duel_PowerUpPartners(index);
+            MBDPartnerPowerUp(index);
         }
 
         win = HuWinExCreate(-1, 80, 80, 160, 105, 0);
@@ -4635,7 +4635,7 @@ void func_80110CF8_duel04(void) {
         func_800F5BB4_name_81(1);
         func_800F5EB0_name_81(1);
         if (ContBtn[0] & 0x1000) {
-            Duel_PowerUpPartners(1);
+            MBDPartnerPowerUp(1);
         }
     }
     if ((player->stats.partners.frontID == 6 || player->stats.partners.backID == 6) &&
@@ -4978,7 +4978,7 @@ void func_80112714_duel04(void) {
     MBDModelKill(obj);
     HuPrcSleep(15);
     HuAudFXPlay(0x159);
-    func_800EB49C_name_81(0x16, 0x1F2B, D_80101200_shared_board[GwPlayer[(s8)(GwSystem.current_player_index ^ 1)].chr], 0, 0, 0, 0);
+    func_800EB49C_name_81(0x16, 0x1F2B, mbKSuitObj[GwPlayer[(s8)(GwSystem.current_player_index ^ 1)].chr], 0, 0, 0, 0);
     func_800EB278_name_81();
     func_800EB29C_name_81();
     func_800EDF78_name_81();
@@ -5029,7 +5029,7 @@ void func_80112A90_duel04(void) {
         func_800EFABC_name_81(partners[PARTNER_BACK]);
         MBDModelKill(partners[PARTNER_BACK]);
     }
-    Duel_PowerUpPartners(sys->current_player_index);
+    MBDPartnerPowerUp(sys->current_player_index);
     HuPrcChildLink(HuPrcCurrentGet(), func_800E4A74_name_81(0));
     HuPrcChildWatch();
     func_800EDDBC_name_81();
@@ -5073,7 +5073,7 @@ void func_80112C7C_duel04(void) {
         func_800EFABC_name_81(partners[PARTNER_BACK]);
         MBDModelKill(partners[PARTNER_BACK]);
     }
-    Duel_PowerDownPartners(sys->current_player_index);
+    MBDPartnerPowerDown(sys->current_player_index);
     HuAudFXPlay(0x1FC);
     HuPrcChildLink(HuPrcCurrentGet(), func_800E4A74_name_81(1));
     HuPrcChildWatch();
@@ -5111,7 +5111,7 @@ void func_80112E68_duel04(void) {
         }
         HuPrcVSleep();
     }
-    Duel_SwapPartnerPositions(playerIndex);
+    MBDPartnerPosSwap(playerIndex);
     func_800DD564_name_81();
     for (angle = 120.0f; angle > 0.0f; angle -= 5.0f) {
         if (player->stats.partners.frontID != PARTNER_NONE) {
@@ -7633,7 +7633,7 @@ void func_80118D14_duel04(void) {
         }
         HuPrcVSleep();
     }
-    Duel_SwapPartnerPositions(playerIndex);
+    MBDPartnerPosSwap(playerIndex);
     for (angle = 120.0f; angle > 0.0f; angle -= 5.0f) {
         player->player_obj->velocity.x = angle;
         MTX_ROTY(Hu3DData[player->player_obj->omObj1->model[0]].mtx, angle * 10.0f);

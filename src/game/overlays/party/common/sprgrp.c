@@ -3,35 +3,35 @@
 #include "game/malloc.h"
 #include "game/mallocblock.h"
 
-extern UnkBoard8 *D_80105570_shared_board;
-extern u16 D_80105574_shared_board;
+extern UnkBoard8 *mbSprGrpListHead;
+extern u16 mbSprGrpNum;
 
-void func_800F2A20_shared_board(void) {
-    D_80105570_shared_board = NULL;
-    D_80105574_shared_board = 0;
+void MBSprGrpInit(void) {
+    mbSprGrpListHead = NULL;
+    mbSprGrpNum = 0;
 }
 
-void func_800F2A34_shared_board(void) {
-    while (D_80105570_shared_board != NULL) {
-        func_800F2CA4_shared_board(D_80105570_shared_board);
+void MBSprGrpClose(void) {
+    while (mbSprGrpListHead != NULL) {
+        MBSprGrpKill(mbSprGrpListHead);
     }
 }
 
-static UnkBoard8 *func_800F2A74_shared_board(s16 amount) {
+static UnkBoard8 *MBSprGrpAlloc(s16 amount) {
     UnkBoard8 *temp_v0;
     s32 i;
 
     temp_v0 = HuMemMemoryAllocTemp(sizeof(UnkBoard8));
     if (temp_v0 != NULL) {
-        D_80105574_shared_board++;
-        temp_v0->unk_00 = D_80105570_shared_board;
+        mbSprGrpNum++;
+        temp_v0->unk_00 = mbSprGrpListHead;
         temp_v0->unk_04 = 0;
 
-        if (D_80105570_shared_board != NULL) {
-            D_80105570_shared_board->unk_04 = temp_v0;
+        if (mbSprGrpListHead != NULL) {
+            mbSprGrpListHead->unk_04 = temp_v0;
         }
 
-        D_80105570_shared_board = temp_v0;
+        mbSprGrpListHead = temp_v0;
         temp_v0->amount = amount;
 
         temp_v0->model = HuMemMemoryAllocTemp(amount * (sizeof *temp_v0->model));
@@ -62,17 +62,17 @@ static UnkBoard8 *func_800F2A74_shared_board(s16 amount) {
     return temp_v0;
 }
 
-UnkBoard8 *func_800F2C48_shared_board(s16 arg0, s16 arg1) {
+UnkBoard8 *MBSprGrpCreate(s16 arg0, s16 arg1) {
     UnkBoard8 *temp_v0;
 
-    temp_v0 = func_800F2A74_shared_board(arg0);
+    temp_v0 = MBSprGrpAlloc(arg0);
     if (temp_v0 != NULL) {
         temp_v0->spriteGroup = HuSprGrpCreate(arg0, arg1);
     }
     return temp_v0;
 }
 
-void func_800F2CA4_shared_board(UnkBoard8* arg0) {
+void MBSprGrpKill(UnkBoard8* arg0) {
     s16 model;
     s32 i;
 
@@ -83,7 +83,7 @@ void func_800F2CA4_shared_board(UnkBoard8* arg0) {
     if (arg0->unk_04 != NULL) {
         arg0->unk_04->unk_00 = arg0->unk_00;
     } else {
-        D_80105570_shared_board = arg0->unk_00;
+        mbSprGrpListHead = arg0->unk_00;
     }
 
     for (i = 0; i < arg0->amount; i++) {
@@ -100,18 +100,18 @@ void func_800F2CA4_shared_board(UnkBoard8* arg0) {
     HuMemMemoryFreeTemp(arg0->unk_14);
     HuMemMemoryFreeTemp(arg0->model);
     HuMemMemoryFreeTemp(arg0);
-    D_80105574_shared_board--;
+    mbSprGrpNum--;
 }
 
 //unused
-void func_800F2D8C_shared_board(UnkBoard8* arg0, s16 member, s16 x, s16 y) {
+void MBSprGrpPosSet(UnkBoard8* arg0, s16 member, s16 x, s16 y) {
     arg0->xPositions[member] = x;
     arg0->yPositions[member] = y;
     HuSprPosSet(arg0->spriteGroup, member, x, y);
 }
 
 //unused
-void func_800F2DDC_shared_board(UnkBoard8 *arg0, s16 member, f32 arg2, f32 arg3) {
+void MBSprGrpScaleSet(UnkBoard8 *arg0, s16 member, f32 arg2, f32 arg3) {
     arg0->unk_10[member] = arg2; //rot?
     arg0->unk_14[member] = arg3; //scale?
     HuSprScaleSet(arg0->spriteGroup, member, arg2, arg3);

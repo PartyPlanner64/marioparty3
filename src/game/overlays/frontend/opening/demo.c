@@ -721,7 +721,7 @@ void opDemoEventSetup(void) {
     func_80110F48_opening();
     Hu3DCameraViewportSet(0, &D_80114BB8_opening, &D_80114BC4_opening);
     Hu3DCameraScissorSet(0, &D_80114BD0_opening);
-    func_800E6630_shared_board((u32)hvq_data_ROM_START);
+    MBBackArcInit((u32)hvq_data_ROM_START);
     func_80112944_opening();
     func_80110B90_opening();
     opContErrorCreate();
@@ -853,7 +853,7 @@ void opDemoEvent(void) {
     }
     HuAudFXPlay(0x234);
     MBBackLoad(0x1F);
-    func_800E9344_shared_board(10.0f, 10000.0f);
+    MBCameraNearFarSet(10.0f, 10000.0f);
     opModelCreate(0xB, 0xF0007, 0x2A9);
     opModelPosSet(0xB, 0.0f, 0.0f, 0.0f);
     opModelScaleSet(0xB, 1.0f, 1.0f, 1.0f);
@@ -911,7 +911,7 @@ void opDemoEvent(void) {
         }
         sp20 = D_80114D84_opening;
         sp30 = D_80114D90_opening;
-        func_800E92D4_shared_board();
+        MBCameraKill();
         func_80110FB0_opening(&sp20, &sp30);
         if (storyMode != 0) {
             func_80108118_opening(0, 0x5A00U);
@@ -1026,7 +1026,7 @@ void opDemoEvent(void) {
         opModelKill(0x6E);
         MBBackKill();
         MBBackLoad(0x20);
-        func_800E92D4_shared_board();
+        MBCameraKill();
         Hu3DCameraPerspectiveSet(0, 40.0f, 500.0f, 8000.0f);
         func_80110FB0_opening(&D_80114B70_opening[0], &D_80114B70_opening[1]);
         opModelDispOff(0xB);
@@ -1536,7 +1536,7 @@ void opDemoEvent(void) {
         func_80107CA0_opening(0);
         MBBackKill();
         MBBackLoad(0x21);
-        func_800E92D4_shared_board();
+        MBCameraKill();
         Hu3DCameraPerspectiveSet(0, 40.0f, 500.0f, 8000.0f);
         func_80110FB0_opening(&D_80114B88_opening[0], &D_80114B88_opening[1]);
         opModelCreate(0xC, 0xA0089, 0x6A9);
@@ -1597,7 +1597,7 @@ void opDemoEvent(void) {
         opModelDispOff(0xE);
         MBBackKill();
         MBBackLoad(0x20);
-        func_800E92D4_shared_board();
+        MBCameraKill();
         Hu3DCameraPerspectiveSet(0, 40.0f, 500.0f, 8000.0f);
         func_80110FB0_opening(&D_80114B70_opening[0], &D_80114B70_opening[1]);
         opModelCreate(6, 0xF0006, 0x6A9);
@@ -2058,7 +2058,7 @@ void opDemoEvent(void) {
             func_80107CD0_opening(0, 0x4D16U);
             opSleep(0x3C);
         }
-        func_800E9344_shared_board(10.0f, 10000.0f);
+        MBCameraNearFarSet(10.0f, 10000.0f);
         opModelCreate(0x1C, 0xF0007, 0x2A9);
         opModelPosSet(0x1C, -580.0f, 60.0f, 2580.0f);
         opModelPosGet(0, &sp238.x, &sp238.y, &sp238.z);
@@ -2150,7 +2150,7 @@ void opDemoEvent(void) {
         opModelKill(0x1E);
         MBBackKill();
         MBBackLoad(0x22);
-        func_800E92D4_shared_board();
+        MBCameraKill();
         Hu3DCameraPerspectiveSet(0, 40.0f, 500.0f, 8000.0f);
         func_80110FB0_opening(&D_80114B70_opening[0], &D_80114B70_opening[1]);
         opModelKill(0xC);
@@ -2877,7 +2877,7 @@ void opDemoEvent(void) {
         Hu3DScreenClearF = 1;
         MBBackKill();
         MBBackLoad(0x22);
-        func_800E92D4_shared_board();
+        MBCameraKill();
         Hu3DCameraPerspectiveSet(0, 40.0f, 500.0f, 8000.0f);
         func_80110FB0_opening(&D_80114B70_opening[0], &D_80114B70_opening[1]);
         AuraKill(opModelIdGet(0xB));

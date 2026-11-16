@@ -52,8 +52,8 @@ extern u16 mgInstColumnTbl[5];
 extern u16 mgInstSlotTbl[5];
 
 
-s32 BoardGetTurnTier(s32);
-s32 BoardPlayerRankCalc(s32);
+s32 MBTurnTierGet(s32);
+s32 MBPlayerRankCalc(s32);
 
 s32 func_80106418_inst(Vec *, Vec *, Vec *, Vec *, s32);
 void func_80107E98_inst(void);
@@ -500,8 +500,8 @@ void func_80106898_inst(void) {
             for (i = 0; i < 8; i++) {
                 selected[i] = 0;
             }
-            tier = BoardGetTurnTier(-1);
-            rank = BoardPlayerRankCalc(D_8010D400_inst[0]);
+            tier = MBTurnTierGet(-1);
+            rank = MBPlayerRankCalc(D_8010D400_inst[0]);
             if ((u8)(rand8() % 3) == 0) {
                 choices = D_8010D4B0_inst;
                 column = D_8010D6D8_inst[rank][tier];

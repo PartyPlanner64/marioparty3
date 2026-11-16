@@ -32,7 +32,7 @@ static s32 D_80107568_last5[4];
 static UnkBoard8 *D_80107578_last5;
 static Object *D_8010757C_last5;
 
-void func_800EC5B4_shared_board(s16 arg0, s32 arg1);
+void MBDlgWinExecAllKey(s16 arg0, s32 arg1);
 void func_80105F9C_last5(void);
 void func_80107178_last5(void);
 void func_801072FC_last5(omObjData *);
@@ -48,10 +48,10 @@ void func_801059A0_last5(void) {
     omInitObjMan(0x32, 0x32);
     func_801073B0_last5();
     func_80107358_last5();
-    func_800D95C4_shared_board(1000.0f);
+    MBShadowHeightMaxSet(1000.0f);
     HuWinInit();
-    func_800F453C_shared_board();
-    func_800F7108_shared_board();
+    MBStatusCreate();
+    MBStatusItemDispOff();
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         MBStatusPosSet(i, 0x1E, -0x32);
     }
@@ -66,7 +66,7 @@ s16 func_80105A68_last5(s16 *arg0, s16 arg1, s16 arg2) {
 void func_80105AAC_last5(s16 arg0) {
     winData[arg0].stat = HUWIN_STAT_DRAWMES;
     HuPrcVSleep();
-    func_800EE2C0_shared_board(arg0);
+    MBWinComKeyAllWaitKeep(arg0);
 }
 
 s16 func_80105B04_last5(s32 arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4, u32 arg5, s16 arg6, s16 arg7) {
@@ -110,7 +110,7 @@ s16 func_80105B04_last5(s32 arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4, u32 ar
 
     HuWinMesSet(window, arg0, -1, -1);
     HuWinExAnimIn(window);
-    func_800EE2C0_shared_board(window);
+    MBWinComKeyAllWaitKeep(window);
     return window;
 }
 
@@ -140,7 +140,7 @@ void func_80105DEC_last5(void) {
     void *data;
     omObjData *obj;
 
-    D_80107578_last5 = func_800F2C48_shared_board(2, 0);
+    D_80107578_last5 = MBSprGrpCreate(2, 0);
     data = DataRead(0x1301DE);
     D_80107578_last5->model[0] = HuSprAnimRead(data);
     DataClose(data);
@@ -158,7 +158,7 @@ void func_80105DEC_last5(void) {
     obj = omAddObj(0x1000, 0, 0, -1, func_80105CD4_last5);
     HuPrcSleep(0x1E);
     omDelObj(obj);
-    func_800F2CA4_shared_board(D_80107578_last5);
+    MBSprGrpKill(D_80107578_last5);
     HuPrcSleep(0xA);
 }
 
@@ -213,24 +213,24 @@ void func_80106100_last5(void) {
     }
     func_80105DEC_last5();
     HuAudFXPlay(0x2A0);
-    func_800EC5B4_shared_board(-1, 0x430A);
+    MBDlgWinExecAllKey(-1, 0x430A);
     for (value = 0; value < 4; value++) {
         HuPrcChildLink(HuPrcCurrentGet(), func_801060A4_last5(value));
         {
             s32 rankMes[] = { 0x430B, 0x430C, 0x430D, 0x430E };
-            window = func_80105B04_last5(rankMes[BoardPlayerRankCalc(D_80107568_last5[value])],
+            window = func_80105B04_last5(rankMes[MBPlayerRankCalc(D_80107568_last5[value])],
                                          mbCharNameMesTbl[GwPlayer[D_80107568_last5[value]].chr],
                                          0, 0, 0, 0, 0x8C, 0x6E);
             func_80105C9C_last5(window);
         }
         HuPrcChildWatch();
     }
-    func_800EC5B4_shared_board(-1, 0x430F);
+    MBDlgWinExecAllKey(-1, 0x430F);
     MBMotionSet(model, 0, 2);
     HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&model->coords, &D_8010748C_last5, &model->coords, 0x3C));
     HuPrcChildWatch();
     MBVecForwardSet(&forward);
-    HuPrcChildLink(HuPrcCurrentGet(), func_800ED128_shared_board(&model->rot, &forward, &model->rot, 0xA));
+    HuPrcChildLink(HuPrcCurrentGet(), MBVecRotLerpCreate(&model->rot, &forward, &model->rot, 0xA));
     HuPrcChildWatch();
     MBMotionShiftSet(model, -1, 0, 5, 2);
     winner = 0;
@@ -283,7 +283,7 @@ void func_80106100_last5(void) {
         HuPrcVSleep();
     }
     HuPrcChildWatch();
-    func_800EC5B4_shared_board(-1, 0x4312);
+    MBDlgWinExecAllKey(-1, 0x4312);
     MBMotionShiftSet(coinModel, 0, 0, 5, 2);
     HuPrcSleep(0x14);
 }
@@ -333,19 +333,19 @@ void func_80106768_last5(void) {
     }
     func_80105DEC_last5();
     HuAudFXPlay(0x298);
-    func_800EC5B4_shared_board(-1, 0x4300);
+    MBDlgWinExecAllKey(-1, 0x4300);
     for (i = 0; i < 4; i++) {
         HuPrcChildLink(HuPrcCurrentGet(), func_801060A4_last5(i));
         {
             s32 rankMes[] = { 0x4301, 0x4302, 0x4303, 0x4304 };
-            window = func_80105B04_last5(rankMes[BoardPlayerRankCalc(D_80107568_last5[i])],
+            window = func_80105B04_last5(rankMes[MBPlayerRankCalc(D_80107568_last5[i])],
                                          mbCharNameMesTbl[GwPlayer[D_80107568_last5[i]].chr], 0, 0, 0, 0, 0x8C,
                                          0x6E);
             func_80105C9C_last5(window);
         }
         HuPrcChildWatch();
     }
-    func_800EC5B4_shared_board(-1, 0x4305);
+    MBDlgWinExecAllKey(-1, 0x4305);
     winner = 3;
     for (i = 0; i < 4; i++) {
         if (GwPlayer[i].chr == 0) {
@@ -364,7 +364,7 @@ void func_80106768_last5(void) {
         HuPrcChildWatch();
         step = 0xA;
         MBVecForwardSet(&forward);
-        HuPrcChildLink(HuPrcCurrentGet(), func_800ED128_shared_board(&model->rot, &forward, &model->rot, 0xA));
+        HuPrcChildLink(HuPrcCurrentGet(), MBVecRotLerpCreate(&model->rot, &forward, &model->rot, 0xA));
         HuPrcChildWatch();
         MBMotionSet(model, -1, 2);
         HuAudFXPlay(0x25D);
@@ -461,7 +461,7 @@ void func_80106768_last5(void) {
         Hu3DParticleAttrSet(light, 1, 0);
     }
     EffectStop(light);
-    func_800EC5B4_shared_board(-1, 0x4309);
+    MBDlgWinExecAllKey(-1, 0x4309);
     MBGuideFaceSet(faceModel, D_80107504_last5);
     MBMotionShiftSet(faceModel, 0, 0, 5, 2);
     HuPrcSleep(0x14);
@@ -474,7 +474,7 @@ void func_80107178_last5(void) {
     s32 *rankPtr;
 
     for (i = 0; i < 4; i++) {
-        D_80107558_last5[i] = BoardPlayerRankCalc(i);
+        D_80107558_last5[i] = MBPlayerRankCalc(i);
     }
     for (rank = 0, rankPtr = D_80107558_last5, count = 0; rank < 4; rank++) {
         for (i = 0; i < 4; i++) {
@@ -505,7 +505,7 @@ void func_801072B0_last5(omObjData *arg0) {
     if (WipeStatGet() == 0) {
         func_80107450_last5();
         func_80107384_last5();
-        func_800F4730_shared_board();
+        MBStatusKill();
         HuWinAllKill();
         omOvlReturnEx(1);
     }
@@ -522,13 +522,13 @@ void func_801072FC_last5(omObjData *arg0) {
 
 void func_80107358_last5(void) {
     MBModelInit();
-    func_800F26E8_shared_board();
-    func_800EE700_shared_board();
+    MBPlayerMotInit();
+    MBMotShiftInit();
 }
 
 void func_80107384_last5(void) {
-    func_800EE740_shared_board();
-    func_800F27C4_shared_board();
+    MBMotShiftClose();
+    MBPlayerClose();
     MBModelClose();
 }
 
@@ -536,9 +536,9 @@ void func_801073B0_last5(void) {
     s32 sp10[] = { 4, 7, 0xA, 0xD, 0x10, 0x13 };
 
     Hu3DCamInit(1);
-    func_800E6630_shared_board((u32)hvq_data_ROM_START);
+    MBBackArcInit((u32)hvq_data_ROM_START);
     MBBackLoad(sp10[GwSystem.current_board_index]);
-    func_800E9344_shared_board(1000.0f, 10000.0f);
+    MBCameraNearFarSet(1000.0f, 10000.0f);
 }
 
 void func_80107450_last5(void) {

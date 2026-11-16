@@ -5,7 +5,7 @@
 
 //this file matches brancharrow.c in duel/common
 
-UnkBoard2 *func_800D6B70_shared_board(s32 arg0) {
+UnkBoard2 *MBBranchArrowCreate(s32 arg0) {
     s32 sp10[3] = { 0x00000016, 0x00000016, 0x00000016 };
     UnkBoard2 *temp_v0;
     Object *temp_v0_2;
@@ -20,12 +20,12 @@ UnkBoard2 *func_800D6B70_shared_board(s32 arg0) {
     return temp_v0;
 }
 
-static void func_800D6C3C_shared_board(UnkBoard2* arg0) {
+static void MBBranchArrowKill(UnkBoard2* arg0) {
     MBModelKill(arg0->obj);
     HuMemMemoryFreeTemp(arg0);
 }
 
-UnkEA790Struct* func_800D6C6C_shared_board(void) {
+UnkEA790Struct* MBBranchArrowGrpCreate(void) {
     UnkEA790Struct* temp_v0;
 
     temp_v0 = HuMemMemoryAllocTemp(sizeof(UnkEA790Struct));
@@ -38,14 +38,14 @@ UnkEA790Struct* func_800D6C6C_shared_board(void) {
     return temp_v0;
 }
 
-void func_800D6CA0_shared_board(UnkEA790Struct* arg0) {
+void MBBranchArrowGrpKill(UnkEA790Struct* arg0) {
     UnkBoard2** var_s1;
     s32 i;
 
     if (arg0->unk_02 != 0) {
         var_s1 = arg0->unk_04;
         for (i = 0; i < arg0->unk_02; i++) {
-            func_800D6C3C_shared_board(*var_s1++);
+            MBBranchArrowKill(*var_s1++);
         }
         HuMemMemoryFreeTemp(arg0->unk_04);
     }
@@ -57,7 +57,7 @@ void func_800D6CA0_shared_board(UnkEA790Struct* arg0) {
     HuMemMemoryFreeTemp(arg0);
 }
 
-void func_800D6D2C_shared_board(UnkEA790Struct *arg0, UnkBoard2 *arg1, u16 arg2) {
+void MBBranchArrowGrpAdd(UnkEA790Struct *arg0, UnkBoard2 *arg1, u16 arg2) {
     UnkBoard2 **newList;
     UnkBoard2 **dst;
     UnkBoard2 **src;
@@ -91,7 +91,7 @@ void func_800D6D2C_shared_board(UnkEA790Struct *arg0, UnkBoard2 *arg1, u16 arg2)
 }
 
 //unused
-void func_800D6E00_shared_board(UnkEA790Struct *arg0, UnkBoard2* arg1) {
+void MBBranchArrowGrpRemove(UnkEA790Struct *arg0, UnkBoard2* arg1) {
     UnkBoard2 **newList;
     UnkBoard2 **dst;
     UnkBoard2 **src;
@@ -125,6 +125,6 @@ void func_800D6E00_shared_board(UnkEA790Struct *arg0, UnkBoard2* arg1) {
     arg0->unk_04 = newList;
 }
 
-UnkBoard2* func_800D6EC8_shared_board(UnkEA790Struct* arg0, s16 arg1) {
+UnkBoard2* MBBranchArrowGrpArrowGet(UnkEA790Struct* arg0, s16 arg1) {
     return arg0->unk_04[arg1];
 }

@@ -5,15 +5,15 @@
 #include "move.h"
 #include "vec.h"
 
-// UnkBoard2* func_800D6B70_shared_board(s32);
-// UnkEA790Struct* func_800D6C6C_shared_board(void);
-// void func_800D6D2C_shared_board(void*, UnkBoard2*, s32);
-// s32 func_800D7250_shared_board(UnkEA790Struct*, s32);
-// UnkBoard2* func_800D6EC8_shared_board(UnkEA790Struct*, s16);
-// f32 func_800D8DAC_shared_board(Vec*, Vec*);
-// s16 func_800ECF18_shared_board(s16, f32);
+// UnkBoard2* MBBranchArrowCreate(s32);
+// UnkEA790Struct* MBBranchArrowGrpCreate(void);
+// void MBBranchArrowGrpAdd(void*, UnkBoard2*, s32);
+// s32 MBBranchSelMesSend(UnkEA790Struct*, s32);
+// UnkBoard2* MBBranchArrowGrpArrowGet(UnkEA790Struct*, s16);
+// f32 MBVecBetweenAngleGet(Vec*, Vec*);
+// s16 MBPadStkCheck(s16, f32);
 
-static void func_800D6EE0_shared_board(void) {
+static void MBBranchSelProc(void) {
     s32 mesg;
     s32 ret;
     UnkEA790Struct *work;
@@ -91,7 +91,7 @@ static void func_800D6EE0_shared_board(void) {
             if (sel != work->unk_0C) {
                 HuAudFXPlay(1);
                 if (sel >= 0) {
-                    HuVecCopyXYZ(&func_800D6EC8_shared_board(work, sel)->obj->scale, 1.0f, 1.0f, 1.0f);
+                    HuVecCopyXYZ(&MBBranchArrowGrpArrowGet(work, sel)->obj->scale, 1.0f, 1.0f, 1.0f);
                     angle = 0.0f;
                 }
                 sel = work->unk_0C;
@@ -112,7 +112,7 @@ static void func_800D6EE0_shared_board(void) {
             }
             scaleZ = (cosdf(angle) * 0.3f) + 1.2f;
             scaleX = (cosdf(angle) * 0.2f) + 1.2f;
-            HuVecCopyXYZ(&func_800D6EC8_shared_board(work, sel)->obj->scale, scaleX, 1.0f, scaleZ);
+            HuVecCopyXYZ(&MBBranchArrowGrpArrowGet(work, sel)->obj->scale, scaleX, 1.0f, scaleZ);
         }
 
         if (timer > 0) {
@@ -120,7 +120,7 @@ static void func_800D6EE0_shared_board(void) {
             scaleZ = timer * (1.0f / 30.0f);
             for (i = 0; i < work->unk_02; i++) {
                 if (i != sel) {
-                    scale = &func_800D6EC8_shared_board(work, i)->obj->scale;
+                    scale = &MBBranchArrowGrpArrowGet(work, i)->obj->scale;
                     HuVecMulScalar(scale, scaleZ, scale);
                 }
             }
@@ -129,14 +129,14 @@ static void func_800D6EE0_shared_board(void) {
     omDelPrcObj(NULL);
 }
 
-s32 func_800D7250_shared_board(UnkEA790Struct* arg0, s32 arg1) {
+s32 MBBranchSelMesSend(UnkEA790Struct* arg0, s32 arg1) {
     if (arg0->proc != NULL) {
         return osSendMesg(&arg0->unk10, (void* ) arg1, 0);
     }
     return - 1;
 }
 
-static void func_800D7280_shared_board(void) {
+static void MBBranchSelPadProc(void) {
     Vec stick;
     Vec diff;
     UnkEA790Struct *work;
@@ -158,16 +158,16 @@ static void func_800D7280_shared_board(void) {
         stick.z = -stick.z;
         stick.y = 0.0f;
 
-        if (func_800ECF18_shared_board(work->unkE, 40.0f) != 0) {
+        if (MBPadStkCheck(work->unkE, 40.0f) != 0) {
             for (i = 0; i < work->unk_02; i++) {
                 HuVecSubtract(&diff,
-                              &func_800D6EC8_shared_board(work, i)->obj->coords,
+                              &MBBranchArrowGrpArrowGet(work, i)->obj->coords,
                               &player->player_obj->coords);
                 diff.y = 0.0f;
-                if (func_800D8DAC_shared_board(&stick, &diff) <= 38.0f) {
+                if (MBVecBetweenAngleGet(&stick, &diff) <= 38.0f) {
                     if (sel != i) {
                         sel = i;
-                        func_800D7250_shared_board(work, sel);
+                        MBBranchSelMesSend(work, sel);
                     }
                     break;
                 }
@@ -176,7 +176,7 @@ static void func_800D7280_shared_board(void) {
 
         if ((ContBtnDown[work->unkE] & A_BUTTON) && (sel >= 0)) {
             sel = -4;
-            func_800D7250_shared_board(work, sel);
+            MBBranchSelMesSend(work, sel);
             run = 0;
         }
     }
@@ -184,12 +184,12 @@ static void func_800D7280_shared_board(void) {
 }
 
 
-s32 func_800D742C_shared_board(UnkEA790Struct* arg0, s16 playerNo, s32 arg2) {
+s32 MBBranchSelStart(UnkEA790Struct* arg0, s16 playerNo, s32 arg2) {
     GW_PLAYER* player;
     Process* proc;
 
     if (arg0->proc == NULL) {
-        proc = omAddPrcObj(func_800D6EE0_shared_board, 0xEFFF, 0x1000, 0);
+        proc = omAddPrcObj(MBBranchSelProc, 0xEFFF, 0x1000, 0);
         arg0->proc = proc;
         proc->user_data = arg0;
         osCreateMesgQueue(&arg0->unk10, &arg0->unk28, 0x10);
@@ -197,17 +197,17 @@ s32 func_800D742C_shared_board(UnkEA790Struct* arg0, s16 playerNo, s32 arg2) {
         player = MBPlayerGet(playerNo);
         if (player->stat & 1) {
             arg0->unk_00 |= 1;
-            func_800D7250_shared_board(arg0, -1);
+            MBBranchSelMesSend(arg0, -1);
         } else {
             arg0->unkE = player->pad;
-            omAddPrcObj(func_800D7280_shared_board, 0xEFFF, 0x1000, 0)->user_data = arg0;
+            omAddPrcObj(MBBranchSelPadProc, 0xEFFF, 0x1000, 0)->user_data = arg0;
         }
         return player->stat & 1;
     }
     return -1;
 }
 
-s32 func_800D7518_shared_board(UnkEA790Struct* arg0) {
+s32 MBBranchSelWait(UnkEA790Struct* arg0) {
     if (arg0->proc != NULL) {
         HuPrcChildLink(HuPrcCurrentGet(), arg0->proc);
         HuPrcChildWatch();
@@ -216,7 +216,7 @@ s32 func_800D7518_shared_board(UnkEA790Struct* arg0) {
     return arg0->unk_0C;
 }
 
-void func_800D7568_shared_board(UnkBoard2* arg0, Vec* arg1, Vec* arg2, f32 arg3) {
+void MBBranchArrowPosSet(UnkBoard2* arg0, Vec* arg1, Vec* arg2, f32 arg3) {
     Vec sp10;
 
     MBVecDirGet(arg1, arg2, &sp10);
@@ -225,23 +225,23 @@ void func_800D7568_shared_board(UnkBoard2* arg0, Vec* arg1, Vec* arg2, f32 arg3)
     HuVecAdd(&arg0->obj->coords, &sp10, arg1);
 }
 
-static UnkEA790Struct* func_800D75E8_shared_board(s16 arg0, s16* arg1, s32 arg2) {
+static UnkEA790Struct* MBBranchArrowGrpCreateEx(s16 arg0, s16* arg1, s32 arg2) {
     GW_PLAYER* player;
     UnkBoard2* temp_s0;
     UnkEA790Struct* temp_v0;
 
     player = MBPlayerGet(arg0);
-    temp_v0 = func_800D6C6C_shared_board();
+    temp_v0 = MBBranchArrowGrpCreate();
     temp_v0->player = player;
     for (; *arg1 >= 0; arg1++) {
-        temp_s0 = func_800D6B70_shared_board(arg2);
-        func_800D7568_shared_board(temp_s0, &player->player_obj->coords, &MBMasuGet(*arg1)->coords, 18.0f);
-        func_800D6D2C_shared_board(temp_v0, temp_s0, 0);
+        temp_s0 = MBBranchArrowCreate(arg2);
+        MBBranchArrowPosSet(temp_s0, &player->player_obj->coords, &MBMasuGet(*arg1)->coords, 18.0f);
+        MBBranchArrowGrpAdd(temp_v0, temp_s0, 0);
     }
     
     return temp_v0;
 }
 
-UnkEA790Struct* func_800D76A0_shared_board(s16 arg0, s16* arg1) {
-    return func_800D75E8_shared_board(arg0, arg1, 0);
+UnkEA790Struct* MBBranchArrowLinkCreate(s16 arg0, s16* arg1) {
+    return MBBranchArrowGrpCreateEx(arg0, arg1, 0);
 }

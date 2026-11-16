@@ -13,11 +13,11 @@ typedef struct UnkBoard6 {
     /* 0x10 */ Vec unk10;
 } UnkBoard6;
 
-void func_800D76D0_shared_board(s32 arg0);
-void func_800D7714_shared_board(void);
-s32 func_800D771C_shared_board(s8 arg0, Object *arg1, s16 arg2, s16 arg3);
-void func_800D7770_shared_board(s32 arg0);
-void func_800D7790_shared_board(s8 arg0, Vec *arg1, s16 arg2, s16 arg3);
+void MBMapFullInit(s32 arg0);
+void MBMapFullClose(void);
+s32 MBMapFullIconMdlAdd(s8 arg0, Object *arg1, s16 arg2, s16 arg3);
+void MBMapFullIconRemove(s32 arg0);
+void MBMapFullIconPosAdd(s8 arg0, Vec *arg1, s16 arg2, s16 arg3);
 void MBMapFullExec(s32 playerPadNo);
 
 #endif //_PARTY_COMMON_MAPFULL_H

@@ -14,63 +14,63 @@ typedef struct StarGlowData {
     s16 y;
 } StarGlowData; //sizeof 0x4
 
-s32 D_801007A0_shared_board[] = {
+s32 mbMapFullIconSprTbl[] = {
     0x210008, 0x210009, 0x21000A, 0x21000B, 0x21000C, 0x21000D, 0x21000E, 0x21000F,
     0x1301CF, 0x1301D0, 0x1301D1, 0x1301D2, 0x1301DD
 };
-s16 D_801007D4_shared_board[][4] = {
+s16 mbMapFullCursorMoveTbl[][4] = {
     { 0, 2, 0, 1 },
     { 0, 2, -1, 0 },
     { -2, 0, 0, 1 },
     { -2, 0, -1, 0 }
 };
-s16 D_801007F4_shared_board[] = { 66, 252, 66, 252 };
-s16 D_801007FC_shared_board[] = { 30, 30, 210, 210 };
-s32 D_80100804_shared_board[] = { 0x210008, 0x210009, 0x21000A, 0x21000B, 0x21000C, 0x21000D, 0x21000E, 0x21000F };
-s32 D_80100824_shared_board[] = { 0x1301D5, 0x1301D6, 0x1301D7, 0x1301D8, 0x1301D9, 0x1301DA, 0x1301DB, 0x1301DC };
+s16 mbMapFullPlayerXTbl[] = { 66, 252, 66, 252 };
+s16 mbMapFullPlayerYTbl[] = { 30, 30, 210, 210 };
+s32 mbMapFullCharSprTbl[] = { 0x210008, 0x210009, 0x21000A, 0x21000B, 0x21000C, 0x21000D, 0x21000E, 0x21000F };
+s32 mbMapFullCharNameSprTbl[] = { 0x1301D5, 0x1301D6, 0x1301D7, 0x1301D8, 0x1301D9, 0x1301DA, 0x1301DB, 0x1301DC };
 
-extern s32 D_80102700_shared_board;
-extern s16 D_80102704_shared_board;
-extern UnkBoard6 D_80102708_shared_board[32];
-extern s16 D_80102A88_shared_board[];
-extern s16 D_80102A90_shared_board[];
-extern UnkBoard8* D_80102A98_shared_board[];
-extern s16 D_80102AA8_shared_board;
-extern s32 D_80105990_shared_board;
+extern s32 mbMapFullBackNo;
+extern s16 mbMapFullIconNum;
+extern UnkBoard6 mbMapFullIconTbl[32];
+extern s16 mbMapFullPlayerScrXTbl[];
+extern s16 mbMapFullPlayerScrYTbl[];
+extern UnkBoard8* mbMapFullLineTbl[];
+extern s16 mbMapFullSel;
+extern s32 mbBackNo;
 
-void func_800D76D0_shared_board(s32 arg0) {
+void MBMapFullInit(s32 arg0) {
     s32 i;
 
-    D_80102700_shared_board = arg0;
-    for (i = 0; i < ARRAY_COUNT(D_80102708_shared_board); i++) {
-        D_80102708_shared_board[i].unk_00 = -1;
+    mbMapFullBackNo = arg0;
+    for (i = 0; i < ARRAY_COUNT(mbMapFullIconTbl); i++) {
+        mbMapFullIconTbl[i].unk_00 = -1;
     }
 
-    D_80102704_shared_board = 0;
+    mbMapFullIconNum = 0;
 }
 
-void func_800D7714_shared_board(void) {
+void MBMapFullClose(void) {
 }
 
-s32 func_800D771C_shared_board(s8 arg0, Object* arg1, s16 arg2, s16 arg3) {
+s32 MBMapFullIconMdlAdd(s8 arg0, Object* arg1, s16 arg2, s16 arg3) {
     UnkBoard6* temp_v0;
 
-    temp_v0 = &D_80102708_shared_board[D_80102704_shared_board++];
+    temp_v0 = &mbMapFullIconTbl[mbMapFullIconNum++];
     temp_v0->unk_00 = arg0;
     temp_v0->unk4 = arg1;
     temp_v0->unkC = arg2;
     temp_v0->unkE = arg3;
-    return D_80102704_shared_board - 1;
+    return mbMapFullIconNum - 1;
 }
 
-void func_800D7770_shared_board(s32 arg0) {
-    D_80102708_shared_board[arg0].unk_00 = -1;
+void MBMapFullIconRemove(s32 arg0) {
+    mbMapFullIconTbl[arg0].unk_00 = -1;
 }
 
-void func_800D7790_shared_board(s8 arg0, Vec* arg1, s16 arg2, s16 arg3) {
+void MBMapFullIconPosAdd(s8 arg0, Vec* arg1, s16 arg2, s16 arg3) {
     UnkBoard6* temp_v1;
 
-    temp_v1 = &D_80102708_shared_board[D_80102704_shared_board++];
+    temp_v1 = &mbMapFullIconTbl[mbMapFullIconNum++];
     temp_v1->unk_00 = arg0;
     temp_v1->unk4 = 0;
     temp_v1->unkC = arg2;
@@ -82,8 +82,8 @@ static void MBMapFullStarGlowKill(void) {
     UnkBoard6 *entry;
     s32 i;
     
-    for (i = 0; i < ARRAY_COUNT(D_80102708_shared_board); i++) {
-        entry = &D_80102708_shared_board[i];
+    for (i = 0; i < ARRAY_COUNT(mbMapFullIconTbl); i++) {
+        entry = &mbMapFullIconTbl[i];
         if (entry->unk_00 >= 0) {
             if (entry->process != NULL) {
                 omDelPrcObj(entry->process);
@@ -145,11 +145,11 @@ static void MBMapFullLinePosFix(UnkBoard8* arg0, s16 arg1) {
     Vec sp10;
     f32 vecAngle;
 
-    HuSprPosSet(arg0->spriteGroup, 0, D_801007F4_shared_board[arg1], D_801007FC_shared_board[arg1]);
-    HuSprPosSet(arg0->spriteGroup, 1, D_801007F4_shared_board[arg1], D_801007FC_shared_board[arg1]);
-    sp10.x = D_80102A88_shared_board[arg1] - D_801007F4_shared_board[arg1];
+    HuSprPosSet(arg0->spriteGroup, 0, mbMapFullPlayerXTbl[arg1], mbMapFullPlayerYTbl[arg1]);
+    HuSprPosSet(arg0->spriteGroup, 1, mbMapFullPlayerXTbl[arg1], mbMapFullPlayerYTbl[arg1]);
+    sp10.x = mbMapFullPlayerScrXTbl[arg1] - mbMapFullPlayerXTbl[arg1];
     sp10.y = 0;
-    sp10.z = D_80102A90_shared_board[arg1] - D_801007FC_shared_board[arg1];
+    sp10.z = mbMapFullPlayerScrYTbl[arg1] - mbMapFullPlayerYTbl[arg1];
     vecAngle = MBVecAngleGet(&sp10);
     HuSprScaleSet(arg0->spriteGroup, 0, 0.25f, HuSqrtf((sp10.x * sp10.x) + (sp10.z * sp10.z)) / 32.0f);
     HuSprZRotSet(arg0->spriteGroup, 0, vecAngle);
@@ -162,7 +162,7 @@ void MBMapFullLineCreate(void) {
     void* temp_v0_2;
 
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
-        temp_s0 = func_800F2C48_shared_board(2, 0);
+        temp_s0 = MBSprGrpCreate(2, 0);
         temp_v0 = DataRead(0x1301CE);
         temp_s0->model[0] = HuSprAnimRead(temp_v0);
         HuSprGrpMemberSet(temp_s0->spriteGroup, 0, temp_s0->model[0], 0);
@@ -178,15 +178,15 @@ void MBMapFullLineCreate(void) {
         HuSprColorTPLvlSet(temp_s0->spriteGroup, 1, 0, 0, 0xFF, 0x80);
         DataClose(temp_v0_2);
         MBMapFullLinePosFix(temp_s0, i);
-        D_80102A98_shared_board[i] = temp_s0;
+        mbMapFullLineTbl[i] = temp_s0;
     }
 }
 
-void func_800D7D00_shared_board(void) {
+void MBMapFullLineKill(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        func_800F2CA4_shared_board(D_80102A98_shared_board[i]);
+        MBSprGrpKill(mbMapFullLineTbl[i]);
     }
 }
 
@@ -208,10 +208,10 @@ static void MBMapFullLineFlash(void) {
             HuPrcVSleep();
         }
         
-        if (sel != D_80102AA8_shared_board) {
-            sel = D_80102AA8_shared_board;
+        if (sel != mbMapFullSel) {
+            sel = mbMapFullSel;
             for (i = 0; i < 4; i++) {
-                entry = D_80102A98_shared_board[i];
+                entry = mbMapFullLineTbl[i];
                 if (i == sel) {
                     HuSprPriSet(entry->spriteGroup, 0, 2);
                     HuSprPriSet(entry->spriteGroup, 1, 2);
@@ -227,7 +227,7 @@ static void MBMapFullLineFlash(void) {
             }
         }
 
-        entry = D_80102A98_shared_board[sel];
+        entry = mbMapFullLineTbl[sel];
         alpha = (sindf(angle) * 255.0f);
         alpha = (alpha < 0) ? -alpha : alpha;
         
@@ -261,7 +261,7 @@ static void MBMapFullMain(void) {
     void *data;
 
     userData = (s32)HuPrcCurrentGet()->user_data; //this is correct, usage is strange here
-    savedBack = D_80105990_shared_board;
+    savedBack = mbBackNo;
     sel = 0;
 
     for (i = 0; i < 4; i++) {
@@ -274,36 +274,36 @@ static void MBMapFullMain(void) {
         }
     }
 
-    D_80102AA8_shared_board = sel;
+    mbMapFullSel = sel;
     savedZoom = MBCameraZoomGet();
     MBCameraPos2DGet(&sp10);
     WipeCreateOut(WIPE_TYPE_NORMAL, 8);
     HuPrcSleep(8);
-    func_800EA358_shared_board();
+    MBBackSprDispOff();
     MBStatusHideAll();
-    func_800DC024_shared_board(userData);
+    MBSaiMdlDispOff(userData);
     HuPrcVSleep();
     Hu3DPauseF = 1;
-    D_80105706_shared_board &= ~1;
-    func_800DBEC0_shared_board(GwSystem.current_player_index);
-    func_800DC024_shared_board(GwSystem.current_player_index);
-    func_800EA6B0_shared_board(1);
+    mbModelDispFlag &= ~1;
+    MBSaiNumKill(GwSystem.current_player_index);
+    MBSaiMdlDispOff(GwSystem.current_player_index);
+    MBMasuBmpModeSet(1);
     MBBackKill();
-    MBBackLoad(D_80102700_shared_board);
-    iconGrp = func_800F2C48_shared_board(0x20, 0);
+    MBBackLoad(mbMapFullBackNo);
+    iconGrp = MBSprGrpCreate(0x20, 0);
 
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         player = MBPlayerGet(i);
         MBCamera3Dto2D(&MBMasuGet(MBMasuLinkMasuIdGet(player->clink, player->cidx))->coords, sp18);
-        D_80102A88_shared_board[i] = sp18[0];
-        D_80102A90_shared_board[i] = sp18[1];
+        mbMapFullPlayerScrXTbl[i] = sp18[0];
+        mbMapFullPlayerScrYTbl[i] = sp18[1];
     }
 
     
-    for (i = 0, j = 0; j < ARRAY_COUNT(D_80102708_shared_board); i++, j++) {
-        entry = &D_80102708_shared_board[j];
+    for (i = 0, j = 0; j < ARRAY_COUNT(mbMapFullIconTbl); i++, j++) {
+        entry = &mbMapFullIconTbl[j];
         if (entry->unk_00 >= 0) {
-            data = DataRead(D_801007A0_shared_board[entry->unk_00]);
+            data = DataRead(mbMapFullIconSprTbl[entry->unk_00]);
             iconGrp->model[i] = HuSprAnimRead(data);
             HuSprGrpMemberSet(iconGrp->spriteGroup, i, iconGrp->model[i], 0);
             HuSprAttrSet(iconGrp->spriteGroup, i, 0x01001000);
@@ -334,36 +334,36 @@ static void MBMapFullMain(void) {
 
     MBMapFullLineCreate();
     lineFlash = omAddPrcObj(MBMapFullLineFlash, 0x1005, 0, 0);
-    charGrp = func_800F2C48_shared_board(8, 0);
+    charGrp = MBSprGrpCreate(8, 0);
 
     for (i = 0; i < 4; i++) {
         player = MBPlayerGet(i);
-        data = DataRead(D_80100804_shared_board[player->chr]);
+        data = DataRead(mbMapFullCharSprTbl[player->chr]);
         charGrp->model[i] = HuSprAnimRead(data);
         HuSprGrpMemberSet(charGrp->spriteGroup, i, charGrp->model[i], 0);
         HuSprPriSet(charGrp->spriteGroup, i, 1);
         HuSprAttrSet(charGrp->spriteGroup, i, 0x01001000);
         HuSprPosSet(charGrp->spriteGroup, i,
-                            D_801007F4_shared_board[i] - 0x1E,
-                            D_801007FC_shared_board[i]);
+                            mbMapFullPlayerXTbl[i] - 0x1E,
+                            mbMapFullPlayerYTbl[i]);
         DataClose(data);
 
-        data = DataRead(D_80100824_shared_board[player->chr]);
+        data = DataRead(mbMapFullCharNameSprTbl[player->chr]);
         charGrp->model[i+4] = HuSprAnimRead(data);
         HuSprGrpMemberSet(charGrp->spriteGroup, i + 4, charGrp->model[i + 4], 0);
         HuSprPriSet(charGrp->spriteGroup, i + 4, 1);
         HuSprAttrSet(charGrp->spriteGroup, i + 4, 0x01001000);
         HuSprPosSet(charGrp->spriteGroup, i + 4,
-                            D_801007F4_shared_board[i] + 8,
-                            D_801007FC_shared_board[i]);
+                            mbMapFullPlayerXTbl[i] + 8,
+                            mbMapFullPlayerYTbl[i]);
         DataClose(data);
     }
 
     HuAudSeqVolSet(0x60);
     WipeCreateIn(WIPE_TYPE_NORMAL, 8);
     HuPrcSleep(7);
-    help0 = func_800E210C_shared_board(0, 0xC0, 0);
-    help1 = func_800E210C_shared_board(4, 0xCE, 0);
+    help0 = MBHelpWinCreate(0, 0xC0, 0);
+    help1 = MBHelpWinCreate(4, 0xCE, 0);
 
     do {
         u16 pad;
@@ -380,9 +380,9 @@ static void MBMapFullMain(void) {
             dir = 3;
         }
         if (dir != -1) {
-            sel += D_801007D4_shared_board[sel][dir];
+            sel += mbMapFullCursorMoveTbl[sel][dir];
         }
-        D_80102AA8_shared_board = sel;
+        mbMapFullSel = sel;
     } while (!(HuPadBtnDown[userData] & (A_BUTTON | B_BUTTON | Z_TRIG | R_TRIG)));
 
     WipeCreateOut(WIPE_TYPE_NORMAL, 8);
@@ -393,20 +393,20 @@ static void MBMapFullMain(void) {
     MBCameraZoomSet(savedZoom);
     MBCameraPos2DSet(&sp10);
     HuPrcVSleep();
-    D_80105706_shared_board |= 1;
-    func_800DB884_shared_board(GwSystem.current_player_index);
-    func_800DC08C_shared_board(GwSystem.current_player_index);
+    mbModelDispFlag |= 1;
+    MBSaiNumShow(GwSystem.current_player_index);
+    MBSaiMdlDispOn(GwSystem.current_player_index);
     MBHelpWinKill(help0);
     MBHelpWinKill(help1);
     omDelPrcObj(lineFlash);
-    func_800F2CA4_shared_board(charGrp);
-    func_800F2CA4_shared_board(iconGrp);
-    func_800D7D00_shared_board();
+    MBSprGrpKill(charGrp);
+    MBSprGrpKill(iconGrp);
+    MBMapFullLineKill();
     MBMapFullStarGlowKill();
-    func_800EA348_shared_board();
-    func_800DC08C_shared_board(userData);
+    MBBackSprDispOn();
+    MBSaiMdlDispOn(userData);
     MBStatusShowAll();
-    func_800EA6B0_shared_board(0);
+    MBMasuBmpModeSet(0);
     HuAudSeqVolSet(0x7F);
     WipeCreateIn(WIPE_TYPE_NORMAL, 8);
     HuPrcSleep(8);

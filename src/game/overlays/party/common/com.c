@@ -5,9 +5,9 @@
 #include "player.h"
 #include "item.h"
 
-extern s32 (*D_80102BC4_shared_board)(void);
-extern s32 D_80102BC0_shared_board;
-s16 D_80100D50_shared_board[] = { 6, 7, 8, 9, 10, 11, 12, 13 };
+extern s32 (*mbComItemDecideHook)(void);
+extern s32 mbComTreePlayerNo;
+s16 mbComStarFlagTbl[] = { 6, 7, 8, 9, 10, 11, 12, 13 };
 
 // main CPU decision logic function
 s16 MBComTreeExec(DecisionTreeNonLeafNode *arg0) {
@@ -48,7 +48,7 @@ s16 MBComTreeExec(DecisionTreeNonLeafNode *arg0) {
                             }
                         }
                     }
-                    if (!GWBoardFlagCheck(D_80100D50_shared_board[i])) {
+                    if (!GWBoardFlagCheck(mbComStarFlagTbl[i])) {
                         break;
                     }
                 }
@@ -105,7 +105,7 @@ s16 MBComTreeExec(DecisionTreeNonLeafNode *arg0) {
                 break;
 
             case 5:
-                if ((1 << BoardPlayerRankCalc(MBPlayerTurnGet())) & node->node_data1.data) {
+                if ((1 << MBPlayerRankCalc(MBPlayerTurnGet())) & node->node_data1.data) {
                     break;
                 }
                 continue;
@@ -200,7 +200,7 @@ s16 MBComTreeExec(DecisionTreeNonLeafNode *arg0) {
                 clink = node->node_data1.data_u8[1];
                 cidxMin = node->node_data1.data_u8[2];
                 cidxMax = node->node_data1.data_u8[3];
-                player = MBPlayerGet((s16)D_80102BC0_shared_board);
+                player = MBPlayerGet((s16)mbComTreePlayerNo);
                 if (player->clink != clink) {
                     continue;
                 }
@@ -256,13 +256,13 @@ s16 MBComTreeExec(DecisionTreeNonLeafNode *arg0) {
 }
 
 void MBComItemDecideHookSet(s32 (*arg0)(void)) {
-    D_80102BC4_shared_board = arg0;
+    mbComItemDecideHook = arg0;
 }
 
 s32 MBComItemDecide(void) {
-    return D_80102BC4_shared_board();
+    return mbComItemDecideHook();
 }
 
-void func_800DA778_shared_board(s32 arg0) {
-    D_80102BC0_shared_board = arg0;
+void MBComTreePlayerSet(s32 arg0) {
+    mbComTreePlayerNo = arg0;
 }

@@ -3533,13 +3533,13 @@ void func_8010FE0C_duel10(void) {
         func_800EFABC_name_81(obj);
         MBDModelKill(obj);
     }
-    Duel_PowerUpPartners(system->current_player_index);
+    MBDPartnerPowerUp(system->current_player_index);
     HuPrcChildLink(process, func_800E4A74_name_81(0));
     HuPrcChildWatch();
     sprGroup = func_8010DB60_duel10(6, 100, 100);
     func_8010ECA0_duel10(D_80114CD0_duel10, 0x2516);
     func_8010DD5C_duel10(sprGroup);
-    Duel_PowerDownPartners(system->current_player_index);
+    MBDPartnerPowerDown(system->current_player_index);
     func_8010E37C_duel10(2);
     func_8010E8D4_duel10();
     func_800DB624_name_81(system->current_player_index, 1);

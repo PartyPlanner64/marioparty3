@@ -12,15 +12,15 @@ typedef struct ItemSlotEntry {
 } ItemSlotEntry; // sizeof 0xA
 
 void MBMgCallHisInit(void);
-void func_800DF854_shared_board(void);
+void MBMgCallInit(void);
 void MBMgCallClose(void);
 void MBMgCallListCreate(s32 arg0);
-void func_800E00EC_shared_board(void);
+void MBMgCallListClose(void);
 void MBArrayShuffle(u8 *output, s32 count);
 Process *MBMgCallCreate(void);
 Process *MBMgCallBattleCreate(void);
-Process *func_800E0F84_shared_board(void);
-Process *func_800E11C0_shared_board(s32 arg0, s32 arg1);
+Process *MBMgCallGambleCreate(void);
+Process *MBMgCallKettouCreate(s32 arg0, s32 arg1);
 Process *MBMgCallTutorialCreate(void);
 
 #endif //_PARTY_COMMON_MGCALL_H

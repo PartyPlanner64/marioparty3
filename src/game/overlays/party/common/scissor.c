@@ -1,59 +1,59 @@
 #include "common_board.h"
 
-RectF D_80101770_shared_board = {
+RectF mbScissorRect = {
     16.0f, 12.0f, 304.0f, 228.0f
 };
 
-void func_800F27D0_shared_board(void) {
-    D_80101770_shared_board.x1 = 16.0f;
-    D_80101770_shared_board.y1 = 12.0f;
-    D_80101770_shared_board.x2 = 304.0f;
-    D_80101770_shared_board.y2 = 228.0f;
-    Hu3DCameraScissorSet(0, &D_80101770_shared_board);
+void MBScissorFullSet(void) {
+    mbScissorRect.x1 = 16.0f;
+    mbScissorRect.y1 = 12.0f;
+    mbScissorRect.x2 = 304.0f;
+    mbScissorRect.y2 = 228.0f;
+    Hu3DCameraScissorSet(0, &mbScissorRect);
 }
 
-void func_800F2834_shared_board(void) {
-    D_80101770_shared_board.x1 = 16.0f;
-    D_80101770_shared_board.y1 = 12.0f;
-    D_80101770_shared_board.x2 = 16.0f;
-    D_80101770_shared_board.y2 = 228.0f;
-    Hu3DCameraScissorSet(0, &D_80101770_shared_board);
+void MBScissorEmptySet(void) {
+    mbScissorRect.x1 = 16.0f;
+    mbScissorRect.y1 = 12.0f;
+    mbScissorRect.x2 = 16.0f;
+    mbScissorRect.y2 = 228.0f;
+    Hu3DCameraScissorSet(0, &mbScissorRect);
 }
 
-static void func_800F288C_shared_board(void) {
+static void MBScissorWipeOutProc(void) {
     s32 i;
 
-    D_80101770_shared_board.x1 = 16.0f;
-    D_80101770_shared_board.x2 = 304.0f;
+    mbScissorRect.x1 = 16.0f;
+    mbScissorRect.x2 = 304.0f;
 
     for (i = 0; i < 9; i++) {
         HuPrcVSleep();
-        D_80101770_shared_board.x1 += 32.0f;
-        Hu3DCameraScissorSet(0, &D_80101770_shared_board);
+        mbScissorRect.x1 += 32.0f;
+        Hu3DCameraScissorSet(0, &mbScissorRect);
     }
     omDelPrcObj(NULL);
 }
 
-Process *func_800F292C_shared_board(void) {
-    return omAddPrcObj(func_800F288C_shared_board, 0x1002, 0, 0);
+Process *MBScissorWipeOutStart(void) {
+    return omAddPrcObj(MBScissorWipeOutProc, 0x1002, 0, 0);
 }
 
-static void func_800F2958_shared_board(void) {
+static void MBScissorWipeInProc(void) {
     s32 i;
 
-    D_80101770_shared_board.x1 = 16.0f;
-    D_80101770_shared_board.x2 = 16.0f;
+    mbScissorRect.x1 = 16.0f;
+    mbScissorRect.x2 = 16.0f;
 
     for (i = 0; i < 9; i++) {
         HuPrcVSleep();
-        D_80101770_shared_board.x2 += 32.0f;
-        Hu3DCameraScissorSet(0, &D_80101770_shared_board);
+        mbScissorRect.x2 += 32.0f;
+        Hu3DCameraScissorSet(0, &mbScissorRect);
     }
 
     omDelPrcObj(NULL);
 }
 
-Process *func_800F29EC_shared_board(void) {
-    return omAddPrcObj(func_800F2958_shared_board, 0x1002, 0, 0);
+Process *MBScissorWipeInStart(void) {
+    return omAddPrcObj(MBScissorWipeInProc, 0x1002, 0, 0);
 }
 

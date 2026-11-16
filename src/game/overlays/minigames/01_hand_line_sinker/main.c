@@ -1690,7 +1690,7 @@ f32 func_8010AAEC_hand_line_sinker(f32 x) {
  * follows a label or a blank line, so the original asm must have had a code label right after
  * `jal logf` in the second block (no other directive/nop/-g form reproduces it; the pattern is unique
  * in the ROM). No branch in the target jumps to that mul.s, so the label is an orphan. The only
- * orphan-label mechanism seen in this GCC (e.g. the loop-top labels in func_800EB1CC_shared_board)
+ * orphan-label mechanism seen in this GCC (e.g. the loop-top labels in MBMasuLinkSearch)
  * is reorg deleting a dead block that holds a delay-slot-filled `j LABEL` SEQUENCE: jump.c
  * delete_insn does not decrement the label count of a jump inside a SEQUENCE. That needs an
  * out-of-line block (loop/goto style) that jumps back to `end = t * s + ...` and that reorg

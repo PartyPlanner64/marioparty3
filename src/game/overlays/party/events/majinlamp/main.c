@@ -412,7 +412,7 @@ void func_80106E74_majinlamp(void) {
     HuSprPosSet(D_80108338_majinlamp, 0, 0xA0, 0x78);
     HuSprScaleSet(D_80108338_majinlamp, 0, 50.0f, 50.0f);
     D_80108334_majinlamp = MBPlayerGet(D_8010833C_majinlamp);
-    MBPlayerModelCreate(D_8010833C_majinlamp, D_80101734_shared_board[GwPlayer[D_8010833C_majinlamp].chr], 2);
+    MBPlayerModelCreate(D_8010833C_majinlamp, mbPlayerMotTbl[GwPlayer[D_8010833C_majinlamp].chr], 2);
     memcpy(&sp18, D_80108270_majinlamp, 0x20);
     memcpy(&sp38, D_80108290_majinlamp, 0x20);
     D_80108340_majinlamp[0] = CharAnimCreate(
@@ -442,7 +442,7 @@ void func_80106E74_majinlamp(void) {
         HuPrcVSleep();
     }
     HuPrcSleep(0x1E);
-    func_800F2388_shared_board(D_8010833C_majinlamp, -1, 0, 0xA, 2);
+    MBPlayerMotionShiftSet(D_8010833C_majinlamp, -1, 0, 0xA, 2);
     HuPrcSleep(0xF);
     MBDlgResultWinExec(0x3A17);
     D_801080EC_majinlamp = 0;
@@ -571,7 +571,7 @@ void func_8010771C_majinlamp(void) {
     offset = &sp[3];
     MBVecForwardSet(offset);
     HuVecCopy3F(direction, &D_80108334_majinlamp->player_obj->rot);
-    HuPrcChildLink(HuPrcCurrentGet(), func_800ED128_shared_board(&D_80108334_majinlamp->player_obj->rot, offset,
+    HuPrcChildLink(HuPrcCurrentGet(), MBVecRotLerpCreate(&D_80108334_majinlamp->player_obj->rot, offset,
                                                                  &D_80108334_majinlamp->player_obj->rot, 0xA));
     HuPrcChildWatch();
     msmSeStop(sound);
@@ -581,9 +581,9 @@ void func_8010771C_majinlamp(void) {
     MBPlayerMotionSet(D_8010833C_majinlamp, 5, 2);
     HuPrcSleep(0x32);
     MBVecDirGet(&D_80108334_majinlamp->player_obj->coords, &D_80108118_majinlamp, direction);
-    HuPrcChildLink(HuPrcCurrentGet(), func_800ED128_shared_board(&D_80108334_majinlamp->player_obj->rot, direction,
+    HuPrcChildLink(HuPrcCurrentGet(), MBVecRotLerpCreate(&D_80108334_majinlamp->player_obj->rot, direction,
                                                                  &D_80108334_majinlamp->player_obj->rot, 0xA));
-    HuPrcChildLink(HuPrcCurrentGet(), func_800ED128_shared_board(&D_8010832C_majinlamp->rot, direction,
+    HuPrcChildLink(HuPrcCurrentGet(), MBVecRotLerpCreate(&D_8010832C_majinlamp->rot, direction,
                                                                  &D_8010832C_majinlamp->rot, 0xA));
     HuPrcChildWatch();
     D_801080EA_majinlamp = 1;
@@ -626,13 +626,13 @@ void func_80107E1C_majinlamp(omObjData *arg0) {
 
 void func_80107E40_majinlamp(void) {
     MBModelInit();
-    func_800F26E8_shared_board();
+    MBPlayerMotInit();
 }
 
 void func_80107E64_majinlamp(void) {
     HuSprAnimKill(D_8010833A_majinlamp);
     HuSprGrpKill(D_80108338_majinlamp);
-    func_800F27C4_shared_board();
+    MBPlayerClose();
     MBModelClose();
 }
 

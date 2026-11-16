@@ -114,7 +114,7 @@ void func_800EDF78_name_81(void);
 void func_800EE468_name_81(s32);
 void func_800EDDBC_name_81(void);
 void func_800F3880_name_81(s32, s32, s32);
-extern s32 D_80101200_shared_board[];
+extern s32 mbKSuitObj[];
 Process *func_800E0924_name_81(void);
 Process *func_800DCE40_name_81(s32, Vec *, Vec *, f32);
 s32 func_8010EB88_duel01(void);

@@ -18,7 +18,7 @@ void func_80106F40_mgresultboard(omObjData *);
 void func_80106FC8_mgresultboard(void);
 void func_80107188_mgresultboard(void);
 void func_80107234_mgresultboard(void);
-void func_800E6630_shared_board(u32);
+void MBBackArcInit(u32);
 void MBBackCreate(s32, s32);
 void func_80107024_mgresultboard(void);
 void func_8010705C_mgresultboard(Gfx **, s32, s32);
@@ -544,7 +544,7 @@ void func_80106F40_mgresultboard(omObjData *arg0) {
 void func_80106FC8_mgresultboard(void) {
     GW_SYSTEM *system = &GwSystem;
 
-    func_800E6630_shared_board((u32)hvq_data_ROM_START);
+    MBBackArcInit((u32)hvq_data_ROM_START);
 
     if (!(system->playMode & 2)) {
         MBBackCreate(D_8010AD0C_mgresultboard[system->current_board_index], 0);

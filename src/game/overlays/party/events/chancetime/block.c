@@ -614,13 +614,13 @@ void func_8010DFA4_chancetime(void) {
     HuWinHomeClear(D_80110004_chancetime);
     if (GwPlayer[D_801100D0_chancetime[0]].stat & 1) {
         HuWinAttrSet(D_80110004_chancetime, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
     }
     func_80108B50_chancetime();
     HuWinMesSet(D_80110004_chancetime, D_8010FD5C_chancetime[index], -1, -1);
@@ -680,11 +680,11 @@ void func_8010E280_chancetime(omObjData *object) {
     func_8010F984_chancetime(object);
     HuPrcSleep(10);
     D_8010FAE4_chancetime = 1;
-    func_800F5E30_shared_board(players[0], players[1]);
-    func_800F7108_shared_board();
-    func_800F5F4C_shared_board(players[0], players[1]);
-    func_800F5F60_shared_board();
-    func_800F5F7C_shared_board();
+    MBStatusCreateHidden(players[0], players[1]);
+    MBStatusItemDispOff();
+    MBStatusVsPlayerSet(players[0], players[1]);
+    MBStatusVsAMove();
+    MBStatusVsBMove();
     HuPrcSleep(40);
     func_8010E4D0_chancetime(object);
     if (coins + 1 == GwPlayer[D_801100D0_chancetime[0]].coin) {
@@ -945,13 +945,13 @@ void func_8010F1F8_chancetime(void) {
     HuWinHomeClear(D_80110004_chancetime);
     if (GwPlayer[D_801100D0_chancetime[0]].stat & 1) {
         HuWinAttrSet(D_80110004_chancetime, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
     }
     func_80108B50_chancetime();
     func_8010BF48_chancetime();
@@ -997,13 +997,13 @@ void func_8010F44C_chancetime(s32 arg0, s32 arg1, s32 arg2) {
     HuWinHomeClear(D_80110004_chancetime);
     if (GwPlayer[D_801100D0_chancetime[0]].stat & 1) {
         HuWinAttrSet(D_80110004_chancetime, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
     }
     func_80108B50_chancetime();
     HuWinMesSet(D_80110004_chancetime, D_8010FD8C_chancetime[arg0], -1, -1);
@@ -1013,13 +1013,13 @@ void func_8010F44C_chancetime(s32 arg0, s32 arg1, s32 arg2) {
     }
     if (GwPlayer[D_801100D0_chancetime[0]].stat & 1) {
         HuWinAttrSet(D_80110004_chancetime, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
     }
     if (arg2 < arg1) {
         if (arg2 > 0) {

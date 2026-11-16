@@ -64,8 +64,8 @@ void func_800EB5E8_name_81(void);
 void func_800EB7BC_name_81(Vec *);
 void func_800EF9C4_name_81(Object *, s32, s32);
 void func_800EFD24_name_81(void);
-extern s32 D_80100D90_shared_board;
-extern s32 D_80101200_shared_board[];
+extern s32 mbSaiSeF;
+extern s32 mbKSuitObj[];
 extern s16 kakusiMasuItemHis[10];
 
 s32 D_8010E3E0_boardresult = 0;
@@ -916,7 +916,7 @@ void func_80108378_boardresult(s16 effect) {
     }
     for (i = 0, j = 0; i < 4; i++) {
         if (winners[i] != 0) {
-            chars[j] = D_80101200_shared_board[GwPlayer[i].chr];
+            chars[j] = mbKSuitObj[GwPlayer[i].chr];
             j++;
         }
     }
@@ -985,7 +985,7 @@ void func_80108378_boardresult(s16 effect) {
     }
     for (i = 0, j = 0; i < 4; i++) {
         if (winners[i] != 0) {
-            chars[j] = D_80101200_shared_board[GwPlayer[i].chr];
+            chars[j] = mbKSuitObj[GwPlayer[i].chr];
             j++;
         }
     }
@@ -1055,7 +1055,7 @@ void func_80108378_boardresult(s16 effect) {
     }
     for (i = 0, j = 0; i < 4; i++) {
         if (winners[i] != 0) {
-            chars[j] = D_80101200_shared_board[GwPlayer[i].chr];
+            chars[j] = mbKSuitObj[GwPlayer[i].chr];
             j++;
         }
     }
@@ -1454,7 +1454,7 @@ void func_80109754_boardresult(void) {
 
             for (j = 0, n = 0; j < 4; j++) {
                 if (rank[j] == i) {
-                    chars[n] = D_80101200_shared_board[GwPlayer[j].chr];
+                    chars[n] = mbKSuitObj[GwPlayer[j].chr];
                     n++;
                 }
             }
@@ -1472,7 +1472,7 @@ void func_80109754_boardresult(void) {
         for (j = 0, k = 0; j < 4; j++) {
             if (rank[j] == i) {
                 if (k != 0) {
-                    D_80100D90_shared_board = 0;
+                    mbSaiSeF = 0;
                 }
                 func_800DB648_name_81(j);
                 func_800DABE0_name_81(j);
@@ -1534,7 +1534,7 @@ void func_80109754_boardresult(void) {
                 }
             }
         }
-        chars[0] = D_80101200_shared_board[GwPlayer[order[0]].chr];
+        chars[0] = mbKSuitObj[GwPlayer[order[0]].chr];
         if (values[i] == 2 || values[i] == 4) {
             rank[order[1]] = i + 1;
             if (values[i] == 4) {
@@ -1686,7 +1686,7 @@ void func_80109754_boardresult(void) {
         }
     }
 
-    func_800EB4DC_name_81(-1, 0x1418, D_80101200_shared_board[GwPlayer[kakusiMasuItemHis[0]].chr], 0, 0, 0, 0);
+    func_800EB4DC_name_81(-1, 0x1418, mbKSuitObj[GwPlayer[kakusiMasuItemHis[0]].chr], 0, 0, 0, 0);
     func_800EB278_name_81();
     func_800EB29C_name_81();
     MBDMotionShiftSet(D_8010EB38_boardresult[kakusiMasuItemHis[0]]->player_obj, -1, 0, 10, 2);

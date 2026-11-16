@@ -53,7 +53,7 @@ void func_801059A0_chancetime(void) {
         }
     }
 
-    D_801100DC_chancetime = BoardGetTurnTier(CUR_TURN);
+    D_801100DC_chancetime = MBTurnTierGet(CUR_TURN);
     roll = (u8)(rand8() % 10) + 1;
     if (roll < 8) {
         D_8010FE64_chancetime[0] = 2;
@@ -291,6 +291,6 @@ void func_80106240_chancetime(void) {
 void func_801062DC_chancetime(void) {
     HuWinAllKill();
     if (D_8010FAE4_chancetime == 1) {
-        func_800F5EF0_shared_board();
+        MBStatusVsKill();
     }
 }

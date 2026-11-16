@@ -19,11 +19,11 @@
 #define ITEMS_POS_OFFSET_X 56
 #define ITEMS_POS_OFFSET_Y 19
 
-s32 D_80101780_shared_board = -1;
-s32 D_80101784_shared_board = -1;
-s32 D_80101788_shared_board = -1;
-s32 D_8010178C_shared_board = -1;
-s32 D_80101790_shared_board = 1;
+s32 mbStatusVsPlayerA = -1;
+s32 mbStatusVsPlayerB = -1;
+s32 mbStatusTeamPlayerA = -1;
+s32 mbStatusTeamPlayerB = -1;
+s32 mbStatusItemDispF = 1;
 s16 PlayerBoardStatusRootPosition[8][2] = {
     { 24, 16 }, { 191, 16 }, { 24, 186 }, { 191, 186 }, { -224, 16 }, { 432, 16 }, { -224, 186 }, { 432, 186 }
 };
@@ -65,28 +65,28 @@ s16 PlayerBoardStatusRootPositionExtras[][2] = {
     { 0x01B0, 0x00BA }
 };
 
-s16 D_8010183C_shared_board[4][2] = {
+s16 mbStatusGrpPosETbl[4][2] = {
     {0x0028, 0x005C}, {0x00A8, 0x005C}, {0x0028, 0x00B8}, {0x00A8, 0x00B8}
 };
 
-s16 D_8010184C_shared_board[4][2] = {
+s16 mbStatusGrpPosATbl[4][2] = {
     {0x0028, 0x005C}, {0x00A8, 0x005C}, {0x0028, 0x00B8}, {0x00A8, 0x00B8}
 };
 
-s16 D_8010185C_shared_board[4][2] = {
+s16 mbStatusGrpPosDTbl[4][2] = {
     {0x00A8, 0x005C}, {0x00A8, 0x008A}, {0x00A8, 0x00B8}, {0x0028, 0x008A}
 };
 
-s16 D_8010186C_shared_board[4][2] = {
+s16 mbStatusGrpPosCTbl[4][2] = {
     {0x0028, 0x005C}, {0x0028, 0x00B8}, {0x00A8, 0x005C}, {0x00A8, 0x00B8}
 };
 
-s16 D_8010187C_shared_board[4][2] = {
+s16 mbStatusGrpPosBTbl[4][2] = {
     {0x0020, 0x008A}, {0x00B0, 0x005C}, {0x00B0, 0x008A}, {0x00B0, 0x00B8}
 };
 
 // TODO: this probably isn't all RGB data
-RGB D_8010188C_shared_board[] = {
+RGB mbStatusColorTbl[] = {
     { 0x80, 0x80, 0x80 },
     { 0x1A, 0x84, 0xFF },
     { 0xFF, 0x1A, 0x2D },
@@ -118,7 +118,7 @@ RGB D_8010188C_shared_board[] = {
     { 0x00, 0xFF, 0x00 },
 };
 
-s16 D_801018E4_shared_board[][2] = {
+s16 mbStatusSprOfsTbl[][2] = {
     { 0x0000, 0x0000 },
     { 0x0000, 0x0000 },
     { 0x0003, 0x0007 },
@@ -138,24 +138,24 @@ s16 D_801018E4_shared_board[][2] = {
     { 0x0025, 0xFFE9 }
 };
 
-u8 D_80101928_shared_board[] = {
+u8 mbStatusDispMovePosIdxTbl[] = {
     0, 4, 0, 0, 8, 0, 12, 16, 20, 24, 0, 0, 0, 0, 32, 32, 32, 32, 28, 28, 28, 28, 0, 0, 0, 4, 0, 36
 };
 
-s32 D_80101944_shared_board[] = {
+s32 mbStatusCharSprTbl[] = {
     0x00130107, 0x00130108, 0x00130109, 0x0013010A, 0x0013010B, 0x0013010C, 0x0013010D, 0x0013010E
 };
 
-s16 (*D_80101964_shared_board[])[2] = {
-    D_8010184C_shared_board,
-    D_8010187C_shared_board,
-    D_8010186C_shared_board,
-    D_8010185C_shared_board,
-    D_8010184C_shared_board,
-    D_8010183C_shared_board
+s16 (*mbStatusGrpPosTbl[])[2] = {
+    mbStatusGrpPosATbl,
+    mbStatusGrpPosBTbl,
+    mbStatusGrpPosCTbl,
+    mbStatusGrpPosDTbl,
+    mbStatusGrpPosATbl,
+    mbStatusGrpPosETbl
 };
 
-s32 D_8010197C_shared_board[] = {
+s32 mbItemIconSprTbl[] = {
     0x0013018E,
     0x0013018F,
     0x00130190,
@@ -179,7 +179,7 @@ s32 D_8010197C_shared_board[] = {
     0x001301B6
 };
 
-s32 D_801019D0_shared_board[] = {
+s32 mbStatusItemSprTbl[] = {
     0x001301A2,
     0x001301A3,
     0x001301A4,
@@ -201,20 +201,20 @@ s32 D_801019D0_shared_board[] = {
     0x001301B5,
 };
 
-extern s16 D_80105588_shared_board[];
-extern RGB D_8010188C_shared_board[];
-extern s16 D_801055C2_shared_board;
-extern s16 D_801055C4_shared_board;
-extern f32 D_801055C8_shared_board;
-extern s16 D_801055E4_shared_board;
-extern Vec2f D_801055CC_shared_board;
-extern Vec2f D_801055DC_shared_board;
-extern Vec2f D_801055D4_shared_board;
-extern Process* D_80105580_shared_board;
+extern s16 mbStatusAnimTbl[];
+extern RGB mbStatusColorTbl[];
+extern s16 mbVsSprGrp;
+extern s16 mbVsSprAnim;
+extern f32 mbVsSprScale;
+extern s16 mbVsSprMoveTime;
+extern Vec2f mbVsSprPos;
+extern Vec2f mbVsSprAccel;
+extern Vec2f mbVsSprVel;
+extern Process* mbStatusProc;
 
 #define SHARED_BOARD_UNK_SIZE_0 4
-extern s16 D_801055FC_shared_board[SHARED_BOARD_UNK_SIZE_0];
-extern s16 D_80105608_shared_board[SHARED_BOARD_UNK_SIZE_0][3];
+extern s16 mbStatusUnusedTbl[SHARED_BOARD_UNK_SIZE_0];
+extern s16 mbStatusUnusedTbl2[SHARED_BOARD_UNK_SIZE_0][3];
 
 static void MBStatusNumUpdate(s32 playerIndex) {
     UnkCoinThing coinDigits;
@@ -274,7 +274,7 @@ static void MBStatusNumUpdate(s32 playerIndex) {
     coinDigits.unk_08[1] = GwPlayer[playerIndex].star;
 
     for (i = 0; i < ARRAY_COUNT(coinDigits.unk_08); i++) {
-        if ((i != 0 && playerBoardStatus->counts[i] != coinDigits.unk_08[i]) || (i == 0 && D_801055E8_shared_board[playerIndex] != NULL)) {
+        if ((i != 0 && playerBoardStatus->counts[i] != coinDigits.unk_08[i]) || (i == 0 && mbCoinTakeObjTbl[playerIndex] != NULL)) {
             if (playerBoardStatus->unk2[i] == 0) {
                 HuSprSpeedSet(playerBoardStatus->playerIndex, i + 2, 1.0f);
                 playerBoardStatus->unk2[i] = 0xF;
@@ -284,7 +284,7 @@ static void MBStatusNumUpdate(s32 playerIndex) {
         if (playerBoardStatus->unk2[i] != 0) {
             playerBoardStatus->unk2[i]--;
             if (playerBoardStatus->unk2[i] == 0) {
-                if (i != 0 || D_801055E8_shared_board[playerIndex] == NULL) {
+                if (i != 0 || mbCoinTakeObjTbl[playerIndex] == NULL) {
                     HuSprBankSet(playerBoardStatus->playerIndex, i + 2, 0, 0);
                     HuSprSpeedSet(playerBoardStatus->playerIndex, i + 2, 0.0f);
                     HuSprAnimModeSet(playerBoardStatus->playerIndex, i + 2, HUSPR_ANIM_MODE_BANK);
@@ -298,14 +298,14 @@ static void MBStatusNumUpdate(s32 playerIndex) {
         HuSprAnimModeSet(playerBoardStatus->playerIndex, DIGIT_X, HUSPR_ANIM_MODE_BANK);
         return;
     }
-    if (playerBoardStatus->prevRank != BoardPlayerRankCalc(playerIndex)) {
-        HuSprBankSet(playerBoardStatus->playerIndex, DIGIT_X, BoardPlayerRankCalc(playerIndex), 0);
+    if (playerBoardStatus->prevRank != MBPlayerRankCalc(playerIndex)) {
+        HuSprBankSet(playerBoardStatus->playerIndex, DIGIT_X, MBPlayerRankCalc(playerIndex), 0);
         HuSprAnimModeSet(playerBoardStatus->playerIndex, DIGIT_X, HUSPR_ANIM_MODE_BANK);
-        playerBoardStatus->prevRank = BoardPlayerRankCalc(playerIndex);
+        playerBoardStatus->prevRank = MBPlayerRankCalc(playerIndex);
     }
 }
 
-void func_800F3370_shared_board(void) {
+void MBStatusSprDispOffAll(void) {
     s32 i, j;
 
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
@@ -324,10 +324,10 @@ static void MBStatusMain(omObjData *obj) {
     while (1) {
         if (Hu3DPauseF == 0) {
             for (i = 0; i < MB_MAX_PLAYERS; i++) {
-                if (D_80101780_shared_board != -1 &&
-                    D_80101784_shared_board != -1 &&
-                    i != D_80101780_shared_board &&
-                    i != D_80101784_shared_board) {
+                if (mbStatusVsPlayerA != -1 &&
+                    mbStatusVsPlayerB != -1 &&
+                    i != mbStatusVsPlayerA &&
+                    i != mbStatusVsPlayerB) {
                     continue;
                 }
 
@@ -355,7 +355,7 @@ static void MBStatusMain(omObjData *obj) {
                                     continue;
                                 }
 
-                                HuSprGrpMemberSet(temp_s2->playerIndex, j, D_80105588_shared_board[GwPlayer[i].itemNo[j - 11] + 10], 0);
+                                HuSprGrpMemberSet(temp_s2->playerIndex, j, mbStatusAnimTbl[GwPlayer[i].itemNo[j - 11] + 10], 0);
                                 HuSprAnimModeSet(temp_s2->playerIndex, j, HUSPR_ANIM_MODE_STOP);
                                 HuSprPriSet(temp_s2->playerIndex, j, (i * 5) + 0x478E);
                                 HuSprAttrSet(temp_s2->playerIndex, j, 0);
@@ -363,9 +363,9 @@ static void MBStatusMain(omObjData *obj) {
                                 if (i >= 2) {
                                     var_v1 = j + 3;
                                 }
-                                HuSprPosSet(temp_s2->playerIndex, j, D_801018E4_shared_board[var_v1][0], D_801018E4_shared_board[var_v1][1]);
+                                HuSprPosSet(temp_s2->playerIndex, j, mbStatusSprOfsTbl[var_v1][0], mbStatusSprOfsTbl[var_v1][1]);
                                 HuSprDispOff(temp_s2->playerIndex, j);
-                                if (D_80101790_shared_board != 0) {
+                                if (mbStatusItemDispF != 0) {
                                     break;
                                 }
                                 continue;
@@ -421,21 +421,21 @@ static void MBStatusMain(omObjData *obj) {
                                     (s16)((s32)(temp_s2->yPos + 0.5f) + ITEMS_POS_OFFSET_Y));
             }
 
-            if (D_801055C2_shared_board != -1) {
-                D_801055C8_shared_board += 0.1f;
-                if (D_801055C8_shared_board > 1.0f) {
-                    D_801055C8_shared_board = 1.0f;
+            if (mbVsSprGrp != -1) {
+                mbVsSprScale += 0.1f;
+                if (mbVsSprScale > 1.0f) {
+                    mbVsSprScale = 1.0f;
                 }
-                HuSprScaleSet(D_801055C2_shared_board, 0, D_801055C8_shared_board, D_801055C8_shared_board);
-                if (D_801055E4_shared_board > 0) {
-                    D_801055E4_shared_board--;
-                    D_801055CC_shared_board.x += D_801055D4_shared_board.x;
-                    D_801055CC_shared_board.y += D_801055D4_shared_board.y;
-                    D_801055D4_shared_board.x += D_801055DC_shared_board.x;
-                    D_801055D4_shared_board.y += D_801055DC_shared_board.y;
-                    HuSprPosSet(D_801055C2_shared_board, 0,
-                                        D_801055CC_shared_board.x,
-                                        D_801055CC_shared_board.y);
+                HuSprScaleSet(mbVsSprGrp, 0, mbVsSprScale, mbVsSprScale);
+                if (mbVsSprMoveTime > 0) {
+                    mbVsSprMoveTime--;
+                    mbVsSprPos.x += mbVsSprVel.x;
+                    mbVsSprPos.y += mbVsSprVel.y;
+                    mbVsSprVel.x += mbVsSprAccel.x;
+                    mbVsSprVel.y += mbVsSprAccel.y;
+                    HuSprPosSet(mbVsSprGrp, 0,
+                                        mbVsSprPos.x,
+                                        mbVsSprPos.y);
                 }
             }
         }
@@ -447,11 +447,11 @@ static void MBStatusCharSprCreate(s32 playerIndex) {
     s16 temp_s1;
 
     temp_s1 = mbStatusData[playerIndex].playerIndex;
-    HuSprGrpMemberSet(temp_s1, 1, D_80105588_shared_board[playerIndex + 1], 0);
+    HuSprGrpMemberSet(temp_s1, 1, mbStatusAnimTbl[playerIndex + 1], 0);
     HuSprAnimModeSet(temp_s1, 1, HUSPR_ANIM_MODE_STOP);
     HuSprPriSet(temp_s1, 1, ((playerIndex * 5) + 0x4790));
     HuSprAttrSet(temp_s1, 1, 0);
-    HuSprPosSet(temp_s1, 1, D_801018E4_shared_board[1][0], D_801018E4_shared_board[1][1]);
+    HuSprPosSet(temp_s1, 1, mbStatusSprOfsTbl[1][0], mbStatusSprOfsTbl[1][1]);
 }
 
 static void MBStatusIconSprCreate(s32 arg0) {
@@ -459,12 +459,12 @@ static void MBStatusIconSprCreate(s32 arg0) {
     s16 temp_s2 = mbStatusData[arg0].playerIndex;
 
     for (i = 0; i < 2; i++) {
-        HuSprGrpMemberSet(temp_s2, i + 2, D_80105588_shared_board[i + 5], 0);
+        HuSprGrpMemberSet(temp_s2, i + 2, mbStatusAnimTbl[i + 5], 0);
         HuSprPriSet(temp_s2, i + 2, ((arg0 * 5) + 0x4790));
         HuSprAttrReset(temp_s2, i + 2, 0xFFFF);
         HuSprAttrSet(temp_s2, i + 2, 0x1000);
         HuSprZRotSet(temp_s2, i + 2, 0.0f);
-        HuSprPosSet(temp_s2, i + 2, D_801018E4_shared_board[i + 2][0], D_801018E4_shared_board[i + 2][1]);
+        HuSprPosSet(temp_s2, i + 2, mbStatusSprOfsTbl[i + 2][0], mbStatusSprOfsTbl[i + 2][1]);
         HuSprSpeedSet(temp_s2, i + 2, 0.0f);
         HuSprTPLvlSet(temp_s2, i + 2, 0x100);
     }
@@ -488,7 +488,7 @@ static void MBStatusNumSprCreate(s32 arg0) {
         HuSprPriSet(temp_s2, i + 4, ((arg0 * 5) + 0x4790));
         HuSprAttrReset(temp_s2, i + 4, 0xFFFF);
         HuSprAttrSet(temp_s2, i + 4, 0);
-        HuSprPosSet(temp_s2, i + 4, D_801018E4_shared_board[i + 4][0], D_801018E4_shared_board[i + 4][1]);
+        HuSprPosSet(temp_s2, i + 4, mbStatusSprOfsTbl[i + 4][0], mbStatusSprOfsTbl[i + 4][1]);
         HuSprColorSet(temp_s2, i + 4, 0xFF, 0xFF, 0xFF);
         HuSprTPLvlSet(temp_s2, i + 4, 0x100);
         HuSprZRotSet(temp_s2, i + 4, 0.0f);
@@ -501,7 +501,7 @@ static void MBStatusBackSprCreate(s32 playerNo) {
     s16 temp_v0 = HuSprGrpCreate(0xE, 2);
 
     temp_s0->playerIndex = temp_v0;
-    HuSprGrpMemberSet(temp_v0, 0, D_80105588_shared_board[0], 0);
+    HuSprGrpMemberSet(temp_v0, 0, mbStatusAnimTbl[0], 0);
     HuSprPriSet(temp_v0, 0, ((playerNo * 5) + 0x4790));
     HuSprAttrSet(temp_v0, 0, 0x1000);
     HuSprPosSet(temp_v0, 0, 0, 0);
@@ -513,23 +513,23 @@ static void MBStatusRankSprCreate(s32 playerNo) {
 
     temp_v0->prevRank = -1;
     temp_s0 = temp_v0->playerIndex;
-    HuSprGrpMemberSet(temp_s0, 0xA, D_80105588_shared_board[8], 0);
+    HuSprGrpMemberSet(temp_s0, 0xA, mbStatusAnimTbl[8], 0);
     HuSprAnimModeSet(temp_s0, 0xA, HUSPR_ANIM_MODE_BANK);
     HuSprBankSet(temp_s0, 0xA, 0, 0);
     HuSprPriSet(temp_s0, 0xA, ((playerNo * 5) + 0x478F));
     HuSprAttrSet(temp_s0, 0xA, 0);
-    HuSprPosSet(temp_s0, 0xA, D_801018E4_shared_board[10][0], D_801018E4_shared_board[10][1]);
+    HuSprPosSet(temp_s0, 0xA, mbStatusSprOfsTbl[10][0], mbStatusSprOfsTbl[10][1]);
 }
 
 static void MBStatusComSprCreate(s32 playerNo) {
     s16 temp_s2;
 
     temp_s2 = mbStatusData[playerNo].playerIndex;
-    HuSprGrpMemberSet(temp_s2, 9, D_80105588_shared_board[9], 0);
+    HuSprGrpMemberSet(temp_s2, 9, mbStatusAnimTbl[9], 0);
     HuSprAnimModeSet(temp_s2, 9, HUSPR_ANIM_MODE_STOP);
     HuSprPriSet(temp_s2, 9, ((playerNo * 5) + 0x478E));
     HuSprAttrSet(temp_s2, 9, 0);
-    HuSprPosSet(temp_s2, 9, D_801018E4_shared_board[9][0], D_801018E4_shared_board[9][1]);
+    HuSprPosSet(temp_s2, 9, mbStatusSprOfsTbl[9][0], mbStatusSprOfsTbl[9][1]);
     if (!(GwPlayer[playerNo].stat & 1)) {
         HuSprDispOff(temp_s2, 9);
     }
@@ -544,7 +544,7 @@ static void MBStatusItemIconSprCreate(s32 playerNo) {
     for (i = 0; i < ARRAY_COUNT(GwPlayer->itemNo); i++) {
         curItem = GwPlayer[playerNo].itemNo[i];
         curItem = (curItem == -1) ? 0 : curItem;
-        HuSprGrpMemberSet(temp_s3, i + 0xB, D_80105588_shared_board[curItem + 10], 0);
+        HuSprGrpMemberSet(temp_s3, i + 0xB, mbStatusAnimTbl[curItem + 10], 0);
         HuSprAnimModeSet(temp_s3, i + 0xB, HUSPR_ANIM_MODE_STOP);
         HuSprPriSet(temp_s3, i + 0xB, ((playerNo * 5) + 0x478E));
         HuSprAttrSet(temp_s3, i + 0xB, 0);
@@ -552,7 +552,7 @@ static void MBStatusItemIconSprCreate(s32 playerNo) {
         if (playerNo >= 2) {
             var_s1 = i + 0xE;
         }
-        HuSprPosSet(temp_s3, i + 0xB, D_801018E4_shared_board[var_s1][0], D_801018E4_shared_board[var_s1][1]);
+        HuSprPosSet(temp_s3, i + 0xB, mbStatusSprOfsTbl[var_s1][0], mbStatusSprOfsTbl[var_s1][1]);
         if (GwPlayer[playerNo].itemNo[i] == -1) {
             HuSprDispOff(temp_s3, i + 0xB);
         }
@@ -566,7 +566,7 @@ static void MBStatusAnimCreate(void) {
     s16 *spriteIDs;
     s32 sp10[2] = { 0x130112, 0x130111 };
 
-    spriteIDs = D_80105588_shared_board;
+    spriteIDs = mbStatusAnimTbl;
     // unk sprite id
     temp_v0 = DataRead(0x13010F);
     spriteIDs[0] = HuSprAnimRead(temp_v0);
@@ -574,7 +574,7 @@ static void MBStatusAnimCreate(void) {
 
     // create player sprite ids
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
-        temp_v0 = DataRead(D_80101944_shared_board[GwPlayer[i].chr]);
+        temp_v0 = DataRead(mbStatusCharSprTbl[GwPlayer[i].chr]);
         spriteIDs[i + 1] = HuSprAnimRead(temp_v0);
         DataClose(temp_v0);
     }
@@ -598,7 +598,7 @@ static void MBStatusAnimCreate(void) {
 
     // create item sprite ids
     for (i = 0; i < ITEMS_END; i++) {
-        temp_v0 = DataRead(D_801019D0_shared_board[i]);
+        temp_v0 = DataRead(mbStatusItemSprTbl[i]);
         spriteIDs[i + 10] = HuSprAnimRead(temp_v0);
         DataClose(temp_v0);
     }
@@ -606,7 +606,7 @@ static void MBStatusAnimCreate(void) {
 
 static void MBStatusAnimKill(void) {
     s32 i;
-    s16 *spriteIDs = D_80105588_shared_board;
+    s16 *spriteIDs = mbStatusAnimTbl;
 
     HuSprAnimKill(spriteIDs[0]);
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
@@ -625,7 +625,7 @@ static void MBStatusAnimKill(void) {
     }
 }
 
-static void func_800F43FC_shared_board(s32 playerNo) {
+static void MBStatusPlayerCreate(s32 playerNo) {
     BoardStatus *temp_s2 = &mbStatusData[playerNo];
     s32 i;
 
@@ -651,36 +651,36 @@ static void func_800F43FC_shared_board(s32 playerNo) {
     MBStatusComSprCreate(playerNo);
     MBStatusItemIconSprCreate(playerNo);
     MBStatusNumUpdate(playerNo);
-    D_801055E8_shared_board[playerNo] = NULL;
+    mbCoinTakeObjTbl[playerNo] = NULL;
     temp_s2->unk30 = 0;
 }
 
-void func_800F453C_shared_board(void) {
+void MBStatusCreate(void) {
     s32 i, j;
 
     MBStatusAnimCreate();
 
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
-        func_800F43FC_shared_board(i);
+        MBStatusPlayerCreate(i);
     }
 
-    D_80105580_shared_board = omAddPrcObj(MBStatusMain, 0, 0x2000, 0);
-    omPrcSetStatBit(D_80105580_shared_board, OM_STAT_NOALLPAUSE);
+    mbStatusProc = omAddPrcObj(MBStatusMain, 0, 0x2000, 0);
+    omPrcSetStatBit(mbStatusProc, OM_STAT_NOALLPAUSE);
 
-    D_801055C4_shared_board = -1;
-    D_801055C2_shared_board = -1;
-    D_80101780_shared_board = -1;
-    D_80101784_shared_board = -1;
+    mbVsSprAnim = -1;
+    mbVsSprGrp = -1;
+    mbStatusVsPlayerA = -1;
+    mbStatusVsPlayerB = -1;
 
     for (i = 0; i < SHARED_BOARD_UNK_SIZE_0; i++) {
-        D_801055FC_shared_board[i] = -1;
-        for (j = 0; j < ARRAY_COUNT_2D_COLS(D_80105608_shared_board); j++) {
-            D_80105608_shared_board[i][j] = -1;
+        mbStatusUnusedTbl[i] = -1;
+        for (j = 0; j < ARRAY_COUNT_2D_COLS(mbStatusUnusedTbl2); j++) {
+            mbStatusUnusedTbl2[i][j] = -1;
         }
     }
 }
 
-static void func_800F462C_shared_board(s32 playerNo) {
+static void MBStatusPlayerKill(s32 playerNo) {
     BoardStatus *temp_s2 = &mbStatusData[playerNo];
     s32 i;
 
@@ -704,38 +704,38 @@ static void func_800F462C_shared_board(s32 playerNo) {
         temp_s2->unk30 = 0;
     }
 
-    if (D_801055E8_shared_board[playerNo] != NULL) {
-        omDelObj(D_801055E8_shared_board[playerNo]);
-        D_801055E8_shared_board[playerNo] = NULL;
+    if (mbCoinTakeObjTbl[playerNo] != NULL) {
+        omDelObj(mbCoinTakeObjTbl[playerNo]);
+        mbCoinTakeObjTbl[playerNo] = NULL;
     }
 }
 
-void func_800F4730_shared_board(void) {
+void MBStatusKill(void) {
     s32 i;
 
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
-        func_800F462C_shared_board(i);
+        MBStatusPlayerKill(i);
     }
 
     MBStatusAnimKill();
-    HuPrcKill(D_80105580_shared_board);
+    HuPrcKill(mbStatusProc);
     MBVsSprKill();
-    D_80101780_shared_board = -1;
-    D_80101784_shared_board = -1;
+    mbStatusVsPlayerA = -1;
+    mbStatusVsPlayerB = -1;
 }
 
 void MBStatusColorSet(u32 playerNo, s32 turnStatus) {
     if (playerNo < MB_MAX_PLAYERS) {
-        HuSprColorSet(mbStatusData[playerNo].playerIndex, 0, D_8010188C_shared_board[turnStatus].r, D_8010188C_shared_board[turnStatus].g, D_8010188C_shared_board[turnStatus].b);
+        HuSprColorSet(mbStatusData[playerNo].playerIndex, 0, mbStatusColorTbl[turnStatus].r, mbStatusColorTbl[turnStatus].g, mbStatusColorTbl[turnStatus].b);
         mbStatusData[playerNo].spaceType = turnStatus;
     }
 }
 
-s32 func_800F482C_shared_board(s32 playerNo) {
+s32 MBStatusColorGet(s32 playerNo) {
     return mbStatusData[playerNo].spaceType;
 }
 
-void func_800F4850_shared_board(s32 playerNo, s32 arg1) {
+void MBStatusParamSet(s32 playerNo, s32 arg1) {
     mbStatusData[playerNo].unk1 = arg1;
 }
 
@@ -816,9 +816,9 @@ s32 MBStatusDispMoveSet(s32 arg0) {
         if ((arg0 >= 10) && (arg0 <= 13) && (i != arg0 - 10)) continue;
         if ((arg0 >= 14) && (arg0 <= 17) && (i != arg0 - 14)) continue;
         if ((arg0 >= 18) && (arg0 <= 21) && (i != arg0 - 18)) continue;
-        if ((arg0 == 22) && (i != D_80101780_shared_board)) continue;
-        if ((arg0 == 23) && (i != D_80101784_shared_board)) continue;
-        if ((arg0 == 24) && (i != D_80101784_shared_board)) continue;
+        if ((arg0 == 22) && (i != mbStatusVsPlayerA)) continue;
+        if ((arg0 == 23) && (i != mbStatusVsPlayerB)) continue;
+        if ((arg0 == 24) && (i != mbStatusVsPlayerB)) continue;
 
         switch (arg0) {
         case 0:
@@ -830,17 +830,17 @@ s32 MBStatusDispMoveSet(s32 arg0) {
                               PlayerBoardStatusRootPosition[i + 4][1]);
             break;
         case 22:
-            MBStatusPosSet(D_80101780_shared_board,
+            MBStatusPosSet(mbStatusVsPlayerA,
                            PlayerBoardStatusRootPosition[4][0],
                            PlayerBoardStatusRootPosition[4][1] + 0x20);
             break;
         case 23:
-            MBStatusPosSet(D_80101784_shared_board,
+            MBStatusPosSet(mbStatusVsPlayerB,
                            PlayerBoardStatusRootPosition[5][0],
                            PlayerBoardStatusRootPosition[5][1] + 0x20);
             break;
         case 24:
-            MBStatusPosSet(D_80101784_shared_board,
+            MBStatusPosSet(mbStatusVsPlayerB,
                            PlayerBoardStatusRootPosition[5][0],
                            PlayerBoardStatusRootPosition[5][1]);
             break;
@@ -867,12 +867,12 @@ s32 MBStatusDispMoveSet(s32 arg0) {
         case 12:
         case 13: // 0x9C
             dummy:
-            sp->unk_18 = PlayerBoardStatusRootPosition[D_80101928_shared_board[arg0] + i][0];
-            sp->unk_1C = PlayerBoardStatusRootPosition[D_80101928_shared_board[arg0] + i][1];
+            sp->unk_18 = PlayerBoardStatusRootPosition[mbStatusDispMovePosIdxTbl[arg0] + i][0];
+            sp->unk_1C = PlayerBoardStatusRootPosition[mbStatusDispMovePosIdxTbl[arg0] + i][1];
             break;
         case 2: // 0x70
-            sp->unk_18 = D_80101964_shared_board[group1Count][slot[i]][0];
-            sp->unk_1C = D_80101964_shared_board[group1Count][slot[i]][1];
+            sp->unk_18 = mbStatusGrpPosTbl[group1Count][slot[i]][0];
+            sp->unk_1C = mbStatusGrpPosTbl[group1Count][slot[i]][1];
             sp->unkE = 9;
             break;
         case 5:
@@ -893,7 +893,7 @@ s32 MBStatusDispMoveSet(s32 arg0) {
         case 19:
         case 20:
         case 21:
-            sp->unk_18 = PlayerBoardStatusRootPosition[D_80101928_shared_board[arg0] + i][0];
+            sp->unk_18 = PlayerBoardStatusRootPosition[mbStatusDispMovePosIdxTbl[arg0] + i][0];
             sp->unk_1C = sp->yPos;
             break;
         case 22:
@@ -909,15 +909,15 @@ s32 MBStatusDispMoveSet(s32 arg0) {
             sp->unk_1C = PlayerBoardStatusRootPosition[1][1];
             break;
         case 27:
-            if (i == D_80101788_shared_board) {
-                sp->unk_18 = PlayerBoardStatusRootPosition[D_80101928_shared_board[arg0]][0];
-                sp->unk_1C = PlayerBoardStatusRootPosition[D_80101928_shared_board[arg0]][1];
-            } else if (i == D_8010178C_shared_board) {
-                sp->unk_18 = PlayerBoardStatusRootPosition[D_80101928_shared_board[arg0] + 1][0];
-                sp->unk_1C = PlayerBoardStatusRootPosition[D_80101928_shared_board[arg0] + 1][1];
+            if (i == mbStatusTeamPlayerA) {
+                sp->unk_18 = PlayerBoardStatusRootPosition[mbStatusDispMovePosIdxTbl[arg0]][0];
+                sp->unk_1C = PlayerBoardStatusRootPosition[mbStatusDispMovePosIdxTbl[arg0]][1];
+            } else if (i == mbStatusTeamPlayerB) {
+                sp->unk_18 = PlayerBoardStatusRootPosition[mbStatusDispMovePosIdxTbl[arg0] + 1][0];
+                sp->unk_1C = PlayerBoardStatusRootPosition[mbStatusDispMovePosIdxTbl[arg0] + 1][1];
             } else {
-                sp->unk_18 = PlayerBoardStatusRootPosition[D_80101928_shared_board[arg0] + 2 + i][0];
-                sp->unk_1C = PlayerBoardStatusRootPosition[D_80101928_shared_board[arg0] + 2 + i][1];
+                sp->unk_18 = PlayerBoardStatusRootPosition[mbStatusDispMovePosIdxTbl[arg0] + 2 + i][0];
+                sp->unk_1C = PlayerBoardStatusRootPosition[mbStatusDispMovePosIdxTbl[arg0] + 2 + i][1];
             }
             break;
         }
@@ -926,9 +926,9 @@ s32 MBStatusDispMoveSet(s32 arg0) {
         sp->unk_24 = sp->unk_2C = (2.0f * (sp->unk_1C - sp->yPos)) / (f32) ((sp->unkE + 1) * (sp->unkE + 1));
 
         if (arg0 == 5) {
-            D_801055D4_shared_board.x = D_801055DC_shared_board.x = 0.0f;
-            D_801055D4_shared_board.y = D_801055DC_shared_board.y = 2.0f;
-            D_801055E4_shared_board = sp->unkE;
+            mbVsSprVel.x = mbVsSprAccel.x = 0.0f;
+            mbVsSprVel.y = mbVsSprAccel.y = 2.0f;
+            mbVsSprMoveTime = sp->unkE;
         }
     }
 
@@ -969,7 +969,7 @@ s32 MBStatusDispMoveSet(s32 arg0) {
 }
 
 
-s32 func_800F5278_shared_board(void) {
+s32 MBStatusMoveCheck(void) {
     s32 var_a0 = FALSE;
     s32 i;
 
@@ -982,7 +982,7 @@ s32 func_800F5278_shared_board(void) {
 }
 
 // decide what type of minigame will be played
-s32 func_800F52C4_shared_board(void) {
+s32 MBMgTypeCalc(void) {
     u8 type1Indices[4];
     u8 type2Indices[4];
     u8 otherCount = 0;
@@ -1013,12 +1013,12 @@ s32 func_800F52C4_shared_board(void) {
     }
 
     if (blueCount == 1) {
-        D_801055F8_shared_board = type1Indices[0];
+        mbMgTypeSoloPlayer = type1Indices[0];
         return 1;
     }
 
     if (blueCount == 3) {
-        D_801055F8_shared_board = type2Indices[0];
+        mbMgTypeSoloPlayer = type2Indices[0];
         return 1;
     }
 
@@ -1028,58 +1028,58 @@ s32 func_800F52C4_shared_board(void) {
 void MBVsSprCreate(void) {
     void *temp_s0;
 
-    if (D_801055C2_shared_board == -1) {
-        D_801055C2_shared_board = HuSprGrpCreate(1, 0);
+    if (mbVsSprGrp == -1) {
+        mbVsSprGrp = HuSprGrpCreate(1, 0);
         temp_s0 = DataRead(0x130115);
-        D_801055CC_shared_board.y = 158.0f;
-        D_801055C4_shared_board = HuSprAnimRead(temp_s0);
+        mbVsSprPos.y = 158.0f;
+        mbVsSprAnim = HuSprAnimRead(temp_s0);
         DataClose(temp_s0);
-        HuSprGrpMemberSet(D_801055C2_shared_board, 0, D_801055C4_shared_board, 0);
-        HuSprPriSet(D_801055C2_shared_board, 0, 0x4780);
-        HuSprAttrSet(D_801055C2_shared_board, 0, 0x1000);
-        HuSprPosSet(D_801055C2_shared_board, 0, 0xA0, D_801055CC_shared_board.y);
-        HuSprScaleSet(D_801055C2_shared_board, 0, 0.0f, 0.0f);
-        D_801055C8_shared_board = 0.0f;
-        D_801055CC_shared_board.x = 160.0f;
-        D_801055D4_shared_board.x = D_801055D4_shared_board.y = 0.0f;
+        HuSprGrpMemberSet(mbVsSprGrp, 0, mbVsSprAnim, 0);
+        HuSprPriSet(mbVsSprGrp, 0, 0x4780);
+        HuSprAttrSet(mbVsSprGrp, 0, 0x1000);
+        HuSprPosSet(mbVsSprGrp, 0, 0xA0, mbVsSprPos.y);
+        HuSprScaleSet(mbVsSprGrp, 0, 0.0f, 0.0f);
+        mbVsSprScale = 0.0f;
+        mbVsSprPos.x = 160.0f;
+        mbVsSprVel.x = mbVsSprVel.y = 0.0f;
 
-        D_801055E4_shared_board = 0;
+        mbVsSprMoveTime = 0;
     }
 }
 
 void MBVsSprCreateY(f32 arg0, f32 arg1) {
     void *temp_s0;
 
-    if (D_801055C2_shared_board == -1) {
-        D_801055C2_shared_board = HuSprGrpCreate(1, 5);
+    if (mbVsSprGrp == -1) {
+        mbVsSprGrp = HuSprGrpCreate(1, 5);
         temp_s0 = DataRead(0x130115);
-        D_801055CC_shared_board.y = arg1;
-        D_801055C4_shared_board = HuSprAnimRead(temp_s0);
+        mbVsSprPos.y = arg1;
+        mbVsSprAnim = HuSprAnimRead(temp_s0);
         DataClose(temp_s0);
-        HuSprGrpMemberSet(D_801055C2_shared_board, 0, D_801055C4_shared_board, 0);
-        HuSprPriSet(D_801055C2_shared_board, 0, 0x4780);
-        HuSprAttrSet(D_801055C2_shared_board, 0, 0x1000);
-        HuSprPosSet(D_801055C2_shared_board, 0, 0xA0, D_801055CC_shared_board.y);
-        HuSprScaleSet(D_801055C2_shared_board, 0, 0.0f, 0.0f);
-        D_801055C8_shared_board = 0.0f;
-        D_801055CC_shared_board.x = arg0;
-        D_801055D4_shared_board.x = D_801055D4_shared_board.y = 0.0f;
-        D_801055E4_shared_board = 0;
+        HuSprGrpMemberSet(mbVsSprGrp, 0, mbVsSprAnim, 0);
+        HuSprPriSet(mbVsSprGrp, 0, 0x4780);
+        HuSprAttrSet(mbVsSprGrp, 0, 0x1000);
+        HuSprPosSet(mbVsSprGrp, 0, 0xA0, mbVsSprPos.y);
+        HuSprScaleSet(mbVsSprGrp, 0, 0.0f, 0.0f);
+        mbVsSprScale = 0.0f;
+        mbVsSprPos.x = arg0;
+        mbVsSprVel.x = mbVsSprVel.y = 0.0f;
+        mbVsSprMoveTime = 0;
     }
 }
 
 void MBVsSprKill(void) {
-    if (D_801055C2_shared_board != -1) {
-        HuSprGrpKill(D_801055C2_shared_board);
-        D_801055C2_shared_board = -1;
+    if (mbVsSprGrp != -1) {
+        HuSprGrpKill(mbVsSprGrp);
+        mbVsSprGrp = -1;
     }
-    if (D_801055C4_shared_board != -1) {
-        HuSprAnimKill(D_801055C4_shared_board);
-        D_801055C4_shared_board = -1;
+    if (mbVsSprAnim != -1) {
+        HuSprAnimKill(mbVsSprAnim);
+        mbVsSprAnim = -1;
     }
 }
 
-static void func_800F56A8_shared_board(omObjData *arg0) {
+static void MBStatusPulseObjMain(omObjData *arg0) {
     BoardStatus *temp_s2 = &mbStatusData[arg0->work[0]];
     f32 var_f0;
     f32 var_f0_2;
@@ -1106,13 +1106,13 @@ static void func_800F56A8_shared_board(omObjData *arg0) {
     }
 }
 
-void func_800F5828_shared_board(s32 arg0) {
+void MBStatusPulseStart(s32 arg0) {
     BoardStatus *temp_s1 = &mbStatusData[arg0];
     omObjData *temp_v0;
     s32 i, j;
 
     if (temp_s1->unk30 == NULL) {
-        temp_v0 = omAddObj(-0x8000, 0, 0, -1, func_800F56A8_shared_board);
+        temp_v0 = omAddObj(-0x8000, 0, 0, -1, MBStatusPulseObjMain);
         temp_s1->unk30 = temp_v0;
         temp_v0->rot.x = 0;
         temp_v0->work[0] = arg0;
@@ -1124,7 +1124,7 @@ void func_800F5828_shared_board(s32 arg0) {
     }
 }
 
-void func_800F591C_shared_board(s32 arg0) {
+void MBStatusPulseStop(s32 arg0) {
     BoardStatus *temp_s1 = &mbStatusData[arg0];
     s32 i;
 
@@ -1137,7 +1137,7 @@ void func_800F591C_shared_board(s32 arg0) {
     }
 }
 
-static void func_800F59B4_shared_board(omObjData *obj) {
+static void MBCoinTakeObjMain(omObjData *obj) {
     s32 var_s1 = 0;
 
     while (obj->scale.y <= 0.0f) {
@@ -1166,7 +1166,7 @@ static void func_800F59B4_shared_board(omObjData *obj) {
         }
 
         if ((obj->trans.x == 0.0f) || (GwPlayer[obj->work[0]].coin == 0)) {
-            D_801055E8_shared_board[obj->work[0]] = NULL;
+            mbCoinTakeObjTbl[obj->work[0]] = NULL;
             omDelObj(obj);
             return;
         }
@@ -1179,7 +1179,7 @@ static void func_800F59B4_shared_board(omObjData *obj) {
 
 void MBCoinTakeCreateSound(s32 playerIndex, s32 coinAmount, s32 arg2) {
     if (coinAmount != 0) {
-        if (D_801055E8_shared_board[playerIndex] != NULL) {
+        if (mbCoinTakeObjTbl[playerIndex] != NULL) {
             MBPlayerCoinAdd(playerIndex, coinAmount);
             return;
         }
@@ -1188,15 +1188,15 @@ void MBCoinTakeCreateSound(s32 playerIndex, s32 coinAmount, s32 arg2) {
             return;
         }
 
-        D_801055E8_shared_board[playerIndex] = omAddObj(-0x8000, 0, 0, -1, func_800F59B4_shared_board);
-        D_801055E8_shared_board[playerIndex]->work[0] = playerIndex;
-        D_801055E8_shared_board[playerIndex]->trans.x = coinAmount;
+        mbCoinTakeObjTbl[playerIndex] = omAddObj(-0x8000, 0, 0, -1, MBCoinTakeObjMain);
+        mbCoinTakeObjTbl[playerIndex]->work[0] = playerIndex;
+        mbCoinTakeObjTbl[playerIndex]->trans.x = coinAmount;
 
-        D_801055E8_shared_board[playerIndex]->scale.x = coinAmount > 0.0f ? (30.0f / coinAmount) : (30.0f / (0.0f - coinAmount));
+        mbCoinTakeObjTbl[playerIndex]->scale.x = coinAmount > 0.0f ? (30.0f / coinAmount) : (30.0f / (0.0f - coinAmount));
 
-        (D_801055E8_shared_board[playerIndex])->scale.y = 0.0f;
-        (D_801055E8_shared_board[playerIndex])->scale.z = 3.0f;
-        (D_801055E8_shared_board[playerIndex])->work[3] = arg2;
+        (mbCoinTakeObjTbl[playerIndex])->scale.y = 0.0f;
+        (mbCoinTakeObjTbl[playerIndex])->scale.z = 3.0f;
+        (mbCoinTakeObjTbl[playerIndex])->work[3] = arg2;
     }
 }
 
@@ -1205,7 +1205,7 @@ void MBCoinTakeCreate(s32 playerNo, s32 arg1) {
 }
 
 s32 MBCoinTakeCheck(s32 playerNo) {
-    if (D_801055E8_shared_board[playerNo]) {
+    if (mbCoinTakeObjTbl[playerNo]) {
         return TRUE;
     } else {
         return FALSE;
@@ -1238,46 +1238,46 @@ void MBStatusShowAll(void) {
     }
 }
 
-void func_800F5E24_shared_board(s32 arg0) {
-    D_80101784_shared_board = arg0;
+void MBStatusVsPlayerBSet(s32 arg0) {
+    mbStatusVsPlayerB = arg0;
 }
 
-void func_800F5E30_shared_board(void) {
+void MBStatusCreateHidden(void) {
     s32 i;
 
     MBStatusAnimCreate();
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
-        func_800F43FC_shared_board(i);
+        MBStatusPlayerCreate(i);
         MBStatusPosSet(i, PlayerBoardStatusRootPosition[i + 4][0], PlayerBoardStatusRootPosition[i + 4][1]);
         MBStatusColorSet(i, GwPlayer[i].color);
     }
 
-    D_80105580_shared_board = omAddPrcObj(MBStatusMain, 0, 0x2000, 0);
-    omPrcSetStatBit(D_80105580_shared_board, OM_STAT_NOALLPAUSE);
-    D_801055C4_shared_board = -1;
-    D_801055C2_shared_board = -1;
+    mbStatusProc = omAddPrcObj(MBStatusMain, 0, 0x2000, 0);
+    omPrcSetStatBit(mbStatusProc, OM_STAT_NOALLPAUSE);
+    mbVsSprAnim = -1;
+    mbVsSprGrp = -1;
 }
 
-void func_800F5EF0_shared_board(void) {
-    func_800F462C_shared_board(D_80101780_shared_board);
-    func_800F462C_shared_board(D_80101784_shared_board);
+void MBStatusVsKill(void) {
+    MBStatusPlayerKill(mbStatusVsPlayerA);
+    MBStatusPlayerKill(mbStatusVsPlayerB);
     MBStatusAnimKill();
-    HuPrcKill(D_80105580_shared_board);
+    HuPrcKill(mbStatusProc);
     MBVsSprKill();
-    D_80101780_shared_board = -1;
-    D_80101784_shared_board = -1;
+    mbStatusVsPlayerA = -1;
+    mbStatusVsPlayerB = -1;
 }
 
-void func_800F5F4C_shared_board(s32 arg0, s32 arg1) {
-    D_80101780_shared_board = arg0;
-    D_80101784_shared_board = arg1;
+void MBStatusVsPlayerSet(s32 arg0, s32 arg1) {
+    mbStatusVsPlayerA = arg0;
+    mbStatusVsPlayerB = arg1;
 }
 
-void func_800F5F60_shared_board(void) {
+void MBStatusVsAMove(void) {
     MBStatusDispMoveSet(0x16);
 }
 
-void func_800F5F7C_shared_board(void) {
+void MBStatusVsBMove(void) {
     MBStatusDispMoveSet(0x17);
 }
 
@@ -1292,7 +1292,7 @@ static void MBStatusItemSprCreate(s32 playerNo, s32 arg1) {
     for (i = 0; i < ARRAY_COUNT(GwPlayer->itemNo); i++) {
         var_s2 = NULL;
         if (GwPlayer[playerNo].itemNo[i] != ITEM_NONE) {
-            var_s2 = DataRead(D_8010197C_shared_board[GwPlayer[playerNo].itemNo[i]]);
+            var_s2 = DataRead(mbItemIconSprTbl[GwPlayer[playerNo].itemNo[i]]);
         } else {
             if (i == 0) {
                 var_s2 = DataRead(0x13025E);
@@ -1464,7 +1464,7 @@ void MBStatusItemOfsApply(s32 playerNo, s32 arg1, f32 arg2, f32 arg3) {
     HuSprPosSet(temp_s1, arg1 + 2, temp_f20, temp_f22);
 }
 
-void func_800F6848_shared_board(s32 playerNo, s32 arg1, f32 *arg2, f32 *arg3) {
+void MBStatusItemSprPosGet(s32 playerNo, s32 arg1, f32 *arg2, f32 *arg3) {
     MBStatusSprPosGet(mbStatusData[playerNo].playerIndex, (arg1 + 2), arg2, arg3);
 }
 
@@ -1496,7 +1496,7 @@ void MBStatusItemAttrReset(s32 playerNo, s32 arg1, u16 arg2) {
     HuSprAttrReset(mbStatusData[playerNo].playerIndex, arg1 + 2, arg2);
 }
 
-void func_800F6A88_shared_board(s16 arg0, u16 arg1) {
+void MBSprGrpFlagSet(s16 arg0, u16 arg1) {
     HuSprGrpData[arg0]->unk_08 = arg1;
 }
 
@@ -1532,8 +1532,8 @@ void MBStatusShrink(s32 playerNo) {
         if (playerNo == CUR_PLAYER || playerNo == i) {
             temp_s2 = &mbStatusData[i];
             if (temp_s2->uiUpdatePaused == TRUE) {
-                func_800F6A88_shared_board(temp_s2->playerIndex, 2);
-                HuSprPosSet(temp_s2->playerIndex, 1, D_801018E4_shared_board[1][0], D_801018E4_shared_board[1][1]);
+                MBSprGrpFlagSet(temp_s2->playerIndex, 2);
+                HuSprPosSet(temp_s2->playerIndex, 1, mbStatusSprOfsTbl[1][0], mbStatusSprOfsTbl[1][1]);
                 if (GwPlayer[i].itemNo[0] != ITEM_NONE) {
                     // used for item positions when closing items screen
                     for (j = 0; j < ARRAY_COUNT(GwPlayer->itemNo); j++) {
@@ -1615,7 +1615,7 @@ void MBStatusGrow(s32 playerNo) {
             MBStatusScaleSet(i, 1.0f, 1.0f);
             temp_s2 = &mbStatusData[i];
             if (temp_s2->uiUpdatePaused == TRUE) {
-                func_800F6A88_shared_board(temp_s2->playerIndex, 0);
+                MBSprGrpFlagSet(temp_s2->playerIndex, 0);
                 sp10 = PlayerBoardStatusRootPosition[i][0] + ITEMS_POS_OFFSET_X;
                 sp14 = PlayerBoardStatusRootPosition[i][1] + ITEMS_POS_OFFSET_Y;
                 HuSprPosSet(temp_s2->playerIndex, 1, sp10, sp14);
@@ -1634,18 +1634,18 @@ void MBStatusGrow(s32 playerNo) {
 }
 
 // draw item icons
-void func_800F70F8_shared_board(void) {
-    D_80101790_shared_board = 1;
+void MBStatusItemDispOn(void) {
+    mbStatusItemDispF = 1;
 }
 
 // hide item icons
-void func_800F7108_shared_board(void) {
-    D_80101790_shared_board = 0;
+void MBStatusItemDispOff(void) {
+    mbStatusItemDispF = 0;
 }
 
-void func_800F7114_shared_board(s32 arg0, s32 arg1) {
-    D_80101788_shared_board = arg0;
-    D_8010178C_shared_board = arg1;
+void MBStatusTeamPlayerSet(s32 arg0, s32 arg1) {
+    mbStatusTeamPlayerA = arg0;
+    mbStatusTeamPlayerB = arg1;
 }
 
 //TODO: subsegment align issues. So many things point to rodata aligned to 16, but then certain places have issues at 8...confusing

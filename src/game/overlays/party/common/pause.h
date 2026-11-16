@@ -4,32 +4,32 @@
 #include "common_board.h"
 #include "game/board.h"
 
-void func_800EE6C0_shared_board(Object*);
-void func_800EDC20_shared_board(s32 arg0);
-s32 func_800EDC40_shared_board(void);
-void func_800EDC58_shared_board(s32 arg0, s32 arg1);
-void func_800EDC74_shared_board(s32 arg0, s32 arg1);
-void func_800EDF90_shared_board(s32 arg0, s32 arg1, s32 arg2); //unused
-void func_800EDFAC_shared_board(s32 arg0, s32 arg1, s32 arg2); //unused
-void func_800EE2A4_shared_board(s32 arg0);
-void func_800EE2C0_shared_board(s32 arg0);
-void func_800EE614_shared_board(s32 arg0);
-void func_800EE688_shared_board(Object* arg0, f32 arg1, f32 arg2);
-s32 func_800EE694_shared_board(Object* arg0);
-u32 func_800EE884_shared_board(Object* arg0, s16 arg1, s16 arg2);
-void func_800EE94C_shared_board(Object *arg0, s16 arg1, s32 arg2); //unused
+void MBModelJumpWait(Object*);
+void MBMesWaitSet(s32 arg0);
+s32 MBMesWaitGet(void);
+void MBWinComKeyWait(s32 arg0, s32 arg1);
+void MBWinComKeyWaitKeep(s32 arg0, s32 arg1);
+void MBWinComKey2Wait(s32 arg0, s32 arg1, s32 arg2); //unused
+void MBWinComKey2WaitKeep(s32 arg0, s32 arg1, s32 arg2); //unused
+void MBWinComKeyAllWait(s32 arg0);
+void MBWinComKeyAllWaitKeep(s32 arg0);
+void MBWinComKeyAnyWait(s32 arg0);
+void MBModelJumpSet(Object* arg0, f32 arg1, f32 arg2);
+s32 MBModelJumpCheck(Object* arg0);
+u32 MBMotionEndShiftSet(Object* arg0, s16 arg1, s16 arg2);
+void MBMotionShiftSetDef(Object *arg0, s16 arg1, s32 arg2); //unused
 void MBModelMotionWait(Object *arg0);
-s32 BoardPlayerRankCalc(s32 player);
+s32 MBPlayerRankCalc(s32 player);
 s32 MBPlayerStealRankGet(s32 arg0);
 s32 MBPlayerScoreGet(s32 arg0);
-s32 func_800EECF0_shared_board(s32 arg0); //unused
+s32 MBPlayerBonusScoreGet(s32 arg0); //unused
 s32 MBRand(f32 arg0);
 void MBGuideFaceCreate(Object *arg0, s16 arg1, s16 arg2, s32 arg3);
 void MBGuideFaceSet(Object* arg0, s32 arg1);
-s32 func_800EF0D8_shared_board(s32 arg0);
+s32 MBPlayerRankRandGet(s32 arg0);
 s32 MBPauseMesNumGet(s32 arg0);
 void MBPauseCreate(s32 arg0);
-void func_800EE700_shared_board(void);
-void func_800EE740_shared_board(void);
+void MBMotShiftInit(void);
+void MBMotShiftClose(void);
 
 #endif //_PARTY_COMMON_PAUSE_H

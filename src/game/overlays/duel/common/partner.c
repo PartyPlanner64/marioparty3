@@ -117,13 +117,13 @@ s32 D_80101A1C_name_81[] = {
     0x1F10, 0x1F11, 0x1F12, 0x1F13, 0x1F14, 0x1F15
 };
 
-void Duel_ClearPartnerObjects(void) {
+void MBDPartnerObjClear(void) {
     s32 i, j;
 
     // TODO: unhardcode loop conditions
     for (i = 0; i < 2; i++) {
         for (j = 0; j < 2; j++) {
-            Duel_PartnerObjects[i][j] = NULL;
+            mbdPartnerObj[i][j] = NULL;
         }
     }
 }
@@ -163,41 +163,41 @@ Object *func_800F8050_name_81(s32 partnerID) {
 void func_800F8108_name_81(s32 playerIndex) {
     GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
 
-    if (Duel_PartnerObjects[playerIndex][PARTNER_FRONT] != NULL) {
-        MBDModelKill(Duel_PartnerObjects[playerIndex][PARTNER_FRONT]);
-        Duel_PartnerObjects[playerIndex][PARTNER_FRONT] = NULL;
+    if (mbdPartnerObj[playerIndex][PARTNER_FRONT] != NULL) {
+        MBDModelKill(mbdPartnerObj[playerIndex][PARTNER_FRONT]);
+        mbdPartnerObj[playerIndex][PARTNER_FRONT] = NULL;
     }
 
     if (player->stats.partners.frontID != PARTNER_NONE) {
         if (player->stats.partners.frontID == PARTNER_PIRANHA_PLANT) {
-            Duel_PartnerObjects[playerIndex][PARTNER_FRONT] = func_800F8034_name_81(playerIndex);
+            mbdPartnerObj[playerIndex][PARTNER_FRONT] = func_800F8034_name_81(playerIndex);
         } else {
-            Duel_PartnerObjects[playerIndex][PARTNER_FRONT] = func_800F8050_name_81(player->stats.partners.frontID);
+            mbdPartnerObj[playerIndex][PARTNER_FRONT] = func_800F8050_name_81(player->stats.partners.frontID);
         }
     }
 
-    if (Duel_PartnerObjects[playerIndex][1] != NULL) {
-        MBDModelKill(Duel_PartnerObjects[playerIndex][1]);
-        Duel_PartnerObjects[playerIndex][1] = NULL;
+    if (mbdPartnerObj[playerIndex][1] != NULL) {
+        MBDModelKill(mbdPartnerObj[playerIndex][1]);
+        mbdPartnerObj[playerIndex][1] = NULL;
     }
 
     if (player->stats.partners.backID != PARTNER_NONE) {
         if (player->stats.partners.backID == PARTNER_PIRANHA_PLANT) {
-            Duel_PartnerObjects[playerIndex][PARTNER_BACK] = func_800F8034_name_81(playerIndex);
+            mbdPartnerObj[playerIndex][PARTNER_BACK] = func_800F8034_name_81(playerIndex);
         } else {
-            Duel_PartnerObjects[playerIndex][PARTNER_BACK] = func_800F8050_name_81(player->stats.partners.backID);
+            mbdPartnerObj[playerIndex][PARTNER_BACK] = func_800F8050_name_81(player->stats.partners.backID);
         }
     }
 }
 
 void func_800F821C_name_81(s32 playerIndex, s32 partnerNo) {
     GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
-    Object *partnerObj = Duel_PartnerObjects[playerIndex][partnerNo];
+    Object *partnerObj = mbdPartnerObj[playerIndex][partnerNo];
     s32 partnerID;
 
     if (partnerObj != NULL) {
         MBDModelKill(partnerObj);
-        Duel_PartnerObjects[playerIndex][partnerNo] = NULL;
+        mbdPartnerObj[playerIndex][partnerNo] = NULL;
     }
 
     if (partnerNo == PARTNER_KOOPA) {
@@ -208,9 +208,9 @@ void func_800F821C_name_81(s32 playerIndex, s32 partnerNo) {
 
     if (partnerID != PARTNER_NONE) {
         if (partnerID == PARTNER_PIRANHA_PLANT) {
-            Duel_PartnerObjects[playerIndex][partnerNo] = func_800F8034_name_81(playerIndex);
+            mbdPartnerObj[playerIndex][partnerNo] = func_800F8034_name_81(playerIndex);
         } else {
-            Duel_PartnerObjects[playerIndex][partnerNo] = func_800F8050_name_81(partnerID);
+            mbdPartnerObj[playerIndex][partnerNo] = func_800F8050_name_81(partnerID);
         }
     }
 }
@@ -219,9 +219,9 @@ void func_800F82EC_name_81(s32 playerIndex) {
     s32 i;
 
     for (i = 0; i < MBD_MAX_PLAYERS; i++) {
-        if (Duel_PartnerObjects[playerIndex][i] != NULL) {
-            MBDModelKill(Duel_PartnerObjects[playerIndex][i]);
-            Duel_PartnerObjects[playerIndex][i] = NULL;
+        if (mbdPartnerObj[playerIndex][i] != NULL) {
+            MBDModelKill(mbdPartnerObj[playerIndex][i]);
+            mbdPartnerObj[playerIndex][i] = NULL;
         }
     }
 }
@@ -230,17 +230,17 @@ void func_800F8358_name_81(s32 playerIndex) {
     GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
 
     if (player->stats.partners.frontID == PARTNER_NONE) {
-        if (Duel_PartnerObjects[playerIndex][PARTNER_FRONT] != NULL) {
-            MBDModelKill(Duel_PartnerObjects[playerIndex][PARTNER_FRONT]);
-            Duel_PartnerObjects[playerIndex][PARTNER_FRONT] = NULL;
+        if (mbdPartnerObj[playerIndex][PARTNER_FRONT] != NULL) {
+            MBDModelKill(mbdPartnerObj[playerIndex][PARTNER_FRONT]);
+            mbdPartnerObj[playerIndex][PARTNER_FRONT] = NULL;
             func_800F85A4_name_81(playerIndex, PARTNER_FRONT);
         }
     }
 
     if (player->stats.partners.backID == PARTNER_NONE) {
-        if (Duel_PartnerObjects[playerIndex][PARTNER_BACK] != NULL) {
-            MBDModelKill(Duel_PartnerObjects[playerIndex][1]);
-            Duel_PartnerObjects[playerIndex][PARTNER_BACK] = NULL;
+        if (mbdPartnerObj[playerIndex][PARTNER_BACK] != NULL) {
+            MBDModelKill(mbdPartnerObj[playerIndex][1]);
+            mbdPartnerObj[playerIndex][PARTNER_BACK] = NULL;
             func_800F85A4_name_81(playerIndex, PARTNER_BACK);
         }
     }
@@ -321,7 +321,7 @@ void func_800F85A4_name_81(s32 playerIndex, s32 frontOrBackIndex) {
 }
 
 // swaps front and back partners for playerIndex player
-void Duel_SwapPartnerPositions(s32 playerIndex) {
+void MBDPartnerPosSwap(s32 playerIndex) {
     GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
     s32 frontID = player->stats.partners.frontID;
     s32 frontHP = player->stats.partners.frontHp;
@@ -342,16 +342,16 @@ void Duel_SwapPartnerPositions(s32 playerIndex) {
     player->stats.partners.backCost = frontCost;
     player->stats.partners.backPower = frontPower;
 
-    tempPartner = Duel_PartnerObjects[playerIndex][PARTNER_FRONT];
-    Duel_PartnerObjects[playerIndex][PARTNER_FRONT] = Duel_PartnerObjects[playerIndex][PARTNER_BACK];
-    Duel_PartnerObjects[playerIndex][PARTNER_BACK] = tempPartner;
+    tempPartner = mbdPartnerObj[playerIndex][PARTNER_FRONT];
+    mbdPartnerObj[playerIndex][PARTNER_FRONT] = mbdPartnerObj[playerIndex][PARTNER_BACK];
+    mbdPartnerObj[playerIndex][PARTNER_BACK] = tempPartner;
 
     func_800ED214_name_81(playerIndex);
     func_800F5BB4_name_81(playerIndex);
     func_800F5EB0_name_81(playerIndex);
 }
 
-void Duel_PowerUpPartners(s32 playerIndex) {
+void MBDPartnerPowerUp(s32 playerIndex) {
     GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
 
     if ((player->stats.partners.frontID != PARTNER_NONE) && (player->stats.partners.frontPoweredUp == POWERUP_NONE)) {
@@ -369,7 +369,7 @@ void Duel_PowerUpPartners(s32 playerIndex) {
     }
 }
 
-void Duel_PowerDownPartners(s32 playerIndex) {
+void MBDPartnerPowerDown(s32 playerIndex) {
     GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
 
     if ((player->stats.partners.frontID != PARTNER_NONE) && (player->stats.partners.frontPoweredUp == POWERUP_ACTIVE)) {
@@ -387,7 +387,7 @@ void Duel_PowerDownPartners(s32 playerIndex) {
 }
 
 Object *MBDGetPlayerPartnerRef(s32 playerIndex, s32 frontOrBackIndex) {
-    return Duel_PartnerObjects[playerIndex][frontOrBackIndex];
+    return mbdPartnerObj[playerIndex][frontOrBackIndex];
 }
 
 s32 func_800F8980_name_81(s32 playerIndex) {
@@ -413,14 +413,14 @@ s32 func_800F89D0_name_81(s32 playerIndex, s32 frontOrBackIndex, s16 arg2, u16 a
 
     if (frontOrBackIndex == PARTNER_FRONT) {
         if ((player->stats.partners.frontID != PARTNER_NONE) && (D_801017DC_name_81[player->stats.partners.frontID] != NULL)) {
-            MBDMotionSet(Duel_PartnerObjects[playerIndex][PARTNER_FRONT], arg2, arg3);
+            MBDMotionSet(mbdPartnerObj[playerIndex][PARTNER_FRONT], arg2, arg3);
             partnerCount++;
         }
     }
 
     if (frontOrBackIndex == PARTNER_BACK) {
         if ((player->stats.partners.backID != PARTNER_NONE) && (D_801017DC_name_81[player->stats.partners.backID] != NULL)) {
-            MBDMotionSet(Duel_PartnerObjects[playerIndex][PARTNER_BACK], arg2, arg3);
+            MBDMotionSet(mbdPartnerObj[playerIndex][PARTNER_BACK], arg2, arg3);
             partnerCount++;
         }
     }
@@ -441,7 +441,7 @@ s32 func_800F8AEC_name_81(s32 playerIndex, s32 arg1, s16 arg2, s16 arg3, s16 arg
             if (player->stats.partners.frontID == PARTNER_THWOMP) {
                 flagsCopy &= ~4;
             }
-            MBDMotionShiftSet(Duel_PartnerObjects[playerIndex][PARTNER_FRONT], arg2, arg3, arg4, flagsCopy);
+            MBDMotionShiftSet(mbdPartnerObj[playerIndex][PARTNER_FRONT], arg2, arg3, arg4, flagsCopy);
             partnerCount++;
         }
     }
@@ -451,7 +451,7 @@ s32 func_800F8AEC_name_81(s32 playerIndex, s32 arg1, s16 arg2, s16 arg3, s16 arg
             if (player->stats.partners.backID == PARTNER_THWOMP) {
                 flags &= ~4;
             }
-            MBDMotionShiftSet(Duel_PartnerObjects[playerIndex][PARTNER_BACK], arg2, arg3, arg4, flags);
+            MBDMotionShiftSet(mbdPartnerObj[playerIndex][PARTNER_BACK], arg2, arg3, arg4, flags);
             partnerCount++;
         }
     }
@@ -460,14 +460,14 @@ s32 func_800F8AEC_name_81(s32 playerIndex, s32 arg1, s16 arg2, s16 arg3, s16 arg
 }
 
 void func_800F8C68_name_81(s32 arg0) {
-    Object *frontPartnerObj = Duel_PartnerObjects[arg0][PARTNER_FRONT];
+    Object *frontPartnerObj = mbdPartnerObj[arg0][PARTNER_FRONT];
     Object *backPartnerObj;
 
     if (frontPartnerObj != NULL) {
         Hu3DMotionReset(frontPartnerObj->omObj1->model[0]);
     }
 
-    backPartnerObj = Duel_PartnerObjects[arg0][1];
+    backPartnerObj = mbdPartnerObj[arg0][1];
     if (backPartnerObj != NULL) {
         Hu3DMotionReset(backPartnerObj->omObj1->model[0]);
     }
@@ -481,11 +481,11 @@ void func_800F8CD8_name_81(s32 playerIndex, f32 arg1) {
     }
 
     if (player->stats.partners.frontID != PARTNER_NONE) {
-        Hu3DMotionSpeedSet(Duel_PartnerObjects[playerIndex][PARTNER_FRONT]->omObj1->model[0], arg1);
+        Hu3DMotionSpeedSet(mbdPartnerObj[playerIndex][PARTNER_FRONT]->omObj1->model[0], arg1);
     }
 
     if (player->stats.partners.backID != PARTNER_NONE) {
-        Hu3DMotionSpeedSet(Duel_PartnerObjects[playerIndex][PARTNER_BACK]->omObj1->model[0], arg1);
+        Hu3DMotionSpeedSet(mbdPartnerObj[playerIndex][PARTNER_BACK]->omObj1->model[0], arg1);
     }
 }
 

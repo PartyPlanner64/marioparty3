@@ -2,7 +2,7 @@
 #include "macros.h"
 #include "game/overlays/duel/common/ovl_81.h"
 
-extern s32 D_80101200_shared_board[];
+extern s32 mbKSuitObj[];
 extern u8 D_80101960[];
 
 void func_800F3C98_name_81(s16, u32 *, s16);
@@ -624,7 +624,7 @@ void func_80106D18_opduel(void) {
     func_800EBC60_name_81(&D_80109574_opduel[0]->player_obj->rot, &directions[0],
                           &D_80109574_opduel[0]->player_obj->rot, 10);
     MBDMotionSet(D_80109208_opduel, 0, 2);
-    func_800EB4DC_name_81(-1, 0x2707, D_80101200_shared_board[GwPlayer[0].chr], 0, 0, 0, 0);
+    func_800EB4DC_name_81(-1, 0x2707, mbKSuitObj[GwPlayer[0].chr], 0, 0, 0, 0);
     func_800EB278_name_81();
     func_800EB29C_name_81();
     MBDMotionSet(D_80109208_opduel, -1, 2);
@@ -643,7 +643,7 @@ void func_80106D18_opduel(void) {
     func_800EBC60_name_81(&D_80109574_opduel[1]->player_obj->rot, &directions[1],
                           &D_80109574_opduel[1]->player_obj->rot, 10);
     MBDMotionSet(D_80109208_opduel, 0, 2);
-    func_800EB4DC_name_81(-1, 0x2708, D_80101200_shared_board[GwPlayer[1].chr], 0, 0, 0, 0);
+    func_800EB4DC_name_81(-1, 0x2708, mbKSuitObj[GwPlayer[1].chr], 0, 0, 0, 0);
     func_800EB278_name_81();
     func_800EB29C_name_81();
     MBDMotionSet(D_80109208_opduel, -1, 2);
@@ -821,13 +821,13 @@ spin:
     MBDMotionSet(D_80109208_opduel, -1, 2);
     if (j == 0) {
         MBDMotionSet(D_80109208_opduel, 0, 2);
-        func_800EB4DC_name_81(-1, 0x270C, D_80101200_shared_board[GwPlayer[0].chr], 0, 0, 0, 0);
+        func_800EB4DC_name_81(-1, 0x270C, mbKSuitObj[GwPlayer[0].chr], 0, 0, 0, 0);
         func_800EB278_name_81();
         func_800EB29C_name_81();
         MBDMotionSet(D_80109208_opduel, -1, 2);
     } else {
         MBDMotionSet(D_80109208_opduel, 0, 2);
-        func_800EB4DC_name_81(-1, 0x270C, D_80101200_shared_board[GwPlayer[1].chr], 0, 0, 0, 0);
+        func_800EB4DC_name_81(-1, 0x270C, mbKSuitObj[GwPlayer[1].chr], 0, 0, 0, 0);
         func_800EB278_name_81();
         func_800EB29C_name_81();
         MBDMotionSet(D_80109208_opduel, -1, 2);
@@ -877,7 +877,7 @@ spin:
     HuPrcSleep(10);
     MBDMotionSet(D_80109574_opduel[0]->player_obj, 0, 2);
     MBDMotionSet(D_80109208_opduel, 0, 2);
-    func_800EB4DC_name_81(-1, 0x270D, D_80101200_shared_board[GwPlayer[1].chr], 0, 0, 0, 0);
+    func_800EB4DC_name_81(-1, 0x270D, mbKSuitObj[GwPlayer[1].chr], 0, 0, 0, 0);
     func_800EB278_name_81();
     func_800EB29C_name_81();
     MBDMotionSet(D_80109208_opduel, -1, 2);

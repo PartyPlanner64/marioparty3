@@ -413,10 +413,10 @@ void func_801100F0_pump_pump_away(void);
 void func_801102E4_pump_pump_away(omObjData *obj);
 void func_801103D8_pump_pump_away(omObjData *obj);
 void func_801104BC_pump_pump_away(omObjData *obj);
-void func_80110D28_pump_pump_away(void);
+void m213_ObjectSetup(void);
 
-void func_801059A0_pump_pump_away(void) {
-    func_80110D28_pump_pump_away();
+void m213_Executor(void) {
+    m213_ObjectSetup();
 }
 
 Gfx **func_801059BC_pump_pump_away(Gfx **gfxPos) {
@@ -3946,7 +3946,7 @@ void func_80110BB8_pump_pump_away(void) {
     }
 }
 
-void func_80110D28_pump_pump_away(void) {
+void m213_ObjectSetup(void) {
     MapCollInit(50);
     Hu3DSprModelInit(100);
     omInitObjMan(100, 0);

@@ -17,7 +17,7 @@ typedef struct UnkCam3DStruct {
     f32 unk_0C;
 } UnkCam3DStruct;
 
-extern s32 D_80102DB8_shared_board;
+extern s32 mbBackFileAddr;
 
 typedef struct UnkModelStruct {
     /* 0x00 */ s32 unk0;
@@ -37,17 +37,17 @@ typedef struct UnkModelStruct {
     /* 0x38 */ f32 unk38;
 } UnkModelStruct; //sizeof 0x3C
 
-s32 *D_80101240_shared_board = NULL; //TODO: fix type
-u32 *D_80101244_shared_board = NULL;
-UnkModelStruct *D_80101248_shared_board = NULL;
-u8 D_8010124C_shared_board = 255;
-f32 D_80101250_shared_board = 1.0f;
-f32 D_80101254_shared_board = 0.0f;
-f32 D_80101258_shared_board = 0.0f;
-Vec D_8010125C_shared_board = { 0.0f, 0.0f, 0.0f };
-s32 D_80101268_shared_board = 0;
-u8 D_8010126C_shared_board = 255;
-Gfx D_80101270_shared_board[] = {
+s32 *mbBackArcOfsTbl = NULL; //TODO: fix type
+u32 *mbBackFileOfsTbl = NULL;
+UnkModelStruct *mbBackHdr = NULL;
+u8 mbBackTPLvl = 255;
+f32 mbBackZoom = 1.0f;
+f32 mbCameraFar = 0.0f;
+f32 mbCameraNear = 0.0f;
+Vec mbCameraFocusPos = { 0.0f, 0.0f, 0.0f };
+s32 mbBackAltF = 0;
+u8 mbBackAltTPLvl = 255;
+Gfx mbBackGfxInit[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_DECALRGBA),
@@ -58,26 +58,26 @@ Gfx D_80101270_shared_board[] = {
     gsDPSetAlphaDither(G_AD_DISABLE),
     gsSPEndDisplayList(),
 };
-Process *D_801012B8_shared_board = NULL;
-s32 D_801012BC_shared_board = 1;
-void *D_801012C0_shared_board = NULL;
-u8 (*D_801012C4_shared_board)[SPACES_MAX] = NULL;
-s32 D_801012C8_shared_board[] = { 0, 0x130215, 0x130216, 0, 0x130219, 0x13021F, 0x130218, 0x13021D, 0, 0x130217, 0, 0, 0x13021E, 0x130222, 0x13021B, 0x13021A };
-u8 D_80101308_shared_board[] = { 0, 2, 2, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1 }; //u8 array that links space type to render type
-s32 D_80101318_shared_board[] = { 0, 0x130248, 0x130249, 0, 0x13024B, 0x13024C, 0x130250, 0x13024D, 0, 0x13024F, 0, 0, 0x130251, 0x13024E, 0x130252, 0x13024A };
-Vtx D_80101358_shared_board[] = {
+Process *mbBackSprProc = NULL;
+s32 mbBackSprDispF = 1;
+void *mbMasuData = NULL;
+u8 (*mbMasuTypeListTbl)[SPACES_MAX] = NULL;
+s32 mbMasuBmpTbl[] = { 0, 0x130215, 0x130216, 0, 0x130219, 0x13021F, 0x130218, 0x13021D, 0, 0x130217, 0, 0, 0x13021E, 0x130222, 0x13021B, 0x13021A };
+u8 mbMasuBmpSizeTbl[] = { 0, 2, 2, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1 }; //u8 array that links space type to render type
+s32 mbMasuBmpAltTbl[] = { 0, 0x130248, 0x130249, 0, 0x13024B, 0x13024C, 0x130250, 0x13024D, 0, 0x13024F, 0, 0, 0x130251, 0x13024E, 0x130252, 0x13024A };
+Vtx mbMasuVtx[] = {
     { { { 100, 0, -100 }, 0, { 992, 992 }, { 0, 0, 127, 255 } } },
     { { { -100, 0, -100 }, 0, { 0, 992 }, { 0, 0, 127, 255 } } },
     { { { -100, 0, 100 }, 0, { 0, 0 }, { 0, 0, 127, 255 } } },
     { { { 100, 0, 100 }, 0, { 992, 0 }, { 0, 0, 127, 255 } } },
 };
-Vtx D_80101398_shared_board[] = {
+Vtx mbMasuAltVtx[] = {
     { { { 100, 0, -100 }, 0, { 224, 224 }, { 0, 0, 127, 255 } } },
     { { { -100, 0, -100 }, 0, { 0, 224 }, { 0, 0, 127, 255 } } },
     { { { -100, 0, 100 }, 0, { 0, 0 }, { 0, 0, 127, 255 } } },
     { { { 100, 0, 100 }, 0, { 224, 0 }, { 0, 0, 127, 255 } } },
 };
-Gfx D_801013D8_shared_board[] = {
+Gfx mbMasuGfxInit[] = {
     gsSPSegment(0x00, 0x00000000),
     gsSPClipRatio(FRUSTRATIO_2),
     gsSPClearGeometryMode(0xFFFFFFFF),
@@ -94,110 +94,110 @@ Gfx D_801013D8_shared_board[] = {
     gsDPSetAlphaDither(G_AD_DISABLE),
     gsSPEndDisplayList(),
 };
-u8 D_80101468_shared_board[] = { 1, 2, 4, 1, 16, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+u8 mbMasuTypeBitTbl[] = { 1, 2, 4, 1, 16, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 
-extern u16 D_80102DC0_shared_board;
-extern OverlayBgEntry *D_801030A8_shared_board[6][6];
-extern OverlayBgEntry D_80102DD8_shared_board[36];
-extern OverlayBgEntry D_80103140_shared_board[];
-extern OSMesgQueue D_80103468_shared_board;
-extern u16 D_80105212_shared_board;
-extern u32 D_80102DB0_shared_board;
-extern s32 D_80102DB4_shared_board;
-extern u16 D_80102DC0_shared_board;
-extern f32 D_8010341C_shared_board;
-extern Vec2f D_801049F0_shared_board;
-extern f32 D_801049F8_shared_board[];
-extern OSMesgQueue D_80103468_shared_board;
-extern OSMesg D_80103480_shared_board[36];
-extern OSThread D_80103510_shared_board;
-extern OSThread D_80103EC0_shared_board;
-extern s32 D_80104070_shared_board;
-extern OSMesg D_80104898_shared_board[36];
-extern OSMesg D_80104940_shared_board[36];
-extern OSMesg D_801049E8_shared_board[2];
-extern OSThread D_80103EC0_shared_board;
-extern s32 D_80104070_shared_board;
-extern s16 D_80102DC2_shared_board;
-extern s16 D_80102DC4_shared_board;
-extern s16 D_80102DC6_shared_board;
-extern s16 D_80102DC8_shared_board;
-extern Process* D_80103414_shared_board;
-extern Process* D_80103410_shared_board;
-extern f32 D_80103418_shared_board;
-extern Vec D_80103420_shared_board;
-extern Vec D_8010342C_shared_board;
-extern Vec D_80103438_shared_board;
-extern Vec D_80103444_shared_board;
-extern f32 D_80102DBC_shared_board;
-extern s32 D_80105500_shared_board[];
-extern s16 D_80105540_shared_board[];
-extern s16 D_801054F8_shared_board;
-extern s16 D_801054B6_shared_board;
-extern s16 D_801054B8_shared_board[];
-extern s16 D_801052B8_shared_board[];
-extern void* D_80105278_shared_board;
-extern void* D_8010527C_shared_board;
-extern void* D_80105280_shared_board;
-extern void* D_80105284_shared_board;
-extern s32 D_80105288_shared_board;
-extern s32 D_80105990_shared_board;
-extern Vec D_80103450_shared_board;
-extern s32 D_8010345C_shared_board;
-extern s32 D_80103460_shared_board;
-extern UnkFAF78 *D_80103464_shared_board;
-extern u8* D_80102DCC_shared_board;
-extern HvqFileHeader* D_80103138_shared_board;
-extern OSMesgQueue D_80104880_shared_board;
-extern OSMesgQueue D_80104928_shared_board;
-extern OSMesgQueue D_801049D0_shared_board;
-extern HvqHeader* D_80102DD0_shared_board;
-extern UnkBoard7 D_80104A00_shared_board[64];
-extern s32 D_80105200_shared_board;
-extern s16 D_80105260_shared_board;
-extern u8* D_80105220_shared_board[]; //space form images
-extern s32 D_801052B0_shared_board;
-extern f32 D_80105290_shared_board[];
+extern u16 mbBackFlag;
+extern OverlayBgEntry *mbBackTileMap[6][6];
+extern OverlayBgEntry mbBackTileTbl[36];
+extern OverlayBgEntry mbBackAltTileTbl[];
+extern OSMesgQueue mbBackDmaMesgQ;
+extern u16 mbMasuLinkNum;
+extern u32 mbBackArcAddr;
+extern s32 mbBackArcNum;
+extern u16 mbBackFlag;
+extern f32 mbBackScale;
+extern Vec2f mbCameraScrTarget;
+extern f32 mbCameraScrPos[];
+extern OSMesgQueue mbBackDmaMesgQ;
+extern OSMesg mbBackDmaMesgBuf[36];
+extern OSThread mbBackDmaThread;
+extern OSThread mbBackDecodeThread;
+extern s32 mbBackThreadPri;
+extern OSMesg mbBackDecodeMesgBuf[36];
+extern OSMesg mbBackDoneMesgBuf[36];
+extern OSMesg mbBackExitMesgBuf[2];
+extern OSThread mbBackDecodeThread;
+extern s32 mbBackThreadPri;
+extern s16 mbBackOfsX;
+extern s16 mbBackOfsY;
+extern s16 mbBackHalfW;
+extern s16 mbBackHalfH;
+extern Process* mbCameraZoomProc;
+extern Process* mbCameraUpdateProc;
+extern f32 mbCameraSpeedDiv;
+extern Vec mbCameraEye;
+extern Vec mbCameraAt;
+extern Vec mbCameraUp;
+extern Vec mbCameraViewportSize;
+extern f32 mbCameraSpeed;
+extern s32 mbMasuFlagTbl[];
+extern s16 mbMasuStarTbl[];
+extern s16 mbMasuBlockNum;
+extern s16 mbMasuBlockExtNum;
+extern s16 mbMasuBlockTbl[];
+extern s16 mbMasuBlockExtTbl[];
+extern void* mbMasuEventBoardStartTbl;
+extern void* mbMasuEventRoundEndTbl;
+extern void* mbMasuEventTurnStartTbl;
+extern void* mbMasuEventTurnTelopTbl;
+extern s32 mbMasuEventResult;
+extern s32 mbBackNo;
+extern Vec mbBackOrigin;
+extern s32 mbBackAltBank;
+extern s32 mbBackAltNo;
+extern UnkFAF78 *mbBackAltTbl;
+extern u8* mbBackHvqWork;
+extern HvqFileHeader* mbBackHvqFileHdr;
+extern OSMesgQueue mbBackDecodeMesgQ;
+extern OSMesgQueue mbBackDoneMesgQ;
+extern OSMesgQueue mbBackExitMesgQ;
+extern HvqHeader* mbBackHvqCur;
+extern UnkBoard7 mbBackSprTbl[64];
+extern s32 mbBackSprNum;
+extern s16 mbMasuBmpMode;
+extern u8* mbMasuBmpDataTbl[]; //space form images
+extern s32 mbMasuArrowAngleNum;
+extern f32 mbMasuArrowAngleTbl[];
 extern s16 MTXBufNum;
 extern Mtx* MTXBuf;
 extern u16 gTotalSpaces;
-extern SpaceData* D_80105214_shared_board;
-extern LinkData* D_80105218_shared_board;
-extern u8 D_80105268_shared_board[];
+extern SpaceData* mbMasuTbl;
+extern LinkData* mbMasuLinkTbl;
+extern u8 mbMasuTypeNumTbl[];
 
-static void func_800E86CC_shared_board(Gfx** arg0, s32 arg1, u8 arg2);
-static s32 func_800E7330_shared_board(u16 arg0);
-static void func_800E90BC_shared_board(void);
-static void func_800E9328_shared_board(void);
-static void func_800E9358_shared_board(void);
+static void MBBackDraw(Gfx** arg0, s32 arg1, u8 arg2);
+static s32 MBBackFileSizeGet(u16 arg0);
+static void MBCameraInit(void);
+static void MBCameraClose(void);
+static void MBCameraUpdateMain(void);
 
-void func_800E6630_shared_board(u32 arg0) {
+void MBBackArcInit(u32 arg0) {
     HuArchive* temp_v0;
     s32* temp_v0_2;
     u32 temp_s0;
 
-    D_80102DB0_shared_board = arg0;
+    mbBackArcAddr = arg0;
     temp_v0 = HuMemMemoryAllocTemp(sizeof(HuArchive));
     dmaRead(arg0, (u8*)temp_v0, sizeof(HuArchive));
-    D_80102DB4_shared_board = temp_v0->count;
+    mbBackArcNum = temp_v0->count;
     HuMemMemoryFreeTemp(temp_v0);
-    temp_s0 = D_80102DB4_shared_board * 4;
+    temp_s0 = mbBackArcNum * 4;
     temp_v0_2 = HuMemMemoryAllocTemp(temp_s0);
-    D_80101240_shared_board = temp_v0_2;
+    mbBackArcOfsTbl = temp_v0_2;
     dmaRead(arg0 + 4, (u8*)temp_v0_2, temp_s0);
-    D_80102DCC_shared_board = HuMemMemoryAllocTemp(0x300); //TODO: hardcoded size
-    D_80101248_shared_board = NULL;
+    mbBackHvqWork = HuMemMemoryAllocTemp(0x300); //TODO: hardcoded size
+    mbBackHdr = NULL;
 }
 
-void func_800E66D4_shared_board(void) {
-    D_80101248_shared_board = NULL;
+void MBBackReset(void) {
+    mbBackHdr = NULL;
 }
 
 void MBBackClose(void) {
-    if (D_80101240_shared_board != NULL) {
-        HuMemMemoryFreeTemp(D_80101240_shared_board);
-        D_80101240_shared_board = NULL;
-        HuMemMemoryFreeTemp(D_80102DCC_shared_board);
+    if (mbBackArcOfsTbl != NULL) {
+        HuMemMemoryFreeTemp(mbBackArcOfsTbl);
+        mbBackArcOfsTbl = NULL;
+        HuMemMemoryFreeTemp(mbBackHvqWork);
     }
 }
 
@@ -208,47 +208,47 @@ void MBBackCreate(s32 arg0, s32 arg1) {
     HuArchive* temp_v0;
     u32* temp_v0_2;
 
-    D_80105990_shared_board = arg0;
-    D_80102DB8_shared_board = D_80102DB0_shared_board + D_80101240_shared_board[arg0];
+    mbBackNo = arg0;
+    mbBackFileAddr = mbBackArcAddr + mbBackArcOfsTbl[arg0];
     temp_v0 = HuMemMemoryAllocTemp(sizeof(HuArchive));
-    dmaRead((u32)D_80102DB8_shared_board, (u8*)temp_v0, sizeof(HuArchive));
+    dmaRead((u32)mbBackFileAddr, (u8*)temp_v0, sizeof(HuArchive));
     arg0 = temp_v0->count;
     HuMemMemoryFreeTemp(temp_v0);
     arg0++;
     temp_s0 = arg0 * 4;
     temp_v0_2 = HuMemMemoryAllocTemp(temp_s0);
-    D_80101244_shared_board = temp_v0_2;
-    dmaRead(D_80102DB8_shared_board + 4, (u8*)temp_v0_2, temp_s0);
+    mbBackFileOfsTbl = temp_v0_2;
+    dmaRead(mbBackFileAddr + 4, (u8*)temp_v0_2, temp_s0);
     temp_v0_3 = HuMemMemoryAllocTemp(sizeof(UnkModelStruct));
-    D_80101248_shared_board = temp_v0_3;
-    dmaRead(D_80102DB8_shared_board + D_80101244_shared_board[0], (u8*)&temp_v0_3->unk0, sizeof(UnkModelStruct));
-    D_80103450_shared_board.x = D_80101248_shared_board->unk18;
-    D_80103450_shared_board.y = D_80101248_shared_board->unk1C;
-    D_80103450_shared_board.z = D_80101248_shared_board->unk20;
-    D_80101248_shared_board->unk18 *= 5.0f;
-    D_80101248_shared_board->unk1C *= 5.0f;
-    D_80101248_shared_board->unk20 *= 5.0f;
-    D_80101248_shared_board->unk24 *= 5.0f;
-    D_80101248_shared_board->unk28 *= 5.0f;
-    D_80101248_shared_board->unk2C *= 5.0f;
-    D_80103138_shared_board = HuMemMemoryAllocTemp(func_800E7330_shared_board(0));
-    dmaRead(D_80102DB8_shared_board + D_80101244_shared_board[1], (u8 *)D_80103138_shared_board, func_800E7330_shared_board(0));
-    D_80102DC4_shared_board = 0;
-    D_80102DC2_shared_board = 0;
-    D_80102DC6_shared_board = D_80101248_shared_board->unk0 * D_80101248_shared_board->unk8 / 2;
-    D_80102DC8_shared_board = D_80101248_shared_board->unk4 * D_80101248_shared_board->unkC / 2;
-    D_80102DC0_shared_board = 1;
-    Hu3DLayerHookSet(0, func_800E86CC_shared_board);
-    func_800E7254_shared_board();
-    func_800E6FBC_shared_board();
+    mbBackHdr = temp_v0_3;
+    dmaRead(mbBackFileAddr + mbBackFileOfsTbl[0], (u8*)&temp_v0_3->unk0, sizeof(UnkModelStruct));
+    mbBackOrigin.x = mbBackHdr->unk18;
+    mbBackOrigin.y = mbBackHdr->unk1C;
+    mbBackOrigin.z = mbBackHdr->unk20;
+    mbBackHdr->unk18 *= 5.0f;
+    mbBackHdr->unk1C *= 5.0f;
+    mbBackHdr->unk20 *= 5.0f;
+    mbBackHdr->unk24 *= 5.0f;
+    mbBackHdr->unk28 *= 5.0f;
+    mbBackHdr->unk2C *= 5.0f;
+    mbBackHvqFileHdr = HuMemMemoryAllocTemp(MBBackFileSizeGet(0));
+    dmaRead(mbBackFileAddr + mbBackFileOfsTbl[1], (u8 *)mbBackHvqFileHdr, MBBackFileSizeGet(0));
+    mbBackOfsY = 0;
+    mbBackOfsX = 0;
+    mbBackHalfW = mbBackHdr->unk0 * mbBackHdr->unk8 / 2;
+    mbBackHalfH = mbBackHdr->unk4 * mbBackHdr->unkC / 2;
+    mbBackFlag = 1;
+    Hu3DLayerHookSet(0, MBBackDraw);
+    MBBackStreamStart();
+    MBBackThreadPriHighSet();
     if (arg1 != 0) {
-        func_800E90BC_shared_board();
+        MBCameraInit();
     }
-    func_800E9730_shared_board(1.0f);
+    MBCameraSpeedDivSet(1.0f);
     MBBackTPLvlSet(0xFF);
     MBCameraSpeedSet(-1.0f);
-    D_80101254_shared_board = 0.0f;
-    D_80101258_shared_board = 0.0f;
+    mbCameraFar = 0.0f;
+    mbCameraNear = 0.0f;
     MBCameraZoomSet(1.0f);
 }
 
@@ -257,49 +257,49 @@ void MBBackLoad(s32 arg0) {
 }
 
 void MBBackKill(void) {
-    if (D_80101244_shared_board != NULL) {
-        HuMemMemoryFreeTemp(D_80101244_shared_board);
-        D_80101244_shared_board = NULL;
-        HuMemMemoryFreeTemp(D_80101248_shared_board);
-        HuMemMemoryFreeTemp(D_80103138_shared_board);
+    if (mbBackFileOfsTbl != NULL) {
+        HuMemMemoryFreeTemp(mbBackFileOfsTbl);
+        mbBackFileOfsTbl = NULL;
+        HuMemMemoryFreeTemp(mbBackHdr);
+        HuMemMemoryFreeTemp(mbBackHvqFileHdr);
         Hu3DLayerHookSet(0, 0);
-        func_800E728C_shared_board();
-        func_800E9328_shared_board();
+        MBBackStreamStop();
+        MBCameraClose();
     }
 }
 
 static void MBBackOffsetSet(s16 arg0, s16 arg1) {
-    D_80102DC2_shared_board = arg0;
-    D_80102DC4_shared_board = arg1;
+    mbBackOfsX = arg0;
+    mbBackOfsY = arg1;
 }
 
 
 static f32 MBBackMaxXGet(void) {
-    return ((D_80102DC6_shared_board - 160.0f) / D_8010341C_shared_board) + 160.0f;
+    return ((mbBackHalfW - 160.0f) / mbBackScale) + 160.0f;
 }
 
 static f32 MBBackMaxYGet(void) {
-    return ((D_80102DC8_shared_board - 120.0f) / D_8010341C_shared_board) + 120.0f;
+    return ((mbBackHalfH - 120.0f) / mbBackScale) + 120.0f;
 }
 
 static u16 MBBackPosClamp(Vec2f* arg0, f32 arg1) {
     s32 var_v1;
 
     var_v1 = 0;
-    if (arg0->x <= (((-D_80102DC6_shared_board + 160.0f) / arg1) + 160.0f)) {
-        arg0->x = ((-D_80102DC6_shared_board + 160.0f) / arg1) + 160.0f;
+    if (arg0->x <= (((-mbBackHalfW + 160.0f) / arg1) + 160.0f)) {
+        arg0->x = ((-mbBackHalfW + 160.0f) / arg1) + 160.0f;
         var_v1 = 1;
     }
-    if (((D_80102DC6_shared_board - 160.0f) / arg1) + 160.0f + ((320.0f / arg1) - (320.0f / (arg1 * D_80101250_shared_board))) <= arg0->x) {
-        arg0->x = ((D_80102DC6_shared_board - 160.0f) / arg1) + 160.0f + ((320.0f / arg1) - (320.0f / (arg1 * D_80101250_shared_board)));
+    if (((mbBackHalfW - 160.0f) / arg1) + 160.0f + ((320.0f / arg1) - (320.0f / (arg1 * mbBackZoom))) <= arg0->x) {
+        arg0->x = ((mbBackHalfW - 160.0f) / arg1) + 160.0f + ((320.0f / arg1) - (320.0f / (arg1 * mbBackZoom)));
         var_v1 |= 2;
     }
-    if (arg0->y <= ((-D_80102DC8_shared_board + 120.0f) / arg1) + 120.0f) {
-        arg0->y = ((-D_80102DC8_shared_board + 120.0f) / arg1) + 120.0f;
+    if (arg0->y <= ((-mbBackHalfH + 120.0f) / arg1) + 120.0f) {
+        arg0->y = ((-mbBackHalfH + 120.0f) / arg1) + 120.0f;
         var_v1 |= 4;
     }
-    if (((D_80102DC8_shared_board - 120.0f) / arg1) + 120.0f + ((240.0f / arg1) - (240.0f / (arg1 * D_80101250_shared_board))) <= arg0->y) {
-        arg0->y = ((D_80102DC8_shared_board - 120.0f) / arg1) + 120.0f + ((240.0f / arg1) - (240.0f / (arg1 * D_80101250_shared_board)));
+    if (((mbBackHalfH - 120.0f) / arg1) + 120.0f + ((240.0f / arg1) - (240.0f / (arg1 * mbBackZoom))) <= arg0->y) {
+        arg0->y = ((mbBackHalfH - 120.0f) / arg1) + 120.0f + ((240.0f / arg1) - (240.0f / (arg1 * mbBackZoom)));
         var_v1 |= 8;
     }
     return var_v1;
@@ -307,25 +307,25 @@ static u16 MBBackPosClamp(Vec2f* arg0, f32 arg1) {
 
 void MBBackDispSet(u16 arg0) {
     if (arg0) {
-        D_80102DC0_shared_board = D_80102DC0_shared_board | 1;
+        mbBackFlag = mbBackFlag | 1;
     } else {
-        D_80102DC0_shared_board = D_80102DC0_shared_board & ~1;
+        mbBackFlag = mbBackFlag & ~1;
     }
 }
 
-static void func_800E6C80_shared_board(void) {
+static void MBBackDmaProc(void) {
     OverlayBgEntry* sp10;
 
     while (1) {
-        osRecvMesg(&D_80103468_shared_board, (OSMesg*)&sp10, 1);
+        osRecvMesg(&mbBackDmaMesgQ, (OSMesg*)&sp10, 1);
         if (sp10 == NULL) {
             break;
         }
         dmaRead(sp10->romAddr, (u8 *)sp10->compressedData, sp10->compressedSize);
-        osSendMesg(&D_80104880_shared_board, (OSMesg*)sp10, 0);
+        osSendMesg(&mbBackDecodeMesgQ, (OSMesg*)sp10, 0);
     }
 
-    osSendMesg(&D_801049D0_shared_board, (void* )1, 0);
+    osSendMesg(&mbBackExitMesgQ, (void* )1, 0);
     osDestroyThread(NULL);
 }
 
@@ -337,7 +337,7 @@ static void func_800E6C80_shared_board(void) {
         (buffer) += (*src++);         \
     } while (0)
 
-static void func_800E6CF8_shared_board(u8 *input, u8 *output, s32 compressedSize) {
+static void MBBackSlideDecode(u8 *input, u8 *output, s32 compressedSize) {
     u8 *src = input + 4;       // Skip metadata
     s32 flagLen = 0;           // Remaining bits in the bit buffer
     s32 flag = 0;              // Buffer holding bits for control decisions
@@ -398,64 +398,64 @@ static void func_800E6CF8_shared_board(u8 *input, u8 *output, s32 compressedSize
 }
 
 // Decode a board image tile into RGBA5551 pixels.
-static void func_800E6DEC_shared_board(void) {
+static void MBBackDecodeProc(void) {
     OverlayBgEntry *sp10;
     HvqHeader *temp_a0;
 
     hvqMpsInit1(0xFF);
-    hvqMpsDecodeStart1(D_80103138_shared_board); //"HVQ-MPS 1.1"
+    hvqMpsDecodeStart1(mbBackHvqFileHdr); //"HVQ-MPS 1.1"
     while (1) {
-        osRecvMesg(&D_80104880_shared_board, (void *)&sp10, 1);
+        osRecvMesg(&mbBackDecodeMesgQ, (void *)&sp10, 1);
         if (sp10 != NULL) {
             temp_a0 = sp10->compressedData;
-            D_80102DD0_shared_board = sp10->compressedData;
+            mbBackHvqCur = sp10->compressedData;
             if (temp_a0->magic == ASCII_HVQS) {
-                hvqMpsDecode1(&temp_a0->data.image, sp10->pixels, 0x40, D_80102DCC_shared_board);
+                hvqMpsDecode1(&temp_a0->data.image, sp10->pixels, 0x40, mbBackHvqWork);
             } else {
                 // 0x1800 size for decoded tile
-                func_800E6CF8_shared_board(D_80102DD0_shared_board->data.slide, (u8 *)sp10->pixels, 0x1800);
+                MBBackSlideDecode(mbBackHvqCur->data.slide, (u8 *)sp10->pixels, 0x1800);
             }
-            osSendMesg(&D_80104928_shared_board, sp10, 0);
+            osSendMesg(&mbBackDoneMesgQ, sp10, 0);
         } else {
             break;
         }
     }
 
-    osSendMesg(&D_801049D0_shared_board, (void *)2, 0);
+    osSendMesg(&mbBackExitMesgQ, (void *)2, 0);
     osDestroyThread(NULL);
 }
 
-static void func_800E6EC8_shared_board(void) {
-    osCreateMesgQueue(&D_80103468_shared_board, D_80103480_shared_board, 0x24);
-    osCreateMesgQueue(&D_80104880_shared_board, D_80104898_shared_board, 0x24);
-    osCreateMesgQueue(&D_80104928_shared_board, D_80104940_shared_board, 0x24);
-    osCreateMesgQueue(&D_801049D0_shared_board, D_801049E8_shared_board, 2);
-    D_80104070_shared_board = 1;
-    osCreateThread(&D_80103EC0_shared_board, 0x64, (void (*)(void*)) func_800E6DEC_shared_board, NULL, &D_80104880_shared_board, 1);
-    osStartThread(&D_80103EC0_shared_board);
-    osCreateThread(&D_80103510_shared_board, 0x65, (void*)func_800E6C80_shared_board, NULL, &D_80103EC0_shared_board, 4);
-    osStartThread(&D_80103510_shared_board);
+static void MBBackThreadCreate(void) {
+    osCreateMesgQueue(&mbBackDmaMesgQ, mbBackDmaMesgBuf, 0x24);
+    osCreateMesgQueue(&mbBackDecodeMesgQ, mbBackDecodeMesgBuf, 0x24);
+    osCreateMesgQueue(&mbBackDoneMesgQ, mbBackDoneMesgBuf, 0x24);
+    osCreateMesgQueue(&mbBackExitMesgQ, mbBackExitMesgBuf, 2);
+    mbBackThreadPri = 1;
+    osCreateThread(&mbBackDecodeThread, 0x64, (void (*)(void*)) MBBackDecodeProc, NULL, &mbBackDecodeMesgQ, 1);
+    osStartThread(&mbBackDecodeThread);
+    osCreateThread(&mbBackDmaThread, 0x65, (void*)MBBackDmaProc, NULL, &mbBackDecodeThread, 4);
+    osStartThread(&mbBackDmaThread);
 }
 
-void func_800E6FBC_shared_board(void) {
-    D_80104070_shared_board = 3;
+void MBBackThreadPriHighSet(void) {
+    mbBackThreadPri = 3;
 }
 
-void func_800E6FCC_shared_board(void) {
-    D_80104070_shared_board = 1;
+void MBBackThreadPriLowSet(void) {
+    mbBackThreadPri = 1;
 }
 
-static void func_800E6FDC_shared_board(void) {
-    if (osGetThreadPri(&D_80103EC0_shared_board) != D_80104070_shared_board) {
-        osSetThreadPri(&D_80103EC0_shared_board, D_80104070_shared_board);
+static void MBBackThreadPriUpdate(void) {
+    if (osGetThreadPri(&mbBackDecodeThread) != mbBackThreadPri) {
+        osSetThreadPri(&mbBackDecodeThread, mbBackThreadPri);
     }
 }
 
-static void func_800E7018_shared_board(void) {
+static void MBBackDoneFree(void) {
     OverlayBgEntry* sp10;
 
     while (1) {
-        if (osRecvMesg(&D_80104928_shared_board, (OSMesg*)&sp10, 0) != 0) {
+        if (osRecvMesg(&mbBackDoneMesgQ, (OSMesg*)&sp10, 0) != 0) {
             break;
         }
         if (sp10 != NULL) {
@@ -465,20 +465,20 @@ static void func_800E7018_shared_board(void) {
     }
 }
 
-static void func_800E7068_shared_board(void) {
+static void MBBackThreadKill(void) {
     s32 i;
 
-    osJamMesg(&D_80103468_shared_board, NULL, OS_MESG_NOBLOCK);
-    osJamMesg(&D_80104880_shared_board, NULL, OS_MESG_NOBLOCK);
+    osJamMesg(&mbBackDmaMesgQ, NULL, OS_MESG_NOBLOCK);
+    osJamMesg(&mbBackDecodeMesgQ, NULL, OS_MESG_NOBLOCK);
 
-    func_800E6FBC_shared_board();
-    func_800E6FDC_shared_board();
+    MBBackThreadPriHighSet();
+    MBBackThreadPriUpdate();
 
-    osRecvMesg(&D_801049D0_shared_board, NULL, OS_MESG_BLOCK);
-    osRecvMesg(&D_801049D0_shared_board, NULL, OS_MESG_BLOCK);
+    osRecvMesg(&mbBackExitMesgQ, NULL, OS_MESG_BLOCK);
+    osRecvMesg(&mbBackExitMesgQ, NULL, OS_MESG_BLOCK);
 
-    for (i = 0; i < ARRAY_COUNT(D_80102DD8_shared_board); i++) {
-        OverlayBgEntry* temp = &D_80102DD8_shared_board[i];
+    for (i = 0; i < ARRAY_COUNT(mbBackTileTbl); i++) {
+        OverlayBgEntry* temp = &mbBackTileTbl[i];
         if (temp->compressedData != NULL) {
             HuMemMemoryFreePerm(temp->compressedData);
             temp->compressedData = NULL;
@@ -486,11 +486,11 @@ static void func_800E7068_shared_board(void) {
     }
 }
 
-static void func_800E7130_shared_board(void) {
-    OverlayBgEntry* var_s0 = D_80102DD8_shared_board;
+static void MBBackTileInit(void) {
+    OverlayBgEntry* var_s0 = mbBackTileTbl;
     s32 i;
 
-    for (i = 0; i < ARRAY_COUNT(D_80102DD8_shared_board); i++, var_s0++) {
+    for (i = 0; i < ARRAY_COUNT(mbBackTileTbl); i++, var_s0++) {
         var_s0->unk0 = 0;
         var_s0->unk1 = 0;
         var_s0->unk2 = -1;
@@ -498,14 +498,14 @@ static void func_800E7130_shared_board(void) {
         var_s0->compressedData = NULL;
     }
 
-    bzero(D_801030A8_shared_board, sizeof(D_801030A8_shared_board));
+    bzero(mbBackTileMap, sizeof(mbBackTileMap));
 }
 
-static void func_800E71A8_shared_board(void) {
-    OverlayBgEntry* var_v1 = D_80102DD8_shared_board;
+static void MBBackTileUseClear(void) {
+    OverlayBgEntry* var_v1 = mbBackTileTbl;
     s32 i;
 
-    for (i = 0; i < ARRAY_COUNT(D_80102DD8_shared_board); i++, var_v1++) {
+    for (i = 0; i < ARRAY_COUNT(mbBackTileTbl); i++, var_v1++) {
         if ((var_v1->compressedData == NULL) && (var_v1->unk0 == 0)) {
             var_v1->unk2 = -1;
         }
@@ -513,11 +513,11 @@ static void func_800E71A8_shared_board(void) {
     }
 }
 
-static void func_800E71EC_shared_board(void) {
-    OverlayBgEntry* var_s0 = D_80102DD8_shared_board;
+static void MBBackTileClose(void) {
+    OverlayBgEntry* var_s0 = mbBackTileTbl;
     s32 i;
 
-    for (i = 0; i < ARRAY_COUNT(D_80102DD8_shared_board); i++, var_s0++) {
+    for (i = 0; i < ARRAY_COUNT(mbBackTileTbl); i++, var_s0++) {
         var_s0->unk0 = 0;
         var_s0->unk2 = -1;
 
@@ -528,45 +528,45 @@ static void func_800E71EC_shared_board(void) {
     }
 }
 
-void func_800E7254_shared_board(void) {
-    func_800E7130_shared_board();
-    func_800E6EC8_shared_board();
-    D_80102DC0_shared_board |= 4;
+void MBBackStreamStart(void) {
+    MBBackTileInit();
+    MBBackThreadCreate();
+    mbBackFlag |= 4;
 }
 
-void func_800E728C_shared_board(void) {
-    func_800E7068_shared_board();
-    func_800E71EC_shared_board();
-    D_80102DC0_shared_board &= ~4;
+void MBBackStreamStop(void) {
+    MBBackThreadKill();
+    MBBackTileClose();
+    mbBackFlag &= ~4;
 }
 
-void func_800E72C4_shared_board(void) {
-    D_80102DC0_shared_board &= ~4;
+void MBBackStreamOff(void) {
+    mbBackFlag &= ~4;
 }
 
 f32 MBBackMdlScaleGet(void) {
-    if (D_80101248_shared_board == NULL) {
+    if (mbBackHdr == NULL) {
         return 1.0f;
     } else {
-        return D_80101248_shared_board->unk14;
+        return mbBackHdr->unk14;
     }
 }
 
-static u16 func_800E7300_shared_board(s32 arg0, s32 arg1) {
-    return ((((D_80101248_shared_board->unkC - arg1) - 1) * D_80101248_shared_board->unk8) + arg0 + 1);
+static u16 MBBackTileNoGet(s32 arg0, s32 arg1) {
+    return ((((mbBackHdr->unkC - arg1) - 1) * mbBackHdr->unk8) + arg0 + 1);
 }
 
-static s32 func_800E7330_shared_board(u16 arg0) {
+static s32 MBBackFileSizeGet(u16 arg0) {
     arg0++;
-    return D_80101244_shared_board[(arg0 + 1)] - D_80101244_shared_board[(arg0 + 0)];
+    return mbBackFileOfsTbl[(arg0 + 1)] - mbBackFileOfsTbl[(arg0 + 0)];
 }
 
-static s32 func_800E7358_shared_board(u16 arg0) {
+static s32 MBBackFileAddrGet(u16 arg0) {
     arg0++;
-    return D_80102DB8_shared_board + D_80101244_shared_board[(arg0)];
+    return mbBackFileAddr + mbBackFileOfsTbl[(arg0)];
 }
 
-static OverlayBgEntry *func_800E7384_shared_board(u16 arg0) {
+static OverlayBgEntry *MBBackTileLoad(u16 arg0) {
     OverlayBgEntry *entry;
     OverlayBgEntry *slot;
     u16 bank;
@@ -574,13 +574,13 @@ static OverlayBgEntry *func_800E7384_shared_board(u16 arg0) {
     s32 size;
 
     slot = NULL;
-    entry = D_80102DD8_shared_board;
+    entry = mbBackTileTbl;
     bank = 0;
 
-    if (D_8010345C_shared_board != 0) {
-        for (i = 0; i < D_80103464_shared_board[D_80103460_shared_board].unk_00 - 1; i++) {
-            if (arg0 == D_80103464_shared_board[D_80103460_shared_board].unk_04[i]) {
-                bank = D_8010345C_shared_board;
+    if (mbBackAltBank != 0) {
+        for (i = 0; i < mbBackAltTbl[mbBackAltNo].unk_00 - 1; i++) {
+            if (arg0 == mbBackAltTbl[mbBackAltNo].unk_04[i]) {
+                bank = mbBackAltBank;
             }
         }
     }
@@ -600,36 +600,36 @@ static OverlayBgEntry *func_800E7384_shared_board(u16 arg0) {
         slot->unk0 = 1;
         slot->unk2 = arg0;
         slot->unk1 = bank;
-        slot->romAddr = func_800E7358_shared_board(arg0);
-        size = func_800E7330_shared_board(arg0);
+        slot->romAddr = MBBackFileAddrGet(arg0);
+        size = MBBackFileSizeGet(arg0);
         slot->compressedSize = size;
         slot->compressedData = HuMemMemoryAllocPerm(size);
-        osSendMesg(&D_80103468_shared_board, slot, OS_MESG_NOBLOCK);
+        osSendMesg(&mbBackDmaMesgQ, slot, OS_MESG_NOBLOCK);
     }
     return slot;
 }
 
-static void func_800E7514_shared_board(void) {
+static void MBBackTileMapUpdate(void) {
     s32 tileX;
     s32 tileY;
     s32 x;
     s32 y;
 
-    tileY = (s32)(((f32)((D_80102DC8_shared_board + D_80102DC4_shared_board) - 0x78) -
-                   ((240.0f - (240.0f / D_80101250_shared_board)) / 2.0f)) / 48.0f);
+    tileY = (s32)(((f32)((mbBackHalfH + mbBackOfsY) - 0x78) -
+                   ((240.0f - (240.0f / mbBackZoom)) / 2.0f)) / 48.0f);
 
     for (y = 0; y < 6; y++, tileY++) {
-        tileX = (s32)(((f32)((D_80102DC6_shared_board + D_80102DC2_shared_board) - 0xA0) -
-                       ((320.0f - (320.0f / D_80101250_shared_board)) / 2.0f)) / 64.0f);
+        tileX = (s32)(((f32)((mbBackHalfW + mbBackOfsX) - 0xA0) -
+                       ((320.0f - (320.0f / mbBackZoom)) / 2.0f)) / 64.0f);
 
         for (x = 0; x < 6; x++, tileX++) {
             if ((tileX < 0) || (tileY < 0) ||
-                (tileX >= D_80101248_shared_board->unk8) ||
-                (tileY >= D_80101248_shared_board->unkC)) {
-                D_801030A8_shared_board[x][y] = NULL;
+                (tileX >= mbBackHdr->unk8) ||
+                (tileY >= mbBackHdr->unkC)) {
+                mbBackTileMap[x][y] = NULL;
             } else {
-                D_801030A8_shared_board[x][y] =
-                    func_800E7384_shared_board(func_800E7300_shared_board(tileX, tileY));
+                mbBackTileMap[x][y] =
+                    MBBackTileLoad(MBBackTileNoGet(tileX, tileY));
             }
         }
     }
@@ -649,68 +649,68 @@ static void func_800E7514_shared_board(void) {
     gImmp1(pkt, G_RDPHALF_2, (_SHIFTL((s16)(dsdx), 16, 16) | _SHIFTL((s16)(dtdy), 0, 16))); \
 }
 
-static void func_800E76EC_shared_board(Gfx** arg0, u16* arg1, s16 arg2, s16 arg3, s16 arg4) {
+static void MBBackTileDraw(Gfx** arg0, u16* arg1, s16 arg2, s16 arg3, s16 arg4) {
     f32 temp_f0;
     f32 temp_f20;
     f32 temp_f22;
 
-    temp_f20 = ((f32) arg2 + (D_801049F8_shared_board[0] / 4.0f)) - (f32) (s32) (D_801049F8_shared_board[0] / 4.0f);
-    temp_f22 = ((f32) arg3 + (D_801049F8_shared_board[1] / 4.0f)) - (f32) (s32) (D_801049F8_shared_board[1] / 4.0f);
+    temp_f20 = ((f32) arg2 + (mbCameraScrPos[0] / 4.0f)) - (f32) (s32) (mbCameraScrPos[0] / 4.0f);
+    temp_f22 = ((f32) arg3 + (mbCameraScrPos[1] / 4.0f)) - (f32) (s32) (mbCameraScrPos[1] / 4.0f);
     HuLoadTextureBlock(arg0, arg1, 0, 2, 0x40, 0x20, 0, 0, 0x40, 0x20, 0, 1, 1, 6, 5, 0, 0);
-    if (!(D_80102DC0_shared_board & 0x10)) {
+    if (!(mbBackFlag & 0x10)) {
         gSPScisTextureRectangle_MP((*arg0)++,
-            /*xl*/(temp_f20 * D_80101250_shared_board * 4.0f),
-            /*yl*/((temp_f22 * D_80101250_shared_board * 4.0f) - (f32) arg4),
-            /*xh*/(temp_f20 + 64.0f) * D_80101250_shared_board * 4.0f,
-            /*yh*/(temp_f22 + 32.0f) * D_80101250_shared_board * 4.0f,
+            /*xl*/(temp_f20 * mbBackZoom * 4.0f),
+            /*yl*/((temp_f22 * mbBackZoom * 4.0f) - (f32) arg4),
+            /*xh*/(temp_f20 + 64.0f) * mbBackZoom * 4.0f,
+            /*yh*/(temp_f22 + 32.0f) * mbBackZoom * 4.0f,
             /*tile*/0,
             /*s*/0,
             /*t*/0,
-            /*dsdx*/(1024.0f / D_80101250_shared_board),
-            /*dtdy*/(1024.0f / D_80101250_shared_board)
+            /*dsdx*/(1024.0f / mbBackZoom),
+            /*dtdy*/(1024.0f / mbBackZoom)
         );
     } else {
         gSPScisTextureRectangle_MP((*arg0)++,
-            /*xl*/((256.0f - temp_f20) * D_80101250_shared_board * 4.0f),
-            /*yl*/((temp_f22 * D_80101250_shared_board * 4.0f)),
-            /*xh*/((320.0f - temp_f20) * D_80101250_shared_board * 4.0f),
-            /*yh*/((temp_f22 + 32.0f) * D_80101250_shared_board * 4.0f),
+            /*xl*/((256.0f - temp_f20) * mbBackZoom * 4.0f),
+            /*yl*/((temp_f22 * mbBackZoom * 4.0f)),
+            /*xh*/((320.0f - temp_f20) * mbBackZoom * 4.0f),
+            /*yh*/((temp_f22 + 32.0f) * mbBackZoom * 4.0f),
             /*tile*/0,
             /*s*/0x7e0,
             /*t*/0,
-            /*dsdx*/-(s16)(1024.0f / D_80101250_shared_board),
-            /*dtdy*/(1024.0f / D_80101250_shared_board)
+            /*dsdx*/-(s16)(1024.0f / mbBackZoom),
+            /*dtdy*/(1024.0f / mbBackZoom)
         );
     }
     HuLoadTextureBlock(arg0, arg1 + (64 * 32), 0, 2, 0x40, 0x10, 0, 0, 0x40, 0x10, 0, 1, 1, 6, 4, 0, 0);
-    if (!(D_80102DC0_shared_board & 0x10)) {
+    if (!(mbBackFlag & 0x10)) {
         gSPScisTextureRectangle_MP((*arg0)++,
-            /*xl*/(temp_f20 * D_80101250_shared_board * 4.0f),
-            /*yl*/((temp_f22 + 32.0f) * D_80101250_shared_board * 4.0f),
-            /*xh*/((temp_f20 + 64.0f) * D_80101250_shared_board * 4.0f),
-            /*yh*/((temp_f22 + 48.0f) * D_80101250_shared_board * 4.0f),
+            /*xl*/(temp_f20 * mbBackZoom * 4.0f),
+            /*yl*/((temp_f22 + 32.0f) * mbBackZoom * 4.0f),
+            /*xh*/((temp_f20 + 64.0f) * mbBackZoom * 4.0f),
+            /*yh*/((temp_f22 + 48.0f) * mbBackZoom * 4.0f),
             /*tile*/0,
             /*s*/0,
             /*t*/0,
-            /*dsdx*/(1024.0f / D_80101250_shared_board),
-            /*dtdy*/(1024.0f / D_80101250_shared_board)
+            /*dsdx*/(1024.0f / mbBackZoom),
+            /*dtdy*/(1024.0f / mbBackZoom)
         );
     } else {
         gSPScisTextureRectangle_MP((*arg0)++,
-            /*xl*/((256.0f - temp_f20) * D_80101250_shared_board * 4.0f),
-            /*yl*/((temp_f22 + 32.0f) * D_80101250_shared_board * 4.0f),
-            /*xh*/((320.0f - temp_f20) * D_80101250_shared_board * 4.0f),
-            /*yh*/((temp_f22 + 48.0f) * D_80101250_shared_board * 4.0f),
+            /*xl*/((256.0f - temp_f20) * mbBackZoom * 4.0f),
+            /*yl*/((temp_f22 + 32.0f) * mbBackZoom * 4.0f),
+            /*xh*/((320.0f - temp_f20) * mbBackZoom * 4.0f),
+            /*yh*/((temp_f22 + 48.0f) * mbBackZoom * 4.0f),
             /*tile*/0,
             /*s*/0x7e0,
             /*t*/0,
-            /*dsdx*/-(s16)(1024.0f / D_80101250_shared_board),
-            /*dtdy*/(1024.0f / D_80101250_shared_board)
+            /*dsdx*/-(s16)(1024.0f / mbBackZoom),
+            /*dtdy*/(1024.0f / mbBackZoom)
         );
     }
 }
 
-static void func_800E86CC_shared_board(Gfx** arg0, s32 arg1, u8 arg2) {
+static void MBBackDraw(Gfx** arg0, s32 arg1, u8 arg2) {
     u16 sp1E;
     u16 sp26;
     s16 spY; // sp34
@@ -721,38 +721,38 @@ static void func_800E86CC_shared_board(Gfx** arg0, s32 arg1, u8 arg2) {
     s16 temp_s0;
     OverlayBgEntry* bgEntry;
 
-    if (arg2 || !(D_80102DC0_shared_board & 4)) {
+    if (arg2 || !(mbBackFlag & 4)) {
         return;
     }
 
-    func_800E7018_shared_board();
-    if (!(D_80102DC0_shared_board & 1)) {
+    MBBackDoneFree();
+    if (!(mbBackFlag & 1)) {
         return;
     }
 
-    func_800E71A8_shared_board();
+    MBBackTileUseClear();
     temp_s0 = HuProfCpuBegin(0xC8, 0, 0);
-    func_800E7514_shared_board();
+    MBBackTileMapUpdate();
     HuProfCpuEnd(temp_s0);
 
-    sp26 = ((D_80102DC8_shared_board + D_80102DC4_shared_board) - 120) % 48;
-    sp1E = ((D_80102DC6_shared_board + D_80102DC2_shared_board) - 160) % 64;
+    sp26 = ((mbBackHalfH + mbBackOfsY) - 120) % 48;
+    sp1E = ((mbBackHalfW + mbBackOfsX) - 160) % 64;
 
-    spY = (s32)(((f32)(((D_80102DC8_shared_board + D_80102DC4_shared_board)) - 120) - ((240.0f - (240.0f / D_80101250_shared_board)) / 2.0f)) / 48.0f) - ((((D_80102DC8_shared_board + D_80102DC4_shared_board)) - 120) / 48);
-    spX = (s32)(((f32)(((D_80102DC6_shared_board + D_80102DC2_shared_board)) - 160) - ((320.0f - (320.0f / D_80101250_shared_board)) / 2.0f)) / 64.0f) - ((((D_80102DC6_shared_board + D_80102DC2_shared_board)) - 160) / 64);
+    spY = (s32)(((f32)(((mbBackHalfH + mbBackOfsY)) - 120) - ((240.0f - (240.0f / mbBackZoom)) / 2.0f)) / 48.0f) - ((((mbBackHalfH + mbBackOfsY)) - 120) / 48);
+    spX = (s32)(((f32)(((mbBackHalfW + mbBackOfsX)) - 160) - ((320.0f - (320.0f / mbBackZoom)) / 2.0f)) / 64.0f) - ((((mbBackHalfW + mbBackOfsX)) - 160) / 64);
 
-    gSPDisplayList((*arg0)++, D_80101270_shared_board);
-    gDPSetEnvColor((*arg0)++, 0xFF, 0xFF, 0xFF, D_8010124C_shared_board);
+    gSPDisplayList((*arg0)++, mbBackGfxInit);
+    gDPSetEnvColor((*arg0)++, 0xFF, 0xFF, 0xFF, mbBackTPLvl);
 
-    if (D_8010124C_shared_board < 0xFF) {
-        if (D_80102DC0_shared_board & 8) {
+    if (mbBackTPLvl < 0xFF) {
+        if (mbBackFlag & 8) {
             gDPSetCombineLERP((*arg0)++, ENVIRONMENT, TEXEL0, ENVIRONMENT, 0, 0, 0, 0, ENVIRONMENT, ENVIRONMENT, TEXEL0, ENVIRONMENT, 0, 0, 0, 0, ENVIRONMENT);
         } else {
             gDPSetCombineLERP((*arg0)++, 0, 0, 0, TEXEL0, 0, 0, 0, ENVIRONMENT, 0, 0, 0, TEXEL0, 0, 0, 0, ENVIRONMENT);
         }
         gDPSetRenderMode((*arg0)++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
     } else {
-        if (D_80102DC0_shared_board & 8) {
+        if (mbBackFlag & 8) {
             gDPSetCombineLERP((*arg0)++, ENVIRONMENT, TEXEL0, ENVIRONMENT, 0, 0, 0, 0, TEXEL0, ENVIRONMENT, TEXEL0, ENVIRONMENT, 0, 0, 0, 0, TEXEL0);
         }
 
@@ -761,23 +761,23 @@ static void func_800E86CC_shared_board(Gfx** arg0, s32 arg1, u8 arg2) {
 
     for (row = 0; row < 6; row++) {
         for (col = 0; col < 6; col++) {
-            bgEntry = D_801030A8_shared_board[col][row];
+            bgEntry = mbBackTileMap[col][row];
             if (bgEntry == NULL) {
                 continue;
             }
 
-            if (D_80101268_shared_board != 0 && D_8010126C_shared_board == 0xFF) {
-                for (i = 0; i < (D_80103464_shared_board->unk_00 - 1) && i < 0x24; i++) {
-                    if (bgEntry->unk2 == D_80103140_shared_board[i].unk2) {
+            if (mbBackAltF != 0 && mbBackAltTPLvl == 0xFF) {
+                for (i = 0; i < (mbBackAltTbl->unk_00 - 1) && i < 0x24; i++) {
+                    if (bgEntry->unk2 == mbBackAltTileTbl[i].unk2) {
                         break;
                     }
                 }
-                if (i != (D_80103464_shared_board->unk_00 - 1) && i != 0x24) {
-                    bgEntry = &D_80103140_shared_board[i];
+                if (i != (mbBackAltTbl->unk_00 - 1) && i != 0x24) {
+                    bgEntry = &mbBackAltTileTbl[i];
                 }
             }
 
-            func_800E76EC_shared_board(
+            MBBackTileDraw(
                 arg0,
                 bgEntry->pixels,
                 ((col + spX) * 64) - sp1E,
@@ -785,19 +785,19 @@ static void func_800E86CC_shared_board(Gfx** arg0, s32 arg1, u8 arg2) {
                 0
             );
 
-            if (D_80101268_shared_board != 0 && D_8010126C_shared_board > 0 && D_8010126C_shared_board < 0xFF) {
-                for (i = 0; i < (D_80103464_shared_board->unk_00 - 1) && i < 0x24; i++) {
-                    if (bgEntry->unk2 == D_80103140_shared_board[i].unk2) {
+            if (mbBackAltF != 0 && mbBackAltTPLvl > 0 && mbBackAltTPLvl < 0xFF) {
+                for (i = 0; i < (mbBackAltTbl->unk_00 - 1) && i < 0x24; i++) {
+                    if (bgEntry->unk2 == mbBackAltTileTbl[i].unk2) {
                         break;
                     }
                 }
-                if (i != (D_80103464_shared_board->unk_00 - 1) && i != 0x24) {
-                    bgEntry = &D_80103140_shared_board[i];
-                    gDPSetEnvColor((*arg0)++, 0xFF, 0xFF, 0xFF, D_8010126C_shared_board);
+                if (i != (mbBackAltTbl->unk_00 - 1) && i != 0x24) {
+                    bgEntry = &mbBackAltTileTbl[i];
+                    gDPSetEnvColor((*arg0)++, 0xFF, 0xFF, 0xFF, mbBackAltTPLvl);
                     gDPSetCombineLERP((*arg0)++, 0, 0, 0, TEXEL0, 0, 0, 0, ENVIRONMENT, 0, 0, 0, TEXEL0, 0, 0, 0, ENVIRONMENT);
                     gDPSetRenderMode((*arg0)++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
 
-                    func_800E76EC_shared_board(
+                    MBBackTileDraw(
                         arg0,
                         bgEntry->pixels,
                         ((col + spX) * 64) - sp1E,
@@ -805,7 +805,7 @@ static void func_800E86CC_shared_board(Gfx** arg0, s32 arg1, u8 arg2) {
                         -1
                     );
 
-                    gDPSetEnvColor((*arg0)++, 0xFF, 0xFF, 0xFF, D_8010124C_shared_board);
+                    gDPSetEnvColor((*arg0)++, 0xFF, 0xFF, 0xFF, mbBackTPLvl);
                     gDPSetCombineMode((*arg0)++, G_CC_DECALRGBA, G_CC_DECALRGBA);
                     gDPSetRenderMode((*arg0)++, G_RM_AA_SUB_SURF, G_RM_AA_SUB_SURF2);
                 }
@@ -813,18 +813,18 @@ static void func_800E86CC_shared_board(Gfx** arg0, s32 arg1, u8 arg2) {
         }
     }
 
-    func_800E6FDC_shared_board();
+    MBBackThreadPriUpdate();
 }
 
 f32 MBCameraZoomGet(void) {
-    return D_80101250_shared_board;
+    return mbBackZoom;
 }
 
 void MBCameraZoomSet(f32 zoom) {
-    D_80101250_shared_board = zoom;
+    mbBackZoom = zoom;
 }
 
-static void func_800E8DE0_shared_board(void) {
+static void MBCameraZoomMotProc(void) {
     f32 target;
     f32 diff;
     f32 step;
@@ -834,8 +834,8 @@ static void func_800E8DE0_shared_board(void) {
     target = *(f32 *)HuPrcCurrentGet()->user_data;
 
     while (1) {
-        diff = D_80101250_shared_board - target;
-        step = (0.0f < diff) ? diff : 0.0f - (D_80101250_shared_board - target);
+        diff = mbBackZoom - target;
+        step = (0.0f < diff) ? diff : 0.0f - (mbBackZoom - target);
         
         if (step <= 0.005f) {
             break;
@@ -845,17 +845,17 @@ static void func_800E8DE0_shared_board(void) {
         if (step < 0.005f) {
             step = 0.005f;
         }
-        if (target < D_80101250_shared_board) {
-            next = D_80101250_shared_board - step;
+        if (target < mbBackZoom) {
+            next = mbBackZoom - step;
         } else {
-            next = step + D_80101250_shared_board;
+            next = step + mbBackZoom;
         }
-        D_80101250_shared_board = next;
+        mbBackZoom = next;
         HuPrcVSleep();
     }
 
-    D_80101250_shared_board = target;
-    D_80103414_shared_board = NULL;
+    mbBackZoom = target;
+    mbCameraZoomProc = NULL;
     omDelPrcObj(NULL);
 }
 
@@ -863,18 +863,18 @@ Process* MBCameraZoomMotStart(f32 arg0) {
     Process* temp_v0;
     f32* temp_v0_2;
 
-    if (D_80103414_shared_board != NULL) {
-        omDelPrcObj(D_80103414_shared_board);
+    if (mbCameraZoomProc != NULL) {
+        omDelPrcObj(mbCameraZoomProc);
     }
-    D_80103414_shared_board = omAddPrcObj(func_800E8DE0_shared_board, 1U, 0, 0x40);
+    mbCameraZoomProc = omAddPrcObj(MBCameraZoomMotProc, 1U, 0, 0x40);
 
-    temp_v0_2 = HuMemMemoryAlloc(D_80103414_shared_board->heap, 0x10);
-    D_80103414_shared_board->user_data = temp_v0_2;
+    temp_v0_2 = HuMemMemoryAlloc(mbCameraZoomProc->heap, 0x10);
+    mbCameraZoomProc->user_data = temp_v0_2;
     *temp_v0_2 = arg0;
-    return D_80103414_shared_board;
+    return mbCameraZoomProc;
 }
 
-static void func_800E8F54_shared_board(void) {
+static void MBCameraZoomMotFastProc(void) {
     f32 temp_f22;
     f32 temp_f2;
     f32 var_f0;
@@ -883,99 +883,99 @@ static void func_800E8F54_shared_board(void) {
     s32 i;
 
     temp_f22 = *(f32*)HuPrcCurrentGet()->user_data;
-    temp_f2 = D_80101250_shared_board - temp_f22;
+    temp_f2 = mbBackZoom - temp_f22;
     if (temp_f2 > 0.0f) {
         var_f20 = temp_f2 / 5.0f;
     } else {
-        var_f20 = (0.0f - (D_80101250_shared_board - temp_f22)) / 5.0f;
+        var_f20 = (0.0f - (mbBackZoom - temp_f22)) / 5.0f;
     }
     for (i = 0; i < 5; i++, HuPrcVSleep()) {
-        if (temp_f22 < D_80101250_shared_board) {
-            D_80101250_shared_board = D_80101250_shared_board - var_f20;
+        if (temp_f22 < mbBackZoom) {
+            mbBackZoom = mbBackZoom - var_f20;
         } else {
-            D_80101250_shared_board = var_f20 + D_80101250_shared_board;
+            mbBackZoom = var_f20 + mbBackZoom;
         }
     }
 
-    D_80101250_shared_board = temp_f22;
-    D_80103414_shared_board = NULL;
+    mbBackZoom = temp_f22;
+    mbCameraZoomProc = NULL;
     omDelPrcObj(NULL);
 }
 
-Process* func_800E9044_shared_board(f32 arg0) {
+Process* MBCameraZoomMotFastStart(f32 arg0) {
     Process* proc;
     f32* temp_v0_2;
 
-    if (D_80103414_shared_board != NULL) {
-        omDelPrcObj(D_80103414_shared_board);
+    if (mbCameraZoomProc != NULL) {
+        omDelPrcObj(mbCameraZoomProc);
     }
 
-    proc = omAddPrcObj(func_800E8F54_shared_board, 1, 0, 0x40);
-    D_80103414_shared_board = proc;
+    proc = omAddPrcObj(MBCameraZoomMotFastProc, 1, 0, 0x40);
+    mbCameraZoomProc = proc;
     temp_v0_2 = HuMemMemoryAlloc(proc->heap, 0x10);
-    D_80103414_shared_board->user_data = temp_v0_2;
+    mbCameraZoomProc->user_data = temp_v0_2;
     *temp_v0_2 = arg0;
-    return D_80103414_shared_board;
+    return mbCameraZoomProc;
 }
 
-static void func_800E90BC_shared_board(void) {
+static void MBCameraInit(void) {
     Process* temp_v0;
     f32 temp_f2;
     f32 temp_f4;
 
-    temp_f2 = (f32) (D_80101248_shared_board->unk4 * D_80101248_shared_board->unkC) / 240.0f;
-    D_8010341C_shared_board = temp_f2;
-    temp_f4 = (f32) (D_80101248_shared_board->unk0 * D_80101248_shared_board->unk8) / 320.0f;
+    temp_f2 = (f32) (mbBackHdr->unk4 * mbBackHdr->unkC) / 240.0f;
+    mbBackScale = temp_f2;
+    temp_f4 = (f32) (mbBackHdr->unk0 * mbBackHdr->unk8) / 320.0f;
     if (temp_f2 < temp_f4) {
-        D_8010341C_shared_board = temp_f4;
+        mbBackScale = temp_f4;
     }
-    D_80103420_shared_board.x = D_80101248_shared_board->unk18;
-    D_80103420_shared_board.y = D_80101248_shared_board->unk1C;
-    D_80103420_shared_board.z = D_80101248_shared_board->unk20;
-    D_8010342C_shared_board.x = D_80101248_shared_board->unk24;
-    D_8010342C_shared_board.y = D_80101248_shared_board->unk28;
-    D_8010342C_shared_board.z = D_80101248_shared_board->unk2C;
-    D_80103438_shared_board.x = D_80101248_shared_board->unk30;
-    D_80103438_shared_board.y = D_80101248_shared_board->unk34;
-    D_80103438_shared_board.z = D_80101248_shared_board->unk38;
-    D_80103444_shared_board.x = (D_8010341C_shared_board * 640.0f);
-    D_80103444_shared_board.y = (D_8010341C_shared_board * 480.0f);
-    D_80103444_shared_board.z = 511.0f;
-    D_801049F8_shared_board[0] = 640.0f;
-    D_801049F8_shared_board[1] = 480.0f;
-    D_801049F0_shared_board.x = 159.5f;
-    D_801049F0_shared_board.y = 119.5f;
-    D_80103418_shared_board = 1.0f;
-    temp_v0 = omAddPrcObj(func_800E9358_shared_board, 0x1001, 0, 0);
-    D_80103410_shared_board = temp_v0;
+    mbCameraEye.x = mbBackHdr->unk18;
+    mbCameraEye.y = mbBackHdr->unk1C;
+    mbCameraEye.z = mbBackHdr->unk20;
+    mbCameraAt.x = mbBackHdr->unk24;
+    mbCameraAt.y = mbBackHdr->unk28;
+    mbCameraAt.z = mbBackHdr->unk2C;
+    mbCameraUp.x = mbBackHdr->unk30;
+    mbCameraUp.y = mbBackHdr->unk34;
+    mbCameraUp.z = mbBackHdr->unk38;
+    mbCameraViewportSize.x = (mbBackScale * 640.0f);
+    mbCameraViewportSize.y = (mbBackScale * 480.0f);
+    mbCameraViewportSize.z = 511.0f;
+    mbCameraScrPos[0] = 640.0f;
+    mbCameraScrPos[1] = 480.0f;
+    mbCameraScrTarget.x = 159.5f;
+    mbCameraScrTarget.y = 119.5f;
+    mbCameraSpeedDiv = 1.0f;
+    temp_v0 = omAddPrcObj(MBCameraUpdateMain, 0x1001, 0, 0);
+    mbCameraUpdateProc = temp_v0;
     omPrcSetStatBit(temp_v0, OM_STAT_NOALLPAUSE);
-    D_80103414_shared_board = 0;
-    Hu3DCameraPerspectiveSet(0, D_80101248_shared_board->unk10, 10.0f, 200.0f);
-    Hu3DCameraPosSetV(0, &D_80103420_shared_board, &D_8010342C_shared_board, &D_80103438_shared_board);
+    mbCameraZoomProc = 0;
+    Hu3DCameraPerspectiveSet(0, mbBackHdr->unk10, 10.0f, 200.0f);
+    Hu3DCameraPosSetV(0, &mbCameraEye, &mbCameraAt, &mbCameraUp);
     Hu3DCamUpdateMtx(0);
 }
 
-void func_800E92D4_shared_board(void) {
-    if (D_80103410_shared_board != NULL) {
-        omDelPrcObj(D_80103410_shared_board);
-        D_80103410_shared_board = NULL;
+void MBCameraKill(void) {
+    if (mbCameraUpdateProc != NULL) {
+        omDelPrcObj(mbCameraUpdateProc);
+        mbCameraUpdateProc = NULL;
     }
-    if (D_80103414_shared_board != NULL) {
-        omDelPrcObj(D_80103414_shared_board);
-        D_80103414_shared_board = NULL;
+    if (mbCameraZoomProc != NULL) {
+        omDelPrcObj(mbCameraZoomProc);
+        mbCameraZoomProc = NULL;
     }
 }
 
-static void func_800E9328_shared_board(void) {
-    func_800E92D4_shared_board();
+static void MBCameraClose(void) {
+    MBCameraKill();
 }
 
-void func_800E9344_shared_board(f32 arg0, f32 arg1) {
-    D_80101258_shared_board = arg0;
-    D_80101254_shared_board = arg1;
+void MBCameraNearFarSet(f32 arg0, f32 arg1) {
+    mbCameraNear = arg0;
+    mbCameraFar = arg1;
 }
 
-static void func_800E9358_shared_board(void) {
+static void MBCameraUpdateMain(void) {
     Vec sp10;
     s16 sp20[2];
     Vec sp28;
@@ -987,48 +987,48 @@ static void func_800E9358_shared_board(void) {
     f32 var_f2;
 
     while (1) {
-        temp_f4 = HuVecDistance(&D_80103420_shared_board, &D_8010342C_shared_board);
-        var_f2 = D_80101254_shared_board;
-        if ((var_f2 == 0.0f) || (var_f0 = D_80101258_shared_board, (var_f0 == 0.0f))) {
+        temp_f4 = HuVecDistance(&mbCameraEye, &mbCameraAt);
+        var_f2 = mbCameraFar;
+        if ((var_f2 == 0.0f) || (var_f0 = mbCameraNear, (var_f0 == 0.0f))) {
             var_f2 = temp_f4 + 1000.0f;
             var_f0 = var_f2 - 2000.0f;
         }
         if (var_f0 < 10.0f) {
             var_f0 = 10.0f;
         }
-        Hu3DCameraPerspectiveSet(0, D_80101248_shared_board->unk10, var_f0, var_f2);
-        Hu3DCameraPosSetV(0, &D_80103420_shared_board, &D_8010342C_shared_board, &D_80103438_shared_board);
+        Hu3DCameraPerspectiveSet(0, mbBackHdr->unk10, var_f0, var_f2);
+        Hu3DCameraPosSetV(0, &mbCameraEye, &mbCameraAt, &mbCameraUp);
         Hu3DCamUpdateMtx(0);
 
-        sp38.x = ((((D_801049F0_shared_board.x - 160.0f) * D_8010341C_shared_board * -4.0f) + 640.0f) - D_801049F8_shared_board[0]) / D_80103418_shared_board;
-        sp38.y = ((((D_801049F0_shared_board.y - 120.0f) * D_8010341C_shared_board * -4.0f) + 480.0f) - D_801049F8_shared_board[1]) / D_80103418_shared_board;
+        sp38.x = ((((mbCameraScrTarget.x - 160.0f) * mbBackScale * -4.0f) + 640.0f) - mbCameraScrPos[0]) / mbCameraSpeedDiv;
+        sp38.y = ((((mbCameraScrTarget.y - 120.0f) * mbBackScale * -4.0f) + 480.0f) - mbCameraScrPos[1]) / mbCameraSpeedDiv;
         sp38.z = 0.0f;
 
         temp_f2 = HuVecGetLength3F(&sp38) / 4.0f;
 
         if (temp_f2 <= 1.0f) {
-            D_80102DC0_shared_board &= 0xFFFD;
-            D_801049F8_shared_board[0] = ((D_801049F0_shared_board.x - 160.0f) * D_8010341C_shared_board * -4.0f) + 640.0f;
-            D_801049F8_shared_board[1] = ((D_801049F0_shared_board.y - 120.0f) * D_8010341C_shared_board * -4.0f) + 480.0f;
+            mbBackFlag &= 0xFFFD;
+            mbCameraScrPos[0] = ((mbCameraScrTarget.x - 160.0f) * mbBackScale * -4.0f) + 640.0f;
+            mbCameraScrPos[1] = ((mbCameraScrTarget.y - 120.0f) * mbBackScale * -4.0f) + 480.0f;
         } else {
-            D_80102DC0_shared_board |= 2;
-            if ((D_80102DBC_shared_board >= 0.0f) && (D_80102DBC_shared_board < temp_f2)) {
+            mbBackFlag |= 2;
+            if ((mbCameraSpeed >= 0.0f) && (mbCameraSpeed < temp_f2)) {
                 MBVecNormalize(&sp38);
-                HuVecMulScalar(&sp38, D_80102DBC_shared_board * 4.0f, &sp38);
+                HuVecMulScalar(&sp38, mbCameraSpeed * 4.0f, &sp38);
             }
-            D_801049F8_shared_board[0] += sp38.x;
-            D_801049F8_shared_board[1] = D_801049F8_shared_board[1] + sp38.y;
+            mbCameraScrPos[0] += sp38.x;
+            mbCameraScrPos[1] = mbCameraScrPos[1] + sp38.y;
         }
 
-        sp20[0] = D_801049F8_shared_board[0] / 4.0f;
-        sp20[1] = D_801049F8_shared_board[1] / 4.0f;
+        sp20[0] = mbCameraScrPos[0] / 4.0f;
+        sp20[1] = mbCameraScrPos[1] / 4.0f;
 
-        sp10.x = D_801049F8_shared_board[0] * D_80101250_shared_board;
-        sp10.y = D_801049F8_shared_board[1] * D_80101250_shared_board;
+        sp10.x = mbCameraScrPos[0] * mbBackZoom;
+        sp10.y = mbCameraScrPos[1] * mbBackZoom;
         sp10.z = 511.5f;
 
-        sp28.x = D_8010341C_shared_board * 640.0f * D_80101250_shared_board;
-        sp28.y = D_8010341C_shared_board * 480.0f * D_80101250_shared_board;
+        sp28.x = mbBackScale * 640.0f * mbBackZoom;
+        sp28.y = mbBackScale * 480.0f * mbBackZoom;
         sp28.z = 511.0f;
 
         Hu3DCameraViewportSet(0, &sp28, &sp10);
@@ -1037,12 +1037,12 @@ static void func_800E9358_shared_board(void) {
     }
 }
 
-void func_800E9730_shared_board(f32 arg0) {
-    D_80103418_shared_board = arg0;
+void MBCameraSpeedDivSet(f32 arg0) {
+    mbCameraSpeedDiv = arg0;
 }
 
-f32 func_800E973C_shared_board(void) {
-    return D_80103418_shared_board;
+f32 MBCameraSpeedDivGet(void) {
+    return mbCameraSpeedDiv;
 }
 
 u16 MBCameraPos3DSet(Vec *arg0) {
@@ -1052,38 +1052,38 @@ u16 MBCameraPos3DSet(Vec *arg0) {
     f32 halfH;
     Vec2f* temp;
     
-    D_8010125C_shared_board.x = arg0->x;
-    D_8010125C_shared_board.y = arg0->y;
-    D_8010125C_shared_board.z = arg0->z;
+    mbCameraFocusPos.x = arg0->x;
+    mbCameraFocusPos.y = arg0->y;
+    mbCameraFocusPos.z = arg0->z;
 
     HuVecCopyXYZ(&sp10, arg0->x, arg0->y + 10.0f, arg0->z);
-    Hu3D3Dto2D(0, &sp10, &D_801049F0_shared_board);
+    Hu3D3Dto2D(0, &sp10, &mbCameraScrTarget);
 
-    temp = &D_801049F0_shared_board;
+    temp = &mbCameraScrTarget;
 
-    halfW = 320.0f / (2.0f * D_8010341C_shared_board);
-    temp->x += halfW - (halfW / D_80101250_shared_board);
+    halfW = 320.0f / (2.0f * mbBackScale);
+    temp->x += halfW - (halfW / mbBackZoom);
 
-    halfH = 240.0f / (2.0f * D_8010341C_shared_board);
-    D_801049F0_shared_board.y += halfH - (halfH / D_80101250_shared_board);
+    halfH = 240.0f / (2.0f * mbBackScale);
+    mbCameraScrTarget.y += halfH - (halfH / mbBackZoom);
 
-    return MBBackPosClamp(&D_801049F0_shared_board, D_8010341C_shared_board);
+    return MBBackPosClamp(&mbCameraScrTarget, mbBackScale);
 }
 
 u16 MBCameraPos2DSet(Vec2f* arg0) {
-    D_801049F0_shared_board.x = arg0->x / D_8010341C_shared_board + 160.0f;
-    D_801049F0_shared_board.y = arg0->y / D_8010341C_shared_board + 120.0f;
-    return MBBackPosClamp(&D_801049F0_shared_board, D_8010341C_shared_board);
+    mbCameraScrTarget.x = arg0->x / mbBackScale + 160.0f;
+    mbCameraScrTarget.y = arg0->y / mbBackScale + 120.0f;
+    return MBBackPosClamp(&mbCameraScrTarget, mbBackScale);
 }
 
 void MBCameraPos3DGet(Vec2f* arg0) {
-    arg0->x = (D_801049F0_shared_board.x - 160.0f) * D_8010341C_shared_board;
-    arg0->y = (D_801049F0_shared_board.y - 120.0f) * D_8010341C_shared_board;
+    arg0->x = (mbCameraScrTarget.x - 160.0f) * mbBackScale;
+    arg0->y = (mbCameraScrTarget.y - 120.0f) * mbBackScale;
 }
 
 void MBCameraPos2DGet(Vec2f *arg0) {
-    arg0->x = -((D_801049F8_shared_board[0] / 4.0f) - 160.0f);
-    arg0->y = -((D_801049F8_shared_board[1] / 4.0f) - 120.0f);
+    arg0->x = -((mbCameraScrPos[0] / 4.0f) - 160.0f);
+    arg0->y = -((mbCameraScrPos[1] / 4.0f) - 120.0f);
 }
 
 void MBCamera3Dto2D(Vec* arg0, f32* arg1) {
@@ -1093,62 +1093,62 @@ void MBCamera3Dto2D(Vec* arg0, f32* arg1) {
     f32 temp_f6;
 
     Hu3D3Dto2D(0, arg0, &sp10.unk_00);
-    temp_f6 = 2.0f * D_8010341C_shared_board;
+    temp_f6 = 2.0f * mbBackScale;
     temp_f2 = 320.0f / temp_f6;
-    sp10.unk_00.x = (temp_f2 - (temp_f2 / D_80101250_shared_board)) + sp10.unk_00.x;
+    sp10.unk_00.x = (temp_f2 - (temp_f2 / mbBackZoom)) + sp10.unk_00.x;
     temp_f0 = 240.0f / temp_f6;
-    sp10.unk_00.y =  (temp_f0 - (temp_f0 / D_80101250_shared_board)) + sp10.unk_00.y;
-    sp10.unk_00.x = ((sp10.unk_00.x - 160.0f) * D_8010341C_shared_board) + 160.0f;
-    sp10.unk_00.y = ((sp10.unk_00.y - 120.0f) * D_8010341C_shared_board) + 120.0f;
-    sp10.unk_08 = (D_801049F8_shared_board[0] / 4.0f) - 160.0f;
-    sp10.unk_0C = (D_801049F8_shared_board[1] / 4.0f) - 120.0f;
+    sp10.unk_00.y =  (temp_f0 - (temp_f0 / mbBackZoom)) + sp10.unk_00.y;
+    sp10.unk_00.x = ((sp10.unk_00.x - 160.0f) * mbBackScale) + 160.0f;
+    sp10.unk_00.y = ((sp10.unk_00.y - 120.0f) * mbBackScale) + 120.0f;
+    sp10.unk_08 = (mbCameraScrPos[0] / 4.0f) - 160.0f;
+    sp10.unk_0C = (mbCameraScrPos[1] / 4.0f) - 120.0f;
     arg1[0] = sp10.unk_00.x + sp10.unk_08;
     arg1[1] = sp10.unk_00.y + sp10.unk_0C;
 }
 
 void MBBackTPLvlSet(u8 arg0) {
-    D_8010124C_shared_board = arg0;
+    mbBackTPLvl = arg0;
 }
 
 void MBBackInvertSet(s16 arg0) {
     if (arg0) {
-        D_80102DC0_shared_board |= 8;
+        mbBackFlag |= 8;
     } else {
-        D_80102DC0_shared_board &= ~8;
+        mbBackFlag &= ~8;
     }
 }
 
 void MBBackFlipSet(s16 arg0) {
     if (arg0) {
-        D_80102DC0_shared_board |= 0x10;
+        mbBackFlag |= 0x10;
     } else {
-        D_80102DC0_shared_board &= ~0x10;
+        mbBackFlag &= ~0x10;
     }
 }
 
 void MBCameraSpeedSet(f32 arg0) {
-    D_80102DBC_shared_board = arg0;
+    mbCameraSpeed = arg0;
 }
 
 f32 MBCameraSpeedGet(void) {
-    return D_80102DBC_shared_board;
+    return mbCameraSpeed;
 }
 
 s32 MBCameraStopCheck(void) {
-    return D_80102DC0_shared_board & 2;
+    return mbBackFlag & 2;
 }
 
-void func_800E9AF0_shared_board(Vec* arg0, s32 arg1) {
+void MBBackRefresh(Vec* arg0, s32 arg1) {
     f32 temp_f20;
     f32 temp_f22;
 
-    func_800E728C_shared_board();
-    func_800E7254_shared_board();
+    MBBackStreamStop();
+    MBBackStreamStart();
     temp_f22 = MBCameraSpeedGet();
     MBCameraSpeedSet(-1.0f);
-    temp_f20 = func_800E973C_shared_board();
-    func_800E9730_shared_board(1.0f);
-    func_800E6FBC_shared_board();
+    temp_f20 = MBCameraSpeedDivGet();
+    MBCameraSpeedDivSet(1.0f);
+    MBBackThreadPriHighSet();
     
     if (arg0 != NULL) {
         MBCameraPos3DSet(arg0);
@@ -1156,35 +1156,35 @@ void func_800E9AF0_shared_board(Vec* arg0, s32 arg1) {
     HuPrcVSleep();
     
     if (arg1 != 0) {
-        func_800E6FCC_shared_board();
+        MBBackThreadPriLowSet();
     }
     
-    func_800E9730_shared_board(temp_f20);
+    MBCameraSpeedDivSet(temp_f20);
     MBCameraSpeedSet(temp_f22);
 }
 
 
-void func_800E9BB0_shared_board(void) {
-    func_800E6630_shared_board((u32)hvq_data_ROM_START);
+void MBBackArcInitDef(void) {
+    MBBackArcInit((u32)hvq_data_ROM_START);
 }
 
-void func_800E9BD0_shared_board(s32 arg0) {
+void MBBackCreateNoCamera(s32 arg0) {
     MBBackCreate(arg0, 1);
-    omDelPrcObj(D_80103410_shared_board);
-    D_80103410_shared_board = NULL;
+    omDelPrcObj(mbCameraUpdateProc);
+    mbCameraUpdateProc = NULL;
 }
 
 void MBCameraOffsetSet(s16 arg0, s16 arg1) {
     MBBackOffsetSet(arg0, arg1);
 }
 
-void func_800E9C28_shared_board(s16 arg0, s16 arg1) {
-    D_801049F0_shared_board.x = (arg0 / D_8010341C_shared_board) + 160.0f;
-    D_801049F0_shared_board.y = (arg1 / D_8010341C_shared_board) + 120.0f;
+void MBCameraScrPosSet(s16 arg0, s16 arg1) {
+    mbCameraScrTarget.x = (arg0 / mbBackScale) + 160.0f;
+    mbCameraScrTarget.y = (arg1 / mbBackScale) + 120.0f;
 }
 
 
-static void func_800E9C94_shared_board(void) {
+static void MBBackSprMain(void) {
     UnkBoard7 *obj;
     f32 pos[2];
     f32 maxX, maxY;
@@ -1192,8 +1192,8 @@ static void func_800E9C94_shared_board(void) {
     s32 i;
 
     while (TRUE) {
-        for (i = 0; i < ARRAY_COUNT(D_80104A00_shared_board); i++) {
-            obj = &D_80104A00_shared_board[i];
+        for (i = 0; i < ARRAY_COUNT(mbBackSprTbl); i++) {
+            obj = &mbBackSprTbl[i];
 
             if (!(obj->unk_00 & 1)) {
                 continue;
@@ -1202,7 +1202,7 @@ static void func_800E9C94_shared_board(void) {
             MBCamera3Dto2D(&obj->pos, pos);
 
             if (obj->unk_01 != 0) {
-                HuSprPosSet(obj->unk_02, 0, (D_801049F8_shared_board[0] / (f32)obj->unk_01) + pos[0], (D_801049F8_shared_board[1] / (f32)obj->unk_01) + pos[1]);
+                HuSprPosSet(obj->unk_02, 0, (mbCameraScrPos[0] / (f32)obj->unk_01) + pos[0], (mbCameraScrPos[1] / (f32)obj->unk_01) + pos[1]);
             } else {
                 HuSprPosSet(obj->unk_02, 0, pos[0], pos[1]);
             }
@@ -1235,7 +1235,7 @@ static void func_800E9C94_shared_board(void) {
                 obj->pos.y += obj->vel.y;
             }
 
-            if (D_801012BC_shared_board != 0) {
+            if (mbBackSprDispF != 0) {
                 HuSprDispOn(obj->unk_02, 0);
             } else {
                 HuSprDispOff(obj->unk_02, 0);
@@ -1245,25 +1245,25 @@ static void func_800E9C94_shared_board(void) {
     }
 }
 
-void func_800E9EF4_shared_board(void) {
+void MBBackSprInit(void) {
     s32 i;
 
-    for (i = 0; i < ARRAY_COUNT(D_80104A00_shared_board); i++) {
-        D_80104A00_shared_board[i].unk_00 = 0;
+    for (i = 0; i < ARRAY_COUNT(mbBackSprTbl); i++) {
+        mbBackSprTbl[i].unk_00 = 0;
     }
 
-    D_80105200_shared_board = 0;
+    mbBackSprNum = 0;
 }
 
-s32 func_800E9F24_shared_board(s32 arg0, Vec *arg1) {
+s32 MBBackSprCreate(s32 arg0, Vec *arg1) {
     UnkBoard7 *obj;
     Process *proc;
     void *data;
     s32 count;
     s32 i;
 
-    for (i = 0; i < ARRAY_COUNT(D_80104A00_shared_board); i++) {
-        obj = &D_80104A00_shared_board[i];
+    for (i = 0; i < ARRAY_COUNT(mbBackSprTbl); i++) {
+        obj = &mbBackSprTbl[i];
         if (obj->unk_00 & 1) {
             continue;
         }
@@ -1287,24 +1287,24 @@ s32 func_800E9F24_shared_board(s32 arg0, Vec *arg1) {
         HuSprAttrSet(obj->unk_02, 0, 0x9000);
         HuSprScissorSet(obj->unk_02, 0, 0x10, 0xC, 0x130, 0xE4);
     
-        if (D_80105200_shared_board == 0) {
-            proc = omAddPrcObj(func_800E9C94_shared_board, 0x1001, 0, 0);
-            D_801012B8_shared_board = proc;
+        if (mbBackSprNum == 0) {
+            proc = omAddPrcObj(MBBackSprMain, 0x1001, 0, 0);
+            mbBackSprProc = proc;
             omPrcSetStatBit(proc, OM_STAT_NOALLPAUSE);
         }
         
-        D_80105200_shared_board++;
+        mbBackSprNum++;
         return i;
     }
     return -1;
 }
 
-s32 func_800EA0B8_shared_board(s32 arg0, Vec *arg1) {
+s32 MBBackSprCopyCreate(s32 arg0, Vec *arg1) {
     UnkBoard7 *unkBoard7;
     s32 i;
 
-    for (i = 0; i < ARRAY_COUNT(D_80104A00_shared_board); i++) {
-        unkBoard7 = &D_80104A00_shared_board[i];
+    for (i = 0; i < ARRAY_COUNT(mbBackSprTbl); i++) {
+        unkBoard7 = &mbBackSprTbl[i];
         if (unkBoard7->unk_00 & 1) {
             continue;
         }
@@ -1319,20 +1319,20 @@ s32 func_800EA0B8_shared_board(s32 arg0, Vec *arg1) {
         unkBoard7->unk_02 = HuSprGrpCreate(1, 0);
 
         HuSprGrpMemberSet(unkBoard7->unk_02, 0,
-                            D_80104A00_shared_board[arg0].unk_04, 0);
+                            mbBackSprTbl[arg0].unk_04, 0);
         HuSprAnimModeSet(unkBoard7->unk_02, 0, HUSPR_ANIM_MODE_BANK);
         HuSprPriSet(unkBoard7->unk_02, 0, 0x8000);
         HuSprAttrSet(unkBoard7->unk_02, 0, 0x9000);
         HuSprScissorSet(unkBoard7->unk_02, 0, 0x10, 0xC, 0x130, 0xE4);
 
-        D_80105200_shared_board++;
+        mbBackSprNum++;
         return i;
     }
     return -1;
 }
 
-static void func_800EA200_shared_board(s32 arg0) {
-    UnkBoard7* temp_s0 = &D_80104A00_shared_board[arg0];
+static void MBBackSprKill(s32 arg0) {
+    UnkBoard7* temp_s0 = &mbBackSprTbl[arg0];
 
     if (temp_s0->unk_00 & 1) {
         if (!(temp_s0->unk_00 & 2)) {
@@ -1340,47 +1340,47 @@ static void func_800EA200_shared_board(s32 arg0) {
         }
         HuSprGrpKill(temp_s0->unk_02);
         temp_s0->unk_00 = 0;
-        D_80105200_shared_board--;
-        if (D_80105200_shared_board == 0) {
-            omDelPrcObj(D_801012B8_shared_board);
-            D_801012B8_shared_board = NULL;
+        mbBackSprNum--;
+        if (mbBackSprNum == 0) {
+            omDelPrcObj(mbBackSprProc);
+            mbBackSprProc = NULL;
         }
     }
 }
 
-void func_800EA284_shared_board(void) {
+void MBBackSprKillAll(void) {
     s32 i;
 
-    for (i = 0; i < ARRAY_COUNT(D_80104A00_shared_board); i++) {
-        func_800EA200_shared_board(i);
+    for (i = 0; i < ARRAY_COUNT(mbBackSprTbl); i++) {
+        MBBackSprKill(i);
     }
 }
 
-void func_800EA2BC_shared_board(s32 arg0, s8 arg1) {
-    D_80104A00_shared_board[arg0].unk_01 = arg1;
+void MBBackSprParallaxSet(s32 arg0, s8 arg1) {
+    mbBackSprTbl[arg0].unk_01 = arg1;
 }
 
-void func_800EA2D0_shared_board(s32 arg0, s16 arg1) {
-    D_80104A00_shared_board[arg0].unk_06 = arg1;
+void MBBackSprTPLvlSet(s32 arg0, s16 arg1) {
+    mbBackSprTbl[arg0].unk_06 = arg1;
 }
 
-void func_800EA2E4_shared_board(s32 arg0, RGB* arg1) {
-    HuSprColorSet(D_80104A00_shared_board[arg0].unk_02, 0, arg1->r, arg1->g, arg1->b);
+void MBBackSprColorSet(s32 arg0, RGB* arg1) {
+    HuSprColorSet(mbBackSprTbl[arg0].unk_02, 0, arg1->r, arg1->g, arg1->b);
 }
 
-void func_800EA320_shared_board(s32 arg0, Vec* arg1) {
-    HuVecCopy3F(&D_80104A00_shared_board[arg0].vel, arg1);
+void MBBackSprVelSet(s32 arg0, Vec* arg1) {
+    HuVecCopy3F(&mbBackSprTbl[arg0].vel, arg1);
 }
 
-void func_800EA348_shared_board(void) {
-    D_801012BC_shared_board = 1;
+void MBBackSprDispOn(void) {
+    mbBackSprDispF = 1;
 }
 
-void func_800EA358_shared_board(void) {
-    D_801012BC_shared_board = 0;
+void MBBackSprDispOff(void) {
+    mbBackSprDispF = 0;
 }
 
-void func_800EA364_shared_board(s16 arg0) {
+void MBBackColorModeSet(s16 arg0) {
     OverlayBgEntry *entry;
     u16 color;
     u8 r, g, b;
@@ -1391,12 +1391,12 @@ void func_800EA364_shared_board(s16 arg0) {
 
     switch (arg0) {
         case 0:
-            func_800E9AF0_shared_board(NULL, 0);
+            MBBackRefresh(NULL, 0);
             break;
 
         case 1:
-            for (i = 0; i < ARRAY_COUNT(D_80102DD8_shared_board); i++) {
-                entry = &D_80102DD8_shared_board[i];
+            for (i = 0; i < ARRAY_COUNT(mbBackTileTbl); i++) {
+                entry = &mbBackTileTbl[i];
                 if (entry->pixels == NULL) {
                     continue;
                 }
@@ -1420,7 +1420,7 @@ void func_800EA364_shared_board(s16 arg0) {
     }
 }
 
-void func_800EA4CC_shared_board(void) {
+void MBBackIdleProc(void) {
     while (1) {
         HuPrcVSleep();
     }
@@ -1430,23 +1430,23 @@ static void MBMasuBmpCreate(s16 arg0) {
     s32 *var_s2;
     s32 i;
 
-    D_80105260_shared_board = arg0;
+    mbMasuBmpMode = arg0;
 
     switch (arg0) {
         case 0:
         default:
-            var_s2 = D_801012C8_shared_board;
+            var_s2 = mbMasuBmpTbl;
             break;
         case 1:
-            var_s2 = D_80101318_shared_board;
+            var_s2 = mbMasuBmpAltTbl;
             break;
     }
 
     for (i = 0; i < SPACE_TYPES_TOTAL; i++) {
         if (var_s2[i] != 0) {
-            D_80105220_shared_board[i] = DataRead(var_s2[i]);
+            mbMasuBmpDataTbl[i] = DataRead(var_s2[i]);
         } else {
-            D_80105220_shared_board[i] = NULL;
+            mbMasuBmpDataTbl[i] = NULL;
         }
     }
 }
@@ -1455,46 +1455,46 @@ static void MBMasuBmpKill(void) {
     s32 i;
 
     for (i = 0; i < SPACE_TYPES_TOTAL; i++) {
-        if (D_80105220_shared_board[i] != 0) {
-            DataClose(D_80105220_shared_board[i]);
+        if (mbMasuBmpDataTbl[i] != 0) {
+            DataClose(mbMasuBmpDataTbl[i]);
         }
-        D_80105220_shared_board[i] = 0;
+        mbMasuBmpDataTbl[i] = 0;
     }
 }
 
-void func_800EA60C_shared_board(void) {
+void MBMasuInit(void) {
     s32 i;
 
     MBMasuBmpCreate(0);
-    D_801012C0_shared_board = 0;
-    D_801052B0_shared_board = 0;
+    mbMasuData = 0;
+    mbMasuArrowAngleNum = 0;
 
     for (i = 0; i < 16; i++) {
-        D_80105500_shared_board[i] = 0;
+        mbMasuFlagTbl[i] = 0;
     }
 }
 
 void MBMasuArrowAngleAdd(f32 arg0) {
-    if (D_801052B0_shared_board != 8) {
-        D_80105290_shared_board[D_801052B0_shared_board++] = arg0;
+    if (mbMasuArrowAngleNum != 8) {
+        mbMasuArrowAngleTbl[mbMasuArrowAngleNum++] = arg0;
     }
 }
 
-void func_800EA694_shared_board(void) {
+void MBMasuClose(void) {
     MBMasuBmpKill();
 }
 
-void func_800EA6B0_shared_board(s16 arg0) {
+void MBMasuBmpModeSet(s16 arg0) {
     MBMasuBmpKill();
     MBMasuBmpCreate(arg0);
 }
 
 void MBMasuStarSet(s32 arg0, s16 arg1) {
-    D_80105540_shared_board[arg0] = arg1;
+    mbMasuStarTbl[arg0] = arg1;
 }
 
-extern s16 D_80105260_shared_board;
-extern u16 D_80105262_shared_board;
+extern s16 mbMasuBmpMode;
+extern u16 mbMasuDispF;
 
 static void MBMasuDraw(Gfx **arg0, Mtx *arg1, s32 arg2) {
     Gfx **gfxPos = arg0;
@@ -1516,58 +1516,58 @@ static void MBMasuDraw(Gfx **arg0, Mtx *arg1, s32 arg2) {
 
     sp5C = arg1;
     var_s5 = 0;
-    if (!(arg2 & 0xFF) && (D_80105262_shared_board != 0) && (D_801012C4_shared_board != 0)) {
+    if (!(arg2 & 0xFF) && (mbMasuDispF != 0) && (mbMasuTypeListTbl != 0)) {
         sp7E = HuProfCpuBegin(0xC8, 0xC8, 0xC8);
-        gSPDisplayList((*gfxPos)++, D_801013D8_shared_board);
+        gSPDisplayList((*gfxPos)++, mbMasuGfxInit);
         Hu3DCameraSet(0, gfxPos);
         Hu3DCameraScissorDraw(0, gfxPos);
         MBCameraPos3DGet(&sp50);
 
-        if ((D_80105260_shared_board == 0) || (var_v0 = 8, (D_80105260_shared_board != 1))) {
+        if ((mbMasuBmpMode == 0) || (var_v0 = 8, (mbMasuBmpMode != 1))) {
             var_v0 = 0x10;
-            sp64 = (Vtx *)OS_K0_TO_PHYSICAL(D_80101358_shared_board);
-            sp6C = D_80101308_shared_board;
+            sp64 = (Vtx *)OS_K0_TO_PHYSICAL(mbMasuVtx);
+            sp6C = mbMasuBmpSizeTbl;
             sp74 = 0;
         } else {
             var_v0 = 8;
-            sp64 = (Vtx *)OS_K0_TO_PHYSICAL(D_80101398_shared_board);
+            sp64 = (Vtx *)OS_K0_TO_PHYSICAL(mbMasuAltVtx);
             sp6C = NULL;
             sp74 = 1;
         }
         // iterate over all space types
         for (i = 0; i < SPACE_TYPES_TOTAL; i++) {
-            if (D_80105220_shared_board[i] != 0) {
+            if (mbMasuBmpDataTbl[i] != 0) {
                 if (sp74 == 0) {
                     switch (sp6C[i]) {
                         case 0:
-                            gDPLoadTextureBlock((*gfxPos)++, D_80105220_shared_board[i] + 0x10, G_IM_FMT_RGBA, G_IM_SIZ_32b,
+                            gDPLoadTextureBlock((*gfxPos)++, mbMasuBmpDataTbl[i] + 0x10, G_IM_FMT_RGBA, G_IM_SIZ_32b,
                                                 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
                             break;
                         case 1:
                             // + 0x10 to skip image header data
-                            gDPLoadTextureBlock((*gfxPos)++, D_80105220_shared_board[i] + 0x10, G_IM_FMT_RGBA, G_IM_SIZ_32b,
+                            gDPLoadTextureBlock((*gfxPos)++, mbMasuBmpDataTbl[i] + 0x10, G_IM_FMT_RGBA, G_IM_SIZ_32b,
                                                 16, 32, 0, G_TX_MIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
                             break;
                         case 2:
-                            gDPLoadTextureBlock((*gfxPos)++, D_80105220_shared_board[i] + 0x10, G_IM_FMT_RGBA, G_IM_SIZ_32b,
+                            gDPLoadTextureBlock((*gfxPos)++, mbMasuBmpDataTbl[i] + 0x10, G_IM_FMT_RGBA, G_IM_SIZ_32b,
                                                 16, 16, 0, G_TX_MIRROR | G_TX_WRAP, G_TX_MIRROR | G_TX_WRAP, 4, 4, G_TX_NOLOD, G_TX_NOLOD);
                             break;
                     }
                 } else {
-                    gDPLoadTextureBlock((*gfxPos)++, D_80105220_shared_board[i] + 0x10, G_IM_FMT_RGBA, G_IM_SIZ_32b,
+                    gDPLoadTextureBlock((*gfxPos)++, mbMasuBmpDataTbl[i] + 0x10, G_IM_FMT_RGBA, G_IM_SIZ_32b,
                                         var_v0, var_v0, 0, G_TX_MIRROR | G_TX_WRAP, G_TX_MIRROR | G_TX_WRAP, 4, 4, G_TX_NOLOD, G_TX_NOLOD);
                 }
                 // read over a space types space array
                 for (j = 0; j < gTotalSpaces; j++) {
-                    s32 spaceId = D_801012C4_shared_board[i][j];
+                    s32 spaceId = mbMasuTypeListTbl[i][j];
                     if (spaceId == 0xff) {
                         break;
                     }
                     temp_s0 = MBMasuGet(spaceId);
                     func_80089980_main(sp10, &sp5C[1]);
                     mtxTransCat(sp10, temp_s0->coords.x, temp_s0->coords.y, temp_s0->coords.z);
-                    if ((i == 0xD) && (var_s5 < D_801052B0_shared_board)) {
-                        mtxRotYCat(sp10, D_80105290_shared_board[var_s5++]);
+                    if ((i == 0xD) && (var_s5 < mbMasuArrowAngleNum)) {
+                        mtxRotYCat(sp10, mbMasuArrowAngleTbl[var_s5++]);
                     }
                     mtxScaleCat(sp10, temp_s0->rot.x, 1.0f, temp_s0->rot.z);
                     temp_s0_3 = &MTXBuf[MTXBufNum++];
@@ -1584,7 +1584,7 @@ static void MBMasuDraw(Gfx **arg0, Mtx *arg1, s32 arg2) {
 }
 
 //TODO: how is this meant to be written?
-u16 *func_800EAE00_shared_board(u16 *base, s32 offset) {
+u16 *MBMasuDataOfsGet(u16 *base, s32 offset) {
     return (u16 *)((u8 *)base + *(u16 *)((u8 *)base + offset));
 }
 
@@ -1600,18 +1600,18 @@ s32 MBMasuCreate(s32 arg0, s32 arg1) {
     u16* temp_v0_2;
     struct var_s0* var_s0;
 
-    D_801012C0_shared_board = DataRead((arg0 << 0x10) | (arg1 << 0x10 >> 0x10));
-    if (D_801012C0_shared_board != NULL) {
-        D_80105278_shared_board = 0;
-        D_8010527C_shared_board = 0;
-        D_80105280_shared_board = 0;
-        D_80105284_shared_board = 0;
-        var_s0_2 = D_801012C0_shared_board;
+    mbMasuData = DataRead((arg0 << 0x10) | (arg1 << 0x10 >> 0x10));
+    if (mbMasuData != NULL) {
+        mbMasuEventBoardStartTbl = 0;
+        mbMasuEventRoundEndTbl = 0;
+        mbMasuEventTurnStartTbl = 0;
+        mbMasuEventTurnTelopTbl = 0;
+        var_s0_2 = mbMasuData;
         gTotalSpaces = var_s0_2[0];
-        D_80105212_shared_board = var_s0_2[1];
-        D_80105214_shared_board = HuMemMemoryAllocTemp(gTotalSpaces * 0x24);
-        var_s0_2 = func_800EAE00_shared_board(D_801012C0_shared_board, 4);
-        var_s1 = D_80105214_shared_board;
+        mbMasuLinkNum = var_s0_2[1];
+        mbMasuTbl = HuMemMemoryAllocTemp(gTotalSpaces * 0x24);
+        var_s0_2 = MBMasuDataOfsGet(mbMasuData, 4);
+        var_s1 = mbMasuTbl;
         for (var_s2 = 0; var_s2 < gTotalSpaces; var_s2++) {
             var_s1->unk_00 = 1;
             var_s1->unk_02 = *var_s0_2++;
@@ -1627,11 +1627,11 @@ s32 MBMasuCreate(s32 arg0, s32 arg1) {
             var_s1 += 1;
         }
         (void)sp10; // Suppress unused variable warning
-        D_80105218_shared_board = HuMemMemoryAllocTemp(D_80105212_shared_board * 8);
-        temp_s3 = func_800EAE00_shared_board(D_801012C0_shared_board, 6);
-        var_s1_2 = D_80105218_shared_board;
-        for (var_s2 = 0; var_s2 < D_80105212_shared_board; var_s2++) {
-            var_s0_2 = func_800EAE00_shared_board(temp_s3, var_s2 * 2);
+        mbMasuLinkTbl = HuMemMemoryAllocTemp(mbMasuLinkNum * 8);
+        temp_s3 = MBMasuDataOfsGet(mbMasuData, 6);
+        var_s1_2 = mbMasuLinkTbl;
+        for (var_s2 = 0; var_s2 < mbMasuLinkNum; var_s2++) {
+            var_s0_2 = MBMasuDataOfsGet(temp_s3, var_s2 * 2);
             var_s1_2->chainIndicies = *var_s0_2++;
             var_s1_2->spaces = HuMemMemoryAllocTemp(((var_s1_2->chainIndicies << 1)));
             temp_v0_3 = var_s1_2->spaces;
@@ -1640,54 +1640,54 @@ s32 MBMasuCreate(s32 arg0, s32 arg1) {
             }
             var_s1_2 += 1;
         }
-        DataClose(D_801012C0_shared_board);
+        DataClose(mbMasuData);
         Hu3DLayerHookSet(1, &MBMasuDraw);
-        D_80105262_shared_board = 1;
+        mbMasuDispF = 1;
     }
-    D_801054B6_shared_board = 0;
-    D_801054F8_shared_board = 0;
+    mbMasuBlockExtNum = 0;
+    mbMasuBlockNum = 0;
 
     return 0;
 }
 
-void func_800EB09C_shared_board(void) {
+void MBMasuKill(void) {
     LinkData* var_s1;
     s32 i;
 
-    if (D_801012C0_shared_board != NULL) {
-        D_801012C0_shared_board = NULL;
-        D_80105262_shared_board = 0;
-        HuMemMemoryFreeTemp(D_80105214_shared_board);
+    if (mbMasuData != NULL) {
+        mbMasuData = NULL;
+        mbMasuDispF = 0;
+        HuMemMemoryFreeTemp(mbMasuTbl);
         
-        var_s1 = D_80105218_shared_board;
-        for (i = 0; i < D_80105212_shared_board; i++, var_s1++) {
+        var_s1 = mbMasuLinkTbl;
+        for (i = 0; i < mbMasuLinkNum; i++, var_s1++) {
             HuMemMemoryFreeTemp(var_s1->spaces);
         }
         
-        HuMemMemoryFreeTemp(D_80105218_shared_board);
+        HuMemMemoryFreeTemp(mbMasuLinkTbl);
         Hu3DLayerHookSet(1, NULL);
     }
-    if (D_801012C4_shared_board != NULL) {
-        HuMemMemoryFreeTemp(D_801012C4_shared_board);
-        D_801012C4_shared_board = NULL;
+    if (mbMasuTypeListTbl != NULL) {
+        HuMemMemoryFreeTemp(mbMasuTypeListTbl);
+        mbMasuTypeListTbl = NULL;
     }
 }
 
 //file split?
 
 SpaceData *MBMasuGet(s16 arg0) {
-    return &D_80105214_shared_board[arg0];
+    return &mbMasuTbl[arg0];
 }
 
 s16 MBMasuLinkMasuIdGet(u16 linkIdx, u16 spaceIdx) {
-    return D_80105218_shared_board[linkIdx].spaces[spaceIdx];
+    return mbMasuLinkTbl[linkIdx].spaces[spaceIdx];
 }
 
 s16 MBMasuLinkNumGet(u16 arg0) {
-    return D_80105218_shared_board[arg0].chainIndicies;
+    return mbMasuLinkTbl[arg0].chainIndicies;
 }
 
-static s16 func_800EB1CC_shared_board(s16 arg0, s16 arg1) {
+static s16 MBMasuLinkSearch(s16 arg0, s16 arg1) {
     s32 i;
 
     for (i = 0; i < MBMasuLinkNumGet(arg1); i++) {
@@ -1698,11 +1698,11 @@ static s16 func_800EB1CC_shared_board(s16 arg0, s16 arg1) {
     return -1;
 }
 
-void func_800EB24C_shared_board(s16 arg0, s8 *chainOut, s8 *linkOut) {
+void MBMasuLinkIdxGet(s16 arg0, s8 *chainOut, s8 *linkOut) {
     s32 chain;
     s32 link;
 
-    for (chain = 0; chain < D_80105212_shared_board; chain++) {
+    for (chain = 0; chain < mbMasuLinkNum; chain++) {
         for (link = 0; link < MBMasuLinkNumGet(chain); link++) {
             if (MBMasuLinkMasuIdGet(chain, link) == arg0) {
                 *chainOut = chain;
@@ -1713,16 +1713,16 @@ void func_800EB24C_shared_board(s16 arg0, s8 *chainOut, s8 *linkOut) {
     }
 }
 
-s32 func_800EB310_shared_board(s16 arg0, s8 *arg1, s8 *arg2) {
+s32 MBMasuOtherLinkGet(s16 arg0, s8 *arg1, s8 *arg2) {
     s16 link;
     s32 i;
 
-    for (i = 0; i < D_80105212_shared_board; i++) {
+    for (i = 0; i < mbMasuLinkNum; i++) {
         if (*arg1 == i) {
             continue;
         }
 
-        link = func_800EB1CC_shared_board(arg0, i);
+        link = MBMasuLinkSearch(arg0, i);
         if (link != -1) {
             *arg1 = i;
             *arg2 = link;
@@ -1732,16 +1732,16 @@ s32 func_800EB310_shared_board(s16 arg0, s8 *arg1, s8 *arg2) {
     return -1;
 }
 
-void func_800EB3C0_shared_board(void) {
+void MBMoveStartMasuSet(void) {
     LinkData *chain;
     s16 *space;
     s16 i;
     s16 j;
     s16 k;
 
-    chain = D_80105218_shared_board;
+    chain = mbMasuLinkTbl;
 
-    for (i = 0; i < D_80105212_shared_board; i++) {
+    for (i = 0; i < mbMasuLinkNum; i++) {
         space = chain->spaces;
 
         for (j = 0; j < chain->chainIndicies; j++) {
@@ -1761,7 +1761,7 @@ void func_800EB3C0_shared_board(void) {
     }
 }
 
-s16 func_800EB4F0_shared_board(u16 arg0, u16 arg1) {
+s16 MBMasuLinkRandIdxGet(u16 arg0, u16 arg1) {
     s32 linkNum;
     s32 i;
     u8 count;
@@ -1770,7 +1770,7 @@ s16 func_800EB4F0_shared_board(u16 arg0, u16 arg1) {
     count = (rand8() % 30) + 1;
     
     for (i = 0;;) {
-        if (D_80101468_shared_board[MBMasuGet(MBMasuLinkMasuIdGet(arg1, i))->space_type & 0xF] & arg0) {
+        if (mbMasuTypeBitTbl[MBMasuGet(MBMasuLinkMasuIdGet(arg1, i))->space_type & 0xF] & arg0) {
             if (--count == 0) {
                 break;
             }
@@ -1792,35 +1792,35 @@ static s16 MBMasuBlockGet(u16 arg0, u8 arg1) {
 
     for (i = 0; i < gTotalSpaces; i++) {
         space = MBMasuGet(i);
-        if (D_80101468_shared_board[space->space_type & 0xF] & arg0) {
+        if (mbMasuTypeBitTbl[space->space_type & 0xF] & arg0) {
             var_s1++;
         }
     }
 
-    var_s1 -= D_801054F8_shared_board;
+    var_s1 -= mbMasuBlockNum;
     if (arg1 < 5) {
-        var_s1 -= D_801054B6_shared_board;
+        var_s1 -= mbMasuBlockExtNum;
     }
 
     var_s1 = MBRand(var_s1);
 
     for (i = 0;; i = (++i < gTotalSpaces) ? i : 0) {
         space = MBMasuGet(i);
-        for (j = 0; j < D_801054F8_shared_board; j++) {
-            if (D_801054B8_shared_board[j] == i) {
+        for (j = 0; j < mbMasuBlockNum; j++) {
+            if (mbMasuBlockTbl[j] == i) {
                 break;
             }
         }
 
-        if (j == D_801054F8_shared_board) {
+        if (j == mbMasuBlockNum) {
             if (arg1 < 5) {
-                for (j = 0; j < D_801054B6_shared_board; j++) {
-                    if (D_801052B8_shared_board[j] == i) {
+                for (j = 0; j < mbMasuBlockExtNum; j++) {
+                    if (mbMasuBlockExtTbl[j] == i) {
                         break;
                     }
                 }
-                if (j == D_801054B6_shared_board) {
-                    if (D_80101468_shared_board[space->space_type & 0xF] & arg0) {
+                if (j == mbMasuBlockExtNum) {
+                    if (mbMasuTypeBitTbl[space->space_type & 0xF] & arg0) {
                         if (var_s1 == 0) {
                             break;
                         }
@@ -1828,7 +1828,7 @@ static s16 MBMasuBlockGet(u16 arg0, u8 arg1) {
                     }
                 }
             } else {
-                if (D_80101468_shared_board[space->space_type & 0xF] & arg0) {
+                if (mbMasuTypeBitTbl[space->space_type & 0xF] & arg0) {
                     if (var_s1 == 0) {
                         break;
                     }
@@ -1846,7 +1846,7 @@ void MBMasuTypeSet(s16 spaceIdx, s32 newSpaceType) {
 }
 
 // unused, sets all space types in a link to a new type
-void func_800EB820_shared_board(u16 linkNo, u16 curSpaceType, u8 newSpaceType) {
+void MBMasuLinkTypeSet(u16 linkNo, u16 curSpaceType, u8 newSpaceType) {
     s32 linkSpaceCount;
     SpaceData *space;
     s32 i;
@@ -1861,7 +1861,7 @@ void func_800EB820_shared_board(u16 linkNo, u16 curSpaceType, u8 newSpaceType) {
     }
 }
 
-static void func_800EB8BC_shared_board(void) {
+static void MBMasuBounceProc(void) {
     SpaceData* temp_v0;
     f32 temp_f22;
     f32 var_f20;
@@ -1870,7 +1870,7 @@ static void func_800EB8BC_shared_board(void) {
     temp_v0 = MBMasuGet((s16)(s32)proc->user_data);
     temp_f22 = temp_v0->rot.x;
     var_f20 = temp_f22 + 0.03f;
-    if (D_801012C0_shared_board != 0) {
+    if (mbMasuData != 0) {
         while (1) {
             HuPrcVSleep();
             
@@ -1881,7 +1881,7 @@ static void func_800EB8BC_shared_board(void) {
             
             temp_v0->rot.x = var_f20;
             temp_v0->rot.z = var_f20;
-            if ((var_f20 <= temp_f22) || (D_801012C0_shared_board == 0)) {
+            if ((var_f20 <= temp_f22) || (mbMasuData == 0)) {
                 break;
             }            
         }
@@ -1890,23 +1890,23 @@ static void func_800EB8BC_shared_board(void) {
     omDelPrcObj(NULL);
 }
 
-void func_800EB97C_shared_board(s16 arg0) {
-    omAddPrcObj(func_800EB8BC_shared_board, 0xEF00, 0, 0)->user_data = (void *)(s32)arg0;
+void MBMasuBounceCreate(s16 arg0) {
+    omAddPrcObj(MBMasuBounceProc, 0xEF00, 0, 0)->user_data = (void *)(s32)arg0;
 }
 
 static void MBMasuEventSet(s16 arg0, void *arg1) {
     switch (arg0) {
         case -2:
-            D_80105278_shared_board = arg1;
+            mbMasuEventBoardStartTbl = arg1;
             break;
         case -3:
-            D_8010527C_shared_board = arg1;
+            mbMasuEventRoundEndTbl = arg1;
             break;
         case -4:
-            D_80105280_shared_board = arg1;
+            mbMasuEventTurnStartTbl = arg1;
             break;
         case -5:
-            D_80105284_shared_board = arg1;
+            mbMasuEventTurnTelopTbl = arg1;
             break;
         default:
             MBMasuGet(arg0)->event_list = arg1;
@@ -1933,10 +1933,10 @@ s32 MBMasuEventCall(s16 arg0, s16 arg1) {
     }
 
     switch (arg0) {
-        case -2: entry = D_80105278_shared_board; break;
-        case -3: entry = D_8010527C_shared_board; break;
-        case -4: entry = D_80105280_shared_board; break;
-        case -5: entry = D_80105284_shared_board; break;
+        case -2: entry = mbMasuEventBoardStartTbl; break;
+        case -3: entry = mbMasuEventRoundEndTbl; break;
+        case -4: entry = mbMasuEventTurnStartTbl; break;
+        case -5: entry = mbMasuEventTurnTelopTbl; break;
         default: entry = MBMasuGet(arg0)->event_list;     break;
     }
 
@@ -1947,7 +1947,7 @@ s32 MBMasuEventCall(s16 arg0, s16 arg1) {
     if (entry != NULL) {
         while (entry->activation_type != 0) {
             if (entry->activation_type == arg1) {
-                D_80105288_shared_board = 0;
+                mbMasuEventResult = 0;
                 switch (entry->execution_type) {
                     case 1:
                         entry->event_fn();
@@ -1958,7 +1958,7 @@ s32 MBMasuEventCall(s16 arg0, s16 arg1) {
                         HuPrcChildWatch();
                         break;
                 }
-                ret |= D_80105288_shared_board;
+                ret |= mbMasuEventResult;
             }
             entry++;
         }
@@ -1968,8 +1968,8 @@ s32 MBMasuEventCall(s16 arg0, s16 arg1) {
     return ret;
 }
 
-void func_800EBCB0_shared_board(s32 arg0) {
-    D_80105288_shared_board = arg0;
+void MBMasuEventResultSet(s32 arg0) {
+    mbMasuEventResult = arg0;
 }
 
 void MBMasuCurSet(s16 arg0) {
@@ -1988,55 +1988,55 @@ void MBMasuBlockTblExtSet(s16 *arg0) {
     s32 i;
 
     for (i = 0; *arg0 != -1; i++) {
-        D_801052B8_shared_board[i] = *arg0++;
+        mbMasuBlockExtTbl[i] = *arg0++;
     }
     
-    D_801054B6_shared_board = i;
+    mbMasuBlockExtNum = i;
 }
 
 void MBMasuBlockTblSet(s16 *arg0) {
     s32 i;
 
     for (i = 0; *arg0 != -1; i++) {
-        D_801054B8_shared_board[i] = *arg0++;
+        mbMasuBlockTbl[i] = *arg0++;
     }
     
-    D_801054F8_shared_board = i;
+    mbMasuBlockNum = i;
 }
 
-void func_800EBDAC_shared_board(void) {
+void MBMasuTypeListCreate(void) {
     s32 var_s0;
     s32 i, j;
 
-    if (D_801012C4_shared_board != NULL) {
-        HuMemMemoryFreeTemp(D_801012C4_shared_board);
+    if (mbMasuTypeListTbl != NULL) {
+        HuMemMemoryFreeTemp(mbMasuTypeListTbl);
     }
 
-    D_801012C4_shared_board = HuMemMemoryAllocTemp(SPACE_TYPES_TOTAL * SPACES_MAX);
+    mbMasuTypeListTbl = HuMemMemoryAllocTemp(SPACE_TYPES_TOTAL * SPACES_MAX);
 
     for (i = 0; i < SPACE_TYPES_TOTAL; i++) {
         var_s0 = 0;
 
         for (j = 0; j < gTotalSpaces; j++) {
             if (MBMasuGet(j)->space_type == i) {
-                D_801012C4_shared_board[i][var_s0] = j;
+                mbMasuTypeListTbl[i][var_s0] = j;
                 var_s0++;
             }
         }
 
-        D_801012C4_shared_board[i][var_s0] = 0xFF;
-        D_80105268_shared_board[i] = var_s0;
+        mbMasuTypeListTbl[i][var_s0] = 0xFF;
+        mbMasuTypeNumTbl[i] = var_s0;
     }
 }
 
-u8 func_800EBEAC_shared_board(s32 arg0, s32 arg1) {
-    return D_801012C4_shared_board[arg0][arg1];
+u8 MBMasuTypeListGet(s32 arg0, s32 arg1) {
+    return mbMasuTypeListTbl[arg0][arg1];
 }
 
 void MBMasuDispOn(void) {
-    D_80105262_shared_board = 1;
+    mbMasuDispF = 1;
 }
 
 void MBMasuDispOff(void) {
-    D_80105262_shared_board = 0;
+    mbMasuDispF = 0;
 }

@@ -9,39 +9,39 @@ typedef struct UnkNameVecEntry {
     /* 0x0C */ Vec *points; // array of count Vecs
 } UnkNameVecEntry;          // sizeof 0x10
 
-extern UnkD6B00 D_80105560_name_81[16];
-s32 D_80101220_name_81 = 2;
+extern UnkD6B00 mbdMotShiftTbl[16];
+s32 mbdWinComKeyAllNum = 2;
 extern s32 GwMessSpeed;
 extern s32 GwMessWait;
 
-static void func_800EED5C_name_81(s32 arg0);
-static void func_800EEDA0_name_81(s32 arg0, s32 arg1, s32 arg2);
-static void func_800EF0D8_name_81(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
-static void func_800EF3F8_name_81(s32 arg0, s32 arg1);
-static s32 func_800EFEC8_name_81(Object *obj, Vec *target, f32 speed, Vec *dir);
+static void MBDMesSpeedCurSet(s32 arg0);
+static void MBDWinComKeyExec(s32 arg0, s32 arg1, s32 arg2);
+static void MBDWinComKey2Exec(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
+static void MBDWinComKeyAllExec(s32 arg0, s32 arg1);
+static s32 MBDModelTargetMoveExec(Object *obj, Vec *target, f32 speed, Vec *dir);
 
-void func_800EED30_name_81(s32 arg0) {
+void MBDMesWaitSet(s32 arg0) {
     GwMessWait = arg0;
-    func_800EED5C_name_81(arg0);
+    MBDMesSpeedCurSet(arg0);
 }
 
-s32 func_800EED50_name_81(void) {
+s32 MBDMesWaitGet(void) {
     return GwMessWait;
 }
 
-static void func_800EED5C_name_81(s32 arg0) {
+static void MBDMesSpeedCurSet(s32 arg0) {
     GwMessSpeed = arg0;
 }
 
-void func_800EED68_name_81(s32 arg0, s32 arg1) {
-    func_800EEDA0_name_81(arg0, arg1, 0);
+void MBDWinComKeyWait(s32 arg0, s32 arg1) {
+    MBDWinComKeyExec(arg0, arg1, 0);
 }
 
-void func_800EED84_name_81(s32 arg0, s32 arg1) {
-    func_800EEDA0_name_81(arg0, arg1, 1);
+void MBDWinComKeyWaitKeep(s32 arg0, s32 arg1) {
+    MBDWinComKeyExec(arg0, arg1, 1);
 }
 
-static void func_800EEDA0_name_81(s32 arg0, s32 arg1, s32 arg2) {
+static void MBDWinComKeyExec(s32 arg0, s32 arg1, s32 arg2) {
     s16 sp18[MB_MAX_PLAYERS];
     s32 hasCom = 0;
     u8 sp20[MB_MAX_PLAYERS] = { 1, 2, 4, 8 };
@@ -90,15 +90,15 @@ static void func_800EEDA0_name_81(s32 arg0, s32 arg1, s32 arg2) {
     HuWinComKeyReset();
 }
 
-void func_800EF0A0_name_81(s32 arg0, s32 arg1, s32 arg2) {
-    func_800EF0D8_name_81(arg0, arg1, arg2, 0);
+void MBDWinComKey2Wait(s32 arg0, s32 arg1, s32 arg2) {
+    MBDWinComKey2Exec(arg0, arg1, arg2, 0);
 }
 
-void func_800EF0BC_name_81(s32 arg0, s32 arg1, s32 arg2) {
-    func_800EF0D8_name_81(arg0, arg1, arg2, 1);
+void MBDWinComKey2WaitKeep(s32 arg0, s32 arg1, s32 arg2) {
+    MBDWinComKey2Exec(arg0, arg1, arg2, 1);
 }
 
-static void func_800EF0D8_name_81(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+static void MBDWinComKey2Exec(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     s16 sp18[MB_MAX_PLAYERS];
     u8 sp20[MB_MAX_PLAYERS] = { 1, 2, 4, 8 };
     u8 mask;
@@ -146,32 +146,32 @@ static void func_800EF0D8_name_81(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     HuWinComKeyReset();
 }
 
-void func_800EF3B4_name_81(s32 arg0) {
-    func_800EF3F8_name_81(arg0, 0);
+void MBDWinComKeyAllWait(s32 arg0) {
+    MBDWinComKeyAllExec(arg0, 0);
 }
 
-void func_800EF3D0_name_81(s32 arg0) {
-    func_800EF3F8_name_81(arg0, 1);
+void MBDWinComKeyAllWaitKeep(s32 arg0) {
+    MBDWinComKeyAllExec(arg0, 1);
 }
 
-void func_800EF3EC_name_81(s32 arg0) {
-    D_80101220_name_81 = arg0;
+void MBDWinComKeyAllNumSet(s32 arg0) {
+    mbdWinComKeyAllNum = arg0;
 }
 
-static void func_800EF3F8_name_81(s32 arg0, s32 arg1) {
+static void MBDWinComKeyAllExec(s32 arg0, s32 arg1) {
     s16 sp18[MB_MAX_PLAYERS];
     u8 sp20[MB_MAX_PLAYERS] = { 1, 2, 4, 8 };
     u8 mask;
     s32 i;
 
     mask = 0;
-    for (i = 0; i < D_80101220_name_81; i++) {
+    for (i = 0; i < mbdWinComKeyAllNum; i++) {
         if (!(GwPlayer[i].stat & 1)) {
             break;
         }
     }
 
-    if (i == D_80101220_name_81) {
+    if (i == mbdWinComKeyAllNum) {
         HuWinAttrSet(arg0, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, GwMessSpeed);
         HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, GwMessSpeed);
@@ -192,7 +192,7 @@ static void func_800EF3F8_name_81(s32 arg0, s32 arg1) {
             winData[arg0].stat = 7;
         }
     } else {
-        for (i = 0; i < D_80101220_name_81; i++) {
+        for (i = 0; i < mbdWinComKeyAllNum; i++) {
             if (GwPlayer[i].stat & 1) {
                 sp18[GwPlayer[i].pad] = 0;
             } else {
@@ -216,7 +216,7 @@ static void func_800EF3F8_name_81(s32 arg0, s32 arg1) {
     HuWinComKeyReset();
 }
 
-void func_800EF754_name_81(s32 arg0) {
+void MBDWinComKeyAnyWait(s32 arg0) {
     HuWinActivePlayerSet(arg0, HUWIN_PLAYER_ALL);
     HuWinComKeySet(-1, -1, -1, -1);
     while (HuWinStatGet(arg0) != 0) {
@@ -225,12 +225,12 @@ void func_800EF754_name_81(s32 arg0) {
     HuWinComKeyReset();
 }
 
-void func_800EF7C8_name_81(Object *arg0, f32 arg1, f32 arg2) {
+void MBDModelJumpSet(Object *arg0, f32 arg1, f32 arg2) {
     arg0->velocity.y = arg1;
     arg0->velocity.z = arg2;
 }
 
-s32 func_800EF7D4_name_81(Object *arg0) {
+s32 MBDModelJumpCheck(Object *arg0) {
     s32 ret = 0;
     if (arg0->velocity.z != 0.0f) {
         ret = 1;
@@ -238,26 +238,26 @@ s32 func_800EF7D4_name_81(Object *arg0) {
     return ret;
 }
 
-void func_800EF800_name_81(Object *arg0) {
-    while (func_800EF7D4_name_81(arg0)) {
+void MBDModelJumpWait(Object *arg0) {
+    while (MBDModelJumpCheck(arg0)) {
         HuPrcVSleep();
     }
 }
 
-void func_800EF840_name_81(void) {
+void MBDMotShiftInit(void) {
     s32 i;
 
     for (i = 0; i < 16; i++) {
-        D_80105560_name_81[i].unk_04 = NULL;
-        D_80105560_name_81[i].unk_08 = NULL;
+        mbdMotShiftTbl[i].unk_04 = NULL;
+        mbdMotShiftTbl[i].unk_08 = NULL;
     }
 }
 
-void func_800EF880_name_81(void) {
+void MBDMotShiftClose(void) {
     s32 i;
     UnkD6B00 *entry;
 
-    for (i = 0, entry = D_80105560_name_81; i < 16; i++) {
+    for (i = 0, entry = mbdMotShiftTbl; i < 16; i++) {
         if (entry[i].unk_08 != NULL) {
             omDelObj(entry[i].unk_08);
             entry[i].unk_08 = NULL;
@@ -265,8 +265,8 @@ void func_800EF880_name_81(void) {
     }
 }
 
-static void func_800EF8EC_name_81(omObjData *obj) {
-    UnkD6B00 *entry = &D_80105560_name_81[obj->work[0]];
+static void MBDMotShiftObjMain(omObjData *obj) {
+    UnkD6B00 *entry = &mbdMotShiftTbl[obj->work[0]];
 
     if (Hu3DData[entry->unk_04->omObj1->model[0]].motTime ==
         Hu3DMotion[Hu3DData[entry->unk_04->omObj1->model[0]].motId].unk02) {
@@ -277,21 +277,21 @@ static void func_800EF8EC_name_81(omObjData *obj) {
     }
 }
 
-s32 func_800EF9C4_name_81(Object *arg0, s16 arg1, s16 arg2) {
+s32 MBDMotionEndShiftSet(Object *arg0, s16 arg1, s16 arg2) {
     omObjData *obj;
     UnkD6B00 *entry;
     s32 i;
     s32 ret;
 
-    for (i = 0; i < ARRAY_COUNT(D_80105560_name_81); i++) {
-        entry = &D_80105560_name_81[i];
+    for (i = 0; i < ARRAY_COUNT(mbdMotShiftTbl); i++) {
+        entry = &mbdMotShiftTbl[i];
         if (entry->unk_08 == NULL) {
             break;
         }
     }
 
-    if (i != ARRAY_COUNT(D_80105560_name_81)) {
-        obj = omAddObj(0x2000, 0, 0, -1, func_800EF8EC_name_81);
+    if (i != ARRAY_COUNT(mbdMotShiftTbl)) {
+        obj = omAddObj(0x2000, 0, 0, -1, MBDMotShiftObjMain);
         entry->unk_08 = obj;
         obj->work[0] = i;
         entry->unk_04 = arg0;
@@ -304,23 +304,23 @@ s32 func_800EF9C4_name_81(Object *arg0, s16 arg1, s16 arg2) {
     return ret;
 }
 
-void func_800EFA8C_name_81(Object *arg0, s16 arg1, s32 arg2) {
+void MBDMotionShiftSetDef(Object *arg0, s16 arg1, s32 arg2) {
     MBDMotionShiftSet(arg0, arg1, 0, 0xA, arg2);
 }
 
-void func_800EFABC_name_81(Object *arg0) {
+void MBDModelMotionWait(Object *arg0) {
     while (!(MBDMotionCheck(arg0) & 1)) {
         HuPrcVSleep();
     }
 }
 
-void func_800EFB00_name_81(Object *arg0) {
+void MBDModelMotionStartWait(Object *arg0) {
     do {
         HuPrcVSleep();
-    } while (!(func_800D92A8_name_81(arg0) & 1));
+    } while (!(MBDMotionStartCheck(arg0) & 1));
 }
 
-s32 func_800EFB3C_name_81(s32 playerIndex) {
+s32 MBDPlayerRankCalc(s32 playerIndex) {
     s32 rank;
     s32 i;
     s32 score[MBD_MAX_PLAYERS];
@@ -337,11 +337,11 @@ s32 func_800EFB3C_name_81(s32 playerIndex) {
     return rank;
 }
 
-s32 func_800EFBE8_name_81(s32 playerIndex) {
+s32 MBDPlayerScoreGet(s32 playerIndex) {
     return GwPlayer[playerIndex].star * 1000 + GwPlayer[playerIndex].coin;
 }
 
-void func_800EFC28_name_81(void) {
+void MBDPlayerKeyWait(void) {
     s32 i;
 
     HuPrcSleep(2);
@@ -371,7 +371,7 @@ void func_800EFC28_name_81(void) {
     }
 }
 
-void func_800EFD24_name_81(void) {
+void MBDPlayerKeyWaitAll(void) {
     s32 i;
 
     HuPrcSleep(2);
@@ -401,7 +401,7 @@ void func_800EFD24_name_81(void) {
     }
 }
 
-s32 func_800EFE20_name_81(f32 arg0) { // 800EEF80 in party mode
+s32 MBDRand(f32 arg0) { // 800EEF80 in party mode
     // rand8 returns an unsigned byte
     u8 randomByte1 = rand8();
     u8 randomByte2 = rand8();
@@ -413,17 +413,17 @@ s32 func_800EFE20_name_81(f32 arg0) { // 800EEF80 in party mode
     return scaledRandom;
 }
 
-s32 func_800EFE8C_name_81(Object *obj, Vec *target, f32 speed) {
-    return func_800EFEC8_name_81(obj, target, speed, &obj->rot);
+s32 MBDModelTargetMoveRot(Object *obj, Vec *target, f32 speed) {
+    return MBDModelTargetMoveExec(obj, target, speed, &obj->rot);
 }
 
-s32 func_800EFEAC_name_81(Object *obj, Vec *target, f32 speed) {
+s32 MBDModelTargetMove(Object *obj, Vec *target, f32 speed) {
     Vec dir;
 
-    return func_800EFEC8_name_81(obj, target, speed, &dir);
+    return MBDModelTargetMoveExec(obj, target, speed, &dir);
 }
 
-static s32 func_800EFEC8_name_81(Object *obj, Vec *target, f32 speed, Vec *dir) {
+static s32 MBDModelTargetMoveExec(Object *obj, Vec *target, f32 speed, Vec *dir) {
     f32 dist = HuVecDistance(&obj->coords, target);
 
     if (dist == 0.0f) {
@@ -440,7 +440,7 @@ static s32 func_800EFEC8_name_81(Object *obj, Vec *target, f32 speed, Vec *dir) 
     return 1;
 }
 
-UnkNameVecEntry *func_800EFFBC_name_81(Object *obj, f32 speed, s16 count, Vec *points) {
+UnkNameVecEntry *MBDModelPathCreate(Object *obj, f32 speed, s16 count, Vec *points) {
     UnkNameVecEntry *entry = HuMemMemoryAllocPerm(sizeof(UnkNameVecEntry));
 
     entry->obj = obj;
@@ -451,8 +451,8 @@ UnkNameVecEntry *func_800EFFBC_name_81(Object *obj, f32 speed, s16 count, Vec *p
     return entry;
 }
 
-s32 func_800F001C_name_81(UnkNameVecEntry *entry) {
-    if (func_800EFE8C_name_81(entry->obj, &entry->points[entry->index], entry->speed) == 0) {
+s32 MBDModelPathMove(UnkNameVecEntry *entry) {
+    if (MBDModelTargetMoveRot(entry->obj, &entry->points[entry->index], entry->speed) == 0) {
         return 0;
     }
     if (++entry->index >= entry->count) {
@@ -461,7 +461,7 @@ s32 func_800F001C_name_81(UnkNameVecEntry *entry) {
     return 1;
 }
 
-s32 func_800F008C_name_81(Object *obj, Vec *target, f32 speed) {
+s32 MBDModelTargetTurn(Object *obj, Vec *target, f32 speed) {
     Vec dir;
     f32 maxTurn = speed * 1.2f;
     f32 targetAngle;
@@ -496,7 +496,7 @@ s32 func_800F008C_name_81(Object *obj, Vec *target, f32 speed) {
     return angle == targetAngle;
 }
 
-void func_800F0208_name_81(Vec *pos, f32 zoom, f32 targetZoom, u32 frames) {
+void MBDCameraZoomLerpExec(Vec *pos, f32 zoom, f32 targetZoom, u32 frames) {
     f32 step;
 
     frames = frames * 1.2f;
@@ -519,16 +519,16 @@ void func_800F0208_name_81(Vec *pos, f32 zoom, f32 targetZoom, u32 frames) {
     }
 }
 
-void func_800F0378_name_81(Object *obj, char *hookName, s16 model) {
+void MBDModelHookSet(Object *obj, char *hookName, s16 model) {
     Hu3DModelHookSet(model, obj->omObj1->model[0], hookName);
     Hu3DModelAttrSet(model, 0x4000, 0x4000);
 }
 
-void func_800F03C8_name_81(s16 arg0) {
+void MBDModelHookReset(s16 arg0) {
     Hu3DModelAttrSet(arg0, 0x4000, 0);
 }
 
-s32 func_800F03F0_name_81(s16 x, s16 y, s16 w, s16 h) {
+s32 MBDWinDummyCreate(s16 x, s16 y, s16 w, s16 h) {
     s32 win = HuWinCreate(x, y, w, h, 0, 0);
 
     HuWinBGTPLvlSet(win, 200);

@@ -17,8 +17,8 @@ s8 D_80108E78_mgresultduel = 0;
 const s16 D_80108EA0_mgresultduel[2][2] = { { 30, 40 }, { 194, 40 } };
 extern Addr D_128CC60;
 
-void func_800F6550_name_81(s32, s16, s16);
-void func_800F7458_name_81(s32, f32, f32);
+void MBDStatusPosSet(s32, s16, s16);
+void MBDStatusScaleSet(s32, f32, f32);
 void func_80105E90_mgresultduel(omObjData *);
 void func_80105FD4_mgresultduel(omObjData *);
 void func_80106054_mgresultduel(void);
@@ -61,15 +61,15 @@ void func_801059A0_mgresultduel(void) {
 
     omInitObjMan(50, 20);
     Hu3DSprModelInit(120);
-    func_800F6390_name_81();
-    func_800F6550_name_81(0, D_80108EA0_mgresultduel[0][0], D_80108EA0_mgresultduel[0][1]);
-    func_800F6550_name_81(1, D_80108EA0_mgresultduel[1][0], D_80108EA0_mgresultduel[1][1]);
-    func_800F7458_name_81(0, 0.0f, 0.0f);
-    func_800F7458_name_81(1, 0.0f, 0.0f);
+    MBDStatusCreate();
+    MBDStatusPosSet(0, D_80108EA0_mgresultduel[0][0], D_80108EA0_mgresultduel[0][1]);
+    MBDStatusPosSet(1, D_80108EA0_mgresultduel[1][0], D_80108EA0_mgresultduel[1][1]);
+    MBDStatusScaleSet(0, 0.0f, 0.0f);
+    MBDStatusScaleSet(1, 0.0f, 0.0f);
     Hu3DCamInit(1);
-    func_800E4F50_name_81(D_128CC60);
+    MBDBackArcInit(D_128CC60);
     MBDBackLoad(23);
-    func_800E8180_name_81(1000.0f, 10000.0f);
+    MBDCameraNearFarSet(1000.0f, 10000.0f);
 
     coins[0] = GwPlayer[D_80109310_mgresultduel[0]].gameCoin + GwPlayer[D_80109310_mgresultduel[0]].bonusCoin;
     coins[1] = GwPlayer[D_80109310_mgresultduel[1]].gameCoin + GwPlayer[D_80109310_mgresultduel[1]].bonusCoin;
@@ -192,7 +192,7 @@ void func_80105FD4_mgresultduel(omObjData *obj) {
 void func_80106054_mgresultduel(void) {
     MBDBackKill();
     MBDBackClose();
-    func_800F64FC_name_81();
+    MBDStatusKill();
 }
 
 void func_80106080_mgresultduel(void) {

@@ -1,30 +1,30 @@
 #include "common_duel.h"
 #include "ovl_81.h"
 
-void func_800E18C0_name_81(void) {
-    D_80102BF0_name_81 = -1;
-    D_80102BF2_name_81 = -1;
+void MBDItemWarpBlockSwapInit(void) {
+    mbdItemWarpPlayerA = -1;
+    mbdItemWarpPlayerB = -1;
 }
 
-s32 func_800E18D8_name_81(s16 arg0, s16 arg1) {
+s32 MBDPlayerOtherCheck(s16 arg0, s16 arg1) {
     return arg0 != arg1;
 }
 
-void func_800E18E8_name_81(s16 arg0, s16 arg1) {
+void MBDItemWarpPlayerSet(s16 arg0, s16 arg1) {
     s16 v0;
     s16 v1 = arg1;
 
     v0 = arg1;
     if (v0 == MBDGetCurrentPlayerIndex()) {
-        D_80102BF0_name_81 = v1;
-        D_80102BF2_name_81 = arg0;
+        mbdItemWarpPlayerA = v1;
+        mbdItemWarpPlayerB = arg0;
     } else {
-        D_80102BF0_name_81 = arg0;
-        D_80102BF2_name_81 = v1;
+        mbdItemWarpPlayerA = arg0;
+        mbdItemWarpPlayerB = v1;
     }
 }
 
-s32 func_800E1960_name_81(void) {
+s32 MBDItemWarpBlockSwapPlayerSet(void) {
     GW_PLAYER *player = MBDGetPlayerStruct(-1);
     s16 indices[MBD_MAX_PLAYERS];
     s32 otherIndex;
@@ -35,18 +35,18 @@ s32 func_800E1960_name_81(void) {
     }
     for (i = 0; i < MBD_MAX_PLAYERS; i++) {
         otherIndex = indices[i];
-        if (player->turn != otherIndex && func_800E18D8_name_81(player->turn, otherIndex)) {
+        if (player->turn != otherIndex && MBDPlayerOtherCheck(player->turn, otherIndex)) {
             break;
         }
     }
     if (i != MBD_MAX_PLAYERS) {
-        func_800E18E8_name_81(player->turn, otherIndex);
+        MBDItemWarpPlayerSet(player->turn, otherIndex);
         return 1;
     }
     return 0;
 }
 
-void func_800E1A24_name_81(void) {
+void MBDItemWarpBlockSwap(void) {
     GW_PLAYER *player1;
     GW_PLAYER *player2;
     GW_PLAYER *playerCopy;
@@ -57,19 +57,19 @@ void func_800E1A24_name_81(void) {
     f32 scaleXZ;
     s32 i;
 
-    func_800FC888_name_81(0);
-    player1 = MBDGetPlayerStruct(D_80102BF0_name_81);
-    player2 = MBDGetPlayerStruct(D_80102BF2_name_81);
+    MBDCameraFocusModeSet(0);
+    player1 = MBDGetPlayerStruct(mbdItemWarpPlayerA);
+    player2 = MBDGetPlayerStruct(mbdItemWarpPlayerB);
     player1->stat |= 4;
     player2->stat |= 4;
     obj1 = player1->player_obj;
     obj2 = player2->player_obj;
 
     HuAudFXPlay(0x1F5);
-    effect = func_800D8010_name_81(0x1F, NULL);
+    effect = MBDModelCreate(0x1F, NULL);
     MBDMotionSet(effect, -1, 0);
     HuVecCopy3F(&effect->coords, &obj1->coords);
-    func_800FFAE0_name_81(D_80102BF0_name_81, 1);
+    MBDPlayerVibrate(mbdItemWarpPlayerA, 1);
     for (i = 0; i < 15; i++) {
         scaleY = (f32)i / 15.0f;
         scaleXZ = 1.0f - scaleY;
@@ -77,23 +77,23 @@ void func_800E1A24_name_81(void) {
         obj1->scale.x = scaleXZ;
         obj1->scale.y = scaleY;
         obj1->scale.z = scaleXZ;
-        func_800F3B94_name_81(D_80102BF0_name_81, &obj1->scale);
+        MBDPlayerScaleSet(mbdItemWarpPlayerA, &obj1->scale);
         HuPrcVSleep();
     }
     obj1->scale.x = 0.0f;
     obj1->scale.y = 0.0f;
     obj1->scale.z = 0.0f;
-    func_800F3B94_name_81(D_80102BF0_name_81, &obj1->scale);
+    MBDPlayerScaleSet(mbdItemWarpPlayerA, &obj1->scale);
     HuPrcVSleep();
     obj1->flags &= ~2;
     MBDModelDispOff(obj1);
     MBDModelKill(effect);
 
     HuAudFXPlay(0x1F5);
-    effect = func_800D8010_name_81(0x1F, NULL);
+    effect = MBDModelCreate(0x1F, NULL);
     MBDMotionSet(effect, -1, 0);
     HuVecCopy3F(&effect->coords, &obj2->coords);
-    func_800FFAE0_name_81(D_80102BF2_name_81, 1);
+    MBDPlayerVibrate(mbdItemWarpPlayerB, 1);
     for (i = 0; i < 15; i++) {
         scaleY = (f32)i / 15.0f;
         scaleXZ = 1.0f - scaleY;
@@ -101,24 +101,24 @@ void func_800E1A24_name_81(void) {
         obj2->scale.x = scaleXZ;
         obj2->scale.y = scaleY;
         obj2->scale.z = scaleXZ;
-        func_800F3B94_name_81(D_80102BF2_name_81, &obj2->scale);
+        MBDPlayerScaleSet(mbdItemWarpPlayerB, &obj2->scale);
         HuPrcVSleep();
     }
     playerCopy = player1;
     MBDModelKill(effect);
 
     duelUnkF0 = 0;
-    func_800EB8B0_name_81(D_80102BF0_name_81, D_80102BF2_name_81);
-    func_800EB6C4_name_81(D_80102BF0_name_81, MBDMasuLinkMasuIdGet(playerCopy->clink, player1->cidx));
-    func_800EB6C4_name_81(D_80102BF2_name_81, MBDMasuLinkMasuIdGet(player2->clink, player2->cidx));
-    func_800ED214_name_81(D_80102BF0_name_81);
-    func_800ED214_name_81(D_80102BF2_name_81);
+    MBDPlayerMasuSwap(mbdItemWarpPlayerA, mbdItemWarpPlayerB);
+    MBDPlayerPosMasuSet(mbdItemWarpPlayerA, MBDMasuLinkMasuIdGet(playerCopy->clink, player1->cidx));
+    MBDPlayerPosMasuSet(mbdItemWarpPlayerB, MBDMasuLinkMasuIdGet(player2->clink, player2->cidx));
+    MBDPartnerPosFix(mbdItemWarpPlayerA);
+    MBDPartnerPosFix(mbdItemWarpPlayerB);
 
     HuAudFXPlay(0x1F5);
-    effect = func_800D8010_name_81(0x1F, NULL);
+    effect = MBDModelCreate(0x1F, NULL);
     MBDMotionSet(effect, -1, 0);
     HuVecCopy3F(&effect->coords, &obj2->coords);
-    func_800FFAE0_name_81(D_80102BF2_name_81, 1);
+    MBDPlayerVibrate(mbdItemWarpPlayerB, 1);
     for (i = 14; i >= 0; i--) {
         scaleY = (f32)i / 15.0f;
         scaleXZ = 1.0f - scaleY;
@@ -126,26 +126,26 @@ void func_800E1A24_name_81(void) {
         obj2->scale.x = scaleXZ;
         obj2->scale.y = scaleY;
         obj2->scale.z = scaleXZ;
-        func_800F3B94_name_81(D_80102BF2_name_81, &obj2->scale);
+        MBDPlayerScaleSet(mbdItemWarpPlayerB, &obj2->scale);
         HuPrcVSleep();
     }
     MBDModelKill(effect);
 
     WipeCreateOut(0, 16);
     HuPrcSleep(16);
-    func_800E890C_name_81(&obj1->coords, 1);
-    func_800FCF50_name_81(0, 1);
-    func_800FCF50_name_81(1, 1);
+    MBDBackRefresh(&obj1->coords, 1);
+    MBDPlayerPosFixSet(0, 1);
+    MBDPlayerPosFixSet(1, 1);
     WipeCreateIn(0, 16);
     HuPrcSleep(16);
 
     HuAudFXPlay(0x1F5);
     obj1->flags |= 2;
     MBDModelDispOn(obj1);
-    effect = func_800D8010_name_81(0x1F, NULL);
+    effect = MBDModelCreate(0x1F, NULL);
     MBDMotionSet(effect, -1, 0);
     HuVecCopy3F(&effect->coords, &obj1->coords);
-    func_800FFAE0_name_81(D_80102BF0_name_81, 1);
+    MBDPlayerVibrate(mbdItemWarpPlayerA, 1);
     for (i = 14; i >= 0; i--) {
         scaleY = (f32)i / 15.0f;
         scaleXZ = 1.0f - scaleY;
@@ -153,45 +153,45 @@ void func_800E1A24_name_81(void) {
         obj1->scale.x = scaleXZ;
         obj1->scale.y = scaleY;
         obj1->scale.z = scaleXZ;
-        func_800F3B94_name_81(D_80102BF0_name_81, &obj1->scale);
+        MBDPlayerScaleSet(mbdItemWarpPlayerA, &obj1->scale);
         HuPrcVSleep();
     }
     MBDModelKill(effect);
     playerCopy->stat &= ~4;
     player2->stat &= ~4;
 
-    if (D_80102BF0_name_81 != MBDGetCurrentPlayerIndex()) {
+    if (mbdItemWarpPlayerA != MBDGetCurrentPlayerIndex()) {
         HuPrcSleep(15);
         WipeCreateOut(0, 16);
         HuPrcSleep(16);
-        func_800E890C_name_81(&MBDGetPlayerStruct(-1)->player_obj->coords, 1);
+        MBDBackRefresh(&MBDGetPlayerStruct(-1)->player_obj->coords, 1);
         WipeCreateIn(0, 16);
         HuPrcSleep(16);
     }
     HuPrcSleep(15);
-    func_800EAFC4_name_81(0x1F2E);
-    func_800FC888_name_81(1);
-    func_800E18C0_name_81();
+    MBDDlgResultWinExec(0x1F2E);
+    MBDCameraFocusModeSet(1);
+    MBDItemWarpBlockSwapInit();
     omDelPrcObj(NULL);
 }
 
-void func_800E1F38_name_81(void) {
+void MBDItemWarpBlockSwapCreate(void) {
     Process *parent = HuPrcCurrentGet();
 
-    HuPrcChildLink(parent, omAddPrcObj(func_800E1A24_name_81, 0x1003, 0, 0));
+    HuPrcChildLink(parent, omAddPrcObj(MBDItemWarpBlockSwap, 0x1003, 0, 0));
     HuPrcChildWatch();
 }
 
-s16 func_800E1F88_name_81(void) {
-    return D_80102BF0_name_81;
+s16 MBDItemWarpPlayerGet(void) {
+    return mbdItemWarpPlayerA;
 }
 
-void func_800E1F94_name_81(void) {
-    func_800EE74C_name_81(1);
+void MBDWarpAuraSpinProc(void) {
+    MBDAuraSpinExec(1);
     HuPrcSleep(-1);
 }
 
-void func_800E1FB8_name_81(void) {
+void MBDWarpEffProc(void) {
     GW_PLAYER *player = MBDGetPlayerStruct(-1);
     s16 effect = EffectCreate(0x110012, 0x2A9);
     s32 i;
@@ -208,7 +208,7 @@ void func_800E1FB8_name_81(void) {
     omDelPrcObj(NULL);
 }
 
-void func_800E209C_name_81(void) {
+void MBDWarpMasuProc(void) {
     GW_PLAYER *player;
     Object *obj;
     Object *effect;
@@ -219,21 +219,21 @@ void func_800E209C_name_81(void) {
     s32 tempLink;
     s32 tempIdx;
 
-    func_800FC888_name_81(0);
-    player = MBDGetPlayerStruct(D_80102BF0_name_81);
+    MBDCameraFocusModeSet(0);
+    player = MBDGetPlayerStruct(mbdItemWarpPlayerA);
     player->stat |= 4;
     obj = player->player_obj;
-    func_800EDD50_name_81(&obj->coords);
-    func_800EE0F4_name_81(1);
-    func_800EDF48_name_81();
-    process = omAddPrcObj(func_800E1F94_name_81, 10, 0, 0);
+    MBDAuraCreate(&obj->coords);
+    MBDAuraLandNoSe(1);
+    MBDAuraHoverStart();
+    process = omAddPrcObj(MBDWarpAuraSpinProc, 10, 0, 0);
     HuPrcSleep(10);
 
     HuAudFXPlay(0x1F7);
-    effect = func_800D8010_name_81(0x1F, NULL);
+    effect = MBDModelCreate(0x1F, NULL);
     MBDMotionSet(effect, -1, 0);
     HuVecCopy3F(&effect->coords, &obj->coords);
-    func_800FFAE0_name_81(D_80102BF0_name_81, 1);
+    MBDPlayerVibrate(mbdItemWarpPlayerA, 1);
     for (i = 0; i < 15; i++) {
         scaleY = (f32)i / 15.0f;
         scaleXZ = 1.0f - scaleY;
@@ -241,32 +241,32 @@ void func_800E209C_name_81(void) {
         obj->scale.x = scaleXZ;
         obj->scale.y = scaleY;
         obj->scale.z = scaleXZ;
-        func_800F3B94_name_81(D_80102BF0_name_81, &obj->scale);
+        MBDPlayerScaleSet(mbdItemWarpPlayerA, &obj->scale);
         HuPrcVSleep();
     }
     obj->scale.x = 0.0f;
     obj->scale.y = 0.0f;
     obj->scale.z = 0.0f;
-    func_800F3B94_name_81(D_80102BF0_name_81, &obj->scale);
+    MBDPlayerScaleSet(mbdItemWarpPlayerA, &obj->scale);
     HuPrcVSleep();
     obj->flags &= ~2;
     MBDModelDispOff(obj);
     MBDModelKill(effect);
 
-    player->clink = player->nlink = player->blink = D_80102BF4_name_81;
-    player->cidx = D_80102BF6_name_81;
-    player->nidx = D_80102BF6_name_81 + 1;
-    player->bidx = D_80102BF6_name_81 - 1;
+    player->clink = player->nlink = player->blink = mbdWarpLink;
+    player->cidx = mbdWarpIdx;
+    player->nidx = mbdWarpIdx + 1;
+    player->bidx = mbdWarpIdx - 1;
     player->nnidx = player->nnlink = -1;
-    if (D_80102BF8_name_81 != -1) {
-        player->blink = D_80102BF8_name_81;
+    if (mbdWarpBackLink != -1) {
+        player->blink = mbdWarpBackLink;
     }
-    if (D_80102BFA_name_81 != -1) {
-        player->bidx = D_80102BFA_name_81;
+    if (mbdWarpBackIdx != -1) {
+        player->bidx = mbdWarpBackIdx;
     }
     player->rev = 0;
     duelUnkF0 = 0;
-    func_800EB6C4_name_81(D_80102BF0_name_81, MBDMasuLinkMasuIdGet(player->clink, player->cidx));
+    MBDPlayerPosMasuSet(mbdItemWarpPlayerA, MBDMasuLinkMasuIdGet(player->clink, player->cidx));
     if (GwSystem.current_board_index == 5 && GwSystem.boardData.halfWordBytes[0] != 0) {
         player->rev = 1;
         tempLink = player->nlink;
@@ -280,23 +280,23 @@ void func_800E209C_name_81(void) {
     WipeCreateOut(0, 16);
     HuPrcSleep(16);
     omDelPrcObj(process);
-    func_800EDF78_name_81();
-    func_800EDDBC_name_81();
-    func_800E890C_name_81(&obj->coords, 1);
-    func_800FCF50_name_81(0, 1);
-    func_800FCF50_name_81(1, 1);
+    MBDAuraHoverStop();
+    MBDAuraKill();
+    MBDBackRefresh(&obj->coords, 1);
+    MBDPlayerPosFixSet(0, 1);
+    MBDPlayerPosFixSet(1, 1);
     WipeCreateIn(0, 16);
     HuPrcSleep(16);
-    omAddPrcObj(func_800E1FB8_name_81, 10, 0, 0);
+    omAddPrcObj(MBDWarpEffProc, 10, 0, 0);
     HuPrcSleep(10);
 
     HuAudFXPlay(0x1F8);
     obj->flags |= 2;
     MBDModelDispOn(obj);
-    effect = func_800D8010_name_81(0x1F, NULL);
+    effect = MBDModelCreate(0x1F, NULL);
     MBDMotionSet(effect, -1, 0);
     HuVecCopy3F(&effect->coords, &obj->coords);
-    func_800FFAE0_name_81(D_80102BF0_name_81, 1);
+    MBDPlayerVibrate(mbdItemWarpPlayerA, 1);
     for (i = 14; i >= 0; i--) {
         scaleY = (f32)i / 15.0f;
         scaleXZ = 1.0f - scaleY;
@@ -304,31 +304,31 @@ void func_800E209C_name_81(void) {
         obj->scale.x = scaleXZ;
         obj->scale.y = scaleY;
         obj->scale.z = scaleXZ;
-        func_800F3B94_name_81(D_80102BF0_name_81, &obj->scale);
+        MBDPlayerScaleSet(mbdItemWarpPlayerA, &obj->scale);
         HuPrcVSleep();
     }
     MBDModelKill(effect);
     player->stat &= ~4;
     HuPrcSleep(15);
-    func_800FC888_name_81(1);
-    func_800E18C0_name_81();
+    MBDCameraFocusModeSet(1);
+    MBDItemWarpBlockSwapInit();
     omDelPrcObj(NULL);
 }
 
-void func_800E24AC_name_81(s32 link, s32 idx, s32 backLink, s32 backIdx) {
+void MBDWarpMasuExec(s32 link, s32 idx, s32 backLink, s32 backIdx) {
     Process *parent;
 
-    D_80102BF0_name_81 = MBDGetCurrentPlayerIndex();
-    D_80102BF4_name_81 = link;
-    D_80102BF6_name_81 = idx;
-    D_80102BF8_name_81 = backLink;
-    D_80102BFA_name_81 = backIdx;
+    mbdItemWarpPlayerA = MBDGetCurrentPlayerIndex();
+    mbdWarpLink = link;
+    mbdWarpIdx = idx;
+    mbdWarpBackLink = backLink;
+    mbdWarpBackIdx = backIdx;
     parent = HuPrcCurrentGet();
-    HuPrcChildLink(parent, omAddPrcObj(func_800E209C_name_81, 0x1003, 0, 0));
+    HuPrcChildLink(parent, omAddPrcObj(MBDWarpMasuProc, 0x1003, 0, 0));
     HuPrcChildWatch();
 }
 
-void func_800E2550_name_81(void) {
+void MBDWarpPosProc(void) {
     GW_PLAYER *player;
     Object *obj;
     Object *effect;
@@ -337,12 +337,12 @@ void func_800E2550_name_81(void) {
     Object *partner;
     s32 i;
 
-    player = MBDGetPlayerStruct(D_80102BF0_name_81);
+    player = MBDGetPlayerStruct(mbdItemWarpPlayerA);
     player->stat |= 4;
     obj = player->player_obj;
 
     HuAudFXPlay(0x1F7);
-    effect = func_800D8010_name_81(0x1F, NULL);
+    effect = MBDModelCreate(0x1F, NULL);
     MBDMotionSet(effect, -1, 0);
     obj->flags &= ~2;
     HuVecCopy3F(&effect->coords, &obj->coords);
@@ -353,35 +353,35 @@ void func_800E2550_name_81(void) {
         obj->scale.x = scaleXZ;
         obj->scale.y = scaleY;
         obj->scale.z = scaleXZ;
-        func_800F3B94_name_81(D_80102BF0_name_81, &obj->scale);
+        MBDPlayerScaleSet(mbdItemWarpPlayerA, &obj->scale);
         HuPrcVSleep();
     }
     obj->scale.x = 0.0f;
     obj->scale.y = 0.0f;
     obj->scale.z = 0.0f;
-    func_800F3B94_name_81(D_80102BF0_name_81, &obj->scale);
+    MBDPlayerScaleSet(mbdItemWarpPlayerA, &obj->scale);
     HuPrcVSleep();
     MBDModelDispOff(obj);
     MBDModelKill(effect);
 
-    HuVecCopy3F(&obj->coords, &D_80102C00_name_81);
-    func_800EB7BC_name_81(&obj->rot);
-    partner = MBDGetPlayerPartnerRef(D_80102BF0_name_81, PARTNER_FRONT);
+    HuVecCopy3F(&obj->coords, &mbdWarpPosA);
+    MBDVecForwardSet(&obj->rot);
+    partner = MBDGetPlayerPartnerRef(mbdItemWarpPlayerA, PARTNER_FRONT);
     if (partner != NULL) {
-        HuVecCopy3F(&partner->coords, &D_80102C0C_name_81);
-        func_800EB7BC_name_81(&partner->rot);
+        HuVecCopy3F(&partner->coords, &mbdWarpPosB);
+        MBDVecForwardSet(&partner->rot);
     }
-    partner = MBDGetPlayerPartnerRef(D_80102BF0_name_81, PARTNER_BACK);
+    partner = MBDGetPlayerPartnerRef(mbdItemWarpPlayerA, PARTNER_BACK);
     if (partner != NULL) {
-        HuVecCopy3F(&partner->coords, &D_80102C18_name_81);
-        func_800EB7BC_name_81(&partner->rot);
+        HuVecCopy3F(&partner->coords, &mbdWarpPosC);
+        MBDVecForwardSet(&partner->rot);
     }
     HuPrcVSleep();
 
     HuAudFXPlay(0x1F8);
     obj->flags |= 2;
     MBDModelDispOn(obj);
-    effect = func_800D8010_name_81(0x1F, NULL);
+    effect = MBDModelCreate(0x1F, NULL);
     MBDMotionSet(effect, -1, 0);
     HuVecCopy3F(&effect->coords, &obj->coords);
     for (i = 14; i >= 0; i--) {
@@ -391,24 +391,24 @@ void func_800E2550_name_81(void) {
         obj->scale.x = scaleXZ;
         obj->scale.y = scaleY;
         obj->scale.z = scaleXZ;
-        func_800F3B94_name_81(D_80102BF0_name_81, &obj->scale);
+        MBDPlayerScaleSet(mbdItemWarpPlayerA, &obj->scale);
         HuPrcVSleep();
     }
     MBDModelKill(effect);
     player->stat &= ~4;
     HuPrcSleep(15);
-    func_800E18C0_name_81();
+    MBDItemWarpBlockSwapInit();
     omDelPrcObj(NULL);
 }
 
-void func_800E27D4_name_81(s32 playerIndex, Vec *pos, Vec *pos1, Vec *pos2) {
+void MBDWarpPosExec(s32 playerIndex, Vec *pos, Vec *pos1, Vec *pos2) {
     Process *parent;
 
-    D_80102BF0_name_81 = playerIndex;
-    HuVecCopy3F(&D_80102C00_name_81, pos);
-    HuVecCopy3F(&D_80102C0C_name_81, pos1);
-    HuVecCopy3F(&D_80102C18_name_81, pos2);
+    mbdItemWarpPlayerA = playerIndex;
+    HuVecCopy3F(&mbdWarpPosA, pos);
+    HuVecCopy3F(&mbdWarpPosB, pos1);
+    HuVecCopy3F(&mbdWarpPosC, pos2);
     parent = HuPrcCurrentGet();
-    HuPrcChildLink(parent, omAddPrcObj(func_800E2550_name_81, 0x1003, 0, 0));
+    HuPrcChildLink(parent, omAddPrcObj(MBDWarpPosProc, 0x1003, 0, 0));
     HuPrcChildWatch();
 }

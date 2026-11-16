@@ -12,233 +12,233 @@
  */
 typedef struct {
     /* 0x00 */ s16 sprGrp;
-    /* 0x02 */ s16 sprAnims[2]; // D_80102CAA_name_81
+    /* 0x02 */ s16 sprAnims[2]; // mbdTelopPlayerAnim
 } NameBss2CA8;
 
 typedef struct {
     /* 0x00 */ u8 unk_00;
-    /* 0x02 */ s16 sprGrps[2]; // D_80102CBA_name_81
-    /* 0x06 */ s16 sprAnims[2]; // D_80102CBE_name_81
+    /* 0x02 */ s16 sprGrps[2]; // mbdTelopLast5Grp
+    /* 0x06 */ s16 sprAnims[2]; // mbdTelopLast5Anim
 } NameBss2CB8;
 
 // model.c
-Object *D_801029C0_name_81 BSS;
-u16 D_801029C4_name_81 BSS;
-s16 D_801029C8_name_81[130] BSS;
-u8 D_80102ACC_name_81[4] BSS; /* Unreferenced. */
+Object *mbdModelListHead BSS;
+u16 mbdModelNum BSS;
+s16 mbdMotionRefTbl[130] BSS;
+u8 mbdModelPad[4] BSS; /* Unreferenced. */
 
 // effect.c
-Object *D_80102AD0_name_81[32] BSS;
-s16 D_80102B50_name_81 BSS;
-omObjData *D_80102B54_name_81 BSS;
-Vec D_80102B58_name_81 BSS;
-Vec D_80102B64_name_81 BSS; /* Unreferenced. */
+Object *mbdEffBurstObjTbl[32] BSS;
+s16 mbdEffSwirlMdl BSS;
+omObjData *mbdEffSwirlObj BSS;
+Vec mbdEffSwirlPos BSS;
+Vec mbdEffSwirlPad BSS; /* Unreferenced. */
 
 // mgcall.c
-UnkC5770B70 D_80102B70_name_81[5] BSS;
-omObjData *D_80102BA4_name_81 BSS;
-s8 D_80102BA8_name_81[5] BSS;
-s8 D_80102BAD_name_81 BSS;
-s8 D_80102BAE_name_81 BSS;
-s16 D_80102BB0_name_81 BSS;
-s16 D_80102BB2_name_81 BSS;
-s16 D_80102BB4_name_81 BSS;
-s16 D_80102BB6_name_81 BSS;
-s32 D_80102BB8_name_81 BSS;
-u8 D_80102BBC_name_81[4] BSS; /* Unreferenced. */
-s16 D_80102BC0_name_81[2] BSS;
-s16 D_80102BC4_name_81[2][2] BSS;
-omObjData *D_80102BCC_name_81[2] BSS;
-u8 D_80102BD4_name_81 BSS;
-f32 D_80102BD8_name_81[2][2] BSS;
-u8 D_80102BE8_name_81[8] BSS; /* Unreferenced. */
+UnkC5770B70 mbdMgCallSlotTbl[5] BSS;
+omObjData *mbdMgCallListObj BSS;
+s8 mbdMgCallMgList[5] BSS;
+s8 mbdMgCallType BSS;
+s8 mbdMgCallAltOfs BSS;
+s16 mbdMgCallBgGrp BSS;
+s16 mbdMgCallBgAnim BSS;
+s16 mbdMgCallCursorGrp BSS;
+s16 mbdMgCallCursorAnim BSS;
+s32 mbdMgCallMode BSS;
+u8 mbdMgCallBssPad[4] BSS; /* Unreferenced. */
+s16 mbdCoinChangeGrp[2] BSS;
+s16 mbdCoinChangeAnimTbl[2][2] BSS;
+omObjData *mbdCoinChangeObj[2] BSS;
+u8 mbdCoinChangeMode BSS;
+f32 mbdCoinChangePosTbl[2][2] BSS;
+u8 mbdCoinChangePad[8] BSS; /* Unreferenced. */
 
 // warp.c
-s16 D_80102BF0_name_81 BSS;
-s16 D_80102BF2_name_81 BSS;
-s16 D_80102BF4_name_81 BSS;
-s16 D_80102BF6_name_81 BSS;
-s16 D_80102BF8_name_81 BSS;
-s16 D_80102BFA_name_81 BSS;
-u8 D_80102BFC_name_81[4] BSS; /* Unreferenced. */
-Vec D_80102C00_name_81 BSS;
-Vec D_80102C0C_name_81 BSS;
-Vec D_80102C18_name_81 BSS;
-Vec D_80102C24_name_81 BSS; /* Unreferenced. */
+s16 mbdItemWarpPlayerA BSS;
+s16 mbdItemWarpPlayerB BSS;
+s16 mbdWarpLink BSS;
+s16 mbdWarpIdx BSS;
+s16 mbdWarpBackLink BSS;
+s16 mbdWarpBackIdx BSS;
+u8 mbdWarpPad[4] BSS; /* Unreferenced. */
+Vec mbdWarpPosA BSS;
+Vec mbdWarpPosB BSS;
+Vec mbdWarpPosC BSS;
+Vec mbdWarpPosPad BSS; /* Unreferenced. */
 
 // telop.c
-GAMEMES D_80102C30_name_81 BSS;
-s16 D_80102CA4_name_81 BSS;
-u8 D_80102CA6_name_81 BSS;
-NameBss2CA8 D_80102CA8_name_81 BSS;
-omObjData *D_80102CB0_name_81 BSS;
-omObjData *D_80102CB4_name_81 BSS;
-NameBss2CB8 D_80102CB8_name_81 BSS;
-s32 D_80102CC4_name_81 BSS;
-s32 D_80102CC8_name_81 BSS;
-UnkBoard4 *D_80102CCC_name_81 BSS;
-UnkBoard4 *D_80102CD0_name_81 BSS;
-u8 D_80102CD4_name_81[0xC] BSS; /* Unreferenced. */
-Vec D_80102CE0_name_81 BSS;
-Vec D_80102CEC_name_81 BSS;
-Vec D_80102CF8_name_81 BSS;
-Vec D_80102D04_name_81 BSS;
-Vec D_80102D10_name_81 BSS;
-u8 D_80102D1C_name_81[4] BSS; /* Unreferenced. */
+GAMEMES mbdTelopMes BSS;
+s16 mbdTelopMgTypeStrNo BSS;
+u8 mbdTelopFlag BSS;
+NameBss2CA8 mbdTelopPlayerGrp BSS;
+omObjData *mbdTelopPlayerObj BSS;
+omObjData *mbdTelopLast5Obj BSS;
+NameBss2CB8 mbdTelopLast5StopF BSS;
+s32 mbdTelopLast5Turn BSS;
+s32 mbdTelopMgTypeY BSS;
+UnkBoard4 *mbdTelopTitleSpr BSS;
+UnkBoard4 *mbdTelopTitleShadowSpr BSS;
+u8 mbdTelopPad[0xC] BSS; /* Unreferenced. */
+Vec mbdGuideCameraEye BSS;
+Vec mbdGuideCameraAt BSS;
+Vec mbdGuideCameraUp BSS;
+Vec mbdGuideCameraViewSize BSS;
+Vec mbdGuideCameraViewPos BSS;
+u8 mbdGuidePad[4] BSS; /* Unreferenced. */
 
 // back.c
-u32 D_80102D20_name_81 BSS;
-s32 D_80102D24_name_81 BSS;
-u32 D_80102D28_name_81 BSS;
-f32 D_80102D2C_name_81 BSS;
-u16 D_80102D30_name_81 BSS;
-s16 D_80102D32_name_81 BSS;
-s16 D_80102D34_name_81 BSS;
-s16 D_80102D36_name_81 BSS;
-s16 D_80102D38_name_81 BSS;
-u8 *D_80102D3C_name_81 BSS;
-HvqHeader *D_80102D40_name_81 BSS;
-u8 D_80102D44_name_81[4] BSS; /* Unreferenced. */
-OverlayBgEntry D_80102D48_name_81[50] BSS;
-OverlayBgEntry *D_80103130_name_81[6][6] BSS;
-HvqFileHeader *D_801031C0_name_81 BSS;
-Process *D_801031C4_name_81 BSS;
-Process *D_801031C8_name_81 BSS;
-f32 D_801031CC_name_81 BSS;
-f32 D_801031D0_name_81 BSS;
-Vec D_801031D4_name_81 BSS;
-Vec D_801031E0_name_81 BSS;
-Vec D_801031EC_name_81 BSS;
-Vec D_801031F8_name_81 BSS;
-Vec D_80103204_name_81 BSS;
-OSMesgQueue D_80103210_name_81 BSS;
-OSMesg D_80103228_name_81[50] BSS;
-OSThread D_801032F0_name_81 BSS;
-u8 D_801034A0_name_81[0x800] BSS; // Stack of the D_801032F0_name_81 thread.
-OSThread D_80103CA0_name_81 BSS;
-OSPri D_80103E50_name_81 BSS;
-u8 D_80103E54_name_81[0x80C] BSS; // Stack of the D_80103CA0_name_81 thread.
-OSMesgQueue D_80104660_name_81 BSS;
-OSMesg D_80104678_name_81[50] BSS;
-OSMesgQueue D_80104740_name_81 BSS;
-OSMesg D_80104758_name_81[50] BSS;
-OSMesgQueue D_80104820_name_81 BSS;
-OSMesg D_80104838_name_81[2] BSS;
-Vec2f D_80104840_name_81 BSS;
-f32 D_80104848_name_81[2] BSS;
-UnkBoard7 D_80104850_name_81[64] BSS;
-s32 D_80105050_name_81 BSS;
-u8 D_80105054_name_81[4] BSS; /* Unreferenced. */
-Object *D_80105058_name_81[16] BSS;
-u8 D_80105098_name_81[8] BSS; /* Unreferenced. */
+u32 mbdBackArcAddr BSS;
+s32 mbdBackArcNum BSS;
+u32 mbdBackFileAddr BSS;
+f32 mbdCameraSpeed BSS;
+u16 mbdBackFlag BSS;
+s16 mbdBackOfsX BSS;
+s16 mbdBackOfsY BSS;
+s16 mbdBackHalfW BSS;
+s16 mbdBackHalfH BSS;
+u8 *mbdBackHvqWork BSS;
+HvqHeader *mbdBackHvqCur BSS;
+u8 mbdBackHvqPad[4] BSS; /* Unreferenced. */
+OverlayBgEntry mbdBackTileTbl[50] BSS;
+OverlayBgEntry *mbdBackTileMap[6][6] BSS;
+HvqFileHeader *mbdBackHvqFileHdr BSS;
+Process *mbdCameraUpdateProc BSS;
+Process *mbdCameraZoomProc BSS;
+f32 mbdCameraSpeedDiv BSS;
+f32 mbdBackScale BSS;
+Vec mbdCameraEye BSS;
+Vec mbdCameraAt BSS;
+Vec mbdCameraUp BSS;
+Vec mbdCameraViewportSize BSS;
+Vec mbdBackOrigin BSS;
+OSMesgQueue mbdBackDmaMesgQ BSS;
+OSMesg mbdBackDmaMesgBuf[50] BSS;
+OSThread mbdBackDmaThread BSS;
+u8 mbdBackDmaStack[0x800] BSS; // Stack of the mbdBackDmaThread thread.
+OSThread mbdBackDecodeThread BSS;
+OSPri mbdBackThreadPri BSS;
+u8 mbdBackDecodeStack[0x80C] BSS; // Stack of the mbdBackDecodeThread thread.
+OSMesgQueue mbdBackDecodeMesgQ BSS;
+OSMesg mbdBackDecodeMesgBuf[50] BSS;
+OSMesgQueue mbdBackDoneMesgQ BSS;
+OSMesg mbdBackDoneMesgBuf[50] BSS;
+OSMesgQueue mbdBackExitMesgQ BSS;
+OSMesg mbdBackExitMesgBuf[2] BSS;
+Vec2f mbdCameraScrTarget BSS;
+f32 mbdCameraScrPos[2] BSS;
+UnkBoard7 mbdBackSprTbl[64] BSS;
+s32 mbdBackSprNum BSS;
+u8 mbdBackSprPad[4] BSS; /* Unreferenced. */
+Object *mbdBackMdlTbl[16] BSS;
+u8 mbdBackMdlPad[8] BSS; /* Unreferenced. */
 
 // masu.c
-u16 D_801050A0_name_81 BSS;
-u16 D_801050A2_name_81 BSS;
-SpaceData *D_801050A4_name_81 BSS;
-LinkData *D_801050A8_name_81 BSS;
-u8 D_801050AC_name_81[4] BSS; /* Unreferenced. */
-MasuBmp *D_801050B0_name_81[19] BSS;
-s16 D_801050FC_name_81 BSS;
-u16 D_801050FE_name_81 BSS;
-u8 D_80105100_name_81[19] BSS;
-event_list_entry *D_80105114_name_81 BSS;
-event_list_entry *D_80105118_name_81 BSS;
-event_list_entry *D_8010511C_name_81 BSS;
-event_list_entry *D_80105120_name_81 BSS;
-s32 D_80105124_name_81 BSS;
-f32 D_80105128_name_81[8] BSS;
-s32 D_80105148_name_81 BSS;
-u8 D_8010514C_name_81[4] BSS; /* Unreferenced. */
-s16 D_80105150_name_81[255] BSS;
-s16 D_8010534E_name_81 BSS;
-s16 D_80105350_name_81[16] BSS;
-s16 D_80105370_name_81 BSS;
-s16 D_80105372_name_81 BSS; /* Unreferenced. */
-u8 D_80105374_name_81[4] BSS; /* Unreferenced. */
-s32 D_80105378_name_81[0x13] BSS;
-u8 D_801053C4_name_81[4] BSS; /* Unreferenced. */
-s16 D_801053C8_name_81[12] BSS;
+u16 mbdMasuNum BSS;
+u16 mbdMasuLinkNum BSS;
+SpaceData *mbdMasuTbl BSS;
+LinkData *mbdMasuLinkTbl BSS;
+u8 mbdMasuLinkPad[4] BSS; /* Unreferenced. */
+MasuBmp *mbdMasuBmpDataTbl[19] BSS;
+s16 mbdMasuBmpMode BSS;
+u16 mbdMasuDispF BSS;
+u8 mbdMasuTypeNumTbl[19] BSS;
+event_list_entry *mbdMasuEventBoardStartTbl BSS;
+event_list_entry *mbdMasuEventRoundEndTbl BSS;
+event_list_entry *mbdMasuEventTurnStartTbl BSS;
+event_list_entry *mbdMasuEventTurnTelopTbl BSS;
+s32 mbdMasuEventResult BSS;
+f32 mbdMasuArrowAngleTbl[8] BSS;
+s32 mbdMasuArrowAngleNum BSS;
+u8 mbdMasuArrowPad[4] BSS; /* Unreferenced. */
+s16 mbdMasuBlockExtTbl[255] BSS;
+s16 mbdMasuBlockExtNum BSS;
+s16 mbdMasuBlockTbl[16] BSS;
+s16 mbdMasuBlockNum BSS;
+s16 mbdMasuBlockUnused BSS; /* Unreferenced. */
+u8 mbdMasuBlockPad[4] BSS; /* Unreferenced. */
+s32 mbdMasuFlagTbl[0x13] BSS;
+u8 mbdMasuFlagPad[4] BSS; /* Unreferenced. */
+s16 mbdMasuStarTbl[12] BSS;
 
 // pause.c
-UnkOvl81_2 *D_801053E0_name_81 BSS;
-s16 D_801053E4_name_81 BSS;
-s16 D_801053E6_name_81 BSS;
-s32 D_801053E8_name_81 BSS;
-s32 D_801053EC_name_81 BSS;
-s16 D_801053F0_name_81[2] BSS;
-s16 D_801053F4_name_81 BSS;
-s16 D_801053F6_name_81 BSS; /* Unreferenced. */
-u8 D_801053F8_name_81[8] BSS; /* Unreferenced. */
+UnkOvl81_2 *mbdPauseGuide BSS;
+s16 mbdPauseStat BSS;
+s16 mbdPauseQuitF BSS;
+s32 mbdPauseHelpWinL BSS;
+s32 mbdPauseHelpWinR BSS;
+s16 mbdPauseHelpWinSize[2] BSS;
+s16 mbdPauseCursorBlinkF BSS;
+s16 mbdPauseUnused BSS; /* Unreferenced. */
+u8 mbdPausePad[8] BSS; /* Unreferenced. */
 
 // sprgrp.c
-UnkBoard4 *D_80105400_name_81 BSS;
-u16 D_80105404_name_81 BSS;
-s16 D_80105406_name_81 BSS; /* Unreferenced. */
-u8 D_80105408_name_81[8] BSS; /* Unreferenced. */
+UnkBoard4 *mbdSprGrpListHead BSS;
+u16 mbdSprGrpNum BSS;
+s16 mbdSprGrpUnused BSS; /* Unreferenced. */
+u8 mbdSprGrpPad[8] BSS; /* Unreferenced. */
 
 // status.c
-Process *D_80105410_name_81 BSS;
-NameSpriteIds D_80105414_name_81 BSS;
-s16 D_80105420_name_81 BSS;
-s16 D_80105422_name_81 BSS;
-f32 D_80105424_name_81 BSS;
-Vec2f D_80105428_name_81 BSS;
-Vec2f D_80105430_name_81 BSS;
-Vec2f D_80105438_name_81 BSS;
-s16 D_80105440_name_81 BSS;
-omObjData *D_80105444_name_81[3] BSS;
+Process *mbdStatusProc BSS;
+NameSpriteIds mbdStatusAnim BSS;
+s16 mbdVsSprGrp BSS;
+s16 mbdVsSprAnim BSS;
+f32 mbdVsSprScale BSS;
+Vec2f mbdVsSprPos BSS;
+Vec2f mbdVsSprVel BSS;
+Vec2f mbdVsSprAccel BSS;
+s16 mbdVsSprMoveTime BSS;
+omObjData *mbdCoinTakeObjTbl[3] BSS;
 
 // partner.c
 Object *mbdPartnerObj[MBD_MAX_PLAYERS][PARTNEROBJINDEX_MAX] BSS;
-Vec D_80105460_name_81 BSS;
-u8 D_8010546C_name_81[4] BSS; /* Unreferenced. */
-s16 D_80105470_name_81[8] BSS;
-s16 D_80105480_name_81[8] BSS;
+Vec mbdPartnerCameraPos BSS;
+u8 mbdPartnerPad[4] BSS; /* Unreferenced. */
+s16 mbdPartnerAttackMotTbl[8] BSS;
+s16 mbdPartnerExtMotTbl[8] BSS;
 
 // main.c
-s32 D_80105490_name_81 BSS;
-s16 D_80105494_name_81 BSS;
-s16 D_80105496_name_81 BSS;
-s32 D_80105498_name_81 BSS;
-s16 D_8010549C_name_81 BSS;
-s16 D_8010549E_name_81 BSS;
-Vec D_801054A0_name_81 BSS;
-Vec *D_801054AC_name_81 BSS;
-UnkE3CD0 *D_801054B0_name_81 BSS;
-u8 D_801054B4_name_81[4] BSS; /* Unreferenced. */
-Vec D_801054B8_name_81[2] BSS;
-Vec D_801054D0_name_81[2][2] BSS;
+s32 mbdWalkEventResult BSS;
+s16 mbdExitFlag BSS;
+s16 mbdExitMusFadeF BSS;
+s32 mbdExitOvlNo BSS;
+s16 mbdExitOvlEvent BSS;
+s16 mbdCameraFocusMode BSS;
+Vec mbdCameraFocusStaticPos BSS;
+Vec *mbdCameraFocusVec BSS;
+UnkE3CD0 *mbdCameraFocusObj BSS;
+u8 mbdPlayerFixPad[4] BSS; /* Unreferenced. */
+Vec mbdPlayerFixPosTbl[2] BSS;
+Vec mbdPartnerFixPosTbl[2][2] BSS;
 
 // scroll.c
-omObjData *D_80105500_name_81 BSS;
-UnkBoard4 *D_80105504_name_81 BSS;
-s16 D_80105508_name_81[4][2] BSS;
-UnkBoard4 *D_80105518_name_81 BSS;
-Process *D_8010551C_name_81 BSS;
-Object *D_80105520_name_81[MBD_MAX_PLAYERS] BSS;
-f32 D_80105528_name_81 BSS;
-Vec2f D_8010552C_name_81 BSS;
-u8 D_80105534_name_81[0xC] BSS; /* Unreferenced. */
+omObjData *mbdMapScrollArrowObj BSS;
+UnkBoard4 *mbdMapScrollArrow BSS;
+s16 mbdMapScrollArrowPos[4][2] BSS;
+UnkBoard4 *mbdMapScrollMiniMap BSS;
+Process *mbdMapScrollMiniMapProc BSS;
+Object *mbdMapScrollMdlTbl[MBD_MAX_PLAYERS] BSS;
+f32 mbdMapScrollZoom BSS;
+Vec2f mbdMapScrollPos BSS;
+u8 mbdMapScrollPad[0xC] BSS; /* Unreferenced. */
 
 // Shared between files.
-Vec D_80105540_name_81 BSS;
-s32 D_8010554C_name_81 BSS;
-s32 D_80105550_name_81 BSS;
-u8 D_80105554_name_81 BSS;
-u8 D_80105555_name_81 BSS;
-s32 D_80105558_name_81 BSS;
-s16 D_8010555C_name_81 BSS;
-UnkD6B00 D_80105560_name_81[16] BSS;
-s32 D_80105620_name_81 BSS;
-s16 D_80105624_name_81 BSS;
-s32 D_80105628_name_81 BSS;
-u8 D_8010562C_name_81 BSS;
-NamePlayerData D_80105630_name_81[2] BSS;
-f32 D_80105708_name_81 BSS;
-s32 D_8010570C_name_81 BSS;
-u8 D_80105710_name_81 BSS;
-s16 D_80105712_name_81 BSS;
-u8 D_80105714_name_81[4] BSS; /* Unreferenced. */
-s32 D_80105718_name_81 BSS;
-s32 D_8010571C_name_81 BSS;
+Vec mbdAttackCameraPos BSS;
+s32 mbdCounterResult BSS;
+s32 mbdAttackHpDamage BSS;
+u8 mbdSaiMode BSS;
+u8 mbdSaiDispF BSS;
+s32 mbdAttackStarDamage BSS;
+s16 mbdDlgWinId BSS;
+UnkD6B00 mbdMotShiftTbl[16] BSS;
+s32 mbdAttackType BSS;
+s16 mbdModelDispFlag BSS;
+s32 mbdPartnerUnusedWork BSS;
+u8 mbdKakusiWaitF BSS;
+NamePlayerData mbdStatusPlayerTbl[2] BSS;
+f32 mbdSaiHeight BSS;
+s32 mbdAttackOtherIdParam BSS;
+u8 mbdSaiReadyF BSS;
+s16 mbdWinId BSS;
+u8 mbdAttackPad[4] BSS; /* Unreferenced. */
+s32 mbdAttackResult BSS;
+s32 mbdAttackTargetIdParam BSS;

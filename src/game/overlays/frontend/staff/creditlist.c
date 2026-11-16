@@ -872,10 +872,10 @@ void func_8010D1E8_staff(void) {
 
     temp_s2 = HuPrcCurrentGet()->user_data;
     Hu3DGLightDirSet(1, 0.0f, 0.0f, 100.0f);
-    func_800E4F50_name_81(hvq_data_ROM_START);
+    MBDBackArcInit(hvq_data_ROM_START);
     MBDBackLoad(0x20);
-    func_800E8180_name_81(1000.0f, 10000.0f);
-    func_800E8110_name_81();
+    MBDCameraNearFarSet(1000.0f, 10000.0f);
+    MBDCameraKill();
     D_80110538_staff = 1;
     D_80111540_staff.x = 350.0f;
     D_80111540_staff.y = 190.0f;

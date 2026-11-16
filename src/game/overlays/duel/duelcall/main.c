@@ -1,7 +1,7 @@
 #include "common.h"
 
-void func_800FBFA4_name_81(void);
-void func_800FC030_name_81(void);
+void MBDOvlCallInit(void);
+void MBDOvlCallExec(void);
 
 void func_801059D0_duelcall(void) {
     if (_CheckFlag(0)) {
@@ -10,14 +10,14 @@ void func_801059D0_duelcall(void) {
         GWBoardFlagClear(1);
     }
     omInitObjMan(0xA, 0);
-    func_800FBFA4_name_81();
+    MBDOvlCallInit();
     omOvlGotoEx(0x5A, 1, 0x4190);
     omOvlHisChg(0, 0x5A, 1, 0x4190);
 }
 
 void func_80105A44_duelcall(void) {
     omInitObjMan(0xA, 0);
-    func_800FC030_name_81();
+    MBDOvlCallExec();
 }
 
 void func_80105A6C_duelcall(void) {

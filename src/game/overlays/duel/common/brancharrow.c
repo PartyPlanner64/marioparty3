@@ -1,14 +1,14 @@
 #include "common_duel.h"
 #include "ovl_81.h"
 
-UnkBoard2 *func_800D6B70_name_81(s32 arg0) {
+UnkBoard2 *MBDBranchArrowCreate(s32 arg0) {
     s32 sp10[3] = { 0x00000017, 0x00000018, 0x00000019 };
     UnkBoard2 *temp_v0;
     Object *temp_v0_2;
 
     temp_v0 = HuMemMemoryAllocTemp(sizeof(UnkBoard2));
     temp_v0->unk_00 = 0;
-    temp_v0_2 = func_800D8010_name_81(sp10[arg0], 0);
+    temp_v0_2 = MBDModelCreate(sp10[arg0], 0);
     temp_v0->obj = temp_v0_2;
     Hu3DModelAttrSet(temp_v0_2->omObj1->model[0], 0x180, 0);
     Hu3DModelLayerSet(temp_v0->obj->omObj1->model[0], 0x1400);
@@ -17,12 +17,12 @@ UnkBoard2 *func_800D6B70_name_81(s32 arg0) {
     return temp_v0;
 }
 
-void func_800D6C3C_name_81(UnkBoard2 *arg0) {
+void MBDBranchArrowKill(UnkBoard2 *arg0) {
     MBDModelKill(arg0->obj);
     HuMemMemoryFreeTemp(arg0);
 }
 
-UnkEA790Struct *func_800D6C6C_name_81(void) {
+UnkEA790Struct *MBDBranchArrowGrpCreate(void) {
     UnkEA790Struct *temp_v0;
 
     temp_v0 = HuMemMemoryAllocTemp(sizeof(UnkEA790Struct));
@@ -35,13 +35,13 @@ UnkEA790Struct *func_800D6C6C_name_81(void) {
     return temp_v0;
 }
 
-void func_800D6CA0_name_81(UnkEA790Struct *arg0) {
+void MBDBranchArrowGrpKill(UnkEA790Struct *arg0) {
     UnkBoard2 **var_s1;
     s32 i;
 
     if (arg0->unk_02 != 0) {
         for (var_s1 = arg0->unk_04, i = 0; i < arg0->unk_02; var_s1++, i++) {
-            func_800D6C3C_name_81(*var_s1);
+            MBDBranchArrowKill(*var_s1);
         }
         HuMemMemoryFreeTemp(arg0->unk_04);
     }
@@ -53,7 +53,7 @@ void func_800D6CA0_name_81(UnkEA790Struct *arg0) {
     HuMemMemoryFreeTemp(arg0);
 }
 
-void func_800D6D2C_name_81(UnkEA790Struct *arg0, UnkBoard2 *arg1, u16 arg2) {
+void MBDBranchArrowGrpAdd(UnkEA790Struct *arg0, UnkBoard2 *arg1, u16 arg2) {
     UnkBoard2 **newList;
     UnkBoard2 **dst;
     UnkBoard2 **src;
@@ -86,7 +86,7 @@ void func_800D6D2C_name_81(UnkEA790Struct *arg0, UnkBoard2 *arg1, u16 arg2) {
     }
 }
 
-void func_800D6E00_name_81(UnkEA790Struct *arg0, UnkBoard2* arg1) {
+void MBDBranchArrowGrpRemove(UnkEA790Struct *arg0, UnkBoard2* arg1) {
     UnkBoard2 **newList;
     UnkBoard2 **dst;
     UnkBoard2 **src;
@@ -120,6 +120,6 @@ void func_800D6E00_name_81(UnkEA790Struct *arg0, UnkBoard2* arg1) {
     arg0->unk_04 = newList;
 }
 
-UnkBoard2 *func_800D6EC8_name_81(UnkEA790Struct *arg0, s16 arg1) {
+UnkBoard2 *MBDBranchArrowGrpArrowGet(UnkEA790Struct *arg0, s16 arg1) {
     return arg0->unk_04[arg1];
 }

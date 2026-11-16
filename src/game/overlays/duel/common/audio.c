@@ -1,10 +1,10 @@
 #include "common_duel.h"
 #include "ovl_81.h"
 
-void func_800DC660_name_81(void);
-void func_800DC700_name_81(void);
+void MBDSeqVolUpProc(void);
+void MBDSeqVolDownProc(void);
 
-void func_800DC660_name_81(void) {
+void MBDSeqVolUpProc(void) {
     f32 var_f20 = 96.0f;
 
     HuAudSeqVolSet(0x60);
@@ -20,7 +20,7 @@ void func_800DC660_name_81(void) {
     omDelPrcObj(NULL);
 }
 
-void func_800DC700_name_81(void) {
+void MBDSeqVolDownProc(void) {
     f32 var_f20 = 127.0f;
 
     HuAudSeqVolSet(0x7F);
@@ -36,10 +36,10 @@ void func_800DC700_name_81(void) {
     omDelPrcObj(NULL);
 }
 
-void func_800DC7A0_name_81(void) {
-    omAddPrcObj(func_800DC700_name_81, 0xEFFF, 0, 0);
+void MBDSeqVolDownStart(void) {
+    omAddPrcObj(MBDSeqVolDownProc, 0xEFFF, 0, 0);
 }
 
-void func_800DC7CC_name_81(void) {
-    omAddPrcObj(func_800DC660_name_81, 0xEFFF, 0, 0);
+void MBDSeqVolUpStart(void) {
+    omAddPrcObj(MBDSeqVolUpProc, 0xEFFF, 0, 0);
 }

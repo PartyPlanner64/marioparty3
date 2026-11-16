@@ -1,66 +1,66 @@
 #include "common_duel.h"
 #include "ovl_81.h"
 
-void func_800EED68_name_81(s16, s32);
-void func_800EF3B4_name_81(s16);
-void *func_800FFC2C_name_81(s16, s16, s32);
-void func_800FFCCC_name_81(void *);
-void func_800FB148_name_81(void);
-void func_800FB158_name_81(void);
+void MBDWinComKeyWait(s16, s32);
+void MBDWinComKeyAllWait(s16);
+void *MBDPlayerVibrateObjCreate(s16, s16, s32);
+void MBDPlayerVibrateObjKill(void *);
+void MBDAttackHpClear(void);
+void MBDPartnerStub(void);
 
-s32 D_80101670_name_81[] = { 4, 0xA0090, 0xA009A, 0xA009B, 0xA009C };
-s32 D_80101684_name_81[] = { 2, 0xA0094, 0xA0096 };
-s32 D_80101690_name_81[] = { 4, 0xA00A7, 0xA00AB, 0xA00AC, 0xA00AD };
-s32 D_801016A4_name_81[] = { 2, 0xA00AE, 0xA00AF };
-s32 D_801016B0_name_81[] = { 4, 0xA0002, 0xA0012, 0xA0013, 0xA0014 };
-s32 D_801016C4_name_81[] = { 2, 0xA0015, 0xA0016 };
-s32 D_801016D0_name_81[] = { 4, 0xA00BD, 0xA00BE, 0xA00BF, 0xA00C0 };
-s32 D_801016E4_name_81[] = { 1, 0xA00BC };
-s32 D_801016EC_name_81[] = { 4, 0xA00C7, 0xA00C8, 0xA00C9, 0xA00CA };
-s32 D_80101700_name_81[] = { 4, 0xA00D0, 0xA00D1, 0xA00D2, 0xA00D3 };
-s32 D_80101714_name_81[] = { 1, 0xA00D4 };
-s32 D_8010171C_name_81[] = { 4, 0xA0138, 0xA0139, 0xA013A, 0xA013B };
-s32 D_80101730_name_81[] = { 3, 0xA013C, 0xA013D, 0xA013E };
-s32 D_80101740_name_81[] = { 4, 0xA00E9, 0xA00EA, 0xA00EB, 0xA00EC };
-s32 D_80101754_name_81[] = { 4, 0xA0103, 0xA0104, 0xA0105, 0xA0106 };
-s32 D_80101768_name_81[] = { 2, 0xA0107, 0xA0108 };
-s32 D_80101774_name_81[] = { 4, 0xA00DD, 0xA00DE, 0xA00DF, 0xA00E0 };
-s32 D_80101788_name_81[] = { 1, 0xA00E1 };
-s32 D_80101790_name_81[] = { 4, 0xA0141, 0xA0142, 0xA0143, 0xA0144 };
-s32 D_801017A4_name_81[] = { 1, 0xA0145 };
-s32 D_801017AC_name_81[] = { 2, 0xA010F, 0xA0110 };
-s32 D_801017B8_name_81[] = { 4, 0xA0113, 0xA0114, 0xA0115, 0xA0116 };
-s32 D_801017CC_name_81[] = { 3, 0xA0110, 0xA0111, 0xA0112 };
+s32 mbdNokonokoMotTbl[] = { 4, 0xA0090, 0xA009A, 0xA009B, 0xA009C };
+s32 mbdNokonokoAttackMotTbl[] = { 2, 0xA0094, 0xA0096 };
+s32 mbdKuriboMotTbl[] = { 4, 0xA00A7, 0xA00AB, 0xA00AC, 0xA00AD };
+s32 mbdKuriboAttackMotTbl[] = { 2, 0xA00AE, 0xA00AF };
+s32 mbdKinopioMotTbl[] = { 4, 0xA0002, 0xA0012, 0xA0013, 0xA0014 };
+s32 mbdKinopioAttackMotTbl[] = { 2, 0xA0015, 0xA0016 };
+s32 mbdBomheiMotTbl[] = { 4, 0xA00BD, 0xA00BE, 0xA00BF, 0xA00C0 };
+s32 mbdBomheiAttackMotTbl[] = { 1, 0xA00BC };
+s32 mbdTeresaMotTbl[] = { 4, 0xA00C7, 0xA00C8, 0xA00C9, 0xA00CA };
+s32 mbdWhompMotTbl[] = { 4, 0xA00D0, 0xA00D1, 0xA00D2, 0xA00D3 };
+s32 mbdWhompAttackMotTbl[] = { 1, 0xA00D4 };
+s32 mbdSnifitMotTbl[] = { 4, 0xA0138, 0xA0139, 0xA013A, 0xA013B };
+s32 mbdSnifitAttackMotTbl[] = { 3, 0xA013C, 0xA013D, 0xA013E };
+s32 mbdDossunMotTbl[] = { 4, 0xA00E9, 0xA00EA, 0xA00EB, 0xA00EC };
+s32 mbdKoopaJrMotTbl[] = { 4, 0xA0103, 0xA0104, 0xA0105, 0xA0106 };
+s32 mbdKoopaJrAttackMotTbl[] = { 2, 0xA0107, 0xA0108 };
+s32 mbdWanwanMotTbl[] = { 4, 0xA00DD, 0xA00DE, 0xA00DF, 0xA00E0 };
+s32 mbdWanwanAttackMotTbl[] = { 1, 0xA00E1 };
+s32 mbdBlizzardMotTbl[] = { 4, 0xA0141, 0xA0142, 0xA0143, 0xA0144 };
+s32 mbdBlizzardAttackMotTbl[] = { 1, 0xA0145 };
+s32 mbdPakkunMotTbl[] = { 2, 0xA010F, 0xA0110 };
+s32 mbdPakkunAttackMotTbl[] = { 4, 0xA0113, 0xA0114, 0xA0115, 0xA0116 };
+s32 mbdPakkunExtMotTbl[] = { 3, 0xA0110, 0xA0111, 0xA0112 };
 
-s32 *D_801017DC_name_81[] = {
-    D_80101670_name_81,
-    D_80101690_name_81,
-    D_801016B0_name_81,
-    D_801016D0_name_81,
-    D_801016EC_name_81,
-    D_80101700_name_81,
-    D_8010171C_name_81,
-    D_801017AC_name_81,
-    D_80101774_name_81,
-    D_80101740_name_81,
-    D_80101790_name_81,
-    D_80101754_name_81,
+s32 *mbdPartnerMdlMotTbl[] = {
+    mbdNokonokoMotTbl,
+    mbdKuriboMotTbl,
+    mbdKinopioMotTbl,
+    mbdBomheiMotTbl,
+    mbdTeresaMotTbl,
+    mbdWhompMotTbl,
+    mbdSnifitMotTbl,
+    mbdPakkunMotTbl,
+    mbdWanwanMotTbl,
+    mbdDossunMotTbl,
+    mbdBlizzardMotTbl,
+    mbdKoopaJrMotTbl,
 };
-s32 *D_8010180C_name_81[] = {
-    D_80101684_name_81,
-    D_801016A4_name_81,
-    D_801016C4_name_81,
-    D_801016E4_name_81,
+s32 *mbdPartnerAttackMotFileTbl[] = {
+    mbdNokonokoAttackMotTbl,
+    mbdKuriboAttackMotTbl,
+    mbdKinopioAttackMotTbl,
+    mbdBomheiAttackMotTbl,
     NULL,
-    D_80101714_name_81,
-    D_80101730_name_81,
-    D_801017B8_name_81,
-    D_80101788_name_81,
+    mbdWhompAttackMotTbl,
+    mbdSnifitAttackMotTbl,
+    mbdPakkunAttackMotTbl,
+    mbdWanwanAttackMotTbl,
     NULL,
-    D_801017A4_name_81,
-    D_80101768_name_81,
+    mbdBlizzardAttackMotTbl,
+    mbdKoopaJrAttackMotTbl,
 };
-s32 *D_8010183C_name_81[] = {
+s32 *mbdPartnerExtMotFileTbl[] = {
     NULL,
     NULL,
     NULL,
@@ -68,7 +68,7 @@ s32 *D_8010183C_name_81[] = {
     NULL,
     NULL,
     NULL,
-    D_801017CC_name_81,
+    mbdPakkunExtMotTbl,
     NULL,
     NULL,
     NULL,
@@ -79,8 +79,8 @@ PartnerBaseAttributes PartnersBaseStats[] = {
     { 37, 2, 1, 1, NULL, NULL, NULL, NULL },
     { 12, 1, 2, 2, NULL, NULL, NULL, NULL },
     { 9, 1, 1, 1, NULL, NULL, NULL, NULL },
-    { 38, 1, 1, 3, NULL, NULL, func_800FB148_name_81, NULL },
-    { 10, 1, 2, 3, NULL, NULL, NULL, func_800FB158_name_81 },
+    { 38, 1, 1, 3, NULL, NULL, MBDAttackHpClear, NULL },
+    { 10, 1, 2, 3, NULL, NULL, NULL, MBDPartnerStub },
     { 11, 4, 0, 3, NULL, NULL, NULL, NULL },
     { 36, 2, 2, 5, NULL, NULL, NULL, NULL },
     { 44, 1, 3, 5, NULL, NULL, NULL, NULL },
@@ -90,29 +90,29 @@ PartnerBaseAttributes PartnersBaseStats[] = {
     { 41, 1, 1, 3, NULL, NULL, NULL, NULL },
 };
 
-Process *D_8010195C_name_81 = NULL;
-u8 D_80101960_name_81[] = { 0, 1, 2, 4, 3, 5, 7, 6 }; /* Unreferenced. */
-s8 *D_80101968_name_81 = NULL;
-s8 *D_8010196C_name_81 = NULL;
-s8 *D_80101970_name_81 = NULL;
-s8 *D_80101974_name_81 = NULL;
-s8 *D_80101978_name_81 = NULL;
-s8 *D_8010197C_name_81 = NULL;
-s32 D_80101980_name_81 = 0;
-s32 D_80101984_name_81 = 0;
-Object *D_80101988_name_81 = NULL;
-void (*D_8010198C_name_81)(void) = NULL;
-s16 D_80101990_name_81 = 0;
-s16 D_80101992_name_81 = 0;
-s16 D_80101994_name_81 = 0;
-s32 D_80101998_name_81[] = {
+Process *mbdPartnerProc = NULL;
+u8 mbdCharPartnerTbl[] = { 0, 1, 2, 4, 3, 5, 7, 6 };
+s8 *mbdAttackHp = NULL;
+s8 *mbdAttackTargetHp = NULL;
+s8 *mbdAttackOtherHp = NULL;
+s8 *mbdAttackPartnerId = NULL;
+s8 *mbdAttackTargetId = NULL;
+s8 *mbdAttackOtherId = NULL;
+s32 mbdCoinScatterNum = 0;
+s32 mbdCoinScatterDoneNum = 0;
+Object *mbdCoinScatterMdl = NULL;
+void (*mbdCoinScatterHook)(void) = NULL;
+s16 mbdPartnerAttackMotNum = 0;
+s16 mbdPartnerExtMotNum = 0;
+s16 mbdPartnerExtMotUseCnt = 0;
+s32 mbdPartnerDescMesTbl[] = {
     0x4F00, 0x4F01, 0x4F02, 0x4F03, 0x4F04, 0x4F05,
     0x4F06, 0x4F07, 0x4F08, 0x4F09, 0x4F0A, 0x4F0B
 };
-s16 D_801019C8_name_81[] = { 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F, 0x20, 0x21, 0x22 };
-s32 D_801019E0_name_81[][2] = { { 4, 10 }, { 3, 8 }, { 5, 9 }, { 0, 2 }, { 6, 10 } };
-s32 D_80101A08_name_81[] = { 0x1F16, 0x1F17, 0x1F18, 0x1F19, 0x1F1A };
-s32 D_80101A1C_name_81[] = {
+s16 mbdPartnerDescFaceTbl[] = { 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F, 0x20, 0x21, 0x22 };
+s32 mbdPartnerComboTbl[][2] = { { 4, 10 }, { 3, 8 }, { 5, 9 }, { 0, 2 }, { 6, 10 } };
+s32 mbdPartnerComboMesTbl[] = { 0x1F16, 0x1F17, 0x1F18, 0x1F19, 0x1F1A };
+s32 mbdPartnerNameMesTbl[] = {
     0x1F0A, 0x1F0B, 0x1F0C, 0x1F0D, 0x1F0E, 0x1F0F,
     0x1F10, 0x1F11, 0x1F12, 0x1F13, 0x1F14, 0x1F15
 };
@@ -128,26 +128,26 @@ void MBDPartnerObjClear(void) {
     }
 }
 
-void func_800F7FDC_name_81(void) {
+void MBDPartnerClose(void) {
     s32 i;
 
     for (i = 0; i < MBD_MAX_PLAYERS; i++) {
-        func_800F82EC_name_81(i);
+        MBDPartnerModelKillAll(i);
     }
 
-    if (D_8010195C_name_81 != NULL) {
-        omDelPrcObj(D_8010195C_name_81);
-        D_8010195C_name_81 = NULL;
+    if (mbdPartnerProc != NULL) {
+        omDelPrcObj(mbdPartnerProc);
+        mbdPartnerProc = NULL;
     }
 }
 
 // partnerNo arg goes unused?
-Object *func_800F8034_name_81(s32 partnerNo) {
-    return func_800F8050_name_81(7);
+Object *MBDPartnerPakkunModelCreate(s32 partnerNo) {
+    return MBDPartnerModelCreate(7);
 }
 
-Object *func_800F8050_name_81(s32 partnerID) {
-    Object *obj = func_800D8010_name_81(PartnersBaseStats[partnerID].unk_00, D_801017DC_name_81[partnerID]);
+Object *MBDPartnerModelCreate(s32 partnerID) {
+    Object *obj = MBDModelCreate(PartnersBaseStats[partnerID].unk_00, mbdPartnerMdlMotTbl[partnerID]);
 
     if (partnerID == PARTNER_BOO) {
         Hu3DModelTPLvlInit(obj->omObj1->model[0]);
@@ -160,7 +160,7 @@ Object *func_800F8050_name_81(s32 partnerID) {
     return obj;
 }
 
-void func_800F8108_name_81(s32 playerIndex) {
+void MBDPartnerModelSetup(s32 playerIndex) {
     GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
 
     if (mbdPartnerObj[playerIndex][PARTNER_FRONT] != NULL) {
@@ -170,9 +170,9 @@ void func_800F8108_name_81(s32 playerIndex) {
 
     if (player->stats.partners.frontID != PARTNER_NONE) {
         if (player->stats.partners.frontID == PARTNER_PIRANHA_PLANT) {
-            mbdPartnerObj[playerIndex][PARTNER_FRONT] = func_800F8034_name_81(playerIndex);
+            mbdPartnerObj[playerIndex][PARTNER_FRONT] = MBDPartnerPakkunModelCreate(playerIndex);
         } else {
-            mbdPartnerObj[playerIndex][PARTNER_FRONT] = func_800F8050_name_81(player->stats.partners.frontID);
+            mbdPartnerObj[playerIndex][PARTNER_FRONT] = MBDPartnerModelCreate(player->stats.partners.frontID);
         }
     }
 
@@ -183,14 +183,14 @@ void func_800F8108_name_81(s32 playerIndex) {
 
     if (player->stats.partners.backID != PARTNER_NONE) {
         if (player->stats.partners.backID == PARTNER_PIRANHA_PLANT) {
-            mbdPartnerObj[playerIndex][PARTNER_BACK] = func_800F8034_name_81(playerIndex);
+            mbdPartnerObj[playerIndex][PARTNER_BACK] = MBDPartnerPakkunModelCreate(playerIndex);
         } else {
-            mbdPartnerObj[playerIndex][PARTNER_BACK] = func_800F8050_name_81(player->stats.partners.backID);
+            mbdPartnerObj[playerIndex][PARTNER_BACK] = MBDPartnerModelCreate(player->stats.partners.backID);
         }
     }
 }
 
-void func_800F821C_name_81(s32 playerIndex, s32 partnerNo) {
+void MBDPartnerModelReset(s32 playerIndex, s32 partnerNo) {
     GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
     Object *partnerObj = mbdPartnerObj[playerIndex][partnerNo];
     s32 partnerID;
@@ -208,14 +208,14 @@ void func_800F821C_name_81(s32 playerIndex, s32 partnerNo) {
 
     if (partnerID != PARTNER_NONE) {
         if (partnerID == PARTNER_PIRANHA_PLANT) {
-            mbdPartnerObj[playerIndex][partnerNo] = func_800F8034_name_81(playerIndex);
+            mbdPartnerObj[playerIndex][partnerNo] = MBDPartnerPakkunModelCreate(playerIndex);
         } else {
-            mbdPartnerObj[playerIndex][partnerNo] = func_800F8050_name_81(partnerID);
+            mbdPartnerObj[playerIndex][partnerNo] = MBDPartnerModelCreate(partnerID);
         }
     }
 }
 
-void func_800F82EC_name_81(s32 playerIndex) {
+void MBDPartnerModelKillAll(s32 playerIndex) {
     s32 i;
 
     for (i = 0; i < MBD_MAX_PLAYERS; i++) {
@@ -226,14 +226,14 @@ void func_800F82EC_name_81(s32 playerIndex) {
     }
 }
 
-void func_800F8358_name_81(s32 playerIndex) {
+void MBDPartnerModelUpdate(s32 playerIndex) {
     GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
 
     if (player->stats.partners.frontID == PARTNER_NONE) {
         if (mbdPartnerObj[playerIndex][PARTNER_FRONT] != NULL) {
             MBDModelKill(mbdPartnerObj[playerIndex][PARTNER_FRONT]);
             mbdPartnerObj[playerIndex][PARTNER_FRONT] = NULL;
-            func_800F85A4_name_81(playerIndex, PARTNER_FRONT);
+            MBDPartnerClear(playerIndex, PARTNER_FRONT);
         }
     }
 
@@ -241,12 +241,12 @@ void func_800F8358_name_81(s32 playerIndex) {
         if (mbdPartnerObj[playerIndex][PARTNER_BACK] != NULL) {
             MBDModelKill(mbdPartnerObj[playerIndex][1]);
             mbdPartnerObj[playerIndex][PARTNER_BACK] = NULL;
-            func_800F85A4_name_81(playerIndex, PARTNER_BACK);
+            MBDPartnerClear(playerIndex, PARTNER_BACK);
         }
     }
 }
 
-void func_800F8418_name_81(s32 playerIndex, s32 partnerID, s32 frontOrBackIndex) {
+void MBDPartnerSet(s32 playerIndex, s32 partnerID, s32 frontOrBackIndex) {
     GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
 
     switch (frontOrBackIndex) {
@@ -283,7 +283,7 @@ void func_800F8418_name_81(s32 playerIndex, s32 partnerID, s32 frontOrBackIndex)
     }
 }
 
-void func_800F85A4_name_81(s32 playerIndex, s32 frontOrBackIndex) {
+void MBDPartnerClear(s32 playerIndex, s32 frontOrBackIndex) {
     GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
 
     switch (frontOrBackIndex) {
@@ -346,9 +346,9 @@ void MBDPartnerPosSwap(s32 playerIndex) {
     mbdPartnerObj[playerIndex][PARTNER_FRONT] = mbdPartnerObj[playerIndex][PARTNER_BACK];
     mbdPartnerObj[playerIndex][PARTNER_BACK] = tempPartner;
 
-    func_800ED214_name_81(playerIndex);
-    func_800F5BB4_name_81(playerIndex);
-    func_800F5EB0_name_81(playerIndex);
+    MBDPartnerPosFix(playerIndex);
+    MBDStatusFrontUpdate(playerIndex);
+    MBDStatusBackUpdate(playerIndex);
 }
 
 void MBDPartnerPowerUp(s32 playerIndex) {
@@ -390,7 +390,7 @@ Object *MBDGetPlayerPartnerRef(s32 playerIndex, s32 frontOrBackIndex) {
     return mbdPartnerObj[playerIndex][frontOrBackIndex];
 }
 
-s32 func_800F8980_name_81(s32 playerIndex) {
+s32 MBDPartnerCostGet(s32 playerIndex) {
     GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
     s32 totalPartnerCost = 0;
 
@@ -403,7 +403,7 @@ s32 func_800F8980_name_81(s32 playerIndex) {
     return totalPartnerCost;
 }
 
-s32 func_800F89D0_name_81(s32 playerIndex, s32 frontOrBackIndex, s16 arg2, u16 arg3) {
+s32 MBDPartnerMotionSet(s32 playerIndex, s32 frontOrBackIndex, s16 arg2, u16 arg3) {
     s32 partnerCount = 0;
     GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
 
@@ -412,14 +412,14 @@ s32 func_800F89D0_name_81(s32 playerIndex, s32 frontOrBackIndex, s16 arg2, u16 a
     }
 
     if (frontOrBackIndex == PARTNER_FRONT) {
-        if ((player->stats.partners.frontID != PARTNER_NONE) && (D_801017DC_name_81[player->stats.partners.frontID] != NULL)) {
+        if ((player->stats.partners.frontID != PARTNER_NONE) && (mbdPartnerMdlMotTbl[player->stats.partners.frontID] != NULL)) {
             MBDMotionSet(mbdPartnerObj[playerIndex][PARTNER_FRONT], arg2, arg3);
             partnerCount++;
         }
     }
 
     if (frontOrBackIndex == PARTNER_BACK) {
-        if ((player->stats.partners.backID != PARTNER_NONE) && (D_801017DC_name_81[player->stats.partners.backID] != NULL)) {
+        if ((player->stats.partners.backID != PARTNER_NONE) && (mbdPartnerMdlMotTbl[player->stats.partners.backID] != NULL)) {
             MBDMotionSet(mbdPartnerObj[playerIndex][PARTNER_BACK], arg2, arg3);
             partnerCount++;
         }
@@ -427,7 +427,7 @@ s32 func_800F89D0_name_81(s32 playerIndex, s32 frontOrBackIndex, s16 arg2, u16 a
     return partnerCount;
 }
 
-s32 func_800F8AEC_name_81(s32 playerIndex, s32 arg1, s16 arg2, s16 arg3, s16 arg4, u16 flags) {
+s32 MBDPartnerMotionShiftSet(s32 playerIndex, s32 arg1, s16 arg2, s16 arg3, s16 arg4, u16 flags) {
     s32 partnerCount = 0;
     GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
     u16 flagsCopy = flags;
@@ -437,7 +437,7 @@ s32 func_800F8AEC_name_81(s32 playerIndex, s32 arg1, s16 arg2, s16 arg3, s16 arg
     }
 
     if (arg1 == 0) {
-        if ((player->stats.partners.frontID != PARTNER_NONE) && (D_801017DC_name_81[player->stats.partners.frontID] != NULL)) {
+        if ((player->stats.partners.frontID != PARTNER_NONE) && (mbdPartnerMdlMotTbl[player->stats.partners.frontID] != NULL)) {
             if (player->stats.partners.frontID == PARTNER_THWOMP) {
                 flagsCopy &= ~4;
             }
@@ -447,7 +447,7 @@ s32 func_800F8AEC_name_81(s32 playerIndex, s32 arg1, s16 arg2, s16 arg3, s16 arg
     }
 
     if (arg1 == 1) {
-        if ((player->stats.partners.backID != PARTNER_NONE) && (D_801017DC_name_81[player->stats.partners.backID] != NULL)) {
+        if ((player->stats.partners.backID != PARTNER_NONE) && (mbdPartnerMdlMotTbl[player->stats.partners.backID] != NULL)) {
             if (player->stats.partners.backID == PARTNER_THWOMP) {
                 flags &= ~4;
             }
@@ -459,7 +459,7 @@ s32 func_800F8AEC_name_81(s32 playerIndex, s32 arg1, s16 arg2, s16 arg3, s16 arg
     return partnerCount;
 }
 
-void func_800F8C68_name_81(s32 arg0) {
+void MBDPartnerMotionReset(s32 arg0) {
     Object *frontPartnerObj = mbdPartnerObj[arg0][PARTNER_FRONT];
     Object *backPartnerObj;
 
@@ -473,7 +473,7 @@ void func_800F8C68_name_81(s32 arg0) {
     }
 }
 
-void func_800F8CD8_name_81(s32 playerIndex, f32 arg1) {
+void MBDPartnerSpeedSet(s32 playerIndex, f32 arg1) {
     GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
 
     if (playerIndex == PARTNER_NONE) {
@@ -489,7 +489,7 @@ void func_800F8CD8_name_81(s32 playerIndex, f32 arg1) {
     }
 }
 
-void func_800F8D9C_name_81(s32 arg0, s32 *arg1, s32 *arg2) {
+void MBDPartnerAttackPairGet(s32 arg0, s32 *arg1, s32 *arg2) {
     GW_PLAYER *curPlayer = NULL;
     GW_PLAYER *opponent = NULL;
     s32 i;
@@ -523,7 +523,7 @@ void func_800F8D9C_name_81(s32 arg0, s32 *arg1, s32 *arg2) {
 }
 
 // what does this do? (arg4 is unused)
-void func_800F8EB8_name_81(u32 partnerID, s32 arg1, s32 *damageAmount, s32 *arg3, s32 arg4) {
+void MBDPartnerDamageCalc(u32 partnerID, s32 arg1, s32 *damageAmount, s32 *arg3, s32 arg4) {
     *arg3 = 0;
 
     switch (partnerID) {
@@ -547,7 +547,7 @@ void func_800F8EB8_name_81(u32 partnerID, s32 arg1, s32 *damageAmount, s32 *arg3
             }
             break;
         case PARTNER_BABY_BOWSER:
-            if (func_800EFE20_name_81(100.0f) < 40) {
+            if (MBDRand(100.0f) < 40) {
                 *damageAmount *= 3;
             } else {
                 *damageAmount = 0;
@@ -569,7 +569,7 @@ void func_800F8EB8_name_81(u32 partnerID, s32 arg1, s32 *damageAmount, s32 *arg3
             if (*damageAmount != 0xCA) {
                 if (arg1 != -1) {
                     // related to miss chance potentially? gets a 10% chance of something...
-                    if (func_800EFE20_name_81(10.0f) == 0) {
+                    if (MBDRand(10.0f) == 0) {
                         *damageAmount = 0x12C;
                     }
                 }
@@ -601,12 +601,12 @@ void func_800F8EB8_name_81(u32 partnerID, s32 arg1, s32 *damageAmount, s32 *arg3
             break;
     }
 
-    if ((*arg3 > 0) && ((*arg3 < 0xC8) || (*arg3 >= 0xCA)) && (*arg3 != 0xCA) && (func_800EFE20_name_81(10.0f) == 0)) {
+    if ((*arg3 > 0) && ((*arg3 < 0xC8) || (*arg3 >= 0xCA)) && (*arg3 != 0xCA) && (MBDRand(10.0f) == 0)) {
         *arg3 = 0x12C;
     }
 }
 
-void func_800F90BC_name_81(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+void MBDPartnerMesWinExec(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     u8 sp18[128];
     u8 sp98[32];
     u16 temp_v0;
@@ -637,15 +637,15 @@ void func_800F90BC_name_81(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     HuWinExAnimIn(temp_v0);
 
     if (arg3 == -1) {
-        func_800EF3B4_name_81(temp_v0);
+        MBDWinComKeyAllWait(temp_v0);
     } else {
-        func_800EED68_name_81(temp_v0, arg3);
+        MBDWinComKeyWait(temp_v0, arg3);
     }
     HuWinExAnimOut(temp_v0, 0);
     HuWinKill(temp_v0);
 }
 
-void func_800F924C_name_81(s32 attackType) {
+void MBDPartnerAttackExec(s32 attackType) {
     GW_PLAYER *player;
     GW_PLAYER *opposingPlayer;
     Process *process;
@@ -674,9 +674,9 @@ void func_800F924C_name_81(s32 attackType) {
     player = MBDGetPlayerStruct(curPlayerIndex);
     opposingPlayer = MBDGetPlayerStruct(opposingPlayerIndex);
     process = HuPrcCurrentGet();
-    func_800E5964_name_81();
-    func_800FAEE8_name_81();
-    func_800F8D9C_name_81(attackType, &partnerID, &targetID);
+    MBDBackThreadPriLowSet();
+    MBDPartnerExtMotInit();
+    MBDPartnerAttackPairGet(attackType, &partnerID, &targetID);
 
     if (partnerID == PARTNER_MR_BLIZZARD) {
         switch (attackType) {
@@ -695,13 +695,13 @@ void func_800F924C_name_81(s32 attackType) {
         }
     }
 
-    D_80105620_name_81 = attackType;
-    func_800F8D9C_name_81(attackType, &partnerID, &targetID);
+    mbdAttackType = attackType;
+    MBDPartnerAttackPairGet(attackType, &partnerID, &targetID);
 
     if (partnerID == PARTNER_NONE) {
         HuPrcChildLink(process, MBDCameraZoomMotStart(1.0f));
         HuPrcChildWatch();
-        func_800EAFC4_name_81(0x1E00);
+        MBDDlgResultWinExec(0x1E00);
         HuPrcChildLink(process, MBDCameraZoomMotStart(1.7f));
         HuPrcChildWatch();
     } else {
@@ -713,48 +713,48 @@ void func_800F924C_name_81(s32 attackType) {
 
         switch (attackType) {
             case 0:
-                D_80101968_name_81 = &player->stats.partners.frontHp;
-                D_8010196C_name_81 = &opposingPlayer->stats.partners.backHp;
-                D_80101970_name_81 = &opposingPlayer->stats.partners.frontHp;
-                D_80101974_name_81 = &player->stats.partners.frontID;
-                D_80101978_name_81 = &opposingPlayer->stats.partners.backID;
-                D_8010197C_name_81 = &opposingPlayer->stats.partners.frontID;
+                mbdAttackHp = &player->stats.partners.frontHp;
+                mbdAttackTargetHp = &opposingPlayer->stats.partners.backHp;
+                mbdAttackOtherHp = &opposingPlayer->stats.partners.frontHp;
+                mbdAttackPartnerId = &player->stats.partners.frontID;
+                mbdAttackTargetId = &opposingPlayer->stats.partners.backID;
+                mbdAttackOtherId = &opposingPlayer->stats.partners.frontID;
                 poweredUp = player->stats.partners.frontPoweredUp;
                 damage = player->stats.partners.frontPower;
                 frontOrBackIndex = 0;
                 targetIndex = 1;
                 break;
             case 2:
-                D_80101968_name_81 = &player->stats.partners.backHp;
-                D_8010196C_name_81 = &opposingPlayer->stats.partners.backHp;
-                D_80101970_name_81 = &opposingPlayer->stats.partners.frontHp;
-                D_80101974_name_81 = &player->stats.partners.backID;
-                D_80101978_name_81 = &opposingPlayer->stats.partners.backID;
-                D_8010197C_name_81 = &opposingPlayer->stats.partners.frontID;
+                mbdAttackHp = &player->stats.partners.backHp;
+                mbdAttackTargetHp = &opposingPlayer->stats.partners.backHp;
+                mbdAttackOtherHp = &opposingPlayer->stats.partners.frontHp;
+                mbdAttackPartnerId = &player->stats.partners.backID;
+                mbdAttackTargetId = &opposingPlayer->stats.partners.backID;
+                mbdAttackOtherId = &opposingPlayer->stats.partners.frontID;
                 poweredUp = player->stats.partners.backPoweredUp;
                 damage = player->stats.partners.backPower;
                 frontOrBackIndex = 1;
                 targetIndex = 1;
                 break;
             case 1:
-                D_80101968_name_81 = &player->stats.partners.backHp;
-                D_8010196C_name_81 = &opposingPlayer->stats.partners.frontHp;
-                D_80101970_name_81 = &opposingPlayer->stats.partners.backHp;
-                D_80101974_name_81 = &player->stats.partners.backID;
-                D_80101978_name_81 = &opposingPlayer->stats.partners.frontID;
-                D_8010197C_name_81 = &opposingPlayer->stats.partners.backID;
+                mbdAttackHp = &player->stats.partners.backHp;
+                mbdAttackTargetHp = &opposingPlayer->stats.partners.frontHp;
+                mbdAttackOtherHp = &opposingPlayer->stats.partners.backHp;
+                mbdAttackPartnerId = &player->stats.partners.backID;
+                mbdAttackTargetId = &opposingPlayer->stats.partners.frontID;
+                mbdAttackOtherId = &opposingPlayer->stats.partners.backID;
                 poweredUp = player->stats.partners.backPoweredUp;
                 damage = player->stats.partners.backPower;
                 frontOrBackIndex = 1;
                 targetIndex = 0;
                 break;
             case 3:
-                D_80101968_name_81 = &player->stats.partners.frontHp;
-                D_8010196C_name_81 = &opposingPlayer->stats.partners.frontHp;
-                D_80101970_name_81 = &opposingPlayer->stats.partners.backHp;
-                D_80101974_name_81 = &player->stats.partners.frontID;
-                D_80101978_name_81 = &opposingPlayer->stats.partners.frontID;
-                D_8010197C_name_81 = &opposingPlayer->stats.partners.backID;
+                mbdAttackHp = &player->stats.partners.frontHp;
+                mbdAttackTargetHp = &opposingPlayer->stats.partners.frontHp;
+                mbdAttackOtherHp = &opposingPlayer->stats.partners.backHp;
+                mbdAttackPartnerId = &player->stats.partners.frontID;
+                mbdAttackTargetId = &opposingPlayer->stats.partners.frontID;
+                mbdAttackOtherId = &opposingPlayer->stats.partners.backID;
                 poweredUp = player->stats.partners.frontPoweredUp;
                 damage = player->stats.partners.frontPower;
                 frontOrBackIndex = 0;
@@ -780,22 +780,22 @@ void func_800F924C_name_81(s32 attackType) {
         msmMusPause(HuAudMusNo);
         msmMusSetVolume(HuAudMusNo, 127);
         musHandle = HuAudSubSeqPlay(0x17);
-        func_800FFAE0_name_81(0, 2);
-        func_800FFAE0_name_81(1, 2);
-        HuPrcChildLink(process, func_800E415C_name_81());
+        MBDPlayerVibrate(0, 2);
+        MBDPlayerVibrate(1, 2);
+        HuPrcChildLink(process, MBDTelopTitleCreate());
         HuPrcChildWatch();
         HuPrcChildLink(process, MBDCameraZoomMotStart(3.0f));
         HuPrcChildWatch();
-        func_800F74E4_name_81(-1);
-        HuVecCopy3F(&D_80105540_name_81, &player->player_obj->coords);
-        func_800FC888_name_81(4);
-        func_800FC8C4_name_81(&D_80105540_name_81);
-        HuPrcChildLink(process, func_800EC1E4_name_81(&D_80105540_name_81, &partner->coords, &D_80105540_name_81, 4.0f));
+        MBDStatusShrink(-1);
+        HuVecCopy3F(&mbdAttackCameraPos, &player->player_obj->coords);
+        MBDCameraFocusModeSet(4);
+        MBDCameraFocusVecSet(&mbdAttackCameraPos);
+        HuPrcChildLink(process, MBDVecSpeedMoveCreate(&mbdAttackCameraPos, &partner->coords, &mbdAttackCameraPos, 4.0f));
         HuPrcChildWatch();
-        func_800FC8C4_name_81(&partner->coords);
-        func_800F8EB8_name_81(partnerID, targetID, &damage, &counterDamage, poweredUp);
-        D_80105550_name_81 = 0;
-        D_80105558_name_81 = 0;
+        MBDCameraFocusVecSet(&partner->coords);
+        MBDPartnerDamageCalc(partnerID, targetID, &damage, &counterDamage, poweredUp);
+        mbdAttackHpDamage = 0;
+        mbdAttackStarDamage = 0;
 
     damageLoop:
         if (opposingPlayer->star == 0) {
@@ -809,8 +809,8 @@ void func_800F924C_name_81(s32 attackType) {
             if (opposingPlayer->star < 0) {
                 opposingPlayer->star = 0;
             }
-            *D_8010196C_name_81 -= 1;
-            *D_80101970_name_81 -= 1;
+            *mbdAttackTargetHp -= 1;
+            *mbdAttackOtherHp -= 1;
             damage = 0;
             flags |= 4;
         } else if (damage == 201) {
@@ -818,13 +818,13 @@ void func_800F924C_name_81(s32 attackType) {
             if (opposingPlayer->star < 0) {
                 opposingPlayer->star = 0;
             }
-            *D_8010196C_name_81 -= 2;
-            if (*D_8010196C_name_81 < 0) {
-                *D_8010196C_name_81 = 0;
+            *mbdAttackTargetHp -= 2;
+            if (*mbdAttackTargetHp < 0) {
+                *mbdAttackTargetHp = 0;
             }
-            *D_80101970_name_81 -= 2;
-            if (*D_80101970_name_81 < 0) {
-                *D_80101970_name_81 = 0;
+            *mbdAttackOtherHp -= 2;
+            if (*mbdAttackOtherHp < 0) {
+                *mbdAttackOtherHp = 0;
             }
             damage = 0;
             flags |= 0x10;
@@ -833,13 +833,13 @@ void func_800F924C_name_81(s32 attackType) {
             if (opposingPlayer->star < 0) {
                 opposingPlayer->star = 0;
             }
-            *D_8010196C_name_81 -= 4;
-            if (*D_8010196C_name_81 < 0) {
-                *D_8010196C_name_81 = 0;
+            *mbdAttackTargetHp -= 4;
+            if (*mbdAttackTargetHp < 0) {
+                *mbdAttackTargetHp = 0;
             }
-            *D_80101970_name_81 -= 4;
-            if (*D_80101970_name_81 < 0) {
-                *D_80101970_name_81 = 0;
+            *mbdAttackOtherHp -= 4;
+            if (*mbdAttackOtherHp < 0) {
+                *mbdAttackOtherHp = 0;
             }
             damage = 0;
             flags |= 0x20;
@@ -848,41 +848,41 @@ void func_800F924C_name_81(s32 attackType) {
             if (opposingPlayer->star < 0) {
                 opposingPlayer->star = 0;
             }
-            D_80105558_name_81 = -damage;
+            mbdAttackStarDamage = -damage;
             damage = 0;
             flags |= 2;
         } else if (damage > 0) {
-            *D_8010196C_name_81 -= damage;
-            if (*D_8010196C_name_81 < 0) {
-                D_80105550_name_81 = *D_8010196C_name_81 + damage;
+            *mbdAttackTargetHp -= damage;
+            if (*mbdAttackTargetHp < 0) {
+                mbdAttackHpDamage = *mbdAttackTargetHp + damage;
                 if (damage != 100) {
-                    damage = *D_8010196C_name_81;
+                    damage = *mbdAttackTargetHp;
                 } else {
                     damage = 0;
                 }
-                *D_8010196C_name_81 = 0;
+                *mbdAttackTargetHp = 0;
             } else {
-                D_80105550_name_81 = damage;
+                mbdAttackHpDamage = damage;
                 damage = 0;
             }
             flags |= 1;
             goto damageLoop;
         }
 
-        D_80105718_name_81 = 0;
+        mbdAttackResult = 0;
         if (opposingPlayer->star <= 0) {
-            D_80105718_name_81 = 1;
+            mbdAttackResult = 1;
         }
-        if (*D_8010196C_name_81 <= 0) {
+        if (*mbdAttackTargetHp <= 0) {
             if (counterDamage == 0) {
-                D_80105718_name_81 |= 8;
-                D_80105718_name_81 |= 2 << targetIndex;
+                mbdAttackResult |= 8;
+                mbdAttackResult |= 2 << targetIndex;
             } else {
-                D_80105718_name_81 |= 0x10;
+                mbdAttackResult |= 0x10;
             }
         }
-        if (*D_80101970_name_81 <= 0) {
-            D_80105718_name_81 |= 2 << (targetIndex ^ 1);
+        if (*mbdAttackOtherHp <= 0) {
+            mbdAttackResult |= 2 << (targetIndex ^ 1);
         }
 
         for (i = 255; i > 64; i -= 16) {
@@ -891,12 +891,12 @@ void func_800F924C_name_81(s32 attackType) {
         }
         MBDBackTPLvlSet(64);
 
-        HuPrcChildLink(process, func_800E47B8_name_81(curPlayerIndex, *D_80101974_name_81, &player->player_obj->coords, &opposingPlayer->player_obj->coords, 1));
-        effect = func_800D8010_name_81(0x36, 0);
+        HuPrcChildLink(process, MBDTelopAttackCreate(curPlayerIndex, *mbdAttackPartnerId, &player->player_obj->coords, &opposingPlayer->player_obj->coords, 1));
+        effect = MBDModelCreate(0x36, 0);
         HuVecCopy3F(&effect->coords, &partner->coords);
         Hu3DMotionAttrSet(effect->omObj1->model[0], 2, 0);
         HuAudFXPlay(0x1CC);
-        func_800EFABC_name_81(effect);
+        MBDModelMotionWait(effect);
         MBDModelKill(effect);
         HuPrcChildWatch();
 
@@ -908,16 +908,16 @@ void func_800F924C_name_81(s32 attackType) {
             HuAudFXPlay(0x20E);
         }
 
-        func_800FAB1C_name_81();
+        MBDCoinScatterInit();
 
-        if (PartnersBaseStats[*D_80101974_name_81].func1 != NULL) {
-            D_8010571C_name_81 = (D_80101978_name_81 == NULL) ? -1 : *D_80101978_name_81;
-            D_8010570C_name_81 = (D_8010197C_name_81 == NULL) ? -1 : *D_8010197C_name_81;
-            PartnersBaseStats[*D_80101974_name_81].func1(curPlayerIndex, opposingPlayerIndex, partner, opposingPartner, flags, poweredUp);
+        if (PartnersBaseStats[*mbdAttackPartnerId].func1 != NULL) {
+            mbdAttackTargetIdParam = (mbdAttackTargetId == NULL) ? -1 : *mbdAttackTargetId;
+            mbdAttackOtherIdParam = (mbdAttackOtherId == NULL) ? -1 : *mbdAttackOtherId;
+            PartnersBaseStats[*mbdAttackPartnerId].func1(curPlayerIndex, opposingPlayerIndex, partner, opposingPartner, flags, poweredUp);
         }
-        func_800FAC4C_name_81();
-        D_80105550_name_81 = 0;
-        D_80105558_name_81 = 0;
+        MBDCoinScatterClose();
+        mbdAttackHpDamage = 0;
+        mbdAttackStarDamage = 0;
 
     counterLoop:
         if (player->star == 0) {
@@ -931,46 +931,46 @@ void func_800F924C_name_81(s32 attackType) {
             if (player->star < 0) {
                 player->star = 0;
             }
-            D_80105558_name_81 = -counterDamage;
+            mbdAttackStarDamage = -counterDamage;
             counterDamage = 0;
             counterFlags |= 2;
         } else if (counterDamage > 0) {
-            *D_80101968_name_81 -= counterDamage;
-            if (*D_80101968_name_81 < 0) {
-                D_80105550_name_81 = *D_80101968_name_81 + counterDamage;
-                counterDamage = *D_80101968_name_81;
-                *D_80101968_name_81 = 0;
+            *mbdAttackHp -= counterDamage;
+            if (*mbdAttackHp < 0) {
+                mbdAttackHpDamage = *mbdAttackHp + counterDamage;
+                counterDamage = *mbdAttackHp;
+                *mbdAttackHp = 0;
             } else {
-                D_80105550_name_81 = counterDamage;
+                mbdAttackHpDamage = counterDamage;
                 counterDamage = 0;
             }
             counterFlags |= 1;
             goto counterLoop;
         }
 
-        D_8010554C_name_81 = 0;
+        mbdCounterResult = 0;
         if (player->star <= 0) {
-            D_8010554C_name_81 = 1;
+            mbdCounterResult = 1;
         }
-        if (*D_80101968_name_81 <= 0) {
-            D_8010554C_name_81 |= 8;
-            D_8010554C_name_81 |= 2 << frontOrBackIndex;
+        if (*mbdAttackHp <= 0) {
+            mbdCounterResult |= 8;
+            mbdCounterResult |= 2 << frontOrBackIndex;
         }
 
         if (counterFlags != 0) {
-            HuVecCopy3F(&D_80105540_name_81, func_800FC8D0_name_81());
-            func_800FC8C4_name_81(&D_80105540_name_81);
-            func_800FC888_name_81(4);
-            HuPrcChildLink(process, func_800EC1E4_name_81(&D_80105540_name_81, &opposingPartner->coords, &D_80105540_name_81, 4.0f));
+            HuVecCopy3F(&mbdAttackCameraPos, MBDCameraFocusVecGet());
+            MBDCameraFocusVecSet(&mbdAttackCameraPos);
+            MBDCameraFocusModeSet(4);
+            HuPrcChildLink(process, MBDVecSpeedMoveCreate(&mbdAttackCameraPos, &opposingPartner->coords, &mbdAttackCameraPos, 4.0f));
             HuPrcChildWatch();
-            func_800FC8C4_name_81(&opposingPartner->coords);
+            MBDCameraFocusVecSet(&opposingPartner->coords);
 
-            HuPrcChildLink(process, func_800E47B8_name_81(opposingPlayerIndex, *D_80101978_name_81, &opposingPlayer->player_obj->coords, &player->player_obj->coords, 0));
-            counterEffect = func_800D8010_name_81(0x36, 0);
+            HuPrcChildLink(process, MBDTelopAttackCreate(opposingPlayerIndex, *mbdAttackTargetId, &opposingPlayer->player_obj->coords, &player->player_obj->coords, 0));
+            counterEffect = MBDModelCreate(0x36, 0);
             HuVecCopy3F(&counterEffect->coords, &opposingPartner->coords);
             Hu3DMotionAttrSet(counterEffect->omObj1->model[0], 2, 0);
             HuAudFXPlay(0x1CC);
-            func_800EFABC_name_81(counterEffect);
+            MBDModelMotionWait(counterEffect);
             MBDModelKill(counterEffect);
             HuPrcChildWatch();
 
@@ -988,48 +988,48 @@ void func_800F924C_name_81(s32 attackType) {
                     attackType = 0;
                     break;
             }
-            D_80105620_name_81 = attackType;
-            func_800FAB1C_name_81();
+            mbdAttackType = attackType;
+            MBDCoinScatterInit();
 
-            if (*D_80101978_name_81 != -1 && PartnersBaseStats[*D_80101978_name_81].func2 != NULL) {
-                attackerID = *D_80101974_name_81;
+            if (*mbdAttackTargetId != -1 && PartnersBaseStats[*mbdAttackTargetId].func2 != NULL) {
+                attackerID = *mbdAttackPartnerId;
                 if (attackerID == 0) {
                     attackerID = -1;
                 }
-                D_8010571C_name_81 = attackerID;
-                D_8010570C_name_81 = -1;
-                PartnersBaseStats[*D_80101978_name_81].func2(opposingPlayerIndex, curPlayerIndex, opposingPartner, partner, counterFlags, poweredUp + 0x10);
+                mbdAttackTargetIdParam = attackerID;
+                mbdAttackOtherIdParam = -1;
+                PartnersBaseStats[*mbdAttackTargetId].func2(opposingPlayerIndex, curPlayerIndex, opposingPartner, partner, counterFlags, poweredUp + 0x10);
             }
-            func_800FAC4C_name_81();
+            MBDCoinScatterClose();
         }
 
-        if (*D_80101974_name_81 != -1 && PartnersBaseStats[*D_80101974_name_81].func3 != NULL) {
-            PartnersBaseStats[*D_80101974_name_81].func3();
+        if (*mbdAttackPartnerId != -1 && PartnersBaseStats[*mbdAttackPartnerId].func3 != NULL) {
+            PartnersBaseStats[*mbdAttackPartnerId].func3();
         }
-        if (*D_80101978_name_81 != -1 && PartnersBaseStats[*D_80101978_name_81].func4 != NULL) {
-            PartnersBaseStats[*D_80101978_name_81].func4();
+        if (*mbdAttackTargetId != -1 && PartnersBaseStats[*mbdAttackTargetId].func4 != NULL) {
+            PartnersBaseStats[*mbdAttackTargetId].func4();
         }
 
-        if (*D_80101968_name_81 <= 0) {
-            *D_80101974_name_81 = -1;
-            *D_80101968_name_81 = 0;
-            func_800F8358_name_81(curPlayerIndex);
-            func_800F57B0_name_81(curPlayerIndex);
-            func_800F5E2C_name_81(curPlayerIndex);
+        if (*mbdAttackHp <= 0) {
+            *mbdAttackPartnerId = -1;
+            *mbdAttackHp = 0;
+            MBDPartnerModelUpdate(curPlayerIndex);
+            MBDStatusFrontDispOff(curPlayerIndex);
+            MBDStatusBackDispOff(curPlayerIndex);
         }
-        if (*D_8010196C_name_81 <= 0) {
-            *D_80101978_name_81 = -1;
-            *D_8010196C_name_81 = 0;
-            func_800F8358_name_81(opposingPlayerIndex);
-            func_800F57B0_name_81(opposingPlayerIndex);
-            func_800F5E2C_name_81(opposingPlayerIndex);
+        if (*mbdAttackTargetHp <= 0) {
+            *mbdAttackTargetId = -1;
+            *mbdAttackTargetHp = 0;
+            MBDPartnerModelUpdate(opposingPlayerIndex);
+            MBDStatusFrontDispOff(opposingPlayerIndex);
+            MBDStatusBackDispOff(opposingPlayerIndex);
         }
-        if (*D_80101970_name_81 <= 0) {
-            *D_8010197C_name_81 = -1;
-            *D_80101970_name_81 = 0;
-            func_800F8358_name_81(opposingPlayerIndex);
-            func_800F57B0_name_81(opposingPlayerIndex);
-            func_800F5E2C_name_81(opposingPlayerIndex);
+        if (*mbdAttackOtherHp <= 0) {
+            *mbdAttackOtherId = -1;
+            *mbdAttackOtherHp = 0;
+            MBDPartnerModelUpdate(opposingPlayerIndex);
+            MBDStatusFrontDispOff(opposingPlayerIndex);
+            MBDStatusBackDispOff(opposingPlayerIndex);
         }
 
         for (i = 64; i < 255; i += 16) {
@@ -1037,13 +1037,13 @@ void func_800F924C_name_81(s32 attackType) {
             HuPrcVSleep();
         }
         MBDBackTPLvlSet(255);
-        func_800F75EC_name_81(-1);
-        HuVecCopy3F(&D_80105540_name_81, func_800FC8D0_name_81());
-        func_800FC8C4_name_81(&D_80105540_name_81);
-        func_800FC888_name_81(4);
-        HuPrcChildLink(process, func_800EC1E4_name_81(&D_80105540_name_81, &player->player_obj->coords, &D_80105540_name_81, 4.0f));
+        MBDStatusGrow(-1);
+        HuVecCopy3F(&mbdAttackCameraPos, MBDCameraFocusVecGet());
+        MBDCameraFocusVecSet(&mbdAttackCameraPos);
+        MBDCameraFocusModeSet(4);
+        HuPrcChildLink(process, MBDVecSpeedMoveCreate(&mbdAttackCameraPos, &player->player_obj->coords, &mbdAttackCameraPos, 4.0f));
         HuPrcChildWatch();
-        func_800FC888_name_81(1);
+        MBDCameraFocusModeSet(1);
         mbItemBtnF = 1;
 
     end:
@@ -1053,11 +1053,11 @@ void func_800F924C_name_81(s32 attackType) {
         }
     }
 
-    func_800FAFAC_name_81();
-    func_800E5954_name_81();
+    MBDPartnerExtMotKill();
+    MBDBackThreadPriHighSet();
 }
 
-void func_800FA120_name_81(void) {
+void MBDCoinScatterProc(void) {
     UnkBoard5 *data = HuPrcCurrentGet()->user_data;
     s32 order = data->unk_00;
     Object *obj = data->unk_04;
@@ -1081,15 +1081,15 @@ void func_800FA120_name_81(void) {
     seNo = NULL;
     process = HuPrcCurrentGet();
 
-    while (order != D_80101984_name_81) {
+    while (order != mbdCoinScatterDoneNum) {
         HuPrcVSleep();
     }
 
-    if (D_8010198C_name_81 != NULL) {
-        D_8010198C_name_81();
+    if (mbdCoinScatterHook != NULL) {
+        mbdCoinScatterHook();
     }
 
-    HuPrcChildLink(process, func_800EC1E4_name_81(&D_80105460_name_81, &obj->coords, &D_80105460_name_81, 4.0f));
+    HuPrcChildLink(process, MBDVecSpeedMoveCreate(&mbdPartnerCameraPos, &obj->coords, &mbdPartnerCameraPos, 4.0f));
     HuPrcChildWatch();
 
     if (motion != -1 && count != -1) {
@@ -1098,7 +1098,7 @@ void func_800FA120_name_81(void) {
 
     if (count != -1) {
         for (i = 0; i < count; i++) {
-            coinObjs[i] = func_800D8B18_name_81(D_80101988_name_81);
+            coinObjs[i] = MBDModelLinkCreate(mbdCoinScatterMdl);
             HuVecCopy3F(&coinObjs[i]->coords, &obj->coords);
             sincosdf(-45.0f, &Hu3DData[coinObjs[i]->omObj1->model[0]].mtx[1][2], &Hu3DData[coinObjs[i]->omObj1->model[0]].mtx[1][1]);
             Hu3DData[coinObjs[i]->omObj1->model[0]].mtx[2][1] = -Hu3DData[coinObjs[i]->omObj1->model[0]].mtx[1][2];
@@ -1115,10 +1115,10 @@ void func_800FA120_name_81(void) {
     if (seIdx == -1) {
         if (obj == GwPlayer[0].player_obj) {
             PlayerFXPlay(0x286, 0);
-            seNo = func_800FFC2C_name_81(0, 4, 6);
+            seNo = MBDPlayerVibrateObjCreate(0, 4, 6);
         } else if (obj == GwPlayer[1].player_obj) {
             PlayerFXPlay(0x286, 1);
-            seNo = func_800FFC2C_name_81(1, 4, 6);
+            seNo = MBDPlayerVibrateObjCreate(1, 4, 6);
         }
     } else {
         s32 partnerSounds[12] = { 0x25A, 0x25B, 0x29A, 0x256, 0x257, 0x25D, 0x2A3, 0x2A4, 0x2A2, 0x258, 0x2A5, 0x2A0 };
@@ -1134,25 +1134,25 @@ void func_800FA120_name_81(void) {
 
     if (count != -1) {
         for (i = 0; i < count; i++) {
-            func_800EF7C8_name_81(coinObjs[i], 5.0f, -1.0f);
+            MBDModelJumpSet(coinObjs[i], 5.0f, -1.0f);
             angle = MBDVecAngleGet(&coinObjs[i]->rot);
             HuVecCopyXYZ(&coinTargets[i],
                          coinObjs[i]->coords.x + sindf(angle + coinAngles[i]) * radius,
                          coinObjs[i]->coords.y,
                          coinObjs[i]->coords.z + cosdf(angle + coinAngles[i]) * radius);
-            HuPrcChildLink(process, func_800EBF2C_name_81(&coinObjs[i]->coords, &coinTargets[i], &coinObjs[i]->coords, 30));
+            HuPrcChildLink(process, MBDPlayerPosMoveCreate(&coinObjs[i]->coords, &coinTargets[i], &coinObjs[i]->coords, 30));
         }
-        func_800EF800_name_81(coinObjs[0]);
+        MBDModelJumpWait(coinObjs[0]);
 
         for (i = 0; i < count; i++) {
-            func_800EF7C8_name_81(coinObjs[i], 2.5f, -0.5f);
+            MBDModelJumpSet(coinObjs[i], 2.5f, -0.5f);
         }
-        func_800EF800_name_81(coinObjs[0]);
+        MBDModelJumpWait(coinObjs[0]);
 
         for (i = 0; i < count; i++) {
-            func_800EF7C8_name_81(coinObjs[i], 1.0f, -0.2f);
+            MBDModelJumpSet(coinObjs[i], 1.0f, -0.2f);
         }
-        func_800EF800_name_81(coinObjs[0]);
+        MBDModelJumpWait(coinObjs[0]);
 
         HuPrcChildWatch();
 
@@ -1162,7 +1162,7 @@ void func_800FA120_name_81(void) {
     }
 
     if (seNo != NULL) {
-        func_800FFCCC_name_81(seNo);
+        MBDPlayerVibrateObjKill(seNo);
     }
 
     if (count != -1) {
@@ -1179,7 +1179,7 @@ void func_800FA120_name_81(void) {
         HuAudFXPlay(countSounds[soundIdx]);
 
         MBDCamera3Dto2D(&obj->coords, &screenPos);
-        sprite = func_800F4528_name_81(4, 2);
+        sprite = MBDSprGrpCreate(4, 2);
 
         for (i = 0; i < 4; i++) {
             if (i == 0) {
@@ -1230,17 +1230,17 @@ void func_800FA120_name_81(void) {
             HuSprPosSet(sprite->unk_0A, 0, screenPos.x, screenPos.y - i);
             HuPrcVSleep();
         }
-        func_800F4584_name_81(sprite);
+        MBDSprGrpKill(sprite);
     }
 
     if (flags != 0 && !(flags & 1)) {
-        func_800FB0B8_name_81(obj, 2, 0);
-        func_800EFABC_name_81(obj);
+        MBDPartnerModelMotionSet(obj, 2, 0);
+        MBDModelMotionWait(obj);
         {
             Vec effectOffsets[3] = { { 0.0f, 0.5f, 0.0f }, { -0.5f, 0.5f, 0.0f }, { 0.5f, 0.5f, 0.0f } };
 
             for (i = 0; i < 3; i++) {
-                func_800DCE40_name_81(0x4E, &obj->coords, &effectOffsets[i], 2.0f);
+                MBDEffMdlCreate(0x4E, &obj->coords, &effectOffsets[i], 2.0f);
             }
         }
         HuPrcVSleep();
@@ -1252,32 +1252,32 @@ void func_800FA120_name_81(void) {
         MBDMotionSet(obj, -1, 2);
     }
 
-    D_80101980_name_81--;
-    D_80101984_name_81++;
+    mbdCoinScatterNum--;
+    mbdCoinScatterDoneNum++;
     omDelPrcObj(NULL);
 }
 
-void func_800FAB1C_name_81(void) {
+void MBDCoinScatterInit(void) {
     Object *temp_v0;
 
-    D_80101980_name_81 = 0;
-    D_80101984_name_81 = 0;
-    temp_v0 = func_800D8010_name_81(0x3C, 0);
-    D_80101988_name_81 = temp_v0;
+    mbdCoinScatterNum = 0;
+    mbdCoinScatterDoneNum = 0;
+    temp_v0 = MBDModelCreate(0x3C, 0);
+    mbdCoinScatterMdl = temp_v0;
     MBDModelTempAllocFree(temp_v0);
-    MBDModelDispOff(D_80101988_name_81);
+    MBDModelDispOff(mbdCoinScatterMdl);
 }
 
-Process *func_800FAB68_name_81(Object *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+Process *MBDCoinScatterCreate(Object *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     Process *temp_v0;
     s32 temp_a0;
     UnkBoard5 *temp_v0_2;
 
-    temp_v0 = omAddPrcObj(func_800FA120_name_81, 0, 0, 0x40);
+    temp_v0 = omAddPrcObj(MBDCoinScatterProc, 0, 0, 0x40);
     temp_v0_2 = HuMemMemoryAlloc(temp_v0->heap, sizeof(UnkBoard5));
     temp_v0->user_data = temp_v0_2;
-    temp_a0 = D_80101980_name_81;
-    D_80101980_name_81++;
+    temp_a0 = mbdCoinScatterNum;
+    mbdCoinScatterNum++;
     temp_v0_2->unk_00 = temp_a0;
     temp_v0_2->unk_04 = arg0;
     temp_v0_2->unk_08 = arg1;
@@ -1287,19 +1287,19 @@ Process *func_800FAB68_name_81(Object *arg0, s32 arg1, s32 arg2, s32 arg3, s32 a
     return temp_v0;
 }
 
-void func_800FAC1C_name_81(Vec *arg0) {
-    HuVecCopy3F(&D_80105460_name_81, arg0);
-    func_800FC8C4_name_81(&D_80105460_name_81);
+void MBDPartnerCameraFocusSet(Vec *arg0) {
+    HuVecCopy3F(&mbdPartnerCameraPos, arg0);
+    MBDCameraFocusVecSet(&mbdPartnerCameraPos);
 }
 
-void func_800FAC4C_name_81(void) {
-    while (D_80101980_name_81 != 0) {
+void MBDCoinScatterClose(void) {
+    while (mbdCoinScatterNum != 0) {
         HuPrcVSleep();
     }
-    MBDModelKill(D_80101988_name_81);
+    MBDModelKill(mbdCoinScatterMdl);
 }
 
-void func_800FAC94_name_81(PartnerFunc *arg0, PartnerFunc *arg1) {
+void MBDPartnerAttackFuncSet(PartnerFunc *arg0, PartnerFunc *arg1) {
     s32 i;
 
     for (i = 0; i < 12; i++) {
@@ -1311,102 +1311,102 @@ void func_800FAC94_name_81(PartnerFunc *arg0, PartnerFunc *arg1) {
     }
 }
 
-void func_800FAD04_name_81(s32 arg0) {
+void MBDPartnerAttackMotLoad(s32 arg0) {
     s32 *var_s1;
     s32 i;
 
-    var_s1 = D_8010180C_name_81[arg0];
+    var_s1 = mbdPartnerAttackMotFileTbl[arg0];
     if (var_s1 == NULL) {
-        D_80101990_name_81 = 0;
+        mbdPartnerAttackMotNum = 0;
         return;
     }
 
-    D_80101990_name_81 = *var_s1++;
+    mbdPartnerAttackMotNum = *var_s1++;
 
-    for (i = 0; i < D_80101990_name_81; i++) {
-        D_80105470_name_81[i] = Hu3DMotionCreate(DataRead(*var_s1++), 8);
+    for (i = 0; i < mbdPartnerAttackMotNum; i++) {
+        mbdPartnerAttackMotTbl[i] = Hu3DMotionCreate(DataRead(*var_s1++), 8);
     }
 }
 
-void func_800FADB4_name_81(void) {
+void MBDPartnerAttackMotKill(void) {
     s32 i;
 
-    for (i = 0; i < D_80101990_name_81; i++) {
-        Hu3DMotionKill(D_80105470_name_81[i]);
+    for (i = 0; i < mbdPartnerAttackMotNum; i++) {
+        Hu3DMotionKill(mbdPartnerAttackMotTbl[i]);
     }
 }
 
-void func_800FAE18_name_81(Object *arg0, s16 arg1, s16 arg2) {
-    if (arg1 <= D_80101990_name_81) {
-        Hu3DMotionSet(arg0->omObj1->model[0], D_80105470_name_81[arg1]);
+void MBDPartnerAttackMotSet(Object *arg0, s16 arg1, s16 arg2) {
+    if (arg1 <= mbdPartnerAttackMotNum) {
+        Hu3DMotionSet(arg0->omObj1->model[0], mbdPartnerAttackMotTbl[arg1]);
         Hu3DMotionAttrSet(arg0->omObj1->model[0], -1, arg2);
     }
 }
 
-void func_800FAE98_name_81(Object *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
-    Hu3DMotionShiftSet(arg0->omObj1->model[0], D_80105470_name_81[arg1], arg2, arg3, arg4);
+void MBDPartnerAttackMotShiftSet(Object *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
+    Hu3DMotionShiftSet(arg0->omObj1->model[0], mbdPartnerAttackMotTbl[arg1], arg2, arg3, arg4);
 }
 
-void func_800FAEE8_name_81(void) {
-    D_80101992_name_81 = 0;
-    D_80101994_name_81 = 0;
+void MBDPartnerExtMotInit(void) {
+    mbdPartnerExtMotNum = 0;
+    mbdPartnerExtMotUseCnt = 0;
 }
 
-void func_800FAEFC_name_81(s32 arg0) {
+void MBDPartnerExtMotLoad(s32 arg0) {
     s32 *var_s1;
     s32 i;
 
-    var_s1 = D_8010183C_name_81[arg0];
+    var_s1 = mbdPartnerExtMotFileTbl[arg0];
     if (var_s1 == NULL) {
-        D_80101992_name_81 = 0;
+        mbdPartnerExtMotNum = 0;
         return;
     }
 
-    D_80101992_name_81 = *var_s1++;
+    mbdPartnerExtMotNum = *var_s1++;
 
-    for (i = 0; i < D_80101992_name_81; i++) {
-        D_80105480_name_81[i] = Hu3DMotionCreate(DataRead(*var_s1++), 8);
+    for (i = 0; i < mbdPartnerExtMotNum; i++) {
+        mbdPartnerExtMotTbl[i] = Hu3DMotionCreate(DataRead(*var_s1++), 8);
     }
 }
 
-void func_800FAFAC_name_81(void) {
+void MBDPartnerExtMotKill(void) {
     s32 i;
 
-    while (D_80101994_name_81 != 0) {
+    while (mbdPartnerExtMotUseCnt != 0) {
         HuPrcVSleep();
     }
 
-    for (i = 0; i < D_80101992_name_81; i++) {
-        Hu3DMotionKill(D_80105480_name_81[i]);
+    for (i = 0; i < mbdPartnerExtMotNum; i++) {
+        Hu3DMotionKill(mbdPartnerExtMotTbl[i]);
     }
 }
 
-void func_800FB038_name_81(Object *arg0, s16 arg1, u16 arg2) {
-    if (arg1 < D_80101992_name_81) {
-        Hu3DMotionSet(arg0->omObj1->model[0], D_80105480_name_81[arg1]);
+void MBDPartnerExtMotSet(Object *arg0, s16 arg1, u16 arg2) {
+    if (arg1 < mbdPartnerExtMotNum) {
+        Hu3DMotionSet(arg0->omObj1->model[0], mbdPartnerExtMotTbl[arg1]);
         Hu3DMotionAttrSet(arg0->omObj1->model[0], -1, arg2);
     }
 }
 
-void func_800FB0B8_name_81(Object *arg0, s32 arg1, s32 arg2) {
+void MBDPartnerModelMotionSet(Object *arg0, s32 arg1, s32 arg2) {
     if (arg0->unk8 == 0x2C) {
-        if (D_80101992_name_81 == 0) {
-            func_800FAEFC_name_81(7);
+        if (mbdPartnerExtMotNum == 0) {
+            MBDPartnerExtMotLoad(7);
         }
-        func_800FB038_name_81(arg0, arg1 - 1, arg2);
+        MBDPartnerExtMotSet(arg0, arg1 - 1, arg2);
         return;
     }
     MBDMotionSet(arg0, arg1, arg2);
 }
 
-void func_800FB148_name_81(void) {
-    *D_80101968_name_81 = 0;
+void MBDAttackHpClear(void) {
+    *mbdAttackHp = 0;
 }
 
-void func_800FB158_name_81(void) {
+void MBDPartnerStub(void) {
 }
 
-void func_800FB160_name_81(void) {
+void MBDPartnerDescProc(void) {
     s16 sp18[2];
     u16 sp36;
     DuelHelpWin *sp3C;
@@ -1425,12 +1425,12 @@ void func_800FB160_name_81(void) {
     var_s3 = 0;
     HuWinTabSizeSet(0x78);
     HuWinMesMaxSizeBetGet(sp18, 0x4F00, 0x4F0A);
-    sp36 = HuWinExCreate(D_801019C8_name_81[0], 0xA0 - sp18[0] / 2, 0x3C, sp18[0], sp18[1], 0);
+    sp36 = HuWinExCreate(mbdPartnerDescFaceTbl[0], 0xA0 - sp18[0] / 2, 0x3C, sp18[0], sp18[1], 0);
     HuWinTabWidthSet(sp36, 0x78);
     HuWinBGColSet(sp36, 1, 0xB9, 0xE7);
-    HuWinMesSet(sp36, D_80101998_name_81[0], -1, -1);
+    HuWinMesSet(sp36, mbdPartnerDescMesTbl[0], -1, -1);
     HuWinExAnimIn(sp36);
-    temp_s4 = func_800F4528_name_81(3, 2);
+    temp_s4 = MBDSprGrpCreate(3, 2);
 
     for (i = 0; i < 3; i++) {
         temp_v0_2 = DataRead(sp20[i]);
@@ -1446,9 +1446,9 @@ void func_800FB160_name_81(void) {
         }
     }
 
-    sp3C = func_800E1824_name_81(0x10, 0xA0, 0);
-    temp_fp = func_800E1824_name_81(0x11, 0xAE, 0);
-    temp_s7 = func_800E1824_name_81(4, 0xBC, 0);
+    sp3C = MBDHelpWinCreate(0x10, 0xA0, 0);
+    temp_fp = MBDHelpWinCreate(0x11, 0xAE, 0);
+    temp_s7 = MBDHelpWinCreate(4, 0xBC, 0);
 
     while (1) {
         if (ContBtnDown[playerPad] & B_BUTTON) {
@@ -1458,8 +1458,8 @@ void func_800FB160_name_81(void) {
             var_s3++;
             var_s3 %= 12;
             HuWinHomeClear(sp36);
-            HuWinMesSet(sp36, D_80101998_name_81[var_s3], -1, -1);
-            HuWinExAnimPopIn(sp36, D_801019C8_name_81[var_s3]);
+            HuWinMesSet(sp36, mbdPartnerDescMesTbl[var_s3], -1, -1);
+            HuWinExAnimPopIn(sp36, mbdPartnerDescFaceTbl[var_s3]);
         }
         if (ContBtnRep[playerPad] & L_CBUTTONS) {
             var_s3--;
@@ -1467,34 +1467,34 @@ void func_800FB160_name_81(void) {
                 var_s3 = 0xB;
             }
             HuWinHomeClear(sp36);
-            HuWinMesSet(sp36, D_80101998_name_81[var_s3], -1, -1);
-            HuWinExAnimPopIn(sp36, D_801019C8_name_81[var_s3]);
+            HuWinMesSet(sp36, mbdPartnerDescMesTbl[var_s3], -1, -1);
+            HuWinExAnimPopIn(sp36, mbdPartnerDescFaceTbl[var_s3]);
         }
         HuPrcVSleep();
     }
 
-    func_800F4584_name_81(temp_s4);
-    func_800E1854_name_81(sp3C);
-    func_800E1854_name_81(temp_fp);
-    func_800E1854_name_81(temp_s7);
+    MBDSprGrpKill(temp_s4);
+    MBDHelpWinKill(sp3C);
+    MBDHelpWinKill(temp_fp);
+    MBDHelpWinKill(temp_s7);
     HuWinExAnimOut(sp36, 0);
     HuWinKill(sp36);
     omDelPrcObj(0);
 }
 
-void func_800FB524_name_81(s32 playerIndex) {
+void MBDPartnerDescExec(s32 playerIndex) {
     Process *curProcess;
     Process *newProcess;
 
     curProcess = HuPrcCurrentGet();
-    newProcess = omAddPrcObj(func_800FB160_name_81, 0x1005, 0, 0);
+    newProcess = omAddPrcObj(MBDPartnerDescProc, 0x1005, 0, 0);
     newProcess->user_data = (void *)playerIndex;
     omPrcSetStatBit(newProcess, OM_STAT_NOALLPAUSE);
     HuPrcChildLink(curProcess, newProcess);
     HuPrcChildWatch();
 }
 
-void func_800FB59C_name_81(s32 playerIndex, s32 frontOrBackIndex, s32 targetIndex, s32 starDamage, s32 hpDamage, s32 selfStarDamage, s32 selfHpDamage) {
+void MBDPartnerDamageExec(s32 playerIndex, s32 frontOrBackIndex, s32 targetIndex, s32 starDamage, s32 hpDamage, s32 selfStarDamage, s32 selfHpDamage) {
     GW_PLAYER *player;
     GW_PLAYER *opposingPlayer;
     Object *partner;
@@ -1514,8 +1514,8 @@ void func_800FB59C_name_81(s32 playerIndex, s32 frontOrBackIndex, s32 targetInde
     opposingPlayer = MBDGetPlayerStruct(opposingPlayerIndex);
     counterFlags = 0;
     process = HuPrcCurrentGet();
-    D_80105558_name_81 = starDamage;
-    D_80105550_name_81 = hpDamage;
+    mbdAttackStarDamage = starDamage;
+    mbdAttackHpDamage = hpDamage;
     flags = (starDamage != 0) << 1;
     if (hpDamage != 0) {
         flags |= 1;
@@ -1529,60 +1529,60 @@ void func_800FB59C_name_81(s32 playerIndex, s32 frontOrBackIndex, s32 targetInde
     if (selfHpDamage > 0) {
         counterFlags |= 1;
     }
-    func_800FAEE8_name_81();
+    MBDPartnerExtMotInit();
 
     if (frontOrBackIndex == 0) {
-        D_80101968_name_81 = &player->stats.partners.frontHp;
-        D_80101974_name_81 = &player->stats.partners.frontID;
+        mbdAttackHp = &player->stats.partners.frontHp;
+        mbdAttackPartnerId = &player->stats.partners.frontID;
         poweredUp = player->stats.partners.frontPoweredUp;
     } else {
-        D_80101968_name_81 = &player->stats.partners.backHp;
-        D_80101974_name_81 = &player->stats.partners.backID;
+        mbdAttackHp = &player->stats.partners.backHp;
+        mbdAttackPartnerId = &player->stats.partners.backID;
         poweredUp = player->stats.partners.backPoweredUp;
     }
 
     if (targetIndex == 0) {
-        D_8010196C_name_81 = &opposingPlayer->stats.partners.frontHp;
-        D_80101978_name_81 = &opposingPlayer->stats.partners.frontID;
-        D_80101970_name_81 = &opposingPlayer->stats.partners.backHp;
-        D_8010197C_name_81 = &opposingPlayer->stats.partners.backID;
+        mbdAttackTargetHp = &opposingPlayer->stats.partners.frontHp;
+        mbdAttackTargetId = &opposingPlayer->stats.partners.frontID;
+        mbdAttackOtherHp = &opposingPlayer->stats.partners.backHp;
+        mbdAttackOtherId = &opposingPlayer->stats.partners.backID;
     } else if (targetIndex == 1) {
-        D_8010196C_name_81 = &opposingPlayer->stats.partners.backHp;
-        D_80101978_name_81 = &opposingPlayer->stats.partners.backID;
-        D_80101970_name_81 = &opposingPlayer->stats.partners.frontHp;
-        D_8010197C_name_81 = &opposingPlayer->stats.partners.frontID;
+        mbdAttackTargetHp = &opposingPlayer->stats.partners.backHp;
+        mbdAttackTargetId = &opposingPlayer->stats.partners.backID;
+        mbdAttackOtherHp = &opposingPlayer->stats.partners.frontHp;
+        mbdAttackOtherId = &opposingPlayer->stats.partners.frontID;
     } else {
-        D_8010196C_name_81 = NULL;
-        D_80101978_name_81 = NULL;
-        D_80101970_name_81 = NULL;
-        D_8010197C_name_81 = NULL;
+        mbdAttackTargetHp = NULL;
+        mbdAttackTargetId = NULL;
+        mbdAttackOtherHp = NULL;
+        mbdAttackOtherId = NULL;
     }
 
     partner = MBDGetPlayerPartnerRef(playerIndex, frontOrBackIndex);
     opposingPartner = MBDGetPlayerPartnerRef(opposingPlayerIndex, targetIndex);
     HuPrcChildLink(process, MBDCameraZoomMotStart(3.0f));
     HuPrcChildWatch();
-    func_800F74E4_name_81(-1);
-    HuVecCopy3F(&D_80105540_name_81, &player->player_obj->coords);
-    func_800FC888_name_81(4);
-    func_800FC8C4_name_81(&D_80105540_name_81);
-    HuPrcChildLink(process, func_800EC1E4_name_81(&D_80105540_name_81, &partner->coords, &D_80105540_name_81, 4.0f));
+    MBDStatusShrink(-1);
+    HuVecCopy3F(&mbdAttackCameraPos, &player->player_obj->coords);
+    MBDCameraFocusModeSet(4);
+    MBDCameraFocusVecSet(&mbdAttackCameraPos);
+    HuPrcChildLink(process, MBDVecSpeedMoveCreate(&mbdAttackCameraPos, &partner->coords, &mbdAttackCameraPos, 4.0f));
     HuPrcChildWatch();
-    func_800FC8C4_name_81(&partner->coords);
+    MBDCameraFocusVecSet(&partner->coords);
 
     if (hpDamage == 200) {
-        *D_8010196C_name_81 -= 1;
-        *D_80101970_name_81 -= 1;
+        *mbdAttackTargetHp -= 1;
+        *mbdAttackOtherHp -= 1;
         opposingPlayer->star -= 1;
     } else {
-        if (D_8010196C_name_81 != NULL) {
-            *D_8010196C_name_81 -= hpDamage;
+        if (mbdAttackTargetHp != NULL) {
+            *mbdAttackTargetHp -= hpDamage;
         }
         opposingPlayer->star -= starDamage;
     }
     if (selfHpDamage > 0) {
         // Adjusts the pointer rather than the HP value; likely an original bug.
-        D_80101968_name_81 -= selfHpDamage;
+        mbdAttackHp -= selfHpDamage;
     }
     if (selfStarDamage > 0) {
         player->star -= selfStarDamage;
@@ -1594,80 +1594,80 @@ void func_800FB59C_name_81(s32 playerIndex, s32 frontOrBackIndex, s32 targetInde
     }
     MBDBackTPLvlSet(64);
 
-    HuPrcChildLink(process, func_800E47B8_name_81(playerIndex, *D_80101974_name_81, &player->player_obj->coords, &opposingPlayer->player_obj->coords, 1));
-    effect = func_800D8010_name_81(0x36, 0);
+    HuPrcChildLink(process, MBDTelopAttackCreate(playerIndex, *mbdAttackPartnerId, &player->player_obj->coords, &opposingPlayer->player_obj->coords, 1));
+    effect = MBDModelCreate(0x36, 0);
     HuVecCopy3F(&effect->coords, &partner->coords);
     Hu3DMotionAttrSet(effect->omObj1->model[0], 2, 0);
     HuAudFXPlay(0x1CC);
-    func_800EFABC_name_81(effect);
+    MBDModelMotionWait(effect);
     MBDModelKill(effect);
     HuPrcChildWatch();
-    func_800FAB1C_name_81();
+    MBDCoinScatterInit();
 
-    if (PartnersBaseStats[*D_80101974_name_81].func1 != NULL) {
-        D_8010571C_name_81 = (D_80101978_name_81 == NULL) ? -1 : *D_80101978_name_81;
-        D_8010570C_name_81 = (D_8010197C_name_81 == NULL) ? -1 : *D_8010197C_name_81;
-        PartnersBaseStats[*D_80101974_name_81].func1(playerIndex, opposingPlayerIndex, partner, opposingPartner, flags, poweredUp);
+    if (PartnersBaseStats[*mbdAttackPartnerId].func1 != NULL) {
+        mbdAttackTargetIdParam = (mbdAttackTargetId == NULL) ? -1 : *mbdAttackTargetId;
+        mbdAttackOtherIdParam = (mbdAttackOtherId == NULL) ? -1 : *mbdAttackOtherId;
+        PartnersBaseStats[*mbdAttackPartnerId].func1(playerIndex, opposingPlayerIndex, partner, opposingPartner, flags, poweredUp);
     }
-    func_800FAC4C_name_81();
+    MBDCoinScatterClose();
 
     if (counterFlags != 0) {
-        HuVecCopy3F(&D_80105540_name_81, func_800FC8D0_name_81());
-        func_800FC8C4_name_81(&D_80105540_name_81);
-        func_800FC888_name_81(4);
-        HuPrcChildLink(process, func_800EC1E4_name_81(&D_80105540_name_81, &opposingPartner->coords, &D_80105540_name_81, 4.0f));
+        HuVecCopy3F(&mbdAttackCameraPos, MBDCameraFocusVecGet());
+        MBDCameraFocusVecSet(&mbdAttackCameraPos);
+        MBDCameraFocusModeSet(4);
+        HuPrcChildLink(process, MBDVecSpeedMoveCreate(&mbdAttackCameraPos, &opposingPartner->coords, &mbdAttackCameraPos, 4.0f));
         HuPrcChildWatch();
-        func_800FC8C4_name_81(&opposingPartner->coords);
+        MBDCameraFocusVecSet(&opposingPartner->coords);
 
-        HuPrcChildLink(process, func_800E47B8_name_81(opposingPlayerIndex, *D_80101978_name_81, &opposingPlayer->player_obj->coords, &player->player_obj->coords, 0));
-        counterEffect = func_800D8010_name_81(0x36, 0);
+        HuPrcChildLink(process, MBDTelopAttackCreate(opposingPlayerIndex, *mbdAttackTargetId, &opposingPlayer->player_obj->coords, &player->player_obj->coords, 0));
+        counterEffect = MBDModelCreate(0x36, 0);
         HuVecCopy3F(&counterEffect->coords, &opposingPartner->coords);
         Hu3DMotionAttrSet(counterEffect->omObj1->model[0], 2, 0);
         HuAudFXPlay(0x1CC);
-        func_800EFABC_name_81(counterEffect);
+        MBDModelMotionWait(counterEffect);
         MBDModelKill(counterEffect);
         HuPrcChildWatch();
-        func_800FAB1C_name_81();
+        MBDCoinScatterInit();
 
-        if (*D_80101978_name_81 != -1 && PartnersBaseStats[*D_80101978_name_81].func2 != NULL) {
-            partnerID = *D_80101974_name_81;
+        if (*mbdAttackTargetId != -1 && PartnersBaseStats[*mbdAttackTargetId].func2 != NULL) {
+            partnerID = *mbdAttackPartnerId;
             if (partnerID == 0) {
                 partnerID = -1;
             }
-            D_8010571C_name_81 = partnerID;
-            D_8010570C_name_81 = -1;
-            PartnersBaseStats[*D_80101978_name_81].func2(opposingPlayerIndex, playerIndex, opposingPartner, partner, counterFlags, poweredUp + 0x10);
+            mbdAttackTargetIdParam = partnerID;
+            mbdAttackOtherIdParam = -1;
+            PartnersBaseStats[*mbdAttackTargetId].func2(opposingPlayerIndex, playerIndex, opposingPartner, partner, counterFlags, poweredUp + 0x10);
         }
-        func_800FAC4C_name_81();
+        MBDCoinScatterClose();
     }
 
-    if (*D_80101974_name_81 != -1 && PartnersBaseStats[*D_80101974_name_81].func3 != NULL) {
-        PartnersBaseStats[*D_80101974_name_81].func3();
+    if (*mbdAttackPartnerId != -1 && PartnersBaseStats[*mbdAttackPartnerId].func3 != NULL) {
+        PartnersBaseStats[*mbdAttackPartnerId].func3();
     }
-    if (D_80101978_name_81 != NULL && *D_80101978_name_81 != -1 && PartnersBaseStats[*D_80101978_name_81].func4 != NULL) {
-        PartnersBaseStats[*D_80101978_name_81].func4();
+    if (mbdAttackTargetId != NULL && *mbdAttackTargetId != -1 && PartnersBaseStats[*mbdAttackTargetId].func4 != NULL) {
+        PartnersBaseStats[*mbdAttackTargetId].func4();
     }
 
-    if (*D_80101968_name_81 <= 0) {
-        *D_80101974_name_81 = -1;
-        *D_80101968_name_81 = 0;
-        func_800F8358_name_81(playerIndex);
-        func_800F57B0_name_81(playerIndex);
-        func_800F5E2C_name_81(playerIndex);
+    if (*mbdAttackHp <= 0) {
+        *mbdAttackPartnerId = -1;
+        *mbdAttackHp = 0;
+        MBDPartnerModelUpdate(playerIndex);
+        MBDStatusFrontDispOff(playerIndex);
+        MBDStatusBackDispOff(playerIndex);
     }
-    if (D_8010196C_name_81 != NULL && *D_8010196C_name_81 <= 0) {
-        *D_80101978_name_81 = -1;
-        *D_8010196C_name_81 = 0;
-        func_800F8358_name_81(opposingPlayerIndex);
-        func_800F57B0_name_81(opposingPlayerIndex);
-        func_800F5E2C_name_81(opposingPlayerIndex);
+    if (mbdAttackTargetHp != NULL && *mbdAttackTargetHp <= 0) {
+        *mbdAttackTargetId = -1;
+        *mbdAttackTargetHp = 0;
+        MBDPartnerModelUpdate(opposingPlayerIndex);
+        MBDStatusFrontDispOff(opposingPlayerIndex);
+        MBDStatusBackDispOff(opposingPlayerIndex);
     }
-    if (D_80101970_name_81 != NULL && *D_80101970_name_81 <= 0) {
-        *D_8010197C_name_81 = -1;
-        *D_80101970_name_81 = 0;
-        func_800F8358_name_81(opposingPlayerIndex);
-        func_800F57B0_name_81(opposingPlayerIndex);
-        func_800F5E2C_name_81(opposingPlayerIndex);
+    if (mbdAttackOtherHp != NULL && *mbdAttackOtherHp <= 0) {
+        *mbdAttackOtherId = -1;
+        *mbdAttackOtherHp = 0;
+        MBDPartnerModelUpdate(opposingPlayerIndex);
+        MBDStatusFrontDispOff(opposingPlayerIndex);
+        MBDStatusBackDispOff(opposingPlayerIndex);
     }
 
     for (i = 64; i < 255; i += 16) {
@@ -1675,17 +1675,17 @@ void func_800FB59C_name_81(s32 playerIndex, s32 frontOrBackIndex, s32 targetInde
         HuPrcVSleep();
     }
     MBDBackTPLvlSet(255);
-    func_800F75EC_name_81(-1);
-    HuVecCopy3F(&D_80105540_name_81, func_800FC8D0_name_81());
-    func_800FC8C4_name_81(&D_80105540_name_81);
-    func_800FC888_name_81(4);
-    HuPrcChildLink(process, func_800EC1E4_name_81(&D_80105540_name_81, &player->player_obj->coords, &D_80105540_name_81, 4.0f));
+    MBDStatusGrow(-1);
+    HuVecCopy3F(&mbdAttackCameraPos, MBDCameraFocusVecGet());
+    MBDCameraFocusVecSet(&mbdAttackCameraPos);
+    MBDCameraFocusModeSet(4);
+    HuPrcChildLink(process, MBDVecSpeedMoveCreate(&mbdAttackCameraPos, &player->player_obj->coords, &mbdAttackCameraPos, 4.0f));
     HuPrcChildWatch();
-    func_800FC888_name_81(1);
-    func_800FAFAC_name_81();
+    MBDCameraFocusModeSet(1);
+    MBDPartnerExtMotKill();
 }
 
-void func_800FBDD4_name_81(void) {
+void MBDPartnerComboMesExec(void) {
     s32 sp20[1][2];
     GW_PLAYER *player;
     s32 i;
@@ -1703,15 +1703,15 @@ void func_800FBDD4_name_81(void) {
             sp20[0][PARTNER_BACK] = player->stats.partners.frontID;
         }
 
-        for (i = 0, new_var3 = D_801019E0_name_81; i < 5; i++) {
+        for (i = 0, new_var3 = mbdPartnerComboTbl; i < 5; i++) {
             if (sp20[0][PARTNER_FRONT] == new_var3[i][PARTNER_FRONT]) {
-                new_var2 = &D_801019E0_name_81[i][PARTNER_BACK];
+                new_var2 = &mbdPartnerComboTbl[i][PARTNER_BACK];
                 if (sp20[0][PARTNER_BACK] == new_var2[PARTNER_FRONT]) {
-                    func_800EB49C_name_81(0x16, D_80101A08_name_81[i], D_80101A1C_name_81[player->stats.partners.frontID], D_80101A1C_name_81[player->stats.partners.backID], 0, 0, 0);
-                    func_800EB58C_name_81();
-                    func_800EB58C_name_81();
-                    func_800EB278_name_81();
-                    func_800EB29C_name_81();
+                    MBDDlgWinInsertCreate(0x16, mbdPartnerComboMesTbl[i], mbdPartnerNameMesTbl[player->stats.partners.frontID], mbdPartnerNameMesTbl[player->stats.partners.backID], 0, 0, 0);
+                    MBDDlgWinMesWait();
+                    MBDDlgWinMesWait();
+                    MBDDlgWinClose();
+                    MBDDlgWinKill();
                     return;
                 }
             }

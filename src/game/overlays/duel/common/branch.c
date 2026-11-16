@@ -1,10 +1,10 @@
 #include "common_duel.h"
 #include "ovl_81.h"
 
-s16 func_800EBA50_name_81(s16, f32);
-f32 func_800D7CEC_name_81(Vec*, Vec*);
+s16 MBDPadStkCheck(s16, f32);
+f32 MBDVecBetweenAngleGet(Vec*, Vec*);
 
-static void func_800D6EE0_name_81(void) {
+static void MBDBranchSelProc(void) {
     s32 mesg;
     s32 ret;
     UnkEA790Struct *work;
@@ -82,7 +82,7 @@ static void func_800D6EE0_name_81(void) {
             if (sel != work->unk_0C) {
                 HuAudFXPlay(1);
                 if (sel >= 0) {
-                    HuVecCopyXYZ(&func_800D6EC8_name_81(work, sel)->obj->scale, 1.0f, 1.0f, 1.0f);
+                    HuVecCopyXYZ(&MBDBranchArrowGrpArrowGet(work, sel)->obj->scale, 1.0f, 1.0f, 1.0f);
                     angle = 0.0f;
                 }
                 sel = work->unk_0C;
@@ -103,7 +103,7 @@ static void func_800D6EE0_name_81(void) {
             }
             scaleZ = (cosdf(angle) * 0.3f) + 1.2f;
             scaleX = (cosdf(angle) * 0.2f) + 1.2f;
-            HuVecCopyXYZ(&func_800D6EC8_name_81(work, sel)->obj->scale, scaleX, 1.0f, scaleZ);
+            HuVecCopyXYZ(&MBDBranchArrowGrpArrowGet(work, sel)->obj->scale, scaleX, 1.0f, scaleZ);
         }
 
         if (timer > 0) {
@@ -111,7 +111,7 @@ static void func_800D6EE0_name_81(void) {
             scaleZ = timer * (1.0f / 30.0f);
             for (i = 0; i < work->unk_02; i++) {
                 if (i != sel) {
-                    scale = &func_800D6EC8_name_81(work, i)->obj->scale;
+                    scale = &MBDBranchArrowGrpArrowGet(work, i)->obj->scale;
                     HuVecMulScalar(scale, scaleZ, scale);
                 }
             }
@@ -120,14 +120,14 @@ static void func_800D6EE0_name_81(void) {
     omDelPrcObj(NULL);
 }
 
-s32 func_800D7250_name_81(UnkEA790Struct* arg0, s32 arg1) {
+s32 MBDBranchSelMesSend(UnkEA790Struct* arg0, s32 arg1) {
     if (arg0->proc != NULL) {
         return osSendMesg(&arg0->unk10, (void* ) arg1, 0);
     }
     return - 1;
 }
 
-static void func_800D7280_name_81(void) {
+static void MBDBranchSelPadProc(void) {
     Vec stick;
     Vec diff;
     UnkEA790Struct *work;
@@ -149,16 +149,16 @@ static void func_800D7280_name_81(void) {
         stick.z = -stick.z;
         stick.y = 0.0f;
 
-        if (func_800EBA50_name_81(work->unkE, 40.0f) != 0) {
+        if (MBDPadStkCheck(work->unkE, 40.0f) != 0) {
             for (i = 0; i < work->unk_02; i++) {
                 HuVecSubtract(&diff,
-                              &func_800D6EC8_name_81(work, i)->obj->coords,
+                              &MBDBranchArrowGrpArrowGet(work, i)->obj->coords,
                               &player->player_obj->coords);
                 diff.y = 0.0f;
-                if (func_800D7CEC_name_81(&stick, &diff) <= 38.0f) {
+                if (MBDVecBetweenAngleGet(&stick, &diff) <= 38.0f) {
                     if (sel != i) {
                         sel = i;
-                        func_800D7250_name_81(work, sel);
+                        MBDBranchSelMesSend(work, sel);
                     }
                     break;
                 }
@@ -167,7 +167,7 @@ static void func_800D7280_name_81(void) {
 
         if ((ContBtnDown[work->unkE] & A_BUTTON) && (sel >= 0)) {
             sel = -4;
-            func_800D7250_name_81(work, sel);
+            MBDBranchSelMesSend(work, sel);
             run = 0;
         }
     }
@@ -175,12 +175,12 @@ static void func_800D7280_name_81(void) {
 }
 
 
-s32 func_800D742C_name_81(UnkEA790Struct* arg0, s16 playerNo, s32 arg2) {
+s32 MBDBranchSelStart(UnkEA790Struct* arg0, s16 playerNo, s32 arg2) {
     GW_PLAYER* player;
     Process* proc;
 
     if (arg0->proc == NULL) {
-        proc = omAddPrcObj(func_800D6EE0_name_81, 0xEFFF, 0x1000, 0);
+        proc = omAddPrcObj(MBDBranchSelProc, 0xEFFF, 0x1000, 0);
         arg0->proc = proc;
         proc->user_data = arg0;
         osCreateMesgQueue(&arg0->unk10, &arg0->unk28, 0x10);
@@ -188,17 +188,17 @@ s32 func_800D742C_name_81(UnkEA790Struct* arg0, s16 playerNo, s32 arg2) {
         player = MBDGetPlayerStruct(playerNo);
         if (player->stat & 1) {
             arg0->unk_00 |= 1;
-            func_800D7250_name_81(arg0, -1);
+            MBDBranchSelMesSend(arg0, -1);
         } else {
             arg0->unkE = player->pad;
-            omAddPrcObj(func_800D7280_name_81, 0xEFFF, 0x1000, 0)->user_data = arg0;
+            omAddPrcObj(MBDBranchSelPadProc, 0xEFFF, 0x1000, 0)->user_data = arg0;
         }
         return player->stat & 1;
     }
     return -1;
 }
 
-s32 func_800D7518_name_81(UnkEA790Struct* arg0) {
+s32 MBDBranchSelWait(UnkEA790Struct* arg0) {
     if (arg0->proc != NULL) {
         HuPrcChildLink(HuPrcCurrentGet(), arg0->proc);
         HuPrcChildWatch();
@@ -207,7 +207,7 @@ s32 func_800D7518_name_81(UnkEA790Struct* arg0) {
     return arg0->unk_0C;
 }
 
-void func_800D7568_name_81(UnkBoard2* arg0, Vec* arg1, Vec* arg2, f32 arg3) {
+void MBDBranchArrowPosSet(UnkBoard2* arg0, Vec* arg1, Vec* arg2, f32 arg3) {
     Vec sp10;
 
     MBDVecDirGet(arg1, arg2, &sp10);
@@ -216,23 +216,23 @@ void func_800D7568_name_81(UnkBoard2* arg0, Vec* arg1, Vec* arg2, f32 arg3) {
     HuVecAdd(&arg0->obj->coords, &sp10, arg1);
 }
 
-static UnkEA790Struct* func_800D75E8_name_81(s16 arg0, s16* arg1, s32 arg2) {
+static UnkEA790Struct* MBDBranchArrowGrpCreateEx(s16 arg0, s16* arg1, s32 arg2) {
     GW_PLAYER* player;
     UnkBoard2* temp_s0;
     UnkEA790Struct* temp_v0;
 
     player = MBDGetPlayerStruct(arg0);
-    temp_v0 = func_800D6C6C_name_81();
+    temp_v0 = MBDBranchArrowGrpCreate();
     temp_v0->player = player;
     for (; *arg1 >= 0; arg1++) {
-        temp_s0 = func_800D6B70_name_81(arg2);
-        func_800D7568_name_81(temp_s0, &player->player_obj->coords, &MBDMasuGet(*arg1)->coords, 12.0f);
-        func_800D6D2C_name_81(temp_v0, temp_s0, 0);
+        temp_s0 = MBDBranchArrowCreate(arg2);
+        MBDBranchArrowPosSet(temp_s0, &player->player_obj->coords, &MBDMasuGet(*arg1)->coords, 12.0f);
+        MBDBranchArrowGrpAdd(temp_v0, temp_s0, 0);
     }
     
     return temp_v0;
 }
 
-UnkEA790Struct* func_800D76A0_name_81(s16 arg0, s16* arg1) {
-    return func_800D75E8_name_81(arg0, arg1, 0);
+UnkEA790Struct* MBDBranchArrowLinkCreate(s16 arg0, s16* arg1) {
+    return MBDBranchArrowGrpCreateEx(arg0, arg1, 0);
 }

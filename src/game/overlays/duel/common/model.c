@@ -20,14 +20,14 @@ typedef struct ModelSpinWork {
     /* 0x0C */ s32 time;
 } ModelSpinWork; //sizeof 0x10
 
-extern u16 D_801029C4_name_81;
-extern s16 D_80105624_name_81;
+extern u16 mbdModelNum;
+extern s16 mbdModelDispFlag;
 extern u8 omAllPauseF;
 
-f32 D_80100E10_name_81 = 1.0f;
-f32 D_80100E14_name_81 = 100.0f;
+f32 mbdModelScaleMul = 1.0f;
+f32 mbdShadowHeightMax = 100.0f;
 
-const UnkTemp D_80101C48_name_81[] = {
+const UnkTemp mbdModelDataTbl[] = {
     { 0x000200A2, 0x00000009, 1.0f, 0.9f },
     { 0x000300A2, 0x00000009, 1.0f, 0.9f },
     { 0x000700A2, 0x00000009, 1.0f, 1.2f },
@@ -122,71 +122,71 @@ const UnkTemp D_80101C48_name_81[] = {
     { 0x000B002A, 0x00000009, 1.6666666f, 0.0f },
 };
 
-void func_800D85B4_name_81(omObjData *playerObj);
-void func_800D87E8_name_81(omObjData *arg0);
+void MBDModelObjMain(omObjData *playerObj);
+void MBDShadowObjMain(omObjData *arg0);
 
-void func_800D7D70_name_81(void) {
+void MBDMotionRefTblInit(void) {
     s32 i;
     for (i = 0; i < 128; i++) {
-        D_801029C8_name_81[i] = 0;
+        mbdMotionRefTbl[i] = 0;
     }
 }
 
 s16 MBDMotionLock(s16 arg0) {
-    D_801029C8_name_81[arg0]++;
+    mbdMotionRefTbl[arg0]++;
     return arg0;
 }
 
-s16 func_800D7DC8_name_81(s32 arg0) {
+s16 MBDMotionCreate(s32 arg0) {
     s16 res = Hu3DMotionCreate(DataRead(arg0), 8);
-    D_801029C8_name_81[res]++;
+    mbdMotionRefTbl[res]++;
     return res;
 }
 
 void MBDMotionKill(s16 arg0) {
-    if (D_801029C8_name_81[arg0] != 0) {
-        D_801029C8_name_81[arg0]--;
-        if (D_801029C8_name_81[arg0] == 0) {
+    if (mbdMotionRefTbl[arg0] != 0) {
+        mbdMotionRefTbl[arg0]--;
+        if (mbdMotionRefTbl[arg0] == 0) {
             Hu3DMotionKill(arg0);
         }
     }
 }
 
-s16 func_800D7E68_name_81(s16 arg0) {
-    if (D_801029C8_name_81[arg0] != 0) {
-        D_801029C8_name_81[arg0]++;
+s16 MBDMotionRefCopy(s16 arg0) {
+    if (mbdMotionRefTbl[arg0] != 0) {
+        mbdMotionRefTbl[arg0]++;
         return arg0;
     }
     return -1;
 }
 
 void MBDModelInit(void) {
-    D_801029C0_name_81 = NULL;
-    D_801029C4_name_81 = 0;
-    D_80105624_name_81 = 1;
-    func_800D7D70_name_81();
-    func_800D87DC_name_81(100.0f);
-    func_800D85A8_name_81(1.0f);
+    mbdModelListHead = NULL;
+    mbdModelNum = 0;
+    mbdModelDispFlag = 1;
+    MBDMotionRefTblInit();
+    MBDShadowHeightMaxSet(100.0f);
+    MBDModelScaleMulSet(1.0f);
 }
 
 void MBDModelClose(void) {
-    while (D_801029C0_name_81 != NULL) {
-        MBDModelKill(D_801029C0_name_81);
+    while (mbdModelListHead != NULL) {
+        MBDModelKill(mbdModelListHead);
     }
 }
 
-Object *func_800D7F4C_name_81(void) {
+Object *MBDModelAlloc(void) {
     Object *temp_v0;
 
     temp_v0 = HuMemMemoryAllocTemp(sizeof(Object));
     if (temp_v0 != NULL) {
-        D_801029C4_name_81++;
-        temp_v0->prev = D_801029C0_name_81;
+        mbdModelNum++;
+        temp_v0->prev = mbdModelListHead;
         temp_v0->next = NULL;
-        if (D_801029C0_name_81 != NULL) {
-            D_801029C0_name_81->next = temp_v0;
+        if (mbdModelListHead != NULL) {
+            mbdModelListHead->next = temp_v0;
         }
-        D_801029C0_name_81 = temp_v0;
+        mbdModelListHead = temp_v0;
         temp_v0->flags = 8;
         HuVecCopyXYZ(&temp_v0->coords, 0.0f, 0.0f, 0.0f);
         HuVecCopyXYZ(&temp_v0->rot, 0.0f, 0.0f, 1.0f);
@@ -200,7 +200,7 @@ Object *func_800D7F4C_name_81(void) {
     return temp_v0;
 }
 
-Object *func_800D8010_name_81(u8 arg0, s32 *dataPtr) {
+Object *MBDModelCreate(u8 arg0, s32 *dataPtr) {
     Object *object;
     omObjData *objData;
     UnkObj *work;
@@ -210,7 +210,7 @@ Object *func_800D8010_name_81(u8 arg0, s32 *dataPtr) {
 
     motionCnt = 0;
 
-    object = func_800D7F4C_name_81();
+    object = MBDModelAlloc();
     if (object != NULL) {
         object->unk8 = arg0;
 
@@ -222,9 +222,9 @@ Object *func_800D8010_name_81(u8 arg0, s32 *dataPtr) {
             object->mtncnt = -1;
         }
 
-        objData = object->omObj1 = omAddObj(0x4000, 1, motionCnt, -1, func_800D85B4_name_81);
+        objData = object->omObj1 = omAddObj(0x4000, 1, motionCnt, -1, MBDModelObjMain);
 
-        mdlIdx = Hu3DModelRead(D_80101C48_name_81[object->unk8].unk_00, 0x6A9);
+        mdlIdx = Hu3DModelRead(mbdModelDataTbl[object->unk8].unk_00, 0x6A9);
         omSetStatBit(objData, OM_STAT_NOALLPAUSE);
         objData->model[0] = mdlIdx;
         omSetRot(objData, 0.0f, 0.0f, 0.0f);
@@ -238,15 +238,15 @@ Object *func_800D8010_name_81(u8 arg0, s32 *dataPtr) {
         work = HuMemMemoryAllocTemp(sizeof(UnkObj));
         objData->data = work;
         work->unk_00 = object;
-        work->unk_04 = D_80101C48_name_81[object->unk8].unk_08 * 0.6f;
+        work->unk_04 = mbdModelDataTbl[object->unk8].unk_08 * 0.6f;
 
         for (i = 0; i < motionCnt; i++) {
-            objData->motion[i] = func_800D7DC8_name_81(*dataPtr++);
+            objData->motion[i] = MBDMotionCreate(*dataPtr++);
         }
 
-        if (D_80101C48_name_81[object->unk8].unk_0C > 0.0f) {
-            objData = object->omObj2 = omAddObj(0x4000, 1, 0, -1, func_800D87E8_name_81);
-            mdlIdx = Hu3DModelRead(D_80101C48_name_81[object->unk8].unk_04, 0x229);
+        if (mbdModelDataTbl[object->unk8].unk_0C > 0.0f) {
+            objData = object->omObj2 = omAddObj(0x4000, 1, 0, -1, MBDShadowObjMain);
+            mdlIdx = Hu3DModelRead(mbdModelDataTbl[object->unk8].unk_04, 0x229);
             omSetStatBit(objData, OM_STAT_NOALLPAUSE);
             objData->model[0] = mdlIdx;
             omSetRot(objData, 0.0f, 0.0f, 0.0f);
@@ -256,7 +256,7 @@ Object *func_800D8010_name_81(u8 arg0, s32 *dataPtr) {
             work = HuMemMemoryAllocTemp(sizeof(UnkObj));
             objData->data = work;
             work->unk_00 = object;
-            work->unk_04 = D_80101C48_name_81[object->unk8].unk_0C * 0.6f;
+            work->unk_04 = mbdModelDataTbl[object->unk8].unk_0C * 0.6f;
         } else {
             object->omObj2 = NULL;
         }
@@ -276,7 +276,7 @@ Object *MBDModelFileCreate(s32 arg0, s32 arg1, f32 arg2, f32 arg3, u32 *arg4) {
     dataPtr = arg4;
     motionCnt = 0;
 
-    object = func_800D7F4C_name_81();
+    object = MBDModelAlloc();
     if (object != NULL) {
         object->unk8 = 0xFF;
 
@@ -285,7 +285,7 @@ Object *MBDModelFileCreate(s32 arg0, s32 arg1, f32 arg2, f32 arg3, u32 *arg4) {
             dataPtr++;
         }
 
-        objData = object->omObj1 = omAddObj(0x4000, 1, motionCnt, -1, func_800D85B4_name_81);
+        objData = object->omObj1 = omAddObj(0x4000, 1, motionCnt, -1, MBDModelObjMain);
 
         mdlIdx = Hu3DModelRead(arg0, 0x6A9);
         omSetStatBit(objData, OM_STAT_NOALLPAUSE);
@@ -304,11 +304,11 @@ Object *MBDModelFileCreate(s32 arg0, s32 arg1, f32 arg2, f32 arg3, u32 *arg4) {
         work->unk_04 = arg2;
 
         for (i = 0; i < motionCnt; i++) {
-            objData->motion[i] = func_800D7DC8_name_81(*dataPtr++);
+            objData->motion[i] = MBDMotionCreate(*dataPtr++);
         }
 
         if ((arg1 >= 0) && (arg3 > 0.0f)) {
-            objData = object->omObj2 = omAddObj(0x4000, 1, 0, -1, func_800D87E8_name_81);
+            objData = object->omObj2 = omAddObj(0x4000, 1, 0, -1, MBDShadowObjMain);
             mdlIdx = Hu3DModelRead(arg1, 0x229);
             omSetStatBit(objData, OM_STAT_NOALLPAUSE);
             objData->model[0] = mdlIdx;
@@ -327,11 +327,11 @@ Object *MBDModelFileCreate(s32 arg0, s32 arg1, f32 arg2, f32 arg3, u32 *arg4) {
     return object;
 }
 
-void func_800D85A8_name_81(f32 arg0) {
-    D_80100E10_name_81 = arg0;
+void MBDModelScaleMulSet(f32 arg0) {
+    mbdModelScaleMul = arg0;
 }
 
-void func_800D85B4_name_81(omObjData *playerObj) {
+void MBDModelObjMain(omObjData *playerObj) {
     Vec2f sp10;
     Object *temp_s0;
     UnkObj *temp_s2;
@@ -351,7 +351,7 @@ void func_800D85B4_name_81(omObjData *playerObj) {
         }
     }
 
-    if (!(D_80105624_name_81 & 1)) {
+    if (!(mbdModelDispFlag & 1)) {
         MBDModelAttrSetDispOff(temp_s0);
         return;
     }
@@ -380,16 +380,16 @@ void func_800D85B4_name_81(omObjData *playerObj) {
     playerObj->trans.x = temp_s0->coords.x;
     playerObj->trans.y = temp_s0->coords.y + temp_s0->velocity.x;
     playerObj->trans.z = temp_s0->coords.z;
-    playerObj->scale.x = temp_s0->scale.x * temp_s2->unk_04 * MBDBackMdlScaleGet() * D_80100E10_name_81;
-    playerObj->scale.y = temp_s0->scale.y * temp_s2->unk_04 * MBDBackMdlScaleGet() * D_80100E10_name_81;
-    playerObj->scale.z = temp_s0->scale.z * temp_s2->unk_04 * MBDBackMdlScaleGet() * D_80100E10_name_81;
+    playerObj->scale.x = temp_s0->scale.x * temp_s2->unk_04 * MBDBackMdlScaleGet() * mbdModelScaleMul;
+    playerObj->scale.y = temp_s0->scale.y * temp_s2->unk_04 * MBDBackMdlScaleGet() * mbdModelScaleMul;
+    playerObj->scale.z = temp_s0->scale.z * temp_s2->unk_04 * MBDBackMdlScaleGet() * mbdModelScaleMul;
 }
 
-void func_800D87DC_name_81(f32 arg0) {
-    D_80100E14_name_81 = arg0;
+void MBDShadowHeightMaxSet(f32 arg0) {
+    mbdShadowHeightMax = arg0;
 }
 
-void func_800D87E8_name_81(omObjData *arg0) {
+void MBDShadowObjMain(omObjData *arg0) {
     f32 var_f20;
     Object *temp_s0;
     UnkObj *temp_s2;
@@ -402,7 +402,7 @@ void func_800D87E8_name_81(omObjData *arg0) {
         var_f20 = 0.0f;
     } else {
         if (temp_s0->velocity.x != 0.0f) {
-            var_f20 = 1.0f - (temp_s0->velocity.x / D_80100E14_name_81);
+            var_f20 = 1.0f - (temp_s0->velocity.x / mbdShadowHeightMax);
             if (var_f20 <= 0.0f) {
                 var_f20 = 0.0f;
             }
@@ -411,9 +411,9 @@ void func_800D87E8_name_81(omObjData *arg0) {
             }
         }
     }
-    arg0->scale.x = var_f20 * temp_s0->scale.x * temp_s2->unk_04 * MBDBackMdlScaleGet() * D_80100E10_name_81;
+    arg0->scale.x = var_f20 * temp_s0->scale.x * temp_s2->unk_04 * MBDBackMdlScaleGet() * mbdModelScaleMul;
     arg0->scale.y = MBDBackMdlScaleGet();
-    arg0->scale.z = var_f20 * temp_s0->scale.z * temp_s2->unk_04 * MBDBackMdlScaleGet() * D_80100E10_name_81;
+    arg0->scale.z = var_f20 * temp_s0->scale.z * temp_s2->unk_04 * MBDBackMdlScaleGet() * mbdModelScaleMul;
     arg0->trans.x = temp_s0->coords.x;
     arg0->trans.y = temp_s0->coords.y;
     arg0->trans.z = temp_s0->coords.z;
@@ -427,7 +427,7 @@ void MBDModelTempAllocFree(Object* arg0) {
     }
 }
 
-void func_800D898C_name_81(Object *arg0, u8 arg1) {
+void MBDModelChange(Object *arg0, u8 arg1) {
     u16 temp;
     s16 mdlIdx;
 
@@ -438,12 +438,12 @@ void func_800D898C_name_81(Object *arg0, u8 arg1) {
         MBDMotionKill(arg0->unk46);
     }
 
-    temp = Hu3DModelRead(D_80101C48_name_81[arg0->unk8].unk_00, 0x6A9);
+    temp = Hu3DModelRead(mbdModelDataTbl[arg0->unk8].unk_00, 0x6A9);
     arg0->omObj1->model[0] = temp;
     mdlIdx = temp;
     Hu3DMotionAttrSet(mdlIdx, 2, 2);
     Hu3DModelCameraSet(mdlIdx, HU3D_CAM0);
-    ((UnkObj *)arg0->omObj1->data)->unk_04 = D_80101C48_name_81[arg0->unk8].unk_08;
+    ((UnkObj *)arg0->omObj1->data)->unk_04 = mbdModelDataTbl[arg0->unk8].unk_08;
     if (Hu3DData[mdlIdx].motId != 0xFF) {
         arg0->unk46 = MBDMotionLock(Hu3DData[mdlIdx].motId);
     } else {
@@ -452,26 +452,26 @@ void func_800D898C_name_81(Object *arg0, u8 arg1) {
 
     if (arg0->omObj2 != NULL) {
         Hu3DModelKill(arg0->omObj2->model[0]);
-        temp = Hu3DModelRead(D_80101C48_name_81[arg0->unk8].unk_04, 0x229);
+        temp = Hu3DModelRead(mbdModelDataTbl[arg0->unk8].unk_04, 0x229);
         arg0->omObj2->model[0] = temp;
         mdlIdx = temp;
         Hu3DModelCameraSet(mdlIdx, HU3D_CAM0);
-        ((UnkObj *)arg0->omObj2->data)->unk_04 = D_80101C48_name_81[arg0->unk8].unk_0C;
+        ((UnkObj *)arg0->omObj2->data)->unk_04 = mbdModelDataTbl[arg0->unk8].unk_0C;
     }
 }
 
-Object *func_800D8B18_name_81(Object *src) {
+Object *MBDModelLinkCreate(Object *src) {
     Object *object;
     omObjData *objData;
     UnkObj *work;
     s16 mdlIdx;
     s16 i;
 
-    object = func_800D7F4C_name_81();
+    object = MBDModelAlloc();
     if (object != NULL) {
         object->unk8 = src->unk8;
 
-        objData = object->omObj1 = omAddObj(0x4000, 1, src->omObj1->mtncnt, -1, func_800D85B4_name_81);
+        objData = object->omObj1 = omAddObj(0x4000, 1, src->omObj1->mtncnt, -1, MBDModelObjMain);
 
         mdlIdx = Hu3DModelLink(src->omObj1->model[0]);
         omSetStatBit(objData, OM_STAT_NOALLPAUSE);
@@ -482,7 +482,7 @@ Object *func_800D8B18_name_81(Object *src) {
         Hu3DModelScaleSet(mdlIdx, 0.0f, 0.0f, 0.0f);
 
         if (Hu3DData[mdlIdx].motId != 0xFF) {
-            object->unk46 = func_800D7E68_name_81(Hu3DData[mdlIdx].motId);
+            object->unk46 = MBDMotionRefCopy(Hu3DData[mdlIdx].motId);
         } else {
             object->unk46 = src->unk46;
         }
@@ -491,19 +491,19 @@ Object *func_800D8B18_name_81(Object *src) {
         objData->data = work;
         work->unk_00 = object;
         if (object->unk8 != 0xFF) {
-            work->unk_04 = D_80101C48_name_81[object->unk8].unk_08 * 0.6f;
+            work->unk_04 = mbdModelDataTbl[object->unk8].unk_08 * 0.6f;
         } else {
             work->unk_04 = 1.0f;
         }
 
         for (i = 0; i < src->omObj1->mtncnt; i++) {
-            objData->motion[i] = func_800D7E68_name_81(src->omObj1->motion[i]);
+            objData->motion[i] = MBDMotionRefCopy(src->omObj1->motion[i]);
         }
         object->mtncnt = src->mtncnt;
 
         if ((src->omObj2 != NULL) && (object->unk8 != 0xFF) &&
-            (D_80101C48_name_81[object->unk8].unk_0C > 0.0f)) {
-            objData = object->omObj2 = omAddObj(0x4000, 1, 0, -1, func_800D87E8_name_81);
+            (mbdModelDataTbl[object->unk8].unk_0C > 0.0f)) {
+            objData = object->omObj2 = omAddObj(0x4000, 1, 0, -1, MBDShadowObjMain);
 
             mdlIdx = Hu3DModelLink(src->omObj2->model[0]);
             omSetStatBit(objData, OM_STAT_NOALLPAUSE);
@@ -515,7 +515,7 @@ Object *func_800D8B18_name_81(Object *src) {
             work = HuMemMemoryAllocTemp(sizeof(UnkObj));
             objData->data = work;
             work->unk_00 = object;
-            work->unk_04 = D_80101C48_name_81[object->unk8].unk_0C * 0.6f;
+            work->unk_04 = mbdModelDataTbl[object->unk8].unk_0C * 0.6f;
         } else {
             object->omObj2 = NULL;
         }
@@ -554,14 +554,14 @@ void MBDModelDispOff(Object* arg0) {
 void MBDModelKill(Object* arg0) {
     s32 i;
 
-    if (D_801029C0_name_81 != NULL) {
+    if (mbdModelListHead != NULL) {
         if (arg0->prev != NULL) {
             arg0->prev->next = arg0->next;
         }
         if (arg0->next != NULL) {
             arg0->next->prev = arg0->prev;
         } else {
-            D_801029C0_name_81 = arg0->prev;
+            mbdModelListHead = arg0->prev;
         }
         Hu3DMotionSet(arg0->omObj1->model[0], -1);
         Hu3DModelKill(arg0->omObj1->model[0]);
@@ -588,14 +588,14 @@ void MBDModelKill(Object* arg0) {
             omDelObj(arg0->omObj2);
         }
         HuMemMemoryFreeTemp(arg0);
-        D_801029C4_name_81 -= 1;
+        mbdModelNum -= 1;
     }
 }
 
-s32 func_800D9098_name_81(Object *arg0) {
+s32 MBDModelExistCheck(Object *arg0) {
     Object *node;
 
-    for (node = D_801029C0_name_81; node != NULL; node = node->prev) {
+    for (node = mbdModelListHead; node != NULL; node = node->prev) {
         if (node == arg0) {
             return 1;
         }
@@ -656,7 +656,7 @@ u16 MBDMotionCheck(Object *arg0) {
     return ret;
 }
 
-u16 func_800D92A8_name_81(Object *arg0) {
+u16 MBDMotionStartCheck(Object *arg0) {
     u16 ret;
 
     ret = 0;
@@ -666,7 +666,7 @@ u16 func_800D92A8_name_81(Object *arg0) {
     return ret;
 }
 
-void func_800D92F8_name_81(omObjData* arg0) {
+void MBDModelTurnObjMain(omObjData* arg0) {
     Object* temp_s1;
 
     temp_s1 = arg0->data;
@@ -686,14 +686,14 @@ void func_800D92F8_name_81(omObjData* arg0) {
     temp_s1->rot.z = cosdf(arg0->scale.y);
 }
 
-omObjData* func_800D9384_name_81(Object* arg0, Vec* arg1, s32 arg2) {
+omObjData* MBDModelTurnCreate(Object* arg0, Vec* arg1, s32 arg2) {
     Vec sp18;
     f32 var_f20;
     f32 var_f4;
     omObjData* temp_v0;
 
     MBDVecDirGet(&arg0->coords, arg1, &sp18);
-    temp_v0 = omAddObj(0x1000, 0, 0, -1, func_800D92F8_name_81);
+    temp_v0 = omAddObj(0x1000, 0, 0, -1, MBDModelTurnObjMain);
     temp_v0->work[1] = arg2;
     temp_v0->rot.x = sp18.x;
     temp_v0->rot.y = sp18.y;
@@ -713,7 +713,7 @@ omObjData* func_800D9384_name_81(Object* arg0, Vec* arg1, s32 arg2) {
     return temp_v0;
 }
 
-void func_800D94C4_name_81(void) {
+void MBDModelSpinProc(void) {
     ModelSpinWork *work = HuPrcCurrentGet()->user_data;
     Object *obj = work->obj;
     f32 angle = work->angle;
@@ -758,11 +758,11 @@ void func_800D94C4_name_81(void) {
     omDelPrcObj(NULL);
 }
 
-Process *func_800D9668_name_81(Object *obj, f32 angle, f32 speed, s32 time) {
+Process *MBDModelSpinCreate(Object *obj, f32 angle, f32 speed, s32 time) {
     Process *proc;
     ModelSpinWork *work;
 
-    proc = omAddPrcObj(func_800D94C4_name_81, 0, 0, 0x40);
+    proc = omAddPrcObj(MBDModelSpinProc, 0, 0, 0x40);
     work = HuMemMemoryAlloc(proc->heap, sizeof(ModelSpinWork));
     proc->user_data = work;
     work->obj = obj;
@@ -772,21 +772,21 @@ Process *func_800D9668_name_81(Object *obj, f32 angle, f32 speed, s32 time) {
     return proc;
 }
 
-void func_800D96F4_name_81(void) {
+void MBDModelMotionKillProc(void) {
     Object **work = HuPrcCurrentGet()->user_data;
     Object *obj = *work;
 
     Hu3DMotionAttrSet(obj->omObj1->model[0], 3, 0);
-    func_800EFABC_name_81(obj);
+    MBDModelMotionWait(obj);
     MBDModelKill(obj);
     omDelPrcObj(NULL);
 }
 
-void func_800D974C_name_81(Object* arg0) {
+void MBDModelMotionKillCreate(Object* arg0) {
     Process* proc;
     Object** work;
 
-    proc = omAddPrcObj(func_800D96F4_name_81, 0, 0, 0x40);
+    proc = omAddPrcObj(MBDModelMotionKillProc, 0, 0, 0x40);
     work = HuMemMemoryAlloc(proc->heap, 0x10);
     proc->user_data = work;
     *work = arg0;

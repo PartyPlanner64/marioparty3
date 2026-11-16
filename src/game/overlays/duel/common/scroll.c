@@ -5,58 +5,58 @@
 
 extern s32 D_800D41B0_main[];
 
-extern omObjData *D_80105500_name_81;
-extern UnkBoard4 *D_80105504_name_81;
-extern s16 D_80105508_name_81[UNK_ARR_SIZE][2];
-extern UnkBoard4 *D_80105518_name_81;
-extern Process *D_8010551C_name_81;
-extern Object *D_80105520_name_81[MBD_MAX_PLAYERS];
-extern f32 D_80105528_name_81;
-extern Vec2f D_8010552C_name_81;
+extern omObjData *mbdMapScrollArrowObj;
+extern UnkBoard4 *mbdMapScrollArrow;
+extern s16 mbdMapScrollArrowPos[UNK_ARR_SIZE][2];
+extern UnkBoard4 *mbdMapScrollMiniMap;
+extern Process *mbdMapScrollMiniMapProc;
+extern Object *mbdMapScrollMdlTbl[MBD_MAX_PLAYERS];
+extern f32 mbdMapScrollZoom;
+extern Vec2f mbdMapScrollPos;
 
-f32 D_80101B20_name_81[] = {
+f32 mbdMapScrollShadowSizeTbl[] = {
     0.8999999762f, 0.8999999762f, 1.200000048f,
     1.100000024f, 1.100000024f,
     1.5f, 0.8999999762f, 1.200000048f
 };
 
-s16 D_80101B40_name_81[UNK_ARR_SIZE][2] = {
+s16 mbdMapScrollArrowPosTbl[UNK_ARR_SIZE][2] = {
     { 0x22, 0x80 }, { 0x11E, 0x80 }, { 0xA0, 0x18 }, { 0xA0, 0xD8 }
 };
 
-s16 D_80101B50_name_81[UNK_ARR_SIZE][2] = {
+s16 mbdMapScrollArrowStartTbl[UNK_ARR_SIZE][2] = {
     { 0x0092, 0x0080 }, { 0x00AE, 0x0080 }, { 0x00A0, 0x006C }, { 0x00A0, 0x0084 }
 };
 
-s16 D_80101B60_name_81[UNK_ARR_SIZE][2] = {
+s16 mbdMapScrollArrowVelTbl[UNK_ARR_SIZE][2] = {
     { 0xFFF0, 0x0000 }, { 0x0010, 0x0000 }, { 0x0000, 0xFFF4 }, { 0x0000, 0x000C }
 };
 
-f32 D_80101B70_name_81[UNK_ARR_SIZE] = {
+f32 mbdMapScrollArrowRotTbl[UNK_ARR_SIZE] = {
     90.0f, -90.0f, 0.0f, 180.0f
 };
 
-s16 D_80101B80_name_81[][2] = {
+s16 mbdMapScrollMiniMapPosTbl[][2] = {
     { 0x00F0, 0x0034 }, { 0x00F0, 0x0034 }, { 0x00F0, 0x0034 }, { 0x00F0, 0x0034 }, { 0x00F0, 0x0034 }
 };
 
-s32 D_80101B94_name_81[] = {
+s32 mbdMapScrollMiniMapSprTbl[] = {
     0x00130117, 0x00130118, 0x00130119, 0x0013011A, 0x0013011B
 };
 
-s32 D_80101BA8_name_81[] = {
+s32 mbdMapScrollMiniMapBoardSprTbl[] = {
     0x00130117, 0x00130136, 0x00130138, 0x0013013B, 0x0013013D, 0x0013013F
 };
 
-s32 D_80101BC0_name_81[] = {
+s32 mbdMapScrollMiniMapBoardAltSprTbl[] = {
     0x00130118, 0x00130137, 0x00130139, 0x0013013C, 0x0013013E, 0x00130140
 };
 
-s32 D_80101BD8_name_81[] = {
+s32 mbdMapScrollIconMdlTbl[] = {
     0x001300B3, 0x001300B4, 0x001300B5, 0x001300B6, 0x001300B7, 0x001300B8, 0x001300B9, 0x001300BA
 };
 
-f32 D_80101BF8_name_81[] = {
+f32 mbdMapScrollIconScaleTbl[] = {
     0.6499999762f,
     0.6499999762f,
     0.6499999762f,
@@ -67,47 +67,47 @@ f32 D_80101BF8_name_81[] = {
     0.6499999762f,
 };
 
-void func_800FFD10_name_81(omObjData *obj) {
+void MBDMapScrollArrowObjMain(omObjData *obj) {
     s32 i;
 
     for (i = 0; i < UNK_ARR_SIZE; i++) {
-        D_80105508_name_81[i][0] += D_80101B60_name_81[i][0];
-        D_80105508_name_81[i][1] += D_80101B60_name_81[i][1];
-        if (D_80101B60_name_81[i][0] < 0) {
-            if (D_80105508_name_81[i][0] < D_80101B40_name_81[i][0]) {
-                D_80105508_name_81[i][0] = D_80101B40_name_81[i][0];
+        mbdMapScrollArrowPos[i][0] += mbdMapScrollArrowVelTbl[i][0];
+        mbdMapScrollArrowPos[i][1] += mbdMapScrollArrowVelTbl[i][1];
+        if (mbdMapScrollArrowVelTbl[i][0] < 0) {
+            if (mbdMapScrollArrowPos[i][0] < mbdMapScrollArrowPosTbl[i][0]) {
+                mbdMapScrollArrowPos[i][0] = mbdMapScrollArrowPosTbl[i][0];
             }
         }
 
-        if (D_80101B60_name_81[i][0] > 0) {
-            if (D_80105508_name_81[i][0] > D_80101B40_name_81[i][0]) {
-                D_80105508_name_81[i][0] = D_80101B40_name_81[i][0];
+        if (mbdMapScrollArrowVelTbl[i][0] > 0) {
+            if (mbdMapScrollArrowPos[i][0] > mbdMapScrollArrowPosTbl[i][0]) {
+                mbdMapScrollArrowPos[i][0] = mbdMapScrollArrowPosTbl[i][0];
             }
         }
 
-        if (D_80101B60_name_81[i][1] < 0) {
-            if (D_80105508_name_81[i][1] < D_80101B40_name_81[i][1]) {
-                D_80105508_name_81[i][1] = D_80101B40_name_81[i][1];
+        if (mbdMapScrollArrowVelTbl[i][1] < 0) {
+            if (mbdMapScrollArrowPos[i][1] < mbdMapScrollArrowPosTbl[i][1]) {
+                mbdMapScrollArrowPos[i][1] = mbdMapScrollArrowPosTbl[i][1];
             }
         }
 
-        if (D_80101B60_name_81[i][1] > 0) {
-            if (D_80105508_name_81[i][1] > D_80101B40_name_81[i][1]) {
-                D_80105508_name_81[i][1] = D_80101B40_name_81[i][1];
+        if (mbdMapScrollArrowVelTbl[i][1] > 0) {
+            if (mbdMapScrollArrowPos[i][1] > mbdMapScrollArrowPosTbl[i][1]) {
+                mbdMapScrollArrowPos[i][1] = mbdMapScrollArrowPosTbl[i][1];
             }
         }
-        HuSprPosSet(D_80105504_name_81->unk_0A, i, D_80105508_name_81[i][0], D_80105508_name_81[i][1]);
+        HuSprPosSet(mbdMapScrollArrow->unk_0A, i, mbdMapScrollArrowPos[i][0], mbdMapScrollArrowPos[i][1]);
     }
 }
 
-UnkBoard4 *func_800FFEEC_name_81(void) {
+UnkBoard4 *MBDMapScrollArrowCreate(void) {
     UnkBoard4 *temp_v0;
     omObjData *temp_v0_2;
     void *temp_s4;
     s32 i;
 
-    temp_v0 = func_800F4528_name_81(4, 0);
-    D_80105504_name_81 = temp_v0;
+    temp_v0 = MBDSprGrpCreate(4, 0);
+    mbdMapScrollArrow = temp_v0;
     temp_s4 = DataRead(0x001301D4);
 
     for (i = 0; i < UNK_ARR_SIZE; i++) {
@@ -115,25 +115,25 @@ UnkBoard4 *func_800FFEEC_name_81(void) {
         HuSprGrpMemberSet(temp_v0->unk_0A, i, temp_v0->unk_0C[i], 0);
         HuSprPriSet(temp_v0->unk_0A, i, 0);
         HuSprDispOff(temp_v0->unk_0A, i);
-        HuSprPosSet(temp_v0->unk_0A, i, D_80101B50_name_81[i][0], D_80101B50_name_81[i][1]);
-        D_80105508_name_81[i][0] = D_80101B50_name_81[i][0];
-        D_80105508_name_81[i][1] = D_80101B50_name_81[i][1];
-        HuSprZRotSet(temp_v0->unk_0A, i, D_80101B70_name_81[i]);
+        HuSprPosSet(temp_v0->unk_0A, i, mbdMapScrollArrowStartTbl[i][0], mbdMapScrollArrowStartTbl[i][1]);
+        mbdMapScrollArrowPos[i][0] = mbdMapScrollArrowStartTbl[i][0];
+        mbdMapScrollArrowPos[i][1] = mbdMapScrollArrowStartTbl[i][1];
+        HuSprZRotSet(temp_v0->unk_0A, i, mbdMapScrollArrowRotTbl[i]);
     }
 
     DataClose(temp_s4);
-    temp_v0_2 = omAddObj(0x1000, 0, 0, -1, func_800FFD10_name_81);
-    D_80105500_name_81 = temp_v0_2;
+    temp_v0_2 = omAddObj(0x1000, 0, 0, -1, MBDMapScrollArrowObjMain);
+    mbdMapScrollArrowObj = temp_v0_2;
     omSetStatBit(temp_v0_2, OM_STAT_NOPAUSE);
     return temp_v0;
 }
 
-void func_80100070_name_81(UnkBoard4 *arg0) {
-    omDelObj(D_80105500_name_81);
-    func_800F4584_name_81(arg0);
+void MBDMapScrollArrowKill(UnkBoard4 *arg0) {
+    omDelObj(mbdMapScrollArrowObj);
+    MBDSprGrpKill(arg0);
 }
 
-void func_801000A4_name_81(UnkBoard4 *arg0, u16 arg1) {
+void MBDMapScrollArrowDispSet(UnkBoard4 *arg0, u16 arg1) {
     s32 var_v0;
     s32 i;
 
@@ -147,16 +147,16 @@ void func_801000A4_name_81(UnkBoard4 *arg0, u16 arg1) {
     }
 }
 
-void func_80100124_name_81(UnkBoard4 *arg0, s32 arg1) {
+void MBDMapScrollMiniMapUpdate(UnkBoard4 *arg0, s32 arg1) {
     Vec2f sp10;
     Vec2f sp18;
 
     MBDCameraPos2DGet(&sp10);
-    HuSprPosSet(arg0->unk_0A, 2, (D_80101B80_name_81[2][0] + (sp10.x / 9.0f)), (D_80101B80_name_81[2][1] + (sp10.y / 9.0f)));
+    HuSprPosSet(arg0->unk_0A, 2, (mbdMapScrollMiniMapPosTbl[2][0] + (sp10.x / 9.0f)), (mbdMapScrollMiniMapPosTbl[2][1] + (sp10.y / 9.0f)));
     MBDCamera3Dto2D(&GwPlayer[0].player_obj->coords, &sp18);
-    HuSprPosSet(arg0->unk_0A, 3, (D_80101B80_name_81[3][0] + (sp10.x / 9.0f) + ((sp18.x - 160.0f) / 9.0f)), ((D_80101B80_name_81[3][1] + (sp10.y / 9.0f) + ((sp18.y - 120.0f) / 9.0f)) - 4.0f));
+    HuSprPosSet(arg0->unk_0A, 3, (mbdMapScrollMiniMapPosTbl[3][0] + (sp10.x / 9.0f) + ((sp18.x - 160.0f) / 9.0f)), ((mbdMapScrollMiniMapPosTbl[3][1] + (sp10.y / 9.0f) + ((sp18.y - 120.0f) / 9.0f)) - 4.0f));
     MBDCamera3Dto2D(&GwPlayer[1].player_obj->coords, &sp18);
-    HuSprPosSet(arg0->unk_0A, 4, (D_80101B80_name_81[4][0] + (sp10.x / 9.0f) + ((sp18.x - 160.0f) / 9.0f)), ((D_80101B80_name_81[4][1] + (sp10.y / 9.0f) + ((sp18.y - 120.0f) / 9.0f)) - 4.0f));
+    HuSprPosSet(arg0->unk_0A, 4, (mbdMapScrollMiniMapPosTbl[4][0] + (sp10.x / 9.0f) + ((sp18.x - 160.0f) / 9.0f)), ((mbdMapScrollMiniMapPosTbl[4][1] + (sp10.y / 9.0f) + ((sp18.y - 120.0f) / 9.0f)) - 4.0f));
 
     if (arg1 == 0) {
         HuSprDispOff(arg0->unk_0A, 3);
@@ -169,13 +169,13 @@ void func_80100124_name_81(UnkBoard4 *arg0, s32 arg1) {
 }
 
 // TODO: what is this?
-void func_801003C8_name_81(void) {
+void MBDMapScrollMiniMapProc(void) {
     s32 counter = 32;
 
     while (1) {
-        UnkBoard4 *data = D_80105518_name_81;
+        UnkBoard4 *data = mbdMapScrollMiniMap;
         s32 adjusted = (counter < 0) ? (counter + 0x1F) : counter;
-        func_80100124_name_81(data, adjusted >> 5);
+        MBDMapScrollMiniMapUpdate(data, adjusted >> 5);
 
         counter++;
         if (counter >= 64) {
@@ -186,19 +186,19 @@ void func_801003C8_name_81(void) {
     }
 }
 
-void *func_80100420_name_81(void) {
+void *MBDMapScrollMiniMapCreate(void) {
     UnkBoard4 *temp_s2;
     void *temp_v0;
     s32 i;
 
-    temp_s2 = func_800F4528_name_81(5, 0);
+    temp_s2 = MBDSprGrpCreate(5, 0);
     for (i = 0; i < 5; i++) {
         if (i == 0) {
-            temp_v0 = DataRead(D_80101BA8_name_81[GwSystem.current_board_index]);
+            temp_v0 = DataRead(mbdMapScrollMiniMapBoardSprTbl[GwSystem.current_board_index]);
         } else if (i == 1) {
-            temp_v0 = DataRead(D_80101BC0_name_81[GwSystem.current_board_index]);
+            temp_v0 = DataRead(mbdMapScrollMiniMapBoardAltSprTbl[GwSystem.current_board_index]);
         } else {
-            temp_v0 = DataRead(D_80101B94_name_81[i]);
+            temp_v0 = DataRead(mbdMapScrollMiniMapSprTbl[i]);
         }
 
         temp_s2->unk_0C[i] = HuSprAnimRead(temp_v0);
@@ -210,20 +210,20 @@ void *func_80100420_name_81(void) {
         } else {
             HuSprAttrSet(temp_s2->unk_0A, i, 0);
         }
-        HuSprPosSet(temp_s2->unk_0A, i, D_80101B80_name_81[i][0], D_80101B80_name_81[i][1]);
+        HuSprPosSet(temp_s2->unk_0A, i, mbdMapScrollMiniMapPosTbl[i][0], mbdMapScrollMiniMapPosTbl[i][1]);
         DataClose(temp_v0);
     }
-    D_8010551C_name_81 = omAddPrcObj(func_801003C8_name_81, 0x1005, 0, 0);
-    func_80100124_name_81(temp_s2, 1);
+    mbdMapScrollMiniMapProc = omAddPrcObj(MBDMapScrollMiniMapProc, 0x1005, 0, 0);
+    MBDMapScrollMiniMapUpdate(temp_s2, 1);
     return temp_s2;
 }
 
-void func_801005DC_name_81(UnkBoard4 *arg0) {
-    func_800F4584_name_81(arg0);
-    omDelPrcObj(D_8010551C_name_81);
+void MBDMapScrollMiniMapKill(UnkBoard4 *arg0) {
+    MBDSprGrpKill(arg0);
+    omDelPrcObj(mbdMapScrollMiniMapProc);
 }
 
-void func_80100604_name_81(void) {
+void MBDPlayerIconMdlSet(void) {
     GW_PLAYER *temp_v0;
     s32 i;
     Object **obj;
@@ -231,32 +231,32 @@ void func_80100604_name_81(void) {
 
     for (i = 0; i < MBD_MAX_PLAYERS; i++) {
         temp_v0 = MBDGetPlayerStruct(i);
-        D_80105520_name_81[i] = MBDModelFileCreate(D_80101BD8_name_81[temp_v0->chr], 9, 1.0f, D_80101B20_name_81[temp_v0->chr], 0);
-        obj = &D_80105520_name_81[i]; // TODO: this is odd
-        Hu3DModelScaleSet(D_80105520_name_81[i]->omObj1->model[0], 0.0f, 0.0f, 0.0f);
+        mbdMapScrollMdlTbl[i] = MBDModelFileCreate(mbdMapScrollIconMdlTbl[temp_v0->chr], 9, 1.0f, mbdMapScrollShadowSizeTbl[temp_v0->chr], 0);
+        obj = &mbdMapScrollMdlTbl[i]; // TODO: this is odd
+        Hu3DModelScaleSet(mbdMapScrollMdlTbl[i]->omObj1->model[0], 0.0f, 0.0f, 0.0f);
         Hu3DModelScaleSet((*obj)->omObj2->model[0], 0.0f, 0.0f, 0.0f);
-        HuVecCopyXYZ(&(*obj)->scale, D_80101BF8_name_81[temp_v0->chr], D_80101BF8_name_81[temp_v0->chr], D_80101BF8_name_81[temp_v0->chr]);
+        HuVecCopyXYZ(&(*obj)->scale, mbdMapScrollIconScaleTbl[temp_v0->chr], mbdMapScrollIconScaleTbl[temp_v0->chr], mbdMapScrollIconScaleTbl[temp_v0->chr]);
     }
 
     for (i = 0; i < MBD_MAX_PLAYERS; i++) {
         temp_v0 = MBDGetPlayerStruct(i);
         temp_a0 = temp_v0->player_obj;
-        temp_v0->player_obj = D_80105520_name_81[i];
-        D_80105520_name_81[i] = temp_a0;
+        temp_v0->player_obj = mbdMapScrollMdlTbl[i];
+        mbdMapScrollMdlTbl[i] = temp_a0;
     }
 
     for (i = 0; i < MBD_MAX_PLAYERS; i++) {
-        func_800FCF50_name_81(i, 1);
+        MBDPlayerPosFixSet(i, 1);
     }
 
     HuPrcVSleep();
 
     for (i = 0; i < MBD_MAX_PLAYERS; i++) {
-        MBDModelDispOff(D_80105520_name_81[i]);
+        MBDModelDispOff(mbdMapScrollMdlTbl[i]);
     }
 }
 
-void func_801007C4_name_81(void) {
+void MBDPlayerIconMdlReset(void) {
     GW_PLAYER *temp_v0;
     Object *temp_a0;
     s32 i;
@@ -264,31 +264,31 @@ void func_801007C4_name_81(void) {
     for (i = 0; i < MBD_MAX_PLAYERS; i++) {
         temp_v0 = MBDGetPlayerStruct(i);
         temp_a0 = temp_v0->player_obj;
-        temp_v0->player_obj = D_80105520_name_81[i];
-        D_80105520_name_81[i] = temp_a0;
+        temp_v0->player_obj = mbdMapScrollMdlTbl[i];
+        mbdMapScrollMdlTbl[i] = temp_a0;
     }
 
     for (i = 0; i < MBD_MAX_PLAYERS; i++) {
         temp_v0 = MBDGetPlayerStruct(i);
         MBDModelDispOn(temp_v0->player_obj);
-        MBDModelKill(D_80105520_name_81[i]);
+        MBDModelKill(mbdMapScrollMdlTbl[i]);
     }
 }
 
-void func_80100864_name_81(void) {
-    func_80100604_name_81();
-    func_800F8C68_name_81(0);
-    func_800F8C68_name_81(1);
+void MBDMapScrollIconSet(void) {
+    MBDPlayerIconMdlSet();
+    MBDPartnerMotionReset(0);
+    MBDPartnerMotionReset(1);
 }
 
-void func_80100890_name_81(void) {
-    func_801007C4_name_81();
-    func_800F740C_name_81();
-    func_800F89D0_name_81(GwSystem.current_player_index, 0, -1, 2);
-    func_800F89D0_name_81(GwSystem.current_player_index, 1, -1, 2);
+void MBDMapScrollIconReset(void) {
+    MBDPlayerIconMdlReset();
+    MBDStatusShowAll();
+    MBDPartnerMotionSet(GwSystem.current_player_index, 0, -1, 2);
+    MBDPartnerMotionSet(GwSystem.current_player_index, 1, -1, 2);
 }
 
-void func_801008E8_name_81(void) {
+void MBDMapScrollProc(void) {
     Vec2f sp10;
     f32 temp_f20;
     f32 temp_f22;
@@ -310,25 +310,25 @@ void func_801008E8_name_81(void) {
         var_s7 = 0;
         var_s1 = 0;
         temp_f22 = MBDCameraSpeedGet();
-        if ((func_800FC114_name_81()) == 0) {
-            var_s7 = func_800DB3E0_name_81(GwSystem.current_player_index);
-            func_800DB544_name_81(GwSystem.current_player_index);
+        if ((MBDOvlCallCheck()) == 0) {
+            var_s7 = MBDSaiNumKill(GwSystem.current_player_index);
+            MBDSaiMdlDispOff(GwSystem.current_player_index);
             HuAudSeqVolSet(0x60);
         }
-        func_80100864_name_81();
-        temp_s3 = func_800FFEEC_name_81();
-        temp_s6 = func_800E1824_name_81(4, 0xA0, 0);
+        MBDMapScrollIconSet();
+        temp_s3 = MBDMapScrollArrowCreate();
+        temp_s6 = MBDHelpWinCreate(4, 0xA0, 0);
         if (D_800D41B0_main[4] != 0) {
-            var_s4 = func_800E1824_name_81(6, 0x3C, 0);
+            var_s4 = MBDHelpWinCreate(6, 0x3C, 0);
         }
-        D_80105518_name_81 = func_80100420_name_81();
+        mbdMapScrollMiniMap = MBDMapScrollMiniMapCreate();
         MBDCameraSpeedSet(3.5f);
 
         do {
             sixteen = 16;
             HuPrcVSleep();
             MBDCameraPos2DGet(&sp10);
-            func_801000A4_name_81(temp_s3, MBDCameraPos2DSet(&sp10));
+            MBDMapScrollArrowDispSet(temp_s3, MBDCameraPos2DSet(&sp10));
 
             if (ContBtn[temp_s2] & 0x200) {
                 sp10.x -= sixteen;
@@ -351,9 +351,9 @@ void func_801008E8_name_81(void) {
 
             if (var_s1 != 0) {
                 var_s1 -= 1;
-                func_800F73C0_name_81();
+                MBDStatusHideAll();
             } else {
-                func_800F740C_name_81();
+                MBDStatusShowAll();
             }
 
             if (GwPlayer[GwSystem.current_player_index].stat & 1) {
@@ -364,30 +364,30 @@ void func_801008E8_name_81(void) {
 
         while (1) {
         label:
-            func_800E1854_name_81(temp_s6);
+            MBDHelpWinKill(temp_s6);
             if (var_s4 != NULL) {
-                func_800E1854_name_81(var_s4);
+                MBDHelpWinKill(var_s4);
             }
-            func_80100070_name_81(temp_s3);
-            func_801005DC_name_81(D_80105518_name_81);
+            MBDMapScrollArrowKill(temp_s3);
+            MBDMapScrollMiniMapKill(mbdMapScrollMiniMap);
             WipeCreateOut(WIPE_TYPE_NORMAL, 4);
             HuPrcSleep(4);
-            if ((func_800FC114_name_81()) == 0) {
-                func_800E5C20_name_81();
-                func_800E5BE8_name_81();
+            if ((MBDOvlCallCheck()) == 0) {
+                MBDBackStreamStop();
+                MBDBackStreamStart();
                 MBDCameraSpeedSet(-1.0f);
-                temp_f20 = func_800E8578_name_81();
-                func_800E856C_name_81(1.0f);
-                func_800E5954_name_81();
-                MBDCameraZoomSet(D_80105528_name_81);
-                MBDCameraPos2DSet(&D_8010552C_name_81);
+                temp_f20 = MBDCameraSpeedDivGet();
+                MBDCameraSpeedDivSet(1.0f);
+                MBDBackThreadPriHighSet();
+                MBDCameraZoomSet(mbdMapScrollZoom);
+                MBDCameraPos2DSet(&mbdMapScrollPos);
                 HuPrcVSleep();
-                func_800E856C_name_81(temp_f20);
+                MBDCameraSpeedDivSet(temp_f20);
                 if (var_s7 != 0) {
-                    func_800DADA0_name_81(GwSystem.current_player_index);
+                    MBDSaiNumShow(GwSystem.current_player_index);
                 }
-                func_800DB5AC_name_81(GwSystem.current_player_index);
-                func_80100890_name_81();
+                MBDSaiMdlDispOn(GwSystem.current_player_index);
+                MBDMapScrollIconReset();
                 HuAudSeqVolSet(0x7F);
                 WipeCreateIn(WIPE_TYPE_NORMAL, 4);
                 HuPrcSleep(4);
@@ -399,42 +399,42 @@ void func_801008E8_name_81(void) {
             }
             HuWinComKeyReset();
         }
-        func_80100890_name_81();
+        MBDMapScrollIconReset();
         MBDCameraSpeedSet(temp_f22);
         omDelPrcObj(0);
     } while (0);
 }
 
-void func_80100CA0_name_81(void) {
+void MBDMapScrollFocusProc(void) {
     while (1) {
         MBDCameraPos3DSet(&GwPlayer[GwSystem.current_player_index].player_obj->coords);
         HuPrcVSleep();
     }
 }
 
-void func_80100CEC_name_81(s32 padIdx) {
+void MBDMapScrollExec(s32 padIdx) {
     Process *proc;
     Process *proc2;
     Process *procObj;
 
-    D_80105528_name_81 = MBDCameraZoomGet();
-    MBDCameraPos2DGet(&D_8010552C_name_81);
+    mbdMapScrollZoom = MBDCameraZoomGet();
+    MBDCameraPos2DGet(&mbdMapScrollPos);
     winPauseF = 1;
     omAllPause();
-    func_800E5964_name_81();
-    procObj = omAddPrcObj(func_80100CA0_name_81, 0x1005, 0, 0);
+    MBDBackThreadPriLowSet();
+    procObj = omAddPrcObj(MBDMapScrollFocusProc, 0x1005, 0, 0);
     omPrcSetStatBit(procObj, OM_STAT_NOPAUSE);
     proc = HuPrcCurrentGet();
     HuPrcChildLink(proc, MBDCameraZoomMotStart(1.0f));
     HuPrcChildWatch();
     omDelPrcObj(procObj);
     proc2 = HuPrcCurrentGet();
-    procObj = omAddPrcObj(func_801008E8_name_81, 0x1005, 0, 0);
+    procObj = omAddPrcObj(MBDMapScrollProc, 0x1005, 0, 0);
     procObj->user_data = (void *)padIdx;
     omPrcSetStatBit(procObj, OM_STAT_NOALLPAUSE);
     HuPrcChildLink(proc2, procObj);
     HuPrcChildWatch();
     omAllUPause();
     winPauseF = 0;
-    func_800E5954_name_81();
+    MBDBackThreadPriHighSet();
 }

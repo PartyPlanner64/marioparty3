@@ -8,28 +8,28 @@ typedef struct UnkNameDicePrcData {
     /* 0x0C */ s32 unk_0C;
 } UnkNameDicePrcData; // sizeof 0x10
 
-extern u8 D_80105554_name_81;
-extern u8 D_80105555_name_81;
-extern f32 D_80105708_name_81;
-extern u8 D_80105710_name_81;
-extern u8 D_8010562C_name_81;
+extern u8 mbdSaiMode;
+extern u8 mbdSaiDispF;
+extern f32 mbdSaiHeight;
+extern u8 mbdSaiReadyF;
+extern u8 mbdKakusiWaitF;
 extern f32 Hu3DVtxWaveAngle;
 
-u8 D_80100E20_name_81 = 0;
-s32 D_80100E24_name_81[] = { 0x130207, 0x130207, 0x130207 };
-s32 D_80100E30_name_81[] = { 0x1300FE, 0x1300FF, 0x130100 };
+u8 mbdSaiHitLockF = 0;
+s32 mbdSaiMdlTbl[] = { 0x130207, 0x130207, 0x130207 };
+s32 mbdSaiAnimTbl[] = { 0x1300FE, 0x1300FF, 0x130100 };
 
-void func_800DA00C_name_81(omObjData *arg0);
-void func_800DA460_name_81(omObjData *arg0);
-void func_800DA85C_name_81(omObjData *arg0);
-void func_800DB148_name_81(s32 arg0);
-void func_800DC4E4_name_81(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
-void func_800DBD88_name_81(s32 arg0);
-void func_800DC0EC_name_81(void);
-void func_800F3880_name_81(s32 playerIndex, s16 motion, u16 arg2);
-void func_800F397C_name_81(s32 playerIndex, s16 arg1, s16 arg2, s16 arg3, u16 arg4);
+void MBDSaiObjMain(omObjData *arg0);
+void MBDSaiNumObjMain(omObjData *arg0);
+void MBDSaiNumSingleObjMain(omObjData *arg0);
+void MBDSaiValueDecide(s32 arg0);
+void MBDSaiNumPosSet(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
+void MBDSaiKill(s32 arg0);
+void MBDSaiPlayerProc(void);
+void MBDPlayerMotionSet(s32 playerIndex, s16 motion, u16 arg2);
+void MBDPlayerMotionShiftSet(s32 playerIndex, s16 arg1, s16 arg2, s16 arg3, u16 arg4);
 
-void func_800D9F90_name_81(s32 playerIndex) {
+void MBDSaiSePlay(s32 playerIndex) {
     UnkDiceRelated *dice = &mbDiceData[playerIndex];
 
     if (dice->unk28 == -1 && dice->dice->work[0] == 1) {
@@ -41,7 +41,7 @@ void func_800D9F90_name_81(s32 playerIndex) {
     }
 }
 
-void func_800DA00C_name_81(omObjData *arg0) {
+void MBDSaiObjMain(omObjData *arg0) {
     UnkDiceRelated *entry;
     f32 base;
     f32 scale;
@@ -49,7 +49,7 @@ void func_800DA00C_name_81(omObjData *arg0) {
     s32 i;
 
     entry = &mbDiceData[arg0->work[3]];
-    if (D_80105554_name_81 == 1) {
+    if (mbdSaiMode == 1) {
         base = 1.0f;
     } else {
         base = 0.1f;
@@ -60,7 +60,7 @@ void func_800DA00C_name_81(omObjData *arg0) {
             if (Hu3DPauseF != 0) {
                 return;
             }
-            arg0->trans.y = GwPlayer[arg0->work[3]].player_obj->coords.y + D_80105708_name_81;
+            arg0->trans.y = GwPlayer[arg0->work[3]].player_obj->coords.y + mbdSaiHeight;
 
             scale = (sindf(arg0->work[1] * 2) * entry->unk48 * base) + base;
             arg0->scale.x = arg0->scale.y = arg0->scale.z = scale;
@@ -76,7 +76,7 @@ void func_800DA00C_name_81(omObjData *arg0) {
                 arg0->work[1] = 0;
                 arg0->work[0] = 1;
 
-                if (D_80105554_name_81 == 1) {
+                if (mbdSaiMode == 1) {
                     for (i = 0; i < 4; i++) {
                         if (mbDiceData[i].unk28 != -1) {
                             break;
@@ -92,8 +92,8 @@ void func_800DA00C_name_81(omObjData *arg0) {
                     } else {
                         entry->unk28 = mbDiceData[i].unk28;
                     }
-                } else if ((entry->unk2A == 0) && (D_80105554_name_81 != 2) && (entry->unk_0A != 2) &&
-                           (D_80105555_name_81 != 0)) {
+                } else if ((entry->unk2A == 0) && (mbdSaiMode != 2) && (entry->unk_0A != 2) &&
+                           (mbdSaiDispF != 0)) {
                     if (entry->unk_0A == 1) {
                         entry->unk28 = HuAudFXPlay(0x1D5);
                     } else {
@@ -105,7 +105,7 @@ void func_800DA00C_name_81(omObjData *arg0) {
 
         case 1:
             if (Hu3DPauseF == 0) {
-                arg0->trans.y = GwPlayer[arg0->work[3]].player_obj->coords.y + D_80105708_name_81 +
+                arg0->trans.y = GwPlayer[arg0->work[3]].player_obj->coords.y + mbdSaiHeight +
                                 (sindf(arg0->work[1] * 2) * 10.0f * base);
                 arg0->work[1] = (arg0->work[1] + 5) % 180;
             }
@@ -120,14 +120,14 @@ void func_800DA00C_name_81(omObjData *arg0) {
                 entry->unk40 += 0.05f;
                 entry->unk44 = ((10.0f - entry->unk44) / 30.0f) + entry->unk44;
                 if (entry->unk40 > 1.0f) {
-                    func_800DBD88_name_81(arg0->work[3]);
+                    MBDSaiKill(arg0->work[3]);
                 }
             }
             break;
     }
 }
 
-void func_800DA460_name_81(omObjData *arg0) {
+void MBDSaiNumObjMain(omObjData *arg0) {
     UnkDiceRelated *entry;
     Vec pos;
     Vec2f pos2d;
@@ -161,18 +161,18 @@ void func_800DA460_name_81(omObjData *arg0) {
     HuSprAnimModeSet(entry->sprites[arg0->work[1]], 1, HUSPR_ANIM_MODE_BANK);
 
     pos.x = GwPlayer[arg0->work[3]].player_obj->coords.x;
-    pos.y = GwPlayer[arg0->work[3]].player_obj->coords.y + D_80105708_name_81 + arg0->trans.y;
+    pos.y = GwPlayer[arg0->work[3]].player_obj->coords.y + mbdSaiHeight + arg0->trans.y;
     pos.z = GwPlayer[arg0->work[3]].player_obj->coords.z;
     MBDCamera3Dto2D(&pos, &pos2d);
 
     HuSprPosSet(entry->sprites[arg0->work[1]], 0, pos2d.x, pos2d.y - 8.0f);
 
     if ((pos2d.x >= 0.0f) && (pos2d.x <= 320.0f) && (pos2d.y >= 0.0f) && (pos2d.y <= 240.0f)) {
-        func_800DC4E4_name_81(arg0->work[3], arg0->work[1], 160, 120 - (s32)(MBDCameraZoomGet() * 24.0f));
+        MBDSaiNumPosSet(arg0->work[3], arg0->work[1], 160, 120 - (s32)(MBDCameraZoomGet() * 24.0f));
     }
 }
 
-void func_800DA85C_name_81(omObjData *arg0) {
+void MBDSaiNumSingleObjMain(omObjData *arg0) {
     UnkDiceRelated *entry;
     Vec pos;
     Vec2f pos2d;
@@ -202,14 +202,14 @@ void func_800DA85C_name_81(omObjData *arg0) {
     HuSprAnimModeSet(entry->sprites[entry->rollValueIdx], 0, HUSPR_ANIM_MODE_BANK);
 
     pos.x = GwPlayer[arg0->work[3]].player_obj->coords.x;
-    pos.y = GwPlayer[arg0->work[3]].player_obj->coords.y + D_80105708_name_81 + arg0->trans.y;
+    pos.y = GwPlayer[arg0->work[3]].player_obj->coords.y + mbdSaiHeight + arg0->trans.y;
     pos.z = GwPlayer[arg0->work[3]].player_obj->coords.z;
     MBDCamera3Dto2D(&pos, &pos2d);
 
     HuSprPosSet(entry->sprites[entry->rollValueIdx], 0, pos2d.x, pos2d.y);
 }
 
-void func_800DAAB0_name_81(void) {
+void MBDSaiValueClear(void) {
     s32 i;
     s32 j;
 
@@ -221,7 +221,7 @@ void func_800DAAB0_name_81(void) {
     }
 }
 
-void func_800DAB1C_name_81(void) {
+void MBDSaiInit(void) {
     UnkDiceRelated *entry;
     s32 i;
     s32 j;
@@ -250,13 +250,13 @@ void func_800DAB1C_name_81(void) {
         entry->unk_09 = -1;
     }
 
-    D_80105554_name_81 = 0;
-    D_80105710_name_81 = 1;
-    D_80105708_name_81 = 25.0f;
-    D_80105555_name_81 = 1;
+    mbdSaiMode = 0;
+    mbdSaiReadyF = 1;
+    mbdSaiHeight = 25.0f;
+    mbdSaiDispF = 1;
 }
 
-void func_800DABE0_name_81(s32 arg0) {
+void MBDSaiNumSprCreate(s32 arg0) {
     UnkDiceRelated *entry;
     void *data;
     s32 i;
@@ -288,7 +288,7 @@ void func_800DABE0_name_81(s32 arg0) {
     entry->unk_0B = 1;
 }
 
-void func_800DADA0_name_81(s32 arg0) {
+void MBDSaiNumShow(s32 arg0) {
     UnkDiceRelated *entry;
     omObjData *obj;
     Vec pos;
@@ -300,12 +300,12 @@ void func_800DADA0_name_81(s32 arg0) {
     if (entry->rollValue[entry->rollValueIdx] != 0) {
         if ((entry->dice == NULL) || (entry->dice->work[0] == 2)) {
             pos.x = GwPlayer[arg0].player_obj->coords.x;
-            pos.y = GwPlayer[arg0].player_obj->coords.y + D_80105708_name_81;
+            pos.y = GwPlayer[arg0].player_obj->coords.y + mbdSaiHeight;
             pos.z = GwPlayer[arg0].player_obj->coords.z;
             MBDCamera3Dto2D(&pos, &pos2d);
 
             if (entry->sprites[entry->rollValueIdx] == -1) {
-                func_800DABE0_name_81(arg0);
+                MBDSaiNumSprCreate(arg0);
                 entry->unk_0B = 0;
             } else {
                 roll = entry->rollValueIdx;
@@ -314,8 +314,8 @@ void func_800DADA0_name_81(s32 arg0) {
                 HuSprAnimModeSet(entry->sprites[entry->rollValueIdx], 0, HUSPR_ANIM_MODE_BANK);
             }
 
-            if ((func_800FC114_name_81() == 0) && (D_80105554_name_81 == 0)) {
-                func_800DC4E4_name_81(arg0, entry->rollValueIdx, pos2d.x, pos2d.y - 8.0f);
+            if ((MBDOvlCallCheck() == 0) && (mbdSaiMode == 0)) {
+                MBDSaiNumPosSet(arg0, entry->rollValueIdx, pos2d.x, pos2d.y - 8.0f);
             } else {
                 HuSprPosSet(entry->sprites[entry->rollValueIdx], 0, pos2d.x, pos2d.y);
             }
@@ -327,13 +327,13 @@ void func_800DADA0_name_81(s32 arg0) {
             HuSprDispOn(entry->sprites[entry->rollValueIdx], 0);
 
             if (entry->omObj == NULL) {
-                if ((func_800FC114_name_81() == 0) && (D_80105554_name_81 == 0)) {
-                    obj = omAddObj(-0x8000, 0, 0, -1, func_800DA460_name_81);
+                if ((MBDOvlCallCheck() == 0) && (mbdSaiMode == 0)) {
+                    obj = omAddObj(-0x8000, 0, 0, -1, MBDSaiNumObjMain);
                     entry->omObj = obj;
                     obj->scale.z = 3.0f;
                     obj->work[1] = entry->rollValueIdx;
                 } else {
-                    obj = omAddObj(-0x8000, 0, 0, -1, func_800DA85C_name_81);
+                    obj = omAddObj(-0x8000, 0, 0, -1, MBDSaiNumSingleObjMain);
                     entry->omObj = obj;
                     obj->scale.z = 1.0f;
                 }
@@ -347,19 +347,19 @@ void func_800DADA0_name_81(s32 arg0) {
     }
 }
 
-void func_800DB148_name_81(s32 arg0) {
+void MBDSaiValueDecide(s32 arg0) {
     UnkDiceRelated *entry = &mbDiceData[arg0];
     s32 i;
 
     if (entry->unk_0B == 0) {
         if (entry->rollValueIdx == 0) {
-            func_800DB3E0_name_81(arg0);
+            MBDSaiNumKill(arg0);
         }
     }
 
     entry->unk_0B = 0;
 
-    if (D_80105554_name_81 == 1) {
+    if (mbdSaiMode == 1) {
         do {
             if (entry->predecidedRollValue[entry->rollValueIdx] != 0) {
                 entry->rollValue[entry->rollValueIdx] = entry->predecidedRollValue[entry->rollValueIdx];
@@ -401,10 +401,10 @@ void func_800DB148_name_81(s32 arg0) {
         }
     }
 
-    func_800DADA0_name_81(arg0);
+    MBDSaiNumShow(arg0);
 }
 
-void func_800DB38C_name_81(s32 playerIndex) {
+void MBDSaiNumObjKill(s32 playerIndex) {
     UnkDiceRelated *dice = &mbDiceData[playerIndex];
 
     if (dice->omObj != NULL) {
@@ -413,7 +413,7 @@ void func_800DB38C_name_81(s32 playerIndex) {
     }
 }
 
-s32 func_800DB3E0_name_81(s32 arg0) {
+s32 MBDSaiNumKill(s32 arg0) {
     s32 count = 0;
     UnkDiceRelated *entry = &mbDiceData[arg0];
     s32 i;
@@ -446,42 +446,42 @@ s32 func_800DB3E0_name_81(s32 arg0) {
     return count;
 }
 
-void func_800DB4DC_name_81(s32 arg0) {
+void MBDSaiNumCountDown(s32 arg0) {
     UnkDiceRelated *dice = &mbDiceData[arg0];
 
     dice->rollValue[dice->rollValueIdx]--;
     if (dice->rollValue[dice->rollValueIdx] <= 0) {
-        func_800DB3E0_name_81(arg0);
+        MBDSaiNumKill(arg0);
     }
 }
 
-void func_800DB544_name_81(s32 arg0) {
+void MBDSaiMdlDispOff(s32 arg0) {
     if (mbDiceData[arg0].unk_16 != -1) {
         Hu3DModelAttrSet(mbDiceData[arg0].unk_16, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
 }
 
-void func_800DB58C_name_81(s32 arg0) {
-    D_80105555_name_81 = 0;
-    func_800DB544_name_81(arg0);
+void MBDSaiDispOff(s32 arg0) {
+    mbdSaiDispF = 0;
+    MBDSaiMdlDispOff(arg0);
 }
 
-void func_800DB5AC_name_81(s32 playerIndex) {
-    if (D_80105555_name_81 && mbDiceData[playerIndex].unk_16 != -1) {
+void MBDSaiMdlDispOn(s32 playerIndex) {
+    if (mbdSaiDispF && mbDiceData[playerIndex].unk_16 != -1) {
         Hu3DModelAttrSet(mbDiceData[playerIndex].unk_16, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     }
 }
 
-void func_800DB600_name_81(s32 arg0) {
-    D_80105555_name_81 = 1;
-    func_800DB5AC_name_81(arg0);
+void MBDSaiDispOn(s32 arg0) {
+    mbdSaiDispF = 1;
+    MBDSaiMdlDispOn(arg0);
 }
 
-void func_800DB624_name_81(s32 arg0, s8 arg1) {
+void MBDSaiTypeSet(s32 arg0, s8 arg1) {
     mbDiceData[arg0].unk_09 = arg1;
 }
 
-s16 func_800DB648_name_81(s32 arg0) {
+s16 MBDSaiCreate(s32 arg0) {
     UnkDiceRelated *entry;
     omObjData *dice;
     s32 rot;
@@ -496,7 +496,7 @@ s16 func_800DB648_name_81(s32 arg0) {
     }
 
     if (entry->rollValueIdx == 0) {
-        func_800DB3E0_name_81(arg0);
+        MBDSaiNumKill(arg0);
     }
 
     if (entry->unk_09 != -1) {
@@ -506,12 +506,12 @@ s16 func_800DB648_name_81(s32 arg0) {
         entry->unk_0A = 0;
     }
 
-    entry->unk_16 = Hu3DModelCreate(DataRead(D_80100E24_name_81[entry->unk_0A]), 0x6A9);
+    entry->unk_16 = Hu3DModelCreate(DataRead(mbdSaiMdlTbl[entry->unk_0A]), 0x6A9);
     Hu3DModelCameraSet(entry->unk_16, HU3D_CAM0);
     Hu3DModelScaleSet(entry->unk_16, 0.0f, 0.0f, 0.0f);
     Hu3DModelObjAttrSet(entry->unk_16, 0x20000, 0x20000);
 
-    entry->unk_2C = DataRead(D_80100E30_name_81[entry->unk_0A]);
+    entry->unk_2C = DataRead(mbdSaiAnimTbl[entry->unk_0A]);
     entry->unk_1A[0] = Hu3DAnimCreate(Hu3DData[entry->unk_16].hmf, entry->unk_2C, 0, "tile01_DEF");
     entry->unk_1A[1] = Hu3DAnimLink(Hu3DData[entry->unk_16].hmf, entry->unk_1A[0], 0, "tile02_DEF");
     entry->unk_1A[2] = Hu3DAnimLink(Hu3DData[entry->unk_16].hmf, entry->unk_1A[0], 0, "tile03_DEF");
@@ -533,13 +533,13 @@ s16 func_800DB648_name_81(s32 arg0) {
     Hu3DModelRemakeStatic(entry->unk_16);
     Hu3DModelVtxBufMake(entry->unk_16);
 
-    dice = omAddObj(-0x8000, 1, 1, -1, func_800DA00C_name_81);
+    dice = omAddObj(-0x8000, 1, 1, -1, MBDSaiObjMain);
     entry->dice = dice;
     *dice->model = entry->unk_16;
     omSetStatBit(dice, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
 
     dice->trans.x = GwPlayer[arg0].player_obj->coords.x;
-    dice->trans.y = GwPlayer[arg0].player_obj->coords.y + D_80105708_name_81;
+    dice->trans.y = GwPlayer[arg0].player_obj->coords.y + mbdSaiHeight;
     dice->trans.z = GwPlayer[arg0].player_obj->coords.z;
 
     dice->rot.y = -90.0f;
@@ -553,11 +553,11 @@ s16 func_800DB648_name_81(s32 arg0) {
     entry->unk40 = 0.0f;
     entry->unk44 = 1.0f;
 
-    D_80105554_name_81 = 0;
+    mbdSaiMode = 0;
     ret = -1;
     switch (entry->unk_0A) {
         case 0:
-            if (D_80105554_name_81 != 2) {
+            if (mbdSaiMode != 2) {
                 ret = HuAudFXPlay(0x102);
             } else {
                 HuAudFXPlay(0x10E);
@@ -577,19 +577,19 @@ s16 func_800DB648_name_81(s32 arg0) {
     return ret;
 }
 
-void func_800DBAB0_name_81(s32 arg0, s32 arg1, s32 arg2, char *arg3[]) {
+void MBDSaiCreateEx(s32 arg0, s32 arg1, s32 arg2, char *arg3[]) {
     UnkDiceRelated *entry = &mbDiceData[arg0];
     omObjData *dice;
     s32 i;
 
     if (entry->unk_16 == -1) {
-        if (D_80105554_name_81 == 1) {
-            D_80105708_name_81 = 250.0f;
+        if (mbdSaiMode == 1) {
+            mbdSaiHeight = 250.0f;
         } else {
-            D_80105708_name_81 = 25.0f;
+            mbdSaiHeight = 25.0f;
         }
 
-        func_800DB3E0_name_81(arg0);
+        MBDSaiNumKill(arg0);
         entry->unk_0A = 0;
 
         entry->unk_16 = Hu3DModelCreate(DataRead(arg1), 0x6A9);
@@ -618,12 +618,12 @@ void func_800DBAB0_name_81(s32 arg0, s32 arg1, s32 arg2, char *arg3[]) {
         Hu3DModelRemakeStatic(entry->unk_16);
         Hu3DModelVtxBufMake(entry->unk_16);
 
-        dice = omAddObj(-0x8000, 1, 1, -1, func_800DA00C_name_81);
+        dice = omAddObj(-0x8000, 1, 1, -1, MBDSaiObjMain);
         entry->dice = dice;
         dice->model[0] = entry->unk_16;
         omSetStatBit(dice, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
         dice->trans.x = GwPlayer[arg0].player_obj->coords.x;
-        dice->trans.y = GwPlayer[arg0].player_obj->coords.y + D_80105708_name_81;
+        dice->trans.y = GwPlayer[arg0].player_obj->coords.y + mbdSaiHeight;
         dice->trans.z = GwPlayer[arg0].player_obj->coords.z;
         dice->rot.y = -90.0f;
         dice->scale.z = dice->scale.y = dice->scale.x = dice->rot.x = dice->rot.z = 0.0f;
@@ -640,7 +640,7 @@ void func_800DBAB0_name_81(s32 arg0, s32 arg1, s32 arg2, char *arg3[]) {
     }
 }
 
-void func_800DBD88_name_81(s32 arg0) {
+void MBDSaiKill(s32 arg0) {
     UnkDiceRelated *entry = &mbDiceData[arg0];
     s32 i;
 
@@ -679,16 +679,16 @@ void func_800DBD88_name_81(s32 arg0) {
     }
 }
 
-void func_800DBEB0_name_81(void) {
+void MBDSaiClose(void) {
     s32 i;
 
     for (i = 0; i < 5; i++) {
-        func_800DBD88_name_81(i);
-        func_800DB3E0_name_81(i);
+        MBDSaiKill(i);
+        MBDSaiNumKill(i);
     }
 }
 
-void func_800DBEF0_name_81(s32 arg0) {
+void MBDSaiHit(s32 arg0) {
     UnkDiceRelated *entry;
     s32 count;
     s32 i;
@@ -698,11 +698,11 @@ void func_800DBEF0_name_81(s32 arg0) {
     if (entry->unk_16 != -1) {
         entry->dice->work[0] = 2;
 
-        if (D_80105554_name_81 != 2) {
-            func_800DB148_name_81(arg0);
+        if (mbdSaiMode != 2) {
+            MBDSaiValueDecide(arg0);
         }
 
-        if (D_80105554_name_81 == 1) {
+        if (mbdSaiMode == 1) {
             count = 0;
             for (i = 0; i < 4; i++) {
                 if (mbDiceData[i].unk28 != -1) {
@@ -719,7 +719,7 @@ void func_800DBEF0_name_81(s32 arg0) {
         entry->unk28 = -1;
         entry->unk2A = 0;
 
-        if (D_80105554_name_81 == 2) {
+        if (mbdSaiMode == 2) {
             HuAudFXPlay(0x10D);
         } else {
             HuAudFXPlay(0x103);
@@ -727,12 +727,12 @@ void func_800DBEF0_name_81(s32 arg0) {
     }
 }
 
-void func_800DBFF8_name_81(void) {
-    D_80105554_name_81 = 1;
-    D_80105708_name_81 = 250.0f;
+void MBDSaiOrderModeSet(void) {
+    mbdSaiMode = 1;
+    mbdSaiHeight = 250.0f;
 }
 
-s32 func_800DC018_name_81(s32 arg0) {
+s32 MBDSaiExistCheck(s32 arg0) {
     if (~mbDiceData[arg0].unk_16) {
         return 1;
     } else {
@@ -740,19 +740,19 @@ s32 func_800DC018_name_81(s32 arg0) {
     }
 }
 
-void func_800DC044_name_81(s32 arg0, s8 arg1) {
+void MBDSaiValueSet(s32 arg0, s8 arg1) {
     mbDiceData[arg0].rollValue[mbDiceData[arg0].rollValueIdx] = arg1;
 }
 
-void func_800DC07C_name_81(s32 arg0, s8 arg1) {
+void MBDSaiValueForceSet(s32 arg0, s8 arg1) {
     mbDiceData[arg0].predecidedRollValue[mbDiceData[arg0].rollValueIdx] = arg1;
 }
 
-s32 func_800DC0B4_name_81(s32 arg0) {
+s32 MBDSaiValueGet(s32 arg0) {
     return mbDiceData[arg0].rollValue[mbDiceData[arg0].rollValueIdx];
 }
 
-void func_800DC0EC_name_81(void) {
+void MBDSaiPlayerProc(void) {
     UnkNameDicePrcData *work;
     s32 count;
 
@@ -761,9 +761,9 @@ void func_800DC0EC_name_81(void) {
     while (1) {
         switch (work->state) {
             case 0:
-                D_80105710_name_81 = 0;
-                func_800DB648_name_81(work->playerIndex);
-                D_80105710_name_81 = 1;
+                mbdSaiReadyF = 0;
+                MBDSaiCreate(work->playerIndex);
+                mbdSaiReadyF = 1;
                 work->state++;
                 HuPrcSleep(20);
                 break;
@@ -771,18 +771,18 @@ void func_800DC0EC_name_81(void) {
                 if (((GwPlayer[work->playerIndex].stat & 1) ||
                      (HuPadBtnDown[GwPlayer[work->playerIndex].pad] & A_BUTTON)) &&
                     !(Hu3DData[mbDiceData[work->playerIndex].unk_16].attr & 4) && (GWBoardFlagCheck(0x11) == 0) &&
-                    (D_80100E20_name_81 == 0)) {
+                    (mbdSaiHitLockF == 0)) {
                     work->state++;
-                    func_800F3880_name_81(work->playerIndex, 1, 0);
-                    func_800EF7C8_name_81(GwPlayer[work->playerIndex].player_obj, 2.0f, -0.3f);
+                    MBDPlayerMotionSet(work->playerIndex, 1, 0);
+                    MBDModelJumpSet(GwPlayer[work->playerIndex].player_obj, 2.0f, -0.3f);
                     mbCameraBtnF = 0;
                     duelCancelEnableF = 0;
                 }
                 break;
             case 2:
                 if (++count >= 5) {
-                    func_800DBEF0_name_81(work->playerIndex);
-                    func_800F397C_name_81(work->playerIndex, -1, 0, 10, 2);
+                    MBDSaiHit(work->playerIndex);
+                    MBDPlayerMotionShiftSet(work->playerIndex, -1, 0, 10, 2);
                     work->state++;
                 }
                 break;
@@ -795,11 +795,11 @@ void func_800DC0EC_name_81(void) {
     }
 }
 
-Process *func_800DC324_name_81(s32 playerIndex) {
+Process *MBDSaiPlayerCreate(s32 playerIndex) {
     Process *process;
     UnkNameDicePrcData *work;
 
-    process = omAddPrcObj(func_800DC0EC_name_81, 0, 0, 0x40);
+    process = omAddPrcObj(MBDSaiPlayerProc, 0, 0, 0x40);
     work = HuMemMemoryAlloc(process->heap, sizeof(UnkNameDicePrcData));
     process->user_data = work;
     work->playerIndex = playerIndex;
@@ -807,19 +807,19 @@ Process *func_800DC324_name_81(s32 playerIndex) {
     return process;
 }
 
-u8 func_800DC384_name_81(void) {
-    return D_8010562C_name_81;
+u8 MBDKakusiWaitCheck(void) {
+    return mbdKakusiWaitF;
 }
 
-void func_800DC390_name_81(void) {
-    D_8010562C_name_81 = 1;
+void MBDKakusiWaitOn(void) {
+    mbdKakusiWaitF = 1;
 }
 
-void func_800DC3A0_name_81(void) {
-    D_8010562C_name_81 = 0;
+void MBDKakusiWaitOff(void) {
+    mbdKakusiWaitF = 0;
 }
 
-void func_800DC3AC_name_81(s32 playerIndex) {
+void MBDSaiSeStop(s32 playerIndex) {
     UnkDiceRelated *dice = &mbDiceData[playerIndex];
 
     if (dice->unk28 != -1) {
@@ -829,11 +829,11 @@ void func_800DC3AC_name_81(s32 playerIndex) {
     dice->unk2A = 1;
 }
 
-void func_800DC410_name_81(s32 playerIndex) {
+void MBDSaiSeResume(s32 playerIndex) {
     UnkDiceRelated *dice = &mbDiceData[playerIndex];
 
     if (dice->unk2A == 1 && dice->unk_16 != -1) {
-        if (dice->dice != NULL && dice->dice->work[0] != 2 && D_80105554_name_81 != 2) {
+        if (dice->dice != NULL && dice->dice->work[0] != 2 && mbdSaiMode != 2) {
             if (dice->unk_0A == 1) {
                 dice->unk28 = HuAudFXPlay(0x1D5);
             } else {
@@ -844,15 +844,15 @@ void func_800DC410_name_81(s32 playerIndex) {
     dice->unk2A = 0;
 }
 
-void func_800DC4B4_name_81(s8 arg0) {
-    D_80105554_name_81 = arg0;
+void MBDSaiModeSet(s8 arg0) {
+    mbdSaiMode = arg0;
 }
 
-void func_800DC4C0_name_81(s32 arg0, s8 arg1) {
+void MBDSaiValueNoSet(s32 arg0, s8 arg1) {
     mbDiceData[arg0].rollValueIdx = arg1;
 }
 
-void func_800DC4E4_name_81(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+void MBDSaiNumPosSet(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     UnkDiceRelated *entry;
 
     entry = &mbDiceData[arg0];
@@ -867,12 +867,12 @@ void func_800DC4E4_name_81(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     }
 }
 
-void func_800DC5CC_name_81(s32 arg0) {
+void MBDSaiPosSet(s32 arg0) {
     UnkDiceRelated *entry = &mbDiceData[arg0];
 
     if (entry->dice != NULL) {
         entry->dice->trans.x = GwPlayer[arg0].player_obj->coords.x;
-        entry->dice->trans.y = GwPlayer[arg0].player_obj->coords.y + D_80105708_name_81;
+        entry->dice->trans.y = GwPlayer[arg0].player_obj->coords.y + mbdSaiHeight;
         entry->dice->trans.z = GwPlayer[arg0].player_obj->coords.z;
     }
 }

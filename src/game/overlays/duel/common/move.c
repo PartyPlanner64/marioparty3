@@ -37,11 +37,11 @@ typedef struct UnkD3450StepData {
     /* 0x1C */ f32 speed;
 } UnkD3450StepData; // sizeof 0x20
 
-s32 D_801011E0_name_81[] = { 5, 25, 60 };
+s32 mbdMesSpeedTbl[] = { 5, 25, 60 };
 
-void func_800EED30_name_81(s32);
+void MBDMesWaitSet(s32);
 
-void func_800EB680_name_81(s16 playerIdx, s16 spaceIdx, Vec *outCoords) {
+void MBDMasuPosGet(s16 playerIdx, s16 spaceIdx, Vec *outCoords) {
     SpaceData *space = MBDMasuGet(spaceIdx);
 
     outCoords->x = space->coords.x;
@@ -49,8 +49,8 @@ void func_800EB680_name_81(s16 playerIdx, s16 spaceIdx, Vec *outCoords) {
     outCoords->z = space->coords.z;
 }
 
-void func_800EB6C4_name_81(s16 playerIdx, s16 spaceIdx) {
-    func_800EB680_name_81(playerIdx, spaceIdx, &GwPlayer[playerIdx].player_obj->coords);
+void MBDPlayerPosMasuSet(s16 playerIdx, s16 spaceIdx) {
+    MBDMasuPosGet(playerIdx, spaceIdx, &GwPlayer[playerIdx].player_obj->coords);
 }
 
 void MBDVecDirGet(Vec *arg0, Vec *arg1, Vec *arg2) {
@@ -58,40 +58,40 @@ void MBDVecDirGet(Vec *arg0, Vec *arg1, Vec *arg2) {
     MBDVecNormalize(arg2);
 }
 
-void func_800EB740_name_81(s16 playerIdx, Vec *arg1) {
+void MBDPlayerDirPosSet(s16 playerIdx, Vec *arg1) {
     Object *playerObj;
 
     playerObj = MBDGetPlayerStruct(playerIdx)->player_obj;
     MBDVecDirGet(&playerObj->coords, arg1, &playerObj->rot);
 }
 
-void func_800EB780_name_81(Object *arg0, s16 arg1) {
+void MBDModelDirMasuSet(Object *arg0, s16 arg1) {
     MBDVecDirGet(&arg0->coords, &MBDMasuGet(arg1)->coords, &arg0->rot);
 }
 
-void func_800EB7BC_name_81(Vec *out) {
+void MBDVecForwardSet(Vec *out) {
     out->x = 0.0f;
     out->y = 0.0f;
     out->z = 1.0f;
 }
 
-void func_800EB7D8_name_81(s16 playerIdx) {
-    func_800EB7BC_name_81(&MBDGetPlayerStruct(playerIdx)->player_obj->rot);
+void MBDPlayerForwardSet(s16 playerIdx) {
+    MBDVecForwardSet(&MBDGetPlayerStruct(playerIdx)->player_obj->rot);
 }
 
-void func_800EB804_name_81(Object *obj) {
+void MBDModelBillboardSet(Object *obj) {
     Vec sp10;
     Vec sp20;
 
     HuVecSubtract(&sp10, &gCameraList->pos, &obj->coords);
     HuVecCopyXYZ(&sp20, sp10.x, 0.0f, sp10.z);
-    obj->omObj1->rot.x = -func_800D7CEC_name_81(&sp10, &sp20);
+    obj->omObj1->rot.x = -MBDVecBetweenAngleGet(&sp10, &sp20);
     MBDVecDirGet(&obj->coords, &gCameraList->pos, &sp10);
     obj->omObj1->rot.y = MBDVecAngleGet(&sp10);
     obj->omObj1->rot.z = 0;
 }
 
-void func_800EB8B0_name_81(s16 playerNoOne, s16 playerNoTwo) {
+void MBDPlayerMasuSwap(s16 playerNoOne, s16 playerNoTwo) {
     GW_PLAYER *playerOne = MBDGetPlayerStruct(playerNoOne);
     GW_PLAYER *playerTwo = MBDGetPlayerStruct(playerNoTwo);
     u8 temp;
@@ -127,7 +127,7 @@ void func_800EB8B0_name_81(s16 playerNoOne, s16 playerNoTwo) {
     playerTwo->rev = prevRev;
 }
 
-s16 func_800EB984_name_81(void) {
+s16 MBDTotalStarGet(void) {
     s32 i;
     s32 totalStars = 0;
 
@@ -137,17 +137,17 @@ s16 func_800EB984_name_81(void) {
     return totalStars;
 }
 
-s16 func_800EB9D4_name_81(s8 percent) {
+s16 MBDRandCheck100(s8 percent) {
     return percent > ((rand8() & 0xFF) * 99 >> 8);
 }
 
-s16 func_800EBA1C_name_81(void) {
+s16 MBDTurnRemain(void) {
     GW_SYSTEM *system = &GwSystem;
 
     return system->total_turns - system->current_turn + 1;
 }
 
-s32 func_800EBA50_name_81(s16 arg0, f32 arg1) {
+s32 MBDPadStkCheck(s16 arg0, f32 arg1) {
     Vec sp10;
     s32 var_v0;
 
@@ -163,11 +163,11 @@ s32 func_800EBA50_name_81(s16 arg0, f32 arg1) {
     return var_v0;
 }
 
-void func_800EBAD4_name_81(s16 arg0) {
-    func_800EED30_name_81(D_801011E0_name_81[arg0]);
+void MBDMesSpeedSet(s16 arg0) {
+    MBDMesWaitSet(mbdMesSpeedTbl[arg0]);
 }
 
-void func_800EBB00_name_81(void) {
+void MBDVecRotLerpProc(void) {
     UnkD3450RotData *data = HuPrcCurrentGet()->user_data;
     s32 time = data->time;
     f32 angle = MBDVecAngleGet(&data->from);
@@ -203,8 +203,8 @@ void func_800EBB00_name_81(void) {
     omDelPrcObj(NULL);
 }
 
-Process *func_800EBC60_name_81(Vec *from, Vec *to, Vec *out, s32 time) {
-    Process *prc = omAddPrcObj(func_800EBB00_name_81, 0x4002, 0, 0x80);
+Process *MBDVecRotLerpCreate(Vec *from, Vec *to, Vec *out, s32 time) {
+    Process *prc = omAddPrcObj(MBDVecRotLerpProc, 0x4002, 0, 0x80);
     UnkD3450RotData *data = HuMemMemoryAlloc(prc->heap, sizeof(UnkD3450RotData));
 
     prc->user_data = data;
@@ -216,8 +216,8 @@ Process *func_800EBC60_name_81(Vec *from, Vec *to, Vec *out, s32 time) {
     return prc;
 }
 
-Process *func_800EBD1C_name_81(Vec *from, Vec *to, Vec *out, s32 time) {
-    Process *prc = omAddPrcObj(func_800EBB00_name_81, 0x4002, 0, 0x80);
+Process *MBDVecRotLerpSpinCreate(Vec *from, Vec *to, Vec *out, s32 time) {
+    Process *prc = omAddPrcObj(MBDVecRotLerpProc, 0x4002, 0, 0x80);
     UnkD3450RotData *data = HuMemMemoryAlloc(prc->heap, sizeof(UnkD3450RotData));
 
     prc->user_data = data;
@@ -229,16 +229,16 @@ Process *func_800EBD1C_name_81(Vec *from, Vec *to, Vec *out, s32 time) {
     return prc;
 }
 
-Process *func_800EBDDC_name_81(s16 playerIndex, s32 time, s16 spaceIndex) {
+Process *MBDPlayerRotMasuStart(s16 playerIndex, s32 time, s16 spaceIndex) {
     GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
     Vec dir;
 
     HuVecSubtract(&dir, &MBDMasuGet(spaceIndex)->coords, &player->player_obj->coords);
     MBDVecNormalize(&dir);
-    return func_800EBC60_name_81(&player->player_obj->rot, &dir, &player->player_obj->rot, time);
+    return MBDVecRotLerpCreate(&player->player_obj->rot, &dir, &player->player_obj->rot, time);
 }
 
-void func_800EBE60_name_81(void) {
+void MBDPlayerPosMoveProc(void) {
     UnkD3450MoveData *data = HuPrcCurrentGet()->user_data;
     s32 time = data->time;
 
@@ -253,8 +253,8 @@ void func_800EBE60_name_81(void) {
     omDelPrcObj(NULL);
 }
 
-Process *func_800EBF2C_name_81(Vec *from, Vec *to, Vec *out, s32 time) {
-    Process *prc = omAddPrcObj(func_800EBE60_name_81, 0x4002, 0, 0x50);
+Process *MBDPlayerPosMoveCreate(Vec *from, Vec *to, Vec *out, s32 time) {
+    Process *prc = omAddPrcObj(MBDPlayerPosMoveProc, 0x4002, 0, 0x50);
     UnkD3450MoveData *data = HuMemMemoryAlloc(prc->heap, sizeof(UnkD3450MoveData));
 
     prc->user_data = data;
@@ -265,30 +265,30 @@ Process *func_800EBF2C_name_81(Vec *from, Vec *to, Vec *out, s32 time) {
     return prc;
 }
 
-void func_800EBFE0_name_81(s16 playerIndex, s32 time) {
+void MBDPlayerPosMoveSet(s16 playerIndex, s32 time) {
     Vec from;
     Vec to;
     Vec dir;
     Process *prc;
     GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
 
-    func_800EB680_name_81(playerIndex, MBDMasuLinkMasuIdGet(player->clink, player->cidx), &from);
-    func_800EB680_name_81(playerIndex, MBDMasuLinkMasuIdGet(player->nlink, player->nidx), &to);
+    MBDMasuPosGet(playerIndex, MBDMasuLinkMasuIdGet(player->clink, player->cidx), &from);
+    MBDMasuPosGet(playerIndex, MBDMasuLinkMasuIdGet(player->nlink, player->nidx), &to);
     if (!(player->rev & 4)) {
         MBDVecDirGet(&from, &to, &dir);
     } else {
         MBDVecDirGet(&to, &from, &dir);
     }
-    func_800EBC60_name_81(&player->player_obj->rot, &dir, &player->player_obj->rot, time);
-    prc = func_800EBF2C_name_81(&from, &to, &player->player_obj->coords, time);
+    MBDVecRotLerpCreate(&player->player_obj->rot, &dir, &player->player_obj->rot, time);
+    prc = MBDPlayerPosMoveCreate(&from, &to, &player->player_obj->coords, time);
     HuPrcChildLink(HuPrcCurrentGet(), prc);
     HuPrcChildWatch();
 }
 
-void func_800EC114_name_81(void) {
+void MBDPlayerMoveStub(void) {
 }
 
-void func_800EC11C_name_81(void) {
+void MBDVecSpeedMoveProc(void) {
     UnkD3450StepData *data = HuPrcCurrentGet()->user_data;
     f32 speed = data->speed;
     Vec *to = &data->to;
@@ -306,8 +306,8 @@ void func_800EC11C_name_81(void) {
     omDelPrcObj(NULL);
 }
 
-Process *func_800EC1E4_name_81(Vec *from, Vec *to, Vec *out, f32 speed) {
-    Process *prc = omAddPrcObj(func_800EC11C_name_81, 0x4002, 0, 0x50);
+Process *MBDVecSpeedMoveCreate(Vec *from, Vec *to, Vec *out, f32 speed) {
+    Process *prc = omAddPrcObj(MBDVecSpeedMoveProc, 0x4002, 0, 0x50);
     UnkD3450StepData *data = HuMemMemoryAlloc(prc->heap, sizeof(UnkD3450StepData));
 
     prc->user_data = data;
@@ -318,7 +318,7 @@ Process *func_800EC1E4_name_81(Vec *from, Vec *to, Vec *out, f32 speed) {
     return prc;
 }
 
-void func_800EC298_name_81(void) {
+void MBDVecSpeedMove2Proc(void) {
     UnkD3450StepData *data = HuPrcCurrentGet()->user_data;
     f32 speed = data->speed;
     s32 done = FALSE;
@@ -341,8 +341,8 @@ void func_800EC298_name_81(void) {
     omDelPrcObj(NULL);
 }
 
-Process *func_800EC36C_name_81(Vec *from, Vec *to, Vec *out, f32 speed) {
-    Process *prc = omAddPrcObj(func_800EC298_name_81, 0x4002, 0, 0x50);
+Process *MBDVecSpeedMove2Create(Vec *from, Vec *to, Vec *out, f32 speed) {
+    Process *prc = omAddPrcObj(MBDVecSpeedMove2Proc, 0x4002, 0, 0x50);
     UnkD3450StepData *data = HuMemMemoryAlloc(prc->heap, sizeof(UnkD3450StepData));
 
     prc->user_data = data;
@@ -353,39 +353,39 @@ Process *func_800EC36C_name_81(Vec *from, Vec *to, Vec *out, f32 speed) {
     return prc;
 }
 
-void func_800EC420_name_81(s16 playerIndex, f32 speed) {
+void MBDPlayerPosMoveSpeedSet(s16 playerIndex, f32 speed) {
     Vec from;
     Vec to;
     Process *prc;
     GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
 
-    func_800EB680_name_81(playerIndex, MBDMasuLinkMasuIdGet(player->clink, player->cidx), &from);
-    func_800EB680_name_81(playerIndex, MBDMasuLinkMasuIdGet(player->nlink, player->nidx), &to);
+    MBDMasuPosGet(playerIndex, MBDMasuLinkMasuIdGet(player->clink, player->cidx), &from);
+    MBDMasuPosGet(playerIndex, MBDMasuLinkMasuIdGet(player->nlink, player->nidx), &to);
     if (!(player->rev & 4)) {
         MBDVecDirGet(&from, &to, &player->player_obj->rot);
     } else {
         MBDVecDirGet(&to, &from, &player->player_obj->rot);
     }
-    prc = func_800EC1E4_name_81(&from, &to, &player->player_obj->coords, speed);
+    prc = MBDVecSpeedMoveCreate(&from, &to, &player->player_obj->coords, speed);
     HuPrcChildLink(HuPrcCurrentGet(), prc);
     HuPrcChildWatch();
 }
 
-void func_800EC548_name_81(s16 playerIndex, Vec *cur, Vec *next, Vec *after, Vec *dir) {
+void MBDPlayerMoveVecGet(s16 playerIndex, Vec *cur, Vec *next, Vec *after, Vec *dir) {
     GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
     s16 spaceIndex;
 
-    func_800EB680_name_81(playerIndex, MBDMasuLinkMasuIdGet(player->clink, player->cidx), cur);
-    func_800EB680_name_81(playerIndex, MBDMasuLinkMasuIdGet(player->nlink, player->nidx), next);
+    MBDMasuPosGet(playerIndex, MBDMasuLinkMasuIdGet(player->clink, player->cidx), cur);
+    MBDMasuPosGet(playerIndex, MBDMasuLinkMasuIdGet(player->nlink, player->nidx), next);
     if (player->nnlink >= 0 && player->nnidx >= 0) {
-        func_800EB680_name_81(playerIndex, MBDMasuLinkMasuIdGet(player->nnlink, player->nnidx), after);
+        MBDMasuPosGet(playerIndex, MBDMasuLinkMasuIdGet(player->nnlink, player->nnidx), after);
     } else {
         if (!(player->rev & FLAG_REV)) {
             spaceIndex = MBDMasuLinkMasuIdGet(player->nlink, player->nidx + 1);
         } else {
             spaceIndex = MBDMasuLinkMasuIdGet(player->nlink, player->nidx - 1);
         }
-        func_800EB680_name_81(playerIndex, spaceIndex, after);
+        MBDMasuPosGet(playerIndex, spaceIndex, after);
     }
     if (!(player->rev & 4)) {
         MBDVecDirGet(cur, next, dir);
@@ -394,7 +394,7 @@ void func_800EC548_name_81(s16 playerIndex, Vec *cur, Vec *next, Vec *after, Vec
     }
 }
 
-void func_800EC6F4_name_81(void) {
+void MBDPartnerFrontMoveProc(void) {
     UnkD3450PrcDataF *data = HuPrcCurrentGet()->user_data;
     s16 playerIndex = data->unk_00;
     f32 speed = data->unk_04;
@@ -409,7 +409,7 @@ void func_800EC6F4_name_81(void) {
     Object *partner;
     f32 angle;
 
-    func_800EC548_name_81(playerIndex, &cur, &next, &after, &dir);
+    MBDPlayerMoveVecGet(playerIndex, &cur, &next, &after, &dir);
     prc = HuPrcCurrentGet();
     partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_FRONT);
     if (!(player->rev & 4)) {
@@ -421,7 +421,7 @@ void func_800EC6F4_name_81(void) {
         HuVecCopy3F(&from, &partner->coords);
         HuVecCopy3F(&to, &cur);
     }
-    HuPrcChildLink(prc, func_800EC36C_name_81(&from, &to, &partner->coords, speed));
+    HuPrcChildLink(prc, MBDVecSpeedMove2Create(&from, &to, &partner->coords, speed));
     HuPrcChildWatch();
 
     if (player->rev & 4) {
@@ -435,13 +435,13 @@ void func_800EC6F4_name_81(void) {
     to.y = next.y;
     HuVecCopy3F(&from, &partner->coords);
     HuVecCopy3F(&partner->rot, &dir);
-    HuPrcChildLink(prc, func_800EC1E4_name_81(&from, &to, &partner->coords, speed));
+    HuPrcChildLink(prc, MBDVecSpeedMoveCreate(&from, &to, &partner->coords, speed));
     HuPrcChildWatch();
     omDelPrcObj(NULL);
 }
 
-Process *func_800EC91C_name_81(s16 playerIdx, f32 arg1) {
-    Process *prc = omAddPrcObj(func_800EC6F4_name_81, 0x4003, 0, 0x40);
+Process *MBDPartnerFrontMoveCreate(s16 playerIdx, f32 arg1) {
+    Process *prc = omAddPrcObj(MBDPartnerFrontMoveProc, 0x4003, 0, 0x40);
     UnkD3450PrcDataF *data = HuMemMemoryAlloc(prc->heap, sizeof(UnkD3450PrcDataF));
 
     prc->user_data = data;
@@ -450,7 +450,7 @@ Process *func_800EC91C_name_81(s16 playerIdx, f32 arg1) {
     return prc;
 }
 
-void func_800EC99C_name_81(void) {
+void MBDPartnerBackMoveProc(void) {
     UnkD3450PrcDataF *data = HuPrcCurrentGet()->user_data;
     s16 playerIndex = data->unk_00;
     f32 speed = data->unk_04;
@@ -465,7 +465,7 @@ void func_800EC99C_name_81(void) {
     Object *partner;
     f32 angle;
 
-    func_800EC548_name_81(playerIndex, &cur, &next, &after, &dir);
+    MBDPlayerMoveVecGet(playerIndex, &cur, &next, &after, &dir);
     prc = HuPrcCurrentGet();
     partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_BACK);
     if (!(player->rev & 4)) {
@@ -477,7 +477,7 @@ void func_800EC99C_name_81(void) {
         HuVecCopy3F(&from, &partner->coords);
         HuVecCopy3F(&to, &next);
     }
-    HuPrcChildLink(prc, func_800EC36C_name_81(&from, &to, &partner->coords, speed));
+    HuPrcChildLink(prc, MBDVecSpeedMove2Create(&from, &to, &partner->coords, speed));
     HuPrcChildWatch();
 
     if (!(player->rev & 4)) {
@@ -491,13 +491,13 @@ void func_800EC99C_name_81(void) {
     to.y = next.y;
     HuVecCopy3F(&from, &partner->coords);
     HuVecCopy3F(&partner->rot, &dir);
-    HuPrcChildLink(prc, func_800EC1E4_name_81(&from, &to, &partner->coords, speed));
+    HuPrcChildLink(prc, MBDVecSpeedMoveCreate(&from, &to, &partner->coords, speed));
     HuPrcChildWatch();
     omDelPrcObj(NULL);
 }
 
-Process *func_800ECBB4_name_81(s16 playerIdx, f32 arg1) {
-    Process *prc = omAddPrcObj(func_800EC99C_name_81, 0x4003, 0, 0x40);
+Process *MBDPartnerBackMoveCreate(s16 playerIdx, f32 arg1) {
+    Process *prc = omAddPrcObj(MBDPartnerBackMoveProc, 0x4003, 0, 0x40);
     UnkD3450PrcDataF *data = HuMemMemoryAlloc(prc->heap, sizeof(UnkD3450PrcDataF));
 
     prc->user_data = data;
@@ -506,22 +506,22 @@ Process *func_800ECBB4_name_81(s16 playerIdx, f32 arg1) {
     return prc;
 }
 
-void func_800ECC34_name_81(s16 playerIndex, f32 speed) {
+void MBDPlayerPartnerMoveExec(s16 playerIndex, f32 speed) {
     GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
     Process *prc = HuPrcCurrentGet();
 
     if (player->stats.partners.frontID != PARTNER_NONE) {
-        HuPrcChildLink(prc, func_800EC91C_name_81(playerIndex, speed));
+        HuPrcChildLink(prc, MBDPartnerFrontMoveCreate(playerIndex, speed));
     }
     if (player->stats.partners.backID != PARTNER_NONE) {
-        HuPrcChildLink(prc, func_800ECBB4_name_81(playerIndex, speed));
+        HuPrcChildLink(prc, MBDPartnerBackMoveCreate(playerIndex, speed));
     }
-    func_800EC420_name_81(playerIndex, speed);
+    MBDPlayerPosMoveSpeedSet(playerIndex, speed);
     player->nnlink = -1;
     player->nnidx = -1;
 }
 
-void func_800ECD0C_name_81(s16 playerIdx, s16 nlink, s16 nidx) {
+void MBDMoveMasuSet(s16 playerIdx, s16 nlink, s16 nidx) {
     GW_PLAYER *player = MBDGetPlayerStruct(playerIdx);
 
     if (nlink >= 0) {
@@ -536,7 +536,7 @@ void func_800ECD0C_name_81(s16 playerIdx, s16 nlink, s16 nidx) {
     }
 }
 
-void func_800ECD88_name_81(s16 playerIdx, s16 nlink, s16 nidx) {
+void MBDMoveNextMasuSet(s16 playerIdx, s16 nlink, s16 nidx) {
     GW_PLAYER *player = MBDGetPlayerStruct(playerIdx);
 
     if (nlink >= 0) {
@@ -547,28 +547,28 @@ void func_800ECD88_name_81(s16 playerIdx, s16 nlink, s16 nidx) {
     }
 }
 
-void func_800ECDE8_name_81(void) {
+void MBDPlayerRevOn(void) {
     GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
 
     player->rev |= FLAG_REV;
 }
 
-void func_800ECE10_name_81(void) {
+void MBDPlayerRevOff(void) {
     GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
 
     player->rev &= ~FLAG_REV;
 }
 
-void func_800ECE38_name_81(s32 playerIndex) {
+void MBDPlayerDirNextSet(s32 playerIndex) {
     Vec from;
     Vec to;
     GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
     s32 space;
 
     space = MBDMasuLinkMasuIdGet(player->clink, player->cidx);
-    func_800EB680_name_81(playerIndex, space, &from);
+    MBDMasuPosGet(playerIndex, space, &from);
     space = MBDMasuLinkMasuIdGet(player->nlink, player->nidx);
-    func_800EB680_name_81(playerIndex, space, &to);
+    MBDMasuPosGet(playerIndex, space, &to);
     if (!(player->rev & 4)) {
         MBDVecDirGet(&from, &to, &player->player_obj->rot);
     } else {
@@ -576,7 +576,7 @@ void func_800ECE38_name_81(s32 playerIndex) {
     }
 }
 
-void func_800ECF1C_name_81(s32 playerIndex, Vec *frontOffset, Vec *backOffset) {
+void MBDPartnerOfsGet(s32 playerIndex, Vec *frontOffset, Vec *backOffset) {
     Vec cur;
     Vec next;
     Vec back;
@@ -584,8 +584,8 @@ void func_800ECF1C_name_81(s32 playerIndex, Vec *frontOffset, Vec *backOffset) {
     f32 angle;
     GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
 
-    func_800EC548_name_81(playerIndex, &cur, &next, &back, &dir);
-    func_800EB680_name_81(playerIndex, MBDMasuLinkMasuIdGet(player->blink, player->bidx), &back);
+    MBDPlayerMoveVecGet(playerIndex, &cur, &next, &back, &dir);
+    MBDMasuPosGet(playerIndex, MBDMasuLinkMasuIdGet(player->blink, player->bidx), &back);
     if (!(player->rev & 4)) {
         MBDVecDirGet(&cur, &next, &dir);
         angle = MBDVecAngleGet(&dir);
@@ -611,15 +611,15 @@ void func_800ECF1C_name_81(s32 playerIndex, Vec *frontOffset, Vec *backOffset) {
     }
 }
 
-void func_800ED118_name_81(s32 playerIndex, Vec *frontDir, Vec *backDir) {
+void MBDPartnerDirGet(s32 playerIndex, Vec *frontDir, Vec *backDir) {
     Vec cur;
     Vec next;
     Vec back;
     Vec dir;
     GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
 
-    func_800EC548_name_81(playerIndex, &cur, &next, &back, &dir);
-    func_800EB680_name_81(playerIndex, MBDMasuLinkMasuIdGet(player->blink, player->bidx), &back);
+    MBDPlayerMoveVecGet(playerIndex, &cur, &next, &back, &dir);
+    MBDMasuPosGet(playerIndex, MBDMasuLinkMasuIdGet(player->blink, player->bidx), &back);
     if (!(player->rev & 4)) {
         MBDVecDirGet(&cur, &next, frontDir);
         MBDVecDirGet(&back, &cur, backDir);
@@ -629,13 +629,13 @@ void func_800ED118_name_81(s32 playerIndex, Vec *frontDir, Vec *backDir) {
     }
 }
 
-void func_800ED214_name_81(s32 playerIndex) {
+void MBDPartnerPosFix(s32 playerIndex) {
     Vec sp10;
     Vec sp20;
     GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
     Object *partner;
 
-    func_800ECF1C_name_81(playerIndex, &sp10, &sp20);
+    MBDPartnerOfsGet(playerIndex, &sp10, &sp20);
 
     if (player->stats.partners.frontID != PARTNER_NONE) {
         partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_FRONT);
@@ -655,7 +655,7 @@ void func_800ED214_name_81(s32 playerIndex) {
     }
 }
 
-void func_800ED31C_name_81(void) {
+void MBDPartnerFrontJumpProc(void) {
     UnkD3450PrcData *data = HuPrcCurrentGet()->user_data;
     s32 time = data->unk_04;
     s16 playerIndex = data->unk_00;
@@ -669,7 +669,7 @@ void func_800ED31C_name_81(void) {
     Object *partner;
     f32 angle;
 
-    func_800EC548_name_81(playerIndex, &cur, &next, &after, &dir);
+    MBDPlayerMoveVecGet(playerIndex, &cur, &next, &after, &dir);
     prc = HuPrcCurrentGet();
     partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_FRONT);
     MBDVecDirGet(&cur, &next, &dir);
@@ -679,14 +679,14 @@ void func_800ED31C_name_81(void) {
     to.y = cur.y;
     HuVecCopy3F(&from, &partner->coords);
     HuVecCopy3F(&partner->rot, &dir);
-    HuPrcChildLink(prc, func_800EBF2C_name_81(&from, &to, &partner->coords, time));
-    func_800EF7C8_name_81(partner, 5.0f, -5.0f / (time / 2));
+    HuPrcChildLink(prc, MBDPlayerPosMoveCreate(&from, &to, &partner->coords, time));
+    MBDModelJumpSet(partner, 5.0f, -5.0f / (time / 2));
     HuPrcChildWatch();
     omDelPrcObj(NULL);
 }
 
-Process *func_800ED4AC_name_81(s16 playerIdx, s32 arg) {
-    Process *prc = omAddPrcObj(func_800ED31C_name_81, 0x4003, 0, 0x40);
+Process *MBDPartnerFrontJumpCreate(s16 playerIdx, s32 arg) {
+    Process *prc = omAddPrcObj(MBDPartnerFrontJumpProc, 0x4003, 0, 0x40);
     UnkD3450PrcData *data = HuMemMemoryAlloc(prc->heap, sizeof(UnkD3450PrcData));
 
     prc->user_data = data;
@@ -695,7 +695,7 @@ Process *func_800ED4AC_name_81(s16 playerIdx, s32 arg) {
     return prc;
 }
 
-void func_800ED520_name_81(void) {
+void MBDPartnerFrontWalkProc(void) {
     UnkD3450PrcDataF *data = HuPrcCurrentGet()->user_data;
     s16 playerIndex = data->unk_00;
     f32 speed = data->unk_04;
@@ -709,7 +709,7 @@ void func_800ED520_name_81(void) {
     Object *partner;
     f32 angle;
 
-    func_800EC548_name_81(playerIndex, &cur, &next, &after, &dir);
+    MBDPlayerMoveVecGet(playerIndex, &cur, &next, &after, &dir);
     prc = HuPrcCurrentGet();
     partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_FRONT);
     MBDVecDirGet(&cur, &next, &dir);
@@ -719,13 +719,13 @@ void func_800ED520_name_81(void) {
     to.y = cur.y;
     HuVecCopy3F(&from, &partner->coords);
     HuVecCopy3F(&partner->rot, &dir);
-    HuPrcChildLink(prc, func_800EC1E4_name_81(&from, &to, &partner->coords, speed));
+    HuPrcChildLink(prc, MBDVecSpeedMoveCreate(&from, &to, &partner->coords, speed));
     HuPrcChildWatch();
     omDelPrcObj(NULL);
 }
 
-Process *func_800ED68C_name_81(s16 playerIdx, f32 arg1) {
-    Process *prc = omAddPrcObj(func_800ED520_name_81, 0x4003, 0, 0x40);
+Process *MBDPartnerFrontWalkCreate(s16 playerIdx, f32 arg1) {
+    Process *prc = omAddPrcObj(MBDPartnerFrontWalkProc, 0x4003, 0, 0x40);
     UnkD3450PrcDataF *data = HuMemMemoryAlloc(prc->heap, sizeof(UnkD3450PrcDataF));
 
     prc->user_data = data;
@@ -734,26 +734,26 @@ Process *func_800ED68C_name_81(s16 playerIdx, f32 arg1) {
     return prc;
 }
 
-Process *func_800ED70C_name_81(s32 playerIdx, s32 arg) {
+Process *MBDPartnerFrontFollowCreate(s32 playerIdx, s32 arg) {
     Process *prc = NULL;
 
     if (MBDGetPlayerStruct(playerIdx)->stats.prize.gamblePrize != -1) {
         if (arg != 0) {
-            prc = func_800ED4AC_name_81(playerIdx, 0xF);
+            prc = MBDPartnerFrontJumpCreate(playerIdx, 0xF);
         } else {
-            prc = func_800ED68C_name_81(playerIdx, 3.0f);
+            prc = MBDPartnerFrontWalkCreate(playerIdx, 3.0f);
         }
     }
     return prc;
 }
 
-void func_800ED788_name_81(s32 playerIndex) {
+void MBDPartnerFrontFollowExec(s32 playerIndex) {
     Process *prc;
 
     if (GwSystem.current_board_index == 3) {
-        prc = func_800ED70C_name_81(playerIndex, 1);
+        prc = MBDPartnerFrontFollowCreate(playerIndex, 1);
     } else {
-        prc = func_800ED70C_name_81(playerIndex, 0);
+        prc = MBDPartnerFrontFollowCreate(playerIndex, 0);
     }
 
     if (prc != NULL) {
@@ -762,7 +762,7 @@ void func_800ED788_name_81(s32 playerIndex) {
     }
 }
 
-void func_800ED7EC_name_81(void) {
+void MBDPartnerBackJumpProc(void) {
     UnkD3450PrcData *data = HuPrcCurrentGet()->user_data;
     s32 time = data->unk_04;
     s16 playerIndex = data->unk_00;
@@ -777,8 +777,8 @@ void func_800ED7EC_name_81(void) {
     Object *partner;
     f32 angle;
 
-    func_800EC548_name_81(playerIndex, &cur, &next, &back, &dir);
-    func_800EB680_name_81(playerIndex, MBDMasuLinkMasuIdGet(player->blink, player->bidx), &back);
+    MBDPlayerMoveVecGet(playerIndex, &cur, &next, &back, &dir);
+    MBDMasuPosGet(playerIndex, MBDMasuLinkMasuIdGet(player->blink, player->bidx), &back);
     prc = HuPrcCurrentGet();
     partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_BACK);
     MBDVecDirGet(&back, &cur, &dir);
@@ -788,14 +788,14 @@ void func_800ED7EC_name_81(void) {
     to.y = cur.y;
     HuVecCopy3F(&from, &partner->coords);
     HuVecCopy3F(&partner->rot, &dir);
-    HuPrcChildLink(prc, func_800EBF2C_name_81(&from, &to, &partner->coords, time));
-    func_800EF7C8_name_81(partner, 5.0f, -5.0f / (time / 2));
+    HuPrcChildLink(prc, MBDPlayerPosMoveCreate(&from, &to, &partner->coords, time));
+    MBDModelJumpSet(partner, 5.0f, -5.0f / (time / 2));
     HuPrcChildWatch();
     omDelPrcObj(NULL);
 }
 
-Process *func_800ED9C4_name_81(s16 playerIdx, s32 arg) {
-    Process *prc = omAddPrcObj(func_800ED7EC_name_81, 0x4003, 0, 0x40);
+Process *MBDPartnerBackJumpCreate(s16 playerIdx, s32 arg) {
+    Process *prc = omAddPrcObj(MBDPartnerBackJumpProc, 0x4003, 0, 0x40);
     UnkD3450PrcData *data = HuMemMemoryAlloc(prc->heap, sizeof(UnkD3450PrcData));
 
     prc->user_data = data;
@@ -804,7 +804,7 @@ Process *func_800ED9C4_name_81(s16 playerIdx, s32 arg) {
     return prc;
 }
 
-void func_800EDA38_name_81(void) {
+void MBDPartnerBackWalkProc(void) {
     UnkD3450PrcDataF *data = HuPrcCurrentGet()->user_data;
     s16 playerIndex = data->unk_00;
     f32 speed = data->unk_04;
@@ -819,8 +819,8 @@ void func_800EDA38_name_81(void) {
     Object *partner;
     f32 angle;
 
-    func_800EC548_name_81(playerIndex, &cur, &next, &back, &dir);
-    func_800EB680_name_81(playerIndex, MBDMasuLinkMasuIdGet(player->blink, player->bidx), &back);
+    MBDPlayerMoveVecGet(playerIndex, &cur, &next, &back, &dir);
+    MBDMasuPosGet(playerIndex, MBDMasuLinkMasuIdGet(player->blink, player->bidx), &back);
     prc = HuPrcCurrentGet();
     partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_BACK);
     MBDVecDirGet(&back, &cur, &dir);
@@ -830,13 +830,13 @@ void func_800EDA38_name_81(void) {
     to.y = cur.y;
     HuVecCopy3F(&from, &partner->coords);
     HuVecCopy3F(&partner->rot, &dir);
-    HuPrcChildLink(prc, func_800EC1E4_name_81(&from, &to, &partner->coords, speed));
+    HuPrcChildLink(prc, MBDVecSpeedMoveCreate(&from, &to, &partner->coords, speed));
     HuPrcChildWatch();
     omDelPrcObj(NULL);
 }
 
-Process *func_800EDBEC_name_81(s16 playerIdx, f32 arg1) {
-    Process *prc = omAddPrcObj(func_800EDA38_name_81, 0x4003, 0, 0x40);
+Process *MBDPartnerBackWalkCreate(s16 playerIdx, f32 arg1) {
+    Process *prc = omAddPrcObj(MBDPartnerBackWalkProc, 0x4003, 0, 0x40);
     UnkD3450PrcDataF *data = HuMemMemoryAlloc(prc->heap, sizeof(UnkD3450PrcDataF));
 
     prc->user_data = data;
@@ -845,26 +845,26 @@ Process *func_800EDBEC_name_81(s16 playerIdx, f32 arg1) {
     return prc;
 }
 
-Process *func_800EDC6C_name_81(s32 playerIdx, s32 arg) {
+Process *MBDPartnerBackFollowCreate(s32 playerIdx, s32 arg) {
     Process *prc = NULL;
 
     if (MBDGetPlayerStruct(playerIdx)->stats.prize.duelNo != -1) {
         if (arg != 0) {
-            prc = func_800ED9C4_name_81(playerIdx, 0xF);
+            prc = MBDPartnerBackJumpCreate(playerIdx, 0xF);
         } else {
-            prc = func_800EDBEC_name_81(playerIdx, 3.0f);
+            prc = MBDPartnerBackWalkCreate(playerIdx, 3.0f);
         }
     }
     return prc;
 }
 
-void func_800EDCE8_name_81(s32 playerIndex) {
+void MBDPartnerBackFollowExec(s32 playerIndex) {
     Process *prc;
 
     if (GwSystem.current_board_index == 3) {
-        prc = func_800EDC6C_name_81(playerIndex, 1);
+        prc = MBDPartnerBackFollowCreate(playerIndex, 1);
     } else {
-        prc = func_800EDC6C_name_81(playerIndex, 0);
+        prc = MBDPartnerBackFollowCreate(playerIndex, 0);
     }
     if (prc != NULL) {
         HuPrcChildLink(HuPrcCurrentGet(), prc);

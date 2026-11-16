@@ -1,34 +1,34 @@
 #include "common_duel.h"
 #include "ovl_81.h"
 
-extern s16 D_80105712_name_81;
+extern s16 mbdWinId;
 
-s16 D_801011D0_name_81 = 0;
-s16 D_801011D2_name_81 = 0;
+s16 mbdDlgWinTabWidth = 0;
+s16 mbdDlgWinAllKeyF = 0;
 
-void func_800EF3B4_name_81(s16);
-void func_800EF3D0_name_81(s16);
-void func_800EED68_name_81(s16, s32);
-void func_800EED84_name_81(s16, s32);
-void func_800EB094_name_81(s16 arg0, s32 arg1, s32 arg2);
+void MBDWinComKeyAllWait(s16);
+void MBDWinComKeyAllWaitKeep(s16);
+void MBDWinComKeyWait(s16, s32);
+void MBDWinComKeyWaitKeep(s16, s32);
+void MBDDlgWinExecY(s16 arg0, s32 arg1, s32 arg2);
 
-void func_800EAB20_name_81(s16 arg0) {
-    if (D_801011D2_name_81 != 0) {
-        func_800EF3B4_name_81(arg0);
+void MBDWinIdKeyWait(s16 arg0) {
+    if (mbdDlgWinAllKeyF != 0) {
+        MBDWinComKeyAllWait(arg0);
         return;
     }
-    func_800EED68_name_81(arg0, GwSystem.current_player_index);
+    MBDWinComKeyWait(arg0, GwSystem.current_player_index);
 }
 
-void func_800EAB6C_name_81(s16 arg0, s32 arg1) {
-    if ((GwSystem.current_player_index == 4) || (D_801011D2_name_81 != 0)) {
-        func_800EF3D0_name_81(arg0);
+void MBDWinIdPlayerKeyWaitKeep(s16 arg0, s32 arg1) {
+    if ((GwSystem.current_player_index == 4) || (mbdDlgWinAllKeyF != 0)) {
+        MBDWinComKeyAllWaitKeep(arg0);
         return;
     }
-    func_800EED84_name_81(arg0, arg1);
+    MBDWinComKeyWaitKeep(arg0, arg1);
 }
 
-s16 func_800EABBC_name_81(s16 arg0, s16 *arg1, s16 arg2) {
+s16 MBDWinCreate(s16 arg0, s16 *arg1, s16 arg2) {
     s32 result;
 
     if (arg2 == -1) {
@@ -52,13 +52,13 @@ s16 func_800EABBC_name_81(s16 arg0, s16 *arg1, s16 arg2) {
     return result;
 }
 
-void func_800EAD08_name_81(s32 arg0) {
+void MBDWinOpen(s32 arg0) {
     s16 sp18[2];
     s16 temp_v0;
 
     HuWinMesMaxSizeGet(1, sp18, arg0);
     temp_v0 = HuWinExCreate(-1, 0, 0, sp18[0], sp18[1], 2);
-    D_80105712_name_81 = temp_v0;
+    mbdWinId = temp_v0;
 
     if (winPauseF == 0) {
         HuWinAttrSet(temp_v0, HUWIN_ATTR_PAUSE, HUWIN_ATTR_PAUSE);
@@ -68,7 +68,7 @@ void func_800EAD08_name_81(s32 arg0) {
     HuWinExAnimIn(temp_v0);
 }
 
-void func_800EADBC_name_81(s32 arg0, char *arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
+void MBDWinInsertOpen(s32 arg0, char *arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     s16 sp18[2];
     s16 temp_v0;
 
@@ -91,7 +91,7 @@ void func_800EADBC_name_81(s32 arg0, char *arg1, s32 arg2, s32 arg3, s32 arg4, s
 
     HuWinMesMaxSizeGet(1, sp18, arg0);
     temp_v0 = HuWinExCreate(-1, 0, 0, sp18[0], sp18[1], 2);
-    D_80105712_name_81 = temp_v0;
+    mbdWinId = temp_v0;
 
     if (winPauseF == 0) {
         HuWinAttrSet(temp_v0, HUWIN_ATTR_PAUSE, HUWIN_ATTR_PAUSE);
@@ -115,22 +115,22 @@ void func_800EADBC_name_81(s32 arg0, char *arg1, s32 arg2, s32 arg3, s32 arg4, s
     HuWinExAnimIn(temp_v0);
 }
 
-void func_800EAF70_name_81(s32 arg0) {
-    func_800EAB6C_name_81(D_80105712_name_81, arg0);
+void MBDWinKeyWaitKeep(s32 arg0) {
+    MBDWinIdPlayerKeyWaitKeep(mbdWinId, arg0);
 }
 
-void func_800EAF94_name_81(void) {
-    HuWinExAnimOut(D_80105712_name_81, 0);
-    HuWinKill(D_80105712_name_81);
+void MBDWinClose(void) {
+    HuWinExAnimOut(mbdWinId, 0);
+    HuWinKill(mbdWinId);
 }
 
-void func_800EAFC4_name_81(s32 arg0) {
+void MBDDlgResultWinExec(s32 arg0) {
     s16 sp18[2];
     s16 temp_v0;
 
     HuWinMesMaxSizeGet(1, sp18, arg0);
     temp_v0 = HuWinExCreate(-1, 0, 0, sp18[0], sp18[1], 2);
-    D_8010555C_name_81 = temp_v0;
+    mbdDlgWinId = temp_v0;
 
     if (winPauseF == 0) {
         HuWinAttrSet(temp_v0, HUWIN_ATTR_PAUSE, HUWIN_ATTR_PAUSE);
@@ -138,65 +138,65 @@ void func_800EAFC4_name_81(s32 arg0) {
 
     HuWinMesSet(temp_v0, arg0, -1, -1);
     HuWinExAnimIn(temp_v0);
-    func_800EAB20_name_81(temp_v0);
+    MBDWinIdKeyWait(temp_v0);
     HuWinExAnimOut(temp_v0, 0);
     HuWinKill(temp_v0);
 }
 
-void func_800EB094_name_81(s16 arg0, s32 arg1, s32 arg2) {
+void MBDDlgWinExecY(s16 arg0, s32 arg1, s32 arg2) {
     s16 sp10[2];
     s16 temp_v0;
 
     HuWinMesMaxSizeGet(1, sp10, arg1);
-    temp_v0 = func_800EABBC_name_81(arg0, sp10, arg2);
-    D_8010555C_name_81 = temp_v0;
+    temp_v0 = MBDWinCreate(arg0, sp10, arg2);
+    mbdDlgWinId = temp_v0;
     HuWinMesSet(temp_v0, arg1, -1, -1);
     HuWinExAnimIn(temp_v0);
-    func_800EAB20_name_81(temp_v0);
+    MBDWinIdKeyWait(temp_v0);
     HuWinExAnimOut(temp_v0, 0);
     HuWinKill(temp_v0);
 }
 
-void func_800EB140_name_81(s16 arg0, s32 arg1) {
-    func_800EB094_name_81(arg0, arg1, -1);
+void MBDDlgWinExec(s16 arg0, s32 arg1) {
+    MBDDlgWinExecY(arg0, arg1, -1);
 }
 
-void func_800EB164_name_81(s16 arg0, s32 arg1) {
-    D_801011D2_name_81 = 1;
-    func_800EB094_name_81(arg0, arg1, -1);
-    D_801011D2_name_81 = 0;
+void MBDDlgWinExecAllKey(s16 arg0, s32 arg1) {
+    mbdDlgWinAllKeyF = 1;
+    MBDDlgWinExecY(arg0, arg1, -1);
+    mbdDlgWinAllKeyF = 0;
 }
 
-void func_800EB19C_name_81(s16 arg0, s32 arg1, s16 arg2) {
-    D_801011D2_name_81 = 1;
-    func_800EB094_name_81(arg0, arg1, arg2);
-    D_801011D2_name_81 = 0;
+void MBDDlgWinExecYAllKey(s16 arg0, s32 arg1, s16 arg2) {
+    mbdDlgWinAllKeyF = 1;
+    MBDDlgWinExecY(arg0, arg1, arg2);
+    mbdDlgWinAllKeyF = 0;
 }
 
-void func_800EB1D8_name_81(s16 arg0, s32 arg1) {
+void MBDDlgWinCreate(s16 arg0, s32 arg1) {
     s16 sp10[2];
     s16 temp_v0;
 
     HuWinMesMaxSizeGet(1, sp10, arg1);
-    temp_v0 = func_800EABBC_name_81(arg0, sp10, -1);
-    D_8010555C_name_81 = temp_v0;
+    temp_v0 = MBDWinCreate(arg0, sp10, -1);
+    mbdDlgWinId = temp_v0;
     HuWinMesSet(temp_v0, arg1, -1, -1);
     HuWinExAnimIn(temp_v0);
 }
 
-void func_800EB258_name_81(void) {
-    HuWinExAnimIn(D_8010555C_name_81);
+void MBDDlgWinOpen(void) {
+    HuWinExAnimIn(mbdDlgWinId);
 }
 
-void func_800EB278_name_81(void) {
-    HuWinExAnimOut(D_8010555C_name_81, 0);
+void MBDDlgWinClose(void) {
+    HuWinExAnimOut(mbdDlgWinId, 0);
 }
 
-void func_800EB29C_name_81(void) {
-    HuWinKill(D_8010555C_name_81);
+void MBDDlgWinKill(void) {
+    HuWinKill(mbdDlgWinId);
 }
 
-void func_800EB2BC_name_81(s16 arg0, s32 arg1, u32 arg2, u32 arg3, u32 arg4, u32 arg5, u32 arg6, s16 arg7) {
+void MBDDlgWinInsertCreateY(s16 arg0, s32 arg1, u32 arg2, u32 arg3, u32 arg4, u32 arg5, u32 arg6, s16 arg7) {
     s16 sp10[2];
     s16 temp_v0;
 
@@ -216,8 +216,8 @@ void func_800EB2BC_name_81(s16 arg0, s32 arg1, u32 arg2, u32 arg3, u32 arg4, u32
         HuWinInsertMesSizeGet(arg6, 4);
     }
     HuWinMesMaxSizeGet(1, sp10, arg1);
-    temp_v0 = func_800EABBC_name_81(arg0, sp10, arg7);
-    D_8010555C_name_81 = temp_v0;
+    temp_v0 = MBDWinCreate(arg0, sp10, arg7);
+    mbdDlgWinId = temp_v0;
     if (arg2 != 0) {
         HuWinInsertMesSet(temp_v0, arg2, 0);
     }
@@ -233,8 +233,8 @@ void func_800EB2BC_name_81(s16 arg0, s32 arg1, u32 arg2, u32 arg3, u32 arg4, u32
     if (arg6 != 0) {
         HuWinInsertMesSet(temp_v0, arg6, 4);
     }
-    if (D_801011D0_name_81 != 0) {
-        HuWinTabWidthSet(temp_v0, D_801011D0_name_81);
+    if (mbdDlgWinTabWidth != 0) {
+        HuWinTabWidthSet(temp_v0, mbdDlgWinTabWidth);
     }
     HuWinMesSet(temp_v0, arg1, -1, -1);
     if (arg0 == -1) {
@@ -243,44 +243,44 @@ void func_800EB2BC_name_81(s16 arg0, s32 arg1, u32 arg2, u32 arg3, u32 arg4, u32
         HuWinExAnimIn(temp_v0);
     }
 
-    func_800EAB6C_name_81(temp_v0, GwSystem.current_player_index);
+    MBDWinIdPlayerKeyWaitKeep(temp_v0, GwSystem.current_player_index);
 }
 
-void func_800EB49C_name_81(s16 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
-    func_800EB2BC_name_81(arg0, arg1, arg2, arg3, arg4, arg5, arg6, -1);
+void MBDDlgWinInsertCreate(s16 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
+    MBDDlgWinInsertCreateY(arg0, arg1, arg2, arg3, arg4, arg5, arg6, -1);
 }
 
-void func_800EB4DC_name_81(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
-    D_801011D2_name_81 = 1;
-    func_800EB2BC_name_81(arg0, arg1, arg2, arg3, arg4, arg5, arg6, -1);
-    D_801011D2_name_81 = 0;
+void MBDDlgWinInsertCreateAllKey(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
+    mbdDlgWinAllKeyF = 1;
+    MBDDlgWinInsertCreateY(arg0, arg1, arg2, arg3, arg4, arg5, arg6, -1);
+    mbdDlgWinAllKeyF = 0;
 }
 
-void func_800EB530_name_81(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s16 arg7) {
-    D_801011D2_name_81 = 1;
-    func_800EB2BC_name_81(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-    D_801011D2_name_81 = 0;
+void MBDDlgWinInsertCreateYAllKey(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s16 arg7) {
+    mbdDlgWinAllKeyF = 1;
+    MBDDlgWinInsertCreateY(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+    mbdDlgWinAllKeyF = 0;
 }
 
-void func_800EB58C_name_81(void) {
-    winData[D_8010555C_name_81].stat = HUWIN_STAT_DRAWMES;
+void MBDDlgWinMesWait(void) {
+    winData[mbdDlgWinId].stat = HUWIN_STAT_DRAWMES;
     HuPrcVSleep();
-    func_800EAB6C_name_81(D_8010555C_name_81, GwSystem.current_player_index);
+    MBDWinIdPlayerKeyWaitKeep(mbdDlgWinId, GwSystem.current_player_index);
 }
 
-void func_800EB5E8_name_81(void) {
-    D_801011D2_name_81 = 1;
-    winData[D_8010555C_name_81].stat = HUWIN_STAT_DRAWMES;
+void MBDDlgWinMesWaitAllKey(void) {
+    mbdDlgWinAllKeyF = 1;
+    winData[mbdDlgWinId].stat = HUWIN_STAT_DRAWMES;
     HuPrcVSleep();
-    func_800EAB6C_name_81(D_8010555C_name_81, GwSystem.current_player_index);
-    D_801011D2_name_81 = 0;
+    MBDWinIdPlayerKeyWaitKeep(mbdDlgWinId, GwSystem.current_player_index);
+    mbdDlgWinAllKeyF = 0;
 }
 
-void func_800EB658_name_81(s32 arg0) {
-    D_801011D0_name_81 = arg0;
+void MBDDlgWinTabWidthSet(s32 arg0) {
+    mbdDlgWinTabWidth = arg0;
 }
 
-void func_800EB664_name_81(void) {
-    D_801011D0_name_81 = 0;
-    D_801011D2_name_81 = 0;
+void MBDDlgWinParamReset(void) {
+    mbdDlgWinTabWidth = 0;
+    mbdDlgWinAllKeyF = 0;
 }

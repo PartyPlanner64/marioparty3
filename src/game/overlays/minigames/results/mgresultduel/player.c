@@ -60,9 +60,9 @@ void func_80106730_mgresultduel(void);
 void func_80106560_mgresultduel(void);
 void func_8010654C_mgresultduel(void);
 void func_8010751C_mgresultduel(s8);
-void func_800F79E8_name_81(s32);
-void func_800E1504_name_81(s32, s32, s32, s32);
-void func_800F37E0_name_81(s32, s32);
+void MBDStatusBounceExec(s32);
+void MBDCoinChangePosCreate(s32, s32, s32, s32);
+void MBDPlayerCoinAdd(s32, s32);
 void func_80108818_mgresultduel(omObjData *);
 void func_80108D28_mgresultduel(void);
 void func_80108820_mgresultduel(omObjData *);
@@ -496,7 +496,7 @@ void func_80108318_mgresultduel(omObjData *arg0) {
     Vec2f screenPos;
     s16 player;
 
-    func_800F79E8_name_81(-1);
+    MBDStatusBounceExec(-1);
     if (D_80109318_mgresultduel != 2) {
         if (D_80109318_mgresultduel == -1) {
             obj = D_80109340_mgresultduel.obj;
@@ -507,18 +507,18 @@ void func_80108318_mgresultduel(omObjData *arg0) {
         pos.y = Hu3DData[obj->model[1]].pos.y + 120.0f;
         pos.z = Hu3DData[obj->model[1]].pos.z;
         Hu3D3Dto2D(0, &pos, &screenPos);
-        func_800E0CEC_name_81();
+        MBDCoinChangeInit();
         if (D_80109318_mgresultduel == -1) {
             player = D_80109310_mgresultduel[0];
-            func_800E1504_name_81(D_80109310_mgresultduel[0], D_80109314_mgresultduel, screenPos.x, screenPos.y);
+            MBDCoinChangePosCreate(D_80109310_mgresultduel[0], D_80109314_mgresultduel, screenPos.x, screenPos.y);
         } else {
             player = D_80109310_mgresultduel[1];
-            func_800E1504_name_81(D_80109310_mgresultduel[1], D_80109314_mgresultduel, screenPos.x, screenPos.y);
+            MBDCoinChangePosCreate(D_80109310_mgresultduel[1], D_80109314_mgresultduel, screenPos.x, screenPos.y);
         }
         HuPrcSleep(20);
-        func_800F37E0_name_81(player, D_80109314_mgresultduel);
+        MBDPlayerCoinAdd(player, D_80109314_mgresultduel);
         HuPrcSleep(20);
-        func_800E0E38_name_81();
+        MBDCoinChangeClose();
     } else {
         HuPrcSleep(40);
     }

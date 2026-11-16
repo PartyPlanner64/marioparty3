@@ -21,21 +21,21 @@ typedef struct EffectMoveWork {
     /* 0x18 */ char unk_18[8];
 } EffectMoveWork; // sizeof 0x20
 
-extern Object *D_80102AD0_name_81[];
-s32 D_80100E40_name_81 = 1;
-extern s16 D_80102B50_name_81;
-extern omObjData *D_80102B54_name_81;
-extern Vec D_80102B58_name_81;
+extern Object *mbdEffBurstObjTbl[];
+s32 mbdEffSwirlF = 1;
+extern s16 mbdEffSwirlMdl;
+extern omObjData *mbdEffSwirlObj;
+extern Vec mbdEffSwirlPos;
 
-void func_800DC800_name_81(void);
-void func_800DCBA8_name_81(void);
-void func_800DCE6C_name_81(s16 model);
-void func_800DD518_name_81(omObjData *obj);
-void func_800DD59C_name_81(s16 arg0, f32 arg1, f32 arg2);
-void func_800DD5CC_name_81(s16 model);
-void func_800DD75C_name_81(s16 model);
+void MBDEffBurstProc(void);
+void MBDEffMdlProc(void);
+void MBDEffExplodeHook(s16 model);
+void MBDEffSwirlObjMain(omObjData *obj);
+void MBDEffSwirlParamSet(s16 arg0, f32 arg1, f32 arg2);
+void MBDEffSwirlEmit(s16 model);
+void MBDEffSwirlHook(s16 model);
 
-void func_800DC800_name_81(void) {
+void MBDEffBurstProc(void) {
     EffectBurstWork *work = HuPrcCurrentGet()->user_data;
     s32 modelId = work->modelId;
     s32 count = work->count;
@@ -57,30 +57,30 @@ void func_800DC800_name_81(void) {
 
     HuVecCopy3F(&pos, basePos);
     for (i = 0; i < count; i++) {
-        obj = func_800D8010_name_81(modelId, NULL);
-        D_80102AD0_name_81[i] = obj;
+        obj = MBDModelCreate(modelId, NULL);
+        mbdEffBurstObjTbl[i] = obj;
         if (!noLayer) {
             Hu3DModelLayerSet(obj->omObj1->model[0], 0x800);
-            Hu3DModelAttrSet(D_80102AD0_name_81[i]->omObj1->model[0], 0x180, 0);
-            Hu3DModelRemakeStatic(D_80102AD0_name_81[i]->omObj1->model[0]);
+            Hu3DModelAttrSet(mbdEffBurstObjTbl[i]->omObj1->model[0], 0x180, 0);
+            Hu3DModelRemakeStatic(mbdEffBurstObjTbl[i]->omObj1->model[0]);
         }
-        MBDModelTempAllocFree(D_80102AD0_name_81[i]);
-        Hu3DMotionAttrSet(D_80102AD0_name_81[i]->omObj1->model[0], 2, 0);
-        HuVecCopy3F(&D_80102AD0_name_81[i]->coords, &pos);
-        D_80102AD0_name_81[i]->coords.x += spread * offsets[i % 6].x;
-        D_80102AD0_name_81[i]->coords.y += spread * offsets[i % 6].y;
-        D_80102AD0_name_81[i]->coords.z += spread * offsets[i % 6].z;
+        MBDModelTempAllocFree(mbdEffBurstObjTbl[i]);
+        Hu3DMotionAttrSet(mbdEffBurstObjTbl[i]->omObj1->model[0], 2, 0);
+        HuVecCopy3F(&mbdEffBurstObjTbl[i]->coords, &pos);
+        mbdEffBurstObjTbl[i]->coords.x += spread * offsets[i % 6].x;
+        mbdEffBurstObjTbl[i]->coords.y += spread * offsets[i % 6].y;
+        mbdEffBurstObjTbl[i]->coords.z += spread * offsets[i % 6].z;
         HuPrcSleep(interval);
     }
-    func_800EFABC_name_81(D_80102AD0_name_81[i - 1]);
+    MBDModelMotionWait(mbdEffBurstObjTbl[i - 1]);
     for (i = 0; i < count; i++) {
-        MBDModelKill(D_80102AD0_name_81[i]);
+        MBDModelKill(mbdEffBurstObjTbl[i]);
     }
     omDelPrcObj(NULL);
 }
 
-Process *func_800DCA64_name_81(s32 modelId, s32 count, Vec *pos, f32 spread, s32 interval) {
-    Process *process = omAddPrcObj(func_800DC800_name_81, 0, 0, 0x40);
+Process *MBDEffBurstCreate(s32 modelId, s32 count, Vec *pos, f32 spread, s32 interval) {
+    Process *process = omAddPrcObj(MBDEffBurstProc, 0, 0, 0x40);
     EffectBurstWork *work = HuMemMemoryAlloc(process->heap, sizeof(EffectBurstWork));
 
     process->user_data = work;
@@ -93,8 +93,8 @@ Process *func_800DCA64_name_81(s32 modelId, s32 count, Vec *pos, f32 spread, s32
     return process;
 }
 
-Process *func_800DCB04_name_81(s32 modelId, s32 count, Vec *pos, f32 spread, s32 interval) {
-    Process *process = omAddPrcObj(func_800DC800_name_81, 0, 0, 0x40);
+Process *MBDEffBurstNoLayerCreate(s32 modelId, s32 count, Vec *pos, f32 spread, s32 interval) {
+    Process *process = omAddPrcObj(MBDEffBurstProc, 0, 0, 0x40);
     EffectBurstWork *work = HuMemMemoryAlloc(process->heap, sizeof(EffectBurstWork));
 
     process->user_data = work;
@@ -107,7 +107,7 @@ Process *func_800DCB04_name_81(s32 modelId, s32 count, Vec *pos, f32 spread, s32
     return process;
 }
 
-void func_800DCBA8_name_81(void) {
+void MBDEffMdlProc(void) {
     EffectMoveWork *work = HuPrcCurrentGet()->user_data;
     Vec *velIn = work->vel;
     Vec vel = { 0.0f, 0.0f, 0.0f };
@@ -130,8 +130,8 @@ void func_800DCBA8_name_81(void) {
     omDelPrcObj(NULL);
 }
 
-Process *func_800DCC8C_name_81(s32 modelId, Vec *pos, Vec *vel, f32 scale, s32 delay, f32 speed) {
-    Object *obj = func_800D8010_name_81(modelId, NULL);
+Process *MBDEffMdlCreateEx(s32 modelId, Vec *pos, Vec *vel, f32 scale, s32 delay, f32 speed) {
+    Object *obj = MBDModelCreate(modelId, NULL);
     Process *process;
     EffectMoveWork *work;
 
@@ -148,7 +148,7 @@ Process *func_800DCC8C_name_81(s32 modelId, Vec *pos, Vec *vel, f32 scale, s32 d
     }
     HuVecCopy3F(&obj->coords, pos);
     HuVecCopyXYZ(&obj->scale, scale, scale, scale);
-    process = omAddPrcObj(func_800DCBA8_name_81, 0, 0, 0x40);
+    process = omAddPrcObj(MBDEffMdlProc, 0, 0, 0x40);
     work = HuMemMemoryAlloc(process->heap, sizeof(EffectMoveWork));
     process->user_data = work;
     work->modelId = modelId;
@@ -160,15 +160,15 @@ Process *func_800DCC8C_name_81(s32 modelId, Vec *pos, Vec *vel, f32 scale, s32 d
     return process;
 }
 
-Process *func_800DCE10_name_81(s32 modelId, Vec *pos, Vec *vel, f32 scale, s32 delay) {
-    return func_800DCC8C_name_81(modelId, pos, vel, scale, delay, 1.0f);
+Process *MBDEffMdlDelayCreate(s32 modelId, Vec *pos, Vec *vel, f32 scale, s32 delay) {
+    return MBDEffMdlCreateEx(modelId, pos, vel, scale, delay, 1.0f);
 }
 
-Process *func_800DCE40_name_81(s32 modelId, Vec *pos, Vec *vel, f32 scale) {
-    return func_800DCC8C_name_81(modelId, pos, vel, scale, 0, 1.0f);
+Process *MBDEffMdlCreate(s32 modelId, Vec *pos, Vec *vel, f32 scale) {
+    return MBDEffMdlCreateEx(modelId, pos, vel, scale, 0, 1.0f);
 }
 
-void func_800DCE6C_name_81(s16 model) {
+void MBDEffExplodeHook(s16 model) {
     HmfData *hmf = Hu3DData[model].hmf;
     HmfModelData_UnkBC_Struct *effect = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle;
@@ -217,7 +217,7 @@ void func_800DCE6C_name_81(s16 model) {
     }
 }
 
-s32 func_800DD1E0_name_81(s32 dataNum, char *objName) {
+s32 MBDEffExplodeCreate(s32 dataNum, char *objName) {
     s32 model = Hu3DModelRead(dataNum, 0xAA9);
 
     Hu3DModelPosSet(model, 0.0f, 0.0f, 0.0f);
@@ -229,19 +229,19 @@ s32 func_800DD1E0_name_81(s32 dataNum, char *objName) {
     Hu3DModelCameraSet(model, 1);
     Hu3DMotionSpeedSet(model, 0.5f);
     Hu3DModelScaleSet(model, 0.1f, 0.1f, 0.1f);
-    Hu3DParticleCreate(model, -1, objName, func_800DCE6C_name_81);
+    Hu3DParticleCreate(model, -1, objName, MBDEffExplodeHook);
     return model;
 }
 
-void func_800DD2BC_name_81(s32 model) {
+void MBDEffExplodeKill(s32 model) {
     Hu3DModelKill(model);
 }
 
-void func_800DD2DC_name_81(s32 model, Vec *pos) {
+void MBDEffExplodePosSet(s32 model, Vec *pos) {
     Hu3DModelPosSet(model, pos->x, pos->y, pos->z);
 }
 
-void func_800DD30C_name_81(s32 model) {
+void MBDEffExplodeLoop(s32 model) {
     if (Hu3DMotion[Hu3DData[model].motId].unk02 <= Hu3DData[model].motTime) {
         Hu3DMotionTimeSet(model, 0.0f);
         Hu3DParticleAttrSet(model, 4, 0);
@@ -249,54 +249,54 @@ void func_800DD30C_name_81(s32 model) {
     }
 }
 
-s32 func_800DD3B4_name_81(s32 arg0) {
+s32 MBDEffExplodeEndCheck(s32 arg0) {
     return Hu3DMotion[Hu3DData[arg0].motId].unk02 <= Hu3DData[arg0].motTime;
 }
 
-void func_800DD41C_name_81(Vec *pos) {
+void MBDEffSwirlCreate(Vec *pos) {
     s16 model;
 
-    model = D_80102B50_name_81 = Hu3DModelRead(0xB0032, 0xAA9);
+    model = mbdEffSwirlMdl = Hu3DModelRead(0xB0032, 0xAA9);
     Hu3DModelPosSet(model, 0.0f, 0.0f, 0.0f);
     Hu3DModelObjAttrSet(model, 0x20000, 0x20000);
     Hu3DModelCameraSet(model, 1);
     Hu3DModelRemakeStatic(model);
     Hu3DModelVtxBufMake(model);
     Hu3DModelDynamicFree(model);
-    Hu3DParticleCreate(model, -1, NULL, func_800DD75C_name_81);
-    func_800DD59C_name_81(model, 5.0f, 1.0f);
-    D_80100E40_name_81 = 0;
-    D_80102B54_name_81 = omAddObj(2000, 10, 10, -1, func_800DD518_name_81);
-    HuVecCopy3F(&D_80102B58_name_81, pos);
+    Hu3DParticleCreate(model, -1, NULL, MBDEffSwirlHook);
+    MBDEffSwirlParamSet(model, 5.0f, 1.0f);
+    mbdEffSwirlF = 0;
+    mbdEffSwirlObj = omAddObj(2000, 10, 10, -1, MBDEffSwirlObjMain);
+    HuVecCopy3F(&mbdEffSwirlPos, pos);
 }
 
-void func_800DD518_name_81(omObjData *obj) {
-    if (D_80100E40_name_81 != 0) {
-        func_800DD5CC_name_81(D_80102B50_name_81);
-        func_800DD5CC_name_81(D_80102B50_name_81);
+void MBDEffSwirlObjMain(omObjData *obj) {
+    if (mbdEffSwirlF != 0) {
+        MBDEffSwirlEmit(mbdEffSwirlMdl);
+        MBDEffSwirlEmit(mbdEffSwirlMdl);
     }
 }
 
-void func_800DD554_name_81(void) {
-    D_80100E40_name_81 = 1;
+void MBDEffSwirlOn(void) {
+    mbdEffSwirlF = 1;
 }
 
-void func_800DD564_name_81(void) {
-    D_80100E40_name_81 = 0;
+void MBDEffSwirlOff(void) {
+    mbdEffSwirlF = 0;
 }
 
-void func_800DD570_name_81(void) {
-    Hu3DModelKill(D_80102B50_name_81);
-    omDelObj(D_80102B54_name_81);
+void MBDEffSwirlKill(void) {
+    Hu3DModelKill(mbdEffSwirlMdl);
+    omDelObj(mbdEffSwirlObj);
 }
 
-void func_800DD59C_name_81(s16 arg0, f32 arg1, f32 arg2) {
+void MBDEffSwirlParamSet(s16 arg0, f32 arg1, f32 arg2) {
     HmfModelData_UnkBC_Struct *unkBC = Hu3DData[arg0].unkBC;
     unkBC->unk08.f = arg1;
     unkBC->unk0C.f = arg2;
 }
 
-void func_800DD5CC_name_81(s16 model) {
+void MBDEffSwirlEmit(s16 model) {
     HmfData *hmf = Hu3DData[model].hmf;
     HmfModelData_UnkBC_Struct *effect = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle = effect->unk58;
@@ -308,16 +308,16 @@ void func_800DD5CC_name_81(s16 model) {
             particle->unk18 = ((rand8() * 75) >> 6) + 100;
             particle->unk1C = effect->unk08.f;
             particle->unk20 = (rand8() * 45) >> 5;
-            particle->unk0C = sindf(particle->unk20) * particle->unk18 / 20.0f + D_80102B58_name_81.x + 142.0f;
-            particle->unk10 = D_80102B58_name_81.y;
-            particle->unk14 = cosdf(particle->unk20) * particle->unk18 / 20.0f + D_80102B58_name_81.z;
+            particle->unk0C = sindf(particle->unk20) * particle->unk18 / 20.0f + mbdEffSwirlPos.x + 142.0f;
+            particle->unk10 = mbdEffSwirlPos.y;
+            particle->unk14 = cosdf(particle->unk20) * particle->unk18 / 20.0f + mbdEffSwirlPos.z;
             particle->unk08 = 0.3f;
             break;
         }
     }
 }
 
-void func_800DD75C_name_81(s16 model) {
+void MBDEffSwirlHook(s16 model) {
     HmfData *hmf = Hu3DData[model].hmf;
     HmfModelData_UnkBC_Struct *effect = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle;
@@ -338,9 +338,9 @@ void func_800DD75C_name_81(s16 model) {
     particle = effect->unk58;
     for (i = 0; i < count; i++, particle++) {
         if (particle->unk08 > 0.0f) {
-            particle->unk0C = sindf(particle->unk20) * particle->unk18 / 20.0f + D_80102B58_name_81.x + 142.0f;
+            particle->unk0C = sindf(particle->unk20) * particle->unk18 / 20.0f + mbdEffSwirlPos.x + 142.0f;
             particle->unk10 += particle->unk1C;
-            particle->unk14 = cosdf(particle->unk20) * particle->unk18 / 20.0f + D_80102B58_name_81.z;
+            particle->unk14 = cosdf(particle->unk20) * particle->unk18 / 20.0f + mbdEffSwirlPos.z;
             particle->unk20 += (400.0f - particle->unk18) / 20.0f * effect->unk0C.f;
             if (particle->unk20 > 360.0f) {
                 particle->unk20 -= 360.0f;

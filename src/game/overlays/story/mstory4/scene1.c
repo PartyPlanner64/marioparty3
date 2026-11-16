@@ -1455,7 +1455,7 @@ void func_8010F910_mstory4(void) {
     HuPrcSleep(129);
 }
 
-void func_800E4F50_name_81(u8 *);
+void MBDBackArcInit(u8 *);
 void MBDBackCreate(s32, s32);                   /* extern */
 void func_8010EF28_mstory4(s32);                /* extern */
 void func_8010F0A0_mstory4(void);               /* extern */
@@ -1485,7 +1485,7 @@ void func_8010FC98_mstory4(void) {
 
     D_80111AC4_mstory4 = 1;
     var_s3 = 0;
-    func_800E4F50_name_81(hvq_data_ROM_START);
+    MBDBackArcInit(hvq_data_ROM_START);
     MBDBackCreate(0x20, 0);
     func_8010EF28_mstory4(7);
     for (i = 0; i < 6; i++) {

@@ -60,11 +60,11 @@ void func_8010AAE8_duelresult(void);
 void func_8010AB50_duelresult(void);
 void func_8010AB1C_duelresult(void);
 void func_8010ABB0_duelresult(void);
-void func_800F3C98_name_81(s16, s32 *, s16);
-void func_800F3EC0_name_81(s16);
-void func_800EB164_name_81(s32, s32);
-void func_800EF9C4_name_81(Object *, s32, s32);
-void func_800EFC28_name_81(void);
+void MBDPlayerModelCreate(s16, s32 *, s16);
+void MBDPlayerModelKill(s16);
+void MBDDlgWinExecAllKey(s32, s32);
+void MBDMotionEndShiftSet(Object *, s32, s32);
+void MBDPlayerKeyWait(void);
 
 s32 D_8010D290_duelresult = 0;
 
@@ -237,8 +237,8 @@ void func_801059A0_duelresult(void) {
     omInitObjMan(0x32, 0x32);
     func_8010AB50_duelresult();
     func_8010AAE8_duelresult();
-    func_800D87DC_name_81(700.0f);
-    func_800D85A8_name_81(1.6f);
+    MBDShadowHeightMaxSet(700.0f);
+    MBDModelScaleMulSet(1.6f);
     HuWinInit();
     omAddPrcObj(func_8010A938_duelresult, 0x300, 0x2000, 0);
     omAddObj(0x1000, 0, 0, -1, func_8010AA9C_duelresult);
@@ -280,7 +280,7 @@ void func_80105BD0_duelresult(void) {
     s32 i;
     s32 j;
 
-    groups[0] = func_800F4528_name_81(4, 2);
+    groups[0] = MBDSprGrpCreate(4, 2);
     for (i = 0; i < 4; i++) {
         data = DataRead(files.files[i]);
         groups[0]->unk_0C[i] = HuSprAnimRead(data);
@@ -291,7 +291,7 @@ void func_80105BD0_duelresult(void) {
         DataClose(data);
     }
 
-    groups[1] = func_800F4528_name_81(4, 2);
+    groups[1] = MBDSprGrpCreate(4, 2);
     for (i = 0; i < 4; i++) {
         data = DataRead(files.files[i]);
         groups[1]->unk_0C[i] = HuSprAnimRead(data);
@@ -304,7 +304,7 @@ void func_80105BD0_duelresult(void) {
 
     for (i = 0; i < 2; i++) {
         D_8010D8A8_duelresult[i] = MBDGetPlayerStruct(i);
-        func_800F3C98_name_81(i, D_8010D608_duelresult[GwPlayer[i].chr], 2);
+        MBDPlayerModelCreate(i, D_8010D608_duelresult[GwPlayer[i].chr], 2);
         HuVecCopy3F(&D_8010D8A8_duelresult[i]->player_obj->coords, &D_8010D36C_duelresult);
         D_8010D8A8_duelresult[i]->player_obj->flags |= 1;
         D_8010D8A8_duelresult[i]->stat |= 4;
@@ -320,12 +320,12 @@ void func_80105BD0_duelresult(void) {
         HuSprPosSet(groups[1]->unk_0A, 0, rightPos.pos[0][0] - i, rightPos.pos[0][1]);
         HuPrcVSleep();
     }
-    func_800F4584_name_81(groups[0]);
-    func_800F4584_name_81(groups[1]);
+    MBDSprGrpKill(groups[0]);
+    MBDSprGrpKill(groups[1]);
     HuPrcSleep(10);
     MBDBackTPLvlSet(255);
 
-    D_8010D864_duelresult = func_800D8010_name_81(0x3B, 0);
+    D_8010D864_duelresult = MBDModelCreate(0x3B, 0);
     AuraCreate(D_8010D864_duelresult->omObj1->model[0]);
     MBDModelTempAllocFree(D_8010D864_duelresult);
     HuVecCopy3F(&D_8010D864_duelresult->coords, &D_8010D324_duelresult);
@@ -351,7 +351,7 @@ void func_80105BD0_duelresult(void) {
                      &D_8010D8A8_duelresult[i]->player_obj->rot);
         targets[i].y += heights.heights[GwPlayer[i].chr];
         D_8010D8A8_duelresult[i]->player_obj->coords.y += heights.heights[GwPlayer[i].chr] - 80.0f;
-        func_800EBF2C_name_81(&D_8010D8A8_duelresult[i]->player_obj->coords, &targets[i],
+        MBDPlayerPosMoveCreate(&D_8010D8A8_duelresult[i]->player_obj->coords, &targets[i],
                               &D_8010D8A8_duelresult[i]->player_obj->coords, 20);
         for (j = 0; j < 20; j++) {
             HuVecCopyXYZ(&D_8010D8A8_duelresult[i]->player_obj->scale, (20.0f - j) / 40.0f + 0.5f,
@@ -409,7 +409,7 @@ void func_80105BD0_duelresult(void) {
         targets[i].y += 400.0f;
         func_8008A120_main(Hu3DData[D_8010D8A8_duelresult[i]->player_obj->omObj1->model[0]].mtx, -30.0f);
         MBDModelDispOn(D_8010D8A8_duelresult[i]->player_obj);
-        func_800EBF2C_name_81(&D_8010D8A8_duelresult[i]->player_obj->coords, &targets[i],
+        MBDPlayerPosMoveCreate(&D_8010D8A8_duelresult[i]->player_obj->coords, &targets[i],
                               &D_8010D8A8_duelresult[i]->player_obj->coords, 5);
         HuAudFXPlay(0x16A);
         for (j = 5; j > 0; j--) {
@@ -431,7 +431,7 @@ void func_80105BD0_duelresult(void) {
     AuraKill(D_8010D864_duelresult->omObj1->model[0]);
     MBDModelKill(D_8010D864_duelresult);
     for (i = 0; i < 2; i++) {
-        func_800F3EC0_name_81(i);
+        MBDPlayerModelKill(i);
     }
 }
 
@@ -557,7 +557,7 @@ void func_8010709C_duelresult(void) {
 
     index = *(s32 *)HuPrcCurrentGet()->user_data;
     process = HuPrcCurrentGet();
-    HuPrcChildLink(process, func_800EBF2C_name_81(&D_8010D8A8_duelresult[index]->player_obj->coords,
+    HuPrcChildLink(process, MBDPlayerPosMoveCreate(&D_8010D8A8_duelresult[index]->player_obj->coords,
                                                   &D_8010D378_duelresult[index + 2],
                                                   &D_8010D8A8_duelresult[index]->player_obj->coords, 10));
     MBDMotionSet(D_8010D8A8_duelresult[index]->player_obj, 0, 0);
@@ -744,10 +744,10 @@ void func_80107F3C_duelresult(void) {
                          D_8010D8B0_duelresult[i]->coords.y + (D_8010D67C_duelresult + D_8010D930_duelresult[i]),
                          D_8010D8B0_duelresult[i]->coords.z);
             if (D_8010D8B0_duelresult[i]->coords.y >= 1000.0f) {
-                HuVecCopyXYZ(&D_8010D8B0_duelresult[i]->coords, (func_800EFE20_name_81(300.0f) - 150) * 5.0f,
-                             -(func_800EFE20_name_81(200.0f) + 250) * 5.0f, (300 - i * 50) * 5.0f);
+                HuVecCopyXYZ(&D_8010D8B0_duelresult[i]->coords, (MBDRand(300.0f) - 150) * 5.0f,
+                             -(MBDRand(200.0f) + 250) * 5.0f, (300 - i * 50) * 5.0f);
                 D_8010D930_duelresult[i] =
-                    func_800EFE20_name_81(D_8010D67C_duelresult / 2.0f) - D_8010D67C_duelresult / 4.0f;
+                    MBDRand(D_8010D67C_duelresult / 2.0f) - D_8010D67C_duelresult / 4.0f;
                 if (D_8010D678_duelresult) {
                     MBDModelDispOff(D_8010D8B0_duelresult[i]);
                     D_8010D680_duelresult[i] = 1;
@@ -772,14 +772,14 @@ s32 func_80108138_duelresult(void) {
 void func_80108174_duelresult(DuelResultWork *work, s32 index) {
     s32 x, y, z;
 
-    x = func_800EFE20_name_81(256.0f) - 128;
-    y = -func_800EFE20_name_81(256.0f) - 500;
+    x = MBDRand(256.0f) - 128;
+    y = -MBDRand(256.0f) - 500;
     func_8010AC84_duelresult(work, x, y, 0.0f);
-    x = func_800EFE20_name_81(100.0f) + index * 500 - 550;
-    y = func_800EFE20_name_81(64.0f) + 218;
-    z = func_800EFE20_name_81(500.0f) - 500;
+    x = MBDRand(100.0f) + index * 500 - 550;
+    y = MBDRand(64.0f) + 218;
+    z = MBDRand(500.0f) - 500;
     func_8010AC74_duelresult(work, x, y, z);
-    func_8010AC94_duelresult(work, func_800EFE20_name_81(60.0f) + 30);
+    func_8010AC94_duelresult(work, MBDRand(60.0f) + 30);
 }
 
 void func_801082C0_duelresult(void) {
@@ -865,10 +865,10 @@ void func_8010856C_duelresult(void) {
 
     MBDBackKill();
     MBDBackLoad(1);
-    func_800E8180_name_81(1000.0f, 10000.0f);
+    MBDCameraNearFarSet(1000.0f, 10000.0f);
     for (i = 0; i < 2; i++) {
         D_8010D8A8_duelresult[i] = MBDGetPlayerStruct(i);
-        func_800F3C98_name_81(i, D_8010D628_duelresult[GwPlayer[i].chr], 2);
+        MBDPlayerModelCreate(i, D_8010D628_duelresult[GwPlayer[i].chr], 2);
         D_8010D8A8_duelresult[i]->player_obj->flags |= 1;
         D_8010D8A8_duelresult[i]->stat |= 4;
         motions = D_8010D7F0_duelresult;
@@ -885,7 +885,7 @@ void func_8010856C_duelresult(void) {
     for (i = 0; i < 2; i++) {
         HuVecCopyXYZ(&D_8010D8A8_duelresult[i]->player_obj->scale, 1.0f, 1.0f, 1.0f);
         HuVecCopy3F(&D_8010D8A8_duelresult[i]->player_obj->coords, &D_8010D378_duelresult[i]);
-        func_800EB7BC_name_81(&D_8010D8A8_duelresult[i]->player_obj->rot);
+        MBDVecForwardSet(&D_8010D8A8_duelresult[i]->player_obj->rot);
         func_8008A120_main(Hu3DData[D_8010D8A8_duelresult[i]->player_obj->omObj1->model[0]].mtx, 0.0f);
     }
 
@@ -909,7 +909,7 @@ void func_8010856C_duelresult(void) {
     }
     rotObj = omAddObj(0x1000, 0, 0, -1, func_80106C4C_duelresult);
 
-    D_8010D8E0_duelresult = func_800D8010_name_81(0x3E, D_8010D65C_duelresult);
+    D_8010D8E0_duelresult = MBDModelCreate(0x3E, D_8010D65C_duelresult);
     D_8010D8E0_duelresult->flags |= 1;
     HuVecCopy3F(&D_8010D8E0_duelresult->coords, &D_8010D2AC_duelresult);
     D_8010D8E0_duelresult->rot.x = sindf(10.0f);
@@ -933,7 +933,7 @@ void func_8010856C_duelresult(void) {
 
     for (i = 0; i < 2; i++) {
         HuPrcChildLink(HuPrcCurrentGet(),
-                       func_800EBF2C_name_81(&D_8010D8C8_duelresult[i]->coords, &D_8010D2DC_duelresult[2 - i],
+                       MBDPlayerPosMoveCreate(&D_8010D8C8_duelresult[i]->coords, &D_8010D2DC_duelresult[2 - i],
                                              &D_8010D8C8_duelresult[i]->coords, 60));
         obj = omAddObj(0x3FFF, 0, 0, -1, func_80106D48_duelresult);
         obj->work[1] = i;
@@ -941,7 +941,7 @@ void func_8010856C_duelresult(void) {
         HuPrcSleep(10);
     }
     HuPrcSleep(40);
-    HuPrcChildLink(HuPrcCurrentGet(), func_800EBF2C_name_81(&D_8010D8E0_duelresult->coords, &D_8010D2B8_duelresult,
+    HuPrcChildLink(HuPrcCurrentGet(), MBDPlayerPosMoveCreate(&D_8010D8E0_duelresult->coords, &D_8010D2B8_duelresult,
                                                             &D_8010D8E0_duelresult->coords, 60));
     obj = omAddObj(0x3FFF, 0, 0, -1, func_80106EF8_duelresult);
     obj->work[2] = 60;
@@ -964,7 +964,7 @@ void func_8010856C_duelresult(void) {
     MBDMotionSet(D_8010D8E0_duelresult, 1, 0);
     HuPrcSleep(22);
     func_8010690C_duelresult(D_8010D8E0_duelresult->omObj1->model[0], D_8010D8E8_duelresult[0]);
-    func_800EF9C4_name_81(D_8010D8E0_duelresult, -1, 2);
+    MBDMotionEndShiftSet(D_8010D8E0_duelresult, -1, 2);
     HuAudFXPlay(0x2A8);
     HuPrcSleep(10);
     for (i = 0; i < 2; i++) {
@@ -976,13 +976,13 @@ void func_8010856C_duelresult(void) {
     }
     HuPrcChildWatch();
 
-    func_800EB164_name_81(-1, 0x2001);
+    MBDDlgWinExecAllKey(-1, 0x2001);
     HuAudFXPlay(0x16B);
-    actor = func_800D8010_name_81(0x1D, NULL);
+    actor = MBDModelCreate(0x1D, NULL);
     HuVecCopy3F(&actor->coords, &D_8010D294_duelresult);
-    HuPrcChildLink(HuPrcCurrentGet(), func_800D9668_name_81(actor, 0, 20.0f, 20));
+    HuPrcChildLink(HuPrcCurrentGet(), MBDModelSpinCreate(actor, 0, 20.0f, 20));
     HuPrcChildLink(HuPrcCurrentGet(),
-                   func_800EBF2C_name_81(&actor->coords, &D_8010D2A0_duelresult, &actor->coords, 20));
+                   MBDPlayerPosMoveCreate(&actor->coords, &D_8010D2A0_duelresult, &actor->coords, 20));
     EffectParamSet(effect, 15.0f, 30.0f, 10.0f);
     Hu3DParticleAttrSet(effect, 0, 1);
     while (1) {
@@ -995,17 +995,17 @@ void func_8010856C_duelresult(void) {
     Hu3DParticleAttrSet(effect, 1, 0);
     MBDModelKill(actor);
     func_80107BC0_duelresult();
-    func_800EFC28_name_81();
+    MBDPlayerKeyWait();
     func_80107E7C_duelresult();
 
     if (GwPlayer[0].star == GwPlayer[1].star) {
-        func_800EB164_name_81(-1, 0x2003);
+        MBDDlgWinExecAllKey(-1, 0x2003);
         HuAudFXPlay(0x16C);
-        actor = func_800D8010_name_81(0x1A, NULL);
+        actor = MBDModelCreate(0x1A, NULL);
         HuVecCopy3F(&actor->coords, &D_8010D294_duelresult);
-        HuPrcChildLink(HuPrcCurrentGet(), func_800D9668_name_81(actor, 0, 20.0f, 20));
+        HuPrcChildLink(HuPrcCurrentGet(), MBDModelSpinCreate(actor, 0, 20.0f, 20));
         HuPrcChildLink(HuPrcCurrentGet(),
-                       func_800EBF2C_name_81(&actor->coords, &D_8010D2A0_duelresult, &actor->coords, 20));
+                       MBDPlayerPosMoveCreate(&actor->coords, &D_8010D2A0_duelresult, &actor->coords, 20));
         EffectParamSet(effect, 15.0f, 30.0f, 10.0f);
         Hu3DParticleAttrSet(effect, 0, 1);
         while (1) {
@@ -1018,19 +1018,19 @@ void func_8010856C_duelresult(void) {
         Hu3DParticleAttrSet(effect, 1, 0);
         MBDModelKill(actor);
         func_80107644_duelresult();
-        func_800EFC28_name_81();
+        MBDPlayerKeyWait();
         func_80107A58_duelresult();
 
         if (GwPlayer[0].coin == GwPlayer[1].coin) {
             // The duel is a draw
-            func_800EB164_name_81(-1, 0x2004);
+            MBDDlgWinExecAllKey(-1, 0x2004);
             HuPrcVSleep();
             for (i = 0; i < 2; i++) {
                 MBDMotionSet(D_8010D8A8_duelresult[i]->player_obj, 3, 0);
             }
             HuAudFXPlay(0x2A9);
             func_8010690C_duelresult(D_8010D8E0_duelresult->omObj1->model[0], D_8010D8E8_duelresult[4]);
-            group = func_800F4528_name_81(1, 0);
+            group = MBDSprGrpCreate(1, 0);
             data = DataRead(0x130134);
             group->unk_0C[0] = HuSprAnimRead(data);
             DataClose(data);
@@ -1080,7 +1080,7 @@ void func_8010856C_duelresult(void) {
     }
 
     func_8010690C_duelresult(D_8010D8E0_duelresult->omObj1->model[0], D_8010D8E8_duelresult[1]);
-    func_800EB164_name_81(-1, 0x2002);
+    MBDDlgWinExecAllKey(-1, 0x2002);
 
     // Determine rankings
     for (j = 0; j < 2; j++) {
@@ -1099,13 +1099,13 @@ void func_8010856C_duelresult(void) {
     }
     kakusiMasuItemHis[2] = 0;
 
-    D_8010D864_duelresult = func_800D8010_name_81(0x3B, NULL);
+    D_8010D864_duelresult = MBDModelCreate(0x3B, NULL);
     AuraCreate(D_8010D864_duelresult->omObj1->model[0]);
     HuVecCopy3F(&D_8010D864_duelresult->coords, &D_8010D330_duelresult);
-    HuPrcChildLink(HuPrcCurrentGet(), func_800EBF2C_name_81(&D_8010D8E0_duelresult->coords, &D_8010D2D0_duelresult,
+    HuPrcChildLink(HuPrcCurrentGet(), MBDPlayerPosMoveCreate(&D_8010D8E0_duelresult->coords, &D_8010D2D0_duelresult,
                                                             &D_8010D8E0_duelresult->coords, 20));
     HuAudFXPlay(0x16D);
-    HuPrcChildLink(HuPrcCurrentGet(), func_800EBF2C_name_81(&D_8010D864_duelresult->coords, &D_8010D33C_duelresult,
+    HuPrcChildLink(HuPrcCurrentGet(), MBDPlayerPosMoveCreate(&D_8010D864_duelresult->coords, &D_8010D33C_duelresult,
                                                             &D_8010D864_duelresult->coords, 40));
     EffectParamSet(effect, 15.0f, 30.0f, 20.0f);
     Hu3DParticleAttrSet(effect, 0, 1);
@@ -1122,7 +1122,7 @@ void func_8010856C_duelresult(void) {
     swayObj->rot.y = 30.0f;
     swayObj->rot.z = 10.0f;
     HuAudFXPlay(0x159);
-    func_800EB164_name_81(-1, 0x2005);
+    MBDDlgWinExecAllKey(-1, 0x2005);
 
     // Fade out the clouds
     state[0] = 0xFF;
@@ -1159,12 +1159,12 @@ void func_8010856C_duelresult(void) {
     HuAudFXPlay(0x16E);
     omDelObj(swayObj);
     for (i = 0; i < 2; i++) {
-        func_800EBF2C_name_81(&D_8010D8A8_duelresult[i]->player_obj->coords, &D_8010D378_duelresult[i + 14],
+        MBDPlayerPosMoveCreate(&D_8010D8A8_duelresult[i]->player_obj->coords, &D_8010D378_duelresult[i + 14],
                               &D_8010D8A8_duelresult[i]->player_obj->coords, 20);
-        func_800EBF2C_name_81(&D_8010D8C8_duelresult[1 - i]->coords, &D_8010D378_duelresult[i + 14],
+        MBDPlayerPosMoveCreate(&D_8010D8C8_duelresult[1 - i]->coords, &D_8010D378_duelresult[i + 14],
                               &D_8010D8C8_duelresult[1 - i]->coords, 20);
     }
-    HuPrcChildLink(HuPrcCurrentGet(), func_800EBF2C_name_81(&D_8010D864_duelresult->coords, &D_8010D360_duelresult,
+    HuPrcChildLink(HuPrcCurrentGet(), MBDPlayerPosMoveCreate(&D_8010D864_duelresult->coords, &D_8010D360_duelresult,
                                                             &D_8010D864_duelresult->coords, 2));
     while (1) {
         EffectPosSet(effect, D_8010D864_duelresult->coords.x, D_8010D864_duelresult->coords.y,
@@ -1174,12 +1174,12 @@ void func_8010856C_duelresult(void) {
         }
         HuPrcVSleep();
     }
-    HuPrcChildLink(HuPrcCurrentGet(), func_800EBF2C_name_81(&D_8010D864_duelresult->coords, &D_8010D33C_duelresult,
+    HuPrcChildLink(HuPrcCurrentGet(), MBDPlayerPosMoveCreate(&D_8010D864_duelresult->coords, &D_8010D33C_duelresult,
                                                             &D_8010D864_duelresult->coords, 18));
     HuPrcSleep(18);
     for (i = 0; i < 2; i++) {
         HuPrcChildLink(HuPrcCurrentGet(),
-                       func_800EBF2C_name_81(&D_8010D8C8_duelresult[1 - i]->coords, &D_8010D378_duelresult[i + 8],
+                       MBDPlayerPosMoveCreate(&D_8010D8C8_duelresult[1 - i]->coords, &D_8010D378_duelresult[i + 8],
                                              &D_8010D8C8_duelresult[1 - i]->coords, 20));
     }
     HuPrcSleep(5);
@@ -1193,11 +1193,11 @@ void func_8010856C_duelresult(void) {
         D_8010D67C_duelresult += 1.0f;
         if (j == 20) {
             for (i = 0; i < 2; i++) {
-                func_800EBF2C_name_81(&D_8010D8A8_duelresult[i]->player_obj->coords, &D_8010D378_duelresult[i + 6],
+                MBDPlayerPosMoveCreate(&D_8010D8A8_duelresult[i]->player_obj->coords, &D_8010D378_duelresult[i + 6],
                                       &D_8010D8A8_duelresult[i]->player_obj->coords, 10);
             }
             HuPrcChildLink(HuPrcCurrentGet(),
-                           func_800EBF2C_name_81(&D_8010D864_duelresult->coords, &D_8010D348_duelresult,
+                           MBDPlayerPosMoveCreate(&D_8010D864_duelresult->coords, &D_8010D348_duelresult,
                                                  &D_8010D864_duelresult->coords, 15));
         }
         EffectPosSet(effect, D_8010D864_duelresult->coords.x, D_8010D864_duelresult->coords.y,
@@ -1217,17 +1217,17 @@ void func_8010856C_duelresult(void) {
     // Reveal the winner's star
     HuVecCopy3F(&star->coords, &D_8010D8C8_duelresult[1 - kakusiMasuItemHis[0]]->coords);
     MBDModelDispOn(star);
-    HuPrcChildLink(HuPrcCurrentGet(), func_800EBF2C_name_81(&star->coords,
+    HuPrcChildLink(HuPrcCurrentGet(), MBDPlayerPosMoveCreate(&star->coords,
                                                             &D_8010D378_duelresult[kakusiMasuItemHis[0] + 10],
                                                             &star->coords, 30));
     HuPrcSleep(2);
-    func_800EBF2C_name_81(&D_8010D8A8_duelresult[kakusiMasuItemHis[0]]->player_obj->coords,
+    MBDPlayerPosMoveCreate(&D_8010D8A8_duelresult[kakusiMasuItemHis[0]]->player_obj->coords,
                           &D_8010D378_duelresult[kakusiMasuItemHis[0] + 10],
                           &D_8010D8A8_duelresult[kakusiMasuItemHis[0]]->player_obj->coords, 28);
     omDelObj(swayObj);
-    func_800EBF2C_name_81(&D_8010D864_duelresult->coords, &D_8010D360_duelresult, &D_8010D864_duelresult->coords,
+    MBDPlayerPosMoveCreate(&D_8010D864_duelresult->coords, &D_8010D360_duelresult, &D_8010D864_duelresult->coords,
                           15);
-    func_800EBF2C_name_81(&D_8010D8A8_duelresult[1 - kakusiMasuItemHis[0]]->player_obj->coords,
+    MBDPlayerPosMoveCreate(&D_8010D8A8_duelresult[1 - kakusiMasuItemHis[0]]->player_obj->coords,
                           &D_8010D378_duelresult[15 - kakusiMasuItemHis[0]],
                           &D_8010D8A8_duelresult[1 - kakusiMasuItemHis[0]]->player_obj->coords, 15);
     for (i = 0; i < 15; i++) {
@@ -1243,19 +1243,19 @@ void func_8010856C_duelresult(void) {
         HuPrcVSleep();
     }
     MBDMotionSet(D_8010D8A8_duelresult[kakusiMasuItemHis[0]]->player_obj, 0, 0);
-    func_800EF9C4_name_81(D_8010D8A8_duelresult[kakusiMasuItemHis[0]]->player_obj, -1, 2);
+    MBDMotionEndShiftSet(D_8010D8A8_duelresult[kakusiMasuItemHis[0]]->player_obj, -1, 2);
     for (i = 0; i < 5; i++) {
         D_8010D67C_duelresult -= 3.0f;
         HuPrcVSleep();
     }
     HuPrcSleep(10);
     HuPrcChildLink(HuPrcCurrentGet(),
-                   func_800EBF2C_name_81(&D_8010D8A8_duelresult[1 - kakusiMasuItemHis[0]]->player_obj->coords,
+                   MBDPlayerPosMoveCreate(&D_8010D8A8_duelresult[1 - kakusiMasuItemHis[0]]->player_obj->coords,
                                          &D_8010D378_duelresult[9 - kakusiMasuItemHis[0]],
                                          &D_8010D8A8_duelresult[1 - kakusiMasuItemHis[0]]->player_obj->coords, 20));
     PlayerFXPlay(0x286, 1 - kakusiMasuItemHis[0]);
     omDelObj(swayObj);
-    HuPrcChildLink(HuPrcCurrentGet(), func_800EBF2C_name_81(&D_8010D864_duelresult->coords, &D_8010D348_duelresult,
+    HuPrcChildLink(HuPrcCurrentGet(), MBDPlayerPosMoveCreate(&D_8010D864_duelresult->coords, &D_8010D348_duelresult,
                                                             &D_8010D864_duelresult->coords, 45));
     D_8010D678_duelresult = 1;
     while (D_8010D67C_duelresult > 60.0f) {
@@ -1277,17 +1277,17 @@ void func_8010856C_duelresult(void) {
     swayObj->rot.y = 10.0f;
     swayObj->rot.z = 10.0f;
     HuPrcSleep(20);
-    HuPrcChildLink(HuPrcCurrentGet(), func_800EBF2C_name_81(&star->coords,
+    HuPrcChildLink(HuPrcCurrentGet(), MBDPlayerPosMoveCreate(&star->coords,
                                                             &D_8010D378_duelresult[kakusiMasuItemHis[0] + 6],
                                                             &star->coords, 60));
-    func_800EBF2C_name_81(&D_8010D8A8_duelresult[kakusiMasuItemHis[0]]->player_obj->coords,
+    MBDPlayerPosMoveCreate(&D_8010D8A8_duelresult[kakusiMasuItemHis[0]]->player_obj->coords,
                           &D_8010D378_duelresult[kakusiMasuItemHis[0] + 6],
                           &D_8010D8A8_duelresult[kakusiMasuItemHis[0]]->player_obj->coords, 60);
     HuPrcChildWatch();
 
-    func_800EB4DC_name_81(-1, 0x2006, mbKSuitObj[GwPlayer[kakusiMasuItemHis[0]].chr], 0, 0, 0, 0);
-    func_800EB278_name_81();
-    func_800EB29C_name_81();
+    MBDDlgWinInsertCreateAllKey(-1, 0x2006, mbKSuitObj[GwPlayer[kakusiMasuItemHis[0]].chr], 0, 0, 0, 0);
+    MBDDlgWinClose();
+    MBDDlgWinKill();
     for (i = 0; i < 2; i++) {
         actors = D_8010D83C_duelresult;
         D_8010D8D0_duelresult[i] = MBDModelFileCreate(0x1301C8, -1, 1.0f, 0.0f, 0);
@@ -1295,7 +1295,7 @@ void func_8010856C_duelresult(void) {
         HuVecCopyXYZ(&D_8010D8D0_duelresult[i]->scale, 0.625f, 0.625f, 0.625f);
         MBDModelTempAllocFree(D_8010D8D0_duelresult[i]);
         HuPrcVSleep();
-        D_8010D8D8_duelresult[i] = func_800D8010_name_81(actors.ids[GwPlayer[kakusiMasuItemHis[0]].chr], NULL);
+        D_8010D8D8_duelresult[i] = MBDModelCreate(actors.ids[GwPlayer[kakusiMasuItemHis[0]].chr], NULL);
         HuVecCopy3F(&D_8010D8D8_duelresult[i]->coords, &D_8010D498_duelresult[i]);
         MBDModelTempAllocFree(D_8010D8D8_duelresult[i]);
         HuPrcVSleep();
@@ -1308,7 +1308,7 @@ void func_8010856C_duelresult(void) {
         star->coords.y += 2.0f;
         if (i == 40) {
             Hu3DParticleAttrSet(effect, 1, 0);
-            func_800EBF2C_name_81(&D_8010D864_duelresult->coords, &D_8010D354_duelresult,
+            MBDPlayerPosMoveCreate(&D_8010D864_duelresult->coords, &D_8010D354_duelresult,
                                   &D_8010D864_duelresult->coords, 30);
         }
         HuPrcVSleep();
@@ -1318,30 +1318,30 @@ void func_8010856C_duelresult(void) {
         star->coords.y += 2.0f;
         if (i == 40) {
             Hu3DParticleAttrSet(effect, 1, 0);
-            func_800EBF2C_name_81(&D_8010D864_duelresult->coords, &D_8010D354_duelresult,
+            MBDPlayerPosMoveCreate(&D_8010D864_duelresult->coords, &D_8010D354_duelresult,
                                   &D_8010D864_duelresult->coords, 30);
         }
         HuPrcVSleep();
     }
 
-    func_800E8180_name_81(100.0f, 20000.0f);
+    MBDCameraNearFarSet(100.0f, 20000.0f);
     HuPrcChildLink(HuPrcCurrentGet(),
-                   func_800EBF2C_name_81(&D_8010D8A8_duelresult[kakusiMasuItemHis[0]]->player_obj->coords,
+                   MBDPlayerPosMoveCreate(&D_8010D8A8_duelresult[kakusiMasuItemHis[0]]->player_obj->coords,
                                          &D_8010D438_duelresult[GwPlayer[kakusiMasuItemHis[0]].chr],
                                          &D_8010D8A8_duelresult[kakusiMasuItemHis[0]]->player_obj->coords, 30));
     HuPrcChildLink(HuPrcCurrentGet(),
-                   func_800EBF2C_name_81(&star->coords, &D_8010D438_duelresult[GwPlayer[kakusiMasuItemHis[0]].chr],
+                   MBDPlayerPosMoveCreate(&star->coords, &D_8010D438_duelresult[GwPlayer[kakusiMasuItemHis[0]].chr],
                                          &star->coords, 30));
     HuPrcChildWatch();
     for (i = 0; i < 2; i++) {
-        func_800EBF2C_name_81(&D_8010D8D8_duelresult[i]->coords, &D_8010D4B0_duelresult[i],
+        MBDPlayerPosMoveCreate(&D_8010D8D8_duelresult[i]->coords, &D_8010D4B0_duelresult[i],
                               &D_8010D8D8_duelresult[i]->coords, 60);
-        func_800EBF2C_name_81(&D_8010D8D0_duelresult[i]->coords, &D_8010D4B0_duelresult[i],
+        MBDPlayerPosMoveCreate(&D_8010D8D0_duelresult[i]->coords, &D_8010D4B0_duelresult[i],
                               &D_8010D8D0_duelresult[i]->coords, 60);
     }
     for (i = 0; i < 2; i++) {
         if (i != kakusiMasuItemHis[0]) {
-            func_800F3EC0_name_81(i);
+            MBDPlayerModelKill(i);
             MBDModelKill(D_8010D8C8_duelresult[1 - i]);
         }
     }
@@ -1363,10 +1363,10 @@ void func_8010856C_duelresult(void) {
     CharAnimSet(D_8010D8A8_duelresult[kakusiMasuItemHis[0]]->player_obj->omObj1->model[0], 2,
                        GwPlayer[kakusiMasuItemHis[0]].chr, D_8010D868_duelresult[kakusiMasuItemHis[0]][1]);
     MBDMotionSet(D_8010D8A8_duelresult[kakusiMasuItemHis[0]]->player_obj, 2, 0);
-    func_800EFABC_name_81(D_8010D8A8_duelresult[kakusiMasuItemHis[0]]->player_obj);
+    MBDModelMotionWait(D_8010D8A8_duelresult[kakusiMasuItemHis[0]]->player_obj);
     HuAudFXPlay(0x177);
     MBDMotionSet(D_8010D8A8_duelresult[kakusiMasuItemHis[0]]->player_obj, 5, 2);
-    group = func_800F4528_name_81(1, 0);
+    group = MBDSprGrpCreate(1, 0);
     data = DataRead(0x1301C6);
     group->unk_0C[0] = HuSprAnimRead(data);
     DataClose(data);
@@ -1448,24 +1448,24 @@ void func_8010AA9C_duelresult(omObjData *obj) {
 
 void func_8010AAE8_duelresult() {
     MBDModelInit();
-    func_800F3F4C_name_81();
-    func_800EF840_name_81();
-    func_800F4300_name_81();
+    MBDPlayerMotInit();
+    MBDMotShiftInit();
+    MBDSprGrpInit();
 }
 
 void func_8010AB1C_duelresult() {
-    func_800F4314_name_81();
-    func_800EF880_name_81();
-    func_800F4030_name_81();
+    MBDSprGrpClose();
+    MBDMotShiftClose();
+    MBDPlayerClose();
     MBDModelClose();
 }
 
 void func_8010AB50_duelresult(void) {
     Hu3DCamInit(1);
     Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
-    func_800E4F50_name_81(hvq_data_ROM_START);
+    MBDBackArcInit(hvq_data_ROM_START);
     MBDBackLoad(0);
-    func_800E8180_name_81(1000.0f, 10000.0f);
+    MBDCameraNearFarSet(1000.0f, 10000.0f);
 }
 
 void func_8010ABB0_duelresult() {

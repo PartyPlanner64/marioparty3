@@ -205,9 +205,9 @@ void func_80107204_storyresult(void) {
     data = func_8010A4A4_storyresult(2, GwStory.unk1)->user_data;
     HuPrcVSleep();
     D_8010A912_storyresult = 1;
-    func_800E4F50_name_81(hvq_data_ROM_START);
+    MBDBackArcInit(hvq_data_ROM_START);
     MBDBackLoad(D_8010A940_storyresult[GwStory.unk0]);
-    func_800E8180_name_81(1000.0f, 10000.0f);
+    MBDCameraNearFarSet(1000.0f, 10000.0f);
     if (GwStory.unk0 == 12) {
         sprite = espEntry(HuSprAnimDataRead(0x1D0012), 0, 0);
         espAttrSet(sprite, 0x4000);
@@ -575,9 +575,9 @@ void func_8010822C_storyresult(void) {
     Hu3DScreenClearF = 0;
     func_801060D0_storyresult(&D_8010AB9C_storyresult);
     D_8010A912_storyresult = 1;
-    func_800E4F50_name_81(hvq_data_ROM_START);
+    MBDBackArcInit(hvq_data_ROM_START);
     MBDBackLoad(0x20);
-    func_800E8180_name_81(1000.0f, 10000.0f);
+    MBDCameraNearFarSet(1000.0f, 10000.0f);
     D_8010AC2A_storyresult = 0xB;
     WipeCreateIn(0xB, 0x10);
     while (WipeStatGet() != 0) {

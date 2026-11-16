@@ -2,7 +2,7 @@
 #include "ovl_81.h"
 
 // CPU decision logic function (duel equivalent of MBComTreeExec)
-s16 func_800D97B0_name_81(DecisionTreeNonLeafNode *tree) {
+s16 MBDComTreeExec(DecisionTreeNonLeafNode *tree) {
     char pad[32];
     DecisionTreeNonLeafNode *node = tree;
     GW_PLAYER *player;
@@ -22,7 +22,7 @@ s16 func_800D97B0_name_81(DecisionTreeNonLeafNode *tree) {
                 break;
 
             case 1:
-                if (func_800F3850_name_81(-1, node->node_data1.data) != 0) {
+                if (MBDPlayerCoinCheck(-1, node->node_data1.data) != 0) {
                     break;
                 }
                 continue;
@@ -72,7 +72,7 @@ s16 func_800D97B0_name_81(DecisionTreeNonLeafNode *tree) {
                 break;
 
             case 4:
-                if ((1 << func_800EFB3C_name_81(MBDGetCurrentPlayerIndex())) & node->node_data1.data) {
+                if ((1 << MBDPlayerRankCalc(MBDGetCurrentPlayerIndex())) & node->node_data1.data) {
                     break;
                 }
                 continue;
@@ -84,7 +84,7 @@ s16 func_800D97B0_name_81(DecisionTreeNonLeafNode *tree) {
                 continue;
 
             case 6:
-                turns = func_800EBA1C_name_81();
+                turns = MBDTurnRemain();
                 limit = node->node_data1.signed_data;
                 if ((limit > turns) == 0) {
                     break;
@@ -150,7 +150,7 @@ s16 func_800D97B0_name_81(DecisionTreeNonLeafNode *tree) {
                 continue;
 
             case 12:
-                if (func_800F3850_name_81(-1, node->node_data1.data) == 0) {
+                if (MBDPlayerCoinCheck(-1, node->node_data1.data) == 0) {
                     break;
                 }
                 continue;
@@ -176,20 +176,20 @@ s16 func_800D97B0_name_81(DecisionTreeNonLeafNode *tree) {
 
             case 15:
                 playerIndex = MBDGetCurrentPlayerIndex();
-                if (func_800F8980_name_81(playerIndex) == 0) {
+                if (MBDPartnerCostGet(playerIndex) == 0) {
                     break;
                 }
-                if (GwPlayer[playerIndex].coin / func_800F8980_name_81(playerIndex) >= node->node_data1.signed_data) {
+                if (GwPlayer[playerIndex].coin / MBDPartnerCostGet(playerIndex) >= node->node_data1.signed_data) {
                     break;
                 }
                 continue;
 
             case 16:
                 playerIndex = MBDGetCurrentPlayerIndex() ^ 1;
-                if (func_800F8980_name_81(playerIndex) == 0) {
+                if (MBDPartnerCostGet(playerIndex) == 0) {
                     break;
                 }
-                if (GwPlayer[playerIndex].coin / func_800F8980_name_81(playerIndex) >= node->node_data1.signed_data) {
+                if (GwPlayer[playerIndex].coin / MBDPartnerCostGet(playerIndex) >= node->node_data1.signed_data) {
                     break;
                 }
                 continue;
@@ -278,7 +278,7 @@ s16 func_800D97B0_name_81(DecisionTreeNonLeafNode *tree) {
                 break;
         }
 
-        if (func_800EB9D4_name_81(pct) != 0) {
+        if (MBDRandCheck100(pct) != 0) {
             cmp = (node->node_data2.data >> 0x1C) & 1;
         } else {
             cmp = ((node->node_data2.data >> 0x1C) ^ 1) & 1;

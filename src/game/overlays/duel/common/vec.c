@@ -74,7 +74,7 @@ void MBDVecRotateZ(Vec *arg0, f32 arg1) {
 }
 
 
-void func_800D7A6C_name_81(Vec* arg0, Vec* arg1, f32 arg2) {
+void MBDVecAxisRotate(Vec* arg0, Vec* arg1, f32 arg2) {
     Vec origPos;
     f32 temp_f2; //should be fs4
     f32 temp_f3; //should be fs1
@@ -103,7 +103,7 @@ void func_800D7A6C_name_81(Vec* arg0, Vec* arg1, f32 arg2) {
               ((arg1->z * arg1->z + (1.0f - arg1->z * arg1->z) * cosdf(arg2)) * origPos.z);
 }
 
-f32 func_800D7CEC_name_81(Vec *vec_1, Vec *vec_2) {
+f32 MBDVecBetweenAngleGet(Vec *vec_1, Vec *vec_2) {
     f32 length;
     f32 dot;
 

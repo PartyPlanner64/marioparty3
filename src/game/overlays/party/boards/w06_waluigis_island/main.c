@@ -2087,7 +2087,7 @@ extern const ModelIdTable D_8011E1F8_w06;
 extern const MessageTable D_8011E204_w06;
 extern const MasuIdTable D_8011E214_w06;
 
-void func_800D9F5C_name_81(Object *arg0, Vec *arg1, s32 arg2);
+void MBDDebugCheatKill(Object *arg0, Vec *arg1, s32 arg2);
 void func_80108A10_w06(void);
 
 s16 func_801059D0_w06(void) {
@@ -5527,7 +5527,7 @@ void func_8010F20C_w06(void) {
     space = MBMasuGet(spaceId);
     spaceId = camMasu;
     if (spaceId != -1) {
-        func_800D9F5C_name_81(boo, &space->coords, 5);
+        MBDDebugCheatKill(boo, &space->coords, 5);
         MBPlayerRotMasuStart(-1, 5, spaceId);
         HuPrcSleep(5);
         process = HuPrcCurrentGet();

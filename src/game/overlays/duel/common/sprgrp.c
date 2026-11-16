@@ -1,33 +1,33 @@
 #include "common_duel.h"
 #include "ovl_81.h"
 
-void func_800F4300_name_81(void) {
-    D_80105400_name_81 = 0;
-    D_80105404_name_81 = 0;
+void MBDSprGrpInit(void) {
+    mbdSprGrpListHead = 0;
+    mbdSprGrpNum = 0;
 }
 
-void func_800F4314_name_81(void) {
-    while (D_80105400_name_81 != 0) {
-        func_800F4584_name_81(D_80105400_name_81);
+void MBDSprGrpClose(void) {
+    while (mbdSprGrpListHead != 0) {
+        MBDSprGrpKill(mbdSprGrpListHead);
     }
 }
 
-UnkBoard4 *func_800F4354_name_81(s16 arg0) {
+UnkBoard4 *MBDSprGrpAlloc(s16 arg0) {
     UnkBoard4 *temp_v0;
     s32 i;
 
     temp_v0 = HuMemMemoryAllocTemp(sizeof(UnkBoard4));
     if (temp_v0 != NULL) {
-        D_80105404_name_81++;
+        mbdSprGrpNum++;
 
-        temp_v0->unk_00 = (void *)D_80105400_name_81;
+        temp_v0->unk_00 = (void *)mbdSprGrpListHead;
         temp_v0->unk_04 = NULL;
 
-        if (D_80105400_name_81 != NULL) {
-            D_80105400_name_81->unk_04 = temp_v0;
+        if (mbdSprGrpListHead != NULL) {
+            mbdSprGrpListHead->unk_04 = temp_v0;
         }
 
-        D_80105400_name_81 = temp_v0;
+        mbdSprGrpListHead = temp_v0;
         temp_v0->unk_08 = arg0;
 
         temp_v0->unk_0C = HuMemMemoryAllocTemp(arg0 * sizeof(*temp_v0->unk_0C));
@@ -58,17 +58,17 @@ UnkBoard4 *func_800F4354_name_81(s16 arg0) {
     return temp_v0;
 }
 
-UnkBoard4 *func_800F4528_name_81(s16 arg0, s16 arg1) {
+UnkBoard4 *MBDSprGrpCreate(s16 arg0, s16 arg1) {
     UnkBoard4 *temp_v0;
 
-    temp_v0 = func_800F4354_name_81(arg0);
+    temp_v0 = MBDSprGrpAlloc(arg0);
     if (temp_v0 != NULL) {
         temp_v0->unk_0A = HuSprGrpCreate(arg0, arg1);
     }
     return temp_v0;
 }
 
-void func_800F4584_name_81(UnkBoard4 *arg0) {
+void MBDSprGrpKill(UnkBoard4 *arg0) {
     s32 i;
 
     if (arg0->unk_00 != NULL) {
@@ -78,7 +78,7 @@ void func_800F4584_name_81(UnkBoard4 *arg0) {
     if (arg0->unk_04 != NULL) {
         arg0->unk_04->unk_00 = arg0->unk_00;
     } else {
-        D_80105400_name_81 = arg0->unk_00;
+        mbdSprGrpListHead = arg0->unk_00;
     }
 
     for (i = 0; i < arg0->unk_08; i++) {
@@ -94,16 +94,16 @@ void func_800F4584_name_81(UnkBoard4 *arg0) {
     HuMemMemoryFreeTemp(arg0->unk_14);
     HuMemMemoryFreeTemp(arg0->unk_0C);
     HuMemMemoryFreeTemp(arg0);
-    D_80105404_name_81 -= 1;
+    mbdSprGrpNum -= 1;
 }
 
-void func_800F466C_name_81(UnkBoard4 *arg0, s16 arg1, s16 arg2, s16 arg3) {
+void MBDSprGrpPosSet(UnkBoard4 *arg0, s16 arg1, s16 arg2, s16 arg3) {
     arg0->unk_18[arg1] = arg2;
     arg0->unk_1C[arg1] = arg3;
     HuSprPosSet(arg0->unk_0A, arg1, arg2, arg3);
 }
 
-void func_800F46BC_name_81(UnkBoard4 *arg0, s16 arg1, f32 arg2, f32 arg3) {
+void MBDSprGrpScaleSet(UnkBoard4 *arg0, s16 arg1, f32 arg2, f32 arg3) {
     arg0->unk_10[arg1] = arg2;
     arg0->unk_14[arg1] = arg3;
     HuSprScaleSet(arg0->unk_0A, arg1, arg2, arg3);

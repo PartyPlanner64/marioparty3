@@ -22,80 +22,80 @@ typedef struct UnkOvl81_3 {
     /* 0x14 */ char unk_14[0xC];
 } UnkOvl81_3; // sizeof 0x20
 
-extern s16 D_80102CA4_name_81;
-extern u8 D_80102CA6_name_81;
-extern s16 D_80102CA8_name_81;
-extern s16 D_80102CAA_name_81[];
-extern GAMEMES D_80102C30_name_81;
-extern omObjData *D_80102CB0_name_81;
-extern omObjData *D_80102CB4_name_81;
-extern u8 D_80102CB8_name_81;
-extern s16 D_80102CBA_name_81[2];
-extern s16 D_80102CBE_name_81[2];
-extern Vec D_80102CE0_name_81;
-extern Vec D_80102CEC_name_81;
-extern Vec D_80102CF8_name_81;
-extern Vec D_80102D04_name_81;
-extern Vec D_80102D10_name_81;
-extern s32 D_80102CC4_name_81;
-extern s32 D_80102CC8_name_81;
-extern UnkBoard4 *D_80102CCC_name_81;
-extern UnkBoard4 *D_80102CD0_name_81;
+extern s16 mbdTelopMgTypeStrNo;
+extern u8 mbdTelopFlag;
+extern s16 mbdTelopPlayerGrp;
+extern s16 mbdTelopPlayerAnim[];
+extern GAMEMES mbdTelopMes;
+extern omObjData *mbdTelopPlayerObj;
+extern omObjData *mbdTelopLast5Obj;
+extern u8 mbdTelopLast5StopF;
+extern s16 mbdTelopLast5Grp[2];
+extern s16 mbdTelopLast5Anim[2];
+extern Vec mbdGuideCameraEye;
+extern Vec mbdGuideCameraAt;
+extern Vec mbdGuideCameraUp;
+extern Vec mbdGuideCameraViewSize;
+extern Vec mbdGuideCameraViewPos;
+extern s32 mbdTelopLast5Turn;
+extern s32 mbdTelopMgTypeY;
+extern UnkBoard4 *mbdTelopTitleSpr;
+extern UnkBoard4 *mbdTelopTitleShadowSpr;
 
-char *D_80100FC0_name_81[] = { "  1 VS 1 GAME ", "  HAPPENING!  " };
-s8 D_80100FC8_name_81[] = { 14, 14 };
-s8 D_80100FCC_name_81[] = { -8, -8, -8, -8, -8, -8 };
-s16 D_80100FD4_name_81[] = { 60, 93, 126, 159, 192, 225, 258 };
+char *mbdTelopTitleStrTbl[] = { "  1 VS 1 GAME ", "  HAPPENING!  " };
+s8 mbdTelopTitleLenTbl[] = { 14, 14 };
+s8 mbdTelopTitleOfsTbl[] = { -8, -8, -8, -8, -8, -8 };
+s16 mbdTelopTitleXTbl[] = { 60, 93, 126, 159, 192, 225, 258 };
 
-const SomeStruct D_80102478_name_81 = { { 0, 0, 1, 2, 3, 3, 3, 3, 3, 4 } };
-const SomeStruct2 D_80102484_name_81 = { { 0xEE, 0xEF, 0xF0, 0xF1, 0xF2, 0xF3, 0xF4, 0xF5 } };
-const SomeStruct3 D_80102494_name_81 = { { 0, 1, 2, 2, 3, 4, 5, 2, 1, 6, 2 } };
+const SomeStruct mbdTelopLast5FrameTbl = { { 0, 0, 1, 2, 3, 3, 3, 3, 3, 4 } };
+const SomeStruct2 mbdTelopPlayerSprTbl = { { 0xEE, 0xEF, 0xF0, 0xF1, 0xF2, 0xF3, 0xF4, 0xF5 } };
+const SomeStruct3 mbdTelopTitleMemberTbl = { { 0, 1, 2, 2, 3, 4, 5, 2, 1, 6, 2 } };
 
-void func_800E31A0_name_81(void);
-void func_800E02B4_name_81(s32 arg0);
-void func_800E3400_name_81(s32 arg0);
-void func_800E2AD0_name_81(omObjData *arg0);
-void func_800E38B0_name_81(void);
-void func_800E4914_name_81(void);
-void func_800E4188_name_81(void);
+void MBDTelopLast5Create(void);
+void MBDMgCallListStart(s32 arg0);
+void MBDTelopPlayerCreate(s32 arg0);
+void MBDTelopPlayerMain(omObjData *arg0);
+void MBDTelopMain(void);
+void MBDTelopBannerProc(void);
+void MBDTelopAttackProc(void);
 
-void func_800E2870_name_81(void) {
-    D_80102CA4_name_81 = -1;
-    D_80102CA6_name_81 = 0;
-    D_80102CA8_name_81 = -1;
-    D_80102CAA_name_81[0] = D_80102CAA_name_81[1] = -1;
-    D_80102CB0_name_81 = NULL;
-    D_80102CB4_name_81 = NULL;
+void MBDTelopInit(void) {
+    mbdTelopMgTypeStrNo = -1;
+    mbdTelopFlag = 0;
+    mbdTelopPlayerGrp = -1;
+    mbdTelopPlayerAnim[0] = mbdTelopPlayerAnim[1] = -1;
+    mbdTelopPlayerObj = NULL;
+    mbdTelopLast5Obj = NULL;
 }
 
-void func_800E28B0_name_81(void) {
-    if (D_80102CA6_name_81 & 0x20) {
-        GMesSprClose(&D_80102C30_name_81);
+void MBDTelopClose(void) {
+    if (mbdTelopFlag & 0x20) {
+        GMesSprClose(&mbdTelopMes);
     }
-    if (D_80102CA6_name_81 & 0x10) {
-        HuSprGrpKill(D_80102CA8_name_81);
-        HuSprAnimKill(D_80102CAA_name_81[0]);
-        HuSprAnimKill(D_80102CAA_name_81[1]);
+    if (mbdTelopFlag & 0x10) {
+        HuSprGrpKill(mbdTelopPlayerGrp);
+        HuSprAnimKill(mbdTelopPlayerAnim[0]);
+        HuSprAnimKill(mbdTelopPlayerAnim[1]);
     }
-    if (D_80102CB0_name_81 != NULL) {
-        omDelObj(D_80102CB0_name_81);
-        D_80102CB0_name_81 = NULL;
+    if (mbdTelopPlayerObj != NULL) {
+        omDelObj(mbdTelopPlayerObj);
+        mbdTelopPlayerObj = NULL;
     }
-    if (D_80102CB4_name_81 != NULL) {
-        omDelObj(D_80102CB4_name_81);
-        D_80102CB4_name_81 = NULL;
+    if (mbdTelopLast5Obj != NULL) {
+        omDelObj(mbdTelopLast5Obj);
+        mbdTelopLast5Obj = NULL;
     }
-    D_80102CA6_name_81 &= 0xCF;
+    mbdTelopFlag &= 0xCF;
 }
 
-void func_800E2978_name_81(omObjData *arg0) {
+void MBDTelopLast5Main(omObjData *arg0) {
     s32 i;
 
     switch (arg0->work[0]) {
         case 0:
             arg0->rot.x += 30.0f;
             arg0->scale.x = sindf(arg0->rot.x) * 0.5f + 1.0f;
-            HuSprScaleSet(D_80102CBA_name_81[0], 0, arg0->scale.x, arg0->scale.x);
+            HuSprScaleSet(mbdTelopLast5Grp[0], 0, arg0->scale.x, arg0->scale.x);
             if (arg0->rot.x >= 360.0f) {
                 arg0->rot.x -= 360.0f;
             }
@@ -104,20 +104,20 @@ void func_800E2978_name_81(omObjData *arg0) {
             break;
         case 2:
             for (i = 0; i < 2; i++) {
-                if (D_80102CBE_name_81[i] != -1) {
-                    HuSprAnimKill(D_80102CBE_name_81[i]);
+                if (mbdTelopLast5Anim[i] != -1) {
+                    HuSprAnimKill(mbdTelopLast5Anim[i]);
                 }
-                if (D_80102CBA_name_81[i] != -1) {
-                    HuSprGrpKill(D_80102CBA_name_81[i]);
+                if (mbdTelopLast5Grp[i] != -1) {
+                    HuSprGrpKill(mbdTelopLast5Grp[i]);
                 }
             }
-            D_80102CB4_name_81 = NULL;
+            mbdTelopLast5Obj = NULL;
             omDelObj(arg0);
             break;
     }
 }
 
-void func_800E2AD0_name_81(omObjData *arg0) {
+void MBDTelopPlayerMain(omObjData *arg0) {
     s32 i;
 
     if (arg0->rot.y > 0.0f) {
@@ -127,7 +127,7 @@ void func_800E2AD0_name_81(omObjData *arg0) {
     switch (arg0->work[0]) {
         case 0:
             arg0->scale.x += 0.2f;
-            HuSprScaleSet(D_80102CA8_name_81, 0, arg0->scale.x, arg0->scale.x);
+            HuSprScaleSet(mbdTelopPlayerGrp, 0, arg0->scale.x, arg0->scale.x);
             if (arg0->scale.x >= 1.0f) {
                 arg0->work[0] = 1;
                 arg0->work[1] = 12;
@@ -151,7 +151,7 @@ void func_800E2AD0_name_81(omObjData *arg0) {
                     arg0->work[0] = 2;
                 }
                 if (arg0->work[2] == 0) {
-                    HuSprPosSet(D_80102CA8_name_81, 0, 160, 120 + (s32)(sindf(arg0->rot.x) * 5.0f + 0.5f));
+                    HuSprPosSet(mbdTelopPlayerGrp, 0, 160, 120 + (s32)(sindf(arg0->rot.x) * 5.0f + 0.5f));
                     arg0->rot.x += 10.0f;
                     if (arg0->rot.x >= 360.0f) {
                         arg0->rot.x -= 360.0f;
@@ -178,40 +178,40 @@ void func_800E2AD0_name_81(omObjData *arg0) {
             break;
         case 2:
             arg0->scale.x += 0.2f;
-            HuSprScaleSet(D_80102CA8_name_81, 0, arg0->scale.x, arg0->scale.x);
-            HuSprTPLvlSet(D_80102CA8_name_81, 0, (2.0f - arg0->scale.x) * 256.0f);
+            HuSprScaleSet(mbdTelopPlayerGrp, 0, arg0->scale.x, arg0->scale.x);
+            HuSprTPLvlSet(mbdTelopPlayerGrp, 0, (2.0f - arg0->scale.x) * 256.0f);
             if (arg0->scale.x >= 2.0f) {
                 arg0->work[0] = 3;
             }
             break;
         case 3:
-            HuSprGrpKill(D_80102CA8_name_81);
-            HuSprAnimKill(D_80102CAA_name_81[0]);
-            D_80102CA8_name_81 = -1;
-            D_80102CAA_name_81[0] = -1;
-            if (D_80102CB4_name_81 != NULL) {
+            HuSprGrpKill(mbdTelopPlayerGrp);
+            HuSprAnimKill(mbdTelopPlayerAnim[0]);
+            mbdTelopPlayerGrp = -1;
+            mbdTelopPlayerAnim[0] = -1;
+            if (mbdTelopLast5Obj != NULL) {
                 for (i = 0; i < 2; i++) {
-                    if (D_80102CBE_name_81[i] != -1) {
-                        HuSprAnimKill(D_80102CBE_name_81[i]);
+                    if (mbdTelopLast5Anim[i] != -1) {
+                        HuSprAnimKill(mbdTelopLast5Anim[i]);
                     }
-                    if (D_80102CBA_name_81[i] != -1) {
-                        HuSprGrpKill(D_80102CBA_name_81[i]);
+                    if (mbdTelopLast5Grp[i] != -1) {
+                        HuSprGrpKill(mbdTelopLast5Grp[i]);
                     }
                 }
-                omDelObj(D_80102CB4_name_81);
-                D_80102CB4_name_81 = NULL;
+                omDelObj(mbdTelopLast5Obj);
+                mbdTelopLast5Obj = NULL;
             }
-            D_80102CB0_name_81 = NULL;
+            mbdTelopPlayerObj = NULL;
             omDelObj(arg0);
             break;
     }
 }
 
-void func_800E2F84_name_81(void) {
-    D_80102CB8_name_81 = 1;
+void MBDTelopLast5Stop(void) {
+    mbdTelopLast5StopF = 1;
 }
 
-void func_800E2F94_name_81(omObjData *obj) {
+void MBDTelopMgTypeMain(omObjData *obj) {
     s32 i;
 
     if (obj->work[2] != 0) {
@@ -228,73 +228,73 @@ void func_800E2F94_name_81(omObjData *obj) {
         }
     }
 
-    HuSprPosSet(D_80102C30_name_81.strGId[D_80102CA4_name_81], 0, obj->rot.x + 80.0f,
-                D_80102CC8_name_81 + 2.0f * sindf(obj->rot.z));
+    HuSprPosSet(mbdTelopMes.strGId[mbdTelopMgTypeStrNo], 0, obj->rot.x + 80.0f,
+                mbdTelopMgTypeY + 2.0f * sindf(obj->rot.z));
 
-    for (i = 1; D_80100FC8_name_81[obj->work[0]] >= i; i++) {
-        HuSprTPLvlSet(D_80102C30_name_81.strGId[D_80102CA4_name_81], i, obj->scale.x * 256.0f);
+    for (i = 1; mbdTelopTitleLenTbl[obj->work[0]] >= i; i++) {
+        HuSprTPLvlSet(mbdTelopMes.strGId[mbdTelopMgTypeStrNo], i, obj->scale.x * 256.0f);
     }
 }
 
-void func_800E31A0_name_81(void) {
+void MBDTelopLast5Create(void) {
     omObjData *obj;
     void *data;
-    SomeStruct sp18 = D_80102478_name_81;
+    SomeStruct sp18 = mbdTelopLast5FrameTbl;
 
-    obj = omAddObj(-0x8000, 0, 0, -1, func_800E2978_name_81);
-    D_80102CB4_name_81 = obj;
+    obj = omAddObj(-0x8000, 0, 0, -1, MBDTelopLast5Main);
+    mbdTelopLast5Obj = obj;
     obj->rot.x = 0.0f;
 
-    if (D_80102CC4_name_81 == 0) {
-        D_80102CBA_name_81[0] = HuSprGrpCreate(1, 0);
+    if (mbdTelopLast5Turn == 0) {
+        mbdTelopLast5Grp[0] = HuSprGrpCreate(1, 0);
         data = DataRead(0x1301E0);
-        D_80102CBE_name_81[0] = HuSprAnimRead(data);
+        mbdTelopLast5Anim[0] = HuSprAnimRead(data);
         DataClose(data);
-        HuSprGrpMemberSet(D_80102CBA_name_81[0], 0, D_80102CBE_name_81[0], 0);
-        HuSprPriSet(D_80102CBA_name_81[0], 0, 0x10);
-        HuSprAttrSet(D_80102CBA_name_81[0], 0, 0x1000);
-        HuSprPosSet(D_80102CBA_name_81[0], 0, 0xA0, 0x32);
-        D_80102CBE_name_81[1] = -1;
-        D_80102CBA_name_81[1] = -1;
+        HuSprGrpMemberSet(mbdTelopLast5Grp[0], 0, mbdTelopLast5Anim[0], 0);
+        HuSprPriSet(mbdTelopLast5Grp[0], 0, 0x10);
+        HuSprAttrSet(mbdTelopLast5Grp[0], 0, 0x1000);
+        HuSprPosSet(mbdTelopLast5Grp[0], 0, 0xA0, 0x32);
+        mbdTelopLast5Anim[1] = -1;
+        mbdTelopLast5Grp[1] = -1;
         obj->work[0] = 1;
         return;
     }
 
-    D_80102CBA_name_81[0] = HuSprGrpCreate(1, 0);
+    mbdTelopLast5Grp[0] = HuSprGrpCreate(1, 0);
     data = DataRead(0x1301DF);
-    D_80102CBE_name_81[0] = HuSprAnimRead(data);
+    mbdTelopLast5Anim[0] = HuSprAnimRead(data);
     DataClose(data);
-    HuSprGrpMemberSet(D_80102CBA_name_81[0], 0, D_80102CBE_name_81[0], sp18.unk_00[D_80102CC4_name_81]);
-    HuSprPriSet(D_80102CBA_name_81[0], 0, 0x10);
-    HuSprAttrSet(D_80102CBA_name_81[0], 0, 0x1000);
-    HuSprPosSet(D_80102CBA_name_81[0], 0, 0xA0, 0x32);
+    HuSprGrpMemberSet(mbdTelopLast5Grp[0], 0, mbdTelopLast5Anim[0], sp18.unk_00[mbdTelopLast5Turn]);
+    HuSprPriSet(mbdTelopLast5Grp[0], 0, 0x10);
+    HuSprAttrSet(mbdTelopLast5Grp[0], 0, 0x1000);
+    HuSprPosSet(mbdTelopLast5Grp[0], 0, 0xA0, 0x32);
 
-    D_80102CBA_name_81[1] = HuSprGrpCreate(1, 0);
+    mbdTelopLast5Grp[1] = HuSprGrpCreate(1, 0);
     data = DataRead(0x1301DE);
-    D_80102CBE_name_81[1] = HuSprAnimRead(data);
+    mbdTelopLast5Anim[1] = HuSprAnimRead(data);
     DataClose(data);
-    HuSprGrpMemberSet(D_80102CBA_name_81[1], 0, D_80102CBE_name_81[1], 0);
-    HuSprPriSet(D_80102CBA_name_81[1], 0, 0x11);
-    HuSprAttrSet(D_80102CBA_name_81[1], 0, 0x1000);
-    HuSprPosSet(D_80102CBA_name_81[1], 0, 0xA0, 0x32);
+    HuSprGrpMemberSet(mbdTelopLast5Grp[1], 0, mbdTelopLast5Anim[1], 0);
+    HuSprPriSet(mbdTelopLast5Grp[1], 0, 0x11);
+    HuSprAttrSet(mbdTelopLast5Grp[1], 0, 0x1000);
+    HuSprPosSet(mbdTelopLast5Grp[1], 0, 0xA0, 0x32);
     obj->work[0] = 0;
 }
 
-void func_800E3400_name_81(s32 arg0) {
+void MBDTelopPlayerCreate(s32 arg0) {
     omObjData *obj;
     void *data;
-    SomeStruct2 sp18 = D_80102484_name_81;
+    SomeStruct2 sp18 = mbdTelopPlayerSprTbl;
 
-    D_80102CA8_name_81 = HuSprGrpCreate(1, 0);
+    mbdTelopPlayerGrp = HuSprGrpCreate(1, 0);
     data = DataRead(sp18.unk_00[GwPlayer[arg0].chr] | 0x130000);
-    D_80102CAA_name_81[0] = HuSprAnimRead(data);
+    mbdTelopPlayerAnim[0] = HuSprAnimRead(data);
     DataClose(data);
-    HuSprGrpMemberSet(D_80102CA8_name_81, 0, D_80102CAA_name_81[0], 0);
-    HuSprPriSet(D_80102CA8_name_81, 0, 0x10);
-    HuSprAttrSet(D_80102CA8_name_81, 0, 0x1000);
-    HuSprPosSet(D_80102CA8_name_81, 0, 0xA0, 0x78);
-    obj = omAddObj(-0x8000, 0, 0, -1, func_800E2AD0_name_81);
-    D_80102CB0_name_81 = obj;
+    HuSprGrpMemberSet(mbdTelopPlayerGrp, 0, mbdTelopPlayerAnim[0], 0);
+    HuSprPriSet(mbdTelopPlayerGrp, 0, 0x10);
+    HuSprAttrSet(mbdTelopPlayerGrp, 0, 0x1000);
+    HuSprPosSet(mbdTelopPlayerGrp, 0, 0xA0, 0x78);
+    obj = omAddObj(-0x8000, 0, 0, -1, MBDTelopPlayerMain);
+    mbdTelopPlayerObj = obj;
 
     obj->scale.x = 0;
     obj->rot.x = 180.0f;
@@ -303,7 +303,7 @@ void func_800E3400_name_81(s32 arg0) {
     obj->work[0] = 0;
     obj->work[1] = 12;
 
-    if (D_80102CB4_name_81 != NULL) {
+    if (mbdTelopLast5Obj != NULL) {
         obj->work[1] = 24;
     }
     obj->work[3] = arg0;
@@ -312,69 +312,69 @@ void func_800E3400_name_81(s32 arg0) {
     }
 }
 
-s32 func_800E35C4_name_81(void) {
-    return D_80102CA6_name_81 & 4;
+s32 MBDTelopPlayerCheck(void) {
+    return mbdTelopFlag & 4;
 }
 
-void func_800E35D4_name_81(void) {
-    HuSprGrpKill(D_80102CA8_name_81);
-    HuSprAnimKill(D_80102CAA_name_81[0]);
-    HuSprAnimKill(D_80102CAA_name_81[1]);
-    omDelObj(D_80102CB0_name_81);
-    D_80102CB0_name_81 = NULL;
-    D_80102CA6_name_81 &= 0xC3;
+void MBDTelopPlayerKill(void) {
+    HuSprGrpKill(mbdTelopPlayerGrp);
+    HuSprAnimKill(mbdTelopPlayerAnim[0]);
+    HuSprAnimKill(mbdTelopPlayerAnim[1]);
+    omDelObj(mbdTelopPlayerObj);
+    mbdTelopPlayerObj = NULL;
+    mbdTelopFlag &= 0xC3;
 }
 
-void func_800E363C_name_81(s32 arg0, Vec *pos) {
+void MBDTelopMgTypeCreate(s32 arg0, Vec *pos) {
     Vec2f pos2D;
     omObjData *obj;
     s32 i;
     s32 type;
 
-    if (!(D_80102CA6_name_81 & 4)) {
+    if (!(mbdTelopFlag & 4)) {
         type = arg0;
-        D_80102CA4_name_81 = GameMesStrInit(&D_80102C30_name_81, D_80100FC0_name_81[type], 0, 0, 0);
+        mbdTelopMgTypeStrNo = GameMesStrInit(&mbdTelopMes, mbdTelopTitleStrTbl[type], 0, 0, 0);
         MBDCamera3Dto2D(pos, &pos2D);
-        D_80102CC8_name_81 = pos2D.y - 24.0f;
+        mbdTelopMgTypeY = pos2D.y - 24.0f;
         if (MBDCameraZoomGet() == 2.0f) {
-            D_80102CC8_name_81 -= 10;
+            mbdTelopMgTypeY -= 10;
         }
-        HuSprPosSet(D_80102C30_name_81.strGId[D_80102CA4_name_81], 0, D_80100FCC_name_81[type] + 80,
-                    D_80102CC8_name_81);
+        HuSprPosSet(mbdTelopMes.strGId[mbdTelopMgTypeStrNo], 0, mbdTelopTitleOfsTbl[type] + 80,
+                    mbdTelopMgTypeY);
 
-        for (i = 1; D_80100FC8_name_81[type] >= i; i++) {
-            HuSprTPLvlSet(D_80102C30_name_81.strGId[D_80102CA4_name_81], i, 0);
+        for (i = 1; mbdTelopTitleLenTbl[type] >= i; i++) {
+            HuSprTPLvlSet(mbdTelopMes.strGId[mbdTelopMgTypeStrNo], i, 0);
         }
 
-        obj = omAddObj(-0x8000, 0, 0, -1, func_800E2F94_name_81);
-        D_80102CB0_name_81 = obj;
+        obj = omAddObj(-0x8000, 0, 0, -1, MBDTelopMgTypeMain);
+        mbdTelopPlayerObj = obj;
         obj->scale.x = 0.0f;
         obj->trans.x = 400.0f;
         obj->trans.z = 0.0f;
-        obj->rot.x = D_80100FCC_name_81[type];
+        obj->rot.x = mbdTelopTitleOfsTbl[type];
         obj->rot.y = 0.0f;
         obj->rot.z = 0.0f;
         obj->work[0] = type;
-        obj->work[1] = D_80102CA4_name_81;
+        obj->work[1] = mbdTelopMgTypeStrNo;
         obj->work[2] = 30;
         obj->work[3] = 7;
-        D_80102CA6_name_81 = 38;
-        func_800E02B4_name_81(arg0);
+        mbdTelopFlag = 38;
+        MBDMgCallListStart(arg0);
     }
 }
 
-s32 func_800E3858_name_81(void) {
-    return D_80102CA6_name_81 & 0xC;
+s32 MBDTelopMgTypeStatGet(void) {
+    return mbdTelopFlag & 0xC;
 }
 
-void func_800E3868_name_81(void) {
-    omDelObj(D_80102CB0_name_81);
-    D_80102CB0_name_81 = NULL;
-    GMesSprClose(&D_80102C30_name_81);
-    D_80102CA6_name_81 &= 0xC3;
+void MBDTelopMgTypeKill(void) {
+    omDelObj(mbdTelopPlayerObj);
+    mbdTelopPlayerObj = NULL;
+    GMesSprClose(&mbdTelopMes);
+    mbdTelopFlag &= 0xC3;
 }
 
-void func_800E38B0_name_81(void) {
+void MBDTelopMain(void) {
     UnkOvl81_1 *work = HuPrcCurrentGet()->user_data;
 
     while (1) {
@@ -382,23 +382,23 @@ void func_800E38B0_name_81(void) {
             case 0:
                 HuAudFXPlay(0x10C);
                 if (work->unk_04 == 0) {
-                    D_80102CC4_name_81 = GwSystem.total_turns - GwSystem.current_turn;
-                    switch (D_80102CC4_name_81) {
+                    mbdTelopLast5Turn = GwSystem.total_turns - GwSystem.current_turn;
+                    switch (mbdTelopLast5Turn) {
                         case 0:
                         case 1:
                         case 2:
                         case 3:
                         case 4:
                         case 9:
-                            func_800E31A0_name_81();
+                            MBDTelopLast5Create();
                             break;
                     }
                 }
-                func_800E3400_name_81(work->unk_04);
+                MBDTelopPlayerCreate(work->unk_04);
                 work->unk_00++;
                 break;
             case 1:
-                if (D_80102CA8_name_81 == -1) {
+                if (mbdTelopPlayerGrp == -1) {
                     omDelPrcObj(NULL);
                 }
                 break;
@@ -407,8 +407,8 @@ void func_800E38B0_name_81(void) {
     }
 }
 
-Process *func_800E39AC_name_81(s32 playerIndex) {
-    Process *process = omAddPrcObj(func_800E38B0_name_81, 0, 0, 0x40);
+Process *MBDTelopCreate(s32 playerIndex) {
+    Process *process = omAddPrcObj(MBDTelopMain, 0, 0, 0x40);
     UnkOvl81_1 *work = HuMemMemoryAlloc(process->heap, sizeof(UnkOvl81_1));
     process->user_data = work;
     work->unk_00 = 0;
@@ -416,32 +416,32 @@ Process *func_800E39AC_name_81(s32 playerIndex) {
     return process;
 }
 
-void func_800E3A0C_name_81(void) {
+void MBDTelopTitleCharProc(void) {
     s32 idx = ((UnkOvl81_1 *)HuPrcCurrentGet()->user_data)->unk_00;
     s32 i;
 
-    HuSprAttrReset(D_80102CCC_name_81->unk_0A, idx, 0x8000);
-    HuSprAttrReset(D_80102CD0_name_81->unk_0A, idx, 0x8000);
+    HuSprAttrReset(mbdTelopTitleSpr->unk_0A, idx, 0x8000);
+    HuSprAttrReset(mbdTelopTitleShadowSpr->unk_0A, idx, 0x8000);
     for (i = 0; i < 93; i += 23) {
-        HuSprScaleSet(D_80102CCC_name_81->unk_0A, idx, (120 - i) / 20.0f + 1.0f, (120 - i) / 20.0f + 1.0f);
-        HuSprScaleSet(D_80102CD0_name_81->unk_0A, idx, (120 - i) / 20.0f + 1.0f, (120 - i) / 20.0f + 1.0f);
-        HuSprPosSet(D_80102CCC_name_81->unk_0A, idx, D_80100FD4_name_81[idx], i);
-        HuSprPosSet(D_80102CD0_name_81->unk_0A, idx, D_80100FD4_name_81[idx], i);
-        HuSprTPLvlSet(D_80102CCC_name_81->unk_0A, idx, i * 2);
-        HuSprTPLvlSet(D_80102CD0_name_81->unk_0A, idx, i * 2);
+        HuSprScaleSet(mbdTelopTitleSpr->unk_0A, idx, (120 - i) / 20.0f + 1.0f, (120 - i) / 20.0f + 1.0f);
+        HuSprScaleSet(mbdTelopTitleShadowSpr->unk_0A, idx, (120 - i) / 20.0f + 1.0f, (120 - i) / 20.0f + 1.0f);
+        HuSprPosSet(mbdTelopTitleSpr->unk_0A, idx, mbdTelopTitleXTbl[idx], i);
+        HuSprPosSet(mbdTelopTitleShadowSpr->unk_0A, idx, mbdTelopTitleXTbl[idx], i);
+        HuSprTPLvlSet(mbdTelopTitleSpr->unk_0A, idx, i * 2);
+        HuSprTPLvlSet(mbdTelopTitleShadowSpr->unk_0A, idx, i * 2);
         HuPrcVSleep();
     }
-    HuSprScaleSet(D_80102CCC_name_81->unk_0A, idx, 1.0f, 1.0f);
-    HuSprScaleSet(D_80102CD0_name_81->unk_0A, idx, 1.0f, 1.0f);
-    HuSprPosSet(D_80102CCC_name_81->unk_0A, idx, D_80100FD4_name_81[idx], 92);
-    HuSprPosSet(D_80102CD0_name_81->unk_0A, idx, D_80100FD4_name_81[idx], 92);
-    HuSprTPLvlSet(D_80102CCC_name_81->unk_0A, idx, 256);
-    HuSprTPLvlSet(D_80102CD0_name_81->unk_0A, idx, 256);
+    HuSprScaleSet(mbdTelopTitleSpr->unk_0A, idx, 1.0f, 1.0f);
+    HuSprScaleSet(mbdTelopTitleShadowSpr->unk_0A, idx, 1.0f, 1.0f);
+    HuSprPosSet(mbdTelopTitleSpr->unk_0A, idx, mbdTelopTitleXTbl[idx], 92);
+    HuSprPosSet(mbdTelopTitleShadowSpr->unk_0A, idx, mbdTelopTitleXTbl[idx], 92);
+    HuSprTPLvlSet(mbdTelopTitleSpr->unk_0A, idx, 256);
+    HuSprTPLvlSet(mbdTelopTitleShadowSpr->unk_0A, idx, 256);
     omDelPrcObj(NULL);
 }
 
-void func_800E3C6C_name_81(void) {
-    SomeStruct3 members = D_80102494_name_81;
+void MBDTelopTitleProc(void) {
+    SomeStruct3 members = mbdTelopTitleMemberTbl;
     UnkBoard4 *sprite;
     Process *process;
     UnkOvl81_1 *work;
@@ -451,33 +451,33 @@ void func_800E3C6C_name_81(void) {
     s32 i;
 
     data = DataRead(0x130121);
-    D_80102CCC_name_81 = func_800F4528_name_81(7, 0);
-    D_80102CCC_name_81->unk_0C[0] = HuSprAnimRead(data);
+    mbdTelopTitleSpr = MBDSprGrpCreate(7, 0);
+    mbdTelopTitleSpr->unk_0C[0] = HuSprAnimRead(data);
     for (i = 0; i < 7; i++) {
-        HuSprGrpMemberSet(D_80102CCC_name_81->unk_0A, i, D_80102CCC_name_81->unk_0C[0], members.unk_00[i]);
-        HuSprPriSet(D_80102CCC_name_81->unk_0A, i, 1);
-        HuSprAttrSet(D_80102CCC_name_81->unk_0A, i, 0x1000);
-        HuSprPosSet(D_80102CCC_name_81->unk_0A, i, D_80100FD4_name_81[i], 92);
-        HuSprAttrSet(D_80102CCC_name_81->unk_0A, i, 0x8000);
+        HuSprGrpMemberSet(mbdTelopTitleSpr->unk_0A, i, mbdTelopTitleSpr->unk_0C[0], members.unk_00[i]);
+        HuSprPriSet(mbdTelopTitleSpr->unk_0A, i, 1);
+        HuSprAttrSet(mbdTelopTitleSpr->unk_0A, i, 0x1000);
+        HuSprPosSet(mbdTelopTitleSpr->unk_0A, i, mbdTelopTitleXTbl[i], 92);
+        HuSprAttrSet(mbdTelopTitleSpr->unk_0A, i, 0x8000);
     }
     DataClose(data);
 
     data = DataRead(0x130122);
-    D_80102CD0_name_81 = func_800F4528_name_81(7, 0);
-    D_80102CD0_name_81->unk_0C[0] = HuSprAnimRead(data);
+    mbdTelopTitleShadowSpr = MBDSprGrpCreate(7, 0);
+    mbdTelopTitleShadowSpr->unk_0C[0] = HuSprAnimRead(data);
     for (i = 0; i < 7; i++) {
-        HuSprGrpMemberSet(D_80102CD0_name_81->unk_0A, i, D_80102CD0_name_81->unk_0C[0], members.unk_00[i]);
-        HuSprPriSet(D_80102CD0_name_81->unk_0A, i, 2);
-        HuSprAttrSet(D_80102CD0_name_81->unk_0A, i, 0x1000);
-        HuSprPosSet(D_80102CD0_name_81->unk_0A, i, D_80100FD4_name_81[i], 92);
-        HuSprColorSet(D_80102CD0_name_81->unk_0A, i, 0, 21, 233);
-        HuSprAttrSet(D_80102CD0_name_81->unk_0A, i, 0x8000);
+        HuSprGrpMemberSet(mbdTelopTitleShadowSpr->unk_0A, i, mbdTelopTitleShadowSpr->unk_0C[0], members.unk_00[i]);
+        HuSprPriSet(mbdTelopTitleShadowSpr->unk_0A, i, 2);
+        HuSprAttrSet(mbdTelopTitleShadowSpr->unk_0A, i, 0x1000);
+        HuSprPosSet(mbdTelopTitleShadowSpr->unk_0A, i, mbdTelopTitleXTbl[i], 92);
+        HuSprColorSet(mbdTelopTitleShadowSpr->unk_0A, i, 0, 21, 233);
+        HuSprAttrSet(mbdTelopTitleShadowSpr->unk_0A, i, 0x8000);
     }
     DataClose(data);
 
     for (i = 0; i < 7; i++) {
         HuPrcSleep(3);
-        process = omAddPrcObj(func_800E3A0C_name_81, 10, 0, 0x40);
+        process = omAddPrcObj(MBDTelopTitleCharProc, 10, 0, 0x40);
         work = HuMemMemoryAlloc(process->heap, sizeof(UnkOvl81_1));
         process->user_data = work;
         work->unk_00 = i;
@@ -485,7 +485,7 @@ void func_800E3C6C_name_81(void) {
 
     HuAudFXPlay(0x1CF);
     data = DataRead(0x130133);
-    sprite = func_800F4528_name_81(1, 0);
+    sprite = MBDSprGrpCreate(1, 0);
     sprite->unk_0C[0] = HuSprAnimRead(data);
     HuSprGrpMemberSet(sprite->unk_0A, 0, sprite->unk_0C[0], 0);
     HuSprPriSet(sprite->unk_0A, 0, 1);
@@ -512,17 +512,17 @@ void func_800E3C6C_name_81(void) {
 
     HuSprAttrSet(sprite->unk_0A, 0, 0x8000);
     HuPrcSleep(15);
-    func_800F4584_name_81(D_80102CCC_name_81);
-    func_800F4584_name_81(D_80102CD0_name_81);
-    func_800F4584_name_81(sprite);
+    MBDSprGrpKill(mbdTelopTitleSpr);
+    MBDSprGrpKill(mbdTelopTitleShadowSpr);
+    MBDSprGrpKill(sprite);
     omDelPrcObj(NULL);
 }
 
-Process *func_800E415C_name_81(void) {
-    return omAddPrcObj(func_800E3C6C_name_81, 0, 0, 0);
+Process *MBDTelopTitleCreate(void) {
+    return omAddPrcObj(MBDTelopTitleProc, 0, 0, 0);
 }
 
-void func_800E4188_name_81(void) {
+void MBDTelopAttackProc(void) {
     UnkOvl81_3 *work = HuPrcCurrentGet()->user_data;
     s32 playerIndex = work->playerIndex;
     s32 unk_04 = work->unk_04;
@@ -553,7 +553,7 @@ void func_800E4188_name_81(void) {
         dirIdx = 3;
     }
 
-    sprite = func_800F4528_name_81(3, 2);
+    sprite = MBDSprGrpCreate(3, 2);
     for (i = 0; i < 3; i++) {
         if ((mode == 1 || mode == 2) && i == 2) {
             continue;
@@ -616,16 +616,16 @@ void func_800E4188_name_81(void) {
         delay -= mode;
     }
     HuPrcSleep(delay);
-    func_800F4584_name_81(sprite);
+    MBDSprGrpKill(sprite);
     omDelPrcObj(NULL);
 }
 
-Process *func_800E47B8_name_81(s32 playerIndex, s32 arg1, Vec *arg2, Vec *arg3, s32 arg4) {
+Process *MBDTelopAttackCreate(s32 playerIndex, s32 arg1, Vec *arg2, Vec *arg3, s32 arg4) {
     Process *process;
     UnkOvl81_3 *work;
     s32 flag;
 
-    process = omAddPrcObj(func_800E4188_name_81, 0, 0x1000, 0x40);
+    process = omAddPrcObj(MBDTelopAttackProc, 0, 0x1000, 0x40);
     work = HuMemMemoryAlloc(process->heap, sizeof(UnkOvl81_3));
     process->user_data = work;
     work->playerIndex = playerIndex;
@@ -645,7 +645,7 @@ Process *func_800E47B8_name_81(s32 playerIndex, s32 arg1, Vec *arg2, Vec *arg3, 
         }
         work->unk_10 = 2;
 
-        process = omAddPrcObj(func_800E4188_name_81, 0, 0x1000, 0x40);
+        process = omAddPrcObj(MBDTelopAttackProc, 0, 0x1000, 0x40);
         work = HuMemMemoryAlloc(process->heap, sizeof(UnkOvl81_3));
         process->user_data = work;
         work->playerIndex = playerIndex;
@@ -654,7 +654,7 @@ Process *func_800E47B8_name_81(s32 playerIndex, s32 arg1, Vec *arg2, Vec *arg3, 
         work->unk_0C = arg3;
         work->unk_10 = 1;
 
-        process = omAddPrcObj(func_800E4188_name_81, 0, 0x1000, 0x40);
+        process = omAddPrcObj(MBDTelopAttackProc, 0, 0x1000, 0x40);
         work = HuMemMemoryAlloc(process->heap, sizeof(UnkOvl81_3));
         process->user_data = work;
         work->playerIndex = playerIndex;
@@ -666,7 +666,7 @@ Process *func_800E47B8_name_81(s32 playerIndex, s32 arg1, Vec *arg2, Vec *arg3, 
     return process;
 }
 
-void func_800E4914_name_81(void) {
+void MBDTelopBannerProc(void) {
     s32 idx = ((UnkOvl81_1 *)HuPrcCurrentGet()->user_data)->unk_00;
     s32 files[2] = { 0x130101, 0x130102 };
     s32 posY[2] = { 120, 90 };
@@ -676,7 +676,7 @@ void func_800E4914_name_81(void) {
     s32 offset;
     s32 i;
 
-    sprite = func_800F4528_name_81(1, 2);
+    sprite = MBDSprGrpCreate(1, 2);
     data = DataRead(files[idx]);
     sprite->unk_0C[0] = HuSprAnimRead(data);
     HuSprGrpMemberSet(sprite->unk_0A, 0, sprite->unk_0C[0], 0);
@@ -698,33 +698,33 @@ void func_800E4914_name_81(void) {
     }
 
     HuPrcSleep(20);
-    func_800F4584_name_81(sprite);
+    MBDSprGrpKill(sprite);
     omDelPrcObj(NULL);
 }
 
-Process *func_800E4A74_name_81(s32 arg0) {
-    Process *process = omAddPrcObj(func_800E4914_name_81, 0, 0, 0x40);
+Process *MBDTelopBannerCreate(s32 arg0) {
+    Process *process = omAddPrcObj(MBDTelopBannerProc, 0, 0, 0x40);
     UnkOvl81_1 *work = HuMemMemoryAlloc(process->heap, sizeof(UnkOvl81_1));
     process->user_data = work;
     work->unk_00 = arg0;
     return process;
 }
 
-void func_800E4AD0_name_81(void) {
+void MBDGuideCameraCreate(void) {
     Hu3DCameraPerspectiveSet(1, 40.0f, 80.0f, 8000.0f);
-    Hu3DCameraPosSetV(1, &D_80102CE0_name_81, &D_80102CEC_name_81, &D_80102CF8_name_81);
+    Hu3DCameraPosSetV(1, &mbdGuideCameraEye, &mbdGuideCameraAt, &mbdGuideCameraUp);
     Hu3DCamUpdateMtx(1);
-    Hu3DCameraViewportSet(1, &D_80102D04_name_81, &D_80102D10_name_81);
+    Hu3DCameraViewportSet(1, &mbdGuideCameraViewSize, &mbdGuideCameraViewPos);
 }
 
-void func_800E4B38_name_81(void) {
+void MBDGuideMain(void) {
     while (1) {
-        func_800E4AD0_name_81();
+        MBDGuideCameraCreate();
         HuPrcVSleep();
     }
 }
 
-UnkOvl81_2 *func_800E4B64_name_81(s32 arg0, s32 arg1) {
+UnkOvl81_2 *MBDGuideCreate(s32 arg0, s32 arg1) {
     HmfModel *rotHmf;
     HmfModel *hmf;
     UnkOvl81_2 *guide;
@@ -735,7 +735,7 @@ UnkOvl81_2 *func_800E4B64_name_81(s32 arg0, s32 arg1) {
 
     guide = HuMemMemoryAllocTemp(sizeof(UnkOvl81_2));
     if (guide != NULL) {
-        obj = func_800D8010_name_81(0x3E, NULL);
+        obj = MBDModelCreate(0x3E, NULL);
         guide->obj = obj;
         HuVecCopyXYZ(&obj->scale, 1.43f, 1.43f, 1.43f);
         guide->obj->flags |= 1;
@@ -768,33 +768,33 @@ UnkOvl81_2 *func_800E4B64_name_81(s32 arg0, s32 arg1) {
         hmf->mtx[3][3] = one;
         hmf->mtx[0][0] = one;
 
-        process = omAddPrcObj(func_800E4B38_name_81, 0x4000, 0, 0);
+        process = omAddPrcObj(MBDGuideMain, 0x4000, 0, 0);
         guide->process = process;
         process->user_data = guide;
 
         guide->unk_0A = 0x69;
 
-        D_80102CE0_name_81.x = zero;
-        D_80102CE0_name_81.y = zero;
-        D_80102CE0_name_81.z = 120.0f;
+        mbdGuideCameraEye.x = zero;
+        mbdGuideCameraEye.y = zero;
+        mbdGuideCameraEye.z = 120.0f;
 
-        D_80102CEC_name_81.x = zero;
-        D_80102CEC_name_81.y = zero;
-        D_80102CEC_name_81.z = zero;
+        mbdGuideCameraAt.x = zero;
+        mbdGuideCameraAt.y = zero;
+        mbdGuideCameraAt.z = zero;
 
-        D_80102CF8_name_81.x = zero;
-        D_80102CF8_name_81.y = one;
-        D_80102CF8_name_81.z = zero;
+        mbdGuideCameraUp.x = zero;
+        mbdGuideCameraUp.y = one;
+        mbdGuideCameraUp.z = zero;
 
-        D_80102D04_name_81.x = 1280.0f;
-        D_80102D04_name_81.y = 960.0f;
-        D_80102D04_name_81.z = 511.0f;
+        mbdGuideCameraViewSize.x = 1280.0f;
+        mbdGuideCameraViewSize.y = 960.0f;
+        mbdGuideCameraViewSize.z = 511.0f;
 
-        D_80102D10_name_81.x = 240.0f;
-        D_80102D10_name_81.y = guide->unk_0A * 4.0f + 480.0f;
-        D_80102D10_name_81.z = 511.5f;
+        mbdGuideCameraViewPos.x = 240.0f;
+        mbdGuideCameraViewPos.y = guide->unk_0A * 4.0f + 480.0f;
+        mbdGuideCameraViewPos.z = 511.5f;
 
-        func_800E4AD0_name_81();
+        MBDGuideCameraCreate();
 
         if (arg1 != 0) {
             guide->win_id = HuWinExCreateStyled(0x5B, guide->unk_0A + 0x5A + arg1, 0x11);
@@ -805,7 +805,7 @@ UnkOvl81_2 *func_800E4B64_name_81(s32 arg0, s32 arg1) {
     return guide;
 }
 
-void func_800E4E64_name_81(UnkOvl81_2 *arg0) {
+void MBDGuideKill(UnkOvl81_2 *arg0) {
     if (arg0 != NULL) {
         MBDModelKill(arg0->obj);
         omDelPrcObj(arg0->process);
@@ -814,9 +814,9 @@ void func_800E4E64_name_81(UnkOvl81_2 *arg0) {
     }
 }
 
-void func_800E4EAC_name_81(UnkOvl81_2 *arg0, s16 arg1, s16 arg2) {
+void MBDGuidePosSet(UnkOvl81_2 *arg0, s16 arg1, s16 arg2) {
     arg0->unk_0A = arg1;
-    D_80102D10_name_81.y = arg1 * 4.0f + 480.0f;
+    mbdGuideCameraViewPos.y = arg1 * 4.0f + 480.0f;
     if (arg2 != 0) {
         HuWinPosSet(arg0->win_id, 91, arg0->unk_0A + 80 + arg2);
     } else {

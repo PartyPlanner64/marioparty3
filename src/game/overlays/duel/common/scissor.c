@@ -1,64 +1,64 @@
 #include "common_duel.h"
 #include "ovl_81.h"
 
-RectF D_801014D0_name_81 = { 16.0f, 12.0f, 304.0f, 228.0f };
+RectF mbdScissorRect = { 16.0f, 12.0f, 304.0f, 228.0f };
 
-void func_800F413C_name_81(void);
+void MBDScissorWipeOutProc(void);
 
-void func_800F4208_name_81(void);
+void MBDScissorWipeInProc(void);
 
-void func_800F4080_name_81(void) {
-    D_801014D0_name_81.x1 = 16.0f;
-    D_801014D0_name_81.y1 = 12.0f;
-    D_801014D0_name_81.x2 = 304.0f;
-    D_801014D0_name_81.y2 = 228.0f;
-    Hu3DCameraScissorSet(0, &D_801014D0_name_81);
+void MBDScissorFullSet(void) {
+    mbdScissorRect.x1 = 16.0f;
+    mbdScissorRect.y1 = 12.0f;
+    mbdScissorRect.x2 = 304.0f;
+    mbdScissorRect.y2 = 228.0f;
+    Hu3DCameraScissorSet(0, &mbdScissorRect);
 }
 
-void func_800F40E4_name_81(void) {
-    D_801014D0_name_81.x1 = 16.0f;
-    D_801014D0_name_81.y1 = 12.0f;
-    D_801014D0_name_81.x2 = 16.0f;
-    D_801014D0_name_81.y2 = 228.0f;
-    Hu3DCameraScissorSet(0, &D_801014D0_name_81);
+void MBDScissorEmptySet(void) {
+    mbdScissorRect.x1 = 16.0f;
+    mbdScissorRect.y1 = 12.0f;
+    mbdScissorRect.x2 = 16.0f;
+    mbdScissorRect.y2 = 228.0f;
+    Hu3DCameraScissorSet(0, &mbdScissorRect);
 }
 
-void func_800F413C_name_81(void) {
+void MBDScissorWipeOutProc(void) {
     s32 i;
 
-    D_801014D0_name_81.x1 = 16.0f;
-    D_801014D0_name_81.x2 = 304.0f;
+    mbdScissorRect.x1 = 16.0f;
+    mbdScissorRect.x2 = 304.0f;
 
     for (i = 0; i < 9; i++) {
         HuPrcVSleep();
-        D_801014D0_name_81.x1 += 32.0f;
-        Hu3DCameraScissorSet(0, &D_801014D0_name_81);
+        mbdScissorRect.x1 += 32.0f;
+        Hu3DCameraScissorSet(0, &mbdScissorRect);
     }
     omDelPrcObj(NULL);
 }
 
-Process *func_800F41DC_name_81(void) {
-    return omAddPrcObj(func_800F413C_name_81, 0x1002, 0, 0);
+Process *MBDScissorWipeOutStart(void) {
+    return omAddPrcObj(MBDScissorWipeOutProc, 0x1002, 0, 0);
 }
 
-void func_800F4208_name_81(void) {
+void MBDScissorWipeInProc(void) {
     s32 i;
 
-    D_801014D0_name_81.x1 = 16.0f;
-    D_801014D0_name_81.x2 = 16.0f;
+    mbdScissorRect.x1 = 16.0f;
+    mbdScissorRect.x2 = 16.0f;
 
     for (i = 0; i < 9; i++) {
         HuPrcVSleep();
-        D_801014D0_name_81.x2 += 32.0f;
-        Hu3DCameraScissorSet(0, &D_801014D0_name_81);
+        mbdScissorRect.x2 += 32.0f;
+        Hu3DCameraScissorSet(0, &mbdScissorRect);
     }
     omDelPrcObj(NULL);
 }
 
-Process *func_800F429C_name_81(void) {
-    return omAddPrcObj(func_800F4208_name_81, 0x1002, 0, 0);
+Process *MBDScissorWipeInStart(void) {
+    return omAddPrcObj(MBDScissorWipeInProc, 0x1002, 0, 0);
 }
 
-s32 func_800F42C8_name_81(void) {
-    return D_801014D0_name_81.x2 == 304.0f;
+s32 MBDScissorFullCheck(void) {
+    return mbdScissorRect.x2 == 304.0f;
 }

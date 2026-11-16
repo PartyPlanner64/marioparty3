@@ -87,7 +87,7 @@ s16 D_8010D802_game_guys_lucky_7 BSS;
 s16 D_8010D804_game_guys_lucky_7 BSS;
 extern const GameGuysLucky7PadValues D_8010D598_game_guys_lucky_7; // COM keys
 extern const GameGuysLucky7PadValues D_8010D5A0_game_guys_lucky_7; // active players
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 
 void func_80105A28_game_guys_lucky_7(void);
 void func_80105AC0_game_guys_lucky_7(void);
@@ -1246,7 +1246,7 @@ void func_801085D4_game_guys_lucky_7(void) {
 void func_801087B4_game_guys_lucky_7(omObjData *object) {
     s32 attr = 0x2A9;
     s32 chr = D_8010D6DC_game_guys_lucky_7[2];
-    s32 bodyFile = D_800A178C_main[chr][0] | D_800A178C_main[chr][1];
+    s32 bodyFile = omCharModelNoTbl[chr][0] | omCharModelNoTbl[chr][1];
     s32 files[4] = { bodyFile, 9, 0x82, 0x83 };
     s32 motions[10] = {
         CharMotionDataNumGet(chr, 0x00),
@@ -1314,11 +1314,11 @@ void func_80108B64_game_guys_lucky_7(omObjData *object) {
                 break;
             case 5:
                 Hu3DMotionModelSet(object->model[0], object->motion[5]);
-                HuAudCharVoicePlay(D_800A178C_main[D_8010D6DC_game_guys_lucky_7[2]][0] | 0x2F);
+                HuAudCharVoicePlay(omCharModelNoTbl[D_8010D6DC_game_guys_lucky_7[2]][0] | 0x2F);
                 break;
             case 6:
                 Hu3DMotionModelSet(object->model[0], object->motion[6]);
-                HuAudCharVoicePlay(D_800A178C_main[D_8010D6DC_game_guys_lucky_7[2]][0] | 0x36);
+                HuAudCharVoicePlay(omCharModelNoTbl[D_8010D6DC_game_guys_lucky_7[2]][0] | 0x36);
                 break;
             case 7:
                 Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[D_8010D746_game_guys_lucky_7]].motId, 0,

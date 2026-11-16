@@ -32,7 +32,7 @@ typedef struct HeyBatterBatterBssEE4 {
     /* 0x0A */ s16 unk0A;
 } HeyBatterBatterBssEE4; // Size 0xC
 
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 extern u16 mgInstColumnTbl[5];
 extern u16 mgInstSlotTbl[5];
 
@@ -597,7 +597,7 @@ void func_801070D8_hey_batter_batter(omObjData *object) {
 void func_80107144_hey_batter_batter(omObjData *object) {
     s32 chr = GwPlayer[D_80109ED0_hey_batter_batter].chr;
 
-    object->model[0] = Hu3DModelRead(D_800A178C_main[chr][0] | D_800A178C_main[chr][2], 0x6A8);
+    object->model[0] = Hu3DModelRead(omCharModelNoTbl[chr][0] | omCharModelNoTbl[chr][2], 0x6A8);
     object->model[1] = Hu3DModelRead(0x5D0005, 0x6A9);
     object->model[2] = Hu3DModelRead(9, 0x2A9);
     omObjMotionRead(object, 0, CharMotionDataNumGet(chr, 0));
@@ -637,11 +637,11 @@ void func_80107464_hey_batter_batter(omObjData *object) {
                 break;
             case 2:
                 Hu3DMotionModelSet(object->model[0], object->motion[2]);
-                HuAudCharVoicePlay(D_800A178C_main[GwPlayer[D_80109ED0_hey_batter_batter].chr][0] | 0x35);
+                HuAudCharVoicePlay(omCharModelNoTbl[GwPlayer[D_80109ED0_hey_batter_batter].chr][0] | 0x35);
                 break;
             case 3:
                 Hu3DMotionModelSet(object->model[0], object->motion[3]);
-                HuAudCharVoicePlay(D_800A178C_main[GwPlayer[D_80109ED0_hey_batter_batter].chr][0] | 0x38);
+                HuAudCharVoicePlay(omCharModelNoTbl[GwPlayer[D_80109ED0_hey_batter_batter].chr][0] | 0x38);
                 break;
             case 4:
                 Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[D_80109ED2_hey_batter_batter]].motId, 0,

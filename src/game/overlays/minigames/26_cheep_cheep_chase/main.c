@@ -131,7 +131,7 @@ typedef struct {
 } CheepCheepChaseUnk368; // sizeof 0x8
 
 extern u8 omAllPauseF;
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 
 u8 D_8010E010_cheep_cheep_chase = 0;
 f32 D_8010E014_cheep_cheep_chase = 0.0f;
@@ -249,9 +249,9 @@ void func_801059BC_cheep_cheep_chase(void) {
     ScissorSet(camera, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(camera, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 30.0f, 80.0f, 4000.0f);
-    D_800EC1B8_minigame = 0;
-    D_800EC280_minigame = 0;
-    D_800EBE28_minigame = 0;
+    mgItemObjNum = 0;
+    mgPlayerObjNum = 0;
+    mgMapObjNum = 0;
     func_8010D560_cheep_cheep_chase();
     func_80105BBC_cheep_cheep_chase();
     func_8010D6F4_cheep_cheep_chase(0, 0, -1, 0, NULL, func_801076B4_cheep_cheep_chase, FALSE, FALSE);
@@ -331,10 +331,10 @@ void func_80105F50_cheep_cheep_chase(omObjData *object) {
     omSetStatBit(omAddObj(10, 4, 0, -1, func_80106388_cheep_cheep_chase), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     omAddObj(10, 3, 0, -1, func_8010665C_cheep_cheep_chase);
     omAddObj(10, 8, 0, -1, func_80106978_cheep_cheep_chase);
-    func_800E18D8_minigame();
-    func_800E19F0_minigame(1);
+    MgPlayerParamReset();
+    MgShadowAltSet(1);
     for (i = 0; i < 4; i++) {
-        D_800EC598_minigame[i] = omAddObj(200, 10, 44, -1, func_80106E80_cheep_cheep_chase);
+        mgPlayerObjTbl[i] = omAddObj(200, 10, 44, -1, func_80106E80_cheep_cheep_chase);
     }
     omSetStatBit(omAddObj(300, 2, 2, -1, func_80107440_cheep_cheep_chase), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     for (i = 0; i < 18; i++) {
@@ -530,35 +530,35 @@ void func_80106AA0_cheep_cheep_chase(omObjData *object) {
 void func_80106E80_cheep_cheep_chase(omObjData *object) {
     s32 attr = 0x2A9;
     f32 chrTable[8] = { -0.2f, 0.1f, 0.0f, 0.0f, 0.0f, 0.1f, 0.0f, 0.0f };
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     s32 chr;
     s32 model;
     s32 motion;
 
-    object->work[0] = D_800EC280_minigame;
+    object->work[0] = mgPlayerObjNum;
     chr = GwPlayer[object->work[0]].chr;
-    model = D_800A178C_main[chr][0];
-    motion = D_800A178C_main[chr][2];
-    func_800E1BA8_minigame(object, model, motion, D_800EC280_minigame, attr, 0x2BD);
+    model = omCharModelNoTbl[chr][0];
+    motion = omCharModelNoTbl[chr][2];
+    MgPlayerCreate(object, model, motion, mgPlayerObjNum, attr, 0x2BD);
     object->model[9] = Hu3DModelRead(0x47000A, 0x2B9);
     Hu3DModelAttrSet(object->model[9], 4, 4);
-    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(chr, 0), 1, 0);
-    func_800E5A00_minigame(object, 1, CharMotionDataNumGet(chr, 1), 1, 0);
-    func_800E5A00_minigame(object, 0x26, CharMotionDataNumGet(chr, 0xD), 1, 0);
-    func_800E5A00_minigame(object, 0x27, CharMotionDataNumGet(chr, 0x3B), 1, 0);
-    func_800E5A00_minigame(object, 0x28, CharMotionDataNumGet(chr, 0x3C), 1, 0);
-    func_800E5A00_minigame(object, 0x2A, CharMotionDataNumGet(chr, 0x59), 1, 0);
-    func_800E5A00_minigame(object, 0x2B, CharMotionDataNumGet(chr, 0x5D), 1, 0);
-    func_800E5A00_minigame(object, 0xD, CharMotionDataNumGet(chr, 0x2F), 1, 999);
+    MgPlayerMotLoad(object, 0, CharMotionDataNumGet(chr, 0), 1, 0);
+    MgPlayerMotLoad(object, 1, CharMotionDataNumGet(chr, 1), 1, 0);
+    MgPlayerMotLoad(object, 0x26, CharMotionDataNumGet(chr, 0xD), 1, 0);
+    MgPlayerMotLoad(object, 0x27, CharMotionDataNumGet(chr, 0x3B), 1, 0);
+    MgPlayerMotLoad(object, 0x28, CharMotionDataNumGet(chr, 0x3C), 1, 0);
+    MgPlayerMotLoad(object, 0x2A, CharMotionDataNumGet(chr, 0x59), 1, 0);
+    MgPlayerMotLoad(object, 0x2B, CharMotionDataNumGet(chr, 0x5D), 1, 0);
+    MgPlayerMotLoad(object, 0xD, CharMotionDataNumGet(chr, 0x2F), 1, 999);
     Hu3DModelScaleSet(object->model[0], 0.7f, 0.7f, 0.7f);
-    object->trans.x = 300.0 - (D_8010E370_cheep_cheep_chase[D_800EC280_minigame] + 1.0f) * 120.0;
+    object->trans.x = 300.0 - (D_8010E370_cheep_cheep_chase[mgPlayerObjNum] + 1.0f) * 120.0;
     object->trans.y = 1060.0f;
     object->trans.z = -600.0f;
     object->rot.y = 180.0f;
-    func_800E5690_minigame(object, 0x2A);
+    MgPlayerMotSet(object, 0x2A);
     Hu3DModelPosSet(object->model[1], 0.0f, 0.0f, 0.0f);
     Hu3DModelAttrSet(object->model[1], 4, 4);
-    D_800EC280_minigame++;
+    mgPlayerObjNum++;
     data = object->data;
     D_8010E364_cheep_cheep_chase[object->work[0]].padId = data->unk57;
     D_8010E364_cheep_cheep_chase[object->work[0]].unk_01 = 0;
@@ -586,7 +586,7 @@ void func_8010732C_cheep_cheep_chase(omObjData *object) {
             funcId = group->funcCtx[funcId].next;
         }
     }
-    func_800E4E30_minigame(object);
+    MgPlayerMotUpdate(object);
 }
 
 void func_80107440_cheep_cheep_chase(omObjData *object) {
@@ -754,7 +754,7 @@ void func_80107BDC_cheep_cheep_chase(FuncContext *ctx) {
 }
 
 void func_80107E3C_cheep_cheep_chase(FuncContext *ctx) {
-    omObjData *object = D_800EC598_minigame[0];
+    omObjData *object = mgPlayerObjTbl[0];
     CheepCheepChasePlayer *player = D_8010E364_cheep_cheep_chase;
     s16 i;
     f32 t;
@@ -802,8 +802,8 @@ void func_801080C8_cheep_cheep_chase(FuncContext *ctx) {
             break;
         case 1:
             for (i = 0; i < 4; i++) {
-                if (D_800EC598_minigame[i]->trans.z + 255.0f < ctx->work.f32[0]) {
-                    ctx->work.f32[0] = D_800EC598_minigame[i]->trans.z + 255.0f;
+                if (mgPlayerObjTbl[i]->trans.z + 255.0f < ctx->work.f32[0]) {
+                    ctx->work.f32[0] = mgPlayerObjTbl[i]->trans.z + 255.0f;
                 }
             }
             Center.z = ctx->work.f32[0];
@@ -814,7 +814,7 @@ void func_801080C8_cheep_cheep_chase(FuncContext *ctx) {
 }
 
 void func_80108170_cheep_cheep_chase(FuncContext *ctx) {
-    omObjData *object = D_800EC598_minigame[0];
+    omObjData *object = mgPlayerObjTbl[0];
     s16 i;
 
     if (D_8010E01C_cheep_cheep_chase >= 4) {
@@ -837,7 +837,7 @@ void func_80108170_cheep_cheep_chase(FuncContext *ctx) {
                     func_8010D6F4_cheep_cheep_chase(2, 0, D_8010E360_cheep_cheep_chase->unk_24, 0, NULL, func_801092B8_cheep_cheep_chase, FALSE, FALSE);
                     break;
                 case 90:
-                    object = D_800EC598_minigame[0];
+                    object = mgPlayerObjTbl[0];
                     for (i = 0; i < 4; i++, object++) {
                         func_8010D6F4_cheep_cheep_chase(i + 4, 4, object->model[0], 0, NULL, func_80109CAC_cheep_cheep_chase, FALSE, FALSE);
                     }
@@ -886,7 +886,7 @@ void func_80108170_cheep_cheep_chase(FuncContext *ctx) {
 }
 
 void func_801085FC_cheep_cheep_chase(FuncContext *ctx) {
-    omObjData *object = D_800EC598_minigame[0];
+    omObjData *object = mgPlayerObjTbl[0];
     CheepCheepChasePlayer *player = D_8010E364_cheep_cheep_chase;
     s16 caughtCount = 0;
     s16 caught[4] = { -1, -1, -1, -1 };
@@ -1204,7 +1204,7 @@ void func_801094C0_cheep_cheep_chase(omObjData *object, s16 offset) {
 }
 
 void func_80109750_cheep_cheep_chase(FuncContext *ctx) {
-    omObjData *object = D_800EC598_minigame[ctx->work.s16[0]];
+    omObjData *object = mgPlayerObjTbl[ctx->work.s16[0]];
     f32 chrTable[8] = { 65.0f, 58.0f, 45.0f, 60.0f, 84.0f, 102.0f, 44.0f, 45.0f };
     f32 accel;
     f32 x;
@@ -1218,7 +1218,7 @@ void func_80109750_cheep_cheep_chase(FuncContext *ctx) {
             ctx->work.s8[0] = 0;
             ctx->work.f32[1] = object->trans.y = 1060.0f;
             ctx->work.f32[2] = 0.0f;
-            func_800E5690_minigame(object, 0x2A);
+            MgPlayerMotSet(object, 0x2A);
             CharFXPlay(0xB8, GwPlayer[object->work[0]].chr);
             ctx->state = 1;
             break;
@@ -1261,7 +1261,7 @@ void func_80109750_cheep_cheep_chase(FuncContext *ctx) {
                     break;
             }
             if (ctx->work.s8[0] == 2) {
-                func_800E5690_minigame(object, 0x26);
+                MgPlayerMotSet(object, 0x26);
                 func_8010D7F4_cheep_cheep_chase(ctx->work.s16[0] + 4, ctx);
             }
             break;
@@ -1269,7 +1269,7 @@ void func_80109750_cheep_cheep_chase(FuncContext *ctx) {
 }
 
 void func_80109CAC_cheep_cheep_chase(FuncContext *ctx) {
-    omObjData *object = D_800EC598_minigame[ctx->work.s16[0]];
+    omObjData *object = mgPlayerObjTbl[ctx->work.s16[0]];
     f32 scale = 0.0f;
 
     switch (ctx->state) {
@@ -1283,7 +1283,7 @@ void func_80109CAC_cheep_cheep_chase(FuncContext *ctx) {
         case 1:
             switch (ctx->work.s8[0]) {
                 case 0:
-                    func_800E5690_minigame(object, 0x2B);
+                    MgPlayerMotSet(object, 0x2B);
                     ctx->work.s8[0] = 1;
                     break;
                 case 1:
@@ -1331,7 +1331,7 @@ void func_80109CAC_cheep_cheep_chase(FuncContext *ctx) {
 }
 
 void func_8010A08C_cheep_cheep_chase(FuncContext *ctx) {
-    omObjData *object = D_800EC598_minigame[ctx->work.s16[0]];
+    omObjData *object = mgPlayerObjTbl[ctx->work.s16[0]];
     CheepCheepChasePlayer *player = &D_8010E364_cheep_cheep_chase[ctx->work.s16[0]];
 
     switch (ctx->state) {
@@ -1349,7 +1349,7 @@ void func_8010A08C_cheep_cheep_chase(FuncContext *ctx) {
         case 1:
             switch (player->unk_01) {
                 case 7:
-                    func_800E5690_minigame(object, 0x2A);
+                    MgPlayerMotSet(object, 0x2A);
                     object->trans.z += 5.0;
                     ctx->work.s8[0] += 0.5;
                     if (ctx->work.s8[0] >= 180.0f) {
@@ -1359,7 +1359,7 @@ void func_8010A08C_cheep_cheep_chase(FuncContext *ctx) {
                     break;
                 case 6:
                     if (++ctx->work.s8[3] >= 5) {
-                        func_800E5690_minigame(object, 1);
+                        MgPlayerMotSet(object, 1);
                         if (Hu3DData[object->model[0]].motTime == 0.0f) {
                             CharFXPlay(0x1F, GwPlayer[object->work[0]].chr);
                         }
@@ -1372,7 +1372,7 @@ void func_8010A08C_cheep_cheep_chase(FuncContext *ctx) {
                             ctx->work.s8[1] = 70;
                         }
                         if (func_8010DF48_cheep_cheep_chase(&object->trans.x, (u8 *)&ctx->work.s8[4], ctx->work.f32[1], 0.0f, 70.0f)) {
-                            func_800E5690_minigame(object, 0);
+                            MgPlayerMotSet(object, 0);
                             ctx->state = 2;
                             func_8010D6F4_cheep_cheep_chase(0, 0, -1, 0, NULL, func_80107E3C_cheep_cheep_chase, FALSE, FALSE);
                             ctx->work.s8[1] = 0;
@@ -1396,8 +1396,8 @@ void func_8010A08C_cheep_cheep_chase(FuncContext *ctx) {
 
                 CharAnimCreate(object->model[0], 2, GwPlayer[playerNo].chr, dataNum);
                 func_8010D7F4_cheep_cheep_chase(ctx->work.s16[0] + 4, ctx);
-                func_800E5690_minigame(object, 0xD);
-                HuAudCharVoicePlay(D_800A178C_main[GwPlayer[playerNo].chr][0] | 0x2F);
+                MgPlayerMotSet(object, 0xD);
+                HuAudCharVoicePlay(omCharModelNoTbl[GwPlayer[playerNo].chr][0] | 0x2F);
                 func_8010D6F4_cheep_cheep_chase(1, 0, -1, 0, NULL, func_8010896C_cheep_cheep_chase, FALSE, FALSE);
             }
             break;
@@ -1405,7 +1405,7 @@ void func_8010A08C_cheep_cheep_chase(FuncContext *ctx) {
 }
 
 void func_8010A57C_cheep_cheep_chase(FuncContext *ctx) {
-    omObjData *object = D_800EC598_minigame[ctx->work.s16[0]];
+    omObjData *object = mgPlayerObjTbl[ctx->work.s16[0]];
     CheepCheepChasePlayer *player = &D_8010E364_cheep_cheep_chase[ctx->work.s16[0]];
     s16 found = FALSE;
     CheepCheepChaseGameUnk04 *item;
@@ -1475,7 +1475,7 @@ void func_8010A57C_cheep_cheep_chase(FuncContext *ctx) {
 }
 
 void func_8010A938_cheep_cheep_chase(FuncContext *ctx) {
-    omObjData *object = D_800EC598_minigame[ctx->work.s16[0]];
+    omObjData *object = mgPlayerObjTbl[ctx->work.s16[0]];
     CheepCheepChasePlayer *player = &D_8010E364_cheep_cheep_chase[ctx->work.s16[0]];
     s16 found = FALSE;
     CheepCheepChaseGameUnk04 *item;
@@ -1554,7 +1554,7 @@ void func_8010ACD8_cheep_cheep_chase(s32 arg0) {
 
 void func_8010AD14_cheep_cheep_chase(FuncContext *ctx) {
     CheepCheepChasePlayer *player = &D_8010E364_cheep_cheep_chase[ctx->work.s16[0]];
-    omObjData *object = D_800EC598_minigame[ctx->work.s16[0]];
+    omObjData *object = mgPlayerObjTbl[ctx->work.s16[0]];
 
     switch (ctx->state) {
         case 0:
@@ -1659,7 +1659,7 @@ void func_8010AF70_cheep_cheep_chase(FuncContext *ctx) {
 }
 
 void func_8010B148_cheep_cheep_chase(FuncContext *ctx) {
-    omObjData *object = D_800EC598_minigame[ctx->work.s16[0]];
+    omObjData *object = mgPlayerObjTbl[ctx->work.s16[0]];
     CheepCheepChasePlayer *player = &D_8010E364_cheep_cheep_chase[ctx->work.s16[0]];
 
     if (player->unk_01 == 4) {
@@ -1701,7 +1701,7 @@ void func_8010B148_cheep_cheep_chase(FuncContext *ctx) {
 }
 
 void func_8010B33C_cheep_cheep_chase(FuncContext *ctx) {
-    omObjData *object = D_800EC598_minigame[ctx->work.s16[0]];
+    omObjData *object = mgPlayerObjTbl[ctx->work.s16[0]];
     CheepCheepChasePlayer *player = &D_8010E364_cheep_cheep_chase[ctx->work.s16[0]];
 
     switch (ctx->state) {
@@ -1749,7 +1749,7 @@ void func_8010B33C_cheep_cheep_chase(FuncContext *ctx) {
 
 void func_8010B52C_cheep_cheep_chase(FuncContext *ctx) {
     HmfModel *model = &Hu3DData[ctx->param];
-    omObjData *object = D_800EC598_minigame[ctx->work.s16[0]];
+    omObjData *object = mgPlayerObjTbl[ctx->work.s16[0]];
     CheepCheepChasePlayer *player = &D_8010E364_cheep_cheep_chase[ctx->work.s16[0]];
 
     switch (ctx->state) {
@@ -1762,7 +1762,7 @@ void func_8010B52C_cheep_cheep_chase(FuncContext *ctx) {
                 player->updateMotion = TRUE;
             }
             if (player->updateMotion) {
-                func_800E5690_minigame(object, player->motion);
+                MgPlayerMotSet(object, player->motion);
                 player->updateMotion = FALSE;
             }
             break;
@@ -1777,7 +1777,7 @@ void func_8010B63C_cheep_cheep_chase(CheepCheepChasePlayer *player, s16 motion, 
 }
 
 void func_8010B648_cheep_cheep_chase(FuncContext *ctx) {
-    omObjData *object = D_800EC598_minigame[ctx->work.s16[0]];
+    omObjData *object = mgPlayerObjTbl[ctx->work.s16[0]];
     CheepCheepChasePlayer *player = &D_8010E364_cheep_cheep_chase[ctx->work.s16[0]];
     f32 scale = 0.0f;
     f32 chrTable[8] = { 0.3f, 0.2f, 0.2f, 0.2f, 0.2f, 0.0f, 0.2f, 0.2f };
@@ -1848,7 +1848,7 @@ void func_8010B648_cheep_cheep_chase(FuncContext *ctx) {
 }
 
 void func_8010BB9C_cheep_cheep_chase(FuncContext *ctx) {
-    omObjData *object = D_800EC598_minigame[ctx->work.s16[0]];
+    omObjData *object = mgPlayerObjTbl[ctx->work.s16[0]];
     CheepCheepChasePlayer *player = &D_8010E364_cheep_cheep_chase[ctx->work.s16[0]];
     CheepCheepChaseGameUnk04 *item;
     s16 i;
@@ -1880,7 +1880,7 @@ void func_8010BB9C_cheep_cheep_chase(FuncContext *ctx) {
 }
 
 void func_8010BEA4_cheep_cheep_chase(FuncContext *ctx) {
-    omObjData *object = D_800EC598_minigame[ctx->work.s16[0]];
+    omObjData *object = mgPlayerObjTbl[ctx->work.s16[0]];
     CheepCheepChasePlayer *player = &D_8010E364_cheep_cheep_chase[ctx->work.s16[0]];
 
     switch (ctx->state) {
@@ -1909,7 +1909,7 @@ void func_8010BEA4_cheep_cheep_chase(FuncContext *ctx) {
 }
 
 void func_8010C004_cheep_cheep_chase(FuncContext *ctx) {
-    omObjData *object = D_800EC598_minigame[ctx->work.s16[0]];
+    omObjData *object = mgPlayerObjTbl[ctx->work.s16[0]];
     f32 x;
     f32 z;
     s16 i;
@@ -1972,7 +1972,7 @@ void func_8010C004_cheep_cheep_chase(FuncContext *ctx) {
 }
 
 void func_8010C440_cheep_cheep_chase(FuncContext *ctx) {
-    omObjData *object = D_800EC598_minigame[0];
+    omObjData *object = mgPlayerObjTbl[0];
     CheepCheepChasePlayer *player = D_8010E364_cheep_cheep_chase;
     HmfModel *model = &Hu3DData[ctx->param];
     f32 speed = 0.0f;

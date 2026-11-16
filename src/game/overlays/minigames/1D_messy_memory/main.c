@@ -3187,9 +3187,9 @@ void func_80110EC4_messy_memory(void) {
     Hu3DGLightColorSet(1, 64, 64, 64);
     Hu3DGLightDirSet(1, 0.0f, 85.0f, 100.0f);
     func_80110D50_messy_memory();
-    D_800EC1B8_minigame = 0;
-    D_800EC280_minigame = 0;
-    D_800EBE28_minigame = 0;
+    mgItemObjNum = 0;
+    mgPlayerObjNum = 0;
+    mgMapObjNum = 0;
     GMesFontMesCreate(D_801115F4_messy_memory, 0);
     GMesFontMesCreate(D_801115F4_messy_memory, 1);
     omAddObj(1000, 0, 0, -1, func_801109BC_messy_memory);

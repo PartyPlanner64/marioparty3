@@ -5,11 +5,11 @@
 
 extern s32 GwMessSpeed;
 extern s32 GwMessWait;
-extern s16 D_800A12C8_main;
+extern s16 mbWipeTypeNext;
 extern s32 mbCameraZoomInstantF;
 extern s8 mbStarMusF;
 extern s32 mbTurnUnkF;
-extern s32 D_800A12D8_main;
+extern s32 mbTauntOffF;
 
 void GWInit(void);
 void GWMgNoSet(s8 arg0);

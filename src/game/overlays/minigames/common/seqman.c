@@ -5,144 +5,144 @@
 #include "game/sprite.h"
 #include "math.h"
 
-u16 D_800EB910_minigame = 0;
-u16 D_800EB912_minigame = 0;
-u16 D_800EB914_minigame = 0;
-u16 D_800EB916_minigame = 0;
-u16 D_800EB918_minigame = 0;
-u16 D_800EB91A_minigame = 0;
-s32 D_800EB91C_minigame = 0x90;
-s32 D_800EB920_minigame = 0xD0;
-s32 D_800EB924_minigame = 1;
-s16 D_800EB928_minigame = 0; /* Unreferenced. */
-s16 D_800EB92A_minigame = -1;
-s32 D_800EB92C_minigame = -1;
-s16 D_800EB930_minigame = -1;
-s16 D_800EB932_minigame = 75;
-s16 D_800EB934_minigame = 0;
-f32 D_800EB938_minigame = 0.0f;
-s32 D_800EB93C_minigame = 0;
-s32 D_800EB940_minigame = 0;
+u16 mgFlowOpeningTime = 0;
+u16 mgFlowStartTime = 0;
+u16 mgFlowPlayTime = 0;
+u16 mgFlowFinishTime = 0;
+u16 mgFlowResultTime = 0;
+u16 mgFlowResultWait = 0;
+s32 mgRecordX = 0x90;
+s32 mgRecordY = 0xD0;
+s32 mgRecordPrio = 1;
+s16 mgRecordPad = 0; /* Unreferenced. */
+s16 mgRecordTime = -1;
+s32 mgRecordNo = -1;
+s16 mgFlowSeqNo = -1;
+s16 mgFlowSeqTime = 75;
+s16 mgFlowResultF = 0;
+f32 mgRecordZoomAngle = 0.0f;
+s32 mgFlowTimerMesF = 0;
+s32 mgRecordNewF = 0;
 
 extern s32 omovl;
 extern u8 storySceneNo;
-extern s16 D_800EBDE4_minigame;
-extern s16 D_800EBDE6_minigame;
-extern s16 D_800EBDE8_minigame[];
+extern s16 mgTimeSprAnim;
+extern s16 mgRecordSprAnim;
+extern s16 mgTimeGrpTbl[];
 
-void func_800E5EA0_minigame(MinigameFlow *flow) {
+void MgFlowInit(MinigameFlow *flow) {
     flow->state = MG_STATE_OPENING;
-    D_800EBDE0_minigame = flow;
+    mgFlow = flow;
     if (flow->timeDisp == MG_TIME_DISP_RECORD) {
-        func_800E62A8_minigame();
-        func_800E6268_minigame();
-        func_800E64B8_minigame(D_800EB91C_minigame, D_800EB920_minigame);
-        func_800E6300_minigame(D_800EB91C_minigame, D_800EB920_minigame + 12);
+        MgRecordSprLoad();
+        MgTimeSprLoad();
+        MgRecordGrpCreate(mgRecordX, mgRecordY);
+        MgTimeGrpCreate(mgRecordX, mgRecordY + 12);
         switch ((u32)omovl) {
             case 0x10:
-                D_800EB92C_minigame = 1;
-                D_800EB92A_minigame = GWMgRecordGet(D_800EB92C_minigame);
+                mgRecordNo = 1;
+                mgRecordTime = GWMgRecordGet(mgRecordNo);
                 break;
             case 0x23:
-                D_800EB92C_minigame = 2;
-                D_800EB92A_minigame = GWMgRecordGet(D_800EB92C_minigame);
+                mgRecordNo = 2;
+                mgRecordTime = GWMgRecordGet(mgRecordNo);
                 break;
             case 0x46:
-                D_800EB92C_minigame = storySceneNo + 5;
-                D_800EB92A_minigame = GWMgRecordGet(D_800EB92C_minigame);
+                mgRecordNo = storySceneNo + 5;
+                mgRecordTime = GWMgRecordGet(mgRecordNo);
                 break;
         }
-        func_800E6670_minigame(1, D_800EB92A_minigame);
-        func_800E6670_minigame(0, 0);
+        MgTimeDispSet(1, mgRecordTime);
+        MgTimeDispSet(0, 0);
     }
 
-    switch (D_800EBDE0_minigame->gauge & MG_GAUGE_LAYOUT_MASK) {
+    switch (mgFlow->gauge & MG_GAUGE_LAYOUT_MASK) {
         case MG_GAUGE_CORNERS_4:
-            func_800E9C20_minigame(4, D_800EBDE0_minigame->gauge & MG_GAUGE_LENGTH_MASK);
-            func_800EA0FC_minigame(0, 0.0f, 100.0f);
-            func_800E9F40_minigame(0, 24, 16, 0);
-            func_800EA2A8_minigame(0);
-            func_800EA0FC_minigame(1, 0.0f, 100.0f);
-            func_800E9F40_minigame(1, 296 - (D_800EBDE0_minigame->gauge & MG_GAUGE_LENGTH_MASK) * 10, 16, 0);
-            func_800EA2A8_minigame(1);
-            func_800EA0FC_minigame(2, 0.0f, 100.0f);
-            func_800E9F40_minigame(2, 24, 200, 0);
-            func_800EA2A8_minigame(2);
-            func_800EA0FC_minigame(3, 0.0f, 100.0f);
-            func_800E9F40_minigame(3, 296 - (D_800EBDE0_minigame->gauge & MG_GAUGE_LENGTH_MASK) * 10, 200, 0);
-            func_800EA2A8_minigame(3);
+            MgGaugeInit(4, mgFlow->gauge & MG_GAUGE_LENGTH_MASK);
+            MgGaugeRangeSet(0, 0.0f, 100.0f);
+            MgGaugePosSet(0, 24, 16, 0);
+            MgGaugeDispOn(0);
+            MgGaugeRangeSet(1, 0.0f, 100.0f);
+            MgGaugePosSet(1, 296 - (mgFlow->gauge & MG_GAUGE_LENGTH_MASK) * 10, 16, 0);
+            MgGaugeDispOn(1);
+            MgGaugeRangeSet(2, 0.0f, 100.0f);
+            MgGaugePosSet(2, 24, 200, 0);
+            MgGaugeDispOn(2);
+            MgGaugeRangeSet(3, 0.0f, 100.0f);
+            MgGaugePosSet(3, 296 - (mgFlow->gauge & MG_GAUGE_LENGTH_MASK) * 10, 200, 0);
+            MgGaugeDispOn(3);
             break;
         case MG_GAUGE_TOP_2:
-            func_800E9C20_minigame(2, D_800EBDE0_minigame->gauge & MG_GAUGE_LENGTH_MASK);
-            func_800EA0FC_minigame(0, 0.0f, 100.0f);
-            func_800E9F40_minigame(0, 24, 16, 0);
-            func_800EA2A8_minigame(0);
-            func_800EA0FC_minigame(1, 0.0f, 100.0f);
-            func_800E9F40_minigame(1, 296 - (D_800EBDE0_minigame->gauge & MG_GAUGE_LENGTH_MASK) * 10, 16, 0);
-            func_800EA2A8_minigame(1);
+            MgGaugeInit(2, mgFlow->gauge & MG_GAUGE_LENGTH_MASK);
+            MgGaugeRangeSet(0, 0.0f, 100.0f);
+            MgGaugePosSet(0, 24, 16, 0);
+            MgGaugeDispOn(0);
+            MgGaugeRangeSet(1, 0.0f, 100.0f);
+            MgGaugePosSet(1, 296 - (mgFlow->gauge & MG_GAUGE_LENGTH_MASK) * 10, 16, 0);
+            MgGaugeDispOn(1);
             break;
         case MG_GAUGE_RIGHT_2:
-            func_800E9C20_minigame(2, D_800EBDE0_minigame->gauge & MG_GAUGE_LENGTH_MASK);
-            func_800EA0FC_minigame(0, 0.0f, 100.0f);
-            func_800E9F40_minigame(0, 296 - (D_800EBDE0_minigame->gauge & MG_GAUGE_LENGTH_MASK) * 10, 16, 0);
-            func_800EA2A8_minigame(0);
-            func_800EA0FC_minigame(1, 0.0f, 100.0f);
-            func_800E9F40_minigame(1, 296 - (D_800EBDE0_minigame->gauge & MG_GAUGE_LENGTH_MASK) * 10, 130, 0);
-            func_800EA2A8_minigame(1);
+            MgGaugeInit(2, mgFlow->gauge & MG_GAUGE_LENGTH_MASK);
+            MgGaugeRangeSet(0, 0.0f, 100.0f);
+            MgGaugePosSet(0, 296 - (mgFlow->gauge & MG_GAUGE_LENGTH_MASK) * 10, 16, 0);
+            MgGaugeDispOn(0);
+            MgGaugeRangeSet(1, 0.0f, 100.0f);
+            MgGaugePosSet(1, 296 - (mgFlow->gauge & MG_GAUGE_LENGTH_MASK) * 10, 130, 0);
+            MgGaugeDispOn(1);
             break;
     }
 
-    D_800EB910_minigame = 0;
-    D_800EB912_minigame = 0;
-    D_800EB914_minigame = 0;
-    D_800EB916_minigame = 0;
-    D_800EB918_minigame = 0;
-    D_800EB91A_minigame = 0;
-    D_800EB934_minigame = 0;
+    mgFlowOpeningTime = 0;
+    mgFlowStartTime = 0;
+    mgFlowPlayTime = 0;
+    mgFlowFinishTime = 0;
+    mgFlowResultTime = 0;
+    mgFlowResultWait = 0;
+    mgFlowResultF = 0;
 }
 
-void func_800E6248_minigame(s32 arg0, s32 arg1) {
-    D_800EB91C_minigame = arg0;
-    D_800EB920_minigame = arg1;
+void MgRecordPosSet(s32 arg0, s32 arg1) {
+    mgRecordX = arg0;
+    mgRecordY = arg1;
 }
 
-void func_800E625C_minigame(s32 arg0) {
-    D_800EB924_minigame = arg0;
+void MgRecordPrioSet(s32 arg0) {
+    mgRecordPrio = arg0;
 }
 
-void func_800E6268_minigame(void) {
+void MgTimeSprLoad(void) {
     void *data;
 
     data = DataRead(0x31);
-    D_800EBDE4_minigame = HuSprAnimRead(data);
+    mgTimeSprAnim = HuSprAnimRead(data);
     DataClose(data);
 }
 
-void func_800E62A8_minigame(void) {
+void MgRecordSprLoad(void) {
     void *data;
 
     data = DataRead(0x31);
-    D_800EBDE6_minigame = HuSprAnimRead(data);
+    mgRecordSprAnim = HuSprAnimRead(data);
     DataClose(data);
-    espPalColorSet(D_800EBDE6_minigame, 0.0f, 1.0f, 0.0f);
+    espPalColorSet(mgRecordSprAnim, 0.0f, 1.0f, 0.0f);
 }
 
-s16 func_800E6300_minigame(s32 x, s32 y) {
+s16 MgTimeGrpCreate(s32 x, s32 y) {
     s16 group;
     s16 member;
     s16 memberX;
 
-    group = D_800EBDE8_minigame[0] = HuSprGrpCreate(7, 5);
-    HuSprGrpMemberSet(group, 0, D_800EBDE4_minigame, 0);
+    group = mgTimeGrpTbl[0] = HuSprGrpCreate(7, 5);
+    HuSprGrpMemberSet(group, 0, mgTimeSprAnim, 0);
     HuSprAttrReset(group, 0, 0xFFFF);
     HuSprDispOff(group, 0);
     HuSprPosSet(group, 0, x - 16, y);
-    HuSprPriSet(group, 0, (u16)D_800EB924_minigame);
+    HuSprPriSet(group, 0, (u16)mgRecordPrio);
 
     memberX = 4;
     for (member = 1; member < 7; member++) {
-        HuSprPriSet(group, member, (u16)D_800EB924_minigame);
-        HuSprGrpMemberSet(group, member, D_800EBDE4_minigame, 0);
+        HuSprPriSet(group, member, (u16)mgRecordPrio);
+        HuSprGrpMemberSet(group, member, mgTimeSprAnim, 0);
         HuSprPosSet(group, member, memberX, 0);
         HuSprAttrReset(group, member, 0xFFFF);
         HuSprDispOff(group, member);
@@ -158,22 +158,22 @@ s16 func_800E6300_minigame(s32 x, s32 y) {
     return group;
 }
 
-s16 func_800E64B8_minigame(s32 x, s32 y) {
+s16 MgRecordGrpCreate(s32 x, s32 y) {
     s16 group;
     s16 member;
     s16 memberX;
 
-    group = D_800EBDE8_minigame[1] = HuSprGrpCreate(7, 5);
-    HuSprGrpMemberSet(group, 0, D_800EBDE6_minigame, 0);
+    group = mgTimeGrpTbl[1] = HuSprGrpCreate(7, 5);
+    HuSprGrpMemberSet(group, 0, mgRecordSprAnim, 0);
     HuSprAttrReset(group, 0, 0xFFFF);
     HuSprDispOff(group, 0);
     HuSprPosSet(group, 0, x - 16, y);
-    HuSprPriSet(group, 0, (u16)D_800EB924_minigame);
+    HuSprPriSet(group, 0, (u16)mgRecordPrio);
 
     memberX = 4;
     for (member = 1; member < 7; member++) {
-        HuSprPriSet(group, member, (u16)D_800EB924_minigame);
-        HuSprGrpMemberSet(group, member, D_800EBDE6_minigame, 0);
+        HuSprPriSet(group, member, (u16)mgRecordPrio);
+        HuSprGrpMemberSet(group, member, mgRecordSprAnim, 0);
         HuSprPosSet(group, member, memberX, 0);
         HuSprAttrReset(group, member, 0xFFFF);
         HuSprDispOff(group, member);
@@ -189,8 +189,8 @@ s16 func_800E64B8_minigame(s32 x, s32 y) {
     return group;
 }
 
-void func_800E6670_minigame(s16 index, s16 time) {
-    s16 group = D_800EBDE8_minigame[index];
+void MgTimeDispSet(s16 index, s16 time) {
+    s16 group = mgTimeGrpTbl[index];
     s16 digit;
     s16 seconds;
 
@@ -231,23 +231,23 @@ void func_800E6670_minigame(s16 index, s16 time) {
     HuSprAnimModeSet(group, 6, HUSPR_ANIM_MODE_BANK);
 }
 
-void func_800E6968_minigame(s16 index, s16 time) {
-    s16 group = D_800EBDE8_minigame[index];
+void MgTimeDispZoomSet(s16 index, s16 time) {
+    s16 group = mgTimeGrpTbl[index];
     s16 digit;
     s16 seconds;
 
-    D_800EB938_minigame += 10.0f;
-    if (D_800EB938_minigame > 180.0f) {
-        D_800EB938_minigame = 180.0f;
+    mgRecordZoomAngle += 10.0f;
+    if (mgRecordZoomAngle > 180.0f) {
+        mgRecordZoomAngle = 180.0f;
     }
 
-    HuSprScaleSet(group, 0, sindf(D_800EB938_minigame) + 1.0f, sindf(D_800EB938_minigame) + 1.0f);
-    HuSprScaleSet(group, 1, sindf(D_800EB938_minigame) + 1.0f, sindf(D_800EB938_minigame) + 1.0f);
-    HuSprScaleSet(group, 2, sindf(D_800EB938_minigame) + 1.0f, sindf(D_800EB938_minigame) + 1.0f);
-    HuSprScaleSet(group, 3, sindf(D_800EB938_minigame) + 1.0f, sindf(D_800EB938_minigame) + 1.0f);
-    HuSprScaleSet(group, 4, sindf(D_800EB938_minigame) + 1.0f, sindf(D_800EB938_minigame) + 1.0f);
-    HuSprScaleSet(group, 5, sindf(D_800EB938_minigame) + 1.0f, sindf(D_800EB938_minigame) + 1.0f);
-    HuSprScaleSet(group, 6, sindf(D_800EB938_minigame) + 1.0f, sindf(D_800EB938_minigame) + 1.0f);
+    HuSprScaleSet(group, 0, sindf(mgRecordZoomAngle) + 1.0f, sindf(mgRecordZoomAngle) + 1.0f);
+    HuSprScaleSet(group, 1, sindf(mgRecordZoomAngle) + 1.0f, sindf(mgRecordZoomAngle) + 1.0f);
+    HuSprScaleSet(group, 2, sindf(mgRecordZoomAngle) + 1.0f, sindf(mgRecordZoomAngle) + 1.0f);
+    HuSprScaleSet(group, 3, sindf(mgRecordZoomAngle) + 1.0f, sindf(mgRecordZoomAngle) + 1.0f);
+    HuSprScaleSet(group, 4, sindf(mgRecordZoomAngle) + 1.0f, sindf(mgRecordZoomAngle) + 1.0f);
+    HuSprScaleSet(group, 5, sindf(mgRecordZoomAngle) + 1.0f, sindf(mgRecordZoomAngle) + 1.0f);
+    HuSprScaleSet(group, 6, sindf(mgRecordZoomAngle) + 1.0f, sindf(mgRecordZoomAngle) + 1.0f);
 
     HuSprDispOn(group, 0);
     digit = time / 3600;
@@ -286,45 +286,45 @@ void func_800E6968_minigame(s16 index, s16 time) {
     HuSprAnimModeSet(group, 6, HUSPR_ANIM_MODE_BANK);
 }
 
-void func_800E6E4C_minigame(s16 arg0) {
-    D_800EBDE0_minigame->startDelay = arg0;
+void MgFlowStartDelaySet(s16 arg0) {
+    mgFlow->startDelay = arg0;
 }
 
-void func_800E6E5C_minigame(s16 arg0) {
-    D_800EBDE0_minigame->timer = arg0;
+void MgFlowTimerSet(s16 arg0) {
+    mgFlow->timer = arg0;
 }
 
-void func_800E6E6C_minigame(s16 arg0) {
-    D_800EBDE0_minigame->resultDelay = arg0;
+void MgFlowResultDelaySet(s16 arg0) {
+    mgFlow->resultDelay = arg0;
 }
 
-void func_800E6E7C_minigame(s8 arg0) {
-    D_800EBDE0_minigame->type = arg0;
+void MgFlowTypeSet(s8 arg0) {
+    mgFlow->type = arg0;
 }
 
 u8 MgFlowStatGet(void) {
-    return D_800EBDE0_minigame->state;
+    return mgFlow->state;
 }
 
-u16 func_800E6E9C_minigame(void) {
+u16 MgFlowStatTimeGet(void) {
     s32 value;
 
-    switch (D_800EBDE0_minigame->state) {
+    switch (mgFlow->state) {
         case MG_STATE_OPENING:
-            value = D_800EB910_minigame;
+            value = mgFlowOpeningTime;
             break;
         case MG_STATE_START:
-            value = D_800EB912_minigame;
+            value = mgFlowStartTime;
             break;
         case MG_STATE_PLAY:
-            value = D_800EB914_minigame;
+            value = mgFlowPlayTime;
             break;
         case MG_STATE_FINISH:
-            value = D_800EB916_minigame;
+            value = mgFlowFinishTime;
             break;
         case MG_STATE_RESULT:
         default:
-            value = D_800EB918_minigame;
+            value = mgFlowResultTime;
             break;
     }
 
@@ -332,15 +332,15 @@ u16 func_800E6E9C_minigame(void) {
 }
 
 void MgFlowStatSet(u8 arg0) {
-    D_800EBDE0_minigame->state = arg0;
+    mgFlow->state = arg0;
 }
 
 void MgFlowStatNext(void) {
-    D_800EBDE0_minigame->state++;
+    mgFlow->state++;
 }
 
-void func_800E6F34_minigame(s32 arg0) {
-    D_800EB91A_minigame = arg0;
+void MgFlowResultWaitSet(s32 arg0) {
+    mgFlowResultWait = arg0;
 }
 
 u8 MgFlowMain(void) {
@@ -350,24 +350,24 @@ u8 MgFlowMain(void) {
     if (omSysExitReq == 1) {
         MgFlowStatSet(MG_STATE_EXIT);
     }
-    func_800EA518_minigame();
+    MgGaugeUpdate();
 
-    switch (D_800EBDE0_minigame->state) {
+    switch (mgFlow->state) {
         case MG_STATE_OPENING:
             if (WipeStatGet() != 0) {
                 break;
             }
-            if (D_800EBDE0_minigame->startDelay == 0) {
+            if (mgFlow->startDelay == 0) {
                 MgFlowStatSet(MG_STATE_START);
-            } else if (D_800EBDE0_minigame->startDelay != -1) {
-                D_800EBDE0_minigame->startDelay--;
+            } else if (mgFlow->startDelay != -1) {
+                mgFlow->startDelay--;
             }
-            D_800EB910_minigame++;
+            mgFlowOpeningTime++;
             break;
 
         case MG_STATE_START:
-            if (D_800EB912_minigame == 0) {
-                switch (D_800EBDE0_minigame->type) {
+            if (mgFlowStartTime == 0) {
+                switch (mgFlow->type) {
                     case MINIGAME_4P:
                         mes = 3;
                         break;
@@ -392,77 +392,77 @@ u8 MgFlowMain(void) {
                         break;
                 }
                 GMesCreate(mes);
-            } else if (D_800EB912_minigame == 75.0) {
+            } else if (mgFlowStartTime == 75.0) {
                 MgFlowStatSet(MG_STATE_PLAY);
             }
-            if (D_800EB932_minigame == D_800EB912_minigame && D_800EB930_minigame != -1) {
-                HuAudSeqPlay(D_800EB930_minigame);
+            if (mgFlowSeqTime == mgFlowStartTime && mgFlowSeqNo != -1) {
+                HuAudSeqPlay(mgFlowSeqNo);
             }
-            D_800EB912_minigame++;
+            mgFlowStartTime++;
             break;
 
         case MG_STATE_PLAY:
-            if (D_800EB914_minigame == 0 && D_800EBDE0_minigame->timeDisp == MG_TIME_DISP_COUNTDOWN) {
+            if (mgFlowPlayTime == 0 && mgFlow->timeDisp == MG_TIME_DISP_COUNTDOWN) {
                 GMesCreate(0x1A, 30, 160, 24);
             }
-            switch (D_800EBDE0_minigame->timeDisp) {
+            switch (mgFlow->timeDisp) {
                 case MG_TIME_DISP_NONE:
                     break;
                 case MG_TIME_DISP_RECORD:
-                    func_800E6670_minigame(0, D_800EB914_minigame * 2);
-                    if (D_800EBDE0_minigame->timeLimit == D_800EB914_minigame) {
+                    MgTimeDispSet(0, mgFlowPlayTime * 2);
+                    if (mgFlow->timeLimit == mgFlowPlayTime) {
                         MgFlowStatSet(MG_STATE_FINISH);
                     }
                     break;
                 case MG_TIME_DISP_COUNTDOWN:
-                    GMesTimerValueSet(D_800EBDE0_minigame->timer / 30 + 1);
+                    GMesTimerValueSet(mgFlow->timer / 30 + 1);
                     break;
             }
-            if (D_800EBDE0_minigame->timeLimit != -1) {
-                if (D_800EBDE0_minigame->timeLimit - 900 == D_800EB914_minigame) {
+            if (mgFlow->timeLimit != -1) {
+                if (mgFlow->timeLimit - 900 == mgFlowPlayTime) {
                     GMesCreate(0x1A, 30, 160, 24);
-                    D_800EB93C_minigame = 1;
-                } else if (D_800EBDE0_minigame->timeLimit - 900 < D_800EB914_minigame) {
-                    GMesTimerValueSet((D_800EBDE0_minigame->timeLimit - D_800EB914_minigame) / 30 + 1);
+                    mgFlowTimerMesF = 1;
+                } else if (mgFlow->timeLimit - 900 < mgFlowPlayTime) {
+                    GMesTimerValueSet((mgFlow->timeLimit - mgFlowPlayTime) / 30 + 1);
                 }
             }
-            if (D_800EBDE0_minigame->timer != -1) {
-                switch (D_800EBDE0_minigame->timerMode) {
+            if (mgFlow->timer != -1) {
+                switch (mgFlow->timerMode) {
                     case MG_TIMER_COUNT_UP:
-                        if (D_800EBDE0_minigame->timer >= D_800EBDE0_minigame->timeLimit) {
+                        if (mgFlow->timer >= mgFlow->timeLimit) {
                             MgFlowStatSet(MG_STATE_FINISH);
                         } else {
-                            D_800EBDE0_minigame->timer++;
+                            mgFlow->timer++;
                         }
                         break;
                     case MG_TIMER_COUNT_DOWN:
-                        if (D_800EBDE0_minigame->timer == 0) {
+                        if (mgFlow->timer == 0) {
                             MgFlowStatSet(MG_STATE_FINISH);
                             GMesTimerValueSet(0);
                         } else {
-                            D_800EBDE0_minigame->timer--;
+                            mgFlow->timer--;
                         }
                         break;
                     case MG_TIMER_NONE:
                         break;
                 }
             }
-            D_800EB914_minigame++;
+            mgFlowPlayTime++;
             break;
 
         case MG_STATE_FINISH:
-            if (D_800EB916_minigame == 0) {
-                D_800EB914_minigame--;
-                if (D_800EB914_minigame * 2 < D_800EB92A_minigame) {
-                    D_800EBDE0_minigame->newRecord = TRUE;
-                    GWMgRecordSet((s16)D_800EB92C_minigame, (u16)(D_800EB914_minigame * 2));
-                    D_800EBDE0_minigame->resultDelay += 75.0;
-                    D_800EB940_minigame = 1;
+            if (mgFlowFinishTime == 0) {
+                mgFlowPlayTime--;
+                if (mgFlowPlayTime * 2 < mgRecordTime) {
+                    mgFlow->newRecord = TRUE;
+                    GWMgRecordSet((s16)mgRecordNo, (u16)(mgFlowPlayTime * 2));
+                    mgFlow->resultDelay += 75.0;
+                    mgRecordNewF = 1;
                 }
-                if (D_800EBDE0_minigame->timeDisp == MG_TIME_DISP_COUNTDOWN || D_800EB93C_minigame != 0) {
+                if (mgFlow->timeDisp == MG_TIME_DISP_COUNTDOWN || mgFlowTimerMesF != 0) {
                     GMesTimerEnd();
                 }
-                switch (D_800EBDE0_minigame->type) {
+                switch (mgFlow->type) {
                     case MINIGAME_4P:
                         mes = 0xE;
                         break;
@@ -489,52 +489,52 @@ u8 MgFlowMain(void) {
                 GMesCreate(mes);
                 HuAudSeqFadeOut(120);
             }
-            if (D_800EBDE0_minigame->finishDelay == 0) {
+            if (mgFlow->finishDelay == 0) {
                 MgFlowStatSet(MG_STATE_RESULT);
-            } else if (D_800EBDE0_minigame->finishDelay != -1) {
-                D_800EBDE0_minigame->finishDelay--;
+            } else if (mgFlow->finishDelay != -1) {
+                mgFlow->finishDelay--;
             }
-            D_800EB916_minigame++;
+            mgFlowFinishTime++;
             break;
 
         case MG_STATE_RESULT:
-            D_800EB934_minigame = 0;
-            if (D_800EB918_minigame == 0 && D_800EBDE0_minigame->newRecord == TRUE) {
-                D_800EB91A_minigame = 75;
+            mgFlowResultF = 0;
+            if (mgFlowResultTime == 0 && mgFlow->newRecord == TRUE) {
+                mgFlowResultWait = 75;
                 GMesCreate(0x1B);
             }
-            if (D_800EB918_minigame == D_800EB91A_minigame) {
-                switch (D_800EBDE0_minigame->resultType) {
+            if (mgFlowResultTime == mgFlowResultWait) {
+                switch (mgFlow->resultType) {
                     case MG_RESULT_WIN_1:
-                        GMesCreate(0x16, GwPlayer[D_800EBDE0_minigame->winners[0]].chr);
-                        if (D_800EBDE0_minigame->newRecord == TRUE) {
+                        GMesCreate(0x16, GwPlayer[mgFlow->winners[0]].chr);
+                        if (mgFlow->newRecord == TRUE) {
                             HuAudSeqPlay(0x6A);
-                        } else if (D_800EBDE0_minigame->type == MINIGAME_BATTLE) {
+                        } else if (mgFlow->type == MINIGAME_BATTLE) {
                             HuAudSeqPlay(0x67);
                         } else {
                             HuAudSeqPlay(0x65);
                         }
                         break;
                     case MG_RESULT_WIN_2:
-                        GMesCreate(0x1E, GwPlayer[D_800EBDE0_minigame->winners[0]].chr,
-                                   GwPlayer[D_800EBDE0_minigame->winners[1]].chr);
-                        if (D_800EBDE0_minigame->newRecord == TRUE) {
+                        GMesCreate(0x1E, GwPlayer[mgFlow->winners[0]].chr,
+                                   GwPlayer[mgFlow->winners[1]].chr);
+                        if (mgFlow->newRecord == TRUE) {
                             HuAudSeqPlay(0x6A);
                         } else {
                             HuAudSeqPlay(0x66);
                         }
                         break;
                     case MG_RESULT_WIN_3:
-                        GMesCreate(0x22, GwPlayer[D_800EBDE0_minigame->winners[0]].chr,
-                                   GwPlayer[D_800EBDE0_minigame->winners[1]].chr,
-                                   GwPlayer[D_800EBDE0_minigame->winners[2]].chr);
+                        GMesCreate(0x22, GwPlayer[mgFlow->winners[0]].chr,
+                                   GwPlayer[mgFlow->winners[1]].chr,
+                                   GwPlayer[mgFlow->winners[2]].chr);
                         HuAudSeqPlay(0x66);
                         break;
                     case MG_RESULT_WIN_4:
-                        GMesCreate(0x23, GwPlayer[D_800EBDE0_minigame->winners[0]].chr,
-                                   GwPlayer[D_800EBDE0_minigame->winners[1]].chr,
-                                   GwPlayer[D_800EBDE0_minigame->winners[2]].chr,
-                                   GwPlayer[D_800EBDE0_minigame->winners[3]].chr);
+                        GMesCreate(0x23, GwPlayer[mgFlow->winners[0]].chr,
+                                   GwPlayer[mgFlow->winners[1]].chr,
+                                   GwPlayer[mgFlow->winners[2]].chr,
+                                   GwPlayer[mgFlow->winners[3]].chr);
                         HuAudSeqPlay(0x66);
                         break;
                     case MG_RESULT_DRAW:
@@ -559,33 +559,33 @@ u8 MgFlowMain(void) {
                     case MG_RESULT_NONE:
                         break;
                 }
-                D_800EB934_minigame = 1;
+                mgFlowResultF = 1;
             }
-            if (D_800EBDE0_minigame->resultDelay == 0) {
+            if (mgFlow->resultDelay == 0) {
                 MgFlowStatSet(MG_STATE_EXIT);
-            } else if (D_800EBDE0_minigame->resultDelay != -1) {
-                D_800EBDE0_minigame->resultDelay--;
+            } else if (mgFlow->resultDelay != -1) {
+                mgFlow->resultDelay--;
             }
-            if (D_800EB940_minigame != 0) {
-                func_800E6968_minigame(1, D_800EB914_minigame * 2);
+            if (mgRecordNewF != 0) {
+                MgTimeDispZoomSet(1, mgFlowPlayTime * 2);
             }
-            D_800EB918_minigame++;
+            mgFlowResultTime++;
             break;
 
         case MG_STATE_EXIT:
             break;
     }
 
-    switch (D_800EBDE0_minigame->gauge & MG_GAUGE_LAYOUT_MASK) {
+    switch (mgFlow->gauge & MG_GAUGE_LAYOUT_MASK) {
         case MG_GAUGE_CORNERS_4:
-            func_800EA178_minigame(2, D_800EBDE0_minigame->gaugeValue[2]);
-            func_800EA178_minigame(3, D_800EBDE0_minigame->gaugeValue[3]);
+            MgGaugeValueSet(2, mgFlow->gaugeValue[2]);
+            MgGaugeValueSet(3, mgFlow->gaugeValue[3]);
         case MG_GAUGE_TOP_2:
         case MG_GAUGE_RIGHT_2:
-            func_800EA178_minigame(0, D_800EBDE0_minigame->gaugeValue[0]);
-            func_800EA178_minigame(1, D_800EBDE0_minigame->gaugeValue[1]);
+            MgGaugeValueSet(0, mgFlow->gaugeValue[0]);
+            MgGaugeValueSet(1, mgFlow->gaugeValue[1]);
             break;
     }
 
-    return D_800EBDE0_minigame->state;
+    return mgFlow->state;
 }

@@ -134,7 +134,6 @@ extern u16 saveStorySize;
 extern u16 saveChecksumOfs;
 
 
-// extern char D_800A7B40_main[];
 
 void SaveSchemeInit(void) {
     SAVE_SCHEME_BYTE_SIZE(saveCommonSize, saveCommonScheme);

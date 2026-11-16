@@ -631,9 +631,9 @@ void func_801059A0_rockin_raceway(void) {
     ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 30.0f, 80.0f, 6000.0f);
-    D_800EC280_minigame = 0;
-    D_800EBE28_minigame = 0;
-    D_800EC1B8_minigame = 0;
+    mgPlayerObjNum = 0;
+    mgMapObjNum = 0;
+    mgItemObjNum = 0;
     D_80111ACC_rockin_raceway = 0;
     D_80111AD0_rockin_raceway = 0;
     D_80111AD4_rockin_raceway = 0;
@@ -810,10 +810,10 @@ void func_80105CB0_rockin_raceway(omObjData *object) {
                                          D_80111350_rockin_raceway[5].zoom, 10);
             D_80111C2E_rockin_raceway = 2;
             if (D_80111B34_rockin_raceway != -1) {
-                leaderObj = D_800EC598_minigame[D_80111AF0_rockin_raceway[0]];
+                leaderObj = mgPlayerObjTbl[D_80111AF0_rockin_raceway[0]];
                 racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(leaderObj);
                 for (i = 1; i < 4; i++) {
-                    otherObj = D_800EC598_minigame[D_80111AF0_rockin_raceway[i]];
+                    otherObj = mgPlayerObjTbl[D_80111AF0_rockin_raceway[i]];
                     other = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(otherObj);
                     if (other->unk02 == 1) {
                         continue;
@@ -833,7 +833,7 @@ void func_80105CB0_rockin_raceway(omObjData *object) {
                 }
             }
             for (i = 0; i < 4; i++) {
-                racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(D_800EC598_minigame[i]);
+                racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(mgPlayerObjTbl[i]);
                 if (racer->unk04 != -1) {
                     HuAudFXStop(racer->unk04);
                     racer->unk04 = -1;
@@ -863,7 +863,7 @@ void func_80105CB0_rockin_raceway(omObjData *object) {
                 break;
             }
             if (D_80111B34_rockin_raceway != -1) {
-                racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(D_800EC598_minigame[D_80111B34_rockin_raceway]);
+                racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(mgPlayerObjTbl[D_80111B34_rockin_raceway]);
                 GwPlayer[racer->unk0A].bonusCoin += 10;
                 if (D_80111B38_rockin_raceway != 0) {
                     func_80109044_rockin_raceway();
@@ -957,7 +957,7 @@ void func_80105CB0_rockin_raceway(omObjData *object) {
                     break;
                 case 2:
                     if (D_80111B34_rockin_raceway != -1) {
-                        racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(D_800EC598_minigame[D_80111B34_rockin_raceway]);
+                        racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(mgPlayerObjTbl[D_80111B34_rockin_raceway]);
                         GMesCreate(GMES_MES_MG_WINNER, racer->unk0E);
                         if (D_80111B36_rockin_raceway == 0) {
                             HuAudSeqPlay(0x65);
@@ -1076,9 +1076,9 @@ void func_80106B28_rockin_raceway(void) {
         }
         func_8010A5E4_rockin_raceway(racer->unk2E, racer->unk0E);
         object = omAddObj(i + 16, 10, 60, -1, func_80106DC8_rockin_raceway);
-        D_800EC598_minigame[D_800EC280_minigame] = object;
+        mgPlayerObjTbl[mgPlayerObjNum] = object;
         func_8010EC0C_rockin_raceway(object, (u32)&D_80111B30_rockin_raceway[i]);
-        D_800EC280_minigame++;
+        mgPlayerObjNum++;
     }
 }
 
@@ -1446,7 +1446,7 @@ void func_80107E78_rockin_raceway(s32 row, s16 arg1) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        object = D_800EC598_minigame[i];
+        object = mgPlayerObjTbl[i];
         racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(object);
         if (D_80111B3C_rockin_raceway[row].racers[racer->unk0A].active != 0) {
             continue;
@@ -1477,11 +1477,11 @@ void func_8010803C_rockin_raceway(s32 *order) {
     s32 j;
 
     for (i = 0; i < 4; i++) {
-        racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(D_800EC598_minigame[i]);
+        racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(mgPlayerObjTbl[i]);
         standings[i].index = i;
         standings[i].node = racer->unk4C;
         standings[i].track = racer->unk2E;
-        standings[i].x = D_800EC598_minigame[i]->trans.x + racer->unk54;
+        standings[i].x = mgPlayerObjTbl[i]->trans.x + racer->unk54;
         standings[i].fraction = racer->unk50;
         standings[i].distance = racer->unk48;
     }
@@ -1512,7 +1512,7 @@ void func_8010803C_rockin_raceway(s32 *order) {
         }
     }
     for (i = 0; i < 4; i++) {
-        racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(D_800EC598_minigame[i]);
+        racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(mgPlayerObjTbl[i]);
         for (j = 0; j < 4; j++) {
             if (standings[j].index == i) {
                 break;
@@ -1524,7 +1524,7 @@ void func_8010803C_rockin_raceway(s32 *order) {
         racer->unk1C = j;
     }
     for (i = 0; i < 4; i++) {
-        order[i] = ((RockinRacewayRacer *)func_8010EC38_rockin_raceway(D_800EC598_minigame[standings[i].index]))->unk0A;
+        order[i] = ((RockinRacewayRacer *)func_8010EC38_rockin_raceway(mgPlayerObjTbl[standings[i].index]))->unk0A;
     }
 }
 
@@ -1533,15 +1533,15 @@ s32 func_80108464_rockin_raceway(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(D_800EC598_minigame[i]);
+        racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(mgPlayerObjTbl[i]);
         if (racer->unk4C >= D_801112C0_rockin_raceway[racer->unk2E] - 1 &&
-            D_800EC598_minigame[i]->trans.x + racer->unk54 >= 1.7f * 200.0) {
+            mgPlayerObjTbl[i]->trans.x + racer->unk54 >= 1.7f * 200.0) {
             break;
         }
     }
     if (i < 4) {
         for (i = 0; i < 4; i++) {
-            racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(D_800EC598_minigame[i]);
+            racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(mgPlayerObjTbl[i]);
             if (racer->unk1C == 0) {
                 return i;
             }
@@ -1696,7 +1696,7 @@ void func_80108BAC_rockin_raceway(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(D_800EC598_minigame[i]);
+        racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(mgPlayerObjTbl[i]);
         switch (func_80108A80_rockin_raceway(&racer->pos)) {
             case 0:
                 racer->unk02 = 2;
@@ -2084,10 +2084,10 @@ void func_801098D8_rockin_raceway(void) {
 // Appends a new object to the shared minigame object list.
 void func_801099AC_rockin_raceway(void) {
     omObjData *obj = omAddObj(1, 0x18, 0, -1, func_80109A04_rockin_raceway);
-    u16 index = D_800EBE28_minigame;
+    u16 index = mgMapObjNum;
 
-    D_800EBE28_minigame = index + 1;
-    D_800EC1C0_minigame[index] = obj;
+    mgMapObjNum = index + 1;
+    mgMapObjTbl[index] = obj;
 }
 
 void func_80109A04_rockin_raceway(omObjData *object) {
@@ -2142,13 +2142,13 @@ void func_80109CF8_rockin_raceway(omObjData *object) {
 }
 
 void func_80109D00_rockin_raceway(s32 *players) {
-    omObjData *object = D_800EC1C0_minigame[0];
+    omObjData *object = mgMapObjTbl[0];
 
     func_80110C38_rockin_raceway(&object->model[3], HuSprAnimDataGet(D_80111B68_rockin_raceway[3]), players);
 }
 
 void func_80109D54_rockin_raceway(s32 *values) {
-    omObjData *object = D_800EC1C0_minigame[0];
+    omObjData *object = mgMapObjTbl[0];
 
     func_80110D90_rockin_raceway(&object->model[7], HuSprAnimDataGet(D_80111B68_rockin_raceway[4]), values);
 }
@@ -2656,7 +2656,7 @@ void func_8010B89C_rockin_raceway(void) {
             print8(D_801115F4_rockin_raceway + 20, D_801115F8_rockin_raceway + 96, omDBGStrBuf);
             sprintf(omDBGStrBuf, " ZOOM   %3.3f ", CZoom);
             print8(D_801115F4_rockin_raceway + 20, D_801115F8_rockin_raceway + 104, omDBGStrBuf);
-            D_800EBE24_minigame = 0;
+            mgFieldStat = 0;
             break;
         case 2:
             if ((HuPadBtn[0] & R_JPAD) || (HuPadBtn[0] & R_CBUTTONS)) {
@@ -2682,7 +2682,7 @@ void func_8010B89C_rockin_raceway(void) {
             print8(D_801115F4_rockin_raceway + 20, D_801115F8_rockin_raceway + 104, omDBGStrBuf);
             break;
         default:
-            D_800EBE24_minigame = 1;
+            mgFieldStat = 1;
             break;
     }
     if (HuPadBtnDown[0] & R_TRIG) {
@@ -3090,17 +3090,17 @@ void func_8010D600_rockin_raceway(void) {
         frame->unk04[i] = D_80111AF0_rockin_raceway[i];
     }
     for (i = 0; i < 4; i++) {
-        racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(D_800EC598_minigame[i]);
+        racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(mgPlayerObjTbl[i]);
         replay = &frame->racers[i];
-        replay->trans.x = D_800EC598_minigame[i]->trans.x;
-        replay->trans.y = D_800EC598_minigame[i]->trans.y;
-        replay->trans.z = D_800EC598_minigame[i]->trans.z;
-        replay->rot.x = D_800EC598_minigame[i]->rot.x;
-        replay->rot.y = D_800EC598_minigame[i]->rot.y;
-        replay->rot.z = D_800EC598_minigame[i]->rot.z;
-        replay->scale.x = D_800EC598_minigame[i]->scale.x;
-        replay->scale.y = D_800EC598_minigame[i]->scale.y;
-        replay->scale.z = D_800EC598_minigame[i]->scale.z;
+        replay->trans.x = mgPlayerObjTbl[i]->trans.x;
+        replay->trans.y = mgPlayerObjTbl[i]->trans.y;
+        replay->trans.z = mgPlayerObjTbl[i]->trans.z;
+        replay->rot.x = mgPlayerObjTbl[i]->rot.x;
+        replay->rot.y = mgPlayerObjTbl[i]->rot.y;
+        replay->rot.z = mgPlayerObjTbl[i]->rot.z;
+        replay->scale.x = mgPlayerObjTbl[i]->scale.x;
+        replay->scale.y = mgPlayerObjTbl[i]->scale.y;
+        replay->scale.z = mgPlayerObjTbl[i]->scale.z;
         replay->unk24 = racer->unk38;
         replay->unk28 = racer->unk24;
     }
@@ -3204,7 +3204,7 @@ void func_8010D9C4_rockin_raceway(s32 index) {
     func_80109D54_rockin_raceway(times);
     for (i = 0; i < 4; i++) {
         replay = &frame->racers[i];
-        object = D_800EC598_minigame[i];
+        object = mgPlayerObjTbl[i];
         if (index - 1 < 0) {
             prev = replay;
         } else {
@@ -3233,7 +3233,7 @@ void func_8010D9C4_rockin_raceway(s32 index) {
                 } else {
                     prev2 = &func_8010D944_rockin_raceway(index - (j + 3))->racers[i];
                 }
-                model = &Hu3DData[D_800EC598_minigame[i]->model[j + 3]];
+                model = &Hu3DData[mgPlayerObjTbl[i]->model[j + 3]];
                 if (D_80111B3C_rockin_raceway[j].racers[i].active != 0) {
                     snapshot = &D_80111B3C_rockin_raceway[j].racers[i];
                     if (snapshot->unk00 != 0) {
@@ -3335,7 +3335,7 @@ void func_8010E08C_rockin_raceway(s32 winner) {
         }
     }
     for (j = 0; j < 4; j++) {
-        racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(D_800EC598_minigame[j]);
+        racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(mgPlayerObjTbl[j]);
         if (winner == j) {
             racer->unk44 += 0.1f * 200.0;
         } else {

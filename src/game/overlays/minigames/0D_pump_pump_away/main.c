@@ -184,7 +184,7 @@ typedef struct PumpPumpAwaySkyColor {
 
 extern u8 Hu3DBufNo;
 extern u8 omAllPauseF;
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 extern const s16 D_801116D8_pump_pump_away[];
 
 Vec D_80110E70_pump_pump_away[] = {
@@ -2464,7 +2464,7 @@ void func_8010C1C8_pump_pump_away(omObjData *obj) {
 
 void func_8010C3E0_pump_pump_away(omObjData *obj) {
     UnkPumpPumpAwayJet *jet = &D_80113438_pump_pump_away[obj->work[0]];
-    s32 modelFile = D_800A178C_main[GwPlayer[obj->work[0]].chr][0];
+    s32 modelFile = omCharModelNoTbl[GwPlayer[obj->work[0]].chr][0];
 
     if (jet->unk_08 == 0) {
         Hu3DMotionModelSet(obj->model[0], obj->motion[5]);
@@ -2544,7 +2544,7 @@ void func_8010C6E4_pump_pump_away(omObjData *obj) {
     u16 character = GwPlayer[obj->work[0]].chr;
     UnkPumpPumpAwayJet *jet;
 
-    obj->model[0] = Hu3DModelRead(D_800A178C_main[character][0] | D_800A178C_main[character][1], 0x2B9);
+    obj->model[0] = Hu3DModelRead(omCharModelNoTbl[character][0] | omCharModelNoTbl[character][1], 0x2B9);
     omObjMotionRead(obj, 0, CharMotionDataNumGet(character, 0));
     omObjMotionRead(obj, 1, CharMotionDataNumGet(character, 0x14));
     omObjMotionRead(obj, 3, CharMotionDataNumGet(character, 1));
@@ -3960,9 +3960,9 @@ void m213_ObjectSetup(void) {
     Hu3DGLightDirSet(1, 0.0f, 90.0f, 560.0f);
     Hu3DGLightColorSet(2, 255, 255, 255);
     Hu3DGLightDirSet(2, 0.0f, 90.0f, 560.0f);
-    D_800EC1B8_minigame = 0;
-    D_800EC280_minigame = 0;
-    D_800EBE28_minigame = 0;
+    mgItemObjNum = 0;
+    mgPlayerObjNum = 0;
+    mgMapObjNum = 0;
     GMesFontMesCreate(D_801116D8_pump_pump_away, 0);
     GMesFontMesCreate(D_801116D8_pump_pump_away, 1);
     omAddObj(1000, 0, 0, -1, func_80110B34_pump_pump_away);

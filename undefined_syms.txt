@@ -18,16 +18,16 @@ func_80107CC4_silly_screws = 0x80107CC4;
 D_8010BF80_silly_screws = 0x8010BF80;
 D_8010BF84_silly_screws = 0x8010BF84;
 
-D_800EC1BC_minigame = 0x800EC1BC;
+mgMapObjLastTbl = 0x800EC1BC;
 
-/* minigame field aliases: MinigameBssC1B8, MinigameBssC280. */
-D_800EC1B8_minigame = minigameBssC1B8;
-D_800EC1BA_minigame = minigameBssC1B8 + 0x2;
-D_800EC280_minigame = minigameBssC280;
-D_800EC282_minigame = minigameBssC280 + 0x2;
-D_800EC286_minigame = minigameBssC280 + 0x6;
-D_800EC288_minigame = minigameBssC280 + 0x8;
-D_800EC28A_minigame = minigameBssC280 + 0xA;
+/* minigame field aliases: MgBssItemObjNum, MgBssPlayerObjNum. */
+mgItemObjNum = mgBssItemObjNum;
+mgStickRotDirTbl = mgBssItemObjNum + 0x2;
+mgPlayerObjNum = mgBssPlayerObjNum;
+mgStickRotWaitTbl = mgBssPlayerObjNum + 0x2;
+mgWallMapNo = mgBssPlayerObjNum + 0x6;
+mgHitSkipCnt = mgBssPlayerObjNum + 0x8;
+mgStickRotLapTbl = mgBssPlayerObjNum + 0xA;
 
 /* Minigame table field aliases: MinigameTable (mgdata.c). */
 D_800A6D44_main = mgDataTbl + 0x4; /* minigameType */
@@ -97,14 +97,14 @@ D_800B1A3E_main = gMesFontUpperAnim - 0x41 * 2; /* 'A' */
 D_800B1A76_main = gMesFontUpperAltAnim - 0x41 * 2; /* 'A' */
 
 /* profiler sample buffer sampleCount fields. */
-D_800B246C_main = HuProfCpuBuf + 0x4;
-D_800B24F4_main = HuProfRspBuf + 0x4;
+HuProfCpuSampleNum = HuProfCpuBuf + 0x4;
+HuProfRspSampleNum = HuProfRspBuf + 0x4;
 
 /* objmain character model table fields, referenced by overlays as separate arrays. */
-D_800A178C_main = omCharModelTbl + 0x4;
-D_800A1790_main = omCharModelTbl + 0x8;
-D_800A1794_main = omCharModelTbl + 0xC;
-D_800A1798_main = omCharModelTbl + 0x10;
+omCharModelNoTbl = omCharModelTbl + 0x4;
+omCharMotTbl = omCharModelTbl + 0x8;
+omCharMot1Tbl = omCharModelTbl + 0xC;
+omCharMot2Tbl = omCharModelTbl + 0x10;
 
 /* Low byte of the gamework message speed, referenced by the name overlay asm. */
 D_800A12C3_main = GwMessSpeed + 0x3;
@@ -116,27 +116,27 @@ mgPlayerTeam = Hu3DObjExtF + 0x1;
 HuPadBtnOld = saveBoardSystemSize + 0x2;
 HuPadStkX = saveBoardSystemSize + 0xA;
 Hu3DDLModelNum = saveBoardSystemSize + 0xE;
-HuPadStkXSum = D_800D0568_main + 0x2;
+HuPadStkXSum = HuPadStkXSumWork + 0x2;
 HuPadStkYSum = mbWipeType + 0x2;
 HuPadStkY = Hu3DFlatShadeF + 0x1;
 mesWInsert = Hu3DModelDataTag + 0x2;
 ContBtn = matGfxSplitF + 0x2;
 
 /* main bss.c: fields and elements of larger objects, referenced separately. */
-D_800CD360_main = gMesData + 0x60;
-D_800CD364_main = gMesData + 0x64;
-D_800CE202_main = omovl + 0x2; /* low halfword */
-D_800D09A9_main = saveCommonBuf + 0x1; /* SaveCommonBuf boxNo */
-D_800D13EE_main = HuAudFadeSysConfig + 0x56;
-D_800D1F60_main = wipeTex + 0x4; /* WipeTexture pixels */
-D_800D52C0_main = HuAudSysConfig + 0x28; /* str800D5298 unk28 */
-D_800D54FC_main = CenterM + 0x4;
-D_800D5500_main = CenterM + 0x8;
-D_800D5A40_main = Hu3DObjMtxStack + 0x40;
-D_800D6AE4_main = CRotM + 0x4;
+gMesDataPosX = gMesData + 0x60;
+gMesDataPosY = gMesData + 0x64;
+omovlLo = omovl + 0x2; /* low halfword */
+saveCommonBufBoxNo = saveCommonBuf + 0x1; /* SaveCommonBuf boxNo */
+HuAudFadeSeChMax = HuAudFadeSysConfig + 0x56;
+wipeTexImg = wipeTex + 0x4; /* WipeTexture pixels */
+HuAudSysFxNo = HuAudSysConfig + 0x28; /* str800D5298 unk28 */
+CenterMY = CenterM + 0x4;
+CenterMZ = CenterM + 0x8;
+Hu3DObjMtxStackNext = Hu3DObjMtxStack + 0x40;
+CRotMY = CRotM + 0x4;
 
 /* main bss.c: base of a matrix table indexed from 1. */
-D_800D41B0_main = Hu3DSubMtxStack - 0x40;
+Hu3DSubMtxStackPrev = Hu3DSubMtxStack - 0x40;
 
 /* swing_n_swipe field aliases: SwingNSwipeBssC148. */
 D_8010C148_swing_n_swipe = swingNSwipeBssC148;
@@ -687,3 +687,5 @@ D_80115CA6_mstory1 = D_80115C9C_mstory1 + 0xA;
 GameManFirstPad = 0x800D1F36;
 mbMesNum = 0x800D41C2;
 storySceneNo = 0x800CE20A;
+omOvlEntry = 0x801059A0; /* entry point at the start of every overlay */
+mgInstSlotEnd = mgInstSlotTbl + 0xA; /* mgInstSlotTbl[5] */

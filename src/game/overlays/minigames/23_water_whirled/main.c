@@ -122,11 +122,11 @@ void func_801059A0_water_whirled(void) {
     u8 camIndex;
 
     MapCollInit(50);
-    Hu3DQuadPoolInit(&D_800EBEB0_minigame, 0x40);
+    Hu3DQuadPoolInit(&mgQuadPool, 0x40);
     Hu3DSprModelInit(32);
     omInitObjMan(50, 0);
     omGameSysInit();
-    func_800E1804_minigame();
+    MgFieldStatClear();
     CamSetupInit(1);
     camIndex = CamSetupMapCullAdd();
     ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
@@ -134,29 +134,29 @@ void func_801059A0_water_whirled(void) {
     CFanLen = 30000.0f;
     Hu3DCameraPerspectiveSet(0, 20.0f, 80.0f, 16000.0f);
     Hu3DGLightDirSet(1, -35.0f, -114.0f, -3.0f);
-    D_800EC1B8_minigame = 0;
-    D_800EC280_minigame = 0;
-    D_800EBE28_minigame = 0;
-    func_800E18D8_minigame();
-    D_800EB77C_minigame = 0.0f;
-    func_800E1490_minigame(D_800EBE28_minigame);
-    D_800EC1C0_minigame[D_800EBE28_minigame++] = omAddObj(1, 10, 0, -1, func_801071BC_water_whirled);
-    D_800EC598_minigame[D_800EC280_minigame++] = omAddObj(3, 7, 0, -1, func_80107880_water_whirled);
-    D_800EC598_minigame[D_800EC280_minigame++] = omAddObj(3, 7, 0, -1, func_8010789C_water_whirled);
-    D_800EC598_minigame[D_800EC280_minigame++] = omAddObj(3, 7, 0, -1, func_801078B8_water_whirled);
-    D_800EC598_minigame[D_800EC280_minigame++] = omAddObj(3, 7, 0, -1, func_801078D4_water_whirled);
+    mgItemObjNum = 0;
+    mgPlayerObjNum = 0;
+    mgMapObjNum = 0;
+    MgPlayerParamReset();
+    mgPlayerFallInit = 0.0f;
+    MgMapBaseSet(mgMapObjNum);
+    mgMapObjTbl[mgMapObjNum++] = omAddObj(1, 10, 0, -1, func_801071BC_water_whirled);
+    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 7, 0, -1, func_80107880_water_whirled);
+    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 7, 0, -1, func_8010789C_water_whirled);
+    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 7, 0, -1, func_801078B8_water_whirled);
+    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 7, 0, -1, func_801078D4_water_whirled);
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     omSetStatBit(omAddObj(4, 0, 0, -1, func_80105EA0_water_whirled), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     omSetStatBit(omAddObj(100, 0, 0, -1, func_80108DF8_water_whirled), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    D_800EB73C_minigame = 10.0f;
+    mgPlayerAccel = 10.0f;
     WipeCreateIn(WIPE_TYPE_PREV, 16);
-    func_800E5EA0_minigame(&D_8010A2AC_water_whirled);
-    D_800EB930_minigame = 50;
-    D_800EB932_minigame = 60;
-    func_800EA0FC_minigame(0, 0.0f, D_8010A190_water_whirled[0]);
-    func_800EA0FC_minigame(1, 0.0f, D_8010A190_water_whirled[1]);
-    func_800EA0FC_minigame(2, 0.0f, D_8010A190_water_whirled[2]);
-    func_800EA0FC_minigame(3, 0.0f, D_8010A190_water_whirled[3]);
+    MgFlowInit(&D_8010A2AC_water_whirled);
+    mgFlowSeqNo = 50;
+    mgFlowSeqTime = 60;
+    MgGaugeRangeSet(0, 0.0f, D_8010A190_water_whirled[0]);
+    MgGaugeRangeSet(1, 0.0f, D_8010A190_water_whirled[1]);
+    MgGaugeRangeSet(2, 0.0f, D_8010A190_water_whirled[2]);
+    MgGaugeRangeSet(3, 0.0f, D_8010A190_water_whirled[3]);
     Hu3DGLightDirSet(1, D_8010A2D4_water_whirled.x, D_8010A2D4_water_whirled.y, D_8010A2D4_water_whirled.z);
 }
 
@@ -308,7 +308,7 @@ void func_80106308_water_whirled(omObjData *object) {
 }
 
 void func_80106680_water_whirled(void) {
-    s32 time = func_800E6E9C_minigame();
+    s32 time = MgFlowStatTimeGet();
 
     if (MgFlowStatGet() == MG_STATE_OPENING) {
         if (time < 15) {
@@ -365,7 +365,7 @@ void func_8010698C_water_whirled(void) {
     omObjData *target;
 
     if (D_8010A280_water_whirled != -1) {
-        target = D_800EC598_minigame[D_8010A280_water_whirled];
+        target = mgPlayerObjTbl[D_8010A280_water_whirled];
         Center.x -= (Center.x - target->trans.x) * 0.25f;
         Center.z -= (Center.z - target->trans.z) * 0.25f;
         Center.y -= (Center.y - target->trans.y) * 0.25f;
@@ -390,8 +390,8 @@ void func_80106A58_water_whirled(void) {
 
     for (i = 0; i < 4; i++) {
         progress[i] = D_8010A240_water_whirled[i] * 1500.0f;
-        x = D_800EC598_minigame[i]->trans.x;
-        z = D_800EC598_minigame[i]->trans.z;
+        x = mgPlayerObjTbl[i]->trans.x;
+        z = mgPlayerObjTbl[i]->trans.z;
         if (x > 0.0f) {
             if (z > 0.0f) {
                 if (x > 1000.0f) {
@@ -450,7 +450,7 @@ void func_80106A58_water_whirled(void) {
 }
 
 void func_80106DB8_water_whirled(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *work;
+    MgPlayerWork *work;
     s32 time;
     s32 i;
 
@@ -458,7 +458,7 @@ void func_80106DB8_water_whirled(omObjData *object) {
     if (omPauseChk() + omAllPauseF != 0) {
         return;
     }
-    time = func_800E6E9C_minigame();
+    time = MgFlowStatTimeGet();
     switch (MgFlowMain()) {
         case 0:
             if (time == 1) {
@@ -478,7 +478,7 @@ void func_80106DB8_water_whirled(omObjData *object) {
                     MgFlowStatSet(MG_STATE_FINISH);
                     D_8010A2AC_water_whirled.winners[0] = D_8010A280_water_whirled;
                     D_8010A2AC_water_whirled.resultType = MG_RESULT_WIN_1;
-                    work = D_800EC598_minigame[D_8010A280_water_whirled]->data;
+                    work = mgPlayerObjTbl[D_8010A280_water_whirled]->data;
                     GwPlayer[work->unk59].bonusCoin += 10;
                     break;
                 }
@@ -513,7 +513,7 @@ void func_80106DB8_water_whirled(omObjData *object) {
             func_8010698C_water_whirled();
             break;
         case 4:
-            if (D_8010A280_water_whirled != -1 && D_800EB934_minigame == 1) {
+            if (D_8010A280_water_whirled != -1 && mgFlowResultF == 1) {
                 HuAudPlayerFXPlay(GwPlayer[D_8010A280_water_whirled].chr + 0x290, D_8010A280_water_whirled);
             }
             if (time >= 150) {
@@ -529,8 +529,8 @@ void func_80106DB8_water_whirled(omObjData *object) {
             object->func = func_8010616C_water_whirled;
             break;
     }
-    for (i = 0; i < D_800EC280_minigame; i++) {
-        work = D_800EC598_minigame[i]->data;
+    for (i = 0; i < mgPlayerObjNum; i++) {
+        work = mgPlayerObjTbl[i]->data;
         work->unk60 = CRot.y;
     }
     if (omSysExitReq == 1) {
@@ -545,7 +545,7 @@ void func_80106DB8_water_whirled(omObjData *object) {
 }
 
 void func_801071BC_water_whirled(omObjData *object) {
-    D_800EC1C0_minigame_ObjData *work;
+    MgMapWork *work;
 
     object->model[0] = Hu3DModelRead2(0x440000, 0x4C9);
     object->model[1] = Hu3DModelRead2(0x440001, 0x4C9);
@@ -570,11 +570,11 @@ void func_801071BC_water_whirled(omObjData *object) {
     Center.x = -224.0f;
     Center.y = 300.0f;
     Center.z = 300.0f;
-    func_800E147C_minigame(object);
-    func_800E1370_minigame(object, 1, 0.0f);
-    func_800E1304_minigame(object, 0.2f);
-    func_800E1310_minigame(object, D_800EB73C_minigame);
-    func_800E131C_minigame(object, 25.0f);
+    MgMapTiltOn(object);
+    MgMapAttrSet(object, 1, 0.0f);
+    MgMapFrictionSet(object, 0.2f);
+    MgMapAccelSet(object, mgPlayerAccel);
+    MgMapSlideSet(object, 25.0f);
     work->unk04 = 0;
     Hu3DModelObjAttrSet(object->model[1], 0x20000, 0x20000);
     Hu3DModelRemakeStatic(object->model[1]);
@@ -595,7 +595,7 @@ void func_801071BC_water_whirled(omObjData *object) {
 }
 
 void func_8010750C_water_whirled(omObjData *object, u16 player) {
-    func_800E1BA8_minigame_ObjData *work;
+    MgPlayerWork *work;
     s32 i;
 
     for (i = 0; i < object->mdlcnt; i++) {
@@ -614,11 +614,11 @@ void func_8010750C_water_whirled(omObjData *object, u16 player) {
     work->unk4C = 0.5f;
     work->unkCC = 1.0f;
     work->unk60 = 0.0f;
-    func_800E1328_minigame(object, 100.0f);
-    func_800E1334_minigame(object, 150.0f);
-    func_800E1340_minigame(object, 20.0f);
-    func_800E134C_minigame(object, 30.0f);
-    func_800E12EC_minigame(object, 1000.0f);
+    MgPlayerRadiusSet(object, 100.0f);
+    MgPlayerHeightSet(object, 150.0f);
+    MgPlayerPunchRadiusSet(object, 20.0f);
+    MgPlayerAttackParamSet(object, 30.0f);
+    MgPlayerVelYSet(object, 1000.0f);
     work->unk9C = work->unkA0 = work->unkA4 = 0.0f;
     work->unk59 = player;
     work->unkC3 = -1;
@@ -649,7 +649,7 @@ void func_8010750C_water_whirled(omObjData *object, u16 player) {
     }
     work = object->data;
     work->unk3C = 90.0f;
-    func_800E149C_minigame(object, 0, 2);
+    MgPlayerMapAttrSet(object, 0, 2);
     do {
         i = rand8() & 3;
     } while (D_8010A2F0_water_whirled[i] != -1);
@@ -676,7 +676,7 @@ void func_801078D4_water_whirled(omObjData *object) {
 }
 
 void func_801078F0_water_whirled(omObjData *object, f32 speed) {
-    func_800E1BA8_minigame_ObjData *work = object->data;
+    MgPlayerWork *work = object->data;
     s32 player = work->unk59;
     f32 angle = work->unk3C;
     f32 offset;
@@ -752,7 +752,7 @@ void func_80107DD4_water_whirled(s32 index, f32 unused, Vec *out) {
 }
 
 void func_80107F08_water_whirled(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *work = object->data;
+    MgPlayerWork *work = object->data;
     s32 player;
     s32 pad;
     s32 mode;
@@ -769,7 +769,7 @@ void func_80107F08_water_whirled(omObjData *object) {
     Vec vel;
     Vec drift;
 
-    D_800EBE2C_minigame = D_800EC5D8_minigame = 0.0f;
+    mgMoveOfsX = mgMoveOfsZ = 0.0f;
     player = work->unk59;
     pad = work->unk57;
     speed = work->unk40;
@@ -797,7 +797,7 @@ void func_80107F08_water_whirled(omObjData *object) {
         if (stickY < -60) {
             stickY = -60;
         }
-        func_800E2308_minigame(&stickX, &stickY);
+        MgStickClamp(&stickX, &stickY);
     } else {
         stickY = 0;
         stickX = 0;
@@ -853,13 +853,13 @@ void func_80107F08_water_whirled(omObjData *object) {
     D_8010A1A0_water_whirled[player].x = x - D_8010A1D0_water_whirled[player].x;
     D_8010A1A0_water_whirled[player].y = 0.0f;
     D_8010A1A0_water_whirled[player].z = z - D_8010A1D0_water_whirled[player].z;
-    x += D_800EBE2C_minigame;
-    z += D_800EC5D8_minigame;
+    x += mgMoveOfsX;
+    z += mgMoveOfsZ;
     func_801086A0_water_whirled(object, x, z);
     speed = work->unk40;
     object->trans.x -= D_8010A3CC_water_whirled[player] * 50.0f;
     func_80088910_main(Hu3DData[object->model[0]].mtx, 0.0f, work->unk3C, 0.0f);
-    func_800E17D4_minigame(object, x, y - 40.0f, z);
+    MgObjPosSet(object, x, y - 40.0f, z);
     func_801078F0_water_whirled(object, D_8010A3CC_water_whirled[player]);
     if (D_8010A230_water_whirled[player] != 0.0f) {
         if ((D_8010A230_water_whirled[player] *= 0.9f) < 1.0f) {
@@ -888,7 +888,7 @@ void func_8010860C_water_whirled(Vec *origin, Vec *p, Vec *q, Vec *out) {
 }
 
 void func_801086A0_water_whirled(omObjData *object, f32 x, f32 z) {
-    func_800E1BA8_minigame_ObjData *work;
+    MgPlayerWork *work;
     Vec a;
     Vec b;
     Vec c;
@@ -924,8 +924,8 @@ void func_801086A0_water_whirled(omObjData *object, f32 x, f32 z) {
 }
 
 void func_80108898_water_whirled(omObjData *object, Vec *pos) {
-    func_800E1BA8_minigame_ObjData *work = object->data;
-    func_800E1BA8_minigame_ObjData *otherWork;
+    MgPlayerWork *work = object->data;
+    MgPlayerWork *otherWork;
     omObjData *other;
     f32 x = pos->x;
     f32 z = pos->z;
@@ -934,30 +934,30 @@ void func_80108898_water_whirled(omObjData *object, Vec *pos) {
     f32 dist;
     s32 i;
 
-    for (i = 0; i < D_800EC280_minigame; i++) {
-        other = D_800EC598_minigame[i];
+    for (i = 0; i < mgPlayerObjNum; i++) {
+        other = mgPlayerObjTbl[i];
         otherWork = other->data;
         if (work == otherWork) {
             continue;
         }
-        dx = other->trans.x - (x + D_800EBE2C_minigame);
-        dz = other->trans.z - (z + D_800EC5D8_minigame);
+        dx = other->trans.x - (x + mgMoveOfsX);
+        dz = other->trans.z - (z + mgMoveOfsZ);
         dist = HuSqrtf(dx * dx + dz * dz) - (otherWork->unk48 + work->unk48);
         if (dist < 0.0f) {
-            func_800DFCDC_minigame(dx, dz, dist);
+            MgMoveOfsAdd(dx, dz, dist);
             work->unk53[1] = i;
         }
     }
 }
 
 void func_801089C0_water_whirled(omObjData *object, f32 x, f32 z) {
-    func_800E1BA8_minigame_ObjData *work = object->data;
+    MgPlayerWork *work = object->data;
     f32 radius = work->unk48;
-    f32 dist = HuSqrtf(D_800EBE2C_minigame * D_800EBE2C_minigame + D_800EC5D8_minigame * D_800EC5D8_minigame);
+    f32 dist = HuSqrtf(mgMoveOfsX * mgMoveOfsX + mgMoveOfsZ * mgMoveOfsZ);
 
-    if (dist > radius || fabs(D_800EBE2C_minigame) > radius || fabs(D_800EC5D8_minigame) > radius) {
-        D_800EBE2C_minigame = D_8010A1D0_water_whirled[work->unk59].x - x;
-        D_800EC5D8_minigame = D_8010A1D0_water_whirled[work->unk59].z - z;
+    if (dist > radius || fabs(mgMoveOfsX) > radius || fabs(mgMoveOfsZ) > radius) {
+        mgMoveOfsX = D_8010A1D0_water_whirled[work->unk59].x - x;
+        mgMoveOfsZ = D_8010A1D0_water_whirled[work->unk59].z - z;
     }
     if (MgFlowStatGet() == MG_STATE_PLAY) {
         if (D_8010A29C_water_whirled[work->unk59] == 0) {
@@ -976,23 +976,23 @@ void func_801089C0_water_whirled(omObjData *object, f32 x, f32 z) {
 }
 
 f32 func_80108B98_water_whirled(omObjData *object, f32 x, f32 y, f32 z) {
-    func_800E1BA8_minigame_ObjData *work = object->data;
+    MgPlayerWork *work = object->data;
     f32 speed = work->unk40;
     s32 player = work->unk59;
     Hu3DSphere sphere;
     f32 dist;
 
-    sphere.pos.x = x + sindf(work->unk3C) * speed + D_800EBE2C_minigame;
+    sphere.pos.x = x + sindf(work->unk3C) * speed + mgMoveOfsX;
     sphere.pos.y = y;
-    sphere.pos.z = z + cosdf(work->unk3C) * speed + D_800EC5D8_minigame;
+    sphere.pos.z = z + cosdf(work->unk3C) * speed + mgMoveOfsZ;
     sphere.radius = work->unk48;
     work->unk53[0] = work->unk53[1] = -1;
     func_80108898_water_whirled(object, &sphere.pos);
     func_801089C0_water_whirled(object, x, z);
-    sphere.pos.x += D_800EBE2C_minigame;
-    sphere.pos.z += D_800EC5D8_minigame;
-    func_800DD530_minigame(object, &sphere, 0.0f);
-    dist = HuSqrtf(D_800EBE2C_minigame * D_800EBE2C_minigame + D_800EC5D8_minigame * D_800EC5D8_minigame);
+    sphere.pos.x += mgMoveOfsX;
+    sphere.pos.z += mgMoveOfsZ;
+    MgPlayerWallCheck(object, &sphere, 0.0f);
+    dist = HuSqrtf(mgMoveOfsX * mgMoveOfsX + mgMoveOfsZ * mgMoveOfsZ);
     if (dist != 0.0f) {
         if (dist > D_8010A190_water_whirled[player] * 0.5f) {
             work->unk40 *= 0.8f;
@@ -1000,9 +1000,9 @@ f32 func_80108B98_water_whirled(omObjData *object, f32 x, f32 y, f32 z) {
             work->unk40 *= 0.98f;
         }
         if (dist > D_8010A230_water_whirled[player]) {
-            D_8010A200_water_whirled[player].x = D_800EBE2C_minigame;
+            D_8010A200_water_whirled[player].x = mgMoveOfsX;
             D_8010A200_water_whirled[player].y = 0.0f;
-            D_8010A200_water_whirled[player].z = D_800EC5D8_minigame;
+            D_8010A200_water_whirled[player].z = mgMoveOfsZ;
             MapVecNormalize(&D_8010A200_water_whirled[player]);
             D_8010A230_water_whirled[player] = 16.0f;
         }
@@ -1083,7 +1083,7 @@ void func_80108DF8_water_whirled(omObjData *object) {
             HuSprParentSet(grp, j, 0);
         }
         HuSprDispOn(grp, 2);
-        func_800E9F40_minigame(i, iconPos[i][0], iconPos[i][1], 0);
+        MgGaugePosSet(i, iconPos[i][0], iconPos[i][1], 0);
     }
     object->func = NULL;
 }
@@ -1152,7 +1152,7 @@ s32 func_8010960C_water_whirled(omObjData *object) {
 }
 
 void func_801096BC_water_whirled(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *work = object->data;
+    MgPlayerWork *work = object->data;
     f32 x = object->trans.x;
     f32 z = object->trans.z;
     Vec dir;
@@ -1182,11 +1182,11 @@ void func_801096BC_water_whirled(omObjData *object) {
         }
     }
     angle = work->unk3C;
-    work->unk60 = func_800E2ED4_minigame(dir.x, dir.z, sindf(angle), cosdf(angle));
+    work->unk60 = MgDirDot(dir.x, dir.z, sindf(angle), cosdf(angle));
 }
 
 void func_801098AC_water_whirled(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *work = object->data;
+    MgPlayerWork *work = object->data;
     s32 player = work->unk59;
     s32 accelerate;
     s32 section;
@@ -1248,7 +1248,7 @@ void func_801098AC_water_whirled(omObjData *object) {
     angle = work->unk3C - 90.0f;
     dx = D_8010A860_water_whirled.x - object->trans.x;
     dz = D_8010A860_water_whirled.y - object->trans.z;
-    D_8010AC44_water_whirled = (s8)(func_800E2ED4_minigame(dx, dz, sindf(angle), cosdf(angle)) * 120.0f);
+    D_8010AC44_water_whirled = (s8)(MgDirDot(dx, dz, sindf(angle), cosdf(angle)) * 120.0f);
     // do-while(0) needed for float register allocation of dir.
     do {
         dir = work->unk3C;
@@ -1257,7 +1257,7 @@ void func_801098AC_water_whirled(omObjData *object) {
         dx -= object->trans.x;
         dz -= object->trans.z;
     } while (0);
-    if (func_800E2ED4_minigame(dx, dz, sindf(dir), cosdf(dir)) < 0.0f) {
+    if (MgDirDot(dx, dz, sindf(dir), cosdf(dir)) < 0.0f) {
         D_8010AC44_water_whirled = 60;
     } else if (accelerate == TRUE) {
         D_8010AC40_water_whirled |= 0x8000;
@@ -1269,7 +1269,7 @@ void func_801098AC_water_whirled(omObjData *object) {
 }
 
 void func_80109E2C_water_whirled(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *work = object->data;
+    MgPlayerWork *work = object->data;
     s32 player = work->unk59;
     s32 section = func_8010960C_water_whirled(object);
     Vec normal;

@@ -2,12 +2,12 @@
 #include "gcc/memory.h"
 #include "game/overlays/minigame.h"
 
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 extern u8 Hu3DBufNo;
 extern u8 omAllPauseF;
 extern f32 Hu3DMatAmbScale;
 extern f32 Hu3DMatColScale;
-extern omObjData *D_800EBE70_minigame[];
+extern omObjData *mgItemObjTbl[];
 
 s32 D_8010AF80_treadmill_grill = 0;
 u8 D_8010AF84_treadmill_grill[4] = { 0, 0, 0, 0 };
@@ -118,7 +118,7 @@ void func_801059A0_treadmill_grill(void) {
     u8 camIndex;
 
     MapCollInit(50);
-    Hu3DQuadPoolInit(&D_800EBEB0_minigame, 0x40);
+    Hu3DQuadPoolInit(&mgQuadPool, 0x40);
     Hu3DSprModelInit(32);
     omInitObjMan(30, 0);
     omGameSysInit();
@@ -128,38 +128,38 @@ void func_801059A0_treadmill_grill(void) {
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 20.0f, 80.0f, 8000.0f);
     Hu3DGLightDirSet(1, -35.0f, -114.0f, -3.0f);
-    D_800EC1B8_minigame = 0;
-    D_800EC280_minigame = 0;
-    D_800EBE28_minigame = 0;
-    func_800E18D8_minigame();
-    D_800EB77C_minigame = 0.0f;
-    func_800E19F0_minigame(0);
-    func_800E1490_minigame(D_800EBE28_minigame);
-    D_800EC1C0_minigame[D_800EBE28_minigame++] = omAddObj(1, 1, 0, -1, func_801065DC_treadmill_grill);
-    D_800EC1C0_minigame[D_800EBE28_minigame++] = omAddObj(1, 16, 0, -1, func_801067A8_treadmill_grill);
-    D_800EC598_minigame[D_800EC280_minigame++] = omAddObj(3, 16, 60, -1, func_801084B4_treadmill_grill);
-    D_800EC598_minigame[D_800EC280_minigame++] = omAddObj(3, 16, 60, -1, func_801085D8_treadmill_grill);
-    D_800EC598_minigame[D_800EC280_minigame++] = omAddObj(3, 16, 60, -1, func_80108730_treadmill_grill);
-    D_800EC598_minigame[D_800EC280_minigame++] = omAddObj(3, 16, 60, -1, func_80108888_treadmill_grill);
-    D_800EBE70_minigame[D_800EC1B8_minigame++] = omAddObj(2, 2, 0, -1, func_80108DE0_treadmill_grill);
-    D_800EBE70_minigame[D_800EC1B8_minigame++] = omAddObj(2, 2, 0, -1, func_80108DE0_treadmill_grill);
-    D_800EBE70_minigame[D_800EC1B8_minigame++] = omAddObj(2, 2, 0, -1, func_80108DE0_treadmill_grill);
-    D_800EBE70_minigame[D_800EC1B8_minigame++] = omAddObj(2, 2, 0, -1, func_80108DE0_treadmill_grill);
-    D_800EBE70_minigame[D_800EC1B8_minigame++] = omAddObj(2, 2, 0, -1, func_80108DE0_treadmill_grill);
-    D_800EBE70_minigame[D_800EC1B8_minigame++] = omAddObj(2, 2, 0, -1, func_80108DE0_treadmill_grill);
-    D_800EBE70_minigame[D_800EC1B8_minigame++] = omAddObj(2, 2, 0, -1, func_80108DE0_treadmill_grill);
-    D_800EBE70_minigame[D_800EC1B8_minigame++] = omAddObj(2, 2, 0, -1, func_80108DE0_treadmill_grill);
-    D_800EBE70_minigame[D_800EC1B8_minigame++] = omAddObj(2, 2, 0, -1, func_80108DE0_treadmill_grill);
-    D_800EBE70_minigame[D_800EC1B8_minigame++] = omAddObj(2, 2, 0, -1, func_80108DE0_treadmill_grill);
-    D_800EBE70_minigame[D_800EC1B8_minigame++] = omAddObj(2, 2, 0, -1, func_80108DE0_treadmill_grill);
-    D_800EBE70_minigame[D_800EC1B8_minigame++] = omAddObj(2, 2, 0, -1, func_80108DE0_treadmill_grill);
-    D_800EBE70_minigame[D_800EC1B8_minigame++] = omAddObj(2, 2, 0, -1, func_80108DE0_treadmill_grill);
+    mgItemObjNum = 0;
+    mgPlayerObjNum = 0;
+    mgMapObjNum = 0;
+    MgPlayerParamReset();
+    mgPlayerFallInit = 0.0f;
+    MgShadowAltSet(0);
+    MgMapBaseSet(mgMapObjNum);
+    mgMapObjTbl[mgMapObjNum++] = omAddObj(1, 1, 0, -1, func_801065DC_treadmill_grill);
+    mgMapObjTbl[mgMapObjNum++] = omAddObj(1, 16, 0, -1, func_801067A8_treadmill_grill);
+    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 16, 60, -1, func_801084B4_treadmill_grill);
+    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 16, 60, -1, func_801085D8_treadmill_grill);
+    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 16, 60, -1, func_80108730_treadmill_grill);
+    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 16, 60, -1, func_80108888_treadmill_grill);
+    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 2, 0, -1, func_80108DE0_treadmill_grill);
+    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 2, 0, -1, func_80108DE0_treadmill_grill);
+    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 2, 0, -1, func_80108DE0_treadmill_grill);
+    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 2, 0, -1, func_80108DE0_treadmill_grill);
+    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 2, 0, -1, func_80108DE0_treadmill_grill);
+    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 2, 0, -1, func_80108DE0_treadmill_grill);
+    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 2, 0, -1, func_80108DE0_treadmill_grill);
+    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 2, 0, -1, func_80108DE0_treadmill_grill);
+    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 2, 0, -1, func_80108DE0_treadmill_grill);
+    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 2, 0, -1, func_80108DE0_treadmill_grill);
+    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 2, 0, -1, func_80108DE0_treadmill_grill);
+    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 2, 0, -1, func_80108DE0_treadmill_grill);
+    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 2, 0, -1, func_80108DE0_treadmill_grill);
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    D_800EB73C_minigame = 10.0f;
+    mgPlayerAccel = 10.0f;
     WipeCreateIn(WIPE_TYPE_PREV, 16);
-    func_800E5EA0_minigame(&D_8010B03C_treadmill_grill);
-    D_800EB930_minigame = 53;
-    D_800EB932_minigame = 20;
+    MgFlowInit(&D_8010B03C_treadmill_grill);
+    mgFlowSeqNo = 53;
+    mgFlowSeqTime = 20;
     Hu3DGLightDirSet(1, 86.0f, 45.0f, 74.0f);
     func_801089E0_treadmill_grill();
 }
@@ -177,8 +177,8 @@ void func_80106034_treadmill_grill(omObjData *object) {
 
     if (WipeStatGet() == 0) {
         func_80109108_treadmill_grill(object);
-        for (i = 0; i < D_800EC1B8_minigame; i++) {
-            other = D_800EBE70_minigame[i];
+        for (i = 0; i < mgItemObjNum; i++) {
+            other = mgItemObjTbl[i];
             other->trans.x = D_8010B378_treadmill_grill[i].x;
             other->trans.y = D_8010B378_treadmill_grill[i].y;
             other->trans.z = D_8010B378_treadmill_grill[i].z;
@@ -215,7 +215,7 @@ void func_801061E8_treadmill_grill(omObjData *object) {
 }
 
 void func_801062DC_treadmill_grill(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     omObjData *player;
     s32 last;
     s32 count;
@@ -226,7 +226,7 @@ void func_801062DC_treadmill_grill(omObjData *object) {
         return;
     }
     count = 0;
-    for (i = 0; i < D_800EC280_minigame; i++) {
+    for (i = 0; i < mgPlayerObjNum; i++) {
         if (D_8010AF84_treadmill_grill[i] == 0) {
             count++;
             last = i;
@@ -234,7 +234,7 @@ void func_801062DC_treadmill_grill(omObjData *object) {
     }
     switch (MgFlowMain()) {
         case 0:
-            if (func_800E6E9C_minigame() == 10) {
+            if (MgFlowStatTimeGet() == 10) {
                 HuAudSeqPlay(0);
             }
             break;
@@ -252,20 +252,20 @@ void func_801062DC_treadmill_grill(omObjData *object) {
             }
             break;
         case 4:
-            if (D_800EB934_minigame == 1) {
+            if (mgFlowResultF == 1) {
                 if (D_8010B03C_treadmill_grill.resultType == MG_RESULT_DRAW) {
                     for (i = 0; i < 4; i++) {
-                        player = D_800EC598_minigame[i];
+                        player = mgPlayerObjTbl[i];
                         if (D_8010AF84_treadmill_grill[i] == 0) {
-                            func_800E5798_minigame(player, 14);
+                            MgPlayerMotForceSet(player, 14);
                         }
                     }
                 } else {
-                    player = D_800EC598_minigame[last];
-                    func_800E5798_minigame(player, 13);
+                    player = mgPlayerObjTbl[last];
+                    MgPlayerMotForceSet(player, 13);
                     data = player->data;
                     GwPlayer[data->unk59].bonusCoin += 10;
-                    HuAudCharVoicePlay(D_800A178C_main[GwPlayer[data->unk59].chr][0] | 0x2F);
+                    HuAudCharVoicePlay(omCharModelNoTbl[GwPlayer[data->unk59].chr][0] | 0x2F);
                 }
             }
             break;
@@ -274,8 +274,8 @@ void func_801062DC_treadmill_grill(omObjData *object) {
             object->func = func_80106008_treadmill_grill;
             break;
     }
-    for (i = 0; i < D_800EC280_minigame; i++) {
-        ((func_800E1BA8_minigame_ObjData *)D_800EC598_minigame[i]->data)->unk60 = CRot.y;
+    for (i = 0; i < mgPlayerObjNum; i++) {
+        ((MgPlayerWork *)mgPlayerObjTbl[i]->data)->unk60 = CRot.y;
     }
     if (omSysExitReq == 1) {
         WipeCreateOut(0, 20);
@@ -288,7 +288,7 @@ void func_801062DC_treadmill_grill(omObjData *object) {
 }
 
 void func_801065DC_treadmill_grill(omObjData *object) {
-    D_800EC1C0_minigame_ObjData *work;
+    MgMapWork *work;
 
     object->model[0] = Hu3DModelRead2(0x360005, 0xA9);
     object->trans.x = 100.0f;
@@ -307,11 +307,11 @@ void func_801065DC_treadmill_grill(omObjData *object) {
     Center.x = 0.0f;
     Center.y = 50.0f;
     Center.z = -350.0f;
-    func_800E147C_minigame(object);
-    func_800E139C_minigame(object, 0.0f, -1500.0f, -1500.0f, 1500.0f, 1500.0f);
-    func_800E1304_minigame(object, 0.2f);
-    func_800E1310_minigame(object, D_800EB73C_minigame);
-    func_800E131C_minigame(object, 25.0f);
+    MgMapTiltOn(object);
+    MgMapBoxSet(object, 0.0f, -1500.0f, -1500.0f, 1500.0f, 1500.0f);
+    MgMapFrictionSet(object, 0.2f);
+    MgMapAccelSet(object, mgPlayerAccel);
+    MgMapSlideSet(object, 25.0f);
     work->unk04 = 0;
     Hu3DModelObjAttrSet(object->model[0], 0x20000, 0x20000);
     Hu3DModelRemakeStatic(object->model[0]);
@@ -322,7 +322,7 @@ void func_801065DC_treadmill_grill(omObjData *object) {
 const char D_8010B288_treadmill_grill[] = "c201_000-eyes";
 
 void func_801067A8_treadmill_grill(omObjData *object) {
-    D_800EC1C0_minigame_ObjData *work;
+    MgMapWork *work;
 
     Hu3DMatAmbScale = 1.0f;
     Hu3DMatColScale = 1.0f;
@@ -366,7 +366,7 @@ void func_801067A8_treadmill_grill(omObjData *object) {
     memset(work, 0, 0xB4);
     object->func = func_80109FA8_treadmill_grill;
     work->unk03 = 1;
-    func_800E13CC_minigame(object, 250.0f, 250.0f, -550.0f, -1050.0f, 550.0f, 150.0f);
+    MgMapBlockSet(object, 250.0f, 250.0f, -550.0f, -1050.0f, 550.0f, 150.0f);
     Hu3DModelObjAttrSet(object->model[0], 0x20000, 0x20000);
     Hu3DModelRemakeStatic(object->model[0]);
     Hu3DModelVtxBufMake(object->model[0]);
@@ -382,10 +382,10 @@ void func_801067A8_treadmill_grill(omObjData *object) {
     Hu3DModelPosSet(object->model[1], 0.0f, 0.0f, -300.0f);
     Hu3DModelPosSet(object->model[2], 0.0f, 0.0f, -600.0f);
     Hu3DModelPosSet(object->model[3], 0.0f, 0.0f, -900.0f);
-    func_800E147C_minigame(object);
-    func_800E1304_minigame(object, 0.3f);
-    func_800E131C_minigame(object, 15.0f);
-    func_800E17F4_minigame(object, 1.0f, 1.0f, 1.0f);
+    MgMapTiltOn(object);
+    MgMapFrictionSet(object, 0.3f);
+    MgMapSlideSet(object, 15.0f);
+    MgObjScaleSet(object, 1.0f, 1.0f, 1.0f);
     work->unk04 = 1;
     Hu3DModelPosSet(object->model[4], 0.0f, 0.0f, 0.0f);
     Hu3DModelPosSet(object->model[5], 480.0f, 150.0f, 165.0f);
@@ -399,7 +399,7 @@ void func_801067A8_treadmill_grill(omObjData *object) {
 }
 
 void func_80106DA0_treadmill_grill(omObjData *object, s32 model, s32 motion, u16 player, f32 x, f32 y, f32 z) {
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     s32 chr;
     s32 i;
     s32 tag;
@@ -407,7 +407,7 @@ void func_80106DA0_treadmill_grill(omObjData *object, s32 model, s32 motion, u16
     tag = 0xA99;
     Hu3DMatAmbScale = 1.0f;
     Hu3DMatColScale = 1.0f;
-    func_800E1BA8_minigame(object, model, motion, player, tag, tag);
+    MgPlayerCreate(object, model, motion, player, tag, tag);
     data = object->data;
     chr = GwPlayer[data->unk59].chr;
     Hu3DMatAmbScale = 1.0f;
@@ -418,23 +418,23 @@ void func_80106DA0_treadmill_grill(omObjData *object, s32 model, s32 motion, u16
     object->model[5] = Hu3DModelRead(6, 0x89D);
     object->model[7] = Hu3DModelRead(8, 0x89D);
     object->model[8] = Hu3DModelRead(7, 0x89D);
-    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(chr, 0), 1, 0);
-    func_800E5A00_minigame(object, 5, CharMotionDataNumGet(chr, 3), 0, 0);
-    func_800E5A00_minigame(object, 1, CharMotionDataNumGet(chr, 1), 1, 0);
-    func_800E5A00_minigame(object, 2, CharMotionDataNumGet(chr, 2), 1, 0);
-    func_800E5A00_minigame(object, 6, CharMotionDataNumGet(chr, 4), 1, 19);
-    func_800E5A00_minigame(object, 8, CharMotionDataNumGet(chr, 6), 1, 27);
-    func_800E5A00_minigame(object, 17, CharMotionDataNumGet(chr, 14), 1, 15);
-    func_800E5A00_minigame(object, 32, CharMotionDataNumGet(chr, 34), 0, 0);
-    func_800E5A00_minigame(object, 18, CharMotionDataNumGet(chr, 15), 2, 0);
-    func_800E5A00_minigame(object, 21, CharMotionDataNumGet(chr, 31), 0, 0);
-    func_800E5A00_minigame(object, 3, CharMotionDataNumGet(chr, 29), 1, 0);
-    func_800E5A00_minigame(object, 4, CharMotionDataNumGet(chr, 30), 1, 0);
-    func_800E5A00_minigame(object, 30, CharMotionDataNumGet(chr, 32), 2, 0);
-    func_800E5A00_minigame(object, 31, CharMotionDataNumGet(chr, 33), 2, 0);
-    func_800E5978_minigame(object, 13, CharMotionDataNumGet(chr, 47), 1, 120);
-    func_800E5978_minigame(object, 14, CharMotionDataNumGet(chr, 54), 1, 120);
-    func_800E5978_minigame(object, 38, CharMotionDataNumGet(chr, 26), 1, 0);
+    MgPlayerMotLoad(object, 0, CharMotionDataNumGet(chr, 0), 1, 0);
+    MgPlayerMotLoad(object, 5, CharMotionDataNumGet(chr, 3), 0, 0);
+    MgPlayerMotLoad(object, 1, CharMotionDataNumGet(chr, 1), 1, 0);
+    MgPlayerMotLoad(object, 2, CharMotionDataNumGet(chr, 2), 1, 0);
+    MgPlayerMotLoad(object, 6, CharMotionDataNumGet(chr, 4), 1, 19);
+    MgPlayerMotLoad(object, 8, CharMotionDataNumGet(chr, 6), 1, 27);
+    MgPlayerMotLoad(object, 17, CharMotionDataNumGet(chr, 14), 1, 15);
+    MgPlayerMotLoad(object, 32, CharMotionDataNumGet(chr, 34), 0, 0);
+    MgPlayerMotLoad(object, 18, CharMotionDataNumGet(chr, 15), 2, 0);
+    MgPlayerMotLoad(object, 21, CharMotionDataNumGet(chr, 31), 0, 0);
+    MgPlayerMotLoad(object, 3, CharMotionDataNumGet(chr, 29), 1, 0);
+    MgPlayerMotLoad(object, 4, CharMotionDataNumGet(chr, 30), 1, 0);
+    MgPlayerMotLoad(object, 30, CharMotionDataNumGet(chr, 32), 2, 0);
+    MgPlayerMotLoad(object, 31, CharMotionDataNumGet(chr, 33), 2, 0);
+    MgPlayerMotRead(object, 13, CharMotionDataNumGet(chr, 47), 1, 120);
+    MgPlayerMotRead(object, 14, CharMotionDataNumGet(chr, 54), 1, 120);
+    MgPlayerMotRead(object, 38, CharMotionDataNumGet(chr, 26), 1, 0);
     for (i = 10; i < 14; i++) {
         if (D_8010B0D4_treadmill_grill < 0) {
             object->model[i] = D_8010B0D4_treadmill_grill = Hu3DModelRead(0x10014, 0x89D);
@@ -447,11 +447,11 @@ void func_80106DA0_treadmill_grill(omObjData *object, s32 model, s32 motion, u16
     object->trans.z = z;
     data = object->data;
     Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
-    func_800E149C_minigame(object, 0, 2);
-    func_800E149C_minigame(object, 1, 2);
-    func_800E3568_minigame(data, 0, (void *)func_80107798_treadmill_grill);
-    func_800E3568_minigame(data, 1, (void *)func_80107238_treadmill_grill);
-    func_800E3568_minigame(data, 20, (void *)func_80107454_treadmill_grill);
+    MgPlayerMapAttrSet(object, 0, 2);
+    MgPlayerMapAttrSet(object, 1, 2);
+    MgPlayerHookSet(data, 0, (void *)func_80107798_treadmill_grill);
+    MgPlayerHookSet(data, 1, (void *)func_80107238_treadmill_grill);
+    MgPlayerHookSet(data, 20, (void *)func_80107454_treadmill_grill);
 }
 
 s32 func_80107230_treadmill_grill(void) {
@@ -459,7 +459,7 @@ s32 func_80107230_treadmill_grill(void) {
 }
 
 void func_80107238_treadmill_grill(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     f32 dx;
     f32 dy;
     f32 dz;
@@ -482,9 +482,9 @@ void func_80107238_treadmill_grill(omObjData *object) {
         }
         if (data->unk53[0] == 0 || hit == TRUE) {
             D_8010AF84_treadmill_grill[player] = 1;
-            func_800E5798_minigame(object, 0x26);
+            MgPlayerMotForceSet(object, 0x26);
             data->unk50 |= 0x400;
-            data->unk38 = -D_800EB744_minigame;
+            data->unk38 = -mgPlayerJumpPower;
             Hu3DModelAttrSet(object->model[1], 4, 4);
             HuAudPlayerFXPlay(0x39D, data->unk59);
             PlayerFXPlay(0x286, data->unk59);
@@ -500,14 +500,14 @@ void func_80107238_treadmill_grill(omObjData *object) {
 }
 
 void func_80107454_treadmill_grill(omObjData *object, f32 *x, f32 *y, f32 *z) {
-    func_800E1BA8_minigame_ObjData *data;
-    D_800EC1C0_minigame_ObjData *stageData;
+    MgPlayerWork *data;
+    MgMapWork *stageData;
     omObjData *stage;
     f32 velY;
     s16 seId;
 
     data = object->data;
-    stage = D_800EC1C0_minigame[1];
+    stage = mgMapObjTbl[1];
     if (HuSqrtf(*x * *x + *z * *z) > 2000.0f) {
         Hu3DModelAttrSet(object->model[0], 4, 4);
         Hu3DModelAttrSet(object->model[10], 4, 4);
@@ -520,13 +520,13 @@ void func_80107454_treadmill_grill(omObjData *object, f32 *x, f32 *y, f32 *z) {
     data->unk3C = atan2df(*x - stage->trans.x, *z - stage->trans.z);
     data->unk40 = 25.0f;
     velY = data->unk38;
-    if (velY > D_800EB774_minigame) {
-        velY = D_800EB774_minigame;
+    if (velY > mgPlayerFallMax) {
+        velY = mgPlayerFallMax;
     }
     *y += velY * velY * (data->unk38 >= 0.0f ? -35.0f : 35.0f);
     if (*x > stageData->unkA0 && *x < stageData->unkA8 && *z > stageData->unkA4 && *z < stageData->unkA8) {
         if (*y <= stageData->unk14) {
-            data->unk38 = -D_800EB744_minigame;
+            data->unk38 = -mgPlayerJumpPower;
             *y = stageData->unk14;
             switch (D_8010B0D8_treadmill_grill[data->unk59]) {
                 case 0:
@@ -550,7 +550,7 @@ void func_80107454_treadmill_grill(omObjData *object, f32 *x, f32 *y, f32 *z) {
             D_8010B0D8_treadmill_grill[data->unk59]++;
         }
     } else if (*y <= 0.0f) {
-        data->unk38 = -D_800EB744_minigame;
+        data->unk38 = -mgPlayerJumpPower;
         *y = 0.0f;
         switch (D_8010B0D8_treadmill_grill[data->unk59]) {
             case 0:
@@ -573,15 +573,15 @@ void func_80107454_treadmill_grill(omObjData *object, f32 *x, f32 *y, f32 *z) {
         HuAudPlayerFXPlay(seId, data->unk59);
         D_8010B0D8_treadmill_grill[data->unk59]++;
     }
-    data->unk38 += D_800EB748_minigame * 0.6f;
+    data->unk38 += mgPlayerGravity * 0.6f;
     func_80108C64_treadmill_grill(object, *x, *y, *z);
 }
 
 // CPU input logic. minX doubles as the search angle and dist as the lane width third; these reused
 // locals and the do-while around the player load are needed for matching register allocation.
 void func_80107798_treadmill_grill(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *data;
-    D_800EC1C0_minigame_ObjData *stageData;
+    MgPlayerWork *data;
+    MgMapWork *stageData;
     omObjData *stage;
     omObjData *other;
     Vec dir;
@@ -627,7 +627,7 @@ void func_80107798_treadmill_grill(omObjData *object) {
     if (D_8010AF84_treadmill_grill[player] == 1) {
         return;
     }
-    stage = D_800EC1C0_minigame[1];
+    stage = mgMapObjTbl[1];
     stageData = stage->data;
     difficulty = GwPlayer[data->unk59].cpu_difficulty;
     func_8010AA2C_treadmill_grill(object->trans.x, object->trans.z);
@@ -642,7 +642,7 @@ void func_80107798_treadmill_grill(omObjData *object) {
         for (i = 0; i < 4; i++) {
             if (D_8010AF84_treadmill_grill[i] != 1) {
                 if (i != player) {
-                    other = D_800EC598_minigame[i];
+                    other = mgPlayerObjTbl[i];
                     x = other->trans.x - object->trans.x;
                     z = other->trans.z - object->trans.z;
                     if (HuSqrtf(x * x + z * z) < 2.0f * data->unk48) {
@@ -766,7 +766,7 @@ void func_80107798_treadmill_grill(omObjData *object) {
         for (i = 0; i < 4; i++) {
             if (D_8010AF84_treadmill_grill[i] != 1) {
                 if (i != player) {
-                    other = D_800EC598_minigame[i];
+                    other = mgPlayerObjTbl[i];
                     x = object->trans.x - other->trans.x;
                     y = object->trans.y - other->trans.y;
                     z = object->trans.z - other->trans.z;
@@ -777,7 +777,7 @@ void func_80107798_treadmill_grill(omObjData *object) {
                     }
                     if (dist < 2.0f * data->unk48 + 80.0f) {
                         rotY = data->unk3C;
-                        if (func_800E2ED4_minigame(x, z, sindf(rotY), cosdf(rotY)) < -0.8f) {
+                        if (MgDirDot(x, z, sindf(rotY), cosdf(rotY)) < -0.8f) {
                             HuPadBtnDown[pad] = 0x4000;
                             D_8010B0F8_treadmill_grill[player] = 16;
                             break;
@@ -787,7 +787,7 @@ void func_80107798_treadmill_grill(omObjData *object) {
             }
         }
         if (nearest != -1 && HuPadBtnDown[pad] == 0) {
-            other = D_800EC598_minigame[nearest];
+            other = mgPlayerObjTbl[nearest];
             dir.x = object->trans.x - other->trans.x;
             dir.y = 0.0f;
             dir.z = object->trans.z - other->trans.z;
@@ -815,13 +815,13 @@ void func_80107798_treadmill_grill(omObjData *object) {
 }
 
 void func_801084B4_treadmill_grill(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     s32 motion;
     s32 model;
     s32 i;
 
-    motion = D_800A178C_main[GwPlayer[0].chr][1];
-    model = D_800A178C_main[GwPlayer[0].chr][0];
+    motion = omCharModelNoTbl[GwPlayer[0].chr][1];
+    model = omCharModelNoTbl[GwPlayer[0].chr][0];
     func_80106DA0_treadmill_grill(object, model, motion, 0, 0.0f, 250.0f, -500.0f);
     data = object->data;
     i = rand8() & 3;
@@ -833,13 +833,13 @@ void func_801084B4_treadmill_grill(omObjData *object) {
 }
 
 void func_801085D8_treadmill_grill(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     s32 motion;
     s32 model;
     s32 i;
 
-    motion = D_800A178C_main[GwPlayer[1].chr][1];
-    model = D_800A178C_main[GwPlayer[1].chr][0];
+    motion = omCharModelNoTbl[GwPlayer[1].chr][1];
+    model = omCharModelNoTbl[GwPlayer[1].chr][0];
     func_80106DA0_treadmill_grill(object, model, motion, 1, 0.0f, 250.0f, -300.0f);
     data = object->data;
     do {
@@ -853,13 +853,13 @@ void func_801085D8_treadmill_grill(omObjData *object) {
 }
 
 void func_80108730_treadmill_grill(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     s32 motion;
     s32 model;
     s32 i;
 
-    motion = D_800A178C_main[GwPlayer[2].chr][1];
-    model = D_800A178C_main[GwPlayer[2].chr][0];
+    motion = omCharModelNoTbl[GwPlayer[2].chr][1];
+    model = omCharModelNoTbl[GwPlayer[2].chr][0];
     func_80106DA0_treadmill_grill(object, model, motion, 2, 0.0f, 250.0f, -300.0f);
     data = object->data;
     do {
@@ -873,13 +873,13 @@ void func_80108730_treadmill_grill(omObjData *object) {
 }
 
 void func_80108888_treadmill_grill(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     s32 motion;
     s32 model;
     s32 i;
 
-    motion = D_800A178C_main[GwPlayer[3].chr][1];
-    model = D_800A178C_main[GwPlayer[3].chr][0];
+    motion = omCharModelNoTbl[GwPlayer[3].chr][1];
+    model = omCharModelNoTbl[GwPlayer[3].chr][0];
     func_80106DA0_treadmill_grill(object, model, motion, 3, 0.0f, 250.0f, -300.0f);
     data = object->data;
     do {
@@ -935,7 +935,7 @@ void func_80108C64_treadmill_grill(omObjData *object, f32 x, f32 y, f32 z) {
     f32 scale;
     s32 i;
 
-    player = ((func_800E1BA8_minigame_ObjData *)object->data)->unk59;
+    player = ((MgPlayerWork *)object->data)->unk59;
     for (i = 0; i < 4; i++) {
         if (D_8010B128_treadmill_grill[player][i] >= 0) {
             if (D_8010B128_treadmill_grill[player][i] == 0) {
@@ -955,11 +955,11 @@ void func_80108C64_treadmill_grill(omObjData *object, f32 x, f32 y, f32 z) {
 }
 
 void func_80108DE0_treadmill_grill(omObjData *object) {
-    A96F0_ObjData *data;
+    MgItemWork *data;
     s32 i;
 
-    object->data = HuMemAllocTag(sizeof(A96F0_ObjData), TAG_OVERLAY);
-    memset(object->data, 0, sizeof(A96F0_ObjData));
+    object->data = HuMemAllocTag(sizeof(MgItemWork), TAG_OVERLAY);
+    memset(object->data, 0, sizeof(MgItemWork));
     data = object->data;
     object->model[1] = 0;
     object->model[0] = D_8010B310_treadmill_grill[D_8010AF80_treadmill_grill++];
@@ -979,8 +979,8 @@ void func_80108DE0_treadmill_grill(omObjData *object) {
         data->unk84[i] = NULL;
     }
     data->unk56 = D_8010B178_treadmill_grill;
-    func_800E149C_minigame(object, 0, 2);
-    func_800E149C_minigame(object, 1, 2);
+    MgPlayerMapAttrSet(object, 0, 2);
+    MgPlayerMapAttrSet(object, 1, 2);
     object->trans.x = sindf(D_8010B178_treadmill_grill * 36.0f) * 450.0f;
     object->trans.y = 500.0f;
     object->trans.z = cosdf(D_8010B178_treadmill_grill * 36.0f) * 450.0f + -512.0f;
@@ -990,9 +990,9 @@ void func_80108DE0_treadmill_grill(omObjData *object) {
 
 void func_80108FCC_treadmill_grill(omObjData *object) {
     omObjData *stage;
-    A96F0_ObjData *data;
+    MgItemWork *data;
 
-    stage = D_800EC1C0_minigame[1];
+    stage = mgMapObjTbl[1];
     data = object->data;
     if (MgFlowStatGet() == MG_STATE_PLAY) {
         object->trans.x = D_8010B378_treadmill_grill[data->unk56].x;
@@ -1016,7 +1016,7 @@ void func_80109108_treadmill_grill(omObjData *object) {
 
     n = 0;
     length = 2.0f * (D_8010AF8C_treadmill_grill[0] + 600.0f) + 2000.0f;
-    spacing = length / (D_800EC1B8_minigame - 1);
+    spacing = length / (mgItemObjNum - 1);
     D_8010B330_treadmill_grill[0].x = sindf(D_8010AFAC_treadmill_grill) * (spacing / 2.0f) + object->trans.x + 0.0f;
     D_8010B330_treadmill_grill[0].y = 50.0f;
     D_8010B330_treadmill_grill[0].z = 350.0f;
@@ -1125,7 +1125,7 @@ void func_8010980C_treadmill_grill(omObjData *object) {
     f32 angle;
     s32 i;
 
-    if (MgFlowStatGet() == MG_STATE_PLAY && func_800E6E9C_minigame() < 150) {
+    if (MgFlowStatGet() == MG_STATE_PLAY && MgFlowStatTimeGet() < 150) {
         return;
     }
     for (i = 0; i < 3; i++) {
@@ -1210,7 +1210,7 @@ void func_8010980C_treadmill_grill(omObjData *object) {
 }
 
 void func_80109FA8_treadmill_grill(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     omObjData *player;
     s32 lane;
     s32 i;
@@ -1262,15 +1262,15 @@ void func_80109FA8_treadmill_grill(omObjData *object) {
             if (++D_8010B1DC_treadmill_grill == 300) {
                 func_8010A6A4_treadmill_grill();
                 for (i = 0; i < 4; i++) {
-                    data = D_800EC598_minigame[i]->data;
+                    data = mgPlayerObjTbl[i]->data;
                     if (D_8010AF84_treadmill_grill[i] == 0) {
                         omVibrate(data->unk59, 20, 0, 20);
                     }
                 }
             }
         }
-        for (i = 0; i < D_800EC280_minigame; i++) {
-            player = D_800EC598_minigame[i];
+        for (i = 0; i < mgPlayerObjNum; i++) {
+            player = mgPlayerObjTbl[i];
             data = player->data;
             if (D_8010AF84_treadmill_grill[i] == 0 && data->unk53[0] == 1) {
                 lane = func_8010AA2C_treadmill_grill(player->trans.x, player->trans.z);
@@ -1372,7 +1372,7 @@ void func_8010A754_treadmill_grill(omObjData *object) {
     Hu3DModelPosSet(object->model[8], object->trans.x + D_8010B260_treadmill_grill - 50.0f, 220.0f, 155.0f);
     minX = -D_8010AF8C_treadmill_grill[0] / 2.0f;
     maxX = D_8010AF8C_treadmill_grill[0] / 2.0f + 50.0f;
-    func_800E13CC_minigame(object, 250.0f, 250.0f, minX - 50.0f, -1050.0f, maxX, 150.0f);
+    MgMapBlockSet(object, 250.0f, 250.0f, minX - 50.0f, -1050.0f, maxX, 150.0f);
 }
 
 void func_8010A9AC_treadmill_grill(omObjData *object) {

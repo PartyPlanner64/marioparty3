@@ -32,7 +32,7 @@
 // hmfcoll
 
 // unknown
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 
 enum {
     FGRP_CAMERA
@@ -992,9 +992,9 @@ void m254_InitEnvironment(void) {
     ViewportSet(1, 640.0f, 480.0f, 511.0f, 960.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(1, 60.0f, 40.0f, 4000.0f);
     Hu3DBGColorSet(0xFF, 0xFF, 0xFF);
-    D_800EC1B8_minigame = 0;
-    D_800EC280_minigame = 0;
-    D_800EBE28_minigame = 0;
+    mgItemObjNum = 0;
+    mgPlayerObjNum = 0;
+    mgMapObjNum = 0;
     m254_CreateSystem();
     m254_CreateMinigame();
     omAddObj(100, 0, 0, -1, func_80106044_motor_rooter);
@@ -1087,15 +1087,15 @@ void func_80106044_motor_rooter(omObjData *object) {
     s16 i;
 
     Hu3DFogSet(0x3CA, 1000, 0xFF, 0xFF, 0xFF);
-    func_800E18D8_minigame();
-    func_800E19F0_minigame(1);
+    MgPlayerParamReset();
+    MgShadowAltSet(1);
     for (i = 0; i < 2; i++) {
-        D_800EC1C0_minigame[i] = omAddObj(10, 2, 0, -1, func_801062BC_motor_rooter);
+        mgMapObjTbl[i] = omAddObj(10, 2, 0, -1, func_801062BC_motor_rooter);
         m254_minigame->views[i].unk00 = omAddObj(100, 21, 0, -1, func_80106508_motor_rooter);
         m254_minigame->views[i].unk8C = omAddObj(200, 15, 0, -1, func_80106998_motor_rooter);
         omAddObj(500, 1, 0, -1, func_80107210_motor_rooter);
         omAddObj(800, 5, 0, -1, func_801079E8_motor_rooter);
-        D_800EC598_minigame[i] = D_801137C8_motor_rooter[i].unk00 = omAddObj(300, 11, 40, -1, func_80106BAC_motor_rooter);
+        mgPlayerObjTbl[i] = D_801137C8_motor_rooter[i].unk00 = omAddObj(300, 11, 40, -1, func_80106BAC_motor_rooter);
     }
     memset(&m254_minigame->runtime, 0, sizeof(m254_minigame->runtime));
     m254_SetFunc(FGRP_CAMERA, 0, -1, NULL, m254_InitCamera, 0, FALSE);
@@ -1121,7 +1121,7 @@ void func_801062BC_motor_rooter(omObjData *object) {
         if (object->work[0] == 0) {
             object->model[i] = Hu3DModelRead(courseModels.fileIds[D_801137CE_motor_rooter][i] | 0x570000, modelFlags);
         } else {
-            object->model[i] = Hu3DModelLink(D_800EC1C0_minigame[0]->model[i]);
+            object->model[i] = Hu3DModelLink(mgMapObjTbl[0]->model[i]);
         }
         Hu3DModelPosSet(object->model[i], 0.0f, 0.0f, 0.0f);
     }
@@ -1225,7 +1225,7 @@ void func_80106B7C_motor_rooter(omObjData *object) {
 
 void func_80106BAC_motor_rooter(omObjData *object) {
     s32 modelFiles[2] = { 0, 1 };
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     s16 character;
     s32 modelFlags = 0x289;
     s32 characterIndex;
@@ -1235,13 +1235,13 @@ void func_80106BAC_motor_rooter(omObjData *object) {
     s16 cameraMask;
     s16 i;
 
-    object->work[0] = D_800EC280_minigame;
+    object->work[0] = mgPlayerObjNum;
     object->work[1] = m254_playerId[object->work[0]];
     character = GwPlayer[object->work[1]].chr;
     characterIndex = GwPlayer[object->work[1]].chr;
-    characterModel = D_800A178C_main[characterIndex][0];
-    characterMotion = D_800A178C_main[characterIndex][2];
-    func_800E1BA8_minigame(object, characterModel, characterMotion, object->work[1], modelFlags, 0x299);
+    characterModel = omCharModelNoTbl[characterIndex][0];
+    characterMotion = omCharModelNoTbl[characterIndex][2];
+    MgPlayerCreate(object, characterModel, characterMotion, object->work[1], modelFlags, 0x299);
     Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelScaleSet(object->model[1], 0.2f, 0.2f, 0.2f);
     object->model[9] = Hu3DModelRead(modelFiles[object->work[0]] | 0x570000, 0x299);
@@ -1249,17 +1249,17 @@ void func_80106BAC_motor_rooter(omObjData *object) {
     object->model[10] = Hu3DModelRead(9, 0x99);
     Hu3DModelScaleSet(object->model[10], 0.4f, 0.4f, 0.4f);
     motion = CharMotionDataNumGet(character, 0);
-    func_800E5A00_minigame(object, 0, motion, 1, 0);
+    MgPlayerMotLoad(object, 0, motion, 1, 0);
     motion = CharMotionDataNumGet(character, 4);
-    func_800E5A00_minigame(object, 6, motion, 1, 19);
+    MgPlayerMotLoad(object, 6, motion, 1, 19);
     motion = CharMotionDataNumGet(character, 47);
-    func_800E5A00_minigame(object, 13, motion, 1, 999);
+    MgPlayerMotLoad(object, 13, motion, 1, 999);
     motion = CharMotionDataNumGet(character, 31);
-    func_800E5A00_minigame(object, 21, motion, 1, 999);
+    MgPlayerMotLoad(object, 21, motion, 1, 999);
     motion = CharMotionDataNumGet(character, 39);
-    func_800E5A00_minigame(object, 38, motion, 1, 0);
+    MgPlayerMotLoad(object, 38, motion, 1, 0);
     motion = CharMotionDataNumGet(character, 40);
-    func_800E5A00_minigame(object, 39, motion, 1, 99);
+    MgPlayerMotLoad(object, 39, motion, 1, 99);
     object->trans.x = 0.0f;
     object->trans.y = -56.0f;
     object->trans.z = 100.0f;
@@ -1269,7 +1269,7 @@ void func_80106BAC_motor_rooter(omObjData *object) {
     Hu3DModelRotSet(object->model[9], 0.0f, 180.0f, 0.0f);
     Hu3DModelAttrSet(object->model[10], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     func_8010BDE4_motor_rooter(&D_801137C8_motor_rooter[object->work[0]], 38, 1);
-    D_800EC280_minigame++;
+    mgPlayerObjNum++;
     data = object->data;
     D_801137C8_motor_rooter[object->work[0]].unk08 = 1;
     D_801137C8_motor_rooter[object->work[0]].controllerPort = data->unk57;
@@ -1287,7 +1287,7 @@ void func_80106BAC_motor_rooter(omObjData *object) {
 
 void func_801070CC_motor_rooter(omObjData *object) {
     m254_UpdateFuncGroup((u8)object->work[0] + 4);
-    func_800E4E30_minigame(object);
+    MgPlayerMotUpdate(object);
     if (object->rot.x >= 360.0f) {
         object->rot.x -= 360.0f;
     }
@@ -2577,10 +2577,10 @@ void func_8010BCD0_motor_rooter(FuncContext *ctx) {
         player->animChange = 1;
     }
     if (player->animChange) {
-        func_800E5690_minigame(object, player->nextAnim);
+        MgPlayerMotSet(object, player->nextAnim);
         player->animChange = 0;
         if (player->nextAnim == 13) {
-            HuAudCharVoicePlayPlayer(D_800A178C_main[GwPlayer[m254_playerId[object->work[0]]].chr][0] | 0x2F, -1, 0);
+            HuAudCharVoicePlayPlayer(omCharModelNoTbl[GwPlayer[m254_playerId[object->work[0]]].chr][0] | 0x2F, -1, 0);
         }
     }
 }

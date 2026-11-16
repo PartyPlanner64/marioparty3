@@ -50,7 +50,7 @@ typedef struct {
 } ThreeDoorMontyBssEC48; // sizeof 0x8
 
 extern u8 omAllPauseF;
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 extern const s16 D_8010D228_three_door_monty[];
 // obj of D_8010D260_three_door_monty[8], accessed through a separate symbol.
 extern omObjData *D_8010D680_three_door_monty;
@@ -1755,7 +1755,7 @@ void func_8010B138_three_door_monty(omObjData *obj) {
     s8 chr = GwPlayer[obj->work[0]].chr;
     s16 i;
 
-    obj->model[0] = Hu3DModelRead(D_800A178C_main[chr][0] | D_800A178C_main[chr][3], 0x2A9);
+    obj->model[0] = Hu3DModelRead(omCharModelNoTbl[chr][0] | omCharModelNoTbl[chr][3], 0x2A9);
     Hu3DModelRemakeStatic(obj->model[0]);
     Hu3DModelDynamicFree(obj->model[0]);
     omObjMotionRead(obj, 0, CharMotionDataNumGet(chr, 0));
@@ -2319,9 +2319,9 @@ void func_8010CBBC_three_door_monty(void) {
     Hu3DGLightDirSet(1, 0.0f, 90.0f, 560.0f);
     Hu3DGLightColorSet(2, 0xFF, 0xFF, 0xFF);
     Hu3DGLightDirSet(2, 0.0f, 90.0f, 560.0f);
-    D_800EC1B8_minigame = 0;
-    D_800EC280_minigame = 0;
-    D_800EBE28_minigame = 0;
+    mgItemObjNum = 0;
+    mgPlayerObjNum = 0;
+    mgMapObjNum = 0;
     GMesFontMesCreate(D_8010D228_three_door_monty, 0);
     GMesFontMesCreate(D_8010D228_three_door_monty, 1);
     omAddObj(1000, 0, 0, -1, func_8010C8C0_three_door_monty);

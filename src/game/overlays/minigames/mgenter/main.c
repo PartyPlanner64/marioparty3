@@ -1,7 +1,7 @@
 #include "common.h"
 #include "gcc/string.h"
 
-extern s16 D_800A11E6_main;
+extern s16 mgInstSlotEnd;
 extern s16 GameManFirstPad;
 extern s16 mgModeCoinBase;
 extern u8 storySceneNo;
@@ -122,7 +122,7 @@ void func_80105CD8_mgenter(void) {
     s16 winId;
     s16 confirmed;
 
-    D_80109B2C_mgenter = D_800A11E6_main;
+    D_80109B2C_mgenter = mgInstSlotEnd;
     if (D_80109B2C_mgenter < 0) {
         D_80109B2C_mgenter = 0;
     }
@@ -168,13 +168,13 @@ void func_80105CD8_mgenter(void) {
             }
             if (HuPadBtnDown[D_80109B74_mgenter] & 0x8000) {
                 HuAudFXPlay(2);
-                D_800A11E6_main = D_80109B2C_mgenter;
+                mgInstSlotEnd = D_80109B2C_mgenter;
                 storySceneNo = D_80109B2C_mgenter;
                 break;
             }
             if (HuPadBtnDown[D_80109B74_mgenter] & 0x4000) {
                 HuAudFXPlay(4);
-                D_800A11E6_main = -1;
+                mgInstSlotEnd = -1;
                 D_80109B7C_mgenter = 0;
                 D_80109AA4_mgenter = 1;
                 D_80109AA6_mgenter = 1;
@@ -252,7 +252,7 @@ void func_80106294_mgenter(void) {
     s16 winId;
     s16 btn;
 
-    D_800A11E6_main = -1;
+    mgInstSlotEnd = -1;
     omAddPrcObj(func_80106568_mgenter, 0x3F00, 0x800, 0);
     sprite = func_801095F4_mgenter();
     func_801096EC_mgenter(mgDataTbl[D_80109B2A_mgenter].flags & 0x7FF);
@@ -562,7 +562,7 @@ void func_801079B4_mgenter(void) {
     s16 delta;
     s16 btn;
 
-    D_800A11E6_main = -1;
+    mgInstSlotEnd = -1;
     omAddPrcObj(func_80106568_mgenter, 0x3F00, 0x800, 0);
     sprite = func_801095F4_mgenter();
     func_801096EC_mgenter(mgDataTbl[D_80109B2A_mgenter].flags & 0x7FF);

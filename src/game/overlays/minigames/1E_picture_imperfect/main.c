@@ -78,8 +78,8 @@ typedef struct PictureImperfectBssA230 {
     /* 0x7A */ s16 unk7A;
 } PictureImperfectBssA230; // Size 0x7C
 
-extern u32 D_800A178C_main[][6];
-extern s32 D_800A1790_main[][6];
+extern u32 omCharModelNoTbl[][6];
+extern s32 omCharMotTbl[][6];
 extern u8 storySceneNo;
 extern u8 omAllPauseF;
 
@@ -182,29 +182,29 @@ void func_801059A0_picture_imperfect(void) {
     s32 i;
 
     MapCollInit(0x20);
-    Hu3DQuadPoolInit(&D_800EBEB0_minigame, 0x40);
+    Hu3DQuadPoolInit(&mgQuadPool, 0x40);
     Hu3DSprModelInit(0x40);
     omInitObjMan(0x20, 0);
     omGameSysInit();
-    D_800EC1B8_minigame = 0;
-    D_800EC280_minigame = 0;
-    D_800EBE28_minigame = 0;
-    func_800E1804_minigame();
+    mgItemObjNum = 0;
+    mgPlayerObjNum = 0;
+    mgMapObjNum = 0;
+    MgFieldStatClear();
     func_80105EF4_picture_imperfect();
     D_8010A150_picture_imperfect = 2 - storySceneNo;
     func_80105BA8_picture_imperfect();
     func_80105E68_picture_imperfect(&D_8010A128_picture_imperfect);
-    func_800E5EA0_minigame(&D_8010A128_picture_imperfect);
+    MgFlowInit(&D_8010A128_picture_imperfect);
     Hu3DGLightColorSet(1, 0x40, 0x40, 0x40);
     Hu3DGLightDirSet(1, 0.0f, 0.0f, 100.0f);
     D_8010A151_picture_imperfect = rand8() >> 6;
     object = omAddObj(0, 0, 0, -1, func_80106154_picture_imperfect);
     omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    func_800E1490_minigame(D_800EBE28_minigame);
-    D_800EC1C0_minigame[D_800EBE28_minigame++] = omAddObj(0, 1, 0, -1, func_80109608_picture_imperfect);
+    MgMapBaseSet(mgMapObjNum);
+    mgMapObjTbl[mgMapObjNum++] = omAddObj(0, 1, 0, -1, func_80109608_picture_imperfect);
     for (i = 0; i < 4; i++) {
-        D_800EC598_minigame[i] = omAddObj(1, 4, 60, -1, func_8010629C_picture_imperfect);
-        omSetStatBit(D_800EC598_minigame[i], OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+        mgPlayerObjTbl[i] = omAddObj(1, 4, 60, -1, func_8010629C_picture_imperfect);
+        omSetStatBit(mgPlayerObjTbl[i], OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     }
     object = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
     omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
@@ -255,7 +255,7 @@ void func_80105BA8_picture_imperfect(void) {
 void func_80105E68_picture_imperfect(MinigameFlow *flow) {
     s32 i;
 
-    D_800EB932_minigame = 10;
+    mgFlowSeqTime = 10;
     flow->state = MG_STATE_OPENING;
     flow->type = MINIGAME_4P;
     flow->timerMode = MG_TIMER_COUNT_DOWN;
@@ -309,10 +309,10 @@ void func_80106154_picture_imperfect(omObjData *object) {
             MgFlowStatSet(MG_STATE_EXIT);
             D_8010A014_picture_imperfect = 1;
         }
-        func_800E1840_minigame();
+        MgFieldStatUpdate();
         switch (MgFlowMain()) {
             case 0:
-                D_800EB930_minigame = 49;
+                mgFlowSeqNo = 49;
                 break;
             case 1:
                 break;
@@ -336,7 +336,7 @@ void func_80106154_picture_imperfect(omObjData *object) {
 }
 
 void func_8010629C_picture_imperfect(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *playerData;
+    MgPlayerWork *playerData;
     PictureImperfectWork *work;
     s8 character;
     u32 model;
@@ -345,10 +345,10 @@ void func_8010629C_picture_imperfect(omObjData *object) {
     s32 i;
 
     character = GwPlayer[D_8010A028_picture_imperfect].chr;
-    model = D_800A178C_main[character][0];
-    motion = D_800A1790_main[character][0];
-    func_800E19F0_minigame(1);
-    func_800E1BA8_minigame(object, model, motion, D_8010A028_picture_imperfect, 0x2A9, 0x2B9);
+    model = omCharModelNoTbl[character][0];
+    motion = omCharMotTbl[character][0];
+    MgShadowAltSet(1);
+    MgPlayerCreate(object, model, motion, D_8010A028_picture_imperfect, 0x2A9, 0x2B9);
     playerData = object->data;
     playerData->unk158 = HuMemAllocTag(sizeof(PictureImperfectWork), TAG_OVERLAY);
     memset(playerData->unk158, 0, sizeof(PictureImperfectWork));
@@ -384,13 +384,13 @@ void func_8010629C_picture_imperfect(omObjData *object) {
     Hu3DModelCameraSet(object->model[1], camera);
     Hu3DModelCameraSet(object->model[2], camera);
     Hu3DModelCameraSet(object->model[3], camera);
-    func_800E149C_minigame(object, 0, 2);
-    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(character, 0), 1, 0);
-    func_800E5A00_minigame(object, 6, CharMotionDataNumGet(character, 4), 1, 19);
-    func_800E5A00_minigame(object, 21, CharMotionDataNumGet(character, 0x1F), 0, 0);
-    func_800E5A00_minigame(object, 13, CharMotionDataNumGet(character, 0x2F), 1, 120);
-    func_800E5A00_minigame(object, 14, CharMotionDataNumGet(character, 0x36), 1, 120);
-    func_800E5690_minigame(object, 0);
+    MgPlayerMapAttrSet(object, 0, 2);
+    MgPlayerMotLoad(object, 0, CharMotionDataNumGet(character, 0), 1, 0);
+    MgPlayerMotLoad(object, 6, CharMotionDataNumGet(character, 4), 1, 19);
+    MgPlayerMotLoad(object, 21, CharMotionDataNumGet(character, 0x1F), 0, 0);
+    MgPlayerMotLoad(object, 13, CharMotionDataNumGet(character, 0x2F), 1, 120);
+    MgPlayerMotLoad(object, 14, CharMotionDataNumGet(character, 0x36), 1, 120);
+    MgPlayerMotSet(object, 0);
     object->func = func_80107820_picture_imperfect;
     work->unk00 = 0;
     work->unk01 = 0;
@@ -581,7 +581,7 @@ void func_8010629C_picture_imperfect(omObjData *object) {
 }
 
 void func_80107820_picture_imperfect(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *playerData;
+    MgPlayerWork *playerData;
     PictureImperfectWork *work;
     PictureImperfectWork *otherWork;
     s16 sound;
@@ -594,7 +594,7 @@ void func_80107820_picture_imperfect(omObjData *object) {
     work = playerData->unk158;
     switch (MgFlowStatGet()) {
         case MG_STATE_OPENING:
-            func_800DDD94_minigame(object);
+            MgPlayerObjMain(object);
             break;
         case MG_STATE_PLAY:
             HuPadStkX[playerData->unk57] = HuPadStkY[playerData->unk57] = 0;
@@ -614,7 +614,7 @@ void func_80107820_picture_imperfect(omObjData *object) {
                     HuAudFXPanning(sound, 32);
                 }
                 omVibrate(playerData->unk59, 2, 3, 10);
-                func_800E4C88_minigame(object, 3, object->trans.x, work->unk10 - 25.0f, object->trans.z, 180.0f, 0.0f);
+                MgPlayerEffSet(object, 3, object->trans.x, work->unk10 - 25.0f, object->trans.z, 180.0f, 0.0f);
                 work->unk14 = 0.0f;
                 work->unk05 = 1;
                 D_8010A02C_picture_imperfect++;
@@ -654,8 +654,8 @@ void func_80107820_picture_imperfect(omObjData *object) {
             func_801083C0_picture_imperfect(playerData->unk59);
             func_80108688_picture_imperfect(object);
             func_80108C20_picture_imperfect(work, playerData->unk59);
-            D_800EB748_minigame = 0.7f;
-            func_800DDD94_minigame(object);
+            mgPlayerGravity = 0.7f;
+            MgPlayerObjMain(object);
             break;
         case MG_STATE_FINISH:
             if (D_80109FE0_picture_imperfect != -1) {
@@ -675,8 +675,8 @@ void func_80107820_picture_imperfect(omObjData *object) {
                     break;
                 case 2:
                     for (i = 0; i < 4; i++) {
-                        if (object != D_800EC598_minigame[i]) {
-                            otherWork = ((func_800E1BA8_minigame_ObjData *)D_800EC598_minigame[i]->data)->unk158;
+                        if (object != mgPlayerObjTbl[i]) {
+                            otherWork = ((MgPlayerWork *)mgPlayerObjTbl[i]->data)->unk158;
                             if (work->unk04 < otherWork->unk04) {
                                 work->unk07++;
                             }
@@ -686,7 +686,7 @@ void func_80107820_picture_imperfect(omObjData *object) {
                         count = 0;
                         D_8010A110_picture_imperfect = 0;
                         for (i = 0; i < 4; i++) {
-                            otherWork = ((func_800E1BA8_minigame_ObjData *)D_800EC598_minigame[i]->data)->unk158;
+                            otherWork = ((MgPlayerWork *)mgPlayerObjTbl[i]->data)->unk158;
                             if (otherWork->unk07 == 0) {
                                 D_8010A110_picture_imperfect++;
                                 D_80109FF8_picture_imperfect[count] = i;
@@ -723,16 +723,16 @@ void func_80107820_picture_imperfect(omObjData *object) {
                     }
                     break;
             }
-            func_800DDD94_minigame(object);
+            MgPlayerObjMain(object);
             break;
         case MG_STATE_RESULT:
-            if (func_800E6E9C_minigame() == 12) {
+            if (MgFlowStatTimeGet() == 12) {
                 if (D_80109FE4_picture_imperfect == 16) {
                     if (playerData->unk59 == D_80109FF8_picture_imperfect[0] ||
                         playerData->unk59 == D_80109FF8_picture_imperfect[1] ||
                         playerData->unk59 == D_80109FF8_picture_imperfect[2] ||
                         playerData->unk59 == D_80109FF8_picture_imperfect[3]) {
-                        func_800E5690_minigame(object, 13);
+                        MgPlayerMotSet(object, 13);
                         switch (GwPlayer[playerData->unk59].chr) {
                             case 0:
                             default:
@@ -763,9 +763,9 @@ void func_80107820_picture_imperfect(omObjData *object) {
                         HuAudCharVoicePlay((character << 16) | 0x2F);
                         GwPlayer[playerData->unk59].bonusCoin += 10;
                     } else {
-                        func_800E5690_minigame(object, 14);
+                        MgPlayerMotSet(object, 14);
                     }
-                    func_800DDD94_minigame(object);
+                    MgPlayerObjMain(object);
                 }
                 if (playerData->unk59 == 3) {
                     if (D_8010A110_picture_imperfect == 1) {
@@ -802,7 +802,7 @@ void func_80107820_picture_imperfect(omObjData *object) {
 
 void func_801081E4_picture_imperfect(omObjData *object) {
     PictureImperfectWork *work;
-    func_800E1BA8_minigame_ObjData *playerData;
+    MgPlayerWork *playerData;
     s32 chance3;
     s32 chance2;
     s32 chance1;
@@ -912,7 +912,7 @@ void func_801083C0_picture_imperfect(s8 player) {
 }
 
 void func_80108688_picture_imperfect(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *playerData;
+    MgPlayerWork *playerData;
     PictureImperfectWork *work;
     s8 player;
     s16(*sprites)[5];
@@ -1359,7 +1359,7 @@ void func_80109608_picture_imperfect(omObjData *object) {
     data->unk03 = 1;
     data->unk04 = 0;
     data->unk08 = 0.5f;
-    func_800E1370_minigame(object, 2, -8.0f);
+    MgMapAttrSet(object, 2, -8.0f);
 }
 
 void func_80109AC4_picture_imperfect(omObjData *object) {
@@ -1381,11 +1381,11 @@ void func_80109AC4_picture_imperfect(omObjData *object) {
                 break;
         }
         espPatNoSet(D_8010A2A8_picture_imperfect, 0);
-        if (func_800E6E9C_minigame() == 1) {
+        if (MgFlowStatTimeGet() == 1) {
             espDispOn(D_8010A2A6_picture_imperfect);
             espDispOn(D_8010A2A8_picture_imperfect);
             espDispOn(D_8010A2AA_picture_imperfect);
-        } else if (func_800E6E9C_minigame() > 26) {
+        } else if (MgFlowStatTimeGet() > 26) {
             switch (D_8010A054_picture_imperfect) {
                 case 0:
                     if (D_8010A055_picture_imperfect == 0xFF) {
@@ -1439,7 +1439,7 @@ void func_80109AC4_picture_imperfect(omObjData *object) {
             }
         }
     } else if (MgFlowStatGet() == MG_STATE_FINISH) {
-        if (GMesStatGet() == 0 && func_800E6E9C_minigame() > 10) {
+        if (GMesStatGet() == 0 && MgFlowStatTimeGet() > 10) {
             D_8010A050_picture_imperfect += 0.04f;
             if (D_8010A050_picture_imperfect > 0.5f) {
                 D_8010A050_picture_imperfect = 0.5f;

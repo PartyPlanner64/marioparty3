@@ -305,11 +305,11 @@ void func_801059A0_marios_puzzle_party(void) {
     s32 i;
 
     MapCollInit(50);
-    Hu3DQuadPoolInit(&D_800EBEB0_minigame, 64);
+    Hu3DQuadPoolInit(&mgQuadPool, 64);
     Hu3DSprModelInit(32);
     omInitObjMan(170, 200);
     omGameSysInit();
-    func_800E1804_minigame();
+    MgFieldStatClear();
     HuWinInit();
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     CamSetupInit(1);
@@ -344,8 +344,8 @@ void func_801059A0_marios_puzzle_party(void) {
     func_8010604C_marios_puzzle_party();
     omAddPrcObj(func_80105C98_marios_puzzle_party, 0x4001, 0x800, 0);
     omPrcSetStatBit(omAddPrcObj(func_8010D9AC_marios_puzzle_party, 0x4001, 0x800, 0), 0xA0);
-    func_800E5EA0_minigame(&D_80110140_marios_puzzle_party);
-    D_800EB930_minigame = 56;
+    MgFlowInit(&D_80110140_marios_puzzle_party);
+    mgFlowSeqNo = 56;
     WipeCreateIn(0xFF, 16);
 }
 
@@ -2958,8 +2958,8 @@ void func_8010EF30_marios_puzzle_party(void) {
 
     D_801160E4_marios_puzzle_party = -1;
     flow = &D_80110140_marios_puzzle_party;
-    func_800E6E4C_minigame(0);
-    D_800EB932_minigame = 60;
+    MgFlowStartDelaySet(0);
+    mgFlowSeqTime = 60;
     for (i = 0; i < 4; i++) {
         D_801161C8_marios_puzzle_party[i] = 240;
     }
@@ -3063,7 +3063,7 @@ void func_8010EF30_marios_puzzle_party(void) {
                 }
                 break;
             case 3:
-                if (func_800E6E9C_minigame() == 1) {
+                if (MgFlowStatTimeGet() == 1) {
                     if (D_80116158_marios_puzzle_party == 2) {
                         if (D_80116128_marios_puzzle_party[0] > D_8011615C_marios_puzzle_party) {
                             D_80116128_marios_puzzle_party[0] = D_8011615C_marios_puzzle_party;

@@ -259,7 +259,7 @@ void func_801059A0_vine_with_me(void) {
     D_80111B50_vine_with_me.newRecord = FALSE;
     D_80111B50_vine_with_me.gauge = MG_GAUGE_NONE;
     D_80111B50_vine_with_me.timeLimit = -1;
-    func_800E5EA0_minigame(&D_80111B50_vine_with_me);
+    MgFlowInit(&D_80111B50_vine_with_me);
 }
 
 void func_80105D08_vine_with_me(omObjData *arg0) {
@@ -363,7 +363,7 @@ void func_80106004_vine_with_me(omObjData *arg0) {
                 D_80111B50_vine_with_me.winners[0] = D_80115670_vine_with_me[D_8011558C_vine_with_me];
             }
             if (D_801155D0_vine_with_me == 2 && D_801155D0_vine_with_me != D_8011558C_vine_with_me) {
-                func_800E6F34_minigame(0x1E);
+                MgFlowResultWaitSet(0x1E);
             }
             if (D_801155D0_vine_with_me == 15 && D_80115554_vine_with_me != -1) {
                 HuAudFXFadeOut(D_80115554_vine_with_me, 0xF);

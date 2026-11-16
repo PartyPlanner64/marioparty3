@@ -8,11 +8,11 @@
 
 s32 GwMessSpeed = 25; // message speed
 s32 GwMessWait = 25;
-s16 D_800A12C8_main = -1;
+s16 mbWipeTypeNext = -1;
 s32 mbCameraZoomInstantF = 0;
 s8 mbStarMusF = 0;
 s32 mbTurnUnkF = 1;
-s32 D_800A12D8_main = 0;
+s32 mbTauntOffF = 0;
 s32 mbTurnOnF = 0;
 
 static s32 GwContErrorF;

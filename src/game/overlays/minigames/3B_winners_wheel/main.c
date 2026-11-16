@@ -185,12 +185,12 @@ void func_8010A190_winners_wheel(void);
 void func_801059A0_winners_wheel(void) {
     omInitObjMan(30, 10);
     MapCollInit(16);
-    Hu3DQuadPoolInit(&D_800EBEB0_minigame, 64);
+    Hu3DQuadPoolInit(&mgQuadPool, 64);
     Hu3DSprModelInit(64);
     func_8010A190_winners_wheel();
     omGameSysInit();
     Hu3DBGColorSet(0, 0, 0);
-    func_800E5EA0_minigame(&D_8010A260_winners_wheel);
+    MgFlowInit(&D_8010A260_winners_wheel);
     WipeCreateIn(0xFF, 16);
     func_80105AB0_winners_wheel();
     func_80105BA8_winners_wheel();
@@ -203,7 +203,7 @@ void func_801059A0_winners_wheel(void) {
     func_80109D44_winners_wheel();
     D_8010A466_winners_wheel = 0;
     CZoom = 1800.0f;
-    D_800EBE24_minigame = 0;
+    mgFieldStat = 0;
     D_8010A464_winners_wheel = 0;
     omAddObj(0x50, 0, 0, -1, func_80105FE4_winners_wheel);
     HuAudSeqPlay(0x44);
@@ -326,14 +326,14 @@ void func_80105FE4_winners_wheel(omObjData *obj) {
     }
     switch (MgFlowMain(obj)) {
         case 0:
-            if (func_800E6E9C_minigame() == 15) {
+            if (MgFlowStatTimeGet() == 15) {
                 func_8010842C_winners_wheel();
             }
             break;
         case 1:
             break;
         case 2:
-            if (func_800E6E9C_minigame() == 0) {
+            if (MgFlowStatTimeGet() == 0) {
                 omAddPrcObj(func_80109388_winners_wheel, 0x50, 0, 0);
                 D_8010A464_winners_wheel = 1;
             }
@@ -354,7 +354,7 @@ void func_80105FE4_winners_wheel(omObjData *obj) {
             }
             break;
         case 3:
-            if (func_800E6E9C_minigame() == 1) {
+            if (MgFlowStatTimeGet() == 1) {
                 func_80109050_winners_wheel();
                 func_801077F4_winners_wheel();
                 if (D_8010A468_winners_wheel[D_8010A480_winners_wheel] != 17) {
@@ -384,7 +384,7 @@ void func_80105FE4_winners_wheel(omObjData *obj) {
             }
             break;
         case 4:
-            if (func_800E6E9C_minigame() == 1) {
+            if (MgFlowStatTimeGet() == 1) {
                 if (D_8010A468_winners_wheel[D_8010A480_winners_wheel] != 17) {
                     func_80106F54_winners_wheel();
                     func_80107BE0_winners_wheel();

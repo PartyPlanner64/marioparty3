@@ -63,7 +63,7 @@ extern u8 wipeScreenStillF;
 extern u8 wipeColorB;
 extern u16 *wipeScreenBufP;
 extern u16 *currFrameBuffer;
-extern u8 *D_800D1F60_main;
+extern u8 *wipeTexImg;
 
 void WipeInit(void) {
     s16 i;
@@ -153,7 +153,7 @@ void WipeExecAlways(Gfx **gfx) {
                     }
                     wipeMallocBuf[i] = NULL;
                 }
-                D_800D1F60_main = NULL;
+                wipeTexImg = NULL;
                 HuMemDelayFreeAllWithTag(TAG_WIPE);
             }
             break;
@@ -526,7 +526,7 @@ s32 WipeTileIn(Gfx **gfx) {
     if (wipeDuration == 0.0f) {
         return 0;
     }
-    if (wipeTime == 0.0f && D_800D1F60_main == NULL) {
+    if (wipeTime == 0.0f && wipeTexImg == NULL) {
         WipeTexRead(23);
     }
     WipeTileDraw(gfx, 1.0f - (1.0f / wipeDuration) * wipeTime);
@@ -709,7 +709,7 @@ s32 WipeImageOut(Gfx **gfx, s32 file) {
         if (file != 0) {
             WipeTexRead(file);
         } else {
-            D_800D1F60_main = NULL;
+            wipeTexImg = NULL;
         }
     }
     WipeBlindDraw(gfx, (1.0f / wipeDuration) * wipeTime);

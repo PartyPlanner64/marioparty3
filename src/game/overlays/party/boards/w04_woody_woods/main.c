@@ -8004,7 +8004,7 @@ void func_80116AFC_w04(void) {
         MBCameraPos3DSet(&player->player_obj->coords);
         HuPrcVSleep();
         WipeCreateIn(WIPE_TYPE_NORMAL, 0x10);
-        D_800A12D8_main = 1;
+        mbTauntOffF = 1;
         HuPrcSleep(0x10);
     }
 
@@ -8039,7 +8039,7 @@ void func_80116AFC_w04(void) {
         MBPlayerMotionSet(-1, -1, 2);
     } else {
         MBMotionSet(MBPlayerGet(targetPlayer)->player_obj, -1, 2);
-        D_800A12D8_main = 0;
+        mbTauntOffF = 0;
     }
 
     if (targetPlayer != loc->current_player_index) {
@@ -8168,7 +8168,7 @@ void func_8011737C_w04(void) {
         MBCameraPos3DSet(&player->player_obj->coords);
         HuPrcVSleep();
         WipeCreateIn(WIPE_TYPE_NORMAL, 0x10);
-        D_800A12D8_main = 1;
+        mbTauntOffF = 1;
         HuPrcSleep(0x10);
     }
 
@@ -8205,7 +8205,7 @@ void func_8011737C_w04(void) {
         MBPlayerMotionSet(-1, -1, 2);
     } else {
         MBMotionSet(MBPlayerGet(targetPlayer)->player_obj, -1, 2);
-        D_800A12D8_main = 0;
+        mbTauntOffF = 0;
     }
 
     if (targetPlayer != loc->current_player_index) {

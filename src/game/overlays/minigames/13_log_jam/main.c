@@ -244,7 +244,7 @@ s32 D_8010E634_log_jam BSS;
 s32 D_8010E638_log_jam BSS;
 u8 D_8010E63C_log_jam[4] BSS; /* Unreferenced. */
 MinigameFlow D_8010E640_log_jam BSS;
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 extern s16 motionBakeMtxCnt;
 extern u8 omAllPauseF;
 extern s16 Hu3DModelTag;
@@ -338,9 +338,9 @@ void func_801059A0_log_jam(void) {
     ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 30.0f, 80.0f, 4000.0f);
-    D_800EC280_minigame = 0;
-    D_800EBE28_minigame = 0;
-    D_800EC1B8_minigame = 0;
+    mgPlayerObjNum = 0;
+    mgMapObjNum = 0;
+    mgItemObjNum = 0;
     D_8010E5A0_log_jam = 900;
     D_8010E59C_log_jam = 0;
     D_8010E598_log_jam = 0;
@@ -351,7 +351,7 @@ void func_801059A0_log_jam(void) {
     D_8010E590_log_jam = omAddObj(0x20, 0, 0, -1, func_80105B9C_log_jam);
     memset(&D_8010E640_log_jam, 0, 0x28);
     D_8010E640_log_jam.type = MINIGAME_BATTLE;
-    func_800E5EA0_minigame(&D_8010E640_log_jam);
+    MgFlowInit(&D_8010E640_log_jam);
 }
 
 void func_80105B9C_log_jam(omObjData *object) {
@@ -572,8 +572,8 @@ void func_80106190_log_jam(void) {
             }
         }
     }
-    func_800E19F0_minigame(1);
-    func_800E18D8_minigame();
+    MgShadowAltSet(1);
+    MgPlayerParamReset();
     for (i = 0; i < 2; i++, team++) {
         team->unk_10 = i;
         team->unk_12 = 0;
@@ -596,9 +596,9 @@ void func_80106190_log_jam(void) {
             work->unk_04 = i;
             work->unk_02 = D_8010DFC4_log_jam[work->unk_00];
             work->unk_18 = playerIds[i][j];
-            obj = D_800EC598_minigame[D_800EC280_minigame] =
+            obj = mgPlayerObjTbl[mgPlayerObjNum] =
                 omAddObj(D_8010DFCC_log_jam[work->unk_00], 8, 11, -1, func_80106968_log_jam);
-            D_800EC280_minigame++;
+            mgPlayerObjNum++;
             obj->trans.x = D_8010DE90_log_jam[work->unk_00].x;
             obj->trans.z = D_8010DE90_log_jam[work->unk_00].z;
             obj->rot.y = D_8010DF20_log_jam[work->unk_00];
@@ -672,7 +672,7 @@ void func_801065E8_log_jam(omObjData *object) {
 
 void func_80106968_log_jam(omObjData *object) {
     LogJamLogWork *work;
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     s16 player;
     s16 chr;
     s32 model;
@@ -687,9 +687,9 @@ void func_80106968_log_jam(omObjData *object) {
     work->unk_1A = GwPlayer[player].pad;
     work->unk_1E = GwPlayer[player].stat & 1;
     work->unk_20 = GwPlayer[player].cpu_difficulty;
-    model = D_800A178C_main[chr][0];
-    motion = D_800A178C_main[chr][2];
-    func_800E1BA8_minigame(object, model, motion, player, 0x6A9, 0x299);
+    model = omCharModelNoTbl[chr][0];
+    motion = omCharModelNoTbl[chr][2];
+    MgPlayerCreate(object, model, motion, player, 0x6A9, 0x299);
     data = object->data;
     data->unk50 &= ~1;
     data->unkEC = NULL;
@@ -713,30 +713,30 @@ void func_80106968_log_jam(omObjData *object) {
     }
     object->model[6] = Hu3DModelRead(8, 0x68D);
     Hu3DModelScaleSet(object->model[6], 0.5f, 0.5f, 0.5f);
-    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(chr, 0), 1, 0);
-    func_800E5A00_minigame(object, 1, CharMotionDataNumGet(chr, 4), 1, 19);
-    func_800E5A00_minigame(object, 2, CharMotionDataNumGet(chr, 6), 1, 27);
+    MgPlayerMotLoad(object, 0, CharMotionDataNumGet(chr, 0), 1, 0);
+    MgPlayerMotLoad(object, 1, CharMotionDataNumGet(chr, 4), 1, 19);
+    MgPlayerMotLoad(object, 2, CharMotionDataNumGet(chr, 6), 1, 27);
     if (work->unk_02 == 1) {
-        func_800E5A00_minigame(object, 3, CharMotionDataNumGet(chr, 0x74), 0, 20);
-        func_800E5A00_minigame(object, 4, CharMotionDataNumGet(chr, 0x75), 0, 10);
-        func_800E5A00_minigame(object, 5, CharMotionDataNumGet(chr, 0x81), 0, 8);
-        func_800E5A00_minigame(object, 6, CharMotionDataNumGet(chr, 0x76), 1, 0);
+        MgPlayerMotLoad(object, 3, CharMotionDataNumGet(chr, 0x74), 0, 20);
+        MgPlayerMotLoad(object, 4, CharMotionDataNumGet(chr, 0x75), 0, 10);
+        MgPlayerMotLoad(object, 5, CharMotionDataNumGet(chr, 0x81), 0, 8);
+        MgPlayerMotLoad(object, 6, CharMotionDataNumGet(chr, 0x76), 1, 0);
     } else {
-        func_800E5A00_minigame(object, 7, CharMotionDataNumGet(chr, 0x77), 0, 30);
-        func_800E5A00_minigame(object, 8, CharMotionDataNumGet(chr, 0x78), 0, 40);
+        MgPlayerMotLoad(object, 7, CharMotionDataNumGet(chr, 0x77), 0, 30);
+        MgPlayerMotLoad(object, 8, CharMotionDataNumGet(chr, 0x78), 0, 40);
     }
     if (chr == 5) {
-        func_800E5A00_minigame(object, 9, CharMotionDataNumGet(5, 0x31), 1, 120);
+        MgPlayerMotLoad(object, 9, CharMotionDataNumGet(5, 0x31), 1, 120);
         work->unk_14 = D_8010DFD4_log_jam[5] | 0x31;
     } else if (chr == 1 || chr == 6) {
-        func_800E5A00_minigame(object, 9, CharMotionDataNumGet(chr, D_8010DFF4_log_jam[0]), 1, 120);
+        MgPlayerMotLoad(object, 9, CharMotionDataNumGet(chr, D_8010DFF4_log_jam[0]), 1, 120);
         work->unk_14 = D_8010DFD4_log_jam[chr] | D_8010DFF4_log_jam[0];
     } else {
         index = rand8() & 1;
-        func_800E5A00_minigame(object, 9, CharMotionDataNumGet(chr, D_8010DFF4_log_jam[index]), 1, 120);
+        MgPlayerMotLoad(object, 9, CharMotionDataNumGet(chr, D_8010DFF4_log_jam[index]), 1, 120);
         work->unk_14 = D_8010DFD4_log_jam[chr] | D_8010DFF4_log_jam[index];
     }
-    func_800E5A00_minigame(object, 10, CharMotionDataNumGet(chr, D_8010DFF4_log_jam[2]), 1, 120);
+    MgPlayerMotLoad(object, 10, CharMotionDataNumGet(chr, D_8010DFF4_log_jam[2]), 1, 120);
     work->unk_06 = -1;
     work->unk_0C = 0;
     work->unk_0A = 0;
@@ -778,9 +778,9 @@ void func_80106FAC_log_jam(void) {
 
     for (i = 0; i < 4; i++) {
         for (j = 0; j < 3; j++) {
-            if (D_800EC598_minigame[i]->model[D_8010E004_log_jam[j]] != -1) {
-                Hu3DModelKill(D_800EC598_minigame[i]->model[D_8010E004_log_jam[j]]);
-                D_800EC598_minigame[i]->model[D_8010E004_log_jam[j]] = -1;
+            if (mgPlayerObjTbl[i]->model[D_8010E004_log_jam[j]] != -1) {
+                Hu3DModelKill(mgPlayerObjTbl[i]->model[D_8010E004_log_jam[j]]);
+                mgPlayerObjTbl[i]->model[D_8010E004_log_jam[j]] = -1;
             }
         }
     }
@@ -1107,7 +1107,7 @@ void func_80107C84_log_jam(omObjData *object, LogJamTeam *team) {
                     work->unk_0A = 0;
                     work->unk_0C = 0;
                     func_8010C5DC_log_jam(object, 6, 5);
-                    func_800E4C88_minigame(object, 6, D_8010DF30_log_jam[team->unk_10].x,
+                    MgPlayerEffSet(object, 6, D_8010DF30_log_jam[team->unk_10].x,
                                            D_8010DF30_log_jam[team->unk_10].y, D_8010DF30_log_jam[team->unk_10].z, 0.0f,
                                            0.0f);
                 } else {
@@ -1151,11 +1151,11 @@ void func_80107C84_log_jam(omObjData *object, LogJamTeam *team) {
                     func_8010925C_log_jam(team->unk_16);
                     team->unk_16 = team->unk_18 = -1;
                     team->unk_1A = 0;
-                    func_800E4C88_minigame(object, 6, D_8010DF30_log_jam[team->unk_10].x,
+                    MgPlayerEffSet(object, 6, D_8010DF30_log_jam[team->unk_10].x,
                                            D_8010DF30_log_jam[team->unk_10].y + 50.0,
                                            D_8010DF30_log_jam[team->unk_10].z, 0.0f, 0.0f);
                 } else {
-                    func_800E4C88_minigame(object, 6, D_8010DF30_log_jam[team->unk_10].x,
+                    MgPlayerEffSet(object, 6, D_8010DF30_log_jam[team->unk_10].x,
                                            D_8010DF30_log_jam[team->unk_10].y, D_8010DF30_log_jam[team->unk_10].z, 0.0f,
                                            0.0f);
                 }
@@ -1711,10 +1711,10 @@ void func_80109AD8_log_jam(void) {
 // Appends a new object to the shared minigame object list.
 void func_80109B34_log_jam(void) {
     omObjData *obj = omAddObj(1, 0x10, 0, -1, func_80109B8C_log_jam);
-    u16 index = D_800EBE28_minigame;
+    u16 index = mgMapObjNum;
 
-    D_800EBE28_minigame = index + 1;
-    D_800EC1C0_minigame[index] = obj;
+    mgMapObjNum = index + 1;
+    mgMapObjTbl[index] = obj;
 }
 
 void func_80109B8C_log_jam(omObjData *object) {
@@ -2532,10 +2532,10 @@ u32 func_8010C588_log_jam(omObjData *object) {
 
 void func_8010C5DC_log_jam(omObjData *object, s16 motion, s16 shift) {
     HmfModel *model = &Hu3DData[object->model[0]];
-    func_800E1BA8_minigame_UnkE8_ObjData *anim;
+    MgMotAttr *anim;
 
     Hu3DMotionShiftSet(object->model[0], object->motion[motion], 0, shift, 0);
-    anim = &((func_800E1BA8_minigame_ObjData *)object->data)->unkE8[motion];
+    anim = &((MgPlayerWork *)object->data)->unkE8[motion];
     if (anim->unk00 & 1) {
         model->motShiftAttr = 2;
     } else {
@@ -2553,13 +2553,13 @@ void func_8010C6A4_log_jam(omObjData *object, s16 motion, s16 time) {
 
 void func_8010C714_log_jam(omObjData *object, s16 motion, s16 time) {
     HmfModel *model = &Hu3DData[object->model[0]];
-    func_800E1BA8_minigame_UnkE8_ObjData *anim;
+    MgMotAttr *anim;
 
     model->motId = object->motion[motion];
     model->unk48 = model->motTime = model->motSpeed = 1.0f;
     model->motIdShift = 0xFF;
     model->motTime = time;
-    anim = &((func_800E1BA8_minigame_ObjData *)object->data)->unkE8[motion];
+    anim = &((MgPlayerWork *)object->data)->unkE8[motion];
     if (anim->unk00 & 1) {
         model->motAttr = 2;
     } else {
@@ -2595,7 +2595,7 @@ void func_8010C7F8_log_jam(omObjData *object) {
 
 void func_8010C8B0_log_jam(omObjData *object) {
     if (object->model[6] != -1) {
-        func_800E4BA4_minigame((u8)object->model[6]);
+        MgEffMdlUpdate((u8)object->model[6]);
     }
 }
 

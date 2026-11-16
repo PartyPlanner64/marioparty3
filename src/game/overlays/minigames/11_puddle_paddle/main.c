@@ -83,8 +83,8 @@ typedef struct PuddlePaddleGame {
 } PuddlePaddleGame; // Size 0x44
 
 extern u8 omAllPauseF;
-extern s32 D_800A178C_main[][6];
-extern s32 D_800A1790_main[][6];
+extern s32 omCharModelNoTbl[][6];
+extern s32 omCharMotTbl[][6];
 
 extern UnkPuddlePaddleSpr *D_80111664_puddle_paddle;
 extern UnkPuddlePaddleEntry *D_80111668_puddle_paddle;
@@ -175,9 +175,9 @@ void func_801059BC_puddle_paddle(void) {
     ScissorSet(camera, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(camera, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 30.0f, 80.0f, 5000.0f);
-    D_800EC1B8_minigame = 0;
-    D_800EC280_minigame = 0;
-    D_800EBE28_minigame = 0;
+    mgItemObjNum = 0;
+    mgPlayerObjNum = 0;
+    mgMapObjNum = 0;
     func_8010B820_puddle_paddle();
     func_80105B94_puddle_paddle();
     omAddObj(0x3E8, 0, 0, -1, func_80105DBC_puddle_paddle);
@@ -234,22 +234,22 @@ void func_80105DBC_puddle_paddle(omObjData *object) {
     s16 i;
     PuddlePaddleTeam *team;
 
-    func_800E18D8_minigame();
-    func_800E19F0_minigame(1);
+    MgPlayerParamReset();
+    MgShadowAltSet(1);
     func_8010B8B4_puddle_paddle(NULL, 0, 0, 4);
     func_8010BA04_puddle_paddle(0, 0, 0, func_801075B8_puddle_paddle, 0);
     object->work[1] = 1;
     func_8010B8B4_puddle_paddle(object, (s8)object->work[1], 0, 4);
-    D_800EC1C0_minigame[0] = omAddObj(10, 1, 2, -1, func_80106064_puddle_paddle);
-    D_800EC1C0_minigame[1] = omAddObj(10, 1, 0, -1, func_80106988_puddle_paddle);
-    omSetStatBit(D_800EC1C0_minigame[1], OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    mgMapObjTbl[0] = omAddObj(10, 1, 2, -1, func_80106064_puddle_paddle);
+    mgMapObjTbl[1] = omAddObj(10, 1, 0, -1, func_80106988_puddle_paddle);
+    omSetStatBit(mgMapObjTbl[1], OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     for (i = 0; i < 4; i++) {
         team = &D_80111650_puddle_paddle[D_80111654_puddle_paddle[i].team = GwPlayer[i].group];
         D_80111654_puddle_paddle[i].unk_10 = team->count;
         team->players[team->count++] = i;
     }
     for (i = 0; i < 4; i++) {
-        D_800EC598_minigame[i] = omAddObj(300, 11, 42, -1, func_80106CE4_puddle_paddle);
+        mgPlayerObjTbl[i] = omAddObj(300, 11, 42, -1, func_80106CE4_puddle_paddle);
     }
     omAddObj(500, 2, 0, -1, func_801073E4_puddle_paddle);
     D_80111658_puddle_paddle->unk_00 = 1;
@@ -445,13 +445,13 @@ void func_80106CE4_puddle_paddle(omObjData *object) {
     s16 model;
     f32 angle;
 
-    object->work[0] = D_800EC280_minigame;
+    object->work[0] = mgPlayerObjNum;
     object->work[1] = object->work[0] + 3;
     player = &D_80111654_puddle_paddle[object->work[0]];
     player->chr = GwPlayer[object->work[0]].chr;
-    modelFile = D_800A178C_main[player->chr][0];
-    motionFile = D_800A1790_main[player->chr][0];
-    func_800E1BA8_minigame(object, modelFile, motionFile, object->work[0], attr, attr);
+    modelFile = omCharModelNoTbl[player->chr][0];
+    motionFile = omCharMotTbl[player->chr][0];
+    MgPlayerCreate(object, modelFile, motionFile, object->work[0], attr, attr);
     object->model[9] = model = Hu3DModelRead(handFiles[player->chr] | 0x320000, attr);
     D_8011122C_puddle_paddle = SearchObjectIndex(Hu3DData[object->model[0]].hmf, objNames[player->chr][0]);
     func_80106B6C_puddle_paddle(model, object->model[0], D_8011122C_puddle_paddle);
@@ -459,16 +459,16 @@ void func_80106CE4_puddle_paddle(omObjData *object) {
     D_8011122C_puddle_paddle = SearchObjectIndex(Hu3DData[object->model[0]].hmf, objNames[player->chr][1]);
     func_80106B6C_puddle_paddle(model, object->model[0], D_8011122C_puddle_paddle);
     object->trans.z = 200.0f;
-    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(player->chr, 0x98), 0, 0);
-    func_800E5A00_minigame(object, 2, CharMotionDataNumGet(player->chr, 2), 1, 0);
-    func_800E5A00_minigame(object, 13, CharMotionDataNumGet(player->chr, 0x9E), 1, 0);
-    func_800E5A00_minigame(object, 14, CharMotionDataNumGet(player->chr, 0x37), 1, 999);
-    func_800E5A00_minigame(object, 38, CharMotionDataNumGet(player->chr, 0x92), 0, 0);
-    func_800E5A00_minigame(object, 40, CharMotionDataNumGet(player->chr, 0x93), 0, 0);
-    func_800E5A00_minigame(object, 39, CharMotionDataNumGet(player->chr, 0x94), 0, 0);
-    func_800E5A00_minigame(object, 41, CharMotionDataNumGet(player->chr, 0x95), 0, 0);
+    MgPlayerMotLoad(object, 0, CharMotionDataNumGet(player->chr, 0x98), 0, 0);
+    MgPlayerMotLoad(object, 2, CharMotionDataNumGet(player->chr, 2), 1, 0);
+    MgPlayerMotLoad(object, 13, CharMotionDataNumGet(player->chr, 0x9E), 1, 0);
+    MgPlayerMotLoad(object, 14, CharMotionDataNumGet(player->chr, 0x37), 1, 999);
+    MgPlayerMotLoad(object, 38, CharMotionDataNumGet(player->chr, 0x92), 0, 0);
+    MgPlayerMotLoad(object, 40, CharMotionDataNumGet(player->chr, 0x93), 0, 0);
+    MgPlayerMotLoad(object, 39, CharMotionDataNumGet(player->chr, 0x94), 0, 0);
+    MgPlayerMotLoad(object, 41, CharMotionDataNumGet(player->chr, 0x95), 0, 0);
     func_80109804_puddle_paddle(player, 0, 1);
-    func_800E5690_minigame(object, 0);
+    MgPlayerMotSet(object, 0);
     player->unk_0E = -1;
     angle = player->unk_48 = angles[player->unk_10];
     angle += D_80111650_puddle_paddle[player->team].unk_18;
@@ -478,13 +478,13 @@ void func_80106CE4_puddle_paddle(omObjData *object) {
     Hu3DModelPosSet(object->model[0], positions.points[player->team].x + sindf(angle) * 20.0f * 5.0f * 0.7f,
                     positions.points[player->team].y + 37.0f,
                     positions.points[player->team].z + cosdf(angle) * 20.0f * 5.0f * 0.7f);
-    player->unk_00 = ((func_800E1BA8_minigame_ObjData *)object->data)->unk57;
+    player->unk_00 = ((MgPlayerWork *)object->data)->unk57;
     player->unk_04 = 1;
     player->unk_56 = 0;
     player->unk_58 = 0;
     object->rot.x = object->rot.y = object->rot.z = 0.0f;
     object->scale.x = object->scale.y = object->scale.z = 1.0f;
-    D_800EC280_minigame++;
+    mgPlayerObjNum++;
     func_8010B8B4_puddle_paddle(object, (s8)object->work[1], 0, 4);
     func_8010BA04_puddle_paddle((s8)object->work[1], 0xF, player, func_801094C4_puddle_paddle, 0);
     func_8010BA04_puddle_paddle((s8)object->work[1], 0xFFFF, player, func_80109718_puddle_paddle, 0);
@@ -497,7 +497,7 @@ const PuddlePaddlePositions D_80111614_puddle_paddle = {
 
 void func_801073AC_puddle_paddle(omObjData *object) {
     func_8010BC14_puddle_paddle(object->work[1]);
-    func_800E4E30_minigame(object);
+    MgPlayerMotUpdate(object);
     func_80110714_puddle_paddle(object);
 }
 
@@ -1113,7 +1113,7 @@ void func_80109718_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
         player->unk_08 = 1;
     }
     if (player->unk_08 != 0) {
-        func_800E5690_minigame(object, player->unk_0A);
+        MgPlayerMotSet(object, player->unk_0A);
         player->unk_08 = 0;
         if (player->unk_58 == -1) {
             player->unk_58 = 1;
@@ -1216,7 +1216,7 @@ void func_80109BD4_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
     HmfModel *boat;
     HmfModel *model;
     HmfModel *other;
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     Vec diff;
     f32 x, z;
     s16 angle;
@@ -1228,16 +1228,16 @@ void func_80109BD4_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
         boat = &Hu3DData[slot->unk_04[i]];
         for (j = 0; j < 2; j++) {
             player = &D_80111654_puddle_paddle[team->players[j]];
-            model = &Hu3DData[D_800EC598_minigame[team->players[j]]->model[0]];
+            model = &Hu3DData[mgPlayerObjTbl[team->players[j]]->model[0]];
             angle = player->unk_48 + team->unk_18;
             if (angle > 360.0f) {
                 angle -= 360.0f;
             }
             x = sindf(angle) * 20.0f * 5.0f * 0.7f + boat->pos.x;
             z = cosdf(angle) * 20.0f * 5.0f * 0.7f + boat->pos.z;
-            Hu3DModelPosSet(D_800EC598_minigame[team->players[j]]->model[0], x, boat->pos.y + 37.0f, z);
-            Hu3DModelRotSet(D_800EC598_minigame[team->players[j]]->model[0], 0.0f, boat->rot.y, 0.0f);
-            Hu3DModelPosSet(D_800EC598_minigame[team->players[j]]->model[1], x, boat->pos.y + 34.0f, z);
+            Hu3DModelPosSet(mgPlayerObjTbl[team->players[j]]->model[0], x, boat->pos.y + 37.0f, z);
+            Hu3DModelRotSet(mgPlayerObjTbl[team->players[j]]->model[0], 0.0f, boat->rot.y, 0.0f);
+            Hu3DModelPosSet(mgPlayerObjTbl[team->players[j]]->model[1], x, boat->pos.y + 34.0f, z);
             if (player->unk_04 & 8) {
                 if (player->unk_04 & 2) {
                     func_80109804_puddle_paddle(player, 0x27, 0);
@@ -1255,7 +1255,7 @@ void func_80109BD4_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
                     func_80109804_puddle_paddle(player, 0, 0);
                 }
             }
-            data = D_800EC598_minigame[team->players[j]]->data;
+            data = mgPlayerObjTbl[team->players[j]]->data;
             left = FALSE;
             right = FALSE;
             if (model->motTime == 20.0f) {
@@ -1313,7 +1313,7 @@ void func_8010A224_puddle_paddle(void) {
         for (j = 0; j < 2; j++) {
             index = team->players[j];
             player = &D_80111654_puddle_paddle[index];
-            object = D_800EC598_minigame[index];
+            object = mgPlayerObjTbl[index];
             if (!(player->unk_04 & 0x10)) {
                 continue;
             }

@@ -851,7 +851,7 @@ s16 msmSysVolExpand(s32 arg0) {
 // address is 16-aligned and the sys code above uses no data or rodata, but the
 // function before it ends exactly here (no nop padding), and the sys bss ends at
 // 0x800A97B8, which is not 16-aligned. So the mus/se player pointers
-// (D_800A97B8/D_800A97BC) may be defined with the sys code, or this is not a
+// (msmMus/msmSe) may be defined with the sys code, or this is not a
 // real split.
 /* Loads a bank file for the player, copying it from another player that
  * already has it loaded when possible. */
@@ -2040,7 +2040,7 @@ void msmMusGetMidiCtrl(s32 playerIdx, s32 chan, MusChlInfo *info) {
 
 // Suspected mus/se boundary: ROM 0x48B8 (msm "se" code starts here). This is
 // not a real file split: the mus text ends here at a non-16-aligned address with
-// no nop padding, and msmSeLoadBank is clearly se code (D_800A97BC), so the
+// no nop padding, and msmSeLoadBank is clearly se code (msmSe), so the
 // mus and se code were most likely built as one file. The mus rodata (jump
 // tables 0x800A6300-0x800A6790) does end 16-aligned, but that looks incidental.
 /* Loads the sound effect bank file and resolves the offsets inside it. */

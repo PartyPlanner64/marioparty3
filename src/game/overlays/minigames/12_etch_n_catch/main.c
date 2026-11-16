@@ -77,7 +77,7 @@ typedef struct EtchNCatchPlayerOffsets {
 
 // Per-object data of the player objects created by func_80109A54_etch_n_catch.
 typedef struct EtchNCatchPlayerData {
-    /* 0x000 */ func_800E1BA8_minigame_ObjData base;
+    /* 0x000 */ MgPlayerWork base;
     /* 0x15C */ s32 unk15C;
     /* 0x160 */ u8 unk160; // Index into D_801113E8_etch_n_catch
     /* 0x161 */ u8 unk161;
@@ -99,8 +99,8 @@ typedef struct EtchNCatchBoardWork {
     /* 0x08 */ f32 unk08;
 } EtchNCatchBoardWork; // sizeof 0xC
 
-extern f32 D_800EB770_minigame;
-extern s32 D_800A178C_main[][6];
+extern f32 mgPlayerSpeedZero;
+extern s32 omCharModelNoTbl[][6];
 extern u8 omAllPauseF;
 
 s8 D_8010C6A0_etch_n_catch = 0;
@@ -161,7 +161,7 @@ void func_80106334_etch_n_catch(omObjData *object);
 void func_80106A64_etch_n_catch(omObjData *object);
 void func_80108B20_etch_n_catch(EtchNCatchWork *arg0);
 void func_80107EA4_etch_n_catch(omObjData *object);
-void func_8010880C_etch_n_catch(func_800E1BA8_minigame_ObjData *data);
+void func_8010880C_etch_n_catch(MgPlayerWork *data);
 EtchNCatchNode *func_80108B28_etch_n_catch(s8 playerId);
 void func_80108B64_etch_n_catch(EtchNCatchNode **head, EtchNCatchNode *node);
 void func_80108BCC_etch_n_catch(EtchNCatchNode **head, EtchNCatchNode *node);
@@ -193,29 +193,29 @@ void func_801059A0_etch_n_catch(void) {
     s32 i;
 
     MapCollInit(32);
-    Hu3DQuadPoolInit(&D_800EBEB0_minigame, 64);
+    Hu3DQuadPoolInit(&mgQuadPool, 64);
     Hu3DSprModelInit(64);
     omInitObjMan(32, 0);
     omGameSysInit();
-    D_800EC1B8_minigame = 0;
-    D_800EC280_minigame = 0;
-    D_800EBE28_minigame = 0;
-    func_800E1804_minigame();
+    mgItemObjNum = 0;
+    mgPlayerObjNum = 0;
+    mgMapObjNum = 0;
+    MgFieldStatClear();
     func_80105CD0_etch_n_catch(&D_801113B0_etch_n_catch);
-    func_800E5EA0_minigame(&D_801113B0_etch_n_catch);
+    MgFlowInit(&D_801113B0_etch_n_catch);
     Hu3DGLightColorSet(1, 64, 64, 64);
     Hu3DGLightDirSet(1, 0.0f, 0.0f, 100.0f);
     omSetStatBit(omAddObj(0, 0, 0, -1, func_80105ED4_etch_n_catch), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     func_80105D5C_etch_n_catch();
-    D_800EC1C0_minigame[D_800EBE28_minigame++] = omAddObj(2, 1, 0, -1, func_8010C390_etch_n_catch);
-    D_800EC1C0_minigame[D_800EBE28_minigame++] = omAddObj(2, 1, 0, -1, func_8010C444_etch_n_catch);
-    func_800E1490_minigame(D_800EBE28_minigame);
-    D_800EC1C0_minigame[D_800EBE28_minigame++] = omAddObj(1, 0, 0, -1, func_8010BE84_etch_n_catch);
-    func_800E18D8_minigame();
-    D_800EB740_minigame = 0.5f;
+    mgMapObjTbl[mgMapObjNum++] = omAddObj(2, 1, 0, -1, func_8010C390_etch_n_catch);
+    mgMapObjTbl[mgMapObjNum++] = omAddObj(2, 1, 0, -1, func_8010C444_etch_n_catch);
+    MgMapBaseSet(mgMapObjNum);
+    mgMapObjTbl[mgMapObjNum++] = omAddObj(1, 0, 0, -1, func_8010BE84_etch_n_catch);
+    MgPlayerParamReset();
+    mgPlayerFriction = 0.5f;
     for (i = 0; i < 4; i++) {
-        D_800EC598_minigame[D_800EC280_minigame++] = omAddObj(3, 5, 60, -1, func_80106334_etch_n_catch);
-        omSetStatBit(D_800EC598_minigame[i], OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+        mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 5, 60, -1, func_80106334_etch_n_catch);
+        omSetStatBit(mgPlayerObjTbl[i], OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
         D_801113D8_etch_n_catch[i] = HuMemAllocTag(0x100 * sizeof(EtchNCatchNode), TAG_OVERLAY);
         memset(D_801113D8_etch_n_catch[i], 0, 0x100 * sizeof(EtchNCatchNode));
     }
@@ -230,7 +230,7 @@ void func_801059A0_etch_n_catch(void) {
 void func_80105CD0_etch_n_catch(MinigameFlow *flow) {
     s32 i;
 
-    D_800EB932_minigame = 60;
+    mgFlowSeqTime = 60;
     flow->state = MG_STATE_OPENING;
     flow->type = MINIGAME_1V3;
     flow->timerMode = MG_TIMER_COUNT_DOWN;
@@ -285,10 +285,10 @@ void func_80105ED4_etch_n_catch(omObjData *object) {
             MgFlowStatSet(MG_STATE_EXIT);
             D_8010C6D8_etch_n_catch = 1;
         }
-        func_800E1840_minigame();
+        MgFieldStatUpdate();
         switch (MgFlowMain()) {
             case 0:
-                D_800EB930_minigame = 56;
+                mgFlowSeqNo = 56;
                 break;
             case 1:
                 break;
@@ -298,7 +298,7 @@ void func_80105ED4_etch_n_catch(omObjData *object) {
                 }
                 break;
             case 3:
-                if (func_800E6E9C_minigame() == 74.0) {
+                if (MgFlowStatTimeGet() == 74.0) {
                     if (D_8010C6AC_etch_n_catch == D_8010C6AD_etch_n_catch) {
                         D_801113B0_etch_n_catch.resultType = MG_RESULT_DRAW;
                     } else {
@@ -324,11 +324,11 @@ void func_80105ED4_etch_n_catch(omObjData *object) {
                 }
                 break;
             case 4:
-                if (D_800EB934_minigame != 0) {
+                if (mgFlowResultF != 0) {
                     for (i = 0; i < 4; i++) {
                         if (D_801113B0_etch_n_catch.resultType == MG_RESULT_WIN_2) {
                             if (i == D_801113B0_etch_n_catch.winners[0] || i == D_801113B0_etch_n_catch.winners[1]) {
-                                func_800E5690_minigame(D_800EC598_minigame[i], 13);
+                                MgPlayerMotSet(mgPlayerObjTbl[i], 13);
                                 switch (GwPlayer[i].chr) {
                                     case 0:
                                     default:
@@ -359,10 +359,10 @@ void func_80105ED4_etch_n_catch(omObjData *object) {
                                 HuAudFXAllStop();
                                 HuAudCharVoicePlay((voice << 16) | 0x2F);
                             } else {
-                                func_800E5690_minigame(D_800EC598_minigame[i], 14);
+                                MgPlayerMotSet(mgPlayerObjTbl[i], 14);
                             }
                         } else {
-                            func_800E5690_minigame(D_800EC598_minigame[i], 14);
+                            MgPlayerMotSet(mgPlayerObjTbl[i], 14);
                         }
                     }
                 }
@@ -387,7 +387,7 @@ void func_80106334_etch_n_catch(omObjData *object) {
     Vec team0PosB[2] = { { -150.0f, 1000.0f, 250.0f }, { -350.0f, 1000.0f, -200.0f } };
     Vec team1PosA[2] = { { 150.0f, 1000.0f, -200.0f }, { 350.0f, 1000.0f, 250.0f } };
     Vec team1PosB[2] = { { 350.0f, 1000.0f, 250.0f }, { 150.0f, 1000.0f, -200.0f } };
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     EtchNCatchWork *work;
     f32 offsetX;
     f32 offsetZ;
@@ -397,13 +397,13 @@ void func_80106334_etch_n_catch(omObjData *object) {
     s32 i;
 
     chr = GwPlayer[D_8010C6D9_etch_n_catch].chr;
-    model = D_800A178C_main[chr][0];
-    motion = D_800A178C_main[chr][1];
-    func_800E19F0_minigame(1);
-    func_800E1BA8_minigame(object, model, motion, D_8010C6D9_etch_n_catch, 0xAA9, 0xAB9);
+    model = omCharModelNoTbl[chr][0];
+    motion = omCharModelNoTbl[chr][1];
+    MgShadowAltSet(1);
+    MgPlayerCreate(object, model, motion, D_8010C6D9_etch_n_catch, 0xAA9, 0xAB9);
     data = object->data;
-    D_800EB784_minigame[data->unk59][0] = -1;
-    D_800EB784_minigame[data->unk59][1] = -1;
+    mgPlayerSeTbl[data->unk59][0] = -1;
+    mgPlayerSeTbl[data->unk59][1] = -1;
     data->unk3C = 0.0f;
     D_8010C868_etch_n_catch[D_8010C6D9_etch_n_catch] = work = HuMemAllocTag(sizeof(EtchNCatchWork), TAG_OVERLAY);
     memset(work, 0, sizeof(EtchNCatchWork));
@@ -432,8 +432,8 @@ void func_80106334_etch_n_catch(omObjData *object) {
             } else {
                 work->unk_00 = 2;
             }
-            func_800E149C_minigame(object, 0, 2);
-            func_800E149C_minigame(object, 1, 1);
+            MgPlayerMapAttrSet(object, 0, 2);
+            MgPlayerMapAttrSet(object, 1, 1);
             D_8010C6DA_etch_n_catch++;
             break;
         case 1:
@@ -453,8 +453,8 @@ void func_80106334_etch_n_catch(omObjData *object) {
             } else {
                 work->unk_00 = 8;
             }
-            func_800E149C_minigame(object, 0, 1);
-            func_800E149C_minigame(object, 1, 2);
+            MgPlayerMapAttrSet(object, 0, 1);
+            MgPlayerMapAttrSet(object, 1, 2);
             D_8010C6DB_etch_n_catch++;
             break;
     }
@@ -489,13 +489,13 @@ void func_80106334_etch_n_catch(omObjData *object) {
         Hu3DMotionAttrSet(D_80111390_etch_n_catch[data->unk59][i], 2, 2);
         Hu3DModelTPLvlInit(D_80111390_etch_n_catch[data->unk59][i]);
     }
-    func_800E1328_minigame(object, 46.875f);
-    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(chr, 0x47), 1, 0);
-    func_800E5A00_minigame(object, 1, CharMotionDataNumGet(chr, 0x48), 1, 0);
-    func_800E5A00_minigame(object, 13, CharMotionDataNumGet(chr, 0x2F), 1, 120);
-    func_800E5A00_minigame(object, 14, CharMotionDataNumGet(chr, 0x36), 1, 120);
-    func_800E5A00_minigame(object, 38, CharMotionDataNumGet(chr, 0), 1, 0);
-    func_800E5690_minigame(object, 0);
+    MgPlayerRadiusSet(object, 46.875f);
+    MgPlayerMotLoad(object, 0, CharMotionDataNumGet(chr, 0x47), 1, 0);
+    MgPlayerMotLoad(object, 1, CharMotionDataNumGet(chr, 0x48), 1, 0);
+    MgPlayerMotLoad(object, 13, CharMotionDataNumGet(chr, 0x2F), 1, 120);
+    MgPlayerMotLoad(object, 14, CharMotionDataNumGet(chr, 0x36), 1, 120);
+    MgPlayerMotLoad(object, 38, CharMotionDataNumGet(chr, 0), 1, 0);
+    MgPlayerMotSet(object, 0);
     D_8010C6D9_etch_n_catch++;
 }
 
@@ -505,8 +505,8 @@ void func_80106A64_etch_n_catch(omObjData *object) {
     Vec2f screenPos;
     Vec2f dir;
     EtchNCatchPlayerOffsets saved;
-    func_800E1BA8_minigame_ObjData *data;
-    func_800E1BA8_minigame_ObjData *otherData;
+    MgPlayerWork *data;
+    MgPlayerWork *otherData;
     EtchNCatchNode *newNode;
     EtchNCatchNode *node;
     f32 offsetX;
@@ -542,7 +542,7 @@ void func_80106A64_etch_n_catch(omObjData *object) {
                     D_8010C6DC_etch_n_catch = 0.75f;
                 }
             }
-            func_800DDD94_minigame(object);
+            MgPlayerObjMain(object);
             Hu3DModelPosSet(object->model[2], object->trans.x, object->trans.y, object->trans.z);
             func_8010C628_etch_n_catch(object, 0.75f);
             offsetX = sindf(data->unk3C) * 65.0f * 0.75f;
@@ -569,25 +569,25 @@ void func_80106A64_etch_n_catch(omObjData *object) {
     data->unk40 *= 0.9f;
     func_8010880C_etch_n_catch(data);
     for (i = 0; i < 4; i++) {
-        saved.x[i] = D_800EC598_minigame[i]->trans.x;
-        saved.z[i] = D_800EC598_minigame[i]->trans.z;
-        otherData = D_800EC598_minigame[i]->data;
+        saved.x[i] = mgPlayerObjTbl[i]->trans.x;
+        saved.z[i] = mgPlayerObjTbl[i]->trans.z;
+        otherData = mgPlayerObjTbl[i]->data;
         saved.offsetX[i] = sindf(otherData->unk3C) * 46.875f;
         saved.offsetZ[i] = cosdf(otherData->unk3C) * 46.875f;
-        D_800EC598_minigame[i]->trans.x -= saved.offsetX[i];
-        D_800EC598_minigame[i]->trans.z -= saved.offsetZ[i];
+        mgPlayerObjTbl[i]->trans.x -= saved.offsetX[i];
+        mgPlayerObjTbl[i]->trans.z -= saved.offsetZ[i];
     }
-    func_800DDD94_minigame(object);
+    MgPlayerObjMain(object);
     for (i = 0; i < 4; i++) {
-        D_800EC598_minigame[i]->trans.x += saved.offsetX[i];
-        D_800EC598_minigame[i]->trans.z += saved.offsetZ[i];
+        mgPlayerObjTbl[i]->trans.x += saved.offsetX[i];
+        mgPlayerObjTbl[i]->trans.z += saved.offsetZ[i];
     }
     offsetX = sindf(data->unk3C) * 65.0f * 0.75f;
     offsetZ = cosdf(data->unk3C) * 65.0f * 0.75f;
     switch (MgFlowStatGet()) {
         case MG_STATE_FINISH:
-            if (func_800E6E9C_minigame() == 0) {
-                func_800E1328_minigame(object, 60.0f);
+            if (MgFlowStatTimeGet() == 0) {
+                MgPlayerRadiusSet(object, 60.0f);
                 object->trans.x -= offsetX;
                 object->trans.z -= offsetZ;
             }
@@ -607,7 +607,7 @@ void func_80106A64_etch_n_catch(omObjData *object) {
     }
     Hu3DModelPosSet(object->model[2], object->trans.x, object->trans.y, object->trans.z);
     Hu3DModelRotSet(object->model[2], object->rot.x, data->unk3C, object->rot.z);
-    if (func_800E4A90_minigame(object) == 2) {
+    if (MgPlayerMotStatGet(object) == 2) {
         Hu3DMotionAttrSet(object->model[2], 2, 1);
     } else {
         Hu3DMotionAttrSet(object->model[2], 2, 2);
@@ -619,9 +619,9 @@ void func_80106A64_etch_n_catch(omObjData *object) {
             func_8010C628_etch_n_catch(object, 0.75f);
             return;
         case MG_STATE_FINISH:
-            if (func_800E6E9C_minigame() == 0) {
+            if (MgFlowStatTimeGet() == 0) {
                 Hu3DModelAttrSet(object->model[2], 4, 4);
-                func_800E5690_minigame(object, 38);
+                MgPlayerMotSet(object, 38);
             }
             data->unk3C = func_8010C4F8_etch_n_catch(data->unk3C);
             if (data->unk3C < 0.0f) {
@@ -659,7 +659,7 @@ void func_80106A64_etch_n_catch(omObjData *object) {
                 HuAudFXPanning(D_8010C838_etch_n_catch->unk_10, 95);
             }
             D_8010C838_etch_n_catch->unk_12 = 1;
-        } else if (D_8010C838_etch_n_catch->unk_12 == 1 && data->unk40 == D_800EB770_minigame) {
+        } else if (D_8010C838_etch_n_catch->unk_12 == 1 && data->unk40 == mgPlayerSpeedZero) {
             HuAudFXStop(D_8010C838_etch_n_catch->unk_10);
             D_8010C838_etch_n_catch->unk_12 = 0;
         }
@@ -760,7 +760,7 @@ void func_80106A64_etch_n_catch(omObjData *object) {
                 D_8010C858_etch_n_catch[0]->work[0] = 5;
                 for (i = 0; i < 4; i++) {
                     if (D_8010C868_etch_n_catch[i]->unk_01 == 3) {
-                        otherData = D_800EC598_minigame[i]->data;
+                        otherData = mgPlayerObjTbl[i]->data;
                         omVibrate(otherData->unk59, 2, 3, 10);
                     }
                 }
@@ -774,7 +774,7 @@ void func_80106A64_etch_n_catch(omObjData *object) {
                 D_8010C858_etch_n_catch[1]->work[0] = 5;
                 for (i = 0; i < 4; i++) {
                     if (D_8010C868_etch_n_catch[i]->unk_01 == 12) {
-                        otherData = D_800EC598_minigame[i]->data;
+                        otherData = mgPlayerObjTbl[i]->data;
                         omVibrate(otherData->unk59, 2, 3, 10);
                     }
                 }
@@ -858,7 +858,7 @@ s32 func_80107D38_etch_n_catch(f32 x, f32 z, EtchNCatchWork *work) {
 }
 
 void func_80107EA4_etch_n_catch(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *data = object->data;
+    MgPlayerWork *data = object->data;
     EtchNCatchWork *work = D_8010C868_etch_n_catch[data->unk59];
     omObjData *target;
     Vec2f dir;
@@ -976,7 +976,7 @@ void func_80107EA4_etch_n_catch(omObjData *object) {
     }
 }
 
-void func_8010880C_etch_n_catch(func_800E1BA8_minigame_ObjData *data) {
+void func_8010880C_etch_n_catch(MgPlayerWork *data) {
     f32 stickX = HuPadStkX[data->unk57];
     f32 stickY = -HuPadStkY[data->unk57];
     f32 angle;
@@ -1397,7 +1397,7 @@ void func_80109A54_etch_n_catch(omObjData *object) {
     object->data = HuMemAllocTag(sizeof(EtchNCatchPlayerData), TAG_OVERLAY);
     memset(object->data, 0, sizeof(EtchNCatchPlayerData));
     data = object->data;
-    data->base.unkE8 = HuMemAllocTag(object->mtncnt * sizeof(func_800E1BA8_minigame_UnkE8_ObjData), TAG_OVERLAY);
+    data->base.unkE8 = HuMemAllocTag(object->mtncnt * sizeof(MgMotAttr), TAG_OVERLAY);
     data->base.unk5A = object->model[0];
     data->base.unk5B = 0;
     data->unk160 = D_8010C6A0_etch_n_catch % 2;
@@ -1808,15 +1808,15 @@ void func_8010B3B4_etch_n_catch(omObjData *object) {
                 for (i = 0; i < 4; i++) {
                     if (work->unk00 == 0 && D_8010C868_etch_n_catch[i]->unk_01 == 3) {
                         if (first == NULL) {
-                            first = D_800EC598_minigame[i];
+                            first = mgPlayerObjTbl[i];
                         } else {
-                            second = D_800EC598_minigame[i];
+                            second = mgPlayerObjTbl[i];
                         }
                     } else if (work->unk00 == 1 && D_8010C868_etch_n_catch[i]->unk_01 == 12) {
                         if (first == NULL) {
-                            first = D_800EC598_minigame[i];
+                            first = mgPlayerObjTbl[i];
                         } else {
-                            second = D_800EC598_minigame[i];
+                            second = mgPlayerObjTbl[i];
                         }
                     }
                 }
@@ -1852,7 +1852,7 @@ void func_8010B3B4_etch_n_catch(omObjData *object) {
                 }
                 if (work->unk08 == 45.0f) {
                     Hu3DModelScaleSet(object->model[1], 3.6f, 3.6f, 3.6f);
-                    func_800E4C88_minigame(object, 1, object->trans.x, 0.0f, object->trans.z, 0.0f, 0.0f);
+                    MgPlayerEffSet(object, 1, object->trans.x, 0.0f, object->trans.z, 0.0f, 0.0f);
                 } else if (work->unk08 == 50.0f) {
                     if (work->unk00 == 0) {
                         fx = HuAudFXPlay(0x37B);
@@ -1887,13 +1887,13 @@ void func_8010B3B4_etch_n_catch(omObjData *object) {
                 if (work->unk00 == 0) {
                     for (i = 0; i < 4; i++) {
                         if (D_8010C868_etch_n_catch[i]->unk_01 == 3) {
-                            omVibrate(((func_800E1BA8_minigame_ObjData *)D_800EC598_minigame[i]->data)->unk59, 10, 0, 10);
+                            omVibrate(((MgPlayerWork *)mgPlayerObjTbl[i]->data)->unk59, 10, 0, 10);
                         }
                     }
                 } else {
                     for (i = 0; i < 4; i++) {
                         if (D_8010C868_etch_n_catch[i]->unk_01 == 12) {
-                            omVibrate(((func_800E1BA8_minigame_ObjData *)D_800EC598_minigame[i]->data)->unk59, 10, 0, 10);
+                            omVibrate(((MgPlayerWork *)mgPlayerObjTbl[i]->data)->unk59, 10, 0, 10);
                         }
                     }
                 }
@@ -1952,7 +1952,7 @@ void func_8010BD98_etch_n_catch(omObjData *object) {
 }
 
 void func_8010BE84_etch_n_catch(omObjData *object) {
-    D_800EC1C0_minigame_ObjData *work;
+    MgMapWork *work;
     HuSprite *sprite;
     u16 *palette;
     u8 *grid;
@@ -2015,7 +2015,7 @@ void func_8010BE84_etch_n_catch(omObjData *object) {
     memset(work, 0, 0xB4);
     work->unk03 = 1;
     work->unk08 = 0.5f;
-    func_800E1370_minigame(object, 2, 0.0f);
+    MgMapAttrSet(object, 2, 0.0f);
 }
 
 void func_8010C2F4_etch_n_catch(void) {
@@ -2033,7 +2033,7 @@ void func_8010C2F4_etch_n_catch(void) {
 }
 
 void func_8010C390_etch_n_catch(omObjData *object) {
-    D_800EC1C0_minigame_ObjData *work;
+    MgMapWork *work;
 
     object->model[0] = -1;
     object->func = NULL;
@@ -2043,12 +2043,12 @@ void func_8010C390_etch_n_catch(omObjData *object) {
     work->unk03 = 1;
     work->unk04 = 0;
     work->unk08 = 0.5f;
-    func_800E139C_minigame(object, 0.0f, -450.0f, -400.0f, -80.0f, 300.0f);
-    func_800E1468_minigame(object);
+    MgMapBoxSet(object, 0.0f, -450.0f, -400.0f, -80.0f, 300.0f);
+    MgMapNoBumpOn(object);
 }
 
 void func_8010C444_etch_n_catch(omObjData *object) {
-    D_800EC1C0_minigame_ObjData *work;
+    MgMapWork *work;
 
     object->model[0] = -1;
     object->func = NULL;
@@ -2058,8 +2058,8 @@ void func_8010C444_etch_n_catch(omObjData *object) {
     work->unk03 = 1;
     work->unk04 = 1;
     work->unk08 = 0.5f;
-    func_800E139C_minigame(object, 0.0f, 80.0f, -400.0f, 450.0f, 300.0f);
-    func_800E1468_minigame(object);
+    MgMapBoxSet(object, 0.0f, 80.0f, -400.0f, 450.0f, 300.0f);
+    MgMapNoBumpOn(object);
 }
 
 f32 func_8010C4F8_etch_n_catch(f32 arg0) {

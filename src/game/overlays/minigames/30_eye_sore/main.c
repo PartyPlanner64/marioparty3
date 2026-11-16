@@ -87,7 +87,7 @@ typedef struct {
     /* 0x02 */ s16 unk_02[7];
 } EyeSoreBssAF20; // sizeof 0x10
 
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 
 f32 func_801059BC_eye_sore(f32 arg0, f32 arg1);
 void func_80106054_eye_sore(omObjData *obj);
@@ -946,10 +946,10 @@ void func_80108330_eye_sore(omObjData *obj) {
     EyeSoreUnkCA60 *state = &D_8010CA60_eye_sore[player];
     EyeSoreEntry *entry = &D_8010AF70_eye_sore[player + 5];
     u16 chr = GwPlayer[player].chr;
-    s32 dir = D_800A178C_main[chr][0];
+    s32 dir = omCharModelNoTbl[chr][0];
     u16 i;
 
-    obj->model[0] = Hu3DModelRead(dir | D_800A178C_main[chr][2], 0x2A9);
+    obj->model[0] = Hu3DModelRead(dir | omCharModelNoTbl[chr][2], 0x2A9);
     omObjMotionRead(obj, 0, CharMotionDataNumGet(chr, 0));
     omObjMotionRead(obj, 1, CharMotionDataNumGet(chr, 1));
     omObjMotionRead(obj, 2, CharMotionDataNumGet(chr, 2));
@@ -1689,9 +1689,9 @@ void func_8010AAF8_eye_sore(void) {
     Hu3DGLightDirSet(0, -33.0f, 0.0f, 115.0f);
     Hu3DGLightDirSet(1, -33.0f, 0.0f, 115.0f);
     Hu3DGLightDirSet(2, -33.0f, 0.0f, 115.0f);
-    D_800EC1B8_minigame = 0;
-    D_800EC280_minigame = 0;
-    D_800EBE28_minigame = 0;
+    mgItemObjNum = 0;
+    mgPlayerObjNum = 0;
+    mgMapObjNum = 0;
     GMesFontMesCreate(D_8010AF0C_eye_sore, 0);
     GMesFontMesCreate(D_8010AF0C_eye_sore, 1);
     omAddObj(1000, 0, 0, -1, func_8010A8EC_eye_sore);

@@ -113,7 +113,7 @@ s32 D_8010AFD0_coconut_conk[] = { 2, 3, 7, 4, 5, 6, 8, 9 };
 // The intended delays (90, 900, 0, 30, 150) landed in gaugeValue/winners, likely
 // from an initializer written without the inner braces. It doesn't matter in
 // practice: this overlay never runs MgFlowMain, so only the
-// setup in func_800E5EA0_minigame reads this struct.
+// setup in MgFlowInit reads this struct.
 MinigameFlow D_8010AFF0_coconut_conk = {
     MG_STATE_OPENING, MINIGAME_4P, MG_TIMER_COUNT_DOWN, MG_TIME_DISP_COUNTDOWN, FALSE, MG_GAUGE_NONE, MG_RESULT_WIN_1, 0,
     { 90.0f, 900.0f, 0.0f, 30.0f },
@@ -169,8 +169,8 @@ extern omObjData *D_8010B484_coconut_conk;
 extern f32 D_8010B4A0_coconut_conk;
 extern f32 D_8010B4A4_coconut_conk;
 extern u8 omAllPauseF;
-extern s32 D_800A178C_main[][6];
-extern s32 D_800A1790_main[][6];
+extern s32 omCharModelNoTbl[][6];
+extern s32 omCharMotTbl[][6];
 
 void func_80105C58_coconut_conk(omObjData *);
 void func_80105C60_coconut_conk(omObjData *);
@@ -283,17 +283,17 @@ void func_80105C58_coconut_conk(omObjData *arg0) {
 void func_80105C60_coconut_conk(omObjData *arg0) {
     CoconutConkCameraWork *work;
 
-    D_800EC1C0_minigame[D_800EBE28_minigame++] = arg0;
+    mgMapObjTbl[mgMapObjNum++] = arg0;
     work = HuMemAllocTag(sizeof(CoconutConkCameraWork), TAG_OVERLAY);
     arg0->data = work;
     memset(work, 0, sizeof(CoconutConkCameraWork));
     work->unk03 = 1;
     work->unk04 = 0;
     work->unk06 &= ~0x200;
-    func_800E131C_minigame(arg0, 20.0f);
-    func_800E1304_minigame(arg0, 0.5f);
-    func_800E1310_minigame(arg0, D_800EB73C_minigame);
-    func_800E139C_minigame(D_800EC1C0_minigame[0], 512.0f, -1000.0f, -285.0f, 1000.0f, -165.0f);
+    MgMapSlideSet(arg0, 20.0f);
+    MgMapFrictionSet(arg0, 0.5f);
+    MgMapAccelSet(arg0, mgPlayerAccel);
+    MgMapBoxSet(mgMapObjTbl[0], 512.0f, -1000.0f, -285.0f, 1000.0f, -165.0f);
     arg0->func = func_80105C58_coconut_conk;
 }
 
@@ -522,7 +522,7 @@ void func_801069BC_coconut_conk(omObjData *arg0) {
                 arg0->trans.y = 0.0f;
                 data->unk04 = 3;
                 data->unk18 = 0.0f;
-                func_800E4C88_minigame(arg0, 1, arg0->trans.x, arg0->trans.y, arg0->trans.z, 0.0f, 0.0f);
+                MgPlayerEffSet(arg0, 1, arg0->trans.x, arg0->trans.y, arg0->trans.z, 0.0f, 0.0f);
             }
             break;
         case 3:
@@ -1124,10 +1124,10 @@ void func_8010815C_coconut_conk(omObjData *arg0) {
 void func_801089DC_coconut_conk(omObjData *obj) {
     CoconutConkData *data = &D_8010B1F0_coconut_conk[21];
     s8 chr = GwPlayer[obj->work[0]].chr;
-    s32 model = D_800A178C_main[chr][0];
+    s32 model = omCharModelNoTbl[chr][0];
     s16 i;
 
-    obj->model[0] = Hu3DModelRead(model | D_800A178C_main[chr][2], 0x2A9);
+    obj->model[0] = Hu3DModelRead(model | omCharModelNoTbl[chr][2], 0x2A9);
     for (i = 0; i < 3; i++) {
         D_8010B1D0_coconut_conk[i] = DataRead(model | D_8010AF68_coconut_conk[chr][i]);
     }
@@ -1313,7 +1313,7 @@ void func_801095C0_coconut_conk(omObjData *arg0) {
 
 void func_801095C8_coconut_conk(omObjData *arg0) {
     CoconutConkData *data = &D_8010B1F0_coconut_conk[22 + arg0->work[1]];
-    func_800E1BA8_minigame_ObjData *work = arg0->data;
+    MgPlayerWork *work = arg0->data;
     CoconutConkData *target;
     f32 minDist;
     s16 closest;
@@ -1325,7 +1325,7 @@ void func_801095C8_coconut_conk(omObjData *arg0) {
     if (HuPadStkY[arg0->work[3]] < -4) {
         HuPadStkY[arg0->work[3]] = 0;
     }
-    func_800DDD94_minigame(arg0);
+    MgPlayerObjMain(arg0);
     if (Hu3DData[arg0->model[7]].motTime == 0.0f) {
         Hu3DModelAttrSet(arg0->model[7], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
@@ -1333,7 +1333,7 @@ void func_801095C8_coconut_conk(omObjData *arg0) {
         data->unk04 = 1;
         if (D_8010B1DE_coconut_conk < 3) {
             D_8010B1DE_coconut_conk++;
-            func_800E4C88_minigame(arg0, 7, arg0->trans.x, arg0->trans.y, arg0->trans.z, 0.0f, 0.0f);
+            MgPlayerEffSet(arg0, 7, arg0->trans.x, arg0->trans.y, arg0->trans.z, 0.0f, 0.0f);
             minDist = 3000.0f;
             closest = 0;
             for (i = 0; i < 6; i++) {
@@ -1398,11 +1398,11 @@ void func_801095C8_coconut_conk(omObjData *arg0) {
 }
 
 void func_80109940_coconut_conk(omObjData *arg0) {
-    func_800E1BA8_minigame_ObjData *works[3];
+    MgPlayerWork *works[3];
     CoconutConkData *datas[3];
     omObjData *objs[3];
     CoconutConkData *data = &D_8010B1F0_coconut_conk[22 + arg0->work[1]];
-    func_800E1BA8_minigame_ObjData *work = arg0->data;
+    MgPlayerWork *work = arg0->data;
     s16 i;
 
     if (D_8010B1C8_coconut_conk != 2) {
@@ -1453,15 +1453,15 @@ void func_80109940_coconut_conk(omObjData *arg0) {
                 (works[2]->unk50 == 0 || works[2]->unk50 == 0x80) && works[2]->unk5C == works[1]->unk5C) {
                 D_8010CBBA_coconut_conk = 3;
             }
-            func_800DDD94_minigame(arg0);
+            MgPlayerObjMain(arg0);
             break;
         case 4:
             if (data->unk0E == 0) {
                 if (D_8010B1CC_coconut_conk == 0) {
-                    func_800E5690_minigame(arg0, 14);
+                    MgPlayerMotSet(arg0, 14);
                     data->unk0E = 1;
                 } else {
-                    func_800E5690_minigame(arg0, 13);
+                    MgPlayerMotSet(arg0, 13);
                     data->unk0E = 1;
                     HuAudCharVoicePlay((D_8010AFD0_coconut_conk[GwPlayer[arg0->work[0]].chr] << 16) | 0x2F);
                 }
@@ -1473,7 +1473,7 @@ void func_80109940_coconut_conk(omObjData *arg0) {
             break;
     }
     if (D_8010B1C8_coconut_conk != 2 && D_8010B1C8_coconut_conk != 3) {
-        func_800DDD94_minigame(arg0);
+        MgPlayerObjMain(arg0);
     }
     if (arg0->trans.x < -450.0f) {
         arg0->trans.x = -450.0f;
@@ -1498,7 +1498,7 @@ void func_80109DEC_coconut_conk(omObjData *arg0) {
     u16 character = GwPlayer[arg0->work[0]].chr;
     s32 modelFile;
     s32 motionFile;
-    func_800E1BA8_minigame_ObjData *work;
+    MgPlayerWork *work;
     u8 slot;
 
     if (GwPlayer[arg0->work[0]].stat & 1) {
@@ -1526,10 +1526,10 @@ void func_80109DEC_coconut_conk(omObjData *arg0) {
                 break;
         }
     }
-    modelFile = D_800A178C_main[character][0];
-    motionFile = D_800A1790_main[character][0];
-    func_800E18D8_minigame();
-    func_800E1BA8_minigame(arg0, modelFile, motionFile, ((u16 *)arg0->work)[1], 0x2B9, 0x2A9);
+    modelFile = omCharModelNoTbl[character][0];
+    motionFile = omCharMotTbl[character][0];
+    MgPlayerParamReset();
+    MgPlayerCreate(arg0, modelFile, motionFile, ((u16 *)arg0->work)[1], 0x2B9, 0x2A9);
     work = arg0->data;
     work->unkEC = 0;
     Hu3DModelObjAttrSet(arg0->model[1], 0x80000000, 0);
@@ -1539,17 +1539,17 @@ void func_80109DEC_coconut_conk(omObjData *arg0) {
     Hu3DModelDynamicFree(arg0->model[1]);
     arg0->model[7] = Hu3DModelRead(8, 0x2BD);
     arg0->model[6] = Hu3DModelRead(5, 0x2BD);
-    func_800E5A00_minigame(arg0, 0, CharMotionDataNumGet(character, 0), 1, 0);
-    func_800E5A00_minigame(arg0, 1, CharMotionDataNumGet(character, 1), 1, 0);
-    func_800E5A00_minigame(arg0, 2, CharMotionDataNumGet(character, 2), 1, 0);
-    func_800E5A00_minigame(arg0, 6, CharMotionDataNumGet(character, 4), 1, 0x13);
-    func_800E5A00_minigame(arg0, 8, CharMotionDataNumGet(character, 6), 1, 0x1B);
-    func_800E5A00_minigame(arg0, 0x12, CharMotionDataNumGet(character, 0xF), 2, 0);
-    func_800E5978_minigame(arg0, 0x15, CharMotionDataNumGet(character, 0x1F), 0, 0);
-    func_800E5A00_minigame(arg0, 0xD, CharMotionDataNumGet(character, 0x2F), 1, 0x78);
-    func_800E5A00_minigame(arg0, 0xE, CharMotionDataNumGet(character, 0x36), 1, 0x3E7);
-    func_800E5690_minigame(arg0, 0);
-    D_800EBE24_minigame = 1;
+    MgPlayerMotLoad(arg0, 0, CharMotionDataNumGet(character, 0), 1, 0);
+    MgPlayerMotLoad(arg0, 1, CharMotionDataNumGet(character, 1), 1, 0);
+    MgPlayerMotLoad(arg0, 2, CharMotionDataNumGet(character, 2), 1, 0);
+    MgPlayerMotLoad(arg0, 6, CharMotionDataNumGet(character, 4), 1, 0x13);
+    MgPlayerMotLoad(arg0, 8, CharMotionDataNumGet(character, 6), 1, 0x1B);
+    MgPlayerMotLoad(arg0, 0x12, CharMotionDataNumGet(character, 0xF), 2, 0);
+    MgPlayerMotRead(arg0, 0x15, CharMotionDataNumGet(character, 0x1F), 0, 0);
+    MgPlayerMotLoad(arg0, 0xD, CharMotionDataNumGet(character, 0x2F), 1, 0x78);
+    MgPlayerMotLoad(arg0, 0xE, CharMotionDataNumGet(character, 0x36), 1, 0x3E7);
+    MgPlayerMotSet(arg0, 0);
+    mgFieldStat = 1;
     slot = rand8() % 3;
     while (TRUE) {
         if (slot != D_8010B1C9_coconut_conk[0] && slot != D_8010B1C9_coconut_conk[1]) {
@@ -1583,7 +1583,7 @@ void func_80109DEC_coconut_conk(omObjData *arg0) {
     Hu3DModelCameraSet(arg0->model[1], HU3D_CAM1);
     Hu3DModelCameraSet(arg0->model[7], HU3D_CAM1);
     Hu3DModelCameraSet(arg0->model[6], HU3D_CAM1);
-    func_800E149C_minigame(arg0, 0, 2);
+    MgPlayerMapAttrSet(arg0, 0, 2);
     func_80105B04_coconut_conk(arg0->work[0]);
     arg0->func = func_80109940_coconut_conk;
 }
@@ -1618,8 +1618,8 @@ void func_8010A344_coconut_conk(void) {
             obj->work[3] = GwPlayer[player].pad;
             data->unk00 = obj;
             obj->work[1] = count++;
-            D_800EC598_minigame[D_800EC280_minigame] = obj;
-            D_800EC280_minigame++;
+            mgPlayerObjTbl[mgPlayerObjNum] = obj;
+            mgPlayerObjNum++;
         }
     }
 }
@@ -1853,15 +1853,15 @@ void func_8010AE04_coconut_conk(void) {
     Hu3DGLightDirSet(1, -84.0f, 49.0f, 69.0f);
     Hu3DGLightColorSet(2, 0xFF, 0xFF, 0xFF);
     Hu3DGLightDirSet(2, -84.0f, 49.0f, 69.0f);
-    D_800EC1B8_minigame = 0;
-    D_800EC280_minigame = 0;
-    D_800EBE28_minigame = 0;
+    mgItemObjNum = 0;
+    mgPlayerObjNum = 0;
+    mgMapObjNum = 0;
     GMesFontMesCreate(D_8010B1B8_coconut_conk, 0);
     GMesFontMesCreate(D_8010B1B8_coconut_conk, 1);
     omAddObj(0x5DC, 0, 0, -1, func_8010AB4C_coconut_conk);
     omAddObj(0x5DC, 0, 0, -1, func_8010A610_coconut_conk);
     func_80105A3C_coconut_conk();
-    func_800E5EA0_minigame(&D_8010AFF0_coconut_conk);
+    MgFlowInit(&D_8010AFF0_coconut_conk);
 }
 
 // Keep this table after the functions to preserve the original rodata order.

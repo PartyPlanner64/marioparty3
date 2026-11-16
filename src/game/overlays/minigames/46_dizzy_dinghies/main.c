@@ -12,7 +12,7 @@
 #include "math.h"
 #include "game/overlays/minigame.h"
 
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 extern f32 CFanOfs;
 extern u8 storySceneNo;
 extern u8 Hu3DBufNo;
@@ -228,11 +228,11 @@ void func_801059A0_dizzy_dinghies(void) {
     u8 camIndex;
 
     MapCollInit(50);
-    Hu3DQuadPoolInit(&D_800EBEB0_minigame, 0x40);
+    Hu3DQuadPoolInit(&mgQuadPool, 0x40);
     Hu3DSprModelInit(32);
     omInitObjMan(50, 0);
     omGameSysInit();
-    func_800E1804_minigame();
+    MgFieldStatClear();
     CamSetupInit(1);
     camIndex = CamSetupMapCullAdd();
     ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
@@ -246,33 +246,33 @@ void func_801059A0_dizzy_dinghies(void) {
     Hu3DGLightDirSet(2, -84.0f, 83.0f, 12.0f);
     Hu3DGLightColorSet(1, 64, 64, 64);
     Hu3DGLightColorSet(2, 230, 230, 230);
-    D_800EC1B8_minigame = 0;
-    D_800EC280_minigame = 0;
-    D_800EBE28_minigame = 0;
-    func_800E18D8_minigame();
-    D_800EB77C_minigame = 0.0f;
-    func_800E1490_minigame(D_800EBE28_minigame);
-    D_800EC1C0_minigame[D_800EBE28_minigame++] = omAddObj(1, 40, 0, -1, func_80107098_dizzy_dinghies);
-    D_800EC598_minigame[D_800EC280_minigame++] = omAddObj(3, 13, 0, -1, func_80107DE8_dizzy_dinghies);
+    mgItemObjNum = 0;
+    mgPlayerObjNum = 0;
+    mgMapObjNum = 0;
+    MgPlayerParamReset();
+    mgPlayerFallInit = 0.0f;
+    MgMapBaseSet(mgMapObjNum);
+    mgMapObjTbl[mgMapObjNum++] = omAddObj(1, 40, 0, -1, func_80107098_dizzy_dinghies);
+    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 13, 0, -1, func_80107DE8_dizzy_dinghies);
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     omSetStatBit(omAddObj(4, 0, 0, -1, func_80105CAC_dizzy_dinghies), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     omSetStatBit(omAddObj(100, 0, 0, -1, func_80109420_dizzy_dinghies), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    D_800EB73C_minigame = 10.0f;
+    mgPlayerAccel = 10.0f;
     WipeCreateIn(WIPE_TYPE_PREV, 16);
-    func_800E5EA0_minigame(&D_80109D3C_dizzy_dinghies);
-    D_800EB930_minigame = 50;
-    D_800EB932_minigame = 72;
+    MgFlowInit(&D_80109D3C_dizzy_dinghies);
+    mgFlowSeqNo = 50;
+    mgFlowSeqTime = 72;
     D_801097EC_dizzy_dinghies = storySceneNo;
 }
 
 void func_80105CAC_dizzy_dinghies(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *work = D_800EC598_minigame[0]->data;
+    MgPlayerWork *work = mgPlayerObjTbl[0]->data;
     f32 angle = work->unk3C;
     f32 dist = D_801097B0_dizzy_dinghies * 100.0f + D_801097E0_dizzy_dinghies + work->unk40 * 2.0f;
 
-    Center.x = D_800EC598_minigame[0]->trans.x + sindf(angle) * dist;
+    Center.x = mgPlayerObjTbl[0]->trans.x + sindf(angle) * dist;
     Center.y = 0.0f;
-    Center.z = D_800EC598_minigame[0]->trans.z + cosdf(angle) * dist;
+    Center.z = mgPlayerObjTbl[0]->trans.z + cosdf(angle) * dist;
 }
 
 void func_80105D64_dizzy_dinghies(omObjData *object) {
@@ -305,8 +305,8 @@ void func_80105EB4_dizzy_dinghies(omObjData *object) {
     f32 height;
     s32 i;
 
-    boatX = D_800EC598_minigame[0]->trans.x;
-    boatZ = D_800EC598_minigame[0]->trans.z;
+    boatX = mgPlayerObjTbl[0]->trans.x;
+    boatZ = mgPlayerObjTbl[0]->trans.z;
     hmf = Hu3DData[object->model[1]].hmf;
     vtx = hmf->unk44[Hu3DBufNo];
     src = hmf->unk40;
@@ -373,7 +373,7 @@ void func_80106494_dizzy_dinghies(void) {
     omObjData *obj;
 
     if (D_801097D4_dizzy_dinghies == 1) {
-        obj = D_800EC598_minigame[0];
+        obj = mgPlayerObjTbl[0];
         Center.x -= (Center.x - obj->trans.x) * 0.25f;
         Center.z -= (Center.z - obj->trans.z) * 0.25f;
         Center.y -= (Center.y - obj->trans.y) * 0.25f;
@@ -402,7 +402,7 @@ void func_8010655C_dizzy_dinghies(omObjData *object) {
         D_80109D7C_dizzy_dinghies *= 0.98f;
         D_80109D74_dizzy_dinghies *= 0.8f;
     }
-    time = func_800E6E9C_minigame();
+    time = MgFlowStatTimeGet();
     if (MgFlowStatGet() == MG_STATE_OPENING) {
         if (time == 60) {
             Hu3DMotionAttrSet(object->model[2], 1, 0);
@@ -520,7 +520,7 @@ void func_80106970_dizzy_dinghies(omObjData *object) {
 }
 
 void func_80106DF4_dizzy_dinghies(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *work;
+    MgPlayerWork *work;
     s32 time;
     s32 i;
 
@@ -528,7 +528,7 @@ void func_80106DF4_dizzy_dinghies(omObjData *object) {
     if (omPauseChk() + omAllPauseF != 0) {
         return;
     }
-    time = func_800E6E9C_minigame();
+    time = MgFlowStatTimeGet();
     switch (MgFlowMain()) {
         case 0:
             if (time == 5) {
@@ -555,7 +555,7 @@ void func_80106DF4_dizzy_dinghies(omObjData *object) {
             D_801097E0_dizzy_dinghies *= 0.95f;
             D_80109D3C_dizzy_dinghies.resultType = MG_RESULT_NONE;
         case 4:
-            if (D_800EB934_minigame == 1) {
+            if (mgFlowResultF == 1) {
                 if (D_801097D4_dizzy_dinghies == 0) {
                     HuAudSeqPlay(0x6B);
                 } else if (D_80109D3C_dizzy_dinghies.newRecord == TRUE) {
@@ -571,8 +571,8 @@ void func_80106DF4_dizzy_dinghies(omObjData *object) {
             HuAudFXAllFadeOut(30);
             break;
     }
-    for (i = 0; i < D_800EC280_minigame; i++) {
-        work = D_800EC598_minigame[i]->data;
+    for (i = 0; i < mgPlayerObjNum; i++) {
+        work = mgPlayerObjTbl[i]->data;
         work->unk60 = CRot.y;
     }
     if (omSysExitReq == 1) {
@@ -585,7 +585,7 @@ void func_80106DF4_dizzy_dinghies(omObjData *object) {
 }
 
 void func_80107098_dizzy_dinghies(omObjData *object) {
-    D_800EC1C0_minigame_ObjData *work;
+    MgMapWork *work;
     s16 motion;
 
     object->model[0] = Hu3DModelRead2((D_801097EC_dizzy_dinghies + 3) | 0x670000, 0x4B9);
@@ -646,11 +646,11 @@ void func_80107098_dizzy_dinghies(omObjData *object) {
     CRot.x = 330.0f;
     CRot.y = 5.0f;
     CZoom = 4500.0f;
-    func_800E147C_minigame(object);
-    func_800E1370_minigame(object, 1, 0.0f);
-    func_800E1304_minigame(object, 0.2f);
-    func_800E1310_minigame(object, D_800EB73C_minigame);
-    func_800E131C_minigame(object, 25.0f);
+    MgMapTiltOn(object);
+    MgMapAttrSet(object, 1, 0.0f);
+    MgMapFrictionSet(object, 0.2f);
+    MgMapAccelSet(object, mgPlayerAccel);
+    MgMapSlideSet(object, 25.0f);
     work->unk04 = 0;
     Hu3DLLightCreate(object->model[1], 1);
     Hu3DLLightDirSet(object->model[1], -66.0f, -99.0f, -9.0f);
@@ -703,7 +703,7 @@ Vec D_80109E44_dizzy_dinghies[3][3] = {
 };
 
 void func_80107738_dizzy_dinghies(omObjData *object, u16 player) {
-    func_800E1BA8_minigame_ObjData *work;
+    MgPlayerWork *work;
     s32 tag;
     s32 charModel;
     s32 model;
@@ -718,8 +718,8 @@ void func_80107738_dizzy_dinghies(omObjData *object, u16 player) {
     object->data = HuMemAllocTag(0x15C, TAG_OVERLAY);
     memset(object->data, 0, 0x15C);
     work = object->data;
-    motion = D_800A178C_main[GwPlayer[player].chr][2];
-    model = D_800A178C_main[GwPlayer[player].chr][0];
+    motion = omCharModelNoTbl[GwPlayer[player].chr][2];
+    model = omCharModelNoTbl[GwPlayer[player].chr][0];
     charModel = Hu3DModelRead(model | motion, tag | 4);
     D_8010A020_dizzy_dinghies = boatType = mgModeCoinRate;
     object->model[0] = Hu3DModelRead(boatType | 0x670000, tag);
@@ -758,11 +758,11 @@ void func_80107738_dizzy_dinghies(omObjData *object, u16 player) {
     work->unk4C = 0.5f;
     work->unkCC = 1.0f;
     work->unk60 = 0.0f;
-    func_800E1328_minigame(object, 100.0f);
-    func_800E1334_minigame(object, 150.0f);
-    func_800E1340_minigame(object, 20.0f);
-    func_800E134C_minigame(object, 30.0f);
-    func_800E12EC_minigame(object, 1000.0f);
+    MgPlayerRadiusSet(object, 100.0f);
+    MgPlayerHeightSet(object, 150.0f);
+    MgPlayerPunchRadiusSet(object, 20.0f);
+    MgPlayerAttackParamSet(object, 30.0f);
+    MgPlayerVelYSet(object, 1000.0f);
     work->unk9C = work->unkA0 = work->unkA4 = 0.0f;
     work->unk59 = player;
     work->unkC3 = -1;
@@ -805,7 +805,7 @@ void func_80107738_dizzy_dinghies(omObjData *object, u16 player) {
     }
     work = object->data;
     work->unk3C = D_80109768_dizzy_dinghies;
-    func_800E149C_minigame(object, 0, 2);
+    MgPlayerMapAttrSet(object, 0, 2);
     do {
         i = rand8() & 3;
     } while (D_80109DF8_dizzy_dinghies[i] != -1);
@@ -843,7 +843,7 @@ void func_80107E04_dizzy_dinghies(omObjData *object, f32 speed) {
     s32 idx;
     s32 i;
 
-    angle = ((func_800E1BA8_minigame_ObjData *)object->data)->unk3C;
+    angle = ((MgPlayerWork *)object->data)->unk3C;
     idx = D_80109E04_dizzy_dinghies + 1;
     idx = (idx != 6) ? idx : 0;
     D_80109E04_dizzy_dinghies = idx;
@@ -934,7 +934,7 @@ void func_80108514_dizzy_dinghies(s32 player, f32 speed, Vec *out) {
 }
 
 void func_801085F4_dizzy_dinghies(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *work;
+    MgPlayerWork *work;
     HmfMotionNode *node;
     Vec vel;
     Vec drift;
@@ -951,7 +951,7 @@ void func_801085F4_dizzy_dinghies(omObjData *object) {
     f32 motTime;
 
     work = object->data;
-    D_800EBE2C_minigame = D_800EC5D8_minigame = 0.0f;
+    mgMoveOfsX = mgMoveOfsZ = 0.0f;
     player = work->unk59;
     pad = work->unk57;
     speed = work->unk40;
@@ -978,7 +978,7 @@ void func_801085F4_dizzy_dinghies(omObjData *object) {
         if (stickY < -60) {
             stickY = -60;
         }
-        func_800E2308_minigame(&stickX, &stickY);
+        MgStickClamp(&stickX, &stickY);
     } else {
         stickY = 0;
         stickX = 0;
@@ -1043,14 +1043,14 @@ void func_801085F4_dizzy_dinghies(omObjData *object) {
     D_80109788_dizzy_dinghies.x = x - D_80109794_dizzy_dinghies.x;
     D_80109788_dizzy_dinghies.y = 0.0f;
     D_80109788_dizzy_dinghies.z = z - D_80109794_dizzy_dinghies.z;
-    x += D_800EBE2C_minigame;
-    z += D_800EC5D8_minigame;
+    x += mgMoveOfsX;
+    z += mgMoveOfsZ;
     D_801097D8_dizzy_dinghies -= (object->trans.x - x) * 32.0f / 1000.0f;
     D_801097DC_dizzy_dinghies += (object->trans.z - z) * 32.0f / 1000.0f;
     func_80108EC4_dizzy_dinghies(object, x, z);
     speed = work->unk40;
     func_80088910_main(Hu3DData[object->model[0]].mtx, 0.0f, work->unk3C, 0.0f);
-    func_800E17D4_minigame(object, x, y - 40.0f, z);
+    MgObjPosSet(object, x, y - 40.0f, z);
     func_80107E04_dizzy_dinghies(object, D_801097B0_dizzy_dinghies);
     if (D_801097AC_dizzy_dinghies != 0.0f) {
         D_801097AC_dizzy_dinghies *= 0.9f;
@@ -1092,7 +1092,7 @@ void func_801085F4_dizzy_dinghies(omObjData *object) {
         node->scale.x = node->scale.y = node->scale.z = node->baseScale.x = node->baseScale.y = node->baseScale.z =
             D_801097E4_dizzy_dinghies;
     }
-    func_800EA178_minigame(0, speed);
+    MgGaugeValueSet(0, speed);
 }
 
 void func_80108E30_dizzy_dinghies(Vec *origin, Vec *p, Vec *q, Vec *out) {
@@ -1110,7 +1110,7 @@ void func_80108E30_dizzy_dinghies(Vec *origin, Vec *p, Vec *q, Vec *out) {
 }
 
 void func_80108EC4_dizzy_dinghies(omObjData *object, f32 x, f32 z) {
-    func_800E1BA8_minigame_ObjData *work;
+    MgPlayerWork *work;
     Vec a;
     Vec b;
     Vec c;
@@ -1146,13 +1146,13 @@ void func_80108EC4_dizzy_dinghies(omObjData *object, f32 x, f32 z) {
 }
 
 void func_801090BC_dizzy_dinghies(omObjData *object, f32 x, f32 z) {
-    func_800E1BA8_minigame_ObjData *work = object->data;
+    MgPlayerWork *work = object->data;
     f32 limit = work->unk48;
-    f32 mag = HuSqrtf(D_800EBE2C_minigame * D_800EBE2C_minigame + D_800EC5D8_minigame * D_800EC5D8_minigame);
+    f32 mag = HuSqrtf(mgMoveOfsX * mgMoveOfsX + mgMoveOfsZ * mgMoveOfsZ);
 
-    if (mag > limit || fabs(D_800EBE2C_minigame) > limit || fabs(D_800EC5D8_minigame) > limit) {
-        D_800EBE2C_minigame = D_80109794_dizzy_dinghies.x - x;
-        D_800EC5D8_minigame = D_80109794_dizzy_dinghies.z - z;
+    if (mag > limit || fabs(mgMoveOfsX) > limit || fabs(mgMoveOfsZ) > limit) {
+        mgMoveOfsX = D_80109794_dizzy_dinghies.x - x;
+        mgMoveOfsZ = D_80109794_dizzy_dinghies.z - z;
     }
     if (MgFlowStatGet() == MG_STATE_PLAY) {
         if (D_80109E3C_dizzy_dinghies == 0) {
@@ -1171,20 +1171,20 @@ void func_801090BC_dizzy_dinghies(omObjData *object, f32 x, f32 z) {
 }
 
 f32 func_80109238_dizzy_dinghies(omObjData *object, f32 x, f32 y, f32 z) {
-    func_800E1BA8_minigame_ObjData *work = object->data;
+    MgPlayerWork *work = object->data;
     f32 speed = work->unk40;
     Hu3DSphere sphere;
     f32 dist;
 
-    sphere.pos.x = x + sindf(work->unk3C) * speed + D_800EBE2C_minigame;
+    sphere.pos.x = x + sindf(work->unk3C) * speed + mgMoveOfsX;
     sphere.pos.y = y;
-    sphere.pos.z = z + cosdf(work->unk3C) * speed + D_800EC5D8_minigame;
+    sphere.pos.z = z + cosdf(work->unk3C) * speed + mgMoveOfsZ;
     sphere.radius = work->unk48;
     work->unk53[0] = work->unk53[1] = -1;
-    sphere.pos.x += D_800EBE2C_minigame;
-    sphere.pos.z += D_800EC5D8_minigame;
-    func_800DD530_minigame(object, &sphere, 0.0f);
-    dist = HuSqrtf(D_800EBE2C_minigame * D_800EBE2C_minigame + D_800EC5D8_minigame * D_800EC5D8_minigame);
+    sphere.pos.x += mgMoveOfsX;
+    sphere.pos.z += mgMoveOfsZ;
+    MgPlayerWallCheck(object, &sphere, 0.0f);
+    dist = HuSqrtf(mgMoveOfsX * mgMoveOfsX + mgMoveOfsZ * mgMoveOfsZ);
     if (dist != 0.0f) {
         if (dist > D_80109770_dizzy_dinghies * 0.5f) {
             work->unk40 *= D_80109784_dizzy_dinghies;
@@ -1192,9 +1192,9 @@ f32 func_80109238_dizzy_dinghies(omObjData *object, f32 x, f32 y, f32 z) {
             work->unk40 *= D_80109780_dizzy_dinghies;
         }
         if (dist > D_801097AC_dizzy_dinghies) {
-            D_801097A0_dizzy_dinghies.x = D_800EBE2C_minigame;
+            D_801097A0_dizzy_dinghies.x = mgMoveOfsX;
             D_801097A0_dizzy_dinghies.y = 0.0f;
-            D_801097A0_dizzy_dinghies.z = D_800EC5D8_minigame;
+            D_801097A0_dizzy_dinghies.z = mgMoveOfsZ;
             MapVecNormalize(&D_801097A0_dizzy_dinghies);
             D_801097AC_dizzy_dinghies = 16.0f;
         }
@@ -1230,10 +1230,10 @@ void func_80109420_dizzy_dinghies(omObjData *object) {
         espDispOn(sprite);
         espPosSet(sprite, pos[2] - 10, pos[3] + 4);
         espPriSet(sprite, 100);
-        func_800E9C20_minigame(1, 5);
-        func_800EA0FC_minigame(0, 0.0f, D_80109770_dizzy_dinghies);
-        func_800E9F40_minigame(0, 44, 27, 0);
-        func_800EA2A8_minigame(0);
+        MgGaugeInit(1, 5);
+        MgGaugeRangeSet(0, 0.0f, D_80109770_dizzy_dinghies);
+        MgGaugePosSet(0, 44, 27, 0);
+        MgGaugeDispOn(0);
     }
     object->func = NULL;
 }

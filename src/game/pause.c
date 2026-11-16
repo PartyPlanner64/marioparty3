@@ -46,7 +46,7 @@ static u8 *charVoiceDelayTbl[] = {
 };
 static u8 charVoiceDirTbl[] = { 2, 3, 7, 4, 5, 6, 8, 9 };
 static s16 pauseWinId[3];
-static u8 D_800B2346_main[10]; // unreferenced
+static u8 pauseWinIdPad[10]; // unreferenced
 static D_800B2350_main_Struct charVoiceReq[8];
 static omObjData *charVoiceObj;
 extern u16 omPauseWinInitF;

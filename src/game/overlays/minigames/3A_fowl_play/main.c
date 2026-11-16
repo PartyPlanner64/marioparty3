@@ -5,7 +5,7 @@
 #include "gcc/memory.h"
 #include "game/texload.h"
 
-#define PLAYER_WORK(obj) ((FowlPlayerWork *)((func_800E1BA8_minigame_ObjData *)(obj)->data)->unk158)
+#define PLAYER_WORK(obj) ((FowlPlayerWork *)((MgPlayerWork *)(obj)->data)->unk158)
 
 #define FOWL_CC_PRIM_DECALA 0, 0, 0, PRIMITIVE, 0, 0, 0, TEXEL0
 #define FOWL_CC_PRIM_MODULATEA 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0
@@ -121,7 +121,7 @@ typedef struct Fowl {
 } Fowl; // sizeof 0x68
 
 extern HuSprAnimData *HuSprAnimTbl[];
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 
 u8 D_8010E7A0_fowl_play = 1; /* Unreferenced. */
 s32 D_8010E7A4_fowl_play = 0;
@@ -222,7 +222,7 @@ void func_801079B0_fowl_play(void);
 void func_80107A4C_fowl_play(omObjData *object);
 void func_80108298_fowl_play(omObjData *object);
 u16 func_80108B08_fowl_play(omObjData *object);
-void func_80109410_fowl_play(omObjData *object, func_800E1BA8_minigame_ObjData **data, FowlPlayerWork **work);
+void func_80109410_fowl_play(omObjData *object, MgPlayerWork **data, FowlPlayerWork **work);
 void func_80109424_fowl_play(void);
 void func_801094A4_fowl_play(omObjData *object);
 void func_80109844_fowl_play(omObjData *object);
@@ -260,7 +260,7 @@ void func_801059A0_fowl_play(void) {
     omObjData *obj;
 
     MapCollInit(1);
-    Hu3DQuadPoolInit(&D_800EBEB0_minigame, 0x40);
+    Hu3DQuadPoolInit(&mgQuadPool, 0x40);
     omInitObjMan(0x14, 0);
     omGameSysInit();
     Hu3DGLightColorSet(0, 0xFF, 0xFF, 0xFF);
@@ -277,13 +277,13 @@ void func_801059A0_fowl_play(void) {
     ScissorSet(1, 160.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(1, 640.0f, 480.0f, 511.0f, 960.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(1, 45.0f, 80.0f, 8000.0f);
-    func_800E1804_minigame();
+    MgFieldStatClear();
     func_80105BEC_fowl_play(obj);
     func_8010B41C_fowl_play(0x80);
     func_801068F0_fowl_play();
     memset(&D_8010F208_fowl_play, 0, sizeof(D_8010F208_fowl_play));
     D_8010F208_fowl_play.type = MINIGAME_BATTLE;
-    func_800E5EA0_minigame(&D_8010F208_fowl_play);
+    MgFlowInit(&D_8010F208_fowl_play);
     func_801079B0_fowl_play();
     D_8010F2A0_fowl_play = 0;
     func_80109424_fowl_play();
@@ -335,7 +335,7 @@ void func_80105BEC_fowl_play(omObjData *object) {
 
 void func_80105E4C_fowl_play(omObjData *object) {
     FowlCameraWork *work;
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     FowlPlayerWork *playerWork;
     HuMtx4F unusedMtx; // Unreferenced, but present in the stack frame.
     Vec unusedVec;     // Unreferenced, but present in the stack frame.
@@ -499,9 +499,9 @@ void func_80106824_fowl_play(f32 x, f32 y, f32 z, f32 *dst) {
 }
 
 void func_801068F0_fowl_play(void) {
-    D_800EBE28_minigame = 0;
-    func_800E1490_minigame(0);
-    D_800EC1C0_minigame[D_800EBE28_minigame++] = omAddObj(5, 1, 0, -1, func_80106960_fowl_play);
+    mgMapObjNum = 0;
+    MgMapBaseSet(0);
+    mgMapObjTbl[mgMapObjNum++] = omAddObj(5, 1, 0, -1, func_80106960_fowl_play);
     D_8010F29C_fowl_play = 0;
 }
 
@@ -514,10 +514,10 @@ void func_80106960_fowl_play(omObjData *object) {
     memset(work, 0, sizeof(FowlSetupWork));
     work->unk03 = 1;
     work->unk04 = 0;
-    func_800E131C_minigame(object, 20.0f);
-    func_800E1304_minigame(object, 0.5f);
-    func_800E1310_minigame(object, 10.0f);
-    func_800E1404_minigame(object, 0.0f, 1200.0f);
+    MgMapSlideSet(object, 20.0f);
+    MgMapFrictionSet(object, 0.5f);
+    MgMapAccelSet(object, 10.0f);
+    MgMapCircleSet(object, 0.0f, 1200.0f);
     D_8010F230_fowl_play[0] = func_8010B2C4_fowl_play(0x5B0000);
     D_8010F240_fowl_play[0] = func_8010B30C_fowl_play(D_8010F230_fowl_play[0], 2);
     HuSprPosSet(D_8010F240_fowl_play[0], 0, 0, 0);
@@ -564,7 +564,7 @@ void func_80106BD0_fowl_play(omObjData *object) {
             break;
         case 2:
             for (i = 0; i < 2; i++) {
-                if (PLAYER_WORK(D_800EC598_minigame[i])->unk24) {
+                if (PLAYER_WORK(mgPlayerObjTbl[i])->unk24) {
                     D_8010E7AC_fowl_play = i;
                     D_8010F29C_fowl_play = 3;
                 }
@@ -594,12 +594,12 @@ void func_80106BD0_fowl_play(omObjData *object) {
                 break;
             }
             for (i = 0; i < 2; i++) {
-                if (PLAYER_WORK(D_800EC598_minigame[i])->unk24) {
+                if (PLAYER_WORK(mgPlayerObjTbl[i])->unk24) {
                     D_8010E7AC_fowl_play = i;
                 }
             }
             if (D_8010E7AC_fowl_play != -1) {
-                GMesCreate(0x16, PLAYER_WORK(D_800EC598_minigame[D_8010E7AC_fowl_play])->character);
+                GMesCreate(0x16, PLAYER_WORK(mgPlayerObjTbl[D_8010E7AC_fowl_play])->character);
                 HuAudSeqPlay(0x67);
             } else {
                 GMesCreate(0x20);
@@ -812,11 +812,11 @@ f32 func_801075B0_fowl_play(Vec *pos, f32 dist, f32 dir) {
 void func_801079B0_fowl_play(void) {
     s32 i;
 
-    func_800E18D8_minigame();
-    func_800E19F0_minigame(1);
-    D_800EC280_minigame = 0;
+    MgPlayerParamReset();
+    MgShadowAltSet(1);
+    mgPlayerObjNum = 0;
     for (i = 0; i < 2; i++) {
-        D_800EC598_minigame[D_800EC280_minigame++] = omAddObj(2, 15, 50, -1, func_80107A4C_fowl_play);
+        mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(2, 15, 50, -1, func_80107A4C_fowl_play);
     }
 }
 
@@ -830,7 +830,7 @@ void func_80107A4C_fowl_play(omObjData *object) {
         { 0xA6, 0xA6, 0xA6, 0xA6, 0xA6, 0xA6, 0xA6, 0x1D },
         { 0xA4, 0xA4, 0xA4, 0xA4, 0xA4, 0xA4, 0xA4, 0x1B },
     };
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     FowlPlayerWork *work;
     s32 i;
     u8 player;
@@ -845,9 +845,9 @@ void func_80107A4C_fowl_play(omObjData *object) {
     }
     player = i;
     character = GwPlayer[player].chr;
-    model = D_800A178C_main[character][0];
-    motion = D_800A178C_main[character][1];
-    func_800E1BA8_minigame(object, model, motion, player, 0x2D9, 0x2D9);
+    model = omCharModelNoTbl[character][0];
+    motion = omCharModelNoTbl[character][1];
+    MgPlayerCreate(object, model, motion, player, 0x2D9, 0x2D9);
     data = object->data;
     data->unk50 &= ~1;
     data->unkEC = 0;
@@ -889,51 +889,51 @@ void func_80107A4C_fowl_play(omObjData *object) {
     work->pos.z = object->trans.z;
     work->unk26 = 0;
     ((FowlCameraWork *)D_8010F294_fowl_play[D_8010E87C_fowl_play]->data)->player = object;
-    func_800E149C_minigame(object, 0, 2);
+    MgPlayerMapAttrSet(object, 0, 2);
     data->unk50 |= 0x8200;
     object->func = func_80108298_fowl_play;
     Hu3DModelCameraSet(object->model[0], 3);
     Hu3DModelCameraSet(object->model[1], 3);
-    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(character, 0), 1, 0);
-    func_800E5A00_minigame(object, 1, CharMotionDataNumGet(character, 1), 1, 0);
-    func_800E5A00_minigame(object, 2, CharMotionDataNumGet(character, 2), 1, 0);
-    func_800E5A00_minigame(object, 0x11, CharMotionDataNumGet(character, 0xE), 0, 0);
-    func_800E5A00_minigame(object, 0x20, CharMotionDataNumGet(character, 0x22), 0, 0);
-    func_800E5A00_minigame(object, 6, CharMotionDataNumGet(character, 4), 1, 0x13);
-    func_800E5A00_minigame(object, 0x15, CharMotionDataNumGet(character, 0x1F), 0, 0x13);
-    func_800E5A00_minigame(object, 5, CharMotionDataNumGet(character, 0x99), 0, 0);
-    func_800E5A00_minigame(object, 0x27, CharMotionDataNumGet(character, 0x96), 1, 0);
-    func_800E5A00_minigame(object, 0xD, CharMotionDataNumGet(character, 0x9A), 1, 0x3C);
+    MgPlayerMotLoad(object, 0, CharMotionDataNumGet(character, 0), 1, 0);
+    MgPlayerMotLoad(object, 1, CharMotionDataNumGet(character, 1), 1, 0);
+    MgPlayerMotLoad(object, 2, CharMotionDataNumGet(character, 2), 1, 0);
+    MgPlayerMotLoad(object, 0x11, CharMotionDataNumGet(character, 0xE), 0, 0);
+    MgPlayerMotLoad(object, 0x20, CharMotionDataNumGet(character, 0x22), 0, 0);
+    MgPlayerMotLoad(object, 6, CharMotionDataNumGet(character, 4), 1, 0x13);
+    MgPlayerMotLoad(object, 0x15, CharMotionDataNumGet(character, 0x1F), 0, 0x13);
+    MgPlayerMotLoad(object, 5, CharMotionDataNumGet(character, 0x99), 0, 0);
+    MgPlayerMotLoad(object, 0x27, CharMotionDataNumGet(character, 0x96), 1, 0);
+    MgPlayerMotLoad(object, 0xD, CharMotionDataNumGet(character, 0x9A), 1, 0x3C);
     switch (model >> 16) {
         case 3:
         case 4:
         case 5:
-            func_800E5A00_minigame(object, 0xE, CharMotionDataNumGet(character, 0x39), 1, 0x3C);
+            MgPlayerMotLoad(object, 0xE, CharMotionDataNumGet(character, 0x39), 1, 0x3C);
             break;
         case 2:
         case 6:
         case 7:
         case 8:
         case 9:
-            func_800E5A00_minigame(object, 0xE, CharMotionDataNumGet(character, 0x3A), 1, 0x3C);
+            MgPlayerMotLoad(object, 0xE, CharMotionDataNumGet(character, 0x3A), 1, 0x3C);
             break;
     }
-    func_800E5690_minigame(object, 0);
+    MgPlayerMotSet(object, 0);
     D_8010E87C_fowl_play++;
 }
 
 void func_80108020_fowl_play(omObjData *object, s32 arg1, s32 arg2, u16 player, u16 tag) {
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     s32 i;
     u32 character;
     f32 zero;
-    func_800E1BA8_minigame_UnkE8_ObjData *entry;
+    MgMotAttr *entry;
 
     for (i = 0; i < object->mdlcnt; i++) {
         object->model[i] = 0;
     }
-    object->data = HuMemAllocTag(sizeof(func_800E1BA8_minigame_ObjData), TAG_OVERLAY);
-    memset(object->data, 0, sizeof(func_800E1BA8_minigame_ObjData));
+    object->data = HuMemAllocTag(sizeof(MgPlayerWork), TAG_OVERLAY);
+    memset(object->data, 0, sizeof(MgPlayerWork));
     data = object->data;
     data->unkE8 = HuMemAllocTag(object->mtncnt * 3 * sizeof(s32), TAG_OVERLAY);
     memset(data->unkE8, 0, object->mtncnt * 3 * sizeof(s32));
@@ -961,10 +961,10 @@ void func_80108020_fowl_play(omObjData *object, s32 arg1, s32 arg2, u16 player, 
     data->unk59 = player;
 
     data->unk3C = atan2df(-object->trans.x, -object->trans.z);
-    func_800E1328_minigame(object, 60.0f);
-    func_800E1334_minigame(object, 150.0f);
-    func_800E1340_minigame(object, 20.0f);
-    func_800E12EC_minigame(object, 1000.0f);
+    MgPlayerRadiusSet(object, 60.0f);
+    MgPlayerHeightSet(object, 150.0f);
+    MgPlayerPunchRadiusSet(object, 20.0f);
+    MgPlayerVelYSet(object, 1000.0f);
 
     character = (u32)arg1 >> 16;
     switch (character) {
@@ -984,8 +984,8 @@ void func_80108020_fowl_play(omObjData *object, s32 arg1, s32 arg2, u16 player, 
 void func_80108298_fowl_play(omObjData *object) {
     FowlCharMotions motions = D_8010ED88_fowl_play; // Copied but never read.
     Vec pos;
-    func_800E1BA8_minigame_ObjData *data;
-    func_800E1BA8_minigame_ObjData *otherData;
+    MgPlayerWork *data;
+    MgPlayerWork *otherData;
     FowlPlayerWork *work;
     FowlPlayerWork *otherWork;
     omObjData *other;
@@ -1041,11 +1041,11 @@ void func_80108298_fowl_play(omObjData *object) {
             work->unk3C = 0;
             if (work->unk24 == 1) {
                 GwPlayer[data->unk59].bonusCoin += 10;
-                func_800E5690_minigame(object, 0xD);
+                MgPlayerMotSet(object, 0xD);
                 HuAudCharVoicePlayPlayer(work->unk1C, -1, work->index);
                 work->unk24++;
             } else if (work->unk24 == 0) {
-                func_800E5690_minigame(object, 0xE);
+                MgPlayerMotSet(object, 0xE);
                 work->unk24--;
             }
             break;
@@ -1060,7 +1060,7 @@ void func_80108298_fowl_play(omObjData *object) {
             return;
     }
     buttons = HuPadBtnDown[pad]; // Overwritten immediately, but needed to match.
-    buttons = func_800E4A90_minigame(object);
+    buttons = MgPlayerMotStatGet(object);
     work->prevPos.x = object->trans.x;
     work->prevPos.y = object->trans.y;
     work->prevPos.z = object->trans.z;
@@ -1069,7 +1069,7 @@ void func_80108298_fowl_play(omObjData *object) {
     } else {
         Hu3DData[object->model[0]].motIdShape = 0xFF;
     }
-    func_800DDD94_minigame(object);
+    MgPlayerObjMain(object);
     if (buttons & 0x40) {
         if (Hu3DData[object->model[0]].motTime >= 16.0 && Hu3DData[object->model[0]].motTime <= 20.0) {
             canCatch = 1;
@@ -1084,7 +1084,7 @@ void func_80108298_fowl_play(omObjData *object) {
         Hu3DMotionShapeSet(object->model[0], object->motion[0x27], 0);
     }
     for (i = 0; i < 2; i++) {
-        other = D_800EC598_minigame[i];
+        other = mgPlayerObjTbl[i];
         if (object == other) {
             continue;
         }
@@ -1142,7 +1142,7 @@ void func_80108A70_fowl_play(omObjData *object, f32 x, f32 y, f32 z) {
 
     for (i = 9; i < 12; i++) {
         if (Hu3DData[object->model[i]].attr & 4) {
-            func_800E4C88_minigame(object, i, x, y, z, 0.0f, 0.0f);
+            MgPlayerEffSet(object, i, x, y, z, 0.0f, 0.0f);
             return;
         }
     }
@@ -1151,7 +1151,7 @@ void func_80108A70_fowl_play(omObjData *object, f32 x, f32 y, f32 z) {
 u16 func_80108B08_fowl_play(omObjData *object) {
     Vec corners[4] = { { 1000.0f, 0.0f, 0.0f }, { -1000.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 1000.0f }, { 0.0f, 0.0f, -1000.0f } };
     Vec target;
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     FowlPlayerWork *work;
     omObjData *fox;
     FowlFoxWork *foxWork;
@@ -1165,9 +1165,9 @@ u16 func_80108B08_fowl_play(omObjData *object) {
 
     func_80109410_fowl_play(object, &data, &work);
     pad = data->unk57;
-    func_800E4A90_minigame(object);
+    MgPlayerMotStatGet(object);
     fox = D_8010F290_fowl_play[0];
-    foxWork = ((func_800E1BA8_minigame_ObjData *)fox->data)->unk158;
+    foxWork = ((MgPlayerWork *)fox->data)->unk158;
     if (D_8010F29E_fowl_play > 1500) {
         target.x = fox->trans.x + sindf(foxWork->unk14) * 60.0;
         target.z = fox->trans.z + cosdf(foxWork->unk14) * 60.0;
@@ -1261,7 +1261,7 @@ u16 func_80108B08_fowl_play(omObjData *object) {
     return buttons;
 }
 
-void func_80109410_fowl_play(omObjData *object, func_800E1BA8_minigame_ObjData **data, FowlPlayerWork **work) {
+void func_80109410_fowl_play(omObjData *object, MgPlayerWork **data, FowlPlayerWork **work) {
     *data = object->data;
     *work = (*data)->unk158;
 }
@@ -1276,16 +1276,16 @@ void func_80109424_fowl_play(void) {
 }
 
 void func_801094A4_fowl_play(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     FowlFoxWork *work;
     s32 index;
     s32 i;
 
-    data = HuMemAllocTag(sizeof(func_800E1BA8_minigame_ObjData), TAG_OVERLAY);
+    data = HuMemAllocTag(sizeof(MgPlayerWork), TAG_OVERLAY);
     object->data = data;
-    memset(data, 0, sizeof(func_800E1BA8_minigame_ObjData));
-    data->unkE8 = HuMemAllocTag(object->mtncnt * sizeof(func_800E1BA8_minigame_UnkE8_ObjData), TAG_OVERLAY);
-    memset(data->unkE8, 0, object->mtncnt * sizeof(func_800E1BA8_minigame_UnkE8_ObjData));
+    memset(data, 0, sizeof(MgPlayerWork));
+    data->unkE8 = HuMemAllocTag(object->mtncnt * sizeof(MgMotAttr), TAG_OVERLAY);
+    memset(data->unkE8, 0, object->mtncnt * sizeof(MgMotAttr));
     data->unk52 = 0;
     data->unkD0 = 0xFFFF;
     work = HuMemAllocTag(sizeof(FowlFoxWork), TAG_OVERLAY);
@@ -1310,10 +1310,10 @@ void func_801094A4_fowl_play(omObjData *object) {
         func_8010CE44_fowl_play(index, 0.5f);
     }
     Hu3DModelScaleSet(object->model[1], 0.75f, 0.75f, 0.75f);
-    func_800E5A00_minigame(object, 0, 0x5B0007, 1, 0);
-    func_800E5A00_minigame(object, 1, 0x5B0008, 1, 0);
-    func_800E5A00_minigame(object, 2, 0x5B0009, 1, 0);
-    func_800E5690_minigame(object, 0);
+    MgPlayerMotLoad(object, 0, 0x5B0007, 1, 0);
+    MgPlayerMotLoad(object, 1, 0x5B0008, 1, 0);
+    MgPlayerMotLoad(object, 2, 0x5B0009, 1, 0);
+    MgPlayerMotSet(object, 0);
     object->func = func_80109844_fowl_play;
     object->trans.x = (f32)(func_8010A9A0_fowl_play() - 0x8000) * 3.0517578125e-05 * 40.0;
     object->trans.z = (f32)(func_8010A9A0_fowl_play() - 0x8000) * 3.0517578125e-05 * 40.0;
@@ -1334,7 +1334,7 @@ void func_80109844_fowl_play(omObjData *object) {
     f32 dists[2];
     f32 angles[2];
     HuMtx4F unusedMtx; // Unreferenced, but present in the stack frame.
-    func_800E1BA8_minigame_ObjData *data = object->data;
+    MgPlayerWork *data = object->data;
     FowlFoxWork *work = data->unk158;
     omObjData *player;
     f32 dist;
@@ -1383,7 +1383,7 @@ void func_80109844_fowl_play(omObjData *object) {
         case 1:
         case 2:
             for (i = 0; i < 2; i++) {
-                player = D_800EC598_minigame[i];
+                player = mgPlayerObjTbl[i];
                 dists[i] = func_8010AA64_fowl_play(&object->trans, &player->trans);
                 angles[i] =
                     func_8010A9EC_fowl_play(player->trans.x - object->trans.x, player->trans.z - object->trans.z);
@@ -1466,7 +1466,7 @@ void func_80109844_fowl_play(omObjData *object) {
             }
             work->unk03--;
             if (work->unk00 == 1) {
-                func_800E5690_minigame(object, 2);
+                MgPlayerMotSet(object, 2);
                 work->unk08 = 20.0f;
                 work->unk04 -= 2;
                 work->unk06--;
@@ -1476,7 +1476,7 @@ void func_80109844_fowl_play(omObjData *object) {
                     work->unk00++;
                 }
             } else {
-                func_800E5690_minigame(object, 1);
+                MgPlayerMotSet(object, 1);
                 work->unk08 = 6.0f;
                 work->unk04--;
                 if (work->unk03 == 0) {
@@ -1512,7 +1512,7 @@ void func_80109844_fowl_play(omObjData *object) {
             break;
         case 3:
             if (--work->unk03 == 0) {
-                func_800E5690_minigame(object, 0);
+                MgPlayerMotSet(object, 0);
                 Hu3DModelHookSet(object->model[0], work->target->model[0], "item_hook");
                 Hu3DModelAttrSet(object->model[0], 0x4000, 0x4000);
             }
@@ -1593,12 +1593,12 @@ void func_80109844_fowl_play(omObjData *object) {
     work->unk18.z = object->trans.z;
     object->rot.y = work->unk10;
     Hu3DModelPosSet(object->model[1], object->trans.x, 1.0f, object->trans.z);
-    func_800E4E30_minigame(object);
+    MgPlayerMotUpdate(object);
 }
 
 u8 func_8010A738_fowl_play(omObjData *object, u8 canCatch) {
     Vec unused; // Unreferenced, but present in the stack frame.
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     FowlFoxWork *work;
     omObjData *fox;
     f32 range;
@@ -1609,7 +1609,7 @@ u8 func_8010A738_fowl_play(omObjData *object, u8 canCatch) {
         return 0;
     }
     fox = D_8010F290_fowl_play[0];
-    work = ((func_800E1BA8_minigame_ObjData *)fox->data)->unk158;
+    work = ((MgPlayerWork *)fox->data)->unk158;
     data = object->data;
     range = work->unk0C + data->unk48;
     dist = func_8010AA64_fowl_play(&object->trans, &fox->trans);

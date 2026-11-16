@@ -182,12 +182,12 @@ void func_801096E8_bobbing_bow_loons(void);
 void func_801059A0_bobbing_bow_loons(void) {
     omInitObjMan(30, 10);
     MapCollInit(16);
-    Hu3DQuadPoolInit(&D_800EBEB0_minigame, 64);
+    Hu3DQuadPoolInit(&mgQuadPool, 64);
     Hu3DSprModelInit(64);
     func_80105AE8_bobbing_bow_loons();
     omGameSysInit();
     Hu3DBGColorSet(0, 0, 0);
-    func_800E5EA0_minigame(&D_80109720_bobbing_bow_loons);
+    MgFlowInit(&D_80109720_bobbing_bow_loons);
     WipeCreateIn(0xFF, 16);
     func_80105B64_bobbing_bow_loons();
     func_80105D04_bobbing_bow_loons();
@@ -196,7 +196,7 @@ void func_801059A0_bobbing_bow_loons(void) {
     func_801074CC_bobbing_bow_loons();
     func_801093DC_bobbing_bow_loons();
     D_80109B06_bobbing_bow_loons = 0;
-    D_800EBE24_minigame = 0;
+    mgFieldStat = 0;
     D_80109B04_bobbing_bow_loons = 0;
     D_80109B10_bobbing_bow_loons = -1;
     omAddObj(0x50, 0, 0, -1, func_80106A34_bobbing_bow_loons);
@@ -467,14 +467,14 @@ void func_80106A34_bobbing_bow_loons(omObjData *obj) {
     }
     switch (MgFlowMain(obj)) {
         case 0:
-            if (func_800E6E9C_minigame() == 1) {
+            if (MgFlowStatTimeGet() == 1) {
                 HuAudSeqPlay(0x44);
             }
             if (Hu3DData[D_80109B1C_bobbing_bow_loons->model[0]].motTime ==
                 cueFrames[GwPlayer[D_80109B0C_bobbing_bow_loons].chr]) {
                 HuAudFXPlay(0x4DA);
             }
-            if (func_800E6E9C_minigame() == 15) {
+            if (MgFlowStatTimeGet() == 15) {
                 func_80107C48_bobbing_bow_loons();
                 HuAudFXPlay(0x4E0);
             }
@@ -482,7 +482,7 @@ void func_80106A34_bobbing_bow_loons(omObjData *obj) {
         case 1:
             break;
         case 2:
-            if (func_800E6E9C_minigame() == 0) {
+            if (MgFlowStatTimeGet() == 0) {
                 func_80107F68_bobbing_bow_loons();
                 func_80108894_bobbing_bow_loons();
             }

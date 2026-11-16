@@ -25,17 +25,17 @@ typedef struct ToadstoolTitanBssF650 {
     /* 0x0D */ u8 unk0D[4]; // group of each player
 } ToadstoolTitanBssF650;    // sizeof 0x11
 
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 extern s16 HuAudMusNo;
 extern s16 HuAudSubMusNo;
 extern f32 CFanOfs;
 extern f32 CFanLen;
 extern omObjData *HuAudFadeObj;
-extern f32 D_800EB760_minigame;
-extern f32 D_800EB764_minigame;
-extern f32 D_800EB768_minigame;
-extern f32 D_800EB76C_minigame;
-extern f32 D_800EB75C_minigame;
+extern f32 mgPlayerSpeedMax;
+extern f32 mgPlayerSpeedRun;
+extern f32 mgPlayerSpeedWalk;
+extern f32 mgPlayerSpeedMin;
+extern f32 mgPlayerStickDiv;
 extern u8 Hu3DCameraNo;
 extern s16 Hu3DCamMtxNo;
 extern u8 omAllPauseF;
@@ -158,7 +158,7 @@ void func_801059A0_toadstool_titan(void) {
     s32 i;
 
     MapCollInit(50);
-    Hu3DQuadPoolInit(&D_800EBEB0_minigame, 0x40);
+    Hu3DQuadPoolInit(&mgQuadPool, 0x40);
     Hu3DSprModelInit(0x20);
     omInitObjMan(100, 0);
     omGameSysInit();
@@ -167,16 +167,16 @@ void func_801059A0_toadstool_titan(void) {
     Hu3DCameraNo = CamSetupMapCullAdd();
     ScissorSet(Hu3DCameraNo, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(Hu3DCameraNo, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
-    D_800EC1B8_minigame = 0;
-    D_800EC280_minigame = 0;
-    D_800EBE28_minigame = 0;
-    func_800E18D8_minigame();
-    D_800EB73C_minigame = 15.0f;
-    D_800EB760_minigame = 18.0f;
-    D_800EB764_minigame = 13.5f;
-    D_800EB768_minigame = 9.0f;
-    D_800EB76C_minigame = 4.5f;
-    func_800E19F0_minigame(1);
+    mgItemObjNum = 0;
+    mgPlayerObjNum = 0;
+    mgMapObjNum = 0;
+    MgPlayerParamReset();
+    mgPlayerAccel = 15.0f;
+    mgPlayerSpeedMax = 18.0f;
+    mgPlayerSpeedRun = 13.5f;
+    mgPlayerSpeedWalk = 9.0f;
+    mgPlayerSpeedMin = 4.5f;
+    MgShadowAltSet(1);
     Hu3DGLightMaxSet(2);
     Hu3DGLightDirSet(0, 0.0f, 73.0f, 95.0f);
     Hu3DGLightColorSet(0, 0x80, 0x80, 0x80);
@@ -185,17 +185,17 @@ void func_801059A0_toadstool_titan(void) {
     Hu3DGLightDirSet(2, 0.0f, 95.0f, 55.0f);
     Hu3DGLightColorSet(2, 0xFF, 0xFF, 0xFF);
     omAddObj(0, 0, 0, -1, func_80105E50_toadstool_titan);
-    func_800E1490_minigame(D_800EBE28_minigame);
+    MgMapBaseSet(mgMapObjNum);
     object = omAddObj(4, 58, 58, -1, func_80106C98_toadstool_titan);
-    D_800EC1C0_minigame[D_800EBE28_minigame++] = D_8010F5F8_toadstool_titan = object;
+    mgMapObjTbl[mgMapObjNum++] = D_8010F5F8_toadstool_titan = object;
     omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     for (i = 0; i < 9; i++) {
-        D_800EC1C0_minigame[D_800EBE28_minigame++] = D_8010F5D0_toadstool_titan[i] = omAddObj(2, 2, 2, -1, func_801069DC_toadstool_titan);
+        mgMapObjTbl[mgMapObjNum++] = D_8010F5D0_toadstool_titan[i] = omAddObj(2, 2, 2, -1, func_801069DC_toadstool_titan);
     }
-    D_800EC598_minigame[D_800EC280_minigame++] = D_8010F640_toadstool_titan[0] = omAddObj(3, 12, 60, -1, func_8010B99C_toadstool_titan);
-    D_800EC598_minigame[D_800EC280_minigame++] = D_8010F640_toadstool_titan[1] = omAddObj(3, 12, 60, -1, func_8010BA80_toadstool_titan);
-    D_800EC598_minigame[D_800EC280_minigame++] = D_8010F640_toadstool_titan[2] = omAddObj(3, 12, 60, -1, func_8010BB64_toadstool_titan);
-    D_800EC598_minigame[D_800EC280_minigame++] = D_8010F640_toadstool_titan[3] = omAddObj(3, 12, 60, -1, func_8010BC48_toadstool_titan);
+    mgPlayerObjTbl[mgPlayerObjNum++] = D_8010F640_toadstool_titan[0] = omAddObj(3, 12, 60, -1, func_8010B99C_toadstool_titan);
+    mgPlayerObjTbl[mgPlayerObjNum++] = D_8010F640_toadstool_titan[1] = omAddObj(3, 12, 60, -1, func_8010BA80_toadstool_titan);
+    mgPlayerObjTbl[mgPlayerObjNum++] = D_8010F640_toadstool_titan[2] = omAddObj(3, 12, 60, -1, func_8010BB64_toadstool_titan);
+    mgPlayerObjTbl[mgPlayerObjNum++] = D_8010F640_toadstool_titan[3] = omAddObj(3, 12, 60, -1, func_8010BC48_toadstool_titan);
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, func_8010B510_toadstool_titan), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     WipeCreateIn(0xFF, 30);
     GMesFontMesCreate(D_8010EE80_toadstool_titan, 1);
@@ -209,7 +209,7 @@ void func_801059A0_toadstool_titan(void) {
     D_8010F590_toadstool_titan.newRecord = FALSE;
     D_8010F590_toadstool_titan.gauge = MG_GAUGE_NONE;
     D_8010F590_toadstool_titan.timeLimit = -1;
-    func_800E5EA0_minigame(&D_8010F590_toadstool_titan);
+    MgFlowInit(&D_8010F590_toadstool_titan);
 }
 
 void func_80105E48_toadstool_titan(void) {
@@ -259,7 +259,7 @@ void func_80105E50_toadstool_titan(omObjData *object) {
 }
 
 void func_801060AC_toadstool_titan(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     s16 i;
 
     D_8010F580_toadstool_titan++;
@@ -315,7 +315,7 @@ void func_801060AC_toadstool_titan(omObjData *object) {
                 }
             }
             if (D_8010F580_toadstool_titan == 2) {
-                func_800E6F34_minigame(30);
+                MgFlowResultWaitSet(30);
                 D_8010F590_toadstool_titan.finishDelay = 60;
             }
             if (MgFlowStatGet() == MG_STATE_RESULT) {
@@ -359,7 +359,7 @@ void func_801060AC_toadstool_titan(omObjData *object) {
                     CharAnimSet(D_8010F640_toadstool_titan[D_8010F58A_toadstool_titan]->model[0], 1,
                                        slots[D_8010F568_toadstool_titan[D_8010F58A_toadstool_titan]->chr],
                                        D_8010F568_toadstool_titan[D_8010F58A_toadstool_titan]->unk_08);
-                    func_800E5A00_minigame(
+                    MgPlayerMotLoad(
                         D_8010F640_toadstool_titan[D_8010F58A_toadstool_titan], 13,
                         CharMotionDataNumGet(D_8010F568_toadstool_titan[D_8010F58A_toadstool_titan]->chr, (rand8() & 1) ? 0x2F : 0x30), 1, 120);
                     HuAudCharVoicePlay(D_8010F568_toadstool_titan[D_8010F58A_toadstool_titan]->unk_0C);
@@ -367,13 +367,13 @@ void func_801060AC_toadstool_titan(omObjData *object) {
                 }
             }
             if (D_8010F580_toadstool_titan == 30 && D_8010F586_toadstool_titan == 9) {
-                func_800E5690_minigame(D_8010F640_toadstool_titan[D_8010F58A_toadstool_titan], 13);
+                MgPlayerMotSet(D_8010F640_toadstool_titan[D_8010F58A_toadstool_titan], 13);
             }
         case 5:
             if (D_8010F5FC_toadstool_titan == 5) {
                 if (D_8010F580_toadstool_titan == 1) {
                     for (i = 0; i < 4; i++) {
-                        func_800E5A00_minigame(D_8010F640_toadstool_titan[i], 14, CharMotionDataNumGet(D_8010F568_toadstool_titan[i]->chr, 0x3A), 1,
+                        MgPlayerMotLoad(D_8010F640_toadstool_titan[i], 14, CharMotionDataNumGet(D_8010F568_toadstool_titan[i]->chr, 0x3A), 1,
                                                120);
                     }
                     msmMusStop(HuAudSubMusNo);
@@ -383,7 +383,7 @@ void func_801060AC_toadstool_titan(omObjData *object) {
                         data = D_8010F640_toadstool_titan[i]->data;
                         if (data->unk5C != 0x1000 && data->unk38 == 1000.0f) {
                             data->unk3C = 0.0f;
-                            func_800E5690_minigame(D_8010F640_toadstool_titan[i], 14);
+                            MgPlayerMotSet(D_8010F640_toadstool_titan[i], 14);
                         }
                     }
                 }
@@ -439,7 +439,7 @@ void func_80106984_toadstool_titan(void) {
 void func_801069DC_toadstool_titan(omObjData *object) {
     f32 xs[9] = { 0.0f, 110.0f, 250.0f, 250.0f, 110.0f, -110.0f, -250.0f, -250.0f, -110.0f };
     f32 zs[9] = { 0.0f, -230.0f, -110.0f, 110.0f, 240.0f, 240.0f, 110.0f, -110.0f, -230.0f };
-    D_800EC1C0_minigame_ObjData *work;
+    MgMapWork *work;
 
     if (D_8010EDA0_toadstool_titan == 0) {
         object->model[0] = Hu3DModelRead(0x370000, 0xBD);
@@ -458,10 +458,10 @@ void func_801069DC_toadstool_titan(omObjData *object) {
     work = object->data = HuMemAllocTag(0xB4, TAG_OVERLAY);
     memset(work, 0, 0xB4);
     work->unk03 = 1;
-    func_800E13CC_minigame(object, 50.0f, 100.0f, -60.0f, -60.0f, 60.0f,
+    MgMapBlockSet(object, 50.0f, 100.0f, -60.0f, -60.0f, 60.0f,
                            (D_8010EDA0_toadstool_titan >= 4 && D_8010EDA0_toadstool_titan < 6) ? 120.0f : 60.0f);
-    func_800E1304_minigame(object, 1.0f);
-    func_800E1310_minigame(object, 6.0f);
+    MgMapFrictionSet(object, 1.0f);
+    MgMapAccelSet(object, 6.0f);
     work->unk04 = D_8010EDA0_toadstool_titan + 1;
     D_8010F650_toadstool_titan[D_8010EDA0_toadstool_titan] = 0;
     D_8010EDA0_toadstool_titan++;
@@ -470,7 +470,7 @@ void func_801069DC_toadstool_titan(omObjData *object) {
 
 void func_80106C98_toadstool_titan(omObjData *object) {
     s32 spriteFiles[1] = { 0x37000C };
-    D_800EC1C0_minigame_ObjData *work;
+    MgMapWork *work;
     s16 i;
 
     object->model[0] = -1;
@@ -478,10 +478,10 @@ void func_80106C98_toadstool_titan(omObjData *object) {
     work = object->data = HuMemAllocTag(0xB4, TAG_OVERLAY);
     memset(work, 0, 0xB4);
     work->unk03 = 1;
-    func_800E139C_minigame(object, 0.0f, -475.0f, -425.0f, 475.0f, 425.0f);
-    func_800E1304_minigame(object, 1.0f);
-    func_800E1310_minigame(object, 6.0f);
-    func_800E1468_minigame(object);
+    MgMapBoxSet(object, 0.0f, -475.0f, -425.0f, 475.0f, 425.0f);
+    MgMapFrictionSet(object, 1.0f);
+    MgMapAccelSet(object, 6.0f);
+    MgMapNoBumpOn(object);
     work->unk04 = 0;
     for (i = 0; i < 1; i++) {
         D_8010F588_toadstool_titan[i] = espEntry(D_8010F60C_toadstool_titan[i] = HuSprAnimDataRead(spriteFiles[i]), 0, 0);
@@ -547,7 +547,7 @@ void func_80106C98_toadstool_titan(omObjData *object) {
 }
 
 void func_80107360_toadstool_titan(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     HuCamMtxs *camMtxs;
     f32 t;
     f32 x;
@@ -688,16 +688,16 @@ void func_80107360_toadstool_titan(omObjData *object) {
                     D_8010F640_toadstool_titan[j]->model[6] = Hu3DModelRead(5, 0x88D);
                     D_8010F640_toadstool_titan[j]->model[7] = Hu3DModelRead(8, 0x88D);
                     D_8010F640_toadstool_titan[j]->model[8] = Hu3DModelRead(7, 0x88D);
-                    func_800E5A00_minigame(D_8010F640_toadstool_titan[j], 1, CharMotionDataNumGet(chr, 1), 1, 0);
-                    func_800E5A00_minigame(D_8010F640_toadstool_titan[j], 18, CharMotionDataNumGet(chr, 15), 2, 0);
-                    func_800E5A00_minigame(D_8010F640_toadstool_titan[j], 2, CharMotionDataNumGet(chr, 2), 1, 0);
-                    func_800E5A00_minigame(D_8010F640_toadstool_titan[j], 17, CharMotionDataNumGet(chr, 14), 1, 15);
-                    func_800E5978_minigame(D_8010F640_toadstool_titan[j], 30, CharMotionDataNumGet(chr, 32), 2, 0);
-                    func_800E5978_minigame(D_8010F640_toadstool_titan[j], 31, CharMotionDataNumGet(chr, 33), 2, 0);
-                    func_800E5978_minigame(D_8010F640_toadstool_titan[j], 32, CharMotionDataNumGet(chr, 34), 0, 0);
-                    func_800E5A00_minigame(D_8010F640_toadstool_titan[j], 5, CharMotionDataNumGet(chr, 3), 0, 0);
-                    func_800E5A00_minigame(D_8010F640_toadstool_titan[j], 8, CharMotionDataNumGet(chr, 6), 1, 27);
-                    func_800E5A00_minigame(D_8010F640_toadstool_titan[j], 12, CharMotionDataNumGet(chr, 37), 1, 120);
+                    MgPlayerMotLoad(D_8010F640_toadstool_titan[j], 1, CharMotionDataNumGet(chr, 1), 1, 0);
+                    MgPlayerMotLoad(D_8010F640_toadstool_titan[j], 18, CharMotionDataNumGet(chr, 15), 2, 0);
+                    MgPlayerMotLoad(D_8010F640_toadstool_titan[j], 2, CharMotionDataNumGet(chr, 2), 1, 0);
+                    MgPlayerMotLoad(D_8010F640_toadstool_titan[j], 17, CharMotionDataNumGet(chr, 14), 1, 15);
+                    MgPlayerMotRead(D_8010F640_toadstool_titan[j], 30, CharMotionDataNumGet(chr, 32), 2, 0);
+                    MgPlayerMotRead(D_8010F640_toadstool_titan[j], 31, CharMotionDataNumGet(chr, 33), 2, 0);
+                    MgPlayerMotRead(D_8010F640_toadstool_titan[j], 32, CharMotionDataNumGet(chr, 34), 0, 0);
+                    MgPlayerMotLoad(D_8010F640_toadstool_titan[j], 5, CharMotionDataNumGet(chr, 3), 0, 0);
+                    MgPlayerMotLoad(D_8010F640_toadstool_titan[j], 8, CharMotionDataNumGet(chr, 6), 1, 27);
+                    MgPlayerMotLoad(D_8010F640_toadstool_titan[j], 12, CharMotionDataNumGet(chr, 37), 1, 120);
                 }
             }
             break;
@@ -740,7 +740,7 @@ void func_80107360_toadstool_titan(omObjData *object) {
                         data->unkC5 = HuAudPlayerFXPlay(0x3A5, data->unk59);
                         data->unkC4 = -1;
                         for (k = 0; k < 4; k++) {
-                            func_800E149C_minigame(D_8010F640_toadstool_titan[k], j + 1, 1);
+                            MgPlayerMapAttrSet(D_8010F640_toadstool_titan[k], j + 1, 1);
                         }
                         Hu3DModelAttrSet(D_8010F5D0_toadstool_titan[j]->model[0], 4, 4);
                         Hu3DModelAttrSet(D_8010F5D0_toadstool_titan[j]->model[1], 4, 4);
@@ -804,7 +804,7 @@ void func_80107360_toadstool_titan(omObjData *object) {
                 for (j = 0; j < 9; j++) {
                     D_8010F650_toadstool_titan[j] = 0;
                     for (k = 0; k < 4; k++) {
-                        func_800E149C_minigame(D_8010F640_toadstool_titan[k], j + 1, 1);
+                        MgPlayerMapAttrSet(D_8010F640_toadstool_titan[k], j + 1, 1);
                     }
                 }
             } else if (D_8010F61C_toadstool_titan == 45) {
@@ -831,7 +831,7 @@ void func_80107360_toadstool_titan(omObjData *object) {
                                 t * 75.0f + D_8010F5D0_toadstool_titan[D_8010F620_toadstool_titan]->trans.y + 12.5,
                                 D_8010F5D0_toadstool_titan[D_8010F620_toadstool_titan]->trans.z - 25.0f);
                 if (D_8010F61C_toadstool_titan == 12) {
-                    func_800E1BA8_minigame_ObjData *playerData;
+                    MgPlayerWork *playerData;
                     s32 n;
 
                     HuAudFXPlay(0x3A8);
@@ -919,7 +919,7 @@ void func_80107360_toadstool_titan(omObjData *object) {
                 D_8010EDD0_toadstool_titan == 0) {
                 D_8010F586_toadstool_titan = 9;
                 D_8010F61C_toadstool_titan = 0;
-                func_800E5690_minigame(D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan], 0);
+                MgPlayerMotSet(D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan], 0);
                 D_8010EDD0_toadstool_titan = 1;
             }
             if (D_8010F61C_toadstool_titan == 1) {
@@ -931,14 +931,14 @@ void func_80107360_toadstool_titan(omObjData *object) {
                 HuAudFXPlay(0x3AB);
                 omSetSca(D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan], 1.0f, 1.0f, 1.0f);
                 if (!(D_8010F5FC_toadstool_titan == 5 || D_8010F5FC_toadstool_titan == 6)) {
-                    func_800E5690_minigame(D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan], 12);
+                    MgPlayerMotSet(D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan], 12);
                 }
                 Hu3DModelLayerSet(D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->model[0], 0x800);
                 for (j = 0; j < 5; j++) {
                     Hu3DModelLayerSet(D_8010F5F8_toadstool_titan->model[3 + j], 0x800);
                 }
             } else if (D_8010F61C_toadstool_titan == 46) {
-                func_800E5690_minigame(D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan], 0);
+                MgPlayerMotSet(D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan], 0);
             } else if (D_8010F61C_toadstool_titan >= 55) {
                 D_8010F586_toadstool_titan = 4;
                 D_8010F61C_toadstool_titan = 0;
@@ -949,7 +949,7 @@ void func_80107360_toadstool_titan(omObjData *object) {
             break;
         case 4:
             if (D_8010F61C_toadstool_titan == 3) {
-                func_800E1BA8_minigame_ObjData *work = D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->data;
+                MgPlayerWork *work = D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->data;
 
                 work->unkC5 = HuAudPlayerFXPlay(0x3A7, work->unk59);
                 work->unkC4 = -1;
@@ -970,7 +970,7 @@ void func_80107360_toadstool_titan(omObjData *object) {
                 omSetSca(D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan], 2.0f, 2.0f, 2.0f);
             }
             if (D_8010F61C_toadstool_titan >= 35) {
-                func_800E1BA8_minigame_ObjData *work = D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->data;
+                MgPlayerWork *work = D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->data;
 
                 if (D_8010F5FC_toadstool_titan == 2) {
                     work->unk50 |= 0x400;
@@ -988,7 +988,7 @@ void func_80107360_toadstool_titan(omObjData *object) {
         case 5:
             omSetSca(D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan], 2.0f, 2.0f, 2.0f);
             if (D_8010F61C_toadstool_titan >= 150) {
-                func_800E1BA8_minigame_ObjData *work = D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->data;
+                MgPlayerWork *work = D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->data;
 
                 work->unk50 &= ~0x400;
                 D_8010F586_toadstool_titan = 6;
@@ -1012,7 +1012,7 @@ void func_80107360_toadstool_titan(omObjData *object) {
                         dz = D_8010F640_toadstool_titan[i]->trans.z - D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->trans.z;
                         dz *= dz;
                         if (dx + dy + dz < 22500.0f && D_8010F640_toadstool_titan[i]->trans.y < 270.0f) {
-                            func_800E1BA8_minigame_ObjData *work = D_8010F640_toadstool_titan[i]->data;
+                            MgPlayerWork *work = D_8010F640_toadstool_titan[i]->data;
 
                             work->unk50 |= 0x400;
                             work->unkC5 = HuAudPlayerFXPlay(0x3A6, work->unk59);
@@ -1043,7 +1043,7 @@ void func_80107360_toadstool_titan(omObjData *object) {
                 scale = (D_8010F61C_toadstool_titan < 6) ? scale * 0.5 + 1.5 : 1.5 - scale * 0.5;
                 omSetSca(D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan], scale, scale, scale);
                 if (D_8010F61C_toadstool_titan == 1) {
-                    func_800E1BA8_minigame_ObjData *work = D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->data;
+                    MgPlayerWork *work = D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->data;
 
                     work->unkC5 = HuAudPlayerFXPlay(0x3A4, work->unk59);
                     work->unkC4 = -1;
@@ -1062,7 +1062,7 @@ void func_80107360_toadstool_titan(omObjData *object) {
                 } else {
                     D_8010F586_toadstool_titan = 9;
                     D_8010F61C_toadstool_titan = 0;
-                    func_800E5A00_minigame(D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan], 13,
+                    MgPlayerMotLoad(D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan], 13,
                                            CharMotionDataNumGet(D_8010F568_toadstool_titan[D_8010F60E_toadstool_titan]->chr,
                                                               D_8010F568_toadstool_titan[i]->unk_0C),
                                            1, 120);
@@ -1093,7 +1093,7 @@ void func_80107360_toadstool_titan(omObjData *object) {
                     Hu3DModelAttrSet(D_8010F5D0_toadstool_titan[j]->model[0], 4, 0);
                     Hu3DModelAttrSet(D_8010F5D0_toadstool_titan[j]->model[1], 4, 0);
                     for (k = 0; k < 4; k++) {
-                        func_800E149C_minigame(D_8010F640_toadstool_titan[k], j + 1, 2);
+                        MgPlayerMapAttrSet(D_8010F640_toadstool_titan[k], j + 1, 2);
                     }
                 }
                 j = (u8)(rand8() % 9);
@@ -1107,7 +1107,7 @@ void func_80107360_toadstool_titan(omObjData *object) {
             break;
         case 9:
             if (D_8010F5FC_toadstool_titan >= 3 && D_8010F58A_toadstool_titan < 4 && D_8010F61C_toadstool_titan >= 7) {
-                func_800E1BA8_minigame_ObjData *winnerData = D_8010F640_toadstool_titan[D_8010F58A_toadstool_titan]->data;
+                MgPlayerWork *winnerData = D_8010F640_toadstool_titan[D_8010F58A_toadstool_titan]->data;
 
                 winnerData->unk3C = (winnerData->unk3C < -10.0f)  ? (winnerData->unk3C + 9.0f) - winnerData->unk3C * 0.1
                                     : (winnerData->unk3C > 10.0f) ? (winnerData->unk3C - 9.0f) - winnerData->unk3C * 0.1
@@ -1119,12 +1119,12 @@ void func_80107360_toadstool_titan(omObjData *object) {
         data = D_8010F640_toadstool_titan[i]->data;
         data->unk53[3] = 0;
         if (D_8010F616_toadstool_titan[i] != 0 && D_8010F616_toadstool_titan[i] < 60) {
-            func_800E5690_minigame(D_8010F640_toadstool_titan[i], 18);
+            MgPlayerMotSet(D_8010F640_toadstool_titan[i], 18);
             Hu3DData[D_8010F640_toadstool_titan[i]->model[0]].motTime = 0.0f;
             Hu3DData[D_8010F640_toadstool_titan[i]->model[0]].motSpeed = 0.0f;
-            func_800E4E30_minigame(D_8010F640_toadstool_titan[i]);
+            MgPlayerMotUpdate(D_8010F640_toadstool_titan[i]);
             Hu3DData[D_8010F640_toadstool_titan[i]->model[0]].unk0E = Hu3DData[D_8010F640_toadstool_titan[i]->model[0]].unk0C;
-            func_800E5138_minigame(D_8010F640_toadstool_titan[i]);
+            MgPlayerScaleUpdate(D_8010F640_toadstool_titan[i]);
             D_8010F640_toadstool_titan[i]->trans.x += sindf(D_8010F640_toadstool_titan[i]->rot.z) * -50.0f;
             D_8010F640_toadstool_titan[i]->trans.y += cosdf(D_8010F640_toadstool_titan[i]->rot.z) * 50.0f;
             D_8010F640_toadstool_titan[i]->rot.y += 33.0f;
@@ -1414,12 +1414,12 @@ void func_8010B510_toadstool_titan(omObjData *object) {
     up.x = 0.0f;
     up.y = 1.0f;
     up.z = 0.0f;
-    D_800CE17C_main[0] = D_8010F628_toadstool_titan.x;
-    D_800CE17C_main[1] = D_8010F628_toadstool_titan.z;
-    D_800CE17C_main[-1] = 0.0f;
-    D_800CE17C_main[2] = gCameraList->fov;
-    D_800CE17C_main[3] = CFanLen;
-    D_800CE17C_main[4] = CFanOfs;
+    CFanParam[0] = D_8010F628_toadstool_titan.x;
+    CFanParam[1] = D_8010F628_toadstool_titan.z;
+    CFanParam[-1] = 0.0f;
+    CFanParam[2] = gCameraList->fov;
+    CFanParam[3] = CFanLen;
+    CFanParam[4] = CFanOfs;
     Hu3DCameraPerspectiveSet(0, D_8010F624_toadstool_titan, 800.0f, 2750.0f);
     Hu3DCameraPosSetV(0, &D_8010F628_toadstool_titan, &D_8010F5C0_toadstool_titan, &up);
     Hu3DCamUpdateMtx(0);
@@ -1429,7 +1429,7 @@ void func_8010B658_toadstool_titan(omObjData *object, s32 model, s32 motion, u16
     s32 dirs[8] = { 2, 3, 7, 4, 5, 6, 8, 9 };
     s32 slots[8] = { 0, 1, 2, 3, 4, 5, 6, 7 };
     s32 files[2][8] = { { 0xA4, 0xA4, 0xA4, 0xA4, 0xA4, 0xA4, 0xA4, 0x1B }, { 0xA5, 0xA5, 0xA5, 0xA5, 0xA5, 0xA5, 0xA5, 0x1C } };
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     s32 modelFlags;
     s32 motionFlags;
     u16 chr;
@@ -1437,8 +1437,8 @@ void func_8010B658_toadstool_titan(omObjData *object, s32 model, s32 motion, u16
     modelFlags = 0x4A9;
     motionFlags = 0x99;
     chr = D_8010F568_toadstool_titan[group]->chr;
-    func_800E18D8_minigame();
-    func_800E1BA8_minigame(object, model, motion, D_8010F568_toadstool_titan[group]->playerNo, modelFlags, motionFlags);
+    MgPlayerParamReset();
+    MgPlayerCreate(object, model, motion, D_8010F568_toadstool_titan[group]->playerNo, modelFlags, motionFlags);
     omSetTra(object, x, y, z);
     Hu3DModelPosSet(object->model[1], x, 0.0f, z);
     data = object->data;
@@ -1449,18 +1449,18 @@ void func_8010B658_toadstool_titan(omObjData *object, s32 model, s32 motion, u16
     D_8010F568_toadstool_titan[group]->unk_08 = Hu3DAnimDataRead((dirs[chr] << 16) | files[1][chr]);
     Hu3DModelAnimStop(Hu3DData[object->model[0]].hmf);
     Hu3DModelDynamicFree(object->model[0]);
-    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(chr, 0), 1, 0);
-    func_800E5A00_minigame(object, 6, CharMotionDataNumGet(chr, 4), 1, 19);
-    func_800E5978_minigame(object, 21, CharMotionDataNumGet(chr, 31), 0, 0);
-    func_800E149C_minigame(object, 0, 2);
+    MgPlayerMotLoad(object, 0, CharMotionDataNumGet(chr, 0), 1, 0);
+    MgPlayerMotLoad(object, 6, CharMotionDataNumGet(chr, 4), 1, 19);
+    MgPlayerMotRead(object, 21, CharMotionDataNumGet(chr, 31), 0, 0);
+    MgPlayerMapAttrSet(object, 0, 2);
 }
 
 void func_8010B99C_toadstool_titan(omObjData *object) {
     s32 motion;
     s32 model;
 
-    motion = D_800A178C_main[D_8010F568_toadstool_titan[0]->chr][3];
-    model = D_800A178C_main[D_8010F568_toadstool_titan[0]->chr][0];
+    motion = omCharModelNoTbl[D_8010F568_toadstool_titan[0]->chr][3];
+    model = omCharModelNoTbl[D_8010F568_toadstool_titan[0]->chr][0];
     func_8010B658_toadstool_titan(object, model, motion, 0, (D_8010F668_toadstool_titan[0] >> 1) ? -400.0f : 400.0f, 800.0f,
                                   (D_8010F668_toadstool_titan[0] & 1) ? -350.0f : 350.0f);
     object->func = func_8010BD2C_toadstool_titan;
@@ -1470,8 +1470,8 @@ void func_8010BA80_toadstool_titan(omObjData *object) {
     s32 motion;
     s32 model;
 
-    motion = D_800A178C_main[D_8010F568_toadstool_titan[1]->chr][3];
-    model = D_800A178C_main[D_8010F568_toadstool_titan[1]->chr][0];
+    motion = omCharModelNoTbl[D_8010F568_toadstool_titan[1]->chr][3];
+    model = omCharModelNoTbl[D_8010F568_toadstool_titan[1]->chr][0];
     func_8010B658_toadstool_titan(object, model, motion, 1, (D_8010F668_toadstool_titan[1] >> 1) ? -400.0f : 400.0f, 800.0f,
                                   (D_8010F668_toadstool_titan[1] & 1) ? -350.0f : 350.0f);
     object->func = func_8010BD2C_toadstool_titan;
@@ -1481,8 +1481,8 @@ void func_8010BB64_toadstool_titan(omObjData *object) {
     s32 motion;
     s32 model;
 
-    motion = D_800A178C_main[D_8010F568_toadstool_titan[2]->chr][3];
-    model = D_800A178C_main[D_8010F568_toadstool_titan[2]->chr][0];
+    motion = omCharModelNoTbl[D_8010F568_toadstool_titan[2]->chr][3];
+    model = omCharModelNoTbl[D_8010F568_toadstool_titan[2]->chr][0];
     func_8010B658_toadstool_titan(object, model, motion, 2, (D_8010F668_toadstool_titan[2] >> 1) ? -400.0f : 400.0f, 800.0f,
                                   (D_8010F668_toadstool_titan[2] & 1) ? -350.0f : 350.0f);
     object->func = func_8010BD2C_toadstool_titan;
@@ -1492,8 +1492,8 @@ void func_8010BC48_toadstool_titan(omObjData *object) {
     s32 motion;
     s32 model;
 
-    motion = D_800A178C_main[D_8010F568_toadstool_titan[3]->chr][3];
-    model = D_800A178C_main[D_8010F568_toadstool_titan[3]->chr][0];
+    motion = omCharModelNoTbl[D_8010F568_toadstool_titan[3]->chr][3];
+    model = omCharModelNoTbl[D_8010F568_toadstool_titan[3]->chr][0];
     func_8010B658_toadstool_titan(object, model, motion, 3, (D_8010F668_toadstool_titan[3] >> 1) ? -400.0f : 400.0f, 800.0f,
                                   (D_8010F668_toadstool_titan[3] & 1) ? -350.0f : 350.0f);
     object->func = func_8010BD2C_toadstool_titan;
@@ -1507,7 +1507,7 @@ void func_8010BC48_toadstool_titan(omObjData *object) {
 #ifdef NON_MATCHING
 void func_8010BD2C_toadstool_titan(omObjData *object) {
     u8 flags[4];
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     u16 savedBtn;
     u16 savedBtn2;
     u16 savedBtn3;
@@ -1515,8 +1515,8 @@ void func_8010BD2C_toadstool_titan(omObjData *object) {
     s8 savedStickY;
     s16 savedStick2;
     s16 savedStick3;
-    func_800E1BA8_minigame_ObjData *otherData;
-    func_800E1BA8_minigame_ObjData *work;
+    MgPlayerWork *otherData;
+    MgPlayerWork *work;
     ToadstoolTitanPlayer *player;
     s16 group;
     s32 i;
@@ -1941,14 +1941,14 @@ void func_8010BD2C_toadstool_titan(omObjData *object) {
         HuPadBtnRep[player->pad] = 0;
     }
     if (D_8010F586_toadstool_titan == 5 && D_8010F60E_toadstool_titan == group) {
-        D_800EB73C_minigame = 30.0f;
-        D_800EB75C_minigame = 1.6666666f;
+        mgPlayerAccel = 30.0f;
+        mgPlayerStickDiv = 1.6666666f;
         speed = 18.0f;
-        D_800EB760_minigame = speed * 2;
-        D_800EB764_minigame = speed * 1.5f;
+        mgPlayerSpeedMax = speed * 2;
+        mgPlayerSpeedRun = speed * 1.5f;
         halfSpeed = speed / 2;
-        D_800EB768_minigame = speed;
-        D_800EB76C_minigame = halfSpeed;
+        mgPlayerSpeedWalk = speed;
+        mgPlayerSpeedMin = halfSpeed;
     }
     if (D_8010F586_toadstool_titan == 5 && D_8010F60E_toadstool_titan == group) {
         if (D_8010EE3C_toadstool_titan == 0 && data->unk40 > 9.0f) {
@@ -1992,7 +1992,7 @@ void func_8010BD2C_toadstool_titan(omObjData *object) {
     if ((D_8010F5FC_toadstool_titan != 0 || D_8010F580_toadstool_titan < 46 || D_8010F580_toadstool_titan > 54) &&
         ((D_8010F586_toadstool_titan != 4 && D_8010F586_toadstool_titan != 6) || D_8010F60E_toadstool_titan != group) &&
         D_8010F616_toadstool_titan[group] == 0) {
-        func_800DDD94_minigame(object);
+        MgPlayerObjMain(object);
         D_8010F634_toadstool_titan[group] = -1;
     } else if (D_8010F634_toadstool_titan[group] == -1 || D_8010F634_toadstool_titan[group] > Hu3DData[object->model[0]].motTime) {
         D_8010F634_toadstool_titan[group] = Hu3DData[object->model[0]].motTime;
@@ -2019,8 +2019,8 @@ void func_8010BD2C_toadstool_titan(omObjData *object) {
                 (data->unk3C > -55.0f && data->unk3C < 55.0f && object->trans.z >= 350.0f)) {
                 object->trans.x = (object->trans.x <= -400.0f) ? -400.0f : ((object->trans.x >= 400.0f) ? 400.0f : object->trans.x);
                 object->trans.z = (object->trans.z <= -350.0f) ? -350.0f : ((object->trans.z >= 350.0f) ? 350.0f : object->trans.z);
-                data->unk40 = -D_800EB768_minigame;
-                func_800E5690_minigame(object, 30);
+                data->unk40 = -mgPlayerSpeedWalk;
+                MgPlayerMotSet(object, 30);
                 omVibrate(data->unk59, 20, 0, 20);
                 for (i = 0; i < 4; i++) {
                     if (D_8010F616_toadstool_titan[i] == 0 && D_8010F568_toadstool_titan[i]->playerNo != data->unk59) {
@@ -2034,12 +2034,12 @@ void func_8010BD2C_toadstool_titan(omObjData *object) {
             }
         }
     }
-    D_800EB73C_minigame = 15.0f;
-    D_800EB75C_minigame = 3.3333333f;
-    D_800EB760_minigame = 18.0f;
-    D_800EB764_minigame = 13.5f;
-    D_800EB768_minigame = 9.0f;
-    D_800EB76C_minigame = 4.5f;
+    mgPlayerAccel = 15.0f;
+    mgPlayerStickDiv = 3.3333333f;
+    mgPlayerSpeedMax = 18.0f;
+    mgPlayerSpeedRun = 13.5f;
+    mgPlayerSpeedWalk = 9.0f;
+    mgPlayerSpeedMin = 4.5f;
     HuPadBtn[player->pad] = savedBtn;
     HuPadBtnDown[player->pad] = savedBtn2;
     HuPadBtnRep[player->pad] = savedBtn3;

@@ -8,7 +8,7 @@
 s32 HuDbgStatus = 0xFF88FF88;
 
 static u64 swapChainStack[0x1800 / sizeof(u64)];
-static u8 D_800AE000_main[0x3800]; // unreferenced
+static u8 swapChainStackPad[0x3800]; // unreferenced
 static swapChainTaskQueue swapChainTask;
 static OSMesgQueue gSwapChainMesgQueue;
 static OSMesg gSwapChainInitMesg[0x40];

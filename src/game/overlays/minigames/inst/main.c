@@ -402,12 +402,12 @@ s32 func_80106418_inst(Vec *startPosition, Vec *endPosition, Vec *startTarget, V
 }
 
 void func_8010674C_inst(omObjData *object) {
-    D_800CE17C_main[0] = D_8010D418_inst.x;
-    D_800CE17C_main[1] = D_8010D418_inst.z;
-    D_800CE17C_main[-1] = 0.0f;
-    D_800CE17C_main[2] = gCameraList->fov;
-    D_800CE17C_main[3] = CFanLen;
-    D_800CE17C_main[4] = CFanOfs;
+    CFanParam[0] = D_8010D418_inst.x;
+    CFanParam[1] = D_8010D418_inst.z;
+    CFanParam[-1] = 0.0f;
+    CFanParam[2] = gCameraList->fov;
+    CFanParam[3] = CFanLen;
+    CFanParam[4] = CFanOfs;
     Hu3DCameraPosSetV(0, &D_8010D418_inst, &D_8010D424_inst, &D_8010D430_inst);
     Hu3DCamUpdateMtx(0);
 }

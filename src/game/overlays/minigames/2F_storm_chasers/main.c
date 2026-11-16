@@ -115,7 +115,7 @@ typedef struct StormChaserPlayer {
     /* 0x56 */ s16 unk_56; // CPU: stored stick y
 } StormChaserPlayer;       // sizeof 0x58
 
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 extern u8 omAllPauseF;
 extern f32 D_8010CF24_storm_chasers; // D_8010CF20_storm_chasers.unk_04; func_801075F8_storm_chasers accesses it as a separate symbol
 extern s16 D_8010CF6E_storm_chasers; // low half of D_8010CF6C_storm_chasers
@@ -404,7 +404,7 @@ void func_801061C0_storm_chasers(omObjData *object) {
 }
 
 void func_80106218_storm_chasers(omObjData *object) {
-    D_800EC1C0_minigame_ObjData *work;
+    MgMapWork *work;
 
     D_8010CF0C_storm_chasers = 160.0f;
     D_8010CF10_storm_chasers = 120.0f;
@@ -412,16 +412,16 @@ void func_80106218_storm_chasers(omObjData *object) {
     D_8010CF0A_storm_chasers = espEntry(D_8010CF08_storm_chasers, 0, 0);
     espAttrSet(D_8010CF0A_storm_chasers, 0x5000);
     espPosSet(D_8010CF0A_storm_chasers, D_8010CF0C_storm_chasers, D_8010CF10_storm_chasers);
-    D_800EC1C0_minigame[D_800EBE28_minigame++] = object;
+    mgMapObjTbl[mgMapObjNum++] = object;
     work = HuMemAllocTag(0xB4, TAG_OVERLAY);
     object->data = work;
     memset(work, 0, 0xB4);
     work->unk03 = 1;
     work->unk04 = 0;
-    func_800E131C_minigame(object, 20.0f);
-    func_800E1304_minigame(object, 0.5f);
-    func_800E1310_minigame(object, D_800EB73C_minigame);
-    func_800E1404_minigame(D_800EC1C0_minigame[0], 0.0f, 500.0f);
+    MgMapSlideSet(object, 20.0f);
+    MgMapFrictionSet(object, 0.5f);
+    MgMapAccelSet(object, mgPlayerAccel);
+    MgMapCircleSet(mgMapObjTbl[0], 0.0f, 500.0f);
     object->func = func_801061C0_storm_chasers;
 }
 
@@ -1225,7 +1225,7 @@ void func_80109170_storm_chasers(omObjData *object) {
 
 void func_8010A070_storm_chasers(omObjData *object) {
     StormChaserPlayer *player = &D_8010CD80_storm_chasers[object->work[0]];
-    func_800E1BA8_minigame_ObjData *work = object->data;
+    MgPlayerWork *work = object->data;
     StormChaserState *state;
     Vec result;
     s32 i;
@@ -1238,7 +1238,7 @@ void func_8010A070_storm_chasers(omObjData *object) {
         func_80106184_storm_chasers(object->trans.x, object->trans.z, state->unk_10->trans.x, state->unk_10->trans.z, &result);
         if (ABS(result.x) < 80.0f) {
             if (player->unk_3C == 0) {
-                func_800E5690_minigame(object, 0x21);
+                MgPlayerMotSet(object, 0x21);
                 player->unk_3C = 1;
                 if (player->unk_04 == 0) {
                     omVibrate(object->work[0], 2, 2, 20);
@@ -1264,7 +1264,7 @@ void func_8010A070_storm_chasers(omObjData *object) {
 
 void func_8010A260_storm_chasers(omObjData *object) {
     StormChaserPlayer *player = &D_8010CD80_storm_chasers[object->work[0]];
-    func_800E1BA8_minigame_ObjData *work = object->data;
+    MgPlayerWork *work = object->data;
     StormChaserPlayer *other;
     Vec result;
     s32 isBlocked;
@@ -1334,7 +1334,7 @@ void func_8010A260_storm_chasers(omObjData *object) {
 
 void func_8010AC7C_storm_chasers(omObjData *object) {
     StormChaserPlayer *player = &D_8010CD80_storm_chasers[object->work[0]];
-    func_800E1BA8_minigame_ObjData *work = object->data;
+    MgPlayerWork *work = object->data;
     StormChaserData *data = &D_8010CCE0_storm_chasers[object->work[0]];
 
     if (data->unk_04 != 0) {
@@ -1348,7 +1348,7 @@ void func_8010AC7C_storm_chasers(omObjData *object) {
 
 void func_8010AD68_storm_chasers(omObjData *object) {
     StormChaserPlayer *player = &D_8010CD80_storm_chasers[object->work[0]];
-    func_800E1BA8_minigame_ObjData *data = object->data;
+    MgPlayerWork *data = object->data;
 
     if (data->unk3C != 0.0f) {
         data->unk3C = WRAP_ANGLE(data->unk3C + D_8010C8D8_storm_chasers[player->unk_0C].unk_10);
@@ -1357,15 +1357,15 @@ void func_8010AD68_storm_chasers(omObjData *object) {
 
 void func_8010AE4C_storm_chasers(omObjData *object) {
     StormChaserPlayer *player = &D_8010CD80_storm_chasers[object->work[0]];
-    func_800E1BA8_minigame_ObjData *data = object->data;
-    s32 charBase = D_800A178C_main[GwPlayer[object->work[0]].chr][0];
+    MgPlayerWork *data = object->data;
+    s32 charBase = omCharModelNoTbl[GwPlayer[object->work[0]].chr][0];
 
     if (player->unk_18 == 1) {
-        func_800E5690_minigame(object, 0xD);
+        MgPlayerMotSet(object, 0xD);
         HuAudCharVoicePlay(charBase | 0x2F);
         player->unk_18 = 2;
     } else if (player->unk_18 == 0) {
-        func_800E5690_minigame(object, 0xE);
+        MgPlayerMotSet(object, 0xE);
         player->unk_18 = 2;
     }
     data->unk3C = 0.0f;
@@ -1373,7 +1373,7 @@ void func_8010AE4C_storm_chasers(omObjData *object) {
 
 void func_8010AF20_storm_chasers(omObjData *object) {
     StormChaserPlayer *player = &D_8010CD80_storm_chasers[object->work[0]];
-    func_800E1BA8_minigame_ObjData *work;
+    MgPlayerWork *work;
 
     if (player->state == -1) {
         return;
@@ -1441,7 +1441,7 @@ void func_8010AF20_storm_chasers(omObjData *object) {
             player->unk_20 = 1;
         }
     }
-    func_800DDD94_minigame(object);
+    MgPlayerObjMain(object);
     Hu3DModelPosSet(object->model[1], object->trans.x, 2.0f, object->trans.z);
 }
 
@@ -1449,13 +1449,13 @@ void func_8010B1B0_storm_chasers(omObjData *object) {
     s32 modelAttr = 0x2B9;
     s32 shadowAttr = 0xC9;
     u16 character = GwPlayer[object->work[0]].chr;
-    s32 modelFile = D_800A178C_main[character][0];
-    s32 motionFile = D_800A178C_main[character][2];
-    func_800E1BA8_minigame_ObjData *work;
+    s32 modelFile = omCharModelNoTbl[character][0];
+    s32 motionFile = omCharModelNoTbl[character][2];
+    MgPlayerWork *work;
     StormChaserPlayer *player;
 
-    func_800E18D8_minigame();
-    func_800E1BA8_minigame(object, modelFile, motionFile, object->work[0], modelAttr, shadowAttr);
+    MgPlayerParamReset();
+    MgPlayerCreate(object, modelFile, motionFile, object->work[0], modelAttr, shadowAttr);
     work = object->data;
     work->unkEC = 0;
     Hu3DModelObjAttrSet(object->model[1], 0x80000000, 0);
@@ -1466,17 +1466,17 @@ void func_8010B1B0_storm_chasers(omObjData *object) {
     object->model[3] = Hu3DModelRead(3, 0x2BD);
     object->model[4] = Hu3DModelRead(4, 0x2BD);
     object->model[8] = Hu3DModelRead(8, 0x2BD);
-    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(character, 0), 1, 0);
-    func_800E5A00_minigame(object, 1, CharMotionDataNumGet(character, 1), 1, 0);
-    func_800E5A00_minigame(object, 2, CharMotionDataNumGet(character, 2), 1, 0);
-    func_800E5A00_minigame(object, 0x11, CharMotionDataNumGet(character, 0xE), 0, 0);
-    func_800E5A00_minigame(object, 3, CharMotionDataNumGet(character, 0x1D), 1, 0);
-    func_800E5A00_minigame(object, 4, CharMotionDataNumGet(character, 0x1E), 1, 0);
-    func_800E5A00_minigame(object, 0x20, CharMotionDataNumGet(character, 0x22), 0, 0);
-    func_800E5A00_minigame(object, 0x16, CharMotionDataNumGet(character, 0x96), 1, 0);
-    func_800E5A00_minigame(object, 0xD, CharMotionDataNumGet(character, 0x2F), 1, 120);
-    func_800E5A00_minigame(object, 0xE, CharMotionDataNumGet(character, 0x37), 1, 120);
-    func_800E5A00_minigame(object, 0x21, CharMotionDataNumGet(character, 0x97), 2, 0);
+    MgPlayerMotLoad(object, 0, CharMotionDataNumGet(character, 0), 1, 0);
+    MgPlayerMotLoad(object, 1, CharMotionDataNumGet(character, 1), 1, 0);
+    MgPlayerMotLoad(object, 2, CharMotionDataNumGet(character, 2), 1, 0);
+    MgPlayerMotLoad(object, 0x11, CharMotionDataNumGet(character, 0xE), 0, 0);
+    MgPlayerMotLoad(object, 3, CharMotionDataNumGet(character, 0x1D), 1, 0);
+    MgPlayerMotLoad(object, 4, CharMotionDataNumGet(character, 0x1E), 1, 0);
+    MgPlayerMotLoad(object, 0x20, CharMotionDataNumGet(character, 0x22), 0, 0);
+    MgPlayerMotLoad(object, 0x16, CharMotionDataNumGet(character, 0x96), 1, 0);
+    MgPlayerMotLoad(object, 0xD, CharMotionDataNumGet(character, 0x2F), 1, 120);
+    MgPlayerMotLoad(object, 0xE, CharMotionDataNumGet(character, 0x37), 1, 120);
+    MgPlayerMotLoad(object, 0x21, CharMotionDataNumGet(character, 0x97), 2, 0);
     if (object->work[0] == 0) {
         D_8010CF18_storm_chasers = rand8() & 3;
     } else {
@@ -1491,14 +1491,14 @@ void func_8010B1B0_storm_chasers(omObjData *object) {
     Hu3DModelPosSet(object->model[1], object->trans.x, 2.0f, object->trans.z);
     object->rot.y = D_8010C8D8_storm_chasers[D_8010CF18_storm_chasers].unk_08;
     Hu3DModelRotSet(object->model[0], object->rot.x, object->rot.y, object->rot.z);
-    func_800E5690_minigame(object, 0);
-    D_800EBE24_minigame = 1;
+    MgPlayerMotSet(object, 0);
+    mgFieldStat = 1;
     Hu3DModelCameraSet(object->model[0], HU3D_CAM0);
     Hu3DModelCameraSet(object->model[1], HU3D_CAM0);
     Hu3DModelCameraSet(object->model[3], HU3D_CAM0);
     Hu3DModelCameraSet(object->model[4], HU3D_CAM0);
     Hu3DModelCameraSet(object->model[8], HU3D_CAM0);
-    func_800E149C_minigame(object, 0, 2);
+    MgPlayerMapAttrSet(object, 0, 2);
     func_80105B9C_storm_chasers(object->work[0]);
     work->unk40 = 0.0f;
     object->func = func_8010AF20_storm_chasers;
@@ -1568,8 +1568,8 @@ void func_8010B738_storm_chasers(void) {
         }
         obj = omAddObj(0xC8, 9, 0x3C, -1, func_8010B1B0_storm_chasers);
         obj->work[0] = value;
-        D_800EC598_minigame[D_800EC280_minigame] = obj;
-        D_800EC280_minigame++;
+        mgPlayerObjTbl[mgPlayerObjNum] = obj;
+        mgPlayerObjNum++;
     }
 }
 
@@ -2016,14 +2016,14 @@ void func_8010C780_storm_chasers(void) {
     Hu3DGLightDirSet(0, -215.0f, 295.0f, 470.0f);
     Hu3DGLightColorSet(1, 255, 255, 255);
     Hu3DGLightDirSet(1, -215.0f, 295.0f, 470.0f);
-    D_800EC1B8_minigame = 0;
-    D_800EC280_minigame = 0;
-    D_800EBE28_minigame = 0;
+    mgItemObjNum = 0;
+    mgPlayerObjNum = 0;
+    mgMapObjNum = 0;
     GMesFontMesCreate(D_8010CC8C_storm_chasers, 0);
     GMesFontMesCreate(D_8010CC8C_storm_chasers, 1);
     omAddObj(1000, 0, 0, -1, func_8010C57C_storm_chasers);
     omAddObj(1000, 0, 0, -1, func_8010C29C_storm_chasers);
-    func_800E5EA0_minigame(&D_8010C8B0_storm_chasers);
+    MgFlowInit(&D_8010C8B0_storm_chasers);
 }
 
 const s16 D_8010CC8C_storm_chasers[] = { 0x8260, 0x8261, 0x8262, 0 };

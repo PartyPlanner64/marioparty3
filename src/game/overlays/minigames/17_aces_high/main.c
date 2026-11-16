@@ -240,9 +240,9 @@ void func_801059A0_aces_high(void) {
     D_8010DE64_aces_high = omAddObj(10, 4, 0, -1, func_80105FC8_aces_high);
     omSetStatBit(D_8010DE64_aces_high, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     omSetStatBit(D_8010DE64_aces_high, OM_STAT_MODELPAUSE);
-    func_800E5EA0_minigame(&D_8010DB40_aces_high);
-    D_800EB930_minigame = 50;
-    D_800EB932_minigame = 10;
+    MgFlowInit(&D_8010DB40_aces_high);
+    mgFlowSeqNo = 50;
+    mgFlowSeqTime = 10;
     omMakeGroup(0, 4);
     D_8010DE68_aces_high = omGetGroupMemberList(0);
     for (i = 0; i < 4; i++) {

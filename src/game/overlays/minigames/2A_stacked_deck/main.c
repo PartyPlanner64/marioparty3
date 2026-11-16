@@ -46,8 +46,8 @@ typedef struct {
     /* 0x02 */ s16 unk_02[4];
 } StackedDeckBssS16Run; // sizeof 0xA
 
-extern s32 D_800A178C_main[][6];
-extern s32 D_800A1790_main[][6];
+extern s32 omCharModelNoTbl[][6];
+extern s32 omCharMotTbl[][6];
 
 s32 D_8010F290_stacked_deck[8] = { 2, 3, 7, 4, 5, 6, 8, 9 };
 Vec2f D_8010F2B0_stacked_deck[12] = {
@@ -69,7 +69,7 @@ f32 D_8010F328_stacked_deck[3] = { 2.0f, 2.0f, 2.0f };
 // The intended delays (90, 900, 0, 30, 150) landed in gaugeValue/winners, likely
 // from an initializer written without the inner braces. It doesn't matter in
 // practice: this overlay never runs MgFlowMain, so only the
-// setup in func_800E5EA0_minigame reads this struct.
+// setup in MgFlowInit reads this struct.
 MinigameFlow D_8010F334_stacked_deck = {
     MG_STATE_OPENING, MINIGAME_4P, MG_TIMER_COUNT_DOWN, MG_TIME_DISP_COUNTDOWN, FALSE, MG_GAUGE_NONE, MG_RESULT_WIN_1, 0,
     { 90.0f, 900.0f, 0.0f, 30.0f },
@@ -372,18 +372,18 @@ void func_80106554_stacked_deck(omObjData *object) {
 }
 
 void func_8010655C_stacked_deck(omObjData *object) {
-    D_800EC1C0_minigame_ObjData *work;
+    MgMapWork *work;
 
-    D_800EC1C0_minigame[D_800EBE28_minigame++] = object;
+    mgMapObjTbl[mgMapObjNum++] = object;
     work = HuMemAllocTag(0xB4, TAG_OVERLAY);
     object->data = work;
     memset(work, 0, 0xB4);
     work->unk03 = 1;
     work->unk04 = 0;
-    func_800E131C_minigame(object, 20.0f);
-    func_800E1304_minigame(object, 0.5f);
-    func_800E1310_minigame(object, D_800EB73C_minigame);
-    func_800E139C_minigame(D_800EC1C0_minigame[0], 1.0f, -5060.0f, -5000.0f, 5060.0f, 5000.0f);
+    MgMapSlideSet(object, 20.0f);
+    MgMapFrictionSet(object, 0.5f);
+    MgMapAccelSet(object, mgPlayerAccel);
+    MgMapBoxSet(mgMapObjTbl[0], 1.0f, -5060.0f, -5000.0f, 5060.0f, 5000.0f);
     object->func = func_80106554_stacked_deck;
 }
 
@@ -449,7 +449,7 @@ void func_80106780_stacked_deck(omObjData *object) {
 
 void func_801069A0_stacked_deck(omObjData *object) {
     StackedDeckCard *card = &D_8010F730_stacked_deck[object->work[0] + 2];
-    func_800E1BA8_minigame_ObjData *data = object->data;
+    MgPlayerWork *data = object->data;
     StackedDeckCard *other;
     omObjData *cardObj;
     s16 i;
@@ -491,7 +491,7 @@ void func_801069A0_stacked_deck(omObjData *object) {
 
 void func_80106BC8_stacked_deck(omObjData *object) {
     StackedDeckCard *card = &STACKED_DECK_PLAYERS[object->work[0]];
-    func_800E1BA8_minigame_ObjData *data = object->data;
+    MgPlayerWork *data = object->data;
     omObjData *player;
     StackedDeckCard *other;
     StackedDeckCard *effect;
@@ -598,7 +598,7 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                     (cardObj->trans.x - 90.0f < object->trans.x && object->trans.x < cardObj->trans.x + 90.0f &&
                      cardObj->trans.z - 135.0f < object->trans.z && object->trans.z < cardObj->trans.z + 135.0f &&
                      other->unk_04[0] == 1 && D_8011114A_stacked_deck == 0)) {
-                    func_800E5690_minigame(object, 0);
+                    MgPlayerMotSet(object, 0);
                     HuPadBtnDown[object->work[3]] |= 0x8000;
                     D_8011114A_stacked_deck = 1;
                 }
@@ -648,7 +648,7 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                 switch (card->unk_04[2]) {
                     case 0:
                         if (effect->unk_04[0] == 2 && card->unk_04[1] != 0x27) {
-                            func_800E5690_minigame(object, 0x27);
+                            MgPlayerMotSet(object, 0x27);
                             card->unk_04[1] = 0x27;
                         }
                         if (card->unk_04[1] == 0x27 && Hu3DMotion[Hu3DData[object->model[0]].motId].unk02 <=
@@ -694,9 +694,9 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                                 object->trans.x = (D_8011116E_stacked_deck - 1) * 140.0f;
                                 if (data->unk3C <= 200.0f && data->unk3C >= 160.0f) {
                                     if (card->unk_04[1] != 0) {
-                                        func_800E5690_minigame(object, 2);
+                                        MgPlayerMotSet(object, 2);
                                         object->motion[0] = object->motion[43];
-                                        func_800E5690_minigame(object, 0);
+                                        MgPlayerMotSet(object, 0);
                                         card->unk_04[1] = 0;
                                     }
                                     data->unk3C = 180.0f;
@@ -708,7 +708,7 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                                 } else {
                                     data->unk3C = func_801059BC_stacked_deck(data->unk3C, -15.0f);
                                     if (card->unk_04[1] != 2) {
-                                        func_800E5690_minigame(object, 2);
+                                        MgPlayerMotSet(object, 2);
                                         object->motion[43] = object->motion[0];
                                         object->motion[0] = object->motion[2];
                                         card->unk_04[1] = 2;
@@ -758,7 +758,7 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                     case 0:
                         data->unk3C = 0.0f;
                         if (effect->unk_04[0] == 2 && card->unk_04[1] != 0x28) {
-                            func_800E5690_minigame(object, 0x28);
+                            MgPlayerMotSet(object, 0x28);
                             card->unk_04[1] = 0x28;
                         }
                         if (card->unk_04[1] == 0x28 && Hu3DMotion[Hu3DData[object->model[0]].motId].unk02 <=
@@ -795,7 +795,7 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                     case 0:
                         if (effect->unk_04[0] == 2 && card->unk_04[1] != 0x28) {
                             data->unk3C = 180.0f;
-                            func_800E5690_minigame(object, 0x28);
+                            MgPlayerMotSet(object, 0x28);
                             card->unk_04[1] = 0x28;
                         }
                         if (card->unk_04[1] == 0x28 && Hu3DMotion[Hu3DData[object->model[0]].motId].unk02 <=
@@ -930,7 +930,7 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                         data->unk40 = 0.0f;
                         data->unk3C = 0.0f;
                         if (effect->unk_04[0] == 2 && card->unk_04[1] != 0x29) {
-                            func_800E5690_minigame(object, 0x29);
+                            MgPlayerMotSet(object, 0x29);
                             card->unk_04[1] = 0x29;
                             card->unk_04[7] = D_8011116E_stacked_deck;
                         }
@@ -941,7 +941,7 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                         }
                         if (effect->unk_04[0] >= 5) {
                             card->unk_04[2] = 1;
-                            func_800E5690_minigame(object, 0x12);
+                            MgPlayerMotSet(object, 0x12);
                             card->unk_04[1] = 0x12;
                             Hu3DMotionTimeSet(object->model[0], 0.0f);
                             Hu3DMotionSpeedSet(object->model[0], 0.0f);
@@ -1024,7 +1024,7 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                         data->unk40 = 0.0f;
                         data->unk3C = 0.0f;
                         if (effect->unk_04[0] == 2 && card->unk_04[1] != 0x29) {
-                            func_800E5690_minigame(object, 0x29);
+                            MgPlayerMotSet(object, 0x29);
                             card->unk_04[1] = 0x29;
                             card->unk_04[7] = D_8011116E_stacked_deck;
                         }
@@ -1035,7 +1035,7 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                         }
                         if (effect->unk_04[0] >= 5) {
                             card->unk_04[2] = 1;
-                            func_800E5690_minigame(object, 0x12);
+                            MgPlayerMotSet(object, 0x12);
                             card->unk_04[1] = 0x12;
                             Hu3DMotionTimeSet(object->model[0], 0.0f);
                             Hu3DMotionSpeedSet(object->model[0], 0.0f);
@@ -1071,14 +1071,14 @@ void func_80106BC8_stacked_deck(omObjData *object) {
             } else if (object->work[1] <= D_8011116E_stacked_deck && D_8010F6F4_stacked_deck == 15) {
                 if (data->unk3C <= 20.0f || data->unk3C >= 340.0f) {
                     data->unk3C = 0.0f;
-                    func_800E5690_minigame(object, 2);
+                    MgPlayerMotSet(object, 2);
                     object->motion[0] = object->motion[43];
-                    func_800E5690_minigame(object, 0);
+                    MgPlayerMotSet(object, 0);
                     card->unk_04[1] = 0;
                 } else {
                     data->unk3C = func_801059BC_stacked_deck(data->unk3C, 15.0f);
                     if (card->unk_04[1] != 2) {
-                        func_800E5690_minigame(object, 2);
+                        MgPlayerMotSet(object, 2);
                         object->motion[43] = object->motion[0];
                         object->motion[0] = object->motion[2];
                         card->unk_04[1] = 2;
@@ -1096,7 +1096,7 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                         data->unk40 = 0.0f;
                         data->unk3C = 0.0f;
                         if (effect->unk_04[0] == 2 && card->unk_04[1] != 0x29) {
-                            func_800E5690_minigame(object, 0x29);
+                            MgPlayerMotSet(object, 0x29);
                             card->unk_04[1] = 0x29;
                             card->unk_04[7] = D_8011116E_stacked_deck;
                         }
@@ -1107,7 +1107,7 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                         }
                         if (effect->unk_04[0] >= 5) {
                             card->unk_04[2] = 1;
-                            func_800E5690_minigame(object, 0x12);
+                            MgPlayerMotSet(object, 0x12);
                             card->unk_04[1] = 0x12;
                             Hu3DMotionTimeSet(object->model[0], 0.0f);
                             Hu3DMotionSpeedSet(object->model[0], 0.0f);
@@ -1151,7 +1151,7 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                     data->unk3C = 0.0f;
                     if (card->unk_04[1] != 13 && D_8010F720_stacked_deck >= 0) {
                         object->motion[0] = object->motion[43];
-                        func_800E5690_minigame(object, 13);
+                        MgPlayerMotSet(object, 13);
                         card->unk_04[1] = 13;
                         card->unk_04[7] = 0;
                         HuAudCharVoicePlay((D_8010F290_stacked_deck[GwPlayer[object->work[0]].chr] << 16) | 0x30);
@@ -1159,7 +1159,7 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                 } else {
                     data->unk3C = func_801059BC_stacked_deck(data->unk3C, 15.0f);
                     if (card->unk_04[1] != 2) {
-                        func_800E5690_minigame(object, 2);
+                        MgPlayerMotSet(object, 2);
                         object->motion[43] = object->motion[0];
                         object->motion[0] = object->motion[2];
                         card->unk_04[1] = 2;
@@ -1170,15 +1170,15 @@ void func_80106BC8_stacked_deck(omObjData *object) {
     }
 
     if (D_8010F6F4_stacked_deck == 7) {
-        D_800EB744_minigame = 1.7f;
+        mgPlayerJumpPower = 1.7f;
     } else {
-        D_800EB744_minigame = 1.3f;
+        mgPlayerJumpPower = 1.3f;
     }
     if (object->work[1] > D_8011116E_stacked_deck) {
         func_80105B3C_stacked_deck(object->work[0]);
         data->unk40 = 0.0f;
     }
-    func_800DDD94_minigame(object);
+    MgPlayerObjMain(object);
     Hu3DModelPosSet(object->model[1], object->trans.x, 1.0f, object->trans.z);
     if (object->trans.x >= 3000.0f) {
         object->trans.y = object->work[0] * 500.0f + 100.0f;
@@ -1191,9 +1191,9 @@ void func_80106BC8_stacked_deck(omObjData *object) {
 void func_80108E48_stacked_deck(omObjData *object) {
     StackedDeckCard *card = &STACKED_DECK_PLAYERS[object->work[0]];
     u16 character = GwPlayer[object->work[0]].chr;
-    s32 modelFile = D_800A178C_main[character][0];
-    s32 motionFile = D_800A1790_main[character][0];
-    func_800E1BA8_minigame_ObjData *work;
+    s32 modelFile = omCharModelNoTbl[character][0];
+    s32 motionFile = omCharMotTbl[character][0];
+    MgPlayerWork *work;
     omObjData *obj;
     StackedDeckCard *player;
     s32 values[4];
@@ -1202,8 +1202,8 @@ void func_80108E48_stacked_deck(omObjData *object) {
     s16 rank;
     s16 slot;
 
-    func_800E18D8_minigame();
-    func_800E1BA8_minigame(object, modelFile, motionFile, ((u16 *)object->work)[1], 0x2B9, 0x2A9);
+    MgPlayerParamReset();
+    MgPlayerCreate(object, modelFile, motionFile, ((u16 *)object->work)[1], 0x2B9, 0x2A9);
     work = object->data;
     work->unkEC = NULL;
     Hu3DModelObjAttrSet(object->model[1], 0x80000000, 0);
@@ -1212,21 +1212,21 @@ void func_80108E48_stacked_deck(omObjData *object) {
     Hu3DModelRemakeStatic(object->model[1]);
     Hu3DModelDynamicFree(object->model[1]);
     object->model[7] = Hu3DModelRead(8, 0x2BD);
-    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(character, 0), 1, 0);
-    func_800E5A00_minigame(object, 1, CharMotionDataNumGet(character, 1), 1, 0);
-    func_800E5A00_minigame(object, 2, CharMotionDataNumGet(character, 2), 1, 0);
-    func_800E5A00_minigame(object, 6, CharMotionDataNumGet(character, 4), 1, 0x13);
-    func_800E5A00_minigame(object, 8, CharMotionDataNumGet(character, 6), 1, 0x1B);
-    func_800E5A00_minigame(object, 0x12, CharMotionDataNumGet(character, 0xF), 2, 0);
-    func_800E5978_minigame(object, 0x15, CharMotionDataNumGet(character, 0x1F), 0, 0);
-    func_800E5A00_minigame(object, 0xD, CharMotionDataNumGet(character, 0x30), 1, 0x78);
-    func_800E5A00_minigame(object, 0x27, CharMotionDataNumGet(character, 0x33), 2, 0);
-    func_800E5A00_minigame(object, 0x28, CharMotionDataNumGet(character, 0x7A), 2, 0);
-    func_800E5A00_minigame(object, 0x29, CharMotionDataNumGet(character, 0x37), 1, 0x78);
-    func_800E5A00_minigame(object, 0x2A, CharMotionDataNumGet(character, 0x70), 1, 0);
+    MgPlayerMotLoad(object, 0, CharMotionDataNumGet(character, 0), 1, 0);
+    MgPlayerMotLoad(object, 1, CharMotionDataNumGet(character, 1), 1, 0);
+    MgPlayerMotLoad(object, 2, CharMotionDataNumGet(character, 2), 1, 0);
+    MgPlayerMotLoad(object, 6, CharMotionDataNumGet(character, 4), 1, 0x13);
+    MgPlayerMotLoad(object, 8, CharMotionDataNumGet(character, 6), 1, 0x1B);
+    MgPlayerMotLoad(object, 0x12, CharMotionDataNumGet(character, 0xF), 2, 0);
+    MgPlayerMotRead(object, 0x15, CharMotionDataNumGet(character, 0x1F), 0, 0);
+    MgPlayerMotLoad(object, 0xD, CharMotionDataNumGet(character, 0x30), 1, 0x78);
+    MgPlayerMotLoad(object, 0x27, CharMotionDataNumGet(character, 0x33), 2, 0);
+    MgPlayerMotLoad(object, 0x28, CharMotionDataNumGet(character, 0x7A), 2, 0);
+    MgPlayerMotLoad(object, 0x29, CharMotionDataNumGet(character, 0x37), 1, 0x78);
+    MgPlayerMotLoad(object, 0x2A, CharMotionDataNumGet(character, 0x70), 1, 0);
     card->unk_04[1] = 0;
-    func_800E5690_minigame(object, 0);
-    D_800EBE24_minigame = 1;
+    MgPlayerMotSet(object, 0);
+    mgFieldStat = 1;
 
     // The last player sets up the turn order for everyone, ranked by coins and
     // then by stars.
@@ -1296,7 +1296,7 @@ void func_80108E48_stacked_deck(omObjData *object) {
             Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
         }
     }
-    func_800E149C_minigame(object, 0, 2);
+    MgPlayerMapAttrSet(object, 0, 2);
     func_80105B3C_stacked_deck(object->work[0]);
     object->rot.y = 180.0f;
     work->unk3C = 180.0f;
@@ -1332,8 +1332,8 @@ void func_8010969C_stacked_deck(void) {
         obj->work[0] = player;
         obj->work[3] = GwPlayer[player].pad;
         card->obj = obj;
-        D_800EC598_minigame[D_800EC280_minigame] = obj;
-        D_800EC280_minigame++;
+        mgPlayerObjTbl[mgPlayerObjNum] = obj;
+        mgPlayerObjNum++;
     }
 }
 
@@ -3258,15 +3258,15 @@ void func_8010F134_stacked_deck(void) {
     Hu3DGLightDirSet(1, 0.0f, 90.0f, 560.0f);
     Hu3DGLightColorSet(2, 0xFF, 0xFF, 0xFF);
     Hu3DGLightDirSet(2, 0.0f, 90.0f, 560.0f);
-    D_800EC1B8_minigame = 0;
-    D_800EC280_minigame = 0;
-    D_800EBE28_minigame = 0;
+    mgItemObjNum = 0;
+    mgPlayerObjNum = 0;
+    mgMapObjNum = 0;
     GMesFontMesCreate(D_8010F6E8_stacked_deck, 0);
     GMesFontMesCreate(D_8010F6E8_stacked_deck, 1);
     omAddObj(1000, 0, 0, -1, func_8010ED44_stacked_deck);
     omAddObj(1000, 0, 0, -1, func_8010E734_stacked_deck);
     func_80105A74_stacked_deck();
-    func_800E5EA0_minigame(&D_8010F334_stacked_deck);
+    MgFlowInit(&D_8010F334_stacked_deck);
 }
 
 const s16 D_8010F6E8_stacked_deck[] = { 0x8260, 0x8261, 0x8262, 0 };

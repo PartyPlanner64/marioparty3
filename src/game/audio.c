@@ -19,7 +19,7 @@ extern s16 HuAudSeVol[];
 extern s16 HuAudSubMusNo;
 extern u8 saveCommonBuf;
 extern str800D5298 HuAudSysConfig;
-extern s32 D_800D52C0_main;
+extern s32 HuAudSysFxNo;
 extern omObjData *HuAudFadeObj;
 
 u16 HuAudMusEnableF = 1;

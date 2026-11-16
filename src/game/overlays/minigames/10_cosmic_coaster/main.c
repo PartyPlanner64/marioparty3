@@ -86,7 +86,7 @@ extern f32 D_8010C018_cosmic_coaster[2];     // victory jump y velocity per ride
 extern s32 D_8010C020_cosmic_coaster;        // victory sequence countdown
 extern omObjData *D_8010C024_cosmic_coaster; // victory camera helper object
 extern omObjData *D_8010C028_cosmic_coaster; // losing car object
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 extern u16 D_8010C05A_cosmic_coaster;
 
 void func_80105D80_cosmic_coaster(omObjData *arg0);
@@ -153,9 +153,9 @@ void func_801059A0_cosmic_coaster(void) {
     D_8010C3B0_cosmic_coaster[1] = omAddObj(10, 9, 14, -1, func_8010673C_cosmic_coaster);
     omSetStat(D_8010C3C4_cosmic_coaster, 0x100);
     omAddObj(40, 0, 0, -1, func_801090C0_cosmic_coaster);
-    func_800E5EA0_minigame(&D_8010BB30_cosmic_coaster);
-    func_800EA0FC_minigame(0, 0.0f, 130.0f);
-    func_800EA0FC_minigame(1, 0.0f, 130.0f);
+    MgFlowInit(&D_8010BB30_cosmic_coaster);
+    MgGaugeRangeSet(0, 0.0f, 130.0f);
+    MgGaugeRangeSet(1, 0.0f, 130.0f);
     CharAnimInit();
 }
 
@@ -400,9 +400,9 @@ void func_80106758_cosmic_coaster(omObjData *object, s16 group) {
             car->hasHuman = 1;
         }
         chr = (s8)GwPlayer[car->player[i]].chr;
-        dir = D_800A178C_main[chr][0];
-        object->model[3 + i] = Hu3DModelRead(dir | D_800A178C_main[chr][1], 0x206D9);
-        object->model[7 + i] = Hu3DModelRead(dir | D_800A178C_main[chr][2], 0x206CD);
+        dir = omCharModelNoTbl[chr][0];
+        object->model[3 + i] = Hu3DModelRead(dir | omCharModelNoTbl[chr][1], 0x206D9);
+        object->model[7 + i] = Hu3DModelRead(dir | omCharModelNoTbl[chr][2], 0x206CD);
         CharAnimCreate(object->model[7 + i], 2, chr, CharMotionDataNumGetTbl(chr, 2, 1));
         Hu3DModelDynamicFree(object->model[7 + i]);
         Hu3DModelCameraSet(object->model[3 + i], cam);
@@ -716,8 +716,8 @@ void func_80107888_cosmic_coaster(omObjData *object) {
                 Hu3DMotionShiftSet(object->model[3 + i], Hu3DData[object->motion[10 + i]].motId, 0, 6, 0);
                 Hu3DMotionShiftSet(D_8010C028_cosmic_coaster->model[3 + i],
                                    Hu3DData[D_8010C028_cosmic_coaster->motion[12 + i]].motId, 0, 6, 0);
-                HuAudCharVoicePlay(D_800A178C_main[GwPlayer[car->player[0]].chr][0] | 0x2F);
-                HuAudCharVoicePlay(D_800A178C_main[GwPlayer[car->player[1]].chr][0] | 0x2F);
+                HuAudCharVoicePlay(omCharModelNoTbl[GwPlayer[car->player[0]].chr][0] | 0x2F);
+                HuAudCharVoicePlay(omCharModelNoTbl[GwPlayer[car->player[1]].chr][0] | 0x2F);
             }
             D_8010C028_cosmic_coaster->work[0] = 1;
             D_8010C028_cosmic_coaster->work[1] = 45;

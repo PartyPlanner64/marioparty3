@@ -31,9 +31,9 @@ typedef union {
     f32 single;
 } HmfFloatBits;
 
-u8 D_800A0540_main = 0;
-u8 D_800A0541_main = 0;
-u8 D_800A0542_main = 0;
+u8 Hu3DBGColR = 0;
+u8 Hu3DBGColG = 0;
+u8 Hu3DBGColB = 0;
 s16 sceneLoadF = 0;
 
 static u8 *ModeTop;

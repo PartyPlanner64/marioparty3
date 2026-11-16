@@ -61,7 +61,7 @@ typedef struct RiverRaidersBssDB8 {
     /* 0x06 */ s16 unk06; // D_80110DBE_river_raiders
 } RiverRaidersBssDB8; // sizeof 0x08
 
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 extern u8 omAllPauseF;
 extern const s16 D_8010D9BC_river_raiders[];
 
@@ -908,7 +908,7 @@ void func_80107B14_river_raiders(omObjData *obj) {
 void func_80108188_river_raiders(omObjData *obj) {
     s8 chr = GwPlayer[obj->work[0]].chr;
 
-    obj->model[5] = Hu3DModelRead(D_800A178C_main[chr][0] | D_800A178C_main[chr][1], 0x6A9);
+    obj->model[5] = Hu3DModelRead(omCharModelNoTbl[chr][0] | omCharModelNoTbl[chr][1], 0x6A9);
     omObjMotionRead(obj, 0, CharMotionDataNumGet(chr, 0x27));
     omObjMotionRead(obj, 1, CharMotionDataNumGet(chr, 0x28));
     Hu3DMotionModelSet(obj->model[5], obj->motion[0]);
@@ -1524,7 +1524,7 @@ void func_8010A6A8_river_raiders(omObjData *obj) {
     s8 chr = GwPlayer[obj->work[0]].chr;
     u8 lane;
 
-    obj->model[0] = Hu3DModelRead(D_800A178C_main[chr][0] | D_800A178C_main[chr][1], 0x6A9);
+    obj->model[0] = Hu3DModelRead(omCharModelNoTbl[chr][0] | omCharModelNoTbl[chr][1], 0x6A9);
     omObjMotionRead(obj, 0, CharMotionDataNumGet(chr, 0x4F));
     omObjMotionRead(obj, 1, CharMotionDataNumGet(chr, 0x50));
     omObjMotionRead(obj, 2, CharMotionDataNumGet(chr, 0x51));
@@ -2370,9 +2370,9 @@ void func_8010D268_river_raiders(void) {
     Hu3DGLightColorSet(2, 64, 64, 64);
     Hu3DGLightDirSet(2, 0.0f, 0.0f, 100.0f);
     func_8010D0F8_river_raiders();
-    D_800EC1B8_minigame = 0;
-    D_800EC280_minigame = 0;
-    D_800EBE28_minigame = 0;
+    mgItemObjNum = 0;
+    mgPlayerObjNum = 0;
+    mgMapObjNum = 0;
     GMesFontMesCreate(D_8010D9BC_river_raiders, 0);
     GMesFontMesCreate(D_8010D9BC_river_raiders, 1);
     omAddObj(1000, 0, 0, -1, func_8010CF00_river_raiders);

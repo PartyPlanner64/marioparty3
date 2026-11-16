@@ -5,12 +5,12 @@
 #include "gcc/memory.h"
 #include "game/overlays/minigame.h"
 
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 extern u8 omAllPauseF;
-extern f32 D_800EB724_minigame;
-extern u16 D_800EC288_minigame;
-extern Vec D_800EC298_minigame[];
-extern omObjData *D_800EBE70_minigame[];
+extern f32 mgItemSpeedMax;
+extern u16 mgHitSkipCnt;
+extern Vec mgWallNorTbl[];
+extern omObjData *mgItemObjTbl[];
 
 s32 D_80109700_boulder_ball[8] = { 2, 0, 0, 0, 0, 0, 0, 0 };
 Vec D_80109720_boulder_ball = { 320.0f, 0.0f, 1000.0f };
@@ -81,35 +81,35 @@ void func_801059A0_boulder_ball(void) {
     u8 camIndex;
 
     MapCollInit(50);
-    Hu3DQuadPoolInit(&D_800EBEB0_minigame, 0x40);
+    Hu3DQuadPoolInit(&mgQuadPool, 0x40);
     Hu3DSprModelInit(32);
     omInitObjMan(50, 0);
     omGameSysInit();
-    func_800E1804_minigame();
+    MgFieldStatClear();
     CamSetupInit(1);
     camIndex = CamSetupMapCullAdd();
     ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 32.0f, 80.0f, 5000.0f);
     Hu3DGLightDirSet(1, -94.0f, 65.0f, 34.0f);
-    D_800EC1B8_minigame = 0;
-    D_800EC280_minigame = 0;
-    D_800EBE28_minigame = 0;
-    func_800E18D8_minigame();
-    func_800E19F0_minigame(1);
-    D_800EB77C_minigame = 0.0f;
-    func_800E1490_minigame(D_800EBE28_minigame);
-    D_800EC1C0_minigame[D_800EBE28_minigame++] = omAddObj(1, 10, 0, -1, func_80106B58_boulder_ball);
-    D_800EC1C0_minigame[D_800EBE28_minigame++] = omAddObj(1, 5, 0, -1, func_80106C8C_boulder_ball);
-    D_800EC598_minigame[D_800EC280_minigame++] = omAddObj(3, 10, 60, -1, func_80107924_boulder_ball);
-    D_800EC598_minigame[D_800EC280_minigame++] = omAddObj(3, 10, 60, -1, func_80107A20_boulder_ball);
-    D_800EC598_minigame[D_800EC280_minigame++] = omAddObj(3, 10, 60, -1, func_80107B0C_boulder_ball);
+    mgItemObjNum = 0;
+    mgPlayerObjNum = 0;
+    mgMapObjNum = 0;
+    MgPlayerParamReset();
+    MgShadowAltSet(1);
+    mgPlayerFallInit = 0.0f;
+    MgMapBaseSet(mgMapObjNum);
+    mgMapObjTbl[mgMapObjNum++] = omAddObj(1, 10, 0, -1, func_80106B58_boulder_ball);
+    mgMapObjTbl[mgMapObjNum++] = omAddObj(1, 5, 0, -1, func_80106C8C_boulder_ball);
+    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 10, 60, -1, func_80107924_boulder_ball);
+    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 10, 60, -1, func_80107A20_boulder_ball);
+    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 10, 60, -1, func_80107B0C_boulder_ball);
     D_801098A4_boulder_ball = omAddObj(3, 10, 60, -1, func_80107C08_boulder_ball);
-    D_801098A0_boulder_ball = D_800EBE70_minigame[D_800EC1B8_minigame++] =
+    D_801098A0_boulder_ball = mgItemObjTbl[mgItemObjNum++] =
         omAddObj(2, 4, 0, -1, func_80108A08_boulder_ball);
-    D_800EBE70_minigame[D_800EC1B8_minigame++] = omAddObj(2, 10, 0, -1, func_80108A08_boulder_ball);
-    D_800EBE70_minigame[D_800EC1B8_minigame++] = omAddObj(2, 10, 0, -1, func_80108A08_boulder_ball);
-    D_800EBE70_minigame[D_800EC1B8_minigame++] = omAddObj(2, 10, 0, -1, func_80108A08_boulder_ball);
+    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 10, 0, -1, func_80108A08_boulder_ball);
+    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 10, 0, -1, func_80108A08_boulder_ball);
+    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 10, 0, -1, func_80108A08_boulder_ball);
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     Center.x = 0.0f;
     Center.y = 200.0f;
@@ -118,7 +118,7 @@ void func_801059A0_boulder_ball(void) {
     CRot.y = 0.0f;
     CZoom = 1400.0f;
     WipeCreateIn(WIPE_TYPE_PREV, 16);
-    func_800E5EA0_minigame(&D_80109760_boulder_ball);
+    MgFlowInit(&D_80109760_boulder_ball);
     if (GwPlayer[0].group == 0) {
         D_8010989C_boulder_ball = 0;
     }
@@ -131,8 +131,8 @@ void func_801059A0_boulder_ball(void) {
     if (GwPlayer[3].group == 0) {
         D_8010989C_boulder_ball = 3;
     }
-    D_800EB930_minigame = 47;
-    D_800EB932_minigame = 36;
+    mgFlowSeqNo = 47;
+    mgFlowSeqTime = 36;
 }
 
 void func_80105E74_boulder_ball(omObjData *object) {
@@ -146,12 +146,12 @@ void func_80105EA0_boulder_ball(void) {
     f32 maxZ = 0.0f;
     s32 i;
 
-    for (i = 0; i < D_800EC280_minigame; i++) {
-        if (maxZ < D_800EC598_minigame[i]->trans.z) {
-            maxZ = D_800EC598_minigame[i]->trans.z;
+    for (i = 0; i < mgPlayerObjNum; i++) {
+        if (maxZ < mgPlayerObjTbl[i]->trans.z) {
+            maxZ = mgPlayerObjTbl[i]->trans.z;
         }
-        if (D_800EC598_minigame[i]->trans.y < minY) {
-            minY = D_800EC598_minigame[i]->trans.y;
+        if (mgPlayerObjTbl[i]->trans.y < minY) {
+            minY = mgPlayerObjTbl[i]->trans.y;
         }
     }
     Center.x = 0.0f;
@@ -180,9 +180,9 @@ void func_80105EA0_boulder_ball(void) {
 }
 
 void func_801060D0_boulder_ball(void) {
-    s32 time = func_800E6E9C_minigame();
-    func_800E1BA8_minigame_ObjData *playerData = D_801098A4_boulder_ball->data;
-    A96F0_ObjData *boulderData = D_801098A0_boulder_ball->data;
+    s32 time = MgFlowStatTimeGet();
+    MgPlayerWork *playerData = D_801098A4_boulder_ball->data;
+    MgItemWork *boulderData = D_801098A0_boulder_ball->data;
 
     if (time < 5) {
         Center.x = 0.0f;
@@ -230,8 +230,8 @@ void func_801060D0_boulder_ball(void) {
 }
 
 void func_80106410_boulder_ball(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *data;
-    func_800E1BA8_minigame_ObjData *work;
+    MgPlayerWork *data;
+    MgPlayerWork *work;
     omObjData *player;
     f32 velocity;
     f32 speedSq;
@@ -242,7 +242,7 @@ void func_80106410_boulder_ball(omObjData *object) {
     if (omPauseChk() + omAllPauseF != 0) {
         return;
     }
-    func_800E6E9C_minigame();
+    MgFlowStatTimeGet();
     switch (MgFlowMain()) {
         case 0:
             func_801060D0_boulder_ball();
@@ -253,10 +253,10 @@ void func_80106410_boulder_ball(omObjData *object) {
         case 3:
             if (D_801097A0_boulder_ball == 0) {
                 D_801098A4_boulder_ball->func = func_80108798_boulder_ball;
-                func_800E131C_minigame(D_800EC1C0_minigame[0], 0.0f);
-                for (i = 0; i < D_800EC1B8_minigame; i++) {
-                    Hu3DModelAttrSet(D_800EBE70_minigame[i]->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-                    Hu3DModelAttrSet(D_800EBE70_minigame[i]->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                MgMapSlideSet(mgMapObjTbl[0], 0.0f);
+                for (i = 0; i < mgItemObjNum; i++) {
+                    Hu3DModelAttrSet(mgItemObjTbl[i]->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    Hu3DModelAttrSet(mgItemObjTbl[i]->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     if (D_80109744_boulder_ball[i] != -1) {
                         HuAudFXStop((s16)D_80109744_boulder_ball[i]);
                         D_80109744_boulder_ball[i] = -1;
@@ -267,9 +267,9 @@ void func_80106410_boulder_ball(omObjData *object) {
                     D_80109760_boulder_ball.winners[0] = D_8010989C_boulder_ball;
                     Hu3DModelAttrSet(D_801098A4_boulder_ball->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     Hu3DModelAttrSet(D_801098A4_boulder_ball->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-                    func_800E5798_minigame(D_801098A4_boulder_ball, 6);
+                    MgPlayerMotForceSet(D_801098A4_boulder_ball, 6);
                     work = D_801098A4_boulder_ball->data;
-                    work->unk38 = -D_800EB744_minigame;
+                    work->unk38 = -mgPlayerJumpPower;
                 } else {
                     D_80109760_boulder_ball.resultType = MG_RESULT_WIN_3;
                     for (j = 0, i = 0; i < 4; i++) {
@@ -284,7 +284,7 @@ void func_80106410_boulder_ball(omObjData *object) {
                 D_801097A0_boulder_ball = 1;
             }
             for (i = 0; i < 3; i++) {
-                player = D_800EC598_minigame[i];
+                player = mgPlayerObjTbl[i];
                 work = player->data;
                 work->unk3C *= 0.8f;
             }
@@ -305,22 +305,22 @@ void func_80106410_boulder_ball(omObjData *object) {
             }
             break;
         case 4:
-            if (D_800EB934_minigame == 1) {
+            if (mgFlowResultF == 1) {
                 if (D_8010975C_boulder_ball == 1) {
                     for (i = 0; i < 3; i++) {
-                        player = D_800EC598_minigame[i];
+                        player = mgPlayerObjTbl[i];
                         data = player->data;
-                        func_800E5798_minigame(player, 0xD);
-                        HuAudCharVoicePlay(D_800A178C_main[GwPlayer[data->unk59].chr][0] | 0x2F);
+                        MgPlayerMotForceSet(player, 0xD);
+                        HuAudCharVoicePlay(omCharModelNoTbl[GwPlayer[data->unk59].chr][0] | 0x2F);
                         GwPlayer[data->unk59].bonusCoin += 10;
                     }
                 } else {
                     GwPlayer[D_8010989C_boulder_ball].bonusCoin += 10;
                     for (i = 0; i < 3; i++) {
-                        func_800E5798_minigame(D_800EC598_minigame[i], 0xE);
+                        MgPlayerMotForceSet(mgPlayerObjTbl[i], 0xE);
                     }
-                    func_800E5798_minigame(D_801098A4_boulder_ball, 0xD);
-                    HuAudCharVoicePlay(D_800A178C_main[GwPlayer[D_8010989C_boulder_ball].chr][0] | 0x2F);
+                    MgPlayerMotForceSet(D_801098A4_boulder_ball, 0xD);
+                    HuAudCharVoicePlay(omCharModelNoTbl[GwPlayer[D_8010989C_boulder_ball].chr][0] | 0x2F);
                 }
             }
             break;
@@ -329,8 +329,8 @@ void func_80106410_boulder_ball(omObjData *object) {
             object->func = func_80105E74_boulder_ball;
             break;
     }
-    for (i = 0; i < D_800EC280_minigame; i++) {
-        work = D_800EC598_minigame[i]->data;
+    for (i = 0; i < mgPlayerObjNum; i++) {
+        work = mgPlayerObjTbl[i]->data;
         work->unk60 = CRot.y;
     }
     if (omSysExitReq == 1) {
@@ -341,13 +341,13 @@ void func_80106410_boulder_ball(omObjData *object) {
     }
     if (D_80109754_boulder_ball != 1000.0f) {
         velocity = D_80109754_boulder_ball;
-        if (velocity > D_800EB774_minigame) {
-            velocity = D_800EB774_minigame;
+        if (velocity > mgPlayerFallMax) {
+            velocity = mgPlayerFallMax;
         }
         speedSq = velocity * velocity;
         y = D_80109798_boulder_ball + speedSq * (D_80109754_boulder_ball >= 0.0f ? -36.75f : 36.75f);
         D_80109798_boulder_ball = y;
-        D_80109754_boulder_ball = velocity = D_80109754_boulder_ball + D_800EB748_minigame;
+        D_80109754_boulder_ball = velocity = D_80109754_boulder_ball + mgPlayerGravity;
         if (y < 0.0f) {
             D_80109798_boulder_ball = 0.0f;
             if (velocity > 0.5f) {
@@ -361,9 +361,9 @@ void func_80106410_boulder_ball(omObjData *object) {
 }
 
 void func_80106B58_boulder_ball(omObjData *object) {
-    D_800EC1C0_minigame_ObjData *work;
+    MgMapWork *work;
 
-    D_800EB73C_minigame = 15.0f;
+    mgPlayerAccel = 15.0f;
     object->model[0] = Hu3DModelRead2(0x250000, 0x6B9);
     object->model[1] = Hu3DModelRead2(0x250003, 0xAB9);
     object->trans.x = 0.0f;
@@ -376,20 +376,20 @@ void func_80106B58_boulder_ball(omObjData *object) {
     memset(work, 0, 0xB4);
     object->func = func_80106410_boulder_ball;
     work->unk03 = 1;
-    func_800E147C_minigame(object);
-    func_800E1370_minigame(object, 1, 0.0f);
-    func_800E1304_minigame(object, 0.2f);
-    func_800E1310_minigame(object, D_800EB73C_minigame);
-    func_800E131C_minigame(object, 22.5f);
-    func_800E1468_minigame(object);
+    MgMapTiltOn(object);
+    MgMapAttrSet(object, 1, 0.0f);
+    MgMapFrictionSet(object, 0.2f);
+    MgMapAccelSet(object, mgPlayerAccel);
+    MgMapSlideSet(object, 22.5f);
+    MgMapNoBumpOn(object);
     work->unk04 = 0;
     omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
 }
 
 void func_80106C8C_boulder_ball(omObjData *object) {
-    D_800EC1C0_minigame_ObjData *work;
+    MgMapWork *work;
 
-    D_800EB73C_minigame = 15.0f;
+    mgPlayerAccel = 15.0f;
     object->model[0] = Hu3DModelRead2(0x250001, 0x29D);
     object->trans.x = 0.0f;
     object->trans.y = 0.0f;
@@ -401,65 +401,65 @@ void func_80106C8C_boulder_ball(omObjData *object) {
     memset(work, 0, 0xB4);
     object->func = NULL;
     work->unk03 = 1;
-    func_800E147C_minigame(object);
-    func_800E1370_minigame(object, 1, 0.0f);
-    func_800E1304_minigame(object, 0.2f);
-    func_800E1310_minigame(object, D_800EB73C_minigame);
-    func_800E131C_minigame(object, 22.5f);
-    func_800E1468_minigame(object);
+    MgMapTiltOn(object);
+    MgMapAttrSet(object, 1, 0.0f);
+    MgMapFrictionSet(object, 0.2f);
+    MgMapAccelSet(object, mgPlayerAccel);
+    MgMapSlideSet(object, 22.5f);
+    MgMapNoBumpOn(object);
     work->unk04 = 1;
     omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
 }
 
 void func_80106DAC_boulder_ball(omObjData *object, s32 model, s32 motion, u16 player) {
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     s32 chr;
     s32 attr1 = 0xAC9;
     s32 attr2 = 0xA99;
 
-    func_800E1BA8_minigame(object, model, motion, player, attr1, attr2);
+    MgPlayerCreate(object, model, motion, player, attr1, attr2);
     data = object->data;
     chr = GwPlayer[data->unk59].chr;
     object->model[3] = Hu3DModelRead(3, 0x88D);
     object->model[4] = Hu3DModelRead(4, 0x88D);
     object->model[5] = Hu3DModelRead(6, 0x88D);
     object->model[7] = Hu3DModelRead(8, 0x88D);
-    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(chr, 0), 1, 0);
-    func_800E5A00_minigame(object, 1, CharMotionDataNumGet(chr, 1), 1, 0);
-    func_800E5A00_minigame(object, 2, CharMotionDataNumGet(chr, 2), 1, 0);
-    func_800E5A00_minigame(object, 0x11, CharMotionDataNumGet(chr, 0xE), 1, 0xF);
-    func_800E5A00_minigame(object, 3, CharMotionDataNumGet(chr, 0x1D), 1, 0);
-    func_800E5A00_minigame(object, 4, CharMotionDataNumGet(chr, 0x1E), 1, 0);
-    func_800E5A00_minigame(object, 0x1E, CharMotionDataNumGet(chr, 0x20), 2, 0);
-    func_800E5A00_minigame(object, 0x1F, CharMotionDataNumGet(chr, 0x21), 2, 0);
-    func_800E5A00_minigame(object, 0x20, CharMotionDataNumGet(chr, 0x22), 0, 0);
-    func_800E5978_minigame(object, 0xD, CharMotionDataNumGet(chr, 0x2F), 1, 0x78);
-    func_800E5978_minigame(object, 0xE, CharMotionDataNumGet(chr, 0x36), 1, 0x78);
+    MgPlayerMotLoad(object, 0, CharMotionDataNumGet(chr, 0), 1, 0);
+    MgPlayerMotLoad(object, 1, CharMotionDataNumGet(chr, 1), 1, 0);
+    MgPlayerMotLoad(object, 2, CharMotionDataNumGet(chr, 2), 1, 0);
+    MgPlayerMotLoad(object, 0x11, CharMotionDataNumGet(chr, 0xE), 1, 0xF);
+    MgPlayerMotLoad(object, 3, CharMotionDataNumGet(chr, 0x1D), 1, 0);
+    MgPlayerMotLoad(object, 4, CharMotionDataNumGet(chr, 0x1E), 1, 0);
+    MgPlayerMotLoad(object, 0x1E, CharMotionDataNumGet(chr, 0x20), 2, 0);
+    MgPlayerMotLoad(object, 0x1F, CharMotionDataNumGet(chr, 0x21), 2, 0);
+    MgPlayerMotLoad(object, 0x20, CharMotionDataNumGet(chr, 0x22), 0, 0);
+    MgPlayerMotRead(object, 0xD, CharMotionDataNumGet(chr, 0x2F), 1, 0x78);
+    MgPlayerMotRead(object, 0xE, CharMotionDataNumGet(chr, 0x36), 1, 0x78);
     data->unk4C = 0.05f;
     data->unkB4 = 0.8f;
     data->unkEC = func_8010707C_boulder_ball;
-    func_800E149C_minigame(object, 0, 2);
-    func_800E149C_minigame(object, 1, 1);
-    func_800E3568_minigame(data, 0, func_80107298_boulder_ball);
-    func_800E3568_minigame(data, 1, func_80107194_boulder_ball);
+    MgPlayerMapAttrSet(object, 0, 2);
+    MgPlayerMapAttrSet(object, 1, 1);
+    MgPlayerHookSet(data, 0, func_80107298_boulder_ball);
+    MgPlayerHookSet(data, 1, func_80107194_boulder_ball);
 }
 
 s32 func_8010707C_boulder_ball(omObjData *object, omObjData *other) {
-    func_800E1BA8_minigame_ObjData *data = object->data;
+    MgPlayerWork *data = object->data;
     f32 x, y, z;
 
     if (MgFlowStatGet() == MG_STATE_PLAY) {
         if (data->unkBE != 0) {
-            D_800EC288_minigame++;
+            mgHitSkipCnt++;
         } else {
             x = object->trans.x;
             y = object->trans.y;
             z = object->trans.z;
             HuAudPlayerFXPlay(GwPlayer[data->unk59].chr + 0x287, data->unk59);
             HuAudPlayerFXPlay(0x320, data->unk59);
-            func_800E561C_minigame(object, 1);
-            func_800E5690_minigame(object, 0);
-            func_800E4C88_minigame(object, 7, x, y, z, 0.0f, 0.0f);
+            MgPlayerSquashSet(object, 1);
+            MgPlayerMotSet(object, 0);
+            MgPlayerEffSet(object, 7, x, y, z, 0.0f, 0.0f);
             data->unkBE = 105;
             omVibrate(data->unk59, 20, 0, 20);
         }
@@ -468,7 +468,7 @@ s32 func_8010707C_boulder_ball(omObjData *object, omObjData *other) {
 }
 
 s32 func_80107194_boulder_ball(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *data = object->data;
+    MgPlayerWork *data = object->data;
 
     if (GwPlayer[data->unk59].stat & 1) {
         HuPadBtnDown[data->unk57] = D_80109890_boulder_ball;
@@ -487,10 +487,10 @@ s32 func_80107298_boulder_ball(omObjData *object) {
     Vec dir;
     f32 ranges[4] = { 70.0f, 80.0f, 90.0f, 100.0f };
     f32 speeds[4] = { 0.5f, 0.55f, 0.6f, 0.65f };
-    func_800E1BA8_minigame_ObjData *data = object->data;
+    MgPlayerWork *data = object->data;
     s32 player = data->unk59;
     s32 pad = data->unk57;
-    A96F0_ObjData *boulderData;
+    MgItemWork *boulderData;
     omObjData *boulder;
     s32 difficulty;
     s32 target;
@@ -519,8 +519,8 @@ s32 func_80107298_boulder_ball(omObjData *object) {
     x = z = dir.x = dir.y = dir.z = 0.0f;
     target = -1;
     speed = 30000.0f;
-    for (i = 0; i < D_800EC1B8_minigame; i++) {
-        boulder = D_800EBE70_minigame[i];
+    for (i = 0; i < mgItemObjNum; i++) {
+        boulder = mgItemObjTbl[i];
         boulderData = boulder->data;
         if (D_80109700_boulder_ball[boulderData->unk56] == 3) {
             x = boulder->trans.x;
@@ -533,10 +533,10 @@ s32 func_80107298_boulder_ball(omObjData *object) {
         }
     }
     if (target != -1) {
-        boulderData = D_800EBE70_minigame[target]->data;
-        x = D_800EBE70_minigame[target]->trans.x;
-        z = D_800EBE70_minigame[target]->trans.z;
-        angle = D_800EBE70_minigame[target]->rot.y;
+        boulderData = mgItemObjTbl[target]->data;
+        x = mgItemObjTbl[target]->trans.x;
+        z = mgItemObjTbl[target]->trans.z;
+        angle = mgItemObjTbl[target]->rot.y;
         speed = boulderData->unk40;
         for (i = 0; i < 100; i++) {
             x += sindf(angle) * speed;
@@ -614,8 +614,8 @@ void func_80107924_boulder_ball(omObjData *object) {
     if (GwPlayer[D_801097C4_boulder_ball].group == 0) {
         D_801097C4_boulder_ball++;
     }
-    func_80106DAC_boulder_ball(object, D_800A178C_main[GwPlayer[D_801097C4_boulder_ball].chr][0],
-                               D_800A178C_main[GwPlayer[D_801097C4_boulder_ball].chr][2], D_801097C4_boulder_ball);
+    func_80106DAC_boulder_ball(object, omCharModelNoTbl[GwPlayer[D_801097C4_boulder_ball].chr][0],
+                               omCharModelNoTbl[GwPlayer[D_801097C4_boulder_ball].chr][2], D_801097C4_boulder_ball);
     D_801097A4_boulder_ball[D_801097C4_boulder_ball] = D_80109720_boulder_ball.x - 80.0f;
     object->trans.x = D_80109720_boulder_ball.x;
     object->trans.y = D_80109720_boulder_ball.y;
@@ -627,8 +627,8 @@ void func_80107A20_boulder_ball(omObjData *object) {
     if (GwPlayer[D_801097C4_boulder_ball].group == 0) {
         D_801097C4_boulder_ball++;
     }
-    func_80106DAC_boulder_ball(object, D_800A178C_main[GwPlayer[D_801097C4_boulder_ball].chr][0],
-                               D_800A178C_main[GwPlayer[D_801097C4_boulder_ball].chr][2], D_801097C4_boulder_ball);
+    func_80106DAC_boulder_ball(object, omCharModelNoTbl[GwPlayer[D_801097C4_boulder_ball].chr][0],
+                               omCharModelNoTbl[GwPlayer[D_801097C4_boulder_ball].chr][2], D_801097C4_boulder_ball);
     D_801097A4_boulder_ball[D_801097C4_boulder_ball] = D_8010972C_boulder_ball.x;
     object->trans.x = D_8010972C_boulder_ball.x;
     object->trans.y = D_8010972C_boulder_ball.y;
@@ -640,8 +640,8 @@ void func_80107B0C_boulder_ball(omObjData *object) {
     if (GwPlayer[D_801097C4_boulder_ball].group == 0) {
         D_801097C4_boulder_ball++;
     }
-    func_80106DAC_boulder_ball(object, D_800A178C_main[GwPlayer[D_801097C4_boulder_ball].chr][0],
-                               D_800A178C_main[GwPlayer[D_801097C4_boulder_ball].chr][2], D_801097C4_boulder_ball);
+    func_80106DAC_boulder_ball(object, omCharModelNoTbl[GwPlayer[D_801097C4_boulder_ball].chr][0],
+                               omCharModelNoTbl[GwPlayer[D_801097C4_boulder_ball].chr][2], D_801097C4_boulder_ball);
     D_801097A4_boulder_ball[D_801097C4_boulder_ball] = D_80109738_boulder_ball.x + 80.0f;
     object->trans.x = D_80109738_boulder_ball.x;
     object->trans.y = D_80109738_boulder_ball.y;
@@ -650,10 +650,10 @@ void func_80107B0C_boulder_ball(omObjData *object) {
 }
 
 void func_80107C08_boulder_ball(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     s32 effectAttr = 0x89D;
-    s32 motion = D_800A178C_main[GwPlayer[D_8010989C_boulder_ball].chr][2];
-    s32 model = D_800A178C_main[GwPlayer[D_8010989C_boulder_ball].chr][0];
+    s32 motion = omCharModelNoTbl[GwPlayer[D_8010989C_boulder_ball].chr][2];
+    s32 model = omCharModelNoTbl[GwPlayer[D_8010989C_boulder_ball].chr][0];
     s32 attr = 0xAD9;
     s32 chr;
     s32 i;
@@ -661,10 +661,10 @@ void func_80107C08_boulder_ball(omObjData *object) {
     for (i = 0; i < object->mdlcnt; i++) {
         object->model[i] = 0;
     }
-    object->data = HuMemAllocTag(sizeof(func_800E1BA8_minigame_ObjData), TAG_OVERLAY);
-    memset(object->data, 0, sizeof(func_800E1BA8_minigame_ObjData));
+    object->data = HuMemAllocTag(sizeof(MgPlayerWork), TAG_OVERLAY);
+    memset(object->data, 0, sizeof(MgPlayerWork));
     data = object->data;
-    data->unkE8 = HuMemAllocTag(object->mtncnt * sizeof(func_800E1BA8_minigame_UnkE8_ObjData), TAG_OVERLAY);
+    data->unkE8 = HuMemAllocTag(object->mtncnt * sizeof(MgMotAttr), TAG_OVERLAY);
     for (i = 0; i < object->mtncnt; i++) {
         object->motion[i] = -1;
     }
@@ -684,9 +684,9 @@ void func_80107C08_boulder_ball(omObjData *object) {
     Hu3DModelScaleSet(object->model[2], 2.1f, 2.1f, 2.1f);
     Hu3DModelScaleSet(object->model[3], 2.0f, 2.0f, 2.0f);
     Hu3DModelScaleSet(object->model[4], 2.2f, 2.2f, 2.2f);
-    func_800E5978_minigame(object, 6, CharMotionDataNumGet(chr, 4), 1, 0x13);
-    func_800E5978_minigame(object, 0, CharMotionDataNumGet(chr, 0), 1, 0);
-    func_800E5978_minigame(object, 0xD, CharMotionDataNumGet(chr, 0x2F), 1, 0x78);
+    MgPlayerMotRead(object, 6, CharMotionDataNumGet(chr, 4), 1, 0x13);
+    MgPlayerMotRead(object, 0, CharMotionDataNumGet(chr, 0), 1, 0);
+    MgPlayerMotRead(object, 0xD, CharMotionDataNumGet(chr, 0x2F), 1, 0x78);
     data->unk57 = GwPlayer[D_8010989C_boulder_ball].pad;
     data->unk59 = D_8010989C_boulder_ball;
     data->unk50 = 0;
@@ -702,7 +702,7 @@ void func_80107C08_boulder_ball(omObjData *object) {
 }
 
 void func_80108000_boulder_ball(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *data = object->data;
+    MgPlayerWork *data = object->data;
     f32 speeds[4] = { 0.8f, 0.85f, 0.9f, 1.0f };
     f32 ranges[4] = { 100.0f, 75.0f, 50.0f, 0.0f };
     omObjData *player;
@@ -724,9 +724,9 @@ void func_80108000_boulder_ball(omObjData *object) {
     D_80109890_boulder_ball = 0;
     targetX = targetZ = 0.0f;
     maxY = -10.0f;
-    for (i = 0; i < D_800EC280_minigame; i++) {
-        player = D_800EC598_minigame[i];
-        if (((func_800E1BA8_minigame_ObjData *)player->data)->unkBE == 0 && maxY < player->trans.y) {
+    for (i = 0; i < mgPlayerObjNum; i++) {
+        player = mgPlayerObjTbl[i];
+        if (((MgPlayerWork *)player->data)->unkBE == 0 && maxY < player->trans.y) {
             targetX = player->trans.x;
             maxY = player->trans.y;
             targetZ = player->trans.z;
@@ -786,10 +786,10 @@ void func_80108000_boulder_ball(omObjData *object) {
 }
 
 void func_801083D8_boulder_ball(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *data = object->data;
+    MgPlayerWork *data = object->data;
     s32 player = data->unk59;
     s32 pad = data->unk57;
-    A96F0_ObjData *boulderData;
+    MgItemWork *boulderData;
 
     if (MgFlowStatGet() != MG_STATE_PLAY) {
         return;
@@ -854,17 +854,17 @@ void func_801083D8_boulder_ball(omObjData *object) {
 }
 
 void func_80108798_boulder_ball(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     f32 y;
     f32 velocity;
     f32 speedSq;
 
-    if (func_800E4A90_minigame(object) & 0x20) {
+    if (MgPlayerMotStatGet(object) & 0x20) {
         data = object->data;
         velocity = data->unk38;
         y = object->trans.y;
-        if (velocity > D_800EB774_minigame) {
-            velocity = D_800EB774_minigame;
+        if (velocity > mgPlayerFallMax) {
+            velocity = mgPlayerFallMax;
         }
         speedSq = velocity * velocity;
         if (data->unk38 >= 0.0f) {
@@ -872,9 +872,9 @@ void func_80108798_boulder_ball(omObjData *object) {
         } else {
             y += speedSq * 35.0f;
         }
-        data->unk38 += D_800EB748_minigame;
+        data->unk38 += mgPlayerGravity;
         if (y < 700.0f) {
-            func_800E5690_minigame(object, 0);
+            MgPlayerMotSet(object, 0);
             y = 700.0f;
         }
         object->trans.y = y;
@@ -898,20 +898,20 @@ void func_80108798_boulder_ball(omObjData *object) {
             Hu3DModelAttrSet(object->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             break;
     }
-    func_800E4E30_minigame(object);
+    MgPlayerMotUpdate(object);
     D_801097CC_boulder_ball++;
 }
 
 void func_80108A08_boulder_ball(omObjData *object) {
-    A96F0_ObjData *data;
+    MgItemWork *data;
     s32 i;
 
-    object->data = HuMemAllocTag(sizeof(A96F0_ObjData), TAG_OVERLAY);
-    memset(object->data, 0, sizeof(A96F0_ObjData));
+    object->data = HuMemAllocTag(sizeof(MgItemWork), TAG_OVERLAY);
+    memset(object->data, 0, sizeof(MgItemWork));
     data = object->data;
     object->model[0] = Hu3DModelRead2(0x250002, 0xAD9);
     object->model[1] = Hu3DModelRead3(9, 0xAD9);
-    func_800E3584_minigame(object->model[1]);
+    MgShadowMdlInit(object->model[1]);
     object->model[2] = Hu3DModelRead(4, 0x89D);
     object->model[3] = Hu3DModelRead(4, 0x89D);
     object->model[4] = Hu3DModelRead(4, 0x89D);
@@ -920,7 +920,7 @@ void func_80108A08_boulder_ball(omObjData *object) {
     Hu3DModelScaleSet(object->model[3], 2.0f, 2.0f, 2.0f);
     Hu3DModelScaleSet(object->model[4], 2.0f, 2.0f, 2.0f);
     Hu3DModelScaleSet(object->model[5], 2.0f, 2.0f, 2.0f);
-    object->func = func_800D6B70_minigame;
+    object->func = MgItemObjMain;
     data->unk44 = 0.3f;
     data->unk48 = 70.0f;
     data->unk34 = 180.0f;
@@ -936,21 +936,21 @@ void func_80108A08_boulder_ball(omObjData *object) {
     for (i = 0; i < 9; i++) {
         data->unk84[i] = NULL;
     }
-    func_800E149C_minigame(object, 0, 1);
-    func_800E149C_minigame(object, 1, 2);
+    MgPlayerMapAttrSet(object, 0, 1);
+    MgPlayerMapAttrSet(object, 1, 2);
     object->trans.x = 0.0f;
     object->trans.y = 700.0f;
     object->trans.z = -600.0f;
     object->scale.x = object->scale.y = object->scale.z = 1.0f;
     func_80088700_main(Hu3DData[object->model[1]].mtx, 2.0f, 2.0f, 2.0f);
     D_801097D0_boulder_ball++;
-    func_800D861C_minigame(data, 2, func_80108CF4_boulder_ball);
-    func_800D861C_minigame(data, 0, func_80108E5C_boulder_ball);
-    // The return value of slot 1 is ignored by func_800D6B70_minigame.
-    func_800D861C_minigame(data, 1, (void *)func_801093B8_boulder_ball);
-    func_800D861C_minigame(data, 4, func_80109410_boulder_ball);
-    func_800D861C_minigame(data, 5, func_801095A0_boulder_ball);
-    D_800EB724_minigame = 35.0f;
+    MgItemHookSet(data, 2, func_80108CF4_boulder_ball);
+    MgItemHookSet(data, 0, func_80108E5C_boulder_ball);
+    // The return value of slot 1 is ignored by MgItemObjMain.
+    MgItemHookSet(data, 1, (void *)func_801093B8_boulder_ball);
+    MgItemHookSet(data, 4, func_80109410_boulder_ball);
+    MgItemHookSet(data, 5, func_801095A0_boulder_ball);
+    mgItemSpeedMax = 35.0f;
 }
 
 s32 func_80108CF4_boulder_ball(omObjData *object) {
@@ -958,7 +958,7 @@ s32 func_80108CF4_boulder_ball(omObjData *object) {
 }
 
 void func_80108CFC_boulder_ball(omObjData *object) {
-    A96F0_ObjData *data = object->data;
+    MgItemWork *data = object->data;
     s32 slot = data->unk56;
     s32 time;
     f32 maxTime;
@@ -967,7 +967,7 @@ void func_80108CFC_boulder_ball(omObjData *object) {
 
     if (D_80109700_boulder_ball[slot] < 4) {
         if (D_80109700_boulder_ball[slot] > 0) {
-            time = func_800E6E9C_minigame();
+            time = MgFlowStatTimeGet();
             switch (time) {
                 case 1:
                 case 6:
@@ -994,7 +994,7 @@ void func_80108CFC_boulder_ball(omObjData *object) {
 }
 
 s32 func_80108E5C_boulder_ball(omObjData *object) {
-    A96F0_ObjData *data;
+    MgItemWork *data;
     s32 slot;
     s32 result = 0;
     f32 spin;
@@ -1043,8 +1043,8 @@ s32 func_80108E5C_boulder_ball(omObjData *object) {
             if (object->trans.y == 700.0f) {
                 D_80109700_boulder_ball[slot] = 2;
                 D_80109758_boulder_ball = 1;
-                D_801098A0_boulder_ball = D_800EBE70_minigame[D_801097F4_boulder_ball];
-                D_80109754_boulder_ball = -D_800EB744_minigame * 0.5f;
+                D_801098A0_boulder_ball = mgItemObjTbl[D_801097F4_boulder_ball];
+                D_80109754_boulder_ball = -mgPlayerJumpPower * 0.5f;
                 for (i = 0; i < 4; i++) {
                     omVibrate(i, 2, 2, 20);
                 }
@@ -1054,7 +1054,7 @@ s32 func_80108E5C_boulder_ball(omObjData *object) {
             if (D_80109758_boulder_ball == 0) {
                 D_80109700_boulder_ball[slot] = 3;
                 D_801097F4_boulder_ball++;
-                if (D_801097F4_boulder_ball == D_800EC1B8_minigame) {
+                if (D_801097F4_boulder_ball == mgItemObjNum) {
                     D_801097F4_boulder_ball = 0;
                 }
                 D_80109744_boulder_ball[slot] = HuAudFXPlay(0x31D);
@@ -1104,7 +1104,7 @@ s32 func_80108E5C_boulder_ball(omObjData *object) {
 }
 
 void func_801093B8_boulder_ball(omObjData *arg0) {
-    A96F0_ObjData *data = arg0->data;
+    MgItemWork *data = arg0->data;
 
     data->unk40 += 0.3f;
     data->unk78++;
@@ -1114,7 +1114,7 @@ void func_801093B8_boulder_ball(omObjData *arg0) {
 }
 
 s32 func_80109410_boulder_ball(omObjData *object) {
-    A96F0_ObjData *data = object->data;
+    MgItemWork *data = object->data;
     s32 slot = data->unk56;
     f32 maxTime;
     f32 motTime;
@@ -1143,16 +1143,16 @@ s32 func_80109410_boulder_ball(omObjData *object) {
 }
 
 s32 func_801095A0_boulder_ball(omObjData *object) {
-    A96F0_ObjData *data = object->data;
+    MgItemWork *data = object->data;
     Vec pos;
     Vec dir;
     Vec out;
     f32 dot;
     s32 i;
 
-    pos.x = D_800EC298_minigame[0].x;
+    pos.x = mgWallNorTbl[0].x;
     pos.y = dir.y = 0.0f;
-    pos.z = D_800EC298_minigame[0].z;
+    pos.z = mgWallNorTbl[0].z;
     dir.x = sindf(data->unk3C + 180.0f);
     dir.z = cosdf(data->unk3C + 180.0f);
     dot = HuVecDot3F(&pos, &dir);

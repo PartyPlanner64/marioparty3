@@ -105,7 +105,7 @@ typedef struct {
     /* 0x0B */ s8 unk_0B;    // D_8010E1B3
 } HideAndSneakBssE1A8;       // sizeof 0xC
 
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 extern u8 omAllPauseF;
 // Fields of hideAndSneakBssE174 (aliased in undefined_syms.txt).
 extern s8 D_8010E174_hide_and_sneak;
@@ -796,7 +796,7 @@ void func_80107638_hide_and_sneak(omObjData *object) {
     HideAndSneakSoloCpu *cpu = &D_8010E168_hide_and_sneak;
     u16 character = GwPlayer[object->work[0]].chr;
 
-    object->model[0] = Hu3DModelRead(D_800A178C_main[character][0] | D_800A178C_main[character][3], 0x2B9);
+    object->model[0] = Hu3DModelRead(omCharModelNoTbl[character][0] | omCharModelNoTbl[character][3], 0x2B9);
     omObjMotionRead(object, 0, CharMotionDataNumGet(character, 0));
     omObjMotionRead(object, 1, CharMotionDataNumGet(character, 1));
     omObjMotionRead(object, 2, CharMotionDataNumGet(character, 0x14));
@@ -1867,7 +1867,7 @@ void func_8010A1CC_hide_and_sneak(omObjData *object) {
     HideAndSneakUnk788 *entry = &D_8010C788_hide_and_sneak[object->work[1]];
     u16 character = GwPlayer[object->work[0]].chr;
 
-    object->model[0] = Hu3DModelRead(D_800A178C_main[character][0] | D_800A178C_main[character][3], 0x2B9);
+    object->model[0] = Hu3DModelRead(omCharModelNoTbl[character][0] | omCharModelNoTbl[character][3], 0x2B9);
     omObjMotionRead(object, 0, CharMotionDataNumGet(character, 0));
     omObjMotionRead(object, 1, CharMotionDataNumGet(character, 2));
     omObjMotionRead(object, 3, CharMotionDataNumGet(character, 0x79));
@@ -2547,9 +2547,9 @@ void func_8010C220_hide_and_sneak(void) {
     Hu3DGLightDirSet(1, 0.0f, 0.0f, 100.0f);
     Hu3DGLightColorSet(2, 255, 255, 255);
     Hu3DGLightDirSet(2, 0.0f, 0.0f, 100.0f);
-    D_800EC1B8_minigame = 0;
-    D_800EC280_minigame = 0;
-    D_800EBE28_minigame = 0;
+    mgItemObjNum = 0;
+    mgPlayerObjNum = 0;
+    mgMapObjNum = 0;
     GMesFontMesCreate(D_8010C754_hide_and_sneak, 0);
     GMesFontMesCreate(D_8010C754_hide_and_sneak, 1);
     omAddObj(1500, 0, 0, -1, func_8010BFE8_hide_and_sneak);

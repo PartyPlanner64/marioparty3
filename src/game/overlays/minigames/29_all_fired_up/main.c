@@ -22,7 +22,7 @@ typedef struct {
     /* 0x38 */ u8 unk38;
 } AllFiredUpWork; // Size 0x3C
 
-// Per-player work allocated in func_80107DA4_all_fired_up, stored at func_800E1BA8_minigame_ObjData->unk158
+// Per-player work allocated in func_80107DA4_all_fired_up, stored at MgPlayerWork->unk158
 typedef struct {
     /* 0x00 */ f32 unk00;
     /* 0x04 */ f32 unk04;
@@ -35,9 +35,9 @@ typedef struct {
     /* 0x02 */ s16 unk02[4];
 } AllFiredUpBssAF0; // Size 0xC
 
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 extern u8 omAllPauseF;
-extern f32 D_800EB76C_minigame;
+extern f32 mgPlayerSpeedMin;
 
 u8 D_80109930_all_fired_up[24][4] = {
     { 0, 1, 2, 3 },
@@ -147,27 +147,27 @@ void func_801059A0_all_fired_up(void) {
     s32 i;
 
     MapCollInit(32);
-    Hu3DQuadPoolInit(&D_800EBEB0_minigame, 64);
+    Hu3DQuadPoolInit(&mgQuadPool, 64);
     Hu3DSprModelInit(64);
     omInitObjMan(32, 0);
     omGameSysInit();
-    D_800EC1B8_minigame = 0;
-    D_800EC280_minigame = 0;
-    D_800EBE28_minigame = 0;
-    func_800E1804_minigame();
+    mgItemObjNum = 0;
+    mgPlayerObjNum = 0;
+    mgMapObjNum = 0;
+    MgFieldStatClear();
     func_80105CE8_all_fired_up();
     func_80105C54_all_fired_up(&D_80109AC8_all_fired_up);
-    func_800E5EA0_minigame(&D_80109AC8_all_fired_up);
+    MgFlowInit(&D_80109AC8_all_fired_up);
     Hu3DGLightColorSet(1, 64, 64, 64);
     Hu3DGLightDirSet(1, 0.0f, 0.0f, 100.0f);
     omSetStatBit(omAddObj(0, 0, 0, -1, func_80105E1C_all_fired_up), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    func_800E1490_minigame(D_800EBE28_minigame);
+    MgMapBaseSet(mgMapObjNum);
     object = omAddObj(0, 1, 0, -1, func_801097B0_all_fired_up);
-    D_800EC1C0_minigame[D_800EBE28_minigame++] = object;
+    mgMapObjTbl[mgMapObjNum++] = object;
     omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     D_80109AF0_all_fired_up = (rand8() * 24) >> 8;
     for (i = 0; i < 4; i++) {
-        D_800EC598_minigame[D_800EC280_minigame++] = omAddObj(1, 2, 60, -1, func_80107DA4_all_fired_up);
+        mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(1, 2, 60, -1, func_80107DA4_all_fired_up);
     }
     for (i = 0; i < 4; i++) {
         D_80109AF2_all_fired_up[i] = Hu3DModelRead(0x4A0003, 0x819);
@@ -185,7 +185,7 @@ void func_801059A0_all_fired_up(void) {
 void func_80105C54_all_fired_up(MinigameFlow *flow) {
     s32 i;
 
-    D_800EB932_minigame = 0xF;
+    mgFlowSeqTime = 0xF;
     flow->state = MG_STATE_OPENING;
     flow->type = MINIGAME_1V1;
     flow->timerMode = MG_TIMER_COUNT_DOWN;
@@ -232,10 +232,10 @@ void func_80105E1C_all_fired_up(omObjData *object) {
             MgFlowStatSet(MG_STATE_EXIT);
             D_801099FC_all_fired_up = 1;
         }
-        func_800E1840_minigame();
+        MgFieldStatUpdate();
         switch (MgFlowMain()) {
             case 0:
-                D_800EB930_minigame = 53;
+                mgFlowSeqNo = 53;
                 break;
             case 1:
                 break;
@@ -392,7 +392,7 @@ void func_801067CC_all_fired_up(omObjData *object) {
     AllFiredUpWork *work = object->data;
 
     if (work->unk00 < 15) {
-        if (func_800E6E9C_minigame() >= 16) {
+        if (MgFlowStatTimeGet() >= 16) {
             object->trans.y -= work->unk04 + 15.0f;
             work->unk04 += 3.0f;
             if (object->trans.y < 0.0f) {
@@ -533,7 +533,7 @@ void func_80106CDC_all_fired_up(omObjData *object) {
             }
             Hu3DModelScaleSet(object->model[1], work->unk08, work->unk08, work->unk08);
         }
-        if (func_800E6E9C_minigame() % 15 == 0) {
+        if (MgFlowStatTimeGet() % 15 == 0) {
             work->unk0C = (rand8() % 180) * 2;
         }
         if (HuSqrtf(object->trans.x * object->trans.x + object->trans.z * object->trans.z) >= 700.0f) {
@@ -643,7 +643,7 @@ void func_80107440_all_fired_up(omObjData *object) {
 
 void func_80107578_all_fired_up(omObjData *object) {
     AllFiredUpWork *work = object->data;
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     s32 i;
 
     if (D_801099C9_all_fired_up >= work->unk00) {
@@ -651,7 +651,7 @@ void func_80107578_all_fired_up(omObjData *object) {
             switch (D_80109C54_all_fired_up) {
                 case 0:
                     for (i = 0; i < 4; i++) {
-                        data = D_800EC598_minigame[i]->data;
+                        data = mgPlayerObjTbl[i]->data;
                         if ((GwPlayer[data->unk59].stat & 1) && data->unk38 != 1000.0f) {
                             D_80109A04_all_fired_up = 1;
                             break;
@@ -660,7 +660,7 @@ void func_80107578_all_fired_up(omObjData *object) {
                     if (D_801099CC_all_fired_up == 0.0f || D_801099CC_all_fired_up == 700.0f) {
                         D_80109C59_all_fired_up ^= 1;
                     } else if (D_80109A04_all_fired_up != 0) {
-                        if (func_800E6E9C_minigame() % 15 == 0 && (rand8() >> 7)) {
+                        if (MgFlowStatTimeGet() % 15 == 0 && (rand8() >> 7)) {
                             D_80109C59_all_fired_up ^= 1;
                         }
                     }
@@ -669,7 +669,7 @@ void func_80107578_all_fired_up(omObjData *object) {
                     D_80109C59_all_fired_up = 0;
                     break;
                 default:
-                    if (func_800E6E9C_minigame() % 15 == 0 && (rand8() >> 7)) {
+                    if (MgFlowStatTimeGet() % 15 == 0 && (rand8() >> 7)) {
                         D_80109C59_all_fired_up ^= 1;
                     }
                     break;
@@ -700,7 +700,7 @@ void func_80107578_all_fired_up(omObjData *object) {
                 object->trans.z = cosdf(work->unk0C) * D_801099CC_all_fired_up;
                 break;
             case 1:
-                if (work->unk00 == 0 && func_800E6E9C_minigame() % 15 == 0) {
+                if (work->unk00 == 0 && MgFlowStatTimeGet() % 15 == 0) {
                     D_80109A00_all_fired_up = (rand8() % 15) / 10.0f + 1.0f;
                 }
                 if (D_80109C59_all_fired_up != 0) {
@@ -718,7 +718,7 @@ void func_80107578_all_fired_up(omObjData *object) {
                 object->trans.z = cosdf(work->unk0C) * work->unk14;
                 break;
             case 2:
-                if (work->unk00 == 0 && func_800E6E9C_minigame() % 5 == 0) {
+                if (work->unk00 == 0 && MgFlowStatTimeGet() % 5 == 0) {
                     D_80109A00_all_fired_up = (rand8() % 15) / 10.0f + 1.0f;
                 }
                 work->unk0C -= D_80109A00_all_fired_up;
@@ -741,7 +741,7 @@ void func_80107578_all_fired_up(omObjData *object) {
 }
 
 void func_80107BD4_all_fired_up(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     omObjData *player;
     f32 dx;
     f32 dz;
@@ -749,7 +749,7 @@ void func_80107BD4_all_fired_up(omObjData *object) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        player = D_800EC598_minigame[i];
+        player = mgPlayerObjTbl[i];
         data = player->data;
         if (player->work[0] != 0) {
             continue;
@@ -759,7 +759,7 @@ void func_80107BD4_all_fired_up(omObjData *object) {
         if (dx < hitRange && dz < hitRange) {
             if (player->trans.y < object->trans.y + 36.0f && player->trans.y + 150.0f > object->trans.y - 36.0f) {
                 player->work[0] = 1;
-                D_801099C0_all_fired_up[data->unk59] = func_800E6E9C_minigame();
+                D_801099C0_all_fired_up[data->unk59] = MgFlowStatTimeGet();
                 HuAudPlayerFXPlay(0x440, data->unk59);
                 PlayerFXPlay(0x286, data->unk59);
                 omVibrate(data->unk59, 2, 2, 20);
@@ -769,17 +769,17 @@ void func_80107BD4_all_fired_up(omObjData *object) {
 }
 
 void func_80107DA4_all_fired_up(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     AllFiredUpPlayerWork *work;
     s8 chr;
     s32 model;
     s32 motion;
 
     chr = GwPlayer[D_80109A05_all_fired_up].chr;
-    model = D_800A178C_main[chr][0];
-    motion = D_800A178C_main[chr][1];
-    func_800E19F0_minigame(1);
-    func_800E1BA8_minigame(object, model, motion, D_80109A05_all_fired_up, 0x2C9, 0x2D9);
+    model = omCharModelNoTbl[chr][0];
+    motion = omCharModelNoTbl[chr][1];
+    MgShadowAltSet(1);
+    MgPlayerCreate(object, model, motion, D_80109A05_all_fired_up, 0x2C9, 0x2D9);
     data = object->data;
     data->unk158 = HuMemAllocTag(sizeof(AllFiredUpPlayerWork), TAG_OVERLAY);
     memset(data->unk158, 0, sizeof(AllFiredUpPlayerWork));
@@ -795,24 +795,24 @@ void func_80107DA4_all_fired_up(omObjData *object) {
     object->trans.x = D_80109990_all_fired_up[D_80109AC5_all_fired_up].x;
     object->trans.y = D_80109990_all_fired_up[D_80109AC5_all_fired_up].y;
     object->trans.z = D_80109990_all_fired_up[D_80109AC5_all_fired_up].z;
-    func_800E149C_minigame(object, 0, 2);
+    MgPlayerMapAttrSet(object, 0, 2);
     Hu3DModelPosSet(object->model[1], object->trans.x, 0.0f, object->trans.z);
     Hu3DModelScaleSet(object->model[1], object->scale.x, object->scale.y, object->scale.z);
-    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(chr, 0), 1, 0);
-    func_800E5A00_minigame(object, 1, CharMotionDataNumGet(chr, 1), 1, 0);
-    func_800E5A00_minigame(object, 2, CharMotionDataNumGet(chr, 2), 1, 0);
-    func_800E5A00_minigame(object, 6, CharMotionDataNumGet(chr, 4), 1, 19);
-    func_800E5A00_minigame(object, 21, CharMotionDataNumGet(chr, 0x1F), 0, 0);
-    func_800E5A00_minigame(object, 14, CharMotionDataNumGet(chr, 0x1A), 1, 0);
-    func_800E5A00_minigame(object, 13, CharMotionDataNumGet(chr, 0x2F), 1, 120);
-    func_800E5690_minigame(object, 0);
-    func_800E1328_minigame(object, 60.0f);
+    MgPlayerMotLoad(object, 0, CharMotionDataNumGet(chr, 0), 1, 0);
+    MgPlayerMotLoad(object, 1, CharMotionDataNumGet(chr, 1), 1, 0);
+    MgPlayerMotLoad(object, 2, CharMotionDataNumGet(chr, 2), 1, 0);
+    MgPlayerMotLoad(object, 6, CharMotionDataNumGet(chr, 4), 1, 19);
+    MgPlayerMotLoad(object, 21, CharMotionDataNumGet(chr, 0x1F), 0, 0);
+    MgPlayerMotLoad(object, 14, CharMotionDataNumGet(chr, 0x1A), 1, 0);
+    MgPlayerMotLoad(object, 13, CharMotionDataNumGet(chr, 0x2F), 1, 120);
+    MgPlayerMotSet(object, 0);
+    MgPlayerRadiusSet(object, 60.0f);
     object->func = func_801080C8_all_fired_up;
     D_80109A05_all_fired_up++;
 }
 
 void func_801080C8_all_fired_up(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *data = object->data;
+    MgPlayerWork *data = object->data;
     s32 character;
     s32 i;
     s32 count;
@@ -827,9 +827,9 @@ void func_801080C8_all_fired_up(omObjData *object) {
                 if (GwPlayer[data->unk59].stat & 1) {
                     func_80108AA0_all_fired_up(object);
                 }
-                func_800DDD94_minigame(object);
+                MgPlayerObjMain(object);
                 if (object->work[0] == 1) {
-                    func_800E5690_minigame(object, 14);
+                    MgPlayerMotSet(object, 14);
                     func_80108710_all_fired_up(object);
                     object->work[0] = 2;
                 } else if (object->work[0] == 2) {
@@ -838,7 +838,7 @@ void func_801080C8_all_fired_up(omObjData *object) {
                 if (data->unk59 == 3) {
                     count = 0;
                     for (i = 0; i < 4; i++) {
-                        count += D_800EC598_minigame[i]->work[0] != 0;
+                        count += mgPlayerObjTbl[i]->work[0] != 0;
                     }
                     if (count >= 3) {
                         MgFlowStatSet(MG_STATE_FINISH);
@@ -859,13 +859,13 @@ void func_801080C8_all_fired_up(omObjData *object) {
                 if (object->work[0] == 0) {
                     data->unk3C *= 0.9f;
                 }
-                func_800DDD94_minigame(object);
+                MgPlayerObjMain(object);
                 if (object->work[0] == 2) {
                     func_80108710_all_fired_up(object);
                 }
                 break;
             case MG_STATE_RESULT:
-                if (func_800E6E9C_minigame() == 0) {
+                if (MgFlowStatTimeGet() == 0) {
                     if (object->work[0] == 0) {
                         switch (GwPlayer[data->unk59].chr) {
                             case 0:
@@ -895,7 +895,7 @@ void func_801080C8_all_fired_up(omObjData *object) {
                                 break;
                         }
                         HuAudCharVoicePlay((character << 16) | 0x2F);
-                        func_800E5690_minigame(object, 13);
+                        MgPlayerMotSet(object, 13);
                         D_80109A06_all_fired_up = 0;
                     }
                     if (data->unk59 == 3 && D_80109A06_all_fired_up == -1) {
@@ -928,14 +928,14 @@ void func_801080C8_all_fired_up(omObjData *object) {
                             D_80109A06_all_fired_up = 1;
                             break;
                     }
-                } else if ((D_80109A06_all_fired_up == 0 && func_800E6E9C_minigame() >= 100) ||
-                           (D_80109A06_all_fired_up == 1 && func_800E6E9C_minigame() > 144)) {
+                } else if ((D_80109A06_all_fired_up == 0 && MgFlowStatTimeGet() >= 100) ||
+                           (D_80109A06_all_fired_up == 1 && MgFlowStatTimeGet() > 144)) {
                     MgFlowStatSet(MG_STATE_EXIT);
                 }
-                func_800DDD94_minigame(object);
+                MgPlayerObjMain(object);
                 break;
             default:
-                func_800DDD94_minigame(object);
+                MgPlayerObjMain(object);
                 if (object->work[0] == 2) {
                     func_80108710_all_fired_up(object);
                 }
@@ -949,20 +949,20 @@ void func_801080C8_all_fired_up(omObjData *object) {
 }
 
 void func_801085A4_all_fired_up(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *data = object->data;
+    MgPlayerWork *data = object->data;
 
-    if (func_800E6E9C_minigame() == 20) {
+    if (MgFlowStatTimeGet() == 20) {
         data->unk3C = atan2df(object->trans.x, object->trans.z);
-    } else if (func_800E6E9C_minigame() > 20) {
+    } else if (MgFlowStatTimeGet() > 20) {
         if (HuSqrtf(object->trans.x * object->trans.x + object->trans.z * object->trans.z) < 500.0f) {
             object->trans.x += sindf(data->unk3C) * 10.0f;
             object->trans.z += cosdf(data->unk3C) * 10.0f;
-            func_800E5690_minigame(object, 2);
+            MgPlayerMotSet(object, 2);
         } else {
             data->unk3C = atan2df(-object->trans.x, -object->trans.z);
-            func_800E5690_minigame(object, 0);
+            MgPlayerMotSet(object, 0);
         }
-        func_800E4E30_minigame(object);
+        MgPlayerMotUpdate(object);
     }
     func_80088910_main(Hu3DData[object->model[0]].mtx, 0.0f, data->unk3C, 0.0f);
     Hu3DModelPosSet(object->model[1], object->trans.x, 0.0f, object->trans.z);
@@ -983,13 +983,13 @@ void func_80108710_all_fired_up(omObjData *object) {
         object->trans.z += 28.0f;
     }
     if (ABS(object->trans.x) > 700.0f) {
-        func_800E149C_minigame(object, 0, 1);
+        MgPlayerMapAttrSet(object, 0, 1);
         Hu3DModelAttrSet(object->model[1], 4, 4);
         if (object->trans.y < -2000.0f) {
             object->work[0] = 3;
         }
     }
-    work = ((func_800E1BA8_minigame_ObjData *)object->data)->unk158;
+    work = ((MgPlayerWork *)object->data)->unk158;
     if (work->unk04 < 270.0f) {
         object->trans.y = sindf(work->unk04) * 400.0f;
         work->unk04 += 6.0f;
@@ -1002,7 +1002,7 @@ void func_80108710_all_fired_up(omObjData *object) {
 }
 
 void func_80108958_all_fired_up(omObjData *object) {
-    s32 player = ((func_800E1BA8_minigame_ObjData *)object->data)->unk59;
+    s32 player = ((MgPlayerWork *)object->data)->unk59;
     f32 scale;
     s32 i;
 
@@ -1025,7 +1025,7 @@ void func_80108958_all_fired_up(omObjData *object) {
 }
 
 void func_80108AA0_all_fired_up(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     AllFiredUpPlayerWork *work;
     omObjData *fire;
     f32 nearX;
@@ -1209,7 +1209,7 @@ void func_80108AA0_all_fired_up(omObjData *object) {
     } else if (D_801099C8_all_fired_up == 3) {
         if (D_80109C54_all_fired_up == 1 || D_80109C54_all_fired_up == 2) {
             func_80109660_all_fired_up(object, len, jump);
-            if (D_800EB76C_minigame <= data->unk40) {
+            if (mgPlayerSpeedMin <= data->unk40) {
                 x = object->trans.x + sindf(data->unk3C) * 200.0f - nearX;
                 z = object->trans.z + cosdf(data->unk3C) * 200.0f - nearZ;
                 if (x * x + z * z < 200.0f * 200.0f) {
@@ -1233,7 +1233,7 @@ void func_80108AA0_all_fired_up(omObjData *object) {
 }
 
 void func_80109660_all_fired_up(omObjData *object, f32 dist, s8 arg2) {
-    AllFiredUpPlayerWork *work = ((func_800E1BA8_minigame_ObjData *)object->data)->unk158;
+    AllFiredUpPlayerWork *work = ((MgPlayerWork *)object->data)->unk158;
 
     if (D_80109C59_all_fired_up != 0) {
         if (arg2 == 0) {
@@ -1255,7 +1255,7 @@ void func_80109660_all_fired_up(omObjData *object, f32 dist, s8 arg2) {
 }
 
 void func_801097B0_all_fired_up(omObjData *object) {
-    D_800EC1C0_minigame_ObjData *work;
+    MgMapWork *work;
     u16 sprite1;
     s16 group1;
     u16 sprite2;

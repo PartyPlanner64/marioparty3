@@ -78,7 +78,7 @@ extern const Vec D_80114F48_mstory5;
 extern const Vec D_80114F60_mstory5;
 extern const Vec D_80114F6C_mstory5;
 extern s16 D_801154EA_mstory5;
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 extern Vec D_80115478_mstory5;
 extern const Vec D_80114D20_mstory5;
 extern const s32 D_80114D80_mstory5[];
@@ -396,7 +396,7 @@ void func_80110208_mstory5(void) {
     D_801153A0_mstory5[0].unk_08 = 0;
     D_801153A0_mstory5[0].unk_0C = 0;
     chr = GwStory.unk1;
-    obj->model[1] = Hu3DModelRead(D_800A178C_main[chr][0] | D_800A178C_main[chr][2], 0x2A9);
+    obj->model[1] = Hu3DModelRead(omCharModelNoTbl[chr][0] | omCharModelNoTbl[chr][2], 0x2A9);
     obj->model[2] = Hu3DModelLink(D_801154D8_mstory5);
     if (GwStory.unk1 == 5) {
         Hu3DModelScaleSet(obj->model[2], 1.5f, 1.0f, 1.5f);

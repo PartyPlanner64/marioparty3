@@ -61,9 +61,9 @@ extern HmfData_Unk84_Entry2 *Hu3DTexData;
 
 extern Gfx *gMainGfxPos;
 
-extern u8 D_800A0540_main;
-extern u8 D_800A0541_main;
-extern u8 D_800A0542_main;
+extern u8 Hu3DBGColR;
+extern u8 Hu3DBGColG;
+extern u8 Hu3DBGColB;
 extern s16 Hu3DCameraNum;
 extern s32 Hu3DCurAttr;
 extern u16 Hu3DDLModelNum[];
@@ -818,7 +818,7 @@ void Hu3DScreenClear(u32 arg0, u32 arg1) {
     gSPDisplayList(gMainGfxPos++, scrClearGfx1);
     gDPSetColorImage(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, arg0);
     if (Hu3DScreenClearF != 0) {
-        gDPSetFillColor(gMainGfxPos++, PACK_FILL_COLOR(D_800A0540_main, D_800A0541_main, D_800A0542_main, 1));
+        gDPSetFillColor(gMainGfxPos++, PACK_FILL_COLOR(Hu3DBGColR, Hu3DBGColG, Hu3DBGColB, 1));
         gSPDisplayList(gMainGfxPos++, scrClearGfx2);
     }
 }
@@ -1653,9 +1653,9 @@ f32 Hu3DMotionMotionMaxTimeGet(s16 arg0) {
 }
 
 void Hu3DBGColorSet(s32 r, s32 g, s32 b) {
-    D_800A0540_main = r;
-    D_800A0541_main = g;
-    D_800A0542_main = b;
+    Hu3DBGColR = r;
+    Hu3DBGColG = g;
+    Hu3DBGColB = b;
 }
 
 void Hu3DMotionAttrSetEx(s16 idx, s16 flags, s16 clear, s16 set) {

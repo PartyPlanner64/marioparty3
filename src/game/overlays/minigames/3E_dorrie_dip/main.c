@@ -71,7 +71,7 @@ typedef struct {
 
 extern u16 mgInstColumnTbl[];
 extern u16 mgInstSlotTbl[];
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 
 MinigameFlow D_8010A040_dorrie_dip = {
     MG_STATE_OPENING, MINIGAME_ITEM, MG_TIMER_NONE, MG_TIME_DISP_NONE, FALSE, MG_GAUGE_NONE, MG_RESULT_GOT_ITEM, 0,
@@ -174,7 +174,7 @@ void func_801059A0_dorrie_dip(void) {
 
     omInitObjMan(30, 10);
     MapCollInit(16);
-    Hu3DQuadPoolInit(&D_800EBEB0_minigame, 0x40);
+    Hu3DQuadPoolInit(&mgQuadPool, 0x40);
     Hu3DSprModelInit(0x40);
     omGameSysInit();
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutView);
@@ -182,11 +182,11 @@ void func_801059A0_dorrie_dip(void) {
     func_80105B44_dorrie_dip(500.0f, 345.0f, 0.0f, 0.0f, 0.0f, 190.0f, 0.0f);
     omOutView(obj);
     Hu3DBGColorSet(0, 0, 0);
-    func_800E5EA0_minigame(&D_8010A040_dorrie_dip);
-    D_800EBE28_minigame = 0;
-    D_800EC280_minigame = 0;
-    func_800E18D8_minigame();
-    D_800EB774_minigame = 1.0f;
+    MgFlowInit(&D_8010A040_dorrie_dip);
+    mgMapObjNum = 0;
+    mgPlayerObjNum = 0;
+    MgPlayerParamReset();
+    mgPlayerFallMax = 1.0f;
     WipeCreateIn(WIPE_TYPE_PREV, 16);
     func_80108800_dorrie_dip();
     omAddObj(0x50, 0, 0, -1, func_80105C7C_dorrie_dip);
@@ -228,35 +228,35 @@ void func_80105C7C_dorrie_dip(omObjData *obj) {
     }
     switch (MgFlowMain(obj)) {
         case 0:
-            if (func_800E6E9C_minigame() == 30) {
+            if (MgFlowStatTimeGet() == 30) {
                 func_801074CC_dorrie_dip();
             }
-            if (func_800E6E9C_minigame() == 60) {
+            if (MgFlowStatTimeGet() == 60) {
                 func_80108148_dorrie_dip();
             }
-            if (func_800E6E9C_minigame() == 120) {
+            if (MgFlowStatTimeGet() == 120) {
                 func_80106D50_dorrie_dip();
             }
-            if (D_8010A068_dorrie_dip == func_800E6E9C_minigame()) {
+            if (D_8010A068_dorrie_dip == MgFlowStatTimeGet()) {
                 if (D_8010A068_dorrie_dip == 1) {
                     HuAudSeqPlay(0x44);
                 }
                 HuAudFXPlay(0x4E7);
                 D_8010A068_dorrie_dip += 30 + rand8() / 8;
             }
-            if (D_8010A06C_dorrie_dip == func_800E6E9C_minigame()) {
+            if (D_8010A06C_dorrie_dip == MgFlowStatTimeGet()) {
                 HuAudFXPlay(0x4E8);
                 D_8010A06C_dorrie_dip += 30 + rand8() / 8;
             }
             break;
         case 2:
-            if (func_800E6E9C_minigame() == 0) {
+            if (MgFlowStatTimeGet() == 0) {
                 func_80108700_dorrie_dip();
                 func_80108678_dorrie_dip();
             }
             break;
         case 3:
-            if (func_800E6E9C_minigame() == 1) {
+            if (MgFlowStatTimeGet() == 1) {
                 if (D_8010A1F8_dorrie_dip == 2) {
                     func_80108458_dorrie_dip();
                 } else {
@@ -273,14 +273,14 @@ void func_80105C7C_dorrie_dip(omObjData *obj) {
                     D_8010A040_dorrie_dip.resultType = MG_RESULT_GOT_ITEM;
                 }
             }
-            if (func_800E6E9C_minigame() == 15 && D_8010A220_dorrie_dip != -1 &&
+            if (MgFlowStatTimeGet() == 15 && D_8010A220_dorrie_dip != -1 &&
                 D_8010A208_dorrie_dip[D_8010A220_dorrie_dip] != 17) {
                 func_80108EA0_dorrie_dip(D_8010A220_dorrie_dip);
                 func_801092E0_dorrie_dip();
             }
             break;
         case 4:
-            if (func_800E6E9C_minigame() == 1) {
+            if (MgFlowStatTimeGet() == 1) {
                 func_801090C4_dorrie_dip();
             }
             break;
@@ -536,13 +536,13 @@ void func_80106E14_dorrie_dip(omObjData *obj, s32 playerIdx) {
     s32 motion7[8] = { 156, 156, 156, 156, 156, 156, 156, 156 };
     s32 character;
     s32 model, motion;
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
 
-    D_800EC598_minigame[D_800EC280_minigame++] = obj;
+    mgPlayerObjTbl[mgPlayerObjNum++] = obj;
     character = GwPlayer[playerIdx].chr;
-    model = D_800A178C_main[character][0];
-    motion = D_800A178C_main[character][3];
-    func_800E1BA8_minigame(obj, model, motion, playerIdx, 0x20A99, 0x20A99);
+    model = omCharModelNoTbl[character][0];
+    motion = omCharModelNoTbl[character][3];
+    MgPlayerCreate(obj, model, motion, playerIdx, 0x20A99, 0x20A99);
     data = obj->data;
     obj->model[3] = Hu3DModelRead(3, 0x6DD);
     obj->model[4] = Hu3DModelRead(4, 0x6DD);
@@ -550,28 +550,28 @@ void func_80106E14_dorrie_dip(omObjData *obj, s32 playerIdx) {
     obj->model[5] = Hu3DModelRead(6, 0x6DD);
     obj->model[7] = Hu3DModelRead(8, 0x6DD);
     obj->model[8] = Hu3DModelRead(7, 0x6DD);
-    func_800E5A00_minigame(obj, 0, CharMotionDataNumGet(character, (s16)motion0[character]), 1, 0);
-    func_800E5A00_minigame(obj, 6, CharMotionDataNumGet(character, (s16)motion1[character]), 1, 19);
-    func_800E5A00_minigame(obj, 21, CharMotionDataNumGet(character, (s16)motion2[character]), 0, 0);
-    func_800E5A00_minigame(obj, 14, CharMotionDataNumGet(character, (s16)motion3[character]), 1, 120);
-    func_800E5A00_minigame(obj, 13, CharMotionDataNumGet(character, (s16)motion4[character]), 1, 120);
-    func_800E5A00_minigame(obj, 18, CharMotionDataNumGet(character, (s16)motion5[character]), 2, 0);
-    func_800E5A00_minigame(obj, 8, CharMotionDataNumGet(character, (s16)motion6[character]), 1, 29);
-    func_800E5A00_minigame(obj, 38, CharMotionDataNumGet(character, (s16)motion7[character]), 0, 0);
+    MgPlayerMotLoad(obj, 0, CharMotionDataNumGet(character, (s16)motion0[character]), 1, 0);
+    MgPlayerMotLoad(obj, 6, CharMotionDataNumGet(character, (s16)motion1[character]), 1, 19);
+    MgPlayerMotLoad(obj, 21, CharMotionDataNumGet(character, (s16)motion2[character]), 0, 0);
+    MgPlayerMotLoad(obj, 14, CharMotionDataNumGet(character, (s16)motion3[character]), 1, 120);
+    MgPlayerMotLoad(obj, 13, CharMotionDataNumGet(character, (s16)motion4[character]), 1, 120);
+    MgPlayerMotLoad(obj, 18, CharMotionDataNumGet(character, (s16)motion5[character]), 2, 0);
+    MgPlayerMotLoad(obj, 8, CharMotionDataNumGet(character, (s16)motion6[character]), 1, 29);
+    MgPlayerMotLoad(obj, 38, CharMotionDataNumGet(character, (s16)motion7[character]), 0, 0);
     omSetTra(obj, 50.0f, 133.0f, 0.0f);
     data->unk3C = 270.0f;
-    func_800E149C_minigame(obj, 0, 2);
-    func_800E149C_minigame(obj, 1, 2);
-    func_800E149C_minigame(obj, 2, 2);
-    func_800E149C_minigame(obj, 3, 2);
-    func_800E149C_minigame(obj, 4, 2);
-    func_800E5690_minigame(obj, 0);
+    MgPlayerMapAttrSet(obj, 0, 2);
+    MgPlayerMapAttrSet(obj, 1, 2);
+    MgPlayerMapAttrSet(obj, 2, 2);
+    MgPlayerMapAttrSet(obj, 3, 2);
+    MgPlayerMapAttrSet(obj, 4, 2);
+    MgPlayerMotSet(obj, 0);
     D_8010A240_dorrie_dip = 0;
     obj->func = func_80107360_dorrie_dip;
 }
 
 void func_80107360_dorrie_dip(omObjData *obj) {
-    func_800E1BA8_minigame_ObjData *data = obj->data;
+    MgPlayerWork *data = obj->data;
     f32 x = obj->trans.x;
     f32 z = obj->trans.z;
 
@@ -584,7 +584,7 @@ void func_80107360_dorrie_dip(omObjData *obj) {
     if (MgFlowStatGet() == MG_STATE_PLAY && (GwPlayer[data->unk59].stat & 1)) {
         func_80109F00_dorrie_dip();
     }
-    func_800DDD94_minigame(obj);
+    MgPlayerObjMain(obj);
     if (data->unk5C == 0x200) {
         D_8010A1F8_dorrie_dip = 3;
         if (data->unk5C == 0x200 && data->unk50 == 0x80 && !(D_8010A240_dorrie_dip & 1)) {
@@ -966,13 +966,13 @@ void func_80108800_dorrie_dip(void) {
     obj->trans.x = 0;
     obj->trans.y = 0;
     obj->trans.z = 0;
-    func_800E1490_minigame(D_800EBE28_minigame);
-    D_800EC1C0_minigame[D_800EBE28_minigame++] = obj;
+    MgMapBaseSet(mgMapObjNum);
+    mgMapObjTbl[mgMapObjNum++] = obj;
     memset(obj->data, 0, sizeof(DorrieDipBackground));
     data->unk03 = 1;
     data->unk08 = 0.5f;
     data->unk04 = 0;
-    func_800E1370_minigame(obj, 2, 133.0f);
+    MgMapAttrSet(obj, 2, 133.0f);
     Hu3DMotionAttrSet(obj->model[1], 8, 8);
     Hu3DMotionAttrSet(obj->model[1], 2, 2);
     omSetTra(obj, 0.0f, 13.0f, 0.0f);
@@ -1099,24 +1099,24 @@ void func_801090C4_dorrie_dip(void) {
 }
 
 void func_801090F0_dorrie_dip(void) {
-    func_800E1BA8_minigame_ObjData *data = D_800EC598_minigame[0]->data;
+    MgPlayerWork *data = mgPlayerObjTbl[0]->data;
     s32 i;
 
-    func_800E5798_minigame(D_800EC598_minigame[0], 38);
+    MgPlayerMotForceSet(mgPlayerObjTbl[0], 38);
     for (i = 0; i < 10; i++) {
         data->unk3C = i * 90.0f / 10.0f + 270.0f;
         HuPrcVSleep();
     }
     if (D_8010A220_dorrie_dip != -1 && D_8010A208_dorrie_dip[D_8010A220_dorrie_dip] != 17) {
-        func_800E5798_minigame(D_800EC598_minigame[0], 13);
+        MgPlayerMotForceSet(mgPlayerObjTbl[0], 13);
         Hu3DMotionShiftSet(D_8010A238_dorrie_dip->model[0], Hu3DData[D_8010A238_dorrie_dip->motion[4]].motId, 0, 10, 0);
-        HuAudCharVoicePlay(D_800A178C_main[GwPlayer[data->unk59].chr][0] | 0x35);
+        HuAudCharVoicePlay(omCharModelNoTbl[GwPlayer[data->unk59].chr][0] | 0x35);
         for (i = 0; i < 60; i++) {
             HuPrcVSleep();
         }
         HuAudFXPlay(0x4E4);
     } else {
-        func_800E5798_minigame(D_800EC598_minigame[0], 14);
+        MgPlayerMotForceSet(mgPlayerObjTbl[0], 14);
         if (D_8010A220_dorrie_dip == -1) {
             Hu3DMotionShiftSet(D_8010A238_dorrie_dip->model[0], Hu3DData[D_8010A238_dorrie_dip->motion[3]].motId, 0, 10, 0);
         }
@@ -1151,16 +1151,16 @@ void func_8010930C_dorrie_dip(void) {
     splashes->flags[splashIdx] &= ~4;
     splashes->flags[splashIdx] &= ~1;
     splashes->flags[splashIdx] |= 8;
-    deltaX = D_800EC598_minigame[0]->trans.x - dorrie->hookPos.x;
-    deltaZ = D_800EC598_minigame[0]->trans.z - dorrie->hookPos.z;
+    deltaX = mgPlayerObjTbl[0]->trans.x - dorrie->hookPos.x;
+    deltaZ = mgPlayerObjTbl[0]->trans.z - dorrie->hookPos.z;
     startY = splashes->posY[splashIdx];
     for (i = 0; i < 30; i++) {
         splashes->posX[splashIdx] = deltaX / 30.0f + splashes->posX[splashIdx];
         angle = i * 180.0f / 30.0f;
         splashes->unk8C[splashIdx] = sindf(angle) * 400.0f + startY;
         if (angle > 90.0f) {
-            if (splashes->unk8C[splashIdx] < D_800EC598_minigame[0]->trans.y + 300.0f) {
-                splashes->unk8C[splashIdx] = D_800EC598_minigame[0]->trans.y + 300.0f;
+            if (splashes->unk8C[splashIdx] < mgPlayerObjTbl[0]->trans.y + 300.0f) {
+                splashes->unk8C[splashIdx] = mgPlayerObjTbl[0]->trans.y + 300.0f;
             }
         }
         splashes->posZ[splashIdx] = deltaZ / 30.0f + splashes->posZ[splashIdx];
@@ -1360,7 +1360,7 @@ void func_80109E1C_dorrie_dip(s32 dipIdx) {
 }
 
 void func_80109F00_dorrie_dip(void) {
-    func_800E1BA8_minigame_ObjData *data = D_800EC598_minigame[0]->data;
+    MgPlayerWork *data = mgPlayerObjTbl[0]->data;
     DorrieDipDips *dips = D_8010A230_dorrie_dip->data;
 
     if (D_8010A254_dorrie_dip.triggered == 0) {

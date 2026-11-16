@@ -13,7 +13,7 @@ extern s16 D_80109A64_mgresultdealer[4];
 extern s8 D_8010A266_mgresultdealer[4];
 extern f32 D_80109A60_mgresultdealer;
 extern s16 D_801099F8_mgresultdealer[4];
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 extern const s16 D_801099A8_mgresultdealer[][2];
 
 void func_80106A50_mgresultdealer(omObjData *);
@@ -34,7 +34,7 @@ void func_801065D0_mgresultdealer(void) {
     D_8010A250_mgresultdealer.obj = obj;
     chr = GwPlayer[D_8010A266_mgresultdealer[0]].chr;
 
-    obj->model[0] = Hu3DModelRead(D_800A178C_main[chr][0] | D_800A178C_main[chr][2], 0x2A9);
+    obj->model[0] = Hu3DModelRead(omCharModelNoTbl[chr][0] | omCharModelNoTbl[chr][2], 0x2A9);
     Hu3DMotionAttrSet(obj->model[0], 2, 2);
     Hu3DModelCameraSet(obj->model[0], 1);
 

@@ -269,7 +269,7 @@ typedef struct UnkStardustBattleObj {
 } UnkStardustBattleObj; // sizeof 0x7C
 
 extern u8 Hu3DBufNo;
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 extern s16 D_80113DE6_stardust_battle[]; // low halfword of D_80113DE4
 extern s16 motionBakeMtxCnt;
 extern s16 *motionBakeNodeMap;
@@ -277,7 +277,7 @@ extern HuMtx4F *motionBakeMtx;
 extern s16 Hu3DObjMtxStackIdx;
 extern HuMtx4F Hu3DObjMtxStack[];
 extern u8 omAllPauseF;
-extern f32 D_800EB770_minigame;
+extern f32 mgPlayerSpeedZero;
 extern s16 Hu3DModelTag;
 
 const s16 D_80114100_stardust_battle[] = {
@@ -584,9 +584,9 @@ void func_801059A0_stardust_battle(void) {
     ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 30.0f, 80.0f, 4000.0f);
-    D_800EC280_minigame = 0;
-    D_800EBE28_minigame = 0;
-    D_800EC1B8_minigame = 0;
+    mgPlayerObjNum = 0;
+    mgMapObjNum = 0;
+    mgItemObjNum = 0;
     D_80114AB0_stardust_battle = 0;
     D_80114AA4_stardust_battle = 0;
     D_80114AA0_stardust_battle = 0;
@@ -640,7 +640,7 @@ void func_801059A0_stardust_battle(void) {
     D_80114A98_stardust_battle = omAddObj(0x20, 0, 0, -1, func_80105D18_stardust_battle);
     memset(&D_80114BB8_stardust_battle, 0, 0x28);
     D_80114BB8_stardust_battle.type = MINIGAME_BATTLE;
-    func_800E5EA0_minigame(&D_80114BB8_stardust_battle);
+    MgFlowInit(&D_80114BB8_stardust_battle);
     GMesFontMesCreate(D_80114100_stardust_battle, 1);
     GMesFontMesCreate(D_8011410C_stardust_battle, 1);
 }
@@ -1057,8 +1057,8 @@ void func_80106D0C_stardust_battle(void) {
     s16 i;
 
     obj = D_80114AC8_stardust_battle = HuMemAllocTag(sizeof(UnkStardustBattleObj), TAG_OVERLAY);
-    func_800E19F0_minigame(0);
-    func_800E18D8_minigame();
+    MgShadowAltSet(0);
+    MgPlayerParamReset();
     for (i = 0; i < 4; i++) {
         if (GwPlayer[D_80113DEC_stardust_battle[i]].group == 0) {
             break;
@@ -1070,8 +1070,8 @@ void func_80106D0C_stardust_battle(void) {
     obj->unk_00 = i;
     obj->unk_20 = D_80113DEC_stardust_battle[i];
     object = omAddObj(16, 11, 60, -1, func_80106EB0_stardust_battle);
-    D_800EC598_minigame[D_800EC280_minigame] = object;
-    D_800EC280_minigame++;
+    mgPlayerObjTbl[mgPlayerObjNum] = object;
+    mgPlayerObjNum++;
     object->trans.x = D_80113CB0_stardust_battle[obj->unk_00].x;
     object->trans.z = D_80113CB0_stardust_battle[obj->unk_00].z;
     obj->unk_2C = object->trans.x;
@@ -1087,7 +1087,7 @@ void func_80106D0C_stardust_battle(void) {
 
 void func_80106EB0_stardust_battle(omObjData *object) {
     UnkStardustBattleObj *obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle(object);
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     s16 player = obj->unk_20;
     s16 character;
     s16 chr;
@@ -1102,10 +1102,10 @@ void func_80106EB0_stardust_battle(omObjData *object) {
     obj->unk_26 = GwPlayer[player].stat & 1;
     obj->cpuDifficulty = GwPlayer[player].cpu_difficulty;
     chr = character;
-    model = D_800A178C_main[chr][0];
-    motion = D_800A178C_main[chr][1];
-    extra = D_800A178C_main[chr][2];
-    func_800E1BA8_minigame(object, model, motion, player, 0x699, 0x1699);
+    model = omCharModelNoTbl[chr][0];
+    motion = omCharModelNoTbl[chr][1];
+    extra = omCharModelNoTbl[chr][2];
+    MgPlayerCreate(object, model, motion, player, 0x699, 0x1699);
     data = object->data;
     data->unk50 &= ~1;
     data->unkEC = NULL;
@@ -1113,38 +1113,38 @@ void func_80106EB0_stardust_battle(omObjData *object) {
     object->model[4] = Hu3DModelRead(4, 0x1E8D);
     object->model[10] = -1;
     object->model[9] = Hu3DModelRead(model | extra, 0x6BD);
-    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(chr, 0), 1, 0);
-    func_800E5A00_minigame(object, 1, CharMotionDataNumGet(chr, 1), 1, 0);
-    func_800E5A00_minigame(object, 2, CharMotionDataNumGet(chr, 2), 1, 0);
-    func_800E5A00_minigame(object, 6, CharMotionDataNumGet(chr, 4), 1, 19);
-    func_800E5A00_minigame(object, 17, CharMotionDataNumGet(chr, 14), 1, 15);
-    func_800E5A00_minigame(object, 18, CharMotionDataNumGet(chr, 15), 2, 0);
-    func_800E5A00_minigame(object, 21, CharMotionDataNumGet(chr, 31), 0, 0);
-    func_800E5A00_minigame(object, 20, CharMotionDataNumGet(chr, 29), 0, 0);
-    func_800E5A00_minigame(object, 4, CharMotionDataNumGet(chr, 30), 1, 0);
-    func_800E5A00_minigame(object, 32, CharMotionDataNumGet(chr, 34), 0, 0);
-    func_800E5A00_minigame(object, 9, CharMotionDataNumGet(chr, 7), 1, 39);
-    func_800E5978_minigame(object, 33, CharMotionDataNumGet(chr, 35), 2, 0);
-    func_800E5A00_minigame(object, 34, CharMotionDataNumGet(chr, 36), 2, 0);
+    MgPlayerMotLoad(object, 0, CharMotionDataNumGet(chr, 0), 1, 0);
+    MgPlayerMotLoad(object, 1, CharMotionDataNumGet(chr, 1), 1, 0);
+    MgPlayerMotLoad(object, 2, CharMotionDataNumGet(chr, 2), 1, 0);
+    MgPlayerMotLoad(object, 6, CharMotionDataNumGet(chr, 4), 1, 19);
+    MgPlayerMotLoad(object, 17, CharMotionDataNumGet(chr, 14), 1, 15);
+    MgPlayerMotLoad(object, 18, CharMotionDataNumGet(chr, 15), 2, 0);
+    MgPlayerMotLoad(object, 21, CharMotionDataNumGet(chr, 31), 0, 0);
+    MgPlayerMotLoad(object, 20, CharMotionDataNumGet(chr, 29), 0, 0);
+    MgPlayerMotLoad(object, 4, CharMotionDataNumGet(chr, 30), 1, 0);
+    MgPlayerMotLoad(object, 32, CharMotionDataNumGet(chr, 34), 0, 0);
+    MgPlayerMotLoad(object, 9, CharMotionDataNumGet(chr, 7), 1, 39);
+    MgPlayerMotRead(object, 33, CharMotionDataNumGet(chr, 35), 2, 0);
+    MgPlayerMotLoad(object, 34, CharMotionDataNumGet(chr, 36), 2, 0);
     if (chr != 5) {
-        func_800E5A00_minigame(object, 5, CharMotionDataNumGet(chr, 142), 0, 0);
-        func_800E5A00_minigame(object, 38, CharMotionDataNumGet(chr, 18), 0, 0);
-        func_800E5A00_minigame(object, 39, CharMotionDataNumGet(chr, 28), 0, 0);
+        MgPlayerMotLoad(object, 5, CharMotionDataNumGet(chr, 142), 0, 0);
+        MgPlayerMotLoad(object, 38, CharMotionDataNumGet(chr, 18), 0, 0);
+        MgPlayerMotLoad(object, 39, CharMotionDataNumGet(chr, 28), 0, 0);
     } else {
-        func_800E5A00_minigame(object, 5, 0xA015C, 0, 0);
-        func_800E5A00_minigame(object, 38, 0xA015B, 0, 0);
-        func_800E5A00_minigame(object, 39, 0xA015A, 0, 0);
+        MgPlayerMotLoad(object, 5, 0xA015C, 0, 0);
+        MgPlayerMotLoad(object, 38, 0xA015B, 0, 0);
+        MgPlayerMotLoad(object, 39, 0xA015A, 0, 0);
     }
     chr = character;
-    func_800E5A00_minigame(object, 40, CharMotionDataNumGet(chr, 108), 0, 0);
-    func_800E5A00_minigame(object, 41, CharMotionDataNumGet(chr, 155), 0, 0);
+    MgPlayerMotLoad(object, 40, CharMotionDataNumGet(chr, 108), 0, 0);
+    MgPlayerMotLoad(object, 41, CharMotionDataNumGet(chr, 155), 0, 0);
     r = rand8() & 1;
-    func_800E5A00_minigame(object, 13, CharMotionDataNumGet(chr, D_80113E1C_stardust_battle[r]), 1, 120);
+    MgPlayerMotLoad(object, 13, CharMotionDataNumGet(chr, D_80113E1C_stardust_battle[r]), 1, 120);
     obj->unk_18 = D_80113DFC_stardust_battle[chr] | D_80113E1C_stardust_battle[r];
-    func_800E5A00_minigame(object, 14, CharMotionDataNumGet(chr, 57), 1, 60);
+    MgPlayerMotLoad(object, 14, CharMotionDataNumGet(chr, 57), 1, 60);
     obj->unk_1C = D_80113DFC_stardust_battle[chr] | 57;
-    func_800E5690_minigame(object, 0);
-    func_800E149C_minigame(object, 0, 2);
+    MgPlayerMotSet(object, 0);
+    MgPlayerMapAttrSet(object, 0, 2);
     obj->unk_0C = 0;
     obj->unk_0E = 0;
     obj->unk_04 = -1;
@@ -1165,7 +1165,7 @@ void func_801073F4_stardust_battle(omObjData *object) {
     s16 noControl = FALSE;
     UnkStardustBattleObj *obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle(object);
     HmfModel *model = &Hu3DData[object->model[0]];
-    func_800E1BA8_minigame_ObjData *data = object->data;
+    MgPlayerWork *data = object->data;
     u16 btnDown;
     s16 stickX;
     s16 stickY;
@@ -1189,8 +1189,8 @@ void func_801073F4_stardust_battle(omObjData *object) {
     if (obj->func_70 != NULL) {
         obj->func_70(object);
     }
-    func_800DDD94_minigame(object);
-    if (func_800E4A90_minigame(object) & 0x8C00) {
+    MgPlayerObjMain(object);
+    if (MgPlayerMotStatGet(object) & 0x8C00) {
         noControl = TRUE;
     }
     if (obj->func_74 != NULL) {
@@ -1208,9 +1208,9 @@ void func_801073F4_stardust_battle(omObjData *object) {
             } else {
                 D_80114ACE_stardust_battle = 1;
             }
-            data->unk40 = D_800EB770_minigame;
-            data->unk38 = -(D_800EB744_minigame * 0.65f);
-            func_800E5690_minigame(object, 9);
+            data->unk40 = mgPlayerSpeedZero;
+            data->unk38 = -(mgPlayerJumpPower * 0.65f);
+            MgPlayerMotSet(object, 9);
         }
         func_8010EA04_stardust_battle(object);
     }
@@ -1237,7 +1237,7 @@ void func_801073F4_stardust_battle(omObjData *object) {
 void func_80107760_stardust_battle(omObjData *object, s16 noControl) {
     UnkStardustBattleObj *obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle(object);
     HmfModel *model = &Hu3DData[object->model[0]];
-    func_800E1BA8_minigame_ObjData *data = object->data;
+    MgPlayerWork *data = object->data;
     UnkStardustBattleStar *star;
     HuMtx4F mtx;
     f32 t;
@@ -1367,7 +1367,7 @@ void func_80107DCC_stardust_battle(omObjData *object, s16 mode) {
 }
 
 s16 func_80107E84_stardust_battle(s16 arg0) {
-    omObjData *object = D_800EC598_minigame[0];
+    omObjData *object = mgPlayerObjTbl[0];
     UnkStardustBattleObj *obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle(object);
     HmfModel *model = &Hu3DData[object->model[0]];
     HmfModel *other = &Hu3DData[object->model[9]];
@@ -1384,21 +1384,21 @@ s16 func_80107E84_stardust_battle(s16 arg0) {
 }
 
 void func_80107F34_stardust_battle(f32 step) {
-    func_800E1BA8_minigame_ObjData *data = D_800EC598_minigame[0]->data;
+    MgPlayerWork *data = mgPlayerObjTbl[0]->data;
 
-    data->unk3C = func_80111C2C_stardust_battle(atan2df(D_80114B18_stardust_battle->trans.x - D_800EC598_minigame[0]->trans.x,
-                                                        D_80114B18_stardust_battle->trans.z - D_800EC598_minigame[0]->trans.z),
+    data->unk3C = func_80111C2C_stardust_battle(atan2df(D_80114B18_stardust_battle->trans.x - mgPlayerObjTbl[0]->trans.x,
+                                                        D_80114B18_stardust_battle->trans.z - mgPlayerObjTbl[0]->trans.z),
                                                 data->unk3C, step);
 }
 
 s16 func_80107FA4_stardust_battle(void) {
     UnkStardustBattleObj *obj;
 
-    if (D_800EC280_minigame == 0) {
+    if (mgPlayerObjNum == 0) {
         return 0;
     }
 
-    obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle(D_800EC598_minigame[0]);
+    obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle(mgPlayerObjTbl[0]);
     obj->func_6C = func_80108120_stardust_battle;
     obj->unk_3A = 0;
     return 1;
@@ -1407,11 +1407,11 @@ s16 func_80107FA4_stardust_battle(void) {
 s16 func_80107FE8_stardust_battle(void) {
     UnkStardustBattleObj *obj;
 
-    if (D_800EC280_minigame == 0) {
+    if (mgPlayerObjNum == 0) {
         return 0;
     }
 
-    obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle(D_800EC598_minigame[0]);
+    obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle(mgPlayerObjTbl[0]);
     if (obj->func_6C != func_80108120_stardust_battle || obj->unk_3A < 2 || obj->unk_3C < 22.5f) {
         return 0;
     }
@@ -1421,8 +1421,8 @@ s16 func_80107FE8_stardust_battle(void) {
 void func_80108074_stardust_battle(void) {
     UnkStardustBattleObj *obj;
 
-    if (D_800EC280_minigame != 0) {
-        obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle(D_800EC598_minigame[0]);
+    if (mgPlayerObjNum != 0) {
+        obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle(mgPlayerObjTbl[0]);
         obj->func_6C = func_801081FC_stardust_battle;
     }
 }
@@ -1430,8 +1430,8 @@ void func_80108074_stardust_battle(void) {
 void func_801080B0_stardust_battle(void) {
     UnkStardustBattleObj *obj;
 
-    if (D_800EC280_minigame != 0) {
-        obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle(D_800EC598_minigame[0]);
+    if (mgPlayerObjNum != 0) {
+        obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle(mgPlayerObjTbl[0]);
         obj->func_6C = func_801082C4_stardust_battle;
     }
 }
@@ -1439,8 +1439,8 @@ void func_801080B0_stardust_battle(void) {
 void func_801080EC_stardust_battle(void) {
     UnkStardustBattleObj *obj;
 
-    if (D_800EC280_minigame != 0) {
-        obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle(D_800EC598_minigame[0]);
+    if (mgPlayerObjNum != 0) {
+        obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle(mgPlayerObjTbl[0]);
         obj->func_6C = NULL;
     }
 }
@@ -1450,19 +1450,19 @@ void func_80108120_stardust_battle(omObjData *object) {
 
     switch (obj->unk_3A) {
         case 0:
-            func_800E5690_minigame(object, 40);
+            MgPlayerMotSet(object, 40);
             obj->unk_3A++;
             break;
         case 1:
-            if (func_800E4A90_minigame(object) == 1) {
-                func_800E5690_minigame(object, 41);
+            if (MgPlayerMotStatGet(object) == 1) {
+                MgPlayerMotSet(object, 41);
                 obj->unk_3A++;
                 obj->unk_3C = 0;
             }
             break;
         case 2:
             obj->unk_3C++;
-            if (func_800E4A90_minigame(object) == 1) {
+            if (MgPlayerMotStatGet(object) == 1) {
                 obj->func_6C = NULL;
                 obj->unk_3C = 0;
                 obj->unk_3A = 0;
@@ -1487,10 +1487,10 @@ void func_801081FC_stardust_battle(omObjData *object) {
 }
 
 void func_801082C4_stardust_battle(omObjData *object) {
-    UnkStardustBattleObj *obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle(D_800EC598_minigame[0]);
-    func_800E1BA8_minigame_ObjData *data = object->data;
+    UnkStardustBattleObj *obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle(mgPlayerObjTbl[0]);
+    MgPlayerWork *data = object->data;
 
-    if (obj->unk_04 != -1 && data->unk38 == 1000.0f && !(func_800E4A90_minigame(object) & 0x8C00)) {
+    if (obj->unk_04 != -1 && data->unk38 == 1000.0f && !(MgPlayerMotStatGet(object) & 0x8C00)) {
         if (obj->unk_04 == 13) {
             if (func_80111B28_stardust_battle(0.0f, data->unk3C) < 5.0f) {
                 data->unk3C = 0.0f;
@@ -1500,16 +1500,16 @@ void func_801082C4_stardust_battle(omObjData *object) {
             }
         }
         Hu3DData[object->model[0]].motIdShape = 0xFF;
-        func_800E5798_minigame(object, (u16)obj->unk_04);
+        MgPlayerMotForceSet(object, (u16)obj->unk_04);
         HuAudCharVoicePlayPlayer(obj->unk_04 == 13 ? obj->unk_18 : obj->unk_1C, -1, obj->unk_20);
         obj->unk_04 = -1;
     }
 }
 
 void func_80108404_stardust_battle(omObjData *object) {
-    D_800EB744_minigame = 1.47f;
-    D_800EB748_minigame = 0.15f;
-    D_800EB774_minigame = 1.7f;
+    mgPlayerJumpPower = 1.47f;
+    mgPlayerGravity = 0.15f;
+    mgPlayerFallMax = 1.7f;
 }
 
 void func_80108444_stardust_battle(omObjData *object) {
@@ -1523,9 +1523,9 @@ void func_8010844C_stardust_battle(omObjData *object) {
 void func_80108454_stardust_battle(omObjData *object) {
     UnkStardustBattleObj *obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle();
 
-    D_800EB744_minigame = 1.029f;
-    D_800EB748_minigame = 0.105000004f;
-    D_800EB774_minigame = 1.19f;
+    mgPlayerJumpPower = 1.029f;
+    mgPlayerGravity = 0.105000004f;
+    mgPlayerFallMax = 1.19f;
     obj->unk_0A = 0;
 }
 
@@ -1597,11 +1597,11 @@ void func_8010882C_stardust_battle(omObjData *object) {
     HmfModel *model = &Hu3DData[object->model[0]];
     HmfModel *shadow;
 
-    D_800EB744_minigame = 1.47f;
-    D_800EB748_minigame = 0.15f;
-    D_800EB774_minigame = 1.7f;
+    mgPlayerJumpPower = 1.47f;
+    mgPlayerGravity = 0.15f;
+    mgPlayerFallMax = 1.7f;
     object->model[10] =
-        Hu3DModelRead(D_800A178C_main[obj->character][0] | D_800A178C_main[obj->character][1], 0x689);
+        Hu3DModelRead(omCharModelNoTbl[obj->character][0] | omCharModelNoTbl[obj->character][1], 0x689);
     Hu3DModelFaceFlip(object->model[10]);
     Hu3DModelRemakeStatic(object->model[10]);
     Hu3DModelDynamicFree(object->model[10]);
@@ -1628,7 +1628,7 @@ void func_801089B4_stardust_battle(omObjData *object) {
 void func_801089BC_stardust_battle(omObjData *object) {
     HmfModel *model;
     HmfModel *shadow;
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
 
     if (object->model[10] == -1) {
         return;
@@ -1675,16 +1675,16 @@ void func_80108B34_stardust_battle(void) {
     stage->streaks = NULL;
     stage->func_30 = NULL;
     stage->func_34 = NULL;
-    D_800EC1C0_minigame[D_800EBE28_minigame] = omAddObj(3, 8, 0, -1, func_80108C14_stardust_battle);
-    omSetStatBit(D_800EC1C0_minigame[D_800EBE28_minigame], OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    func_80111FC0_stardust_battle(D_800EC1C0_minigame[D_800EBE28_minigame], (u32)stage);
-    D_800EBE28_minigame++;
-    func_800E1490_minigame(0);
+    mgMapObjTbl[mgMapObjNum] = omAddObj(3, 8, 0, -1, func_80108C14_stardust_battle);
+    omSetStatBit(mgMapObjTbl[mgMapObjNum], OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    func_80111FC0_stardust_battle(mgMapObjTbl[mgMapObjNum], (u32)stage);
+    mgMapObjNum++;
+    MgMapBaseSet(0);
 }
 
 void func_80108C14_stardust_battle(omObjData *object) {
     UnkStardustBattleStage *stage = (UnkStardustBattleStage *)func_80111FEC_stardust_battle(object);
-    D_800EC1C0_minigame_ObjData *work;
+    MgMapWork *work;
     HmfData *hmf;
 
     work = HuMemAllocTag(0xB4, TAG_OVERLAY);
@@ -1692,10 +1692,10 @@ void func_80108C14_stardust_battle(omObjData *object) {
     memset(work, 0, 0xB4);
     work->unk03 = 1;
     work->unk04 = 0;
-    func_800E131C_minigame(object, 20.0f);
-    func_800E1304_minigame(object, 1.0f);
-    func_800E1310_minigame(object, 10.0f);
-    func_800E1370_minigame(object, 2, 0.0f);
+    MgMapSlideSet(object, 20.0f);
+    MgMapFrictionSet(object, 1.0f);
+    MgMapAccelSet(object, 10.0f);
+    MgMapAttrSet(object, 2, 0.0f);
     func_80109128_stardust_battle(0);
     object->model[2] = Hu3DModelRead(0x62000A, 0x19);
     Hu3DModelScaleSet(object->model[2], 1.75f, 1.5f, 1.5f);
@@ -1773,17 +1773,17 @@ void func_80109128_stardust_battle(s16 mode) {
     omObjData *object;
     UnkStardustBattleStage *stage;
 
-    if (D_800EBE28_minigame == 0 || D_800EC280_minigame == 0) {
+    if (mgMapObjNum == 0 || mgPlayerObjNum == 0) {
         return;
     }
 
-    object = D_800EC1BC_minigame[D_800EBE28_minigame];
+    object = mgMapObjLastTbl[mgMapObjNum];
     stage = (UnkStardustBattleStage *)func_80111FEC_stardust_battle(object);
     if (stage->unk_00 == mode) {
         return;
     }
 
-    func_80107DCC_stardust_battle(D_800EC598_minigame[0], mode);
+    func_80107DCC_stardust_battle(mgPlayerObjTbl[0], mode);
     if (stage->func_34 != NULL) {
         stage->func_34(object);
         stage->func_34 = NULL;
@@ -1808,20 +1808,20 @@ void func_80109128_stardust_battle(s16 mode) {
 /* Like func_80107FA4, the return value of func_80111FEC_stardust_battle is
    treated as a pointer. */
 s16 func_8010929C_stardust_battle(void) {
-    if (D_800EBE28_minigame == 0) {
+    if (mgMapObjNum == 0) {
         return 0;
     }
 
-    if (D_800EC280_minigame == 0) {
+    if (mgPlayerObjNum == 0) {
         return 0;
     }
 
-    return ((UnkStardustBattleStage *)func_80111FEC_stardust_battle(D_800EC1BC_minigame[D_800EBE28_minigame]))
+    return ((UnkStardustBattleStage *)func_80111FEC_stardust_battle(mgMapObjLastTbl[mgMapObjNum]))
         ->unk_00;
 }
 
 void func_801092F0_stardust_battle(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *data = object->data;
+    MgPlayerWork *data = object->data;
     f32 dist = object->trans.x * object->trans.x + object->trans.z * object->trans.z;
     f32 radius = fabs(525.0 - data->unk48);
 
@@ -1842,9 +1842,9 @@ void func_801092F0_stardust_battle(omObjData *object) {
 void func_801093CC_stardust_battle(omObjData *object) {
     UnkStardustBattleStage *stage = (UnkStardustBattleStage *)func_80111FEC_stardust_battle(object);
 
-    func_800E131C_minigame(object, 20.0f);
-    func_800E1304_minigame(object, 1.0f);
-    func_800E1310_minigame(object, 10.0f);
+    MgMapSlideSet(object, 20.0f);
+    MgMapFrictionSet(object, 1.0f);
+    MgMapAccelSet(object, 10.0f);
     stage->func_30 = NULL;
 }
 
@@ -1866,9 +1866,9 @@ void func_80109424_stardust_battle(omObjData *object) {
     s32 i;
     s32 j;
 
-    func_800E131C_minigame(object, 20.0f);
-    func_800E1304_minigame(object, 1.5f);
-    func_800E1310_minigame(object, 8.0f);
+    MgMapSlideSet(object, 20.0f);
+    MgMapFrictionSet(object, 1.5f);
+    MgMapAccelSet(object, 8.0f);
     Hu3DModelVtxBufMake(object->model[1]);
     Hu3DModelAnimNameSet(object->model[1], "co_y02_DEF");
     hmf->unk60->unk50 |= 0x8000000;
@@ -2073,7 +2073,7 @@ void func_80109FE4_stardust_battle(omObjData *object) {
 }
 
 s32 func_8010A04C_stardust_battle(f32 x, f32 z, f32 arg2, f32 arg3, f32 arg4, f32 arg5) {
-    UnkStardustBattleStage *stage = (UnkStardustBattleStage *)func_80111FEC_stardust_battle(D_800EC1C0_minigame[0]);
+    UnkStardustBattleStage *stage = (UnkStardustBattleStage *)func_80111FEC_stardust_battle(mgMapObjTbl[0]);
     UnkStardustBattleStreak *streak;
     s32 i;
 
@@ -2114,7 +2114,7 @@ s32 func_8010A04C_stardust_battle(f32 x, f32 z, f32 arg2, f32 arg3, f32 arg4, f3
 /* Spawns a streak at the closest point of the stage's point list, if any is
    within range of the given position. */
 s16 func_8010A204_stardust_battle(f32 x, f32 z, f32 arg2, f32 arg3, f32 arg4, f32 arg5) {
-    UnkStardustBattleStage *stage = (UnkStardustBattleStage *)func_80111FEC_stardust_battle(D_800EC1C0_minigame[0]);
+    UnkStardustBattleStage *stage = (UnkStardustBattleStage *)func_80111FEC_stardust_battle(mgMapObjTbl[0]);
     UnkStardustBattlePoint *point;
     f32 dx;
     f32 dz;
@@ -2213,9 +2213,9 @@ void func_8010A5E0_stardust_battle(omObjData *object) {
     UnkStardustBattleStage *stage = (UnkStardustBattleStage *)func_80111FEC_stardust_battle(object);
     HmfData *hmf = Hu3DData[object->model[0]].hmf;
 
-    func_800E131C_minigame(object, 20.0f);
-    func_800E1304_minigame(object, 0.1f);
-    func_800E1310_minigame(object, 5.0f);
+    MgMapSlideSet(object, 20.0f);
+    MgMapFrictionSet(object, 0.1f);
+    MgMapAccelSet(object, 5.0f);
     Hu3DModelVtxBufMake(object->model[0]);
     stage->unk_2C = SearchObjectIndex(hmf, "comet-nagare");
     stage->func_30 = func_8010A690_stardust_battle;
@@ -2909,8 +2909,8 @@ Vec *func_8010CA48_stardust_battle(s16 index) {
         spot = &spots->spot[(s16)(index % spots->count)];
     }
     if (spot->followPlayer != 0) {
-        spot->pos.x = D_800EC598_minigame[0]->trans.x;
-        spot->pos.z = D_800EC598_minigame[0]->trans.z;
+        spot->pos.x = mgPlayerObjTbl[0]->trans.x;
+        spot->pos.z = mgPlayerObjTbl[0]->trans.z;
         spot->pos.y = 0.0f;
     }
     return &spot->pos;
@@ -3269,7 +3269,7 @@ void func_8010DF70_stardust_battle(s16 index) {
 s16 func_8010E03C_stardust_battle(omObjData *object) {
     UnkStardustBattleStars *stars;
     UnkStardustBattleStar *star;
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     f32 dx;
     f32 dz;
     f32 distSq;
@@ -3401,7 +3401,7 @@ void func_8010E4C8_stardust_battle(s16 arg0, f32 arg1, f32 arg2, f32 arg3) {
 }
 
 s16 func_8010E524_stardust_battle(omObjData *object, s16 mode, Vec *out) {
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     UnkStardustBattleStars *stars;
     UnkStardustBattleStar *star;
     Vec pos;
@@ -3512,7 +3512,7 @@ s16 func_8010E524_stardust_battle(omObjData *object, s16 mode, Vec *out) {
 void func_8010EA04_stardust_battle(omObjData *object) {
     UnkStardustBattleStars *stars;
     UnkStardustBattleStar *star;
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     f32 dx;
     f32 dy;
     f32 dz;
@@ -4589,7 +4589,7 @@ void func_80112040_stardust_battle(s16 model, const char *name, HuMtx4F *out) {
 }
 
 void func_80112220_stardust_battle(omObjData *object, const char *name, HuMtx4F out) {
-    func_800E1BA8_minigame_ObjData *data = object->data;
+    MgPlayerWork *data = object->data;
     HuMtx4F mtx;
     HuMtx4F local;
 

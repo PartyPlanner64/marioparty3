@@ -1,9 +1,9 @@
 #include "common.h"
 #include "game/overlays/minigame.h"
 
-u32 D_800EB900_minigame = 0;
+u32 mgRandSeed = 0;
 
-u32 func_800E5D40_minigame(u32 seed) {
+u32 MgRandSeedCalc(u32 seed) {
     u32 quotient;
     u32 remainder;
 
@@ -18,15 +18,15 @@ u32 func_800E5D40_minigame(u32 seed) {
     return seed - remainder * 16807;
 }
 
-u32 func_800E5E14_minigame(void) {
-    D_800EB900_minigame = func_800E5D40_minigame(D_800EB900_minigame);
-    return D_800EB900_minigame;
+u32 MgRand(void) {
+    mgRandSeed = MgRandSeedCalc(mgRandSeed);
+    return mgRandSeed;
 }
 
-u32 func_800E5E3C_minigame(u32 max) {
+u32 MgRandMod(u32 max) {
     u32 value;
 
-    value = func_800E5D40_minigame(D_800EB900_minigame);
-    D_800EB900_minigame = value;
+    value = MgRandSeedCalc(mgRandSeed);
+    mgRandSeed = value;
     return (value & 0x7FFFFFFF) % max;
 }

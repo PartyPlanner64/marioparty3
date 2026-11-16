@@ -44,7 +44,7 @@ extern u16 HuPadBtnDown[];
 // printfunc
 
 // unknown
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 extern char omDBGStrBuf[];
 extern u16 omSysExitReq;
 
@@ -222,9 +222,9 @@ void m255_InitEnvironment(void) {
     ScissorSet(1, 161.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(1, 640.0f, 480.0f, 511.0f, 960.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(1, 60.0f, 80.0f, 4000.0f);
-    D_800EC1B8_minigame = 0;
-    D_800EC280_minigame = 0;
-    D_800EBE28_minigame = 0;
+    mgItemObjNum = 0;
+    mgPlayerObjNum = 0;
+    mgMapObjNum = 0;
     m255_CreateSystem();
     m255_CreateMinigame();
     m255_SetFunc(FGRP_CAMERA, 0, -1, 0, m255_InitCamera, FALSE, FALSE);
@@ -305,14 +305,14 @@ void m255_InitMinigame(omObjData *object) {
             }
         }
     }
-    func_800E18D8_minigame();
-    func_800E19F0_minigame(1);
+    MgPlayerParamReset();
+    MgShadowAltSet(1);
     for (i = 0; i < PLAYERS_TOTAL; i++) {
         omAddObj(10, 8, 0, -1, m255_CreateWall);
         omAddObj(10, 2, 0, -1, m255_CreateSigns);
         omAddObj(10, 7, 0, -1, m255_CreateScrews);
         omAddObj(10, 6, 0, -1, m255_CreateNuts);
-        D_800EC598_minigame[i] = omAddObj(300, 12, 38, -1, m255_InitPlayer);
+        mgPlayerObjTbl[i] = omAddObj(300, 12, 38, -1, m255_InitPlayer);
     }
     m255_SetSpriteDispOn(m255_SetSprite(0x58, 0xF, 0, 0), 160, 120);
     m255_SetFunc(FGRP_MINIGAME, 1, -1, 0, m255_ExecMinigameIntro, TRUE, FALSE);
@@ -517,12 +517,12 @@ void m255_InitPlayer(omObjData *object) {
     s16 chr;
     s16 i;
 
-    object->work[0] = D_800EC280_minigame;
+    object->work[0] = mgPlayerObjNum;
     object->work[1] = m255_playerId[object->work[0]];
     chr = GwPlayer[object->work[1]].chr;
-    temp_a1 = D_800A178C_main[GwPlayer[object->work[1]].chr][0];
-    temp_v0_2 = D_800A178C_main[GwPlayer[object->work[1]].chr][2];
-    func_800E1BA8_minigame(object, temp_a1, temp_v0_2, object->work[1], 0x2A9, 0x2B9);
+    temp_a1 = omCharModelNoTbl[GwPlayer[object->work[1]].chr][0];
+    temp_v0_2 = omCharModelNoTbl[GwPlayer[object->work[1]].chr][2];
+    MgPlayerCreate(object, temp_a1, temp_v0_2, object->work[1], 0x2A9, 0x2B9);
     object->model[MDL_ARROW] = Hu3DModelRead(0x58000B, 0x2B9);
     object->model[MDL_BALLOON_B] = Hu3DModelRead(0x58000D, 0x2B9);
     object->model[MDL_BALLOON_A] = Hu3DModelRead(0x58000E, 0x2B9);
@@ -532,21 +532,21 @@ void m255_InitPlayer(omObjData *object) {
     Hu3DModelAttrSet(object->model[MDL_ARROW], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelAttrSet(object->model[MDL_BALLOON_B], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelAttrSet(object->model[MDL_BALLOON_A], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    func_800E5A00_minigame(object, PLAYER_ANIM_IDLE, CharMotionDataNumGet(chr, 0), 1, 0);
-    func_800E5A00_minigame(object, PLAYER_ANIM_WALK, CharMotionDataNumGet(chr, 1), 1, 0);
-    func_800E5A00_minigame(object, PLAYER_ANIM_RUN, CharMotionDataNumGet(chr, 2), 1, 0);
-    func_800E5A00_minigame(object, PLAYER_ANIM_JUMP, CharMotionDataNumGet(chr, 4), 1, 19);
-    func_800E5A00_minigame(object, PLAYER_ANIM_32, CharMotionDataNumGet(chr, 0x22), 0, 0);
-    func_800E5A00_minigame(object, PLAYER_ANIM_LOST, CharMotionDataNumGet(chr, 0x36), 1, 999);
-    func_800E5A00_minigame(object, PLAYER_ANIM_WON, CharMotionDataNumGet(chr, 0x2F), 1, 999);
+    MgPlayerMotLoad(object, PLAYER_ANIM_IDLE, CharMotionDataNumGet(chr, 0), 1, 0);
+    MgPlayerMotLoad(object, PLAYER_ANIM_WALK, CharMotionDataNumGet(chr, 1), 1, 0);
+    MgPlayerMotLoad(object, PLAYER_ANIM_RUN, CharMotionDataNumGet(chr, 2), 1, 0);
+    MgPlayerMotLoad(object, PLAYER_ANIM_JUMP, CharMotionDataNumGet(chr, 4), 1, 19);
+    MgPlayerMotLoad(object, PLAYER_ANIM_32, CharMotionDataNumGet(chr, 0x22), 0, 0);
+    MgPlayerMotLoad(object, PLAYER_ANIM_LOST, CharMotionDataNumGet(chr, 0x36), 1, 999);
+    MgPlayerMotLoad(object, PLAYER_ANIM_WON, CharMotionDataNumGet(chr, 0x2F), 1, 999);
     object->trans.x = m255_players[object->work[0]].startPosX;
     object->trans.y = 2000.0f;
     object->trans.z = 0.0f;
     object->rot.y = 180.0f;
-    func_800E5690_minigame(object, PLAYER_ANIM_IDLE);
+    MgPlayerMotSet(object, PLAYER_ANIM_IDLE);
     Hu3DModelPosSet(object->model[1], object->trans.x, object->trans.y, object->trans.z);
     Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-    D_800EC280_minigame++;
+    mgPlayerObjNum++;
     unkData = object->data;
     m255_players[object->work[0]].padId = unkData[0x57]; // TODO: figure out type.
     m255_players[object->work[0]].object = object;
@@ -565,7 +565,7 @@ void m255_InitPlayer(omObjData *object) {
 
 void m255_UpdatePlayer(omObjData *object) {
     m255_UpdateFuncGroup(FGRP_PLAYER_1 + object->work[0]);
-    func_800E4E30_minigame(object);
+    MgPlayerMotUpdate(object);
 }
 
 void m255_InitCamera(FuncContext *ctx) {
@@ -1367,9 +1367,9 @@ void m255_UpdatePlayerAnimation(FuncContext *ctx) {
                     ctx->work.s8[0] = 0;
                     if (player->speed == 0.0f) {
                         if (!player->lost) {
-                            func_800E5690_minigame(player->object, PLAYER_ANIM_IDLE);
+                            MgPlayerMotSet(player->object, PLAYER_ANIM_IDLE);
                         } else {
-                            func_800E5690_minigame(player->object, PLAYER_ANIM_LOST);
+                            MgPlayerMotSet(player->object, PLAYER_ANIM_LOST);
                         }
                         if (player->nutSeActive) {
                             HuAudFXStop(player->nutSeNo);
@@ -1380,7 +1380,7 @@ void m255_UpdatePlayerAnimation(FuncContext *ctx) {
                         if (player->inputIdleTimer >= 6) {
                             player->speed -= 0.5f;
                         }
-                        func_800E5690_minigame(player->object, PLAYER_ANIM_RUN);
+                        MgPlayerMotSet(player->object, PLAYER_ANIM_RUN);
                         if (Hu3DData[player->object->model[0]].motTime == 0.0f) {
                             CharFXPlay(0x28, GwPlayer[m255_playerId[player->object->work[0]]].chr);
                         }
@@ -1389,29 +1389,29 @@ void m255_UpdatePlayerAnimation(FuncContext *ctx) {
                         if (player->inputIdleTimer >= 6) {
                             player->speed += 0.5f;
                         }
-                        func_800E5690_minigame(player->object, PLAYER_ANIM_RUN);
+                        MgPlayerMotSet(player->object, PLAYER_ANIM_RUN);
                         if (Hu3DData[player->object->model[0]].motTime == 0.0f) {
                             CharFXPlay(0x28, GwPlayer[m255_playerId[player->object->work[0]]].chr);
                         }
                     }
                     break;
                 case PLAYER_STATE_WAIT_CAM:
-                    func_800E5690_minigame(player->object, PLAYER_ANIM_IDLE);
+                    MgPlayerMotSet(player->object, PLAYER_ANIM_IDLE);
                     break;
                 case PLAYER_STATE_1:
                     if (Hu3DData[player->object->model[0]].motTime == 0.0f) {
                         CharFXPlay(0x1F, GwPlayer[m255_playerId[player->object->work[0]]].chr);
                     }
-                    func_800E5690_minigame(player->object, PLAYER_ANIM_WALK);
+                    MgPlayerMotSet(player->object, PLAYER_ANIM_WALK);
                     break;
                 case PLAYER_STATE_FINISHED:
                     if (Hu3DData[player->object->model[0]].motTime == 0.0f) {
                         CharFXPlay(0x28, GwPlayer[m255_playerId[player->object->work[0]]].chr);
                     }
-                    func_800E5690_minigame(player->object, PLAYER_ANIM_WALK);
+                    MgPlayerMotSet(player->object, PLAYER_ANIM_WALK);
                     break;
                 case PLAYER_STATE_JUMP:
-                    func_800E5690_minigame(player->object, PLAYER_ANIM_JUMP);
+                    MgPlayerMotSet(player->object, PLAYER_ANIM_JUMP);
                     if (ctx->work.s8[0] == 0) {
                         ctx->work.s8[0] = 1;
                         CharFXPlay(0x3A, GwPlayer[m255_playerId[player->object->work[0]]].chr);
@@ -1419,8 +1419,8 @@ void m255_UpdatePlayerAnimation(FuncContext *ctx) {
                     break;
                 case PLAYER_STATE_WON:
                     if (D_8010BE4E_silly_screws == 0) {
-                        func_800E5690_minigame(player->object, PLAYER_ANIM_WON);
-                        HuAudCharVoicePlayPlayer(D_800A178C_main[GwPlayer[m255_playerId[player->object->work[0]]].chr][0] | 0x2F, -1, m255_playerId[player->object->work[0]]);
+                        MgPlayerMotSet(player->object, PLAYER_ANIM_WON);
+                        HuAudCharVoicePlayPlayer(omCharModelNoTbl[GwPlayer[m255_playerId[player->object->work[0]]].chr][0] | 0x2F, -1, m255_playerId[player->object->work[0]]);
                         D_8010BE4E_silly_screws = 1;
                     }
                     break;
@@ -1428,7 +1428,7 @@ void m255_UpdatePlayerAnimation(FuncContext *ctx) {
                     if (Hu3DData[player->object->model[0]].motTime == 0.0f) {
                         CharFXPlay(0x28, GwPlayer[m255_playerId[player->object->work[0]]].chr);
                     }
-                    func_800E5690_minigame(player->object, PLAYER_ANIM_RUN);
+                    MgPlayerMotSet(player->object, PLAYER_ANIM_RUN);
                     break;
             }
             break;

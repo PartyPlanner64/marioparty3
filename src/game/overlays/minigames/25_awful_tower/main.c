@@ -28,11 +28,11 @@ typedef struct {
     /* 0x08 */ s32 unk08;
 } AwfulTowerPlayer; // Size 0xC
 
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 extern EffectGroup *EffectGroupData[];
-extern f32 D_800EB760_minigame;
+extern f32 mgPlayerSpeedMax;
 extern Gfx *gMainGfxPos;
-extern omObjData *D_800EBE70_minigame[];
+extern omObjData *mgItemObjTbl[];
 
 s32 D_8010CB60_awful_tower[] = { 1, 2, 4, 8 };
 MinigameFlow D_8010CB70_awful_tower = { 0 };
@@ -142,7 +142,7 @@ void func_801059A0_awful_tower(void) {
     s32 j;
 
     MapCollInit(50);
-    Hu3DQuadPoolInit(&D_800EBEB0_minigame, 0x40);
+    Hu3DQuadPoolInit(&mgQuadPool, 0x40);
     Hu3DSprModelInit(0x20);
     omInitObjMan(100, 0);
     omGameSysInit();
@@ -164,11 +164,11 @@ void func_801059A0_awful_tower(void) {
         CRotM[i].z = 0.0f;
         CZoomM[i] = 12000.0f;
     }
-    D_800EC1B8_minigame = 0;
-    D_800EC280_minigame = 0;
-    D_800EBE28_minigame = 0;
-    func_800E18D8_minigame();
-    func_800E19F0_minigame(1);
+    mgItemObjNum = 0;
+    mgPlayerObjNum = 0;
+    mgMapObjNum = 0;
+    MgPlayerParamReset();
+    MgShadowAltSet(1);
     Hu3DGLightMaxSet(2);
     Hu3DGLightDirSet(0, 0.0f, 80.0f, 130.0f);
     Hu3DGLightColorSet(0, 0x80, 0x80, 0x90);
@@ -177,20 +177,20 @@ void func_801059A0_awful_tower(void) {
     omAddObj(0, 0, 0, -1, func_80106028_awful_tower);
     D_8010D3E8_awful_tower = omAddObj(4, 21, 21, -1, func_80106FDC_awful_tower);
     omSetStatBit(D_8010D3E8_awful_tower, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    func_800E1490_minigame(D_800EBE28_minigame);
-    D_800EC1C0_minigame[D_800EBE28_minigame++] = D_8010D344_awful_tower = omAddObj(2, 21, 21, -1, func_80106A9C_awful_tower);
+    MgMapBaseSet(mgMapObjNum);
+    mgMapObjTbl[mgMapObjNum++] = D_8010D344_awful_tower = omAddObj(2, 21, 21, -1, func_80106A9C_awful_tower);
     for (i = 0; i < 4; i++) {
         for (j = 0; j < 3; j++) {
-            D_800EC1C0_minigame[D_800EBE28_minigame++] = D_8010D360_awful_tower[i][j] = omAddObj(2, 4, 4, -1, func_80106E84_awful_tower);
+            mgMapObjTbl[mgMapObjNum++] = D_8010D360_awful_tower[i][j] = omAddObj(2, 4, 4, -1, func_80106E84_awful_tower);
         }
     }
     for (i = 0; i < 5; i++) {
-        D_800EBE70_minigame[D_800EC1B8_minigame++] = D_8010D390_awful_tower[i] = omAddObj(2, 4, 2, -1, func_80106CDC_awful_tower);
+        mgItemObjTbl[mgItemObjNum++] = D_8010D390_awful_tower[i] = omAddObj(2, 4, 2, -1, func_80106CDC_awful_tower);
     }
-    D_800EC598_minigame[D_800EC280_minigame++] = D_8010D3A8_awful_tower[0] = omAddObj(3, 12, 60, -1, func_80108CCC_awful_tower);
-    D_800EC598_minigame[D_800EC280_minigame++] = D_8010D3A8_awful_tower[1] = omAddObj(3, 12, 60, -1, func_80108D3C_awful_tower);
-    D_800EC598_minigame[D_800EC280_minigame++] = D_8010D3A8_awful_tower[2] = omAddObj(3, 12, 60, -1, func_80108DAC_awful_tower);
-    D_800EC598_minigame[D_800EC280_minigame++] = D_8010D3A8_awful_tower[3] = omAddObj(3, 12, 60, -1, func_80108E1C_awful_tower);
+    mgPlayerObjTbl[mgPlayerObjNum++] = D_8010D3A8_awful_tower[0] = omAddObj(3, 12, 60, -1, func_80108CCC_awful_tower);
+    mgPlayerObjTbl[mgPlayerObjNum++] = D_8010D3A8_awful_tower[1] = omAddObj(3, 12, 60, -1, func_80108D3C_awful_tower);
+    mgPlayerObjTbl[mgPlayerObjNum++] = D_8010D3A8_awful_tower[2] = omAddObj(3, 12, 60, -1, func_80108DAC_awful_tower);
+    mgPlayerObjTbl[mgPlayerObjNum++] = D_8010D3A8_awful_tower[3] = omAddObj(3, 12, 60, -1, func_80108E1C_awful_tower);
     object = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
     object->work[0] = 4;
     omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
@@ -206,7 +206,7 @@ void func_801059A0_awful_tower(void) {
     D_8010CB70_awful_tower.newRecord = FALSE;
     D_8010CB70_awful_tower.gauge = MG_GAUGE_NONE;
     D_8010CB70_awful_tower.timeLimit = -1;
-    func_800E5EA0_minigame(&D_8010CB70_awful_tower);
+    MgFlowInit(&D_8010CB70_awful_tower);
     for (i = 0; i < 4; i++) {
         D_8010D2CC_awful_tower[i] = EffectGroupStarCreate(0x6A9, 4);
     }
@@ -314,7 +314,7 @@ void func_801061FC_awful_tower(omObjData *object) {
                 GwPlayer[D_8010D308_awful_tower[D_8010D3FC_awful_tower]->player].bonusCoin = 10;
             }
             if (D_8010D3DC_awful_tower == 2) {
-                func_800E6F34_minigame(30);
+                MgFlowResultWaitSet(30);
             }
             if (MgFlowStatGet() == MG_STATE_RESULT) {
                 D_8010D3E4_awful_tower = 4;
@@ -335,7 +335,7 @@ void func_801061FC_awful_tower(omObjData *object) {
             if (D_8010D3DC_awful_tower == 1) {
                 chr = D_8010D308_awful_tower[D_8010D3FC_awful_tower]->chr;
                 D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[9] =
-                    Hu3DModelRead(D_800A178C_main[chr][0] | D_800A178C_main[chr][2], 0x4AD);
+                    Hu3DModelRead(omCharModelNoTbl[chr][0] | omCharModelNoTbl[chr][2], 0x4AD);
                 D_8010D3EC_awful_tower[0] =
                     CharAnimCreate(D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[9], 1, motions[chr],
                                        (chrDirs[chr] << 16) | winFiles[0][chr]);
@@ -371,7 +371,7 @@ void func_801061FC_awful_tower(omObjData *object) {
         case 5:
             if (D_8010D3E4_awful_tower == 5 && D_8010D3DC_awful_tower == 1) {
                 for (i = 0; i < 4; i++) {
-                    func_800E5690_minigame(D_8010D3A8_awful_tower[i], 14);
+                    MgPlayerMotSet(D_8010D3A8_awful_tower[i], 14);
                 }
             }
             if (MgFlowStatGet() == MG_STATE_EXIT) {
@@ -406,7 +406,7 @@ void func_801061FC_awful_tower(omObjData *object) {
 }
 
 void func_80106A9C_awful_tower(omObjData *object) {
-    D_800EC1C0_minigame_ObjData *work;
+    MgMapWork *work;
 
     object->model[0] = -1;
     object->model[0] = Hu3DModelRead2(0x460006, 0x499);
@@ -424,18 +424,18 @@ void func_80106A9C_awful_tower(omObjData *object) {
     object->data = work;
     memset(work, 0, 0xB4);
     work->unk03 = 1;
-    func_800E139C_minigame(object, 0.0f, -670.0f, -380.0f, 670.0f, 250.0f);
-    func_800E1304_minigame(object, 1.0f);
-    func_800E1310_minigame(object, 6.0f);
-    func_800E1468_minigame(object);
+    MgMapBoxSet(object, 0.0f, -670.0f, -380.0f, 670.0f, 250.0f);
+    MgMapFrictionSet(object, 1.0f);
+    MgMapAccelSet(object, 6.0f);
+    MgMapNoBumpOn(object);
     work->unk04 = 0;
     object->func = NULL;
 }
 
 s32 func_80106C44_awful_tower(omObjData *player, omObjData *object) {
-    A96F0_ObjData *data = object->data;
+    MgItemWork *data = object->data;
 
-    GwPlayer[((func_800E1BA8_minigame_ObjData *)player->data)->unk59].gameCoin++;
+    GwPlayer[((MgPlayerWork *)player->data)->unk59].gameCoin++;
     HuAudFXPlay(9);
     data->unk54 = 0;
     data->unk78 = 0;
@@ -445,15 +445,15 @@ s32 func_80106C44_awful_tower(omObjData *player, omObjData *object) {
 }
 
 void func_80106CDC_awful_tower(omObjData *object) {
-    A96F0_ObjData *data;
+    MgItemWork *data;
     s16 i;
     s32 unused[2]; // Retain the original stack frame.
 
-    object->data = HuMemAllocTag(sizeof(A96F0_ObjData), TAG_OVERLAY);
-    memset(object->data, 0, sizeof(A96F0_ObjData));
+    object->data = HuMemAllocTag(sizeof(MgItemWork), TAG_OVERLAY);
+    memset(object->data, 0, sizeof(MgItemWork));
     data = object->data;
     if (D_8010CB98_awful_tower[0] == -1) {
-        func_800E1594_minigame(object, 0x210026, 0x41D, 8);
+        MgObjSprMdlCreate(object, 0x210026, 0x41D, 8);
         D_8010CB98_awful_tower[0] = data->unk55;
     } else {
         data->unk55 = Hu3DSprModelLink(D_8010CB98_awful_tower[0], 8);
@@ -476,13 +476,13 @@ void func_80106CDC_awful_tower(omObjData *object) {
         data->unk84[i] = NULL;
     }
     data->unk84[8] = (void *)func_80106C44_awful_tower;
-    func_800E17F4_minigame(object, 3.0f, 3.0f, 3.0f);
+    MgObjScaleSet(object, 3.0f, 3.0f, 3.0f);
     Hu3DModelAttrSet(object->model[0], 4, 4);
     object->func = NULL;
 }
 
 void func_80106E84_awful_tower(omObjData *object) {
-    D_800EC1C0_minigame_ObjData *work;
+    MgMapWork *work;
 
     object->model[0] = -1;
     object->trans.x = object->trans.y = object->trans.z = 250.0f;
@@ -490,9 +490,9 @@ void func_80106E84_awful_tower(omObjData *object) {
     object->data = work;
     memset(work, 0, 0xB4);
     work->unk03 = 1;
-    func_800E13CC_minigame(object, 50.0f, 100.0f, -50.0f, -50.0f, 50.0f, 50.0f);
-    func_800E1304_minigame(object, 1.0f);
-    func_800E1310_minigame(object, 6.0f);
+    MgMapBlockSet(object, 50.0f, 100.0f, -50.0f, -50.0f, 50.0f, 50.0f);
+    MgMapFrictionSet(object, 1.0f);
+    MgMapAccelSet(object, 6.0f);
     work->unk04 = 0;
     object->func = NULL;
 }
@@ -539,7 +539,7 @@ void func_80106FDC_awful_tower(omObjData *object) {
     for (i = 0; i < 5; i++) {
         f32 posX[5] = { 1.0f, -1.0f, 1.0f, -1.0f, 0.25f };
         f32 posY[5] = { 13.5f, 8.5f, 24.0f, 34.0f, 40.5f };
-        A96F0_ObjData *data = D_8010D390_awful_tower[i]->data;
+        MgItemWork *data = D_8010D390_awful_tower[i]->data;
 
         D_8010D390_awful_tower[i]->trans.x = posX[i] * 150.0f;
         D_8010D390_awful_tower[i]->trans.y = posY[i] * 100.0f + 50.0f;
@@ -557,7 +557,7 @@ void func_80106FDC_awful_tower(omObjData *object) {
     Hu3DModelScaleSet(object->model[20], 0.666666f, 0.666666f, 0.666666f);
     for (i = 0; i < 4; i++) {
         for (j = 0; j < 3; j++) {
-            ((D_800EC1C0_minigame_ObjData *)D_8010D360_awful_tower[i][j]->data)->unk04 = i * 3 + j + 1;
+            ((MgMapWork *)D_8010D360_awful_tower[i][j]->data)->unk04 = i * 3 + j + 1;
             for (k = 0; k < 3; k++) {
                 D_8010D360_awful_tower[i][j]->model[k + 1] = Hu3DModelLink(D_8010D3E8_awful_tower->model[j]);
                 Hu3DModelAttrSet(D_8010D360_awful_tower[i][j]->model[k + 1], 4, 4);
@@ -736,11 +736,11 @@ void func_80108880_awful_tower(omObjData *object, s32 model, s32 motion, u16 gro
     s32 attr1 = 0x4B9;
     s32 attr2 = 0x49D;
     u16 chr = D_8010D308_awful_tower[group]->chr;
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     s32 i;
 
-    func_800E18D8_minigame();
-    func_800E1BA8_minigame(object, model, motion, D_8010D308_awful_tower[group]->player, attr1, attr2);
+    MgPlayerParamReset();
+    MgPlayerCreate(object, model, motion, D_8010D308_awful_tower[group]->player, attr1, attr2);
     Hu3DModelCameraSet(object->model[0], D_8010CB60_awful_tower[group]);
     data = object->data;
     data->unk59 = D_8010D308_awful_tower[group]->player;
@@ -753,33 +753,33 @@ void func_80108880_awful_tower(omObjData *object, s32 model, s32 motion, u16 gro
     D_8010D308_awful_tower[group]->unk08 = (rand8() & 1) ? 0x2F : 0x30;
     object->model[10] = Hu3DModelRead(CharMotionDataNumGet(chr, D_8010D308_awful_tower[group]->unk08), attr1 | 4);
     D_8010D308_awful_tower[group]->unk08 |= chrDirs[chr] << 16;
-    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(chr, 0), 1, 0);
-    func_800E5A00_minigame(object, 1, CharMotionDataNumGet(chr, 1), 1, 0);
-    func_800E5A00_minigame(object, 2, CharMotionDataNumGet(chr, 2), 1, 0);
-    func_800E5A00_minigame(object, 6, CharMotionDataNumGet(chr, 4), 1, 19);
-    func_800E5A00_minigame(object, 17, CharMotionDataNumGet(chr, 14), 1, 15);
-    func_800E5978_minigame(object, 21, CharMotionDataNumGet(chr, 31), 0, 0);
-    func_800E5978_minigame(object, 30, CharMotionDataNumGet(chr, 32), 2, 0);
-    func_800E5978_minigame(object, 31, CharMotionDataNumGet(chr, 33), 2, 0);
-    func_800E5978_minigame(object, 32, CharMotionDataNumGet(chr, 34), 0, 0);
-    func_800E5A00_minigame(object, 14, CharMotionDataNumGet(chr, 58), 1, 120);
+    MgPlayerMotLoad(object, 0, CharMotionDataNumGet(chr, 0), 1, 0);
+    MgPlayerMotLoad(object, 1, CharMotionDataNumGet(chr, 1), 1, 0);
+    MgPlayerMotLoad(object, 2, CharMotionDataNumGet(chr, 2), 1, 0);
+    MgPlayerMotLoad(object, 6, CharMotionDataNumGet(chr, 4), 1, 19);
+    MgPlayerMotLoad(object, 17, CharMotionDataNumGet(chr, 14), 1, 15);
+    MgPlayerMotRead(object, 21, CharMotionDataNumGet(chr, 31), 0, 0);
+    MgPlayerMotRead(object, 30, CharMotionDataNumGet(chr, 32), 2, 0);
+    MgPlayerMotRead(object, 31, CharMotionDataNumGet(chr, 33), 2, 0);
+    MgPlayerMotRead(object, 32, CharMotionDataNumGet(chr, 34), 0, 0);
+    MgPlayerMotLoad(object, 14, CharMotionDataNumGet(chr, 58), 1, 120);
     object->trans.x = x;
     object->trans.y = y;
     object->trans.z = z;
     Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
     for (i = 0; i < 12; i++) {
-        func_800E149C_minigame(object, i + 1, 1);
+        MgPlayerMapAttrSet(object, i + 1, 1);
     }
-    func_800E149C_minigame(object, 0, 2);
-    func_800E149C_minigame(object, group * 3 + 1, 2);
-    func_800E149C_minigame(object, group * 3 + 2, 2);
-    func_800E149C_minigame(object, group * 3 + 3, 2);
+    MgPlayerMapAttrSet(object, 0, 2);
+    MgPlayerMapAttrSet(object, group * 3 + 1, 2);
+    MgPlayerMapAttrSet(object, group * 3 + 2, 2);
+    MgPlayerMapAttrSet(object, group * 3 + 3, 2);
 }
 
 void func_80108CCC_awful_tower(omObjData *object) {
     s8 chr = D_8010D308_awful_tower[0]->chr;
-    s32 motion = D_800A178C_main[chr][1];
-    s32 model = D_800A178C_main[chr][0];
+    s32 motion = omCharModelNoTbl[chr][1];
+    s32 model = omCharModelNoTbl[chr][0];
 
     func_80108880_awful_tower(object, model, motion, 0, 0.0f, 0.0f, 0.0f);
     object->func = func_80108E8C_awful_tower;
@@ -787,8 +787,8 @@ void func_80108CCC_awful_tower(omObjData *object) {
 
 void func_80108D3C_awful_tower(omObjData *object) {
     s8 chr = D_8010D308_awful_tower[1]->chr;
-    s32 motion = D_800A178C_main[chr][1];
-    s32 model = D_800A178C_main[chr][0];
+    s32 motion = omCharModelNoTbl[chr][1];
+    s32 model = omCharModelNoTbl[chr][0];
 
     func_80108880_awful_tower(object, model, motion, 1, 0.0f, 0.0f, 0.0f);
     object->func = func_80108E8C_awful_tower;
@@ -796,8 +796,8 @@ void func_80108D3C_awful_tower(omObjData *object) {
 
 void func_80108DAC_awful_tower(omObjData *object) {
     s8 chr = D_8010D308_awful_tower[2]->chr;
-    s32 motion = D_800A178C_main[chr][1];
-    s32 model = D_800A178C_main[chr][0];
+    s32 motion = omCharModelNoTbl[chr][1];
+    s32 model = omCharModelNoTbl[chr][0];
 
     func_80108880_awful_tower(object, model, motion, 2, 0.0f, 0.0f, 0.0f);
     object->func = func_80108E8C_awful_tower;
@@ -805,8 +805,8 @@ void func_80108DAC_awful_tower(omObjData *object) {
 
 void func_80108E1C_awful_tower(omObjData *object) {
     s8 chr = D_8010D308_awful_tower[3]->chr;
-    s32 motion = D_800A178C_main[chr][1];
-    s32 model = D_800A178C_main[chr][0];
+    s32 motion = omCharModelNoTbl[chr][1];
+    s32 model = omCharModelNoTbl[chr][0];
 
     func_80108880_awful_tower(object, model, motion, 3, 0.0f, 0.0f, 0.0f);
     object->func = func_80108E8C_awful_tower;
@@ -821,7 +821,7 @@ void func_80108E8C_awful_tower(omObjData *object) {
     s8 savedStickY;
     s16 savedStick2;
     s16 savedStick3;
-    func_800E1BA8_minigame_ObjData *data = object->data;
+    MgPlayerWork *data = object->data;
     s16 group = D_8010D3CC_awful_tower[data->unk59];
     u8 savedCB70 = 0xFF;
     u8 platTypes[16] = { 0, 2, 1, 1, 0, 0, 2, 1, 2, 2, 1, 0, 1, 2, 2, 0 };
@@ -833,7 +833,7 @@ void func_80108E8C_awful_tower(omObjData *object) {
     u8 closePlats[3] = { -1, -1, -1 };
     f32 closeDists[3] = { 32000.0f, 32000.0f, 32000.0f };
     u8 coinNear[5];
-    func_800E1BA8_minigame_ObjData *work;
+    MgPlayerWork *work;
     f32 dist;
     f32 vx;
     f32 vy;
@@ -925,9 +925,9 @@ void func_80108E8C_awful_tower(omObjData *object) {
         omSetTra(D_8010D360_awful_tower[group][i], platCols[closePlats[i]] * 150 - 150,
                  D_8010D0D0_awful_tower[closePlats[i]], 0.0f);
         if (closePlats[i] == 0) {
-            func_800E13CC_minigame(D_8010D360_awful_tower[group][i], 50.0f, 300.0f, -150.0f, -50.0f, 50.0f, 50.0f);
+            MgMapBlockSet(D_8010D360_awful_tower[group][i], 50.0f, 300.0f, -150.0f, -50.0f, 50.0f, 50.0f);
         } else {
-            func_800E13CC_minigame(D_8010D360_awful_tower[group][i], 50.0f, 100.0f, -50.0f, -50.0f, 50.0f, 50.0f);
+            MgMapBlockSet(D_8010D360_awful_tower[group][i], 50.0f, 100.0f, -50.0f, -50.0f, 50.0f, 50.0f);
         }
         for (j = 0; j < 3; j++) {
             Hu3DModelAttrSet(D_8010D360_awful_tower[group][i]->model[j + 1], 4, 4);
@@ -959,7 +959,7 @@ void func_80108E8C_awful_tower(omObjData *object) {
         }
     }
     if (D_8010CC18_awful_tower[group] > -1000.0f) {
-        func_800E1BA8_minigame_ObjData *hitData;
+        MgPlayerWork *hitData;
         f32 dx;
         f32 dy;
 
@@ -976,18 +976,18 @@ void func_80108E8C_awful_tower(omObjData *object) {
             dx * dx + dy * dy < 3600.0f) {
             hitData = object->data;
             hitData->unk3C = (object->trans.y > 3500.0f) ? 90.0f : -90.0f;
-            func_800E5690_minigame(object, 30);
+            MgPlayerMotSet(object, 30);
             if (hitData->unk38 == 1000.0f) {
-                hitData->unk40 = -D_800EB760_minigame;
+                hitData->unk40 = -mgPlayerSpeedMax;
             } else {
-                hitData->unk40 = -D_800EB760_minigame;
-                hitData->unk38 = -D_800EB744_minigame * 0.6f;
+                hitData->unk40 = -mgPlayerSpeedMax;
+                hitData->unk38 = -mgPlayerJumpPower * 0.6f;
             }
-            func_800E4C88_minigame(object, 6, (D_8010D190_awful_tower[group] + object->trans.x) / 2.0,
+            MgPlayerEffSet(object, 6, (D_8010D190_awful_tower[group] + object->trans.x) / 2.0,
                                    (D_8010CC18_awful_tower[group] + object->trans.y + 75.0f) / 2.0, 0.0f, 0.0f,
                                    180.0f);
             PlayerFXPlay(0x286, hitData->unk59);
-            func_800E19FC_minigame(hitData, 8);
+            MgPlayerSePlay(hitData, 8);
             omVibrate(hitData->unk59, 2, 2, 20);
             D_8010D1E0_awful_tower[group] = 0.0f;
         }
@@ -1129,7 +1129,7 @@ void func_80108E8C_awful_tower(omObjData *object) {
         }
     }
     for (i = 0; i < 5; i++) {
-        A96F0_ObjData *coin = D_8010D390_awful_tower[i]->data;
+        MgItemWork *coin = D_8010D390_awful_tower[i]->data;
 
         coinNear[i] = ABS(D_8010D390_awful_tower[i]->trans.y - (object->trans.y + 160.0)) < 200.0;
         coin->unk54 = D_8010D330_awful_tower[group][i] && coinNear[i];
@@ -1152,7 +1152,7 @@ void func_80108E8C_awful_tower(omObjData *object) {
     }
     if (!(D_8010D3FC_awful_tower < 4 &&
           (D_8010D3E4_awful_tower == 7 || (D_8010D3E4_awful_tower == 4 && D_8010D3DC_awful_tower >= 30)))) {
-        func_800DDD94_minigame(object);
+        MgPlayerObjMain(object);
     }
     if (D_8010D3E4_awful_tower == 3 && D_8010CC44_awful_tower >= 12) {
         HuAudFXStop(data->unkC5);
@@ -1181,7 +1181,7 @@ void func_80108E8C_awful_tower(omObjData *object) {
         }
     }
     for (i = 0; i < 5; i++) {
-        A96F0_ObjData *coin = D_8010D390_awful_tower[i]->data;
+        MgItemWork *coin = D_8010D390_awful_tower[i]->data;
         s32 cameras;
 
         if (D_8010D330_awful_tower[group][i] != 0 && coinNear[i] != 0 && coin->unk54 == 0) {
@@ -1206,7 +1206,7 @@ void func_80108E8C_awful_tower(omObjData *object) {
             Hu3DModelCameraSet(D_8010D390_awful_tower[i]->model[0], cameras);
         }
     }
-    if (D_8010CC00_awful_tower[group] > 0 && (u16)func_800E4A80_minigame(object) == 14) {
+    if (D_8010CC00_awful_tower[group] > 0 && (u16)MgPlayerMotNoGet(object) == 14) {
         object->trans.y = D_8010D0D0_awful_tower[D_8010CC00_awful_tower[group] - 1] + 50.0f;
     }
     work = object->data;

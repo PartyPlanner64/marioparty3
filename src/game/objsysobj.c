@@ -152,7 +152,7 @@ extern omObjData *HuAudFadeObj;
 extern struct str800D5298 HuAudFadeSysConfig;
 extern s16 HuAudMusNo;
 extern u16 omSysExitReq;
-extern u16 D_800D13EE_main;
+extern u16 HuAudFadeSeChMax;
 extern s16 HuAudSeChMax;
 extern s16 HuAudSubMusNo;
 extern Vec CUpM[4];
@@ -181,12 +181,12 @@ void omOutView(omObjData *object) {
     up.x = sindf(rot_y) * sindf(rot_x);
     up.y = cosdf(rot_x);
     up.z = cosdf(rot_y) * sindf(rot_x);
-    D_800CE17C_main[0] = pos.x;
-    D_800CE17C_main[1] = pos.z;
-    D_800CE17C_main[-1] = CRot.y; // actually CFan?
-    D_800CE17C_main[2] = gCameraList->fov;
-    D_800CE17C_main[3] = CFanLen;
-    D_800CE17C_main[4] = CFanOfs;
+    CFanParam[0] = pos.x;
+    CFanParam[1] = pos.z;
+    CFanParam[-1] = CRot.y; // actually CFan?
+    CFanParam[2] = gCameraList->fov;
+    CFanParam[3] = CFanLen;
+    CFanParam[4] = CFanOfs;
     Hu3DCameraPosSetV(0, &pos, &at, &up);
     Hu3DCamUpdateMtx(0);
 }
@@ -380,12 +380,12 @@ void omCameraViewExec(omObjData *object) {
     up.x = sindf(rot_y) * sindf(rot_x);
     up.y = cosdf(rot_x);
     up.z = cosdf(rot_y) * sindf(rot_x);
-    D_800CE17C_main[0] = pos.x;
-    D_800CE17C_main[1] = pos.z;
-    D_800CE17C_main[-1] = CRot.y; // actually CFan?
-    D_800CE17C_main[2] = gCameraList->fov;
-    D_800CE17C_main[3] = CFanLen;
-    D_800CE17C_main[4] = CFanOfs;
+    CFanParam[0] = pos.x;
+    CFanParam[1] = pos.z;
+    CFanParam[-1] = CRot.y; // actually CFan?
+    CFanParam[2] = gCameraList->fov;
+    CFanParam[3] = CFanLen;
+    CFanParam[4] = CFanOfs;
     Hu3DCameraPosSetV(0, &pos, &at, &up);
     Hu3DCamUpdateMtx(0);
 
@@ -528,7 +528,7 @@ void HuAudFadeObjCreate(void) {
     HuAudFadeObj = omAddObj(0x7FD8, 0, 0, -1, HuAudFadeObjExec);
     data = HuAudFadeObj->data = HuMemAllocTag(sizeof(UnkAudioObjData), TAG_OVERLAY);
     msmSysGetConfig(&HuAudFadeSysConfig);
-    HuAudSeChMax = D_800D13EE_main;
+    HuAudSeChMax = HuAudFadeSeChMax;
     data->unk00 = HuMemAllocTag(HuAudSeChMax * sizeof(f32), TAG_OVERLAY);
     data->unk04 = HuMemAllocTag(HuAudSeChMax * sizeof(f32), TAG_OVERLAY);
     data->unk08 = HuMemAllocTag(HuAudSeChMax * sizeof(f32), TAG_OVERLAY);

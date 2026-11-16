@@ -103,7 +103,7 @@ u8 D_8010C144_hand_line_sinker[4] BSS; /* Unreferenced. */
 s16 D_8010C148_hand_line_sinker[2][6] BSS;
 omObjData *D_8010C160_hand_line_sinker[8] BSS;
 extern u8 omAllPauseF;
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 
 void func_80105D28_hand_line_sinker(omObjData *);
 void func_80105CF0_hand_line_sinker(omObjData *arg0);
@@ -186,8 +186,8 @@ void func_801059A0_hand_line_sinker(void) {
     }
     D_8010C100_hand_line_sinker = omGetGroupMemberList(0);
     GMesFontMesCreate(D_8010BFB0_hand_line_sinker, 1);
-    func_800E5EA0_minigame(&D_8010BF00_hand_line_sinker);
-    D_800EB930_minigame = 45;
+    MgFlowInit(&D_8010BF00_hand_line_sinker);
+    mgFlowSeqNo = 45;
     CharAnimInit();
 }
 
@@ -310,8 +310,8 @@ void func_80106100_hand_line_sinker(omObjData *obj, u16 playerNo) {
     s32 motion;
 
     chr = GwPlayer[playerNo].chr;
-    model = D_800A178C_main[chr][0];
-    motion = D_800A178C_main[chr][2];
+    model = omCharModelNoTbl[chr][0];
+    motion = omCharModelNoTbl[chr][2];
     obj->data = HuMemAllocTag(sizeof(HandLineSinkerPlayerWork), TAG_OVERLAY);
     work = obj->data;
     work->playerNo = playerNo;
@@ -1365,7 +1365,7 @@ void func_80109584_hand_line_sinker(omObjData *obj) {
                                    D_8010C0FC_hand_line_sinker->model[5]);
                 Hu3DMotionShiftSet(D_8010C0FC_hand_line_sinker->model[0],
                                    Hu3DData[D_8010C0FC_hand_line_sinker->motion[12]].motId, 0, 8, 0);
-                HuAudCharVoicePlay(D_800A178C_main[GwPlayer[work->playerNo].chr][0] | 0x2F);
+                HuAudCharVoicePlay(omCharModelNoTbl[GwPlayer[work->playerNo].chr][0] | 0x2F);
                 omDelObj(D_8010C190_hand_line_sinker);
                 D_8010BF00_hand_line_sinker.winners[0] = work->playerNo;
                 obj->work[0] = 1;

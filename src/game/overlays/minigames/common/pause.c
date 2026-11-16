@@ -10,36 +10,36 @@ typedef struct {
     /* 0x06 */ s16 unk06;
     /* 0x08 */ s16 x;
     /* 0x0A */ s16 y;
-} BA4B0_ProcessData; // Size 0xC
+} MgStoryStatParam; // Size 0xC
 
 typedef struct {
     /* 0x00 */ s16 x;
     /* 0x02 */ s16 y;
-} BA4B0_Pos; // Size 0x4
+} MgStoryStatPos; // Size 0x4
 
 typedef struct {
-    /* 0x00 */ BA4B0_Pos pos;
+    /* 0x00 */ MgStoryStatPos pos;
     /* 0x04 */ s16 unk04;
     /* 0x06 */ s16 unk06;
     /* 0x08 */ s16 unk08;
     /* 0x0A */ s16 unk0A;
-} BA4B0_Elem; // Size 0xC
+} MgStoryStatElem; // Size 0xC
 
 typedef struct {
     /* 0x00 */ s32 file;
-    /* 0x04 */ BA4B0_Pos pos;
-} BA4B0_SprDef; // Size 0x8
+    /* 0x04 */ MgStoryStatPos pos;
+} MgStoryStatSprDef; // Size 0x8
 
 typedef struct {
     /* 0x00 */ s16 x;
     /* 0x02 */ s16 y;
     /* 0x04 */ s16 w;
     /* 0x06 */ s16 h;
-} BA4B0_WinDef; // Size 0x8
+} MgStoryStatWinDef; // Size 0x8
 
 typedef struct {
-    /* 0x000 */ BA4B0_ProcessData *data;
-    /* 0x004 */ BA4B0_Elem elems[23];
+    /* 0x000 */ MgStoryStatParam *data;
+    /* 0x004 */ MgStoryStatElem elems[23];
     /* 0x118 */ s16 unk118;
     /* 0x11A */ s16 windows[6];
     /* 0x126 */ s16 winFlags[6];
@@ -49,9 +49,9 @@ typedef struct {
     /* 0x13E */ s16 unk13E;
     /* 0x140 */ s16 unk140;
     /* 0x142 */ char unk142[0x2];
-} BA4B0_Work; // Size 0x144
+} MgStoryStatWork; // Size 0x144
 
-BA4B0_SprDef D_800EB950_minigame[15] = {
+MgStoryStatSprDef mgStoryStatSprTbl[15] = {
     { 0x00150000, { 0, -75 } },
     { 0x00150002, { 0, 8 } },
     { 0x00150011, { -86, -22 } },
@@ -69,65 +69,65 @@ BA4B0_SprDef D_800EB950_minigame[15] = {
     { 0x0015001E, { 0, 1 } },
 };
 
-s32 D_800EB9C8_minigame[] = {
+s32 mgStoryResultSprTbl[] = {
     0x0015000D, 0x0015000C, 0x0015000B, 0x0015000A, 0x0015000A, 0x0015000A, 0x0015000A,
 };
 
-s32 D_800EB9E4_minigame[] = {
+s32 mgStoryCharSprTbl[] = {
     0x00150004, 0x00150005, 0x00150006, 0x00150007, 0x00150008, 0x00150009,
 };
 
-u32 D_800EB9FC_minigame[] = {
+u32 mgStoryCharMesTbl[] = {
     0x1C00, 0x1C01, 0x1C02, 0x1C03, 0x1C04, 0x1C05,
 };
 
-u32 D_800EBA14_minigame[] = {
+u32 mgStoryLevelMesTbl[] = {
     0x6102, 0x6103, 0x6104, 0x6105,
 };
 
-u32 D_800EBA24_minigame[] = {
+u32 mgStoryRankMesTbl[] = {
     0x6112, 0x6113, 0x6116, 0x6117, 0x6118, 0x6118, 0x6118,
 };
 
-u8 D_800EBA40_minigame[] = {
+u8 mgStoryRankBlinkTbl[] = {
     0xFF, 0x50, 0x50, 0x50, 0xFF, 0x50, 0xFF, 0xFF, 0x50,
 };
 
-u8 D_800EBA4C_minigame[] = {
+u8 mgStoryRankBlinkAltTbl[] = {
     0xFF, 0x50, 0x50, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00,
 };
 
-u8 D_800EBA58_minigame[][3] = {
+u8 mgStoryRankColorTbl[][3] = {
     { 0x8C, 0x87, 0x87 }, { 0x7B, 0x2A, 0xBF }, { 0xF0, 0xD9, 0x12 }, { 0xFF, 0xFF, 0xFF },
     { 0xFF, 0xFF, 0xFF }, { 0xFF, 0xFF, 0xFF }, { 0xFF, 0xFF, 0xFF },
 };
 
-BA4B0_WinDef D_800EBA70_minigame[6] = {
+MgStoryStatWinDef mgStoryStatWinTbl[6] = {
     { -72, -98, 80, 48 },  { 6, -98, 112, 20 },  { 6, -84, 112, 20 },
     { 6, -70, 112, 20 },   { -120, -50, 240, 20 }, { -104, -18, 112, 105 },
 };
 
-BA4B0_Pos D_800EBAA0_minigame[] = {
+MgStoryStatPos mgStoryResultPosTbl[] = {
     { -86, -3 }, { 0, -3 }, { 86, -3 }, { -86, 43 }, { 0, 43 }, { 86, 43 }, { 0, 20 },
 };
 
-u32 D_800EBABC_minigame[] = {
+u32 mgStoryPageMesTbl[] = {
     0x6106, 0x6107, 0x6108, 0x6109,
 };
 
-u8 D_800EBACC_minigame[] = { 0, 2, 4, 6, 8, 11 };
-u8 D_800EBAD4_minigame[] = { 1, 3, 5, 7, 9, 10 };
-u8 D_800EBADC_minigame[] = { 0, 0, 1, 2, 3 };
-u8 D_800EBAE4_minigame[] = { 0, 0, 1, 2, 3 };
-u8 D_800EBAEC_minigame[] = { 13, 26, 30, 34 };
-s16 D_800EBAF0_minigame = 0;
-u8 D_800EBAF4_minigame[] = { 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 2 };
+u8 mgStoryResultOrderTbl[] = { 0, 2, 4, 6, 8, 11 };
+u8 mgStoryResultOrderAltTbl[] = { 1, 3, 5, 7, 9, 10 };
+u8 mgStoryResultScoreTbl[] = { 0, 0, 1, 2, 3 };
+u8 mgStoryBossScoreTbl[] = { 0, 0, 1, 2, 3 };
+u8 mgStoryRankBorderTbl[] = { 13, 26, 30, 34 };
+s16 mgStoryStatPortNo = 0;
+u8 mgStoryPageTbl[] = { 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 2 };
 
 extern s16 winPrio;
 
-s16 func_800E7BCC_minigame(BA4B0_Work *work);
+s16 MgStoryStatRankMarkDisp(MgStoryStatWork *work);
 
-void func_800E7930_minigame(s16 group, s16 member, s16 graphic, s16 prio, s16 x, s16 y) {
+void MgStoryStatSprSet(s16 group, s16 member, s16 graphic, s16 prio, s16 x, s16 y) {
     HuSprTPLvlSet(group, member, 256);
     HuSprAttrReset(group, member, 0xFFFF);
     HuSprAttrSet(group, member, 0x9000);
@@ -138,8 +138,8 @@ void func_800E7930_minigame(s16 group, s16 member, s16 graphic, s16 prio, s16 x,
     HuSprPosSet(group, member, x, y);
 }
 
-s16 func_800E7A2C_minigame(u8 *values, s16 alt, s16 start, s16 end, BA4B0_Elem *elemsA, BA4B0_Elem *elemsB,
-                           BA4B0_Work *work) {
+s16 MgStoryStatResultDisp(u8 *values, s16 alt, s16 start, s16 end, MgStoryStatElem *elemsA, MgStoryStatElem *elemsB,
+                           MgStoryStatWork *work) {
     u8 *order;
     s16 group;
     s16 *graphics;
@@ -152,7 +152,7 @@ s16 func_800E7A2C_minigame(u8 *values, s16 alt, s16 start, s16 end, BA4B0_Elem *
     s16 y;
     s32 i;
 
-    order = (alt != 0) ? D_800EBAD4_minigame : D_800EBACC_minigame;
+    order = (alt != 0) ? mgStoryResultOrderAltTbl : mgStoryResultOrderTbl;
     group = work->group;
     graphics = work->graphics;
     baseX = work->data->x;
@@ -167,17 +167,17 @@ s16 func_800E7A2C_minigame(u8 *values, s16 alt, s16 start, s16 end, BA4B0_Elem *
         elemsA->unk08 = 1;
         elemsA->unk0A = 1;
         graphic = graphics[value];
-        elemsB->pos = D_800EBAA0_minigame[i];
+        elemsB->pos = mgStoryResultPosTbl[i];
         x = baseX + elemsB->pos.x;
         y = baseY + elemsB->pos.y;
-        func_800E7930_minigame(group, i + 16, graphic, 1200, x, y);
+        MgStoryStatSprSet(group, i + 16, graphic, 1200, x, y);
         elemsB->unk08 = 1;
         elemsB->unk0A = 1;
     }
     return result;
 }
 
-s16 func_800E7BCC_minigame(BA4B0_Work *work) {
+s16 MgStoryStatRankMarkDisp(MgStoryStatWork *work) {
     u8 counts[4];
     u8 *entries;
     u8 last;
@@ -230,14 +230,14 @@ s16 func_800E7BCC_minigame(BA4B0_Work *work) {
     return 0;
 }
 
-s16 func_800E7E08_minigame(s16 page, BA4B0_Work *work) {
+s16 MgStoryStatPageSet(s16 page, MgStoryStatWork *work) {
     u8 *values;
-    BA4B0_Elem *elems;
-    BA4B0_Elem *elemsB;
+    MgStoryStatElem *elems;
+    MgStoryStatElem *elemsB;
     s16 alt;
 
     HuWinHomeClear(work->windows[4]);
-    HuWinMesSet(work->windows[4], D_800EBABC_minigame[page], -2, -1);
+    HuWinMesSet(work->windows[4], mgStoryPageMesTbl[page], -2, -1);
     work->winFlags[4] = 1;
     if (page < 2) {
         alt = 0;
@@ -252,7 +252,7 @@ s16 func_800E7E08_minigame(s16 page, BA4B0_Work *work) {
             values = GwStory.unk10[work->unk118];
         }
         elemsB = &work->elems[16];
-        return func_800E7A2C_minigame(values, alt, 0, 6, elems, elemsB, work);
+        return MgStoryStatResultDisp(values, alt, 0, 6, elems, elemsB, work);
     } else if (page == 2) {
         if (work->unk118 < 0) {
             values = &GwStory.progress.fields.unkF;
@@ -261,21 +261,21 @@ s16 func_800E7E08_minigame(s16 page, BA4B0_Work *work) {
         }
         elems = &work->elems[14];
         elemsB = &work->elems[22];
-        return func_800E7A2C_minigame(values, 0, 6, 7, elems, elemsB, work);
+        return MgStoryStatResultDisp(values, 0, 6, 7, elems, elemsB, work);
     } else {
-        return func_800E7BCC_minigame(work);
+        return MgStoryStatRankMarkDisp(work);
     }
 }
 
-void func_800E7F60_minigame(void) {
+void MgStoryStatExec(void) {
     s16 color[3];
     s16 step[3];
     u32 msgs[4];
-    BA4B0_ProcessData *data;
+    MgStoryStatParam *data;
     s16 *rankWin;
-    BA4B0_Work *work;
-    BA4B0_Elem *elem;
-    BA4B0_SprDef *def;
+    MgStoryStatWork *work;
+    MgStoryStatElem *elem;
+    MgStoryStatSprDef *def;
     s16 *win;
     s16 *flag;
     s16 *gfx;
@@ -307,8 +307,8 @@ void func_800E7F60_minigame(void) {
     s32 i;
 
     data = HuPrcCurrentGet()->user_data;
-    work = HuMemAllocTag(sizeof(BA4B0_Work), 0x7918);
-    memset(work, 0, sizeof(BA4B0_Work));
+    work = HuMemAllocTag(sizeof(MgStoryStatWork), 0x7918);
+    memset(work, 0, sizeof(MgStoryStatWork));
     work->data = data;
     page = 0;
     prevPage = 0;
@@ -326,43 +326,43 @@ void func_800E7F60_minigame(void) {
         case 0:
         default:
             hasRank = 1;
-            rank = func_800E905C_minigame(data->unk02);
+            rank = MgStoryRankGet(data->unk02);
             msgs[0] = 0x6101;
-            msgs[2] = D_800EBA14_minigame[GwStory.unk5E[data->unk02]];
-            msgs[3] = D_800EBA24_minigame[rank];
+            msgs[2] = mgStoryLevelMesTbl[GwStory.unk5E[data->unk02]];
+            msgs[3] = mgStoryRankMesTbl[rank];
             work->unk118 = data->unk02;
             break;
         case 1:
             data->unk02 = GwStory.unk1;
             hasRank = 1;
-            rank = func_800E905C_minigame(-1);
+            rank = MgStoryRankGet(-1);
             msgs[0] = 0x6101;
-            msgs[2] = D_800EBA14_minigame[GwStory.unk2];
-            msgs[3] = D_800EBA24_minigame[rank];
+            msgs[2] = mgStoryLevelMesTbl[GwStory.unk2];
+            msgs[3] = mgStoryRankMesTbl[rank];
             work->unk118 = -1;
             break;
         case 2:
             data->unk02 = GwStory.unk1;
             msgs[0] = 0x6100;
-            msgs[2] = D_800EBA14_minigame[GwStory.unk2];
+            msgs[2] = mgStoryLevelMesTbl[GwStory.unk2];
             work->unk118 = -1;
             if (GwStory.unk0 == 12) {
                 hasRank = 1;
-                rank = func_800E905C_minigame(-1);
+                rank = MgStoryRankGet(-1);
                 page = 2;
                 prevPage = 2;
-                msgs[3] = D_800EBA24_minigame[rank];
+                msgs[3] = mgStoryRankMesTbl[rank];
             } else {
-                prevPage = page = D_800EBAF4_minigame[GwStory.unk0];
+                prevPage = page = mgStoryPageTbl[GwStory.unk0];
             }
             break;
     }
-    msgs[1] = D_800EB9FC_minigame[data->unk02];
+    msgs[1] = mgStoryCharMesTbl[data->unk02];
 
     group = HuSprGrpCreate(23, 0);
     member = 0;
-    def = D_800EB950_minigame;
-    for (elem = work->elems, i = 0; i < ARRAY_COUNTU(D_800EB950_minigame);
+    def = mgStoryStatSprTbl;
+    for (elem = work->elems, i = 0; i < ARRAY_COUNTU(mgStoryStatSprTbl);
          i++, member++, def++, elem++) {
         prio = 1200;
         graphic = HuSprAnimDataRead(def->file);
@@ -373,7 +373,7 @@ void func_800E7F60_minigame(void) {
         if (i >= 2) {
             prio = 1199;
         }
-        func_800E7930_minigame(group, member, graphic, prio, x, y);
+        MgStoryStatSprSet(group, member, graphic, prio, x, y);
     }
     HuSprScaleSet(group, 1, 1.0f, 1.02f);
     HuSprColorSet(group, 1, 0, 0, 0);
@@ -381,22 +381,22 @@ void func_800E7F60_minigame(void) {
     work->elems[1].unk06 = 255;
     work->group = group;
 
-    graphic = HuSprAnimDataRead(D_800EB9E4_minigame[data->unk02]);
+    graphic = HuSprAnimDataRead(mgStoryCharSprTbl[data->unk02]);
     work->elems[15].unk04 = graphic;
     work->elems[15].pos.x = -96;
     work->elems[15].pos.y = -74;
     x = work->elems[15].pos.x + data->x;
     y = work->elems[15].pos.y + data->y;
-    func_800E7930_minigame(group, 15, graphic, 1200, x, y);
+    MgStoryStatSprSet(group, 15, graphic, 1200, x, y);
     for (gfx = work->graphics, i = 0; i < 4; i++, gfx++) {
-        *gfx = HuSprAnimDataRead(D_800EB9C8_minigame[i]);
+        *gfx = HuSprAnimDataRead(mgStoryResultSprTbl[i]);
     }
     work->unk13C = HuSprGrpCreate(13, 0);
     work->unk13E = HuSprAnimDataRead(0x15001D);
     y = data->y - 28;
     for (i = 0; i < 13; i++) {
         markX = data->x + (s16)(i * 12 - 24);
-        func_800E7930_minigame(work->unk13C, i, work->unk13E, 1200, markX, y);
+        MgStoryStatSprSet(work->unk13C, i, work->unk13E, 1200, markX, y);
     }
 
     winPrio = 400;
@@ -405,8 +405,8 @@ void func_800E7F60_minigame(void) {
     x = data->x;
     y = data->y;
     for (i = 0; i < ARRAY_COUNTU(work->windows); i++, win++, flag++) {
-        *win = HuWinCreate(x + D_800EBA70_minigame[i].x, y + D_800EBA70_minigame[i].y, D_800EBA70_minigame[i].w,
-                           D_800EBA70_minigame[i].h, 0, 12);
+        *win = HuWinCreate(x + mgStoryStatWinTbl[i].x, y + mgStoryStatWinTbl[i].y, mgStoryStatWinTbl[i].w,
+                           mgStoryStatWinTbl[i].h, 0, 12);
         HuWinMesSpeedSet(*win, 0);
         HuWinBGTPLvlSet(*win, 0);
         HuWinMesPalSet(*win, 2, 255, 0, 0);
@@ -427,11 +427,11 @@ void func_800E7F60_minigame(void) {
     if (hasRank) {
         HuWinMesSet(win[3], msgs[3], -1, -1);
         work->winFlags[3] = 1;
-        HuWinMesPalSet(win[3], 7, D_800EBA58_minigame[rank][0], D_800EBA58_minigame[rank][1],
-                       D_800EBA58_minigame[rank][2]);
+        HuWinMesPalSet(win[3], 7, mgStoryRankColorTbl[rank][0], mgStoryRankColorTbl[rank][1],
+                       mgStoryRankColorTbl[rank][2]);
     }
     HuWinMesSet(win[5], 0x6111, -1, -1);
-    func_800E7E08_minigame(page, work);
+    MgStoryStatPageSet(page, work);
 
     state = 0;
     work->unk140 = 0;
@@ -459,7 +459,7 @@ void func_800E7F60_minigame(void) {
         if (pageChanging) {
             if (sprFadeSpeed == 0 && winFadeSpeed == 0) {
                 pageChanging = 0;
-                func_800E7E08_minigame(page, work);
+                MgStoryStatPageSet(page, work);
                 sprAlpha = 0;
                 sprFadeSpeed = 51;
                 winAlpha = 0;
@@ -502,11 +502,11 @@ void func_800E7F60_minigame(void) {
                         elem[15].unk08 = 1;
                         if (rank == 4) {
                             colorCycle = 1;
-                            colorPtr = colorStart = D_800EBA40_minigame;
+                            colorPtr = colorStart = mgStoryRankBlinkTbl;
                             colorFrames = 6;
                         } else if (rank == 3) {
                             colorCycle = 1;
-                            colorPtr = colorStart = D_800EBA4C_minigame;
+                            colorPtr = colorStart = mgStoryRankBlinkAltTbl;
                             colorFrames = 8;
                         }
                     }
@@ -666,28 +666,28 @@ void func_800E7F60_minigame(void) {
     }
 }
 
-Process *func_800E8EC4_minigame(u16 arg0, s16 arg1) {
-    BA4B0_ProcessData *data;
+Process *MgStoryStatCreate(u16 arg0, s16 arg1) {
+    MgStoryStatParam *data;
     Process *prc;
 
     if (arg0 == 0 || arg0 == 1) {
-        if (func_800E905C_minigame(arg1) < 0) {
+        if (MgStoryRankGet(arg1) < 0) {
             return NULL;
         }
     }
-    data = HuMemAllocTag(sizeof(BA4B0_ProcessData), 0x7918);
-    memset(data, 0, sizeof(BA4B0_ProcessData));
+    data = HuMemAllocTag(sizeof(MgStoryStatParam), 0x7918);
+    memset(data, 0, sizeof(MgStoryStatParam));
     data->x = 160;
     data->y = 120;
     data->unk00 = arg0;
     data->unk02 = arg1;
-    prc = omAddPrcObj(func_800E7F60_minigame, 0x4000, 0x800, 0);
+    prc = omAddPrcObj(MgStoryStatExec, 0x4000, 0x800, 0);
     prc->user_data = data;
     return prc;
 }
 
-s32 func_800E8F78_minigame(Process *prc) {
-    BA4B0_ProcessData *data;
+s32 MgStoryStatKill(Process *prc) {
+    MgStoryStatParam *data;
     s32 result;
 
     if (prc == NULL) {
@@ -703,21 +703,21 @@ s32 func_800E8F78_minigame(Process *prc) {
     return result;
 }
 
-s16 func_800E8FE4_minigame(Process *prc, s16 value) {
-    BA4B0_ProcessData *data = prc->user_data;
+s16 MgStoryStatModeSet(Process *prc, s16 value) {
+    MgStoryStatParam *data = prc->user_data;
 
     data->unk04 = value;
     return value;
 }
 
-s16 func_800E8FF8_minigame(Process *prc) {
-    BA4B0_ProcessData *data = prc->user_data;
+s16 MgStoryStatModeGet(Process *prc) {
+    MgStoryStatParam *data = prc->user_data;
 
     return data->unk04;
 }
 
-void func_800E9004_minigame(Process *prc, s16 value) {
-    BA4B0_ProcessData *data = prc->user_data;
+void MgStoryStatModeWait(Process *prc, s16 value) {
+    MgStoryStatParam *data = prc->user_data;
 
     if (data->unk04 != value) {
         do {
@@ -726,7 +726,7 @@ void func_800E9004_minigame(Process *prc, s16 value) {
     }
 }
 
-s16 func_800E905C_minigame(s16 arg0) {
+s16 MgStoryRankGet(s16 arg0) {
     u8 *last;
     u8 *entries;
     s16 total;
@@ -749,7 +749,7 @@ s16 func_800E905C_minigame(s16 arg0) {
     if (*last >= 5) {
         *last = 4;
     }
-    total = D_800EBAE4_minigame[*last];
+    total = mgStoryBossScoreTbl[*last];
     for (i = 0; i < 12; i++, entries++) {
         if (*entries == 0) {
             return -1;
@@ -757,19 +757,19 @@ s16 func_800E905C_minigame(s16 arg0) {
         if (*entries >= 5) {
             *entries = 4;
         }
-        total += D_800EBADC_minigame[*entries];
+        total += mgStoryResultScoreTbl[*entries];
     }
     for (rank = 0; rank < 4; rank++) {
-        if (total < D_800EBAEC_minigame[rank]) {
+        if (total < mgStoryRankBorderTbl[rank]) {
             break;
         }
     }
     return rank;
 }
 
-void func_800E9170_minigame(void) {
+void MgStoryStatViewProc(void) {
     s16 sprites[2];
-    BA4B0_Pos pos[2];
+    MgStoryStatPos pos[2];
     s16 *result;
     s16 cursorAnim;
     s16 arrowAnim;
@@ -834,9 +834,9 @@ void func_800E9170_minigame(void) {
     } else {
         story = *result;
     }
-    prc = func_800E8EC4_minigame(0, story);
+    prc = MgStoryStatCreate(0, story);
     HuPrcVSleep();
-    func_800E8FE4_minigame(prc, 1);
+    MgStoryStatModeSet(prc, 1);
     espDispOn(cursor);
     espDispOn(sprites[0]);
     espDispOn(sprites[1]);
@@ -857,26 +857,26 @@ void func_800E9170_minigame(void) {
     angle = 0;
     speed = 0;
     while (TRUE) {
-        if (HuPadBtnDown[D_800EBAF0_minigame] & 0x4000) {
+        if (HuPadBtnDown[mgStoryStatPortNo] & 0x4000) {
             HuAudFXPlay(4);
             *result = -2;
             break;
         }
-        if (HuPadBtnDown[D_800EBAF0_minigame] & 0x1000) {
+        if (HuPadBtnDown[mgStoryStatPortNo] & 0x1000) {
             HuAudFXPlay(2);
             *result = -1;
             break;
         }
-        if (func_800E8FF8_minigame(prc) == 0) {
-            if ((HuPadBtnDown[D_800EBAF0_minigame] & 0x100) || HuPadStkX[D_800EBAF0_minigame] >= 31) {
+        if (MgStoryStatModeGet(prc) == 0) {
+            if ((HuPadBtnDown[mgStoryStatPortNo] & 0x100) || HuPadStkX[mgStoryStatPortNo] >= 31) {
                 HuAudFXPlay(1);
-                func_800E8FE4_minigame(prc, 3);
+                MgStoryStatModeSet(prc, 3);
                 angle = 180;
                 speed = -22;
                 selection = 1;
-            } else if ((HuPadBtnDown[D_800EBAF0_minigame] & 0x200) || HuPadStkX[D_800EBAF0_minigame] < -30) {
+            } else if ((HuPadBtnDown[mgStoryStatPortNo] & 0x200) || HuPadStkX[mgStoryStatPortNo] < -30) {
                 HuAudFXPlay(1);
-                func_800E8FE4_minigame(prc, 4);
+                MgStoryStatModeSet(prc, 4);
                 angle = 180;
                 speed = 22;
                 selection = 0;
@@ -895,7 +895,7 @@ void func_800E9170_minigame(void) {
         HuPrcVSleep();
     }
 
-    func_800E8FE4_minigame(prc, 2);
+    MgStoryStatModeSet(prc, 2);
     HuWinHomeClear(window);
     for (i = 256; i >= 0; i -= 36) {
         espTPLvlSet(cursor, i);
@@ -910,8 +910,8 @@ void func_800E9170_minigame(void) {
     espDispOff(sprites[0]);
     espDispOff(sprites[1]);
     espDispOff(frame);
-    func_800E9004_minigame(prc, 0);
-    func_800E8F78_minigame(prc);
+    MgStoryStatModeWait(prc, 0);
+    MgStoryStatKill(prc);
     espKill(frame);
     espKill(cursor);
     espKill(sprites[0]);
@@ -927,7 +927,7 @@ void func_800E9170_minigame(void) {
     }
 }
 
-void func_800E989C_minigame(void) {
+void MgStoryStageGoto(void) {
     GW_PLAYER *temp;
     GW_PLAYER *player;
     GW_PLAYER *player0;
@@ -939,7 +939,7 @@ void func_800E989C_minigame(void) {
     s16 first;
     s32 i;
 
-    switch (D_800EBAF4_minigame[GwStory.unk0]) {
+    switch (mgStoryPageTbl[GwStory.unk0]) {
         case 0:
             _ClearFlag(0x28);
             _ClearFlag(0);

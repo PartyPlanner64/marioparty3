@@ -8149,7 +8149,7 @@ void MB1Ev_ItemNKinoko(void) {
         MBCameraPos3DSet(&player->player_obj->coords);
         HuPrcVSleep();
         WipeCreateIn(WIPE_TYPE_NORMAL, 0x10);
-        D_800A12D8_main = 1;
+        mbTauntOffF = 1;
         HuPrcSleep(0x10);
     }
 
@@ -8187,7 +8187,7 @@ void MB1Ev_ItemNKinoko(void) {
         MBPlayerMotionSet(-1, -1, 2);
     } else {
         MBMotionSet(MBPlayerGet(target)->player_obj, -1, 2);
-        D_800A12D8_main = 0;
+        mbTauntOffF = 0;
     }
 
     if (target != system->current_player_index) {
@@ -8334,7 +8334,7 @@ void MB1Ev_ItemRKinoko(void) {
         MBCameraPos3DSet(&player->player_obj->coords);
         HuPrcVSleep();
         WipeCreateIn(WIPE_TYPE_NORMAL, 0x10);
-        D_800A12D8_main = 1;
+        mbTauntOffF = 1;
         HuPrcSleep(0x10);
     }
 
@@ -8374,7 +8374,7 @@ void MB1Ev_ItemRKinoko(void) {
         MBPlayerMotionSet(-1, -1, 2);
     } else {
         MBMotionSet(MBPlayerGet(target)->player_obj, -1, 2);
-        D_800A12D8_main = 0;
+        mbTauntOffF = 0;
     }
 
     if (target != system->current_player_index) {
@@ -9448,7 +9448,7 @@ void MB1Ev_SnowmanStart(void) {
 
     MBPlayerGet(-1);
     mbItemBtnF = 0;
-    D_800A12D8_main = 1;
+    mbTauntOffF = 1;
     path = (rand8() & 1) ? 2 : 0;
     count = MB1Ev_SnowmanPathGet(path);
     if (count != 0) {
@@ -9769,7 +9769,7 @@ void MB1Ev_SnowmanStart(void) {
     }
     func_8011A8B8_ChillyWaters();
     MBStatusShowAll();
-    D_800A12D8_main = 0;
+    mbTauntOffF = 0;
     mbItemBtnF = 1;
     omDelPrcObj(NULL);
 }
@@ -9950,7 +9950,7 @@ void func_8011BF3C_ChillyWaters(void) {
 
     MBStatusHideAll();
     MBMasuDispOff();
-    D_800A12D8_main = 1;
+    mbTauntOffF = 1;
 
     HuPrcChildLink(HuPrcCurrentGet(), MBCameraZoomMotStart(1.0f));
     HuPrcChildWatch();
@@ -10053,7 +10053,7 @@ void func_8011BF3C_ChillyWaters(void) {
     MBDlgResultWinExec(0x101);
     GWBoardFlagSet(0x12);
     HuPrcSleep(0x14);
-    D_800A12D8_main = 0;
+    mbTauntOffF = 0;
     omDelPrcObj(NULL);
 }
 

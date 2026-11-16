@@ -88,7 +88,7 @@ extern s16 omovlhisidx;
 extern omOvlHisData omovlhis[12];
 extern u16 omdispinfo;
 extern s16 omDBGInfoWin;
-extern f32 D_800CE17C_main[];
+extern f32 CFanParam[];
 extern omObjData *omSysTimerObj;
 #endif
 

@@ -8675,7 +8675,7 @@ void func_801182EC_w06(void) {
         MBCameraPos3DSet(&player->player_obj->coords);
         HuPrcVSleep();
         WipeCreateIn(WIPE_TYPE_NORMAL, 0x10);
-        D_800A12D8_main = 1;
+        mbTauntOffF = 1;
         HuPrcSleep(0x10);
     }
 
@@ -8710,7 +8710,7 @@ void func_801182EC_w06(void) {
         MBPlayerMotionSet(-1, -1, 2);
     } else {
         MBMotionSet(MBPlayerGet(targetPlayer)->player_obj, -1, 2);
-        D_800A12D8_main = 0;
+        mbTauntOffF = 0;
     }
 
     if (targetPlayer != loc->current_player_index) {
@@ -8839,7 +8839,7 @@ void func_80118B6C_w06(void) {
         MBCameraPos3DSet(&player->player_obj->coords);
         HuPrcVSleep();
         WipeCreateIn(WIPE_TYPE_NORMAL, 0x10);
-        D_800A12D8_main = 1;
+        mbTauntOffF = 1;
         HuPrcSleep(0x10);
     }
 
@@ -8876,7 +8876,7 @@ void func_80118B6C_w06(void) {
         MBPlayerMotionSet(-1, -1, 2);
     } else {
         MBMotionSet(MBPlayerGet(targetPlayer)->player_obj, -1, 2);
-        D_800A12D8_main = 0;
+        mbTauntOffF = 0;
     }
 
     if (targetPlayer != loc->current_player_index) {
@@ -9088,7 +9088,7 @@ void func_80119748_w06(void) {
     if (GwSystem.boardData.halfWordBytes[1] == 0) {
         mask = 0;
         MBStatusHideAll();
-        D_800A12D8_main = 1;
+        mbTauntOffF = 1;
         for (i = 0; i < 4; i++) {
             player = MBPlayerGet(i);
 
@@ -9128,7 +9128,7 @@ void func_80119748_w06(void) {
         HuPrcSleep(0x28);
         MBStatusShowAll();
         maxCoins = -1;
-        D_800A12D8_main = 0;
+        mbTauntOffF = 0;
         j = -1;
         for (i = 0; i < 4; i++) {
             MBPlayerVibrateObjKill(data[i]);

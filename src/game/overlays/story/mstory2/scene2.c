@@ -11,7 +11,7 @@ typedef struct MstoryPath {
     /* 0x0C */ f32 (*intervals)[2];
 } MstoryPath; // sizeof 0x10
 
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 
 extern char *D_8011BB60_mstory2[];
 extern char *D_8011BB80_mstory2[];
@@ -676,7 +676,7 @@ void func_8010E9E0_mstory2(void) {
     D_8011C760_mstory2[0].func = func_8010D21C_mstory2;
     D_8011C760_mstory2[0].unk_0C = 0;
     D_8011C760_mstory2[0].unk_10 = 31;
-    obj->model[1] = Hu3DModelRead(D_800A178C_main[D_8011C83C_mstory2][0] | D_800A178C_main[D_8011C83C_mstory2][2], 0x2A9);
+    obj->model[1] = Hu3DModelRead(omCharModelNoTbl[D_8011C83C_mstory2][0] | omCharModelNoTbl[D_8011C83C_mstory2][2], 0x2A9);
     obj->model[2] = Hu3DModelLink(D_8011C83A_mstory2);
     obj->model[3] = Hu3DModelRead(0x1D000A, 0x2B9);
     obj->model[4] = Hu3DModelRead(0x83, 0x2B9);

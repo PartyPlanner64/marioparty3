@@ -8127,7 +8127,7 @@ void func_80117034_w03(void) {
         MBCameraPos3DSet(&player->player_obj->coords);
         HuPrcVSleep();
         WipeCreateIn(WIPE_TYPE_NORMAL, 0x10);
-        D_800A12D8_main = 1;
+        mbTauntOffF = 1;
         HuPrcSleep(0x10);
     }
 
@@ -8162,7 +8162,7 @@ void func_80117034_w03(void) {
         MBPlayerMotionSet(-1, -1, 2);
     } else {
         MBMotionSet(MBPlayerGet(targetPlayer)->player_obj, -1, 2);
-        D_800A12D8_main = 0;
+        mbTauntOffF = 0;
     }
 
     if (targetPlayer != loc->current_player_index) {
@@ -8291,7 +8291,7 @@ void func_801178B4_w03(void) {
         MBCameraPos3DSet(&player->player_obj->coords);
         HuPrcVSleep();
         WipeCreateIn(WIPE_TYPE_NORMAL, 0x10);
-        D_800A12D8_main = 1;
+        mbTauntOffF = 1;
         HuPrcSleep(0x10);
     }
 
@@ -8328,7 +8328,7 @@ void func_801178B4_w03(void) {
         MBPlayerMotionSet(-1, -1, 2);
     } else {
         MBMotionSet(MBPlayerGet(targetPlayer)->player_obj, -1, 2);
-        D_800A12D8_main = 0;
+        mbTauntOffF = 0;
     }
 
     if (targetPlayer != loc->current_player_index) {
@@ -9315,7 +9315,7 @@ void func_8011A704_w03(void) {
     f32 scale;
 
     mbItemBtnF = 0;
-    D_800A12D8_main = 1;
+    mbTauntOffF = 1;
     MBStatusHideAll();
     hatena = D_8011D3F8_w03;
     player = MBPlayerGet(-1);
@@ -9525,7 +9525,7 @@ void func_8011A704_w03(void) {
         MBCameraFocusModeSet(2);
         MBCameraFocusStaticPosSet(&pos);
     }
-    D_800A12D8_main = 0;
+    mbTauntOffF = 0;
     mbItemBtnF = 1;
     omDelPrcObj(NULL);
 }

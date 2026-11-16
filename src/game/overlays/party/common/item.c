@@ -79,7 +79,7 @@ extern Object* mbTelopMgTypeMdl;
 extern s32 mbTelopMgTypeY;
 extern s32 mbItemScaleEffF;
 extern s32 mbItemSelComNo;
-extern s32 D_800D41B0_main[];
+extern s32 Hu3DSubMtxStackPrev[];
 
 typedef struct SomeStruct {
     u8 unk_00[10];
@@ -1048,7 +1048,7 @@ void MBItemKSuitWalkExec(void) {
         }
     }
 
-    if (D_800D41B0_main[4] == 0) {
+    if (Hu3DSubMtxStackPrev[4] == 0) {
         MBItemKSuitEnd();
     }
 }

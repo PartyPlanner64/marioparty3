@@ -211,7 +211,7 @@ void func_801059A0_parasol_plummet(void) {
 
     omInitObjMan(40, 10);
     MapCollInit(16);
-    Hu3DQuadPoolInit(&D_800EBEB0_minigame, 64);
+    Hu3DQuadPoolInit(&mgQuadPool, 64);
     Hu3DSprModelInit(64);
     omGameSysInit();
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutView);
@@ -219,7 +219,7 @@ void func_801059A0_parasol_plummet(void) {
     func_8010A75C_parasol_plummet(2500.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
     omOutView(obj);
     Hu3DBGColorSet(0, 0, 0);
-    func_800E5EA0_minigame(&D_8010A8A0_parasol_plummet);
+    MgFlowInit(&D_8010A8A0_parasol_plummet);
     WipeCreateIn(WIPE_TYPE_PREV, 16);
     for (i = 0; i < 4; i++) {
         D_8010AC50_parasol_plummet[i] = 0.0f;
@@ -257,10 +257,10 @@ void func_80105B94_parasol_plummet(omObjData *object) {
     }
     switch (D_8010AC66_parasol_plummet = MgFlowMain(object)) {
         case 0:
-            if (func_800E6E9C_minigame() == 20) {
+            if (MgFlowStatTimeGet() == 20) {
                 HuAudFXPlay(0x3E5);
             }
-            if (func_800E6E9C_minigame() == 150) {
+            if (MgFlowStatTimeGet() == 150) {
                 HuAudSeqPlay(0x33);
             }
             break;
@@ -313,7 +313,7 @@ void func_80105B94_parasol_plummet(omObjData *object) {
                 }
             }
             D_8010A8A0_parasol_plummet.resultType = MG_RESULT_NONE;
-            if (func_800E6E9C_minigame() == 135) {
+            if (MgFlowStatTimeGet() == 135) {
                 HuAudSeqPlay(0x66);
             }
             break;

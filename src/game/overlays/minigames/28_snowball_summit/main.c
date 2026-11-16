@@ -128,7 +128,7 @@ typedef struct UnkSnowballSummitNode {
     /* 0x0C */ omObjData *unk_0C;
 } UnkSnowballSummitNode; // sizeof 0x10
 
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 
 UnkSnowballSummitPath D_8010F550_snowball_summit[3] = {
     { { -50.0f, 500.0f, -800.0f }, { -1200.0f, -330.0f, -800.0f } },
@@ -1387,7 +1387,7 @@ void func_8010B01C_snowball_summit(omObjData *object) {
 
 void func_8010B158_snowball_summit(omObjData *object) {
     UnkSnowballSummitMover *mover = &D_8010F9B8_snowball_summit[object->work[0]];
-    s32 charBase = D_800A178C_main[GwPlayer[object->work[0]].chr][0];
+    s32 charBase = omCharModelNoTbl[GwPlayer[object->work[0]].chr][0];
 
     if (D_80110044_snowball_summit != 0) {
         if (mover->unk_3C == 0 && mover->unk_04 != 9) {
@@ -1439,7 +1439,7 @@ void func_8010B34C_snowball_summit(omObjData *object) {
     u16 character = GwPlayer[object->work[0]].chr;
     UnkSnowballSummitMover *mover;
 
-    object->model[0] = Hu3DModelRead(D_800A178C_main[character][0] | D_800A178C_main[character][1], 0x2B9);
+    object->model[0] = Hu3DModelRead(omCharModelNoTbl[character][0] | omCharModelNoTbl[character][1], 0x2B9);
     omObjMotionRead(object, 0, CharMotionDataNumGet(character, 0));
     omObjMotionRead(object, 1, CharMotionDataNumGet(character, 1));
     omObjMotionRead(object, 2, CharMotionDataNumGet(character, 0x89));
@@ -2841,9 +2841,9 @@ void func_8010F42C_snowball_summit(void) {
     Hu3DGLightDirSet(0, -215.0f, 295.0f, 470.0f);
     Hu3DGLightColorSet(1, 255, 255, 255);
     Hu3DGLightDirSet(1, -215.0f, 295.0f, 470.0f);
-    D_800EC1B8_minigame = 0;
-    D_800EC280_minigame = 0;
-    D_800EBE28_minigame = 0;
+    mgItemObjNum = 0;
+    mgPlayerObjNum = 0;
+    mgMapObjNum = 0;
     GMesFontMesCreate(D_8010F870_snowball_summit, 0);
     GMesFontMesCreate(D_8010F870_snowball_summit, 1);
     omAddObj(1000, 0, 0, -1, func_8010F234_snowball_summit);

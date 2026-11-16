@@ -67,7 +67,7 @@ typedef struct MerryGoChompBssC4BC {
     /* 0x02 */ s8 unk02[5]; // D_8010C4BE_merry_go_chomp
 } MerryGoChompBssC4BC; // sizeof 0x08
 
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 
 s32 D_8010C140_merry_go_chomp[8] = { 2, 3, 7, 4, 5, 6, 8, 9 };
 s8 D_8010C160_merry_go_chomp[17] = { 60, 30, 20, 15, 10, 5, 0, 0, 0, 0, -15, -15, -20, -40, -50, -60, -65 };
@@ -1154,7 +1154,7 @@ void func_801090B0_merry_go_chomp(omObjData *obj) {
     MerryGoChompEntry *entry = &D_8010C500_merry_go_chomp[player + 5];
     u16 chr = GwPlayer[player].chr;
 
-    obj->model[0] = Hu3DModelRead(D_800A178C_main[chr][0] | D_800A178C_main[chr][3], 0x2B9);
+    obj->model[0] = Hu3DModelRead(omCharModelNoTbl[chr][0] | omCharModelNoTbl[chr][3], 0x2B9);
     omObjMotionRead(obj, 0, CharMotionDataNumGet(chr, 0));
     omObjMotionRead(obj, 1, CharMotionDataNumGet(chr, 2));
     omObjMotionRead(obj, 4, CharMotionDataNumGet(chr, 0x15));
@@ -2040,9 +2040,9 @@ void func_8010C030_merry_go_chomp(void) {
     Hu3DGLightDirSet(0, -33.0f, 0.0f, 115.0f);
     Hu3DGLightDirSet(1, -33.0f, 0.0f, 115.0f);
     Hu3DGLightDirSet(2, -33.0f, 0.0f, 115.0f);
-    D_800EC1B8_minigame = 0;
-    D_800EC280_minigame = 0;
-    D_800EBE28_minigame = 0;
+    mgItemObjNum = 0;
+    mgPlayerObjNum = 0;
+    mgMapObjNum = 0;
     GMesFontMesCreate(D_8010C400_merry_go_chomp, 0);
     GMesFontMesCreate(D_8010C400_merry_go_chomp, 1);
     omAddObj(1500, 0, 0, -1, func_8010BDE8_merry_go_chomp);

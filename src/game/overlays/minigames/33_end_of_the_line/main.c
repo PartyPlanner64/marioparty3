@@ -86,7 +86,7 @@ typedef struct EndOfTheLineBssC780 {
     /* 0x02 */ s16 unk02[3];
 } EndOfTheLineBssC780; // sizeof 0x8
 
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 
 MinigameFlow D_8010C5A0_end_of_the_line = {
     MG_STATE_OPENING, MINIGAME_BATTLE, MG_TIMER_COUNT_DOWN, MG_TIME_DISP_NONE, FALSE, MG_GAUGE_NONE, MG_RESULT_WIN_1, 0,
@@ -247,7 +247,7 @@ void func_801059A0_end_of_the_line(void) {
     D_8010C780_end_of_the_line = HuSprAnimDataRead(0x38001F);
     func_80107F0C_end_of_the_line();
     func_8010C3F4_end_of_the_line();
-    func_800E5EA0_minigame(&D_8010C5A0_end_of_the_line);
+    MgFlowInit(&D_8010C5A0_end_of_the_line);
 }
 
 void func_80105E0C_end_of_the_line(omObjData *obj) {
@@ -305,7 +305,7 @@ void func_80105E88_end_of_the_line(omObjData *obj) {
                         }
                     }
                     MgFlowStatSet(MG_STATE_FINISH);
-                } else if (func_800E6E9C_minigame() == 9000 || D_8010C75A_end_of_the_line == 1) {
+                } else if (MgFlowStatTimeGet() == 9000 || D_8010C75A_end_of_the_line == 1) {
                     D_8010C75A_end_of_the_line = 1;
                     D_8010C75C_end_of_the_line = 1;
                     GMesTimerValueSet(0);
@@ -879,7 +879,7 @@ void func_801082D8_end_of_the_line(omObjData *obj) {
     Hu3DLLightColorSet(obj->model[5], 0xFF, 0xFF, 0xFF);
     Hu3DLLightDirSet(obj->model[5], 102.0f, 40.0f, 48.0f);
     chr = GwPlayer[player->gwPlayerIdx].chr;
-    obj->model[2] = Hu3DModelRead(D_800A178C_main[chr][0] | D_800A178C_main[chr][1], 0x20AD9);
+    obj->model[2] = Hu3DModelRead(omCharModelNoTbl[chr][0] | omCharModelNoTbl[chr][1], 0x20AD9);
     Hu3DModelCameraSet(obj->model[2], D_8010C5C8_end_of_the_line[player->playerIdx]);
     omObjMotionRead(obj, 0, CharMotionDataNumGet(chr, 0));
     omObjMotionRead(obj, 1, CharMotionDataNumGet(chr, 1));
@@ -1482,7 +1482,7 @@ void func_8010A7D0_end_of_the_line(void) {
     D_8010C5A0_end_of_the_line.winners[0] = player->gwPlayerIdx;
     GwPlayer[player->gwPlayerIdx].bonusCoin = 10;
     Hu3DMotionShiftSet(obj->model[2], Hu3DData[obj->motion[2]].motId, 0, 6, 0);
-    HuAudCharVoicePlayPlayer(D_800A178C_main[GwPlayer[player->gwPlayerIdx].chr][0] | 0x2F, -1, 0);
+    HuAudCharVoicePlayPlayer(omCharModelNoTbl[GwPlayer[player->gwPlayerIdx].chr][0] | 0x2F, -1, 0);
 }
 
 void func_8010A8B4_end_of_the_line(omObjData *obj) {
@@ -1702,7 +1702,7 @@ void func_8010B064_end_of_the_line(omObjData *obj) {
         case 2:
             break;
         case 3:
-            if (D_800EB934_minigame == 1) {
+            if (mgFlowResultF == 1) {
                 func_8010A8B4_end_of_the_line(D_8010C73C_end_of_the_line[0]);
                 func_8010A8B4_end_of_the_line(D_8010C73C_end_of_the_line[1]);
             }

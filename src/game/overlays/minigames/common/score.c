@@ -1,106 +1,106 @@
 #include "common.h"
 #include "game/overlays/minigame.h"
 
-extern s16 D_800EBDF0_minigame;
-extern D_800EBDF4_minigame_Entry *D_800EBDF4_minigame;
-extern s16 D_800EBDF8_minigame;
-extern s16 D_800EBDFA_minigame;
-extern u16 D_800EBDFC_minigame;
+extern s16 mgGaugeNum;
+extern MgGauge *mgGaugeTbl;
+extern s16 mgGaugeFrameAnim;
+extern s16 mgGaugeBarAnim;
+extern u16 mgGaugeLen;
 
-void func_800E9C20_minigame(s16 count, u16 length) {
+void MgGaugeInit(s16 count, u16 length) {
     s32 i;
     s32 j;
 
-    D_800EBDF0_minigame = count;
-    D_800EBDFC_minigame = length;
-    D_800EBDF4_minigame = HuMemAllocTag(count * sizeof(D_800EBDF4_minigame_Entry), 0x7918);
-    D_800EBDF8_minigame = HuSprAnimDataRead(0x210018);
-    D_800EBDFA_minigame = HuSprAnimDataRead(0x210019);
+    mgGaugeNum = count;
+    mgGaugeLen = length;
+    mgGaugeTbl = HuMemAllocTag(count * sizeof(MgGauge), 0x7918);
+    mgGaugeFrameAnim = HuSprAnimDataRead(0x210018);
+    mgGaugeBarAnim = HuSprAnimDataRead(0x210019);
     for (i = 0; i < count; i++) {
-        D_800EBDF4_minigame[i].unk_00 = HuMemAllocTag(length * sizeof(s16), 0x7918);
-        D_800EBDF4_minigame[i].unk_04 = HuMemAllocTag(length * sizeof(s16), 0x7918);
-        D_800EBDF4_minigame[i].unk_16 = 0;
-        D_800EBDF4_minigame[i].unk_14 = 0;
+        mgGaugeTbl[i].unk_00 = HuMemAllocTag(length * sizeof(s16), 0x7918);
+        mgGaugeTbl[i].unk_04 = HuMemAllocTag(length * sizeof(s16), 0x7918);
+        mgGaugeTbl[i].unk_16 = 0;
+        mgGaugeTbl[i].unk_14 = 0;
         for (j = 0; j < length; j++) {
-            D_800EBDF4_minigame[i].unk_00[j] = espEntry(D_800EBDF8_minigame, 0, 0);
-            D_800EBDF4_minigame[i].unk_04[j] = espEntry(D_800EBDFA_minigame, 0, 0);
+            mgGaugeTbl[i].unk_00[j] = espEntry(mgGaugeFrameAnim, 0, 0);
+            mgGaugeTbl[i].unk_04[j] = espEntry(mgGaugeBarAnim, 0, 0);
         }
-        func_800E9F40_minigame(i, 24, 16, 0);
-        func_800EA0FC_minigame(i, 0.0f, 100.0f);
-        func_800EA178_minigame(i, 0.0f);
-        func_800EA1E4_minigame(i, 0x8000);
-        func_800EA444_minigame(i);
+        MgGaugePosSet(i, 24, 16, 0);
+        MgGaugeRangeSet(i, 0.0f, 100.0f);
+        MgGaugeValueSet(i, 0.0f);
+        MgGaugePriSet(i, 0x8000);
+        MgGaugeDispOff(i);
     }
 }
 
-void func_800E9E28_minigame(void) {
+void MgGaugeClose(void) {
     s32 i;
     s32 j;
 
-    for (i = 0; i < D_800EBDF0_minigame; i++) {
-        for (j = 0; j < D_800EBDFC_minigame; j++) {
-            espKill(D_800EBDF4_minigame[i].unk_00[j]);
-            espKill(D_800EBDF4_minigame[i].unk_04[j]);
+    for (i = 0; i < mgGaugeNum; i++) {
+        for (j = 0; j < mgGaugeLen; j++) {
+            espKill(mgGaugeTbl[i].unk_00[j]);
+            espKill(mgGaugeTbl[i].unk_04[j]);
         }
-        HuMemFree(D_800EBDF4_minigame[i].unk_00);
-        HuMemFree(D_800EBDF4_minigame[i].unk_04);
+        HuMemFree(mgGaugeTbl[i].unk_00);
+        HuMemFree(mgGaugeTbl[i].unk_04);
     }
-    HuSprAnimKill(D_800EBDF8_minigame);
-    HuSprAnimKill(D_800EBDFA_minigame);
+    HuSprAnimKill(mgGaugeFrameAnim);
+    HuSprAnimKill(mgGaugeBarAnim);
 }
 
-void func_800E9F40_minigame(s16 arg0, s16 x, s16 y, s16 arg3) {
-    D_800EBDF4_minigame_Entry *entry = &D_800EBDF4_minigame[arg0];
+void MgGaugePosSet(s16 arg0, s16 x, s16 y, s16 arg3) {
+    MgGauge *entry = &mgGaugeTbl[arg0];
     s32 i;
 
     switch (arg3) {
         case 0:
-            for (i = 0; i < D_800EBDFC_minigame; i++) {
+            for (i = 0; i < mgGaugeLen; i++) {
                 espPosSet(entry->unk_00[i], x + 5 + i * 10, y + 5);
                 espPosSet(entry->unk_04[i], x + 5 + i * 10, y + 5);
             }
             break;
         case 1:
-            for (i = D_800EBDFC_minigame - 1; i >= 0; i--) {
-                espPosSet(entry->unk_00[i], x + 5 + (D_800EBDFC_minigame - 1 - i) * 10, y + 5);
-                espPosSet(entry->unk_04[i], x + 5 + (D_800EBDFC_minigame - 1 - i) * 10, y + 5);
+            for (i = mgGaugeLen - 1; i >= 0; i--) {
+                espPosSet(entry->unk_00[i], x + 5 + (mgGaugeLen - 1 - i) * 10, y + 5);
+                espPosSet(entry->unk_04[i], x + 5 + (mgGaugeLen - 1 - i) * 10, y + 5);
             }
             break;
     }
 }
 
-void func_800EA0FC_minigame(s16 arg0, f32 arg1, f32 arg2) {
-    D_800EBDF4_minigame[arg0].unk_08 = arg1;
-    D_800EBDF4_minigame[arg0].unk_0C = arg2;
+void MgGaugeRangeSet(s16 arg0, f32 arg1, f32 arg2) {
+    mgGaugeTbl[arg0].unk_08 = arg1;
+    mgGaugeTbl[arg0].unk_0C = arg2;
 }
 
-void func_800EA128_minigame(s16 arg0, f32 arg1) {
-    D_800EBDF4_minigame[arg0].unk_10 = arg1;
-    if (!(D_800EBDF4_minigame[arg0].unk_14 & 1)) {
-        func_800EA2A8_minigame(arg0);
+void MgGaugeRateSet(s16 arg0, f32 arg1) {
+    mgGaugeTbl[arg0].unk_10 = arg1;
+    if (!(mgGaugeTbl[arg0].unk_14 & 1)) {
+        MgGaugeDispOn(arg0);
     }
 }
 
-void func_800EA178_minigame(s16 arg0, f32 arg1) {
-    f32 range = D_800EBDF4_minigame[arg0].unk_0C - D_800EBDF4_minigame[arg0].unk_08;
+void MgGaugeValueSet(s16 arg0, f32 arg1) {
+    f32 range = mgGaugeTbl[arg0].unk_0C - mgGaugeTbl[arg0].unk_08;
 
-    D_800EBDF4_minigame[arg0].unk_10 = (arg1 - D_800EBDF4_minigame[arg0].unk_08) / range;
-    if (!(D_800EBDF4_minigame[arg0].unk_14 & 1)) {
-        func_800EA2A8_minigame(arg0);
+    mgGaugeTbl[arg0].unk_10 = (arg1 - mgGaugeTbl[arg0].unk_08) / range;
+    if (!(mgGaugeTbl[arg0].unk_14 & 1)) {
+        MgGaugeDispOn(arg0);
     }
 }
 
-void func_800EA1E4_minigame(s16 arg0, s32 arg1) {
+void MgGaugePriSet(s16 arg0, s32 arg1) {
     s32 i;
 
-    for (i = 0; i < D_800EBDFC_minigame; i++) {
-        espPriSet(D_800EBDF4_minigame[arg0].unk_00[i], (u16)(arg1 + 1));
-        espPriSet(D_800EBDF4_minigame[arg0].unk_04[i], (u16)arg1);
+    for (i = 0; i < mgGaugeLen; i++) {
+        espPriSet(mgGaugeTbl[arg0].unk_00[i], (u16)(arg1 + 1));
+        espPriSet(mgGaugeTbl[arg0].unk_04[i], (u16)arg1);
     }
 }
 
-void func_800EA2A8_minigame(s16 arg0) {
-    D_800EBDF4_minigame_Entry *entry = &D_800EBDF4_minigame[arg0];
+void MgGaugeDispOn(s16 arg0) {
+    MgGauge *entry = &mgGaugeTbl[arg0];
     f32 count;
     f32 step;
     f32 frac;
@@ -111,11 +111,11 @@ void func_800EA2A8_minigame(s16 arg0) {
     if (entry->unk_14 & 2) {
         return;
     }
-    count = D_800EBDFC_minigame;
+    count = mgGaugeLen;
     filled = count * entry->unk_10;
     step = 1.0f / count;
     frac = (entry->unk_10 - step * filled) / step;
-    for (i = 0; i < D_800EBDFC_minigame; i++) {
+    for (i = 0; i < mgGaugeLen; i++) {
         espDispOn(entry->unk_00[i]);
         if (i < filled) {
             espDispOn(entry->unk_04[i]);
@@ -129,23 +129,23 @@ void func_800EA2A8_minigame(s16 arg0) {
     }
 }
 
-void func_800EA444_minigame(s16 arg0) {
+void MgGaugeDispOff(s16 arg0) {
     s32 i;
 
-    D_800EBDF4_minigame[arg0].unk_14 |= 1;
-    for (i = 0; i < D_800EBDFC_minigame; i++) {
-        espDispOff(D_800EBDF4_minigame[arg0].unk_00[i]);
-        espDispOff(D_800EBDF4_minigame[arg0].unk_04[i]);
+    mgGaugeTbl[arg0].unk_14 |= 1;
+    for (i = 0; i < mgGaugeLen; i++) {
+        espDispOff(mgGaugeTbl[arg0].unk_00[i]);
+        espDispOff(mgGaugeTbl[arg0].unk_04[i]);
     }
 }
 
-void func_800EA518_minigame(void) {
-    D_800EBDF4_minigame_Entry *entry;
+void MgGaugeUpdate(void) {
+    MgGauge *entry;
     s32 i;
     s32 j;
 
-    for (i = 0; i < D_800EBDF0_minigame; i++) {
-        entry = &D_800EBDF4_minigame[i];
+    for (i = 0; i < mgGaugeNum; i++) {
+        entry = &mgGaugeTbl[i];
         if (entry->unk_14 & 1) {
             continue;
         }
@@ -155,18 +155,18 @@ void func_800EA518_minigame(void) {
                 entry->unk_16 = 0;
             }
             if (entry->unk_16 < 2) {
-                for (j = 0; j < D_800EBDFC_minigame; j++) {
+                for (j = 0; j < mgGaugeLen; j++) {
                     espDispOff(entry->unk_04[j]);
                 }
             } else {
-                for (j = 0; j < D_800EBDFC_minigame; j++) {
+                for (j = 0; j < mgGaugeLen; j++) {
                     espDispOn(entry->unk_04[j]);
                 }
             }
             entry->unk_16 = (entry->unk_16 + 1) & 3;
         } else if (entry->unk_14 & 2) {
             entry->unk_14 &= ~2;
-            func_800EA2A8_minigame(i);
+            MgGaugeDispOn(i);
         }
     }
 }

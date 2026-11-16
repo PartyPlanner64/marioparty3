@@ -113,7 +113,7 @@ typedef struct UnkModeSelStorySave {
     s32 totalTurns;
 } UnkModeSelStorySave; // sizeof 0x1C
 
-extern s16 D_800EBAF0_minigame;
+extern s16 mgStoryStatPortNo;
 extern const char D_8010F454_modesel[];
 
 s32 D_8010F290_modesel = 28; /* Unreferenced. */
@@ -899,7 +899,7 @@ void func_80107CEC_modesel(void) {
 
     D_80110BD8_modesel = 0;
     for (i = 0; i < 6; i++) {
-        if (func_800E905C_minigame(i) >= 0) {
+        if (MgStoryRankGet(i) >= 0) {
             D_80110BD8_modesel = i;
             break;
         }
@@ -1150,7 +1150,7 @@ void func_80107CEC_modesel(void) {
             if (GwStory.unk0 == 12) {
                 omOvlCallEx(0x41, 0, 0x94);
                 omOvlHisChg(1, 0x77, 0, 0x91);
-                func_800E989C_minigame();
+                MgStoryStageGoto();
                 func_80107B08_modesel();
             } else if (GwSystem.playMode & 1) {
                 omOvlCallEx(0x78, 2, 0x91);
@@ -1193,7 +1193,7 @@ void func_80107CEC_modesel(void) {
         case 14:
             omOvlCallEx(0x41, 0, 0x94);
             omOvlHisChg(1, 0x77, 0, 0x91);
-            func_800E989C_minigame();
+            MgStoryStageGoto();
             func_80107B08_modesel();
             break;
         case 3:
@@ -2044,7 +2044,7 @@ void func_8010AF90_modesel(void) {
 
         modelId = func_8010648C_modesel(2);
         for (i = 0; i < 6; i++) {
-            if (func_800E905C_minigame(i) < 0) {
+            if (MgStoryRankGet(i) < 0) {
                 node = Hu3DModelObjPtrGet(modelId, names[i]);
                 func_80088800_main(node->unk58, 0.0f, -4000.0f, 0.0f);
             }
@@ -2719,15 +2719,15 @@ s32 func_8010CD00_modesel(s32 cur, s32 buttons) {
             func_80107700_modesel(0);
             func_80106000_modesel(1);
             func_8010EC40_modesel();
-            D_800EBAF0_minigame = 0;
+            mgStoryStatPortNo = 0;
             selection = D_80110BDA_modesel;
             HuPrcVSleep();
-            if (func_800E905C_minigame(selection) < 0) {
+            if (MgStoryRankGet(selection) < 0) {
                 while (1) {
                     HuPrcVSleep();
                 }
             }
-            process = omAddPrcObj(func_800E9170_minigame, 0x4000, 0x800, 0);
+            process = omAddPrcObj(MgStoryStatViewProc, 0x4000, 0x800, 0);
             process->user_data = &selection;
             while (1) {
                 if (selection == -3) {
@@ -3091,11 +3091,11 @@ s32 func_8010D8DC_modesel(s32 cur, s32 buttons) {
             if (buttons & 0x200) {
                 do {
                     D_80110BD8_modesel = (D_80110BD8_modesel - 1 < 0) ? 5 : D_80110BD8_modesel - 1;
-                } while (func_800E905C_minigame(D_80110BDA_modesel) < 0);
+                } while (MgStoryRankGet(D_80110BDA_modesel) < 0);
             } else if (buttons & 0x100) {
                 do {
                     D_80110BD8_modesel = (D_80110BD8_modesel + 1 < 6) ? D_80110BD8_modesel + 1 : 0;
-                } while (func_800E905C_minigame(D_80110BDA_modesel) < 0);
+                } while (MgStoryRankGet(D_80110BDA_modesel) < 0);
             } else if (buttons & 0x400) {
                 next = 3;
             }
@@ -3103,7 +3103,7 @@ s32 func_8010D8DC_modesel(s32 cur, s32 buttons) {
         case 3:
             if (buttons & 0x800) {
                 for (i = 0; i < 6; i++) {
-                    if (func_800E905C_minigame(i) >= 0) {
+                    if (MgStoryRankGet(i) >= 0) {
                         next = 2;
                     }
                 }
@@ -3203,7 +3203,7 @@ void func_8010DC6C_modesel(s32 arg0) {
         case 0:
         case 1:
         case 2:
-            rank = func_800E905C_minigame(D_80110BDA_modesel);
+            rank = MgStoryRankGet(D_80110BDA_modesel);
             rank = (rank < 0) ? 0 : (rank >= 5) ? 4
                                                 : rank;
             func_80107730_modesel(0, 0x3114);
@@ -3261,7 +3261,7 @@ void func_8010DE88_modesel(s32 arg0) {
         case 0:
         case 1:
         case 2:
-            func_800E905C_minigame(D_80110BDA_modesel);
+            MgStoryRankGet(D_80110BDA_modesel);
             func_8010E280_modesel(1, 2);
             break;
         case 3:

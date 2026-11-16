@@ -54,7 +54,7 @@ extern u16 D_8010D366_fridged_bridges;
 extern u16 D_8010D368_fridged_bridges[4][2];
 extern Vec2f D_8010D378_fridged_bridges[4];
 extern u8 omAllPauseF;
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 extern Vec2f D_8010D3A0_fridged_bridges[4][3][12];
 extern Vec2f D_8010D820_fridged_bridges[4][12];
 extern f32 CFanLenM[];
@@ -143,7 +143,7 @@ void func_801059A0_fridged_bridges(void) {
     omInitObjMan(60, 0);
     omGameSysInit();
     MapCollInit(16);
-    Hu3DQuadPoolInit(&D_800EBEB0_minigame, 64);
+    Hu3DQuadPoolInit(&mgQuadPool, 64);
     HuAudCharVoiceInit();
     CamSetupInitMulti(4);
     CamSetupMapCullAddMulti(4);
@@ -185,9 +185,9 @@ void func_801059A0_fridged_bridges(void) {
     omAddObj(0, 0, 0, -1, func_80105F00_fridged_bridges);
     D_8010DA6C_fridged_bridges = omAddObj(10, 8, 0, -1, func_801061C4_fridged_bridges);
     omSetStatBit(D_8010DA6C_fridged_bridges, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    func_800E5EA0_minigame(&D_8010CF20_fridged_bridges);
-    D_800EB930_minigame = 46;
-    D_800EB932_minigame = 30;
+    MgFlowInit(&D_8010CF20_fridged_bridges);
+    mgFlowSeqNo = 46;
+    mgFlowSeqTime = 30;
     omMakeGroup(0, 4);
     D_8010DA64_fridged_bridges = omGetGroupMemberList(0);
     omAddObj(20, 6, 9, 0, func_8010641C_fridged_bridges);
@@ -241,7 +241,7 @@ void func_80105F34_fridged_bridges(omObjData *arg0) {
                     } else if (func_8010ADC0_fridged_bridges() == 1) {
                         MgFlowStatSet(MG_STATE_FINISH);
                     }
-                } else if (func_800E6E9C_minigame() == 5400) {
+                } else if (MgFlowStatTimeGet() == 5400) {
                     D_8010DA68_fridged_bridges = 1;
                     D_8010CF20_fridged_bridges.resultType = MG_RESULT_DRAW;
                     MgFlowStatSet(MG_STATE_FINISH);
@@ -434,15 +434,15 @@ void func_8010648C_fridged_bridges(omObjData *arg0, s16 playerIndex) {
     player->unk_58 = 0;
     player->unk_6A = 0;
     chr = GwPlayer[playerIndex].chr;
-    modelFile = D_800A178C_main[chr][0];
-    arg0->model[0] = Hu3DModelRead(modelFile | D_800A178C_main[chr][1], 0x20699);
+    modelFile = omCharModelNoTbl[chr][0];
+    arg0->model[0] = Hu3DModelRead(modelFile | omCharModelNoTbl[chr][1], 0x20699);
     omSetTra(arg0, D_8010CFA4_fridged_bridges[playerIndex].x, D_8010CFA4_fridged_bridges[playerIndex].y,
              D_8010CFA4_fridged_bridges[playerIndex].z);
     arg0->model[1] = Hu3DModelRead3(9, 0xA89);
     Hu3DModelPosSet(arg0->model[1], arg0->trans.x, 0.0f, arg0->trans.z);
     arg0->model[2] = Hu3DModelRead(0x450011, 0xA9D);
     arg0->model[3] = Hu3DModelRead(0x450012, 0x69D);
-    arg0->model[4] = Hu3DModelRead(modelFile | D_800A178C_main[chr][2], 0x2068D);
+    arg0->model[4] = Hu3DModelRead(modelFile | omCharModelNoTbl[chr][2], 0x2068D);
     CharAnimCreate(arg0->model[4], 2, chr, CharMotionDataNumGetTbl(chr, 2, 0));
     Hu3DModelDynamicFree(arg0->model[4]);
     arg0->model[5] = Hu3DAnimDataRead(CharMotionDataNumGetTbl(chr, 2, 1));
@@ -1343,7 +1343,7 @@ void func_80109390_fridged_bridges(omObjData *arg0) {
                 Hu3DMotionShiftSet(
                     D_8010DA64_fridged_bridges[D_8010DA60_fridged_bridges]->model[0],
                     Hu3DData[D_8010DA64_fridged_bridges[D_8010DA60_fridged_bridges]->motion[5]].motId, 0, 6, 0);
-                HuAudCharVoicePlay(D_800A178C_main[GwPlayer[D_8010DA60_fridged_bridges].chr][0] | 0x2F);
+                HuAudCharVoicePlay(omCharModelNoTbl[GwPlayer[D_8010DA60_fridged_bridges].chr][0] | 0x2F);
                 D_8010D366_fridged_bridges = 5;
                 for (i = 0; i < 4; i++) {
                     obj = D_8010DA64_fridged_bridges[i];
@@ -1409,10 +1409,10 @@ s32 func_80109988_fridged_bridges(omObjData *arg0, FridgedBridgesProbe *probe) {
         best = probe->height[i] = -10000.0f;
         probe->bridgeIds[i] = 0xFFFF;
         points = (Hu3DPoint *)Hu3DData[D_8010DA6C_fridged_bridges->model[player->playerId]].hmf->unk50;
-        Hu3DQuadPoolCollect(D_8010DA6C_fridged_bridges->model[player->playerId], &D_800EBEB0_minigame,
+        Hu3DQuadPoolCollect(D_8010DA6C_fridged_bridges->model[player->playerId], &mgQuadPool,
                            func_80109D4C_fridged_bridges, &pos);
-        for (quad = Hu3DQuadPoolNext(&D_800EBEB0_minigame); quad != NULL;
-             quad = Hu3DQuadPoolNext(&D_800EBEB0_minigame)) {
+        for (quad = Hu3DQuadPoolNext(&mgQuadPool); quad != NULL;
+             quad = Hu3DQuadPoolNext(&mgQuadPool)) {
             height = MapCalcPoint(x, y, z, points, quad);
             if (height > best) {
                 probe->height[i] = best = height;
@@ -1428,9 +1428,9 @@ s32 func_80109988_fridged_bridges(omObjData *arg0, FridgedBridgesProbe *probe) {
             points = (Hu3DPoint *)Hu3DData[D_8010DA70_fridged_bridges->model[player->playerId * 5 + 1 + j]]
                          .hmf->unk50;
             Hu3DQuadPoolCollect(D_8010DA70_fridged_bridges->model[player->playerId * 5 + 1 + j],
-                               &D_800EBEB0_minigame, func_80109D4C_fridged_bridges, &pos);
-            for (quad = Hu3DQuadPoolNext(&D_800EBEB0_minigame); quad != NULL;
-                 quad = Hu3DQuadPoolNext(&D_800EBEB0_minigame)) {
+                               &mgQuadPool, func_80109D4C_fridged_bridges, &pos);
+            for (quad = Hu3DQuadPoolNext(&mgQuadPool); quad != NULL;
+                 quad = Hu3DQuadPoolNext(&mgQuadPool)) {
                 height = MapCalcPoint(x, y, z, points, quad);
                 if (height > best) {
                     probe->height[i] = best = height;
@@ -1452,7 +1452,7 @@ s32 func_80109D4C_fridged_bridges(s32 count, s16 *vtx, Hu3DPoint *points, Vec *p
     return func_80109D6C_fridged_bridges(pos, vtx - 1, points);
 }
 
-// Same as func_800DA540_minigame, without the face type check.
+// Same as MgFaceInsideXZCheck, without the face type check.
 s32 func_80109D6C_fridged_bridges(Vec *pos, s16 *face, Hu3DPoint *points) {
     f32 x;
     f32 z;

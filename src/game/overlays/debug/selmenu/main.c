@@ -26,8 +26,8 @@ typedef struct SelMenuSound {
     s8 vol;
 } SelMenuSound; // sizeof 0x4
 
-extern s32 D_800A178C_main[][6];
-extern s32 D_800A1790_main[][6];
+extern s32 omCharModelNoTbl[][6];
+extern s32 omCharMotTbl[][6];
 extern s16 selMenuMgModeF;
 extern char D_80109820_selmenu[];
 extern char D_8010982C_selmenu[];
@@ -448,7 +448,7 @@ void func_801059A0_selmenu(void) {
     omMakeGroup(0, 32);
     obj = omAddObj(10, 1, 80, -1, NULL);
     for (i = 0; i < 8; i++) {
-        D_8010A1C0_selmenu[i] = Hu3DModelRead(D_800A178C_main[i][0] | D_800A1790_main[i][0], 0x69D);
+        D_8010A1C0_selmenu[i] = Hu3DModelRead(omCharModelNoTbl[i][0] | omCharMotTbl[i][0], 0x69D);
         Hu3DData[D_8010A1C0_selmenu[i]].motAttr |= 2;
         omObjMotionRead(obj, 0, CharMotionDataNumGet(i, 0));
         D_8010A1D0_selmenu[i] = obj->motion[0];

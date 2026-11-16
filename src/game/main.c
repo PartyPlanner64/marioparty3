@@ -29,7 +29,7 @@ void *HuGfxUcodeTbl[] = {
     gspF3DEX2_NoN_fifoTextStart, gspF3DEX2_NoN_fifoDataStart,
     gspF3DLX2_Rej_fifoTextStart, gspF3DLX2_Rej_fifoDataStart,
 };
-s32 D_800A129C_main = 1000; // unreferenced
+s32 mainResvVal = 1000; // unreferenced
 
 s32 mainFramePending = 0;
 f32 mainUnkF32 = 0.0f;

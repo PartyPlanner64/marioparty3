@@ -139,7 +139,7 @@ typedef union BowserTossWorkBytes { // packs the low byte of each work word
     } bytes;
 } BowserTossWorkBytes;
 
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 extern s8 HuPadStkY[];
 extern u16 HuPadBtnDown[];
 extern s16 HuPadBtn[];
@@ -368,9 +368,9 @@ void func_801059A0_bowser_toss(void) {
     for (i = 0; i < 2; i++) {
         Hu3DCameraPerspectiveSet(i, 45.0f, 80.0f, 4000.0f);
     }
-    D_800EC280_minigame = 0;
-    D_800EBE28_minigame = 0;
-    D_800EC1B8_minigame = 0;
+    mgPlayerObjNum = 0;
+    mgMapObjNum = 0;
+    mgItemObjNum = 0;
     D_8010FB60_bowser_toss = 300;
     D_8010FB5C_bowser_toss = 0;
     D_8010FB58_bowser_toss = 0;
@@ -386,7 +386,7 @@ void func_801059A0_bowser_toss(void) {
     D_8010FB50_bowser_toss = omAddObj(0x40, 0, 0, -1, func_80105C80_bowser_toss);
     memset(&D_8010FBB8_bowser_toss, 0, 0x28);
     D_8010FBB8_bowser_toss.type = MINIGAME_BATTLE;
-    func_800E5EA0_minigame(&D_8010FBB8_bowser_toss);
+    MgFlowInit(&D_8010FBB8_bowser_toss);
     D_8010FB98_bowser_toss = HuMemAllocTag(0x20, TAG_OVERLAY);
     memset(D_8010FB98_bowser_toss, 0, 0x20);
     GMesFontMesCreate(D_8010F530_bowser_toss, 1);
@@ -450,8 +450,8 @@ void func_80105CEC_bowser_toss(omObjData *object) {
             D_8010FB60_bowser_toss--;
             GMesTimerValueSet((D_8010FB60_bowser_toss + 29) / 30);
             if (D_8010FB60_bowser_toss <= 0) {
-                player1 = func_8010D98C_bowser_toss(D_800EC598_minigame[0]);
-                player2 = func_8010D98C_bowser_toss(D_800EC598_minigame[1]);
+                player1 = func_8010D98C_bowser_toss(mgPlayerObjTbl[0]);
+                player2 = func_8010D98C_bowser_toss(mgPlayerObjTbl[1]);
                 player2->unk_0C = player1->unk_0C = 3;
                 GMesTimerEnd();
                 D_8010FB5C_bowser_toss = 0;
@@ -463,8 +463,8 @@ void func_80105CEC_bowser_toss(omObjData *object) {
                 GMesCreate(0x11);
                 MgFlowStatSet(MG_STATE_FINISH);
                 HuAudSeqFadeOut(120);
-                func_8010847C_bowser_toss(D_800EC598_minigame[0], 0, 10);
-                func_8010847C_bowser_toss(D_800EC598_minigame[1], 0, 10);
+                func_8010847C_bowser_toss(mgPlayerObjTbl[0], 0, 10);
+                func_8010847C_bowser_toss(mgPlayerObjTbl[1], 0, 10);
                 D_8010FB5C_bowser_toss = 0;
                 D_8010FB64_bowser_toss++;
             }
@@ -477,8 +477,8 @@ void func_80105CEC_bowser_toss(omObjData *object) {
             break;
         case 6:
             if (D_8010FB5C_bowser_toss >= 15) {
-                player1 = func_8010D98C_bowser_toss(D_800EC598_minigame[0]);
-                player2 = func_8010D98C_bowser_toss(D_800EC598_minigame[1]);
+                player1 = func_8010D98C_bowser_toss(mgPlayerObjTbl[0]);
+                player2 = func_8010D98C_bowser_toss(mgPlayerObjTbl[1]);
                 score1 = player1->unk_04;
                 score2 = player2->unk_04;
                 if (player1->unk_04 == 0.0f && player2->unk_04 == 0.0f) {
@@ -550,7 +550,7 @@ void func_80105CEC_bowser_toss(omObjData *object) {
                         D_8010FB68_bowser_toss = 140;
                         D_8010FB64_bowser_toss = 10;
                     }
-                    obj = D_800EC598_minigame[D_8010FB78_bowser_toss];
+                    obj = mgPlayerObjTbl[D_8010FB78_bowser_toss];
                     bowser = &D_8010FB8C_bowser_toss[D_8010FB78_bowser_toss];
                     func_8010D98C_bowser_toss(obj);
                     x = obj->trans.x * 0.5f + bowser->unk_30 * 0.5f;
@@ -577,7 +577,7 @@ void func_80105CEC_bowser_toss(omObjData *object) {
             }
             break;
         case 10:
-            GMesCreate(0x16, func_8010D98C_bowser_toss(D_800EC598_minigame[D_8010FB78_bowser_toss])->unk_1C);
+            GMesCreate(0x16, func_8010D98C_bowser_toss(mgPlayerObjTbl[D_8010FB78_bowser_toss])->unk_1C);
             if (D_8010FB72_bowser_toss != 0) {
                 HuAudSeqPlay(0x6A);
             }
@@ -657,23 +657,23 @@ void func_80106568_bowser_toss(void) {
         }
         used[i] = D_8010FB74_bowser_toss[i].unk_18;
     }
-    func_800E19F0_minigame(1);
-    func_800E18D8_minigame();
+    MgShadowAltSet(1);
+    MgPlayerParamReset();
     for (i = 0; i < 2; i++, player++) {
         player->index = i;
-        D_800EC598_minigame[D_800EC280_minigame] = omAddObj(i + 16, 11, 60, -1, func_801067B0_bowser_toss);
-        D_800EC598_minigame[D_800EC280_minigame]->trans.x = D_8010F198_bowser_toss[i].x;
-        D_800EC598_minigame[D_800EC280_minigame]->trans.y = D_8010F198_bowser_toss[i].y;
-        D_800EC598_minigame[D_800EC280_minigame]->trans.z = D_8010F198_bowser_toss[i].z;
-        D_800EC598_minigame[D_800EC280_minigame]->rot.y = 90.0f;
-        func_8010D960_bowser_toss(D_800EC598_minigame[D_800EC280_minigame], (u32)player);
-        D_800EC280_minigame++;
+        mgPlayerObjTbl[mgPlayerObjNum] = omAddObj(i + 16, 11, 60, -1, func_801067B0_bowser_toss);
+        mgPlayerObjTbl[mgPlayerObjNum]->trans.x = D_8010F198_bowser_toss[i].x;
+        mgPlayerObjTbl[mgPlayerObjNum]->trans.y = D_8010F198_bowser_toss[i].y;
+        mgPlayerObjTbl[mgPlayerObjNum]->trans.z = D_8010F198_bowser_toss[i].z;
+        mgPlayerObjTbl[mgPlayerObjNum]->rot.y = 90.0f;
+        func_8010D960_bowser_toss(mgPlayerObjTbl[mgPlayerObjNum], (u32)player);
+        mgPlayerObjNum++;
     }
 }
 
 void func_801067B0_bowser_toss(omObjData *object) {
     BowserTossPlayer *player;
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     s32 variant;
     s16 gwIndex;
     s16 chr;
@@ -689,10 +689,10 @@ void func_801067B0_bowser_toss(omObjData *object) {
     player->unk_1A = GwPlayer[gwIndex].pad;
     player->unk_1E = GwPlayer[gwIndex].stat & 1;
     player->unk_20 = GwPlayer[gwIndex].cpu_difficulty;
-    model = D_800A178C_main[chr][0];
-    motionFile = D_800A178C_main[chr][1];
-    linkModel = D_800A178C_main[chr][2];
-    func_800E1BA8_minigame(object, model, motionFile, gwIndex, 0x289, 0x299);
+    model = omCharModelNoTbl[chr][0];
+    motionFile = omCharModelNoTbl[chr][1];
+    linkModel = omCharModelNoTbl[chr][2];
+    MgPlayerCreate(object, model, motionFile, gwIndex, 0x289, 0x299);
     data = object->data;
     data->unk50 &= ~1;
     data->unkEC = 0;
@@ -702,16 +702,16 @@ void func_801067B0_bowser_toss(omObjData *object) {
     Hu3DModelCameraSet(object->model[0], 1 << player->index);
     Hu3DModelCameraSet(object->model[1], 1 << player->index);
     Hu3DModelCameraSet(object->model[10], 1 << player->index);
-    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(chr, 0), 1, 0);
-    func_800E5A00_minigame(object, 3, CharMotionDataNumGet(chr, 4), 1, 0x13);
-    func_800E5A00_minigame(object, 4, CharMotionDataNumGet(chr, 0x6D), 1, 0);
-    func_800E5A00_minigame(object, 5, CharMotionDataNumGet(chr, 0x64), 1, 0);
-    func_800E5A00_minigame(object, 6, CharMotionDataNumGet(chr, 0x65), 1, 30);
+    MgPlayerMotLoad(object, 0, CharMotionDataNumGet(chr, 0), 1, 0);
+    MgPlayerMotLoad(object, 3, CharMotionDataNumGet(chr, 4), 1, 0x13);
+    MgPlayerMotLoad(object, 4, CharMotionDataNumGet(chr, 0x6D), 1, 0);
+    MgPlayerMotLoad(object, 5, CharMotionDataNumGet(chr, 0x64), 1, 0);
+    MgPlayerMotLoad(object, 6, CharMotionDataNumGet(chr, 0x65), 1, 30);
     variant = rand8() & 1;
-    func_800E5A00_minigame(object, 7, CharMotionDataNumGet(chr, D_8010F220_bowser_toss[variant]), 1, 120);
+    MgPlayerMotLoad(object, 7, CharMotionDataNumGet(chr, D_8010F220_bowser_toss[variant]), 1, 120);
     player->unk_14 = D_8010F1C0_bowser_toss[chr] | D_8010F220_bowser_toss[variant];
-    func_800E5A00_minigame(object, 8, CharMotionDataNumGet(chr, D_8010F228_bowser_toss[rand8() & 1]), 1, 120);
-    func_800E5690_minigame(object, 5);
+    MgPlayerMotLoad(object, 8, CharMotionDataNumGet(chr, D_8010F228_bowser_toss[rand8() & 1]), 1, 120);
+    MgPlayerMotSet(object, 5);
     Hu3DData[object->model[0]].motId = object->motion[5];
     Hu3DMotionShapeSet(object->model[0], object->motion[6], 1);
     Hu3DData[object->model[0]].motShapeSpeed = 0.0f;
@@ -748,7 +748,7 @@ void func_80106BC4_bowser_toss(omObjData *object) {
     BowserTossPlayer *player;
     UnkBowser *bowser;
     HmfModel *model;
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     s32 stickPos;
     f32 temp;
     f32 stickX;
@@ -781,7 +781,7 @@ void func_80106BC4_bowser_toss(omObjData *object) {
             switch (player->unk_0C) {
                 case 1:
                     if (HuPadBtnDown[player->unk_1A] & 0x8000) {
-                        if (func_800E5690_minigame(object, 4)) {
+                        if (MgPlayerMotSet(object, 4)) {
                             player->unk_30 = 10;
                             player->unk_32 = 1;
                             player->unk_44 += 0.5f;
@@ -822,7 +822,7 @@ void func_80106BC4_bowser_toss(omObjData *object) {
                     if (stickY >= 8.0f) {
                         stickY -= 8.0f;
                     }
-                    stickPos = func_800E2250_minigame(object, stickX, stickY);
+                    stickPos = MgPlayerStickAvgGet(object, stickX, stickY);
                     stickX = stickPos >> 16;
                     stickY = stickPos & 0xFFFF;
                     power = sqrtf(stickX * stickX + stickY * stickY) / 52.0f;
@@ -968,7 +968,7 @@ void func_80106BC4_bowser_toss(omObjData *object) {
                             }
                             player->unk_10 = -1;
                             HuAudPlayerFXPlay(player->unk_1C + 0xB0, player->index);
-                            func_800E5690_minigame(object, 0);
+                            MgPlayerMotSet(object, 0);
                             Hu3DData[object->model[0]].motIdShape = 0xFF;
                             player->unk_3C = 0;
                             player->unk_0C = 4;
@@ -1012,7 +1012,7 @@ void func_80106BC4_bowser_toss(omObjData *object) {
                     if (player->unk_04 < 400.0) {
                         player->unk_0C = 9;
                     } else if (player->unk_04 < 800.0) {
-                        func_800E5690_minigame(object, 3);
+                        MgPlayerMotSet(object, 3);
                         player->unk_34 = 19.0f;
                         player->unk_0C = 7;
                         HuAudPlayerFXPlay(player->unk_1C + 0x3B, player->index);
@@ -1021,7 +1021,7 @@ void func_80106BC4_bowser_toss(omObjData *object) {
                     } else {
                         object->trans.x = bowser->unk_30 - 500.0;
                         object->trans.y = 700.0f;
-                        func_800E5690_minigame(object, 3);
+                        MgPlayerMotSet(object, 3);
                         player->unk_34 = 0.0f;
                         player->unk_0C = 8;
                         HuAudPlayerFXPlay(player->unk_1C + 0xB9, player->index);
@@ -1033,7 +1033,7 @@ void func_80106BC4_bowser_toss(omObjData *object) {
                     player->unk_34 -= 1.79663f;
                     object->rot.y = func_8010D6E0_bowser_toss(90.0f, object->rot.y, 10.0f);
                     if (object->trans.y <= 0.0f) {
-                        func_800E5690_minigame(object, 0);
+                        MgPlayerMotSet(object, 0);
                         HuAudPlayerFXPlay(player->unk_1C + 0x32, player->index);
                         object->trans.y = 0.0f;
                         player->unk_0C = 9;
@@ -1045,7 +1045,7 @@ void func_80106BC4_bowser_toss(omObjData *object) {
                     player->unk_34 -= 1.79663f;
                     object->rot.y = func_8010D6E0_bowser_toss(90.0f, object->rot.y, 10.0f);
                     if (object->trans.y <= 0.0f) {
-                        func_800E5690_minigame(object, 0);
+                        MgPlayerMotSet(object, 0);
                         HuAudPlayerFXPlay(player->unk_1C + 0x32, player->index);
                         if (D_8010FB84_bowser_toss == -1) {
                             D_8010FB84_bowser_toss = HuAudFXPlay(0x4AA);
@@ -1056,7 +1056,7 @@ void func_80106BC4_bowser_toss(omObjData *object) {
                     break;
                 case 9:
                     if (player->unk_3C) {
-                        func_800E5690_minigame(object, 0);
+                        MgPlayerMotSet(object, 0);
                         Hu3DData[object->model[0]].motIdShape = 0xFF;
                         bowser->unk_0A = 3;
                         player->unk_3C = 0;
@@ -1073,14 +1073,14 @@ void func_80106BC4_bowser_toss(omObjData *object) {
         case MG_STATE_RESULT:
             switch (player->unk_02) {
                 case 0:
-                    if (func_800E5690_minigame(object, 7)) {
+                    if (MgPlayerMotSet(object, 7)) {
                         CharAnimCreate(object->model[0], 2, player->unk_1C, D_8010F154_bowser_toss[player->unk_1C]);
                         HuAudCharVoicePlayPlayer(player->unk_14, -1, player->index);
                         player->unk_02 = -1;
                     }
                     break;
                 case 1:
-                    if (func_800E5690_minigame(object, 8)) {
+                    if (MgPlayerMotSet(object, 8)) {
                         CharAnimCreate(object->model[0], 2, player->unk_1C, D_8010F174_bowser_toss[player->unk_1C]);
                         player->unk_02 = -1;
                     }
@@ -1088,7 +1088,7 @@ void func_80106BC4_bowser_toss(omObjData *object) {
             }
             break;
     }
-    func_800E4E30_minigame(object);
+    MgPlayerMotUpdate(object);
     if ((player->unk_30 != 0 || player->unk_32 != 0) && data->unkD6 == 0) {
         model = &Hu3DData[object->model[0]];
         if (player->unk_30 != 0) {
@@ -1245,7 +1245,7 @@ void func_8010858C_bowser_toss(s16 index) {
     HmfModelData_Unk64_Unk8C_Struct *motData;
 
     bowser = &D_8010FB8C_bowser_toss[index];
-    bowser->unk_00 = D_800EC598_minigame[index];
+    bowser->unk_00 = mgPlayerObjTbl[index];
     bowser->unk_0A = 0;
     func_8010D98C_bowser_toss(bowser->unk_00);
     model = &Hu3DData[bowser->unk_00->model[0]];
@@ -1748,10 +1748,10 @@ s32 func_8010A2D4_bowser_toss(Vec *pos, Vec *vel, Vec *scale, f32 speed, s16 cam
 // Appends a new object to the shared minigame object list.
 void func_8010A4A8_bowser_toss(void) {
     omObjData *obj = omAddObj(0x20, 0x1C, 0, -1, func_8010A500_bowser_toss);
-    u16 index = D_800EBE28_minigame;
+    u16 index = mgMapObjNum;
 
-    D_800EBE28_minigame = index + 1;
-    D_800EC1C0_minigame[index] = obj;
+    mgMapObjNum = index + 1;
+    mgMapObjTbl[index] = obj;
 }
 
 void func_8010A500_bowser_toss(omObjData *object) {

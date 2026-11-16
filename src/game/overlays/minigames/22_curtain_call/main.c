@@ -67,7 +67,7 @@ extern s8 D_8010CEC9_curtain_call[][8];
 extern omObjData *D_8010CECC_curtain_call[][2];
 extern char *D_8010B120_curtain_call[8];
 extern const s16 D_8010B4A0_curtain_call[];
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 extern u8 omAllPauseF;
 
 void func_801062EC_curtain_call(void);
@@ -979,10 +979,10 @@ void func_80107D20_curtain_call(omObjData *obj) {
     s8 player = obj->work[0];
     CurtainCallEntry *entry = &D_8010B4B0_curtain_call[1 + player];
     u16 chr = GwPlayer[player].chr;
-    s32 dir = D_800A178C_main[chr][0];
+    s32 dir = omCharModelNoTbl[chr][0];
     s8 i;
 
-    obj->model[0] = Hu3DModelRead(dir | D_800A178C_main[chr][3], 0x2A9);
+    obj->model[0] = Hu3DModelRead(dir | omCharModelNoTbl[chr][3], 0x2A9);
     omObjMotionRead(obj, 0, CharMotionDataNumGet(chr, 0x6C));
     omObjMotionRead(obj, 1, CharMotionDataNumGet(chr, 0x2C));
     omObjMotionRead(obj, 3, CharMotionDataNumGet(chr, 0));
@@ -1971,9 +1971,9 @@ void func_8010AF78_curtain_call(void) {
     Hu3DGLightDirSet(1, 0.0f, 90.0f, 560.0f);
     Hu3DGLightColorSet(2, 0xFF, 0xFF, 0xFF);
     Hu3DGLightDirSet(2, 0.0f, 90.0f, 560.0f);
-    D_800EC1B8_minigame = 0;
-    D_800EC280_minigame = 0;
-    D_800EBE28_minigame = 0;
+    mgItemObjNum = 0;
+    mgPlayerObjNum = 0;
+    mgMapObjNum = 0;
     GMesFontMesCreate(D_8010B4A0_curtain_call, 0);
     GMesFontMesCreate(D_8010B4A0_curtain_call, 1);
     omAddObj(1500, 0, 0, -1, func_8010AD68_curtain_call);

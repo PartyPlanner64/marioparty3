@@ -6,7 +6,7 @@
 #include "gcc/memory.h"
 #include "game/texload.h"
 
-#define PLAYER_WORK(obj) ((UnkCrowdCoverWork *)((func_800E1BA8_minigame_ObjData *)(obj)->data)->unk158)
+#define PLAYER_WORK(obj) ((UnkCrowdCoverWork *)((MgPlayerWork *)(obj)->data)->unk158)
 
 #define CROWD_CC_PRIM_DECALA 0, 0, 0, PRIMITIVE, 0, 0, 0, TEXEL0
 #define CROWD_CC_PRIM_MODULATEA 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0
@@ -98,7 +98,7 @@ typedef struct {
     /* 0x40 */ f32 unk40;
 } CrowdCoverMember; // sizeof 0x44
 
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 extern HuSprAnimData *HuSprAnimTbl[];
 extern u8 storySceneNo;
 
@@ -233,7 +233,7 @@ void func_801059A0_crowd_cover(void) {
     s32 count;
 
     MapCollInit(1);
-    Hu3DQuadPoolInit(&D_800EBEB0_minigame, 0x40);
+    Hu3DQuadPoolInit(&mgQuadPool, 0x40);
     omInitObjMan(0x10, 0);
     omGameSysInit();
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutView);
@@ -243,7 +243,7 @@ void func_801059A0_crowd_cover(void) {
     ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 45.0f, 80.0f, 8000.0f);
-    func_800E1804_minigame();
+    MgFieldStatClear();
     func_80105B58_crowd_cover(obj);
     func_801060C4_crowd_cover();
     func_80109354_crowd_cover(0x80);
@@ -361,10 +361,10 @@ void func_80105FD0_crowd_cover(f32 x, f32 y, f32 z, f32 *dst) {
 }
 
 void func_801060C4_crowd_cover(void) {
-    D_800EBE28_minigame = 0;
-    func_800E1490_minigame(0);
+    mgMapObjNum = 0;
+    MgMapBaseSet(0);
     D_8010D860_crowd_cover = storySceneNo;
-    D_800EC1C0_minigame[D_800EBE28_minigame++] = omAddObj(5, 1, 0, -1, func_80106144_crowd_cover);
+    mgMapObjTbl[mgMapObjNum++] = omAddObj(5, 1, 0, -1, func_80106144_crowd_cover);
     D_8010CFD8_crowd_cover = 0;
 }
 
@@ -447,37 +447,37 @@ void func_80106580_crowd_cover(omObjData *object) {
             if (D_8010C6C0_crowd_cover == 0) {
                 D_8010CFD8_crowd_cover = 3;
             }
-            if (PLAYER_WORK(D_800EC598_minigame[0])->unk32 | PLAYER_WORK(D_800EC598_minigame[1])->unk32) {
+            if (PLAYER_WORK(mgPlayerObjTbl[0])->unk32 | PLAYER_WORK(mgPlayerObjTbl[1])->unk32) {
                 D_8010CFD8_crowd_cover = 3;
-                if (PLAYER_WORK(D_800EC598_minigame[0])->unk32 != 0 &&
-                    PLAYER_WORK(D_800EC598_minigame[1])->unk32 != 0) {
-                    PLAYER_WORK(D_800EC598_minigame[func_80108F1C_crowd_cover() & 1])->unk32 = 0;
+                if (PLAYER_WORK(mgPlayerObjTbl[0])->unk32 != 0 &&
+                    PLAYER_WORK(mgPlayerObjTbl[1])->unk32 != 0) {
+                    PLAYER_WORK(mgPlayerObjTbl[func_80108F1C_crowd_cover() & 1])->unk32 = 0;
                 }
             }
             break;
         case 3:
-            if (PLAYER_WORK(D_800EC598_minigame[0])->unk32 != 0) {
-                if (PLAYER_WORK(D_800EC598_minigame[0])->unk32 == D_8010D862_crowd_cover + 1) {
+            if (PLAYER_WORK(mgPlayerObjTbl[0])->unk32 != 0) {
+                if (PLAYER_WORK(mgPlayerObjTbl[0])->unk32 == D_8010D862_crowd_cover + 1) {
                     D_8010C6D4_crowd_cover = 0;
-                    PLAYER_WORK(D_800EC598_minigame[0])->unk2C = 1;
-                    PLAYER_WORK(D_800EC598_minigame[1])->unk2C = 0;
+                    PLAYER_WORK(mgPlayerObjTbl[0])->unk2C = 1;
+                    PLAYER_WORK(mgPlayerObjTbl[1])->unk2C = 0;
                 } else {
                     D_8010C6D4_crowd_cover = 1;
-                    D_8010C6D8_crowd_cover = PLAYER_WORK(D_800EC598_minigame[0])->unk32;
-                    PLAYER_WORK(D_800EC598_minigame[0])->unk2C = 0;
-                    PLAYER_WORK(D_800EC598_minigame[1])->unk2C = 1;
+                    D_8010C6D8_crowd_cover = PLAYER_WORK(mgPlayerObjTbl[0])->unk32;
+                    PLAYER_WORK(mgPlayerObjTbl[0])->unk2C = 0;
+                    PLAYER_WORK(mgPlayerObjTbl[1])->unk2C = 1;
                 }
                 D_8010C6D0_crowd_cover = 36;
-            } else if (PLAYER_WORK(D_800EC598_minigame[1])->unk32 != 0) {
-                if (PLAYER_WORK(D_800EC598_minigame[1])->unk32 == D_8010D862_crowd_cover + 1) {
+            } else if (PLAYER_WORK(mgPlayerObjTbl[1])->unk32 != 0) {
+                if (PLAYER_WORK(mgPlayerObjTbl[1])->unk32 == D_8010D862_crowd_cover + 1) {
                     D_8010C6D4_crowd_cover = 1;
-                    PLAYER_WORK(D_800EC598_minigame[0])->unk2C = 0;
-                    PLAYER_WORK(D_800EC598_minigame[1])->unk2C = 1;
+                    PLAYER_WORK(mgPlayerObjTbl[0])->unk2C = 0;
+                    PLAYER_WORK(mgPlayerObjTbl[1])->unk2C = 1;
                 } else {
                     D_8010C6D4_crowd_cover = 0;
-                    D_8010C6D8_crowd_cover = PLAYER_WORK(D_800EC598_minigame[1])->unk32;
-                    PLAYER_WORK(D_800EC598_minigame[0])->unk2C = 1;
-                    PLAYER_WORK(D_800EC598_minigame[1])->unk2C = 0;
+                    D_8010C6D8_crowd_cover = PLAYER_WORK(mgPlayerObjTbl[1])->unk32;
+                    PLAYER_WORK(mgPlayerObjTbl[0])->unk2C = 1;
+                    PLAYER_WORK(mgPlayerObjTbl[1])->unk2C = 0;
                 }
             } else {
                 D_8010C6D4_crowd_cover = -1;
@@ -521,7 +521,7 @@ void func_80106580_crowd_cover(omObjData *object) {
                     GMesCreate(0x20);
                     HuAudSeqPlay(0x6C);
                 } else {
-                    GMesCreate(0x16, PLAYER_WORK(D_800EC598_minigame[D_8010C6D4_crowd_cover])->unk29);
+                    GMesCreate(0x16, PLAYER_WORK(mgPlayerObjTbl[D_8010C6D4_crowd_cover])->unk29);
                     HuAudSeqPlay(0x67);
                 }
                 D_8010C6D0_crowd_cover = 15;
@@ -563,10 +563,10 @@ void func_80106580_crowd_cover(omObjData *object) {
 void func_80106CB8_crowd_cover(void) {
     s32 i;
 
-    func_800E18D8_minigame();
-    D_800EC280_minigame = 0;
+    MgPlayerParamReset();
+    mgPlayerObjNum = 0;
     for (i = 0; i < 2; i++) {
-        D_800EC598_minigame[D_800EC280_minigame++] = omAddObj(2, 0xB, 0x32, -1, func_80106D4C_crowd_cover);
+        mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(2, 0xB, 0x32, -1, func_80106D4C_crowd_cover);
     }
 }
 
@@ -581,7 +581,7 @@ void func_80106D4C_crowd_cover(omObjData *object) {
     };
     s16 itemModels[3] = { 14, 13, 12 };
     s32 unused[4]; // Unreferenced, but present in the stack frame.
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     UnkCrowdCoverWork *work;
     s32 i;
     u8 player;
@@ -598,9 +598,9 @@ void func_80106D4C_crowd_cover(omObjData *object) {
     }
     player = i;
     character = GwPlayer[player].chr;
-    model = D_800A178C_main[character][0];
-    linkModel = D_800A178C_main[character][2];
-    func_800E19F0_minigame(1);
+    model = omCharModelNoTbl[character][0];
+    linkModel = omCharModelNoTbl[character][2];
+    MgShadowAltSet(1);
     func_80107298_crowd_cover(object, model, linkModel, player, 0x2C9);
     data = object->data;
     object->trans.x = D_8010C6EC_crowd_cover[D_8010C6E4_crowd_cover][0];
@@ -644,27 +644,27 @@ void func_80106D4C_crowd_cover(omObjData *object) {
     Hu3DModelAttrSet(object->model[2], 4, 0);
     object->model[9] = Hu3DModelRead2(7, 0x2DD);
     object->func = func_80107554_crowd_cover;
-    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(character, 0), 1, 0);
-    func_800E5A00_minigame(object, 0x26, CharMotionDataNumGet(character, 0x66), 1, 0);
-    func_800E5A00_minigame(object, 0x27, CharMotionDataNumGet(character, 0x67), 1, 0x3C);
-    func_800E5A00_minigame(object, 0xD, CharMotionDataNumGet(character, 0x2F), 2, 0x78);
-    func_800E5A00_minigame(object, 0xE, CharMotionDataNumGet(character, 0x36), 2, 0x78);
-    func_800E5690_minigame(object, 0x26);
+    MgPlayerMotLoad(object, 0, CharMotionDataNumGet(character, 0), 1, 0);
+    MgPlayerMotLoad(object, 0x26, CharMotionDataNumGet(character, 0x66), 1, 0);
+    MgPlayerMotLoad(object, 0x27, CharMotionDataNumGet(character, 0x67), 1, 0x3C);
+    MgPlayerMotLoad(object, 0xD, CharMotionDataNumGet(character, 0x2F), 2, 0x78);
+    MgPlayerMotLoad(object, 0xE, CharMotionDataNumGet(character, 0x36), 2, 0x78);
+    MgPlayerMotSet(object, 0x26);
     D_8010C6E4_crowd_cover++;
 }
 
 void func_80107298_crowd_cover(omObjData *object, s32 arg1, s32 arg2, u16 player, u16 tag) {
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     s32 i;
     u32 character;
     f32 zero;
-    func_800E1BA8_minigame_UnkE8_ObjData *entry;
+    MgMotAttr *entry;
 
     for (i = 0; i < object->mdlcnt; i++) {
         object->model[i] = 0;
     }
-    object->data = HuMemAllocTag(sizeof(func_800E1BA8_minigame_ObjData), TAG_OVERLAY);
-    memset(object->data, 0, sizeof(func_800E1BA8_minigame_ObjData));
+    object->data = HuMemAllocTag(sizeof(MgPlayerWork), TAG_OVERLAY);
+    memset(object->data, 0, sizeof(MgPlayerWork));
     data = object->data;
     data->unkE8 = HuMemAllocTag(object->mtncnt * 3 * sizeof(s32), TAG_OVERLAY);
     memset(data->unkE8, 0, object->mtncnt * 3 * sizeof(s32));
@@ -673,7 +673,7 @@ void func_80107298_crowd_cover(omObjData *object, s32 arg1, s32 arg2, u16 player
 
     object->model[0] = Hu3DModelRead(arg1 | arg2, tag);
     object->model[1] = Hu3DModelRead3(9, tag);
-    func_800E3584_minigame(object->model[1]);
+    MgShadowMdlInit(object->model[1]);
     for (i = 0; i < object->mtncnt; i++) {
         object->motion[i] = -1;
     }
@@ -696,10 +696,10 @@ void func_80107298_crowd_cover(omObjData *object, s32 arg1, s32 arg2, u16 player
     data->unk59 = player;
 
     data->unk3C = atan2df(-object->trans.x, -object->trans.z);
-    func_800E1328_minigame(object, 60.0f);
-    func_800E1334_minigame(object, 150.0f);
-    func_800E1340_minigame(object, 20.0f);
-    func_800E12EC_minigame(object, 1000.0f);
+    MgPlayerRadiusSet(object, 60.0f);
+    MgPlayerHeightSet(object, 150.0f);
+    MgPlayerPunchRadiusSet(object, 20.0f);
+    MgPlayerVelYSet(object, 1000.0f);
 
     character = (u32)arg1 >> 16;
     switch (character) {
@@ -723,7 +723,7 @@ void func_80107554_crowd_cover(omObjData *object) {
     u16 buttons[3] = { 0x8000, 0x4000, 0x2000 };
     s32 unused[4]; // Unreferenced, but present in the stack frame.
     Vec pos;
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     UnkCrowdCoverWork *work;
     u8 pad;
     f32 rot;
@@ -735,7 +735,7 @@ void func_80107554_crowd_cover(omObjData *object) {
     work = data->unk158;
     pad = data->unk57;
     rot = data->unk3C;
-    func_800E4A90_minigame(object);
+    MgPlayerMotStatGet(object);
     switch (D_8010CFD8_crowd_cover) {
         case 0:
             if (!work->unk2D) {
@@ -771,7 +771,7 @@ void func_80107554_crowd_cover(omObjData *object) {
                 Hu3DModelAttrSet(object->model[2], 4, 4);
                 Hu3DModelAttrSet(object->model[work->unk32 + 1], 4, 0);
             } else {
-                func_800E5690_minigame(object, 0);
+                MgPlayerMotSet(object, 0);
                 model = object->model[9];
                 func_801090CC_crowd_cover(object->model[0], "item_hook", Hu3DData[object->model[0]].motTime, &pos);
                 Hu3DModelAttrSet(model, 4, 0);
@@ -791,7 +791,7 @@ void func_80107554_crowd_cover(omObjData *object) {
                 break;
             }
             rot = 0.0f;
-            func_800E5690_minigame(object, 0x27);
+            MgPlayerMotSet(object, 0x27);
             if (Hu3DData[object->model[0]].motTime ==
                 Hu3DMotion[Hu3DData[object->model[0]].motId].unk02 - 2.0) {
                 omVibrate(data->unk59, 2, 3, 10);
@@ -815,11 +815,11 @@ void func_80107554_crowd_cover(omObjData *object) {
             if (work->unk2C) {
                 GwPlayer[data->unk59].bonusCoin += 10;
                 CharAnimSet(object->model[0], 2, motions.values[work->unk29], work->unk2F);
-                func_800E5690_minigame(object, 0xD);
+                MgPlayerMotSet(object, 0xD);
                 HuAudCharVoicePlayPlayer(work->unk24, -1, work->unk2A);
             } else {
                 CharAnimSet(object->model[0], 2, motions.values[work->unk29], work->unk30);
-                func_800E5690_minigame(object, 0xE);
+                MgPlayerMotSet(object, 0xE);
             }
             work->unk20++;
             break;
@@ -840,7 +840,7 @@ void func_80107554_crowd_cover(omObjData *object) {
     func_8008A120_main(*mtx, -50.0f);
     mtxRotCat(*mtx, 0.0f, rot, 0.0f);
     data->unk3C = rot;
-    func_800E4E30_minigame(object);
+    MgPlayerMotUpdate(object);
 }
 
 u16 func_80107C5C_crowd_cover(omObjData *arg0) {
@@ -849,7 +849,7 @@ u16 func_80107C5C_crowd_cover(omObjData *arg0) {
     s16 remaining;
     u16 result = 0;
 
-    work = OM_GET_DATA_PTR(arg0, func_800E1BA8_minigame_ObjData)->unk158;
+    work = OM_GET_DATA_PTR(arg0, MgPlayerWork)->unk158;
     remaining = --work->unk34;
     if (remaining == 0) {
         result = work->unk36;

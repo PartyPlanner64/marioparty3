@@ -375,7 +375,7 @@
 // extern OSMesgQueue mbBackDecodeMesgQ;
 // extern OSMesgQueue mbBackDoneMesgQ;
 // extern OSMesgQueue mbBackExitMesgQ;
-// extern s32 D_800D41B0_main[];
+// extern s32 Hu3DSubMtxStackPrev[];
 // extern s32 mbCharNameMesTbl[];
 // extern void (*MBItemSubFunctions[22])(void); //size based on MB1_ObjectSetup (calls to MBItemHookSet)
 // extern s32 mbItemMasuKinopioF;

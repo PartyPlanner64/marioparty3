@@ -134,8 +134,8 @@ void func_8010F6F8_baby_bowser_broadside(f32 *start, f32 *end);
 
 extern u8 omAllPauseF;
 
-extern s32 D_800A178C_main[][6];
-extern s32 D_800A1790_main[][6];
+extern s32 omCharModelNoTbl[][6];
+extern s32 omCharMotTbl[][6];
 
 void func_80107600_baby_bowser_broadside(omObjData *object);
 void func_8010913C_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBowserBroadsideHandler *handler);
@@ -204,9 +204,9 @@ void func_801059BC_baby_bowser_broadside(void) {
     ScissorSet(camera, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(camera, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 30.0f, 80.0f, 6000.0f);
-    D_800EC1B8_minigame = 0;
-    D_800EC280_minigame = 0;
-    D_800EBE28_minigame = 0;
+    mgItemObjNum = 0;
+    mgPlayerObjNum = 0;
+    mgMapObjNum = 0;
     func_80109ED0_baby_bowser_broadside();
     func_80105B94_baby_bowser_broadside();
     omAddObj(0x3E8, 0, 0, -1, func_80105F64_baby_bowser_broadside);
@@ -284,15 +284,15 @@ void func_80105F64_baby_bowser_broadside(omObjData *object) {
     s16 i, j;
     BabyBowserBroadsideTeam *team;
 
-    func_800E18D8_minigame();
-    func_800E19F0_minigame(1);
+    MgPlayerParamReset();
+    MgShadowAltSet(1);
     func_80109F64_baby_bowser_broadside(NULL, 0, 0, 4);
     func_8010A0B4_baby_bowser_broadside(0, 0, 0, func_80107630_baby_bowser_broadside, 0);
     object->work[1] = 1;
     func_80109F64_baby_bowser_broadside(object, (s8)object->work[1], 0, 6);
-    D_800EC1C0_minigame[0] = omAddObj(10, 1, 0, -1, func_801062C4_baby_bowser_broadside);
-    D_800EC1C0_minigame[1] = omAddObj(10, 1, 0, -1, func_80106E70_baby_bowser_broadside);
-    omSetStatBit(D_800EC1C0_minigame[1], OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    mgMapObjTbl[0] = omAddObj(10, 1, 0, -1, func_801062C4_baby_bowser_broadside);
+    mgMapObjTbl[1] = omAddObj(10, 1, 0, -1, func_80106E70_baby_bowser_broadside);
+    omSetStatBit(mgMapObjTbl[1], OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     counts[1] = 0;
     counts[0] = 0;
     for (i = 0; i < 4; i++) {
@@ -310,7 +310,7 @@ void func_80105F64_baby_bowser_broadside(omObjData *object) {
         team->players[team->count++] = i;
     }
     for (i = 0; i < 4; i++) {
-        D_800EC598_minigame[i] = omAddObj(300, 9, 41, -1, func_80107140_baby_bowser_broadside);
+        mgPlayerObjTbl[i] = omAddObj(300, 9, 41, -1, func_80107140_baby_bowser_broadside);
     }
     D_80110008_baby_bowser_broadside->unk_00 = 1;
     D_80110008_baby_bowser_broadside->unk_04 = 900.0f;
@@ -481,34 +481,34 @@ void func_80107140_baby_bowser_broadside(omObjData *object) {
     s16 i;
     s32 modelFile, motionFile;
 
-    object->work[0] = D_800EC280_minigame;
-    object->work[1] = D_800EC280_minigame + 3;
+    object->work[0] = mgPlayerObjNum;
+    object->work[1] = mgPlayerObjNum + 3;
     player = &D_80110004_baby_bowser_broadside[object->work[0]];
     player->unk_02 = GwPlayer[object->work[0]].chr;
-    modelFile = D_800A178C_main[player->unk_02][0];
-    motionFile = D_800A1790_main[player->unk_02][0];
-    func_800E1BA8_minigame(object, modelFile, motionFile, (u16)object->work[0], flags, flags);
+    modelFile = omCharModelNoTbl[player->unk_02][0];
+    motionFile = omCharMotTbl[player->unk_02][0];
+    MgPlayerCreate(object, modelFile, motionFile, (u16)object->work[0], flags, flags);
     object->trans.z = 200.0f;
-    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(player->unk_02, 0), 1, 0);
-    func_800E5A00_minigame(object, 2, CharMotionDataNumGet(player->unk_02, 2), 1, 0);
-    func_800E5A00_minigame(object, 13, CharMotionDataNumGet(player->unk_02, 0x2F), 1, 999);
+    MgPlayerMotLoad(object, 0, CharMotionDataNumGet(player->unk_02, 0), 1, 0);
+    MgPlayerMotLoad(object, 2, CharMotionDataNumGet(player->unk_02, 2), 1, 0);
+    MgPlayerMotLoad(object, 13, CharMotionDataNumGet(player->unk_02, 0x2F), 1, 999);
     if (player->unk_02 == 5) {
-        func_800E5A00_minigame(object, 14, CharMotionDataNumGet(5, 0x38), 1, 999);
+        MgPlayerMotLoad(object, 14, CharMotionDataNumGet(5, 0x38), 1, 999);
     } else {
-        func_800E5A00_minigame(object, 14, CharMotionDataNumGet(player->unk_02, 0x37), 1, 999);
+        MgPlayerMotLoad(object, 14, CharMotionDataNumGet(player->unk_02, 0x37), 1, 999);
     }
-    func_800E5A00_minigame(object, 38, CharMotionDataNumGet(player->unk_02, 0x27), 1, 0);
-    func_800E5A00_minigame(object, 39, CharMotionDataNumGet(player->unk_02, 0x28), 1, 999);
-    func_800E5A00_minigame(object, 40, CharMotionDataNumGet(player->unk_02, 0x28), 1, 999);
+    MgPlayerMotLoad(object, 38, CharMotionDataNumGet(player->unk_02, 0x27), 1, 0);
+    MgPlayerMotLoad(object, 39, CharMotionDataNumGet(player->unk_02, 0x28), 1, 999);
+    MgPlayerMotLoad(object, 40, CharMotionDataNumGet(player->unk_02, 0x28), 1, 999);
     func_80109EB0_baby_bowser_broadside(player, 38, 1);
     player->unk_0C = -1;
-    player->unk_00 = ((func_800E1BA8_minigame_ObjData *)object->data)->unk57;
+    player->unk_00 = ((MgPlayerWork *)object->data)->unk57;
     player->unk_04 = 0x10000;
     player->unk_50 = D_80110000_baby_bowser_broadside[player->unk_5A].angles[player->unk_10];
     player->unk_4C = player->unk_50 + 180.0f;
     object->rot.x = object->rot.y = object->rot.z = 0.0f;
     object->scale.x = object->scale.y = object->scale.z = 1.0f;
-    D_800EC280_minigame++;
+    mgPlayerObjNum++;
     for (i = 0; i < 3; i++) {
         player->unk_54[i].unk_2C = HuMemAllocTag(sizeof(BabyBowserBroadsideShip), TAG_OVERLAY);
         func_8010E018_baby_bowser_broadside(player->unk_54[i].unk_2C, 6, 40.0f, player->unk_54[i].unk_02);
@@ -536,7 +536,7 @@ void func_80107140_baby_bowser_broadside(omObjData *object) {
 
 void func_80107600_baby_bowser_broadside(omObjData *object) {
     func_8010A2C4_baby_bowser_broadside((s8)object->work[1]);
-    func_800E4E30_minigame(object);
+    MgPlayerMotUpdate(object);
 }
 
 void func_80107630_baby_bowser_broadside(void) {
@@ -1264,9 +1264,9 @@ void func_80109D94_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBows
         player->unk_08 = 1;
     }
     if (player->unk_08 != 0) {
-        func_800E5690_minigame(object, player->unk_0A);
+        MgPlayerMotSet(object, player->unk_0A);
         if (player->unk_0A == 13) {
-            HuAudCharVoicePlay(D_800A178C_main[GwPlayer[object->work[0]].chr][0] | 0x2F);
+            HuAudCharVoicePlay(omCharModelNoTbl[GwPlayer[object->work[0]].chr][0] | 0x2F);
         }
         player->unk_08 = 0;
         if (player->unk_0C != -1) {

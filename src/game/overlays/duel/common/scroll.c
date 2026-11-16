@@ -3,7 +3,7 @@
 
 #define UNK_ARR_SIZE 4
 
-extern s32 D_800D41B0_main[];
+extern s32 Hu3DSubMtxStackPrev[];
 
 extern omObjData *mbdMapScrollArrowObj;
 extern UnkBoard4 *mbdMapScrollArrow;
@@ -318,7 +318,7 @@ void MBDMapScrollProc(void) {
         MBDMapScrollIconSet();
         temp_s3 = MBDMapScrollArrowCreate();
         temp_s6 = MBDHelpWinCreate(4, 0xA0, 0);
-        if (D_800D41B0_main[4] != 0) {
+        if (Hu3DSubMtxStackPrev[4] != 0) {
             var_s4 = MBDHelpWinCreate(6, 0x3C, 0);
         }
         mbdMapScrollMiniMap = MBDMapScrollMiniMapCreate();

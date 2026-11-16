@@ -65,7 +65,7 @@ typedef struct BounceNTrounceTileWork {
     /* 0x08 */ u16 timer;
 } BounceNTrounceTileWork; // Size 0xC
 
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 extern f32 Hu3DMotionGlobalSpeed;
 
 MinigameFlow D_8010ABB0_bounce_n_trounce = {
@@ -228,7 +228,7 @@ void func_801059A0_bounce_n_trounce(void) {
             i++;
         }
     }
-    func_800E5EA0_minigame(&D_8010ABB0_bounce_n_trounce);
+    MgFlowInit(&D_8010ABB0_bounce_n_trounce);
 }
 
 void func_80105C84_bounce_n_trounce(omObjData *arg0) {
@@ -554,8 +554,8 @@ void func_801069F0_bounce_n_trounce(omObjData *object) {
         work->unk_0E[i] = 0;
     }
     chr = GwPlayer[playerId].chr;
-    mdlId = D_800A178C_main[chr][0];
-    mdlAttr = D_800A178C_main[chr][1];
+    mdlId = omCharModelNoTbl[chr][0];
+    mdlAttr = omCharModelNoTbl[chr][1];
     object->model[0] = Hu3DModelRead(D_8010AD2C_bounce_n_trounce[chr], 0x6D9);
     omSetTra(object, D_8010ACFC_bounce_n_trounce[D_8010AEE4_bounce_n_trounce[playerId]].x,
              D_8010ACFC_bounce_n_trounce[D_8010AEE4_bounce_n_trounce[playerId]].y,
@@ -1718,7 +1718,7 @@ void func_80109F68_bounce_n_trounce(omObjData *object) {
                                Hu3DData[D_8010AEDC_bounce_n_trounce[D_8010AEBE_bounce_n_trounce]->motion[4]].motId, 0,
                                6, 0);
             MgFlowStatSet(MG_STATE_RESULT);
-            HuAudCharVoicePlay(D_800A178C_main[GwPlayer[D_8010AEBE_bounce_n_trounce].chr][0] | 0x2F);
+            HuAudCharVoicePlay(omCharModelNoTbl[GwPlayer[D_8010AEBE_bounce_n_trounce].chr][0] | 0x2F);
             GwPlayer[D_8010AEBE_bounce_n_trounce].bonusCoin = 10;
             D_8010AECA_bounce_n_trounce = 6;
             break;

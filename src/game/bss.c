@@ -31,7 +31,7 @@
 // likely original definer. Labels inside a variable are aliased in
 // undefined_syms.txt. "unreferenced" storage has no known symbol.
 
-u8 D_800C9510_main[0xC] BSS; // unreferenced
+u8 bssHeadPad[0xC] BSS; // unreferenced
 u16 espMax BSS; // esprite.c
 u16 ContBtnDown[4] BSS; // input.c, pause.c, window.c
 u16 Hu3DMtxMax BSS; // hmfdraw.c
@@ -62,7 +62,7 @@ HmfData Hu3DMotionHmf BSS; // hmfman.c
 u8 winPauseF BSS; // pause.c, window.c
 u32 __kmc_pt_mode BSS; // 2.0L/os/initialize_kmc.c, 2.0L/os/initialize_msp.c
 s16 omPadBtnRep[4] BSS; // audio.c
-u8 D_800CB9B0_main[0x1B0] ALIGNED(8) BSS; // unreferenced
+u8 omPadBtnRepPad[0x1B0] ALIGNED(8) BSS; // unreferenced
 HmfModelEntry *Hu3DSprModelData BSS; // hmfspr.c
 u16 saveBoardSystemSize[14] BSS; // pad.c, audio.c, hmfman.c, ...; contains HuPadBtnOld, HuPadStkX, Hu3DDLModelNum
 graphicsMessage gMesgRingBuffer[0x40] BSS; // graphics.c
@@ -79,7 +79,7 @@ u8 wipeMode BSS; // wipe.c
 HmfDrawObject *DrawObjData BSS; // hmfdraw.c, hmfman.c
 u8 mbDiceUnkF BSS; // overlays only
 GW_COMMON GwCommon ALIGNED(8) BSS; // gamework.c, saveload.c, window.c
-u8 D_800CC16C_main[0x204] BSS; // unreferenced
+u8 GwCommonPad[0x204] BSS; // unreferenced
 s32 omObjExecCnt BSS; // objmain.c
 s16 kakusiMasuItemHis[10] ALIGNED(8) BSS; // overlays only
 Gfx gTaskDataPointers[2] BSS; // graphics.c
@@ -88,17 +88,17 @@ void (*omCurObjFunc)(omObjData *) BSS; // objmain.c
 s16 gSwapChainMesgTotal BSS; // graphics.c
 OSMesgQueue scGraphicsTaskQueue BSS; // graphics.c, nnsched.c, profiler.c
 void (*Hu3DLayerHook[1])(Gfx **, HuCamMtxs *, s16) BSS; // hmfman.c
-u8 D_800CC3DC_main[0x4] BSS; // overlays only
+u8 mbMgHisIdxWork[0x4] BSS; // overlays only
 u8 mbMgHisIdx[4] BSS; // overlays only
-s16 D_800CC3E4_main BSS; // unreferenced
+s16 mbMgHisIdxPad BSS; // unreferenced
 u16 HuSprAnimNum BSS; // sprman.c
-u8 D_800CC3E8_main[0x8] BSS; // unreferenced
+u8 HuSprAnimNumPad[0x8] BSS; // unreferenced
 OSPifRam __osContPifRam BSS; // 2.0L/io/contreaddata.c, 2.0L/io/controller.c
 s16 omobjlast BSS; // objmain.c
-s16 D_800CC432_main BSS; // unreferenced
-u8 D_800CC434_main[0x4] BSS; // unreferenced
+s16 omobjlastPad BSS; // unreferenced
+u8 omobjlastPadB[0x4] BSS; // unreferenced
 s16 mgModeSelNo BSS; // overlays only
-s16 D_800CC43A_main BSS; // unreferenced
+s16 mgModeSelNoPad BSS; // unreferenced
 u32 __osRdb_IP6_CurWrite BSS; // 2.0L/os/initrdb.c, 2.0L/os/rdbsend.c
 Unk_D_800CC440 printWinData[4] BSS; // lightdebug.c, printfunc.c
 UnkData_CD0A0 mbMgHis BSS; // overlays only
@@ -107,15 +107,15 @@ OSThread swapChainThread BSS; // graphics.c
 u16 mgBattleCoinPot BSS; // overlays only
 TextWindow *winData BSS; // window.c, pause.c
 u16 strlinecnt BSS; // printfunc.c
-s16 D_800CC6A2_main BSS; // unreferenced
-u8 D_800CC6A4_main[0x80C] BSS; // unreferenced
+s16 strlinecntPad BSS; // unreferenced
+u8 strlinecntPadB[0x80C] BSS; // unreferenced
 OSPiHandle __Dom2SpeedParam BSS; // 2.0L/io/pimgr.c, 2.0L/os/initialize.c
 OSProf *__osProfileList BSS; // 2.0L/os/timerintr.c
 s16 MTXBufNum BSS; // hmfcoll.c, hmfdraw.c
 s32 scPreNMIF BSS; // nnsched.c
 Gfx *HuSprTileBuf BSS; // sprman.c, sprput.c
 void *mainIntrQueue ALIGNED(8) BSS; // gameman.c, main.c
-u8 D_800CCF3C_main[0x14] BSS; // unreferenced
+u8 mainIntrQueuePad[0x14] BSS; // unreferenced
 s16 ommaxobjs BSS; // objmain.c
 u8 HuGfxBufNum BSS; // main.c, objmain.c
 u16 savePlayerSize BSS; // saveEncode.c, saveload.c
@@ -130,7 +130,7 @@ s16 omnumobjs BSS; // objmain.c
 ISVDbg *gISVDbgPrnAdrs BSS; // 2.0L/os/initialize_isv.c
 f32 CFanLenM[4] ALIGNED(8) BSS; // objmain.c, objsysobj.c
 void *piMesgBuf BSS; // rom.c
-u8 D_800CCFAC_main[0xA4] BSS; // unreferenced
+u8 piMesgBufPad[0xA4] BSS; // unreferenced
 u16 omMusFadeTime BSS; // objmain.c
 GW_SYSTEM GwSystem ALIGNED(8) BSS; // gamemes.c, gamework.c, objmain.c, ...
 u8 gEncodedSaveBuffer[224] BSS; // saveEncode.c, saveload.c
@@ -145,20 +145,20 @@ f32 CZoomM[6] ALIGNED(8) BSS; // gameman.c, objsysobj.c
 Unk800CD2A0 ditherBak BSS; // hmfdraw.c
 u8 cancelCRF BSS; // window.c
 Vec CUpM[4] BSS; // objsysobj.c
-u8 D_800CD2D8_main[0x18] BSS; // unreferenced
+u8 CUpMPad[0x18] BSS; // unreferenced
 u32 __osThprofCount BSS; // 2.0L/debug/threadprofile.c
 u16 omHu3DGfxNum BSS; // gameman.c, objmain.c
 u16 Hu3DDLModelId BSS; // hmfman.c
 HmfPaletteData *Hu3DPalData BSS; // hmfanim.c
 u32 texSizIncr BSS; // hmfdraw.c
-GAMEMES gMesData[GMES_MAX] BSS; // gamemes.c; contains D_800CD360_main, D_800CD364_main
-u8 D_800CD6A0_main[0x4] BSS; // unreferenced
+GAMEMES gMesData[GMES_MAX] BSS; // gamemes.c; contains gMesDataPosX, gMesDataPosY
+u8 gMesDataPad[0x4] BSS; // unreferenced
 u16 saveStorySize BSS; // saveEncode.c, saveload.c
 u8 Hu3DCameraNo BSS; // hmfdraw.c, hmfman.c, hmfparticle.c
-u8 D_800CD6A7_main BSS; // unreferenced
-u8 D_800CD6A8_main[0x8] BSS; // unreferenced
+u8 Hu3DCameraNoPad BSS; // unreferenced
+u8 Hu3DCameraNoPadB[0x8] BSS; // unreferenced
 HmfDrawFace faceBuf[48] BSS; // hmfdraw.c
-u8 D_800CDA70_main[0x4] BSS; // unreferenced
+u8 faceBufPad[0x4] BSS; // unreferenced
 u8 wipeColorR BSS; // wipe.c
 s16 lightColBakB BSS; // hmfdraw.c
 u32 __osRdb_Read_Data_Ct BSS; // 2.0L/debug/readhost.c
@@ -183,7 +183,7 @@ HuSprGrp *HuSprGrpData[HUSPR_GRP_MAX] ALIGNED(8) BSS; // sprman.c
 s16 ambColBakG BSS; // hmfdraw.c
 u32 __osRdb_IP6_Size BSS; // 2.0L/os/initrdb.c, 2.0L/os/rdbsend.c
 s32 CFan BSS; // camsetup.c, objsysobj.c
-f32 D_800CE17C_main[5] BSS; // objsysobj.c
+f32 CFanParam[5] BSS; // objsysobj.c
 s16 omExecStep BSS; // objmain.c
 omObjData *omSysTimerObj BSS; // objsysobj.c
 s16 mbBoardMusId BSS; // overlays only
@@ -193,15 +193,15 @@ void *HuSprGfxBuf[3] BSS; // sprman.c
 s16 kakusiMasuCoin BSS; // overlays only
 u8 Hu3DFogF BSS; // hmfdraw.c, hmfman.c
 f32 CZoom BSS; // gameman.c, objsysobj.c
-s16 D_800CE1CC_main BSS; // unreferenced
+s16 CZoomPad BSS; // unreferenced
 s16 vtxCnt BSS; // hmfdraw.c
 s16 duelUnkF0 BSS; // overlays only
 UnkLightData *Hu3DLightData BSS; // hmfdraw.c, hmflight.c, lightdebug.c
-u8 D_800CE1D8_main[0x4] BSS; // unreferenced
+u8 Hu3DLightDataPad[0x4] BSS; // unreferenced
 Unk_D_800CE1DC saftyFrameData BSS; // objmain.c, printfunc.c
 s16 kakusiMasuCoinHis[10] BSS; // overlays only
 u64 *gThreadYieldStack BSS; // graphics.c, profiler.c
-s32 omovl BSS; // objmain.c, gamemes.c; contains D_800CE202_main
+s32 omovl BSS; // objmain.c, gamemes.c; contains omovlLo
 u8 __osMaxControllers BSS; // 2.0L/io/contreaddata.c, 2.0L/io/controller.c, 2.0L/io/contsetch.c, ...
 s16 mbSeqPlayF BSS; // overlays only
 u16 kakusiMasuStarCnt BSS; // overlays only
@@ -211,7 +211,7 @@ u16 omPauseWinInitF BSS; // objmain.c, pause.c
 s16 HuAudSeVol[64] BSS; // audio.c
 Process *pauseProc BSS; // pause.c
 s16 mgModeMgNo BSS; // overlays only
-s16 D_800CE29E_main BSS; // unreferenced
+s16 mgModeMgNoPad BSS; // unreferenced
 u8 mgModeRecordBak[0x14] BSS; // unreferenced
 s16 Hu3DMotionTag BSS; // hmfdraw.c
 OSTime __osCurrentTime BSS; // 2.0L/io/vimgr.c, 2.0L/os/gettime.c, 2.0L/os/timerintr.c
@@ -220,8 +220,8 @@ void *winCursorData BSS; // window.c
 u32 scRetraceRate BSS; // nnsched.c
 s8 HuPadStkXHis[4][8] ALIGNED(8) BSS; // pad.c
 u32 renderModeBak BSS; // hmfdraw.c; declared u64 in hmfdraw.c
-s32 D_800CE2F4_main BSS; // hmfdraw.c
-u8 D_800CE2F8_main[0x2008] BSS; // unreferenced
+s32 renderModeBakLo BSS; // hmfdraw.c
+u8 renderModeBakPad[0x2008] BSS; // unreferenced
 u64 *gThread3Stack BSS; // boot.c, graphics.c, profiler.c
 GW_STORY GwStory ALIGNED(8) BSS; // gamework.c, saveload.c
 s16 mbItemBtnF BSS; // overlays only
@@ -231,14 +231,14 @@ HuMallocHeader *gLastMallocBlock BSS; // mallocblock.c
 HmfModel *Hu3DData BSS; // aura.c, camera.c, effect.c, ...
 u16 kakusiMasuCoinCnt BSS; // overlays only
 s16 mgModeStar BSS; // overlays only; accessed as s16[4] in mgmode
-u8 D_800D0400_main[0x8] BSS; // unreferenced
-u8 D_800D0408_main[0x4] BSS; // unreferenced
+u8 mgModeStarPad[0x8] BSS; // unreferenced
+u8 mgModeStarPadB[0x4] BSS; // unreferenced
 Process *winProc BSS; // window.c
 u16 empstrline BSS; // printfunc.c
-s16 D_800D0412_main BSS; // unreferenced
-u8 D_800D0414_main[0x4] BSS; // unreferenced
+s16 empstrlinePad BSS; // unreferenced
+u8 empstrlinePadB[0x4] BSS; // unreferenced
 s16 mgModeMgList[8] BSS; // overlays only
-u8 D_800D0428_main[0x18] BSS; // unreferenced
+u8 mgModeMgListPad[0x18] BSS; // unreferenced
 HmfData_Unk84_Entry *texAnimEntryBak BSS; // hmfdraw.c
 HuCamMtxs *Hu3DCurCamMtx BSS; // camera.c, hmflight.c, hmfman.c
 Process *GameManDrawPrc BSS; // gameman.c
@@ -251,25 +251,25 @@ f32 CFanM[6][6] BSS; // camsetup.c, objsysobj.c
 u64 *gThreadOutStack BSS; // graphics.c, profiler.c
 omObjData *omCurObj BSS; // objmain.c
 OSMesgQueue __osPiAccessQueue BSS; // 2.0L/io/piacs.c, 2.0L/io/pimgr.c
-s16 D_800D0568_main[20] BSS; // pad.c; contains HuPadStkXSum
+s16 HuPadStkXSumWork[20] BSS; // pad.c; contains HuPadStkXSum
 s16 ContBtnRep[4] BSS; // input.c, lightdebug.c, window.c
 u8 wipeColorG BSS; // wipe.c
 u8 Hu3DFogColR BSS; // hmfdraw.c, hmfman.c
 u16 Hu3DDLModelList[4][128] ALIGNED(8) BSS; // hmfman.c
-u8 D_800D09A0_main[0x8] BSS; // unreferenced
-SaveCommonBuf saveCommonBuf BSS; // audio.c, gameman.c, saveload.c; contains D_800D09A9_main
+u8 Hu3DDLModelListPad[0x8] BSS; // unreferenced
+SaveCommonBuf saveCommonBuf BSS; // audio.c, gameman.c, saveload.c; contains saveCommonBufBoxNo
 OSPiHandle __Dom1SpeedParam BSS; // 2.0L/io/pimgr.c, 2.0L/os/initialize.c
 s32 *gUCodeAddresses BSS; // graphics.c, profiler.c
 s16 pauseSprAnim BSS; // pause.c
 u16 omHu3DReinitWait BSS; // objmain.c
 f32 wipeDuration BSS; // wipe.c
-u8 D_800D0A40_main[0x4] BSS; // unreferenced
+u8 wipeDurationPad[0x4] BSS; // unreferenced
 s16 faceCnt BSS; // hmfdraw.c
-s16 D_800D0A46_main BSS; // unreferenced
-u8 D_800D0A48_main[0x8] BSS; // unreferenced
+s16 faceCntPad BSS; // unreferenced
+u8 faceCntPadB[0x8] BSS; // unreferenced
 HuSprAnmDesc *HuSprPalAnimData[0x100] BSS; // sprman.c
 u8 eepBoxBuf[672] BSS; // eeprom.c, saveload.c
-u8 D_800D10F0_main BSS; // hmfdraw.c
+u8 Hu3DObjExtMode BSS; // hmfdraw.c
 s16 HuSprBGHookMdl BSS; // sprman.c
 HuCamera *Hu3DCurCamera BSS; // camera.c, hmfcoll.c, hmfdraw.c, ...
 s16 ContRepCnt[4] BSS; // input.c
@@ -291,13 +291,13 @@ Gfx *Hu3DSprGfxBuf[8] BSS; // hmfspr.c
 s16 mbWipeType[5] BSS; // pad.c; contains HuPadStkYSum
 s16 Hu3DObjMtxStackIdx BSS; // hmfdraw.c, hmfspr.c
 Vec CRot BSS; // gameman.c, objsysobj.c
-str800D5298 HuAudFadeSysConfig BSS; // objsysobj.c; contains D_800D13EE_main
+str800D5298 HuAudFadeSysConfig BSS; // objsysobj.c; contains HuAudFadeSeChMax
 HmfLookAtData Hu3DLookAtBuf[8] BSS; // hmfdraw.c
 s16 kakusiMasuItemForceF BSS; // overlays only
 Process *GameManExecPrc BSS; // gameman.c
 s8 omHu3DBufNum BSS; // gameman.c, objmain.c
 HmfAnim *Hu3DAnimData BSS; // hmfanim.c, hmfspr.c
-u8 D_800D1718_main[0x8] BSS; // unreferenced
+u8 Hu3DAnimDataPad[0x8] BSS; // unreferenced
 u8 rmonRdbReadBuf[2048] BSS; // 2.0L/rmon/rmonsio.c
 u8 mgModeGroupBak[4] BSS; // overlays only
 u32 __osThprofLastTimer BSS; // 2.0L/debug/threadprofile.c
@@ -308,7 +308,7 @@ Gfx *Hu3DSprGfxPos ALIGNED(8) BSS; // hmfspr.c
 u8 comKeyIdx BSS; // window.c
 Gfx *Hu3DGfxBuf[8] BSS; // hmfdraw.c
 u8 __osContLastCmd BSS; // 2.0L/io/conteepread.c, 2.0L/io/conteepwrite.c, 2.0L/io/contramread.c, ...
-WipeTexture wipeTex BSS; // wipe.c; contains D_800D1F60_main
+WipeTexture wipeTex BSS; // wipe.c; contains wipeTexImg
 u32 leoComuBuffAdd BSS; // 2.0L/os/initialize_isv.c
 Mtx *MTXBuf BSS; // hmfcoll.c, hmfdraw.c
 OSMesg __osEepromTimerMsg BSS; // 2.0L/io/conteeplongwrite.c, 2.0L/io/controller.c
@@ -323,8 +323,8 @@ OSTimer __osBaseTimer BSS; // 2.0L/os/timerintr.c
 s32 __osRdb_IP6_CurSend BSS; // 2.0L/os/initrdb.c
 HmfData_Unk84_Entry2 *Hu3DTexData BSS; // hmfanim.c, hmfman.c
 u32 combineModeBak BSS; // hmfdraw.c; declared u64 in hmfdraw.c
-s32 D_800D1FD4_main BSS; // hmfdraw.c
-s16 D_800D1FD8_main BSS; // hmfdraw.c
+s32 combineModeBakLo BSS; // hmfdraw.c
+s16 totalPolyCnt BSS; // hmfdraw.c
 s32 HuSprGfxBufSize BSS; // sprman.c
 s16 mgModeCoinBase BSS; // unreferenced
 s16 lightColBakG BSS; // hmfdraw.c
@@ -343,7 +343,7 @@ omOvlHisData omovlhis[12] ALIGNED(8) BSS; // objmain.c
 HmfDrawEntry *Hu3DDrawList[8] BSS; // hmfdraw.c, hmfman.c
 void *nextFrameBuffer BSS; // graphics.c
 u32 scRetraceCnt BSS; // graphics.c, main.c, nnsched.c
-u8 D_800D2098_main[0x4] BSS; // unreferenced
+u8 scRetraceCntPad[0x4] BSS; // unreferenced
 s32 winLastAdvance BSS; // window.c
 u8 Hu3DFlatShadeF[8] BSS; // audio.c, hmfdraw.c, input.c, ...; contains HuPadStkY
 u32 sPrcSleepLoc BSS; // process.c
@@ -351,7 +351,7 @@ s32 Hu3DFrameCnt BSS; // hmfdraw.c, hmfman.c, mallocblock.c
 u8 mgModeMenuNo BSS; // mgmode
 s8 Hu3DPauseF BSS; // gamemes.c, hmfman.c, hmfspr.c, ...
 u8 CharAnimId[16][3] ALIGNED(8) BSS; // hmfspr.c
-u8 D_800D20E8_main[0x4] BSS; // unreferenced
+u8 CharAnimIdPad[0x4] BSS; // unreferenced
 u8 SLFormatFlags BSS; // saveload.c
 u16 Hu3DDrawEnableF BSS; // hmfdraw.c, hmfman.c
 omOvlHisData mbovlhis[5] BSS; // overlays only
@@ -360,31 +360,31 @@ u8 shadingBak BSS; // hmfdraw.c
 f32 Hu3DMotionGlobalSpeed BSS; // hmfdraw.c
 u8 mgModeCursor[0xA] BSS; // unreferenced
 u8 wipeColorB BSS; // wipe.c
-u8 D_800D212F_main BSS; // unreferenced
+u8 wipeColorBPad BSS; // unreferenced
 s16 kakusiMasuCoinForceF BSS; // unreferenced
 u8 omSysPauseReadyF BSS; // objmain.c, pause.c
-u8 D_800D2133_main BSS; // unreferenced
-u8 D_800D2134_main[0xC] BSS; // unreferenced
+u8 omSysPauseReadyFPad BSS; // unreferenced
+u8 omSysPauseReadyFPadB[0xC] BSS; // unreferenced
 void *HuMemDebugBlkOld[2000] BSS; // mallocblock.c
 s16 kakusiMasuStarForceF BSS; // overlays only
 u16 omHu3DVtxNum BSS; // gameman.c, objmain.c
 void *winFrameData BSS; // window.c
-u8 D_800D4088_main[0x4] BSS; // unreferenced
+u8 winFrameDataPad[0x4] BSS; // unreferenced
 HmfAnimSet *Hu3DAnimSetData BSS; // hmfanim.c, hmfspr.c
 s16 CharAnimWork[6][3][7] BSS; // hmfspr.c
-s16 D_800D418C_main BSS; // unreferenced
+s16 CharAnimWorkPad BSS; // unreferenced
 s16 Hu3DCamMtxNo BSS; // camera.c, hmfcoll.c, hmfman.c, ...
 OSProf *__osProfileListEnd BSS; // 2.0L/os/timerintr.c
 s16 mgModeType BSS; // overlays only
 s16 mbOvlCallF BSS; // overlays only
 f32 CFanOfsM[4] BSS; // objmain.c, objsysobj.c
-OSMesgQueue __osProfTimerQ BSS; // 2.0L/os/timerintr.c; contains D_800D41B0_main
+OSMesgQueue __osProfTimerQ BSS; // 2.0L/os/timerintr.c; contains Hu3DSubMtxStackPrev
 s32 mbWalkNum BSS; // overlays only
 u8 Hu3DFogColG BSS; // hmfdraw.c, hmfman.c
 OSTimer __osEepromTimer BSS; // 2.0L/io/conteeplongwrite.c
-u8 D_800D41E8_main[0x8] BSS; // unreferenced
+u8 eepromTimerPad[0x8] BSS; // unreferenced
 HuMtx4F Hu3DSubMtxStack[64] BSS; // hmfdraw.c
-u8 D_800D51F0_main[0x4] BSS; // unreferenced
+u8 Hu3DSubMtxStackPad[0x4] BSS; // unreferenced
 f32 wipeTime BSS; // wipe.c
 s16 duelCancelEnableF BSS; // overlays only
 f32 Hu3DMatAmbScale BSS; // hmfdraw.c, objmain.c
@@ -394,7 +394,7 @@ u16 HuSprGrpNum BSS; // sprman.c
 f32 CFanLen BSS; // objmain.c, objsysobj.c
 s16 Hu3DSubMtxStackIdx BSS; // hmfdraw.c
 char omDBGStrBuf[128] BSS; // lightdebug.c, objmain.c
-str800D5298 HuAudSysConfig BSS; // audio.c, gameman.c; contains D_800D52C0_main
+str800D5298 HuAudSysConfig BSS; // audio.c, gameman.c; contains HuAudSysFxNo
 u8 wipeScreenStillF BSS; // wipe.c
 u16 Hu3DGfxMax BSS; // hmfdraw.c
 Vtx *Hu3DVtxPos BSS; // hmfdraw.c
@@ -404,7 +404,7 @@ f32 Hu3DMatColScale BSS; // hmfdraw.c, objmain.c
 s8 HuPadStkYHis[4][8] ALIGNED(8) BSS; // pad.c
 s16 espFreeIdx BSS; // esprite.c
 __OSEventState __osEventStateTab[OS_NUM_EVENTS] ALIGNED(8) BSS; // 2.0L/os/seteventmesg.c
-Vec CenterM[6] BSS; // gameman.c, objsysobj.c; contains D_800D54FC_main, D_800D5500_main
+Vec CenterM[6] BSS; // gameman.c, objsysobj.c; contains CenterMY, CenterMZ
 s8 winTabSize BSS; // window.c
 s16 HuPadReadNum BSS; // pad.c
 u16 matGfxSplitF[5] BSS; // hmfdraw.c, input.c; contains ContBtn
@@ -420,12 +420,12 @@ HuAllocFunc gMallocFunc BSS; // mallocblock.c
 u8 CharAnimSrc[16][3] BSS; // hmfspr.c
 OSPifRam __osPfsPifRam BSS; // 2.0L/io/contramread.c, 2.0L/io/contramwrite.c, 2.0L/io/pfsgetstatus.c, ...
 __OSThreadprofile_s thprof[62] BSS; // 2.0L/debug/threadprofile.c, 2.0L/os/createthread.c
-u8 D_800D59C0_main[0x10] BSS; // hmfdraw.c
-u8 D_800D59D0_main[0x10] BSS; // unreferenced
+u8 Hu3DObjMtxStackPrev[0x10] BSS; // hmfdraw.c
+u8 thprofPad[0x10] BSS; // unreferenced
 s16 kakusiMasuStarHis[10] BSS; // overlays only
 Vtx *HuSprVtxPos BSS; // sprman.c, sprput.c
 HmfVertexAnim *Hu3DShapeData BSS; // hmfshape.c
-HuMtx4F Hu3DObjMtxStack[64] ALIGNED(8) BSS; // hmfdraw.c, hmfspr.c; contains D_800D5A40_main
+HuMtx4F Hu3DObjMtxStack[64] ALIGNED(8) BSS; // hmfdraw.c, hmfspr.c; contains Hu3DObjMtxStackNext
 EffectGroup *EffectGroupData[EFFECT_GROUP_MAX] BSS; // effect.c
 u32 texSizBytes BSS; // hmfdraw.c
 u16 gISVChk BSS; // 2.0L/os/initialize_isv.c
@@ -439,22 +439,22 @@ s8 omPadStkX[4] BSS; // audio.c
 u8 CharAnimWorkNum[6] BSS; // hmfspr.c
 u16 omHu3DMtxNum BSS; // gameman.c, objmain.c
 u8 omSysPauseDisableF BSS; // gamemes.c, objmain.c
-u8 D_800D6A59_main BSS; // unreferenced
-s16 D_800D6A5A_main BSS; // unreferenced
+u8 omSysPauseDisableFPad BSS; // unreferenced
+s16 omSysPauseDisableFPadB BSS; // unreferenced
 u8 __rmonRcpAtBreak BSS; // 2.0L/rmon/rmonbrk.c, 2.0L/rmon/rmontask.c
 OSMesgQueue __rmonMQ BSS; // 2.0L/rmon/rmonmain.c, 2.0L/rmon/rmonmisc.c
 Vec CUp BSS; // objsysobj.c
 Gfx *extraGfxPos ALIGNED(8) BSS; // hmfdraw.c
 u32 __osRdb_IP6_Ct BSS; // 2.0L/os/initrdb.c, 2.0L/os/rdbsend.c
 u8 omAllPauseF BSS; // objmain.c, window.c
-s16 D_800D6A92_main BSS; // hmfdraw.c
+s16 totalMatCnt BSS; // hmfdraw.c
 Vtx *Hu3DVtxBuf[8] ALIGNED(8) BSS; // hmfdraw.c
 s32 omSysTimerMax BSS; // objsysobj.c
 Vec Center BSS; // gameman.c, objsysobj.c
 s16 Hu3DDrawListNum[8] BSS; // hmfdraw.c
-s16 D_800D6AD8_main BSS; // unreferenced
+s16 Hu3DDrawListNumPad BSS; // unreferenced
 s16 pauseSprGrp BSS; // pause.c
-Vec CRotM[6] ALIGNED(8) BSS; // gameman.c, objsysobj.c; contains D_800D6AE4_main
+Vec CRotM[6] ALIGNED(8) BSS; // gameman.c, objsysobj.c; contains CRotMY
 OSMesgQueue piMesgQueue BSS; // rom.c
 s16 omnextidx BSS; // objmain.c
 OSMesgQueue __osSiAccessQueue ALIGNED(8) BSS; // 2.0L/io/siacs.c
@@ -462,4 +462,4 @@ s16 mbovlhisidx BSS; // overlays only
 s16 winPrio BSS; // window.c
 s16 Hu3DFogStart BSS; // hmfdraw.c, hmfman.c
 HuMallocHeader *gFirstMallocBlock BSS; // mallocblock.c
-u8 D_800D6B6C_main[0x4] BSS; // unreferenced
+u8 gFirstMallocBlockPad[0x4] BSS; // unreferenced

@@ -20,7 +20,7 @@ extern ResultDuelObj D_80109324_mgresultduel;
 extern ResultDuelObj D_80109338_mgresultduel;
 extern s32 D_80109300_mgresultduel[3];
 extern s32 D_80109314_mgresultduel;
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 extern s8 D_80109318_mgresultduel;
 extern u16 D_80108F30_mgresultduel;
 extern u16 D_80108F32_mgresultduel;
@@ -79,7 +79,7 @@ void func_80106930_mgresultduel(void) {
     D_80109340_mgresultduel.obj = obj;
     chr = GwPlayer[D_80109310_mgresultduel[0]].chr;
 
-    obj->model[1] = Hu3DModelRead(D_800A178C_main[chr][0] | D_800A178C_main[chr][3], 0x2B9);
+    obj->model[1] = Hu3DModelRead(omCharModelNoTbl[chr][0] | omCharModelNoTbl[chr][3], 0x2B9);
     Hu3DMotionAttrSet(obj->model[1], 2, 2);
     Hu3DModelPosSet(obj->model[1], -460.0f, 0.0f, 2300.0f);
 
@@ -171,7 +171,7 @@ void func_80106F38_mgresultduel(void) {
     D_8010932C_mgresultduel.obj = obj;
     chr = GwPlayer[D_80109310_mgresultduel[1]].chr;
 
-    obj->model[1] = Hu3DModelRead(D_800A178C_main[chr][0] | D_800A178C_main[chr][3], 0x2B9);
+    obj->model[1] = Hu3DModelRead(omCharModelNoTbl[chr][0] | omCharModelNoTbl[chr][3], 0x2B9);
     Hu3DMotionAttrSet(obj->model[1], 2, 2);
     Hu3DModelPosSet(obj->model[1], 460.0f, 0.0f, 2300.0f);
 

@@ -26,8 +26,8 @@ typedef struct UnkSelmenu2Sound {
     s8 vol;
 } UnkSelmenu2Sound; // sizeof 0x4
 
-extern s32 D_800A178C_main[][6];
-extern s32 D_800A1790_main[][6];
+extern s32 omCharModelNoTbl[][6];
+extern s32 omCharMotTbl[][6];
 extern char D_80109A98_selmenu2[];
 extern char D_80109AA4_selmenu2[];
 extern char D_80109A8C_selmenu2[];
@@ -366,7 +366,7 @@ void func_801059A0_selmenu2(void) {
     omMakeGroup(0, 32);
     obj = omAddObj(10, 1, 80, -1, NULL);
     for (i = 0; i < 8; i++) {
-        D_80109C48_selmenu2[i] = Hu3DModelRead(D_800A178C_main[i][0] | D_800A1790_main[i][0], 0x69D);
+        D_80109C48_selmenu2[i] = Hu3DModelRead(omCharModelNoTbl[i][0] | omCharMotTbl[i][0], 0x69D);
         Hu3DData[D_80109C48_selmenu2[i]].motAttr |= 2;
         omObjMotionRead(obj, 0, CharMotionDataNumGet(i, 0));
         D_80109C58_selmenu2[i] = obj->motion[0];

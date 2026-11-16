@@ -8,7 +8,7 @@
 #include "game/mallocblock.h"
 #include "gcc/memory.h"
 
-#define TIDAL_TOSS_WORK(obj) ((TidalTossWork *)((func_800E1BA8_minigame_ObjData *)(obj)->data)->unk158)
+#define TIDAL_TOSS_WORK(obj) ((TidalTossWork *)((MgPlayerWork *)(obj)->data)->unk158)
 
 typedef struct {
     f32 unk00;
@@ -81,8 +81,8 @@ typedef struct {
     f32 unk20;
 } TidalTossSpriteWork;
 
-extern s32 D_800A178C_main[][6];
-extern s32 D_800A1790_main[][6];
+extern s32 omCharModelNoTbl[][6];
+extern s32 omCharMotTbl[][6];
 extern u8 Hu3DBufNo;
 
 u8 D_8010AA70_tidal_toss = 0;
@@ -146,7 +146,7 @@ void func_801065AC_tidal_toss(omObjData *);
 void func_80106D24_tidal_toss(Gfx **, s32, s32);
 s32 func_8010A7F8_tidal_toss(void);
 u16 func_8010A11C_tidal_toss(omObjData *);
-void func_8010A7E4_tidal_toss(omObjData *, func_800E1BA8_minigame_ObjData **, TidalTossWork **);
+void func_8010A7E4_tidal_toss(omObjData *, MgPlayerWork **, TidalTossWork **);
 void func_80105C80_tidal_toss(HuMtx4F, HuMtx4F);
 s16 func_8010A90C_tidal_toss(s32);
 s16 func_8010A954_tidal_toss(s16, s16);
@@ -162,7 +162,7 @@ void func_801059A0_tidal_toss(void) {
     u8 camIndex;
 
     MapCollInit(3);
-    Hu3DQuadPoolInit(&D_800EBEB0_minigame, 0x40);
+    Hu3DQuadPoolInit(&mgQuadPool, 0x40);
     omInitObjMan(0x10, 0);
     omGameSysInit();
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutView);
@@ -172,12 +172,12 @@ void func_801059A0_tidal_toss(void) {
     ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 45.0f, 80.0f, 8000.0f);
-    func_800E1804_minigame();
+    MgFieldStatClear();
     func_80105B04_tidal_toss(obj);
     func_8010600C_tidal_toss();
     memset(&D_8010AEB0_tidal_toss, 0, 0x28);
     D_8010AEB0_tidal_toss.type = MINIGAME_BATTLE;
-    func_800E5EA0_minigame(&D_8010AEB0_tidal_toss);
+    MgFlowInit(&D_8010AEB0_tidal_toss);
     func_801085A4_tidal_toss();
 }
 
@@ -281,11 +281,11 @@ void func_80105F40_tidal_toss(f32 x, f32 y, f32 z, f32 *dst) {
 }
 
 void func_8010600C_tidal_toss(void) {
-    D_800EBE28_minigame = 0;
-    func_800E1490_minigame(0);
-    D_800EC1C0_minigame[D_800EBE28_minigame++] = omAddObj(5, 1, 0, -1, func_80106104_tidal_toss);
-    D_800EC1C0_minigame[D_800EBE28_minigame++] = omAddObj(5, 1, 0, -1, func_80106480_tidal_toss);
-    D_800EC1C0_minigame[D_800EBE28_minigame++] = omAddObj(5, 1, 0, -1, func_80106514_tidal_toss);
+    mgMapObjNum = 0;
+    MgMapBaseSet(0);
+    mgMapObjTbl[mgMapObjNum++] = omAddObj(5, 1, 0, -1, func_80106104_tidal_toss);
+    mgMapObjTbl[mgMapObjNum++] = omAddObj(5, 1, 0, -1, func_80106480_tidal_toss);
+    mgMapObjTbl[mgMapObjNum++] = omAddObj(5, 1, 0, -1, func_80106514_tidal_toss);
     D_8010AF40_tidal_toss = 0;
 }
 
@@ -306,10 +306,10 @@ void func_80106104_tidal_toss(omObjData *object) {
     memset(work, 0, 0xB4);
     work->unk03 = 1;
     work->unk04 = 0;
-    func_800E131C_minigame(object, 20.0f);
-    func_800E1304_minigame(object, 0.5f);
-    func_800E1310_minigame(object, 10.0f);
-    func_800E1404_minigame(object, 0.0f, 730.0f);
+    MgMapSlideSet(object, 20.0f);
+    MgMapFrictionSet(object, 0.5f);
+    MgMapAccelSet(object, 10.0f);
+    MgMapCircleSet(object, 0.0f, 730.0f);
 
     D_8010AED8_tidal_toss = func_8010A90C_tidal_toss(0x2B0000);
     setupSpriteId = func_8010A954_tidal_toss(D_8010AED8_tidal_toss, 1);
@@ -369,10 +369,10 @@ void func_80106480_tidal_toss(omObjData *object) {
     memset(work, 0, sizeof(TidalTossSetupWork));
     work->unk03 = 1;
     work->unk04 = 0;
-    func_800E131C_minigame(object, 20.0f);
-    func_800E1304_minigame(object, 5.0f);
-    func_800E1310_minigame(object, 10.0f);
-    func_800E1404_minigame(object, 20.0f, 345.0f);
+    MgMapSlideSet(object, 20.0f);
+    MgMapFrictionSet(object, 5.0f);
+    MgMapAccelSet(object, 10.0f);
+    MgMapCircleSet(object, 20.0f, 345.0f);
     object->func = NULL;
 }
 
@@ -384,10 +384,10 @@ void func_80106514_tidal_toss(omObjData *object) {
     memset(work, 0, sizeof(TidalTossSetupWork));
     work->unk03 = 1;
     work->unk04 = 0;
-    func_800E131C_minigame(object, 20.0f);
-    func_800E1304_minigame(object, 0.05f);
-    func_800E1310_minigame(object, 20.0f);
-    func_800E1404_minigame(object, -800.0f, 1380.0f);
+    MgMapSlideSet(object, 20.0f);
+    MgMapFrictionSet(object, 0.05f);
+    MgMapAccelSet(object, 20.0f);
+    MgMapCircleSet(object, -800.0f, 1380.0f);
     object->func = NULL;
 }
 
@@ -430,7 +430,7 @@ void func_801065AC_tidal_toss(omObjData *object) {
             active = 0;
             for (i = 0; i < 4; i++) {
                 if (i != D_8010AA70_tidal_toss) {
-                    active += TIDAL_TOSS_WORK(D_800EC598_minigame[i])->unk2F;
+                    active += TIDAL_TOSS_WORK(mgPlayerObjTbl[i])->unk2F;
                 }
             }
             if (active == 0) {
@@ -445,11 +445,11 @@ void func_801065AC_tidal_toss(omObjData *object) {
             break;
         case 3:
             if (D_8010AA94_tidal_toss == D_8010AA70_tidal_toss) {
-                TIDAL_TOSS_WORK(D_800EC598_minigame[D_8010AA94_tidal_toss])->unk2F = 1;
+                TIDAL_TOSS_WORK(mgPlayerObjTbl[D_8010AA94_tidal_toss])->unk2F = 1;
             } else {
                 for (i = 0; i < 4; i++) {
                     if (i != D_8010AA70_tidal_toss) {
-                        TIDAL_TOSS_WORK(D_800EC598_minigame[i])->unk2F = 1;
+                        TIDAL_TOSS_WORK(mgPlayerObjTbl[i])->unk2F = 1;
                     }
                 }
             }
@@ -463,12 +463,12 @@ void func_801065AC_tidal_toss(omObjData *object) {
             if (GMesStatGet() == 0) {
                 if (--D_8010AA8C_tidal_toss == 0) {
                     if (D_8010AA94_tidal_toss == D_8010AA70_tidal_toss) {
-                        GMesCreate(0x16, TIDAL_TOSS_WORK(D_800EC598_minigame[D_8010AA94_tidal_toss])->unk2C);
+                        GMesCreate(0x16, TIDAL_TOSS_WORK(mgPlayerObjTbl[D_8010AA94_tidal_toss])->unk2C);
                         HuAudSeqPlay(0x65);
                     } else {
                         for (i = 0, count = 0; i < 4; i++) {
                             if (i != D_8010AA70_tidal_toss) {
-                                chars[count] = TIDAL_TOSS_WORK(D_800EC598_minigame[i])->unk2C;
+                                chars[count] = TIDAL_TOSS_WORK(mgPlayerObjTbl[i])->unk2C;
                                 count++;
                             }
                         }
@@ -925,15 +925,15 @@ void func_80108460_tidal_toss(f32 arg0) {
 void func_801085A4_tidal_toss(void) {
     s32 i;
 
-    func_800E18D8_minigame();
-    D_800EC280_minigame = 0;
+    MgPlayerParamReset();
+    mgPlayerObjNum = 0;
     for (i = 0; i < 4; i++) {
-        D_800EC598_minigame[D_800EC280_minigame++] = omAddObj(2, 0xF, 0x32, -1, func_80108638_tidal_toss);
+        mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(2, 0xF, 0x32, -1, func_80108638_tidal_toss);
     }
 }
 
 void func_80108638_tidal_toss(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     TidalTossWork *work;
     u8 playerIndex;
     u8 playerSlot;
@@ -947,10 +947,10 @@ void func_80108638_tidal_toss(omObjData *object) {
     playerSlot = D_8010AAB8_tidal_toss;
     playerIndex = D_8010AAB0_tidal_toss[playerSlot][1];
     character = (s8)GwPlayer[playerIndex].chr;
-    model = D_800A178C_main[character][0];
-    motion = D_800A1790_main[character][0];
+    model = omCharModelNoTbl[character][0];
+    motion = omCharMotTbl[character][0];
     modelTag = 0x2D9;
-    func_800E1BA8_minigame(object, model, motion, playerIndex, modelTag, modelTag);
+    MgPlayerCreate(object, model, motion, playerIndex, modelTag, modelTag);
 
     data = object->data;
     data->unk50 &= 0xFFFE;
@@ -989,9 +989,9 @@ void func_80108638_tidal_toss(omObjData *object) {
         object->trans.y = D_8010AABC_tidal_toss[playerSlot + 1][1];
         object->trans.z = D_8010AABC_tidal_toss[playerSlot + 1][2];
         data->unk3C = D_8010AAEC_tidal_toss[playerSlot + 1];
-        func_800E149C_minigame(object, 0, 2);
-        func_800E149C_minigame(object, 1, 1);
-        func_800E149C_minigame(object, 2, 1);
+        MgPlayerMapAttrSet(object, 0, 2);
+        MgPlayerMapAttrSet(object, 1, 1);
+        MgPlayerMapAttrSet(object, 2, 1);
         data->unk50 |= 0x8000;
         object->func = func_8010961C_tidal_toss;
         D_8010AAB9_tidal_toss++;
@@ -1000,9 +1000,9 @@ void func_80108638_tidal_toss(omObjData *object) {
         object->trans.y = D_8010AABC_tidal_toss[0][1];
         object->trans.z = D_8010AABC_tidal_toss[0][2];
         data->unk3C = D_8010AAEC_tidal_toss[0];
-        func_800E149C_minigame(object, 0, 1);
-        func_800E149C_minigame(object, 1, 2);
-        func_800E149C_minigame(object, 2, 1);
+        MgPlayerMapAttrSet(object, 0, 1);
+        MgPlayerMapAttrSet(object, 1, 2);
+        MgPlayerMapAttrSet(object, 2, 1);
         object->model[9] = Hu3DModelRead(0x2B0005, modelTag);
         Hu3DModelPosSet(object->model[9], object->trans.x, object->trans.y,
                         object->trans.z + 20.0);
@@ -1019,83 +1019,83 @@ void func_80108638_tidal_toss(omObjData *object) {
         }
     }
 
-    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(character, 0), 1, 0);
-    func_800E5A00_minigame(object, 6, CharMotionDataNumGet(character, 4), 1, 0x13);
-    func_800E5A00_minigame(object, 0x15, CharMotionDataNumGet(character, 0x1F), 0, 0x13);
+    MgPlayerMotLoad(object, 0, CharMotionDataNumGet(character, 0), 1, 0);
+    MgPlayerMotLoad(object, 6, CharMotionDataNumGet(character, 4), 1, 0x13);
+    MgPlayerMotLoad(object, 0x15, CharMotionDataNumGet(character, 0x1F), 0, 0x13);
 
     if (work->unk2D != 0) {
-        func_800E5A00_minigame(object, 1, CharMotionDataNumGet(character, 1), 1, 0);
-        func_800E5A00_minigame(object, 2, CharMotionDataNumGet(character, 1), 1, 0);
-        func_800E5A00_minigame(object, 0x11, CharMotionDataNumGet(character, 0xE), 0, 0);
-        func_800E5A00_minigame(object, 0x20, CharMotionDataNumGet(character, 0x22), 0, 0);
-        func_800E5A00_minigame(object, 9, CharMotionDataNumGet(character, 7), 1, 0x27);
-        func_800E5A00_minigame(object, 0xA, CharMotionDataNumGet(character, 0x11), 1, 0x27);
-        func_800E5978_minigame(object, 0x21, CharMotionDataNumGet(character, 0x23), 2, 0);
-        func_800E5A00_minigame(object, 0x22, CharMotionDataNumGet(character, 0x24), 2, 0);
+        MgPlayerMotLoad(object, 1, CharMotionDataNumGet(character, 1), 1, 0);
+        MgPlayerMotLoad(object, 2, CharMotionDataNumGet(character, 1), 1, 0);
+        MgPlayerMotLoad(object, 0x11, CharMotionDataNumGet(character, 0xE), 0, 0);
+        MgPlayerMotLoad(object, 0x20, CharMotionDataNumGet(character, 0x22), 0, 0);
+        MgPlayerMotLoad(object, 9, CharMotionDataNumGet(character, 7), 1, 0x27);
+        MgPlayerMotLoad(object, 0xA, CharMotionDataNumGet(character, 0x11), 1, 0x27);
+        MgPlayerMotRead(object, 0x21, CharMotionDataNumGet(character, 0x23), 2, 0);
+        MgPlayerMotLoad(object, 0x22, CharMotionDataNumGet(character, 0x24), 2, 0);
         work->unk24 = model | 0x2F;
-        func_800E5A00_minigame(object, 0xD, CharMotionDataNumGet(character, 0x2F), 1, 0x78);
-        func_800E5A00_minigame(object, 0xE, CharMotionDataNumGet(character, 0x36), 1, 0x78);
+        MgPlayerMotLoad(object, 0xD, CharMotionDataNumGet(character, 0x2F), 1, 0x78);
+        MgPlayerMotLoad(object, 0xE, CharMotionDataNumGet(character, 0x36), 1, 0x78);
     } else {
-        func_800E5A00_minigame(object, 8, CharMotionDataNumGet(character, 6), 1, 0x1D);
-        func_800E5A00_minigame(object, 0x12, CharMotionDataNumGet(character, 0xF), 2, 0);
+        MgPlayerMotLoad(object, 8, CharMotionDataNumGet(character, 6), 1, 0x1D);
+        MgPlayerMotLoad(object, 0x12, CharMotionDataNumGet(character, 0xF), 2, 0);
         switch (model >> 16) {
             case 2:
                 work->unk24 = model | 0x30;
-                func_800E5A00_minigame(object, 0xD, CharMotionDataNumGet(character, 0x30), 1, 0x78);
-                func_800E5A00_minigame(object, 0xE, CharMotionDataNumGet(character, 0x38), 1, 0x64);
+                MgPlayerMotLoad(object, 0xD, CharMotionDataNumGet(character, 0x30), 1, 0x78);
+                MgPlayerMotLoad(object, 0xE, CharMotionDataNumGet(character, 0x38), 1, 0x64);
                 break;
             case 3:
                 work->unk24 = model | 0x30;
-                func_800E5A00_minigame(object, 0xD, CharMotionDataNumGet(character, 0x30), 1, 0x78);
-                func_800E5A00_minigame(object, 0xE, CharMotionDataNumGet(character, 0x38), 1, 0x64);
+                MgPlayerMotLoad(object, 0xD, CharMotionDataNumGet(character, 0x30), 1, 0x78);
+                MgPlayerMotLoad(object, 0xE, CharMotionDataNumGet(character, 0x38), 1, 0x64);
                 break;
             case 7:
                 work->unk24 = model | 0x30;
-                func_800E5A00_minigame(object, 0xD, CharMotionDataNumGet(character, 0x30), 1, 0x78);
-                func_800E5A00_minigame(object, 0xE, CharMotionDataNumGet(character, 0x36), 1, 0x78);
+                MgPlayerMotLoad(object, 0xD, CharMotionDataNumGet(character, 0x30), 1, 0x78);
+                MgPlayerMotLoad(object, 0xE, CharMotionDataNumGet(character, 0x36), 1, 0x78);
                 break;
             case 5:
                 work->unk24 = model | 0x2F;
-                func_800E5A00_minigame(object, 0xD, CharMotionDataNumGet(character, 0x2F), 1, 0x78);
-                func_800E5A00_minigame(object, 0xE, CharMotionDataNumGet(character, 0x38), 1, 0x64);
+                MgPlayerMotLoad(object, 0xD, CharMotionDataNumGet(character, 0x2F), 1, 0x78);
+                MgPlayerMotLoad(object, 0xE, CharMotionDataNumGet(character, 0x38), 1, 0x64);
                 break;
             case 6:
                 work->unk24 = model | 0x2F;
-                func_800E5A00_minigame(object, 0xD, CharMotionDataNumGet(character, 0x2F), 1, 0x78);
-                func_800E5A00_minigame(object, 0xE, CharMotionDataNumGet(character, 0x38), 1, 0x64);
+                MgPlayerMotLoad(object, 0xD, CharMotionDataNumGet(character, 0x2F), 1, 0x78);
+                MgPlayerMotLoad(object, 0xE, CharMotionDataNumGet(character, 0x38), 1, 0x64);
                 break;
             case 9:
                 work->unk24 = model | 0x2F;
-                func_800E5A00_minigame(object, 0xD, CharMotionDataNumGet(character, 0x2F), 1, 0x78);
-                func_800E5A00_minigame(object, 0xE, CharMotionDataNumGet(character, 0x38), 1, 0x64);
+                MgPlayerMotLoad(object, 0xD, CharMotionDataNumGet(character, 0x2F), 1, 0x78);
+                MgPlayerMotLoad(object, 0xE, CharMotionDataNumGet(character, 0x38), 1, 0x64);
                 break;
             case 4:
             case 8:
             default:
                 work->unk24 = model | 0x2F;
-                func_800E5A00_minigame(object, 0xD, CharMotionDataNumGet(character, 0x2F), 1, 0x78);
-                func_800E5A00_minigame(object, 0xE, CharMotionDataNumGet(character, 0x36), 1, 0x78);
+                MgPlayerMotLoad(object, 0xD, CharMotionDataNumGet(character, 0x2F), 1, 0x78);
+                MgPlayerMotLoad(object, 0xE, CharMotionDataNumGet(character, 0x36), 1, 0x78);
                 break;
         }
     }
 
-    func_800E5690_minigame(object, 0);
+    MgPlayerMotSet(object, 0);
 
     D_8010AAB8_tidal_toss++;
 }
 
 void func_80108F08_tidal_toss(omObjData *object, s32 arg1, s32 arg2, u16 player, u16 tag) {
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     s32 i;
     u32 character;
     f32 zero;
-    func_800E1BA8_minigame_UnkE8_ObjData *entry;
+    MgMotAttr *entry;
 
     for (i = 0; i < object->mdlcnt; i++) {
         object->model[i] = 0;
     }
-    object->data = HuMemAllocTag(sizeof(func_800E1BA8_minigame_ObjData), TAG_OVERLAY);
-    memset(object->data, 0, sizeof(func_800E1BA8_minigame_ObjData));
+    object->data = HuMemAllocTag(sizeof(MgPlayerWork), TAG_OVERLAY);
+    memset(object->data, 0, sizeof(MgPlayerWork));
     data = object->data;
     data->unkE8 = HuMemAllocTag(object->mtncnt * 3 * sizeof(s32), TAG_OVERLAY);
     memset(data->unkE8, 0, object->mtncnt * 3 * sizeof(s32));
@@ -1123,10 +1123,10 @@ void func_80108F08_tidal_toss(omObjData *object, s32 arg1, s32 arg2, u16 player,
     data->unk59 = player;
 
     data->unk3C = atan2df(-object->trans.x, -object->trans.z);
-    func_800E1328_minigame(object, 60.0f);
-    func_800E1334_minigame(object, 150.0f);
-    func_800E1340_minigame(object, 20.0f);
-    func_800E12EC_minigame(object, 1000.0f);
+    MgPlayerRadiusSet(object, 60.0f);
+    MgPlayerHeightSet(object, 150.0f);
+    MgPlayerPunchRadiusSet(object, 20.0f);
+    MgPlayerVelYSet(object, 1000.0f);
 
     character = (u32)arg1 >> 16;
     switch (character) {
@@ -1144,7 +1144,7 @@ void func_80108F08_tidal_toss(omObjData *object, s32 arg1, s32 arg2, u16 player,
 }
 
 void func_80109180_tidal_toss(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     TidalTossWork *work;
     u8 player;
     u16 status;
@@ -1183,12 +1183,12 @@ void func_80109180_tidal_toss(omObjData *object) {
             break;
         case 5:
             if (work->unk2F == 1) {
-                func_800E5690_minigame(object, 0xD);
+                MgPlayerMotSet(object, 0xD);
                 HuAudCharVoicePlay(work->unk24);
                 GwPlayer[data->unk59].bonusCoin += 10;
                 work->unk2F++;
             } else if (work->unk2F == 0) {
-                func_800E5690_minigame(object, 0xE);
+                MgPlayerMotSet(object, 0xE);
                 work->unk2F--;
             }
             break;
@@ -1203,7 +1203,7 @@ void func_80109180_tidal_toss(omObjData *object) {
             return;
     }
 
-    status = func_800E4A90_minigame(object);
+    status = MgPlayerMotStatGet(object);
     work->unk0C = object->trans.x;
     work->unk10 = object->trans.y;
     work->unk14 = object->trans.z;
@@ -1212,7 +1212,7 @@ void func_80109180_tidal_toss(omObjData *object) {
         HuPadStkX[player] = 0;
     }
 
-    func_800DDD94_minigame(object);
+    MgPlayerObjMain(object);
     Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
 
     if (status & 0x200) {
@@ -1256,14 +1256,14 @@ void func_80109584_tidal_toss(omObjData *arg0, f32 arg1, f32 arg2, f32 arg3) {
 
     for (i = 9; i < 12; i++) {
         if (Hu3DData[arg0->model[i]].attr & 4) {
-            func_800E4C88_minigame(arg0, i, arg1, arg2, arg3, 0.0f, 0.0f);
+            MgPlayerEffSet(arg0, i, arg1, arg2, arg3, 0.0f, 0.0f);
             return;
         }
     }
 }
 
 void func_8010961C_tidal_toss(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     TidalTossWork *work;
     u8 player;
     u32 status;
@@ -1275,12 +1275,12 @@ void func_8010961C_tidal_toss(omObjData *object) {
     f32 diff;
     f64 radius;
     omObjData *other;
-    func_800E1BA8_minigame_ObjData *otherData;
+    MgPlayerWork *otherData;
 
     data = object->data;
     work = data->unk158;
     player = data->unk57;
-    status = func_800E4A90_minigame(object);
+    status = MgPlayerMotStatGet(object);
     work->unk0C = object->trans.x;
     work->unk10 = object->trans.y;
     work->unk14 = object->trans.z;
@@ -1325,19 +1325,19 @@ void func_8010961C_tidal_toss(omObjData *object) {
                         rot -= 360.0f;
                     }
                     if (fabs(rot - angle) < 90.0) {
-                        func_800E5690_minigame(object, 10);
+                        MgPlayerMotSet(object, 10);
                         data->unk3C = angle;
                         data->unk40 = entry->unk0C;
                         status |= 0x800;
                     } else {
-                        func_800E5690_minigame(object, 9);
+                        MgPlayerMotSet(object, 9);
                         data->unk3C = angle + 180.0;
                         data->unk40 = -entry->unk0C;
                         status |= 0x400;
                     }
                     data->unk38 = -0.735f;
                     data->unkBE = 94;
-                    func_800E19FC_minigame(data, 8);
+                    MgPlayerSePlay(data, 8);
                     switch (entry->unk10) {
                         case 1:
                             omVibrate(data->unk59, 2, 3, 10);
@@ -1378,7 +1378,7 @@ void func_8010961C_tidal_toss(omObjData *object) {
             }
             if (work->unk2F == 1) {
                 if (work->unk2A == 0) {
-                    func_800E5798_minigame(object, 13);
+                    MgPlayerMotForceSet(object, 13);
                     HuAudCharVoicePlay(work->unk24);
                 }
                 GwPlayer[data->unk59].bonusCoin += 10;
@@ -1400,7 +1400,7 @@ void func_8010961C_tidal_toss(omObjData *object) {
 
     HuPadStkX[player] = (f32)HuPadStkX[player] * 0.325;
     HuPadStkY[player] = (f32)HuPadStkY[player] * 0.325;
-    func_800DDD94_minigame(object);
+    MgPlayerObjMain(object);
     if (dist <= 190.0) {
         object->trans.x = object->trans.x / dist * 190.0;
         object->trans.z = object->trans.z / dist * 190.0;
@@ -1412,8 +1412,8 @@ void func_8010961C_tidal_toss(omObjData *object) {
             } else {
                 data->unk40 = 24.0f;
             }
-            func_800E149C_minigame(object, 0, 1);
-            func_800E149C_minigame(object, 2, 2);
+            MgPlayerMapAttrSet(object, 0, 1);
+            MgPlayerMapAttrSet(object, 2, 2);
             data->unk38 = -1.0289999f;
             work->unk2A = 1;
             work->unk2F = 0;
@@ -1447,7 +1447,7 @@ void func_8010961C_tidal_toss(omObjData *object) {
     }
 
     for (i = 0; i < 4; i++) {
-        other = D_800EC598_minigame[i];
+        other = mgPlayerObjTbl[i];
         if (object == other) {
             continue;
         }
@@ -1483,7 +1483,7 @@ void func_8010961C_tidal_toss(omObjData *object) {
 
 u16 func_8010A11C_tidal_toss(omObjData *object) {
     TidalTossWork *work;
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     s16 player;
     s32 status;
     s32 random;
@@ -1491,7 +1491,7 @@ u16 func_8010A11C_tidal_toss(omObjData *object) {
 
     func_8010A7E4_tidal_toss(object, &data, &work);
     player = data->unk57;
-    status = func_800E4A90_minigame(object);
+    status = MgPlayerMotStatGet(object);
 
     switch (work->unk32) {
         case 1:
@@ -1556,7 +1556,7 @@ u16 func_8010A11C_tidal_toss(omObjData *object) {
 
 u16 func_8010A490_tidal_toss(omObjData *arg0, f32 arg1) {
     TidalTossWork *work;
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     TidalTossStruct *entry;
     f32 distance;
     f64 distanceD;
@@ -1573,7 +1573,7 @@ u16 func_8010A490_tidal_toss(omObjData *arg0, f32 arg1) {
         f32 unused[2]; // Unused stack space retained from the original function.
     }
     player = data->unk57;
-    status = func_800E4A90_minigame(arg0);
+    status = MgPlayerMotStatGet(arg0);
     entry = D_8010AF48_tidal_toss;
 
     for (i = 0; i < 8; i++) {
@@ -1628,7 +1628,7 @@ u16 func_8010A490_tidal_toss(omObjData *arg0, f32 arg1) {
     return result;
 }
 
-void func_8010A7E4_tidal_toss(omObjData *arg0, func_800E1BA8_minigame_ObjData **arg1, TidalTossWork **arg2) {
+void func_8010A7E4_tidal_toss(omObjData *arg0, MgPlayerWork **arg1, TidalTossWork **arg2) {
     *arg1 = arg0->data;
     *arg2 = (*arg1)->unk158;
 }

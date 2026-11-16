@@ -192,7 +192,7 @@ typedef struct UnkSlotPriority {
     u16 unk_02[4]; // sprite priorities, aliased as D_8010DF66_slot_synch
 } UnkSlotPriority;
 
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 extern u8 omAllPauseF;
 extern s16 Hu3DModelTag;
 extern u8 Hu3DBufNo;
@@ -446,9 +446,9 @@ void func_801059A0_slot_synch(void) {
     ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 30.0f, 80.0f, 4000.0f);
-    D_800EC280_minigame = 0;
-    D_800EBE28_minigame = 0;
-    D_800EC1B8_minigame = 0;
+    mgPlayerObjNum = 0;
+    mgMapObjNum = 0;
+    mgItemObjNum = 0;
     D_8010DF50_slot_synch = 900;
     D_8010DF4C_slot_synch = 0;
     D_8010DF48_slot_synch = 0;
@@ -459,7 +459,7 @@ void func_801059A0_slot_synch(void) {
     D_8010DF40_slot_synch = omAddObj(0x20, 0, 0, -1, func_80105B98_slot_synch);
     memset(&D_8010DFF8_slot_synch, 0, 0x28);
     D_8010DFF8_slot_synch.type = MINIGAME_BATTLE;
-    func_800E5EA0_minigame(&D_8010DFF8_slot_synch);
+    MgFlowInit(&D_8010DFF8_slot_synch);
 }
 
 void func_80105B98_slot_synch(omObjData *object) {
@@ -660,8 +660,8 @@ void func_8010614C_slot_synch(void) {
             playerIds[1][1] = temp;
         }
     }
-    func_800E19F0_minigame(1);
-    func_800E18D8_minigame();
+    MgShadowAltSet(1);
+    MgPlayerParamReset();
     for (i = 0; i < 2; i++, team++) {
         obj = omAddObj(i + 16, 0, 0, -1, func_80106878_slot_synch);
         func_8010C3FC_slot_synch(obj, (u32)team);
@@ -678,9 +678,9 @@ void func_8010614C_slot_synch(void) {
             player->unk_00 = i * 2 + j;
             player->unk_02 = i;
             player->unk_1C = playerIds[i][j];
-            obj = D_800EC598_minigame[D_800EC280_minigame] =
+            obj = mgPlayerObjTbl[mgPlayerObjNum] =
                 omAddObj(D_8010D8E4_slot_synch[player->unk_00], 9, 60, -1, func_80106560_slot_synch);
-            D_800EC280_minigame++;
+            mgPlayerObjNum++;
             obj->trans.x = D_8010D7F0_slot_synch[player->unk_00].x;
             obj->trans.z = D_8010D7F0_slot_synch[player->unk_00].z;
             if (j == 0) {
@@ -698,7 +698,7 @@ void func_8010614C_slot_synch(void) {
 
 void func_80106560_slot_synch(omObjData *object) {
     UnkSlotPlayer *player;
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     s16 playerIndex;
     s16 chr;
     s32 index;
@@ -716,29 +716,29 @@ void func_80106560_slot_synch(omObjData *object) {
     player->unk_28 = 0;
     player->unk_2A = 0;
     player->unk_2C = -1;
-    model = D_800A178C_main[chr][0];
-    anim = D_800A178C_main[chr][2];
-    func_800E1BA8_minigame(object, model, anim, playerIndex, 0x2A9, 0x299);
+    model = omCharModelNoTbl[chr][0];
+    anim = omCharModelNoTbl[chr][2];
+    MgPlayerCreate(object, model, anim, playerIndex, 0x2A9, 0x299);
     data = object->data;
     data->unk50 &= ~1;
     data->unkEC = NULL;
-    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(chr, 0), 1, 0);
-    func_800E5A00_minigame(object, 1, CharMotionDataNumGet(chr, 1), 1, 0);
-    func_800E5A00_minigame(object, 6, CharMotionDataNumGet(chr, 4), 1, 19);
-    func_800E5A00_minigame(object, 21, CharMotionDataNumGet(chr, 0x1F), 0, 0);
-    func_800E5A00_minigame(object, 38, CharMotionDataNumGet(chr, 0x33), 1, 60);
-    func_800E5A00_minigame(object, 39, CharMotionDataNumGet(chr, 0x3A), 1, 60);
+    MgPlayerMotLoad(object, 0, CharMotionDataNumGet(chr, 0), 1, 0);
+    MgPlayerMotLoad(object, 1, CharMotionDataNumGet(chr, 1), 1, 0);
+    MgPlayerMotLoad(object, 6, CharMotionDataNumGet(chr, 4), 1, 19);
+    MgPlayerMotLoad(object, 21, CharMotionDataNumGet(chr, 0x1F), 0, 0);
+    MgPlayerMotLoad(object, 38, CharMotionDataNumGet(chr, 0x33), 1, 60);
+    MgPlayerMotLoad(object, 39, CharMotionDataNumGet(chr, 0x3A), 1, 60);
     if (chr != 5) {
         index = rand8() & 1;
-        func_800E5A00_minigame(object, 13, CharMotionDataNumGet(chr, D_8010D90C_slot_synch[index]), 1, 120);
+        MgPlayerMotLoad(object, 13, CharMotionDataNumGet(chr, D_8010D90C_slot_synch[index]), 1, 120);
         player->unk_18 = D_8010D8EC_slot_synch[chr] | D_8010D90C_slot_synch[index];
     } else {
-        func_800E5A00_minigame(object, 13, CharMotionDataNumGet(chr, D_8010D90C_slot_synch[1]), 1, 120);
+        MgPlayerMotLoad(object, 13, CharMotionDataNumGet(chr, D_8010D90C_slot_synch[1]), 1, 120);
         player->unk_18 = D_8010D8EC_slot_synch[chr] | D_8010D90C_slot_synch[1];
     }
-    func_800E5A00_minigame(object, 14, CharMotionDataNumGet(chr, D_8010D90C_slot_synch[2]), 1, 120);
-    func_800E5690_minigame(object, 0);
-    func_800E149C_minigame(object, 0, 2);
+    MgPlayerMotLoad(object, 14, CharMotionDataNumGet(chr, D_8010D90C_slot_synch[2]), 1, 120);
+    MgPlayerMotSet(object, 0);
+    MgPlayerMapAttrSet(object, 0, 2);
     player->unk_04 = -1;
     player->unk_0A = 0;
     player->unk_08 = 0;
@@ -749,8 +749,8 @@ void func_80106560_slot_synch(omObjData *object) {
 void func_80106878_slot_synch(omObjData *object) {
     UnkSlotSynch *team = (UnkSlotSynch *)func_8010C428_slot_synch(object);
     UnkSlotMachine *machine;
-    func_800E1BA8_minigame_ObjData *data0;
-    func_800E1BA8_minigame_ObjData *data1;
+    MgPlayerWork *data0;
+    MgPlayerWork *data1;
     s16 result0;
     s16 result1;
 
@@ -828,11 +828,11 @@ void func_80106878_slot_synch(omObjData *object) {
                     func_8010800C_slot_synch(team->unk_1A, team->unk_10);
                 }
                 if (team->unk_1A != 3 && team->unk_1A != 4) {
-                    func_800E5690_minigame(team->unk_00, 38);
-                    func_800E5690_minigame(team->unk_04, 38);
+                    MgPlayerMotSet(team->unk_00, 38);
+                    MgPlayerMotSet(team->unk_04, 38);
                 } else {
-                    func_800E5690_minigame(team->unk_00, 39);
-                    func_800E5690_minigame(team->unk_04, 39);
+                    MgPlayerMotSet(team->unk_00, 39);
+                    MgPlayerMotSet(team->unk_04, 39);
                 }
                 team->unk_14 = 0;
                 team->unk_12 = 4;
@@ -840,8 +840,8 @@ void func_80106878_slot_synch(omObjData *object) {
             break;
         case 4:
             if (team->unk_14 >= 30.0f) {
-                func_800E5690_minigame(team->unk_00, 0);
-                func_800E5690_minigame(team->unk_04, 0);
+                MgPlayerMotSet(team->unk_00, 0);
+                MgPlayerMotSet(team->unk_04, 0);
                 team->unk_14 = 0;
                 team->unk_12 = 0;
             }
@@ -913,12 +913,12 @@ void func_80106E8C_slot_synch(omObjData *object) {
     if (player->unk_04 != -1) {
         switch (player->unk_04) {
             case 0:
-                func_800E5690_minigame(object, 13);
+                MgPlayerMotSet(object, 13);
                 CharAnimCreate(object->model[0], 2, player->unk_20, D_8010D870_slot_synch[player->unk_20]);
                 HuAudCharVoicePlayPlayer(player->unk_18, -1, player->unk_1C);
                 break;
             case 1:
-                func_800E5690_minigame(object, 14);
+                MgPlayerMotSet(object, 14);
                 CharAnimCreate(object->model[0], 2, player->unk_20, D_8010D890_slot_synch[player->unk_20]);
                 break;
         }
@@ -943,7 +943,7 @@ void func_80106E8C_slot_synch(omObjData *object) {
     stickY = HuPadStkY[player->unk_1E];
     HuPadStkX[player->unk_1E] = 0;
     HuPadStkY[player->unk_1E] = 0;
-    func_800DDD94_minigame(object);
+    MgPlayerObjMain(object);
     HuPadStkX[player->unk_1E] = stickX;
     HuPadStkY[player->unk_1E] = stickY;
     if (team->unk_1C == 0) {
@@ -1066,12 +1066,12 @@ void func_801075D4_slot_synch(void) {
     D_8010DF66_slot_synch[3] = priority;
     priority--;
     func_80107BAC_slot_synch();
-    D_800EC1C0_minigame[D_800EBE28_minigame++] = omAddObj(0x1D, 16, 0, -1, func_80107794_slot_synch);
-    func_800E1490_minigame(0);
+    mgMapObjTbl[mgMapObjNum++] = omAddObj(0x1D, 16, 0, -1, func_80107794_slot_synch);
+    MgMapBaseSet(0);
 }
 
 void func_80107794_slot_synch(omObjData *object) {
-    D_800EC1C0_minigame_ObjData *work;
+    MgMapWork *work;
     s16 group;
 
     work = HuMemAllocTag(0xB4, TAG_OVERLAY);
@@ -1079,10 +1079,10 @@ void func_80107794_slot_synch(omObjData *object) {
     memset(work, 0, 0xB4);
     work->unk03 = 1;
     work->unk04 = 0;
-    func_800E131C_minigame(object, 20.0f);
-    func_800E1304_minigame(object, 1.0f);
-    func_800E1310_minigame(object, 10.0f);
-    func_800E139C_minigame(object, 0.0f, -2000.0f, -2000.0f, 2000.0f, 2000.0f);
+    MgMapSlideSet(object, 20.0f);
+    MgMapFrictionSet(object, 1.0f);
+    MgMapAccelSet(object, 10.0f);
+    MgMapBoxSet(object, 0.0f, -2000.0f, -2000.0f, 2000.0f, 2000.0f);
     group = HuSprGrpCreate(4, 0);
     D_8010DF8C_slot_synch[3] = func_8010A2C4_slot_synch(0x350007);
     HuSprGrpMemberSet(group, 0, D_8010DF8C_slot_synch[3], 0);
@@ -1390,14 +1390,14 @@ void func_80108428_slot_synch(omObjData *object) {
 
 s16 func_80108848_slot_synch(s16 arg0) {
     UnkSlotMachine *machine = &D_8010DF7C_slot_synch[arg0];
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     UnkSlotPlayer *player;
     omObjData *obj;
     f32 height;
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        obj = D_800EC598_minigame[i];
+        obj = mgPlayerObjTbl[i];
         data = obj->data;
         player = (UnkSlotPlayer *)func_8010C428_slot_synch(obj);
         // The original checks the x distance twice.

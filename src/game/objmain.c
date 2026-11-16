@@ -66,14 +66,14 @@ static u8 omSysPauseCloseReq = 0;
 static s16 omModeOvlPrev = -1;
 static u16 omDBGPrevOvl = 999;
 s32 omprevovl = 999;
-s16 D_800A175C_main = 0; // unreferenced
+s16 omprevovlPad = 0; // unreferenced
 u8 omDBGPlayMode = 0;
 u16 omdispinfo = 0;
 static u8 omOvlKillWait = 0;
 s16 omovlevtno = -1;
 u16 omovlstat = 0;
 s16 omovlhisidx = -1;
-s16 D_800A176A_main = 0; // unreferenced
+s16 omovlhisidxPad = 0; // unreferenced
 static u8 omOvlChangeF = 1;
 u8 omOvlSeKeepF = 0;
 static omObjData *omobjall = NULL;
@@ -123,7 +123,7 @@ extern f32 CFanLenM[];
 extern omObjGroup omgroup[];
 extern u16 omHu3DGfxNum;
 extern s32 omovl;
-extern u16 D_800CE202_main;
+extern u16 omovlLo;
 extern u16 omHu3DReinitWait;
 extern omObjData *omDBGSysKeyObj;
 extern u16 omHu3DVtxNum;
@@ -673,7 +673,7 @@ void omOvlGotoEx(s32 ovlID, s16 event, u16 stat) {
 
     if (omovl != selmenu && omovl != selmenu2) {
         omprevovl = omovl;
-        omDBGPrevOvl = D_800CE202_main;
+        omDBGPrevOvl = omovlLo;
     }
 
     omOvlChangeF = 1;
@@ -765,7 +765,7 @@ extern void (*omCurObjFunc)(omObjData *);
 
 extern u16 omHu3DReinitWait;
 
-void func_801059A0(void);
+void omOvlEntry(void);
 
 void omMain(void) {
     omObjData *obj;
@@ -923,7 +923,7 @@ void omMain(void) {
             omAudVolResetF = 0;
             omHu3DReinitSkipF = 0;
             omMgActiveF = 0;
-            func_801059A0();
+            omOvlEntry();
             for (i = 0; i < 4; i++) {
                 if (CheckControllerRead(i) != 0) {
                     HuPadBtnDown[i] = 0;

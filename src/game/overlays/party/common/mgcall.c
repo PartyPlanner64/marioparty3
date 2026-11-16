@@ -102,7 +102,7 @@ typedef struct Unk800CC3DC {
     s8 unk_04[8]; // unknown size
 } Unk800CC3DC;
 
-extern Unk800CC3DC D_800CC3DC_main;
+extern Unk800CC3DC mbMgHisIdxWork;
 extern UnkData_CD0A0 mbMgHis;
 extern omObjData *mbMgCallListObj;
 extern s16 mbMgCallBgGrp;
@@ -262,13 +262,13 @@ static void MBMgCallListExec(omObjData *arg0) {
             if (arg0->work[3] != 0) {
                 arg0->work[3]--;
             } else {
-                mbMgHis.recentMinigames[mbMgCallType][D_800CC3DC_main.unk_04[mbMgCallType]] = mbMgCallMgList[arg0->work[2]];
-                D_800CC3DC_main.unk_04[mbMgCallType]++;
+                mbMgHis.recentMinigames[mbMgCallType][mbMgHisIdxWork.unk_04[mbMgCallType]] = mbMgCallMgList[arg0->work[2]];
+                mbMgHisIdxWork.unk_04[mbMgCallType]++;
 
                 if (_CheckFlag(0x20) != 0) {
-                    D_800CC3DC_main.unk_04[mbMgCallType] = (D_800CC3DC_main.unk_04[mbMgCallType] % (s32)mbMgCallHisLenAltTbl[mbMgCallType]);
+                    mbMgHisIdxWork.unk_04[mbMgCallType] = (mbMgHisIdxWork.unk_04[mbMgCallType] % (s32)mbMgCallHisLenAltTbl[mbMgCallType]);
                 } else {
-                    D_800CC3DC_main.unk_04[mbMgCallType] = (D_800CC3DC_main.unk_04[mbMgCallType] % (s32)mbMgCallHisLenTbl[mbMgCallType]);
+                    mbMgHisIdxWork.unk_04[mbMgCallType] = (mbMgHisIdxWork.unk_04[mbMgCallType] % (s32)mbMgCallHisLenTbl[mbMgCallType]);
                 }
                 GWMgNoSet(mbMgCallMgList[arg0->work[2]]);
                 if (GwSystem.current_board_index != 6) {

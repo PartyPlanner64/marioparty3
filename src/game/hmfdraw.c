@@ -29,7 +29,7 @@
 
 static HmfModelData_Unk64_Unk60_Struct *drawObjP;
 static s32 tlutModeBak;
-static u8 D_800B19F8_main[8]; // unreferenced
+static u8 tlutModeBakPad[8]; // unreferenced
 static u16 motionKeyTimeCnt;
 static u16 motionKeyValCnt;
 extern s16 faceCnt;
@@ -58,8 +58,8 @@ extern Gfx *gMainGfxPos;
 extern Gfx *Hu3DGfxStart;
 extern u16 Hu3DDrawEnableF;
 extern s16 vtxCnt;
-extern s16 D_800D1FD8_main;
-extern s16 D_800D6A92_main;
+extern s16 totalPolyCnt;
+extern s16 totalMatCnt;
 extern u8 Hu3DLayerNo;
 extern HmfDrawEntry *Hu3DDrawList[8];
 extern s16 Hu3DDrawListNum[8];
@@ -75,7 +75,7 @@ extern u16 Hu3DGfxMax;
 extern HmfDrawObject *DrawObjData;
 extern UnkLightData *Hu3DLightData;
 extern u8 Hu3DObjExtF;
-extern u8 D_800D10F0_main;
+extern u8 Hu3DObjExtMode;
 extern f32 Hu3DMatColScale;
 extern f32 Hu3DMatAmbScale;
 extern u8 Hu3DFogF;
@@ -94,9 +94,9 @@ extern s16 ambColBakB;
 extern s16 ambColBakG;
 extern s16 ambColBakR;
 extern u64 renderModeBak;
-extern s32 D_800CE2F4_main;
+extern s32 renderModeBakLo;
 extern u64 combineModeBak;
-extern s32 D_800D1FD4_main;
+extern s32 combineModeBakLo;
 extern HmfData_Unk84_Entry *texAnimEntryBak;
 extern HmfData_Unk84_Entry *texAnimGfxBak;
 extern Light *Hu3DLightP;
@@ -105,9 +105,9 @@ extern s16 lightColBakG;
 extern s16 lightColBakB;
 
 extern HuMtx4F Hu3DObjMtxStack[];
-extern HuMtx4F D_800D59C0_main[];
-extern HuMtx4F D_800D41B0_main[];
-extern HuMtx4F D_800D5A40_main;
+extern HuMtx4F Hu3DObjMtxStackPrev[];
+extern HuMtx4F Hu3DSubMtxStackPrev[];
+extern HuMtx4F Hu3DObjMtxStackNext;
 extern HuMtx4F Hu3DSubMtxStack[];
 extern s16 Hu3DObjMtxStackIdx;
 extern s16 Hu3DSubMtxStackIdx;
@@ -296,7 +296,7 @@ void Hu3DDrawInit(HuAllocFunc alloc, HuFreeFunc free, u16 vertexCount, u16 matri
     Hu3DTexInit();
     Hu3DShapeInit();
     Hu3DObjExtF = 1;
-    D_800D10F0_main = 2;
+    Hu3DObjExtMode = 2;
     Hu3DMatColScale = 1.0f;
     Hu3DMatAmbScale = 1.0f;
     Hu3DFogF = 0;
@@ -322,8 +322,8 @@ void Hu3DPreProc(void) {
         Hu3DLightClose();
         vtxCnt = 0;
         MTXBufNum = 0;
-        D_800D1FD8_main = 0;
-        D_800D6A92_main = 0;
+        totalPolyCnt = 0;
+        totalMatCnt = 0;
         Hu3DLayerNo = 0;
         Hu3DCamMtxBufSync();
         Hu3DFrameCnt++;
@@ -645,7 +645,7 @@ void Hu3DDraw(HmfData *arg0, HuMtx4F arg1, HuMtx4F arg2) {
     }
     mtxCopy(Hu3DObjMtxStack[0], arg1);
     Hu3DObjMtxStackIdx = 1;
-    guMtxIdentF(D_800D5A40_main);
+    guMtxIdentF(Hu3DObjMtxStackNext);
     Hu3DSubMtxStackIdx = 0;
     mtxCopy(Hu3DSubMtxStack[0], arg2);
     if (arg0->unk01 & 4) {
@@ -747,13 +747,13 @@ void objCallSkeleton(HmfData *arg0, s16 arg1) {
             func_8008A070_main(temp);
             mtxScaleCat(temp, node->scale.x, node->scale.y, node->scale.z);
             Hu3DSubMtxStackIdx++;
-            mtxCat(temp, D_800D41B0_main[Hu3DSubMtxStackIdx], D_800D41B0_main[Hu3DSubMtxStackIdx + 1]);
+            mtxCat(temp, Hu3DSubMtxStackPrev[Hu3DSubMtxStackIdx], Hu3DSubMtxStackPrev[Hu3DSubMtxStackIdx + 1]);
             scaled = 1;
             transformed = 1;
         }
         if (transformed) {
             Hu3DObjMtxStackIdx++;
-            mtxCat(mtx, D_800D59C0_main[Hu3DObjMtxStackIdx], D_800D59C0_main[Hu3DObjMtxStackIdx + 1]);
+            mtxCat(mtx, Hu3DObjMtxStackPrev[Hu3DObjMtxStackIdx], Hu3DObjMtxStackPrev[Hu3DObjMtxStackIdx + 1]);
         }
         mtxCat(Hu3DObjMtxStack[Hu3DObjMtxStackIdx], Hu3DObjMtxStack[0], mtx);
     }
@@ -806,7 +806,7 @@ void objCall(HmfData *arg0, s16 arg1) {
         if (node->baseScale.x != 1.0f || node->baseScale.y != 1.0f || node->baseScale.z != 1.0f) {
             func_80088700_main(temp, node->baseScale.x, node->baseScale.y, node->baseScale.z);
             Hu3DSubMtxStackIdx++;
-            mtxCat(temp, D_800D41B0_main[Hu3DSubMtxStackIdx], D_800D41B0_main[Hu3DSubMtxStackIdx + 1]);
+            mtxCat(temp, Hu3DSubMtxStackPrev[Hu3DSubMtxStackIdx], Hu3DSubMtxStackPrev[Hu3DSubMtxStackIdx + 1]);
             scaled = 1;
         }
     } else {
@@ -831,13 +831,13 @@ void objCall(HmfData *arg0, s16 arg1) {
             }
             func_80088700_main(temp, node->scale.x, node->scale.y, node->scale.z);
             matrixIndex = ++Hu3DSubMtxStackIdx;
-            mtxCat(temp, D_800D41B0_main[matrixIndex], D_800D41B0_main[matrixIndex + 1]);
+            mtxCat(temp, Hu3DSubMtxStackPrev[matrixIndex], Hu3DSubMtxStackPrev[matrixIndex + 1]);
             scaled = 1;
             transformed = 1;
         }
         if (transformed) {
             Hu3DObjMtxStackIdx++;
-            mtxCat(mtx, D_800D59C0_main[Hu3DObjMtxStackIdx], D_800D59C0_main[Hu3DObjMtxStackIdx + 1]);
+            mtxCat(mtx, Hu3DObjMtxStackPrev[Hu3DObjMtxStackIdx], Hu3DObjMtxStackPrev[Hu3DObjMtxStackIdx + 1]);
         }
         if (Hu3DCameraNum != 1 && arg0->unk0B == 1) {
             mtxCopy(node->unk58, Hu3DObjMtxStack[Hu3DObjMtxStackIdx]);
@@ -900,7 +900,7 @@ void objCallNoAnim(HmfData *arg0, s16 arg1) {
     if (node->baseScale.x != 1.0f || node->baseScale.y != 1.0f || node->baseScale.z != 1.0f) {
         func_80088700_main(temp, node->baseScale.x, node->baseScale.y, node->baseScale.z);
         Hu3DSubMtxStackIdx++;
-        mtxCat(temp, D_800D41B0_main[Hu3DSubMtxStackIdx], D_800D41B0_main[Hu3DSubMtxStackIdx + 1]);
+        mtxCat(temp, Hu3DSubMtxStackPrev[Hu3DSubMtxStackIdx], Hu3DSubMtxStackPrev[Hu3DSubMtxStackIdx + 1]);
         scaled = 1;
     }
     func_800898F0_main(mtx, &MTXBuf[MTXBufNum]);
@@ -963,7 +963,7 @@ void objCallLink(HmfData *arg0, s16 arg1) {
         if (flags && (node->baseScale.x != 1.0f || node->baseScale.y != 1.0f || node->baseScale.z != 1.0f)) {
             func_80088700_main(temp, node->baseScale.x, node->baseScale.y, node->baseScale.z);
             Hu3DSubMtxStackIdx++;
-            mtxCat(temp, D_800D41B0_main[Hu3DSubMtxStackIdx], D_800D41B0_main[Hu3DSubMtxStackIdx + 1]);
+            mtxCat(temp, Hu3DSubMtxStackPrev[Hu3DSubMtxStackIdx], Hu3DSubMtxStackPrev[Hu3DSubMtxStackIdx + 1]);
         }
     } else {
         if (node->pos.x != 0.0f || node->pos.y != 0.0f || node->pos.z != 0.0f) {
@@ -988,13 +988,13 @@ void objCallLink(HmfData *arg0, s16 arg1) {
             if (flags) {
                 func_80088700_main(temp, node->scale.x, node->scale.y, node->scale.z);
                 Hu3DSubMtxStackIdx++;
-                mtxCat(temp, D_800D41B0_main[Hu3DSubMtxStackIdx], D_800D41B0_main[Hu3DSubMtxStackIdx + 1]);
+                mtxCat(temp, Hu3DSubMtxStackPrev[Hu3DSubMtxStackIdx], Hu3DSubMtxStackPrev[Hu3DSubMtxStackIdx + 1]);
             }
             transformed = 1;
         }
         if (transformed) {
             Hu3DObjMtxStackIdx++;
-            mtxCat(mtx, D_800D59C0_main[Hu3DObjMtxStackIdx], D_800D59C0_main[Hu3DObjMtxStackIdx + 1]);
+            mtxCat(mtx, Hu3DObjMtxStackPrev[Hu3DObjMtxStackIdx], Hu3DObjMtxStackPrev[Hu3DObjMtxStackIdx + 1]);
         }
         if (Hu3DCameraNum != 1 && arg0->unk0B == 1) {
             mtxCopy(node->unk58, Hu3DObjMtxStack[Hu3DObjMtxStackIdx]);
@@ -2331,7 +2331,7 @@ s32 objMtxCalc(HmfData *hmf, s16 nodeIndex, s16 targetIndex) {
     }
     if (changed) {
         matrixIndex = ++Hu3DObjMtxStackIdx;
-        mtxCat(mtx, D_800D59C0_main[matrixIndex], D_800D59C0_main[matrixIndex + 1]);
+        mtxCat(mtx, Hu3DObjMtxStackPrev[matrixIndex], Hu3DObjMtxStackPrev[matrixIndex + 1]);
     }
     if (targetIndex == nodeIndex) {
         return 0;
@@ -2443,7 +2443,7 @@ void objMtxCalcSkeleton(HmfData *hmf, s16 nodeIndex) {
     }
     if (changed) {
         matrixIndex = ++Hu3DObjMtxStackIdx;
-        mtxCat(mtx, D_800D59C0_main[matrixIndex], D_800D59C0_main[matrixIndex + 1]);
+        mtxCat(mtx, Hu3DObjMtxStackPrev[matrixIndex], Hu3DObjMtxStackPrev[matrixIndex + 1]);
     }
     mtxCopy(node->unk4C, Hu3DObjMtxStack[Hu3DObjMtxStackIdx]);
     if (node->unk04 != 0) {
@@ -2488,7 +2488,7 @@ void objMtxCalcMotion(HmfData *hmf, s16 nodeIndex) {
     }
     if (changed) {
         matrixIndex = ++Hu3DObjMtxStackIdx;
-        mtxCat(mtx, D_800D59C0_main[matrixIndex], D_800D59C0_main[matrixIndex + 1]);
+        mtxCat(mtx, Hu3DObjMtxStackPrev[matrixIndex], Hu3DObjMtxStackPrev[matrixIndex + 1]);
     }
     mtxCopy(node->unk58, Hu3DObjMtxStack[Hu3DObjMtxStackIdx]);
     for (i = 0; i < node->unk00; i++) {
@@ -3077,9 +3077,9 @@ f32 GetLinear(HmfModelData_Unk64_Unk8C_Struct *motion, HmfMotionChannel *channel
     }
 }
 
-const u32 D_800A6CC8_main[2] = { 0, 0 };
-const f64 D_800A6CD0_main = 1.0;
-const f64 D_800A6CD8_main = 3.0;
+const u32 curveConstPad[2] = { 0, 0 };
+const f64 curveConstOne = 1.0;
+const f64 curveConstThree = 3.0;
 
 f32 GetCurve(HmfModelData_Unk64_Unk8C_Struct *motion, HmfMotionChannel *channel, f32 frame) {
     HmfHermiteKey *values;
@@ -3118,13 +3118,13 @@ f32 GetCurve(HmfModelData_Unk64_Unk8C_Struct *motion, HmfMotionChannel *channel,
         i--;
         previous = &values[i];
         elapsed = frame - times[i];
-        inverse = D_800A6CD0_main / (nextTime - times[i]);
+        inverse = curveConstOne / (nextTime - times[i]);
         inverseSquared = inverse * inverse;
         elapsedSquared = elapsed * elapsed;
         quadratic = elapsedSquared * inverse;
         cubic = elapsedSquared * elapsed * inverseSquared;
         twiceCubic = 2.0 * cubic * inverse;
-        thriceQuadratic = D_800A6CD8_main * elapsedSquared * inverseSquared;
+        thriceQuadratic = curveConstThree * elapsedSquared * inverseSquared;
         return (twiceCubic - thriceQuadratic + 1.0f) * previous->value +
                (-twiceCubic + thriceQuadratic) * next->value +
                (cubic - quadratic - quadratic + elapsed) * previous->inTangent +

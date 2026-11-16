@@ -23,7 +23,7 @@ typedef struct SwingNSwipeBssC148 {
 } SwingNSwipeBssC148; // sizeof 0xC
 
 extern u16 mgInstColumnTbl[];
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 extern u16 mgInstSlotTbl[];
 extern s16 D_8010C148_swing_n_swipe; // swingNSwipeBssC148.unk00
 extern s16 D_8010C14A_swing_n_swipe[5]; // swingNSwipeBssC148.unk02
@@ -382,7 +382,7 @@ void func_80106290_swing_n_swipe(omObjData *object) {
         D_8010C146_swing_n_swipe = 0;
         D_8010C148_swing_n_swipe = 0;
         Hu3DData[D_8010C140_swing_n_swipe->model[0]].motIdShape = 0xFF;
-        func_800E5690_minigame(D_8010C140_swing_n_swipe, 0);
+        MgPlayerMotSet(D_8010C140_swing_n_swipe, 0);
         for (i = 0; i < 5; i++) {
             D_8010C14A_swing_n_swipe[i] = 0;
         }
@@ -424,12 +424,12 @@ void func_801064A4_swing_n_swipe(omObjData *object) {
             break;
         case 2:
             if (D_8010C13C_swing_n_swipe == 0) {
-                func_800E5690_minigame(D_8010C140_swing_n_swipe, 6);
-                HuAudCharVoicePlay(D_800A178C_main[GwPlayer[D_8010C144_swing_n_swipe].chr][0] | 0x35);
+                MgPlayerMotSet(D_8010C140_swing_n_swipe, 6);
+                HuAudCharVoicePlay(omCharModelNoTbl[GwPlayer[D_8010C144_swing_n_swipe].chr][0] | 0x35);
             } else if (D_8010C13C_swing_n_swipe == 1) {
                 HuAudFXPlay(0x4F6);
-                func_800E5690_minigame(D_8010C140_swing_n_swipe, 7);
-                HuAudCharVoicePlay(D_800A178C_main[GwPlayer[D_8010C144_swing_n_swipe].chr][0] | 0x38);
+                MgPlayerMotSet(D_8010C140_swing_n_swipe, 7);
+                HuAudCharVoicePlay(omCharModelNoTbl[GwPlayer[D_8010C144_swing_n_swipe].chr][0] | 0x38);
                 for (i = 0; i < 5; i++) {
                     D_8010C14A_swing_n_swipe[i] = 4;
                 }
@@ -468,20 +468,20 @@ void func_80106764_swing_n_swipe(omObjData *object) {
     s32 model;
     s32 motion;
 
-    func_800E18D8_minigame();
+    MgPlayerParamReset();
     chr = GwPlayer[D_8010C144_swing_n_swipe].chr;
-    model = D_800A178C_main[chr][0];
-    motion = D_800A178C_main[chr][1];
-    func_800E1BA8_minigame(object, model, motion, D_8010C144_swing_n_swipe, 0x2B9, 0x2B9);
-    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(chr, 0), 1, 0);
-    func_800E5A00_minigame(object, 1, CharMotionDataNumGet(chr, 1), 1, 0);
-    func_800E5A00_minigame(object, 2, CharMotionDataNumGet(chr, 2), 1, 0);
-    func_800E5A00_minigame(object, 4, CharMotionDataNumGet(chr, 0x18), 1, 0);
-    func_800E5A00_minigame(object, 3, CharMotionDataNumGet(chr, 4), 0, 0);
-    func_800E5A00_minigame(object, 5, CharMotionDataNumGet(chr, 0x91), 0, 0);
-    func_800E5A00_minigame(object, 6, CharMotionDataNumGet(chr, 0x35), 0, 0);
-    func_800E5A00_minigame(object, 7, CharMotionDataNumGet(chr, 0x38), 0, 0);
-    func_800E5690_minigame(object, 4);
+    model = omCharModelNoTbl[chr][0];
+    motion = omCharModelNoTbl[chr][1];
+    MgPlayerCreate(object, model, motion, D_8010C144_swing_n_swipe, 0x2B9, 0x2B9);
+    MgPlayerMotLoad(object, 0, CharMotionDataNumGet(chr, 0), 1, 0);
+    MgPlayerMotLoad(object, 1, CharMotionDataNumGet(chr, 1), 1, 0);
+    MgPlayerMotLoad(object, 2, CharMotionDataNumGet(chr, 2), 1, 0);
+    MgPlayerMotLoad(object, 4, CharMotionDataNumGet(chr, 0x18), 1, 0);
+    MgPlayerMotLoad(object, 3, CharMotionDataNumGet(chr, 4), 0, 0);
+    MgPlayerMotLoad(object, 5, CharMotionDataNumGet(chr, 0x91), 0, 0);
+    MgPlayerMotLoad(object, 6, CharMotionDataNumGet(chr, 0x35), 0, 0);
+    MgPlayerMotLoad(object, 7, CharMotionDataNumGet(chr, 0x38), 0, 0);
+    MgPlayerMotSet(object, 4);
     omSetTra(object, 0.0f, 0.0f, 1500.0f);
     object->model[1] = Hu3DModelRead(9, 0x2B9);
     Hu3DModelPosSet(object->model[1], object->trans.x, object->trans.y, object->trans.z);
@@ -500,7 +500,7 @@ void func_801069CC_swing_n_swipe(omObjData *object) {
     if (D_8010C168_swing_n_swipe == 1 && Hu3DData[object->model[0]].motTime == 0.0f) {
         CharFXPlay(0x1F, GwPlayer[D_8010C144_swing_n_swipe].chr);
     }
-    func_800E4E30_minigame(object);
+    MgPlayerMotUpdate(object);
 }
 
 void func_80106AD0_swing_n_swipe(void) {
@@ -517,7 +517,7 @@ void func_80106AD0_swing_n_swipe(void) {
                 obj->trans.z = 1500.0f;
                 obj->rot.y = 180.0f;
                 Hu3DMotionShapeSet(obj->model[0], obj->motion[4], 0);
-                func_800E5690_minigame(obj, 1);
+                MgPlayerMotSet(obj, 1);
                 D_8010BD4E_swing_n_swipe++;
                 break;
             case 1:
@@ -538,7 +538,7 @@ void func_80106AD0_swing_n_swipe(void) {
             case 3:
                 D_8010C168_swing_n_swipe = 0;
                 Hu3DMotionShapeSet(obj->model[0], obj->motion[4], 0);
-                func_800E5690_minigame(obj, 0);
+                MgPlayerMotSet(obj, 0);
                 D_8010BD4E_swing_n_swipe++;
                 break;
             case 4:
@@ -551,7 +551,7 @@ void func_80106AD0_swing_n_swipe(void) {
             case 8:
                 HuAudFXPlay(0x4F8);
                 Hu3DMotionShapeSet(obj->model[0], obj->motion[5], 0);
-                func_800E5690_minigame(obj, 5);
+                MgPlayerMotSet(obj, 5);
                 D_8010BD4E_swing_n_swipe++;
                 break;
             case 6:
@@ -569,7 +569,7 @@ void func_80106AD0_swing_n_swipe(void) {
                 break;
             case 11:
                 Hu3DMotionShapeSet(obj->model[0], obj->motion[4], 0);
-                func_800E5690_minigame(obj, 0);
+                MgPlayerMotSet(obj, 0);
                 D_8010BD50_swing_n_swipe = 0;
                 D_8010BD4E_swing_n_swipe = 0;
                 D_8010C146_swing_n_swipe = 0;
@@ -584,7 +584,7 @@ void func_80106AD0_swing_n_swipe(void) {
                 D_8010BD52_swing_n_swipe = 1;
                 D_8010BD58_swing_n_swipe = -1.47f;
                 Hu3DData[obj->model[0]].motIdShape = 0xFF;
-                func_800E5690_minigame(obj, 1);
+                MgPlayerMotSet(obj, 1);
                 D_8010BD4E_swing_n_swipe++;
                 break;
             case 1:
@@ -592,7 +592,7 @@ void func_80106AD0_swing_n_swipe(void) {
                     D_8010C168_swing_n_swipe = 1;
                     if (func_8010B920_swing_n_swipe() == 1) {
                         D_8010BD54_swing_n_swipe = 1;
-                        func_800E5690_minigame(obj, 3);
+                        MgPlayerMotSet(obj, 3);
                         CharFXPlay(0x3A, GwPlayer[D_8010C144_swing_n_swipe].chr);
                         D_8010C168_swing_n_swipe = 0;
                         break;
@@ -612,7 +612,7 @@ void func_80106AD0_swing_n_swipe(void) {
                         D_8010C168_swing_n_swipe = 1;
                         D_8010BD54_swing_n_swipe = 0;
                         CharFXPlay(0x31, GwPlayer[D_8010C144_swing_n_swipe].chr);
-                        func_800E5690_minigame(obj, 1);
+                        MgPlayerMotSet(obj, 1);
                     }
                 }
                 D_8010C090_swing_n_swipe = obj->trans.x;
@@ -649,7 +649,7 @@ void func_80106AD0_swing_n_swipe(void) {
                 break;
             case 3:
                 D_8010C168_swing_n_swipe = 0;
-                func_800E5690_minigame(obj, 0);
+                MgPlayerMotSet(obj, 0);
                 D_8010BD4E_swing_n_swipe++;
                 break;
         }
@@ -672,7 +672,7 @@ void func_801072D0_swing_n_swipe(void) {
                 D_8010BD68_swing_n_swipe[i].x = D_8010BD68_swing_n_swipe[i].y = 0.0f;
             }
             Hu3DMotionShapeSet(obj->model[0], obj->motion[5], 0);
-            func_800E5690_minigame(obj, 5);
+            MgPlayerMotSet(obj, 5);
         }
         if (D_8010BD5C_swing_n_swipe == 0) {
             D_8010BD68_swing_n_swipe[D_8010BDB8_swing_n_swipe].x = HuPadStkX[pad];
@@ -698,7 +698,7 @@ void func_801072D0_swing_n_swipe(void) {
                     D_8010BD68_swing_n_swipe[i].x = D_8010BD68_swing_n_swipe[i].y = 0.0f;
                 }
                 Hu3DMotionShapeSet(obj->model[0], obj->motion[5], 0);
-                func_800E5690_minigame(obj, 5);
+                MgPlayerMotSet(obj, 5);
             }
         }
         if (D_8010C162_swing_n_swipe <= D_8010BD60_swing_n_swipe++ && D_8010BD5C_swing_n_swipe == 0) {
@@ -782,12 +782,12 @@ void func_801072D0_swing_n_swipe(void) {
                 CharFXPlay(0x1F, GwPlayer[D_8010C144_swing_n_swipe].chr);
             }
             Hu3DMotionShapeSet(obj->model[0], obj->motion[4], 0);
-            func_800E5690_minigame(obj, 1);
+            MgPlayerMotSet(obj, 1);
             obj->rot.y = -atan2df(-moveX, -moveZ);
         }
     } else if (D_8010BD5C_swing_n_swipe == 0) {
         Hu3DMotionShapeSet(obj->model[0], obj->motion[4], 0);
-        func_800E5690_minigame(obj, 0);
+        MgPlayerMotSet(obj, 0);
     }
 }
 

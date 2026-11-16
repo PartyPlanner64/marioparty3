@@ -93,7 +93,7 @@ typedef struct {
     /* 0x28 */ f32 fov;
 } PipeCleanerCamera; // Size 0x2C
 
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 
 extern char *D_80109F60_pipe_cleaners[];
 extern const s16 D_8010A2A8_pipe_cleaners[];
@@ -572,7 +572,7 @@ void func_80106CB4_pipe_cleaners(omObjData *obj, PipeCleanerWork *work) {
 }
 
 void func_80106CF4_pipe_cleaners(PipeCleanerWork *work) {
-    s32 dir = D_800A178C_main[GwPlayer[work->object->work[0]].chr][0];
+    s32 dir = omCharModelNoTbl[GwPlayer[work->object->work[0]].chr][0];
 
     func_80106A70_pipe_cleaners(work->object, 5);
     Hu3DMotionAttrSet(work->object->model[0], 2, 2);
@@ -755,8 +755,8 @@ void func_80107598_pipe_cleaners(omObjData *obj) {
     work->unk18 = 0;
     work->pos.x = work->pos.y = work->pos.z = 0.0f;
     chr = GwPlayer[obj->work[0]].chr;
-    dir = D_800A178C_main[chr][0];
-    obj->model[0] = Hu3DModelRead(dir | D_800A178C_main[chr][2], 0x2A9);
+    dir = omCharModelNoTbl[chr][0];
+    obj->model[0] = Hu3DModelRead(dir | omCharModelNoTbl[chr][2], 0x2A9);
     for (i = 0; i < 3; i++) {
         D_8010A2B0_pipe_cleaners[obj->work[0]][i] = DataRead(dir | D_80109F30_pipe_cleaners[chr][i]);
     }
@@ -1593,9 +1593,9 @@ void func_80109D70_pipe_cleaners(void) {
     Hu3DGLightDirSet(1, 0.0f, 90.0f, 560.0f);
     Hu3DGLightColorSet(2, 255, 255, 255);
     Hu3DGLightDirSet(2, 0.0f, 90.0f, 560.0f);
-    D_800EC1B8_minigame = 0;
-    D_800EC280_minigame = 0;
-    D_800EBE28_minigame = 0;
+    mgItemObjNum = 0;
+    mgPlayerObjNum = 0;
+    mgMapObjNum = 0;
     GMesFontMesCreate(D_8010A2A8_pipe_cleaners, 0);
     GMesFontMesCreate(D_8010A2A8_pipe_cleaners, 1);
     omAddObj(1000, 0, 0, -1, func_80109B74_pipe_cleaners);

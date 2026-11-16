@@ -25,7 +25,6 @@ typedef struct
 
 OSTime HuProfRecordEnd(ProfSampleBuff *buffer, s16 sampleIdx);
 
-extern u8 D_8008F1C0_main;
 static ProfSampleBuff HuProfCpuDispBuf;
 // Global so undefined_syms.txt can alias their sampleCount fields, and aligned
 // to match the placement they get as statics.
@@ -33,31 +32,31 @@ ProfSampleBuff HuProfCpuBuf BSS ALIGNED(8);
 ProfSampleBuff HuProfRspBuf BSS ALIGNED(8);
 // sampleCount fields of the buffers above (see undefined_syms.txt). The
 // original resets them through these separate symbols.
-extern s16 D_800B246C_main;
-extern s16 D_800B24F4_main;
+extern s16 HuProfCpuSampleNum;
+extern s16 HuProfRspSampleNum;
 static u32 HuProfRspAwaitTime;
 static OSMesgQueue HuProfMesgQueue;
 static OSMesg HuProfMesgBuf[3];
-static u32 D_800B259C_main; // unreferenced
+static u32 HuProfPad; // unreferenced
 // RSP task fields (an OSTask layout followed by its completion queue and message)
-static u32 D_800B25A0_main; // type
-static u32 D_800B25A4_main; // flags
-static u64 *D_800B25A8_main; // ucode_boot
-static u32 D_800B25AC_main; // ucode_boot_size
-static u64 *D_800B25B0_main; // ucode
-static u32 D_800B25B4_main; // ucode_size
-static u64 *D_800B25B8_main; // ucode_data
-static u32 D_800B25BC_main; // ucode_data_size
-static u64 *D_800B25C0_main; // dram_stack
-static u32 D_800B25C4_main; // dram_stack_size
-static u64 *D_800B25C8_main; // output_buff
-static u64 *D_800B25CC_main; // output_buff_size
-static u64 *D_800B25D0_main; // data_ptr
-static u32 D_800B25D4_main; // data_size
-static u64 *D_800B25D8_main; // yield_data_ptr
-static u32 D_800B25DC_main; // yield_data_size
-static OSMesgQueue *D_800B25E0_main;
-static OSMesg D_800B25E4_main;
+static u32 HuProfTaskType; // type
+static u32 HuProfTaskFlags; // flags
+static u64 *HuProfTaskUcodeBoot; // ucode_boot
+static u32 HuProfTaskUcodeBootSize; // ucode_boot_size
+static u64 *HuProfTaskUcode; // ucode
+static u32 HuProfTaskUcodeSize; // ucode_size
+static u64 *HuProfTaskUcodeData; // ucode_data
+static u32 HuProfTaskUcodeDataSize; // ucode_data_size
+static u64 *HuProfTaskDramStack; // dram_stack
+static u32 HuProfTaskDramStackSize; // dram_stack_size
+static u64 *HuProfTaskOutputBuff; // output_buff
+static u64 *HuProfTaskOutputBuffSize; // output_buff_size
+static u64 *HuProfTaskDataPtr; // data_ptr
+static u32 HuProfTaskDataSize; // data_size
+static u64 *HuProfTaskYieldDataPtr; // yield_data_ptr
+static u32 HuProfTaskYieldDataSize; // yield_data_size
+static OSMesgQueue *HuProfTaskMesgQueue;
+static OSMesg HuProfTaskMesg;
 static Gfx HuProfGfxBuf[0x80];
 
 extern s32 *gUCodeAddresses;
@@ -67,20 +66,20 @@ void HuProfInit(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u16 arg4) {
     HuProfCpuBuf.config.unk2 = arg2;
     HuProfRspBuf.config.unk0 = arg3;
     HuProfRspBuf.config.unk2 = arg4;
-    D_800B25E0_main = &HuProfMesgQueue;
-    D_800B25E4_main = 0;
-    D_800B25A0_main = 1;
-    D_800B25A4_main = 2;
-    D_800B25A8_main = (u64 *)rspbootTextStart;
-    D_800B25AC_main = (u32)rspbootTextEnd - (u32)rspbootTextStart;
-    D_800B25B4_main = 0x1000;
-    D_800B25BC_main = 0x800;
-    D_800B25C4_main = 0x400;
-    D_800B25D0_main = (u64 *)HuProfGfxBuf;
-    D_800B25D4_main = 0;
-    D_800B25DC_main = 0xC00;
-    D_800B25B0_main = (u64 *)gUCodeAddresses[arg0 * 2];
-    D_800B25B8_main = (u64 *)gUCodeAddresses[(arg0 * 2) | 1];
+    HuProfTaskMesgQueue = &HuProfMesgQueue;
+    HuProfTaskMesg = 0;
+    HuProfTaskType = 1;
+    HuProfTaskFlags = 2;
+    HuProfTaskUcodeBoot = (u64 *)rspbootTextStart;
+    HuProfTaskUcodeBootSize = (u32)rspbootTextEnd - (u32)rspbootTextStart;
+    HuProfTaskUcodeSize = 0x1000;
+    HuProfTaskUcodeDataSize = 0x800;
+    HuProfTaskDramStackSize = 0x400;
+    HuProfTaskDataPtr = (u64 *)HuProfGfxBuf;
+    HuProfTaskDataSize = 0;
+    HuProfTaskYieldDataSize = 0xC00;
+    HuProfTaskUcode = (u64 *)gUCodeAddresses[arg0 * 2];
+    HuProfTaskUcodeData = (u64 *)gUCodeAddresses[(arg0 * 2) | 1];
     osCreateMesgQueue(&HuProfMesgQueue, HuProfMesgBuf, ARRAY_COUNT(HuProfMesgBuf));
 }
 
@@ -140,7 +139,7 @@ void HuProfRspEnd(s16 sampleIdx) {
 void HuProfFrameBegin(void) {
     u32 temp_v0;
 
-    D_800B246C_main = 0;
+    HuProfCpuSampleNum = 0;
     temp_v0 = osSetIntMask(1U);
     HuProfCpuBuf.unk0 = HuProfRspAwaitTime;
     osSetIntMask(temp_v0);
@@ -155,7 +154,7 @@ void HuProfFrameEnd(void) {
 }
 
 void HuProfRspReset(void) {
-    D_800B24F4_main = 0;
+    HuProfRspSampleNum = 0;
     HuProfRspBuf.unk0 = HuProfRspAwaitTime;
 }
 
@@ -176,10 +175,10 @@ extern s32 gThreadYieldStack;
 void HuProfDrawTask(void) {
     Gfx *gfx = HuProfGfxBuf;
 
-    D_800B25C0_main = gThread3Stack;
-    D_800B25D8_main = (u64 *)gThreadYieldStack;
-    D_800B25C8_main = (u64 *)gThreadOutStack;
-    D_800B25CC_main = (u64 *)gThreadOutStackSize;
+    HuProfTaskDramStack = gThread3Stack;
+    HuProfTaskYieldDataPtr = (u64 *)gThreadYieldStack;
+    HuProfTaskOutputBuff = (u64 *)gThreadOutStack;
+    HuProfTaskOutputBuffSize = (u64 *)gThreadOutStackSize;
     gDPPipeSync(gfx++);
     gDPSetCycleType(gfx++, G_CYC_FILL);
     gDPSetRenderMode(gfx++, G_RM_NOOP, G_RM_NOOP2);
@@ -187,5 +186,5 @@ void HuProfDrawTask(void) {
     gfx = HuProfDraw(&HuProfRspBuf, gfx, 2);
     gDPFullSync(gfx++);
     gSPEndDisplayList(gfx++);
-    osJamMesg(&scGraphicsTaskQueue, &D_800B25A0_main, 0);
+    osJamMesg(&scGraphicsTaskQueue, &HuProfTaskType, 0);
 }

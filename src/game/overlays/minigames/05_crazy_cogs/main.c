@@ -92,14 +92,14 @@ typedef struct {
     /* 0x02 */ s8 unk02[4];
 } CrazyCogsBssDE68;
 
-extern s32 D_800A178C_main[][6];
-extern s32 D_800A1790_main[][6];
+extern s32 omCharModelNoTbl[][6];
+extern s32 omCharMotTbl[][6];
 
 s32 D_8010B810_crazy_cogs[8] = { 2, 3, 7, 4, 5, 6, 8, 9 };
 // The intended delays (90, 900, 0, 30, 150) landed in gaugeValue/winners, likely
 // from an initializer written without the inner braces. It doesn't matter in
 // practice: this overlay never runs MgFlowMain, so only the
-// setup in func_800E5EA0_minigame reads this struct.
+// setup in MgFlowInit reads this struct.
 MinigameFlow D_8010B830_crazy_cogs = {
     MG_STATE_OPENING, MINIGAME_4P, MG_TIMER_COUNT_DOWN, MG_TIME_DISP_COUNTDOWN, FALSE, MG_GAUGE_NONE, MG_RESULT_WIN_1, 0,
     { 90.0f, 900.0f, 0.0f, 30.0f },
@@ -401,16 +401,16 @@ void func_80106270_crazy_cogs(omObjData *arg0) {
     D_8010BA32_crazy_cogs = espEntry(D_8010BA30_crazy_cogs, 0, 0);
     espAttrSet(D_8010BA32_crazy_cogs, 0x5000);
     espPosSet(D_8010BA32_crazy_cogs, D_8010BA34_crazy_cogs, D_8010BA38_crazy_cogs);
-    D_800EC1C0_minigame[D_800EBE28_minigame++] = arg0;
+    mgMapObjTbl[mgMapObjNum++] = arg0;
     work = HuMemAllocTag(sizeof(CrazyCogsSetupWork), TAG_OVERLAY);
     arg0->data = work;
     memset(work, 0, sizeof(CrazyCogsSetupWork));
     work->unk_03 = 1;
     work->unk_04 = 0;
-    func_800E131C_minigame(arg0, 20.0f);
-    func_800E1304_minigame(arg0, 0.5f);
-    func_800E1310_minigame(arg0, 10.0f);
-    func_800E1404_minigame(D_800EC1C0_minigame[0], 0.0f, 360.0f);
+    MgMapSlideSet(arg0, 20.0f);
+    MgMapFrictionSet(arg0, 0.5f);
+    MgMapAccelSet(arg0, 10.0f);
+    MgMapCircleSet(mgMapObjTbl[0], 0.0f, 360.0f);
     arg0->model[0] = -1;
     arg0->func = func_80106268_crazy_cogs;
 }
@@ -789,7 +789,7 @@ void func_8010728C_crazy_cogs(omObjData *arg0) {
 void func_801074A0_crazy_cogs(omObjData *arg0) {
     u16 character = GwPlayer[arg0->work[0]].chr;
 
-    arg0->model[0] = Hu3DModelRead(D_800A178C_main[character][0] | D_800A1790_main[character][0], 0x2B9);
+    arg0->model[0] = Hu3DModelRead(omCharModelNoTbl[character][0] | omCharMotTbl[character][0], 0x2B9);
     omObjMotionRead(arg0, 0, CharMotionDataNumGet(character, 0x3F));
     omObjMotionRead(arg0, 3, CharMotionDataNumGet(character, 0x30));
     omObjMotionRead(arg0, 4, CharMotionDataNumGet(character, D_8010B86C_crazy_cogs[character][1]));
@@ -864,7 +864,7 @@ void func_80107884_crazy_cogs(omObjData *arg0) {
     u16 character = GwPlayer[arg0->work[0]].chr;
     f32 angle;
 
-    arg0->model[0] = Hu3DModelRead(D_800A178C_main[character][0] | D_800A1790_main[character][0], 0x2B9);
+    arg0->model[0] = Hu3DModelRead(omCharModelNoTbl[character][0] | omCharMotTbl[character][0], 0x2B9);
     omObjMotionRead(arg0, 1, CharMotionDataNumGet(character, 0));
     omObjMotionRead(arg0, 2, CharMotionDataNumGet(character, 2));
     func_80106034_crazy_cogs(arg0, 1, 2);
@@ -1066,11 +1066,11 @@ void func_80108190_crazy_cogs(omObjData *arg0) {
             }
             cog->unk_44.y = arg0->trans.y;
             cog->unk_12++;
-            func_800E5690_minigame(arg0, 0x12);
+            MgPlayerMotSet(arg0, 0x12);
             Hu3DData[arg0->model[0]].motTime = 0;
             Hu3DData[arg0->model[0]].motSpeed = 0;
             func_80105B04_crazy_cogs(arg0->work[1]);
-            func_800DDD94_minigame(arg0);
+            MgPlayerObjMain(arg0);
             HuAudFXStop((s16)(arg0->work[3] * 2 + 2));
             HuAudPlayerFXPlay(0x325, ((s16 *)arg0->work)[1]);
             PlayerFXPlay(0x286, ((s16 *)arg0->work)[1]);
@@ -1154,7 +1154,7 @@ void func_80108464_crazy_cogs(omObjData *arg0) {
 
 void func_801087B8_crazy_cogs(omObjData *arg0) {
     UnkCrazyCogsCog *cog = &(&D_8010B9F0_crazy_cogs[5])[arg0->work[1]];
-    func_800E1BA8_minigame_ObjData *work = arg0->data;
+    MgPlayerWork *work = arg0->data;
 
     if (cog->unk_0E != 0) {
         func_80108190_crazy_cogs(arg0);
@@ -1176,7 +1176,7 @@ void func_801087B8_crazy_cogs(omObjData *arg0) {
             work->unk40 = 0;
         }
         if (D_8010B9A0_crazy_cogs > 0) {
-            func_800E5690_minigame(arg0, 0xD);
+            MgPlayerMotSet(arg0, 0xD);
             HuAudCharVoicePlay((D_8010B810_crazy_cogs[GwPlayer[arg0->work[0]].chr] << 16) | 0x30);
         }
     } else {
@@ -1202,7 +1202,7 @@ void func_801087B8_crazy_cogs(omObjData *arg0) {
                 break;
         }
     }
-    func_800DDD94_minigame(arg0);
+    MgPlayerObjMain(arg0);
     Hu3DModelPosSet(arg0->model[1], arg0->trans.x, arg0->trans.y, arg0->trans.z);
 }
 
@@ -1210,12 +1210,12 @@ void func_80108B0C_crazy_cogs(omObjData *arg0) {
     CrazyCogsCpuMovement *movement = &D_8010DE70_crazy_cogs[arg0->work[1]];
     UnkCrazyCogsCog *cog = &(&D_8010B9F0_crazy_cogs[5])[arg0->work[1]];
     u16 character = GwPlayer[arg0->work[0]].chr;
-    s32 modelFile = D_800A178C_main[character][0];
-    s32 motionFile = D_800A1790_main[character][0];
-    func_800E1BA8_minigame_ObjData *work;
+    s32 modelFile = omCharModelNoTbl[character][0];
+    s32 motionFile = omCharMotTbl[character][0];
+    MgPlayerWork *work;
 
-    func_800E18D8_minigame();
-    func_800E1BA8_minigame(arg0, modelFile, motionFile, ((u16 *)arg0->work)[1], 0x299, 0x289);
+    MgPlayerParamReset();
+    MgPlayerCreate(arg0, modelFile, motionFile, ((u16 *)arg0->work)[1], 0x299, 0x289);
     work = arg0->data;
     work->unkEC = 0;
     Hu3DModelObjAttrSet(arg0->model[1], 0x80000000, 0);
@@ -1224,15 +1224,15 @@ void func_80108B0C_crazy_cogs(omObjData *arg0) {
     Hu3DModelDynamicFree(arg0->model[1]);
     arg0->model[3] = Hu3DModelRead(3, 0x2BD);
     arg0->model[4] = Hu3DModelRead(4, 0x2BD);
-    func_800E5A00_minigame(arg0, 0, CharMotionDataNumGet(character, 0), 1, 0);
-    func_800E5A00_minigame(arg0, 1, CharMotionDataNumGet(character, 1), 1, 0);
-    func_800E5A00_minigame(arg0, 2, CharMotionDataNumGet(character, 2), 1, 0);
-    func_800E5A00_minigame(arg0, 0x12, CharMotionDataNumGet(character, 0xF), 2, 0);
-    func_800E5978_minigame(arg0, 3, CharMotionDataNumGet(character, 0x1D), 1, 0);
-    func_800E5978_minigame(arg0, 4, CharMotionDataNumGet(character, 0x1E), 1, 0);
-    func_800E5A00_minigame(arg0, 0xD, CharMotionDataNumGet(character, 0x30), 1, 120);
-    func_800E5690_minigame(arg0, 0);
-    D_800EBE24_minigame = 1;
+    MgPlayerMotLoad(arg0, 0, CharMotionDataNumGet(character, 0), 1, 0);
+    MgPlayerMotLoad(arg0, 1, CharMotionDataNumGet(character, 1), 1, 0);
+    MgPlayerMotLoad(arg0, 2, CharMotionDataNumGet(character, 2), 1, 0);
+    MgPlayerMotLoad(arg0, 0x12, CharMotionDataNumGet(character, 0xF), 2, 0);
+    MgPlayerMotRead(arg0, 3, CharMotionDataNumGet(character, 0x1D), 1, 0);
+    MgPlayerMotRead(arg0, 4, CharMotionDataNumGet(character, 0x1E), 1, 0);
+    MgPlayerMotLoad(arg0, 0xD, CharMotionDataNumGet(character, 0x30), 1, 120);
+    MgPlayerMotSet(arg0, 0);
+    mgFieldStat = 1;
     Hu3DModelCameraSet(arg0->model[0], HU3D_CAM0);
     Hu3DModelCameraSet(arg0->model[1], HU3D_CAM0);
     Hu3DModelCameraSet(arg0->model[3], HU3D_CAM0);
@@ -1298,8 +1298,8 @@ void func_80108EE8_crazy_cogs(void) {
             cog->obj = obj;
             obj->work[1] = cogIndex;
             cogIndex++;
-            D_800EC598_minigame[D_800EC280_minigame] = obj;
-            D_800EC280_minigame++;
+            mgPlayerObjTbl[mgPlayerObjNum] = obj;
+            mgPlayerObjNum++;
             D_8010B991_crazy_cogs[count] = GwPlayer[obj->work[0]].chr;
             D_8010DE10_crazy_cogs[count] = obj->work[0];
             count++;
@@ -1442,7 +1442,7 @@ void func_80109388_crazy_cogs(omObjData *arg0) {
 void func_801097EC_crazy_cogs(omObjData *arg0) {
     s16 candidates[3];
     UnkCrazyCogsCog *cog;
-    func_800E1BA8_minigame_ObjData *work;
+    MgPlayerWork *work;
     s16 count;
     s16 i;
     f32 x;
@@ -2104,15 +2104,15 @@ void func_8010B6E0_crazy_cogs(void) {
     Hu3DGLightDirSet(0, 0.0f, 90.0f, 560.0f);
     Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
     Hu3DGLightDirSet(1, 0.0f, 90.0f, 560.0f);
-    D_800EC1B8_minigame = 0;
-    D_800EC280_minigame = 0;
-    D_800EBE28_minigame = 0;
+    mgItemObjNum = 0;
+    mgPlayerObjNum = 0;
+    mgMapObjNum = 0;
     GMesFontMesCreate(D_8010B97C_crazy_cogs, 0);
     GMesFontMesCreate(D_8010B97C_crazy_cogs, 1);
     omAddObj(0x7D0, 0, 0, -1, func_8010B46C_crazy_cogs);
     omAddObj(0x7D0, 0, 0, -1, func_8010B09C_crazy_cogs);
     func_80105A3C_crazy_cogs();
-    func_800E5EA0_minigame(&D_8010B830_crazy_cogs);
+    MgFlowInit(&D_8010B830_crazy_cogs);
 }
 
 // Keep this table after the functions to preserve the original rodata order.

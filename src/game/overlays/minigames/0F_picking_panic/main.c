@@ -186,7 +186,7 @@ void func_801059A0_picking_panic(void) {
     D_8010E5B0_picking_panic.newRecord = FALSE;
     D_8010E5B0_picking_panic.gauge = MG_GAUGE_NONE;
     D_8010E5B0_picking_panic.timeLimit = -1;
-    func_800E5EA0_minigame(&D_8010E5B0_picking_panic);
+    MgFlowInit(&D_8010E5B0_picking_panic);
 }
 
 void func_80105D3C_picking_panic(omObjData *object) {
@@ -303,7 +303,7 @@ void func_80106020_picking_panic(omObjData *object) {
                 GwPlayer[D_8010EEE0_picking_panic[D_8010EF14_picking_panic * 2 + 1]->unk0].bonusCoin = 10;
             }
             if (D_8010EFA8_picking_panic == 2) {
-                func_800E6F34_minigame(30);
+                MgFlowResultWaitSet(30);
             }
             if (MgFlowStatGet() == MG_STATE_RESULT) {
                 D_8010EF80_picking_panic = 5;

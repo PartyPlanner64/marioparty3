@@ -7,7 +7,7 @@ extern UnkE3CD0 *mbdCameraFocusObj;
 extern Vec *mbdCameraFocusVec;
 extern Vec mbdCameraFocusStaticPos;
 extern s16 mbdCameraFocusMode;
-extern s16 D_800A12C8_main;
+extern s16 mbWipeTypeNext;
 extern f32 mbCameraZoom;
 extern s16 duelUnkF0;
 extern s16 duelUnkF1;
@@ -135,7 +135,7 @@ void MBDPlayerTauntProc(omObjData *obj) {
     while (1) {
         if (
             (MBDPlayerComCheck(temp_s0[0]) == 0) &&
-            (D_800A12D8_main == 0) &&
+            (mbTauntOffF == 0) &&
             ((GwSystem.current_player_index != temp_s0[0]) || (mbTurnUnkF == 0)) &&
             (ContBtnDown[GwPlayer[temp_s0[0]].pad] & 0x20)) {
             PlayerFXPlay(0x2BD, temp_s0[0]);
@@ -284,11 +284,11 @@ void MBDSaveInit(void) {
     mbCameraZoom = 1.4f;
     MBDMgCallHisInit();
     MBDSaiValueClear();
-    D_800A12C8_main = -1;
+    mbWipeTypeNext = -1;
     mbSubMusNo = -1;
     mbSeqPlayF = 0;
     mbTurnUnkF = 1;
-    D_800A12D8_main = 0;
+    mbTauntOffF = 0;
 
     if (((common->unk9E == 3) | (common->unk9E == 1)) != 0) {
         common->unk9E = 2;
@@ -950,9 +950,9 @@ void MBDMain(void) {
                         if (attackType != -1) {
                             MBDPlayerPartyMotionSet(-1, -1, 2);
                             MBDSaiNumKill(player->turn);
-                            D_800A12D8_main = 1;
+                            mbTauntOffF = 1;
                             MBDPartnerAttackExec(attackType);
-                            D_800A12D8_main = 0;
+                            mbTauntOffF = 0;
 
                             if (mbTurnOnF != 0) {
                                 player->star = 5;
@@ -1689,14 +1689,14 @@ void MBDStart(u32 arg0) {
                     MBDScissorEmptySet();
                     break;
                 default:
-                    if (D_800A12C8_main != -1) {
-                        if (D_800A12C8_main == 0) {
+                    if (mbWipeTypeNext != -1) {
+                        if (mbWipeTypeNext == 0) {
                             WipeColorSet(255, 255, 255);
                         } else {
                             WipeColorSet(0, 0, 0);
                         }
-                        WipeCreateIn(D_800A12C8_main, 0x10);
-                        D_800A12C8_main = -1;
+                        WipeCreateIn(mbWipeTypeNext, 0x10);
+                        mbWipeTypeNext = -1;
                         MBDPlayerVibrate(0, 0);
                         MBDPlayerVibrate(1, 0);
                     } else {
@@ -1741,7 +1741,7 @@ void MBDExitReturnSet(s16 arg0) {
 }
 
 void MBDWipeTypeNextSet(s32 arg0) {
-    D_800A12C8_main = arg0;
+    mbWipeTypeNext = arg0;
 }
 
 void MBDExitOvlCallEx(s32 arg0, s16 arg1, s16 arg2, s16 arg3) {

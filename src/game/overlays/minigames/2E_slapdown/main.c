@@ -53,7 +53,7 @@ typedef struct {
     /* 0x06 */ s16 unk_06[5];
 } SlapdownBssAA10; // sizeof 0x10
 
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 
 s32 D_8010A6A0_slapdown[8] = { 2, 3, 7, 4, 5, 6, 8, 9 };
 f32 D_8010A6C0_slapdown[4] = { -380.0f, 380.0f, 380.0f, -380.0f };
@@ -722,7 +722,7 @@ void func_80107858_slapdown(omObjData *obj) {
     SlapdownEntry *entry = &D_8010AAB0_slapdown[11 + obj->work[0]];
     s8 chr = GwPlayer[obj->work[0]].chr;
 
-    obj->model[0] = Hu3DModelRead(D_800A178C_main[chr][0] | D_800A178C_main[chr][3], 0x2A9);
+    obj->model[0] = Hu3DModelRead(omCharModelNoTbl[chr][0] | omCharModelNoTbl[chr][3], 0x2A9);
     Hu3DModelRemakeStatic(obj->model[0]);
     Hu3DModelDynamicFree(obj->model[0]);
     omObjMotionRead(obj, 0, CharMotionDataNumGet(chr, 0));
@@ -1683,9 +1683,9 @@ void func_8010A550_slapdown(void) {
     Hu3DGLightDirSet(1, -41.0f, 70.0f, 87.0f);
     Hu3DGLightColorSet(2, 0xFF, 0xFF, 0xFF);
     Hu3DGLightDirSet(2, -41.0f, 70.0f, 87.0f);
-    D_800EC1B8_minigame = 0;
-    D_800EC280_minigame = 0;
-    D_800EBE28_minigame = 0;
+    mgItemObjNum = 0;
+    mgPlayerObjNum = 0;
+    mgMapObjNum = 0;
     GMesFontMesCreate(D_8010AA08_slapdown, 0);
     GMesFontMesCreate(D_8010AA08_slapdown, 1);
     omAddObj(1000, 0, 0, -1, func_8010A2B8_slapdown);

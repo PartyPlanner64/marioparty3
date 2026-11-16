@@ -18,7 +18,7 @@ void func_801069FC_mgresultbattle(omObjData *);
 void func_80106908_mgresultbattle(void);
 void func_80106910_mgresultbattle(omObjData *obj);
 
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 extern const s32 D_80108908_mgresultbattle[];
 extern const s8 D_801089A0_mgresultbattle[];
 extern const f32 D_80108920_mgresultbattle[][4];
@@ -337,7 +337,7 @@ void func_80106660_mgresultbattle(void) {
         D_80108F50_mgresultbattle[i].obj = obj;
         chr = GwPlayer[D_80108F8C_mgresultbattle[i]].chr;
 
-        obj->model[1] = Hu3DModelRead(D_800A178C_main[chr][0] | D_800A178C_main[chr][1], 0x2B9);
+        obj->model[1] = Hu3DModelRead(omCharModelNoTbl[chr][0] | omCharModelNoTbl[chr][1], 0x2B9);
         Hu3DMotionAttrSet(obj->model[1], 2, 2);
         obj->model[2] = Hu3DModelRead(9, 0x2B9);
         Hu3DModelPosSet(obj->model[2], 0.0f, -5.0f, 0.0f);

@@ -8,20 +8,20 @@
 #include "game/mallocblock.h"
 #include "game/util.h"
 
-f32 D_800EB720_minigame = 1.0f;
-f32 D_800EB724_minigame = 20.0f;
-f32 D_800EB728_minigame = 4.0f;
-f32 D_800EB72C_minigame = 0.06f;
+f32 mgItemFallMax = 1.0f;
+f32 mgItemSpeedMax = 20.0f;
+f32 mgItemTiltStep = 4.0f;
+f32 mgItemGravity = 0.06f;
 
-extern f32 D_800EB740_minigame;
-extern f32 D_800EB760_minigame;
-extern f32 D_800EB770_minigame;
-extern Vec D_800EBDC0_minigame;
-extern Vec D_800EC298_minigame[];
-extern u8 D_800EB739_minigame;
+extern f32 mgPlayerFriction;
+extern f32 mgPlayerSpeedMax;
+extern f32 mgPlayerSpeedZero;
+extern Vec mgItemPrevPos;
+extern Vec mgWallNorTbl[];
+extern u8 mgShadowAltF;
 
-void func_800D6B70_minigame(omObjData *arg0) {
-    A96F0_ObjData *data = arg0->data;
+void MgItemObjMain(omObjData *arg0) {
+    MgItemWork *data = arg0->data;
     s32 result = 0;
     f32 x, y, z;
     f32 angle;
@@ -32,24 +32,24 @@ void func_800D6B70_minigame(omObjData *arg0) {
             return;
         }
     }
-    D_800EBE2C_minigame = D_800EC5D8_minigame = 0.0f;
-    D_800EBDC0_minigame.x = x = arg0->trans.x;
-    D_800EBDC0_minigame.y = y = arg0->trans.y;
-    D_800EBDC0_minigame.z = z = arg0->trans.z;
+    mgMoveOfsX = mgMoveOfsZ = 0.0f;
+    mgItemPrevPos.x = x = arg0->trans.x;
+    mgItemPrevPos.y = y = arg0->trans.y;
+    mgItemPrevPos.z = z = arg0->trans.z;
     angle = data->unk3C;
     if (data->unk84[0] != NULL && data->unk84[0](arg0) == 1) {
         return;
     }
     x += sindf(angle) * data->unk40;
     z += cosdf(angle) * data->unk40;
-    func_800D7084_minigame(data);
+    MgItemFloorMoveAdd(data);
     if (data->unk38 != 1000.0f) {
         y += data->unk38 * data->unk38 * (data->unk38 >= 0.0f ? -35.0f : 35.0f);
-        data->unk38 += D_800EB72C_minigame;
-        if (data->unk38 > D_800EB720_minigame) {
-            data->unk38 = D_800EB720_minigame;
+        data->unk38 += mgItemGravity;
+        if (data->unk38 > mgItemFallMax) {
+            data->unk38 = mgItemFallMax;
         }
-        floorY = func_800D6E14_minigame(arg0, x, y, z);
+        floorY = MgItemCollide(arg0, x, y, z);
         if (y < floorY) {
             if (data->unk84[4] != NULL) {
                 result = data->unk84[4](arg0);
@@ -60,45 +60,45 @@ void func_800D6B70_minigame(omObjData *arg0) {
                 if (data->unk38 >= -0.4f) {
                     data->unk38 = 1000.0f;
                 }
-                func_800D710C_minigame(arg0);
+                MgItemSpeedDec(arg0);
             }
         }
     } else {
-        y = func_800D6E14_minigame(arg0, x, y, z);
-        func_800D710C_minigame(arg0);
-        func_800D71F0_minigame(arg0);
+        y = MgItemCollide(arg0, x, y, z);
+        MgItemSpeedDec(arg0);
+        MgItemDirUpdate(arg0);
     }
-    func_800E17D4_minigame(arg0, x + D_800EBE2C_minigame, y, z + D_800EC5D8_minigame);
-    func_800D80DC_minigame(arg0);
+    MgObjPosSet(arg0, x + mgMoveOfsX, y, z + mgMoveOfsZ);
+    MgItemLifeUpdate(arg0);
     if (data->unk84[1] != NULL) {
         data->unk84[1](arg0);
     }
 }
 
-f32 func_800D6E14_minigame(omObjData *arg0, f32 x, f32 y, f32 z) {
-    A96F0_ObjData *data = arg0->data;
+f32 MgItemCollide(omObjData *arg0, f32 x, f32 y, f32 z) {
+    MgItemWork *data = arg0->data;
     Hu3DSphere sphere;
 
     sphere.pos.x = x;
     sphere.pos.y = y;
     sphere.pos.z = z;
     sphere.radius = data->unk48;
-    func_800D7AA8_minigame(arg0, x, y, z);
-    func_800D7C14_minigame(arg0, &sphere);
-    return func_800D72B0_minigame(arg0, &sphere);
+    MgItemPlayerPush(arg0, x, y, z);
+    MgItemWallCheck(arg0, &sphere);
+    return MgItemFloorCheck(arg0, &sphere);
 }
 
-void func_800D6E74_minigame(omObjData *arg0, Vec *arg1) {
-    A96F0_ObjData *data = arg0->data;
-    D_800EC1C0_minigame_ObjData *other;
+void MgItemFloorVelSet(omObjData *arg0, Vec *arg1) {
+    MgItemWork *data = arg0->data;
+    MgMapWork *other;
 
     if (data->unk53 >= 0 && data->unk38 == 1000.0f) {
-        other = D_800EC1C0_minigame[data->unk53]->data;
+        other = mgMapObjTbl[data->unk53]->data;
         data->unk5C = arg1->x * other->unk10;
         data->unk60 = arg1->y;
         data->unk64 = arg1->z * other->unk10;
         if (other->unk06 & 0x400) {
-            func_800D6F20_minigame(arg0, arg1);
+            MgItemTiltSet(arg0, arg1);
         }
     } else {
         data->unk5C = 0.0f;
@@ -107,8 +107,8 @@ void func_800D6E74_minigame(omObjData *arg0, Vec *arg1) {
     }
 }
 
-void func_800D6F20_minigame(omObjData *arg0, Vec *arg1) {
-    A96F0_ObjData *data = arg0->data;
+void MgItemTiltSet(omObjData *arg0, Vec *arg1) {
+    MgItemWork *data = arg0->data;
     f32 rotX;
     f32 rotZ;
     f32 curX;
@@ -119,23 +119,23 @@ void func_800D6F20_minigame(omObjData *arg0, Vec *arg1) {
     curX = data->unk68;
     curZ = data->unk70;
     if (curX < rotX) {
-        data->unk68 += D_800EB728_minigame;
+        data->unk68 += mgItemTiltStep;
         if (rotX < data->unk68) {
             data->unk68 = rotX;
         }
     } else if (rotX < curX) {
-        data->unk68 -= D_800EB728_minigame;
+        data->unk68 -= mgItemTiltStep;
         if (data->unk68 < rotX) {
             data->unk68 = rotX;
         }
     }
     if (curZ < rotZ) {
-        data->unk70 += D_800EB728_minigame;
+        data->unk70 += mgItemTiltStep;
         if (rotZ < data->unk70) {
             data->unk70 = rotZ;
         }
     } else if (rotZ < curZ) {
-        data->unk70 -= D_800EB728_minigame;
+        data->unk70 -= mgItemTiltStep;
         if (data->unk70 < rotZ) {
             data->unk70 = rotZ;
         }
@@ -144,62 +144,62 @@ void func_800D6F20_minigame(omObjData *arg0, Vec *arg1) {
     arg0->rot.z = data->unk70;
 }
 
-void func_800D7084_minigame(A96F0_ObjData *arg0) {
+void MgItemFloorMoveAdd(MgItemWork *arg0) {
     if (__builtin_fabs((f64)arg0->unk5C) > 1.0) {
-        D_800EBE2C_minigame += arg0->unk5C * arg0->unk58;
+        mgMoveOfsX += arg0->unk5C * arg0->unk58;
     }
     if (__builtin_fabs((f64)arg0->unk64) > 1.0) {
-        D_800EC5D8_minigame += arg0->unk64 * arg0->unk58;
+        mgMoveOfsZ += arg0->unk64 * arg0->unk58;
     }
 }
 
-void func_800D710C_minigame(omObjData *arg0) {
-    A96F0_ObjData *data = arg0->data;
+void MgItemSpeedDec(omObjData *arg0) {
+    MgItemWork *data = arg0->data;
     f32 temp;
 
     if (data->unk53 != -1) {
         if (data->unk84[2] != NULL && data->unk84[2](arg0) == 1) {
             return;
         }
-        temp = ((D_800EC1C0_minigame_ObjData *)D_800EC1C0_minigame[data->unk53]->data)->unk08;
+        temp = ((MgMapWork *)mgMapObjTbl[data->unk53]->data)->unk08;
         if (temp != 0.0f) {
             data->unk40 -= temp;
         } else {
-            data->unk40 -= D_800EB740_minigame;
+            data->unk40 -= mgPlayerFriction;
         }
-        if (data->unk40 < D_800EB770_minigame) {
-            data->unk40 = D_800EB770_minigame;
+        if (data->unk40 < mgPlayerSpeedZero) {
+            data->unk40 = mgPlayerSpeedZero;
         }
-        if (data->unk40 > D_800EB724_minigame) {
-            data->unk40 = D_800EB724_minigame;
+        if (data->unk40 > mgItemSpeedMax) {
+            data->unk40 = mgItemSpeedMax;
         }
     }
 }
 
-void func_800D71F0_minigame(omObjData *arg0) {
-    A96F0_ObjData *data = arg0->data;
+void MgItemDirUpdate(omObjData *arg0) {
+    MgItemWork *data = arg0->data;
     Vec dir;
 
     if (data->unk84[3] != NULL && data->unk84[3](arg0) == 1) {
         return;
     }
-    dir.x = -D_800EBE2C_minigame;
+    dir.x = -mgMoveOfsX;
     dir.y = 0.0f;
-    dir.z = -D_800EC5D8_minigame;
+    dir.z = -mgMoveOfsZ;
     MapVecNormalize(&dir);
     dir.x = sindf(data->unk3C) - dir.x / 20.0f;
     dir.z = cosdf(data->unk3C) - dir.z / 20.0f;
     data->unk3C = atan2df(dir.x, dir.z);
 }
 
-f32 func_800D72B0_minigame(omObjData *arg0, Hu3DSphere *arg1) {
-    A96F0_ObjData *data = arg0->data;
+f32 MgItemFloorCheck(omObjData *arg0, Hu3DSphere *arg1) {
+    MgItemWork *data = arg0->data;
     f32 y = arg1->pos.y;
     Vec normal;
     f32 floorY;
     f32 newY;
 
-    newY = func_800D74AC_minigame(arg0, arg1, &normal);
+    newY = MgItemFloorGet(arg0, arg1, &normal);
     floorY = newY;
     if (newY < y - data->unk34 || y + data->unk34 <= newY) {
         if (data->unk38 == 1000.0f) {
@@ -207,12 +207,12 @@ f32 func_800D72B0_minigame(omObjData *arg0, Hu3DSphere *arg1) {
         }
         newY = y;
     }
-    func_800D7388_minigame(arg0, arg1->pos.x, newY, arg1->pos.z, floorY, &normal);
+    MgItemShadowSet(arg0, arg1->pos.x, newY, arg1->pos.z, floorY, &normal);
     return newY;
 }
 
-void func_800D7388_minigame(omObjData *arg0, f32 x, f32 y, f32 z, f32 floorY, Vec *normal) {
-    A96F0_ObjData *data = arg0->data;
+void MgItemShadowSet(omObjData *arg0, f32 x, f32 y, f32 z, f32 floorY, Vec *normal) {
+    MgItemWork *data = arg0->data;
     f32 scale = 1.0f;
     f32 height;
 
@@ -228,13 +228,13 @@ void func_800D7388_minigame(omObjData *arg0, f32 x, f32 y, f32 z, f32 floorY, Ve
         }
         Hu3DModelPosSet(arg0->model[1], x, floorY + 5.0f, z);
         Hu3DModelScaleSet(arg0->model[1], scale, 1.0f, scale);
-        func_800E3628_minigame(arg0->model[1], normal);
+        MgShadowSlopeSet(arg0->model[1], normal);
     }
 }
 
-f32 func_800D74AC_minigame(omObjData *arg0, Hu3DSphere *arg1, Vec *normal) {
-    A96F0_ObjData *data;
-    D_800EC1C0_minigame_ObjData *objData;
+f32 MgItemFloorGet(omObjData *arg0, Hu3DSphere *arg1, Vec *normal) {
+    MgItemWork *data;
+    MgMapWork *objData;
     omObjData *obj;
     Hu3DPoint *points;
     Hu3DQuad *quad;
@@ -256,8 +256,8 @@ f32 func_800D74AC_minigame(omObjData *arg0, Hu3DSphere *arg1, Vec *normal) {
     data = arg0->data;
     floorY = -65536.0f;
     data->unk53 = -1;
-    for (i = 0; i < D_800EBE28_minigame; i++) {
-        obj = D_800EC1C0_minigame[i];
+    for (i = 0; i < mgMapObjNum; i++) {
+        obj = mgMapObjTbl[i];
         objData = obj->data;
         if (data->unk00[i] & 1) {
             continue;
@@ -265,15 +265,15 @@ f32 func_800D74AC_minigame(omObjData *arg0, Hu3DSphere *arg1, Vec *normal) {
         pos.x = x;
         pos.y = y;
         pos.z = z;
-        func_800E28BC_minigame(D_800EC240_minigame, D_800EBE30_minigame, &pos, obj);
+        MgMapPosLocalGet(mgMapMtx, mgMapInvMtx, &pos, obj);
         if (objData->unk06 & 4) {
-            if (func_800E2F40_minigame(Hu3DData[obj->model[0]].hmf->unk60, &pos) == 0) {
+            if (MgBoundsCheck(Hu3DData[obj->model[0]].hmf->unk60, &pos) == 0) {
                 continue;
             }
         }
         if (objData->unk06 & 0x7A) {
             if (objData->unk06 & 0x50) {
-                if (func_800E30B8_minigame(&pos, objData) == 0) {
+                if (MgMapAreaCheck(&pos, objData) == 0) {
                     continue;
                 }
             }
@@ -281,7 +281,7 @@ f32 func_800D74AC_minigame(omObjData *arg0, Hu3DSphere *arg1, Vec *normal) {
             if (obj->trans.x != 0.0f || obj->trans.y != 0.0f || obj->trans.z != 0.0f || obj->rot.x != 0.0f ||
                 obj->rot.y != 0.0f || obj->rot.z != 0.0f) {
                 pos.y = hitY;
-                func_800E2C68_minigame(D_800EC240_minigame, &pos);
+                MgMtxPosYMult(mgMapMtx, &pos);
                 hitY = pos.y;
                 if (floorY <= hitY && hitY < y + 150.0f) {
                     floorY = hitY;
@@ -290,7 +290,7 @@ f32 func_800D74AC_minigame(omObjData *arg0, Hu3DSphere *arg1, Vec *normal) {
                         tmp.x = 0.0f;
                         tmp.y = 1.0f;
                         tmp.z = 0.0f;
-                        func_800E2B58_minigame(D_800EC240_minigame, &tmp);
+                        MgMtxDirMult(mgMapMtx, &tmp);
                         normal->x = tmp.x;
                         normal->y = tmp.y;
                         normal->z = tmp.z;
@@ -309,9 +309,9 @@ f32 func_800D74AC_minigame(omObjData *arg0, Hu3DSphere *arg1, Vec *normal) {
         } else {
             model = obj->model[0];
             points = (Hu3DPoint *)Hu3DData[model].hmf->unk50;
-            Hu3DQuadPoolCollect(model, &D_800EBEB0_minigame, func_800DB704_minigame, &pos);
-            for (quad = Hu3DQuadPoolNext(&D_800EBEB0_minigame); quad != NULL;
-                 quad = Hu3DQuadPoolNext(&D_800EBEB0_minigame)) {
+            Hu3DQuadPoolCollect(model, &mgQuadPool, MgFloorFaceFilter, &pos);
+            for (quad = Hu3DQuadPoolNext(&mgQuadPool); quad != NULL;
+                 quad = Hu3DQuadPoolNext(&mgQuadPool)) {
                 transformed = FALSE;
                 if (Hu3DData[model].pos.x != 0.0f || Hu3DData[model].pos.y != 0.0f ||
                     Hu3DData[model].pos.z != 0.0f || Hu3DData[model].rot.x != 0.0f ||
@@ -319,13 +319,13 @@ f32 func_800D74AC_minigame(omObjData *arg0, Hu3DSphere *arg1, Vec *normal) {
                     tmp.x = x;
                     tmp.y = y + 10.0f;
                     tmp.z = z;
-                    func_800E2BD4_minigame(D_800EBE30_minigame, &tmp);
+                    MgMtxPosMult(mgMapInvMtx, &tmp);
                     dir.x = tmp.x - pos.x;
                     dir.y = tmp.y - pos.y;
                     dir.z = tmp.z - pos.z;
                     MapVecNormalize(&dir);
-                    func_800D8818_minigame(pos.x, pos.y, pos.z, points, quad, &dir, &pos);
-                    func_800E2C68_minigame(D_800EC240_minigame, &pos);
+                    MgFaceRayCross(pos.x, pos.y, pos.z, points, quad, &dir, &pos);
+                    MgMtxPosYMult(mgMapMtx, &pos);
                     hitY = pos.y;
                     transformed = TRUE;
                 } else {
@@ -341,7 +341,7 @@ f32 func_800D74AC_minigame(omObjData *arg0, Hu3DSphere *arg1, Vec *normal) {
                             tmp.x = normal->x;
                             tmp.y = normal->y;
                             tmp.z = normal->z;
-                            func_800E2B58_minigame(D_800EC240_minigame, &tmp);
+                            MgMtxDirMult(mgMapMtx, &tmp);
                             normal->x = tmp.x;
                             normal->y = tmp.y;
                             normal->z = tmp.z;
@@ -352,13 +352,13 @@ f32 func_800D74AC_minigame(omObjData *arg0, Hu3DSphere *arg1, Vec *normal) {
             }
         }
     }
-    func_800D6E74_minigame(arg0, normal);
+    MgItemFloorVelSet(arg0, normal);
     return floorY;
 }
 
-void func_800D7AA8_minigame(omObjData *arg0, f32 x, f32 y, f32 z) {
-    A96F0_ObjData *data = arg0->data;
-    A96F0_ObjData *otherData;
+void MgItemPlayerPush(omObjData *arg0, f32 x, f32 y, f32 z) {
+    MgItemWork *data = arg0->data;
+    MgItemWork *otherData;
     omObjData *other;
     f32 dx;
     f32 dz;
@@ -368,28 +368,28 @@ void func_800D7AA8_minigame(omObjData *arg0, f32 x, f32 y, f32 z) {
     if ((data->unk52 & 7) != 0) {
         return;
     }
-    for (i = 0; i < D_800EC280_minigame; i++) {
-        other = D_800EC598_minigame[i];
+    for (i = 0; i < mgPlayerObjNum; i++) {
+        other = mgPlayerObjTbl[i];
         otherData = other->data;
-        dx = other->trans.x - (x + D_800EBE2C_minigame);
-        dz = other->trans.z - (z + D_800EC5D8_minigame);
+        dx = other->trans.x - (x + mgMoveOfsX);
+        dz = other->trans.z - (z + mgMoveOfsZ);
         dist = HuSqrtf(dx * dx + dz * dz) - (data->unk48 + otherData->unk48);
         // The do-while(0) raises the loop depth weighting of the 0.0f/1000.0f
         // constant uses, needed to match float register allocation.
         do {
             if (dist < 0.0f && data->unk38 == 1000.0f && otherData->unk38 == 1000.0f) {
-                func_800DFCDC_minigame(dx, dz, dist);
+                MgMoveOfsAdd(dx, dz, dist);
             }
         } while (0);
     }
 }
 
-void func_800D7C14_minigame(omObjData *arg0, Hu3DSphere *arg1) {
-    A96F0_ObjData *data = arg0->data;
+void MgItemWallCheck(omObjData *arg0, Hu3DSphere *arg1) {
+    MgItemWork *data = arg0->data;
     Hu3DSphere sphere;
-    func_800DBCF4_minigame_Arg local;
+    MgHitSphere local;
     omObjData *obj;
-    D_800EC1C0_minigame_ObjData *objData;
+    MgMapWork *objData;
     s16 count;
     s16 i;
 
@@ -397,9 +397,9 @@ void func_800D7C14_minigame(omObjData *arg0, Hu3DSphere *arg1) {
     sphere.pos.y = data->unk34 / 2 + arg1->pos.y;
     sphere.pos.z = arg1->pos.z;
     sphere.radius = arg1->radius;
-    D_800EB736_minigame = 0;
-    for (i = 0; i < D_800EBE28_minigame; i++) {
-        obj = D_800EC1C0_minigame[i];
+    mgWallNum = 0;
+    for (i = 0; i < mgMapObjNum; i++) {
+        obj = mgMapObjTbl[i];
         objData = obj->data;
         if (objData->unk06 & 2) {
             continue;
@@ -407,61 +407,61 @@ void func_800D7C14_minigame(omObjData *arg0, Hu3DSphere *arg1) {
         if (data->unk00[i] & 1) {
             continue;
         }
-        count = D_800EB736_minigame;
+        count = mgWallNum;
         local.pos.x = local.prev.x = arg1->pos.x;
         local.pos.y = local.prev.y = data->unk34 / 2 + arg1->pos.y;
         local.pos.z = local.prev.z = arg1->pos.z;
         local.radius = sphere.radius = arg1->radius;
-        func_800E28BC_minigame(D_800EC240_minigame, D_800EBE30_minigame, &local.pos, obj);
+        MgMapPosLocalGet(mgMapMtx, mgMapInvMtx, &local.pos, obj);
         if (objData->unk06 & 4) {
-            if (func_800E2FD8_minigame(Hu3DData[obj->model[0]].hmf->unk60, &local.pos, data->unk48) == 0) {
+            if (MgBoundsMarginCheck(Hu3DData[obj->model[0]].hmf->unk60, &local.pos, data->unk48) == 0) {
                 continue;
             }
         }
         if (objData->unk06 & 8) {
-            local.pos.x += D_800EBE2C_minigame;
-            local.pos.y += D_800EC5D8_minigame;
-            func_800DC354_minigame(obj, (Hu3DSphere *)&local, &local.prev);
+            local.pos.x += mgMoveOfsX;
+            local.pos.y += mgMoveOfsZ;
+            MgMapBoxBoundsHit(obj, (Hu3DSphere *)&local, &local.prev);
         } else if (objData->unk06 & 0x10) {
-            local.pos.x += D_800EBE2C_minigame;
-            local.pos.y += D_800EC5D8_minigame;
-            func_800DCCB0_minigame(obj, (Hu3DSphere *)&local, &local.prev, data->unk34 / 2);
+            local.pos.x += mgMoveOfsX;
+            local.pos.y += mgMoveOfsZ;
+            MgMapBlockHit(obj, (Hu3DSphere *)&local, &local.prev, data->unk34 / 2);
         } else if (objData->unk06 & 0x20) {
-            local.pos.x += D_800EBE2C_minigame;
-            local.pos.y += D_800EC5D8_minigame;
-            func_800DC7D8_minigame(obj, (Hu3DSphere *)&local);
+            local.pos.x += mgMoveOfsX;
+            local.pos.y += mgMoveOfsZ;
+            MgMapCircleBoundsHit(obj, (Hu3DSphere *)&local);
         } else if (objData->unk06 & 0x40) {
-            local.pos.x += D_800EBE2C_minigame;
-            local.pos.y += D_800EC5D8_minigame;
-            func_800DC8E4_minigame(obj, (Hu3DSphere *)&local, data->unk34 / 2);
+            local.pos.x += mgMoveOfsX;
+            local.pos.y += mgMoveOfsZ;
+            MgMapCylinderHit(obj, (Hu3DSphere *)&local, data->unk34 / 2);
         } else {
-            Hu3DQuadPoolCollect(D_800EC1C0_minigame[i]->model[0], &D_800EBEB0_minigame,
-                               (s32 (*)(s32, s16 *, Hu3DPoint *, Vec *))func_800DBCF4_minigame, &local.pos);
+            Hu3DQuadPoolCollect(mgMapObjTbl[i]->model[0], &mgQuadPool,
+                               (s32 (*)(s32, s16 *, Hu3DPoint *, Vec *))MgWallFaceHitEx, &local.pos);
         }
-        if (count != D_800EB736_minigame) {
-            func_800E2B58_minigame(D_800EC240_minigame, &D_800EC298_minigame[count]);
+        if (count != mgWallNum) {
+            MgMtxDirMult(mgMapMtx, &mgWallNorTbl[count]);
         }
     }
-    func_800D7FA8_minigame(arg0);
+    MgItemWallReflect(arg0);
 }
 
-void func_800D7FA8_minigame(omObjData *arg0) {
-    A96F0_ObjData *data;
+void MgItemWallReflect(omObjData *arg0) {
+    MgItemWork *data;
     Vec wall;
     Vec dir;
     Vec reflect;
     f32 dot;
 
-    if (D_800EB736_minigame == 0) {
+    if (mgWallNum == 0) {
         return;
     }
     data = arg0->data;
     if (data->unk84[5] != NULL && data->unk84[5](arg0) == 1) {
         return;
     }
-    wall.x = D_800EC298_minigame[0].x;
+    wall.x = mgWallNorTbl[0].x;
     wall.y = dir.y = 0.0f;
-    wall.z = D_800EC298_minigame[0].z;
+    wall.z = mgWallNorTbl[0].z;
     dir.x = sindf(data->unk3C + 180.0f);
     dir.z = cosdf(data->unk3C + 180.0f);
     dot = HuVecDot3F(&wall, &dir);
@@ -473,8 +473,8 @@ void func_800D7FA8_minigame(omObjData *arg0) {
     data->unk40 *= 0.8f;
 }
 
-void func_800D80DC_minigame(omObjData *arg0) {
-    A96F0_ObjData *data = arg0->data;
+void MgItemLifeUpdate(omObjData *arg0) {
+    MgItemWork *data = arg0->data;
     s32 remaining;
 
     data->unk78++;
@@ -501,9 +501,9 @@ void func_800D80DC_minigame(omObjData *arg0) {
     }
 }
 
-void func_800D81C8_minigame(omObjData *arg0, omObjData *arg1) {
-    A96F0_ObjData *data = arg1->data;
-    func_800E1BA8_minigame_ObjData *playerData = arg0->data;
+void MgItemCoinGet(omObjData *arg0, omObjData *arg1) {
+    MgItemWork *data = arg1->data;
+    MgPlayerWork *playerData = arg0->data;
     u8 sprite;
     u8 model;
 
@@ -542,13 +542,13 @@ void func_800D81C8_minigame(omObjData *arg0, omObjData *arg1) {
     Hu3DModelAttrSet(arg1->model[1], 4, 4);
 }
 
-void func_800D83D8_minigame(omObjData *arg0, s32 arg1) {
-    A96F0_ObjData *data;
+void MgItemInit(omObjData *arg0, s32 arg1) {
+    MgItemWork *data;
     s32 shadowFile = 0x299;
     s32 i;
 
-    arg0->data = HuMemAllocTag(sizeof(A96F0_ObjData), TAG_OVERLAY);
-    memset(arg0->data, 0, sizeof(A96F0_ObjData));
+    arg0->data = HuMemAllocTag(sizeof(MgItemWork), TAG_OVERLAY);
+    memset(arg0->data, 0, sizeof(MgItemWork));
     data = arg0->data;
     data->unkA8 = HuMemAllocTag(4, TAG_OVERLAY);
     // Empty loop needed to match; keeps shadowFile | 0x400 from being
@@ -556,12 +556,12 @@ void func_800D83D8_minigame(omObjData *arg0, s32 arg1) {
     for (i = 0; i < 0; i++) {
     }
     if (arg1 == 3) {
-        func_800E1594_minigame(arg0, 10, 0x689, 8);
-        func_800E1718_minigame(arg0, 3, 12, shadowFile | 0x400, 8);
+        MgObjSprMdlCreate(arg0, 10, 0x689, 8);
+        MgObjSprCreate(arg0, 3, 12, shadowFile | 0x400, 8);
         Hu3DSprModelTPLvlSet(data->unk21[3], 240);
         Hu3DSprModelColorSet(data->unk21[3], 255, 255, 134);
     }
-    if (D_800EB739_minigame == 0) {
+    if (mgShadowAltF == 0) {
         arg0->model[1] = Hu3DModelRead3(0, shadowFile);
     } else {
         arg0->model[1] = Hu3DModelRead3(9, shadowFile);
@@ -575,24 +575,24 @@ void func_800D83D8_minigame(omObjData *arg0, s32 arg1) {
     data->unk7C = 300;
     data->unk50 = 0;
     data->unk40 = 0.0f;
-    func_800E17F4_minigame(arg0, 2.0f, 2.0f, 2.0f);
+    MgObjScaleSet(arg0, 2.0f, 2.0f, 2.0f);
     for (i = 0; i < 9; i++) {
         data->unk84[i] = NULL;
     }
 }
 
-void func_800D853C_minigame(omObjData *arg0, omObjData *arg1) {
-    A96F0_ObjData *data1 = arg1->data;
-    A96F0_ObjData *data0 = arg0->data;
+void MgItemRelease(omObjData *arg0, omObjData *arg1) {
+    MgItemWork *data1 = arg1->data;
+    MgItemWork *data0 = arg0->data;
 
     if (data1->unk84[6] != NULL && data1->unk84[6](arg0) == 1) {
         return;
     }
-    data1->unk38 = -D_800EB744_minigame * 0.6f;
+    data1->unk38 = -mgPlayerJumpPower * 0.6f;
     data1->unk3C = data0->unk3C;
     data1->unk40 = data0->unk40;
-    if (data1->unk40 < D_800EB760_minigame) {
-        data1->unk40 = D_800EB760_minigame;
+    if (data1->unk40 < mgPlayerSpeedMax) {
+        data1->unk40 = mgPlayerSpeedMax;
     }
     data1->unk80 = NULL;
     arg1->trans.x = arg0->trans.x;
@@ -600,7 +600,7 @@ void func_800D853C_minigame(omObjData *arg0, omObjData *arg1) {
     arg1->trans.z = arg0->trans.z;
 }
 
-void func_800D861C_minigame(A96F0_ObjData *arg0, s32 arg1, s32 (*arg2)(omObjData *)) {
+void MgItemHookSet(MgItemWork *arg0, s32 arg1, s32 (*arg2)(omObjData *)) {
     if (arg1 < 9) {
         arg0->unk84[arg1] = arg2;
     }

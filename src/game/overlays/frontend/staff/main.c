@@ -219,12 +219,12 @@ void func_8010615C_staff(void) {
         up.y = 1.0f;
         up.z = 0.0f;
     }
-    D_800CE17C_main[0] = pos.x;
-    D_800CE17C_main[1] = pos.z;
-    D_800CE17C_main[-1] = CRot.y;
-    D_800CE17C_main[2] = gCameraList->fov;
-    D_800CE17C_main[3] = CFanLen;
-    D_800CE17C_main[4] = CFanOfs;
+    CFanParam[0] = pos.x;
+    CFanParam[1] = pos.z;
+    CFanParam[-1] = CRot.y;
+    CFanParam[2] = gCameraList->fov;
+    CFanParam[3] = CFanLen;
+    CFanParam[4] = CFanOfs;
     Hu3DCameraPosSetV(0, &pos, &at, &up);
     Hu3DCamUpdateMtx(0);
 }

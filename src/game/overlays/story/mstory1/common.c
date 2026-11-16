@@ -101,12 +101,12 @@ void func_80105EF4_mstory1(void) {
 }
 
 void func_80105F28_mstory1(omObjData *obj) {
-    D_800CE17C_main[0] = D_80114A8C_mstory1.x;
-    D_800CE17C_main[1] = D_80114A8C_mstory1.z;
-    D_800CE17C_main[-1] = 0.0f;
-    D_800CE17C_main[2] = 35.0f;
-    D_800CE17C_main[3] = CFanLen;
-    D_800CE17C_main[4] = CFanOfs;
+    CFanParam[0] = D_80114A8C_mstory1.x;
+    CFanParam[1] = D_80114A8C_mstory1.z;
+    CFanParam[-1] = 0.0f;
+    CFanParam[2] = 35.0f;
+    CFanParam[3] = CFanLen;
+    CFanParam[4] = CFanOfs;
     Hu3DCameraPosSetV(0, &D_80114A8C_mstory1, &D_80114A98_mstory1, &D_80114AA4_mstory1);
     Hu3DCamUpdateMtx(0);
 }

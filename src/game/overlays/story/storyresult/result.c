@@ -69,7 +69,7 @@ s16 func_8010A5C4_storyresult(s16 playerIdx);
 s16 func_8010A738_storyresult(s16 playerIdx);
 s16 func_8010A7B0_storyresult(s16 playerIdx);
 s16 func_8010A7EC_storyresult(void);
-extern s16 D_800EBAF0_minigame;
+extern s16 mgStoryStatPortNo;
 extern s16 winPrio;
 
 s32 D_8010A940_storyresult[13] = { 4, 23, 7, 23, 10, 23, 13, 23, 16, 23, 23, 19, 23 };
@@ -563,7 +563,7 @@ Process *func_8010818C_storyresult(s16 *arg0, s16 arg1) {
     }
     _SetFlag(0x1E);
     *arg0 = arg1;
-    D_800EBAF0_minigame = D_8010ABE0_storyresult;
+    mgStoryStatPortNo = D_8010ABE0_storyresult;
     prc = omAddPrcObj(func_80107920_storyresult, 0x4000, 0x800, 0);
     prc->user_data = arg0;
     return prc;
@@ -600,13 +600,13 @@ void func_8010822C_storyresult(void) {
 Process *func_8010832C_storyresult(s16 *arg0, s16 arg1) {
     Process *prc;
 
-    if (func_800E905C_minigame(arg1) < 0) {
+    if (MgStoryRankGet(arg1) < 0) {
         *arg0 = -1;
         return NULL;
     }
     *arg0 = arg1;
-    D_800EBAF0_minigame = 0;
-    prc = omAddPrcObj(func_800E9170_minigame, 0x4000, 0x800, 0);
+    mgStoryStatPortNo = 0;
+    prc = omAddPrcObj(MgStoryStatViewProc, 0x4000, 0x800, 0);
     prc->user_data = arg0;
     return prc;
 }

@@ -19,7 +19,6 @@ extern u16 HuPadBtnDown[4];
 extern u16 omSysExitReq;
 extern u8 omSysPauseDisableF;
 
-// extern Unk800D6B48 D_800D6B48_main[2];
 
 extern s16 mbUnkParam;
 extern s16 mbEndingF;

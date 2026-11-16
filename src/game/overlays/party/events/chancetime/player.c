@@ -6,7 +6,7 @@ extern s32 D_8010FE74_chancetime;
 extern s8 D_8010FE78_chancetime;
 extern s16 D_8010FE7A_chancetime[3];
 extern ChanceTimeObjState D_801100C0_chancetime;
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 
 void func_80106760_chancetime(omObjData *object);
 void func_80106768_chancetime(void);
@@ -28,7 +28,7 @@ void func_80106320_chancetime(void) {
     D_801100C0_chancetime.obj = obj;
     chr = GwPlayer[D_801100D0_chancetime[0]].chr;
 
-    obj->model[1] = Hu3DModelRead(D_800A178C_main[chr][0] | D_800A178C_main[chr][2], 0x2A9);
+    obj->model[1] = Hu3DModelRead(omCharModelNoTbl[chr][0] | omCharModelNoTbl[chr][2], 0x2A9);
     Hu3DMotionAttrSet(obj->model[1], 2, 2);
     Hu3DModelPosSet(obj->model[1], 360.0f, 0.0f, -50.0f);
     Hu3DModelRotSet(obj->model[1], 0.0f, -90.0f, 0.0f);

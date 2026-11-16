@@ -52,7 +52,7 @@ extern Vec mbPlayerFixPosTbl[];
 extern Object *mbBattleKuriboMdl;
 extern Object *mbBattleKuriboUpperMdl;
 extern omObjData *mbBattleKuriboObj;
-extern s16 D_800A12C8_main;
+extern s16 mbWipeTypeNext;
 extern f32 mbCameraZoom;
 extern s16 mbSeqPlayF;
 extern s16 kakusiMasuItemForceF;
@@ -475,7 +475,7 @@ void MBPlayerTauntProc(void) {
     while (1) {
         if (
             (MBPlayerComCheck(temp_s0[0]) == 0) &&
-            (D_800A12D8_main == 0) &&
+            (mbTauntOffF == 0) &&
             ((GwSystem.current_player_index != temp_s0[0]) || (mbTurnUnkF == 0)) &&
             (ContBtnDown[GwPlayer[temp_s0[0]].pad] & 0x20)) {
             PlayerFXPlay(0x2BD, temp_s0[0]);
@@ -636,11 +636,11 @@ static void MBSaveInit(void) {
     MBMgCallHisInit();
     MBSaiValueClear(); // clear lucky 7 flag for buffing golden mushrooms
 
-    D_800A12C8_main = -1;
+    mbWipeTypeNext = -1;
     mbSubMusNo = -1;
     mbSeqPlayF = 0;
     mbTurnUnkF = 1;
-    D_800A12D8_main = 0;
+    mbTauntOffF = 0;
 
     MBPlayerInit(0);
     MBPlayerInit(1);
@@ -3497,14 +3497,14 @@ void MBStart(u32 arg0) {
                     MBScissorEmptySet();
                     break;
                 default:
-                    if (D_800A12C8_main != -1) {
-                        if (D_800A12C8_main == 0) {
+                    if (mbWipeTypeNext != -1) {
+                        if (mbWipeTypeNext == 0) {
                             WipeColorSet(255, 255, 255);
                         } else {
                             WipeColorSet(0, 0, 0);
                         }
-                        WipeCreateIn(D_800A12C8_main, 0x10);
-                        D_800A12C8_main = -1;
+                        WipeCreateIn(mbWipeTypeNext, 0x10);
+                        mbWipeTypeNext = -1;
                         MBPlayerVibrate(0, 0);
                         MBPlayerVibrate(1, 0);
                         MBPlayerVibrate(2, 0);
@@ -3555,7 +3555,7 @@ void MBExitReturnSet(s16 arg0) {
 }
 
 void MBWipeTypeNextSet(s32 arg0) {
-    D_800A12C8_main = arg0;
+    mbWipeTypeNext = arg0;
 }
 
 void MBExitOvlCallEx(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {

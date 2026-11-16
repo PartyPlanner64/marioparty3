@@ -179,7 +179,7 @@ void func_801059A0_thwomp_pull(void) {
     D_8010ED60_thwomp_pull.newRecord = FALSE;
     D_8010ED60_thwomp_pull.gauge = MG_GAUGE_NONE;
     D_8010ED60_thwomp_pull.timeLimit = -1;
-    func_800E5EA0_minigame(&D_8010ED60_thwomp_pull);
+    MgFlowInit(&D_8010ED60_thwomp_pull);
 }
 
 void func_80105D3C_thwomp_pull(omObjData *object) {
@@ -276,7 +276,7 @@ void func_80105F14_thwomp_pull(omObjData *object) {
                 }
             }
             if (D_8010F5A4_thwomp_pull == 2) {
-                func_800E6F34_minigame(30);
+                MgFlowResultWaitSet(30);
             }
             if (D_8010F5A4_thwomp_pull >= 31 && D_8010F5A4_thwomp_pull <= 61) {
                 D_8010F588_thwomp_pull = (D_8010F5A4_thwomp_pull - 31) / 30.0;
@@ -343,7 +343,7 @@ void func_80105F14_thwomp_pull(omObjData *object) {
                 }
                 D_8010ED88_thwomp_pull += (D_8010ED88_thwomp_pull != 99);
             }
-            if (D_800EB934_minigame != 0) {
+            if (mgFlowResultF != 0) {
                 s32 slots[8] = { 0, 1, 2, 3, 4, 5, 6, 7 };
 
                 if (D_8010F566_thwomp_pull == 0) {

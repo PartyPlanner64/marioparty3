@@ -37,9 +37,9 @@ typedef struct {
     /* 0x08 */ u16 button;
 } MpiqCpuInput; // Size 0xC
 
-// Data of the objects registered in D_800EC1C0_minigame
+// Data of the objects registered in mgMapObjTbl
 typedef struct {
-    /* 0x00 */ D_800EC1C0_minigame_ObjData header;
+    /* 0x00 */ MgMapWork header;
     /* 0xB0 */ void *unkB0;
 } MpiqStageData; // Size 0xB4
 
@@ -76,7 +76,7 @@ typedef struct {
     /* 0x06 */ s16 imageIds[3];
 } MpiqBssCAEC; // Size 0xC
 
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 extern u8 omAllPauseF;
 
 MinigameFlow D_8010C680_mpiq = {
@@ -197,7 +197,7 @@ void func_801059A0_mpiq(void) {
 
     omInitObjMan(40, 20);
     MapCollInit(16);
-    Hu3DQuadPoolInit(&D_800EBEB0_minigame, 64);
+    Hu3DQuadPoolInit(&mgQuadPool, 64);
     Hu3DSprModelInit(64);
     HuAudCharVoiceInit();
     omGameSysInit();
@@ -206,15 +206,15 @@ void func_801059A0_mpiq(void) {
     func_80108A3C_mpiq(2000.0f, 0.0f, 0.0f, 0.0f, 0.0f, 420.0f, 0.0f);
     omOutView(obj);
     Hu3DBGColorSet(0, 0, 0);
-    func_800E5EA0_minigame(&D_8010C680_mpiq);
+    MgFlowInit(&D_8010C680_mpiq);
     WipeCreateIn(0xFF, 16);
-    D_800EBE28_minigame = 0;
-    D_800EC280_minigame = 0;
-    func_800E18D8_minigame();
-    D_800EB774_minigame = 1.0f;
+    mgMapObjNum = 0;
+    mgPlayerObjNum = 0;
+    MgPlayerParamReset();
+    mgPlayerFallMax = 1.0f;
     D_8010C9F8_mpiq = 0;
     D_8010D020_mpiq = 58;
-    func_800E19F0_minigame(1);
+    MgShadowAltSet(1);
     HuWinInit();
     func_80106B5C_mpiq();
     func_8010720C_mpiq();
@@ -238,9 +238,9 @@ void func_801059A0_mpiq(void) {
     func_80107F28_mpiq();
     D_8010C9B8_mpiq = 0;
     D_8010C9BA_mpiq = 0;
-    D_800EBE24_minigame = 0;
-    D_800EB930_minigame = 49;
-    D_800EB932_minigame = 60;
+    mgFieldStat = 0;
+    mgFlowSeqNo = 49;
+    mgFlowSeqTime = 60;
 }
 
 void func_80105C60_mpiq(omObjData *obj) {
@@ -313,33 +313,33 @@ void func_80105E14_mpiq(omObjData *obj, s32 index) {
     s32 motion9[8] = { 0x3A, 0x3A, 0x3A, 0x3A, 0x3A, 0x3A, 0x3A, 0x3A };
     s32 motion10[8] = { 0x15, 0x15, 0x15, 0x15, 0x15, 0x15, 0x15, 0x15 };
     s32 motion11[8] = { 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23 };
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     s32 chr;
     s32 model;
     s32 motion;
     s32 attr1;
     s32 attr2;
 
-    D_800EC598_minigame[D_800EC280_minigame++] = obj;
-    model = D_800A178C_main[GwPlayer[index].chr][0];
-    motion = D_800A178C_main[GwPlayer[index].chr][1];
+    mgPlayerObjTbl[mgPlayerObjNum++] = obj;
+    model = omCharModelNoTbl[GwPlayer[index].chr][0];
+    motion = omCharModelNoTbl[GwPlayer[index].chr][1];
     attr1 = 0x20AB9;
     attr2 = 0x20A99;
-    func_800E1BA8_minigame(obj, model, motion, index, attr1, attr2);
+    MgPlayerCreate(obj, model, motion, index, attr1, attr2);
     data = obj->data;
     chr = GwPlayer[index].chr;
-    func_800E5A00_minigame(obj, 0, CharMotionDataNumGet(chr, motion0[chr]), 1, 0);
-    func_800E5A00_minigame(obj, 6, CharMotionDataNumGet(chr, motion1[chr]), 1, 19);
-    func_800E5A00_minigame(obj, 21, CharMotionDataNumGet(chr, motion2[chr]), 0, 0);
-    func_800E5A00_minigame(obj, 14, CharMotionDataNumGet(chr, motion3[chr]), 1, 120);
-    func_800E5A00_minigame(obj, 13, CharMotionDataNumGet(chr, motion4[chr]), 1, 120);
-    func_800E5A00_minigame(obj, 38, CharMotionDataNumGet(chr, motion5[chr]), 0, 0);
-    func_800E5A00_minigame(obj, 39, CharMotionDataNumGet(chr, motion6[chr]), 0, 0);
-    func_800E5A00_minigame(obj, 40, CharMotionDataNumGet(chr, motion7[chr]), 0, 0);
-    func_800E5A00_minigame(obj, 41, CharMotionDataNumGet(chr, motion8[chr]), 0, 0);
-    func_800E5A00_minigame(obj, 42, CharMotionDataNumGet(chr, motion9[chr]), 0, 0);
-    func_800E5A00_minigame(obj, 43, CharMotionDataNumGet(chr, motion10[chr]), 1, 0);
-    func_800E5A00_minigame(obj, 33, CharMotionDataNumGet(chr, motion11[chr]), 1, 0);
+    MgPlayerMotLoad(obj, 0, CharMotionDataNumGet(chr, motion0[chr]), 1, 0);
+    MgPlayerMotLoad(obj, 6, CharMotionDataNumGet(chr, motion1[chr]), 1, 19);
+    MgPlayerMotLoad(obj, 21, CharMotionDataNumGet(chr, motion2[chr]), 0, 0);
+    MgPlayerMotLoad(obj, 14, CharMotionDataNumGet(chr, motion3[chr]), 1, 120);
+    MgPlayerMotLoad(obj, 13, CharMotionDataNumGet(chr, motion4[chr]), 1, 120);
+    MgPlayerMotLoad(obj, 38, CharMotionDataNumGet(chr, motion5[chr]), 0, 0);
+    MgPlayerMotLoad(obj, 39, CharMotionDataNumGet(chr, motion6[chr]), 0, 0);
+    MgPlayerMotLoad(obj, 40, CharMotionDataNumGet(chr, motion7[chr]), 0, 0);
+    MgPlayerMotLoad(obj, 41, CharMotionDataNumGet(chr, motion8[chr]), 0, 0);
+    MgPlayerMotLoad(obj, 42, CharMotionDataNumGet(chr, motion9[chr]), 0, 0);
+    MgPlayerMotLoad(obj, 43, CharMotionDataNumGet(chr, motion10[chr]), 1, 0);
+    MgPlayerMotLoad(obj, 33, CharMotionDataNumGet(chr, motion11[chr]), 1, 0);
     screenPos.x = D_8010C6A8_mpiq[index];
     screenPos.y = 180.0f;
     Hu3D2Dto3D(0, CZoom, &screenPos, &pos);
@@ -348,12 +348,12 @@ void func_80105E14_mpiq(omObjData *obj, s32 index) {
     obj->trans.y = 0.0f;
     obj->trans.z = 0.0f;
     obj->rot.y = 180.0f;
-    func_800E149C_minigame(obj, 0, 1);
-    func_800E149C_minigame(obj, 1, 2);
-    func_800E149C_minigame(obj, 2, 2);
-    func_800E149C_minigame(obj, 3, 2);
-    func_800E149C_minigame(obj, 4, 2);
-    func_800E5690_minigame(obj, 0);
+    MgPlayerMapAttrSet(obj, 0, 1);
+    MgPlayerMapAttrSet(obj, 1, 2);
+    MgPlayerMapAttrSet(obj, 2, 2);
+    MgPlayerMapAttrSet(obj, 3, 2);
+    MgPlayerMapAttrSet(obj, 4, 2);
+    MgPlayerMotSet(obj, 0);
     D_8010C9C8_mpiq[index] = 0;
     D_8010C9E8_mpiq[index] = 0;
     data->unk104[2] = func_80106658_mpiq;
@@ -361,7 +361,7 @@ void func_80105E14_mpiq(omObjData *obj, s32 index) {
 }
 
 void func_8010651C_mpiq(omObjData *obj) {
-    func_800E1BA8_minigame_ObjData *data = obj->data;
+    MgPlayerWork *data = obj->data;
     f32 x = obj->trans.x;
     f32 z = obj->trans.z;
 
@@ -375,7 +375,7 @@ void func_8010651C_mpiq(omObjData *obj) {
         HuPadBtn[data->unk57] &= 0x7FFF;
         HuPadBtnDown[data->unk57] &= 0x7FFF;
     }
-    func_800DDD94_minigame(obj);
+    MgPlayerObjMain(obj);
     data->unk60 = 0;
     obj->trans.x = x;
     obj->trans.z = z;
@@ -452,7 +452,7 @@ void func_80106664_mpiq(s32 index) {
 }
 
 void func_801069F8_mpiq(s32 index) {
-    func_800E1BA8_minigame_ObjData *data = D_800EC598_minigame[index]->data;
+    MgPlayerWork *data = mgPlayerObjTbl[index]->data;
 
     if (D_8010C9E8_mpiq[index] & 1) {
         return;
@@ -485,8 +485,8 @@ void func_80106B5C_mpiq(void) {
     obj->trans.x = 0.0f;
     obj->trans.y = 0.0f;
     obj->trans.z = 0.0f;
-    func_800E1490_minigame(D_800EBE28_minigame);
-    D_800EC1C0_minigame[D_800EBE28_minigame++] = obj;
+    MgMapBaseSet(mgMapObjNum);
+    mgMapObjTbl[mgMapObjNum++] = obj;
     memset(obj->data, 0, sizeof(MpiqStageData));
     work->header.unk03 = 1;
     work->header.unk08 = 0.5f;
@@ -619,12 +619,12 @@ void func_8010720C_mpiq(void) {
         screenPos.y = 180.0f;
         Hu3D2Dto3D(0, CZoom, &screenPos, &pos);
         omSetTra(obj, pos.x, 0.0f, 0.0f);
-        D_800EC1C0_minigame[D_800EBE28_minigame++] = obj;
+        mgMapObjTbl[mgMapObjNum++] = obj;
         memset(obj->data, 0, sizeof(MpiqStageData));
         work->header.unk03 = 1;
         work->header.unk08 = 0.5f;
         work->header.unk04 = i + 1;
-        func_800E13CC_minigame(obj, 0.0f, 100.0f, -100.0f, -100.0f, 100.0f, 100.0f);
+        MgMapBlockSet(obj, 0.0f, 100.0f, -100.0f, -100.0f, 100.0f, 100.0f);
         D_8010CA90_mpiq[i] = 0;
         D_8010CAA0_mpiq[i] = 0;
     }
@@ -752,21 +752,21 @@ void func_80107774_mpiq(omObjData *obj) {
             work->flags &= ~0x20;
         }
     }
-    if (func_801089D0_mpiq(obj, D_800EC598_minigame[D_8010C9BC_mpiq])) {
+    if (func_801089D0_mpiq(obj, mgPlayerObjTbl[D_8010C9BC_mpiq])) {
         if (work->flags & 3) {
             if (work->unk_24 == 0) {
                 _HuAudPlayerFXPlay(0x411, D_8010C9BE_mpiq);
                 work->unk_24 = 1;
             }
-            func_800E561C_minigame(D_800EC598_minigame[D_8010C9BC_mpiq], 1);
+            MgPlayerSquashSet(mgPlayerObjTbl[D_8010C9BC_mpiq], 1);
             omVibrate(D_8010C9BE_mpiq, 20, 0, 20);
         } else if (D_8010C9C2_mpiq == 0) {
             Hu3DMotionAttrSet(obj->model[0], 4, 0);
             Hu3DMotionAttrSet(obj->model[0], 1, 0);
-            func_800E58F8_minigame(D_800EC598_minigame[D_8010C9BC_mpiq], 0x26, 0);
+            MgPlayerMotSwap(mgPlayerObjTbl[D_8010C9BC_mpiq], 0x26, 0);
             D_8010C9C2_mpiq = 1;
             for (i = 0; i < 4; i++) {
-                func_800E12EC_minigame(D_800EC598_minigame[i], 1000.0f);
+                MgPlayerVelYSet(mgPlayerObjTbl[i], 1000.0f);
             }
             work->flags |= 0x20;
             work->timer = 7;
@@ -866,7 +866,7 @@ void func_80107FC4_mpiq(omObjData *obj) {
 
 void func_80107FCC_mpiq(s32 index) {
     f32 heights[8] = { 100.0f, 110.0f, 100.0f, 110.0f, 100.0f, 120.0f, 110.0f, 100.0f };
-    omObjData *player = D_800EC598_minigame[index];
+    omObjData *player = mgPlayerObjTbl[index];
     s32 chr = GwPlayer[index].chr;
     f32 x = player->trans.x;
     f32 y = player->trans.y + heights[chr];
@@ -1157,7 +1157,7 @@ void func_80109018_mpiq(void) {
     u16 buttons;
 
     while (TRUE) {
-        player = D_800EC598_minigame[D_8010C9BC_mpiq];
+        player = mgPlayerObjTbl[D_8010C9BC_mpiq];
         if (D_8010C9C2_mpiq == 1 && D_8010C6B8_mpiq == -1 && (D_8010C9C0_mpiq & 4) &&
             func_8010C4C0_mpiq(D_8010C9BC_mpiq)) {
             buttons = HuPadBtnDown[GwPlayer[D_8010C9BC_mpiq].pad];
@@ -1171,12 +1171,12 @@ void func_80109018_mpiq(void) {
             work->scale = 0.0f;
             if ((buttons & 0xE000) == 0x8000) {
                 D_8010C6B8_mpiq = 0;
-                func_800E58F8_minigame(player, 0x26, 0);
-                func_800E5798_minigame(player, 0x27);
+                MgPlayerMotSwap(player, 0x26, 0);
+                MgPlayerMotForceSet(player, 0x27);
                 while (Hu3DData[player->model[0]].motTime < Hu3DMotion[Hu3DData[player->model[0]].motId].unk02) {
                     HuPrcVSleep();
                 }
-                func_800E5798_minigame(player, 0x28);
+                MgPlayerMotForceSet(player, 0x28);
                 HuPrcSleep(2);
                 work->flags |= 5;
                 HuPrcSleep(30);
@@ -1185,12 +1185,12 @@ void func_80109018_mpiq(void) {
             }
             if ((buttons & 0xE000) == 0x4000) {
                 D_8010C6B8_mpiq = 1;
-                func_800E58F8_minigame(player, 0x26, 0);
-                func_800E5798_minigame(player, 0x27);
+                MgPlayerMotSwap(player, 0x26, 0);
+                MgPlayerMotForceSet(player, 0x27);
                 while (Hu3DData[player->model[0]].motTime < Hu3DMotion[Hu3DData[player->model[0]].motId].unk02) {
                     HuPrcVSleep();
                 }
-                func_800E5798_minigame(player, 0x28);
+                MgPlayerMotForceSet(player, 0x28);
                 HuPrcSleep(2);
                 work->flags |= 9;
                 HuPrcSleep(30);
@@ -1199,12 +1199,12 @@ void func_80109018_mpiq(void) {
             }
             if ((buttons & 0xE000) == 0x2000) {
                 D_8010C6B8_mpiq = 2;
-                func_800E58F8_minigame(player, 0x26, 0);
-                func_800E5798_minigame(player, 0x27);
+                MgPlayerMotSwap(player, 0x26, 0);
+                MgPlayerMotForceSet(player, 0x27);
                 while (Hu3DData[player->model[0]].motTime < Hu3DMotion[Hu3DData[player->model[0]].motId].unk02) {
                     HuPrcVSleep();
                 }
-                func_800E5798_minigame(player, 0x28);
+                MgPlayerMotForceSet(player, 0x28);
                 HuPrcSleep(2);
                 work->flags |= 0x11;
                 HuPrcSleep(30);
@@ -1317,7 +1317,7 @@ s32 func_801096C0_mpiq(s32 index, s32 question) {
         switch (mes) {
             case 0x5302:
                 value = D_8010CBB8_mpiq[index] - 0x1C60;
-                count = func_800E905C_minigame(value);
+                count = MgStoryRankGet(value);
                 if (count == -1) {
                     return FALSE;
                 }
@@ -1626,7 +1626,7 @@ void func_8010A184_mpiq(s32 index) {
             break;
         case 0x5302:
             value = D_8010CBB8_mpiq[index] - 0x1C60;
-            rank = func_800E905C_minigame(value);
+            rank = MgStoryRankGet(value);
             other = 0x533B;
             D_8010D010_mpiq = other - rank;
             if (D_8010C9F8_mpiq != 0) {
@@ -1999,13 +1999,13 @@ void func_8010B0CC_mpiq(void) {
                 HuWinKill(D_8010CA00_mpiq);
                 D_8010CA00_mpiq = -1;
                 func_80107C50_mpiq(D_8010C9BC_mpiq);
-                player = D_800EC598_minigame[D_8010C9BC_mpiq];
+                player = mgPlayerObjTbl[D_8010C9BC_mpiq];
                 data = D_8010CA78_mpiq->data;
                 if (D_8010C6B8_mpiq == D_8010CA38_mpiq[round]) {
                     _HuAudPlayerFXPlay(0x40E, D_8010C9BC_mpiq);
                     PlayerFXPlay(0x274, D_8010C9BC_mpiq);
                     espDispOn(D_8010C9DC_mpiq[0]);
-                    func_800E5798_minigame(player, 0x29);
+                    MgPlayerMotForceSet(player, 0x29);
                     Hu3DMotionShiftSet(D_8010CA78_mpiq->model[0], Hu3DData[D_8010CA78_mpiq->motion[1]].motId, 0, 10, 0);
                     data->flags |= 1;
                     HuPrcSleep(30);
@@ -2018,16 +2018,16 @@ void func_8010B0CC_mpiq(void) {
                     _HuAudPlayerFXPlay(0x40F, D_8010C9BC_mpiq);
                     PlayerFXPlay(0x286, D_8010C9BC_mpiq);
                     espDispOn(D_8010C9DC_mpiq[1]);
-                    func_800E5798_minigame(player, 0x2A);
+                    MgPlayerMotForceSet(player, 0x2A);
                     Hu3DMotionShiftSet(D_8010CA78_mpiq->model[0], Hu3DData[D_8010CA78_mpiq->motion[2]].motId, 0, 10, 0);
                     data->flags |= 1;
                     HuPrcSleep(30);
                     func_80107C18_mpiq(D_8010C9BC_mpiq);
                     HuPrcSleep(70);
                     if (D_8010C6B8_mpiq == -1) {
-                        func_800E58F8_minigame(player, 0x26, 0);
+                        MgPlayerMotSwap(player, 0x26, 0);
                     }
-                    func_800E5798_minigame(player, 0x2B);
+                    MgPlayerMotForceSet(player, 0x2B);
                     D_8010C9E8_mpiq[D_8010C9BC_mpiq] |= 1;
                     counts[D_8010C9BC_mpiq] = 2;
                     HuPrcSleep(20);
@@ -2038,14 +2038,14 @@ void func_8010B0CC_mpiq(void) {
             }
             count = 0;
             for (i = 0; i < 4; i++) {
-                player = D_800EC598_minigame[i];
+                player = mgPlayerObjTbl[i];
                 if (D_8010C9E8_mpiq[i] & 1) {
                     counts[i]--;
                     if (round == 9) {
                         counts[i] = 0;
                     }
                     if (counts[i] == 0) {
-                        func_800E5798_minigame(player, 0x21);
+                        MgPlayerMotForceSet(player, 0x21);
                         func_8010811C_mpiq();
                         count++;
                     }
@@ -2055,10 +2055,10 @@ void func_8010B0CC_mpiq(void) {
                 HuPrcSleep(30);
             }
             for (i = 0; i < 4; i++) {
-                player = D_800EC598_minigame[i];
+                player = mgPlayerObjTbl[i];
                 if (D_8010C9E8_mpiq[i] & 1) {
                     if (counts[i] == 0) {
-                        func_800E5798_minigame(player, 0);
+                        MgPlayerMotForceSet(player, 0);
                         D_8010C9E8_mpiq[i] &= ~1;
                     }
                 }
@@ -2104,19 +2104,19 @@ void func_8010B0CC_mpiq(void) {
     func_801089A4_mpiq(2);
     for (i = 0; i < 16; i++) {
         for (round = 0; round < 4; round++) {
-            D_800EC598_minigame[round]->rot.y = i * 12 + 180.0f;
+            mgPlayerObjTbl[round]->rot.y = i * 12 + 180.0f;
         }
         HuPrcVSleep();
     }
-    while (D_800EB934_minigame != 1) {
+    while (mgFlowResultF != 1) {
         HuPrcVSleep();
     }
     for (round = 0; round < 4; round++) {
         if (round == D_8010C9D8_mpiq) {
-            func_800E5798_minigame(D_800EC598_minigame[round], 0xD);
-            HuAudCharVoicePlay(D_800A178C_main[GwPlayer[round].chr][0] | 0x2F);
+            MgPlayerMotForceSet(mgPlayerObjTbl[round], 0xD);
+            HuAudCharVoicePlay(omCharModelNoTbl[GwPlayer[round].chr][0] | 0x2F);
         } else {
-            func_800E5798_minigame(D_800EC598_minigame[round], 0xE);
+            MgPlayerMotForceSet(mgPlayerObjTbl[round], 0xE);
         }
     }
     omDelPrcObj(NULL);
@@ -2336,7 +2336,7 @@ void func_8010C2F0_mpiq(void) {
     if (D_8010CAF8_mpiq == 0) {
         D_8010C9C0_mpiq &= ~0x20;
         for (i = 0; i < 4; i++) {
-            func_800E12EC_minigame(D_800EC598_minigame[i], 1000.0f);
+            MgPlayerVelYSet(mgPlayerObjTbl[i], 1000.0f);
         }
     }
     GMesTimerEnd();
@@ -2345,7 +2345,7 @@ void func_8010C2F0_mpiq(void) {
 
 s32 func_8010C4C0_mpiq(s32 index) {
     s32 result = 0;
-    if (D_800EC598_minigame[index]->trans.y == D_8010CA80_mpiq[index]->trans.y) {
+    if (mgPlayerObjTbl[index]->trans.y == D_8010CA80_mpiq[index]->trans.y) {
         result = 1;
     }
     return result;

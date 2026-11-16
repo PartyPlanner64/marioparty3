@@ -7936,7 +7936,7 @@ void func_80116AC4_w02(void) {
         MBCameraPos3DSet(&player->player_obj->coords);
         HuPrcVSleep();
         WipeCreateIn(WIPE_TYPE_NORMAL, 0x10);
-        D_800A12D8_main = 1;
+        mbTauntOffF = 1;
         HuPrcSleep(0x10);
     }
 
@@ -7971,7 +7971,7 @@ void func_80116AC4_w02(void) {
         MBPlayerMotionSet(-1, -1, 2);
     } else {
         MBMotionSet(MBPlayerGet(targetPlayer)->player_obj, -1, 2);
-        D_800A12D8_main = 0;
+        mbTauntOffF = 0;
     }
 
     if (targetPlayer != loc->current_player_index) {
@@ -8100,7 +8100,7 @@ void func_80117344_w02(void) {
         MBCameraPos3DSet(&player->player_obj->coords);
         HuPrcVSleep();
         WipeCreateIn(WIPE_TYPE_NORMAL, 0x10);
-        D_800A12D8_main = 1;
+        mbTauntOffF = 1;
         HuPrcSleep(0x10);
     }
 
@@ -8137,7 +8137,7 @@ void func_80117344_w02(void) {
         MBPlayerMotionSet(-1, -1, 2);
     } else {
         MBMotionSet(MBPlayerGet(targetPlayer)->player_obj, -1, 2);
-        D_800A12D8_main = 0;
+        mbTauntOffF = 0;
     }
 
     if (targetPlayer != loc->current_player_index) {
@@ -9079,7 +9079,7 @@ void func_80119DB0_w02(void) {
                 break;
         }
     }
-    D_800A12D8_main = 1;
+    mbTauntOffF = 1;
     func_801193C0_w02();
     HuAudFXPlay(0x194);
     for (i = 0; i < 4; i++) {
@@ -9334,7 +9334,7 @@ void func_80119DB0_w02(void) {
     HuVecCopyXYZ(&D_8011C8DC_w02->scale, 1.0f, 1.0f, 1.0f);
     D_8011C8DC_w02->rot.x = sindf(-138.0f);
     D_8011C8DC_w02->rot.z = cosdf(-138.0f);
-    D_800A12D8_main = 0;
+    mbTauntOffF = 0;
 }
 #else
 INCLUDE_ASM("asm/nonmatchings/game/overlays/party/boards/w02_deep_bloober_sea/main", func_80119DB0_w02);

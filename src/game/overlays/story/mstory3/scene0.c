@@ -61,7 +61,7 @@ extern s16 D_80115D96_mstory3;
 extern s16 D_80115DB0_mstory3;
 extern s16 D_80115D98_mstory3[5];
 extern char *D_801153E0_mstory3[];
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 
 MstoryPath *func_8010C9F0_mstory3(Vec *points, s32 flags);
 void func_8010CCF4_mstory3(MstoryPath *path, f32 time, Vec *result);
@@ -878,7 +878,7 @@ void func_8010F660_mstory3(void) {
     D_80115CB0_mstory3[0].unk_0C = 0;
     D_80115CB0_mstory3[0].unk_10 = 31;
     chr = D_80115DB0_mstory3;
-    obj->model[1] = Hu3DModelRead(D_800A178C_main[chr][0] | D_800A178C_main[chr][2], 0x2A9);
+    obj->model[1] = Hu3DModelRead(omCharModelNoTbl[chr][0] | omCharModelNoTbl[chr][2], 0x2A9);
     obj->model[2] = Hu3DModelLink(D_80115D8C_mstory3);
     obj->model[3] = Hu3DModelRead(0x1D000A, 0x2B9);
     obj->model[4] = Hu3DModelRead(0x83, 0x2B9);

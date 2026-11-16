@@ -15,11 +15,11 @@
 #include "game/pad.h"
 #include "math.h"
 
-s32 D_800EB800_minigame[] = {
+s32 mgCharMdlTbl[] = {
     0x000200A3, 0x000300A3, 0x000700A3, 0x000400A3, 0x000500A3, 0x000600A3, 0x000800A3, 0x0009001A,
 };
 
-s32 D_800EB820_minigame[][7] = {
+s32 mgCharAnimTbl[][7] = {
     { 0xA4, 0xA5, 0xA6, 0xA7, 0xA8, 0xA9, 0xAA },
     { 0xA4, 0xA5, 0xA6, 0xA7, 0xA8, 0xA9, 0xAA },
     { 0xA4, 0xA5, 0xA6, 0xA7, 0xA8, 0xA9, 0xAA },
@@ -30,31 +30,31 @@ s32 D_800EB820_minigame[][7] = {
     { 0xA4, 0xA5, 0xA6, 0xA7, 0xA8, 0xA9, 0xAA },
 };
 
-extern s32 D_800EB730_minigame;
-extern u8 D_800EB734_minigame;
-extern u8 D_800EB739_minigame;
-extern u8 D_800EB73A_minigame;
-extern f32 D_800EB74C_minigame;
-extern f32 D_800EB750_minigame;
-extern f32 D_800EB75C_minigame;
-extern f32 D_800EB760_minigame;
-extern f32 D_800EB764_minigame;
-extern f32 D_800EB768_minigame;
-extern f32 D_800EB76C_minigame;
-extern f32 D_800EB770_minigame;
-extern f32 D_800EB778_minigame;
-extern s16 D_800EBE10_minigame[];
-extern s32 D_800A178C_main[][6];
+extern s32 mgFieldStatReq;
+extern u8 mgMapBaseNo;
+extern u8 mgShadowAltF;
+extern u8 mgCharMdlF;
+extern f32 mgPlayerAirStickDiv;
+extern f32 mgPlayerTurnDiv;
+extern f32 mgPlayerStickDiv;
+extern f32 mgPlayerSpeedMax;
+extern f32 mgPlayerSpeedRun;
+extern f32 mgPlayerSpeedWalk;
+extern f32 mgPlayerSpeedMin;
+extern f32 mgPlayerSpeedZero;
+extern f32 mgPlayerAirSpeedScale;
+extern s16 mgPlayerSeNoTbl[];
+extern s32 omCharModelNoTbl[][6];
 extern u8 Hu3DBufNo;
-extern s16 D_800EBE18_minigame[];
-extern u8 D_800EBE20_minigame[];
-extern s8 D_800EC1BA_minigame[];
-extern s8 D_800EC282_minigame[];
-extern s16 D_800EC28A_minigame[];
-extern u8 D_800EC5DC_minigame[];
+extern s16 mgStickRotTimeTbl[];
+extern u8 mgStickRotQuadTbl[];
+extern s8 mgStickRotDirTbl[];
+extern s8 mgStickRotWaitTbl[];
+extern s16 mgStickRotLapTbl[];
+extern u8 mgStickRotStartTbl[];
 
-void func_800E1160_minigame(omObjData *arg0, u16 arg1, u16 player, s32 arg3, s32 arg4, f32 arg5) {
-    s32 dataNum = D_800EB800_minigame[GwPlayer[player].chr];
+void MgCharMdlCreate(omObjData *arg0, u16 arg1, u16 player, s32 arg3, s32 arg4, f32 arg5) {
+    s32 dataNum = mgCharMdlTbl[GwPlayer[player].chr];
     s16 anim;
 
     arg0->model[arg1] = Hu3DModelRead(arg3, arg4 & ~0x11);
@@ -62,93 +62,93 @@ void func_800E1160_minigame(omObjData *arg0, u16 arg1, u16 player, s32 arg3, s32
     CharAnimSet(arg0->model[arg1], 0, GwPlayer[player].chr, anim);
 }
 
-void func_800E123C_minigame(omObjData *arg0, u16 arg1, s32 arg2, s32 arg3, f32 arg4) {
+void MgObjLODMdlCreate(omObjData *arg0, u16 arg1, s32 arg2, s32 arg3, f32 arg4) {
     s16 model = Hu3DModelRead(arg2, arg3);
 
     arg0->model[arg1] = model;
     Hu3DModelLODSet(arg0->model[0], model, arg4);
 }
 
-void func_800E12B0_minigame(omObjData *arg0, f32 arg1) {
-    func_800E1BA8_minigame_ObjData *temp_data = arg0->data;
+void MgPlayerDirSet(omObjData *arg0, f32 arg1) {
+    MgPlayerWork *temp_data = arg0->data;
 
     temp_data->unk3C = HuAngleWrap(arg1);
 }
 
-void func_800E12E0_minigame(omObjData *arg0, f32 arg1) {
-    func_800E1BA8_minigame_ObjData *temp_data = arg0->data;
+void MgPlayerSpeedSet(omObjData *arg0, f32 arg1) {
+    MgPlayerWork *temp_data = arg0->data;
 
     temp_data->unk40 = arg1;
 }
 
-void func_800E12EC_minigame(omObjData *arg0, f32 arg1) {
-    func_800E1BA8_minigame_ObjData *temp_data = arg0->data;
+void MgPlayerVelYSet(omObjData *arg0, f32 arg1) {
+    MgPlayerWork *temp_data = arg0->data;
 
     temp_data->unk38 = arg1;
 }
 
-void func_800E12F8_minigame(omObjData *arg0, f32 arg1) {
-    func_800E1BA8_minigame_ObjData *temp_data = arg0->data;
+void MgPlayerResvSet(omObjData *arg0, f32 arg1) {
+    MgPlayerWork *temp_data = arg0->data;
 
     temp_data->unk44 = arg1;
 }
 
-void func_800E1304_minigame(omObjData *arg0, f32 arg1) {
-    func_800E1BA8_minigame_ObjData *temp_data = arg0->data;
+void MgMapFrictionSet(omObjData *arg0, f32 arg1) {
+    MgPlayerWork *temp_data = arg0->data;
 
     temp_data->unk08 = arg1;
 }
 
-void func_800E1310_minigame(omObjData *arg0, f32 arg1) {
-    func_800E1BA8_minigame_ObjData *temp_data = arg0->data;
+void MgMapAccelSet(omObjData *arg0, f32 arg1) {
+    MgPlayerWork *temp_data = arg0->data;
 
     temp_data->unk0C = arg1;
 }
 
-void func_800E131C_minigame(omObjData *arg0, f32 arg1) {
-    func_800E1BA8_minigame_ObjData *temp_data = arg0->data;
+void MgMapSlideSet(omObjData *arg0, f32 arg1) {
+    MgPlayerWork *temp_data = arg0->data;
 
     temp_data->unk10 = arg1;
 }
 
-void func_800E1328_minigame(omObjData *arg0, f32 arg1) {
-    func_800E1BA8_minigame_ObjData *temp_data = arg0->data;
+void MgPlayerRadiusSet(omObjData *arg0, f32 arg1) {
+    MgPlayerWork *temp_data = arg0->data;
 
     temp_data->unk48 = arg1;
 }
 
-void func_800E1334_minigame(omObjData *arg0, f32 arg1) {
-    func_800E1BA8_minigame_ObjData *temp_data = arg0->data;
+void MgPlayerHeightSet(omObjData *arg0, f32 arg1) {
+    MgPlayerWork *temp_data = arg0->data;
 
     temp_data->unk34 = arg1;
 }
 
-void func_800E1340_minigame(omObjData *arg0, f32 arg1) {
-    func_800E1BA8_minigame_ObjData *temp_data = arg0->data;
+void MgPlayerPunchRadiusSet(omObjData *arg0, f32 arg1) {
+    MgPlayerWork *temp_data = arg0->data;
 
     temp_data->unk64 = arg1;
 }
 
-void func_800E134C_minigame(omObjData *arg0, f32 arg1) {
-    func_800E1BA8_minigame_ObjData *temp_data = arg0->data;
+void MgPlayerAttackParamSet(omObjData *arg0, f32 arg1) {
+    MgPlayerWork *temp_data = arg0->data;
 
     temp_data->unk68 = arg1;
 }
 
-void func_800E1358_minigame(omObjData *arg0, f32 arg1) {
-    func_800E1BA8_minigame_ObjData *temp_data = arg0->data;
+void MgPlayerReachSet(omObjData *arg0, f32 arg1) {
+    MgPlayerWork *temp_data = arg0->data;
 
     temp_data->unk6C = arg1;
 }
 
-void func_800E1364_minigame(omObjData *arg0, f32 arg1) {
-    func_800E1BA8_minigame_ObjData *temp_data = arg0->data;
+void MgPlayerHitRadiusSet(omObjData *arg0, f32 arg1) {
+    MgPlayerWork *temp_data = arg0->data;
 
     temp_data->unk70 = arg1;
 }
 
-void func_800E1370_minigame(omObjData *arg0, s32 arg1, f32 arg2) {
-    func_800E1BA8_minigame_ObjData *temp_data = arg0->data;
+void MgMapAttrSet(omObjData *arg0, s32 arg1, f32 arg2) {
+    MgPlayerWork *temp_data = arg0->data;
 
     temp_data->unk06 = (arg1 & 0xFF) | temp_data->unk06;
     if (arg1 & 2) {
@@ -156,8 +156,8 @@ void func_800E1370_minigame(omObjData *arg0, s32 arg1, f32 arg2) {
     }
 }
 
-void func_800E139C_minigame(omObjData *arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5) {
-    func_800E1BA8_minigame_ObjData *temp_v0 = arg0->data;
+void MgMapBoxSet(omObjData *arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5) {
+    MgPlayerWork *temp_v0 = arg0->data;
 
     temp_v0->unk06 |= 0x8;
     temp_v0->unk14 = arg1;
@@ -167,8 +167,8 @@ void func_800E139C_minigame(omObjData *arg0, f32 arg1, f32 arg2, f32 arg3, f32 a
     temp_v0->unkAC = arg5;
 }
 
-void func_800E13CC_minigame(omObjData *arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6) {
-    func_800E1BA8_minigame_ObjData *temp_v0 = arg0->data;
+void MgMapBlockSet(omObjData *arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6) {
+    MgPlayerWork *temp_v0 = arg0->data;
 
     temp_v0->unk06 |= 0x10;
     temp_v0->unk14 = arg1;
@@ -179,16 +179,16 @@ void func_800E13CC_minigame(omObjData *arg0, f32 arg1, f32 arg2, f32 arg3, f32 a
     temp_v0->unkAC = arg6;
 }
 
-void func_800E1404_minigame(omObjData *arg0, f32 arg1, f32 arg2) {
-    func_800E1BA8_minigame_ObjData *temp_v0 = arg0->data;
+void MgMapCircleSet(omObjData *arg0, f32 arg1, f32 arg2) {
+    MgPlayerWork *temp_v0 = arg0->data;
 
     temp_v0->unk06 |= 0x20;
     temp_v0->unk14 = arg1;
     temp_v0->unk9C = arg2;
 }
 
-void func_800E1420_minigame(omObjData *arg0, f32 arg1, f32 arg2, f32 arg3) {
-    func_800E1BA8_minigame_ObjData *temp_v0 = arg0->data;
+void MgMapCylinderSet(omObjData *arg0, f32 arg1, f32 arg2, f32 arg3) {
+    MgPlayerWork *temp_v0 = arg0->data;
 
     temp_v0->unk06 |= 0x40;
     temp_v0->unk14 = arg1;
@@ -196,41 +196,41 @@ void func_800E1420_minigame(omObjData *arg0, f32 arg1, f32 arg2, f32 arg3) {
     temp_v0->unk9C = arg3;
 }
 
-void func_800E1440_minigame(omObjData *arg0) {
-    func_800E1BA8_minigame_ObjData *temp_v0 = arg0->data;
+void MgMapMtxStaticOn(omObjData *arg0) {
+    MgPlayerWork *temp_v0 = arg0->data;
 
     temp_v0->unk06 |= 0x80;
 }
 
-void func_800E1454_minigame(omObjData *arg0) {
-    func_800E1BA8_minigame_ObjData *temp_v0 = arg0->data;
+void MgMapMdlMtxOn(omObjData *arg0) {
+    MgPlayerWork *temp_v0 = arg0->data;
 
     temp_v0->unk06 |= 0x100;
 }
 
-void func_800E1468_minigame(omObjData *arg0) {
-    func_800E1BA8_minigame_ObjData *temp_v0 = arg0->data;
+void MgMapNoBumpOn(omObjData *arg0) {
+    MgPlayerWork *temp_v0 = arg0->data;
 
     temp_v0->unk06 |= 0x200;
 }
 
-void func_800E147C_minigame(omObjData *arg0) {
-    func_800E1BA8_minigame_ObjData *temp_v0 = arg0->data;
+void MgMapTiltOn(omObjData *arg0) {
+    MgPlayerWork *temp_v0 = arg0->data;
 
     temp_v0->unk06 |= 0x400;
 }
 
-void func_800E1490_minigame(s32 arg0) {
-    D_800EB734_minigame = arg0;
+void MgMapBaseSet(s32 arg0) {
+    mgMapBaseNo = arg0;
 }
 
-void func_800E149C_minigame(omObjData *arg0, u8 arg1, s8 arg2) {
-    func_800E1BA8_minigame_ObjData *temp_v0 = arg0->data;
+void MgPlayerMapAttrSet(omObjData *arg0, u8 arg1, s8 arg2) {
+    MgPlayerWork *temp_v0 = arg0->data;
 
     temp_v0->unk00[arg1] = arg2;
 }
 
-void func_800E14B0_minigame(omObjData *arg0, s32 arg1, s32 arg2) {
+void MgObjMdlDispSet(omObjData *arg0, s32 arg1, s32 arg2) {
     if (!(arg2 & 0xFF)) {
         Hu3DModelAttrSet(arg0->model[arg1 & 0xFF], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     } else {
@@ -238,15 +238,15 @@ void func_800E14B0_minigame(omObjData *arg0, s32 arg1, s32 arg2) {
     }
 }
 
-s32 func_800E1510_minigame(s8 arg0) {
-    D_800EC1C0_minigame_ObjData *data;
+s32 MgMapBumpCheck(s8 arg0) {
+    MgMapWork *data;
     s32 i;
 
     if (arg0 < 0) {
         return 0;
     }
-    for (i = 0; i < D_800EBE28_minigame; i++) {
-        data = D_800EC1C0_minigame[i]->data;
+    for (i = 0; i < mgMapObjNum; i++) {
+        data = mgMapObjTbl[i]->data;
         if (data->unk04 == arg0) {
             if (data->unk06 & 0x200) {
                 return 0;
@@ -257,16 +257,16 @@ s32 func_800E1510_minigame(s8 arg0) {
     return 1;
 }
 
-void func_800E1594_minigame(omObjData *arg0, s32 arg1, s32 arg2, s32 arg3) {
-    func_800E1BA8_minigame_ObjData *temp_v0 = arg0->data;
+void MgObjSprMdlCreate(omObjData *arg0, s32 arg1, s32 arg2, s32 arg3) {
+    MgPlayerWork *temp_v0 = arg0->data;
 
     temp_v0->unk53[2] = SprModelRead(arg1, arg2, arg3);
     arg0->model[0] = Hu3DSprModelData[(u8)temp_v0->unk53[2]].modelId;
     Hu3DModelObjAttrSet(arg0->model[0], 0x70000000, 0x70000000);
 }
 
-void func_800E1610_minigame(omObjData *arg0, u8 arg1, s32 arg2, s32 arg3, char *arg4, s32 arg5) {
-    func_800E1BA8_minigame_ObjData *data = arg0->data;
+void MgObjAnimMdlCreate(omObjData *arg0, u8 arg1, s32 arg2, s32 arg3, char *arg4, s32 arg5) {
+    MgPlayerWork *data = arg0->data;
     u8 anim;
     HmfModel *model;
 
@@ -280,8 +280,8 @@ void func_800E1610_minigame(omObjData *arg0, u8 arg1, s32 arg2, s32 arg3, char *
     Hu3DModelScaleSet(arg0->model[arg1], 2.0f, 2.0f, 2.0f);
 }
 
-void func_800E1718_minigame(omObjData *arg0, u8 arg1, s32 arg2, s32 arg3, s32 arg4) {
-    func_800E1BA8_minigame_ObjData *data = arg0->data;
+void MgObjSprCreate(omObjData *arg0, u8 arg1, s32 arg2, s32 arg3, s32 arg4) {
+    MgPlayerWork *data = arg0->data;
     u16 sprite = SprModelRead(arg2, arg3, arg4);
 
     arg0->model[arg1] = Hu3DSprModelData[(u8)sprite].modelId;
@@ -290,144 +290,144 @@ void func_800E1718_minigame(omObjData *arg0, u8 arg1, s32 arg2, s32 arg3, s32 ar
     Hu3DSprModelAttrSet((u8)sprite, 4, 4);
 }
 
-void func_800E17D4_minigame(omObjData *arg0, f32 x, f32 y, f32 z) {
+void MgObjPosSet(omObjData *arg0, f32 x, f32 y, f32 z) {
     arg0->trans.x = x;
     arg0->trans.y = y;
     arg0->trans.z = z;
 }
 
-void func_800E17E4_minigame(omObjData *arg0, f32 x, f32 y, f32 z) {
+void MgObjRotSet(omObjData *arg0, f32 x, f32 y, f32 z) {
     arg0->rot.x = x;
     arg0->rot.y = y;
     arg0->rot.z = z;
 }
 
-void func_800E17F4_minigame(omObjData *arg0, f32 x, f32 y, f32 z) {
+void MgObjScaleSet(omObjData *arg0, f32 x, f32 y, f32 z) {
     arg0->scale.x = x;
     arg0->scale.y = y;
     arg0->scale.z = z;
 }
 
-void func_800E1804_minigame(void) {
-    D_800EB730_minigame = 0;
+void MgFieldStatClear(void) {
+    mgFieldStatReq = 0;
 }
 
-void func_800E1810_minigame(void) {
-    D_800EB730_minigame = 2;
+void MgFieldStatLand(void) {
+    mgFieldStatReq = 2;
 }
 
-void func_800E1820_minigame(void) {
-    D_800EB730_minigame = 3;
+void MgFieldStatEnd(void) {
+    mgFieldStatReq = 3;
 }
 
-void func_800E1830_minigame(void) {
-    D_800EB730_minigame = 1;
+void MgFieldStatStart(void) {
+    mgFieldStatReq = 1;
 }
 
-void func_800E1840_minigame(void) {
-    D_800EBE24_minigame = D_800EB730_minigame;
+void MgFieldStatUpdate(void) {
+    mgFieldStat = mgFieldStatReq;
 }
 
-s32 func_800E1854_minigame(s32 arg0) {
+s32 MgMapObjNoGet(s32 arg0) {
     s32 i;
 
-    for (i = 0; i < D_800EBE28_minigame; i++) {
+    for (i = 0; i < mgMapObjNum; i++) {
         /* Raw byte at 0x5F, inside omObjData's trailing data pointer field. */
-        if (((u8 *)D_800EC1C0_minigame[i])[0x5F] == arg0) {
+        if (((u8 *)mgMapObjTbl[i])[0x5F] == arg0) {
             return i;
         }
     }
-    return D_800EB734_minigame;
+    return mgMapBaseNo;
 }
 
-void func_800E18B4_minigame(void) {
+void MgDummy(void) {
     s8 temp_s8;
 
     memset(&temp_s8, 0, sizeof(temp_s8));
 }
 
-void func_800E18D8_minigame(void) {
-    D_800EB73C_minigame = 15.0f;
-    D_800EB740_minigame = 0.5f;
-    D_800EB744_minigame = 1.45f;
-    D_800EB748_minigame = 0.15f;
-    D_800EB74C_minigame = 7.0f;
-    D_800EB750_minigame = 30.0f;
-    D_800EB778_minigame = 0.5f;
-    D_800EB75C_minigame = 3.3333333f;
-    D_800EB760_minigame = 18.0f;
-    D_800EB764_minigame = 13.5f;
-    D_800EB768_minigame = 9.0f;
-    D_800EB76C_minigame = 4.5f;
-    D_800EB770_minigame = 0.0f;
-    D_800EB774_minigame = 1.6f;
-    D_800EB77C_minigame = 0.14500001f;
-    D_800EB735_minigame = 1;
-    D_800EB73A_minigame = 0;
+void MgPlayerParamReset(void) {
+    mgPlayerAccel = 15.0f;
+    mgPlayerFriction = 0.5f;
+    mgPlayerJumpPower = 1.45f;
+    mgPlayerGravity = 0.15f;
+    mgPlayerAirStickDiv = 7.0f;
+    mgPlayerTurnDiv = 30.0f;
+    mgPlayerAirSpeedScale = 0.5f;
+    mgPlayerStickDiv = 3.3333333f;
+    mgPlayerSpeedMax = 18.0f;
+    mgPlayerSpeedRun = 13.5f;
+    mgPlayerSpeedWalk = 9.0f;
+    mgPlayerSpeedMin = 4.5f;
+    mgPlayerSpeedZero = 0.0f;
+    mgPlayerFallMax = 1.6f;
+    mgPlayerFallInit = 0.14500001f;
+    mgPlayerBounceF = 1;
+    mgCharMdlF = 0;
 }
 
-void func_800E19E4_minigame(s32 arg0) {
-    D_800EB73A_minigame = arg0;
+void MgCharMdlSet(s32 arg0) {
+    mgCharMdlF = arg0;
 }
 
-void func_800E19F0_minigame(s8 arg0) {
-    D_800EB739_minigame = arg0;
+void MgShadowAltSet(s8 arg0) {
+    mgShadowAltF = arg0;
 }
 
-void func_800E19FC_minigame(func_800E1BA8_minigame_ObjData *arg0, s32 arg1) {
-    s16 sound = D_800EB784_minigame[arg0->unk59][arg1];
+void MgPlayerSePlay(MgPlayerWork *arg0, s32 arg1) {
+    s16 sound = mgPlayerSeTbl[arg0->unk59][arg1];
 
     if (sound >= 0) {
         if (arg0->unkC4 != arg1) {
             arg0->unkC5 = HuAudPlayerFXPlay(sound, arg0->unk59);
             arg0->unkC4 = arg1;
-            D_800EBE10_minigame[arg0->unk59] = sound;
+            mgPlayerSeNoTbl[arg0->unk59] = sound;
         }
     } else {
         arg0->unkC4 = -1;
     }
 }
 
-void func_800E1A9C_minigame(func_800E1BA8_minigame_ObjData *arg0, s32 arg1) {
-    s16 sound = D_800EB784_minigame[arg0->unk59][arg1];
+void MgPlayerSeReq(MgPlayerWork *arg0, s32 arg1) {
+    s16 sound = mgPlayerSeTbl[arg0->unk59][arg1];
 
     if (sound >= 0) {
         if (arg0->unkC4 != arg1) {
             arg0->unkC5 = HuAudPlayerFXPlay(sound, arg0->unk59);
             arg0->unkC4 = arg1;
-            D_800EBE10_minigame[arg0->unk59] = sound;
+            mgPlayerSeNoTbl[arg0->unk59] = sound;
         }
     } else {
         arg0->unkC4 = -1;
     }
 }
 
-void func_800E1B3C_minigame(void) {
+void MgPlayerSeStopAll(void) {
     s32 i;
 
-    for (i = 0; i < D_800EC280_minigame; i++) {
-        HuAudFXStop(OM_GET_DATA_PTR(D_800EC598_minigame[i], func_800E1BA8_minigame_ObjData)->unkC5);
+    for (i = 0; i < mgPlayerObjNum; i++) {
+        HuAudFXStop(OM_GET_DATA_PTR(mgPlayerObjTbl[i], MgPlayerWork)->unkC5);
     }
 }
 
-void func_800E1BA8_minigame(omObjData *arg0, u32 arg1, s32 arg2, u16 arg3, s32 arg4, s32 arg5) {
-    func_800E1BA8_minigame_ObjData *temp_s0;
+void MgPlayerCreate(omObjData *arg0, u32 arg1, s32 arg2, u16 arg3, s32 arg4, s32 arg5) {
+    MgPlayerWork *temp_s0;
     s32 var_a0;
 
     for (var_a0 = 0; var_a0 < arg0->mdlcnt; var_a0++) {
         arg0->model[var_a0] = 0;
     }
-    arg0->data = HuMemAllocTag(sizeof(func_800E1BA8_minigame_ObjData), TAG_OVERLAY);
-    memset(arg0->data, 0, sizeof(func_800E1BA8_minigame_ObjData));
+    arg0->data = HuMemAllocTag(sizeof(MgPlayerWork), TAG_OVERLAY);
+    memset(arg0->data, 0, sizeof(MgPlayerWork));
     temp_s0 = arg0->data;
-    temp_s0->unkE8 = HuMemAllocTag(arg0->mtncnt * sizeof(func_800E1BA8_minigame_UnkE8_ObjData), TAG_OVERLAY);
-    if (D_800EB73A_minigame == 1) {
-        func_800E1160_minigame(arg0, 0, arg3, arg1 | arg2, arg4, 750.0f);
+    temp_s0->unkE8 = HuMemAllocTag(arg0->mtncnt * sizeof(MgMotAttr), TAG_OVERLAY);
+    if (mgCharMdlF == 1) {
+        MgCharMdlCreate(arg0, 0, arg3, arg1 | arg2, arg4, 750.0f);
     } else {
         arg0->model[0] = Hu3DModelRead(arg1 | arg2, arg4);
     }
-    arg0->model[1] = Hu3DModelRead3((D_800EB739_minigame != 0) ? 9 : 0, arg5);
-    func_800E3584_minigame(arg0->model[1]);
+    arg0->model[1] = Hu3DModelRead3((mgShadowAltF != 0) ? 9 : 0, arg5);
+    MgShadowMdlInit(arg0->model[1]);
     for (var_a0 = 0; var_a0 < arg0->mtncnt; var_a0++) {
         arg0->motion[var_a0] = -1;
     }
@@ -441,7 +441,7 @@ void func_800E1BA8_minigame(omObjData *arg0, u32 arg1, s32 arg2, u16 arg3, s32 a
         temp_s0->unkE8[var_a0].unk08 = -1;
     }
     temp_s0->unk57 = GwPlayer[arg3].pad;
-    arg0->func = func_800DDD94_minigame;
+    arg0->func = MgPlayerObjMain;
     temp_s0->unk52 = 0;
     temp_s0->unkB4 = 1.0f;
     temp_s0->unk8C = 65536.0f;
@@ -449,13 +449,13 @@ void func_800E1BA8_minigame(omObjData *arg0, u32 arg1, s32 arg2, u16 arg3, s32 a
     temp_s0->unk4C = 0.5f;
     temp_s0->unkCC = 1.0f;
     temp_s0->unk60 = 0.0f;
-    func_800E1328_minigame(arg0, 60.0f);
-    func_800E1334_minigame(arg0, 150.0f);
-    func_800E1340_minigame(arg0, 20.0f);
-    func_800E134C_minigame(arg0, 30.0f);
-    func_800E1358_minigame(arg0, 50.0f);
-    func_800E1364_minigame(arg0, 40.0f);
-    func_800E12EC_minigame(arg0, 1000.0f);
+    MgPlayerRadiusSet(arg0, 60.0f);
+    MgPlayerHeightSet(arg0, 150.0f);
+    MgPlayerPunchRadiusSet(arg0, 20.0f);
+    MgPlayerAttackParamSet(arg0, 30.0f);
+    MgPlayerReachSet(arg0, 50.0f);
+    MgPlayerHitRadiusSet(arg0, 40.0f);
+    MgPlayerVelYSet(arg0, 1000.0f);
     temp_s0->unk9C = temp_s0->unkA0 = temp_s0->unkA4 = 0.0f;
     temp_s0->unk59 = (s8)arg3;
     temp_s0->unkC3 = -1;
@@ -476,43 +476,43 @@ void func_800E1BA8_minigame(omObjData *arg0, u32 arg1, s32 arg2, u16 arg3, s32 a
             break;
     }
     var_a0 = GwPlayer[arg3].chr + 1;
-    D_800EB784_minigame[temp_s0->unk59][0] = var_a0 + 0x1F;
-    D_800EB784_minigame[temp_s0->unk59][1] = var_a0 + 0x28;
-    D_800EB784_minigame[temp_s0->unk59][2] = var_a0 + 0x43;
-    D_800EB784_minigame[temp_s0->unk59][3] = var_a0 + 0x3A;
-    D_800EB784_minigame[temp_s0->unk59][4] = var_a0 + 0x31;
-    D_800EB784_minigame[temp_s0->unk59][5] = var_a0 + 0x4C;
-    D_800EB784_minigame[temp_s0->unk59][6] = var_a0 + 0x55;
-    D_800EB784_minigame[temp_s0->unk59][7] = var_a0 + 0x9D;
-    D_800EB784_minigame[temp_s0->unk59][8] = var_a0 + 0x94;
-    D_800EB784_minigame[temp_s0->unk59][9] = var_a0 + 0xA6;
-    D_800EB784_minigame[temp_s0->unk59][10] = var_a0 + 0x5E;
-    D_800EB784_minigame[temp_s0->unk59][11] = var_a0 + 0x67;
-    D_800EB784_minigame[temp_s0->unk59][12] = var_a0 + 0xAF;
-    D_800EB784_minigame[temp_s0->unk59][13] = var_a0 + 0xB8;
+    mgPlayerSeTbl[temp_s0->unk59][0] = var_a0 + 0x1F;
+    mgPlayerSeTbl[temp_s0->unk59][1] = var_a0 + 0x28;
+    mgPlayerSeTbl[temp_s0->unk59][2] = var_a0 + 0x43;
+    mgPlayerSeTbl[temp_s0->unk59][3] = var_a0 + 0x3A;
+    mgPlayerSeTbl[temp_s0->unk59][4] = var_a0 + 0x31;
+    mgPlayerSeTbl[temp_s0->unk59][5] = var_a0 + 0x4C;
+    mgPlayerSeTbl[temp_s0->unk59][6] = var_a0 + 0x55;
+    mgPlayerSeTbl[temp_s0->unk59][7] = var_a0 + 0x9D;
+    mgPlayerSeTbl[temp_s0->unk59][8] = var_a0 + 0x94;
+    mgPlayerSeTbl[temp_s0->unk59][9] = var_a0 + 0xA6;
+    mgPlayerSeTbl[temp_s0->unk59][10] = var_a0 + 0x5E;
+    mgPlayerSeTbl[temp_s0->unk59][11] = var_a0 + 0x67;
+    mgPlayerSeTbl[temp_s0->unk59][12] = var_a0 + 0xAF;
+    mgPlayerSeTbl[temp_s0->unk59][13] = var_a0 + 0xB8;
 }
 
-void func_800E210C_minigame(omObjData *arg0, s16 arg1, s16 arg2) {
-    func_800E1BA8_minigame_ObjData *temp_data = arg0->data;
+void MgPlayerCharAnimCreate(omObjData *arg0, s16 arg1, s16 arg2) {
+    MgPlayerWork *temp_data = arg0->data;
     s32 chr;
     s32 model;
 
     temp_data->unk5A = arg1;
     temp_data->unk5B = arg2;
     chr = GwPlayer[temp_data->unk59].chr;
-    model = D_800A178C_main[chr][0];
+    model = omCharModelNoTbl[chr][0];
     CharAnimCreate(arg1, arg2, chr, model | CharMotionDataNumGetTbl(chr, arg2, 0));
 }
 
-void func_800E21B8_minigame(omObjData *arg0, s32 arg1, s32 arg2) {
-    func_800E1BA8_minigame_ObjData *temp_data = arg0->data;
+void MgPlayerAnimRead(omObjData *arg0, s32 arg1, s32 arg2) {
+    MgPlayerWork *temp_data = arg0->data;
 
     temp_data->unkF2[arg2] =
-        Hu3DAnimDataRead(D_800EB820_minigame[GwPlayer[arg1].chr][arg2] | D_800A178C_main[GwPlayer[0].chr][0]);
+        Hu3DAnimDataRead(mgCharAnimTbl[GwPlayer[arg1].chr][arg2] | omCharModelNoTbl[GwPlayer[0].chr][0]);
 }
 
-s32 func_800E2250_minigame(omObjData *arg0, s16 arg1, s16 arg2) {
-    func_800E1BA8_minigame_ObjData *temp_a3 = arg0->data;
+s32 MgPlayerStickAvgGet(omObjData *arg0, s16 arg1, s16 arg2) {
+    MgPlayerWork *temp_a3 = arg0->data;
     s32 value = (arg1 << 16) | (arg2 & 0xFFFF);
     s16 sumHi;
     s16 sumLo;
@@ -534,7 +534,7 @@ s32 func_800E2250_minigame(omObjData *arg0, s16 arg1, s16 arg2) {
     return value;
 }
 
-void func_800E2308_minigame(s16 *arg0, s16 *arg1) {
+void MgStickClamp(s16 *arg0, s16 *arg1) {
     Vec vec;
     f32 x = *arg0;
     f32 z = *arg1;
@@ -549,8 +549,8 @@ void func_800E2308_minigame(s16 *arg0, s16 *arg1) {
     }
 }
 
-void func_800E23E0_minigame(omObjData *arg0) {
-    func_800E1BA8_minigame_ObjData *temp_v0 = arg0->data;
+void MgPlayerStickReset(omObjData *arg0) {
+    MgPlayerWork *temp_v0 = arg0->data;
     s32 var_a0;
 
     for (var_a0 = 0; var_a0 < 6; var_a0++) {
@@ -558,7 +558,7 @@ void func_800E23E0_minigame(omObjData *arg0) {
     }
 }
 
-s16 func_800E240C_minigame(s16 idx, s16 arg1, s8 x, s8 y) {
+s16 MgStickRotGet(s16 idx, s16 arg1, s8 x, s8 y) {
     s16 mult = 1;
     s16 angle;
     s16 diff;
@@ -572,52 +572,52 @@ s16 func_800E240C_minigame(s16 idx, s16 arg1, s8 x, s8 y) {
         angle += 360;
     }
     angle /= 90;
-    if (angle == D_800EBE20_minigame[idx]) {
-        if (++D_800EC282_minigame[idx] > arg1) {
-            D_800EC282_minigame[idx] = arg1;
-            D_800EC1BA_minigame[idx] = 0;
-            D_800EC5DC_minigame[idx] = angle;
-            D_800EBE18_minigame[idx] = 0;
+    if (angle == mgStickRotQuadTbl[idx]) {
+        if (++mgStickRotWaitTbl[idx] > arg1) {
+            mgStickRotWaitTbl[idx] = arg1;
+            mgStickRotDirTbl[idx] = 0;
+            mgStickRotStartTbl[idx] = angle;
+            mgStickRotTimeTbl[idx] = 0;
             return 0;
         }
-        D_800EBE18_minigame[idx]++;
-        return D_800EC1BA_minigame[idx];
+        mgStickRotTimeTbl[idx]++;
+        return mgStickRotDirTbl[idx];
     }
-    D_800EBE18_minigame[idx]++;
-    D_800EC282_minigame[idx] = 0;
-    if (D_800EC5DC_minigame[idx] == angle) {
+    mgStickRotTimeTbl[idx]++;
+    mgStickRotWaitTbl[idx] = 0;
+    if (mgStickRotStartTbl[idx] == angle) {
         mult = 2;
-        D_800EC28A_minigame[idx] = D_800EBE18_minigame[idx];
-        D_800EBE18_minigame[idx] = 0;
+        mgStickRotLapTbl[idx] = mgStickRotTimeTbl[idx];
+        mgStickRotTimeTbl[idx] = 0;
     }
-    diff = angle - D_800EBE20_minigame[idx];
+    diff = angle - mgStickRotQuadTbl[idx];
     if (diff >= 0 ? diff == 3 : -diff == 3) {
         diff = -diff;
     }
     dir = (diff < 0) ? -1 : 1;
-    if (dir != 0 && dir != D_800EC1BA_minigame[idx]) {
-        D_800EC1BA_minigame[idx] = dir;
-        D_800EBE20_minigame[idx] = angle;
-        D_800EC282_minigame[idx] = 0;
-        D_800EC5DC_minigame[idx] = angle;
-        D_800EBE18_minigame[idx] = 0;
+    if (dir != 0 && dir != mgStickRotDirTbl[idx]) {
+        mgStickRotDirTbl[idx] = dir;
+        mgStickRotQuadTbl[idx] = angle;
+        mgStickRotWaitTbl[idx] = 0;
+        mgStickRotStartTbl[idx] = angle;
+        mgStickRotTimeTbl[idx] = 0;
         return 0;
     }
-    D_800EBE18_minigame[idx]++;
-    if (((D_800EBE20_minigame[idx] + D_800EC1BA_minigame[idx]) & 3) == angle) {
-        D_800EBE20_minigame[idx] = angle;
-        return D_800EC1BA_minigame[idx] * mult;
+    mgStickRotTimeTbl[idx]++;
+    if (((mgStickRotQuadTbl[idx] + mgStickRotDirTbl[idx]) & 3) == angle) {
+        mgStickRotQuadTbl[idx] = angle;
+        return mgStickRotDirTbl[idx] * mult;
     }
-    D_800EC1BA_minigame[idx] = dir;
-    D_800EBE20_minigame[idx] = angle;
-    D_800EC282_minigame[idx] = 0;
-    D_800EBE18_minigame[idx] = 0;
+    mgStickRotDirTbl[idx] = dir;
+    mgStickRotQuadTbl[idx] = angle;
+    mgStickRotWaitTbl[idx] = 0;
+    mgStickRotTimeTbl[idx] = 0;
     return 0;
 }
 
-void func_800E2780_minigame(omObjData *obj) {
+void MgMapMtxUpdate(omObjData *obj) {
     s32 model = obj->model[0];
-    D_800EC1C0_minigame_ObjData *data = obj->data;
+    MgMapWork *data = obj->data;
 
     if (obj->trans.x != 0.0f || obj->trans.y != 0.0f || obj->trans.z != 0.0f) {
         func_80088800_main(data->unk18, obj->trans.x, obj->trans.y, obj->trans.z);
@@ -633,8 +633,8 @@ void func_800E2780_minigame(omObjData *obj) {
     mtxInverse(data->unk18, data->unk58);
 }
 
-void func_800E28BC_minigame(HuMtx4F mtx, HuMtx4F result, Vec *pos, omObjData *obj) {
-    D_800EC1C0_minigame_ObjData *data = obj->data;
+void MgMapPosLocalGet(HuMtx4F mtx, HuMtx4F result, Vec *pos, omObjData *obj) {
+    MgMapWork *data = obj->data;
     s32 model = obj->model[0];
     f32 rotX = obj->rot.x;
     f32 rotY = obj->rot.y;
@@ -668,7 +668,7 @@ void func_800E28BC_minigame(HuMtx4F mtx, HuMtx4F result, Vec *pos, omObjData *ob
     pos->z = x * result[0][2] + y * result[1][2] + z * result[2][2] + result[3][2];
 }
 
-void func_800E2B58_minigame(HuMtx4F mtx, Vec *arg1) {
+void MgMtxDirMult(HuMtx4F mtx, Vec *arg1) {
     f32 x = arg1->x;
     f32 y = arg1->y;
     f32 z = arg1->z;
@@ -678,7 +678,7 @@ void func_800E2B58_minigame(HuMtx4F mtx, Vec *arg1) {
     arg1->z = x * mtx[0][2] + y * mtx[1][2] + z * mtx[2][2];
 }
 
-void func_800E2BD4_minigame(HuMtx4F mtx, Vec *arg1) {
+void MgMtxPosMult(HuMtx4F mtx, Vec *arg1) {
     f32 x = arg1->x;
     f32 y = arg1->y;
     f32 z = arg1->z;
@@ -688,7 +688,7 @@ void func_800E2BD4_minigame(HuMtx4F mtx, Vec *arg1) {
     arg1->z = x * mtx[0][2] + y * mtx[1][2] + z * mtx[2][2] + mtx[3][2];
 }
 
-void func_800E2C68_minigame(HuMtx4F mtx, Vec *arg1) {
+void MgMtxPosYMult(HuMtx4F mtx, Vec *arg1) {
     f32 x = arg1->x;
     f32 y = arg1->y;
     f32 z = arg1->z;
@@ -696,10 +696,10 @@ void func_800E2C68_minigame(HuMtx4F mtx, Vec *arg1) {
     arg1->y = x * mtx[0][1] + y * mtx[1][1] + z * mtx[2][1] + mtx[3][1];
 }
 
-void func_800E2CA4_minigame(omObjData *arg0, f32 arg1) {
-    func_800E1BA8_minigame_ObjData *data = arg0->data;
+void MgPlayerItemThrow(omObjData *arg0, f32 arg1) {
+    MgPlayerWork *data = arg0->data;
     omObjData *item;
-    A96F0_ObjData *itemData;
+    MgItemWork *itemData;
 
     if (data->unk50 & 0x10) {
         item = data->unkC8;
@@ -714,15 +714,15 @@ void func_800E2CA4_minigame(omObjData *arg0, f32 arg1) {
         if (item->model[1] != 0) {
             Hu3DModelAttrSet(item->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         }
-        func_800D853C_minigame(arg0, item);
+        MgItemRelease(arg0, item);
         data->unkC8 = NULL;
         data->unkB4 = 1.0f;
     }
 }
 
-s32 func_800E2DA4_minigame(omObjData *arg0, omObjData *item) {
-    func_800E1BA8_minigame_ObjData *data = arg0->data;
-    A96F0_ObjData *itemData = item->data;
+s32 MgPlayerItemHold(omObjData *arg0, omObjData *item) {
+    MgPlayerWork *data = arg0->data;
+    MgItemWork *itemData = item->data;
 
     if (!(itemData->unk50 & 0x20)) {
         return 0;
@@ -749,14 +749,14 @@ s32 func_800E2DA4_minigame(omObjData *arg0, omObjData *item) {
     return 1;
 }
 
-void func_800E2E98_minigame(omObjData *arg0) {
-    func_800E1BA8_minigame_ObjData *temp_v0 = arg0->data;
+void MgPlayerItemShapeReset(omObjData *arg0) {
+    MgPlayerWork *temp_v0 = arg0->data;
 
     Hu3DData[arg0->model[0]].motIdShape = 0xFF;
     temp_v0->unk50 &= 0xFEFF;
 }
 
-f32 func_800E2ED4_minigame(f32 x1, f32 z1, f32 x2, f32 z2) {
+f32 MgDirDot(f32 x1, f32 z1, f32 x2, f32 z2) {
     Vec a;
     Vec b;
 
@@ -771,7 +771,7 @@ f32 func_800E2ED4_minigame(f32 x1, f32 z1, f32 x2, f32 z2) {
     return HuVecDot3F(&b, &a);
 }
 
-s32 func_800E2F40_minigame(HmfModelData_Unk64_Unk60_Struct *obj, Vec *pos) {
+s32 MgBoundsCheck(HmfModelData_Unk64_Unk60_Struct *obj, Vec *pos) {
     f32 minX = obj->boundsMin[0];
     f32 minZ = obj->boundsMin[2];
     f32 maxX = obj->boundsMax[0];
@@ -780,7 +780,7 @@ s32 func_800E2F40_minigame(HmfModelData_Unk64_Unk60_Struct *obj, Vec *pos) {
     return minX <= pos->x && minZ <= pos->z && pos->x <= maxX && pos->z <= maxZ;
 }
 
-s32 func_800E2FD8_minigame(HmfModelData_Unk64_Unk60_Struct *obj, Vec *pos, f32 margin) {
+s32 MgBoundsMarginCheck(HmfModelData_Unk64_Unk60_Struct *obj, Vec *pos, f32 margin) {
     f32 x;
     f32 z;
     f32 minX;
@@ -800,7 +800,7 @@ s32 func_800E2FD8_minigame(HmfModelData_Unk64_Unk60_Struct *obj, Vec *pos, f32 m
     return 0;
 }
 
-s32 func_800E30B8_minigame(Vec *pos, D_800EC1C0_minigame_ObjData *data) {
+s32 MgMapAreaCheck(Vec *pos, MgMapWork *data) {
     f32 x;
     f32 z;
 
@@ -819,8 +819,8 @@ s32 func_800E30B8_minigame(Vec *pos, D_800EC1C0_minigame_ObjData *data) {
     return 0;
 }
 
-void func_800E317C_minigame(omObjData *arg0, f32 x, f32 z) {
-    func_800E1BA8_minigame_ObjData *data = arg0->data;
+void MgPlayerBounce(omObjData *arg0, f32 x, f32 z) {
+    MgPlayerWork *data = arg0->data;
     s16 stickX;
     s16 stickY;
     s32 avg;
@@ -830,7 +830,7 @@ void func_800E317C_minigame(omObjData *arg0, f32 x, f32 z) {
     } else {
         data->unk4C = 0.6f;
     }
-    func_800E5690_minigame(arg0, 6);
+    MgPlayerMotSet(arg0, 6);
     if (abs(HuPadStkX[data->unk57]) >= 9 || abs(HuPadStkY[data->unk57]) >= 9) {
         stickX = HuPadStkX[data->unk57];
         stickY = HuPadStkY[data->unk57];
@@ -846,50 +846,50 @@ void func_800E317C_minigame(omObjData *arg0, f32 x, f32 z) {
         if (stickY < -60) {
             stickY = -60;
         }
-        func_800E2308_minigame(&stickX, &stickY);
-        func_800E2250_minigame(arg0, stickX, stickY);
-        func_800E2250_minigame(arg0, stickX, stickY);
-        func_800E2250_minigame(arg0, stickX, stickY);
-        func_800E2250_minigame(arg0, stickX, stickY);
-        func_800E2250_minigame(arg0, stickX, stickY);
-        avg = func_800E2250_minigame(arg0, stickX, stickY);
+        MgStickClamp(&stickX, &stickY);
+        MgPlayerStickAvgGet(arg0, stickX, stickY);
+        MgPlayerStickAvgGet(arg0, stickX, stickY);
+        MgPlayerStickAvgGet(arg0, stickX, stickY);
+        MgPlayerStickAvgGet(arg0, stickX, stickY);
+        MgPlayerStickAvgGet(arg0, stickX, stickY);
+        avg = MgPlayerStickAvgGet(arg0, stickX, stickY);
         stickX = avg >> 16;
         stickY = avg;
         data->unk3C = atan2df(stickX, -stickY) + data->unk60;
-        data->unk40 = D_800EB760_minigame;
-    } else if (func_800E2ED4_minigame(sindf(data->unk3C), cosdf(data->unk3C), x, z) < 0.0f) {
-        data->unk40 = D_800EB760_minigame;
+        data->unk40 = mgPlayerSpeedMax;
+    } else if (MgDirDot(sindf(data->unk3C), cosdf(data->unk3C), x, z) < 0.0f) {
+        data->unk40 = mgPlayerSpeedMax;
     } else {
-        data->unk40 = -D_800EB760_minigame;
+        data->unk40 = -mgPlayerSpeedMax;
     }
-    data->unk38 = -D_800EB744_minigame * 0.9f;
+    data->unk38 = -mgPlayerJumpPower * 0.9f;
     data->unk50 |= 8;
 }
 
-void func_800E341C_minigame(func_800E1BA8_minigame_ObjData *arg0, f32 x, f32 z) {
-    if (0.0f <= func_800E2ED4_minigame(sindf(arg0->unk3C), cosdf(arg0->unk3C), x, z)) {
-        arg0->unk40 = D_800EB764_minigame;
+void MgPlayerRepel(MgPlayerWork *arg0, f32 x, f32 z) {
+    if (0.0f <= MgDirDot(sindf(arg0->unk3C), cosdf(arg0->unk3C), x, z)) {
+        arg0->unk40 = mgPlayerSpeedRun;
     } else {
-        arg0->unk40 = -D_800EB764_minigame;
+        arg0->unk40 = -mgPlayerSpeedRun;
     }
     arg0->unk50 |= 8;
-    func_800E19FC_minigame(arg0, 7);
+    MgPlayerSePlay(arg0, 7);
 }
 
-void func_800E34D8_minigame(omObjData *arg0, omObjData *arg1) {
-    func_800E1BA8_minigame_ObjData *data1 = arg1->data;
+void MgPlayerRepelPair(omObjData *arg0, omObjData *arg1) {
+    MgPlayerWork *data1 = arg1->data;
 
-    func_800E341C_minigame(arg0->data, arg0->trans.x - arg1->trans.x, arg0->trans.z - arg1->trans.z);
-    func_800E341C_minigame(data1, arg1->trans.x - arg0->trans.x, arg1->trans.z - arg0->trans.z);
+    MgPlayerRepel(arg0->data, arg0->trans.x - arg1->trans.x, arg0->trans.z - arg1->trans.z);
+    MgPlayerRepel(data1, arg1->trans.x - arg0->trans.x, arg1->trans.z - arg0->trans.z);
 }
 
-void func_800E3568_minigame(func_800E1BA8_minigame_ObjData *arg0, s32 index, s32 (*func)()) {
+void MgPlayerHookSet(MgPlayerWork *arg0, s32 index, s32 (*func)()) {
     if (index < 21) {
         arg0->unk104[index] = func;
     }
 }
 
-void func_800E3584_minigame(s16 model) {
+void MgShadowMdlInit(s16 model) {
     HmfData *hmf;
     s16 i;
 
@@ -900,7 +900,7 @@ void func_800E3584_minigame(s16 model) {
     }
 }
 
-void func_800E3628_minigame(s16 model, Vec *normal) {
+void MgShadowSlopeSet(s16 model, Vec *normal) {
     HmfModel *hmfModel = &Hu3DData[model];
     HmfData *hmf = hmfModel->hmf;
     Vtx *vtx = hmf->unk44[Hu3DBufNo];

@@ -49,7 +49,7 @@ typedef struct ChipShotChallengeSphere {
 
 extern f32 Hu3DMatColScale;
 extern f32 Hu3DMatAmbScale;
-extern s32 D_800A178C_main[][6];
+extern s32 omCharModelNoTbl[][6];
 extern u8 omAllPauseF;
 
 s32 D_8010A820_chip_shot_challenge = 0;
@@ -160,29 +160,29 @@ void func_801059A0_chip_shot_challenge(void) {
     s32 i;
 
     MapCollInit(50);
-    Hu3DQuadPoolInit(&D_800EBEB0_minigame, 0x40);
+    Hu3DQuadPoolInit(&mgQuadPool, 0x40);
     Hu3DSprModelInit(32);
     omInitObjMan(50, 0);
     omGameSysInit();
-    func_800E1804_minigame();
+    MgFieldStatClear();
     CamSetupInit(1);
     camIndex = CamSetupMapCullAdd();
     ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 40.0f, 80.0f, 8000.0f);
     Hu3DGLightDirSet(1, 32.0f, 99.0f, 59.0f);
-    D_800EC1B8_minigame = 0;
-    D_800EC280_minigame = 0;
-    D_800EBE28_minigame = 0;
-    func_800E18D8_minigame();
-    func_800E19F0_minigame(1);
-    D_800EB77C_minigame = 0.0f;
-    func_800E1490_minigame(D_800EBE28_minigame);
-    D_800EC1C0_minigame[D_800EBE28_minigame++] = omAddObj(1, 12, 0, -1, func_80106B84_chip_shot_challenge);
-    D_800EC598_minigame[D_800EC280_minigame++] = omAddObj(2, 10, 10, -1, func_801085C0_chip_shot_challenge);
-    D_800EC598_minigame[D_800EC280_minigame++] = omAddObj(2, 10, 10, -1, func_80108638_chip_shot_challenge);
-    D_800EC598_minigame[D_800EC280_minigame++] = omAddObj(2, 10, 10, -1, func_801086B4_chip_shot_challenge);
-    D_800EC598_minigame[D_800EC280_minigame++] = omAddObj(2, 10, 10, -1, func_80108730_chip_shot_challenge);
+    mgItemObjNum = 0;
+    mgPlayerObjNum = 0;
+    mgMapObjNum = 0;
+    MgPlayerParamReset();
+    MgShadowAltSet(1);
+    mgPlayerFallInit = 0.0f;
+    MgMapBaseSet(mgMapObjNum);
+    mgMapObjTbl[mgMapObjNum++] = omAddObj(1, 12, 0, -1, func_80106B84_chip_shot_challenge);
+    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(2, 10, 10, -1, func_801085C0_chip_shot_challenge);
+    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(2, 10, 10, -1, func_80108638_chip_shot_challenge);
+    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(2, 10, 10, -1, func_801086B4_chip_shot_challenge);
+    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(2, 10, 10, -1, func_80108730_chip_shot_challenge);
     omAddObj(3, 25, 10, -1, func_80107520_chip_shot_challenge);
     D_8010AAF0_chip_shot_challenge = omAddObj(3, 10, 0, -1, func_80108108_chip_shot_challenge);
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
@@ -191,9 +191,9 @@ void func_801059A0_chip_shot_challenge(void) {
     espPosSet(sprite, 160, 120);
     espAttrSet(sprite, 0x4000);
     WipeCreateIn(WIPE_TYPE_PREV, 0x10);
-    func_800E5EA0_minigame(&D_8010A900_chip_shot_challenge);
-    D_800EB930_minigame = 45;
-    D_800EB932_minigame = 60;
+    MgFlowInit(&D_8010A900_chip_shot_challenge);
+    mgFlowSeqNo = 45;
+    mgFlowSeqTime = 60;
     Center.x = 0.0f;
     Center.y = 200.0f;
     Center.z = 0.0f;
@@ -232,7 +232,7 @@ void func_80105E8C_chip_shot_challenge(omObjData *object) {
 }
 
 void func_80105EB8_chip_shot_challenge(omObjData *object) {
-    s32 time = func_800E6E9C_minigame();
+    s32 time = MgFlowStatTimeGet();
     f32 velocity;
     f32 speedSq;
 
@@ -304,7 +304,7 @@ void func_80105EB8_chip_shot_challenge(omObjData *object) {
         } else {
             D_8010A938_chip_shot_challenge += speedSq * 37.5f;
         }
-        D_8010A944_chip_shot_challenge += D_800EB72C_minigame;
+        D_8010A944_chip_shot_challenge += mgItemGravity;
         if (D_8010A944_chip_shot_challenge > 1.2f) {
             D_8010A944_chip_shot_challenge = 1.2f;
         }
@@ -342,7 +342,7 @@ void func_8010646C_chip_shot_challenge(omObjData *object) {
     if (omPauseChk() + omAllPauseF != 0) {
         return;
     }
-    time = func_800E6E9C_minigame();
+    time = MgFlowStatTimeGet();
     switch (MgFlowMain()) {
         case 0:
             func_80105EB8_chip_shot_challenge(object);
@@ -409,19 +409,19 @@ void func_8010646C_chip_shot_challenge(omObjData *object) {
             }
             break;
         case 4:
-            if (D_800EB934_minigame == 1) {
+            if (mgFlowResultF == 1) {
                 for (i = 0; i < 4; i++) {
-                    player = D_800EC598_minigame[i];
+                    player = mgPlayerObjTbl[i];
                     if (D_8010A8E0_chip_shot_challenge[D_8010A928_chip_shot_challenge[i]] == 0) {
                         work = player->data;
-                        func_800E5690_minigame(player, 5);
+                        MgPlayerMotSet(player, 5);
                         chr = GwPlayer[work->playerIndex].chr;
-                        chrData = D_800A178C_main[chr][0];
+                        chrData = omCharModelNoTbl[chr][0];
                         CharAnimSet(player->model[0], 2, chr, player->model[4]);
                         HuAudCharVoicePlay(chrData | 0x2F);
                         GwPlayer[work->playerIndex].bonusCoin += 10;
                     } else {
-                        func_800E5690_minigame(player, 6);
+                        MgPlayerMotSet(player, 6);
                     }
                 }
             }
@@ -431,7 +431,7 @@ void func_8010646C_chip_shot_challenge(omObjData *object) {
             object->func = func_80105E8C_chip_shot_challenge;
             break;
     }
-    func_800E3628_minigame(object->model[4], &D_8010AAB0_chip_shot_challenge);
+    MgShadowSlopeSet(object->model[4], &D_8010AAB0_chip_shot_challenge);
     for (i = 0; i < 5; i++) {
         x = sindf(D_8010A87C_chip_shot_challenge[i]) * D_8010A8A4_chip_shot_challenge[i];
         Hu3DModelPosSet(object->model[7 + i], x, D_8010A890_chip_shot_challenge[i],
@@ -447,8 +447,8 @@ void func_8010646C_chip_shot_challenge(omObjData *object) {
             D_8010A87C_chip_shot_challenge[i] = 100.0f;
         }
     }
-    for (i = 0; i < D_800EC280_minigame; i++) {
-        ((ChipShotChallengeWork *)D_800EC598_minigame[i]->data)->unk_60 = CRot.y;
+    for (i = 0; i < mgPlayerObjNum; i++) {
+        ((ChipShotChallengeWork *)mgPlayerObjTbl[i]->data)->unk_60 = CRot.y;
     }
     if (omSysExitReq == 1) {
         WipeCreateOut(WIPE_TYPE_NORMAL, 20);
@@ -465,7 +465,7 @@ void func_80106B84_chip_shot_challenge(omObjData *object) {
     f32 dist;
     s32 tag = 0x2B9;
 
-    D_800EB73C_minigame = 20.0f;
+    mgPlayerAccel = 20.0f;
     if (rand8() > 128) {
         object->model[0] = Hu3DModelRead2(0x3C0000, tag);
     } else {
@@ -476,7 +476,7 @@ void func_80106B84_chip_shot_challenge(omObjData *object) {
     object->model[3] = Hu3DModelRead2(0x3C0004, tag);
     object->model[4] = Hu3DModelRead2(0x3C0005, tag);
     object->model[5] = Hu3DModelRead2(0x3C0009, tag);
-    func_800E3584_minigame(object->model[4]);
+    MgShadowMdlInit(object->model[4]);
     D_8010AAD0_chip_shot_challenge = object->model[6] = Hu3DModelRead2(0xA0089, tag);
     object->model[7] = Hu3DModelRead2(0x210029, tag);
     object->model[8] = Hu3DModelLink(object->model[7]);
@@ -497,12 +497,12 @@ void func_80106B84_chip_shot_challenge(omObjData *object) {
     memset(work, 0, sizeof(ChipShotChallengeCourseWork));
     object->func = func_8010646C_chip_shot_challenge;
     work->unk_03 = 1;
-    func_800E147C_minigame(object);
-    func_800E1370_minigame(object, 1, 0.0f);
-    func_800E1304_minigame(object, 0.1f);
-    func_800E1310_minigame(object, D_800EB73C_minigame);
-    func_800E131C_minigame(object, 25.0f);
-    func_800E1468_minigame(object);
+    MgMapTiltOn(object);
+    MgMapAttrSet(object, 1, 0.0f);
+    MgMapFrictionSet(object, 0.1f);
+    MgMapAccelSet(object, mgPlayerAccel);
+    MgMapSlideSet(object, 25.0f);
+    MgMapNoBumpOn(object);
     work->unk_04 = 0;
     omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     while (TRUE) {
@@ -800,7 +800,7 @@ void func_80108108_chip_shot_challenge(omObjData *object) {
     work = OM_GET_DATA_PTR(object, ChipShotChallengeWork);
     object->model[0] = Hu3DModelRead2(0x3C0008, 0xAB9);
     object->model[1] = Hu3DModelRead3(9, 0xAB9);
-    func_800E3584_minigame(object->model[1]);
+    MgShadowMdlInit(object->model[1]);
     work->unk_44 = 0.3f;
     work->unk_48 = 60.0f;
     work->unk_34 = 50.0f;
@@ -816,22 +816,22 @@ void func_80108108_chip_shot_challenge(omObjData *object) {
     for (i = 0; i < 9; i++) {
         work->unk_84[i] = 0;
     }
-    func_800E149C_minigame(object, 0, 2);
+    MgPlayerMapAttrSet(object, 0, 2);
     object->scale.x = object->scale.y = object->scale.z = 0.5f;
     Hu3DModelScaleSet(object->model[1], 0.4f, 0.4f, 0.4f);
     object->func = func_801094D8_chip_shot_challenge;
 }
 
-func_800E1BA8_minigame_ObjData *func_80108274_chip_shot_challenge(omObjData *object, s32 player) {
-    func_800E1BA8_minigame_ObjData *data;
+MgPlayerWork *func_80108274_chip_shot_challenge(omObjData *object, s32 player) {
+    MgPlayerWork *data;
     s32 i;
     s32 chr;
     s32 model;
     s32 motion;
     s32 tag;
 
-    motion = D_800A178C_main[GwPlayer[player].chr][2];
-    model = D_800A178C_main[GwPlayer[player].chr][0];
+    motion = omCharModelNoTbl[GwPlayer[player].chr][2];
+    model = omCharModelNoTbl[GwPlayer[player].chr][0];
     tag = 0xAA9;
     chr = GwPlayer[player].chr;
     for (i = 0; i < object->mdlcnt; i++) {
@@ -845,12 +845,12 @@ func_800E1BA8_minigame_ObjData *func_80108274_chip_shot_challenge(omObjData *obj
     object->model[1] = Hu3DModelRead2(9, tag);
     CharAnimCreate(object->model[0], 2, chr, CharMotionDataNumGetTbl(chr, 2, 0));
     object->model[4] = Hu3DAnimDataRead(CharMotionDataNumGetTbl(chr, 2, 1));
-    func_800E5978_minigame(object, 0, CharMotionDataNumGet(chr, 0), 1, 0);
-    func_800E5978_minigame(object, 1, CharMotionDataNumGet(chr, 1), 1, 0);
-    func_800E5978_minigame(object, 2, CharMotionDataNumGet(chr, 0x5E), 1, 0);
-    func_800E5978_minigame(object, 3, CharMotionDataNumGet(chr, 0x5F), 0, 0);
-    func_800E5978_minigame(object, 5, CharMotionDataNumGet(chr, 0x2F), 0, 0);
-    func_800E5978_minigame(object, 6, CharMotionDataNumGet(chr, 0x36), 0, 0);
+    MgPlayerMotRead(object, 0, CharMotionDataNumGet(chr, 0), 1, 0);
+    MgPlayerMotRead(object, 1, CharMotionDataNumGet(chr, 1), 1, 0);
+    MgPlayerMotRead(object, 2, CharMotionDataNumGet(chr, 0x5E), 1, 0);
+    MgPlayerMotRead(object, 3, CharMotionDataNumGet(chr, 0x5F), 0, 0);
+    MgPlayerMotRead(object, 5, CharMotionDataNumGet(chr, 0x2F), 0, 0);
+    MgPlayerMotRead(object, 6, CharMotionDataNumGet(chr, 0x36), 0, 0);
     object->model[2] = Hu3DModelRead2((chr + 10) | 0x3C0000, tag);
     object->model[3] = Hu3DModelRead2((chr + 0x12) | 0x3C0000, 0x4AD);
     Hu3DModelHookSet(object->model[2], object->model[0], "item_hook");
@@ -869,7 +869,7 @@ func_800E1BA8_minigame_ObjData *func_80108274_chip_shot_challenge(omObjData *obj
 }
 
 void func_801085C0_chip_shot_challenge(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *data = func_80108274_chip_shot_challenge(object, D_8010A928_chip_shot_challenge[0]);
+    MgPlayerWork *data = func_80108274_chip_shot_challenge(object, D_8010A928_chip_shot_challenge[0]);
 
     object->trans.x = -300.0f;
     object->trans.z = 20.0f;
@@ -878,7 +878,7 @@ void func_801085C0_chip_shot_challenge(omObjData *object) {
 }
 
 void func_80108638_chip_shot_challenge(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *data = func_80108274_chip_shot_challenge(object, D_8010A928_chip_shot_challenge[1]);
+    MgPlayerWork *data = func_80108274_chip_shot_challenge(object, D_8010A928_chip_shot_challenge[1]);
 
     object->trans.x = -600.0f;
     object->trans.z = 20.0f;
@@ -887,7 +887,7 @@ void func_80108638_chip_shot_challenge(omObjData *object) {
 }
 
 void func_801086B4_chip_shot_challenge(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *data = func_80108274_chip_shot_challenge(object, D_8010A928_chip_shot_challenge[2]);
+    MgPlayerWork *data = func_80108274_chip_shot_challenge(object, D_8010A928_chip_shot_challenge[2]);
 
     object->trans.x = -900.0f;
     object->trans.z = 20.0f;
@@ -896,7 +896,7 @@ void func_801086B4_chip_shot_challenge(omObjData *object) {
 }
 
 void func_80108730_chip_shot_challenge(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *data = func_80108274_chip_shot_challenge(object, D_8010A928_chip_shot_challenge[3]);
+    MgPlayerWork *data = func_80108274_chip_shot_challenge(object, D_8010A928_chip_shot_challenge[3]);
 
     object->trans.x = -1200.0f;
     object->trans.z = 20.0f;
@@ -905,7 +905,7 @@ void func_80108730_chip_shot_challenge(omObjData *object) {
 }
 
 void func_801087AC_chip_shot_challenge(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *data = OM_GET_DATA_PTR(object, func_800E1BA8_minigame_ObjData);
+    MgPlayerWork *data = OM_GET_DATA_PTR(object, MgPlayerWork);
     // z is left implicit so GCC doesn't merge this with the identical initializer in func_80109DE0
     Vec pos = { .x = 0.0f, .y = 1.0f };
     s32 stickX;
@@ -942,20 +942,20 @@ void func_801087AC_chip_shot_challenge(omObjData *object) {
         func_8010A454_chip_shot_challenge(object, &stickX, &stickY, &buttons);
         switch (data->unk50) {
             case 0:
-                func_800E5690_minigame(object, 1);
+                MgPlayerMotSet(object, 1);
                 data->unk50 = 1;
                 break;
             case 1:
                 object->trans.x += 5.0f;
                 if (object->trans.x > -90.0f) {
-                    func_800E5690_minigame(object, 2);
+                    MgPlayerMotSet(object, 2);
                     data->unk50 = 2;
                     D_8010A824_chip_shot_challenge = 1;
                     object->trans.x = -90.0f;
                     GMesCreate(0x1A, 10, 0xA0, 0x18);
                     D_8010AA9C_chip_shot_challenge = 300;
                 }
-                func_800E3628_minigame(D_8010AAF0_chip_shot_challenge->model[1], &pos);
+                MgShadowSlopeSet(D_8010AAF0_chip_shot_challenge->model[1], &pos);
                 D_8010A96C_chip_shot_challenge -= 5;
                 if (D_8010A96C_chip_shot_challenge < 100) {
                     D_8010A96C_chip_shot_challenge = 100;
@@ -964,7 +964,7 @@ void func_801087AC_chip_shot_challenge(omObjData *object) {
             case 2:
                 GMesTimerValueSet(D_8010AA9C_chip_shot_challenge / 30 + 1);
                 if ((buttons & 0x8000) || D_8010AA9C_chip_shot_challenge == 0) {
-                    func_800E5690_minigame(object, 3);
+                    MgPlayerMotSet(object, 3);
                     data->unk50 = 3;
                     D_8010A824_chip_shot_challenge = 0;
                     D_8010AA98_chip_shot_challenge = 0;
@@ -1037,15 +1037,15 @@ void func_801087AC_chip_shot_challenge(omObjData *object) {
                 if (D_8010A844_chip_shot_challenge == 4) {
                     MgFlowStatSet(MG_STATE_FINISH);
                     for (i = 0; i < 4; i++) {
-                        D_800EC598_minigame[i]->trans.x = D_8010A84C_chip_shot_challenge[i][0];
-                        D_800EC598_minigame[i]->trans.y = D_8010A84C_chip_shot_challenge[i][1];
-                        D_800EC598_minigame[i]->trans.z = D_8010A84C_chip_shot_challenge[i][2];
-                        D_800EC598_minigame[i]->rot.y = 0.0f;
-                        Hu3DModelPosSet(D_800EC598_minigame[i]->model[1], D_8010A84C_chip_shot_challenge[i][0],
+                        mgPlayerObjTbl[i]->trans.x = D_8010A84C_chip_shot_challenge[i][0];
+                        mgPlayerObjTbl[i]->trans.y = D_8010A84C_chip_shot_challenge[i][1];
+                        mgPlayerObjTbl[i]->trans.z = D_8010A84C_chip_shot_challenge[i][2];
+                        mgPlayerObjTbl[i]->rot.y = 0.0f;
+                        Hu3DModelPosSet(mgPlayerObjTbl[i]->model[1], D_8010A84C_chip_shot_challenge[i][0],
                                         D_8010A84C_chip_shot_challenge[i][1], D_8010A84C_chip_shot_challenge[i][2]);
-                        Hu3DModelAttrSet(D_800EC598_minigame[i]->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-                        Hu3DModelAttrSet(D_800EC598_minigame[i]->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-                        Hu3DModelAttrSet(D_800EC598_minigame[i]->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                        Hu3DModelAttrSet(mgPlayerObjTbl[i]->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                        Hu3DModelAttrSet(mgPlayerObjTbl[i]->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                        Hu3DModelAttrSet(mgPlayerObjTbl[i]->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                         if (D_8010A848_chip_shot_challenge != 1) {
                             Hu3DModelAttrSet(object->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                             Hu3DModelPosSet(object->model[3], D_8010AAF0_chip_shot_challenge->trans.x,
@@ -1056,10 +1056,10 @@ void func_801087AC_chip_shot_challenge(omObjData *object) {
                     Hu3DModelAttrSet(D_8010AAF0_chip_shot_challenge->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     Hu3DModelAttrSet(D_8010AAF0_chip_shot_challenge->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 } else {
-                    D_800EC598_minigame[D_8010A844_chip_shot_challenge]->trans.x = -200.0f;
+                    mgPlayerObjTbl[D_8010A844_chip_shot_challenge]->trans.x = -200.0f;
                     data->unk50 = 5;
                     Hu3DModelPosSet(D_8010AAF0_chip_shot_challenge->model[1], 0.0f, 3.0f, 0.0f);
-                    func_800E3628_minigame(D_8010AAF0_chip_shot_challenge->model[1], &pos);
+                    MgShadowSlopeSet(D_8010AAF0_chip_shot_challenge->model[1], &pos);
                     Hu3DModelAttrSet(D_8010AAF0_chip_shot_challenge->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     if (D_8010A848_chip_shot_challenge != 1) {
                         Hu3DModelAttrSet(object->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
@@ -1081,7 +1081,7 @@ void func_801087AC_chip_shot_challenge(omObjData *object) {
                     Center.z = 0.0f;
                     CRot.y = 0.0f;
                 }
-                func_800E5690_minigame(object, 0);
+                MgPlayerMotSet(object, 0);
                 D_8010A840_chip_shot_challenge = 0;
                 D_8010A828_chip_shot_challenge = D_8010A82C_chip_shot_challenge = 0.0f;
                 break;
@@ -1091,7 +1091,7 @@ void func_801087AC_chip_shot_challenge(omObjData *object) {
         }
         Hu3DModelPosSet(object->model[1], object->trans.x, object->trans.y, object->trans.z);
     }
-    func_800E4E30_minigame(object);
+    MgPlayerMotUpdate(object);
     if (D_8010A840_chip_shot_challenge == 0) {
         func_8010802C_chip_shot_challenge();
     }
@@ -1157,7 +1157,7 @@ void func_801094D8_chip_shot_challenge(omObjData *object) {
     if (MgFlowStatGet() != MG_STATE_PLAY) {
         return;
     }
-    D_800EBE2C_minigame = D_800EC5D8_minigame = 0.0f;
+    mgMoveOfsX = mgMoveOfsZ = 0.0f;
     if (D_8010A820_chip_shot_challenge != 1) {
         D_8010A980_chip_shot_challenge = -1;
         return;
@@ -1183,9 +1183,9 @@ void func_801094D8_chip_shot_challenge(omObjData *object) {
     D_8010A838_chip_shot_challenge = work->unk_40;
     if (work->unk_38 != 1000.0f) {
         y += work->unk_38 * work->unk_38 * (work->unk_38 >= 0.0f ? -25.0f : 25.0f);
-        work->unk_38 += D_800EB72C_minigame;
-        if (work->unk_38 > D_800EB720_minigame) {
-            work->unk_38 = D_800EB720_minigame;
+        work->unk_38 += mgItemGravity;
+        if (work->unk_38 > mgItemFallMax) {
+            work->unk_38 = mgItemFallMax;
         }
         if (D_8010A83C_chip_shot_challenge == 1) {
             if (y <= D_8010AAA4_chip_shot_challenge.y - 40.0f) {
@@ -1208,8 +1208,8 @@ void func_801094D8_chip_shot_challenge(omObjData *object) {
     } else {
         y = func_80109AD0_chip_shot_challenge(object, x, y, z);
     }
-    func_800E17D4_minigame(object, x + D_800EBE2C_minigame, y, z + D_800EC5D8_minigame);
-    D_8010A978_chip_shot_challenge -= cosdf(angle) * work->unk_40 + D_800EC5D8_minigame;
+    MgObjPosSet(object, x + mgMoveOfsX, y, z + mgMoveOfsZ);
+    D_8010A978_chip_shot_challenge -= cosdf(angle) * work->unk_40 + mgMoveOfsZ;
     D_8010A978_chip_shot_challenge = HuAngleWrap(D_8010A978_chip_shot_challenge);
     D_8010A97C_chip_shot_challenge = HuAngleWrap(D_8010A97C_chip_shot_challenge);
     object->rot.y = angle;
@@ -1227,7 +1227,7 @@ void func_801094D8_chip_shot_challenge(omObjData *object) {
             if (D_8010A980_chip_shot_challenge == -1) {
                 HuAudPlayerFXPlay(0x3DE, (s16)D_8010A844_chip_shot_challenge);
                 D_8010A980_chip_shot_challenge = 0;
-                omVibrate(OM_GET_DATA_PTR(D_800EC598_minigame[D_8010A844_chip_shot_challenge], ChipShotChallengeWork)
+                omVibrate(OM_GET_DATA_PTR(mgPlayerObjTbl[D_8010A844_chip_shot_challenge], ChipShotChallengeWork)
                               ->playerIndex,
                           10, 0, 10);
             }
@@ -1242,7 +1242,7 @@ void func_801094D8_chip_shot_challenge(omObjData *object) {
 }
 
 f32 func_80109AD0_chip_shot_challenge(omObjData *object, f32 x, f32 y, f32 z) {
-    func_800E1BA8_minigame_ObjData *data = object->data;
+    MgPlayerWork *data = object->data;
     ChipShotChallengeSphere sphere;
 
     sphere.pos.x = x;
@@ -1278,7 +1278,7 @@ void func_80109B24_chip_shot_challenge(omObjData *object, f32 x, f32 y, f32 z) {
             dist = 1.0f - (25.0f - dist) / 13.125f;
             angle = work->unk_3C - 90.0f;
             sinAngle = sindf(angle);
-            D_8010AABC_chip_shot_challenge = func_800E2ED4_minigame(dx, dz, sinAngle, cosdf(angle)) * dist * 20.0f;
+            D_8010AABC_chip_shot_challenge = MgDirDot(dx, dz, sinAngle, cosdf(angle)) * dist * 20.0f;
             work->unk_3C -= D_8010AABC_chip_shot_challenge;
             work->unk_40 -= dist * 0.5f;
             if (work->unk_40 < 2.0f) {
@@ -1330,7 +1330,7 @@ void func_80109EF0_chip_shot_challenge(omObjData *object, f32 x, f32 y, f32 z, f
     }
     Hu3DModelPosSet(object->model[1], x, floorY + 3.0f, z);
     Hu3DModelScaleSet(object->model[1], scale, 0.5f, scale);
-    func_800E3628_minigame(object->model[1], normal);
+    MgShadowSlopeSet(object->model[1], normal);
     Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
 }
 
@@ -1348,19 +1348,19 @@ f32 func_8010A04C_chip_shot_challenge(ChipShotChallengeSphere *sphere, Vec *norm
     u8 transformed;
 
     D_8010AAA0_chip_shot_challenge = 0;
-    object = D_800EC1C0_minigame[0];
+    object = mgMapObjTbl[0];
     x = sphere->pos.x;
     y = sphere->pos.y;
     z = sphere->pos.z;
     pos.x = x;
     pos.y = y;
     pos.z = z;
-    func_800E28BC_minigame(D_800EC240_minigame, D_800EBE30_minigame, &pos, object);
+    MgMapPosLocalGet(mgMapMtx, mgMapInvMtx, &pos, object);
     floorY = -65536.0f;
     model = object->model[0];
     points = (Hu3DPoint *)Hu3DData[model].hmf->unk50;
-    Hu3DQuadPoolCollect(model, &D_800EBEB0_minigame, func_800DB704_minigame, &pos);
-    for (quad = Hu3DQuadPoolNext(&D_800EBEB0_minigame); quad != NULL; quad = Hu3DQuadPoolNext(&D_800EBEB0_minigame)) {
+    Hu3DQuadPoolCollect(model, &mgQuadPool, MgFloorFaceFilter, &pos);
+    for (quad = Hu3DQuadPoolNext(&mgQuadPool); quad != NULL; quad = Hu3DQuadPoolNext(&mgQuadPool)) {
         transformed = FALSE;
         if (Hu3DData[model].pos.x != 0.0f || Hu3DData[model].pos.y != 0.0f ||
             Hu3DData[model].pos.z != 0.0f || Hu3DData[model].rot.x != 0.0f ||
@@ -1368,13 +1368,13 @@ f32 func_8010A04C_chip_shot_challenge(ChipShotChallengeSphere *sphere, Vec *norm
             tmp.x = x;
             tmp.y = y + 10.0f;
             tmp.z = z;
-            func_800E2BD4_minigame(D_800EBE30_minigame, &tmp);
+            MgMtxPosMult(mgMapInvMtx, &tmp);
             dir.x = tmp.x - pos.x;
             dir.y = tmp.y - pos.y;
             dir.z = tmp.z - pos.z;
             MapVecNormalize(&dir);
-            func_800D8818_minigame(pos.x, pos.y, pos.z, points, quad, &dir, &pos);
-            func_800E2C68_minigame(D_800EC240_minigame, &pos);
+            MgFaceRayCross(pos.x, pos.y, pos.z, points, quad, &dir, &pos);
+            MgMtxPosYMult(mgMapMtx, &pos);
             hitY = pos.y;
             transformed = TRUE;
         } else {
@@ -1389,7 +1389,7 @@ f32 func_8010A04C_chip_shot_challenge(ChipShotChallengeSphere *sphere, Vec *norm
                     tmp.x = normal->x;
                     tmp.y = normal->y;
                     tmp.z = normal->z;
-                    func_800E2B58_minigame(D_800EC240_minigame, &tmp);
+                    MgMtxDirMult(mgMapMtx, &tmp);
                     normal->x = tmp.x;
                     normal->y = tmp.y;
                     normal->z = tmp.z;

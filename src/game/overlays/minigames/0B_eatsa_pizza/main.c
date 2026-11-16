@@ -29,8 +29,8 @@ typedef struct {
     /* 0x37 */ u8 unk37;
 } Work; // Size 0x38
 
-extern s32 D_800A178C_main[][6];
-extern s32 D_800A1790_main[][6];
+extern s32 omCharModelNoTbl[][6];
+extern s32 omCharMotTbl[][6];
 
 // Aliases into the arrays below, see undefined_syms.txt.
 extern s16 D_8010913A_eatsa_pizza;
@@ -82,7 +82,7 @@ void func_801078C4_eatsa_pizza(omObjData *object);
 void func_80107A64_eatsa_pizza(omObjData *object);
 void func_80106084_eatsa_pizza(omObjData *object);
 void func_8010679C_eatsa_pizza(omObjData *object);
-void func_801083A8_eatsa_pizza(omObjData *arg0, func_800E1BA8_minigame_ObjData **arg1, void **arg2);
+void func_801083A8_eatsa_pizza(omObjData *arg0, MgPlayerWork **arg1, void **arg2);
 void *func_801090B4_eatsa_pizza(s16 arg0, s16 arg1);
 void func_801087DC_eatsa_pizza(omObjData *object);
 void func_80108C50_eatsa_pizza(omObjData *);
@@ -105,7 +105,7 @@ void func_801059A0_eatsa_pizza(void) {
     u8 camIndex;
 
     MapCollInit(1);
-    Hu3DQuadPoolInit(&D_800EBEB0_minigame, 0x40);
+    Hu3DQuadPoolInit(&mgQuadPool, 0x40);
     omInitObjMan(0x10, 0);
     omGameSysInit();
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutView);
@@ -115,7 +115,7 @@ void func_801059A0_eatsa_pizza(void) {
     ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 5.0f, 80.0f, 4000.0f);
-    func_800E1804_minigame();
+    MgFieldStatClear();
     func_80105AF4_eatsa_pizza(obj);
     func_801083BC_eatsa_pizza();
     func_80105FF0_eatsa_pizza();
@@ -225,10 +225,10 @@ void func_80105F24_eatsa_pizza(f32 x, f32 y, f32 z, f32 *dst) {
 void func_80105FF0_eatsa_pizza(void) {
     s32 i;
 
-    func_800E18D8_minigame();
-    D_800EC280_minigame = 0;
+    MgPlayerParamReset();
+    mgPlayerObjNum = 0;
     for (i = 0; i < 4; i++) {
-        D_800EC598_minigame[D_800EC280_minigame++] = omAddObj(2, 0xB, 0x32, -1, func_80106084_eatsa_pizza);
+        mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(2, 0xB, 0x32, -1, func_80106084_eatsa_pizza);
     }
 }
 
@@ -238,15 +238,15 @@ void func_80106084_eatsa_pizza(omObjData *object) {
     s8 character;
     s32 model;
     s32 motion;
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     Work *work;
 
     player = D_80109100_eatsa_pizza[D_80109108_eatsa_pizza][1];
     group = GwPlayer[player].group;
     character = (s8)GwPlayer[player].chr;
-    model = D_800A178C_main[character][0];
-    motion = D_800A1790_main[character][0];
-    func_800E19F0_minigame(1);
+    model = omCharModelNoTbl[character][0];
+    motion = omCharMotTbl[character][0];
+    MgShadowAltSet(1);
     func_80106504_eatsa_pizza(object, model, motion, player, 0x2D9);
 
     data = object->data;
@@ -289,21 +289,21 @@ void func_80106084_eatsa_pizza(omObjData *object) {
     object->model[7] = Hu3DModelRead(8, 0x2DD);
     object->model[8] = Hu3DModelRead(7, 0x2DD);
     object->func = func_8010679C_eatsa_pizza;
-    func_800E5A00_minigame(object, 0, CharMotionDataNumGet(character, 0), 1, 0);
-    func_800E5A00_minigame(object, 0x10, CharMotionDataNumGet(character, 0x3E), 1, 0);
-    func_800E5A00_minigame(object, 0xD, CharMotionDataNumGet(character, 0x4E), 2, 0x78);
-    func_800E5A00_minigame(object, 0xE, CharMotionDataNumGet(character, 0x3A), 2, 0x3C);
-    func_800E5690_minigame(object, 0);
+    MgPlayerMotLoad(object, 0, CharMotionDataNumGet(character, 0), 1, 0);
+    MgPlayerMotLoad(object, 0x10, CharMotionDataNumGet(character, 0x3E), 1, 0);
+    MgPlayerMotLoad(object, 0xD, CharMotionDataNumGet(character, 0x4E), 2, 0x78);
+    MgPlayerMotLoad(object, 0xE, CharMotionDataNumGet(character, 0x3A), 2, 0x3C);
+    MgPlayerMotSet(object, 0);
     D_80109108_eatsa_pizza++;
     D_8010910C_eatsa_pizza[group]++;
 }
 
 void func_80106504_eatsa_pizza(omObjData *object, s32 arg1, s32 arg2, u16 player, u16 tag) {
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     s32 i;
     u32 character;
     f32 zero;
-    func_800E1BA8_minigame_UnkE8_ObjData *entry;
+    MgMotAttr *entry;
 
     for (i = 0; i < object->mdlcnt; i++) {
         object->model[i] = 0;
@@ -339,10 +339,10 @@ void func_80106504_eatsa_pizza(omObjData *object, s32 arg1, s32 arg2, u16 player
     data->unk59 = player;
 
     data->unk3C = atan2df(-object->trans.x, -object->trans.z);
-    func_800E1328_minigame(object, 60.0f);
-    func_800E1334_minigame(object, 150.0f);
-    func_800E1340_minigame(object, 20.0f);
-    func_800E12EC_minigame(object, 1000.0f);
+    MgPlayerRadiusSet(object, 60.0f);
+    MgPlayerHeightSet(object, 150.0f);
+    MgPlayerPunchRadiusSet(object, 20.0f);
+    MgPlayerVelYSet(object, 1000.0f);
 
     character = (u32)arg1 >> 16;
     switch (character) {
@@ -360,7 +360,7 @@ void func_80106504_eatsa_pizza(omObjData *object, s32 arg1, s32 arg2, u16 player
 }
 
 void func_8010679C_eatsa_pizza(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     Work *work;
     s32 mode;
     s32 input = 0;
@@ -379,7 +379,7 @@ void func_8010679C_eatsa_pizza(omObjData *object) {
     data = object->data;
     work = data->unk158;
     currentAngle = data->unk3C;
-    frameStatus = func_800E4A90_minigame(object);
+    frameStatus = MgPlayerMotStatGet(object);
     work->unk20 = (s16)(s32)(work->pos.x + 160.0f);
     work->unk20 >>= 5;
     work->unk22 = (s16)(s32)(work->pos.y + 120.0f);
@@ -397,11 +397,11 @@ void func_8010679C_eatsa_pizza(omObjData *object) {
             work = data->unk158;
             player = data->unk57;
             if ((frameStatus & 0xFFFF) == 2) {
-                func_800E5690_minigame(object, 0x10);
+                MgPlayerMotSet(object, 0x10);
             }
             if (work->unk35 == 0) {
                 s32 pad = (s8)player;
-                u32 packedInput = func_800E2250_minigame(object, HuPadStkX[pad], HuPadStkY[pad]);
+                u32 packedInput = MgPlayerStickAvgGet(object, HuPadStkX[pad], HuPadStkY[pad]);
                 dx = packedInput >> 16;
                 dy = packedInput;
                 input = HuPadBtnDown[pad];
@@ -428,7 +428,7 @@ void func_8010679C_eatsa_pizza(omObjData *object) {
             }
             if (data->unk40 != 0.0) {
                 if ((frameStatus & 0xFFFF) == 2) {
-                    func_800E5690_minigame(object, 0x10);
+                    MgPlayerMotSet(object, 0x10);
                 }
                 if (work->unk35 == 0) {
                     angle = atan2df((f32)dx, (f32)-dy) + 180.0;
@@ -510,18 +510,18 @@ void func_8010679C_eatsa_pizza(omObjData *object) {
             break;
         case 3:
         case 4:
-            func_800E5690_minigame(object, 0);
+            MgPlayerMotSet(object, 0);
             Hu3DMotionSpeedSet(object->model[0], 1.0f);
             work->unk36 = 2;
             break;
         case 5:
             if (work->unk36 != 0) {
                 if (work->unk34 != 0) {
-                    func_800E5690_minigame(object, 0xD);
+                    MgPlayerMotSet(object, 0xD);
                     HuAudCharVoicePlayPlayer(work->unk2C, (work->unk32 * 5 << 3) + 0x2C, work->unk30);
                     GwPlayer[data->unk59].bonusCoin += 10;
                 } else {
-                    func_800E5690_minigame(object, 0xE);
+                    MgPlayerMotSet(object, 0xE);
                 }
             }
             break;
@@ -577,11 +577,11 @@ void func_8010679C_eatsa_pizza(omObjData *object) {
     func_80105F24_eatsa_pizza(work->pos.x, work->pos.y, work->pos.z, screenPos);
     object->trans.x = screenPos[0];
     object->trans.y = screenPos[1];
-    func_800E4E30_minigame(object);
+    MgPlayerMotUpdate(object);
 }
 
 s32 func_801070E8_eatsa_pizza(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     Work *work;
     u16 *mask;
     s32 random;
@@ -741,9 +741,9 @@ s32 func_801070E8_eatsa_pizza(omObjData *object) {
 }
 
 void func_801078C4_eatsa_pizza(omObjData *arg0) {
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     Work *self;
-    func_800E1BA8_minigame_ObjData *otherData;
+    MgPlayerWork *otherData;
     Work *other;
     f32 selfRadius;
     f32 dx;
@@ -760,7 +760,7 @@ void func_801078C4_eatsa_pizza(omObjData *arg0) {
         if (data->unk59 == j) {
             continue;
         }
-        func_801083A8_eatsa_pizza(D_800EC598_minigame[i], &otherData, (void **)&other);
+        func_801083A8_eatsa_pizza(mgPlayerObjTbl[i], &otherData, (void **)&other);
         dx = other->pos.x - self->pos.x;
         dy = other->pos.y - self->pos.y;
         otherRadius = other->radius;
@@ -784,7 +784,7 @@ void func_801078C4_eatsa_pizza(omObjData *arg0) {
 }
 
 void func_80107A64_eatsa_pizza(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     Work *work;
     u8 *map;
     f32 x;
@@ -882,7 +882,7 @@ void func_80107A64_eatsa_pizza(omObjData *object) {
 // be live across the calls (all s-regs busy) with every reference removed by
 // combine, which only happens for a value live at entry whose read folds away.
 s32 func_80107E6C_eatsa_pizza(omObjData *object) {
-    func_800E1BA8_minigame_ObjData *data;
+    MgPlayerWork *data;
     Work *work;
     u16 *mask;
     u16 color;
@@ -1007,16 +1007,16 @@ s32 func_80107E6C_eatsa_pizza(omObjData *object) {
 INCLUDE_ASM("asm/nonmatchings/game/overlays/minigames/0B_eatsa_pizza/main", func_80107E6C_eatsa_pizza);
 #endif
 
-void func_801083A8_eatsa_pizza(omObjData *arg0, func_800E1BA8_minigame_ObjData **arg1, void **arg2) {
+void func_801083A8_eatsa_pizza(omObjData *arg0, MgPlayerWork **arg1, void **arg2) {
     *arg1 = arg0->data;
     *arg2 = (*arg1)->unk158;
 }
 
 void func_801083BC_eatsa_pizza(void) {
-    D_800EBE28_minigame = 0;
-    func_800E1490_minigame(0);
-    D_800EC1C0_minigame[D_800EBE28_minigame++] = omAddObj(5, 1, 0, -1, func_80108470_eatsa_pizza);
-    D_800EC1C0_minigame[D_800EBE28_minigame++] = omAddObj(5, 1, 0, -1, func_801084F8_eatsa_pizza);
+    mgMapObjNum = 0;
+    MgMapBaseSet(0);
+    mgMapObjTbl[mgMapObjNum++] = omAddObj(5, 1, 0, -1, func_80108470_eatsa_pizza);
+    mgMapObjTbl[mgMapObjNum++] = omAddObj(5, 1, 0, -1, func_801084F8_eatsa_pizza);
     D_80109350_eatsa_pizza = 0;
 }
 

@@ -200,7 +200,7 @@ void func_801059A0_ridiculous_relay(void) {
     D_80110CB0_ridiculous_relay.newRecord = FALSE;
     D_80110CB0_ridiculous_relay.gauge = MG_GAUGE_NONE;
     D_80110CB0_ridiculous_relay.timeLimit = -1;
-    func_800E5EA0_minigame(&D_80110CB0_ridiculous_relay);
+    MgFlowInit(&D_80110CB0_ridiculous_relay);
 }
 
 void func_80105D40_ridiculous_relay(omObjData *object) {
@@ -303,7 +303,7 @@ void func_80105F48_ridiculous_relay(omObjData *object) {
                 }
             }
             if (D_801119D4_ridiculous_relay == 2) {
-                func_800E6F34_minigame(30);
+                MgFlowResultWaitSet(30);
             }
             if (D_801119D4_ridiculous_relay == 15) {
                 for (i = 0; i < 3; i++) {

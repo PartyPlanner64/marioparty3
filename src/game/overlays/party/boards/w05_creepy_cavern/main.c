@@ -8483,7 +8483,7 @@ void func_80116508_w05(void) {
         MBCameraPos3DSet(&player->player_obj->coords);
         HuPrcVSleep();
         WipeCreateIn(WIPE_TYPE_NORMAL, 0x10);
-        D_800A12D8_main = 1;
+        mbTauntOffF = 1;
         HuPrcSleep(0x10);
     }
 
@@ -8518,7 +8518,7 @@ void func_80116508_w05(void) {
         MBPlayerMotionSet(-1, -1, 2);
     } else {
         MBMotionSet(MBPlayerGet(targetPlayer)->player_obj, -1, 2);
-        D_800A12D8_main = 0;
+        mbTauntOffF = 0;
     }
 
     if (targetPlayer != loc->current_player_index) {
@@ -8647,7 +8647,7 @@ void func_80116D88_w05(void) {
         MBCameraPos3DSet(&player->player_obj->coords);
         HuPrcVSleep();
         WipeCreateIn(WIPE_TYPE_NORMAL, 0x10);
-        D_800A12D8_main = 1;
+        mbTauntOffF = 1;
         HuPrcSleep(0x10);
     }
 
@@ -8684,7 +8684,7 @@ void func_80116D88_w05(void) {
         MBPlayerMotionSet(-1, -1, 2);
     } else {
         MBMotionSet(MBPlayerGet(targetPlayer)->player_obj, -1, 2);
-        D_800A12D8_main = 0;
+        mbTauntOffF = 0;
     }
 
     if (targetPlayer != loc->current_player_index) {
@@ -10332,7 +10332,7 @@ retry:
     }
 
     mbItemBtnF = 0;
-    D_800A12D8_main = 1;
+    mbTauntOffF = 1;
     MBStatusHideAll();
     MBBackThreadPriLowSet();
     HuVecCopy3F(&pos, &player->player_obj->coords);
@@ -10459,7 +10459,7 @@ retry:
         MBModelJumpWait(bridge);
         MBBackThreadPriHighSet();
         MBStatusShowAll();
-        D_800A12D8_main = 0;
+        mbTauntOffF = 0;
         mbItemBtnF = 1;
         switch (type) {
             case 0:
@@ -10534,7 +10534,7 @@ retry:
         HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&player->player_obj->coords, &target->coords, &player->player_obj->coords, 20));
         HuPrcChildWatch();
         MBStatusShowAll();
-        D_800A12D8_main = 0;
+        mbTauntOffF = 0;
         mbItemBtnF = 1;
     }
 
@@ -10589,7 +10589,7 @@ void func_8011BC40_w05(s32 arg0, SpaceData *space) {
     Object *bridge;
 
     player = MBPlayerGet(-1);
-    D_800A12D8_main = 1;
+    mbTauntOffF = 1;
     WipeCreateOut(4, 16);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
@@ -10709,7 +10709,7 @@ void func_8011BC40_w05(s32 arg0, SpaceData *space) {
         HuPrcChildWatch();
     }
     MBBackThreadPriHighSet();
-    D_800A12D8_main = 0;
+    mbTauntOffF = 0;
 }
 
 void func_8011C2A8_w05(void) {

@@ -2446,32 +2446,32 @@ void func_8010E8E0_option(void) {
     HuWinMesSet(titleWindow, menu.pages[0].title, -1, -1);
     HuWinDispOn(titleWindow);
     customSounds = 0;
-    if (func_800E905C_minigame(0) >= 0) {
+    if (MgStoryRankGet(0) >= 0) {
         customSounds = 1;
         menu.pages[14].entries[1].message = 0x4C37;
         menu.pages[14].entries[1].sound = 0x2C7;
     }
-    if (func_800E905C_minigame(1) >= 0) {
+    if (MgStoryRankGet(1) >= 0) {
         customSounds = 1;
         menu.pages[14].entries[2].message = 0x4C38;
         menu.pages[14].entries[2].sound = 0x2C8;
     }
-    if (func_800E905C_minigame(2) >= 0) {
+    if (MgStoryRankGet(2) >= 0) {
         customSounds = 1;
         menu.pages[14].entries[3].message = 0x4C39;
         menu.pages[14].entries[3].sound = 0x2C9;
     }
-    if (func_800E905C_minigame(3) >= 0) {
+    if (MgStoryRankGet(3) >= 0) {
         customSounds = 1;
         menu.pages[14].entries[4].message = 0x4C3A;
         menu.pages[14].entries[4].sound = 0x2CA;
     }
-    if (func_800E905C_minigame(4) >= 0) {
+    if (MgStoryRankGet(4) >= 0) {
         customSounds = 1;
         menu.pages[14].entries[5].message = 0x4C3B;
         menu.pages[14].entries[5].sound = 0x2CB;
     }
-    if (func_800E905C_minigame(5) >= 0) {
+    if (MgStoryRankGet(5) >= 0) {
         customSounds = 1;
         menu.pages[14].entries[6].message = 0x4C3C;
         menu.pages[14].entries[6].sound = 0x2CC;

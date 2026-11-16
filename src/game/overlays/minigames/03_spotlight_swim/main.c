@@ -110,8 +110,8 @@ typedef struct {
     /* 0x03 */ s8 unk03[3];
 } SpotlightSwimBss398; // sizeof 0x6
 
-extern s32 D_800A178C_main[][6];
-extern s32 D_800A1790_main[][6];
+extern s32 omCharModelNoTbl[][6];
+extern s32 omCharMotTbl[][6];
 extern s16 Hu3DCamMtxNo;
 
 s8 D_8010CCC0_spotlight_swim[][3] = {
@@ -1124,7 +1124,7 @@ void func_80108AD8_spotlight_swim(omObjData *obj) {
 
     chr = GwPlayer[obj->work[0]].chr;
     obj->work[1] = chr;
-    obj->model[0] = Hu3DModelRead(D_800A178C_main[chr][0] | D_800A1790_main[chr][0], 0x2B9);
+    obj->model[0] = Hu3DModelRead(omCharModelNoTbl[chr][0] | omCharMotTbl[chr][0], 0x2B9);
     omObjMotionRead(obj, 0, CharMotionDataNumGet(chr, 9));
     omObjMotionRead(obj, 1, CharMotionDataNumGet(chr, 0x60));
     omObjMotionRead(obj, 3, CharMotionDataNumGet(chr, 0x61));
@@ -1625,7 +1625,7 @@ void func_8010A328_spotlight_swim(omObjData *obj) {
     u16 chr = GwPlayer[obj->work[0]].chr;
     f32 unused[2]; // Unused stack space retained from the original function.
 
-    obj->model[0] = Hu3DModelRead(D_800A178C_main[chr][0] | D_800A1790_main[chr][0], 0x2B9);
+    obj->model[0] = Hu3DModelRead(omCharModelNoTbl[chr][0] | omCharMotTbl[chr][0], 0x2B9);
     omObjMotionRead(obj, 0, CharMotionDataNumGet(chr, 0x5C));
     omObjMotionRead(obj, 1, CharMotionDataNumGet(chr, 0x5B));
     omObjMotionRead(obj, 2, CharMotionDataNumGet(chr, 0x5A));
@@ -2378,9 +2378,9 @@ void func_8010CB78_spotlight_swim(void) {
     Hu3DGLightDirSet(1, 0.0f, 90.0f, 560.0f);
     Hu3DGLightColorSet(2, 0xFF, 0xFF, 0xFF);
     Hu3DGLightDirSet(2, 0.0f, 90.0f, 560.0f);
-    D_800EC1B8_minigame = 0;
-    D_800EC280_minigame = 0;
-    D_800EBE28_minigame = 0;
+    mgItemObjNum = 0;
+    mgPlayerObjNum = 0;
+    mgMapObjNum = 0;
     GMesFontMesCreate(D_8010D2E0_spotlight_swim, 0);
     GMesFontMesCreate(D_8010D2E0_spotlight_swim, 1);
     omAddObj(0x5DC, 0, 0, -1, func_8010C900_spotlight_swim);

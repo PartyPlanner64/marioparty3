@@ -31,7 +31,7 @@ extern u8 CharAnimWorkNum[6];
 
 u8 Hu3DSprModelInitF = 0;
 s16 sprTexFilterTbl[] = { G_TF_POINT, G_TF_AVERAGE, G_TF_BILERP, G_TF_POINT };
-s16 D_800A062C_main[] = { 2, 3, 7, 4, 5, 6, 8, 9 }; // unreferenced
+s16 sprCharDirTbl[] = { 2, 3, 7, 4, 5, 6, 8, 9 }; // unreferenced
 
 /* hmfanim functions. This file does not include game/hmfanim.h: it was compiled
  * against an s16 return type for Hu3DAnimDataCreate, which is declared s32 there. */

@@ -59,12 +59,12 @@ void func_801059BC_mstory2(void) {
 }
 
 void func_801059E4_mstory2(omObjData *obj) {
-    D_800CE17C_main[0] = D_8011B920_mstory2.x;
-    D_800CE17C_main[1] = D_8011B920_mstory2.z;
-    D_800CE17C_main[-1] = 0.0f;
-    D_800CE17C_main[2] = 35.0f;
-    D_800CE17C_main[3] = CFanLen;
-    D_800CE17C_main[4] = CFanOfs;
+    CFanParam[0] = D_8011B920_mstory2.x;
+    CFanParam[1] = D_8011B920_mstory2.z;
+    CFanParam[-1] = 0.0f;
+    CFanParam[2] = 35.0f;
+    CFanParam[3] = CFanLen;
+    CFanParam[4] = CFanOfs;
     Hu3DCameraPosSetV(0, &D_8011B920_mstory2, &D_8011B92C_mstory2, &D_8011B938_mstory2);
     Hu3DCamUpdateMtx(0);
 }
@@ -188,7 +188,7 @@ void func_80105EC4_mstory2(omObjData *obj) {
             }
             omOvlReturnEx(1);
         } else if (D_8011B948_mstory2 == 1) {
-            func_800E989C_minigame();
+            MgStoryStageGoto();
         }
     }
 }

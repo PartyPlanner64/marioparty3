@@ -2,24 +2,24 @@
 #include "staff.h"
 
 /* The overlay's BSS is shared by all of its code units. Keep allocation order here. */
-s16 D_80111490_staff[27] BSS;
-UnkStaff_6 *D_801114C8_staff BSS;
-u8 D_801114CC_staff[4] BSS; /* Unreferenced. */
-s16 D_801114D0_staff[28] BSS;
-UnkStaff_6 *D_80111508_staff BSS;
-s16 D_8011150C_staff BSS;
-s16 D_8011150E_staff BSS;
-s16 D_80111510_staff BSS;
-s16 D_80111512_staff BSS;
-s16 D_80111514_staff BSS;
-s16 D_80111516_staff BSS;
-MsetupPlayerConfig D_80111518_staff BSS;
-s16 D_80111530_staff BSS;
-s16 D_80111532_staff BSS;
-Vec D_80111534_staff BSS;
-Vec D_80111540_staff BSS;
-s16 D_8011154C_staff BSS;
-Vec D_80111550_staff BSS;
-s16 D_8011155C_staff BSS;
-f32 D_80111560_staff BSS;
-f32 D_80111564_staff BSS;
+s16 staff_roleFontAnimTbl[27] BSS;
+UnkStaff_6 *staff_roleLineTbl BSS;
+u8 staff_roleLinePad[4] BSS; /* Unreferenced. */
+s16 staff_nameFontAnimTbl[28] BSS;
+UnkStaff_6 *staff_nameLineTbl BSS;
+s16 staff_roleLineNum BSS;
+s16 staff_nameLineNum BSS;
+s16 staff_padNo BSS;
+s16 staff_storyF BSS;
+s16 staff_chrNo BSS;
+s16 staff_exitOvlNo BSS;
+MsetupPlayerConfig staff_playerConfig BSS;
+s16 staff_wipeType BSS;
+s16 staff_exitEvtNo BSS;
+Vec staff_cameraTarget BSS;
+Vec staff_cameraPos BSS;
+s16 staff_wipeTime BSS;
+Vec staff_cameraRot BSS;
+s16 staff_exitMode BSS;
+f32 staff_cameraFar BSS;
+f32 staff_cameraNear BSS;

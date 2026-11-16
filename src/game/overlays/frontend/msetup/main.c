@@ -16,97 +16,97 @@ typedef struct MsetupSceneryState {
     Vec outerPositions[6];
 } MsetupSceneryState;
 
-extern MsetupEntryAnim D_8011A9E0_msetup[];
-extern s16 D_801198C0_msetup;
-extern void (*D_8011955C_msetup[])(void);
-extern omObjData *D_80119430_msetup;
-extern s16 (*D_80119434_msetup[])(s16);
-extern s16 (*D_80119458_msetup[])(s16);
-extern u8 D_80119478_msetup[];
-extern s16 (*D_80119510_msetup[])(s16);
-extern s16 (*D_80119524_msetup[])(s16);
-extern u8 D_80119488_msetup[];
-extern u8 D_80119498_msetup[];
-extern s32 D_801194A8_msetup[];
-extern s32 D_801194C0_msetup[];
-extern s32 D_801194D8_msetup[];
-extern s32 D_801194F8_msetup[];
-extern u16 D_80119410_msetup;
-extern s16 D_80119412_msetup;
-extern u8 D_80119419_msetup;
-extern MsetupPlayerConfig D_8011AA30_msetup;
-extern s16 D_8011AA48_msetup;
-extern s16 D_8011A93A_msetup;
-extern s16 D_8011A944_msetup;
-extern s16 D_8011A946_msetup;
-extern s16 D_8011AA4C_msetup;
-extern s16 D_8011AA4A_msetup;
-extern f32 D_80119414_msetup;
-extern u32 D_8011941C_msetup;
-extern f32 D_8011A93C_msetup;
-extern f32 D_8011A940_msetup;
-extern Vec D_8011A994_msetup;
-extern Process *D_80119420_msetup;
-extern s32 D_80119E94_msetup[];
-extern s32 D_80119EAC_msetup[];
-extern s32 D_80119EC4_msetup[];
-extern s32 D_80119EE0_msetup[];
-extern s16 D_8011A880_msetup;
-extern MsetupMenuState D_8011A882_msetup;
-extern s16 D_8011A990_msetup;
-extern s16 D_8011A938_msetup;
-extern s16 D_8011A948_msetup;
-extern u8 D_8011A949_msetup;
-extern s16 D_8011A950_msetup[];
-extern s16 D_8011A9A0_msetup[];
-extern s32 D_80119424_msetup[];
-extern s32 D_80119534_msetup[];
-extern s32 D_80119548_msetup[];
-extern ModeCameraPreset D_80119580_msetup;
-extern MsetupCameraKeyframe D_801195A0_msetup[];
-extern MsetupCameraKeyframe D_801197BC_msetup[];
-extern MsetupCameraKeyframe D_801196C0_msetup[];
-extern s8 D_80119418_msetup;
-extern Vec D_8011A920_msetup;
-extern Vec D_8011A92C_msetup;
+extern MsetupEntryAnim msetup_playerWorkTbl[];
+extern s16 msetup_shadowMdl;
+extern void (*msetup_setupProcTbl[])(void);
+extern omObjData *msetup_backObj;
+extern s16 (*msetup_partyStepTbl[])(s16);
+extern s16 (*msetup_duelStepTbl[])(s16);
+extern u8 msetup_storyBoardTbl[];
+extern s16 (*msetup_mgModeStepTbl[])(s16);
+extern s16 (*msetup_mgMode1PStepTbl[])(s16);
+extern u8 msetup_storyStageKindTbl[];
+extern u8 msetup_storyRivalTbl[];
+extern s32 msetup_storyPartyBoardMesTbl[];
+extern s32 msetup_storyDuelBoardMesTbl[];
+extern s32 msetup_storyDuelRivalMesTbl[];
+extern s32 msetup_storyDuelLuigiMesTbl[];
+extern u16 msetup_exitCnt;
+extern s16 msetup_exitRumbleF;
+extern u8 msetup_exitRumbleCnt;
+extern MsetupPlayerConfig msetup_playerConfig;
+extern s16 msetup_wipeType;
+extern s16 msetup_wipeTime;
+extern s16 msetup_exitMode;
+extern s16 msetup_exitEvtNo;
+extern s16 msetup_exitOvlNo;
+extern s16 msetup_backNarrowF;
+extern f32 msetup_cameraFov;
+extern u32 msetup_randSeed;
+extern f32 msetup_cameraFar;
+extern f32 msetup_cameraNear;
+extern Vec msetup_cameraRot;
+extern Process *msetup_summaryProc;
+extern s32 msetup_boardPartySprTbl[];
+extern s32 msetup_boardDuelSprTbl[];
+extern s32 msetup_boardPartyMesTbl[];
+extern s32 msetup_boardDuelMesTbl[];
+extern s16 msetup_playerNum;
+extern MsetupMenuState msetup_menu;
+extern s16 msetup_winMode;
+extern s16 msetup_setupMode;
+extern s16 msetup_padNo;
+extern u8 msetup_padNoLo;
+extern s16 msetup_entryMdlTbl[];
+extern s16 msetup_entryMotTbl[];
+extern s32 msetup_stageMdlFileTbl[];
+extern s32 msetup_tutorialPartyMesTbl[];
+extern s32 msetup_tutorialDuelMesTbl[];
+extern ModeCameraPreset msetup_cameraPreset;
+extern MsetupCameraKeyframe msetup_cameraIntroKeyTbl[];
+extern MsetupCameraKeyframe msetup_cameraStartKeyTbl[];
+extern MsetupCameraKeyframe msetup_cameraCancelKeyTbl[];
+extern s8 msetup_cameraLookF;
+extern Vec msetup_cameraTarget;
+extern Vec msetup_cameraPos;
 extern f32 CFanLen;
 extern f32 CFanOfs;
 
-void func_8010B82C_msetup(s32);
-s32 func_8010B858_msetup(void);
-void func_8010B968_msetup(u32, s8);
-void func_8010B998_msetup(void);
-s16 func_8010BA3C_msetup(void);
-omObjData *func_8010E21C_msetup(void);
-void func_8010BBF4_msetup(s16);
-void func_8010BE8C_msetup(s16);
-void func_8010BA6C_msetup(s16, s16);
-void func_8010BC18_msetup(s16, s16);
-void func_8010B9B8_msetup(s32, s32);
-void func_8010DDD8_msetup(omObjData *object);
-omObjData *func_8010DE38_msetup(s32, s32, s32);
-void func_8010E4BC_msetup(Array2D *, s32, f32);
-void func_8010E4D8_msetup(MsetupLinkedModel *, s32);
-void func_8010E8C8_msetup(Array2D *models, s16 count, s16 frames, f32 rotation, f32 height, f32 scale, f32 endScale, s16 animateBoard);
-void func_8010F320_msetup(Process *, s16, s16, s16);
-s16 func_8010F2F4_msetup(Process *, s16);
-s16 func_80113ED4_msetup(MsetupMenuState *arg0);
-void func_80107F88_msetup(s16, s16, s16);
-void func_80105F7C_msetup(MsetupModelEntry *, s16);
-void func_80105DB4_msetup(omObjData *);
-void func_8010A7EC_msetup(s16);
-void func_8010ACB0_msetup(void);
-void func_8010A35C_msetup(s16 (**)(s16));
-void func_801059A0_msetup(void);
-void func_80105C4C_msetup(omObjData *);
-void func_80106320_msetup(void);
-void func_80106DF8_msetup(void);
-void func_80117820_msetup(void);
-void func_8010B1F4_msetup(void);
-Process *func_8010F2BC_msetup(void);
-void func_801068F4_msetup(MsetupCameraKeyframe *, f32, void (*)(s16, s16, s16));
+void msetup_WinMesSet(s32);
+s32 msetup_WinMesWait(void);
+void msetup_WinInsertMesSet(u32, s8);
+void msetup_WinHomeClear(void);
+s16 msetup_WinInputGet(void);
+omObjData *msetup_EffObjCreate(void);
+void msetup_PlayerProcCreate(s16);
+void msetup_PlayerProcKill(s16);
+void msetup_PlayerProcCreateEx(s16, s16);
+void msetup_PlayerProcKillEx(s16, s16);
+void msetup_WinAttrWait(s32, s32);
+void msetup_ArrowObjKill(omObjData *object);
+omObjData *msetup_ArrowObjCreate(s32, s32, s32);
+void msetup_PanelCreate(Array2D *, s32, f32);
+void msetup_PanelDynamicFree(MsetupLinkedModel *, s32);
+void msetup_PanelSpinMove(Array2D *models, s16 count, s16 frames, f32 rotation, f32 height, f32 scale, f32 endScale, s16 animateBoard);
+void msetup_SummaryEntrySet(Process *, s16, s16, s16);
+s16 msetup_SummaryStateSet(Process *, s16);
+s16 msetup_BoardSelect(MsetupMenuState *arg0);
+void msetup_IntroCameraHook(s16, s16, s16);
+void msetup_ModelEntryPosSet(MsetupModelEntry *, s16);
+void msetup_ExitObjMain(omObjData *);
+void msetup_TutorialSetupExec(s16);
+void msetup_SysClose(void);
+void msetup_MgModeSetupExec(s16 (**)(s16));
+void msetup_ObjectSetup(void);
+void msetup_ExitCheckObjMain(omObjData *);
+void msetup_CameraProc(void);
+void msetup_PlayerConfigInit(void);
+void msetup_MenuProc(void);
+void msetup_TumbleProc(void);
+Process *msetup_SummaryCreate(void);
+void msetup_CameraKeyframeExec(MsetupCameraKeyframe *, f32, void (*)(s16, s16, s16));
 
-void func_801059A0_msetup(void) {
+void msetup_ObjectSetup(void) {
     Hu3DCamInit(1);
     MapCollInit(1);
     Hu3DSprModelInit(25);
@@ -114,18 +114,18 @@ void func_801059A0_msetup(void) {
     HuWinInit();
     omGameSysInit();
     Hu3DScreenClearF = 1;
-    D_8011A940_msetup = 80.0f;
-    D_8011A93C_msetup = 6000.0f;
-    D_80119414_msetup = 58.0f;
-    Hu3DCameraPerspectiveSet(0, D_80119414_msetup, D_8011A940_msetup, D_8011A93C_msetup);
-    D_8011A994_msetup.x = 0;
-    D_8011A994_msetup.y = 0;
-    D_8011A994_msetup.z = 0;
+    msetup_cameraNear = 80.0f;
+    msetup_cameraFar = 6000.0f;
+    msetup_cameraFov = 58.0f;
+    Hu3DCameraPerspectiveSet(0, msetup_cameraFov, msetup_cameraNear, msetup_cameraFar);
+    msetup_cameraRot.x = 0;
+    msetup_cameraRot.y = 0;
+    msetup_cameraRot.z = 0;
     CRot.x = 0;
     CRot.y = 0;
     CRot.z = 0;
-    D_801198C0_msetup = -1;
-    omAddObj(10000, 0, 0, -1, func_80105C4C_msetup);
+    msetup_shadowMdl = -1;
+    omAddObj(10000, 0, 0, -1, msetup_ExitCheckObjMain);
     Hu3DGLightMaxSet(3);
     Hu3DGLightColorSet(2, 0, 0, 0);
     Hu3DGLightDirSet(2, 0.0f, 0.0f, 100.0f);
@@ -133,136 +133,136 @@ void func_801059A0_msetup(void) {
     Hu3DGLightDirSet(3, 0.0f, 100.0f, 0.0f);
     Hu3DGLightColorSet(1, 255, 255, 255);
     Hu3DBGColorSet(16, 16, 240);
-    omPrcSetStatBit(omAddPrcObj(func_80106320_msetup, 0x1100, 0x400, 0), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    D_8011A944_msetup = 0;
-    func_80106DF8_msetup();
-    D_8011A938_msetup = -1;
+    omPrcSetStatBit(omAddPrcObj(msetup_CameraProc, 0x1100, 0x400, 0), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    msetup_exitMode = 0;
+    msetup_PlayerConfigInit();
+    msetup_setupMode = -1;
     switch (omovlevtno) {
         case 0:
-            D_8011A938_msetup = 0;
+            msetup_setupMode = 0;
             break;
         case 1:
-            D_8011A938_msetup = 1;
+            msetup_setupMode = 1;
             break;
         case 2:
-            D_8011A938_msetup = 2;
+            msetup_setupMode = 2;
             break;
         case 3:
-            D_8011A938_msetup = 3;
+            msetup_setupMode = 3;
             break;
         case 4:
-            D_8011A938_msetup = 4;
+            msetup_setupMode = 4;
             break;
         case 5:
-            D_8011A938_msetup = 5;
+            msetup_setupMode = 5;
             break;
         case 6:
-            D_8011A938_msetup = 6;
+            msetup_setupMode = 6;
             break;
         case 7:
-            D_8011A938_msetup = 7;
+            msetup_setupMode = 7;
             break;
         case 8:
-            D_8011A938_msetup = 8;
+            msetup_setupMode = 8;
             break;
     }
-    if (D_8011A938_msetup < 0) {
-        D_80119410_msetup = 1;
+    if (msetup_setupMode < 0) {
+        msetup_exitCnt = 1;
     } else {
-        omAddPrcObj(D_8011955C_msetup[D_8011A938_msetup], 0x3F00, 0x1000, 0);
+        omAddPrcObj(msetup_setupProcTbl[msetup_setupMode], 0x3F00, 0x1000, 0);
     }
-    if (D_8011A938_msetup == 4) {
+    if (msetup_setupMode == 4) {
         WipeColorSet(255, 255, 255);
     } else {
         WipeColorSet(0, 0, 0);
     }
-    D_8011AA48_msetup = 11;
-    D_8011A93A_msetup = 20;
+    msetup_wipeType = 11;
+    msetup_wipeTime = 20;
 }
 
-void func_80105C4C_msetup(omObjData *object) {
+void msetup_ExitCheckObjMain(omObjData *object) {
     s32 i;
 
-    if (D_80119412_msetup != 0) {
-        D_80119419_msetup--;
-        if (D_80119419_msetup == 0) {
-            for (i = 0; i < D_8011AA30_msetup.humanCount; i++) {
-                RepeatVibrator(D_8011AA30_msetup.controllerPorts[i], 5, 0, 5);
+    if (msetup_exitRumbleF != 0) {
+        msetup_exitRumbleCnt--;
+        if (msetup_exitRumbleCnt == 0) {
+            for (i = 0; i < msetup_playerConfig.humanCount; i++) {
+                RepeatVibrator(msetup_playerConfig.controllerPorts[i], 5, 0, 5);
             }
-            D_80119419_msetup = 10;
+            msetup_exitRumbleCnt = 10;
         }
     }
-    if (D_80119410_msetup == 0) {
+    if (msetup_exitCnt == 0) {
         if (omSysExitReq != 0) {
             goto createWipe;
         }
-    } else if (D_80119410_msetup == 1) {
+    } else if (msetup_exitCnt == 1) {
         goto createWipe;
     } else {
-        D_80119410_msetup--;
+        msetup_exitCnt--;
     }
     return;
 
 createWipe:
-    if (D_8011A938_msetup == 4) {
+    if (msetup_setupMode == 4) {
         WipeColorSet(255, 255, 255);
-        D_8011AA48_msetup = 11;
+        msetup_wipeType = 11;
     } else {
-        D_8011AA48_msetup = 2;
+        msetup_wipeType = 2;
     }
-    if (D_8011AA48_msetup >= 0) {
-        WipeCreateOut(D_8011AA48_msetup, D_8011A93A_msetup);
+    if (msetup_wipeType >= 0) {
+        WipeCreateOut(msetup_wipeType, msetup_wipeTime);
     }
-    if (D_8011A944_msetup == 0) {
+    if (msetup_exitMode == 0) {
         HuAudSeqFadeOut(15);
     }
-    object->func = func_80105DB4_msetup;
+    object->func = msetup_ExitObjMain;
 }
 
-void func_80105DB4_msetup(omObjData *object) {
+void msetup_ExitObjMain(omObjData *object) {
     u16 flags;
 
     if (WipeStatGet() == 0) {
         HuWinAllKill();
-        func_8010ACB0_msetup();
+        msetup_SysClose();
         flags = 0x14;
-        switch (D_8011A944_msetup) {
+        switch (msetup_exitMode) {
             case 0:
             default:
                 omOvlReturnEx(1);
                 break;
             case 2:
-                omOvlCallEx(D_8011AA4C_msetup, D_8011A946_msetup, flags);
+                omOvlCallEx(msetup_exitOvlNo, msetup_exitEvtNo, flags);
                 break;
             case 1:
-                omOvlGotoEx(D_8011AA4C_msetup, D_8011A946_msetup, flags);
+                omOvlGotoEx(msetup_exitOvlNo, msetup_exitEvtNo, flags);
                 break;
             case 3:
-                omOvlGotoEx(D_8011AA4C_msetup, D_8011A946_msetup, 0x4090);
+                omOvlGotoEx(msetup_exitOvlNo, msetup_exitEvtNo, 0x4090);
                 break;
             case 4:
-                omOvlGotoEx(D_8011AA4C_msetup, D_8011A946_msetup, 0x92);
+                omOvlGotoEx(msetup_exitOvlNo, msetup_exitEvtNo, 0x92);
                 break;
         }
     }
 }
 
-void func_80105E90_msetup(MsetupModelEntry *entry) {
+void msetup_ModelEntryReadList(MsetupModelEntry *entry) {
     s32 i;
     s16 model;
     s32 motion;
 
     for (i = 0; entry->dataId != -1; entry++, i++) {
-        model = D_8011A950_msetup[(s16)i] = Hu3DModelRead(entry->dataId, entry->flags);
-        func_80105F7C_msetup(entry, model);
-        motion = D_8011A9A0_msetup[(s16)i] = Hu3DData[model].motId;
+        model = msetup_entryMdlTbl[(s16)i] = Hu3DModelRead(entry->dataId, entry->flags);
+        msetup_ModelEntryPosSet(entry, model);
+        motion = msetup_entryMotTbl[(s16)i] = Hu3DData[model].motId;
         if (motion != -1) {
             Hu3DMotionAttrSet(model, -1, entry->motion);
         }
     }
 }
 
-void func_80105F7C_msetup(MsetupModelEntry *entry, s16 model) {
+void msetup_ModelEntryPosSet(MsetupModelEntry *entry, s16 model) {
     switch (entry->positionMode) {
         case 0:
             break;
@@ -277,7 +277,7 @@ void func_80105F7C_msetup(MsetupModelEntry *entry, s16 model) {
     }
 }
 
-void func_80106030_msetup(MsetupModelEntry *entry, MsetupModelHandle *handle, s32 count) {
+void msetup_ModelEntryReadAll(MsetupModelEntry *entry, MsetupModelHandle *handle, s32 count) {
     s16 i;
     s16 model;
     s32 motion;
@@ -287,7 +287,7 @@ void func_80106030_msetup(MsetupModelEntry *entry, MsetupModelHandle *handle, s3
     }
     for (i = 0; i < count; entry++, i++, handle++) {
         model = handle->model = Hu3DModelRead(entry->dataId, entry->flags);
-        func_80105F7C_msetup(entry, model);
+        msetup_ModelEntryPosSet(entry, model);
         motion = handle->motion = Hu3DData[model].motId;
         if (motion >= 0) {
             Hu3DMotionAttrSet(model, -1, entry->motion);
@@ -295,7 +295,7 @@ void func_80106030_msetup(MsetupModelEntry *entry, MsetupModelHandle *handle, s3
     }
 }
 
-u32 func_8010610C_msetup(u32 seed) {
+u32 msetup_RandSeedCalc(u32 seed) {
     u32 quotient;
     u32 remainder;
 
@@ -310,29 +310,29 @@ u32 func_8010610C_msetup(u32 seed) {
     return seed - remainder * 16807;
 }
 
-u32 func_801061E0_msetup(void) {
-    return D_8011941C_msetup = func_8010610C_msetup(D_8011941C_msetup);
+u32 msetup_Rand(void) {
+    return msetup_randSeed = msetup_RandSeedCalc(msetup_randSeed);
 }
 
-u32 func_80106208_msetup(u32 limit) {
+u32 msetup_RandMod(u32 limit) {
     u32 random;
 
-    random = D_8011941C_msetup = func_8010610C_msetup(D_8011941C_msetup);
+    random = msetup_randSeed = msetup_RandSeedCalc(msetup_randSeed);
     return (random & 0x7FFFFFFF) % limit;
 }
 
-void func_80106260_msetup(ModeCameraPreset *preset) {
+void msetup_CameraPresetSet(ModeCameraPreset *preset) {
     CRot = preset->rot;
-    D_8011A994_msetup = CRot;
+    msetup_cameraRot = CRot;
     Center = preset->center;
     CZoom = preset->zoom;
-    if (preset->fov != D_80119414_msetup) {
-        D_80119414_msetup = preset->fov;
-        Hu3DCameraPerspectiveSet(0, D_80119414_msetup, D_8011A940_msetup, D_8011A93C_msetup);
+    if (preset->fov != msetup_cameraFov) {
+        msetup_cameraFov = preset->fov;
+        Hu3DCameraPerspectiveSet(0, msetup_cameraFov, msetup_cameraNear, msetup_cameraFar);
     }
 }
 
-void func_80106320_msetup(void) {
+void msetup_CameraProc(void) {
     Vec pos, at, up;
     f32 rotX, rotY, rotZ;
     f32 upX, upY, upZ;
@@ -340,7 +340,7 @@ void func_80106320_msetup(void) {
     f32 length;
 
     while (1) {
-        if (D_80119418_msetup == 0) {
+        if (msetup_cameraLookF == 0) {
             rotX = CRot.x;
             rotY = CRot.y;
             rotZ = CRot.z;
@@ -370,8 +370,8 @@ void func_80106320_msetup(void) {
                    upY * (dy * dz * (1.0f - cosdf(rotZ)) + dx * sindf(rotZ)) +
                    upZ * (dz * dz + (1.0f - dz * dz) * cosdf(rotZ));
         } else {
-            pos = D_8011A92C_msetup;
-            at = D_8011A920_msetup;
+            pos = msetup_cameraPos;
+            at = msetup_cameraTarget;
             up.x = 0.0f;
             up.y = 1.0f;
             up.z = 0.0f;
@@ -388,7 +388,7 @@ void func_80106320_msetup(void) {
     }
 }
 
-void func_801068F4_msetup(MsetupCameraKeyframe *keys, f32 speed, void (*callback)(s16, s16, s16)) {
+void msetup_CameraKeyframeExec(MsetupCameraKeyframe *keys, f32 speed, void (*callback)(s16, s16, s16)) {
     MsetupCameraKeyframe interpolated;
     f32 values[4];
     f32 times[4];
@@ -465,51 +465,51 @@ void func_801068F4_msetup(MsetupCameraKeyframe *keys, f32 speed, void (*callback
         Center.x = interpolated.values.preset.center.x;
         Center.y = interpolated.values.preset.center.y;
         Center.z = interpolated.values.preset.center.z;
-        D_8011A994_msetup.x = CRot.x = interpolated.values.preset.rot.x;
-        D_8011A994_msetup.y = CRot.y = interpolated.values.preset.rot.y;
-        D_8011A994_msetup.z = CRot.z = interpolated.values.preset.rot.z;
+        msetup_cameraRot.x = CRot.x = interpolated.values.preset.rot.x;
+        msetup_cameraRot.y = CRot.y = interpolated.values.preset.rot.y;
+        msetup_cameraRot.z = CRot.z = interpolated.values.preset.rot.z;
         CZoom = interpolated.values.preset.zoom;
-        gCameraList->fov = D_80119414_msetup = interpolated.values.preset.fov;
+        gCameraList->fov = msetup_cameraFov = interpolated.values.preset.fov;
         if (callback != NULL) {
             onFrame((s16)duration, segment, i);
         }
         HuPrcVSleep();
     }
     segment++;
-    D_8011A994_msetup.x = CRot.x = keys[segment].values.preset.rot.x;
-    D_8011A994_msetup.y = CRot.y = keys[segment].values.preset.rot.y;
-    D_8011A994_msetup.z = CRot.z = keys[segment].values.preset.rot.z;
+    msetup_cameraRot.x = CRot.x = keys[segment].values.preset.rot.x;
+    msetup_cameraRot.y = CRot.y = keys[segment].values.preset.rot.y;
+    msetup_cameraRot.z = CRot.z = keys[segment].values.preset.rot.z;
     CZoom = keys[segment].values.preset.zoom;
     Center.x = keys[segment].values.preset.center.x;
     Center.y = keys[segment].values.preset.center.y;
     Center.z = keys[segment].values.preset.center.z;
-    gCameraList->fov = D_80119414_msetup = keys[segment].values.preset.fov;
+    gCameraList->fov = msetup_cameraFov = keys[segment].values.preset.fov;
     winPauseF = 0;
 }
 
-void func_80106DF8_msetup(void) {
+void msetup_PlayerConfigInit(void) {
     s16 i;
     s16 connectedCount;
     s16 port;
     s16 j;
 
     for (i = 0; i < 4; i++) {
-        D_8011AA30_msetup.controllerPorts[i] = 0xFF;
-        D_8011AA30_msetup.characters[i] = i;
-        D_8011AA30_msetup.cpuDifficulty[i] = 0xFF;
-        D_8011AA30_msetup.stars[i] = 0;
+        msetup_playerConfig.controllerPorts[i] = 0xFF;
+        msetup_playerConfig.characters[i] = i;
+        msetup_playerConfig.cpuDifficulty[i] = 0xFF;
+        msetup_playerConfig.stars[i] = 0;
     }
     for (i = 0, connectedCount = 0; i < 4; i++) {
         if (CheckControllerRead(i)) {
-            D_8011AA30_msetup.controllerPorts[connectedCount] = i;
+            msetup_playerConfig.controllerPorts[connectedCount] = i;
             connectedCount++;
         }
     }
     for (i = 0; i < 4; i++) {
-        if (D_8011AA30_msetup.controllerPorts[i] == 0xFF) {
+        if (msetup_playerConfig.controllerPorts[i] == 0xFF) {
             for (port = 0; port < 4; port++) {
                 for (j = 0; j < 4; j++) {
-                    if (D_8011AA30_msetup.controllerPorts[j] == port) {
+                    if (msetup_playerConfig.controllerPorts[j] == port) {
                         break;
                     }
                 }
@@ -517,28 +517,28 @@ void func_80106DF8_msetup(void) {
                     break;
                 }
             }
-            D_8011AA30_msetup.controllerPorts[i] = port;
+            msetup_playerConfig.controllerPorts[i] = port;
         }
     }
-    D_8011AA30_msetup.totalTurns = 0;
-    D_8011AA30_msetup.unk16 = 0;
-    D_8011AA30_msetup.unk13 = 0;
-    D_8011AA30_msetup.connectedCount = connectedCount;
-    D_8011AA30_msetup.humanCount = 0;
-    D_8011AA30_msetup.cpuCount = 4;
-    D_8011AA30_msetup.boardIndex = 0;
-    D_8011AA30_msetup.unk17 = 0;
-    D_8011A948_msetup = D_8011AA30_msetup.controllerPorts[0];
+    msetup_playerConfig.totalTurns = 0;
+    msetup_playerConfig.unk16 = 0;
+    msetup_playerConfig.unk13 = 0;
+    msetup_playerConfig.connectedCount = connectedCount;
+    msetup_playerConfig.humanCount = 0;
+    msetup_playerConfig.cpuCount = 4;
+    msetup_playerConfig.boardIndex = 0;
+    msetup_playerConfig.unk17 = 0;
+    msetup_padNo = msetup_playerConfig.controllerPorts[0];
 }
 
-f32 func_80106FC0_msetup(Vec *pos, u32 mask, f32 radius) {
+f32 msetup_BackPartPosRand(Vec *pos, u32 mask, f32 radius) {
     u32 random;
     f32 angle;
 
-    random = func_801061E0_msetup() & mask;
+    random = msetup_Rand() & mask;
     pos->y -= (f32)random;
-    random = func_801061E0_msetup() & 0x7FFFFFFF;
-    if (D_8011AA4A_msetup != 0) {
+    random = msetup_Rand() & 0x7FFFFFFF;
+    if (msetup_backNarrowF != 0) {
         random %= 120;
         random += 120;
     } else {
@@ -550,7 +550,7 @@ f32 func_80106FC0_msetup(Vec *pos, u32 mask, f32 radius) {
     return angle;
 }
 
-void func_801070FC_msetup(omObjData *object) {
+void msetup_BackObjMain(omObjData *object) {
     MsetupSceneryState *state;
     Vec *pos;
     s32 i;
@@ -586,7 +586,7 @@ void func_801070FC_msetup(omObjData *object) {
         pos->y += 40.0f;
         if (pos->y > 1000.0f) {
             pos->y -= 12000.0f;
-            func_80106FC0_msetup(pos, 0xFFF, 900.00006103515625f);
+            msetup_BackPartPosRand(pos, 0xFFF, 900.00006103515625f);
         }
         Hu3DModelPosSet(model, pos->x, pos->y, pos->z);
     }
@@ -596,14 +596,14 @@ void func_801070FC_msetup(omObjData *object) {
         pos->y += 75.0f;
         if (pos->y > 1000.0f) {
             pos->y -= 12000.0f;
-            height = func_80106FC0_msetup(pos, 0xFFF, 906.00006103515625f);
+            height = msetup_BackPartPosRand(pos, 0xFFF, 906.00006103515625f);
             Hu3DModelRotSet(model, 0.0f, height - 180.0f, 0.0f);
         }
         Hu3DModelPosSet(model, pos->x, pos->y, pos->z);
     }
 }
 
-omObjData *func_80107428_msetup(void) {
+omObjData *msetup_BackObjCreate(void) {
     MsetupSceneryState *state;
     omObjData *object;
     Vec *pos;
@@ -612,9 +612,9 @@ omObjData *func_80107428_msetup(void) {
     s16 source;
     f32 height;
 
-    D_8011AA4A_msetup = 0;
-    object = omAddObj(0x17D0, 16, 0, -1, func_801070FC_msetup);
-    D_80119430_msetup = object;
+    msetup_backNarrowF = 0;
+    object = omAddObj(0x17D0, 16, 0, -1, msetup_BackObjMain);
+    msetup_backObj = object;
     if (object == NULL) {
         return NULL;
     }
@@ -664,7 +664,7 @@ omObjData *func_80107428_msetup(void) {
         object->model[i + 7] = model;
         pos = &state->innerPositions[i];
         pos->y = 0.0f;
-        func_80106FC0_msetup(pos, 0x1FFF, 900.00006103515625f);
+        msetup_BackPartPosRand(pos, 0x1FFF, 900.00006103515625f);
         Hu3DModelPosSet(model, pos->x, pos->y, pos->z);
     }
     source = -1;
@@ -678,20 +678,20 @@ omObjData *func_80107428_msetup(void) {
         object->model[i + 10] = model;
         pos = &state->outerPositions[i];
         pos->y = 0.0f;
-        height = func_80106FC0_msetup(pos, 0x1FFF, 906.00006103515625f);
+        height = msetup_BackPartPosRand(pos, 0x1FFF, 906.00006103515625f);
         Hu3DModelPosSet(model, pos->x, pos->y, pos->z);
         Hu3DModelRotSet(model, 0.0f, height - 180.0f, 0.0f);
     }
     return object;
 }
 
-s16 func_801077E0_msetup(s16 stateIndex) {
-    D_8011A882_msetup.state = 1;
+s16 msetup_PartyPlayerNumStep(s16 stateIndex) {
+    msetup_menu.state = 1;
     do {
         HuPrcVSleep();
-    } while (D_8011A882_msetup.state != 0);
+    } while (msetup_menu.state != 0);
 
-    if (D_8011A882_msetup.result < 0) {
+    if (msetup_menu.result < 0) {
         stateIndex--;
     } else {
         stateIndex++;
@@ -699,32 +699,32 @@ s16 func_801077E0_msetup(s16 stateIndex) {
     return stateIndex;
 }
 
-s16 func_80107840_msetup(s16 stateIndex) {
+s16 msetup_PartyChrStep(s16 stateIndex) {
     s32 i;
 
-    D_8011A882_msetup.state = 2;
+    msetup_menu.state = 2;
     do {
         HuPrcVSleep();
-    } while (D_8011A882_msetup.state != 0);
+    } while (msetup_menu.state != 0);
 
-    if (D_8011A882_msetup.result != -1) {
-        D_8011A990_msetup = 0;
+    if (msetup_menu.result != -1) {
+        msetup_winMode = 0;
         for (i = 7; i != 0; i--) {
             HuPrcVSleep();
         }
-        func_8010BBF4_msetup(D_8011A880_msetup);
+        msetup_PlayerProcCreate(msetup_playerNum);
         for (i = 4; i != 0; i--) {
             HuPrcVSleep();
         }
         HuAudFXPlay(0x2DB);
-        for (i = 0; i < D_8011A880_msetup; i++) {
-            D_8011A9E0_msetup[i].state = 1;
+        for (i = 0; i < msetup_playerNum; i++) {
+            msetup_playerWorkTbl[i].state = 1;
         }
-        while (D_8011A9E0_msetup[3].state != 0) {
+        while (msetup_playerWorkTbl[3].state != 0) {
             HuPrcVSleep();
         }
     }
-    if (D_8011A882_msetup.result < 0) {
+    if (msetup_menu.result < 0) {
         stateIndex--;
     } else {
         stateIndex++;
@@ -732,25 +732,25 @@ s16 func_80107840_msetup(s16 stateIndex) {
     return stateIndex;
 }
 
-s16 func_80107964_msetup(s16 stateIndex) {
+s16 msetup_PartyComLevelStep(s16 stateIndex) {
     s32 i;
 
-    if (D_8011AA30_msetup.cpuCount != 0) {
-        for (i = 0; i < D_8011A880_msetup; i++) {
-            D_8011A9E0_msetup[i].state = 7;
+    if (msetup_playerConfig.cpuCount != 0) {
+        for (i = 0; i < msetup_playerNum; i++) {
+            msetup_playerWorkTbl[i].state = 7;
         }
-        D_8011A882_msetup.state = 3;
+        msetup_menu.state = 3;
         do {
             HuPrcVSleep();
-        } while (D_8011A882_msetup.state != 0);
+        } while (msetup_menu.state != 0);
     } else {
-        D_8011A990_msetup = 1;
+        msetup_winMode = 1;
     }
-    if (D_8011A882_msetup.result == -1) {
+    if (msetup_menu.result == -1) {
         HuAudFXPlay(0x2E4);
-        func_8010BE8C_msetup(D_8011A880_msetup);
+        msetup_PlayerProcKill(msetup_playerNum);
     }
-    if (D_8011A882_msetup.result < 0) {
+    if (msetup_menu.result < 0) {
         stateIndex--;
     } else {
         stateIndex++;
@@ -758,32 +758,32 @@ s16 func_80107964_msetup(s16 stateIndex) {
     return stateIndex;
 }
 
-s16 func_80107A58_msetup(s16 stateIndex) {
+s16 msetup_PartyHandicapStep(s16 stateIndex) {
     s32 i;
 
-    if (D_8011A882_msetup.result < 0) {
-        for (i = 0; i < D_8011A880_msetup; i++) {
-            D_8011A9E0_msetup[i].state = 10;
+    if (msetup_menu.result < 0) {
+        for (i = 0; i < msetup_playerNum; i++) {
+            msetup_playerWorkTbl[i].state = 10;
         }
     }
-    D_8011A882_msetup.state = 6;
+    msetup_menu.state = 6;
     do {
         HuPrcVSleep();
-    } while (D_8011A882_msetup.state != 0);
+    } while (msetup_menu.state != 0);
 
-    if (D_8011A882_msetup.result == 0) {
-        D_8011A882_msetup.state = 4;
+    if (msetup_menu.result == 0) {
+        msetup_menu.state = 4;
         do {
             HuPrcVSleep();
-        } while (D_8011A882_msetup.state != 0);
-        if (D_8011A882_msetup.result >= 0) {
+        } while (msetup_menu.state != 0);
+        if (msetup_menu.result >= 0) {
             stateIndex++;
         }
     } else {
-        for (i = 0; i < D_8011A880_msetup; i++) {
-            D_8011AA30_msetup.stars[i] = 0;
+        for (i = 0; i < msetup_playerNum; i++) {
+            msetup_playerConfig.stars[i] = 0;
         }
-        if (D_8011A882_msetup.result < 0) {
+        if (msetup_menu.result < 0) {
             stateIndex--;
         } else {
             stateIndex++;
@@ -792,33 +792,33 @@ s16 func_80107A58_msetup(s16 stateIndex) {
     return stateIndex;
 }
 
-s16 func_80107B8C_msetup(s16 stateIndex) {
+s16 msetup_PartyBoardStep(s16 stateIndex) {
     s32 i;
 
-    for (i = 0; i < D_8011A880_msetup; i++) {
-        D_8011A9E0_msetup[i].state = 12;
+    for (i = 0; i < msetup_playerNum; i++) {
+        msetup_playerWorkTbl[i].state = 12;
     }
-    D_8011A990_msetup = 2;
+    msetup_winMode = 2;
     HuPrcVSleep();
-    func_8010B9B8_msetup(0x4000, 0x4000);
-    D_8011A882_msetup.state = 8;
+    msetup_WinAttrWait(0x4000, 0x4000);
+    msetup_menu.state = 8;
     do {
         HuPrcVSleep();
-    } while (D_8011A882_msetup.state != 0);
+    } while (msetup_menu.state != 0);
 
-    if (D_8011A882_msetup.result < 0) {
-        func_8010F2F4_msetup(D_80119420_msetup, 0xFF);
+    if (msetup_menu.result < 0) {
+        msetup_SummaryStateSet(msetup_summaryProc, 0xFF);
     } else {
-        func_8010F2F4_msetup(D_80119420_msetup, 1);
+        msetup_SummaryStateSet(msetup_summaryProc, 1);
     }
-    D_8011A990_msetup = 1;
+    msetup_winMode = 1;
     HuPrcVSleep();
-    func_8010B9B8_msetup(0x4000, 0x4000);
-    for (i = 0; i < D_8011A880_msetup; i++) {
-        D_8011A9E0_msetup[i].state = 11;
+    msetup_WinAttrWait(0x4000, 0x4000);
+    for (i = 0; i < msetup_playerNum; i++) {
+        msetup_playerWorkTbl[i].state = 11;
     }
     HuPrcVSleep();
-    if (D_8011A882_msetup.result < 0) {
+    if (msetup_menu.result < 0) {
         stateIndex--;
     } else {
         stateIndex++;
@@ -826,19 +826,19 @@ s16 func_80107B8C_msetup(s16 stateIndex) {
     return stateIndex;
 }
 
-s16 func_80107CF4_msetup(s16 stateIndex) {
-    D_8011A882_msetup.state = 5;
+s16 msetup_PartyTurnStep(s16 stateIndex) {
+    msetup_menu.state = 5;
     do {
         HuPrcVSleep();
-    } while (D_8011A882_msetup.state != 0);
+    } while (msetup_menu.state != 0);
 
-    if (D_8011A882_msetup.result == -1) {
-        func_8010F2F4_msetup(D_80119420_msetup, 3);
+    if (msetup_menu.result == -1) {
+        msetup_SummaryStateSet(msetup_summaryProc, 3);
     } else {
-        func_8010F2F4_msetup(D_80119420_msetup, 4);
+        msetup_SummaryStateSet(msetup_summaryProc, 4);
     }
 
-    if (D_8011A882_msetup.result < 0) {
+    if (msetup_menu.result < 0) {
         stateIndex--;
     } else {
         stateIndex++;
@@ -846,28 +846,28 @@ s16 func_80107CF4_msetup(s16 stateIndex) {
     return stateIndex;
 }
 
-s16 func_80107D84_msetup(s16 stateIndex) {
+s16 msetup_PartyMgPackStep(s16 stateIndex) {
     s32 i;
 
-    D_8011A882_msetup.state = 13;
+    msetup_menu.state = 13;
     do {
         HuPrcVSleep();
-    } while (D_8011A882_msetup.state != 0);
+    } while (msetup_menu.state != 0);
 
-    if (D_8011A882_msetup.result == 0) {
-        D_8011AA30_msetup.unk17 = 0;
+    if (msetup_menu.result == 0) {
+        msetup_playerConfig.unk17 = 0;
     } else {
-        D_8011AA30_msetup.unk17 = 1;
+        msetup_playerConfig.unk17 = 1;
     }
 
-    if (D_8011A882_msetup.result == -1) {
-        func_8010F2F4_msetup(D_80119420_msetup, 6);
+    if (msetup_menu.result == -1) {
+        msetup_SummaryStateSet(msetup_summaryProc, 6);
         for (i = 7; i != 0; i--) {
             HuPrcVSleep();
         }
     }
 
-    if (D_8011A882_msetup.result < 0) {
+    if (msetup_menu.result < 0) {
         stateIndex--;
     } else {
         stateIndex++;
@@ -875,19 +875,19 @@ s16 func_80107D84_msetup(s16 stateIndex) {
     return stateIndex;
 }
 
-s16 func_80107E48_msetup(s16 stateIndex) {
-    D_8011A882_msetup.state = 7;
+s16 msetup_PartyBonusStep(s16 stateIndex) {
+    msetup_menu.state = 7;
     do {
         HuPrcVSleep();
-    } while (D_8011A882_msetup.state != 0);
+    } while (msetup_menu.state != 0);
 
-    if (D_8011A882_msetup.result == 0) {
-        D_8011AA30_msetup.unk13 = 1;
+    if (msetup_menu.result == 0) {
+        msetup_playerConfig.unk13 = 1;
     } else {
-        D_8011AA30_msetup.unk13 = 0;
+        msetup_playerConfig.unk13 = 0;
     }
 
-    if (D_8011A882_msetup.result < 0) {
+    if (msetup_menu.result < 0) {
         stateIndex--;
     } else {
         stateIndex++;
@@ -895,138 +895,138 @@ s16 func_80107E48_msetup(s16 stateIndex) {
     return stateIndex;
 }
 
-s16 func_80107ECC_msetup(s16 stateIndex) {
-    D_8011A882_msetup.result = 0;
-    func_8010B82C_msetup(0x152D);
-    if (func_8010B858_msetup() == 0) {
-        func_8010B82C_msetup(0x152F);
+s16 msetup_PartyConfirmStep(s16 stateIndex) {
+    msetup_menu.result = 0;
+    msetup_WinMesSet(0x152D);
+    if (msetup_WinMesWait() == 0) {
+        msetup_WinMesSet(0x152F);
         stateIndex = -2;
-        func_8010B858_msetup();
+        msetup_WinMesWait();
         HuAudFXPlay(0x2A6);
     } else {
-        func_8010B82C_msetup(0x152E);
-        if (func_8010B858_msetup() == 0) {
-            func_8010F2F4_msetup(D_80119420_msetup, 9);
+        msetup_WinMesSet(0x152E);
+        if (msetup_WinMesWait() == 0) {
+            msetup_SummaryStateSet(msetup_summaryProc, 9);
             HuAudFXPlay(0x2E4);
             stateIndex = 0;
-            func_8010BE8C_msetup(D_8011A880_msetup);
+            msetup_PlayerProcKill(msetup_playerNum);
         } else {
-            D_8011A882_msetup.result = -1;
+            msetup_menu.result = -1;
             stateIndex--;
         }
     }
     return stateIndex;
 }
 
-void func_80107F88_msetup(s16 countdown, s16 pointIndex, s16 frame) {
+void msetup_IntroCameraHook(s16 countdown, s16 pointIndex, s16 frame) {
     if (frame == 0x31) {
         HuAudSeqPlay(9);
     }
 }
 
-void func_80107FB4_msetup(void) {
+void msetup_PartySetupProc(void) {
     s16 state[2];
     Process *process;
     s16 step;
     s32 i;
 
-    D_8011A880_msetup = 4;
+    msetup_playerNum = 4;
     _ClearFlag(0);
-    Hu3DModelPosSet(Hu3DModelRead(D_80119424_msetup[2], 0x2B9), 0.0f, -37.5f, 100.0f);
-    func_80107428_msetup();
-    process = omAddPrcObj(func_80117820_msetup, 0xBB8, 0x1000, 0);
-    memset(&D_8011A882_msetup, 0, sizeof(D_8011A882_msetup));
-    D_8011A882_msetup.result = -1;
-    process->user_data = &D_8011A882_msetup;
-    D_80119420_msetup = func_8010F2BC_msetup();
-    process = omAddPrcObj(func_8010B1F4_msetup, 0x3E8, 0x600, 0);
+    Hu3DModelPosSet(Hu3DModelRead(msetup_stageMdlFileTbl[2], 0x2B9), 0.0f, -37.5f, 100.0f);
+    msetup_BackObjCreate();
+    process = omAddPrcObj(msetup_MenuProc, 0xBB8, 0x1000, 0);
+    memset(&msetup_menu, 0, sizeof(msetup_menu));
+    msetup_menu.result = -1;
+    process->user_data = &msetup_menu;
+    msetup_summaryProc = msetup_SummaryCreate();
+    process = omAddPrcObj(msetup_TumbleProc, 0x3E8, 0x600, 0);
     memset(state, 0, sizeof(state));
     process->user_data = state;
-    func_80106260_msetup(&D_80119580_msetup);
+    msetup_CameraPresetSet(&msetup_cameraPreset);
     HuPrcVSleep();
-    WipeCreateIn(D_8011AA48_msetup, 16);
+    WipeCreateIn(msetup_wipeType, 16);
     HuAudFXPlay(0x2D8);
-    func_801068F4_msetup(D_801195A0_msetup, 22.0f, func_80107F88_msetup);
-    D_8011AA4A_msetup = 1;
+    msetup_CameraKeyframeExec(msetup_cameraIntroKeyTbl, 22.0f, msetup_IntroCameraHook);
+    msetup_backNarrowF = 1;
     state[0] = 1;
     do {
         HuPrcVSleep();
     } while (state[0] == 1);
-    D_8011A990_msetup = 1;
-    func_8010B9B8_msetup(0x4000, 0x4000);
+    msetup_winMode = 1;
+    msetup_WinAttrWait(0x4000, 0x4000);
     if (!_CheckFlag(0x1A)) {
         _SetFlag(0x1A);
-        func_8010B82C_msetup(0x1500);
-        func_8010B858_msetup();
+        msetup_WinMesSet(0x1500);
+        msetup_WinMesWait();
     }
-    func_8010B82C_msetup(0x1502);
-    func_8010B858_msetup();
+    msetup_WinMesSet(0x1502);
+    msetup_WinMesWait();
     step = 0;
     do {
-        step = D_80119434_msetup[step](step);
+        step = msetup_partyStepTbl[step](step);
     } while (step >= 0);
-    func_8010F2F4_msetup(D_80119420_msetup, 8);
-    D_8011A990_msetup = 0;
+    msetup_SummaryStateSet(msetup_summaryProc, 8);
+    msetup_winMode = 0;
     if (step < -1) {
-        for (i = 0; i < D_8011A880_msetup; i++) {
-            D_8011A9E0_msetup[i].state = 12;
+        for (i = 0; i < msetup_playerNum; i++) {
+            msetup_playerWorkTbl[i].state = 12;
         }
         HuPrcVSleep();
-        for (i = 0; i < D_8011A880_msetup; i++) {
-            D_8011A9E0_msetup[i].state = 16;
+        for (i = 0; i < msetup_playerNum; i++) {
+            msetup_playerWorkTbl[i].state = 16;
         }
         HuAudSeqFadeOut(390);
-        D_80119412_msetup = 1;
+        msetup_exitRumbleF = 1;
         HuAudFXPlay(0x2DF);
-        func_801068F4_msetup(D_801197BC_msetup, 22.0f, NULL);
-        GwSystem.current_board_index = D_8011AA30_msetup.boardIndex;
-        GwSystem.total_turns = D_8011AA30_msetup.totalTurns;
-        GwSystem.current_game_length = D_8011AA30_msetup.unk16;
-        for (i = 0; i < D_8011A880_msetup; i++) {
-            GwPlayer[i].chr = D_8011AA30_msetup.characters[i];
-            GwPlayer[i].star = D_8011AA30_msetup.stars[i];
+        msetup_CameraKeyframeExec(msetup_cameraStartKeyTbl, 22.0f, NULL);
+        GwSystem.current_board_index = msetup_playerConfig.boardIndex;
+        GwSystem.total_turns = msetup_playerConfig.totalTurns;
+        GwSystem.current_game_length = msetup_playerConfig.unk16;
+        for (i = 0; i < msetup_playerNum; i++) {
+            GwPlayer[i].chr = msetup_playerConfig.characters[i];
+            GwPlayer[i].star = msetup_playerConfig.stars[i];
             GwPlayer[i].coin = 0;
-            GwPlayer[i].pad = D_8011AA30_msetup.controllerPorts[i];
-            if (D_8011AA30_msetup.cpuDifficulty[i] < 4) {
-                GwPlayer[i].cpu_difficulty = D_8011AA30_msetup.cpuDifficulty[i];
+            GwPlayer[i].pad = msetup_playerConfig.controllerPorts[i];
+            if (msetup_playerConfig.cpuDifficulty[i] < 4) {
+                GwPlayer[i].cpu_difficulty = msetup_playerConfig.cpuDifficulty[i];
                 GwPlayer[i].stat = 1;
             } else {
                 GwPlayer[i].cpu_difficulty = 1;
                 GwPlayer[i].stat = 0;
             }
         }
-        if (D_8011AA30_msetup.unk13 != 0) {
+        if (msetup_playerConfig.unk13 != 0) {
             _SetFlag(0x1B);
         } else {
             _ClearFlag(0x1B);
         }
-        if (D_8011AA30_msetup.unk17 != 0) {
+        if (msetup_playerConfig.unk17 != 0) {
             _SetFlag(0x20);
         } else {
             _ClearFlag(0x20);
         }
-        D_8011A944_msetup = 4;
-        D_8011AA4C_msetup = 71;
-        D_8011A946_msetup = 0;
+        msetup_exitMode = 4;
+        msetup_exitOvlNo = 71;
+        msetup_exitEvtNo = 0;
     } else {
-        D_80119410_msetup = 75;
+        msetup_exitCnt = 75;
         HuAudFXPlay(0x2EC);
-        func_801068F4_msetup(D_801196C0_msetup, 25.0f, NULL);
+        msetup_CameraKeyframeExec(msetup_cameraCancelKeyTbl, 25.0f, NULL);
     }
-    func_8010F2F4_msetup(D_80119420_msetup, 0xFF);
-    D_80119410_msetup = 1;
+    msetup_SummaryStateSet(msetup_summaryProc, 0xFF);
+    msetup_exitCnt = 1;
     while (1) {
         HuPrcVSleep();
     }
 }
 
-s16 func_80108464_msetup(s16 stateIndex) {
-    D_8011A882_msetup.state = 9;
+s16 msetup_DuelPlayerNumStep(s16 stateIndex) {
+    msetup_menu.state = 9;
     do {
         HuPrcVSleep();
-    } while (D_8011A882_msetup.state != 0);
+    } while (msetup_menu.state != 0);
 
-    if (D_8011A882_msetup.result < 0) {
+    if (msetup_menu.result < 0) {
         stateIndex--;
     } else {
         stateIndex++;
@@ -1034,29 +1034,29 @@ s16 func_80108464_msetup(s16 stateIndex) {
     return stateIndex;
 }
 
-s16 func_801084C4_msetup(s16 stateIndex) {
+s16 msetup_DuelChrStep(s16 stateIndex) {
     s32 i;
 
-    D_8011A882_msetup.state = 2;
+    msetup_menu.state = 2;
     do {
         HuPrcVSleep();
-    } while (D_8011A882_msetup.state != 0);
+    } while (msetup_menu.state != 0);
 
-    if (D_8011A882_msetup.result != -1) {
-        D_8011A990_msetup = 0;
+    if (msetup_menu.result != -1) {
+        msetup_winMode = 0;
         for (i = 7; i != 0; i--) {
             HuPrcVSleep();
         }
-        func_8010BBF4_msetup(D_8011A880_msetup);
+        msetup_PlayerProcCreate(msetup_playerNum);
         HuAudFXPlay(0x2DB);
-        for (i = 0; i < D_8011A880_msetup; i++) {
-            D_8011A9E0_msetup[i].state = 1;
+        for (i = 0; i < msetup_playerNum; i++) {
+            msetup_playerWorkTbl[i].state = 1;
         }
-        while (D_8011A9E0_msetup[1].state != 0) {
+        while (msetup_playerWorkTbl[1].state != 0) {
             HuPrcVSleep();
         }
     }
-    if (D_8011A882_msetup.result < 0) {
+    if (msetup_menu.result < 0) {
         stateIndex--;
     } else {
         stateIndex++;
@@ -1064,25 +1064,25 @@ s16 func_801084C4_msetup(s16 stateIndex) {
     return stateIndex;
 }
 
-s16 func_801085D4_msetup(s16 stateIndex) {
+s16 msetup_DuelComLevelStep(s16 stateIndex) {
     s32 i;
 
-    if (D_8011AA30_msetup.cpuCount != 0) {
-        for (i = 0; i < D_8011A880_msetup; i++) {
-            D_8011A9E0_msetup[i].state = 6;
+    if (msetup_playerConfig.cpuCount != 0) {
+        for (i = 0; i < msetup_playerNum; i++) {
+            msetup_playerWorkTbl[i].state = 6;
         }
-        D_8011A882_msetup.state = 3;
+        msetup_menu.state = 3;
         do {
             HuPrcVSleep();
-        } while (D_8011A882_msetup.state != 0);
+        } while (msetup_menu.state != 0);
     } else {
-        D_8011A990_msetup = 1;
+        msetup_winMode = 1;
     }
-    if (D_8011A882_msetup.result == -1) {
+    if (msetup_menu.result == -1) {
         HuAudFXPlay(0x2E4);
-        func_8010BE8C_msetup(D_8011A880_msetup);
+        msetup_PlayerProcKill(msetup_playerNum);
     }
-    if (D_8011A882_msetup.result < 0) {
+    if (msetup_menu.result < 0) {
         stateIndex--;
     } else {
         stateIndex++;
@@ -1090,30 +1090,30 @@ s16 func_801085D4_msetup(s16 stateIndex) {
     return stateIndex;
 }
 
-s16 func_801086C8_msetup(s16 stateIndex) {
+s16 msetup_DuelHandicapStep(s16 stateIndex) {
     s32 i;
 
-    for (i = 0; i < D_8011A880_msetup; i++) {
-        D_8011A9E0_msetup[i].state = 14;
+    for (i = 0; i < msetup_playerNum; i++) {
+        msetup_playerWorkTbl[i].state = 14;
     }
-    D_8011A882_msetup.state = 11;
+    msetup_menu.state = 11;
     do {
         HuPrcVSleep();
-    } while (D_8011A882_msetup.state != 0);
+    } while (msetup_menu.state != 0);
 
-    if (D_8011A882_msetup.result == 0) {
-        D_8011A882_msetup.state = 10;
+    if (msetup_menu.result == 0) {
+        msetup_menu.state = 10;
         do {
             HuPrcVSleep();
-        } while (D_8011A882_msetup.state != 0);
-        if (D_8011A882_msetup.result >= 0) {
+        } while (msetup_menu.state != 0);
+        if (msetup_menu.result >= 0) {
             stateIndex++;
         }
     } else {
-        for (i = 0; i < D_8011A880_msetup; i++) {
-            D_8011AA30_msetup.stars[i] = 5;
+        for (i = 0; i < msetup_playerNum; i++) {
+            msetup_playerConfig.stars[i] = 5;
         }
-        if (D_8011A882_msetup.result < 0) {
+        if (msetup_menu.result < 0) {
             stateIndex--;
         } else {
             stateIndex++;
@@ -1122,24 +1122,24 @@ s16 func_801086C8_msetup(s16 stateIndex) {
     return stateIndex;
 }
 
-s16 func_801087F4_msetup(s16 stateIndex) {
+s16 msetup_DuelBoardStep(s16 stateIndex) {
     s32 i;
 
-    D_8011A882_msetup.state = 8;
+    msetup_menu.state = 8;
     do {
         HuPrcVSleep();
-    } while (D_8011A882_msetup.state != 0);
+    } while (msetup_menu.state != 0);
 
-    if (D_8011A882_msetup.result < 0) {
-        func_8010F2F4_msetup(D_80119420_msetup, 0xFF);
+    if (msetup_menu.result < 0) {
+        msetup_SummaryStateSet(msetup_summaryProc, 0xFF);
     } else {
-        func_8010F2F4_msetup(D_80119420_msetup, 1);
+        msetup_SummaryStateSet(msetup_summaryProc, 1);
         for (i = 7; i != 0; i--) {
             HuPrcVSleep();
         }
     }
 
-    if (D_8011A882_msetup.result < 0) {
+    if (msetup_menu.result < 0) {
         stateIndex--;
     } else {
         stateIndex++;
@@ -1147,19 +1147,19 @@ s16 func_801087F4_msetup(s16 stateIndex) {
     return stateIndex;
 }
 
-s16 func_801088A8_msetup(s16 stateIndex) {
-    D_8011A882_msetup.state = 5;
+s16 msetup_DuelTurnStep(s16 stateIndex) {
+    msetup_menu.state = 5;
     do {
         HuPrcVSleep();
-    } while (D_8011A882_msetup.state != 0);
+    } while (msetup_menu.state != 0);
 
-    if (D_8011A882_msetup.result == -1) {
-        func_8010F2F4_msetup(D_80119420_msetup, 3);
+    if (msetup_menu.result == -1) {
+        msetup_SummaryStateSet(msetup_summaryProc, 3);
     } else {
-        func_8010F2F4_msetup(D_80119420_msetup, 4);
+        msetup_SummaryStateSet(msetup_summaryProc, 4);
     }
 
-    if (D_8011A882_msetup.result < 0) {
+    if (msetup_menu.result < 0) {
         stateIndex--;
     } else {
         stateIndex++;
@@ -1167,28 +1167,28 @@ s16 func_801088A8_msetup(s16 stateIndex) {
     return stateIndex;
 }
 
-s16 func_80108938_msetup(s16 stateIndex) {
+s16 msetup_DuelMgPackStep(s16 stateIndex) {
     s32 i;
 
-    D_8011A882_msetup.state = 13;
+    msetup_menu.state = 13;
     do {
         HuPrcVSleep();
-    } while (D_8011A882_msetup.state != 0);
+    } while (msetup_menu.state != 0);
 
-    if (D_8011A882_msetup.result == 0) {
-        D_8011AA30_msetup.unk17 = 0;
+    if (msetup_menu.result == 0) {
+        msetup_playerConfig.unk17 = 0;
     } else {
-        D_8011AA30_msetup.unk17 = 1;
+        msetup_playerConfig.unk17 = 1;
     }
 
-    if (D_8011A882_msetup.result == -1) {
-        func_8010F2F4_msetup(D_80119420_msetup, 6);
+    if (msetup_menu.result == -1) {
+        msetup_SummaryStateSet(msetup_summaryProc, 6);
         for (i = 7; i != 0; i--) {
             HuPrcVSleep();
         }
     }
 
-    if (D_8011A882_msetup.result < 0) {
+    if (msetup_menu.result < 0) {
         stateIndex--;
     } else {
         stateIndex++;
@@ -1196,123 +1196,123 @@ s16 func_80108938_msetup(s16 stateIndex) {
     return stateIndex;
 }
 
-s16 func_801089FC_msetup(s16 stateIndex) {
-    D_8011A882_msetup.result = 0;
-    func_8010B82C_msetup(0x241B);
-    if (func_8010B858_msetup() == 0) {
-        func_8010B82C_msetup(0x241D);
+s16 msetup_DuelConfirmStep(s16 stateIndex) {
+    msetup_menu.result = 0;
+    msetup_WinMesSet(0x241B);
+    if (msetup_WinMesWait() == 0) {
+        msetup_WinMesSet(0x241D);
         stateIndex = -2;
-        func_8010B858_msetup();
+        msetup_WinMesWait();
         HuAudFXPlay(0x2A6);
     } else {
-        func_8010B82C_msetup(0x241C);
-        if (func_8010B858_msetup() == 0) {
-            func_8010F2F4_msetup(D_80119420_msetup, 9);
+        msetup_WinMesSet(0x241C);
+        if (msetup_WinMesWait() == 0) {
+            msetup_SummaryStateSet(msetup_summaryProc, 9);
             HuAudFXPlay(0x2E4);
             stateIndex = 0;
-            func_8010BE8C_msetup(D_8011A880_msetup);
+            msetup_PlayerProcKill(msetup_playerNum);
         } else {
-            D_8011A882_msetup.result = -1;
+            msetup_menu.result = -1;
             stateIndex--;
         }
     }
     return stateIndex;
 }
 
-void func_80108AB8_msetup(void) {
+void msetup_DuelSetupProc(void) {
     s16 state[2];
     Process *process;
     s16 step;
     s32 i;
 
-    D_8011A880_msetup = 2;
+    msetup_playerNum = 2;
     _ClearFlag(0);
-    Hu3DModelPosSet(Hu3DModelRead(D_80119424_msetup[1], 0x2B9), 0.0f, -37.5f, 100.0f);
-    func_80107428_msetup();
-    process = omAddPrcObj(func_80117820_msetup, 0xBB8, 0x1000, 0);
-    memset(&D_8011A882_msetup, 0, sizeof(D_8011A882_msetup));
-    D_8011A882_msetup.result = -1;
-    process->user_data = &D_8011A882_msetup;
-    D_80119420_msetup = func_8010F2BC_msetup();
-    process = omAddPrcObj(func_8010B1F4_msetup, 0x3E8, 0x600, 0);
+    Hu3DModelPosSet(Hu3DModelRead(msetup_stageMdlFileTbl[1], 0x2B9), 0.0f, -37.5f, 100.0f);
+    msetup_BackObjCreate();
+    process = omAddPrcObj(msetup_MenuProc, 0xBB8, 0x1000, 0);
+    memset(&msetup_menu, 0, sizeof(msetup_menu));
+    msetup_menu.result = -1;
+    process->user_data = &msetup_menu;
+    msetup_summaryProc = msetup_SummaryCreate();
+    process = omAddPrcObj(msetup_TumbleProc, 0x3E8, 0x600, 0);
     memset(state, 0, sizeof(state));
     process->user_data = state;
-    func_80106260_msetup(&D_80119580_msetup);
+    msetup_CameraPresetSet(&msetup_cameraPreset);
     HuPrcVSleep();
-    for (i = 0; i < D_8011A880_msetup; i++) {
-        D_8011AA30_msetup.stars[i] = 5;
+    for (i = 0; i < msetup_playerNum; i++) {
+        msetup_playerConfig.stars[i] = 5;
     }
-    WipeCreateIn(D_8011AA48_msetup, 16);
+    WipeCreateIn(msetup_wipeType, 16);
     HuAudFXPlay(0x2D8);
-    func_801068F4_msetup(D_801195A0_msetup, 22.0f, func_80107F88_msetup);
-    D_8011AA4A_msetup = 1;
+    msetup_CameraKeyframeExec(msetup_cameraIntroKeyTbl, 22.0f, msetup_IntroCameraHook);
+    msetup_backNarrowF = 1;
     state[0] = 1;
     do {
         HuPrcVSleep();
     } while (state[0] == 1);
-    D_8011A990_msetup = 1;
-    func_8010B9B8_msetup(0x4000, 0x4000);
+    msetup_winMode = 1;
+    msetup_WinAttrWait(0x4000, 0x4000);
     if (!_CheckFlag(0x19)) {
         _SetFlag(0x19);
-        func_8010B82C_msetup(0x2400);
-        func_8010B858_msetup();
+        msetup_WinMesSet(0x2400);
+        msetup_WinMesWait();
     }
-    func_8010B82C_msetup(0x2402);
-    func_8010B858_msetup();
+    msetup_WinMesSet(0x2402);
+    msetup_WinMesWait();
     step = 0;
     do {
-        step = D_80119458_msetup[step](step);
+        step = msetup_duelStepTbl[step](step);
     } while (step >= 0);
-    func_8010F2F4_msetup(D_80119420_msetup, 8);
-    D_8011A990_msetup = 0;
+    msetup_SummaryStateSet(msetup_summaryProc, 8);
+    msetup_winMode = 0;
     if (step < -1) {
-        for (i = 0; i < D_8011A880_msetup; i++) {
-            D_8011A9E0_msetup[i].state = 12;
+        for (i = 0; i < msetup_playerNum; i++) {
+            msetup_playerWorkTbl[i].state = 12;
         }
         HuPrcVSleep();
-        for (i = 0; i < D_8011A880_msetup; i++) {
-            D_8011A9E0_msetup[i].state = 16;
+        for (i = 0; i < msetup_playerNum; i++) {
+            msetup_playerWorkTbl[i].state = 16;
         }
         HuAudSeqFadeOut(390);
-        D_80119412_msetup = 1;
+        msetup_exitRumbleF = 1;
         HuAudFXPlay(0x2DF);
-        func_801068F4_msetup(D_801197BC_msetup, 22.0f, NULL);
-        GwSystem.current_board_index = D_8011AA30_msetup.boardIndex;
-        GwSystem.total_turns = D_8011AA30_msetup.totalTurns;
-        for (i = 0; i < D_8011A880_msetup; i++) {
-            GwPlayer[i].chr = D_8011AA30_msetup.characters[i];
-            GwPlayer[i].star = D_8011AA30_msetup.stars[i];
+        msetup_CameraKeyframeExec(msetup_cameraStartKeyTbl, 22.0f, NULL);
+        GwSystem.current_board_index = msetup_playerConfig.boardIndex;
+        GwSystem.total_turns = msetup_playerConfig.totalTurns;
+        for (i = 0; i < msetup_playerNum; i++) {
+            GwPlayer[i].chr = msetup_playerConfig.characters[i];
+            GwPlayer[i].star = msetup_playerConfig.stars[i];
             GwPlayer[i].coin = 0;
-            GwPlayer[i].pad = D_8011AA30_msetup.controllerPorts[i];
-            if (D_8011AA30_msetup.cpuDifficulty[i] < 4) {
-                GwPlayer[i].cpu_difficulty = D_8011AA30_msetup.cpuDifficulty[i];
+            GwPlayer[i].pad = msetup_playerConfig.controllerPorts[i];
+            if (msetup_playerConfig.cpuDifficulty[i] < 4) {
+                GwPlayer[i].cpu_difficulty = msetup_playerConfig.cpuDifficulty[i];
                 GwPlayer[i].stat = 1;
             } else {
                 GwPlayer[i].cpu_difficulty = 1;
                 GwPlayer[i].stat = 0;
             }
         }
-        if (D_8011AA30_msetup.unk17 != 0) {
+        if (msetup_playerConfig.unk17 != 0) {
             _SetFlag(0x20);
         } else {
             _ClearFlag(0x20);
         }
-        D_8011A944_msetup = 3;
-        D_8011AA4C_msetup = 90;
-        D_8011A946_msetup = 0;
+        msetup_exitMode = 3;
+        msetup_exitOvlNo = 90;
+        msetup_exitEvtNo = 0;
     } else {
-        D_80119410_msetup = 75;
+        msetup_exitCnt = 75;
         HuAudFXPlay(0x2EC);
-        func_801068F4_msetup(D_801196C0_msetup, 25.0f, NULL);
+        msetup_CameraKeyframeExec(msetup_cameraCancelKeyTbl, 25.0f, NULL);
     }
-    func_8010F2F4_msetup(D_80119420_msetup, 0xFF);
-    D_80119410_msetup = 1;
+    msetup_SummaryStateSet(msetup_summaryProc, 0xFF);
+    msetup_exitCnt = 1;
     while (1) {
         HuPrcVSleep();
     }
 }
 
-void func_80108F74_msetup(void) {
+void msetup_StoryPlayerInit(void) {
     u8 characters[4];
     s32 i;
     s32 player;
@@ -1324,9 +1324,9 @@ void func_80108F74_msetup(void) {
     u32 first;
     u32 second;
 
-    GwSystem.current_board_index = D_80119478_msetup[GwStory.unk0];
+    GwSystem.current_board_index = msetup_storyBoardTbl[GwStory.unk0];
     GwSystem.current_game_length = 0;
-    mode = D_80119488_msetup[GwStory.unk0];
+    mode = msetup_storyStageKindTbl[GwStory.unk0];
     stars = 0;
     if (mode == 1) {
         GwSystem.total_turns = 20;
@@ -1336,11 +1336,11 @@ void func_80108F74_msetup(void) {
     }
     GwPlayer[0].chr = GwStory.unk1;
     GwPlayer[0].star = stars;
-    GwPlayer[0].pad = D_8011A949_msetup;
+    GwPlayer[0].pad = msetup_padNoLo;
     GwPlayer[0].cpu_difficulty = 1;
     GwPlayer[0].stat = 0;
     GwPlayer[0].coin = 0;
-    opponent = D_80119498_msetup[GwStory.unk0];
+    opponent = msetup_storyRivalTbl[GwStory.unk0];
     if (opponent == GwStory.unk1) {
         opponent = 1;
     }
@@ -1348,7 +1348,7 @@ void func_80108F74_msetup(void) {
     if (mode == 1) {
         GwPlayer[1].chr = opponent;
         GwPlayer[1].star = stars;
-        GwPlayer[1].pad = D_8011AA30_msetup.controllerPorts[1];
+        GwPlayer[1].pad = msetup_playerConfig.controllerPorts[1];
         GwPlayer[1].cpu_difficulty = GwStory.unk2;
         GwPlayer[1].stat = 1;
         GwPlayer[1].coin = 0;
@@ -1363,7 +1363,7 @@ void func_80108F74_msetup(void) {
             character++;
         } while (i < 4);
         for (i = 96; i != 0; i--) {
-            random = func_801061E0_msetup();
+            random = msetup_Rand();
             first = random & 3;
             second = (random >> 2) & 3;
             character = characters[first];
@@ -1374,7 +1374,7 @@ void func_80108F74_msetup(void) {
         if (GwStory.unk0 >= 11) {
             GwPlayer[player].chr = opponent;
             GwPlayer[player].star = stars;
-            GwPlayer[player].pad = D_8011AA30_msetup.controllerPorts[1];
+            GwPlayer[player].pad = msetup_playerConfig.controllerPorts[1];
             GwPlayer[player].cpu_difficulty = GwStory.unk2;
             GwPlayer[player].stat = 1;
             GwPlayer[player].coin = 0;
@@ -1383,7 +1383,7 @@ void func_80108F74_msetup(void) {
         for (i = 0; player < 4; player++, i++) {
             GwPlayer[player].chr = characters[i];
             GwPlayer[player].star = stars;
-            GwPlayer[player].pad = D_8011AA30_msetup.controllerPorts[player];
+            GwPlayer[player].pad = msetup_playerConfig.controllerPorts[player];
             GwPlayer[player].cpu_difficulty = GwStory.unk2;
             GwPlayer[player].stat = 1;
             GwPlayer[player].coin = 0;
@@ -1391,287 +1391,287 @@ void func_80108F74_msetup(void) {
     }
 }
 
-void func_80109218_msetup(void) {
+void msetup_StoryPartySetupProc(void) {
     s16 state[2];
     Process *process;
     s32 i;
 
-    D_8011A880_msetup = 4;
-    func_80108F74_msetup();
-    D_8011AA30_msetup.boardIndex = GwSystem.current_board_index;
-    D_8011AA30_msetup.totalTurns = GwSystem.total_turns;
-    D_8011AA30_msetup.unk17 = _CheckFlag(0x29);
-    for (i = 0; i < D_8011A880_msetup; i++) {
-        D_8011AA30_msetup.characters[i] = GwPlayer[i].chr;
-        D_8011AA30_msetup.stars[i] = GwPlayer[i].star;
-        D_8011AA30_msetup.controllerPorts[i] = GwPlayer[i].pad;
+    msetup_playerNum = 4;
+    msetup_StoryPlayerInit();
+    msetup_playerConfig.boardIndex = GwSystem.current_board_index;
+    msetup_playerConfig.totalTurns = GwSystem.total_turns;
+    msetup_playerConfig.unk17 = _CheckFlag(0x29);
+    for (i = 0; i < msetup_playerNum; i++) {
+        msetup_playerConfig.characters[i] = GwPlayer[i].chr;
+        msetup_playerConfig.stars[i] = GwPlayer[i].star;
+        msetup_playerConfig.controllerPorts[i] = GwPlayer[i].pad;
         if (GwPlayer[i].stat & 1) {
-            D_8011AA30_msetup.cpuDifficulty[i] = GwPlayer[i].cpu_difficulty;
+            msetup_playerConfig.cpuDifficulty[i] = GwPlayer[i].cpu_difficulty;
         } else {
-            D_8011AA30_msetup.cpuDifficulty[i] = 0xFF;
+            msetup_playerConfig.cpuDifficulty[i] = 0xFF;
         }
     }
-    D_8011AA30_msetup.humanCount = 1;
-    D_8011AA30_msetup.cpuCount = 3;
-    Hu3DModelPosSet(Hu3DModelRead(D_80119424_msetup[2], 0x2B9), 0.0f, -37.5f, 100.0f);
-    func_80107428_msetup();
-    process = omAddPrcObj(func_80117820_msetup, 0xBB8, 0x1000, 0);
-    memset(&D_8011A882_msetup, 0, sizeof(D_8011A882_msetup));
-    D_8011A882_msetup.result = -1;
-    process->user_data = &D_8011A882_msetup;
-    process = omAddPrcObj(func_8010B1F4_msetup, 0x3E8, 0x600, 0);
+    msetup_playerConfig.humanCount = 1;
+    msetup_playerConfig.cpuCount = 3;
+    Hu3DModelPosSet(Hu3DModelRead(msetup_stageMdlFileTbl[2], 0x2B9), 0.0f, -37.5f, 100.0f);
+    msetup_BackObjCreate();
+    process = omAddPrcObj(msetup_MenuProc, 0xBB8, 0x1000, 0);
+    memset(&msetup_menu, 0, sizeof(msetup_menu));
+    msetup_menu.result = -1;
+    process->user_data = &msetup_menu;
+    process = omAddPrcObj(msetup_TumbleProc, 0x3E8, 0x600, 0);
     memset(state, 0, sizeof(state));
     process->user_data = state;
-    func_80106260_msetup(&D_80119580_msetup);
-    func_8010BBF4_msetup(D_8011A880_msetup);
+    msetup_CameraPresetSet(&msetup_cameraPreset);
+    msetup_PlayerProcCreate(msetup_playerNum);
     HuPrcVSleep();
-    WipeCreateIn(D_8011AA48_msetup, 16);
+    WipeCreateIn(msetup_wipeType, 16);
     HuAudFXPlay(0x2D8);
-    func_801068F4_msetup(D_801195A0_msetup, 22.0f, func_80107F88_msetup);
-    D_8011AA4A_msetup = 1;
+    msetup_CameraKeyframeExec(msetup_cameraIntroKeyTbl, 22.0f, msetup_IntroCameraHook);
+    msetup_backNarrowF = 1;
     state[0] = 1;
     HuAudFXPlay(0x2DB);
-    D_8011A9E0_msetup[0].state = 1;
+    msetup_playerWorkTbl[0].state = 1;
     while (state[0] == 1) {
         HuPrcVSleep();
     }
-    D_8011A990_msetup = 1;
-    func_8010B9B8_msetup(0x4000, 0x4000);
-    func_8010B998_msetup();
-    func_8010B968_msetup(D_8011AA30_msetup.characters[0] + 0x1C00, 0);
-    func_8010B82C_msetup(0x1A00);
-    func_8010B858_msetup();
-    func_8010B82C_msetup(D_801194A8_msetup[D_8011AA30_msetup.boardIndex]);
-    func_8010B858_msetup();
-    func_8010B82C_msetup(0x1A07);
-    func_8010B858_msetup();
-    func_8010B998_msetup();
-    D_8011A990_msetup = 2;
-    D_8011A882_msetup.state = 12;
+    msetup_winMode = 1;
+    msetup_WinAttrWait(0x4000, 0x4000);
+    msetup_WinHomeClear();
+    msetup_WinInsertMesSet(msetup_playerConfig.characters[0] + 0x1C00, 0);
+    msetup_WinMesSet(0x1A00);
+    msetup_WinMesWait();
+    msetup_WinMesSet(msetup_storyPartyBoardMesTbl[msetup_playerConfig.boardIndex]);
+    msetup_WinMesWait();
+    msetup_WinMesSet(0x1A07);
+    msetup_WinMesWait();
+    msetup_WinHomeClear();
+    msetup_winMode = 2;
+    msetup_menu.state = 12;
     do {
         HuPrcVSleep();
-    } while (D_8011A882_msetup.state != 0);
-    D_8011A990_msetup = 1;
+    } while (msetup_menu.state != 0);
+    msetup_winMode = 1;
     HuPrcVSleep();
-    func_8010B9B8_msetup(0x4000, 0x4000);
-    func_8010B82C_msetup(0x1A08);
-    func_8010B858_msetup();
-    D_8011A990_msetup = 0;
+    msetup_WinAttrWait(0x4000, 0x4000);
+    msetup_WinMesSet(0x1A08);
+    msetup_WinMesWait();
+    msetup_winMode = 0;
     HuAudFXPlay(0x2DB);
-    for (i = 1; i < D_8011A880_msetup; i++) {
-        D_8011A9E0_msetup[i].state = 1;
+    for (i = 1; i < msetup_playerNum; i++) {
+        msetup_playerWorkTbl[i].state = 1;
     }
     for (i = 7; i != 0; i--) {
         HuPrcVSleep();
     }
-    D_8011A9E0_msetup[0].state = 17;
-    while (D_8011A9E0_msetup[D_8011A880_msetup - 1].state != 0) {
+    msetup_playerWorkTbl[0].state = 17;
+    while (msetup_playerWorkTbl[msetup_playerNum - 1].state != 0) {
         HuPrcVSleep();
     }
-    D_8011A990_msetup = 1;
-    func_8010B82C_msetup(0x1A09);
-    func_8010B858_msetup();
-    func_8010B82C_msetup(0x1A0A);
-    func_8010B858_msetup();
-    func_8010B82C_msetup(0x1A0B);
-    func_8010B858_msetup();
-    if (D_8011AA30_msetup.unk17 != 0) {
-        func_8010B82C_msetup(0x1A10);
+    msetup_winMode = 1;
+    msetup_WinMesSet(0x1A09);
+    msetup_WinMesWait();
+    msetup_WinMesSet(0x1A0A);
+    msetup_WinMesWait();
+    msetup_WinMesSet(0x1A0B);
+    msetup_WinMesWait();
+    if (msetup_playerConfig.unk17 != 0) {
+        msetup_WinMesSet(0x1A10);
     } else {
-        func_8010B82C_msetup(0x1A0F);
+        msetup_WinMesSet(0x1A0F);
     }
-    func_8010B858_msetup();
-    func_8010B82C_msetup(0x1A0C);
-    func_8010B858_msetup();
+    msetup_WinMesWait();
+    msetup_WinMesSet(0x1A0C);
+    msetup_WinMesWait();
     i = 1;
     do {
-        func_8010B82C_msetup(0x1A0D);
-        if (func_8010B858_msetup() == 0) {
-            func_8010B82C_msetup(0x1A0E);
-            func_8010B858_msetup();
+        msetup_WinMesSet(0x1A0D);
+        if (msetup_WinMesWait() == 0) {
+            msetup_WinMesSet(0x1A0E);
+            msetup_WinMesWait();
             HuAudFXPlay(0x2A6);
-            D_8011A990_msetup = 0;
-            for (i = 0; i < D_8011A880_msetup; i++) {
-                D_8011A9E0_msetup[i].state = 16;
+            msetup_winMode = 0;
+            for (i = 0; i < msetup_playerNum; i++) {
+                msetup_playerWorkTbl[i].state = 16;
             }
             HuAudSeqFadeOut(390);
-            D_80119412_msetup = 1;
+            msetup_exitRumbleF = 1;
             HuAudFXPlay(0x2DF);
-            func_801068F4_msetup(D_801197BC_msetup, 22.0f, NULL);
+            msetup_CameraKeyframeExec(msetup_cameraStartKeyTbl, 22.0f, NULL);
             _ClearFlag(0);
             _ClearFlag(0x28);
             _SetFlag(0x1B);
-            if (D_8011AA30_msetup.unk17 != 0) {
+            if (msetup_playerConfig.unk17 != 0) {
                 _SetFlag(0x20);
             } else {
                 _ClearFlag(0x20);
             }
             GwSystem.playMode = 5;
-            D_8011A944_msetup = 4;
-            D_8011AA4C_msetup = 71;
-            D_8011A946_msetup = 0;
+            msetup_exitMode = 4;
+            msetup_exitOvlNo = 71;
+            msetup_exitEvtNo = 0;
             omOvlHisChg(0, 0x7D, 0, 0x4090);
             omovlhisidx++;
             i = 0;
         } else {
-            func_8010B82C_msetup(0x1501);
-            if (func_8010B858_msetup() == 0) {
+            msetup_WinMesSet(0x1501);
+            if (msetup_WinMesWait() == 0) {
                 i = 0;
-                D_8011A990_msetup = 0;
-                D_80119410_msetup = 75;
+                msetup_winMode = 0;
+                msetup_exitCnt = 75;
                 HuAudFXPlay(0x2EC);
-                func_801068F4_msetup(D_801196C0_msetup, 25.0f, NULL);
+                msetup_CameraKeyframeExec(msetup_cameraCancelKeyTbl, 25.0f, NULL);
             }
         }
     } while (i != 0);
-    D_80119410_msetup = 1;
+    msetup_exitCnt = 1;
     while (1) {
         HuPrcVSleep();
     }
 }
 
-void func_80109868_msetup(void) {
+void msetup_StoryDuelSetupProc(void) {
     s16 state[2];
     Process *process;
     s32 i;
 
-    D_8011A880_msetup = 2;
-    func_80108F74_msetup();
-    D_8011AA30_msetup.boardIndex = GwSystem.current_board_index;
-    D_8011AA30_msetup.totalTurns = GwSystem.total_turns;
-    D_8011AA30_msetup.unk17 = _CheckFlag(0x29);
-    for (i = 0; i < D_8011A880_msetup; i++) {
-        D_8011AA30_msetup.characters[i] = GwPlayer[i].chr;
-        D_8011AA30_msetup.stars[i] = GwPlayer[i].star;
-        D_8011AA30_msetup.controllerPorts[i] = GwPlayer[i].pad;
+    msetup_playerNum = 2;
+    msetup_StoryPlayerInit();
+    msetup_playerConfig.boardIndex = GwSystem.current_board_index;
+    msetup_playerConfig.totalTurns = GwSystem.total_turns;
+    msetup_playerConfig.unk17 = _CheckFlag(0x29);
+    for (i = 0; i < msetup_playerNum; i++) {
+        msetup_playerConfig.characters[i] = GwPlayer[i].chr;
+        msetup_playerConfig.stars[i] = GwPlayer[i].star;
+        msetup_playerConfig.controllerPorts[i] = GwPlayer[i].pad;
         if (GwPlayer[i].stat & 1) {
-            D_8011AA30_msetup.cpuDifficulty[i] = GwPlayer[i].cpu_difficulty;
+            msetup_playerConfig.cpuDifficulty[i] = GwPlayer[i].cpu_difficulty;
         } else {
-            D_8011AA30_msetup.cpuDifficulty[i] = 0xFF;
+            msetup_playerConfig.cpuDifficulty[i] = 0xFF;
         }
     }
-    D_8011AA30_msetup.humanCount = 1;
-    D_8011AA30_msetup.cpuCount = 1;
-    Hu3DModelPosSet(Hu3DModelRead(D_80119424_msetup[1], 0x2B9), 0.0f, -37.5f, 100.0f);
-    func_80107428_msetup();
-    process = omAddPrcObj(func_80117820_msetup, 0xBB8, 0x1000, 0);
-    memset(&D_8011A882_msetup, 0, sizeof(D_8011A882_msetup));
-    D_8011A882_msetup.result = -1;
-    process->user_data = &D_8011A882_msetup;
-    process = omAddPrcObj(func_8010B1F4_msetup, 0x3E8, 0x600, 0);
+    msetup_playerConfig.humanCount = 1;
+    msetup_playerConfig.cpuCount = 1;
+    Hu3DModelPosSet(Hu3DModelRead(msetup_stageMdlFileTbl[1], 0x2B9), 0.0f, -37.5f, 100.0f);
+    msetup_BackObjCreate();
+    process = omAddPrcObj(msetup_MenuProc, 0xBB8, 0x1000, 0);
+    memset(&msetup_menu, 0, sizeof(msetup_menu));
+    msetup_menu.result = -1;
+    process->user_data = &msetup_menu;
+    process = omAddPrcObj(msetup_TumbleProc, 0x3E8, 0x600, 0);
     memset(state, 0, sizeof(state));
     process->user_data = state;
-    func_80106260_msetup(&D_80119580_msetup);
-    func_8010BBF4_msetup(D_8011A880_msetup);
+    msetup_CameraPresetSet(&msetup_cameraPreset);
+    msetup_PlayerProcCreate(msetup_playerNum);
     HuPrcVSleep();
-    WipeCreateIn(D_8011AA48_msetup, 16);
+    WipeCreateIn(msetup_wipeType, 16);
     HuAudFXPlay(0x2D8);
-    func_801068F4_msetup(D_801195A0_msetup, 22.0f, func_80107F88_msetup);
-    D_8011AA4A_msetup = 1;
+    msetup_CameraKeyframeExec(msetup_cameraIntroKeyTbl, 22.0f, msetup_IntroCameraHook);
+    msetup_backNarrowF = 1;
     state[0] = 1;
     HuAudFXPlay(0x2DB);
-    D_8011A9E0_msetup[0].state = 1;
+    msetup_playerWorkTbl[0].state = 1;
     while (state[0] == 1) {
         HuPrcVSleep();
     }
-    D_8011A990_msetup = 1;
-    func_8010B9B8_msetup(0x4000, 0x4000);
-    func_8010B968_msetup(D_8011AA30_msetup.characters[0] + 0x1C00, 0);
-    func_8010B82C_msetup(0x2900);
-    func_8010B858_msetup();
-    func_8010B82C_msetup(D_801194C0_msetup[D_8011AA30_msetup.boardIndex]);
-    func_8010B858_msetup();
-    func_8010B82C_msetup(0x2907);
-    func_8010B858_msetup();
-    D_8011A882_msetup.state = 12;
+    msetup_winMode = 1;
+    msetup_WinAttrWait(0x4000, 0x4000);
+    msetup_WinInsertMesSet(msetup_playerConfig.characters[0] + 0x1C00, 0);
+    msetup_WinMesSet(0x2900);
+    msetup_WinMesWait();
+    msetup_WinMesSet(msetup_storyDuelBoardMesTbl[msetup_playerConfig.boardIndex]);
+    msetup_WinMesWait();
+    msetup_WinMesSet(0x2907);
+    msetup_WinMesWait();
+    msetup_menu.state = 12;
     do {
         HuPrcVSleep();
-    } while (D_8011A882_msetup.state != 0);
-    func_8010B82C_msetup(0x2908);
-    func_8010B858_msetup();
+    } while (msetup_menu.state != 0);
+    msetup_WinMesSet(0x2908);
+    msetup_WinMesWait();
     HuAudFXPlay(0x2DB);
-    for (i = 1; i < D_8011A880_msetup; i++) {
-        D_8011A9E0_msetup[i].state = 1;
+    for (i = 1; i < msetup_playerNum; i++) {
+        msetup_playerWorkTbl[i].state = 1;
     }
     for (i = 7; i != 0; i--) {
         HuPrcVSleep();
     }
-    D_8011A9E0_msetup[0].state = 17;
-    while (D_8011A9E0_msetup[D_8011A880_msetup - 1].state != 0) {
+    msetup_playerWorkTbl[0].state = 17;
+    while (msetup_playerWorkTbl[msetup_playerNum - 1].state != 0) {
         HuPrcVSleep();
     }
-    if (D_8011AA30_msetup.characters[1] != 1) {
-        func_8010B82C_msetup(D_801194D8_msetup[D_8011AA30_msetup.characters[1]]);
+    if (msetup_playerConfig.characters[1] != 1) {
+        msetup_WinMesSet(msetup_storyDuelRivalMesTbl[msetup_playerConfig.characters[1]]);
     } else {
-        func_8010B82C_msetup(D_801194F8_msetup[D_8011AA30_msetup.boardIndex]);
+        msetup_WinMesSet(msetup_storyDuelLuigiMesTbl[msetup_playerConfig.boardIndex]);
     }
-    func_8010B858_msetup();
-    func_8010B82C_msetup(0x2914);
-    func_8010B858_msetup();
-    func_8010B82C_msetup(0x2915);
-    func_8010B858_msetup();
-    func_8010B82C_msetup(0x2916);
-    func_8010B858_msetup();
-    if (D_8011AA30_msetup.unk17 != 0) {
-        func_8010B82C_msetup(0x291A);
+    msetup_WinMesWait();
+    msetup_WinMesSet(0x2914);
+    msetup_WinMesWait();
+    msetup_WinMesSet(0x2915);
+    msetup_WinMesWait();
+    msetup_WinMesSet(0x2916);
+    msetup_WinMesWait();
+    if (msetup_playerConfig.unk17 != 0) {
+        msetup_WinMesSet(0x291A);
     } else {
-        func_8010B82C_msetup(0x2919);
+        msetup_WinMesSet(0x2919);
     }
-    func_8010B858_msetup();
+    msetup_WinMesWait();
     i = 1;
     do {
-        func_8010B82C_msetup(0x2917);
-        if (func_8010B858_msetup() == 0) {
-            func_8010B82C_msetup(0x2918);
-            func_8010B858_msetup();
+        msetup_WinMesSet(0x2917);
+        if (msetup_WinMesWait() == 0) {
+            msetup_WinMesSet(0x2918);
+            msetup_WinMesWait();
             HuAudFXPlay(0x2A6);
-            D_8011A990_msetup = 0;
-            for (i = 0; i < D_8011A880_msetup; i++) {
-                D_8011A9E0_msetup[i].state = 16;
+            msetup_winMode = 0;
+            for (i = 0; i < msetup_playerNum; i++) {
+                msetup_playerWorkTbl[i].state = 16;
             }
             HuAudSeqFadeOut(390);
-            D_80119412_msetup = 1;
+            msetup_exitRumbleF = 1;
             HuAudFXPlay(0x2DF);
-            func_801068F4_msetup(D_801197BC_msetup, 22.0f, NULL);
+            msetup_CameraKeyframeExec(msetup_cameraStartKeyTbl, 22.0f, NULL);
             _ClearFlag(0);
             _ClearFlag(0x28);
-            if (D_8011AA30_msetup.unk17 != 0) {
+            if (msetup_playerConfig.unk17 != 0) {
                 _SetFlag(0x20);
             } else {
                 _ClearFlag(0x20);
             }
             GwSystem.playMode = 6;
-            D_8011A944_msetup = 3;
-            D_8011AA4C_msetup = 90;
-            D_8011A946_msetup = 0;
+            msetup_exitMode = 3;
+            msetup_exitOvlNo = 90;
+            msetup_exitEvtNo = 0;
             omOvlHisChg(0, 0x7D, 0, 0x4090);
             omovlhisidx++;
             i = 0;
         } else {
-            func_8010B82C_msetup(0x1501);
-            if (func_8010B858_msetup() == 0) {
+            msetup_WinMesSet(0x1501);
+            if (msetup_WinMesWait() == 0) {
                 i = 0;
-                D_8011A990_msetup = 0;
-                D_80119410_msetup = 75;
+                msetup_winMode = 0;
+                msetup_exitCnt = 75;
                 HuAudFXPlay(0x2EC);
-                func_801068F4_msetup(D_801196C0_msetup, 25.0f, NULL);
+                msetup_CameraKeyframeExec(msetup_cameraCancelKeyTbl, 25.0f, NULL);
             }
         }
     } while (i != 0);
-    D_80119410_msetup = 1;
+    msetup_exitCnt = 1;
     while (1) {
         HuPrcVSleep();
     }
 }
 
-s16 func_80109EA0_msetup(s16 stateIndex) {
+s16 msetup_MgModeIntroStep(s16 stateIndex) {
     s16 nextState;
 
-    if (D_8011A882_msetup.result >= 0) {
-        func_8010B82C_msetup(0x4900);
-        func_8010B858_msetup();
-        func_8010B82C_msetup(0x4902);
-        func_8010B858_msetup();
+    if (msetup_menu.result >= 0) {
+        msetup_WinMesSet(0x4900);
+        msetup_WinMesWait();
+        msetup_WinMesSet(0x4902);
+        msetup_WinMesWait();
         nextState = stateIndex + 1;
     } else {
         nextState = stateIndex - 1;
@@ -1679,15 +1679,15 @@ s16 func_80109EA0_msetup(s16 stateIndex) {
     return nextState;
 }
 
-s16 func_80109F04_msetup(s16 stateIndex) {
+s16 msetup_MgMode1PIntroStep(s16 stateIndex) {
     s16 nextState;
 
-    if (D_8011A882_msetup.result >= 0) {
-        func_8010B968_msetup(D_8011AA30_msetup.characters[0] + 0x1C00, 0);
-        func_8010B82C_msetup(0x4A00);
-        func_8010B858_msetup();
-        func_8010B82C_msetup(0x4A02);
-        func_8010B858_msetup();
+    if (msetup_menu.result >= 0) {
+        msetup_WinInsertMesSet(msetup_playerConfig.characters[0] + 0x1C00, 0);
+        msetup_WinMesSet(0x4A00);
+        msetup_WinMesWait();
+        msetup_WinMesSet(0x4A02);
+        msetup_WinMesWait();
         nextState = stateIndex + 1;
     } else {
         nextState = stateIndex - 1;
@@ -1695,36 +1695,36 @@ s16 func_80109F04_msetup(s16 stateIndex) {
     return nextState;
 }
 
-s16 func_80109F7C_msetup(s16 step) {
+s16 msetup_MgMode1PChrStep(s16 step) {
     s32 i;
 
-    D_8011A882_msetup.state = 2;
+    msetup_menu.state = 2;
     do {
         HuPrcVSleep();
-    } while (D_8011A882_msetup.state != 0);
+    } while (msetup_menu.state != 0);
 
-    if (D_8011A882_msetup.result != -1) {
-        D_8011A990_msetup = 0;
+    if (msetup_menu.result != -1) {
+        msetup_winMode = 0;
         for (i = 7; i != 0; i--) {
             HuPrcVSleep();
         }
-        func_8010BA6C_msetup(1, D_8011A880_msetup);
+        msetup_PlayerProcCreateEx(1, msetup_playerNum);
         for (i = 4; i != 0; i--) {
             HuPrcVSleep();
         }
         HuAudFXPlay(0x2DB);
-        for (i = 1; i < D_8011A880_msetup; i++) {
-            D_8011A9E0_msetup[i].state = 1;
+        for (i = 1; i < msetup_playerNum; i++) {
+            msetup_playerWorkTbl[i].state = 1;
         }
         for (i = 7; i != 0; i--) {
             HuPrcVSleep();
         }
-        D_8011A9E0_msetup[0].state = 17;
-        while (D_8011A9E0_msetup[D_8011A880_msetup - 1].state != 0) {
+        msetup_playerWorkTbl[0].state = 17;
+        while (msetup_playerWorkTbl[msetup_playerNum - 1].state != 0) {
             HuPrcVSleep();
         }
     }
-    if (D_8011A882_msetup.result < 0) {
+    if (msetup_menu.result < 0) {
         step--;
     } else {
         step++;
@@ -1732,25 +1732,25 @@ s16 func_80109F7C_msetup(s16 step) {
     return step;
 }
 
-s16 func_8010A10C_msetup(s16 step) {
+s16 msetup_MgMode1PComLevelStep(s16 step) {
     s32 i;
 
-    if (D_8011AA30_msetup.cpuCount != 0) {
-        for (i = 0; i < D_8011A880_msetup; i++) {
-            D_8011A9E0_msetup[i].state = 7;
+    if (msetup_playerConfig.cpuCount != 0) {
+        for (i = 0; i < msetup_playerNum; i++) {
+            msetup_playerWorkTbl[i].state = 7;
         }
-        D_8011A882_msetup.state = 3;
+        msetup_menu.state = 3;
         do {
             HuPrcVSleep();
-        } while (D_8011A882_msetup.state != 0);
+        } while (msetup_menu.state != 0);
     } else {
-        D_8011A990_msetup = 1;
+        msetup_winMode = 1;
     }
-    if (D_8011A882_msetup.result == -1) {
+    if (msetup_menu.result == -1) {
         HuAudFXPlay(0x2E4);
-        func_8010BC18_msetup(1, D_8011A880_msetup);
+        msetup_PlayerProcKillEx(1, msetup_playerNum);
     }
-    if (D_8011A882_msetup.result < 0) {
+    if (msetup_menu.result < 0) {
         step--;
     } else {
         step++;
@@ -1758,143 +1758,143 @@ s16 func_8010A10C_msetup(s16 step) {
     return step;
 }
 
-s16 func_8010A204_msetup(s16 step) {
-    D_8011A882_msetup.result = 0;
-    func_8010B82C_msetup(0x4919);
-    if (func_8010B858_msetup() == 0) {
-        func_8010B82C_msetup(0x491B);
+s16 msetup_MgModeConfirmStep(s16 step) {
+    msetup_menu.result = 0;
+    msetup_WinMesSet(0x4919);
+    if (msetup_WinMesWait() == 0) {
+        msetup_WinMesSet(0x491B);
         step = -2;
-        func_8010B858_msetup();
+        msetup_WinMesWait();
         HuAudFXPlay(0x2A6);
     } else {
-        func_8010B82C_msetup(0x491A);
-        if (func_8010B858_msetup() == 0) {
+        msetup_WinMesSet(0x491A);
+        if (msetup_WinMesWait() == 0) {
             HuAudFXPlay(0x2E4);
             step = 1;
-            func_8010BE8C_msetup(D_8011A880_msetup);
+            msetup_PlayerProcKill(msetup_playerNum);
         } else {
-            D_8011A882_msetup.result = -1;
+            msetup_menu.result = -1;
             step--;
         }
     }
     return step;
 }
 
-s16 func_8010A2B0_msetup(s16 step) {
-    D_8011A882_msetup.result = 0;
-    func_8010B82C_msetup(0x4919);
-    if (func_8010B858_msetup() == 0) {
-        func_8010B82C_msetup(0x491B);
+s16 msetup_MgMode1PConfirmStep(s16 step) {
+    msetup_menu.result = 0;
+    msetup_WinMesSet(0x4919);
+    if (msetup_WinMesWait() == 0) {
+        msetup_WinMesSet(0x491B);
         step = -2;
-        func_8010B858_msetup();
+        msetup_WinMesWait();
         HuAudFXPlay(0x2A6);
     } else {
-        func_8010B82C_msetup(0x491A);
-        if (func_8010B858_msetup() == 0) {
+        msetup_WinMesSet(0x491A);
+        if (msetup_WinMesWait() == 0) {
             HuAudFXPlay(0x2E4);
-            func_8010BC18_msetup(1, D_8011A880_msetup);
+            msetup_PlayerProcKillEx(1, msetup_playerNum);
             step = 1;
         } else {
-            D_8011A882_msetup.result = -1;
+            msetup_menu.result = -1;
             step--;
         }
     }
     return step;
 }
 
-void func_8010A35C_msetup(s16 (**steps)(s16)) {
+void msetup_MgModeSetupExec(s16 (**steps)(s16)) {
     s16 state[2];
     Process *process;
     s16 step;
     s32 i;
 
-    D_8011A880_msetup = 4;
-    Hu3DModelPosSet(Hu3DModelRead(D_80119424_msetup[0], 0x2B9), 0.0f, -37.5f, 100.0f);
-    func_80107428_msetup();
-    process = omAddPrcObj(func_80117820_msetup, 0xBB8, 0x1000, 0);
-    memset(&D_8011A882_msetup, 0, sizeof(D_8011A882_msetup));
-    D_8011A882_msetup.result = -1;
-    process->user_data = &D_8011A882_msetup;
-    process = omAddPrcObj(func_8010B1F4_msetup, 0x3E8, 0x600, 0);
+    msetup_playerNum = 4;
+    Hu3DModelPosSet(Hu3DModelRead(msetup_stageMdlFileTbl[0], 0x2B9), 0.0f, -37.5f, 100.0f);
+    msetup_BackObjCreate();
+    process = omAddPrcObj(msetup_MenuProc, 0xBB8, 0x1000, 0);
+    memset(&msetup_menu, 0, sizeof(msetup_menu));
+    msetup_menu.result = -1;
+    process->user_data = &msetup_menu;
+    process = omAddPrcObj(msetup_TumbleProc, 0x3E8, 0x600, 0);
     memset(state, 0, sizeof(state));
     process->user_data = state;
-    if (D_8011A938_msetup == 6) {
-        func_8010BA6C_msetup(0, 1);
+    if (msetup_setupMode == 6) {
+        msetup_PlayerProcCreateEx(0, 1);
     }
-    func_80106260_msetup(&D_80119580_msetup);
+    msetup_CameraPresetSet(&msetup_cameraPreset);
     HuPrcVSleep();
-    WipeCreateIn(D_8011AA48_msetup, 16);
-    D_8011A882_msetup.result = 0;
+    WipeCreateIn(msetup_wipeType, 16);
+    msetup_menu.result = 0;
     HuAudFXPlay(0x2D8);
-    func_801068F4_msetup(D_801195A0_msetup, 22.0f, func_80107F88_msetup);
-    D_8011AA4A_msetup = 1;
-    if (D_8011A938_msetup == 6) {
+    msetup_CameraKeyframeExec(msetup_cameraIntroKeyTbl, 22.0f, msetup_IntroCameraHook);
+    msetup_backNarrowF = 1;
+    if (msetup_setupMode == 6) {
         HuAudFXPlay(0x2DB);
-        D_8011A9E0_msetup[0].state = 1;
+        msetup_playerWorkTbl[0].state = 1;
     }
     state[0] = 1;
     do {
         HuPrcVSleep();
     } while (state[0] == 1);
-    D_8011A990_msetup = 1;
-    func_8010B9B8_msetup(0x4000, 0x4000);
+    msetup_winMode = 1;
+    msetup_WinAttrWait(0x4000, 0x4000);
     step = 0;
     do {
         step = steps[step](step);
     } while (step >= 0);
-    D_8011A990_msetup = 0;
+    msetup_winMode = 0;
     if (step < -1) {
-        for (i = 0; i < D_8011A880_msetup; i++) {
-            D_8011A9E0_msetup[i].state = 12;
+        for (i = 0; i < msetup_playerNum; i++) {
+            msetup_playerWorkTbl[i].state = 12;
         }
         HuPrcVSleep();
-        for (i = 0; i < D_8011A880_msetup; i++) {
-            D_8011A9E0_msetup[i].state = 16;
+        for (i = 0; i < msetup_playerNum; i++) {
+            msetup_playerWorkTbl[i].state = 16;
         }
         HuAudSeqFadeOut(390);
-        D_80119412_msetup = 1;
+        msetup_exitRumbleF = 1;
         HuAudFXPlay(0x2DF);
-        func_801068F4_msetup(D_801197BC_msetup, 22.0f, NULL);
-        for (i = 0; i < D_8011A880_msetup; i++) {
-            GwPlayer[i].chr = D_8011AA30_msetup.characters[i];
-            GwPlayer[i].star = D_8011AA30_msetup.stars[i];
+        msetup_CameraKeyframeExec(msetup_cameraStartKeyTbl, 22.0f, NULL);
+        for (i = 0; i < msetup_playerNum; i++) {
+            GwPlayer[i].chr = msetup_playerConfig.characters[i];
+            GwPlayer[i].star = msetup_playerConfig.stars[i];
             GwPlayer[i].coin = 0;
-            GwPlayer[i].pad = D_8011AA30_msetup.controllerPorts[i];
-            if (D_8011AA30_msetup.cpuDifficulty[i] < 4) {
-                GwPlayer[i].cpu_difficulty = D_8011AA30_msetup.cpuDifficulty[i];
+            GwPlayer[i].pad = msetup_playerConfig.controllerPorts[i];
+            if (msetup_playerConfig.cpuDifficulty[i] < 4) {
+                GwPlayer[i].cpu_difficulty = msetup_playerConfig.cpuDifficulty[i];
                 GwPlayer[i].stat = 1;
             } else {
                 GwPlayer[i].cpu_difficulty = 1;
                 GwPlayer[i].stat = 0;
             }
         }
-        D_8011A944_msetup = 1;
-        D_8011AA4C_msetup = 105;
-        D_8011A946_msetup = 0;
+        msetup_exitMode = 1;
+        msetup_exitOvlNo = 105;
+        msetup_exitEvtNo = 0;
     } else {
-        D_80119410_msetup = 75;
+        msetup_exitCnt = 75;
         HuAudFXPlay(0x2EC);
-        func_801068F4_msetup(D_801196C0_msetup, 25.0f, NULL);
+        msetup_CameraKeyframeExec(msetup_cameraCancelKeyTbl, 25.0f, NULL);
     }
-    D_80119410_msetup = 1;
+    msetup_exitCnt = 1;
     while (1) {
         HuPrcVSleep();
     }
 }
 
-void func_8010A780_msetup(void) {
-    func_8010A35C_msetup(D_80119510_msetup);
+void msetup_MgModeSetupProc(void) {
+    msetup_MgModeSetupExec(msetup_mgModeStepTbl);
 }
 
-void func_8010A7A0_msetup(void) {
-    D_8011AA30_msetup.humanCount = 1;
-    D_8011AA30_msetup.cpuCount = 3;
-    D_8011AA30_msetup.characters[0] = GwStory.unk1;
-    D_8011AA30_msetup.cpuDifficulty[0] = 0xFF;
-    func_8010A35C_msetup(D_80119524_msetup);
+void msetup_MgMode1PSetupProc(void) {
+    msetup_playerConfig.humanCount = 1;
+    msetup_playerConfig.cpuCount = 3;
+    msetup_playerConfig.characters[0] = GwStory.unk1;
+    msetup_playerConfig.cpuDifficulty[0] = 0xFF;
+    msetup_MgModeSetupExec(msetup_mgMode1PStepTbl);
 }
 
-void func_8010A7EC_msetup(s16 mode) {
+void msetup_TutorialSetupExec(s16 mode) {
     s16 state[2];
     Process *process;
     s32 *messages;
@@ -1905,76 +1905,76 @@ void func_8010A7EC_msetup(s16 mode) {
     switch (mode) {
         default:
         case 0:
-            D_8011A880_msetup = 4;
-            D_8011AA30_msetup.humanCount = 1;
-            D_8011AA30_msetup.cpuCount = 3;
-            D_8011AA30_msetup.characters[0] = 3;
-            D_8011AA30_msetup.characters[1] = 2;
-            D_8011AA30_msetup.characters[2] = 0;
-            D_8011AA30_msetup.characters[3] = 4;
-            messages = D_80119534_msetup;
+            msetup_playerNum = 4;
+            msetup_playerConfig.humanCount = 1;
+            msetup_playerConfig.cpuCount = 3;
+            msetup_playerConfig.characters[0] = 3;
+            msetup_playerConfig.characters[1] = 2;
+            msetup_playerConfig.characters[2] = 0;
+            msetup_playerConfig.characters[3] = 4;
+            messages = msetup_tutorialPartyMesTbl;
             i = 2;
             break;
         case 1:
-            D_8011A880_msetup = 2;
-            D_8011AA30_msetup.humanCount = 1;
-            D_8011AA30_msetup.cpuCount = 1;
-            D_8011AA30_msetup.characters[0] = 0;
-            D_8011AA30_msetup.characters[1] = 1;
-            messages = D_80119548_msetup;
+            msetup_playerNum = 2;
+            msetup_playerConfig.humanCount = 1;
+            msetup_playerConfig.cpuCount = 1;
+            msetup_playerConfig.characters[0] = 0;
+            msetup_playerConfig.characters[1] = 1;
+            messages = msetup_tutorialDuelMesTbl;
             i = 1;
             break;
     }
-    Hu3DModelPosSet(Hu3DModelRead(D_80119424_msetup[i], 0x2B9), 0.0f, -37.5f, 100.0f);
-    func_80107428_msetup();
-    func_8010E21C_msetup();
-    process = omAddPrcObj(func_8010B1F4_msetup, 0x3E8, 0x600, 0);
+    Hu3DModelPosSet(Hu3DModelRead(msetup_stageMdlFileTbl[i], 0x2B9), 0.0f, -37.5f, 100.0f);
+    msetup_BackObjCreate();
+    msetup_EffObjCreate();
+    process = omAddPrcObj(msetup_TumbleProc, 0x3E8, 0x600, 0);
     memset(state, 0, sizeof(state));
     process->user_data = state;
-    func_80106260_msetup(&D_80119580_msetup);
-    func_8010BBF4_msetup(D_8011A880_msetup);
+    msetup_CameraPresetSet(&msetup_cameraPreset);
+    msetup_PlayerProcCreate(msetup_playerNum);
     i = 0;
     HuPrcVSleep();
-    WipeCreateIn(D_8011AA48_msetup, 16);
+    WipeCreateIn(msetup_wipeType, 16);
     HuAudFXPlay(0x2D8);
-    func_801068F4_msetup(D_801195A0_msetup, 22.0f, func_80107F88_msetup);
-    D_8011AA4A_msetup = 1;
+    msetup_CameraKeyframeExec(msetup_cameraIntroKeyTbl, 22.0f, msetup_IntroCameraHook);
+    msetup_backNarrowF = 1;
     state[0] = 1;
     HuAudFXPlay(0x2DB);
-    for (; i < D_8011A880_msetup; i++) {
-        D_8011A9E0_msetup[i].state = 1;
+    for (; i < msetup_playerNum; i++) {
+        msetup_playerWorkTbl[i].state = 1;
     }
     while (state[0] == 1) {
         HuPrcVSleep();
     }
-    D_8011A990_msetup = 1;
-    func_8010B9B8_msetup(0x4000, 0x4000);
-    func_8010B998_msetup();
+    msetup_winMode = 1;
+    msetup_WinAttrWait(0x4000, 0x4000);
+    msetup_WinHomeClear();
     for (i = 0; i < 4; i++) {
-        func_8010B82C_msetup(messages[i]);
-        func_8010B858_msetup();
-        if (func_8010BA3C_msetup() & 0x4000) {
-            func_8010B82C_msetup(messages[4]);
-            if (func_8010B858_msetup() == 0) {
+        msetup_WinMesSet(messages[i]);
+        msetup_WinMesWait();
+        if (msetup_WinInputGet() & 0x4000) {
+            msetup_WinMesSet(messages[4]);
+            if (msetup_WinMesWait() == 0) {
                 break;
             }
         }
     }
     if (i < 4) {
-        D_8011A990_msetup = 0;
-        D_80119410_msetup = 75;
+        msetup_winMode = 0;
+        msetup_exitCnt = 75;
         HuAudFXPlay(0x2EC);
-        func_801068F4_msetup(D_801196C0_msetup, 25.0f, NULL);
+        msetup_CameraKeyframeExec(msetup_cameraCancelKeyTbl, 25.0f, NULL);
     } else {
         HuAudFXPlay(0x2A6);
-        D_8011A990_msetup = 0;
-        for (i = 0; i < D_8011A880_msetup; i++) {
-            D_8011A9E0_msetup[i].state = 16;
+        msetup_winMode = 0;
+        for (i = 0; i < msetup_playerNum; i++) {
+            msetup_playerWorkTbl[i].state = 16;
         }
         HuAudSeqFadeOut(390);
-        D_80119412_msetup = 1;
+        msetup_exitRumbleF = 1;
         HuAudFXPlay(0x2DF);
-        func_801068F4_msetup(D_801197BC_msetup, 22.0f, NULL);
+        msetup_CameraKeyframeExec(msetup_cameraStartKeyTbl, 22.0f, NULL);
         _ClearFlag(0);
         GwSystem.current_board_index = 6;
         GwSystem.total_turns = 20;
@@ -1982,21 +1982,21 @@ void func_8010A7EC_msetup(s16 mode) {
         switch (mode) {
             default:
             case 0:
-                D_8011A944_msetup = 4;
-                D_8011AA4C_msetup = 71;
-                D_8011A946_msetup = 0;
+                msetup_exitMode = 4;
+                msetup_exitOvlNo = 71;
+                msetup_exitEvtNo = 0;
                 stars = 0;
                 break;
             case 1:
-                D_8011A944_msetup = 3;
-                D_8011AA4C_msetup = 90;
-                D_8011A946_msetup = 0;
+                msetup_exitMode = 3;
+                msetup_exitOvlNo = 90;
+                msetup_exitEvtNo = 0;
                 stars = 5;
                 break;
         }
-        for (i = 0; i < D_8011A880_msetup; i++) {
-            controllerPort = &D_8011A949_msetup;
-            GwPlayer[i].chr = D_8011AA30_msetup.characters[i];
+        for (i = 0; i < msetup_playerNum; i++) {
+            controllerPort = &msetup_padNoLo;
+            GwPlayer[i].chr = msetup_playerConfig.characters[i];
             GwPlayer[i].star = stars;
             GwPlayer[i].pad = *controllerPort;
             GwPlayer[i].cpu_difficulty = 1;
@@ -2004,19 +2004,19 @@ void func_8010A7EC_msetup(s16 mode) {
             GwPlayer[i].coin = 0;
         }
     }
-    D_80119410_msetup = 1;
+    msetup_exitCnt = 1;
     while (1) {
         HuPrcVSleep();
     }
 }
 
-void func_8010AC78_msetup(void) {
-    func_8010A7EC_msetup(0);
+void msetup_TutorialPartySetupProc(void) {
+    msetup_TutorialSetupExec(0);
 }
 
-void func_8010AC94_msetup(void) {
-    func_8010A7EC_msetup(1);
+void msetup_TutorialDuelSetupProc(void) {
+    msetup_TutorialSetupExec(1);
 }
 
-void func_8010ACB0_msetup(void) {
+void msetup_SysClose(void) {
 }

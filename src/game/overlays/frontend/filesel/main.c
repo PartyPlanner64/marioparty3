@@ -2,16 +2,16 @@
 
 extern u8 omSysPauseReadyF;
 
-void func_80107C84_filesel(void);
+void filesel_MainInit(void);
 
-const Vec D_801129C0_filesel = { 0.0f, 0.0f, 100.0f };
-const Vec D_801129CC_filesel = { 0.0f, 0.0f, 0.0f };
-const Vec D_801129D8_filesel = { 0.0f, 1.0f, 0.0f };
-const Vec D_801129E4_filesel = { 0.0f, 0.0f, 0.0f }; /* Unreferenced. */
+const Vec filesel_cameraInitPos = { 0.0f, 0.0f, 100.0f };
+const Vec filesel_cameraInitTarget = { 0.0f, 0.0f, 0.0f };
+const Vec filesel_cameraInitUp = { 0.0f, 1.0f, 0.0f };
+const Vec filesel_unusedVec = { 0.0f, 0.0f, 0.0f }; /* Unreferenced. */
 
-s32 D_80112E90_filesel BSS;
+s32 filesel_unusedF BSS;
 
-void func_801059D0_filesel(void) {
+void filesel_ObjectInit(void) {
     Vec position;
     Vec target;
     Vec up;
@@ -20,9 +20,9 @@ void func_801059D0_filesel(void) {
     Hu3DSprModelInit(0x20);
     omGameSysInit();
     CamSetupInit(1);
-    position = D_801129C0_filesel;
-    target = D_801129CC_filesel;
-    up = D_801129D8_filesel;
+    position = filesel_cameraInitPos;
+    target = filesel_cameraInitTarget;
+    up = filesel_cameraInitUp;
     ScissorSet(0, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 41.0f, 80.0f, 8000.0f);
@@ -40,8 +40,8 @@ void func_801059D0_filesel(void) {
     omSysPauseReadyF = 0;
 }
 
-void func_80105BC0_filesel(void) {
-    D_80112E90_filesel = 0;
-    func_801059D0_filesel();
-    func_80107C84_filesel();
+void filesel_ObjectSetup(void) {
+    filesel_unusedF = 0;
+    filesel_ObjectInit();
+    filesel_MainInit();
 }

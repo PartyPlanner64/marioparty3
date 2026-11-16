@@ -77,8 +77,8 @@ typedef struct UnkModeSel7 {
     Vec unk_1C;
 } UnkModeSel7; // sizeof 0x28
 
-// Accumulated spin angle: added to as a float by func_8010B940_modesel, but reset
-// and read as a raw word by func_8010B804_modesel and func_8010B824_modesel.
+// Accumulated spin angle: added to as a float by modesel_StarNodeRotAdd, but reset
+// and read as a raw word by modesel_StarNodeRotSet and modesel_StarNodeUpdate.
 typedef union UnkModeSelAngle {
     s32 word;
     f32 angle;
@@ -114,26 +114,26 @@ typedef struct UnkModeSelStorySave {
 } UnkModeSelStorySave; // sizeof 0x1C
 
 extern s16 mgStoryStatPortNo;
-extern const char D_8010F454_modesel[];
+extern const char modesel_emptyStr[];
 
-s32 D_8010F290_modesel = 28; /* Unreferenced. */
-s32 D_8010F294_modesel = 208;
-s32 D_8010F298_modesel = 24; /* Unreferenced. */
-s32 D_8010F29C_modesel = 2;  /* Unreferenced. */
-u8 D_8010F2A0_modesel[16] = { 0, 6, 1, 7, 2, 8, 3, 9, 4, 10, 11, 5 };
-u8 D_8010F2B0_modesel[12] = { 0, 1, 2, 3, 4, 5, 7, 6 };
-f32 D_8010F2BC_modesel = 55.0f;
-f32 D_8010F2C0_modesel = 100.0f;
-f32 D_8010F2C4_modesel = 2080.0f;
-s32 D_8010F2C8_modesel = 0;
+s32 modesel_winPosX = 28; /* Unreferenced. */
+s32 modesel_winPosY = 208;
+s32 modesel_winUnusedParamA = 24; /* Unreferenced. */
+s32 modesel_winUnusedParamB = 2;  /* Unreferenced. */
+u8 modesel_boardNoTbl[16] = { 0, 6, 1, 7, 2, 8, 3, 9, 4, 10, 11, 5 };
+u8 modesel_unusedOrderTbl[12] = { 0, 1, 2, 3, 4, 5, 7, 6 };
+f32 modesel_cameraFov = 55.0f;
+f32 modesel_cameraNear = 100.0f;
+f32 modesel_cameraFar = 2080.0f;
+s32 modesel_stickBtn = 0;
 // Position tables, one entry per spinner position.
-Vec D_8010F2CC_modesel[3] = {
+Vec modesel_starPosTbl[3] = {
     { 250.0f, 25.0f, 355.0f },
     { -250.0f, 25.0f, 355.0f },
     { 0.0f, 25.0f, 70.0f },
 };
-u32 D_8010F2F0_modesel[5] = { 0x3121, 0x3120, 0x311D, 0x311C, 0x311B };
-Vec D_8010F304_modesel[14] = {
+u32 modesel_rankMesTbl[5] = { 0x3121, 0x3120, 0x311D, 0x311C, 0x311B };
+Vec modesel_spotPosTbl[14] = {
     { 250.0f, 45.0f, 355.0f },
     { -250.0f, 45.0f, 355.0f },
     { 0.0f, 45.0f, 70.0f },
@@ -150,432 +150,432 @@ Vec D_8010F304_modesel[14] = {
     { 575.0f, 440.0f, -355.0f }
 };
 
-UnkModeSel2 D_8010F710_modesel[0x40] BSS;
+UnkModeSel2 modesel_sprTbl[0x40] BSS;
 // the one-column second dimension keeps these indexed stores addressing the array base symbolically
-s16 D_8010FE10_modesel[0x40][1] BSS;
-UnkModeSel D_8010FE90_modesel[0x40] BSS;
-s16 D_80110990_modesel BSS;
-u16 D_80110992_modesel BSS;
-u8 D_80110994_modesel[4] BSS; /* Unreferenced. */
-s16 D_80110998_modesel[0x20][6] BSS;
-UnkModeSelStar D_80110B18_modesel[3] BSS;
-u8 D_80110B6C_modesel[4] BSS; /* Unreferenced. */
-s32 D_80110B70_modesel[6] BSS;
-UnkModeSelBoardSave D_80110B88_modesel BSS;
-UnkModeSelStorySave D_80110BB4_modesel BSS;
-omObjData *D_80110BD0_modesel BSS;
-HmfMotionNode *D_80110BD4_modesel BSS;
-s32 D_80110BD8_modesel BSS;
-Process *D_80110BDC_modesel BSS;
-Process *D_80110BE0_modesel BSS;
-u8 D_80110BE4_modesel[4] BSS; /* Unreferenced. */
-UnkModeSel3 D_80110BE8_modesel BSS;
-u8 D_80110C0C_modesel[4] BSS; /* Unreferenced. */
-UnkModeSel7 D_80110C10_modesel BSS;
-UnkModeSel6 D_80110C38_modesel BSS;
-UnkModeSel5 D_80110C68_modesel[3] BSS;
-Vec D_80110CB0_modesel BSS;
-Vec D_80110CBC_modesel BSS;
-u8 D_80110CC8_modesel[0xC] BSS; /* Unreferenced. */
-f32 D_80110CD4_modesel BSS;
+s16 modesel_animTbl[0x40][1] BSS;
+UnkModeSel modesel_modelTbl[0x40] BSS;
+s16 modesel_bgAnim BSS;
+u16 modesel_bgSpr BSS;
+u8 modesel_bgSprPad[4] BSS; /* Unreferenced. */
+s16 modesel_winTbl[0x20][6] BSS;
+UnkModeSelStar modesel_starNodeTbl[3] BSS;
+u8 modesel_starNodePad[4] BSS; /* Unreferenced. */
+s32 modesel_boardStatUnusedTbl[6] BSS;
+UnkModeSelBoardSave modesel_boardStatParty BSS;
+UnkModeSelStorySave modesel_boardStatStory BSS;
+omObjData *modesel_hostObj BSS;
+HmfMotionNode *modesel_taihoNode BSS;
+s32 modesel_storyChr BSS;
+Process *modesel_mainProc BSS;
+Process *modesel_cameraProc BSS;
+u8 modesel_cameraProcPad[4] BSS; /* Unreferenced. */
+UnkModeSel3 modesel_cameraWork BSS;
+u8 modesel_cameraWorkPad[4] BSS; /* Unreferenced. */
+UnkModeSel7 modesel_cameraMove BSS;
+UnkModeSel6 modesel_cameraShake BSS;
+UnkModeSel5 modesel_starBobTbl[3] BSS;
+Vec modesel_hostPos BSS;
+Vec modesel_hostEndPos BSS;
+u8 modesel_hostPad[0xC] BSS; /* Unreferenced. */
+f32 modesel_hostRotY BSS;
 // Start and end positions for the model 10 hop animation.
-Vec D_80110CD8_modesel[2] BSS;
+Vec modesel_hostJumpPosTbl[2] BSS;
 // Three interleaved parallel arrays covering the same 21 slots; each element is 0xC bytes apart.
-s32 D_80110CF0_modesel[21][3] BSS;
-s32 D_80110DEC_modesel BSS;
+s32 modesel_spotEffTime[21][3] BSS;
+s32 modesel_rumbleCnt BSS;
 
 /* Views into the BSS arrays above, aliased in undefined_syms.txt. */
-extern s16 D_8010F296_modesel;               // low half of D_8010F294_modesel
-extern s16 D_80110BDA_modesel;               // low half of D_80110BD8_modesel
-extern UnkModeSel4 D_8010FEA0_modesel[0x40]; // D_8010FE90_modesel[i].unk_10
-extern s32 D_8011099C_modesel[0x20][3];
-extern s32 D_801109A0_modesel[0x20][3];
-extern s32 D_80110CF4_modesel[][3];
-extern omObjData *D_80110CF8_modesel[][3];
+extern s16 modesel_winPosYHalf;               // low half of modesel_winPosY
+extern s16 modesel_storyChrHalf;               // low half of modesel_storyChr
+extern UnkModeSel4 modesel_modelScaleTbl[0x40]; // modesel_modelTbl[i].unk_10
+extern s32 modesel_winMesTbl[0x20][3];
+extern s32 modesel_winTypeTbl[0x20][3];
+extern s32 modesel_spotEffMaxTime[][3];
+extern omObjData *modesel_spotEffObj[][3];
 
-void func_80105C7C_modesel(void);
-void func_80105F84_modesel(s32);
-void func_80105FB4_modesel(s32);
-void func_80106234_modesel(void);
-void func_801074AC_modesel(void);
-void func_80107CB0_modesel(void);
-void func_801074F0_modesel(s32);
-void func_80108A94_modesel(s32);
-s32 func_80108AE0_modesel(Vec *, Vec *, Vec *);
-void func_8010ACA8_modesel(omObjData *);
-f32 func_8010EC74_modesel(f32, f32);
+void modesel_SprInit(void);
+void modesel_SprDispOn(s32);
+void modesel_SprDispOff(s32);
+void modesel_ModelInit(void);
+void modesel_WinInit(void);
+void modesel_MainCreate(void);
+void modesel_WinKill(s32);
+void modesel_CameraMotionApply(s32);
+s32 modesel_CameraMotionPosGet(Vec *, Vec *, Vec *);
+void modesel_HostFallObjMain(omObjData *);
+f32 modesel_LookAtAngleCalc(f32, f32);
 
-void func_8010601C_modesel(s32, s32, s32);
-void func_801063A4_modesel(s32);
-void func_80107CEC_modesel(void);
-void func_8010B790_modesel(s32, f32, f32, f32, f32);
-void func_8010B75C_modesel(s32, f32, f32, f32, f32);
-void func_8010B824_modesel(s32);
-void func_8010E000_modesel(s32, s32 *, s32 *);
-void func_8010ECAC_modesel(omObjData *);
-void func_80106A38_modesel(s32, s32, s16);
-void func_80108F8C_modesel(Vec *, Vec *, Vec *);
-void func_80109290_modesel(omObjData *);
-void func_8010A420_modesel(omObjData *);
-void func_8010A674_modesel(omObjData *);
-void func_8010A84C_modesel(omObjData *);
-void func_8010AAC0_modesel(omObjData *);
-void func_8010ADC8_modesel(omObjData *);
-void func_8010E5F0_modesel(omObjData *);
-void func_80109BC0_modesel(omObjData *);
-void func_801096D4_modesel(omObjData *);
-void func_8010E138_modesel(s32, f32 *, f32 *, f32 *);
-void func_8010E3A4_modesel(s32, f32);
-s32 func_80109A58_modesel(s32);
-s32 func_8010C094_modesel(void);
-s32 func_8010CC38_modesel(void);
-void func_8010EBF8_modesel(void);
-void func_8010ED3C_modesel(void);
-s32 func_8010F214_modesel(s32);
-s32 func_8010F234_modesel(s32);
-void func_8010C874_modesel(void);
-void func_8010CA30_modesel(void);
-void func_8010CB34_modesel(void);
-void func_8010E280_modesel(s32, s32);
-void func_8010DC6C_modesel(s32);
-void func_80106BA0_modesel(s32 index, u32 message, s16 x, s16 y, s16 width, s16 height, s16 style);
-void func_8010DE88_modesel(s32);
-void func_80108FD0_modesel(omObjData *);
-void func_80106074_modesel(s32, s32 *, s32 *);
-void func_80109DB8_modesel(omObjData *);
-void func_8010A068_modesel(omObjData *);
-void func_8010A1C4_modesel(omObjData *);
-void func_8010B804_modesel(s32, s32);
-void func_8010B940_modesel(s32, f32);
-void func_8010E558_modesel(s32);
-void func_801094F0_modesel(Vec *, Vec *, f32, Vec *);
-s32 func_80106DEC_modesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 style);
-s32 func_80106F38_modesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 style);
-s32 func_801070A0_modesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 style);
-s32 func_80107248_modesel(u32 message, s16 x, s16 y, s16 style);
-s32 func_80107314_modesel(u32 message, s16 x, s16 y, s16 style);
-s32 func_801073E0_modesel(u32 message, s16 x, s16 y, s16 style);
-s32 func_8010F204_modesel(s32);
-s32 func_8010CD00_modesel(s32, s32);
-s32 func_8010D8DC_modesel(s32, s32);
-void func_8010DF70_modesel(void);
-void func_8010DFB4_modesel(void);
-void func_8010DFD0_modesel(s32);
-void func_8010E6D8_modesel(s32);
-void func_8010EC40_modesel(void);
-void func_8010ED00_modesel(void);
-void func_80109B74_modesel(void);
-void func_8010E7B4_modesel(void);
-void func_8010AF90_modesel(void);
-void func_8010E50C_modesel(void);
-void func_80108FC4_modesel(void);
-void func_8010E984_modesel(void);
-Process *func_8010B9C4_modesel(void);
-Process *func_8010899C_modesel(void);
-omObjData *func_8010A9B8_modesel(s32);
-omObjData *func_8010AA48_modesel(s32);
-s32 func_8010BA70_modesel(void);
-void func_80109154_modesel(void);
-void func_8010E790_modesel(Process *);
-void func_8010EBC4_modesel(void);
-void func_8010E5B8_modesel(void);
-void func_8010B6B0_modesel(void);
+void modesel_SprPosSet(s32, s32, s32);
+void modesel_ModelKill(s32);
+void modesel_MainProc(void);
+void modesel_StarNodePosSet(s32, f32, f32, f32, f32);
+void modesel_StarNodeSet(s32, f32, f32, f32, f32);
+void modesel_StarNodeUpdate(s32);
+void modesel_CursorPosGet(s32, s32 *, s32 *);
+void modesel_RumbleObjMain(omObjData *);
+void modesel_MotionSet(s32, s32, s16);
+void modesel_CameraViewSet(Vec *, Vec *, Vec *);
+void modesel_CameraShakeObjMain(omObjData *);
+void modesel_StarJumpObjMain(omObjData *);
+void modesel_HostFloatObjMain(omObjData *);
+void modesel_HostEnterObjMain(omObjData *);
+void modesel_HostExitObjMain(omObjData *);
+void modesel_HostJumpObjMain(omObjData *);
+void modesel_SpotEffObjMain(omObjData *);
+void modesel_StarBobObjMain(omObjData *);
+void modesel_CameraTurnEaseObjMain(omObjData *);
+void modesel_SpotPosGet(s32, f32 *, f32 *, f32 *);
+void modesel_SpotEffUpdate(s32, f32);
+s32 modesel_StickBtnGet(s32);
+s32 modesel_BoardStatCreate(void);
+s32 modesel_BoardStatChoice(void);
+void modesel_FileInfoDispOn(void);
+void modesel_HelpExec(void);
+s32 modesel_BoardIdxGet(s32);
+s32 modesel_BoardTypeGet(s32);
+void modesel_BoardStatDispOn(void);
+void modesel_BoardStatDispOff(void);
+void modesel_BoardStatKill(void);
+void modesel_CursorMove(s32, s32);
+void modesel_MenuMesSet(s32);
+void modesel_WinCreate(s32 index, u32 message, s16 x, s16 y, s16 width, s16 height, s16 style);
+void modesel_SpotFocus(s32);
+void modesel_CameraEaseObjMain(omObjData *);
+void modesel_SprPosGet(s32, s32 *, s32 *);
+void modesel_StarLandObjMain(omObjData *);
+void modesel_StarFallObjMain(omObjData *);
+void modesel_StarHoldObjMain(omObjData *);
+void modesel_StarNodeRotSet(s32, s32);
+void modesel_StarNodeRotAdd(s32, f32);
+void modesel_SpotEffKill(s32);
+void modesel_CameraDirLerp(Vec *, Vec *, f32, Vec *);
+s32 modesel_WinType0Create(u32 message, s16 x, s16 y, s16 width, s16 height, s16 style);
+s32 modesel_WinType1Create(u32 message, s16 x, s16 y, s16 width, s16 height, s16 style);
+s32 modesel_WinType2Create(u32 message, s16 x, s16 y, s16 width, s16 height, s16 style);
+s32 modesel_WinType3Create(u32 message, s16 x, s16 y, s16 style);
+s32 modesel_WinType4Create(u32 message, s16 x, s16 y, s16 style);
+s32 modesel_WinType5Create(u32 message, s16 x, s16 y, s16 style);
+s32 modesel_BoardNoGet(s32);
+s32 modesel_MenuDecide(s32, s32);
+s32 modesel_MenuMove(s32, s32);
+void modesel_CursorCreate(void);
+void modesel_CursorKill(void);
+void modesel_CursorPosUpdate(s32);
+void modesel_SpotEffCreate(s32);
+void modesel_FileInfoDispOff(void);
+void modesel_RumbleStart(void);
+void modesel_StarBobInit(void);
+void modesel_BoardStatRead(void);
+void modesel_StageCreate(void);
+void modesel_SpotEffInit(void);
+void modesel_CameraMoveInit(void);
+void modesel_FileInfoCreate(void);
+Process *modesel_CameraMotionStart(void);
+Process *modesel_CameraManualStart(void);
+omObjData *modesel_HostEnterCreate(s32);
+omObjData *modesel_HostFloatCreate(s32);
+s32 modesel_MenuExec(void);
+void modesel_CameraMoveKill(void);
+void modesel_CameraMotionStop(Process *);
+void modesel_FileInfoKill(void);
+void modesel_SpotEffKillAll(void);
+void modesel_StageKill(void);
 
-void func_80105C50_modesel(void) {
-    func_80105C7C_modesel();
-    func_80106234_modesel();
-    func_801074AC_modesel();
+void modesel_UtilInit(void) {
+    modesel_SprInit();
+    modesel_ModelInit();
+    modesel_WinInit();
 }
 
-void func_80105C7C_modesel(void) {
+void modesel_SprInit(void) {
     UnkModeSel2 *p;
     f32 zero;
     s32 i;
 
-    for (i = 0; i < ARRAY_COUNT(D_8010F710_modesel); i++) {
-        D_8010FE10_modesel[i][0] = -1;
-        D_8010F710_modesel[i].unk_00 = -1;
+    for (i = 0; i < ARRAY_COUNT(modesel_sprTbl); i++) {
+        modesel_animTbl[i][0] = -1;
+        modesel_sprTbl[i].unk_00 = -1;
         // only these two of the seven field stores go through the pointer, the rest stay symbolic
-        p = &D_8010F710_modesel[i];
+        p = &modesel_sprTbl[i];
         p->unk_08 = 0;
-        D_8010F710_modesel[i].unk_04 = 0;
+        modesel_sprTbl[i].unk_04 = 0;
         zero = 0.0f;
         p->unk_10 = zero;
-        D_8010F710_modesel[i].unk_0C = zero;
-        D_8010F710_modesel[i].unk_14 = zero;
-        D_8010F710_modesel[i].unk_18 = 0xFF;
+        modesel_sprTbl[i].unk_0C = zero;
+        modesel_sprTbl[i].unk_14 = zero;
+        modesel_sprTbl[i].unk_18 = 0xFF;
     }
 }
 
-s16 func_80105D10_modesel(s32 arg0) {
-    return D_8010FE10_modesel[arg0][0];
+s16 modesel_AnimIdGet(s32 arg0) {
+    return modesel_animTbl[arg0][0];
 }
 
-s16 func_80105D24_modesel(s32 arg0) {
-    return D_8010F710_modesel[arg0].unk_00;
+s16 modesel_EspIdGet(s32 arg0) {
+    return modesel_sprTbl[arg0].unk_00;
 }
 
-void func_80105D40_modesel(s32 arg0, s32 arg1) {
-    D_8010FE10_modesel[arg0][0] = HuSprAnimDataRead(arg1);
+void modesel_AnimCreate(s32 arg0, s32 arg1) {
+    modesel_animTbl[arg0][0] = HuSprAnimDataRead(arg1);
 }
 
-void func_80105D78_modesel(s32 arg0) {
-    if (D_8010FE10_modesel[arg0][0] != -1) {
-        HuSprAnimKill(D_8010FE10_modesel[arg0][0]);
+void modesel_AnimKill(s32 arg0) {
+    if (modesel_animTbl[arg0][0] != -1) {
+        HuSprAnimKill(modesel_animTbl[arg0][0]);
     }
-    D_8010FE10_modesel[arg0][0] = -1;
+    modesel_animTbl[arg0][0] = -1;
 }
 
-void func_80105DD0_modesel(s32 arg0, s16 arg1) {
-    D_8010F710_modesel[arg0].unk_00 = espEntry(D_8010FE10_modesel[arg1][0], 0, 0);
-    func_8010601C_modesel(arg0, 0xA0, 0x78);
+void modesel_EspCreate(s32 arg0, s16 arg1) {
+    modesel_sprTbl[arg0].unk_00 = espEntry(modesel_animTbl[arg1][0], 0, 0);
+    modesel_SprPosSet(arg0, 0xA0, 0x78);
 }
 
-void func_80105E38_modesel(s32 arg0) {
-    if (D_8010F710_modesel[arg0].unk_00 != -1) {
-        espKill(D_8010F710_modesel[arg0].unk_00);
+void modesel_EspKill(s32 arg0) {
+    if (modesel_sprTbl[arg0].unk_00 != -1) {
+        espKill(modesel_sprTbl[arg0].unk_00);
     }
-    D_8010F710_modesel[arg0].unk_00 = -1;
+    modesel_sprTbl[arg0].unk_00 = -1;
 }
 
-void func_80105EA8_modesel(s32 arg0, s32 arg1) {
-    func_80105D40_modesel(arg0, arg1);
-    func_80105DD0_modesel(arg0, arg0);
+void modesel_SprCreate(s32 arg0, s32 arg1) {
+    modesel_AnimCreate(arg0, arg1);
+    modesel_EspCreate(arg0, arg0);
 }
 
-void func_80105EDC_modesel(s32 arg0, s32 arg1) {
-    func_80105EA8_modesel(arg0, arg1);
-    espAttrSet(D_8010F710_modesel[arg0].unk_00, 0x4000);
+void modesel_SprBGCreate(s32 arg0, s32 arg1) {
+    modesel_SprCreate(arg0, arg1);
+    espAttrSet(modesel_sprTbl[arg0].unk_00, 0x4000);
 }
 
-void func_80105F20_modesel(s32 arg0) {
-    func_80105E38_modesel(arg0);
-    func_80105D78_modesel(arg0);
+void modesel_SprKill(s32 arg0) {
+    modesel_EspKill(arg0);
+    modesel_AnimKill(arg0);
 }
 
-void func_80105F4C_modesel(void) {
+void modesel_SprKillAll(void) {
     s32 i;
 
     for (i = 0; i < 0x40; i++) {
-        func_80105F20_modesel(i);
+        modesel_SprKill(i);
     }
 }
 
-void func_80105F84_modesel(s32 arg0) {
-    espDispOn(D_8010F710_modesel[arg0].unk_00);
+void modesel_SprDispOn(s32 arg0) {
+    espDispOn(modesel_sprTbl[arg0].unk_00);
 }
 
-void func_80105FB4_modesel(s32 arg0) {
-    espDispOff(D_8010F710_modesel[arg0].unk_00);
+void modesel_SprDispOff(s32 arg0) {
+    espDispOff(modesel_sprTbl[arg0].unk_00);
 }
 
-void func_80105FE4_modesel(s32 arg0) {
-    func_80105F84_modesel(arg0);
+void modesel_SprBGDispOn(s32 arg0) {
+    modesel_SprDispOn(arg0);
 }
 
-void func_80106000_modesel(s32 arg0) {
-    func_80105FB4_modesel(arg0);
+void modesel_SprBGDispOff(s32 arg0) {
+    modesel_SprDispOff(arg0);
 }
 
-void func_8010601C_modesel(s32 arg0, s32 arg1, s32 arg2) {
-    D_8010F710_modesel[arg0].unk_04 = arg1;
-    D_8010F710_modesel[arg0].unk_08 = arg2;
-    espPosSet(D_8010F710_modesel[arg0].unk_00, arg1, arg2);
+void modesel_SprPosSet(s32 arg0, s32 arg1, s32 arg2) {
+    modesel_sprTbl[arg0].unk_04 = arg1;
+    modesel_sprTbl[arg0].unk_08 = arg2;
+    espPosSet(modesel_sprTbl[arg0].unk_00, arg1, arg2);
 }
 
-void func_80106074_modesel(s32 arg0, s32 *x, s32 *y) {
-    *x = D_8010F710_modesel[arg0].unk_04;
-    *y = D_8010F710_modesel[arg0].unk_08;
+void modesel_SprPosGet(s32 arg0, s32 *x, s32 *y) {
+    *x = modesel_sprTbl[arg0].unk_04;
+    *y = modesel_sprTbl[arg0].unk_08;
 }
 
-void func_801060A4_modesel(s32 arg0, f32 arg1, f32 arg2) {
-    D_8010F710_modesel[arg0].unk_0C = arg1;
-    D_8010F710_modesel[arg0].unk_10 = arg2;
-    espScaleSet(D_8010F710_modesel[arg0].unk_00, arg1, arg2);
+void modesel_SprScaleSet(s32 arg0, f32 arg1, f32 arg2) {
+    modesel_sprTbl[arg0].unk_0C = arg1;
+    modesel_sprTbl[arg0].unk_10 = arg2;
+    espScaleSet(modesel_sprTbl[arg0].unk_00, arg1, arg2);
 }
 
-void func_801060F4_modesel(s32 arg0, u16 arg1) {
-    espTPLvlSet(D_8010F710_modesel[arg0].unk_00, arg1);
+void modesel_SprAlphaSet(s32 arg0, u16 arg1) {
+    espTPLvlSet(modesel_sprTbl[arg0].unk_00, arg1);
 }
 
-void func_8010612C_modesel(s32 arg0, u16 arg1) {
-    espAttrSet(D_8010F710_modesel[arg0].unk_00, arg1);
+void modesel_SprAttrSet(s32 arg0, u16 arg1) {
+    espAttrSet(modesel_sprTbl[arg0].unk_00, arg1);
 }
 
-void func_80106160_modesel(s32 arg0, u16 arg1) {
-    espAttrReset(D_8010F710_modesel[arg0].unk_00, arg1);
+void modesel_SprAttrReset(s32 arg0, u16 arg1) {
+    espAttrReset(modesel_sprTbl[arg0].unk_00, arg1);
 }
 
-void func_80106194_modesel(s32 arg0, u16 arg1) {
-    espPriSet(D_8010F710_modesel[arg0].unk_00, arg1);
+void modesel_SprPriSet(s32 arg0, u16 arg1) {
+    espPriSet(modesel_sprTbl[arg0].unk_00, arg1);
 }
 
-void func_801061C8_modesel(s32 arg0, u16 arg1, u16 arg2) {
-    espAnimModeSet(D_8010F710_modesel[arg0].unk_00, 1);
-    espBankSet(D_8010F710_modesel[arg0].unk_00, arg1, arg2);
+void modesel_SprBankSet(s32 arg0, u16 arg1, u16 arg2) {
+    espAnimModeSet(modesel_sprTbl[arg0].unk_00, 1);
+    espBankSet(modesel_sprTbl[arg0].unk_00, arg1, arg2);
 }
 
-void func_80106234_modesel(void) {
+void modesel_ModelInit(void) {
     s32 i;
 
-    for (i = 0; i < ARRAY_COUNT(D_8010FE90_modesel); i++) {
-        D_8010FE90_modesel[i].unk_00 = -1;
-        D_8010FE90_modesel[i].unk_02 = -1;
+    for (i = 0; i < ARRAY_COUNT(modesel_modelTbl); i++) {
+        modesel_modelTbl[i].unk_00 = -1;
+        modesel_modelTbl[i].unk_02 = -1;
     }
 }
 
-void func_80106280_modesel(s32 arg0, s32 arg1, s32 arg2) {
+void modesel_ModelCreate(s32 arg0, s32 arg1, s32 arg2) {
     s16 modelId = Hu3DModelRead(arg1, arg2);
 
-    D_8010FE90_modesel[arg0].unk_00 = modelId;
+    modesel_modelTbl[arg0].unk_00 = modelId;
     Hu3DModelPosSet(modelId, 0.0f, 0.0f, 0.0f);
     Hu3DModelRotSet(modelId, 0.0f, 0.0f, 0.0f);
     Hu3DModelScaleSet(modelId, 1.0f, 1.0f, 1.0f);
 }
 
-void func_8010631C_modesel(s32 arg0, s32 arg1, s32 arg2) {
+void modesel_MotionCreate(s32 arg0, s32 arg1, s32 arg2) {
     void *data;
 
     if (arg2 == -1) {
         arg2 = 0x6AD;
     }
     data = DataRead(arg1);
-    D_8010FE90_modesel[arg0].unk_02 = Hu3DMotionCreate(data, (s16)arg2);
+    modesel_modelTbl[arg0].unk_02 = Hu3DMotionCreate(data, (s16)arg2);
     DataClose(data);
 }
 
-void func_801063A4_modesel(s32 arg0) {
-    if (D_8010FE90_modesel[arg0].unk_00 != -1) {
-        Hu3DModelKill(D_8010FE90_modesel[arg0].unk_00);
-        D_8010FE90_modesel[arg0].unk_00 = -1;
+void modesel_ModelKill(s32 arg0) {
+    if (modesel_modelTbl[arg0].unk_00 != -1) {
+        Hu3DModelKill(modesel_modelTbl[arg0].unk_00);
+        modesel_modelTbl[arg0].unk_00 = -1;
     }
-    if (D_8010FE90_modesel[arg0].unk_02 != -1) {
-        Hu3DMotionKill(D_8010FE90_modesel[arg0].unk_02);
-        D_8010FE90_modesel[arg0].unk_02 = -1;
+    if (modesel_modelTbl[arg0].unk_02 != -1) {
+        Hu3DMotionKill(modesel_modelTbl[arg0].unk_02);
+        modesel_modelTbl[arg0].unk_02 = -1;
     }
 }
 
-void func_80106454_modesel(void) {
+void modesel_ModelKillAll(void) {
     s32 i;
 
     for (i = 0; i < 0x40; i++) {
-        func_801063A4_modesel(i);
+        modesel_ModelKill(i);
     }
 }
 
-s16 func_8010648C_modesel(s32 arg0) {
-    return D_8010FE90_modesel[arg0].unk_00;
+s16 modesel_ModelIdGet(s32 arg0) {
+    return modesel_modelTbl[arg0].unk_00;
 }
 
-s16 func_801064B0_modesel(s32 arg0) {
-    return D_8010FE90_modesel[arg0].unk_02;
+s16 modesel_MotionIdGet(s32 arg0) {
+    return modesel_modelTbl[arg0].unk_02;
 }
 
-void func_801064D4_modesel(s32 arg0, f32 arg1, f32 arg2, f32 arg3) {
-    D_8010FE90_modesel[arg0].unk_1C = arg1;
-    D_8010FE90_modesel[arg0].unk_20 = arg2;
-    D_8010FE90_modesel[arg0].unk_24 = arg3;
-    Hu3DModelRotSet(D_8010FE90_modesel[arg0].unk_00, arg1, arg2, arg3);
+void modesel_ModelRotSet(s32 arg0, f32 arg1, f32 arg2, f32 arg3) {
+    modesel_modelTbl[arg0].unk_1C = arg1;
+    modesel_modelTbl[arg0].unk_20 = arg2;
+    modesel_modelTbl[arg0].unk_24 = arg3;
+    Hu3DModelRotSet(modesel_modelTbl[arg0].unk_00, arg1, arg2, arg3);
 }
 
-void func_8010653C_modesel(s32 arg0, f32 arg1, f32 arg2, f32 arg3) {
-    D_8010FE90_modesel[arg0].unk_04 = arg1;
-    D_8010FE90_modesel[arg0].unk_08 = arg2;
-    D_8010FE90_modesel[arg0].unk_0C = arg3;
-    Hu3DModelPosSet(D_8010FE90_modesel[arg0].unk_00, arg1, arg2, arg3);
+void modesel_ModelPosSet(s32 arg0, f32 arg1, f32 arg2, f32 arg3) {
+    modesel_modelTbl[arg0].unk_04 = arg1;
+    modesel_modelTbl[arg0].unk_08 = arg2;
+    modesel_modelTbl[arg0].unk_0C = arg3;
+    Hu3DModelPosSet(modesel_modelTbl[arg0].unk_00, arg1, arg2, arg3);
 }
 
-void func_801065B0_modesel(s32 arg0, f32 arg1, f32 arg2, f32 arg3) {
-    D_8010FEA0_modesel[arg0].unk_00 = arg1;
-    D_8010FEA0_modesel[arg0].unk_04 = arg2;
-    D_8010FEA0_modesel[arg0].unk_08 = arg3;
-    Hu3DModelScaleSet(D_8010FE90_modesel[arg0].unk_00, arg1, arg2, arg3);
+void modesel_ModelScaleSet(s32 arg0, f32 arg1, f32 arg2, f32 arg3) {
+    modesel_modelScaleTbl[arg0].unk_00 = arg1;
+    modesel_modelScaleTbl[arg0].unk_04 = arg2;
+    modesel_modelScaleTbl[arg0].unk_08 = arg3;
+    Hu3DModelScaleSet(modesel_modelTbl[arg0].unk_00, arg1, arg2, arg3);
 }
 
-void func_80106618_modesel(s32 arg0, f32 *arg1, f32 *arg2, f32 *arg3) {
-    *arg1 = D_8010FE90_modesel[arg0].unk_04;
-    *arg2 = D_8010FE90_modesel[arg0].unk_08;
-    *arg3 = D_8010FE90_modesel[arg0].unk_0C;
+void modesel_ModelPosGet(s32 arg0, f32 *arg1, f32 *arg2, f32 *arg3) {
+    *arg1 = modesel_modelTbl[arg0].unk_04;
+    *arg2 = modesel_modelTbl[arg0].unk_08;
+    *arg3 = modesel_modelTbl[arg0].unk_0C;
 }
 
-void func_8010666C_modesel(s32 arg0, f32 *arg1, f32 *arg2, f32 *arg3) {
-    *arg1 = D_8010FE90_modesel[arg0].unk_1C;
-    *arg2 = D_8010FE90_modesel[arg0].unk_20;
-    *arg3 = D_8010FE90_modesel[arg0].unk_24;
+void modesel_ModelRotGet(s32 arg0, f32 *arg1, f32 *arg2, f32 *arg3) {
+    *arg1 = modesel_modelTbl[arg0].unk_1C;
+    *arg2 = modesel_modelTbl[arg0].unk_20;
+    *arg3 = modesel_modelTbl[arg0].unk_24;
 }
 
-void func_801066B4_modesel(s32 arg0, f32 *arg1, f32 *arg2, f32 *arg3) {
-    *arg1 = D_8010FEA0_modesel[arg0].unk_00;
-    *arg2 = D_8010FEA0_modesel[arg0].unk_04;
-    *arg3 = D_8010FEA0_modesel[arg0].unk_08;
+void modesel_ModelScaleGet(s32 arg0, f32 *arg1, f32 *arg2, f32 *arg3) {
+    *arg1 = modesel_modelScaleTbl[arg0].unk_00;
+    *arg2 = modesel_modelScaleTbl[arg0].unk_04;
+    *arg3 = modesel_modelScaleTbl[arg0].unk_08;
 }
 
-void func_801066FC_modesel(s32 arg0) {
-    Hu3DModelAttrSet(D_8010FE90_modesel[arg0].unk_00, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+void modesel_ModelDispOff(s32 arg0) {
+    Hu3DModelAttrSet(modesel_modelTbl[arg0].unk_00, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
 }
 
-void func_8010673C_modesel(s32 arg0) {
-    Hu3DModelAttrSet(D_8010FE90_modesel[arg0].unk_00, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+void modesel_ModelDispOn(s32 arg0) {
+    Hu3DModelAttrSet(modesel_modelTbl[arg0].unk_00, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
 }
 
-void func_8010677C_modesel(s32 arg0, s32 arg1) {
-    Hu3DMotionAttrSet(D_8010FE90_modesel[arg0].unk_00, -1, arg1);
+void modesel_MotionFlagSet(s32 arg0, s32 arg1) {
+    Hu3DMotionAttrSet(modesel_modelTbl[arg0].unk_00, -1, arg1);
 }
 
-void func_801067C0_modesel(s32 arg0, s32 arg1, s16 arg2, s16 arg3, s16 arg4) {
-    Hu3DMotionShiftSet(D_8010FE90_modesel[arg0].unk_00, D_8010FE90_modesel[arg1].unk_02, arg2, arg3, arg4);
+void modesel_MotionShiftSet(s32 arg0, s32 arg1, s16 arg2, s16 arg3, s16 arg4) {
+    Hu3DMotionShiftSet(modesel_modelTbl[arg0].unk_00, modesel_modelTbl[arg1].unk_02, arg2, arg3, arg4);
 }
 
-void func_80106830_modesel(s32 arg0, s32 arg1) {
-    Hu3DMotionAttrSet(D_8010FE90_modesel[arg0].unk_00, arg1, 0);
+void modesel_MotionFlagReset(s32 arg0, s32 arg1) {
+    Hu3DMotionAttrSet(modesel_modelTbl[arg0].unk_00, arg1, 0);
 }
 
-void func_80106874_modesel(s32 arg0) {
+void modesel_MotionSpeedSet(s32 arg0) {
     // The original call omits the scale argument.
     void (*setModelScale)() = (void (*)())Hu3DMotionSpeedSet;
 
-    setModelScale(D_8010FE90_modesel[arg0].unk_00);
+    setModelScale(modesel_modelTbl[arg0].unk_00);
 }
 
-void func_801068AC_modesel(s32 arg0, u32 arg1) {
-    Hu3DMotionTimeSet(D_8010FE90_modesel[arg0].unk_00, arg1);
+void modesel_MotionTimeSet(s32 arg0, u32 arg1) {
+    Hu3DMotionTimeSet(modesel_modelTbl[arg0].unk_00, arg1);
 }
 
-void func_80106910_modesel(s32 arg0) {
-    while (Hu3DData[D_8010FE90_modesel[arg0].unk_00].motTime !=
-           Hu3DMotion[Hu3DData[D_8010FE90_modesel[arg0].unk_00].motId].unk02) {
+void modesel_MotionEndWait(s32 arg0) {
+    while (Hu3DData[modesel_modelTbl[arg0].unk_00].motTime !=
+           Hu3DMotion[Hu3DData[modesel_modelTbl[arg0].unk_00].motId].unk02) {
         HuPrcVSleep();
     }
 }
 
-s32 func_801069B0_modesel(s32 arg0) {
-    s16 modelId = D_8010FE90_modesel[arg0].unk_00;
+s32 modesel_MotionEndCheck(s32 arg0) {
+    s16 modelId = modesel_modelTbl[arg0].unk_00;
 
     return Hu3DData[modelId].motTime == Hu3DMotion[Hu3DData[modelId].motId].unk02;
 }
 
-void func_80106A38_modesel(s32 arg0, s32 arg1, s16 arg2) {
-    s16 modelId = func_8010648C_modesel(arg0);
-    s16 parentModelId = func_801064B0_modesel(arg1);
+void modesel_MotionSet(s32 arg0, s32 arg1, s16 arg2) {
+    s16 modelId = modesel_ModelIdGet(arg0);
+    s16 parentModelId = modesel_MotionIdGet(arg1);
 
     Hu3DMotionSet(modelId, parentModelId);
     Hu3DMotionAttrSet(modelId, -1, arg2);
 }
 
-void func_80106AA8_modesel(void) {
+void modesel_BGSprCreate(void) {
     // The original call omits the resource id.
-    D_80110990_modesel = ((s16 (*)())HuSprAnimDataRead)();
-    D_80110992_modesel = espEntry(D_80110990_modesel, 0, 0);
-    espAttrSet(D_80110992_modesel, 0x4000);
-    espPosSet(D_80110992_modesel, 0xA0, 0x78);
+    modesel_bgAnim = ((s16 (*)())HuSprAnimDataRead)();
+    modesel_bgSpr = espEntry(modesel_bgAnim, 0, 0);
+    espAttrSet(modesel_bgSpr, 0x4000);
+    espPosSet(modesel_bgSpr, 0xA0, 0x78);
 }
 
-void func_80106B0C_modesel(void) {
-    espKill(D_80110992_modesel);
-    HuSprAnimKill(D_80110990_modesel);
+void modesel_BGSprKill(void) {
+    espKill(modesel_bgSpr);
+    HuSprAnimKill(modesel_bgAnim);
 }
 
-u32 func_80106B38_modesel(u32 arg0) {
+u32 modesel_WinMesConv(u32 arg0) {
     char buf[0x100];
     s32 len;
     void *ptr;
@@ -589,47 +589,47 @@ u32 func_80106B38_modesel(u32 arg0) {
     return arg0;
 }
 
-void func_80106BA0_modesel(s32 index, u32 message, s16 x, s16 y, s16 width, s16 height, s16 style) {
+void modesel_WinCreate(s32 index, u32 message, s16 x, s16 y, s16 width, s16 height, s16 style) {
     s32 window;
     u32 text;
 
     switch (style) {
         case 1:
-            text = func_80106B38_modesel(message);
-            window = func_80106F38_modesel(text, x, y, width, height, style);
+            text = modesel_WinMesConv(message);
+            window = modesel_WinType1Create(text, x, y, width, height, style);
             break;
         case 2:
-            text = func_80106B38_modesel(message);
-            window = func_801070A0_modesel(text, x, y, width, height, style);
+            text = modesel_WinMesConv(message);
+            window = modesel_WinType2Create(text, x, y, width, height, style);
             break;
         case 3:
-            text = func_80106B38_modesel(message);
-            window = func_80107248_modesel(text, x, y, style);
+            text = modesel_WinMesConv(message);
+            window = modesel_WinType3Create(text, x, y, style);
             break;
         case 4:
-            text = func_80106B38_modesel(message);
-            window = func_80107314_modesel(text, x, y, style);
+            text = modesel_WinMesConv(message);
+            window = modesel_WinType4Create(text, x, y, style);
             break;
         case 5:
-            text = func_80106B38_modesel(message);
-            window = func_801073E0_modesel(text, x, y, style);
+            text = modesel_WinMesConv(message);
+            window = modesel_WinType5Create(text, x, y, style);
             break;
         case 0:
-            text = func_80106B38_modesel(message);
-            window = func_80106DEC_modesel(text, x, y, width, height, style);
+            text = modesel_WinMesConv(message);
+            window = modesel_WinType0Create(text, x, y, width, height, style);
             break;
         default:
-            text = func_80106B38_modesel(message);
-            window = func_80106DEC_modesel(text, x, y, width, height, style);
+            text = modesel_WinMesConv(message);
+            window = modesel_WinType0Create(text, x, y, width, height, style);
             break;
     }
     if (text > 0x80000000U) {
-        D_8011099C_modesel[index][0] = text;
+        modesel_winMesTbl[index][0] = text;
     }
-    D_80110998_modesel[index][0] = window;
+    modesel_winTbl[index][0] = window;
 }
 
-s32 func_80106DEC_modesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 style) {
+s32 modesel_WinType0Create(u32 message, s16 x, s16 y, s16 width, s16 height, s16 style) {
     s16 window = HuWinCreate(x, y, width, height, 0, 8);
 
     HuWinAttrSet(window, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
@@ -649,7 +649,7 @@ s32 func_80106DEC_modesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 
     return window;
 }
 
-s32 func_80106F38_modesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 style) {
+s32 modesel_WinType1Create(u32 message, s16 x, s16 y, s16 width, s16 height, s16 style) {
     s16 window = HuWinCreate(x, y, width, height, 0, 4);
 
     HuWinAttrSet(window, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
@@ -670,7 +670,7 @@ s32 func_80106F38_modesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 
     return window;
 }
 
-s32 func_801070A0_modesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 style) {
+s32 modesel_WinType2Create(u32 message, s16 x, s16 y, s16 width, s16 height, s16 style) {
     s16 window = HuWinCreate(x, y, width, height, 0, 8);
 
     HuWinAttrSet(window, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
@@ -693,7 +693,7 @@ s32 func_801070A0_modesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 
     return window;
 }
 
-s32 func_80107248_modesel(u32 message, s16 x, s16 y, s16 style) {
+s32 modesel_WinType3Create(u32 message, s16 x, s16 y, s16 style) {
     s16 window = HuWinExCreateStyled(x, y, 19);
 
     HuWinMesPalSet(window, 2, 255, 64, 64);
@@ -705,7 +705,7 @@ s32 func_80107248_modesel(u32 message, s16 x, s16 y, s16 style) {
     return window;
 }
 
-s32 func_80107314_modesel(u32 message, s16 x, s16 y, s16 style) {
+s32 modesel_WinType4Create(u32 message, s16 x, s16 y, s16 style) {
     s16 window = HuWinExCreateStyled(x, y, 20);
 
     HuWinMesPalSet(window, 2, 255, 64, 64);
@@ -717,7 +717,7 @@ s32 func_80107314_modesel(u32 message, s16 x, s16 y, s16 style) {
     return window;
 }
 
-s32 func_801073E0_modesel(u32 message, s16 x, s16 y, s16 style) {
+s32 modesel_WinType5Create(u32 message, s16 x, s16 y, s16 style) {
     s16 window = HuWinExCreateStyled(x, y, 19);
 
     HuWinMesPalSet(window, 2, 255, 64, 64);
@@ -729,100 +729,100 @@ s32 func_801073E0_modesel(u32 message, s16 x, s16 y, s16 style) {
     return window;
 }
 
-void func_801074AC_modesel(void) {
+void modesel_WinInit(void) {
     s32 i;
 
     for (i = 0; i < 0x20; i++) {
-        D_80110998_modesel[i][0] = -1;
-        D_8011099C_modesel[i][0] = 0;
+        modesel_winTbl[i][0] = -1;
+        modesel_winMesTbl[i][0] = 0;
     }
 }
 
-void func_801074F0_modesel(s32 arg0) {
-    if (D_801109A0_modesel[arg0][0] == 3) {
-        HuWinExClose(D_80110998_modesel[arg0][0], 1);
-        HuWinExCleanup(D_80110998_modesel[arg0][0]);
+void modesel_WinKill(s32 arg0) {
+    if (modesel_winTypeTbl[arg0][0] == 3) {
+        HuWinExClose(modesel_winTbl[arg0][0], 1);
+        HuWinExCleanup(modesel_winTbl[arg0][0]);
     } else {
-        HuWinDispOff(D_80110998_modesel[arg0][0]);
-        HuWinKill(D_80110998_modesel[arg0][0]);
-        D_80110998_modesel[arg0][0] = -1;
+        HuWinDispOff(modesel_winTbl[arg0][0]);
+        HuWinKill(modesel_winTbl[arg0][0]);
+        modesel_winTbl[arg0][0] = -1;
     }
-    if (D_8011099C_modesel[arg0][0] != 0) {
-        HuMemDelayFree((void *)D_8011099C_modesel[arg0][0]);
-        D_8011099C_modesel[arg0][0] = 0;
+    if (modesel_winMesTbl[arg0][0] != 0) {
+        HuMemDelayFree((void *)modesel_winMesTbl[arg0][0]);
+        modesel_winMesTbl[arg0][0] = 0;
     }
 }
 
-void func_801075D4_modesel(void) {
+void modesel_WinKillAll(void) {
     s32 i;
 
     for (i = 0; i < 0x20; i++) {
-        if (D_80110998_modesel[i][0] != -1) {
-            func_801074F0_modesel(i);
+        if (modesel_winTbl[i][0] != -1) {
+            modesel_WinKill(i);
         }
     }
 }
 
-void func_80107638_modesel(s32 arg0, f32 arg1, f32 arg2) {
-    HuWinScaleSet(D_80110998_modesel[arg0][0], arg1, arg2);
+void modesel_WinScaleSet(s32 arg0, f32 arg1, f32 arg2) {
+    HuWinScaleSet(modesel_winTbl[arg0][0], arg1, arg2);
 }
 
-void func_80107668_modesel(s32 arg0, f32 arg1, f32 arg2) {
-    HuWinPosSet(D_80110998_modesel[arg0][0], arg1, arg2);
+void modesel_WinPosSet(s32 arg0, f32 arg1, f32 arg2) {
+    HuWinPosSet(modesel_winTbl[arg0][0], arg1, arg2);
 }
 
-void func_801076D0_modesel(s32 arg0) {
-    HuWinDispOn(D_80110998_modesel[arg0][0]);
+void modesel_WinDispOn(s32 arg0) {
+    HuWinDispOn(modesel_winTbl[arg0][0]);
 }
 
-void func_80107700_modesel(s32 arg0) {
-    HuWinDispOff(D_80110998_modesel[arg0][0]);
+void modesel_WinDispOff(s32 arg0) {
+    HuWinDispOff(modesel_winTbl[arg0][0]);
 }
 
-void func_80107730_modesel(s32 arg0, u32 message) {
+void modesel_WinMesSet(s32 arg0, u32 message) {
     u32 text;
 
-    HuWinHomeClear(D_80110998_modesel[arg0][0]);
-    if (D_8011099C_modesel[arg0][0] != 0) {
-        HuMemDelayFree((void *)D_8011099C_modesel[arg0][0]);
-        D_8011099C_modesel[arg0][0] = 0;
+    HuWinHomeClear(modesel_winTbl[arg0][0]);
+    if (modesel_winMesTbl[arg0][0] != 0) {
+        HuMemDelayFree((void *)modesel_winMesTbl[arg0][0]);
+        modesel_winMesTbl[arg0][0] = 0;
     }
-    text = func_80106B38_modesel(message);
+    text = modesel_WinMesConv(message);
     if (text > 0x80000000U) {
-        D_8011099C_modesel[arg0][0] = text;
+        modesel_winMesTbl[arg0][0] = text;
     }
-    HuWinMesSet(D_80110998_modesel[arg0][0], text, -1, -1);
+    HuWinMesSet(modesel_winTbl[arg0][0], text, -1, -1);
 }
 
-void func_801077FC_modesel(s32 arg0, s8 arg1, u32 arg2) {
-    HuWinInsertMesSetNoLF(D_80110998_modesel[arg0][0], arg2, arg1);
+void modesel_WinInsertMesSet(s32 arg0, s8 arg1, u32 arg2) {
+    HuWinInsertMesSetNoLF(modesel_winTbl[arg0][0], arg2, arg1);
 }
 
-s32 func_80107838_modesel(s32 arg0, s16 arg1, s32 arg2) {
-    return HuWinChoiceGet(D_80110998_modesel[arg0][0], arg1, arg2);
+s32 modesel_WinChoiceGet(s32 arg0, s16 arg1, s32 arg2) {
+    return HuWinChoiceGet(modesel_winTbl[arg0][0], arg1, arg2);
 }
 
-s16 func_80107870_modesel(s32 arg0) {
-    return D_80110998_modesel[arg0][0];
+s16 modesel_WinIdGet(s32 arg0) {
+    return modesel_winTbl[arg0][0];
 }
 
-void func_8010788C_modesel(s32 arg0) {
-    while (HuWinStatGet(D_80110998_modesel[arg0][0]) != 0) {
+void modesel_WinMesWait(s32 arg0) {
+    while (HuWinStatGet(modesel_winTbl[arg0][0]) != 0) {
         HuPrcVSleep();
     }
 }
 
-void func_801078E0_modesel(s32 arg0) {
+void modesel_PadBtnWait(s32 arg0) {
     do {
         HuPrcVSleep();
     } while (!(arg0 & HuPadBtnDown[0]));
 }
 
-void func_8010791C_modesel(s32 arg0, s16 arg1) {
-    HuWinPriSet(D_80110998_modesel[arg0][0], arg1);
+void modesel_WinPriSet(s32 arg0, s16 arg1) {
+    HuWinPriSet(modesel_winTbl[arg0][0], arg1);
 }
 
-u16 func_80107954_modesel(s32 value) {
+u16 modesel_CameraDebugExec(s32 value) {
     char text[0x100];
     HmfData_UnkBC *camera;
 
@@ -849,7 +849,7 @@ u16 func_80107954_modesel(s32 value) {
     return HuPadBtnDown[0];
 }
 
-void func_80107B08_modesel(void) {
+void modesel_PlayerPadInit(void) {
     s16 i;
     s16 count;
     s16 pad;
@@ -881,14 +881,14 @@ void func_80107B08_modesel(void) {
     }
 }
 
-void func_80107CB0_modesel(void) {
-    func_80105C50_modesel();
-    D_80110BDC_modesel = omAddPrcObj(func_80107CEC_modesel, 0x5000, 0x2000, 0);
+void modesel_MainCreate(void) {
+    modesel_UtilInit();
+    modesel_mainProc = omAddPrcObj(modesel_MainProc, 0x5000, 0x2000, 0);
 }
 
-const char D_8010F454_modesel[] = "";
+const char modesel_emptyStr[] = "";
 
-void func_80107CEC_modesel(void) {
+void modesel_MainProc(void) {
     s32 i;
     s32 j;
     s32 board;
@@ -897,91 +897,91 @@ void func_80107CEC_modesel(void) {
     s16 modelId;
     omOvlHisData *history;
 
-    D_80110BD8_modesel = 0;
+    modesel_storyChr = 0;
     for (i = 0; i < 6; i++) {
         if (MgStoryRankGet(i) >= 0) {
-            D_80110BD8_modesel = i;
+            modesel_storyChr = i;
             break;
         }
     }
     if (_CheckFlag(0x21)) {
-        D_80110BD8_modesel = 0;
+        modesel_storyChr = 0;
     } else if (_CheckFlag(0x22)) {
-        D_80110BD8_modesel = 1;
+        modesel_storyChr = 1;
     } else if (_CheckFlag(0x23)) {
-        D_80110BD8_modesel = 2;
+        modesel_storyChr = 2;
     } else if (_CheckFlag(0x24)) {
-        D_80110BD8_modesel = 3;
+        modesel_storyChr = 3;
     } else if (_CheckFlag(0x25)) {
-        D_80110BD8_modesel = 4;
+        modesel_storyChr = 4;
     } else if (_CheckFlag(0x26)) {
-        D_80110BD8_modesel = 5;
+        modesel_storyChr = 5;
     }
     Hu3DBGColorSet(0, 0x40, 0x40);
     Hu3DScreenClearF = 0;
-    func_80109B74_modesel();
-    func_8010E7B4_modesel();
-    func_8010AF90_modesel();
-    func_8010E50C_modesel();
-    func_80108FC4_modesel();
-    func_8010E984_modesel();
-    func_8010EBF8_modesel();
+    modesel_StarBobInit();
+    modesel_BoardStatRead();
+    modesel_StageCreate();
+    modesel_SpotEffInit();
+    modesel_CameraMoveInit();
+    modesel_FileInfoCreate();
+    modesel_FileInfoDispOn();
     if (GwStory.unk0 == 12 && FileSelEnteredGet() == 0) {
         HuAudSeqPlay(0x29);
     } else {
         HuAudSeqPlay(4);
     }
-    D_80110BE0_modesel = func_8010B9C4_modesel();
+    modesel_cameraProc = modesel_CameraMotionStart();
     if (omovlevtno != 1) {
         if (omovlevtno == 2) {
             WipeColorSet(0xFF, 0xFF, 0xFF);
         }
         WipeCreateIn(0xB, 0x10);
-        modelId = func_8010648C_modesel(0xB);
+        modelId = modesel_ModelIdGet(0xB);
         Hu3DModelPosSet(modelId, 0.0f, 0.0f, 0.0f);
         Hu3DCameraMotionSet(modelId, 0);
         HuPrcSleep(0x10);
     } else {
         WipeColorSet(0xFF, 0xFF, 0xFF);
         WipeCreateIn(0xB, 0x10);
-        func_8010EC40_modesel();
+        modesel_FileInfoDispOff();
         HuPrcSleep(1);
-        func_801068AC_modesel(0xD, 0);
-        func_80106830_modesel(0xD, 1);
+        modesel_MotionTimeSet(0xD, 0);
+        modesel_MotionFlagReset(0xD, 1);
         HuPrcSleep(0xF);
-        func_80106910_modesel(0xD);
-        modelId = func_8010648C_modesel(0xB);
+        modesel_MotionEndWait(0xD);
+        modelId = modesel_ModelIdGet(0xB);
         Hu3DModelPosSet(modelId, 0.0f, 0.0f, 0.0f);
         Hu3DCameraMotionSet(modelId, 0);
-        func_8010EBF8_modesel();
+        modesel_FileInfoDispOn();
     }
     if (FileSelEnteredGet() == 1) {
         if (_CheckFlag(0x16) || _CheckFlag(0x17)) {
-            func_801068AC_modesel(5, 0);
-            func_80106830_modesel(5, 1);
-            func_80106910_modesel(5);
+            modesel_MotionTimeSet(5, 0);
+            modesel_MotionFlagReset(5, 1);
+            modesel_MotionEndWait(5);
         }
     } else if (_CheckFlag(0x28)) {
-        func_801068AC_modesel(5, 0);
-        func_80106830_modesel(5, 1);
-        func_80106910_modesel(5);
+        modesel_MotionTimeSet(5, 0);
+        modesel_MotionFlagReset(5, 1);
+        modesel_MotionEndWait(5);
     }
     if (GwStory.unk0 == 12 && FileSelEnteredGet() == 0) {
-        omDelPrcObj(D_80110BE0_modesel);
-        D_80110BE0_modesel = func_8010899C_modesel();
-        D_80110BD0_modesel = func_8010AA48_modesel(10);
+        omDelPrcObj(modesel_cameraProc);
+        modesel_cameraProc = modesel_CameraManualStart();
+        modesel_hostObj = modesel_HostFloatCreate(10);
     } else {
-        D_80110BD0_modesel = func_8010A9B8_modesel(10);
+        modesel_hostObj = modesel_HostEnterCreate(10);
     }
-    func_8010673C_modesel(10);
+    modesel_ModelDispOn(10);
     HuPrcSleep(0x28);
-    func_801067C0_modesel(10, 0x13, 8, 8, 2);
+    modesel_MotionShiftSet(10, 0x13, 8, 8, 2);
     HuAudFXPlay(0x159);
     if (FileSelEnteredGet() == 1) {
         if (ModeSelIntroShownGet() == 0) {
-            func_80106BA0_modesel(0, 0x3100, 0xA0, D_8010F296_modesel + 4, 0, 0, 3);
+            modesel_WinCreate(0, 0x3100, 0xA0, modesel_winPosYHalf + 4, 0, 0, 3);
             HuPrcSleep(0x1E);
-            func_8010788C_modesel(0);
+            modesel_WinMesWait(0);
             board = -1;
             if (_CheckFlag(0x21)) {
                 board = 0;
@@ -1003,9 +1003,9 @@ void func_80107CEC_modesel(void) {
             _ClearFlag(0x25);
             _ClearFlag(0x26);
             if (board != -1) {
-                func_80107730_modesel(0, 0x311A);
-                func_801077FC_modesel(0, 0, board + 0x1C00);
-                func_8010788C_modesel(0);
+                modesel_WinMesSet(0, 0x311A);
+                modesel_WinInsertMesSet(0, 0, board + 0x1C00);
+                modesel_WinMesWait(0);
                 complete = 1;
                 for (j = 0; j < 12; j++) {
                     if (GwStory.unk10[board][j] < 4) {
@@ -1016,24 +1016,24 @@ void func_80107CEC_modesel(void) {
                     complete = 0;
                 }
                 if (complete) {
-                    func_80107730_modesel(0, 0x313B);
-                    func_8010788C_modesel(0);
-                    func_801074F0_modesel(0);
-                    func_80106BA0_modesel(0, (u32)D_8010F454_modesel, 0xA0, D_8010F296_modesel + 4, 0, 0, 3);
+                    modesel_WinMesSet(0, 0x313B);
+                    modesel_WinMesWait(0);
+                    modesel_WinKill(0);
+                    modesel_WinCreate(0, (u32)modesel_emptyStr, 0xA0, modesel_winPosYHalf + 4, 0, 0, 3);
                 }
             }
             ModeSelIntroShownSet(1);
-            func_80107730_modesel(0, 0x3101);
+            modesel_WinMesSet(0, 0x3101);
         } else {
-            func_80106BA0_modesel(0, 0x3101, 0xA0, D_8010F296_modesel + 4, 0, 0, 3);
+            modesel_WinCreate(0, 0x3101, 0xA0, modesel_winPosYHalf + 4, 0, 0, 3);
         }
-        func_8010788C_modesel(0);
+        modesel_WinMesWait(0);
         HuPrcVSleep();
     } else if (GwStory.unk0 == 12) {
-        func_80106BA0_modesel(0, 0x3136, 0xA0, D_8010F296_modesel + 4, 0, 0, 3);
-        func_8010788C_modesel(0);
-        func_80107730_modesel(0, 0x3119);
-        func_8010788C_modesel(0);
+        modesel_WinCreate(0, 0x3136, 0xA0, modesel_winPosYHalf + 4, 0, 0, 3);
+        modesel_WinMesWait(0);
+        modesel_WinMesSet(0, 0x3119);
+        modesel_WinMesWait(0);
     } else {
         board = -1;
         if (_CheckFlag(0x21)) {
@@ -1056,10 +1056,10 @@ void func_80107CEC_modesel(void) {
         _ClearFlag(0x25);
         _ClearFlag(0x26);
         if (board != -1) {
-            func_80106BA0_modesel(0, (u32)D_8010F454_modesel, 0xA0, D_8010F296_modesel + 4, 0, 0, 3);
-            func_80107730_modesel(0, 0x311A);
-            func_801077FC_modesel(0, 0, board + 0x1C00);
-            func_8010788C_modesel(0);
+            modesel_WinCreate(0, (u32)modesel_emptyStr, 0xA0, modesel_winPosYHalf + 4, 0, 0, 3);
+            modesel_WinMesSet(0, 0x311A);
+            modesel_WinInsertMesSet(0, 0, board + 0x1C00);
+            modesel_WinMesWait(0);
             complete = 1;
             for (j = 0; j < 12; j++) {
                 if (GwStory.unk10[board][j] < 4) {
@@ -1070,19 +1070,19 @@ void func_80107CEC_modesel(void) {
                 complete = 0;
             }
             if (complete) {
-                func_80107730_modesel(0, 0x313B);
-                func_8010788C_modesel(0);
+                modesel_WinMesSet(0, 0x313B);
+                modesel_WinMesWait(0);
             }
-            func_801074F0_modesel(0);
+            modesel_WinKill(0);
         }
-        board = func_8010F204_modesel(GwStory.unk0);
-        func_80106BA0_modesel(0, (u32)D_8010F454_modesel, 0xA0, D_8010F296_modesel + 4, 0, 0, 3);
-        func_801077FC_modesel(0, 0, board + 0x3127);
-        func_80107730_modesel(0, 0x3134);
-        func_8010788C_modesel(0);
+        board = modesel_BoardNoGet(GwStory.unk0);
+        modesel_WinCreate(0, (u32)modesel_emptyStr, 0xA0, modesel_winPosYHalf + 4, 0, 0, 3);
+        modesel_WinInsertMesSet(0, 0, board + 0x3127);
+        modesel_WinMesSet(0, 0x3134);
+        modesel_WinMesWait(0);
     }
-    func_801067C0_modesel(10, 0x14, 8, 8, 2);
-    result = func_8010BA70_modesel();
+    modesel_MotionShiftSet(10, 0x14, 8, 8, 2);
+    result = modesel_MenuExec();
     Hu3DScreenClearF = 1;
     if (result == 16) {
         WipeColorSet(0xFF, 0xFF, 0xFF);
@@ -1090,18 +1090,18 @@ void func_80107CEC_modesel(void) {
     WipeCreateOut(0xB, 0x14);
     HuAudSeqFadeOut(0x14);
     HuPrcSleep(0x14);
-    func_801074F0_modesel(0);
-    func_80109154_modesel();
-    func_8010E790_modesel(D_80110BE0_modesel);
-    func_8010EBC4_modesel();
-    func_8010E5B8_modesel();
-    func_8010B6B0_modesel();
-    omDelPrcObj(D_80110BDC_modesel);
+    modesel_WinKill(0);
+    modesel_CameraMoveKill();
+    modesel_CameraMotionStop(modesel_cameraProc);
+    modesel_FileInfoKill();
+    modesel_SpotEffKillAll();
+    modesel_StageKill();
+    omDelPrcObj(modesel_mainProc);
     HuWinAllKill();
     omOvlKill();
     switch (result) {
         case 0:
-            omOvlCallEx(0x7C, D_80110BDA_modesel, 0x4000);
+            omOvlCallEx(0x7C, modesel_storyChrHalf, 0x4000);
             omOvlHisChg(1, 0x77, 0, 0x91);
             break;
         case 1:
@@ -1151,7 +1151,7 @@ void func_80107CEC_modesel(void) {
                 omOvlCallEx(0x41, 0, 0x94);
                 omOvlHisChg(1, 0x77, 0, 0x91);
                 MgStoryStageGoto();
-                func_80107B08_modesel();
+                modesel_PlayerPadInit();
             } else if (GwSystem.playMode & 1) {
                 omOvlCallEx(0x78, 2, 0x91);
                 omOvlHisChg(1, 0x77, 0, 0x91);
@@ -1194,7 +1194,7 @@ void func_80107CEC_modesel(void) {
             omOvlCallEx(0x41, 0, 0x94);
             omOvlHisChg(1, 0x77, 0, 0x91);
             MgStoryStageGoto();
-            func_80107B08_modesel();
+            modesel_PlayerPadInit();
             break;
         case 3:
         case 15:
@@ -1211,58 +1211,58 @@ void func_80107CEC_modesel(void) {
     }
 }
 
-void func_801088AC_modesel(void) {
-    Hu3DCameraPerspectiveSet(0, D_8010F2BC_modesel, D_8010F2C0_modesel, D_8010F2C4_modesel);
+void modesel_CameraMotionProc(void) {
+    Hu3DCameraPerspectiveSet(0, modesel_cameraFov, modesel_cameraNear, modesel_cameraFar);
     while (1) {
-        func_80108A94_modesel(0);
+        modesel_CameraMotionApply(0);
         HuPrcVSleep();
     }
 }
 
-void func_801088F8_modesel(void) {
+void modesel_CameraProc(void) {
     do {
-        func_80108F8C_modesel(&D_80110BE8_modesel.pos, &D_80110BE8_modesel.at, &D_80110BE8_modesel.up);
+        modesel_CameraViewSet(&modesel_cameraWork.pos, &modesel_cameraWork.at, &modesel_cameraWork.up);
         HuPrcVSleep();
     } while (1);
 }
 
-void func_8010893C_modesel(Process *arg0) {
+void modesel_CameraProcKill(Process *arg0) {
     Vec pos;
     Vec at;
     Vec up;
 
-    func_80108AE0_modesel(&pos, &at, &up);
-    func_80108F8C_modesel(&pos, &at, &up);
+    modesel_CameraMotionPosGet(&pos, &at, &up);
+    modesel_CameraViewSet(&pos, &at, &up);
     omDelPrcObj(arg0);
 }
 
-Process *func_8010899C_modesel(void) {
-    func_80108AE0_modesel(&D_80110BE8_modesel.pos, &D_80110BE8_modesel.at, &D_80110BE8_modesel.up);
-    return omAddPrcObj(func_801088F8_modesel, 0x5000, 0x1800, 0);
+Process *modesel_CameraManualStart(void) {
+    modesel_CameraMotionPosGet(&modesel_cameraWork.pos, &modesel_cameraWork.at, &modesel_cameraWork.up);
+    return omAddPrcObj(modesel_CameraProc, 0x5000, 0x1800, 0);
 }
 
-void func_801089DC_modesel(Vec *pos, Vec *at, Vec *up) {
-    HuVecCopy3F(pos, &D_80110BE8_modesel.pos);
-    HuVecCopy3F(at, &D_80110BE8_modesel.at);
-    HuVecCopy3F(up, &D_80110BE8_modesel.up);
+void modesel_CameraPosGet(Vec *pos, Vec *at, Vec *up) {
+    HuVecCopy3F(pos, &modesel_cameraWork.pos);
+    HuVecCopy3F(at, &modesel_cameraWork.at);
+    HuVecCopy3F(up, &modesel_cameraWork.up);
 }
 
-void func_80108A34_modesel(Vec *pos, Vec *at, Vec *up) {
-    HuVecCopy3F(&D_80110BE8_modesel.pos, pos);
-    HuVecCopy3F(&D_80110BE8_modesel.at, at);
-    HuVecCopy3F(&D_80110BE8_modesel.up, up);
+void modesel_CameraPosSet(Vec *pos, Vec *at, Vec *up) {
+    HuVecCopy3F(&modesel_cameraWork.pos, pos);
+    HuVecCopy3F(&modesel_cameraWork.at, at);
+    HuVecCopy3F(&modesel_cameraWork.up, up);
 }
 
-void func_80108A94_modesel(s32 arg0) {
+void modesel_CameraMotionApply(s32 arg0) {
     Vec pos;
     Vec at;
     Vec up;
 
-    func_80108AE0_modesel(&pos, &at, &up);
-    func_80108F8C_modesel(&pos, &at, &up);
+    modesel_CameraMotionPosGet(&pos, &at, &up);
+    modesel_CameraViewSet(&pos, &at, &up);
 }
 
-s32 func_80108AE0_modesel(Vec *pos, Vec *at, Vec *up) {
+s32 modesel_CameraMotionPosGet(Vec *pos, Vec *at, Vec *up) {
     HmfData_UnkBC *cam;
     f32 angle;
     f32 dx, dy, dz;
@@ -1300,16 +1300,16 @@ s32 func_80108AE0_modesel(Vec *pos, Vec *at, Vec *up) {
     return 1;
 }
 
-void func_80108F8C_modesel(Vec *pos, Vec *at, Vec *up) {
+void modesel_CameraViewSet(Vec *pos, Vec *at, Vec *up) {
     Hu3DCameraPosSetV(0, pos, at, up);
     Hu3DCamUpdateMtx(0);
 }
 
-void func_80108FC4_modesel(void) {
-    D_80110C10_modesel.obj = NULL;
+void modesel_CameraMoveInit(void) {
+    modesel_cameraMove.obj = NULL;
 }
 
-void func_80108FD0_modesel(omObjData *obj) {
+void modesel_CameraEaseObjMain(omObjData *obj) {
     Vec camPos;
     Vec at;
     Vec up;
@@ -1319,9 +1319,9 @@ void func_80108FD0_modesel(omObjData *obj) {
     f32 t;
     f32 s;
 
-    HuVecCopy3F(&start, &D_80110C10_modesel.unk_10);
-    HuVecCopy3F(&end, &D_80110C10_modesel.unk_1C);
-    t = (f32)D_80110C10_modesel.unk_04 / (f32)D_80110C10_modesel.unk_08;
+    HuVecCopy3F(&start, &modesel_cameraMove.unk_10);
+    HuVecCopy3F(&end, &modesel_cameraMove.unk_1C);
+    t = (f32)modesel_cameraMove.unk_04 / (f32)modesel_cameraMove.unk_08;
     if (t < 0.0f) {
         t = 0.0f;
     }
@@ -1332,69 +1332,69 @@ void func_80108FD0_modesel(omObjData *obj) {
     }
     HuVecCopyXYZ(&pos, start.x + (end.x - start.x) * s, start.y + (end.y - start.y) * s,
                  start.z + (end.z - start.z) * s);
-    func_801089DC_modesel(&camPos, &at, &up);
-    if (D_80110C10_modesel.unk_04 > D_80110C10_modesel.unk_08) {
+    modesel_CameraPosGet(&camPos, &at, &up);
+    if (modesel_cameraMove.unk_04 > modesel_cameraMove.unk_08) {
         omDelObj(obj);
-        func_80108A34_modesel(&camPos, &end, &up);
-        D_80110C10_modesel.obj = NULL;
+        modesel_CameraPosSet(&camPos, &end, &up);
+        modesel_cameraMove.obj = NULL;
     } else {
-        D_80110C10_modesel.unk_04++;
-        func_80108A34_modesel(&camPos, &pos, &up);
+        modesel_cameraMove.unk_04++;
+        modesel_CameraPosSet(&camPos, &pos, &up);
     }
 }
 
-void func_80109154_modesel(void) {
-    if (D_80110C10_modesel.obj != NULL) {
-        omDelObj(D_80110C10_modesel.obj);
+void modesel_CameraMoveKill(void) {
+    if (modesel_cameraMove.obj != NULL) {
+        omDelObj(modesel_cameraMove.obj);
     }
-    D_80110C10_modesel.obj = NULL;
+    modesel_cameraMove.obj = NULL;
 }
 
-omObjData *func_80109188_modesel(s32 arg0, s32 arg1) {
+omObjData *modesel_CameraEaseMove(s32 arg0, s32 arg1) {
     omObjData *obj;
     Vec pos;
     Vec at;
     Vec up;
     Vec target;
 
-    if (D_80110C10_modesel.obj != NULL) {
-        omDelObj(D_80110C10_modesel.obj);
+    if (modesel_cameraMove.obj != NULL) {
+        omDelObj(modesel_cameraMove.obj);
     }
-    obj = omAddObj(6, 0, 0, -1, func_80108FD0_modesel);
+    obj = omAddObj(6, 0, 0, -1, modesel_CameraEaseObjMain);
     obj->work[0] = 0;
     obj->work[1] = 0;
-    D_80110C10_modesel.obj = obj;
-    D_80110C10_modesel.unk_04 = 0;
-    D_80110C10_modesel.unk_08 = arg1;
-    D_80110C10_modesel.unk_0C = arg0;
-    func_801089DC_modesel(&pos, &at, &up);
-    HuVecCopyXYZ(&D_80110C10_modesel.unk_10, at.x, at.y, at.z);
+    modesel_cameraMove.obj = obj;
+    modesel_cameraMove.unk_04 = 0;
+    modesel_cameraMove.unk_08 = arg1;
+    modesel_cameraMove.unk_0C = arg0;
+    modesel_CameraPosGet(&pos, &at, &up);
+    HuVecCopyXYZ(&modesel_cameraMove.unk_10, at.x, at.y, at.z);
     if (arg0 < 0) {
         target.x = 0.0f;
     } else {
-        func_8010E138_modesel(arg0, &target.x, &target.y, &target.z);
+        modesel_SpotPosGet(arg0, &target.x, &target.y, &target.z);
     }
     target.y = at.y;
     target.z = at.z;
-    HuVecCopyXYZ(&D_80110C10_modesel.unk_1C, target.x, target.y, target.z);
+    HuVecCopyXYZ(&modesel_cameraMove.unk_1C, target.x, target.y, target.z);
     return obj;
 }
 
-void func_80109290_modesel(omObjData *obj) {
+void modesel_CameraShakeObjMain(omObjData *obj) {
     Vec pos;
     Vec at;
-    s32 timer = D_80110C38_modesel.unk_04;
+    s32 timer = modesel_cameraShake.unk_04;
     f32 shake;
 
-    HuVecCopy3F(&pos, &D_80110C38_modesel.pos);
-    HuVecCopy3F(&at, &D_80110C38_modesel.at);
+    HuVecCopy3F(&pos, &modesel_cameraShake.pos);
+    HuVecCopy3F(&at, &modesel_cameraShake.at);
     if (timer > 32) {
         omDelObj(obj);
-        D_80110C38_modesel.unk_00 = NULL;
+        modesel_cameraShake.unk_00 = NULL;
         timer = 0;
     } else {
-        D_80110C38_modesel.unk_08 = ~D_80110C38_modesel.unk_08;
-        if (D_80110C38_modesel.unk_08 != 0) {
+        modesel_cameraShake.unk_08 = ~modesel_cameraShake.unk_08;
+        if (modesel_cameraShake.unk_08 != 0) {
             shake = rand8();
         } else {
             shake = -(f32)rand8();
@@ -1403,40 +1403,40 @@ void func_80109290_modesel(omObjData *obj) {
         pos.y += shake * 40.0f;
         at.y += shake * 40.0f;
     }
-    func_80108A34_modesel(&pos, &at, &D_80110C38_modesel.up);
-    D_80110C38_modesel.unk_04 = timer + 1;
+    modesel_CameraPosSet(&pos, &at, &modesel_cameraShake.up);
+    modesel_cameraShake.unk_04 = timer + 1;
 }
 
-void func_80109408_modesel(void) {
-    if (D_80110C38_modesel.unk_00 != NULL) {
-        omDelObj(D_80110C38_modesel.unk_00);
-        D_80110C38_modesel.unk_00 = NULL;
+void modesel_CameraShakeKill(void) {
+    if (modesel_cameraShake.unk_00 != NULL) {
+        omDelObj(modesel_cameraShake.unk_00);
+        modesel_cameraShake.unk_00 = NULL;
     }
 }
 
-void func_80109444_modesel(void) {
-    D_80110C38_modesel.unk_00 = omAddObj(6, 0, 0, -1, func_80109290_modesel);
-    D_80110C38_modesel.unk_04 = 0;
-    func_801089DC_modesel(&D_80110C38_modesel.pos, &D_80110C38_modesel.at, &D_80110C38_modesel.up);
-    D_80110C38_modesel.unk_08 = 1;
+void modesel_CameraShakeCreate(void) {
+    modesel_cameraShake.unk_00 = omAddObj(6, 0, 0, -1, modesel_CameraShakeObjMain);
+    modesel_cameraShake.unk_04 = 0;
+    modesel_CameraPosGet(&modesel_cameraShake.pos, &modesel_cameraShake.at, &modesel_cameraShake.up);
+    modesel_cameraShake.unk_08 = 1;
 }
 
-f32 func_801094A8_modesel(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
+f32 modesel_CameraAngleCalc(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     return -(atan2df(arg3 - arg1, arg2 - arg0) - 90.0f);
 }
 
-void func_801094F0_modesel(Vec *from, Vec *to, f32 t, Vec *out) {
+void modesel_CameraDirLerp(Vec *from, Vec *to, f32 t, Vec *out) {
     f32 fromAngle;
     f32 toAngle;
     f32 endAngleCw;
     f32 endAngleCcw;
     f32 angle;
 
-    fromAngle = func_801094A8_modesel(0.0f, 0.0f, from->x, from->z);
+    fromAngle = modesel_CameraAngleCalc(0.0f, 0.0f, from->x, from->z);
     if (fromAngle < 0.0f) {
         fromAngle += 360.0f;
     }
-    toAngle = func_801094A8_modesel(0.0f, 0.0f, to->x, to->z);
+    toAngle = modesel_CameraAngleCalc(0.0f, 0.0f, to->x, to->z);
     if (toAngle < 0.0f) {
         toAngle += 360.0f;
     }
@@ -1467,11 +1467,11 @@ void func_801094F0_modesel(Vec *from, Vec *to, f32 t, Vec *out) {
     out->z = cosdf(angle);
 }
 
-void func_801096D4_modesel(omObjData *obj) {
+void modesel_CameraTurnEaseObjMain(omObjData *obj) {
     Vec pos, at, up, direction, startAt, endAt, startDir, endDir;
     f32 t, clamped, startLength, angleT;
 
-    t = (f32)D_80110C10_modesel.unk_04 / D_80110C10_modesel.unk_08;
+    t = (f32)modesel_cameraMove.unk_04 / modesel_cameraMove.unk_08;
     if (t < 0.0f) {
         t = 0.0f;
     }
@@ -1480,57 +1480,57 @@ void func_801096D4_modesel(omObjData *obj) {
     } else {
         clamped = t;
     }
-    func_801089DC_modesel(&pos, &at, &up);
-    HuVecCopy3F(&startAt, &D_80110C10_modesel.unk_10);
-    HuVecCopy3F(&endAt, &D_80110C10_modesel.unk_1C);
+    modesel_CameraPosGet(&pos, &at, &up);
+    HuVecCopy3F(&startAt, &modesel_cameraMove.unk_10);
+    HuVecCopy3F(&endAt, &modesel_cameraMove.unk_1C);
     HuVecCopyXYZ(&at, (endAt.x - startAt.x) * clamped + startAt.x,
                  (endAt.y - startAt.y) * clamped + startAt.y,
                  (endAt.z - startAt.z) * clamped + startAt.z);
     HuVecCopyXYZ(&startDir, startAt.x - pos.x, 0.0f, startAt.z - pos.z);
     HuVecCopyXYZ(&endDir, endAt.x - pos.x, 0.0f, endAt.z - pos.z);
     angleT = sindf(clamped * 90.0f);
-    func_801094F0_modesel(&startDir, &endDir, angleT, &direction);
+    modesel_CameraDirLerp(&startDir, &endDir, angleT, &direction);
     startLength = HuVecGetLength3F(&startDir);
     t = (HuVecGetLength3F(&endDir) - startLength) * angleT + startLength;
     HuVecCopyXYZ(&at, t * direction.x + pos.x, (endAt.y - startAt.y) + startAt.y, t * direction.z + pos.z);
-    if (D_80110C10_modesel.unk_04 > D_80110C10_modesel.unk_08) {
+    if (modesel_cameraMove.unk_04 > modesel_cameraMove.unk_08) {
         omDelObj(obj);
-        func_80108A34_modesel(&pos, &D_80110C10_modesel.unk_1C, &up);
-        D_80110C10_modesel.obj = NULL;
+        modesel_CameraPosSet(&pos, &modesel_cameraMove.unk_1C, &up);
+        modesel_cameraMove.obj = NULL;
     } else {
-        D_80110C10_modesel.unk_04++;
-        func_80108A34_modesel(&pos, &at, &up);
+        modesel_cameraMove.unk_04++;
+        modesel_CameraPosSet(&pos, &at, &up);
     }
 }
 
-omObjData *func_80109968_modesel(s32 arg0, s32 arg1) {
+omObjData *modesel_CameraTurnEaseMove(s32 arg0, s32 arg1) {
     omObjData *obj;
     Vec pos;
     Vec at;
     Vec up;
 
-    if (D_80110C10_modesel.obj != NULL) {
-        omDelObj(D_80110C10_modesel.obj);
+    if (modesel_cameraMove.obj != NULL) {
+        omDelObj(modesel_cameraMove.obj);
     }
-    obj = omAddObj(6, 0, 0, -1, func_801096D4_modesel);
+    obj = omAddObj(6, 0, 0, -1, modesel_CameraTurnEaseObjMain);
     obj->work[0] = 0;
     obj->work[1] = 0;
-    D_80110C10_modesel.obj = obj;
-    D_80110C10_modesel.unk_04 = 0;
-    D_80110C10_modesel.unk_08 = arg1;
-    D_80110C10_modesel.unk_0C = arg0;
-    func_801089DC_modesel(&pos, &at, &up);
-    HuVecCopy3F(&D_80110C10_modesel.unk_10, &at);
+    modesel_cameraMove.obj = obj;
+    modesel_cameraMove.unk_04 = 0;
+    modesel_cameraMove.unk_08 = arg1;
+    modesel_cameraMove.unk_0C = arg0;
+    modesel_CameraPosGet(&pos, &at, &up);
+    HuVecCopy3F(&modesel_cameraMove.unk_10, &at);
     if (arg0 < 0) {
         at.x = 0.0f;
     } else {
-        func_8010E138_modesel(arg0, &at.x, &at.y, &at.z);
+        modesel_SpotPosGet(arg0, &at.x, &at.y, &at.z);
     }
-    HuVecCopyXYZ(&D_80110C10_modesel.unk_1C, at.x, at.y, at.z);
+    HuVecCopyXYZ(&modesel_cameraMove.unk_1C, at.x, at.y, at.z);
     return obj;
 }
 
-s32 func_80109A58_modesel(s32 arg0) {
+s32 modesel_StickBtnGet(s32 arg0) {
     s32 stickX;
     s32 stickY;
     s32 absX;
@@ -1538,9 +1538,9 @@ s32 func_80109A58_modesel(s32 arg0) {
 
     stickX = HuPadStkX[arg0];
     stickY = HuPadStkY[arg0];
-    if (D_8010F2C8_modesel != 0) {
+    if (modesel_stickBtn != 0) {
         if ((stickX == 0) & (stickY == 0)) {
-            D_8010F2C8_modesel = 0;
+            modesel_stickBtn = 0;
         }
         return 0;
     }
@@ -1550,95 +1550,95 @@ s32 func_80109A58_modesel(s32 arg0) {
         if (absY < absX) {
             if (absX > absY * 2) {
                 if (stickX < 0) {
-                    D_8010F2C8_modesel = 0x200;
+                    modesel_stickBtn = 0x200;
                 } else {
-                    D_8010F2C8_modesel = 0x100;
+                    modesel_stickBtn = 0x100;
                 }
             } else if (stickY > 0) {
                 if (stickX < 0) {
-                    D_8010F2C8_modesel = 0xA00;
+                    modesel_stickBtn = 0xA00;
                 } else {
-                    D_8010F2C8_modesel = 0x900;
+                    modesel_stickBtn = 0x900;
                 }
             } else {
                 if (stickX < 0) {
-                    D_8010F2C8_modesel = 0x600;
+                    modesel_stickBtn = 0x600;
                 } else {
-                    D_8010F2C8_modesel = 0x500;
+                    modesel_stickBtn = 0x500;
                 }
             }
         } else {
             if (absY > absX * 2) {
                 if (stickY < 0) {
-                    D_8010F2C8_modesel = 0x400;
+                    modesel_stickBtn = 0x400;
                 } else {
-                    D_8010F2C8_modesel = 0x800;
+                    modesel_stickBtn = 0x800;
                 }
             } else if (stickY > 0) {
                 if (stickX < 0) {
-                    D_8010F2C8_modesel = 0xA00;
+                    modesel_stickBtn = 0xA00;
                 } else {
-                    D_8010F2C8_modesel = 0x900;
+                    modesel_stickBtn = 0x900;
                 }
             } else {
                 if (stickX < 0) {
-                    D_8010F2C8_modesel = 0x600;
+                    modesel_stickBtn = 0x600;
                 } else {
-                    D_8010F2C8_modesel = 0x500;
+                    modesel_stickBtn = 0x500;
                 }
             }
         }
     }
-    return D_8010F2C8_modesel;
+    return modesel_stickBtn;
 }
 
-void func_80109B74_modesel(void) {
+void modesel_StarBobInit(void) {
     s32 i;
 
     for (i = 0; i < 3; i++) {
-        D_80110C68_modesel[i].unk_08 = NULL;
-        D_80110C68_modesel[i].unk_04 = 0;
-        D_80110C68_modesel[i].unk_00 = 0;
+        modesel_starBobTbl[i].unk_08 = NULL;
+        modesel_starBobTbl[i].unk_04 = 0;
+        modesel_starBobTbl[i].unk_00 = 0;
     }
 }
 
-void func_80109BC0_modesel(omObjData *obj) {
+void modesel_StarBobObjMain(omObjData *obj) {
     s32 index = obj->work[0];
     s32 timer = obj->work[1];
     f32 angle = timer * (360.0f / 255.0f);
     f32 wave = sindf(angle);
 
-    func_8010648C_modesel(index);
-    func_8010B75C_modesel(index, 0.0f, wave * 8.0f + 8.0f + 8.0f, 0.0f, wave * 16.0f + 20.0f);
+    modesel_ModelIdGet(index);
+    modesel_StarNodeSet(index, 0.0f, wave * 8.0f + 8.0f + 8.0f, 0.0f, wave * 16.0f + 20.0f);
     obj->work[1] = timer + 4;
 }
 
-void func_80109C8C_modesel(s32 arg0) {
+void modesel_StarBobKill(s32 arg0) {
     s32 i = arg0 - 7;
 
-    if (D_80110C68_modesel[i].unk_08 != NULL) {
-        omDelObj(D_80110C68_modesel[i].unk_08);
+    if (modesel_starBobTbl[i].unk_08 != NULL) {
+        omDelObj(modesel_starBobTbl[i].unk_08);
     }
-    D_80110C68_modesel[i].unk_08 = NULL;
+    modesel_starBobTbl[i].unk_08 = NULL;
 }
 
-omObjData *func_80109CEC_modesel(s32 arg0) {
+omObjData *modesel_StarBobCreate(s32 arg0) {
     s32 i = arg0 - 7;
     omObjData *obj;
 
-    if (D_80110C68_modesel[i].unk_08 != NULL) {
-        func_80109C8C_modesel(arg0);
+    if (modesel_starBobTbl[i].unk_08 != NULL) {
+        modesel_StarBobKill(arg0);
     }
-    obj = omAddObj(6, 0, 0, -1, func_80109BC0_modesel);
-    D_80110C68_modesel[i].unk_08 = obj;
+    obj = omAddObj(6, 0, 0, -1, modesel_StarBobObjMain);
+    modesel_starBobTbl[i].unk_08 = obj;
     obj->work[0] = arg0;
     obj->work[1] = rand8();
-    D_80110C68_modesel[i].unk_00 = 0;
-    D_80110C68_modesel[i].unk_04 = 0;
+    modesel_starBobTbl[i].unk_00 = 0;
+    modesel_starBobTbl[i].unk_04 = 0;
     return obj;
 }
 
-void func_80109DB8_modesel(omObjData *obj) {
+void modesel_StarLandObjMain(omObjData *obj) {
     s32 index = obj->work[0];
     s32 i = index - 7;
     s32 timer = obj->work[1];
@@ -1648,134 +1648,134 @@ void func_80109DB8_modesel(omObjData *obj) {
     t = 1.0f - t;
     scale = (t < 0.0f) ? 0.0f : t;
 
-    func_8010B75C_modesel(index, 0.0f, (D_80110C68_modesel[i].unk_0C.y - 10.0f) * scale + 10.0f, 0.0f, 0.0f);
+    modesel_StarNodeSet(index, 0.0f, (modesel_starBobTbl[i].unk_0C.y - 10.0f) * scale + 10.0f, 0.0f, 0.0f);
     if (timer < 10) {
         timer++;
     }
     obj->work[1] = timer;
 }
 
-omObjData *func_80109E90_modesel(s32 arg0) {
+omObjData *modesel_StarLandCreate(s32 arg0) {
     s32 i = arg0 - 7;
-    omObjData *obj = D_80110C68_modesel[i].unk_08;
+    omObjData *obj = modesel_starBobTbl[i].unk_08;
     f32 wave;
 
     if (obj != NULL) {
         wave = (s32)obj->work[1];
         wave = sindf(wave * (360.0f / 255.0f));
-        HuVecCopyXYZ(&D_80110C68_modesel[i].unk_0C, 0.0f, wave * 8.0f + 8.0f + 8.0f, 0.0f);
-        omDelObj(D_80110C68_modesel[i].unk_08);
+        HuVecCopyXYZ(&modesel_starBobTbl[i].unk_0C, 0.0f, wave * 8.0f + 8.0f + 8.0f, 0.0f);
+        omDelObj(modesel_starBobTbl[i].unk_08);
     } else {
-        HuVecCopyXYZ(&D_80110C68_modesel[i].unk_0C, 0.0f, 0.0f, 0.0f);
+        HuVecCopyXYZ(&modesel_starBobTbl[i].unk_0C, 0.0f, 0.0f, 0.0f);
     }
-    D_80110C68_modesel[i].unk_08 = omAddObj(6, 0, 0, -1, func_80109DB8_modesel);
-    D_80110C68_modesel[i].unk_04 = 0;
+    modesel_starBobTbl[i].unk_08 = omAddObj(6, 0, 0, -1, modesel_StarLandObjMain);
+    modesel_starBobTbl[i].unk_04 = 0;
     // Writes to the previous (possibly deleted) object rather than the new one.
     obj->work[0] = arg0;
     return obj;
 }
 
 // Toggles the spinner's model when work[1] wraps over its 0..200 range: the
-// second argument to func_8010677C_modesel is the model's visibility.
-void func_80109FCC_modesel(omObjData *obj) {
+// second argument to modesel_MotionFlagSet is the model's visibility.
+void modesel_StarBlinkObjMain(omObjData *obj) {
     s32 index = obj->work[0];
     s32 timer = obj->work[1];
 
     if (timer == 200) {
-        func_8010677C_modesel(index, 0);
+        modesel_MotionFlagSet(index, 0);
     } else if (timer == 0) {
-        func_8010677C_modesel(index, 1);
+        modesel_MotionFlagSet(index, 1);
     }
     timer += 4;
     obj->work[1] = timer;
 }
 
-void func_8010A020_modesel(s32 arg0) {
-    omObjData *obj = omAddObj(6, 0, 0, -1, func_80109FCC_modesel);
+void modesel_StarBlinkCreate(s32 arg0) {
+    omObjData *obj = omAddObj(6, 0, 0, -1, modesel_StarBlinkObjMain);
 
     obj->work[0] = arg0;
     obj->work[1] = 0;
 }
 
-void func_8010A068_modesel(omObjData *obj) {
+void modesel_StarFallObjMain(omObjData *obj) {
     s32 index = obj->work[0];
     s32 timer = obj->work[1];
     f32 t = timer * (1.0f / 255.0f);
     Vec pos;
     f32 shadowY;
 
-    pos.x = D_8010F2CC_modesel[index - 7].x;
-    pos.y = D_8010F2CC_modesel[index - 7].y;
-    pos.z = D_8010F2CC_modesel[index - 7].z;
+    pos.x = modesel_starPosTbl[index - 7].x;
+    pos.y = modesel_starPosTbl[index - 7].y;
+    pos.z = modesel_starPosTbl[index - 7].z;
     pos.y -= t * 400.0f;
-    func_8010653C_modesel(index, 0.0f, 0.0f, 0.0f);
+    modesel_ModelPosSet(index, 0.0f, 0.0f, 0.0f);
     shadowY = pos.y + 20.0f - 12.0f;
     if (shadowY < 0.0f) {
         shadowY = 0.0f;
     }
-    func_8010B790_modesel(index, pos.x, pos.y, pos.z, shadowY);
-    func_8010B804_modesel(index, 0);
-    func_8010B824_modesel(index);
+    modesel_StarNodePosSet(index, pos.x, pos.y, pos.z, shadowY);
+    modesel_StarNodeRotSet(index, 0);
+    modesel_StarNodeUpdate(index);
     timer += 20;
     if (timer == 100) {
         // Empty in the original; the comparison is still emitted.
     } else if (timer >= 256) {
         omDelObj(obj);
-        func_801066FC_modesel(index);
+        modesel_ModelDispOff(index);
     }
     obj->work[1] = timer;
 }
 
-void func_8010A1C4_modesel(omObjData *obj) {
+void modesel_StarHoldObjMain(omObjData *obj) {
     s32 index = obj->work[0];
     s32 timer = obj->work[1];
     Vec pos;
     f32 shadowY;
 
-    pos.x = D_8010F2CC_modesel[index - 7].x;
-    pos.y = D_8010F2CC_modesel[index - 7].y;
-    pos.z = D_8010F2CC_modesel[index - 7].z;
-    func_8010653C_modesel(index, 0.0f, 0.0f, 0.0f);
+    pos.x = modesel_starPosTbl[index - 7].x;
+    pos.y = modesel_starPosTbl[index - 7].y;
+    pos.z = modesel_starPosTbl[index - 7].z;
+    modesel_ModelPosSet(index, 0.0f, 0.0f, 0.0f);
     shadowY = pos.y + 20.0f - 12.0f;
     if (shadowY < 0.0f) {
         shadowY = 0.0f;
     }
-    func_8010B790_modesel(index, pos.x, pos.y, pos.z, shadowY);
-    func_8010B804_modesel(index, 0);
-    func_8010B824_modesel(index);
+    modesel_StarNodePosSet(index, pos.x, pos.y, pos.z, shadowY);
+    modesel_StarNodeRotSet(index, 0);
+    modesel_StarNodeUpdate(index);
     timer++;
     if (timer > 20) {
         HuAudFXPlay(0x2E2);
-        obj->func = func_8010A068_modesel;
+        obj->func = modesel_StarFallObjMain;
         obj->work[1] = 0;
     }
     obj->work[1] = timer;
 }
 
-void func_8010A2E8_modesel(omObjData *obj) {
+void modesel_StarSpinObjMain(omObjData *obj) {
     s32 index = obj->work[0];
     s32 timer = obj->work[1];
     Vec pos;
 
-    pos.x = D_8010F2CC_modesel[index - 7].x;
-    pos.y = D_8010F2CC_modesel[index - 7].y;
-    pos.z = D_8010F2CC_modesel[index - 7].z;
-    func_8010653C_modesel(index, 0.0f, 0.0f, 0.0f);
-    func_8010B790_modesel(index, pos.x, pos.y, pos.z, pos.y + 20.0f - 12.0f);
-    func_8010B940_modesel(index, 35.5f);
-    func_8010B824_modesel(index);
+    pos.x = modesel_starPosTbl[index - 7].x;
+    pos.y = modesel_starPosTbl[index - 7].y;
+    pos.z = modesel_starPosTbl[index - 7].z;
+    modesel_ModelPosSet(index, 0.0f, 0.0f, 0.0f);
+    modesel_StarNodePosSet(index, pos.x, pos.y, pos.z, pos.y + 20.0f - 12.0f);
+    modesel_StarNodeRotAdd(index, 35.5f);
+    modesel_StarNodeUpdate(index);
     timer += 20;
     if (timer >= 256) {
         timer = 0;
-        D_8010F2CC_modesel[index - 7].x = pos.x;
-        D_8010F2CC_modesel[index - 7].y = pos.y;
-        D_8010F2CC_modesel[index - 7].z = pos.z;
-        obj->func = func_8010A1C4_modesel;
+        modesel_starPosTbl[index - 7].x = pos.x;
+        modesel_starPosTbl[index - 7].y = pos.y;
+        modesel_starPosTbl[index - 7].z = pos.z;
+        obj->func = modesel_StarHoldObjMain;
     }
     obj->work[1] = timer;
 }
 
-void func_8010A420_modesel(omObjData *obj) {
+void modesel_StarJumpObjMain(omObjData *obj) {
     s32 index = obj->work[0];
     s32 timer = obj->work[1];
     f32 t = timer * (1.0f / 255.0f);
@@ -1785,37 +1785,37 @@ void func_8010A420_modesel(omObjData *obj) {
     Vec end;
     Vec pos;
 
-    start.x = D_8010F2CC_modesel[index - 7].x;
-    start.y = D_8010F2CC_modesel[index - 7].y;
-    start.z = D_8010F2CC_modesel[index - 7].z;
+    start.x = modesel_starPosTbl[index - 7].x;
+    start.y = modesel_starPosTbl[index - 7].y;
+    start.z = modesel_starPosTbl[index - 7].z;
     HuVecCopyXYZ(&end, 0.0f, 200.0f, 300.0f);
     pos.x = start.x + (end.x - start.x) * t;
     pos.y = start.y + (end.y - start.y) * u;
     pos.z = start.z + (end.z - start.z) * t;
-    func_8010653C_modesel(index, 0.0f, 0.0f, 0.0f);
-    func_8010B790_modesel(index, pos.x, pos.y, pos.z, pos.y + 20.0f - 12.0f);
-    func_8010B940_modesel(index, 35.5f);
-    func_8010B824_modesel(index);
+    modesel_ModelPosSet(index, 0.0f, 0.0f, 0.0f);
+    modesel_StarNodePosSet(index, pos.x, pos.y, pos.z, pos.y + 20.0f - 12.0f);
+    modesel_StarNodeRotAdd(index, 35.5f);
+    modesel_StarNodeUpdate(index);
     timer += 12;
     if (timer >= 256) {
         obj->work[1] = 0;
-        D_8010F2CC_modesel[index - 7].x = pos.x;
-        D_8010F2CC_modesel[index - 7].y = pos.y;
-        D_8010F2CC_modesel[index - 7].z = pos.z;
-        obj->func = func_8010A2E8_modesel;
+        modesel_starPosTbl[index - 7].x = pos.x;
+        modesel_starPosTbl[index - 7].y = pos.y;
+        modesel_starPosTbl[index - 7].z = pos.z;
+        obj->func = modesel_StarSpinObjMain;
     } else {
         obj->work[1] = timer;
     }
 }
 
-void func_8010A62C_modesel(s32 arg0) {
-    omObjData *obj = omAddObj(6, 0, 0, -1, func_8010A420_modesel);
+void modesel_StarJumpCreate(s32 arg0) {
+    omObjData *obj = omAddObj(6, 0, 0, -1, modesel_StarJumpObjMain);
 
     obj->work[0] = arg0;
     obj->work[1] = 0;
 }
 
-void func_8010A674_modesel(omObjData *obj) {
+void modesel_HostFloatObjMain(omObjData *obj) {
     s32 index = obj->work[0];
     s32 timer = obj->work[1];
     f32 bob;
@@ -1833,14 +1833,14 @@ void func_8010A674_modesel(omObjData *obj) {
     // diff is reused to hold the float timer; a separate temporary changes register allocation.
     diff = timer;
     bob = sindf(diff * 1.4117647f);
-    HuVecCopy3F(&base, &D_80110CB0_modesel);
+    HuVecCopy3F(&base, &modesel_hostPos);
     HuVecCopyXYZ(&pos, base.x, base.y + bob * 5.0f * 5.0f, base.z);
-    func_8010653C_modesel(index, pos.x, pos.y, pos.z);
+    modesel_ModelPosSet(index, pos.x, pos.y, pos.z);
     timer++;
-    func_801089DC_modesel(&camPos, &camAt, &camUp);
-    func_80106618_modesel(10, &x, &y, &z);
-    angle = D_80110CD4_modesel;
-    diff = func_8010EC74_modesel(camPos.x - x, camPos.z - z);
+    modesel_CameraPosGet(&camPos, &camAt, &camUp);
+    modesel_ModelPosGet(10, &x, &y, &z);
+    angle = modesel_hostRotY;
+    diff = modesel_LookAtAngleCalc(camPos.x - x, camPos.z - z);
     diff -= angle;
     if (diff < -2.0f) {
         angle -= 2.0f;
@@ -1848,12 +1848,12 @@ void func_8010A674_modesel(omObjData *obj) {
     angle = (angle < 0.0f) ? angle + 360.0f : angle;
     angle = (diff > 2.0f) ? angle + 2.0f : angle;
     angle = (angle > 360.0f) ? angle - 360.0f : angle;
-    D_80110CD4_modesel = angle;
-    func_801064D4_modesel(10, 0.0f, angle, 0.0f);
+    modesel_hostRotY = angle;
+    modesel_ModelRotSet(10, 0.0f, angle, 0.0f);
     obj->work[1] = timer;
 }
 
-void func_8010A84C_modesel(omObjData *obj) {
+void modesel_HostEnterObjMain(omObjData *obj) {
     Vec pos;
     Vec start;
     Vec end;
@@ -1865,14 +1865,14 @@ void func_8010A84C_modesel(omObjData *obj) {
 
     s = (1.0f < t) ? 1.0f : t * t;
     u = s * -3.0f * (s - 1.3333334f);
-    HuVecCopy3F(&start, &D_80110CB0_modesel);
-    HuVecCopy3F(&end, &D_80110CBC_modesel);
+    HuVecCopy3F(&start, &modesel_hostPos);
+    HuVecCopy3F(&end, &modesel_hostEndPos);
     HuVecCopyXYZ(&pos, start.x + (end.x - start.x) * s, start.y + (end.y - start.y) * u,
                  start.z + (end.z - start.z) * s);
-    func_8010653C_modesel(index, pos.x, pos.y, pos.z);
+    modesel_ModelPosSet(index, pos.x, pos.y, pos.z);
     if (timer > 20) {
-        obj->func = func_8010A674_modesel;
-        HuVecCopy3F(&D_80110CB0_modesel, &pos);
+        obj->func = modesel_HostFloatObjMain;
+        HuVecCopy3F(&modesel_hostPos, &pos);
         timer = 0;
     } else {
         timer++;
@@ -1880,28 +1880,28 @@ void func_8010A84C_modesel(omObjData *obj) {
     obj->work[1] = timer;
 }
 
-omObjData *func_8010A9B8_modesel(s32 arg0) {
-    omObjData *obj = omAddObj(6, 0, 0, -1, func_8010A84C_modesel);
+omObjData *modesel_HostEnterCreate(s32 arg0) {
+    omObjData *obj = omAddObj(6, 0, 0, -1, modesel_HostEnterObjMain);
 
     obj->work[0] = arg0;
     obj->work[1] = 0;
-    func_80106618_modesel(arg0, &D_80110CB0_modesel.x, &D_80110CB0_modesel.y, &D_80110CB0_modesel.z);
-    HuVecCopyXYZ(&D_80110CBC_modesel, 0.0f, 25.0f, 300.0f);
-    D_80110CD4_modesel = 0.0f;
+    modesel_ModelPosGet(arg0, &modesel_hostPos.x, &modesel_hostPos.y, &modesel_hostPos.z);
+    HuVecCopyXYZ(&modesel_hostEndPos, 0.0f, 25.0f, 300.0f);
+    modesel_hostRotY = 0.0f;
     return obj;
 }
 
-omObjData *func_8010AA48_modesel(s32 arg0) {
-    omObjData *obj = omAddObj(6, 0, 0, -1, func_8010A674_modesel);
+omObjData *modesel_HostFloatCreate(s32 arg0) {
+    omObjData *obj = omAddObj(6, 0, 0, -1, modesel_HostFloatObjMain);
 
     obj->work[0] = arg0;
     obj->work[1] = 0;
-    func_80106618_modesel(arg0, &D_80110CB0_modesel.x, &D_80110CB0_modesel.y, &D_80110CB0_modesel.z);
-    D_80110CD4_modesel = 0.0f;
+    modesel_ModelPosGet(arg0, &modesel_hostPos.x, &modesel_hostPos.y, &modesel_hostPos.z);
+    modesel_hostRotY = 0.0f;
     return obj;
 }
 
-void func_8010AAC0_modesel(omObjData *obj) {
+void modesel_HostExitObjMain(omObjData *obj) {
     Vec start;
     Vec end;
     Vec pos;
@@ -1909,36 +1909,36 @@ void func_8010AAC0_modesel(omObjData *obj) {
     s32 timer = obj->work[1];
     f32 t = timer * 0.05f;
 
-    HuVecCopy3F(&start, &D_80110CB0_modesel);
-    HuVecCopy3F(&end, &D_80110CBC_modesel);
+    HuVecCopy3F(&start, &modesel_hostPos);
+    HuVecCopy3F(&end, &modesel_hostEndPos);
     HuVecCopyXYZ(&pos, start.x + (end.x - start.x) * t, start.y + (end.y - start.y) * t,
                  start.z + (end.z - start.z) * t);
-    func_8010653C_modesel(index, pos.x, pos.y, pos.z);
+    modesel_ModelPosSet(index, pos.x, pos.y, pos.z);
     if (timer < 21) {
         timer++;
     }
     obj->work[1] = timer;
 }
 
-omObjData *func_8010ABB4_modesel(s32 arg0) {
-    omObjData *obj = omAddObj(6, 0, 0, -1, func_8010AAC0_modesel);
+omObjData *modesel_HostExitCreate(s32 arg0) {
+    omObjData *obj = omAddObj(6, 0, 0, -1, modesel_HostExitObjMain);
 
     obj->work[0] = arg0;
     obj->work[1] = 0;
-    func_80106618_modesel(arg0, &D_80110CB0_modesel.x, &D_80110CB0_modesel.y, &D_80110CB0_modesel.z);
-    HuVecCopyXYZ(&D_80110CBC_modesel, 0.0f, -400.0f, 300.0f);
+    modesel_ModelPosGet(arg0, &modesel_hostPos.x, &modesel_hostPos.y, &modesel_hostPos.z);
+    HuVecCopyXYZ(&modesel_hostEndPos, 0.0f, -400.0f, 300.0f);
     return obj;
 }
 
-void func_8010AC3C_modesel(void) {
+void modesel_HostLookAtUpdate(void) {
     Vec modelPos;
     Vec pos;
     Vec at;
     Vec up;
 
-    func_80106618_modesel(0xA, &modelPos.x, &modelPos.y, &modelPos.z);
-    func_801089DC_modesel(&pos, &at, &up);
-    func_801064D4_modesel(0xA, 0.0f, func_8010EC74_modesel(pos.x - modelPos.x, pos.z - modelPos.z), 0.0f);
+    modesel_ModelPosGet(0xA, &modelPos.x, &modelPos.y, &modelPos.z);
+    modesel_CameraPosGet(&pos, &at, &up);
+    modesel_ModelRotSet(0xA, 0.0f, modesel_LookAtAngleCalc(pos.x - modelPos.x, pos.z - modelPos.z), 0.0f);
 }
 
 #ifdef NON_MATCHING
@@ -1947,11 +1947,11 @@ void func_8010AC3C_modesel(void) {
 // multiply, so local-alloc ties the product to t. In the target t must be a global-alloc pseudo
 // (product then ties to the 400.0f constant; an artificial early `if (...) return;` reproduces
 // everything except t landing in $f2) and also conflict with $f2, i.e. stay live past the
-// D_80110CD8_modesel[1].y load, yet no visible later use exists. Tried: t = timer; t *= k,
+// modesel_hostJumpPosTbl[1].y load, yet no visible later use exists. Tried: t = timer; t *= k,
 // 400.0f * t, constants/products in variables, separate x/y/z locals, a float timer local,
-// pointer to D_80110CD8_modesel[1], pos.y = ...; pos.y -= ..., struct copy, an inline helper,
+// pointer to modesel_hostJumpPosTbl[1], pos.y = ...; pos.y -= ..., struct copy, an inline helper,
 // identical if/else arms (not cross-jumped), and do-while(0) around every statement combination.
-void func_8010ACA8_modesel(omObjData *obj) {
+void modesel_HostFallObjMain(omObjData *obj) {
     Vec pos;
     s32 model = 10;
     s32 timer = obj->work[0];
@@ -1960,89 +1960,89 @@ void func_8010ACA8_modesel(omObjData *obj) {
     // The empty loop ends the CSE block, so the model id stays in a saved register.
     do {
     } while (0);
-    pos.x = D_80110CD8_modesel[1].x;
-    pos.y = D_80110CD8_modesel[1].y - t * 400.0f;
-    pos.z = D_80110CD8_modesel[1].z;
-    func_8010653C_modesel(model, pos.x, pos.y, pos.z);
-    func_8010AC3C_modesel();
+    pos.x = modesel_hostJumpPosTbl[1].x;
+    pos.y = modesel_hostJumpPosTbl[1].y - t * 400.0f;
+    pos.z = modesel_hostJumpPosTbl[1].z;
+    modesel_ModelPosSet(model, pos.x, pos.y, pos.z);
+    modesel_HostLookAtUpdate();
     timer += 20;
     if (timer >= 256) {
         omDelObj(obj);
-        func_801066FC_modesel(model);
+        modesel_ModelDispOff(model);
     }
     obj->work[0] = timer;
 }
 #else
-INCLUDE_ASM("asm/nonmatchings/game/overlays/frontend/modesel/modesel", func_8010ACA8_modesel);
+INCLUDE_ASM("asm/nonmatchings/game/overlays/frontend/modesel/modesel", modesel_HostFallObjMain);
 #endif
 
-void func_8010AD74_modesel(omObjData *obj) {
+void modesel_HostWaitObjMain(omObjData *obj) {
     s32 timer = obj->work[0];
 
-    func_8010AC3C_modesel();
+    modesel_HostLookAtUpdate();
     timer++;
     if (timer >= 31) {
-        obj->func = func_8010ACA8_modesel;
+        obj->func = modesel_HostFallObjMain;
         timer = 0;
     }
     obj->work[0] = timer;
 }
 
-void func_8010ADC8_modesel(omObjData *obj) {
+void modesel_HostJumpObjMain(omObjData *obj) {
     Vec pos;
     s32 timer = obj->work[0];
     f32 t = timer * (1.0f / 255.0f);
     f32 s = (t < 1.0) ? t : 1.0f;
 
-    pos.x = (D_80110CD8_modesel[1].x - D_80110CD8_modesel[0].x) * t + D_80110CD8_modesel[0].x;
-    pos.y = (D_80110CD8_modesel[1].y - D_80110CD8_modesel[0].y) * s + (1.0f - (s - 0.5f) * 4.0f * (s - 0.5f)) * 80.0f +
-            D_80110CD8_modesel[0].y;
-    pos.z = (D_80110CD8_modesel[1].z - D_80110CD8_modesel[0].z) * t + D_80110CD8_modesel[0].z;
-    func_8010653C_modesel(10, pos.x, pos.y, pos.z);
-    func_8010AC3C_modesel();
+    pos.x = (modesel_hostJumpPosTbl[1].x - modesel_hostJumpPosTbl[0].x) * t + modesel_hostJumpPosTbl[0].x;
+    pos.y = (modesel_hostJumpPosTbl[1].y - modesel_hostJumpPosTbl[0].y) * s + (1.0f - (s - 0.5f) * 4.0f * (s - 0.5f)) * 80.0f +
+            modesel_hostJumpPosTbl[0].y;
+    pos.z = (modesel_hostJumpPosTbl[1].z - modesel_hostJumpPosTbl[0].z) * t + modesel_hostJumpPosTbl[0].z;
+    modesel_ModelPosSet(10, pos.x, pos.y, pos.z);
+    modesel_HostLookAtUpdate();
     timer += 12;
     if (timer >= 256) {
-        obj->func = func_8010AD74_modesel;
+        obj->func = modesel_HostWaitObjMain;
         timer = 0;
     }
     obj->work[0] = timer;
 }
 
-omObjData *func_8010AF18_modesel(void) {
-    omObjData *obj = omAddObj(6, 0, 0, -1, func_8010ADC8_modesel);
+omObjData *modesel_HostJumpCreate(void) {
+    omObjData *obj = omAddObj(6, 0, 0, -1, modesel_HostJumpObjMain);
 
-    func_80106618_modesel(0xA, &D_80110CD8_modesel[0].x, &D_80110CD8_modesel[0].y, &D_80110CD8_modesel[0].z);
-    HuVecCopyXYZ(&D_80110CD8_modesel[1], 0.0f, 200.0f, 300.0f);
+    modesel_ModelPosGet(0xA, &modesel_hostJumpPosTbl[0].x, &modesel_hostJumpPosTbl[0].y, &modesel_hostJumpPosTbl[0].z);
+    HuVecCopyXYZ(&modesel_hostJumpPosTbl[1], 0.0f, 200.0f, 300.0f);
     obj->work[0] = 0;
     return obj;
 }
 
-void func_8010AF90_modesel(void) {
+void modesel_StageCreate(void) {
     s16 modelId;
 
-    func_80106280_modesel(0, 0xD0000, 0x2002A9);
-    func_8010653C_modesel(0, 0.0f, 0.0f, 0.0f);
-    func_801065B0_modesel(0, 1.0f, 1.0f, 1.0f);
-    func_801068AC_modesel(0, 0);
-    func_8010677C_modesel(0, 1);
+    modesel_ModelCreate(0, 0xD0000, 0x2002A9);
+    modesel_ModelPosSet(0, 0.0f, 0.0f, 0.0f);
+    modesel_ModelScaleSet(0, 1.0f, 1.0f, 1.0f);
+    modesel_MotionTimeSet(0, 0);
+    modesel_MotionFlagSet(0, 1);
 
-    func_80106280_modesel(1, 0xD0001, 0x229);
-    func_8010653C_modesel(1, 0.0f, 0.0f, 0.0f);
-    func_801065B0_modesel(1, 1.0f, 1.0f, 1.0f);
-    func_801068AC_modesel(1, 0);
-    func_8010677C_modesel(1, 1);
+    modesel_ModelCreate(1, 0xD0001, 0x229);
+    modesel_ModelPosSet(1, 0.0f, 0.0f, 0.0f);
+    modesel_ModelScaleSet(1, 1.0f, 1.0f, 1.0f);
+    modesel_MotionTimeSet(1, 0);
+    modesel_MotionFlagSet(1, 1);
 
-    func_80106280_modesel(2, 0xD0002, 0x6A9);
-    func_8010653C_modesel(2, 0.0f, 0.0f, -585.0f);
-    func_801065B0_modesel(2, 1.0f, 1.0f, 1.0f);
-    func_801068AC_modesel(2, 0);
-    func_8010677C_modesel(2, 1);
+    modesel_ModelCreate(2, 0xD0002, 0x6A9);
+    modesel_ModelPosSet(2, 0.0f, 0.0f, -585.0f);
+    modesel_ModelScaleSet(2, 1.0f, 1.0f, 1.0f);
+    modesel_MotionTimeSet(2, 0);
+    modesel_MotionFlagSet(2, 1);
     {
         char *names[] = { "mario", "luigi", "peach", "yoshi", "wario", "donkey" };
         HmfMotionNode *node;
         s32 i;
 
-        modelId = func_8010648C_modesel(2);
+        modelId = modesel_ModelIdGet(2);
         for (i = 0; i < 6; i++) {
             if (MgStoryRankGet(i) < 0) {
                 node = Hu3DModelObjPtrGet(modelId, names[i]);
@@ -2056,170 +2056,170 @@ void func_8010AF90_modesel(void) {
 
         HuVecCopyXYZ(&pos, 0.0f, 0.0f, -200.0f);
         pos.z = pos.z - 8.0f - 2.5f;
-        func_80106280_modesel(3, 0xD0003, 0x7A9);
-        func_8010653C_modesel(3, pos.x, pos.y, pos.z);
+        modesel_ModelCreate(3, 0xD0003, 0x7A9);
+        modesel_ModelPosSet(3, pos.x, pos.y, pos.z);
     }
-    func_801065B0_modesel(3, 1.0f, 1.0f, 1.0f);
-    func_801068AC_modesel(3, 0);
-    func_8010677C_modesel(3, 1);
+    modesel_ModelScaleSet(3, 1.0f, 1.0f, 1.0f);
+    modesel_MotionTimeSet(3, 0);
+    modesel_MotionFlagSet(3, 1);
 
-    func_80106280_modesel(4, 0xD0004, 0xAA9);
-    func_8010653C_modesel(4, 0.0f, 0.0f, 0.0f);
-    func_801065B0_modesel(4, 1.0f, 1.0f, 1.0f);
-    func_801068AC_modesel(4, 0);
-    func_8010677C_modesel(4, 1);
+    modesel_ModelCreate(4, 0xD0004, 0xAA9);
+    modesel_ModelPosSet(4, 0.0f, 0.0f, 0.0f);
+    modesel_ModelScaleSet(4, 1.0f, 1.0f, 1.0f);
+    modesel_MotionTimeSet(4, 0);
+    modesel_MotionFlagSet(4, 1);
 
-    func_80106280_modesel(5, 0xD0005, 0x6A9);
-    func_8010653C_modesel(5, 325.0f, 9.5f, 45.0f);
-    func_801065B0_modesel(5, 1.0f, 1.0f, 1.0f);
-    func_801068AC_modesel(5, 0);
-    func_8010677C_modesel(5, 1);
-    D_80110BD4_modesel = Hu3DModelObjPtrGet(func_8010648C_modesel(5), "taiho");
+    modesel_ModelCreate(5, 0xD0005, 0x6A9);
+    modesel_ModelPosSet(5, 325.0f, 9.5f, 45.0f);
+    modesel_ModelScaleSet(5, 1.0f, 1.0f, 1.0f);
+    modesel_MotionTimeSet(5, 0);
+    modesel_MotionFlagSet(5, 1);
+    modesel_taihoNode = Hu3DModelObjPtrGet(modesel_ModelIdGet(5), "taiho");
 
-    func_8010631C_modesel(0x11, 0xD000B, -1);
+    modesel_MotionCreate(0x11, 0xD000B, -1);
 
-    func_80106280_modesel(0x12, 0xD000C, 0xAA9);
-    func_8010653C_modesel(0x12, 275.0f, 97.0f, 122.5f);
-    func_801065B0_modesel(0x12, 1.0f, 1.0f, 1.0f);
-    func_801068AC_modesel(0x12, 0);
-    func_8010677C_modesel(0x12, 2);
-    func_801066FC_modesel(0x12);
+    modesel_ModelCreate(0x12, 0xD000C, 0xAA9);
+    modesel_ModelPosSet(0x12, 275.0f, 97.0f, 122.5f);
+    modesel_ModelScaleSet(0x12, 1.0f, 1.0f, 1.0f);
+    modesel_MotionTimeSet(0x12, 0);
+    modesel_MotionFlagSet(0x12, 2);
+    modesel_ModelDispOff(0x12);
 
-    func_80106280_modesel(7, 0xD0007, 0xAA9);
-    func_8010653C_modesel(7, 250.0f, 25.0f, 355.0f);
-    func_801065B0_modesel(7, 1.0f, 1.0f, 1.0f);
-    func_8010677C_modesel(7, 1);
-    func_80109CEC_modesel(7);
-    modelId = func_8010648C_modesel(7);
-    D_80110B18_modesel[0].star = Hu3DModelObjPtrGet(modelId, "star_red");
-    D_80110B18_modesel[0].shadow = Hu3DModelObjPtrGet(modelId, "red_kage");
-    func_8010B804_modesel(7, 0);
-    func_8010B75C_modesel(7, 0.0f, 16.0f, 0.0f, 20.0f);
+    modesel_ModelCreate(7, 0xD0007, 0xAA9);
+    modesel_ModelPosSet(7, 250.0f, 25.0f, 355.0f);
+    modesel_ModelScaleSet(7, 1.0f, 1.0f, 1.0f);
+    modesel_MotionFlagSet(7, 1);
+    modesel_StarBobCreate(7);
+    modelId = modesel_ModelIdGet(7);
+    modesel_starNodeTbl[0].star = Hu3DModelObjPtrGet(modelId, "star_red");
+    modesel_starNodeTbl[0].shadow = Hu3DModelObjPtrGet(modelId, "red_kage");
+    modesel_StarNodeRotSet(7, 0);
+    modesel_StarNodeSet(7, 0.0f, 16.0f, 0.0f, 20.0f);
 
-    func_80106280_modesel(8, 0xD0008, 0xAA9);
-    func_8010653C_modesel(8, -250.0f, 25.0f, 355.0f);
-    func_801065B0_modesel(8, 1.0f, 1.0f, 1.0f);
-    func_8010677C_modesel(8, 1);
-    func_80109CEC_modesel(8);
-    modelId = func_8010648C_modesel(8);
-    D_80110B18_modesel[1].star = Hu3DModelObjPtrGet(modelId, "star_blue");
-    D_80110B18_modesel[1].shadow = Hu3DModelObjPtrGet(modelId, "blue_kage");
-    func_8010B804_modesel(8, 0);
-    func_8010B75C_modesel(8, 0.0f, 0.0f, 16.0f, 20.0f);
+    modesel_ModelCreate(8, 0xD0008, 0xAA9);
+    modesel_ModelPosSet(8, -250.0f, 25.0f, 355.0f);
+    modesel_ModelScaleSet(8, 1.0f, 1.0f, 1.0f);
+    modesel_MotionFlagSet(8, 1);
+    modesel_StarBobCreate(8);
+    modelId = modesel_ModelIdGet(8);
+    modesel_starNodeTbl[1].star = Hu3DModelObjPtrGet(modelId, "star_blue");
+    modesel_starNodeTbl[1].shadow = Hu3DModelObjPtrGet(modelId, "blue_kage");
+    modesel_StarNodeRotSet(8, 0);
+    modesel_StarNodeSet(8, 0.0f, 0.0f, 16.0f, 20.0f);
 
-    func_80106280_modesel(9, 0xD0009, 0x6A9);
-    func_8010653C_modesel(9, 0.0f, 25.0f, 70.0f);
-    func_801065B0_modesel(9, 1.0f, 1.0f, 1.0f);
-    func_8010677C_modesel(9, 1);
-    func_80109CEC_modesel(9);
-    modelId = func_8010648C_modesel(9);
-    D_80110B18_modesel[2].star = Hu3DModelObjPtrGet(modelId, "star_yellow");
-    D_80110B18_modesel[2].shadow = Hu3DModelObjPtrGet(modelId, "yellow_kage");
-    func_8010B75C_modesel(9, 0.0f, 0.0f, 16.0f, 20.0f);
+    modesel_ModelCreate(9, 0xD0009, 0x6A9);
+    modesel_ModelPosSet(9, 0.0f, 25.0f, 70.0f);
+    modesel_ModelScaleSet(9, 1.0f, 1.0f, 1.0f);
+    modesel_MotionFlagSet(9, 1);
+    modesel_StarBobCreate(9);
+    modelId = modesel_ModelIdGet(9);
+    modesel_starNodeTbl[2].star = Hu3DModelObjPtrGet(modelId, "star_yellow");
+    modesel_starNodeTbl[2].shadow = Hu3DModelObjPtrGet(modelId, "yellow_kage");
+    modesel_StarNodeSet(9, 0.0f, 0.0f, 16.0f, 20.0f);
 
-    func_80106280_modesel(10, 0xA0122, 0xAA9);
+    modesel_ModelCreate(10, 0xA0122, 0xAA9);
     if (GwStory.unk0 == 12 && FileSelEnteredGet() == 0) {
-        func_8010653C_modesel(10, -300.0f, 225.0f, 300.0f);
-        func_8010673C_modesel(10);
+        modesel_ModelPosSet(10, -300.0f, 225.0f, 300.0f);
+        modesel_ModelDispOn(10);
     } else {
-        func_8010653C_modesel(10, 0.0f, -75.0f, 300.0f);
-        func_801066FC_modesel(10);
+        modesel_ModelPosSet(10, 0.0f, -75.0f, 300.0f);
+        modesel_ModelDispOff(10);
     }
-    func_801065B0_modesel(10, 1.0f, 1.0f, 1.0f);
-    func_801068AC_modesel(10, 0);
-    AuraCreate(func_8010648C_modesel(10));
+    modesel_ModelScaleSet(10, 1.0f, 1.0f, 1.0f);
+    modesel_MotionTimeSet(10, 0);
+    AuraCreate(modesel_ModelIdGet(10));
 
-    func_8010631C_modesel(0x13, 0xA0125, 0);
-    func_8010631C_modesel(0x14, 0xA0123, 0);
+    modesel_MotionCreate(0x13, 0xA0125, 0);
+    modesel_MotionCreate(0x14, 0xA0123, 0);
 
-    func_80106280_modesel(11, 0xD000D, 0x200009);
-    func_801068AC_modesel(11, 0);
-    func_8010677C_modesel(11, 1);
+    modesel_ModelCreate(11, 0xD000D, 0x200009);
+    modesel_MotionTimeSet(11, 0);
+    modesel_MotionFlagSet(11, 1);
 
-    func_80106280_modesel(12, 0xD000E, 0x2002B9);
-    func_801068AC_modesel(12, 0);
-    func_8010677C_modesel(12, 1);
+    modesel_ModelCreate(12, 0xD000E, 0x2002B9);
+    modesel_MotionTimeSet(12, 0);
+    modesel_MotionFlagSet(12, 1);
 
-    func_80106280_modesel(13, 0xD000F, 0x2002B9);
-    func_801068AC_modesel(13, 0);
-    func_8010677C_modesel(13, 1);
+    modesel_ModelCreate(13, 0xD000F, 0x2002B9);
+    modesel_MotionTimeSet(13, 0);
+    modesel_MotionFlagSet(13, 1);
 }
 
-void func_8010B6B0_modesel(void) {
-    func_801063A4_modesel(0);
-    func_801063A4_modesel(1);
-    func_801063A4_modesel(2);
-    func_801063A4_modesel(3);
-    func_801063A4_modesel(4);
-    func_801063A4_modesel(0x11);
-    func_801063A4_modesel(0x12);
-    func_801063A4_modesel(5);
-    func_801063A4_modesel(7);
-    func_801063A4_modesel(8);
-    func_801063A4_modesel(9);
-    AuraKill(func_8010648C_modesel(0xA));
-    func_801063A4_modesel(0xA);
-    omDelObj(D_80110BD0_modesel);
-    func_80109154_modesel();
-    func_801063A4_modesel(0xB);
-    func_801063A4_modesel(0xC);
+void modesel_StageKill(void) {
+    modesel_ModelKill(0);
+    modesel_ModelKill(1);
+    modesel_ModelKill(2);
+    modesel_ModelKill(3);
+    modesel_ModelKill(4);
+    modesel_ModelKill(0x11);
+    modesel_ModelKill(0x12);
+    modesel_ModelKill(5);
+    modesel_ModelKill(7);
+    modesel_ModelKill(8);
+    modesel_ModelKill(9);
+    AuraKill(modesel_ModelIdGet(0xA));
+    modesel_ModelKill(0xA);
+    omDelObj(modesel_hostObj);
+    modesel_CameraMoveKill();
+    modesel_ModelKill(0xB);
+    modesel_ModelKill(0xC);
 }
 
-void func_8010B75C_modesel(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4) {
-    func_8010B790_modesel(arg0, arg1, arg2, arg3, arg4);
-    func_8010B824_modesel(arg0);
+void modesel_StarNodeSet(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4) {
+    modesel_StarNodePosSet(arg0, arg1, arg2, arg3, arg4);
+    modesel_StarNodeUpdate(arg0);
 }
 
-void func_8010B790_modesel(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4) {
+void modesel_StarNodePosSet(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4) {
     s32 index = arg0 - 7;
 
-    D_80110B18_modesel[index].x = arg1;
-    D_80110B18_modesel[index].y = arg2;
-    D_80110B18_modesel[index].z = arg3;
-    D_80110B18_modesel[index].scale = arg4 < 0.0f ? 0.0f : arg4;
+    modesel_starNodeTbl[index].x = arg1;
+    modesel_starNodeTbl[index].y = arg2;
+    modesel_starNodeTbl[index].z = arg3;
+    modesel_starNodeTbl[index].scale = arg4 < 0.0f ? 0.0f : arg4;
 }
 
-void func_8010B804_modesel(s32 arg0, s32 arg1) {
-    D_80110B18_modesel[arg0 - 7].rot.word = arg1;
+void modesel_StarNodeRotSet(s32 arg0, s32 arg1) {
+    modesel_starNodeTbl[arg0 - 7].rot.word = arg1;
 }
 
-void func_8010B824_modesel(s32 arg0) {
+void modesel_StarNodeUpdate(s32 arg0) {
     s32 index = arg0 - 7;
     f32 shadowY;
 
-    func_80088800_main(D_80110B18_modesel[index].star->unk58, D_80110B18_modesel[index].x,
-                       D_80110B18_modesel[index].y, D_80110B18_modesel[index].z);
-    mtxRotYCat(D_80110B18_modesel[index].star->unk58, D_80110B18_modesel[index].rot.angle);
-    shadowY = (8.0f < D_80110B18_modesel[index].y) ? 4.0f : -200.0f;
-    func_80088800_main(D_80110B18_modesel[index].shadow->unk58, D_80110B18_modesel[index].x, shadowY,
-                       D_80110B18_modesel[index].z);
-    mtxRotYCat(D_80110B18_modesel[index].shadow->unk58, D_80110B18_modesel[index].rot.angle);
+    func_80088800_main(modesel_starNodeTbl[index].star->unk58, modesel_starNodeTbl[index].x,
+                       modesel_starNodeTbl[index].y, modesel_starNodeTbl[index].z);
+    mtxRotYCat(modesel_starNodeTbl[index].star->unk58, modesel_starNodeTbl[index].rot.angle);
+    shadowY = (8.0f < modesel_starNodeTbl[index].y) ? 4.0f : -200.0f;
+    func_80088800_main(modesel_starNodeTbl[index].shadow->unk58, modesel_starNodeTbl[index].x, shadowY,
+                       modesel_starNodeTbl[index].z);
+    mtxRotYCat(modesel_starNodeTbl[index].shadow->unk58, modesel_starNodeTbl[index].rot.angle);
 }
 
-void func_8010B940_modesel(s32 arg0, f32 arg1) {
+void modesel_StarNodeRotAdd(s32 arg0, f32 arg1) {
     s32 index = arg0 - 7;
 
     if (360.0f < arg1) {
         arg1 = 360.0f;
     }
-    D_80110B18_modesel[index].rot.angle += arg1;
-    if (360.0f < D_80110B18_modesel[index].rot.angle) {
-        D_80110B18_modesel[index].rot.angle -= 360.0f;
+    modesel_starNodeTbl[index].rot.angle += arg1;
+    if (360.0f < modesel_starNodeTbl[index].rot.angle) {
+        modesel_starNodeTbl[index].rot.angle -= 360.0f;
     }
 }
 
-Process *func_8010B9C4_modesel(void) {
-    s16 modelId = func_8010648C_modesel(omovlevtno != 1 ? 0xB : 0xD);
+Process *modesel_CameraMotionStart(void) {
+    s16 modelId = modesel_ModelIdGet(omovlevtno != 1 ? 0xB : 0xD);
 
     Hu3DModelPosSet(modelId, 0.0f, 0.0f, 0.0f);
     Hu3DCameraMotionSet(modelId, 0);
     Hu3DMotionTimeSet(modelId, 0.0f);
     Hu3DMotionAttrSet(modelId, 1, 1);
-    func_80108AE0_modesel(&D_80110BE8_modesel.pos, &D_80110BE8_modesel.at, &D_80110BE8_modesel.up);
-    return omAddPrcObj(func_801088AC_modesel, 0x5000, 0x2000, 0);
+    modesel_CameraMotionPosGet(&modesel_cameraWork.pos, &modesel_cameraWork.at, &modesel_cameraWork.up);
+    return omAddPrcObj(modesel_CameraMotionProc, 0x5000, 0x2000, 0);
 }
 
-s32 func_8010BA70_modesel(void) {
+s32 modesel_MenuExec(void) {
     s32 cur = 10;
     s32 buttons;
     s32 result;
@@ -2229,98 +2229,98 @@ s32 func_8010BA70_modesel(void) {
     if (FileSelEnteredGet() == 1) {
         if (_CheckFlag(0x16) || _CheckFlag(0x17)) {
             cur = 5;
-            func_80107730_modesel(0, 0x3106);
+            modesel_WinMesSet(0, 0x3106);
         } else {
-            func_80107730_modesel(0, 0x3124);
+            modesel_WinMesSet(0, 0x3124);
         }
     } else if (_CheckFlag(0x28)) {
         cur = 5;
-        func_80107730_modesel(0, 0x3106);
+        modesel_WinMesSet(0, 0x3106);
     } else if (GwStory.unk0 != 12) {
         cur = 7;
-        func_801077FC_modesel(0, 0, func_8010F204_modesel(GwStory.unk0) + 0x3127);
-        func_80107730_modesel(0, 0x3135);
+        modesel_WinInsertMesSet(0, 0, modesel_BoardNoGet(GwStory.unk0) + 0x3127);
+        modesel_WinMesSet(0, 0x3135);
         if (GwSystem.playMode & 1) {
             cur = 8;
         }
     }
-    func_8010DF70_modesel();
-    func_8010DFD0_modesel(cur);
-    omDelPrcObj(D_80110BE0_modesel);
-    D_80110BE0_modesel = func_8010899C_modesel();
+    modesel_CursorCreate();
+    modesel_CursorPosUpdate(cur);
+    omDelPrcObj(modesel_cameraProc);
+    modesel_cameraProc = modesel_CameraManualStart();
     Hu3DCameraMotionOff(0);
-    func_80109188_modesel(cur, 7);
+    modesel_CameraEaseMove(cur, 7);
     while (1) {
         buttons = HuPadBtnDown[0];
-        buttons |= func_80109A58_modesel(0);
+        buttons |= modesel_StickBtnGet(0);
         if (buttons & 0x8000) {
-            result = func_8010CD00_modesel(cur, buttons);
+            result = modesel_MenuDecide(cur, buttons);
             if (result >= 0) {
                 break;
             }
         } else if (buttons & 0xF00) {
-            result = func_8010D8DC_modesel(cur, buttons);
+            result = modesel_MenuMove(cur, buttons);
             if (result >= 0) {
                 cur = result;
             }
         } else if (buttons & 0x4000) {
-            func_80105FB4_modesel(1);
-            func_80109188_modesel(10, 8);
+            modesel_SprDispOff(1);
+            modesel_CameraEaseMove(10, 8);
             HuPrcSleep(8);
-            func_801074F0_modesel(0);
-            func_801067C0_modesel(10, 0x13, 8, 8, 2);
-            func_80106BA0_modesel(0, 0x3115, 0xA0, D_8010F296_modesel + 4, 0, 0, 3);
-            func_8010788C_modesel(0);
-            confirm = func_80107838_modesel(0, 1, 0);
-            func_801067C0_modesel(10, 0x14, 8, 8, 2);
+            modesel_WinKill(0);
+            modesel_MotionShiftSet(10, 0x13, 8, 8, 2);
+            modesel_WinCreate(0, 0x3115, 0xA0, modesel_winPosYHalf + 4, 0, 0, 3);
+            modesel_WinMesWait(0);
+            confirm = modesel_WinChoiceGet(0, 1, 0);
+            modesel_MotionShiftSet(10, 0x14, 8, 8, 2);
             if (confirm == 0) {
                 HuPrcVSleep();
                 result = 16;
-                func_80107730_modesel(0, 0x3116);
-                func_8010788C_modesel(0);
+                modesel_WinMesSet(0, 0x3116);
+                modesel_WinMesWait(0);
                 break;
             }
             if (FileSelEnteredGet() == 1) {
                 HuWinComKeyWait(-0x8000, 0, 0, 0, 1);
-                func_80107730_modesel(0, 0x3101);
+                modesel_WinMesSet(0, 0x3101);
             } else if (GwStory.unk0 == 12) {
-                func_80107730_modesel(0, 0x3136);
+                modesel_WinMesSet(0, 0x3136);
             } else {
-                func_801077FC_modesel(0, 0, func_8010F204_modesel(GwStory.unk0) + 0x3127);
-                func_80107730_modesel(0, 0x3134);
+                modesel_WinInsertMesSet(0, 0, modesel_BoardNoGet(GwStory.unk0) + 0x3127);
+                modesel_WinMesSet(0, 0x3134);
             }
-            func_8010788C_modesel(0);
-            func_8010DC6C_modesel(cur);
-            func_80109188_modesel(cur, 8);
+            modesel_WinMesWait(0);
+            modesel_MenuMesSet(cur);
+            modesel_CameraEaseMove(cur, 8);
             HuPrcSleep(8);
-            func_80105F84_modesel(1);
+            modesel_SprDispOn(1);
         }
-        func_8010DFD0_modesel(cur);
-        func_8010E6D8_modesel(cur);
+        modesel_CursorPosUpdate(cur);
+        modesel_SpotEffCreate(cur);
         HuPrcVSleep();
     }
     switch (result) {
         case 0:
-            func_80105FB4_modesel(1);
+            modesel_SprDispOff(1);
             break;
         case 1:
-            func_80105FB4_modesel(1);
-            func_80107700_modesel(0);
-            func_8010EC40_modesel();
-            func_80109188_modesel(-1, 20);
-            func_80109E90_modesel(9);
+            modesel_SprDispOff(1);
+            modesel_WinDispOff(0);
+            modesel_FileInfoDispOff();
+            modesel_CameraEaseMove(-1, 20);
+            modesel_StarLandCreate(9);
             if (GwStory.unk0 != 12 || FileSelEnteredGet() != 0) {
-                func_8010ABB4_modesel(10);
+                modesel_HostExitCreate(10);
             }
             HuPrcSleep(20);
-            modelId = func_8010648C_modesel(12);
+            modelId = modesel_ModelIdGet(12);
             Hu3DCameraMotionSet(modelId, 0);
             Hu3DMotionTimeSet(modelId, 2.0f);
             Hu3DMotionSpeedSet(modelId, 0.7f);
             Hu3DMotionAttrSet(modelId, 3, 0);
             HuPrcSleep(20);
             HuAudFXPlay(0x2E1);
-            func_80106830_modesel(3, 3);
+            modesel_MotionFlagReset(3, 3);
             HuPrcSleep(30);
             break;
         case 4:
@@ -2329,62 +2329,62 @@ s32 func_8010BA70_modesel(void) {
         case 9:
         case 10:
         case 13:
-            func_80105FB4_modesel(1);
-            func_80107700_modesel(0);
-            func_8010EC40_modesel();
-            func_8010E558_modesel(cur);
+            modesel_SprDispOff(1);
+            modesel_WinDispOff(0);
+            modesel_FileInfoDispOff();
+            modesel_SpotEffKill(cur);
             HuAudFXPlay(0x2E0);
-            func_8010A62C_modesel(cur);
-            func_80109188_modesel(-1, 20);
-            omDelObj(D_80110BD0_modesel);
+            modesel_StarJumpCreate(cur);
+            modesel_CameraEaseMove(-1, 20);
+            omDelObj(modesel_hostObj);
             if (GwStory.unk0 != 12 || FileSelEnteredGet() != 0) {
-                D_80110BD0_modesel = func_8010ABB4_modesel(10);
+                modesel_hostObj = modesel_HostExitCreate(10);
             }
             HuPrcSleep(20);
-            modelId = func_8010648C_modesel(11);
+            modelId = modesel_ModelIdGet(11);
             Hu3DCameraMotionSet(modelId, 0);
             Hu3DMotionTimeSet(modelId, 0.0f);
             Hu3DMotionSpeedSet(modelId, 0.7f);
             Hu3DMotionAttrSet(modelId, 3, 0);
             HuPrcSleep(50);
-            func_8010ED00_modesel();
+            modesel_RumbleStart();
             break;
         case 5:
         case 8:
         case 11:
-            func_8010E558_modesel(5);
-            D_80110BD4_modesel->scale.x = D_80110BD4_modesel->baseScale.x = D_80110BD4_modesel->scale.y =
-                D_80110BD4_modesel->baseScale.y = D_80110BD4_modesel->scale.z = D_80110BD4_modesel->baseScale.z =
+            modesel_SpotEffKill(5);
+            modesel_taihoNode->scale.x = modesel_taihoNode->baseScale.x = modesel_taihoNode->scale.y =
+                modesel_taihoNode->baseScale.y = modesel_taihoNode->scale.z = modesel_taihoNode->baseScale.z =
                     1.0f;
             HuPrcSleep(8);
-            func_80106A38_modesel(5, 0x11, 0);
-            func_801068AC_modesel(0x12, 0);
-            func_8010677C_modesel(0x12, 0);
-            func_8010673C_modesel(0x12);
-            func_80109154_modesel();
+            modesel_MotionSet(5, 0x11, 0);
+            modesel_MotionTimeSet(0x12, 0);
+            modesel_MotionFlagSet(0x12, 0);
+            modesel_ModelDispOn(0x12);
+            modesel_CameraMoveKill();
             HuPrcSleep(4);
             HuAudFXPlay(0x2FA);
-            func_80109444_modesel();
-            func_80106910_modesel(0x12);
+            modesel_CameraShakeCreate();
+            modesel_MotionEndWait(0x12);
             HuPrcSleep(24);
-            func_80109408_modesel();
+            modesel_CameraShakeKill();
             break;
         case 14:
-            func_80105FB4_modesel(1);
-            func_80107700_modesel(0);
-            func_8010EC40_modesel();
-            func_8010E558_modesel(cur);
-            omDelObj(D_80110BD0_modesel);
-            func_8010AF18_modesel();
-            func_80109188_modesel(-1, 20);
+            modesel_SprDispOff(1);
+            modesel_WinDispOff(0);
+            modesel_FileInfoDispOff();
+            modesel_SpotEffKill(cur);
+            omDelObj(modesel_hostObj);
+            modesel_HostJumpCreate();
+            modesel_CameraEaseMove(-1, 20);
             HuPrcSleep(20);
-            modelId = func_8010648C_modesel(11);
+            modelId = modesel_ModelIdGet(11);
             Hu3DCameraMotionSet(modelId, 0);
             Hu3DMotionTimeSet(modelId, 0.0f);
             Hu3DMotionSpeedSet(modelId, 0.7f);
             Hu3DMotionAttrSet(modelId, 3, 0);
             HuPrcSleep(50);
-            func_8010ED00_modesel();
+            modesel_RumbleStart();
             break;
         case 16:
             break;
@@ -2393,11 +2393,11 @@ s32 func_8010BA70_modesel(void) {
                 HuPrcVSleep();
             }
     }
-    func_8010DFB4_modesel();
+    modesel_CursorKill();
     return result;
 }
 
-s32 func_8010C094_modesel(void) {
+s32 modesel_BoardStatCreate(void) {
     s32 x;
     s32 y;
     s32 i;
@@ -2407,276 +2407,276 @@ s32 func_8010C094_modesel(void) {
     SLLoadBoard();
     x = 0x50;
     y = 0x68;
-    func_80105EA8_modesel(10, 0x1F0019);
-    func_8010601C_modesel(10, x, y);
-    func_80105FB4_modesel(10);
+    modesel_SprCreate(10, 0x1F0019);
+    modesel_SprPosSet(10, x, y);
+    modesel_SprDispOff(10);
     for (i = 0; i < 4; i++) {
         if (i == 0) {
-            func_80105EA8_modesel(11, 0x1F0004);
+            modesel_SprCreate(11, 0x1F0004);
         } else {
-            func_80105DD0_modesel(i + 11, 11);
+            modesel_EspCreate(i + 11, 11);
         }
-        func_80106194_modesel(i + 11, 5);
-        func_8010601C_modesel(i + 11, x + (i - 2) * 16 + 8, y - 0x15);
-        chr = D_80110B88_modesel.chr[i];
-        func_801061C8_modesel(i + 11, chr, 0);
-        func_80105FB4_modesel(i + 11);
+        modesel_SprPriSet(i + 11, 5);
+        modesel_SprPosSet(i + 11, x + (i - 2) * 16 + 8, y - 0x15);
+        chr = modesel_boardStatParty.chr[i];
+        modesel_SprBankSet(i + 11, chr, 0);
+        modesel_SprDispOff(i + 11);
         if (i == 0) {
-            func_80105EA8_modesel(15, 0x1F0008);
+            modesel_SprCreate(15, 0x1F0008);
         } else {
-            func_80105DD0_modesel(i + 15, 15);
+            modesel_EspCreate(i + 15, 15);
         }
-        func_80106194_modesel(i + 15, 5);
-        func_8010601C_modesel(i + 15, x + (i - 2) * 16 + 8, y - 9);
-        func_80105FB4_modesel(i + 15);
+        modesel_SprPriSet(i + 15, 5);
+        modesel_SprPosSet(i + 15, x + (i - 2) * 16 + 8, y - 9);
+        modesel_SprDispOff(i + 15);
     }
-    func_80105EA8_modesel(19, 0x1F000C);
-    func_80106194_modesel(19, 5);
-    func_8010601C_modesel(19, x, y - 0x24);
-    func_801061C8_modesel(19, 0, 0);
-    func_80105FB4_modesel(19);
-    func_80105EA8_modesel(20, 0x1F000B);
-    func_80106194_modesel(20, 5);
-    func_8010601C_modesel(20, x, y + 6);
-    func_801061C8_modesel(20, GwSystem.current_board_index, 0);
-    func_80105FB4_modesel(20);
-    func_80105EA8_modesel(21, 0x1F0006);
-    func_80106194_modesel(21, 5);
-    func_8010601C_modesel(21, x - 0x18, y + 0x1E);
-    func_80105FB4_modesel(21);
-    func_80105EA8_modesel(22, 0x1F0007);
-    func_80106194_modesel(22, 5);
-    func_8010601C_modesel(22, x + 8, y + 0x1E);
-    digit = D_80110B88_modesel.currentTurn % 10;
-    func_801061C8_modesel(22, digit, 0);
-    func_80105FB4_modesel(22);
-    func_80105DD0_modesel(23, 22);
-    func_80106194_modesel(23, 5);
-    func_8010601C_modesel(23, x, y + 0x1E);
-    digit = D_80110B88_modesel.currentTurn / 10;
-    func_801061C8_modesel(23, digit, 0);
-    func_80105FB4_modesel(23);
-    func_80105EA8_modesel(24, 0x1F0028);
-    func_8010601C_modesel(24, x + 0x10, y + 0x1E);
-    func_80106194_modesel(24, 5);
-    func_80105FB4_modesel(24);
-    func_80105DD0_modesel(25, 22);
-    func_80106194_modesel(25, 5);
-    func_8010601C_modesel(25, x + 0x20, y + 0x1E);
-    digit = D_80110B88_modesel.totalTurns % 10;
-    func_801061C8_modesel(25, digit, 0);
-    func_80105FB4_modesel(25);
-    func_80105DD0_modesel(26, 22);
-    func_80106194_modesel(26, 5);
-    func_8010601C_modesel(26, x + 0x18, y + 0x1E);
-    digit = D_80110B88_modesel.totalTurns / 10;
-    func_801061C8_modesel(26, digit, 0);
-    func_80105FB4_modesel(26);
+    modesel_SprCreate(19, 0x1F000C);
+    modesel_SprPriSet(19, 5);
+    modesel_SprPosSet(19, x, y - 0x24);
+    modesel_SprBankSet(19, 0, 0);
+    modesel_SprDispOff(19);
+    modesel_SprCreate(20, 0x1F000B);
+    modesel_SprPriSet(20, 5);
+    modesel_SprPosSet(20, x, y + 6);
+    modesel_SprBankSet(20, GwSystem.current_board_index, 0);
+    modesel_SprDispOff(20);
+    modesel_SprCreate(21, 0x1F0006);
+    modesel_SprPriSet(21, 5);
+    modesel_SprPosSet(21, x - 0x18, y + 0x1E);
+    modesel_SprDispOff(21);
+    modesel_SprCreate(22, 0x1F0007);
+    modesel_SprPriSet(22, 5);
+    modesel_SprPosSet(22, x + 8, y + 0x1E);
+    digit = modesel_boardStatParty.currentTurn % 10;
+    modesel_SprBankSet(22, digit, 0);
+    modesel_SprDispOff(22);
+    modesel_EspCreate(23, 22);
+    modesel_SprPriSet(23, 5);
+    modesel_SprPosSet(23, x, y + 0x1E);
+    digit = modesel_boardStatParty.currentTurn / 10;
+    modesel_SprBankSet(23, digit, 0);
+    modesel_SprDispOff(23);
+    modesel_SprCreate(24, 0x1F0028);
+    modesel_SprPosSet(24, x + 0x10, y + 0x1E);
+    modesel_SprPriSet(24, 5);
+    modesel_SprDispOff(24);
+    modesel_EspCreate(25, 22);
+    modesel_SprPriSet(25, 5);
+    modesel_SprPosSet(25, x + 0x20, y + 0x1E);
+    digit = modesel_boardStatParty.totalTurns % 10;
+    modesel_SprBankSet(25, digit, 0);
+    modesel_SprDispOff(25);
+    modesel_EspCreate(26, 22);
+    modesel_SprPriSet(26, 5);
+    modesel_SprPosSet(26, x + 0x18, y + 0x1E);
+    digit = modesel_boardStatParty.totalTurns / 10;
+    modesel_SprBankSet(26, digit, 0);
+    modesel_SprDispOff(26);
 
     SLLoadBoardStory();
     x = 0xF0;
     y = 0x68;
-    func_80105DD0_modesel(27, 10);
-    func_8010601C_modesel(27, x, y);
-    func_80105FB4_modesel(27);
+    modesel_EspCreate(27, 10);
+    modesel_SprPosSet(27, x, y);
+    modesel_SprDispOff(27);
     for (i = 0; i < 2; i++) {
         if (i == 0) {
-            func_80105EA8_modesel(28, 0x1F0004);
+            modesel_SprCreate(28, 0x1F0004);
         } else {
-            func_80105DD0_modesel(i + 28, 28);
+            modesel_EspCreate(i + 28, 28);
         }
-        chr = D_80110BB4_modesel.chr[i];
-        func_80106194_modesel(i + 28, 5);
-        func_8010601C_modesel(i + 28, x + i * 32 - 0x10, y - 0x15);
-        func_801061C8_modesel(i + 28, chr, 0);
-        func_80105FB4_modesel(i + 28);
+        chr = modesel_boardStatStory.chr[i];
+        modesel_SprPriSet(i + 28, 5);
+        modesel_SprPosSet(i + 28, x + i * 32 - 0x10, y - 0x15);
+        modesel_SprBankSet(i + 28, chr, 0);
+        modesel_SprDispOff(i + 28);
         if (i == 0) {
-            func_80105EA8_modesel(30, 0x1F0008);
+            modesel_SprCreate(30, 0x1F0008);
         } else {
-            func_80105DD0_modesel(i + 30, 30);
+            modesel_EspCreate(i + 30, 30);
         }
-        func_80106194_modesel(i + 30, 5);
-        func_8010601C_modesel(i + 30, x + i * 32 - 0x10, y - 9);
-        func_80105FB4_modesel(i + 30);
+        modesel_SprPriSet(i + 30, 5);
+        modesel_SprPosSet(i + 30, x + i * 32 - 0x10, y - 9);
+        modesel_SprDispOff(i + 30);
     }
     x = 0xF0;
     y = 0x68;
-    func_80105DD0_modesel(32, 19);
-    func_80106194_modesel(32, 5);
-    func_8010601C_modesel(32, x, y - 0x24);
-    func_801061C8_modesel(32, 1, 0);
-    func_80105FB4_modesel(32);
-    func_80105EA8_modesel(33, 0x1F000A);
-    func_80106194_modesel(33, 5);
-    func_8010601C_modesel(33, x, y + 6);
-    func_801061C8_modesel(33, GwSystem.current_board_index, 0);
-    func_80105FB4_modesel(33);
-    func_80105DD0_modesel(34, 21);
-    func_80106194_modesel(34, 5);
-    func_8010601C_modesel(34, x - 0x18, y + 0x1E);
-    func_80105FB4_modesel(34);
-    func_80105DD0_modesel(35, 22);
-    func_80106194_modesel(35, 5);
-    func_8010601C_modesel(35, x + 8, y + 0x1E);
-    digit = D_80110BB4_modesel.currentTurn % 10;
-    func_801061C8_modesel(35, digit, 0);
-    func_80105FB4_modesel(35);
-    func_80105DD0_modesel(36, 22);
-    func_80106194_modesel(36, 5);
-    func_8010601C_modesel(36, x, y + 0x1E);
-    digit = D_80110BB4_modesel.currentTurn / 10;
-    func_801061C8_modesel(36, digit, 0);
-    func_80105FB4_modesel(36);
-    if (D_80110BB4_modesel.totalTurns != 20) {
-        func_80105EA8_modesel(37, 0x1F0027);
-        func_8010601C_modesel(37, x, y + 0x1E);
+    modesel_EspCreate(32, 19);
+    modesel_SprPriSet(32, 5);
+    modesel_SprPosSet(32, x, y - 0x24);
+    modesel_SprBankSet(32, 1, 0);
+    modesel_SprDispOff(32);
+    modesel_SprCreate(33, 0x1F000A);
+    modesel_SprPriSet(33, 5);
+    modesel_SprPosSet(33, x, y + 6);
+    modesel_SprBankSet(33, GwSystem.current_board_index, 0);
+    modesel_SprDispOff(33);
+    modesel_EspCreate(34, 21);
+    modesel_SprPriSet(34, 5);
+    modesel_SprPosSet(34, x - 0x18, y + 0x1E);
+    modesel_SprDispOff(34);
+    modesel_EspCreate(35, 22);
+    modesel_SprPriSet(35, 5);
+    modesel_SprPosSet(35, x + 8, y + 0x1E);
+    digit = modesel_boardStatStory.currentTurn % 10;
+    modesel_SprBankSet(35, digit, 0);
+    modesel_SprDispOff(35);
+    modesel_EspCreate(36, 22);
+    modesel_SprPriSet(36, 5);
+    modesel_SprPosSet(36, x, y + 0x1E);
+    digit = modesel_boardStatStory.currentTurn / 10;
+    modesel_SprBankSet(36, digit, 0);
+    modesel_SprDispOff(36);
+    if (modesel_boardStatStory.totalTurns != 20) {
+        modesel_SprCreate(37, 0x1F0027);
+        modesel_SprPosSet(37, x, y + 0x1E);
     } else {
-        func_80105EA8_modesel(37, 0x1F0028);
-        func_8010601C_modesel(37, x + 0x10, y + 0x1E);
+        modesel_SprCreate(37, 0x1F0028);
+        modesel_SprPosSet(37, x + 0x10, y + 0x1E);
     }
-    func_80106194_modesel(37, 5);
-    func_80105FB4_modesel(37);
-    func_80105DD0_modesel(38, 22);
-    func_80106194_modesel(38, 5);
-    func_8010601C_modesel(38, x + 0x20, y + 0x1E);
-    digit = D_80110BB4_modesel.totalTurns % 10;
-    func_801061C8_modesel(38, digit, 0);
-    func_80105FB4_modesel(38);
-    func_80105DD0_modesel(39, 22);
-    func_80106194_modesel(39, 5);
-    func_8010601C_modesel(39, x + 0x18, y + 0x1E);
-    digit = D_80110BB4_modesel.totalTurns / 10;
-    func_801061C8_modesel(39, digit, 0);
-    func_80105FB4_modesel(39);
+    modesel_SprPriSet(37, 5);
+    modesel_SprDispOff(37);
+    modesel_EspCreate(38, 22);
+    modesel_SprPriSet(38, 5);
+    modesel_SprPosSet(38, x + 0x20, y + 0x1E);
+    digit = modesel_boardStatStory.totalTurns % 10;
+    modesel_SprBankSet(38, digit, 0);
+    modesel_SprDispOff(38);
+    modesel_EspCreate(39, 22);
+    modesel_SprPriSet(39, 5);
+    modesel_SprPosSet(39, x + 0x18, y + 0x1E);
+    digit = modesel_boardStatStory.totalTurns / 10;
+    modesel_SprBankSet(39, digit, 0);
+    modesel_SprDispOff(39);
     return 0;
 }
 
-void func_8010C874_modesel(void) {
+void modesel_BoardStatDispOn(void) {
     s32 i;
 
-    func_80105FE4_modesel(10);
-    func_80105FE4_modesel(11);
-    func_80105FE4_modesel(12);
-    func_80105FE4_modesel(13);
-    func_80105FE4_modesel(14);
+    modesel_SprBGDispOn(10);
+    modesel_SprBGDispOn(11);
+    modesel_SprBGDispOn(12);
+    modesel_SprBGDispOn(13);
+    modesel_SprBGDispOn(14);
     for (i = 0; i < 4; i++) {
-        if (D_80110B88_modesel.cpu[i] != 0) {
-            func_80105FE4_modesel(i + 15);
+        if (modesel_boardStatParty.cpu[i] != 0) {
+            modesel_SprBGDispOn(i + 15);
         }
     }
-    func_80105FE4_modesel(19);
-    func_80105FE4_modesel(20);
-    func_80105FE4_modesel(21);
-    func_80105FE4_modesel(24);
-    if (D_80110B88_modesel.currentTurn / 10 != 0) {
-        func_80105FE4_modesel(23);
+    modesel_SprBGDispOn(19);
+    modesel_SprBGDispOn(20);
+    modesel_SprBGDispOn(21);
+    modesel_SprBGDispOn(24);
+    if (modesel_boardStatParty.currentTurn / 10 != 0) {
+        modesel_SprBGDispOn(23);
     }
-    func_80105FE4_modesel(22);
-    func_80105FE4_modesel(26);
-    func_80105FE4_modesel(25);
-    func_80105FE4_modesel(27);
-    func_80105FE4_modesel(28);
-    func_80105FE4_modesel(29);
+    modesel_SprBGDispOn(22);
+    modesel_SprBGDispOn(26);
+    modesel_SprBGDispOn(25);
+    modesel_SprBGDispOn(27);
+    modesel_SprBGDispOn(28);
+    modesel_SprBGDispOn(29);
     for (i = 0; i < 2; i++) {
-        if (D_80110BB4_modesel.cpu[i] != 0) {
-            func_80105FE4_modesel(i + 30);
+        if (modesel_boardStatStory.cpu[i] != 0) {
+            modesel_SprBGDispOn(i + 30);
         }
     }
-    func_80105FE4_modesel(32);
-    func_80105FE4_modesel(33);
-    func_80105FE4_modesel(34);
-    func_80105FE4_modesel(37);
-    if (D_80110BB4_modesel.totalTurns == 20) {
-        if (D_80110BB4_modesel.currentTurn / 10 != 0) {
-            func_80105FE4_modesel(36);
+    modesel_SprBGDispOn(32);
+    modesel_SprBGDispOn(33);
+    modesel_SprBGDispOn(34);
+    modesel_SprBGDispOn(37);
+    if (modesel_boardStatStory.totalTurns == 20) {
+        if (modesel_boardStatStory.currentTurn / 10 != 0) {
+            modesel_SprBGDispOn(36);
         }
-        func_80105FE4_modesel(35);
-        func_80105FE4_modesel(39);
-        func_80105FE4_modesel(38);
+        modesel_SprBGDispOn(35);
+        modesel_SprBGDispOn(39);
+        modesel_SprBGDispOn(38);
     }
 }
 
-void func_8010CA30_modesel(void) {
-    func_80106000_modesel(0xA);
-    func_80106000_modesel(0xB);
-    func_80106000_modesel(0xC);
-    func_80106000_modesel(0xD);
-    func_80106000_modesel(0xE);
-    func_80106000_modesel(0xF);
-    func_80106000_modesel(0x10);
-    func_80106000_modesel(0x11);
-    func_80106000_modesel(0x12);
-    func_80106000_modesel(0x13);
-    func_80106000_modesel(0x14);
-    func_80106000_modesel(0x15);
-    func_80106000_modesel(0x16);
-    func_80106000_modesel(0x17);
-    func_80106000_modesel(0x18);
-    func_80106000_modesel(0x19);
-    func_80106000_modesel(0x1A);
-    func_80106000_modesel(0x1B);
-    func_80106000_modesel(0x1C);
-    func_80106000_modesel(0x1D);
-    func_80106000_modesel(0x1E);
-    func_80106000_modesel(0x1F);
-    func_80106000_modesel(0x20);
-    func_80106000_modesel(0x21);
-    func_80106000_modesel(0x22);
-    func_80106000_modesel(0x23);
-    func_80106000_modesel(0x24);
-    func_80106000_modesel(0x25);
-    func_80106000_modesel(0x26);
-    func_80106000_modesel(0x27);
+void modesel_BoardStatDispOff(void) {
+    modesel_SprBGDispOff(0xA);
+    modesel_SprBGDispOff(0xB);
+    modesel_SprBGDispOff(0xC);
+    modesel_SprBGDispOff(0xD);
+    modesel_SprBGDispOff(0xE);
+    modesel_SprBGDispOff(0xF);
+    modesel_SprBGDispOff(0x10);
+    modesel_SprBGDispOff(0x11);
+    modesel_SprBGDispOff(0x12);
+    modesel_SprBGDispOff(0x13);
+    modesel_SprBGDispOff(0x14);
+    modesel_SprBGDispOff(0x15);
+    modesel_SprBGDispOff(0x16);
+    modesel_SprBGDispOff(0x17);
+    modesel_SprBGDispOff(0x18);
+    modesel_SprBGDispOff(0x19);
+    modesel_SprBGDispOff(0x1A);
+    modesel_SprBGDispOff(0x1B);
+    modesel_SprBGDispOff(0x1C);
+    modesel_SprBGDispOff(0x1D);
+    modesel_SprBGDispOff(0x1E);
+    modesel_SprBGDispOff(0x1F);
+    modesel_SprBGDispOff(0x20);
+    modesel_SprBGDispOff(0x21);
+    modesel_SprBGDispOff(0x22);
+    modesel_SprBGDispOff(0x23);
+    modesel_SprBGDispOff(0x24);
+    modesel_SprBGDispOff(0x25);
+    modesel_SprBGDispOff(0x26);
+    modesel_SprBGDispOff(0x27);
 }
 
-void func_8010CB34_modesel(void) {
-    func_80105F20_modesel(0x27);
-    func_80105F20_modesel(0x26);
-    func_80105F20_modesel(0x24);
-    func_80105F20_modesel(0x23);
-    func_80105F20_modesel(0x1A);
-    func_80105F20_modesel(0x19);
-    func_80105F20_modesel(0x17);
-    func_80105F20_modesel(0x16);
-    func_80105F20_modesel(0x25);
-    func_80105F20_modesel(0x18);
-    func_80105F20_modesel(0x22);
-    func_80105F20_modesel(0x15);
-    func_80105F20_modesel(0x21);
-    func_80105F20_modesel(0x14);
-    func_80105F20_modesel(0x20);
-    func_80105F20_modesel(0x13);
-    func_80105F20_modesel(0x1F);
-    func_80105F20_modesel(0x1E);
-    func_80105F20_modesel(0x12);
-    func_80105F20_modesel(0x11);
-    func_80105F20_modesel(0x10);
-    func_80105F20_modesel(0xF);
-    func_80105F20_modesel(0x1D);
-    func_80105F20_modesel(0x1C);
-    func_80105F20_modesel(0xE);
-    func_80105F20_modesel(0xD);
-    func_80105F20_modesel(0xC);
-    func_80105F20_modesel(0xB);
-    func_80105F20_modesel(0x1B);
-    func_80105F20_modesel(0xA);
+void modesel_BoardStatKill(void) {
+    modesel_SprKill(0x27);
+    modesel_SprKill(0x26);
+    modesel_SprKill(0x24);
+    modesel_SprKill(0x23);
+    modesel_SprKill(0x1A);
+    modesel_SprKill(0x19);
+    modesel_SprKill(0x17);
+    modesel_SprKill(0x16);
+    modesel_SprKill(0x25);
+    modesel_SprKill(0x18);
+    modesel_SprKill(0x22);
+    modesel_SprKill(0x15);
+    modesel_SprKill(0x21);
+    modesel_SprKill(0x14);
+    modesel_SprKill(0x20);
+    modesel_SprKill(0x13);
+    modesel_SprKill(0x1F);
+    modesel_SprKill(0x1E);
+    modesel_SprKill(0x12);
+    modesel_SprKill(0x11);
+    modesel_SprKill(0x10);
+    modesel_SprKill(0xF);
+    modesel_SprKill(0x1D);
+    modesel_SprKill(0x1C);
+    modesel_SprKill(0xE);
+    modesel_SprKill(0xD);
+    modesel_SprKill(0xC);
+    modesel_SprKill(0xB);
+    modesel_SprKill(0x1B);
+    modesel_SprKill(0xA);
 }
 
-s32 func_8010CC38_modesel(void) {
+s32 modesel_BoardStatChoice(void) {
     s32 choice;
     s32 x;
     s32 y;
     s32 buttons;
 
-    func_8010C094_modesel();
-    func_8010C874_modesel();
+    modesel_BoardStatCreate();
+    modesel_BoardStatDispOn();
     choice = 14;
-    func_8010E000_modesel(choice, &x, &y);
-    func_8010601C_modesel(1, x, y);
+    modesel_CursorPosGet(choice, &x, &y);
+    modesel_SprPosSet(1, x, y);
     while (1) {
         HuPrcVSleep();
         buttons = HuPadBtnDown[0];
-        buttons |= func_80109A58_modesel(0);
+        buttons |= modesel_StickBtnGet(0);
         if (buttons & 0x8000) {
             break;
         }
@@ -2686,17 +2686,17 @@ s32 func_8010CC38_modesel(void) {
         }
         if (buttons & 0xF00) {
             choice = (choice == 14) ? 15 : 14;
-            func_8010E280_modesel(1, choice);
+            modesel_CursorMove(1, choice);
         }
-        func_8010E000_modesel(choice, &x, &y);
-        func_8010601C_modesel(1, x, y);
+        modesel_CursorPosGet(choice, &x, &y);
+        modesel_SprPosSet(1, x, y);
     }
-    func_8010CA30_modesel();
-    func_8010CB34_modesel();
+    modesel_BoardStatDispOff();
+    modesel_BoardStatKill();
     return choice;
 }
 
-s32 func_8010CD00_modesel(s32 cur, s32 buttons) {
+s32 modesel_MenuDecide(s32 cur, s32 buttons) {
     s32 result = -1;
     s16 selection;
     Process *process;
@@ -2716,11 +2716,11 @@ s32 func_8010CD00_modesel(s32 cur, s32 buttons) {
         case 1:
             break;
         case 2:
-            func_80107700_modesel(0);
-            func_80106000_modesel(1);
-            func_8010EC40_modesel();
+            modesel_WinDispOff(0);
+            modesel_SprBGDispOff(1);
+            modesel_FileInfoDispOff();
             mgStoryStatPortNo = 0;
-            selection = D_80110BDA_modesel;
+            selection = modesel_storyChrHalf;
             HuPrcVSleep();
             if (MgStoryRankGet(selection) < 0) {
                 while (1) {
@@ -2742,9 +2742,9 @@ s32 func_8010CD00_modesel(s32 cur, s32 buttons) {
                 }
                 HuPrcVSleep();
             }
-            func_801076D0_modesel(0);
-            func_80105FE4_modesel(1);
-            func_8010EBF8_modesel();
+            modesel_WinDispOn(0);
+            modesel_SprBGDispOn(1);
+            modesel_FileInfoDispOn();
             return result;
         case 3:
             HuAudFXPlay(3);
@@ -2752,274 +2752,274 @@ s32 func_8010CD00_modesel(s32 cur, s32 buttons) {
             break;
         case 5:
             HuAudFXPlay(3);
-            func_801067C0_modesel(10, 0x13, 8, 8, 2);
+            modesel_MotionShiftSet(10, 0x13, 8, 8, 2);
             if (FileSelEnteredGet() == 1) {
                 if (_CheckFlag(0x16) && _CheckFlag(0x17)) {
-                    func_80107730_modesel(0, 0x3112);
-                    pick = func_8010CC38_modesel();
+                    modesel_WinMesSet(0, 0x3112);
+                    pick = modesel_BoardStatChoice();
                     if (pick != -1) {
                         result = (pick == 14) ? 8 : 5;
-                        func_80107700_modesel(0);
-                        func_80106000_modesel(1);
+                        modesel_WinDispOff(0);
+                        modesel_SprBGDispOff(1);
                     } else {
-                        func_80107730_modesel(0, 0x3102);
+                        modesel_WinMesSet(0, 0x3102);
                     }
                 } else if (_CheckFlag(0x16) && !_CheckFlag(0x17)) {
                     result = 8;
-                    func_80107700_modesel(0);
-                    func_80106000_modesel(1);
+                    modesel_WinDispOff(0);
+                    modesel_SprBGDispOff(1);
                 } else if (!_CheckFlag(0x16) && _CheckFlag(0x17)) {
                     result = 5;
-                    func_80107700_modesel(0);
-                    func_80106000_modesel(1);
+                    modesel_WinDispOff(0);
+                    modesel_SprBGDispOff(1);
                 }
             } else {
-                func_80107700_modesel(0);
-                func_80106000_modesel(1);
+                modesel_WinDispOff(0);
+                modesel_SprBGDispOff(1);
                 result = 11;
             }
             if (result != -1) {
                 RepeatVibrator(0, 30, 0, 30);
             }
-            func_801067C0_modesel(10, 0x14, 8, 8, 2);
+            modesel_MotionShiftSet(10, 0x14, 8, 8, 2);
             break;
         case 7:
             HuAudFXPlay(3);
-            func_801067C0_modesel(10, 0x13, 8, 8, 2);
-            func_80105FB4_modesel(1);
+            modesel_MotionShiftSet(10, 0x13, 8, 8, 2);
+            modesel_SprDispOff(1);
             if (FileSelEnteredGet() == 0 && GwStory.unk0 == 12) {
-                func_80107730_modesel(0, 0x3118);
-                func_8010788C_modesel(0);
-                func_80107730_modesel(0, 0x3104);
+                modesel_WinMesSet(0, 0x3118);
+                modesel_WinMesWait(0);
+                modesel_WinMesSet(0, 0x3104);
             } else if (FileSelEnteredGet() == 0 && !(GwSystem.playMode & 2)) {
-                func_80107730_modesel(0, 0x3118);
-                func_8010788C_modesel(0);
-                func_80107730_modesel(0, 0x3104);
+                modesel_WinMesSet(0, 0x3118);
+                modesel_WinMesWait(0);
+                modesel_WinMesSet(0, 0x3104);
             } else {
-                func_80107730_modesel(0, 0x310A);
-                func_8010788C_modesel(0);
-                switch (func_80107838_modesel(0, 1, 0)) {
+                modesel_WinMesSet(0, 0x310A);
+                modesel_WinMesWait(0);
+                switch (modesel_WinChoiceGet(0, 1, 0)) {
                     case 0:
                         result = 6;
                         break;
                     case 1:
                         if (FileSelEnteredGet() == 1) {
                             if (_CheckFlag(0x17)) {
-                                func_80107730_modesel(0, 0x310B);
-                                func_8010788C_modesel(0);
+                                modesel_WinMesSet(0, 0x310B);
+                                modesel_WinMesWait(0);
                                 HuPrcVSleep();
-                                func_80107730_modesel(0, 0x310D);
-                                func_8010788C_modesel(0);
-                                if (func_80107838_modesel(0, 1, 1) == 0) {
-                                    func_80107730_modesel(0, 0x310E);
-                                    func_8010788C_modesel(0);
+                                modesel_WinMesSet(0, 0x310D);
+                                modesel_WinMesWait(0);
+                                if (modesel_WinChoiceGet(0, 1, 1) == 0) {
+                                    modesel_WinMesSet(0, 0x310E);
+                                    modesel_WinMesWait(0);
                                     result = 4;
                                 } else {
-                                    func_80107730_modesel(0, 0x3110);
-                                    func_8010788C_modesel(0);
-                                    func_80107730_modesel(0, 0x3104);
+                                    modesel_WinMesSet(0, 0x3110);
+                                    modesel_WinMesWait(0);
+                                    modesel_WinMesSet(0, 0x3104);
                                 }
                             } else {
                                 result = 4;
                             }
                         } else if (GwSystem.playMode & 2) {
                             if (_CheckFlag(0x28)) {
-                                func_80107730_modesel(0, 0x310B);
+                                modesel_WinMesSet(0, 0x310B);
                                 HuPrcSleep(8);
-                                func_801078E0_modesel(0xC000);
-                                func_80107730_modesel(0, 0x310C);
-                                func_8010788C_modesel(0);
-                                if (func_80107838_modesel(0, 1, 1) == 0) {
-                                    func_80107730_modesel(0, 0x310F);
-                                    func_8010788C_modesel(0);
-                                    if (func_80107838_modesel(0, 1, 1) == 0) {
+                                modesel_PadBtnWait(0xC000);
+                                modesel_WinMesSet(0, 0x310C);
+                                modesel_WinMesWait(0);
+                                if (modesel_WinChoiceGet(0, 1, 1) == 0) {
+                                    modesel_WinMesSet(0, 0x310F);
+                                    modesel_WinMesWait(0);
+                                    if (modesel_WinChoiceGet(0, 1, 1) == 0) {
                                         result = 10;
                                         break;
                                     }
                                 }
-                                func_80107730_modesel(0, 0x3110);
-                                func_8010788C_modesel(0);
-                                func_8010DC6C_modesel(cur);
+                                modesel_WinMesSet(0, 0x3110);
+                                modesel_WinMesWait(0);
+                                modesel_MenuMesSet(cur);
                             } else {
                                 result = 10;
                             }
                         } else {
-                            func_80107730_modesel(0, 0x3118);
-                            func_8010788C_modesel(0);
-                            func_80107730_modesel(0, 0x3104);
+                            modesel_WinMesSet(0, 0x3118);
+                            modesel_WinMesWait(0);
+                            modesel_WinMesSet(0, 0x3104);
                         }
                         break;
                     default:
-                        func_8010DC6C_modesel(cur);
+                        modesel_MenuMesSet(cur);
                         break;
                 }
             }
             if (result != -1) {
             confirmed:
-                func_80107730_modesel(0, 0x3117);
-                func_8010788C_modesel(0);
-                func_80107730_modesel(0, (u32)D_8010F454_modesel);
+                modesel_WinMesSet(0, 0x3117);
+                modesel_WinMesWait(0);
+                modesel_WinMesSet(0, (u32)modesel_emptyStr);
             } else {
-                func_80105FE4_modesel(1);
+                modesel_SprBGDispOn(1);
             }
-            func_801067C0_modesel(10, 0x14, 8, 8, 2);
+            modesel_MotionShiftSet(10, 0x14, 8, 8, 2);
             break;
         case 8:
             HuAudFXPlay(3);
-            func_801067C0_modesel(10, 0x13, 8, 8, 2);
-            func_80105FB4_modesel(1);
+            modesel_MotionShiftSet(10, 0x13, 8, 8, 2);
+            modesel_SprDispOff(1);
             if (FileSelEnteredGet() == 0 && GwStory.unk0 == 12) {
-                func_80107730_modesel(0, 0x3118);
-                func_8010788C_modesel(0);
-                func_80107730_modesel(0, 0x3103);
+                modesel_WinMesSet(0, 0x3118);
+                modesel_WinMesWait(0);
+                modesel_WinMesSet(0, 0x3103);
             } else if (FileSelEnteredGet() == 0 && (GwSystem.playMode & 2)) {
-                func_80107730_modesel(0, 0x3118);
-                func_8010788C_modesel(0);
-                func_80107730_modesel(0, 0x3103);
+                modesel_WinMesSet(0, 0x3118);
+                modesel_WinMesWait(0);
+                modesel_WinMesSet(0, 0x3103);
             } else {
-                func_80107730_modesel(0, 0x3109);
-                func_8010788C_modesel(0);
-                switch (func_80107838_modesel(0, 1, 0)) {
+                modesel_WinMesSet(0, 0x3109);
+                modesel_WinMesWait(0);
+                switch (modesel_WinChoiceGet(0, 1, 0)) {
                     case 0:
                         result = 9;
                         break;
                     case 1:
                         if (FileSelEnteredGet() == 1) {
                             if (_CheckFlag(0x16)) {
-                                func_80107730_modesel(0, 0x310B);
-                                func_8010788C_modesel(0);
+                                modesel_WinMesSet(0, 0x310B);
+                                modesel_WinMesWait(0);
                                 HuPrcVSleep();
-                                func_80107730_modesel(0, 0x310D);
-                                func_8010788C_modesel(0);
-                                if (func_80107838_modesel(0, 1, 1) == 0) {
-                                    func_80107730_modesel(0, 0x310E);
-                                    func_8010788C_modesel(0);
+                                modesel_WinMesSet(0, 0x310D);
+                                modesel_WinMesWait(0);
+                                if (modesel_WinChoiceGet(0, 1, 1) == 0) {
+                                    modesel_WinMesSet(0, 0x310E);
+                                    modesel_WinMesWait(0);
                                     result = 7;
                                 } else {
-                                    func_80107730_modesel(0, 0x3110);
-                                    func_8010788C_modesel(0);
-                                    func_80107730_modesel(0, 0x3103);
+                                    modesel_WinMesSet(0, 0x3110);
+                                    modesel_WinMesWait(0);
+                                    modesel_WinMesSet(0, 0x3103);
                                 }
                             } else {
                                 result = 7;
                             }
                         } else if (GwSystem.playMode & 2) {
-                            func_80107730_modesel(0, 0x3118);
-                            func_8010788C_modesel(0);
-                            func_80107730_modesel(0, 0x3103);
+                            modesel_WinMesSet(0, 0x3118);
+                            modesel_WinMesWait(0);
+                            modesel_WinMesSet(0, 0x3103);
                         } else if (_CheckFlag(0x28)) {
-                            func_80107730_modesel(0, 0x310B);
-                            func_8010788C_modesel(0);
+                            modesel_WinMesSet(0, 0x310B);
+                            modesel_WinMesWait(0);
                             HuPrcVSleep();
-                            func_80107730_modesel(0, 0x310C);
-                            func_8010788C_modesel(0);
-                            if (func_80107838_modesel(0, 1, 1) == 0) {
-                                func_80107730_modesel(0, 0x310F);
-                                func_8010788C_modesel(0);
-                                if (func_80107838_modesel(0, 1, 1) == 0) {
+                            modesel_WinMesSet(0, 0x310C);
+                            modesel_WinMesWait(0);
+                            if (modesel_WinChoiceGet(0, 1, 1) == 0) {
+                                modesel_WinMesSet(0, 0x310F);
+                                modesel_WinMesWait(0);
+                                if (modesel_WinChoiceGet(0, 1, 1) == 0) {
                                     result = 10;
                                     break;
                                 }
                             }
-                            func_80107730_modesel(0, 0x3110);
-                            func_8010788C_modesel(0);
-                            func_8010DC6C_modesel(cur);
+                            modesel_WinMesSet(0, 0x3110);
+                            modesel_WinMesWait(0);
+                            modesel_MenuMesSet(cur);
                         } else {
                             result = 10;
                         }
                         break;
                     default:
-                        func_8010DC6C_modesel(cur);
+                        modesel_MenuMesSet(cur);
                         break;
                 }
             }
             if (result != -1) {
                 goto confirmed;
             }
-            func_80105FE4_modesel(1);
-            func_801067C0_modesel(10, 0x14, 8, 8, 2);
+            modesel_SprBGDispOn(1);
+            modesel_MotionShiftSet(10, 0x14, 8, 8, 2);
             break;
         case 9:
             HuAudFXPlay(3);
-            func_801067C0_modesel(10, 0x13, 8, 8, 2);
-            func_80105FB4_modesel(1);
+            modesel_MotionShiftSet(10, 0x13, 8, 8, 2);
+            modesel_SprDispOff(1);
             for (i = 0; i < 0x48; i++) {
                 if (GWMgUnlockCheck(i)) {
                     break;
                 }
             }
             if (FileSelEnteredGet() == 0) {
-                func_80107730_modesel(0, 0x3118);
-                func_8010788C_modesel(0);
-                func_80107730_modesel(0, 0x313E);
+                modesel_WinMesSet(0, 0x3118);
+                modesel_WinMesWait(0);
+                modesel_WinMesSet(0, 0x313E);
             } else if (i == 0x48) {
-                func_80107730_modesel(0, 0x3111);
-                func_8010788C_modesel(0);
-                func_80107730_modesel(0, 0x3105);
+                modesel_WinMesSet(0, 0x3111);
+                modesel_WinMesWait(0);
+                modesel_WinMesSet(0, 0x3105);
             } else {
-                func_80107730_modesel(0, 0x3133);
-                func_8010788C_modesel(0);
-                if (func_80107838_modesel(0, 1, 0) == 0) {
+                modesel_WinMesSet(0, 0x3133);
+                modesel_WinMesWait(0);
+                if (modesel_WinChoiceGet(0, 1, 0) == 0) {
                     result = 13;
                     goto confirmed;
                 }
                 if (FileSelEnteredGet() == 0) {
-                    func_80107730_modesel(0, 0x313E);
+                    modesel_WinMesSet(0, 0x313E);
                 } else {
-                    func_80107730_modesel(0, 0x3105);
+                    modesel_WinMesSet(0, 0x3105);
                 }
             }
-            func_80105F84_modesel(1);
-            func_801067C0_modesel(10, 0x14, 8, 8, 2);
+            modesel_SprDispOn(1);
+            modesel_MotionShiftSet(10, 0x14, 8, 8, 2);
             break;
         case 10:
             HuAudFXPlay(3);
-            func_801067C0_modesel(10, 0x13, 8, 8, 2);
+            modesel_MotionShiftSet(10, 0x13, 8, 8, 2);
             if (FileSelEnteredGet() == 0 && GwStory.unk0 == 12) {
-                func_80106000_modesel(1);
-                func_80107730_modesel(0, 0x313C);
-                func_8010788C_modesel(0);
-                if (func_80107838_modesel(0, 1, 1) == 0) {
-                    func_80107730_modesel(0, 0x313D);
-                    func_8010788C_modesel(0);
-                    func_80107730_modesel(0, (u32)D_8010F454_modesel);
+                modesel_SprBGDispOff(1);
+                modesel_WinMesSet(0, 0x313C);
+                modesel_WinMesWait(0);
+                if (modesel_WinChoiceGet(0, 1, 1) == 0) {
+                    modesel_WinMesSet(0, 0x313D);
+                    modesel_WinMesWait(0);
+                    modesel_WinMesSet(0, (u32)modesel_emptyStr);
                     result = 14;
                 } else {
-                    func_80107730_modesel(0, 0x3119);
-                    func_80105FE4_modesel(1);
+                    modesel_WinMesSet(0, 0x3119);
+                    modesel_SprBGDispOn(1);
                 }
             } else {
-                func_80106000_modesel(1);
+                modesel_SprBGDispOff(1);
                 if (FileSelEnteredGet() == 0) {
-                    func_80107730_modesel(0, 0x3137);
-                    func_8010788C_modesel(0);
-                    choice = func_80107838_modesel(0, 1, 0);
+                    modesel_WinMesSet(0, 0x3137);
+                    modesel_WinMesWait(0);
+                    choice = modesel_WinChoiceGet(0, 1, 0);
                     if (choice == 0) {
-                        func_80107730_modesel(0, 0x3138);
-                        func_8010788C_modesel(0);
-                        func_801074F0_modesel(0);
-                        func_80106BA0_modesel(0, (u32)D_8010F454_modesel, 0xA0, D_8010F296_modesel + 4, 0, 0, 3);
+                        modesel_WinMesSet(0, 0x3138);
+                        modesel_WinMesWait(0);
+                        modesel_WinKill(0);
+                        modesel_WinCreate(0, (u32)modesel_emptyStr, 0xA0, modesel_winPosYHalf + 4, 0, 0, 3);
                     }
                     if (choice == 1) {
-                        func_80107730_modesel(0, 0x3139);
-                        func_8010788C_modesel(0);
-                        choice = func_80107838_modesel(0, 1, 0);
+                        modesel_WinMesSet(0, 0x3139);
+                        modesel_WinMesWait(0);
+                        choice = modesel_WinChoiceGet(0, 1, 0);
                         if (choice == 0) {
-                            func_8010ED3C_modesel();
+                            modesel_HelpExec();
                         }
                         if (choice == 1) {
-                            func_80107730_modesel(0, 0x313A);
-                            func_8010788C_modesel(0);
+                            modesel_WinMesSet(0, 0x313A);
+                            modesel_WinMesWait(0);
                         }
                     }
-                    func_80107730_modesel(0, 0x3122);
+                    modesel_WinMesSet(0, 0x3122);
                 } else {
                     bestChr = -1;
                     index = rand8() * (10.0f / 255.0f);
-                    boardNo = func_8010F204_modesel(index);
-                    board = func_8010F214_modesel(index);
+                    boardNo = modesel_BoardNoGet(index);
+                    board = modesel_BoardIdxGet(index);
                     best = 0;
-                    if (func_8010F234_modesel(index) == 2) {
+                    if (modesel_BoardTypeGet(index) == 2) {
                         for (j = 0; j < 8; j++) {
                             if (best < GwCommon.boardRecord[1][board].chr[j]) {
                                 best = GwCommon.boardRecord[1][board].chr[j];
@@ -3051,27 +3051,27 @@ s32 func_8010CD00_modesel(s32 cur, s32 buttons) {
                         }
                     }
                     message = boardNo + 0x3127;
-                    func_801077FC_modesel(0, 0, message);
-                    func_80107730_modesel(0, 0x3125);
-                    func_8010788C_modesel(0);
+                    modesel_WinInsertMesSet(0, 0, message);
+                    modesel_WinMesSet(0, 0x3125);
+                    modesel_WinMesWait(0);
                     if (bestChr != -1) {
-                        func_801077FC_modesel(0, 0, message);
-                        func_801077FC_modesel(0, 1, bestChr + 0x1C00);
-                        func_80107730_modesel(0, 0x3126);
-                        func_8010788C_modesel(0);
+                        modesel_WinInsertMesSet(0, 0, message);
+                        modesel_WinInsertMesSet(0, 1, bestChr + 0x1C00);
+                        modesel_WinMesSet(0, 0x3126);
+                        modesel_WinMesWait(0);
                     }
-                    func_80107730_modesel(0, 0x3124);
+                    modesel_WinMesSet(0, 0x3124);
                     HuPrcSleep(3);
                 }
-                func_80105FE4_modesel(1);
+                modesel_SprBGDispOn(1);
             }
-            func_801067C0_modesel(10, 0x14, 8, 8, 2);
+            modesel_MotionShiftSet(10, 0x14, 8, 8, 2);
             break;
     }
     return result;
 }
 
-s32 func_8010D8DC_modesel(s32 cur, s32 buttons) {
+s32 modesel_MenuMove(s32 cur, s32 buttons) {
     s32 next = cur;
     s32 unlocked;
     s32 i;
@@ -3090,12 +3090,12 @@ s32 func_8010D8DC_modesel(s32 cur, s32 buttons) {
         case 2:
             if (buttons & 0x200) {
                 do {
-                    D_80110BD8_modesel = (D_80110BD8_modesel - 1 < 0) ? 5 : D_80110BD8_modesel - 1;
-                } while (MgStoryRankGet(D_80110BDA_modesel) < 0);
+                    modesel_storyChr = (modesel_storyChr - 1 < 0) ? 5 : modesel_storyChr - 1;
+                } while (MgStoryRankGet(modesel_storyChrHalf) < 0);
             } else if (buttons & 0x100) {
                 do {
-                    D_80110BD8_modesel = (D_80110BD8_modesel + 1 < 6) ? D_80110BD8_modesel + 1 : 0;
-                } while (MgStoryRankGet(D_80110BDA_modesel) < 0);
+                    modesel_storyChr = (modesel_storyChr + 1 < 6) ? modesel_storyChr + 1 : 0;
+                } while (MgStoryRankGet(modesel_storyChrHalf) < 0);
             } else if (buttons & 0x400) {
                 next = 3;
             }
@@ -3191,128 +3191,128 @@ s32 func_8010D8DC_modesel(s32 cur, s32 buttons) {
             }
             break;
     }
-    func_8010DE88_modesel(next);
-    func_8010DC6C_modesel(next);
+    modesel_SpotFocus(next);
+    modesel_MenuMesSet(next);
     return next;
 }
 
-void func_8010DC6C_modesel(s32 arg0) {
+void modesel_MenuMesSet(s32 arg0) {
     s32 rank;
 
     switch (arg0) {
         case 0:
         case 1:
         case 2:
-            rank = MgStoryRankGet(D_80110BDA_modesel);
+            rank = MgStoryRankGet(modesel_storyChrHalf);
             rank = (rank < 0) ? 0 : (rank >= 5) ? 4
                                                 : rank;
-            func_80107730_modesel(0, 0x3114);
-            func_801077FC_modesel(0, 0, D_8010F2F0_modesel[rank]);
-            func_801077FC_modesel(0, 1, D_80110BD8_modesel + 0x1C00);
+            modesel_WinMesSet(0, 0x3114);
+            modesel_WinInsertMesSet(0, 0, modesel_rankMesTbl[rank]);
+            modesel_WinInsertMesSet(0, 1, modesel_storyChr + 0x1C00);
             break;
         case 3:
-            func_80107730_modesel(0, 0x3107);
+            modesel_WinMesSet(0, 0x3107);
             break;
         case 4:
         case 5:
-            func_80107730_modesel(0, 0x3106);
+            modesel_WinMesSet(0, 0x3106);
             break;
         case 7:
             if (FileSelEnteredGet() == 1) {
-                func_80107730_modesel(0, 0x3104);
+                modesel_WinMesSet(0, 0x3104);
             } else if ((GwSystem.playMode & 2) && GwStory.unk0 != 12) {
-                func_801077FC_modesel(0, 0, func_8010F204_modesel(GwStory.unk0) + 0x3127);
-                func_80107730_modesel(0, 0x3135);
+                modesel_WinInsertMesSet(0, 0, modesel_BoardNoGet(GwStory.unk0) + 0x3127);
+                modesel_WinMesSet(0, 0x3135);
             } else {
-                func_80107730_modesel(0, 0x3104);
+                modesel_WinMesSet(0, 0x3104);
             }
             break;
         case 8:
             if (FileSelEnteredGet() == 1) {
-                func_80107730_modesel(0, 0x3103);
+                modesel_WinMesSet(0, 0x3103);
             } else if ((GwSystem.playMode & 1) && GwStory.unk0 != 12) {
-                func_801077FC_modesel(0, 0, func_8010F204_modesel(GwStory.unk0) + 0x3127);
-                func_80107730_modesel(0, 0x3135);
+                modesel_WinInsertMesSet(0, 0, modesel_BoardNoGet(GwStory.unk0) + 0x3127);
+                modesel_WinMesSet(0, 0x3135);
             } else {
-                func_80107730_modesel(0, 0x3103);
+                modesel_WinMesSet(0, 0x3103);
             }
             break;
         case 9:
             if (FileSelEnteredGet() == 0) {
-                func_80107730_modesel(0, 0x313E);
+                modesel_WinMesSet(0, 0x313E);
             } else {
-                func_80107730_modesel(0, 0x3105);
+                modesel_WinMesSet(0, 0x3105);
             }
             break;
         case 10:
             if (FileSelEnteredGet() == 0 && GwStory.unk0 == 12) {
-                func_80107730_modesel(0, 0x3119);
+                modesel_WinMesSet(0, 0x3119);
             } else if (FileSelEnteredGet() == 0) {
-                func_80107730_modesel(0, 0x3122);
+                modesel_WinMesSet(0, 0x3122);
             } else {
-                func_80107730_modesel(0, 0x3124);
+                modesel_WinMesSet(0, 0x3124);
             }
             break;
     }
 }
 
-void func_8010DE88_modesel(s32 arg0) {
+void modesel_SpotFocus(s32 arg0) {
     switch (arg0) {
         case 0:
         case 1:
         case 2:
-            MgStoryRankGet(D_80110BDA_modesel);
-            func_8010E280_modesel(1, 2);
+            MgStoryRankGet(modesel_storyChrHalf);
+            modesel_CursorMove(1, 2);
             break;
         case 3:
-            func_80109188_modesel(3, 8);
-            func_8010E280_modesel(1, 3);
+            modesel_CameraEaseMove(3, 8);
+            modesel_CursorMove(1, 3);
             break;
         case 4:
         case 5:
-            func_80109188_modesel(5, 8);
-            func_8010E280_modesel(1, 5);
+            modesel_CameraEaseMove(5, 8);
+            modesel_CursorMove(1, 5);
             break;
         case 7:
-            func_80109188_modesel(7, 8);
-            func_8010E280_modesel(1, 7);
+            modesel_CameraEaseMove(7, 8);
+            modesel_CursorMove(1, 7);
             break;
         case 8:
-            func_80109188_modesel(8, 8);
-            func_8010E280_modesel(1, 8);
+            modesel_CameraEaseMove(8, 8);
+            modesel_CursorMove(1, 8);
             break;
         case 9:
-            func_80109188_modesel(9, 8);
-            func_8010E280_modesel(1, 9);
+            modesel_CameraEaseMove(9, 8);
+            modesel_CursorMove(1, 9);
             break;
         case 10:
             FileSelEnteredGet();
-            func_80109188_modesel(10, 8);
-            func_8010E280_modesel(1, 10);
+            modesel_CameraEaseMove(10, 8);
+            modesel_CursorMove(1, 10);
             break;
     }
 }
 
-void func_8010DF70_modesel(void) {
-    func_80105EA8_modesel(1, 0x88);
-    func_80106194_modesel(1, 5);
-    func_8010601C_modesel(1, 0xA0, 0x71);
-    func_80105F84_modesel(1);
+void modesel_CursorCreate(void) {
+    modesel_SprCreate(1, 0x88);
+    modesel_SprPriSet(1, 5);
+    modesel_SprPosSet(1, 0xA0, 0x71);
+    modesel_SprDispOn(1);
 }
 
-void func_8010DFB4_modesel(void) {
-    func_80105F20_modesel(1);
+void modesel_CursorKill(void) {
+    modesel_SprKill(1);
 }
 
-void func_8010DFD0_modesel(s32 arg0) {
+void modesel_CursorPosUpdate(s32 arg0) {
     s32 x;
     s32 y;
 
-    func_8010E000_modesel(arg0, &x, &y);
-    func_8010601C_modesel(1, x, y);
+    modesel_CursorPosGet(arg0, &x, &y);
+    modesel_SprPosSet(1, x, y);
 }
 
-void func_8010E000_modesel(s32 arg0, s32 *x, s32 *y) {
+void modesel_CursorPosGet(s32 arg0, s32 *x, s32 *y) {
     Vec pos;
     Vec2f screenPos;
     s32 index = 0;
@@ -3321,7 +3321,7 @@ void func_8010E000_modesel(s32 arg0, s32 *x, s32 *y) {
         case 0:
         case 1:
         case 2:
-            index = D_80110BD8_modesel + 8;
+            index = modesel_storyChr + 8;
             break;
         case 3:
             index = 3;
@@ -3356,15 +3356,15 @@ void func_8010E000_modesel(s32 arg0, s32 *x, s32 *y) {
             *y = 0x3C;
             return;
     }
-    pos.x = D_8010F304_modesel[index].x;
-    pos.y = D_8010F304_modesel[index].y;
-    pos.z = D_8010F304_modesel[index].z;
+    pos.x = modesel_spotPosTbl[index].x;
+    pos.y = modesel_spotPosTbl[index].y;
+    pos.z = modesel_spotPosTbl[index].z;
     Hu3D3Dto2D(0, &pos, &screenPos);
     *x = screenPos.x;
     *y = screenPos.y;
 }
 
-void func_8010E138_modesel(s32 arg0, f32 *x, f32 *y, f32 *z) {
+void modesel_SpotPosGet(s32 arg0, f32 *x, f32 *y, f32 *z) {
     s32 index = 0;
 
     switch (arg0) {
@@ -3404,21 +3404,21 @@ void func_8010E138_modesel(s32 arg0, f32 *x, f32 *y, f32 *z) {
         case 15:
             break;
     }
-    *x = D_8010F304_modesel[index].x;
-    *y = D_8010F304_modesel[index].y;
-    *z = D_8010F304_modesel[index].z;
+    *x = modesel_spotPosTbl[index].x;
+    *y = modesel_spotPosTbl[index].y;
+    *z = modesel_spotPosTbl[index].z;
 }
 
-void func_8010E22C_modesel(s32 arg0, s32 arg1) {
+void modesel_SprPosYAdd(s32 arg0, s32 arg1) {
     s32 x;
     s32 y;
 
-    func_80106074_modesel(arg0, &x, &y);
+    modesel_SprPosGet(arg0, &x, &y);
     y += arg1;
-    func_8010601C_modesel(arg0, x, y);
+    modesel_SprPosSet(arg0, x, y);
 }
 
-void func_8010E280_modesel(s32 arg0, s32 arg1) {
+void modesel_CursorMove(s32 arg0, s32 arg1) {
     s32 endX;
     s32 endY;
     s32 startX;
@@ -3426,18 +3426,18 @@ void func_8010E280_modesel(s32 arg0, s32 arg1) {
     s32 i;
     f32 t;
 
-    func_8010E000_modesel(arg1, &endX, &endY);
-    func_80106074_modesel(arg0, &startX, &startY);
+    modesel_CursorPosGet(arg1, &endX, &endY);
+    modesel_SprPosGet(arg0, &startX, &startY);
     for (i = 0; i < 8; i++) {
         t = i * (1.0f / 7.0f);
-        func_8010E000_modesel(arg1, &endX, &endY);
-        func_8010601C_modesel(arg0, startX + t * (endX - startX), startY + t * (endY - startY));
+        modesel_CursorPosGet(arg1, &endX, &endY);
+        modesel_SprPosSet(arg0, startX + t * (endX - startX), startY + t * (endY - startY));
         HuPrcVSleep();
     }
-    func_8010601C_modesel(arg0, endX, endY);
+    modesel_SprPosSet(arg0, endX, endY);
 }
 
-void func_8010E3A4_modesel(s32 index, f32 t) {
+void modesel_SpotEffUpdate(s32 index, f32 t) {
     s32 slot = index;
     f32 angle;
     f32 sine;
@@ -3459,310 +3459,310 @@ void func_8010E3A4_modesel(s32 index, f32 t) {
     scale = sine * amplitude + base;
     switch (slot) {
         case 2:
-            func_801065B0_modesel(index, 1.0f, 1.0f, 1.0f);
+            modesel_ModelScaleSet(index, 1.0f, 1.0f, 1.0f);
             break;
         case 3:
-            func_801065B0_modesel(index, scale, scale, 1.0f);
+            modesel_ModelScaleSet(index, scale, scale, 1.0f);
             break;
         case 5:
             scale = sine * 0.3f + 1.0f;
-            D_80110BD4_modesel->scale.x = D_80110BD4_modesel->baseScale.x = D_80110BD4_modesel->scale.y =
-                D_80110BD4_modesel->baseScale.y = D_80110BD4_modesel->scale.z = D_80110BD4_modesel->baseScale.z =
+            modesel_taihoNode->scale.x = modesel_taihoNode->baseScale.x = modesel_taihoNode->scale.y =
+                modesel_taihoNode->baseScale.y = modesel_taihoNode->scale.z = modesel_taihoNode->baseScale.z =
                     scale;
             break;
         case 7:
         case 8:
         case 9:
-            func_8010B940_modesel(index, 180.0f / 23.0f);
-            func_8010B824_modesel(index);
+            modesel_StarNodeRotAdd(index, 180.0f / 23.0f);
+            modesel_StarNodeUpdate(index);
             break;
     }
 }
 
-void func_8010E50C_modesel(void) {
+void modesel_SpotEffInit(void) {
     s32 i;
 
     for (i = 0; i < 21; i++) {
-        D_80110CF8_modesel[i][0] = 0;
-        D_80110CF0_modesel[i][0] = 0;
-        D_80110CF4_modesel[i][0] = 0;
+        modesel_spotEffObj[i][0] = 0;
+        modesel_spotEffTime[i][0] = 0;
+        modesel_spotEffMaxTime[i][0] = 0;
     }
 }
 
-void func_8010E558_modesel(s32 arg0) {
-    if (D_80110CF8_modesel[arg0][0] != NULL) {
-        omDelObj(D_80110CF8_modesel[arg0][0]);
+void modesel_SpotEffKill(s32 arg0) {
+    if (modesel_spotEffObj[arg0][0] != NULL) {
+        omDelObj(modesel_spotEffObj[arg0][0]);
     }
-    D_80110CF8_modesel[arg0][0] = NULL;
+    modesel_spotEffObj[arg0][0] = NULL;
 }
 
-void func_8010E5B8_modesel(void) {
+void modesel_SpotEffKillAll(void) {
     s32 i;
 
     for (i = 0; i < 21; i++) {
-        func_8010E558_modesel(i);
+        modesel_SpotEffKill(i);
     }
 }
 
-void func_8010E5F0_modesel(omObjData *obj) {
+void modesel_SpotEffObjMain(omObjData *obj) {
     s32 index = obj->work[0];
     s32 slot = index;
-    f32 t = (f32)D_80110CF0_modesel[index][0] / D_80110CF4_modesel[index][0];
+    f32 t = (f32)modesel_spotEffTime[index][0] / modesel_spotEffMaxTime[index][0];
 
-    if (D_80110CF0_modesel[index][0] <= D_80110CF4_modesel[index][0] - 1) {
-        func_8010E3A4_modesel(index, t);
-        D_80110CF0_modesel[index][0]++;
+    if (modesel_spotEffTime[index][0] <= modesel_spotEffMaxTime[index][0] - 1) {
+        modesel_SpotEffUpdate(index, t);
+        modesel_spotEffTime[index][0]++;
     } else {
-        func_8010E3A4_modesel(index, t);
-        func_8010E558_modesel(slot);
-        D_80110CF0_modesel[index][0] = 0;
+        modesel_SpotEffUpdate(index, t);
+        modesel_SpotEffKill(slot);
+        modesel_spotEffTime[index][0] = 0;
     }
 }
 
-void func_8010E6D8_modesel(s32 arg0) {
+void modesel_SpotEffCreate(s32 arg0) {
     omObjData *obj;
 
-    if (D_80110CF8_modesel[arg0][0] == NULL) {
-        obj = omAddObj(6, 0, 0, -1, func_8010E5F0_modesel);
+    if (modesel_spotEffObj[arg0][0] == NULL) {
+        obj = omAddObj(6, 0, 0, -1, modesel_SpotEffObjMain);
         obj->work[0] = arg0;
-        D_80110CF8_modesel[arg0][0] = obj;
+        modesel_spotEffObj[arg0][0] = obj;
         if (arg0 < 10) {
             if (arg0 >= 7) {
-                D_80110CF4_modesel[arg0][0] = 45;
+                modesel_spotEffMaxTime[arg0][0] = 45;
             } else {
-                D_80110CF4_modesel[arg0][0] = 20;
+                modesel_spotEffMaxTime[arg0][0] = 20;
             }
         } else {
-            D_80110CF4_modesel[arg0][0] = 20;
+            modesel_spotEffMaxTime[arg0][0] = 20;
         }
     }
 }
 
-void func_8010E790_modesel(Process *arg0) {
+void modesel_CameraMotionStop(Process *arg0) {
     omDelPrcObj(arg0);
     Hu3DCameraMotionOff(0);
 }
 
-void func_8010E7B4_modesel(void) {
+void modesel_BoardStatRead(void) {
     s32 i;
     s8 value;
 
-    D_80110B70_modesel[0] = D_80110B70_modesel[1] = D_80110B70_modesel[2] = D_80110B70_modesel[3] =
-        D_80110B70_modesel[4] = D_80110B70_modesel[5] = 0;
+    modesel_boardStatUnusedTbl[0] = modesel_boardStatUnusedTbl[1] = modesel_boardStatUnusedTbl[2] = modesel_boardStatUnusedTbl[3] =
+        modesel_boardStatUnusedTbl[4] = modesel_boardStatUnusedTbl[5] = 0;
     if (FileSelEnteredGet() == 1) {
         SLLoadBoard();
         for (i = 0; i < 4; i++) {
-            D_80110B88_modesel.chr[i] = GwPlayer[i].chr;
-            D_80110B88_modesel.cpu[i] = GwPlayer[i].stat & 1;
+            modesel_boardStatParty.chr[i] = GwPlayer[i].chr;
+            modesel_boardStatParty.cpu[i] = GwPlayer[i].stat & 1;
         }
-        D_80110B88_modesel.gameLength = (value = GwSystem.current_game_length) >= 3 ? 3 : value;
-        D_80110B88_modesel.currentTurn = (value = GwSystem.current_turn) >= 99 ? 99 : value;
-        D_80110B88_modesel.totalTurns = (value = GwSystem.total_turns) >= 99 ? 99 : value;
+        modesel_boardStatParty.gameLength = (value = GwSystem.current_game_length) >= 3 ? 3 : value;
+        modesel_boardStatParty.currentTurn = (value = GwSystem.current_turn) >= 99 ? 99 : value;
+        modesel_boardStatParty.totalTurns = (value = GwSystem.total_turns) >= 99 ? 99 : value;
         SLLoadBoardStory();
         for (i = 0; i < 2; i++) {
-            D_80110BB4_modesel.chr[i] = GwPlayer[i].chr;
-            D_80110BB4_modesel.cpu[i] = GwPlayer[i].stat & 1;
+            modesel_boardStatStory.chr[i] = GwPlayer[i].chr;
+            modesel_boardStatStory.cpu[i] = GwPlayer[i].stat & 1;
         }
-        D_80110BB4_modesel.gameLength = (value = GwSystem.current_game_length) >= 3 ? 3 : value;
-        D_80110BB4_modesel.currentTurn = (value = GwSystem.current_turn) >= 99 ? 99 : value;
-        D_80110BB4_modesel.totalTurns = (value = GwSystem.total_turns) >= 99 ? 99 : value;
+        modesel_boardStatStory.gameLength = (value = GwSystem.current_game_length) >= 3 ? 3 : value;
+        modesel_boardStatStory.currentTurn = (value = GwSystem.current_turn) >= 99 ? 99 : value;
+        modesel_boardStatStory.totalTurns = (value = GwSystem.total_turns) >= 99 ? 99 : value;
     }
 }
 
-void func_8010E984_modesel(void) {
+void modesel_FileInfoCreate(void) {
     s32 x;
     s32 y;
 
     if (FileSelEnteredGet() == 1) {
-        func_80105EA8_modesel(6, 0xD0011);
-        func_8010601C_modesel(6, 0x40, 0x1C);
-        func_80105FB4_modesel(6);
-        HuSprColorSet(func_80105D24_modesel(6), 0, 0xFF, 0xFF, 0);
-        func_80105EA8_modesel(7, 0xD0013);
-        func_8010601C_modesel(7, 0x40, 0x1C);
-        func_80105FB4_modesel(7);
-        func_80105EA8_modesel(8, 0xD0014);
-        func_8010601C_modesel(8, 0x40, 0x1C);
-        func_80105FB4_modesel(8);
-        func_80105EA8_modesel(9, 0x1F0004);
-        func_8010601C_modesel(9, 0x26, 0x24);
+        modesel_SprCreate(6, 0xD0011);
+        modesel_SprPosSet(6, 0x40, 0x1C);
+        modesel_SprDispOff(6);
+        HuSprColorSet(modesel_EspIdGet(6), 0, 0xFF, 0xFF, 0);
+        modesel_SprCreate(7, 0xD0013);
+        modesel_SprPosSet(7, 0x40, 0x1C);
+        modesel_SprDispOff(7);
+        modesel_SprCreate(8, 0xD0014);
+        modesel_SprPosSet(8, 0x40, 0x1C);
+        modesel_SprDispOff(8);
+        modesel_SprCreate(9, 0x1F0004);
+        modesel_SprPosSet(9, 0x26, 0x24);
     } else {
         x = 0x40;
-        func_80105EA8_modesel(6, 0xD0010);
-        func_8010601C_modesel(6, x, 0x26);
-        func_80105FB4_modesel(6);
-        HuSprColorSet(func_80105D24_modesel(6), 0, 0xFF, 0xFF, 0);
-        func_80105EA8_modesel(7, 0xD0012);
-        func_8010601C_modesel(7, x, 0x1C);
-        func_80105FB4_modesel(7);
+        modesel_SprCreate(6, 0xD0010);
+        modesel_SprPosSet(6, x, 0x26);
+        modesel_SprDispOff(6);
+        HuSprColorSet(modesel_EspIdGet(6), 0, 0xFF, 0xFF, 0);
+        modesel_SprCreate(7, 0xD0012);
+        modesel_SprPosSet(7, x, 0x1C);
+        modesel_SprDispOff(7);
         switch (GwStory.unk2) {
             case 0:
-                func_80105EA8_modesel(8, 0xD0014);
+                modesel_SprCreate(8, 0xD0014);
                 y = 0x2E;
                 break;
             case 1:
-                func_80105EA8_modesel(8, 0xD0015);
+                modesel_SprCreate(8, 0xD0015);
                 y = 0x2E;
                 break;
             case 2:
-                func_80105EA8_modesel(8, 0xD0016);
+                modesel_SprCreate(8, 0xD0016);
                 y = 0x2E;
                 break;
             case 3:
-                func_80105EA8_modesel(8, 0xD0017);
+                modesel_SprCreate(8, 0xD0017);
                 y = 0x2E;
                 break;
             default:
-                func_80105EA8_modesel(8, 0xD0015);
+                modesel_SprCreate(8, 0xD0015);
                 y = 0x2E;
                 break;
         }
-        func_8010601C_modesel(8, x + 10, y);
-        func_80105FB4_modesel(8);
-        func_80105EA8_modesel(9, 0x1F0004);
-        func_8010601C_modesel(9, x - 26, y);
-        func_801061C8_modesel(9, GwStory.unk1, 0);
+        modesel_SprPosSet(8, x + 10, y);
+        modesel_SprDispOff(8);
+        modesel_SprCreate(9, 0x1F0004);
+        modesel_SprPosSet(9, x - 26, y);
+        modesel_SprBankSet(9, GwStory.unk1, 0);
     }
-    func_80105FB4_modesel(9);
+    modesel_SprDispOff(9);
 }
 
-void func_8010EBC4_modesel(void) {
-    func_80105F20_modesel(6);
-    func_80105F20_modesel(7);
-    func_80105F20_modesel(8);
-    func_80105F20_modesel(9);
+void modesel_FileInfoKill(void) {
+    modesel_SprKill(6);
+    modesel_SprKill(7);
+    modesel_SprKill(8);
+    modesel_SprKill(9);
 }
 
-void func_8010EBF8_modesel(void) {
-    func_80105FE4_modesel(6);
-    func_80105FE4_modesel(7);
+void modesel_FileInfoDispOn(void) {
+    modesel_SprBGDispOn(6);
+    modesel_SprBGDispOn(7);
     if (FileSelEnteredGet() != 1) {
-        func_80105FE4_modesel(8);
-        func_80105FE4_modesel(9);
+        modesel_SprBGDispOn(8);
+        modesel_SprBGDispOn(9);
     }
 }
 
-void func_8010EC40_modesel(void) {
-    func_80106000_modesel(6);
-    func_80106000_modesel(7);
-    func_80106000_modesel(8);
-    func_80106000_modesel(9);
+void modesel_FileInfoDispOff(void) {
+    modesel_SprBGDispOff(6);
+    modesel_SprBGDispOff(7);
+    modesel_SprBGDispOff(8);
+    modesel_SprBGDispOff(9);
 }
 
-f32 func_8010EC74_modesel(f32 arg0, f32 arg1) {
+f32 modesel_LookAtAngleCalc(f32 arg0, f32 arg1) {
     return -(atan2df(arg1, arg0) - 90.0f);
 }
 
-void func_8010ECAC_modesel(omObjData *obj) {
+void modesel_RumbleObjMain(omObjData *obj) {
     s32 *counter;
 
-    if (D_80110DEC_modesel == 0) {
+    if (modesel_rumbleCnt == 0) {
         RepeatVibrator(0, 5, 0, 5);
     }
 
-    counter = &D_80110DEC_modesel;
+    counter = &modesel_rumbleCnt;
     *counter = (*counter < 11) ? *counter + 1 : 0;
 }
 
-void func_8010ED00_modesel(void) {
-    D_80110DEC_modesel = 0;
-    omAddObj(6, 0, 0, -1, func_8010ECAC_modesel);
+void modesel_RumbleStart(void) {
+    modesel_rumbleCnt = 0;
+    omAddObj(6, 0, 0, -1, modesel_RumbleObjMain);
 }
 
-void func_8010ED3C_modesel(void) {
+void modesel_HelpExec(void) {
     u16 spriteId;
     s32 i;
 
-    func_80105EA8_modesel(3, 0x140064);
-    func_8010601C_modesel(3, 160, 120);
-    func_801060A4_modesel(3, 10.0f, 8.0f);
-    func_801060F4_modesel(3, 0);
-    func_80105FB4_modesel(3);
-    spriteId = func_80105D24_modesel(3);
+    modesel_SprCreate(3, 0x140064);
+    modesel_SprPosSet(3, 160, 120);
+    modesel_SprScaleSet(3, 10.0f, 8.0f);
+    modesel_SprAlphaSet(3, 0);
+    modesel_SprDispOff(3);
+    spriteId = modesel_EspIdGet(3);
     espColorSet(spriteId, 0, 0, 0);
     espPriSet(spriteId, 0x4BA);
-    func_80105EA8_modesel(2, 0xD0018);
-    func_8010601C_modesel(2, 160, 120);
-    func_801060A4_modesel(2, 1.0f, 1.0f);
-    func_80105FB4_modesel(2);
-    spriteId = func_80105D24_modesel(2);
+    modesel_SprCreate(2, 0xD0018);
+    modesel_SprPosSet(2, 160, 120);
+    modesel_SprScaleSet(2, 1.0f, 1.0f);
+    modesel_SprDispOff(2);
+    spriteId = modesel_EspIdGet(2);
     espColorSet(spriteId, 0, 0, 0);
     espPriSet(spriteId, 11);
-    func_80105EA8_modesel(4, 0x150003);
-    func_8010601C_modesel(4, 28, 120);
-    func_80105FB4_modesel(4);
-    func_80105EA8_modesel(5, 0x150003);
-    func_8010601C_modesel(5, 292, 120);
-    func_80105FB4_modesel(5);
-    espAttrSet(func_80105D24_modesel(5), 1);
-    func_80106000_modesel(1);
-    func_80107700_modesel(0);
-    func_8010EC40_modesel();
-    func_80105F84_modesel(3);
-    func_80105F84_modesel(2);
-    func_80105FB4_modesel(4);
-    func_80105F84_modesel(5);
+    modesel_SprCreate(4, 0x150003);
+    modesel_SprPosSet(4, 28, 120);
+    modesel_SprDispOff(4);
+    modesel_SprCreate(5, 0x150003);
+    modesel_SprPosSet(5, 292, 120);
+    modesel_SprDispOff(5);
+    espAttrSet(modesel_EspIdGet(5), 1);
+    modesel_SprBGDispOff(1);
+    modesel_WinDispOff(0);
+    modesel_FileInfoDispOff();
+    modesel_SprDispOn(3);
+    modesel_SprDispOn(2);
+    modesel_SprDispOff(4);
+    modesel_SprDispOn(5);
     for (i = 0; i < 8; i++) {
-        func_801060F4_modesel(2, i * (256.0f / 7));
+        modesel_SprAlphaSet(2, i * (256.0f / 7));
         if (i * (256.0f / 7) < 128.0f) {
-            func_801060F4_modesel(3, i * (256.0f / 7));
+            modesel_SprAlphaSet(3, i * (256.0f / 7));
         } else {
-            func_801060F4_modesel(3, 128);
+            modesel_SprAlphaSet(3, 128);
         }
         HuPrcVSleep();
     }
-    func_801060F4_modesel(2, 256);
-    func_801060F4_modesel(3, 128);
-    func_80106BA0_modesel(1, 0x5F01, 0, 16, 304, 208, 0);
-    HuWinMesDefColSet(D_80110998_modesel[1][0], 64, 64, 64);
-    HuWinMesPalSet(D_80110998_modesel[1][0], 4, 0, 255, 0);
-    HuWinMesPalSet(D_80110998_modesel[1][0], 6, 255, 255, 128);
+    modesel_SprAlphaSet(2, 256);
+    modesel_SprAlphaSet(3, 128);
+    modesel_WinCreate(1, 0x5F01, 0, 16, 304, 208, 0);
+    HuWinMesDefColSet(modesel_winTbl[1][0], 64, 64, 64);
+    HuWinMesPalSet(modesel_winTbl[1][0], 4, 0, 255, 0);
+    HuWinMesPalSet(modesel_winTbl[1][0], 6, 255, 255, 128);
     while (1) {
         if (HuPadBtnDown[0] & 0x4000) {
             break;
         }
         if (ContBtnDown[0] & 0x200) {
-            func_80105FB4_modesel(4);
-            func_80105F84_modesel(5);
-            func_80107730_modesel(1, 0x5F01);
+            modesel_SprDispOff(4);
+            modesel_SprDispOn(5);
+            modesel_WinMesSet(1, 0x5F01);
         } else if (ContBtn[0] & 0x100) {
-            func_80105F84_modesel(4);
-            func_80105FB4_modesel(5);
-            func_80107730_modesel(1, 0x5F02);
+            modesel_SprDispOn(4);
+            modesel_SprDispOff(5);
+            modesel_WinMesSet(1, 0x5F02);
         }
         HuPrcVSleep();
     }
-    func_801074F0_modesel(1);
+    modesel_WinKill(1);
     for (i = 0; i < 7; i++) {
-        func_801060F4_modesel(2, (7 - i) * (255.0f * (1.0f / 7)));
+        modesel_SprAlphaSet(2, (7 - i) * (255.0f * (1.0f / 7)));
         HuPrcVSleep();
     }
-    func_80105FB4_modesel(2);
-    func_80105FB4_modesel(3);
-    func_80105FB4_modesel(4);
-    func_80105FB4_modesel(5);
-    func_80105F20_modesel(3);
-    func_80105F20_modesel(2);
-    func_80105F20_modesel(4);
-    func_80105F20_modesel(5);
-    func_80105FE4_modesel(1);
-    func_801076D0_modesel(0);
-    func_8010EBF8_modesel();
+    modesel_SprDispOff(2);
+    modesel_SprDispOff(3);
+    modesel_SprDispOff(4);
+    modesel_SprDispOff(5);
+    modesel_SprKill(3);
+    modesel_SprKill(2);
+    modesel_SprKill(4);
+    modesel_SprKill(5);
+    modesel_SprBGDispOn(1);
+    modesel_WinDispOn(0);
+    modesel_FileInfoDispOn();
 }
 
-void func_8010F1F4_modesel(void) {
+void modesel_SysClose(void) {
 }
 
-s32 func_8010F1FC_modesel(void) {
+s32 modesel_SysCheck(void) {
     return 1;
 }
 
-s32 func_8010F204_modesel(s32 arg0) {
-    return D_8010F2A0_modesel[arg0];
+s32 modesel_BoardNoGet(s32 arg0) {
+    return modesel_boardNoTbl[arg0];
 }
 
-s32 func_8010F214_modesel(s32 arg0) {
-    s32 value = D_8010F2A0_modesel[arg0];
+s32 modesel_BoardIdxGet(s32 arg0) {
+    s32 value = modesel_boardNoTbl[arg0];
 
     if (value >= 6) {
         value -= 6;
@@ -3770,12 +3770,12 @@ s32 func_8010F214_modesel(s32 arg0) {
     return value;
 }
 
-s32 func_8010F234_modesel(s32 arg0) {
-    s32 value = D_8010F2A0_modesel[arg0];
+s32 modesel_BoardTypeGet(s32 arg0) {
+    s32 value = modesel_boardNoTbl[arg0];
 
     return value < 6 ? 1 : 2;
 }
 
-u8 func_8010F258_modesel(s32 arg0) {
-    return D_8010F2B0_modesel[arg0];
+u8 modesel_UnusedOrderGet(s32 arg0) {
+    return modesel_unusedOrderTbl[arg0];
 }

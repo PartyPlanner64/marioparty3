@@ -2,21 +2,21 @@
 #include "common.h"
 #include "game/overlays/opening.h"
 
-Process *D_80114EA0_opening BSS;
-s32 D_80114EA4_opening BSS;
-u8 D_80114EA8_opening[8] BSS; /* Unreferenced. */
-OpSpr D_80114EB0_opening[0x40] BSS;
-OpAnimSlot D_801155B0_opening[0x40] BSS;
-OpModel D_80115630_opening[0xA0] BSS;
-s16 D_801171B0_opening BSS;
-u16 D_801171B2_opening BSS;
-u8 D_801171B4_opening[4] BSS; /* Unreferenced. */
-OpSlot D_801171B8_opening[0x20] BSS;
-OpShake D_80117338_opening BSS;
-u8 D_8011734C_opening[4] BSS; /* Unreferenced. */
-OpCamVecs D_80117350_opening BSS;
-Vec D_80117378_opening BSS;
-s32 D_80117384_opening BSS;
-OpObj D_80117388_opening[0x10] BSS;
-u8 D_80117748_opening[8] BSS; /* Unreferenced. */
-OpContError D_80117750_opening BSS;
+Process *op_mainProc BSS;
+s32 op_demoEndF BSS;
+u8 op_demoEndPad[8] BSS; /* Unreferenced. */
+OpSpr op_sprTbl[0x40] BSS;
+OpAnimSlot op_animTbl[0x40] BSS;
+OpModel op_modelTbl[0xA0] BSS;
+s16 op_bgAnim BSS;
+u16 op_bgSpr BSS;
+u8 op_bgSprPad[4] BSS; /* Unreferenced. */
+OpSlot op_winTbl[0x20] BSS;
+OpShake op_cameraShake BSS;
+u8 op_cameraShakePad[4] BSS; /* Unreferenced. */
+OpCamVecs op_cameraWork BSS;
+Vec op_effPos BSS;
+s32 op_effNum BSS;
+OpObj op_demoObjTbl[0x10] BSS;
+u8 op_demoObjPad[8] BSS; /* Unreferenced. */
+OpContError op_contError BSS;

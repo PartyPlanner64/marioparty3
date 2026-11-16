@@ -1,16 +1,16 @@
 #include "common.h"
 
-void opTitleObjectSetup(void);
-void func_80105C2C_opening(void);
-void opDemoObjectSetup(void);
+void op_TitleObjectSetup(void);
+void op_DemoReturnObjectSetup(void);
+void op_DemoObjectSetup(void);
 
-OvlEntrypoint D_80114B50_opening[] = {
-    { 0, opTitleObjectSetup },
-    { 1, func_80105C2C_opening },
-    { 2, opDemoObjectSetup },
+OvlEntrypoint op_ovlEntryTbl[] = {
+    { 0, op_TitleObjectSetup },
+    { 1, op_DemoReturnObjectSetup },
+    { 2, op_DemoObjectSetup },
     { -1, NULL }
 };
 
-void func_801059A0_opening(void) {
-    ovlEventCall(D_80114B50_opening, omovlevtno);
+void op_Executor(void) {
+    ovlEventCall(op_ovlEntryTbl, omovlevtno);
 }

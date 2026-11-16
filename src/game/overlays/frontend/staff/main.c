@@ -1,11 +1,11 @@
 #include "staff.h"
 
-u16 D_80110530_staff = 0;
-f32 D_80110534_staff = 58.0f;
-s8 D_80110538_staff = 0;
-u32 D_8011053C_staff = 0;
+u16 staff_exitCnt = 0;
+f32 staff_cameraFov = 58.0f;
+s8 staff_cameraLookF = 0;
+u32 staff_randSeed = 0;
 
-void func_801059A0_staff(void) {
+void staff_ObjectSetup(void) {
     Hu3DCamInit(1);
     MapCollInit(1);
     Hu3DSprModelInit(25);
@@ -13,18 +13,18 @@ void func_801059A0_staff(void) {
     HuWinInit();
     omGameSysInit();
     Hu3DScreenClearF = 0;
-    D_80111564_staff = 80.0f;
-    D_80111560_staff = 6000.0f;
-    D_80110534_staff = 58.0f;
-    Hu3DCameraPerspectiveSet(0, D_80110534_staff, D_80111564_staff, D_80111560_staff);
-    D_80111550_staff.x = 0;
-    D_80111550_staff.y = 0;
-    D_80111550_staff.z = 0;
+    staff_cameraNear = 80.0f;
+    staff_cameraFar = 6000.0f;
+    staff_cameraFov = 58.0f;
+    Hu3DCameraPerspectiveSet(0, staff_cameraFov, staff_cameraNear, staff_cameraFar);
+    staff_cameraRot.x = 0;
+    staff_cameraRot.y = 0;
+    staff_cameraRot.z = 0;
     CRot.x = 0;
     CRot.y = 0;
     CRot.z = 0;
-    func_8010615C_staff();
-    omAddObj(10000, 0, 0, -1, func_80105BD4_staff);
+    staff_CameraUpdate();
+    omAddObj(10000, 0, 0, -1, staff_ExitCheckObjMain);
     Hu3DGLightMaxSet(3);
     Hu3DGLightColorSet(2, 0, 0, 0);
     Hu3DGLightDirSet(2, 0.0f, 0.0f, 100.0f);
@@ -32,57 +32,57 @@ void func_801059A0_staff(void) {
     Hu3DGLightDirSet(3, 0.0f, 100.0f, 0.0f);
     Hu3DGLightColorSet(1, 255, 255, 255);
     Hu3DBGColorSet(0, 0, 0);
-    omPrcSetStatBit(omAddPrcObj(func_80106720_staff, 0x1100, 0x400, 0), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    D_8011155C_staff = 0;
-    func_80106C50_staff();
-    D_80111514_staff = 0;
-    D_80111512_staff = 0;
+    omPrcSetStatBit(omAddPrcObj(staff_CameraProc, 0x1100, 0x400, 0), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    staff_exitMode = 0;
+    staff_PlayerConfigInit();
+    staff_chrNo = 0;
+    staff_storyF = 0;
     if (omovlevtno >= 0 && omovlevtno < 6) {
-        D_80111514_staff = omovlevtno;
+        staff_chrNo = omovlevtno;
     } else if (omovlevtno >= 6) {
-        D_80111514_staff = GwStory.unk1;
-        D_80111512_staff = 1;
+        staff_chrNo = GwStory.unk1;
+        staff_storyF = 1;
     }
-    omAddPrcObj(func_80106E20_staff, 0x3F00, 0x1000, 0);
+    omAddPrcObj(staff_MainProc, 0x3F00, 0x1000, 0);
     WipeColorSet(0, 0, 0);
-    D_80111530_staff = 11;
-    D_8011154C_staff = 20;
+    staff_wipeType = 11;
+    staff_wipeTime = 20;
 }
 
-void func_80105BD4_staff(omObjData *object) {
-    if (D_80111512_staff == 0 && (HuPadBtnDown[D_80111510_staff] & 0x1000)) {
-        D_8011155C_staff = 0;
-        D_80110530_staff = 1;
+void staff_ExitCheckObjMain(omObjData *object) {
+    if (staff_storyF == 0 && (HuPadBtnDown[staff_padNo] & 0x1000)) {
+        staff_exitMode = 0;
+        staff_exitCnt = 1;
     }
-    if (D_80110530_staff == 0) {
+    if (staff_exitCnt == 0) {
         if (omSysExitReq != 0) {
             goto createWipe;
         }
-    } else if (D_80110530_staff == 1) {
+    } else if (staff_exitCnt == 1) {
         goto createWipe;
     } else {
-        D_80110530_staff--;
+        staff_exitCnt--;
     }
     return;
 
 createWipe:
-    if (D_80111530_staff >= 0) {
-        WipeCreateOut(D_80111530_staff, D_8011154C_staff);
+    if (staff_wipeType >= 0) {
+        WipeCreateOut(staff_wipeType, staff_wipeTime);
     }
     HuAudSeqFadeOut(15);
-    object->func = func_80105CB4_staff;
+    object->func = staff_ExitObjMain;
 }
 
-void func_80105CB4_staff(omObjData *object) {
+void staff_ExitObjMain(omObjData *object) {
     u16 flags;
 
     if (WipeStatGet() == 0) {
         HuWinAllKill();
         flags = 0x14;
-        switch (D_8011155C_staff) {
+        switch (staff_exitMode) {
             case 0:
             default:
-                if (D_80111512_staff != 0) {
+                if (staff_storyF != 0) {
                     omovlhisidx = -1;
                     omOvlCallEx(0x58, 0, 0x84);
                 } else {
@@ -90,22 +90,22 @@ void func_80105CB4_staff(omObjData *object) {
                 }
                 break;
             case 2:
-                omOvlCallEx(D_80111516_staff, D_80111532_staff, flags);
+                omOvlCallEx(staff_exitOvlNo, staff_exitEvtNo, flags);
                 break;
             case 1:
-                omOvlGotoEx(D_80111516_staff, D_80111532_staff, flags);
+                omOvlGotoEx(staff_exitOvlNo, staff_exitEvtNo, flags);
                 break;
             case 3:
-                omOvlGotoEx(D_80111516_staff, D_80111532_staff, 0x4090);
+                omOvlGotoEx(staff_exitOvlNo, staff_exitEvtNo, 0x4090);
                 break;
             case 4:
-                omOvlGotoEx(D_80111516_staff, D_80111532_staff, 0x92);
+                omOvlGotoEx(staff_exitOvlNo, staff_exitEvtNo, 0x92);
                 break;
         }
     }
 }
 
-void func_80105DB8_staff(MsetupModelEntry *entry, s16 model) {
+void staff_ModelEntryPosSet(MsetupModelEntry *entry, s16 model) {
     switch (entry->positionMode) {
         case 0:
             break;
@@ -120,7 +120,7 @@ void func_80105DB8_staff(MsetupModelEntry *entry, s16 model) {
     }
 }
 
-void func_80105E6C_staff(MsetupModelEntry *entry, MsetupModelHandle *handle, s32 count) {
+void staff_ModelEntryReadAll(MsetupModelEntry *entry, MsetupModelHandle *handle, s32 count) {
     s16 i;
     s16 model;
     s32 motion;
@@ -130,7 +130,7 @@ void func_80105E6C_staff(MsetupModelEntry *entry, MsetupModelHandle *handle, s32
     }
     for (i = 0; i < count; entry++, i++, handle++) {
         model = handle->model = Hu3DModelRead(entry->dataId, entry->flags);
-        func_80105DB8_staff(entry, model);
+        staff_ModelEntryPosSet(entry, model);
         motion = handle->motion = Hu3DData[model].motId;
         if (motion >= 0) {
             Hu3DMotionAttrSet(model, -1, entry->motion);
@@ -138,7 +138,7 @@ void func_80105E6C_staff(MsetupModelEntry *entry, MsetupModelHandle *handle, s32
     }
 }
 
-u32 func_80105F48_staff(u32 seed) {
+u32 staff_RandSeedCalc(u32 seed) {
     u32 quotient;
     u32 remainder;
 
@@ -153,36 +153,36 @@ u32 func_80105F48_staff(u32 seed) {
     return seed - remainder * 16807;
 }
 
-u32 func_8010601C_staff(void) {
-    return D_8011053C_staff = func_80105F48_staff(D_8011053C_staff);
+u32 staff_Rand(void) {
+    return staff_randSeed = staff_RandSeedCalc(staff_randSeed);
 }
 
-s32 func_80106044_staff(u32 limit) {
+s32 staff_RandMod(u32 limit) {
     u32 random;
 
-    random = D_8011053C_staff = func_80105F48_staff(D_8011053C_staff);
+    random = staff_randSeed = staff_RandSeedCalc(staff_randSeed);
     return (random & 0x7FFFFFFF) % limit;
 }
 
-void func_8010609C_staff(ModeCameraPreset *preset) {
+void staff_CameraPresetSet(ModeCameraPreset *preset) {
     CRot = preset->rot;
-    D_80111550_staff = CRot;
+    staff_cameraRot = CRot;
     Center = preset->center;
     CZoom = preset->zoom;
-    if (preset->fov != D_80110534_staff) {
-        D_80110534_staff = preset->fov;
-        Hu3DCameraPerspectiveSet(0, D_80110534_staff, D_80111564_staff, D_80111560_staff);
+    if (preset->fov != staff_cameraFov) {
+        staff_cameraFov = preset->fov;
+        Hu3DCameraPerspectiveSet(0, staff_cameraFov, staff_cameraNear, staff_cameraFar);
     }
 }
 
-void func_8010615C_staff(void) {
+void staff_CameraUpdate(void) {
     Vec pos, at, up;
     f32 rotX, rotY, rotZ;
     f32 upX, upY, upZ;
     f32 dx, dy, dz;
     f32 length;
 
-    if (D_80110538_staff == 0) {
+    if (staff_cameraLookF == 0) {
         rotX = CRot.x;
         rotY = CRot.y;
         rotZ = CRot.z;
@@ -213,8 +213,8 @@ void func_8010615C_staff(void) {
                upY * (dy * dz * (1.0f - cosdf(rotZ)) + dx * sindf(rotZ)) +
                upZ * (dz * dz + (1.0f - dz * dz) * cosdf(rotZ));
     } else {
-        pos = D_80111540_staff;
-        at = D_80111534_staff;
+        pos = staff_cameraPos;
+        at = staff_cameraTarget;
         up.x = 0.0f;
         up.y = 1.0f;
         up.z = 0.0f;
@@ -229,14 +229,14 @@ void func_8010615C_staff(void) {
     Hu3DCamUpdateMtx(0);
 }
 
-void func_80106720_staff(void) {
+void staff_CameraProc(void) {
     while (1) {
-        func_8010615C_staff();
+        staff_CameraUpdate();
         HuPrcVSleep();
     }
 }
 
-void func_8010674C_staff(MsetupCameraKeyframe *keys, f32 speed, void (*callback)(s16, s16, s16)) {
+void staff_CameraKeyframeExec(MsetupCameraKeyframe *keys, f32 speed, void (*callback)(s16, s16, s16)) {
     MsetupCameraKeyframe interpolated;
     f32 values[4];
     f32 times[4];
@@ -313,51 +313,51 @@ void func_8010674C_staff(MsetupCameraKeyframe *keys, f32 speed, void (*callback)
         Center.x = interpolated.values.preset.center.x;
         Center.y = interpolated.values.preset.center.y;
         Center.z = interpolated.values.preset.center.z;
-        D_80111550_staff.x = CRot.x = interpolated.values.preset.rot.x;
-        D_80111550_staff.y = CRot.y = interpolated.values.preset.rot.y;
-        D_80111550_staff.z = CRot.z = interpolated.values.preset.rot.z;
+        staff_cameraRot.x = CRot.x = interpolated.values.preset.rot.x;
+        staff_cameraRot.y = CRot.y = interpolated.values.preset.rot.y;
+        staff_cameraRot.z = CRot.z = interpolated.values.preset.rot.z;
         CZoom = interpolated.values.preset.zoom;
-        gCameraList->fov = D_80110534_staff = interpolated.values.preset.fov;
+        gCameraList->fov = staff_cameraFov = interpolated.values.preset.fov;
         if (callback != NULL) {
             onFrame((s16)duration, segment, i);
         }
         HuPrcVSleep();
     }
     segment++;
-    D_80111550_staff.x = CRot.x = keys[segment].values.preset.rot.x;
-    D_80111550_staff.y = CRot.y = keys[segment].values.preset.rot.y;
-    D_80111550_staff.z = CRot.z = keys[segment].values.preset.rot.z;
+    staff_cameraRot.x = CRot.x = keys[segment].values.preset.rot.x;
+    staff_cameraRot.y = CRot.y = keys[segment].values.preset.rot.y;
+    staff_cameraRot.z = CRot.z = keys[segment].values.preset.rot.z;
     CZoom = keys[segment].values.preset.zoom;
     Center.x = keys[segment].values.preset.center.x;
     Center.y = keys[segment].values.preset.center.y;
     Center.z = keys[segment].values.preset.center.z;
-    gCameraList->fov = D_80110534_staff = keys[segment].values.preset.fov;
+    gCameraList->fov = staff_cameraFov = keys[segment].values.preset.fov;
     winPauseF = 0;
 }
 
-void func_80106C50_staff(void) {
+void staff_PlayerConfigInit(void) {
     s16 i;
     s16 connectedCount;
     s16 port;
     s16 j;
 
     for (i = 0; i < 4; i++) {
-        D_80111518_staff.controllerPorts[i] = 0xFF;
-        D_80111518_staff.characters[i] = i;
-        D_80111518_staff.cpuDifficulty[i] = 0xFF;
-        D_80111518_staff.stars[i] = 0;
+        staff_playerConfig.controllerPorts[i] = 0xFF;
+        staff_playerConfig.characters[i] = i;
+        staff_playerConfig.cpuDifficulty[i] = 0xFF;
+        staff_playerConfig.stars[i] = 0;
     }
     for (i = 0, connectedCount = 0; i < 4; i++) {
         if (CheckControllerRead(i)) {
-            D_80111518_staff.controllerPorts[connectedCount] = i;
+            staff_playerConfig.controllerPorts[connectedCount] = i;
             connectedCount++;
         }
     }
     for (i = 0; i < 4; i++) {
-        if (D_80111518_staff.controllerPorts[i] == 0xFF) {
+        if (staff_playerConfig.controllerPorts[i] == 0xFF) {
             for (port = 0; port < 4; port++) {
                 for (j = 0; j < 4; j++) {
-                    if (D_80111518_staff.controllerPorts[j] == port) {
+                    if (staff_playerConfig.controllerPorts[j] == port) {
                         break;
                     }
                 }
@@ -365,15 +365,15 @@ void func_80106C50_staff(void) {
                     break;
                 }
             }
-            D_80111518_staff.controllerPorts[i] = port;
+            staff_playerConfig.controllerPorts[i] = port;
         }
     }
-    D_80111518_staff.totalTurns = 0;
-    D_80111518_staff.unk16 = 0;
-    D_80111518_staff.unk13 = 0;
-    D_80111518_staff.connectedCount = connectedCount;
-    D_80111518_staff.humanCount = 0;
-    D_80111518_staff.cpuCount = 4;
-    D_80111518_staff.boardIndex = 0;
-    D_80111510_staff = D_80111518_staff.controllerPorts[0];
+    staff_playerConfig.totalTurns = 0;
+    staff_playerConfig.unk16 = 0;
+    staff_playerConfig.unk13 = 0;
+    staff_playerConfig.connectedCount = connectedCount;
+    staff_playerConfig.humanCount = 0;
+    staff_playerConfig.cpuCount = 4;
+    staff_playerConfig.boardIndex = 0;
+    staff_padNo = staff_playerConfig.controllerPorts[0];
 }

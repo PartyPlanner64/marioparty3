@@ -1,13 +1,13 @@
 #include "staff.h"
 
-s32 D_80110540_staff[8] = {
+s32 staff_fireworkSprTbl[8] = {
     0xB003E, 0xB003F, 0xB0040, 0xB0041, 0xB0042, 0xB0043, 0xB0044, 0xB0045
 };
-ModeCameraPreset D_80110560_staff = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 1390.0f, 32.0f };
+ModeCameraPreset staff_cameraPreset = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 1390.0f, 32.0f };
 
-const char D_80111208_staff[] = "MARIO PARTY 3 STAFF";
+const char staff_titleStr[] = "MARIO PARTY 3 STAFF";
 
-void func_80106E20_staff(void) {
+void staff_MainProc(void) {
     GAMEMES gMes;
     s16 stat0;
     s16 stat1;
@@ -23,27 +23,27 @@ void func_80106E20_staff(void) {
     s32 i;
 
     Hu3DScreenClearF = 1;
-    func_8010609C_staff(&D_80110560_staff);
-    func_8010B514_staff(0, 6);
-    func_8010B514_staff(1, 12);
+    staff_CameraPresetSet(&staff_cameraPreset);
+    staff_TextLineInit(0, 6);
+    staff_TextLineInit(1, 12);
     stat0 = 0;
-    omAddPrcObj(func_80107EB8_staff, 0x4200, 0x800, 0)->user_data = &stat0;
+    omAddPrcObj(staff_BackProc, 0x4200, 0x800, 0)->user_data = &stat0;
     stat1 = 0;
-    omAddPrcObj(func_801095E4_staff, 0x4000, 0, 0)->user_data = &stat1;
+    omAddPrcObj(staff_StarProc, 0x4000, 0, 0)->user_data = &stat1;
     stat2 = 0;
-    omAddPrcObj(func_8010BF84_staff, 0x4000, 0, 0)->user_data = &stat2;
+    omAddPrcObj(staff_CreditRollProc, 0x4000, 0, 0)->user_data = &stat2;
     stat3 = 0;
-    omAddPrcObj(func_80109264_staff, 0x4000, 0, 0)->user_data = &stat3;
+    omAddPrcObj(staff_HostProc, 0x4000, 0, 0)->user_data = &stat3;
     stat4 = 0;
-    omAddPrcObj(func_80107508_staff, 0x1000, 0, 0)->user_data = &stat4;
-    strId = GameMesStrInit(&gMes, (char *)D_80111208_staff, 0, -1, -1);
+    omAddPrcObj(staff_FireworkShowProc, 0x1000, 0, 0)->user_data = &stat4;
+    strId = GameMesStrInit(&gMes, (char *)staff_titleStr, 0, -1, -1);
     grpId = gMes.strGId[strId];
     HuSprPosSet(grpId, 0, 160, 120);
     for (i = 1; i < 20; i++) {
         HuSprTPLvlSet(grpId, i, 0);
         HuSprDispOff(grpId, i);
     }
-    WipeCreateIn(D_80111530_staff, 16);
+    WipeCreateIn(staff_wipeType, 16);
     while (WipeStatGet()) {
         HuPrcVSleep();
     }
@@ -97,12 +97,12 @@ void func_80106E20_staff(void) {
     while (WipeStatGet()) {
         HuPrcVSleep();
     }
-    func_8010B794_staff(0);
-    func_8010B794_staff(1);
+    staff_TextLineClose(0);
+    staff_TextLineClose(1);
     stat0 = stat1 = -1;
     HuPrcSleep(2);
     stat5 = 1;
-    omAddPrcObj(func_8010D1E8_staff, 0x4000, 0x1800, 0)->user_data = &stat5;
+    omAddPrcObj(staff_FinaleProc, 0x4000, 0x1800, 0)->user_data = &stat5;
     while (stat5 != 0) {
         HuPrcVSleep();
     }
@@ -121,7 +121,7 @@ void func_80106E20_staff(void) {
     }
     stat5 = -1;
     stat6 = 1;
-    omAddPrcObj(func_8010D998_staff, 0x4000, 0x1000, 0)->user_data = &stat6;
+    omAddPrcObj(staff_EndProc, 0x4000, 0x1000, 0)->user_data = &stat6;
     while (stat6 != 0) {
         HuPrcVSleep();
     }
@@ -141,39 +141,39 @@ void func_80106E20_staff(void) {
         }
         HuPrcVSleep();
     }
-    D_80110530_staff = 1;
+    staff_exitCnt = 1;
     while (TRUE) {
         HuPrcVSleep();
     }
 }
 
-void func_801073EC_staff(UnkStaff_2 *arg0, s32 arg1) {
+void staff_FireworkRandSet(UnkStaff_2 *arg0, s32 arg1) {
     u32 random;
     s32 x;
     s32 y;
 
-    random = func_8010601C_staff();
+    random = staff_Rand();
     x = (random & 0xFF) - 128;
     y = -500 - ((random >> 8) & 0xFF);
-    func_8010DEF4_staff(arg0, x, y, 0.0f);
-    x = func_80106044_staff(100) + arg1 * 500 - 550;
-    y = (func_8010601C_staff() & 0x3F) + 218;
-    func_8010DEE4_staff(arg0, x, y, func_80106044_staff(500) - 800);
-    func_8010DF04_staff(arg0, func_80106044_staff(60) + 30);
+    staff_FireworkStartPosSet(arg0, x, y, 0.0f);
+    x = staff_RandMod(100) + arg1 * 500 - 550;
+    y = (staff_Rand() & 0x3F) + 218;
+    staff_FireworkEndPosSet(arg0, x, y, staff_RandMod(500) - 800);
+    staff_FireworkTimeSet(arg0, staff_RandMod(60) + 30);
 }
 
-void func_80107508_staff(void) {
+void staff_FireworkShowProc(void) {
     s16 *stat = HuPrcCurrentGet()->user_data;
     UnkStaff_2 *objs[4];
     s16 timers[3];
     s16 index;
     s32 i;
 
-    index = (D_80111514_staff >= 0 && D_80111514_staff < 6) ? D_80111514_staff : 0;
+    index = (staff_chrNo >= 0 && staff_chrNo < 6) ? staff_chrNo : 0;
     for (i = 0; i < 3; i++) {
-        objs[i] = func_8010DE50_staff(D_80110540_staff[index]);
-        func_801073EC_staff(objs[i], i);
-        func_8010DF0C_staff(objs[i], 1, 1);
+        objs[i] = staff_FireworkCreate(staff_fireworkSprTbl[index]);
+        staff_FireworkRandSet(objs[i], i);
+        staff_FireworkFlagSet(objs[i], 1, 1);
         timers[i] = 0;
     }
     while (*stat >= 0) {
@@ -188,7 +188,7 @@ void func_80107508_staff(void) {
                 break;
             case 2:
                 for (i = 0; i < 3; i++) {
-                    func_8010DF0C_staff(objs[i], 4, 4);
+                    staff_FireworkFlagSet(objs[i], 4, 4);
                 }
                 *stat = -1;
                 break;
@@ -197,9 +197,9 @@ void func_80107508_staff(void) {
             for (i = 0; i < 3; i++) {
                 if (timers[i] != 0) {
                     if (--timers[i] == 0) {
-                        func_8010DF0C_staff(objs[i], 1, 0);
+                        staff_FireworkFlagSet(objs[i], 1, 0);
                     }
-                } else if (func_8010DF24_staff(objs[i]) & 1) {
+                } else if (staff_FireworkFlagGet(objs[i]) & 1) {
                     timers[i] = (rand8() & 0xF) + 1;
                 }
             }

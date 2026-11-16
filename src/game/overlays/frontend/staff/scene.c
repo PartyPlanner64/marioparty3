@@ -1,30 +1,30 @@
 #include "staff.h"
 
-s32 D_801105F0_staff[2] = { 0xA0075, 0xA0122 };
-Vec D_801105F8_staff[2] = {
+s32 staff_hostMdlFileTbl[2] = { 0xA0075, 0xA0122 };
+Vec staff_hostOrbitCenterTbl[2] = {
     { -755.0f, 580.0f, 0.0f },
     { 755.0f, 580.0f, 0.0f },
 };
-f32 D_80110610_staff[2] = { 360.0f, 180.0f };
-Vec D_80110618_staff[4] = {
+f32 staff_hostStopAngleTbl[2] = { 360.0f, 180.0f };
+Vec staff_starPathATbl[4] = {
     { 0.0f, 70.0f, 546.0f },
     { 0.0f, 200.0f, 315.0f },
     { -402.0f, 296.0f, -37.0f },
     { 9999.0f, 9999.0f, 9999.0f },
 };
-Vec D_80110648_staff[3] = {
+Vec staff_starPathBTbl[3] = {
     { -402.0f, 296.0f, -37.0f },
     { 48.0f, 4.0f, 1298.0f },
     { 9999.0f, 9999.0f, 9999.0f },
 };
-s16 D_8011066C_staff[4] = { -160, -80, 80, 160 };
+s16 staff_castGroupOfsTbl[4] = { -160, -80, 80, 160 };
 
-extern StaffAnimEntry D_80110674_staff[18];
-extern StaffModelEntry D_80110704_staff[38];
-extern s32 D_80110AA0_staff[27];
-extern s32 D_80110B0C_staff[28];
+extern StaffAnimEntry staff_castAnimTbl[18];
+extern StaffModelEntry staff_castMdlTbl[38];
+extern s32 staff_roleFontFileTbl[27];
+extern s32 staff_nameFontFileTbl[28];
 
-StaffPath *func_801085F0_staff(Vec *points, s32 flags) {
+StaffPath *staff_PathCreate(Vec *points, s32 flags) {
     StaffPath *path;
     StaffPathSeg *seg;
     Vec *prev;
@@ -84,7 +84,7 @@ StaffPath *func_801085F0_staff(Vec *points, s32 flags) {
     return path;
 }
 
-void func_801088F4_staff(StaffPath *path, f32 t, Vec *out) {
+void staff_PathPosGet(StaffPath *path, f32 t, Vec *out) {
     f32 value[4];
     f32 time[4];
     StaffPathSeg *segs;
@@ -252,12 +252,12 @@ void func_801088F4_staff(StaffPath *path, f32 t, Vec *out) {
     }
 }
 
-void func_8010919C_staff(StaffPath *path) {
+void staff_PathKill(StaffPath *path) {
     HuMemFree(path->segs);
     HuMemFree(path);
 }
 
-void func_801091CC_staff(Vec *out, Vec *center, f32 angle) {
+void staff_HostOrbitPosGet(Vec *out, Vec *center, f32 angle) {
     f32 x = cosdf(angle) * 1235.0f;
     f32 y = sindf(angle) * 880.0f;
 
@@ -268,7 +268,7 @@ void func_801091CC_staff(Vec *out, Vec *center, f32 angle) {
     out->z = center->z;
 }
 
-void func_80109264_staff(void) {
+void staff_HostProc(void) {
     f32 angle[2];
     f32 speed[2];
     Vec pos;
@@ -282,11 +282,11 @@ void func_80109264_staff(void) {
     rotZ = 0.0f;
     stat = HuPrcCurrentGet()->user_data;
     for (i = 0; i < 2; i++) {
-        modelId = Hu3DModelRead(D_801105F0_staff[i], 0x2A9);
+        modelId = Hu3DModelRead(staff_hostMdlFileTbl[i], 0x2A9);
         model[i] = modelId;
         Hu3DMotionAttrSet(modelId, -1, 2);
         angle[i] = 270.0f;
-        func_801091CC_staff(&pos, &D_801105F8_staff[i], 270.0f);
+        staff_HostOrbitPosGet(&pos, &staff_hostOrbitCenterTbl[i], 270.0f);
         Hu3DModelPosSet(modelId, pos.x, pos.y, pos.z);
     }
     AuraCreate(modelId);
@@ -316,20 +316,20 @@ void func_80109264_staff(void) {
             angle[i] += speed[i];
             modelId = 0; // reused as an arrival flag
             if (speed[i] < 0.0f) {
-                if (angle[i] <= D_80110610_staff[i]) {
+                if (angle[i] <= staff_hostStopAngleTbl[i]) {
                     modelId = 1;
                 }
             } else {
-                if (angle[i] >= D_80110610_staff[i]) {
+                if (angle[i] >= staff_hostStopAngleTbl[i]) {
                     modelId++;
                 }
             }
             if (modelId) {
-                angle[i] = D_80110610_staff[i];
+                angle[i] = staff_hostStopAngleTbl[i];
                 speed[i] = 0.0f;
                 (*stat)++;
             }
-            func_801091CC_staff(&pos, &D_801105F8_staff[i], angle[i]);
+            staff_HostOrbitPosGet(&pos, &staff_hostOrbitCenterTbl[i], angle[i]);
             Hu3DModelPosSet(model[i], pos.x, pos.y, pos.z);
             switch (i) {
                 case 0:
@@ -354,7 +354,7 @@ void func_80109264_staff(void) {
     }
 }
 
-void func_801095E4_staff(void) {
+void staff_StarProc(void) {
     Vec pos;
     StaffPath *path;
     s16 state;
@@ -372,9 +372,9 @@ void func_801095E4_staff(void) {
     stat = HuPrcCurrentGet()->user_data;
     model = Hu3DModelRead(0xA015F, 0x2A9);
     Hu3DMotionAttrSet(model, -1, 2);
-    path = func_801085F0_staff(D_80110618_staff, 0);
-    nextPath = func_801085F0_staff(D_80110648_staff, 0);
-    func_801088F4_staff(path, 0.0f, &pos);
+    path = staff_PathCreate(staff_starPathATbl, 0);
+    nextPath = staff_PathCreate(staff_starPathBTbl, 0);
+    staff_PathPosGet(path, 0.0f, &pos);
     Hu3DModelPosSet(model, pos.x, pos.y, pos.z);
     angle = 0.0f;
     angleSpeed = angle;
@@ -422,10 +422,10 @@ void func_801095E4_staff(void) {
             }
             cosAngle = cosdf(angle);
             cosAngle += 1.0f;
-            func_801088F4_staff(path, cosAngle * 0.5f, &pos);
+            staff_PathPosGet(path, cosAngle * 0.5f, &pos);
             Hu3DModelPosSet(model, pos.x, pos.y, pos.z);
             if (done) {
-                func_8010919C_staff(path);
+                staff_PathKill(path);
                 path = NULL;
                 *stat = 0;
             }
@@ -458,7 +458,7 @@ void func_801095E4_staff(void) {
     }
 }
 
-void func_8010992C_staff(Process *prc, s16 modelId) {
+void staff_CastKillReq(Process *prc, s16 modelId) {
     UnkStaff_4 *staff = prc->user_data;
     UnkStaff_3 *ptr = staff->unk_00;
     s32 i;
@@ -476,7 +476,7 @@ void func_8010992C_staff(Process *prc, s16 modelId) {
     }
 }
 
-s16 func_8010998C_staff(Process *prc, s16 *model, s16 *motion, Vec *pos) {
+s16 staff_CastShow(Process *prc, s16 *model, s16 *motion, Vec *pos) {
     UnkStaff_4 *staff = prc->user_data;
     s16 index = staff->unk_08;
     UnkStaff_3 *work = &staff->unk_00[index];
@@ -510,7 +510,7 @@ s16 func_8010998C_staff(Process *prc, s16 *model, s16 *motion, Vec *pos) {
             Hu3DModelAttrSet(work->unk_1C, 4, 0);
             for (i = 0; i < 4; i++) {
                 member = work->unk_28[i];
-                Hu3DModelPosSet(member, x + D_8011066C_staff[i], y, z);
+                Hu3DModelPosSet(member, x + staff_castGroupOfsTbl[i], y, z);
                 Hu3DModelAttrSet(member, 4, 0);
             }
             break;
@@ -538,7 +538,7 @@ s16 func_8010998C_staff(Process *prc, s16 *model, s16 *motion, Vec *pos) {
     return index;
 }
 
-void func_80109D08_staff(Process *prc, s16 modelId, Vec *pos) {
+void staff_CastPosSet(Process *prc, s16 modelId, Vec *pos) {
     UnkStaff_4 *staff = prc->user_data;
     UnkStaff_3 *ptr = staff->unk_00;
     s32 i;
@@ -556,7 +556,7 @@ void func_80109D08_staff(Process *prc, s16 modelId, Vec *pos) {
     }
 }
 
-StaffModelEntry *func_80109D74_staff(UnkStaff_3 *work, StaffModelEntry *entry) {
+StaffModelEntry *staff_CastCreateAll(UnkStaff_3 *work, StaffModelEntry *entry) {
     void *data;
     s32 i;
     s16 hasAnim;
@@ -575,8 +575,8 @@ StaffModelEntry *func_80109D74_staff(UnkStaff_3 *work, StaffModelEntry *entry) {
         if (entry->animNo != 0) {
             i = entry->animNo - 1;
             hasAnim = TRUE;
-            data = DataRead(D_80110674_staff[i].dataNum);
-            work->unk_32 = Hu3DAnimCreate(Hu3DData[model].hmf, data, 0, D_80110674_staff[i].name);
+            data = DataRead(staff_castAnimTbl[i].dataNum);
+            work->unk_32 = Hu3DAnimCreate(Hu3DData[model].hmf, data, 0, staff_castAnimTbl[i].name);
             HuMemMemoryFreePerm(data);
         }
         if (entry->motDataId != 0) {
@@ -596,7 +596,7 @@ StaffModelEntry *func_80109D74_staff(UnkStaff_3 *work, StaffModelEntry *entry) {
     return entry;
 }
 
-StaffModelEntry *func_80109F34_staff(UnkStaff_3 *work, StaffModelEntry *entry) {
+StaffModelEntry *staff_CastNextLoad(UnkStaff_3 *work, StaffModelEntry *entry) {
     void *data;
     s32 i;
     s16 hasAnim;
@@ -654,10 +654,10 @@ StaffModelEntry *func_80109F34_staff(UnkStaff_3 *work, StaffModelEntry *entry) {
     if (entry->animNo != 0) {
         i = entry->animNo - 1;
         hasAnim = TRUE;
-        data = DataRead(D_80110674_staff[i].dataNum);
+        data = DataRead(staff_castAnimTbl[i].dataNum);
         HuPrcVSleep();
         HuPrcVSleep();
-        work->unk_32 = Hu3DAnimCreate(Hu3DData[model].hmf, data, 0, D_80110674_staff[i].name);
+        work->unk_32 = Hu3DAnimCreate(Hu3DData[model].hmf, data, 0, staff_castAnimTbl[i].name);
         HuMemMemoryFreePerm(data);
         HuPrcVSleep();
     }
@@ -817,7 +817,7 @@ StaffModelEntry *func_80109F34_staff(UnkStaff_3 *work, StaffModelEntry *entry) {
     return entry;
 }
 
-void func_8010A848_staff(void) {
+void staff_CastMoveProc(void) {
     UnkStaff_3 *works;
     UnkStaff_3 *work;
     s32 i;
@@ -955,7 +955,7 @@ void func_8010A848_staff(void) {
                     switch (work->unk_36) {
                         case 0:
                             if (work->unk_38 == 0) {
-                                j = func_80106044_staff(380) - 190;
+                                j = staff_RandMod(380) - 190;
                                 work->unk_0C.x = j;
                                 Hu3DModelScaleSet(model, 1.0f, 1.0f, 1.0f);
                                 vel = 6.0f;
@@ -984,7 +984,7 @@ void func_8010A848_staff(void) {
                 case 7:
                     Hu3DModelPosSet(model, x, y, z);
                     for (j = 0; j < 4; j++) {
-                        Hu3DModelPosSet(work->unk_28[j], x + D_8011066C_staff[j], y, z);
+                        Hu3DModelPosSet(work->unk_28[j], x + staff_castGroupOfsTbl[j], y, z);
                     }
                     break;
                 case 8:
@@ -1024,7 +1024,7 @@ void func_8010A848_staff(void) {
     }
 }
 
-void func_8010B1E0_staff(void) {
+void staff_CastProc(void) {
     UnkStaff_3 works[3];
     UnkStaff_4 *staff;
     Process *prc;
@@ -1037,10 +1037,10 @@ void func_8010B1E0_staff(void) {
     memset(staff, 0, sizeof(UnkStaff_4));
     state = 0;
     HuPrcCurrentGet()->user_data = staff;
-    prc = omAddPrcObj(func_8010A848_staff, 0x4000, 0x800, 0);
+    prc = omAddPrcObj(staff_CastMoveProc, 0x4000, 0x800, 0);
     prc->user_data = works;
     staff->unk_00 = works;
-    entry = func_80109D74_staff(works, D_80110704_staff);
+    entry = staff_CastCreateAll(works, staff_castMdlTbl);
     while (state >= 0) {
         if (state != staff->unk_04) {
             switch (staff->unk_04) {
@@ -1054,7 +1054,7 @@ void func_8010B1E0_staff(void) {
         }
         for (work = works, i = 0; i < 3; i++, work++) {
             if (work->unk_3A != 0 && (work->unk_3A & 4)) {
-                entry = func_80109F34_staff(work, entry);
+                entry = staff_CastNextLoad(work, entry);
             }
         }
         HuPrcVSleep();
@@ -1102,7 +1102,7 @@ void func_8010B1E0_staff(void) {
     }
 }
 
-void func_8010B430_staff(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
+void staff_SprPosAdd(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     HuSprGrp *grp = HuSprGrpData[arg0];
     HuSprite *sprite = grp->members[arg1];
 
@@ -1113,7 +1113,7 @@ void func_8010B430_staff(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     }
 }
 
-void func_8010B4B4_staff(s16 arg0, s16 arg1, s16 arg2) {
+void staff_SprPosYSet(s16 arg0, s16 arg1, s16 arg2) {
     f32 value = arg2;
     HuSprGrp *grp = HuSprGrpData[arg0];
     HuSprite *sprite = grp->members[arg1];
@@ -1125,7 +1125,7 @@ void func_8010B4B4_staff(s16 arg0, s16 arg1, s16 arg2) {
     sprite->pos.y = value;
 }
 
-void func_8010B514_staff(s16 arg0, s16 arg1) {
+void staff_TextLineInit(s16 arg0, s16 arg1) {
     UnkStaff_6 *recs;
     UnkStaff_6 *rec;
     s32 *files;
@@ -1140,16 +1140,16 @@ void func_8010B514_staff(s16 arg0, s16 arg1) {
     switch (arg0) {
         case 0:
         default:
-            animTbl = D_80111490_staff;
+            animTbl = staff_roleFontAnimTbl;
             memberCount = 24;
-            files = D_80110AA0_staff;
-            animCount = ARRAY_COUNT(D_80111490_staff);
+            files = staff_roleFontFileTbl;
+            animCount = ARRAY_COUNT(staff_roleFontAnimTbl);
             break;
         case 1:
-            animTbl = D_801114D0_staff;
+            animTbl = staff_nameFontAnimTbl;
             memberCount = 28;
-            files = D_80110B0C_staff;
-            animCount = ARRAY_COUNT(D_801114D0_staff);
+            files = staff_nameFontFileTbl;
+            animCount = ARRAY_COUNT(staff_nameFontAnimTbl);
             break;
     }
 
@@ -1180,17 +1180,17 @@ void func_8010B514_staff(s16 arg0, s16 arg1) {
     switch (arg0) {
         case 0:
         default:
-            D_801114C8_staff = recs;
-            D_8011150C_staff = arg1;
+            staff_roleLineTbl = recs;
+            staff_roleLineNum = arg1;
             break;
         case 1:
-            D_80111508_staff = recs;
-            D_8011150E_staff = arg1;
+            staff_nameLineTbl = recs;
+            staff_nameLineNum = arg1;
             break;
     }
 }
 
-void func_8010B794_staff(s16 arg0) {
+void staff_TextLineClose(s16 arg0) {
     UnkStaff_6 *recs;
     UnkStaff_6 *rec;
     s16 *anims;
@@ -1201,16 +1201,16 @@ void func_8010B794_staff(s16 arg0) {
     switch (arg0) {
         case 0:
         default:
-            recs = D_801114C8_staff;
-            anims = D_80111490_staff;
-            count = D_8011150C_staff;
-            animCount = ARRAY_COUNT(D_80111490_staff);
+            recs = staff_roleLineTbl;
+            anims = staff_roleFontAnimTbl;
+            count = staff_roleLineNum;
+            animCount = ARRAY_COUNT(staff_roleFontAnimTbl);
             break;
         case 1:
-            recs = D_80111508_staff;
-            anims = D_801114D0_staff;
-            count = D_8011150E_staff;
-            animCount = ARRAY_COUNT(D_801114D0_staff);
+            recs = staff_nameLineTbl;
+            anims = staff_nameFontAnimTbl;
+            count = staff_nameLineNum;
+            animCount = ARRAY_COUNT(staff_nameFontAnimTbl);
             break;
     }
 
@@ -1225,16 +1225,16 @@ void func_8010B794_staff(s16 arg0) {
         switch (arg0) {
             case 0:
             default:
-                D_801114C8_staff = NULL;
+                staff_roleLineTbl = NULL;
                 break;
             case 1:
-                D_80111508_staff = NULL;
+                staff_nameLineTbl = NULL;
                 break;
         }
     }
 }
 
-void func_8010B8C0_staff(s16 arg0, s16 arg1, s16 visible) {
+void staff_TextLineDispSet(s16 arg0, s16 arg1, s16 visible) {
     UnkStaff_6 *rec;
     s32 i;
     s16 count;
@@ -1243,10 +1243,10 @@ void func_8010B8C0_staff(s16 arg0, s16 arg1, s16 visible) {
     switch (arg0) {
         case 0:
         default:
-            rec = &D_801114C8_staff[arg1];
+            rec = &staff_roleLineTbl[arg1];
             break;
         case 1:
-            rec = &D_80111508_staff[arg1];
+            rec = &staff_nameLineTbl[arg1];
             break;
     }
 
@@ -1265,16 +1265,16 @@ void func_8010B8C0_staff(s16 arg0, s16 arg1, s16 visible) {
     }
 }
 
-void func_8010B9BC_staff(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
+void staff_TextLinePosSet(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     UnkStaff_6 *rec;
 
     switch (arg0) {
         case 0:
         default:
-            rec = &D_801114C8_staff[arg1];
+            rec = &staff_roleLineTbl[arg1];
             break;
         case 1:
-            rec = &D_80111508_staff[arg1];
+            rec = &staff_nameLineTbl[arg1];
             break;
     }
 
@@ -1283,7 +1283,7 @@ void func_8010B9BC_staff(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     }
 }
 
-void func_8010BA30_staff(s16 arg0, s16 arg1, u32 arg2, s16 arg3, s16 arg4) {
+void staff_TextLineStrSet(s16 arg0, s16 arg1, u32 arg2, s16 arg3, s16 arg4) {
     s16 xs[24];
     UnkStaff_6 *rec;
     s16 *anims;
@@ -1305,15 +1305,15 @@ void func_8010BA30_staff(s16 arg0, s16 arg1, u32 arg2, s16 arg3, s16 arg4) {
     switch (arg0) {
         case 0:
         default:
-            rec = &D_801114C8_staff[arg1];
-            anims = D_80111490_staff;
+            rec = &staff_roleLineTbl[arg1];
+            anims = staff_roleFontAnimTbl;
             maxCount = 24;
             narrowAdjust = -2;
             spacing = 10;
             break;
         case 1:
-            rec = &D_80111508_staff[arg1];
-            anims = D_801114D0_staff;
+            rec = &staff_nameLineTbl[arg1];
+            anims = staff_nameFontAnimTbl;
             maxCount = 28;
             narrowAdjust = 0;
             spacing = 10;
@@ -1398,7 +1398,7 @@ void func_8010BA30_staff(s16 arg0, s16 arg1, u32 arg2, s16 arg3, s16 arg4) {
     (void)allocated; // Unused, but its store keeps the call result in v0.
 }
 
-StaffAnimEntry D_80110674_staff[18] = {
+StaffAnimEntry staff_castAnimTbl[18] = {
     { 0x200A4, "c000l_0_DEF" },
     { 0x300A4, "c001l_0_DEF" },
     { 0x700AB, "c002l_0_DEF" },
@@ -1418,7 +1418,7 @@ StaffAnimEntry D_80110674_staff[18] = {
     { 0xA002B, "c180n_0_DEF" },
     { 0xA007E, "c204n_0_DEF" },
 };
-StaffModelEntry D_80110704_staff[38] = {
+StaffModelEntry staff_castMdlTbl[38] = {
     { 0.8f, 0x200A0, 0x2009D, { 0, 0, 0 }, 0, 0, 1 },
     { 0.8f, 0x300A0, 0x3009D, { 0, 0, 0 }, 0, 0, 2 },
     { 0.8f, 0x700A0, 0x7009D, { 0, 0, 0 }, 0, 0, 3 },
@@ -1458,8 +1458,8 @@ StaffModelEntry D_80110704_staff[38] = {
     { 0.8f, 0xA0075, 0x1D0084, { 0, 30, 0 }, 0, 0, 18 },
     { 0.0f, 0, 0, { 0, 0, 0 }, -1, 0, 0 },
 };
-s32 D_80110A94_staff[3] = { 0 }; /* Unreferenced. */
-s32 D_80110AA0_staff[27] = {
+s32 staff_castMdlPad[3] = { 0 }; /* Unreferenced. */
+s32 staff_roleFontFileTbl[27] = {
     0x160000,
     0x160001,
     0x160002,
@@ -1488,7 +1488,7 @@ s32 D_80110AA0_staff[27] = {
     0x160019,
     0x16004A,
 };
-s32 D_80110B0C_staff[28] = {
+s32 staff_nameFontFileTbl[28] = {
     0x160026,
     0x160027,
     0x160028,

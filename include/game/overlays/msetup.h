@@ -79,6 +79,6 @@ typedef struct MsetupPortraitState {
     s16 unk02;
 } MsetupPortraitState;
 
-s16 func_8010D684_msetup(s16 controller, s16 *previousButtons);
+s16 msetup_PadBtnDownGet(s16 controller, s16 *previousButtons);
 
 #endif

@@ -7,12 +7,12 @@
 #include "game/wipe.h"
 #include "variables.h"
 
-s16 D_80105F40_slerror[4] BSS;
-s16 D_80105F48_slerror[4] BSS;
+s16 slerror_animTbl[4] BSS;
+s16 slerror_sprTbl[4] BSS;
 
-void func_801059D0_slerror(void);
+void slerror_MainProc(void);
 
-void func_801059D0_slerror(void) {
+void slerror_MainProc(void) {
     u16 count;
     s16 anim;
     s16 sprite;
@@ -26,7 +26,7 @@ void func_801059D0_slerror(void) {
     HuWinInit();
     if (SLFormatFlags == 0xF) {
         count = 1;
-        D_80105F48_slerror[0] = sprite = espEntry(D_80105F40_slerror[0] = HuSprAnimDataRead(0x200000), 0, 1);
+        slerror_sprTbl[0] = sprite = espEntry(slerror_animTbl[0] = HuSprAnimDataRead(0x200000), 0, 1);
         espPosSet(sprite, 160, 120);
         espAttrReset(sprite, 0xFFFF);
         espAttrSet(sprite, 0x1000);
@@ -35,8 +35,8 @@ void func_801059D0_slerror(void) {
     } else {
         count = 0;
         if (SLFormatFlags & 8) {
-            D_80105F40_slerror[0] = anim = HuSprAnimDataRead(0x200004);
-            D_80105F48_slerror[0] = sprite = espEntry(anim, 0, 1);
+            slerror_animTbl[0] = anim = HuSprAnimDataRead(0x200004);
+            slerror_sprTbl[0] = sprite = espEntry(anim, 0, 1);
             espPosSet(sprite, 160, 120);
             espAttrReset(sprite, 0xFFFF);
             espAttrSet(sprite, 0x1000);
@@ -45,8 +45,8 @@ void func_801059D0_slerror(void) {
             count = 1;
         }
         if (SLFormatFlags & 1) {
-            D_80105F40_slerror[count] = anim = HuSprAnimDataRead(0x200001);
-            D_80105F48_slerror[count] = sprite = espEntry(anim, 0, 1);
+            slerror_animTbl[count] = anim = HuSprAnimDataRead(0x200001);
+            slerror_sprTbl[count] = sprite = espEntry(anim, 0, 1);
             espPosSet(sprite, 160, 120);
             espAttrReset(sprite, 0xFFFF);
             espAttrSet(sprite, 0x1000);
@@ -55,8 +55,8 @@ void func_801059D0_slerror(void) {
             count++;
         }
         if (SLFormatFlags & 2) {
-            D_80105F40_slerror[count] = anim = HuSprAnimDataRead(0x200002);
-            D_80105F48_slerror[count] = sprite = espEntry(anim, 0, 1);
+            slerror_animTbl[count] = anim = HuSprAnimDataRead(0x200002);
+            slerror_sprTbl[count] = sprite = espEntry(anim, 0, 1);
             espPosSet(sprite, 160, 120);
             espAttrReset(sprite, 0xFFFF);
             espAttrSet(sprite, 0x1000);
@@ -65,8 +65,8 @@ void func_801059D0_slerror(void) {
             count++;
         }
         if (SLFormatFlags & 4) {
-            D_80105F40_slerror[count] = anim = HuSprAnimDataRead(0x200003);
-            D_80105F48_slerror[count] = sprite = espEntry(anim, 0, 1);
+            slerror_animTbl[count] = anim = HuSprAnimDataRead(0x200003);
+            slerror_sprTbl[count] = sprite = espEntry(anim, 0, 1);
             espPosSet(sprite, 160, 120);
             espAttrReset(sprite, 0xFFFF);
             espAttrSet(sprite, 0x1000);
@@ -76,7 +76,7 @@ void func_801059D0_slerror(void) {
         }
     }
     for (i = 0; i < count; i++) {
-        espDispOn(D_80105F48_slerror[i]);
+        espDispOn(slerror_sprTbl[i]);
         WipeCreateIn(0xB, 8);
         while (WipeStatGet() != 0) {
             HuPrcVSleep();
@@ -88,11 +88,11 @@ void func_801059D0_slerror(void) {
         while (WipeStatGet() != 0) {
             HuPrcVSleep();
         }
-        espDispOff(D_80105F48_slerror[i]);
+        espDispOff(slerror_sprTbl[i]);
     }
     for (i = 0; i < count; i++) {
-        espKill(D_80105F48_slerror[i]);
-        HuSprAnimKill(D_80105F40_slerror[i]);
+        espKill(slerror_sprTbl[i]);
+        HuSprAnimKill(slerror_animTbl[i]);
     }
     HuWinAllKill();
     omOvlGotoEx(0x58, 0, 0x81);
@@ -100,14 +100,14 @@ void func_801059D0_slerror(void) {
     HuPrcVSleep();
 }
 
-void func_80105E9C_slerror(void) {
+void slerror_ObjectSetup(void) {
     omInitObjMan(0xA, 0xA);
     omGameSysInit();
-    omAddPrcObj(func_801059D0_slerror, 0x1005, 0, 0);
+    omAddPrcObj(slerror_MainProc, 0x1005, 0, 0);
 }
 
-void func_80105EDC_slerror(void) {
+void slerror_ObjectSetupAlt(void) {
     omInitObjMan(0xA, 0xA);
     omGameSysInit();
-    omAddPrcObj(func_801059D0_slerror, 0x1005, 0, 0);
+    omAddPrcObj(slerror_MainProc, 0x1005, 0, 0);
 }

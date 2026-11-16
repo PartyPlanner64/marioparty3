@@ -2,371 +2,371 @@
 #include "option.h"
 #include "game/mallocblock.h"
 
-extern const Vec D_801146BC_option;
-extern const Vec D_801146C8_option;
-extern const Vec D_801146D4_option;
-extern const Vec D_801146E0_option;
-extern const Vec D_80114674_option;
-extern const Vec D_80114680_option;
+extern const Vec option_soundRoomCameraPos;
+extern const Vec option_soundRoomCameraAt;
+extern const Vec option_recordRoomCameraPos;
+extern const Vec option_recordRoomCameraAt;
+extern const Vec option_roomCameraPos;
+extern const Vec option_roomCameraAt;
 extern u8 saveCommonBuf;
 
-void func_801133BC_option(s32, u32);
-void func_80113368_option(s32, s32 *, s32 *);
-void func_8011323C_option(s32);
-void func_80113258_option(s32);
-void func_80113490_option(s32);
-void func_80113424_option(s32);
-s32 func_801130E8_option(s32);
-void func_801133EC_option(s32);
-void func_80112F48_option(s32, s32, f32, f32, f32);
-void func_8011331C_option(s32, s32, u16);
-void func_801132AC_option(s32, s32);
-void func_801132C8_option(s32, s32);
-void func_801132E4_option(s32, u32);
-void func_80112EB8_option(s32, s32, f32, f32, f32);
-void func_80112FF4_option(s32, s32, f32, f32, f32);
-void func_80112FD8_option(s32, s32, s32);
-void func_80106508_option(Vec *, Vec *, Vec *);
-void func_80113088_option(void);
-s32 func_80105FF8_option(Vec *, Vec *, Vec *);
-void func_80113274_option(s32, f32 *, f32 *, f32 *);
-void func_80113290_option(s32, f32, f32, f32);
-void func_80105E40_option(void);
-void func_80112060_option(void);
-void func_8011053C_option(s32, s32, s32);
-void func_8011019C_option(void);
-void func_80110754_option(void);
-void func_801119CC_option(void);
-void func_8011083C_option(s32, s32, s32);
-void func_801110C0_option(s32, u32, s16, s16, u16, u16, s16);
-s32 func_8011130C_option(s32 message, s16 x, s16 y, s16 width, s16 height, s16 type);
-s32 func_80111458_option(s32 message, s16 x, s16 y, s16 width, s16 height, s16 type);
-s32 func_801115C0_option(s32 message, s16 x, s16 y, s16 width, s16 height, s16 type);
-s32 func_80111768_option(s32 message, s16 x, s16 y, s16 type);
-s32 func_80111834_option(s32 message, s16 x, s16 y, s16 type);
-s32 func_80111900_option(s32 message, s16 x, s16 y, s16 type);
-void func_80111A10_option(s32);
-void func_80111C50_option(s32, u32);
-void func_80112028_option(s32, s32, s32);
-void func_801130CC_option(void);
-s32 func_80113218_option(s32);
-void func_80113338_option(s32, s32, s16, s16, u16);
-void func_80113384_option(s32);
-void func_801133A0_option(s32);
-void func_80113408_option(s32, u32);
-void func_80113440_option(s32);
-s32 func_8011345C_option(s32);
-void func_801123D8_option(void);
-void func_80113300_option(s32);
-void func_80112A44_option(void);
-void func_80105D10_option(void);
-void func_80105D5C_option(f32 fov, f32 nearPlane, f32 farPlane);
-void func_80105DA0_option(s32 camId, f32 fov);
-void func_80105F08_option(f32 fov);
+void option_MenuWinCreate(s32, u32);
+void option_MenuSprPosGet(s32, s32 *, s32 *);
+void option_MenuMdlDispOn(s32);
+void option_MenuMdlDispOff(s32);
+void option_MenuWinMesWait(s32);
+void option_MenuWinDispOn(s32);
+s32 option_StickBtnGet(s32);
+void option_MenuWinKill(s32);
+void option_MenuMdlCreateEx(s32, s32, f32, f32, f32);
+void option_MenuMotSet(s32, s32, u16);
+void option_MenuMotFlagSet(s32, s32);
+void option_MenuMotFlagReset(s32, s32);
+void option_MenuMotTimeSet(s32, u32);
+void option_MenuMdlCreate(s32, s32, f32, f32, f32);
+void option_MenuCamMdlCreate(s32, s32, f32, f32, f32);
+void option_MenuMotCreate(s32, s32, s32);
+void option_CameraPosSet(Vec *, Vec *, Vec *);
+void option_CursorSprCreate(void);
+s32 option_CameraPosGet(Vec *, Vec *, Vec *);
+void option_MenuMdlPosGet(s32, f32 *, f32 *, f32 *);
+void option_MenuMdlRotSet(s32, f32, f32, f32);
+void option_CameraProcKill(void);
+void option_MenuInit(void);
+void option_SprPosSet(s32, s32, s32);
+void option_SprInit(void);
+void option_ModelInit(void);
+void option_WinInit(void);
+void option_MotionCreate(s32, s32, s32);
+void option_WinCreate(s32, u32, s16, s16, u16, u16, s16);
+s32 option_WinType0Create(s32 message, s16 x, s16 y, s16 width, s16 height, s16 type);
+s32 option_WinType1Create(s32 message, s16 x, s16 y, s16 width, s16 height, s16 type);
+s32 option_WinType2Create(s32 message, s16 x, s16 y, s16 width, s16 height, s16 type);
+s32 option_WinType3Create(s32 message, s16 x, s16 y, s16 type);
+s32 option_WinType4Create(s32 message, s16 x, s16 y, s16 type);
+s32 option_WinType5Create(s32 message, s16 x, s16 y, s16 type);
+void option_WinKill(s32);
+void option_WinMesSet(s32, u32);
+void option_MenuSprPosSet(s32, s32, s32);
+void option_CursorSprKill(void);
+s32 option_MenuMdlIdGet(s32);
+void option_MenuMotShiftSet(s32, s32, s16, s16, u16);
+void option_MenuSprDispOn(s32);
+void option_MenuSprDispOff(s32);
+void option_MenuWinMesSet(s32, u32);
+void option_MenuWinDispOff(s32);
+s32 option_MenuWinChoiceGet(s32);
+void option_SoundRoomInit(void);
+void option_MenuMotEndWait(s32);
+void option_SoundRoomClose(void);
+void option_CameraInit(void);
+void option_CameraPerspectiveSet(f32 fov, f32 nearPlane, f32 farPlane);
+void option_CameraMotionStart(s32 camId, f32 fov);
+void option_CameraManualStart(f32 fov);
 
-s32 D_801139D0_option = 0;
+s32 option_stickBtn = 0;
 
-OptSpr D_801147F0_option[0x40] BSS;
-OptSprSlot D_80114EF0_option[0x40] BSS;
-UnkOption D_80114F70_option[0x40] BSS;
-s16 D_80115A70_option BSS;
-u16 D_80115A72_option BSS;
-u8 D_80115A74_option[4] BSS; /* Unreferenced. */
-OptWinEntry D_80115A78_option[0x20] BSS;
+OptSpr option_sprTbl[0x40] BSS;
+OptSprSlot option_animTbl[0x40] BSS;
+UnkOption option_modelTbl[0x40] BSS;
+s16 option_bgAnim BSS;
+u16 option_bgSpr BSS;
+u8 option_bgSprPad[4] BSS; /* Unreferenced. */
+OptWinEntry option_winTbl[0x20] BSS;
 
-void func_80110170_option(void) {
-    func_8011019C_option();
-    func_80110754_option();
-    func_801119CC_option();
+void option_UtilInit(void) {
+    option_SprInit();
+    option_ModelInit();
+    option_WinInit();
 }
 
-void func_8011019C_option(void) {
+void option_SprInit(void) {
     s32 i;
     OptSpr *p;
     f32 zero;
 
-    for (i = 0; i < ARRAY_COUNT(D_801147F0_option); i++) {
-        D_80114EF0_option[i].espriteSlot = -1;
-        D_801147F0_option[i].espriteSlot = -1;
-        p = &D_801147F0_option[i];
+    for (i = 0; i < ARRAY_COUNT(option_sprTbl); i++) {
+        option_animTbl[i].espriteSlot = -1;
+        option_sprTbl[i].espriteSlot = -1;
+        p = &option_sprTbl[i];
         zero = 0.0f;
         p->unk_08 = 0;
-        D_801147F0_option[i].unk_04 = 0;
+        option_sprTbl[i].unk_04 = 0;
         p->unk_10 = zero;
-        D_801147F0_option[i].unk_0C = zero;
-        D_801147F0_option[i].unk_14 = zero;
-        D_801147F0_option[i].unk_18 = -1;
+        option_sprTbl[i].unk_0C = zero;
+        option_sprTbl[i].unk_14 = zero;
+        option_sprTbl[i].unk_18 = -1;
     }
 }
 
-s16 func_80110230_option(s32 arg0) {
-    return D_80114EF0_option[arg0].espriteSlot;
+s16 option_AnimIdGet(s32 arg0) {
+    return option_animTbl[arg0].espriteSlot;
 }
 
-s16 func_80110244_option(s32 arg0) {
-    return D_801147F0_option[arg0].espriteSlot;
+s16 option_EspIdGet(s32 arg0) {
+    return option_sprTbl[arg0].espriteSlot;
 }
 
-void func_80110260_option(s32 arg0, s32 arg1) {
-    D_80114EF0_option[arg0].espriteSlot = HuSprAnimDataRead(arg1);
+void option_AnimCreate(s32 arg0, s32 arg1) {
+    option_animTbl[arg0].espriteSlot = HuSprAnimDataRead(arg1);
 }
 
-void func_80110298_option(s32 arg0) {
-    if (D_80114EF0_option[arg0].espriteSlot != -1) {
-        HuSprAnimKill(D_80114EF0_option[arg0].espriteSlot);
+void option_AnimKill(s32 arg0) {
+    if (option_animTbl[arg0].espriteSlot != -1) {
+        HuSprAnimKill(option_animTbl[arg0].espriteSlot);
     }
-    D_80114EF0_option[arg0].espriteSlot = -1;
+    option_animTbl[arg0].espriteSlot = -1;
 }
 
-void func_801102F0_option(s32 arg0, s16 arg1) {
-    D_801147F0_option[arg0].espriteSlot = espEntry(D_80114EF0_option[arg1].espriteSlot, 0, 0);
-    func_8011053C_option(arg0, 0xA0, 0x78);
+void option_EspCreate(s32 arg0, s16 arg1) {
+    option_sprTbl[arg0].espriteSlot = espEntry(option_animTbl[arg1].espriteSlot, 0, 0);
+    option_SprPosSet(arg0, 0xA0, 0x78);
 }
 
-void func_80110358_option(s32 arg0) {
-    if (D_801147F0_option[arg0].espriteSlot != -1) {
-        espKill(D_801147F0_option[arg0].espriteSlot);
+void option_EspKill(s32 arg0) {
+    if (option_sprTbl[arg0].espriteSlot != -1) {
+        espKill(option_sprTbl[arg0].espriteSlot);
     }
-    D_801147F0_option[arg0].espriteSlot = -1;
+    option_sprTbl[arg0].espriteSlot = -1;
 }
 
-void func_801103C8_option(s32 arg0, s32 resourceId) {
-    func_80110260_option(arg0, resourceId);
-    func_801102F0_option(arg0, arg0);
+void option_SprCreate(s32 arg0, s32 resourceId) {
+    option_AnimCreate(arg0, resourceId);
+    option_EspCreate(arg0, arg0);
 }
 
-void func_801103FC_option(s32 arg0, s32 resourceId) {
-    func_801103C8_option(arg0, resourceId);
-    espAttrSet(D_801147F0_option[arg0].espriteSlot, 0x4000);
+void option_SprBGCreate(s32 arg0, s32 resourceId) {
+    option_SprCreate(arg0, resourceId);
+    espAttrSet(option_sprTbl[arg0].espriteSlot, 0x4000);
 }
 
-void func_80110440_option(s32 arg0) {
-    func_80110358_option(arg0);
-    func_80110298_option(arg0);
+void option_SprKill(s32 arg0) {
+    option_EspKill(arg0);
+    option_AnimKill(arg0);
 }
 
-void func_8011046C_option(void) {
+void option_SprKillAll(void) {
     s32 i;
-    for (i = 0; i < ARRAY_COUNT(D_801147F0_option); i++) {
-        func_80110440_option(i);
+    for (i = 0; i < ARRAY_COUNT(option_sprTbl); i++) {
+        option_SprKill(i);
     }
 }
 
-void func_801104A4_option(s32 arg0) {
-    espDispOn(D_801147F0_option[arg0].espriteSlot);
+void option_SprDispOn(s32 arg0) {
+    espDispOn(option_sprTbl[arg0].espriteSlot);
 }
 
-void func_801104D4_option(s32 arg0) {
-    espDispOff(D_801147F0_option[arg0].espriteSlot);
+void option_SprDispOff(s32 arg0) {
+    espDispOff(option_sprTbl[arg0].espriteSlot);
 }
 
-void func_80110504_option(s32 arg0) {
-    func_801104A4_option(arg0);
+void option_SprBGDispOn(s32 arg0) {
+    option_SprDispOn(arg0);
 }
 
-void func_80110520_option(s32 arg0) {
-    func_801104D4_option(arg0);
+void option_SprBGDispOff(s32 arg0) {
+    option_SprDispOff(arg0);
 }
 
-void func_8011053C_option(s32 arg0, s32 arg1, s32 arg2) {
-    D_801147F0_option[arg0].unk_04 = arg1;
-    D_801147F0_option[arg0].unk_08 = arg2;
-    espPosSet(D_801147F0_option[arg0].espriteSlot, arg1, arg2);
+void option_SprPosSet(s32 arg0, s32 arg1, s32 arg2) {
+    option_sprTbl[arg0].unk_04 = arg1;
+    option_sprTbl[arg0].unk_08 = arg2;
+    espPosSet(option_sprTbl[arg0].espriteSlot, arg1, arg2);
 }
 
-void func_80110594_option(s32 arg0, s32 *arg1, s32 *arg2) {
-    *arg1 = D_801147F0_option[arg0].unk_04;
-    *arg2 = D_801147F0_option[arg0].unk_08;
+void option_SprPosGet(s32 arg0, s32 *arg1, s32 *arg2) {
+    *arg1 = option_sprTbl[arg0].unk_04;
+    *arg2 = option_sprTbl[arg0].unk_08;
 }
 
-void func_801105C4_option(s32 arg0, f32 arg1, f32 arg2) {
-    D_801147F0_option[arg0].unk_0C = arg1;
-    D_801147F0_option[arg0].unk_10 = arg2;
-    espScaleSet(D_801147F0_option[arg0].espriteSlot, arg1, arg2);
+void option_SprScaleSet(s32 arg0, f32 arg1, f32 arg2) {
+    option_sprTbl[arg0].unk_0C = arg1;
+    option_sprTbl[arg0].unk_10 = arg2;
+    espScaleSet(option_sprTbl[arg0].espriteSlot, arg1, arg2);
 }
 
-void func_80110614_option(s32 arg0, u16 arg1) {
-    espTPLvlSet(D_801147F0_option[arg0].espriteSlot, arg1);
+void option_SprAlphaSet(s32 arg0, u16 arg1) {
+    espTPLvlSet(option_sprTbl[arg0].espriteSlot, arg1);
 }
 
-void func_8011064C_option(s32 arg0, u16 arg1) {
-    espAttrSet(D_801147F0_option[arg0].espriteSlot, arg1);
+void option_SprAttrSet(s32 arg0, u16 arg1) {
+    espAttrSet(option_sprTbl[arg0].espriteSlot, arg1);
 }
 
-void func_80110680_option(s32 arg0, u16 arg1) {
-    espAttrReset(D_801147F0_option[arg0].espriteSlot, arg1);
+void option_SprAttrReset(s32 arg0, u16 arg1) {
+    espAttrReset(option_sprTbl[arg0].espriteSlot, arg1);
 }
 
-void func_801106B4_option(s32 arg0, u16 arg1) {
-    espPriSet(D_801147F0_option[arg0].espriteSlot, arg1);
+void option_SprPriSet(s32 arg0, u16 arg1) {
+    espPriSet(option_sprTbl[arg0].espriteSlot, arg1);
 }
 
-void func_801106E8_option(s32 arg0, u16 arg1, u16 arg2) {
-    espAnimModeSet(D_801147F0_option[arg0].espriteSlot, 1);
-    espBankSet(D_801147F0_option[arg0].espriteSlot, arg1, arg2);
+void option_SprBankSet(s32 arg0, u16 arg1, u16 arg2) {
+    espAnimModeSet(option_sprTbl[arg0].espriteSlot, 1);
+    espBankSet(option_sprTbl[arg0].espriteSlot, arg1, arg2);
 }
 
-void func_80110754_option(void) {
+void option_ModelInit(void) {
     s32 i;
 
-    for (i = 0; i < ARRAY_COUNT(D_80114F70_option); i++) {
-        D_80114F70_option[i].unk_00 = -1;
-        D_80114F70_option[i].unk_02 = -1;
+    for (i = 0; i < ARRAY_COUNT(option_modelTbl); i++) {
+        option_modelTbl[i].unk_00 = -1;
+        option_modelTbl[i].unk_02 = -1;
     }
 }
 
-void func_801107A0_option(s32 arg0, s32 arg1, s32 arg2) {
+void option_ModelCreate(s32 arg0, s32 arg1, s32 arg2) {
     s16 model;
 
     model = Hu3DModelRead(arg1, arg2);
-    D_80114F70_option[arg0].unk_00 = model;
+    option_modelTbl[arg0].unk_00 = model;
     Hu3DModelPosSet(model, 0.0f, 0.0f, 0.0f);
     Hu3DModelRotSet(model, 0.0f, 0.0f, 0.0f);
     Hu3DModelScaleSet(model, 1.0f, 1.0f, 1.0f);
 }
 
-void func_8011083C_option(s32 arg0, s32 resourceId, s32 arg2) {
+void option_MotionCreate(s32 arg0, s32 resourceId, s32 arg2) {
     void *data;
 
     if (arg2 == -1) {
         arg2 = 0x6AD;
     }
     data = DataRead(resourceId);
-    D_80114F70_option[arg0].unk_02 = Hu3DMotionCreate(data, (s16)arg2);
+    option_modelTbl[arg0].unk_02 = Hu3DMotionCreate(data, (s16)arg2);
     DataClose(data);
 }
 
-void func_801108C4_option(s32 arg0) {
-    if (D_80114F70_option[arg0].unk_00 != -1) {
-        Hu3DModelKill(D_80114F70_option[arg0].unk_00);
-        D_80114F70_option[arg0].unk_00 = -1;
+void option_ModelKill(s32 arg0) {
+    if (option_modelTbl[arg0].unk_00 != -1) {
+        Hu3DModelKill(option_modelTbl[arg0].unk_00);
+        option_modelTbl[arg0].unk_00 = -1;
     }
-    if (D_80114F70_option[arg0].unk_02 != -1) {
-        Hu3DMotionKill(D_80114F70_option[arg0].unk_02);
-        D_80114F70_option[arg0].unk_02 = -1;
+    if (option_modelTbl[arg0].unk_02 != -1) {
+        Hu3DMotionKill(option_modelTbl[arg0].unk_02);
+        option_modelTbl[arg0].unk_02 = -1;
     }
 }
 
-void func_80110974_option(void) {
+void option_ModelKillAll(void) {
     s32 i;
 
-    for (i = 0; i < ARRAY_COUNT(D_80114F70_option); i++) {
-        func_801108C4_option(i);
+    for (i = 0; i < ARRAY_COUNT(option_modelTbl); i++) {
+        option_ModelKill(i);
     }
 }
 
-s16 func_801109AC_option(s32 arg0) {
-    return D_80114F70_option[arg0].unk_00;
+s16 option_ModelIdGet(s32 arg0) {
+    return option_modelTbl[arg0].unk_00;
 }
 
-s16 func_801109D0_option(s32 arg0) {
-    return D_80114F70_option[arg0].unk_02;
+s16 option_MotionIdGet(s32 arg0) {
+    return option_modelTbl[arg0].unk_02;
 }
 
-void func_801109F4_option(s32 arg0, f32 arg1, f32 arg2, f32 arg3) {
-    D_80114F70_option[arg0].unk_1C = arg1;
-    D_80114F70_option[arg0].unk_20 = arg2;
-    D_80114F70_option[arg0].unk_24 = arg3;
-    Hu3DModelRotSet(D_80114F70_option[arg0].unk_00, arg1, arg2, arg3);
+void option_ModelRotSet(s32 arg0, f32 arg1, f32 arg2, f32 arg3) {
+    option_modelTbl[arg0].unk_1C = arg1;
+    option_modelTbl[arg0].unk_20 = arg2;
+    option_modelTbl[arg0].unk_24 = arg3;
+    Hu3DModelRotSet(option_modelTbl[arg0].unk_00, arg1, arg2, arg3);
 }
 
-void func_80110A5C_option(s32 arg0, f32 arg1, f32 arg2, f32 arg3) {
-    D_80114F70_option[arg0].unk_04 = arg1;
-    D_80114F70_option[arg0].unk_08 = arg2;
-    D_80114F70_option[arg0].unk_0C = arg3;
-    Hu3DModelPosSet(D_80114F70_option[arg0].unk_00, arg1, arg2, arg3);
+void option_ModelPosSet(s32 arg0, f32 arg1, f32 arg2, f32 arg3) {
+    option_modelTbl[arg0].unk_04 = arg1;
+    option_modelTbl[arg0].unk_08 = arg2;
+    option_modelTbl[arg0].unk_0C = arg3;
+    Hu3DModelPosSet(option_modelTbl[arg0].unk_00, arg1, arg2, arg3);
 }
 
-void func_80110AD0_option(s32 arg0, f32 arg1, f32 arg2, f32 arg3) {
-    D_80114F70_option[arg0].unk_10 = arg1;
-    D_80114F70_option[arg0].unk_14 = arg2;
-    D_80114F70_option[arg0].unk_18 = arg3;
-    Hu3DModelScaleSet(D_80114F70_option[arg0].unk_00, arg1, arg2, arg3);
+void option_ModelScaleSet(s32 arg0, f32 arg1, f32 arg2, f32 arg3) {
+    option_modelTbl[arg0].unk_10 = arg1;
+    option_modelTbl[arg0].unk_14 = arg2;
+    option_modelTbl[arg0].unk_18 = arg3;
+    Hu3DModelScaleSet(option_modelTbl[arg0].unk_00, arg1, arg2, arg3);
 }
 
-void func_80110B38_option(s32 arg0, f32 *arg1, f32 *arg2, f32 *arg3) {
-    *arg1 = D_80114F70_option[arg0].unk_04;
-    *arg2 = D_80114F70_option[arg0].unk_08;
-    *arg3 = D_80114F70_option[arg0].unk_0C;
+void option_ModelPosGet(s32 arg0, f32 *arg1, f32 *arg2, f32 *arg3) {
+    *arg1 = option_modelTbl[arg0].unk_04;
+    *arg2 = option_modelTbl[arg0].unk_08;
+    *arg3 = option_modelTbl[arg0].unk_0C;
 }
 
-void func_80110B8C_option(s32 arg0, f32 *arg1, f32 *arg2, f32 *arg3) {
-    *arg1 = D_80114F70_option[arg0].unk_1C;
-    *arg2 = D_80114F70_option[arg0].unk_20;
-    *arg3 = D_80114F70_option[arg0].unk_24;
+void option_ModelRotGet(s32 arg0, f32 *arg1, f32 *arg2, f32 *arg3) {
+    *arg1 = option_modelTbl[arg0].unk_1C;
+    *arg2 = option_modelTbl[arg0].unk_20;
+    *arg3 = option_modelTbl[arg0].unk_24;
 }
 
-void func_80110BD4_option(s32 arg0, f32 *arg1, f32 *arg2, f32 *arg3) {
-    *arg1 = D_80114F70_option[arg0].unk_10;
-    *arg2 = D_80114F70_option[arg0].unk_14;
-    *arg3 = D_80114F70_option[arg0].unk_18;
+void option_ModelScaleGet(s32 arg0, f32 *arg1, f32 *arg2, f32 *arg3) {
+    *arg1 = option_modelTbl[arg0].unk_10;
+    *arg2 = option_modelTbl[arg0].unk_14;
+    *arg3 = option_modelTbl[arg0].unk_18;
 }
 
-void func_80110C1C_option(s32 arg0) {
-    Hu3DModelAttrSet(D_80114F70_option[arg0].unk_00, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+void option_ModelDispOff(s32 arg0) {
+    Hu3DModelAttrSet(option_modelTbl[arg0].unk_00, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
 }
 
-void func_80110C5C_option(s32 arg0) {
-    Hu3DModelAttrSet(D_80114F70_option[arg0].unk_00, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+void option_ModelDispOn(s32 arg0) {
+    Hu3DModelAttrSet(option_modelTbl[arg0].unk_00, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
 }
 
-void func_80110C9C_option(s32 arg0, s32 arg1) {
-    Hu3DMotionAttrSet(D_80114F70_option[arg0].unk_00, -1, arg1);
+void option_MotionFlagSet(s32 arg0, s32 arg1) {
+    Hu3DMotionAttrSet(option_modelTbl[arg0].unk_00, -1, arg1);
 }
 
-void func_80110CE0_option(s32 arg0, s32 arg1, s16 arg2, s16 arg3, s32 arg4) {
-    Hu3DMotionShiftSet(D_80114F70_option[arg0].unk_00, D_80114F70_option[arg1].unk_02, arg2, arg3, arg4);
+void option_MotionShiftSet(s32 arg0, s32 arg1, s16 arg2, s16 arg3, s32 arg4) {
+    Hu3DMotionShiftSet(option_modelTbl[arg0].unk_00, option_modelTbl[arg1].unk_02, arg2, arg3, arg4);
 }
 
-void func_80110D50_option(s32 arg0, s32 arg1) {
-    Hu3DMotionAttrSet(D_80114F70_option[arg0].unk_00, arg1, 0);
+void option_MotionFlagReset(s32 arg0, s32 arg1) {
+    Hu3DMotionAttrSet(option_modelTbl[arg0].unk_00, arg1, 0);
 }
 
-void func_80110D94_option(s32 arg0) {
+void option_MotionSpeedSet(s32 arg0) {
     // The original call omits the scale argument.
     void (*setModelScale)() = (void (*)())Hu3DMotionSpeedSet;
 
-    setModelScale(D_80114F70_option[arg0].unk_00);
+    setModelScale(option_modelTbl[arg0].unk_00);
 }
 
-void func_80110DCC_option(s32 arg0, u32 arg1) {
-    Hu3DMotionTimeSet(D_80114F70_option[arg0].unk_00, arg1);
+void option_MotionTimeSet(s32 arg0, u32 arg1) {
+    Hu3DMotionTimeSet(option_modelTbl[arg0].unk_00, arg1);
 }
 
-void func_80110E30_option(s32 arg0) {
-    while (Hu3DData[D_80114F70_option[arg0].unk_00].motTime != Hu3DMotion[Hu3DData[D_80114F70_option[arg0].unk_00].motId].unk02) {
+void option_MotionEndWait(s32 arg0) {
+    while (Hu3DData[option_modelTbl[arg0].unk_00].motTime != Hu3DMotion[Hu3DData[option_modelTbl[arg0].unk_00].motId].unk02) {
         HuPrcVSleep();
     }
 }
 
-s32 func_80110ED0_option(s32 arg0) {
-    s16 modelId = D_80114F70_option[arg0].unk_00;
+s32 option_MotionEndCheck(s32 arg0) {
+    s16 modelId = option_modelTbl[arg0].unk_00;
 
     return Hu3DData[modelId].motTime == Hu3DMotion[Hu3DData[modelId].motId].unk02;
 }
 
-void func_80110F58_option(s32 arg0, s32 arg1, s32 arg2) {
-    s16 modelId = func_801109AC_option(arg0);
-    s16 parentModelId = func_801109D0_option(arg1);
+void option_MotionSet(s32 arg0, s32 arg1, s32 arg2) {
+    s16 modelId = option_ModelIdGet(arg0);
+    s16 parentModelId = option_MotionIdGet(arg1);
 
     Hu3DMotionSet(modelId, parentModelId);
     Hu3DMotionAttrSet(modelId, -1, arg2);
 }
 
-void func_80110FC8_option(void) {
+void option_BGSprCreate(void) {
     // The original call omits the resource id.
-    D_80115A70_option = ((s16 (*)())HuSprAnimDataRead)();
-    D_80115A72_option = espEntry(D_80115A70_option, 0, 0);
-    espAttrSet(D_80115A72_option, 0x4000);
-    espPosSet(D_80115A72_option, 0xA0, 0x78);
+    option_bgAnim = ((s16 (*)())HuSprAnimDataRead)();
+    option_bgSpr = espEntry(option_bgAnim, 0, 0);
+    espAttrSet(option_bgSpr, 0x4000);
+    espPosSet(option_bgSpr, 0xA0, 0x78);
 }
 
-void func_8011102C_option(void) {
-    espKill(D_80115A72_option);
-    HuSprAnimKill(D_80115A70_option);
+void option_BGSprKill(void) {
+    espKill(option_bgSpr);
+    HuSprAnimKill(option_bgAnim);
 }
 
-u32 func_80111058_option(u32 arg0) {
+u32 option_WinMesConv(u32 arg0) {
     char buf[0x100];
     s32 len;
     void *ptr;
@@ -380,47 +380,47 @@ u32 func_80111058_option(u32 arg0) {
     return arg0;
 }
 
-void func_801110C0_option(s32 arg0, u32 message, s16 x, s16 y, u16 width, u16 height, s16 type) {
+void option_WinCreate(s32 arg0, u32 message, s16 x, s16 y, u16 width, u16 height, s16 type) {
     s32 winID;
     u32 ptr;
 
     switch (type) {
         case 1:
-            ptr = func_80111058_option(message);
-            winID = func_80111458_option(ptr, x, y, width, height, type);
+            ptr = option_WinMesConv(message);
+            winID = option_WinType1Create(ptr, x, y, width, height, type);
             break;
         case 2:
-            ptr = func_80111058_option(message);
-            winID = func_801115C0_option(ptr, x, y, width, height, type);
+            ptr = option_WinMesConv(message);
+            winID = option_WinType2Create(ptr, x, y, width, height, type);
             break;
         case 3:
-            ptr = func_80111058_option(message);
-            winID = func_80111768_option(ptr, x, y, type);
+            ptr = option_WinMesConv(message);
+            winID = option_WinType3Create(ptr, x, y, type);
             break;
         case 4:
-            ptr = func_80111058_option(message);
-            winID = func_80111834_option(ptr, x, y, type);
+            ptr = option_WinMesConv(message);
+            winID = option_WinType4Create(ptr, x, y, type);
             break;
         case 5:
-            ptr = func_80111058_option(message);
-            winID = func_80111900_option(ptr, x, y, type);
+            ptr = option_WinMesConv(message);
+            winID = option_WinType5Create(ptr, x, y, type);
             break;
         case 0:
-            ptr = func_80111058_option(message);
-            winID = func_8011130C_option(ptr, x, y, width, height, type);
+            ptr = option_WinMesConv(message);
+            winID = option_WinType0Create(ptr, x, y, width, height, type);
             break;
         default:
-            ptr = func_80111058_option(message);
-            winID = func_8011130C_option(ptr, x, y, width, height, type);
+            ptr = option_WinMesConv(message);
+            winID = option_WinType0Create(ptr, x, y, width, height, type);
             break;
     }
     if (0x80000000U < ptr) {
-        D_80115A78_option[arg0].unk_04 = (void *)ptr;
+        option_winTbl[arg0].unk_04 = (void *)ptr;
     }
-    D_80115A78_option[arg0].winID = winID;
+    option_winTbl[arg0].winID = winID;
 }
 
-s32 func_8011130C_option(s32 message, s16 x, s16 y, s16 width, s16 height, s16 type) {
+s32 option_WinType0Create(s32 message, s16 x, s16 y, s16 width, s16 height, s16 type) {
     s16 winID;
 
     winID = HuWinCreate(x, y, width, height, 0, 8);
@@ -441,7 +441,7 @@ s32 func_8011130C_option(s32 message, s16 x, s16 y, s16 width, s16 height, s16 t
     return winID;
 }
 
-s32 func_80111458_option(s32 message, s16 x, s16 y, s16 width, s16 height, s16 type) {
+s32 option_WinType1Create(s32 message, s16 x, s16 y, s16 width, s16 height, s16 type) {
     s16 winID;
 
     winID = HuWinCreate(x, y, width, height, 0, 4);
@@ -463,7 +463,7 @@ s32 func_80111458_option(s32 message, s16 x, s16 y, s16 width, s16 height, s16 t
     return winID;
 }
 
-s32 func_801115C0_option(s32 message, s16 x, s16 y, s16 width, s16 height, s16 type) {
+s32 option_WinType2Create(s32 message, s16 x, s16 y, s16 width, s16 height, s16 type) {
     s16 winID;
 
     winID = HuWinCreate(x, y, width, height, 0, 8);
@@ -487,7 +487,7 @@ s32 func_801115C0_option(s32 message, s16 x, s16 y, s16 width, s16 height, s16 t
     return winID;
 }
 
-s32 func_80111768_option(s32 message, s16 x, s16 y, s16 type) {
+s32 option_WinType3Create(s32 message, s16 x, s16 y, s16 type) {
     s16 winID;
 
     winID = HuWinExCreateStyled(x, y, 19);
@@ -500,7 +500,7 @@ s32 func_80111768_option(s32 message, s16 x, s16 y, s16 type) {
     return winID;
 }
 
-s32 func_80111834_option(s32 message, s16 x, s16 y, s16 type) {
+s32 option_WinType4Create(s32 message, s16 x, s16 y, s16 type) {
     s16 winID;
 
     winID = HuWinExCreateStyled(x, y, 20);
@@ -513,7 +513,7 @@ s32 func_80111834_option(s32 message, s16 x, s16 y, s16 type) {
     return winID;
 }
 
-s32 func_80111900_option(s32 message, s16 x, s16 y, s16 type) {
+s32 option_WinType5Create(s32 message, s16 x, s16 y, s16 type) {
     s16 winID;
 
     winID = HuWinExCreateStyled(x, y, 19);
@@ -526,100 +526,100 @@ s32 func_80111900_option(s32 message, s16 x, s16 y, s16 type) {
     return winID;
 }
 
-void func_801119CC_option(void) {
+void option_WinInit(void) {
     s32 i;
 
     for (i = 0; i < 0x20; i++) {
-        D_80115A78_option[i].winID = -1;
-        D_80115A78_option[i].unk_04 = 0;
+        option_winTbl[i].winID = -1;
+        option_winTbl[i].unk_04 = 0;
     }
 }
 
-void func_80111A10_option(s32 arg0) {
-    if (D_80115A78_option[arg0].unk_08 == 3) {
-        HuWinExClose(D_80115A78_option[arg0].winID, 1);
-        HuWinExCleanup(D_80115A78_option[arg0].winID);
+void option_WinKill(s32 arg0) {
+    if (option_winTbl[arg0].unk_08 == 3) {
+        HuWinExClose(option_winTbl[arg0].winID, 1);
+        HuWinExCleanup(option_winTbl[arg0].winID);
     } else {
-        HuWinDispOff(D_80115A78_option[arg0].winID);
-        HuWinKill(D_80115A78_option[arg0].winID);
-        D_80115A78_option[arg0].winID = -1;
+        HuWinDispOff(option_winTbl[arg0].winID);
+        HuWinKill(option_winTbl[arg0].winID);
+        option_winTbl[arg0].winID = -1;
     }
-    if (D_80115A78_option[arg0].unk_04 != NULL) {
-        HuMemDelayFree(D_80115A78_option[arg0].unk_04);
-        D_80115A78_option[arg0].unk_04 = NULL;
+    if (option_winTbl[arg0].unk_04 != NULL) {
+        HuMemDelayFree(option_winTbl[arg0].unk_04);
+        option_winTbl[arg0].unk_04 = NULL;
     }
 }
 
-void func_80111AF4_option(void) {
+void option_WinKillAll(void) {
     s32 i;
 
-    for (i = 0; i < ARRAY_COUNT(D_80115A78_option); i++) {
-        if (D_80115A78_option[i].winID != -1) {
-            func_80111A10_option(i);
+    for (i = 0; i < ARRAY_COUNT(option_winTbl); i++) {
+        if (option_winTbl[i].winID != -1) {
+            option_WinKill(i);
         }
     }
 }
 
-void func_80111B58_option(s32 arg0, f32 arg1, f32 arg2) {
-    HuWinScaleSet(D_80115A78_option[arg0].winID, arg1, arg2);
+void option_WinScaleSet(s32 arg0, f32 arg1, f32 arg2) {
+    HuWinScaleSet(option_winTbl[arg0].winID, arg1, arg2);
 }
 
-void func_80111B88_option(s32 arg0, f32 arg1, f32 arg2) {
-    HuWinPosSet(D_80115A78_option[arg0].winID, arg1, arg2);
+void option_WinPosSet(s32 arg0, f32 arg1, f32 arg2) {
+    HuWinPosSet(option_winTbl[arg0].winID, arg1, arg2);
 }
 
-void func_80111BF0_option(s32 arg0) {
-    HuWinDispOn(D_80115A78_option[arg0].winID);
+void option_WinDispOn(s32 arg0) {
+    HuWinDispOn(option_winTbl[arg0].winID);
 }
 
-void func_80111C20_option(s32 arg0) {
-    HuWinDispOff(D_80115A78_option[arg0].winID);
+void option_WinDispOff(s32 arg0) {
+    HuWinDispOff(option_winTbl[arg0].winID);
 }
 
-void func_80111C50_option(s32 arg0, u32 arg1) {
+void option_WinMesSet(s32 arg0, u32 arg1) {
     u32 message;
 
-    HuWinHomeClear(D_80115A78_option[arg0].winID);
-    if (D_80115A78_option[arg0].unk_04 != NULL) {
-        HuMemDelayFree(D_80115A78_option[arg0].unk_04);
-        D_80115A78_option[arg0].unk_04 = NULL;
+    HuWinHomeClear(option_winTbl[arg0].winID);
+    if (option_winTbl[arg0].unk_04 != NULL) {
+        HuMemDelayFree(option_winTbl[arg0].unk_04);
+        option_winTbl[arg0].unk_04 = NULL;
     }
-    message = func_80111058_option(arg1);
+    message = option_WinMesConv(arg1);
     if (message > 0x80000000U) {
-        D_80115A78_option[arg0].unk_04 = (void *)message;
+        option_winTbl[arg0].unk_04 = (void *)message;
     }
-    HuWinMesSet(D_80115A78_option[arg0].winID, message, -1, -1);
+    HuWinMesSet(option_winTbl[arg0].winID, message, -1, -1);
 }
 
-void func_80111D1C_option(s32 arg0, s8 arg1, u32 arg2) {
-    HuWinInsertMesSetNoLF(D_80115A78_option[arg0].winID, arg2, arg1);
+void option_WinInsertMesSet(s32 arg0, s8 arg1, u32 arg2) {
+    HuWinInsertMesSetNoLF(option_winTbl[arg0].winID, arg2, arg1);
 }
 
-s32 func_80111D58_option(s32 arg0, s16 arg1, s32 arg2) {
-    return HuWinChoiceGet(D_80115A78_option[arg0].winID, arg1, arg2);
+s32 option_WinChoiceGet(s32 arg0, s16 arg1, s32 arg2) {
+    return HuWinChoiceGet(option_winTbl[arg0].winID, arg1, arg2);
 }
 
-s16 func_80111D90_option(s32 arg0) {
-    return D_80115A78_option[arg0].winID;
+s16 option_WinIdGet(s32 arg0) {
+    return option_winTbl[arg0].winID;
 }
 
-void func_80111DAC_option(s32 arg0) {
-    while (HuWinStatGet(D_80115A78_option[arg0].winID) != 0) {
+void option_WinMesWait(s32 arg0) {
+    while (HuWinStatGet(option_winTbl[arg0].winID) != 0) {
         HuPrcVSleep();
     }
 }
 
-void func_80111E00_option(s32 arg0) {
+void option_PadBtnWait(s32 arg0) {
     do {
         HuPrcVSleep();
     } while (!(arg0 & HuPadBtnDown[0]));
 }
 
-void func_80111E3C_option(s32 arg0, s16 arg1) {
-    HuWinPriSet(D_80115A78_option[arg0].winID, arg1);
+void option_WinPriSet(s32 arg0, s16 arg1) {
+    HuWinPriSet(option_winTbl[arg0].winID, arg1);
 }
 
-u16 func_80111E74_option(s32 value) {
+u16 option_CameraDebugExecB(s32 value) {
     static const char exitFormat[] = "\n%d\n";
     static const char posFormat[] = "POS:%4.2f,%4.2f,%4.2f";
     static const char atFormat[] = "A T:%4.2f,%4.2f,%4.2f";
@@ -651,70 +651,70 @@ u16 func_80111E74_option(s32 value) {
     return HuPadBtnDown[0];
 }
 
-void func_80112028_option(s32 arg0, s32 arg1, s32 arg2) {
-    func_8011053C_option(arg0, arg1, arg2);
+void option_MenuSprPosSet(s32 arg0, s32 arg1, s32 arg2) {
+    option_SprPosSet(arg0, arg1, arg2);
 }
 
-void func_80112044_option(s32 arg0, u16 arg1) {
-    func_80110614_option(arg0, arg1);
+void option_MenuSprAlphaSet(s32 arg0, u16 arg1) {
+    option_SprAlphaSet(arg0, arg1);
 }
 
-void func_80112060_option(void) {
-    func_80110170_option();
-    func_80105D10_option();
+void option_MenuInit(void) {
+    option_UtilInit();
+    option_CameraInit();
 }
 
-void func_80112084_option(void) {
+void option_RoomInit(void) {
     Vec pos, at, cameraPos, cameraAt, up;
     s16 model;
 
-    func_80112FF4_option(0, 0xE0004, 0.0f, 0.0f, 0.0f);
-    func_80112EB8_option(1, 0xE0007, 0.0f, 0.0f, 0.0f);
-    func_80112EB8_option(3, 0xE0009, 0.0f, 0.0f, 0.0f);
-    func_80112EB8_option(4, 0xE000A, 0.0f, 0.0f, 0.0f);
-    func_80110C9C_option(4, 2);
-    func_80112FD8_option(6, 0xE0005, 1);
-    func_80112FD8_option(7, 0xE0006, 1);
-    func_80112EB8_option(9, 0xA0000, -385.0f, -6.25f, -500.0f);
-    func_80110AD0_option(9, 0.75f, 0.75f, 0.75f);
-    func_80110C9C_option(9, 2);
-    func_80112EB8_option(10, 0xA0000, 385.0f, -6.25f, -500.0f);
-    func_80110AD0_option(10, 0.75f, 0.75f, 0.75f);
-    func_80110C9C_option(10, 2);
-    CharAnimCreate(func_80113218_option(9), 0, 10, 0xA002A);
-    model = func_80113218_option(10);
+    option_MenuCamMdlCreate(0, 0xE0004, 0.0f, 0.0f, 0.0f);
+    option_MenuMdlCreate(1, 0xE0007, 0.0f, 0.0f, 0.0f);
+    option_MenuMdlCreate(3, 0xE0009, 0.0f, 0.0f, 0.0f);
+    option_MenuMdlCreate(4, 0xE000A, 0.0f, 0.0f, 0.0f);
+    option_MotionFlagSet(4, 2);
+    option_MenuMotCreate(6, 0xE0005, 1);
+    option_MenuMotCreate(7, 0xE0006, 1);
+    option_MenuMdlCreate(9, 0xA0000, -385.0f, -6.25f, -500.0f);
+    option_ModelScaleSet(9, 0.75f, 0.75f, 0.75f);
+    option_MotionFlagSet(9, 2);
+    option_MenuMdlCreate(10, 0xA0000, 385.0f, -6.25f, -500.0f);
+    option_ModelScaleSet(10, 0.75f, 0.75f, 0.75f);
+    option_MotionFlagSet(10, 2);
+    CharAnimCreate(option_MenuMdlIdGet(9), 0, 10, 0xA002A);
+    model = option_MenuMdlIdGet(10);
     CharAnimCreate(model, 0, 10, 0xA002A);
     CharAnimFrameSet(model, 0, 10, 1, 0);
-    func_80112FD8_option(11, 0xA001D, 1);
-    func_80112FD8_option(12, 0xA001E, 1);
-    func_80112FD8_option(13, 0xA001D, 1);
-    func_80112FD8_option(14, 0xA001E, 1);
-    func_80112FD8_option(15, 0xA0001, 1);
-    func_80112EB8_option(20, 9, -385.0f, 0.049999997f, -500.0f);
-    func_80112EB8_option(21, 9, 385.0f, 0.049999997f, -500.0f);
-    func_80105DA0_option((s16)func_80113218_option(0), 68.0f);
-    func_80105D5C_option(68.0f, 45.0f, 3200.0f);
-    func_80105F08_option(68.0f);
-    pos = D_80114674_option;
-    at = D_80114680_option;
-    func_80105FF8_option(&cameraPos, &cameraAt, &up);
-    func_80106508_option(&pos, &at, &up);
-    func_80113088_option();
+    option_MenuMotCreate(11, 0xA001D, 1);
+    option_MenuMotCreate(12, 0xA001E, 1);
+    option_MenuMotCreate(13, 0xA001D, 1);
+    option_MenuMotCreate(14, 0xA001E, 1);
+    option_MenuMotCreate(15, 0xA0001, 1);
+    option_MenuMdlCreate(20, 9, -385.0f, 0.049999997f, -500.0f);
+    option_MenuMdlCreate(21, 9, 385.0f, 0.049999997f, -500.0f);
+    option_CameraMotionStart((s16)option_MenuMdlIdGet(0), 68.0f);
+    option_CameraPerspectiveSet(68.0f, 45.0f, 3200.0f);
+    option_CameraManualStart(68.0f);
+    pos = option_roomCameraPos;
+    at = option_roomCameraAt;
+    option_CameraPosGet(&cameraPos, &cameraAt, &up);
+    option_CameraPosSet(&pos, &at, &up);
+    option_CursorSprCreate();
 }
 
-void func_8011239C_option(void) {
-    func_801130CC_option();
-    func_80105E40_option();
-    func_80110974_option();
-    func_8011046C_option();
-    func_80111AF4_option();
+void option_RoomClose(void) {
+    option_CursorSprKill();
+    option_CameraProcKill();
+    option_ModelKillAll();
+    option_SprKillAll();
+    option_WinKillAll();
 }
 
-const Vec D_80114674_option = { 0.0f, 271.19f, 841.11f };
+const Vec option_roomCameraPos = { 0.0f, 271.19f, 841.11f };
 
-const Vec D_80114680_option = { 0.0f, 228.72f, -550.0f };
+const Vec option_roomCameraAt = { 0.0f, 228.72f, -550.0f };
 
-void func_801123D8_option(void) {
+void option_SoundRoomInit(void) {
     static const char parrot[] = "oumu0_1_DEF";
     static const char trumpet[] = "tranpet_DEF";
     static const char drum[] = "doramu2_DEF";
@@ -723,19 +723,19 @@ void func_801123D8_option(void) {
     s16 model;
     void *data;
 
-    func_80112FF4_option(0, 0xE000D, 0.0f, 0.0f, 0.0f);
-    func_80112EB8_option(1, 0xE000E, 0.0f, 0.0f, 0.0f);
-    func_80112F48_option(2, 0xE0010, -250.0f, 0.0f, -401.15002f);
-    func_801109F4_option(2, 0.0f, 10.0f, 0.0f);
-    model = func_80113218_option(2);
+    option_MenuCamMdlCreate(0, 0xE000D, 0.0f, 0.0f, 0.0f);
+    option_MenuMdlCreate(1, 0xE000E, 0.0f, 0.0f, 0.0f);
+    option_MenuMdlCreateEx(2, 0xE0010, -250.0f, 0.0f, -401.15002f);
+    option_ModelRotSet(2, 0.0f, 10.0f, 0.0f);
+    model = option_MenuMdlIdGet(2);
     data = DataRead(0xE0020);
     Hu3DAnimAttrSet(Hu3DAnimCreate(Hu3DData[model].hmf, data, 0, (char *)parrot), 1, 0);
     DataClose(data);
     Hu3DModelRemakeStatic(model);
     Hu3DModelAnimStop(Hu3DData[model].hmf);
-    func_80112F48_option(3, 0xE0013, 250.0f, 0.0f, -401.15002f);
-    func_801109F4_option(3, 0.0f, -11.0f, 0.0f);
-    model = func_80113218_option(3);
+    option_MenuMdlCreateEx(3, 0xE0013, 250.0f, 0.0f, -401.15002f);
+    option_ModelRotSet(3, 0.0f, -11.0f, 0.0f);
+    model = option_MenuMdlIdGet(3);
     data = DataRead(0xE0021);
     Hu3DAnimAttrSet(Hu3DAnimCreate(Hu3DData[model].hmf, data, 0, (char *)trumpet), 1, 0);
     DataClose(data);
@@ -747,193 +747,193 @@ void func_801123D8_option(void) {
     DataClose(data);
     Hu3DModelRemakeStatic(model);
     Hu3DModelAnimStop(Hu3DData[model].hmf);
-    func_80112F48_option(4, 0xE0016, 0.0f, 0.0f, 0.0f);
-    func_80112F48_option(5, 0xE0019, 0.0f, 0.0f, 0.0f);
-    func_80112FD8_option(17, 0xE0017, 0);
-    func_80112FD8_option(18, 0xE0018, 0);
-    func_80112FD8_option(19, 0xE001A, 0);
-    func_80112FD8_option(20, 0xE001B, 0);
+    option_MenuMdlCreateEx(4, 0xE0016, 0.0f, 0.0f, 0.0f);
+    option_MenuMdlCreateEx(5, 0xE0019, 0.0f, 0.0f, 0.0f);
+    option_MenuMotCreate(17, 0xE0017, 0);
+    option_MenuMotCreate(18, 0xE0018, 0);
+    option_MenuMotCreate(19, 0xE001A, 0);
+    option_MenuMotCreate(20, 0xE001B, 0);
     if (!(saveCommonBuf & 1)) {
-        func_8011331C_option(4, 18, 0);
-        func_801132C8_option(4, 7);
-        func_801132AC_option(4, 2);
-        func_801132E4_option(5, 1);
-        func_801132C8_option(5, 7);
-        func_801132AC_option(5, 4);
+        option_MenuMotSet(4, 18, 0);
+        option_MenuMotFlagReset(4, 7);
+        option_MenuMotFlagSet(4, 2);
+        option_MenuMotTimeSet(5, 1);
+        option_MenuMotFlagReset(5, 7);
+        option_MenuMotFlagSet(5, 4);
     } else {
-        func_8011331C_option(5, 20, 0);
-        func_801132C8_option(5, 7);
-        func_801132AC_option(5, 2);
-        func_801132E4_option(4, 1);
-        func_801132C8_option(4, 7);
-        func_801132AC_option(4, 4);
+        option_MenuMotSet(5, 20, 0);
+        option_MenuMotFlagReset(5, 7);
+        option_MenuMotFlagSet(5, 2);
+        option_MenuMotTimeSet(4, 1);
+        option_MenuMotFlagReset(4, 7);
+        option_MenuMotFlagSet(4, 4);
     }
-    func_80112F48_option(6, 0xE001C, 90.0f, 108.2f, -300.0f);
-    func_80112F48_option(7, 0xE001C, -90.0f, 108.2f, -300.0f);
-    func_80112EB8_option(8, 0xA00B0, 0.0f, 20.0f, -401.15002f);
-    func_80110C9C_option(8, 2);
-    CharAnimCreate(func_80113218_option(8), 0, 13, 0xA00B7);
-    func_80112EB8_option(9, 0xE001E, 0.0f, 0.0f, 0.0f);
-    func_80110C9C_option(9, 2);
-    func_80112EB8_option(21, 0xE001F, 0.0f, 22.25f, -310.7f);
-    func_80110C9C_option(21, 1);
-    func_80112FD8_option(10, 0xA00B1, 0);
-    func_80110F58_option(8, 10, 2);
-    func_80112FD8_option(11, 0xA00B2, 2);
-    func_80112FD8_option(12, 0xE000F, 0);
-    func_80112FD8_option(13, 0xE0011, 0);
-    func_80112FD8_option(14, 0xE0014, 0);
-    func_80112FD8_option(15, 0xE0012, 0);
-    func_80112FD8_option(16, 0xE0015, 0);
-    func_801103C8_option(1, 0x30);
-    func_801106B4_option(1, 5);
-    func_8011053C_option(1, 160, 113);
-    func_801104D4_option(1);
-    func_801103C8_option(2, 0xE0024);
-    func_801106B4_option(2, 10008);
-    func_8011053C_option(2, 160, 113);
-    func_801104D4_option(2);
-    func_80105DA0_option((s16)func_80113218_option(0), 41.539f);
-    func_80105F08_option(41.539f);
-    pos = D_801146BC_option;
-    at = D_801146C8_option;
-    func_80105FF8_option(&cameraPos, &cameraAt, &up);
-    func_80106508_option(&pos, &at, &up);
-    func_80113088_option();
+    option_MenuMdlCreateEx(6, 0xE001C, 90.0f, 108.2f, -300.0f);
+    option_MenuMdlCreateEx(7, 0xE001C, -90.0f, 108.2f, -300.0f);
+    option_MenuMdlCreate(8, 0xA00B0, 0.0f, 20.0f, -401.15002f);
+    option_MotionFlagSet(8, 2);
+    CharAnimCreate(option_MenuMdlIdGet(8), 0, 13, 0xA00B7);
+    option_MenuMdlCreate(9, 0xE001E, 0.0f, 0.0f, 0.0f);
+    option_MotionFlagSet(9, 2);
+    option_MenuMdlCreate(21, 0xE001F, 0.0f, 22.25f, -310.7f);
+    option_MotionFlagSet(21, 1);
+    option_MenuMotCreate(10, 0xA00B1, 0);
+    option_MotionSet(8, 10, 2);
+    option_MenuMotCreate(11, 0xA00B2, 2);
+    option_MenuMotCreate(12, 0xE000F, 0);
+    option_MenuMotCreate(13, 0xE0011, 0);
+    option_MenuMotCreate(14, 0xE0014, 0);
+    option_MenuMotCreate(15, 0xE0012, 0);
+    option_MenuMotCreate(16, 0xE0015, 0);
+    option_SprCreate(1, 0x30);
+    option_SprPriSet(1, 5);
+    option_SprPosSet(1, 160, 113);
+    option_SprDispOff(1);
+    option_SprCreate(2, 0xE0024);
+    option_SprPriSet(2, 10008);
+    option_SprPosSet(2, 160, 113);
+    option_SprDispOff(2);
+    option_CameraMotionStart((s16)option_MenuMdlIdGet(0), 41.539f);
+    option_CameraManualStart(41.539f);
+    pos = option_soundRoomCameraPos;
+    at = option_soundRoomCameraAt;
+    option_CameraPosGet(&cameraPos, &cameraAt, &up);
+    option_CameraPosSet(&pos, &at, &up);
+    option_CursorSprCreate();
 }
 
-void func_80112A44_option(void) {
-    func_801130CC_option();
-    func_80105E40_option();
-    func_801108C4_option(0);
-    func_801108C4_option(1);
-    func_801108C4_option(2);
-    func_801108C4_option(3);
-    func_801108C4_option(4);
-    func_801108C4_option(5);
-    func_801108C4_option(6);
-    func_801108C4_option(7);
-    func_801108C4_option(8);
-    func_801108C4_option(9);
-    func_801108C4_option(10);
-    func_801108C4_option(11);
-    func_801108C4_option(12);
-    func_801108C4_option(13);
-    func_801108C4_option(14);
-    func_801108C4_option(15);
-    func_801108C4_option(16);
-    func_80110974_option();
-    func_8011046C_option();
-    func_80111AF4_option();
+void option_SoundRoomClose(void) {
+    option_CursorSprKill();
+    option_CameraProcKill();
+    option_ModelKill(0);
+    option_ModelKill(1);
+    option_ModelKill(2);
+    option_ModelKill(3);
+    option_ModelKill(4);
+    option_ModelKill(5);
+    option_ModelKill(6);
+    option_ModelKill(7);
+    option_ModelKill(8);
+    option_ModelKill(9);
+    option_ModelKill(10);
+    option_ModelKill(11);
+    option_ModelKill(12);
+    option_ModelKill(13);
+    option_ModelKill(14);
+    option_ModelKill(15);
+    option_ModelKill(16);
+    option_ModelKillAll();
+    option_SprKillAll();
+    option_WinKillAll();
 }
 
-void func_80112B08_option(void) {
+void option_RecordRoomInit(void) {
     Vec pos, at, cameraPos, cameraAt, up;
     s16 model;
 
-    func_80112EB8_option(0, 0xE0025, 0.0f, 0.0f, 0.0f);
-    func_80112EB8_option(1, 0xE0026, 0.0f, 0.0f, 0.0f);
-    func_80112EB8_option(2, 0xE0027, 0.0f, 0.0f, 0.0f);
-    func_80112EB8_option(3, 0xE0028, 0.0f, 0.0f, 0.0f);
-    func_80112EB8_option(4, 0xE0029, 0.0f, 0.0f, 0.0f);
-    func_80112EB8_option(5, 0xE002A, 0.0f, 0.0f, 0.0f);
-    func_80112FF4_option(6, 0xE002B, 0.0f, 0.0f, 0.0f);
-    func_80110C1C_option(6);
-    func_80112FF4_option(7, 0xE002C, 0.0f, 0.0f, 0.0f);
-    func_80110C1C_option(7);
-    func_80112EB8_option(8, 0xA008E, -74.973503f, 56.406998f, -735.0f);
-    func_80110C9C_option(8, 2);
-    CharAnimCreate(func_80113218_option(8), 0, 9, 0xA00A3);
-    func_80112EB8_option(9, 0xA00A2, 64.973503f, 60.8265f, -720.0f);
-    func_80110C9C_option(9, 2);
-    model = func_80113218_option(9);
+    option_MenuMdlCreate(0, 0xE0025, 0.0f, 0.0f, 0.0f);
+    option_MenuMdlCreate(1, 0xE0026, 0.0f, 0.0f, 0.0f);
+    option_MenuMdlCreate(2, 0xE0027, 0.0f, 0.0f, 0.0f);
+    option_MenuMdlCreate(3, 0xE0028, 0.0f, 0.0f, 0.0f);
+    option_MenuMdlCreate(4, 0xE0029, 0.0f, 0.0f, 0.0f);
+    option_MenuMdlCreate(5, 0xE002A, 0.0f, 0.0f, 0.0f);
+    option_MenuCamMdlCreate(6, 0xE002B, 0.0f, 0.0f, 0.0f);
+    option_ModelDispOff(6);
+    option_MenuCamMdlCreate(7, 0xE002C, 0.0f, 0.0f, 0.0f);
+    option_ModelDispOff(7);
+    option_MenuMdlCreate(8, 0xA008E, -74.973503f, 56.406998f, -735.0f);
+    option_MotionFlagSet(8, 2);
+    CharAnimCreate(option_MenuMdlIdGet(8), 0, 9, 0xA00A3);
+    option_MenuMdlCreate(9, 0xA00A2, 64.973503f, 60.8265f, -720.0f);
+    option_MotionFlagSet(9, 2);
+    model = option_MenuMdlIdGet(9);
     CharAnimCreate(model, 0, 8, 0xA00A3);
     CharAnimFrameSet(model, 0, 8, 1, 0);
-    func_80112FD8_option(10, 0xA009E, 1);
-    func_80110F58_option(8, 10, 2);
-    func_80112FD8_option(11, 0xA009F, 1);
-    func_80110F58_option(9, 11, 2);
-    func_80112FD8_option(12, 0xA008F, 1);
-    func_80105DA0_option((s16)func_80113218_option(6), 55.0f);
-    func_80105D5C_option(50.0f, 12.0f, 4800.0f);
-    func_80105F08_option(50.0f);
-    pos = D_801146D4_option;
-    at = D_801146E0_option;
-    func_80105FF8_option(&cameraPos, &cameraAt, &up);
-    func_80106508_option(&pos, &at, &up);
-    func_80113088_option();
+    option_MenuMotCreate(10, 0xA009E, 1);
+    option_MotionSet(8, 10, 2);
+    option_MenuMotCreate(11, 0xA009F, 1);
+    option_MotionSet(9, 11, 2);
+    option_MenuMotCreate(12, 0xA008F, 1);
+    option_CameraMotionStart((s16)option_MenuMdlIdGet(6), 55.0f);
+    option_CameraPerspectiveSet(50.0f, 12.0f, 4800.0f);
+    option_CameraManualStart(50.0f);
+    pos = option_recordRoomCameraPos;
+    at = option_recordRoomCameraAt;
+    option_CameraPosGet(&cameraPos, &cameraAt, &up);
+    option_CameraPosSet(&pos, &at, &up);
+    option_CursorSprCreate();
 }
 
-void func_80112E14_option(void) {
-    func_801130CC_option();
-    func_80105E40_option();
-    func_801108C4_option(0);
-    func_801108C4_option(1);
-    func_801108C4_option(2);
-    func_801108C4_option(3);
-    func_801108C4_option(4);
-    func_801108C4_option(5);
-    func_801108C4_option(6);
-    func_801108C4_option(7);
-    func_801108C4_option(8);
-    func_801108C4_option(9);
-    func_801108C4_option(10);
-    func_801108C4_option(11);
-    func_801108C4_option(12);
-    func_80110974_option();
-    func_8011046C_option();
-    func_80111AF4_option();
+void option_RecordRoomClose(void) {
+    option_CursorSprKill();
+    option_CameraProcKill();
+    option_ModelKill(0);
+    option_ModelKill(1);
+    option_ModelKill(2);
+    option_ModelKill(3);
+    option_ModelKill(4);
+    option_ModelKill(5);
+    option_ModelKill(6);
+    option_ModelKill(7);
+    option_ModelKill(8);
+    option_ModelKill(9);
+    option_ModelKill(10);
+    option_ModelKill(11);
+    option_ModelKill(12);
+    option_ModelKillAll();
+    option_SprKillAll();
+    option_WinKillAll();
 }
 
-void func_80112EB8_option(s32 arg0, s32 arg1, f32 x, f32 y, f32 z) {
-    func_801107A0_option(arg0, arg1, 0x2A9);
-    func_80110A5C_option(arg0, x, y, z);
-    func_80110AD0_option(arg0, 1.0f, 1.0f, 1.0f);
-    func_80110DCC_option(arg0, 0);
-    func_80110C9C_option(arg0, 1);
+void option_MenuMdlCreate(s32 arg0, s32 arg1, f32 x, f32 y, f32 z) {
+    option_ModelCreate(arg0, arg1, 0x2A9);
+    option_ModelPosSet(arg0, x, y, z);
+    option_ModelScaleSet(arg0, 1.0f, 1.0f, 1.0f);
+    option_MotionTimeSet(arg0, 0);
+    option_MotionFlagSet(arg0, 1);
 }
 
-void func_80112F48_option(s32 arg0, s32 arg1, f32 x, f32 y, f32 z) {
-    func_801107A0_option(arg0, arg1, 0x6A9);
-    func_80110A5C_option(arg0, x, y, z);
-    func_80110AD0_option(arg0, 1.0f, 1.0f, 1.0f);
-    func_80110DCC_option(arg0, 0);
-    func_80110C9C_option(arg0, 1);
+void option_MenuMdlCreateEx(s32 arg0, s32 arg1, f32 x, f32 y, f32 z) {
+    option_ModelCreate(arg0, arg1, 0x6A9);
+    option_ModelPosSet(arg0, x, y, z);
+    option_ModelScaleSet(arg0, 1.0f, 1.0f, 1.0f);
+    option_MotionTimeSet(arg0, 0);
+    option_MotionFlagSet(arg0, 1);
 }
 
-void func_80112FD8_option(s32 arg0, s32 resourceId, s32 arg2) {
-    func_8011083C_option(arg0, resourceId, arg2);
+void option_MenuMotCreate(s32 arg0, s32 resourceId, s32 arg2) {
+    option_MotionCreate(arg0, resourceId, arg2);
 }
 
-void func_80112FF4_option(s32 arg0, s32 arg1, f32 x, f32 y, f32 z) {
-    func_801107A0_option(arg0, arg1, 0x2002A9);
-    func_80110A5C_option(arg0, x, y, z);
-    func_80110AD0_option(arg0, 1.0f, 1.0f, 1.0f);
-    func_80110DCC_option(arg0, 0);
-    func_80110C9C_option(arg0, 1);
+void option_MenuCamMdlCreate(s32 arg0, s32 arg1, f32 x, f32 y, f32 z) {
+    option_ModelCreate(arg0, arg1, 0x2002A9);
+    option_ModelPosSet(arg0, x, y, z);
+    option_ModelScaleSet(arg0, 1.0f, 1.0f, 1.0f);
+    option_MotionTimeSet(arg0, 0);
+    option_MotionFlagSet(arg0, 1);
 }
 
-void func_80113088_option(void) {
-    func_801103C8_option(0, 0x88);
-    func_801106B4_option(0, 5);
-    func_8011053C_option(0, 0xA0, 0x71);
-    func_801104D4_option(0);
+void option_CursorSprCreate(void) {
+    option_SprCreate(0, 0x88);
+    option_SprPriSet(0, 5);
+    option_SprPosSet(0, 0xA0, 0x71);
+    option_SprDispOff(0);
 }
 
-void func_801130CC_option(void) {
-    func_80110440_option(0);
+void option_CursorSprKill(void) {
+    option_SprKill(0);
 }
 
-s32 func_801130E8_option(s32 pad) {
+s32 option_StickBtnGet(s32 pad) {
     s32 x, y;
     s32 absX, absY;
 
     x = HuPadStkX[pad];
     y = HuPadStkY[pad];
 
-    if (D_801139D0_option != 0) {
+    if (option_stickBtn != 0) {
         if ((x == 0) & (y == 0)) {
-            D_801139D0_option = 0;
+            option_stickBtn = 0;
         }
         return 0;
     }
@@ -942,116 +942,116 @@ s32 func_801130E8_option(s32 pad) {
         absY = __builtin_abs(y);
         if (absY < absX) {
             if (absY * 2 < absX) {
-                D_801139D0_option = x < 0 ? 0x200 : 0x100;
+                option_stickBtn = x < 0 ? 0x200 : 0x100;
             } else if (y > 0) {
-                D_801139D0_option = x < 0 ? 0xA00 : 0x900;
+                option_stickBtn = x < 0 ? 0xA00 : 0x900;
             } else {
-                D_801139D0_option = x < 0 ? 0x600 : 0x500;
+                option_stickBtn = x < 0 ? 0x600 : 0x500;
             }
         } else if (absX * 2 < absY) {
-            D_801139D0_option = y < 0 ? 0x400 : 0x800;
+            option_stickBtn = y < 0 ? 0x400 : 0x800;
         } else if (y > 0) {
-            D_801139D0_option = x < 0 ? 0xA00 : 0x900;
+            option_stickBtn = x < 0 ? 0xA00 : 0x900;
         } else {
-            D_801139D0_option = x < 0 ? 0x600 : 0x500;
+            option_stickBtn = x < 0 ? 0x600 : 0x500;
         }
     }
-    return D_801139D0_option;
+    return option_stickBtn;
 }
 
-s32 func_80113204_option(s32 arg0) {
+s32 option_PadBtnRepGet(s32 arg0) {
     return (u16)ContBtnRep[arg0];
 }
 
-s32 func_80113218_option(s32 arg0) {
-    return func_801109AC_option(arg0);
+s32 option_MenuMdlIdGet(s32 arg0) {
+    return option_ModelIdGet(arg0);
 }
 
-void func_8011323C_option(s32 arg0) {
-    func_80110C5C_option(arg0);
+void option_MenuMdlDispOn(s32 arg0) {
+    option_ModelDispOn(arg0);
 }
 
-void func_80113258_option(s32 arg0) {
-    func_80110C1C_option(arg0);
+void option_MenuMdlDispOff(s32 arg0) {
+    option_ModelDispOff(arg0);
 }
 
-void func_80113274_option(s32 arg0, f32 *arg1, f32 *arg2, f32 *arg3) {
-    func_80110B38_option(arg0, arg1, arg2, arg3);
+void option_MenuMdlPosGet(s32 arg0, f32 *arg1, f32 *arg2, f32 *arg3) {
+    option_ModelPosGet(arg0, arg1, arg2, arg3);
 }
 
-void func_80113290_option(s32 arg0, f32 arg1, f32 arg2, f32 arg3) {
-    func_801109F4_option(arg0, arg1, arg2, arg3);
+void option_MenuMdlRotSet(s32 arg0, f32 arg1, f32 arg2, f32 arg3) {
+    option_ModelRotSet(arg0, arg1, arg2, arg3);
 }
 
-void func_801132AC_option(s32 arg0, s32 arg1) {
-    func_80110C9C_option(arg0, arg1);
+void option_MenuMotFlagSet(s32 arg0, s32 arg1) {
+    option_MotionFlagSet(arg0, arg1);
 }
 
-void func_801132C8_option(s32 arg0, s32 arg1) {
-    func_80110D50_option(arg0, arg1);
+void option_MenuMotFlagReset(s32 arg0, s32 arg1) {
+    option_MotionFlagReset(arg0, arg1);
 }
 
-void func_801132E4_option(s32 arg0, u32 arg1) {
-    func_80110DCC_option(arg0, arg1);
+void option_MenuMotTimeSet(s32 arg0, u32 arg1) {
+    option_MotionTimeSet(arg0, arg1);
 }
 
-void func_80113300_option(s32 arg0) {
-    func_80110E30_option(arg0);
+void option_MenuMotEndWait(s32 arg0) {
+    option_MotionEndWait(arg0);
 }
 
-void func_8011331C_option(s32 arg0, s32 arg1, u16 arg2) {
-    func_80110F58_option(arg0, arg1, arg2);
+void option_MenuMotSet(s32 arg0, s32 arg1, u16 arg2) {
+    option_MotionSet(arg0, arg1, arg2);
 }
 
-void func_80113338_option(s32 arg0, s32 arg1, s16 arg2, s16 arg3, u16 arg4) {
-    func_80110CE0_option(arg0, arg1, arg2, arg3, arg4);
+void option_MenuMotShiftSet(s32 arg0, s32 arg1, s16 arg2, s16 arg3, u16 arg4) {
+    option_MotionShiftSet(arg0, arg1, arg2, arg3, arg4);
 }
 
-void func_80113368_option(s32 arg0, s32 *arg1, s32 *arg2) {
-    func_80110594_option(arg0, arg1, arg2);
+void option_MenuSprPosGet(s32 arg0, s32 *arg1, s32 *arg2) {
+    option_SprPosGet(arg0, arg1, arg2);
 }
 
-void func_80113384_option(s32 arg0) {
-    func_80110504_option(arg0);
+void option_MenuSprDispOn(s32 arg0) {
+    option_SprBGDispOn(arg0);
 }
 
-void func_801133A0_option(s32 arg0) {
-    func_80110520_option(arg0);
+void option_MenuSprDispOff(s32 arg0) {
+    option_SprBGDispOff(arg0);
 }
 
-void func_801133BC_option(s32 arg0, u32 arg1) {
-    func_801110C0_option(arg0, arg1, 0xA0, 0xC2, 0, 0, 4);
+void option_MenuWinCreate(s32 arg0, u32 arg1) {
+    option_WinCreate(arg0, arg1, 0xA0, 0xC2, 0, 0, 4);
 }
 
-void func_801133EC_option(s32 arg0) {
-    func_80111A10_option(arg0);
+void option_MenuWinKill(s32 arg0) {
+    option_WinKill(arg0);
 }
 
-void func_80113408_option(s32 arg0, u32 arg1) {
-    func_80111C50_option(arg0, arg1);
+void option_MenuWinMesSet(s32 arg0, u32 arg1) {
+    option_WinMesSet(arg0, arg1);
 }
 
-void func_80113424_option(s32 arg0) {
-    func_80111BF0_option(arg0);
+void option_MenuWinDispOn(s32 arg0) {
+    option_WinDispOn(arg0);
 }
 
-void func_80113440_option(s32 arg0) {
-    func_80111C20_option(arg0);
+void option_MenuWinDispOff(s32 arg0) {
+    option_WinDispOff(arg0);
 }
 
-s32 func_8011345C_option(s32 arg0) {
-    func_80111DAC_option(arg0);
-    return func_80111D58_option(arg0, 0, 0);
+s32 option_MenuWinChoiceGet(s32 arg0) {
+    option_WinMesWait(arg0);
+    return option_WinChoiceGet(arg0, 0, 0);
 }
 
-void func_80113490_option(s32 arg0) {
-    func_80111DAC_option(arg0);
+void option_MenuWinMesWait(s32 arg0) {
+    option_WinMesWait(arg0);
 }
 
-const Vec D_801146BC_option = { 0.0f, 264.9f, 364.27f };
+const Vec option_soundRoomCameraPos = { 0.0f, 264.9f, 364.27f };
 
-const Vec D_801146C8_option = { 0.0f, 184.59999f, 61.300003f };
+const Vec option_soundRoomCameraAt = { 0.0f, 184.59999f, 61.300003f };
 
-const Vec D_801146D4_option = { 0.0f, 225.0f, 0.0f };
+const Vec option_recordRoomCameraPos = { 0.0f, 225.0f, 0.0f };
 
-const Vec D_801146E0_option = { 0.0f, 225.0f, -220.0f };
+const Vec option_recordRoomCameraAt = { 0.0f, 225.0f, -220.0f };

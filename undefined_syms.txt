@@ -34,12 +34,12 @@ D_800A6D44_main = mgDataTbl + 0x4; /* minigameType */
 D_800A6D46_main = mgDataTbl + 0x6; /* flags */
 
 /* msetup field aliases: MsetupMenuContext, MsetupMessageWindows, MsetupPlayerConfig. */
-D_8011A880_msetup = msetupMenuContext;          /* playerCount */
-D_8011A882_msetup = msetupMenuContext + 0x2;    /* menu */
-D_8011A890_msetup = msetupMessageWindows;      /* current */
-D_8011A892_msetup = msetupMessageWindows + 0x2; /* windows */
-D_8011A949_msetup = D_8011A948_msetup + 0x1; /* controller low byte */
-D_8011AA42_msetup = D_8011AA30_msetup + 0x12;   /* totalTurns */
+msetup_playerNum = msetupMenuContext;          /* playerCount */
+msetup_menu = msetupMenuContext + 0x2;    /* menu */
+msetup_winId = msetupMessageWindows;      /* current */
+msetup_winIdTbl = msetupMessageWindows + 0x2; /* windows */
+msetup_padNoLo = msetup_padNo + 0x1; /* controller low byte */
+msetup_playerConfigTurnNum = msetup_playerConfig + 0x12;   /* totalTurns */
 
 /* hyper_hydrants field aliases: HyperHydrantsBssBF40, HyperHydrantsBssBF88, HyperHydrantsBssBFAC, HyperHydrantsBssC010. */
 D_8010BF40_hyper_hydrants = hyperHydrantsBssBF40;
@@ -286,18 +286,18 @@ koopa_rouletteWinTbl = koopa_rouletteWork;
 koopa_rouletteEventTbl = koopa_rouletteWork + 0x32;
 
 /* opening: per-field views into the OpObj array (stride 0x3C). */
-D_8011738C_opening = D_80117388_opening + 0x4;
-D_80117390_opening = D_80117388_opening + 0x8;
-D_80117394_opening = D_80117388_opening + 0xC;
-D_80117398_opening = D_80117388_opening + 0x10;
-D_8011739C_opening = D_80117388_opening + 0x14;
-D_801173A4_opening = D_80117388_opening + 0x1C;
-D_801173A8_opening = D_80117388_opening + 0x20;
-D_801173B0_opening = D_80117388_opening + 0x28;
-D_801173B4_opening = D_80117388_opening + 0x2C;
-D_801173B8_opening = D_80117388_opening + 0x30;
-D_801173BC_opening = D_80117388_opening + 0x34;
-D_801173C0_opening = D_80117388_opening + 0x38;
+op_demoObjTime = op_demoObjTbl + 0x4;
+op_demoObjMaxTime = op_demoObjTbl + 0x8;
+op_demoObjWork = op_demoObjTbl + 0xC;
+op_demoObjParamA = op_demoObjTbl + 0x10;
+op_demoObjParamB = op_demoObjTbl + 0x14;
+op_demoObjEndX = op_demoObjTbl + 0x1C;
+op_demoObjEndY = op_demoObjTbl + 0x20;
+op_demoObjAngleX = op_demoObjTbl + 0x28;
+op_demoObjAngleY = op_demoObjTbl + 0x2C;
+op_demoObjAngleZ = op_demoObjTbl + 0x30;
+op_demoObjBodyNode = op_demoObjTbl + 0x34;
+op_demoObjShadowNode = op_demoObjTbl + 0x38;
 
 /* aces_high: labels inside data tables, referenced by the INCLUDE_ASM function
    func_8010D1D8_aces_high. Remove once that function is decompiled. */
@@ -457,15 +457,15 @@ D_8010F650_toadstool_titan = toadstoolTitanBssF650;
 D_8010F659_toadstool_titan = toadstoolTitanBssF650 + 0x9;
 D_8010F65D_toadstool_titan = toadstoolTitanBssF650 + 0xD;
 
-/* modesel aliases: s16 low halves, parallel-array views; func_8010ACA8_modesel (INCLUDE_ASM) uses D_80110CE4. */
-D_8010F296_modesel = D_8010F294_modesel + 0x2;
-D_80110BDA_modesel = D_80110BD8_modesel + 0x2;
-D_8010FEA0_modesel = D_8010FE90_modesel + 0x10;
-D_8011099C_modesel = D_80110998_modesel + 0x4;
-D_801109A0_modesel = D_80110998_modesel + 0x8;
-D_80110CF4_modesel = D_80110CF0_modesel + 0x4;
-D_80110CF8_modesel = D_80110CF0_modesel + 0x8;
-D_80110CE4_modesel = D_80110CD8_modesel + 0xC;
+/* modesel aliases: s16 low halves, parallel-array views; modesel_HostFallObjMain (INCLUDE_ASM) uses D_80110CE4. */
+modesel_winPosYHalf = modesel_winPosY + 0x2;
+modesel_storyChrHalf = modesel_storyChr + 0x2;
+modesel_modelScaleTbl = modesel_modelTbl + 0x10;
+modesel_winMesTbl = modesel_winTbl + 0x4;
+modesel_winTypeTbl = modesel_winTbl + 0x8;
+modesel_spotEffMaxTime = modesel_spotEffTime + 0x4;
+modesel_spotEffObj = modesel_spotEffTime + 0x8;
+D_80110CE4_modesel = modesel_hostJumpPosTbl + 0xC;
 
 /* hide_and_sneak field aliases: HideAndSneakBssE174, HideAndSneakBssE1A8. */
 D_8010E174_hide_and_sneak = hideAndSneakBssE174;

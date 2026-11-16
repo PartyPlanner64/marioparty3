@@ -1,24 +1,24 @@
 #include "common.h"
 
-void func_80105C14_option(void);
-void func_80105C38_option(void);
-void func_80105C5C_option(void);
-void func_80105C80_option(void);
-void func_80105CA4_option(void);
-void func_80105CC8_option(void);
-void func_80105CEC_option(void);
+void option_RoomObjectSetup(void);
+void option_RoomFromLObjectSetup(void);
+void option_RoomFromRObjectSetup(void);
+void option_RoomFromRecordObjectSetup(void);
+void option_SoundRoomLObjectSetup(void);
+void option_SoundRoomRObjectSetup(void);
+void option_RecordRoomObjectSetup(void);
 
-OvlEntrypoint D_801134B0_option[] = {
-    { 0, func_80105C14_option },
-    { 1, func_80105C38_option },
-    { 2, func_80105C5C_option },
-    { 3, func_80105C80_option },
-    { 4, func_80105CA4_option },
-    { 5, func_80105CC8_option },
-    { 6, func_80105CEC_option },
+OvlEntrypoint option_ovlEntryTbl[] = {
+    { 0, option_RoomObjectSetup },
+    { 1, option_RoomFromLObjectSetup },
+    { 2, option_RoomFromRObjectSetup },
+    { 3, option_RoomFromRecordObjectSetup },
+    { 4, option_SoundRoomLObjectSetup },
+    { 5, option_SoundRoomRObjectSetup },
+    { 6, option_RecordRoomObjectSetup },
     { -1, NULL },
 };
 
-void func_801059A0_option(void) {
-    ovlEventCall(D_801134B0_option, omovlevtno);
+void option_Executor(void) {
+    ovlEventCall(option_ovlEntryTbl, omovlevtno);
 }

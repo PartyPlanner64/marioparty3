@@ -1,10 +1,10 @@
 #include "common.h"
 #include "game/overlays/msetup.h"
 
-void func_8010CE8C_msetup(s16);
-u32 func_80106208_msetup(u32);
+void msetup_SpiralEffHook(s16);
+u32 msetup_RandMod(u32);
 
-s16 func_8010CAF0_msetup(s32 dataId, s32 flags) {
+s16 msetup_SpiralEffCreate(s32 dataId, s32 flags) {
     s16 model;
     HmfData *hmf;
     HmfModelData_UnkBC_Struct *data;
@@ -20,7 +20,7 @@ s16 func_8010CAF0_msetup(s32 dataId, s32 flags) {
     Hu3DModelRemakeStatic(model);
     Hu3DModelVtxBufMake(model);
     Hu3DModelDynamicFree(model);
-    Hu3DParticleCreate(model, -1, 0, func_8010CE8C_msetup);
+    Hu3DParticleCreate(model, -1, 0, msetup_SpiralEffHook);
     hmf = Hu3DData[model].hmf;
     data = Hu3DData[model].unkBC;
     entry = data->unk58;
@@ -45,7 +45,7 @@ s16 func_8010CAF0_msetup(s32 dataId, s32 flags) {
     return model;
 }
 
-void func_8010CC70_msetup(s16 model, f32 arg1, f32 arg2, f32 arg3, f32 arg4) {
+void msetup_SpiralEffParamSet(s16 model, f32 arg1, f32 arg2, f32 arg3, f32 arg4) {
     HmfData *hmf = Hu3DData[model].hmf;
     HmfModelData_UnkBC_Struct *data = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *entry = data->unk58;
@@ -65,7 +65,7 @@ void func_8010CC70_msetup(s16 model, f32 arg1, f32 arg2, f32 arg3, f32 arg4) {
     }
 }
 
-s32 func_8010CD14_msetup(s16 model, f32 x, f32 y, f32 z) {
+s32 msetup_SpiralEffAdd(s16 model, f32 x, f32 y, f32 z) {
     HmfData *hmf = Hu3DData[model].hmf;
     HmfModelData_UnkBC_Struct *data = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *entry = data->unk58;
@@ -77,9 +77,9 @@ s32 func_8010CD14_msetup(s16 model, f32 x, f32 y, f32 z) {
     data->unk24.f = z;
     for (i = 0; i < hmf->unk1A; i++, entry++) {
         if (entry->unk04 >= 180.0f) {
-            entry->unk18 = func_80106208_msetup(360);
+            entry->unk18 = msetup_RandMod(360);
             entry->unk20 = data->unk10.f / 10.0f;
-            angle = func_80106208_msetup(150);
+            angle = msetup_RandMod(150);
             angle -= 75.0f;
             if (angle < 0.0f) {
                 angle += 360.0f;
@@ -95,9 +95,9 @@ s32 func_8010CD14_msetup(s16 model, f32 x, f32 y, f32 z) {
 }
 
 /* Preserve the trailing double after the compiler-generated conversion constant. */
-const f64 D_8011A688_msetup = 0.0;
+const f64 msetup_spiralEffPad = 0.0;
 
-void func_8010CE8C_msetup(s16 model) {
+void msetup_SpiralEffHook(s16 model) {
     HmfData *hmf = Hu3DData[model].hmf;
     HmfModelData_UnkBC_Struct *data = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *entry = data->unk58;

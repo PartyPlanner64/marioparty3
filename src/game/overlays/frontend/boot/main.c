@@ -1,61 +1,61 @@
 #include "common.h"
 #include "macros.h"
 
-void func_80105AF0_ovl_boot(omObjData *);
-void func_80105C80_ovl_boot(void);
-void func_80105BA4_ovl_boot(omObjData *);
-void func_801059D0_ovl_boot(void);
-void func_80105C14_ovl_boot(omObjData *);
+void boot_ExitCheckObjMain(omObjData *);
+void boot_LogoProc(void);
+void boot_ExitObjMain(omObjData *);
+void boot_ObjectInit(void);
+void boot_SkipCheckObjMain(omObjData *);
 
-s32 D_80105F00_ovl_boot = 0;
-s32 D_80105F04_ovl_boot = 0;
+s32 boot_skipF = 0;
+s32 boot_exitF = 0;
 
-Process *D_80105F10_ovl_boot BSS;
+Process *boot_logoProc BSS;
 
-void func_801059D0_ovl_boot(void) {
+void boot_ObjectInit(void) {
     Hu3DCamInit(1);
     omInitObjMan(0x10, 4);
     omSysPauseDisableF = 1;
 
-    if (D_80105F00_ovl_boot == 0) {
+    if (boot_skipF == 0) {
         GWContErrorSet();
-        D_80105F10_ovl_boot = omAddPrcObj(func_80105C80_ovl_boot, 0xA, 0, 0);
-        omAddObj(0x3E8, 0, 0, -1, func_80105AF0_ovl_boot);
+        boot_logoProc = omAddPrcObj(boot_LogoProc, 0xA, 0, 0);
+        omAddObj(0x3E8, 0, 0, -1, boot_ExitCheckObjMain);
     } else {
-        D_80105F10_ovl_boot = omAddPrcObj(func_80105C80_ovl_boot, 0xA, 0, 0);
-        omAddObj(0x3E8, 0, 0, -1, func_80105AF0_ovl_boot);
-        omAddObj(0xA, 0, 0, -1, func_80105C14_ovl_boot);
+        boot_logoProc = omAddPrcObj(boot_LogoProc, 0xA, 0, 0);
+        omAddObj(0x3E8, 0, 0, -1, boot_ExitCheckObjMain);
+        omAddObj(0xA, 0, 0, -1, boot_SkipCheckObjMain);
     }
 }
 
-void func_80105AAC_ovl_boot(void) {
-    D_80105F00_ovl_boot = 0;
-    func_801059D0_ovl_boot();
+void boot_ObjectSetup(void) {
+    boot_skipF = 0;
+    boot_ObjectInit();
 }
 
-void func_80105ACC_ovl_boot(void) {
-    D_80105F00_ovl_boot = 1;
-    func_801059D0_ovl_boot();
+void boot_SkipObjectSetup(void) {
+    boot_skipF = 1;
+    boot_ObjectInit();
 }
 
-void func_80105AF0_ovl_boot(omObjData *arg0) {
-    if (((omSysExitReq != 0) || (D_80105F04_ovl_boot != 0)) && (WipeStatGet() == 0)) {
+void boot_ExitCheckObjMain(omObjData *arg0) {
+    if (((omSysExitReq != 0) || (boot_exitF != 0)) && (WipeStatGet() == 0)) {
         WipeColorSet(0, 0, 0U);
         WipeCreateOut(0xB, 9);
-        arg0->func = &func_80105BA4_ovl_boot;
+        arg0->func = &boot_ExitObjMain;
 
         if ((omSysExitReq != 0) && (WipeStatGet() == 0)) {
             WipeColorSet(0, 0, 0U);
             WipeCreateOut(0xB, 9);
-            arg0->func = &func_80105BA4_ovl_boot;
+            arg0->func = &boot_ExitObjMain;
         }
     }
 }
 
-void func_80105BA4_ovl_boot(omObjData *arg0) {
+void boot_ExitObjMain(omObjData *arg0) {
     if (WipeStatGet() == 0) {
         HuWinAllKill();
-        if (D_80105F00_ovl_boot != 0) {
+        if (boot_skipF != 0) {
             omOvlGotoEx(opening, 2, 0x92);
             return;
         }
@@ -64,18 +64,18 @@ void func_80105BA4_ovl_boot(omObjData *arg0) {
     }
 }
 
-void func_80105C14_ovl_boot(omObjData *arg0) {
+void boot_SkipCheckObjMain(omObjData *arg0) {
     s32 temp_v0;
 
     if (WipeStatGet() == 0) {
         temp_v0 = GWContErrorGet();
         if ((temp_v0 == 1) && (CheckControllerRead(0) != 0) && (HuPadBtnDown[0] & START_BUTTON)) {
-            D_80105F04_ovl_boot = temp_v0;
+            boot_exitF = temp_v0;
         }
     }
 }
 
-void func_80105C80_ovl_boot(void) {
+void boot_LogoProc(void) {
     u16 temp_v0;
     u16 temp_v0_3;
     u16 temp_s0_3;

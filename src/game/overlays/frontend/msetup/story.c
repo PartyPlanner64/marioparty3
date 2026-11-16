@@ -11,39 +11,39 @@ typedef struct MsetupStoryMenu {
     s16 unk12;
 } MsetupStoryMenu;
 
-extern Vec *D_8011A16C_msetup[];
-extern MsetupStorySprite D_8011A178_msetup[];
-extern MsetupStorySprite D_8011A218_msetup[];
-extern MsetupStorySprite D_8011A2B8_msetup[];
-extern Vec D_8011A368_msetup[];
-extern Vec D_8011A38C_msetup[];
-extern MsetupStorySprite D_8011A3B8_msetup[];
-extern MsetupStorySprite D_8011A428_msetup[];
-extern MsetupStorySprite D_8011A478_msetup[];
-extern MsetupStorySprite D_8011A4C8_msetup[];
-extern s32 D_8011A508_msetup[];
-extern s16 D_8011A514_msetup[][2];
-extern s16 (*D_8011A544_msetup[])[2];
-extern u8 D_8011A550_msetup[];
-extern s16 D_8011A0D0_msetup[];
+extern Vec *msetup_storyMenuPosTblTbl[];
+extern MsetupStorySprite msetup_storyChrBackTbl[];
+extern MsetupStorySprite msetup_storyLevelBackTbl[];
+extern MsetupStorySprite msetup_storyMgPackBackTbl[];
+extern Vec msetup_storyMenuMdlOfsTbl[];
+extern Vec msetup_storyMenuMdlRotTbl[];
+extern MsetupStorySprite msetup_storyChrOptTbl[];
+extern MsetupStorySprite msetup_storyLevel4OptTbl[];
+extern MsetupStorySprite msetup_storyLevelOptTbl[];
+extern MsetupStorySprite msetup_storyMgPackOptTbl[];
+extern s32 msetup_storyCursorSprTbl[];
+extern s16 msetup_storyChrCursorPosTbl[][2];
+extern s16 (*msetup_storyCursorPosTblTbl[])[2];
+extern u8 msetup_storyMenuSelInitTbl[];
+extern s16 msetup_storyChrVoiceSeTbl[];
 
-extern ModeCameraPreset D_8011A554_msetup;
-extern s16 D_8011A910_msetup;
-extern s16 D_8011A948_msetup;
-extern s16 D_8011AA48_msetup;
-extern s16 D_8011A944_msetup;
-extern s16 D_8011A946_msetup;
-extern s16 D_8011AA4C_msetup;
-extern u16 D_80119410_msetup;
+extern ModeCameraPreset msetup_storyCameraPreset;
+extern s16 msetup_storyWinId;
+extern s16 msetup_padNo;
+extern s16 msetup_wipeType;
+extern s16 msetup_exitMode;
+extern s16 msetup_exitEvtNo;
+extern s16 msetup_exitOvlNo;
+extern u16 msetup_exitCnt;
 extern u8 storySceneNo;
-extern u8 D_8011A3B0_msetup[];
+extern u8 msetup_storyChrTbl[];
 extern s16 Hu3DCamMtxNo;
 
-void func_80106260_msetup(ModeCameraPreset *);
-void func_80117A3C_msetup(void);
+void msetup_CameraPresetSet(ModeCameraPreset *);
+void msetup_StoryMenuProc(void);
 
 
-void func_80117910_msetup(s16 group, s16 member, s16 camera, f32 x, f32 y, f32 z, f32 scale) {
+void msetup_SprPos3DSet(s16 group, s16 member, s16 camera, f32 x, f32 y, f32 z, f32 scale) {
     HuSprite *sprite;
     HuCamera *cam;
     f32 depth;
@@ -57,7 +57,7 @@ void func_80117910_msetup(s16 group, s16 member, s16 camera, f32 x, f32 y, f32 z
     }
 }
 
-void func_80117A3C_msetup(void) {
+void msetup_StoryMenuProc(void) {
     MsetupCursorState cursor;
     Vec positions[16];
     Vec position;
@@ -102,32 +102,32 @@ void func_80117A3C_msetup(void) {
     switch (menu->type) {
         case 0:
         default:
-            backgrounds = D_8011A178_msetup;
+            backgrounds = msetup_storyChrBackTbl;
             backgroundCount = 10;
-            options = D_8011A3B8_msetup;
+            options = msetup_storyChrOptTbl;
             optionCount = 7;
             break;
         case 1:
-            backgrounds = D_8011A218_msetup;
+            backgrounds = msetup_storyLevelBackTbl;
             backgroundCount = 10;
             if (_CheckFlag(0x2D)) {
-                options = D_8011A428_msetup;
+                options = msetup_storyLevel4OptTbl;
                 optionCount = 5;
                 difficultyCount = 4;
             } else {
-                options = D_8011A478_msetup;
+                options = msetup_storyLevelOptTbl;
                 optionCount = 5;
                 difficultyCount = 3;
             }
             break;
         case 2:
-            backgrounds = D_8011A2B8_msetup;
+            backgrounds = msetup_storyMgPackBackTbl;
             backgroundCount = 11;
-            options = D_8011A4C8_msetup;
+            options = msetup_storyMgPackOptTbl;
             optionCount = 4;
             break;
     }
-    presets = D_8011A16C_msetup[menu->type];
+    presets = msetup_storyMenuPosTblTbl[menu->type];
     for (i = 0; i < backgroundCount; i++) {
         sprites[i] = -1;
     }
@@ -202,20 +202,20 @@ void func_80117A3C_msetup(void) {
     Hu3DModelAttrSet(decoration, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DModelScaleSet(model, 0.8f, 0.8f, 0.8f);
     Hu3DModelScaleSet(decoration, 0.8f, 0.8f, 0.8f);
-    target = &D_8011A38C_msetup[menu->type];
+    target = &msetup_storyMenuMdlRotTbl[menu->type];
     Hu3DModelRotSet(model, target->x, target->y, target->z);
     Hu3DModelRotSet(decoration, target->x, target->y, target->z);
-    modelOffset = &D_8011A368_msetup[menu->type];
+    modelOffset = &msetup_storyMenuMdlOfsTbl[menu->type];
     position.x = pos->x + modelOffset->x;
     position.y = pos->y + modelOffset->y;
     position.z = pos->z + modelOffset->z;
     Hu3DModelPosSet(model, position.x, position.y, position.z);
     Hu3DModelPosSet(decoration, position.x, position.y, position.z);
-    omAddPrcObj(func_8010D6D0_msetup, 0x3F00, 0x800, 0)->user_data = &cursor;
+    omAddPrcObj(msetup_CursorProc, 0x3F00, 0x800, 0)->user_data = &cursor;
     cursor.pos[0] = 160;
     cursor.pos[1] = 120;
-    cursor.positions = D_8011A544_msetup[menu->type];
-    cursor.dataId = D_8011A508_msetup[menu->type];
+    cursor.positions = msetup_storyCursorPosTblTbl[menu->type];
+    cursor.dataId = msetup_storyCursorSprTbl[menu->type];
     cursor.selection = -1;
     cursor.state = 0;
     cursor.flags = 0;
@@ -229,10 +229,10 @@ void func_80117A3C_msetup(void) {
     frame = 0;
     duration = 0;
     state = 0;
-    selection = D_8011A550_msetup[menu->type];
+    selection = msetup_storyMenuSelInitTbl[menu->type];
     cursor.selection = selection;
     cursor.flags = 4;
-    func_8010D684_msetup(D_8011A948_msetup, &previousButtons);
+    msetup_PadBtnDownGet(msetup_padNo, &previousButtons);
     angleStep = 90.0f / 30.0f;
     while (1) {
         if (state != menu->state) {
@@ -295,7 +295,7 @@ void func_80117A3C_msetup(void) {
                     }
                     break;
                 case 5:
-                    func_8010D684_msetup(D_8011A948_msetup, &previousButtons);
+                    msetup_PadBtnDownGet(msetup_padNo, &previousButtons);
                     cursor.state = 1;
                     switch (menu->type) {
                         case 0:
@@ -333,16 +333,16 @@ void func_80117A3C_msetup(void) {
             if (angles[i] > 360) {
                 angles[i] -= 360;
             }
-            func_80117910_msetup(backgroundGroup, i, 0, x, y, z, 2.5f);
+            msetup_SprPos3DSet(backgroundGroup, i, 0, x, y, z, 2.5f);
         }
         for (i = 0; i < optionCount; i++) {
             target = &options[i].pos;
             x = pos->x + target->x;
             y = pos->y + target->y;
             z = pos->z + target->z;
-            func_80117910_msetup(group, i, 0, x, y, z, 2.5f);
+            msetup_SprPos3DSet(group, i, 0, x, y, z, 2.5f);
             if (menu->type == 0) {
-                func_80117910_msetup(shadowGroup, i, 0, x, y, z, 2.5f);
+                msetup_SprPos3DSet(shadowGroup, i, 0, x, y, z, 2.5f);
             }
         }
         position.x = pos->x + modelOffset->x;
@@ -358,12 +358,12 @@ void func_80117A3C_msetup(void) {
         previousPosition.x = pos->x;
         previousPosition.y = pos->y;
         previousPosition.z = pos->z;
-        buttons = func_8010D684_msetup(D_8011A948_msetup, &previousButtons);
+        buttons = msetup_PadBtnDownGet(msetup_padNo, &previousButtons);
         if (state == 5) {
             switch (menu->type) {
                 case 0:
                     if (buttons & (U_JPAD | D_JPAD | L_JPAD | R_JPAD)) {
-                        i = func_8010D4DC_msetup(D_8011A514_msetup, disabled, 6, selection, D_8011A948_msetup, buttons);
+                        i = msetup_CursorPadNextGet(msetup_storyChrCursorPosTbl, disabled, 6, selection, msetup_padNo, buttons);
                         if ((i >= 0) & (i < 6U)) {
                             selection = i;
                         }
@@ -378,8 +378,8 @@ void func_80117A3C_msetup(void) {
                         menu->state = 0;
                         menu->result = selection;
                         HuSprDispOn(group, selection + 1);
-                        HuAudFXPlay(D_8011A0D0_msetup[selection]);
-                        RepeatVibrator(D_8011A948_msetup, 5, 0, 5);
+                        HuAudFXPlay(msetup_storyChrVoiceSeTbl[selection]);
+                        RepeatVibrator(msetup_padNo, 5, 0, 5);
                         for (i = 1; i < optionCount; i++) {
                             if (i != selection + 1) {
                                 HuSprDispOn(shadowGroup, i);
@@ -457,7 +457,7 @@ void func_80117A3C_msetup(void) {
     }
 }
 
-void func_80118D48_msetup(void) {
+void msetup_StorySetupProc(void) {
     MsetupStoryMenu first;
     MsetupStoryMenu second;
     MsetupStoryMenu third;
@@ -470,7 +470,7 @@ void func_80118D48_msetup(void) {
     s32 step;
 
     Hu3DScreenClearF = 1;
-    func_80106260_msetup(&D_8011A554_msetup);
+    msetup_CameraPresetSet(&msetup_storyCameraPreset);
     for (i = 0; i < 6; i++) {
         unused2[6] = -1;
         unused[6] = -1;
@@ -479,19 +479,19 @@ void func_80118D48_msetup(void) {
     (void)unused;
     (void)unused2;
     memset(&first, 0, sizeof(first));
-    omAddPrcObj(func_80117A3C_msetup, 0x3F00, 0x800, 0)->user_data = &first;
+    omAddPrcObj(msetup_StoryMenuProc, 0x3F00, 0x800, 0)->user_data = &first;
     first.type = 0;
     first.pos.x = 0;
     first.pos.y = 0;
     first.pos.z = 0;
     memset(&second, 0, sizeof(second));
-    omAddPrcObj(func_80117A3C_msetup, 0x3F00, 0x800, 0)->user_data = &second;
+    omAddPrcObj(msetup_StoryMenuProc, 0x3F00, 0x800, 0)->user_data = &second;
     second.type = 1;
     second.pos.x = 0;
     second.pos.y = 0;
     second.pos.z = 0;
     memset(&third, 0, sizeof(third));
-    omAddPrcObj(func_80117A3C_msetup, 0x3F00, 0x800, 0)->user_data = &third;
+    omAddPrcObj(msetup_StoryMenuProc, 0x3F00, 0x800, 0)->user_data = &third;
     third.type = 2;
     third.pos.x = 0;
     third.pos.y = 0;
@@ -499,16 +499,16 @@ void func_80118D48_msetup(void) {
     sprite = espEntry(HuSprAnimDataRead(0x140067), 0, 0);
     espAttrSet(sprite, 0x4000);
     espPosSet(sprite, 160, 120);
-    D_8011A910_msetup = HuWinExCreateStyled(160, 204, 19);
-    HuWinActivePlayerSet(D_8011A910_msetup, 1 << D_8011A948_msetup);
-    HuWinExTPLvlSet(D_8011A910_msetup, 0xE0);
-    HuWinMesPalSet(D_8011A910_msetup, 2, 255, 64, 64);
-    HuWinMesPalSet(D_8011A910_msetup, 4, 96, 255, 64);
-    HuWinMesPalSet(D_8011A910_msetup, 6, 255, 255, 64);
-    HuWinExOpen(D_8011A910_msetup, 0);
+    msetup_storyWinId = HuWinExCreateStyled(160, 204, 19);
+    HuWinActivePlayerSet(msetup_storyWinId, 1 << msetup_padNo);
+    HuWinExTPLvlSet(msetup_storyWinId, 0xE0);
+    HuWinMesPalSet(msetup_storyWinId, 2, 255, 64, 64);
+    HuWinMesPalSet(msetup_storyWinId, 4, 96, 255, 64);
+    HuWinMesPalSet(msetup_storyWinId, 6, 255, 255, 64);
+    HuWinExOpen(msetup_storyWinId, 0);
     HuAudSeqPlay(10);
     WipeColorSet(255, 255, 255);
-    WipeCreateIn(D_8011AA48_msetup, 16);
+    WipeCreateIn(msetup_wipeType, 16);
     while (WipeStatGet()) {
         HuPrcVSleep();
     }
@@ -517,8 +517,8 @@ void func_80118D48_msetup(void) {
     do {
         switch (step) {
             case 0:
-                HuWinMesSet(D_8011A910_msetup, 0x6000, -1, -1);
-                while (HuWinStatGet(D_8011A910_msetup)) {
+                HuWinMesSet(msetup_storyWinId, 0x6000, -1, -1);
+                while (HuWinStatGet(msetup_storyWinId)) {
                     HuPrcVSleep();
                 }
                 step++;
@@ -529,12 +529,12 @@ void func_80118D48_msetup(void) {
                 do {
                     HuPrcVSleep();
                 } while (first.state);
-                HuWinMesSet(D_8011A910_msetup, 0x6001, -1, -1);
+                HuWinMesSet(msetup_storyWinId, 0x6001, -1, -1);
                 first.state = 5;
                 do {
                     HuPrcVSleep();
                 } while (first.state);
-                HuWinHomeClear(D_8011A910_msetup);
+                HuWinHomeClear(msetup_storyWinId);
                 if (first.result >= 0) {
                     first.state = 3;
                     step++;
@@ -546,12 +546,12 @@ void func_80118D48_msetup(void) {
                 do {
                     HuPrcVSleep();
                 } while (second.state);
-                HuWinMesSet(D_8011A910_msetup, 0x6002, -1, -1);
+                HuWinMesSet(msetup_storyWinId, 0x6002, -1, -1);
                 second.state = 5;
                 do {
                     HuPrcVSleep();
                 } while (second.state);
-                HuWinHomeClear(D_8011A910_msetup);
+                HuWinHomeClear(msetup_storyWinId);
                 if (second.result < 0) {
                     second.state = 3;
                     step--;
@@ -567,8 +567,8 @@ void func_80118D48_msetup(void) {
                 do {
                     HuPrcVSleep();
                 } while (third.state);
-                HuWinMesSet(D_8011A910_msetup, 0x6004, -1, -1);
-                while (HuWinStatGet(D_8011A910_msetup)) {
+                HuWinMesSet(msetup_storyWinId, 0x6004, -1, -1);
+                while (HuWinStatGet(msetup_storyWinId)) {
                     HuPrcVSleep();
                 }
                 previous = -1;
@@ -577,14 +577,14 @@ void func_80118D48_msetup(void) {
                     if (previous != third.result) {
                         previous = third.result;
                         if (third.result != 0) {
-                            HuWinMesSet(D_8011A910_msetup, 0x6006, -1, -1);
+                            HuWinMesSet(msetup_storyWinId, 0x6006, -1, -1);
                         } else {
-                            HuWinMesSet(D_8011A910_msetup, 0x6005, -1, -1);
+                            HuWinMesSet(msetup_storyWinId, 0x6005, -1, -1);
                         }
                     }
                     HuPrcVSleep();
                 } while (third.state);
-                HuWinHomeClear(D_8011A910_msetup);
+                HuWinHomeClear(msetup_storyWinId);
                 if (third.result < 0) {
                     third.state = 3;
                     first.state = 3;
@@ -601,11 +601,11 @@ void func_80118D48_msetup(void) {
                 do {
                     HuPrcVSleep();
                 } while (second.state);
-                HuWinMesSet(D_8011A910_msetup, 0x6003, -1, -1);
-                while (HuWinStatGet(D_8011A910_msetup)) {
+                HuWinMesSet(msetup_storyWinId, 0x6003, -1, -1);
+                while (HuWinStatGet(msetup_storyWinId)) {
                     HuPrcVSleep();
                 }
-                if (HuWinChoiceGet(D_8011A910_msetup, 0, 0) != 0) {
+                if (HuWinChoiceGet(msetup_storyWinId, 0, 0) != 0) {
                     first.state = 4;
                     second.state = 4;
                     step--;
@@ -613,7 +613,7 @@ void func_80118D48_msetup(void) {
                     step = -2;
                     selection = first.result;
                     if (selection < 6) {
-                        GwStory.unk1 = D_8011A3B0_msetup[(s16)selection];
+                        GwStory.unk1 = msetup_storyChrTbl[(s16)selection];
                         GwStory.unk2 = second.result;
                         GwStory.unk0 = 0;
                         GwStory.progress.fields.unkF = 0;
@@ -643,18 +643,18 @@ void func_80118D48_msetup(void) {
                     second.state = 6;
                     third.state = 6;
                 }
-                HuWinHomeClear(D_8011A910_msetup);
+                HuWinHomeClear(msetup_storyWinId);
                 break;
         }
         HuPrcVSleep();
     } while (step >= 0);
     if (step < -1) {
-        D_8011A944_msetup = 1;
-        D_8011AA4C_msetup = 0x75;
-        D_8011A946_msetup = 0;
+        msetup_exitMode = 1;
+        msetup_exitOvlNo = 0x75;
+        msetup_exitEvtNo = 0;
         storySceneNo = 1;
     }
-    D_80119410_msetup = 1;
+    msetup_exitCnt = 1;
     while (1) {
         HuPrcVSleep();
     }

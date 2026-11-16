@@ -31,23 +31,23 @@ typedef struct StaffCreditSlot { // sizeof 0x20
     /* 0x1E */ s16 type;
 } StaffCreditSlot;
 
-s32 D_80110B80_staff[1] = { 0x160042 };
-StaffCreditEntry D_80110B84_staff[] = {
+s32 staff_creditSprTbl[1] = { 0x160042 };
+StaffCreditEntry staff_creditSec0Tbl[] = {
     { 4, 0, 0x6400 },
     { 1, 0, 0x4B00 },
     { -1, 0, 0 },
 };
-StaffCreditEntry D_80110B90_staff[] = {
+StaffCreditEntry staff_creditSec1Tbl[] = {
     { 4, 0, 0x6401 },
     { 1, 0, 0x4B01 },
     { -1, 0, 0 },
 };
-StaffCreditEntry D_80110B9C_staff[] = {
+StaffCreditEntry staff_creditSec2Tbl[] = {
     { 4, 0, 0x6402 },
     { 1, 0, 0x4B02 },
     { -1, 0, 0 },
 };
-StaffCreditEntry D_80110BA8_staff[] = {
+StaffCreditEntry staff_creditSec3Tbl[] = {
     { 4, 0, 0x6403 },
     { 3, 0, 0x6425 },
     { 1, 0, 0x4B02 },
@@ -62,18 +62,18 @@ StaffCreditEntry D_80110BA8_staff[] = {
     { 1, 0, 0x4B01 },
     { -1, 0, 0 },
 };
-StaffCreditEntry D_80110BDC_staff[] = {
+StaffCreditEntry staff_creditSec4Tbl[] = {
     { 4, 0, 0x6404 },
     { 1, 0, 0x4B09 },
     { 1, 0, 0x4B0A },
     { -1, 0, 0 },
 };
-StaffCreditEntry D_80110BEC_staff[] = {
+StaffCreditEntry staff_creditSec5Tbl[] = {
     { 4, 0, 0x6405 },
     { 1, 0, 0x4B0B },
     { -1, 0, 0 },
 };
-StaffCreditEntry D_80110BF8_staff[] = {
+StaffCreditEntry staff_creditSec6Tbl[] = {
     { 4, 0, 0x6406 },
     { 3, 0, 0x6425 },
     { 1, 0, 0x4B0C },
@@ -83,7 +83,7 @@ StaffCreditEntry D_80110BF8_staff[] = {
     { 1, 0, 0x4B0E },
     { -1, 0, 0 },
 };
-StaffCreditEntry D_80110C18_staff[] = {
+StaffCreditEntry staff_creditSec7Tbl[] = {
     { 4, 0, 0x6407 },
     { 3, 0, 0x6425 },
     { 1, 0, 0x4B0F },
@@ -106,17 +106,17 @@ StaffCreditEntry D_80110C18_staff[] = {
     { 1, 0, 0x4B1E },
     { -1, 0, 0 },
 };
-StaffCreditEntry D_80110C6C_staff[] = {
+StaffCreditEntry staff_creditSec8Tbl[] = {
     { 4, 0, 0x6408 },
     { 1, 0, 0x4B1F },
     { -1, 0, 0 },
 };
-StaffCreditEntry D_80110C78_staff[] = {
+StaffCreditEntry staff_creditSec9Tbl[] = {
     { 4, 0, 0x6409 },
     { 1, 0, 0x4B20 },
     { -1, 0, 0 },
 };
-StaffCreditEntry D_80110C84_staff[] = {
+StaffCreditEntry staff_creditSec10Tbl[] = {
     { 4, 0, 0x640A },
     { 3, 0, 0x6425 },
     { 1, 0, 0x4B21 },
@@ -126,7 +126,7 @@ StaffCreditEntry D_80110C84_staff[] = {
     { 1, 0, 0x4B23 },
     { -1, 0, 0 },
 };
-StaffCreditEntry D_80110CA4_staff[] = {
+StaffCreditEntry staff_creditSec11Tbl[] = {
     { 4, 0, 0x640B },
     { 3, 0, 0x6425 },
     { 1, 0, 0x4B24 },
@@ -137,12 +137,12 @@ StaffCreditEntry D_80110CA4_staff[] = {
     { 1, 0, 0x4B27 },
     { -1, 0, 0 },
 };
-StaffCreditEntry D_80110CC8_staff[] = {
+StaffCreditEntry staff_creditSec12Tbl[] = {
     { 4, 0, 0x640C },
     { 1, 0, 0x4B28 },
     { -1, 0, 0 },
 };
-StaffCreditEntry D_80110CD4_staff[] = {
+StaffCreditEntry staff_creditSec13Tbl[] = {
     { 4, 0, 0x640D },
     { 3, 0, 0x6428 },
     { 1, 0, 0x4B29 },
@@ -154,7 +154,7 @@ StaffCreditEntry D_80110CD4_staff[] = {
     { 1, 0, 0x4B2C },
     { -1, 0, 0 },
 };
-StaffCreditEntry D_80110CFC_staff[] = {
+StaffCreditEntry staff_creditSec14Tbl[] = {
     { 4, 0, 0x640E },
     { 3, 0, 0x6428 },
     { 1, 0, 0x4B2D },
@@ -178,7 +178,7 @@ StaffCreditEntry D_80110CFC_staff[] = {
     { 1, 0, 0x4B3C },
     { -1, 0, 0 },
 };
-StaffCreditEntry D_80110D54_staff[] = {
+StaffCreditEntry staff_creditSec15Tbl[] = {
     { 4, 0, 0x640F },
     { 1, 0, 0x4B3D },
     { 1, 0, 0x4B3E },
@@ -186,55 +186,55 @@ StaffCreditEntry D_80110D54_staff[] = {
     { 1, 0, 0x4B40 },
     { -1, 0, 0 },
 };
-StaffCreditEntry D_80110D6C_staff[] = {
+StaffCreditEntry staff_creditSec16Tbl[] = {
     { 4, 0, 0x6410 },
     { 1, 0, 0x4B41 },
     { 1, 0, 0x4B42 },
     { -1, 0, 0 },
 };
-StaffCreditEntry D_80110D7C_staff[] = {
+StaffCreditEntry staff_creditSec17Tbl[] = {
     { 4, 0, 0x6411 },
     { 1, 0, 0x4B43 },
     { -1, 0, 0 },
 };
-StaffCreditEntry D_80110D88_staff[] = {
+StaffCreditEntry staff_creditSec18Tbl[] = {
     { 4, 0, 0x6412 },
     { 1, 0, 0x4B44 },
     { -1, 0, 0 },
 };
-StaffCreditEntry D_80110D94_staff[] = {
+StaffCreditEntry staff_creditSec19Tbl[] = {
     { 4, 0, 0x6413 },
     { 1, 0, 0x4B45 },
     { -1, 0, 0 },
 };
-StaffCreditEntry D_80110DA0_staff[] = {
+StaffCreditEntry staff_creditSec20Tbl[] = {
     { 4, 0, 0x6414 },
     { 1, 0, 0x4B46 },
     { 1, 0, 0x4B4A },
     { -1, 0, 0 },
 };
-StaffCreditEntry D_80110DB0_staff[] = {
+StaffCreditEntry staff_creditSec21Tbl[] = {
     { 4, 0, 0x6415 },
     { 1, 0, 0x4B47 },
     { -1, 0, 0 },
 };
-StaffCreditEntry D_80110DBC_staff[] = {
+StaffCreditEntry staff_creditSec22Tbl[] = {
     { 4, 0, 0x6416 },
     { 1, 0, 0x4B48 },
     { 1, 0, 0x4B4B },
     { -1, 0, 0 },
 };
-StaffCreditEntry D_80110DCC_staff[] = {
+StaffCreditEntry staff_creditSec23Tbl[] = {
     { 4, 0, 0x6417 },
     { 1, 0, 0x4B49 },
     { -1, 0, 0 },
 };
-StaffCreditEntry D_80110DD8_staff[] = {
+StaffCreditEntry staff_creditSec24Tbl[] = {
     { 4, 0, 0x6418 },
     { 1, 0, 0x4B4C },
     { -1, 0, 0 },
 };
-StaffCreditEntry D_80110DE4_staff[] = {
+StaffCreditEntry staff_creditSec25Tbl[] = {
     { 4, 0, 0x6419 },
     { 1, 22, 0x4B4D },
     { 2, 15, 0x0 },
@@ -242,28 +242,28 @@ StaffCreditEntry D_80110DE4_staff[] = {
     { 1, 0, 0x4B4F },
     { -1, 0, 0 },
 };
-StaffCreditEntry D_80110DFC_staff[] = {
+StaffCreditEntry staff_creditSec26Tbl[] = {
     { 4, 0, 0x641A },
     { 1, 0, 0x4B50 },
     { 1, 0, 0x4B51 },
     { -1, 0, 0 },
 };
-StaffCreditEntry D_80110E0C_staff[] = {
+StaffCreditEntry staff_creditSec27Tbl[] = {
     { 4, 0, 0x641B },
     { 1, 0, 0x4B52 },
     { -1, 0, 0 },
 };
-StaffCreditEntry D_80110E18_staff[] = {
+StaffCreditEntry staff_creditSec28Tbl[] = {
     { 4, 0, 0x641C },
     { 1, 0, 0x4B53 },
     { -1, 0, 0 },
 };
-StaffCreditEntry D_80110E24_staff[] = {
+StaffCreditEntry staff_creditSec29Tbl[] = {
     { 4, 0, 0x641D },
     { 1, 0, 0x4B54 },
     { -1, 0, 0 },
 };
-StaffCreditEntry D_80110E30_staff[] = {
+StaffCreditEntry staff_creditSec30Tbl[] = {
     { 4, 0, 0x641E },
     { 3, 0, 0x642B },
     { 1, 0, 0x4B6C },
@@ -280,7 +280,7 @@ StaffCreditEntry D_80110E30_staff[] = {
     { 1, 0, 0x4B74 },
     { -1, 0, 0 },
 };
-StaffCreditEntry D_80110E6C_staff[] = {
+StaffCreditEntry staff_creditSec31Tbl[] = {
     { 4, 0, 0x641F },
     { 1, 0, 0x4B56 },
     { 1, 0, 0x4B57 },
@@ -300,97 +300,97 @@ StaffCreditEntry D_80110E6C_staff[] = {
     { 1, 0, 0x4B61 },
     { -1, 0, 0 },
 };
-StaffCreditEntry D_80110EB4_staff[] = {
+StaffCreditEntry staff_creditSec32Tbl[] = {
     { 4, 0, 0x6420 },
     { 1, 0, 0x4B62 },
     { 1, 0, 0x4B0A },
     { -1, 0, 0 },
 };
-StaffCreditEntry D_80110EC4_staff[] = {
+StaffCreditEntry staff_creditSec33Tbl[] = {
     { 4, 0, 0x6421 },
     { 1, 0, 0x4B63 },
     { 1, 0, 0x4B64 },
     { -1, 0, 0 },
 };
-StaffCreditEntry D_80110ED4_staff[] = {
+StaffCreditEntry staff_creditSec34Tbl[] = {
     { 4, 0, 0x6422 },
     { 1, 0, 0x4B41 },
     { 1, 0, 0x4B65 },
     { -1, 0, 0 },
 };
-StaffCreditEntry D_80110EE4_staff[] = {
+StaffCreditEntry staff_creditSec35Tbl[] = {
     { 4, 0, 0x6423 },
     { 1, 0, 0x4B66 },
     { 1, 0, 0x4B67 },
     { -1, 0, 0 },
 };
-StaffCreditEntry D_80110EF4_staff[] = {
+StaffCreditEntry staff_creditSec36Tbl[] = {
     { 4, 0, 0x6424 },
     { 1, 0, 0x4B68 },
     { 1, 30, 0x4B69 },
     { -1, 0, 0 },
 };
-StaffCreditEntry *D_80110F04_staff[] = {
-    D_80110B84_staff,
-    D_80110B90_staff,
-    D_80110B9C_staff,
-    D_80110BA8_staff,
-    D_80110BDC_staff,
-    D_80110BEC_staff,
-    D_80110BF8_staff,
-    D_80110C18_staff,
-    D_80110C6C_staff,
-    D_80110C78_staff,
-    D_80110C84_staff,
-    D_80110CA4_staff,
-    D_80110CC8_staff,
-    D_80110CD4_staff,
-    D_80110CFC_staff,
-    D_80110D54_staff,
-    D_80110D6C_staff,
-    D_80110D7C_staff,
-    D_80110D88_staff,
-    D_80110D94_staff,
-    D_80110DA0_staff,
-    D_80110DB0_staff,
-    D_80110DBC_staff,
-    D_80110DCC_staff,
-    D_80110DD8_staff,
-    D_80110DE4_staff,
-    D_80110DFC_staff,
-    D_80110E0C_staff,
-    D_80110E18_staff,
-    D_80110E24_staff,
-    D_80110E30_staff,
-    D_80110E6C_staff,
-    D_80110EB4_staff,
-    D_80110EC4_staff,
-    D_80110ED4_staff,
-    D_80110EE4_staff,
-    D_80110EF4_staff,
+StaffCreditEntry *staff_creditTbl[] = {
+    staff_creditSec0Tbl,
+    staff_creditSec1Tbl,
+    staff_creditSec2Tbl,
+    staff_creditSec3Tbl,
+    staff_creditSec4Tbl,
+    staff_creditSec5Tbl,
+    staff_creditSec6Tbl,
+    staff_creditSec7Tbl,
+    staff_creditSec8Tbl,
+    staff_creditSec9Tbl,
+    staff_creditSec10Tbl,
+    staff_creditSec11Tbl,
+    staff_creditSec12Tbl,
+    staff_creditSec13Tbl,
+    staff_creditSec14Tbl,
+    staff_creditSec15Tbl,
+    staff_creditSec16Tbl,
+    staff_creditSec17Tbl,
+    staff_creditSec18Tbl,
+    staff_creditSec19Tbl,
+    staff_creditSec20Tbl,
+    staff_creditSec21Tbl,
+    staff_creditSec22Tbl,
+    staff_creditSec23Tbl,
+    staff_creditSec24Tbl,
+    staff_creditSec25Tbl,
+    staff_creditSec26Tbl,
+    staff_creditSec27Tbl,
+    staff_creditSec28Tbl,
+    staff_creditSec29Tbl,
+    staff_creditSec30Tbl,
+    staff_creditSec31Tbl,
+    staff_creditSec32Tbl,
+    staff_creditSec33Tbl,
+    staff_creditSec34Tbl,
+    staff_creditSec35Tbl,
+    staff_creditSec36Tbl,
     NULL,
     NULL,
 };
-Vec D_80110FA0_staff[5] = {
+Vec staff_finaleStarPosTbl[5] = {
     { -77.0f, 202.0f, 1762.0f },
     { -135.0f, 170.0f, 2500.0f },
     { -135.0f, 140.0f, 2500.0f },
     { 115.0f, 400.0f, -115.0f },
     { 52.0f, 0.0f, 135.0f },
 };
-Vec D_80110FDC_staff = { 52.0f, 340.0f, 400.0f };
-s32 D_80110FE8_staff[3] = { 0x160004, 0x16000D, 0x160003 };
-MsetupModelEntry D_80110FF4_staff[4] = {
+Vec staff_endTumblePos = { 52.0f, 340.0f, 400.0f };
+s32 staff_endSprTbl[3] = { 0x160004, 0x16000D, 0x160003 };
+MsetupModelEntry staff_finaleMdlEntryTbl[4] = {
     { 0xF0004, 0x2B9, 0, 0, 1, { -41.0f, 0.0f, 2893.0f }, { 0.0f, 0.0f, 0.0f } },
     { 0xF0003, 0x2B9, 0, 0, 1, { 96.0f, 0.0f, 3072.0f }, { 0.0f, -30.0f, 0.0f } },
     { 0xF0005, 0x2B9, 0, 0, 1, { -59.0f, 45.0f, 2907.0f }, { 0.0f, 0.0f, 0.0f } },
     { 0xA015E, 0x2B9, 0, 2, 1, { -77.0f, 202.0f, 1216.0f }, { 0.0f, 0.0f, 0.0f } },
 };
 
-extern StaffDecoEntry D_80111094_staff[8];
-extern u8 D_801111E0_staff[4][4];
+extern StaffDecoEntry staff_finaleChrTbl[8];
+extern u8 staff_spiralColorTbl[4][4];
 
-void func_8010BE20_staff(s16 *windows, s16 count) {
+void staff_WinCreateAll(s16 *windows, s16 count) {
     s32 i;
     s16 window;
 
@@ -411,7 +411,7 @@ void func_8010BE20_staff(s16 *windows, s16 count) {
     }
 }
 
-void func_8010BF84_staff(void) {
+void staff_CreditRollProc(void) {
     StaffCreditSlot slots[12];
     s16 models[16];
     s16 anims[1];
@@ -434,7 +434,7 @@ void func_8010BF84_staff(void) {
     s16 done;
 
     state = HuPrcCurrentGet()->user_data;
-    prc = omAddPrcObj(func_8010B1E0_staff, 0x4000, 0x1000, 0);
+    prc = omAddPrcObj(staff_CastProc, 0x4000, 0x1000, 0);
     HuPrcVSleep();
     prcWork = prc->user_data;
     for (slot = slots, i = 0; i < 12; i++, slot++) {
@@ -458,7 +458,7 @@ void func_8010BF84_staff(void) {
         Hu3DModelAttrSet(link, 4, 4);
     }
     for (i = 0; i < 1; i++) {
-        anims[i] = HuSprAnimDataRead(D_80110B80_staff[i]);
+        anims[i] = HuSprAnimDataRead(staff_creditSprTbl[i]);
         sprites[i] = espEntry(anims[i], 0, 0);
         espDispOff(sprites[i]);
     }
@@ -473,7 +473,7 @@ void func_8010BF84_staff(void) {
                     break;
                 case 1:
                     wait = 1;
-                    entry = D_80110F04_staff[0];
+                    entry = staff_creditTbl[0];
                     entryIdx = 1;
                     break;
             }
@@ -482,7 +482,7 @@ void func_8010BF84_staff(void) {
         if (curState == 1) {
             if (entryIdx >= 0 && --wait == 0) {
                 if (entry->type == -1) {
-                    entry = D_80110F04_staff[entryIdx];
+                    entry = staff_creditTbl[entryIdx];
                     entryIdx++;
                     if (entry == NULL) {
                         entryIdx = -1;
@@ -503,7 +503,7 @@ void func_8010BF84_staff(void) {
                         slot->type = entry->type;
                         switch (slot->type) {
                             case 1:
-                                func_8010BA30_staff(1, win1Idx, entry->arg, slot->x, slot->y);
+                                staff_TextLineStrSet(1, win1Idx, entry->arg, slot->x, slot->y);
                                 slot->win1 = win1Idx;
                                 if (++win1Idx >= 12) {
                                     win1Idx = 0;
@@ -513,13 +513,13 @@ void func_8010BF84_staff(void) {
                                 slot->linkModel = models[modelIdx];
                                 Hu3DModelAttrSet(slot->linkModel, 4, 0);
                                 Hu3DModelPosSet(slot->linkModel, slot->pos.x, slot->pos.y, slot->pos.z);
-                                func_8010998C_staff(prc, &slot->model, &slot->motion, &slot->pos);
+                                staff_CastShow(prc, &slot->model, &slot->motion, &slot->pos);
                                 if (++modelIdx >= 3) {
                                     modelIdx = 0;
                                 }
                                 /* fallthrough */
                             case 3:
-                                func_8010BA30_staff(0, win0Idx, entry->arg, slot->x, slot->y);
+                                staff_TextLineStrSet(0, win0Idx, entry->arg, slot->x, slot->y);
                                 slot->win0 = win0Idx;
                                 if (++win0Idx >= 6) {
                                     win0Idx = 0;
@@ -558,12 +558,12 @@ void func_8010BF84_staff(void) {
                     slot->type = 0;
                     if (slot->model >= 0) {
                         Hu3DModelAttrSet(slot->model, 4, 4);
-                        func_8010992C_staff(prc, slot->model);
+                        staff_CastKillReq(prc, slot->model);
                     }
                     slot->model = -1;
                     slot->motion = -1;
                     if (slot->win1 >= 0) {
-                        func_8010B8C0_staff(1, slot->win1, 0);
+                        staff_TextLineDispSet(1, slot->win1, 0);
                         slot->win1 = -1;
                     }
                     if (slot->sprite >= 0) {
@@ -571,7 +571,7 @@ void func_8010BF84_staff(void) {
                         slot->sprite = -1;
                     }
                     if (slot->win0 >= 0) {
-                        func_8010B8C0_staff(0, slot->win0, 0);
+                        staff_TextLineDispSet(0, slot->win0, 0);
                         slot->win0 = -1;
                     }
                     if (slot->linkModel >= 0) {
@@ -582,18 +582,18 @@ void func_8010BF84_staff(void) {
                     switch (slot->type) {
                         case 1:
                             if (slot->win1 >= 0) {
-                                func_8010B9BC_staff(1, slot->win1, slot->x, slot->y);
+                                staff_TextLinePosSet(1, slot->win1, slot->x, slot->y);
                             }
                             break;
                         case 4:
                             slot->pos.y = 288.0 - slot->y * 2.4;
                             Hu3DModelPosSet(slot->linkModel, slot->pos.x, slot->pos.y, slot->pos.z);
                             if (slot->model >= 0) {
-                                func_80109D08_staff(prc, slot->model, &slot->pos);
+                                staff_CastPosSet(prc, slot->model, &slot->pos);
                             }
                             /* fallthrough */
                         case 3:
-                            func_8010B9BC_staff(0, slot->win0, slot->x, slot->y);
+                            staff_TextLinePosSet(0, slot->win0, slot->x, slot->y);
                             break;
                         case 2:
                             espPosSet(slot->sprite, slot->x, slot->y);
@@ -623,7 +623,7 @@ void func_8010BF84_staff(void) {
     }
 }
 
-void func_8010C680_staff(s16 *state, f32 *angle, f32 *rotY, UnkStaff *work) {
+void staff_FinaleWalkUpdate(s16 *state, f32 *angle, f32 *rotY, UnkStaff *work) {
     Vec pos = work->pos;
     Vec *p = &pos;
     f32 dx;
@@ -673,7 +673,7 @@ void func_8010C680_staff(s16 *state, f32 *angle, f32 *rotY, UnkStaff *work) {
     Hu3DModelRotSet(work->unk_18, work->rot.x, *rotY - 8.0f, work->rot.z);
 }
 
-void func_8010C8F4_staff(UnkStaff_1 *works) {
+void staff_FinaleStarUpdate(UnkStaff_1 *works) {
     Vec pos[3];
     UnkStaff_1 *work;
     Vec *p;
@@ -688,7 +688,7 @@ void func_8010C8F4_staff(UnkStaff_1 *works) {
         work->unk_18.z += 180.0f / 7.0f;
         if (work->unk_18.z >= 180.0f) {
             work->unk_18.z -= 180.0f;
-            temp = (f32)(func_8010601C_staff() & 0x1F) - 15.0f;
+            temp = (f32)(staff_Rand() & 0x1F) - 15.0f;
             temp += 20.0f;
             work->unk_24 = temp;
         }
@@ -775,7 +775,7 @@ void func_8010C8F4_staff(UnkStaff_1 *works) {
     }
 }
 
-void func_8010CD74_staff(UnkStaff_1 *works) {
+void staff_FinaleStarCreate(UnkStaff_1 *works) {
     s16 base = -1;
     UnkStaff_1 *work;
     s32 i;
@@ -789,7 +789,7 @@ void func_8010CD74_staff(UnkStaff_1 *works) {
         }
         work->unk_28 = model;
         Hu3DMotionAttrSet(model, -1, 2);
-        work->pos = D_80110FA0_staff[i];
+        work->pos = staff_finaleStarPosTbl[i];
         Hu3DModelPosSet(model, work->pos.x, work->pos.y, work->pos.z);
         work->rot.x = work->rot.y = work->rot.z = 0.0f;
         work->unk_24 = 30.0f;
@@ -817,8 +817,8 @@ void func_8010CD74_staff(UnkStaff_1 *works) {
     }
 }
 
-void func_8010CFD4_staff(UnkStaff *works) {
-    StaffDecoEntry *entry = D_80111094_staff;
+void staff_FinaleChrCreate(UnkStaff *works) {
+    StaffDecoEntry *entry = staff_finaleChrTbl;
     UnkStaff *work = works;
     s16 shadowBase = -1;
     s32 i;
@@ -855,7 +855,7 @@ void func_8010CFD4_staff(UnkStaff *works) {
     }
 }
 
-void func_8010D1E8_staff(void) {
+void staff_FinaleProc(void) {
     MsetupModelHandle sp10[3];
     UnkStaff sp20[8];
     UnkStaff_1 sp120[3];
@@ -876,18 +876,18 @@ void func_8010D1E8_staff(void) {
     MBDBackLoad(0x20);
     MBDCameraNearFarSet(1000.0f, 10000.0f);
     MBDCameraKill();
-    D_80110538_staff = 1;
-    D_80111540_staff.x = 350.0f;
-    D_80111540_staff.y = 190.0f;
-    D_80111540_staff.z = 3770.0f;
-    D_80111534_staff.x = -1000.0f;
-    D_80111534_staff.y = 130.0f;
-    D_80111534_staff.z = 450.0f;
-    D_80110534_staff = 40.0f;
-    Hu3DCameraPerspectiveSet(0, 40.0f, D_80111564_staff, D_80111560_staff);
-    func_80105E6C_staff(D_80110FF4_staff, sp10, 3);
-    func_8010CFD4_staff(sp20);
-    func_8010CD74_staff(sp120);
+    staff_cameraLookF = 1;
+    staff_cameraPos.x = 350.0f;
+    staff_cameraPos.y = 190.0f;
+    staff_cameraPos.z = 3770.0f;
+    staff_cameraTarget.x = -1000.0f;
+    staff_cameraTarget.y = 130.0f;
+    staff_cameraTarget.z = 450.0f;
+    staff_cameraFov = 40.0f;
+    Hu3DCameraPerspectiveSet(0, 40.0f, staff_cameraNear, staff_cameraFar);
+    staff_ModelEntryReadAll(staff_finaleMdlEntryTbl, sp10, 3);
+    staff_FinaleChrCreate(sp20);
+    staff_FinaleStarCreate(sp120);
     *temp_s2 = 0;
     sp1A8 = 0;
     sp1B0 = 90.0f;
@@ -898,13 +898,13 @@ void func_8010D1E8_staff(void) {
                 var_s0 = -1;
             } else {
                 var_s0 = *temp_s2;
-                func_8010C8F4_staff(sp120);
-                func_8010C680_staff(&sp1A8, &sp1AC, &sp1B0, &sp20[3]);
+                staff_FinaleStarUpdate(sp120);
+                staff_FinaleWalkUpdate(&sp1A8, &sp1AC, &sp1B0, &sp20[3]);
                 HuPrcVSleep();
             }
         } else {
-            func_8010C8F4_staff(sp120);
-            func_8010C680_staff(&sp1A8, &sp1AC, &sp1B0, &sp20[3]);
+            staff_FinaleStarUpdate(sp120);
+            staff_FinaleWalkUpdate(&sp1A8, &sp1AC, &sp1B0, &sp20[3]);
             HuPrcVSleep();
         }
     }
@@ -933,7 +933,7 @@ void func_8010D1E8_staff(void) {
     }
 }
 
-void func_8010D450_staff(s16 model, Vec *pos) {
+void staff_EndShadowUpdate(s16 model, Vec *pos) {
     f32 height = pos->y;
     f32 scale = 400.0f - height;
     f32 offsetX;
@@ -956,7 +956,7 @@ void func_8010D450_staff(s16 model, Vec *pos) {
     }
 }
 
-void func_8010D580_staff(s16 model, s16 shadow, Vec *start) {
+void staff_EndTumbleDropExec(s16 model, s16 shadow, Vec *start) {
     Vec pos;
     f32 rotX;
     f32 rotY;
@@ -971,7 +971,7 @@ void func_8010D580_staff(s16 model, s16 shadow, Vec *start) {
     rotZ = 0.0f;
     rotY = rotZ;
     rotX = rotZ;
-    count = func_8010601C_staff();
+    count = staff_Rand();
     i = count & 0xF;
     if (i >= 10) {
         rotZ = -90.0f;
@@ -995,14 +995,14 @@ void func_8010D580_staff(s16 model, s16 shadow, Vec *start) {
         if (pos.y <= 0.0f) {
             pos.y = 0.0f;
             speed *= -0.5;
-            RepeatVibrator(D_80111510_staff, 5, 0, 5);
+            RepeatVibrator(staff_padNo, 5, 0, 5);
             i++;
         }
         pos.z -= 8.0f;
         Hu3DModelPosSet(model, pos.x, pos.y + 22.0f, pos.z);
         *spinAxis = angle;
         Hu3DModelRotSet(model, rotX, rotY, rotZ);
-        func_8010D450_staff(shadow, &pos);
+        staff_EndShadowUpdate(shadow, &pos);
         HuPrcVSleep();
     } while (i < 2);
 
@@ -1019,7 +1019,7 @@ void func_8010D580_staff(s16 model, s16 shadow, Vec *start) {
             Hu3DModelPosSet(model, pos.x, pos.y + 22.0f, pos.z);
             *spinAxis = angle;
             Hu3DModelRotSet(model, rotX, rotY, rotZ);
-            func_8010D450_staff(shadow, &pos);
+            staff_EndShadowUpdate(shadow, &pos);
             HuPrcVSleep();
         }
     }
@@ -1036,7 +1036,7 @@ void func_8010D580_staff(s16 model, s16 shadow, Vec *start) {
     HuPrcVSleep();
 }
 
-void func_8010D998_staff(void) {
+void staff_EndProc(void) {
     UnkStaff_9 work;
     s16 *stat;
     s16 model;
@@ -1056,15 +1056,15 @@ void func_8010D998_staff(void) {
     espAttrSet(esp, 0x4000);
     espPosSet(esp, 160, 120);
     espPriSet(esp, 0xFFF0);
-    D_80110538_staff = 1;
-    D_80111540_staff.x = -300.578f;
-    D_80111540_staff.y = 542.5f;
-    D_80111540_staff.z = 595.0f;
-    D_80111534_staff.x = 10.3905f;
-    D_80111534_staff.y = 0.0f;
-    D_80111534_staff.z = 48.0235f;
-    D_80110534_staff = 32.0f;
-    Hu3DCameraPerspectiveSet(0, 32.0f, D_80111564_staff, D_80111560_staff);
+    staff_cameraLookF = 1;
+    staff_cameraPos.x = -300.578f;
+    staff_cameraPos.y = 542.5f;
+    staff_cameraPos.z = 595.0f;
+    staff_cameraTarget.x = 10.3905f;
+    staff_cameraTarget.y = 0.0f;
+    staff_cameraTarget.z = 48.0235f;
+    staff_cameraFov = 32.0f;
+    Hu3DCameraPerspectiveSet(0, 32.0f, staff_cameraNear, staff_cameraFar);
     motion = Hu3DMotionModelRead(0xA007D);
     model = Hu3DModelRead(0xA0075, 0x2A9);
     Hu3DModelDynamicFree(model);
@@ -1075,11 +1075,11 @@ void func_8010D998_staff(void) {
     shadow = Hu3DModelRead(9, 0x299);
     Hu3DModelAttrSet(model, 4, 0);
     Hu3DModelAttrSet(shadow, 4, 0);
-    work.pos = D_80110FDC_staff;
+    work.pos = staff_endTumblePos;
     Hu3DModelPosSet(model, work.pos.x, work.pos.y + 22.0f, work.pos.z);
-    func_8010D450_staff(shadow, &work.pos);
+    staff_EndShadowUpdate(shadow, &work.pos);
     for (i = 0; i < 3; i++) {
-        work.anims[i] = HuSprAnimDataRead(D_80110FE8_staff[i]);
+        work.anims[i] = HuSprAnimDataRead(staff_endSprTbl[i]);
     }
     grp = HuSprGrpCreate(3, 0);
     for (x = 268, i = 0; i < 3; i++, x += 12) {
@@ -1108,7 +1108,7 @@ void func_8010D998_staff(void) {
             state = *stat;
         }
         if (state == 1) {
-            func_8010D580_staff(model, shadow, &work.pos);
+            staff_EndTumbleDropExec(model, shadow, &work.pos);
             for (i = 0; i < 3; i++) {
                 HuSprDispOn(grp, i);
                 HuSprTPLvlSet(grp, i, 0);
@@ -1132,8 +1132,8 @@ void func_8010D998_staff(void) {
     }
 }
 
-UnkStaff_2 *func_8010DE50_staff(s32 arg0) {
-    Process *prc = omAddPrcObj(func_8010DF34_staff, 0x3F00, 0x2000, 0);
+UnkStaff_2 *staff_FireworkCreate(s32 arg0) {
+    Process *prc = omAddPrcObj(staff_FireworkProc, 0x3F00, 0x2000, 0);
     UnkStaff_2 *data = HuMemAllocTag(sizeof(UnkStaff_2), TAG_OVERLAY);
 
     prc->user_data = data;
@@ -1149,39 +1149,39 @@ UnkStaff_2 *func_8010DE50_staff(s32 arg0) {
     return data;
 }
 
-void func_8010DEDC_staff(s32 *arg0, s32 arg1) {
+void staff_FireworkSprSet(s32 *arg0, s32 arg1) {
     *arg0 = arg1;
 }
 
-void func_8010DEE4_staff(UnkStaff_2 *arg0, f32 x, f32 y, f32 z) {
+void staff_FireworkEndPosSet(UnkStaff_2 *arg0, f32 x, f32 y, f32 z) {
     arg0->unk_0C.x = x;
     arg0->unk_0C.y = y;
     arg0->unk_0C.z = z;
 }
 
-void func_8010DEF4_staff(UnkStaff_2 *arg0, f32 x, f32 y, f32 z) {
+void staff_FireworkStartPosSet(UnkStaff_2 *arg0, f32 x, f32 y, f32 z) {
     arg0->unk_18.x = x;
     arg0->unk_18.y = y;
     arg0->unk_18.z = z;
 }
 
-void func_8010DF04_staff(UnkStaff_2 *arg0, s16 arg1) {
+void staff_FireworkTimeSet(UnkStaff_2 *arg0, s16 arg1) {
     arg0->unk_0A = arg1;
 }
 
-void func_8010DF0C_staff(UnkStaff_2 *arg0, s32 mask, s32 value) {
+void staff_FireworkFlagSet(UnkStaff_2 *arg0, s32 mask, s32 value) {
     arg0->unk_04 = value | (arg0->unk_04 & ~mask);
 }
 
-s16 func_8010DF24_staff(UnkStaff_2 *arg0) {
+s16 staff_FireworkFlagGet(UnkStaff_2 *arg0) {
     return arg0->unk_04;
 }
 
-void func_8010DF2C_staff(UnkStaff_2 *arg0, s16 arg1) {
+void staff_FireworkBurstTimeSet(UnkStaff_2 *arg0, s16 arg1) {
     arg0->unk_06 = arg1;
 }
 
-void func_8010DF34_staff(void) {
+void staff_FireworkProc(void) {
     s16 model;
     s16 model2;
     s16 i;
@@ -1224,7 +1224,7 @@ void func_8010DF34_staff(void) {
     Hu3DModelRemakeStatic(model);
     Hu3DModelVtxBufMake(model);
     Hu3DModelDynamicFree(model);
-    Hu3DParticleCreate(model, -1, NULL, func_8010F4C4_staff);
+    Hu3DParticleCreate(model, -1, NULL, staff_FireworkBurstHook);
     Hu3DParticleAttrSet(model, 8, 8);
     effect = Hu3DData[model].unkBC;
     Hu3DModelAttrSet(model, 4, 4);
@@ -1258,7 +1258,7 @@ void func_8010DF34_staff(void) {
         HuAudFXPlay(0x16F);
         Hu3DModelAttrSet(model, 4, 0);
         Hu3DParticleCntSet(model, 0);
-        effect->unk18 = func_8010F9D4_staff;
+        effect->unk18 = staff_FireworkTrailHook;
         Hu3DParticleAttrSet(model, 2, 0);
 
         for (i = 0; i <= work->unk_08; i++) {
@@ -1300,7 +1300,7 @@ void func_8010DF34_staff(void) {
                 vx *= scale;
                 vy *= scale;
                 vz *= scale;
-                func_8010F3E4_staff(model, vx + cur.x, vy + cur.y, vz + cur.z, vx, vy, vz, 0xFF, 0xFF, 0xC0);
+                staff_ParticleAdd(model, vx + cur.x, vy + cur.y, vz + cur.z, vx, vy, vz, 0xFF, 0xFF, 0xC0);
             }
 
             vx = ROT_XX(dx, dy, dz, rot) * 0.0f + ROT_XY(dx, dy, dz, rot) + ROT_XZ(dx, dy, dz, rot) * 0.0f;
@@ -1309,7 +1309,7 @@ void func_8010DF34_staff(void) {
             vx = (dx * 0.5f + vx * 0.5f) * dist / 2.0f;
             vy = (dy * 0.5f + vy * 0.5f) * dist / 2.0f;
             vz = (dz * 0.5f + vz * 0.5f) * dist / 2.0f;
-            func_8010F3E4_staff(model, cur.x, cur.y, cur.z, vx, vy, vz, 0xFF, 0x20, 0x20);
+            staff_ParticleAdd(model, cur.x, cur.y, cur.z, vx, vy, vz, 0xFF, 0x20, 0x20);
 
             vx = ROT_XX(dx, dy, dz, rot) * 0.0f + ROT_XY(dx, dy, dz, rot) * -1.0f + ROT_XZ(dx, dy, dz, rot) * 0.0f;
             vy = ROT_YX(dx, dy, dz, rot) * 0.0f + ROT_YY(dx, dy, dz, rot) * -1.0f + ROT_YZ(dx, dy, dz, rot) * 0.0f;
@@ -1317,7 +1317,7 @@ void func_8010DF34_staff(void) {
             vx = (dx * 0.5f + vx * 0.5f) * dist / 2.0f;
             vy = (dy * 0.5f + vy * 0.5f) * dist / 2.0f;
             vz = (dz * 0.5f + vz * 0.5f) * dist / 2.0f;
-            func_8010F3E4_staff(model, cur.x, cur.y, cur.z, vx, vy, vz, 0xFF, 0x40, 0x00);
+            staff_ParticleAdd(model, cur.x, cur.y, cur.z, vx, vy, vz, 0xFF, 0x40, 0x00);
         }
 
         HuPrcSleep(15);
@@ -1327,8 +1327,8 @@ void func_8010DF34_staff(void) {
         Hu3DModelPosSet(model2, cur.x, cur.y, cur.z);
         HuPrcVSleep();
         HuAudFXPlay(0x170);
-        func_8010F04C_staff(model, work->unk_00);
-        effect->unk18 = func_8010F4C4_staff;
+        staff_FireworkShapeSet(model, work->unk_00);
+        effect->unk18 = staff_FireworkBurstHook;
         Hu3DParticleCntSet(model, 0);
         Hu3DModelAttrSet(model, 4, 0);
         Hu3DModelPosSet(model, cur.x, cur.y, cur.z);
@@ -1353,7 +1353,7 @@ void func_8010DF34_staff(void) {
     }
 }
 
-void func_8010F04C_staff(s16 model, s32 dataNum) {
+void staff_FireworkShapeSet(s16 model, s32 dataNum) {
     s16 anim;
     s16 grp;
     HuSprite *sprite;
@@ -1409,7 +1409,7 @@ void func_8010F04C_staff(s16 model, s32 dataNum) {
     HuSprAnimKill(anim);
 }
 
-HmfModelData_UnkBC_Unk58_Struct *func_8010F3E4_staff(s16 model, f32 x, f32 y, f32 z, f32 vx, f32 vy, f32 vz, u8 r,
+HmfModelData_UnkBC_Unk58_Struct *staff_ParticleAdd(s16 model, f32 x, f32 y, f32 z, f32 vx, f32 vy, f32 vz, u8 r,
                                                      u8 g, u8 b) {
     HmfData *hmf = Hu3DData[model].hmf;
     HmfModelData_UnkBC_Unk58_Struct *particle = Hu3DData[model].unkBC->unk58;
@@ -1434,7 +1434,7 @@ HmfModelData_UnkBC_Unk58_Struct *func_8010F3E4_staff(s16 model, f32 x, f32 y, f3
     return particle;
 }
 
-void func_8010F4C4_staff(s16 model) {
+void staff_FireworkBurstHook(s16 model) {
     HmfData *hmf = Hu3DData[model].hmf;
     HmfModelData_UnkBC_Struct *bc = Hu3DData[model].unkBC;
     s16 count = hmf->unk1A;
@@ -1533,7 +1533,7 @@ void func_8010F4C4_staff(s16 model) {
     bc->unk02++;
 }
 
-void func_8010F9D4_staff(s16 model) {
+void staff_FireworkTrailHook(s16 model) {
     HmfData *hmf = Hu3DData[model].hmf;
     HmfModelData_UnkBC_Struct *bc = Hu3DData[model].unkBC;
     s16 count = hmf->unk1A;
@@ -1562,8 +1562,8 @@ void func_8010F9D4_staff(s16 model) {
     }
 }
 
-void func_8010FB28_staff(void) {
-    Process *prc = omAddPrcObj(func_8010FB88_staff, 0x3F00, 0x2000, 0);
+void staff_SpiralCreate(void) {
+    Process *prc = omAddPrcObj(staff_SpiralProc, 0x3F00, 0x2000, 0);
     UnkStaff_5 *data = HuMemAllocTag(sizeof(UnkStaff_5), TAG_OVERLAY);
 
     prc->user_data = data;
@@ -1572,7 +1572,7 @@ void func_8010FB28_staff(void) {
     data->unk_18.z = 0.0f;
 }
 
-void func_8010FB88_staff(void) {
+void staff_SpiralProc(void) {
     s16 angle[2];
     Vec cur[2];
     Vec prev[2];
@@ -1610,13 +1610,13 @@ void func_8010FB88_staff(void) {
     Hu3DModelRemakeStatic(model);
     Hu3DModelVtxBufMake(model);
     Hu3DModelDynamicFree(model);
-    Hu3DParticleCreate(model, -1, NULL, func_8010F4C4_staff);
+    Hu3DParticleCreate(model, -1, NULL, staff_FireworkBurstHook);
     Hu3DParticleAttrSet(model, 8, 8);
     effect = Hu3DData[model].unkBC;
     Hu3DModelAttrSet(model, 4, 4);
     Hu3DModelAttrSet(model, 4, 0);
     Hu3DParticleCntSet(model, 0);
-    effect->unk18 = func_8010F9D4_staff;
+    effect->unk18 = staff_FireworkTrailHook;
     Hu3DParticleAttrSet(model, 2, 0);
     work->unk_30 = work->unk_18;
     cur[0].x = sindf(0.0f) * 150.0f + work->unk_30.x;
@@ -1671,8 +1671,8 @@ void func_8010FB88_staff(void) {
             vy = (dy * 0.7f + vy * 0.3f) * dist * 0.7f;
             vz = (dz * 0.7f + vz * 0.3f) * dist * 0.7f;
             color = rand8() & 3;
-            func_8010F3E4_staff(model, cur[i].x, cur[i].y, cur[i].z, vx, vy, vz, D_801111E0_staff[color][0],
-                                D_801111E0_staff[color][1], D_801111E0_staff[color][2])
+            staff_ParticleAdd(model, cur[i].x, cur[i].y, cur[i].z, vx, vy, vz, staff_spiralColorTbl[color][0],
+                                staff_spiralColorTbl[color][1], staff_spiralColorTbl[color][2])
                 ->unk08 = 1.0f;
             vx = -ROT_XY(dx, dy, dz, t);
             vy = -ROT_YY(dx, dy, dz, t);
@@ -1681,14 +1681,14 @@ void func_8010FB88_staff(void) {
             vy = (dy * 0.7f + vy * 0.3f) * dist * 0.7f;
             vz = (dz * 0.7f + vz * 0.3f) * dist * 0.7f;
             color = rand8() & 3;
-            func_8010F3E4_staff(model, cur[i].x, cur[i].y, cur[i].z, vx, vy, vz, D_801111E0_staff[color][0],
-                                D_801111E0_staff[color][1], D_801111E0_staff[color][2])
+            staff_ParticleAdd(model, cur[i].x, cur[i].y, cur[i].z, vx, vy, vz, staff_spiralColorTbl[color][0],
+                                staff_spiralColorTbl[color][1], staff_spiralColorTbl[color][2])
                 ->unk08 = 1.0f;
         }
     }
 }
 
-StaffDecoEntry D_80111094_staff[8] = {
+StaffDecoEntry staff_finaleChrTbl[8] = {
     { 0x200A1, 0xF000B, 0x200A4, "c000l_0_DEF", { 100.0f, -14.0f, 3072.0f }, { 0.0f, -30.0f, 0.0f } },
     { 0x300A1, 0x160043, 0x300AB, "c001l_0_DEF", { 205.0f, 0.0f, 2869.0f }, { 0.0f, 46.0f, 0.0f } },
     { 0x700A1, 0x160044, 0x700AB, "c002l_0_DEF", { 299.0f, 0.0f, 2950.0f }, { 0.0f, -122.0f, 0.0f } },
@@ -1698,5 +1698,5 @@ StaffDecoEntry D_80111094_staff[8] = {
     { 0x800A1, 0x160048, 0x800AA, "c300l_0_DEF", { -346.0f, 0.0f, 2356.0f }, { 0.0f, -103.0f, -8.0f } },
     { 0x90001, 0x160049, 0x9001A, "c301l_0_DEF", { -133.0f, 0.0f, 2460.0f }, { 0.0f, 0.0f, 0.0f } },
 };
-s32 D_801111D4_staff[3] = { 0 }; /* Unreferenced. */
-u8 D_801111E0_staff[4][4] = { { 0, 255, 255, 0 }, { 255, 160, 40, 0 }, { 255, 255, 0, 0 }, { 0, 255, 0, 0 } };
+s32 staff_finaleChrPad[3] = { 0 }; /* Unreferenced. */
+u8 staff_spiralColorTbl[4][4] = { { 0, 255, 255, 0 }, { 255, 160, 40, 0 }, { 255, 255, 0, 0 }, { 0, 255, 0, 0 } };

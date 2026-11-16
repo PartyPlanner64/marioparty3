@@ -30,36 +30,36 @@ typedef struct MsetupBoardAnim {
     /* 0x3A */ s16 count;
 } MsetupBoardAnim;
 
-extern Vec D_80119B20_msetup;
-extern f32 D_80119B0C_msetup[];
-extern s16 D_8011A938_msetup;
+extern Vec msetup_panelStartPos;
+extern f32 msetup_summaryScaleTbl[];
+extern s16 msetup_setupMode;
 extern HmfData_Unk84_Entry2 *Hu3DTexData;
-extern omObjData *D_80119AF0_msetup;
-extern MsetupSpriteState D_8011A8B0_msetup;
-extern f32 D_80119AF4_msetup;
-extern f32 D_80119AF8_msetup;
-extern f32 D_80119AFC_msetup;
+extern omObjData *msetup_effObj;
+extern MsetupSpriteState msetup_summaryWork;
+extern f32 msetup_effParamA;
+extern f32 msetup_effParamB;
+extern f32 msetup_effFallSpeed;
 
-void func_8010DAC4_msetup(omObjData *);
-void func_8010EB94_msetup(void);
-void func_8010E09C_msetup(omObjData *);
+void msetup_ArrowObjMain(omObjData *);
+void msetup_SummaryProc(void);
+void msetup_EffObjMain(omObjData *);
 
 
-void func_8010D060_msetup(HmfData *arg0, s16 arg1) {
+void msetup_MpAttrFlagSet(HmfData *arg0, s16 arg1) {
     // 0x80 in unk9 marks the entry's texture as used, but only if a texture is assigned
     if (arg0->unk84[arg1].unk3 != -1) {
         arg0->unk84[arg1].unk9 |= 0x80;
     }
 }
 
-void func_8010D094_msetup(HmfData *arg0, s16 arg1) {
+void msetup_MpAttrFlagClear(HmfData *arg0, s16 arg1) {
     // 0x80 in unk9 marks the entry's texture as used, but only if a texture is assigned
     if (arg0->unk84[arg1].unk3 != -1) {
         arg0->unk84[arg1].unk9 &= 0x7F;
     }
 }
 
-s16 func_8010D0C8_msetup(s16 model, char *name) {
+s16 msetup_MpAttrIdxGet(s16 model, char *name) {
     HmfData *hmf = Hu3DData[model].hmf;
     HmfData_Unk84_Entry2 *texture;
     s16 hash = HmfNameHash((u8 *)name);
@@ -87,7 +87,7 @@ s16 func_8010D0C8_msetup(s16 model, char *name) {
     return i;
 }
 
-s16 func_8010D234_msetup(s16 positions[][2], u8 *disabled, s16 count, s16 selection, s16 directionX, s16 directionY) {
+s16 msetup_CursorNearestGet(s16 positions[][2], u8 *disabled, s16 count, s16 selection, s16 directionX, s16 directionY) {
     s16 i;
     s16 closest;
     f32 x;
@@ -140,7 +140,7 @@ s16 func_8010D234_msetup(s16 positions[][2], u8 *disabled, s16 count, s16 select
     return closest;
 }
 
-s16 func_8010D4DC_msetup(s16 positions[][2], u8 *disabled, s16 count, s16 selection, s16 controller, s16 buttons) {
+s16 msetup_CursorPadNextGet(s16 positions[][2], u8 *disabled, s16 count, s16 selection, s16 controller, s16 buttons) {
     s16 directionX;
     s16 directionY;
 
@@ -165,10 +165,10 @@ s16 func_8010D4DC_msetup(s16 positions[][2], u8 *disabled, s16 count, s16 select
             directionY = -100;
         }
     }
-    return func_8010D234_msetup(positions, disabled, count, selection, directionX, directionY);
+    return msetup_CursorNearestGet(positions, disabled, count, selection, directionX, directionY);
 }
 
-s16 func_8010D5EC_msetup(s16 controller) {
+s16 msetup_PadBtnGet(s16 controller) {
     s16 buttons = HuPadBtn[controller];
     s8 stickX = HuPadStkX[controller];
     s8 stickY = HuPadStkY[controller];
@@ -186,9 +186,9 @@ s16 func_8010D5EC_msetup(s16 controller) {
     return buttons;
 }
 
-s16 func_8010D684_msetup(s16 controller, s16 *previousButtons) {
+s16 msetup_PadBtnDownGet(s16 controller, s16 *previousButtons) {
     s16 oldButtons = *previousButtons;
-    s16 buttons = func_8010D5EC_msetup(controller);
+    s16 buttons = msetup_PadBtnGet(controller);
 
     oldButtons &= buttons;
     oldButtons ^= buttons;
@@ -196,7 +196,7 @@ s16 func_8010D684_msetup(s16 controller, s16 *previousButtons) {
     return oldButtons;
 }
 
-void func_8010D6D0_msetup(void) {
+void msetup_CursorProc(void) {
     s16 sprite;
     s16 slot;
     s16 previousState;
@@ -314,7 +314,7 @@ void func_8010D6D0_msetup(void) {
     }
 }
 
-void func_8010DAC4_msetup(omObjData *object) {
+void msetup_ArrowObjMain(omObjData *object) {
     MsetupPairSpriteAnim *anim;
     s16 slot;
     s16 y;
@@ -416,7 +416,7 @@ void func_8010DAC4_msetup(omObjData *object) {
     }
 }
 
-void func_8010DDD8_msetup(omObjData *object) {
+void msetup_ArrowObjKill(omObjData *object) {
     espKill(object->model[0]);
     espKill(object->model[1]);
     HuSprAnimKill(object->model[2]);
@@ -425,13 +425,13 @@ void func_8010DDD8_msetup(omObjData *object) {
     omDelObj(object);
 }
 
-omObjData *func_8010DE38_msetup(s32 leftX, s32 rightX, s32 y) {
+omObjData *msetup_ArrowObjCreate(s32 leftX, s32 rightX, s32 y) {
     s16 i;
     MsetupPairSpriteAnim *anim;
     omObjData *object;
     s16 sprite;
 
-    object = omAddObj(0x17D0, 4, 0, -1, func_8010DAC4_msetup);
+    object = omAddObj(0x17D0, 4, 0, -1, msetup_ArrowObjMain);
     if (object == NULL) {
         return NULL;
     }
@@ -466,7 +466,7 @@ omObjData *func_8010DE38_msetup(s32 leftX, s32 rightX, s32 y) {
     return object;
 }
 
-s16 func_8010E00C_msetup(omObjData *arg0, s16 arg1) {
+s16 msetup_EffEmitNumSet(omObjData *arg0, s16 arg1) {
     MsetupBoardAnim *anim;
 
     if (arg0 == NULL) {
@@ -480,7 +480,7 @@ s16 func_8010E00C_msetup(omObjData *arg0, s16 arg1) {
     return arg1;
 }
 
-void func_8010E044_msetup(omObjData *arg0, s16 arg1, s16 arg2, f32 arg3, f32 arg4, f32 arg5) {
+void msetup_EffEmitPosSet(omObjData *arg0, s16 arg1, s16 arg2, f32 arg3, f32 arg4, f32 arg5) {
     MsetupBoardAnim *anim;
 
     if (arg0 == NULL) {
@@ -495,7 +495,7 @@ void func_8010E044_msetup(omObjData *arg0, s16 arg1, s16 arg2, f32 arg3, f32 arg
     }
 }
 
-void func_8010E09C_msetup(omObjData *object) {
+void msetup_EffObjMain(omObjData *object) {
     s16 model = object->model[0];
     s32 modelIndex = model;
     MsetupBoardAnim *anim;
@@ -506,7 +506,7 @@ void func_8010E09C_msetup(omObjData *object) {
     f32 *pos;
 
     if (object->work[1] != object->work[2]) {
-        EffectParamSet(modelIndex, D_80119AF4_msetup, D_80119AF8_msetup, D_80119AFC_msetup);
+        EffectParamSet(modelIndex, msetup_effParamA, msetup_effParamB, msetup_effFallSpeed);
         object->work[2] = object->work[1];
     }
     anim = object->data;
@@ -525,14 +525,14 @@ void func_8010E09C_msetup(omObjData *object) {
     }
 }
 
-omObjData *func_8010E21C_msetup(void) {
+omObjData *msetup_EffObjCreate(void) {
     MsetupBoardAnim *anim;
     omObjData *object;
     HmfModelData_UnkBC_Struct *data;
     s16 model;
 
-    object = omAddObj(0x17D0, 1, 0, -1, func_8010E09C_msetup);
-    D_80119AF0_msetup = object;
+    object = omAddObj(0x17D0, 1, 0, -1, msetup_EffObjMain);
+    msetup_effObj = object;
     if (object == NULL) {
         return NULL;
     }
@@ -552,7 +552,7 @@ omObjData *func_8010E21C_msetup(void) {
     return object;
 }
 
-void func_8010E32C_msetup(Array2D *arg0, s32 count, f32 rotation, s32 link) {
+void msetup_PanelCreateEx(Array2D *arg0, s32 count, f32 rotation, s32 link) {
     s32 i;
     s16 sourceModel = -1;
     s16 model;
@@ -576,18 +576,18 @@ void func_8010E32C_msetup(Array2D *arg0, s32 count, f32 rotation, s32 link) {
             rot->y = rotation;
         }
         Hu3DModelRotSet(model, rot->x, rot->y, rot->z);
-        entry->pos = D_80119B20_msetup;
+        entry->pos = msetup_panelStartPos;
         Hu3DModelPosSet(model, entry->pos.x, entry->pos.y, entry->pos.z);
         Hu3DModelScaleSet(model, 0.1f, 0.1f, 0.1f);
         HuPrcVSleep();
     }
 }
 
-void func_8010E4BC_msetup(Array2D *arg0, s32 arg1, f32 arg2) {
-    func_8010E32C_msetup(arg0, arg1, arg2, 1);
+void msetup_PanelCreate(Array2D *arg0, s32 arg1, f32 arg2) {
+    msetup_PanelCreateEx(arg0, arg1, arg2, 1);
 }
 
-void func_8010E4D8_msetup(MsetupLinkedModel *entry, s32 count) {
+void msetup_PanelDynamicFree(MsetupLinkedModel *entry, s32 count) {
     s32 i;
 
     for (i = 0; i < count; i++, entry++) {
@@ -595,7 +595,7 @@ void func_8010E4D8_msetup(MsetupLinkedModel *entry, s32 count) {
     }
 }
 
-void func_8010E52C_msetup(MsetupLinkedModel *models, MsetupModelTarget *targets, s16 count, s16 frames,
+void msetup_PanelMove(MsetupLinkedModel *models, MsetupModelTarget *targets, s16 count, s16 frames,
                           s16 *scaleModels, s16 scaleCount, f32 startScale, f32 endScale) {
     Vec pos;
     MsetupLinkedModel *entry;
@@ -666,7 +666,7 @@ void func_8010E52C_msetup(MsetupLinkedModel *models, MsetupModelTarget *targets,
     }
 }
 
-void func_8010E8C8_msetup(Array2D *models, s16 count, s16 frames, f32 rotation, f32 height, f32 scale, f32 endScale,
+void msetup_PanelSpinMove(Array2D *models, s16 count, s16 frames, f32 rotation, f32 height, f32 scale, f32 endScale,
                           s16 animateBoard) {
     s16 boardCount;
     s32 i;
@@ -678,10 +678,10 @@ void func_8010E8C8_msetup(Array2D *models, s16 count, s16 frames, f32 rotation, 
     f32 heightStep;
     f32 scaleStep;
 
-    if ((D_80119AF0_msetup != NULL) & (animateBoard != 0)) {
-        D_80119AF0_msetup->work[0] = 1;
-        D_80119AF0_msetup->work[1] = 1;
-        boardCount = func_8010E00C_msetup(D_80119AF0_msetup, animateBoard);
+    if ((msetup_effObj != NULL) & (animateBoard != 0)) {
+        msetup_effObj->work[0] = 1;
+        msetup_effObj->work[1] = 1;
+        boardCount = msetup_EffEmitNumSet(msetup_effObj, animateBoard);
     } else {
         boardCount = 0;
     }
@@ -709,7 +709,7 @@ void func_8010E8C8_msetup(Array2D *models, s16 count, s16 frames, f32 rotation, 
             Hu3DModelPosSet(model, current->pos.x, current->pos.y, current->pos.z);
             Hu3DModelScaleSet(model, scale, scale, scale);
             if (i < boardCount) {
-                func_8010E044_msetup(D_80119AF0_msetup, i, 120, current->pos.x, current->pos.y, current->pos.z);
+                msetup_EffEmitPosSet(msetup_effObj, i, 120, current->pos.x, current->pos.y, current->pos.z);
             }
             entry++;
         }
@@ -726,11 +726,11 @@ void func_8010E8C8_msetup(Array2D *models, s16 count, s16 frames, f32 rotation, 
         entry++;
     }
     if (boardCount != 0) {
-        D_80119AF0_msetup->work[0] = 0;
+        msetup_effObj->work[0] = 0;
     }
 }
 
-void func_8010EB94_msetup(void) {
+void msetup_SummaryProc(void) {
     MsetupModelSpriteAnim anim;
     s16 previousState;
     s16 index;
@@ -775,7 +775,7 @@ void func_8010EB94_msetup(void) {
                     anim.fade.sprite.alpha[0] = 0;
                     anim.fade.sprite.delta[0] = 25;
                     handle = slots[2];
-                    switch (D_8011A938_msetup) {
+                    switch (msetup_setupMode) {
                         case 0:
                             espScaleSet((u16)handle, 0.8f, 0.8f);
                             break;
@@ -884,8 +884,8 @@ void func_8010EB94_msetup(void) {
             handle = slots[index];
             if (handle >= 0) {
                 anim.scale[i] += anim.speed[i];
-                if (anim.scale[i] >= D_80119B0C_msetup[index]) {
-                    anim.scale[i] = D_80119B0C_msetup[index];
+                if (anim.scale[i] >= msetup_summaryScaleTbl[index]) {
+                    anim.scale[i] = msetup_summaryScaleTbl[index];
                     anim.speed[i] = 0;
                 } else if (anim.scale[i] <= 0) {
                     anim.scale[i] = 0;
@@ -941,14 +941,14 @@ void func_8010EB94_msetup(void) {
     }
 }
 
-Process *func_8010F2BC_msetup(void) {
-    Process *process = omAddPrcObj(func_8010EB94_msetup, 0x3F00, 0x600, 0);
+Process *msetup_SummaryCreate(void) {
+    Process *process = omAddPrcObj(msetup_SummaryProc, 0x3F00, 0x600, 0);
 
-    process->user_data = &D_8011A8B0_msetup;
+    process->user_data = &msetup_summaryWork;
     return process;
 }
 
-s16 func_8010F2F4_msetup(Process *arg0, s16 arg1) {
+s16 msetup_SummaryStateSet(Process *arg0, s16 arg1) {
     s16 *ptr = arg0->user_data;
     s32 value = arg1;
 
@@ -960,14 +960,14 @@ s16 func_8010F2F4_msetup(Process *arg0, s16 arg1) {
     return value;
 }
 
-void func_8010F320_msetup(Process *process, s16 index, s16 spriteSlot, s16 value) {
+void msetup_SummaryEntrySet(Process *process, s16 index, s16 spriteSlot, s16 value) {
     MsetupSpriteState *data = process->user_data;
 
     data->spriteSlots[index] = spriteSlot;
     data->values[index] = value;
 }
 
-void func_8010F33C_msetup(s16 model, Vec *worldPos, HuMtx4F nodeTransform) {
+void msetup_ModelMtxPosGet(s16 model, Vec *worldPos, HuMtx4F nodeTransform) {
     HuMtx4F transform;
     HuMtx4F combined;
     HmfModel *entry = &Hu3DData[model];
@@ -981,11 +981,11 @@ void func_8010F33C_msetup(s16 model, Vec *worldPos, HuMtx4F nodeTransform) {
     worldPos->z = combined[0][2] + combined[1][2] + combined[2][2] + combined[3][2];
 }
 
-void func_8010F43C_msetup(s16 model, char *node, Vec2f *screenPos) {
+void msetup_ModelNodePos2DGet(s16 model, char *node, Vec2f *screenPos) {
     HuMtx4F transform;
     Vec worldPos;
 
     Hu3DModelObjMtxFrameGet(model, Hu3DData[model].motTime, node, &transform);
-    func_8010F33C_msetup(model, &worldPos, transform);
+    msetup_ModelMtxPosGet(model, &worldPos, transform);
     Hu3D3Dto2D(0, &worldPos, screenPos);
 }

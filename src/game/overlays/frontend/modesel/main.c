@@ -2,14 +2,14 @@
 
 extern u8 omSysPauseReadyF;
 
-const Vec D_8010F3B0_modesel = { 0.0f, 0.0f, 100.0f };
-const Vec D_8010F3BC_modesel = { 0.0f, 0.0f, 0.0f };
-const Vec D_8010F3C8_modesel = { 0.0f, 1.0f, 0.0f };
-const Vec D_8010F3D4_modesel = { 0.0f, 0.0f, 0.0f }; /* Unreferenced. */
+const Vec modesel_cameraPos = { 0.0f, 0.0f, 100.0f };
+const Vec modesel_cameraAt = { 0.0f, 0.0f, 0.0f };
+const Vec modesel_cameraUp = { 0.0f, 1.0f, 0.0f };
+const Vec modesel_cameraUnusedVec = { 0.0f, 0.0f, 0.0f }; /* Unreferenced. */
 
-void func_80107CB0_modesel(void);
+void modesel_MainCreate(void);
 
-void func_801059D0_modesel(void) {
+void modesel_ObjectInit(void) {
     Vec position;
     Vec target;
     Vec up;
@@ -18,9 +18,9 @@ void func_801059D0_modesel(void) {
     Hu3DSprModelInit(0x20);
     omGameSysInit();
     CamSetupInit(1);
-    position = D_8010F3B0_modesel;
-    target = D_8010F3BC_modesel;
-    up = D_8010F3C8_modesel;
+    position = modesel_cameraPos;
+    target = modesel_cameraAt;
+    up = modesel_cameraUp;
     ScissorSet(0, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 41.0f, 80.0f, 8000.0f);
@@ -41,17 +41,17 @@ void func_801059D0_modesel(void) {
     _ClearFlag(0xD);
 }
 
-void func_80105BD8_modesel(void) {
-    func_801059D0_modesel();
-    func_80107CB0_modesel();
+void modesel_ObjectSetup(void) {
+    modesel_ObjectInit();
+    modesel_MainCreate();
 }
 
-void func_80105BFC_modesel(void) {
-    func_801059D0_modesel();
-    func_80107CB0_modesel();
+void modesel_ReturnObjectSetup(void) {
+    modesel_ObjectInit();
+    modesel_MainCreate();
 }
 
-void func_80105C20_modesel(void) {
-    func_801059D0_modesel();
-    func_80107CB0_modesel();
+void modesel_FadeWhiteObjectSetup(void) {
+    modesel_ObjectInit();
+    modesel_MainCreate();
 }

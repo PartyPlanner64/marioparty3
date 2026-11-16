@@ -6,7 +6,7 @@
 extern s8 omSysPauseReadyF;
 
 
-void opObjectInit(void) {
+void op_ObjectInit(void) {
     omInitObjMan(32, 8);
     Hu3DSprModelInit(8);
     omGameSysInit();
@@ -35,17 +35,17 @@ void opObjectInit(void) {
     omSysPauseReadyF = 0;
 }
 
-void opTitleObjectSetup(void) {
-    opObjectInit();
-    opTitleCreate();
+void op_TitleObjectSetup(void) {
+    op_ObjectInit();
+    op_TitleCreate();
 }
 
-void func_80105C2C_opening(void) {
-    opObjectInit();
-    opDemoCreate();
+void op_DemoReturnObjectSetup(void) {
+    op_ObjectInit();
+    op_DemoCreate();
 }
 
-void opDemoObjectSetup(void) {
-    opObjectInit();
-    opDemoCreate();
+void op_DemoObjectSetup(void) {
+    op_ObjectInit();
+    op_DemoCreate();
 }

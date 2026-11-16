@@ -49,102 +49,102 @@ typedef struct MsetupSelectionData {
     s16 previousButtons;
 } MsetupSelectionData;
 
-extern MsetupEntryAnim D_8011A9E0_msetup[];
-extern s16 D_80119FE4_msetup[];
-extern Vec D_80119B20_msetup;
-extern s32 D_80119B44_msetup[];
-extern s16 D_80119B60_msetup[][2];
-extern s16 D_80119B90_msetup[][4];
-extern s32 D_80119BA0_msetup[];
-extern s32 D_80119BD0_msetup[];
-extern s32 D_80119BF0_msetup[];
-extern u8 D_80119C10_msetup[][3];
+extern MsetupEntryAnim msetup_playerWorkTbl[];
+extern s16 msetup_duelHandicapTbl[];
+extern Vec msetup_panelStartPos;
+extern s32 msetup_chrInfoSprTbl[];
+extern s16 msetup_chrInfoPosTbl[][2];
+extern s16 msetup_chrInfoWinTbl[][4];
+extern s32 msetup_chrInfoPortraitTbl[];
+extern s32 msetup_chrInfoMesTbl[];
+extern s32 msetup_chrInfoSubMesTbl[];
+extern u8 msetup_chrInfoStatTbl[][3];
 
-extern const char *D_80119E20_msetup[];
-extern s32 D_80119E38_msetup[];
-extern s16 D_80119E50_msetup[];
-extern s16 D_80119E54_msetup[];
+extern const char *msetup_comLevelNodeNameTbl[];
+extern s32 msetup_comLevelSprTbl[];
+extern s16 msetup_comLevelSprFirstTbl[];
+extern s16 msetup_comLevelSprLastTbl[];
 
-extern s32 D_80119E58_msetup[];
-extern s32 D_80119E64_msetup[];
-extern s32 D_80119E70_msetup[];
-extern s32 D_80119E7C_msetup[];
-extern s32 D_80119E88_msetup[];
-extern Process *D_80119420_msetup;
-extern s32 D_80119E18_msetup[];
-extern s32 D_80119E94_msetup[];
-extern s32 D_80119EAC_msetup[];
-extern s32 D_80119EC4_msetup[];
-extern s32 D_80119EE0_msetup[];
-extern s32 D_80119EFC_msetup[];
-extern s32 D_80119F14_msetup[];
-extern s16 D_8011A938_msetup;
-extern s16 D_8011A948_msetup;
-extern s16 D_8011A990_msetup;
-extern MsetupPlayerConfig D_8011AA30_msetup;
-extern Vec D_8011A028_msetup[];
-extern s16 D_8011A058_msetup[4][4];
-extern s16 D_8011A078_msetup[4][4];
-extern s16 D_8011A8E0_msetup[4][4];
-extern s16 (*D_80119FF0_msetup[])(MsetupMenuState *);
-extern s32 D_8011A098_msetup[];
-extern f32 D_8011A0A8_msetup[];
-extern f32 D_8011A0B8_msetup[];
-extern s32 D_80119B34_msetup[];
-extern s32 D_80119FDC_msetup[];
-extern s32 D_80119FD4_msetup[];
-extern MsetupModelTarget D_80119F94_msetup[];
-extern MsetupModelTarget D_80119FB4_msetup[];
+extern s32 msetup_handicapChoiceMesTbl[];
+extern s32 msetup_bonusChoiceMesTbl[];
+extern s32 msetup_duelHandicapChoiceMesTbl[];
+extern s32 msetup_mgPackDuelMesTbl[];
+extern s32 msetup_mgPackMesTbl[];
+extern Process *msetup_summaryProc;
+extern s32 msetup_comLevelModeMesTbl[];
+extern s32 msetup_boardPartySprTbl[];
+extern s32 msetup_boardDuelSprTbl[];
+extern s32 msetup_boardPartyMesTbl[];
+extern s32 msetup_boardDuelMesTbl[];
+extern s32 msetup_storyBoardPartyMesTbl[];
+extern s32 msetup_storyBoardDuelMesTbl[];
+extern s16 msetup_setupMode;
+extern s16 msetup_padNo;
+extern s16 msetup_winMode;
+extern MsetupPlayerConfig msetup_playerConfig;
+extern Vec msetup_panelPosTbl[];
+extern s16 msetup_panelOrderTbl[4][4];
+extern s16 msetup_panelOrder3Tbl[4][4];
+extern s16 msetup_menuSlotTbl[4][4];
+extern s16 (*msetup_menuFuncTbl[])(MsetupMenuState *);
+extern s32 msetup_playerNumAnimTbl[];
+extern f32 msetup_panelRotTbl[];
+extern f32 msetup_playerNumTbl[];
+extern s32 msetup_playerNumMesTbl[];
+extern s32 msetup_duelPlayerNumAnimTbl[];
+extern s32 msetup_duelPlayerNumMesTbl[];
+extern MsetupModelTarget msetup_duelPlayerNumPanelOpenTbl[];
+extern MsetupModelTarget msetup_duelPlayerNumPanelCloseTbl[];
 
-extern const char D_8011A6D8_msetup[];
-extern const char D_8011A7D8_msetup[];
-extern const char D_8011A7E0_msetup[];
-extern const char D_8011A7E8_msetup[];
-extern const char D_8011A7F0_msetup[];
-extern const char D_8011A7F8_msetup[];
-extern f32 D_8011A908_msetup;
-extern u8 D_8011AA42_msetup; // Alias of D_8011AA30_msetup.totalTurns.
-extern f32 D_80119F4C_msetup[];
-extern s16 D_80119F6C_msetup[];
-extern s16 D_80119F78_msetup[];
-extern const char D_8011A800_msetup[];
-extern s32 D_80119F3C_msetup[];
-extern f32 D_80119F60_msetup[];
-extern s32 D_80119F8C_msetup[];
+extern const char msetup_panelTexStr[];
+extern const char msetup_turn20Str[];
+extern const char msetup_turn35Str[];
+extern const char msetup_turn50Str[];
+extern const char msetup_turnCustomStr[];
+extern const char msetup_turnNeedleStr[];
+extern f32 msetup_turnDialAngle;
+extern u8 msetup_playerConfigTurnNum; // Alias of msetup_playerConfig.totalTurns.
+extern f32 msetup_turnDialAngleTbl[];
+extern s16 msetup_turnNumTbl[];
+extern s16 msetup_turnCustomNumTbl[];
+extern const char msetup_turnInfStr[];
+extern s32 msetup_turnMesTbl[];
+extern f32 msetup_duelTurnDialAngleTbl[];
+extern s32 msetup_duelTurnMesTbl[];
 
-extern s16 D_80119DFC_msetup[][2];
-extern s16 (*D_80119E0C_msetup[])[2];
-extern s32 D_80119B2C_msetup[];
-extern MsetupModelTarget D_80119DC8_msetup[];
+extern s16 msetup_comLevel4CursorPosTbl[][2];
+extern s16 (*msetup_comLevelCursorPosTblTbl[])[2];
+extern s32 msetup_comLevelCursorSprTbl[];
+extern MsetupModelTarget msetup_comLevelPanelOpenTbl[];
 
-extern s32 D_80119CC0_msetup[];
-extern s32 D_80119CE0_msetup[];
-extern s32 D_80119D00_msetup[];
-extern s32 D_80119D20_msetup[];
-extern s32 D_80119AD0_msetup[];
-extern s16 D_80119CB0_msetup[];
+extern s32 msetup_chrNameMesTbl[];
+extern s32 msetup_chrNameDuelMesTbl[];
+extern s32 msetup_chrNameMgModeMesTbl[];
+extern s32 msetup_chrNameMgMode1PMesTbl[];
+extern s32 msetup_cursorSprTbl[];
+extern s16 msetup_chrVoiceSeTbl[];
 
-extern MsetupModelTarget D_80119C48_msetup[];
-extern MsetupModelTarget D_80119C28_msetup[];
-extern u8 D_80119C68_msetup[];
-extern s32 D_80119C70_msetup[];
-extern const char *D_80119D68_msetup[];
-extern s32 D_80119D88_msetup[];
-extern s32 D_80119DA8_msetup[];
-extern s32 D_80119DB8_msetup[];
-extern Process *D_8011A900_msetup;
-extern MsetupPortraitState D_8011A904_msetup;
+extern MsetupModelTarget msetup_panelCloseTbl[];
+extern MsetupModelTarget msetup_chrSelPanelOpenTbl[];
+extern u8 msetup_chrSlotTbl[];
+extern s32 msetup_chrSelOnSprTbl[];
+extern const char *msetup_chrNodeNameTbl[];
+extern s32 msetup_chrSelSprTbl[];
+extern s32 msetup_chrSelMesTbl[];
+extern s32 msetup_chrSelDuelMesTbl[];
+extern Process *msetup_chrInfoProc;
+extern MsetupPortraitState msetup_chrInfoWork;
 
-s16 func_80115A9C_msetup(s16, s16, HuMtx4F, s16 *, s16);
-void func_8010E32C_msetup(Array2D *, s32, f32, s32);
+s16 msetup_DuelTurnDialChoice(s16, s16, HuMtx4F, s16 *, s16);
+void msetup_PanelCreateEx(Array2D *, s32, f32, s32);
 
-void func_8010F43C_msetup(s16 model, char *node, Vec2f *screenPos);
-s32 func_801138F8_msetup(MsetupMenuState *, s32, s32 *, s32);
+void msetup_ModelNodePos2DGet(s16 model, char *node, Vec2f *screenPos);
+s32 msetup_ChoicePanelSelect(MsetupMenuState *, s32, s32 *, s32);
 
 
-void func_80112804_msetup(void);
+void msetup_ComLevelSprProc(void);
 
-void func_8010F4E0_msetup(MsetupLinkedModel *models, s16 count, s16 layout) {
+void msetup_PanelOrderMove(MsetupLinkedModel *models, s16 count, s16 layout) {
     Vec pos;
     s16 *positions[4];
     s32 i;
@@ -154,11 +154,11 @@ void func_8010F4E0_msetup(MsetupLinkedModel *models, s16 count, s16 layout) {
 
     if (count == 3) {
         for (i = 0; i < 4; i++) {
-            positions[i] = D_8011A078_msetup[i];
+            positions[i] = msetup_panelOrder3Tbl[i];
         }
     } else {
         for (i = 0; i < 4; i++) {
-            positions[i] = D_8011A058_msetup[i];
+            positions[i] = msetup_panelOrderTbl[i];
         }
     }
     for (i = 0; i < count; i++) {
@@ -167,8 +167,8 @@ void func_8010F4E0_msetup(MsetupLinkedModel *models, s16 count, s16 layout) {
     for (frame = 0; frame < 15; frame++) {
         progress = sindf(frame * (90.0f / 14.0f));
         for (i = 0; i < count; i++) {
-            start = &D_8011A028_msetup[models[i].currentPosition];
-            pos = D_8011A028_msetup[models[i].targetPosition];
+            start = &msetup_panelPosTbl[models[i].currentPosition];
+            pos = msetup_panelPosTbl[models[i].targetPosition];
             pos.x -= start->x;
             pos.y -= start->y;
             pos.z -= start->z;
@@ -188,14 +188,14 @@ void func_8010F4E0_msetup(MsetupLinkedModel *models, s16 count, s16 layout) {
         HuPrcVSleep();
     }
     for (i = 0; i < count; i++) {
-        start = &D_8011A028_msetup[models[i].targetPosition];
+        start = &msetup_panelPosTbl[models[i].targetPosition];
         Hu3DModelPosSet(models[i].model, start->x, start->y, start->z);
         models[i].pos = *start;
         models[i].currentPosition = models[i].targetPosition;
     }
 }
 
-s16 func_8010F87C_msetup(MsetupMenuState *state) {
+s16 msetup_PlayerNumSelect(MsetupMenuState *state) {
     MsetupLinkedModel models[4];
     Vec pos;
     s16 *positions[4];
@@ -217,11 +217,11 @@ s16 func_8010F87C_msetup(MsetupMenuState *state) {
     f32 progress;
     Vec *target;
 
-    connected = D_8011AA30_msetup.connectedCount;
+    connected = msetup_playerConfig.connectedCount;
     if (state->result < 0) {
-        i = D_8011AA30_msetup.humanCount;
+        i = msetup_playerConfig.humanCount;
         for (selection = 0; selection < 4; selection++) {
-            if (i == D_8011A0B8_msetup[selection]) {
+            if (i == msetup_playerNumTbl[selection]) {
                 break;
             }
         }
@@ -234,16 +234,16 @@ s16 func_8010F87C_msetup(MsetupMenuState *state) {
         selection = state->result;
     }
     count = connected;
-    if (count < D_8011A0B8_msetup[selection]) {
+    if (count < msetup_playerNumTbl[selection]) {
         for (selection = 0; selection < 4; selection++) {
-            if (count == D_8011A0B8_msetup[selection]) {
+            if (count == msetup_playerNumTbl[selection]) {
                 break;
             }
         }
         selection = selection < 4 ? selection : 0;
         state->result = selection;
     }
-    func_8010B998_msetup();
+    msetup_WinHomeClear();
     modelCount = connected;
     if (modelCount < 2) {
         modelCount = 2;
@@ -251,7 +251,7 @@ s16 func_8010F87C_msetup(MsetupMenuState *state) {
     for (i = 0; i < modelCount; i++) {
         model = Hu3DModelRead(0x140003, 0x2A9);
         models[i].model = model;
-        models[i].unk1A = Hu3DAnimRead(Hu3DData[model].hmf, D_8011A098_msetup[i], (char *)D_8011A6D8_msetup);
+        models[i].unk1A = Hu3DAnimRead(Hu3DData[model].hmf, msetup_playerNumAnimTbl[i], (char *)msetup_panelTexStr);
         Hu3DAnimSpeedSet(models[i].unk1A, 0.75f);
         Hu3DModelRemakeStatic(model);
         Hu3DModelDynamicFree(model);
@@ -264,28 +264,28 @@ s16 func_8010F87C_msetup(MsetupMenuState *state) {
         }
         Hu3DModelRotSet(model, rot->x, rot->y, rot->z);
         target = &entry->pos;
-        *target = D_80119B20_msetup;
+        *target = msetup_panelStartPos;
         Hu3DModelPosSet(model, target->x, target->y, target->z);
         Hu3DModelScaleSet(model, 0.1, 0.1, 0.1);
         HuPrcVSleep();
     }
     if (modelCount == 3) {
         for (i = 0; i < 4; i++) {
-            positions[i] = D_8011A078_msetup[i];
+            positions[i] = msetup_panelOrder3Tbl[i];
         }
     } else {
         for (i = 0; i < 4; i++) {
-            positions[i] = D_8011A058_msetup[i];
+            positions[i] = msetup_panelOrderTbl[i];
         }
     }
     if (connected >= 2) {
-        cursor = func_8010DE38_msetup(64, 256, 64);
+        cursor = msetup_ArrowObjCreate(64, 256, 64);
     }
-    func_8010B82C_msetup(0x1503);
+    msetup_WinMesSet(0x1503);
     refresh = 1;
-    func_8010B858_msetup();
+    msetup_WinMesWait();
     HuAudFXPlay(0x2D9);
-    func_8010E8C8_msetup((Array2D *)models, modelCount, 15, 720.0f, 565.0f, 0.1f, 1.0f, 1);
+    msetup_PanelSpinMove((Array2D *)models, modelCount, 15, 720.0f, 565.0f, 0.1f, 1.0f, 1);
     if (connected >= 2) {
         cursor->work[0] = 1;
         cursor->work[1] = 36;
@@ -294,14 +294,14 @@ s16 func_8010F87C_msetup(MsetupMenuState *state) {
             for (i = 0; i < modelCount; i++) {
                 position = positions[selection][i];
                 entry = &models[i];
-                target = &D_8011A028_msetup[position];
+                target = &msetup_panelPosTbl[position];
                 pos.x = (target->x - entry->pos.x) * progress;
                 pos.y = (target->y - entry->pos.y) * progress;
                 pos.z = (target->z - entry->pos.z) * progress;
                 pos.x += entry->pos.x;
                 pos.y += entry->pos.y;
                 pos.z += entry->pos.z;
-                angle = (D_8011A0A8_msetup[position] - entry->rot.y) * progress;
+                angle = (msetup_panelRotTbl[position] - entry->rot.y) * progress;
                 model = entry->model;
                 Hu3DModelRotSet(model, entry->rot.x, angle + entry->rot.y, entry->rot.z);
                 Hu3DModelPosSet(model, pos.x, pos.y, pos.z);
@@ -311,8 +311,8 @@ s16 func_8010F87C_msetup(MsetupMenuState *state) {
         for (i = 0; i < modelCount; i++) {
             position = positions[selection][i];
             entry = &models[i];
-            entry->pos = D_8011A028_msetup[position];
-            entry->rot.y = D_8011A0A8_msetup[position];
+            entry->pos = msetup_panelPosTbl[position];
+            entry->rot.y = msetup_panelRotTbl[position];
             model = entry->model;
             Hu3DModelPosSet(model, entry->pos.x, entry->pos.y, entry->pos.z);
             Hu3DModelRotSet(model, entry->rot.x, entry->rot.y, entry->rot.z);
@@ -336,31 +336,31 @@ s16 func_8010F87C_msetup(MsetupMenuState *state) {
         models[i].targetPosition = models[i].currentPosition = positions[selection][i];
     }
     refresh = 1;
-    func_8010D684_msetup(D_8011A948_msetup, &previousButtons);
+    msetup_PadBtnDownGet(msetup_padNo, &previousButtons);
     while (1) {
         if (refresh) {
-            func_8010B82C_msetup(D_80119B34_msetup[state->result]);
+            msetup_WinMesSet(msetup_playerNumMesTbl[state->result]);
             refresh = 0;
         }
-        buttons = func_8010D684_msetup(D_8011A948_msetup, &previousButtons);
+        buttons = msetup_PadBtnDownGet(msetup_padNo, &previousButtons);
         if (buttons & B_BUTTON) {
             HuAudFXPlay(4);
-            func_8010B82C_msetup(0x1501);
-            if (func_8010B858_msetup() == 0) {
+            msetup_WinMesSet(0x1501);
+            if (msetup_WinMesWait() == 0) {
                 state->result = -1;
                 break;
             }
-            func_8010B82C_msetup(0x1503);
+            msetup_WinMesSet(0x1503);
             refresh = 1;
-            func_8010B858_msetup();
-            buttons = func_8010D684_msetup(D_8011A948_msetup, &previousButtons);
+            msetup_WinMesWait();
+            buttons = msetup_PadBtnDownGet(msetup_padNo, &previousButtons);
         } else if (buttons & A_BUTTON) {
             HuAudFXPlay(2);
-            i = D_8011A0B8_msetup[state->result];
-            D_8011AA30_msetup.humanCount = i;
-            D_8011AA30_msetup.cpuCount = 4 - i;
-            for (i = 0; i < D_8011AA30_msetup.humanCount; i++) {
-                RepeatVibrator(D_8011AA30_msetup.controllerPorts[i], 10, 0, 10);
+            i = msetup_playerNumTbl[state->result];
+            msetup_playerConfig.humanCount = i;
+            msetup_playerConfig.cpuCount = 4 - i;
+            for (i = 0; i < msetup_playerConfig.humanCount; i++) {
+                RepeatVibrator(msetup_playerConfig.controllerPorts[i], 10, 0, 10);
             }
             break;
         }
@@ -381,7 +381,7 @@ s16 func_8010F87C_msetup(MsetupMenuState *state) {
         }
         if (selection != state->result) {
             HuAudFXPlay(1);
-            func_8010F4E0_msetup(models, modelCount, state->result);
+            msetup_PanelOrderMove(models, modelCount, state->result);
             refresh = 1;
             selection = state->result;
         }
@@ -405,11 +405,11 @@ s16 func_8010F87C_msetup(MsetupMenuState *state) {
         models[0].rot.y = angle;
         Hu3DModelAttrSet(models[1].model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     }
-    func_8010B998_msetup();
+    msetup_WinHomeClear();
     HuAudFXPlay(0x2DA);
-    func_8010E8C8_msetup((Array2D *)models, modelCount, 7, 360.0f, 400.0f, 1.0f, 0.1f, 4);
+    msetup_PanelSpinMove((Array2D *)models, modelCount, 7, 360.0f, 400.0f, 1.0f, 0.1f, 4);
     if (connected >= 2) {
-        func_8010DDD8_msetup(cursor);
+        msetup_ArrowObjKill(cursor);
     }
     for (i = 0; i < modelCount; i++) {
         Hu3DAnimModelKill(models[i].unk1A);
@@ -418,7 +418,7 @@ s16 func_8010F87C_msetup(MsetupMenuState *state) {
     return 0;
 }
 
-void func_8011035C_msetup(void) {
+void msetup_ChrInfoProc(void) {
     s16 previousSelection;
     MsetupPlayerSprites sprites;
     s16 group;
@@ -443,7 +443,7 @@ void func_8011035C_msetup(void) {
         sprites.windows[i] = -1;
     }
     for (i = 0; i < 8; i++) {
-        sprites.portraits[i] = HuSprAnimDataRead(D_80119BA0_msetup[i]);
+        sprites.portraits[i] = HuSprAnimDataRead(msetup_chrInfoPortraitTbl[i]);
         if (i & 1) {
             HuPrcVSleep();
         }
@@ -453,7 +453,7 @@ void func_8011035C_msetup(void) {
         if (member == 7) {
             sprite = sprites.portraits[state->unk02];
         } else {
-            sprite = HuSprAnimDataRead(D_80119B44_msetup[member]);
+            sprite = HuSprAnimDataRead(msetup_chrInfoSprTbl[member]);
             sprites.sprites[member] = sprite;
         }
         HuSprTPLvlSet(group, member, 256);
@@ -463,18 +463,18 @@ void func_8011035C_msetup(void) {
         HuSprAnimModeSet(group, member, HUSPR_ANIM_MODE_BANK);
         HuSprGrpMemberSet(group, member, sprite, 0);
         HuSprPriSet(group, member, 15000);
-        HuSprPosSet(group, member, D_80119B60_msetup[member][0], D_80119B60_msetup[member][1]);
+        HuSprPosSet(group, member, msetup_chrInfoPosTbl[member][0], msetup_chrInfoPosTbl[member][1]);
         HuPrcVSleep();
     }
     i = 0;
     member = 4;
     initialSelection = state->unk02;
     for (; i < 2; i++, member++) {
-        HuSprPatNoSet(group, member, D_80119C10_msetup[initialSelection][i]);
+        HuSprPatNoSet(group, member, msetup_chrInfoStatTbl[initialSelection][i]);
     }
     for (i = 0; i < 2; i++) {
-        window = HuWinCreate(D_80119B90_msetup[i][0], D_80119B90_msetup[i][1],
-                                    D_80119B90_msetup[i][2], D_80119B90_msetup[i][3], 0, 12);
+        window = HuWinCreate(msetup_chrInfoWinTbl[i][0], msetup_chrInfoWinTbl[i][1],
+                                    msetup_chrInfoWinTbl[i][2], msetup_chrInfoWinTbl[i][3], 0, 12);
         sprites.windows[i] = window;
         HuWinMesSpeedSet(window, 0);
         HuWinBGTPLvlSet(window, 0);
@@ -519,11 +519,11 @@ void func_8011035C_msetup(void) {
                 i = 0;
                 member = 4;
                 for (; i < 3; i++, member++) {
-                    HuSprPatNoSet(group, member, D_80119C10_msetup[selection][i]);
+                    HuSprPatNoSet(group, member, msetup_chrInfoStatTbl[selection][i]);
                 }
-                HuWinMesSet(sprites.windows[0], D_80119BD0_msetup[selection], -1, -1);
+                HuWinMesSet(sprites.windows[0], msetup_chrInfoMesTbl[selection], -1, -1);
                 HuWinHomeClear(sprites.windows[1]);
-                HuWinMesSet(sprites.windows[1], D_80119BF0_msetup[selection], HUWIN_POS_CENTER, -1);
+                HuWinMesSet(sprites.windows[1], msetup_chrInfoSubMesTbl[selection], HUWIN_POS_CENTER, -1);
                 previousSelection = state->unk02;
             }
         }
@@ -556,7 +556,7 @@ void func_8011035C_msetup(void) {
     }
 }
 
-void func_80110954_msetup(void) {
+void msetup_ChrCursorProc(void) {
     MsetupSelectionData data;
     MsetupSelectionCursor *cursor;
     s16 *position;
@@ -591,20 +591,20 @@ void func_80110954_msetup(void) {
 
     cursor = HuPrcCurrentGet()->user_data;
     updateGlobal = 0;
-    switch (D_8011A938_msetup) {
+    switch (msetup_setupMode) {
         case 0:
         default:
-            messages = D_80119CC0_msetup;
+            messages = msetup_chrNameMesTbl;
             break;
         case 1:
-            messages = D_80119CE0_msetup;
+            messages = msetup_chrNameDuelMesTbl;
             updateGlobal = 1;
             break;
         case 5:
-            messages = D_80119D00_msetup;
+            messages = msetup_chrNameMgModeMesTbl;
             break;
         case 6:
-            messages = D_80119D20_msetup;
+            messages = msetup_chrNameMgMode1PMesTbl;
             break;
     }
     if (cursor->priority < 0) {
@@ -648,7 +648,7 @@ void func_80110954_msetup(void) {
         data.sprites[i] = data.slots[i] = -1;
     }
     for (i = 0; i < cursor->count; i++) {
-        data.sprites[i] = HuSprAnimDataRead(D_80119AD0_msetup[cursor->priority]);
+        data.sprites[i] = HuSprAnimDataRead(msetup_cursorSprTbl[cursor->priority]);
         data.slots[i] = espEntry(data.sprites[i], 0, 1);
         espPriSet(data.slots[i], 2);
         espScaleSet(data.slots[i], 0.75f, 0.75f);
@@ -658,7 +658,7 @@ void func_80110954_msetup(void) {
     refresh = 0;
     HuPrcVSleep();
     if (updateGlobal) {
-        D_8011A904_msetup.unk02 = selection;
+        msetup_chrInfoWork.unk02 = selection;
     }
     while (1) {
         if (previousState != cursor->state) {
@@ -682,8 +682,8 @@ void func_80110954_msetup(void) {
                         alpha = 0;
                         espTPLvlSet(slot, 0);
                         espDispOn(slot);
-                        func_8010D684_msetup(cursor->controller, &data.previousButtons);
-                        func_8010D684_msetup(cursor->controller, &data.previousButtons);
+                        msetup_PadBtnDownGet(cursor->controller, &data.previousButtons);
+                        msetup_PadBtnDownGet(cursor->controller, &data.previousButtons);
                         visible = 1;
                         refresh = 1;
                         selection = previousSelection;
@@ -727,16 +727,16 @@ void func_80110954_msetup(void) {
         if (visible) {
             if (refresh) {
                 if (cursor->priority == 4) {
-                    func_8010B82C_msetup(messages[selection]);
+                    msetup_WinMesSet(messages[selection]);
                 }
                 if (updateGlobal) {
-                    D_8011A904_msetup.unk02 = selection;
+                    msetup_chrInfoWork.unk02 = selection;
                 }
                 HuSprDispOff(cursor->entries[selection].group, cursor->entries[selection].normal);
                 HuSprDispOn(cursor->entries[selection].group, cursor->entries[selection].selected);
                 refresh = 0;
             }
-            buttons = func_8010D684_msetup(cursor->controller, &data.previousButtons);
+            buttons = msetup_PadBtnDownGet(cursor->controller, &data.previousButtons);
             if (buttons & B_BUTTON) {
                 HuAudFXPlay(4);
                 if (selectedCount) {
@@ -760,10 +760,10 @@ void func_80110954_msetup(void) {
             } else if (enabled) {
                 if ((buttons & A_BUTTON) && !(cursor->entries[selection].flags & 0xFFEF)) {
                     if (cursor->priority != 4) {
-                        _HuAudPlayerFXPlay(D_80119CB0_msetup[selection], cursor->controller);
+                        _HuAudPlayerFXPlay(msetup_chrVoiceSeTbl[selection], cursor->controller);
                         RepeatVibrator(cursor->controller, 5, 0, 5);
                     } else {
-                        HuAudFXPlay(D_80119CB0_msetup[selection]);
+                        HuAudFXPlay(msetup_chrVoiceSeTbl[selection]);
                     }
                     cursor->entries[selection].flags = data.selectionIds[selectedCount];
                     HuSprDispOff(cursor->entries[selection].group, cursor->entries[selection].normal);
@@ -804,7 +804,7 @@ void func_80110954_msetup(void) {
                 for (i = 0; i < 8; i++) {
                     data.disabled[i] = cursor->entries[i].flags;
                 }
-                nextSelection = func_8010D4DC_msetup(cursor->positions, data.disabled, 8, selection, cursor->controller, buttons);
+                nextSelection = msetup_CursorPadNextGet(cursor->positions, data.disabled, 8, selection, cursor->controller, buttons);
                 if (nextSelection >= 0) {
                     HuAudFXPlay(1);
                     if (!(cursor->entries[selection].flags & 0xFFEF)) {
@@ -870,7 +870,7 @@ void func_80110954_msetup(void) {
     }
 }
 
-s16 func_80111650_msetup(MsetupMenuState *state) {
+s16 msetup_ChrSelect(MsetupMenuState *state) {
     MsetupLinkedModel models[2];
     MsetupSelectionEntry entries[8];
     MsetupSelectionCursor cursors[4];
@@ -901,25 +901,25 @@ s16 func_80111650_msetup(MsetupMenuState *state) {
     s16 characterSprite;
     MsetupSelectionCursor *cursor;
 
-    func_8010B998_msetup();
+    msetup_WinHomeClear();
     state->result = 0;
-    D_8011A900_msetup = NULL;
+    msetup_chrInfoProc = NULL;
     slot = sprite = -1;
-    switch (D_8011A938_msetup) {
+    switch (msetup_setupMode) {
         default:
         case 0:
-            messages = D_80119DA8_msetup;
+            messages = msetup_chrSelMesTbl;
             break;
         case 1:
-            messages = D_80119DB8_msetup;
-            D_8011A904_msetup.state = 0;
-            D_8011A904_msetup.unk02 = 0;
-            D_8011A900_msetup = omAddPrcObj(func_8011035C_msetup, 0x3F00, 0x600, 0);
-            D_8011A900_msetup->user_data = &D_8011A904_msetup;
+            messages = msetup_chrSelDuelMesTbl;
+            msetup_chrInfoWork.state = 0;
+            msetup_chrInfoWork.unk02 = 0;
+            msetup_chrInfoProc = omAddPrcObj(msetup_ChrInfoProc, 0x3F00, 0x600, 0);
+            msetup_chrInfoProc->user_data = &msetup_chrInfoWork;
             break;
     }
-    func_8010E4BC_msetup(&models, 2, 90.0f);
-    func_8010E4D8_msetup(models, 2);
+    msetup_PanelCreate(&models, 2, 90.0f);
+    msetup_PanelDynamicFree(models, 2);
     model = Hu3DModelRead(0x140007, 0x289);
     Hu3DModelRemakeStatic(model);
     Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
@@ -928,9 +928,9 @@ s16 func_80111650_msetup(MsetupMenuState *state) {
     Hu3DMotionAttrSet(model, 1, 1);
     group = HuSprGrpCreate(16, 0);
     for (i = 0; i < 8; i++) {
-        func_8010F43C_msetup(model, (char *)D_80119D68_msetup[i], &position);
-        spriteIds[0] = D_80119D88_msetup[i];
-        spriteIds[1] = D_80119C70_msetup[i];
+        msetup_ModelNodePos2DGet(model, (char *)msetup_chrNodeNameTbl[i], &position);
+        spriteIds[0] = msetup_chrSelSprTbl[i];
+        spriteIds[1] = msetup_chrSelOnSprTbl[i];
         spriteIndex = 0;
         if (i == 3) {
             spriteIndex = -(_CheckFlag(0x2E) == 0);
@@ -967,8 +967,8 @@ s16 func_80111650_msetup(MsetupMenuState *state) {
         processes[i] = NULL;
         selections[i] = -1;
     }
-    humanCount = D_8011AA30_msetup.humanCount;
-    cpuCount = D_8011AA30_msetup.cpuCount;
+    humanCount = msetup_playerConfig.humanCount;
+    cpuCount = msetup_playerConfig.cpuCount;
     count = humanCount;
     firstCpuIndex = humanCount;
     if (cpuCount) {
@@ -990,7 +990,7 @@ s16 func_80111650_msetup(MsetupMenuState *state) {
         }
     }
     for (i = 0; i < count; i++) {
-        processes[i] = omAddPrcObj(func_80110954_msetup, 0x3F00, 0x800, 0);
+        processes[i] = omAddPrcObj(msetup_ChrCursorProc, 0x3F00, 0x800, 0);
         cursor = &cursors[i];
         processes[i]->user_data = cursor;
         cursor->entries = entries;
@@ -998,13 +998,13 @@ s16 func_80111650_msetup(MsetupMenuState *state) {
         cursor->state = 0;
         if (i < humanCount) {
             cursor->priority = i;
-            cursor->controller = D_8011AA30_msetup.controllerPorts[i];
+            cursor->controller = msetup_playerConfig.controllerPorts[i];
             cursor->selection = selections[i];
             cursor->frames = 4;
             cursor->count = 1;
         } else {
             cursor->priority = 4;
-            cursor->controller = D_8011A948_msetup;
+            cursor->controller = msetup_padNo;
             cursor->selection = 0;
             cursor->frames = 0;
             cursor->count = cpuCount;
@@ -1012,10 +1012,10 @@ s16 func_80111650_msetup(MsetupMenuState *state) {
         cursor->result = 0;
     }
     HuAudFXPlay(0x2D9);
-    func_8010E8C8_msetup(&models, 2, 15, 720, 565, 0.1f, 1.0f, 1);
+    msetup_PanelSpinMove(&models, 2, 15, 720, 565, 0.1f, 1.0f, 1);
     Hu3DModelPosSet(model, 0, 300, -280);
     Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-    func_8010E52C_msetup(models, D_80119C28_msetup, 2, 7, &model, 1, 0.1f, 1.2f);
+    msetup_PanelMove(models, msetup_chrSelPanelOpenTbl, 2, 7, &model, 1, 0.1f, 1.2f);
     for (i = 0; i < 8; i++) {
         HuSprDispOn(group, i);
     }
@@ -1028,7 +1028,7 @@ s16 func_80111650_msetup(MsetupMenuState *state) {
     for (i = 0; i < 8; i++) {
         HuSprTPLvlSet(group, i, 256);
     }
-    switch (D_8011A938_msetup) {
+    switch (msetup_setupMode) {
         default:
         case 0:
             initialState = 0;
@@ -1037,21 +1037,21 @@ s16 func_80111650_msetup(MsetupMenuState *state) {
         case 1:
             initialState = 2;
             menuState = 2;
-            D_8011A904_msetup.unk02 = 0;
-            D_8011A904_msetup.state = 1;
+            msetup_chrInfoWork.unk02 = 0;
+            msetup_chrInfoWork.state = 1;
             break;
         case 6:
             initialState = 3;
             menuState = 3;
-            i = D_8011AA30_msetup.characters[0];
+            i = msetup_playerConfig.characters[0];
             for (index = 0; index < 8; index++) {
-                if (D_80119C68_msetup[index] == i) {
+                if (msetup_chrSlotTbl[index] == i) {
                     break;
                 }
             }
             index = index < 8 ? index : 0;
             entries[index].flags = 1;
-            sprite = HuSprAnimDataRead(D_80119AD0_msetup[0]);
+            sprite = HuSprAnimDataRead(msetup_cursorSprTbl[0]);
             slot = espEntry(sprite, 0, 1);
             espPriSet(slot, 2);
             espScaleSet(slot, 0.75f, 0.75f);
@@ -1064,8 +1064,8 @@ s16 func_80111650_msetup(MsetupMenuState *state) {
     do {
         switch (menuState) {
             case 0:
-                func_8010B82C_msetup(messages[0]);
-                func_8010B858_msetup();
+                msetup_WinMesSet(messages[0]);
+                msetup_WinMesWait();
                 for (i = 0; i < humanCount; i++) {
                     cursors[i].state = 1;
                 }
@@ -1088,8 +1088,8 @@ s16 func_80111650_msetup(MsetupMenuState *state) {
                             break;
                         }
                     }
-                    D_8011AA30_msetup.characters[i] = D_80119C68_msetup[index];
-                    D_8011AA30_msetup.cpuDifficulty[i] = 0xFF;
+                    msetup_playerConfig.characters[i] = msetup_chrSlotTbl[index];
+                    msetup_playerConfig.cpuDifficulty[i] = 0xFF;
                 }
                 menuState = cpuCount ? 1 : -1;
                 if (!flags) {
@@ -1098,8 +1098,8 @@ s16 func_80111650_msetup(MsetupMenuState *state) {
                 }
                 break;
             case 1:
-                func_8010B82C_msetup(messages[cpuCount]);
-                func_8010B858_msetup();
+                msetup_WinMesSet(messages[cpuCount]);
+                msetup_WinMesWait();
                 cursor = &cursors[firstCpuIndex];
                 for (i = 0; i < 8; i++) {
                     if (entries[i].flags == 0) {
@@ -1123,8 +1123,8 @@ s16 func_80111650_msetup(MsetupMenuState *state) {
                         if (cursor->priority < entries[index].flags) {
                             i = firstCpuIndex + (s16)(entries[index].flags - cursor->priority - 1);
                             if (i < 4) {
-                                D_8011AA30_msetup.characters[i] = D_80119C68_msetup[index];
-                                D_8011AA30_msetup.cpuDifficulty[i] = 1;
+                                msetup_playerConfig.characters[i] = msetup_chrSlotTbl[index];
+                                msetup_playerConfig.cpuDifficulty[i] = 1;
                             }
                         }
                     }
@@ -1132,8 +1132,8 @@ s16 func_80111650_msetup(MsetupMenuState *state) {
                 }
                 break;
             case 2:
-                func_8010B82C_msetup(messages[0]);
-                func_8010B858_msetup();
+                msetup_WinMesSet(messages[0]);
+                msetup_WinMesWait();
                 menuState = cpuCount ? 1 : -1;
                 for (index = 0; index < humanCount; index++) {
                     cursor = &cursors[index];
@@ -1175,14 +1175,14 @@ s16 func_80111650_msetup(MsetupMenuState *state) {
                                 break;
                             }
                         }
-                        D_8011AA30_msetup.characters[index] = D_80119C68_msetup[i];
-                        D_8011AA30_msetup.cpuDifficulty[index] = 0xFF;
+                        msetup_playerConfig.characters[index] = msetup_chrSlotTbl[i];
+                        msetup_playerConfig.cpuDifficulty[index] = 0xFF;
                     }
                 }
                 break;
             case 3:
-                func_8010B82C_msetup(messages[cpuCount]);
-                func_8010B858_msetup();
+                msetup_WinMesSet(messages[cpuCount]);
+                msetup_WinMesWait();
                 cursor = &cursors[firstCpuIndex];
                 for (i = 0; i < 8; i++) {
                     if (entries[i].flags == 0) {
@@ -1200,8 +1200,8 @@ s16 func_80111650_msetup(MsetupMenuState *state) {
                 } while (cursor->result == 0);
                 cursor->state = 2;
                 if (cursor->result < 0) {
-                    func_8010B82C_msetup(0x1501);
-                    if (func_8010B858_msetup() != 0) {
+                    msetup_WinMesSet(0x1501);
+                    if (msetup_WinMesWait() != 0) {
                         menuState = 3;
                         break;
                     }
@@ -1212,8 +1212,8 @@ s16 func_80111650_msetup(MsetupMenuState *state) {
                         if (cursor->priority < entries[index].flags) {
                             i = firstCpuIndex + (s16)(entries[index].flags - cursor->priority - 1);
                             if (i < 4) {
-                                D_8011AA30_msetup.characters[i] = D_80119C68_msetup[index];
-                                D_8011AA30_msetup.cpuDifficulty[i] = 1;
+                                msetup_playerConfig.characters[i] = msetup_chrSlotTbl[index];
+                                msetup_playerConfig.cpuDifficulty[i] = 1;
                             }
                         }
                     }
@@ -1225,9 +1225,9 @@ s16 func_80111650_msetup(MsetupMenuState *state) {
         }
         HuPrcVSleep();
     } while (menuState >= 0);
-    func_8010B998_msetup();
-    if (D_8011A900_msetup != NULL) {
-        D_8011A904_msetup.state = 2;
+    msetup_WinHomeClear();
+    if (msetup_chrInfoProc != NULL) {
+        msetup_chrInfoWork.state = 2;
     }
     for (i = 0; i < 4; i++) {
         if (processes[i] != NULL) {
@@ -1243,14 +1243,14 @@ s16 func_80111650_msetup(MsetupMenuState *state) {
     for (i = 0; i < 16; i++) {
         HuSprDispOff(group, i);
     }
-    func_8010E52C_msetup(models, D_80119C48_msetup, 2, 7, &model, 1, 1.2f, 0.0f);
-    if (D_8011A900_msetup != NULL) {
-        D_8011A904_msetup.state = 3;
+    msetup_PanelMove(models, msetup_panelCloseTbl, 2, 7, &model, 1, 1.2f, 0.0f);
+    if (msetup_chrInfoProc != NULL) {
+        msetup_chrInfoWork.state = 3;
     }
     HuAudFXPlay(0x2DA);
-    func_8010E8C8_msetup(&models, 2, 7, 360, 400, 1.0f, 0.1f, 1);
-    if (D_8011A900_msetup != NULL) {
-        omDelPrcObj(D_8011A900_msetup);
+    msetup_PanelSpinMove(&models, 2, 7, 360, 400, 1.0f, 0.1f, 1);
+    if (msetup_chrInfoProc != NULL) {
+        omDelPrcObj(msetup_chrInfoProc);
     }
     for (i = 0; i < 4; i++) {
         if (processes[i] != NULL) {
@@ -1275,54 +1275,54 @@ s16 func_80111650_msetup(MsetupMenuState *state) {
 }
 
 /* Keep these strings before the menu process jump table in rodata. */
-const char D_8011A6D8_msetup[] = "03tex_DEF";
+const char msetup_panelTexStr[] = "03tex_DEF";
 
-const char D_8011A6E4_msetup[] = "waruigi_DEF";
+const char msetup_waluigiDefStr[] = "waruigi_DEF";
 
-const char D_8011A6F0_msetup[] = "donkey_DEF";
+const char msetup_dkDefStr[] = "donkey_DEF";
 
-const char D_8011A6FC_msetup[] = "wario_DEF";
+const char msetup_warioDefStr[] = "wario_DEF";
 
-const char D_8011A708_msetup[] = "yoshi_DEF";
+const char msetup_yoshiDefStr[] = "yoshi_DEF";
 
-const char D_8011A714_msetup[] = "daisy_DEF";
+const char msetup_daisyDefStr[] = "daisy_DEF";
 
-const char D_8011A720_msetup[] = "peach_DEF";
+const char msetup_peachDefStr[] = "peach_DEF";
 
-const char D_8011A72C_msetup[] = "ruigi_DEF";
+const char msetup_luigiDefStr[] = "ruigi_DEF";
 
-const char D_8011A738_msetup[] = "mario_DEF";
+const char msetup_marioDefStr[] = "mario_DEF";
 
-const char D_8011A744_msetup[] = "waluigi";
+const char msetup_waluigiStr[] = "waluigi";
 
-const char D_8011A74C_msetup[] = "donkey";
+const char msetup_dkStr[] = "donkey";
 
-const char D_8011A754_msetup[] = "wario";
+const char msetup_warioStr[] = "wario";
 
-const char D_8011A75C_msetup[] = "yoshi";
+const char msetup_yoshiStr[] = "yoshi";
 
-const char D_8011A764_msetup[] = "daisy";
+const char msetup_daisyStr[] = "daisy";
 
-const char D_8011A76C_msetup[] = "peach";
+const char msetup_peachStr[] = "peach";
 
-const char D_8011A774_msetup[] = "luigi";
+const char msetup_luigiStr[] = "luigi";
 
-const char D_8011A77C_msetup[] = "mario";
+const char msetup_marioStr[] = "mario";
 
-const char D_8011A784_msetup[] = "kobetu";
+const char msetup_comLevelEachStr[] = "kobetu";
 
-const char D_8011A78C_msetup[] = "zenin";
+const char msetup_comLevelAllStr[] = "zenin";
 
-const char D_8011A794_msetup[] = "s_tuyoi";
+const char msetup_comLevelVeryHardStr[] = "s_tuyoi";
 
-const char D_8011A79C_msetup[] = "tuyoi";
+const char msetup_comLevelHardStr[] = "tuyoi";
 
-const char D_8011A7A4_msetup[] = "futuu";
+const char msetup_comLevelNormalStr[] = "futuu";
 
-const char D_8011A7AC_msetup[] = "yowai";
-const char D_8011A7B4_msetup[4] = "";
+const char msetup_comLevelEasyStr[] = "yowai";
+const char msetup_emptyStr[4] = "";
 
-void func_80112804_msetup(void) {
+void msetup_ComLevelSprProc(void) {
     MsetupDifficultySprites sprites;
     s16 group;
     s16 model;
@@ -1339,7 +1339,7 @@ void func_80112804_msetup(void) {
     model = state->unk02;
     group = HuSprGrpCreate(6, 0);
     for (; i < 6; i++) {
-        index = HuSprAnimDataRead(D_80119E38_msetup[i]);
+        index = HuSprAnimDataRead(msetup_comLevelSprTbl[i]);
         sprites.sprites[i] = index;
         HuSprTPLvlSet(group, i, 0);
         HuSprAttrReset(group, i, 0xFFFF);
@@ -1430,13 +1430,13 @@ void func_80112804_msetup(void) {
                 if (sprites.delay[side] != 0) {
                     sprites.delay[side]--;
                 } else {
-                    first = D_80119E50_msetup[side];
-                    last = D_80119E54_msetup[side];
+                    first = msetup_comLevelSprFirstTbl[side];
+                    last = msetup_comLevelSprLastTbl[side];
                     if (side == 1 && state->result == 3) {
                         last--;
                     }
                     for (i = first; i <= last; i++) {
-                        func_8010F43C_msetup(model, (char *)D_80119E20_msetup[i], &sprites.position);
+                        msetup_ModelNodePos2DGet(model, (char *)msetup_comLevelNodeNameTbl[i], &sprites.position);
                         HuSprPosSet(group, i, sprites.position.x, sprites.position.y);
                     }
                     if (sprites.alphaStep[side] != 0) {
@@ -1478,24 +1478,24 @@ void func_80112804_msetup(void) {
     }
 }
 
-s16 func_80112E08_msetup(s16 selection, s16 *previousButtons, MsetupCursorState *cursor) {
+s16 msetup_ComLevelModeChoice(s16 selection, s16 *previousButtons, MsetupCursorState *cursor) {
     s16 buttons;
     s16 previousSelection;
 
-    func_8010B82C_msetup(0x1514);
+    msetup_WinMesSet(0x1514);
     previousSelection = -1;
-    func_8010B858_msetup();
+    msetup_WinMesWait();
     cursor->selection = selection;
     HuPrcVSleep();
     cursor->flags = 4;
     cursor->state = 1;
-    func_8010D684_msetup(D_8011A948_msetup, previousButtons);
+    msetup_PadBtnDownGet(msetup_padNo, previousButtons);
     while (1) {
         if (previousSelection != selection) {
             previousSelection = selection;
-            func_8010B82C_msetup(D_80119E18_msetup[selection]);
+            msetup_WinMesSet(msetup_comLevelModeMesTbl[selection]);
         }
-        buttons = func_8010D684_msetup(D_8011A948_msetup, previousButtons);
+        buttons = msetup_PadBtnDownGet(msetup_padNo, previousButtons);
         if (buttons & (U_JPAD | R_JPAD)) {
             selection = 0;
         } else if (buttons & (D_JPAD | L_JPAD)) {
@@ -1520,7 +1520,7 @@ s16 func_80112E08_msetup(s16 selection, s16 *previousButtons, MsetupCursorState 
     return selection;
 }
 
-s16 func_80112F5C_msetup(s16 individual, s16 count, s16 *previousButtons, MsetupCursorState *cursor) {
+s16 msetup_ComLevelChoice(s16 individual, s16 count, s16 *previousButtons, MsetupCursorState *cursor) {
     s16 players[4];
     s16 player;
     s16 cpuCount;
@@ -1531,33 +1531,33 @@ s16 func_80112F5C_msetup(s16 individual, s16 count, s16 *previousButtons, Msetup
     s32 j;
     s32 currentPlayer;
 
-    player = D_8011AA30_msetup.humanCount;
-    cpuCount = D_8011AA30_msetup.cpuCount;
+    player = msetup_playerConfig.humanCount;
+    cpuCount = msetup_playerConfig.cpuCount;
     for (i = 0; player < 4; i++, player++) {
         players[i] = player;
     }
     i = 0;
     previousPlayer = -1;
     cursor->flags = 0;
-    selection = D_8011AA30_msetup.cpuDifficulty[players[0]];
+    selection = msetup_playerConfig.cpuDifficulty[players[0]];
     cursor->selection = selection;
     HuPrcVSleep();
     HuPrcVSleep();
     cursor->flags = 4;
     cursor->state = 1;
-    func_8010D684_msetup(D_8011A948_msetup, previousButtons);
+    msetup_PadBtnDownGet(msetup_padNo, previousButtons);
     while (1) {
         if (previousPlayer != i) {
             if (individual != 0) {
-                func_8010B968_msetup(D_8011AA30_msetup.characters[players[i]] + 0x1C00, 0);
-                func_8010B82C_msetup(0x1518);
+                msetup_WinInsertMesSet(msetup_playerConfig.characters[players[i]] + 0x1C00, 0);
+                msetup_WinMesSet(0x1518);
             } else {
-                func_8010B82C_msetup(0x1517);
+                msetup_WinMesSet(0x1517);
             }
             previousPlayer = i;
-            selection = D_8011AA30_msetup.cpuDifficulty[players[i]];
+            selection = msetup_playerConfig.cpuDifficulty[players[i]];
         }
-        buttons = func_8010D684_msetup(D_8011A948_msetup, previousButtons);
+        buttons = msetup_PadBtnDownGet(msetup_padNo, previousButtons);
         if (buttons & (U_JPAD | R_JPAD)) {
             selection++;
             if (selection >= count) {
@@ -1585,14 +1585,14 @@ s16 func_80112F5C_msetup(s16 individual, s16 count, s16 *previousButtons, Msetup
                 selection = -1;
                 break;
             }
-            D_8011A9E0_msetup[players[i]].state = 6;
+            msetup_playerWorkTbl[players[i]].state = 6;
         }
         if (buttons & A_BUTTON) {
             HuAudFXPlay(2);
             if (individual != 0) {
                 currentPlayer = players[i];
-                D_8011AA30_msetup.cpuDifficulty[currentPlayer] = selection;
-                D_8011A9E0_msetup[currentPlayer].state = 5;
+                msetup_playerConfig.cpuDifficulty[currentPlayer] = selection;
+                msetup_playerWorkTbl[currentPlayer].state = 5;
                 i++;
                 if (i >= cpuCount) {
                     break;
@@ -1600,8 +1600,8 @@ s16 func_80112F5C_msetup(s16 individual, s16 count, s16 *previousButtons, Msetup
             } else {
                 for (j = 0; j < cpuCount; j++) {
                     currentPlayer = players[j];
-                    D_8011AA30_msetup.cpuDifficulty[currentPlayer] = selection;
-                    D_8011A9E0_msetup[currentPlayer].state = 5;
+                    msetup_playerConfig.cpuDifficulty[currentPlayer] = selection;
+                    msetup_playerWorkTbl[currentPlayer].state = 5;
                 }
                 break;
             }
@@ -1612,7 +1612,7 @@ s16 func_80112F5C_msetup(s16 individual, s16 count, s16 *previousButtons, Msetup
     return selection;
 }
 
-s16 func_801132C4_msetup(MsetupMenuState *state) {
+s16 msetup_ComLevelSelect(MsetupMenuState *state) {
     Process *cursorProcesses[2];
     MsetupCursorState cursors[2];
     MsetupMenuState spriteState;
@@ -1629,9 +1629,9 @@ s16 func_801132C4_msetup(MsetupMenuState *state) {
     f32 rotation;
 
     state->result = 0;
-    func_8010B998_msetup();
-    func_8010E4BC_msetup(&models, 2, 90.0f);
-    func_8010E4D8_msetup(models, 2);
+    msetup_WinHomeClear();
+    msetup_PanelCreate(&models, 2, 90.0f);
+    msetup_PanelDynamicFree(models, 2);
     model = Hu3DModelRead(0x140007, 0x289);
     Hu3DModelRemakeStatic(model);
     Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
@@ -1645,49 +1645,49 @@ s16 func_801132C4_msetup(MsetupMenuState *state) {
         Hu3DMotionTimeSet(model, 0.0f);
         difficultyCount = 3;
     }
-    if (D_8011AA30_msetup.cpuCount == 1) {
+    if (msetup_playerConfig.cpuCount == 1) {
         Hu3DModelRotSet(model, 180.0f, 0.0f, 0.0f);
     }
     spriteState.state = 0;
     spriteState.unk02 = model;
     spriteState.result = difficultyCount;
-    spriteProcess = omAddPrcObj(func_80112804_msetup, 0x3F00, 0x800, 0);
+    spriteProcess = omAddPrcObj(msetup_ComLevelSprProc, 0x3F00, 0x800, 0);
     spriteProcess->user_data = &spriteState;
     for (i = 0; i < 2; i++) {
-        cursorProcesses[i] = omAddPrcObj(func_8010D6D0_msetup, 0x3F00, 0x800, 0);
+        cursorProcesses[i] = omAddPrcObj(msetup_CursorProc, 0x3F00, 0x800, 0);
         cursor = &cursors[i];
         cursorProcesses[i]->user_data = cursor;
         cursor->pos[0] = 160;
         cursor->pos[1] = 120;
         if ((i == 1) & (difficultyCount == 4)) {
-            cursor->positions = D_80119DFC_msetup;
+            cursor->positions = msetup_comLevel4CursorPosTbl;
         } else {
-            cursor->positions = D_80119E0C_msetup[i];
+            cursor->positions = msetup_comLevelCursorPosTblTbl[i];
         }
-        cursor->dataId = D_80119B2C_msetup[1 - i];
+        cursor->dataId = msetup_comLevelCursorSprTbl[1 - i];
         cursor->selection = -1;
         cursor->state = 0;
         cursor->flags = 0;
         cursor->priority = 0;
     }
     HuAudFXPlay(0x2D9);
-    func_8010E8C8_msetup(&models, 2, 15, 720.0f, 565.0f, 0.1f, 1.0f, 1);
+    msetup_PanelSpinMove(&models, 2, 15, 720.0f, 565.0f, 0.1f, 1.0f, 1);
     Hu3DModelPosSet(model, 0.0f, 300.0f, -280.0f);
-    D_8011A990_msetup = 1;
+    msetup_winMode = 1;
     Hu3DModelScaleSet(model, 0.1f, 0.1f, 0.1f);
     Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-    if (D_8011AA30_msetup.cpuCount == 1) {
+    if (msetup_playerConfig.cpuCount == 1) {
         spriteState.state = 3;
     } else {
         spriteState.state = 1;
     }
-    func_8010E52C_msetup(models, D_80119DC8_msetup, 2, 7, &model, 1, 0.1f, 1.2f);
-    step = D_8011AA30_msetup.cpuCount == 1 ? 2 : 1;
+    msetup_PanelMove(models, msetup_comLevelPanelOpenTbl, 2, 7, &model, 1, 0.1f, 1.2f);
+    step = msetup_playerConfig.cpuCount == 1 ? 2 : 1;
     individual = 0;
     do {
         switch (step) {
             case 1:
-                result = func_80112E08_msetup(individual, &previousButtons, &cursors[0]);
+                result = msetup_ComLevelModeChoice(individual, &previousButtons, &cursors[0]);
                 if (result < 0) {
                     state->result = -1;
                     goto finishSelection;
@@ -1703,11 +1703,11 @@ s16 func_801132C4_msetup(MsetupMenuState *state) {
                 }
                 break;
             case 2:
-                result = func_80112F5C_msetup(individual, difficultyCount, &previousButtons, &cursors[1]);
+                result = msetup_ComLevelChoice(individual, difficultyCount, &previousButtons, &cursors[1]);
                 step = -1;
                 if (result < 0) {
                     step = 1;
-                    if (D_8011AA30_msetup.cpuCount == 1) {
+                    if (msetup_playerConfig.cpuCount == 1) {
                         state->result = -1;
                         step = -1;
                         break;
@@ -1730,12 +1730,12 @@ s16 func_801132C4_msetup(MsetupMenuState *state) {
         HuPrcVSleep();
     } while (step > 0);
     spriteState.state = 6;
-    func_8010E52C_msetup(models, D_80119C48_msetup, 2, 7, &model, 1, 1.1f, 0.0f);
+    msetup_PanelMove(models, msetup_panelCloseTbl, 2, 7, &model, 1, 1.1f, 0.0f);
     cursors[0].state = -1;
     cursors[1].state = -1;
     spriteState.state = 7;
     HuAudFXPlay(0x2DA);
-    func_8010E8C8_msetup(&models, 2, 7, 360.0f, 400.0f, 1.0f, 0.1f, 1);
+    msetup_PanelSpinMove(&models, 2, 7, 360.0f, 400.0f, 1.0f, 0.1f, 1);
     omDelPrcObj(spriteProcess);
     omDelPrcObj(cursorProcesses[0]);
     omDelPrcObj(cursorProcesses[1]);
@@ -1746,7 +1746,7 @@ s16 func_801132C4_msetup(MsetupMenuState *state) {
     return 0;
 }
 
-s32 func_801138F8_msetup(MsetupMenuState *state, s32 dataId, s32 *messages, s32 selectionArg) {
+s32 msetup_ChoicePanelSelect(MsetupMenuState *state, s32 dataId, s32 *messages, s32 selectionArg) {
     Array2D models;
     s16 previousButtons;
     s16 anim;
@@ -1762,21 +1762,21 @@ s32 func_801138F8_msetup(MsetupMenuState *state, s32 dataId, s32 *messages, s32 
 
     selection = selectionArg;
     state->result = selection;
-    func_8010B998_msetup();
-    func_8010E4BC_msetup(&models, 2, 0.0f);
+    msetup_WinHomeClear();
+    msetup_PanelCreate(&models, 2, 0.0f);
     model = models[0].model;
-    anim = Hu3DAnimRead(Hu3DData[model].hmf, dataId, (char *)D_8011A6D8_msetup);
+    anim = Hu3DAnimRead(Hu3DData[model].hmf, dataId, (char *)msetup_panelTexStr);
     Hu3DModelRemakeStatic(model);
     Hu3DAnimAttrSet(anim, 1, 1);
-    func_8010E4D8_msetup(models, 2);
+    msetup_PanelDynamicFree(models, 2);
     Hu3DAnimBankSet(anim, selection);
-    arrows = func_8010DE38_msetup(96, 224, 72);
+    arrows = msetup_ArrowObjCreate(96, 224, 72);
     if (messages != NULL) {
-        func_8010B82C_msetup(messages[0]);
-        func_8010B858_msetup();
+        msetup_WinMesSet(messages[0]);
+        msetup_WinMesWait();
     }
     HuAudFXPlay(0x2D9);
-    func_8010E8C8_msetup(&models, 2, 15, 720.0f, 565.0f, 0.1f, 1.52f, 1);
+    msetup_PanelSpinMove(&models, 2, 15, 720.0f, 565.0f, 0.1f, 1.52f, 1);
     arrows->work[0] = 1;
     arrows->work[1] = 36;
     Hu3DModelAttrSet(models[1].model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
@@ -1786,15 +1786,15 @@ s32 func_801138F8_msetup(MsetupMenuState *state, s32 dataId, s32 *messages, s32 
     }
     Hu3DModelRotSet(model, 0.0f, 180.0f, 0.0f);
     previousSelection = -1;
-    func_8010D684_msetup(D_8011A948_msetup, &previousButtons);
+    msetup_PadBtnDownGet(msetup_padNo, &previousButtons);
     while (1) {
         if (messages != NULL) {
             if (previousSelection != selection) {
                 previousSelection = selection;
-                func_8010B82C_msetup(messages[selection + 1]);
+                msetup_WinMesSet(messages[selection + 1]);
             }
         }
-        buttons = func_8010D684_msetup(D_8011A948_msetup, &previousButtons);
+        buttons = msetup_PadBtnDownGet(msetup_padNo, &previousButtons);
         if (buttons & A_BUTTON) {
             HuAudFXPlay(2);
             break;
@@ -1844,8 +1844,8 @@ s32 func_801138F8_msetup(MsetupMenuState *state, s32 dataId, s32 *messages, s32 
     Hu3DModelRotSet(model, 0.0f, 0.0f, 0.0f);
     Hu3DModelAttrSet(models[1].model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     HuAudFXPlay(0x2DA);
-    func_8010E8C8_msetup(&models, 2, 7, 360.0f, 400.0f, 1.52f, 0.1f, 1);
-    func_8010DDD8_msetup(arrows);
+    msetup_PanelSpinMove(&models, 2, 7, 360.0f, 400.0f, 1.52f, 0.1f, 1);
+    msetup_ArrowObjKill(arrows);
     if (anim >= 0) {
         Hu3DAnimModelKill(anim);
     }
@@ -1855,28 +1855,28 @@ s32 func_801138F8_msetup(MsetupMenuState *state, s32 dataId, s32 *messages, s32 
     return 0;
 }
 
-s16 func_80113DEC_msetup(MsetupMenuState *state) {
-    return func_801138F8_msetup(state, 0x140021, D_80119E58_msetup, 1);
+s16 msetup_HandicapChoice(MsetupMenuState *state) {
+    return msetup_ChoicePanelSelect(state, 0x140021, msetup_handicapChoiceMesTbl, 1);
 }
 
-s16 func_80113E20_msetup(MsetupMenuState *state) {
-    return func_801138F8_msetup(state, 0x140022, D_80119E64_msetup, 0);
+s16 msetup_BonusChoice(MsetupMenuState *state) {
+    return msetup_ChoicePanelSelect(state, 0x140022, msetup_bonusChoiceMesTbl, 0);
 }
 
-s16 func_80113E54_msetup(MsetupMenuState *state) {
-    return func_801138F8_msetup(state, 0x140021, D_80119E70_msetup, 1);
+s16 msetup_DuelHandicapChoice(MsetupMenuState *state) {
+    return msetup_ChoicePanelSelect(state, 0x140021, msetup_duelHandicapChoiceMesTbl, 1);
 }
 
-s16 func_80113E88_msetup(MsetupMenuState *state) {
-    s32 *messages = D_80119E88_msetup;
+s16 msetup_MgPackChoice(MsetupMenuState *state) {
+    s32 *messages = msetup_mgPackMesTbl;
 
-    if (D_8011A938_msetup == 1) {
-        messages = D_80119E7C_msetup;
+    if (msetup_setupMode == 1) {
+        messages = msetup_mgPackDuelMesTbl;
     }
-    return func_801138F8_msetup(state, 0x140050, messages, 0);
+    return msetup_ChoicePanelSelect(state, 0x140050, messages, 0);
 }
 
-s16 func_80113ED4_msetup(MsetupMenuState *arg0) {
+s16 msetup_BoardSelect(MsetupMenuState *arg0) {
 #define MODE_PARTY 0
 #define MODE_DUEL 1
 #define FLAG_WALUIGIS_ISLAND 0x31
@@ -1902,7 +1902,7 @@ s16 func_80113ED4_msetup(MsetupMenuState *arg0) {
 
     boardDescriptionId = NULL;
     mainFSArray = NULL;
-    curBoardIndex = D_8011AA30_msetup.boardIndex;
+    curBoardIndex = msetup_playerConfig.boardIndex;
     arg0->result = 0;
     backgroundEspriteSlot = -1;
     var_s6 = -1;
@@ -1910,10 +1910,10 @@ s16 func_80113ED4_msetup(MsetupMenuState *arg0) {
     var_fp = 70;
     tempFloat = 1.0f;
 
-    switch (D_8011A938_msetup) { // current mode
+    switch (msetup_setupMode) { // current mode
         case MODE_PARTY:
-            boardDescriptionId = D_80119EC4_msetup;
-            mainFSArray = D_80119E94_msetup; // party mode board backgrounds
+            boardDescriptionId = msetup_boardPartyMesTbl;
+            mainFSArray = msetup_boardPartySprTbl; // party mode board backgrounds
             tempFloat = 1.0f;
             var_fp = 74;
             boardCountMax = 5;
@@ -1922,8 +1922,8 @@ s16 func_80113ED4_msetup(MsetupMenuState *arg0) {
             }
             break;
         case MODE_DUEL:
-            boardDescriptionId = D_80119EE0_msetup;
-            mainFSArray = D_80119EAC_msetup; // duel mode board backgrounds
+            boardDescriptionId = msetup_boardDuelMesTbl;
+            mainFSArray = msetup_boardDuelSprTbl; // duel mode board backgrounds
             var_fp = 74;
             boardCountMax = 5;
             if (_CheckFlag(FLAG_BACKTRACK) != 0) {
@@ -1932,15 +1932,15 @@ s16 func_80113ED4_msetup(MsetupMenuState *arg0) {
             break;
     }
 
-    func_8010B998_msetup();
-    func_8010E4BC_msetup(&sp20, 2, 0);
-    func_8010E4D8_msetup(sp20, 2);
+    msetup_WinHomeClear();
+    msetup_PanelCreate(&sp20, 2, 0);
+    msetup_PanelDynamicFree(sp20, 2);
     temp = sp20[0].model;
-    temp_s5 = func_8010DE38_msetup(0x40, 0x100, 0x48);
-    func_8010B82C_msetup(boardDescriptionId[6]);
-    func_8010B858_msetup();
+    temp_s5 = msetup_ArrowObjCreate(0x40, 0x100, 0x48);
+    msetup_WinMesSet(boardDescriptionId[6]);
+    msetup_WinMesWait();
     HuAudFXPlay(0x2D9);
-    func_8010E8C8_msetup(&sp20, 2, 0xF, 720.0f, 565.0f, 0.1f, 1.0f, 1);
+    msetup_PanelSpinMove(&sp20, 2, 0xF, 720.0f, 565.0f, 0.1f, 1.0f, 1);
     Hu3DModelAttrSet(sp20[1].model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
 
     for (var_f20 = 0.0f; var_f20 < 180.0f; var_f20 += (180.0f / 7.0f)) {
@@ -1959,10 +1959,10 @@ s16 func_80113ED4_msetup(MsetupMenuState *arg0) {
 
     Hu3DModelScaleSet(temp, 2.5f, 2.5f, 2.5f);
     prevBoardIndex = -1;
-    pad = func_8010D684_msetup(D_8011A948_msetup, &unk_68);
+    pad = msetup_PadBtnDownGet(msetup_padNo, &unk_68);
     boardCountMaxCopy = boardCountMax;
     while (1) {
-        pad = func_8010D684_msetup(D_8011A948_msetup, &unk_68);
+        pad = msetup_PadBtnDownGet(msetup_padNo, &unk_68);
         if (pad & A_BUTTON) {
             HuAudFXPlay(2);
             break;
@@ -2010,14 +2010,14 @@ s16 func_80113ED4_msetup(MsetupMenuState *arg0) {
             }
             espTPLvlSet(backgroundEspriteSlot, 0xFF);
             prevBoardIndex = curBoardIndex;
-            func_8010B82C_msetup(boardDescriptionId[curBoardIndex]);
+            msetup_WinMesSet(boardDescriptionId[curBoardIndex]);
         }
         HuPrcVSleep();
     }
 
     arg0->result = curBoardIndex;
     if (curBoardIndex >= 0) {
-        D_8011AA30_msetup.boardIndex = curBoardIndex;
+        msetup_playerConfig.boardIndex = curBoardIndex;
     }
 
     temp_s5->work[0] = 2;
@@ -2045,11 +2045,11 @@ s16 func_80113ED4_msetup(MsetupMenuState *arg0) {
     Hu3DModelRotSet(temp, 0, 0.0f, 0);
     Hu3DModelAttrSet(sp20[1].model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     HuAudFXPlay(0x2DA);
-    func_8010E8C8_msetup(&sp20, 2, 7, 360.0f, 400.0f, 1.0f, 0.1f, 1);
+    msetup_PanelSpinMove(&sp20, 2, 7, 360.0f, 400.0f, 1.0f, 0.1f, 1);
 
     if (curBoardIndex >= 0) {
-        func_8010F320_msetup(D_80119420_msetup, 0, sp20[0].model, -1);
-        func_8010F320_msetup(D_80119420_msetup, 2, backgroundEspriteSlot, var_s6);
+        msetup_SummaryEntrySet(msetup_summaryProc, 0, sp20[0].model, -1);
+        msetup_SummaryEntrySet(msetup_summaryProc, 2, backgroundEspriteSlot, var_s6);
         Hu3DModelKill(sp20[1].model);
     } else {
         for (i = 0; i < 2; i++) {
@@ -2058,15 +2058,15 @@ s16 func_80113ED4_msetup(MsetupMenuState *arg0) {
         espKill(backgroundEspriteSlot);
         HuSprAnimKill(var_s6);
     }
-    func_8010DDD8_msetup(temp_s5);
+    msetup_ArrowObjKill(temp_s5);
     return 0;
 }
 
-s16 func_801145D0_msetup(MsetupMenuState *state) {
+s16 msetup_StoryBoardShow(MsetupMenuState *state) {
     Array2D models;
     s32 *messages = NULL;
     s32 *backgrounds = NULL;
-    s16 board = D_8011AA30_msetup.boardIndex;
+    s16 board = msetup_playerConfig.boardIndex;
     s32 y;
     f32 scale;
     s16 model;
@@ -2079,26 +2079,26 @@ s16 func_801145D0_msetup(MsetupMenuState *state) {
     state->result = 0;
     scale = 1.0f;
     y = 70;
-    switch (D_8011A938_msetup) {
+    switch (msetup_setupMode) {
         case 2:
-            messages = D_80119EFC_msetup;
-            backgrounds = D_80119E94_msetup;
+            messages = msetup_storyBoardPartyMesTbl;
+            backgrounds = msetup_boardPartySprTbl;
             scale = 1.0f;
             y = 74;
             break;
         case 3:
-            messages = D_80119F14_msetup;
-            backgrounds = D_80119EAC_msetup;
+            messages = msetup_storyBoardDuelMesTbl;
+            backgrounds = msetup_boardDuelSprTbl;
             scale = 1.0f;
             y = 74;
             break;
     }
-    func_8010B998_msetup();
-    func_8010E4BC_msetup(&models, 2, 0);
-    func_8010E4D8_msetup(models, 2);
+    msetup_WinHomeClear();
+    msetup_PanelCreate(&models, 2, 0);
+    msetup_PanelDynamicFree(models, 2);
     model = models[0].model;
     HuAudFXPlay(0x2D9);
-    func_8010E8C8_msetup(&models, 2, 15, 720.0f, 565.0f, 0.1f, 1.0f, 1);
+    msetup_PanelSpinMove(&models, 2, 15, 720.0f, 565.0f, 0.1f, 1.0f, 1);
     Hu3DModelAttrSet(models[1].model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     for (value = 0.0f; value < 180.0f; value += 180.0f / 7.0f) {
         Hu3DModelRotSet(model, 0, value, 0);
@@ -2123,8 +2123,8 @@ s16 func_801145D0_msetup(MsetupMenuState *state) {
         HuPrcVSleep();
     }
     espTPLvlSet(slot, 255);
-    func_8010B82C_msetup(messages[board]);
-    func_8010B858_msetup();
+    msetup_WinMesSet(messages[board]);
+    msetup_WinMesWait();
     for (i = 255; i > 0; i -= 255 / 7) {
         espTPLvlSet(slot, i);
         HuPrcVSleep();
@@ -2141,7 +2141,7 @@ s16 func_801145D0_msetup(MsetupMenuState *state) {
     Hu3DModelRotSet(model, 0, 0, 0);
     Hu3DModelAttrSet(models[1].model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     HuAudFXPlay(0x2DA);
-    func_8010E8C8_msetup(&models, 2, 7, 360.0f, 400.0f, 1.0f, 0.1f, 1);
+    msetup_PanelSpinMove(&models, 2, 7, 360.0f, 400.0f, 1.0f, 0.1f, 1);
     for (i = 0; i < 2; i++) {
         Hu3DModelKill(models[i].model);
     }
@@ -2150,7 +2150,7 @@ s16 func_801145D0_msetup(MsetupMenuState *state) {
     return 0;
 }
 
-s16 func_80114AA0_msetup(MsetupMenuState *state) {
+s16 msetup_HandicapSelect(MsetupMenuState *state) {
     Array2D models;
     s16 previousButtons;
     s16 selection;
@@ -2168,19 +2168,19 @@ s16 func_80114AA0_msetup(MsetupMenuState *state) {
     f32 step;
 
     state->result = 0;
-    selection = D_8011AA30_msetup.stars[0];
+    selection = msetup_playerConfig.stars[0];
     player = 0;
-    func_8010B998_msetup();
-    func_8010E4BC_msetup(&models, 2, 0);
+    msetup_WinHomeClear();
+    msetup_PanelCreate(&models, 2, 0);
     model = models[0].model;
-    anim = Hu3DAnimRead(Hu3DData[model].hmf, 0x140023, (char *)D_8011A6D8_msetup);
+    anim = Hu3DAnimRead(Hu3DData[model].hmf, 0x140023, (char *)msetup_panelTexStr);
     Hu3DModelRemakeStatic(model);
     Hu3DAnimAttrSet(anim, 1, 1);
-    func_8010E4D8_msetup(models, 2);
+    msetup_PanelDynamicFree(models, 2);
     Hu3DAnimBankSet(anim, selection);
-    cursor = func_8010DE38_msetup(96, 224, 72);
+    cursor = msetup_ArrowObjCreate(96, 224, 72);
     HuAudFXPlay(0x2D9);
-    func_8010E8C8_msetup(&models, 2, 15, 720.0f, 565.0f, 0.1f, 1.4f, 1);
+    msetup_PanelSpinMove(&models, 2, 15, 720.0f, 565.0f, 0.1f, 1.4f, 1);
     cursor->work[0] = 1;
     cursor->work[1] = 36;
     Hu3DModelAttrSet(models[1].model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
@@ -2191,28 +2191,28 @@ s16 func_80114AA0_msetup(MsetupMenuState *state) {
     Hu3DModelRotSet(model, 0, 180.0f, 0);
     oldSelection = selection;
     oldPlayer = -1;
-    func_8010D684_msetup(D_8011A948_msetup, &previousButtons);
+    msetup_PadBtnDownGet(msetup_padNo, &previousButtons);
     while (1) {
         if (oldPlayer != player) {
-            func_8010B968_msetup(D_8011AA30_msetup.characters[player] + 0x1C00, 0);
-            func_8010B82C_msetup(0x151C);
+            msetup_WinInsertMesSet(msetup_playerConfig.characters[player] + 0x1C00, 0);
+            msetup_WinMesSet(0x151C);
             oldPlayer = player;
         }
-        buttons = func_8010D684_msetup(D_8011A948_msetup, &previousButtons);
+        buttons = msetup_PadBtnDownGet(msetup_padNo, &previousButtons);
         if (buttons & A_BUTTON) {
             HuAudFXPlay(2);
-            D_8011AA30_msetup.stars[player] = selection;
+            msetup_playerConfig.stars[player] = selection;
             if (selection != 0) {
-                D_8011A9E0_msetup[player].state = 8;
+                msetup_playerWorkTbl[player].state = 8;
             } else {
-                D_8011A9E0_msetup[player].state = 10;
+                msetup_playerWorkTbl[player].state = 10;
             }
             player++;
             if (player >= 4) {
                 state->result = 0;
                 break;
             }
-            selection = D_8011AA30_msetup.stars[player];
+            selection = msetup_playerConfig.stars[player];
         } else if (buttons & B_BUTTON) {
             HuAudFXPlay(4);
             player--;
@@ -2220,8 +2220,8 @@ s16 func_80114AA0_msetup(MsetupMenuState *state) {
                 state->result = -1;
                 break;
             }
-            D_8011A9E0_msetup[player].state = 9;
-            selection = D_8011AA30_msetup.stars[player];
+            msetup_playerWorkTbl[player].state = 9;
+            selection = msetup_playerConfig.stars[player];
         }
         reverse = 0;
         if (buttons & (U_JPAD | R_JPAD)) {
@@ -2269,8 +2269,8 @@ s16 func_80114AA0_msetup(MsetupMenuState *state) {
     Hu3DModelRotSet(model, 0, 0, 0);
     Hu3DModelAttrSet(models[1].model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     HuAudFXPlay(0x2DA);
-    func_8010E8C8_msetup(&models, 2, 7, 360.0f, 400.0f, 1.4f, 0.1f, 1);
-    func_8010DDD8_msetup(cursor);
+    msetup_PanelSpinMove(&models, 2, 7, 360.0f, 400.0f, 1.4f, 0.1f, 1);
+    msetup_ArrowObjKill(cursor);
     if (anim >= 0) {
         Hu3DAnimModelKill(anim);
     }
@@ -2280,7 +2280,7 @@ s16 func_80114AA0_msetup(MsetupMenuState *state) {
     return 0;
 }
 
-s32 func_801150A0_msetup(s16 controller) {
+s32 msetup_StickQuadrantGet(s16 controller) {
     u8 stickX = HuPadStkX[controller];
     u8 stickY = HuPadStkY[controller];
     s32 quadrant = 0;
@@ -2305,7 +2305,7 @@ s32 func_801150A0_msetup(s16 controller) {
     return quadrant;
 }
 
-s16 func_801152C4_msetup(s16 model, s16 anim, HuMtx4F matrix, s16 *previousButtons, s16 selection) {
+s16 msetup_TurnDialChoice(s16 model, s16 anim, HuMtx4F matrix, s16 *previousButtons, s16 selection) {
     HmfMotionNode *nodes[4];
     s8 unused[4];
     HuMtx4F matrices[4];
@@ -2320,13 +2320,13 @@ s16 func_801152C4_msetup(s16 model, s16 anim, HuMtx4F matrix, s16 *previousButto
     s32 direction;
     s16 i;
 
-    nodes[0] = Hu3DModelObjPtrGet(model, (char *)D_8011A7D8_msetup);
+    nodes[0] = Hu3DModelObjPtrGet(model, (char *)msetup_turn20Str);
     mtxCopy(matrices[0], nodes[0]->unk58);
-    nodes[1] = Hu3DModelObjPtrGet(model, (char *)D_8011A7E0_msetup);
+    nodes[1] = Hu3DModelObjPtrGet(model, (char *)msetup_turn35Str);
     mtxCopy(matrices[1], nodes[1]->unk58);
-    nodes[2] = Hu3DModelObjPtrGet(model, (char *)D_8011A7E8_msetup);
+    nodes[2] = Hu3DModelObjPtrGet(model, (char *)msetup_turn50Str);
     mtxCopy(matrices[2], nodes[2]->unk58);
-    nodes[3] = Hu3DModelObjPtrGet(model, (char *)D_8011A7F0_msetup);
+    nodes[3] = Hu3DModelObjPtrGet(model, (char *)msetup_turnCustomStr);
     mtxCopy(matrices[3], nodes[3]->unk58);
     phase = 0.0f;
     for (i = 0; i < 4; i++) {
@@ -2334,11 +2334,11 @@ s16 func_801152C4_msetup(s16 model, s16 anim, HuMtx4F matrix, s16 *previousButto
     }
     // Preserve the original scratch initialization and stack layout.
     (void)unused;
-    angle = D_8011A908_msetup;
-    targetAngle = D_80119F4C_msetup[selection];
+    angle = msetup_turnDialAngle;
+    targetAngle = msetup_turnDialAngleTbl[selection];
     oldSelection = -1;
     while (1) {
-        buttons = func_8010D684_msetup(D_8011A948_msetup, previousButtons);
+        buttons = msetup_PadBtnDownGet(msetup_padNo, previousButtons);
         if (buttons & B_BUTTON) {
             HuAudFXPlay(4);
             selection = -1;
@@ -2355,14 +2355,14 @@ s16 func_801152C4_msetup(s16 model, s16 anim, HuMtx4F matrix, s16 *previousButto
         direction = buttons >> 8;
         direction &= 0xF;
         if (direction) {
-            if (HuPadBtn[D_8011A948_msetup] & (L_JPAD | R_JPAD)) {
-                if (HuPadBtn[D_8011A948_msetup] & R_JPAD) {
+            if (HuPadBtn[msetup_padNo] & (L_JPAD | R_JPAD)) {
+                if (HuPadBtn[msetup_padNo] & R_JPAD) {
                     selection++;
                     if (selection >= 4) {
                         selection = 0;
                     }
                     HuAudFXPlay(1);
-                } else if (HuPadBtn[D_8011A948_msetup] & L_JPAD) {
+                } else if (HuPadBtn[msetup_padNo] & L_JPAD) {
                     selection--;
                     if (selection < 0) {
                         selection = 3;
@@ -2370,7 +2370,7 @@ s16 func_801152C4_msetup(s16 model, s16 anim, HuMtx4F matrix, s16 *previousButto
                     HuAudFXPlay(1);
                 }
             } else {
-                direction = (s16)func_801150A0_msetup(D_8011A948_msetup);
+                direction = (s16)msetup_StickQuadrantGet(msetup_padNo);
                 if (direction >= 0 && selection != direction) {
                     HuAudFXPlay(1);
                     selection = direction;
@@ -2378,9 +2378,9 @@ s16 func_801152C4_msetup(s16 model, s16 anim, HuMtx4F matrix, s16 *previousButto
             }
         }
         if (oldSelection != selection) {
-            func_8010B82C_msetup(D_80119F3C_msetup[selection]);
-            targetAngle = D_80119F4C_msetup[selection];
-            D_8011A908_msetup = targetAngle;
+            msetup_WinMesSet(msetup_turnMesTbl[selection]);
+            targetAngle = msetup_turnDialAngleTbl[selection];
+            msetup_turnDialAngle = targetAngle;
             if (oldSelection >= 0) {
                 nodeMatrix = &nodes[oldSelection]->unk58;
                 mtxCopy(*nodeMatrix, matrices[oldSelection]);
@@ -2405,7 +2405,7 @@ s16 func_801152C4_msetup(s16 model, s16 anim, HuMtx4F matrix, s16 *previousButto
             } else if (angle < 0.0f) {
                 angle += 360.0f;
             }
-            nodeMatrix = &((HmfMotionNode *)Hu3DModelObjPtrGet(model, (char *)D_8011A7F8_msetup))->unk58;
+            nodeMatrix = &((HmfMotionNode *)Hu3DModelObjPtrGet(model, (char *)msetup_turnNeedleStr))->unk58;
             mtxCopy(*nodeMatrix, matrix);
             mtxRotCat(*nodeMatrix, 0.0f, 0.0f, angle);
         }
@@ -2425,7 +2425,7 @@ s16 func_801152C4_msetup(s16 model, s16 anim, HuMtx4F matrix, s16 *previousButto
     return selection;
 }
 
-s16 func_801157B8_msetup(s16 model, s16 anim, s16 *controller, s16 selection, MsetupLinkedModel *linked, omObjData *obj) {
+s16 msetup_TurnCustomChoice(s16 model, s16 anim, s16 *controller, s16 selection, MsetupLinkedModel *linked, omObjData *obj) {
     f32 angle;
     s16 oldSelection;
     s16 linkedModel;
@@ -2436,10 +2436,10 @@ s16 func_801157B8_msetup(s16 model, s16 anim, s16 *controller, s16 selection, Ms
         Hu3DModelRotSet(model, 0.0f, angle, 0.0f);
         HuPrcVSleep();
     }
-    func_8010B82C_msetup(0x1529);
+    msetup_WinMesSet(0x1529);
     oldSelection = -1;
     while (1) {
-        buttons = func_8010D684_msetup(D_8011A948_msetup, controller);
+        buttons = msetup_PadBtnDownGet(msetup_padNo, controller);
         if (buttons & B_BUTTON) {
             HuAudFXPlay(4);
             selection = -1;
@@ -2488,7 +2488,7 @@ s16 func_801157B8_msetup(s16 model, s16 anim, s16 *controller, s16 selection, Ms
     return selection;
 }
 
-s16 func_80115A9C_msetup(s16 model, s16 anim, HuMtx4F matrix, s16 *previousButtons, s16 selection) {
+s16 msetup_DuelTurnDialChoice(s16 model, s16 anim, HuMtx4F matrix, s16 *previousButtons, s16 selection) {
     HmfMotionNode *nodes[2];
     HuMtx4F matrices[2];
     HuMtx4F *nodeMatrix;
@@ -2500,16 +2500,16 @@ s16 func_80115A9C_msetup(s16 model, s16 anim, HuMtx4F matrix, s16 *previousButto
     s16 oldSelection;
     s16 buttons;
 
-    nodes[0] = Hu3DModelObjPtrGet(model, (char *)D_8011A7D8_msetup);
+    nodes[0] = Hu3DModelObjPtrGet(model, (char *)msetup_turn20Str);
     mtxCopy(matrices[0], nodes[0]->unk58);
-    nodes[1] = Hu3DModelObjPtrGet(model, (char *)D_8011A800_msetup);
+    nodes[1] = Hu3DModelObjPtrGet(model, (char *)msetup_turnInfStr);
     mtxCopy(matrices[1], nodes[1]->unk58);
     phase = 0.0f;
-    angle = D_8011A908_msetup;
-    targetAngle = D_80119F60_msetup[selection];
+    angle = msetup_turnDialAngle;
+    targetAngle = msetup_duelTurnDialAngleTbl[selection];
     oldSelection = -1;
     while (1) {
-        buttons = func_8010D684_msetup(D_8011A948_msetup, previousButtons);
+        buttons = msetup_PadBtnDownGet(msetup_padNo, previousButtons);
         if (buttons & B_BUTTON) {
             HuAudFXPlay(4);
             selection = -1;
@@ -2531,9 +2531,9 @@ s16 func_80115A9C_msetup(s16 model, s16 anim, HuMtx4F matrix, s16 *previousButto
             selection = 1;
         }
         if (oldSelection != selection) {
-            func_8010B82C_msetup(D_80119F8C_msetup[selection]);
-            targetAngle = D_80119F60_msetup[selection];
-            D_8011A908_msetup = targetAngle;
+            msetup_WinMesSet(msetup_duelTurnMesTbl[selection]);
+            targetAngle = msetup_duelTurnDialAngleTbl[selection];
+            msetup_turnDialAngle = targetAngle;
             if (oldSelection >= 0) {
                 HmfMotionNode *node = nodes[oldSelection];
                 nodeMatrix = &node->unk58;
@@ -2558,7 +2558,7 @@ s16 func_80115A9C_msetup(s16 model, s16 anim, HuMtx4F matrix, s16 *previousButto
             } else if (angle < 0.0f) {
                 angle += 360.0f;
             }
-            nodeMatrix = &((HmfMotionNode *)Hu3DModelObjPtrGet(model, (char *)D_8011A7F8_msetup))->unk58;
+            nodeMatrix = &((HmfMotionNode *)Hu3DModelObjPtrGet(model, (char *)msetup_turnNeedleStr))->unk58;
             mtxCopy(*nodeMatrix, matrix);
             mtxRotCat(*nodeMatrix, 0.0f, 0.0f, angle);
         }
@@ -2578,7 +2578,7 @@ s16 func_80115A9C_msetup(s16 model, s16 anim, HuMtx4F matrix, s16 *previousButto
     return selection;
 }
 
-void func_80115E78_msetup(s16 idx, f32 x, f32 y, f32 z) {
+void msetup_ModelPosAdd(s16 idx, f32 x, f32 y, f32 z) {
     if (idx >= 0 && Hu3DData[idx].hmf != NULL) {
         Hu3DData[idx].pos.x += x;
         Hu3DData[idx].pos.y += y;
@@ -2587,19 +2587,19 @@ void func_80115E78_msetup(s16 idx, f32 x, f32 y, f32 z) {
 }
 
 /* These strings follow the menu process jump table in rodata. */
-const char D_8011A7D8_msetup[] = "20turn";
+const char msetup_turn20Str[] = "20turn";
 
-const char D_8011A7E0_msetup[] = "35turn";
+const char msetup_turn35Str[] = "35turn";
 
-const char D_8011A7E8_msetup[] = "50turn";
+const char msetup_turn50Str[] = "50turn";
 
-const char D_8011A7F0_msetup[] = "q_turn";
+const char msetup_turnCustomStr[] = "q_turn";
 
-const char D_8011A7F8_msetup[] = "hari";
+const char msetup_turnNeedleStr[] = "hari";
 
-const char D_8011A800_msetup[] = "mugen";
+const char msetup_turnInfStr[] = "mugen";
 
-s16 func_80115EE0_msetup(MsetupMenuState *state) {
+s16 msetup_TurnSelect(MsetupMenuState *state) {
     Array2D models;
     Vec pos;
     Vec rot;
@@ -2619,38 +2619,38 @@ s16 func_80115EE0_msetup(MsetupMenuState *state) {
     f32 step;
 
     state->result = 0;
-    func_8010B998_msetup();
-    func_8010E4BC_msetup(&models, 2, 0);
-    func_8010E4D8_msetup(models, 2);
+    msetup_WinHomeClear();
+    msetup_PanelCreate(&models, 2, 0);
+    msetup_PanelDynamicFree(models, 2);
     model = Hu3DModelRead(0x140008, 0x2A9);
     linkedModel = model;
     anim = Hu3DAnimRead(Hu3DData[linkedModel].hmf, 0x140024, "uramen_CIDX");
     Hu3DModelRemakeStatic(linkedModel);
     rot.x = rot.y = rot.z = 0;
     Hu3DModelRotSet(linkedModel, 0, 0, 0);
-    pos = D_80119B20_msetup;
+    pos = msetup_panelStartPos;
     Hu3DModelPosSet(linkedModel, pos.x, pos.y, pos.z);
     Hu3DModelScaleSet(linkedModel, 0.1f, 0.1f, 0.1f);
-    mtxCopy(matrix, ((HmfMotionNode *)Hu3DModelObjPtrGet(linkedModel, (char *)D_8011A7F8_msetup))->unk58);
+    mtxCopy(matrix, ((HmfMotionNode *)Hu3DModelObjPtrGet(linkedModel, (char *)msetup_turnNeedleStr))->unk58);
     message = 0;
-    switch (D_8011A938_msetup) {
+    switch (msetup_setupMode) {
         case 0:
-            mtxScaleCat(((HmfMotionNode *)Hu3DModelObjPtrGet(linkedModel, (char *)D_8011A800_msetup))->unk58, 0, 0, 0);
+            mtxScaleCat(((HmfMotionNode *)Hu3DModelObjPtrGet(linkedModel, (char *)msetup_turnInfStr))->unk58, 0, 0, 0);
             message = 0x1524;
             break;
         case 1:
-            mtxScaleCat(((HmfMotionNode *)Hu3DModelObjPtrGet(linkedModel, (char *)D_8011A7E0_msetup))->unk58, 0, 0, 0);
-            mtxScaleCat(((HmfMotionNode *)Hu3DModelObjPtrGet(linkedModel, (char *)D_8011A7E8_msetup))->unk58, 0, 0, 0);
-            mtxScaleCat(((HmfMotionNode *)Hu3DModelObjPtrGet(linkedModel, (char *)D_8011A7F0_msetup))->unk58, 0, 0, 0);
+            mtxScaleCat(((HmfMotionNode *)Hu3DModelObjPtrGet(linkedModel, (char *)msetup_turn35Str))->unk58, 0, 0, 0);
+            mtxScaleCat(((HmfMotionNode *)Hu3DModelObjPtrGet(linkedModel, (char *)msetup_turn50Str))->unk58, 0, 0, 0);
+            mtxScaleCat(((HmfMotionNode *)Hu3DModelObjPtrGet(linkedModel, (char *)msetup_turnCustomStr))->unk58, 0, 0, 0);
             message = 0x242E;
             break;
     }
-    cursor = func_8010DE38_msetup(96, 224, 72);
-    func_8010B82C_msetup(message);
+    cursor = msetup_ArrowObjCreate(96, 224, 72);
+    msetup_WinMesSet(message);
     i = 0;
-    func_8010B858_msetup();
+    msetup_WinMesWait();
     HuAudFXPlay(0x2D9);
-    func_8010E8C8_msetup(&models, 2, 15, 720.0f, 565.0f, 0.1f, 1.5f, 1);
+    msetup_PanelSpinMove(&models, 2, 15, 720.0f, 565.0f, 0.1f, 1.5f, 1);
     models[0].pos.z -= 1.5f;
     models[1].pos.z -= 1.5f;
     backModel = models[1].model;
@@ -2681,7 +2681,7 @@ s16 func_80115EE0_msetup(MsetupMenuState *state) {
     Hu3DModelRotSet(model, rot.x, rot.y, rot.z);
     Hu3DModelAttrSet(linkedModel, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     phase = 0;
-    switch (D_8011A938_msetup) {
+    switch (msetup_setupMode) {
         case 0:
             phase = 0;
             break;
@@ -2690,18 +2690,18 @@ s16 func_80115EE0_msetup(MsetupMenuState *state) {
             break;
     }
     selection = 0;
-    D_8011A908_msetup = 0;
-    func_8010D684_msetup(D_8011A948_msetup, &previousButtons);
+    msetup_turnDialAngle = 0;
+    msetup_PadBtnDownGet(msetup_padNo, &previousButtons);
     do {
-        func_8010D684_msetup(D_8011A948_msetup, &previousButtons);
+        msetup_PadBtnDownGet(msetup_padNo, &previousButtons);
         switch (phase) {
             case 0:
-                selection = func_801152C4_msetup(model, anim, matrix, &previousButtons, selection);
+                selection = msetup_TurnDialChoice(model, anim, matrix, &previousButtons, selection);
                 if (selection < 0) {
                     state->result = -1;
                 } else if (selection < 3) {
-                    D_8011AA30_msetup.totalTurns = D_80119F6C_msetup[selection];
-                    D_8011AA30_msetup.unk16 = selection;
+                    msetup_playerConfig.totalTurns = msetup_turnNumTbl[selection];
+                    msetup_playerConfig.unk16 = selection;
                     selection = -1;
                 } else {
                     selection = 0;
@@ -2711,24 +2711,24 @@ s16 func_80115EE0_msetup(MsetupMenuState *state) {
             case 1:
                 cursor->work[0] = 1;
                 cursor->work[1] = 36;
-                selection = func_801157B8_msetup(model, anim, &previousButtons, selection, models, cursor);
+                selection = msetup_TurnCustomChoice(model, anim, &previousButtons, selection, models, cursor);
                 if (selection < 0) {
                     selection = 3;
                     phase--;
                 } else {
-                    D_8011AA30_msetup.totalTurns = D_80119F78_msetup[selection];
-                    D_8011AA30_msetup.unk16 = 3;
+                    msetup_playerConfig.totalTurns = msetup_turnCustomNumTbl[selection];
+                    msetup_playerConfig.unk16 = 3;
                     selection = -1;
                 }
                 cursor->work[0] = 2;
                 cursor->work[1] = 36;
                 break;
             case 2:
-                selection = func_80115A9C_msetup(model, anim, matrix, &previousButtons, selection);
+                selection = msetup_DuelTurnDialChoice(model, anim, matrix, &previousButtons, selection);
                 if (selection < 0) {
                     state->result = -1;
                 } else if (selection < 2) {
-                    D_8011AA42_msetup = selection == 0 ? 20 : 255;
+                    msetup_playerConfigTurnNum = selection == 0 ? 20 : 255;
                     selection = -1;
                 } else {
                     state->result = -1;
@@ -2738,7 +2738,7 @@ s16 func_80115EE0_msetup(MsetupMenuState *state) {
         }
         HuPrcVSleep();
     } while (selection >= 0);
-    func_8010B998_msetup();
+    msetup_WinHomeClear();
     linkedModel = models[1].model;
     Hu3DModelAttrSet(linkedModel, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DModelRotSet(linkedModel, 0, 180.0f, 0);
@@ -2755,27 +2755,27 @@ s16 func_80115EE0_msetup(MsetupMenuState *state) {
     models[0].pos.z += 1.5f;
     models[1].pos.z += 1.5f;
     HuAudFXPlay(0x2DA);
-    func_8010E8C8_msetup(&models, 2, 7, 360.0f, 400.0f, 1.5f, 0.1f, 2);
-    func_8010DDD8_msetup(cursor);
+    msetup_PanelSpinMove(&models, 2, 7, 360.0f, 400.0f, 1.5f, 0.1f, 2);
+    msetup_ArrowObjKill(cursor);
     for (i = 0; i < 2; i++) {
         Hu3DModelKill(models[i].model);
     }
     if (state->result >= 0) {
-        switch (D_8011A938_msetup) {
+        switch (msetup_setupMode) {
             case 0:
                 for (i = 0; i < 9; i++) {
-                    if (D_8011AA30_msetup.totalTurns == D_80119F78_msetup[i]) {
+                    if (msetup_playerConfig.totalTurns == msetup_turnCustomNumTbl[i]) {
                         break;
                     }
                 }
                 i = i < 9 ? i : 0;
                 break;
             case 1:
-                i = D_8011AA30_msetup.totalTurns == 255 ? 9 : 2;
+                i = msetup_playerConfig.totalTurns == 255 ? 9 : 2;
                 break;
         }
         Hu3DAnimBankSet(anim, i);
-        func_8010F320_msetup(D_80119420_msetup, 1, model, anim);
+        msetup_SummaryEntrySet(msetup_summaryProc, 1, model, anim);
     } else {
         if (anim >= 0) {
             Hu3DAnimModelKill(anim);
@@ -2785,7 +2785,7 @@ s16 func_80115EE0_msetup(MsetupMenuState *state) {
     return 0;
 }
 
-s16 func_801167B8_msetup(MsetupMenuState *state) {
+s16 msetup_DuelPlayerNumSelect(MsetupMenuState *state) {
     Array2D models;
     s16 previousButtons;
     s32 i;
@@ -2801,12 +2801,12 @@ s16 func_801167B8_msetup(MsetupMenuState *state) {
     f32 oldScale;
     s32 count;
 
-    connected = D_8011AA30_msetup.connectedCount;
+    connected = msetup_playerConfig.connectedCount;
     cursor = NULL;
     if (state->result < 0) {
-        i = D_8011AA30_msetup.humanCount;
+        i = msetup_playerConfig.humanCount;
         for (selection = 0; selection < 2; selection++) {
-            if (i == D_8011A0B8_msetup[selection]) {
+            if (i == msetup_playerNumTbl[selection]) {
                 break;
             }
         }
@@ -2819,36 +2819,36 @@ s16 func_801167B8_msetup(MsetupMenuState *state) {
         selection = state->result;
     }
     count = connected;
-    if (count < D_8011A0B8_msetup[selection]) {
+    if (count < msetup_playerNumTbl[selection]) {
         for (selection = 0; selection < 2; selection++) {
-            if (count == D_8011A0B8_msetup[selection]) {
+            if (count == msetup_playerNumTbl[selection]) {
                 break;
             }
         }
         selection = selection >= 2 ? 0 : selection;
         state->result = selection;
     }
-    func_8010B998_msetup();
+    msetup_WinHomeClear();
     angle = connected >= 2 ? 90.0f : 0.0f;
-    func_8010E32C_msetup(&models, 2, angle, 0);
+    msetup_PanelCreateEx(&models, 2, angle, 0);
     for (i = 0; i < 2; i++) {
         model = models[i].model;
-        models[i].unk1A = Hu3DAnimRead(Hu3DData[model].hmf, D_80119FDC_msetup[i], (char *)D_8011A6D8_msetup);
+        models[i].unk1A = Hu3DAnimRead(Hu3DData[model].hmf, msetup_duelPlayerNumAnimTbl[i], (char *)msetup_panelTexStr);
         Hu3DModelRemakeStatic(model);
         Hu3DAnimSpeedSet(models[i].unk1A, 0.75f);
     }
-    func_8010E4D8_msetup(models, 2);
+    msetup_PanelDynamicFree(models, 2);
     if (connected >= 2) {
-        cursor = func_8010DE38_msetup(64, 256, 72);
+        cursor = msetup_ArrowObjCreate(64, 256, 72);
     }
-    func_8010B82C_msetup(0x2403);
-    func_8010B858_msetup();
+    msetup_WinMesSet(0x2403);
+    msetup_WinMesWait();
     HuAudFXPlay(0x2D9);
-    func_8010E8C8_msetup(&models, 2, 15, 720.0f, 565.0f, 0.1f, 1.0f, 1);
+    msetup_PanelSpinMove(&models, 2, 15, 720.0f, 565.0f, 0.1f, 1.0f, 1);
     if (connected >= 2) {
         cursor->work[0] = 1;
         cursor->work[1] = 36;
-        func_8010E52C_msetup(models, D_80119F94_msetup, 2, 7, NULL, 0, 0.0f, 1.0f);
+        msetup_PanelMove(models, msetup_duelPlayerNumPanelOpenTbl, 2, 7, NULL, 0, 0.0f, 1.0f);
         i = 4;
         for (scale = 1.0f; i != 0; i--) {
             scale += 0.1f;
@@ -2872,13 +2872,13 @@ s16 func_801167B8_msetup(MsetupMenuState *state) {
     }
     oldSelection = selection;
     refresh = 1;
-    func_8010D684_msetup(D_8011A948_msetup, &previousButtons);
+    msetup_PadBtnDownGet(msetup_padNo, &previousButtons);
     while (1) {
         if (refresh) {
-            func_8010B82C_msetup(D_80119FD4_msetup[selection]);
+            msetup_WinMesSet(msetup_duelPlayerNumMesTbl[selection]);
             refresh = 0;
         }
-        buttons = func_8010D684_msetup(D_8011A948_msetup, &previousButtons);
+        buttons = msetup_PadBtnDownGet(msetup_padNo, &previousButtons);
         if (buttons & A_BUTTON) {
             HuAudFXPlay(2);
             state->result = selection;
@@ -2886,15 +2886,15 @@ s16 func_801167B8_msetup(MsetupMenuState *state) {
         }
         if (buttons & B_BUTTON) {
             HuAudFXPlay(4);
-            func_8010B82C_msetup(0x2401);
-            if (func_8010B858_msetup() == 0) {
+            msetup_WinMesSet(0x2401);
+            if (msetup_WinMesWait() == 0) {
                 state->result = -1;
                 break;
             }
             refresh = 1;
-            func_8010B82C_msetup(0x2403);
-            func_8010B858_msetup();
-            buttons = func_8010D684_msetup(D_8011A948_msetup, &previousButtons);
+            msetup_WinMesSet(0x2403);
+            msetup_WinMesWait();
+            buttons = msetup_PadBtnDownGet(msetup_padNo, &previousButtons);
         }
         if (connected >= 2) {
             if (buttons & (U_JPAD | R_JPAD)) {
@@ -2926,17 +2926,17 @@ s16 func_801167B8_msetup(MsetupMenuState *state) {
         HuPrcVSleep();
     }
     if (state->result >= 0) {
-        i = D_8011A0B8_msetup[state->result];
-        D_8011AA30_msetup.humanCount = i;
-        D_8011AA30_msetup.cpuCount = 2 - i;
-        for (i = 0; i < D_8011AA30_msetup.humanCount; i++) {
-            RepeatVibrator(D_8011AA30_msetup.controllerPorts[i], 10, 0, 10);
+        i = msetup_playerNumTbl[state->result];
+        msetup_playerConfig.humanCount = i;
+        msetup_playerConfig.cpuCount = 2 - i;
+        for (i = 0; i < msetup_playerConfig.humanCount; i++) {
+            RepeatVibrator(msetup_playerConfig.controllerPorts[i], 10, 0, 10);
         }
     }
     if (connected >= 2) {
         cursor->work[0] = 2;
         cursor->work[1] = 17;
-        func_8010E52C_msetup(models, D_80119FB4_msetup, 2, 7, NULL, 0, 0.0f, 1.0f);
+        msetup_PanelMove(models, msetup_duelPlayerNumPanelCloseTbl, 2, 7, NULL, 0, 0.0f, 1.0f);
     } else {
         angle = models[0].rot.y;
         oldScale = 180.0f / 7.0f;
@@ -2953,9 +2953,9 @@ s16 func_801167B8_msetup(MsetupMenuState *state) {
         Hu3DModelAttrSet(models[1].model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     }
     HuAudFXPlay(0x2DA);
-    func_8010E8C8_msetup(&models, 2, 7, 360.0f, 400.0f, 1.0f, 0.1f, 2);
+    msetup_PanelSpinMove(&models, 2, 7, 360.0f, 400.0f, 1.0f, 0.1f, 2);
     if (connected >= 2) {
-        func_8010DDD8_msetup(cursor);
+        msetup_ArrowObjKill(cursor);
     }
     for (i = 0; i < 2; i++) {
         Hu3DAnimModelKill(models[i].unk1A);
@@ -2964,7 +2964,7 @@ s16 func_801167B8_msetup(MsetupMenuState *state) {
     return 0;
 }
 
-s16 func_80116FE0_msetup(MsetupMenuState *state) {
+s16 msetup_DuelHandicapSelect(MsetupMenuState *state) {
     static const char nodeName[0x1C] = "sitagocoro_DEF";
     Array2D models;
     s16 previousButtons;
@@ -2984,17 +2984,17 @@ s16 func_80116FE0_msetup(MsetupMenuState *state) {
 
     state->result = 0;
     selection = 0;
-    starCounts = D_80119FE4_msetup;
+    starCounts = msetup_duelHandicapTbl;
     for (; selection < 5; selection++) {
-        if (D_8011AA30_msetup.stars[0] == starCounts[selection]) {
+        if (msetup_playerConfig.stars[0] == starCounts[selection]) {
             break;
         }
     }
     selection = selection >= 5 ? 0 : selection;
     player = 0;
-    func_8010B998_msetup();
-    func_8010E4BC_msetup(&models, 2, 0);
-    func_8010E4D8_msetup(models, 2);
+    msetup_WinHomeClear();
+    msetup_PanelCreate(&models, 2, 0);
+    msetup_PanelDynamicFree(models, 2);
     model = Hu3DModelRead(0x14000A, 0x2A9);
     motion = Hu3DAnimRead(Hu3DData[model].hmf, 0x140034, (char *)nodeName);
     Hu3DModelRemakeStatic(model);
@@ -3002,13 +3002,13 @@ s16 func_80116FE0_msetup(MsetupMenuState *state) {
     Hu3DAnimAttrSet(motion, 1, 1);
     Hu3DAnimBankSet(motion, selection);
     Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    cursor = func_8010DE38_msetup(96, 224, 72);
+    cursor = msetup_ArrowObjCreate(96, 224, 72);
     HuAudFXPlay(0x2D9);
-    func_8010E8C8_msetup(&models, 2, 15, 720.0f, 565.0f, 0.1f, 1.0f, 1);
+    msetup_PanelSpinMove(&models, 2, 15, 720.0f, 565.0f, 0.1f, 1.0f, 1);
     cursor->work[0] = 1;
     cursor->work[1] = 36;
     Hu3DModelAttrSet(models[1].model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    Hu3DModelPosSet(model, D_80119B20_msetup.x, D_80119B20_msetup.y + 565.0f, D_80119B20_msetup.z + 0.5f);
+    Hu3DModelPosSet(model, msetup_panelStartPos.x, msetup_panelStartPos.y + 565.0f, msetup_panelStartPos.z + 0.5f);
     Hu3DModelRotSet(model, 0, 180.0f, 0);
     Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     for (angle = 0; angle < 180.0f; angle += 180.0f / 7.0f) {
@@ -3020,26 +3020,26 @@ s16 func_80116FE0_msetup(MsetupMenuState *state) {
     Hu3DModelRotSet(models[0].model, 0, 180.0f, 0);
     oldSelection = selection;
     oldPlayer = -1;
-    func_8010D684_msetup(D_8011A948_msetup, &previousButtons);
+    msetup_PadBtnDownGet(msetup_padNo, &previousButtons);
     while (1) {
         if (oldPlayer != player) {
-            func_8010B968_msetup(D_8011AA30_msetup.characters[player] + 0x1C00, 0);
-            func_8010B82C_msetup(0x2413);
+            msetup_WinInsertMesSet(msetup_playerConfig.characters[player] + 0x1C00, 0);
+            msetup_WinMesSet(0x2413);
             oldPlayer = player;
         }
-        buttons = func_8010D684_msetup(D_8011A948_msetup, &previousButtons);
+        buttons = msetup_PadBtnDownGet(msetup_padNo, &previousButtons);
         if (buttons & A_BUTTON) {
             HuAudFXPlay(2);
-            D_8011AA30_msetup.stars[player] = D_80119FE4_msetup[selection];
-            D_8011A9E0_msetup[player].state = 13;
+            msetup_playerConfig.stars[player] = msetup_duelHandicapTbl[selection];
+            msetup_playerWorkTbl[player].state = 13;
             player++;
             if (player >= 2) {
                 state->result = 0;
                 break;
             }
-            i = D_8011AA30_msetup.stars[player];
+            i = msetup_playerConfig.stars[player];
             for (selection = 0; selection < 5; selection++) {
-                if (i == D_80119FE4_msetup[selection]) {
+                if (i == msetup_duelHandicapTbl[selection]) {
                     break;
                 }
             }
@@ -3051,10 +3051,10 @@ s16 func_80116FE0_msetup(MsetupMenuState *state) {
                 state->result = -1;
                 break;
             }
-            D_8011A9E0_msetup[player].state = 14;
-            i = D_8011AA30_msetup.stars[player];
+            msetup_playerWorkTbl[player].state = 14;
+            i = msetup_playerConfig.stars[player];
             for (selection = 0; selection < 5; selection++) {
-                if (i == D_80119FE4_msetup[selection]) {
+                if (i == msetup_duelHandicapTbl[selection]) {
                     break;
                 }
             }
@@ -3110,8 +3110,8 @@ s16 func_80116FE0_msetup(MsetupMenuState *state) {
     Hu3DModelRotSet(models[1].model, 0, 0, 0);
     Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     HuAudFXPlay(0x2DA);
-    func_8010E8C8_msetup(&models, 2, 7, 360.0f, 400.0f, 1.0f, 0.1f, 2);
-    func_8010DDD8_msetup(cursor);
+    msetup_PanelSpinMove(&models, 2, 7, 360.0f, 400.0f, 1.0f, 0.1f, 2);
+    msetup_ArrowObjKill(cursor);
     if (motion >= 0) {
         Hu3DAnimModelKill(motion);
     }
@@ -3124,28 +3124,28 @@ s16 func_80116FE0_msetup(MsetupMenuState *state) {
     return 0;
 }
 
-s16 func_80117818_msetup(MsetupMenuState *state) {
+s16 msetup_MenuIdle(MsetupMenuState *state) {
     return 0;
 }
 
-void func_80117820_msetup(void) {
+void msetup_MenuProc(void) {
     MsetupMenuState *state;
     s16 currentState;
 
     state = HuPrcCurrentGet()->user_data;
     for (currentState = 0; currentState < 4; currentState++) {
-        D_8011A8E0_msetup[currentState][0] = -1;
-        D_8011A8E0_msetup[currentState][1] = -1;
-        D_8011A8E0_msetup[currentState][2] = -1;
-        D_8011A8E0_msetup[currentState][3] = -1;
+        msetup_menuSlotTbl[currentState][0] = -1;
+        msetup_menuSlotTbl[currentState][1] = -1;
+        msetup_menuSlotTbl[currentState][2] = -1;
+        msetup_menuSlotTbl[currentState][3] = -1;
     }
-    func_8010E21C_msetup();
+    msetup_EffObjCreate();
     currentState = 0;
     while (1) {
         if (currentState != state->state) {
             currentState = (u16)state->state < 14 ? state->state : 0;
         }
-        state->state = D_80119FF0_msetup[currentState](state);
+        state->state = msetup_menuFuncTbl[currentState](state);
         HuPrcVSleep();
     }
 }

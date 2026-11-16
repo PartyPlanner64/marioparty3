@@ -3,54 +3,54 @@
 #include "game/mallocblock.h"
 #include "game/overlays/opening.h"
 
-void opEventInit(void) {
-    opDemoEndReset();
+void op_EventInit(void) {
+    op_DemoEndReset();
 }
 
-void opTitleCreate(void) {
-    opEventInit();
-    D_80114EA0_opening = omAddPrcObj(opTitleMain, 0x5000, 0x800, 0);
+void op_TitleCreate(void) {
+    op_EventInit();
+    op_mainProc = omAddPrcObj(op_TitleMain, 0x5000, 0x800, 0);
 }
 
-void opDemoCreate(void) {
-    opEventInit();
-    D_80114EA0_opening = omAddPrcObj(opDemoMain, 0x5000, 0x800, 0);
+void op_DemoCreate(void) {
+    op_EventInit();
+    op_mainProc = omAddPrcObj(op_DemoMain, 0x5000, 0x800, 0);
 }
 
-Process *opDemoEventCreate(void) {
+Process *op_DemoEventCreate(void) {
     Process *parentPrc = HuPrcCurrentGet();
-    Process *eventPrc = omAddPrcObj(opDemoEvent, 0x5000, 0x2000, 0);
+    Process *eventPrc = omAddPrcObj(op_DemoEvent, 0x5000, 0x2000, 0);
 
     HuPrcChildLink(parentPrc, eventPrc);
     return eventPrc;
 }
 
-void opDemoMain(void) {
+void op_DemoMain(void) {
     Process *parentPrc;
     Process *eventPrc;
 
     Hu3DBGColorSet(0, 0, 0);
-    opDemoEventSetup();
+    op_DemoEventSetup();
     parentPrc = HuPrcCurrentGet();
-    eventPrc = opDemoEventCreate();
+    eventPrc = op_DemoEventCreate();
     WipeCreateIn(11, 16);
     HuPrcSleep(16);
     while (1) {
         HuPrcVSleep();
         if (omovlevtno == 1) {
-            if (opBtnStartCheck() && _CheckFlag(50)) {
+            if (op_BtnStartCheck() && _CheckFlag(50)) {
                 WipeColorSet(255, 255, 255);
                 WipeCreateOut(11, 20);
                 HuAudSeqFadeOut(20);
                 break;
             }
-        } else if (opBtnStartCheck()) {
+        } else if (op_BtnStartCheck()) {
             WipeColorSet(255, 255, 255);
             WipeCreateOut(11, 20);
             HuAudSeqFadeOut(20);
             break;
         }
-        if (!HuPrcChildGet(parentPrc) || opDemoEndGet()) {
+        if (!HuPrcChildGet(parentPrc) || op_DemoEndGet()) {
             WipeColorSet(255, 255, 255);
             WipeCreateOut(11, 20);
             HuAudSeqFadeOut(50);
@@ -63,7 +63,7 @@ void opDemoMain(void) {
     if (HuPrcChildGet(parentPrc)) {
         omDelPrcObj(eventPrc);
     }
-    opDemoEventKill();
+    op_DemoEventKill();
     HuWinAllKill();
     omOvlKill();
     if (omovlevtno == 0) {
@@ -83,31 +83,31 @@ void opDemoMain(void) {
     }
 }
 
-Process *func_80105F68_opening(void) {
+Process *op_TitleSprCreate(void) {
     Process *parentPrc = HuPrcCurrentGet();
-    Process *sprPrc = omAddPrcObj(opTitleSprMain, 0x5000, 0x2000, 0);
+    Process *sprPrc = omAddPrcObj(op_TitleSprMain, 0x5000, 0x2000, 0);
 
     HuPrcChildLink(parentPrc, sprPrc);
     return sprPrc;
 }
 
-void opTitleMain(void) {
+void op_TitleMain(void) {
     s32 frame;
     Process *parentPrc;
     Process *sprPrc;
 
     Hu3DBGColorSet(0, 64, 64);
     frame = 0;
-    opTitleSetup();
+    op_TitleSetup();
     parentPrc = HuPrcCurrentGet();
-    sprPrc = func_80105F68_opening();
+    sprPrc = op_TitleSprCreate();
     WipeColorSet(255, 255, 255);
     WipeCreateIn(11, 16);
     HuPrcSleep(16);
     HuPrcSleep(60);
     while (1) {
         HuPrcVSleep();
-        if (opBtnStartCheck()) {
+        if (op_BtnStartCheck()) {
             WipeCreateOut(11, 20);
             HuAudSeqFadeOut(20);
             do {
@@ -116,7 +116,7 @@ void opTitleMain(void) {
             if (HuPrcChildGet(parentPrc)) {
                 omDelPrcObj(sprPrc);
             }
-            opTitleKill();
+            op_TitleKill();
             HuWinAllKill();
             omOvlKill();
             omOvlGotoEx(121, 0, 0x91);
@@ -125,7 +125,7 @@ void opTitleMain(void) {
                 HuPrcVSleep();
             }
         }
-        if (HuPrcChildGet(parentPrc) && !opDemoEndGet() && frame < 5401) {
+        if (HuPrcChildGet(parentPrc) && !op_DemoEndGet() && frame < 5401) {
             frame++;
         } else {
             WipeCreateOut(11, 20);
@@ -136,7 +136,7 @@ void opTitleMain(void) {
             if (HuPrcChildGet(parentPrc)) {
                 omDelPrcObj(sprPrc);
             }
-            opTitleKill();
+            op_TitleKill();
             HuWinAllKill();
             omOvlKill();
             omOvlGotoEx(88, 1, 0x90);
@@ -148,21 +148,21 @@ void opTitleMain(void) {
     }
 }
 
-s32 opBtnStartCheck(void) {
+s32 op_BtnStartCheck(void) {
     if (GWContErrorGet() == 1) {
         return (HuPadBtnDown[0] & START_BUTTON) != 0;
     }
     return 0;
 }
 
-void opDemoEndReset(void) {
-    D_80114EA4_opening = 0;
+void op_DemoEndReset(void) {
+    op_demoEndF = 0;
 }
 
-void opDemoEndSet(s32 value) {
-    D_80114EA4_opening = value;
+void op_DemoEndSet(s32 value) {
+    op_demoEndF = value;
 }
 
-s32 opDemoEndGet(void) {
-    return D_80114EA4_opening;
+s32 op_DemoEndGet(void) {
+    return op_demoEndF;
 }

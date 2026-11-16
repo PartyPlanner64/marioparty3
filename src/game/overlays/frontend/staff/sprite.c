@@ -1,17 +1,17 @@
 #include "staff.h"
 
-u32 D_80110580_staff[3] = { 0xFFFFFFC8, 0xFFFFFFFF, 0xC8F07109 }; /* Unreferenced. */
-s32 D_8011058C_staff[4] = { 0x16001E, 0x16001F, 0x160020, 0x160021 };
-u8 D_8011059C_staff[4] = { 6, 8, 16, 32 };
-u16 D_801105A0_staff[4] = { 0xF000, 0xF001, 0xF002, 0xF003 };
-f32 D_801105A8_staff[4] = { 6.0f, 4.0f, 2.0f, 1.0f };
-s16 D_801105B8_staff[4] = { 2, 6, 6, 0 };
-u16 D_801105C0_staff[4] = { 402, 400, 400, 0 };
-StaffPos2s D_801105C8_staff[3] = { { 160, 175 }, { 38, 185 }, { 286, 194 } };
-s32 D_801105D4_staff[3] = { 0x16001B, 0x16001C, 0x16001D };
-s32 D_801105E0_staff[2] = { 0x160022, 0x160023 };
+u32 staff_backStarPad[3] = { 0xFFFFFFC8, 0xFFFFFFFF, 0xC8F07109 }; /* Unreferenced. */
+s32 staff_backStarSprTbl[4] = { 0x16001E, 0x16001F, 0x160020, 0x160021 };
+u8 staff_backStarNumTbl[4] = { 6, 8, 16, 32 };
+u16 staff_backStarPriTbl[4] = { 0xF000, 0xF001, 0xF002, 0xF003 };
+f32 staff_backStarSpeedTbl[4] = { 6.0f, 4.0f, 2.0f, 1.0f };
+s16 staff_backSprSpeedTbl[4] = { 2, 6, 6, 0 };
+u16 staff_backSprPriTbl[4] = { 402, 400, 400, 0 };
+StaffPos2s staff_backSprPosTbl[3] = { { 160, 175 }, { 38, 185 }, { 286, 194 } };
+s32 staff_backSprTbl[3] = { 0x16001B, 0x16001C, 0x16001D };
+s32 staff_shootStarSprTbl[2] = { 0x160022, 0x160023 };
 
-UnkStaff_7 *func_80107740_staff(void) {
+UnkStaff_7 *staff_BackStarCreate(void) {
     UnkStaff_7 *work;
     UnkStaff_7 *ptr;
     Vec2f *pos;
@@ -35,20 +35,20 @@ UnkStaff_7 *func_80107740_staff(void) {
     work = HuMemAllocTag(sizeof(UnkStaff_7) * 4, TAG_OVERLAY);
     memset(work, 0, sizeof(UnkStaff_7) * 4);
     for (i = 0, ptr = work; i < 4; i++, ptr++) {
-        count = D_8011059C_staff[i];
+        count = staff_backStarNumTbl[i];
         pos = HuMemAllocTag(count * sizeof(Vec2f), TAG_OVERLAY);
         vel = HuMemAllocTag(count * sizeof(f32), TAG_OVERLAY);
         speed = HuMemAllocTag(count * sizeof(f32), TAG_OVERLAY);
         grpId = HuSprGrpCreate(count, 0);
-        animId = HuSprAnimDataRead(D_8011058C_staff[i]);
-        pri = D_801105A0_staff[i];
+        animId = HuSprAnimDataRead(staff_backStarSprTbl[i]);
+        pri = staff_backStarPriTbl[i];
         ptr->unk_00 = pos;
         ptr->unk_0C = grpId;
         ptr->unk_0E = animId;
         ptr->unk_04 = vel;
         ptr->unk_08 = speed;
         ptr->count = count;
-        baseSpeed = D_801105A8_staff[i];
+        baseSpeed = staff_backStarSpeedTbl[i];
         for (j = 0; j < count; j++, pos++, vel++, speed++) {
             HuSprTPLvlSet(grpId, j, 0x100);
             HuSprAttrReset(grpId, j, 0xFFFF);
@@ -57,14 +57,14 @@ UnkStaff_7 *func_80107740_staff(void) {
             HuSprAnimModeSet(grpId, j, HUSPR_ANIM_MODE_STOP);
             HuSprGrpMemberSet(grpId, j, animId, 0);
             HuSprPriSet(grpId, j, pri);
-            random = func_8010601C_staff();
+            random = staff_Rand();
             red = random | 0xC0;
             random >>= 7;
             green = random | 0xC0;
             random >>= 7;
             blue = random | 0xC0;
             HuSprColorSet(grpId, j, red, green, blue);
-            random = func_8010601C_staff() & 0x7FFFFFFF;
+            random = staff_Rand() & 0x7FFFFFFF;
             x = random % 320;
             random >>= 6;
             y = random % 304 - 64;
@@ -81,7 +81,7 @@ UnkStaff_7 *func_80107740_staff(void) {
     return work;
 }
 
-void func_80107A9C_staff(UnkStaff_7 *arg0) {
+void staff_BackStarKill(UnkStaff_7 *arg0) {
     s32 i;
     UnkStaff_7 *ptr;
 
@@ -95,7 +95,7 @@ void func_80107A9C_staff(UnkStaff_7 *arg0) {
     HuMemFree(arg0);
 }
 
-void func_80107B1C_staff(UnkStaff_7 *arg0, f32 arg1) {
+void staff_BackStarSpeedSet(UnkStaff_7 *arg0, f32 arg1) {
     s16 i;
     s16 j;
     s16 count;
@@ -113,7 +113,7 @@ void func_80107B1C_staff(UnkStaff_7 *arg0, f32 arg1) {
     }
 }
 
-void func_80107BA0_staff(UnkStaff_7 *arg0) {
+void staff_BackStarMove(UnkStaff_7 *arg0) {
     UnkStaff_7 *ptr;
     Vec2f *pos;
     f32 *vel;
@@ -132,7 +132,7 @@ void func_80107BA0_staff(UnkStaff_7 *arg0) {
         for (j = 0; j < count; j++, pos++, vel++) {
             pos->y += *vel;
             if (pos->y >= 240.0f) {
-                random = func_8010601C_staff() & 0x7FFFFFFF;
+                random = staff_Rand() & 0x7FFFFFFF;
                 if (i == 0) {
                     x = random % 160;
                     random >>= 5;
@@ -149,9 +149,9 @@ void func_80107BA0_staff(UnkStaff_7 *arg0) {
     }
 }
 
-const char D_80111228_staff[] = "";
+const char staff_emptyStr[] = "";
 
-void func_80107DBC_staff(UnkStaff_7 *arg0) {
+void staff_BackStarTwinkle(UnkStaff_7 *arg0) {
     UnkStaff_7 *ptr;
     u32 random;
     s16 counter;
@@ -171,7 +171,7 @@ void func_80107DBC_staff(UnkStaff_7 *arg0) {
             counter -= 4;
             if (counter < 0) {
                 counter = 31;
-                random = func_8010601C_staff();
+                random = staff_Rand();
             }
             bits = random & 0xF;
             random >>= 4;
@@ -184,7 +184,7 @@ void func_80107DBC_staff(UnkStaff_7 *arg0) {
     }
 }
 
-void func_80107EB8_staff(void) {
+void staff_BackProc(void) {
     s16 *stat = HuPrcCurrentGet()->user_data;
     UnkStaff_7 *snow;
     s16 sprIds[3];
@@ -212,9 +212,9 @@ void func_80107EB8_staff(void) {
     s16 x;
     s32 i;
 
-    snow = func_80107740_staff();
+    snow = staff_BackStarCreate();
     for (i = 0; i < 2; i++) {
-        starAnimIds[i] = HuSprAnimDataRead(D_801105E0_staff[i]);
+        starAnimIds[i] = HuSprAnimDataRead(staff_shootStarSprTbl[i]);
         starSprIds[i] = espEntry(starAnimIds[i], 0, 0);
         espColorSet(starSprIds[i], 255, 255, 255);
         espAttrSet(starSprIds[i], 0x4000);
@@ -229,11 +229,11 @@ void func_80107EB8_staff(void) {
     espPriSet(titleSpr, 0xFFF0);
     titleActive = TRUE;
     for (i = 0; i < 3; i++) {
-        animIds[i] = HuSprAnimDataRead(D_801105D4_staff[i]);
+        animIds[i] = HuSprAnimDataRead(staff_backSprTbl[i]);
         sprIds[i] = temp = espEntry(animIds[i], 0, 0);
-        espPriSet(temp, D_801105C0_staff[i]);
-        xs[i] = D_801105C8_staff[i].x;
-        ys[i] = D_801105C8_staff[i].y;
+        espPriSet(temp, staff_backSprPriTbl[i]);
+        xs[i] = staff_backSprPosTbl[i].x;
+        ys[i] = staff_backSprPosTbl[i].y;
         espPosSet(temp, xs[i], ys[i]);
     }
     moveActive = TRUE;
@@ -282,15 +282,15 @@ void func_80107EB8_staff(void) {
                 snowSpeedVel = 0.0f;
                 snowActive = FALSE;
             }
-            func_80107B1C_staff(snow, snowSpeed);
+            staff_BackStarSpeedSet(snow, snowSpeed);
         }
         if (snowActive) {
-            func_80107BA0_staff(snow);
+            staff_BackStarMove(snow);
             for (i = 0; i < 2; i++) {
                 if (--starTimers[i] == 0) {
                     espDispOn(starSprIds[i]);
-                    x = func_80106044_staff(160);
-                    x += func_80106044_staff(160);
+                    x = staff_RandMod(160);
+                    x += staff_RandMod(160);
                     starPos[i].x = x;
                     starPos[i].y = -128;
                     espPosSet(starSprIds[i], starPos[i].x, -128);
@@ -304,7 +304,7 @@ void func_80107EB8_staff(void) {
                 }
             }
         }
-        func_80107DBC_staff(snow);
+        staff_BackStarTwinkle(snow);
         if (titleActive) {
             if (titleAlphaVel != 0.0f) {
                 titleAlpha += titleAlphaVel;
@@ -331,7 +331,7 @@ void func_80107EB8_staff(void) {
                 temp = 3;
                 for (i = 0; i < 3; i++) {
                     if (ys[i] < 304.0f) {
-                        ys[i] += moveRate * D_801105B8_staff[i];
+                        ys[i] += moveRate * staff_backSprSpeedTbl[i];
                         espPosSet(sprIds[i], xs[i], ys[i]);
                     } else {
                         temp--;
@@ -350,7 +350,7 @@ void func_80107EB8_staff(void) {
         }
         HuPrcVSleep();
     }
-    func_80107A9C_staff(snow);
+    staff_BackStarKill(snow);
     for (i = 0; i < 2; i++) {
         espKill(starSprIds[i]);
         HuSprAnimKill(starAnimIds[i]);

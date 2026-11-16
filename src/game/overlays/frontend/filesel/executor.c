@@ -1,12 +1,12 @@
 #include "common.h"
 
-void func_80105BC0_filesel(void);
+void filesel_ObjectSetup(void);
 
-OvlEntrypoint D_801127A0_filesel[] = {
-    { 0, func_80105BC0_filesel },
+OvlEntrypoint filesel_ovlEntryTbl[] = {
+    { 0, filesel_ObjectSetup },
     { -1, NULL },
 };
 
-void func_801059A0_filesel(void) {
-    ovlEventCall(D_801127A0_filesel, omovlevtno);
+void filesel_Executor(void) {
+    ovlEventCall(filesel_ovlEntryTbl, omovlevtno);
 }

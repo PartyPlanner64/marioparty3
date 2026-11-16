@@ -3,101 +3,101 @@
 #include "mgmode.h"
 
 // Misaligned s8 array after an s16 (see undefined_syms.txt for aliases).
-typedef struct MgmodeBssB3E4 {
-    /* 0x00 */ s16 unk00;   // D_8011B3E4_mgmode
-    /* 0x02 */ s8 unk02[4]; // D_8011B3E6_mgmode
-} MgmodeBssB3E4;            // sizeof 0x06
+typedef struct MgmodeTeamWork {
+    /* 0x00 */ s16 unk00;   // mgmode_teamWinId
+    /* 0x02 */ s8 unk02[4]; // mgmode_teamOrderTbl
+} MgmodeTeamWork;            // sizeof 0x06
 
 // Misaligned s16 arrays after a u8 (see undefined_syms.txt for aliases).
-typedef struct MgmodeBssB434 {
-    /* 0x00 */ u8 unk00;     // D_8011B434_mgmode
-    /* 0x02 */ s16 unk02[4]; // D_8011B436_mgmode
-    /* 0x0A */ s16 unk0A[4]; // D_8011B43E_mgmode
-    /* 0x12 */ s16 unk12[4]; // D_8011B446_mgmode
-} MgmodeBssB434;             // sizeof 0x1A
+typedef struct MgmodeStarWork {
+    /* 0x00 */ u8 unk00;     // mgmode_starPlayerNum
+    /* 0x02 */ s16 unk02[4]; // mgmode_battlePlayerAnimTbl
+    /* 0x0A */ s16 unk0A[4]; // mgmode_battlePlayerChrTbl
+    /* 0x12 */ s16 unk12[4]; // mgmode_battleConfettiTbl
+} MgmodeStarWork;             // sizeof 0x1A
 
 /* The overlay's BSS is shared by all of its code units. Keep allocation order here. */
-s16 D_8011A700_mgmode BSS;
-u8 D_8011A704_mgmode[4] BSS; /* Unreferenced. */
-char D_8011A708_mgmode[0x100] BSS;
-HuMtx4F D_8011A808_mgmode BSS;
-HuMtx4F D_8011A848_mgmode BSS;
-HuMtx4F D_8011A888_mgmode BSS;
-u8 D_8011A8C8_mgmode[8][20] BSS;
-u8 D_8011A968_mgmode[8] BSS;
-u8 D_8011A970_mgmode[8][20] BSS;
-u8 D_8011AA10_mgmode[8] BSS;
-MgmodeSpaceCoord D_8011AA18_mgmode[26] BSS;
-Vec D_8011AA80_mgmode[8][25] BSS;
-u16 *D_8011B3E0_mgmode BSS;
-MgmodeBssB3E4 mgmodeBssB3E4 BSS;
-MgmodeEsprite *D_8011B3EC_mgmode BSS;
+s16 mgmode_roomSpotNo BSS;
+u8 mgmode_roomSpotNoPad[4] BSS; /* Unreferenced. */
+char mgmode_strBuf[0x100] BSS;
+HuMtx4F mgmode_roomMonitorMtx BSS;
+HuMtx4F mgmode_roomBattleDoorMtx BSS;
+HuMtx4F mgmode_roomGambleDoorMtx BSS;
+u8 mgmode_markMgTbl[8][20] BSS;
+u8 mgmode_markMgNumTbl[8] BSS;
+u8 mgmode_plainMgTbl[8][20] BSS;
+u8 mgmode_plainMgNumTbl[8] BSS;
+MgmodeSpaceCoord mgmode_bookCursorPosTbl[26] BSS;
+Vec mgmode_bookPosTbl[8][25] BSS;
+u16 *mgmode_teamPosXTbl BSS;
+MgmodeTeamWork mgmode_teamWork BSS;
+MgmodeEsprite *mgmode_teamSprTbl BSS;
 
-HuMtx4F D_8011B3F0_mgmode BSS;
-u8 D_8011B430_mgmode[4] BSS;
-MgmodeBssB434 mgmodeBssB434 BSS;
-MgmodeEsprite *D_8011B450_mgmode BSS;
-s16 D_8011B454_mgmode BSS;
-s16 D_8011B458_mgmode[8] BSS;
-MgmodeSpaceCoord D_8011B468_mgmode[6] BSS;
-MgmodeEsprite *D_8011B480_mgmode BSS;
-s16 D_8011B484_mgmode BSS;
-u16 D_8011B488_mgmode[28] BSS;
-s16 D_8011B4C0_mgmode BSS;
-u8 D_8011B4C4_mgmode[12] BSS; /* Unreferenced. */
+HuMtx4F mgmode_battleDoorMtx BSS;
+u8 mgmode_starPlayerTbl[4] BSS;
+MgmodeStarWork mgmode_starWork BSS;
+MgmodeEsprite *mgmode_battleMenuSprTbl BSS;
+s16 mgmode_battleTypeNum BSS;
+s16 mgmode_battleTypeTbl[8] BSS;
+MgmodeSpaceCoord mgmode_battleTypeCursorTbl[6] BSS;
+MgmodeEsprite *mgmode_battleBoardSprTbl BSS;
+s16 mgmode_battleStarAnim BSS;
+u16 mgmode_battleStarSprTbl[28] BSS;
+s16 mgmode_battleStarSprNum BSS;
+u8 mgmode_battleStarSprNumPad[12] BSS; /* Unreferenced. */
 
-HuMtx4F D_8011B4D0_mgmode BSS;
-u8 D_8011B510_mgmode[256] BSS;
-u8 *D_8011B610_mgmode[3] BSS;
-s16 D_8011B61C_mgmode BSS;
-s16 D_8011B61E_mgmode BSS;
-s16 D_8011B620_mgmode BSS;
-s16 D_8011B622_mgmode BSS;
-s16 D_8011B624_mgmode BSS;
-u8 D_8011B628_mgmode[8] BSS; /* Unreferenced. */
+HuMtx4F mgmode_gambleDoorMtx BSS;
+u8 mgmode_gambleTitleStr[256] BSS;
+u8 *mgmode_spotBufTbl[3] BSS;
+s16 mgmode_spotAnim BSS;
+s16 mgmode_spotGrp BSS;
+s16 mgmode_gamblePlayerAnim BSS;
+s16 mgmode_gamblePlayerChr BSS;
+s16 mgmode_gambleConfettiNo BSS;
+u8 mgmode_gambleConfettiNoPad[8] BSS; /* Unreferenced. */
 
-u8 D_8011B630_mgmode[0x20] BSS;
-s16 D_8011B650_mgmode BSS;
-s16 D_8011B652_mgmode BSS;
-u16 *D_8011B654_mgmode[3] BSS;
-void *D_8011B660_mgmode BSS;
-s16 D_8011B664_mgmode BSS;
-s16 D_8011B666_mgmode BSS;
-s16 D_8011B668_mgmode BSS;
-s16 D_8011B66A_mgmode BSS;
-s16 D_8011B66C_mgmode BSS;
-s16 D_8011B66E_mgmode BSS;
-MgmodeSpaceCoord *D_8011B670_mgmode BSS;
-u8 D_8011B674_mgmode[4] BSS; /* Unreferenced. */
-s16 D_8011B678_mgmode[4][4] BSS;
-s16 D_8011B698_mgmode[4] BSS;
+u8 mgmode_cursorDisableTbl[0x20] BSS;
+s16 mgmode_mgPicSpr BSS;
+s16 mgmode_mgPicBufNo BSS;
+u16 *mgmode_mgPicBufTbl[3] BSS;
+void *mgmode_mgPicOrigData BSS;
+s16 mgmode_cursorX BSS;
+s16 mgmode_cursorY BSS;
+s16 mgmode_cursorMoveTime BSS;
+s16 mgmode_cursorSel BSS;
+s16 mgmode_cursorSpr BSS;
+s16 mgmode_cursorDispF BSS;
+MgmodeSpaceCoord *mgmode_cursorPosTbl BSS;
+u8 mgmode_cursorPosTblPad[4] BSS; /* Unreferenced. */
+s16 mgmode_confettiMdlTbl[4][4] BSS;
+s16 mgmode_confettiCntTbl[4] BSS;
 
-s16 D_8011B6A0_mgmode BSS;
-f32 D_8011B6A4_mgmode BSS;
-s16 D_8011B6A8_mgmode BSS;
-u8 D_8011B6AC_mgmode[4] BSS; /* Unreferenced. */
-u8 D_8011B6B0_mgmode[8][25] BSS;
-u8 D_8011B778_mgmode BSS;
-s16 D_8011B77A_mgmode BSS;
-u8 D_8011B77C_mgmode[4] BSS; /* Unreferenced. */
-s16 D_8011B780_mgmode[64] BSS;
-s16 D_8011B800_mgmode BSS;
-f32 D_8011B804_mgmode BSS;
-s16 D_8011B808_mgmode BSS;
-s16 D_8011B80A_mgmode BSS;
-u8 D_8011B80C_mgmode[4] BSS; /* Unreferenced. */
-GAMEMES D_8011B810_mgmode BSS;
-s16 D_8011B884_mgmode BSS;
-f32 D_8011B888_mgmode BSS;
-Vec D_8011B88C_mgmode BSS;
-Vec D_8011B898_mgmode BSS;
-u8 D_8011B8A4_mgmode BSS;
-s16 D_8011B8A8_mgmode[64] BSS;
-s16 D_8011B928_mgmode[8] BSS;
-f32 D_8011B938_mgmode BSS;
-u8 D_8011B93C_mgmode[4] BSS; /* Unreferenced. */
-s16 D_8011B940_mgmode[8] BSS;
-s16 D_8011B950_mgmode BSS;
-ModeCameraPreset *D_8011B954_mgmode BSS;
-u8 D_8011B958_mgmode BSS;
-s16 D_8011B95A_mgmode BSS;
+s16 mgmode_menuWinId BSS;
+f32 mgmode_cameraFov BSS;
+s16 mgmode_winId BSS;
+u8 mgmode_winIdPad[4] BSS; /* Unreferenced. */
+u8 mgmode_typeMgTbl[8][25] BSS;
+u8 mgmode_battleOpenF BSS;
+s16 mgmode_mgNum BSS;
+u8 mgmode_mgNumPad[4] BSS; /* Unreferenced. */
+s16 mgmode_motTbl[64] BSS;
+s16 mgmode_playerNo BSS;
+f32 mgmode_cameraNear BSS;
+s16 mgmode_padNo BSS;
+s16 mgmode_mgUnlockNum BSS;
+u8 mgmode_mgUnlockNumPad[4] BSS; /* Unreferenced. */
+GAMEMES mgmode_gambleTitleMes BSS;
+s16 mgmode_zClearF BSS;
+f32 mgmode_cameraFar BSS;
+Vec mgmode_cameraCenter BSS;
+Vec mgmode_cameraRot BSS;
+u8 mgmode_gambleOpenF BSS;
+s16 mgmode_mdlTbl[64] BSS;
+s16 mgmode_typeUnlockNumTbl[8] BSS;
+f32 mgmode_cameraZoom BSS;
+u8 mgmode_cameraZoomPad[4] BSS; /* Unreferenced. */
+s16 mgmode_typeMgNumTbl[8] BSS;
+s16 mgmode_exitEvtNo BSS;
+ModeCameraPreset *mgmode_cameraPresetTbl BSS;
+u8 mgmode_cameraPresetNo BSS;
+s16 mgmode_exitOvlNo BSS;

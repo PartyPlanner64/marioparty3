@@ -6,29 +6,29 @@
 #include "game/overlays/party/common/player.h"
 #include "mgresultbattle.h"
 
-void func_80105E0C_mgresultbattle(void);
-void func_80105EF4_mgresultbattle(void);
-void func_801060A4_mgresultbattle(void);
-void func_80106660_mgresultbattle(void);
-void func_80105CAC_mgresultbattle(omObjData *);
-void func_80105E64_mgresultbattle(omObjData *);
-void func_80105F50_mgresultbattle(void);
-void func_80105F78_mgresultbattle(Gfx **, s32, s32);
-void func_801069FC_mgresultbattle(omObjData *);
-void func_80106908_mgresultbattle(void);
-void func_80106910_mgresultbattle(omObjData *obj);
+void mgresultbattle_CameraInit(void);
+void mgresultbattle_BackInit(void);
+void mgresultbattle_CoinCalc(void);
+void mgresultbattle_PlayerProc(void);
+void mgresultbattle_MainObjMain(omObjData *);
+void mgresultbattle_ExitObjMain(omObjData *);
+void mgresultbattle_BackDimCreate(void);
+void mgresultbattle_BackDimDraw(Gfx **, s32, s32);
+void mgresultbattle_PlayerReactWait(omObjData *);
+void mgresultbattle_PlayerDestroy(void);
+void mgresultbattle_PlayerIdle(omObjData *obj);
 
 extern s32 omCharModelNoTbl[][6];
-extern const s32 D_80108908_mgresultbattle[];
-extern const s8 D_801089A0_mgresultbattle[];
-extern const f32 D_80108920_mgresultbattle[][4];
+extern const s32 mgresultbattle_boardBackTbl[];
+extern const s8 mgresultbattle_coinShareDivTbl[];
+extern const f32 mgresultbattle_coinShareTbl[][4];
 extern u16 mgBattleCoinPot;
 
-s8 D_801088D0_mgresultbattle = 0;
-s32 D_801088D4_mgresultbattle = 0;
-s8 D_801088D8_mgresultbattle = 0;
+s8 mgresultbattle_mainState = 0;
+s32 mgresultbattle_mainTimer = 0;
+s8 mgresultbattle_exitWipeF = 0;
 
-void func_801059A0_mgresultbattle(void) {
+void mgresultbattle_ObjectSetup(void) {
     s16 var_a0_2;
     s16 var_a1;
     s16 i;
@@ -41,7 +41,7 @@ void func_801059A0_mgresultbattle(void) {
             if (i != GwPlayer[j].group) {
                 continue;
             }
-            D_80108F8C_mgresultbattle[var_a1] = j;
+            mgresultbattle_playerOrderTbl[var_a1] = j;
             var_a1++;
 
             if (var_a1 >= 4) {
@@ -74,39 +74,39 @@ void func_801059A0_mgresultbattle(void) {
         omOvlReturnEx(1);
         return;
     }
-    func_801060A4_mgresultbattle();
-    omAddPrcObj(func_80108130_mgresultbattle, 0x1001, 0x2000, 0);
-    omAddPrcObj(func_80107400_mgresultbattle, 0x1001, 0x2000, 0);
-    omAddPrcObj(func_80107D10_mgresultbattle, 0x1001, 0x2000, 0);
-    omAddPrcObj(func_80106660_mgresultbattle, 0x1001, 0x2000, 0);
-    omAddPrcObj(func_80106BA0_mgresultbattle, 0x1001, 0x2000, 0);
-    omAddObj(0, 0, 0, -1, func_80105CAC_mgresultbattle);
-    omAddObj(0, 0, 0, -1, func_80105E64_mgresultbattle);
-    func_80105EF4_mgresultbattle();
-    func_80105E0C_mgresultbattle();
+    mgresultbattle_CoinCalc();
+    omAddPrcObj(mgresultbattle_CoinNumProc, 0x1001, 0x2000, 0);
+    omAddPrcObj(mgresultbattle_HostProc, 0x1001, 0x2000, 0);
+    omAddPrcObj(mgresultbattle_PodiumProc, 0x1001, 0x2000, 0);
+    omAddPrcObj(mgresultbattle_PlayerProc, 0x1001, 0x2000, 0);
+    omAddPrcObj(mgresultbattle_CoinProc, 0x1001, 0x2000, 0);
+    omAddObj(0, 0, 0, -1, mgresultbattle_MainObjMain);
+    omAddObj(0, 0, 0, -1, mgresultbattle_ExitObjMain);
+    mgresultbattle_BackInit();
+    mgresultbattle_CameraInit();
     WipeCreateIn(WIPE_TYPE_PREV, 0x10);
 }
 
-void func_80105CAC_mgresultbattle(omObjData *obj) {
+void mgresultbattle_MainObjMain(omObjData *obj) {
     s32 state;
     s32 i;
     s32 coins;
     s32 newCoins;
 
-    state = D_801088D0_mgresultbattle;
+    state = mgresultbattle_mainState;
     switch (state) {
         case 0:
             HuAudSeqPlay(0x15);
-            D_801088D4_mgresultbattle = 0;
+            mgresultbattle_mainTimer = 0;
             state++;
             break;
         case 1:
             state++;
             break;
         case 2:
-            if (D_801088D4_mgresultbattle++ >= 6) {
-                func_801075FC_mgresultbattle();
-                D_801088D4_mgresultbattle = 0;
+            if (mgresultbattle_mainTimer++ >= 6) {
+                mgresultbattle_HostFlyStart();
+                mgresultbattle_mainTimer = 0;
                 state++;
             }
             break;
@@ -135,10 +135,10 @@ void func_80105CAC_mgresultbattle(omObjData *obj) {
             }
             break;
     }
-    D_801088D0_mgresultbattle = state;
+    mgresultbattle_mainState = state;
 }
 
-void func_80105E0C_mgresultbattle(void) {
+void mgresultbattle_CameraInit(void) {
     CZoom = 2300.0f;
     CRot.x = 0.0f;
     CRot.y = 0.0f;
@@ -148,11 +148,11 @@ void func_80105E0C_mgresultbattle(void) {
     Center.z = -460.0f;
 }
 
-void func_80105E64_mgresultbattle(omObjData *obj) {
+void mgresultbattle_ExitObjMain(omObjData *obj) {
     if (omSysExitReq == 1) {
-        if (D_801088D8_mgresultbattle == 0) {
+        if (mgresultbattle_exitWipeF == 0) {
             WipeCreateOut(WIPE_TYPE_NORMAL, 20);
-            D_801088D8_mgresultbattle = 1;
+            mgresultbattle_exitWipeF = 1;
             return;
         }
         if (WipeStatGet() == 0) {
@@ -166,24 +166,24 @@ void func_80105E64_mgresultbattle(omObjData *obj) {
     }
 }
 
-void func_80105EF4_mgresultbattle(void) {
+void mgresultbattle_BackInit(void) {
     GW_SYSTEM *system = &GwSystem;
 
     MBBackArcInit((u32)hvq_data_ROM_START);
 
     if (!(system->playMode & 2)) {
-        MBBackCreate(D_80108908_mgresultbattle[system->current_board_index], 0);
+        MBBackCreate(mgresultbattle_boardBackTbl[system->current_board_index], 0);
     } else {
         MBBackCreate(0x17, 0);
     }
-    func_80105F50_mgresultbattle();
+    mgresultbattle_BackDimCreate();
 }
 
-void func_80105F50_mgresultbattle(void) {
-    Hu3DHookFuncCreate(0, func_80105F78_mgresultbattle, 0);
+void mgresultbattle_BackDimCreate(void) {
+    Hu3DHookFuncCreate(0, mgresultbattle_BackDimDraw, 0);
 }
 
-void func_80105F78_mgresultbattle(Gfx **gfx, s32 arg1, s32 arg2) {
+void mgresultbattle_BackDimDraw(Gfx **gfx, s32 arg1, s32 arg2) {
     Gfx *gdl = *gfx;
 
     gDPPipeSync(gdl++);
@@ -201,7 +201,7 @@ void func_80105F78_mgresultbattle(Gfx **gfx, s32 arg1, s32 arg2) {
     *gfx = gdl;
 }
 
-void func_801060A4_mgresultbattle(void) {
+void mgresultbattle_CoinCalc(void) {
     s32 order[4];
     s32 ranks[4];
     s8 rankCounts[4];
@@ -217,7 +217,7 @@ void func_801060A4_mgresultbattle(void) {
         j += (GwPlayer[i].bonusCoin >= 3);
     }
     if (j >= 4) {
-        D_80108F70_mgresultbattle = 0;
+        mgresultbattle_coinRest = 0;
         for (i = 0; i < 4; i++) {
             GwPlayer[i].gameCoin = 0;
             GwPlayer[i].coin += GwPlayer[i].checkCoin;
@@ -268,47 +268,47 @@ void func_801060A4_mgresultbattle(void) {
 
     total = 0;
     for (i = 0; i < 4; i++) {
-        if (D_801089A0_mgresultbattle[type] == 0) {
-            GwPlayer[i].gameCoin = mgBattleCoinPot * D_80108920_mgresultbattle[type][GwPlayer[i].bonusCoin];
-        } else if (D_80108920_mgresultbattle[type][GwPlayer[i].bonusCoin] != 0.0f) {
-            GwPlayer[i].gameCoin = mgBattleCoinPot / D_80108920_mgresultbattle[type][GwPlayer[i].bonusCoin];
+        if (mgresultbattle_coinShareDivTbl[type] == 0) {
+            GwPlayer[i].gameCoin = mgBattleCoinPot * mgresultbattle_coinShareTbl[type][GwPlayer[i].bonusCoin];
+        } else if (mgresultbattle_coinShareTbl[type][GwPlayer[i].bonusCoin] != 0.0f) {
+            GwPlayer[i].gameCoin = mgBattleCoinPot / mgresultbattle_coinShareTbl[type][GwPlayer[i].bonusCoin];
         } else {
             GwPlayer[i].gameCoin = 0;
         }
         total += GwPlayer[i].gameCoin;
     }
-    D_80108F70_mgresultbattle = mgBattleCoinPot - total;
+    mgresultbattle_coinRest = mgBattleCoinPot - total;
 
     switch (type) {
         case 4:
-            if (D_80108F70_mgresultbattle == 2) {
+            if (mgresultbattle_coinRest == 2) {
                 for (i = 0; i < 4; i++) {
                     if (GwPlayer[i].bonusCoin == 1) {
                         GwPlayer[i].gameCoin += 1;
                     }
                 }
-                D_80108F70_mgresultbattle = 0;
+                mgresultbattle_coinRest = 0;
             }
             break;
         case 5:
-            if (D_80108F70_mgresultbattle == 3) {
+            if (mgresultbattle_coinRest == 3) {
                 for (i = 0; i < 4; i++) {
                     if (GwPlayer[i].bonusCoin == 1) {
                         GwPlayer[i].gameCoin += 1;
                     }
                 }
-                D_80108F70_mgresultbattle = 0;
+                mgresultbattle_coinRest = 0;
             }
             break;
         case 6:
-            if (D_80108F70_mgresultbattle == 2) {
+            if (mgresultbattle_coinRest == 2) {
                 for (i = 0; i < 4; i++) {
                     if (GwPlayer[i].bonusCoin == 0) {
                         GwPlayer[i].gameCoin += 2;
                         break;
                     }
                 }
-                D_80108F70_mgresultbattle = 0;
+                mgresultbattle_coinRest = 0;
             }
             break;
     }
@@ -316,26 +316,26 @@ void func_801060A4_mgresultbattle(void) {
     count = 0;
     for (i = 0; i < 4; i++) {
         for (j = 0; j < 4; j++) {
-            player = D_80108F8C_mgresultbattle[j];
+            player = mgresultbattle_playerOrderTbl[j];
             if (i == GwPlayer[player].bonusCoin) {
                 order[count++] = player;
             }
         }
     }
     for (i = 0; i < 4; i++) {
-        D_80108F8C_mgresultbattle[i] = order[i];
+        mgresultbattle_playerOrderTbl[i] = order[i];
     }
 }
 
-void func_80106660_mgresultbattle(void) {
+void mgresultbattle_PlayerProc(void) {
     omObjData *obj;
     s32 i;
     s32 chr;
 
     for (i = 0; i < 4; i++) {
         obj = omAddObj(0x14, 4, 8, -1, NULL);
-        D_80108F50_mgresultbattle[i].obj = obj;
-        chr = GwPlayer[D_80108F8C_mgresultbattle[i]].chr;
+        mgresultbattle_playerWorkTbl[i].obj = obj;
+        chr = GwPlayer[mgresultbattle_playerOrderTbl[i]].chr;
 
         obj->model[1] = Hu3DModelRead(omCharModelNoTbl[chr][0] | omCharModelNoTbl[chr][1], 0x2B9);
         Hu3DMotionAttrSet(obj->model[1], 2, 2);
@@ -348,52 +348,52 @@ void func_80106660_mgresultbattle(void) {
         omObjMotionRead(obj, 3, CharMotionDataNumGet(chr, 0x25));
         Hu3DMotionModelSet(obj->model[1], obj->motion[0]);
         Hu3DMotionAttrSet(obj->model[1], 2, 2);
-        Hu3DModelPosSet(obj->model[1], D_801089D0_mgresultbattle[i].x, D_801089D0_mgresultbattle[i].y,
-                        D_801089D0_mgresultbattle[i].z);
-        Hu3DModelPosSet(obj->model[2], D_801089D0_mgresultbattle[i].x, D_801089D0_mgresultbattle[i].y,
-                        D_801089D0_mgresultbattle[i].z);
+        Hu3DModelPosSet(obj->model[1], mgresultbattle_playerPosTbl[i].x, mgresultbattle_playerPosTbl[i].y,
+                        mgresultbattle_playerPosTbl[i].z);
+        Hu3DModelPosSet(obj->model[2], mgresultbattle_playerPosTbl[i].x, mgresultbattle_playerPosTbl[i].y,
+                        mgresultbattle_playerPosTbl[i].z);
 
         obj->trans.x = 0.0f;
         obj->trans.y = 0.0f;
         obj->trans.z = 0.0f;
         Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
-        omPrcSetDestructor(NULL, func_80106908_mgresultbattle);
-        D_80108F50_mgresultbattle[i].func = func_80106910_mgresultbattle;
+        omPrcSetDestructor(NULL, mgresultbattle_PlayerDestroy);
+        mgresultbattle_playerWorkTbl[i].func = mgresultbattle_PlayerIdle;
     }
 
     while (TRUE) {
         for (i = 0; i < 4; i++) {
-            D_80108F50_mgresultbattle[i].func(obj);
+            mgresultbattle_playerWorkTbl[i].func(obj);
             HuPrcVSleep();
         }
     }
 }
 
-void func_80106908_mgresultbattle(void) {
+void mgresultbattle_PlayerDestroy(void) {
 }
 
-void func_80106910_mgresultbattle(omObjData *obj) {
+void mgresultbattle_PlayerIdle(omObjData *obj) {
 }
 
-void func_80106918_mgresultbattle(void) {
+void mgresultbattle_PlayerReactStart(void) {
     omObjData *obj;
     s32 motion;
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        obj = D_80108F50_mgresultbattle[i].obj;
-        if (GwPlayer[D_80108F8C_mgresultbattle[i]].gameCoin > 0) {
+        obj = mgresultbattle_playerWorkTbl[i].obj;
+        if (GwPlayer[mgresultbattle_playerOrderTbl[i]].gameCoin > 0) {
             motion = 1;
-            PlayerFXPlay(0x274, D_80108F8C_mgresultbattle[i]);
+            PlayerFXPlay(0x274, mgresultbattle_playerOrderTbl[i]);
         } else {
             motion = 2;
         }
         Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[motion]].motId, 0, 0x14, 0);
     }
-    D_80108F50_mgresultbattle[0].func = func_801069FC_mgresultbattle;
+    mgresultbattle_playerWorkTbl[0].func = mgresultbattle_PlayerReactWait;
 }
 
-void func_801069FC_mgresultbattle(omObjData *obj) {
+void mgresultbattle_PlayerReactWait(omObjData *obj) {
     s32 pressed;
     s32 i;
     s32 j;
@@ -417,17 +417,17 @@ void func_801069FC_mgresultbattle(omObjData *obj) {
                 }
                 HuPrcVSleep();
             }
-            D_801088D0_mgresultbattle = 4;
+            mgresultbattle_mainState = 4;
             break;
         }
         HuPrcVSleep();
     }
-    D_80108F50_mgresultbattle[0].func = func_80106910_mgresultbattle;
+    mgresultbattle_playerWorkTbl[0].func = mgresultbattle_PlayerIdle;
 }
 
-const s32 D_80108908_mgresultbattle[] = { 4, 7, 10, 13, 16, 19 };
+const s32 mgresultbattle_boardBackTbl[] = { 4, 7, 10, 13, 16, 19 };
 
-const f32 D_80108920_mgresultbattle[][4] = {
+const f32 mgresultbattle_coinShareTbl[][4] = {
     { 0.7f, 0.3f, 0.0f, 0.0f },
     { 0.5f, 0.0f, 0.0f, 0.0f },
     { 0.5f, 0.0f, 0.0f, 0.0f },

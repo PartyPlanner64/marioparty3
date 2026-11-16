@@ -4,7 +4,7 @@
 #include "game/mallocblock.h"
 
 
-void func_80108AF0_inst(s16 model, void *imageHeader, void *imageData, u8 *alpha) {
+void inst_PicLoad(s16 model, void *imageHeader, void *imageData, u8 *alpha) {
     u16 *decoded;
     u8 *work;
     u8(*pixels)[4];

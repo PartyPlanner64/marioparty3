@@ -2,64 +2,64 @@
 #include "inst.h"
 
 extern u16 mgBattleCoinPot;
-extern omObjData *D_8010DCA0_inst;
-extern s32 D_8010D5B4_inst;
-extern s32 D_8010D5B8_inst;
-extern s16 D_8010D5BA_inst;
-extern u16 D_8010DCC0_inst[2];
-extern u16 D_8010DCC4_inst[3];
-extern s8 D_8010D411_inst;
-extern s8 D_8010D40B_inst;
-extern s8 D_8010D5B1_inst;
-extern s8 D_8010DCD4_inst;
-extern s32 D_8010DCCC_inst;
-extern const MinigameTable *D_8010DCD0_inst;
-extern s8 D_8010D400_inst[4];
-extern s8 D_8010D406_inst;
-extern s8 D_8010D408_inst;
-extern s8 D_8010D409_inst;
-extern s8 D_8010D40A_inst;
-extern s32 D_8010D440_inst;
-extern s8 D_8010D5B0_inst;
-extern void (*D_8010DCA4_inst)(s32);
-extern UnkInstWin D_8010DCA8_inst;
-extern GAMEMES D_8010DCD8_inst;
-extern GAMEMES D_8010DD50_inst;
+extern omObjData *inst_winObj;
+extern s32 inst_titleInCnt;
+extern s32 inst_titleY;
+extern s16 inst_titleYHalf;
+extern u16 inst_titleSprTbl[2];
+extern u16 inst_coinPotDigitSprTbl[3];
+extern s8 inst_hostNo;
+extern s8 inst_mgNo;
+extern s8 inst_practiceF;
+extern s8 inst_winPage;
+extern s32 inst_winMes;
+extern const MinigameTable *inst_mgData;
+extern s8 inst_playerOrderTbl[4];
+extern s8 inst_practiceStartF;
+extern s8 inst_introSkipF;
+extern s8 inst_startF;
+extern s8 inst_mgType;
+extern s32 inst_winOpenF;
+extern s8 inst_winStartF;
+extern void (*inst_winFunc)(s32);
+extern UnkInstWin inst_win;
+extern GAMEMES inst_titleMes;
+extern GAMEMES inst_practiceMes;
 
-const InstSpritePos D_8010DAF8_inst[3] = {{0, 95}, {0, 105}, {0, 115}};
-const s16 D_8010DB04_inst[2][3] = {
+const InstSpritePos inst_coinPotDigitPosTbl[3] = {{0, 95}, {0, 105}, {0, 115}};
+const s16 inst_practiceMesTbl[2][3] = {
     {0x3900, 0x3901, 0x3902},
     {0x3908, 0x3909, 0x390A},
 };
-const s16 D_8010DB10_inst[2][3] = {
+const s16 inst_practiceVsMesTbl[2][3] = {
     {0x3910, 0x3912, 0x3914},
     {0x390C, 0x390D, 0x390E},
 };
-const s16 D_8010DB1C_inst[] = {0x3904, 0x3905, 0x3906, 0x0000};
-const s16 D_8010DB24_inst[2][3] = {
+const s16 inst_practiceAltMesTbl[] = {0x3904, 0x3905, 0x3906, 0x0000};
+const s16 inst_practiceSpecialMesTbl[2][3] = {
     {0x3803, 0x3804, 0x3805},
     {0x380A, 0x380B, 0x380C},
 };
-const s16 D_8010DB30_inst[] = {0x3811, 0x3812, 0x3813, 0x0000};
+const s16 inst_practiceOmakeMesTbl[] = {0x3811, 0x3812, 0x3813, 0x0000};
 
 
-void func_8010CDE4_inst(const char *, s32, s32);
-void func_8010CF14_inst(void);
-void func_8010CFF4_inst(void);
-void func_8010CC14_inst(void);
-void func_8010C8B4_inst(void);
-void func_8010BE28_inst(void);
+void inst_TitleCreate(const char *, s32, s32);
+void inst_PracticeLabelCreate(void);
+void inst_PracticeLabelDispOff(void);
+void inst_WinPlayerSet(void);
+void inst_WinDestroy(void);
+void inst_WinStartWait(void);
 
-void func_8010C124_inst(s32);
-void func_8010C5C4_inst(s32 arg0);
-void func_8010CBB8_inst(s32);
-void func_8010D1D4_inst(void);
-u16 func_8010C8E0_inst(s32);
-void func_8010D044_inst(void);
-void func_8010CED0_inst(s32, s32);
-void func_8010BE78_inst(s32 arg0); /* extern */
+void inst_WinPageMain(s32);
+void inst_WinPracticeMain(s32 arg0);
+void inst_WinPageIconSet(s32);
+void inst_PracticeOn(void);
+u16 inst_PadBtnDownGet(s32);
+void inst_PracticeOff(void);
+void inst_TitlePosSet(s32, s32);
+void inst_WinTitleIn(s32 arg0); /* extern */
 
-void func_8010B990_inst(void) {
+void inst_WinMain(void) {
     s32 digits[3];
     s32 i;
     s32 score;
@@ -70,20 +70,20 @@ void func_8010B990_inst(void) {
     u16 *sprites;
 
     object = omAddObj(20, 5, 0, -1, NULL);
-    D_8010DCA0_inst = object;
-    D_8010DCD0_inst = &mgDataTbl[D_8010D40B_inst];
-    D_8010DCC0_inst[0] = espEntry(HuSprAnimDataRead(0x170008), 0, 1);
-    espAttrSet(D_8010DCC0_inst[0], 0x1000);
-    espTPLvlSet(D_8010DCC0_inst[0], 255);
-    espPosSet(D_8010DCC0_inst[0], 160, -100);
-    func_8010CDE4_inst((const char *)(D_8010D40B_inst + 0x4700), 160, -100);
-    func_8010CF14_inst();
-    func_8010CFF4_inst();
-    if (D_8010D40A_inst == 3) {
-        D_8010DCC0_inst[1] = espEntry(HuSprAnimDataRead(0x17000E), 0, 1);
-        espAttrSet(D_8010DCC0_inst[1], 0x1000);
-        espTPLvlSet(D_8010DCC0_inst[1], 255);
-        espPosSet(D_8010DCC0_inst[1], 160, -78);
+    inst_winObj = object;
+    inst_mgData = &mgDataTbl[inst_mgNo];
+    inst_titleSprTbl[0] = espEntry(HuSprAnimDataRead(0x170008), 0, 1);
+    espAttrSet(inst_titleSprTbl[0], 0x1000);
+    espTPLvlSet(inst_titleSprTbl[0], 255);
+    espPosSet(inst_titleSprTbl[0], 160, -100);
+    inst_TitleCreate((const char *)(inst_mgNo + 0x4700), 160, -100);
+    inst_PracticeLabelCreate();
+    inst_PracticeLabelDispOff();
+    if (inst_mgType == 3) {
+        inst_titleSprTbl[1] = espEntry(HuSprAnimDataRead(0x17000E), 0, 1);
+        espAttrSet(inst_titleSprTbl[1], 0x1000);
+        espTPLvlSet(inst_titleSprTbl[1], 255);
+        espPosSet(inst_titleSprTbl[1], 160, -78);
         score = mgBattleCoinPot;
         sprite = HuSprAnimDataRead(0x1300CF);
         if (score >= 1000) {
@@ -96,332 +96,332 @@ void func_8010B990_inst(void) {
         digits[2] = score % 10;
         for (i = 0; i < 3; i++) {
             slot = espEntry(sprite, 0, 0);
-            sprites = D_8010DCC4_inst;
+            sprites = inst_coinPotDigitSprTbl;
             sprites[i] = slot;
-            positions = D_8010DAF8_inst;
+            positions = inst_coinPotDigitPosTbl;
             espPosSet(sprites[i], positions[i].x, -78);
             espBankSet(sprites[i], (u16)digits[i], 0);
         }
     }
-    D_8010DCA8_inst.curGroup = HuWinExCreateStyled(72, 188, 7);
-    HuWinMesPalSet(D_8010DCA8_inst.curGroup, 2, 0, 255, 255);
-    HuWinMesPalSet(D_8010DCA8_inst.curGroup, 4, 96, 255, 64);
-    HuWinMesPalSet(D_8010DCA8_inst.curGroup, 6, 255, 255, 64);
-    HuWinGet(D_8010DCA8_inst.curGroup)->spacing_x = 1;
-    func_8010CC14_inst();
-    D_8010DCA8_inst.mainMembers[0] = HuWinAnimSet(D_8010DCA8_inst.curGroup, 0x17000B, 60, -33, 0);
-    D_8010DCA8_inst.mainMembers[1] = HuWinAnimSet(D_8010DCA8_inst.curGroup, 0x170009, 148, -33, 0);
-    D_8010DCA8_inst.mainMembers[2] = HuWinAnimSet(D_8010DCA8_inst.curGroup, 0x17000A, 200, -33, 0);
-    D_8010DCA8_inst.helpMembers[0] = HuWinAnimSet(D_8010DCA8_inst.curGroup, 0x17000D, 60, -33, 0);
-    D_8010DCA8_inst.helpMembers[1] = HuWinAnimSet(D_8010DCA8_inst.curGroup, 0x17000F, 200, -33, 0);
-    D_8010DCA8_inst.member = HuWinAnimSet(D_8010DCA8_inst.curGroup, 0x17000C, 38, -33, 0);
-    D_8010DCD4_inst = 0;
-    D_8010DCCC_inst = D_8010DCD0_inst->message;
-    if (D_8010D40A_inst == 4 && D_8010D411_inst != 2) {
-        D_8010DCCC_inst++;
+    inst_win.curGroup = HuWinExCreateStyled(72, 188, 7);
+    HuWinMesPalSet(inst_win.curGroup, 2, 0, 255, 255);
+    HuWinMesPalSet(inst_win.curGroup, 4, 96, 255, 64);
+    HuWinMesPalSet(inst_win.curGroup, 6, 255, 255, 64);
+    HuWinGet(inst_win.curGroup)->spacing_x = 1;
+    inst_WinPlayerSet();
+    inst_win.mainMembers[0] = HuWinAnimSet(inst_win.curGroup, 0x17000B, 60, -33, 0);
+    inst_win.mainMembers[1] = HuWinAnimSet(inst_win.curGroup, 0x170009, 148, -33, 0);
+    inst_win.mainMembers[2] = HuWinAnimSet(inst_win.curGroup, 0x17000A, 200, -33, 0);
+    inst_win.helpMembers[0] = HuWinAnimSet(inst_win.curGroup, 0x17000D, 60, -33, 0);
+    inst_win.helpMembers[1] = HuWinAnimSet(inst_win.curGroup, 0x17000F, 200, -33, 0);
+    inst_win.member = HuWinAnimSet(inst_win.curGroup, 0x17000C, 38, -33, 0);
+    inst_winPage = 0;
+    inst_winMes = inst_mgData->message;
+    if (inst_mgType == 4 && inst_hostNo != 2) {
+        inst_winMes++;
     }
-    HuWinMesSet(D_8010DCA8_inst.curGroup, D_8010DCCC_inst, -1, -1);
-    omPrcSetDestructor(NULL, func_8010C8B4_inst);
-    D_8010DCA4_inst = (void (*)(s32))func_8010BE28_inst;
+    HuWinMesSet(inst_win.curGroup, inst_winMes, -1, -1);
+    omPrcSetDestructor(NULL, inst_WinDestroy);
+    inst_winFunc = (void (*)(s32))inst_WinStartWait;
     while (1) {
-        D_8010DCA4_inst((s32)object);
+        inst_winFunc((s32)object);
         HuPrcVSleep();
     }
 }
 
-void func_8010BE28_inst(void) {
-    if (D_8010D408_inst == 1) {
-        D_8010D5B0_inst = 1;
+void inst_WinStartWait(void) {
+    if (inst_introSkipF == 1) {
+        inst_winStartF = 1;
     }
-    if (D_8010D5B0_inst == 1) {
-        D_8010DCA4_inst = func_8010BE78_inst;
+    if (inst_winStartF == 1) {
+        inst_winFunc = inst_WinTitleIn;
     }
 }
 
-void func_8010BE70_inst(s32 arg0) {
+void inst_WinIdle(s32 arg0) {
 }
 
-void func_8010BE78_inst(s32 arg0) {
+void inst_WinTitleIn(s32 arg0) {
     s32 i;
     s32 value;
     s16 *y;
     u16 *sprites;
     const InstSpritePos *positions;
 
-    if (D_8010D408_inst == 0) {
-        espPosSet(D_8010DCC0_inst[0], 160, *(y = &D_8010D5BA_inst));
-        func_8010CED0_inst(160, *y);
-        value = D_8010D40A_inst;
+    if (inst_introSkipF == 0) {
+        espPosSet(inst_titleSprTbl[0], 160, *(y = &inst_titleYHalf));
+        inst_TitlePosSet(160, *y);
+        value = inst_mgType;
         if (value == 3) {
-            espPosSet(D_8010DCC0_inst[1], 160, *y + 22);
-            for (i = 0, sprites = D_8010DCC4_inst, positions = D_8010DAF8_inst; i < 3; i++) {
-                espPosSet(sprites[i], positions[i].x, D_8010D5BA_inst + 22);
+            espPosSet(inst_titleSprTbl[1], 160, *y + 22);
+            for (i = 0, sprites = inst_coinPotDigitSprTbl, positions = inst_coinPotDigitPosTbl; i < 3; i++) {
+                espPosSet(sprites[i], positions[i].x, inst_titleYHalf + 22);
             }
         }
-        D_8010D5B4_inst++;
-        D_8010D5B8_inst = sindf(D_8010D5B4_inst * 6) * 96.0f + -64.0f;
-        if (D_8010D5B4_inst < 15) {
+        inst_titleInCnt++;
+        inst_titleY = sindf(inst_titleInCnt * 6) * 96.0f + -64.0f;
+        if (inst_titleInCnt < 15) {
             return;
         }
-        D_8010D5B4_inst = 0;
-        D_8010D5B8_inst = -64;
-        espPosSet(D_8010DCC0_inst[0], 160, 32);
-        func_8010CED0_inst(160, 32);
-        value = D_8010D40A_inst;
+        inst_titleInCnt = 0;
+        inst_titleY = -64;
+        espPosSet(inst_titleSprTbl[0], 160, 32);
+        inst_TitlePosSet(160, 32);
+        value = inst_mgType;
         if (value == 3) {
-            espPosSet(D_8010DCC0_inst[1], 160, 54);
-            for (i = 0, sprites = D_8010DCC4_inst, positions = D_8010DAF8_inst; i < 3; i++) {
+            espPosSet(inst_titleSprTbl[1], 160, 54);
+            for (i = 0, sprites = inst_coinPotDigitSprTbl, positions = inst_coinPotDigitPosTbl; i < 3; i++) {
                 espPosSet(sprites[i], positions[i].x, 54);
             }
         }
     } else {
-        espPosSet(D_8010DCC0_inst[0], 160, 32);
-        func_8010CED0_inst(160, 32);
-        value = D_8010D40A_inst;
+        espPosSet(inst_titleSprTbl[0], 160, 32);
+        inst_TitlePosSet(160, 32);
+        value = inst_mgType;
         if (value == 3) {
-            espPosSet(D_8010DCC0_inst[1], 160, 54);
-            for (i = 0, sprites = D_8010DCC4_inst, positions = D_8010DAF8_inst; i < 3; i++) {
+            espPosSet(inst_titleSprTbl[1], 160, 54);
+            for (i = 0, sprites = inst_coinPotDigitSprTbl, positions = inst_coinPotDigitPosTbl; i < 3; i++) {
                 espPosSet(sprites[i], positions[i].x, 54);
             }
         }
-        HuWinExOpenNow(D_8010DCA8_inst.curGroup);
+        HuWinExOpenNow(inst_win.curGroup);
         value = 1;
-        D_8010D440_inst = value;
+        inst_winOpenF = value;
     }
-    func_8010D044_inst();
-    D_8010DCA4_inst = func_8010C124_inst;
+    inst_PracticeOff();
+    inst_winFunc = inst_WinPageMain;
 }
 
-void func_8010C124_inst(s32 arg0) {
-    if (D_8010D409_inst == 1) {
+void inst_WinPageMain(s32 arg0) {
+    if (inst_startF == 1) {
         return;
     }
-    if (func_8010C8E0_inst(0x10) != 0) {
-        func_8010D1D4_inst();
-        D_8010DCA4_inst = func_8010C5C4_inst;
+    if (inst_PadBtnDownGet(0x10) != 0) {
+        inst_PracticeOn();
+        inst_winFunc = inst_WinPracticeMain;
         return;
     }
-    switch (D_8010DCD4_inst) {
+    switch (inst_winPage) {
         case 0:
-            if (func_8010C8E0_inst(1) != 0) {
-                D_8010DCCC_inst = D_8010DCD0_inst->unk_0A[0];
-                if (D_8010DCD0_inst->unk_0A[1] < 0) {
-                    func_8010CBB8_inst(1);
-                    D_8010DCD4_inst = 1;
+            if (inst_PadBtnDownGet(1) != 0) {
+                inst_winMes = inst_mgData->unk_0A[0];
+                if (inst_mgData->unk_0A[1] < 0) {
+                    inst_WinPageIconSet(1);
+                    inst_winPage = 1;
                 } else {
-                    func_8010CBB8_inst(3);
-                    D_8010DCD4_inst = 3;
+                    inst_WinPageIconSet(3);
+                    inst_winPage = 3;
                 }
-                HuWinMesSet(D_8010DCA8_inst.curGroup, D_8010DCCC_inst, -1, -1);
+                HuWinMesSet(inst_win.curGroup, inst_winMes, -1, -1);
             }
             break;
         case 1:
-            if (func_8010C8E0_inst(1) != 0) {
-                D_8010DCCC_inst = D_8010DCD0_inst->finalMessage;
-                if (D_8010D40A_inst == 4 && D_8010D411_inst != 2) {
-                    D_8010DCCC_inst++;
+            if (inst_PadBtnDownGet(1) != 0) {
+                inst_winMes = inst_mgData->finalMessage;
+                if (inst_mgType == 4 && inst_hostNo != 2) {
+                    inst_winMes++;
                 }
-                HuWinMesSet(D_8010DCA8_inst.curGroup, D_8010DCCC_inst, -1, -1);
-                func_8010CBB8_inst(2);
-                D_8010DCD4_inst = 2;
+                HuWinMesSet(inst_win.curGroup, inst_winMes, -1, -1);
+                inst_WinPageIconSet(2);
+                inst_winPage = 2;
             }
             break;
         case 3:
-            if (func_8010C8E0_inst(1) != 0) {
-                if (D_8010DCD0_inst->unk_0A[1] < 0) {
-                    D_8010DCCC_inst = D_8010DCD0_inst->finalMessage;
-                    if (D_8010D40A_inst == 4 && D_8010D411_inst != 2) {
-                        D_8010DCCC_inst++;
+            if (inst_PadBtnDownGet(1) != 0) {
+                if (inst_mgData->unk_0A[1] < 0) {
+                    inst_winMes = inst_mgData->finalMessage;
+                    if (inst_mgType == 4 && inst_hostNo != 2) {
+                        inst_winMes++;
                     }
-                    func_8010CBB8_inst(2);
-                    D_8010DCD4_inst = 2;
+                    inst_WinPageIconSet(2);
+                    inst_winPage = 2;
                 } else {
-                    D_8010DCCC_inst = D_8010DCD0_inst->unk_0A[1];
-                    func_8010CBB8_inst(4);
-                    D_8010DCD4_inst = 4;
+                    inst_winMes = inst_mgData->unk_0A[1];
+                    inst_WinPageIconSet(4);
+                    inst_winPage = 4;
                 }
-                HuWinMesSet(D_8010DCA8_inst.curGroup, D_8010DCCC_inst, -1, -1);
+                HuWinMesSet(inst_win.curGroup, inst_winMes, -1, -1);
             }
             break;
         case 4:
-            if (func_8010C8E0_inst(1) != 0) {
-                if (D_8010DCD0_inst->unk_0A[2] < 0) {
-                    D_8010DCCC_inst = D_8010DCD0_inst->finalMessage;
-                    if (D_8010D40A_inst == 4 && D_8010D411_inst != 2) {
-                        D_8010DCCC_inst++;
+            if (inst_PadBtnDownGet(1) != 0) {
+                if (inst_mgData->unk_0A[2] < 0) {
+                    inst_winMes = inst_mgData->finalMessage;
+                    if (inst_mgType == 4 && inst_hostNo != 2) {
+                        inst_winMes++;
                     }
-                    func_8010CBB8_inst(2);
-                    D_8010DCD4_inst = 2;
+                    inst_WinPageIconSet(2);
+                    inst_winPage = 2;
                 } else {
-                    D_8010DCCC_inst = D_8010DCD0_inst->unk_0A[2];
-                    func_8010CBB8_inst(6);
-                    D_8010DCD4_inst = 6;
+                    inst_winMes = inst_mgData->unk_0A[2];
+                    inst_WinPageIconSet(6);
+                    inst_winPage = 6;
                 }
-                HuWinMesSet(D_8010DCA8_inst.curGroup, D_8010DCCC_inst, -1, -1);
+                HuWinMesSet(inst_win.curGroup, inst_winMes, -1, -1);
             }
             break;
         case 6:
-            if (func_8010C8E0_inst(1) != 0) {
-                if (D_8010DCD0_inst->unk_0A[3] < 0) {
-                    D_8010DCCC_inst = D_8010DCD0_inst->finalMessage;
-                    if (D_8010D40A_inst == 4 && D_8010D411_inst != 2) {
-                        D_8010DCCC_inst++;
+            if (inst_PadBtnDownGet(1) != 0) {
+                if (inst_mgData->unk_0A[3] < 0) {
+                    inst_winMes = inst_mgData->finalMessage;
+                    if (inst_mgType == 4 && inst_hostNo != 2) {
+                        inst_winMes++;
                     }
-                    func_8010CBB8_inst(2);
-                    D_8010DCD4_inst = 2;
+                    inst_WinPageIconSet(2);
+                    inst_winPage = 2;
                 } else {
-                    D_8010DCCC_inst = D_8010DCD0_inst->unk_0A[3];
-                    func_8010CBB8_inst(7);
-                    D_8010DCD4_inst = 7;
+                    inst_winMes = inst_mgData->unk_0A[3];
+                    inst_WinPageIconSet(7);
+                    inst_winPage = 7;
                 }
-                HuWinMesSet(D_8010DCA8_inst.curGroup, D_8010DCCC_inst, -1, -1);
+                HuWinMesSet(inst_win.curGroup, inst_winMes, -1, -1);
             }
             break;
         case 7:
-            if (func_8010C8E0_inst(1) != 0) {
-                D_8010DCCC_inst = D_8010DCD0_inst->finalMessage;
-                func_8010CBB8_inst(2);
-                D_8010DCD4_inst = 2;
-                if (D_8010D40A_inst == 4 && D_8010D411_inst != 2) {
-                    D_8010DCCC_inst++;
+            if (inst_PadBtnDownGet(1) != 0) {
+                inst_winMes = inst_mgData->finalMessage;
+                inst_WinPageIconSet(2);
+                inst_winPage = 2;
+                if (inst_mgType == 4 && inst_hostNo != 2) {
+                    inst_winMes++;
                 }
-                HuWinMesSet(D_8010DCA8_inst.curGroup, D_8010DCCC_inst, -1, -1);
+                HuWinMesSet(inst_win.curGroup, inst_winMes, -1, -1);
             }
             break;
         case 2:
-            if (func_8010C8E0_inst(1) != 0) {
-                D_8010DCCC_inst = D_8010DCD0_inst->message;
-                if (D_8010D40A_inst == 4 && D_8010D411_inst != 2) {
-                    D_8010DCCC_inst++;
+            if (inst_PadBtnDownGet(1) != 0) {
+                inst_winMes = inst_mgData->message;
+                if (inst_mgType == 4 && inst_hostNo != 2) {
+                    inst_winMes++;
                 }
-                HuWinMesSet(D_8010DCA8_inst.curGroup, D_8010DCCC_inst, -1, -1);
-                func_8010CBB8_inst(0);
-                D_8010DCD4_inst = 0;
+                HuWinMesSet(inst_win.curGroup, inst_winMes, -1, -1);
+                inst_WinPageIconSet(0);
+                inst_winPage = 0;
             }
             break;
     }
 }
 
-s32 func_8010C55C_inst(void) {
+s32 inst_PracticeCancelCheck(void) {
     s32 changed = 0;
 
-    if ((func_8010C8E0_inst(0x10) != 0) && (D_8010D409_inst != 1)) {
+    if ((inst_PadBtnDownGet(0x10) != 0) && (inst_startF != 1)) {
         changed = 1;
-        func_8010D044_inst();
-        D_8010DCA4_inst = func_8010C124_inst;
+        inst_PracticeOff();
+        inst_winFunc = inst_WinPageMain;
     }
     HuPrcVSleep();
     return changed;
 }
 
-void func_8010C5C4_inst(s32 arg0) {
+void inst_WinPracticeMain(s32 arg0) {
     s8 i;
     s32 message;
 
-    if (D_8010D409_inst != 1) {
+    if (inst_startF != 1) {
         for (i = 0; i < 3; i++) {
-            switch (D_8010D40B_inst) {
+            switch (inst_mgNo) {
                 case 8:
                 case 16:
                 case 27:
-                    message = D_8010DB1C_inst[i];
+                    message = inst_practiceAltMesTbl[i];
                     break;
                 default:
-                    switch (D_8010D40A_inst) {
+                    switch (inst_mgType) {
                         case 5:
-                            message = D_8010DB04_inst[1][i];
+                            message = inst_practiceMesTbl[1][i];
                             break;
                         case 4:
-                            message = D_8010DB10_inst[0][i];
-                            message += D_8010D411_inst != 2;
+                            message = inst_practiceVsMesTbl[0][i];
+                            message += inst_hostNo != 2;
                             break;
                         case 3:
-                            message = D_8010DB10_inst[1][i];
+                            message = inst_practiceVsMesTbl[1][i];
                             break;
                         case 7:
-                            if (D_8010D40B_inst == 70) {
-                                message = D_8010DB24_inst[1][i];
+                            if (inst_mgNo == 70) {
+                                message = inst_practiceSpecialMesTbl[1][i];
                             } else {
-                                message = D_8010DB30_inst[i];
+                                message = inst_practiceOmakeMesTbl[i];
                             }
                             break;
                         case 8:
-                            message = D_8010DB24_inst[0][i];
+                            message = inst_practiceSpecialMesTbl[0][i];
                             break;
                         case 0:
                         case 1:
                         case 2:
                         case 6:
                         default:
-                            message = D_8010DB04_inst[0][i];
+                            message = inst_practiceMesTbl[0][i];
                             break;
                     }
                     break;
             }
-            HuWinMesSet(D_8010DCA8_inst.curGroup, message, -1, -1);
-            while (HuWinStatGet(D_8010DCA8_inst.curGroup) != 0) {
-                if (func_8010C55C_inst() != 0) {
+            HuWinMesSet(inst_win.curGroup, message, -1, -1);
+            while (HuWinStatGet(inst_win.curGroup) != 0) {
+                if (inst_PracticeCancelCheck() != 0) {
                     return;
                 }
             }
         }
-        message = D_8010DCD0_inst->finalMessage;
-        if (D_8010D40A_inst == 4) {
-            message += D_8010D411_inst != 2;
+        message = inst_mgData->finalMessage;
+        if (inst_mgType == 4) {
+            message += inst_hostNo != 2;
         }
-        HuWinMesSet(D_8010DCA8_inst.curGroup, message, -1, -1);
-        while (HuWinStatGet(D_8010DCA8_inst.curGroup) != 0) {
-            if (func_8010C55C_inst() != 0) {
+        HuWinMesSet(inst_win.curGroup, message, -1, -1);
+        while (HuWinStatGet(inst_win.curGroup) != 0) {
+            if (inst_PracticeCancelCheck() != 0) {
                 return;
             }
         }
-        while (func_8010C8E0_inst(0x8000) == 0) {
-            if (func_8010C55C_inst() != 0) {
+        while (inst_PadBtnDownGet(0x8000) == 0) {
+            if (inst_PracticeCancelCheck() != 0) {
                 return;
             }
         }
-        D_8010D406_inst = 1;
-        D_8010DCA4_inst = func_8010BE70_inst;
+        inst_practiceStartF = 1;
+        inst_winFunc = inst_WinIdle;
     }
 }
 
-void func_8010C848_inst(void) {
-    if (D_8010D408_inst == 0) {
+void inst_WinOpen(void) {
+    if (inst_introSkipF == 0) {
         HuAudFXPlay(0x11D);
-        HuWinExOpen(D_8010DCA8_inst.curGroup, 0);
-        D_8010D440_inst = 1;
+        HuWinExOpen(inst_win.curGroup, 0);
+        inst_winOpenF = 1;
     }
 }
 
-void func_8010C890_inst(void) {
-    HuWinExClose(D_8010DCA8_inst.curGroup, 1);
+void inst_WinClose(void) {
+    HuWinExClose(inst_win.curGroup, 1);
 }
 
-void func_8010C8B4_inst(void) {
+void inst_WinDestroy(void) {
     GMesClose();
 }
 
-void func_8010C8D0_inst(void) {
-    D_8010D5B0_inst = 1;
+void inst_WinStart(void) {
+    inst_winStartF = 1;
 }
 
-u16 func_8010C8E0_inst(s32 buttons) {
+u16 inst_PadBtnDownGet(s32 buttons) {
     u16 pressed = 0;
     s8 i;
 
-    switch (D_8010D40A_inst) {
+    switch (inst_mgType) {
         case 5:
         case 6:
         case 7:
         case 8:
-            if (!(GwPlayer[D_8010D400_inst[0]].stat & 1)) {
-                pressed = HuPadBtnDown[GwPlayer[D_8010D400_inst[0]].pad] & buttons;
+            if (!(GwPlayer[inst_playerOrderTbl[0]].stat & 1)) {
+                pressed = HuPadBtnDown[GwPlayer[inst_playerOrderTbl[0]].pad] & buttons;
             }
             break;
         case 4:
             for (i = 0; i < 2; i++) {
-                if (!(GwPlayer[D_8010D400_inst[i]].stat & 1)) {
-                    pressed = HuPadBtnDown[GwPlayer[D_8010D400_inst[i]].pad] & buttons;
+                if (!(GwPlayer[inst_playerOrderTbl[i]].stat & 1)) {
+                    pressed = HuPadBtnDown[GwPlayer[inst_playerOrderTbl[i]].pad] & buttons;
                     if (pressed != 0) {
                         break;
                     }
@@ -434,8 +434,8 @@ u16 func_8010C8E0_inst(s32 buttons) {
         case 3:
         default:
             for (i = 0; i < 4; i++) {
-                if (!(GwPlayer[D_8010D400_inst[i]].stat & 1)) {
-                    pressed = HuPadBtnDown[GwPlayer[D_8010D400_inst[i]].pad] & buttons;
+                if (!(GwPlayer[inst_playerOrderTbl[i]].stat & 1)) {
+                    pressed = HuPadBtnDown[GwPlayer[inst_playerOrderTbl[i]].pad] & buttons;
                     if (pressed != 0) {
                         break;
                     }
@@ -446,20 +446,20 @@ u16 func_8010C8E0_inst(s32 buttons) {
     return pressed;
 }
 
-u16 func_8010CA74_inst(u16 buttons, s16 wait) {
+u16 inst_PadBtnDownAutoGet(u16 buttons, s16 wait) {
     s32 cpu = 0;
     u16 pressed = 0;
     s8 i;
 
-    switch (D_8010D40A_inst) {
+    switch (inst_mgType) {
         case 5:
         case 6:
         case 7:
         case 8:
-            cpu = GwPlayer[D_8010D400_inst[0]].stat & 1;
+            cpu = GwPlayer[inst_playerOrderTbl[0]].stat & 1;
             break;
         case 4:
-            if ((GwPlayer[D_8010D400_inst[0]].stat & 1) && (GwPlayer[D_8010D400_inst[1]].stat & 1)) {
+            if ((GwPlayer[inst_playerOrderTbl[0]].stat & 1) && (GwPlayer[inst_playerOrderTbl[1]].stat & 1)) {
                 cpu = 1;
             }
             break;
@@ -470,39 +470,39 @@ u16 func_8010CA74_inst(u16 buttons, s16 wait) {
         }
     }
     if ((i < 4) & (cpu != 1)) {
-        pressed = func_8010C8E0_inst(buttons);
+        pressed = inst_PadBtnDownGet(buttons);
     } else if (wait == 0) {
         pressed = 1;
     }
     return pressed;
 }
 
-void func_8010CBB8_inst(s32 arg0) {
-    TextWindow *window = &winData[D_8010DCA8_inst.curGroup];
-    s16 member = D_8010DCA8_inst.member;
+void inst_WinPageIconSet(s32 arg0) {
+    TextWindow *window = &winData[inst_win.curGroup];
+    s16 member = inst_win.member;
 
     HuSprGrpMemberSet(window->group, member, window->sprite_id[member], arg0 & 0xFF);
 }
 
-void func_8010CC14_inst(void) {
+void inst_WinPlayerSet(void) {
     s8 i;
     s32 pads;
 
     for (i = 0; i < 4; i++) {
-        HuWinInsertMesSet(D_8010DCA8_inst.curGroup, GwPlayer[D_8010D400_inst[i]].chr + 0x1C00, i);
+        HuWinInsertMesSet(inst_win.curGroup, GwPlayer[inst_playerOrderTbl[i]].chr + 0x1C00, i);
     }
     pads = 0;
-    switch (D_8010D40A_inst) {
+    switch (inst_mgType) {
         case 5:
         case 6:
         case 7:
         case 8:
-            pads |= 1 << GwPlayer[D_8010D400_inst[0]].pad;
+            pads |= 1 << GwPlayer[inst_playerOrderTbl[0]].pad;
             break;
         case 4:
             for (i = 0; i < 2; i++) {
-                if (!(GwPlayer[D_8010D400_inst[i]].stat & 1)) {
-                    pads |= 1 << GwPlayer[D_8010D400_inst[i]].pad;
+                if (!(GwPlayer[inst_playerOrderTbl[i]].stat & 1)) {
+                    pads |= 1 << GwPlayer[inst_playerOrderTbl[i]].pad;
                 }
             }
             break;
@@ -512,131 +512,131 @@ void func_8010CC14_inst(void) {
         case 3:
         default:
             for (i = 0; i < 4; i++) {
-                if (!(GwPlayer[D_8010D400_inst[i]].stat & 1)) {
-                    pads |= 1 << GwPlayer[D_8010D400_inst[i]].pad;
+                if (!(GwPlayer[inst_playerOrderTbl[i]].stat & 1)) {
+                    pads |= 1 << GwPlayer[inst_playerOrderTbl[i]].pad;
                 }
             }
             break;
     }
-    HuWinActivePlayerSet(D_8010DCA8_inst.curGroup, pads);
+    HuWinActivePlayerSet(inst_win.curGroup, pads);
 }
 
-void func_8010CDE4_inst(const char *message, s32 x, s32 y) {
+void inst_TitleCreate(const char *message, s32 x, s32 y) {
     char *text = MessDataMesGet((char *)message);
 
-    D_8010DCD8_inst.subMode = -1;
-    D_8010DCD8_inst.subMode = GameMesStrCreate(&D_8010DCD8_inst, text + 1, 0, -1, -1);
-    D_8010DCD8_inst.pos.x = (s16)x;
-    D_8010DCD8_inst.pos.y = (s16)y;
-    HuSprPosSet(D_8010DCD8_inst.strGId[D_8010DCD8_inst.subMode], 0, D_8010DCD8_inst.pos.x,
-                       D_8010DCD8_inst.pos.y);
+    inst_titleMes.subMode = -1;
+    inst_titleMes.subMode = GameMesStrCreate(&inst_titleMes, text + 1, 0, -1, -1);
+    inst_titleMes.pos.x = (s16)x;
+    inst_titleMes.pos.y = (s16)y;
+    HuSprPosSet(inst_titleMes.strGId[inst_titleMes.subMode], 0, inst_titleMes.pos.x,
+                       inst_titleMes.pos.y);
     MessDataMesFree(text);
 }
 
-void func_8010CED0_inst(s32 x, s32 y) {
-    HuSprPosSet(D_8010DCD8_inst.strGId[D_8010DCD8_inst.subMode], 0, x, y);
+void inst_TitlePosSet(s32 x, s32 y) {
+    HuSprPosSet(inst_titleMes.strGId[inst_titleMes.subMode], 0, x, y);
 }
 
-void func_8010CF14_inst(void) {
-    D_8010DD50_inst.subMode = GameMesStrCreate(&D_8010DD50_inst, "PRACTICE", 0, -1, -1);
-    D_8010DD50_inst.pos.x = 216.0f;
-    D_8010DD50_inst.pos.y = 90.0f;
-    HuSprPosSet(D_8010DD50_inst.strGId[D_8010DD50_inst.subMode], 0, 216, 90);
+void inst_PracticeLabelCreate(void) {
+    inst_practiceMes.subMode = GameMesStrCreate(&inst_practiceMes, "PRACTICE", 0, -1, -1);
+    inst_practiceMes.pos.x = 216.0f;
+    inst_practiceMes.pos.y = 90.0f;
+    HuSprPosSet(inst_practiceMes.strGId[inst_practiceMes.subMode], 0, 216, 90);
 }
 
-void func_8010CF98_inst(void) {
-    D_8010DD50_inst.pos.x = 216.0f;
-    D_8010DD50_inst.pos.y = 90.0f;
-    HuSprPosSet(D_8010DD50_inst.strGId[D_8010DD50_inst.subMode], 0, 0xD8, 0x5A);
+void inst_PracticeLabelDispOn(void) {
+    inst_practiceMes.pos.x = 216.0f;
+    inst_practiceMes.pos.y = 90.0f;
+    HuSprPosSet(inst_practiceMes.strGId[inst_practiceMes.subMode], 0, 0xD8, 0x5A);
 }
 
-void func_8010CFF4_inst(void) {
-    D_8010DD50_inst.pos.x = 512.0f;
-    D_8010DD50_inst.pos.y = 512.0f;
-    HuSprPosSet(D_8010DD50_inst.strGId[D_8010DD50_inst.subMode], 0, 0x200, 0x200);
+void inst_PracticeLabelDispOff(void) {
+    inst_practiceMes.pos.x = 512.0f;
+    inst_practiceMes.pos.y = 512.0f;
+    HuSprPosSet(inst_practiceMes.strGId[inst_practiceMes.subMode], 0, 0x200, 0x200);
 }
 
-void func_8010D044_inst(void) {
-    TextWindow *window = &winData[D_8010DCA8_inst.curGroup];
+void inst_PracticeOff(void) {
+    TextWindow *window = &winData[inst_win.curGroup];
     s8 i;
 
-    if (D_8010D409_inst != 1) {
-        func_8010CFF4_inst();
-        HuSprDispOn(window->group, D_8010DCA8_inst.member);
+    if (inst_startF != 1) {
+        inst_PracticeLabelDispOff();
+        HuSprDispOn(window->group, inst_win.member);
         for (i = 0; i < 3; i++) {
             if (i != 1) {
-                HuSprDispOn(window->group, D_8010DCA8_inst.mainMembers[i]);
+                HuSprDispOn(window->group, inst_win.mainMembers[i]);
             }
         }
         for (i = 0; i < 2; i++) {
-            HuSprDispOff(window->group, D_8010DCA8_inst.helpMembers[i]);
+            HuSprDispOff(window->group, inst_win.helpMembers[i]);
         }
-        D_8010DCCC_inst = D_8010DCD0_inst->message;
-        if ((D_8010D40A_inst == 4) && (D_8010D411_inst != 2)) {
-            D_8010DCCC_inst++;
+        inst_winMes = inst_mgData->message;
+        if ((inst_mgType == 4) && (inst_hostNo != 2)) {
+            inst_winMes++;
         }
-        HuWinMesSet(D_8010DCA8_inst.curGroup, D_8010DCCC_inst, -1, -1);
-        func_8010CBB8_inst(0);
-        D_8010DCD4_inst = 0;
-        D_8010D5B1_inst = 0;
+        HuWinMesSet(inst_win.curGroup, inst_winMes, -1, -1);
+        inst_WinPageIconSet(0);
+        inst_winPage = 0;
+        inst_practiceF = 0;
     }
 }
 
-void func_8010D1D4_inst(void) {
-    TextWindow *window = &winData[D_8010DCA8_inst.curGroup];
+void inst_PracticeOn(void) {
+    TextWindow *window = &winData[inst_win.curGroup];
     s8 i;
     s32 message;
 
-    if (D_8010D409_inst != 1) {
-        func_8010CF98_inst();
+    if (inst_startF != 1) {
+        inst_PracticeLabelDispOn();
         for (i = 0; i < 2; i++) {
-            HuSprDispOn(window->group, D_8010DCA8_inst.helpMembers[i]);
+            HuSprDispOn(window->group, inst_win.helpMembers[i]);
         }
-        HuSprDispOff(window->group, D_8010DCA8_inst.member);
+        HuSprDispOff(window->group, inst_win.member);
         for (i = 0; i < 3; i++) {
             if (i != 1) {
-                HuSprDispOff(window->group, D_8010DCA8_inst.mainMembers[i]);
+                HuSprDispOff(window->group, inst_win.mainMembers[i]);
             }
         }
-        switch (D_8010D40B_inst) {
+        switch (inst_mgNo) {
             case 8:
             case 16:
             case 27:
-                message = D_8010DB1C_inst[0];
+                message = inst_practiceAltMesTbl[0];
                 break;
             default:
-                switch (D_8010D40A_inst) {
+                switch (inst_mgType) {
                     case 5:
-                        message = D_8010DB04_inst[1][0];
+                        message = inst_practiceMesTbl[1][0];
                         break;
                     case 4:
-                        message = D_8010DB10_inst[0][0];
-                        message += D_8010D411_inst != 2;
+                        message = inst_practiceVsMesTbl[0][0];
+                        message += inst_hostNo != 2;
                         break;
                     case 3:
-                        message = D_8010DB10_inst[1][0];
+                        message = inst_practiceVsMesTbl[1][0];
                         break;
                     case 7:
-                        if (D_8010D40B_inst == 70) {
-                            message = D_8010DB24_inst[1][0];
+                        if (inst_mgNo == 70) {
+                            message = inst_practiceSpecialMesTbl[1][0];
                         } else {
-                            message = D_8010DB30_inst[0];
+                            message = inst_practiceOmakeMesTbl[0];
                         }
                         break;
                     case 8:
-                        message = D_8010DB24_inst[0][0];
+                        message = inst_practiceSpecialMesTbl[0][0];
                         break;
                     case 0:
                     case 1:
                     case 2:
                     case 6:
                     default:
-                        message = D_8010DB04_inst[0][0];
+                        message = inst_practiceMesTbl[0][0];
                         break;
                 }
                 break;
         }
-        HuWinMesSet(D_8010DCA8_inst.curGroup, message, -1, -1);
-        D_8010D5B1_inst = 1;
+        HuWinMesSet(inst_win.curGroup, message, -1, -1);
+        inst_practiceF = 1;
     }
 }

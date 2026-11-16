@@ -21,23 +21,23 @@ typedef struct {
 } ResultBattleEffect; /* size = 0x20 */
 
 #ifndef NO_EXTERN_VARIABLES
-extern ResultBattlePlayerObj D_80108F50_mgresultbattle[4];
-extern s32 D_80108F70_mgresultbattle;
-extern s8 D_80108F8C_mgresultbattle[4];
-extern const Vec D_801089D0_mgresultbattle[4];
+extern ResultBattlePlayerObj mgresultbattle_playerWorkTbl[4];
+extern s32 mgresultbattle_coinRest;
+extern s8 mgresultbattle_playerOrderTbl[4];
+extern const Vec mgresultbattle_playerPosTbl[4];
 #endif
 
 /* main.c */
-void func_80106918_mgresultbattle(void);
+void mgresultbattle_PlayerReactStart(void);
 
 /* host.c */
-void func_80106BA0_mgresultbattle(void);
-void func_80107400_mgresultbattle(void);
-void func_801075FC_mgresultbattle(void);
+void mgresultbattle_CoinProc(void);
+void mgresultbattle_HostProc(void);
+void mgresultbattle_HostFlyStart(void);
 
 /* player.c */
-void func_80107D10_mgresultbattle(void);
-void func_80108130_mgresultbattle(void);
-void func_801082AC_mgresultbattle(void);
+void mgresultbattle_PodiumProc(void);
+void mgresultbattle_CoinNumProc(void);
+void mgresultbattle_CoinNumShowStart(void);
 
 #endif

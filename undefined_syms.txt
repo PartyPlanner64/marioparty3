@@ -78,16 +78,16 @@ D_8010B4A0_coconut_conk = D_8010B1F0_coconut_conk + 0x2B0; /* [5].unk1C */
 D_8010B4A4_coconut_conk = D_8010B1F0_coconut_conk + 0x2B4; /* [5].unk20 */
 
 /* inst array elements, low halfwords of word state, and object callbacks. */
-D_8010D401_inst = D_8010D400_inst + 0x1;
-D_8010D402_inst = D_8010D400_inst + 0x2;
-D_8010D5BA_inst = D_8010D5B8_inst + 0x2;
-D_8010D910_inst = D_8010D90C_inst + 0x4; /* motion column */
-D_8010DC02_inst = D_8010DC00_inst + 0x2;
-D_8010DC22_inst = D_8010DC20_inst + 0x2;
-D_8010DC32_inst = D_8010DC30_inst + 0x2;
-D_8010DC42_inst = D_8010DC40_inst + 0x2;
-D_8010DDE4_inst = D_8010DDE0_inst + 0x4; /* update */
-D_8010DDEC_inst = D_8010DDE8_inst + 0x4; /* update */
+inst_playerOrderTbl1 = inst_playerOrderTbl + 0x1;
+inst_playerOrderTbl2 = inst_playerOrderTbl + 0x2;
+inst_titleYHalf = inst_titleY + 0x2;
+inst_boxFileTbl1 = inst_boxFileTbl + 0x4; /* motion column */
+inst_mainTimerHalf = inst_mainTimer + 0x2;
+inst_hostAnimTblHalf = inst_hostAnimTbl + 0x2;
+inst_itemHostAnimHalf = inst_itemHostAnim + 0x2;
+inst_battleHostAnimHalf = inst_battleHostAnim + 0x2;
+inst_hostFunc = inst_hostWork + 0x4; /* update */
+inst_itemHostFunc = inst_itemHostWork + 0x4; /* update */
 
 /* gamemes "WON" string literal, now emitted by C GameMesMgWinnerExec; still referenced by the WINNERS asm. */
 
@@ -394,17 +394,17 @@ D_8010CD08_merry_go_chomp = D_8010C500_merry_go_chomp + 0x808;
 D_8010D1E4_merry_go_chomp = D_8010C500_merry_go_chomp + 0xCE4;
 D_8010D478_merry_go_chomp = D_8010C500_merry_go_chomp + 0xF78;
 
-/* mgresultdealer: mgResultDealerBssA264 fields. */
-D_8010A264_mgresultdealer = mgResultDealerBssA264;
-D_8010A266_mgresultdealer = mgResultDealerBssA264 + 0x2;
+/* mgresultdealer: mgresultdealer_mainBss fields. */
+mgresultdealer_bet = mgresultdealer_mainBss;
+mgresultdealer_playerOrderTbl = mgresultdealer_mainBss + 0x2;
 
-/* mgresultboard: mgResultBoardBssAD94 fields. */
-D_8010AD94_mgresultboard = mgResultBoardBssAD94;
-D_8010AD96_mgresultboard = mgResultBoardBssAD94 + 0x2;
+/* mgresultboard: mgresultboard_mainBss fields. */
+mgresultboard_mainCnt = mgresultboard_mainBss;
+mgresultboard_seIdTbl = mgresultboard_mainBss + 0x2;
 
-/* mgresultduel: s16 low half of D_80109314_mgresultduel, D_80109324_mgresultduel.func. */
-D_80109316_mgresultduel = D_80109314_mgresultduel + 0x2;
-D_80109328_mgresultduel = D_80109324_mgresultduel + 0x4;
+/* mgresultduel: s16 low half of mgresultduel_prizeCoin, mgresultduel_hostWork.func. */
+mgresultduel_prizeCoinHalf = mgresultduel_prizeCoin + 0x2;
+mgresultduel_hostFunc = mgresultduel_hostWork + 0x4;
 
 /* slapdown: slapdownBssAA10 fields and D_8010AAB0_slapdown[0] fields. */
 D_8010AA10_slapdown = slapdownBssAA10;
@@ -554,35 +554,35 @@ chancetime_actionNo = chancetime_resultWork + 0x3;
 chancetime_actionReelItemNum = chancetime_reelTbl + 0x6A;
 chancetime_actionReelItemTbl = chancetime_reelTbl + 0x6B;
 
-/* mgmode: mgmodeBssB3E4 and mgmodeBssB434 fields, D_8011B780_mgmode[] and D_8011B8A8_mgmode[] entries. */
-D_8011B3E4_mgmode = mgmodeBssB3E4;
-D_8011B3E6_mgmode = mgmodeBssB3E4 + 0x2;
-D_8011B434_mgmode = mgmodeBssB434;
-D_8011B436_mgmode = mgmodeBssB434 + 0x2;
-D_8011B43E_mgmode = mgmodeBssB434 + 0xA;
-D_8011B446_mgmode = mgmodeBssB434 + 0x12;
-D_8011B788_mgmode = D_8011B780_mgmode + 0x8;
-D_8011B78A_mgmode = D_8011B780_mgmode + 0xA;
-D_8011B78C_mgmode = D_8011B780_mgmode + 0xC;
-D_8011B78E_mgmode = D_8011B780_mgmode + 0xE;
-D_8011B790_mgmode = D_8011B780_mgmode + 0x10;
-D_8011B792_mgmode = D_8011B780_mgmode + 0x12;
-D_8011B794_mgmode = D_8011B780_mgmode + 0x14;
-D_8011B796_mgmode = D_8011B780_mgmode + 0x16;
-D_8011B798_mgmode = D_8011B780_mgmode + 0x18;
-D_8011B79A_mgmode = D_8011B780_mgmode + 0x1A;
-D_8011B79C_mgmode = D_8011B780_mgmode + 0x1C;
-D_8011B79E_mgmode = D_8011B780_mgmode + 0x1E;
-D_8011B7A0_mgmode = D_8011B780_mgmode + 0x20;
-D_8011B7A6_mgmode = D_8011B780_mgmode + 0x26;
-D_8011B7AE_mgmode = D_8011B780_mgmode + 0x2E;
-D_8011B7B6_mgmode = D_8011B780_mgmode + 0x36;
-D_8011B8B2_mgmode = D_8011B8A8_mgmode + 0xA;
-D_8011B8B4_mgmode = D_8011B8A8_mgmode + 0xC;
-D_8011B8B6_mgmode = D_8011B8A8_mgmode + 0xE;
-D_8011B8B8_mgmode = D_8011B8A8_mgmode + 0x10;
-D_8011B8C4_mgmode = D_8011B8A8_mgmode + 0x1C;
-D_8011B8E8_mgmode = D_8011B8A8_mgmode + 0x40;
+/* mgmode: mgmode_teamWork and mgmode_starWork fields, mgmode_motTbl[] and mgmode_mdlTbl[] entries. */
+mgmode_teamWinId = mgmode_teamWork;
+mgmode_teamOrderTbl = mgmode_teamWork + 0x2;
+mgmode_starPlayerNum = mgmode_starWork;
+mgmode_battlePlayerAnimTbl = mgmode_starWork + 0x2;
+mgmode_battlePlayerChrTbl = mgmode_starWork + 0xA;
+mgmode_battleConfettiTbl = mgmode_starWork + 0x12;
+mgmode_motTbl4 = mgmode_motTbl + 0x8;
+mgmode_motTbl5 = mgmode_motTbl + 0xA;
+mgmode_motTbl6 = mgmode_motTbl + 0xC;
+mgmode_motTbl7 = mgmode_motTbl + 0xE;
+mgmode_motTbl8 = mgmode_motTbl + 0x10;
+mgmode_motTbl9 = mgmode_motTbl + 0x12;
+mgmode_motTbl10 = mgmode_motTbl + 0x14;
+mgmode_motTbl11 = mgmode_motTbl + 0x16;
+mgmode_motTbl12 = mgmode_motTbl + 0x18;
+mgmode_motTbl13 = mgmode_motTbl + 0x1A;
+mgmode_motTbl14 = mgmode_motTbl + 0x1C;
+mgmode_motTbl15 = mgmode_motTbl + 0x1E;
+mgmode_motTbl16 = mgmode_motTbl + 0x20;
+mgmode_motTbl19 = mgmode_motTbl + 0x26;
+mgmode_motTbl23 = mgmode_motTbl + 0x2E;
+mgmode_motTbl27 = mgmode_motTbl + 0x36;
+mgmode_mdlTbl5 = mgmode_mdlTbl + 0xA;
+mgmode_mdlTbl6 = mgmode_mdlTbl + 0xC;
+mgmode_mdlTbl7 = mgmode_mdlTbl + 0xE;
+mgmode_mdlTbl8 = mgmode_mdlTbl + 0x10;
+mgmode_mdlTbl14 = mgmode_mdlTbl + 0x1C;
+mgmode_mdlTbl32 = mgmode_mdlTbl + 0x40;
 
 /* mstory4: interior Vec labels (mstory4_Scene1EventExec), s16 low halves of s32 arrays, StoryObjWork fields, misaligned BSS groups. */
 mstory4_cameraPosY = mstory4_cameraPos + 0x4;

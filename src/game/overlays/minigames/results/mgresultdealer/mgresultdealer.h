@@ -34,7 +34,7 @@ typedef struct {
 } UnkDealerCoin; // Size 0x18
 
 #ifndef NO_EXTERN_VARIABLES
-extern ResultDealerObj D_8010A250_mgresultdealer;
+extern ResultDealerObj mgresultdealer_playerWork;
 #endif
 
 #endif

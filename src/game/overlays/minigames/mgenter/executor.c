@@ -1,14 +1,14 @@
 #include "common.h"
 
-void func_801059D0_mgenter(void);
-void func_80105C60_mgenter(void);
+void mgenter_ObjectSetup(void);
+void mgenter_SkipObjectSetup(void);
 
-OvlEntrypoint D_80109A80_mgenter[] = {
-    { 0, func_801059D0_mgenter },
-    { 1, func_80105C60_mgenter },
+OvlEntrypoint mgenter_ovlEntryTbl[] = {
+    { 0, mgenter_ObjectSetup },
+    { 1, mgenter_SkipObjectSetup },
     { -1, NULL }
 };
 
-void func_801059A0_mgenter(void) {
-    ovlEventCall(D_80109A80_mgenter, omovlevtno);
+void mgenter_Executor(void) {
+    ovlEventCall(mgenter_ovlEntryTbl, omovlevtno);
 }

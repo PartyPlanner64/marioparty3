@@ -1,95 +1,95 @@
 #include "inst.h"
 
-extern const char D_8010DA24_inst[];
-extern const char D_8010DA34_inst[];
-extern const char D_8010DA44_inst[];
-extern const char D_8010DA54_inst[];
-extern const char D_8010DA64_inst[];
-extern const char D_8010DA74_inst[];
-extern const char D_8010DA84_inst[];
-extern const char D_8010DA94_inst[];
-extern const char D_8010DAA4_inst[];
-extern const char D_8010DAB0_inst[];
-extern const char D_8010DABC_inst[];
-extern const char D_8010DAC8_inst[];
+extern const char inst_chrNode13Name[];
+extern const char inst_chrNode12Name[];
+extern const char inst_chrNode11Name[];
+extern const char inst_chrNode10Name[];
+extern const char inst_chrNode09Name[];
+extern const char inst_chrNode08Name[];
+extern const char inst_chrNode07Name[];
+extern const char inst_chrNode06Name[];
+extern const char inst_plateHookLastName[];
+extern const char inst_plateHookMidoriName[];
+extern const char inst_plateHookAkaName[];
+extern const char inst_plateHookAoName[];
 
-s8 D_8010D400_inst[4] = {0, 1, 2, 3};
-s8 D_8010D404_inst = 0;
-s8 D_8010D405_inst = 0;
-s8 D_8010D406_inst = 0;
-s8 D_8010D407_inst = 0;
-s8 D_8010D408_inst = 0;
-s8 D_8010D409_inst = 0;
-s8 D_8010D40A_inst = 0;
-s8 D_8010D40B_inst = 0;
-s8 D_8010D40C_inst[5] = {0};
-s8 D_8010D411_inst = 0;
-f32 D_8010D414_inst = 45.0f;
-Vec D_8010D418_inst = {0.0f, 0.0f, 0.0f};
-Vec D_8010D424_inst = {0.0f, 0.0f, 0.0f};
-Vec D_8010D430_inst = {0.0f, 1.0f, -0.000001f};
-s32 D_8010D43C_inst = 0;
-s32 D_8010D440_inst = 0;
-Vec D_8010D444_inst[4] = {
+s8 inst_playerOrderTbl[4] = {0, 1, 2, 3};
+s8 inst_mainDoneF = 0;
+s8 inst_mainUnusedF = 0;
+s8 inst_practiceStartF = 0;
+s8 inst_practiceRetF = 0;
+s8 inst_introSkipF = 0;
+s8 inst_startF = 0;
+s8 inst_mgType = 0;
+s8 inst_mgNo = 0;
+s8 inst_itemPrizeTbl[5] = {0};
+s8 inst_hostNo = 0;
+f32 inst_cameraTilt = 45.0f;
+Vec inst_cameraPos = {0.0f, 0.0f, 0.0f};
+Vec inst_cameraTarget = {0.0f, 0.0f, 0.0f};
+Vec inst_cameraUp = {0.0f, 1.0f, -0.000001f};
+s32 inst_mainState = 0;
+s32 inst_winOpenF = 0;
+Vec inst_cameraPosTbl[4] = {
     {70.0f, 560.0f, 1210.0f},
     {0.0f, 560.0f, 1210.0f},
     {0.0f, 470.0f, 830.0f},
     {67.5f, 300.0f, 537.5f},
 };
-Vec D_8010D474_inst[4] = {
+Vec inst_cameraTargetTbl[4] = {
     {70.0f, 0.0f, -210.0f},
     {0.0f, 0.0f, -210.0f},
     {0.0f, 0.0f, -10.0f},
     {67.5f, 50.0f, 37.5f},
 };
-s32 D_8010D4A4_inst = 0;
-s8 D_8010D4A8_inst = 0;
-u32 D_8010D4AC_inst = 0;
-u8 D_8010D4B0_inst[8] = {0, 1, 4, 5, 8, 10, 12, 14};
-u8 D_8010D4B8_inst[8] = {1, 2, 3, 6, 7, 9, 13, 11};
+s32 inst_picNo = 0;
+s8 inst_exitWipeF = 0;
+u32 inst_cameraMoveTime = 0;
+u8 inst_itemPrizeATbl[8] = {0, 1, 4, 5, 8, 10, 12, 14};
+u8 inst_itemPrizeBTbl[8] = {1, 2, 3, 6, 7, 9, 13, 11};
 
 /* The records have varying node counts and share the InstModelHooks prefix. */
-InstModelHooks *D_8010D4C0_inst[][2] = {
-    {(InstModelHooks *)&D_8010D770_inst, (InstModelHooks *)&D_8010D7A4_inst},
-    {(InstModelHooks *)&D_8010D7B0_inst, (InstModelHooks *)&D_8010D7E4_inst},
-    {(InstModelHooks *)&D_8010D7EC_inst, (InstModelHooks *)&D_8010D820_inst},
-    {(InstModelHooks *)&D_8010D828_inst, (InstModelHooks *)&D_8010D85C_inst},
-    {(InstModelHooks *)&D_8010D864_inst, (InstModelHooks *)&D_8010D880_inst},
-    {(InstModelHooks *)&D_8010D888_inst, (InstModelHooks *)&D_8010D89C_inst},
-    {(InstModelHooks *)&D_8010D888_inst, (InstModelHooks *)&D_8010D89C_inst},
-    {(InstModelHooks *)&D_8010D8DC_inst, (InstModelHooks *)&D_8010D8EC_inst},
-    {(InstModelHooks *)&D_8010D8F4_inst, (InstModelHooks *)&D_8010D904_inst},
+InstModelHooks *inst_hookTbl[][2] = {
+    {(InstModelHooks *)&inst_mg4PPlayerHooks, (InstModelHooks *)&inst_mg4PItemHooks},
+    {(InstModelHooks *)&inst_mg2vs2PlayerHooks, (InstModelHooks *)&inst_mg2vs2ItemHooks},
+    {(InstModelHooks *)&inst_mg3vs1PlayerHooks, (InstModelHooks *)&inst_mg3vs1ItemHooks},
+    {(InstModelHooks *)&inst_battlePlayerHooks, (InstModelHooks *)&inst_battleItemHooks},
+    {(InstModelHooks *)&inst_duelPlayerHooks, (InstModelHooks *)&inst_duelItemHooks},
+    {(InstModelHooks *)&inst_itemPlayerHooks, (InstModelHooks *)&inst_itemItemHooks},
+    {(InstModelHooks *)&inst_itemPlayerHooks, (InstModelHooks *)&inst_itemItemHooks},
+    {(InstModelHooks *)&inst_omakePlayerHooks, (InstModelHooks *)&inst_omakeItemHooks},
+    {(InstModelHooks *)&inst_lastPlayerHooks, (InstModelHooks *)&inst_lastItemHooks},
 };
 
-s32 D_8010D508_inst = 0;
-f32 D_8010D50C_inst = 0.0f;
-s32 D_8010D510_inst = 0;
+s32 inst_boxOpenCnt = 0;
+f32 inst_picScaleOfs = 0.0f;
+s32 inst_boxCloseCnt = 0;
 /* Unused initialized storage between the per-object state blocks. */
-s32 D_8010D514_inst[3] = {0};
-s32 D_8010D520_inst = 0;
-s32 D_8010D524_inst = 0;
-s32 D_8010D528_inst[2] = {0};
-s32 D_8010D530_inst = 0;
-s32 D_8010D534_inst = 0;
-s32 D_8010D538_inst[2] = {0};
-s32 D_8010D540_inst = 0;
-s32 D_8010D544_inst = 0;
-s32 D_8010D548_inst[2] = {0};
-s8 D_8010D550_inst = 0;
-s8 D_8010D551_inst = 0;
-u8 D_8010D554_inst[4] = {0};
-s32 D_8010D558_inst = 0;
-const char *D_8010D55C_inst[8] = {
-    D_8010DA94_inst, D_8010DA84_inst, D_8010DA74_inst, D_8010DA64_inst,
-    D_8010DA54_inst, D_8010DA44_inst, D_8010DA34_inst, D_8010DA24_inst,
+s32 inst_boxPad[3] = {0};
+s32 inst_hostWaitCnt = 0;
+s32 inst_hostJumpCnt = 0;
+s32 inst_hostPad[2] = {0};
+s32 inst_itemHostWaitCnt = 0;
+s32 inst_itemHostJumpCnt = 0;
+s32 inst_itemHostPad[2] = {0};
+s32 inst_battleHostWaitCnt = 0;
+s32 inst_battleHostJumpCnt = 0;
+s32 inst_battleHostPad[2] = {0};
+s8 inst_openF = 0;
+s8 inst_openDoneF = 0;
+u8 inst_plateColorTbl[4] = {0};
+s32 inst_playerCloseF = 0;
+const char *inst_chrNodeNameTbl[8] = {
+    inst_chrNode06Name, inst_chrNode07Name, inst_chrNode08Name, inst_chrNode09Name,
+    inst_chrNode10Name, inst_chrNode11Name, inst_chrNode12Name, inst_chrNode13Name,
 };
-s32 D_8010D57C_inst[4] = {0x17002A, 0x17002B, 0x17002C, 0x17002D};
-const char *D_8010D58C_inst[4] = {D_8010DAC8_inst, D_8010DABC_inst, D_8010DAB0_inst, D_8010DAA4_inst};
-s32 D_8010D59C_inst = 0;
-s32 D_8010D5A0_inst = 0;
-s32 D_8010D5A4_inst[3] = {0};
-s8 D_8010D5B0_inst = 0;
-s8 D_8010D5B1_inst = 0;
-s32 D_8010D5B4_inst = 0;
-s32 D_8010D5B8_inst = -64;
-s32 D_8010D5BC_inst = 0;
+s32 inst_plateFileTbl[4] = {0x17002A, 0x17002B, 0x17002C, 0x17002D};
+const char *inst_plateHookNameTbl[4] = {inst_plateHookAoName, inst_plateHookAkaName, inst_plateHookMidoriName, inst_plateHookLastName};
+s32 inst_playerOpenCnt = 0;
+s32 inst_playerCloseCnt = 0;
+s32 inst_playerPad[3] = {0};
+s8 inst_winStartF = 0;
+s8 inst_practiceF = 0;
+s32 inst_titleInCnt = 0;
+s32 inst_titleY = -64;
+s32 inst_titlePad = 0;

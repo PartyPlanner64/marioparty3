@@ -1,168 +1,168 @@
 #include "common.h"
 #include "inst.h"
 
-extern InstModelHooks *D_8010D4C0_inst[][2];
-extern const s32 D_8010D910_inst[][2];
-extern s32 D_8010D4A4_inst;
-extern s8 D_8010D408_inst;
-extern s8 D_8010D40A_inst;
-extern f32 D_8010D414_inst;
-extern void *D_8010DC10_inst;
-extern void *D_8010DC14_inst;
-extern void *D_8010DC18_inst;
-extern InstObjectState D_8010DDD8_inst;
-extern s32 D_8010D508_inst;
-extern f32 D_8010D50C_inst;
-extern s32 D_8010D510_inst;
+extern InstModelHooks *inst_hookTbl[][2];
+extern const s32 inst_boxFileTbl1[][2];
+extern s32 inst_picNo;
+extern s8 inst_introSkipF;
+extern s8 inst_mgType;
+extern f32 inst_cameraTilt;
+extern void *inst_picData;
+extern void *inst_picAlpha;
+extern void *inst_picHeader;
+extern InstObjectState inst_boxWork;
+extern s32 inst_boxOpenCnt;
+extern f32 inst_picScaleOfs;
+extern s32 inst_boxCloseCnt;
 
-extern const char D_8010D784_inst[];
-extern const char D_8010D78C_inst[];
-extern const char D_8010D794_inst[];
-extern const char D_8010D79C_inst[];
-extern const char D_8010D7AC_inst[];
-extern const char D_8010D7C4_inst[];
-extern const char D_8010D7CC_inst[];
-extern const char D_8010D7D4_inst[];
-extern const char D_8010D7DC_inst[];
-extern const char D_8010D800_inst[];
-extern const char D_8010D808_inst[];
-extern const char D_8010D810_inst[];
-extern const char D_8010D818_inst[];
-extern const char D_8010D83C_inst[];
-extern const char D_8010D844_inst[];
-extern const char D_8010D84C_inst[];
-extern const char D_8010D854_inst[];
-extern const char D_8010D870_inst[];
-extern const char D_8010D878_inst[];
-extern const char D_8010D890_inst[];
-extern const char D_8010D8B4_inst[];
-extern const char D_8010D8BC_inst[];
-extern const char D_8010D8C4_inst[];
-extern const char D_8010D8CC_inst[];
-extern const char D_8010D8D4_inst[];
-extern const char D_8010D8E4_inst[];
-extern const char D_8010D8FC_inst[];
-extern const char D_8010D978_inst[];
-extern const char D_8010D980_inst[];
+extern const char inst_mg4PHook4Name[];
+extern const char inst_mg4PHook3Name[];
+extern const char inst_mg4PHook2Name[];
+extern const char inst_mg4PHook1Name[];
+extern const char inst_emptyHookName[];
+extern const char inst_mg2vs2Hook4Name[];
+extern const char inst_mg2vs2Hook3Name[];
+extern const char inst_mg2vs2Hook2Name[];
+extern const char inst_mg2vs2Hook1Name[];
+extern const char inst_mg3vs1Hook4Name[];
+extern const char inst_mg3vs1Hook3Name[];
+extern const char inst_mg3vs1Hook2Name[];
+extern const char inst_mg3vs1Hook1Name[];
+extern const char inst_battleHook4Name[];
+extern const char inst_battleHook3Name[];
+extern const char inst_battleHook2Name[];
+extern const char inst_battleHook1Name[];
+extern const char inst_duelHook2Name[];
+extern const char inst_duelHook1Name[];
+extern const char inst_itemChrHookName[];
+extern const char inst_itemHook5Name[];
+extern const char inst_itemHook4Name[];
+extern const char inst_itemHook3Name[];
+extern const char inst_itemHook2Name[];
+extern const char inst_itemHook1Name[];
+extern const char inst_omakeHook1Name[];
+extern const char inst_lastHook1Name[];
+extern const char inst_picNodeName[];
+extern const char inst_frameNodeName[];
 
-const InstModelHooks4 D_8010D770_inst = {4, {D_8010D79C_inst, D_8010D794_inst, D_8010D78C_inst, D_8010D784_inst}};
+const InstModelHooks4 inst_mg4PPlayerHooks = {4, {inst_mg4PHook1Name, inst_mg4PHook2Name, inst_mg4PHook3Name, inst_mg4PHook4Name}};
 
-const char D_8010D784_inst[] = "4p_4";
+const char inst_mg4PHook4Name[] = "4p_4";
 
-const char D_8010D78C_inst[] = "4p_3";
+const char inst_mg4PHook3Name[] = "4p_3";
 
-const char D_8010D794_inst[] = "4p_2";
+const char inst_mg4PHook2Name[] = "4p_2";
 
-const char D_8010D79C_inst[] = "4p_1";
+const char inst_mg4PHook1Name[] = "4p_1";
 
-const InstModelHooks D_8010D7A4_inst = {0, {D_8010D7AC_inst}};
+const InstModelHooks inst_mg4PItemHooks = {0, {inst_emptyHookName}};
 
-const char D_8010D7AC_inst[4] = "";
+const char inst_emptyHookName[4] = "";
 
-const InstModelHooks4 D_8010D7B0_inst = {4, {D_8010D7DC_inst, D_8010D7D4_inst, D_8010D7CC_inst, D_8010D7C4_inst}};
+const InstModelHooks4 inst_mg2vs2PlayerHooks = {4, {inst_mg2vs2Hook1Name, inst_mg2vs2Hook2Name, inst_mg2vs2Hook3Name, inst_mg2vs2Hook4Name}};
 
-const char D_8010D7C4_inst[] = "2vs2_4";
+const char inst_mg2vs2Hook4Name[] = "2vs2_4";
 
-const char D_8010D7CC_inst[] = "2vs2_3";
+const char inst_mg2vs2Hook3Name[] = "2vs2_3";
 
-const char D_8010D7D4_inst[] = "2vs2_2";
+const char inst_mg2vs2Hook2Name[] = "2vs2_2";
 
-const char D_8010D7DC_inst[] = "2vs2_1";
+const char inst_mg2vs2Hook1Name[] = "2vs2_1";
 
-const InstModelHooks D_8010D7E4_inst = {0, {D_8010D7AC_inst}};
+const InstModelHooks inst_mg2vs2ItemHooks = {0, {inst_emptyHookName}};
 
-const InstModelHooks4 D_8010D7EC_inst = {4, {D_8010D818_inst, D_8010D810_inst, D_8010D808_inst, D_8010D800_inst}};
+const InstModelHooks4 inst_mg3vs1PlayerHooks = {4, {inst_mg3vs1Hook1Name, inst_mg3vs1Hook2Name, inst_mg3vs1Hook3Name, inst_mg3vs1Hook4Name}};
 
-const char D_8010D800_inst[] = "3vs1_4";
+const char inst_mg3vs1Hook4Name[] = "3vs1_4";
 
-const char D_8010D808_inst[] = "3vs1_3";
+const char inst_mg3vs1Hook3Name[] = "3vs1_3";
 
-const char D_8010D810_inst[] = "3vs1_2";
+const char inst_mg3vs1Hook2Name[] = "3vs1_2";
 
-const char D_8010D818_inst[] = "3vs1_1";
+const char inst_mg3vs1Hook1Name[] = "3vs1_1";
 
-const InstModelHooks D_8010D820_inst = {0, {D_8010D7AC_inst}};
+const InstModelHooks inst_mg3vs1ItemHooks = {0, {inst_emptyHookName}};
 
-const InstModelHooks4 D_8010D828_inst = {4, {D_8010D854_inst, D_8010D84C_inst, D_8010D844_inst, D_8010D83C_inst}};
+const InstModelHooks4 inst_battlePlayerHooks = {4, {inst_battleHook1Name, inst_battleHook2Name, inst_battleHook3Name, inst_battleHook4Name}};
 
-const char D_8010D83C_inst[] = "battle4";
+const char inst_battleHook4Name[] = "battle4";
 
-const char D_8010D844_inst[] = "battle3";
+const char inst_battleHook3Name[] = "battle3";
 
-const char D_8010D84C_inst[] = "battle2";
+const char inst_battleHook2Name[] = "battle2";
 
-const char D_8010D854_inst[] = "battle1";
+const char inst_battleHook1Name[] = "battle1";
 
-const InstModelHooks D_8010D85C_inst = {0, {D_8010D7AC_inst}};
+const InstModelHooks inst_battleItemHooks = {0, {inst_emptyHookName}};
 
-const InstModelHooks2 D_8010D864_inst = {2, {D_8010D878_inst, D_8010D870_inst}};
+const InstModelHooks2 inst_duelPlayerHooks = {2, {inst_duelHook1Name, inst_duelHook2Name}};
 
-const char D_8010D870_inst[] = "duel2";
+const char inst_duelHook2Name[] = "duel2";
 
-const char D_8010D878_inst[] = "duel1";
+const char inst_duelHook1Name[] = "duel1";
 
-const InstModelHooks D_8010D880_inst = {0, {D_8010D7AC_inst}};
+const InstModelHooks inst_duelItemHooks = {0, {inst_emptyHookName}};
 
-const InstModelHooks D_8010D888_inst = {1, {D_8010D890_inst}};
+const InstModelHooks inst_itemPlayerHooks = {1, {inst_itemChrHookName}};
 
-const char D_8010D890_inst[] = "item_chara";
+const char inst_itemChrHookName[] = "item_chara";
 
-const InstModelHooks5 D_8010D89C_inst = {5, {D_8010D8D4_inst, D_8010D8CC_inst, D_8010D8C4_inst, D_8010D8BC_inst, D_8010D8B4_inst}};
+const InstModelHooks5 inst_itemItemHooks = {5, {inst_itemHook1Name, inst_itemHook2Name, inst_itemHook3Name, inst_itemHook4Name, inst_itemHook5Name}};
 
-const char D_8010D8B4_inst[] = "item5";
+const char inst_itemHook5Name[] = "item5";
 
-const char D_8010D8BC_inst[] = "item4";
+const char inst_itemHook4Name[] = "item4";
 
-const char D_8010D8C4_inst[] = "item3";
+const char inst_itemHook3Name[] = "item3";
 
-const char D_8010D8CC_inst[] = "item2";
+const char inst_itemHook2Name[] = "item2";
 
-const char D_8010D8D4_inst[] = "item1";
+const char inst_itemHook1Name[] = "item1";
 
-const InstModelHooks D_8010D8DC_inst = {1, {D_8010D8E4_inst}};
+const InstModelHooks inst_omakePlayerHooks = {1, {inst_omakeHook1Name}};
 
-const char D_8010D8E4_inst[] = "omake1";
+const char inst_omakeHook1Name[] = "omake1";
 
-const InstModelHooks D_8010D8EC_inst = {0, {D_8010D7AC_inst}};
+const InstModelHooks inst_omakeItemHooks = {0, {inst_emptyHookName}};
 
-const InstModelHooks D_8010D8F4_inst = {1, {D_8010D8FC_inst}};
+const InstModelHooks inst_lastPlayerHooks = {1, {inst_lastHook1Name}};
 
-const char D_8010D8FC_inst[] = "last1";
+const char inst_lastHook1Name[] = "last1";
 
-const InstModelHooks D_8010D904_inst = {0, {D_8010D7AC_inst}};
+const InstModelHooks inst_lastItemHooks = {0, {inst_emptyHookName}};
 
-const s32 D_8010D90C_inst[][2] = {
+const s32 inst_boxFileTbl[][2] = {
     {0x10, 0x18}, {0x11, 0x19}, {0x12, 0x1A},
     {0x13, 0x1B}, {0x14, 0x1C}, {0x15, 0x1D},
     {0x15, 0x1D}, {0x17, 0x1F}, {0x16, 0x1E},
 };
 
-const s32 D_8010D954_inst[] = {
+const s32 inst_frameFileTbl[] = {
     0x170020, 0x170021, 0x170022, 0x170023, 0x170024,
     0x170025, 0x170025, 0x170027, 0x170026,
 };
 
-const char D_8010D978_inst[] = "gamen";
+const char inst_picNodeName[] = "gamen";
 
-const char D_8010D980_inst[] = "frame";
+const char inst_frameNodeName[] = "frame";
 
-void func_80107E98_inst(void);
-s32 func_80107E20_inst(void);
-void func_80107BE4_inst(void);
-void func_80107938_inst(omObjData *);
-void func_8010815C_inst(omObjData *);
-void func_80107EE0_inst(void);
-void func_80108AF0_inst(s16 model, void *imageHeader, void *imageData, u8 *alpha);
-void func_80107470_inst(void); /* extern */
-void func_801079CC_inst(omObjData *);
-s32 func_8010B10C_inst(void);
-void func_80107E18_inst(omObjData *);
-void func_80107F98_inst(omObjData *);
-void func_8010B124_inst(void);
-void func_80107A24_inst(omObjData *); /* extern */
-void func_80107BF8_inst(omObjData *); /* extern */
+void inst_BoxMotionStart(void);
+s32 inst_BoxMotionEndCheck(void);
+void inst_PicPulseStart(void);
+void inst_BoxOpenWait(omObjData *);
+void inst_BoxOpenNow(omObjData *);
+void inst_BoxDestroy(void);
+void inst_PicLoad(s16 model, void *imageHeader, void *imageData, u8 *alpha);
+void inst_BoxMain(void); /* extern */
+void inst_BoxOpenStart(omObjData *);
+s32 inst_OpenCheck(void);
+void inst_BoxIdle(omObjData *);
+void inst_BoxClose(omObjData *);
+void inst_PlayerCloseStart(void);
+void inst_BoxOpen(omObjData *); /* extern */
+void inst_PicPulse(omObjData *); /* extern */
 
-void func_80107470_inst(void) {
+void inst_BoxMain(void) {
     s32 i;
     s32 j;
     omObjData *object;
@@ -173,12 +173,12 @@ void func_80107470_inst(void) {
     HmfModelData_Unk64_Unk60_Struct *material;
 
     object = omAddObj(20, 10, 5, -1, NULL);
-    D_8010DDD8_inst.object = object;
-    object->model[0] = Hu3DModelRead3(D_8010D90C_inst[D_8010D40A_inst][0] | 0x170000, 0x16B9);
+    inst_boxWork.object = object;
+    object->model[0] = Hu3DModelRead3(inst_boxFileTbl[inst_mgType][0] | 0x170000, 0x16B9);
     object->model[1] = Hu3DModelRead3(0x170029, 0x1E89);
-    object->model[2] = Hu3DModelRead3(D_8010D954_inst[D_8010D40A_inst], 0x1AB9);
+    object->model[2] = Hu3DModelRead3(inst_frameFileTbl[inst_mgType], 0x1AB9);
     object->model[3] = Hu3DModelRead3(0x170028, 0x2B9);
-    object->model[4] = Hu3DModelRead3(D_8010D910_inst[D_8010D40A_inst][0] | 0x170000, 0x239);
+    object->model[4] = Hu3DModelRead3(inst_boxFileTbl1[inst_mgType][0] | 0x170000, 0x239);
     Hu3DMotionAttrSet(object->model[0], 2, 0);
     Hu3DMotionAttrSet(object->model[1], 2, 0);
     Hu3DMotionAttrSet(object->model[2], 2, 0);
@@ -204,7 +204,7 @@ void func_80107470_inst(void) {
         Hu3DModelScaleSet(object->model[i + 1], 0.45f, 0.45f, 0.45f);
     }
     for (group = 0; group < 2; group++) {
-        hooks = D_8010D4C0_inst[D_8010D40A_inst][group];
+        hooks = inst_hookTbl[inst_mgType][group];
         for (j = 0; j < hooks->count; j++) {
             node = (HmfMotionNode *)Hu3DModelObjPtrGet(object->model[0], hooks->nodes[j]);
             data = node->unk54;
@@ -216,71 +216,71 @@ void func_80107470_inst(void) {
             }
         }
     }
-    D_8010DC10_inst = DataRead(D_8010D4A4_inst | 0x170000);
-    D_8010DC18_inst = DataRead((D_8010D4A4_inst + 1) | 0x170000);
-    D_8010DC14_inst = DataRead(0x170007);
-    func_80108AF0_inst(object->model[1], D_8010DC18_inst, D_8010DC10_inst, D_8010DC14_inst);
+    inst_picData = DataRead(inst_picNo | 0x170000);
+    inst_picHeader = DataRead((inst_picNo + 1) | 0x170000);
+    inst_picAlpha = DataRead(0x170007);
+    inst_PicLoad(object->model[1], inst_picHeader, inst_picData, inst_picAlpha);
     Hu3DData[object->model[1]].rot.x = -90.0f;
-    omPrcSetDestructor(NULL, func_80107EE0_inst);
-    if (D_8010D408_inst == 0) {
-        D_8010DDD8_inst.update = func_80107938_inst;
+    omPrcSetDestructor(NULL, inst_BoxDestroy);
+    if (inst_introSkipF == 0) {
+        inst_boxWork.update = inst_BoxOpenWait;
     } else {
-        D_8010DDD8_inst.update = func_8010815C_inst;
+        inst_boxWork.update = inst_BoxOpenNow;
     }
     while (1) {
-        D_8010DDD8_inst.update(object);
+        inst_boxWork.update(object);
         HuPrcVSleep();
     }
 }
 
-void func_80107938_inst(omObjData *obj) {
-    if ((s8)func_8010B10C_inst() == 1) {
+void inst_BoxOpenWait(omObjData *obj) {
+    if ((s8)inst_OpenCheck() == 1) {
         Hu3DMotionAttrSet(obj->model[1], 1, 0);
         Hu3DMotionAttrSet(obj->model[2], 1, 0);
         Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-        D_8010DDD8_inst.update = func_801079CC_inst;
+        inst_boxWork.update = inst_BoxOpenStart;
     }
 }
 
-void func_801079CC_inst(omObjData *obj) {
+void inst_BoxOpenStart(omObjData *obj) {
     Hu3DMotionAttrSet(obj->model[3], 1, 0);
     Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-    D_8010DDD8_inst.update = func_80107A24_inst;
+    inst_boxWork.update = inst_BoxOpen;
 }
 
-void func_80107A24_inst(omObjData *object) {
+void inst_BoxOpen(omObjData *object) {
     f32 duration = Hu3DMotion[Hu3DData[object->model[3]].motId].unk02 - 25.0f;
-    f32 angle = ((f32)D_8010D508_inst / duration) * D_8010D414_inst;
+    f32 angle = ((f32)inst_boxOpenCnt / duration) * inst_cameraTilt;
     s32 i;
 
     Hu3DData[object->model[1]].rot.x = angle - 90.0f;
     Hu3DData[object->model[2]].rot.x = angle;
-    D_8010D50C_inst = (0.15f / duration) * D_8010D508_inst;
+    inst_picScaleOfs = (0.15f / duration) * inst_boxOpenCnt;
     for (i = 0; i < 3; i++) {
-        Hu3DModelScaleSet(object->model[i + 1], D_8010D50C_inst + 0.45f, D_8010D50C_inst + 0.45f,
-                          D_8010D50C_inst + 0.45f);
+        Hu3DModelScaleSet(object->model[i + 1], inst_picScaleOfs + 0.45f, inst_picScaleOfs + 0.45f,
+                          inst_picScaleOfs + 0.45f);
     }
-    D_8010D508_inst++;
-    if ((f32)D_8010D508_inst == duration) {
-        D_8010DDD8_inst.update = func_80107E18_inst;
-        D_8010D50C_inst = 0;
-        D_8010D508_inst = 0;
+    inst_boxOpenCnt++;
+    if ((f32)inst_boxOpenCnt == duration) {
+        inst_boxWork.update = inst_BoxIdle;
+        inst_picScaleOfs = 0;
+        inst_boxOpenCnt = 0;
     }
 }
 
-void func_80107BE4_inst(void) {
-    D_8010DDD8_inst.update = func_80107BF8_inst;
+void inst_PicPulseStart(void) {
+    inst_boxWork.update = inst_PicPulse;
 }
 
-void func_80107BF8_inst(omObjData *object) {
+void inst_PicPulse(omObjData *object) {
     HmfSkeletonNode *nodes[2];
     s32 i;
     s32 j;
     f32 scale;
 
-    nodes[0] = Hu3DModelObjPtrGet(object->model[1], D_8010D978_inst);
-    nodes[1] = Hu3DModelObjPtrGet(object->model[2], D_8010D980_inst);
+    nodes[0] = Hu3DModelObjPtrGet(object->model[1], inst_picNodeName);
+    nodes[1] = Hu3DModelObjPtrGet(object->model[2], inst_frameNodeName);
     if (nodes[0] == (HmfSkeletonNode *)-1 || nodes[1] == (HmfSkeletonNode *)-1) {
         osSyncPrintf("ERROR\n");
     }
@@ -310,66 +310,66 @@ void func_80107BF8_inst(omObjData *object) {
         nodes[j]->unk4C[1][1] = 1.3f;
         nodes[j]->unk4C[2][2] = 1.3f;
     }
-    D_8010DDD8_inst.update = func_80107E18_inst;
+    inst_boxWork.update = inst_BoxIdle;
 }
 
-void func_80107E18_inst(omObjData *object) {
+void inst_BoxIdle(omObjData *object) {
 }
 
-s32 func_80107E20_inst(void) {
-    s16 modelId = D_8010DDD8_inst.object->model[0];
+s32 inst_BoxMotionEndCheck(void) {
+    s16 modelId = inst_boxWork.object->model[0];
     f32 unk40 = Hu3DData[modelId].motTime;
     return Hu3DMotion[Hu3DData[modelId].motId].unk02 <= unk40;
 }
 
-void func_80107E98_inst(void) {
-    Hu3DMotionTimeSet(D_8010DDD8_inst.object->model[0], 0);
-    Hu3DMotionAttrSet(D_8010DDD8_inst.object->model[0], 1, 0);
+void inst_BoxMotionStart(void) {
+    Hu3DMotionTimeSet(inst_boxWork.object->model[0], 0);
+    Hu3DMotionAttrSet(inst_boxWork.object->model[0], 1, 0);
 }
 
-void func_80107EE0_inst(void) {
-    DataClose(D_8010DC18_inst);
-    DataClose(D_8010DC10_inst);
-    DataClose(D_8010DC14_inst);
+void inst_BoxDestroy(void) {
+    DataClose(inst_picHeader);
+    DataClose(inst_picData);
+    DataClose(inst_picAlpha);
 }
 
-void func_80107F18_inst(void) {
-    omObjData *object = D_8010DDD8_inst.object;
+void inst_BoxCloseStart(void) {
+    omObjData *object = inst_boxWork.object;
 
     Hu3DMotionAttrSet(object->model[3], 1, 0);
     Hu3DMotionAttrSet(object->model[3], 4, 4);
     Hu3DModelAttrSet(object->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-    func_8010B124_inst();
-    D_8010DDD8_inst.update = func_80107F98_inst;
+    inst_PlayerCloseStart();
+    inst_boxWork.update = inst_BoxClose;
 }
 
-void func_80107F98_inst(omObjData *obj) {
+void inst_BoxClose(omObjData *obj) {
     f32 duration = Hu3DMotion[Hu3DData[obj->model[3]].motId].unk02 - 25.0f;
-    f32 angle = D_8010D414_inst - ((f32)D_8010D510_inst / duration) * D_8010D414_inst;
+    f32 angle = inst_cameraTilt - ((f32)inst_boxCloseCnt / duration) * inst_cameraTilt;
 
     Hu3DData[obj->model[1]].rot.x = angle - 90.0f;
     Hu3DData[obj->model[2]].rot.x = angle;
-    D_8010D510_inst++;
-    if ((f32)D_8010D510_inst == duration) {
-        D_8010DDD8_inst.update = func_80107BF8_inst;
-        D_8010D510_inst = 0;
+    inst_boxCloseCnt++;
+    if ((f32)inst_boxCloseCnt == duration) {
+        inst_boxWork.update = inst_PicPulse;
+        inst_boxCloseCnt = 0;
     }
 }
 
-s32 func_801080A8_inst(void) {
-    f32 unk40 = Hu3DData[D_8010DDD8_inst.object->model[0]].motTime;
+s32 inst_BoxMotionStartCheck(void) {
+    f32 unk40 = Hu3DData[inst_boxWork.object->model[0]].motTime;
     return unk40 == 0.0f;
 }
 
-void func_801080FC_inst(void) {
-    omObjData *obj = D_8010DDD8_inst.object;
+void inst_BoxMotionRevStart(void) {
+    omObjData *obj = inst_boxWork.object;
 
     Hu3DMotionAttrSet(obj->model[0], 1, 0);
     Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DMotionAttrSet(obj->model[0], 4, 4);
 }
 
-void func_8010815C_inst(omObjData *obj) {
+void inst_BoxOpenNow(omObjData *obj) {
     HmfSkeletonNode *nodes[2];
     s32 i;
     f32 duration = Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02;
@@ -377,18 +377,18 @@ void func_8010815C_inst(omObjData *obj) {
     Hu3DMotionAttrSet(obj->model[0], 1, 0);
     Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DMotionTimeSet(obj->model[0], duration);
-    Hu3DData[obj->model[1]].rot.x = D_8010D414_inst - 90.0f;
-    Hu3DData[obj->model[2]].rot.x = D_8010D414_inst;
+    Hu3DData[obj->model[1]].rot.x = inst_cameraTilt - 90.0f;
+    Hu3DData[obj->model[2]].rot.x = inst_cameraTilt;
     for (i = 0; i < 3; i++) {
         Hu3DModelScaleSet(obj->model[i + 1], 0.6f, 0.6f, 0.6f);
         Hu3DModelAttrSet(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     }
-    nodes[0] = Hu3DModelObjPtrGet(obj->model[1], D_8010D978_inst);
-    nodes[1] = Hu3DModelObjPtrGet(obj->model[2], D_8010D980_inst);
+    nodes[0] = Hu3DModelObjPtrGet(obj->model[1], inst_picNodeName);
+    nodes[1] = Hu3DModelObjPtrGet(obj->model[2], inst_frameNodeName);
     for (i = 0; i < 2; i++) {
         nodes[i]->unk4C[0][0] = 1.3f;
         nodes[i]->unk4C[1][1] = 1.3f;
         nodes[i]->unk4C[2][2] = 1.3f;
     }
-    D_8010DDD8_inst.update = func_80107E18_inst;
+    inst_boxWork.update = inst_BoxIdle;
 }

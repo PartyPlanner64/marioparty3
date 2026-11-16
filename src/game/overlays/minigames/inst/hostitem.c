@@ -1,32 +1,32 @@
 #include "common.h"
 
-extern s8 D_8010D408_inst;
-extern s8 D_8010D40A_inst;
-extern s32 D_8010DC40_inst;
-extern s16 D_8010DC42_inst;
-extern omObjData *D_8010DDD0_inst;
-extern s32 D_8010D540_inst;
-extern s32 D_8010D544_inst;
-extern void (*D_8010DDD4_inst)(omObjData *);
+extern s8 inst_introSkipF;
+extern s8 inst_mgType;
+extern s32 inst_battleHostAnim;
+extern s16 inst_battleHostAnimHalf;
+extern omObjData *inst_battleHostObj;
+extern s32 inst_battleHostWaitCnt;
+extern s32 inst_battleHostJumpCnt;
+extern void (*inst_battleHostFunc)(omObjData *);
 
-void func_80109E94_inst(omObjData *);
-void func_80109F50_inst(omObjData *);
-void func_8010A000_inst(omObjData *);
-void func_8010A0E8_inst(omObjData *);
-void func_8010A1BC_inst(omObjData *object);
-void func_8010C848_inst(void);
-void func_8010C8D0_inst(void);
+void inst_BattleHostReset(omObjData *);
+void inst_BattleHostWait(omObjData *);
+void inst_BattleHostJump(omObjData *);
+void inst_BattleHostLand(omObjData *);
+void inst_BattleHostIdle(omObjData *object);
+void inst_WinOpen(void);
+void inst_WinStart(void);
 
-void func_80109A90_inst(void) {
+void inst_BattleHostMain(void) {
     omObjData *object;
     void *data;
 
     object = omAddObj(25, 5, 8, -1, NULL);
-    D_8010DDD0_inst = object;
+    inst_battleHostObj = object;
     object->model[0] = Hu3DModelRead(0xA00A5, 0x16A9);
     omObjMotionRead(object, 0, 0xA00B4);
     omObjMotionRead(object, 1, 0xA00B5);
-    if (D_8010D40A_inst == 3) {
+    if (inst_mgType == 3) {
         object->model[1] = Hu3DModelRead(0x170047, 0x16B9);
         Hu3DModelAttrSet(object->model[1], 0x4000, 0x4000);
         Hu3DMotionAttrSet(object->model[1], 2, 2);
@@ -36,14 +36,14 @@ void func_80109A90_inst(void) {
     Hu3DMotionModelSet(object->model[0], object->motion[0]);
     Hu3DMotionAttrSet(object->model[0], 2, 2);
     data = DataRead(0xA00B8);
-    D_8010DC40_inst = (s16)Hu3DAnimCreate(Hu3DData[object->model[0]].hmf, data, 0, "c164m_0_DEF");
+    inst_battleHostAnim = (s16)Hu3DAnimCreate(Hu3DData[object->model[0]].hmf, data, 0, "c164m_0_DEF");
     HuMemMemoryFreePerm(data);
     Hu3DModelRemakeStatic(object->model[0]);
     Hu3DModelDynamicFree(object->model[0]);
-    Hu3DAnimAttrSet(D_8010DC42_inst, 1, 0);
-    Hu3DAnimBankSet(D_8010DC42_inst, 0);
-    object->trans.x = D_8010D40A_inst == 3 ? -86.0f : -91.0f;
-    object->trans.y = D_8010D40A_inst == 3 ? -150.0f : -164.0f;
+    Hu3DAnimAttrSet(inst_battleHostAnimHalf, 1, 0);
+    Hu3DAnimBankSet(inst_battleHostAnimHalf, 0);
+    object->trans.x = inst_mgType == 3 ? -86.0f : -91.0f;
+    object->trans.y = inst_mgType == 3 ? -150.0f : -164.0f;
     object->trans.z = 210.0f;
     object->rot.x = -20.0f;
     object->rot.y = 15.0f;
@@ -52,81 +52,81 @@ void func_80109A90_inst(void) {
     object->scale.x = object->scale.y = object->scale.z = 0.4f;
     Hu3DModelScaleSet(object->model[0], 0.4f, 0.4f, 0.4f);
     Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    if (D_8010D408_inst == 1) {
+    if (inst_introSkipF == 1) {
         Hu3DMotionModelSet(object->model[0], object->motion[0]);
         Hu3DMotionAttrSet(object->model[0], 2, 2);
         Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-        object->trans.x = D_8010D40A_inst == 3 ? -86.0f : -91.0f;
-        object->trans.y = D_8010D40A_inst == 3 ? 50.0f : 36.0f;
+        object->trans.x = inst_mgType == 3 ? -86.0f : -91.0f;
+        object->trans.y = inst_mgType == 3 ? 50.0f : 36.0f;
         object->trans.z = 210.0f;
         object->rot.x = -20.0f;
         object->rot.y = 15.0f;
-        D_8010DDD4_inst = func_8010A0E8_inst;
+        inst_battleHostFunc = inst_BattleHostLand;
     } else {
-        D_8010DDD4_inst = func_80109E94_inst;
+        inst_battleHostFunc = inst_BattleHostReset;
     }
     while (1) {
-        D_8010DDD4_inst(object);
+        inst_battleHostFunc(object);
         HuPrcVSleep();
     }
 }
 
-void func_80109E94_inst(omObjData *object) {
-    object->trans.x = D_8010D40A_inst == 3 ? -86.0f : -91.0f;
-    object->trans.y = D_8010D40A_inst == 3 ? -150.0f : -164.0f;
+void inst_BattleHostReset(omObjData *object) {
+    object->trans.x = inst_mgType == 3 ? -86.0f : -91.0f;
+    object->trans.y = inst_mgType == 3 ? -150.0f : -164.0f;
     object->trans.z = 210.0f;
     object->rot.x = -20.0f;
     Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
-    D_8010DDD4_inst = func_80109F50_inst;
+    inst_battleHostFunc = inst_BattleHostWait;
 }
 
-void func_80109F50_inst(omObjData *object) {
-    D_8010D540_inst++;
-    if (D_8010D540_inst >= 110) {
+void inst_BattleHostWait(omObjData *object) {
+    inst_battleHostWaitCnt++;
+    if (inst_battleHostWaitCnt >= 110) {
         Hu3DMotionModelSet(object->model[0], object->motion[1]);
         Hu3DMotionAttrSet(object->model[0], 2, 0);
         Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         HuAudFXPlay(0x25B);
-        D_8010DDD4_inst = func_8010A000_inst;
-        D_8010D540_inst = 0;
-        func_8010C8D0_inst();
+        inst_battleHostFunc = inst_BattleHostJump;
+        inst_battleHostWaitCnt = 0;
+        inst_WinStart();
     }
 }
 
-void func_8010A000_inst(omObjData *object) {
+void inst_BattleHostJump(omObjData *object) {
     f32 height;
     f32 finalHeight;
 
-    D_8010D544_inst++;
-    height = sindf(D_8010D544_inst * 5) * 200.0f;
-    if (D_8010D40A_inst == 3) {
+    inst_battleHostJumpCnt++;
+    height = sindf(inst_battleHostJumpCnt * 5) * 200.0f;
+    if (inst_mgType == 3) {
         object->trans.y = height + -150.0f;
     } else {
         object->trans.y = height + -164.0f;
     }
-    if (D_8010D544_inst >= 17) {
-        if (D_8010D40A_inst == 3) {
+    if (inst_battleHostJumpCnt >= 17) {
+        if (inst_mgType == 3) {
             finalHeight = 50.0f;
         } else {
             finalHeight = 36.0f;
         }
         object->trans.y = finalHeight;
-        D_8010D544_inst = 0;
-        D_8010DDD4_inst = func_8010A0E8_inst;
+        inst_battleHostJumpCnt = 0;
+        inst_battleHostFunc = inst_BattleHostLand;
     }
 }
 
-void func_8010A0E8_inst(omObjData *object) {
+void inst_BattleHostLand(omObjData *object) {
     s16 model = object->model[0];
 
     if (Hu3DMotion[Hu3DData[model].motId].unk02 <= Hu3DData[model].motTime + 15.0f) {
         Hu3DMotionShiftSet(model, Hu3DData[object->motion[0]].motId, 0, 30, 2);
-        func_8010C848_inst();
-        D_8010DDD4_inst = func_8010A1BC_inst;
+        inst_WinOpen();
+        inst_battleHostFunc = inst_BattleHostIdle;
     }
 }
 
-void func_8010A1BC_inst(omObjData *object) {
+void inst_BattleHostIdle(omObjData *object) {
 }

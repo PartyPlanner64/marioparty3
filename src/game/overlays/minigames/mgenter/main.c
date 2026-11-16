@@ -6,53 +6,53 @@ extern s16 GameManFirstPad;
 extern s16 mgModeCoinBase;
 extern u8 storySceneNo;
 
-f32 D_80109AA0_mgenter = 115.0f;
-u16 D_80109AA4_mgenter = 0;
-s16 D_80109AA6_mgenter = 0;
+f32 mgenter_mgPicPosY = 115.0f;
+u16 mgenter_exitF = 0;
+s16 mgenter_seqKeepF = 0;
 
-extern s16 D_80109B20_mgenter;
-extern s16 D_80109B22_mgenter;
-extern s16 D_80109B24_mgenter;
-extern s16 D_80109B26_mgenter;
-extern s16 D_80109B28_mgenter;
-extern s16 D_80109B2A_mgenter;
-extern s16 D_80109B2C_mgenter;
-extern s16 D_80109B2E_mgenter;
-extern s16 D_80109B30_mgenter;
-extern s16 D_80109B32_mgenter;
-extern s16 D_80109B34_mgenter;
-extern s16 D_80109B36_mgenter;
-extern s16 D_80109B38_mgenter;
-extern s16 D_80109B3A_mgenter;
-extern f32 D_80109AB0_mgenter;
-extern f32 D_80109B64_mgenter;
-extern s16 D_80109B74_mgenter;
-extern f32 D_80109B78_mgenter;
-extern s16 D_80109B76_mgenter;
-extern s16 D_80109B7C_mgenter;
-extern s16 D_80109B98_mgenter;
+extern s16 mgenter_arrowPosF;
+extern s16 mgenter_arrowDispF;
+extern s16 mgenter_slideInReq;
+extern s16 mgenter_mgPicState;
+extern s16 mgenter_optionState;
+extern s16 mgenter_mgNo;
+extern s16 mgenter_stageNo;
+extern s16 mgenter_stageNum;
+extern s16 mgenter_stageScrollDir;
+extern s16 mgenter_optionNo;
+extern s16 mgenter_arrowLX;
+extern s16 mgenter_arrowRX;
+extern s16 mgenter_arrowLY;
+extern s16 mgenter_arrowRY;
+extern f32 mgenter_cameraFov;
+extern f32 mgenter_cameraNear;
+extern s16 mgenter_padNo;
+extern f32 mgenter_cameraFar;
+extern s16 mgenter_exitOvlNo;
+extern s16 mgenter_exitMode;
+extern s16 mgenter_exitEvtNo;
 
-void func_80105CD8_mgenter(void);
-void func_80106294_mgenter(void);
-void func_80106BD0_mgenter(void);
-void func_80106568_mgenter(void);
-void func_80106710_mgenter(u8 *str);
-void func_8010677C_mgenter(void);
-void func_801079B4_mgenter(void);
-void func_80107E5C_mgenter(s16 winId, s16 value, u8 *buf);
-void func_80107F0C_mgenter(void);
-void func_80108560_mgenter(s16 arg0, s16 arg1, s16 arg2, s16 arg3);
-void func_80108590_mgenter(void);
-void func_801087C0_mgenter(void);
-void func_80108934_mgenter(omObjData *obj);
-void func_80109020_mgenter(void);
-s16 func_801095F4_mgenter(void);
-void func_801096EC_mgenter(s16 arg0);
-void func_801089A0_mgenter(omObjData *);
-void func_80109820_mgenter(void);
-void func_801098D8_mgenter(void);
+void mgenter_StageMainProc(void);
+void mgenter_MainProc(void);
+void mgenter_OptionProc(void);
+void mgenter_TitleProc(void);
+void mgenter_MesCodeStrip(u8 *str);
+void mgenter_StageNameProc(void);
+void mgenter_NumMainProc(void);
+void mgenter_NumMesSet(s16 winId, s16 value, u8 *buf);
+void mgenter_MgPicProc(void);
+void mgenter_ArrowPosSet(s16 arg0, s16 arg1, s16 arg2, s16 arg3);
+void mgenter_ArrowProc(void);
+void mgenter_PlayerGroupSet(void);
+void mgenter_ExitCheckObjMain(omObjData *obj);
+void mgenter_CameraProc(void);
+s16 mgenter_MgPicCreate(void);
+void mgenter_MgPicLoad(s16 arg0);
+void mgenter_ExitObjMain(omObjData *);
+void mgenter_MgPicKill(void);
+void mgenter_DpadStickSet(void);
 
-void func_801059D0_mgenter(void) {
+void mgenter_ObjectSetup(void) {
     process_func func;
     s16 typeBits;
 
@@ -62,11 +62,11 @@ void func_801059D0_mgenter(void) {
     omInitObjMan(0x33, 0x19);
     HuWinInit();
     omGameSysInit();
-    omAddObj(0x2710, 0, 0, -1, func_80108934_mgenter);
+    omAddObj(0x2710, 0, 0, -1, mgenter_ExitCheckObjMain);
     Hu3DGLightMaxSet(1);
-    D_80109B78_mgenter = 8000.0f;
-    D_80109AB0_mgenter = 45.0f;
-    D_80109B64_mgenter = 80.0f;
+    mgenter_cameraFar = 8000.0f;
+    mgenter_cameraFov = 45.0f;
+    mgenter_cameraNear = 80.0f;
     CRot.x = 354.0f;
     CRot.y = 0.0f;
     CRot.z = 0.0f;
@@ -74,27 +74,27 @@ void func_801059D0_mgenter(void) {
     Center.x = 0.0f;
     Center.y = 260.0f;
     Center.z = 13.0f;
-    Hu3DCameraPerspectiveSet(0, D_80109AB0_mgenter, D_80109B64_mgenter, D_80109B78_mgenter);
-    omPrcSetStatBit(omAddPrcObj(func_80109020_mgenter, 0x1100, 0x800, 0), 0xA0);
+    Hu3DCameraPerspectiveSet(0, mgenter_cameraFov, mgenter_cameraNear, mgenter_cameraFar);
+    omPrcSetStatBit(omAddPrcObj(mgenter_CameraProc, 0x1100, 0x800, 0), 0xA0);
     WipeCreateIn(0xFF, 0x10);
     Hu3DScreenClearF = 1;
     Hu3DBGColorSet(0xFF, 0xFF, 0xFF);
-    D_80109B74_mgenter = GameManFirstPad;
-    D_80109B7C_mgenter = 1;
-    D_80109B76_mgenter = MgDataMaxGet(GwSystem.minigame_index);
-    D_80109B98_mgenter = 0;
-    D_80109B2A_mgenter = GwSystem.minigame_index - 1;
-    typeBits = (mgDataTbl[D_80109B2A_mgenter].flags & 0x3800) >> 11;
-    D_80109B2E_mgenter = typeBits + 1;
-    if (D_80109B2E_mgenter >= 2) {
-        D_80109B2E_mgenter = typeBits;
+    mgenter_padNo = GameManFirstPad;
+    mgenter_exitMode = 1;
+    mgenter_exitOvlNo = MgDataMaxGet(GwSystem.minigame_index);
+    mgenter_exitEvtNo = 0;
+    mgenter_mgNo = GwSystem.minigame_index - 1;
+    typeBits = (mgDataTbl[mgenter_mgNo].flags & 0x3800) >> 11;
+    mgenter_stageNum = typeBits + 1;
+    if (mgenter_stageNum >= 2) {
+        mgenter_stageNum = typeBits;
     }
-    if (D_80109B2A_mgenter == 70) {
-        func = func_80105CD8_mgenter;
-    } else if (D_80109B2A_mgenter == 30) {
-        func = func_801079B4_mgenter;
+    if (mgenter_mgNo == 70) {
+        func = mgenter_StageMainProc;
+    } else if (mgenter_mgNo == 30) {
+        func = mgenter_NumMainProc;
     } else {
-        func = func_80106294_mgenter;
+        func = mgenter_MainProc;
     }
     omAddPrcObj(func, 0x3F00, 0x2000, 0);
     if (mgModeCoinBase != 0) {
@@ -106,7 +106,7 @@ void func_801059D0_mgenter(void) {
     HuAudSeqPlay(8);
 }
 
-void func_80105C60_mgenter(void) {
+void mgenter_SkipObjectSetup(void) {
     Hu3DCamInit(1);
     MapCollInit(1);
     Hu3DSprModelInit(0x19);
@@ -117,108 +117,108 @@ void func_80105C60_mgenter(void) {
     mgModeCoinBase++;
 }
 
-void func_80105CD8_mgenter(void) {
+void mgenter_StageMainProc(void) {
     s16 size[2];
     s16 winId;
     s16 confirmed;
 
-    D_80109B2C_mgenter = mgInstSlotEnd;
-    if (D_80109B2C_mgenter < 0) {
-        D_80109B2C_mgenter = 0;
+    mgenter_stageNo = mgInstSlotEnd;
+    if (mgenter_stageNo < 0) {
+        mgenter_stageNo = 0;
     }
-    D_80109B30_mgenter = 0;
-    D_80109B28_mgenter = -1;
-    omAddPrcObj(func_80108590_mgenter, 0x3F00, 0x800, 0);
-    omAddPrcObj(func_80106568_mgenter, 0x3F00, 0x800, 0);
-    omAddPrcObj(func_8010677C_mgenter, 0x3F00, 0x800, 0);
-    omAddPrcObj(func_80107F0C_mgenter, 0x3F00, 0x800, 0);
-    omAddPrcObj(func_80106BD0_mgenter, 0x3F00, 0x800, 0);
+    mgenter_stageScrollDir = 0;
+    mgenter_optionState = -1;
+    omAddPrcObj(mgenter_ArrowProc, 0x3F00, 0x800, 0);
+    omAddPrcObj(mgenter_TitleProc, 0x3F00, 0x800, 0);
+    omAddPrcObj(mgenter_StageNameProc, 0x3F00, 0x800, 0);
+    omAddPrcObj(mgenter_MgPicProc, 0x3F00, 0x800, 0);
+    omAddPrcObj(mgenter_OptionProc, 0x3F00, 0x800, 0);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
-    D_80109B24_mgenter = 0;
-    D_80109B26_mgenter = 0;
+    mgenter_slideInReq = 0;
+    mgenter_mgPicState = 0;
     HuPrcSleep(10);
     HuWinMesMaxSizeGet(3, size, 0x4600, 0x4601, 0x4603);
     winId = HuWinExCreate(-1, (320 - size[0]) / 2, 180, size[0], size[1], 0);
     HuWinMesSpeedSet(winId, 0);
     HuWinExAnimIn(winId);
-    D_80109B32_mgenter = 0;
+    mgenter_optionNo = 0;
     while (TRUE) {
         HuWinMesSet(winId, 0x4600, -1, -1);
         while (HuWinStatGet(winId) != 0) {
             HuPrcVSleep();
         }
-        func_80108560_mgenter(60, 110, 260, 110);
-        D_80109B22_mgenter = 1;
+        mgenter_ArrowPosSet(60, 110, 260, 110);
+        mgenter_arrowDispF = 1;
         while (TRUE) {
-            func_801098D8_mgenter();
-            if (HuPadStkX[D_80109B74_mgenter] >= 31 || (HuPadBtnDown[D_80109B74_mgenter] & 1)) {
+            mgenter_DpadStickSet();
+            if (HuPadStkX[mgenter_padNo] >= 31 || (HuPadBtnDown[mgenter_padNo] & 1)) {
                 HuAudFXPlay(1);
-                D_80109B30_mgenter = 1;
-                D_80109B22_mgenter = 0;
+                mgenter_stageScrollDir = 1;
+                mgenter_arrowDispF = 0;
                 HuPrcSleep(10);
-                D_80109B22_mgenter = 1;
-            } else if (HuPadStkX[D_80109B74_mgenter] < -30 || (HuPadBtnDown[D_80109B74_mgenter] & 2)) {
+                mgenter_arrowDispF = 1;
+            } else if (HuPadStkX[mgenter_padNo] < -30 || (HuPadBtnDown[mgenter_padNo] & 2)) {
                 HuAudFXPlay(1);
-                D_80109B30_mgenter = -1;
-                D_80109B22_mgenter = 0;
+                mgenter_stageScrollDir = -1;
+                mgenter_arrowDispF = 0;
                 HuPrcSleep(10);
-                D_80109B22_mgenter = 1;
+                mgenter_arrowDispF = 1;
             }
-            if (HuPadBtnDown[D_80109B74_mgenter] & 0x8000) {
+            if (HuPadBtnDown[mgenter_padNo] & 0x8000) {
                 HuAudFXPlay(2);
-                mgInstSlotEnd = D_80109B2C_mgenter;
-                storySceneNo = D_80109B2C_mgenter;
+                mgInstSlotEnd = mgenter_stageNo;
+                storySceneNo = mgenter_stageNo;
                 break;
             }
-            if (HuPadBtnDown[D_80109B74_mgenter] & 0x4000) {
+            if (HuPadBtnDown[mgenter_padNo] & 0x4000) {
                 HuAudFXPlay(4);
                 mgInstSlotEnd = -1;
-                D_80109B7C_mgenter = 0;
-                D_80109AA4_mgenter = 1;
-                D_80109AA6_mgenter = 1;
+                mgenter_exitMode = 0;
+                mgenter_exitF = 1;
+                mgenter_seqKeepF = 1;
                 while (TRUE) {
                     HuPrcVSleep();
                 }
             }
             HuPrcVSleep();
         }
-        D_80109B22_mgenter = 0;
-        D_80109B26_mgenter = 1;
-        D_80109B28_mgenter = 0;
+        mgenter_arrowDispF = 0;
+        mgenter_mgPicState = 1;
+        mgenter_optionState = 0;
         HuPrcSleep(10);
-        func_80108560_mgenter(80, 155, 240, 155);
-        D_80109B22_mgenter = 1;
+        mgenter_ArrowPosSet(80, 155, 240, 155);
+        mgenter_arrowDispF = 1;
         HuWinMesSet(winId, 0x4603, -1, -1);
         while (HuWinStatGet(winId) != 0) {
             HuPrcVSleep();
         }
         while (TRUE) {
-            func_801098D8_mgenter();
-            if (HuPadStkX[D_80109B74_mgenter] >= 31 || (HuPadBtnDown[D_80109B74_mgenter] & 1)) {
+            mgenter_DpadStickSet();
+            if (HuPadStkX[mgenter_padNo] >= 31 || (HuPadBtnDown[mgenter_padNo] & 1)) {
                 HuAudFXPlay(1);
-                if (++D_80109B32_mgenter >= 3) {
-                    D_80109B32_mgenter = 0;
+                if (++mgenter_optionNo >= 3) {
+                    mgenter_optionNo = 0;
                 }
-                D_80109B22_mgenter = 0;
+                mgenter_arrowDispF = 0;
                 HuPrcSleep(10);
-                D_80109B22_mgenter = 1;
-            } else if (HuPadStkX[D_80109B74_mgenter] < -30 || (HuPadBtnDown[D_80109B74_mgenter] & 2)) {
+                mgenter_arrowDispF = 1;
+            } else if (HuPadStkX[mgenter_padNo] < -30 || (HuPadBtnDown[mgenter_padNo] & 2)) {
                 HuAudFXPlay(1);
-                if (--D_80109B32_mgenter < 0) {
-                    D_80109B32_mgenter = 2;
+                if (--mgenter_optionNo < 0) {
+                    mgenter_optionNo = 2;
                 }
-                D_80109B22_mgenter = 0;
+                mgenter_arrowDispF = 0;
                 HuPrcSleep(10);
-                D_80109B22_mgenter = 1;
+                mgenter_arrowDispF = 1;
             }
-            if (HuPadBtnDown[D_80109B74_mgenter] & 0x8000) {
+            if (HuPadBtnDown[mgenter_padNo] & 0x8000) {
                 HuAudFXPlay(2);
                 confirmed = TRUE;
                 break;
             }
-            if (HuPadBtnDown[D_80109B74_mgenter] & 0x4000) {
+            if (HuPadBtnDown[mgenter_padNo] & 0x4000) {
                 HuAudFXPlay(4);
                 confirmed = FALSE;
                 break;
@@ -228,24 +228,24 @@ void func_80105CD8_mgenter(void) {
         if (confirmed) {
             break;
         }
-        D_80109B22_mgenter = 0;
-        D_80109B26_mgenter = 2;
-        D_80109B28_mgenter = 1;
+        mgenter_arrowDispF = 0;
+        mgenter_mgPicState = 2;
+        mgenter_optionState = 1;
         HuPrcSleep(10);
     }
     GwPlayer[0].group = 0;
-    mgModeCoinRate = D_80109B32_mgenter;
+    mgModeCoinRate = mgenter_optionNo;
     HuWinKill(winId);
-    D_80109B7C_mgenter = 2;
-    D_80109B76_mgenter = MgDataMaxGet(GwSystem.minigame_index);
-    D_80109B98_mgenter = 0;
-    D_80109AA4_mgenter = 1;
+    mgenter_exitMode = 2;
+    mgenter_exitOvlNo = MgDataMaxGet(GwSystem.minigame_index);
+    mgenter_exitEvtNo = 0;
+    mgenter_exitF = 1;
     while (TRUE) {
         HuPrcVSleep();
     }
 }
 
-void func_80106294_mgenter(void) {
+void mgenter_MainProc(void) {
     s16 size[2];
     u16 sprite;
     s16 i;
@@ -253,14 +253,14 @@ void func_80106294_mgenter(void) {
     s16 btn;
 
     mgInstSlotEnd = -1;
-    omAddPrcObj(func_80106568_mgenter, 0x3F00, 0x800, 0);
-    sprite = func_801095F4_mgenter();
-    func_801096EC_mgenter(mgDataTbl[D_80109B2A_mgenter].flags & 0x7FF);
+    omAddPrcObj(mgenter_TitleProc, 0x3F00, 0x800, 0);
+    sprite = mgenter_MgPicCreate();
+    mgenter_MgPicLoad(mgDataTbl[mgenter_mgNo].flags & 0x7FF);
     espPosSet(sprite, 0, -100);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
-    D_80109B24_mgenter = 0;
+    mgenter_slideInReq = 0;
     for (i = 0; i < 11; i++) {
         espPosSet(sprite, sindf(i * 9.0f) * 240.0f - 80.0f, 115);
         HuPrcVSleep();
@@ -274,64 +274,64 @@ void func_80106294_mgenter(void) {
         HuPrcVSleep();
     }
     while (TRUE) {
-        btn = HuPadBtnDown[D_80109B74_mgenter];
+        btn = HuPadBtnDown[mgenter_padNo];
         if (btn & 0x8000) {
             HuAudFXPlay(2);
             break;
         }
         if (btn & 0x4000) {
             HuAudFXPlay(4);
-            D_80109B7C_mgenter = 0;
-            D_80109AA4_mgenter = 1;
-            D_80109AA6_mgenter = 1;
+            mgenter_exitMode = 0;
+            mgenter_exitF = 1;
+            mgenter_seqKeepF = 1;
             while (TRUE) {
                 HuPrcVSleep();
             }
         }
         HuPrcVSleep();
     }
-    func_801087C0_mgenter();
+    mgenter_PlayerGroupSet();
     HuWinKill(winId);
-    D_80109B7C_mgenter = 2;
-    D_80109B76_mgenter = MgDataMaxGet(GwSystem.minigame_index);
-    D_80109B98_mgenter = 0;
-    D_80109AA4_mgenter = 1;
+    mgenter_exitMode = 2;
+    mgenter_exitOvlNo = MgDataMaxGet(GwSystem.minigame_index);
+    mgenter_exitEvtNo = 0;
+    mgenter_exitF = 1;
     while (TRUE) {
         HuPrcVSleep();
     }
 }
 
-void func_80106568_mgenter(void) {
+void mgenter_TitleProc(void) {
     GAMEMES gMes;
     u8 *text;
     s16 strId;
     s16 i;
     f32 y;
 
-    text = MessDataMesGet((void *)(D_80109B2A_mgenter + 0x4700));
-    func_80106710_mgenter(text);
+    text = MessDataMesGet((void *)(mgenter_mgNo + 0x4700));
+    mgenter_MesCodeStrip(text);
     strId = GameMesStrInit(&gMes, (char *)text, 0, -1, -1);
     HuSprPosSet(gMes.strGId[strId], 0, 0, -100);
     MessDataMesFree(text);
-    D_80109B24_mgenter = -1;
-    if (D_80109B2E_mgenter != 1) {
+    mgenter_slideInReq = -1;
+    if (mgenter_stageNum != 1) {
         y = 28.0f;
     } else {
         y = 44.0f;
     }
     while (TRUE) {
-        if (D_80109B24_mgenter == 0) {
+        if (mgenter_slideInReq == 0) {
             for (i = 0; i < 11; i++) {
                 HuSprPosSet(gMes.strGId[strId], 0, sindf(i * 9.0f) * 160.0f, y);
                 HuPrcVSleep();
             }
-            D_80109B24_mgenter = -1;
+            mgenter_slideInReq = -1;
         }
         HuPrcVSleep();
     }
 }
 
-void func_80106710_mgenter(u8 *str) {
+void mgenter_MesCodeStrip(u8 *str) {
     u8 *dst = str;
     u8 *src = str;
     u32 c;
@@ -352,7 +352,7 @@ void func_80106710_mgenter(u8 *str) {
     *dst = '\0';
 }
 
-void func_8010677C_mgenter(void) {
+void mgenter_StageNameProc(void) {
     GAMEMES gMes[3];
     u8 buf[32];
     u8 *text;
@@ -364,7 +364,7 @@ void func_8010677C_mgenter(void) {
     s16 cur;
     f32 x;
 
-    cur = D_80109B2C_mgenter;
+    cur = mgenter_stageNo;
     for (i = 0; i < 3; i++) {
         text = MessDataMesGet((void *)(i + 0x4608));
         len = strlen((char *)text);
@@ -382,20 +382,20 @@ void func_8010677C_mgenter(void) {
         MessDataMesFree(text);
     }
     while (TRUE) {
-        if (D_80109B24_mgenter == 0) {
+        if (mgenter_slideInReq == 0) {
             for (i = 0; i < 11; i++) {
                 x = sindf(i * 9.0f) * 160.0f;
                 HuSprPosSet(gMes[cur].strGId[strId], 0, x, 52);
                 HuPrcVSleep();
             }
         }
-        if (D_80109B30_mgenter != 0) {
+        if (mgenter_stageScrollDir != 0) {
             for (i = 1; i < 6; i++) {
-                x = (1.0f - cosdf(i * 18.0f)) * 240.0f * D_80109B30_mgenter + 160.0f;
+                x = (1.0f - cosdf(i * 18.0f)) * 240.0f * mgenter_stageScrollDir + 160.0f;
                 HuSprPosSet(gMes[cur].strGId[strId], 0, x, 52);
                 HuPrcVSleep();
             }
-            cur += D_80109B30_mgenter;
+            cur += mgenter_stageScrollDir;
             if (cur >= 3) {
                 cur = 0;
             }
@@ -403,7 +403,7 @@ void func_8010677C_mgenter(void) {
                 cur = 2;
             }
             for (i = 1; i < 6; i++) {
-                x = -(1.0f - sindf(i * 18.0f)) * 240.0f * D_80109B30_mgenter + 160.0f;
+                x = -(1.0f - sindf(i * 18.0f)) * 240.0f * mgenter_stageScrollDir + 160.0f;
                 HuSprPosSet(gMes[cur].strGId[strId], 0, x, 52);
                 HuPrcVSleep();
             }
@@ -412,7 +412,7 @@ void func_8010677C_mgenter(void) {
     }
 }
 
-void func_80106BD0_mgenter(void) {
+void mgenter_OptionProc(void) {
     s16 models[3];
     GAMEMES gMes[3];
     u8 buf[32];
@@ -464,13 +464,13 @@ void func_80106BD0_mgenter(void) {
         MessDataMesFree(text);
     }
     baseAngle = 0.0f;
-    prevSel = D_80109B32_mgenter;
+    prevSel = mgenter_optionNo;
     rotAngle = 0.0f;
     while (TRUE) {
-        switch (D_80109B28_mgenter) {
+        switch (mgenter_optionState) {
             case 0:
-                baseAngle = D_80109B32_mgenter * 120;
-                prevSel = D_80109B32_mgenter;
+                baseAngle = mgenter_optionNo * 120;
+                prevSel = mgenter_optionNo;
                 for (j = 0; j < 3; j++) {
                     Hu3DModelPosSet(models[j], sindf(j * 120 + baseAngle) * 500.0f, 0.0f,
                                     cosdf(j * 120 + baseAngle) * 500.0f);
@@ -484,8 +484,8 @@ void func_80106BD0_mgenter(void) {
                 }
                 for (i = 0; i < 6; i++) {
                     alpha = i * 51.0f;
-                    for (j = 0; j < gMes[D_80109B32_mgenter].subMode; j++) {
-                        HuSprTPLvlSet(gMes[D_80109B32_mgenter].strGId[0], j + 1, alpha);
+                    for (j = 0; j < gMes[mgenter_optionNo].subMode; j++) {
+                        HuSprTPLvlSet(gMes[mgenter_optionNo].strGId[0], j + 1, alpha);
                     }
                     HuPrcVSleep();
                 }
@@ -494,11 +494,11 @@ void func_80106BD0_mgenter(void) {
                 for (i = 0; i < 3; i++) {
                     Hu3DModelAttrSet(models[i], 4, 4);
                 }
-                Hu3DModelAttrSet(models[D_80109B32_mgenter], 4, 0);
+                Hu3DModelAttrSet(models[mgenter_optionNo], 4, 0);
                 for (i = 0; i < 6; i++) {
                     alpha = i * 51.0f;
-                    for (j = 0; j < gMes[D_80109B32_mgenter].subMode; j++) {
-                        HuSprTPLvlSet(gMes[D_80109B32_mgenter].strGId[0], j + 1, 255.0f - alpha);
+                    for (j = 0; j < gMes[mgenter_optionNo].subMode; j++) {
+                        HuSprTPLvlSet(gMes[mgenter_optionNo].strGId[0], j + 1, 255.0f - alpha);
                     }
                     HuPrcVSleep();
                 }
@@ -508,10 +508,10 @@ void func_80106BD0_mgenter(void) {
                 }
                 break;
         }
-        D_80109B28_mgenter = -1;
-        if (prevSel != D_80109B32_mgenter) {
-            dir = -func_80089750_main(prevSel - D_80109B32_mgenter);
-            if ((D_80109B32_mgenter == 2 && prevSel == 0) || (D_80109B32_mgenter == 0 && prevSel == 2)) {
+        mgenter_optionState = -1;
+        if (prevSel != mgenter_optionNo) {
+            dir = -func_80089750_main(prevSel - mgenter_optionNo);
+            if ((mgenter_optionNo == 2 && prevSel == 0) || (mgenter_optionNo == 0 && prevSel == 2)) {
                 dir = -dir;
             }
             for (i = 0; i < 3; i++) {
@@ -527,13 +527,13 @@ void func_80106BD0_mgenter(void) {
                 for (j = 0; j < gMes[prevSel].subMode; j++) {
                     HuSprTPLvlSet(gMes[prevSel].strGId[0], j + 1, 255.0f - alpha);
                 }
-                for (j = 0; j < gMes[D_80109B32_mgenter].subMode; j++) {
-                    HuSprTPLvlSet(gMes[D_80109B32_mgenter].strGId[0], j + 1, alpha);
+                for (j = 0; j < gMes[mgenter_optionNo].subMode; j++) {
+                    HuSprTPLvlSet(gMes[mgenter_optionNo].strGId[0], j + 1, alpha);
                 }
                 rotAngle += 3.0f;
                 HuPrcVSleep();
             }
-            prevSel = D_80109B32_mgenter;
+            prevSel = mgenter_optionNo;
             for (i = 0; i < 3; i++) {
                 if (Hu3DData[models[i]].pos.z > 0.0f) {
                     Hu3DModelAttrSet(models[i], 4, 0);
@@ -541,7 +541,7 @@ void func_80106BD0_mgenter(void) {
                     Hu3DModelAttrSet(models[i], 4, 4);
                 }
             }
-            baseAngle = D_80109B32_mgenter * 120;
+            baseAngle = mgenter_optionNo * 120;
         }
         for (j = 0; j < 3; j++) {
             func_8008A2A0_main(Hu3DData[models[j]].mtx, rotAngle);
@@ -551,7 +551,7 @@ void func_80106BD0_mgenter(void) {
     }
 }
 
-void func_801079B4_mgenter(void) {
+void mgenter_NumMainProc(void) {
     s16 size[2];
     u8 buf[16];
     u16 sprite;
@@ -563,14 +563,14 @@ void func_801079B4_mgenter(void) {
     s16 btn;
 
     mgInstSlotEnd = -1;
-    omAddPrcObj(func_80106568_mgenter, 0x3F00, 0x800, 0);
-    sprite = func_801095F4_mgenter();
-    func_801096EC_mgenter(mgDataTbl[D_80109B2A_mgenter].flags & 0x7FF);
+    omAddPrcObj(mgenter_TitleProc, 0x3F00, 0x800, 0);
+    sprite = mgenter_MgPicCreate();
+    mgenter_MgPicLoad(mgDataTbl[mgenter_mgNo].flags & 0x7FF);
     espPosSet(sprite, 0, -100);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
-    D_80109B24_mgenter = 0;
+    mgenter_slideInReq = 0;
     for (i = 0; i < 11; i++) {
         espPosSet(sprite, sindf(i * 9.0f) * 240.0f - 80.0f, 100);
         HuPrcVSleep();
@@ -588,14 +588,14 @@ void func_801079B4_mgenter(void) {
     HuWinExAnimIn(winId);
     HuWinMesSet(winId, 0x4601, -1, -1);
     value = 100;
-    func_80107E5C_mgenter(valueWinId, value, buf);
+    mgenter_NumMesSet(valueWinId, value, buf);
     HuWinMesSet(valueWinId, 0x4602, -1, -1);
     while (HuWinStatGet(valueWinId) != 0) {
         HuPrcVSleep();
     }
     HuWinExAnimIn(valueWinId);
     while (TRUE) {
-        btn = ContBtnRep[D_80109B74_mgenter];
+        btn = ContBtnRep[mgenter_padNo];
         if (btn & 0x800) {
             delta = 100;
         } else {
@@ -611,10 +611,10 @@ void func_801079B4_mgenter(void) {
             value += delta;
         }
         if (delta != 0) {
-            func_80107E5C_mgenter(valueWinId, value, buf);
+            mgenter_NumMesSet(valueWinId, value, buf);
             HuWinMesSet(valueWinId, 0x4602, -1, -1);
         }
-        btn = HuPadBtnDown[D_80109B74_mgenter];
+        btn = HuPadBtnDown[mgenter_padNo];
         if (btn & 0x8000) {
             HuAudFXPlay(2);
             mgModeCoinRate = value;
@@ -622,28 +622,28 @@ void func_801079B4_mgenter(void) {
         }
         if (btn & 0x4000) {
             HuAudFXPlay(4);
-            D_80109B7C_mgenter = 0;
-            D_80109AA4_mgenter = 1;
-            D_80109AA6_mgenter = 1;
+            mgenter_exitMode = 0;
+            mgenter_exitF = 1;
+            mgenter_seqKeepF = 1;
             while (TRUE) {
                 HuPrcVSleep();
             }
         }
         HuPrcVSleep();
     }
-    func_801087C0_mgenter();
+    mgenter_PlayerGroupSet();
     HuWinKill(winId);
     HuWinKill(valueWinId);
-    D_80109B7C_mgenter = 2;
-    D_80109B76_mgenter = MgDataMaxGet(GwSystem.minigame_index);
-    D_80109B98_mgenter = 0;
-    D_80109AA4_mgenter = 1;
+    mgenter_exitMode = 2;
+    mgenter_exitOvlNo = MgDataMaxGet(GwSystem.minigame_index);
+    mgenter_exitEvtNo = 0;
+    mgenter_exitF = 1;
     while (TRUE) {
         HuPrcVSleep();
     }
 }
 
-void func_80107E5C_mgenter(s16 winId, s16 value, u8 *buf) {
+void mgenter_NumMesSet(s16 winId, s16 value, u8 *buf) {
     s16 i;
 
     sprintf((char *)buf, "%04d", value);
@@ -658,87 +658,87 @@ void func_80107E5C_mgenter(s16 winId, s16 value, u8 *buf) {
     HuWinInsertMesSet(winId, (u32)buf, 0);
 }
 
-void func_80107F0C_mgenter(void) {
+void mgenter_MgPicProc(void) {
     u16 sprite;
     s16 i;
     f32 t;
     f32 x;
 
-    D_80109B24_mgenter = -1;
-    sprite = func_801095F4_mgenter();
-    func_801096EC_mgenter((mgDataTbl[D_80109B2A_mgenter].flags & 0x7FF) + D_80109B2C_mgenter * 2);
+    mgenter_slideInReq = -1;
+    sprite = mgenter_MgPicCreate();
+    mgenter_MgPicLoad((mgDataTbl[mgenter_mgNo].flags & 0x7FF) + mgenter_stageNo * 2);
     espDispOff(sprite);
-    D_80109B26_mgenter = -1;
+    mgenter_mgPicState = -1;
     while (TRUE) {
-        switch (D_80109B26_mgenter) {
+        switch (mgenter_mgPicState) {
             case 0:
                 espDispOn(sprite);
                 for (i = 0; i < 11; i++) {
                     x = sindf(i * 9.0f) * 240.0f - 80.0f;
-                    espPosSet(sprite, x, D_80109AA0_mgenter);
+                    espPosSet(sprite, x, mgenter_mgPicPosY);
                     HuPrcVSleep();
                 }
-                D_80109B26_mgenter = -1;
+                mgenter_mgPicState = -1;
                 break;
             case 1:
                 for (i = 1; i < 11; i++) {
                     t = sindf(i * 9.0f);
-                    D_80109AA0_mgenter = 115.0f - t * 35.0f;
-                    espPosSet(sprite, 160, D_80109AA0_mgenter);
+                    mgenter_mgPicPosY = 115.0f - t * 35.0f;
+                    espPosSet(sprite, 160, mgenter_mgPicPosY);
                     espScaleSet(sprite, 1.0f - t * 0.2f, 1.0f - t * 0.2f);
                     t = 1.0f - t;
                     Hu3DFogSet((s16)(970.0f - t * 100.0f), (s16)(975.0f - t * 100.0f), 255, 255, 255);
                     HuPrcVSleep();
                 }
-                D_80109B26_mgenter = -1;
+                mgenter_mgPicState = -1;
                 break;
             case 2:
                 for (i = 1; i < 11; i++) {
                     t = 1.0f - sindf(i * 9.0f);
-                    D_80109AA0_mgenter = 115.0f - t * 35.0f;
-                    espPosSet(sprite, 160, D_80109AA0_mgenter);
+                    mgenter_mgPicPosY = 115.0f - t * 35.0f;
+                    espPosSet(sprite, 160, mgenter_mgPicPosY);
                     espScaleSet(sprite, 1.0f - t * 0.2f, 1.0f - t * 0.2f);
                     t = 1.0f - t;
                     Hu3DFogSet((s16)(970.0f - t * 100.0f), (s16)(975.0f - t * 100.0f), 255, 255, 255);
                     HuPrcVSleep();
                 }
-                D_80109B26_mgenter = -1;
+                mgenter_mgPicState = -1;
                 break;
         }
-        if (D_80109B30_mgenter != 0) {
+        if (mgenter_stageScrollDir != 0) {
             for (i = 1; i < 6; i++) {
-                x = (1.0f - cosdf(i * 18.0f)) * 240.0f * D_80109B30_mgenter + 160.0f;
-                espPosSet(sprite, x, D_80109AA0_mgenter);
+                x = (1.0f - cosdf(i * 18.0f)) * 240.0f * mgenter_stageScrollDir + 160.0f;
+                espPosSet(sprite, x, mgenter_mgPicPosY);
                 HuPrcVSleep();
             }
-            D_80109B2C_mgenter += D_80109B30_mgenter;
-            if (D_80109B2C_mgenter >= D_80109B2E_mgenter) {
-                D_80109B2C_mgenter = 0;
+            mgenter_stageNo += mgenter_stageScrollDir;
+            if (mgenter_stageNo >= mgenter_stageNum) {
+                mgenter_stageNo = 0;
             }
-            if (D_80109B2C_mgenter < 0) {
-                D_80109B2C_mgenter = D_80109B2E_mgenter - 1;
+            if (mgenter_stageNo < 0) {
+                mgenter_stageNo = mgenter_stageNum - 1;
             }
-            func_801096EC_mgenter((mgDataTbl[D_80109B2A_mgenter].flags & 0x7FF) + D_80109B2C_mgenter * 2);
+            mgenter_MgPicLoad((mgDataTbl[mgenter_mgNo].flags & 0x7FF) + mgenter_stageNo * 2);
             for (i = 1; i < 6; i++) {
-                x = -(1.0f - sindf(i * 18.0f)) * 240.0f * D_80109B30_mgenter + 160.0f;
-                espPosSet(sprite, x, D_80109AA0_mgenter);
+                x = -(1.0f - sindf(i * 18.0f)) * 240.0f * mgenter_stageScrollDir + 160.0f;
+                espPosSet(sprite, x, mgenter_mgPicPosY);
                 HuPrcVSleep();
             }
-            D_80109B30_mgenter = 0;
+            mgenter_stageScrollDir = 0;
         }
         HuPrcVSleep();
     }
 }
 
-void func_80108560_mgenter(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
-    D_80109B34_mgenter = arg0;
-    D_80109B36_mgenter = arg2;
-    D_80109B38_mgenter = arg1;
-    D_80109B3A_mgenter = arg3;
-    D_80109B20_mgenter = 1;
+void mgenter_ArrowPosSet(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
+    mgenter_arrowLX = arg0;
+    mgenter_arrowRX = arg2;
+    mgenter_arrowLY = arg1;
+    mgenter_arrowRY = arg3;
+    mgenter_arrowPosF = 1;
 }
 
-void func_80108590_mgenter(void) {
+void mgenter_ArrowProc(void) {
     s8 prevState = 0;
     s16 fading = 0;
     s16 data1;
@@ -749,8 +749,8 @@ void func_80108590_mgenter(void) {
     s16 prevAlpha;
     s16 step;
 
-    D_80109B22_mgenter = 0;
-    D_80109B20_mgenter = 0;
+    mgenter_arrowDispF = 0;
+    mgenter_arrowPosF = 0;
     data1 = HuSprAnimDataRead(0x140012);
     data2 = HuSprAnimDataRead(0x140013);
     sprite1 = espEntry(data1, 0, 1);
@@ -765,10 +765,10 @@ void func_80108590_mgenter(void) {
     step = 0;
     while (TRUE) {
         HuPrcVSleep();
-        if (prevState != D_80109B22_mgenter) {
-            prevState = D_80109B22_mgenter;
+        if (prevState != mgenter_arrowDispF) {
+            prevState = mgenter_arrowDispF;
             fading = 1;
-            if (D_80109B22_mgenter != 0) {
+            if (mgenter_arrowDispF != 0) {
                 step = 63;
             } else {
                 step = -63;
@@ -796,16 +796,16 @@ void func_80108590_mgenter(void) {
                 espDispOff(sprite2);
             }
         }
-        if (D_80109B20_mgenter != 0) {
-            espPosSet(sprite1, D_80109B34_mgenter, D_80109B38_mgenter);
-            espPosSet(sprite2, D_80109B36_mgenter, D_80109B3A_mgenter);
-            D_80109B20_mgenter = 0;
+        if (mgenter_arrowPosF != 0) {
+            espPosSet(sprite1, mgenter_arrowLX, mgenter_arrowLY);
+            espPosSet(sprite2, mgenter_arrowRX, mgenter_arrowRY);
+            mgenter_arrowPosF = 0;
         }
     }
 }
 
-void func_801087C0_mgenter(void) {
-    s16 minigameType = mgDataTbl[D_80109B2A_mgenter].minigameType;
+void mgenter_PlayerGroupSet(void) {
+    s16 minigameType = mgDataTbl[mgenter_mgNo].minigameType;
     s16 i;
 
     if (minigameType == 1 || minigameType == 2) {
@@ -835,31 +835,31 @@ void func_801087C0_mgenter(void) {
     }
 }
 
-void func_80108934_mgenter(omObjData *obj) {
-    if ((D_80109AA4_mgenter != 0) || (omSysExitReq != 0)) {
+void mgenter_ExitCheckObjMain(omObjData *obj) {
+    if ((mgenter_exitF != 0) || (omSysExitReq != 0)) {
         WipeCreateOut(WIPE_TYPE_NORMAL, 8);
-        if (D_80109AA6_mgenter == 0) {
+        if (mgenter_seqKeepF == 0) {
             HuAudSeqFadeOut(0x3C);
         }
-        obj->func = func_801089A0_mgenter;
+        obj->func = mgenter_ExitObjMain;
     }
 }
 
-void func_801089A0_mgenter(omObjData *obj) {
+void mgenter_ExitObjMain(omObjData *obj) {
     if (WipeStatGet() != 0) {
         return;
     }
-    func_80109820_mgenter();
+    mgenter_MgPicKill();
     HuWinAllKill();
-    switch (D_80109B7C_mgenter) {
+    switch (mgenter_exitMode) {
         case 0:
             omOvlReturnEx(1);
             break;
         case 2:
-            omOvlCallEx(D_80109B76_mgenter, D_80109B98_mgenter, 0x111);
+            omOvlCallEx(mgenter_exitOvlNo, mgenter_exitEvtNo, 0x111);
             break;
         case 1:
-            omOvlGotoEx(D_80109B76_mgenter, D_80109B98_mgenter, 0x111);
+            omOvlGotoEx(mgenter_exitOvlNo, mgenter_exitEvtNo, 0x111);
             break;
     }
 }

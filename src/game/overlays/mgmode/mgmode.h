@@ -33,9 +33,9 @@ typedef struct MgmodeSpaceCoord {
     /* 0x02 */ s16 y;
 } MgmodeSpaceCoord;
 
-void func_80116ED4_mgmode(s16 presetIdx, s16 duration, s16 easeType, void (*callback)(s16 *));
-void func_801181F4_mgmode(s16 index);
-void func_8011822C_mgmode(MgmodeSpaceCoord *arg0);
-void func_801182B4_mgmode(s16 arg0);
+void mgmode_CameraPresetMove(s16 presetIdx, s16 duration, s16 easeType, void (*callback)(s16 *));
+void mgmode_CursorSelSet(s16 index);
+void mgmode_CursorPosTblSet(MgmodeSpaceCoord *arg0);
+void mgmode_CursorDispSet(s16 arg0);
 
 #endif

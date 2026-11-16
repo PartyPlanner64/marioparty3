@@ -2,10 +2,10 @@
 #include "game/mallocblock.h"
 #include "mgmode.h"
 
-extern s16 D_8011B780_mgmode[];
-extern s16 D_8011B8A8_mgmode[];
+extern s16 mgmode_motTbl[];
+extern s16 mgmode_mdlTbl[];
 
-MgmodeModelEntry D_801195E0_mgmode[19] = {
+MgmodeModelEntry mgmode_roomMdlDefTbl[19] = {
     { 0x00120000, 0x231, 0, 0, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
     { 0x00120001, 0x231, 0, 0, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
     { 0x00120002, 0x220, 0, 0, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
@@ -26,7 +26,7 @@ MgmodeModelEntry D_801195E0_mgmode[19] = {
     { 0x000A0021, 0x231, 0, 2, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
     { -1, 0x0, 0, 0, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } }
 };
-MgmodeEspriteDef D_8011988C_mgmode[20] = {
+MgmodeEspriteDef mgmode_teamSprDefTbl[20] = {
     { 0x00130036, 0x1000, 0, 0 },
     { 0x00130036, 0x1000, 0, 0 },
     { 0x00130036, 0x1000, 0, 0 },
@@ -48,7 +48,7 @@ MgmodeEspriteDef D_8011988C_mgmode[20] = {
     { 0x00120010, 0x1000, 0, 0 },
     { -1, 0x0, 0, 0 }
 };
-MgmodeModelEntry D_8011997C_mgmode[37] = {
+MgmodeModelEntry mgmode_battleMdlDefTbl[37] = {
     { 0x00120015, 0x231, 0, 0, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
     { 0x00120017, 0x231, 0, 0, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
     { 0x00120018, 0x231, 0, 0, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
@@ -87,7 +87,7 @@ MgmodeModelEntry D_8011997C_mgmode[37] = {
     { 0, 0x235, 0, 0, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
     { -1, 0x0, 0, 0, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } }
 };
-MgmodeEspriteDef D_80119EB0_mgmode[10] = {
+MgmodeEspriteDef mgmode_battleMenuSprDefTbl[10] = {
     { 0x0012001A, 0x1000, 160, 120 },
     { 0x0012001B, 0x9000, 0, 0 },
     { 0x0012001C, 0x9000, 0, 0 },
@@ -99,7 +99,7 @@ MgmodeEspriteDef D_80119EB0_mgmode[10] = {
     { 0x00120022, 0x9000, 0, 0 },
     { -1, 0x0, 0, 0 }
 };
-MgmodeEspriteDef D_80119F28_mgmode[10] = {
+MgmodeEspriteDef mgmode_battleBoardSprDefTbl[10] = {
     { 0x00120014, 0x5000, 160, 120 },
     { 0x00120023, 0xD000, 160, 120 },
     { 0x00120023, 0xD000, 160, 120 },
@@ -111,7 +111,7 @@ MgmodeEspriteDef D_80119F28_mgmode[10] = {
     { 0x0012002D, 0x5000, 160, 120 },
     { -1, 0x0, 0, 0 }
 };
-MgmodeModelEntry D_80119FA0_mgmode[20] = {
+MgmodeModelEntry mgmode_gambleMdlDefTbl[20] = {
     { 0x00120035, 0x231, 0, 0, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
     { 0x00120036, 0x231, 0, 0, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
     { 0x00120038, 0x231, 0, 0, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
@@ -133,7 +133,7 @@ MgmodeModelEntry D_80119FA0_mgmode[20] = {
     { 0x0012003A, 0x624, 0, 0, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
     { -1, 0x0, 0, 0, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } }
 };
-MgmodeEspriteDef D_8011A270_mgmode[7] = {
+MgmodeEspriteDef mgmode_gambleCoinSprDefTbl[7] = {
     { 0x0021001A, 0x1000, 29, 22 },
     { 0x0021001B, 0x1000, 39, 21 },
     { 49, 0x1000, 49, 21 },
@@ -142,7 +142,7 @@ MgmodeEspriteDef D_8011A270_mgmode[7] = {
     { 49, 0x1000, 79, 21 },
     { -1, 0x0, 0, 0 }
 };
-MgmodeEspriteDef D_8011A2C4_mgmode[22] = {
+MgmodeEspriteDef mgmode_gambleBoardSprDefTbl[22] = {
     { 0x0012001A, 0x5000, 184, 108 },
     { 0x0012003B, 0xD000, 160, 120 },
     { 0x0012003C, 0xD000, 160, 120 },
@@ -166,35 +166,35 @@ MgmodeEspriteDef D_8011A2C4_mgmode[22] = {
     { 0x000C0086, 0xD000, 160, 120 },
     { -1, 0x0, 0, 0 }
 };
-u8 D_8011A3CC_mgmode[8] = {
+u8 mgmode_chrVoiceTbl[8] = {
     2, 3, 7, 4, 5, 6, 8, 9
 };
 
-void func_80116610_mgmode(MgmodeModelEntry *entries, s16 index, s16 modelId) {
+void mgmode_MdlListPosSet(MgmodeModelEntry *entries, s16 index, s16 modelId) {
     MgmodeModelEntry *entry = &entries[index];
 
     Hu3DModelPosSet(modelId, entry->pos.x, entry->pos.y, entry->pos.z);
     Hu3DModelRotSet(modelId, entry->rot.x, entry->rot.y, entry->rot.z);
 }
 
-void func_8011667C_mgmode(MgmodeModelEntry *entries) {
+void mgmode_MdlListCreate(MgmodeModelEntry *entries) {
     MgmodeModelEntry *entry = entries;
     s16 i;
     s16 model;
 
     for (i = 0; entry->unk_00 != -1; i++, entry++) {
-        D_8011B8A8_mgmode[i] = Hu3DModelRead(entry->unk_00, entry->unk_04 | 0x288);
-        model = D_8011B8A8_mgmode[i];
+        mgmode_mdlTbl[i] = Hu3DModelRead(entry->unk_00, entry->unk_04 | 0x288);
+        model = mgmode_mdlTbl[i];
         Hu3DModelCameraSet(model, 1);
-        func_80116610_mgmode(entries, i, model);
-        D_8011B780_mgmode[i] = Hu3DData[model].motId;
-        if (D_8011B780_mgmode[i] != -1) {
+        mgmode_MdlListPosSet(entries, i, model);
+        mgmode_motTbl[i] = Hu3DData[model].motId;
+        if (mgmode_motTbl[i] != -1) {
             Hu3DMotionAttrSet(model, -1, entry->motAttr);
         }
     }
 }
 
-MgmodeEsprite *func_80116794_mgmode(MgmodeEspriteDef *defs) {
+MgmodeEsprite *mgmode_SprListCreate(MgmodeEspriteDef *defs) {
     MgmodeEsprite *sprites;
     s16 count;
     s16 i;
@@ -217,7 +217,7 @@ MgmodeEsprite *func_80116794_mgmode(MgmodeEspriteDef *defs) {
     return sprites;
 }
 
-void func_801168E0_mgmode(MgmodeEsprite *arg0) {
+void mgmode_SprListKill(MgmodeEsprite *arg0) {
     MgmodeEsprite *sprite = arg0;
     s16 i;
 
@@ -232,39 +232,39 @@ void func_801168E0_mgmode(MgmodeEsprite *arg0) {
     HuMemFree(arg0);
 }
 
-void func_80116968_mgmode(MgmodeEsprite *arg0, s16 index, s16 arg2, s16 arg3) {
+void mgmode_SprListPosSet(MgmodeEsprite *arg0, s16 index, s16 arg2, s16 arg3) {
     espPosSet(arg0[index].espriteSlot, arg2, arg3);
 }
 
-void func_801169A0_mgmode(MgmodeEsprite *arg0, s16 index) {
+void mgmode_SprListDispOn(MgmodeEsprite *arg0, s16 index) {
     espDispOn(arg0[index].espriteSlot);
 }
 
-void func_801169C8_mgmode(MgmodeEsprite *arg0, s16 index) {
+void mgmode_SprListDispOff(MgmodeEsprite *arg0, s16 index) {
     espDispOff(arg0[index].espriteSlot);
 }
 
-void func_801169F0_mgmode(MgmodeEsprite *arg0, s16 index, s16 arg2) {
+void mgmode_SprListAttrSet(MgmodeEsprite *arg0, s16 index, s16 arg2) {
     espAttrSet(arg0[index].espriteSlot, arg2);
 }
 
-void func_80116A1C_mgmode(MgmodeEsprite *arg0, s16 index, s16 arg2) {
+void mgmode_SprListAttrReset(MgmodeEsprite *arg0, s16 index, s16 arg2) {
     espAttrReset(arg0[index].espriteSlot, arg2);
 }
 
-void func_80116A48_mgmode(MgmodeEsprite *arg0, s16 index, f32 x, f32 y) {
+void mgmode_SprListScaleSet(MgmodeEsprite *arg0, s16 index, f32 x, f32 y) {
     espScaleSet(arg0[index].espriteSlot, x, y);
 }
 
-void func_80116A78_mgmode(MgmodeEsprite *arg0, s16 index, s16 tpLvl) {
+void mgmode_SprListTPLvlSet(MgmodeEsprite *arg0, s16 index, s16 tpLvl) {
     espTPLvlSet(arg0[index].espriteSlot, tpLvl);
 }
 
-void func_80116AA8_mgmode(MgmodeEsprite *arg0, s16 index, s16 arg2) {
+void mgmode_SprListPatNoSet(MgmodeEsprite *arg0, s16 index, s16 arg2) {
     espPatNoSet(arg0[index].espriteSlot, arg2);
     espAnimModeSet(arg0[index].espriteSlot, 0);
 }
 
-void func_80116AEC_mgmode(MgmodeEsprite *arg0, s16 index, u16 arg2) {
+void mgmode_SprListPriSet(MgmodeEsprite *arg0, s16 index, u16 arg2) {
     espPriSet(arg0[index].espriteSlot, arg2);
 }

@@ -4,39 +4,39 @@
 #include "game/wipe.h"
 #include "mgresultdealer.h"
 
-s8 D_801098C0_mgresultdealer = 0;
-u8 D_801098C4_mgresultdealer[8] = { 0 }; /* Unreferenced. */
-s32 D_801098CC_mgresultdealer = 0;
-s8 D_801098D0_mgresultdealer = 0;
+s8 mgresultdealer_mainState = 0;
+u8 mgresultdealer_mainStatePad[8] = { 0 }; /* Unreferenced. */
+s32 mgresultdealer_mainTimer = 0;
+s8 mgresultdealer_exitWipeF = 0;
 
-extern s16 D_8010A258_mgresultdealer;
-extern s16 D_8010A264_mgresultdealer;
-extern s8 D_8010A266_mgresultdealer[4];
+extern s16 mgresultdealer_payoutRate;
+extern s16 mgresultdealer_bet;
+extern s8 mgresultdealer_playerOrderTbl[4];
 
-void func_80105C88_mgresultdealer(omObjData *);
-void func_80106234_mgresultdealer(omObjData *);
-void func_801061C8_mgresultdealer(void);
-void func_801062B4_mgresultdealer(void);
-void func_8010630C_mgresultdealer(s16);
-void func_801065D0_mgresultdealer(void);
-void func_801074A0_mgresultdealer(void);
-void func_80108040_mgresultdealer(void);
-void func_80108570_mgresultdealer(void);
-void func_80106D9C_mgresultdealer(void);
-s8 func_80106EA0_mgresultdealer(void);
-void func_80106EAC_mgresultdealer(void);
-void func_801073F4_mgresultdealer(void);
-void func_80107448_mgresultdealer(void);
-void func_80107E44_mgresultdealer(s32);
-s8 func_80108034_mgresultdealer(void);
-void func_80108260_mgresultdealer(void);
-s8 func_8010829C_mgresultdealer(void);
-void func_801090B4_mgresultdealer(void);
-s32 func_801090E8_mgresultdealer(void);
-s32 func_801090F4_mgresultdealer(void);
-s8 func_80109478_mgresultdealer(void);
+void mgresultdealer_MainObjMain(omObjData *);
+void mgresultdealer_ExitObjMain(omObjData *);
+void mgresultdealer_StageCreate(void);
+void mgresultdealer_BackCreate(void);
+void mgresultdealer_CameraModelSet(s16);
+void mgresultdealer_PlayerProc(void);
+void mgresultdealer_CoinProc(void);
+void mgresultdealer_FadeProc(void);
+void mgresultdealer_CalcProc(void);
+void mgresultdealer_DropStart(void);
+s8 mgresultdealer_DropHitCheck(void);
+void mgresultdealer_ConfettiStart(void);
+void mgresultdealer_PlayerWinFaceSet(void);
+void mgresultdealer_PlayerLoseFaceSet(void);
+void mgresultdealer_CoinRainStart(s32);
+s8 mgresultdealer_CoinRainDoneCheck(void);
+void mgresultdealer_FadeStart(void);
+s8 mgresultdealer_FadeDoneCheck(void);
+void mgresultdealer_CalcStart(void);
+s32 mgresultdealer_CalcOpenCheck(void);
+s32 mgresultdealer_CalcCloseCheck(void);
+s8 mgresultdealer_CalcDoneCheck(void);
 
-void func_801059A0_mgresultdealer(void) {
+void mgresultdealer_ObjectSetup(void) {
     omObjData *obj;
     s16 count;
     s16 i;
@@ -48,7 +48,7 @@ void func_801059A0_mgresultdealer(void) {
             if (i != GwPlayer[j].group) {
                 continue;
             }
-            D_8010A266_mgresultdealer[count] = j;
+            mgresultdealer_playerOrderTbl[count] = j;
             count++;
             if (count >= 4) {
                 break;
@@ -69,62 +69,62 @@ void func_801059A0_mgresultdealer(void) {
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
     omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     obj->work[0] = 2;
-    D_8010A264_mgresultdealer = GwPlayer[D_8010A266_mgresultdealer[0]].gameCoin;
-    D_8010A258_mgresultdealer = GwPlayer[D_8010A266_mgresultdealer[0]].bonusCoin;
-    omAddPrcObj(func_801065D0_mgresultdealer, 0x1001, 0x2000, 0);
-    omAddPrcObj(func_801074A0_mgresultdealer, 0x1001, 0x2000, 0);
-    omAddPrcObj(func_80108040_mgresultdealer, 0x1001, 0x2000, 0);
-    omAddPrcObj(func_80108570_mgresultdealer, 0x1001, 0x2000, 0);
-    omAddObj(0, 0, 0, -1, func_80105C88_mgresultdealer);
-    omAddObj(0, 0, 0, -1, func_80106234_mgresultdealer);
-    func_801062B4_mgresultdealer();
-    func_801061C8_mgresultdealer();
+    mgresultdealer_bet = GwPlayer[mgresultdealer_playerOrderTbl[0]].gameCoin;
+    mgresultdealer_payoutRate = GwPlayer[mgresultdealer_playerOrderTbl[0]].bonusCoin;
+    omAddPrcObj(mgresultdealer_PlayerProc, 0x1001, 0x2000, 0);
+    omAddPrcObj(mgresultdealer_CoinProc, 0x1001, 0x2000, 0);
+    omAddPrcObj(mgresultdealer_FadeProc, 0x1001, 0x2000, 0);
+    omAddPrcObj(mgresultdealer_CalcProc, 0x1001, 0x2000, 0);
+    omAddObj(0, 0, 0, -1, mgresultdealer_MainObjMain);
+    omAddObj(0, 0, 0, -1, mgresultdealer_ExitObjMain);
+    mgresultdealer_BackCreate();
+    mgresultdealer_StageCreate();
     WipeCreateIn(WIPE_TYPE_PREV, 0x10);
 }
 
-void func_80105C88_mgresultdealer(omObjData *unused) {
-    omObjData *obj = D_8010A250_mgresultdealer.obj;
+void mgresultdealer_MainObjMain(omObjData *unused) {
+    omObjData *obj = mgresultdealer_playerWork.obj;
     f32 time;
-    s32 state = D_801098C0_mgresultdealer;
+    s32 state = mgresultdealer_mainState;
 
     switch (state) {
         case 0:
-            if (D_8010A264_mgresultdealer * D_8010A258_mgresultdealer > 0) {
+            if (mgresultdealer_bet * mgresultdealer_payoutRate > 0) {
                 HuAudSeqPlay(0x46);
             } else {
                 HuAudSeqPlay(0x47);
             }
-            D_801098CC_mgresultdealer = 0;
+            mgresultdealer_mainTimer = 0;
             state++;
             break;
         case 1:
-            if (++D_801098CC_mgresultdealer > 20) {
+            if (++mgresultdealer_mainTimer > 20) {
                 state++;
             }
             break;
         case 2:
-            func_801090B4_mgresultdealer();
+            mgresultdealer_CalcStart();
             state++;
             break;
         case 3:
-            if (func_801090E8_mgresultdealer()) {
+            if (mgresultdealer_CalcOpenCheck()) {
                 state++;
             }
             break;
         case 4:
-            if (func_80109478_mgresultdealer() == 1) {
-                D_801098CC_mgresultdealer = 0;
+            if (mgresultdealer_CalcDoneCheck() == 1) {
+                mgresultdealer_mainTimer = 0;
                 state++;
             }
             break;
         case 5:
-            if (func_801090F4_mgresultdealer()) {
+            if (mgresultdealer_CalcCloseCheck()) {
                 state++;
             }
             break;
         case 6:
-            if (++D_801098CC_mgresultdealer > 0) {
-                if (D_8010A264_mgresultdealer * D_8010A258_mgresultdealer > 0) {
+            if (++mgresultdealer_mainTimer > 0) {
+                if (mgresultdealer_bet * mgresultdealer_payoutRate > 0) {
                     state++;
                 } else {
                     state = 11;
@@ -132,76 +132,76 @@ void func_80105C88_mgresultdealer(omObjData *unused) {
             }
             break;
         case 7:
-            func_80107E44_mgresultdealer(D_8010A264_mgresultdealer * D_8010A258_mgresultdealer);
+            mgresultdealer_CoinRainStart(mgresultdealer_bet * mgresultdealer_payoutRate);
             state++;
             Hu3DMotionShiftSet(obj->model[0], Hu3DData[obj->motion[3]].motId, 0, 30, 2);
             break;
         case 8:
-            if (func_80108034_mgresultdealer() == 1) {
+            if (mgresultdealer_CoinRainDoneCheck() == 1) {
                 state++;
             }
             break;
         case 9:
-            func_801073F4_mgresultdealer();
+            mgresultdealer_PlayerWinFaceSet();
             Hu3DMotionShiftSet(obj->model[0], Hu3DData[obj->motion[1]].motId, 0, 30, 0);
-            PlayerFXPlay(0x274, D_8010A266_mgresultdealer[0]);
+            PlayerFXPlay(0x274, mgresultdealer_playerOrderTbl[0]);
             HuAudFXPlay(0x516);
-            if (D_8010A264_mgresultdealer * D_8010A258_mgresultdealer >= 100) {
+            if (mgresultdealer_bet * mgresultdealer_payoutRate >= 100) {
                 Hu3DModelAttrSet(obj->model[4], 4, 0);
                 Hu3DModelAttrSet(obj->model[5], 4, 0);
                 Hu3DModelAttrSet(obj->model[6], 4, 0);
-            } else if (D_8010A264_mgresultdealer * D_8010A258_mgresultdealer >= 50) {
+            } else if (mgresultdealer_bet * mgresultdealer_payoutRate >= 50) {
                 Hu3DModelAttrSet(obj->model[4], 4, 0);
                 Hu3DModelAttrSet(obj->model[6], 4, 0);
             } else {
                 Hu3DModelAttrSet(obj->model[5], 4, 0);
             }
-            func_80106EAC_mgresultdealer();
+            mgresultdealer_ConfettiStart();
             state++;
             break;
         case 10:
             time = Hu3DData[obj->model[0]].motTime;
             if (time >= Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02) {
-                D_801098CC_mgresultdealer = 0;
+                mgresultdealer_mainTimer = 0;
                 state = 15;
             }
             break;
         case 11:
-            func_80108260_mgresultdealer();
+            mgresultdealer_FadeStart();
             state++;
             break;
         case 12:
-            if (func_8010829C_mgresultdealer() == 1) {
-                func_80106D9C_mgresultdealer();
+            if (mgresultdealer_FadeDoneCheck() == 1) {
+                mgresultdealer_DropStart();
                 state++;
             }
             break;
         case 13:
-            if (func_80106EA0_mgresultdealer() == 1) {
-                if (!(GwPlayer[D_8010A266_mgresultdealer[0]].stat & 1)) {
-                    omVibrate(D_8010A266_mgresultdealer[0], 20, 0, 20);
+            if (mgresultdealer_DropHitCheck() == 1) {
+                if (!(GwPlayer[mgresultdealer_playerOrderTbl[0]].stat & 1)) {
+                    omVibrate(mgresultdealer_playerOrderTbl[0], 20, 0, 20);
                 }
-                func_80107448_mgresultdealer();
+                mgresultdealer_PlayerLoseFaceSet();
                 state++;
                 Hu3DMotionShiftSet(obj->model[0], Hu3DData[obj->motion[2]].motId, 0, 30, 0);
-                PlayerFXPlay(0x26B, D_8010A266_mgresultdealer[0]);
+                PlayerFXPlay(0x26B, mgresultdealer_playerOrderTbl[0]);
             }
             break;
         case 14:
             time = Hu3DData[obj->model[0]].motTime;
             if (time >= Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02) {
-                D_801098CC_mgresultdealer = 0;
+                mgresultdealer_mainTimer = 0;
                 state++;
             }
             break;
         case 15:
-            if (++D_801098CC_mgresultdealer >= 15) {
+            if (++mgresultdealer_mainTimer >= 15) {
                 state++;
             }
             break;
         case 16:
-            D_8010A264_mgresultdealer = 0;
-            D_8010A258_mgresultdealer = 0;
+            mgresultdealer_bet = 0;
+            mgresultdealer_payoutRate = 0;
             WipeCreateOut(WIPE_TYPE_NORMAL, 20);
             HuAudSeqFadeOut(30);
             HuAudFXAllFadeOut(30);
@@ -214,24 +214,24 @@ void func_80105C88_mgresultdealer(omObjData *unused) {
             }
             break;
     }
-    D_801098C0_mgresultdealer = state;
+    mgresultdealer_mainState = state;
 }
 
-void func_801061C8_mgresultdealer(void) {
+void mgresultdealer_StageCreate(void) {
     s16 model;
 
     model = Hu3DModelRead(0x190002, 0x2002B9);
     Hu3DModelPosSet(model, 0.0f, 0.0f, 0.0f);
     Hu3DModelLightInfoSet(model, 2);
     Hu3DCameraMotionSet(model, 0);
-    func_8010630C_mgresultdealer(model);
+    mgresultdealer_CameraModelSet(model);
 }
 
-void func_80106234_mgresultdealer(omObjData *obj) {
+void mgresultdealer_ExitObjMain(omObjData *obj) {
     if (omSysExitReq == 1) {
-        if (D_801098D0_mgresultdealer == 0) {
+        if (mgresultdealer_exitWipeF == 0) {
             WipeCreateOut(WIPE_TYPE_NORMAL, 20);
-            D_801098D0_mgresultdealer = 1;
+            mgresultdealer_exitWipeF = 1;
             return;
         }
         if (WipeStatGet() == 0) {
@@ -243,7 +243,7 @@ void func_80106234_mgresultdealer(omObjData *obj) {
     }
 }
 
-void func_801062B4_mgresultdealer(void) {
+void mgresultdealer_BackCreate(void) {
     u16 espriteSlot;
 
     espriteSlot = espEntry(HuSprAnimDataRead(0x190000), 0, 0);
@@ -251,7 +251,7 @@ void func_801062B4_mgresultdealer(void) {
     espAttrSet(espriteSlot, 0x4000);
 }
 
-void func_8010630C_mgresultdealer(s16 model) {
+void mgresultdealer_CameraModelSet(s16 model) {
     HmfData_UnkBC *camera = Hu3DData[model].hmf->unkBC;
     HuMtx4F matrix;
     f32 x = camera->unk08 - camera->unk14;

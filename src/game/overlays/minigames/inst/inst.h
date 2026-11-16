@@ -41,21 +41,21 @@ typedef struct {
     s16 x;
 } InstSpritePos;
 
-extern const InstModelHooks4 D_8010D770_inst;
-extern const InstModelHooks D_8010D7A4_inst;
-extern const InstModelHooks4 D_8010D7B0_inst;
-extern const InstModelHooks D_8010D7E4_inst;
-extern const InstModelHooks4 D_8010D7EC_inst;
-extern const InstModelHooks D_8010D820_inst;
-extern const InstModelHooks4 D_8010D828_inst;
-extern const InstModelHooks D_8010D85C_inst;
-extern const InstModelHooks2 D_8010D864_inst;
-extern const InstModelHooks D_8010D880_inst;
-extern const InstModelHooks D_8010D888_inst;
-extern const InstModelHooks5 D_8010D89C_inst;
-extern const InstModelHooks D_8010D8DC_inst;
-extern const InstModelHooks D_8010D8EC_inst;
-extern const InstModelHooks D_8010D8F4_inst;
-extern const InstModelHooks D_8010D904_inst;
+extern const InstModelHooks4 inst_mg4PPlayerHooks;
+extern const InstModelHooks inst_mg4PItemHooks;
+extern const InstModelHooks4 inst_mg2vs2PlayerHooks;
+extern const InstModelHooks inst_mg2vs2ItemHooks;
+extern const InstModelHooks4 inst_mg3vs1PlayerHooks;
+extern const InstModelHooks inst_mg3vs1ItemHooks;
+extern const InstModelHooks4 inst_battlePlayerHooks;
+extern const InstModelHooks inst_battleItemHooks;
+extern const InstModelHooks2 inst_duelPlayerHooks;
+extern const InstModelHooks inst_duelItemHooks;
+extern const InstModelHooks inst_itemPlayerHooks;
+extern const InstModelHooks5 inst_itemItemHooks;
+extern const InstModelHooks inst_omakePlayerHooks;
+extern const InstModelHooks inst_omakeItemHooks;
+extern const InstModelHooks inst_lastPlayerHooks;
+extern const InstModelHooks inst_lastItemHooks;
 
 #endif

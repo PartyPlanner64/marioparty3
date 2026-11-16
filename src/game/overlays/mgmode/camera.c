@@ -5,51 +5,51 @@
 #include "math.h"
 #include "mgmode.h"
 
-extern u8 D_8011B630_mgmode[0x20];
-extern s16 D_8011B650_mgmode;
-extern s16 D_8011B652_mgmode;
-extern u16 *D_8011B654_mgmode[3];
-extern void *D_8011B660_mgmode;
-extern s16 D_8011B664_mgmode;
-extern s16 D_8011B666_mgmode;
-extern s16 D_8011B668_mgmode;
-extern s16 D_8011B66A_mgmode;
-extern s16 D_8011B66C_mgmode;
-extern s16 D_8011B66E_mgmode;
-extern MgmodeSpaceCoord *D_8011B670_mgmode;
-extern s16 D_8011B678_mgmode[4][4];
-extern s16 D_8011B698_mgmode[4];
-extern s16 D_8011B808_mgmode;
+extern u8 mgmode_cursorDisableTbl[0x20];
+extern s16 mgmode_mgPicSpr;
+extern s16 mgmode_mgPicBufNo;
+extern u16 *mgmode_mgPicBufTbl[3];
+extern void *mgmode_mgPicOrigData;
+extern s16 mgmode_cursorX;
+extern s16 mgmode_cursorY;
+extern s16 mgmode_cursorMoveTime;
+extern s16 mgmode_cursorSel;
+extern s16 mgmode_cursorSpr;
+extern s16 mgmode_cursorDispF;
+extern MgmodeSpaceCoord *mgmode_cursorPosTbl;
+extern s16 mgmode_confettiMdlTbl[4][4];
+extern s16 mgmode_confettiCntTbl[4];
+extern s16 mgmode_padNo;
 
-void func_801180A4_mgmode(void);
-void func_801188BC_mgmode(omObjData *obj);
-void func_801189C4_mgmode(s16 model);
-void func_80118B8C_mgmode(s16 model);
+void mgmode_CursorFadeProc(void);
+void mgmode_ConfettiObjMain(omObjData *obj);
+void mgmode_ConfettiParticleAdd(s16 model);
+void mgmode_ConfettiHook(s16 model);
 
-s16 D_8011A3E0_mgmode = -1;
-s32 D_8011A3E4_mgmode[4] = {
+s16 mgmode_mgPicAnim = -1;
+s32 mgmode_confettiMdlFileTbl[4] = {
     0xB002B, 0xB002C, 0xB002D, 0xB002E
 };
-s16 D_8011A3F4_mgmode = 0;
-s16 D_8011A3F8_mgmode[4] = { 0 };
+s16 mgmode_confettiNum = 0;
+s16 mgmode_confettiOnTbl[4] = { 0 };
 
-s16 func_80116B20_mgmode(void) {
+s16 mgmode_MgPicCreate(void) {
     s16 sprGrp;
     s16 i;
 
-    D_8011A3E0_mgmode = HuSprAnimDataRead(0x12000E);
-    sprGrp = espEntry(D_8011A3E0_mgmode, 0, 1);
-    D_8011B650_mgmode = sprGrp;
-    for (i = 0; i < ARRAY_COUNT(D_8011B654_mgmode); i++) {
-        D_8011B654_mgmode[i] = HuMemAllocTag(0x6000, TAG_OVERLAY);
+    mgmode_mgPicAnim = HuSprAnimDataRead(0x12000E);
+    sprGrp = espEntry(mgmode_mgPicAnim, 0, 1);
+    mgmode_mgPicSpr = sprGrp;
+    for (i = 0; i < ARRAY_COUNT(mgmode_mgPicBufTbl); i++) {
+        mgmode_mgPicBufTbl[i] = HuMemAllocTag(0x6000, TAG_OVERLAY);
     }
-    D_8011B660_mgmode = HuSprGet(esprite[sprGrp].unk04, 0)->data->pat->data;
-    D_8011B652_mgmode = 0;
+    mgmode_mgPicOrigData = HuSprGet(esprite[sprGrp].unk04, 0)->data->pat->data;
+    mgmode_mgPicBufNo = 0;
     espDispOff(sprGrp);
     return sprGrp;
 }
 
-void func_80116C18_mgmode(s16 arg0) {
+void mgmode_MgPicLoad(s16 arg0) {
     HvqImageHeader *imageData;
     HvqFileHeader *decodeData;
     u8 *workBuffer;
@@ -59,51 +59,51 @@ void func_80116C18_mgmode(s16 arg0) {
     hvqMpsInit1(0xFF);
     hvqMpsDecodeStart1(decodeData);
     workBuffer = HuMemMemoryAllocPerm(0xC00);
-    hvqMpsDecode1(imageData, D_8011B654_mgmode[D_8011B652_mgmode], 0x80, workBuffer);
+    hvqMpsDecode1(imageData, mgmode_mgPicBufTbl[mgmode_mgPicBufNo], 0x80, workBuffer);
     HuMemMemoryFreePerm(workBuffer);
     DataClose(imageData);
     DataClose(decodeData);
-    HuSprGet(esprite[D_8011B650_mgmode].unk04, 0)->data->pat->data =
-        D_8011B654_mgmode[D_8011B652_mgmode];
-    D_8011B652_mgmode++;
-    if (D_8011B652_mgmode >= ARRAY_COUNT(D_8011B654_mgmode)) {
-        D_8011B652_mgmode = 0;
+    HuSprGet(esprite[mgmode_mgPicSpr].unk04, 0)->data->pat->data =
+        mgmode_mgPicBufTbl[mgmode_mgPicBufNo];
+    mgmode_mgPicBufNo++;
+    if (mgmode_mgPicBufNo >= ARRAY_COUNT(mgmode_mgPicBufTbl)) {
+        mgmode_mgPicBufNo = 0;
     }
-    espDispOn(D_8011B650_mgmode);
+    espDispOn(mgmode_mgPicSpr);
 }
 
-void func_80116D4C_mgmode(void) {
+void mgmode_MgPicKill(void) {
     s16 i;
 
-    if (D_8011A3E0_mgmode != -1) {
-        HuSprGet(esprite[D_8011B650_mgmode].unk04, 0)->data->pat->data =
-            D_8011B660_mgmode;
-        espKill(D_8011B650_mgmode);
-        HuSprAnimKill(D_8011A3E0_mgmode);
-        for (i = 0; i < ARRAY_COUNT(D_8011B654_mgmode); i++) {
-            HuMemFree(D_8011B654_mgmode[i]);
+    if (mgmode_mgPicAnim != -1) {
+        HuSprGet(esprite[mgmode_mgPicSpr].unk04, 0)->data->pat->data =
+            mgmode_mgPicOrigData;
+        espKill(mgmode_mgPicSpr);
+        HuSprAnimKill(mgmode_mgPicAnim);
+        for (i = 0; i < ARRAY_COUNT(mgmode_mgPicBufTbl); i++) {
+            HuMemFree(mgmode_mgPicBufTbl[i]);
         }
-        D_8011A3E0_mgmode = -1;
+        mgmode_mgPicAnim = -1;
     }
 }
 
-extern f32 D_8011B6A4_mgmode;
-extern Vec D_8011B898_mgmode;
-extern ModeCameraPreset *D_8011B954_mgmode;
-extern s8 D_8011B958_mgmode;
+extern f32 mgmode_cameraFov;
+extern Vec mgmode_cameraRot;
+extern ModeCameraPreset *mgmode_cameraPresetTbl;
+extern s8 mgmode_cameraPresetNo;
 
-void func_80116E24_mgmode(s16 arg0) {
-    CRot = D_8011B954_mgmode[arg0].rot;
-    D_8011B898_mgmode = CRot;
+void mgmode_CameraPresetSet(s16 arg0) {
+    CRot = mgmode_cameraPresetTbl[arg0].rot;
+    mgmode_cameraRot = CRot;
 
-    Center = D_8011B954_mgmode[arg0].center;
-    CZoom = D_8011B954_mgmode[arg0].zoom;
+    Center = mgmode_cameraPresetTbl[arg0].center;
+    CZoom = mgmode_cameraPresetTbl[arg0].zoom;
 
-    D_8011B6A4_mgmode = D_8011B954_mgmode[arg0].fov;
-    D_8011B958_mgmode = arg0;
+    mgmode_cameraFov = mgmode_cameraPresetTbl[arg0].fov;
+    mgmode_cameraPresetNo = arg0;
 }
 
-void func_80116ED4_mgmode(s16 presetIdx, s16 duration, s16 easeType, void (*callback)(s16 *)) {
+void mgmode_CameraPresetMove(s16 presetIdx, s16 duration, s16 easeType, void (*callback)(s16 *)) {
     Vec rotDelta;
     Vec centerDelta;
     Vec rotStart;
@@ -122,9 +122,9 @@ void func_80116ED4_mgmode(s16 presetIdx, s16 duration, s16 easeType, void (*call
     s16 i;
 
     cb = callback;
-    rot = D_8011B954_mgmode[presetIdx].rot;
-    center = D_8011B954_mgmode[presetIdx].center;
-    zoom = D_8011B954_mgmode[presetIdx].zoom;
+    rot = mgmode_cameraPresetTbl[presetIdx].rot;
+    center = mgmode_cameraPresetTbl[presetIdx].center;
+    zoom = mgmode_cameraPresetTbl[presetIdx].zoom;
 
     eye.x = sindf(rot.y) * cosdf(rot.x) * zoom + center.x;
     eye.y = -sindf(rot.x) * zoom + center.y;
@@ -170,9 +170,9 @@ void func_80116ED4_mgmode(s16 presetIdx, s16 duration, s16 easeType, void (*call
     centerDelta.y = center.y - Center.y;
     centerDelta.z = center.z - Center.z;
     zoomDelta = zoom - CZoom;
-    unkDelta = D_8011B954_mgmode[presetIdx].fov - D_8011B6A4_mgmode;
+    unkDelta = mgmode_cameraPresetTbl[presetIdx].fov - mgmode_cameraFov;
     cbArg[1] = duration;
-    unkStart = D_8011B6A4_mgmode;
+    unkStart = mgmode_cameraFov;
     centerStart = Center;
     rotStart = CRot;
     zoomStart = CZoom;
@@ -186,14 +186,14 @@ void func_80116ED4_mgmode(s16 presetIdx, s16 duration, s16 easeType, void (*call
             } else {
                 t = -cosdf(i * 180.0f / duration) * 0.5f + 0.5f;
             }
-            D_8011B898_mgmode.x = CRot.x = t * rotDelta.x + rotStart.x;
-            D_8011B898_mgmode.y = CRot.y = t * rotDelta.y + rotStart.y;
-            D_8011B898_mgmode.z = CRot.z = t * rotDelta.z + rotStart.z;
+            mgmode_cameraRot.x = CRot.x = t * rotDelta.x + rotStart.x;
+            mgmode_cameraRot.y = CRot.y = t * rotDelta.y + rotStart.y;
+            mgmode_cameraRot.z = CRot.z = t * rotDelta.z + rotStart.z;
             Center.x = t * centerDelta.x + centerStart.x;
             Center.y = t * centerDelta.y + centerStart.y;
             Center.z = t * centerDelta.z + centerStart.z;
             CZoom = t * zoomDelta + zoomStart;
-            D_8011B6A4_mgmode = t * unkDelta + unkStart;
+            mgmode_cameraFov = t * unkDelta + unkStart;
             if (callback != (void (*)(s16 *))-1) {
                 cbArg[0] = i;
                 cb(cbArg);
@@ -203,9 +203,9 @@ void func_80116ED4_mgmode(s16 presetIdx, s16 duration, s16 easeType, void (*call
     } else {
         for (i = 0; i <= duration; i++) {
             t = (1.0f / duration) * i;
-            D_8011B898_mgmode.x = CRot.x = t * rotDelta.x + rotStart.x;
-            D_8011B898_mgmode.y = CRot.y = t * rotDelta.y + rotStart.y;
-            D_8011B898_mgmode.z = CRot.z = t * rotDelta.z + rotStart.z;
+            mgmode_cameraRot.x = CRot.x = t * rotDelta.x + rotStart.x;
+            mgmode_cameraRot.y = CRot.y = t * rotDelta.y + rotStart.y;
+            mgmode_cameraRot.z = CRot.z = t * rotDelta.z + rotStart.z;
             Center.x = t * centerDelta.x + centerStart.x;
             Center.y = t * centerDelta.y + centerStart.y;
             Center.z = t * centerDelta.z + centerStart.z;
@@ -217,10 +217,10 @@ void func_80116ED4_mgmode(s16 presetIdx, s16 duration, s16 easeType, void (*call
             HuPrcVSleep();
         }
     }
-    func_80116E24_mgmode(presetIdx);
+    mgmode_CameraPresetSet(presetIdx);
 }
 
-void func_801177BC_mgmode(Vec *eye, Vec *center) {
+void mgmode_CameraLookAtSet(Vec *eye, Vec *center) {
     f32 dx;
     f32 dy;
     f32 dz;
@@ -239,7 +239,7 @@ void func_801177BC_mgmode(Vec *eye, Vec *center) {
     Center = *center;
 }
 
-void func_801178E0_mgmode(Vec *center, Vec *rot, f32 zoom, Vec *pos, Vec *at, Vec *up) {
+void mgmode_CameraRotPosCalc(Vec *center, Vec *rot, f32 zoom, Vec *pos, Vec *at, Vec *up) {
     f32 rotX, rotY, rotZ;
     f32 upX, upY, upZ;
     f32 dx, dy, dz;
@@ -274,7 +274,7 @@ void func_801178E0_mgmode(Vec *center, Vec *rot, f32 zoom, Vec *pos, Vec *at, Ve
             upZ * (dz * dz + (1.0f - dz * dz) * cosdf(rotZ));
 }
 
-void func_80117DD0_mgmode(void) {
+void mgmode_CursorProc(void) {
     s16 prev = -1;
     s16 startX;
     s16 startY;
@@ -282,101 +282,101 @@ void func_80117DD0_mgmode(void) {
     s16 dy;
     f32 t;
 
-    D_8011B66E_mgmode = 0;
-    D_8011B66C_mgmode = espEntry(HuSprAnimDataRead(0x11000E), 0, 1);
-    espPriSet(D_8011B66C_mgmode, 1);
-    espPosSet(D_8011B66C_mgmode, 160, 120);
-    espDispOff(D_8011B66C_mgmode);
-    D_8011B664_mgmode = 160;
-    D_8011B666_mgmode = 120;
-    D_8011B668_mgmode = 10;
-    omAddPrcObj(func_801180A4_mgmode, 0x3F00, 0x800, 0);
+    mgmode_cursorDispF = 0;
+    mgmode_cursorSpr = espEntry(HuSprAnimDataRead(0x11000E), 0, 1);
+    espPriSet(mgmode_cursorSpr, 1);
+    espPosSet(mgmode_cursorSpr, 160, 120);
+    espDispOff(mgmode_cursorSpr);
+    mgmode_cursorX = 160;
+    mgmode_cursorY = 120;
+    mgmode_cursorMoveTime = 10;
+    omAddPrcObj(mgmode_CursorFadeProc, 0x3F00, 0x800, 0);
     while (TRUE) {
         HuPrcVSleep();
-        if (D_8011B66E_mgmode == 0) {
-            prev = D_8011B66A_mgmode;
-        } else if (prev != D_8011B66A_mgmode && D_8011B66A_mgmode != -1) {
-            if (D_8011B670_mgmode[D_8011B66A_mgmode].x != D_8011B664_mgmode ||
-                D_8011B670_mgmode[D_8011B66A_mgmode].y != D_8011B666_mgmode) {
-                startX = D_8011B664_mgmode;
-                startY = D_8011B666_mgmode;
-                dx = D_8011B670_mgmode[D_8011B66A_mgmode].x - startX;
-                dy = D_8011B670_mgmode[D_8011B66A_mgmode].y - startY;
-                for (prev = 1; prev <= D_8011B668_mgmode; prev++) {
-                    t = sindf(90.0f / D_8011B668_mgmode * prev);
-                    D_8011B664_mgmode = startX + dx * t;
-                    D_8011B666_mgmode = startY + dy * t;
-                    espPosSet(D_8011B66C_mgmode, D_8011B664_mgmode, D_8011B666_mgmode);
+        if (mgmode_cursorDispF == 0) {
+            prev = mgmode_cursorSel;
+        } else if (prev != mgmode_cursorSel && mgmode_cursorSel != -1) {
+            if (mgmode_cursorPosTbl[mgmode_cursorSel].x != mgmode_cursorX ||
+                mgmode_cursorPosTbl[mgmode_cursorSel].y != mgmode_cursorY) {
+                startX = mgmode_cursorX;
+                startY = mgmode_cursorY;
+                dx = mgmode_cursorPosTbl[mgmode_cursorSel].x - startX;
+                dy = mgmode_cursorPosTbl[mgmode_cursorSel].y - startY;
+                for (prev = 1; prev <= mgmode_cursorMoveTime; prev++) {
+                    t = sindf(90.0f / mgmode_cursorMoveTime * prev);
+                    mgmode_cursorX = startX + dx * t;
+                    mgmode_cursorY = startY + dy * t;
+                    espPosSet(mgmode_cursorSpr, mgmode_cursorX, mgmode_cursorY);
                     HuPrcVSleep();
                 }
             }
-            prev = D_8011B66A_mgmode;
+            prev = mgmode_cursorSel;
         }
-        espPosSet(D_8011B66C_mgmode, D_8011B664_mgmode, D_8011B666_mgmode);
+        espPosSet(mgmode_cursorSpr, mgmode_cursorX, mgmode_cursorY);
     }
 }
 
-void func_801180A4_mgmode(void) {
+void mgmode_CursorFadeProc(void) {
     s16 prev = 0;
     s16 i;
 
     while (TRUE) {
         HuPrcVSleep();
-        if (prev == D_8011B66E_mgmode) {
+        if (prev == mgmode_cursorDispF) {
             continue;
         }
-        if (D_8011B66E_mgmode != 0) {
-            espDispOn(D_8011B66C_mgmode);
+        if (mgmode_cursorDispF != 0) {
+            espDispOn(mgmode_cursorSpr);
             for (i = 0; i < 5; i++) {
-                espTPLvlSet(D_8011B66C_mgmode, i * 63.75f);
+                espTPLvlSet(mgmode_cursorSpr, i * 63.75f);
                 HuPrcVSleep();
             }
         } else {
             for (i = 0; i < 5; i++) {
-                espTPLvlSet(D_8011B66C_mgmode, 255.0f - i * 63.75f);
+                espTPLvlSet(mgmode_cursorSpr, 255.0f - i * 63.75f);
                 HuPrcVSleep();
             }
-            espDispOff(D_8011B66C_mgmode);
+            espDispOff(mgmode_cursorSpr);
         }
-        prev = D_8011B66E_mgmode;
+        prev = mgmode_cursorDispF;
     }
 }
 
-void func_801181F4_mgmode(s16 index) {
-    D_8011B664_mgmode = D_8011B670_mgmode[index].x;
-    D_8011B666_mgmode = D_8011B670_mgmode[index].y;
-    D_8011B66A_mgmode = index;
+void mgmode_CursorSelSet(s16 index) {
+    mgmode_cursorX = mgmode_cursorPosTbl[index].x;
+    mgmode_cursorY = mgmode_cursorPosTbl[index].y;
+    mgmode_cursorSel = index;
 }
 
-void func_8011822C_mgmode(MgmodeSpaceCoord *arg0) {
+void mgmode_CursorPosTblSet(MgmodeSpaceCoord *arg0) {
     s16 i;
     MgmodeSpaceCoord *p;
 
-    D_8011B670_mgmode = arg0;
+    mgmode_cursorPosTbl = arg0;
     for (i = 0; ((p = (MgmodeSpaceCoord *)(i * sizeof(MgmodeSpaceCoord) + (u32)arg0))->x != -1) ||
                 p->y != p->x;
          i++) {
-        D_8011B630_mgmode[i] = 0;
+        mgmode_cursorDisableTbl[i] = 0;
     }
 }
 
-void func_8011829C_mgmode(s16 arg0) {
-    D_8011B668_mgmode = arg0;
+void mgmode_CursorMoveTimeSet(s16 arg0) {
+    mgmode_cursorMoveTime = arg0;
 }
 
-void func_801182A8_mgmode(s16 arg0) {
-    D_8011B66A_mgmode = arg0;
+void mgmode_CursorSelMove(s16 arg0) {
+    mgmode_cursorSel = arg0;
 }
 
-void func_801182B4_mgmode(s16 arg0) {
-    D_8011B66E_mgmode = arg0;
+void mgmode_CursorDispSet(s16 arg0) {
+    mgmode_cursorDispF = arg0;
 }
 
-void func_801182C0_mgmode(s16 index) {
-    D_8011B630_mgmode[index] = 1;
+void mgmode_CursorDisableSet(s16 index) {
+    mgmode_cursorDisableTbl[index] = 1;
 }
 
-s16 func_801182DC_mgmode(s16 stickX, s16 stickY) {
+s16 mgmode_CursorPadNextGet(s16 stickX, s16 stickY) {
     f32 dir[32][2];
     f32 dist[32];
     f32 dx;
@@ -388,12 +388,12 @@ s16 func_801182DC_mgmode(s16 stickX, s16 stickY) {
     s16 best;
     s16 i;
 
-    for (i = 0; D_8011B670_mgmode[i].x != -1 || D_8011B670_mgmode[i].y != D_8011B670_mgmode[i].x; i++) {
-        if (i == D_8011B66A_mgmode || D_8011B630_mgmode[i] != 0) {
+    for (i = 0; mgmode_cursorPosTbl[i].x != -1 || mgmode_cursorPosTbl[i].y != mgmode_cursorPosTbl[i].x; i++) {
+        if (i == mgmode_cursorSel || mgmode_cursorDisableTbl[i] != 0) {
             dist[i] = -1.0f;
         } else {
-            dx = D_8011B670_mgmode[D_8011B66A_mgmode].x - D_8011B670_mgmode[i].x;
-            dy = D_8011B670_mgmode[D_8011B66A_mgmode].y - D_8011B670_mgmode[i].y;
+            dx = mgmode_cursorPosTbl[mgmode_cursorSel].x - mgmode_cursorPosTbl[i].x;
+            dy = mgmode_cursorPosTbl[mgmode_cursorSel].y - mgmode_cursorPosTbl[i].y;
             dist[i] = HuSqrtf(dx * dx + dy * dy);
             len = dist[i];
             dir[i][0] = dx / len;
@@ -403,7 +403,7 @@ s16 func_801182DC_mgmode(s16 stickX, s16 stickY) {
     len = HuSqrtf(stickX * stickX + stickY * stickY);
     nx = stickX / len;
     ny = stickY / len;
-    for (i = 0; D_8011B670_mgmode[i].x != -1 || D_8011B670_mgmode[i].y != D_8011B670_mgmode[i].x; i++) {
+    for (i = 0; mgmode_cursorPosTbl[i].x != -1 || mgmode_cursorPosTbl[i].y != mgmode_cursorPosTbl[i].x; i++) {
         if (dist[i] < 0.0f) {
             continue;
         }
@@ -415,7 +415,7 @@ s16 func_801182DC_mgmode(s16 stickX, s16 stickY) {
     }
     minDist = 100000.0f;
     best = -1;
-    for (i = 0; D_8011B670_mgmode[i].x != -1 || D_8011B670_mgmode[i].y != D_8011B670_mgmode[i].x; i++) {
+    for (i = 0; mgmode_cursorPosTbl[i].x != -1 || mgmode_cursorPosTbl[i].y != mgmode_cursorPosTbl[i].x; i++) {
         if (dist[i] < 0.0f) {
             continue;
         }
@@ -427,13 +427,13 @@ s16 func_801182DC_mgmode(s16 stickX, s16 stickY) {
     return best;
 }
 
-void func_80118624_mgmode(s16 dstModel, s16 srcModel) {
+void mgmode_MdlPosCopy(s16 dstModel, s16 srcModel) {
     Hu3DData[dstModel].pos.x = Hu3DData[srcModel].pos.x;
     Hu3DData[dstModel].pos.y = Hu3DData[srcModel].pos.y;
     Hu3DData[dstModel].pos.z = Hu3DData[srcModel].pos.z;
 }
 
-s16 func_80118678_mgmode(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
+s16 mgmode_ConfettiCreate(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     omObjData *obj;
     HmfModelData_UnkBC_Struct *bc;
     s16 model;
@@ -441,8 +441,8 @@ s16 func_80118678_mgmode(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     s16 i;
 
     for (i = 0; i < 4; i++) {
-        model = Hu3DModelRead(D_8011A3E4_mgmode[i], 0x2A9);
-        D_8011B678_mgmode[D_8011A3F4_mgmode][i] = model;
+        model = Hu3DModelRead(mgmode_confettiMdlFileTbl[i], 0x2A9);
+        mgmode_confettiMdlTbl[mgmode_confettiNum][i] = model;
         anim = Hu3DAnimRead(Hu3DData[model].hmf, 0xB0048, "e268p01_I8");
         Hu3DModelCameraSet(model, 2);
         Hu3DAnmNoSet(anim, i * 2);
@@ -451,7 +451,7 @@ s16 func_80118678_mgmode(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
         Hu3DModelRemakeStatic(model);
         Hu3DModelVtxBufMake(model);
         Hu3DModelDynamicFree(model);
-        Hu3DParticleCreate(model, -1, 0, func_80118B8C_mgmode);
+        Hu3DParticleCreate(model, -1, 0, mgmode_ConfettiHook);
         bc = Hu3DData[model].unkBC;
         bc->unk1C.f = arg0;
         bc->unk20.f = arg1;
@@ -459,36 +459,36 @@ s16 func_80118678_mgmode(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
         bc->unk08.f = arg3;
         Hu3DModelAttrSet(model, 4, 4);
     }
-    obj = omAddObj(10, 10, 10, -1, func_801188BC_mgmode);
-    obj->work[0] = D_8011A3F4_mgmode;
-    D_8011A3F4_mgmode++;
+    obj = omAddObj(10, 10, 10, -1, mgmode_ConfettiObjMain);
+    obj->work[0] = mgmode_confettiNum;
+    mgmode_confettiNum++;
     return obj->work[0];
 }
 
-void func_80118888_mgmode(s16 index) {
-    D_8011A3F8_mgmode[index] = 1;
+void mgmode_ConfettiOn(s16 index) {
+    mgmode_confettiOnTbl[index] = 1;
 }
 
-void func_801188A4_mgmode(s16 index) {
-    D_8011A3F8_mgmode[index] = 0;
+void mgmode_ConfettiOff(s16 index) {
+    mgmode_confettiOnTbl[index] = 0;
 }
 
-void func_801188BC_mgmode(omObjData *obj) {
+void mgmode_ConfettiObjMain(omObjData *obj) {
     s16 index = obj->work[0];
     s16 i;
 
-    if (D_8011A3F8_mgmode[index] != 0) {
+    if (mgmode_confettiOnTbl[index] != 0) {
         for (i = 0; i < 4; i++) {
-            Hu3DModelAttrSet(D_8011B678_mgmode[index][i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-            if (((D_8011B698_mgmode[index] + i) & 3) == 0) {
-                func_801189C4_mgmode(D_8011B678_mgmode[index][i]);
+            Hu3DModelAttrSet(mgmode_confettiMdlTbl[index][i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            if (((mgmode_confettiCntTbl[index] + i) & 3) == 0) {
+                mgmode_ConfettiParticleAdd(mgmode_confettiMdlTbl[index][i]);
             }
         }
-        D_8011B698_mgmode[index]++;
+        mgmode_confettiCntTbl[index]++;
     }
 }
 
-void func_801189C4_mgmode(s16 model) {
+void mgmode_ConfettiParticleAdd(s16 model) {
     HmfData *hmf = Hu3DData[model].hmf;
     HmfModelData_UnkBC_Struct *bc = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle = bc->unk58;
@@ -510,7 +510,7 @@ void func_801189C4_mgmode(s16 model) {
     }
 }
 
-void func_80118B8C_mgmode(s16 model) {
+void mgmode_ConfettiHook(s16 model) {
     HmfData *hmf = Hu3DData[model].hmf;
     HmfModelData_UnkBC_Struct *bc = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle;
@@ -540,36 +540,36 @@ void func_80118B8C_mgmode(s16 model) {
     }
 }
 
-void func_80118CD8_mgmode(void) {
+void mgmode_RecordSave(void) {
     _ClearFlag(0x1C);
     SLCommonSet(1);
     _ClearFlag(0xD);
     _SetFlag(0x1C);
 }
 
-void func_80118D0C_mgmode(void) {
+void mgmode_DpadStickSet(void) {
     f32 x;
     f32 y;
     f32 dist;
 
     y = 0.0f;
     x = y;
-    if (HuPadBtn[D_8011B808_mgmode] & 0x200) {
+    if (HuPadBtn[mgmode_padNo] & 0x200) {
         x = -1.0f;
     }
-    if (HuPadBtn[D_8011B808_mgmode] & 0x100) {
+    if (HuPadBtn[mgmode_padNo] & 0x100) {
         x += 1.0f;
     }
-    if (HuPadBtn[D_8011B808_mgmode] & 0x800) {
+    if (HuPadBtn[mgmode_padNo] & 0x800) {
         y += 1.0f;
     }
-    if (HuPadBtn[D_8011B808_mgmode] & 0x400) {
+    if (HuPadBtn[mgmode_padNo] & 0x400) {
         y += -1.0f;
     }
     if (x == 0.0f && y == 0.0f) {
         return;
     }
     dist = HuSqrtf(x * x + y * y);
-    HuPadStkX[D_8011B808_mgmode] = x / dist * 50.0f;
-    HuPadStkY[D_8011B808_mgmode] = y / dist * 50.0f;
+    HuPadStkX[mgmode_padNo] = x / dist * 50.0f;
+    HuPadStkY[mgmode_padNo] = y / dist * 50.0f;
 }

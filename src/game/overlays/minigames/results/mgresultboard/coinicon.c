@@ -1,26 +1,26 @@
 #include "common.h"
 #include "mgresultboard.h"
 
-extern omObjData *D_8010AF98_mgresultboard;
-extern s32 D_8010AAF8_mgresultboard;
-extern void (*D_8010AF9C_mgresultboard)(omObjData *);
+extern omObjData *mgresultboard_coinIconObj;
+extern s32 mgresultboard_initDoneF;
+extern void (*mgresultboard_coinIconFunc)(omObjData *);
 
-void func_80107CEC_mgresultboard(omObjData *);
-void func_80107CF4_mgresultboard(void);
+void mgresultboard_CoinIconIdle(omObjData *);
+void mgresultboard_CoinIconDestroy(void);
 
-Vec D_8010AB10_mgresultboard[4] = {
+Vec mgresultboard_coinIconPosTbl[4] = {
     { 86.0f, 90.0f, 0.0f },
     { 86.0f, 30.0f, 0.0f },
     { 86.0f, -30.0f, 0.0f },
     { 86.0f, -90.0f, 0.0f }
 };
 
-void func_80107B40_mgresultboard(void) {
+void mgresultboard_CoinIconProc(void) {
     omObjData *obj;
     s32 i;
 
     obj = omAddObj(0x14, 0xE, 0, -1, NULL);
-    D_8010AF98_mgresultboard = obj;
+    mgresultboard_coinIconObj = obj;
     for (i = 0; i < 4; i++) {
         if (i == 0) {
             obj->model[1] = Hu3DModelRead3(0x180001, 0x2B9);
@@ -28,8 +28,8 @@ void func_80107B40_mgresultboard(void) {
             obj->model[i + 1] = Hu3DModelLink(obj->model[1]);
         }
         Hu3DMotionAttrSet(obj->model[i + 1], 2, 0);
-        Hu3DModelPosSet(obj->model[i + 1], D_8010AB10_mgresultboard[i].x, D_8010AB10_mgresultboard[i].y,
-                        D_8010AB10_mgresultboard[i].z);
+        Hu3DModelPosSet(obj->model[i + 1], mgresultboard_coinIconPosTbl[i].x, mgresultboard_coinIconPosTbl[i].y,
+                        mgresultboard_coinIconPosTbl[i].z);
         Hu3DMotionTimeSet(obj->model[i + 1], 0.0f);
         Hu3DModelCameraSet(obj->model[i + 1], 2);
         Hu3DModelAttrSet(obj->model[i + 1], 4, 0);
@@ -37,19 +37,19 @@ void func_80107B40_mgresultboard(void) {
     obj->trans.x = 0.0f;
     obj->trans.y = 0.0f;
     obj->trans.z = 0.0f;
-    omPrcSetDestructor(0, func_80107CF4_mgresultboard);
-    while (D_8010AAF8_mgresultboard == 0) {
+    omPrcSetDestructor(0, mgresultboard_CoinIconDestroy);
+    while (mgresultboard_initDoneF == 0) {
         HuPrcVSleep();
     }
-    D_8010AF9C_mgresultboard = func_80107CEC_mgresultboard;
+    mgresultboard_coinIconFunc = mgresultboard_CoinIconIdle;
     while (TRUE) {
-        D_8010AF9C_mgresultboard(obj);
+        mgresultboard_coinIconFunc(obj);
         HuPrcVSleep();
     }
 }
 
-void func_80107CEC_mgresultboard(omObjData *arg0) {
+void mgresultboard_CoinIconIdle(omObjData *arg0) {
 }
 
-void func_80107CF4_mgresultboard(void) {
+void mgresultboard_CoinIconDestroy(void) {
 }

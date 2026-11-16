@@ -1,38 +1,38 @@
 #include "common.h"
 #include "mgresultdealer.h"
 
-s8 D_801098E0_mgresultdealer = 0;
-u8 D_801098E1_mgresultdealer = 0;
-s8 D_801098E2_mgresultdealer = 0;
-Vec D_801098E4_mgresultdealer = { 0.0f, 0.0f, 0.0f };
-Vec D_801098F0_mgresultdealer = { 0.0f, 0.0f, 0.0f };
-s32 D_801098FC_mgresultdealer[4] = { 0xB002B, 0xB002C, 0xB002D, 0xB002E };
-s16 D_8010990C_mgresultdealer = 0;
+s8 mgresultdealer_dropF = 0;
+u8 mgresultdealer_dropUnusedF = 0;
+s8 mgresultdealer_dropHitF = 0;
+Vec mgresultdealer_dropPos = { 0.0f, 0.0f, 0.0f };
+Vec mgresultdealer_dropRot = { 0.0f, 0.0f, 0.0f };
+s32 mgresultdealer_confettiFileTbl[4] = { 0xB002B, 0xB002C, 0xB002D, 0xB002E };
+s16 mgresultdealer_confettiTimer = 0;
 
-extern s16 D_80109A64_mgresultdealer[4];
-extern s8 D_8010A266_mgresultdealer[4];
-extern f32 D_80109A60_mgresultdealer;
-extern s16 D_801099F8_mgresultdealer[4];
+extern s16 mgresultdealer_playerFaceAnimTbl[4];
+extern s8 mgresultdealer_playerOrderTbl[4];
+extern f32 mgresultdealer_dropVel;
+extern s16 mgresultdealer_confettiMdlTbl[4];
 extern s32 omCharModelNoTbl[][6];
-extern const s16 D_801099A8_mgresultdealer[][2];
+extern const s16 mgresultdealer_chrLoseMotTbl[][2];
 
-void func_80106A50_mgresultdealer(omObjData *);
-void func_80106D94_mgresultdealer(void);
-void func_80106B94_mgresultdealer(omObjData *);
-void func_80106CC8_mgresultdealer(omObjData *);
-void func_80106EC0_mgresultdealer(omObjData *);
-void func_80106EEC_mgresultdealer(void);
-void func_8010705C_mgresultdealer(omObjData *);
-void func_801070EC_mgresultdealer(s16);
-void func_801072A8_mgresultdealer(s16);
+void mgresultdealer_PlayerDropFall(omObjData *);
+void mgresultdealer_PlayerDestroy(void);
+void mgresultdealer_PlayerDropBounce(omObjData *);
+void mgresultdealer_PlayerDropLand(omObjData *);
+void mgresultdealer_PlayerConfetti(omObjData *);
+void mgresultdealer_ConfettiCreate(void);
+void mgresultdealer_ConfettiObjMain(omObjData *);
+void mgresultdealer_ConfettiEmit(s16);
+void mgresultdealer_ConfettiHook(s16);
 
-void func_801065D0_mgresultdealer(void) {
+void mgresultdealer_PlayerProc(void) {
     omObjData *obj;
     s16 chr;
 
     obj = omAddObj(20, 8, 5, -1, NULL);
-    D_8010A250_mgresultdealer.obj = obj;
-    chr = GwPlayer[D_8010A266_mgresultdealer[0]].chr;
+    mgresultdealer_playerWork.obj = obj;
+    chr = GwPlayer[mgresultdealer_playerOrderTbl[0]].chr;
 
     obj->model[0] = Hu3DModelRead(omCharModelNoTbl[chr][0] | omCharModelNoTbl[chr][2], 0x2A9);
     Hu3DMotionAttrSet(obj->model[0], 2, 2);
@@ -65,16 +65,16 @@ void func_801065D0_mgresultdealer(void) {
     Hu3DModelAttrSet(obj->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelAttrSet(obj->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
 
-    D_80109A64_mgresultdealer[0] = CharAnimCreate(obj->model[0], 2, chr, CharMotionDataNumGet(chr, 0xA4));
-    D_80109A64_mgresultdealer[1] = Hu3DAnimDataRead(CharMotionDataNumGet(chr, 0xAA));
-    D_80109A64_mgresultdealer[2] = Hu3DAnimDataRead(CharMotionDataNumGet(chr, 0xA5));
-    D_80109A64_mgresultdealer[3] = Hu3DAnimDataRead(CharMotionDataNumGet(chr, 0xA6));
+    mgresultdealer_playerFaceAnimTbl[0] = CharAnimCreate(obj->model[0], 2, chr, CharMotionDataNumGet(chr, 0xA4));
+    mgresultdealer_playerFaceAnimTbl[1] = Hu3DAnimDataRead(CharMotionDataNumGet(chr, 0xAA));
+    mgresultdealer_playerFaceAnimTbl[2] = Hu3DAnimDataRead(CharMotionDataNumGet(chr, 0xA5));
+    mgresultdealer_playerFaceAnimTbl[3] = Hu3DAnimDataRead(CharMotionDataNumGet(chr, 0xA6));
     Hu3DModelDynamicFree(obj->model[0]);
-    CharAnimSet(obj->model[0], 2, GwPlayer[D_8010A266_mgresultdealer[0]].chr, D_80109A64_mgresultdealer[0]);
+    CharAnimSet(obj->model[0], 2, GwPlayer[mgresultdealer_playerOrderTbl[0]].chr, mgresultdealer_playerFaceAnimTbl[0]);
 
     omObjMotionRead(obj, 0, CharMotionDataNumGet(chr, 0));
     omObjMotionRead(obj, 1, CharMotionDataNumGet(chr, 0x2F));
-    omObjMotionRead(obj, 2, CharMotionDataNumGet(chr, D_801099A8_mgresultdealer[chr][1]));
+    omObjMotionRead(obj, 2, CharMotionDataNumGet(chr, mgresultdealer_chrLoseMotTbl[chr][1]));
     omObjMotionRead(obj, 3, CharMotionDataNumGet(chr, 0x25));
     Hu3DMotionModelSet(obj->model[0], obj->motion[0]);
     Hu3DMotionAttrSet(obj->model[0], 2, 2);
@@ -83,137 +83,137 @@ void func_801065D0_mgresultdealer(void) {
     obj->trans.y = 0.0f;
     obj->trans.z = -35.0f;
     Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
-    omPrcSetDestructor(0, func_80106D94_mgresultdealer);
-    D_8010A250_mgresultdealer.func = func_80106A50_mgresultdealer;
+    omPrcSetDestructor(0, mgresultdealer_PlayerDestroy);
+    mgresultdealer_playerWork.func = mgresultdealer_PlayerDropFall;
 
     while (TRUE) {
-        D_8010A250_mgresultdealer.func(obj);
+        mgresultdealer_playerWork.func(obj);
         HuPrcVSleep();
     }
 }
 
-void func_80106A50_mgresultdealer(omObjData *obj) {
-    if (D_801098E0_mgresultdealer) {
-        D_801098E4_mgresultdealer.y -= D_80109A60_mgresultdealer;
-        D_80109A60_mgresultdealer += 0.98f;
-        D_801098F0_mgresultdealer.x += 30.0f;
-        if (D_801098E4_mgresultdealer.y <= 180.0f) {
+void mgresultdealer_PlayerDropFall(omObjData *obj) {
+    if (mgresultdealer_dropF) {
+        mgresultdealer_dropPos.y -= mgresultdealer_dropVel;
+        mgresultdealer_dropVel += 0.98f;
+        mgresultdealer_dropRot.x += 30.0f;
+        if (mgresultdealer_dropPos.y <= 180.0f) {
             Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-            D_801098E4_mgresultdealer.y = 180.0f;
-            D_80109A60_mgresultdealer = -10.0f;
-            D_801098E2_mgresultdealer = 1;
+            mgresultdealer_dropPos.y = 180.0f;
+            mgresultdealer_dropVel = -10.0f;
+            mgresultdealer_dropHitF = 1;
             HuAudFXPlay(0x515);
             HuAudFXPlay(0x518);
-            D_8010A250_mgresultdealer.func = func_80106B94_mgresultdealer;
+            mgresultdealer_playerWork.func = mgresultdealer_PlayerDropBounce;
         }
-        Hu3DModelPosSet(obj->model[2], D_801098E4_mgresultdealer.x, D_801098E4_mgresultdealer.y,
-                        D_801098E4_mgresultdealer.z);
-        Hu3DModelRotSet(obj->model[2], D_801098F0_mgresultdealer.x, D_801098F0_mgresultdealer.y,
-                        D_801098F0_mgresultdealer.z);
+        Hu3DModelPosSet(obj->model[2], mgresultdealer_dropPos.x, mgresultdealer_dropPos.y,
+                        mgresultdealer_dropPos.z);
+        Hu3DModelRotSet(obj->model[2], mgresultdealer_dropRot.x, mgresultdealer_dropRot.y,
+                        mgresultdealer_dropRot.z);
     }
 }
 
-void func_80106B94_mgresultdealer(omObjData *obj) {
-    D_801098E4_mgresultdealer.y -= D_80109A60_mgresultdealer;
-    D_80109A60_mgresultdealer += 0.98f;
-    D_801098E4_mgresultdealer.x += 5.0f;
-    D_801098E4_mgresultdealer.z -= 5.0f;
-    D_801098F0_mgresultdealer.x -= 5.0f;
-    D_801098F0_mgresultdealer.y -= 5.0f;
-    if (D_801098E4_mgresultdealer.y <= 20.0f) {
-        D_801098E4_mgresultdealer.y = 20.0f;
+void mgresultdealer_PlayerDropBounce(omObjData *obj) {
+    mgresultdealer_dropPos.y -= mgresultdealer_dropVel;
+    mgresultdealer_dropVel += 0.98f;
+    mgresultdealer_dropPos.x += 5.0f;
+    mgresultdealer_dropPos.z -= 5.0f;
+    mgresultdealer_dropRot.x -= 5.0f;
+    mgresultdealer_dropRot.y -= 5.0f;
+    if (mgresultdealer_dropPos.y <= 20.0f) {
+        mgresultdealer_dropPos.y = 20.0f;
         Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-        D_80109A60_mgresultdealer = -2.0f;
-        D_8010A250_mgresultdealer.func = func_80106CC8_mgresultdealer;
+        mgresultdealer_dropVel = -2.0f;
+        mgresultdealer_playerWork.func = mgresultdealer_PlayerDropLand;
     }
-    Hu3DModelPosSet(obj->model[2], D_801098E4_mgresultdealer.x, D_801098E4_mgresultdealer.y,
-                    D_801098E4_mgresultdealer.z);
-    Hu3DModelRotSet(obj->model[2], D_801098F0_mgresultdealer.x, D_801098F0_mgresultdealer.y,
-                    D_801098F0_mgresultdealer.z);
+    Hu3DModelPosSet(obj->model[2], mgresultdealer_dropPos.x, mgresultdealer_dropPos.y,
+                    mgresultdealer_dropPos.z);
+    Hu3DModelRotSet(obj->model[2], mgresultdealer_dropRot.x, mgresultdealer_dropRot.y,
+                    mgresultdealer_dropRot.z);
 }
 
-void func_80106CC8_mgresultdealer(omObjData *obj) {
-    D_801098E4_mgresultdealer.y -= D_80109A60_mgresultdealer;
-    D_80109A60_mgresultdealer += 0.98f;
-    if (D_801098E4_mgresultdealer.y <= 0.0f) {
-        D_801098E4_mgresultdealer.y = 0.0f;
-        D_801098E0_mgresultdealer = 0;
-        D_8010A250_mgresultdealer.func = func_80106A50_mgresultdealer;
+void mgresultdealer_PlayerDropLand(omObjData *obj) {
+    mgresultdealer_dropPos.y -= mgresultdealer_dropVel;
+    mgresultdealer_dropVel += 0.98f;
+    if (mgresultdealer_dropPos.y <= 0.0f) {
+        mgresultdealer_dropPos.y = 0.0f;
+        mgresultdealer_dropF = 0;
+        mgresultdealer_playerWork.func = mgresultdealer_PlayerDropFall;
     }
-    Hu3DModelPosSet(obj->model[2], D_801098E4_mgresultdealer.x, D_801098E4_mgresultdealer.y,
-                    D_801098E4_mgresultdealer.z);
-    Hu3DModelRotSet(obj->model[2], D_801098F0_mgresultdealer.x, D_801098F0_mgresultdealer.y,
-                    D_801098F0_mgresultdealer.z);
+    Hu3DModelPosSet(obj->model[2], mgresultdealer_dropPos.x, mgresultdealer_dropPos.y,
+                    mgresultdealer_dropPos.z);
+    Hu3DModelRotSet(obj->model[2], mgresultdealer_dropRot.x, mgresultdealer_dropRot.y,
+                    mgresultdealer_dropRot.z);
 }
 
-void func_80106D94_mgresultdealer(void) {
+void mgresultdealer_PlayerDestroy(void) {
 }
 
-void func_80106D9C_mgresultdealer(void) {
-    omObjData *obj = D_8010A250_mgresultdealer.obj;
+void mgresultdealer_DropStart(void) {
+    omObjData *obj = mgresultdealer_playerWork.obj;
 
-    D_801098E0_mgresultdealer = 1;
-    D_801098E1_mgresultdealer = 0;
-    D_801098E2_mgresultdealer = 0;
-    D_801098E4_mgresultdealer.x = 0.0f;
-    D_801098E4_mgresultdealer.y = 400.0f;
-    D_801098E4_mgresultdealer.z = -55.0f;
-    D_801098F0_mgresultdealer.x = 160.0f;
-    D_801098F0_mgresultdealer.y = 20.0f;
-    D_801098F0_mgresultdealer.z = 0.0f;
-    D_80109A60_mgresultdealer = 0;
-    Hu3DModelPosSet(obj->model[2], D_801098E4_mgresultdealer.x, 400.0f, -55.0f);
-    Hu3DModelRotSet(obj->model[2], D_801098F0_mgresultdealer.x, D_801098F0_mgresultdealer.y, D_801098F0_mgresultdealer.z);
+    mgresultdealer_dropF = 1;
+    mgresultdealer_dropUnusedF = 0;
+    mgresultdealer_dropHitF = 0;
+    mgresultdealer_dropPos.x = 0.0f;
+    mgresultdealer_dropPos.y = 400.0f;
+    mgresultdealer_dropPos.z = -55.0f;
+    mgresultdealer_dropRot.x = 160.0f;
+    mgresultdealer_dropRot.y = 20.0f;
+    mgresultdealer_dropRot.z = 0.0f;
+    mgresultdealer_dropVel = 0;
+    Hu3DModelPosSet(obj->model[2], mgresultdealer_dropPos.x, 400.0f, -55.0f);
+    Hu3DModelRotSet(obj->model[2], mgresultdealer_dropRot.x, mgresultdealer_dropRot.y, mgresultdealer_dropRot.z);
     Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
 }
 
-s8 func_80106EA0_mgresultdealer(void) {
-    return D_801098E2_mgresultdealer;
+s8 mgresultdealer_DropHitCheck(void) {
+    return mgresultdealer_dropHitF;
 }
 
-void func_80106EAC_mgresultdealer(void) {
-    D_8010A250_mgresultdealer.func = func_80106EC0_mgresultdealer;
+void mgresultdealer_ConfettiStart(void) {
+    mgresultdealer_playerWork.func = mgresultdealer_PlayerConfetti;
 }
 
-void func_80106EC0_mgresultdealer(omObjData *obj) {
-    func_80106EEC_mgresultdealer();
-    D_8010A250_mgresultdealer.func = func_80106A50_mgresultdealer;
+void mgresultdealer_PlayerConfetti(omObjData *obj) {
+    mgresultdealer_ConfettiCreate();
+    mgresultdealer_playerWork.func = mgresultdealer_PlayerDropFall;
 }
 
-const s16 D_801099A8_mgresultdealer[][2] = { { 0, 0x36 }, { 0, 0x37 }, { 0, 0x3A }, { 0, 0x37 }, { 0, 0x36 }, { 0, 0x37 }, { 0, 0x36 }, { 0, 0x37 } };
+const s16 mgresultdealer_chrLoseMotTbl[][2] = { { 0, 0x36 }, { 0, 0x37 }, { 0, 0x3A }, { 0, 0x37 }, { 0, 0x36 }, { 0, 0x37 }, { 0, 0x36 }, { 0, 0x37 } };
 
-void func_80106EEC_mgresultdealer(void) {
+void mgresultdealer_ConfettiCreate(void) {
     s16 model;
     s16 i;
 
     for (i = 0; i < 4; i++) {
-        model = Hu3DModelRead(D_801098FC_mgresultdealer[i], 0x2A9);
-        D_801099F8_mgresultdealer[i] = model;
+        model = Hu3DModelRead(mgresultdealer_confettiFileTbl[i], 0x2A9);
+        mgresultdealer_confettiMdlTbl[i] = model;
         Hu3DAnmNoSet(Hu3DAnimRead(Hu3DData[model].hmf, 0xB0048, "e268p01_I8"), i * 2);
         Hu3DModelPosSet(model, 0.0f, 0.0f, 0.0f);
         Hu3DModelObjAttrSet(model, 0x20000, 0x20000);
         Hu3DModelRemakeStatic(model);
         Hu3DModelVtxBufMake(model);
         Hu3DModelDynamicFree(model);
-        Hu3DParticleCreate(model, -1, 0, func_801072A8_mgresultdealer);
+        Hu3DParticleCreate(model, -1, 0, mgresultdealer_ConfettiHook);
         Hu3DModelCameraSet(model, 2);
     }
-    omAddObj(10, 10, 10, -1, func_8010705C_mgresultdealer);
+    omAddObj(10, 10, 10, -1, mgresultdealer_ConfettiObjMain);
 }
 
-void func_8010705C_mgresultdealer(omObjData *obj) {
+void mgresultdealer_ConfettiObjMain(omObjData *obj) {
     s16 i;
 
     for (i = 0; i < 4; i++) {
-        if (((D_8010990C_mgresultdealer + i) & 7) == 0) {
-            func_801070EC_mgresultdealer(D_801099F8_mgresultdealer[i]);
+        if (((mgresultdealer_confettiTimer + i) & 7) == 0) {
+            mgresultdealer_ConfettiEmit(mgresultdealer_confettiMdlTbl[i]);
         }
     }
-    D_8010990C_mgresultdealer++;
+    mgresultdealer_confettiTimer++;
 }
 
-void func_801070EC_mgresultdealer(s16 model) {
+void mgresultdealer_ConfettiEmit(s16 model) {
     HmfData *hmf = Hu3DData[model].hmf;
     HmfModelData_UnkBC_Struct *bc = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle = bc->unk58;
@@ -234,7 +234,7 @@ void func_801070EC_mgresultdealer(s16 model) {
     }
 }
 
-void func_801072A8_mgresultdealer(s16 model) {
+void mgresultdealer_ConfettiHook(s16 model) {
     HmfData *hmf = Hu3DData[model].hmf;
     HmfModelData_UnkBC_Struct *bc = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle;
@@ -264,12 +264,12 @@ void func_801072A8_mgresultdealer(s16 model) {
     }
 }
 
-void func_801073F4_mgresultdealer(void) {
-    CharAnimSet(D_8010A250_mgresultdealer.obj->model[0], 2, GwPlayer[D_8010A266_mgresultdealer[0]].chr,
-                       D_80109A64_mgresultdealer[2]);
+void mgresultdealer_PlayerWinFaceSet(void) {
+    CharAnimSet(mgresultdealer_playerWork.obj->model[0], 2, GwPlayer[mgresultdealer_playerOrderTbl[0]].chr,
+                       mgresultdealer_playerFaceAnimTbl[2]);
 }
 
-void func_80107448_mgresultdealer(void) {
-    CharAnimSet(D_8010A250_mgresultdealer.obj->model[0], 2, GwPlayer[D_8010A266_mgresultdealer[0]].chr,
-                       D_80109A64_mgresultdealer[3]);
+void mgresultdealer_PlayerLoseFaceSet(void) {
+    CharAnimSet(mgresultdealer_playerWork.obj->model[0], 2, GwPlayer[mgresultdealer_playerOrderTbl[0]].chr,
+                       mgresultdealer_playerFaceAnimTbl[3]);
 }

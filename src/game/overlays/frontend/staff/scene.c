@@ -1,6 +1,6 @@
 #include "staff.h"
 
-s32 staff_hostMdlFileTbl[2] = { 0xA0075, 0xA0122 };
+s32 staff_hostMdlFileTbl[2] = { 0xA0075, 0xA0122 }; // Tumble, Millennium Star
 Vec staff_hostOrbitCenterTbl[2] = {
     { -755.0f, 580.0f, 0.0f },
     { 755.0f, 580.0f, 0.0f },

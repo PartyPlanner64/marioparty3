@@ -18,8 +18,8 @@ typedef struct SwingNSwipeCpuSpeeds {
 } SwingNSwipeCpuSpeeds;
 
 typedef struct SwingNSwipeCarrierWork {
-    /* 0x00 */ s16 unk00; // D_8010C148
-    /* 0x02 */ s16 unk02[5]; // D_8010C14A
+    /* 0x00 */ s16 unk00; // m264_carrierPhase
+    /* 0x02 */ s16 unk02[5]; // m264_carrierMotNoTbl
 } SwingNSwipeCarrierWork; // sizeof 0xC
 
 extern u16 mgInstColumnTbl[];

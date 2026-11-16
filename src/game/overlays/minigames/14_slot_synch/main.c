@@ -76,13 +76,13 @@ typedef struct SlotSynchBlock { // 0x3C bytes, four entries (one per player)
     f32 unk_38;
 } SlotSynchBlock;
 
-typedef struct SlotSynchReelRow { // 0x94 bytes
+typedef struct SlotSynchPipeRow { // 0x94 bytes
     u16 unk_00[0x48];           // vertex indices
     s16 unk_90;
     s16 unk_92; // vertex count
-} SlotSynchReelRow;
+} SlotSynchPipeRow;
 
-typedef struct SlotSynchReel { // 0x20 bytes, two entries
+typedef struct SlotSynchPipe { // 0x20 bytes, two entries
     s16 unk_00;              // model
     s16 unk_02;
     s16 unk_04;
@@ -93,8 +93,8 @@ typedef struct SlotSynchReel { // 0x20 bytes, two entries
     f32 unk_14;
     s16 unk_18; // row count
     char unk_1A[0x2];
-    SlotSynchReelRow *unk_1C;
-} SlotSynchReel;
+    SlotSynchPipeRow *unk_1C;
+} SlotSynchPipe;
 
 typedef union SlotSynchWorkBytes { // packs the top byte of each work word
     u32 word;
@@ -205,14 +205,15 @@ Vec m220_blockPosTbl[4] = {
     { 125.0f, 0.0f, -0.0f },
     { 300.0f, 0.0f, 0.0f }
 };
-Vec m220_reelPosTbl[2] = {
+Vec m220_pipePosTbl[2] = {
     { -255.0f, 0.0f, -300.0f },
     { 255.0f, 0.0f, -300.0f }
 };
 SlotSynchPos m220_scorePosTbl[2] = { { 70, 40 }, { 250, 40 } };
-f32 m220_blockFaceRotTbl[5] = { 0.0f, 90.0f, 180.0f, 270.0f, 0.0f };
-u8 m220_blockSymbolTbl[2][4] = { { 0, 1, 2, 3 }, { 2, 3, 1, 0 } };
-s16 m220_prizePointTbl[4] = { 3, 1, 2, -1 };
+f32 m220_blockSideRotTbl[5] = { 0.0f, 90.0f, 180.0f, 270.0f, 0.0f };
+u8 m220_blockFaceTbl[2][4] = { { 0, 1, 2, 3 }, { 2, 3, 1, 0 } };
+// Faces: 0 = Kinopio, 1 = Kuribo, 2 = Nokonoko, 3 = KoopaJr (4 = no match).
+s16 m220_facePointTbl[4] = { 3, 1, 2, -1 };
 SlotSynchColor m220_chipColor = { 0xE9DDA180 };
 SlotSynchColor m220_halfWhiteColor = { 0xFFFFFF80 };
 SlotSynchColor m220_whiteColor = { 0xFFFFFFFF };
@@ -238,7 +239,7 @@ s32 m220_voiceChrTbl[8] = {
     0x00050000, 0x00060000, 0x00080000, 0x00090000
 };
 s32 m220_voiceNoTbl[4] = { 0x2F, 0x30, 0x36, 0x37 };
-u16 m220_comSymbolTbl[6] = { 0, 2, 1, 3, 0, 0 };
+u16 m220_comFaceTbl[6] = { 0, 2, 1, 3, 0, 0 };
 u16 m220_comSpinTbl[8] = { 3, 3, 3, 3, 2, 3, 3, 0 };
 SlotSynchLampPos m220_lampPos0Tbl[12] = {
     { 16, 92, 0, 0 },
@@ -275,7 +276,7 @@ s32 m220_prizeMot1Tbl[4] = { 0x000A0018, 0x000A00B3, 0x000A00A0, 0x000A00FA };
 s32 m220_prizeMot2Tbl[4] = { 0x000A0002, 0x000A00A9, 0x000A0090, 0x000A00F1 };
 f32 m220_prizeMotSpeedTbl[4] = { 1.5f, 1.75f, 1.0f, 1.2f };
 s32 m220_prizeSeTbl[4] = { 0x393, 0x391, 0x392, 0x394 };
-s32 m220_faceSprTbl[8] = {
+s32 m220_chrIconSprTbl[8] = {
     0x00210008, 0x00210009, 0x0021000A, 0x0021000B,
     0x0021000C, 0x0021000D, 0x0021000E, 0x0021000F
 };
@@ -347,7 +348,7 @@ SlotSynchPlayerWork *m220_playerWorkTbl BSS;
 SlotSynchSprPri m220_winTeamNo BSS;
 SlotSynchLampSys m220_lampSys BSS;
 SlotSynchBlock *m220_blockTbl BSS;
-SlotSynchReel *m220_reelTbl BSS;
+SlotSynchPipe *m220_pipeTbl BSS;
 omObjData *m220_prizeObj BSS;
 SlotSynchPrize *m220_prizeTbl BSS;
 s16 *m220_sprTbl BSS;
@@ -378,18 +379,18 @@ s16 m220_LampCreate(f32 x, f32 y, u8 arg2, u8 arg3, u16 arg4);
 void m220_LampSprInit(void);
 void m220_BlockInit(void);
 void m220_BlockObjMain(omObjData *object);
-void m220_ReelInit(void);
+void m220_PipeInit(void);
 void m220_LampFlash(u8 arg0, u8 arg1);
 void m220_BlockSpinStart(s16 arg0);
-s16 m220_BlockSymbolGet(s16 arg0);
+s16 m220_BlockFaceGet(s16 arg0);
 s16 m220_BlockHitPlayerGet(s16 arg0);
-s16 m220_BlockSymbolAheadGet(s16 arg0, s16 arg1);
+s16 m220_BlockFaceAheadGet(s16 arg0, s16 arg1);
 void m220_BlockTargetSet(s16 arg0, s16 arg1);
 s32 m220_SmokeCreate(Vec *pos, Vec *vel, Vec *scale, f32 speed, u8 *color);
-s16 m220_BlockFaceSymbolGet(s16 arg0, s16 arg1);
-void m220_ReelVtxUpdate(SlotSynchReel *reel);
-void m220_ReelObjMain(omObjData *object);
-void m220_ReelScrollSet(s16 arg0, f32 arg1, f32 arg2);
+s16 m220_BlockSideFaceGet(s16 arg0, s16 arg1);
+void m220_PipeVtxUpdate(SlotSynchPipe *pipe);
+void m220_PipeObjMain(omObjData *object);
+void m220_PipeBulgeStart(s16 arg0, f32 arg1, f32 arg2);
 void m220_PrizeObjMain(omObjData *object);
 s16 m220_MotCreate(s32 file);
 void m220_CameraMoveObjMain(omObjData *object);
@@ -794,8 +795,8 @@ void m220_TeamObjMain(omObjData *object) {
                     }
                 }
                 team->unk_1C = 0;
-                result0 = m220_BlockSymbolGet(team->unk_08->unk_00);
-                result1 = m220_BlockSymbolGet(team->unk_0C->unk_00);
+                result0 = m220_BlockFaceGet(team->unk_08->unk_00);
+                result1 = m220_BlockFaceGet(team->unk_0C->unk_00);
                 if (MgFlowStatGet() == MG_STATE_FINISH) {
                     m220_BlockStopStart(team->unk_08->unk_00);
                     m220_BlockStopStart(team->unk_0C->unk_00);
@@ -977,7 +978,7 @@ void m220_PlayerComInput(omObjData *object) {
             }
             if (partner->unk_22 == 0) {
                 player->unk_2A = 150;
-                player->unk_2C = m220_comSymbolTbl[(u8)(rand8() % 3)];
+                player->unk_2C = m220_comFaceTbl[(u8)(rand8() % 3)];
                 break;
             }
             if ((u8)(rand8() % 100) < player->unk_24 * 15 + 60) {
@@ -989,7 +990,7 @@ void m220_PlayerComInput(omObjData *object) {
             if (team->unk_1E == -1) {
                 index = (u8)(rand8() % 100) * (1.0f - player->unk_24 * 0.075f);
                 index /= 25;
-                team->unk_1E = player->unk_2C = m220_comSymbolTbl[index];
+                team->unk_1E = player->unk_2C = m220_comFaceTbl[index];
             } else {
                 player->unk_2C = team->unk_1E;
                 if (abs(player->unk_2A - partner->unk_2A) < 9.0f) {
@@ -1006,26 +1007,26 @@ void m220_PlayerComInput(omObjData *object) {
             break;
         case 2:
             if (m220_BlockStopCheck(player->unk_00) == 0) {
-                m220_BlockSymbolGet(player->unk_00);
+                m220_BlockFaceGet(player->unk_00);
                 if (player->unk_0A > player->unk_2A) {
                     if (player->unk_28 == 0) {
-                        result = m220_BlockSymbolAheadGet(player->unk_00, spin);
+                        result = m220_BlockFaceAheadGet(player->unk_00, spin);
                         if (result == player->unk_2C) {
                             m220_BlockTargetSet(player->unk_00, result);
                             HuPadBtnDown[player->unk_1E] |= A_BUTTON;
                         }
-                    } else if (m220_BlockSymbolAheadGet(player->unk_00, spin) != player->unk_2C) {
+                    } else if (m220_BlockFaceAheadGet(player->unk_00, spin) != player->unk_2C) {
                         HuPadBtnDown[player->unk_1E] |= A_BUTTON;
                     }
                 } else if (partner->unk_22 == 0 && m220_BlockStopCheck(partner->unk_00)) {
                     player->unk_0A = 0;
-                    if (m220_BlockSymbolAheadGet(player->unk_00, spin) == m220_BlockSymbolGet(partner->unk_00)) {
-                        m220_BlockTargetSet(player->unk_00, m220_BlockSymbolGet(partner->unk_00));
+                    if (m220_BlockFaceAheadGet(player->unk_00, spin) == m220_BlockFaceGet(partner->unk_00)) {
+                        m220_BlockTargetSet(player->unk_00, m220_BlockFaceGet(partner->unk_00));
                         HuPadBtnDown[player->unk_1E] |= A_BUTTON;
                     }
                 }
             }
-            player->unk_26 = m220_BlockSymbolGet(player->unk_00);
+            player->unk_26 = m220_BlockFaceGet(player->unk_00);
             break;
         case 3:
             if (player->unk_2C != -1) {
@@ -1044,7 +1045,7 @@ void m220_StageInit(void) {
 
     m220_LampInit();
     m220_BlockInit();
-    m220_ReelInit();
+    m220_PipeInit();
     m220_stageSprPriTbl[0] = priority;
     priority--;
     m220_stageSprPriTbl[1] = priority;
@@ -1346,7 +1347,7 @@ void m220_BlockObjMain(omObjData *object) {
         if (machine->unk_05 >= 4) {
             machine->unk_05 -= 4;
         }
-        machine->unk_06 = m220_BlockFaceSymbolGet(machine->unk_02, machine->unk_05);
+        machine->unk_06 = m220_BlockSideFaceGet(machine->unk_02, machine->unk_05);
         machine->unk_30 += machine->unk_14;
         if (machine->unk_30 >= 360.0f) {
             machine->unk_30 -= 360.0f;
@@ -1355,7 +1356,7 @@ void m220_BlockObjMain(omObjData *object) {
             HuAudPlayerFXPlay(0x38E, i);
             if (machine->unk_08 == -1) {
                 machine->unk_14 = 0.0f;
-                machine->unk_30 = m220_blockFaceRotTbl[machine->unk_05];
+                machine->unk_30 = m220_blockSideRotTbl[machine->unk_05];
             } else {
                 machine->unk_14 = 0.0f;
                 for (j = 0; j < 4; j++) {
@@ -1370,7 +1371,7 @@ void m220_BlockObjMain(omObjData *object) {
                     if (machine->unk_05 >= 4) {
                         machine->unk_05 -= 4;
                     }
-                    machine->unk_06 = m220_BlockFaceSymbolGet(machine->unk_02, machine->unk_05);
+                    machine->unk_06 = m220_BlockSideFaceGet(machine->unk_02, machine->unk_05);
                     if (machine->unk_06 == machine->unk_08) {
                         break;
                     }
@@ -1436,7 +1437,7 @@ s16 m220_BlockStopCheck(s16 arg0) {
     return machine->unk_0C == 0;
 }
 
-s16 m220_BlockSymbolGet(s16 arg0) {
+s16 m220_BlockFaceGet(s16 arg0) {
     SlotSynchBlock *machine = &m220_blockTbl[arg0];
     f32 angle = machine->unk_30 + 45.0f;
     s16 quadrant;
@@ -1447,10 +1448,10 @@ s16 m220_BlockSymbolGet(s16 arg0) {
         angle += 360.0f;
     }
     quadrant = angle / 90.0f;
-    return m220_BlockFaceSymbolGet(arg0, quadrant);
+    return m220_BlockSideFaceGet(arg0, quadrant);
 }
 
-s16 m220_BlockSymbolAheadGet(s16 arg0, s16 arg1) {
+s16 m220_BlockFaceAheadGet(s16 arg0, s16 arg1) {
     SlotSynchBlock *machine = &m220_blockTbl[arg0];
     s16 quadrant;
     f32 angle = machine->unk_30 + arg1 * machine->unk_14 + 45.0f;
@@ -1462,13 +1463,13 @@ s16 m220_BlockSymbolAheadGet(s16 arg0, s16 arg1) {
         angle += 360.0f;
     }
     quadrant = angle / 90.0f;
-    return m220_BlockFaceSymbolGet(arg0, quadrant);
+    return m220_BlockSideFaceGet(arg0, quadrant);
 }
 
-s16 m220_BlockFaceSymbolGet(s16 arg0, s16 arg1) {
+s16 m220_BlockSideFaceGet(s16 arg0, s16 arg1) {
     SlotSynchBlock *machine = &m220_blockTbl[arg0];
 
-    return m220_blockSymbolTbl[machine->unk_03][arg1];
+    return m220_blockFaceTbl[machine->unk_03][arg1];
 }
 
 void m220_BlockStopStart(s16 arg0) {
@@ -1486,10 +1487,10 @@ void m220_BlockTargetSet(s16 arg0, s16 arg1) {
     machine->unk_08 = arg1;
 }
 
-void m220_ReelInit(void) {
+void m220_PipeInit(void) {
     s16 heights[256];
-    SlotSynchReel *reel;
-    SlotSynchReelRow *row;
+    SlotSynchPipe *pipe;
+    SlotSynchPipeRow *row;
     HmfData *hmf;
     Vtx *vtx;
     s16 i;
@@ -1498,21 +1499,21 @@ void m220_ReelInit(void) {
     s16 count;
     s16 temp;
 
-    reel = m220_reelTbl = HuMemAllocTag(sizeof(SlotSynchReel) * 2, TAG_OVERLAY);
-    memset(reel, 0, sizeof(SlotSynchReel) * 2);
-    for (i = 0; i < 2; i++, reel++) {
-        reel->unk_00 = Hu3DModelRead(0x350002, 0xB9);
-        Hu3DModelPosSet(reel->unk_00, m220_reelPosTbl[i].x, m220_reelPosTbl[i].y,
-                        m220_reelPosTbl[i].z);
-        Hu3DModelScaleSet(reel->unk_00, 1.0f, 0.85f, 1.0f);
-        Hu3DModelVtxBufMake(reel->unk_00);
-        hmf = Hu3DData[reel->unk_00].hmf;
-        reel->unk_02 = i;
-        reel->unk_04 = 0;
-        reel->unk_08 = -75.0f;
-        reel->unk_0C = 75.0f;
-        reel->unk_10 = 0.75f;
-        reel->unk_14 = 0.0f;
+    pipe = m220_pipeTbl = HuMemAllocTag(sizeof(SlotSynchPipe) * 2, TAG_OVERLAY);
+    memset(pipe, 0, sizeof(SlotSynchPipe) * 2);
+    for (i = 0; i < 2; i++, pipe++) {
+        pipe->unk_00 = Hu3DModelRead(0x350002, 0xB9);
+        Hu3DModelPosSet(pipe->unk_00, m220_pipePosTbl[i].x, m220_pipePosTbl[i].y,
+                        m220_pipePosTbl[i].z);
+        Hu3DModelScaleSet(pipe->unk_00, 1.0f, 0.85f, 1.0f);
+        Hu3DModelVtxBufMake(pipe->unk_00);
+        hmf = Hu3DData[pipe->unk_00].hmf;
+        pipe->unk_02 = i;
+        pipe->unk_04 = 0;
+        pipe->unk_08 = -75.0f;
+        pipe->unk_0C = 75.0f;
+        pipe->unk_10 = 0.75f;
+        pipe->unk_14 = 0.0f;
         if (i == 0) {
             vtx = hmf->unk40;
             count = 0;
@@ -1539,16 +1540,16 @@ void m220_ReelInit(void) {
                     }
                 }
             }
-            reel->unk_18 = count;
-            row = reel->unk_1C = HuMemAllocTag(count * sizeof(SlotSynchReelRow), TAG_OVERLAY);
-            for (j = 0; j < reel->unk_18; j++, row++) {
+            pipe->unk_18 = count;
+            row = pipe->unk_1C = HuMemAllocTag(count * sizeof(SlotSynchPipeRow), TAG_OVERLAY);
+            for (j = 0; j < pipe->unk_18; j++, row++) {
                 row->unk_90 = heights[j];
                 row->unk_92 = 0;
             }
             vtx = hmf->unk40;
             for (j = 0; j < hmf->unk18; j++, vtx++) {
-                for (k = 0; k < reel->unk_18; k++) {
-                    row = &reel->unk_1C[k];
+                for (k = 0; k < pipe->unk_18; k++) {
+                    row = &pipe->unk_1C[k];
                     if (vtx->v.ob[1] == row->unk_90) {
                         row->unk_00[row->unk_92] = j;
                         row->unk_92++;
@@ -1560,32 +1561,32 @@ void m220_ReelInit(void) {
                 }
             }
         } else {
-            reel->unk_18 = m220_reelTbl->unk_18;
-            reel->unk_1C = m220_reelTbl->unk_1C;
+            pipe->unk_18 = m220_pipeTbl->unk_18;
+            pipe->unk_1C = m220_pipeTbl->unk_1C;
         }
     }
-    omSetStatBit(omAddObj(0x1B, 0, 0, -1, m220_ReelObjMain), 0xA0);
+    omSetStatBit(omAddObj(0x1B, 0, 0, -1, m220_PipeObjMain), 0xA0);
 }
 
-void m220_ReelObjMain(omObjData *object) {
-    SlotSynchReel *reel = m220_reelTbl;
+void m220_PipeObjMain(omObjData *object) {
+    SlotSynchPipe *pipe = m220_pipeTbl;
     s32 i;
 
-    for (i = 0; i < 2; i++, reel++) {
-        if (omPauseChk() + omAllPauseF == 0 && reel->unk_04 == 1) {
-            reel->unk_08 += reel->unk_14;
-            if (reel->unk_08 >= 359.99999046325684 || reel->unk_08 <= -120.00000476837158) {
-                reel->unk_14 = 0.0f;
-                reel->unk_04 = 0;
+    for (i = 0; i < 2; i++, pipe++) {
+        if (omPauseChk() + omAllPauseF == 0 && pipe->unk_04 == 1) {
+            pipe->unk_08 += pipe->unk_14;
+            if (pipe->unk_08 >= 359.99999046325684 || pipe->unk_08 <= -120.00000476837158) {
+                pipe->unk_14 = 0.0f;
+                pipe->unk_04 = 0;
             }
         }
-        m220_ReelVtxUpdate(reel);
+        m220_PipeVtxUpdate(pipe);
     }
 }
 
-void m220_ReelVtxUpdate(SlotSynchReel *reel) {
-    SlotSynchReelRow *row = reel->unk_1C;
-    HmfData *hmf = Hu3DData[reel->unk_00].hmf;
+void m220_PipeVtxUpdate(SlotSynchPipe *pipe) {
+    SlotSynchPipeRow *row = pipe->unk_1C;
+    HmfData *hmf = Hu3DData[pipe->unk_00].hmf;
     Vtx *src = hmf->unk40;
     Vtx *dst = hmf->unk44[Hu3DBufNo];
     f32 dist;
@@ -1593,12 +1594,12 @@ void m220_ReelVtxUpdate(SlotSynchReel *reel) {
     s32 i;
     s32 j;
 
-    for (i = 0; i < reel->unk_18; i++, row++) {
-        dist = fabsf(reel->unk_08 - row->unk_90 * 0.85f);
-        if (dist > reel->unk_0C) {
+    for (i = 0; i < pipe->unk_18; i++, row++) {
+        dist = fabsf(pipe->unk_08 - row->unk_90 * 0.85f);
+        if (dist > pipe->unk_0C) {
             scale = 0.0f;
         } else {
-            scale = 1.0f - dist / reel->unk_0C;
+            scale = 1.0f - dist / pipe->unk_0C;
         }
         if (scale >= 1.0f) {
             scale = 1.0f;
@@ -1606,7 +1607,7 @@ void m220_ReelVtxUpdate(SlotSynchReel *reel) {
             scale = 0.0f;
         }
         if (scale != 0.0f) {
-            scale = scale * reel->unk_10 + 1.0f;
+            scale = scale * pipe->unk_10 + 1.0f;
             for (j = 0; j < row->unk_92; j++) {
                 dst[row->unk_00[j]].v.ob[0] = src[row->unk_00[j]].v.ob[0] * scale;
                 dst[row->unk_00[j]].v.ob[2] = src[row->unk_00[j]].v.ob[2] * scale;
@@ -1619,12 +1620,12 @@ void m220_ReelVtxUpdate(SlotSynchReel *reel) {
     }
 }
 
-void m220_ReelScrollSet(s16 arg0, f32 arg1, f32 arg2) {
-    SlotSynchReel *reel = &m220_reelTbl[arg0];
+void m220_PipeBulgeStart(s16 arg0, f32 arg1, f32 arg2) {
+    SlotSynchPipe *pipe = &m220_pipeTbl[arg0];
 
-    reel->unk_04 = 1;
-    reel->unk_08 = arg1;
-    reel->unk_14 = arg2;
+    pipe->unk_04 = 1;
+    pipe->unk_08 = arg1;
+    pipe->unk_14 = arg2;
 }
 
 void m220_PrizeInit(void) {
@@ -1750,7 +1751,7 @@ void m220_PrizeObjMain(omObjData *object) {
                     pos.z = spin->unk_34[2];
                     m220_SmokeCreate(&pos, NULL, NULL, 1.0f, m220_chipColor.rgba);
                     Hu3DMotionShiftSet(modelId, spin->unk_0C[spin->unk_26][0], 0, 5, 2);
-                    m220_TeamScoreAdd(spin->unk_01, m220_prizePointTbl[spin->unk_26]);
+                    m220_TeamScoreAdd(spin->unk_01, m220_facePointTbl[spin->unk_26]);
                     spin->unk_02 = 1;
                     spin->unk_34[1] = 0.0f;
                     spin->unk_2A = 0;
@@ -1841,9 +1842,9 @@ s16 m220_PrizeCreate(s16 arg0, s16 arg1) {
         spin->unk_26 = arg1;
         spin->unk_2A = 0;
         spin->unk_2C = 0;
-        spin->unk_34[0] = m220_reelPosTbl[spin->unk_01].x;
-        spin->unk_34[2] = m220_reelPosTbl[spin->unk_01].z;
-        spin->unk_34[1] = m220_reelPosTbl[spin->unk_01].y - 20.0000002980232239;
+        spin->unk_34[0] = m220_pipePosTbl[spin->unk_01].x;
+        spin->unk_34[2] = m220_pipePosTbl[spin->unk_01].z;
+        spin->unk_34[1] = m220_pipePosTbl[spin->unk_01].y - 20.0000002980232239;
         spin->unk_34[3] = spin->unk_34[4] = spin->unk_34[5] = 0.0f;
         spin->unk_34[6] = spin->unk_34[7] = spin->unk_34[8] = 0.1f;
         if (spin->unk_26 != 4) {
@@ -1858,7 +1859,7 @@ s16 m220_PrizeCreate(s16 arg0, s16 arg1) {
         } else {
             spin->unk_28 = 16;
         }
-        m220_ReelScrollSet(spin->unk_01, spin->unk_34[1], 20.0f);
+        m220_PipeBulgeStart(spin->unk_01, spin->unk_34[1], 20.0f);
         return i;
     }
     return -1;
@@ -1950,8 +1951,8 @@ void m220_ScoreChrSet(s16 team, s16 chr0, s16 chr1, s16 arg3) {
     s32 group;
     s32 i;
 
-    m220_sprTbl[team * 2 + 13] = m220_SprAnimRead(m220_faceSprTbl[chr0]);
-    m220_sprTbl[team * 2 + 14] = m220_SprAnimRead(m220_faceSprTbl[chr1]);
+    m220_sprTbl[team * 2 + 13] = m220_SprAnimRead(m220_chrIconSprTbl[chr0]);
+    m220_sprTbl[team * 2 + 14] = m220_SprAnimRead(m220_chrIconSprTbl[chr1]);
     group = HuSprGrpCreate(6, 0);
     light->unk_00 = group;
     light->unk_06[0] = -8;

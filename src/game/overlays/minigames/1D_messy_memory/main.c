@@ -78,9 +78,9 @@ typedef struct {
 } MessyMemoryCamera; // sizeof 0x2C
 
 typedef struct {
-    /* 0x00 */ s16 unk00;   // D_80115D70
-    /* 0x02 */ u8 unk02[4]; // D_80115D72
-    /* 0x06 */ u8 unk06[4]; // D_80115D76
+    /* 0x00 */ s16 unk00;   // m229_dustSeF
+    /* 0x02 */ u8 unk02[4]; // m229_handAlphaTbl
+    /* 0x06 */ u8 unk06[4]; // m229_scoreTbl
 } MessyMemoryPlayerStat;       // sizeof 0xA
 
 // Fields of m229_playerStat (aliased in undefined_syms.txt).

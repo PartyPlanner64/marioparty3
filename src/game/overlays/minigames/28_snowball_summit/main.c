@@ -67,10 +67,10 @@ typedef struct SnowballSummitPuff {
     /* 0x14 */ omObjData *unk_14; // minigame object that owns the slot
 } SnowballSummitPuff;          // sizeof 0x18
 
-typedef struct SnowballSummitMakeEff {
+typedef struct SnowballSummitBallMakeEff {
     /* 0x00 */ s32 id;       // -1 when the slot is unused
     /* 0x04 */ void *unk_04; // minigame object that owns the slot
-} SnowballSummitMakeEff;  // sizeof 0x8
+} SnowballSummitBallMakeEff;  // sizeof 0x8
 
 typedef struct SnowballSummitBackBall {
     /* 0x00 */ s32 state; // -1 when the slot is unused
@@ -160,7 +160,7 @@ u8 m240_backBallAnimPad[4] BSS; /* Unreferenced. */
 s32 m240_hitTimerTbl[4] BSS;
 s32 m240_startPosNo BSS;
 s16 m240_ballMdl BSS;
-s16 m240_makeEffMdl BSS;
+s16 m240_ballMakeEffMdl BSS;
 s16 m240_rollEffMdl BSS;
 u8 m240_rollEffMdlPad[0xC] BSS; /* Unreferenced. */
 SnowballSummitBackdrop m240_backdrop BSS;
@@ -178,7 +178,7 @@ s16 m240_snowMdl BSS;
 u8 m240_snowMdlPad[0x10] BSS; /* Unreferenced. */
 s32 m240_winnerF BSS;
 SnowballSummitPuff m240_puffTbl[16] BSS;
-SnowballSummitMakeEff m240_makeEffTbl[4] BSS;
+SnowballSummitBallMakeEff m240_ballMakeEffTbl[4] BSS;
 s32 m240_unusedF BSS;
 u8 m240_unusedFPad[4] BSS; /* Unreferenced. */
 s16 m240_hudSprGrp BSS;
@@ -198,7 +198,7 @@ void m240_BackdropObjMain(omObjData *object);
 void m240_PlayerObjInit(omObjData *object);
 void m240_PuffObjMain(omObjData *object);
 void m240_SeqFinishObjMain(omObjData *object);
-void m240_MakeEffObjMain(omObjData *object);
+void m240_BallMakeEffObjMain(omObjData *object);
 void m240_RollEffObjMain(omObjData *object);
 void m240_BurstObjMain(omObjData *object);
 void m240_MainObjMain(omObjData *object);
@@ -223,7 +223,7 @@ void m240_SeqSettleWaitObjMain(omObjData *);
 void m240_BallObjInit(omObjData *);
 void m240_SeqTimerObjMain(omObjData *);
 void m240_SeqStartWaitObjMain(omObjData *);
-void m240_MakeEffObjInit(omObjData *);
+void m240_BallMakeEffObjInit(omObjData *);
 void m240_RollEffObjInit(omObjData *);
 
 void m240_Executor(void) {
@@ -1700,8 +1700,8 @@ void m240_BallObjCreateAll(void) {
     }
 }
 
-void m240_MakeEffObjMain(omObjData *object) {
-    SnowballSummitMakeEff *slot = &m240_makeEffTbl[object->work[0]];
+void m240_BallMakeEffObjMain(omObjData *object) {
+    SnowballSummitBallMakeEff *slot = &m240_ballMakeEffTbl[object->work[0]];
     SnowballSummitPlayer *mover;
 
     if (slot->id == -1) {
@@ -1734,14 +1734,14 @@ void m240_MakeEffObjMain(omObjData *object) {
     object->rot.y = mover->unk_78->rot.y;
 }
 
-void m240_MakeEffObjInit(omObjData *object) {
+void m240_BallMakeEffObjInit(omObjData *object) {
     SnowballSummitPlayer *mover;
-    SnowballSummitMakeEff *slot;
+    SnowballSummitBallMakeEff *slot;
 
     if (object->work[0] == 0) {
-        object->model[0] = m240_makeEffMdl = Hu3DModelRead(0x49000C, 0x1699);
+        object->model[0] = m240_ballMakeEffMdl = Hu3DModelRead(0x49000C, 0x1699);
     } else {
-        object->model[0] = Hu3DModelLink(m240_makeEffMdl);
+        object->model[0] = Hu3DModelLink(m240_ballMakeEffMdl);
     }
     Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DMotionAttrSet(object->model[0], 2, 2);
@@ -1750,17 +1750,17 @@ void m240_MakeEffObjInit(omObjData *object) {
     object->trans.y = mover->spawnPosY + 40.0f;
     object->trans.z = mover->spawnPosZ;
     Hu3DModelCameraSet(object->model[0], HU3D_CAM1);
-    object->func = m240_MakeEffObjMain;
-    slot = &m240_makeEffTbl[object->work[0]];
+    object->func = m240_BallMakeEffObjMain;
+    slot = &m240_ballMakeEffTbl[object->work[0]];
     slot->id = 0;
     slot->unk_04 = object;
 }
 
-void m240_MakeEffObjCreateAll(void) {
+void m240_BallMakeEffObjCreateAll(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        omAddObj(0x1FE, 1, 1, -1, m240_MakeEffObjInit)->work[0] = i;
+        omAddObj(0x1FE, 1, 1, -1, m240_BallMakeEffObjInit)->work[0] = i;
     }
 }
 
@@ -2749,11 +2749,11 @@ void m240_BurstWorkInit(void) {
     }
 }
 
-void m240_MakeEffWorkInit(void) {
+void m240_BallMakeEffWorkInit(void) {
     s32 i;
-    SnowballSummitMakeEff *slot;
+    SnowballSummitBallMakeEff *slot;
 
-    for (i = 0, slot = m240_makeEffTbl; i < ARRAY_COUNT(m240_makeEffTbl); i++) {
+    for (i = 0, slot = m240_ballMakeEffTbl; i < ARRAY_COUNT(m240_ballMakeEffTbl); i++) {
         slot[i].id = -1;
     }
 }
@@ -2779,7 +2779,7 @@ void m240_WorkInitAll(void) {
     m240_BackBallWorkInit();
     m240_BallWorkInit();
     m240_PuffWorkInit();
-    m240_MakeEffWorkInit();
+    m240_BallMakeEffWorkInit();
     m240_RollEffWorkInit();
     m240_BurstWorkInit();
 }
@@ -2794,7 +2794,7 @@ void m240_ObjCreateAll(void) {
     m240_PlayerObjCreateAll();
     m240_BallObjCreateAll();
     m240_PuffObjCreateAll();
-    m240_MakeEffObjCreateAll();
+    m240_BallMakeEffObjCreateAll();
     m240_RollEffObjCreateAll();
     m240_BurstObjCreateAll();
     m240_SnowObjCreate();

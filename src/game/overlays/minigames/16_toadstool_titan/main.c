@@ -19,11 +19,11 @@ typedef struct ToadstoolTitanFlagWork {
     /* 0x02 */ u8 unk02[4];
 } ToadstoolTitanFlagWork; // sizeof 0x6
 
-typedef struct ToadstoolTitanStoolWork {
+typedef struct ToadstoolTitanBlockWork {
     /* 0x00 */ u8 unk00[9];
     /* 0x09 */ u8 unk09[4];
     /* 0x0D */ u8 unk0D[4]; // group of each player
-} ToadstoolTitanStoolWork;    // sizeof 0x11
+} ToadstoolTitanBlockWork;    // sizeof 0x11
 
 extern s32 omCharModelNoTbl[][6];
 extern s16 HuAudMusNo;
@@ -41,13 +41,13 @@ extern s16 Hu3DCamMtxNo;
 extern u8 omAllPauseF;
 extern Gfx *gMainGfxPos;
 
-u8 m222_stoolNum = 0;       // number of mushrooms created so far
+u8 m222_blockNum = 0;       // number of Brick Blocks created so far
 f32 m222_viewLeft = 0.0f;   // screen rect left
 f32 m222_viewTop = 0.0f;   // screen rect top
 f32 m222_viewRight = 320.0f; // screen rect right
 f32 m222_viewBottom = 240.0f; // screen rect bottom
 u8 m222_debrisTimerTbl[14] = { 0 };
-u8 m222_stoolBreakTimerTbl[9] = { 0 };
+u8 m222_blockBreakTimerTbl[9] = { 0 };
 u8 m222_puffTimer = 0;
 s16 m222_growEffTimer = 0;
 s16 m222_growEffDoneF = 0;
@@ -71,7 +71,7 @@ Gfx m222_gfxViewFrameInit[] = {
 };
 
 s32 m222_cameraInitF = 0; // set once the camera has been initialized
-u8 m222_titanRunF = 0;
+u8 m222_giantRunF = 0;
 u8 m222_comStateTbl[4] = { 0 };
 s16 m222_comWaitTbl[4] = { 0 };
 s16 m222_comTimerTbl[4] = { 0 };
@@ -84,8 +84,8 @@ f32 m222_debrisZTbl[14] BSS;
 f32 m222_debrisVelXTbl[14] BSS;
 f32 m222_debrisVelYTbl[14] BSS;
 f32 m222_debrisVelZTbl[14] BSS;
-f32 m222_titanRunDir BSS;
-u8 m222_titanRunDirPad[4] BSS; /* Unreferenced. */
+f32 m222_giantRunDir BSS;
+u8 m222_giantRunDirPad[4] BSS; /* Unreferenced. */
 ToadstoolTitanPlayer m222_playerTbl[4] BSS;
 ToadstoolTitanPlayer *m222_groupPlayerTbl[4] BSS; // players indexed by group
 u8 m222_groupPlayerTblPad[8] BSS;                    /* Unreferenced. */
@@ -100,7 +100,7 @@ f32 m222_kinokoVelX BSS;
 u16 m222_exitF BSS;
 Vec m222_cameraTarget BSS;           // camera target
 u8 m222_cameraTargetPad[4] BSS;         /* Unreferenced. */
-omObjData *m222_stoolObjTbl[9] BSS; // mushroom objects
+omObjData *m222_blockObjTbl[9] BSS; // Brick Block objects
 u8 m222_shakeTimer BSS;
 omObjData *m222_stageObj BSS;
 s16 m222_phase BSS;
@@ -108,27 +108,27 @@ f32 m222_musVol BSS; // music volume
 f32 m222_kinokoZ BSS;
 f32 m222_kinokoVelZ BSS;
 s16 m222_frameSprDataTbl[1] BSS;
-s8 m222_titanGroup BSS;
+s8 m222_giantGroup BSS;
 f32 m222_kinokoX BSS;
 ToadstoolTitanFlagWork m222_flagWork BSS;
 u32 m222_kinokoTimer BSS;
-u8 m222_kinokoStoolNo BSS;
+u8 m222_kinokoBlockNo BSS;
 f32 m222_cameraFov BSS; // camera fov
 Vec m222_cameraPos BSS; // camera position
 s16 m222_motTimeTbl[4] BSS;
 u8 m222_motTimeTblPad[4] BSS; /* Unreferenced. */
 omObjData *m222_playerObjTbl[4] BSS;
-ToadstoolTitanStoolWork m222_stoolWork BSS;
+ToadstoolTitanBlockWork m222_blockWork BSS;
 f32 m222_kinokoY BSS;
 u8 m222_startCornerTbl[4] BSS; // start corner of each group
 u8 m222_humanNum BSS;    // number of human players
 f32 m222_shakeAngle BSS;
 
-/* Fields of m222_flagWork/m222_stoolWork, aliased in undefined_syms.txt. */
+/* Fields of m222_flagWork/m222_blockWork, aliased in undefined_syms.txt. */
 extern u8 m222_musicFTbl[2];
-extern u8 m222_squashTimerTbl[4];
-extern u8 m222_stoolStateTbl[9];
-extern u8 m222_squashDirTbl[4];
+extern u8 m222_outTimerTbl[4];
+extern u8 m222_blockStateTbl[9];
+extern u8 m222_outDirTbl[4];
 extern u8 m222_playerGroupTbl[4]; // group of each player
 
 const s16 m222_fontMesTbl[] = {
@@ -140,7 +140,7 @@ const s16 m222_fontMesTbl[] = {
 void m222_MainObjInit(omObjData *object);
 void m222_MainObjMain(omObjData *object);
 void m222_MusVolSave(void);
-void m222_StoolObjInit(omObjData *object);
+void m222_BlockObjInit(omObjData *object);
 void m222_StageObjInit(omObjData *object);
 void m222_StageObjMain(omObjData *object);
 void m222_ViewFrameSet(s16 left, s16 top, s16 right, s16 bottom);
@@ -190,7 +190,7 @@ void m222_ObjectSetup(void) {
     mgMapObjTbl[mgMapObjNum++] = m222_stageObj = object;
     omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     for (i = 0; i < 9; i++) {
-        mgMapObjTbl[mgMapObjNum++] = m222_stoolObjTbl[i] = omAddObj(2, 2, 2, -1, m222_StoolObjInit);
+        mgMapObjTbl[mgMapObjNum++] = m222_blockObjTbl[i] = omAddObj(2, 2, 2, -1, m222_BlockObjInit);
     }
     mgPlayerObjTbl[mgPlayerObjNum++] = m222_playerObjTbl[0] = omAddObj(3, 12, 60, -1, m222_Player0ObjInit);
     mgPlayerObjTbl[mgPlayerObjNum++] = m222_playerObjTbl[1] = omAddObj(3, 12, 60, -1, m222_Player1ObjInit);
@@ -226,8 +226,8 @@ void m222_MainObjInit(omObjData *object) {
     m222_exitTimer = 0;
     m222_kinokoPhase = 0;
     m222_kinokoTimer = 0;
-    m222_titanGroup = -1;
-    m222_squashTimerTbl[0] = m222_squashTimerTbl[1] = m222_squashTimerTbl[2] = m222_squashTimerTbl[3] = 0;
+    m222_giantGroup = -1;
+    m222_outTimerTbl[0] = m222_outTimerTbl[1] = m222_outTimerTbl[2] = m222_outTimerTbl[3] = 0;
     m222_shakeTimer = 0;
     m222_humanNum = 0;
     m222_musicFTbl[0] = m222_musicFTbl[1] = 0;
@@ -436,22 +436,22 @@ void m222_MusVolSave(void) {
     }
 }
 
-void m222_StoolObjInit(omObjData *object) {
+void m222_BlockObjInit(omObjData *object) {
     f32 xs[9] = { 0.0f, 110.0f, 250.0f, 250.0f, 110.0f, -110.0f, -250.0f, -250.0f, -110.0f };
     f32 zs[9] = { 0.0f, -230.0f, -110.0f, 110.0f, 240.0f, 240.0f, 110.0f, -110.0f, -230.0f };
     MgMapWork *work;
 
-    if (m222_stoolNum == 0) {
+    if (m222_blockNum == 0) {
         object->model[0] = Hu3DModelRead(0x370000, 0xBD);
     } else {
-        object->model[0] = Hu3DModelLink(m222_stoolObjTbl[0]->model[0]);
+        object->model[0] = Hu3DModelLink(m222_blockObjTbl[0]->model[0]);
     }
-    omSetTra(object, xs[m222_stoolNum] * 1.11, 375.0f, zs[m222_stoolNum] * 1.11 + 20.0);
+    omSetTra(object, xs[m222_blockNum] * 1.11, 375.0f, zs[m222_blockNum] * 1.11 + 20.0);
     omSetSca(object, 0.6666667f, 0.6666667f, 0.6666667f);
-    if (m222_stoolNum == 0) {
+    if (m222_blockNum == 0) {
         object->model[1] = Hu3DModelRead(0x370001, 0xBD);
     } else {
-        object->model[1] = Hu3DModelLink(m222_stoolObjTbl[0]->model[1]);
+        object->model[1] = Hu3DModelLink(m222_blockObjTbl[0]->model[1]);
     }
     Hu3DModelPosSet(object->model[1], object->trans.x, 0.0f, object->trans.z);
     Hu3DModelScaleSet(object->model[1], 0.6666667f, 0.6666667f, 0.6666667f);
@@ -459,12 +459,12 @@ void m222_StoolObjInit(omObjData *object) {
     memset(work, 0, 0xB4);
     work->unk03 = 1;
     MgMapBlockSet(object, 50.0f, 100.0f, -60.0f, -60.0f, 60.0f,
-                           (m222_stoolNum >= 4 && m222_stoolNum < 6) ? 120.0f : 60.0f);
+                           (m222_blockNum >= 4 && m222_blockNum < 6) ? 120.0f : 60.0f);
     MgMapFrictionSet(object, 1.0f);
     MgMapAccelSet(object, 6.0f);
-    work->unk04 = m222_stoolNum + 1;
-    m222_stoolStateTbl[m222_stoolNum] = 0;
-    m222_stoolNum++;
+    work->unk04 = m222_blockNum + 1;
+    m222_blockStateTbl[m222_blockNum] = 0;
+    m222_blockNum++;
     object->func = NULL;
 }
 
@@ -531,13 +531,13 @@ void m222_StageObjInit(omObjData *object) {
         } else {
             object->model[8 + i] = Hu3DModelLink(object->model[8]);
         }
-        Hu3DModelPosSet(object->model[8 + i], m222_stoolObjTbl[i]->trans.x, m222_stoolObjTbl[i]->trans.y + 25.0f,
-                        m222_stoolObjTbl[i]->trans.z + 125.0f);
+        Hu3DModelPosSet(object->model[8 + i], m222_blockObjTbl[i]->trans.x, m222_blockObjTbl[i]->trans.y + 25.0f,
+                        m222_blockObjTbl[i]->trans.z + 125.0f);
         Hu3DModelRotSet(object->model[8 + i], -23.0f, 0.0f, 0.0f);
         Hu3DModelScaleSet(object->model[8 + i], 2.5f, 2.5f, 2.5f);
         object->model[17 + i] = Hu3DModelRead(0x37000B, 0x8BD);
-        Hu3DModelPosSet(object->model[17 + i], m222_stoolObjTbl[i]->trans.x, m222_stoolObjTbl[i]->trans.y - 100.0f,
-                        m222_stoolObjTbl[i]->trans.z);
+        Hu3DModelPosSet(object->model[17 + i], m222_blockObjTbl[i]->trans.x, m222_blockObjTbl[i]->trans.y - 100.0f,
+                        m222_blockObjTbl[i]->trans.z);
         Hu3DModelRotSet(object->model[17 + i], -23.0f, 0.0f, 0.0f);
         Hu3DModelScaleSet(object->model[17 + i], 0.75f, 0.75f, 0.75f);
     }
@@ -708,45 +708,45 @@ void m222_StageObjMain(omObjData *object) {
                 i %= 4;
                 data = m222_playerObjTbl[i]->data;
                 if (m222_kinokoPhase == 1 && m222_kinokoTimer < 4 && data->unk53[3] >= 1 && data->unk53[3] <= 9 &&
-                    m222_stoolStateTbl[data->unk53[3] - 1] == 2) {
+                    m222_blockStateTbl[data->unk53[3] - 1] == 2) {
                     s32 start;
                     s32 n;
                     s32 slot;
 
                     for (n = 0, start = (u8)(rand8() % 9); n < 9; n++) {
                         slot = (n + start) % 9;
-                        if (m222_stoolStateTbl[slot] == 1) {
-                            m222_stoolStateTbl[data->unk53[3] - 1] = 1;
-                            m222_stoolStateTbl[slot] = 2;
+                        if (m222_blockStateTbl[slot] == 1) {
+                            m222_blockStateTbl[data->unk53[3] - 1] = 1;
+                            m222_blockStateTbl[slot] = 2;
                             break;
                         }
                     }
                 }
-                if (data->unk53[3] >= 1 && data->unk53[3] <= 9 && m222_stoolStateTbl[data->unk53[3] - 1] != 3) {
+                if (data->unk53[3] >= 1 && data->unk53[3] <= 9 && m222_blockStateTbl[data->unk53[3] - 1] != 3) {
                     j = data->unk53[3] - 1;
-                    if (m222_stoolStateTbl[j] == 2) {
+                    if (m222_blockStateTbl[j] == 2) {
                         data->unk38 += 0.5;
                         Hu3DData[m222_playerObjTbl[i]->model[0]].unk0E = Hu3DData[m222_playerObjTbl[i]->model[0]].unk0C;
-                        m222_kinokoStoolNo = j;
+                        m222_kinokoBlockNo = j;
                         for (k = 0; k < 9; k++) {
-                            m222_stoolStateTbl[k] = m222_stoolStateTbl[k] != 0;
+                            m222_blockStateTbl[k] = m222_blockStateTbl[k] != 0;
                         }
-                        m222_stoolStateTbl[j] = 3;
+                        m222_blockStateTbl[j] = 3;
                         m222_kinokoPhase = 2;
                         m222_kinokoTimer = 0;
-                        m222_titanGroup = i;
-                    } else if (m222_stoolStateTbl[j] != 3) {
-                        m222_stoolStateTbl[j] = 0;
+                        m222_giantGroup = i;
+                    } else if (m222_blockStateTbl[j] != 3) {
+                        m222_blockStateTbl[j] = 0;
                         data->unkC5 = HuAudPlayerFXPlay(0x3A5, data->unk59);
                         data->unkC4 = -1;
                         for (k = 0; k < 4; k++) {
                             MgPlayerMapAttrSet(m222_playerObjTbl[k], j + 1, 1);
                         }
-                        Hu3DModelAttrSet(m222_stoolObjTbl[j]->model[0], 4, 4);
-                        Hu3DModelAttrSet(m222_stoolObjTbl[j]->model[1], 4, 4);
+                        Hu3DModelAttrSet(m222_blockObjTbl[j]->model[0], 4, 4);
+                        Hu3DModelAttrSet(m222_blockObjTbl[j]->model[1], 4, 4);
                         Hu3DModelAttrSet(m222_stageObj->model[17 + j], 4, 0);
                         m222_MotTimeSet(m222_stageObj->model[17 + j], 0);
-                        m222_stoolBreakTimerTbl[j] = 1;
+                        m222_blockBreakTimerTbl[j] = 1;
                         count = 0;
                         for (k = 0; count < 4 && k < 14; k++) {
                             if (m222_debrisTimerTbl[k] != 0) {
@@ -765,9 +765,9 @@ void m222_StageObjMain(omObjData *object) {
                                 (m222_debrisXTbl[k] < 0.0f) ? -m222_debrisVelXTbl[k] : m222_debrisVelXTbl[k];
                             m222_debrisVelZTbl[k] =
                                 (m222_debrisZTbl[k] < 0.0f) ? -m222_debrisVelZTbl[k] : m222_debrisVelZTbl[k];
-                            m222_debrisXTbl[k] += m222_stoolObjTbl[j]->trans.x;
-                            m222_debrisYTbl[k] += m222_stoolObjTbl[j]->trans.y;
-                            m222_debrisZTbl[k] += m222_stoolObjTbl[j]->trans.z;
+                            m222_debrisXTbl[k] += m222_blockObjTbl[j]->trans.x;
+                            m222_debrisYTbl[k] += m222_blockObjTbl[j]->trans.y;
+                            m222_debrisZTbl[k] += m222_blockObjTbl[j]->trans.z;
                             Hu3DModelAttrSet(object->model[29 + k], 4, 0);
                             Hu3DModelAttrSet(object->model[43 + k], 4, 0);
                             count++;
@@ -790,7 +790,7 @@ void m222_StageObjMain(omObjData *object) {
                 f32 visible = 0.0f;
 
                 for (j = 0; j < 9; j++) {
-                    if (m222_stoolStateTbl[j] != 0) {
+                    if (m222_blockStateTbl[j] != 0) {
                         visible += 1.0f;
                         Hu3DModelAttrSet(m222_stageObj->model[8 + j], 4, 0);
                         m222_MotTimeSet(m222_stageObj->model[8 + j], 0);
@@ -802,15 +802,15 @@ void m222_StageObjMain(omObjData *object) {
                 }
             } else if (m222_kinokoTimer == 42) {
                 for (j = 0; j < 9; j++) {
-                    m222_stoolStateTbl[j] = 0;
+                    m222_blockStateTbl[j] = 0;
                     for (k = 0; k < 4; k++) {
                         MgPlayerMapAttrSet(m222_playerObjTbl[k], j + 1, 1);
                     }
                 }
             } else if (m222_kinokoTimer == 45) {
                 for (j = 0; j < 9; j++) {
-                    Hu3DModelAttrSet(m222_stoolObjTbl[j]->model[0], 4, 4);
-                    Hu3DModelAttrSet(m222_stoolObjTbl[j]->model[1], 4, 4);
+                    Hu3DModelAttrSet(m222_blockObjTbl[j]->model[0], 4, 4);
+                    Hu3DModelAttrSet(m222_blockObjTbl[j]->model[1], 4, 4);
                 }
             }
             if (m222_kinokoTimer < 7) {
@@ -818,8 +818,8 @@ void m222_StageObjMain(omObjData *object) {
 
                 bounce = 2.0f * bounce - 1.0f;
                 bounce = -(bounce * bounce - 1.0f);
-                m222_stoolObjTbl[m222_kinokoStoolNo]->trans.y = bounce * 25.0f + 375.0f;
-                Hu3DData[m222_stoolObjTbl[m222_kinokoStoolNo]->model[0]].pos.y = bounce * 25.0f + 375.0f;
+                m222_blockObjTbl[m222_kinokoBlockNo]->trans.y = bounce * 25.0f + 375.0f;
+                Hu3DData[m222_blockObjTbl[m222_kinokoBlockNo]->model[0]].pos.y = bounce * 25.0f + 375.0f;
             } else if (m222_kinokoTimer >= 12 && m222_kinokoTimer < 45) {
                 if (m222_kinokoTimer < 35) {
                     t = (m222_kinokoTimer - 12) / 23.0;
@@ -827,9 +827,9 @@ void m222_StageObjMain(omObjData *object) {
                     t = 1.0f;
                 }
                 Hu3DModelAttrSet(object->model[1], 4, 0);
-                Hu3DModelPosSet(object->model[1], m222_stoolObjTbl[m222_kinokoStoolNo]->trans.x,
-                                t * 75.0f + m222_stoolObjTbl[m222_kinokoStoolNo]->trans.y + 12.5,
-                                m222_stoolObjTbl[m222_kinokoStoolNo]->trans.z - 25.0f);
+                Hu3DModelPosSet(object->model[1], m222_blockObjTbl[m222_kinokoBlockNo]->trans.x,
+                                t * 75.0f + m222_blockObjTbl[m222_kinokoBlockNo]->trans.y + 12.5,
+                                m222_blockObjTbl[m222_kinokoBlockNo]->trans.z - 25.0f);
                 if (m222_kinokoTimer == 12) {
                     MgPlayerWork *playerData;
                     s32 n;
@@ -898,7 +898,7 @@ void m222_StageObjMain(omObjData *object) {
                     }
                 }
                 if (k != -1) {
-                    m222_titanGroup = k;
+                    m222_giantGroup = k;
                     m222_kinokoTimer = 54;
                 } else {
                     m222_kinokoTimer = 46;
@@ -919,7 +919,7 @@ void m222_StageObjMain(omObjData *object) {
                 m222_growEffDoneF == 0) {
                 m222_kinokoPhase = 9;
                 m222_kinokoTimer = 0;
-                MgPlayerMotSet(m222_playerObjTbl[m222_titanGroup], 0);
+                MgPlayerMotSet(m222_playerObjTbl[m222_giantGroup], 0);
                 m222_growEffDoneF = 1;
             }
             if (m222_kinokoTimer == 1) {
@@ -929,16 +929,16 @@ void m222_StageObjMain(omObjData *object) {
                     m222_musicFTbl[0] = 0;
                 }
                 HuAudFXPlay(0x3AB);
-                omSetSca(m222_playerObjTbl[m222_titanGroup], 1.0f, 1.0f, 1.0f);
+                omSetSca(m222_playerObjTbl[m222_giantGroup], 1.0f, 1.0f, 1.0f);
                 if (!(m222_phase == 5 || m222_phase == 6)) {
-                    MgPlayerMotSet(m222_playerObjTbl[m222_titanGroup], 12);
+                    MgPlayerMotSet(m222_playerObjTbl[m222_giantGroup], 12);
                 }
-                Hu3DModelLayerSet(m222_playerObjTbl[m222_titanGroup]->model[0], 0x800);
+                Hu3DModelLayerSet(m222_playerObjTbl[m222_giantGroup]->model[0], 0x800);
                 for (j = 0; j < 5; j++) {
                     Hu3DModelLayerSet(m222_stageObj->model[3 + j], 0x800);
                 }
             } else if (m222_kinokoTimer == 46) {
-                MgPlayerMotSet(m222_playerObjTbl[m222_titanGroup], 0);
+                MgPlayerMotSet(m222_playerObjTbl[m222_giantGroup], 0);
             } else if (m222_kinokoTimer >= 55) {
                 m222_kinokoPhase = 4;
                 m222_kinokoTimer = 0;
@@ -949,35 +949,35 @@ void m222_StageObjMain(omObjData *object) {
             break;
         case 4:
             if (m222_kinokoTimer == 3) {
-                MgPlayerWork *work = m222_playerObjTbl[m222_titanGroup]->data;
+                MgPlayerWork *work = m222_playerObjTbl[m222_giantGroup]->data;
 
                 work->unkC5 = HuAudPlayerFXPlay(0x3A7, work->unk59);
                 work->unkC4 = -1;
-                omVibrate(m222_groupPlayerTbl[m222_titanGroup]->playerNo, 10, 0, 10);
+                omVibrate(m222_groupPlayerTbl[m222_giantGroup]->playerNo, 10, 0, 10);
             }
-            Hu3DModelScaleSet(m222_playerObjTbl[m222_titanGroup]->model[1],
-                              m222_playerObjTbl[m222_titanGroup]->scale.x,
-                              m222_playerObjTbl[m222_titanGroup]->scale.y,
-                              m222_playerObjTbl[m222_titanGroup]->scale.z);
+            Hu3DModelScaleSet(m222_playerObjTbl[m222_giantGroup]->model[1],
+                              m222_playerObjTbl[m222_giantGroup]->scale.x,
+                              m222_playerObjTbl[m222_giantGroup]->scale.y,
+                              m222_playerObjTbl[m222_giantGroup]->scale.z);
             if (m222_kinokoTimer < 24) {
                 u8 pulse[8] = { 0, 0, 1, 0, 1, 1, 0, 1 };
                 f32 scale;
 
                 scale = pulse[m222_kinokoTimer & 7];
                 scale = (m222_kinokoTimer < 12) ? scale * 0.5 + 1.0 : 2.0 - scale * 0.5;
-                omSetSca(m222_playerObjTbl[m222_titanGroup], scale, scale, scale);
+                omSetSca(m222_playerObjTbl[m222_giantGroup], scale, scale, scale);
             } else {
-                omSetSca(m222_playerObjTbl[m222_titanGroup], 2.0f, 2.0f, 2.0f);
+                omSetSca(m222_playerObjTbl[m222_giantGroup], 2.0f, 2.0f, 2.0f);
             }
             if (m222_kinokoTimer >= 35) {
-                MgPlayerWork *work = m222_playerObjTbl[m222_titanGroup]->data;
+                MgPlayerWork *work = m222_playerObjTbl[m222_giantGroup]->data;
 
                 if (m222_phase == 2) {
                     work->unk50 |= 0x400;
                 }
                 m222_kinokoPhase = 5;
                 m222_kinokoTimer = (m222_phase != 2) ? 150 : 0;
-                Hu3DModelLayerSet(m222_playerObjTbl[m222_titanGroup]->model[0], 0x400);
+                Hu3DModelLayerSet(m222_playerObjTbl[m222_giantGroup]->model[0], 0x400);
                 if (m222_phase == 2 && m222_exitF == 0 && omSysExitReq == 0) {
                     msmMusPause(HuAudMusNo);
                     HuAudSubSeqPlay(0x45);
@@ -986,9 +986,9 @@ void m222_StageObjMain(omObjData *object) {
             }
             break;
         case 5:
-            omSetSca(m222_playerObjTbl[m222_titanGroup], 2.0f, 2.0f, 2.0f);
+            omSetSca(m222_playerObjTbl[m222_giantGroup], 2.0f, 2.0f, 2.0f);
             if (m222_kinokoTimer >= 150) {
-                MgPlayerWork *work = m222_playerObjTbl[m222_titanGroup]->data;
+                MgPlayerWork *work = m222_playerObjTbl[m222_giantGroup]->data;
 
                 work->unk50 &= ~0x400;
                 m222_kinokoPhase = 6;
@@ -999,17 +999,17 @@ void m222_StageObjMain(omObjData *object) {
                 }
             } else {
                 for (i = 0; i < 4; i++) {
-                    if (m222_squashTimerTbl[i] == 0 && m222_titanGroup != i && m222_phase == 2) {
+                    if (m222_outTimerTbl[i] == 0 && m222_giantGroup != i && m222_phase == 2) {
                         f32 dx;
                         f32 dy;
                         f32 dz;
 
-                        dx = m222_playerObjTbl[i]->trans.x - m222_playerObjTbl[m222_titanGroup]->trans.x;
+                        dx = m222_playerObjTbl[i]->trans.x - m222_playerObjTbl[m222_giantGroup]->trans.x;
                         dx *= dx;
-                        dy = m222_playerObjTbl[i]->trans.y - m222_playerObjTbl[m222_titanGroup]->trans.y;
+                        dy = m222_playerObjTbl[i]->trans.y - m222_playerObjTbl[m222_giantGroup]->trans.y;
                         dy *= 0.5;
                         dy *= dy;
-                        dz = m222_playerObjTbl[i]->trans.z - m222_playerObjTbl[m222_titanGroup]->trans.z;
+                        dz = m222_playerObjTbl[i]->trans.z - m222_playerObjTbl[m222_giantGroup]->trans.z;
                         dz *= dz;
                         if (dx + dy + dz < 22500.0f && m222_playerObjTbl[i]->trans.y < 270.0f) {
                             MgPlayerWork *work = m222_playerObjTbl[i]->data;
@@ -1018,15 +1018,15 @@ void m222_StageObjMain(omObjData *object) {
                             work->unkC5 = HuAudPlayerFXPlay(0x3A6, work->unk59);
                             work->unkC4 = -1;
                             omVibrate(m222_groupPlayerTbl[i]->playerNo, 20, 0, 20);
-                            m222_squashTimerTbl[i] = 1;
-                            m222_squashDirTbl[i] =
-                                (m222_playerObjTbl[i]->trans.x < m222_playerObjTbl[m222_titanGroup]->trans.x) ? 0 : 1;
+                            m222_outTimerTbl[i] = 1;
+                            m222_outDirTbl[i] =
+                                (m222_playerObjTbl[i]->trans.x < m222_playerObjTbl[m222_giantGroup]->trans.x) ? 0 : 1;
                             m222_humanNum -= (m222_groupPlayerTbl[i]->cpuDifficulty == -1) ? 1 : 0;
                             for (j = 0, k = 0; j < 4; j++) {
-                                k += m222_squashTimerTbl[j] != 0;
+                                k += m222_outTimerTbl[j] != 0;
                             }
                             if (k == 3) {
-                                m222_winGroup = m222_titanGroup;
+                                m222_winGroup = m222_giantGroup;
                                 m222_kinokoTimer = 120;
                             }
                         }
@@ -1041,20 +1041,20 @@ void m222_StageObjMain(omObjData *object) {
 
                 scale = pulse[m222_kinokoTimer & 7];
                 scale = (m222_kinokoTimer < 6) ? scale * 0.5 + 1.5 : 1.5 - scale * 0.5;
-                omSetSca(m222_playerObjTbl[m222_titanGroup], scale, scale, scale);
+                omSetSca(m222_playerObjTbl[m222_giantGroup], scale, scale, scale);
                 if (m222_kinokoTimer == 1) {
-                    MgPlayerWork *work = m222_playerObjTbl[m222_titanGroup]->data;
+                    MgPlayerWork *work = m222_playerObjTbl[m222_giantGroup]->data;
 
                     work->unkC5 = HuAudPlayerFXPlay(0x3A4, work->unk59);
                     work->unkC4 = -1;
                 }
             } else {
-                omSetSca(m222_playerObjTbl[m222_titanGroup], 1.0f, 1.0f, 1.0f);
+                omSetSca(m222_playerObjTbl[m222_giantGroup], 1.0f, 1.0f, 1.0f);
             }
-            Hu3DModelScaleSet(m222_playerObjTbl[m222_titanGroup]->model[1],
-                              m222_playerObjTbl[m222_titanGroup]->scale.x,
-                              m222_playerObjTbl[m222_titanGroup]->scale.y,
-                              m222_playerObjTbl[m222_titanGroup]->scale.z);
+            Hu3DModelScaleSet(m222_playerObjTbl[m222_giantGroup]->model[1],
+                              m222_playerObjTbl[m222_giantGroup]->scale.x,
+                              m222_playerObjTbl[m222_giantGroup]->scale.y,
+                              m222_playerObjTbl[m222_giantGroup]->scale.z);
             if (m222_kinokoTimer == 13) {
                 if (m222_phase == 2) {
                     m222_kinokoPhase = 7;
@@ -1062,8 +1062,8 @@ void m222_StageObjMain(omObjData *object) {
                 } else {
                     m222_kinokoPhase = 9;
                     m222_kinokoTimer = 0;
-                    MgPlayerMotLoad(m222_playerObjTbl[m222_titanGroup], 13,
-                                           CharMotionDataNumGet(m222_groupPlayerTbl[m222_titanGroup]->chr,
+                    MgPlayerMotLoad(m222_playerObjTbl[m222_giantGroup], 13,
+                                           CharMotionDataNumGet(m222_groupPlayerTbl[m222_giantGroup]->chr,
                                                               m222_groupPlayerTbl[i]->unk_0C),
                                            1, 120);
                 }
@@ -1089,9 +1089,9 @@ void m222_StageObjMain(omObjData *object) {
                 m222_kinokoPhase = 1;
                 m222_kinokoTimer = 0;
                 for (j = 0; j < 9; j++) {
-                    m222_stoolStateTbl[j] = 1;
-                    Hu3DModelAttrSet(m222_stoolObjTbl[j]->model[0], 4, 0);
-                    Hu3DModelAttrSet(m222_stoolObjTbl[j]->model[1], 4, 0);
+                    m222_blockStateTbl[j] = 1;
+                    Hu3DModelAttrSet(m222_blockObjTbl[j]->model[0], 4, 0);
+                    Hu3DModelAttrSet(m222_blockObjTbl[j]->model[1], 4, 0);
                     for (k = 0; k < 4; k++) {
                         MgPlayerMapAttrSet(m222_playerObjTbl[k], j + 1, 2);
                     }
@@ -1101,8 +1101,8 @@ void m222_StageObjMain(omObjData *object) {
                 while (j == k) {
                     k = (u8)(rand8() % 9);
                 }
-                m222_stoolStateTbl[k] = 2;
-                m222_stoolStateTbl[j] = 2;
+                m222_blockStateTbl[k] = 2;
+                m222_blockStateTbl[j] = 2;
             }
             break;
         case 9:
@@ -1118,7 +1118,7 @@ void m222_StageObjMain(omObjData *object) {
     for (i = 0; i < 4; i++) {
         data = m222_playerObjTbl[i]->data;
         data->unk53[3] = 0;
-        if (m222_squashTimerTbl[i] != 0 && m222_squashTimerTbl[i] < 60) {
+        if (m222_outTimerTbl[i] != 0 && m222_outTimerTbl[i] < 60) {
             MgPlayerMotSet(m222_playerObjTbl[i], 18);
             Hu3DData[m222_playerObjTbl[i]->model[0]].motTime = 0.0f;
             Hu3DData[m222_playerObjTbl[i]->model[0]].motSpeed = 0.0f;
@@ -1130,25 +1130,25 @@ void m222_StageObjMain(omObjData *object) {
             m222_playerObjTbl[i]->rot.y += 33.0f;
             m222_playerObjTbl[i]->rot.z += 33.0f;
             m222_playerObjTbl[i]->rot.x = 0.0f;
-            m222_playerObjTbl[i]->trans.x += (m222_squashDirTbl[i] != 0) ? 30.0f : -30.0f;
+            m222_playerObjTbl[i]->trans.x += (m222_outDirTbl[i] != 0) ? 30.0f : -30.0f;
             m222_playerObjTbl[i]->trans.y +=
-                (m222_squashTimerTbl[i] < 14) ? (1.0 - m222_squashTimerTbl[i] / 13.0) * 65.0 + 15.0 : 15.0;
+                (m222_outTimerTbl[i] < 14) ? (1.0 - m222_outTimerTbl[i] / 13.0) * 65.0 + 15.0 : 15.0;
             m222_playerObjTbl[i]->trans.x -= sindf(m222_playerObjTbl[i]->rot.z) * -50.0f;
             m222_playerObjTbl[i]->trans.y -= cosdf(m222_playerObjTbl[i]->rot.z) * 50.0f;
-            m222_squashTimerTbl[i]++;
-            if (m222_squashTimerTbl[i] == 15) {
+            m222_outTimerTbl[i]++;
+            if (m222_outTimerTbl[i] == 15) {
                 data->unkC5 = PlayerFXPlay(0x286, data->unk59);
                 data->unkC4 = -1;
             }
         }
     }
     for (j = 0; j < 9; j++) {
-        if (m222_stoolBreakTimerTbl[j] != 0) {
-            if (m222_stoolBreakTimerTbl[j] > 60) {
-                m222_stoolBreakTimerTbl[j] = 0;
+        if (m222_blockBreakTimerTbl[j] != 0) {
+            if (m222_blockBreakTimerTbl[j] > 60) {
+                m222_blockBreakTimerTbl[j] = 0;
                 Hu3DModelAttrSet(object->model[17 + j], 4, 4);
             } else {
-                m222_stoolBreakTimerTbl[j]++;
+                m222_blockBreakTimerTbl[j]++;
             }
         }
     }
@@ -1260,10 +1260,10 @@ void m222_StageObjMain(omObjData *object) {
                     weight = 0.0f;
                 }
                 invWeight = 1.0f - weight;
-                x = weight * m222_playerObjTbl[m222_titanGroup]->trans.x + invWeight * Hu3DData[object->model[1]].pos.x;
-                y = (m222_playerObjTbl[m222_titanGroup]->trans.y + 175.0f) * weight +
+                x = weight * m222_playerObjTbl[m222_giantGroup]->trans.x + invWeight * Hu3DData[object->model[1]].pos.x;
+                y = (m222_playerObjTbl[m222_giantGroup]->trans.y + 175.0f) * weight +
                     invWeight * Hu3DData[object->model[1]].pos.y;
-                z = (m222_playerObjTbl[m222_titanGroup]->trans.z + 85.0f) * weight +
+                z = (m222_playerObjTbl[m222_giantGroup]->trans.z + 85.0f) * weight +
                     invWeight * Hu3DData[object->model[1]].pos.z;
                 guMtxL2F(mtx, &camMtxs->lookAtMtx);
                 angle = j * 72;
@@ -1282,9 +1282,9 @@ void m222_StageObjMain(omObjData *object) {
             }
         }
         if (m222_growEffScale > 0.0f) {
-            x = m222_playerObjTbl[m222_titanGroup]->trans.x;
-            y = m222_playerObjTbl[m222_titanGroup]->trans.y + 175.0f;
-            z = m222_playerObjTbl[m222_titanGroup]->trans.z + 85.0f;
+            x = m222_playerObjTbl[m222_giantGroup]->trans.x;
+            y = m222_playerObjTbl[m222_giantGroup]->trans.y + 175.0f;
+            z = m222_playerObjTbl[m222_giantGroup]->trans.z + 85.0f;
             guMtxL2F(mtx, &camMtxs->lookAtMtx);
             mtxTransCat(mtx, x, y, z);
             mtx[0][0] = -sindf(m222_growEffRot) * m222_growEffScale;
@@ -1323,8 +1323,8 @@ void m222_StageObjMain(omObjData *object) {
             m222_cloudTimerTbl[cloud] = 0;
             m222_MotTimeSet(object->model[26 + cloud], 0);
             Hu3DModelAttrSet(object->model[26 + cloud], 4, 0);
-            Hu3DModelPosSet(object->model[26 + cloud], m222_playerObjTbl[m222_titanGroup]->trans.x * 0.9, 300.0f,
-                            m222_playerObjTbl[m222_titanGroup]->trans.z - 15.0f);
+            Hu3DModelPosSet(object->model[26 + cloud], m222_playerObjTbl[m222_giantGroup]->trans.x * 0.9, 300.0f,
+                            m222_playerObjTbl[m222_giantGroup]->trans.z - 15.0f);
         }
     } else {
         m222_cloudTimer = 0;
@@ -1561,7 +1561,7 @@ void m222_PlayerObjMain(omObjData *object) {
     // Computed but never read in the original.
     if (group == 0) {
         for (i = 0; i < 4; i++) {
-            flags[i] = (m222_playerObjTbl[i]->trans.y <= 0.0f) ? 1 : ((m222_squashTimerTbl[i] != 0) ? 2 : 0);
+            flags[i] = (m222_playerObjTbl[i]->trans.y <= 0.0f) ? 1 : ((m222_outTimerTbl[i] != 0) ? 2 : 0);
         }
     }
     (void)flags;
@@ -1605,11 +1605,11 @@ void m222_PlayerObjMain(omObjData *object) {
         HuPadStkY[player->pad] = 0;
         HuPadStkXSum[player->pad] = 0;
         HuPadStkYSum[player->pad] = 0;
-        if (m222_squashTimerTbl[group] != 0) {
+        if (m222_outTimerTbl[group] != 0) {
             m222_comStateTbl[group] = 13;
         }
         if (m222_kinokoPhase == 2) {
-            if (m222_kinokoTimer >= ((m222_titanGroup == group) ? 10 : 30)) {
+            if (m222_kinokoTimer >= ((m222_giantGroup == group) ? 10 : 30)) {
                 if (m222_comStateTbl[group] > 0 && m222_comStateTbl[group] < 4) {
                     m222_comStateTbl[group] = 10;
                     m222_comWaitTbl[group] = 0;
@@ -1619,7 +1619,7 @@ void m222_PlayerObjMain(omObjData *object) {
         if (m222_kinokoPhase == 3) {
             if ((m222_comStateTbl[group] > 0 && m222_comStateTbl[group] < 4) ||
                 (m222_comStateTbl[group] >= 10 && m222_comStateTbl[group] < 13)) {
-                m222_comStateTbl[group] = (m222_titanGroup == group) ? 4 : 7;
+                m222_comStateTbl[group] = (m222_giantGroup == group) ? 4 : 7;
                 m222_comWaitTbl[group] = 0;
             }
         }
@@ -1641,9 +1641,9 @@ void m222_PlayerObjMain(omObjData *object) {
                     break;
                 }
                 for (i = 0, bestDist = 16777216.0f, best = -1; i < 9; i++) {
-                    if (m222_stoolStateTbl[i] != 0) {
-                        dx = object->trans.x - m222_stoolObjTbl[i]->trans.x;
-                        dz = object->trans.z - m222_stoolObjTbl[i]->trans.z;
+                    if (m222_blockStateTbl[i] != 0) {
+                        dx = object->trans.x - m222_blockObjTbl[i]->trans.x;
+                        dz = object->trans.z - m222_blockObjTbl[i]->trans.z;
                         dist = dx * dx + dz * dz + rand8() / 255.0 * params[1][player->cpuDifficulty] * params[1][player->cpuDifficulty];
                         if (dist < bestDist) {
                             bestDist = dist;
@@ -1661,8 +1661,8 @@ void m222_PlayerObjMain(omObjData *object) {
                 break;
             case 2:
             case 3:
-                dx = m222_stoolObjTbl[m222_comWaitTbl[group]]->trans.x - object->trans.x;
-                dz = m222_stoolObjTbl[m222_comWaitTbl[group]]->trans.z - object->trans.z;
+                dx = m222_blockObjTbl[m222_comWaitTbl[group]]->trans.x - object->trans.x;
+                dz = m222_blockObjTbl[m222_comWaitTbl[group]]->trans.z - object->trans.z;
                 dist = (dx != 0.0f || dz != 0.0f) ? HuSqrtf(dx * dx + dz * dz) : 16777216.0f;
                 HuPadStkX[player->pad] = dx / dist * ((dist > 33.0f) ? 1.0 : dist / 33.0) * params[10][player->cpuDifficulty];
                 HuPadStkY[player->pad] = -(dz / dist * ((dist > 33.0f) ? 1.0 : dist / 33.0) * params[10][player->cpuDifficulty]);
@@ -1693,7 +1693,7 @@ void m222_PlayerObjMain(omObjData *object) {
                     HuPadBtn[player->pad] |= 0x8000;
                 }
                 m222_comTimerTbl[group] -= (m222_comTimerTbl[group] > 0) ? 1 : 0;
-                if (m222_stoolStateTbl[m222_comWaitTbl[group]] == 0) {
+                if (m222_blockStateTbl[m222_comWaitTbl[group]] == 0) {
                     m222_comStateTbl[group] = 1;
                     m222_comWaitTbl[group] = params[2][player->cpuDifficulty] + rand8() % params[3][player->cpuDifficulty];
                 }
@@ -1705,7 +1705,7 @@ void m222_PlayerObjMain(omObjData *object) {
                     break;
                 }
                 for (i = 0, bestDist = 16777216.0f, best = -1; i < 4; i++) {
-                    if (i == group || m222_squashTimerTbl[i] != 0) {
+                    if (i == group || m222_outTimerTbl[i] != 0) {
                         continue;
                     }
                     dx = object->trans.x - m222_playerObjTbl[i]->trans.x;
@@ -1753,12 +1753,12 @@ void m222_PlayerObjMain(omObjData *object) {
                 dist = (dx != 0.0f || dz != 0.0f) ? HuSqrtf(dx * dx + dz * dz) : 16777216.0f;
                 HuPadStkX[player->pad] = dx / dist * ((dist > 33.0f) ? 66.0f : dist * 2);
                 HuPadStkY[player->pad] = -(dz / dist * ((dist > 33.0f) ? 66.0f : dist * 2));
-                if (m222_comStateTbl[group] == 5 && m222_comTimerTbl[group] <= 0 && m222_titanRunF != 0) {
+                if (m222_comStateTbl[group] == 5 && m222_comTimerTbl[group] <= 0 && m222_giantRunF != 0) {
                     m222_comStateTbl[group] = 6;
                     m222_comTimerTbl[group] = 0;
                 }
                 m222_comTimerTbl[group] -= (m222_comTimerTbl[group] > 0) ? 1 : 0;
-                if (m222_comStateTbl[group] == 6 && m222_titanRunF == 0) {
+                if (m222_comStateTbl[group] == 6 && m222_giantRunF == 0) {
                     m222_comStateTbl[group] = 4;
                     m222_comWaitTbl[group] = params[8][player->cpuDifficulty] + rand8() % params[9][player->cpuDifficulty];
                 }
@@ -1775,8 +1775,8 @@ void m222_PlayerObjMain(omObjData *object) {
             case 9:
                 if (m222_comWaitTbl[group] == -1) {
                     bestScore = 100.0f;
-                    dx = m222_playerObjTbl[m222_titanGroup]->trans.x - object->trans.x;
-                    dz = m222_playerObjTbl[m222_titanGroup]->trans.z - object->trans.z;
+                    dx = m222_playerObjTbl[m222_giantGroup]->trans.x - object->trans.x;
+                    dz = m222_playerObjTbl[m222_giantGroup]->trans.z - object->trans.z;
                     dist = (dx != 0.0f || dz != 0.0f) ? 1.0f / HuSqrtf(dx * dx + dz * dz) : 0.000001f;
                     dirX = dx * dist;
                     dirZ = dz * dist;
@@ -1792,7 +1792,7 @@ void m222_PlayerObjMain(omObjData *object) {
                         weight = (dist == 16777216.0f) ? 10.0f : ((dist > 500.0f) ? 0.0f : 1.0 - dist / 500.0);
                         bestDist = bestDist * bestDist + weight * weight * 4.0f;
                         if (m222_comStateTbl[group] == 9) {
-                            otherData = m222_playerObjTbl[m222_titanGroup]->data;
+                            otherData = m222_playerObjTbl[m222_giantGroup]->data;
                             sinVal = sindf(otherData->unk3C);
                             cosVal = cosdf(otherData->unk3C);
                             dx = (sinVal > 0.0f) ? sinVal : -sinVal;
@@ -1801,15 +1801,15 @@ void m222_PlayerObjMain(omObjData *object) {
                             signCos = (cosVal < 0.0f) ? -1.0f : 1.0f;
                             hitZ = 1000.0f;
                             if (dz < dx) {
-                                hitZ = (401.0f - signSin * m222_playerObjTbl[m222_titanGroup]->trans.x) / dx * dz +
-                                       signCos * m222_playerObjTbl[m222_titanGroup]->trans.z;
+                                hitZ = (401.0f - signSin * m222_playerObjTbl[m222_giantGroup]->trans.x) / dx * dz +
+                                       signCos * m222_playerObjTbl[m222_giantGroup]->trans.z;
                             }
                             if (hitZ > 351.0f) {
-                                hitX = (351.0f - signCos * m222_playerObjTbl[m222_titanGroup]->trans.z) / dz * dx +
-                                       signSin * m222_playerObjTbl[m222_titanGroup]->trans.x;
+                                hitX = (351.0f - signCos * m222_playerObjTbl[m222_giantGroup]->trans.z) / dz * dx +
+                                       signSin * m222_playerObjTbl[m222_giantGroup]->trans.x;
                                 if (hitX > 401.0f) {
-                                    hitZ = (401.0f - signSin * m222_playerObjTbl[m222_titanGroup]->trans.x) / dx * dz +
-                                           signCos * m222_playerObjTbl[m222_titanGroup]->trans.z;
+                                    hitZ = (401.0f - signSin * m222_playerObjTbl[m222_giantGroup]->trans.x) / dx * dz +
+                                           signCos * m222_playerObjTbl[m222_giantGroup]->trans.z;
                                     hitX = 401.0f;
                                 } else {
                                     hitZ = 351.0f;
@@ -1836,7 +1836,7 @@ void m222_PlayerObjMain(omObjData *object) {
                 dist = (dx != 0.0f || dz != 0.0f) ? HuSqrtf(dx * dx + dz * dz) : 16777216.0f;
                 HuPadStkX[player->pad] = dx / dist * ((dist > 70.0f) ? 70.0f : ((dist > 35.0f) ? dist : 0.0f));
                 HuPadStkY[player->pad] = -(dz / dist * ((dist > 70.0f) ? 70.0f : ((dist > 35.0f) ? dist : 0.0f)));
-                if (m222_titanRunF != 0) {
+                if (m222_giantRunF != 0) {
                     m222_comTimerTbl[group] -= (m222_comTimerTbl[group] > 0) ? 1 : 0;
                     if (m222_comTimerTbl[group] <= 0) {
                         m222_comStateTbl[group] = 9;
@@ -1869,9 +1869,9 @@ void m222_PlayerObjMain(omObjData *object) {
                     }
                     posX = object->trans.x;
                     posZ = object->trans.z;
-                    otherX = m222_playerObjTbl[m222_titanGroup]->trans.x;
-                    otherZ = m222_playerObjTbl[m222_titanGroup]->trans.z;
-                    otherData = m222_playerObjTbl[m222_titanGroup]->data;
+                    otherX = m222_playerObjTbl[m222_giantGroup]->trans.x;
+                    otherZ = m222_playerObjTbl[m222_giantGroup]->trans.z;
+                    otherData = m222_playerObjTbl[m222_giantGroup]->data;
                     velX = sindf(data->unk3C) * data->unk40;
                     velZ = cosdf(data->unk3C) * data->unk40;
                     otherVelX = sindf(otherData->unk3C) * otherData->unk40;
@@ -1927,7 +1927,7 @@ void m222_PlayerObjMain(omObjData *object) {
         HuPadStkXSum[player->pad] = HuPadStkX[player->pad] * 2;
         HuPadStkYSum[player->pad] = HuPadStkY[player->pad] * 2;
     }
-    if (m222_kinokoPhase == 3 && m222_titanGroup == group) {
+    if (m222_kinokoPhase == 3 && m222_giantGroup == group) {
         HuPadBtn[player->pad] = 0;
         HuPadBtnDown[player->pad] = 0;
         HuPadBtnRep[player->pad] = 0;
@@ -1935,12 +1935,12 @@ void m222_PlayerObjMain(omObjData *object) {
         HuPadStkY[player->pad] = 0;
         HuPadStkXSum[player->pad] = 0;
         HuPadStkYSum[player->pad] = 0;
-    } else if (m222_kinokoPhase == 5 && m222_titanGroup == group) {
+    } else if (m222_kinokoPhase == 5 && m222_giantGroup == group) {
         HuPadBtn[player->pad] = 0;
         HuPadBtnDown[player->pad] = 0;
         HuPadBtnRep[player->pad] = 0;
     }
-    if (m222_kinokoPhase == 5 && m222_titanGroup == group) {
+    if (m222_kinokoPhase == 5 && m222_giantGroup == group) {
         mgPlayerAccel = 30.0f;
         mgPlayerStickDiv = 1.6666666f;
         speed = 18.0f;
@@ -1950,26 +1950,26 @@ void m222_PlayerObjMain(omObjData *object) {
         mgPlayerSpeedWalk = speed;
         mgPlayerSpeedMin = halfSpeed;
     }
-    if (m222_kinokoPhase == 5 && m222_titanGroup == group) {
-        if (m222_titanRunF == 0 && data->unk40 > 9.0f) {
-            m222_titanRunF = 1;
+    if (m222_kinokoPhase == 5 && m222_giantGroup == group) {
+        if (m222_giantRunF == 0 && data->unk40 > 9.0f) {
+            m222_giantRunF = 1;
             if (HuPadStkX[player->pad] * HuPadStkX[player->pad] + HuPadStkY[player->pad] * HuPadStkY[player->pad] > 1600) {
                 data->unk3C = (HuPadStkX[player->pad] == 0) ? ((HuPadStkY[player->pad] >= 0) ? 180.0f : 0.0f)
                                                                   : atan2df(HuPadStkX[player->pad], -HuPadStkY[player->pad]);
             }
-            m222_titanRunDir = data->unk3C;
+            m222_giantRunDir = data->unk3C;
         }
-        if (m222_titanRunF != 0) {
-            HuPadStkX[player->pad] = sindf(m222_titanRunDir) * 63.0f + HuPadStkX[player->pad] / 6;
-            HuPadStkY[player->pad] = cosdf(m222_titanRunDir) * -63.0f + HuPadStkY[player->pad] / 6;
+        if (m222_giantRunF != 0) {
+            HuPadStkX[player->pad] = sindf(m222_giantRunDir) * 63.0f + HuPadStkX[player->pad] / 6;
+            HuPadStkY[player->pad] = cosdf(m222_giantRunDir) * -63.0f + HuPadStkY[player->pad] / 6;
             HuPadStkXSum[player->pad] = HuPadStkX[player->pad] * 2;
             HuPadStkYSum[player->pad] = HuPadStkY[player->pad] * 2;
         }
     } else if (m222_kinokoPhase != 5) {
-        m222_titanRunF = 0;
+        m222_giantRunF = 0;
     }
-    if ((m222_kinokoPhase == 3 || m222_kinokoPhase == 4 || m222_kinokoPhase == 6) && group != m222_titanGroup) {
-        work = m222_playerObjTbl[m222_titanGroup]->data;
+    if ((m222_kinokoPhase == 3 || m222_kinokoPhase == 4 || m222_kinokoPhase == 6) && group != m222_giantGroup) {
+        work = m222_playerObjTbl[m222_giantGroup]->data;
         work->unkBE = 1;
         work->unk50 |= 0x200;
     }
@@ -1990,8 +1990,8 @@ void m222_PlayerObjMain(omObjData *object) {
         }
     }
     if ((m222_phase != 0 || m222_phaseTimer < 46 || m222_phaseTimer > 54) &&
-        ((m222_kinokoPhase != 4 && m222_kinokoPhase != 6) || m222_titanGroup != group) &&
-        m222_squashTimerTbl[group] == 0) {
+        ((m222_kinokoPhase != 4 && m222_kinokoPhase != 6) || m222_giantGroup != group) &&
+        m222_outTimerTbl[group] == 0) {
         MgPlayerObjMain(object);
         m222_motTimeTbl[group] = -1;
     } else if (m222_motTimeTbl[group] == -1 || m222_motTimeTbl[group] > Hu3DData[object->model[0]].motTime) {
@@ -2002,17 +2002,17 @@ void m222_PlayerObjMain(omObjData *object) {
     if (m222_phase == 0 && (m222_phaseTimer < 10 || group != 0)) {
         HuAudFXStop(data->unkC5);
     }
-    if ((m222_kinokoPhase == 3 || m222_kinokoPhase == 4 || m222_kinokoPhase == 6) && group != m222_titanGroup) {
-        work = m222_playerObjTbl[m222_titanGroup]->data;
+    if ((m222_kinokoPhase == 3 || m222_kinokoPhase == 4 || m222_kinokoPhase == 6) && group != m222_giantGroup) {
+        work = m222_playerObjTbl[m222_giantGroup]->data;
         work->unkBE = 0;
         work->unk50 &= ~0x200;
     }
     if (m222_phase == 0 && m222_phaseTimer < 10) {
         data->unk38 = 0.0f;
     }
-    if (m222_titanGroup == group && m222_kinokoPhase == 5) {
+    if (m222_giantGroup == group && m222_kinokoPhase == 5) {
         omSetSca(object, 2.0f, 2.0f, 2.0f);
-        if (m222_titanRunF != 0) {
+        if (m222_giantRunF != 0) {
             if ((data->unk3C > -145.0f && data->unk3C < -35.0f && object->trans.x <= -400.0f) ||
                 (data->unk3C > 35.0f && data->unk3C < 145.0f && object->trans.x >= 400.0f) ||
                 ((data->unk3C > 125.0f || data->unk3C < -125.0f) && object->trans.z <= -350.0f) ||
@@ -2023,11 +2023,11 @@ void m222_PlayerObjMain(omObjData *object) {
                 MgPlayerMotSet(object, 30);
                 omVibrate(data->unk59, 20, 0, 20);
                 for (i = 0; i < 4; i++) {
-                    if (m222_squashTimerTbl[i] == 0 && m222_groupPlayerTbl[i]->playerNo != data->unk59) {
+                    if (m222_outTimerTbl[i] == 0 && m222_groupPlayerTbl[i]->playerNo != data->unk59) {
                         omVibrate(m222_groupPlayerTbl[i]->playerNo, 10, 0, 10);
                     }
                 }
-                m222_titanRunF = 0;
+                m222_giantRunF = 0;
                 m222_shakeTimer = 13;
                 m222_shakeAngle = data->unk3C;
                 HuAudFXPlay(0x3AA);
@@ -2047,10 +2047,10 @@ void m222_PlayerObjMain(omObjData *object) {
     HuPadStkY[player->pad] = savedStickY;
     HuPadStkXSum[player->pad] = savedStick2;
     HuPadStkYSum[player->pad] = savedStick3;
-    if (m222_squashTimerTbl[group] >= 60) {
+    if (m222_outTimerTbl[group] >= 60) {
         Hu3DModelAttrSet(object->model[0], 4, 4);
     }
-    if (m222_squashTimerTbl[group] != 0) {
+    if (m222_outTimerTbl[group] != 0) {
         Hu3DModelAttrSet(object->model[1], 4, 4);
     } else {
         Hu3DModelScaleSet(object->model[1], object->scale.x, object->scale.y, object->scale.z);

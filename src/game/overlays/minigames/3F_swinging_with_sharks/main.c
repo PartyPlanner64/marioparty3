@@ -166,9 +166,9 @@ s16 m263_koopaTurnTimer = 0;
 
 HuMtx4F m263_ropeBaseMtx BSS;
 HuMtx4F m263_stepBaseMtx BSS;
-s16 m263_mdlTbl[50] BSS; // model ids, indexed like D_8010ACEC
+s16 m263_mdlTbl[50] BSS; // model ids, indexed like m263_mdlEntryTbl
 u8 m263_mdlTblPad[4] BSS; /* Unreferenced. */
-s16 m263_motTbl[50] BSS; // motion ids, indexed like D_8010ACEC
+s16 m263_motTbl[50] BSS; // motion ids, indexed like m263_mdlEntryTbl
 Vec m263_jumpVel BSS;
 Vec m263_stepPrevPos BSS;
 Vec m263_playerPos BSS;

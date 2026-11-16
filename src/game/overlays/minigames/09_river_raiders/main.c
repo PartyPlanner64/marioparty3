@@ -67,7 +67,7 @@ extern const s16 m209_fontMesTbl[];
 
 s16 m209_coinSe = 9;
 s16 m209_coinBagSe = 21;
-s16 m209_obstacleHitSe = 833;
+s16 m209_logHitSe = 833;
 s16 m209_engineSe = 832;
 s32 m209_riverMdlTbl[3] = { 0x2A0001, 0x2A0002, 0x2A0003 };
 f32 m209_riverZTbl[3] = { 0.0f, -1875.0f, -3750.0f };
@@ -141,7 +141,7 @@ s16 m209_skierHopTimer BSS;
 u8 m209_finishStep BSS;
 u8 m209_finishStepPad[8] BSS; /* Unreferenced. */
 RiverRaidersEntry m209_objWorkTbl[100] BSS;
-u8 m209_obstacleCnt BSS;
+u8 m209_logCnt BSS;
 u8 m209_coinCnt BSS;
 s16 m209_coinBagSide BSS;
 u8 m209_boatCoin BSS;
@@ -152,7 +152,7 @@ u8 m209_phase BSS;
 u8 m209_skierLaneCnt BSS;
 u8 m209_skierLaneCntPad[4] BSS; /* Unreferenced. */
 s16 m209_skierHitTbl[3][5] BSS;
-s16 m209_obstacleMotLen BSS;
+s16 m209_logMotLen BSS;
 RiverRaidersSkierState m209_skierState BSS;
 u8 m209_coinBagCnt BSS;
 u8 m209_coinBagCntPad[4] BSS; /* Unreferenced. */
@@ -1914,7 +1914,7 @@ void m209_ItemHitUpdate(omObjData *obj) {
                     bigObj->trans.x - 60.0f <= obj->trans.x + 150.0f && bigObj->trans.z + 60.0f >= obj->trans.z - 60.0f &&
                     bigObj->trans.z - 60.0f <= obj->trans.z + 60.0f) {
                     big->unk_06 = 60;
-                    HuAudPlayerFXPlay(m209_obstacleHitSe, bigObj->work[0]);
+                    HuAudPlayerFXPlay(m209_logHitSe, bigObj->work[0]);
                     PlayerFXPlay(0x286, bigObj->work[0]);
                     entry->unk_04 = 2;
                     if (!(GwPlayer[bigObj->work[0]].stat & PLAYER_IS_CPU)) {
@@ -1927,7 +1927,7 @@ void m209_ItemHitUpdate(omObjData *obj) {
                         boats[i]->trans.x - 65.0f <= obj->trans.x + 150.0f && boats[i]->trans.z + 55.0f >= obj->trans.z - 60.0f &&
                         boats[i]->trans.z - 55.0f <= obj->trans.z + 60.0f) {
                         entries[i]->unk_06 = 30;
-                        HuAudPlayerFXPlay(m209_obstacleHitSe, boats[i]->work[0]);
+                        HuAudPlayerFXPlay(m209_logHitSe, boats[i]->work[0]);
                         PlayerFXPlay(0x286, boats[i]->work[0]);
                         entry->unk_04 = 2;
                         if (!(GwPlayer[boats[i]->work[0]].stat & PLAYER_IS_CPU)) {
@@ -1976,18 +1976,18 @@ void m209_ItemObjMain(omObjData *obj) {
                         cur->unk_04 = 1;
                     }
                 }
-                if (m209_timer % 125 == 0 && m209_obstacleCnt < 5) {
-                    cur = &m209_itemWorkTbl[m209_obstacleCnt + 24];
+                if (m209_timer % 125 == 0 && m209_logCnt < 5) {
+                    cur = &m209_itemWorkTbl[m209_logCnt + 24];
                     Hu3DModelAttrSet(cur->obj->model[0], 4, 0);
-                    m209_obstacleCnt++;
+                    m209_logCnt++;
                     if (cur->unk_04 == 0) {
                         cur->unk_04 = 1;
                     }
                 }
-                if (m209_timer < 241 && m209_obstacleCnt == 5) {
-                    cur = &m209_itemWorkTbl[m209_obstacleCnt + 24];
+                if (m209_timer < 241 && m209_logCnt == 5) {
+                    cur = &m209_itemWorkTbl[m209_logCnt + 24];
                     Hu3DModelAttrSet(cur->obj->model[0], 4, 0);
-                    m209_obstacleCnt++;
+                    m209_logCnt++;
                     if (cur->unk_04 == 0) {
                         cur->unk_04 = 1;
                     }
@@ -2034,7 +2034,7 @@ void m209_ItemObjMain(omObjData *obj) {
                             }
                             Hu3DModelTPLvlSet(obj->model[0], entry->unk_10);
                         }
-                        if (Hu3DData[obj->model[0]].motTime == m209_obstacleMotLen) {
+                        if (Hu3DData[obj->model[0]].motTime == m209_logMotLen) {
                             entry->unk_04 = 0;
                             Hu3DModelAttrSet(obj->model[0], 4, 4);
                         }
@@ -2109,7 +2109,7 @@ void m209_ItemObjInit(omObjData *obj) {
             Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
             obj->scale.x = obj->scale.y = obj->scale.z = 1.0f;
             Hu3DModelScaleSet(obj->model[0], obj->scale.x, obj->scale.y, obj->scale.z);
-            m209_obstacleMotLen = Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02;
+            m209_logMotLen = Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02;
             break;
     }
     Hu3DModelAttrSet(obj->model[0], 4, 4);
@@ -2305,8 +2305,8 @@ void m209_MainObjInit(omObjData *obj) {
     m209_skierLaneCnt = 0;
     m209_coinCnt = 0;
     m209_coinBagCnt = 0;
-    m209_obstacleCnt = 0;
-    m209_obstacleMotLen = 0;
+    m209_logCnt = 0;
+    m209_logMotLen = 0;
     for (i = 0; i < 5; i++) {
         m209_wakeRotTbl[i] = 0;
     }

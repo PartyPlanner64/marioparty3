@@ -541,7 +541,7 @@ void boardresult2_StatNumUpdate(void) {
 
     for (i = boardresult2_statScroll, row = 0; i < boardresult2_statScroll + 4; i++, row++) {
         for (j = 0; j < 4; j++) {
-            player = MBDGetPlayerStruct(kakusiMasuItemHis[j]);
+            player = MBDPlayerGet(kakusiMasuItemHis[j]);
             digits = 1;
             mask = boardresult2_StatTopMaskGet(i);
             value = 1;

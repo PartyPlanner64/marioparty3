@@ -3,14 +3,14 @@
 #include "game/overlays/minigame.h"
 #include "fridged_bridges.h"
 
-// Result of the ice-floor probe performed by func_80109988.
+// Result of the ice-floor probe performed by m236_FloorCheck.
 typedef struct FridgedBridgesProbe {
     /* 0x00 */ f32 height[9];
     /* 0x24 */ u16 bridgeIds[9];
     /* 0x38 */ Vec pos;
 } FridgedBridgesProbe; // sizeof 0x44
 
-// Data for the objects created by func_8010B164 (one per player area).
+// Data for the objects created by m236_FoeCreateAll (one per player area).
 // It jumps back and forth between the two points of m236_foeJumpPosTbl.
 typedef struct FridgedBridgesFoe {
     /* 0x00 */ u16 state; // 0 waiting, 1 jumping, 2 turning around
@@ -24,14 +24,14 @@ typedef struct FridgedBridgesFoe {
     /* 0x18 */ f32 unk_18;
 } FridgedBridgesFoe; // sizeof 0x1C
 
-// Work area of the dropped-item objects created by func_801084E0.
+// Work area of the dropped-item objects created by m236_PieceDrop.
 typedef struct FridgedBridgesPieceWork {
     /* 0x00 */ omObjData *playerObj;
     /* 0x04 */ u32 phase;
     /* 0x08 */ f32 fallSpeed;
 } FridgedBridgesPieceWork;
 
-// Data for the rescue objects created by func_8010A1A4, which fly in to pick up
+// Data for the rescue objects created by m236_RescueCreate, which fly in to pick up
 // a player that fell off the bridges.
 typedef struct FridgedBridgesRescue {
     /* 0x00 */ u16 state;
@@ -1173,7 +1173,7 @@ void m236_PieceDropObjMain(omObjData *arg0) {
     }
 }
 
-// Shrinking phase of a player's bridge-sink object (created with func_80108C60).
+// Shrinking phase of a player's bridge-sink object (created with m236_PieceDropObjMain).
 // Sinks the player model 10 units per frame while scaling it away; when the
 // scale runs out, stops the animation and deletes the object.
 void m236_PieceShrinkObjMain(omObjData *arg0) {

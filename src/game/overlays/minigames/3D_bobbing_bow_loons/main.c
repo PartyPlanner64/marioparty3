@@ -4,7 +4,7 @@
 
 // Per-object work block for m261_balloonObj, allocated in
 // m261_BalloonObjCreate. Holds five parallel per-item arrays.
-typedef struct BobbingBowLoonsWork {
+typedef struct BobbingBowLoonsBalloon {
     /* 0x00 */ s32 state[5];
     /* 0x14 */ f32 pos_x[5];
     /* 0x28 */ f32 pos_y[5];
@@ -12,15 +12,15 @@ typedef struct BobbingBowLoonsWork {
     /* 0x50 */ f32 unk_50[5];
     /* 0x64 */ f32 unk_64[5];
     /* 0x78 */ f32 rise;
-} BobbingBowLoonsWork; // Size 0x7C
+} BobbingBowLoonsBalloon; // Size 0x7C
 
-// Per-loon positions tracked for the five chained bow loons of the player object
+// Per-balloon positions for the burst effect of the five balloons tied to the player,
 // held in m261_burstObj. Each axis is a parallel array of five.
-typedef struct BobbingBowLoonsLoon {
+typedef struct BobbingBowLoonsBurst {
     /* 0x00 */ f32 x[5];
     /* 0x14 */ f32 y[5];
     /* 0x28 */ f32 z[5];
-} BobbingBowLoonsLoon; // Size 0x3C
+} BobbingBowLoonsBurst; // Size 0x3C
 
 // Object data for the player object held in m261_playerObj,
 // created in m261_PlayerObjCreate.
@@ -39,27 +39,27 @@ typedef struct BobbingBowLoonsStage {
     /* 0x40 */ f32 z[8];
 } BobbingBowLoonsStage; // Size 0x60
 
-// Object data for the hook object held in m261_dartObj,
+// Object data for the dart object held in m261_dartObj,
 // created in m261_DartObjCreate.
-typedef struct BobbingBowLoonsHook {
+typedef struct BobbingBowLoonsDart {
     /* 0x00 */ s32 flags;
     /* 0x04 */ f32 x;
     /* 0x08 */ f32 y;
     /* 0x0C */ f32 z;
     /* 0x10 */ f32 rotZ;
-} BobbingBowLoonsHook; // Size 0x14
+} BobbingBowLoonsDart; // Size 0x14
 
 // Object data for the string object held in m261_stringObj,
 // created in m261_StringObjCreate. Holds the positions of its seven models.
-typedef struct BobbingBowLoonsStrings {
+typedef struct BobbingBowLoonsString {
     /* 0x00 */ f32 x[7];
     /* 0x1C */ f32 y[7];
     /* 0x38 */ f32 z[7];
-} BobbingBowLoonsStrings; // Size 0x54
+} BobbingBowLoonsString; // Size 0x54
 
-// Object data for the effect object held in m261_popObj,
+// Object data for the balloon pop effect object held in m261_popObj,
 // created in m261_PopObjCreate.
-typedef struct BobbingBowLoonsEffect {
+typedef struct BobbingBowLoonsPop {
     /* 0x00 */ f32 x;
     /* 0x04 */ f32 y;
     /* 0x08 */ f32 z;
@@ -67,18 +67,18 @@ typedef struct BobbingBowLoonsEffect {
     /* 0x10 */ f32 scale;
     /* 0x14 */ s32 timer;
     /* 0x18 */ s32 unk_18;
-} BobbingBowLoonsEffect; // Size 0x1C
+} BobbingBowLoonsPop; // Size 0x1C
 
-// Object data for the host object held in m261_koopaObj,
+// Object data for the Bowser object held in m261_koopaObj,
 // created in m261_KoopaObjCreate.
-typedef struct BobbingBowLoonsHost {
+typedef struct BobbingBowLoonsKoopa {
     /* 0x00 */ f32 y;
     /* 0x04 */ f32 headRot;
-} BobbingBowLoonsHost; // Size 0x8
+} BobbingBowLoonsKoopa; // Size 0x8
 
 // Object data for the item object held in m261_itemObj,
-// created in m261_ItemObjCreate. One item hangs from each loon.
-typedef struct BobbingBowLoonsItems {
+// created in m261_ItemObjCreate. One item hangs from each balloon.
+typedef struct BobbingBowLoonsItem {
     /* 0x00 */ f32 x[5];
     /* 0x14 */ f32 y[5];
     /* 0x28 */ f32 z[5];
@@ -86,7 +86,7 @@ typedef struct BobbingBowLoonsItems {
     /* 0x50 */ f32 angle;
     /* 0x54 */ f32 heldX;
     /* 0x58 */ f32 heldY;
-} BobbingBowLoonsItems; // Size 0x5C
+} BobbingBowLoonsItem; // Size 0x5C
 
 extern u16 mgInstColumnTbl[];
 extern u16 mgInstSlotTbl[];
@@ -517,14 +517,14 @@ void m261_MainObjMain(omObjData *obj) {
 
 void m261_BalloonObjCreate(void) {
     s32 attr = 0x699;
-    BobbingBowLoonsWork *work;
+    BobbingBowLoonsBalloon *work;
     BobbingBowLoonsPlayer *player;
     omObjData *obj;
     s32 i;
 
     obj = omAddObj(0xFF, 10, 0, -1, m261_BalloonObjMain);
     m261_balloonObj = obj;
-    work = obj->data = HuMemAllocTag(sizeof(BobbingBowLoonsWork), 0x7918);
+    work = obj->data = HuMemAllocTag(sizeof(BobbingBowLoonsBalloon), 0x7918);
     player = m261_playerObj->data;
     for (i = 0; i < 5; i++) {
         work->state[i] = 1;
@@ -559,7 +559,7 @@ void m261_BalloonObjCreate(void) {
 }
 
 void m261_BalloonObjMain(omObjData *obj) {
-    BobbingBowLoonsWork *work = obj->data;
+    BobbingBowLoonsBalloon *work = obj->data;
     s32 i;
 
     for (i = 0; i < 5; i++) {
@@ -590,7 +590,7 @@ void m261_BalloonObjMain(omObjData *obj) {
 }
 
 void m261_BalloonRiseStart(void) {
-    BobbingBowLoonsWork *work = m261_balloonObj->data;
+    BobbingBowLoonsBalloon *work = m261_balloonObj->data;
     s32 i;
 
     for (i = 0; i < ARRAY_COUNT(work->state); i++) {
@@ -601,10 +601,10 @@ void m261_BalloonRiseStart(void) {
 
 s32 m261_BalloonHitCheck(void) {
     s32 hit = -1;
-    BobbingBowLoonsWork *work = m261_balloonObj->data;
-    BobbingBowLoonsHook *hook = m261_dartObj->data;
-    f32 x = hook->x - 25.0f;
-    f32 y = hook->y - 100.0f;
+    BobbingBowLoonsBalloon *work = m261_balloonObj->data;
+    BobbingBowLoonsDart *dart = m261_dartObj->data;
+    f32 x = dart->x - 25.0f;
+    f32 y = dart->y - 100.0f;
     f32 loonX;
     f32 loonY;
     s16 fx;
@@ -630,7 +630,7 @@ void m261_StringObjCreate(void) {
     s32 i;
 
     obj = omAddObj(0x50, 7, 0, -1, m261_StringObjMain);
-    obj->data = HuMemAllocTag(sizeof(BobbingBowLoonsStrings), 0x7918);
+    obj->data = HuMemAllocTag(sizeof(BobbingBowLoonsString), 0x7918);
     m261_stringObj = obj;
     obj->model[0] = Hu3DModelRead(0x5E0006, 0x4B9);
     for (i = 1; i < 7; i++) {
@@ -640,8 +640,8 @@ void m261_StringObjCreate(void) {
 }
 
 void m261_StringObjMain(omObjData *obj) {
-    BobbingBowLoonsStrings *strings = obj->data;
-    BobbingBowLoonsWork *work = m261_balloonObj->data;
+    BobbingBowLoonsString *strings = obj->data;
+    BobbingBowLoonsBalloon *work = m261_balloonObj->data;
     BobbingBowLoonsPlayer *player = m261_playerObj->data;
     s32 i;
 
@@ -663,8 +663,8 @@ void m261_StringObjMain(omObjData *obj) {
 void m261_ItemObjCreate(void) {
     s32 counts[16];
     s32 itemFiles[16] = { 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60 };
-    BobbingBowLoonsItems *items;
-    BobbingBowLoonsWork *work;
+    BobbingBowLoonsItem *items;
+    BobbingBowLoonsBalloon *work;
     omObjData *obj;
     void *spriteData;
     s16 sprite;
@@ -674,7 +674,7 @@ void m261_ItemObjCreate(void) {
     s32 j;
 
     obj = omAddObj(0xFE, 5, 0, -1, m261_ItemObjMain);
-    obj->data = HuMemAllocTag(sizeof(BobbingBowLoonsItems), 0x7918);
+    obj->data = HuMemAllocTag(sizeof(BobbingBowLoonsItem), 0x7918);
     m261_itemObj = obj;
     items = obj->data;
     work = m261_balloonObj->data;
@@ -720,8 +720,8 @@ void m261_ItemObjCreate(void) {
 }
 
 void m261_ItemObjMain(omObjData *obj) {
-    BobbingBowLoonsItems *items = obj->data;
-    BobbingBowLoonsWork *work = m261_balloonObj->data;
+    BobbingBowLoonsItem *items = obj->data;
+    BobbingBowLoonsBalloon *work = m261_balloonObj->data;
     BobbingBowLoonsPlayer *player = m261_playerObj->data;
     s32 i;
 
@@ -748,7 +748,7 @@ void m261_ItemObjMain(omObjData *obj) {
 }
 
 void m261_ItemGetStart(s32 idx) {
-    BobbingBowLoonsItems *items = m261_itemObj->data;
+    BobbingBowLoonsItem *items = m261_itemObj->data;
 
     items->state[idx] |= 2;
     items->angle = 0.0f;
@@ -762,8 +762,8 @@ void m261_ItemGetStart(s32 idx) {
 }
 
 void m261_ItemGetProc(void) {
-    BobbingBowLoonsWork *work = m261_balloonObj->data;
-    BobbingBowLoonsItems *items = m261_itemObj->data;
+    BobbingBowLoonsBalloon *work = m261_balloonObj->data;
+    BobbingBowLoonsItem *items = m261_itemObj->data;
     BobbingBowLoonsPlayer *player = m261_playerObj->data;
     f32 dx;
     f32 dy;
@@ -876,57 +876,57 @@ void m261_TimerProc(void) {
 }
 
 void m261_DartObjCreate(void) {
-    BobbingBowLoonsHook *hook;
+    BobbingBowLoonsDart *dart;
     BobbingBowLoonsPlayer *player;
     omObjData *obj;
 
     obj = omAddObj(0xFF, 1, 0, -1, m261_DartObjMain);
     m261_dartObj = obj;
-    hook = HuMemAllocTag(sizeof(BobbingBowLoonsHook), 0x7918);
-    obj->data = hook;
+    dart = HuMemAllocTag(sizeof(BobbingBowLoonsDart), 0x7918);
+    obj->data = dart;
     player = m261_playerObj->data;
     obj->model[0] = Hu3DModelRead(0x5E0005, 0x699);
-    hook->flags = 0;
-    hook->x = 0.0f;
-    hook->y = 50.0f;
-    hook->z = player->pos.z;
-    hook->rotZ = 270.0f;
-    omSetTra(obj, hook->x, hook->y, hook->z);
-    omSetRot(obj, 0.0f, 0.0f, hook->rotZ);
+    dart->flags = 0;
+    dart->x = 0.0f;
+    dart->y = 50.0f;
+    dart->z = player->pos.z;
+    dart->rotZ = 270.0f;
+    omSetTra(obj, dart->x, dart->y, dart->z);
+    omSetRot(obj, 0.0f, 0.0f, dart->rotZ);
     Hu3DModelHookSet(obj->model[0], m261_playerObj->model[0], "item_hook");
     Hu3DModelAttrSet(obj->model[0], 0x4000, 0x4000);
 }
 
 void m261_DartObjMain(omObjData *obj) {
-    BobbingBowLoonsHook *hook = obj->data;
+    BobbingBowLoonsDart *dart = obj->data;
     s32 hit;
 
-    omSetTra(obj, hook->x, hook->y, hook->z);
-    omSetRot(obj, 0.0f, 0.0f, hook->rotZ);
-    if (hook->flags & 1) {
-        hook->x -= 23.0f;
+    omSetTra(obj, dart->x, dart->y, dart->z);
+    omSetRot(obj, 0.0f, 0.0f, dart->rotZ);
+    if (dart->flags & 1) {
+        dart->x -= 23.0f;
         hit = m261_BalloonHitCheck();
         if (hit != -1) {
             MgFlowStatSet(MG_STATE_FINISH);
             m261_ItemGetStart(hit);
-            hook->flags &= ~1;
+            dart->flags &= ~1;
             omVibrate(m261_playerNo, 2, 2, 20);
-        } else if (hook->x <= -290.0f) {
+        } else if (dart->x <= -290.0f) {
             m261_seqNo = 0;
             MgFlowStatSet(MG_STATE_FINISH);
             m261_DartMissStart();
-            hook->flags &= ~1;
+            dart->flags &= ~1;
             omVibrate(m261_playerNo, 20, 0, 20);
         }
     }
 }
 
 void m261_DartThrow(void) {
-    BobbingBowLoonsHook *hook = m261_dartObj->data;
+    BobbingBowLoonsDart *dart = m261_dartObj->data;
 
-    hook->x = m261_playerObj->trans.x;
-    hook->y = m261_playerObj->trans.y + 100.0f;
-    hook->flags |= 1;
+    dart->x = m261_playerObj->trans.x;
+    dart->y = m261_playerObj->trans.y + 100.0f;
+    dart->flags |= 1;
     Hu3DModelAttrSet(m261_dartObj->model[0], 4, 0);
     Hu3DModelAttrSet(m261_dartObj->model[0], 0x4000, 0);
     HuAudFXPlay(0x4DB);
@@ -940,9 +940,9 @@ void m261_DartMissProc(void) {
     f32 offsetX[8] = { -20.0f, 0.0f, -15.0f, 31.5f, 5.0f, 19.2f, -15.0f, 0.0f };
     f32 offsetY[8] = { 100.0f, -19.0f, 70.0f, -106.2f, -18.0f, -107.1f, 70.0f, -16.0f };
     f32 offsetZ[8] = { 15.0f, -2.5f, 0.0f, 20.5f, 0.0f, 36.2f, 0.0f, 3.0f };
-    BobbingBowLoonsHook *hook = m261_dartObj->data;
+    BobbingBowLoonsDart *dart = m261_dartObj->data;
     BobbingBowLoonsPlayer *player = m261_playerObj->data;
-    BobbingBowLoonsWork *work = m261_balloonObj->data;
+    BobbingBowLoonsBalloon *work = m261_balloonObj->data;
     f32 speed;
     s32 i;
 
@@ -952,23 +952,23 @@ void m261_DartMissProc(void) {
     for (i = 0; i < 5; i++) {
         work->state[i] &= ~1;
     }
-    omSetTra(m261_hitEffObj, hook->x + 30.0f, hook->y - 30.0f, hook->z);
+    omSetTra(m261_hitEffObj, dart->x + 30.0f, dart->y - 30.0f, dart->z);
     m261_HitEffDispOn();
     HuAudFXPlay(0x4DE);
-    hook->rotZ = 150.0f;
-    while (hook->y < 400.0f) {
-        hook->x += sindf(30.0f) * 23.0f;
-        hook->y += cosdf(30.0f) * 23.0f;
+    dart->rotZ = 150.0f;
+    while (dart->y < 400.0f) {
+        dart->x += sindf(30.0f) * 23.0f;
+        dart->y += cosdf(30.0f) * 23.0f;
         HuPrcVSleep();
     }
     HuPrcSleep(15);
-    hook->rotZ = 180.0f;
-    hook->x = m261_playerObj->trans.x;
-    while (m261_playerObj->trans.y + 300.0f <= hook->y) {
-        hook->y -= 23.0f;
+    dart->rotZ = 180.0f;
+    dart->x = m261_playerObj->trans.x;
+    while (m261_playerObj->trans.y + 300.0f <= dart->y) {
+        dart->y -= 23.0f;
         HuPrcVSleep();
     }
-    hook->y = m261_playerObj->trans.y - 200.0f;
+    dart->y = m261_playerObj->trans.y - 200.0f;
     Hu3DModelAttrSet(m261_dartObj->model[0], 4, 4);
     Hu3DModelAttrSet(m261_stringObj->model[5], 4, 4);
     Hu3DModelAttrSet(m261_playerObj->model[1], 4, 4);
@@ -1005,7 +1005,7 @@ void m261_ThrowInputProc(void) {
     f32 minAngles[5] = { 120.0f, 300.0f, 120.0f, 320.0f, 160.0f };
     f32 maxAngles[5] = { 140.0f, 320.0f, 140.0f, 340.0f, 180.0f };
     f32 targetAngles[5];
-    BobbingBowLoonsWork *work;
+    BobbingBowLoonsBalloon *work;
     s32 done = FALSE;
     s32 range;
     s32 hit;
@@ -1056,12 +1056,12 @@ void m261_ThrowInputProc(void) {
 }
 
 void m261_PopObjCreate(s32 recolor) {
-    BobbingBowLoonsEffect *effect;
+    BobbingBowLoonsPop *effect;
     omObjData *obj;
 
     obj = omAddObj(0xFF, 2, 0, -1, m261_PopObjMain);
     m261_popObj = obj;
-    effect = obj->data = HuMemAllocTag(sizeof(BobbingBowLoonsEffect), 0x7918);
+    effect = obj->data = HuMemAllocTag(sizeof(BobbingBowLoonsPop), 0x7918);
     obj->model[0] = Hu3DModelRead(0x5E0011, 0x6CD);
     Hu3DModelObjAttrSet(obj->model[0], 0x20000, 0x20000);
     Hu3DModelVtxBufMake(obj->model[0]);
@@ -1107,7 +1107,7 @@ void m261_PopObjCreate(s32 recolor) {
 }
 
 void m261_PopObjMain(omObjData *obj) {
-    BobbingBowLoonsEffect *effect = obj->data;
+    BobbingBowLoonsPop *effect = obj->data;
 
     omSetTra(obj, effect->x, effect->y, effect->z);
     if (effect->flags & 1) {
@@ -1122,7 +1122,7 @@ void m261_PopObjMain(omObjData *obj) {
 
 void m261_PopStart(f32 x, f32 y) {
     BobbingBowLoonsPlayer *player = m261_playerObj->data;
-    BobbingBowLoonsEffect *effect;
+    BobbingBowLoonsPop *effect;
     s32 recolor;
     f32 scale;
 
@@ -1149,7 +1149,7 @@ void m261_BurstObjCreate(void) {
 
     obj = omAddObj(0xFF, 2, 0, -1, m261_BurstObjMain);
     m261_burstObj = obj;
-    obj->data = HuMemAllocTag(sizeof(BobbingBowLoonsLoon), 0x7918);
+    obj->data = HuMemAllocTag(sizeof(BobbingBowLoonsBurst), 0x7918);
     obj->model[0] = Hu3DModelRead(0x5D0008, 0xA3D);
     for (i = 1; i < 5; i++) {
         obj->model[i] = Hu3DModelLink(obj->model[0]);
@@ -1157,12 +1157,12 @@ void m261_BurstObjCreate(void) {
 }
 
 void m261_BurstObjMain(omObjData *obj) {
-    BobbingBowLoonsLoon *loons = obj->data;
+    BobbingBowLoonsBurst *burst = obj->data;
     s32 i;
 
-    omSetTra(obj, loons->x[0], loons->y[0], loons->z[0]);
+    omSetTra(obj, burst->x[0], burst->y[0], burst->z[0]);
     for (i = 1; i < 5; i++) {
-        Hu3DModelPosSet(obj->model[i], loons->x[i], loons->y[i], loons->z[i]);
+        Hu3DModelPosSet(obj->model[i], burst->x[i], burst->y[i], burst->z[i]);
     }
     if (Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02 <= Hu3DData[obj->model[0]].motTime) {
         for (i = 0; i < 5; i++) {
@@ -1172,17 +1172,17 @@ void m261_BurstObjMain(omObjData *obj) {
 }
 
 void m261_BalloonPopAll(void) {
-    BobbingBowLoonsLoon *loons = m261_burstObj->data;
-    BobbingBowLoonsWork *work = m261_balloonObj->data;
+    BobbingBowLoonsBurst *burst = m261_burstObj->data;
+    BobbingBowLoonsBalloon *work = m261_balloonObj->data;
     s32 i;
 
     for (i = 0; i < 5; i++) {
         Hu3DModelAttrSet(m261_balloonObj->model[i], 4, 4);
         Hu3DModelAttrSet(m261_stringObj->model[i], 4, 4);
         Hu3DModelAttrSet(m261_itemObj->model[i], 4, 4);
-        loons->x[i] = work->pos_x[i];
-        loons->y[i] = work->pos_y[i] + 50.0f;
-        loons->z[i] = work->pos_z[i] + 2.0f;
+        burst->x[i] = work->pos_x[i];
+        burst->y[i] = work->pos_y[i] + 50.0f;
+        burst->z[i] = work->pos_z[i] + 2.0f;
         work->state[i] &= ~1;
         work->pos_y[i] = -1000.0f;
         Hu3DModelAttrSet(m261_burstObj->model[i], 4, 0);
@@ -1190,43 +1190,43 @@ void m261_BalloonPopAll(void) {
 }
 
 void m261_PlayerBurstStart(void) {
-    BobbingBowLoonsLoon *loons = OM_GET_DATA_PTR(m261_burstObj, BobbingBowLoonsLoon);
+    BobbingBowLoonsBurst *burst = OM_GET_DATA_PTR(m261_burstObj, BobbingBowLoonsBurst);
     BobbingBowLoonsPlayer *player = OM_GET_DATA_PTR(m261_playerObj, BobbingBowLoonsPlayer);
 
-    loons->x[0] = player->pos.x;
-    loons->y[0] = player->pos.y + 50.0f;
-    loons->z[0] = player->pos.z + 2.0f;
+    burst->x[0] = player->pos.x;
+    burst->y[0] = player->pos.y + 50.0f;
+    burst->z[0] = player->pos.z + 2.0f;
     Hu3DModelAttrSet(m261_burstObj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DMotionTimeSet(m261_burstObj->model[0], 0.0f);
 }
 
 void m261_KoopaObjCreate(void) {
-    BobbingBowLoonsHost *host;
+    BobbingBowLoonsKoopa *koopa;
     omObjData *obj;
 
     obj = omAddObj(0xFF, 2, 0, -1, m261_KoopaObjMain);
     m261_koopaObj = obj;
-    host = HuMemAllocTag(sizeof(BobbingBowLoonsHost), 0x7918);
-    obj->data = host;
+    koopa = HuMemAllocTag(sizeof(BobbingBowLoonsKoopa), 0x7918);
+    obj->data = koopa;
     obj->model[0] = Hu3DModelRead(0xA00EE, 0x6D9);
     omSetSca(obj, 0.7f, 0.7f, 0.7f);
     omSetRot(obj, 0.0f, 325.0f, 0.0f);
     Hu3DMotionAttrSet(obj->model[0], 2, 2);
-    host->y = -130.0f;
-    host->headRot = 0.0f;
+    koopa->y = -130.0f;
+    koopa->headRot = 0.0f;
 }
 
 void m261_KoopaObjMain(omObjData *obj) {
-    BobbingBowLoonsHost *host = obj->data;
+    BobbingBowLoonsKoopa *koopa = obj->data;
     HmfMotionNode *node;
     s16 model;
 
-    omSetTra(obj, 370.0f, host->y, -70.0f);
+    omSetTra(obj, 370.0f, koopa->y, -70.0f);
     model = obj->model[0];
     Hu3DMotionNoMotSet(model, Hu3DData[model].motId, "c162_000-atama", 0x4C, 0x45);
     node = Hu3DModelObjPtrGet(model, "c162_000-atama");
-    node->baseRot.x = host->headRot;
-    node->rot.x = host->headRot;
+    node->baseRot.x = koopa->headRot;
+    node->rot.x = koopa->headRot;
     Hu3DMotionAttrSet(obj->model[0], 1, 1);
 }
 
@@ -1235,12 +1235,12 @@ void m261_KoopaLaughStart(void) {
 }
 
 void m261_KoopaLaughProc(void) {
-    BobbingBowLoonsHost *host = m261_koopaObj->data;
+    BobbingBowLoonsKoopa *koopa = m261_koopaObj->data;
     s32 i;
     s32 j;
 
     for (i = 0; i < 10; i++) {
-        host->y += 10.0f;
+        koopa->y += 10.0f;
         HuPrcVSleep();
     }
     m261_CameraLoseStart();
@@ -1248,11 +1248,11 @@ void m261_KoopaLaughProc(void) {
     HuAudFXPlay(0x2A0);
     for (i = 0; i < 30; i++) {
         for (j = 0; j < 2; j++) {
-            host->headRot += 8.0f;
+            koopa->headRot += 8.0f;
             HuPrcVSleep();
         }
         for (j = 0; j < 2; j++) {
-            host->headRot -= 8.0f;
+            koopa->headRot -= 8.0f;
             HuPrcVSleep();
         }
     }

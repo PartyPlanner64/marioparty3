@@ -789,7 +789,7 @@ s32 MBDPausePadUsedCheck(s16 arg0) {
     s16 chr = arg0;
 
     for (i = 0; i < 4; i++) {
-        GW_PLAYER *player = MBDGetPlayerStruct(i);
+        GW_PLAYER *player = MBDPlayerGet(i);
         if (player->stat & PLAYER_IS_CPU) {
             continue;
         }
@@ -808,7 +808,7 @@ void MBDPausePadSet(GW_PLAYER *arg0, s16 arg1) {
     pad = arg0->pad;
     if (arg1 < 4) {
         for (i = 0; i < MB_MAX_PLAYERS; i++) {
-            player = MBDGetPlayerStruct(i);
+            player = MBDPlayerGet(i);
             if (player->pad != arg1) {
                 continue;
             }
@@ -946,7 +946,7 @@ s32 MBDPausePadCfgExec(s32 arg0) {
 
     chr = MBDSprGrpCreate(2, 0);
     for (i = 0; i < MBD_MAX_PLAYERS; i++) {
-        data = DataRead(mbdPauseCharSprTbl[MBDGetPlayerStruct(i)->chr]);
+        data = DataRead(mbdPauseCharSprTbl[MBDPlayerGet(i)->chr]);
         chr->unk_0C[i] = HuSprAnimRead(data);
         HuSprGrpMemberSet(chr->unk_0A, i, chr->unk_0C[i], 0);
         HuSprPriSet(chr->unk_0A, i, 7);
@@ -1045,7 +1045,7 @@ s32 MBDPausePadCfgExec(s32 arg0) {
             HuAudFXPlay(1);
         } else if (HuPadBtnDown[arg0] & A_BUTTON) {
             HuAudFXPlay(2);
-            player = MBDGetPlayerStruct(sel);
+            player = MBDPlayerGet(sel);
             MBDPauseCursorBlinkSet(1);
             diff = player->cpu_difficulty;
             i = (MBDPlayerComCheck(sel) != 0) ? 4 : -1;
@@ -1262,13 +1262,13 @@ void MBDPauseCreate(s32 arg0) {
     MBDBackSprDispOn();
 }
 
-s16 MBDGetCurrentPlayerIndex(void) {
+s16 MBDPlayerTurnGet(void) {
     return GwSystem.current_player_index;
 }
 
-GW_PLAYER *MBDGetPlayerStruct(s32 player) {
+GW_PLAYER *MBDPlayerGet(s32 player) {
     if (player < 0) {
-        player = MBDGetCurrentPlayerIndex();
+        player = MBDPlayerTurnGet();
     }
     return &GwPlayer[player];
 }
@@ -1282,13 +1282,13 @@ s32 MBDPlayerCurrentCheck(s16 playerIndex) {
 }
 
 s32 MBDPlayerComCheck(s16 playerIndex) {
-    return MBDGetPlayerStruct(playerIndex)->stat & PLAYER_IS_CPU;
+    return MBDPlayerGet(playerIndex)->stat & PLAYER_IS_CPU;
 }
 
 void MBDPlayerCoinAdd(s32 playerIndex, s32 amount) {
     GW_PLAYER *player;
 
-    player = MBDGetPlayerStruct(playerIndex);
+    player = MBDPlayerGet(playerIndex);
     player->coin = player->coin + amount;
     if (player->coin > 999) {
         player->coin = 999;
@@ -1302,7 +1302,7 @@ void MBDPlayerCoinAdd(s32 playerIndex, s32 amount) {
 }
 
 s32 MBDPlayerCoinCheck(s32 playerIndex, s32 requiredCoins) {
-    if (MBDGetPlayerStruct(playerIndex)->coin >= requiredCoins) {
+    if (MBDPlayerGet(playerIndex)->coin >= requiredCoins) {
         return TRUE;
     } else {
         return FALSE;
@@ -1310,17 +1310,17 @@ s32 MBDPlayerCoinCheck(s32 playerIndex, s32 requiredCoins) {
 }
 
 void MBDPlayerMotionSet(s32 playerIndex, s16 arg1, u16 arg2) {
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *player = MBDPlayerGet(playerIndex);
 
-    if (player == MBDGetPlayerStruct(CUR_PLAYER)) {
+    if (player == MBDPlayerGet(CUR_PLAYER)) {
         MBDMotionSet(player->player_obj, arg1, arg2);
     }
 }
 
 void MBDPlayerPartyMotionSet(s32 playerIndex, s16 arg1, u16 arg2) {
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *player = MBDPlayerGet(playerIndex);
 
-    if (player == MBDGetPlayerStruct(CUR_PLAYER)) {
+    if (player == MBDPlayerGet(CUR_PLAYER)) {
         MBDMotionSet(player->player_obj, arg1, arg2);
         if (arg1 < 4) {
             MBDPartnerMotionSet(playerIndex, PARTNER_FRONT, arg1, arg2);
@@ -1330,17 +1330,17 @@ void MBDPlayerPartyMotionSet(s32 playerIndex, s16 arg1, u16 arg2) {
 }
 
 void MBDPlayerMotionShiftSet(s32 playerIndex, s16 arg1, s16 arg2, s16 arg3, u16 arg4) {
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *player = MBDPlayerGet(playerIndex);
 
-    if (player == MBDGetPlayerStruct(CUR_PLAYER)) {
+    if (player == MBDPlayerGet(CUR_PLAYER)) {
         MBDMotionShiftSet(player->player_obj, arg1, arg2, arg3, arg4);
     }
 }
 
 void MBDPlayerPartyMotionShiftSet(s32 playerIndex, s16 arg1, s16 arg2, s16 arg3, u16 arg4) {
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *player = MBDPlayerGet(playerIndex);
 
-    if (player == MBDGetPlayerStruct(CUR_PLAYER)) {
+    if (player == MBDPlayerGet(CUR_PLAYER)) {
         MBDMotionShiftSet(player->player_obj, arg1, arg2, arg3, arg4);
         if (arg1 < 4) {
             MBDPartnerMotionShiftSet(playerIndex, PARTNER_FRONT, arg1, arg2, arg3, arg4);
@@ -1350,26 +1350,26 @@ void MBDPlayerPartyMotionShiftSet(s32 playerIndex, s16 arg1, s16 arg2, s16 arg3,
 }
 
 void MBDPlayerSpeedSet(s32 playerIndex, f32 arg1) {
-    Hu3DMotionSpeedSet(MBDGetPlayerStruct(playerIndex)->player_obj->omObj1->model[0], arg1);
+    Hu3DMotionSpeedSet(MBDPlayerGet(playerIndex)->player_obj->omObj1->model[0], arg1);
     MBDPartnerSpeedSet(playerIndex, arg1);
 }
 
 void MBDPlayerComLevelSet(s32 playerIndex, u8 cpuDifficulty) {
-    MBDGetPlayerStruct(playerIndex)->cpu_difficulty = mbdComLevelTbl[cpuDifficulty];
+    MBDPlayerGet(playerIndex)->cpu_difficulty = mbdComLevelTbl[cpuDifficulty];
 }
 
 void MBDPlayerInit(void) {
 }
 
 void MBDPlayerScaleSet(s32 playerIndex, Vec *scale) {
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *player = MBDPlayerGet(playerIndex);
 
     HuVecCopy3F(&player->player_obj->scale, scale);
     if (player->stats.partners.frontID != PARTNER_NONE) {
-        HuVecCopy3F(&MBDGetPlayerPartnerRef(playerIndex, PARTNER_FRONT)->scale, scale);
+        HuVecCopy3F(&MBDPartnerObjGet(playerIndex, PARTNER_FRONT)->scale, scale);
     }
     if (player->stats.partners.backID != PARTNER_NONE) {
-        HuVecCopy3F(&MBDGetPlayerPartnerRef(playerIndex, PARTNER_BACK)->scale, scale);
+        HuVecCopy3F(&MBDPartnerObjGet(playerIndex, PARTNER_BACK)->scale, scale);
     }
 }
 
@@ -1386,7 +1386,7 @@ void MBDPlayerScaleResetProc(void) {
 }
 
 void MBDPlayerModelCreate(s16 playerIndex, s32 *arg1, s32 arg2) {
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *player = MBDPlayerGet(playerIndex);
     Process *proc;
     u8 chr;
 
@@ -1413,19 +1413,19 @@ void MBDPlayerModelCreateMot(s16 playerIndex, s32 *arg1) {
 }
 
 void MBDPlayerModelCreateDef(s16 playerIndex) {
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *player = MBDPlayerGet(playerIndex);
 
     MBDPlayerModelCreate(playerIndex, mbdPlayerMotTbl[player->chr], 0);
 }
 
 void MBDPlayerModelCreateNoMot(s16 playerIndex) {
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex); // unused, like the ovl_80 counterpart
+    GW_PLAYER *player = MBDPlayerGet(playerIndex); // unused, like the ovl_80 counterpart
 
     MBDPlayerModelCreate(playerIndex, NULL, 0);
 }
 
 void MBDPlayerModelSetup(s16 playerIndex) {
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *player = MBDPlayerGet(playerIndex);
 
     MBDPlayerModelCreate(playerIndex, mbdPlayerMotTbl[player->chr], 0);
     MBDPartnerModelSetup(playerIndex);
@@ -1433,15 +1433,15 @@ void MBDPlayerModelSetup(s16 playerIndex) {
 }
 
 u8 MBDPlayerModelAltNoGet(s16 playerIndex) {
-    return mbdPlayerModelAltTbl[MBDGetPlayerStruct(playerIndex)->chr];
+    return mbdPlayerModelAltTbl[MBDPlayerGet(playerIndex)->chr];
 }
 
 void MBDPlayerModelChange(s16 playerIndex, u8 arg1) {
-    MBDModelChange(MBDGetPlayerStruct(playerIndex)->player_obj, arg1);
+    MBDModelChange(MBDPlayerGet(playerIndex)->player_obj, arg1);
 }
 
 void MBDPlayerModelKill(s16 playerIndex) {
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *player = MBDPlayerGet(playerIndex);
 
     if (player->player_obj != NULL) {
         if (player->unk_20 != NULL) {
@@ -1461,7 +1461,7 @@ void MBDPlayerMotInit(void) {
     s32 i, j;
 
     for (j = 0; j < 3; j++) {
-        MBDGetPlayerStruct(j)->player_obj = NULL;
+        MBDPlayerGet(j)->player_obj = NULL;
     }
     MBDPartnerObjClear();
 

@@ -36,20 +36,21 @@ typedef struct Sp18Struct {
 } Sp18Struct;
 
 u8 mbMgCall4PTbl[] = { 21, 22, 23, 24, 25, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 44 };
-u8 mbMgCall4PAltTbl[] = { 21, 25, 28, 29, 30, 33, 34, 38, 40 };
+// *EasyTbl: subsets used when the easy minigame pack is selected (flag 0x20).
+u8 mbMgCall4PEasyTbl[] = { 21, 25, 28, 29, 30, 33, 34, 38, 40 };
 u8 mbMgCall1vs3Tbl[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-u8 mbMgCall1vs3AltTbl[] = { 2, 3, 4, 5, 6, 9, 10 };
+u8 mbMgCall1vs3EasyTbl[] = { 2, 3, 4, 5, 6, 9, 10 };
 u8 mbMgCall2vs2Tbl[] = { 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 };
-u8 mbMgCall2vs2AltTbl[] = { 11, 12, 16, 17, 19 };
+u8 mbMgCall2vs2EasyTbl[] = { 11, 12, 16, 17, 19 };
 u8 mbMgCallBattleTbl[] = { 26, 41, 42, 43, 45, 46, 47, 48 };
-u8 mbMgCallBattleAltTbl[] = { 42, 43, 45, 46 };
+u8 mbMgCallBattleEasyTbl[] = { 42, 43, 45, 46 };
 u8 mbMgCallItemTbl[] = { 59, 60, 61, 62, 63, 64 };
-u8 mbMgCallItemAltTbl[] = { 59, 60, 61, 62, 63, 64 };
+u8 mbMgCallItemEasyTbl[] = { 59, 60, 61, 62, 63, 64 };
 u8 mbMgCall1vs1Tbl[] = { 49, 50, 51, 52, 53, 54, 55, 56, 57, 58 };
-u8 mbMgCall1vs1AltTbl[] = { 49, 50, 51, 53, 55, 56, 57 };
+u8 mbMgCall1vs1EasyTbl[] = { 49, 50, 51, 53, 55, 56, 57 };
 u8 mbMgCallListNumTbl[] = { 5, 3, 3, 3, 3, 5 };
-u8 mbMgCallHisLenTbl[] = { 10, 5, 5, 3, 3, 5 }; /* normal mode: recent minigame avoid count per category */
-u8 mbMgCallHisLenAltTbl[] = { 3, 3, 1, 3, 1, 2 }; /* hard mode: recent minigame avoid count per category */
+u8 mbMgCallHisLenTbl[] = { 10, 5, 5, 3, 3, 5 }; /* full pack: recent minigame avoid count per category */
+u8 mbMgCallHisLenEasyTbl[] = { 3, 3, 1, 3, 1, 2 }; /* easy pack (flag 0x20): recent minigame avoid count per category */
 u8 mbMgCallColorTbl[][3] = {
     { 25, 163, 92 },
     { 52, 86, 206 },
@@ -86,12 +87,12 @@ u8 mbMgCallMesColTbl[] = {
 };
 u32 mbMgCallSeTime = 0;
 u8 mbMgCallMgNumTbl[] = { 20, 10, 10, 6, 8, 10 };
-u8 mbMgCallMgNumAltTbl[] = { 9, 7, 5, 6, 4, 7 };
+u8 mbMgCallMgNumEasyTbl[] = { 9, 7, 5, 6, 4, 7 };
 
 extern Vec mbCameraFocusPos;
 extern ItemRectTable const mbMgCallRectTbl;
 extern DefinitelyNotItemRectTable const mbMgCallMgTbl;
-extern DefinitelyNotItemRectTable const mbMgCallMgAltTbl;
+extern DefinitelyNotItemRectTable const mbMgCallMgEasyTbl;
 extern ItemSlotEntry mbMgCallSlotTbl[5];
 extern s8 mbMgCallMgList[5]; // generated minigame list
 extern s8 mbMgCallType;
@@ -266,7 +267,7 @@ static void MBMgCallListExec(omObjData *arg0) {
                 mbMgHisIdxWork.unk_04[mbMgCallType]++;
 
                 if (_CheckFlag(0x20) != 0) {
-                    mbMgHisIdxWork.unk_04[mbMgCallType] = (mbMgHisIdxWork.unk_04[mbMgCallType] % (s32)mbMgCallHisLenAltTbl[mbMgCallType]);
+                    mbMgHisIdxWork.unk_04[mbMgCallType] = (mbMgHisIdxWork.unk_04[mbMgCallType] % (s32)mbMgCallHisLenEasyTbl[mbMgCallType]);
                 } else {
                     mbMgHisIdxWork.unk_04[mbMgCallType] = (mbMgHisIdxWork.unk_04[mbMgCallType] % (s32)mbMgCallHisLenTbl[mbMgCallType]);
                 }
@@ -401,7 +402,7 @@ void MBMgCallListCreate(s32 arg0) {
 
     sp18.rectTable = mbMgCallRectTbl;
     sp18.notRectTable1 = mbMgCallMgTbl;
-    sp18.notRectTable2 = mbMgCallMgAltTbl;
+    sp18.notRectTable2 = mbMgCallMgEasyTbl;
 
     switch (arg0) {
         case -1:
@@ -454,13 +455,13 @@ void MBMgCallListCreate(s32 arg0) {
         while (1) {
 #ifdef BUG_FIX
             if (_CheckFlag(0x20)) {
-                mbMgCallMgList[i] = ((u8 *)mbMgCallMgAltTbl.notRects[category])[MBRand(mbMgCallMgNumAltTbl[category])];
+                mbMgCallMgList[i] = ((u8 *)mbMgCallMgEasyTbl.notRects[category])[MBRand(mbMgCallMgNumEasyTbl[category])];
             } else {
                 mbMgCallMgList[i] = ((u8 *)mbMgCallMgTbl.notRects[category])[MBRand(mbMgCallMgNumTbl[category])];
             }
 #else
             if (_CheckFlag(0x20)) {
-                mbMgCallMgList[i] = sp18.notRectTable2.notRects[category]->x[MBRand(mbMgCallMgNumAltTbl[category])];
+                mbMgCallMgList[i] = sp18.notRectTable2.notRects[category]->x[MBRand(mbMgCallMgNumEasyTbl[category])];
             } else {
                 mbMgCallMgList[i] = sp18.notRectTable1.notRects[category]->x[MBRand(mbMgCallMgNumTbl[category])];
             }
@@ -479,7 +480,7 @@ void MBMgCallListCreate(s32 arg0) {
                 continue;
             }
 
-            forbidCount = _CheckFlag(0x20) ? mbMgCallHisLenAltTbl[category] : mbMgCallHisLenTbl[category];
+            forbidCount = _CheckFlag(0x20) ? mbMgCallHisLenEasyTbl[category] : mbMgCallHisLenTbl[category];
             for (k = 0; k < forbidCount; k++) {
                 if (mbMgCallMgList[i] == mbMgHis.recentMinigames[category][k]) {
                     break;
@@ -729,13 +730,13 @@ DefinitelyNotItemRectTable const mbMgCallMgTbl = {
       (DefinitelyNotItemRect *)mbMgCall1vs1Tbl }
 };
 
-DefinitelyNotItemRectTable const mbMgCallMgAltTbl = {
-    { (DefinitelyNotItemRect *)mbMgCall4PAltTbl,
-      (DefinitelyNotItemRect *)mbMgCall1vs3AltTbl,
-      (DefinitelyNotItemRect *)mbMgCall2vs2AltTbl,
-      (DefinitelyNotItemRect *)mbMgCallItemAltTbl,
-      (DefinitelyNotItemRect *)mbMgCallBattleAltTbl,
-      (DefinitelyNotItemRect *)mbMgCall1vs1AltTbl }
+DefinitelyNotItemRectTable const mbMgCallMgEasyTbl = {
+    { (DefinitelyNotItemRect *)mbMgCall4PEasyTbl,
+      (DefinitelyNotItemRect *)mbMgCall1vs3EasyTbl,
+      (DefinitelyNotItemRect *)mbMgCall2vs2EasyTbl,
+      (DefinitelyNotItemRect *)mbMgCallItemEasyTbl,
+      (DefinitelyNotItemRect *)mbMgCallBattleEasyTbl,
+      (DefinitelyNotItemRect *)mbMgCall1vs1EasyTbl }
 };
 
 static void MBMgCallExec(void) {

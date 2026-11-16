@@ -72,7 +72,7 @@ s16 MBDComTreeExec(DecisionTreeNonLeafNode *tree) {
                 break;
 
             case 4:
-                if ((1 << MBDPlayerRankCalc(MBDGetCurrentPlayerIndex())) & node->node_data1.data) {
+                if ((1 << MBDPlayerRankCalc(MBDPlayerTurnGet())) & node->node_data1.data) {
                     break;
                 }
                 continue;
@@ -102,7 +102,7 @@ s16 MBDComTreeExec(DecisionTreeNonLeafNode *tree) {
             case 8:
                 clink = node->node_data1.data_u8[2];
                 cidxMin = node->node_data1.data_u8[3];
-                player = MBDGetPlayerStruct(-1);
+                player = MBDPlayerGet(-1);
                 if (player->clink != clink) {
                     continue;
                 }
@@ -114,7 +114,7 @@ s16 MBDComTreeExec(DecisionTreeNonLeafNode *tree) {
             case 9:
                 clink = node->node_data1.data_u8[2];
                 cidxMin = node->node_data1.data_u8[3];
-                player = MBDGetPlayerStruct((s16)(MBDGetCurrentPlayerIndex() ^ 1));
+                player = MBDPlayerGet((s16)(MBDPlayerTurnGet() ^ 1));
                 if (player->clink != clink) {
                     continue;
                 }
@@ -127,7 +127,7 @@ s16 MBDComTreeExec(DecisionTreeNonLeafNode *tree) {
                 clink = node->node_data1.data_u8[1];
                 cidxMin = node->node_data1.data_u8[2];
                 cidxMax = node->node_data1.data_u8[3];
-                player = MBDGetPlayerStruct(-1);
+                player = MBDPlayerGet(-1);
                 if (player->clink != clink) {
                     continue;
                 }
@@ -140,7 +140,7 @@ s16 MBDComTreeExec(DecisionTreeNonLeafNode *tree) {
                 clink = node->node_data1.data_u8[1];
                 cidxMin = node->node_data1.data_u8[2];
                 cidxMax = node->node_data1.data_u8[3];
-                player = MBDGetPlayerStruct((s16)(MBDGetCurrentPlayerIndex() ^ 1));
+                player = MBDPlayerGet((s16)(MBDPlayerTurnGet() ^ 1));
                 if (player->clink != clink) {
                     continue;
                 }
@@ -156,7 +156,7 @@ s16 MBDComTreeExec(DecisionTreeNonLeafNode *tree) {
                 continue;
 
             case 13:
-                if ((GwPlayer[MBDGetCurrentPlayerIndex()].chr != node->node_data1.data) == 0) {
+                if ((GwPlayer[MBDPlayerTurnGet()].chr != node->node_data1.data) == 0) {
                     break;
                 }
                 continue;
@@ -165,7 +165,7 @@ s16 MBDComTreeExec(DecisionTreeNonLeafNode *tree) {
                 clink = node->node_data1.data_u8[1];
                 cidxMin = node->node_data1.data_u8[2];
                 cidxMax = node->node_data1.data_u8[3];
-                player = MBDGetPlayerStruct(node->node_data1.data_u8[0]);
+                player = MBDPlayerGet(node->node_data1.data_u8[0]);
                 if (player->clink != clink) {
                     continue;
                 }
@@ -175,7 +175,7 @@ s16 MBDComTreeExec(DecisionTreeNonLeafNode *tree) {
                 continue;
 
             case 15:
-                playerIndex = MBDGetCurrentPlayerIndex();
+                playerIndex = MBDPlayerTurnGet();
                 if (MBDPartnerCostGet(playerIndex) == 0) {
                     break;
                 }
@@ -185,7 +185,7 @@ s16 MBDComTreeExec(DecisionTreeNonLeafNode *tree) {
                 continue;
 
             case 16:
-                playerIndex = MBDGetCurrentPlayerIndex() ^ 1;
+                playerIndex = MBDPlayerTurnGet() ^ 1;
                 if (MBDPartnerCostGet(playerIndex) == 0) {
                     break;
                 }
@@ -195,61 +195,61 @@ s16 MBDComTreeExec(DecisionTreeNonLeafNode *tree) {
                 continue;
 
             case 17:
-                if (MBDGetPlayerStruct(-1)->stats.partners.frontPower >= node->node_data1.signed_data) {
+                if (MBDPlayerGet(-1)->stats.partners.frontPower >= node->node_data1.signed_data) {
                     break;
                 }
                 continue;
 
             case 18:
-                if (MBDGetPlayerStruct((s16)(MBDGetCurrentPlayerIndex() ^ 1))->stats.partners.frontPower >= node->node_data1.signed_data) {
+                if (MBDPlayerGet((s16)(MBDPlayerTurnGet() ^ 1))->stats.partners.frontPower >= node->node_data1.signed_data) {
                     break;
                 }
                 continue;
 
             case 19:
-                if (GwPlayer[MBDGetCurrentPlayerIndex()].star >= node->node_data1.signed_data) {
+                if (GwPlayer[MBDPlayerTurnGet()].star >= node->node_data1.signed_data) {
                     break;
                 }
                 continue;
 
             case 20:
-                if (GwPlayer[(s16)(MBDGetCurrentPlayerIndex() ^ 1)].star >= node->node_data1.signed_data) {
+                if (GwPlayer[(s16)(MBDPlayerTurnGet() ^ 1)].star >= node->node_data1.signed_data) {
                     break;
                 }
                 continue;
 
             case 21:
-                if (MBDGetCurrentPlayerIndex() == node->node_data1.signed_data) {
+                if (MBDPlayerTurnGet() == node->node_data1.signed_data) {
                     break;
                 }
                 continue;
 
             case 22:
-                if (MBDGetPlayerStruct(-1)->cpu_difficulty == node->node_data1.data) {
+                if (MBDPlayerGet(-1)->cpu_difficulty == node->node_data1.data) {
                     break;
                 }
                 continue;
 
             case 23:
-                if ((1 << (MBDGetPlayerStruct(-1)->stats.partners.frontID + 1)) & node->node_data1.data) {
+                if ((1 << (MBDPlayerGet(-1)->stats.partners.frontID + 1)) & node->node_data1.data) {
                     break;
                 }
                 continue;
 
             case 24:
-                if ((1 << (MBDGetPlayerStruct((s16)(MBDGetCurrentPlayerIndex() ^ 1))->stats.partners.frontID + 1)) & node->node_data1.data) {
+                if ((1 << (MBDPlayerGet((s16)(MBDPlayerTurnGet() ^ 1))->stats.partners.frontID + 1)) & node->node_data1.data) {
                     break;
                 }
                 continue;
 
             case 25:
-                if ((1 << (MBDGetPlayerStruct(-1)->stats.partners.backID + 1)) & node->node_data1.data) {
+                if ((1 << (MBDPlayerGet(-1)->stats.partners.backID + 1)) & node->node_data1.data) {
                     break;
                 }
                 continue;
 
             case 26:
-                if ((1 << (MBDGetPlayerStruct(-1)->stats.partners.backID + 1)) & node->node_data1.data) {
+                if ((1 << (MBDPlayerGet(-1)->stats.partners.backID + 1)) & node->node_data1.data) {
                     break;
                 }
                 continue;
@@ -260,7 +260,7 @@ s16 MBDComTreeExec(DecisionTreeNonLeafNode *tree) {
             continue;
         }
 
-        switch (MBDGetPlayerStruct(-1)->cpu_difficulty) {
+        switch (MBDPlayerGet(-1)->cpu_difficulty) {
             case 0:
                 pct = node->node_data2.data_u8[3] & 0x7F;
                 break;

@@ -230,7 +230,7 @@ void MBDPlayerIconMdlSet(void) {
     Object *temp_a0;
 
     for (i = 0; i < MBD_MAX_PLAYERS; i++) {
-        temp_v0 = MBDGetPlayerStruct(i);
+        temp_v0 = MBDPlayerGet(i);
         mbdMapScrollMdlTbl[i] = MBDModelFileCreate(mbdMapScrollIconMdlTbl[temp_v0->chr], 9, 1.0f, mbdMapScrollShadowSizeTbl[temp_v0->chr], 0);
         obj = &mbdMapScrollMdlTbl[i]; // TODO: this is odd
         Hu3DModelScaleSet(mbdMapScrollMdlTbl[i]->omObj1->model[0], 0.0f, 0.0f, 0.0f);
@@ -239,7 +239,7 @@ void MBDPlayerIconMdlSet(void) {
     }
 
     for (i = 0; i < MBD_MAX_PLAYERS; i++) {
-        temp_v0 = MBDGetPlayerStruct(i);
+        temp_v0 = MBDPlayerGet(i);
         temp_a0 = temp_v0->player_obj;
         temp_v0->player_obj = mbdMapScrollMdlTbl[i];
         mbdMapScrollMdlTbl[i] = temp_a0;
@@ -262,14 +262,14 @@ void MBDPlayerIconMdlReset(void) {
     s32 i;
 
     for (i = 0; i < MBD_MAX_PLAYERS; i++) {
-        temp_v0 = MBDGetPlayerStruct(i);
+        temp_v0 = MBDPlayerGet(i);
         temp_a0 = temp_v0->player_obj;
         temp_v0->player_obj = mbdMapScrollMdlTbl[i];
         mbdMapScrollMdlTbl[i] = temp_a0;
     }
 
     for (i = 0; i < MBD_MAX_PLAYERS; i++) {
-        temp_v0 = MBDGetPlayerStruct(i);
+        temp_v0 = MBDPlayerGet(i);
         MBDModelDispOn(temp_v0->player_obj);
         MBDModelKill(mbdMapScrollMdlTbl[i]);
     }

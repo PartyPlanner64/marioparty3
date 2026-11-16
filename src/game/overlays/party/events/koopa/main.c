@@ -145,7 +145,7 @@ s16 koopa_unusedCoinTbl[][2] = {
 u8 koopa_boardNo BSS;
 s32 koopa_playerNo BSS;
 Object *koopa_koopaMdl BSS;
-s32 koopa_introAltF BSS;
+s32 koopa_introAltF BSS; // 1-in-5 alternate intro: Bowser starts in motion 7 and plays motion 4 backwards
 s32 koopa_rouletteStopOfs BSS;
 s32 koopa_rouletteLeaveF BSS;
 char koopa_coinStr[16] BSS;

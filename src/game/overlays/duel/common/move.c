@@ -61,7 +61,7 @@ void MBDVecDirGet(Vec *arg0, Vec *arg1, Vec *arg2) {
 void MBDPlayerDirPosSet(s16 playerIdx, Vec *arg1) {
     Object *playerObj;
 
-    playerObj = MBDGetPlayerStruct(playerIdx)->player_obj;
+    playerObj = MBDPlayerGet(playerIdx)->player_obj;
     MBDVecDirGet(&playerObj->coords, arg1, &playerObj->rot);
 }
 
@@ -76,7 +76,7 @@ void MBDVecForwardSet(Vec *out) {
 }
 
 void MBDPlayerForwardSet(s16 playerIdx) {
-    MBDVecForwardSet(&MBDGetPlayerStruct(playerIdx)->player_obj->rot);
+    MBDVecForwardSet(&MBDPlayerGet(playerIdx)->player_obj->rot);
 }
 
 void MBDModelBillboardSet(Object *obj) {
@@ -92,8 +92,8 @@ void MBDModelBillboardSet(Object *obj) {
 }
 
 void MBDPlayerMasuSwap(s16 playerNoOne, s16 playerNoTwo) {
-    GW_PLAYER *playerOne = MBDGetPlayerStruct(playerNoOne);
-    GW_PLAYER *playerTwo = MBDGetPlayerStruct(playerNoTwo);
+    GW_PLAYER *playerOne = MBDPlayerGet(playerNoOne);
+    GW_PLAYER *playerTwo = MBDPlayerGet(playerNoTwo);
     u8 temp;
     u8 prevRev;
 
@@ -132,7 +132,7 @@ s16 MBDTotalStarGet(void) {
     s32 totalStars = 0;
 
     for (i = 0; i < 2; i++) {
-        totalStars += MBDGetPlayerStruct(i)->star;
+        totalStars += MBDPlayerGet(i)->star;
     }
     return totalStars;
 }
@@ -230,7 +230,7 @@ Process *MBDVecRotLerpSpinCreate(Vec *from, Vec *to, Vec *out, s32 time) {
 }
 
 Process *MBDPlayerRotMasuStart(s16 playerIndex, s32 time, s16 spaceIndex) {
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *player = MBDPlayerGet(playerIndex);
     Vec dir;
 
     HuVecSubtract(&dir, &MBDMasuGet(spaceIndex)->coords, &player->player_obj->coords);
@@ -270,7 +270,7 @@ void MBDPlayerPosMoveSet(s16 playerIndex, s32 time) {
     Vec to;
     Vec dir;
     Process *prc;
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *player = MBDPlayerGet(playerIndex);
 
     MBDMasuPosGet(playerIndex, MBDMasuLinkMasuIdGet(player->clink, player->cidx), &from);
     MBDMasuPosGet(playerIndex, MBDMasuLinkMasuIdGet(player->nlink, player->nidx), &to);
@@ -357,7 +357,7 @@ void MBDPlayerPosMoveSpeedSet(s16 playerIndex, f32 speed) {
     Vec from;
     Vec to;
     Process *prc;
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *player = MBDPlayerGet(playerIndex);
 
     MBDMasuPosGet(playerIndex, MBDMasuLinkMasuIdGet(player->clink, player->cidx), &from);
     MBDMasuPosGet(playerIndex, MBDMasuLinkMasuIdGet(player->nlink, player->nidx), &to);
@@ -372,7 +372,7 @@ void MBDPlayerPosMoveSpeedSet(s16 playerIndex, f32 speed) {
 }
 
 void MBDPlayerMoveVecGet(s16 playerIndex, Vec *cur, Vec *next, Vec *after, Vec *dir) {
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *player = MBDPlayerGet(playerIndex);
     s16 spaceIndex;
 
     MBDMasuPosGet(playerIndex, MBDMasuLinkMasuIdGet(player->clink, player->cidx), cur);
@@ -398,7 +398,7 @@ void MBDPartnerFrontMoveProc(void) {
     UnkD3450PrcDataF *data = HuPrcCurrentGet()->user_data;
     s16 playerIndex = data->unk_00;
     f32 speed = data->unk_04;
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *player = MBDPlayerGet(playerIndex);
     Vec cur;
     Vec next;
     Vec after;
@@ -411,7 +411,7 @@ void MBDPartnerFrontMoveProc(void) {
 
     MBDPlayerMoveVecGet(playerIndex, &cur, &next, &after, &dir);
     prc = HuPrcCurrentGet();
-    partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_FRONT);
+    partner = MBDPartnerObjGet(playerIndex, PARTNER_FRONT);
     if (!(player->rev & 4)) {
         HuVecCopy3F(&from, &partner->coords);
         HuVecCopy3F(&to, &next);
@@ -454,7 +454,7 @@ void MBDPartnerBackMoveProc(void) {
     UnkD3450PrcDataF *data = HuPrcCurrentGet()->user_data;
     s16 playerIndex = data->unk_00;
     f32 speed = data->unk_04;
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *player = MBDPlayerGet(playerIndex);
     Vec cur;
     Vec next;
     Vec after;
@@ -467,7 +467,7 @@ void MBDPartnerBackMoveProc(void) {
 
     MBDPlayerMoveVecGet(playerIndex, &cur, &next, &after, &dir);
     prc = HuPrcCurrentGet();
-    partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_BACK);
+    partner = MBDPartnerObjGet(playerIndex, PARTNER_BACK);
     if (!(player->rev & 4)) {
         MBDVecDirGet(&partner->coords, &player->player_obj->coords, &partner->rot);
         HuVecCopy3F(&from, &partner->coords);
@@ -507,7 +507,7 @@ Process *MBDPartnerBackMoveCreate(s16 playerIdx, f32 arg1) {
 }
 
 void MBDPlayerPartnerMoveExec(s16 playerIndex, f32 speed) {
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *player = MBDPlayerGet(playerIndex);
     Process *prc = HuPrcCurrentGet();
 
     if (player->stats.partners.frontID != PARTNER_NONE) {
@@ -522,7 +522,7 @@ void MBDPlayerPartnerMoveExec(s16 playerIndex, f32 speed) {
 }
 
 void MBDMoveMasuSet(s16 playerIdx, s16 nlink, s16 nidx) {
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIdx);
+    GW_PLAYER *player = MBDPlayerGet(playerIdx);
 
     if (nlink >= 0) {
         player->clink = nlink;
@@ -537,7 +537,7 @@ void MBDMoveMasuSet(s16 playerIdx, s16 nlink, s16 nidx) {
 }
 
 void MBDMoveNextMasuSet(s16 playerIdx, s16 nlink, s16 nidx) {
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIdx);
+    GW_PLAYER *player = MBDPlayerGet(playerIdx);
 
     if (nlink >= 0) {
         player->nlink = nlink;
@@ -548,13 +548,13 @@ void MBDMoveNextMasuSet(s16 playerIdx, s16 nlink, s16 nidx) {
 }
 
 void MBDPlayerRevOn(void) {
-    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    GW_PLAYER *player = MBDPlayerGet(CUR_PLAYER);
 
     player->rev |= FLAG_REV;
 }
 
 void MBDPlayerRevOff(void) {
-    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    GW_PLAYER *player = MBDPlayerGet(CUR_PLAYER);
 
     player->rev &= ~FLAG_REV;
 }
@@ -562,7 +562,7 @@ void MBDPlayerRevOff(void) {
 void MBDPlayerDirNextSet(s32 playerIndex) {
     Vec from;
     Vec to;
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *player = MBDPlayerGet(playerIndex);
     s32 space;
 
     space = MBDMasuLinkMasuIdGet(player->clink, player->cidx);
@@ -582,7 +582,7 @@ void MBDPartnerOfsGet(s32 playerIndex, Vec *frontOffset, Vec *backOffset) {
     Vec back;
     Vec dir;
     f32 angle;
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *player = MBDPlayerGet(playerIndex);
 
     MBDPlayerMoveVecGet(playerIndex, &cur, &next, &back, &dir);
     MBDMasuPosGet(playerIndex, MBDMasuLinkMasuIdGet(player->blink, player->bidx), &back);
@@ -616,7 +616,7 @@ void MBDPartnerDirGet(s32 playerIndex, Vec *frontDir, Vec *backDir) {
     Vec next;
     Vec back;
     Vec dir;
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *player = MBDPlayerGet(playerIndex);
 
     MBDPlayerMoveVecGet(playerIndex, &cur, &next, &back, &dir);
     MBDMasuPosGet(playerIndex, MBDMasuLinkMasuIdGet(player->blink, player->bidx), &back);
@@ -632,13 +632,13 @@ void MBDPartnerDirGet(s32 playerIndex, Vec *frontDir, Vec *backDir) {
 void MBDPartnerPosFix(s32 playerIndex) {
     Vec sp10;
     Vec sp20;
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *player = MBDPlayerGet(playerIndex);
     Object *partner;
 
     MBDPartnerOfsGet(playerIndex, &sp10, &sp20);
 
     if (player->stats.partners.frontID != PARTNER_NONE) {
-        partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_FRONT);
+        partner = MBDPartnerObjGet(playerIndex, PARTNER_FRONT);
         HuVecCopy3F(&partner->coords, &player->player_obj->coords);
         HuVecAdd(&partner->coords, &partner->coords, &sp10);
         MBDVecNormalize(&sp10);
@@ -646,7 +646,7 @@ void MBDPartnerPosFix(s32 playerIndex) {
     }
 
     if (player->stats.partners.backID != PARTNER_NONE) {
-        partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_BACK);
+        partner = MBDPartnerObjGet(playerIndex, PARTNER_BACK);
         HuVecCopy3F(&partner->coords, &player->player_obj->coords);
         HuVecAdd(&partner->coords, &partner->coords, &sp20);
         MBDVecNormalize(&sp20);
@@ -671,7 +671,7 @@ void MBDPartnerFrontJumpProc(void) {
 
     MBDPlayerMoveVecGet(playerIndex, &cur, &next, &after, &dir);
     prc = HuPrcCurrentGet();
-    partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_FRONT);
+    partner = MBDPartnerObjGet(playerIndex, PARTNER_FRONT);
     MBDVecDirGet(&cur, &next, &dir);
     angle = MBDVecAngleGet(&dir) + 0.0f;
     to.x = sindf(angle) * 12.0f + cur.x;
@@ -711,7 +711,7 @@ void MBDPartnerFrontWalkProc(void) {
 
     MBDPlayerMoveVecGet(playerIndex, &cur, &next, &after, &dir);
     prc = HuPrcCurrentGet();
-    partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_FRONT);
+    partner = MBDPartnerObjGet(playerIndex, PARTNER_FRONT);
     MBDVecDirGet(&cur, &next, &dir);
     angle = MBDVecAngleGet(&dir) + 0.0f;
     to.x = sindf(angle) * 12.0f + cur.x;
@@ -737,7 +737,7 @@ Process *MBDPartnerFrontWalkCreate(s16 playerIdx, f32 arg1) {
 Process *MBDPartnerFrontFollowCreate(s32 playerIdx, s32 arg) {
     Process *prc = NULL;
 
-    if (MBDGetPlayerStruct(playerIdx)->stats.prize.gamblePrize != -1) {
+    if (MBDPlayerGet(playerIdx)->stats.prize.gamblePrize != -1) {
         if (arg != 0) {
             prc = MBDPartnerFrontJumpCreate(playerIdx, 0xF);
         } else {
@@ -766,7 +766,7 @@ void MBDPartnerBackJumpProc(void) {
     UnkD3450PrcData *data = HuPrcCurrentGet()->user_data;
     s32 time = data->unk_04;
     s16 playerIndex = data->unk_00;
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *player = MBDPlayerGet(playerIndex);
     Vec cur;
     Vec next;
     Vec back;
@@ -780,7 +780,7 @@ void MBDPartnerBackJumpProc(void) {
     MBDPlayerMoveVecGet(playerIndex, &cur, &next, &back, &dir);
     MBDMasuPosGet(playerIndex, MBDMasuLinkMasuIdGet(player->blink, player->bidx), &back);
     prc = HuPrcCurrentGet();
-    partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_BACK);
+    partner = MBDPartnerObjGet(playerIndex, PARTNER_BACK);
     MBDVecDirGet(&back, &cur, &dir);
     angle = MBDVecAngleGet(&dir) + 180.0f;
     to.x = sindf(angle) * 12.0f + cur.x;
@@ -808,7 +808,7 @@ void MBDPartnerBackWalkProc(void) {
     UnkD3450PrcDataF *data = HuPrcCurrentGet()->user_data;
     s16 playerIndex = data->unk_00;
     f32 speed = data->unk_04;
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *player = MBDPlayerGet(playerIndex);
     Vec cur;
     Vec next;
     Vec back;
@@ -822,7 +822,7 @@ void MBDPartnerBackWalkProc(void) {
     MBDPlayerMoveVecGet(playerIndex, &cur, &next, &back, &dir);
     MBDMasuPosGet(playerIndex, MBDMasuLinkMasuIdGet(player->blink, player->bidx), &back);
     prc = HuPrcCurrentGet();
-    partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_BACK);
+    partner = MBDPartnerObjGet(playerIndex, PARTNER_BACK);
     MBDVecDirGet(&back, &cur, &dir);
     angle = MBDVecAngleGet(&dir) + 180.0f;
     to.x = sindf(angle) * 12.0f + cur.x;
@@ -848,7 +848,7 @@ Process *MBDPartnerBackWalkCreate(s16 playerIdx, f32 arg1) {
 Process *MBDPartnerBackFollowCreate(s32 playerIdx, s32 arg) {
     Process *prc = NULL;
 
-    if (MBDGetPlayerStruct(playerIdx)->stats.prize.duelNo != -1) {
+    if (MBDPlayerGet(playerIdx)->stats.prize.duelNo != -1) {
         if (arg != 0) {
             prc = MBDPartnerBackJumpCreate(playerIdx, 0xF);
         } else {

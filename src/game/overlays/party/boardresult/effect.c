@@ -12,7 +12,7 @@
 #define ROT_ZY(x, y, z, angle) ((y) * (z) * (1.0f - cosdf(angle)) + (x) * sindf(angle))
 #define ROT_ZZ(x, y, z, angle) ((z) * (z) + (1.0f - (z) * (z)) * cosdf(angle))
 
-// Work area allocated by func_8010BD30 (HuMemAllocTag 0x4C bytes) and stored at
+// Work area allocated by boardresult_FireworkCreate (HuMemAllocTag 0x4C bytes) and stored at
 // the process object's user_data (offset 0x8C). Total size is 0x4C; fields are
 // added as functions are decompiled.
 typedef struct BoardResultWork {

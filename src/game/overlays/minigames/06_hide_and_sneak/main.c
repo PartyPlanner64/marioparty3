@@ -83,26 +83,26 @@ typedef struct {
 } HideAndSneakCamera; // sizeof 0x2C
 
 typedef struct {
-    /* 0x00 */ s8 unk_00;    // D_8010E174
-    /* 0x01 */ s8 unk_01[4]; // D_8010E175
-    /* 0x06 */ s16 unk_06;   // D_8010E17A
-    /* 0x08 */ s8 unk_08;    // D_8010E17C
-    /* 0x09 */ s8 unk_09[3]; // D_8010E17D
-    /* 0x0C */ s8 unk_0C;    // D_8010E180
-    /* 0x0D */ s8 unk_0D;    // D_8010E181
-    /* 0x0E */ s8 unk_0E[4]; // D_8010E182
-    /* 0x12 */ s8 unk_12;    // D_8010E186
+    /* 0x00 */ s8 unk_00;    // m206_roundNo
+    /* 0x01 */ s8 unk_01[4]; // m206_signSpotTbl
+    /* 0x06 */ s16 unk_06;   // m206_timer
+    /* 0x08 */ s8 unk_08;    // m206_seekerSpotNo
+    /* 0x09 */ s8 unk_09[3]; // m206_teamPlayerNoTbl
+    /* 0x0C */ s8 unk_0C;    // m206_phase
+    /* 0x0D */ s8 unk_0D;    // m206_hiderLineupNum
+    /* 0x0E */ s8 unk_0E[4]; // m206_spotOpenTbl
+    /* 0x12 */ s8 unk_12;    // m206_seekerChr
 } HideAndSneakRoundBss;       // sizeof 0x14
 
 typedef struct {
-    /* 0x00 */ s8 unk_00;    // D_8010E1A8
-    /* 0x01 */ s8 unk_01[3]; // D_8010E1A9
-    /* 0x04 */ s8 unk_04;    // D_8010E1AC
-    /* 0x05 */ s8 unk_05;    // D_8010E1AD
-    /* 0x06 */ s8 unk_06[3]; // D_8010E1AE
-    /* 0x09 */ s8 unk_09;    // D_8010E1B1
-    /* 0x0A */ s8 unk_0A;    // D_8010E1B2
-    /* 0x0B */ s8 unk_0B;    // D_8010E1B3
+    /* 0x00 */ s8 unk_00;    // m206_seekerPlayerNo
+    /* 0x01 */ s8 unk_01[3]; // m206_hiderFoundTbl
+    /* 0x04 */ s8 unk_04;    // m206_spotSeF
+    /* 0x05 */ s8 unk_05;    // m206_hiderFoundNum
+    /* 0x06 */ s8 unk_06[3]; // m206_teamChrTbl
+    /* 0x09 */ s8 unk_09;    // m206_hiderLineupNo
+    /* 0x0A */ s8 unk_0A;    // m206_timeUpF
+    /* 0x0B */ s8 unk_0B;    // m206_spotFadeMode
 } HideAndSneakResultBss;       // sizeof 0xC
 
 extern s32 omCharModelNoTbl[][6];

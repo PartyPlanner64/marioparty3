@@ -906,7 +906,7 @@ void m227_Player3ObjInit(omObjData *object) {
 
 void m227_PlayerObjMain(omObjData *object) {
     MgPlayerWork *data = OM_GET_DATA_PTR(object, MgPlayerWork);
-    // z is left implicit so GCC doesn't merge this with the identical initializer in func_80109DE0
+    // z is left implicit so GCC doesn't merge this with the identical initializer in m227_BallFloorCheck
     Vec pos = { .x = 0.0f, .y = 1.0f };
     s32 stickX;
     s32 stickY;

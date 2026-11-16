@@ -15,7 +15,7 @@ void MBDItemWarpPlayerSet(s16 arg0, s16 arg1) {
     s16 v1 = arg1;
 
     v0 = arg1;
-    if (v0 == MBDGetCurrentPlayerIndex()) {
+    if (v0 == MBDPlayerTurnGet()) {
         mbdItemWarpPlayerA = v1;
         mbdItemWarpPlayerB = arg0;
     } else {
@@ -25,7 +25,7 @@ void MBDItemWarpPlayerSet(s16 arg0, s16 arg1) {
 }
 
 s32 MBDItemWarpBlockSwapPlayerSet(void) {
-    GW_PLAYER *player = MBDGetPlayerStruct(-1);
+    GW_PLAYER *player = MBDPlayerGet(-1);
     s16 indices[MBD_MAX_PLAYERS];
     s32 otherIndex;
     s32 i;
@@ -58,8 +58,8 @@ void MBDItemWarpBlockSwap(void) {
     s32 i;
 
     MBDCameraFocusModeSet(0);
-    player1 = MBDGetPlayerStruct(mbdItemWarpPlayerA);
-    player2 = MBDGetPlayerStruct(mbdItemWarpPlayerB);
+    player1 = MBDPlayerGet(mbdItemWarpPlayerA);
+    player2 = MBDPlayerGet(mbdItemWarpPlayerB);
     player1->stat |= 4;
     player2->stat |= 4;
     obj1 = player1->player_obj;
@@ -160,11 +160,11 @@ void MBDItemWarpBlockSwap(void) {
     playerCopy->stat &= ~4;
     player2->stat &= ~4;
 
-    if (mbdItemWarpPlayerA != MBDGetCurrentPlayerIndex()) {
+    if (mbdItemWarpPlayerA != MBDPlayerTurnGet()) {
         HuPrcSleep(15);
         WipeCreateOut(0, 16);
         HuPrcSleep(16);
-        MBDBackRefresh(&MBDGetPlayerStruct(-1)->player_obj->coords, 1);
+        MBDBackRefresh(&MBDPlayerGet(-1)->player_obj->coords, 1);
         WipeCreateIn(0, 16);
         HuPrcSleep(16);
     }
@@ -192,7 +192,7 @@ void MBDWarpAuraSpinProc(void) {
 }
 
 void MBDWarpEffProc(void) {
-    GW_PLAYER *player = MBDGetPlayerStruct(-1);
+    GW_PLAYER *player = MBDPlayerGet(-1);
     s16 effect = EffectCreate(0x110012, 0x2A9);
     s32 i;
 
@@ -220,7 +220,7 @@ void MBDWarpMasuProc(void) {
     s32 tempIdx;
 
     MBDCameraFocusModeSet(0);
-    player = MBDGetPlayerStruct(mbdItemWarpPlayerA);
+    player = MBDPlayerGet(mbdItemWarpPlayerA);
     player->stat |= 4;
     obj = player->player_obj;
     MBDAuraCreate(&obj->coords);
@@ -318,7 +318,7 @@ void MBDWarpMasuProc(void) {
 void MBDWarpMasuExec(s32 link, s32 idx, s32 backLink, s32 backIdx) {
     Process *parent;
 
-    mbdItemWarpPlayerA = MBDGetCurrentPlayerIndex();
+    mbdItemWarpPlayerA = MBDPlayerTurnGet();
     mbdWarpLink = link;
     mbdWarpIdx = idx;
     mbdWarpBackLink = backLink;
@@ -337,7 +337,7 @@ void MBDWarpPosProc(void) {
     Object *partner;
     s32 i;
 
-    player = MBDGetPlayerStruct(mbdItemWarpPlayerA);
+    player = MBDPlayerGet(mbdItemWarpPlayerA);
     player->stat |= 4;
     obj = player->player_obj;
 
@@ -366,12 +366,12 @@ void MBDWarpPosProc(void) {
 
     HuVecCopy3F(&obj->coords, &mbdWarpPosA);
     MBDVecForwardSet(&obj->rot);
-    partner = MBDGetPlayerPartnerRef(mbdItemWarpPlayerA, PARTNER_FRONT);
+    partner = MBDPartnerObjGet(mbdItemWarpPlayerA, PARTNER_FRONT);
     if (partner != NULL) {
         HuVecCopy3F(&partner->coords, &mbdWarpPosB);
         MBDVecForwardSet(&partner->rot);
     }
-    partner = MBDGetPlayerPartnerRef(mbdItemWarpPlayerA, PARTNER_BACK);
+    partner = MBDPartnerObjGet(mbdItemWarpPlayerA, PARTNER_BACK);
     if (partner != NULL) {
         HuVecCopy3F(&partner->coords, &mbdWarpPosC);
         MBDVecForwardSet(&partner->rot);

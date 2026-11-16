@@ -31,7 +31,7 @@ typedef struct DiceInstance {
     /* 0x4C */ s32  unk_4C;     // state; 2 = settled
 } DiceInstance;                 /* size = 0x50 */
 
-typedef struct UnkDiceRelated {
+typedef struct SaiWork {
     /* 0x00 */ s16        unk_00;
     /* 0x02 */ s8         predecidedRollValue[DICE_TOTAL];   // forced roll values, indexed by unk_08
     /* 0x05 */ s8         rollValue[DICE_TOTAL];   // rolled values, indexed by unk_08
@@ -57,7 +57,7 @@ typedef struct UnkDiceRelated {
     /* 0x40 */ f32 unk40;                           /* inferred */
     /* 0x44 */ f32 unk44;                           /* inferred */
     /* 0x48 */ f32 unk48;                           /* inferred */
-} UnkDiceRelated;               /* size = 0x4C */
+} SaiWork;               /* size = 0x4C */
 
 typedef struct SpaceData {
 /* 0x00 */ s8 unk_00;

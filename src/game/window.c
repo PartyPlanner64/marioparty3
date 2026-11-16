@@ -1332,8 +1332,8 @@ s32 HuWinChoiceGet(s16 winId, s16 arg1, s32 arg2) {
  * temp in a0), and T only prefers v0/v1. So the original probably had an insn
  * that existed during allocation and was deleted later, for example a no-op
  * copy or a branch removed after reload. Mario Party 2 has the same code
- * (marioparty2 func_8008BCB8_8C8B8, without the mute check) and it also keeps
- * `sprite` in a0.
+ * (its unnamed HuWinChoice at 0x8008BCB8, without the mute check) and it
+ * also keeps `sprite` in a0.
  * Also tried: static inline cursor setters (the unused return label is
  * removed before CSE, so they give no block boundary), a static inline
  * `&choice_data[n]` getter, and reusing `sprite` in a switch loop, at the

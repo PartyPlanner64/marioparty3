@@ -155,7 +155,7 @@ void opduel_ObjectSetup(void) {
     omAddPrcObj(opduel_MainProc, 0x300, 0x2000, 0);
     omAddObj(0x1000, 0, 0, -1, opduel_ExitCheckObjMain);
     for (j = 0; j < 2; j++) {
-        player = MBDGetPlayerStruct(j);
+        player = MBDPlayerGet(j);
         player->stats.partners.frontID = -1;
         player->stats.partners.backID = -1;
     }
@@ -273,8 +273,8 @@ void opduel_SpiralEffHook(s16 model) {
 }
 
 void opduel_PlayerSwap(s32 player1, s32 player2) {
-    GW_PLAYER *first = MBDGetPlayerStruct(player1);
-    GW_PLAYER *second = MBDGetPlayerStruct(player2);
+    GW_PLAYER *first = MBDPlayerGet(player1);
+    GW_PLAYER *second = MBDPlayerGet(player2);
     GW_PLAYER *temp = HuMemMemoryAllocPerm(sizeof(GW_PLAYER));
 
     bcopy(first, temp, sizeof(GW_PLAYER));
@@ -404,7 +404,7 @@ void opduel_ArriveProc(void) {
     f32 scale;
 
     for (i = 0; i < 2; i++) {
-        opduel_playerTbl[i] = MBDGetPlayerStruct(i);
+        opduel_playerTbl[i] = MBDPlayerGet(i);
         MBDPlayerModelCreate(i, opduel_playerMotTbl[GwPlayer[i].chr], 2);
         HuVecCopy3F(&opduel_playerTbl[i]->player_obj->coords, &opduel_playerStartPosTbl[i]);
         MBDModelTempAllocFree(opduel_playerTbl[i]->player_obj);

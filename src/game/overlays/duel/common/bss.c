@@ -39,7 +39,7 @@ UnkC5770B70 mbdMgCallSlotTbl[5] BSS;
 omObjData *mbdMgCallListObj BSS;
 s8 mbdMgCallMgList[5] BSS;
 s8 mbdMgCallType BSS;
-s8 mbdMgCallAltOfs BSS;
+s8 mbdMgCallPackOfs BSS;
 s16 mbdMgCallBgGrp BSS;
 s16 mbdMgCallBgAnim BSS;
 s16 mbdMgCallCursorGrp BSS;

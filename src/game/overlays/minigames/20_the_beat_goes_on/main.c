@@ -46,7 +46,7 @@ typedef struct {
     /* 0x4A */ u8 btnZ[16];
 } BeatGoesOnNotes; // sizeof 0x5A
 
-// Work data for each player object.
+// Work data for each Fire object.
 typedef struct {
     /* 0x00 */ Vec pos;
     /* 0x0C */ u32 unk_0C;
@@ -54,7 +54,7 @@ typedef struct {
     /* 0x14 */ f32 unk_14;
     /* 0x18 */ HmfModelEntry *entry;
     /* 0x1C */ s8 unk_1C;
-} BeatGoesOnPlayerWork; // sizeof 0x20
+} BeatGoesOnFireWork; // sizeof 0x20
 
 // Work data hung off MgPlayerWork::unk158 for each player.
 typedef struct {
@@ -429,11 +429,11 @@ void m232_MainObjMain(omObjData *object) {
 }
 
 void m232_FireObjInit(omObjData *obj) {
-    BeatGoesOnPlayerWork *work;
+    BeatGoesOnFireWork *work;
     u16 id;
 
-    obj->data = HuMemAllocTag(sizeof(BeatGoesOnPlayerWork), TAG_OVERLAY);
-    memset(obj->data, 0, sizeof(BeatGoesOnPlayerWork));
+    obj->data = HuMemAllocTag(sizeof(BeatGoesOnFireWork), TAG_OVERLAY);
+    memset(obj->data, 0, sizeof(BeatGoesOnFireWork));
     work = obj->data;
     work->unk_1C = m232_fireCreateNo;
     if (work->unk_1C == 4) {
@@ -490,7 +490,7 @@ void m232_FireObjInit(omObjData *obj) {
 }
 
 void m232_FirePosUpdate(omObjData *obj) {
-    BeatGoesOnPlayerWork *work = obj->data;
+    BeatGoesOnFireWork *work = obj->data;
     HmfModelEntry *entry = work->entry;
     u16 modelId = entry->modelId;
     HmfAnimRot *rot;
@@ -528,7 +528,7 @@ void m232_FirePosUpdate(omObjData *obj) {
 }
 
 void m232_FireObjMain(omObjData *obj) {
-    BeatGoesOnPlayerWork *work = obj->data;
+    BeatGoesOnFireWork *work = obj->data;
     Vec dir;
     Vec from;
     Vec to;

@@ -307,7 +307,7 @@ Vec m267_playerStepPosTbl[7] = {
     { 325.0f, 0.0f, -350.0f },
     { 375.0f, 0.0f, -450.0f },
 };
-f32 m267_playerStepPosTblEnd[2] = { 425.0f, 0.0f }; // read as D_8010D1FC[7].x
+f32 m267_playerStepPosTblEnd[2] = { 425.0f, 0.0f }; // read as m267_playerStepPosTbl[7].x
 u16 m267_gambleMotPrev = 999;                 // previous motion
 u16 m267_gambleJumpPhase = 0;                   // state
 u16 m267_gambleJumpTimer = 0;                   // timer
@@ -323,7 +323,7 @@ Vec m267_gambleStepPosTbl[7] = {
     { 350.0f, -100.0f, -300.0f },
     { 375.0f, -100.0f, -450.0f },
 };
-f32 m267_gambleStepPosTblEnd[2] = { 425.0f, -100.0f }; // read as D_8010D26C[7].x
+f32 m267_gambleStepPosTblEnd[2] = { 425.0f, -100.0f }; // read as m267_gambleStepPosTbl[7].x
 u16 m267_saiPhase = 0;
 f32 m267_saiRotX = 0.0f;
 f32 m267_saiRotY = 0.0f;

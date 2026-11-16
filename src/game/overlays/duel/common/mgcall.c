@@ -18,7 +18,7 @@ extern u32 scRetraceCnt;
 extern UnkData_CD0A0 mbMgHis;
 extern s8 mbMgHisIdx[];
 u8 mbdMgCall1vs1Tbl[] = { 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 0 };
-u8 mbdMgCall1vs1AltTbl[] = { 49, 50, 51, 53, 55, 56, 57, 0 };
+u8 mbdMgCall1vs1EasyTbl[] = { 49, 50, 51, 53, 55, 56, 57, 0 };
 u8 mbdMgCallPartnerTbl[] = {
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
     2, 3, 4, 5, 6, 7, 8, 9, 11,
@@ -64,7 +64,7 @@ extern UnkC5770B70 mbdMgCallSlotTbl[5];
 extern omObjData *mbdMgCallListObj;
 extern s8 mbdMgCallMgList[5];
 extern s8 mbdMgCallType;
-extern s8 mbdMgCallAltOfs;
+extern s8 mbdMgCallPackOfs;
 extern s16 mbdMgCallBgGrp;
 extern s16 mbdMgCallBgAnim;
 extern s16 mbdMgCallCursorGrp;
@@ -241,7 +241,7 @@ void MBDMgCallListExec(omObjData *arg0) {
             } else {
                 mbMgHis.recentMinigames[mbdMgCallType][mbMgHisIdx[mbdMgCallType]] = mbdMgCallMgList[arg0->work[2]];
                 mbMgHisIdx[mbdMgCallType]++;
-                mbMgHisIdx[mbdMgCallType] = mbMgHisIdx[mbdMgCallType] % mbdMgCallHisLenTbl[mbdMgCallType + mbdMgCallAltOfs];
+                mbMgHisIdx[mbdMgCallType] = mbMgHisIdx[mbdMgCallType] % mbdMgCallHisLenTbl[mbdMgCallType + mbdMgCallPackOfs];
                 GWMgNoSet(mbdMgCallMgList[arg0->work[2]]);
                 if (GwSystem.current_board_index != 6 || mbdMgCallType == 1) {
                     MBDTelopMgTypeKill();
@@ -453,7 +453,7 @@ void MBDMgCallPartnerListExec(omObjData *arg0) {
             } else {
                 mbMgHis.recentMinigames[mbdMgCallType][mbMgHisIdx[mbdMgCallType]] = mbdMgCallMgList[arg0->work[2]];
                 mbMgHisIdx[mbdMgCallType]++;
-                mbMgHisIdx[mbdMgCallType] = mbMgHisIdx[mbdMgCallType] % mbdMgCallHisLenTbl[mbdMgCallType + mbdMgCallAltOfs];
+                mbMgHisIdx[mbdMgCallType] = mbMgHisIdx[mbdMgCallType] % mbdMgCallHisLenTbl[mbdMgCallType + mbdMgCallPackOfs];
                 GWMgNoSet(mbdMgCallMgList[arg0->work[2]]);
                 if (GwSystem.current_board_index != 6 || mbdMgCallType == 1) {
                     MBDHelpWinKill(mbdMgCallHelpWin);
@@ -579,9 +579,9 @@ void MBDMgCallCursorSprCreate(void) {
 }
 
 void MBDMgCallListCreate(s32 arg0) {
-    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    GW_PLAYER *player = MBDPlayerGet(CUR_PLAYER);
     UnkC5770Rect *rects[2] = { mbdMgCallRect5Tbl, mbdMgCallRect3Tbl };
-    u8 *mgLists[4] = { mbdMgCall1vs1Tbl, mbdMgCallPartnerTbl, mbdMgCall1vs1AltTbl, mbdMgCallPartnerTbl };
+    u8 *mgLists[4] = { mbdMgCall1vs1Tbl, mbdMgCallPartnerTbl, mbdMgCall1vs1EasyTbl, mbdMgCallPartnerTbl };
     u8 mgCounts[4] = { 10, 30, 7, 30 };
     s32 winStyles[2] = { 5, 20 };
     UnkC5770B70 *entry;
@@ -595,7 +595,7 @@ void MBDMgCallListCreate(s32 arg0) {
     type = arg0; // A separate copy of arg0 is needed for regalloc.
     mbdMgCallType = type;
     listOffset = (_CheckFlag(0x20) != 0) * 2;
-    mbdMgCallAltOfs = listOffset;
+    mbdMgCallPackOfs = listOffset;
 
     for (i = 0; i < mbdMgCallListNumTbl[type]; i++) {
         entry = &mbdMgCallSlotTbl[i];
@@ -722,9 +722,9 @@ void MBDMgCallListCreate(s32 arg0) {
 }
 
 void MBDMgCallListCreateProc(void) {
-    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    GW_PLAYER *player = MBDPlayerGet(CUR_PLAYER);
     UnkC5770Rect *rects[2] = { mbdMgCallRect5Tbl, mbdMgCallRect3Tbl };
-    u8 *mgLists[4] = { mbdMgCall1vs1Tbl, mbdMgCallPartnerTbl, mbdMgCall1vs1AltTbl, mbdMgCallPartnerTbl };
+    u8 *mgLists[4] = { mbdMgCall1vs1Tbl, mbdMgCallPartnerTbl, mbdMgCall1vs1EasyTbl, mbdMgCallPartnerTbl };
     u8 mgCounts[4] = { 10, 30, 7, 30 };
     s32 winStyles[2] = { 5, 20 };
     UnkC5770B70 *entry;
@@ -738,7 +738,7 @@ void MBDMgCallListCreateProc(void) {
     arg0 = mbdMgCallMode;
     mbdMgCallType = arg0;
     listOffset = (_CheckFlag(0x20) != 0) * 2;
-    mbdMgCallAltOfs = listOffset;
+    mbdMgCallPackOfs = listOffset;
     if (mbdMgCallMdlObj != NULL) {
         Hu3DMotionSpeedSet(mbdMgCallMdlObj->omObj1->model[0], 2.0f);
     }

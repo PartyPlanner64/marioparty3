@@ -351,7 +351,7 @@ void boardresult_IntroExec(void) {
     }
 
     for (i = 0; i < 4; i++) {
-        boardresult_gwPlayerTbl[i] = MBDGetPlayerStruct(i);
+        boardresult_gwPlayerTbl[i] = MBDPlayerGet(i);
         MBDPlayerModelCreate(i, boardresult_introMotTbl[GwPlayer[i].chr], 2);
         HuVecCopy3F(&boardresult_gwPlayerTbl[i]->player_obj->coords, &boardresult_introPlayerPos);
         MBDModelTempAllocFree(boardresult_gwPlayerTbl[i]->player_obj);
@@ -1266,7 +1266,7 @@ void boardresult_ResultExec(void) {
     MBDBackLoad(1);
     MBDCameraNearFarSet(1000.0f, 10000.0f);
     for (i = 0; i < 4; i++) {
-        boardresult_gwPlayerTbl[i] = MBDGetPlayerStruct(i);
+        boardresult_gwPlayerTbl[i] = MBDPlayerGet(i);
         MBDPlayerModelCreate(i, boardresult_resultMotTbl[GwPlayer[i].chr], 2);
         boardresult_gwPlayerTbl[i]->player_obj->flags |= 1;
         boardresult_gwPlayerTbl[i]->stat |= 4;

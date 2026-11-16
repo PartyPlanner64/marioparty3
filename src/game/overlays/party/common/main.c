@@ -2465,7 +2465,7 @@ static void MBMain(void) {
                 if (system->current_player_index != 4) {
                     mbCameraBtnF = 1;
                     mbItemBtnF = 1;
-                    mbDiceBtnF = 1;
+                    mbSaiBtnF = 1;
                     mbMgHis = 1;
                 }
 
@@ -2474,7 +2474,7 @@ static void MBMain(void) {
                 MBTurnHelpKill();
 
                 mbCameraBtnF = 0;
-                mbDiceBtnF = 0;
+                mbSaiBtnF = 0;
                 mbWalkNum = MBSaiValueGet(system->current_player_index);
 
                 if (mbBoardStartResult == 0 && (temp_v0_4->rev & 0x80)) {
@@ -3428,7 +3428,7 @@ static void MBBtnProc(void) {
             if (MBPlayerComCheck(i) == 0) {
                 playerPadNo = GwPlayer[i].pad;
                 if (i == curPlayerNo) {
-                    if (mbDiceBtnF != 0 && (ContBtnDown[playerPadNo] & B_BUTTON)) {
+                    if (mbSaiBtnF != 0 && (ContBtnDown[playerPadNo] & B_BUTTON)) {
                         if (!(GwSystem.cur_player_used_item & 1)) {
                             MBTurnHelpKill();
                             MBSaiSeStop(i);
@@ -3456,7 +3456,7 @@ static void MBBtnProc(void) {
                         break;
                     }
                 }
-            } else if (mbDiceBtnF != 0 && mbMgHis != 0) {
+            } else if (mbSaiBtnF != 0 && mbMgHis != 0) {
                 if (i == curPlayerNo) {
                     comDecision = MBComItemDecide();
                     if (comDecision == -1) {
@@ -3522,7 +3522,7 @@ void MBStart(u32 arg0) {
             omPrcSetStatBit(omAddPrcObj(MBBtnProc, 0x1001, 0, 0), OM_STAT_NOALLPAUSE);
             mbCameraBtnF = 0;
             mbItemBtnF = 0;
-            mbDiceBtnF = 0;
+            mbSaiBtnF = 0;
             duelCancelEnableF = 0;
             omAddPrcObj(MBCameraFocusProc, 0x1005, 0, 0);
             MBCameraFocusModeSet(1);

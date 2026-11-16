@@ -185,7 +185,7 @@ s32 MBDBranchSelStart(UnkEA790Struct* arg0, s16 playerNo, s32 arg2) {
         proc->user_data = arg0;
         osCreateMesgQueue(&arg0->unk10, &arg0->unk28, 0x10);
         arg0->unk_00 = arg2 | arg0->unk_00;
-        player = MBDGetPlayerStruct(playerNo);
+        player = MBDPlayerGet(playerNo);
         if (player->stat & 1) {
             arg0->unk_00 |= 1;
             MBDBranchSelMesSend(arg0, -1);
@@ -221,7 +221,7 @@ static UnkEA790Struct* MBDBranchArrowGrpCreateEx(s16 arg0, s16* arg1, s32 arg2) 
     UnkBoard2* temp_s0;
     UnkEA790Struct* temp_v0;
 
-    player = MBDGetPlayerStruct(arg0);
+    player = MBDPlayerGet(arg0);
     temp_v0 = MBDBranchArrowGrpCreate();
     temp_v0->player = player;
     for (; *arg1 >= 0; arg1++) {

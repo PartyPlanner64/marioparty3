@@ -17,14 +17,14 @@ typedef struct GameGuysMagicBoxesBonus { // 0x6 bytes
 } GameGuysMagicBoxesBonus;
 
 typedef struct GameGuysMagicBoxesSprite { // 0x1C bytes
-    /* 0x00 */ s16 unk_00;                // esprite slot, written by func_80109C98
+    /* 0x00 */ s16 unk_00;                // esprite slot, written by m268_EspSlotCreate
     /* 0x02 */ u16 priority;              // lower 8 bits given to HuSprPriSet
-    /* 0x04 */ s16 unk_04;                // given to func_8000BBFC
+    /* 0x04 */ s16 unk_04;                // given to espTPLvlSet
     /* 0x06 */ s16 x;
     /* 0x08 */ s16 y;
     /* 0x0A */ s16 xSub;   // added to x, halved
     /* 0x0C */ s16 ySub;   // added to y, halved
-    /* 0x10 */ f32 unk_10; // given to func_8000BF00
+    /* 0x10 */ f32 unk_10; // given to espZRotSet
     /* 0x14 */ f32 scaleX;
     /* 0x18 */ f32 scaleY;
 } GameGuysMagicBoxesSprite;

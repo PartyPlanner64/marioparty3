@@ -134,9 +134,9 @@ void m217_WinExec(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler);
 void m217_TimerUpdate(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler);
 void m217_BoatObjMain(omObjData *object);
 void m217_WipeExitExec(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler);
-void m217_ThrowerTurnUpdate(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler);
-void m217_ThrowerMotUpdate(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler);
-void m217_ThrowerItemThrow(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler);
+void m217_HammerBroTurnUpdate(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler);
+void m217_HammerBroMotUpdate(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler);
+void m217_HammerBroItemThrow(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler);
 void m217_ItemUpdate(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler);
 void m217_PlayerStateSet(PuddlePaddlePlayer *arg0, s16 arg1, u8 arg2);
 void m217_PlayerInputUpdate(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler);
@@ -352,9 +352,9 @@ void m217_StageObjInit(omObjData *object) {
         m217_SprDispOn(sprModel, i * 160 + 116, 32);
     }
 
-    m217_FuncSet((s8)object->work[1], 0xF, 0, m217_ThrowerTurnUpdate, 0);
-    m217_FuncSet((s8)object->work[1], 0xFF, 0, m217_ThrowerMotUpdate, 0);
-    m217_FuncSet((s8)object->work[1], 0x1FF, 0, m217_ThrowerItemThrow, 0);
+    m217_FuncSet((s8)object->work[1], 0xF, 0, m217_HammerBroTurnUpdate, 0);
+    m217_FuncSet((s8)object->work[1], 0xFF, 0, m217_HammerBroMotUpdate, 0);
+    m217_FuncSet((s8)object->work[1], 0x1FF, 0, m217_HammerBroItemThrow, 0);
     m217_FuncSet((s8)object->work[1], 0xFFF, 0, m217_ItemUpdate, 0);
     object->model[0] = slot->unk_04[0];
     m217_MdlSync(object);
@@ -666,7 +666,7 @@ void m217_WipeExitExec(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler) {
     }
 }
 
-void m217_ThrowerTurnUpdate(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler) {
+void m217_HammerBroTurnUpdate(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler) {
     HmfModel *model = &Hu3DData[slot->unk_04[0]];
     f32 angle, target;
 
@@ -715,7 +715,7 @@ void m217_ThrowerTurnUpdate(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler) {
     }
 }
 
-void m217_ThrowerMotUpdate(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler) {
+void m217_HammerBroMotUpdate(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler) {
     omObjData *object = slot->unk_00;
     f32 time;
 
@@ -745,7 +745,7 @@ void m217_ThrowerMotUpdate(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler) {
     }
 }
 
-void m217_ThrowerItemThrow(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler) {
+void m217_HammerBroItemThrow(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler) {
     omObjData *object = slot->unk_00;
     f32 angles[5];
     f32 time;

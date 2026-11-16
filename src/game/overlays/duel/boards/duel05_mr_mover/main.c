@@ -853,11 +853,11 @@ void MBD5_BomheiMdlSwap(s32 playerIndex, s32 mode) {
     Object *partner;
     Object *model;
 
-    player = MBDGetPlayerStruct(playerIndex);
+    player = MBDPlayerGet(playerIndex);
     switch (mode) {
         case 0:
             if (player->stats.partners.frontID == PARTNER_BOB_OMB) {
-                partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_FRONT);
+                partner = MBDPartnerObjGet(playerIndex, PARTNER_FRONT);
                 model = MBDModelCreate(0x28, NULL);
                 mbd5_bomheiFrontMdl = model;
                 HuVecCopy3F(&model->coords, &partner->coords);
@@ -865,7 +865,7 @@ void MBD5_BomheiMdlSwap(s32 playerIndex, s32 mode) {
                 MBDModelDispOff(partner);
             }
             if (player->stats.partners.backID == PARTNER_BOB_OMB) {
-                partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_BACK);
+                partner = MBDPartnerObjGet(playerIndex, PARTNER_BACK);
                 model = MBDModelCreate(0x28, NULL);
                 mbd5_bomheiBackMdl = model;
                 HuVecCopy3F(&model->coords, &partner->coords);
@@ -875,12 +875,12 @@ void MBD5_BomheiMdlSwap(s32 playerIndex, s32 mode) {
             break;
         case 1:
             if (player->stats.partners.frontID == PARTNER_BOB_OMB) {
-                partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_FRONT);
+                partner = MBDPartnerObjGet(playerIndex, PARTNER_FRONT);
                 MBDModelKill(mbd5_bomheiFrontMdl);
                 MBDModelDispOn(partner);
             }
             if (player->stats.partners.backID == PARTNER_BOB_OMB) {
-                partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_BACK);
+                partner = MBDPartnerObjGet(playerIndex, PARTNER_BACK);
                 MBDModelKill(mbd5_bomheiBackMdl);
                 MBDModelDispOn(partner);
             }
@@ -890,7 +890,7 @@ void MBD5_BomheiMdlSwap(s32 playerIndex, s32 mode) {
                 case 1:
                 case 3:
                     if (player->stats.partners.frontID == PARTNER_BOB_OMB) {
-                        partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_FRONT);
+                        partner = MBDPartnerObjGet(playerIndex, PARTNER_FRONT);
                         model = MBDModelCreate(0x28, NULL);
                         mbd5_bomheiFrontMdl = model;
                         HuVecCopy3F(&model->coords, &partner->coords);
@@ -901,7 +901,7 @@ void MBD5_BomheiMdlSwap(s32 playerIndex, s32 mode) {
                 case 0:
                 case 2:
                     if (player->stats.partners.backID == PARTNER_BOB_OMB) {
-                        partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_BACK);
+                        partner = MBDPartnerObjGet(playerIndex, PARTNER_BACK);
                         model = MBDModelCreate(0x28, NULL);
                         mbd5_bomheiBackMdl = model;
                         HuVecCopy3F(&model->coords, &partner->coords);
@@ -916,7 +916,7 @@ void MBD5_BomheiMdlSwap(s32 playerIndex, s32 mode) {
                 case 1:
                 case 3:
                     if (player->stats.partners.frontID == PARTNER_BOB_OMB) {
-                        partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_FRONT);
+                        partner = MBDPartnerObjGet(playerIndex, PARTNER_FRONT);
                         MBDModelKill(mbd5_bomheiFrontMdl);
                         MBDModelDispOn(partner);
                     }
@@ -924,7 +924,7 @@ void MBD5_BomheiMdlSwap(s32 playerIndex, s32 mode) {
                 case 0:
                 case 2:
                     if (player->stats.partners.backID == PARTNER_BOB_OMB) {
-                        partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_BACK);
+                        partner = MBDPartnerObjGet(playerIndex, PARTNER_BACK);
                         MBDModelKill(mbd5_bomheiBackMdl);
                         MBDModelDispOn(partner);
                     }
@@ -969,7 +969,7 @@ void MBD5_NokonokoAttackExec(s32 playerIndex, s32 targetPlayer, Object *obj, Obj
     Vec midPos;
     Vec *mid;
 
-    player = MBDGetPlayerStruct(targetPlayer);
+    player = MBDPlayerGet(targetPlayer);
     process = HuPrcCurrentGet();
     spinProcesses[0] = NULL;
     spinProcesses[1] = NULL;
@@ -1125,7 +1125,7 @@ void MBD5_KuriboAttackExec(s32 playerIndex, s32 targetPlayer, Object *obj, Objec
     Vec midPos;
     Vec *mid;
 
-    player = MBDGetPlayerStruct(targetPlayer);
+    player = MBDPlayerGet(targetPlayer);
     process = HuPrcCurrentGet();
     extra = NULL;
     effectModels[0] = 0x48;
@@ -1250,7 +1250,7 @@ void MBD5_KinopioAttackExec(s32 playerIndex, s32 targetPlayer, Object *obj, Obje
     Vec midPos;
     Vec *mid;
 
-    player = MBDGetPlayerStruct(targetPlayer);
+    player = MBDPlayerGet(targetPlayer);
     process = HuPrcCurrentGet();
     effectModels[0] = 0x54;
     effectModels[1] = 0x55;
@@ -1355,7 +1355,7 @@ void MBD5_BomheiAttackExec(s32 playerIndex, s32 targetPlayer, Object *obj, Objec
     Vec midPos;
     Vec *mid;
 
-    player = MBDGetPlayerStruct(targetPlayer);
+    player = MBDPlayerGet(targetPlayer);
     process = HuPrcCurrentGet();
     extra = NULL;
     effectModels[0] = 0x4F;
@@ -1493,7 +1493,7 @@ void MBD5_DossunAttackExec(s32 playerIndex, s32 targetPlayer, Object *obj, Objec
     Vec origPos;
     Vec delta;
 
-    player = MBDGetPlayerStruct(targetPlayer);
+    player = MBDPlayerGet(targetPlayer);
     process = HuPrcCurrentGet();
     model = -1;
     if (target == NULL) {
@@ -1678,7 +1678,7 @@ void MBD5_TeresaCounterExec(s32 playerIndex, s32 targetPlayer, Object *obj, Obje
     s32 steps;
     s32 i;
 
-    player = MBDGetPlayerStruct(targetPlayer);
+    player = MBDPlayerGet(targetPlayer);
     process = HuPrcCurrentGet();
     HuAudFXPlay(0x1F4);
     MBDMotionSet(obj, 0, 2);
@@ -1753,7 +1753,7 @@ void MBD5_TeresaAttackExec(s32 playerIndex, s32 targetPlayer, Object *obj, Objec
     s32 i;
     s32 iAngle;
 
-    player = MBDGetPlayerStruct(targetPlayer);
+    player = MBDPlayerGet(targetPlayer);
     process = HuPrcCurrentGet();
     sound = -1;
     if (mode & 0x10) {
@@ -1914,7 +1914,7 @@ void MBD5_BlizzardAttackExec(s32 playerIndex, s32 targetPlayer, Object *obj, Obj
     s32 i;
     s32 count;
 
-    player = MBDGetPlayerStruct(targetPlayer);
+    player = MBDPlayerGet(targetPlayer);
     process = HuPrcCurrentGet();
     extra = NULL;
     MBDPartnerAttackMotLoad(10);
@@ -2281,7 +2281,7 @@ void MBD5_KoopaJrAttackExec(s32 playerIndex, s32 targetPlayer, Object *obj, Obje
     Vec midPos;
     Vec *mid;
 
-    player = MBDGetPlayerStruct(targetPlayer);
+    player = MBDPlayerGet(targetPlayer);
     process = HuPrcCurrentGet();
     model = -1;
     MBDPartnerAttackMotLoad(11);
@@ -2429,7 +2429,7 @@ void MBD5_KoopaJrAttackExec(s32 playerIndex, s32 targetPlayer, Object *obj, Obje
 }
 
 void MBD5_WanwanAttackExec(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
-    GW_PLAYER *player = MBDGetPlayerStruct(targetPlayer);
+    GW_PLAYER *player = MBDPlayerGet(targetPlayer);
     Process *process = HuPrcCurrentGet();
     Object *frontPartner = NULL;
     Object *backPartner = NULL;
@@ -2461,7 +2461,7 @@ void MBD5_WanwanAttackExec(s32 playerIndex, s32 targetPlayer, Object *obj, Objec
         hitDelays[0] = 0;
     }
     if (player->stats.partners.frontID != PARTNER_NONE) {
-        frontPartner = MBDGetPlayerPartnerRef(targetPlayer, 0);
+        frontPartner = MBDPartnerObjGet(targetPlayer, 0);
         frontID = GwPlayer[targetPlayer].stats.partners.frontID;
         HuVecSubtract(&delta, &obj->coords, &frontPartner->coords);
         hitDelays[1] = HuVecGetLength3F(&delta) / 7.0f - 1.0f;
@@ -2470,7 +2470,7 @@ void MBD5_WanwanAttackExec(s32 playerIndex, s32 targetPlayer, Object *obj, Objec
         }
     }
     if (player->stats.partners.backID != PARTNER_NONE) {
-        backPartner = MBDGetPlayerPartnerRef(targetPlayer, 1);
+        backPartner = MBDPartnerObjGet(targetPlayer, 1);
         backID = GwPlayer[targetPlayer].stats.partners.backID;
         HuVecSubtract(&delta, &obj->coords, &backPartner->coords);
         hitDelays[2] = HuVecGetLength3F(&delta) / 7.0f - 1.0f;
@@ -2696,7 +2696,7 @@ void MBD5_SnifitAttackExec(s32 playerIndex, s32 targetPlayer, Object *obj, Objec
     s32 effectIds[2];
     s32 i;
 
-    player = MBDGetPlayerStruct(targetPlayer);
+    player = MBDPlayerGet(targetPlayer);
     process = HuPrcCurrentGet();
     effectIds[0] = 0x4D;
     effectIds[1] = 0x53;
@@ -2851,7 +2851,7 @@ void MBD5_PakkunAttackExec(s32 playerIndex, s32 targetPlayer, Object *obj, Objec
     Vec midPos;
     Vec *mid;
 
-    player = MBDGetPlayerStruct(targetPlayer);
+    player = MBDPlayerGet(targetPlayer);
     process = HuPrcCurrentGet();
     model = -1;
     effect = NULL;
@@ -3260,7 +3260,7 @@ void MBD5_ConveyorInit(void) {
 
 s32 MBD5_ComPartnerRefuseRateGet(void) {
     GW_SYSTEM *sys = &GwSystem;
-    GW_PLAYER *player = MBDGetPlayerStruct(sys->current_player_index ^ 1);
+    GW_PLAYER *player = MBDPlayerGet(sys->current_player_index ^ 1);
     s32 curPlayer = sys->current_player_index;
     s32 chance = (5 - GwPlayer[curPlayer].star) * 10;
 
@@ -3291,7 +3291,7 @@ s32 MBD5_ComPartnerRefuseRateGet(void) {
 }
 
 s32 MBD5_ComPartnerSlotRateGet(void) {
-    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    GW_PLAYER *player = MBDPlayerGet(CUR_PLAYER);
     s16 partnerValues[12] = { 40, 90, 30, 50, 90, 10, 80, 15, 60, 80, 70, 90 };
 
     if (player->stats.partners.frontID == PARTNER_NONE) {
@@ -3307,7 +3307,7 @@ s32 MBD5_ComPartnerIdRefuseRateGet(s32 index) {
 }
 
 s32 MBD5_ComPartnerRouletteDecide(void) {
-    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    GW_PLAYER *player = MBDPlayerGet(CUR_PLAYER);
     s32 partner = -1;
     s32 roll = MBDRand(10.0f);
     s32 i;
@@ -3563,7 +3563,7 @@ s32 MBD5Ev_PartnerRouletteExec(s32 index) {
 
     startSpace = MBDMasuGet(mbd5ev_partnerMasuTbl[index].startSpace);
     partnerSpace = MBDMasuGet(mbd5ev_partnerMasuTbl[index].partnerSpace);
-    player = MBDGetPlayerStruct(index);
+    player = MBDPlayerGet(index);
     if (index == 0) {
         state = GwSystem.playerIndexVisitingBowser & 0xFF;
     } else {
@@ -3682,7 +3682,7 @@ s32 MBD5Ev_PartnerRouletteExec(s32 index) {
 
 void MBD5Ev_PartnerGetExec(s32 index) {
     Vec pos;
-    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    GW_PLAYER *player = MBDPlayerGet(CUR_PLAYER);
     u8 playerBits[4] = { 1, 2, 4, 8 };
     s16 comKeys[4] = { 0, 0, 0, 0 };
     Vec offsets[3];
@@ -3781,7 +3781,7 @@ void MBD5Ev_PartnerGetExec(s32 index) {
             mbItemBtnF = 1;
             goto retryB;
         }
-        partner = MBDGetPlayerPartnerRef(index, choice);
+        partner = MBDPartnerObjGet(index, choice);
         if (partner != NULL) {
             HuVecCopy3F(&pos, &partner->coords);
             pos.y += 2.0f;
@@ -3879,8 +3879,8 @@ void MBD5Ev_PartnerGetExec(s32 index) {
 void MBD5Ev_StartMasu1P(void) {
     GW_PLAYER *player;
 
-    player = MBDGetPlayerStruct(CUR_PLAYER);
-    if (MBDGetCurrentPlayerIndex() == 0 && !(player->rev & 4)) {
+    player = MBDPlayerGet(CUR_PLAYER);
+    if (MBDPlayerTurnGet() == 0 && !(player->rev & 4)) {
         MBDPlayerPartyMotionSet(-1, -1, 2);
         MBD5Ev_PartnerGetExec(0);
     }
@@ -3889,8 +3889,8 @@ void MBD5Ev_StartMasu1P(void) {
 void MBD5Ev_StartMasu2P(void) {
     GW_PLAYER *player;
 
-    player = MBDGetPlayerStruct(CUR_PLAYER);
-    if (MBDGetCurrentPlayerIndex() == 1 && !(player->rev & 4)) {
+    player = MBDPlayerGet(CUR_PLAYER);
+    if (MBDPlayerTurnGet() == 1 && !(player->rev & 4)) {
         MBDPlayerPartyMotionSet(-1, -1, 2);
         MBD5Ev_PartnerGetExec(1);
     }
@@ -3940,7 +3940,7 @@ const u8 mbd5ev_partnerSelBack2PStr[] = "\x82\xC8\x82\xC9\x82\xF0\x82\xC2\x82\xA
 
 void MBD5Ev_TurnStart(void) {
     s32 index = GwSystem.current_player_index;
-    GW_PLAYER *player = MBDGetPlayerStruct(index);
+    GW_PLAYER *player = MBDPlayerGet(index);
     u8 mes[0x200];
     u8 playerBits[4] = { 1, 2, 4, 8 };
     s16 comKeys[4] = { 0, 0, 0, 0 };
@@ -4089,9 +4089,9 @@ void MBD5Ev_TurnStart(void) {
         coins = MBDRand(3.0f) + 2;
         MBDPartnerAttackMotLoad(6);
         if (player->stats.partners.backID == 6) {
-            partner = MBDGetPlayerPartnerRef(index, PARTNER_BACK);
+            partner = MBDPartnerObjGet(index, PARTNER_BACK);
         } else {
-            partner = MBDGetPlayerPartnerRef(index, PARTNER_FRONT);
+            partner = MBDPartnerObjGet(index, PARTNER_FRONT);
         }
         HuPrcChildLink(HuPrcCurrentGet(), MBDCameraZoomMotStart(2.0f));
         HuPrcChildWatch();
@@ -4193,7 +4193,7 @@ void MBD5Ev_TurnStart(void) {
             MBDCoinTakeCreate(index, -curCoins);
             HuPrcSleep(30);
             for (side = 0; side < 2; side++) {
-                ref = MBDGetPlayerPartnerRef(index, side);
+                ref = MBDPartnerObjGet(index, side);
                 if (ref != NULL) {
                     HuVecCopy3F(&pos, &ref->coords);
                     pos.y += 2.0f;
@@ -4231,7 +4231,7 @@ void MBD5Ev_GateGuyMasu(void) {
     Vec pos;
     char text[8];
 
-    player = MBDGetPlayerStruct(CUR_PLAYER);
+    player = MBDPlayerGet(CUR_PLAYER);
     space = MBDMasuGet(0x23);
     MBDSaiNumKill(sys->current_player_index);
     MBDPlayerPartyMotionSet(-1, -1, 2);
@@ -4310,7 +4310,7 @@ void MBD5Ev_HatenaHpRecover(void) {
     GW_PLAYER *player;
     void *handle;
 
-    player = MBDGetPlayerStruct(CUR_PLAYER);
+    player = MBDPlayerGet(CUR_PLAYER);
     MBDAuraCreate(&player->player_obj->coords);
     MBDAuraLandNoSe(1);
     MBDAuraHoverStart();
@@ -4362,7 +4362,7 @@ void MBD5Ev_HatenaStartWarp(void) {
     s8 link2 = -1;
     s8 idx2 = -1;
 
-    if (MBDGetCurrentPlayerIndex() == 0) {
+    if (MBDPlayerTurnGet() == 0) {
         MBDMasuLinkIdxGet(0x1E, &nnlink, &nnidx);
     } else {
         MBDMasuLinkIdxGet(0x1D, &nnlink, &nnidx);
@@ -4370,7 +4370,7 @@ void MBD5Ev_HatenaStartWarp(void) {
     MBD5Ev_StartWarpLinkGet(&link2, &idx2);
     MBDWarpMasuExec(nnlink, nnidx, link2, idx2);
     MBDPartnerPosFix(GwSystem.current_player_index);
-    MBD5Ev_PartnerGetExec(MBDGetCurrentPlayerIndex());
+    MBD5Ev_PartnerGetExec(MBDPlayerTurnGet());
 }
 
 void MBD5Ev_HatenaMasuOwnerSwap(void) {
@@ -4382,9 +4382,9 @@ void MBD5Ev_HatenaMasuOwnerSwap(void) {
     s32 curPlayer;
     s32 otherPlayer;
 
-    curPlayer = MBDGetCurrentPlayerIndex();
+    curPlayer = MBDPlayerTurnGet();
     otherPlayer = (curPlayer + 1) & 1;
-    player = MBDGetPlayerStruct(CUR_PLAYER);
+    player = MBDPlayerGet(CUR_PLAYER);
     MBDAuraCreate(&player->player_obj->coords);
     MBDAuraLandNoSe(1);
     MBDAuraHoverStart();
@@ -4440,7 +4440,7 @@ void MBD5Ev_HatenaPartnerPowerUp(void) {
     void *handle;
     Object *partners[2];
 
-    player = MBDGetPlayerStruct(CUR_PLAYER);
+    player = MBDPlayerGet(CUR_PLAYER);
     MBDAuraCreate(&player->player_obj->coords);
     MBDAuraLandNoSe(1);
     MBDAuraHoverStart();
@@ -4455,13 +4455,13 @@ void MBD5Ev_HatenaPartnerPowerUp(void) {
     if (player->stats.partners.frontID != PARTNER_NONE) {
         partners[PARTNER_FRONT] = MBDModelCreate(0x38, NULL);
         MBDModelTempAllocFree(partners[PARTNER_FRONT]);
-        HuVecCopy3F(&partners[PARTNER_FRONT]->coords, &MBDGetPlayerPartnerRef(sys->current_player_index, PARTNER_FRONT)->coords);
+        HuVecCopy3F(&partners[PARTNER_FRONT]->coords, &MBDPartnerObjGet(sys->current_player_index, PARTNER_FRONT)->coords);
         Hu3DMotionAttrSet(partners[PARTNER_FRONT]->omObj1->model[0], 2, 0);
     }
     if (player->stats.partners.backID != PARTNER_NONE) {
         partners[PARTNER_BACK] = MBDModelCreate(0x38, NULL);
         MBDModelTempAllocFree(partners[PARTNER_BACK]);
-        HuVecCopy3F(&partners[PARTNER_BACK]->coords, &MBDGetPlayerPartnerRef(sys->current_player_index, PARTNER_BACK)->coords);
+        HuVecCopy3F(&partners[PARTNER_BACK]->coords, &MBDPartnerObjGet(sys->current_player_index, PARTNER_BACK)->coords);
         Hu3DMotionAttrSet(partners[PARTNER_BACK]->omObj1->model[0], 2, 0);
     }
     HuAudFXPlay(0x1FA);
@@ -4485,7 +4485,7 @@ void MBD5Ev_HatenaPartnerPowerDown(void) {
     void *handle;
     Object *partners[2];
 
-    player = MBDGetPlayerStruct(CUR_PLAYER);
+    player = MBDPlayerGet(CUR_PLAYER);
     MBDAuraCreate(&player->player_obj->coords);
     MBDAuraLandNoSe(1);
     MBDAuraHoverStart();
@@ -4500,13 +4500,13 @@ void MBD5Ev_HatenaPartnerPowerDown(void) {
     if (player->stats.partners.frontID != PARTNER_NONE) {
         partners[PARTNER_FRONT] = MBDModelCreate(0x3A, NULL);
         MBDModelTempAllocFree(partners[PARTNER_FRONT]);
-        HuVecCopy3F(&partners[PARTNER_FRONT]->coords, &MBDGetPlayerPartnerRef(sys->current_player_index, PARTNER_FRONT)->coords);
+        HuVecCopy3F(&partners[PARTNER_FRONT]->coords, &MBDPartnerObjGet(sys->current_player_index, PARTNER_FRONT)->coords);
         Hu3DMotionAttrSet(partners[PARTNER_FRONT]->omObj1->model[0], 2, 0);
     }
     if (player->stats.partners.backID != PARTNER_NONE) {
         partners[PARTNER_BACK] = MBDModelCreate(0x3A, NULL);
         MBDModelTempAllocFree(partners[PARTNER_BACK]);
-        HuVecCopy3F(&partners[PARTNER_BACK]->coords, &MBDGetPlayerPartnerRef(sys->current_player_index, PARTNER_BACK)->coords);
+        HuVecCopy3F(&partners[PARTNER_BACK]->coords, &MBDPartnerObjGet(sys->current_player_index, PARTNER_BACK)->coords);
         Hu3DMotionAttrSet(partners[PARTNER_BACK]->omObj1->model[0], 2, 0);
     }
     if (partners[PARTNER_FRONT] != NULL) {
@@ -4531,8 +4531,8 @@ void MBD5Ev_HatenaPartnerSwap(void) {
     Object *partner;
     f32 angle;
 
-    player = MBDGetPlayerStruct(CUR_PLAYER);
-    playerIndex = MBDGetCurrentPlayerIndex();
+    player = MBDPlayerGet(CUR_PLAYER);
+    playerIndex = MBDPlayerTurnGet();
     MBDEffSwirlCreate(&player->player_obj->coords);
     MBDAuraCreate(&player->player_obj->coords);
     MBDAuraLandNoSe(1);
@@ -4544,12 +4544,12 @@ void MBD5Ev_HatenaPartnerSwap(void) {
     handle = MBDPlayerVibrateObjCreate(-1, 1, 5);
     for (angle = 0.0f; angle < 120.0f; angle += 5.0f) {
         if (player->stats.partners.frontID != PARTNER_NONE) {
-            partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_FRONT);
+            partner = MBDPartnerObjGet(playerIndex, PARTNER_FRONT);
             partner->velocity.x = angle;
             MTX_ROTY(Hu3DData[partner->omObj1->model[0]].mtx, angle * 10.0f);
         }
         if (player->stats.partners.backID != PARTNER_NONE) {
-            partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_BACK);
+            partner = MBDPartnerObjGet(playerIndex, PARTNER_BACK);
             partner->velocity.x = angle;
             MTX_ROTY(Hu3DData[partner->omObj1->model[0]].mtx, angle * 10.0f);
         }
@@ -4559,12 +4559,12 @@ void MBD5Ev_HatenaPartnerSwap(void) {
     MBDEffSwirlOff();
     for (angle = 120.0f; angle > 0.0f; angle -= 5.0f) {
         if (player->stats.partners.frontID != PARTNER_NONE) {
-            partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_FRONT);
+            partner = MBDPartnerObjGet(playerIndex, PARTNER_FRONT);
             partner->velocity.x = angle;
             MTX_ROTY(Hu3DData[partner->omObj1->model[0]].mtx, angle * 10.0f);
         }
         if (player->stats.partners.backID != PARTNER_NONE) {
-            partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_BACK);
+            partner = MBDPartnerObjGet(playerIndex, PARTNER_BACK);
             partner->velocity.x = angle;
             MTX_ROTY(Hu3DData[partner->omObj1->model[0]].mtx, angle * 10.0f);
         }
@@ -4572,12 +4572,12 @@ void MBD5Ev_HatenaPartnerSwap(void) {
     }
     MBDPlayerVibrateObjKill(handle);
     if (player->stats.partners.frontID != PARTNER_NONE) {
-        partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_FRONT);
+        partner = MBDPartnerObjGet(playerIndex, PARTNER_FRONT);
         partner->velocity.x = 0.0f;
         MTX_ROTY(Hu3DData[partner->omObj1->model[0]].mtx, angle * 10.0f);
     }
     if (player->stats.partners.backID != PARTNER_NONE) {
-        partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_BACK);
+        partner = MBDPartnerObjGet(playerIndex, PARTNER_BACK);
         partner->velocity.x = 0.0f;
         MTX_ROTY(Hu3DData[partner->omObj1->model[0]].mtx, angle * 10.0f);
     }
@@ -4596,7 +4596,7 @@ void MBD5Ev_HatenaMasuOwnerClear(void) {
     f32 scale;
     f32 angle;
 
-    player = MBDGetPlayerStruct(CUR_PLAYER);
+    player = MBDPlayerGet(CUR_PLAYER);
     MBDAuraCreate(&player->player_obj->coords);
     MBDAuraLandNoSe(1);
     MBDAuraHoverStart();
@@ -4706,10 +4706,10 @@ void MBD5Ev_Hatena(void) {
 }
 
 s32 MBD5_ComBranch1Lv3Check(void) {
-    s32 curIndex = MBDGetCurrentPlayerIndex();
-    s32 otherIndex = MBDGetCurrentPlayerIndex() ^ 1;
-    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
-    GW_PLAYER *other = MBDGetPlayerStruct(otherIndex);
+    s32 curIndex = MBDPlayerTurnGet();
+    s32 otherIndex = MBDPlayerTurnGet() ^ 1;
+    GW_PLAYER *player = MBDPlayerGet(CUR_PLAYER);
+    GW_PLAYER *other = MBDPlayerGet(otherIndex);
     s32 walkNum = mbWalkNum;
     s32 stars;
 
@@ -4946,10 +4946,10 @@ s32 MBD5_ComBranch1Lv3Check(void) {
 }
 
 s32 MBD5_ComBranch2Lv3Check(void) {
-    s32 curIndex = MBDGetCurrentPlayerIndex();
-    s32 otherIndex = MBDGetCurrentPlayerIndex() ^ 1;
-    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
-    GW_PLAYER *other = MBDGetPlayerStruct(otherIndex);
+    s32 curIndex = MBDPlayerTurnGet();
+    s32 otherIndex = MBDPlayerTurnGet() ^ 1;
+    GW_PLAYER *player = MBDPlayerGet(CUR_PLAYER);
+    GW_PLAYER *other = MBDPlayerGet(otherIndex);
     s32 walkNum = mbWalkNum;
     s32 stars;
 
@@ -5186,7 +5186,7 @@ s32 MBD5_ComBranch2Lv3Check(void) {
 }
 
 void MBD5Ev_Branch1(void) {
-    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    GW_PLAYER *player = MBDPlayerGet(CUR_PLAYER);
     UnkEA790Struct *win;
     s32 count;
     s32 sel;
@@ -5218,7 +5218,7 @@ void MBD5Ev_Branch1(void) {
 }
 
 void MBD5Ev_Branch2(void) {
-    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    GW_PLAYER *player = MBDPlayerGet(CUR_PLAYER);
     UnkEA790Struct *win;
     s32 count;
     s32 sel;
@@ -5258,17 +5258,17 @@ void MBD5Ev_Merge2(void) {
 }
 
 void MBD5Ev_ConveyorEnterA(void) {
-    if (!(MBDGetPlayerStruct(CUR_PLAYER)->rev & 1)) {
+    if (!(MBDPlayerGet(CUR_PLAYER)->rev & 1)) {
         MBDMoveNextMasuSet(CUR_PLAYER, 6, 0);
     }
-    GwSystem.boardData.halfWordBytes[MBDGetCurrentPlayerIndex()] = 0;
+    GwSystem.boardData.halfWordBytes[MBDPlayerTurnGet()] = 0;
 }
 
 void MBD5Ev_ConveyorEnterB(void) {
-    if (!(MBDGetPlayerStruct(CUR_PLAYER)->rev & 1)) {
+    if (!(MBDPlayerGet(CUR_PLAYER)->rev & 1)) {
         MBDMoveNextMasuSet(CUR_PLAYER, 6, 0);
     }
-    GwSystem.boardData.halfWordBytes[MBDGetCurrentPlayerIndex()] = 1;
+    GwSystem.boardData.halfWordBytes[MBDPlayerTurnGet()] = 1;
 }
 
 void MBD5Ev_ConveyorRide(void) {
@@ -5277,15 +5277,15 @@ void MBD5Ev_ConveyorRide(void) {
     } else {
         MBDMoveNextMasuSet(CUR_PLAYER, 3, 0);
     }
-    Hu3DMotionReset(MBDGetPlayerStruct(CUR_PLAYER)->player_obj->omObj1->model[0]);
-    MBDPartnerMotionReset(MBDGetCurrentPlayerIndex());
+    Hu3DMotionReset(MBDPlayerGet(CUR_PLAYER)->player_obj->omObj1->model[0]);
+    MBDPartnerMotionReset(MBDPlayerTurnGet());
 }
 
 void MBD5Ev_ConveyorRevExit(void) {
-    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    GW_PLAYER *player = MBDPlayerGet(CUR_PLAYER);
 
     if (player->rev & 1) {
-        MBDMasuLinkIdxGet(GwSystem.boardData.halfWordBytes[MBDGetCurrentPlayerIndex()] == 0 ? 0x15 : 3,
+        MBDMasuLinkIdxGet(GwSystem.boardData.halfWordBytes[MBDPlayerTurnGet()] == 0 ? 0x15 : 3,
                               &player->nlink, &player->nidx);
         if (mbWalkNum != 0) {
             MBDDlgResultWinExec(0x2200);
@@ -5294,7 +5294,7 @@ void MBD5Ev_ConveyorRevExit(void) {
 }
 
 void MBD5Ev_Merge3(void) {
-    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    GW_PLAYER *player = MBDPlayerGet(CUR_PLAYER);
 
     if (player->rev & 1) {
         MBDMasuLinkIdxGet(0x28, &player->nlink, &player->nidx);
@@ -5302,7 +5302,7 @@ void MBD5Ev_Merge3(void) {
 }
 
 void MBD5Ev_Merge4(void) {
-    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    GW_PLAYER *player = MBDPlayerGet(CUR_PLAYER);
 
     if (player->rev & 1) {
         MBDMasuLinkIdxGet(0x1F, &player->nlink, &player->nidx);
@@ -5310,7 +5310,7 @@ void MBD5Ev_Merge4(void) {
 }
 
 void MBD5Ev_Merge5(void) {
-    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    GW_PLAYER *player = MBDPlayerGet(CUR_PLAYER);
 
     if (!(player->rev & 1) || mbWalkNum == 0) {
         MBDMasuLinkIdxGet(0x1C, &player->nnlink, &player->nnidx);
@@ -5318,13 +5318,13 @@ void MBD5Ev_Merge5(void) {
 }
 
 void MBD5Ev_Merge6(void) {
-    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    GW_PLAYER *player = MBDPlayerGet(CUR_PLAYER);
 
     MBDMasuLinkIdxGet(0xB, &player->nnlink, &player->nnidx);
 }
 
 void MBD5Ev_Merge7(void) {
-    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    GW_PLAYER *player = MBDPlayerGet(CUR_PLAYER);
 
     if ((player->rev & 1) && mbWalkNum != 0) {
         MBDMasuLinkIdxGet(0x1F, &player->nnlink, &player->nnidx);
@@ -5332,7 +5332,7 @@ void MBD5Ev_Merge7(void) {
 }
 
 void MBD5Ev_Merge8(void) {
-    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    GW_PLAYER *player = MBDPlayerGet(CUR_PLAYER);
 
     if (!(player->rev & 1) || mbWalkNum == 0) {
         MBDMasuLinkIdxGet(4, &player->nnlink, &player->nnidx);
@@ -5340,7 +5340,7 @@ void MBD5Ev_Merge8(void) {
 }
 
 void MBD5Ev_Merge9(void) {
-    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    GW_PLAYER *player = MBDPlayerGet(CUR_PLAYER);
 
     if (!(player->rev & 1) || mbWalkNum == 0) {
         MBDMasuLinkIdxGet(0x12, &player->nnlink, &player->nnidx);
@@ -5348,13 +5348,13 @@ void MBD5Ev_Merge9(void) {
 }
 
 void MBD5Ev_Merge10(void) {
-    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    GW_PLAYER *player = MBDPlayerGet(CUR_PLAYER);
 
     MBDMasuLinkIdxGet(0xA, &player->nnlink, &player->nnidx);
 }
 
 void MBD5Ev_Merge11(void) {
-    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    GW_PLAYER *player = MBDPlayerGet(CUR_PLAYER);
 
     if ((player->rev & 1) && mbWalkNum != 0) {
         MBDMasuLinkIdxGet(0x28, &player->nnlink, &player->nnidx);
@@ -5362,7 +5362,7 @@ void MBD5Ev_Merge11(void) {
 }
 
 void MBD5Ev_Merge12(void) {
-    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    GW_PLAYER *player = MBDPlayerGet(CUR_PLAYER);
 
     if (!(player->rev & 1) || mbWalkNum == 0) {
         MBDMasuLinkIdxGet(4, &player->nnlink, &player->nnidx);
@@ -5370,10 +5370,10 @@ void MBD5Ev_Merge12(void) {
 }
 
 void MBD5Ev_ConveyorRevMerge(void) {
-    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    GW_PLAYER *player = MBDPlayerGet(CUR_PLAYER);
 
     if ((player->rev & 1) && mbWalkNum != 0) {
-        MBDMasuLinkIdxGet(GwSystem.boardData.halfWordBytes[MBDGetCurrentPlayerIndex()] == 0 ? 0x15 : 3,
+        MBDMasuLinkIdxGet(GwSystem.boardData.halfWordBytes[MBDPlayerTurnGet()] == 0 ? 0x15 : 3,
                               &player->nnlink, &player->nnidx);
     }
 }
@@ -5384,8 +5384,8 @@ void MBD5Ev_StartWarpLinkGet(s8 *arg0, s8 *arg1) {
 s32 MBD5_WalkAttackHook(void) {
     s32 playerIndex = GwSystem.current_player_index;
     s32 otherIndex = (playerIndex + 1) & 1;
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
-    GW_PLAYER *otherPlayer = MBDGetPlayerStruct(otherIndex);
+    GW_PLAYER *player = MBDPlayerGet(playerIndex);
+    GW_PLAYER *otherPlayer = MBDPlayerGet(otherIndex);
 
     if (player->nlink != otherPlayer->clink) {
         return -1;
@@ -5397,12 +5397,12 @@ s32 MBD5_WalkAttackHook(void) {
 }
 
 void MBD5Ev_ConveyorRouteBSet(void) {
-    s16 playerIndex = MBDGetCurrentPlayerIndex();
+    s16 playerIndex = MBDPlayerTurnGet();
     GwSystem.boardData.halfWordBytes[playerIndex] = 1;
 }
 
 void MBD5Ev_ConveyorRouteASet(void) {
-    GwSystem.boardData.halfWordBytes[MBDGetCurrentPlayerIndex()] = 0;
+    GwSystem.boardData.halfWordBytes[MBDPlayerTurnGet()] = 0;
 }
 
 void MBD5Ev_ConveyorRoundFlip(void) {
@@ -5410,7 +5410,7 @@ void MBD5Ev_ConveyorRoundFlip(void) {
 }
 
 void MBD5Ev_ConveyorMerge(void) {
-    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    GW_PLAYER *player = MBDPlayerGet(CUR_PLAYER);
 
     if (mbWalkNum != 0) {
         if (GwSystem.current_turn & 1) {
@@ -5437,7 +5437,7 @@ void MBD5Ev_GateGuyWarpExec(void) {
     s8 link[2];
     Vec pos[3];
     s8 playerIndex = GwSystem.current_player_index ^ 1;
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *player = MBDPlayerGet(playerIndex);
     SpaceData *space;
 
     MBDMasuLinkIdxGet(0x26, &link[0], &link[1]);

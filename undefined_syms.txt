@@ -6,18 +6,6 @@ osAppNMIBuffer = 0x8000031C;
 /* Microcode text is linked from binary segments, which have no end labels. */
 rspbootTextEnd = gspF3DEX2_fifoTextStart;
 
-D_801155E0_vine_with_me = 0x801155E0;
-D_801155E4_vine_with_me = 0x801155E4;
-D_8011564A_vine_with_me = 0x8011564A;
-D_8011564C_vine_with_me = 0x8011564C;
-D_8011565C_vine_with_me = 0x8011565C;
-D_8011565E_vine_with_me = 0x8011565E;
-D_80115660_vine_with_me = 0x80115660;
-
-func_80107CC4_silly_screws = 0x80107CC4;
-D_8010BF80_silly_screws = 0x8010BF80;
-D_8010BF84_silly_screws = 0x8010BF84;
-
 mgMapObjLastTbl = 0x800EC1BC;
 
 /* minigame field aliases: MgBssItemObjNum, MgBssPlayerObjNum. */
@@ -28,10 +16,6 @@ mgStickRotWaitTbl = mgBssPlayerObjNum + 0x2;
 mgWallMapNo = mgBssPlayerObjNum + 0x6;
 mgHitSkipCnt = mgBssPlayerObjNum + 0x8;
 mgStickRotLapTbl = mgBssPlayerObjNum + 0xA;
-
-/* Minigame table field aliases: MinigameTable (mgdata.c). */
-D_800A6D44_main = mgDataTbl + 0x4; /* minigameType */
-D_800A6D46_main = mgDataTbl + 0x6; /* flags */
 
 /* msetup field aliases: MsetupMenuContext, MsetupMessageWindows, MsetupPlayerConfig. */
 msetup_playerNum = msetupMenuContext;          /* playerCount */
@@ -91,11 +75,6 @@ inst_itemHostFunc = inst_itemHostWork + 0x4; /* update */
 
 /* gamemes "WON" string literal, now emitted by C GameMesMgWinnerExec; still referenced by the WINNERS asm. */
 
-/* gamemes character tables offset by the first character code, referenced by the CreateFontChar asm. */
-D_800B19C6_main = gMesFontLowerAnim - 0x61 * 2; /* 'a' */
-D_800B1A3E_main = gMesFontUpperAnim - 0x41 * 2; /* 'A' */
-D_800B1A76_main = gMesFontUpperAltAnim - 0x41 * 2; /* 'A' */
-
 /* profiler sample buffer sampleCount fields. */
 HuProfCpuSampleNum = HuProfCpuBuf + 0x4;
 HuProfRspSampleNum = HuProfRspBuf + 0x4;
@@ -105,9 +84,6 @@ omCharModelNoTbl = omCharModelTbl + 0x4;
 omCharMotTbl = omCharModelTbl + 0x8;
 omCharMot1Tbl = omCharModelTbl + 0xC;
 omCharMot2Tbl = omCharModelTbl + 0x10;
-
-/* Low byte of the gamework message speed, referenced by the name overlay asm. */
-D_800A12C3_main = GwMessSpeed + 0x3;
 
 /* main bss.c: arrays that sat at 2-byte or odd addresses in the original COMMON
  * layout. GCC 2.7.2 aligns array definitions to 4 bytes, so they are carved out
@@ -142,7 +118,7 @@ Hu3DSubMtxStackPrev = Hu3DSubMtxStack - 0x40;
 m264_carrierPhase = m264_carrierWork;
 m264_carrierMotNoTbl = m264_carrierWork + 0x2;
 
-/* stardust_battle: low halfword of the s32 D_80113DE4. */
+/* stardust_battle: low halfword of the s32 m265_exitTimer. */
 m265_exitTimerLo = m265_exitTimer + 0x2;
 
 /* end_of_the_line field aliases: EndOfTheLineResultWork, EndOfTheLineSceneWork. */
@@ -177,14 +153,7 @@ m269_winSide = m269_resultWork;
 m269_sidePayoutTbl = m269_resultWork + 0x2;
 m269_sideMesTbl = m269_resultWork + 0x6;
 
-/* cosmic_coaster: halfwords packed after the preceding data symbol. */
-m216_bonusCoinF = m216_exitF + 0x2;
-/* cosmic_coaster: s32 priority table whose low halfwords splat labeled. */
-m216_stageObjPrioTbl = D_8010BF82_cosmic_coaster - 0x2;
-
-
-
-/* slot_synch: priority array inside the D_8010DF64 struct. */
+/* slot_synch: priority array inside the m220_winTeamNo struct. */
 m220_stageSprPriTbl = m220_winTeamNo + 0x2;
 
 /* crazy_cogs field aliases: CrazyCogsTeamChrBss, CrazyCogsComQueueBss, CrazyCogsCrankBss. */
@@ -301,22 +270,22 @@ op_demoObjShadowNode = op_demoObjTbl + 0x38;
 
 /* aces_high: labels inside data tables, referenced by the INCLUDE_ASM function
    m223_WinViewExpand. Remove once that function is decompiled. */
-D_8010DB74_aces_high = m223_scissorTbl + 0x4;
-D_8010DB78_aces_high = m223_scissorTbl + 0x8;
-D_8010DB7C_aces_high = m223_scissorTbl + 0xC;
-D_8010DB84_aces_high = m223_scissorTbl + 0x14;
-D_8010DB88_aces_high = m223_scissorTbl + 0x18;
-D_8010DB8C_aces_high = m223_scissorTbl + 0x1C;
-D_8010DB94_aces_high = m223_scissorTbl + 0x24;
-D_8010DB98_aces_high = m223_scissorTbl + 0x28;
-D_8010DB9C_aces_high = m223_scissorTbl + 0x2C;
-D_8010DBA4_aces_high = m223_scissorTbl + 0x34;
-D_8010DBA8_aces_high = m223_scissorTbl + 0x38;
-D_8010DBAC_aces_high = m223_scissorTbl + 0x3C;
-D_8010DCB8_aces_high = m223_viewCenter + 0x4;
-D_8010DCC0_aces_high = m223_viewCornerTbl + 0x4;
+m223_scissor0Y = m223_scissorTbl + 0x4;
+m223_scissor0W = m223_scissorTbl + 0x8;
+m223_scissor0H = m223_scissorTbl + 0xC;
+m223_scissor1Y = m223_scissorTbl + 0x14;
+m223_scissor1W = m223_scissorTbl + 0x18;
+m223_scissor1H = m223_scissorTbl + 0x1C;
+m223_scissor2Y = m223_scissorTbl + 0x24;
+m223_scissor2W = m223_scissorTbl + 0x28;
+m223_scissor2H = m223_scissorTbl + 0x2C;
+m223_scissor3Y = m223_scissorTbl + 0x34;
+m223_scissor3W = m223_scissorTbl + 0x38;
+m223_scissor3H = m223_scissorTbl + 0x3C;
+m223_viewCenterY = m223_viewCenter + 0x4;
+m223_viewCornerYTbl = m223_viewCornerTbl + 0x4;
 
-/* eatsa_pizza: s16 half of the s32 D_80109138 (wipe duration). */
+/* eatsa_pizza: s16 half of the s32 m211_phaseTimer (wipe duration). */
 m211_phaseTimerLo = m211_phaseTimer + 0x2;
 /* eatsa_pizza: entries of the sprite data id / group id tables. The first three
    are also referenced by the INCLUDE_ASM function m211_PizzaEat. */
@@ -328,7 +297,7 @@ m211_pizzaSprGrpTbl = m211_sprGrpTbl + 0x2;
 m211_crumbSprGrp = m211_sprGrpTbl + 0x6;
 
 /* ice_rink_risk: unk04 of the first puck hit entry, referenced by the INCLUDE_ASM function m225_PuckHitCheck. */
-D_801085B4_ice_rink_risk = m225_puckHitTbl + 0x4;
+m225_puckHitTimerTbl = m225_puckHitTbl + 0x4;
 
 /* river_raiders: m209_wakeRotTbl/m209_objWorkTbl entries and fields, m209_skierState fields. */
 m209_boatWakeRotTbl = m209_wakeRotTbl + 0xC;
@@ -448,16 +417,16 @@ m243_hopF = m243_doorWork;
 m243_doorChrTbl = m243_doorWork + 0x2;
 
 /* w03: MB3Ev_Quicksand (INCLUDE_ASM) */
-D_8011D43C_w03 = mb3ev_quicksandExitOfsTbl + 0x4;
+mb3ev_quicksandExitOfsYTbl = mb3ev_quicksandExitOfsTbl + 0x4;
 
-/* toadstool_titan field aliases: ToadstoolTitanFlagWork, ToadstoolTitanStoolWork. */
+/* toadstool_titan field aliases: ToadstoolTitanFlagWork, ToadstoolTitanBlockWork. */
 m222_musicFTbl = m222_flagWork;
-m222_squashTimerTbl = m222_flagWork + 0x2;
-m222_stoolStateTbl = m222_stoolWork;
-m222_squashDirTbl = m222_stoolWork + 0x9;
-m222_playerGroupTbl = m222_stoolWork + 0xD;
+m222_outTimerTbl = m222_flagWork + 0x2;
+m222_blockStateTbl = m222_blockWork;
+m222_outDirTbl = m222_blockWork + 0x9;
+m222_playerGroupTbl = m222_blockWork + 0xD;
 
-/* modesel aliases: s16 low halves, parallel-array views; modesel_HostFallObjMain (INCLUDE_ASM) uses D_80110CE4. */
+/* modesel aliases: s16 low halves, parallel-array views; modesel_HostFallObjMain (INCLUDE_ASM) uses modesel_hostJumpPos1. */
 modesel_winPosYHalf = modesel_winPosY + 0x2;
 modesel_storyChrHalf = modesel_storyChr + 0x2;
 modesel_modelScaleTbl = modesel_modelTbl + 0x10;
@@ -465,7 +434,7 @@ modesel_winMesTbl = modesel_winTbl + 0x4;
 modesel_winTypeTbl = modesel_winTbl + 0x8;
 modesel_spotEffMaxTime = modesel_spotEffTime + 0x4;
 modesel_spotEffObj = modesel_spotEffTime + 0x8;
-D_80110CE4_modesel = modesel_hostJumpPosTbl + 0xC;
+modesel_hostJumpPos1 = modesel_hostJumpPosTbl + 0xC;
 
 /* hide_and_sneak field aliases: HideAndSneakRoundBss, HideAndSneakResultBss. */
 m206_roundNo = m206_roundBss;
@@ -530,17 +499,18 @@ mbItemMasuGive1 = mbItemMasuGiveTbl + 0x4; /* [1] */
 mbItemMasuGive2 = mbItemMasuGiveTbl + 0x8; /* [2] */
 
 /* duel03: MBD3_ComBranch2Lv3PlayerCheck (INCLUDE_ASM) */
-D_80117664_duel03 = mbd3_comLinkIdxTbl + 0x10; /* [2] */
+mbd3_comLinkIdx2Tbl = mbd3_comLinkIdxTbl + 0x10; /* [2] */
 
-/* duel04: MBD4_ComBlowhardBranchFrom19Sel2Lv3Check, MBD4_ComBlowhardBranchFrom13Sel2Lv3Check (INCLUDE_ASM) */
-D_80119EC2_duel04 = mbd4_comLink0IdxTbl - 0x2;
-D_80119ECA_duel04 = mbd4_comLink0RevIdxTbl - 0x2;
-D_80119ED2_duel04 = mbd4_comLink1IdxTbl - 0x2;
-D_80119EDA_duel04 = mbd4_comLink1RevIdxTbl - 0x2;
-D_80119EE2_duel04 = mbd4_comLink2IdxTbl - 0x2;
-D_80119EEA_duel04 = mbd4_comLink2RevIdxTbl - 0x2;
-D_80119EF2_duel04 = mbd4_comLink3IdxTbl - 0x2;
-D_80119EFA_duel04 = mbd4_comLink3RevIdxTbl - 0x2;
+/* duel04: MBD4_ComBlowhardBranchFrom19Sel2Lv3Check, MBD4_ComBlowhardBranchFrom13Sel2Lv3Check (INCLUDE_ASM);
+   ...BiasTbl = the table viewed from index -2. */
+mbd4_comLink0IdxBiasTbl = mbd4_comLink0IdxTbl - 0x2;
+mbd4_comLink0RevIdxBiasTbl = mbd4_comLink0RevIdxTbl - 0x2;
+mbd4_comLink1IdxBiasTbl = mbd4_comLink1IdxTbl - 0x2;
+mbd4_comLink1RevIdxBiasTbl = mbd4_comLink1RevIdxTbl - 0x2;
+mbd4_comLink2IdxBiasTbl = mbd4_comLink2IdxTbl - 0x2;
+mbd4_comLink2RevIdxBiasTbl = mbd4_comLink2RevIdxTbl - 0x2;
+mbd4_comLink3IdxBiasTbl = mbd4_comLink3IdxTbl - 0x2;
+mbd4_comLink3RevIdxBiasTbl = mbd4_comLink3RevIdxTbl - 0x2;
 
 /* duel06: misaligned BSS */
 mbd6_switchMot = mbd6_switchMdlTbl + 0xA;

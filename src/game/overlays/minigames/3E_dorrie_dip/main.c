@@ -9,7 +9,7 @@ typedef struct {
     f32 posY[6];
     f32 posZ[6];
     s32 flags[6];
-} DorrieDipEffects;
+} DorrieDipBurst;
 
 typedef struct {
     f32 posX[6];
@@ -17,13 +17,13 @@ typedef struct {
     f32 posZ[6];
     f32 scaleX[6];
     s32 flags[6];
-} DorrieDipWakes;
+} DorrieDipWake;
 
 typedef struct {
     s32 grabDelay;
-    s32 targetDip;
+    s32 targetRaft;
     s32 triggered;
-} DorrieDipCpu;
+} DorrieDipCom;
 
 typedef struct {
     u8 unk00[3];
@@ -32,7 +32,7 @@ typedef struct {
     u8 unk05[3];
     f32 unk08;
     u8 unk0C[0xA8];
-} DorrieDipBackground;
+} DorrieDipStage;
 
 typedef struct {
     s32 flags;
@@ -47,13 +47,13 @@ typedef struct {
     s32 unk14;
     f32 unk18;
     f32 unk1C;
-} DorrieDipData;
+} DorrieDipKoopa;
 
 typedef struct {
     s32 unk00[6];
     f32 unk18[6];
     f32 unk30[6];
-} DorrieDipDips;
+} DorrieDipRaft;
 
 // One entry per player.
 typedef struct {
@@ -67,7 +67,7 @@ typedef struct {
     f32 unk8C[5];
     s32 flags[5];
     s32 playerIdx[5];
-} DorrieDipSplashes; // sizeof 0xC8
+} DorrieDipItem; // sizeof 0xC8
 
 extern u16 mgInstColumnTbl[];
 extern u16 mgInstSlotTbl[];
@@ -102,7 +102,7 @@ f32 m262_waterAngle BSS;
 omObjData *m262_burstObj BSS;
 omObjData *m262_rippleObj BSS;
 s32 m262_rippleFlag BSS;
-DorrieDipCpu m262_comWork BSS;
+DorrieDipCom m262_comWork BSS;
 omObjData *m262_wakeObj BSS;
 
 /* Low halfword of m262_playerNo. */
@@ -309,24 +309,24 @@ void m262_ExitObjMain(omObjData *obj) {
 void m262_RaftObjCreate(void) {
     s32 i;
     omObjData *obj;
-    DorrieDipDips *dips;
+    DorrieDipRaft *rafts;
     s32 modelFlags = 0x699;
     s32 splashFlags = 0x69D;
 
     obj = omAddObj(250, 12, 0, -1, m262_RaftObjMain);
     m262_raftObj = obj;
-    obj->data = HuMemAllocTag(sizeof(DorrieDipDips), TAG_OVERLAY);
-    dips = obj->data;
+    obj->data = HuMemAllocTag(sizeof(DorrieDipRaft), TAG_OVERLAY);
+    rafts = obj->data;
     for (i = 0; i < 6; i++) {
-        dips->unk00[i] = 0;
-        dips->unk18[i] = i * 60.0f;
-        dips->unk30[i] = 0;
+        rafts->unk00[i] = 0;
+        rafts->unk18[i] = i * 60.0f;
+        rafts->unk30[i] = 0;
         if (i == 0) {
             obj->model[i] = Hu3DModelRead(0x5F0002, modelFlags);
-            omSetRot(obj, 0.0f, dips->unk18[i], 0.0f);
+            omSetRot(obj, 0.0f, rafts->unk18[i], 0.0f);
         } else {
             obj->model[i] = Hu3DModelLink(obj->model[0]);
-            Hu3DModelRotSet(obj->model[i], 0.0f, dips->unk18[i], 0.0f);
+            Hu3DModelRotSet(obj->model[i], 0.0f, rafts->unk18[i], 0.0f);
         }
     }
     for (i = 0; i < 6; i++) {
@@ -343,38 +343,38 @@ void m262_RaftObjCreate(void) {
 
 void m262_RaftObjMain(omObjData *obj) {
     s32 i;
-    DorrieDipDips *dips = obj->data;
+    DorrieDipRaft *rafts = obj->data;
     f32 x, y, z;
 
     for (i = 0; i < 6; i++) {
-        x = sindf(dips->unk18[i]) * 450.0f;
+        x = sindf(rafts->unk18[i]) * 450.0f;
         y = m262_waterY;
-        z = cosdf(dips->unk18[i]) * 450.0f;
+        z = cosdf(rafts->unk18[i]) * 450.0f;
         if (i == 0) {
             omSetTra(obj, x, y, z);
-            omSetRot(obj, 0.0f, dips->unk18[i], 0.0f);
+            omSetRot(obj, 0.0f, rafts->unk18[i], 0.0f);
         } else {
             Hu3DModelPosSet(obj->model[i], x, y, z);
-            Hu3DModelRotSet(obj->model[i], 0.0f, dips->unk18[i], 0.0f);
+            Hu3DModelRotSet(obj->model[i], 0.0f, rafts->unk18[i], 0.0f);
         }
     }
     for (i = 0; i < 6; i++) {
-        x = sindf(dips->unk18[i]) * 450.0f;
-        z = cosdf(dips->unk18[i]) * 450.0f;
+        x = sindf(rafts->unk18[i]) * 450.0f;
+        z = cosdf(rafts->unk18[i]) * 450.0f;
         Hu3DModelPosSet(obj->model[i + 6], x, 0.0f, z);
-        Hu3DModelRotSet(obj->model[i + 6], 0.0f, dips->unk18[i], 0.0f);
+        Hu3DModelRotSet(obj->model[i + 6], 0.0f, rafts->unk18[i], 0.0f);
     }
     for (i = 0; i < 6; i++) {
-        if (dips->unk00[i] & 1) {
-            dips->unk18[i] -= dips->unk30[i];
-            if (dips->unk18[i] <= 0.0f) {
-                dips->unk18[i] += 360.0f;
+        if (rafts->unk00[i] & 1) {
+            rafts->unk18[i] -= rafts->unk30[i];
+            if (rafts->unk18[i] <= 0.0f) {
+                rafts->unk18[i] += 360.0f;
             }
-            dips->unk30[i] += 0.2f;
-            if (dips->unk30[i] > 4.8f) {
-                dips->unk30[i] = 4.8f;
+            rafts->unk30[i] += 0.2f;
+            if (rafts->unk30[i] > 4.8f) {
+                rafts->unk30[i] = 4.8f;
             }
-            if (dips->unk30[i] >= 4.0f && dips->unk30[i] < 4.2f) {
+            if (rafts->unk30[i] >= 4.0f && rafts->unk30[i] < 4.2f) {
                 Hu3DModelAttrSet(m262_raftObj->model[i + 6], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 Hu3DMotionAttrSet(m262_raftObj->model[i + 6], 2, 2);
             }
@@ -384,10 +384,10 @@ void m262_RaftObjMain(omObjData *obj) {
 
 void m262_RaftSpinStart(void) {
     s32 i;
-    DorrieDipDips *dips = (DorrieDipDips *)m262_raftObj->data;
+    DorrieDipRaft *rafts = (DorrieDipRaft *)m262_raftObj->data;
 
     for (i = 0; i < 6; i++) {
-        dips->unk00[i] |= 1;
+        rafts->unk00[i] |= 1;
     }
 }
 
@@ -416,12 +416,12 @@ void m262_DorrieObjCreate(void) {
 void m262_DorrieObjMain(omObjData *obj) {
     Vec hookPos;
     s32 i;
-    s32 splashIdx;
+    s32 itemIdx;
     f32 time;
     DorrieDipDorrie *data = obj->data;
-    DorrieDipDips *dips = m262_raftObj->data;
-    DorrieDipSplashes *splashes = m262_itemObj->data;
-    DorrieDipData *item = m262_koopaObj->data;
+    DorrieDipRaft *rafts = m262_raftObj->data;
+    DorrieDipItem *items = m262_itemObj->data;
+    DorrieDipKoopa *koopa = m262_koopaObj->data;
 
     if ((data->flags & 2) && Hu3DData[obj->model[0]].motTime == 50.0f &&
         data->hookPos.y < 20.0f && m262_grabRaftNo == -1 && data->grabTimer < 15) {
@@ -429,7 +429,7 @@ void m262_DorrieObjMain(omObjData *obj) {
             Hu3DMotionAttrSet(obj->model[0], 8, 8);
         }
         for (i = 0; i < 6; i++) {
-            if (dips->unk18[i] >= 265.0f && dips->unk18[i] < 275.0f) {
+            if (rafts->unk18[i] >= 265.0f && rafts->unk18[i] < 275.0f) {
                 m262_grabRaftNo = i;
                 omVibrate(m262_playerNoS16, 10, 0, 10);
                 break;
@@ -439,18 +439,18 @@ void m262_DorrieObjMain(omObjData *obj) {
             Hu3DModelHookSet(m262_raftObj->model[m262_grabRaftNo], obj->model[0], "item_hook");
             Hu3DModelAttrSet(m262_raftObj->model[m262_grabRaftNo], 0x4000, 0x4000);
             Hu3DModelAttrSet(m262_raftObj->model[m262_grabRaftNo + 6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-            dips->unk00[m262_grabRaftNo] &= ~1;
+            rafts->unk00[m262_grabRaftNo] &= ~1;
             Hu3DMotionAttrSet(obj->model[0], 8, 0);
             if (m262_grabRaftNo == m262_koopaRaftNo) {
-                item->unk14 |= 4;
+                koopa->unk14 |= 4;
             } else {
-                splashIdx = -1;
+                itemIdx = -1;
                 for (i = 0; i < 5; i++) {
-                    if (splashes->playerIdx[i] == m262_grabRaftNo) {
-                        splashIdx = i;
+                    if (items->playerIdx[i] == m262_grabRaftNo) {
+                        itemIdx = i;
                     }
                 }
-                splashes->flags[splashIdx] |= 4;
+                items->flags[itemIdx] |= 4;
                 HuAudFXPlay(0x4E6);
             }
         }
@@ -627,18 +627,18 @@ void m262_ItemObjCreate(void) {
     s32 used[16]; // Initialized but unused in the original function.
     s32 itemFiles[16] = { 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60 };
     omObjData *obj;
-    DorrieDipSplashes *splashes;
-    DorrieDipDips *dips;
+    DorrieDipItem *items;
+    DorrieDipRaft *rafts;
     s32 itemIdx;
     s32 i;
     void *spriteData;
     s16 sprite;
 
     obj = omAddObj(254, 10, 0, -1, m262_ItemObjMain);
-    obj->data = HuMemAllocTag(sizeof(DorrieDipSplashes), TAG_OVERLAY);
+    obj->data = HuMemAllocTag(sizeof(DorrieDipItem), TAG_OVERLAY);
     m262_itemObj = obj;
-    splashes = obj->data;
-    dips = m262_raftObj->data;
+    items = obj->data;
+    rafts = m262_raftObj->data;
     for (i = 0; i < 16; i++) {
         used[i] = 0;
     }
@@ -656,21 +656,21 @@ void m262_ItemObjCreate(void) {
         DataClose(spriteData);
         obj->model[itemIdx] = Hu3DSprModelData[sprite].modelId;
         Hu3DModelObjAttrSet(obj->model[itemIdx], 0x70000000, 0x70000000);
-        splashes->posX[itemIdx] = sindf(dips->unk18[i]) * 450.0f;
-        splashes->posY[itemIdx] = 1500.0f;
-        splashes->posZ[itemIdx] = cosdf(dips->unk18[i]) * 450.0f;
-        splashes->playerIdx[itemIdx] = i;
-        splashes->unk64[itemIdx] = 30.0f;
-        splashes->unk8C[itemIdx] = 0;
-        splashes->unk78[itemIdx] = 0;
+        items->posX[itemIdx] = sindf(rafts->unk18[i]) * 450.0f;
+        items->posY[itemIdx] = 1500.0f;
+        items->posZ[itemIdx] = cosdf(rafts->unk18[i]) * 450.0f;
+        items->playerIdx[itemIdx] = i;
+        items->unk64[itemIdx] = 30.0f;
+        items->unk8C[itemIdx] = 0;
+        items->unk78[itemIdx] = 0;
         if (itemIdx == 0) {
-            omSetTra(obj, splashes->posX[itemIdx], splashes->posY[itemIdx], splashes->posZ[itemIdx]);
+            omSetTra(obj, items->posX[itemIdx], items->posY[itemIdx], items->posZ[itemIdx]);
             omSetSca(obj, 3.0f, 3.0f, 3.0f);
         } else {
-            Hu3DModelPosSet(obj->model[itemIdx], splashes->posX[itemIdx], splashes->posY[itemIdx], splashes->posZ[itemIdx]);
+            Hu3DModelPosSet(obj->model[itemIdx], items->posX[itemIdx], items->posY[itemIdx], items->posZ[itemIdx]);
             Hu3DModelScaleSet(obj->model[itemIdx], 3.0f, 3.0f, 3.0f);
         }
-        splashes->flags[itemIdx] = 0;
+        items->flags[itemIdx] = 0;
         if (itemIdx == 0) {
             obj->model[itemIdx + 5] = Hu3DModelRead(9, 0x4A9);
         } else {
@@ -682,84 +682,84 @@ void m262_ItemObjCreate(void) {
 
 void m262_ItemObjMain(omObjData *obj) {
     s32 i;
-    DorrieDipSplashes *splashes = obj->data;
-    DorrieDipDips *dips = m262_raftObj->data;
+    DorrieDipItem *items = obj->data;
+    DorrieDipRaft *rafts = m262_raftObj->data;
     DorrieDipDorrie *dorrie = m262_dorrieObj->data;
 
     for (i = 0; i < 5; i++) {
         if (i == 0) {
-            omSetTra(obj, splashes->posX[i], splashes->posY[i], splashes->posZ[i]);
+            omSetTra(obj, items->posX[i], items->posY[i], items->posZ[i]);
         } else {
-            Hu3DModelPosSet(obj->model[i], splashes->posX[i], splashes->posY[i], splashes->posZ[i]);
+            Hu3DModelPosSet(obj->model[i], items->posX[i], items->posY[i], items->posZ[i]);
         }
-        Hu3DModelPosSet(obj->model[i + 5], splashes->posX[i], splashes->unk64[i], splashes->posZ[i]);
-        if (splashes->flags[i] & 4) {
-            splashes->unk50[i] = 1.0f;
+        Hu3DModelPosSet(obj->model[i + 5], items->posX[i], items->unk64[i], items->posZ[i]);
+        if (items->flags[i] & 4) {
+            items->unk50[i] = 1.0f;
         } else {
-            splashes->unk50[i] = (1440.0f - splashes->posY[i]) / 1440.0f;
+            items->unk50[i] = (1440.0f - items->posY[i]) / 1440.0f;
         }
-        Hu3DModelScaleSet(obj->model[i + 5], splashes->unk50[i], 1.0f, splashes->unk50[i]);
-        if (splashes->flags[i] & 1) {
-            splashes->posX[i] = sindf(dips->unk18[splashes->playerIdx[i]]) * 450.0f;
-            splashes->posY[i] = m262_waterY + 60.0f;
-            splashes->posZ[i] = cosdf(dips->unk18[splashes->playerIdx[i]]) * 450.0f;
+        Hu3DModelScaleSet(obj->model[i + 5], items->unk50[i], 1.0f, items->unk50[i]);
+        if (items->flags[i] & 1) {
+            items->posX[i] = sindf(rafts->unk18[items->playerIdx[i]]) * 450.0f;
+            items->posY[i] = m262_waterY + 60.0f;
+            items->posZ[i] = cosdf(rafts->unk18[items->playerIdx[i]]) * 450.0f;
         }
-        if (splashes->flags[i] & 2) {
-            splashes->posY[i] += splashes->velY[i];
-            splashes->velY[i] -= 3.0f;
-            if (splashes->posY[i] <= 60.0f) {
-                splashes->posY[i] = 60.0f;
-                splashes->flags[i] &= ~2;
-                splashes->flags[i] |= 1;
+        if (items->flags[i] & 2) {
+            items->posY[i] += items->velY[i];
+            items->velY[i] -= 3.0f;
+            if (items->posY[i] <= 60.0f) {
+                items->posY[i] = 60.0f;
+                items->flags[i] &= ~2;
+                items->flags[i] |= 1;
             }
         }
-        if (splashes->flags[i] & 4) {
-            splashes->posX[i] = dorrie->hookPos.x;
-            splashes->posY[i] = dorrie->hookPos.y + 80.0f;
-            splashes->posZ[i] = dorrie->hookPos.z;
-            splashes->unk64[i] = dorrie->hookPos.y + 30.0f;
+        if (items->flags[i] & 4) {
+            items->posX[i] = dorrie->hookPos.x;
+            items->posY[i] = dorrie->hookPos.y + 80.0f;
+            items->posZ[i] = dorrie->hookPos.z;
+            items->unk64[i] = dorrie->hookPos.y + 30.0f;
         }
-        if (splashes->flags[i] & 8) {
-            splashes->posY[i] = sindf(splashes->unk78[i]) * 50.0f + splashes->unk8C[i];
-            splashes->unk78[i] += 5.0f;
-            if (splashes->unk78[i] >= 360.0f) {
-                splashes->unk78[i] -= 360.0f;
+        if (items->flags[i] & 8) {
+            items->posY[i] = sindf(items->unk78[i]) * 50.0f + items->unk8C[i];
+            items->unk78[i] += 5.0f;
+            if (items->unk78[i] >= 360.0f) {
+                items->unk78[i] -= 360.0f;
             }
-            EffectPosSet(m262_itemEffNo, splashes->posX[i], splashes->posY[i], splashes->posZ[i]);
+            EffectPosSet(m262_itemEffNo, items->posX[i], items->posY[i], items->posZ[i]);
         }
     }
 }
 
 void m262_ItemDropStart(void) {
     s32 i;
-    DorrieDipSplashes *splashes = (DorrieDipSplashes *)m262_itemObj->data;
+    DorrieDipItem *items = (DorrieDipItem *)m262_itemObj->data;
 
     for (i = 0; i < 5; i++) {
-        splashes->flags[i] |= 2;
-        splashes->velY[i] = 0;
-        splashes->posY[i] = 1500.0f;
+        items->flags[i] |= 2;
+        items->velY[i] = 0;
+        items->posY[i] = 1500.0f;
     }
 }
 
 void m262_KoopaObjCreate(void) {
     omObjData *obj;
-    DorrieDipData *data;
-    DorrieDipDips *dips;
+    DorrieDipKoopa *data;
+    DorrieDipRaft *rafts;
 
     obj = omAddObj(254, 2, 3, -1, m262_KoopaObjMain);
-    obj->data = HuMemAllocTag(sizeof(DorrieDipData), TAG_OVERLAY);
+    obj->data = HuMemAllocTag(sizeof(DorrieDipKoopa), TAG_OVERLAY);
     m262_koopaObj = obj;
     data = obj->data;
-    dips = m262_raftObj->data;
+    rafts = m262_raftObj->data;
     obj->model[0] = Hu3DModelRead(0xA00EE, 0x4B9);
     obj->model[1] = Hu3DModelRead(9, 0x4A9);
     omObjMotionRead(obj, 0, 0xA00EF);
     omObjMotionRead(obj, 1, 0xA00F6);
     omObjMotionRead(obj, 2, 0xA00F1);
     Hu3DMotionAttrSet(obj->model[0], 2, 2);
-    data->pos.x = sindf(dips->unk18[m262_koopaRaftNo]) * 450.0f;
+    data->pos.x = sindf(rafts->unk18[m262_koopaRaftNo]) * 450.0f;
     data->pos.y = 1500.0f;
-    data->pos.z = cosdf(dips->unk18[m262_koopaRaftNo]) * 450.0f;
+    data->pos.z = cosdf(rafts->unk18[m262_koopaRaftNo]) * 450.0f;
     data->unk1C = 30.0f;
     data->unk10 = 0;
     data->unk14 = 0;
@@ -767,8 +767,8 @@ void m262_KoopaObjCreate(void) {
 }
 
 void m262_KoopaObjMain(omObjData *obj) {
-    DorrieDipData *data = obj->data;
-    DorrieDipDips *dips = m262_raftObj->data;
+    DorrieDipKoopa *data = obj->data;
+    DorrieDipRaft *rafts = m262_raftObj->data;
     DorrieDipDorrie *dorrie = m262_dorrieObj->data;
 
     omSetTra(obj, data->pos.x, data->pos.y, data->pos.z);
@@ -781,15 +781,15 @@ void m262_KoopaObjMain(omObjData *obj) {
     }
     Hu3DModelScaleSet(obj->model[1], data->unk18, 1.0f, data->unk18);
     if (data->unk14 & 2) {
-        data->pos.x = sindf(dips->unk18[m262_koopaRaftNo]) * 450.0f;
+        data->pos.x = sindf(rafts->unk18[m262_koopaRaftNo]) * 450.0f;
         data->pos.y = 50.0f;
-        data->pos.z = cosdf(dips->unk18[m262_koopaRaftNo]) * 450.0f;
-        data->unk10 = dips->unk18[m262_koopaRaftNo];
+        data->pos.z = cosdf(rafts->unk18[m262_koopaRaftNo]) * 450.0f;
+        data->unk10 = rafts->unk18[m262_koopaRaftNo];
     }
     if (data->unk14 & 1) {
         data->pos.y += data->unk0C;
         data->unk0C -= 3.0f;
-        data->unk10 = dips->unk18[m262_koopaRaftNo];
+        data->unk10 = rafts->unk18[m262_koopaRaftNo];
         if (data->pos.y <= 60.0f) {
             data->pos.y = 60.0f;
             data->unk14 &= ~1;
@@ -805,7 +805,7 @@ void m262_KoopaObjMain(omObjData *obj) {
 }
 
 void m262_KoopaDropStart(void) {
-    DorrieDipData *data = m262_koopaObj->data;
+    DorrieDipKoopa *data = m262_koopaObj->data;
 
     data->unk14 |= 1;
     data->unk0C = 0;
@@ -827,8 +827,8 @@ void m262_KoopaLeaveStart(void) {
 }
 
 void m262_KoopaLeaveProc(void) {
-    DorrieDipData *data = m262_koopaObj->data;
-    DorrieDipDips *dips = m262_raftObj->data;
+    DorrieDipKoopa *data = m262_koopaObj->data;
+    DorrieDipRaft *rafts = m262_raftObj->data;
     f32 radius;
     f32 velY;
     s32 landed;
@@ -849,11 +849,11 @@ void m262_KoopaLeaveProc(void) {
     }
     radius = 450.0f;
     velY = 90.0f;
-    data->unk10 = dips->unk18[m262_koopaRaftNo];
+    data->unk10 = rafts->unk18[m262_koopaRaftNo];
     Hu3DMotionModelSet(m262_koopaObj->model[0], m262_koopaObj->motion[1]);
     landed = 0;
     while (radius < 1050.0f) {
-        data->pos.x = radius * sindf(dips->unk18[m262_koopaRaftNo]);
+        data->pos.x = radius * sindf(rafts->unk18[m262_koopaRaftNo]);
         data->pos.y = velY + data->pos.y;
         velY -= 10.0f;
         radius += 30.0f;
@@ -865,7 +865,7 @@ void m262_KoopaLeaveProc(void) {
                 Hu3DMotionAttrSet(m262_koopaObj->model[0], 2, 2);
             }
         }
-        data->pos.z = radius * cosdf(dips->unk18[m262_koopaRaftNo]);
+        data->pos.z = radius * cosdf(rafts->unk18[m262_koopaRaftNo]);
         HuPrcVSleep();
     }
     omDelPrcObj(NULL);
@@ -876,13 +876,13 @@ void m262_TimeUpStart(void) {
 }
 
 void m262_TimeUpProc(void) {
-    DorrieDipData *data = m262_koopaObj->data;
-    DorrieDipDips *dips = m262_raftObj->data;
+    DorrieDipKoopa *data = m262_koopaObj->data;
+    DorrieDipRaft *rafts = m262_raftObj->data;
     s32 i;
     f32 rotStep;
 
     for (i = 0; i < 6; i++) {
-        dips->unk00[i] &= ~1;
+        rafts->unk00[i] &= ~1;
         Hu3DModelAttrSet(m262_raftObj->model[i + 6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         if (i != m262_koopaRaftNo) {
             m262_RaftBurst(i);
@@ -952,11 +952,11 @@ void m262_TimerProc(void) {
 
 void m262_StageObjCreate(void) {
     omObjData *obj;
-    DorrieDipBackground *data;
+    DorrieDipStage *data;
 
     obj = omAddObj(255, 4, 0, -1, m262_StageObjMain);
     m262_stageObjTbl[0] = obj;
-    data = HuMemAllocTag(sizeof(DorrieDipBackground), TAG_OVERLAY);
+    data = HuMemAllocTag(sizeof(DorrieDipStage), TAG_OVERLAY);
     obj->data = data;
     obj->model[0] = Hu3DModelRead2(0x5F0000, 0x699);
     obj->model[1] = Hu3DModelRead2(0x5F0001, 0x699);
@@ -968,7 +968,7 @@ void m262_StageObjCreate(void) {
     obj->trans.z = 0;
     MgMapBaseSet(mgMapObjNum);
     mgMapObjTbl[mgMapObjNum++] = obj;
-    memset(obj->data, 0, sizeof(DorrieDipBackground));
+    memset(obj->data, 0, sizeof(DorrieDipStage));
     data->unk03 = 1;
     data->unk08 = 0.5f;
     data->unk04 = 0;
@@ -1009,12 +1009,12 @@ void m262_HookPosGet(s16 model, char *hook, s16 time, Vec *pos) {
 void m262_BurstObjCreate(void) {
     s32 i;
     omObjData *obj;
-    DorrieDipEffects *data;
+    DorrieDipBurst *data;
     s32 flags = 0xA3D;
 
     obj = omAddObj(255, 6, 0, -1, m262_BurstObjMain);
     m262_burstObj = obj;
-    obj->data = HuMemAllocTag(sizeof(DorrieDipEffects), TAG_OVERLAY);
+    obj->data = HuMemAllocTag(sizeof(DorrieDipBurst), TAG_OVERLAY);
     data = obj->data;
     for (i = 0; i < 6; i++) {
         if (i == 0) {
@@ -1029,12 +1029,12 @@ void m262_BurstObjCreate(void) {
 void m262_BurstObjMain(omObjData *obj) {
     s32 i;
     f32 x, z;
-    DorrieDipEffects *data = obj->data;
-    DorrieDipDips *dips = m262_raftObj->data;
+    DorrieDipBurst *data = obj->data;
+    DorrieDipRaft *rafts = m262_raftObj->data;
 
     for (i = 0; i < 6; i++) {
-        x = sindf(dips->unk18[i]) * 450.0f;
-        z = cosdf(dips->unk18[i]) * 450.0f;
+        x = sindf(rafts->unk18[i]) * 450.0f;
+        z = cosdf(rafts->unk18[i]) * 450.0f;
         data->posX[i] = x;
         data->posY[i] = 50.0f;
         data->posZ[i] = z;
@@ -1055,42 +1055,42 @@ void m262_BurstObjMain(omObjData *obj) {
     }
 }
 
-void m262_RaftBurst(s32 dipIdx) {
+void m262_RaftBurst(s32 raftIdx) {
     s32 i;
-    s32 splashIdx;
+    s32 itemIdx;
     f32 x, z;
-    DorrieDipEffects *effects = m262_burstObj->data;
-    DorrieDipDips *dips = m262_raftObj->data;
-    DorrieDipSplashes *splashes = m262_itemObj->data;
+    DorrieDipBurst *effects = m262_burstObj->data;
+    DorrieDipRaft *rafts = m262_raftObj->data;
+    DorrieDipItem *items = m262_itemObj->data;
     DorrieDipDorrie *dorrie = m262_dorrieObj->data;
 
-    Hu3DModelAttrSet(m262_raftObj->model[dipIdx], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    Hu3DModelAttrSet(m262_raftObj->model[dipIdx + 6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    splashIdx = -1;
+    Hu3DModelAttrSet(m262_raftObj->model[raftIdx], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(m262_raftObj->model[raftIdx + 6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    itemIdx = -1;
     for (i = 0; i < 5; i++) {
-        if (splashes->playerIdx[i] == dipIdx) {
-            splashIdx = i;
+        if (items->playerIdx[i] == raftIdx) {
+            itemIdx = i;
         }
     }
-    if (splashIdx != -1) {
-        if (dipIdx != m262_grabRaftNo) {
-            Hu3DModelAttrSet(m262_itemObj->model[splashIdx], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    if (itemIdx != -1) {
+        if (raftIdx != m262_grabRaftNo) {
+            Hu3DModelAttrSet(m262_itemObj->model[itemIdx], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         }
-        Hu3DModelAttrSet(m262_itemObj->model[splashIdx + 5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(m262_itemObj->model[itemIdx + 5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
-    x = sindf(dips->unk18[dipIdx]) * 450.0f;
-    z = cosdf(dips->unk18[dipIdx]) * 450.0f;
-    effects->posX[dipIdx] = x;
-    effects->posY[dipIdx] = 50.0f;
-    effects->posZ[dipIdx] = z;
-    if (dipIdx == m262_grabRaftNo) {
-        effects->posX[dipIdx] = dorrie->hookPos.x;
-        effects->posY[dipIdx] = dorrie->hookPos.y;
-        effects->posZ[dipIdx] = dorrie->hookPos.z;
+    x = sindf(rafts->unk18[raftIdx]) * 450.0f;
+    z = cosdf(rafts->unk18[raftIdx]) * 450.0f;
+    effects->posX[raftIdx] = x;
+    effects->posY[raftIdx] = 50.0f;
+    effects->posZ[raftIdx] = z;
+    if (raftIdx == m262_grabRaftNo) {
+        effects->posX[raftIdx] = dorrie->hookPos.x;
+        effects->posY[raftIdx] = dorrie->hookPos.y;
+        effects->posZ[raftIdx] = dorrie->hookPos.z;
     }
-    dips->unk00[dipIdx] &= ~1;
-    effects->flags[dipIdx] |= 1;
-    Hu3DModelAttrSet(m262_burstObj->model[dipIdx], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    rafts->unk00[raftIdx] &= ~1;
+    effects->flags[raftIdx] |= 1;
+    Hu3DModelAttrSet(m262_burstObj->model[raftIdx], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DMotionAttrSet(m262_stageObjTbl[0]->model[1], 1, 1);
 }
 
@@ -1130,40 +1130,40 @@ void m262_ItemGetStart(void) {
 
 void m262_ItemGetProc(void) {
     s32 i;
-    s32 splashIdx;
+    s32 itemIdx;
     f32 deltaX, deltaZ, startY, angle;
-    DorrieDipSplashes *splashes;
+    DorrieDipItem *items;
     DorrieDipDorrie *dorrie;
 
     HuAudFXPlay(25);
-    splashes = m262_itemObj->data;
+    items = m262_itemObj->data;
     dorrie = m262_dorrieObj->data;
     m262_itemEffNo = EffectCreate(0xB0004, 0x6A9);
-    splashIdx = -1;
+    itemIdx = -1;
     for (i = 0; i < 5; i++) {
-        if (splashes->playerIdx[i] == m262_grabRaftNo) {
-            splashIdx = i;
+        if (items->playerIdx[i] == m262_grabRaftNo) {
+            itemIdx = i;
         }
     }
-    if (splashIdx == -1) {
+    if (itemIdx == -1) {
         osSyncPrintf("!!\n");
     }
-    splashes->flags[splashIdx] &= ~4;
-    splashes->flags[splashIdx] &= ~1;
-    splashes->flags[splashIdx] |= 8;
+    items->flags[itemIdx] &= ~4;
+    items->flags[itemIdx] &= ~1;
+    items->flags[itemIdx] |= 8;
     deltaX = mgPlayerObjTbl[0]->trans.x - dorrie->hookPos.x;
     deltaZ = mgPlayerObjTbl[0]->trans.z - dorrie->hookPos.z;
-    startY = splashes->posY[splashIdx];
+    startY = items->posY[itemIdx];
     for (i = 0; i < 30; i++) {
-        splashes->posX[splashIdx] = deltaX / 30.0f + splashes->posX[splashIdx];
+        items->posX[itemIdx] = deltaX / 30.0f + items->posX[itemIdx];
         angle = i * 180.0f / 30.0f;
-        splashes->unk8C[splashIdx] = sindf(angle) * 400.0f + startY;
+        items->unk8C[itemIdx] = sindf(angle) * 400.0f + startY;
         if (angle > 90.0f) {
-            if (splashes->unk8C[splashIdx] < mgPlayerObjTbl[0]->trans.y + 300.0f) {
-                splashes->unk8C[splashIdx] = mgPlayerObjTbl[0]->trans.y + 300.0f;
+            if (items->unk8C[itemIdx] < mgPlayerObjTbl[0]->trans.y + 300.0f) {
+                items->unk8C[itemIdx] = mgPlayerObjTbl[0]->trans.y + 300.0f;
             }
         }
-        splashes->posZ[splashIdx] = deltaZ / 30.0f + splashes->posZ[splashIdx];
+        items->posZ[itemIdx] = deltaZ / 30.0f + items->posZ[itemIdx];
         HuPrcVSleep();
     }
     omDelPrcObj(NULL);
@@ -1251,7 +1251,7 @@ void m262_RippleProc(void) {
 void m262_ComInit(void) {
     s32 i;
     s32 total;
-    s32 targetDip;
+    s32 targetRaft;
     s32 chance;
 
     chance = (u8)(rand8() % 100);
@@ -1264,49 +1264,49 @@ void m262_ComInit(void) {
     if (i == 5) {
         i = 4;
     }
-    targetDip = 0;
+    targetRaft = 0;
     for (total = 0; total < 6; total++) {
         if (m262_raftItemTbl[total] == i) {
-            targetDip = total;
+            targetRaft = total;
         }
     }
     chance = (u8)(rand8() % 100);
     switch (GwPlayer[m262_playerNo].cpu_difficulty) {
         case 0:
             if (chance < 20) {
-                targetDip = m262_koopaRaftNo;
+                targetRaft = m262_koopaRaftNo;
             }
             break;
         case 1:
             if (chance < 15) {
-                targetDip = m262_koopaRaftNo;
+                targetRaft = m262_koopaRaftNo;
             }
             break;
         case 2:
             if (chance < 10) {
-                targetDip = m262_koopaRaftNo;
+                targetRaft = m262_koopaRaftNo;
             }
             break;
         case 3:
             if (chance < 5) {
-                targetDip = m262_koopaRaftNo;
+                targetRaft = m262_koopaRaftNo;
             }
             break;
     }
     m262_comWork.grabDelay = 8;
-    m262_comWork.targetDip = targetDip;
+    m262_comWork.targetRaft = targetRaft;
     m262_comWork.triggered = 0;
 }
 
 void m262_WakeObjCreate(void) {
     s32 i;
     omObjData *obj;
-    DorrieDipWakes *data;
+    DorrieDipWake *data;
     s32 flags = 0x6BD;
 
     obj = omAddObj(255, 6, 0, -1, m262_WakeObjMain);
     m262_wakeObj = obj;
-    obj->data = HuMemAllocTag(sizeof(DorrieDipWakes), TAG_OVERLAY);
+    obj->data = HuMemAllocTag(sizeof(DorrieDipWake), TAG_OVERLAY);
     data = obj->data;
     for (i = 0; i < 6; i++) {
         if (i == 0) {
@@ -1321,51 +1321,51 @@ void m262_WakeObjCreate(void) {
 
 void m262_WakeObjMain(omObjData *obj) {
     s32 i;
-    DorrieDipWakes *data = obj->data;
-    DorrieDipDips *dips = m262_raftObj->data;
+    DorrieDipWake *data = obj->data;
+    DorrieDipRaft *rafts = m262_raftObj->data;
 
     for (i = 0; i < 6; i++) {
         if (i == 0) {
             omSetTra(obj, data->posX[i], data->posY[i], data->posZ[i]);
-            omSetRot(obj, 0.0f, dips->unk18[i], 0.0f);
+            omSetRot(obj, 0.0f, rafts->unk18[i], 0.0f);
             omSetSca(obj, data->scaleX[i], 1.0f, 1.0f);
         } else {
             Hu3DModelPosSet(obj->model[i], data->posX[i], data->posY[i], data->posZ[i]);
-            Hu3DModelRotSet(obj->model[i], 0.0f, dips->unk18[i], 0.0f);
+            Hu3DModelRotSet(obj->model[i], 0.0f, rafts->unk18[i], 0.0f);
             Hu3DModelScaleSet(obj->model[i], data->scaleX[i], 1.0f, 1.0f);
         }
         if (data->flags[i] & 1) {
-            data->scaleX[i] = (4.8f - dips->unk30[i]) / 4.8f;
+            data->scaleX[i] = (4.8f - rafts->unk30[i]) / 4.8f;
             if (data->scaleX[i] == 0.0f) {
                 Hu3DModelAttrSet(obj->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 data->flags[i] &= ~1;
             }
         }
-        data->posX[i] = sindf(dips->unk18[i]) * 450.0f;
+        data->posX[i] = sindf(rafts->unk18[i]) * 450.0f;
         data->posY[i] = m262_waterY;
-        data->posZ[i] = cosdf(dips->unk18[i]) * 450.0f;
+        data->posZ[i] = cosdf(rafts->unk18[i]) * 450.0f;
     }
 }
 
-void m262_WakeStart(s32 dipIdx) {
-    DorrieDipWakes *data = m262_wakeObj->data;
-    DorrieDipDips *dips = m262_raftObj->data;
+void m262_WakeStart(s32 raftIdx) {
+    DorrieDipWake *data = m262_wakeObj->data;
+    DorrieDipRaft *rafts = m262_raftObj->data;
 
-    data->flags[dipIdx] |= 1;
-    data->posX[dipIdx] = sindf(dips->unk18[dipIdx]) * 450.0f;
-    data->posY[dipIdx] = m262_waterY;
-    data->posZ[dipIdx] = cosdf(dips->unk18[dipIdx]) * 450.0f;
-    Hu3DModelAttrSet(m262_wakeObj->model[dipIdx], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-    Hu3DMotionAttrSet(m262_wakeObj->model[dipIdx], 2, 2);
+    data->flags[raftIdx] |= 1;
+    data->posX[raftIdx] = sindf(rafts->unk18[raftIdx]) * 450.0f;
+    data->posY[raftIdx] = m262_waterY;
+    data->posZ[raftIdx] = cosdf(rafts->unk18[raftIdx]) * 450.0f;
+    Hu3DModelAttrSet(m262_wakeObj->model[raftIdx], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DMotionAttrSet(m262_wakeObj->model[raftIdx], 2, 2);
 }
 
 void m262_ComInput(void) {
     MgPlayerWork *data = mgPlayerObjTbl[0]->data;
-    DorrieDipDips *dips = m262_raftObj->data;
+    DorrieDipRaft *rafts = m262_raftObj->data;
 
     if (m262_comWork.triggered == 0) {
-        if (dips->unk18[m262_comWork.targetDip] >= 175.0f &&
-            dips->unk18[m262_comWork.targetDip] < 185.0f) {
+        if (rafts->unk18[m262_comWork.targetRaft] >= 175.0f &&
+            rafts->unk18[m262_comWork.targetRaft] < 185.0f) {
             HuPadBtn[data->unk57] |= A_BUTTON;
             HuPadBtnDown[data->unk57] |= A_BUTTON;
             m262_comWork.triggered++;

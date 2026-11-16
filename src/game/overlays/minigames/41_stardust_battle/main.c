@@ -270,7 +270,7 @@ typedef struct StardustBattlePlayerWork {
 
 extern u8 Hu3DBufNo;
 extern s32 omCharModelNoTbl[][6];
-extern s16 m265_exitTimerLo[]; // low halfword of D_80113DE4
+extern s16 m265_exitTimerLo[]; // low halfword of m265_exitTimer
 extern s16 motionBakeMtxCnt;
 extern s16 *motionBakeNodeMap;
 extern HuMtx4F *motionBakeMtx;
@@ -1518,7 +1518,7 @@ void m265_PlayerGroundPreUpdate(omObjData *object) {
 void m265_PlayerGroundPostUpdate(omObjData *object) {
 }
 
-/* Like func_80107FA4, the return value of m265_WorkPtrGet is
+/* Like m265_PlayerIntroStart, the return value of m265_WorkPtrGet is
    treated as a pointer. */
 void m265_PlayerWaveInit(omObjData *object) {
     StardustBattlePlayerWork *obj = (StardustBattlePlayerWork *)m265_WorkPtrGet();
@@ -1805,7 +1805,7 @@ void m265_StageSet(s16 mode) {
     }
 }
 
-/* Like func_80107FA4, the return value of m265_WorkPtrGet is
+/* Like m265_PlayerIntroStart, the return value of m265_WorkPtrGet is
    treated as a pointer. */
 s16 m265_StageNoGet(void) {
     if (mgMapObjNum == 0) {
@@ -3905,7 +3905,7 @@ void m265_EffMdlObjMain(omObjData *object) {
     }
 }
 
-/* Activates the first free model of the given group in the D_80114B50 object
+/* Activates the first free model of the given group in the m265_effMdlObj object
    and returns its index, or -1 if none are free. */
 s32 m265_EffMdlCreate(Vec *pos, Vec *rot, f32 scale, s16 group) {
     omObjData *object = m265_effMdlObj;

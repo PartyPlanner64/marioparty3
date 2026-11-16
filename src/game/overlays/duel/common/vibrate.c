@@ -11,7 +11,7 @@ typedef struct UnkE78B0 {
 
 void MBDPlayerVibrate(s16 playerNo, s16 arg1) {
     if (playerNo == CUR_PLAYER) {
-        playerNo = MBDGetCurrentPlayerIndex();
+        playerNo = MBDPlayerTurnGet();
     }
 
     //??

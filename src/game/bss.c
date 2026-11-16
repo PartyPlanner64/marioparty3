@@ -77,7 +77,7 @@ s16 Hu3DFogEnd BSS; // hmfdraw.c, hmfman.c
 s16 mbUnkParam BSS; // overlays only
 u8 wipeMode BSS; // wipe.c
 HmfDrawObject *DrawObjData BSS; // hmfdraw.c, hmfman.c
-u8 mbDiceUnkF BSS; // overlays only
+u8 mbSaiTriple7F BSS; // overlays only
 GW_COMMON GwCommon ALIGNED(8) BSS; // gamework.c, saveload.c, window.c
 u8 GwCommonPad[0x204] BSS; // unreferenced
 s32 omObjExecCnt BSS; // objmain.c
@@ -167,7 +167,7 @@ u8 Hu3DFogColB BSS; // hmfdraw.c, hmfman.c
 s16 ambColBakB BSS; // hmfdraw.c
 WindowInputRecord winComKeyBuf[WINDOW_INPUT_RECORDS_MAX] BSS; // window.c
 s16 HuAudMusNo BSS; // audio.c, objmain.c, objsysobj.c
-UnkDiceRelated mbDiceData[5] ALIGNED(8) BSS; // overlays only
+SaiWork mbSaiWorkTbl[5] ALIGNED(8) BSS; // overlays only
 u16 saftyFrameF BSS; // printfunc.c
 u16 Hu3DSprModelMax BSS; // hmfspr.c
 OSPiHandle *cartRomHandle BSS; // gameman.c, rom.c
@@ -175,7 +175,7 @@ Vtx *Hu3DSprVtxPos BSS; // hmfspr.c
 s16 mbCameraBtnF BSS; // overlays only
 s16 ambColBakR BSS; // hmfdraw.c
 u16 omPadBtnDown[4] BSS; // audio.c, objmain.c
-s16 mbDiceBtnF BSS; // overlays only
+s16 mbSaiBtnF BSS; // overlays only
 s16 vtxCntBak BSS; // hmfdraw.c
 s16 kakusiMasuItemCnt BSS; // unreferenced
 s16 Hu3DModelTag BSS; // hmfdraw.c, hmfload.c, hmfman.c, ...

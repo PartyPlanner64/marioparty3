@@ -45,8 +45,8 @@ typedef struct {
 } CurtainCallCamera; // sizeof 0x2C
 
 typedef struct {
-    /* 0x00 */ s16 unk_00;   // D_8010CE88
-    /* 0x02 */ s8 unk_02[2]; // D_8010CE8A
+    /* 0x00 */ s16 unk_00;   // m234_timer
+    /* 0x02 */ s8 unk_02[2]; // m234_questionTbl
 } CurtainCallTimerWork;        // sizeof 0x4
 
 // Fields of entries of m234_objWorkTbl accessed through separate

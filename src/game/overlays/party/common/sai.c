@@ -26,7 +26,7 @@ typedef struct UnkSharedBoard {
 typedef struct UnkCoinProc {
     /* 0x00 */ s32  playerNo;
     /* 0x04 */ s32  state;
-    /* 0x08 */ s32  unk_08;    // item ID; also indexes D_8010197C texture table
+    /* 0x08 */ s32  unk_08;    // item ID; also indexes mbItemIconSprTbl
     /* 0x0C */ char unk_0C[4];
 } UnkCoinProc;
 
@@ -56,22 +56,22 @@ extern u8 mbSaiDispF;
 static void MBSaiNumPosSet(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
 
 void MBSaiSePlay(s32 arg0) {
-    UnkDiceRelated* temp_s0;
+    SaiWork* temp_s0;
 
-    temp_s0 = &mbDiceData[arg0];
+    temp_s0 = &mbSaiWorkTbl[arg0];
     if ((temp_s0->unk28 == -1) && (temp_s0->dice->work[0] == 1)) {
         temp_s0->unk28 = HuAudFXPlay(0x100);
     }
 }
 
 static void MBSaiObjMain(omObjData *arg0) {
-    UnkDiceRelated *entry;
+    SaiWork *entry;
     f32 base;
     f32 scale;
     f32 decay;
     s32 i;
 
-    entry = &mbDiceData[arg0->work[3]];
+    entry = &mbSaiWorkTbl[arg0->work[3]];
     if (mbSaiMode == 1) {
         base = 1.0f;
     } else {
@@ -105,7 +105,7 @@ static void MBSaiObjMain(omObjData *arg0) {
 
                 if (mbSaiMode == 1) {
                     for (i = 0; i < 4; i++) {
-                        if (mbDiceData[i].unk28 != -1) {
+                        if (mbSaiWorkTbl[i].unk28 != -1) {
                             break;
                         }
                     }
@@ -118,7 +118,7 @@ static void MBSaiObjMain(omObjData *arg0) {
                             return;
                         }
                     }
-                    entry->unk28 = mbDiceData[i].unk28;
+                    entry->unk28 = mbSaiWorkTbl[i].unk28;
                 } else if ((entry->unk2A == 0) && (entry->unk_0A != 5) &&
                            (mbSaiMode != 2) &&
                            (mbSaiDispF != 0)) {
@@ -155,13 +155,13 @@ static void MBSaiObjMain(omObjData *arg0) {
 }
 
 static void MBSaiNumObjMain(omObjData *arg0) {
-    UnkDiceRelated *entry;
+    SaiWork *entry;
     Vec pos;
     f32 pos2d[2];
     f32 scale;
     u32 roll;
 
-    entry = &mbDiceData[arg0->work[3]];
+    entry = &mbSaiWorkTbl[arg0->work[3]];
 
     if ((arg0->work[0] == 0) && (Hu3DPauseF == 0)) {
         arg0->scale.x = (sindf(arg0->rot.x) * arg0->scale.z) + 1.0f;
@@ -203,13 +203,13 @@ static void MBSaiNumObjMain(omObjData *arg0) {
 }
 
 static void MBSaiNumSingleObjMain(omObjData *arg0) {
-    UnkDiceRelated *entry;
+    SaiWork *entry;
     Vec pos;
     f32 pos2d[2];
     f32 scale;
     s8 roll;
 
-    entry = &mbDiceData[arg0->work[3]];
+    entry = &mbSaiWorkTbl[arg0->work[3]];
 
     if ((arg0->work[0] == 0) && (Hu3DPauseF == 0)) {
         arg0->scale.x = (sindf(arg0->rot.x) * arg0->scale.z) + 1.0f;
@@ -246,20 +246,20 @@ void MBSaiValueClear(void) {
 
     for (i = 0; i < 5; i++) {
         for (j = 0; j < DICE_TOTAL; j++) {
-            mbDiceData[i].rollValue[j] = 0;
-            mbDiceData[i].predecidedRollValue[j] = 0;
+            mbSaiWorkTbl[i].rollValue[j] = 0;
+            mbSaiWorkTbl[i].predecidedRollValue[j] = 0;
         }
     }
-    mbDiceUnkF = 0;
+    mbSaiTriple7F = 0;
 }
 
 void MBSaiInit(void) {
-    UnkDiceRelated *entry;
+    SaiWork *entry;
     s32 i;
     s32 j;
 
     for (i = 0; i < 5; i++) {
-        entry = &mbDiceData[i];
+        entry = &mbSaiWorkTbl[i];
 
         for (j = 0; j < DICE_TOTAL; j++) {
             entry->sprites[j] = -1;
@@ -290,15 +290,15 @@ void MBSaiInit(void) {
 }
 
 void MBSaiNumSprCreate(s32 arg0) {
-    UnkDiceRelated *entry;
+    SaiWork *entry;
     void *data;
     s32 i;
 
-    entry = &mbDiceData[arg0];
+    entry = &mbSaiWorkTbl[arg0];
 
-    if ((arg0 != 0) && (mbDiceData[0].unk_14 != -1)) {
-        entry->unk_14 = mbDiceData[0].unk_14;
-        mbDiceData[0].unk_0C++;
+    if ((arg0 != 0) && (mbSaiWorkTbl[0].unk_14 != -1)) {
+        entry->unk_14 = mbSaiWorkTbl[0].unk_14;
+        mbSaiWorkTbl[0].unk_0C++;
     } else if ((entry->rollValueIdx == 0) || (mbSaiNum == 1)) {
         data = DataRead(0x13020D);
         entry->unk_14 = HuSprAnimRead(data);
@@ -322,13 +322,13 @@ void MBSaiNumSprCreate(s32 arg0) {
 }
 
 void MBSaiNumShow(s32 arg0) {
-    UnkDiceRelated *entry;
+    SaiWork *entry;
     omObjData *obj;
     Vec pos;
     f32 pos2d[2];
     s8 roll;
 
-    entry = &mbDiceData[arg0];
+    entry = &mbSaiWorkTbl[arg0];
 
     if (entry->rollValue[entry->rollValueIdx] != 0) {
         if ((entry->dice == NULL) || (entry->dice->work[0] == 2)) {
@@ -383,7 +383,7 @@ void MBSaiNumShow(s32 arg0) {
 }
 
 static void MBSaiValueDecide(s32 arg0) {
-    UnkDiceRelated *entry = &mbDiceData[arg0];
+    SaiWork *entry = &mbSaiWorkTbl[arg0];
     s8 forcedRoll;
     s32 i;
 
@@ -408,7 +408,7 @@ static void MBSaiValueDecide(s32 arg0) {
                 if (i == arg0) {
                     continue;
                 }
-                if (mbDiceData[i].rollValue[mbDiceData[i].rollValueIdx] == entry->rollValue[entry->rollValueIdx]) {
+                if (mbSaiWorkTbl[i].rollValue[mbSaiWorkTbl[i].rollValueIdx] == entry->rollValue[entry->rollValueIdx]) {
                     break;
                 }
             }
@@ -442,7 +442,7 @@ static void MBSaiValueDecide(s32 arg0) {
 }
 
 void MBSaiNumObjKill(s32 arg0) {
-    UnkDiceRelated* dice = &mbDiceData[arg0];
+    SaiWork* dice = &mbSaiWorkTbl[arg0];
 
     if (dice->omObj != NULL) {
         omDelObj(dice->omObj);
@@ -452,7 +452,7 @@ void MBSaiNumObjKill(s32 arg0) {
 
 s32 MBSaiNumKill(s32 arg0) {
     s32 count = 0;
-    UnkDiceRelated *entry = &mbDiceData[arg0];
+    SaiWork *entry = &mbSaiWorkTbl[arg0];
     s32 i;
 
     for (i = 0; i < DICE_TOTAL; i++) {
@@ -484,7 +484,7 @@ s32 MBSaiNumKill(s32 arg0) {
 }
 
 void MBSaiNumCountDown(s32 arg0) {
-    UnkDiceRelated* dice = &mbDiceData[arg0];
+    SaiWork* dice = &mbSaiWorkTbl[arg0];
 
     dice->rollValue[dice->rollValueIdx]--;
     if (dice->rollValue[dice->rollValueIdx] <= 0) {
@@ -493,8 +493,8 @@ void MBSaiNumCountDown(s32 arg0) {
 }
 
 void MBSaiMdlDispOff(s32 arg0) {
-    if (mbDiceData[arg0].unk_16 != -1) {
-        Hu3DModelAttrSet(mbDiceData[arg0].unk_16, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    if (mbSaiWorkTbl[arg0].unk_16 != -1) {
+        Hu3DModelAttrSet(mbSaiWorkTbl[arg0].unk_16, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
 }
 
@@ -505,8 +505,8 @@ void MBSaiDispOff(s32 arg0) {
 
 void MBSaiMdlDispOn(s32 arg0) {
     if (mbSaiDispF != 0) {
-        if (mbDiceData[arg0].unk_16 != -1) {
-            Hu3DModelAttrSet(mbDiceData[arg0].unk_16, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        if (mbSaiWorkTbl[arg0].unk_16 != -1) {
+            Hu3DModelAttrSet(mbSaiWorkTbl[arg0].unk_16, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         }
     }
 }
@@ -517,11 +517,11 @@ void MBSaiDispOn(s32 arg0) {
 }
 
 void MBSaiTypeSet(s32 arg0, s8 arg1) {
-    mbDiceData[arg0].unk_09 = arg1;
+    mbSaiWorkTbl[arg0].unk_09 = arg1;
 }
 
 s16 MBSaiCreate(s32 arg0) {
-    UnkDiceRelated *entry;
+    SaiWork *entry;
     omObjData *dice;
     f32 chance;
     s8 mode;
@@ -534,7 +534,7 @@ s16 MBSaiCreate(s32 arg0) {
     s32* temp;
 
     mbSaiRotDir = 0;
-    entry = &mbDiceData[arg0];
+    entry = &mbSaiWorkTbl[arg0];
     
     if (entry->unk_16 != -1) {
         return -1;
@@ -558,7 +558,7 @@ s16 MBSaiCreate(s32 arg0) {
         } else if (mbSaiNum == 3) {
             entry->unk_0A = 4;
             if (entry->rollValueIdx == 0) {
-                if (mbDiceUnkF != 0) {
+                if (mbSaiTriple7F != 0) {
                     chance = 6.0f;
                 } else {
                     chance = 10.0f;
@@ -676,7 +676,7 @@ s16 MBSaiCreate(s32 arg0) {
 }
 
 static void MBSaiCreateEx(s32 arg0, s32 arg1, s32 arg2, char *arg3[]) {
-    UnkDiceRelated *entry = &mbDiceData[arg0];
+    SaiWork *entry = &mbSaiWorkTbl[arg0];
     omObjData *dice;
     f32 height;
     s32 i;
@@ -755,7 +755,7 @@ static void MBSaiBlankCreate(s32 arg0) {
 s32 const pad2[2] = {0 , 0};
 
 void MBSaiKill(s32 arg0) {
-    UnkDiceRelated *entry = &mbDiceData[arg0];
+    SaiWork *entry = &mbSaiWorkTbl[arg0];
     s16 id;
     s32 i;
 
@@ -804,12 +804,12 @@ void MBSaiClose(void) {
 }
 
 void MBSaiHit(s32 arg0) {
-    UnkDiceRelated *entry;
+    SaiWork *entry;
     s16 sound;
     s32 count;
     s32 i;
 
-    entry = &mbDiceData[arg0];
+    entry = &mbSaiWorkTbl[arg0];
 
     if (entry->unk_16 != -1) {
         entry->dice->work[0] = 2;
@@ -822,7 +822,7 @@ void MBSaiHit(s32 arg0) {
         if (mbSaiMode == 1) {
             count = 0;
             for (i = 0; i < 4; i++) {
-                if (mbDiceData[i].unk28 != -1) {
+                if (mbSaiWorkTbl[i].unk28 != -1) {
                     count++;
                 }
             }
@@ -851,7 +851,7 @@ void MBSaiOrderModeSet(void) {
 }
 
 s32 MBSaiExistCheck(s32 arg0) {
-    if (~mbDiceData[arg0].unk_16) {
+    if (~mbSaiWorkTbl[arg0].unk_16) {
         return 1;
     } else {
         return 0;
@@ -859,15 +859,15 @@ s32 MBSaiExistCheck(s32 arg0) {
 }
 
 void MBSaiValueSet(s32 arg0, s32 arg1) {
-    mbDiceData[arg0].rollValue[mbDiceData[arg0].rollValueIdx] = arg1;
+    mbSaiWorkTbl[arg0].rollValue[mbSaiWorkTbl[arg0].rollValueIdx] = arg1;
 }
 
 void MBSaiValueForceSet(s32 arg0, s32 arg1) {
-    mbDiceData[arg0].predecidedRollValue[mbDiceData[arg0].rollValueIdx] = arg1;
+    mbSaiWorkTbl[arg0].predecidedRollValue[mbSaiWorkTbl[arg0].rollValueIdx] = arg1;
 }
 
 s32 MBSaiValueGet(s32 arg0) {
-    return mbDiceData[arg0].rollValue[mbDiceData[arg0].rollValueIdx];
+    return mbSaiWorkTbl[arg0].rollValue[mbSaiWorkTbl[arg0].rollValueIdx];
 }
 
 static void MBSaiPlayerProc(void) {
@@ -891,10 +891,10 @@ static void MBSaiPlayerProc(void) {
     s32 var_s5;
     s32 i, j;
     UnkDice2 *temp_s3;
-    UnkDiceRelated *temp_s4;
+    SaiWork *temp_s4;
     var_s1 = 0;
     temp_s3 = HuPrcCurrentGet()->user_data;
-    temp_s4 = &mbDiceData[temp_s3->unk0];
+    temp_s4 = &mbSaiWorkTbl[temp_s3->unk0];
     var_s5 = 0;
     while (1) {
         switch (temp_s3->unk4) {
@@ -906,12 +906,12 @@ static void MBSaiPlayerProc(void) {
                 HuPrcSleep(0x14);
                 break;
             case 1:
-                if (((GwPlayer[temp_s3->unk0].stat & 1) || (HuPadBtnDown[GwPlayer[temp_s3->unk0].pad] & A_BUTTON)) && !(Hu3DData[mbDiceData[temp_s3->unk0].unk_16].attr & 4) && (GWBoardFlagCheck(0x11) == 0)) {
+                if (((GwPlayer[temp_s3->unk0].stat & 1) || (HuPadBtnDown[GwPlayer[temp_s3->unk0].pad] & A_BUTTON)) && !(Hu3DData[mbSaiWorkTbl[temp_s3->unk0].unk_16].attr & 4) && (GWBoardFlagCheck(0x11) == 0)) {
                     temp_s3->unk4++;
                     MBPlayerMotionSet(temp_s3->unk0, 2, 0);
                     MBModelJumpSet(GwPlayer[temp_s3->unk0].player_obj, 2.0f, -0.3f);
                     mbCameraBtnF = 0;
-                    mbDiceBtnF = 0;
+                    mbSaiBtnF = 0;
                 }
                 break;
             case 2:
@@ -1020,7 +1020,7 @@ static void MBSaiPlayerProc(void) {
                                         MBDlgWinExec(0x16, 0x3A25);
                                         MBCoinChangeCreate(temp_s3->unk0, 50);
                                         MBCoinTakeCreate(temp_s3->unk0, 50);
-                                        mbDiceUnkF = 1;
+                                        mbSaiTriple7F = 1;
                                     } else {
                                         MBDlgWinExec(0x16, 0x3A24);
                                         MBCoinChangeCreate(temp_s3->unk0, 20);
@@ -1214,7 +1214,7 @@ static void MBKakusiStarBlockProc(void) {
                     MBPlayerMotionSet(work->playerNo, 2, 0);
                     MBModelJumpSet(GwPlayer[work->playerNo].player_obj, 2.0f, -0.3f);
                     mbCameraBtnF = 0;
-                    mbDiceBtnF = 0;
+                    mbSaiBtnF = 0;
                 }
                 break;
 
@@ -1276,7 +1276,7 @@ static void MBKakusiItemBlockProc(void) {
                     MBPlayerMotionSet(work->playerNo, 2, 0);
                     MBModelJumpSet(GwPlayer[work->playerNo].player_obj, 2.0f, -0.3f);
                     mbCameraBtnF = 0;
-                    mbDiceBtnF = 0;
+                    mbSaiBtnF = 0;
                 }
                 break;
 
@@ -1426,7 +1426,7 @@ static void MBKakusiCoinBlockProc(void) {
                 if (mbKakusiWaitF == 0) {
                     work->state++;
                     mbCameraBtnF = 0;
-                    mbDiceBtnF = 0;
+                    mbSaiBtnF = 0;
                 }
                 break;
 
@@ -1485,7 +1485,7 @@ void MBKakusiWaitOff(void) {
 
 
 void MBSaiSeStop(s32 arg0) {
-    UnkDiceRelated* temp_s0 = &mbDiceData[arg0];
+    SaiWork* temp_s0 = &mbSaiWorkTbl[arg0];
 
     if (temp_s0->unk28 != -1) {
         HuAudFXStop(temp_s0->unk28);
@@ -1495,9 +1495,9 @@ void MBSaiSeStop(s32 arg0) {
 }
 
 void MBSaiSeResume(s32 arg0) {
-    UnkDiceRelated* temp_s0;
+    SaiWork* temp_s0;
     
-    temp_s0 = &mbDiceData[arg0];
+    temp_s0 = &mbSaiWorkTbl[arg0];
     if ((temp_s0->unk2A == 1) && (temp_s0->unk_16 != -1)) {
         if ((temp_s0->dice != NULL) && (temp_s0->dice->work[0] != 2) && (temp_s0->unk_0A != 5) && (mbSaiMode != 2)) {
             temp_s0->unk28 = HuAudFXPlay(0x100);
@@ -1512,7 +1512,7 @@ void MBSaiModeSet(s8 arg0) {
 
 //unused
 void MBSaiValueNoSet(s32 arg0, s32 arg1) {
-    mbDiceData[arg0].rollValueIdx = arg1;
+    mbSaiWorkTbl[arg0].rollValueIdx = arg1;
 }
 
 void MBSaiNumSet(s32 arg0, s32 arg1) {
@@ -1520,9 +1520,9 @@ void MBSaiNumSet(s32 arg0, s32 arg1) {
 }
 
 static void MBSaiNumPosSet(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
-    UnkDiceRelated *entry;
+    SaiWork *entry;
 
-    entry = &mbDiceData[arg0];
+    entry = &mbSaiWorkTbl[arg0];
 
     if (entry->rollValue[arg1] >= 10) {
         HuSprDispOn(entry->sprites[arg1], 1);
@@ -1535,7 +1535,7 @@ static void MBSaiNumPosSet(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 }
 
 void MBSaiPosSet(s32 arg0) {
-    UnkDiceRelated* temp_a1 = &mbDiceData[arg0];
+    SaiWork* temp_a1 = &mbSaiWorkTbl[arg0];
     
     if (temp_a1->dice != NULL) {
         temp_a1->dice->trans.x = GwPlayer[arg0].player_obj->coords.x;
@@ -1545,7 +1545,7 @@ void MBSaiPosSet(s32 arg0) {
 }
 
 s32 MBSaiTypeGet(s32 arg0) {
-    return mbDiceData[arg0].unk_0A;
+    return mbSaiWorkTbl[arg0].unk_0A;
 }
 
 static void MBSeqVolUpProc(void) {

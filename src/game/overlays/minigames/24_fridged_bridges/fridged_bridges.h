@@ -35,7 +35,7 @@ typedef struct FridgedBridgesPlayer {
     /* 0x24 */ u16 unk_24;
     /* 0x26 */ u16 unk_26;
     /* 0x28 */ u16 unk_28;
-    /* 0x2C */ omObjData *unk_2C; // camera target object, see func_8010BE0C
+    /* 0x2C */ omObjData *unk_2C; // camera target object, see m236_CameraTargetCreate
     /* 0x30 */ omObjData *bridgeObj;
     /* 0x34 */ Vec unk_34;
     /* 0x40 */ f32 unk_40; // bobbing angle while floating

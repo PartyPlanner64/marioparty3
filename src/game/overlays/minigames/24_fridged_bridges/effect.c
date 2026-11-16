@@ -68,7 +68,7 @@ void m236_CameraTargetObjMain(omObjData *arg0) {
     }
 }
 
-// Preloads the pool of effect models used by func_8010BFD0.
+// Preloads the pool of effect models used by m236_EffCreate.
 void m236_EffInit(void) {
     s32 i;
     s32 j;

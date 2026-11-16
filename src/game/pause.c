@@ -27,7 +27,7 @@ typedef struct {
     /* 0x05 */ u8 unk05;
     /* 0x06 */ u8 unk06;
     /* 0x07 */ u8 unk07;
-} D_800B2350_main_Struct; // Size 8
+} CharVoiceReq; // Size 8
 
 
 static u8 charVoiceTypeTbl[] = { 0x2F, 0x30, 0x35, 0x6F, 0x36, 0x38, 0x4E, 0x31, 0x9A };
@@ -47,7 +47,7 @@ static u8 *charVoiceDelayTbl[] = {
 static u8 charVoiceDirTbl[] = { 2, 3, 7, 4, 5, 6, 8, 9 };
 static s16 pauseWinId[3];
 static u8 pauseWinIdPad[10]; // unreferenced
-static D_800B2350_main_Struct charVoiceReq[8];
+static CharVoiceReq charVoiceReq[8];
 static omObjData *charVoiceObj;
 extern u16 omPauseWinInitF;
 extern Process *pauseProc;
@@ -236,7 +236,7 @@ void HuAudCharVoiceInit(void) {
 }
 
 // TODO: type of arg1 assumed. Implies unk06 and unk07.
-s16 HuAudCharVoiceSearch(u32 arg0, D_800B2350_main_Struct *arg1) {
+s16 HuAudCharVoiceSearch(u32 arg0, CharVoiceReq *arg1) {
     s32 temp_v0;
     s32 var_v1;
     s16 var_a2;
@@ -323,7 +323,7 @@ omObjData *HuAudCharVoicePlayPlayer(u32 arg0, s16 arg1, s16 arg2) {
 }
 
 omObjData *HuAudCharVoicePlayEx(u32 arg0, s16 arg1, s16 arg2, s16 arg3) {
-    D_800B2350_main_Struct sp18;
+    CharVoiceReq sp18;
     omObjData *temp_v0_2;
 
     if (HuAudCharVoiceSearch(arg0, &sp18) >= 0) {

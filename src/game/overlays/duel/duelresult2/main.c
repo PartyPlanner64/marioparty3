@@ -471,7 +471,7 @@ void duelresult2_StatNumUpdate(void) {
 
     for (i = duelresult2_statScroll, row = 0; i < duelresult2_statScroll + 4; i++, row++) {
         for (j = 0; j < 2; j++) {
-            player = MBDGetPlayerStruct(j);
+            player = MBDPlayerGet(j);
             mask = duelresult2_StatTopMaskGet(i);
             digits = 1;
             value = 1;

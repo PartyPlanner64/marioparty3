@@ -12,7 +12,7 @@
 #define ROT_ZY(x, y, z, angle) ((y) * (z) * (1.0f - cosdf(angle)) + (x) * sindf(angle))
 #define ROT_ZZ(x, y, z, angle) ((z) * (z) + (1.0f - (z) * (z)) * cosdf(angle))
 
-// Work area allocated by func_8010ABE0 and func_8010C880 and stored at the
+// Work area allocated by duelresult_FireworkCreate and duelresult_SpiralCreate and stored at the
 // process object's user_data. Same layout as boardresult's BoardResultWork.
 typedef struct DuelResultWork {
     /* 0x00 */ s32 unk_00;

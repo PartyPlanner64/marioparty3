@@ -875,7 +875,7 @@ void m211_PizzaWallHit(omObjData *object) {
 // spill slots, shifting every offset). Also tried without success: all single
 // and pairwise variable type changes, centerX/centerY as s16/s32/f32,
 // alternative clamp forms, for/while loop forms and orderings, u16/s32 types
-// for the D_8010927A/7E/82 arrays, and nibble/pattern temporaries per branch.
+// for the m211_pizzaAnimTbl/pizzaHardAnimTbl/biteAnimTbl arrays, and nibble/pattern temporaries per branch.
 // Set-but-unused locals (`tmp = <var or expr>; (void)tmp;`, s32/u8/s16/u16)
 // after or before every assignment in the function do not add slots: flow
 // deletes the dead store before reg_n_refs is counted. The two pseudos must

@@ -29,7 +29,7 @@ u8 mstory4_stampNoPad[8] BSS; /* Unreferenced. */
 
 /* scene0.c */
 StoryObjWork mstory4_scene0WorkTbl[5] BSS;
-s32 mstory4_scene0TumbleFaceAnimTbl[4] BSS; // [i] low halves: D_8011223A/E_mstory4, D_80112242/6_mstory4
+s32 mstory4_scene0TumbleFaceAnimTbl[4] BSS; // [i] low halves: mstory4_scene0TumbleFaceAnim0-3
 s16 mstory4_scene0TumbleFaceSlot BSS;
 u8 mstory4_scene0TumbleFaceSlotPad[4] BSS; /* Unreferenced. */
 Vec mstory4_scene0PlayerPos BSS;

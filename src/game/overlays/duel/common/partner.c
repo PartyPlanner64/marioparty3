@@ -161,7 +161,7 @@ Object *MBDPartnerModelCreate(s32 partnerID) {
 }
 
 void MBDPartnerModelSetup(s32 playerIndex) {
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *player = MBDPlayerGet(playerIndex);
 
     if (mbdPartnerObj[playerIndex][PARTNER_FRONT] != NULL) {
         MBDModelKill(mbdPartnerObj[playerIndex][PARTNER_FRONT]);
@@ -191,7 +191,7 @@ void MBDPartnerModelSetup(s32 playerIndex) {
 }
 
 void MBDPartnerModelReset(s32 playerIndex, s32 partnerNo) {
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *player = MBDPlayerGet(playerIndex);
     Object *partnerObj = mbdPartnerObj[playerIndex][partnerNo];
     s32 partnerID;
 
@@ -227,7 +227,7 @@ void MBDPartnerModelKillAll(s32 playerIndex) {
 }
 
 void MBDPartnerModelUpdate(s32 playerIndex) {
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *player = MBDPlayerGet(playerIndex);
 
     if (player->stats.partners.frontID == PARTNER_NONE) {
         if (mbdPartnerObj[playerIndex][PARTNER_FRONT] != NULL) {
@@ -247,7 +247,7 @@ void MBDPartnerModelUpdate(s32 playerIndex) {
 }
 
 void MBDPartnerSet(s32 playerIndex, s32 partnerID, s32 frontOrBackIndex) {
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *player = MBDPlayerGet(playerIndex);
 
     switch (frontOrBackIndex) {
         case PARTNER_FRONT:
@@ -284,7 +284,7 @@ void MBDPartnerSet(s32 playerIndex, s32 partnerID, s32 frontOrBackIndex) {
 }
 
 void MBDPartnerClear(s32 playerIndex, s32 frontOrBackIndex) {
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *player = MBDPlayerGet(playerIndex);
 
     switch (frontOrBackIndex) {
         case PARTNER_FRONT:
@@ -322,7 +322,7 @@ void MBDPartnerClear(s32 playerIndex, s32 frontOrBackIndex) {
 
 // swaps front and back partners for playerIndex player
 void MBDPartnerPosSwap(s32 playerIndex) {
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *player = MBDPlayerGet(playerIndex);
     s32 frontID = player->stats.partners.frontID;
     s32 frontHP = player->stats.partners.frontHp;
     s32 frontPoweredUp = player->stats.partners.frontPoweredUp;
@@ -352,7 +352,7 @@ void MBDPartnerPosSwap(s32 playerIndex) {
 }
 
 void MBDPartnerPowerUp(s32 playerIndex) {
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *player = MBDPlayerGet(playerIndex);
 
     if ((player->stats.partners.frontID != PARTNER_NONE) && (player->stats.partners.frontPoweredUp == POWERUP_NONE)) {
         player->stats.partners.frontPoweredUp = 2;
@@ -370,7 +370,7 @@ void MBDPartnerPowerUp(s32 playerIndex) {
 }
 
 void MBDPartnerPowerDown(s32 playerIndex) {
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *player = MBDPlayerGet(playerIndex);
 
     if ((player->stats.partners.frontID != PARTNER_NONE) && (player->stats.partners.frontPoweredUp == POWERUP_ACTIVE)) {
         player->stats.partners.frontPoweredUp = POWERUP_NONE;
@@ -386,12 +386,12 @@ void MBDPartnerPowerDown(s32 playerIndex) {
     }
 }
 
-Object *MBDGetPlayerPartnerRef(s32 playerIndex, s32 frontOrBackIndex) {
+Object *MBDPartnerObjGet(s32 playerIndex, s32 frontOrBackIndex) {
     return mbdPartnerObj[playerIndex][frontOrBackIndex];
 }
 
 s32 MBDPartnerCostGet(s32 playerIndex) {
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *player = MBDPlayerGet(playerIndex);
     s32 totalPartnerCost = 0;
 
     if (player->stats.partners.frontID != PARTNER_NONE) {
@@ -405,10 +405,10 @@ s32 MBDPartnerCostGet(s32 playerIndex) {
 
 s32 MBDPartnerMotionSet(s32 playerIndex, s32 frontOrBackIndex, s16 arg2, u16 arg3) {
     s32 partnerCount = 0;
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *player = MBDPlayerGet(playerIndex);
 
     if (playerIndex == CUR_PLAYER) {
-        playerIndex = MBDGetCurrentPlayerIndex();
+        playerIndex = MBDPlayerTurnGet();
     }
 
     if (frontOrBackIndex == PARTNER_FRONT) {
@@ -429,11 +429,11 @@ s32 MBDPartnerMotionSet(s32 playerIndex, s32 frontOrBackIndex, s16 arg2, u16 arg
 
 s32 MBDPartnerMotionShiftSet(s32 playerIndex, s32 arg1, s16 arg2, s16 arg3, s16 arg4, u16 flags) {
     s32 partnerCount = 0;
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *player = MBDPlayerGet(playerIndex);
     u16 flagsCopy = flags;
 
     if (playerIndex == CUR_PLAYER) {
-        playerIndex = MBDGetCurrentPlayerIndex();
+        playerIndex = MBDPlayerTurnGet();
     }
 
     if (arg1 == 0) {
@@ -474,10 +474,10 @@ void MBDPartnerMotionReset(s32 arg0) {
 }
 
 void MBDPartnerSpeedSet(s32 playerIndex, f32 arg1) {
-    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *player = MBDPlayerGet(playerIndex);
 
     if (playerIndex == PARTNER_NONE) {
-        playerIndex = MBDGetCurrentPlayerIndex();
+        playerIndex = MBDPlayerTurnGet();
     }
 
     if (player->stats.partners.frontID != PARTNER_NONE) {
@@ -495,10 +495,10 @@ void MBDPartnerAttackPairGet(s32 arg0, s32 *arg1, s32 *arg2) {
     s32 i;
 
     for (i = 0; i < MBD_MAX_PLAYERS; i++) {
-        if (i == MBDGetCurrentPlayerIndex()) {
-            curPlayer = MBDGetPlayerStruct(i);
+        if (i == MBDPlayerTurnGet()) {
+            curPlayer = MBDPlayerGet(i);
         } else {
-            opponent = MBDGetPlayerStruct(i);
+            opponent = MBDPlayerGet(i);
         }
     }
 
@@ -669,10 +669,10 @@ void MBDPartnerAttackExec(s32 attackType) {
     s32 volume;
     s32 i;
 
-    curPlayerIndex = MBDGetCurrentPlayerIndex();
+    curPlayerIndex = MBDPlayerTurnGet();
     opposingPlayerIndex = curPlayerIndex ^ 1;
-    player = MBDGetPlayerStruct(curPlayerIndex);
-    opposingPlayer = MBDGetPlayerStruct(opposingPlayerIndex);
+    player = MBDPlayerGet(curPlayerIndex);
+    opposingPlayer = MBDPlayerGet(opposingPlayerIndex);
     process = HuPrcCurrentGet();
     MBDBackThreadPriLowSet();
     MBDPartnerExtMotInit();
@@ -762,8 +762,8 @@ void MBDPartnerAttackExec(s32 attackType) {
                 break;
         }
 
-        partner = MBDGetPlayerPartnerRef(curPlayerIndex, frontOrBackIndex);
-        opposingPartner = MBDGetPlayerPartnerRef(opposingPlayerIndex, targetIndex);
+        partner = MBDPartnerObjGet(curPlayerIndex, frontOrBackIndex);
+        opposingPartner = MBDPartnerObjGet(opposingPlayerIndex, targetIndex);
         mbItemBtnF = 0;
         volume = 127;
         HuPrcChildLink(process, MBDCameraZoomMotStart(1.0f));
@@ -1510,8 +1510,8 @@ void MBDPartnerDamageExec(s32 playerIndex, s32 frontOrBackIndex, s32 targetIndex
     s32 partnerID;
 
     opposingPlayerIndex = playerIndex ^ 1;
-    player = MBDGetPlayerStruct(playerIndex);
-    opposingPlayer = MBDGetPlayerStruct(opposingPlayerIndex);
+    player = MBDPlayerGet(playerIndex);
+    opposingPlayer = MBDPlayerGet(opposingPlayerIndex);
     counterFlags = 0;
     process = HuPrcCurrentGet();
     mbdAttackStarDamage = starDamage;
@@ -1558,8 +1558,8 @@ void MBDPartnerDamageExec(s32 playerIndex, s32 frontOrBackIndex, s32 targetIndex
         mbdAttackOtherId = NULL;
     }
 
-    partner = MBDGetPlayerPartnerRef(playerIndex, frontOrBackIndex);
-    opposingPartner = MBDGetPlayerPartnerRef(opposingPlayerIndex, targetIndex);
+    partner = MBDPartnerObjGet(playerIndex, frontOrBackIndex);
+    opposingPartner = MBDPartnerObjGet(opposingPlayerIndex, targetIndex);
     HuPrcChildLink(process, MBDCameraZoomMotStart(3.0f));
     HuPrcChildWatch();
     MBDStatusShrink(-1);
@@ -1693,7 +1693,7 @@ void MBDPartnerComboMesExec(void) {
     s32 *new_var2;
     s32(*new_var3)[2];
 
-    player = MBDGetPlayerStruct(CUR_PLAYER);
+    player = MBDPlayerGet(CUR_PLAYER);
     if ((player->stats.partners.frontID != PARTNER_NONE) && (player->stats.partners.backID != PARTNER_NONE)) {
         if (player->stats.partners.frontID < player->stats.partners.backID) {
             sp20[0][PARTNER_FRONT] = player->stats.partners.frontID;

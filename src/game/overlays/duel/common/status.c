@@ -103,7 +103,7 @@ void MBDStatusNumUpdate(s32 playerIndex) {
     s32 numDigits;
     s32 i;
 
-    gwPlayer = MBDGetPlayerStruct(playerIndex);
+    gwPlayer = MBDPlayerGet(playerIndex);
     player = &mbdStatusPlayerTbl[playerIndex];
     if (mbdStatusCoinUpdateF != 0) {
         if (player->unk_02 != GwPlayer[playerIndex].coin) {
@@ -387,7 +387,7 @@ void MBDStatusFrontDispOff(s32 playerIndex) {
     NamePlayerData *player;
     s32 i;
 
-    if (MBDGetPlayerStruct(playerIndex)->stats.partners.frontID == PARTNER_NONE) {
+    if (MBDPlayerGet(playerIndex)->stats.partners.frontID == PARTNER_NONE) {
         player = &mbdStatusPlayerTbl[playerIndex];
 
         for (i = 0; i < 11; i++) {
@@ -462,7 +462,7 @@ void MBDStatusPartnerSprCreate(s32 playerIndex, s32 partnerID, s16 *anims, s32 b
 }
 
 void MBDStatusFrontUpdate(s32 playerIndex) {
-    GW_PLAYER *gwPlayer = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *gwPlayer = MBDPlayerGet(playerIndex);
     s16 group;
     s32 i;
 
@@ -494,7 +494,7 @@ void MBDStatusBackDispOff(s32 playerIndex) {
     NamePlayerData *player;
     s32 i;
 
-    if (MBDGetPlayerStruct(playerIndex)->stats.partners.backID == PARTNER_NONE) {
+    if (MBDPlayerGet(playerIndex)->stats.partners.backID == PARTNER_NONE) {
         player = &mbdStatusPlayerTbl[playerIndex];
 
         for (i = 0; i < 11; i++) {
@@ -504,7 +504,7 @@ void MBDStatusBackDispOff(s32 playerIndex) {
 }
 
 void MBDStatusBackUpdate(s32 playerIndex) {
-    GW_PLAYER *gwPlayer = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *gwPlayer = MBDPlayerGet(playerIndex);
     s16 group;
     s32 i;
 
@@ -1019,7 +1019,7 @@ void MBDStatusGrow(s32 playerIndex) {
 }
 
 void MBDStatusPartnerPosSet(s32 playerIndex, s16 x, s16 y, s32 isBack) {
-    GW_PLAYER *gwPlayer = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *gwPlayer = MBDPlayerGet(playerIndex);
     s32 base;
     s16 group;
     s32 i;

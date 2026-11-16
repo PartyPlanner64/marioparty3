@@ -303,7 +303,7 @@ void duelresult_IntroExec(void) {
     }
 
     for (i = 0; i < 2; i++) {
-        duelresult_gwPlayerTbl[i] = MBDGetPlayerStruct(i);
+        duelresult_gwPlayerTbl[i] = MBDPlayerGet(i);
         MBDPlayerModelCreate(i, duelresult_introMotTbl[GwPlayer[i].chr], 2);
         HuVecCopy3F(&duelresult_gwPlayerTbl[i]->player_obj->coords, &duelresult_introPlayerPos);
         duelresult_gwPlayerTbl[i]->player_obj->flags |= 1;
@@ -867,7 +867,7 @@ void duelresult_ResultExec(void) {
     MBDBackLoad(1);
     MBDCameraNearFarSet(1000.0f, 10000.0f);
     for (i = 0; i < 2; i++) {
-        duelresult_gwPlayerTbl[i] = MBDGetPlayerStruct(i);
+        duelresult_gwPlayerTbl[i] = MBDPlayerGet(i);
         MBDPlayerModelCreate(i, duelresult_resultMotTbl[GwPlayer[i].chr], 2);
         duelresult_gwPlayerTbl[i]->player_obj->flags |= 1;
         duelresult_gwPlayerTbl[i]->stat |= 4;

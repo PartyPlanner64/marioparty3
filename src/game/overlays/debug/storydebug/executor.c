@@ -1,12 +1,12 @@
 #include "common.h"
 
-void func_801059D0_storydebug(void);
+void storydebug_ObjectSetup(void);
 
-OvlEntrypoint D_801066E0_storydebug[] = {
-    { 0, func_801059D0_storydebug },
+OvlEntrypoint storydebug_ovlEntryTbl[] = {
+    { 0, storydebug_ObjectSetup },
     { -1, NULL }
 };
 
-void func_801059A0_storydebug(void) {
-    ovlEventCall(D_801066E0_storydebug, omovlevtno);
+void storydebug_Executor(void) {
+    ovlEventCall(storydebug_ovlEntryTbl, omovlevtno);
 }

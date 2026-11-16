@@ -14,8 +14,8 @@ typedef struct MessageCheckState {
     s16 unk10[3];
 } MessageCheckState;
 
-MessageCheckState D_80106500_meschk = { 0, { 50, 60, 0, 0, 0 }, 1.0f, { -1, 1200, 0 } };
-MessageCheckEntry D_80106518_meschk[] = {
+MessageCheckState meschk_work = { 0, { 50, 60, 0, 0, 0 }, 1.0f, { -1, 1200, 0 } };
+MessageCheckEntry meschk_mesFileTbl[] = {
     { (u8 *)"B1_snowman", 0x0200, 0x0204 },
     { (u8 *)"B_kekka", 0x1400, 0x1418 },
     { (u8 *)"B_P_starlift", 0x1500, 0x1532 },
@@ -119,15 +119,15 @@ MessageCheckEntry D_80106518_meschk[] = {
     { (u8 *)"", 0xFFFF, 0xFFFF },
 };
 
-u8 D_80106E40_meschk[0x1D0] BSS; /* Unreferenced. */
+u8 meschk_workPad[0x1D0] BSS; /* Unreferenced. */
 
-extern void func_80105B50_meschk(void);
-extern void func_80105B8C_meschk(void);
-extern void func_80106334_meschk(omObjData *data);
-extern void func_80106390_meschk(omObjData *data);
-extern void func_801063BC_meschk(void);
+extern void meschk_MainProc(void);
+extern void meschk_MesCheckExec(void);
+extern void meschk_ExitCheckObjMain(omObjData *data);
+extern void meschk_ExitObjMain(omObjData *data);
+extern void meschk_ModelProc(void);
 
-void func_801059A0_meschk() {
+void meschk_ObjectSetup() {
     omObjData *temp_v0;
 
     Hu3DCamInit(1);
@@ -145,30 +145,30 @@ void func_801059A0_meschk() {
         pfWinKill(omDBGInfoWin);
         omDBGInfoWin = -1;
     }
-    omAddObj(0x2710, 0, 0, -1, func_80106334_meschk);
+    omAddObj(0x2710, 0, 0, -1, meschk_ExitCheckObjMain);
     Hu3DGLightMaxSet(3);
     Hu3DGLightColorSet(0, 0x78, 0x78, 0x78);
     Hu3DGLightColorSet(1, 0x40, 0x40, 0x60);
     Hu3DGLightDirSet(1, -100.0f, 100.0f, 100.0f);
     Hu3DGLightColorSet(2, 0, 0, 0);
     Hu3DGLightColorSet(3, 0, 0, 0);
-    omAddPrcObj(func_80105B50_meschk, 0x3F00, 0x800, 0);
-    omAddPrcObj(func_801063BC_meschk, 0x3F00, 0x800, 0);
+    omAddPrcObj(meschk_MainProc, 0x3F00, 0x800, 0);
+    omAddPrcObj(meschk_ModelProc, 0x3F00, 0x800, 0);
     WipeCreateIn(WIPE_TYPE_NORMAL, 0);
     Hu3DScreenClearF = 1;
     Hu3DBGColorSet(0xFF, 0xFF, 0xFF);
 }
 
-void func_80105B50_meschk() {
-    func_80105B8C_meschk();
-    D_80106500_meschk.finished = 1;
+void meschk_MainProc() {
+    meschk_MesCheckExec();
+    meschk_work.finished = 1;
     HuWinAllKill();
     while (1) {
         HuPrcVSleep();
     }
 }
 
-void func_80105B8C_meschk() {
+void meschk_MesCheckExec() {
     s16 size[2];
     s16 window;
     s16 nameWindow;
@@ -183,13 +183,13 @@ void func_80105B8C_meschk() {
     s16 hasChoice;
     s32 portrait;
 
-    for (count = 0; D_80106518_meschk[count].firstMessage != 0xFFFF; count++) {}
+    for (count = 0; meschk_mesFileTbl[count].firstMessage != 0xFFFF; count++) {}
     nameWindow = HuWinExCreate(-1, 60, 20, 200, 20, 0);
     HuWinExAnimIn(nameWindow);
     entry = 0;
     done = 0;
     do {
-        check = &D_80106518_meschk[entry];
+        check = &meschk_mesFileTbl[entry];
         for (i = 0; i < strlen((char *)check->name); i++) {
             if (check->name[i] == '.') {
                 check->name[i] = 0x85;
@@ -313,21 +313,21 @@ void func_80105B8C_meschk() {
     } while (done == 0);
 }
 
-void func_80106334_meschk(omObjData *arg0) {
-    if ((D_80106500_meschk.finished != 0) || (omSysExitReq != 0)) {
+void meschk_ExitCheckObjMain(omObjData *arg0) {
+    if ((meschk_work.finished != 0) || (omSysExitReq != 0)) {
         WipeCreateOut(WIPE_TYPE_NORMAL, 8);
-        arg0->func = &func_80106390_meschk;
+        arg0->func = &meschk_ExitObjMain;
         HuAudSeqFadeOut(0x3C);
     }
 }
 
-void func_80106390_meschk(omObjData *arg0) {
+void meschk_ExitObjMain(omObjData *arg0) {
     if (WipeStatGet() == 0) {
         omOvlReturnEx(1);
     }
 }
 
-void func_801063BC_meschk() {
+void meschk_ModelProc() {
     s16 model;
     s16 motion;
     HmfModelSet *animation;
@@ -341,7 +341,7 @@ void func_801063BC_meschk() {
     frame = 0;
     while (1) {
         HuPrcVSleep();
-        if (D_80106500_meschk.finished != 0) {
+        if (meschk_work.finished != 0) {
             break;
         }
         Hu3DMotionBakeApply(model, animation, frame);

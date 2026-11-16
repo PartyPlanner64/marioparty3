@@ -4,45 +4,45 @@
 extern f32 CFanOfs;
 extern f32 CFanLen;
 
-extern s16 D_801151B0_mstory5;
-extern s16 D_801151B2_mstory5;
-extern s32 D_801151B4_mstory5;
-extern void (*const D_801148A0_mstory5[])(void);
-extern const s32 D_801148A8_mstory5[];
-extern u16 D_801151B8_mstory5;
-extern s32 D_801151E4_mstory5;
-extern s16 D_801151C0_mstory5[8];
-extern s16 D_801151D0_mstory5[8];
-extern s16 D_801151E0_mstory5;
-extern const s32 D_801148C4_mstory5[7];
-extern const s16 D_801148E0_mstory5[][2];
+extern s16 mstory5_winId;
+extern s16 mstory5_backMdl;
+extern s32 mstory5_padNo;
+extern void (*const mstory5_sceneCreateTbl[])(void);
+extern const s32 mstory5_sceneFlagTbl[];
+extern u16 mstory5_backSpr;
+extern s32 mstory5_stampNo;
+extern s16 mstory5_stampCardSprTbl[8];
+extern s16 mstory5_stampSparkSprTbl[8];
+extern s16 mstory5_stampFadeSpr;
+extern const s32 mstory5_stampSprFileTbl[7];
+extern const s16 mstory5_stampPosTbl[][2];
 
-s32 D_80114730_mstory5 = 0;
-s32 D_80114734_mstory5 = 0;
-s8 D_80114738_mstory5 = 0;
-Vec D_8011473C_mstory5 = { 14.0f, 193.0f, 1400.0f };
-Vec D_80114748_mstory5 = { -25.0f, 0.0f, -650.0f };
-Vec D_80114754_mstory5 = { 0.0f, 1.0f, -0.0001f };
-s32 D_80114760_mstory5 = 0;
+s32 mstory5_sceneState = 0;
+s32 mstory5_skipOnF = 0;
+s8 mstory5_exitF = 0;
+Vec mstory5_cameraPos = { 14.0f, 193.0f, 1400.0f };
+Vec mstory5_cameraTarget = { -25.0f, 0.0f, -650.0f };
+Vec mstory5_cameraUp = { 0.0f, 1.0f, -0.0001f };
+s32 mstory5_stampCardDoneF = 0;
 
-void func_8010842C_mstory5(void);
-void func_801100AC_mstory5(void);
-void func_80106028_mstory5(void);
-void func_801068D4_mstory5(void);
-void func_80106B64_mstory5(omObjData *obj, const Vec *pos, s32 frames, s32 arg3);
-void func_80106DB4_mstory5(omObjData *obj, Vec *pos, s32 frames, s32 arg3);
-void func_80107080_mstory5(omObjData *obj, const Vec *pos, s32 frames);
-void func_80107228_mstory5(omObjData *obj, f32 x, f32 y, f32 z, s32 frames);
-void func_80107254_mstory5(s16 model);
-s32 func_801072A0_mstory5(s16 model);
-void func_8010734C_mstory5(omObjData *obj, f32 speed, s16 frames);
-void func_801074E8_mstory5(omObjData *obj, f32 x, f32 y, f32 z, s32 frames, s32 faceDir);
-void func_80105BDC_mstory5(omObjData *obj);
-void func_80105CCC_mstory5(omObjData *obj);
-void func_80105E34_mstory5(void);
-void func_80105F5C_mstory5(omObjData *obj);
+void mstory5_Scene1Create(void);
+void mstory5_Scene0Create(void);
+void mstory5_StampCardProc(void);
+void mstory5_StampCardDestroy(void);
+void mstory5_ObjPosMoveEx(omObjData *obj, const Vec *pos, s32 frames, s32 arg3);
+void mstory5_ObjLinkPosMoveEx(omObjData *obj, Vec *pos, s32 frames, s32 arg3);
+void mstory5_ObjRotMoveV(omObjData *obj, const Vec *pos, s32 frames);
+void mstory5_ObjRotMove(omObjData *obj, f32 x, f32 y, f32 z, s32 frames);
+void mstory5_MotionEndWait(s16 model);
+s32 mstory5_MotionEndCheck(s16 model);
+void mstory5_ObjForwardMove(omObjData *obj, f32 speed, s16 frames);
+void mstory5_ObjPosMoveAccelXYZ(omObjData *obj, f32 x, f32 y, f32 z, s32 frames, s32 faceDir);
+void mstory5_SceneObjMain(omObjData *obj);
+void mstory5_ExitObjMain(omObjData *obj);
+void mstory5_BackCreate(void);
+void mstory5_CameraObjMain(omObjData *obj);
 
-void func_801059A0_mstory5(void) {
+void mstory5_ObjectSetup(void) {
     omObjData *obj;
     s16 chapter;
 
@@ -54,39 +54,39 @@ void func_801059A0_mstory5(void) {
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 35.0f, 80.0f, 8000.0f);
     Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
-    obj = omAddObj(0x7FDA, 0, 0, -1, func_80105F5C_mstory5);
+    obj = omAddObj(0x7FDA, 0, 0, -1, mstory5_CameraObjMain);
     omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    func_80105F5C_mstory5(obj);
-    omAddObj(0, 0, 0, -1, func_80105BDC_mstory5);
-    omAddObj(0, 0, 0, -1, func_80105CCC_mstory5);
-    func_80105E34_mstory5();
-    for (D_801151B4_mstory5 = 0; D_801151B4_mstory5 < 4; D_801151B4_mstory5++) {
-        if (CheckControllerRead(D_801151B4_mstory5)) {
+    mstory5_CameraObjMain(obj);
+    omAddObj(0, 0, 0, -1, mstory5_SceneObjMain);
+    omAddObj(0, 0, 0, -1, mstory5_ExitObjMain);
+    mstory5_BackCreate();
+    for (mstory5_padNo = 0; mstory5_padNo < 4; mstory5_padNo++) {
+        if (CheckControllerRead(mstory5_padNo)) {
             break;
         }
     }
-    if (D_801151B4_mstory5 >= 4) {
-        D_801151B4_mstory5 = 0;
+    if (mstory5_padNo >= 4) {
+        mstory5_padNo = 0;
     }
     chapter = GwPlayer[0].coin;
     if (GwPlayer[0].coin >= 2) {
         chapter = 1;
     }
-    D_801148A0_mstory5[chapter]();
-    if (_CheckFlag(D_801148A8_mstory5[chapter])) {
-        D_80114734_mstory5 = 1;
+    mstory5_sceneCreateTbl[chapter]();
+    if (_CheckFlag(mstory5_sceneFlagTbl[chapter])) {
+        mstory5_skipOnF = 1;
     } else {
-        _SetFlag(D_801148A8_mstory5[chapter]);
+        _SetFlag(mstory5_sceneFlagTbl[chapter]);
     }
     WipeCreateIn(2, 16);
 }
 
-void (*const D_801148A0_mstory5[])(void) = { func_801100AC_mstory5, func_8010842C_mstory5 };
+void (*const mstory5_sceneCreateTbl[])(void) = { mstory5_Scene0Create, mstory5_Scene1Create };
 
-const s32 D_801148A8_mstory5[] = { 58, 60 };
+const s32 mstory5_sceneFlagTbl[] = { 58, 60 };
 
-void func_80105BDC_mstory5(omObjData *obj) {
-    u32 state = D_80114730_mstory5;
+void mstory5_SceneObjMain(omObjData *obj) {
+    u32 state = mstory5_sceneState;
     s32 btn;
 
     switch (state) {
@@ -98,8 +98,8 @@ void func_80105BDC_mstory5(omObjData *obj) {
             state += WipeStatGet() == 0;
             break;
         case 2:
-            if (D_80114734_mstory5 == 1) {
-                btn = HuPadBtnDown[D_801151B4_mstory5] & START_BUTTON;
+            if (mstory5_skipOnF == 1) {
+                btn = HuPadBtnDown[mstory5_padNo] & START_BUTTON;
                 state += btn != 0;
             }
             break;
@@ -116,15 +116,15 @@ void func_80105BDC_mstory5(omObjData *obj) {
             }
             break;
     }
-    D_80114730_mstory5 = state;
+    mstory5_sceneState = state;
 }
 
-void func_80105CCC_mstory5(omObjData *obj) {
+void mstory5_ExitObjMain(omObjData *obj) {
     if (omSysExitReq == 1) {
-        if (D_80114738_mstory5 == 0) {
+        if (mstory5_exitF == 0) {
             WipeCreateOut(2, 20);
             HuAudSeqFadeOut(30);
-            D_80114738_mstory5 = 1;
+            mstory5_exitF = 1;
         } else if (WipeStatGet() == 0) {
             HuWinAllKill();
             SLCommonSet(1);
@@ -133,61 +133,61 @@ void func_80105CCC_mstory5(omObjData *obj) {
     }
 }
 
-void func_80105D4C_mstory5(void) {
-    Hu3DMotionAttrSet(D_801151B2_mstory5, 4, 0);
-    Hu3DMotionAttrSet(D_801151B2_mstory5, 1, 0);
-    Hu3DMotionTimeSet(D_801151B2_mstory5, 0.0f);
+void mstory5_BackMotionStart(void) {
+    Hu3DMotionAttrSet(mstory5_backMdl, 4, 0);
+    Hu3DMotionAttrSet(mstory5_backMdl, 1, 0);
+    Hu3DMotionTimeSet(mstory5_backMdl, 0.0f);
     HuAudFXPlay(0x216);
 }
 
-void func_80105DA0_mstory5(void) {
-    Hu3DMotionAttrSet(D_801151B2_mstory5, 4, 4);
-    Hu3DMotionAttrSet(D_801151B2_mstory5, 1, 0);
-    Hu3DMotionTimeSet(D_801151B2_mstory5, Hu3DMotion[Hu3DData[D_801151B2_mstory5].motId].unk02);
+void mstory5_BackMotionReverse(void) {
+    Hu3DMotionAttrSet(mstory5_backMdl, 4, 4);
+    Hu3DMotionAttrSet(mstory5_backMdl, 1, 0);
+    Hu3DMotionTimeSet(mstory5_backMdl, Hu3DMotion[Hu3DData[mstory5_backMdl].motId].unk02);
 }
 
-void func_80105E34_mstory5(void) {
-    D_801151B8_mstory5 = espEntry(HuSprAnimDataRead(0x1D0012), 0, 0);
-    espPosSet(D_801151B8_mstory5, 160, 120);
-    espAttrSet(D_801151B8_mstory5, 0x4000);
-    D_801151B2_mstory5 = Hu3DModelRead(0x1D0014, 0x2B9);
-    Hu3DModelPosSet(D_801151B2_mstory5, 591.7f, -81.0f, -1305.7f);
-    Hu3DMotionAttrSet(D_801151B2_mstory5, 2, 0);
-    Hu3DMotionAttrSet(D_801151B2_mstory5, 1, 1);
+void mstory5_BackCreate(void) {
+    mstory5_backSpr = espEntry(HuSprAnimDataRead(0x1D0012), 0, 0);
+    espPosSet(mstory5_backSpr, 160, 120);
+    espAttrSet(mstory5_backSpr, 0x4000);
+    mstory5_backMdl = Hu3DModelRead(0x1D0014, 0x2B9);
+    Hu3DModelPosSet(mstory5_backMdl, 591.7f, -81.0f, -1305.7f);
+    Hu3DMotionAttrSet(mstory5_backMdl, 2, 0);
+    Hu3DMotionAttrSet(mstory5_backMdl, 1, 1);
 }
 
-void func_80105EF4_mstory5(void) {
-    Hu3DModelAttrSet(D_801151B2_mstory5, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    espDispOff(D_801151B8_mstory5);
+void mstory5_BackDispOff(void) {
+    Hu3DModelAttrSet(mstory5_backMdl, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    espDispOff(mstory5_backSpr);
 }
 
-void func_80105F28_mstory5(void) {
-    Hu3DModelAttrSet(D_801151B2_mstory5, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-    espDispOn(D_801151B8_mstory5);
+void mstory5_BackDispOn(void) {
+    Hu3DModelAttrSet(mstory5_backMdl, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    espDispOn(mstory5_backSpr);
 }
 
-void func_80105F5C_mstory5(omObjData *obj) {
-    CFanParam[0] = D_8011473C_mstory5.x;
-    CFanParam[1] = D_8011473C_mstory5.z;
+void mstory5_CameraObjMain(omObjData *obj) {
+    CFanParam[0] = mstory5_cameraPos.x;
+    CFanParam[1] = mstory5_cameraPos.z;
     CFanParam[-1] = 0.0f;
     CFanParam[2] = 35.0f;
     CFanParam[3] = CFanLen;
     CFanParam[4] = CFanOfs;
-    Hu3DCameraPosSetV(0, &D_8011473C_mstory5, &D_80114748_mstory5, &D_80114754_mstory5);
+    Hu3DCameraPosSetV(0, &mstory5_cameraPos, &mstory5_cameraTarget, &mstory5_cameraUp);
     Hu3DCamUpdateMtx(0);
 }
 
-void func_80105FDC_mstory5(void) {
-    D_80114730_mstory5 = 3;
+void mstory5_SceneEnd(void) {
+    mstory5_sceneState = 3;
 }
 
-void func_80105FEC_mstory5(s32 arg0) {
-    D_801151E4_mstory5 = arg0;
-    D_80114760_mstory5 = 0;
-    omAddPrcObj(func_80106028_mstory5, 0x1000, 0x800, 0);
+void mstory5_StampCardStart(s32 arg0) {
+    mstory5_stampNo = arg0;
+    mstory5_stampCardDoneF = 0;
+    omAddPrcObj(mstory5_StampCardProc, 0x1000, 0x800, 0);
 }
 
-void func_80106028_mstory5(void) {
+void mstory5_StampCardProc(void) {
     void *data;
     f32 x;
     f32 y;
@@ -196,130 +196,130 @@ void func_80106028_mstory5(void) {
     s32 i;
     s32 j;
 
-    D_801151C0_mstory5[0] = espEntry(HuSprAnimDataRead(0x1D0001), 0, 0);
-    espPosSet(D_801151C0_mstory5[0], 160, 120);
-    espDispOff(D_801151C0_mstory5[0]);
+    mstory5_stampCardSprTbl[0] = espEntry(HuSprAnimDataRead(0x1D0001), 0, 0);
+    espPosSet(mstory5_stampCardSprTbl[0], 160, 120);
+    espDispOff(mstory5_stampCardSprTbl[0]);
     for (i = 0; i < 7; i++) {
-        D_801151C0_mstory5[i + 1] = espEntry(HuSprAnimDataRead(D_801148C4_mstory5[i]), 0, 0);
-        espPosSet(D_801151C0_mstory5[i + 1], D_801148E0_mstory5[i][0] + 48, D_801148E0_mstory5[i][1] + 48);
-        espAttrSet(D_801151C0_mstory5[i + 1], 8);
-        espDispOff(D_801151C0_mstory5[i + 1]);
+        mstory5_stampCardSprTbl[i + 1] = espEntry(HuSprAnimDataRead(mstory5_stampSprFileTbl[i]), 0, 0);
+        espPosSet(mstory5_stampCardSprTbl[i + 1], mstory5_stampPosTbl[i][0] + 48, mstory5_stampPosTbl[i][1] + 48);
+        espAttrSet(mstory5_stampCardSprTbl[i + 1], 8);
+        espDispOff(mstory5_stampCardSprTbl[i + 1]);
     }
     data = DataRead(0x1D0002);
     for (i = 0; i < 8; i++) {
-        D_801151D0_mstory5[i] = espEntry(HuSprAnimRead(data), 0, 1);
-        x = D_801148E0_mstory5[D_801151E4_mstory5][0] + 48;
-        y = D_801148E0_mstory5[D_801151E4_mstory5][1] + 48;
+        mstory5_stampSparkSprTbl[i] = espEntry(HuSprAnimRead(data), 0, 1);
+        x = mstory5_stampPosTbl[mstory5_stampNo][0] + 48;
+        y = mstory5_stampPosTbl[mstory5_stampNo][1] + 48;
         angle = i * 45.0f;
         x += cosdf(angle) * 32.0f;
         y -= sindf(angle) * 32.0f;
-        espPosSet(D_801151D0_mstory5[i], x, y);
-        espAttrSet(D_801151D0_mstory5[i], 0x1000);
-        espColorSet(D_801151D0_mstory5[i], 255, 255, 192);
-        espAttrSet(D_801151D0_mstory5[i], 8);
-        espScaleSet(D_801151D0_mstory5[i], 1.5f, 1.5f);
-        espTPLvlSet(D_801151D0_mstory5[i], 255);
-        espDispOff(D_801151D0_mstory5[i]);
+        espPosSet(mstory5_stampSparkSprTbl[i], x, y);
+        espAttrSet(mstory5_stampSparkSprTbl[i], 0x1000);
+        espColorSet(mstory5_stampSparkSprTbl[i], 255, 255, 192);
+        espAttrSet(mstory5_stampSparkSprTbl[i], 8);
+        espScaleSet(mstory5_stampSparkSprTbl[i], 1.5f, 1.5f);
+        espTPLvlSet(mstory5_stampSparkSprTbl[i], 255);
+        espDispOff(mstory5_stampSparkSprTbl[i]);
     }
     HuMemMemoryFreePerm(data);
-    D_801151E0_mstory5 = espEntry(HuSprAnimDataRead(0x1D0000), 0, 0);
-    espPosSet(D_801151E0_mstory5, 160, 120);
-    espScaleSet(D_801151E0_mstory5, 40.0f, 30.0f);
-    espAttrSet(D_801151E0_mstory5, 0);
-    espDispOff(D_801151E0_mstory5);
-    omPrcSetDestructor(0, func_801068D4_mstory5);
-    espDispOn(D_801151E0_mstory5);
-    espTPLvlSet(D_801151E0_mstory5, 0);
+    mstory5_stampFadeSpr = espEntry(HuSprAnimDataRead(0x1D0000), 0, 0);
+    espPosSet(mstory5_stampFadeSpr, 160, 120);
+    espScaleSet(mstory5_stampFadeSpr, 40.0f, 30.0f);
+    espAttrSet(mstory5_stampFadeSpr, 0);
+    espDispOff(mstory5_stampFadeSpr);
+    omPrcSetDestructor(0, mstory5_StampCardDestroy);
+    espDispOn(mstory5_stampFadeSpr);
+    espTPLvlSet(mstory5_stampFadeSpr, 0);
     for (i = 0; i < 20; i++) {
-        espTPLvlSet(D_801151E0_mstory5, i * (1.0f / 20.0f) * 255.0f);
+        espTPLvlSet(mstory5_stampFadeSpr, i * (1.0f / 20.0f) * 255.0f);
         HuPrcVSleep();
     }
-    espTPLvlSet(D_801151E0_mstory5, 256);
-    for (i = 0; i < D_801151E4_mstory5; i++) {
-        espDispOn(D_801151C0_mstory5[i + 1]);
+    espTPLvlSet(mstory5_stampFadeSpr, 256);
+    for (i = 0; i < mstory5_stampNo; i++) {
+        espDispOn(mstory5_stampCardSprTbl[i + 1]);
     }
-    func_80105EF4_mstory5();
-    espDispOn(D_801151C0_mstory5[0]);
+    mstory5_BackDispOff();
+    espDispOn(mstory5_stampCardSprTbl[0]);
     HuPrcSleep(30);
     for (i = 0; i < 20; i++) {
-        espTPLvlSet(D_801151E0_mstory5, 255.0f - i * (1.0f / 20.0f) * 255.0f);
+        espTPLvlSet(mstory5_stampFadeSpr, 255.0f - i * (1.0f / 20.0f) * 255.0f);
         HuPrcVSleep();
     }
-    espDispOff(D_801151E0_mstory5);
-    espTPLvlSet(D_801151C0_mstory5[D_801151E4_mstory5 + 1], 0);
-    espDispOn(D_801151C0_mstory5[D_801151E4_mstory5 + 1]);
+    espDispOff(mstory5_stampFadeSpr);
+    espTPLvlSet(mstory5_stampCardSprTbl[mstory5_stampNo + 1], 0);
+    espDispOn(mstory5_stampCardSprTbl[mstory5_stampNo + 1]);
     for (j = 0, tpLvl = 0.0f; j < 20; j++) {
         tpLvl += 12.75f;
-        espTPLvlSet(D_801151C0_mstory5[D_801151E4_mstory5 + 1], tpLvl);
+        espTPLvlSet(mstory5_stampCardSprTbl[mstory5_stampNo + 1], tpLvl);
         HuPrcVSleep();
     }
-    espTPLvlSet(D_801151C0_mstory5[D_801151E4_mstory5 + 1], 255);
-    espScaleSet(D_801151C0_mstory5[D_801151E4_mstory5 + 1], 1.0f, 1.0f);
+    espTPLvlSet(mstory5_stampCardSprTbl[mstory5_stampNo + 1], 255);
+    espScaleSet(mstory5_stampCardSprTbl[mstory5_stampNo + 1], 1.0f, 1.0f);
     HuAudFXPlay(0x131);
     for (i = 0; i < 8; i++) {
-        espBankSet(D_801151D0_mstory5[i], 0, 0);
-        espAnimModeSet(D_801151D0_mstory5[i], 1);
-        espDispOn(D_801151D0_mstory5[i]);
+        espBankSet(mstory5_stampSparkSprTbl[i], 0, 0);
+        espAnimModeSet(mstory5_stampSparkSprTbl[i], 1);
+        espDispOn(mstory5_stampSparkSprTbl[i]);
     }
     HuPrcSleep(20);
     for (i = 0; i < 8; i++) {
-        espDispOff(D_801151D0_mstory5[i]);
+        espDispOff(mstory5_stampSparkSprTbl[i]);
     }
-    if (D_801151E4_mstory5 == 6) {
+    if (mstory5_stampNo == 6) {
         HuPrcSleep(40);
-        espDispOn(D_801151E0_mstory5);
-        espTPLvlSet(D_801151E0_mstory5, 0);
+        espDispOn(mstory5_stampFadeSpr);
+        espTPLvlSet(mstory5_stampFadeSpr, 0);
         for (i = 0; i < 5; i++) {
-            espTPLvlSet(D_801151E0_mstory5, i * (1.0f / 8.0f) * 255.0f);
+            espTPLvlSet(mstory5_stampFadeSpr, i * (1.0f / 8.0f) * 255.0f);
             HuPrcVSleep();
         }
-        espTPLvlSet(D_801151E0_mstory5, 256);
+        espTPLvlSet(mstory5_stampFadeSpr, 256);
         HuPrcSleep(3);
         for (i = 0; i < 5; i++) {
-            espTPLvlSet(D_801151E0_mstory5, 255.0f - i * (1.0f / 8.0f) * 255.0f);
+            espTPLvlSet(mstory5_stampFadeSpr, 255.0f - i * (1.0f / 8.0f) * 255.0f);
             HuPrcVSleep();
         }
-        espDispOff(D_801151E0_mstory5);
+        espDispOff(mstory5_stampFadeSpr);
         HuPrcSleep(80);
     } else {
         HuPrcSleep(60);
     }
-    espDispOn(D_801151E0_mstory5);
-    espTPLvlSet(D_801151E0_mstory5, 0);
+    espDispOn(mstory5_stampFadeSpr);
+    espTPLvlSet(mstory5_stampFadeSpr, 0);
     for (i = 0; i < 20; i++) {
-        espTPLvlSet(D_801151E0_mstory5, i * (1.0f / 20.0f) * 255.0f);
+        espTPLvlSet(mstory5_stampFadeSpr, i * (1.0f / 20.0f) * 255.0f);
         HuPrcVSleep();
     }
-    espTPLvlSet(D_801151E0_mstory5, 256);
-    espDispOff(D_801151C0_mstory5[D_801151E4_mstory5 + 1]);
-    espDispOff(D_801151C0_mstory5[0]);
-    func_80105F28_mstory5();
+    espTPLvlSet(mstory5_stampFadeSpr, 256);
+    espDispOff(mstory5_stampCardSprTbl[mstory5_stampNo + 1]);
+    espDispOff(mstory5_stampCardSprTbl[0]);
+    mstory5_BackDispOn();
     HuPrcSleep(30);
-    for (i = 0; i < D_801151E4_mstory5; i++) {
-        espDispOff(D_801151C0_mstory5[i + 1]);
+    for (i = 0; i < mstory5_stampNo; i++) {
+        espDispOff(mstory5_stampCardSprTbl[i + 1]);
     }
     for (i = 0; i < 20; i++) {
-        espTPLvlSet(D_801151E0_mstory5, 255.0f - i * (1.0f / 20.0f) * 255.0f);
+        espTPLvlSet(mstory5_stampFadeSpr, 255.0f - i * (1.0f / 20.0f) * 255.0f);
         HuPrcVSleep();
     }
-    espDispOff(D_801151E0_mstory5);
-    D_80114760_mstory5 = 1;
+    espDispOff(mstory5_stampFadeSpr);
+    mstory5_stampCardDoneF = 1;
     while (TRUE) {
         HuPrcVSleep();
     }
 }
 
-s32 func_801068C8_mstory5(void) {
-    return D_80114760_mstory5;
+s32 mstory5_StampCardDoneCheck(void) {
+    return mstory5_stampCardDoneF;
 }
 
-void func_801068D4_mstory5(void) {
+void mstory5_StampCardDestroy(void) {
 }
 
-void func_801068DC_mstory5(void) {
+void mstory5_StampCardClose(void) {
 }
 
-void func_801068E4_mstory5(s16 model, s16 animSlot, s16 anim) {
+void mstory5_HmfAnimSet(s16 model, s16 animSlot, s16 anim) {
     HmfAnim *entry;
 
     if (animSlot >= 0) {
@@ -337,47 +337,47 @@ void func_801068E4_mstory5(s16 model, s16 animSlot, s16 anim) {
     }
 }
 
-void func_801069B8_mstory5(void) {
-    D_801151B0_mstory5 = HuWinExCreateStyled(160, 194, 20);
-    HuWinActivePlayerSet(D_801151B0_mstory5, 1 << D_801151B4_mstory5);
-    HuWinInsertMesSet(D_801151B0_mstory5, GwStory.unk1 + 0x1C00, 0);
+void mstory5_WinCreate(void) {
+    mstory5_winId = HuWinExCreateStyled(160, 194, 20);
+    HuWinActivePlayerSet(mstory5_winId, 1 << mstory5_padNo);
+    HuWinInsertMesSet(mstory5_winId, GwStory.unk1 + 0x1C00, 0);
 }
 
-void func_80106A20_mstory5(void) {
-    HuWinHomeClear(D_801151B0_mstory5);
-    HuWinExOpen(D_801151B0_mstory5, 1);
+void mstory5_WinOpen(void) {
+    HuWinHomeClear(mstory5_winId);
+    HuWinExOpen(mstory5_winId, 1);
 }
 
-void func_80106A50_mstory5(void) {
-    HuWinExClose(D_801151B0_mstory5, 1);
+void mstory5_WinClose(void) {
+    HuWinExClose(mstory5_winId, 1);
 }
 
-void func_80106A74_mstory5(s32 mess) {
-    HuWinMesSet(D_801151B0_mstory5, mess, -1, -1);
-    while (HuWinStatGet(D_801151B0_mstory5) != 0) {
+void mstory5_WinMesExec(s32 mess) {
+    HuWinMesSet(mstory5_winId, mess, -1, -1);
+    while (HuWinStatGet(mstory5_winId) != 0) {
         HuPrcVSleep();
     }
 }
 
-void func_80106AC8_mstory5(s32 mess) {
-    HuWinMesSet(D_801151B0_mstory5, mess, -1, -1);
+void mstory5_WinMesSet(s32 mess) {
+    HuWinMesSet(mstory5_winId, mess, -1, -1);
 }
 
-void func_80106AF4_mstory5(void) {
-    while (HuWinStatGet(D_801151B0_mstory5) != 0) {
+void mstory5_WinMesWait(void) {
+    while (HuWinStatGet(mstory5_winId) != 0) {
         HuPrcVSleep();
     }
 }
 
-s32 func_80106B30_mstory5(s32 character) {
+s32 mstory5_PlayerChrCheck(s32 character) {
     return -(character == GwStory.unk1);
 }
 
-void func_80106B48_mstory5(omObjData *obj, const Vec *pos, s32 frames) {
-    func_80106B64_mstory5(obj, pos, frames, 1);
+void mstory5_ObjPosMoveV(omObjData *obj, const Vec *pos, s32 frames) {
+    mstory5_ObjPosMoveEx(obj, pos, frames, 1);
 }
 
-void func_80106B64_mstory5(omObjData *obj, const Vec *pos, s32 frames, s32 arg3) {
+void mstory5_ObjPosMoveEx(omObjData *obj, const Vec *pos, s32 frames, s32 arg3) {
     Vec start;
     Vec diff;
     Vec step;
@@ -415,11 +415,11 @@ void func_80106B64_mstory5(omObjData *obj, const Vec *pos, s32 frames, s32 arg3)
     HuPrcVSleep();
 }
 
-void func_80106D98_mstory5(omObjData *obj, Vec *pos, s32 frames) {
-    func_80106DB4_mstory5(obj, pos, frames, 1);
+void mstory5_ObjLinkPosMoveV(omObjData *obj, Vec *pos, s32 frames) {
+    mstory5_ObjLinkPosMoveEx(obj, pos, frames, 1);
 }
 
-void func_80106DB4_mstory5(omObjData *obj, Vec *pos, s32 frames, s32 arg3) {
+void mstory5_ObjLinkPosMoveEx(omObjData *obj, Vec *pos, s32 frames, s32 arg3) {
     Vec start;
     Vec diff;
     Vec step;
@@ -454,43 +454,43 @@ void func_80106DB4_mstory5(omObjData *obj, Vec *pos, s32 frames, s32 arg3) {
     HuPrcVSleep();
 }
 
-void func_80106FC8_mstory5(omObjData *obj, f32 x, f32 y, f32 z, s32 frames) {
+void mstory5_ObjPosMove(omObjData *obj, f32 x, f32 y, f32 z, s32 frames) {
     Vec pos;
 
     pos.x = x;
     pos.y = y;
     pos.z = z;
-    func_80106B48_mstory5(obj, &pos, frames);
+    mstory5_ObjPosMoveV(obj, &pos, frames);
 }
 
-void func_80106FF4_mstory5(omObjData *obj, f32 x, f32 y, f32 z, s32 frames, s32 arg3) {
+void mstory5_ObjPosMoveExXYZ(omObjData *obj, f32 x, f32 y, f32 z, s32 frames, s32 arg3) {
     Vec pos;
 
     pos.x = x;
     pos.y = y;
     pos.z = z;
-    func_80106B64_mstory5(obj, &pos, frames, arg3);
+    mstory5_ObjPosMoveEx(obj, &pos, frames, arg3);
 }
 
-void func_80107024_mstory5(omObjData *obj, f32 x, f32 y, f32 z, s32 frames) {
+void mstory5_ObjLinkPosMove(omObjData *obj, f32 x, f32 y, f32 z, s32 frames) {
     Vec pos;
 
     pos.x = x;
     pos.y = y;
     pos.z = z;
-    func_80106D98_mstory5(obj, &pos, frames);
+    mstory5_ObjLinkPosMoveV(obj, &pos, frames);
 }
 
-void func_80107050_mstory5(omObjData *obj, f32 x, f32 y, f32 z, s32 frames, s32 arg3) {
+void mstory5_ObjLinkPosMoveExXYZ(omObjData *obj, f32 x, f32 y, f32 z, s32 frames, s32 arg3) {
     Vec pos;
 
     pos.x = x;
     pos.y = y;
     pos.z = z;
-    func_80106DB4_mstory5(obj, &pos, frames, arg3);
+    mstory5_ObjLinkPosMoveEx(obj, &pos, frames, arg3);
 }
 
-void func_80107080_mstory5(omObjData *obj, const Vec *target, s32 frames) {
+void mstory5_ObjRotMoveV(omObjData *obj, const Vec *target, s32 frames) {
     Vec start;
     Vec delta;
     Vec rot;
@@ -516,23 +516,23 @@ void func_80107080_mstory5(omObjData *obj, const Vec *target, s32 frames) {
     HuPrcVSleep();
 }
 
-void func_80107228_mstory5(omObjData *obj, f32 x, f32 y, f32 z, s32 frames) {
+void mstory5_ObjRotMove(omObjData *obj, f32 x, f32 y, f32 z, s32 frames) {
     Vec pos;
 
     pos.x = x;
     pos.y = y;
     pos.z = z;
-    func_80107080_mstory5(obj, &pos, frames);
+    mstory5_ObjRotMoveV(obj, &pos, frames);
 }
 
-void func_80107254_mstory5(s16 model) {
+void mstory5_MotionEndWait(s16 model) {
     HuPrcSleep(10);
-    while (!func_801072A0_mstory5(model)) {
+    while (!mstory5_MotionEndCheck(model)) {
         HuPrcVSleep();
     }
 }
 
-s32 func_801072A0_mstory5(s16 model) {
+s32 mstory5_MotionEndCheck(s16 model) {
     f32 time = Hu3DMotionShiftTimeGet(model);
     s32 ret = 0;
 
@@ -542,7 +542,7 @@ s32 func_801072A0_mstory5(s16 model) {
     return ret;
 }
 
-void func_8010734C_mstory5(omObjData *obj, f32 speed, s16 frames) {
+void mstory5_ObjForwardMove(omObjData *obj, f32 speed, s16 frames) {
     f32 dx;
     f32 dz;
     f32 t;
@@ -556,7 +556,7 @@ void func_8010734C_mstory5(omObjData *obj, f32 speed, s16 frames) {
     }
 }
 
-void func_801074E8_mstory5(omObjData *obj, f32 x, f32 y, f32 z, s32 frames, s32 faceDir) {
+void mstory5_ObjPosMoveAccelXYZ(omObjData *obj, f32 x, f32 y, f32 z, s32 frames, s32 faceDir) {
     Vec start;
     Vec diff;
     Vec vel;
@@ -622,9 +622,9 @@ void func_801074E8_mstory5(omObjData *obj, f32 x, f32 y, f32 z, s32 frames, s32 
     HuPrcVSleep();
 }
 
-const s32 D_801148C4_mstory5[7] = { 0x1D000B, 0x1D000C, 0x1D000D, 0x1D000E, 0x1D000F, 0x1D0010, 0x1D0011 };
+const s32 mstory5_stampSprFileTbl[7] = { 0x1D000B, 0x1D000C, 0x1D000D, 0x1D000E, 0x1D000F, 0x1D0010, 0x1D0011 };
 
-const s16 D_801148E0_mstory5[7][2] = {
+const s16 mstory5_stampPosTbl[7][2] = {
     { 57, 20 },
     { 129, 36 },
     { 200, 22 },

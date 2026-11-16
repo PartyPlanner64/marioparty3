@@ -1,20 +1,20 @@
 #include "common.h"
 
-extern s32 D_80114A84_mstory1;
-extern s32 D_801158B4_mstory1;
-extern s32 D_80115CB0_mstory1[4];
-extern void (*const D_80114C40_mstory1[])(void);
-extern const s32 D_80114C4C_mstory1[];
+extern s32 mstory1_skipOnF;
+extern s32 mstory1_padNo;
+extern s32 mstory1_playerOrderTbl[4];
+extern void (*const mstory1_sceneCreateTbl[])(void);
+extern const s32 mstory1_sceneFlagTbl[];
 
-void func_80105C90_mstory1(omObjData *obj);
-void func_8010809C_mstory1(void);
-void func_8010C99C_mstory1(void);
-void func_801110DC_mstory1(void);
-void func_80105D80_mstory1(omObjData *obj);
-void func_80105E00_mstory1(void);
-void func_80105F28_mstory1(omObjData *obj);
+void mstory1_SceneObjMain(omObjData *obj);
+void mstory1_Scene0Create(void);
+void mstory1_Scene1Create(void);
+void mstory1_Scene2Create(void);
+void mstory1_ExitObjMain(omObjData *obj);
+void mstory1_BackCreate(void);
+void mstory1_CameraObjMain(omObjData *obj);
 
-void func_801059A0_mstory1(void) {
+void mstory1_ObjectSetup(void) {
     omObjData *obj;
     s16 chapter;
     s16 count = 0;
@@ -24,7 +24,7 @@ void func_801059A0_mstory1(void) {
     for (group = 0; group < 4; group++) {
         for (i = 0; i < 4; i++) {
             if (group == GwPlayer[i].group) {
-                D_80115CB0_mstory1[count] = i;
+                mstory1_playerOrderTbl[count] = i;
                 count++;
                 if (count >= 4) {
                     break;
@@ -43,33 +43,33 @@ void func_801059A0_mstory1(void) {
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 35.0f, 80.0f, 8000.0f);
     Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
-    obj = omAddObj(0x7FDA, 0, 0, -1, func_80105F28_mstory1);
+    obj = omAddObj(0x7FDA, 0, 0, -1, mstory1_CameraObjMain);
     omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    func_80105F28_mstory1(obj);
-    omAddObj(0, 0, 0, -1, func_80105C90_mstory1);
-    omAddObj(0, 0, 0, -1, func_80105D80_mstory1);
-    func_80105E00_mstory1();
-    for (D_801158B4_mstory1 = 0; D_801158B4_mstory1 < 4; D_801158B4_mstory1++) {
-        if (CheckControllerRead(D_801158B4_mstory1)) {
+    mstory1_CameraObjMain(obj);
+    omAddObj(0, 0, 0, -1, mstory1_SceneObjMain);
+    omAddObj(0, 0, 0, -1, mstory1_ExitObjMain);
+    mstory1_BackCreate();
+    for (mstory1_padNo = 0; mstory1_padNo < 4; mstory1_padNo++) {
+        if (CheckControllerRead(mstory1_padNo)) {
             break;
         }
     }
-    if (D_801158B4_mstory1 >= 4) {
-        D_801158B4_mstory1 = 0;
+    if (mstory1_padNo >= 4) {
+        mstory1_padNo = 0;
     }
     chapter = GwPlayer[0].coin;
     if (GwPlayer[0].coin >= 3) {
         chapter = 2;
     }
-    D_80114C40_mstory1[chapter]();
-    if (_CheckFlag(D_80114C4C_mstory1[chapter])) {
-        D_80114A84_mstory1 = 1;
+    mstory1_sceneCreateTbl[chapter]();
+    if (_CheckFlag(mstory1_sceneFlagTbl[chapter])) {
+        mstory1_skipOnF = 1;
     } else {
-        _SetFlag(D_80114C4C_mstory1[chapter]);
+        _SetFlag(mstory1_sceneFlagTbl[chapter]);
     }
     WipeCreateIn(2, 16);
 }
 
-void (*const D_80114C40_mstory1[])(void) = { func_8010809C_mstory1, func_8010C99C_mstory1, func_801110DC_mstory1 };
+void (*const mstory1_sceneCreateTbl[])(void) = { mstory1_Scene0Create, mstory1_Scene1Create, mstory1_Scene2Create };
 
-const s32 D_80114C4C_mstory1[] = { 52, 54, 56 };
+const s32 mstory1_sceneFlagTbl[] = { 52, 54, 56 };

@@ -13,116 +13,116 @@ typedef struct MstoryPath {
 
 extern s32 omCharModelNoTbl[][6];
 
-extern char *D_8011BB60_mstory2[];
-extern char *D_8011BB80_mstory2[];
+extern char *mstory2_scene2PlayerAnimNameTbl[];
+extern char *mstory2_scene2RivalAnimNameTbl[];
 
-extern void (*const D_8011BDE0_mstory2[])(void);
-extern const Vec D_8011C054_mstory2;
-extern const Vec D_8011C204_mstory2;
-extern const Vec D_8011C06C_mstory2;
-extern const Vec D_8011C078_mstory2;
-extern const Vec D_8011C1E0_mstory2;
-extern const Vec D_8011C21C_mstory2;
-extern const Vec D_8011C228_mstory2;
-extern Vec D_8011C7E4_mstory2;
-extern Vec D_8011C7FC_mstory2;
-extern UnkMstory2Obj D_8011C760_mstory2[6];
-extern Vec D_8011C808_mstory2;
-extern s16 D_8011C820_mstory2[3];
-extern Vec D_8011C7F0_mstory2;
-extern const Vec D_8011C060_mstory2;
-extern s16 D_8011C826_mstory2;
-extern const Vec D_8011C210_mstory2;
-extern s16 D_8011C828_mstory2;
-extern s16 D_8011C83A_mstory2;
-extern s16 D_8011C83C_mstory2;
-extern s16 D_8011C83E_mstory2;
-extern s16 D_8011C832_mstory2[3];
-extern const Vec D_8011C1EC_mstory2;
-extern s16 D_8011C82A_mstory2[3];
-extern const Vec D_8011C1D4_mstory2;
-extern s16 D_8011C830_mstory2;
-extern s16 D_8011C838_mstory2;
+extern void (*const mstory2_sceneCreateTbl[])(void);
+extern const Vec mstory2_scene2RivalStartPos;
+extern const Vec mstory2_scene2TumbleDestRot2;
+extern const Vec mstory2_scene2StarStartPos;
+extern const Vec mstory2_scene2StampStartPos;
+extern const Vec mstory2_scene2FrontRot;
+extern const Vec mstory2_scene2TumbleDestRot4;
+extern const Vec mstory2_scene2TumbleDestRot5;
+extern Vec mstory2_scene2RivalPos;
+extern Vec mstory2_scene2StarPos;
+extern Mstory2ObjWork mstory2_scene2WorkTbl[6];
+extern Vec mstory2_scene2StampPos;
+extern s16 mstory2_scene2TumbleFaceAnimTbl[3];
+extern Vec mstory2_scene2TumblePos;
+extern const Vec mstory2_scene2TumbleStartPos;
+extern s16 mstory2_scene2TumbleFaceSlot;
+extern const Vec mstory2_scene2TumbleDestRot3;
+extern s16 mstory2_scene2StarFloatStopF;
+extern s16 mstory2_scene2ShadowMdl;
+extern s16 mstory2_scene2PlayerChr;
+extern s16 mstory2_scene2RivalChr;
+extern s16 mstory2_scene2RivalFaceAnimTbl[3];
+extern const Vec mstory2_scene2RivalDestRot2;
+extern s16 mstory2_scene2PlayerFaceAnimTbl[3];
+extern const Vec mstory2_scene2PlayerDestRot1;
+extern s16 mstory2_scene2PlayerFaceSlot;
+extern s16 mstory2_scene2RivalFaceSlot;
 
-void func_80105FBC_mstory2(void);
-void func_80106D58_mstory2(s16 model, s16 arg1, s16 arg2);
-void func_80106E48_mstory2(omObjData *obj, Vec *pos, s32 frames, s32 arg3);
-void func_801070D8_mstory2(omObjData *obj, Vec *pos, s32 frames);
-void func_801073A4_mstory2(omObjData *obj, f32 speed, s16 frames);
-void func_801076DC_mstory2(omObjData *obj, omObjData *target);
-void func_8010EF6C_mstory2(void);
-void func_8010FDE4_mstory2(void);
-void func_8010F2D8_mstory2(omObjData *obj);
-void func_80110BA8_mstory2(omObjData *obj);
-void func_80110910_mstory2(omObjData *obj);
-void func_8010D21C_mstory2(omObjData *);
-void func_8010F2F8_mstory2(omObjData *);
-void func_8010D5C0_mstory2(omObjData *);
-void func_80107824_mstory2(omObjData *obj, Vec *target, s32 frames, s32 faceDir);
-void func_8010EF74_mstory2(omObjData *obj);
-void func_8010F090_mstory2(omObjData *obj);
-void func_8010F460_mstory2(omObjData *obj);
-void func_8010F6CC_mstory2(omObjData *obj);
-void func_8010FDEC_mstory2(omObjData *obj);
-void func_8010FEDC_mstory2(omObjData *obj);
-void func_80110148_mstory2(omObjData *obj);
-void func_80110364_mstory2(omObjData *obj);
-void func_801106F8_mstory2(omObjData *obj);
-void func_80110930_mstory2(omObjData *obj);
-void func_801109F0_mstory2(omObjData *obj);
-void func_80110C44_mstory2(omObjData *obj);
-void func_80110F54_mstory2(omObjData *obj);
-void func_80110F74_mstory2(omObjData *obj);
-void func_80110FC4_mstory2(omObjData *obj);
-void func_8010E9E0_mstory2(void);
-void func_8010F8F8_mstory2(void);
-void func_801103E4_mstory2(void);
-void func_801106F0_mstory2(void);
-void func_80110C64_mstory2(void);
-void func_80111024_mstory2(void);
-void func_80110E08_mstory2(void);
-void func_80111194_mstory2(void);
-void func_8010D3BC_mstory2(void);
-void func_80110E10_mstory2(void);
-void func_8010D224_mstory2(void);
-void func_80105EA4_mstory2(void);
-void func_801060A4_mstory2(void);
-void func_801060D4_mstory2(void);
-void func_801060F8_mstory2(s32 mess);
-void func_8010614C_mstory2(s32 mess);
-void func_8010622C_mstory2(void);
-void func_80106E2C_mstory2(omObjData *obj, Vec *pos, s32 frames);
-void func_801072AC_mstory2(s16 model);
-void func_8010D430_mstory2(omObjData *);
+void mstory2_WinCreate(void);
+void mstory2_HmfAnimSet(s16 model, s16 arg1, s16 arg2);
+void mstory2_ObjPosMoveEx(omObjData *obj, Vec *pos, s32 frames, s32 arg3);
+void mstory2_ObjRotMoveV(omObjData *obj, Vec *pos, s32 frames);
+void mstory2_ObjForwardMove(omObjData *obj, f32 speed, s16 frames);
+void mstory2_ObjTargetFace(omObjData *obj, omObjData *target);
+void mstory2_Scene2PlayerDestroy(void);
+void mstory2_Scene2RivalDestroy(void);
+void mstory2_Scene2PlayerRivalFace(omObjData *obj);
+void mstory2_Scene2TumbleTurn(omObjData *obj);
+void mstory2_Scene2TumbleRivalFace(omObjData *obj);
+void mstory2_Scene2ObjIdle(omObjData *);
+void mstory2_Scene2PlayerStep(omObjData *);
+void mstory2_Scene2EventExec(omObjData *);
+void mstory2_ObjPosMoveAccel(omObjData *obj, Vec *target, s32 frames, s32 faceDir);
+void mstory2_Scene2PlayerCardShow(omObjData *obj);
+void mstory2_Scene2PlayerCardHide(omObjData *obj);
+void mstory2_Scene2PlayerKnockBack(omObjData *obj);
+void mstory2_Scene2PlayerExit(omObjData *obj);
+void mstory2_Scene2RivalStep(omObjData *obj);
+void mstory2_Scene2RivalKnockBack(omObjData *obj);
+void mstory2_Scene2RivalExit(omObjData *obj);
+void mstory2_Scene2RivalLuigiPose(omObjData *obj);
+void mstory2_Scene2TumbleHop1(omObjData *obj);
+void mstory2_Scene2TumbleLand(omObjData *obj);
+void mstory2_Scene2TumbleHop2(omObjData *obj);
+void mstory2_Scene2TumblePlayerFace(omObjData *obj);
+void mstory2_Scene2StarRivalFace(omObjData *obj);
+void mstory2_Scene2StarTurn(omObjData *obj);
+void mstory2_Scene2StarTumbleTurn(omObjData *obj);
+void mstory2_Scene2PlayerProc(void);
+void mstory2_Scene2RivalProc(void);
+void mstory2_Scene2TumbleProc(void);
+void mstory2_Scene2TumbleDestroy(void);
+void mstory2_Scene2StarProc(void);
+void mstory2_Scene2StampProc(void);
+void mstory2_Scene2StarDestroy(void);
+void mstory2_Scene2StampDestroy(void);
+void mstory2_Scene2EventProc(void);
+void mstory2_Scene2StarFloatProc(void);
+void mstory2_Scene2ObjSeLoopProc(void);
+void mstory2_SceneEnd(void);
+void mstory2_WinOpen(void);
+void mstory2_WinClose(void);
+void mstory2_WinMesExec(s32 mess);
+void mstory2_WinMesChrNameExec(s32 mess);
+void mstory2_BackMotionStart(void);
+void mstory2_ObjPosMoveV(omObjData *obj, Vec *pos, s32 frames);
+void mstory2_MotionEndWait(s16 model);
+void mstory2_Scene2EventIntroExec(omObjData *);
 
-Vec D_8011BA70_mstory2[4] = {
+Vec mstory2_scene2StampPathA[4] = {
     { 0.0f, 200.0f, 100.0f },
     { -200.0f, 100.0f, -100.0f },
     { -100.0f, 300.0f, 300.0f },
     { 9999.0f, 9999.0f, 9999.0f },
 };
-Vec D_8011BAA0_mstory2[4] = {
+Vec mstory2_scene2StampPathB[4] = {
     { -100.0f, 300.0f, 300.0f },
     { -200.0f, 400.0f, -100.0f },
     { 0.0f, 200.0f, 100.0f },
     { 9999.0f, 9999.0f, 9999.0f },
 };
-Vec D_8011BAD0_mstory2 = { 0.0f, 158.73f, 0.0f }; /* Unreferenced. */
-Vec D_8011BADC_mstory2 = { 0.0f, 167.01f, 0.0f }; /* Unreferenced. */
-Vec D_8011BAE8_mstory2 = { 0.0f, 158.46f, 0.0f };
-Vec D_8011BAF4_mstory2 = { 0.0f, -70.43f, 0.0f };
-Vec D_8011BB00_mstory2 = { 0.0f, -77.13f, 0.0f };
-Vec D_8011BB0C_mstory2 = { 0.0f, -135.0f, 0.0f };
-Vec D_8011BB18_mstory2 = { 0.0f, 162.4f, 0.0f };   /* Unreferenced. */
-Vec D_8011BB24_mstory2 = { 0.0f, -147.34f, 0.0f }; /* Unreferenced. */
-Vec D_8011BB30_mstory2 = { 0.0f, 306.61f, 0.0f };  /* Unreferenced. */
-Vec D_8011BB3C_mstory2 = { 0.0f, 90.0f, 0.0f };
-Vec D_8011BB48_mstory2 = { 0.0f, 50.19f, 0.0f };
-Vec D_8011BB54_mstory2 = { 0.0f, 100.78f, 0.0f };
+Vec mstory2_scene2UnusedRot0 = { 0.0f, 158.73f, 0.0f }; /* Unreferenced. */
+Vec mstory2_scene2UnusedRot1 = { 0.0f, 167.01f, 0.0f }; /* Unreferenced. */
+Vec mstory2_scene2StarDestRot0 = { 0.0f, 158.46f, 0.0f };
+Vec mstory2_scene2RivalDestRot0 = { 0.0f, -70.43f, 0.0f };
+Vec mstory2_scene2TumbleDestRot0 = { 0.0f, -77.13f, 0.0f };
+Vec mstory2_scene2TumbleDestRot1 = { 0.0f, -135.0f, 0.0f };
+Vec mstory2_scene2UnusedRot2 = { 0.0f, 162.4f, 0.0f };   /* Unreferenced. */
+Vec mstory2_scene2UnusedRot3 = { 0.0f, -147.34f, 0.0f }; /* Unreferenced. */
+Vec mstory2_scene2UnusedRot4 = { 0.0f, 306.61f, 0.0f };  /* Unreferenced. */
+Vec mstory2_scene2RivalDestRot1 = { 0.0f, 90.0f, 0.0f };
+Vec mstory2_scene2StarDestRot1 = { 0.0f, 50.19f, 0.0f };
+Vec mstory2_scene2PlayerDestRot0 = { 0.0f, 100.78f, 0.0f };
 
-const Vec D_8011C048_mstory2 = { -120.0f, 0.0f, 480.0f };
+const Vec mstory2_scene2PlayerStartPos = { -120.0f, 0.0f, 480.0f };
 
-MstoryPath *func_8010C510_mstory2(Vec *points, s32 flags) {
+MstoryPath *mstory2_Scene2PathCreate(Vec *points, s32 flags) {
     MstoryPath *path;
     Vec *current;
     Vec *next;
@@ -182,7 +182,7 @@ MstoryPath *func_8010C510_mstory2(Vec *points, s32 flags) {
     return path;
 }
 
-void func_8010C814_mstory2(MstoryPath *path, f32 time, Vec *result) {
+void mstory2_Scene2PathPosGet(MstoryPath *path, f32 time, Vec *result) {
     f32 values[4];
     f32 times[4];
     Vec *points;
@@ -330,47 +330,47 @@ void func_8010C814_mstory2(MstoryPath *path, f32 time, Vec *result) {
     }
 }
 
-void func_8010D0BC_mstory2(MstoryPath *path) {
+void mstory2_Scene2PathKill(MstoryPath *path) {
     HuMemFree(path->intervals);
     HuMemFree(path);
 }
 
-void func_8010D0EC_mstory2(void) {
-    D_8011C83C_mstory2 = GwStory.unk1;
-    if (D_8011C83C_mstory2 == 3) {
-        D_8011C83E_mstory2 = 1;
+void mstory2_Scene2Create(void) {
+    mstory2_scene2PlayerChr = GwStory.unk1;
+    if (mstory2_scene2PlayerChr == 3) {
+        mstory2_scene2RivalChr = 1;
     } else {
-        D_8011C83E_mstory2 = 3;
+        mstory2_scene2RivalChr = 3;
     }
-    func_80105FBC_mstory2();
-    D_8011C83A_mstory2 = Hu3DModelRead(9, 0x2B9);
-    omAddPrcObj(func_8010E9E0_mstory2, 0x1001, 0x1000, 0);
-    omAddPrcObj(func_8010F8F8_mstory2, 0x1001, 0x1000, 0);
-    omAddPrcObj(func_801103E4_mstory2, 0x1001, 0x1000, 0);
-    omAddPrcObj(func_80110C64_mstory2, 0x1001, 0x1000, 0);
-    omAddPrcObj(func_80111024_mstory2, 0x1001, 0x1000, 0);
+    mstory2_WinCreate();
+    mstory2_scene2ShadowMdl = Hu3DModelRead(9, 0x2B9);
+    omAddPrcObj(mstory2_Scene2PlayerProc, 0x1001, 0x1000, 0);
+    omAddPrcObj(mstory2_Scene2RivalProc, 0x1001, 0x1000, 0);
+    omAddPrcObj(mstory2_Scene2TumbleProc, 0x1001, 0x1000, 0);
+    omAddPrcObj(mstory2_Scene2StarProc, 0x1001, 0x1000, 0);
+    omAddPrcObj(mstory2_Scene2StampProc, 0x1001, 0x1000, 0);
     HuPrcVSleep();
-    omAddPrcObj(func_8010D3BC_mstory2, 0x1001, 0x1000, 0);
-    omAddPrcObj(func_80110E10_mstory2, 0x1001, 0x1000, 0);
-    omAddPrcObj(func_8010D224_mstory2, 0x1001, 0x1000, 0);
-    Hu3DModelAttrSet(D_8011C83A_mstory2, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    omAddPrcObj(mstory2_Scene2EventProc, 0x1001, 0x1000, 0);
+    omAddPrcObj(mstory2_Scene2StarFloatProc, 0x1001, 0x1000, 0);
+    omAddPrcObj(mstory2_Scene2ObjSeLoopProc, 0x1001, 0x1000, 0);
+    Hu3DModelAttrSet(mstory2_scene2ShadowMdl, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
 }
 
-void func_8010D21C_mstory2(omObjData *obj) {
+void mstory2_Scene2ObjIdle(omObjData *obj) {
 }
 
-void func_8010D224_mstory2(void) {
+void mstory2_Scene2ObjSeLoopProc(void) {
     s16 seNo;
     s8 vol;
     f32 z;
 
     while (TRUE) {
-        if (D_8011C760_mstory2[0].unk_0C == 1 && Hu3DData[D_8011C760_mstory2[0].obj->model[1]].motTime == 0.0f) {
-            CharFXPlay((s16)D_8011C760_mstory2[0].unk_10, D_8011C83C_mstory2);
+        if (mstory2_scene2WorkTbl[0].unk_0C == 1 && Hu3DData[mstory2_scene2WorkTbl[0].obj->model[1]].motTime == 0.0f) {
+            CharFXPlay((s16)mstory2_scene2WorkTbl[0].unk_10, mstory2_scene2PlayerChr);
         }
-        if (D_8011C760_mstory2[1].unk_0C == 1 && Hu3DData[D_8011C760_mstory2[1].obj->model[1]].motTime == 0.0f) {
-            seNo = CharFXPlay((s16)D_8011C760_mstory2[1].unk_10, D_8011C83E_mstory2);
-            z = Hu3DData[D_8011C760_mstory2[1].obj->model[1]].pos.z;
+        if (mstory2_scene2WorkTbl[1].unk_0C == 1 && Hu3DData[mstory2_scene2WorkTbl[1].obj->model[1]].motTime == 0.0f) {
+            seNo = CharFXPlay((s16)mstory2_scene2WorkTbl[1].unk_10, mstory2_scene2RivalChr);
+            z = Hu3DData[mstory2_scene2WorkTbl[1].obj->model[1]].pos.z;
             if (z <= 0.0f) {
                 vol = z / 15.0f + 127.0f;
             } else {
@@ -382,29 +382,29 @@ void func_8010D224_mstory2(void) {
     }
 }
 
-void func_8010D3BC_mstory2(void) {
+void mstory2_Scene2EventProc(void) {
     omObjData *obj = omAddObj(0x14, 0, 0, -1, NULL);
 
-    D_8011C760_mstory2[5].obj = obj;
-    D_8011C760_mstory2[5].unk_08 = 0;
-    D_8011C760_mstory2[5].func = func_8010D430_mstory2;
+    mstory2_scene2WorkTbl[5].obj = obj;
+    mstory2_scene2WorkTbl[5].unk_08 = 0;
+    mstory2_scene2WorkTbl[5].func = mstory2_Scene2EventIntroExec;
 
     for (;;) {
-        D_8011C760_mstory2[5].func(obj);
+        mstory2_scene2WorkTbl[5].func(obj);
         HuPrcVSleep();
     }
 }
 
-const Vec D_8011C054_mstory2 = { 608.1f, -85.8f, -1390.3f };
+const Vec mstory2_scene2RivalStartPos = { 608.1f, -85.8f, -1390.3f };
 
-const Vec D_8011C060_mstory2 = { 238.0f, 100.0f, 214.0f };
+const Vec mstory2_scene2TumbleStartPos = { 238.0f, 100.0f, 214.0f };
 
-const Vec D_8011C06C_mstory2 = { 0.0f, 200.0f, 150.0f };
+const Vec mstory2_scene2StarStartPos = { 0.0f, 200.0f, 150.0f };
 
-const Vec D_8011C078_mstory2 = { 0.0f, 200.0f, 100.0f };
-const Vec D_8011C084_mstory2 = { 0.0f, 0.0f, 0.0f }; /* Unreferenced. */
+const Vec mstory2_scene2StampStartPos = { 0.0f, 200.0f, 100.0f };
+const Vec mstory2_scene2UnusedPos0 = { 0.0f, 0.0f, 0.0f }; /* Unreferenced. */
 
-void func_8010D430_mstory2(omObjData *obj) {
+void mstory2_Scene2EventIntroExec(omObjData *obj) {
     Vec pos[4] = {
         { 20.0f, -20.0f, 0.0f },
         { 0.0f, 225.0f, 0.0f },
@@ -413,24 +413,24 @@ void func_8010D430_mstory2(omObjData *obj) {
     };
 
     HuPrcSleep(40);
-    func_801070D8_mstory2(D_8011C760_mstory2[3].obj, &pos[0], 10);
-    func_801070D8_mstory2(D_8011C760_mstory2[2].obj, &pos[1], 10);
+    mstory2_ObjRotMoveV(mstory2_scene2WorkTbl[3].obj, &pos[0], 10);
+    mstory2_ObjRotMoveV(mstory2_scene2WorkTbl[2].obj, &pos[1], 10);
     HuAudFXPlay(0x159);
-    Hu3DMotionShiftSet(D_8011C760_mstory2[3].obj->model[1], Hu3DData[D_8011C760_mstory2[3].obj->motion[1]].motId, 0, 10, 2);
-    func_801060A4_mstory2();
-    if (D_8011C83C_mstory2 != 3) {
-        func_8010614C_mstory2(0x5A1F);
+    Hu3DMotionShiftSet(mstory2_scene2WorkTbl[3].obj->model[1], Hu3DData[mstory2_scene2WorkTbl[3].obj->motion[1]].motId, 0, 10, 2);
+    mstory2_WinOpen();
+    if (mstory2_scene2PlayerChr != 3) {
+        mstory2_WinMesChrNameExec(0x5A1F);
     } else {
-        func_801060F8_mstory2(0x5B0F);
+        mstory2_WinMesExec(0x5B0F);
     }
-    func_801060D4_mstory2();
-    Hu3DMotionShiftSet(D_8011C760_mstory2[3].obj->model[1], Hu3DData[D_8011C760_mstory2[3].obj->motion[0]].motId, 0, 10, 2);
-    func_801070D8_mstory2(D_8011C760_mstory2[3].obj, &pos[2], 10);
-    func_801070D8_mstory2(D_8011C760_mstory2[2].obj, &pos[3], 10);
-    D_8011C760_mstory2[5].func = func_8010D5C0_mstory2;
+    mstory2_WinClose();
+    Hu3DMotionShiftSet(mstory2_scene2WorkTbl[3].obj->model[1], Hu3DData[mstory2_scene2WorkTbl[3].obj->motion[0]].motId, 0, 10, 2);
+    mstory2_ObjRotMoveV(mstory2_scene2WorkTbl[3].obj, &pos[2], 10);
+    mstory2_ObjRotMoveV(mstory2_scene2WorkTbl[2].obj, &pos[3], 10);
+    mstory2_scene2WorkTbl[5].func = mstory2_Scene2EventExec;
 }
 
-void func_8010D5C0_mstory2(omObjData *obj) {
+void mstory2_Scene2EventExec(omObjData *obj) {
     Vec cur;
     MstoryPath *paths[2];
     s16 j = 0;
@@ -445,30 +445,30 @@ void func_8010D5C0_mstory2(omObjData *obj) {
     s16 i;
     f32 t;
 
-    Hu3DModelAttrSet(D_8011C760_mstory2[4].obj->model[1], 4, 0);
-    Hu3DModelAttrSet(D_8011C760_mstory2[4].obj->model[2], 4, 0);
-    Hu3DParticleAttrSet(D_8011C760_mstory2[4].obj->model[2], 1, 1);
+    Hu3DModelAttrSet(mstory2_scene2WorkTbl[4].obj->model[1], 4, 0);
+    Hu3DModelAttrSet(mstory2_scene2WorkTbl[4].obj->model[2], 4, 0);
+    Hu3DParticleAttrSet(mstory2_scene2WorkTbl[4].obj->model[2], 1, 1);
     HuAudFXPlay(0x215);
-    paths[0] = func_8010C510_mstory2(D_8011BA70_mstory2, 0);
+    paths[0] = mstory2_Scene2PathCreate(mstory2_scene2StampPathA, 0);
     for (i = 0; i < 40.0f; i++) {
         if (i == 30) {
-            Hu3DMotionShiftSet(D_8011C760_mstory2[0].obj->model[1], Hu3DData[D_8011C760_mstory2[0].obj->motion[9]].motId, 0, 10, 2);
+            Hu3DMotionShiftSet(mstory2_scene2WorkTbl[0].obj->model[1], Hu3DData[mstory2_scene2WorkTbl[0].obj->motion[9]].motId, 0, 10, 2);
         }
         t = i * 0.025f;
-        func_8010C814_mstory2(paths[0], t * t, &cur);
-        Hu3DModelPosSet(D_8011C760_mstory2[4].obj->model[1], cur.x, cur.y, cur.z);
-        EffectPosSet(D_8011C760_mstory2[4].obj->model[2], cur.x, cur.y - 40.0f, cur.z);
+        mstory2_Scene2PathPosGet(paths[0], t * t, &cur);
+        Hu3DModelPosSet(mstory2_scene2WorkTbl[4].obj->model[1], cur.x, cur.y, cur.z);
+        EffectPosSet(mstory2_scene2WorkTbl[4].obj->model[2], cur.x, cur.y - 40.0f, cur.z);
         HuPrcVSleep();
     }
-    func_8010D0BC_mstory2(paths[0]);
-    D_8011C760_mstory2[0].func = func_8010EF74_mstory2;
+    mstory2_Scene2PathKill(paths[0]);
+    mstory2_scene2WorkTbl[0].func = mstory2_Scene2PlayerCardShow;
     while (TRUE) {
-        if (D_8011C760_mstory2[0].unk_08 == 1) {
+        if (mstory2_scene2WorkTbl[0].unk_08 == 1) {
             cur.x -= 0.19999999f;
             cur.y -= 2.0f;
             cur.z += 1.0f;
-            Hu3DModelPosSet(D_8011C760_mstory2[4].obj->model[1], cur.x, cur.y, cur.z);
-            EffectPosSet(D_8011C760_mstory2[4].obj->model[2], cur.x, cur.y - 40.0f, cur.z);
+            Hu3DModelPosSet(mstory2_scene2WorkTbl[4].obj->model[1], cur.x, cur.y, cur.z);
+            EffectPosSet(mstory2_scene2WorkTbl[4].obj->model[2], cur.x, cur.y - 40.0f, cur.z);
             if (j++ == 30.0f) {
                 j = 0;
                 break;
@@ -476,187 +476,187 @@ void func_8010D5C0_mstory2(omObjData *obj) {
         }
         HuPrcVSleep();
     }
-    HuAudFXVolSet(CharFXPlay(0x2BD, D_8011C83E_mstory2), 80);
+    HuAudFXVolSet(CharFXPlay(0x2BD, mstory2_scene2RivalChr), 80);
     HuPrcSleep(30);
-    Hu3DModelAttrSet(D_8011C760_mstory2[1].obj->model[1], 4, 0);
-    Hu3DModelAttrSet(D_8011C760_mstory2[1].obj->model[2], 4, 0);
-    func_8010622C_mstory2();
+    Hu3DModelAttrSet(mstory2_scene2WorkTbl[1].obj->model[1], 4, 0);
+    Hu3DModelAttrSet(mstory2_scene2WorkTbl[1].obj->model[2], 4, 0);
+    mstory2_BackMotionStart();
     HuPrcSleep(10);
-    D_8011C760_mstory2[0].func = func_8010F090_mstory2;
-    D_8011C760_mstory2[2].func = func_801106F8_mstory2;
+    mstory2_scene2WorkTbl[0].func = mstory2_Scene2PlayerCardHide;
+    mstory2_scene2WorkTbl[2].func = mstory2_Scene2TumbleHop1;
     while (TRUE) {
         cur.x += 1.0f;
         cur.y += 10.0f;
         cur.z -= 5.0f;
-        Hu3DModelPosSet(D_8011C760_mstory2[4].obj->model[1], cur.x, cur.y, cur.z);
-        EffectPosSet(D_8011C760_mstory2[4].obj->model[2], cur.x, cur.y - 40.0f, cur.z);
+        Hu3DModelPosSet(mstory2_scene2WorkTbl[4].obj->model[1], cur.x, cur.y, cur.z);
+        EffectPosSet(mstory2_scene2WorkTbl[4].obj->model[2], cur.x, cur.y - 40.0f, cur.z);
         if (j++ == 6.0f) {
             break;
         }
         HuPrcVSleep();
     }
-    D_8011BAA0_mstory2[0].x = cur.x;
-    D_8011BAA0_mstory2[0].y = cur.y;
-    D_8011BAA0_mstory2[0].z = cur.z;
-    func_801070D8_mstory2(D_8011C760_mstory2[3].obj, &D_8011BAE8_mstory2, 5);
-    D_8011C760_mstory2[3].func = func_80110F54_mstory2;
+    mstory2_scene2StampPathB[0].x = cur.x;
+    mstory2_scene2StampPathB[0].y = cur.y;
+    mstory2_scene2StampPathB[0].z = cur.z;
+    mstory2_ObjRotMoveV(mstory2_scene2WorkTbl[3].obj, &mstory2_scene2StarDestRot0, 5);
+    mstory2_scene2WorkTbl[3].func = mstory2_Scene2StarRivalFace;
     while (TRUE) {
-        if (D_8011C760_mstory2[2].unk_08 == 5) {
+        if (mstory2_scene2WorkTbl[2].unk_08 == 5) {
             break;
         }
         HuPrcVSleep();
     }
-    func_801072AC_mstory2(D_8011C760_mstory2[1].obj->model[1]);
+    mstory2_MotionEndWait(mstory2_scene2WorkTbl[1].obj->model[1]);
     HuPrcSleep(30);
-    D_8011C760_mstory2[1].unk_0C = 1;
-    D_8011C760_mstory2[1].unk_10 = 40;
-    Hu3DMotionSpeedSet(D_8011C760_mstory2[0].obj->model[1], 0.25f);
-    Hu3DMotionShiftSet(D_8011C760_mstory2[0].obj->model[1], Hu3DData[D_8011C760_mstory2[0].obj->motion[10]].motId, 0, 10, 2);
-    Hu3DMotionShiftSet(D_8011C760_mstory2[1].obj->model[1], Hu3DData[D_8011C760_mstory2[1].obj->motion[2]].motId, 0, 10, 2);
-    func_80107824_mstory2(D_8011C760_mstory2[1].obj, &pos[0], 180, 1);
-    D_8011C760_mstory2[1].unk_0C = 0;
-    Hu3DMotionShiftSet(D_8011C760_mstory2[0].obj->model[1], Hu3DData[D_8011C760_mstory2[0].obj->motion[0]].motId, 0, 10, 2);
-    Hu3DMotionSpeedSet(D_8011C760_mstory2[0].obj->model[1], 1.0f);
-    func_80106D58_mstory2(D_8011C760_mstory2[2].obj->model[1], D_8011C826_mstory2, D_8011C820_mstory2[0]);
-    Hu3DMotionShiftSet(D_8011C760_mstory2[1].obj->model[1], Hu3DData[D_8011C760_mstory2[1].obj->motion[3]].motId, 0, 10, 2);
+    mstory2_scene2WorkTbl[1].unk_0C = 1;
+    mstory2_scene2WorkTbl[1].unk_10 = 40;
+    Hu3DMotionSpeedSet(mstory2_scene2WorkTbl[0].obj->model[1], 0.25f);
+    Hu3DMotionShiftSet(mstory2_scene2WorkTbl[0].obj->model[1], Hu3DData[mstory2_scene2WorkTbl[0].obj->motion[10]].motId, 0, 10, 2);
+    Hu3DMotionShiftSet(mstory2_scene2WorkTbl[1].obj->model[1], Hu3DData[mstory2_scene2WorkTbl[1].obj->motion[2]].motId, 0, 10, 2);
+    mstory2_ObjPosMoveAccel(mstory2_scene2WorkTbl[1].obj, &pos[0], 180, 1);
+    mstory2_scene2WorkTbl[1].unk_0C = 0;
+    Hu3DMotionShiftSet(mstory2_scene2WorkTbl[0].obj->model[1], Hu3DData[mstory2_scene2WorkTbl[0].obj->motion[0]].motId, 0, 10, 2);
+    Hu3DMotionSpeedSet(mstory2_scene2WorkTbl[0].obj->model[1], 1.0f);
+    mstory2_HmfAnimSet(mstory2_scene2WorkTbl[2].obj->model[1], mstory2_scene2TumbleFaceSlot, mstory2_scene2TumbleFaceAnimTbl[0]);
+    Hu3DMotionShiftSet(mstory2_scene2WorkTbl[1].obj->model[1], Hu3DData[mstory2_scene2WorkTbl[1].obj->motion[3]].motId, 0, 10, 2);
     HuPrcSleep(60);
-    func_80106D58_mstory2(D_8011C760_mstory2[2].obj->model[1], D_8011C826_mstory2, D_8011C820_mstory2[0]);
-    Hu3DMotionShiftSet(D_8011C760_mstory2[1].obj->model[1], Hu3DData[D_8011C760_mstory2[1].obj->motion[0]].motId, 0, 10, 2);
-    func_801070D8_mstory2(D_8011C760_mstory2[1].obj, &D_8011BAF4_mstory2, 10);
-    if (D_8011C83C_mstory2 != 3) {
-        func_80106E48_mstory2(D_8011C760_mstory2[2].obj, &pos[3], 15, 0);
-        Hu3DMotionShiftSet(D_8011C760_mstory2[1].obj->model[1], Hu3DData[D_8011C760_mstory2[1].obj->motion[1]].motId, 0, 10, 2);
-        func_801070D8_mstory2(D_8011C760_mstory2[1].obj, &D_8011BB3C_mstory2, 10);
-        Hu3DMotionShiftSet(D_8011C760_mstory2[0].obj->model[1], Hu3DData[D_8011C760_mstory2[0].obj->motion[0]].motId, 0, 10, 2);
-        Hu3DMotionShiftSet(D_8011C760_mstory2[1].obj->model[1], Hu3DData[D_8011C760_mstory2[1].obj->motion[5]].motId, 0, 10, 0);
+    mstory2_HmfAnimSet(mstory2_scene2WorkTbl[2].obj->model[1], mstory2_scene2TumbleFaceSlot, mstory2_scene2TumbleFaceAnimTbl[0]);
+    Hu3DMotionShiftSet(mstory2_scene2WorkTbl[1].obj->model[1], Hu3DData[mstory2_scene2WorkTbl[1].obj->motion[0]].motId, 0, 10, 2);
+    mstory2_ObjRotMoveV(mstory2_scene2WorkTbl[1].obj, &mstory2_scene2RivalDestRot0, 10);
+    if (mstory2_scene2PlayerChr != 3) {
+        mstory2_ObjPosMoveEx(mstory2_scene2WorkTbl[2].obj, &pos[3], 15, 0);
+        Hu3DMotionShiftSet(mstory2_scene2WorkTbl[1].obj->model[1], Hu3DData[mstory2_scene2WorkTbl[1].obj->motion[1]].motId, 0, 10, 2);
+        mstory2_ObjRotMoveV(mstory2_scene2WorkTbl[1].obj, &mstory2_scene2RivalDestRot1, 10);
+        Hu3DMotionShiftSet(mstory2_scene2WorkTbl[0].obj->model[1], Hu3DData[mstory2_scene2WorkTbl[0].obj->motion[0]].motId, 0, 10, 2);
+        Hu3DMotionShiftSet(mstory2_scene2WorkTbl[1].obj->model[1], Hu3DData[mstory2_scene2WorkTbl[1].obj->motion[5]].motId, 0, 10, 0);
         HuPrcSleep(10);
-        Hu3DMotionShiftSet(D_8011C760_mstory2[2].obj->model[1], Hu3DData[D_8011C760_mstory2[2].obj->motion[2]].motId, 0, 10, 2);
-        func_801072AC_mstory2(D_8011C760_mstory2[1].obj->model[1]);
-        Hu3DMotionShiftSet(D_8011C760_mstory2[1].obj->model[1], Hu3DData[D_8011C760_mstory2[1].obj->motion[5]].motId, 0, 10, 0);
-        func_801072AC_mstory2(D_8011C760_mstory2[1].obj->model[1]);
-        Hu3DMotionShiftSet(D_8011C760_mstory2[1].obj->model[1], Hu3DData[D_8011C760_mstory2[1].obj->motion[0]].motId, 0, 10, 2);
-        Hu3DMotionShiftSet(D_8011C760_mstory2[2].obj->model[1], Hu3DData[D_8011C760_mstory2[2].obj->motion[0]].motId, 0, 10, 2);
-        D_8011C760_mstory2[2].func = func_8010D21C_mstory2;
-        func_80106E2C_mstory2(D_8011C760_mstory2[2].obj, &pos[4], 8);
-        func_801070D8_mstory2(D_8011C760_mstory2[2].obj, &D_8011BB00_mstory2, 10);
-        Hu3DMotionShiftSet(D_8011C760_mstory2[1].obj->model[1], Hu3DData[D_8011C760_mstory2[1].obj->motion[1]].motId, 0, 10, 2);
-        func_801070D8_mstory2(D_8011C760_mstory2[1].obj, &D_8011BAF4_mstory2, 5);
-        Hu3DMotionShiftSet(D_8011C760_mstory2[1].obj->model[1], Hu3DData[D_8011C760_mstory2[1].obj->motion[0]].motId, 0, 10, 2);
-        D_8011C760_mstory2[3].func = func_8010D21C_mstory2;
-        D_8011C760_mstory2[0].func = func_8010D21C_mstory2;
-        func_801070D8_mstory2(D_8011C760_mstory2[3].obj, &D_8011BB48_mstory2, 5);
-        func_801070D8_mstory2(D_8011C760_mstory2[0].obj, &D_8011BB54_mstory2, 5);
-        func_801060A4_mstory2();
-        func_801060F8_mstory2(0x5A20);
-        func_801060D4_mstory2();
+        Hu3DMotionShiftSet(mstory2_scene2WorkTbl[2].obj->model[1], Hu3DData[mstory2_scene2WorkTbl[2].obj->motion[2]].motId, 0, 10, 2);
+        mstory2_MotionEndWait(mstory2_scene2WorkTbl[1].obj->model[1]);
+        Hu3DMotionShiftSet(mstory2_scene2WorkTbl[1].obj->model[1], Hu3DData[mstory2_scene2WorkTbl[1].obj->motion[5]].motId, 0, 10, 0);
+        mstory2_MotionEndWait(mstory2_scene2WorkTbl[1].obj->model[1]);
+        Hu3DMotionShiftSet(mstory2_scene2WorkTbl[1].obj->model[1], Hu3DData[mstory2_scene2WorkTbl[1].obj->motion[0]].motId, 0, 10, 2);
+        Hu3DMotionShiftSet(mstory2_scene2WorkTbl[2].obj->model[1], Hu3DData[mstory2_scene2WorkTbl[2].obj->motion[0]].motId, 0, 10, 2);
+        mstory2_scene2WorkTbl[2].func = mstory2_Scene2ObjIdle;
+        mstory2_ObjPosMoveV(mstory2_scene2WorkTbl[2].obj, &pos[4], 8);
+        mstory2_ObjRotMoveV(mstory2_scene2WorkTbl[2].obj, &mstory2_scene2TumbleDestRot0, 10);
+        Hu3DMotionShiftSet(mstory2_scene2WorkTbl[1].obj->model[1], Hu3DData[mstory2_scene2WorkTbl[1].obj->motion[1]].motId, 0, 10, 2);
+        mstory2_ObjRotMoveV(mstory2_scene2WorkTbl[1].obj, &mstory2_scene2RivalDestRot0, 5);
+        Hu3DMotionShiftSet(mstory2_scene2WorkTbl[1].obj->model[1], Hu3DData[mstory2_scene2WorkTbl[1].obj->motion[0]].motId, 0, 10, 2);
+        mstory2_scene2WorkTbl[3].func = mstory2_Scene2ObjIdle;
+        mstory2_scene2WorkTbl[0].func = mstory2_Scene2ObjIdle;
+        mstory2_ObjRotMoveV(mstory2_scene2WorkTbl[3].obj, &mstory2_scene2StarDestRot1, 5);
+        mstory2_ObjRotMoveV(mstory2_scene2WorkTbl[0].obj, &mstory2_scene2PlayerDestRot0, 5);
+        mstory2_WinOpen();
+        mstory2_WinMesExec(0x5A20);
+        mstory2_WinClose();
     } else {
         for (i = 0; i < 2; i++) {
-            func_80106E48_mstory2(D_8011C760_mstory2[2].obj, &pos[3], 15, 0);
-            Hu3DMotionShiftSet(D_8011C760_mstory2[1].obj->model[1], Hu3DData[D_8011C760_mstory2[1].obj->motion[1]].motId, 0, 10, 2);
-            func_801070D8_mstory2(D_8011C760_mstory2[1].obj, &D_8011BB3C_mstory2, 10);
-            Hu3DMotionShiftSet(D_8011C760_mstory2[0].obj->model[1], Hu3DData[D_8011C760_mstory2[0].obj->motion[0]].motId, 0, 10, 2);
-            Hu3DMotionShiftSet(D_8011C760_mstory2[1].obj->model[1], Hu3DData[D_8011C760_mstory2[1].obj->motion[5]].motId, 0, 10, 0);
+            mstory2_ObjPosMoveEx(mstory2_scene2WorkTbl[2].obj, &pos[3], 15, 0);
+            Hu3DMotionShiftSet(mstory2_scene2WorkTbl[1].obj->model[1], Hu3DData[mstory2_scene2WorkTbl[1].obj->motion[1]].motId, 0, 10, 2);
+            mstory2_ObjRotMoveV(mstory2_scene2WorkTbl[1].obj, &mstory2_scene2RivalDestRot1, 10);
+            Hu3DMotionShiftSet(mstory2_scene2WorkTbl[0].obj->model[1], Hu3DData[mstory2_scene2WorkTbl[0].obj->motion[0]].motId, 0, 10, 2);
+            Hu3DMotionShiftSet(mstory2_scene2WorkTbl[1].obj->model[1], Hu3DData[mstory2_scene2WorkTbl[1].obj->motion[5]].motId, 0, 10, 0);
             HuPrcSleep(10);
-            Hu3DMotionShiftSet(D_8011C760_mstory2[2].obj->model[1], Hu3DData[D_8011C760_mstory2[2].obj->motion[2]].motId, 0, 10, 2);
-            func_801072AC_mstory2(D_8011C760_mstory2[1].obj->model[1]);
+            Hu3DMotionShiftSet(mstory2_scene2WorkTbl[2].obj->model[1], Hu3DData[mstory2_scene2WorkTbl[2].obj->motion[2]].motId, 0, 10, 2);
+            mstory2_MotionEndWait(mstory2_scene2WorkTbl[1].obj->model[1]);
             if (i == 0) {
-                Hu3DMotionShiftSet(D_8011C760_mstory2[1].obj->model[1], Hu3DData[D_8011C760_mstory2[1].obj->motion[5]].motId, 0, 10, 0);
-                func_801072AC_mstory2(D_8011C760_mstory2[1].obj->model[1]);
+                Hu3DMotionShiftSet(mstory2_scene2WorkTbl[1].obj->model[1], Hu3DData[mstory2_scene2WorkTbl[1].obj->motion[5]].motId, 0, 10, 0);
+                mstory2_MotionEndWait(mstory2_scene2WorkTbl[1].obj->model[1]);
             }
-            Hu3DMotionShiftSet(D_8011C760_mstory2[1].obj->model[1], Hu3DData[D_8011C760_mstory2[1].obj->motion[0]].motId, 0, 10, 2);
-            Hu3DMotionShiftSet(D_8011C760_mstory2[2].obj->model[1], Hu3DData[D_8011C760_mstory2[2].obj->motion[0]].motId, 0, 10, 2);
-            D_8011C760_mstory2[2].func = func_8010D21C_mstory2;
-            func_80106E2C_mstory2(D_8011C760_mstory2[2].obj, &pos[4], 8);
-            func_801070D8_mstory2(D_8011C760_mstory2[2].obj, &D_8011BB00_mstory2, 10);
-            Hu3DMotionShiftSet(D_8011C760_mstory2[1].obj->model[1], Hu3DData[D_8011C760_mstory2[1].obj->motion[1]].motId, 0, 10, 2);
-            func_801070D8_mstory2(D_8011C760_mstory2[1].obj, &D_8011BAF4_mstory2, 5);
-            Hu3DMotionShiftSet(D_8011C760_mstory2[1].obj->model[1], Hu3DData[D_8011C760_mstory2[1].obj->motion[0]].motId, 0, 10, 2);
-            D_8011C760_mstory2[3].func = func_8010D21C_mstory2;
-            D_8011C760_mstory2[0].func = func_8010D21C_mstory2;
-            func_801070D8_mstory2(D_8011C760_mstory2[3].obj, &D_8011BB48_mstory2, 5);
-            func_801070D8_mstory2(D_8011C760_mstory2[0].obj, &D_8011BB54_mstory2, 5);
-            func_801060A4_mstory2();
-            D_8011C760_mstory2[1].func = func_80110364_mstory2;
-            func_801060F8_mstory2(i + 0x5B10);
-            func_801060D4_mstory2();
-            Hu3DMotionShiftSet(D_8011C760_mstory2[0].obj->model[1], Hu3DData[D_8011C760_mstory2[0].obj->motion[8]].motId, 0, 10, 0);
-            func_801072AC_mstory2(D_8011C760_mstory2[0].obj->model[1]);
+            Hu3DMotionShiftSet(mstory2_scene2WorkTbl[1].obj->model[1], Hu3DData[mstory2_scene2WorkTbl[1].obj->motion[0]].motId, 0, 10, 2);
+            Hu3DMotionShiftSet(mstory2_scene2WorkTbl[2].obj->model[1], Hu3DData[mstory2_scene2WorkTbl[2].obj->motion[0]].motId, 0, 10, 2);
+            mstory2_scene2WorkTbl[2].func = mstory2_Scene2ObjIdle;
+            mstory2_ObjPosMoveV(mstory2_scene2WorkTbl[2].obj, &pos[4], 8);
+            mstory2_ObjRotMoveV(mstory2_scene2WorkTbl[2].obj, &mstory2_scene2TumbleDestRot0, 10);
+            Hu3DMotionShiftSet(mstory2_scene2WorkTbl[1].obj->model[1], Hu3DData[mstory2_scene2WorkTbl[1].obj->motion[1]].motId, 0, 10, 2);
+            mstory2_ObjRotMoveV(mstory2_scene2WorkTbl[1].obj, &mstory2_scene2RivalDestRot0, 5);
+            Hu3DMotionShiftSet(mstory2_scene2WorkTbl[1].obj->model[1], Hu3DData[mstory2_scene2WorkTbl[1].obj->motion[0]].motId, 0, 10, 2);
+            mstory2_scene2WorkTbl[3].func = mstory2_Scene2ObjIdle;
+            mstory2_scene2WorkTbl[0].func = mstory2_Scene2ObjIdle;
+            mstory2_ObjRotMoveV(mstory2_scene2WorkTbl[3].obj, &mstory2_scene2StarDestRot1, 5);
+            mstory2_ObjRotMoveV(mstory2_scene2WorkTbl[0].obj, &mstory2_scene2PlayerDestRot0, 5);
+            mstory2_WinOpen();
+            mstory2_scene2WorkTbl[1].func = mstory2_Scene2RivalLuigiPose;
+            mstory2_WinMesExec(i + 0x5B10);
+            mstory2_WinClose();
+            Hu3DMotionShiftSet(mstory2_scene2WorkTbl[0].obj->model[1], Hu3DData[mstory2_scene2WorkTbl[0].obj->motion[8]].motId, 0, 10, 0);
+            mstory2_MotionEndWait(mstory2_scene2WorkTbl[0].obj->model[1]);
         }
-        func_801072AC_mstory2(D_8011C760_mstory2[1].obj->model[1]);
+        mstory2_MotionEndWait(mstory2_scene2WorkTbl[1].obj->model[1]);
     }
-    Hu3DMotionShiftSet(D_8011C760_mstory2[0].obj->model[1], Hu3DData[D_8011C760_mstory2[0].obj->motion[0]].motId, 0, 10, 2);
-    Hu3DMotionShiftSet(D_8011C760_mstory2[1].obj->model[1], Hu3DData[D_8011C760_mstory2[1].obj->motion[1]].motId, 0, 10, 2);
-    D_8011C760_mstory2[1].func = func_8010FDEC_mstory2;
-    D_8011C760_mstory2[2].func = func_80110930_mstory2;
-    D_8011C760_mstory2[3].func = func_80110F74_mstory2;
-    paths[1] = func_8010C510_mstory2(D_8011BAA0_mstory2, 0);
+    Hu3DMotionShiftSet(mstory2_scene2WorkTbl[0].obj->model[1], Hu3DData[mstory2_scene2WorkTbl[0].obj->motion[0]].motId, 0, 10, 2);
+    Hu3DMotionShiftSet(mstory2_scene2WorkTbl[1].obj->model[1], Hu3DData[mstory2_scene2WorkTbl[1].obj->motion[1]].motId, 0, 10, 2);
+    mstory2_scene2WorkTbl[1].func = mstory2_Scene2RivalStep;
+    mstory2_scene2WorkTbl[2].func = mstory2_Scene2TumbleLand;
+    mstory2_scene2WorkTbl[3].func = mstory2_Scene2StarTurn;
+    paths[1] = mstory2_Scene2PathCreate(mstory2_scene2StampPathB, 0);
     for (i = 0; i < 50.0f; i++) {
         t = i * 0.02f;
-        func_8010C814_mstory2(paths[1], t * t, &cur);
-        Hu3DModelPosSet(D_8011C760_mstory2[4].obj->model[1], cur.x, cur.y, cur.z);
-        EffectPosSet(D_8011C760_mstory2[4].obj->model[2], cur.x, cur.y - 40.0f, cur.z);
+        mstory2_Scene2PathPosGet(paths[1], t * t, &cur);
+        Hu3DModelPosSet(mstory2_scene2WorkTbl[4].obj->model[1], cur.x, cur.y, cur.z);
+        EffectPosSet(mstory2_scene2WorkTbl[4].obj->model[2], cur.x, cur.y - 40.0f, cur.z);
         HuPrcVSleep();
     }
-    func_8010D0BC_mstory2(paths[1]);
-    Hu3DModelAttrSet(D_8011C760_mstory2[4].obj->model[1], 4, 4);
-    Hu3DModelAttrSet(D_8011C760_mstory2[4].obj->model[2], 4, 4);
-    Hu3DParticleAttrSet(D_8011C760_mstory2[4].obj->model[2], 1, 0);
+    mstory2_Scene2PathKill(paths[1]);
+    Hu3DModelAttrSet(mstory2_scene2WorkTbl[4].obj->model[1], 4, 4);
+    Hu3DModelAttrSet(mstory2_scene2WorkTbl[4].obj->model[2], 4, 4);
+    Hu3DParticleAttrSet(mstory2_scene2WorkTbl[4].obj->model[2], 1, 0);
     HuPrcSleep(5);
-    func_80106D58_mstory2(D_8011C760_mstory2[2].obj->model[1], D_8011C826_mstory2, D_8011C820_mstory2[2]);
-    Hu3DMotionShiftSet(D_8011C760_mstory2[2].obj->model[1], Hu3DData[D_8011C760_mstory2[2].obj->motion[1]].motId, 0, 10, 2);
-    D_8011C760_mstory2[2].func = func_80110C44_mstory2;
+    mstory2_HmfAnimSet(mstory2_scene2WorkTbl[2].obj->model[1], mstory2_scene2TumbleFaceSlot, mstory2_scene2TumbleFaceAnimTbl[2]);
+    Hu3DMotionShiftSet(mstory2_scene2WorkTbl[2].obj->model[1], Hu3DData[mstory2_scene2WorkTbl[2].obj->motion[1]].motId, 0, 10, 2);
+    mstory2_scene2WorkTbl[2].func = mstory2_Scene2TumblePlayerFace;
     HuPrcSleep(10);
-    func_80106E2C_mstory2(D_8011C760_mstory2[2].obj, &pos[5], 60);
+    mstory2_ObjPosMoveV(mstory2_scene2WorkTbl[2].obj, &pos[5], 60);
     HuPrcSleep(30);
-    D_8011C760_mstory2[2].func = func_8010D21C_mstory2;
-    func_801070D8_mstory2(D_8011C760_mstory2[2].obj, &D_8011BB0C_mstory2, 10);
-    func_801060A4_mstory2();
-    func_801060F8_mstory2(D_8011C83C_mstory2 == 3 ? 0x5A21 : 0x5B12);
-    func_801060D4_mstory2();
+    mstory2_scene2WorkTbl[2].func = mstory2_Scene2ObjIdle;
+    mstory2_ObjRotMoveV(mstory2_scene2WorkTbl[2].obj, &mstory2_scene2TumbleDestRot1, 10);
+    mstory2_WinOpen();
+    mstory2_WinMesExec(mstory2_scene2PlayerChr == 3 ? 0x5A21 : 0x5B12);
+    mstory2_WinClose();
     HuPrcSleep(30);
-    D_8011C828_mstory2 = 1;
-    pos[2].y = pos[1].y = Hu3DData[D_8011C760_mstory2[3].obj->model[1]].pos.y;
-    func_80106E2C_mstory2(D_8011C760_mstory2[3].obj, &pos[1], 3);
+    mstory2_scene2StarFloatStopF = 1;
+    pos[2].y = pos[1].y = Hu3DData[mstory2_scene2WorkTbl[3].obj->model[1]].pos.y;
+    mstory2_ObjPosMoveV(mstory2_scene2WorkTbl[3].obj, &pos[1], 3);
     HuAudFXPlay(0x217);
-    D_8011C760_mstory2[2].func = func_801109F0_mstory2;
-    D_8011C760_mstory2[3].func = func_80110FC4_mstory2;
-    D_8011C760_mstory2[0].func = func_8010F460_mstory2;
-    D_8011C760_mstory2[1].func = func_8010FEDC_mstory2;
-    HuAudPlayerFXPlay(D_8011C83C_mstory2 + 0x2AC, 0);
-    HuAudPlayerFXPlay(D_8011C83E_mstory2 + 0x2AC, 1);
-    D_8011C828_mstory2 = 0;
-    func_80106E48_mstory2(D_8011C760_mstory2[3].obj, &pos[2], 5, 0);
+    mstory2_scene2WorkTbl[2].func = mstory2_Scene2TumbleHop2;
+    mstory2_scene2WorkTbl[3].func = mstory2_Scene2StarTumbleTurn;
+    mstory2_scene2WorkTbl[0].func = mstory2_Scene2PlayerKnockBack;
+    mstory2_scene2WorkTbl[1].func = mstory2_Scene2RivalKnockBack;
+    HuAudPlayerFXPlay(mstory2_scene2PlayerChr + 0x2AC, 0);
+    HuAudPlayerFXPlay(mstory2_scene2RivalChr + 0x2AC, 1);
+    mstory2_scene2StarFloatStopF = 0;
+    mstory2_ObjPosMoveEx(mstory2_scene2WorkTbl[3].obj, &pos[2], 5, 0);
     while (TRUE) {
-        if (D_8011C760_mstory2[2].unk_08 == 1) {
+        if (mstory2_scene2WorkTbl[2].unk_08 == 1) {
             break;
         }
         HuPrcVSleep();
     }
     HuPrcSleep(10);
-    Hu3DMotionShiftSet(D_8011C760_mstory2[3].obj->model[1], Hu3DData[D_8011C760_mstory2[3].obj->motion[1]].motId, 0, 10, 2);
-    func_801060A4_mstory2();
-    func_801060F8_mstory2(D_8011C83C_mstory2 != 3 ? 0x5A22 : 0x5B13);
-    func_801060D4_mstory2();
-    Hu3DMotionShiftSet(D_8011C760_mstory2[3].obj->model[1], Hu3DData[D_8011C760_mstory2[3].obj->motion[0]].motId, 0, 10, 2);
-    D_8011C760_mstory2[0].func = func_8010F6CC_mstory2;
-    D_8011C760_mstory2[1].func = func_80110148_mstory2;
+    Hu3DMotionShiftSet(mstory2_scene2WorkTbl[3].obj->model[1], Hu3DData[mstory2_scene2WorkTbl[3].obj->motion[1]].motId, 0, 10, 2);
+    mstory2_WinOpen();
+    mstory2_WinMesExec(mstory2_scene2PlayerChr != 3 ? 0x5A22 : 0x5B13);
+    mstory2_WinClose();
+    Hu3DMotionShiftSet(mstory2_scene2WorkTbl[3].obj->model[1], Hu3DData[mstory2_scene2WorkTbl[3].obj->motion[0]].motId, 0, 10, 2);
+    mstory2_scene2WorkTbl[0].func = mstory2_Scene2PlayerExit;
+    mstory2_scene2WorkTbl[1].func = mstory2_Scene2RivalExit;
     while (TRUE) {
-        if (D_8011C760_mstory2[0].unk_08 == 10 && D_8011C760_mstory2[1].unk_08 == 10) {
+        if (mstory2_scene2WorkTbl[0].unk_08 == 10 && mstory2_scene2WorkTbl[1].unk_08 == 10) {
             break;
         }
         HuPrcVSleep();
     }
     HuPrcSleep(30);
-    func_80105EA4_mstory2();
-    D_8011C760_mstory2[0].func = func_8010D21C_mstory2;
-    D_8011C760_mstory2[3].func = func_8010D21C_mstory2;
-    D_8011C760_mstory2[2].func = func_8010D21C_mstory2;
-    D_8011C760_mstory2[4].func = func_8010D21C_mstory2;
-    D_8011C760_mstory2[1].func = func_8010D21C_mstory2;
-    D_8011C760_mstory2[5].func = func_8010D21C_mstory2;
+    mstory2_SceneEnd();
+    mstory2_scene2WorkTbl[0].func = mstory2_Scene2ObjIdle;
+    mstory2_scene2WorkTbl[3].func = mstory2_Scene2ObjIdle;
+    mstory2_scene2WorkTbl[2].func = mstory2_Scene2ObjIdle;
+    mstory2_scene2WorkTbl[4].func = mstory2_Scene2ObjIdle;
+    mstory2_scene2WorkTbl[1].func = mstory2_Scene2ObjIdle;
+    mstory2_scene2WorkTbl[5].func = mstory2_Scene2ObjIdle;
 }
 
-void func_8010E9E0_mstory2(void) {
+void mstory2_Scene2PlayerProc(void) {
     s32 motIds[8][3] = {
         { 0x40, 0x3E, 0x42 },
         { 0x4B, 0x48, 0x4D },
@@ -671,82 +671,82 @@ void func_8010E9E0_mstory2(void) {
     void *data;
 
     obj = omAddObj(10, 20, 20, -1, NULL);
-    D_8011C760_mstory2[0].obj = obj;
-    D_8011C760_mstory2[0].unk_08 = 0;
-    D_8011C760_mstory2[0].func = func_8010D21C_mstory2;
-    D_8011C760_mstory2[0].unk_0C = 0;
-    D_8011C760_mstory2[0].unk_10 = 31;
-    obj->model[1] = Hu3DModelRead(omCharModelNoTbl[D_8011C83C_mstory2][0] | omCharModelNoTbl[D_8011C83C_mstory2][2], 0x2A9);
-    obj->model[2] = Hu3DModelLink(D_8011C83A_mstory2);
+    mstory2_scene2WorkTbl[0].obj = obj;
+    mstory2_scene2WorkTbl[0].unk_08 = 0;
+    mstory2_scene2WorkTbl[0].func = mstory2_Scene2ObjIdle;
+    mstory2_scene2WorkTbl[0].unk_0C = 0;
+    mstory2_scene2WorkTbl[0].unk_10 = 31;
+    obj->model[1] = Hu3DModelRead(omCharModelNoTbl[mstory2_scene2PlayerChr][0] | omCharModelNoTbl[mstory2_scene2PlayerChr][2], 0x2A9);
+    obj->model[2] = Hu3DModelLink(mstory2_scene2ShadowMdl);
     obj->model[3] = Hu3DModelRead(0x1D000A, 0x2B9);
     obj->model[4] = Hu3DModelRead(0x83, 0x2B9);
     Hu3DModelAttrSet(obj->model[3], 4, 4);
     Hu3DModelAttrSet(obj->model[4], 4, 4);
-    omObjMotionRead(obj, 0, CharMotionDataNumGet(D_8011C83C_mstory2, 0));
-    omObjMotionRead(obj, 1, CharMotionDataNumGet(D_8011C83C_mstory2, 1));
-    omObjMotionRead(obj, 2, CharMotionDataNumGet(D_8011C83C_mstory2, 2));
-    omObjMotionRead(obj, 3, motIds[D_8011C83C_mstory2][0] | 0x1D0000);
-    omObjMotionRead(obj, 4, motIds[D_8011C83C_mstory2][1] | 0x1D0000);
-    omObjMotionRead(obj, 5, CharMotionDataNumGet(D_8011C83C_mstory2, 0x72));
-    omObjMotionRead(obj, 6, CharMotionDataNumGet(D_8011C83C_mstory2, 0x21));
-    omObjMotionRead(obj, 7, CharMotionDataNumGet(D_8011C83C_mstory2, 0x33));
-    omObjMotionRead(obj, 8, motIds[D_8011C83C_mstory2][2] | 0x1D0000);
-    omObjMotionRead(obj, 9, CharMotionDataNumGet(D_8011C83C_mstory2, 0x9B));
-    omObjMotionRead(obj, 10, CharMotionDataNumGet(D_8011C83C_mstory2, 0x9C));
+    omObjMotionRead(obj, 0, CharMotionDataNumGet(mstory2_scene2PlayerChr, 0));
+    omObjMotionRead(obj, 1, CharMotionDataNumGet(mstory2_scene2PlayerChr, 1));
+    omObjMotionRead(obj, 2, CharMotionDataNumGet(mstory2_scene2PlayerChr, 2));
+    omObjMotionRead(obj, 3, motIds[mstory2_scene2PlayerChr][0] | 0x1D0000);
+    omObjMotionRead(obj, 4, motIds[mstory2_scene2PlayerChr][1] | 0x1D0000);
+    omObjMotionRead(obj, 5, CharMotionDataNumGet(mstory2_scene2PlayerChr, 0x72));
+    omObjMotionRead(obj, 6, CharMotionDataNumGet(mstory2_scene2PlayerChr, 0x21));
+    omObjMotionRead(obj, 7, CharMotionDataNumGet(mstory2_scene2PlayerChr, 0x33));
+    omObjMotionRead(obj, 8, motIds[mstory2_scene2PlayerChr][2] | 0x1D0000);
+    omObjMotionRead(obj, 9, CharMotionDataNumGet(mstory2_scene2PlayerChr, 0x9B));
+    omObjMotionRead(obj, 10, CharMotionDataNumGet(mstory2_scene2PlayerChr, 0x9C));
     Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[0]].motId, 0, 10, 2);
     Hu3DModelPosSet(obj->model[1], -120.0f, 0.0f, 480.0f);
     Hu3DModelPosSet(obj->model[2], -120.0f, -5.0f, 480.0f);
     Hu3DModelRotSet(obj->model[1], 0.0f, 162.4f, 0.0f);
-    if (D_8011C83C_mstory2 == 5) {
+    if (mstory2_scene2PlayerChr == 5) {
         Hu3DModelScaleSet(obj->model[2], 1.5f, 1.0f, 1.5f);
     }
-    data = DataRead(CharMotionDataNumGet(D_8011C83C_mstory2, 0xA4));
-    D_8011C82A_mstory2[0] = Hu3DAnimCreate(Hu3DData[obj->model[1]].hmf, data, 0, D_8011BB60_mstory2[D_8011C83C_mstory2]);
+    data = DataRead(CharMotionDataNumGet(mstory2_scene2PlayerChr, 0xA4));
+    mstory2_scene2PlayerFaceAnimTbl[0] = Hu3DAnimCreate(Hu3DData[obj->model[1]].hmf, data, 0, mstory2_scene2PlayerAnimNameTbl[mstory2_scene2PlayerChr]);
     HuMemMemoryFreePerm(data);
     Hu3DModelRemakeStatic(obj->model[1]);
     Hu3DModelDynamicFree(obj->model[1]);
-    Hu3DAnimAttrSet(D_8011C82A_mstory2[0], 1, 0);
-    Hu3DAnimBankSet(D_8011C82A_mstory2[0], 0);
-    D_8011C830_mstory2 = Hu3DAnimLink(Hu3DData[obj->model[1]].hmf, D_8011C82A_mstory2[0], 0, D_8011BB60_mstory2[D_8011C83C_mstory2]);
-    data = DataRead(CharMotionDataNumGet(D_8011C83C_mstory2, 0xA9));
-    D_8011C82A_mstory2[1] = Hu3DAnimDataCreate(data);
+    Hu3DAnimAttrSet(mstory2_scene2PlayerFaceAnimTbl[0], 1, 0);
+    Hu3DAnimBankSet(mstory2_scene2PlayerFaceAnimTbl[0], 0);
+    mstory2_scene2PlayerFaceSlot = Hu3DAnimLink(Hu3DData[obj->model[1]].hmf, mstory2_scene2PlayerFaceAnimTbl[0], 0, mstory2_scene2PlayerAnimNameTbl[mstory2_scene2PlayerChr]);
+    data = DataRead(CharMotionDataNumGet(mstory2_scene2PlayerChr, 0xA9));
+    mstory2_scene2PlayerFaceAnimTbl[1] = Hu3DAnimDataCreate(data);
     HuMemMemoryFreePerm(data);
-    D_8011C830_mstory2 = Hu3DAnimLink(Hu3DData[obj->model[1]].hmf, D_8011C82A_mstory2[0], 0, D_8011BB60_mstory2[D_8011C83C_mstory2]);
-    data = DataRead(CharMotionDataNumGet(D_8011C83C_mstory2, 0xAA));
-    D_8011C82A_mstory2[2] = Hu3DAnimDataCreate(data);
+    mstory2_scene2PlayerFaceSlot = Hu3DAnimLink(Hu3DData[obj->model[1]].hmf, mstory2_scene2PlayerFaceAnimTbl[0], 0, mstory2_scene2PlayerAnimNameTbl[mstory2_scene2PlayerChr]);
+    data = DataRead(CharMotionDataNumGet(mstory2_scene2PlayerChr, 0xAA));
+    mstory2_scene2PlayerFaceAnimTbl[2] = Hu3DAnimDataCreate(data);
     HuMemMemoryFreePerm(data);
-    func_80106D58_mstory2(obj->model[1], D_8011C830_mstory2, D_8011C82A_mstory2[0]);
-    omPrcSetDestructor(0, func_8010EF6C_mstory2);
+    mstory2_HmfAnimSet(obj->model[1], mstory2_scene2PlayerFaceSlot, mstory2_scene2PlayerFaceAnimTbl[0]);
+    omPrcSetDestructor(0, mstory2_Scene2PlayerDestroy);
     while (TRUE) {
-        D_8011C760_mstory2[0].func(obj);
+        mstory2_scene2WorkTbl[0].func(obj);
         HuPrcVSleep();
     }
 }
 
-void func_8010EF6C_mstory2(void) {
+void mstory2_Scene2PlayerDestroy(void) {
 }
 
-char *D_8011BB60_mstory2[] = { "c000l_0_DEF", "c001l_0_DEF", "c002l_0_DEF", "c003l_0_DEF", "c004l_0_DEF", "c005l_0_DEF", "c300l_0_DEF", "c301l_0_DEF" };
-char *D_8011BB80_mstory2[] = { "c003l_0_DEF", "c001l_0_DEF" };
+char *mstory2_scene2PlayerAnimNameTbl[] = { "c000l_0_DEF", "c001l_0_DEF", "c002l_0_DEF", "c003l_0_DEF", "c004l_0_DEF", "c005l_0_DEF", "c300l_0_DEF", "c301l_0_DEF" };
+char *mstory2_scene2RivalAnimNameTbl[] = { "c003l_0_DEF", "c001l_0_DEF" };
 
-const char D_8011C1C8_mstory2[] = "item_hook";
+const char mstory2_scene2ItemHookName[] = "item_hook";
 
-void func_8010EF74_mstory2(omObjData *obj) {
+void mstory2_Scene2PlayerCardShow(omObjData *obj) {
     s16 model = obj->model[1];
 
     HuPrcSleep(20);
     Hu3DModelAttrSet(obj->model[3], 0x4000, 0x4000);
-    Hu3DModelHookSet(obj->model[3], obj->model[1], D_8011C1C8_mstory2);
+    Hu3DModelHookSet(obj->model[3], obj->model[1], mstory2_scene2ItemHookName);
     Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_DISPOFF, 0);
     Hu3DMotionShiftSet(model, Hu3DData[obj->motion[3]].motId, 0, 10, 0);
-    func_801072AC_mstory2(model);
+    mstory2_MotionEndWait(model);
     Hu3DMotionShiftSet(model, Hu3DData[obj->motion[4]].motId, 0, 10, 0);
-    func_801072AC_mstory2(model);
-    D_8011C760_mstory2[0].func = func_8010D21C_mstory2;
-    D_8011C760_mstory2[0].unk_08 = 1;
+    mstory2_MotionEndWait(model);
+    mstory2_scene2WorkTbl[0].func = mstory2_Scene2ObjIdle;
+    mstory2_scene2WorkTbl[0].unk_08 = 1;
 }
 
-void func_8010F090_mstory2(omObjData *obj) {
+void mstory2_Scene2PlayerCardHide(omObjData *obj) {
     s16 model = obj->model[1];
     f32 time;
 
@@ -769,28 +769,28 @@ void func_8010F090_mstory2(omObjData *obj) {
     Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[0]].motId, 0, 10, 2);
     Hu3DModelAttrSet(obj->model[3], 0x4000, 0);
     Hu3DModelAttrSet(obj->model[3], 4, 4);
-    D_8011C760_mstory2[0].func = func_8010F2D8_mstory2;
+    mstory2_scene2WorkTbl[0].func = mstory2_Scene2PlayerRivalFace;
 }
 
-void func_8010F2D8_mstory2(omObjData *obj) {
-    func_801076DC_mstory2(obj, D_8011C760_mstory2[1].obj);
+void mstory2_Scene2PlayerRivalFace(omObjData *obj) {
+    mstory2_ObjTargetFace(obj, mstory2_scene2WorkTbl[1].obj);
 }
 
-void func_8010F2F8_mstory2(omObjData *obj) {
+void mstory2_Scene2PlayerStep(omObjData *obj) {
     Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[1]].motId, 0, 10, 2);
-    D_8011C760_mstory2[0].unk_0C = 1;
-    D_8011C760_mstory2[0].unk_10 = 31;
-    func_801073A4_mstory2(obj, 3.5f, 15);
-    func_80106D58_mstory2(obj->model[1], D_8011C830_mstory2, D_8011C82A_mstory2[2]);
-    func_80106D58_mstory2(D_8011C760_mstory2[1].obj->model[1], D_8011C838_mstory2, D_8011C832_mstory2[2]);
-    D_8011C760_mstory2[0].unk_0C = 0;
+    mstory2_scene2WorkTbl[0].unk_0C = 1;
+    mstory2_scene2WorkTbl[0].unk_10 = 31;
+    mstory2_ObjForwardMove(obj, 3.5f, 15);
+    mstory2_HmfAnimSet(obj->model[1], mstory2_scene2PlayerFaceSlot, mstory2_scene2PlayerFaceAnimTbl[2]);
+    mstory2_HmfAnimSet(mstory2_scene2WorkTbl[1].obj->model[1], mstory2_scene2RivalFaceSlot, mstory2_scene2RivalFaceAnimTbl[2]);
+    mstory2_scene2WorkTbl[0].unk_0C = 0;
     Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[5]].motId, 0, 10, 2);
-    Hu3DMotionShiftSet(D_8011C760_mstory2[1].obj->model[1], Hu3DData[D_8011C760_mstory2[1].obj->motion[4]].motId, 0, 10, 2);
-    D_8011C760_mstory2[0].func = func_8010D21C_mstory2;
+    Hu3DMotionShiftSet(mstory2_scene2WorkTbl[1].obj->model[1], Hu3DData[mstory2_scene2WorkTbl[1].obj->motion[4]].motId, 0, 10, 2);
+    mstory2_scene2WorkTbl[0].func = mstory2_Scene2ObjIdle;
 }
 
-void func_8010F460_mstory2(omObjData *obj) {
-    Vec pos = D_8011C1D4_mstory2;
+void mstory2_Scene2PlayerKnockBack(omObjData *obj) {
+    Vec pos = mstory2_scene2PlayerDestRot1;
     Vec target;
     Vec tmp;
 
@@ -798,22 +798,22 @@ void func_8010F460_mstory2(omObjData *obj) {
     tmp.y = Hu3DData[obj->model[1]].pos.y;
     tmp.z = 500.0f;
     target = tmp;
-    func_80106D58_mstory2(obj->model[1], D_8011C830_mstory2, D_8011C82A_mstory2[1]);
+    mstory2_HmfAnimSet(obj->model[1], mstory2_scene2PlayerFaceSlot, mstory2_scene2PlayerFaceAnimTbl[1]);
     Hu3DModelRotSet(obj->model[1], 0.0f, 0.0f, 0.0f);
     Hu3DModelPosSet(obj->model[4], Hu3DData[obj->model[1]].pos.x, Hu3DData[obj->model[1]].pos.y, Hu3DData[obj->model[1]].pos.z);
     Hu3DModelAttrSet(obj->model[4], 4, 0);
     Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[6]].motId, 0, 10, 0);
-    func_80106E2C_mstory2(obj, &target, 10);
-    func_801072AC_mstory2(obj->model[1]);
+    mstory2_ObjPosMoveV(obj, &target, 10);
+    mstory2_MotionEndWait(obj->model[1]);
     Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[1]].motId, 0, 10, 2);
-    func_801070D8_mstory2(obj, &pos, 10);
+    mstory2_ObjRotMoveV(obj, &pos, 10);
     Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[0]].motId, 0, 10, 2);
-    func_80106D58_mstory2(obj->model[1], D_8011C830_mstory2, D_8011C82A_mstory2[0]);
-    D_8011C760_mstory2[0].func = func_8010D21C_mstory2;
+    mstory2_HmfAnimSet(obj->model[1], mstory2_scene2PlayerFaceSlot, mstory2_scene2PlayerFaceAnimTbl[0]);
+    mstory2_scene2WorkTbl[0].func = mstory2_Scene2ObjIdle;
 }
 
-void func_8010F6CC_mstory2(omObjData *obj) {
-    Vec pos = D_8011C1E0_mstory2;
+void mstory2_Scene2PlayerExit(omObjData *obj) {
+    Vec pos = mstory2_scene2FrontRot;
     Vec target;
     Vec tmp;
 
@@ -822,44 +822,44 @@ void func_8010F6CC_mstory2(omObjData *obj) {
     tmp.z = 1200.0f;
     target = tmp;
     Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[1]].motId, 0, 10, 2);
-    func_801070D8_mstory2(obj, &pos, 10);
-    D_8011C760_mstory2[2].func = func_80110BA8_mstory2;
-    HuAudPlayerFXPlay(D_8011C83C_mstory2 + 0x275, 0);
+    mstory2_ObjRotMoveV(obj, &pos, 10);
+    mstory2_scene2WorkTbl[2].func = mstory2_Scene2TumbleTurn;
+    HuAudPlayerFXPlay(mstory2_scene2PlayerChr + 0x275, 0);
     Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[7]].motId, 0, 10, 0);
-    func_801072AC_mstory2(obj->model[1]);
-    D_8011C760_mstory2[0].unk_08 = 10;
+    mstory2_MotionEndWait(obj->model[1]);
+    mstory2_scene2WorkTbl[0].unk_08 = 10;
     while (TRUE) {
-        if (D_8011C760_mstory2[1].unk_08 != 10) {
+        if (mstory2_scene2WorkTbl[1].unk_08 != 10) {
             HuPrcVSleep();
         } else {
             break;
         }
     }
-    D_8011C760_mstory2[0].unk_0C = 1;
-    D_8011C760_mstory2[0].unk_10 = 40;
+    mstory2_scene2WorkTbl[0].unk_0C = 1;
+    mstory2_scene2WorkTbl[0].unk_10 = 40;
     Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[2]].motId, 0, 10, 2);
     HuPrcSleep(10);
-    func_80106E2C_mstory2(obj, &target, 60);
-    D_8011C760_mstory2[0].unk_0C = 0;
-    D_8011C760_mstory2[0].func = func_8010D21C_mstory2;
+    mstory2_ObjPosMoveV(obj, &target, 60);
+    mstory2_scene2WorkTbl[0].unk_0C = 0;
+    mstory2_scene2WorkTbl[0].func = mstory2_Scene2ObjIdle;
 }
 
-void func_8010F8F8_mstory2(void) {
+void mstory2_Scene2RivalProc(void) {
     s16 chrs[2] = { 3, 1 };
     s32 motIds[2] = { 0x58, 0x44 };
     omObjData *obj;
     s16 idx;
     void *data;
 
-    idx = D_8011C83C_mstory2 == 3;
+    idx = mstory2_scene2PlayerChr == 3;
     obj = omAddObj(10, 20, 20, -1, NULL);
-    D_8011C760_mstory2[1].obj = obj;
-    D_8011C760_mstory2[1].unk_08 = 0;
-    D_8011C760_mstory2[1].func = func_8010D21C_mstory2;
-    D_8011C760_mstory2[1].unk_0C = 0;
-    D_8011C760_mstory2[1].unk_10 = 31;
+    mstory2_scene2WorkTbl[1].obj = obj;
+    mstory2_scene2WorkTbl[1].unk_08 = 0;
+    mstory2_scene2WorkTbl[1].func = mstory2_Scene2ObjIdle;
+    mstory2_scene2WorkTbl[1].unk_0C = 0;
+    mstory2_scene2WorkTbl[1].unk_10 = 31;
     obj->model[1] = Hu3DModelRead(idx == 0 ? 0x400A0 : 0x300A0, 0x2A9);
-    obj->model[2] = Hu3DModelLink(D_8011C83A_mstory2);
+    obj->model[2] = Hu3DModelLink(mstory2_scene2ShadowMdl);
     obj->model[3] = Hu3DModelRead(0x83, 0x2B9);
     Hu3DModelAttrSet(obj->model[1], 4, 4);
     Hu3DModelAttrSet(obj->model[2], 4, 4);
@@ -873,54 +873,54 @@ void func_8010F8F8_mstory2(void) {
     omObjMotionRead(obj, 6, CharMotionDataNumGet(chrs[idx], 0x21));
     omObjMotionRead(obj, 7, CharMotionDataNumGet(chrs[idx], 0x33));
     omObjMotionRead(obj, 8, CharMotionDataNumGet(chrs[idx], 0x2F));
-    if (D_8011C83C_mstory2 == 3) {
+    if (mstory2_scene2PlayerChr == 3) {
         omObjMotionRead(obj, 9, 0x1D0045);
     }
     Hu3DMotionModelSet(obj->model[1], obj->motion[0]);
     Hu3DMotionAttrSet(obj->model[1], 2, 2);
-    D_8011C7E4_mstory2 = D_8011C054_mstory2;
-    Hu3DModelPosSet(obj->model[1], D_8011C7E4_mstory2.x, D_8011C7E4_mstory2.y, D_8011C7E4_mstory2.z);
-    Hu3DModelPosSet(obj->model[2], D_8011C7E4_mstory2.x, D_8011C7E4_mstory2.y - -5.0f, D_8011C7E4_mstory2.z);
+    mstory2_scene2RivalPos = mstory2_scene2RivalStartPos;
+    Hu3DModelPosSet(obj->model[1], mstory2_scene2RivalPos.x, mstory2_scene2RivalPos.y, mstory2_scene2RivalPos.z);
+    Hu3DModelPosSet(obj->model[2], mstory2_scene2RivalPos.x, mstory2_scene2RivalPos.y - -5.0f, mstory2_scene2RivalPos.z);
     Hu3DModelRotSet(obj->model[1], 0.0f, -14.48f, 0.0f);
     data = DataRead(CharMotionDataNumGet(chrs[idx], 0xA4));
-    D_8011C832_mstory2[0] = Hu3DAnimCreate(Hu3DData[obj->model[1]].hmf, data, 0, D_8011BB80_mstory2[idx]);
+    mstory2_scene2RivalFaceAnimTbl[0] = Hu3DAnimCreate(Hu3DData[obj->model[1]].hmf, data, 0, mstory2_scene2RivalAnimNameTbl[idx]);
     HuMemMemoryFreePerm(data);
     Hu3DModelRemakeStatic(obj->model[1]);
     Hu3DModelDynamicFree(obj->model[1]);
-    Hu3DAnimAttrSet(D_8011C832_mstory2[0], 1, 0);
-    Hu3DAnimBankSet(D_8011C832_mstory2[0], 0);
-    D_8011C838_mstory2 = Hu3DAnimLink(Hu3DData[obj->model[1]].hmf, D_8011C832_mstory2[0], 0, D_8011BB80_mstory2[idx]);
+    Hu3DAnimAttrSet(mstory2_scene2RivalFaceAnimTbl[0], 1, 0);
+    Hu3DAnimBankSet(mstory2_scene2RivalFaceAnimTbl[0], 0);
+    mstory2_scene2RivalFaceSlot = Hu3DAnimLink(Hu3DData[obj->model[1]].hmf, mstory2_scene2RivalFaceAnimTbl[0], 0, mstory2_scene2RivalAnimNameTbl[idx]);
     data = DataRead(CharMotionDataNumGet(chrs[idx], 0xA9));
-    D_8011C832_mstory2[1] = Hu3DAnimDataCreate(data);
+    mstory2_scene2RivalFaceAnimTbl[1] = Hu3DAnimDataCreate(data);
     HuMemMemoryFreePerm(data);
-    D_8011C838_mstory2 = Hu3DAnimLink(Hu3DData[obj->model[1]].hmf, D_8011C832_mstory2[0], 0, D_8011BB80_mstory2[idx]);
+    mstory2_scene2RivalFaceSlot = Hu3DAnimLink(Hu3DData[obj->model[1]].hmf, mstory2_scene2RivalFaceAnimTbl[0], 0, mstory2_scene2RivalAnimNameTbl[idx]);
     data = DataRead(CharMotionDataNumGet(chrs[idx], 0xAA));
-    D_8011C832_mstory2[2] = Hu3DAnimDataCreate(data);
+    mstory2_scene2RivalFaceAnimTbl[2] = Hu3DAnimDataCreate(data);
     HuMemMemoryFreePerm(data);
-    func_80106D58_mstory2(obj->model[1], D_8011C838_mstory2, D_8011C832_mstory2[0]);
-    omPrcSetDestructor(0, func_8010FDE4_mstory2);
+    mstory2_HmfAnimSet(obj->model[1], mstory2_scene2RivalFaceSlot, mstory2_scene2RivalFaceAnimTbl[0]);
+    omPrcSetDestructor(0, mstory2_Scene2RivalDestroy);
     while (TRUE) {
-        D_8011C760_mstory2[1].func(obj);
+        mstory2_scene2WorkTbl[1].func(obj);
         HuPrcVSleep();
     }
 }
 
-void func_8010FDE4_mstory2(void) {
+void mstory2_Scene2RivalDestroy(void) {
 }
 
-void func_8010FDEC_mstory2(omObjData *obj) {
-    D_8011C760_mstory2[1].unk_0C = 1;
-    D_8011C760_mstory2[1].unk_10 = 31;
+void mstory2_Scene2RivalStep(omObjData *obj) {
+    mstory2_scene2WorkTbl[1].unk_0C = 1;
+    mstory2_scene2WorkTbl[1].unk_10 = 31;
     Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[1]].motId, 0, 10, 2);
-    func_801073A4_mstory2(obj, 4.5f, 15);
-    D_8011C760_mstory2[1].unk_0C = 0;
+    mstory2_ObjForwardMove(obj, 4.5f, 15);
+    mstory2_scene2WorkTbl[1].unk_0C = 0;
     Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[0]].motId, 0, 10, 2);
-    D_8011C760_mstory2[1].func = func_8010D21C_mstory2;
-    D_8011C760_mstory2[0].func = func_8010F2F8_mstory2;
+    mstory2_scene2WorkTbl[1].func = mstory2_Scene2ObjIdle;
+    mstory2_scene2WorkTbl[0].func = mstory2_Scene2PlayerStep;
 }
 
-void func_8010FEDC_mstory2(omObjData *obj) {
-    Vec pos = D_8011C1EC_mstory2;
+void mstory2_Scene2RivalKnockBack(omObjData *obj) {
+    Vec pos = mstory2_scene2RivalDestRot2;
     Vec target;
     Vec tmp;
 
@@ -928,22 +928,22 @@ void func_8010FEDC_mstory2(omObjData *obj) {
     tmp.y = Hu3DData[obj->model[1]].pos.y;
     tmp.z = 500.0f;
     target = tmp;
-    func_80106D58_mstory2(obj->model[1], D_8011C838_mstory2, D_8011C832_mstory2[1]);
+    mstory2_HmfAnimSet(obj->model[1], mstory2_scene2RivalFaceSlot, mstory2_scene2RivalFaceAnimTbl[1]);
     Hu3DModelRotSet(obj->model[1], 0.0f, 0.0f, 0.0f);
     Hu3DModelPosSet(obj->model[3], Hu3DData[obj->model[1]].pos.x, Hu3DData[obj->model[1]].pos.y, Hu3DData[obj->model[1]].pos.z);
     Hu3DModelAttrSet(obj->model[3], 4, 0);
     Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[6]].motId, 0, 10, 0);
-    func_80106E2C_mstory2(obj, &target, 10);
-    func_801072AC_mstory2(obj->model[1]);
+    mstory2_ObjPosMoveV(obj, &target, 10);
+    mstory2_MotionEndWait(obj->model[1]);
     Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[1]].motId, 0, 10, 2);
-    func_801070D8_mstory2(obj, &pos, 10);
+    mstory2_ObjRotMoveV(obj, &pos, 10);
     Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[0]].motId, 0, 10, 2);
-    func_80106D58_mstory2(obj->model[1], D_8011C838_mstory2, D_8011C832_mstory2[0]);
-    D_8011C760_mstory2[1].func = func_8010D21C_mstory2;
+    mstory2_HmfAnimSet(obj->model[1], mstory2_scene2RivalFaceSlot, mstory2_scene2RivalFaceAnimTbl[0]);
+    mstory2_scene2WorkTbl[1].func = mstory2_Scene2ObjIdle;
 }
 
-void func_80110148_mstory2(omObjData *obj) {
-    Vec pos = D_8011C1E0_mstory2;
+void mstory2_Scene2RivalExit(omObjData *obj) {
+    Vec pos = mstory2_scene2FrontRot;
     Vec target;
     Vec tmp;
 
@@ -952,117 +952,117 @@ void func_80110148_mstory2(omObjData *obj) {
     tmp.z = 1200.0f;
     target = tmp;
     Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[1]].motId, 0, 10, 2);
-    func_801070D8_mstory2(obj, &pos, 10);
-    HuAudPlayerFXPlay(D_8011C83E_mstory2 + 0x275, 1);
+    mstory2_ObjRotMoveV(obj, &pos, 10);
+    HuAudPlayerFXPlay(mstory2_scene2RivalChr + 0x275, 1);
     Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[7]].motId, 0, 10, 0);
-    func_801072AC_mstory2(obj->model[1]);
-    D_8011C760_mstory2[1].unk_08 = 10;
+    mstory2_MotionEndWait(obj->model[1]);
+    mstory2_scene2WorkTbl[1].unk_08 = 10;
     while (TRUE) {
-        if (D_8011C760_mstory2[0].unk_08 != 10) {
+        if (mstory2_scene2WorkTbl[0].unk_08 != 10) {
             HuPrcVSleep();
         } else {
             break;
         }
     }
-    D_8011C760_mstory2[1].unk_0C = 1;
-    D_8011C760_mstory2[1].unk_10 = 40;
+    mstory2_scene2WorkTbl[1].unk_0C = 1;
+    mstory2_scene2WorkTbl[1].unk_10 = 40;
     Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[2]].motId, 0, 10, 2);
     HuPrcSleep(10);
-    func_80106E2C_mstory2(obj, &target, 60);
-    D_8011C760_mstory2[1].unk_0C = 0;
-    D_8011C760_mstory2[0].func = func_8010D21C_mstory2;
+    mstory2_ObjPosMoveV(obj, &target, 60);
+    mstory2_scene2WorkTbl[1].unk_0C = 0;
+    mstory2_scene2WorkTbl[0].func = mstory2_Scene2ObjIdle;
 }
 
-void func_80110364_mstory2(omObjData *obj) {
-    Hu3DMotionShiftSet(D_8011C760_mstory2[1].obj->model[1], Hu3DData[D_8011C760_mstory2[1].obj->motion[9]].motId, 0, 10, 0);
-    func_801072AC_mstory2(obj->model[1]);
-    D_8011C760_mstory2[1].func = func_8010D21C_mstory2;
+void mstory2_Scene2RivalLuigiPose(omObjData *obj) {
+    Hu3DMotionShiftSet(mstory2_scene2WorkTbl[1].obj->model[1], Hu3DData[mstory2_scene2WorkTbl[1].obj->motion[9]].motId, 0, 10, 0);
+    mstory2_MotionEndWait(obj->model[1]);
+    mstory2_scene2WorkTbl[1].func = mstory2_Scene2ObjIdle;
 }
 
-const Vec D_8011C1D4_mstory2 = { 0.0f, 180.0f, 0.0f };
+const Vec mstory2_scene2PlayerDestRot1 = { 0.0f, 180.0f, 0.0f };
 
-const Vec D_8011C1E0_mstory2 = { 0.0f, 0.0f, 0.0f };
+const Vec mstory2_scene2FrontRot = { 0.0f, 0.0f, 0.0f };
 
-const Vec D_8011C1EC_mstory2 = { 0.0f, -180.0f, 0.0f };
+const Vec mstory2_scene2RivalDestRot2 = { 0.0f, -180.0f, 0.0f };
 
-const char D_8011C1F8_mstory2[] = "c204n_0_DEF";
+const char mstory2_scene2TumbleAnimName[] = "c204n_0_DEF";
 
-void func_801103E4_mstory2(void) {
+void mstory2_Scene2TumbleProc(void) {
     omObjData *obj;
     void *data;
 
     obj = omAddObj(10, 20, 20, -1, NULL);
-    D_8011C760_mstory2[2].obj = obj;
-    D_8011C760_mstory2[2].unk_08 = 0;
+    mstory2_scene2WorkTbl[2].obj = obj;
+    mstory2_scene2WorkTbl[2].unk_08 = 0;
     obj->model[1] = Hu3DModelRead(0xA0075, 0x2A9);
-    obj->model[2] = Hu3DModelLink(D_8011C83A_mstory2);
+    obj->model[2] = Hu3DModelLink(mstory2_scene2ShadowMdl);
     omObjMotionRead(obj, 0, 0xA0076);
     omObjMotionRead(obj, 1, 0x1D0029);
     omObjMotionRead(obj, 2, 0x1D002A);
     Hu3DMotionModelSet(obj->model[1], obj->motion[0]);
     Hu3DMotionAttrSet(obj->model[1], 2, 2);
-    D_8011C7F0_mstory2 = D_8011C060_mstory2;
-    Hu3DModelPosSet(obj->model[1], D_8011C7F0_mstory2.x, D_8011C7F0_mstory2.y, D_8011C7F0_mstory2.z);
-    Hu3DModelPosSet(obj->model[2], D_8011C7F0_mstory2.x, -5.0f, D_8011C7F0_mstory2.z);
+    mstory2_scene2TumblePos = mstory2_scene2TumbleStartPos;
+    Hu3DModelPosSet(obj->model[1], mstory2_scene2TumblePos.x, mstory2_scene2TumblePos.y, mstory2_scene2TumblePos.z);
+    Hu3DModelPosSet(obj->model[2], mstory2_scene2TumblePos.x, -5.0f, mstory2_scene2TumblePos.z);
     Hu3DModelRotSet(obj->model[1], 20.0f, 320.0f, 0.0f);
     data = DataRead(0xA007E);
-    D_8011C820_mstory2[0] = Hu3DAnimCreate(Hu3DData[obj->model[1]].hmf, data, 0, D_8011C1F8_mstory2);
+    mstory2_scene2TumbleFaceAnimTbl[0] = Hu3DAnimCreate(Hu3DData[obj->model[1]].hmf, data, 0, mstory2_scene2TumbleAnimName);
     HuMemMemoryFreePerm(data);
     Hu3DModelRemakeStatic(obj->model[1]);
     Hu3DModelDynamicFree(obj->model[1]);
-    Hu3DAnimAttrSet(D_8011C820_mstory2[0], 1, 0);
-    Hu3DAnimBankSet(D_8011C820_mstory2[0], 0);
-    D_8011C826_mstory2 = Hu3DAnimLink(Hu3DData[obj->model[1]].hmf, D_8011C820_mstory2[0], 0, D_8011C1F8_mstory2);
+    Hu3DAnimAttrSet(mstory2_scene2TumbleFaceAnimTbl[0], 1, 0);
+    Hu3DAnimBankSet(mstory2_scene2TumbleFaceAnimTbl[0], 0);
+    mstory2_scene2TumbleFaceSlot = Hu3DAnimLink(Hu3DData[obj->model[1]].hmf, mstory2_scene2TumbleFaceAnimTbl[0], 0, mstory2_scene2TumbleAnimName);
     data = DataRead(0xA0083);
-    D_8011C820_mstory2[1] = Hu3DAnimDataCreate(data);
+    mstory2_scene2TumbleFaceAnimTbl[1] = Hu3DAnimDataCreate(data);
     HuMemMemoryFreePerm(data);
-    D_8011C826_mstory2 = Hu3DAnimLink(Hu3DData[obj->model[1]].hmf, D_8011C820_mstory2[0], 0, D_8011C1F8_mstory2);
+    mstory2_scene2TumbleFaceSlot = Hu3DAnimLink(Hu3DData[obj->model[1]].hmf, mstory2_scene2TumbleFaceAnimTbl[0], 0, mstory2_scene2TumbleAnimName);
     data = DataRead(0xA0080);
-    D_8011C820_mstory2[2] = Hu3DAnimDataCreate(data);
+    mstory2_scene2TumbleFaceAnimTbl[2] = Hu3DAnimDataCreate(data);
     HuMemMemoryFreePerm(data);
-    func_80106D58_mstory2(obj->model[1], D_8011C826_mstory2, D_8011C820_mstory2[0]);
-    omPrcSetDestructor(0, func_801106F0_mstory2);
-    D_8011C760_mstory2[2].func = func_8010D21C_mstory2;
+    mstory2_HmfAnimSet(obj->model[1], mstory2_scene2TumbleFaceSlot, mstory2_scene2TumbleFaceAnimTbl[0]);
+    omPrcSetDestructor(0, mstory2_Scene2TumbleDestroy);
+    mstory2_scene2WorkTbl[2].func = mstory2_Scene2ObjIdle;
     while (TRUE) {
-        D_8011C760_mstory2[2].func(obj);
+        mstory2_scene2WorkTbl[2].func(obj);
         HuPrcVSleep();
     }
 }
 
-void func_801106F0_mstory2(void) {
+void mstory2_Scene2TumbleDestroy(void) {
 }
 
-void func_801106F8_mstory2(omObjData *obj) {
+void mstory2_Scene2TumbleHop1(omObjData *obj) {
     s16 model = obj->model[1];
     Vec pos;
-    Vec target = D_8011C204_mstory2;
+    Vec target = mstory2_scene2TumbleDestRot2;
     f32 y;
     s16 i;
 
     pos.x = Hu3DData[model].pos.x;
     pos.y = Hu3DData[model].pos.y;
     pos.z = Hu3DData[model].pos.z;
-    func_80106D58_mstory2(model, D_8011C826_mstory2, D_8011C820_mstory2[1]);
+    mstory2_HmfAnimSet(model, mstory2_scene2TumbleFaceSlot, mstory2_scene2TumbleFaceAnimTbl[1]);
     for (i = 0; i < 13; i++) {
         y = sindf(i * 12.000001f) * 80.0f;
         Hu3DData[model].pos.y = y + pos.y;
         HuPrcVSleep();
     }
     HuPrcSleep(10);
-    func_801070D8_mstory2(obj, &target, 5);
-    func_80106D58_mstory2(model, D_8011C826_mstory2, D_8011C820_mstory2[0]);
-    Hu3DMotionShiftSet(D_8011C760_mstory2[1].obj->model[1], Hu3DData[D_8011C760_mstory2[1].obj->motion[8]].motId, 0, 10, 0);
-    HuPrcSleep(D_8011C83C_mstory2 != 3 ? 30 : 35);
-    HuAudFXVolSet(CharFXPlay(0x28F, D_8011C83E_mstory2), 0x60);
-    D_8011C760_mstory2[2].func = func_80110910_mstory2;
-    D_8011C760_mstory2[2].unk_08 = 5;
+    mstory2_ObjRotMoveV(obj, &target, 5);
+    mstory2_HmfAnimSet(model, mstory2_scene2TumbleFaceSlot, mstory2_scene2TumbleFaceAnimTbl[0]);
+    Hu3DMotionShiftSet(mstory2_scene2WorkTbl[1].obj->model[1], Hu3DData[mstory2_scene2WorkTbl[1].obj->motion[8]].motId, 0, 10, 0);
+    HuPrcSleep(mstory2_scene2PlayerChr != 3 ? 30 : 35);
+    HuAudFXVolSet(CharFXPlay(0x28F, mstory2_scene2RivalChr), 0x60);
+    mstory2_scene2WorkTbl[2].func = mstory2_Scene2TumbleRivalFace;
+    mstory2_scene2WorkTbl[2].unk_08 = 5;
 }
 
-void func_80110910_mstory2(omObjData *obj) {
-    func_801076DC_mstory2(obj, D_8011C760_mstory2[1].obj);
+void mstory2_Scene2TumbleRivalFace(omObjData *obj) {
+    mstory2_ObjTargetFace(obj, mstory2_scene2WorkTbl[1].obj);
 }
 
-void func_80110930_mstory2(omObjData *obj) {
+void mstory2_Scene2TumbleLand(omObjData *obj) {
     while (TRUE) {
         if (Hu3DData[obj->model[1]].pos.y > 100.0f) {
             Hu3DData[obj->model[1]].pos.y -= 2.0f;
@@ -1072,79 +1072,79 @@ void func_80110930_mstory2(omObjData *obj) {
         }
     }
     Hu3DData[obj->model[1]].pos.y = 100.0f;
-    D_8011C760_mstory2[2].func = func_8010D21C_mstory2;
+    mstory2_scene2WorkTbl[2].func = mstory2_Scene2ObjIdle;
 }
 
-void func_801109F0_mstory2(omObjData *obj) {
+void mstory2_Scene2TumbleHop2(omObjData *obj) {
     s16 model = obj->model[1];
     Vec pos;
-    Vec target = D_8011C210_mstory2;
+    Vec target = mstory2_scene2TumbleDestRot3;
     f32 y;
     s16 i;
 
     pos.x = Hu3DData[model].pos.x;
     pos.y = Hu3DData[model].pos.y;
     pos.z = Hu3DData[model].pos.z;
-    func_80106D58_mstory2(model, D_8011C826_mstory2, D_8011C820_mstory2[1]);
-    Hu3DMotionShiftSet(D_8011C760_mstory2[2].obj->model[1], Hu3DData[D_8011C760_mstory2[2].obj->motion[0]].motId, 0, 10, 2);
+    mstory2_HmfAnimSet(model, mstory2_scene2TumbleFaceSlot, mstory2_scene2TumbleFaceAnimTbl[1]);
+    Hu3DMotionShiftSet(mstory2_scene2WorkTbl[2].obj->model[1], Hu3DData[mstory2_scene2WorkTbl[2].obj->motion[0]].motId, 0, 10, 2);
     for (i = 0; i < 15; i++) {
         y = sindf(i * 12.000001f) * 80.0f;
         Hu3DData[model].pos.y = y + pos.y;
         HuPrcVSleep();
     }
     HuPrcSleep(15);
-    func_801070D8_mstory2(obj, &target, 10);
-    D_8011C760_mstory2[2].func = func_8010D21C_mstory2;
-    D_8011C760_mstory2[2].unk_08 = 1;
+    mstory2_ObjRotMoveV(obj, &target, 10);
+    mstory2_scene2WorkTbl[2].func = mstory2_Scene2ObjIdle;
+    mstory2_scene2WorkTbl[2].unk_08 = 1;
 }
 
-void func_80110BA8_mstory2(omObjData *obj) {
-    Vec pos = D_8011C21C_mstory2;
+void mstory2_Scene2TumbleTurn(omObjData *obj) {
+    Vec pos = mstory2_scene2TumbleDestRot4;
 
-    func_80106D58_mstory2(obj->model[1], D_8011C826_mstory2, D_8011C820_mstory2[0]);
-    func_801070D8_mstory2(obj, &pos, 10);
+    mstory2_HmfAnimSet(obj->model[1], mstory2_scene2TumbleFaceSlot, mstory2_scene2TumbleFaceAnimTbl[0]);
+    mstory2_ObjRotMoveV(obj, &pos, 10);
     while (TRUE) {
-        func_801076DC_mstory2(D_8011C760_mstory2[2].obj, D_8011C760_mstory2[0].obj);
+        mstory2_ObjTargetFace(mstory2_scene2WorkTbl[2].obj, mstory2_scene2WorkTbl[0].obj);
         HuPrcVSleep();
     }
 }
 
-void func_80110C44_mstory2(omObjData *obj) {
-    func_801076DC_mstory2(obj, D_8011C760_mstory2[0].obj);
+void mstory2_Scene2TumblePlayerFace(omObjData *obj) {
+    mstory2_ObjTargetFace(obj, mstory2_scene2WorkTbl[0].obj);
 }
 
-void func_80110C64_mstory2(void) {
+void mstory2_Scene2StarProc(void) {
     omObjData *obj;
 
     obj = omAddObj(0xA, 20, 20, -1, NULL);
-    D_8011C760_mstory2[3].obj = obj;
-    D_8011C760_mstory2[3].unk_08 = 0;
+    mstory2_scene2WorkTbl[3].obj = obj;
+    mstory2_scene2WorkTbl[3].unk_08 = 0;
     obj->model[1] = Hu3DModelRead(0xA0122, 0x2A9);
-    obj->model[2] = Hu3DModelLink(D_8011C83A_mstory2);
+    obj->model[2] = Hu3DModelLink(mstory2_scene2ShadowMdl);
     AuraCreate(obj->model[1]);
     omObjMotionRead(obj, 0, 0xA0123);
     omObjMotionRead(obj, 1, 0xA0125);
     Hu3DMotionModelSet(obj->model[1], obj->motion[0]);
     Hu3DMotionAttrSet(obj->model[1], 2, 2);
-    D_8011C7FC_mstory2 = D_8011C06C_mstory2;
-    Hu3DModelPosSet(obj->model[1], D_8011C7FC_mstory2.x, D_8011C7FC_mstory2.y, D_8011C7FC_mstory2.z);
-    Hu3DModelPosSet(obj->model[2], D_8011C7FC_mstory2.x, -5.0f, D_8011C7FC_mstory2.z);
+    mstory2_scene2StarPos = mstory2_scene2StarStartPos;
+    Hu3DModelPosSet(obj->model[1], mstory2_scene2StarPos.x, mstory2_scene2StarPos.y, mstory2_scene2StarPos.z);
+    Hu3DModelPosSet(obj->model[2], mstory2_scene2StarPos.x, -5.0f, mstory2_scene2StarPos.z);
     Hu3DModelScaleSet(obj->model[1], 2.0f, 2.0f, 2.0f);
     Hu3DModelScaleSet(obj->model[2], 2.0f, 1.0f, 2.0f);
-    omPrcSetDestructor(0, func_80110E08_mstory2);
-    D_8011C760_mstory2[3].func = func_8010D21C_mstory2;
+    omPrcSetDestructor(0, mstory2_Scene2StarDestroy);
+    mstory2_scene2WorkTbl[3].func = mstory2_Scene2ObjIdle;
     while (1) {
-        D_8011C760_mstory2[3].func(obj);
+        mstory2_scene2WorkTbl[3].func(obj);
         HuPrcVSleep();
     }
 }
 
-void func_80110E08_mstory2(void) {
+void mstory2_Scene2StarDestroy(void) {
 }
 
-void func_80110E10_mstory2(void) {
+void mstory2_Scene2StarFloatProc(void) {
     f32 angle = 0.0f;
-    omObjData *obj = D_8011C760_mstory2[3].obj;
+    omObjData *obj = mstory2_scene2WorkTbl[3].obj;
     Vec pos;
     f32 ofs;
 
@@ -1157,62 +1157,62 @@ void func_80110E10_mstory2(void) {
         if (angle >= 360.0f) {
             angle -= 360.0f;
         }
-        if (D_8011C828_mstory2 != 1) {
+        if (mstory2_scene2StarFloatStopF != 1) {
             Hu3DModelPosSet(obj->model[1], pos.x, ofs + pos.y, pos.z);
         }
         HuPrcVSleep();
     }
 }
 
-void func_80110F54_mstory2(omObjData *obj) {
-    func_801076DC_mstory2(obj, D_8011C760_mstory2[1].obj);
+void mstory2_Scene2StarRivalFace(omObjData *obj) {
+    mstory2_ObjTargetFace(obj, mstory2_scene2WorkTbl[1].obj);
 }
 
-void func_80110F74_mstory2(omObjData *obj) {
-    Vec pos = D_8011C1E0_mstory2;
+void mstory2_Scene2StarTurn(omObjData *obj) {
+    Vec pos = mstory2_scene2FrontRot;
 
-    func_801070D8_mstory2(obj, &pos, 10);
-    D_8011C760_mstory2[3].func = func_8010D21C_mstory2;
+    mstory2_ObjRotMoveV(obj, &pos, 10);
+    mstory2_scene2WorkTbl[3].func = mstory2_Scene2ObjIdle;
 }
 
-void func_80110FC4_mstory2(omObjData *obj) {
-    Vec pos = D_8011C228_mstory2;
+void mstory2_Scene2StarTumbleTurn(omObjData *obj) {
+    Vec pos = mstory2_scene2TumbleDestRot5;
 
-    func_801070D8_mstory2(D_8011C760_mstory2[2].obj, &pos, 10);
-    D_8011C760_mstory2[3].func = func_8010D21C_mstory2;
+    mstory2_ObjRotMoveV(mstory2_scene2WorkTbl[2].obj, &pos, 10);
+    mstory2_scene2WorkTbl[3].func = mstory2_Scene2ObjIdle;
 }
 
-void func_80111024_mstory2(void) {
+void mstory2_Scene2StampProc(void) {
     omObjData *obj;
 
     obj = omAddObj(0xA, 20, 20, -1, NULL);
-    D_8011C760_mstory2[4].obj = obj;
-    D_8011C760_mstory2[4].unk_08 = 0;
-    D_8011C760_mstory2[4].func = func_8010D21C_mstory2;
+    mstory2_scene2WorkTbl[4].obj = obj;
+    mstory2_scene2WorkTbl[4].unk_08 = 0;
+    mstory2_scene2WorkTbl[4].func = mstory2_Scene2ObjIdle;
     obj->model[1] = Hu3DModelRead(0x1D0004, 0x20299);
     obj->model[2] = EffectCreate(0xB0004, 0x6A9);
     Hu3DModelAttrSet(obj->model[1], 4, 4);
     Hu3DMotionAttrSet(obj->model[1], 2, 2);
-    D_8011C808_mstory2 = D_8011C078_mstory2;
-    Hu3DModelPosSet(obj->model[1], D_8011C808_mstory2.x, D_8011C808_mstory2.y, D_8011C808_mstory2.z);
+    mstory2_scene2StampPos = mstory2_scene2StampStartPos;
+    Hu3DModelPosSet(obj->model[1], mstory2_scene2StampPos.x, mstory2_scene2StampPos.y, mstory2_scene2StampPos.z);
     EffectParamSet(obj->model[2], 4.0f, 20.0f, 4.0f);
     EffectRangeSet(obj->model[2], 60.0f);
     Hu3DParticleAttrSet(obj->model[2], 1, 0);
     Hu3DModelAttrSet(obj->model[2], 4, 4);
-    omPrcSetDestructor(0, func_80111194_mstory2);
+    omPrcSetDestructor(0, mstory2_Scene2StampDestroy);
     while (1) {
-        D_8011C760_mstory2[4].func(obj);
+        mstory2_scene2WorkTbl[4].func(obj);
         HuPrcVSleep();
     }
 }
 
-void func_80111194_mstory2(void) {
+void mstory2_Scene2StampDestroy(void) {
 }
 
-const Vec D_8011C204_mstory2 = { 0.0f, 167.0f, 0.0f };
+const Vec mstory2_scene2TumbleDestRot2 = { 0.0f, 167.0f, 0.0f };
 
-const Vec D_8011C210_mstory2 = { 0.0f, -135.0f, 0.0f };
+const Vec mstory2_scene2TumbleDestRot3 = { 0.0f, -135.0f, 0.0f };
 
-const Vec D_8011C21C_mstory2 = { 0.0f, -53.39f, 0.0f };
+const Vec mstory2_scene2TumbleDestRot4 = { 0.0f, -53.39f, 0.0f };
 
-const Vec D_8011C228_mstory2 = { 0.0f, -53.390015f, 0.0f };
+const Vec mstory2_scene2TumbleDestRot5 = { 0.0f, -53.390015f, 0.0f };

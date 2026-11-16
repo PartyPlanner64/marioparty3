@@ -2,7 +2,7 @@
 
 extern u8 storySceneNo;
 
-void func_801059A0_storycall(void) {
+void storycall_ObjectSetup(void) {
     s32 scene = storySceneNo;
 
     omInitObjMan(10, 10);

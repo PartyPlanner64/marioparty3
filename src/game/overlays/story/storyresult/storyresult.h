@@ -4,23 +4,23 @@
 #include "common.h"
 #include "game/overlays/msetup.h"
 
-void func_801060D0_storyresult(ModeCameraPreset *preset);
-s16 func_80106E48_storyresult(void);
-void func_80107204_storyresult(void);
-void func_8010822C_storyresult(void);
-void func_801083A4_storyresult(void);
+void storyresult_CameraPresetSet(ModeCameraPreset *preset);
+s16 storyresult_StageClearCheck(void);
+void storyresult_StageResultProc(void);
+void storyresult_FinalResultProc(void);
+void storyresult_DebugStatProc(void);
 
 #ifndef NO_EXTERN_VARIABLES
-extern u16 D_8010A910_storyresult;
-extern s16 D_8010A912_storyresult;
-extern s16 D_8010A914_storyresult;
-extern u8 D_8010A924_storyresult[];
-extern s16 D_8010ABE0_storyresult;
-extern s16 D_8010ABE2_storyresult;
-extern s16 D_8010AC28_storyresult;
-extern s16 D_8010AC2A_storyresult;
-extern s16 D_8010AC30_storyresult;
-extern s16 D_8010AC32_storyresult;
+extern u16 storyresult_exitCnt;
+extern s16 storyresult_backF;
+extern s16 storyresult_musFadeNo;
+extern u8 storyresult_pageTbl[];
+extern s16 storyresult_padNo;
+extern s16 storyresult_exitMode;
+extern s16 storyresult_wipeTime;
+extern s16 storyresult_wipeType;
+extern s16 storyresult_exitEvtNo;
+extern s16 storyresult_exitOvlNo;
 #endif
 extern u8 storySceneNo;
 

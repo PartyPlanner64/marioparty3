@@ -6,44 +6,44 @@
 #define NO_EXTERN_VARIABLES
 #include "storyresult.h"
 
-void func_80105C30_storyresult(omObjData *object);
-void func_80105CF8_storyresult(omObjData *object);
-void func_80105DEC_storyresult(MsetupModelEntry *entry, s16 model);
-u32 func_80105F7C_storyresult(u32 seed);
-void func_80106190_storyresult(void);
-void func_80106754_storyresult(void);
-void func_80106C84_storyresult(void);
+void storyresult_ExitCheckObjMain(omObjData *object);
+void storyresult_ExitObjMain(omObjData *object);
+void storyresult_ModelEntryPosSet(MsetupModelEntry *entry, s16 model);
+u32 storyresult_RandSeedCalc(u32 seed);
+void storyresult_CameraUpdate(void);
+void storyresult_CameraProc(void);
+void storyresult_PlayerConfigInit(void);
 extern f32 CFanLen;
 extern f32 CFanOfs;
 extern s16 kakusiMasuItemHis[10];
 
-u16 D_8010A910_storyresult = 0;
-s16 D_8010A912_storyresult = 0;
-s16 D_8010A914_storyresult = 1;
-f32 D_8010A918_storyresult = 58.0f;
-s8 D_8010A91C_storyresult = 0;
-u32 D_8010A920_storyresult = 0;
-u8 D_8010A924_storyresult[14] = { 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 2, 2 };
+u16 storyresult_exitCnt = 0;
+s16 storyresult_backF = 0;
+s16 storyresult_musFadeNo = 1;
+f32 storyresult_cameraFov = 58.0f;
+s8 storyresult_cameraLookF = 0;
+u32 storyresult_randSeed = 0;
+u8 storyresult_pageTbl[14] = { 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 2, 2 };
 
-s16 D_8010ABE0_storyresult BSS;
-s16 D_8010ABE2_storyresult BSS;
-u8 D_8010ABE4_storyresult[4] BSS; /* Unreferenced. */
-MsetupPlayerConfig D_8010ABE8_storyresult BSS;
-Vec D_8010AC00_storyresult BSS;
-Vec D_8010AC0C_storyresult BSS;
-Vec D_8010AC18_storyresult BSS;
-f32 D_8010AC24_storyresult BSS;
-s16 D_8010AC28_storyresult BSS;
-s16 D_8010AC2A_storyresult BSS;
-f32 D_8010AC2C_storyresult BSS;
-s16 D_8010AC30_storyresult BSS;
-s16 D_8010AC32_storyresult BSS;
+s16 storyresult_padNo BSS;
+s16 storyresult_exitMode BSS;
+u8 storyresult_exitModePad[4] BSS; /* Unreferenced. */
+MsetupPlayerConfig storyresult_playerConfig BSS;
+Vec storyresult_cameraTarget BSS;
+Vec storyresult_cameraRot BSS;
+Vec storyresult_cameraPos BSS;
+f32 storyresult_cameraNear BSS;
+s16 storyresult_wipeTime BSS;
+s16 storyresult_wipeType BSS;
+f32 storyresult_cameraFar BSS;
+s16 storyresult_exitEvtNo BSS;
+s16 storyresult_exitOvlNo BSS;
 
-void func_801059A0_storyresult(void) {
+void storyresult_ObjectSetup(void) {
     omInitObjMan(51, 25);
     switch (omovlevtno) {
         case 0:
-            if (func_80106E48_storyresult() == 0) {
+            if (storyresult_StageClearCheck() == 0) {
                 return;
             }
             break;
@@ -56,18 +56,18 @@ void func_801059A0_storyresult(void) {
     Hu3DSprModelInit(25);
     HuWinInit();
     Hu3DScreenClearF = 0;
-    D_8010AC24_storyresult = 80.0f;
-    D_8010AC2C_storyresult = 6000.0f;
-    D_8010A918_storyresult = 58.0f;
-    Hu3DCameraPerspectiveSet(0, D_8010A918_storyresult, D_8010AC24_storyresult, D_8010AC2C_storyresult);
-    D_8010AC0C_storyresult.x = 0;
-    D_8010AC0C_storyresult.y = 0;
-    D_8010AC0C_storyresult.z = 0;
+    storyresult_cameraNear = 80.0f;
+    storyresult_cameraFar = 6000.0f;
+    storyresult_cameraFov = 58.0f;
+    Hu3DCameraPerspectiveSet(0, storyresult_cameraFov, storyresult_cameraNear, storyresult_cameraFar);
+    storyresult_cameraRot.x = 0;
+    storyresult_cameraRot.y = 0;
+    storyresult_cameraRot.z = 0;
     CRot.x = 0;
     CRot.y = 0;
     CRot.z = 0;
-    func_80106190_storyresult();
-    omAddObj(10000, 0, 0, -1, func_80105C30_storyresult);
+    storyresult_CameraUpdate();
+    omAddObj(10000, 0, 0, -1, storyresult_ExitCheckObjMain);
     Hu3DGLightMaxSet(3);
     Hu3DGLightColorSet(2, 0, 0, 0);
     Hu3DGLightDirSet(2, 0.0f, 0.0f, 100.0f);
@@ -75,46 +75,46 @@ void func_801059A0_storyresult(void) {
     Hu3DGLightDirSet(3, 0.0f, 100.0f, 0.0f);
     Hu3DGLightColorSet(1, 255, 255, 255);
     Hu3DBGColorSet(16, 16, 240);
-    omPrcSetStatBit(omAddPrcObj(func_80106754_storyresult, 0x1100, 0x400, 0), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    D_8010ABE2_storyresult = 0;
-    func_80106C84_storyresult();
+    omPrcSetStatBit(omAddPrcObj(storyresult_CameraProc, 0x1100, 0x400, 0), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    storyresult_exitMode = 0;
+    storyresult_PlayerConfigInit();
     switch (omovlevtno) {
         case 0:
             if (omovlstat & 0x4000) {
-                omAddPrcObj(func_80107204_storyresult, 0x3F00, 0x1000, 0);
+                omAddPrcObj(storyresult_StageResultProc, 0x3F00, 0x1000, 0);
             }
             break;
         case 1:
-            omAddPrcObj(func_8010822C_storyresult, 0x3F00, 0x1000, 0);
+            omAddPrcObj(storyresult_FinalResultProc, 0x3F00, 0x1000, 0);
             break;
         case 2:
             break;
         case 3:
-            omAddPrcObj(func_801083A4_storyresult, 0x3F00, 0x1000, 0);
+            omAddPrcObj(storyresult_DebugStatProc, 0x3F00, 0x1000, 0);
             break;
     }
     WipeColorSet(0, 0, 0);
-    D_8010AC2A_storyresult = 2;
-    D_8010AC28_storyresult = 20;
+    storyresult_wipeType = 2;
+    storyresult_wipeTime = 20;
 }
 
-void func_80105C30_storyresult(omObjData *object) {
-    if (D_8010A910_storyresult == 0) {
+void storyresult_ExitCheckObjMain(omObjData *object) {
+    if (storyresult_exitCnt == 0) {
         if (omSysExitReq != 0) {
             goto createWipe;
         }
-    } else if (D_8010A910_storyresult == 1) {
+    } else if (storyresult_exitCnt == 1) {
         goto createWipe;
     } else {
-        D_8010A910_storyresult--;
+        storyresult_exitCnt--;
     }
     return;
 
 createWipe:
-    if (D_8010AC2A_storyresult >= 0) {
-        WipeCreateOut(D_8010AC2A_storyresult, D_8010AC28_storyresult);
+    if (storyresult_wipeType >= 0) {
+        WipeCreateOut(storyresult_wipeType, storyresult_wipeTime);
     }
-    switch (D_8010A914_storyresult) {
+    switch (storyresult_musFadeNo) {
         case 1:
             HuAudSeqFadeOut(30);
             break;
@@ -122,41 +122,41 @@ createWipe:
             HuAudSeqFadeOut(81);
             break;
     }
-    object->func = func_80105CF8_storyresult;
+    object->func = storyresult_ExitObjMain;
 }
 
-void func_80105CF8_storyresult(omObjData *object) {
+void storyresult_ExitObjMain(omObjData *object) {
     u16 flags;
 
     if (WipeStatGet() == 0) {
-        if (D_8010A912_storyresult != 0) {
+        if (storyresult_backF != 0) {
             MBDBackKill();
             MBDBackClose();
         }
         HuWinAllKill();
         flags = 0x14;
-        switch (D_8010ABE2_storyresult) {
+        switch (storyresult_exitMode) {
             case 0:
             default:
                 omOvlReturnEx(1);
                 break;
             case 2:
-                omOvlCallEx(D_8010AC32_storyresult, D_8010AC30_storyresult, flags);
+                omOvlCallEx(storyresult_exitOvlNo, storyresult_exitEvtNo, flags);
                 break;
             case 1:
-                omOvlGotoEx(D_8010AC32_storyresult, D_8010AC30_storyresult, flags);
+                omOvlGotoEx(storyresult_exitOvlNo, storyresult_exitEvtNo, flags);
                 break;
             case 3:
-                omOvlGotoEx(D_8010AC32_storyresult, D_8010AC30_storyresult, 0x4090);
+                omOvlGotoEx(storyresult_exitOvlNo, storyresult_exitEvtNo, 0x4090);
                 break;
             case 4:
-                omOvlGotoEx(D_8010AC32_storyresult, D_8010AC30_storyresult, 0x92);
+                omOvlGotoEx(storyresult_exitOvlNo, storyresult_exitEvtNo, 0x92);
                 break;
         }
     }
 }
 
-void func_80105DEC_storyresult(MsetupModelEntry *entry, s16 model) {
+void storyresult_ModelEntryPosSet(MsetupModelEntry *entry, s16 model) {
     switch (entry->positionMode) {
         case 0:
             break;
@@ -171,7 +171,7 @@ void func_80105DEC_storyresult(MsetupModelEntry *entry, s16 model) {
     }
 }
 
-void func_80105EA0_storyresult(MsetupModelEntry *entry, MsetupModelHandle *handle, s32 count) {
+void storyresult_ModelEntryReadAll(MsetupModelEntry *entry, MsetupModelHandle *handle, s32 count) {
     s16 i;
     s16 model;
     s32 motion;
@@ -181,7 +181,7 @@ void func_80105EA0_storyresult(MsetupModelEntry *entry, MsetupModelHandle *handl
     }
     for (i = 0; i < count; entry++, i++, handle++) {
         model = handle->model = Hu3DModelRead(entry->dataId, entry->flags);
-        func_80105DEC_storyresult(entry, model);
+        storyresult_ModelEntryPosSet(entry, model);
         motion = handle->motion = Hu3DData[model].motId;
         if (motion >= 0) {
             Hu3DMotionAttrSet(model, -1, entry->motion);
@@ -189,7 +189,7 @@ void func_80105EA0_storyresult(MsetupModelEntry *entry, MsetupModelHandle *handl
     }
 }
 
-u32 func_80105F7C_storyresult(u32 seed) {
+u32 storyresult_RandSeedCalc(u32 seed) {
     u32 quotient;
     u32 remainder;
 
@@ -204,36 +204,36 @@ u32 func_80105F7C_storyresult(u32 seed) {
     return seed - remainder * 16807;
 }
 
-u32 func_80106050_storyresult(void) {
-    return D_8010A920_storyresult = func_80105F7C_storyresult(D_8010A920_storyresult);
+u32 storyresult_Rand(void) {
+    return storyresult_randSeed = storyresult_RandSeedCalc(storyresult_randSeed);
 }
 
-u32 func_80106078_storyresult(u32 limit) {
+u32 storyresult_RandMod(u32 limit) {
     u32 random;
 
-    random = D_8010A920_storyresult = func_80105F7C_storyresult(D_8010A920_storyresult);
+    random = storyresult_randSeed = storyresult_RandSeedCalc(storyresult_randSeed);
     return (random & 0x7FFFFFFF) % limit;
 }
 
-void func_801060D0_storyresult(ModeCameraPreset *preset) {
+void storyresult_CameraPresetSet(ModeCameraPreset *preset) {
     CRot = preset->rot;
-    D_8010AC0C_storyresult = CRot;
+    storyresult_cameraRot = CRot;
     Center = preset->center;
     CZoom = preset->zoom;
-    if (preset->fov != D_8010A918_storyresult) {
-        D_8010A918_storyresult = preset->fov;
-        Hu3DCameraPerspectiveSet(0, D_8010A918_storyresult, D_8010AC24_storyresult, D_8010AC2C_storyresult);
+    if (preset->fov != storyresult_cameraFov) {
+        storyresult_cameraFov = preset->fov;
+        Hu3DCameraPerspectiveSet(0, storyresult_cameraFov, storyresult_cameraNear, storyresult_cameraFar);
     }
 }
 
-void func_80106190_storyresult(void) {
+void storyresult_CameraUpdate(void) {
     Vec pos, at, up;
     f32 rotX, rotY, rotZ;
     f32 upX, upY, upZ;
     f32 dx, dy, dz;
     f32 length;
 
-    if (D_8010A91C_storyresult == 0) {
+    if (storyresult_cameraLookF == 0) {
         rotX = CRot.x;
         rotY = CRot.y;
         rotZ = CRot.z;
@@ -264,8 +264,8 @@ void func_80106190_storyresult(void) {
                upY * (dy * dz * (1.0f - cosdf(rotZ)) + dx * sindf(rotZ)) +
                upZ * (dz * dz + (1.0f - dz * dz) * cosdf(rotZ));
     } else {
-        pos = D_8010AC18_storyresult;
-        at = D_8010AC00_storyresult;
+        pos = storyresult_cameraPos;
+        at = storyresult_cameraTarget;
         up.x = 0.0f;
         up.y = 1.0f;
         up.z = 0.0f;
@@ -280,14 +280,14 @@ void func_80106190_storyresult(void) {
     Hu3DCamUpdateMtx(0);
 }
 
-void func_80106754_storyresult(void) {
+void storyresult_CameraProc(void) {
     while (1) {
-        func_80106190_storyresult();
+        storyresult_CameraUpdate();
         HuPrcVSleep();
     }
 }
 
-void func_80106780_storyresult(MsetupCameraKeyframe *keys, f32 speed, void (*callback)(s16, s16, s16)) {
+void storyresult_CameraKeyframeExec(MsetupCameraKeyframe *keys, f32 speed, void (*callback)(s16, s16, s16)) {
     MsetupCameraKeyframe interpolated;
     f32 values[4];
     f32 times[4];
@@ -364,51 +364,51 @@ void func_80106780_storyresult(MsetupCameraKeyframe *keys, f32 speed, void (*cal
         Center.x = interpolated.values.preset.center.x;
         Center.y = interpolated.values.preset.center.y;
         Center.z = interpolated.values.preset.center.z;
-        D_8010AC0C_storyresult.x = CRot.x = interpolated.values.preset.rot.x;
-        D_8010AC0C_storyresult.y = CRot.y = interpolated.values.preset.rot.y;
-        D_8010AC0C_storyresult.z = CRot.z = interpolated.values.preset.rot.z;
+        storyresult_cameraRot.x = CRot.x = interpolated.values.preset.rot.x;
+        storyresult_cameraRot.y = CRot.y = interpolated.values.preset.rot.y;
+        storyresult_cameraRot.z = CRot.z = interpolated.values.preset.rot.z;
         CZoom = interpolated.values.preset.zoom;
-        gCameraList->fov = D_8010A918_storyresult = interpolated.values.preset.fov;
+        gCameraList->fov = storyresult_cameraFov = interpolated.values.preset.fov;
         if (callback != NULL) {
             onFrame((s16)duration, segment, i);
         }
         HuPrcVSleep();
     }
     segment++;
-    D_8010AC0C_storyresult.x = CRot.x = keys[segment].values.preset.rot.x;
-    D_8010AC0C_storyresult.y = CRot.y = keys[segment].values.preset.rot.y;
-    D_8010AC0C_storyresult.z = CRot.z = keys[segment].values.preset.rot.z;
+    storyresult_cameraRot.x = CRot.x = keys[segment].values.preset.rot.x;
+    storyresult_cameraRot.y = CRot.y = keys[segment].values.preset.rot.y;
+    storyresult_cameraRot.z = CRot.z = keys[segment].values.preset.rot.z;
     CZoom = keys[segment].values.preset.zoom;
     Center.x = keys[segment].values.preset.center.x;
     Center.y = keys[segment].values.preset.center.y;
     Center.z = keys[segment].values.preset.center.z;
-    gCameraList->fov = D_8010A918_storyresult = keys[segment].values.preset.fov;
+    gCameraList->fov = storyresult_cameraFov = keys[segment].values.preset.fov;
     winPauseF = 0;
 }
 
-void func_80106C84_storyresult(void) {
+void storyresult_PlayerConfigInit(void) {
     s16 i;
     s16 connectedCount;
     s16 port;
     s16 j;
 
     for (i = 0; i < 4; i++) {
-        D_8010ABE8_storyresult.controllerPorts[i] = 0xFF;
-        D_8010ABE8_storyresult.characters[i] = i;
-        D_8010ABE8_storyresult.cpuDifficulty[i] = 0xFF;
-        D_8010ABE8_storyresult.stars[i] = 0;
+        storyresult_playerConfig.controllerPorts[i] = 0xFF;
+        storyresult_playerConfig.characters[i] = i;
+        storyresult_playerConfig.cpuDifficulty[i] = 0xFF;
+        storyresult_playerConfig.stars[i] = 0;
     }
     for (i = 0, connectedCount = 0; i < 4; i++) {
         if (CheckControllerRead(i)) {
-            D_8010ABE8_storyresult.controllerPorts[connectedCount] = i;
+            storyresult_playerConfig.controllerPorts[connectedCount] = i;
             connectedCount++;
         }
     }
     for (i = 0; i < 4; i++) {
-        if (D_8010ABE8_storyresult.controllerPorts[i] == 0xFF) {
+        if (storyresult_playerConfig.controllerPorts[i] == 0xFF) {
             for (port = 0; port < 4; port++) {
                 for (j = 0; j < 4; j++) {
-                    if (D_8010ABE8_storyresult.controllerPorts[j] == port) {
+                    if (storyresult_playerConfig.controllerPorts[j] == port) {
                         break;
                     }
                 }
@@ -416,25 +416,25 @@ void func_80106C84_storyresult(void) {
                     break;
                 }
             }
-            D_8010ABE8_storyresult.controllerPorts[i] = port;
+            storyresult_playerConfig.controllerPorts[i] = port;
         }
     }
-    D_8010ABE8_storyresult.totalTurns = 0;
-    D_8010ABE8_storyresult.unk16 = 0;
-    D_8010ABE8_storyresult.unk13 = 0;
-    D_8010ABE8_storyresult.connectedCount = connectedCount;
-    D_8010ABE8_storyresult.humanCount = 0;
-    D_8010ABE8_storyresult.cpuCount = 4;
-    D_8010ABE8_storyresult.boardIndex = 0;
-    D_8010ABE0_storyresult = D_8010ABE8_storyresult.controllerPorts[0];
+    storyresult_playerConfig.totalTurns = 0;
+    storyresult_playerConfig.unk16 = 0;
+    storyresult_playerConfig.unk13 = 0;
+    storyresult_playerConfig.connectedCount = connectedCount;
+    storyresult_playerConfig.humanCount = 0;
+    storyresult_playerConfig.cpuCount = 4;
+    storyresult_playerConfig.boardIndex = 0;
+    storyresult_padNo = storyresult_playerConfig.controllerPorts[0];
 }
 
-s16 func_80106E48_storyresult(void) {
+s16 storyresult_StageClearCheck(void) {
     s16 result = 0;
     s16 winner;
     s16 i;
 
-    switch (D_8010A924_storyresult[GwStory.unk0]) {
+    switch (storyresult_pageTbl[GwStory.unk0]) {
         case 0:
             winner = kakusiMasuItemHis[0];
             if (winner >= 0 && winner < 6 && GwStory.unk1 == GwPlayer[winner].chr) {
@@ -464,9 +464,9 @@ s16 func_80106E48_storyresult(void) {
             break;
     }
     if (result == 0) {
-        D_8010ABE2_storyresult = 1;
-        D_8010AC32_storyresult = 0x75;
-        D_8010AC30_storyresult = 0;
+        storyresult_exitMode = 1;
+        storyresult_exitOvlNo = 0x75;
+        storyresult_exitEvtNo = 0;
         storySceneNo = 15;
         omOvlGotoEx(0x75, 0, 0x14);
     }

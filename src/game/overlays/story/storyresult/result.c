@@ -8,7 +8,7 @@
 #include "game/pad.h"
 #include "storyresult.h"
 
-// 0xC byte data allocated by func_8010A4A4_storyresult and stored in the
+// 0xC byte data allocated by storyresult_StatCreate and stored in the
 // `user_data` pointer of the process it spawns.
 typedef struct StoryResultWork {
     /* 0x00 */ s16 unk_00;
@@ -32,7 +32,7 @@ typedef struct StoryResultElem {
     /* 0x0A */ s16 unk0A;
 } StoryResultElem; // sizeof 0xC
 
-// Panel state allocated by func_80108F0C_storyresult.
+// Panel state allocated by storyresult_StatExec.
 typedef struct StoryResultPanel {
     /* 0x000 */ StoryResultWork *data;
     /* 0x004 */ StoryResultElem elems[24];
@@ -59,25 +59,25 @@ typedef struct StoryResultWinDef {
     /* 0x06 */ s16 h;
 } StoryResultWinDef; // sizeof 0x8
 
-void func_80107920_storyresult(void);
-Process *func_8010832C_storyresult(s16 *arg0, s16 arg1);
-void func_80108F0C_storyresult(void);
-s16 func_8010A370_storyresult(s16 arg0);
-Process *func_8010A4A4_storyresult(u16 arg0, s16 arg1);
-s32 func_8010A558_storyresult(Process *prc);
-s16 func_8010A5C4_storyresult(s16 playerIdx);
-s16 func_8010A738_storyresult(s16 playerIdx);
-s16 func_8010A7B0_storyresult(s16 playerIdx);
-s16 func_8010A7EC_storyresult(void);
+void storyresult_FinalStatProc(void);
+Process *storyresult_StatViewCreate(s16 *arg0, s16 arg1);
+void storyresult_StatExec(void);
+s16 storyresult_RankGet(s16 arg0);
+Process *storyresult_StatCreate(u16 arg0, s16 arg1);
+s32 storyresult_StatKill(Process *prc);
+s16 storyresult_PartyRankCalc(s16 playerIdx);
+s16 storyresult_DuelRankCalc(s16 playerIdx);
+s16 storyresult_BossRankCalc(s16 playerIdx);
+s16 storyresult_StageRankCalc(void);
 extern s16 mgStoryStatPortNo;
 extern s16 winPrio;
 
-s32 D_8010A940_storyresult[13] = { 4, 23, 7, 23, 10, 23, 13, 23, 16, 23, 23, 19, 23 };
-u32 D_8010A974_storyresult[13] = { 0x6119, 0x611F, 0x611A, 0x6120, 0x611B, 0x6121, 0x611C, 0x6122, 0x611D, 0x6123, 0x6124, 0x611E, 0x612B };
-u32 D_8010A9A8_storyresult[8] = { 0x610A, 0x610D, 0x610E, 0x610F, 0x6110, 0x610A, 0x610A, 0x610A };
-u8 D_8010A9C8_storyresult[16] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0 };
-u16 D_8010A9D8_storyresult[6] = { 0x21, 0x22, 0x23, 0x24, 0x25, 0x26 };
-StoryResultSprDef D_8010A9E4_storyresult[15] = {
+s32 storyresult_stageBackTbl[13] = { 4, 23, 7, 23, 10, 23, 13, 23, 16, 23, 23, 19, 23 };
+u32 storyresult_stageMesTbl[13] = { 0x6119, 0x611F, 0x611A, 0x6120, 0x611B, 0x6121, 0x611C, 0x6122, 0x611D, 0x6123, 0x6124, 0x611E, 0x612B };
+u32 storyresult_stageRankMesTbl[8] = { 0x610A, 0x610D, 0x610E, 0x610F, 0x6110, 0x610A, 0x610A, 0x610A };
+u8 storyresult_stageSceneTbl[16] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0 };
+u16 storyresult_chrClearFlagTbl[6] = { 0x21, 0x22, 0x23, 0x24, 0x25, 0x26 };
+StoryResultSprDef storyresult_statSprTbl[15] = {
     { 0x00150000, { 0, -75 } },
     { 0x00150002, { 0, 8 } },
     { 0x00150011, { -86, -22 } },
@@ -94,15 +94,15 @@ StoryResultSprDef D_8010A9E4_storyresult[15] = {
     { 0x0015001C, { 86, 24 } },
     { 0x0015001E, { 0, 1 } },
 };
-s32 D_8010AA5C_storyresult[7] = { 0x15000D, 0x15000C, 0x15000B, 0x15000A, 0x150010, 0x15000F, 0x15000E };
-s32 D_8010AA78_storyresult[6] = { 0x150004, 0x150005, 0x150006, 0x150007, 0x150008, 0x150009 };
-u32 D_8010AA90_storyresult[6] = { 0x1C00, 0x1C01, 0x1C02, 0x1C03, 0x1C04, 0x1C05 };
-u32 D_8010AAA8_storyresult[4] = { 0x6102, 0x6103, 0x6104, 0x6105 };
-u32 D_8010AAB8_storyresult[7] = { 0x6112, 0x6113, 0x6116, 0x6117, 0x6118, 0x6114, 0x6115 };
-u8 D_8010AAD4_storyresult[12] = { 0xFF, 0x50, 0x50, 0x50, 0xFF, 0x50, 0xFF, 0xFF, 0x50, 0, 0, 0 };
-u8 D_8010AAE0_storyresult[9] = { 0xFF, 0x50, 0x50, 0xFF, 0xFF, 0xFF, 0, 0, 0 };
-u8 D_8010AAEC_storyresult[7][3] = { { 0x8C, 0x87, 0x87 }, { 0x7B, 0x2A, 0xBF }, { 0xF0, 0xD9, 0x12 }, { 0xFF, 0xFF, 0xFF }, { 0xFF, 0xFF, 0xFF }, { 0xFF, 0xFF, 0xFF }, { 0xFF, 0xFF, 0xFF } };
-StoryResultWinDef D_8010AB04_storyresult[6] = {
+s32 storyresult_resultSprTbl[7] = { 0x15000D, 0x15000C, 0x15000B, 0x15000A, 0x150010, 0x15000F, 0x15000E };
+s32 storyresult_charSprTbl[6] = { 0x150004, 0x150005, 0x150006, 0x150007, 0x150008, 0x150009 };
+u32 storyresult_charMesTbl[6] = { 0x1C00, 0x1C01, 0x1C02, 0x1C03, 0x1C04, 0x1C05 };
+u32 storyresult_levelMesTbl[4] = { 0x6102, 0x6103, 0x6104, 0x6105 };
+u32 storyresult_rankMesTbl[7] = { 0x6112, 0x6113, 0x6116, 0x6117, 0x6118, 0x6114, 0x6115 };
+u8 storyresult_rankBlinkTbl[12] = { 0xFF, 0x50, 0x50, 0x50, 0xFF, 0x50, 0xFF, 0xFF, 0x50, 0, 0, 0 };
+u8 storyresult_rankBlinkAltTbl[9] = { 0xFF, 0x50, 0x50, 0xFF, 0xFF, 0xFF, 0, 0, 0 };
+u8 storyresult_rankColorTbl[7][3] = { { 0x8C, 0x87, 0x87 }, { 0x7B, 0x2A, 0xBF }, { 0xF0, 0xD9, 0x12 }, { 0xFF, 0xFF, 0xFF }, { 0xFF, 0xFF, 0xFF }, { 0xFF, 0xFF, 0xFF }, { 0xFF, 0xFF, 0xFF } };
+StoryResultWinDef storyresult_statWinTbl[6] = {
     { -72, -98, 80, 48 },
     { 6, -98, 112, 20 },
     { 6, -84, 112, 20 },
@@ -110,17 +110,17 @@ StoryResultWinDef D_8010AB04_storyresult[6] = {
     { -120, -50, 240, 20 },
     { -104, -18, 112, 105 },
 };
-StoryResultPos D_8010AB34_storyresult[7] = { { -86, -3 }, { 0, -3 }, { 86, -3 }, { -86, 43 }, { 0, 43 }, { 86, 43 }, { 0, 20 } };
-u32 D_8010AB50_storyresult[7] = { 0x6106, 0x6107, 0x6108, 0x6109, 0x6109, 0x6109, 0x6109 };
-u8 D_8010AB6C_storyresult[6] = { 0, 2, 4, 6, 8, 11 };
-u8 D_8010AB74_storyresult[6] = { 1, 3, 5, 7, 9, 10 };
-u8 D_8010AB7C_storyresult[5] = { 0, 0, 1, 2, 3 };
-u8 D_8010AB84_storyresult[5] = { 0, 0, 1, 2, 3 };
-u8 D_8010AB8C_storyresult[4] = { 13, 26, 30, 34 };
-u8 D_8010AB90_storyresult[12] = { 1, 2, 3, 4, 4, 4, 4 };
-ModeCameraPreset D_8010AB9C_storyresult = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 650.0f, 50.0f };
+StoryResultPos storyresult_resultPosTbl[7] = { { -86, -3 }, { 0, -3 }, { 86, -3 }, { -86, 43 }, { 0, 43 }, { 86, 43 }, { 0, 20 } };
+u32 storyresult_pageMesTbl[7] = { 0x6106, 0x6107, 0x6108, 0x6109, 0x6109, 0x6109, 0x6109 };
+u8 storyresult_resultOrderTbl[6] = { 0, 2, 4, 6, 8, 11 };
+u8 storyresult_resultOrderAltTbl[6] = { 1, 3, 5, 7, 9, 10 };
+u8 storyresult_resultScoreTbl[5] = { 0, 0, 1, 2, 3 };
+u8 storyresult_bossScoreTbl[5] = { 0, 0, 1, 2, 3 };
+u8 storyresult_rankBorderTbl[4] = { 13, 26, 30, 34 };
+u8 storyresult_bossRankTbl[12] = { 1, 2, 3, 4, 4, 4, 4 };
+ModeCameraPreset storyresult_cameraPreset = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 650.0f, 50.0f };
 
-s16 func_80106FF0_storyresult(void) {
+s16 storyresult_ProgressSaveCntGet(void) {
     s16 count = GwStory.unk73 != 0;
     s32 i;
 
@@ -132,7 +132,7 @@ s16 func_80106FF0_storyresult(void) {
     return count;
 }
 
-void func_80107030_storyresult(void) {
+void storyresult_ProgressSave(void) {
     s32 i;
 
     GwStory.unk64 = GwStory.unk0;
@@ -152,7 +152,7 @@ void func_80107030_storyresult(void) {
     SLSaveStorySystem(1);
 }
 
-s16 func_801070D8_storyresult(void) {
+s16 storyresult_RecordCntGet(void) {
     s16 idx = GwStory.unk1;
     s16 count = GwStory.unk58[idx] != 0;
     s32 i;
@@ -165,7 +165,7 @@ s16 func_801070D8_storyresult(void) {
     return count;
 }
 
-void func_80107140_storyresult(void) {
+void storyresult_RecordSave(void) {
     s16 idx = GwStory.unk1;
     s32 i;
 
@@ -183,7 +183,7 @@ void func_80107140_storyresult(void) {
     SLSaveStorySystem(1);
 }
 
-void func_80107204_storyresult(void) {
+void storyresult_StageResultProc(void) {
     StoryResultWork *data;
     s16 rank;
     s16 x;
@@ -194,7 +194,7 @@ void func_80107204_storyresult(void) {
     s16 i;
     s32 confirmed;
 
-    rank = func_8010A7EC_storyresult();
+    rank = storyresult_StageRankCalc();
     if (GwStory.unk0 < 12) {
         GwStory.progress.fields.unk3[GwStory.unk0] = rank;
     } else {
@@ -202,11 +202,11 @@ void func_80107204_storyresult(void) {
     }
     x = 160;
     y = 120;
-    data = func_8010A4A4_storyresult(2, GwStory.unk1)->user_data;
+    data = storyresult_StatCreate(2, GwStory.unk1)->user_data;
     HuPrcVSleep();
-    D_8010A912_storyresult = 1;
+    storyresult_backF = 1;
     MBDBackArcInit(hvq_data_ROM_START);
-    MBDBackLoad(D_8010A940_storyresult[GwStory.unk0]);
+    MBDBackLoad(storyresult_stageBackTbl[GwStory.unk0]);
     MBDCameraNearFarSet(1000.0f, 10000.0f);
     if (GwStory.unk0 == 12) {
         sprite = espEntry(HuSprAnimDataRead(0x1D0012), 0, 0);
@@ -244,9 +244,9 @@ void func_80107204_storyresult(void) {
 
     if (GwStory.unk0 >= 12) {
         HuAudSeqPlay(0x26);
-        D_8010A914_storyresult = 0;
+        storyresult_musFadeNo = 0;
     }
-    WipeCreateIn(D_8010AC2A_storyresult, 16);
+    WipeCreateIn(storyresult_wipeType, 16);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -259,8 +259,8 @@ void func_80107204_storyresult(void) {
     while (data->state != 0) {
         HuPrcVSleep();
     }
-    HuWinInsertMesSet(window, D_8010A974_storyresult[GwStory.unk0], 0);
-    HuWinInsertMesSet(window, D_8010A9A8_storyresult[rank], 1);
+    HuWinInsertMesSet(window, storyresult_stageMesTbl[GwStory.unk0], 0);
+    HuWinInsertMesSet(window, storyresult_stageRankMesTbl[rank], 1);
     HuWinMesSet(window, 0x6126, -1, -1);
     while (HuWinStatGet(window)) {
         HuPrcVSleep();
@@ -269,9 +269,9 @@ void func_80107204_storyresult(void) {
     if (GwStory.unk0 >= 12) {
         omOvlHisChg(0, 0x7D, 1, 0x4090);
         omovlhisidx++;
-        D_8010ABE2_storyresult = 1;
-        D_8010AC32_storyresult = 0x75;
-        D_8010AC30_storyresult = 0;
+        storyresult_exitMode = 1;
+        storyresult_exitOvlNo = 0x75;
+        storyresult_exitEvtNo = 0;
         storySceneNo = 14;
     } else {
         if (GwStory.unk0 == 11) {
@@ -285,15 +285,15 @@ void func_80107204_storyresult(void) {
         if (GwStory.unk0 >= 13) {
             GwStory.unk0 = 12;
         }
-        if (D_8010A924_storyresult[GwStory.unk0] == 1) {
+        if (storyresult_pageTbl[GwStory.unk0] == 1) {
             GwSystem.playMode = 6;
         } else {
             GwSystem.playMode = 5;
         }
-        D_8010ABE2_storyresult = 1;
-        D_8010AC32_storyresult = 0x75;
-        D_8010AC30_storyresult = 0;
-        storySceneNo = D_8010A9C8_storyresult[GwStory.unk0];
+        storyresult_exitMode = 1;
+        storyresult_exitOvlNo = 0x75;
+        storyresult_exitEvtNo = 0;
+        storySceneNo = storyresult_stageSceneTbl[GwStory.unk0];
         while (TRUE) {
             data->state = 10;
             do {
@@ -305,7 +305,7 @@ void func_80107204_storyresult(void) {
             }
             if (HuWinChoiceGet(window, 0, 0) == 0) {
                 confirmed = TRUE;
-                if (func_80106FF0_storyresult() != 0) {
+                if (storyresult_ProgressSaveCntGet() != 0) {
                     data->state = 11;
                     do {
                         HuPrcVSleep();
@@ -324,7 +324,7 @@ void func_80107204_storyresult(void) {
                 }
                 HuWinMesSet(window, 0x612C, -1, -1);
                 HuPrcVSleep();
-                func_80107030_storyresult();
+                storyresult_ProgressSave();
                 data->state = 10;
                 HuWinMesSet(window, 0x612A, -1, -1);
                 while (HuWinStatGet(window)) {
@@ -336,13 +336,13 @@ void func_80107204_storyresult(void) {
             break;
         }
     }
-    D_8010A910_storyresult = 1;
+    storyresult_exitCnt = 1;
     while (TRUE) {
         HuPrcVSleep();
     }
 }
 
-void func_80107920_storyresult(void) {
+void storyresult_FinalStatProc(void) {
     s16 sprites[2];
     StoryResultPos pos[2];
     s16 *result;
@@ -395,7 +395,7 @@ void func_80107920_storyresult(void) {
     }
     espAttrSet(sprites[1], 1);
 
-    prc = func_8010A4A4_storyresult(1, -1);
+    prc = storyresult_StatCreate(1, -1);
     if (prc == NULL) {
         *result = -3;
         while (TRUE) {
@@ -421,19 +421,19 @@ void func_80107920_storyresult(void) {
     angle = 0;
     speed = 0;
     while (TRUE) {
-        if (HuPadBtnDown[D_8010ABE0_storyresult] & 0x8000) {
+        if (HuPadBtnDown[storyresult_padNo] & 0x8000) {
             HuAudFXPlay(2);
             break;
         }
         if (data->state == 0) {
-            if ((HuPadBtnDown[D_8010ABE0_storyresult] & 0x100) || HuPadStkX[D_8010ABE0_storyresult] >= 31) {
+            if ((HuPadBtnDown[storyresult_padNo] & 0x100) || HuPadStkX[storyresult_padNo] >= 31) {
                 HuAudFXPlay(1);
                 data->state = 3;
                 angle = 180;
                 speed = -22;
                 selection = 1;
-            } else if ((HuPadBtnDown[D_8010ABE0_storyresult] & 0x200) ||
-                       HuPadStkX[D_8010ABE0_storyresult] < -30) {
+            } else if ((HuPadBtnDown[storyresult_padNo] & 0x200) ||
+                       HuPadStkX[storyresult_padNo] < -30) {
                 HuAudFXPlay(1);
                 data->state = 4;
                 angle = 180;
@@ -479,7 +479,7 @@ void func_80107920_storyresult(void) {
         }
         if (HuWinChoiceGet(window, 0, 0) == 0) {
             confirmed = TRUE;
-            count = func_801070D8_storyresult();
+            count = storyresult_RecordCntGet();
             if (count != 0) {
                 if (count >= 13) {
                     HuWinMesSet(window, 0x612D, -1, -1);
@@ -512,9 +512,9 @@ void func_80107920_storyresult(void) {
             HuWinMesSet(window, 0x612C, -1, -1);
             HuPrcVSleep();
             if (GwStory.unk1 < 6) {
-                _SetFlag(D_8010A9D8_storyresult[GwStory.unk1]);
+                _SetFlag(storyresult_chrClearFlagTbl[GwStory.unk1]);
             }
-            func_80107140_storyresult();
+            storyresult_RecordSave();
             data->state = 10;
             HuWinMesSet(window, 0x612A, -1, -1);
             while (HuWinStatGet(window)) {
@@ -524,9 +524,9 @@ void func_80107920_storyresult(void) {
         HuWinHomeClear(window);
         break;
     }
-    D_8010ABE2_storyresult = 3;
-    D_8010AC32_storyresult = 0x7C;
-    D_8010AC30_storyresult = 6;
+    storyresult_exitMode = 3;
+    storyresult_exitOvlNo = 0x7C;
+    storyresult_exitEvtNo = 6;
     *result = -1;
     data->state = 2;
     for (i = 256; i >= 0; i -= 36) {
@@ -537,7 +537,7 @@ void func_80107920_storyresult(void) {
     while (data->state != 0) {
         HuPrcVSleep();
     }
-    func_8010A558_storyresult(prc);
+    storyresult_StatKill(prc);
     espKill(cursor);
     espKill(sprites[0]);
     espKill(sprites[1]);
@@ -550,9 +550,9 @@ void func_80107920_storyresult(void) {
     }
 }
 
-Process *func_8010818C_storyresult(s16 *arg0, s16 arg1) {
+Process *storyresult_FinalStatCreate(s16 *arg0, s16 arg1) {
     Process *prc;
-    s32 rank = func_8010A370_storyresult(arg1);
+    s32 rank = storyresult_RankGet(arg1);
 
     if (rank < 0) {
         *arg0 = -1;
@@ -563,41 +563,41 @@ Process *func_8010818C_storyresult(s16 *arg0, s16 arg1) {
     }
     _SetFlag(0x1E);
     *arg0 = arg1;
-    mgStoryStatPortNo = D_8010ABE0_storyresult;
-    prc = omAddPrcObj(func_80107920_storyresult, 0x4000, 0x800, 0);
+    mgStoryStatPortNo = storyresult_padNo;
+    prc = omAddPrcObj(storyresult_FinalStatProc, 0x4000, 0x800, 0);
     prc->user_data = arg0;
     return prc;
 }
 
-void func_8010822C_storyresult(void) {
+void storyresult_FinalResultProc(void) {
     s16 sp10;
 
     Hu3DScreenClearF = 0;
-    func_801060D0_storyresult(&D_8010AB9C_storyresult);
-    D_8010A912_storyresult = 1;
+    storyresult_CameraPresetSet(&storyresult_cameraPreset);
+    storyresult_backF = 1;
     MBDBackArcInit(hvq_data_ROM_START);
     MBDBackLoad(0x20);
     MBDCameraNearFarSet(1000.0f, 10000.0f);
-    D_8010AC2A_storyresult = 0xB;
+    storyresult_wipeType = 0xB;
     WipeCreateIn(0xB, 0x10);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
-    func_8010818C_storyresult(&sp10, -1);
+    storyresult_FinalStatCreate(&sp10, -1);
     while (sp10 >= -1) {
         HuPrcVSleep();
     }
-    D_8010AC2A_storyresult = 0xB;
-    D_8010AC28_storyresult = 0x36;
-    D_8010A914_storyresult = 2;
-    D_8010A910_storyresult = 1;
+    storyresult_wipeType = 0xB;
+    storyresult_wipeTime = 0x36;
+    storyresult_musFadeNo = 2;
+    storyresult_exitCnt = 1;
 
     while (1) {
         HuPrcVSleep();
     }
 }
 
-Process *func_8010832C_storyresult(s16 *arg0, s16 arg1) {
+Process *storyresult_StatViewCreate(s16 *arg0, s16 arg1) {
     Process *prc;
 
     if (MgStoryRankGet(arg1) < 0) {
@@ -611,7 +611,7 @@ Process *func_8010832C_storyresult(s16 *arg0, s16 arg1) {
     return prc;
 }
 
-void func_801083A4_storyresult(void) {
+void storyresult_DebugStatProc(void) {
     s16 status;
     u16 sprite;
     s16 value;
@@ -619,11 +619,11 @@ void func_801083A4_storyresult(void) {
     s32 j;
 
     Hu3DScreenClearF = 0;
-    func_801060D0_storyresult(&D_8010AB9C_storyresult);
+    storyresult_CameraPresetSet(&storyresult_cameraPreset);
     sprite = espEntry(HuSprAnimDataRead(0x140067), 0, 0);
     espAttrSet(sprite, 0x4000);
     espPosSet(sprite, 160, 120);
-    WipeCreateIn(D_8010AC2A_storyresult, 16);
+    WipeCreateIn(storyresult_wipeType, 16);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -668,17 +668,17 @@ void func_801083A4_storyresult(void) {
     if (HuPadBtn[0] & 8) {
         i |= 4;
     }
-    func_8010832C_storyresult(&status, i);
+    storyresult_StatViewCreate(&status, i);
     while (status >= 0) {
         HuPrcVSleep();
     }
-    D_8010A910_storyresult = 1;
+    storyresult_exitCnt = 1;
     while (1) {
         HuPrcVSleep();
     }
 }
 
-void func_801085E8_storyresult(s16 group, s16 member, s16 graphic, s16 prio, s16 x, s16 y) {
+void storyresult_StatSprSet(s16 group, s16 member, s16 graphic, s16 prio, s16 x, s16 y) {
     HuSprTPLvlSet(group, member, 256);
     HuSprAttrReset(group, member, 0xFFFF);
     HuSprAttrSet(group, member, 0x9000);
@@ -689,7 +689,7 @@ void func_801085E8_storyresult(s16 group, s16 member, s16 graphic, s16 prio, s16
     HuSprPosSet(group, member, x, y);
 }
 
-s16 func_801086E4_storyresult(u8 *values, s16 alt, s16 start, s16 end, StoryResultElem *elemsA,
+s16 storyresult_StatResultDisp(u8 *values, s16 alt, s16 start, s16 end, StoryResultElem *elemsA,
                               StoryResultElem *elemsB, StoryResultPanel *work) {
     u8 *order;
     s16 group;
@@ -703,7 +703,7 @@ s16 func_801086E4_storyresult(u8 *values, s16 alt, s16 start, s16 end, StoryResu
     s16 y;
     s32 i;
 
-    order = (alt != 0) ? D_8010AB74_storyresult : D_8010AB6C_storyresult;
+    order = (alt != 0) ? storyresult_resultOrderAltTbl : storyresult_resultOrderTbl;
     group = work->group;
     graphics = work->graphics;
     baseX = work->data->x;
@@ -718,17 +718,17 @@ s16 func_801086E4_storyresult(u8 *values, s16 alt, s16 start, s16 end, StoryResu
         elemsA->unk08 = 1;
         elemsA->unk0A = 1;
         graphic = graphics[value];
-        elemsB->pos = D_8010AB34_storyresult[i];
+        elemsB->pos = storyresult_resultPosTbl[i];
         x = baseX + elemsB->pos.x;
         y = baseY + elemsB->pos.y;
-        func_801085E8_storyresult(group, i + 16, graphic, 1200, x, y);
+        storyresult_StatSprSet(group, i + 16, graphic, 1200, x, y);
         elemsB->unk08 = 1;
         elemsB->unk0A = 1;
     }
     return result;
 }
 
-s16 func_80108884_storyresult(StoryResultPanel *work) {
+s16 storyresult_StatRankMarkDisp(StoryResultPanel *work) {
     u8 counts[4];
     u8 *entries;
     u8 last;
@@ -781,7 +781,7 @@ s16 func_80108884_storyresult(StoryResultPanel *work) {
     return 0;
 }
 
-s16 func_80108AC0_storyresult(StoryResultPanel *work, u8 last, u8 *entries) {
+s16 storyresult_StatRankMarkDispEx(StoryResultPanel *work, u8 last, u8 *entries) {
     u8 counts[4];
     s16 group;
     s16 x;
@@ -825,15 +825,15 @@ s16 func_80108AC0_storyresult(StoryResultPanel *work, u8 last, u8 *entries) {
     return 0;
 }
 
-s16 func_80108CB8_storyresult(StoryResultPanel *work) {
-    return func_80108AC0_storyresult(work, GwStory.unk58[GwStory.unk1], GwStory.unk10[GwStory.unk1]);
+s16 storyresult_StatRankMarkRecordDisp(StoryResultPanel *work) {
+    return storyresult_StatRankMarkDispEx(work, GwStory.unk58[GwStory.unk1], GwStory.unk10[GwStory.unk1]);
 }
 
-s16 func_80108D04_storyresult(StoryResultPanel *work) {
-    return func_80108AC0_storyresult(work, GwStory.unk73, GwStory.unk67);
+s16 storyresult_StatRankMarkSaveDisp(StoryResultPanel *work) {
+    return storyresult_StatRankMarkDispEx(work, GwStory.unk73, GwStory.unk67);
 }
 
-s16 func_80108D34_storyresult(s16 page, StoryResultPanel *work) {
+s16 storyresult_StatPageSet(s16 page, StoryResultPanel *work) {
     u8 *values;
     StoryResultElem *elems;
     StoryResultElem *elemsB;
@@ -841,7 +841,7 @@ s16 func_80108D34_storyresult(s16 page, StoryResultPanel *work) {
     s16 result = -1;
 
     HuWinHomeClear(work->windows[4]);
-    HuWinMesSet(work->windows[4], D_8010AB50_storyresult[page], -2, -1);
+    HuWinMesSet(work->windows[4], storyresult_pageMesTbl[page], -2, -1);
     work->winFlags[4] = 1;
     if (page < 2) {
         alt = 0;
@@ -856,7 +856,7 @@ s16 func_80108D34_storyresult(s16 page, StoryResultPanel *work) {
             values = GwStory.unk10[work->unk124];
         }
         elemsB = &work->elems[16];
-        result = func_801086E4_storyresult(values, alt, 0, 6, elems, elemsB, work);
+        result = storyresult_StatResultDisp(values, alt, 0, 6, elems, elemsB, work);
     } else if (page == 2) {
         if (work->unk124 < 0) {
             values = &GwStory.progress.fields.unkF;
@@ -865,20 +865,20 @@ s16 func_80108D34_storyresult(s16 page, StoryResultPanel *work) {
         }
         elems = &work->elems[14];
         elemsB = &work->elems[22];
-        result = func_801086E4_storyresult(values, 0, 6, 7, elems, elemsB, work);
+        result = storyresult_StatResultDisp(values, 0, 6, 7, elems, elemsB, work);
     } else if (page == 3) {
-        result = func_80108884_storyresult(work);
+        result = storyresult_StatRankMarkDisp(work);
     } else if (page == 4) {
-        result = func_80108CB8_storyresult(work);
+        result = storyresult_StatRankMarkRecordDisp(work);
     } else if (page == 5) {
-        result = func_80108884_storyresult(work);
+        result = storyresult_StatRankMarkDisp(work);
     } else if (page == 6) {
-        result = func_80108D04_storyresult(work);
+        result = storyresult_StatRankMarkSaveDisp(work);
     }
     return result;
 }
 
-void func_80108F0C_storyresult(void) {
+void storyresult_StatExec(void) {
     s16 color[3];
     s16 step[3];
     u32 msgs[4];
@@ -942,45 +942,45 @@ void func_80108F0C_storyresult(void) {
         case 0:
         default:
             hasRank = 1;
-            rank = func_8010A370_storyresult(data->unk_02);
+            rank = storyresult_RankGet(data->unk_02);
             msgs[0] = 0x6101;
-            msgs[2] = D_8010AAA8_storyresult[GwStory.unk5E[data->unk_02]];
-            msgs[3] = D_8010AAB8_storyresult[rank];
+            msgs[2] = storyresult_levelMesTbl[GwStory.unk5E[data->unk_02]];
+            msgs[3] = storyresult_rankMesTbl[rank];
             work->unk124 = data->unk_02;
             break;
         case 1:
             data->unk_02 = GwStory.unk1;
             hasRank = 1;
-            rank = func_8010A370_storyresult(-1);
+            rank = storyresult_RankGet(-1);
             msgs[0] = 0x6101;
-            msgs[2] = D_8010AAA8_storyresult[GwStory.unk2];
-            msgs[3] = D_8010AAB8_storyresult[rank];
+            msgs[2] = storyresult_levelMesTbl[GwStory.unk2];
+            msgs[3] = storyresult_rankMesTbl[rank];
             work->unk124 = -1;
             break;
         case 2:
-            if (func_80106FF0_storyresult() != 0) {
+            if (storyresult_ProgressSaveCntGet() != 0) {
                 hasPartner = 1;
             }
             data->unk_02 = GwStory.unk1;
             msgs[0] = 0x6100;
-            msgs[2] = D_8010AAA8_storyresult[GwStory.unk2];
+            msgs[2] = storyresult_levelMesTbl[GwStory.unk2];
             work->unk124 = -1;
             hasRank = 1;
             if (GwStory.unk0 == 12) {
-                rank = func_8010A370_storyresult(-1);
+                rank = storyresult_RankGet(-1);
                 page = 2;
                 prevPage = 2;
             } else {
-                prevPage = page = D_8010A924_storyresult[GwStory.unk0];
+                prevPage = page = storyresult_pageTbl[GwStory.unk0];
             }
             break;
     }
-    msgs[1] = D_8010AA90_storyresult[data->unk_02];
+    msgs[1] = storyresult_charMesTbl[data->unk_02];
 
     group = HuSprGrpCreate(24, 0);
     member = 0;
-    def = D_8010A9E4_storyresult;
-    for (elem = work->elems, i = 0; i < ARRAY_COUNTU(D_8010A9E4_storyresult); i++, member++, def++, elem++) {
+    def = storyresult_statSprTbl;
+    for (elem = work->elems, i = 0; i < ARRAY_COUNTU(storyresult_statSprTbl); i++, member++, def++, elem++) {
         temp = 1200;
         graphic = HuSprAnimDataRead(def->file);
         elem->unk04 = graphic;
@@ -990,7 +990,7 @@ void func_80108F0C_storyresult(void) {
         if (i >= 2) {
             temp = 1199;
         }
-        func_801085E8_storyresult(group, member, graphic, temp, x, y);
+        storyresult_StatSprSet(group, member, graphic, temp, x, y);
     }
     HuSprScaleSet(group, 1, 1.0f, 1.02f);
     // Both branches are identical, but the branch is needed to match.
@@ -1004,31 +1004,31 @@ void func_80108F0C_storyresult(void) {
     work->elems[1].unk06 = 255;
     work->group = group;
 
-    graphic = HuSprAnimDataRead(D_8010AA78_storyresult[data->unk_02]);
+    graphic = HuSprAnimDataRead(storyresult_charSprTbl[data->unk_02]);
     work->elems[15].unk04 = graphic;
     work->elems[15].pos.x = -96;
     work->elems[15].pos.y = -74;
     x = work->elems[15].pos.x + data->x;
     y = work->elems[15].pos.y + data->y;
-    func_801085E8_storyresult(group, 15, graphic, 1200, x, y);
+    storyresult_StatSprSet(group, 15, graphic, 1200, x, y);
     if (hasPartner) {
-        graphic = HuSprAnimDataRead(D_8010AA78_storyresult[GwStory.unk65]);
+        graphic = HuSprAnimDataRead(storyresult_charSprTbl[GwStory.unk65]);
         work->elems[23].unk04 = graphic;
         work->elems[23].pos.x = -96;
         work->elems[23].pos.y = -74;
         x = work->elems[23].pos.x + data->x;
         y = work->elems[23].pos.y + data->y;
-        func_801085E8_storyresult(group, 23, graphic, 1200, x, y);
+        storyresult_StatSprSet(group, 23, graphic, 1200, x, y);
     }
     for (gfx = work->graphics, i = 0; i < 4; i++, gfx++) {
-        *gfx = HuSprAnimDataRead(D_8010AA5C_storyresult[i]);
+        *gfx = HuSprAnimDataRead(storyresult_resultSprTbl[i]);
     }
     work->unk148 = HuSprGrpCreate(13, 0);
     work->unk14A = HuSprAnimDataRead(0x15001D);
     y = data->y - 28;
     for (i = 0; i < 13; i++) {
         markX = data->x + (s16)(i * 12 - 24);
-        func_801085E8_storyresult(work->unk148, i, work->unk14A, 1200, markX, y);
+        storyresult_StatSprSet(work->unk148, i, work->unk14A, 1200, markX, y);
     }
 
     winPrio = 400;
@@ -1037,8 +1037,8 @@ void func_80108F0C_storyresult(void) {
     x = data->x;
     y = data->y;
     for (i = 0; i < ARRAY_COUNTU(work->windows); i++, win++, flag++) {
-        *win = HuWinCreate(x + D_8010AB04_storyresult[i].x, y + D_8010AB04_storyresult[i].y,
-                           D_8010AB04_storyresult[i].w, D_8010AB04_storyresult[i].h, 0, 12);
+        *win = HuWinCreate(x + storyresult_statWinTbl[i].x, y + storyresult_statWinTbl[i].y,
+                           storyresult_statWinTbl[i].w, storyresult_statWinTbl[i].h, 0, 12);
         HuWinMesSpeedSet(*win, 0);
         HuWinBGTPLvlSet(*win, 0);
         HuWinMesPalSet(*win, 2, 255, 64, 64);
@@ -1062,11 +1062,11 @@ void func_80108F0C_storyresult(void) {
             HuWinMesSet(work->windows[3], msgs[3], -1, -1);
         }
         flag[3] = 1;
-        HuWinMesPalSet(win[3], 7, D_8010AAEC_storyresult[rank][0], D_8010AAEC_storyresult[rank][1],
-                       D_8010AAEC_storyresult[rank][2]);
+        HuWinMesPalSet(win[3], 7, storyresult_rankColorTbl[rank][0], storyresult_rankColorTbl[rank][1],
+                       storyresult_rankColorTbl[rank][2]);
     }
     HuWinMesSet(win[5], 0x6111, -1, -1);
-    func_80108D34_storyresult(page, work);
+    storyresult_StatPageSet(page, work);
 
     state = 0;
     work->unk14C = 0;
@@ -1095,7 +1095,7 @@ void func_80108F0C_storyresult(void) {
         if (pageChanging) {
             if (sprFadeSpeed == 0 && winFadeSpeed == 0) {
                 pageChanging = 0;
-                func_80108D34_storyresult(page, work);
+                storyresult_StatPageSet(page, work);
                 sprAlpha = 0;
                 sprFadeSpeed = 51;
                 winAlpha = 0;
@@ -1119,38 +1119,38 @@ void func_80108F0C_storyresult(void) {
                         msg = msgs[3];
                         curRank = rank;
                     } else if (page == 4) {
-                        curRank = func_8010A370_storyresult(GwStory.unk1);
-                        HuWinMesSet(work->windows[2], D_8010AAA8_storyresult[GwStory.unk5E[GwStory.unk1]], -1, -1);
+                        curRank = storyresult_RankGet(GwStory.unk1);
+                        HuWinMesSet(work->windows[2], storyresult_levelMesTbl[GwStory.unk5E[GwStory.unk1]], -1, -1);
                         msg = 0;
                         if (curRank < 0) {
                             HuWinMesSet(work->windows[0], 0x6100, -1, -1);
                         } else {
                             HuWinMesSet(work->windows[0], 0x6101, -1, -1);
-                            msg = D_8010AAB8_storyresult[curRank];
+                            msg = storyresult_rankMesTbl[curRank];
                         }
                     } else if (page == 6) {
-                        curRank = func_8010A370_storyresult(-2);
-                        HuWinMesSet(work->windows[1], D_8010AA90_storyresult[GwStory.unk65], -1, -1);
-                        HuWinMesSet(work->windows[2], D_8010AAA8_storyresult[GwStory.unk66], -1, -1);
+                        curRank = storyresult_RankGet(-2);
+                        HuWinMesSet(work->windows[1], storyresult_charMesTbl[GwStory.unk65], -1, -1);
+                        HuWinMesSet(work->windows[2], storyresult_levelMesTbl[GwStory.unk66], -1, -1);
                         msg = 0;
                         if (curRank < 0) {
                             HuWinMesSet(work->windows[0], 0x6100, -1, -1);
                         } else {
                             HuWinMesSet(work->windows[0], 0x6101, -1, -1);
-                            msg = D_8010AAB8_storyresult[curRank];
+                            msg = storyresult_rankMesTbl[curRank];
                         }
                     }
                     if (msg != 0) {
                         HuWinMesSet(work->windows[3], msg, -1, -1);
-                        HuWinMesPalSet(work->windows[3], 7, D_8010AAEC_storyresult[curRank][0],
-                                       D_8010AAEC_storyresult[curRank][1], D_8010AAEC_storyresult[curRank][2]);
+                        HuWinMesPalSet(work->windows[3], 7, storyresult_rankColorTbl[curRank][0],
+                                       storyresult_rankColorTbl[curRank][1], storyresult_rankColorTbl[curRank][2]);
                         if (curRank == 4) {
                             colorCycle = 1;
-                            colorPtr = colorStart = D_8010AAD4_storyresult;
+                            colorPtr = colorStart = storyresult_rankBlinkTbl;
                             colorFrames = 6;
                         } else if (curRank == 3) {
                             colorCycle = 1;
-                            colorPtr = colorStart = D_8010AAE0_storyresult;
+                            colorPtr = colorStart = storyresult_rankBlinkAltTbl;
                             colorFrames = 8;
                         }
                     } else {
@@ -1212,11 +1212,11 @@ void func_80108F0C_storyresult(void) {
                         elem[15].unk08 = 1;
                         if (rank == 4) {
                             colorCycle = 1;
-                            colorPtr = colorStart = D_8010AAD4_storyresult;
+                            colorPtr = colorStart = storyresult_rankBlinkTbl;
                             colorFrames = 6;
                         } else if (rank == 3) {
                             colorCycle = 1;
-                            colorPtr = colorStart = D_8010AAE0_storyresult;
+                            colorPtr = colorStart = storyresult_rankBlinkAltTbl;
                             colorFrames = 8;
                         }
                     }
@@ -1406,7 +1406,7 @@ void func_80108F0C_storyresult(void) {
     }
 }
 
-s16 func_8010A370_storyresult(s16 arg0) {
+s16 storyresult_RankGet(s16 arg0) {
     u8 *last;
     u8 *entries;
     s16 total;
@@ -1434,7 +1434,7 @@ s16 func_8010A370_storyresult(s16 arg0) {
     if (*last >= 5) {
         *last = 4;
     }
-    total = D_8010AB84_storyresult[*last];
+    total = storyresult_bossScoreTbl[*last];
     for (i = 0; i < 12; i++, entries++) {
         if (*entries == 0) {
             return -1;
@@ -1442,22 +1442,22 @@ s16 func_8010A370_storyresult(s16 arg0) {
         if (*entries >= 5) {
             *entries = 4;
         }
-        total += D_8010AB7C_storyresult[*entries];
+        total += storyresult_resultScoreTbl[*entries];
     }
     for (rank = 0; rank < 4; rank++) {
-        if (total < D_8010AB8C_storyresult[rank]) {
+        if (total < storyresult_rankBorderTbl[rank]) {
             break;
         }
     }
     return rank;
 }
 
-Process *func_8010A4A4_storyresult(u16 arg0, s16 arg1) {
+Process *storyresult_StatCreate(u16 arg0, s16 arg1) {
     StoryResultWork *data;
     Process *prc;
 
     if (arg0 == 0 || arg0 == 1) {
-        if (func_8010A370_storyresult(arg1) < 0) {
+        if (storyresult_RankGet(arg1) < 0) {
             return NULL;
         }
     }
@@ -1467,12 +1467,12 @@ Process *func_8010A4A4_storyresult(u16 arg0, s16 arg1) {
     data->y = 120;
     data->unk_00 = arg0;
     data->unk_02 = arg1;
-    prc = omAddPrcObj(func_80108F0C_storyresult, 0x4000, 0x1000, 0);
+    prc = omAddPrcObj(storyresult_StatExec, 0x4000, 0x1000, 0);
     prc->user_data = data;
     return prc;
 }
 
-s32 func_8010A558_storyresult(Process *prc) {
+s32 storyresult_StatKill(Process *prc) {
     StoryResultWork *work;
     s32 result;
 
@@ -1489,7 +1489,7 @@ s32 func_8010A558_storyresult(Process *prc) {
     return result;
 }
 
-s16 func_8010A5C4_storyresult(s16 playerIdx) {
+s16 storyresult_PartyRankCalc(s16 playerIdx) {
     s16 stars = GwPlayer[playerIdx].star;
     s16 maxStars = 0;
     s16 coins;
@@ -1534,7 +1534,7 @@ s16 func_8010A5C4_storyresult(s16 playerIdx) {
     return result;
 }
 
-s16 func_8010A738_storyresult(s16 playerIdx) {
+s16 storyresult_DuelRankCalc(s16 playerIdx) {
     s16 stars = GwPlayer[playerIdx].star;
     s16 other = playerIdx == 0;
     s16 otherStars = GwPlayer[other].star;
@@ -1553,18 +1553,18 @@ s16 func_8010A738_storyresult(s16 playerIdx) {
     return result;
 }
 
-s16 func_8010A7B0_storyresult(s16 playerIdx) {
+s16 storyresult_BossRankCalc(s16 playerIdx) {
     s16 bonusCoin = GwPlayer[playerIdx].bonusCoin;
     s16 value = 0;
 
     if (bonusCoin >= 0) {
-        value = D_8010AB90_storyresult[bonusCoin];
+        value = storyresult_bossRankTbl[bonusCoin];
     }
     return value;
 }
 
-s16 func_8010A7EC_storyresult(void) {
-    s16 mode = D_8010A924_storyresult[GwStory.unk0];
+s16 storyresult_StageRankCalc(void) {
+    s16 mode = storyresult_pageTbl[GwStory.unk0];
     s16 count = (mode != 0) ? 2 : 4;
     s16 chr = GwStory.unk1;
     s16 result;
@@ -1581,13 +1581,13 @@ s16 func_8010A7EC_storyresult(void) {
     result = 0;
     switch (mode) {
         case 0:
-            result = func_8010A5C4_storyresult(i);
+            result = storyresult_PartyRankCalc(i);
             break;
         case 1:
-            result = func_8010A738_storyresult(i);
+            result = storyresult_DuelRankCalc(i);
             break;
         case 2:
-            result = func_8010A7B0_storyresult(i);
+            result = storyresult_BossRankCalc(i);
             break;
     }
     return result;

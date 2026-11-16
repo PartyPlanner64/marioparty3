@@ -28,114 +28,114 @@ typedef struct BoardResult2StatFiles {
 
 extern s16 kakusiMasuItemHis[10];
 
-s32 D_801097B0_boardresult2 = 0;
-s32 D_801097B4_boardresult2 = 0;
-s32 D_801097B8_boardresult2[2] = { 0 }; /* Unreferenced. */
+s32 boardresult2_statScroll = 0;
+s32 boardresult2_statCursor = 0;
+s32 boardresult2_unusedTbl[2] = { 0 }; /* Unreferenced. */
 
-BoardResult2Positions D_801097C0_boardresult2 = {
+BoardResult2Positions boardresult2_rankHeaderXTbl = {
     { 55, 111, 171, 252 }
 };
 
-BoardResult2PlayerFiles D_801097D0_boardresult2 = {
+BoardResult2PlayerFiles boardresult2_rankRowSprFileTbl = {
     { { 0x00130032, 0x0013003E, 0x00130042 },
       { 0x00130033, 0x0013003F, 0x00130043 },
       { 0x00130034, 0x00130040, 0x00130044 },
       { 0x00130035, 0x00130041, 0x00130045 } }
 };
 
-BoardResult2Portraits D_80109800_boardresult2 = {
+BoardResult2Portraits boardresult2_rankFaceSprFileTbl = {
     { 0x00130036, 0x00130037, 0x00130038, 0x00130039,
       0x0013003A, 0x0013003B, 0x0013003C, 0x0013003D }
 };
 
-BoardResult2Positions D_80109820_boardresult2 = {
+BoardResult2Positions boardresult2_rankRowXTbl = {
     { 0, 60, 142, 0 }
 };
 
-UnkBoard4 *D_801099A0_boardresult2 BSS;
-UnkBoard4 *D_801099A4_boardresult2 BSS;
-UnkBoard4 *D_801099A8_boardresult2 BSS;
-u8 D_801099AC_boardresult2[4] BSS; /* Unreferenced. */
-UnkBoard4 *D_801099B0_boardresult2[4] BSS;
-UnkBoard4 *D_801099C0_boardresult2 BSS;
-UnkBoard4 *D_801099C4_boardresult2 BSS;
-UnkOvl81_2 *D_801099C8_boardresult2 BSS;
-UnkBoard4 *D_801099CC_boardresult2 BSS;
-UnkBoard4 *D_801099D0_boardresult2 BSS;
-UnkBoard4 *D_801099D4_boardresult2 BSS;
-UnkBoard4 *D_801099D8_boardresult2[4] BSS;
-UnkBoard4 *D_801099E8_boardresult2 BSS;
-UnkBoard4 *D_801099EC_boardresult2 BSS;
-UnkBoard4 *D_801099F0_boardresult2 BSS;
-UnkBoard4 *D_801099F4_boardresult2 BSS;
-s32 D_801099F8_boardresult2[16] BSS;
-s16 D_80109A38_boardresult2[10] BSS;
-s16 D_80109A4C_boardresult2 BSS;
-s16 D_80109A4E_boardresult2 BSS;
+UnkBoard4 *boardresult2_bgSprGrp BSS;
+UnkBoard4 *boardresult2_rankHeaderSprGrp BSS;
+UnkBoard4 *boardresult2_rankLabelSprGrp BSS;
+u8 boardresult2_rankLabelPad[4] BSS; /* Unreferenced. */
+UnkBoard4 *boardresult2_rankRowSprGrpTbl[4] BSS;
+UnkBoard4 *boardresult2_rankTitleSprGrp BSS;
+UnkBoard4 *boardresult2_rankSubtitleSprGrp BSS;
+UnkOvl81_2 *boardresult2_hostGuide BSS;
+UnkBoard4 *boardresult2_boardNameSprGrp BSS;
+UnkBoard4 *boardresult2_gameLengthSprGrp BSS;
+UnkBoard4 *boardresult2_statLabelSprGrp BSS;
+UnkBoard4 *boardresult2_statRowSprGrpTbl[4] BSS;
+UnkBoard4 *boardresult2_statArrowSprGrp BSS;
+UnkBoard4 *boardresult2_statNameSprGrp BSS;
+UnkBoard4 *boardresult2_statNumSprGrp BSS;
+UnkBoard4 *boardresult2_statCursorSprGrp BSS;
+s32 boardresult2_hostAnimNoTbl[16] BSS;
+s16 boardresult2_hostAnimTbl[10] BSS;
+s16 boardresult2_hostAnim BSS;
+s16 boardresult2_hostAnimLink BSS;
 
-void func_80105B98_boardresult2(s16 model, s16 animIdx);
-void func_80105CB0_boardresult2(void);
-void func_80106924_boardresult2(void);
-void func_801069A4_boardresult2(void);
-void func_80106A9C_boardresult2(void);
-void func_80107964_boardresult2(void);
-void func_80108548_boardresult2(void);
-void func_801085F8_boardresult2(void);
-void func_8010879C_boardresult2(void);
-void func_80108958_boardresult2(void);
-void func_80108A48_boardresult2(void);
-void func_80108C70_boardresult2(void);
-void func_801074B4_boardresult2(void);
-s32 func_80106B94_boardresult2(s32);
-void func_80108E1C_boardresult2(void);
-void func_801096AC_boardresult2(omObjData *);
-void func_801096F0_boardresult2(omObjData *);
-void func_80109714_boardresult2(void);
-void func_8010976C_boardresult2(void);
-void func_80109740_boardresult2(void);
-void func_8010979C_boardresult2(void);
+void boardresult2_ModelAnimSet(s16 model, s16 animIdx);
+void boardresult2_RankSprCreate(void);
+void boardresult2_RankSprKill(void);
+void boardresult2_RankDispOff(void);
+void boardresult2_RankDispOn(void);
+void boardresult2_StatSprCreate(void);
+void boardresult2_StatSprKill(void);
+void boardresult2_StatDispOff(void);
+void boardresult2_StatDispOn(void);
+void boardresult2_StatMesSet(void);
+void boardresult2_RankRowDropProc(void);
+void boardresult2_TitleDropProc(void);
+void boardresult2_StatNumUpdate(void);
+s32 boardresult2_StatTopMaskGet(s32);
+void boardresult2_MainProc(void);
+void boardresult2_ExitObjMain(omObjData *);
+void boardresult2_ExitCheckObjMain(omObjData *);
+void boardresult2_SysInit(void);
+void boardresult2_CameraInit(void);
+void boardresult2_SysClose(void);
+void boardresult2_CameraClose(void);
 
-void func_801059A0_boardresult2(void) {
+void boardresult2_ObjectSetup(void) {
     u32 i;
 
     omInitObjMan(0x50, 0x50);
-    func_8010976C_boardresult2();
-    func_80109714_boardresult2();
+    boardresult2_CameraInit();
+    boardresult2_SysInit();
     HuWinInit();
-    omAddPrcObj(func_80108E1C_boardresult2, 0x300, 0x4000, 0);
-    omAddObj(0x1000, 0, 0, -1, func_801096F0_boardresult2);
+    omAddPrcObj(boardresult2_MainProc, 0x300, 0x4000, 0);
+    omAddObj(0x1000, 0, 0, -1, boardresult2_ExitCheckObjMain);
 
     for (i = 0; i < 16; i++) {
         do {
-            D_801099F8_boardresult2[i] = MBDRand(7.0f);
-        } while (i != 0 && D_801099F8_boardresult2[i - 1] == D_801099F8_boardresult2[i]);
+            boardresult2_hostAnimNoTbl[i] = MBDRand(7.0f);
+        } while (i != 0 && boardresult2_hostAnimNoTbl[i - 1] == boardresult2_hostAnimNoTbl[i]);
     }
 }
 
-s16 func_80105A8C_boardresult2(s16 model, s32 dataNum, char *name) {
+s16 boardresult2_ModelAnimCreate(s16 model, s32 dataNum, char *name) {
     void *data = DataRead(dataNum);
     s32 anim;
     s16 animIdx;
 
     anim = Hu3DAnimCreate(Hu3DData[model].hmf, data, 0, name);
-    D_80109A4C_boardresult2 = anim;
+    boardresult2_hostAnim = anim;
     Hu3DAnimAttrSet(anim, 1, 1);
     DataClose(data);
     animIdx = Hu3DAnimData[(s16)anim].animIdx;
-    D_80109A4E_boardresult2 = Hu3DAnimLink(Hu3DData[model].hmf, anim, 0, name);
+    boardresult2_hostAnimLink = Hu3DAnimLink(Hu3DData[model].hmf, anim, 0, name);
     Hu3DModelRemakeStatic(model);
     return animIdx;
 }
 
-void func_80105B98_boardresult2(s16 model, s16 animIdx) {
+void boardresult2_ModelAnimSet(s16 model, s16 animIdx) {
     HmfAnim *anim;
 
-    if (D_80109A4E_boardresult2 != 0xFF) {
+    if (boardresult2_hostAnimLink != 0xFF) {
         if (animIdx == -1) {
             Hu3DModelAnimStop(Hu3DData[model].hmf);
         } else {
             Hu3DModelAnimStart(Hu3DData[model].hmf);
-            anim = &Hu3DAnimData[D_80109A4E_boardresult2];
+            anim = &Hu3DAnimData[boardresult2_hostAnimLink];
             anim->animIdx = animIdx;
             anim->rot = 0;
             anim->flags = 0;
@@ -145,7 +145,7 @@ void func_80105B98_boardresult2(s16 model, s16 animIdx) {
     }
 }
 
-s16 func_80105C68_boardresult2(s32 dataNum) {
+s16 boardresult2_AnimDataRead(s32 dataNum) {
     void *data = DataRead(dataNum);
     s16 anim = Hu3DAnimDataCreate(data);
 
@@ -153,198 +153,198 @@ s16 func_80105C68_boardresult2(s32 dataNum) {
     return anim;
 }
 
-void func_80105CB0_boardresult2(void) {
-    BoardResult2Positions headerX = D_801097C0_boardresult2;
-    BoardResult2PlayerFiles playerFiles = D_801097D0_boardresult2;
-    BoardResult2Portraits portraits = D_80109800_boardresult2;
-    BoardResult2Positions memberX = D_80109820_boardresult2;
+void boardresult2_RankSprCreate(void) {
+    BoardResult2Positions headerX = boardresult2_rankHeaderXTbl;
+    BoardResult2PlayerFiles playerFiles = boardresult2_rankRowSprFileTbl;
+    BoardResult2Portraits portraits = boardresult2_rankFaceSprFileTbl;
+    BoardResult2Positions memberX = boardresult2_rankRowXTbl;
     void *data;
     s32 i;
     s32 j;
 
-    D_801099A4_boardresult2 = MBDSprGrpCreate(4, 0);
+    boardresult2_rankHeaderSprGrp = MBDSprGrpCreate(4, 0);
     data = DataRead(0x130030);
-    D_801099A4_boardresult2->unk_0C[0] = HuSprAnimRead(data);
+    boardresult2_rankHeaderSprGrp->unk_0C[0] = HuSprAnimRead(data);
     DataClose(data);
 
     for (j = 0; j < 4; j++) {
-        HuSprGrpMemberSet(D_801099A4_boardresult2->unk_0A, j, D_801099A4_boardresult2->unk_0C[0], 0);
-        HuSprPriSet(D_801099A4_boardresult2->unk_0A, j, 99);
-        HuSprAttrSet(D_801099A4_boardresult2->unk_0A, j, 0x4000);
-        HuSprPosSet(D_801099A4_boardresult2->unk_0A, j, headerX.x[j], 104);
+        HuSprGrpMemberSet(boardresult2_rankHeaderSprGrp->unk_0A, j, boardresult2_rankHeaderSprGrp->unk_0C[0], 0);
+        HuSprPriSet(boardresult2_rankHeaderSprGrp->unk_0A, j, 99);
+        HuSprAttrSet(boardresult2_rankHeaderSprGrp->unk_0A, j, 0x4000);
+        HuSprPosSet(boardresult2_rankHeaderSprGrp->unk_0A, j, headerX.x[j], 104);
     }
 
-    D_801099A8_boardresult2 = MBDSprGrpCreate(1, 0);
+    boardresult2_rankLabelSprGrp = MBDSprGrpCreate(1, 0);
     data = DataRead(0x130031);
-    D_801099A8_boardresult2->unk_0C[0] = HuSprAnimRead(data);
+    boardresult2_rankLabelSprGrp->unk_0C[0] = HuSprAnimRead(data);
     DataClose(data);
-    HuSprGrpMemberSet(D_801099A8_boardresult2->unk_0A, 0, D_801099A8_boardresult2->unk_0C[0], 0);
-    HuSprPriSet(D_801099A8_boardresult2->unk_0A, 0, 99);
-    HuSprAttrSet(D_801099A8_boardresult2->unk_0A, 0, 0x4000);
-    HuSprPosSet(D_801099A8_boardresult2->unk_0A, 0, 55, 129);
+    HuSprGrpMemberSet(boardresult2_rankLabelSprGrp->unk_0A, 0, boardresult2_rankLabelSprGrp->unk_0C[0], 0);
+    HuSprPriSet(boardresult2_rankLabelSprGrp->unk_0A, 0, 99);
+    HuSprAttrSet(boardresult2_rankLabelSprGrp->unk_0A, 0, 0x4000);
+    HuSprPosSet(boardresult2_rankLabelSprGrp->unk_0A, 0, 55, 129);
 
     for (i = 0; i < 4; i++) {
-        D_801099B0_boardresult2[i] = MBDSprGrpCreate(10, 2);
+        boardresult2_rankRowSprGrpTbl[i] = MBDSprGrpCreate(10, 2);
         for (j = 0; j < 3; j++) {
             data = DataRead(playerFiles.files[i][j]);
-            D_801099B0_boardresult2[i]->unk_0C[j + 1] = HuSprAnimRead(data);
+            boardresult2_rankRowSprGrpTbl[i]->unk_0C[j + 1] = HuSprAnimRead(data);
             DataClose(data);
-            HuSprGrpMemberSet(D_801099B0_boardresult2[i]->unk_0A, j + 1, D_801099B0_boardresult2[i]->unk_0C[j + 1], 0);
-            HuSprPriSet(D_801099B0_boardresult2[i]->unk_0A, j + 1, 98 - j);
-            HuSprAttrSet(D_801099B0_boardresult2[i]->unk_0A, j + 1, 0x4000);
-            HuSprPosSet(D_801099B0_boardresult2[i]->unk_0A, j + 1, memberX.x[j], 0);
+            HuSprGrpMemberSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, boardresult2_rankRowSprGrpTbl[i]->unk_0C[j + 1], 0);
+            HuSprPriSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, 98 - j);
+            HuSprAttrSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, 0x4000);
+            HuSprPosSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, memberX.x[j], 0);
         }
 
         data = DataRead(portraits.files[GwPlayer[kakusiMasuItemHis[i]].chr]);
-        D_801099B0_boardresult2[i]->unk_0C[4] = HuSprAnimRead(data);
+        boardresult2_rankRowSprGrpTbl[i]->unk_0C[4] = HuSprAnimRead(data);
         DataClose(data);
-        HuSprGrpMemberSet(D_801099B0_boardresult2[i]->unk_0A, 4, D_801099B0_boardresult2[i]->unk_0C[4], 0);
-        HuSprPriSet(D_801099B0_boardresult2[i]->unk_0A, 4, 95);
-        HuSprAttrSet(D_801099B0_boardresult2[i]->unk_0A, 4, 0x4000);
-        HuSprPosSet(D_801099B0_boardresult2[i]->unk_0A, 4, memberX.x[3], 1);
+        HuSprGrpMemberSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, 4, boardresult2_rankRowSprGrpTbl[i]->unk_0C[4], 0);
+        HuSprPriSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, 4, 95);
+        HuSprAttrSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, 4, 0x4000);
+        HuSprPosSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, 4, memberX.x[3], 1);
 
         j = 4;
         if (GwPlayer[kakusiMasuItemHis[i]].star >= 10) {
             data = DataRead(0xC0086);
-            D_801099B0_boardresult2[i]->unk_0C[j + 1] = HuSprAnimRead(data);
+            boardresult2_rankRowSprGrpTbl[i]->unk_0C[j + 1] = HuSprAnimRead(data);
         } else {
             data = DataRead(0xC003C);
-            D_801099B0_boardresult2[i]->unk_0C[j + 1] = HuSprAnimRead(data);
+            boardresult2_rankRowSprGrpTbl[i]->unk_0C[j + 1] = HuSprAnimRead(data);
         }
         DataClose(data);
-        HuSprGrpMemberSet(D_801099B0_boardresult2[i]->unk_0A, j + 1, D_801099B0_boardresult2[i]->unk_0C[j + 1],
+        HuSprGrpMemberSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, boardresult2_rankRowSprGrpTbl[i]->unk_0C[j + 1],
                           GwPlayer[kakusiMasuItemHis[i]].star / 10);
-        HuSprPriSet(D_801099B0_boardresult2[i]->unk_0A, j + 1, 98 - j);
-        HuSprAttrSet(D_801099B0_boardresult2[i]->unk_0A, j + 1, 0x4000);
-        HuSprPosSet(D_801099B0_boardresult2[i]->unk_0A, j + 1, 68, 4);
+        HuSprPriSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, 98 - j);
+        HuSprAttrSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, 0x4000);
+        HuSprPosSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, 68, 4);
 
         data = DataRead(0xC0086);
-        D_801099B0_boardresult2[i]->unk_0C[6] = HuSprAnimRead(data);
+        boardresult2_rankRowSprGrpTbl[i]->unk_0C[6] = HuSprAnimRead(data);
         DataClose(data);
-        HuSprGrpMemberSet(D_801099B0_boardresult2[i]->unk_0A, 6, D_801099B0_boardresult2[i]->unk_0C[6],
+        HuSprGrpMemberSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, 6, boardresult2_rankRowSprGrpTbl[i]->unk_0C[6],
                           GwPlayer[kakusiMasuItemHis[i]].star % 10);
-        HuSprPriSet(D_801099B0_boardresult2[i]->unk_0A, 6, 93);
-        HuSprAttrSet(D_801099B0_boardresult2[i]->unk_0A, 6, 0x4000);
-        HuSprPosSet(D_801099B0_boardresult2[i]->unk_0A, 6, 84, 4);
+        HuSprPriSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, 6, 93);
+        HuSprAttrSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, 6, 0x4000);
+        HuSprPosSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, 6, 84, 4);
 
         j = 6;
         if (GwPlayer[kakusiMasuItemHis[i]].coin >= 100) {
             data = DataRead(0xC0086);
-            D_801099B0_boardresult2[i]->unk_0C[j + 1] = HuSprAnimRead(data);
+            boardresult2_rankRowSprGrpTbl[i]->unk_0C[j + 1] = HuSprAnimRead(data);
         } else {
             data = DataRead(0xC003C);
-            D_801099B0_boardresult2[i]->unk_0C[j + 1] = HuSprAnimRead(data);
+            boardresult2_rankRowSprGrpTbl[i]->unk_0C[j + 1] = HuSprAnimRead(data);
         }
         DataClose(data);
-        HuSprGrpMemberSet(D_801099B0_boardresult2[i]->unk_0A, j + 1, D_801099B0_boardresult2[i]->unk_0C[j + 1],
+        HuSprGrpMemberSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, boardresult2_rankRowSprGrpTbl[i]->unk_0C[j + 1],
                           GwPlayer[kakusiMasuItemHis[i]].coin / 100);
-        HuSprPriSet(D_801099B0_boardresult2[i]->unk_0A, j + 1, 98 - j);
-        HuSprAttrSet(D_801099B0_boardresult2[i]->unk_0A, j + 1, 0x4000);
-        HuSprPosSet(D_801099B0_boardresult2[i]->unk_0A, j + 1, 142, 4);
+        HuSprPriSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, 98 - j);
+        HuSprAttrSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, 0x4000);
+        HuSprPosSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, 142, 4);
 
         j = 7;
         data = DataRead(0xC0086);
-        D_801099B0_boardresult2[i]->unk_0C[j + 1] = HuSprAnimRead(data);
+        boardresult2_rankRowSprGrpTbl[i]->unk_0C[j + 1] = HuSprAnimRead(data);
         DataClose(data);
         if (GwPlayer[kakusiMasuItemHis[i]].coin >= 10) {
-            HuSprGrpMemberSet(D_801099B0_boardresult2[i]->unk_0A, j + 1, D_801099B0_boardresult2[i]->unk_0C[j + 1],
+            HuSprGrpMemberSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, boardresult2_rankRowSprGrpTbl[i]->unk_0C[j + 1],
                               GwPlayer[kakusiMasuItemHis[i]].coin / 10 % 10);
         } else {
-            HuSprGrpMemberSet(D_801099B0_boardresult2[i]->unk_0A, j + 1, D_801099B0_boardresult2[i]->unk_0C[j + 1],
+            HuSprGrpMemberSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, boardresult2_rankRowSprGrpTbl[i]->unk_0C[j + 1],
                               GwPlayer[kakusiMasuItemHis[i]].coin);
         }
-        HuSprPriSet(D_801099B0_boardresult2[i]->unk_0A, j + 1, 98 - j);
-        HuSprAttrSet(D_801099B0_boardresult2[i]->unk_0A, j + 1, 0x4000);
-        HuSprPosSet(D_801099B0_boardresult2[i]->unk_0A, j + 1, 158, 4);
+        HuSprPriSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, 98 - j);
+        HuSprAttrSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, 0x4000);
+        HuSprPosSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, 158, 4);
 
         if (GwPlayer[kakusiMasuItemHis[i]].coin >= 10) {
             data = DataRead(0xC0086);
-            D_801099B0_boardresult2[i]->unk_0C[9] = HuSprAnimRead(data);
+            boardresult2_rankRowSprGrpTbl[i]->unk_0C[9] = HuSprAnimRead(data);
             DataClose(data);
-            HuSprGrpMemberSet(D_801099B0_boardresult2[i]->unk_0A, 9, D_801099B0_boardresult2[i]->unk_0C[9],
+            HuSprGrpMemberSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, 9, boardresult2_rankRowSprGrpTbl[i]->unk_0C[9],
                               GwPlayer[kakusiMasuItemHis[i]].coin % 10);
-            HuSprPriSet(D_801099B0_boardresult2[i]->unk_0A, 9, 90);
-            HuSprAttrSet(D_801099B0_boardresult2[i]->unk_0A, 9, 0x4000);
-            HuSprPosSet(D_801099B0_boardresult2[i]->unk_0A, 9, 174, 4);
+            HuSprPriSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, 9, 90);
+            HuSprAttrSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, 9, 0x4000);
+            HuSprPosSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, 9, 174, 4);
         }
     }
 
     for (j = 0; j < 4; j++) {
-        HuSprPosSet(D_801099B0_boardresult2[j]->unk_0A, 0, 111, j * 40 + 69);
+        HuSprPosSet(boardresult2_rankRowSprGrpTbl[j]->unk_0A, 0, 111, j * 40 + 69);
     }
 
-    D_801099C0_boardresult2 = MBDSprGrpCreate(1, 0);
+    boardresult2_rankTitleSprGrp = MBDSprGrpCreate(1, 0);
     data = DataRead(0x130046);
-    D_801099C0_boardresult2->unk_0C[0] = HuSprAnimRead(data);
+    boardresult2_rankTitleSprGrp->unk_0C[0] = HuSprAnimRead(data);
     DataClose(data);
-    HuSprGrpMemberSet(D_801099C0_boardresult2->unk_0A, 0, D_801099C0_boardresult2->unk_0C[0], 0);
-    HuSprPriSet(D_801099C0_boardresult2->unk_0A, 0, 90);
-    HuSprAttrSet(D_801099C0_boardresult2->unk_0A, 0, 0x4000);
-    HuSprPosSet(D_801099C0_boardresult2->unk_0A, 0, 160, 33);
+    HuSprGrpMemberSet(boardresult2_rankTitleSprGrp->unk_0A, 0, boardresult2_rankTitleSprGrp->unk_0C[0], 0);
+    HuSprPriSet(boardresult2_rankTitleSprGrp->unk_0A, 0, 90);
+    HuSprAttrSet(boardresult2_rankTitleSprGrp->unk_0A, 0, 0x4000);
+    HuSprPosSet(boardresult2_rankTitleSprGrp->unk_0A, 0, 160, 33);
 
-    D_801099C4_boardresult2 = MBDSprGrpCreate(1, 0);
+    boardresult2_rankSubtitleSprGrp = MBDSprGrpCreate(1, 0);
     data = DataRead(0x130062);
-    D_801099C4_boardresult2->unk_0C[0] = HuSprAnimRead(data);
+    boardresult2_rankSubtitleSprGrp->unk_0C[0] = HuSprAnimRead(data);
     DataClose(data);
-    HuSprGrpMemberSet(D_801099C4_boardresult2->unk_0A, 0, D_801099C4_boardresult2->unk_0C[0], 0);
-    HuSprPriSet(D_801099C4_boardresult2->unk_0A, 0, 89);
-    HuSprAttrSet(D_801099C4_boardresult2->unk_0A, 0, 0x4000);
-    HuSprPosSet(D_801099C4_boardresult2->unk_0A, 0, 55, 41);
+    HuSprGrpMemberSet(boardresult2_rankSubtitleSprGrp->unk_0A, 0, boardresult2_rankSubtitleSprGrp->unk_0C[0], 0);
+    HuSprPriSet(boardresult2_rankSubtitleSprGrp->unk_0A, 0, 89);
+    HuSprAttrSet(boardresult2_rankSubtitleSprGrp->unk_0A, 0, 0x4000);
+    HuSprPosSet(boardresult2_rankSubtitleSprGrp->unk_0A, 0, 55, 41);
 }
 
-void func_80106924_boardresult2(void) {
+void boardresult2_RankSprKill(void) {
     s32 i;
 
-    MBDSprGrpKill(D_801099A4_boardresult2);
-    MBDSprGrpKill(D_801099A8_boardresult2);
+    MBDSprGrpKill(boardresult2_rankHeaderSprGrp);
+    MBDSprGrpKill(boardresult2_rankLabelSprGrp);
 
     for (i = 0; i < 4; i++) {
-        MBDSprGrpKill(D_801099B0_boardresult2[i]);
+        MBDSprGrpKill(boardresult2_rankRowSprGrpTbl[i]);
     }
 
-    MBDSprGrpKill(D_801099C0_boardresult2);
-    MBDSprGrpKill(D_801099C4_boardresult2);
+    MBDSprGrpKill(boardresult2_rankTitleSprGrp);
+    MBDSprGrpKill(boardresult2_rankSubtitleSprGrp);
 }
 
-void func_801069A4_boardresult2(void) {
-    s32 i;
-    s32 j;
-
-    for (j = 0; j < 4; j++) {
-        HuSprDispOff(D_801099A4_boardresult2->unk_0A, j);
-    }
-    HuSprDispOff(D_801099A8_boardresult2->unk_0A, 0);
-
-    for (i = 0; i < 4; i++) {
-        for (j = 0; j < 10; j++) {
-            HuSprDispOff(D_801099B0_boardresult2[i]->unk_0A, j);
-        }
-    }
-
-    HuSprDispOff(D_801099C0_boardresult2->unk_0A, 0);
-    HuSprDispOff(D_801099C4_boardresult2->unk_0A, 0);
-}
-
-void func_80106A9C_boardresult2(void) {
+void boardresult2_RankDispOff(void) {
     s32 i;
     s32 j;
 
     for (j = 0; j < 4; j++) {
-        HuSprDispOn(D_801099A4_boardresult2->unk_0A, j);
+        HuSprDispOff(boardresult2_rankHeaderSprGrp->unk_0A, j);
     }
-    HuSprDispOn(D_801099A8_boardresult2->unk_0A, 0);
+    HuSprDispOff(boardresult2_rankLabelSprGrp->unk_0A, 0);
 
     for (i = 0; i < 4; i++) {
         for (j = 0; j < 10; j++) {
-            HuSprDispOn(D_801099B0_boardresult2[i]->unk_0A, j);
+            HuSprDispOff(boardresult2_rankRowSprGrpTbl[i]->unk_0A, j);
         }
     }
 
-    HuSprDispOn(D_801099C0_boardresult2->unk_0A, 0);
-    HuSprDispOn(D_801099C4_boardresult2->unk_0A, 0);
+    HuSprDispOff(boardresult2_rankTitleSprGrp->unk_0A, 0);
+    HuSprDispOff(boardresult2_rankSubtitleSprGrp->unk_0A, 0);
 }
 
-s32 func_80106B94_boardresult2(s32 category) {
+void boardresult2_RankDispOn(void) {
+    s32 i;
+    s32 j;
+
+    for (j = 0; j < 4; j++) {
+        HuSprDispOn(boardresult2_rankHeaderSprGrp->unk_0A, j);
+    }
+    HuSprDispOn(boardresult2_rankLabelSprGrp->unk_0A, 0);
+
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 10; j++) {
+            HuSprDispOn(boardresult2_rankRowSprGrpTbl[i]->unk_0A, j);
+        }
+    }
+
+    HuSprDispOn(boardresult2_rankTitleSprGrp->unk_0A, 0);
+    HuSprDispOn(boardresult2_rankSubtitleSprGrp->unk_0A, 0);
+}
+
+s32 boardresult2_StatTopMaskGet(s32 category) {
     s32 max;
     s32 mask = 0;
     s32 i;
@@ -514,7 +514,7 @@ s32 func_80106B94_boardresult2(s32 category) {
     return mask;
 }
 
-void func_801074B4_boardresult2(void) {
+void boardresult2_StatNumUpdate(void) {
     u8 buf[8];
     s32 offsets[] = { 0, -30, -25, -20, -15 };
     GW_PLAYER *player;
@@ -527,23 +527,23 @@ void func_801074B4_boardresult2(void) {
     s32 k;
 
     for (i = 0; i < 13; i++) {
-        HuSprDispOff(D_801099EC_boardresult2->unk_0A, i);
+        HuSprDispOff(boardresult2_statNameSprGrp->unk_0A, i);
     }
 
-    for (i = D_801097B0_boardresult2, row = 0; i < D_801097B0_boardresult2 + 4; i++, row++) {
-        HuSprDispOn(D_801099EC_boardresult2->unk_0A, i);
-        HuSprPosSet(D_801099EC_boardresult2->unk_0A, i, row * 44 + 145, 52);
+    for (i = boardresult2_statScroll, row = 0; i < boardresult2_statScroll + 4; i++, row++) {
+        HuSprDispOn(boardresult2_statNameSprGrp->unk_0A, i);
+        HuSprPosSet(boardresult2_statNameSprGrp->unk_0A, i, row * 44 + 145, 52);
     }
 
     for (i = 0; i < 64; i++) {
-        HuSprDispOff(D_801099F0_boardresult2->unk_0A, i);
+        HuSprDispOff(boardresult2_statNumSprGrp->unk_0A, i);
     }
 
-    for (i = D_801097B0_boardresult2, row = 0; i < D_801097B0_boardresult2 + 4; i++, row++) {
+    for (i = boardresult2_statScroll, row = 0; i < boardresult2_statScroll + 4; i++, row++) {
         for (j = 0; j < 4; j++) {
             player = MBDGetPlayerStruct(kakusiMasuItemHis[j]);
             digits = 1;
-            mask = func_80106B94_boardresult2(i);
+            mask = boardresult2_StatTopMaskGet(i);
             value = 1;
             switch (i) {
                 case 0:
@@ -606,285 +606,285 @@ void func_801074B4_boardresult2(void) {
 
             for (k = 0; k < 4; k++) {
                 if (buf[k] == ' ') {
-                    HuSprDispOff(D_801099F0_boardresult2->unk_0A, row * 16 + j * 4 + k);
+                    HuSprDispOff(boardresult2_statNumSprGrp->unk_0A, row * 16 + j * 4 + k);
                     continue;
                 }
                 if (mask & (1 << j)) {
-                    HuSprGrpMemberSet(D_801099F0_boardresult2->unk_0A, row * 16 + j * 4 + k,
-                                      D_801099F0_boardresult2->unk_0C[1], 0);
+                    HuSprGrpMemberSet(boardresult2_statNumSprGrp->unk_0A, row * 16 + j * 4 + k,
+                                      boardresult2_statNumSprGrp->unk_0C[1], 0);
                 } else {
-                    HuSprGrpMemberSet(D_801099F0_boardresult2->unk_0A, row * 16 + j * 4 + k,
-                                      D_801099F0_boardresult2->unk_0C[0], 0);
+                    HuSprGrpMemberSet(boardresult2_statNumSprGrp->unk_0A, row * 16 + j * 4 + k,
+                                      boardresult2_statNumSprGrp->unk_0C[0], 0);
                 }
-                HuSprDispOn(D_801099F0_boardresult2->unk_0A, row * 16 + j * 4 + k);
-                HuSprPosSet(D_801099F0_boardresult2->unk_0A, row * 16 + j * 4 + k,
+                HuSprDispOn(boardresult2_statNumSprGrp->unk_0A, row * 16 + j * 4 + k);
+                HuSprPosSet(boardresult2_statNumSprGrp->unk_0A, row * 16 + j * 4 + k,
                             row * 44 + (s16)(k * 10 + 145) + offsets[digits], j * 22 + 73);
-                HuSprBankSet(D_801099F0_boardresult2->unk_0A, row * 16 + j * 4 + k, buf[k] - '0', 0);
-                HuSprAnimModeSet(D_801099F0_boardresult2->unk_0A, row * 16 + j * 4 + k, HUSPR_ANIM_MODE_BANK);
+                HuSprBankSet(boardresult2_statNumSprGrp->unk_0A, row * 16 + j * 4 + k, buf[k] - '0', 0);
+                HuSprAnimModeSet(boardresult2_statNumSprGrp->unk_0A, row * 16 + j * 4 + k, HUSPR_ANIM_MODE_BANK);
             }
         }
     }
 
-    HuSprPosSet(D_801099F4_boardresult2->unk_0A, 0, D_801097B4_boardresult2 * 44 + 146, 96);
+    HuSprPosSet(boardresult2_statCursorSprGrp->unk_0A, 0, boardresult2_statCursor * 44 + 146, 96);
 }
 
-const BoardResult2Files4 D_801098B4_boardresult2 = {
+const BoardResult2Files4 boardresult2_statRankSprFileTbl = {
     { 0x00130047, 0x00130048, 0x00130049, 0x0013004A }
 };
 
-const BoardResult2BoardFiles D_801098C4_boardresult2 = {
+const BoardResult2BoardFiles boardresult2_boardNameSprFileTbl = {
     { 0x00130069, 0x0013006A, 0x0013006B, 0x0013006C,
       0x0013006D, 0x0013006E }
 };
 
-const BoardResult2Portraits D_801098DC_boardresult2 = {
+const BoardResult2Portraits boardresult2_chrNameSprFileTbl = {
     { 0x00210008, 0x00210009, 0x0021000A, 0x0021000B,
       0x0021000C, 0x0021000D, 0x0021000E, 0x0021000F }
 };
 
-const BoardResult2Portraits D_801098FC_boardresult2 = {
+const BoardResult2Portraits boardresult2_chrFaceSprFileTbl = {
     { 0x001301D5, 0x001301D6, 0x001301D7, 0x001301D8,
       0x001301D9, 0x001301DA, 0x001301DB, 0x001301DC }
 };
 
-const BoardResult2Files4 D_8010991C_boardresult2 = {
+const BoardResult2Files4 boardresult2_gameLengthSprFileTbl = {
     { 0x00130072, 0x00130073, 0x00130074, 0x00130075 }
 };
 
-const BoardResult2StatFiles D_8010992C_boardresult2 = {
+const BoardResult2StatFiles boardresult2_statNameSprFileTbl = {
     { 0x0013004D, 0x0013004E, 0x0013004F, 0x00130050,
       0x00130051, 0x00130052, 0x00130053, 0x00130054,
       0x00130055, 0x00130056, 0x00130057, 0x00130058,
       0x00130059 }
 };
 
-void func_80107964_boardresult2(void) {
-    BoardResult2Files4 rankFiles = D_801098B4_boardresult2;
-    BoardResult2BoardFiles boardFiles = D_801098C4_boardresult2;
-    BoardResult2Portraits nameFiles = D_801098DC_boardresult2;
-    BoardResult2Portraits faceFiles = D_801098FC_boardresult2;
-    BoardResult2Files4 lengthFiles = D_8010991C_boardresult2;
-    BoardResult2StatFiles statFiles = D_8010992C_boardresult2;
+void boardresult2_StatSprCreate(void) {
+    BoardResult2Files4 rankFiles = boardresult2_statRankSprFileTbl;
+    BoardResult2BoardFiles boardFiles = boardresult2_boardNameSprFileTbl;
+    BoardResult2Portraits nameFiles = boardresult2_chrNameSprFileTbl;
+    BoardResult2Portraits faceFiles = boardresult2_chrFaceSprFileTbl;
+    BoardResult2Files4 lengthFiles = boardresult2_gameLengthSprFileTbl;
+    BoardResult2StatFiles statFiles = boardresult2_statNameSprFileTbl;
     void *data;
     s32 i;
 
-    D_801099CC_boardresult2 = MBDSprGrpCreate(1, 0);
+    boardresult2_boardNameSprGrp = MBDSprGrpCreate(1, 0);
     data = DataRead(boardFiles.files[GwSystem.current_board_index]);
-    D_801099CC_boardresult2->unk_0C[0] = HuSprAnimRead(data);
+    boardresult2_boardNameSprGrp->unk_0C[0] = HuSprAnimRead(data);
     DataClose(data);
-    HuSprGrpMemberSet(D_801099CC_boardresult2->unk_0A, 0, D_801099CC_boardresult2->unk_0C[0], 0);
-    HuSprPriSet(D_801099CC_boardresult2->unk_0A, 0, 110);
-    HuSprAttrSet(D_801099CC_boardresult2->unk_0A, 0, 0x4000);
-    HuSprPosSet(D_801099CC_boardresult2->unk_0A, 0, 74, 39);
+    HuSprGrpMemberSet(boardresult2_boardNameSprGrp->unk_0A, 0, boardresult2_boardNameSprGrp->unk_0C[0], 0);
+    HuSprPriSet(boardresult2_boardNameSprGrp->unk_0A, 0, 110);
+    HuSprAttrSet(boardresult2_boardNameSprGrp->unk_0A, 0, 0x4000);
+    HuSprPosSet(boardresult2_boardNameSprGrp->unk_0A, 0, 74, 39);
 
-    D_801099D0_boardresult2 = MBDSprGrpCreate(2, 0);
+    boardresult2_gameLengthSprGrp = MBDSprGrpCreate(2, 0);
     data = DataRead(0x13004B);
-    D_801099D0_boardresult2->unk_0C[0] = HuSprAnimRead(data);
+    boardresult2_gameLengthSprGrp->unk_0C[0] = HuSprAnimRead(data);
     DataClose(data);
-    HuSprGrpMemberSet(D_801099D0_boardresult2->unk_0A, 0, D_801099D0_boardresult2->unk_0C[0], 0);
-    HuSprPriSet(D_801099D0_boardresult2->unk_0A, 0, 100);
-    HuSprAttrSet(D_801099D0_boardresult2->unk_0A, 0, 0x4000);
-    HuSprPosSet(D_801099D0_boardresult2->unk_0A, 0, 210, 28);
+    HuSprGrpMemberSet(boardresult2_gameLengthSprGrp->unk_0A, 0, boardresult2_gameLengthSprGrp->unk_0C[0], 0);
+    HuSprPriSet(boardresult2_gameLengthSprGrp->unk_0A, 0, 100);
+    HuSprAttrSet(boardresult2_gameLengthSprGrp->unk_0A, 0, 0x4000);
+    HuSprPosSet(boardresult2_gameLengthSprGrp->unk_0A, 0, 210, 28);
 
     if (GwSystem.playMode & 4) {
         data = DataRead(0x13007C);
     } else {
         data = DataRead(lengthFiles.files[GwSystem.current_game_length]);
     }
-    D_801099D0_boardresult2->unk_0C[1] = HuSprAnimRead(data);
+    boardresult2_gameLengthSprGrp->unk_0C[1] = HuSprAnimRead(data);
     DataClose(data);
-    HuSprGrpMemberSet(D_801099D0_boardresult2->unk_0A, 1, D_801099D0_boardresult2->unk_0C[1], 0);
-    HuSprPriSet(D_801099D0_boardresult2->unk_0A, 1, 99);
-    HuSprAttrSet(D_801099D0_boardresult2->unk_0A, 1, 0x4000);
-    HuSprPosSet(D_801099D0_boardresult2->unk_0A, 1, 210, 28);
+    HuSprGrpMemberSet(boardresult2_gameLengthSprGrp->unk_0A, 1, boardresult2_gameLengthSprGrp->unk_0C[1], 0);
+    HuSprPriSet(boardresult2_gameLengthSprGrp->unk_0A, 1, 99);
+    HuSprAttrSet(boardresult2_gameLengthSprGrp->unk_0A, 1, 0x4000);
+    HuSprPosSet(boardresult2_gameLengthSprGrp->unk_0A, 1, 210, 28);
 
-    D_801099D4_boardresult2 = MBDSprGrpCreate(1, 0);
+    boardresult2_statLabelSprGrp = MBDSprGrpCreate(1, 0);
     data = DataRead(0x13004C);
-    D_801099D4_boardresult2->unk_0C[0] = HuSprAnimRead(data);
+    boardresult2_statLabelSprGrp->unk_0C[0] = HuSprAnimRead(data);
     DataClose(data);
-    HuSprGrpMemberSet(D_801099D4_boardresult2->unk_0A, 0, D_801099D4_boardresult2->unk_0C[0], 0);
-    HuSprPriSet(D_801099D4_boardresult2->unk_0A, 0, 99);
-    HuSprAttrSet(D_801099D4_boardresult2->unk_0A, 0, 0x4000);
-    HuSprPosSet(D_801099D4_boardresult2->unk_0A, 0, 218, 51);
+    HuSprGrpMemberSet(boardresult2_statLabelSprGrp->unk_0A, 0, boardresult2_statLabelSprGrp->unk_0C[0], 0);
+    HuSprPriSet(boardresult2_statLabelSprGrp->unk_0A, 0, 99);
+    HuSprAttrSet(boardresult2_statLabelSprGrp->unk_0A, 0, 0x4000);
+    HuSprPosSet(boardresult2_statLabelSprGrp->unk_0A, 0, 218, 51);
 
     for (i = 0; i < 4; i++) {
-        D_801099D8_boardresult2[i] = MBDSprGrpCreate(10, 2);
+        boardresult2_statRowSprGrpTbl[i] = MBDSprGrpCreate(10, 2);
         data = DataRead(rankFiles.files[i]);
-        D_801099D8_boardresult2[i]->unk_0C[1] = HuSprAnimRead(data);
+        boardresult2_statRowSprGrpTbl[i]->unk_0C[1] = HuSprAnimRead(data);
         DataClose(data);
-        HuSprGrpMemberSet(D_801099D8_boardresult2[i]->unk_0A, 1, D_801099D8_boardresult2[i]->unk_0C[1], 0);
-        HuSprPriSet(D_801099D8_boardresult2[i]->unk_0A, 1, 98);
-        HuSprAttrSet(D_801099D8_boardresult2[i]->unk_0A, 1, 0x4000);
-        HuSprPosSet(D_801099D8_boardresult2[i]->unk_0A, 1, 172, 0);
+        HuSprGrpMemberSet(boardresult2_statRowSprGrpTbl[i]->unk_0A, 1, boardresult2_statRowSprGrpTbl[i]->unk_0C[1], 0);
+        HuSprPriSet(boardresult2_statRowSprGrpTbl[i]->unk_0A, 1, 98);
+        HuSprAttrSet(boardresult2_statRowSprGrpTbl[i]->unk_0A, 1, 0x4000);
+        HuSprPosSet(boardresult2_statRowSprGrpTbl[i]->unk_0A, 1, 172, 0);
 
         data = DataRead(nameFiles.files[GwPlayer[kakusiMasuItemHis[i]].chr]);
-        D_801099D8_boardresult2[i]->unk_0C[2] = HuSprAnimRead(data);
+        boardresult2_statRowSprGrpTbl[i]->unk_0C[2] = HuSprAnimRead(data);
         DataClose(data);
-        HuSprGrpMemberSet(D_801099D8_boardresult2[i]->unk_0A, 2, D_801099D8_boardresult2[i]->unk_0C[2], 0);
-        HuSprPriSet(D_801099D8_boardresult2[i]->unk_0A, 2, 97);
-        HuSprAttrSet(D_801099D8_boardresult2[i]->unk_0A, 2, 0x4000);
-        HuSprPosSet(D_801099D8_boardresult2[i]->unk_0A, 2, 36, 1);
+        HuSprGrpMemberSet(boardresult2_statRowSprGrpTbl[i]->unk_0A, 2, boardresult2_statRowSprGrpTbl[i]->unk_0C[2], 0);
+        HuSprPriSet(boardresult2_statRowSprGrpTbl[i]->unk_0A, 2, 97);
+        HuSprAttrSet(boardresult2_statRowSprGrpTbl[i]->unk_0A, 2, 0x4000);
+        HuSprPosSet(boardresult2_statRowSprGrpTbl[i]->unk_0A, 2, 36, 1);
 
         data = DataRead(faceFiles.files[GwPlayer[kakusiMasuItemHis[i]].chr]);
-        D_801099D8_boardresult2[i]->unk_0C[3] = HuSprAnimRead(data);
+        boardresult2_statRowSprGrpTbl[i]->unk_0C[3] = HuSprAnimRead(data);
         DataClose(data);
-        HuSprGrpMemberSet(D_801099D8_boardresult2[i]->unk_0A, 3, D_801099D8_boardresult2[i]->unk_0C[3], 0);
-        HuSprPriSet(D_801099D8_boardresult2[i]->unk_0A, 3, 96);
-        HuSprAttrSet(D_801099D8_boardresult2[i]->unk_0A, 3, 0x4000);
-        HuSprPosSet(D_801099D8_boardresult2[i]->unk_0A, 3, 77, 1);
+        HuSprGrpMemberSet(boardresult2_statRowSprGrpTbl[i]->unk_0A, 3, boardresult2_statRowSprGrpTbl[i]->unk_0C[3], 0);
+        HuSprPriSet(boardresult2_statRowSprGrpTbl[i]->unk_0A, 3, 96);
+        HuSprAttrSet(boardresult2_statRowSprGrpTbl[i]->unk_0A, 3, 0x4000);
+        HuSprPosSet(boardresult2_statRowSprGrpTbl[i]->unk_0A, 3, 77, 1);
     }
 
     for (i = 0; i < 4; i++) {
-        HuSprPosSet(D_801099D8_boardresult2[i]->unk_0A, 0, 0, i * 22 + 73);
+        HuSprPosSet(boardresult2_statRowSprGrpTbl[i]->unk_0A, 0, 0, i * 22 + 73);
     }
 
-    D_801099E8_boardresult2 = MBDSprGrpCreate(2, 0);
+    boardresult2_statArrowSprGrp = MBDSprGrpCreate(2, 0);
     for (i = 0; i < 2; i++) {
         data = DataRead(0x13002E);
-        D_801099E8_boardresult2->unk_0C[i] = HuSprAnimRead(data);
+        boardresult2_statArrowSprGrp->unk_0C[i] = HuSprAnimRead(data);
         DataClose(data);
-        HuSprGrpMemberSet(D_801099E8_boardresult2->unk_0A, i, D_801099E8_boardresult2->unk_0C[i], 0);
-        HuSprPriSet(D_801099E8_boardresult2->unk_0A, i, 90);
-        HuSprAttrSet(D_801099E8_boardresult2->unk_0A, i, 0x4000);
-        HuSprPosSet(D_801099E8_boardresult2->unk_0A, i, i * 154 + 133, 161);
+        HuSprGrpMemberSet(boardresult2_statArrowSprGrp->unk_0A, i, boardresult2_statArrowSprGrp->unk_0C[i], 0);
+        HuSprPriSet(boardresult2_statArrowSprGrp->unk_0A, i, 90);
+        HuSprAttrSet(boardresult2_statArrowSprGrp->unk_0A, i, 0x4000);
+        HuSprPosSet(boardresult2_statArrowSprGrp->unk_0A, i, i * 154 + 133, 161);
     }
-    HuSprAttrSet(D_801099E8_boardresult2->unk_0A, 0, 1);
+    HuSprAttrSet(boardresult2_statArrowSprGrp->unk_0A, 0, 1);
 
-    D_801099EC_boardresult2 = MBDSprGrpCreate(13, 0);
+    boardresult2_statNameSprGrp = MBDSprGrpCreate(13, 0);
     for (i = 0; i < 13; i++) {
         data = DataRead(statFiles.files[i]);
-        D_801099EC_boardresult2->unk_0C[i] = HuSprAnimRead(data);
+        boardresult2_statNameSprGrp->unk_0C[i] = HuSprAnimRead(data);
         DataClose(data);
-        HuSprGrpMemberSet(D_801099EC_boardresult2->unk_0A, i, D_801099EC_boardresult2->unk_0C[i], 0);
-        HuSprPriSet(D_801099EC_boardresult2->unk_0A, i, 80);
-        HuSprAttrSet(D_801099EC_boardresult2->unk_0A, i, 0xC000);
+        HuSprGrpMemberSet(boardresult2_statNameSprGrp->unk_0A, i, boardresult2_statNameSprGrp->unk_0C[i], 0);
+        HuSprPriSet(boardresult2_statNameSprGrp->unk_0A, i, 80);
+        HuSprAttrSet(boardresult2_statNameSprGrp->unk_0A, i, 0xC000);
     }
 
-    D_801099F0_boardresult2 = MBDSprGrpCreate(64, 0);
+    boardresult2_statNumSprGrp = MBDSprGrpCreate(64, 0);
     data = DataRead(0x130077);
-    D_801099F0_boardresult2->unk_0C[0] = HuSprAnimRead(data);
+    boardresult2_statNumSprGrp->unk_0C[0] = HuSprAnimRead(data);
     DataClose(data);
     data = DataRead(0x130078);
-    D_801099F0_boardresult2->unk_0C[1] = HuSprAnimRead(data);
+    boardresult2_statNumSprGrp->unk_0C[1] = HuSprAnimRead(data);
     DataClose(data);
     for (i = 0; i < 64; i++) {
-        HuSprGrpMemberSet(D_801099F0_boardresult2->unk_0A, i, D_801099F0_boardresult2->unk_0C[0], 0);
-        HuSprPriSet(D_801099F0_boardresult2->unk_0A, i, 70);
-        HuSprAttrSet(D_801099F0_boardresult2->unk_0A, i, 0xC000);
+        HuSprGrpMemberSet(boardresult2_statNumSprGrp->unk_0A, i, boardresult2_statNumSprGrp->unk_0C[0], 0);
+        HuSprPriSet(boardresult2_statNumSprGrp->unk_0A, i, 70);
+        HuSprAttrSet(boardresult2_statNumSprGrp->unk_0A, i, 0xC000);
     }
 
-    D_801099F4_boardresult2 = MBDSprGrpCreate(1, 0);
+    boardresult2_statCursorSprGrp = MBDSprGrpCreate(1, 0);
     data = DataRead(0x130076);
-    D_801099F4_boardresult2->unk_0C[0] = HuSprAnimRead(data);
+    boardresult2_statCursorSprGrp->unk_0C[0] = HuSprAnimRead(data);
     DataClose(data);
-    HuSprGrpMemberSet(D_801099F4_boardresult2->unk_0A, 0, D_801099F4_boardresult2->unk_0C[0], 0);
-    HuSprPriSet(D_801099F4_boardresult2->unk_0A, 0, 60);
-    HuSprAttrSet(D_801099F4_boardresult2->unk_0A, 0, 0x4000);
+    HuSprGrpMemberSet(boardresult2_statCursorSprGrp->unk_0A, 0, boardresult2_statCursorSprGrp->unk_0C[0], 0);
+    HuSprPriSet(boardresult2_statCursorSprGrp->unk_0A, 0, 60);
+    HuSprAttrSet(boardresult2_statCursorSprGrp->unk_0A, 0, 0x4000);
 
-    D_801099C8_boardresult2 = MBDGuideCreate(0, 8);
-    MBDGuidePosSet(D_801099C8_boardresult2, 105, 8);
-    HuVecCopyXYZ(&D_801099C8_boardresult2->obj->scale, 0.1f, 0.1f, 0.1f);
-    HuWinScaleSet(D_801099C8_boardresult2->win_id, 1.0f, 1.0f);
-    HuWinAttrSet(D_801099C8_boardresult2->win_id, 0x4000, 0x4000);
-    HuWinMesPalSet(D_801099C8_boardresult2->win_id, 2, 255, 96, 96);
-    HuWinMesPalSet(D_801099C8_boardresult2->win_id, 4, 96, 255, 64);
-    HuWinMesPalSet(D_801099C8_boardresult2->win_id, 6, 64, 255, 255);
-    MBDGuidePosSet(D_801099C8_boardresult2, 113, 8);
+    boardresult2_hostGuide = MBDGuideCreate(0, 8);
+    MBDGuidePosSet(boardresult2_hostGuide, 105, 8);
+    HuVecCopyXYZ(&boardresult2_hostGuide->obj->scale, 0.1f, 0.1f, 0.1f);
+    HuWinScaleSet(boardresult2_hostGuide->win_id, 1.0f, 1.0f);
+    HuWinAttrSet(boardresult2_hostGuide->win_id, 0x4000, 0x4000);
+    HuWinMesPalSet(boardresult2_hostGuide->win_id, 2, 255, 96, 96);
+    HuWinMesPalSet(boardresult2_hostGuide->win_id, 4, 96, 255, 64);
+    HuWinMesPalSet(boardresult2_hostGuide->win_id, 6, 64, 255, 255);
+    MBDGuidePosSet(boardresult2_hostGuide, 113, 8);
 
-    D_80109A38_boardresult2[0] =
-        func_80105A8C_boardresult2(D_801099C8_boardresult2->obj->omObj1->model[0], 0xA007E, "c204n_0_DEF");
-    D_80109A38_boardresult2[1] = func_80105C68_boardresult2(0xA007F);
-    D_80109A38_boardresult2[2] = func_80105C68_boardresult2(0xA0080);
-    D_80109A38_boardresult2[3] = func_80105C68_boardresult2(0xA0081);
-    D_80109A38_boardresult2[4] = func_80105C68_boardresult2(0xA0082);
-    D_80109A38_boardresult2[5] = func_80105C68_boardresult2(0xA0083);
-    D_80109A38_boardresult2[6] = func_80105C68_boardresult2(0xA0084);
-    func_80105B98_boardresult2(D_801099C8_boardresult2->obj->omObj1->model[0], D_80109A38_boardresult2[0]);
+    boardresult2_hostAnimTbl[0] =
+        boardresult2_ModelAnimCreate(boardresult2_hostGuide->obj->omObj1->model[0], 0xA007E, "c204n_0_DEF");
+    boardresult2_hostAnimTbl[1] = boardresult2_AnimDataRead(0xA007F);
+    boardresult2_hostAnimTbl[2] = boardresult2_AnimDataRead(0xA0080);
+    boardresult2_hostAnimTbl[3] = boardresult2_AnimDataRead(0xA0081);
+    boardresult2_hostAnimTbl[4] = boardresult2_AnimDataRead(0xA0082);
+    boardresult2_hostAnimTbl[5] = boardresult2_AnimDataRead(0xA0083);
+    boardresult2_hostAnimTbl[6] = boardresult2_AnimDataRead(0xA0084);
+    boardresult2_ModelAnimSet(boardresult2_hostGuide->obj->omObj1->model[0], boardresult2_hostAnimTbl[0]);
 }
 
-void func_80108548_boardresult2(void) {
+void boardresult2_StatSprKill(void) {
     s32 i;
 
-    MBDSprGrpKill(D_801099CC_boardresult2);
-    MBDSprGrpKill(D_801099D0_boardresult2);
-    MBDSprGrpKill(D_801099D4_boardresult2);
+    MBDSprGrpKill(boardresult2_boardNameSprGrp);
+    MBDSprGrpKill(boardresult2_gameLengthSprGrp);
+    MBDSprGrpKill(boardresult2_statLabelSprGrp);
 
     for (i = 0; i < 4; i++) {
-        MBDSprGrpKill(D_801099D8_boardresult2[i]);
+        MBDSprGrpKill(boardresult2_statRowSprGrpTbl[i]);
     }
 
-    MBDSprGrpKill(D_801099E8_boardresult2);
-    MBDSprGrpKill(D_801099EC_boardresult2);
-    MBDSprGrpKill(D_801099F0_boardresult2);
-    MBDSprGrpKill(D_801099F4_boardresult2);
-    MBDGuideKill(D_801099C8_boardresult2);
+    MBDSprGrpKill(boardresult2_statArrowSprGrp);
+    MBDSprGrpKill(boardresult2_statNameSprGrp);
+    MBDSprGrpKill(boardresult2_statNumSprGrp);
+    MBDSprGrpKill(boardresult2_statCursorSprGrp);
+    MBDGuideKill(boardresult2_hostGuide);
 }
 
-void func_801085F8_boardresult2(void) {
+void boardresult2_StatDispOff(void) {
     s32 i;
     s32 j;
 
-    HuSprDispOff(D_801099CC_boardresult2->unk_0A, 0);
-    HuSprDispOff(D_801099D0_boardresult2->unk_0A, 0);
-    HuSprDispOff(D_801099D0_boardresult2->unk_0A, 1);
-    HuSprDispOff(D_801099D4_boardresult2->unk_0A, 0);
+    HuSprDispOff(boardresult2_boardNameSprGrp->unk_0A, 0);
+    HuSprDispOff(boardresult2_gameLengthSprGrp->unk_0A, 0);
+    HuSprDispOff(boardresult2_gameLengthSprGrp->unk_0A, 1);
+    HuSprDispOff(boardresult2_statLabelSprGrp->unk_0A, 0);
 
     for (i = 0; i < 4; i++) {
         for (j = 0; j < 10; j++) {
-            HuSprDispOff(D_801099D8_boardresult2[i]->unk_0A, j);
+            HuSprDispOff(boardresult2_statRowSprGrpTbl[i]->unk_0A, j);
         }
     }
 
     for (j = 0; j < 2; j++) {
-        HuSprDispOff(D_801099E8_boardresult2->unk_0A, j);
+        HuSprDispOff(boardresult2_statArrowSprGrp->unk_0A, j);
     }
 
     for (j = 0; j < 13; j++) {
-        HuSprDispOff(D_801099EC_boardresult2->unk_0A, j);
+        HuSprDispOff(boardresult2_statNameSprGrp->unk_0A, j);
     }
 
     for (j = 0; j < 64; j++) {
-        HuSprDispOff(D_801099F0_boardresult2->unk_0A, j);
+        HuSprDispOff(boardresult2_statNumSprGrp->unk_0A, j);
     }
 
-    HuSprDispOff(D_801099F4_boardresult2->unk_0A, 0);
-    MBDModelDispOff(D_801099C8_boardresult2->obj);
-    HuWinDispOff(D_801099C8_boardresult2->win_id);
+    HuSprDispOff(boardresult2_statCursorSprGrp->unk_0A, 0);
+    MBDModelDispOff(boardresult2_hostGuide->obj);
+    HuWinDispOff(boardresult2_hostGuide->win_id);
 }
 
-void func_8010879C_boardresult2(void) {
+void boardresult2_StatDispOn(void) {
     s32 i;
     s32 j;
 
-    HuSprDispOn(D_801099CC_boardresult2->unk_0A, 0);
-    HuSprDispOn(D_801099D0_boardresult2->unk_0A, 0);
-    HuSprDispOn(D_801099D0_boardresult2->unk_0A, 1);
-    HuSprDispOn(D_801099D4_boardresult2->unk_0A, 0);
+    HuSprDispOn(boardresult2_boardNameSprGrp->unk_0A, 0);
+    HuSprDispOn(boardresult2_gameLengthSprGrp->unk_0A, 0);
+    HuSprDispOn(boardresult2_gameLengthSprGrp->unk_0A, 1);
+    HuSprDispOn(boardresult2_statLabelSprGrp->unk_0A, 0);
 
     for (i = 0; i < 4; i++) {
         for (j = 0; j < 10; j++) {
-            HuSprDispOn(D_801099D8_boardresult2[i]->unk_0A, j);
+            HuSprDispOn(boardresult2_statRowSprGrpTbl[i]->unk_0A, j);
         }
     }
 
     for (j = 0; j < 2; j++) {
-        HuSprDispOn(D_801099E8_boardresult2->unk_0A, j);
+        HuSprDispOn(boardresult2_statArrowSprGrp->unk_0A, j);
     }
 
-    func_801074B4_boardresult2();
-    HuSprDispOn(D_801099F4_boardresult2->unk_0A, 0);
-    MBDModelDispOn(D_801099C8_boardresult2->obj);
-    HuWinDispOn(D_801099C8_boardresult2->win_id);
+    boardresult2_StatNumUpdate();
+    HuSprDispOn(boardresult2_statCursorSprGrp->unk_0A, 0);
+    MBDModelDispOn(boardresult2_hostGuide->obj);
+    HuWinDispOn(boardresult2_hostGuide->win_id);
 
-    if (D_801097B0_boardresult2 == 0 && D_801097B4_boardresult2 == 0) {
-        HuSprDispOff(D_801099E8_boardresult2->unk_0A, 0);
+    if (boardresult2_statScroll == 0 && boardresult2_statCursor == 0) {
+        HuSprDispOff(boardresult2_statArrowSprGrp->unk_0A, 0);
     }
-    if (D_801097B0_boardresult2 == 9 && D_801097B4_boardresult2 == 3) {
-        HuSprDispOff(D_801099E8_boardresult2->unk_0A, 1);
+    if (boardresult2_statScroll == 9 && boardresult2_statCursor == 3) {
+        HuSprDispOff(boardresult2_statArrowSprGrp->unk_0A, 1);
     }
 }
 
-void func_80108958_boardresult2(void) {
+void boardresult2_StatMesSet(void) {
     s32 messages[] = {
         0x1900,
         0x1901,
@@ -901,19 +901,19 @@ void func_80108958_boardresult2(void) {
         0x190C,
     };
 
-    HuWinHomeClear(D_801099C8_boardresult2->win_id);
-    HuWinMesSet(D_801099C8_boardresult2->win_id, messages[D_801097B0_boardresult2 + D_801097B4_boardresult2], -1, -1);
-    func_80105B98_boardresult2(D_801099C8_boardresult2->obj->omObj1->model[0],
-                               D_80109A38_boardresult2[D_801099F8_boardresult2[D_801097B0_boardresult2 + D_801097B4_boardresult2]]);
+    HuWinHomeClear(boardresult2_hostGuide->win_id);
+    HuWinMesSet(boardresult2_hostGuide->win_id, messages[boardresult2_statScroll + boardresult2_statCursor], -1, -1);
+    boardresult2_ModelAnimSet(boardresult2_hostGuide->obj->omObj1->model[0],
+                               boardresult2_hostAnimTbl[boardresult2_hostAnimNoTbl[boardresult2_statScroll + boardresult2_statCursor]]);
 }
 
-void func_80108A48_boardresult2(void) {
+void boardresult2_RankRowDropProc(void) {
     s32 index = *(s32 *)HuPrcCurrentGet()->user_data;
     f32 angle;
     f32 scale;
 
     for (angle = 90.0f; angle < 180.0f; angle += 10.0f) {
-        HuSprPosSet(D_801099B0_boardresult2[index]->unk_0A, 0, 111,
+        HuSprPosSet(boardresult2_rankRowSprGrpTbl[index]->unk_0A, 0, 111,
                     (index * 40 + 69) + sindf(angle) * -(index * 40 + 109));
         HuPrcVSleep();
     }
@@ -921,7 +921,7 @@ void func_80108A48_boardresult2(void) {
     scale = -8.0f;
     HuAudFXPlay(0x178);
     for (angle = 0.0f; angle <= 1260.0f; angle += 50.0f) {
-        HuSprPosSet(D_801099B0_boardresult2[index]->unk_0A, 0, 111, (index * 40 + 69) + sindf(angle) * scale);
+        HuSprPosSet(boardresult2_rankRowSprGrpTbl[index]->unk_0A, 0, 111, (index * 40 + 69) + sindf(angle) * scale);
         scale += 0.3174603f;
         if (scale > 0.0f) {
             scale = 0.0f;
@@ -929,23 +929,23 @@ void func_80108A48_boardresult2(void) {
         HuPrcVSleep();
     }
 
-    HuSprPosSet(D_801099B0_boardresult2[index]->unk_0A, 0, 111, index * 40 + 69);
+    HuSprPosSet(boardresult2_rankRowSprGrpTbl[index]->unk_0A, 0, 111, index * 40 + 69);
     omDelPrcObj(NULL);
 }
 
-void func_80108C70_boardresult2(void) {
+void boardresult2_TitleDropProc(void) {
     f32 angle;
     f32 scale;
 
     for (angle = 90.0f; angle < 180.0f; angle += 10.0f) {
-        HuSprPosSet(D_801099C0_boardresult2->unk_0A, 0, 160, sindf(angle) * -73.0f + 33.0f);
+        HuSprPosSet(boardresult2_rankTitleSprGrp->unk_0A, 0, 160, sindf(angle) * -73.0f + 33.0f);
         HuPrcVSleep();
     }
 
     scale = -4.0f;
     HuAudFXPlay(0x179);
     for (angle = 0.0f; angle <= 720.0f; angle += 50.0f) {
-        HuSprPosSet(D_801099C0_boardresult2->unk_0A, 0, 160, sindf(angle) * scale + 33.0f);
+        HuSprPosSet(boardresult2_rankTitleSprGrp->unk_0A, 0, 160, sindf(angle) * scale + 33.0f);
         scale += 0.2777778f;
         if (scale > 0.0f) {
             scale = 0.0f;
@@ -953,11 +953,11 @@ void func_80108C70_boardresult2(void) {
         HuPrcVSleep();
     }
 
-    HuSprPosSet(D_801099C0_boardresult2->unk_0A, 0, 160, 33);
+    HuSprPosSet(boardresult2_rankTitleSprGrp->unk_0A, 0, 160, 33);
     omDelPrcObj(NULL);
 }
 
-void func_80108E1C_boardresult2(void) {
+void boardresult2_MainProc(void) {
     Process *process;
     void *data;
     f32 angle;
@@ -971,30 +971,30 @@ void func_80108E1C_boardresult2(void) {
     DuelHelpWin *rightWindow = NULL;
     s32 i;
 
-    D_801099A0_boardresult2 = MBDSprGrpCreate(6, 0);
+    boardresult2_bgSprGrp = MBDSprGrpCreate(6, 0);
     data = DataRead(0x13002F);
-    D_801099A0_boardresult2->unk_0C[0] = HuSprAnimRead(data);
+    boardresult2_bgSprGrp->unk_0C[0] = HuSprAnimRead(data);
     DataClose(data);
 
     for (i = 0; i < 6; i++) {
-        HuSprGrpMemberSet(D_801099A0_boardresult2->unk_0A, i, D_801099A0_boardresult2->unk_0C[0], 0);
-        HuSprPriSet(D_801099A0_boardresult2->unk_0A, i, 200);
-        HuSprAttrSet(D_801099A0_boardresult2->unk_0A, i, 0x4000);
-        HuSprPosSet(D_801099A0_boardresult2->unk_0A, i, (i / 2) * 128 + 64, (i & 1) * 128 + 64);
+        HuSprGrpMemberSet(boardresult2_bgSprGrp->unk_0A, i, boardresult2_bgSprGrp->unk_0C[0], 0);
+        HuSprPriSet(boardresult2_bgSprGrp->unk_0A, i, 200);
+        HuSprAttrSet(boardresult2_bgSprGrp->unk_0A, i, 0x4000);
+        HuSprPosSet(boardresult2_bgSprGrp->unk_0A, i, (i / 2) * 128 + 64, (i & 1) * 128 + 64);
     }
 
-    func_80105CB0_boardresult2();
+    boardresult2_RankSprCreate();
     showingDetails = 0;
-    func_80107964_boardresult2();
-    func_80108958_boardresult2();
-    func_801085F8_boardresult2();
-    func_80106A9C_boardresult2();
+    boardresult2_StatSprCreate();
+    boardresult2_StatMesSet();
+    boardresult2_StatDispOff();
+    boardresult2_RankDispOn();
 
     for (i = 0; i < 4; i++) {
-        HuSprPosSet(D_801099B0_boardresult2[i]->unk_0A, 0, 111, -40);
+        HuSprPosSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, 0, 111, -40);
     }
-    HuSprPosSet(D_801099C0_boardresult2->unk_0A, 0, 160, -40);
-    HuSprPosSet(D_801099C4_boardresult2->unk_0A, 0, 55, -40);
+    HuSprPosSet(boardresult2_rankTitleSprGrp->unk_0A, 0, 160, -40);
+    HuSprPosSet(boardresult2_rankSubtitleSprGrp->unk_0A, 0, 55, -40);
 
     WipeCreateIn(2, 16);
     while (WipeStatGet() != 0) {
@@ -1002,30 +1002,30 @@ void func_80108E1C_boardresult2(void) {
     }
 
     for (i = 3; i >= 0; i--) {
-        process = omAddPrcObj(func_80108A48_boardresult2, 0x1000, 0, 0x40);
+        process = omAddPrcObj(boardresult2_RankRowDropProc, 0x1000, 0, 0x40);
         process->user_data = HuMemMemoryAlloc(process->heap, 0x20);
         *(s32 *)process->user_data = i;
         HuPrcSleep(15);
     }
-    omAddPrcObj(func_80108C70_boardresult2, 0x1000, 0, 0);
+    omAddPrcObj(boardresult2_TitleDropProc, 0x1000, 0, 0);
     HuPrcSleep(20);
 
     for (angle = 90.0f; angle < 180.0f; angle += 10.0f) {
-        HuSprPosSet(D_801099C4_boardresult2->unk_0A, 0, 55, sindf(angle) * -73.0f + 41.0f);
+        HuSprPosSet(boardresult2_rankSubtitleSprGrp->unk_0A, 0, 55, sindf(angle) * -73.0f + 41.0f);
         HuPrcVSleep();
     }
 
     scale = -4.0f;
     HuAudFXPlay(0x17A);
     for (angle = 0.0f; angle <= 720.0f; angle += 50.0f) {
-        HuSprPosSet(D_801099C4_boardresult2->unk_0A, 0, 55, sindf(angle) * scale + 41.0f);
+        HuSprPosSet(boardresult2_rankSubtitleSprGrp->unk_0A, 0, 55, sindf(angle) * scale + 41.0f);
         scale += 0.2777778f;
         if (scale > 0.0f) {
             scale = 0.0f;
         }
         HuPrcVSleep();
     }
-    HuSprPosSet(D_801099C4_boardresult2->unk_0A, 0, 55, 41);
+    HuSprPosSet(boardresult2_rankSubtitleSprGrp->unk_0A, 0, 55, 41);
 
     allCpu = 0;
     for (i = 0; i < 4; i++) {
@@ -1063,8 +1063,8 @@ void func_80108E1C_boardresult2(void) {
                     }
                     if (ContBtnDown[GwPlayer[i].pad] & START_BUTTON) {
                         showingDetails = 1;
-                        func_801069A4_boardresult2();
-                        func_8010879C_boardresult2();
+                        boardresult2_RankDispOff();
+                        boardresult2_StatDispOn();
                         if (leftWindow != NULL) {
                             MBDHelpWinKill(leftWindow);
                             leftWindow = NULL;
@@ -1077,44 +1077,44 @@ void func_80108E1C_boardresult2(void) {
                         goto exit;
                     }
                 } else {
-                    prevRow = D_801097B4_boardresult2;
-                    prevPage = D_801097B0_boardresult2;
+                    prevRow = boardresult2_statCursor;
+                    prevPage = boardresult2_statScroll;
                     if (ContBtnDown[GwPlayer[i].pad] & START_BUTTON) {
                         showingDetails = 0;
-                        func_801085F8_boardresult2();
-                        func_80106A9C_boardresult2();
+                        boardresult2_StatDispOff();
+                        boardresult2_RankDispOn();
                     } else if (ContBtnRep[GwPlayer[i].pad] & R_JPAD) {
-                        if (++D_801097B4_boardresult2 >= 4) {
-                            D_801097B4_boardresult2 = 3;
-                            if (++D_801097B0_boardresult2 >= 10) {
-                                D_801097B0_boardresult2 = 9;
+                        if (++boardresult2_statCursor >= 4) {
+                            boardresult2_statCursor = 3;
+                            if (++boardresult2_statScroll >= 10) {
+                                boardresult2_statScroll = 9;
                             }
                         }
                     } else if (ContBtnRep[GwPlayer[i].pad] & L_JPAD) {
-                        if (--D_801097B4_boardresult2 < 0) {
-                            D_801097B4_boardresult2 = 0;
-                            if (--D_801097B0_boardresult2 < 0) {
-                                D_801097B0_boardresult2 = 0;
+                        if (--boardresult2_statCursor < 0) {
+                            boardresult2_statCursor = 0;
+                            if (--boardresult2_statScroll < 0) {
+                                boardresult2_statScroll = 0;
                             }
                         }
                     }
-                    if (D_801097B4_boardresult2 != prevRow || D_801097B0_boardresult2 != prevPage) {
-                        func_80108958_boardresult2();
-                        func_801074B4_boardresult2();
+                    if (boardresult2_statCursor != prevRow || boardresult2_statScroll != prevPage) {
+                        boardresult2_StatMesSet();
+                        boardresult2_StatNumUpdate();
                     }
                 }
             }
 
             if (showingDetails == 1) {
-                if (D_801097B0_boardresult2 == 0 && D_801097B4_boardresult2 == 0) {
-                    HuSprAttrSet(D_801099E8_boardresult2->unk_0A, 0, 0x8000);
+                if (boardresult2_statScroll == 0 && boardresult2_statCursor == 0) {
+                    HuSprAttrSet(boardresult2_statArrowSprGrp->unk_0A, 0, 0x8000);
                 } else {
-                    HuSprAttrReset(D_801099E8_boardresult2->unk_0A, 0, 0x8000);
+                    HuSprAttrReset(boardresult2_statArrowSprGrp->unk_0A, 0, 0x8000);
                 }
-                if (D_801097B0_boardresult2 == 9 && D_801097B4_boardresult2 == 3) {
-                    HuSprAttrSet(D_801099E8_boardresult2->unk_0A, 1, 0x8000);
+                if (boardresult2_statScroll == 9 && boardresult2_statCursor == 3) {
+                    HuSprAttrSet(boardresult2_statArrowSprGrp->unk_0A, 1, 0x8000);
                 } else {
-                    HuSprAttrReset(D_801099E8_boardresult2->unk_0A, 1, 0x8000);
+                    HuSprAttrReset(boardresult2_statArrowSprGrp->unk_0A, 1, 0x8000);
                 }
             }
         }
@@ -1133,46 +1133,46 @@ exit:
     }
     WipeCreateOut(0, 20);
     HuPrcSleep(20);
-    func_80106924_boardresult2();
-    func_80108548_boardresult2();
-    MBDSprGrpKill(D_801099A0_boardresult2);
+    boardresult2_RankSprKill();
+    boardresult2_StatSprKill();
+    MBDSprGrpKill(boardresult2_bgSprGrp);
     omSysExitReq = 1;
     while (1) {
         HuPrcVSleep();
     }
 }
 
-void func_801096AC_boardresult2(omObjData *obj) {
+void boardresult2_ExitObjMain(omObjData *obj) {
     if (WipeStatGet() == 0) {
-        func_8010979C_boardresult2();
-        func_80109740_boardresult2();
+        boardresult2_CameraClose();
+        boardresult2_SysClose();
         HuWinAllKill();
         omOvlReturnEx(1);
     }
 }
 
-void func_801096F0_boardresult2(omObjData *arg0) {
+void boardresult2_ExitCheckObjMain(omObjData *arg0) {
     if (omSysExitReq != 0) {
-        arg0->func = func_801096AC_boardresult2;
+        arg0->func = boardresult2_ExitObjMain;
     }
 }
 
-void func_80109714_boardresult2(void) {
+void boardresult2_SysInit(void) {
     MBDModelInit();
     MBDPlayerMotInit();
     MBDSprGrpInit();
 }
 
-void func_80109740_boardresult2(void) {
+void boardresult2_SysClose(void) {
     MBDPlayerClose();
     MBDModelClose();
     MBDSprGrpClose();
 }
 
-void func_8010976C_boardresult2(void) {
+void boardresult2_CameraInit(void) {
     Hu3DCamInit(2);
     Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
 }
 
-void func_8010979C_boardresult2(void) {
+void boardresult2_CameraClose(void) {
 }

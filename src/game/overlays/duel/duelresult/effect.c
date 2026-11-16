@@ -28,22 +28,22 @@ typedef struct DuelResultWork {
     /* 0x48 */ f32 unk_48;
 } DuelResultWork; // sizeof 0x4C
 
-u8 D_8010D6C0_duelresult[4][4] = {
+u8 duelresult_spiralColorTbl[4][4] = {
     { 0, 255, 255, 0 },
     { 255, 160, 40, 0 },
     { 255, 255, 0, 0 },
     { 0, 255, 0, 0 }
 };
 
-void func_8010ACC4_duelresult(void); /* extern */
-void func_8010BDA4_duelresult(s16 model, s32 dataNum);
-HmfModelData_UnkBC_Unk58_Struct *func_8010C13C_duelresult(s16 model, f32 x, f32 y, f32 z, f32 arg4, f32 arg5, f32 arg6, u8 r, u8 g, u8 b);
-void func_8010C21C_duelresult(s16 model);
-void func_8010C72C_duelresult(s16 model);
-void func_8010C8E0_duelresult(void); /* extern */
+void duelresult_FireworkProc(void); /* extern */
+void duelresult_FireworkShapeSet(s16 model, s32 dataNum);
+HmfModelData_UnkBC_Unk58_Struct *duelresult_ParticleAdd(s16 model, f32 x, f32 y, f32 z, f32 arg4, f32 arg5, f32 arg6, u8 r, u8 g, u8 b);
+void duelresult_FireworkBurstHook(s16 model);
+void duelresult_FireworkTrailHook(s16 model);
+void duelresult_SpiralProc(void); /* extern */
 
-DuelResultWork *func_8010ABE0_duelresult(s32 arg0) {
-    Process *proc = omAddPrcObj(func_8010ACC4_duelresult, 0x3F00, 0x2000, 0);
+DuelResultWork *duelresult_FireworkCreate(s32 arg0) {
+    Process *proc = omAddPrcObj(duelresult_FireworkProc, 0x3F00, 0x2000, 0);
     DuelResultWork *work = proc->user_data = HuMemAllocTag(sizeof(DuelResultWork), TAG_OVERLAY);
 
     work->unk_06 = 60;
@@ -59,39 +59,39 @@ DuelResultWork *func_8010ABE0_duelresult(s32 arg0) {
     return work;
 }
 
-void func_8010AC6C_duelresult(DuelResultWork *arg0, s32 arg1) {
+void duelresult_FireworkSprSet(DuelResultWork *arg0, s32 arg1) {
     arg0->unk_00 = arg1;
 }
 
-void func_8010AC74_duelresult(DuelResultWork *arg0, f32 x, f32 y, f32 z) {
+void duelresult_FireworkEndPosSet(DuelResultWork *arg0, f32 x, f32 y, f32 z) {
     arg0->unk_0C.x = x;
     arg0->unk_0C.y = y;
     arg0->unk_0C.z = z;
 }
 
-void func_8010AC84_duelresult(DuelResultWork *arg0, f32 x, f32 y, f32 z) {
+void duelresult_FireworkStartPosSet(DuelResultWork *arg0, f32 x, f32 y, f32 z) {
     arg0->pos.x = x;
     arg0->pos.y = y;
     arg0->pos.z = z;
 }
 
-void func_8010AC94_duelresult(DuelResultWork *arg0, s16 arg1) {
+void duelresult_FireworkTimeSet(DuelResultWork *arg0, s16 arg1) {
     arg0->unk_0A = arg1;
 }
 
-void func_8010AC9C_duelresult(DuelResultWork *arg0, s32 mask, s32 flags) {
+void duelresult_FireworkFlagSet(DuelResultWork *arg0, s32 mask, s32 flags) {
     arg0->unk_04 = flags | (arg0->unk_04 & ~mask);
 }
 
-s16 func_8010ACB4_duelresult(DuelResultWork *arg0) {
+s16 duelresult_FireworkFlagGet(DuelResultWork *arg0) {
     return arg0->unk_04;
 }
 
-void func_8010ACBC_duelresult(DuelResultWork *arg0, s16 arg1) {
+void duelresult_FireworkBurstTimeSet(DuelResultWork *arg0, s16 arg1) {
     arg0->unk_06 = arg1;
 }
 
-void func_8010ACC4_duelresult(void) {
+void duelresult_FireworkProc(void) {
     s16 model2;
     s16 i;
     s16 angle;
@@ -134,7 +134,7 @@ void func_8010ACC4_duelresult(void) {
     Hu3DModelRemakeStatic(model);
     Hu3DModelVtxBufMake(model);
     Hu3DModelDynamicFree(model);
-    Hu3DParticleCreate(model, -1, NULL, func_8010C21C_duelresult);
+    Hu3DParticleCreate(model, -1, NULL, duelresult_FireworkBurstHook);
     Hu3DParticleAttrSet(model, 8, 8);
     effect = Hu3DData[model].unkBC;
     Hu3DModelAttrSet(model, 4, 4);
@@ -161,7 +161,7 @@ void func_8010ACC4_duelresult(void) {
         HuAudFXPlay(0x16F);
         Hu3DModelAttrSet(model, 4, 0);
         Hu3DParticleCntSet(model, 0);
-        effect->unk18 = func_8010C72C_duelresult;
+        effect->unk18 = duelresult_FireworkTrailHook;
         Hu3DParticleAttrSet(model, 2, 0);
 
         for (i = 0; i <= work->unk_08; i++) {
@@ -203,7 +203,7 @@ void func_8010ACC4_duelresult(void) {
                 vx *= scale;
                 vy *= scale;
                 vz *= scale;
-                func_8010C13C_duelresult(model, vx + cur.x, vy + cur.y, vz + cur.z, vx, vy, vz, 0xFF, 0xFF, 0xC0);
+                duelresult_ParticleAdd(model, vx + cur.x, vy + cur.y, vz + cur.z, vx, vy, vz, 0xFF, 0xFF, 0xC0);
             }
 
             vx = ROT_XX(dx, dy, dz, rot) * 0.0f + ROT_XY(dx, dy, dz, rot) + ROT_XZ(dx, dy, dz, rot) * 0.0f;
@@ -212,7 +212,7 @@ void func_8010ACC4_duelresult(void) {
             vx = (dx * 0.5f + vx * 0.5f) * dist / 2.0f;
             vy = (dy * 0.5f + vy * 0.5f) * dist / 2.0f;
             vz = (dz * 0.5f + vz * 0.5f) * dist / 2.0f;
-            func_8010C13C_duelresult(model, cur.x, cur.y, cur.z, vx, vy, vz, 0xFF, 0x20, 0x20);
+            duelresult_ParticleAdd(model, cur.x, cur.y, cur.z, vx, vy, vz, 0xFF, 0x20, 0x20);
 
             vx = ROT_XX(dx, dy, dz, rot) * 0.0f + ROT_XY(dx, dy, dz, rot) * -1.0f + ROT_XZ(dx, dy, dz, rot) * 0.0f;
             vy = ROT_YX(dx, dy, dz, rot) * 0.0f + ROT_YY(dx, dy, dz, rot) * -1.0f + ROT_YZ(dx, dy, dz, rot) * 0.0f;
@@ -220,7 +220,7 @@ void func_8010ACC4_duelresult(void) {
             vx = (dx * 0.5f + vx * 0.5f) * dist / 2.0f;
             vy = (dy * 0.5f + vy * 0.5f) * dist / 2.0f;
             vz = (dz * 0.5f + vz * 0.5f) * dist / 2.0f;
-            func_8010C13C_duelresult(model, cur.x, cur.y, cur.z, vx, vy, vz, 0xFF, 0x40, 0x00);
+            duelresult_ParticleAdd(model, cur.x, cur.y, cur.z, vx, vy, vz, 0xFF, 0x40, 0x00);
         }
 
         HuPrcSleep(15);
@@ -230,8 +230,8 @@ void func_8010ACC4_duelresult(void) {
         Hu3DModelPosSet(model2, cur.x, cur.y, cur.z);
         HuPrcVSleep();
         HuAudFXPlay(0x170);
-        func_8010BDA4_duelresult(model, work->unk_00);
-        effect->unk18 = func_8010C21C_duelresult;
+        duelresult_FireworkShapeSet(model, work->unk_00);
+        effect->unk18 = duelresult_FireworkBurstHook;
         Hu3DParticleCntSet(model, 0);
         Hu3DModelAttrSet(model, 4, 0);
         Hu3DModelPosSet(model, cur.x, cur.y, cur.z);
@@ -253,7 +253,7 @@ void func_8010ACC4_duelresult(void) {
     }
 }
 
-void func_8010BDA4_duelresult(s16 model, s32 dataNum) {
+void duelresult_FireworkShapeSet(s16 model, s32 dataNum) {
     s16 anim = HuSprAnimDataRead(dataNum);
     s16 group = HuSprGrpCreate(1, 0);
     HuSprite *sprite;
@@ -311,7 +311,7 @@ void func_8010BDA4_duelresult(s16 model, s32 dataNum) {
     HuSprAnimKill(anim);
 }
 
-HmfModelData_UnkBC_Unk58_Struct *func_8010C13C_duelresult(s16 model, f32 x, f32 y, f32 z, f32 arg4, f32 arg5,
+HmfModelData_UnkBC_Unk58_Struct *duelresult_ParticleAdd(s16 model, f32 x, f32 y, f32 z, f32 arg4, f32 arg5,
                                                           f32 arg6, u8 r, u8 g, u8 b) {
     HmfData *hmf = Hu3DData[model].hmf;
     HmfModelData_UnkBC_Unk58_Struct *particle = Hu3DData[model].unkBC->unk58;
@@ -336,7 +336,7 @@ HmfModelData_UnkBC_Unk58_Struct *func_8010C13C_duelresult(s16 model, f32 x, f32 
     return particle;
 }
 
-void func_8010C21C_duelresult(s16 model) {
+void duelresult_FireworkBurstHook(s16 model) {
     HmfData *hmf = Hu3DData[model].hmf;
     HmfModelData_UnkBC_Struct *effect = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle;
@@ -437,7 +437,7 @@ void func_8010C21C_duelresult(s16 model) {
     effect->unk02++;
 }
 
-void func_8010C72C_duelresult(s16 model) {
+void duelresult_FireworkTrailHook(s16 model) {
     HmfData *hmf = Hu3DData[model].hmf;
     HmfModelData_UnkBC_Struct *effect = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle;
@@ -467,8 +467,8 @@ void func_8010C72C_duelresult(s16 model) {
     }
 }
 
-void func_8010C880_duelresult(void) {
-    Process *proc = omAddPrcObj(func_8010C8E0_duelresult, 0x3F00, 0x2000, 0);
+void duelresult_SpiralCreate(void) {
+    Process *proc = omAddPrcObj(duelresult_SpiralProc, 0x3F00, 0x2000, 0);
     DuelResultWork *work = proc->user_data = HuMemAllocTag(sizeof(DuelResultWork), TAG_OVERLAY);
 
     work->pos.x = 0.0f;
@@ -476,7 +476,7 @@ void func_8010C880_duelresult(void) {
     work->pos.z = 0.0f;
 }
 
-void func_8010C8E0_duelresult(void) {
+void duelresult_SpiralProc(void) {
     DuelResultWork *work = HuPrcCurrentGet()->user_data;
     s16 model = Hu3DModelRead(0xB0034, 0x6A8);
     HmfData *hmf;
@@ -513,13 +513,13 @@ void func_8010C8E0_duelresult(void) {
     Hu3DModelRemakeStatic(model);
     Hu3DModelVtxBufMake(model);
     Hu3DModelDynamicFree(model);
-    Hu3DParticleCreate(model, -1, NULL, func_8010C21C_duelresult);
+    Hu3DParticleCreate(model, -1, NULL, duelresult_FireworkBurstHook);
     Hu3DParticleAttrSet(model, 8, 8);
     effect = Hu3DData[model].unkBC;
     Hu3DModelAttrSet(model, 4, 4);
     Hu3DModelAttrSet(model, 4, 0);
     Hu3DParticleCntSet(model, 0);
-    effect->unk18 = func_8010C72C_duelresult;
+    effect->unk18 = duelresult_FireworkTrailHook;
     Hu3DParticleAttrSet(model, 2, 0);
 
     work->center = work->pos;
@@ -578,9 +578,9 @@ void func_8010C8E0_duelresult(void) {
             vy = (dy * 0.7f + vy * 0.3f) * dist * 0.7f;
             vz = (dz * 0.7f + vz * 0.3f) * dist * 0.7f;
             color = rand8() & 3;
-            particle = func_8010C13C_duelresult(model, pos[i].x, pos[i].y, pos[i].z, vx, vy, vz,
-                                                D_8010D6C0_duelresult[color][0], D_8010D6C0_duelresult[color][1],
-                                                D_8010D6C0_duelresult[color][2]);
+            particle = duelresult_ParticleAdd(model, pos[i].x, pos[i].y, pos[i].z, vx, vy, vz,
+                                                duelresult_spiralColorTbl[color][0], duelresult_spiralColorTbl[color][1],
+                                                duelresult_spiralColorTbl[color][2]);
             particle->unk08 = 1.0f;
 
             vx = -(dx * dy * (1.0f - cosdf(angle)) - dz * sindf(angle));
@@ -590,9 +590,9 @@ void func_8010C8E0_duelresult(void) {
             vy = (dy * 0.7f + vy * 0.3f) * dist * 0.7f;
             vz = (dz * 0.7f + vz * 0.3f) * dist * 0.7f;
             color = rand8() & 3;
-            particle = func_8010C13C_duelresult(model, pos[i].x, pos[i].y, pos[i].z, vx, vy, vz,
-                                                D_8010D6C0_duelresult[color][0], D_8010D6C0_duelresult[color][1],
-                                                D_8010D6C0_duelresult[color][2]);
+            particle = duelresult_ParticleAdd(model, pos[i].x, pos[i].y, pos[i].z, vx, vy, vz,
+                                                duelresult_spiralColorTbl[color][0], duelresult_spiralColorTbl[color][1],
+                                                duelresult_spiralColorTbl[color][2]);
             particle->unk08 = 1.0f;
         }
     }

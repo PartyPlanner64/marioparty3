@@ -5,93 +5,93 @@
 #include "game/overlays/party/common/player.h"
 #include "game/overlays/party/common/status.h"
 
-typedef struct ChanceTimeUnkFE3C {
+typedef struct ChanceTimeAmount {
     /* 0x00 */ s16 coins;
     /* 0x02 */ s16 stars;
-} ChanceTimeUnkFE3C; // size = 0x4
+} ChanceTimeAmount; // size = 0x4
 
 typedef struct ChanceTimeReelSpeed {
     /* 0x00 */ f32 accel;
     /* 0x04 */ f32 max;
 } ChanceTimeReelSpeed; // size = 0x8
 
-extern char *D_8010FBD8_chancetime[3];
-extern s32 D_8010FBF0_chancetime;
-extern s32 D_8010FBF4_chancetime[3];
-extern s32 D_8010FC00_chancetime;
-extern s32 D_8010FC10_chancetime;
-extern s32 D_8010FC14_chancetime;
-extern s32 D_8010FC18_chancetime;
-extern s32 D_8010FC1C_chancetime;
-extern const u8 D_8010FC98_chancetime[3][13];
-extern const ChanceTimeReelSpeed D_8010FD08_chancetime[3];
-extern const Vec D_8010FD38_chancetime[3];
-extern const u32 D_8010FD5C_chancetime[3];
-extern const ChanceTimeUnkFE3C D_8010FD68_chancetime[9];
-extern const u32 D_8010FD8C_chancetime[9];
-extern const u32 D_8010FDB0_chancetime[9];
-extern const u32 D_8010FDD4_chancetime[9];
-extern const u32 D_8010FDF8_chancetime[9];
-extern const u32 D_8010FE1C_chancetime[8];
-extern const ChanceTimeUnkFE3C D_8010FE3C_chancetime[9];
-extern s16 D_8010FE94_chancetime[3];
-extern u16 D_8010FE9A_chancetime;
-extern s32 D_8010FEC4_chancetime;
-extern ChanceTimeTransfer D_8010FF60_chancetime[20];
-extern ChanceTimeUnkFED0 D_8010FED0_chancetime[3];
-extern s16 D_8010FEB0_chancetime[3][3];
-extern s8 D_8010FF3A_chancetime;
-extern u8 D_8010FF3B_chancetime[];
-extern s32 D_8010FF48_chancetime[3];
-extern s8 D_8010FEC8_chancetime;
-extern s8 D_8010FEC9_chancetime;
-extern s8 D_80110000_chancetime;
-extern s32 D_80110004_chancetime;
-extern s16 D_80110010_chancetime[10];
-extern s16 D_80110028_chancetime[20];
-extern omObjData *D_80110080_chancetime;
-extern s32 D_80110008_chancetime;
-extern void (*D_80110084_chancetime)();
-extern omObjData *D_801100C8_chancetime;
-extern s8 D_801100DD_chancetime[3];
-extern s8 D_801100DF_chancetime;
-extern void (*D_801100CC_chancetime)(omObjData *);
-extern s16 D_8010FE90_chancetime;
-extern s16 D_8010FE92_chancetime;
-extern HuSprite *D_8010FE9C_chancetime;
-extern void *D_8010FEA0_chancetime;
-extern void *D_8010FEA4_chancetime;
-extern s16 D_8010FEA8_chancetime[2];
+extern char *chancetime_reelAnimNameTbl[3];
+extern s32 chancetime_reelStartCnt;
+extern s32 chancetime_reelSeOnTbl[3];
+extern s32 chancetime_panelHopF;
+extern s32 chancetime_introMesDoneF;
+extern s32 chancetime_blockSpinDoneF;
+extern s32 chancetime_transferDoneF;
+extern s32 chancetime_blockSpinTimer;
+extern const u8 chancetime_actionReelTierTbl[3][13];
+extern const ChanceTimeReelSpeed chancetime_reelSpeedTbl[3];
+extern const Vec chancetime_reelPosTbl[3];
+extern const u32 chancetime_blockMesTbl[3];
+extern const ChanceTimeAmount chancetime_actionAmountTbl[9];
+extern const u32 chancetime_actionMesTbl[9];
+extern const u32 chancetime_actionShortMesTbl[9];
+extern const u32 chancetime_actionNoneMesTbl[9];
+extern const u32 chancetime_actionAmountMesTbl[9];
+extern const u32 chancetime_chrNameMesTbl[8];
+extern const ChanceTimeAmount chancetime_actionMesAmountTbl[9];
+extern s16 chancetime_blockHatenaSprTbl[3];
+extern u16 chancetime_panelFrameSpr;
+extern s32 chancetime_unusedCnt;
+extern ChanceTimeTransfer chancetime_transferTbl[20];
+extern ChanceTimeReel chancetime_reelTbl[3];
+extern s16 chancetime_reelAnimTbl[3][3];
+extern s8 chancetime_actionReelItemNum;
+extern u8 chancetime_actionReelItemTbl[];
+extern s32 chancetime_reelSeTbl[3];
+extern s8 chancetime_unusedOnF;
+extern s8 chancetime_unusedOffF;
+extern s8 chancetime_reelStartNo;
+extern s32 chancetime_eventWin;
+extern s16 chancetime_starEffTbl[10];
+extern s16 chancetime_coinSprTbl[20];
+extern omObjData *chancetime_eventObj;
+extern s32 chancetime_blockSpinNo;
+extern void (*chancetime_eventFunc)();
+extern omObjData *chancetime_blockObj;
+extern s8 chancetime_blockResultTbl[3];
+extern s8 chancetime_actionNo;
+extern void (*chancetime_blockFunc)(omObjData *);
+extern s16 chancetime_panelHookMdl;
+extern s16 chancetime_panelSprAnim;
+extern HuSprite *chancetime_panelSpr;
+extern void *chancetime_panelTex;
+extern void *chancetime_panelPal;
+extern s16 chancetime_panelSize[2];
 
-s32 func_8010872C_chancetime(void);
-void func_8010C870_chancetime(omObjData *object);
-void func_8010C5F4_chancetime(omObjData *object);
-void func_8010C98C_chancetime(void);
-void func_8010C994_chancetime(Gfx **gfxPos, s32 arg1, s32 arg2);
-void func_8010CF78_chancetime(s8 arg0);
-void func_8010DAB0_chancetime(void);
-void func_8010C610_chancetime(omObjData *object);
-void func_8010F44C_chancetime(s32 arg0, s32 arg1, s32 arg2);
-void func_8010D320_chancetime(omObjData *object);
-void func_8010DB1C_chancetime(s8 arg0);
-void func_8010DF68_chancetime(void);
-void func_8010DF70_chancetime(void);
-void func_8010D6A4_chancetime(s8 arg0);
-void func_8010DFA4_chancetime(void);
-void func_8010E1E0_chancetime(void);
-void func_8010E210_chancetime(void);
-void func_8010E280_chancetime(omObjData *object);
-void func_8010E4D0_chancetime(omObjData *object);
-void func_8010F984_chancetime(omObjData *object);
-void func_8010F1F8_chancetime(void);
-void func_8010F42C_chancetime(void);
+s32 chancetime_HostHopCheck(void);
+void chancetime_PanelLand(omObjData *object);
+void chancetime_BlockReelMain(omObjData *object);
+void chancetime_BlockDestroy(void);
+void chancetime_PanelDraw(Gfx **gfxPos, s32 arg1, s32 arg2);
+void chancetime_ReelInit(s8 arg0);
+void chancetime_ReelDispOffAll(void);
+void chancetime_PanelDrop(omObjData *object);
+void chancetime_ResultMesExec(s32 arg0, s32 arg1, s32 arg2);
+void chancetime_ReelUpdate(omObjData *object);
+void chancetime_ReelDispOn(s8 arg0);
+void chancetime_EventDestroy(void);
+void chancetime_EventIdle(void);
+void chancetime_ReelStart(s8 arg0);
+void chancetime_BlockSpinMesExec(void);
+void chancetime_BlockSpinReelStart(void);
+void chancetime_BlockSpinWait(void);
+void chancetime_TransferExec(omObjData *object);
+void chancetime_TransferAnimExec(omObjData *object);
+void chancetime_TransferMesExec(omObjData *object);
+void chancetime_IntroMesExec(void);
+void chancetime_IntroMesEnd(void);
 
-s8 D_8010FB80_chancetime = 0;
-s8 D_8010FB81_chancetime = 0;
-s16 D_8010FB84_chancetime[2] = { 0, -240 };
-f32 D_8010FB88_chancetime = 600.0f;
-f32 D_8010FB8C_chancetime = 0.0f;
-Vec D_8010FB90_chancetime[6] = {
+s8 chancetime_panelDropF = 0;
+s8 chancetime_panelLandF = 0;
+s16 chancetime_panelPos[2] = { 0, -240 };
+f32 chancetime_panelDropY = 600.0f;
+f32 chancetime_panelDropSpeed = 0.0f;
+Vec chancetime_panelItemPosTbl[6] = {
     { -138.0f, 406.0f, -216.0f },
     { 152.0f, 406.0f, -216.0f },
     { 7.0f, 146.0f, -216.0f },
@@ -100,7 +100,7 @@ Vec D_8010FB90_chancetime[6] = {
     { 150.0f, -30.0f, -216.0f },
 };
 
-void func_8010BF80_chancetime(void) {
+void chancetime_BlockProc(void) {
     omObjData *obj;
     void *data;
     s8 i;
@@ -109,19 +109,19 @@ void func_8010BF80_chancetime(void) {
     HuSprite *spr;
 
     obj = omAddObj(20, 16, 0, -1, NULL);
-    D_801100C8_chancetime = obj;
+    chancetime_blockObj = obj;
 
     obj->model[1] = Hu3DModelRead(0x1C0009, 0x229);
     data = DataRead(0x1C0002);
-    D_8010FEB0_chancetime[0][0] = Hu3DAnimCreate(Hu3DData[obj->model[1]].hmf, data, 0, D_8010FBD8_chancetime[0]);
-    Hu3DAnimAttrSet(D_8010FEB0_chancetime[0][0], 1, 1);
-    Hu3DAnimBankSet(D_8010FEB0_chancetime[0][0], 0);
+    chancetime_reelAnimTbl[0][0] = Hu3DAnimCreate(Hu3DData[obj->model[1]].hmf, data, 0, chancetime_reelAnimNameTbl[0]);
+    Hu3DAnimAttrSet(chancetime_reelAnimTbl[0][0], 1, 1);
+    Hu3DAnimBankSet(chancetime_reelAnimTbl[0][0], 0);
     HuMemMemoryFreePerm(data);
     for (i = 1; i < 3; i++) {
-        D_8010FEB0_chancetime[0][i] =
-            Hu3DAnimLink(Hu3DData[obj->model[1]].hmf, D_8010FEB0_chancetime[0][0], 0, D_8010FBD8_chancetime[i]);
-        Hu3DAnimAttrSet(D_8010FEB0_chancetime[0][i], 1, 1);
-        Hu3DAnimBankSet(D_8010FEB0_chancetime[0][i], 0);
+        chancetime_reelAnimTbl[0][i] =
+            Hu3DAnimLink(Hu3DData[obj->model[1]].hmf, chancetime_reelAnimTbl[0][0], 0, chancetime_reelAnimNameTbl[i]);
+        Hu3DAnimAttrSet(chancetime_reelAnimTbl[0][i], 1, 1);
+        Hu3DAnimBankSet(chancetime_reelAnimTbl[0][i], 0);
     }
     Hu3DModelRemakeStatic(obj->model[1]);
     Hu3DModelDynamicFree(obj->model[1]);
@@ -130,10 +130,10 @@ void func_8010BF80_chancetime(void) {
 
     obj->model[2] = Hu3DModelRead(0x1C0009, 0x229);
     for (i = 0; i < 3; i++) {
-        D_8010FEB0_chancetime[1][i] =
-            Hu3DAnimLink(Hu3DData[obj->model[2]].hmf, D_8010FEB0_chancetime[0][0], 0, D_8010FBD8_chancetime[i]);
-        Hu3DAnimAttrSet(D_8010FEB0_chancetime[1][i], 1, 1);
-        Hu3DAnimBankSet(D_8010FEB0_chancetime[1][i], 0);
+        chancetime_reelAnimTbl[1][i] =
+            Hu3DAnimLink(Hu3DData[obj->model[2]].hmf, chancetime_reelAnimTbl[0][0], 0, chancetime_reelAnimNameTbl[i]);
+        Hu3DAnimAttrSet(chancetime_reelAnimTbl[1][i], 1, 1);
+        Hu3DAnimBankSet(chancetime_reelAnimTbl[1][i], 0);
     }
     Hu3DModelRemakeStatic(obj->model[2]);
     Hu3DModelDynamicFree(obj->model[2]);
@@ -142,15 +142,15 @@ void func_8010BF80_chancetime(void) {
 
     obj->model[3] = Hu3DModelRead(0x1C0009, 0x229);
     data = DataRead(0x1C0003);
-    D_8010FEB0_chancetime[2][0] = Hu3DAnimCreate(Hu3DData[obj->model[3]].hmf, data, 0, D_8010FBD8_chancetime[0]);
-    Hu3DAnimAttrSet(D_8010FEB0_chancetime[2][0], 1, 1);
-    Hu3DAnimBankSet(D_8010FEB0_chancetime[2][0], 0);
+    chancetime_reelAnimTbl[2][0] = Hu3DAnimCreate(Hu3DData[obj->model[3]].hmf, data, 0, chancetime_reelAnimNameTbl[0]);
+    Hu3DAnimAttrSet(chancetime_reelAnimTbl[2][0], 1, 1);
+    Hu3DAnimBankSet(chancetime_reelAnimTbl[2][0], 0);
     HuMemMemoryFreePerm(data);
     for (i = 1; i < 3; i++) {
-        D_8010FEB0_chancetime[2][i] =
-            Hu3DAnimLink(Hu3DData[obj->model[3]].hmf, D_8010FEB0_chancetime[2][0], 0, D_8010FBD8_chancetime[i]);
-        Hu3DAnimAttrSet(D_8010FEB0_chancetime[2][i], 1, 1);
-        Hu3DAnimBankSet(D_8010FEB0_chancetime[2][i], 0);
+        chancetime_reelAnimTbl[2][i] =
+            Hu3DAnimLink(Hu3DData[obj->model[3]].hmf, chancetime_reelAnimTbl[2][0], 0, chancetime_reelAnimNameTbl[i]);
+        Hu3DAnimAttrSet(chancetime_reelAnimTbl[2][i], 1, 1);
+        Hu3DAnimBankSet(chancetime_reelAnimTbl[2][i], 0);
     }
     Hu3DModelRemakeStatic(obj->model[3]);
     Hu3DModelDynamicFree(obj->model[3]);
@@ -158,27 +158,27 @@ void func_8010BF80_chancetime(void) {
     Hu3DModelCameraSet(obj->model[3], 1);
 
     spriteId = HuSprAnimDataRead(0x1C0000);
-    D_8010FE92_chancetime = spriteId;
+    chancetime_panelSprAnim = spriteId;
     grp = HuSprGrpCreate(1, 0);
     HuSprAttrSet(grp, 0, HUSPR_ATTR_DISPOFF);
     HuSprGrpMemberSet(grp, 0, spriteId, 0);
-    D_8010FE9C_chancetime = spr = HuSprGet(grp, 0);
-    D_8010FEA0_chancetime = spr->data->data;
-    D_8010FEA4_chancetime = spr->data->pal;
-    D_8010FEA8_chancetime[0] = spr->data->sizeX;
-    D_8010FEA8_chancetime[1] = spr->data->sizeY;
-    D_8010FE90_chancetime = Hu3DHookFuncCreate(0, func_8010C994_chancetime, 2);
-    Hu3DModelCameraSet(D_8010FE90_chancetime, 1);
+    chancetime_panelSpr = spr = HuSprGet(grp, 0);
+    chancetime_panelTex = spr->data->data;
+    chancetime_panelPal = spr->data->pal;
+    chancetime_panelSize[0] = spr->data->sizeX;
+    chancetime_panelSize[1] = spr->data->sizeY;
+    chancetime_panelHookMdl = Hu3DHookFuncCreate(0, chancetime_PanelDraw, 2);
+    Hu3DModelCameraSet(chancetime_panelHookMdl, 1);
 
     data = DataRead(0x1C0007);
     for (i = 0; i < 3; i++) {
-        D_8010FE94_chancetime[i] = espEntry(HuSprAnimRead(data), 0, 0);
-        espDispOff(D_8010FE94_chancetime[i]);
+        chancetime_blockHatenaSprTbl[i] = espEntry(HuSprAnimRead(data), 0, 0);
+        espDispOff(chancetime_blockHatenaSprTbl[i]);
     }
     HuMemMemoryFreePerm(data);
     spriteId = HuSprAnimDataRead(0x1C0004);
-    D_8010FE9A_chancetime = espEntry(spriteId, 0, 0);
-    espDispOff(D_8010FE9A_chancetime);
+    chancetime_panelFrameSpr = espEntry(spriteId, 0, 0);
+    espDispOff(chancetime_panelFrameSpr);
 
     obj->trans.x = 0.0f;
     obj->trans.y = 0.0f;
@@ -186,73 +186,73 @@ void func_8010BF80_chancetime(void) {
     Hu3DModelPosSet(obj->model[1], -111.0f, 486.0f, -541.0f);
     Hu3DModelPosSet(obj->model[2], 119.0f, 486.0f, -541.0f);
     Hu3DModelPosSet(obj->model[3], 3.0f, 265.0f, -541.0f);
-    func_8010CF78_chancetime(D_801100DC_chancetime);
-    func_8010DAB0_chancetime();
-    omPrcSetDestructor(0, func_8010C98C_chancetime);
-    D_801100CC_chancetime = func_8010C5F4_chancetime;
+    chancetime_ReelInit(chancetime_turnTier);
+    chancetime_ReelDispOffAll();
+    omPrcSetDestructor(0, chancetime_BlockDestroy);
+    chancetime_blockFunc = chancetime_BlockReelMain;
     while (TRUE) {
-        D_801100CC_chancetime(obj);
+        chancetime_blockFunc(obj);
         HuPrcVSleep();
     }
 }
 
-void func_8010C5F4_chancetime(omObjData *object) {
-    func_8010D320_chancetime(object);
+void chancetime_BlockReelMain(omObjData *object) {
+    chancetime_ReelUpdate(object);
 }
 
-void func_8010C610_chancetime(omObjData *object) {
+void chancetime_PanelDrop(omObjData *object) {
     Vec pos;
     Vec2f screen;
 
-    D_8010FB8C_chancetime += 1.2f;
-    D_8010FB8C_chancetime = (D_8010FB8C_chancetime > 30.0f) ? 30.0f : D_8010FB8C_chancetime;
-    D_8010FB88_chancetime -= D_8010FB8C_chancetime;
-    if (D_8010FB88_chancetime < 0.0f) {
-        D_8010FB8C_chancetime = D_8010FB8C_chancetime * -0.1f;
-        D_8010FB88_chancetime = 0.0f;
-        if (D_8010FC00_chancetime == 0) {
-            func_80108704_chancetime();
-            D_8010FC00_chancetime = 1;
+    chancetime_panelDropSpeed += 1.2f;
+    chancetime_panelDropSpeed = (chancetime_panelDropSpeed > 30.0f) ? 30.0f : chancetime_panelDropSpeed;
+    chancetime_panelDropY -= chancetime_panelDropSpeed;
+    if (chancetime_panelDropY < 0.0f) {
+        chancetime_panelDropSpeed = chancetime_panelDropSpeed * -0.1f;
+        chancetime_panelDropY = 0.0f;
+        if (chancetime_panelHopF == 0) {
+            chancetime_HostHopStart();
+            chancetime_panelHopF = 1;
         }
-        if (D_8010FB8C_chancetime >= -0.24000001f) {
-            D_8010FC00_chancetime = 0;
-            D_801100CC_chancetime = func_8010C870_chancetime;
-            D_8010FB88_chancetime = 0.0f;
+        if (chancetime_panelDropSpeed >= -0.24000001f) {
+            chancetime_panelHopF = 0;
+            chancetime_blockFunc = chancetime_PanelLand;
+            chancetime_panelDropY = 0.0f;
             return;
         }
     }
     pos.x = 0.0f;
-    pos.y = D_8010FB90_chancetime[0].y + D_8010FB88_chancetime - 168.0f;
-    pos.z = D_8010FB90_chancetime[0].z;
+    pos.y = chancetime_panelItemPosTbl[0].y + chancetime_panelDropY - 168.0f;
+    pos.z = chancetime_panelItemPosTbl[0].z;
     Hu3D3Dto2D(0, &pos, &screen);
-    D_8010FB84_chancetime[0] = 74;
-    D_8010FB84_chancetime[1] = screen.y - 120.0f + 25.0f;
-    espPosSet(D_8010FE9A_chancetime, 161, D_8010FB84_chancetime[1] + 46);
-    espPosSet(D_8010FE94_chancetime[0], D_8010FB84_chancetime[0] + 51, D_8010FB84_chancetime[1] + 46);
-    espPosSet(D_8010FE94_chancetime[1], D_8010FB84_chancetime[0] + 124, D_8010FB84_chancetime[1] + 46);
-    espPosSet(D_8010FE94_chancetime[2], D_8010FB84_chancetime[0] + 87, D_8010FB84_chancetime[1] + 116);
+    chancetime_panelPos[0] = 74;
+    chancetime_panelPos[1] = screen.y - 120.0f + 25.0f;
+    espPosSet(chancetime_panelFrameSpr, 161, chancetime_panelPos[1] + 46);
+    espPosSet(chancetime_blockHatenaSprTbl[0], chancetime_panelPos[0] + 51, chancetime_panelPos[1] + 46);
+    espPosSet(chancetime_blockHatenaSprTbl[1], chancetime_panelPos[0] + 124, chancetime_panelPos[1] + 46);
+    espPosSet(chancetime_blockHatenaSprTbl[2], chancetime_panelPos[0] + 87, chancetime_panelPos[1] + 116);
 }
 
-void func_8010C870_chancetime(omObjData *object) {
-    D_8010FB84_chancetime[0] = 74;
-    D_8010FB84_chancetime[1] = 25;
-    espPosSet(D_8010FE9A_chancetime, 161, 71);
-    espPosSet(D_8010FE94_chancetime[0], D_8010FB84_chancetime[0] + 51, D_8010FB84_chancetime[1] + 46);
-    espPosSet(D_8010FE94_chancetime[1], D_8010FB84_chancetime[0] + 124, D_8010FB84_chancetime[1] + 46);
-    espPosSet(D_8010FE94_chancetime[2], D_8010FB84_chancetime[0] + 87, D_8010FB84_chancetime[1] + 116);
-    if (func_8010872C_chancetime() == 1) {
-        D_8010FB88_chancetime = 600.0f;
-        D_8010FB8C_chancetime = 0.0f;
-        D_8010FB80_chancetime = 0;
-        D_8010FB81_chancetime = 1;
-        D_801100CC_chancetime = func_8010C5F4_chancetime;
+void chancetime_PanelLand(omObjData *object) {
+    chancetime_panelPos[0] = 74;
+    chancetime_panelPos[1] = 25;
+    espPosSet(chancetime_panelFrameSpr, 161, 71);
+    espPosSet(chancetime_blockHatenaSprTbl[0], chancetime_panelPos[0] + 51, chancetime_panelPos[1] + 46);
+    espPosSet(chancetime_blockHatenaSprTbl[1], chancetime_panelPos[0] + 124, chancetime_panelPos[1] + 46);
+    espPosSet(chancetime_blockHatenaSprTbl[2], chancetime_panelPos[0] + 87, chancetime_panelPos[1] + 116);
+    if (chancetime_HostHopCheck() == 1) {
+        chancetime_panelDropY = 600.0f;
+        chancetime_panelDropSpeed = 0.0f;
+        chancetime_panelDropF = 0;
+        chancetime_panelLandF = 1;
+        chancetime_blockFunc = chancetime_BlockReelMain;
     }
 }
 
-void func_8010C98C_chancetime(void) {
+void chancetime_BlockDestroy(void) {
 }
 
-void func_8010C994_chancetime(Gfx **gfxPos, s32 arg1, s32 arg2) {
+void chancetime_PanelDraw(Gfx **gfxPos, s32 arg1, s32 arg2) {
     Gfx *gfx;
     s16 texX[2];
     s16 texY[2];
@@ -267,10 +267,10 @@ void func_8010C994_chancetime(Gfx **gfxPos, s32 arg1, s32 arg2) {
     s16 rows;
     s16 offset;
 
-    width = D_8010FEA8_chancetime[0];
-    height = D_8010FEA8_chancetime[1];
-    x = D_8010FB84_chancetime[0];
-    y = D_8010FB84_chancetime[1];
+    width = chancetime_panelSize[0];
+    height = chancetime_panelSize[1];
+    x = chancetime_panelPos[0];
+    y = chancetime_panelPos[1];
     if ((x + width < 0) | (x >= 320)) {
         return;
     }
@@ -309,7 +309,7 @@ void func_8010C994_chancetime(Gfx **gfxPos, s32 arg1, s32 arg2) {
     gDPSetRenderMode(gfx++, G_RM_TEX_EDGE, G_RM_TEX_EDGE2);
     gDPSetCombineMode(gfx++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
     gDPSetTextureLUT(gfx++, G_TT_RGBA16);
-    gDPLoadTLUT_pal256(gfx++, D_8010FEA4_chancetime);
+    gDPLoadTLUT_pal256(gfx++, chancetime_panelPal);
 
     rows = 4;
     offset = 0;
@@ -317,7 +317,7 @@ void func_8010C994_chancetime(Gfx **gfxPos, s32 arg1, s32 arg2) {
         if (row + rows > texY[1]) {
             rows = texY[1] - row;
         }
-        gDPLoadTextureTile(gfx++, D_8010FEA0_chancetime, G_IM_FMT_CI, G_IM_SIZ_8b, width, rows, texX[0], row, texX[1] - 1, row + rows - 1, 0, G_TX_WRAP, G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        gDPLoadTextureTile(gfx++, chancetime_panelTex, G_IM_FMT_CI, G_IM_SIZ_8b, width, rows, texX[0], row, texX[1] - 1, row + rows - 1, 0, G_TX_WRAP, G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
         gDPSetTileSize(gfx++, G_TX_RENDERTILE, 0, 0, texWidth << 2, rows << 2);
         gSPTextureRectangle(gfx++, screenX << 2, (offset + screenY) << 2, (texWidth + screenX) << 2, (offset + rows + screenY) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
         offset += rows;
@@ -326,81 +326,81 @@ void func_8010C994_chancetime(Gfx **gfxPos, s32 arg1, s32 arg2) {
     *gfxPos = gfx;
 }
 
-void func_8010CF78_chancetime(s8 arg0) {
+void chancetime_ReelInit(s8 arg0) {
     s8 i;
     s8 j;
     s8 k;
 
-    D_8010FBF0_chancetime = 0;
+    chancetime_reelStartCnt = 0;
     for (i = 0; i < 3; i++) {
-        D_8010FBF4_chancetime[i] = 0;
-        D_801100DD_chancetime[i] = -1;
-        D_8010FED0_chancetime[i].unk00 = 0;
-        D_8010FED0_chancetime[i].unk10 = 2;
-        D_8010FED0_chancetime[i].unk12 = 4;
-        D_8010FED0_chancetime[i].unk04 = 0;
-        D_8010FED0_chancetime[i].unk0C = -1.0f;
+        chancetime_reelSeOnTbl[i] = 0;
+        chancetime_blockResultTbl[i] = -1;
+        chancetime_reelTbl[i].unk00 = 0;
+        chancetime_reelTbl[i].unk10 = 2;
+        chancetime_reelTbl[i].unk12 = 4;
+        chancetime_reelTbl[i].unk04 = 0;
+        chancetime_reelTbl[i].unk0C = -1.0f;
     }
     for (i = 0; i < 2; i++) {
         k = rand8() & 3;
         for (j = 0; j < 4; j++) {
-            D_8010FED0_chancetime[i].unk1B[k] = GwPlayer[D_801100D0_chancetime[j]].chr;
+            chancetime_reelTbl[i].unk1B[k] = GwPlayer[chancetime_playerOrderTbl[j]].chr;
             if (++k >= 4) {
                 k = 0;
             }
         }
-        D_8010FED0_chancetime[i].unk1A = 4;
+        chancetime_reelTbl[i].unk1A = 4;
     }
     k = rand8() % 13;
     for (j = 0; j < 13; j++) {
-        D_8010FF3B_chancetime[k] = D_8010FC98_chancetime[arg0][j];
+        chancetime_actionReelItemTbl[k] = chancetime_actionReelTierTbl[arg0][j];
         if (++k >= 13) {
             k = 0;
         }
     }
-    D_8010FF3A_chancetime = 13;
+    chancetime_actionReelItemNum = 13;
     for (i = 0; i < 3; i++) {
         for (j = 0; j < 3; j++) {
-            D_8010FED0_chancetime[i].unk14[j] = D_8010FEB0_chancetime[i][j];
+            chancetime_reelTbl[i].unk14[j] = chancetime_reelAnimTbl[i][j];
         }
     }
     for (i = 0; i < 3; i++) {
         for (j = 0; j < 3; j++) {
-            Hu3DAnmNoSet(D_8010FED0_chancetime[i].unk14[j], D_8010FED0_chancetime[i].unk1B[2 - j]);
+            Hu3DAnmNoSet(chancetime_reelTbl[i].unk14[j], chancetime_reelTbl[i].unk1B[2 - j]);
         }
     }
 }
 
-const u8 D_8010FC98_chancetime[3][13] = {
+const u8 chancetime_actionReelTierTbl[3][13] = {
     { 4, 2, 8, 3, 7, 4, 8, 2, 3, 0, 3, 5, 8 },
     { 0, 3, 6, 1, 8, 7, 2, 8, 4, 5, 0, 7, 2 },
     { 1, 7, 5, 4, 7, 1, 0, 6, 2, 0, 7, 8, 6 },
 };
 
-char *D_8010FBD8_chancetime[3] = { "mar_DEF", "rui_DEF", "pie_DEF" };
-char *D_8010FBE4_chancetime[3] = { "coin_all_DEF", "coin_x30_DEF", "coin_x20_DEF" }; /* Unreferenced. */
-s32 D_8010FBF0_chancetime = 0;
-s32 D_8010FBF4_chancetime[3] = { 0 };
-s32 D_8010FC00_chancetime = 0;
-s32 D_8010FC04_chancetime[3] = { 0 }; /* Unreferenced. */
-s32 D_8010FC10_chancetime = 0;
-s32 D_8010FC14_chancetime = 0;
-s32 D_8010FC18_chancetime = 0;
-s32 D_8010FC1C_chancetime = 0;
+char *chancetime_reelAnimNameTbl[3] = { "mar_DEF", "rui_DEF", "pie_DEF" };
+char *chancetime_actionAnimNameTbl[3] = { "coin_all_DEF", "coin_x30_DEF", "coin_x20_DEF" }; /* Unreferenced. */
+s32 chancetime_reelStartCnt = 0;
+s32 chancetime_reelSeOnTbl[3] = { 0 };
+s32 chancetime_panelHopF = 0;
+s32 chancetime_unusedTbl[3] = { 0 }; /* Unreferenced. */
+s32 chancetime_introMesDoneF = 0;
+s32 chancetime_blockSpinDoneF = 0;
+s32 chancetime_transferDoneF = 0;
+s32 chancetime_blockSpinTimer = 0;
 
-void func_8010D320_chancetime(omObjData *object) {
-    ChanceTimeUnkFED0 *reel;
+void chancetime_ReelUpdate(omObjData *object) {
+    ChanceTimeReel *reel;
     s16 idx;
     s16 tmp;
     s8 i;
     s8 j;
 
     for (i = 0; i < 3; i++) {
-        reel = &D_8010FED0_chancetime[i];
+        reel = &chancetime_reelTbl[i];
         if (reel->unk00 == 4) {
-            reel->unk04 += D_8010FD08_chancetime[D_8010FBF0_chancetime - 1].accel;
-            reel->unk04 = (reel->unk04 > D_8010FD08_chancetime[D_8010FBF0_chancetime - 1].max)
-                              ? D_8010FD08_chancetime[D_8010FBF0_chancetime - 1].max
+            reel->unk04 += chancetime_reelSpeedTbl[chancetime_reelStartCnt - 1].accel;
+            reel->unk04 = (reel->unk04 > chancetime_reelSpeedTbl[chancetime_reelStartCnt - 1].max)
+                              ? chancetime_reelSpeedTbl[chancetime_reelStartCnt - 1].max
                               : reel->unk04;
         }
         if (reel->unk00 == 1) {
@@ -432,92 +432,92 @@ void func_8010D320_chancetime(omObjData *object) {
             tmp = reel->unk10 + (s32)(reel->unk08 / 100.0f) - 2;
             tmp = (tmp < 0) ? reel->unk1A + tmp : tmp;
             tmp = (tmp < reel->unk1A) ? tmp : tmp - reel->unk1A;
-            D_801100DD_chancetime[i] = reel->unk1B[tmp];
+            chancetime_blockResultTbl[i] = reel->unk1B[tmp];
             reel->unk00 = 0;
         }
-        Hu3DModelPosSet(object->model[i + 1], D_8010FD38_chancetime[i].x,
-                        D_8010FD38_chancetime[i].y - reel->unk08, D_8010FD38_chancetime[i].z);
+        Hu3DModelPosSet(object->model[i + 1], chancetime_reelPosTbl[i].x,
+                        chancetime_reelPosTbl[i].y - reel->unk08, chancetime_reelPosTbl[i].z);
     }
 }
 
-void func_8010D6A4_chancetime(s8 arg0) {
+void chancetime_ReelStart(s8 arg0) {
     s8 i;
     s8 j;
 
-    D_8010FBF0_chancetime++;
-    switch (D_8010FBF0_chancetime) {
+    chancetime_reelStartCnt++;
+    switch (chancetime_reelStartCnt) {
         case 1:
-            D_8010FF48_chancetime[0] = HuAudFXPlay(0x4F9);
-            D_8010FBF4_chancetime[0] = 1;
+            chancetime_reelSeTbl[0] = HuAudFXPlay(0x4F9);
+            chancetime_reelSeOnTbl[0] = 1;
             break;
         case 2:
-            D_8010FF48_chancetime[1] = HuAudFXPlay(0x4FA);
-            D_8010FBF4_chancetime[1] = 1;
+            chancetime_reelSeTbl[1] = HuAudFXPlay(0x4FA);
+            chancetime_reelSeOnTbl[1] = 1;
             break;
         case 3:
-            D_8010FF48_chancetime[2] = HuAudFXPlay(0x4FB);
-            D_8010FBF4_chancetime[2] = 1;
+            chancetime_reelSeTbl[2] = HuAudFXPlay(0x4FB);
+            chancetime_reelSeOnTbl[2] = 1;
             break;
     }
-    D_8010FED0_chancetime[arg0].unk00 = 4;
-    if (arg0 < 2 && D_801100DD_chancetime[1 - arg0] != -1) {
+    chancetime_reelTbl[arg0].unk00 = 4;
+    if (arg0 < 2 && chancetime_blockResultTbl[1 - arg0] != -1) {
         j = 0;
         for (i = 0; i < 4; i++) {
-            if (D_801100DD_chancetime[1 - arg0] != GwPlayer[D_801100D0_chancetime[i]].chr) {
-                D_8010FED0_chancetime[arg0].unk1B[j] = GwPlayer[D_801100D0_chancetime[i]].chr;
+            if (chancetime_blockResultTbl[1 - arg0] != GwPlayer[chancetime_playerOrderTbl[i]].chr) {
+                chancetime_reelTbl[arg0].unk1B[j] = GwPlayer[chancetime_playerOrderTbl[i]].chr;
                 j++;
             }
         }
-        D_8010FED0_chancetime[arg0].unk1A = 3;
+        chancetime_reelTbl[arg0].unk1A = 3;
         for (i = 0; i < 3; i++) {
-            Hu3DAnmNoSet(D_8010FED0_chancetime[arg0].unk14[i], D_8010FED0_chancetime[arg0].unk1B[2 - i]);
+            Hu3DAnmNoSet(chancetime_reelTbl[arg0].unk14[i], chancetime_reelTbl[arg0].unk1B[2 - i]);
         }
     }
-    func_8010DB1C_chancetime(arg0);
+    chancetime_ReelDispOn(arg0);
 }
 
-void func_8010D92C_chancetime(s8 arg0) {
-    switch (D_8010FBF0_chancetime) {
+void chancetime_ReelStop(s8 arg0) {
+    switch (chancetime_reelStartCnt) {
         case 1:
-            if (D_8010FBF4_chancetime[0] == 1) {
-                HuAudFXStop((s16)D_8010FF48_chancetime[0]);
+            if (chancetime_reelSeOnTbl[0] == 1) {
+                HuAudFXStop((s16)chancetime_reelSeTbl[0]);
             }
             HuAudFXPlay(0x4FC);
             break;
         case 2:
-            if (D_8010FBF4_chancetime[1] == 1) {
-                HuAudFXStop((s16)D_8010FF48_chancetime[1]);
+            if (chancetime_reelSeOnTbl[1] == 1) {
+                HuAudFXStop((s16)chancetime_reelSeTbl[1]);
             }
             HuAudFXPlay(0x4FD);
             break;
         case 3:
-            if (D_8010FBF4_chancetime[2] == 1) {
-                HuAudFXStop((s16)D_8010FF48_chancetime[2]);
+            if (chancetime_reelSeOnTbl[2] == 1) {
+                HuAudFXStop((s16)chancetime_reelSeTbl[2]);
             }
             HuAudFXPlay(0x4FE);
             break;
     }
-    D_8010FED0_chancetime[arg0].unk00 = 1;
+    chancetime_reelTbl[arg0].unk00 = 1;
 }
 
-void func_8010DA24_chancetime(void) {
+void chancetime_PanelDropStart(void) {
     s32 i;
 
-    D_8010FB80_chancetime = 1;
-    D_8010FB81_chancetime = 0;
+    chancetime_panelDropF = 1;
+    chancetime_panelLandF = 0;
     for (i = 0; i < 3; i++) {
-        espDispOn(D_8010FE94_chancetime[i]);
+        espDispOn(chancetime_blockHatenaSprTbl[i]);
     }
-    espDispOn(D_8010FE9A_chancetime);
-    D_801100CC_chancetime = func_8010C610_chancetime;
+    espDispOn(chancetime_panelFrameSpr);
+    chancetime_blockFunc = chancetime_PanelDrop;
 }
 
-s32 func_8010DAA4_chancetime(void) {
-    return D_8010FB81_chancetime;
+s32 chancetime_PanelLandCheck(void) {
+    return chancetime_panelLandF;
 }
 
-void func_8010DAB0_chancetime(void) {
-    omObjData *obj = D_801100C8_chancetime;
+void chancetime_ReelDispOffAll(void) {
+    omObjData *obj = chancetime_blockObj;
     s8 i;
 
     for (i = 0; i < 3; i++) {
@@ -525,43 +525,43 @@ void func_8010DAB0_chancetime(void) {
     }
 }
 
-void func_8010DB1C_chancetime(s8 arg0) {
-    omObjData *obj = D_801100C8_chancetime;
+void chancetime_ReelDispOn(s8 arg0) {
+    omObjData *obj = chancetime_blockObj;
 
-    espDispOff(D_8010FE94_chancetime[arg0]);
+    espDispOff(chancetime_blockHatenaSprTbl[arg0]);
     Hu3DModelAttrSet(obj->model[arg0 + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
 }
 
-void func_8010DB78_chancetime(void) {
-    D_8010FEC4_chancetime = 0;
-    D_8010FEC8_chancetime = 1;
-    D_8010FEC9_chancetime = 0;
+void chancetime_UnusedFlagOn(void) {
+    chancetime_unusedCnt = 0;
+    chancetime_unusedOnF = 1;
+    chancetime_unusedOffF = 0;
 }
 
-void func_8010DB98_chancetime(void) {
-    D_8010FEC8_chancetime = 0;
-    D_8010FEC9_chancetime = 1;
+void chancetime_UnusedFlagOff(void) {
+    chancetime_unusedOnF = 0;
+    chancetime_unusedOffF = 1;
 }
 
-void func_8010DBB0_chancetime(void) {
+void chancetime_EventProc(void) {
     omObjData *obj;
     HmfModel *model;
     s16 sprId;
     s8 i;
 
     obj = omAddObj(0x14, 0x15, 0, -1, NULL);
-    D_80110080_chancetime = obj;
+    chancetime_eventObj = obj;
     model = &Hu3DData[HuSprBGHookMdl];
     model->unk00 = (model->unk00 & 0xF9) | 3;
     Hu3DModelCameraSet(HuSprBGHookMdl, 2);
     sprId = HuSprAnimDataRead(0x210026);
     for (i = 0; i < 20; i++) {
-        D_80110028_chancetime[i] = espEntry(sprId, 0, 1);
-        espPriSet(D_80110028_chancetime[i], 0);
-        espDispOff(D_80110028_chancetime[i]);
-        espBankSet(D_80110028_chancetime[i], 0, 0);
-        espAnimModeSet(D_80110028_chancetime[i], 1);
-        espScaleSet(D_80110028_chancetime[i], 0.5f, 0.5f);
+        chancetime_coinSprTbl[i] = espEntry(sprId, 0, 1);
+        espPriSet(chancetime_coinSprTbl[i], 0);
+        espDispOff(chancetime_coinSprTbl[i]);
+        espBankSet(chancetime_coinSprTbl[i], 0, 0);
+        espAnimModeSet(chancetime_coinSprTbl[i], 1);
+        espScaleSet(chancetime_coinSprTbl[i], 0.5f, 0.5f);
     }
     obj->model[1] = Hu3DModelRead3(0x1301CC, 0x2B9);
     Hu3DModelScaleSet(obj->model[1], 0.5f, 0.5f, 0.5f);
@@ -576,44 +576,44 @@ void func_8010DBB0_chancetime(void) {
         Hu3DMotionAttrSet(obj->model[i + 1], 2, 2);
     }
     for (i = 0; i < 10; i++) {
-        D_80110010_chancetime[i] = EffectCreate(0xB0004, 0x6A9);
-        EffectParamSet(D_80110010_chancetime[i], 4.0f, 20.0f, 4.0f);
-        EffectRangeSet(D_80110010_chancetime[i], 60.0f);
-        Hu3DModelCameraSet(D_80110010_chancetime[i], 4);
-        Hu3DParticleAttrSet(D_80110010_chancetime[i], 1, 0);
-        Hu3DModelAttrSet(D_80110010_chancetime[i], 4, 4);
+        chancetime_starEffTbl[i] = EffectCreate(0xB0004, 0x6A9);
+        EffectParamSet(chancetime_starEffTbl[i], 4.0f, 20.0f, 4.0f);
+        EffectRangeSet(chancetime_starEffTbl[i], 60.0f);
+        Hu3DModelCameraSet(chancetime_starEffTbl[i], 4);
+        Hu3DParticleAttrSet(chancetime_starEffTbl[i], 1, 0);
+        Hu3DModelAttrSet(chancetime_starEffTbl[i], 4, 4);
     }
-    D_80110004_chancetime = HuWinExCreateStyled(100, 160, 14);
-    HuWinExPriSet((s16)D_80110004_chancetime, 5);
-    if (!(GwPlayer[D_801100D0_chancetime[0]].stat & 1)) {
-        HuWinActivePlayerSet((s16)D_80110004_chancetime, 1 << GwPlayer[D_801100D0_chancetime[0]].pad);
+    chancetime_eventWin = HuWinExCreateStyled(100, 160, 14);
+    HuWinExPriSet((s16)chancetime_eventWin, 5);
+    if (!(GwPlayer[chancetime_playerOrderTbl[0]].stat & 1)) {
+        HuWinActivePlayerSet((s16)chancetime_eventWin, 1 << GwPlayer[chancetime_playerOrderTbl[0]].pad);
     }
-    omPrcSetDestructor(0, func_8010DF68_chancetime);
-    D_80110084_chancetime = func_8010DF70_chancetime;
+    omPrcSetDestructor(0, chancetime_EventDestroy);
+    chancetime_eventFunc = chancetime_EventIdle;
     while (TRUE) {
-        D_80110084_chancetime(obj);
+        chancetime_eventFunc(obj);
         HuPrcVSleep();
     }
 }
 
-void func_8010DF68_chancetime(void) {
+void chancetime_EventDestroy(void) {
 }
 
-void func_8010DF70_chancetime(void) {
+void chancetime_EventIdle(void) {
 }
 
-void func_8010DF78_chancetime(s32 arg0) {
-    D_8010FC14_chancetime = 0;
-    D_80110008_chancetime = (s8)arg0;
-    D_80110084_chancetime = func_8010DFA4_chancetime;
+void chancetime_BlockSpinStart(s32 arg0) {
+    chancetime_blockSpinDoneF = 0;
+    chancetime_blockSpinNo = (s8)arg0;
+    chancetime_eventFunc = chancetime_BlockSpinMesExec;
 }
 
-void func_8010DFA4_chancetime(void) {
-    s32 index = D_80110008_chancetime;
+void chancetime_BlockSpinMesExec(void) {
+    s32 index = chancetime_blockSpinNo;
 
-    HuWinHomeClear(D_80110004_chancetime);
-    if (GwPlayer[D_801100D0_chancetime[0]].stat & 1) {
-        HuWinAttrSet(D_80110004_chancetime, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
+    HuWinHomeClear(chancetime_eventWin);
+    if (GwPlayer[chancetime_playerOrderTbl[0]].stat & 1) {
+        HuWinAttrSet(chancetime_eventWin, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
         HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
         HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
@@ -622,94 +622,94 @@ void func_8010DFA4_chancetime(void) {
         HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
         HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
     }
-    func_80108B50_chancetime();
-    HuWinMesSet(D_80110004_chancetime, D_8010FD5C_chancetime[index], -1, -1);
-    HuWinExOpen(D_80110004_chancetime, 1);
-    while (HuWinStatGet(D_80110004_chancetime)) {
+    chancetime_HostTalkStart();
+    HuWinMesSet(chancetime_eventWin, chancetime_blockMesTbl[index], -1, -1);
+    HuWinExOpen(chancetime_eventWin, 1);
+    while (HuWinStatGet(chancetime_eventWin)) {
         HuPrcVSleep();
     }
-    HuWinExClose(D_80110004_chancetime, 1);
-    func_80108A88_chancetime();
-    if (GwPlayer[D_801100D0_chancetime[0]].stat & 1) {
+    HuWinExClose(chancetime_eventWin, 1);
+    chancetime_HostTalkEnd();
+    if (GwPlayer[chancetime_playerOrderTbl[0]].stat & 1) {
         HuWinComKeyReset();
     }
-    D_80110000_chancetime = index;
-    D_80110084_chancetime = func_8010E1E0_chancetime;
+    chancetime_reelStartNo = index;
+    chancetime_eventFunc = chancetime_BlockSpinReelStart;
 }
 
-void func_8010E1E0_chancetime(void) {
-    func_8010D6A4_chancetime(D_80110000_chancetime);
-    D_80110084_chancetime = func_8010E210_chancetime;
+void chancetime_BlockSpinReelStart(void) {
+    chancetime_ReelStart(chancetime_reelStartNo);
+    chancetime_eventFunc = chancetime_BlockSpinWait;
 }
 
-void func_8010E210_chancetime(void) {
-    D_8010FC1C_chancetime++;
-    if (D_8010FC1C_chancetime < 10) {
+void chancetime_BlockSpinWait(void) {
+    chancetime_blockSpinTimer++;
+    if (chancetime_blockSpinTimer < 10) {
         return;
     }
-    D_8010FC14_chancetime = 1;
-    D_8010FC1C_chancetime = 0;
-    D_80110084_chancetime = func_8010DF70_chancetime;
+    chancetime_blockSpinDoneF = 1;
+    chancetime_blockSpinTimer = 0;
+    chancetime_eventFunc = chancetime_EventIdle;
 }
 
-s32 func_8010E258_chancetime(void) {
-    return D_8010FC14_chancetime;
+s32 chancetime_BlockSpinCheck(void) {
+    return chancetime_blockSpinDoneF;
 }
 
-void func_8010E264_chancetime(void) {
-    D_8010FC18_chancetime = 0;
-    D_80110084_chancetime = func_8010E280_chancetime;
+void chancetime_TransferStart(void) {
+    chancetime_transferDoneF = 0;
+    chancetime_eventFunc = chancetime_TransferExec;
 }
 
-void func_8010E280_chancetime(omObjData *object) {
+void chancetime_TransferExec(omObjData *object) {
     s32 players[2];
     s32 i;
     s32 j;
-    s32 coins = GwPlayer[D_801100D0_chancetime[0]].coin;
-    s32 stars = GwPlayer[D_801100D0_chancetime[0]].star;
+    s32 coins = GwPlayer[chancetime_playerOrderTbl[0]].coin;
+    s32 stars = GwPlayer[chancetime_playerOrderTbl[0]].star;
 
     for (i = 0; i < 2; i++) {
         for (j = 0; j < 4; j++) {
-            if (D_801100DD_chancetime[i] == GwPlayer[j].chr) {
+            if (chancetime_blockResultTbl[i] == GwPlayer[j].chr) {
                 players[i] = j;
                 break;
             }
         }
     }
 
-    func_8010F984_chancetime(object);
+    chancetime_TransferMesExec(object);
     HuPrcSleep(10);
-    D_8010FAE4_chancetime = 1;
+    chancetime_statusVsF = 1;
     MBStatusCreateHidden(players[0], players[1]);
     MBStatusItemDispOff();
     MBStatusVsPlayerSet(players[0], players[1]);
     MBStatusVsAMove();
     MBStatusVsBMove();
     HuPrcSleep(40);
-    func_8010E4D0_chancetime(object);
-    if (coins + 1 == GwPlayer[D_801100D0_chancetime[0]].coin) {
-        func_8010705C_chancetime();
-    } else if (coins < GwPlayer[D_801100D0_chancetime[0]].coin) {
-        func_80106F10_chancetime();
-    } else if (stars < GwPlayer[D_801100D0_chancetime[0]].star) {
-        func_80106F10_chancetime();
-    } else if (GwPlayer[D_801100D0_chancetime[0]].coin < coins) {
-        func_801071A8_chancetime();
-    } else if (GwPlayer[D_801100D0_chancetime[0]].star < stars) {
-        func_801071A8_chancetime();
+    chancetime_TransferAnimExec(object);
+    if (coins + 1 == GwPlayer[chancetime_playerOrderTbl[0]].coin) {
+        chancetime_PlayerNeutralExec();
+    } else if (coins < GwPlayer[chancetime_playerOrderTbl[0]].coin) {
+        chancetime_PlayerJoyExec();
+    } else if (stars < GwPlayer[chancetime_playerOrderTbl[0]].star) {
+        chancetime_PlayerJoyExec();
+    } else if (GwPlayer[chancetime_playerOrderTbl[0]].coin < coins) {
+        chancetime_PlayerSadExec();
+    } else if (GwPlayer[chancetime_playerOrderTbl[0]].star < stars) {
+        chancetime_PlayerSadExec();
     } else {
-        func_8010705C_chancetime();
+        chancetime_PlayerNeutralExec();
     }
     HuPrcSleep(30);
-    D_8010FC18_chancetime = 1;
-    D_80110084_chancetime = func_8010DF70_chancetime;
+    chancetime_transferDoneF = 1;
+    chancetime_eventFunc = chancetime_EventIdle;
 }
 
-s32 func_8010E4C4_chancetime(void) {
-    return D_8010FC18_chancetime;
+s32 chancetime_TransferCheck(void) {
+    return chancetime_transferDoneF;
 }
 
-void func_8010E4D0_chancetime(omObjData *object) {
+void chancetime_TransferAnimExec(omObjData *object) {
     f32 coinsF[2];
     f32 starsF[2];
     s32 players[2];
@@ -738,8 +738,8 @@ void func_8010E4D0_chancetime(omObjData *object) {
 
     for (i = 0; i < 2; i++) {
         for (j = 0; j < 4; j++) {
-            if (D_801100DD_chancetime[i] == GwPlayer[D_801100D0_chancetime[j]].chr) {
-                players[i] = D_801100D0_chancetime[j];
+            if (chancetime_blockResultTbl[i] == GwPlayer[chancetime_playerOrderTbl[j]].chr) {
+                players[i] = chancetime_playerOrderTbl[j];
                 break;
             }
         }
@@ -749,11 +749,11 @@ void func_8010E4D0_chancetime(omObjData *object) {
         starsF[i] = GwPlayer[players[i]].star;
     }
 
-    coins = D_8010FD68_chancetime[D_801100DF_chancetime].coins;
+    coins = chancetime_actionAmountTbl[chancetime_actionNo].coins;
     // Set but unused; its pseudo orders the coins/stars loads and adds the spill slot at 0x70.
     coinAmount = coins;
     (void)coinAmount;
-    stars = D_8010FD68_chancetime[D_801100DF_chancetime].stars;
+    stars = chancetime_actionAmountTbl[chancetime_actionNo].stars;
     if (coins > 0) {
         if (GwPlayer[players[0]].coin < coins) {
             coins = GwPlayer[players[0]].coin;
@@ -791,8 +791,8 @@ void func_8010E4D0_chancetime(omObjData *object) {
     delay = (delay < 5) ? 5 : delay;
 
     for (i = 0; i < 20; i++) {
-        D_8010FF60_chancetime[i].state = 0;
-        D_8010FF60_chancetime[i].timer = 0;
+        chancetime_transferTbl[i].state = 0;
+        chancetime_transferTbl[i].timer = 0;
     }
 
     frame = 0;
@@ -800,11 +800,11 @@ void func_8010E4D0_chancetime(omObjData *object) {
     finished = 0;
     while (finished < count) {
         for (i = 0; i < 20; i++) {
-            switch (D_8010FF60_chancetime[i].state) {
+            switch (chancetime_transferTbl[i].state) {
                 case 0:
                     if (delay < frame) {
                         if (launched < count) {
-                            D_8010FF60_chancetime[i].state = 1;
+                            chancetime_transferTbl[i].state = 1;
                             frame = 0;
                             launched++;
                             if (!isStars) {
@@ -830,24 +830,24 @@ void func_8010E4D0_chancetime(omObjData *object) {
                     break;
                 case 1:
                     if (!isStars) {
-                        espDispOn(D_80110028_chancetime[i]);
-                        espAnimModeSet(D_80110028_chancetime[i], 1);
-                        espBankSet(D_80110028_chancetime[i], 0, 0);
-                        espPosSet(D_80110028_chancetime[i], 80, 74.0f - offsetY);
+                        espDispOn(chancetime_coinSprTbl[i]);
+                        espAnimModeSet(chancetime_coinSprTbl[i], 1);
+                        espBankSet(chancetime_coinSprTbl[i], 0, 0);
+                        espPosSet(chancetime_coinSprTbl[i], 80, 74.0f - offsetY);
                     } else {
                         Hu3DModelAttrSet(object->model[i + 1], 4, 0);
-                        Hu3DModelAttrSet(D_80110010_chancetime[i], 4, 0);
-                        Hu3DParticleAttrSet(D_80110010_chancetime[i], 1, 1);
+                        Hu3DModelAttrSet(chancetime_starEffTbl[i], 4, 0);
+                        Hu3DParticleAttrSet(chancetime_starEffTbl[i], 1, 1);
                         Hu3DModelPosSet(object->model[i + 1], -170.0f, 375.0f, 0.0f);
-                        EffectPosSet(D_80110010_chancetime[i], -170.0f, 375.0f, 0.0f);
+                        EffectPosSet(chancetime_starEffTbl[i], -170.0f, 375.0f, 0.0f);
                     }
-                    D_8010FF60_chancetime[i].timer = 0;
-                    D_8010FF60_chancetime[i].state = 3;
+                    chancetime_transferTbl[i].timer = 0;
+                    chancetime_transferTbl[i].state = 3;
                     break;
                 case 2:
-                    D_8010FF60_chancetime[i].state = 0;
+                    chancetime_transferTbl[i].state = 0;
                     if (!isStars) {
-                        espDispOff(D_80110028_chancetime[i]);
+                        espDispOff(chancetime_coinSprTbl[i]);
                         gained += step;
                         value = gained + coinsF[1];
                         if (value <= 999.0f) {
@@ -858,7 +858,7 @@ void func_8010E4D0_chancetime(omObjData *object) {
                         HuAudFXPlay(0x106);
                     } else {
                         Hu3DModelAttrSet(object->model[i + 1], 4, 4);
-                        Hu3DParticleAttrSet(D_80110010_chancetime[i], 1, 0);
+                        Hu3DParticleAttrSet(chancetime_starEffTbl[i], 1, 0);
                         gained += step;
                         value = gained + starsF[1];
                         if (value <= 99.0f) {
@@ -871,16 +871,16 @@ void func_8010E4D0_chancetime(omObjData *object) {
                     finished++;
                     break;
                 case 3:
-                    timer = D_8010FF60_chancetime[i].timer;
+                    timer = chancetime_transferTbl[i].timer;
                     if (!isStars) {
                         x = timer * 8.5f;
                         s = sindf(timer * 9.0f);
                         y = s * 32.0f;
-                        espPosSet(D_80110028_chancetime[i], x + 80.0f, 74.0f - y - offsetY);
-                        espScaleSet(D_80110028_chancetime[i], s * 0.5f + 0.5f, s * 0.5f + 0.5f);
-                        D_8010FF60_chancetime[i].timer++;
+                        espPosSet(chancetime_coinSprTbl[i], x + 80.0f, 74.0f - y - offsetY);
+                        espScaleSet(chancetime_coinSprTbl[i], s * 0.5f + 0.5f, s * 0.5f + 0.5f);
+                        chancetime_transferTbl[i].timer++;
                         if (timer >= 20) {
-                            D_8010FF60_chancetime[i].state = 2;
+                            chancetime_transferTbl[i].state = 2;
                         }
                     } else {
                         x = timer * 9.25f;
@@ -888,14 +888,14 @@ void func_8010E4D0_chancetime(omObjData *object) {
                         s = sindf(t * 4.5f);
                         y = s * 88.0f;
                         Hu3DModelPosSet(object->model[i + 1], x + -170.0f, y + 375.0f, 0.0f);
-                        EffectPosSet(D_80110010_chancetime[i], x + -170.0f, y + 375.0f, 0.0f);
+                        EffectPosSet(chancetime_starEffTbl[i], x + -170.0f, y + 375.0f, 0.0f);
                         scale = s * 0.5f + 0.5f;
                         Hu3DModelScaleSet(object->model[i + 1], scale, scale, scale);
                         Hu3DModelRotSet(object->model[i + 1], 0.0f, t * 15.0f, 0.0f);
-                        EffectParamSet(D_80110010_chancetime[i], s + s + 4.0f, 20.0f, s + s + 4.0f);
-                        D_8010FF60_chancetime[i].timer++;
+                        EffectParamSet(chancetime_starEffTbl[i], s + s + 4.0f, 20.0f, s + s + 4.0f);
+                        chancetime_transferTbl[i].timer++;
                         if (timer >= 40) {
-                            D_8010FF60_chancetime[i].state = 2;
+                            chancetime_transferTbl[i].state = 2;
                         }
                     }
                     break;
@@ -936,15 +936,15 @@ void func_8010E4D0_chancetime(omObjData *object) {
     HuPrcSleep(30);
 }
 
-void func_8010F1DC_chancetime(void) {
-    D_8010FC10_chancetime = 0;
-    D_80110084_chancetime = func_8010F1F8_chancetime;
+void chancetime_IntroMesStart(void) {
+    chancetime_introMesDoneF = 0;
+    chancetime_eventFunc = chancetime_IntroMesExec;
 }
 
-void func_8010F1F8_chancetime(void) {
-    HuWinHomeClear(D_80110004_chancetime);
-    if (GwPlayer[D_801100D0_chancetime[0]].stat & 1) {
-        HuWinAttrSet(D_80110004_chancetime, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
+void chancetime_IntroMesExec(void) {
+    HuWinHomeClear(chancetime_eventWin);
+    if (GwPlayer[chancetime_playerOrderTbl[0]].stat & 1) {
+        HuWinAttrSet(chancetime_eventWin, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
         HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
         HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
@@ -953,50 +953,50 @@ void func_8010F1F8_chancetime(void) {
         HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
         HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
     }
-    func_80108B50_chancetime();
-    func_8010BF48_chancetime();
+    chancetime_HostTalkStart();
+    chancetime_HostTurn();
     HuAudFXPlay(0x298);
-    HuWinMesSet(D_80110004_chancetime, 0x1B00, -1, -1);
-    HuWinExOpen(D_80110004_chancetime, 1);
-    while (HuWinStatGet(D_80110004_chancetime)) {
+    HuWinMesSet(chancetime_eventWin, 0x1B00, -1, -1);
+    HuWinExOpen(chancetime_eventWin, 1);
+    while (HuWinStatGet(chancetime_eventWin)) {
         HuPrcVSleep();
     }
-    HuWinExClose(D_80110004_chancetime, 1);
-    func_80108A88_chancetime();
-    if (GwPlayer[D_801100D0_chancetime[0]].stat & 1) {
+    HuWinExClose(chancetime_eventWin, 1);
+    chancetime_HostTalkEnd();
+    if (GwPlayer[chancetime_playerOrderTbl[0]].stat & 1) {
         HuWinComKeyReset();
     }
-    D_80110084_chancetime = func_8010F42C_chancetime;
+    chancetime_eventFunc = chancetime_IntroMesEnd;
 }
 
-s32 func_8010F420_chancetime(void) {
-    return D_8010FC10_chancetime;
+s32 chancetime_IntroMesCheck(void) {
+    return chancetime_introMesDoneF;
 }
 
-void func_8010F42C_chancetime(void) {
-    D_8010FC10_chancetime = 1;
-    D_80110084_chancetime = func_8010DF70_chancetime;
+void chancetime_IntroMesEnd(void) {
+    chancetime_introMesDoneF = 1;
+    chancetime_eventFunc = chancetime_EventIdle;
 }
 
-void func_8010F44C_chancetime(s32 arg0, s32 arg1, s32 arg2) {
+void chancetime_ResultMesExec(s32 arg0, s32 arg1, s32 arg2) {
     u32 mes;
     s32 i;
 
     for (i = 0; i < 2; i++) {
-        HuWinInsertMesSet(D_80110004_chancetime, D_8010FE1C_chancetime[D_801100DD_chancetime[i]], i);
+        HuWinInsertMesSet(chancetime_eventWin, chancetime_chrNameMesTbl[chancetime_blockResultTbl[i]], i);
     }
-    if (D_801100DF_chancetime < 5) {
-        if (D_8010FDF8_chancetime[D_801100DF_chancetime] != 0) {
-            HuWinInsertMesSet(D_80110004_chancetime, D_8010FDF8_chancetime[D_801100DF_chancetime], 2);
+    if (chancetime_actionNo < 5) {
+        if (chancetime_actionAmountMesTbl[chancetime_actionNo] != 0) {
+            HuWinInsertMesSet(chancetime_eventWin, chancetime_actionAmountMesTbl[chancetime_actionNo], 2);
         }
     } else {
-        if (D_8010FDF8_chancetime[D_801100DF_chancetime] != 0) {
-            HuWinInsertMesSet(D_80110004_chancetime, D_8010FDF8_chancetime[D_801100DF_chancetime], 3);
+        if (chancetime_actionAmountMesTbl[chancetime_actionNo] != 0) {
+            HuWinInsertMesSet(chancetime_eventWin, chancetime_actionAmountMesTbl[chancetime_actionNo], 3);
         }
     }
-    HuWinHomeClear(D_80110004_chancetime);
-    if (GwPlayer[D_801100D0_chancetime[0]].stat & 1) {
-        HuWinAttrSet(D_80110004_chancetime, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
+    HuWinHomeClear(chancetime_eventWin);
+    if (GwPlayer[chancetime_playerOrderTbl[0]].stat & 1) {
+        HuWinAttrSet(chancetime_eventWin, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
         HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
         HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
@@ -1005,14 +1005,14 @@ void func_8010F44C_chancetime(s32 arg0, s32 arg1, s32 arg2) {
         HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
         HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
     }
-    func_80108B50_chancetime();
-    HuWinMesSet(D_80110004_chancetime, D_8010FD8C_chancetime[arg0], -1, -1);
-    HuWinExOpen(D_80110004_chancetime, 1);
-    while (HuWinStatGet(D_80110004_chancetime)) {
+    chancetime_HostTalkStart();
+    HuWinMesSet(chancetime_eventWin, chancetime_actionMesTbl[arg0], -1, -1);
+    HuWinExOpen(chancetime_eventWin, 1);
+    while (HuWinStatGet(chancetime_eventWin)) {
         HuPrcVSleep();
     }
-    if (GwPlayer[D_801100D0_chancetime[0]].stat & 1) {
-        HuWinAttrSet(D_80110004_chancetime, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
+    if (GwPlayer[chancetime_playerOrderTbl[0]].stat & 1) {
+        HuWinAttrSet(chancetime_eventWin, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
         HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
         HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
@@ -1023,35 +1023,35 @@ void func_8010F44C_chancetime(s32 arg0, s32 arg1, s32 arg2) {
     }
     if (arg2 < arg1) {
         if (arg2 > 0) {
-            mes = D_8010FDB0_chancetime[arg0];
+            mes = chancetime_actionShortMesTbl[arg0];
             if (mes != 0) {
-                HuWinExClose(D_80110004_chancetime, 1);
-                HuWinMesSet(D_80110004_chancetime, mes, -1, -1);
+                HuWinExClose(chancetime_eventWin, 1);
+                HuWinMesSet(chancetime_eventWin, mes, -1, -1);
                 HuAudFXPlay(0x29A);
-                HuWinExOpen(D_80110004_chancetime, 1);
-                while (HuWinStatGet(D_80110004_chancetime)) {
+                HuWinExOpen(chancetime_eventWin, 1);
+                while (HuWinStatGet(chancetime_eventWin)) {
                     HuPrcVSleep();
                 }
             }
         } else {
-            HuWinExClose(D_80110004_chancetime, 1);
-            HuWinMesSet(D_80110004_chancetime, D_8010FDD4_chancetime[arg0], -1, -1);
+            HuWinExClose(chancetime_eventWin, 1);
+            HuWinMesSet(chancetime_eventWin, chancetime_actionNoneMesTbl[arg0], -1, -1);
             HuAudFXPlay(0x29A);
-            HuWinExOpen(D_80110004_chancetime, 1);
-            while (HuWinStatGet(D_80110004_chancetime)) {
+            HuWinExOpen(chancetime_eventWin, 1);
+            while (HuWinStatGet(chancetime_eventWin)) {
                 HuPrcVSleep();
             }
         }
     }
-    HuWinExClose(D_80110004_chancetime, 1);
-    func_80108A88_chancetime();
-    if (GwPlayer[D_801100D0_chancetime[0]].stat & 1) {
+    HuWinExClose(chancetime_eventWin, 1);
+    chancetime_HostTalkEnd();
+    if (GwPlayer[chancetime_playerOrderTbl[0]].stat & 1) {
         HuWinComKeyReset();
     }
-    D_80110084_chancetime = func_8010E1E0_chancetime;
+    chancetime_eventFunc = chancetime_BlockSpinReelStart;
 }
 
-void func_8010F984_chancetime(omObjData *object) {
+void chancetime_TransferMesExec(omObjData *object) {
     s32 players[4];
     s32 i;
     s32 j;
@@ -1063,16 +1063,16 @@ void func_8010F984_chancetime(omObjData *object) {
 
     for (i = 0; i < 2; i++) {
         for (j = 0; j < 4; j++) {
-            if (D_801100DD_chancetime[i] == GwPlayer[D_801100D0_chancetime[j]].chr) {
-                players[i] = D_801100D0_chancetime[j];
+            if (chancetime_blockResultTbl[i] == GwPlayer[chancetime_playerOrderTbl[j]].chr) {
+                players[i] = chancetime_playerOrderTbl[j];
                 break;
             }
         }
     }
 
-    coins = D_8010FE3C_chancetime[D_801100DF_chancetime].coins;
-    coinAmount = D_8010FE3C_chancetime[D_801100DF_chancetime].coins;
-    starAmount = D_8010FE3C_chancetime[D_801100DF_chancetime].stars;
+    coins = chancetime_actionMesAmountTbl[chancetime_actionNo].coins;
+    coinAmount = chancetime_actionMesAmountTbl[chancetime_actionNo].coins;
+    starAmount = chancetime_actionMesAmountTbl[chancetime_actionNo].stars;
     stars = starAmount;
     if (coinAmount > 0) {
         if (GwPlayer[players[0]].coin < coinAmount) {
@@ -1087,25 +1087,25 @@ void func_8010F984_chancetime(omObjData *object) {
     }
 
     if (!isStars) {
-        func_8010F44C_chancetime(D_801100DF_chancetime, coinAmount, coins);
+        chancetime_ResultMesExec(chancetime_actionNo, coinAmount, coins);
     } else {
-        func_8010F44C_chancetime(D_801100DF_chancetime, starAmount, stars);
+        chancetime_ResultMesExec(chancetime_actionNo, starAmount, stars);
     }
 }
 
-const ChanceTimeReelSpeed D_8010FD08_chancetime[3] = { { 10.0f, 10.0f }, { 20.0f, 20.0f }, { 40.0f, 40.0f } };
+const ChanceTimeReelSpeed chancetime_reelSpeedTbl[3] = { { 10.0f, 10.0f }, { 20.0f, 20.0f }, { 40.0f, 40.0f } };
 
-const s32 D_8010FD20_chancetime[6] = { 125, 71, 198, 71, 161, 141 }; /* Unreferenced. */
+const s32 chancetime_unusedSprPosTbl[6] = { 125, 71, 198, 71, 161, 141 }; /* Unreferenced. */
 
-const Vec D_8010FD38_chancetime[3] = {
+const Vec chancetime_reelPosTbl[3] = {
     { -111.0f, 486.0f, -541.0f },
     { 119.0f, 486.0f, -541.0f },
     { 3.0f, 265.0f, -541.0f },
 };
 
-const u32 D_8010FD5C_chancetime[3] = { 0x1B01, 0x1B02, 0x1B03 };
+const u32 chancetime_blockMesTbl[3] = { 0x1B01, 0x1B02, 0x1B03 };
 
-const ChanceTimeUnkFE3C D_8010FD68_chancetime[9] = {
+const ChanceTimeAmount chancetime_actionAmountTbl[9] = {
     { 1000, 0 },
     { 30, 0 },
     { 20, 0 },
@@ -1117,17 +1117,17 @@ const ChanceTimeUnkFE3C D_8010FD68_chancetime[9] = {
     { 0, 1 },
 };
 
-const u32 D_8010FD8C_chancetime[9] = { 0x1B0C, 0x1B06, 0x1B06, 0x1B06, 0x1B04, 0x1B0E, 0x1B09, 0x1B09, 0x1B09 };
+const u32 chancetime_actionMesTbl[9] = { 0x1B0C, 0x1B06, 0x1B06, 0x1B06, 0x1B04, 0x1B0E, 0x1B09, 0x1B09, 0x1B09 };
 
-const u32 D_8010FDB0_chancetime[9] = { 0, 0x1B07, 0x1B07, 0x1B07, 0, 0, 0x1B0A, 0x1B0A, 0x1B0A };
+const u32 chancetime_actionShortMesTbl[9] = { 0, 0x1B07, 0x1B07, 0x1B07, 0, 0, 0x1B0A, 0x1B0A, 0x1B0A };
 
-const u32 D_8010FDD4_chancetime[9] = { 0x1B0D, 0x1B08, 0x1B08, 0x1B08, 0x1B05, 0x1B0F, 0x1B0B, 0x1B0B, 0x1B0B };
+const u32 chancetime_actionNoneMesTbl[9] = { 0x1B0D, 0x1B08, 0x1B08, 0x1B08, 0x1B05, 0x1B0F, 0x1B0B, 0x1B0B, 0x1B0B };
 
-const u32 D_8010FDF8_chancetime[9] = { 0, 0x1B1A, 0x1B19, 0x1B18, 0, 0, 0x1B1D, 0x1B1C, 0x1B1B };
+const u32 chancetime_actionAmountMesTbl[9] = { 0, 0x1B1A, 0x1B19, 0x1B18, 0, 0, 0x1B1D, 0x1B1C, 0x1B1B };
 
-const u32 D_8010FE1C_chancetime[8] = { 0x1B10, 0x1B11, 0x1B12, 0x1B13, 0x1B14, 0x1B15, 0x1B16, 0x1B17 };
+const u32 chancetime_chrNameMesTbl[8] = { 0x1B10, 0x1B11, 0x1B12, 0x1B13, 0x1B14, 0x1B15, 0x1B16, 0x1B17 };
 
-const ChanceTimeUnkFE3C D_8010FE3C_chancetime[9] = {
+const ChanceTimeAmount chancetime_actionMesAmountTbl[9] = {
     { 1000, 0 },
     { 30, 0 },
     { 20, 0 },

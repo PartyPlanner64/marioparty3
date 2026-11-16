@@ -282,8 +282,8 @@ D_80109EEE_hey_batter_batter = heyBatterBatterBssEE4 + 0xA;
 /* dorrie_dip: low halfword of the s32 player index at D_8010A1FC. */
 D_8010A1FE_dorrie_dip = D_8010A1FC_dorrie_dip + 0x2;
 /* koopa: under-aligned u8 array after the s16 window table. */
-D_80109518_koopa = koopaBss9518;
-D_8010954A_koopa = koopaBss9518 + 0x32;
+koopa_rouletteWinTbl = koopa_rouletteWork;
+koopa_rouletteEventTbl = koopa_rouletteWork + 0x32;
 
 /* opening: per-field views into the OpObj array (stride 0x3C). */
 D_8011738C_opening = D_80117388_opening + 0x4;
@@ -545,14 +545,14 @@ D_80119EFA_duel04 = mbd4_comLink3RevIdxTbl - 0x2;
 /* duel06: misaligned BSS */
 mbd6_switchMot = mbd6_switchMdlTbl + 0xA;
 
-/* chancetime: chanceTimeBssFE78 and chanceTimeBss00DC fields, D_8010FED0_chancetime[2] fields. */
-D_8010FE78_chancetime = chanceTimeBssFE78;
-D_8010FE7A_chancetime = chanceTimeBssFE78 + 0x2;
-D_801100DC_chancetime = chanceTimeBss00DC;
-D_801100DD_chancetime = chanceTimeBss00DC + 0x1;
-D_801100DF_chancetime = chanceTimeBss00DC + 0x3;
-D_8010FF3A_chancetime = D_8010FED0_chancetime + 0x6A;
-D_8010FF3B_chancetime = D_8010FED0_chancetime + 0x6B;
+/* chancetime: chancetime_hitWork and chancetime_resultWork fields, chancetime_reelTbl[2] fields. */
+chancetime_hitBlockNo = chancetime_hitWork;
+chancetime_playerAnimTbl = chancetime_hitWork + 0x2;
+chancetime_turnTier = chancetime_resultWork;
+chancetime_blockResultTbl = chancetime_resultWork + 0x1;
+chancetime_actionNo = chancetime_resultWork + 0x3;
+chancetime_actionReelItemNum = chancetime_reelTbl + 0x6A;
+chancetime_actionReelItemTbl = chancetime_reelTbl + 0x6B;
 
 /* mgmode: mgmodeBssB3E4 and mgmodeBssB434 fields, D_8011B780_mgmode[] and D_8011B8A8_mgmode[] entries. */
 D_8011B3E4_mgmode = mgmodeBssB3E4;

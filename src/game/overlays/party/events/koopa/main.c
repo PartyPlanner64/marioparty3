@@ -13,12 +13,12 @@
 #include "game/overlays/party/common/item.h"
 #include "game/overlays/party/common/mgcall.h"
 
-typedef struct UnkBowser {
+typedef struct KoopaWinPos {
     s16 unk_00;
     s16 unk_02;
     s16 unk_04;
     s16 unk_06;
-} UnkBowser; // sizeof 0x8
+} KoopaWinPos; // sizeof 0x8
 
 typedef struct UnkBowser2 {
     s32 unk_00;
@@ -32,50 +32,50 @@ typedef struct UnkBowser2 {
     s32 unk_20;
 } UnkBowser2; // sizeof 0x24
 
-typedef struct KoopaBss9518 {
+typedef struct KoopaRouletteWork {
     /* 0x00 */ s16 windows[5][5];
     /* 0x32 */ u8 events[5];
-} KoopaBss9518; // sizeof 0x38
+} KoopaRouletteWork; // sizeof 0x38
 
 void MBPlayerRevAllSet(void);
 void MBPlayerRevAllReset(void);
-void func_80108360_koopa(s32);
+void koopa_SpellEffExec(s32);
 void MBStatusPulseStart(s32);
 void MBStatusPulseStop(s32);
-void func_80108D2C_koopa(void);
-void func_80109220_koopa(omObjData *);
-void func_8010926C_koopa(void);
-void func_801092D4_koopa(void);
-void func_801091C4_koopa(omObjData *);
-void func_80109320_koopa(void);
-void func_801092A0_koopa(void);
-void func_80107724_koopa(void);
-void func_80107190_koopa(void);
-void func_80105AD8_koopa(omObjData *);
-void func_80106FC8_koopa(void);
-void func_80106A54_koopa(void);
-void func_80106AB8_koopa(void);
-s32 func_80107658_koopa(s32, s32);
-s32 func_80107A9C_koopa(void);
-s32 func_80107DDC_koopa(void);
-s32 func_801085E4_koopa(void);
-s32 func_80108664_koopa(void);
-s32 func_801086E4_koopa(void);
-s32 func_80108A2C_koopa(void);
-s32 func_80108BB0_koopa(void);
-s32 func_8010778C_koopa(void);
-s32 func_801078CC_koopa(void);
+void koopa_MainProc(void);
+void koopa_ExitCheckObjMain(omObjData *);
+void koopa_SysInit(void);
+void koopa_BackInit(void);
+void koopa_ExitObjMain(omObjData *);
+void koopa_BackClose(void);
+void koopa_SysClose(void);
+void koopa_StatusShowExec(void);
+void koopa_RouletteCreate(void);
+void koopa_RouletteObjMain(omObjData *);
+void koopa_CursorCreate(void);
+void koopa_CursorKill(void);
+void koopa_RouletteKill(void);
+s32 koopa_CoinAmountGet(s32, s32);
+s32 koopa_SuitGiveExec(void);
+s32 koopa_PhoneGiveExec(void);
+s32 koopa_RevSetExec(void);
+s32 koopa_RevResetExec(void);
+s32 koopa_ShuffleExec(void);
+s32 koopa_RevoExec(void);
+s32 koopa_LeaveExec(void);
+s32 koopa_CoinTakeExec(void);
+s32 koopa_CoinTakeAllExec(void);
 
-// Aliases into koopaBss9518 (see undefined_syms.txt).
-extern s16 D_80109518_koopa[5][5];
-extern u8 D_8010954A_koopa[5];
+// Aliases into koopa_rouletteWork (see undefined_syms.txt).
+extern s16 koopa_rouletteWinTbl[5][5];
+extern u8 koopa_rouletteEventTbl[5];
 
 extern u32 scRetraceCnt;
 
 //.data
-void *D_80109350_koopa = 0;
+void *koopa_helpWin = 0;
 
-s32 D_80109354_koopa[] = {
+s32 koopa_rouletteMesTbl[] = {
     0x00004200,
     0x00004201,
     0x00004202,
@@ -88,7 +88,7 @@ s32 D_80109354_koopa[] = {
     0x00004209,
 };
 
-UnkBowser D_8010937C_koopa[] = {
+KoopaWinPos koopa_rouletteWinPosTbl[] = {
     { 64, -206, 200, 20 },
     { 64, -186, 200, 20 },
     { 64, -166, 200, 20 },
@@ -96,32 +96,32 @@ UnkBowser D_8010937C_koopa[] = {
     { 64, -126, 200, 20 }
 };
 
-u8 D_801093A4_koopa = 94;
-s8 D_801093A8_koopa[] = { 1, 0, 9, 15, 11, 8, 13, 0 };
-Vec D_801093B0_koopa = { 0.0f, 0.0f, 2250.0f };
-Vec D_801093BC_koopa = { 0.0f, 0.0f, -1000.0f };
+u8 koopa_cursorPosY = 94;
+s8 koopa_cursorOfsTbl[] = { 1, 0, 9, 15, 11, 8, 13, 0 };
+Vec koopa_koopaPos = { 0.0f, 0.0f, 2250.0f };
+Vec koopa_leavePos = { 0.0f, 0.0f, -1000.0f };
 
-UnkBowser2 D_801093C8_koopa = {
+UnkBowser2 koopa_koopaMot = {
     0x00000008, 0x000A0035, 0x000A0032, 0x000A0038,
     0x000A0040, 0x000A0043, 0x000A0041, 0x000A0042, 0x000A0044
 };
 
-s32 (*D_801093EC_koopa[])(void) = {
-    func_8010778C_koopa,
-    func_801078CC_koopa,
-    func_80107A9C_koopa,
-    func_80107DDC_koopa,
-    func_801085E4_koopa,
-    func_80108664_koopa,
-    func_801086E4_koopa,
-    func_80108A2C_koopa,
-    func_80108BB0_koopa,
-    func_80108BB0_koopa
+s32 (*koopa_eventFuncTbl[])(void) = {
+    koopa_CoinTakeExec,
+    koopa_CoinTakeAllExec,
+    koopa_SuitGiveExec,
+    koopa_PhoneGiveExec,
+    koopa_RevSetExec,
+    koopa_RevResetExec,
+    koopa_ShuffleExec,
+    koopa_RevoExec,
+    koopa_LeaveExec,
+    koopa_LeaveExec
 };
 
-u32 D_80109414_koopa = 0;
-s16 D_80109418_koopa[] = { 90, 89, 87, 71, 70, 84, 85, 86, 62, 61, 58, 59, 60, -1 };
-u16 D_80109434_koopa[2][3][4] = {
+u32 koopa_cursorSeTime = 0;
+s16 koopa_shuffleBlockMasuTbl[] = { 90, 89, 87, 71, 70, 84, 85, 86, 62, 61, 58, 59, 60, -1 };
+u16 koopa_coinAmountTbl[2][3][4] = {
     { { 20, 20, 10, 10 },
       { 20, 20, 15, 15 },
       { 30, 30, 20, 20 } },
@@ -131,7 +131,7 @@ u16 D_80109434_koopa[2][3][4] = {
 };
 
 // unused
-s16 D_80109464_koopa[][2] = {
+s16 koopa_unusedCoinTbl[][2] = {
     { 20, 20 },
     { 30, 30 },
     { 30, 30 },
@@ -142,56 +142,56 @@ s16 D_80109464_koopa[][2] = {
 };
 
 //.bss
-u8 D_801094F0_koopa BSS;
-s32 D_801094F4_koopa BSS;
-Object *D_801094F8_koopa BSS;
-s32 D_801094FC_koopa BSS;
-s32 D_80109500_koopa BSS;
-s32 D_80109504_koopa BSS;
-char D_80109508_koopa[16] BSS;
-KoopaBss9518 koopaBss9518 BSS;
-omObjData *D_80109550_koopa BSS;
-s16 D_80109554_koopa[2] BSS;
-s16 D_80109558_koopa BSS;
-s16 D_8010955A_koopa BSS;
-s16 D_8010955C_koopa BSS;
-s16 D_8010955E_koopa BSS;
-s16 D_80109560_koopa BSS;
-s16 D_80109562_koopa BSS;
-s16 D_80109564_koopa BSS;
-s32 D_80109568_koopa BSS;
-s32 D_8010956C_koopa BSS;
+u8 koopa_boardNo BSS;
+s32 koopa_playerNo BSS;
+Object *koopa_koopaMdl BSS;
+s32 koopa_introAltF BSS;
+s32 koopa_rouletteStopOfs BSS;
+s32 koopa_rouletteLeaveF BSS;
+char koopa_coinStr[16] BSS;
+KoopaRouletteWork koopa_rouletteWork BSS;
+omObjData *koopa_rouletteObj BSS;
+s16 koopa_lampSprGrpTbl[2] BSS;
+s16 koopa_lampSpr BSS;
+s16 koopa_titleSprGrp BSS;
+s16 koopa_titleSpr BSS;
+s16 koopa_backSprGrp BSS;
+s16 koopa_backSpr BSS;
+s16 koopa_cursorSprGrp BSS;
+s16 koopa_cursorSpr BSS;
+s32 koopa_rouletteResult BSS;
+s32 koopa_result2 BSS;
 
 //.text
-void func_801059A0_koopa(void) {
+void koopa_ObjectSetup(void) {
     s32 i;
 
-    D_801094F0_koopa = GwSystem.current_board_index;
-    D_801094F4_koopa = GwSystem.playerIndexVisitingBowser;
+    koopa_boardNo = GwSystem.current_board_index;
+    koopa_playerNo = GwSystem.playerIndexVisitingBowser;
     omInitObjMan(0x32, 0x32);
-    func_801092D4_koopa();
-    func_8010926C_koopa();
+    koopa_BackInit();
+    koopa_SysInit();
     MBShadowHeightMaxSet(1000.0f);
     HuWinInit();
     MBStatusCreate();
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         MBStatusPosSet(i, 0x1E, -0x32);
     }
-    omAddPrcObj(func_80108D2C_koopa, 0x300, 0x2000, 0);
-    omAddObj(0x1000, 0, 0, -1, func_80109220_koopa);
+    omAddPrcObj(koopa_MainProc, 0x300, 0x2000, 0);
+    omAddObj(0x1000, 0, 0, -1, koopa_ExitCheckObjMain);
     MBMasuInit();
     MBMasuCreate(0x13, 0x23A);
     omGameSysInit();
 }
 
-void func_80105A8C_koopa(void) {
-    if (scRetraceCnt >= (D_80109414_koopa + 4)) {
+void koopa_CursorFXPlay(void) {
+    if (scRetraceCnt >= (koopa_cursorSeTime + 4)) {
         HuAudFXPlay(0x104);
-        D_80109414_koopa = scRetraceCnt;
+        koopa_cursorSeTime = scRetraceCnt;
     }
 }
 
-void func_80105AD8_koopa(omObjData *obj) {
+void koopa_RouletteObjMain(omObjData *obj) {
     s16 *window;
     s32 i;
     s32 index = 0;
@@ -201,23 +201,23 @@ void func_80105AD8_koopa(omObjData *obj) {
         case 0:
             obj->trans.y += 16.0f;
             for (i = 0; i < 5; i++) {
-                window = D_80109518_koopa[i];
+                window = koopa_rouletteWinTbl[i];
                 HuWinPosSet(window[0], window[1] + window[3] / 2, (window[2] + window[4] / 2) + (s16)obj->trans.y);
             }
-            if (D_8010955E_koopa != -1) {
-                HuSprPosSet(D_8010955E_koopa, 0, D_80109518_koopa[0][1] + 100, (s32)obj->trans.y + D_80109518_koopa[0][2] + 50);
+            if (koopa_backSprGrp != -1) {
+                HuSprPosSet(koopa_backSprGrp, 0, koopa_rouletteWinTbl[0][1] + 100, (s32)obj->trans.y + koopa_rouletteWinTbl[0][2] + 50);
             }
-            if (D_8010955A_koopa != -1) {
-                HuSprPosSet(D_8010955A_koopa, 0, D_80109518_koopa[0][1] + 100, (s32)obj->trans.y + D_80109518_koopa[0][2] - 30);
+            if (koopa_titleSprGrp != -1) {
+                HuSprPosSet(koopa_titleSprGrp, 0, koopa_rouletteWinTbl[0][1] + 100, (s32)obj->trans.y + koopa_rouletteWinTbl[0][2] - 30);
             }
             for (i = 0; i < 2; i++) {
-                if (D_80109554_koopa[i] != -1) {
-                    HuSprPosSet(D_80109554_koopa[i], 0, D_80109518_koopa[0][1] + i * 200, (s32)obj->trans.y + D_80109518_koopa[0][2] - 40);
+                if (koopa_lampSprGrpTbl[i] != -1) {
+                    HuSprPosSet(koopa_lampSprGrpTbl[i], 0, koopa_rouletteWinTbl[0][1] + i * 200, (s32)obj->trans.y + koopa_rouletteWinTbl[0][2] - 40);
                 }
             }
             if (obj->trans.y >= 288.0f) {
-                func_80105A8C_koopa();
-                D_80109350_koopa = MBHelpWinCreate(23, 200, 1);
+                koopa_CursorFXPlay();
+                koopa_helpWin = MBHelpWinCreate(23, 200, 1);
                 obj->work[0] = 1;
                 obj->scale.x = 0.5f;
                 obj->scale.z = -1.0f;
@@ -225,10 +225,10 @@ void func_80105AD8_koopa(omObjData *obj) {
                 obj->work[1] = 0;
                 obj->work[3] = 0;
                 obj->trans.z = 0;
-                obj->rot.y = D_80109500_koopa;
-                if (D_80109504_koopa != 0) {
+                obj->rot.y = koopa_rouletteStopOfs;
+                if (koopa_rouletteLeaveF != 0) {
                     for (i = 0; i < 5; i++) {
-                        if (D_8010954A_koopa[i] >= 8) {
+                        if (koopa_rouletteEventTbl[i] >= 8) {
                             index = i - (s32)obj->rot.y;
                             break;
                         }
@@ -251,24 +251,24 @@ void func_80105AD8_koopa(omObjData *obj) {
                     obj->mdlcnt = 8;
                 }
                 obj->mtncnt = 0;
-                func_80106FC8_koopa();
+                koopa_CursorCreate();
             }
             break;
         case 1:
             if (obj->trans.z == 0) {
-                if (GwPlayer[D_801094F4_koopa].stat & 1) {
+                if (GwPlayer[koopa_playerNo].stat & 1) {
                     obj->trans.z = 1.0f;
                 } else {
-                    buttons = ContBtnDown[GwPlayer[D_801094F4_koopa].pad];
+                    buttons = ContBtnDown[GwPlayer[koopa_playerNo].pad];
                     if (buttons & A_BUTTON) {
                         obj->trans.z = 1.0f;
                     }
                 }
-                if (obj->trans.z == 1.0f && D_80109350_koopa != 0) {
-                    MBHelpWinKill(D_80109350_koopa);
-                    D_80109350_koopa = 0;
+                if (obj->trans.z == 1.0f && koopa_helpWin != 0) {
+                    MBHelpWinKill(koopa_helpWin);
+                    koopa_helpWin = 0;
                 }
-                if (D_80109504_koopa == 0) {
+                if (koopa_rouletteLeaveF == 0) {
                     for (i = 0;; i++) {
                         index = i + obj->work[1];
                         if (index < 0) {
@@ -276,7 +276,7 @@ void func_80105AD8_koopa(omObjData *obj) {
                         } else {
                             index %= 5;
                         }
-                        if (D_8010954A_koopa[index] < 8) {
+                        if (koopa_rouletteEventTbl[index] < 8) {
                             index -= (s32)obj->rot.y;
                             if (index < 0) {
                                 index += 5;
@@ -306,10 +306,10 @@ void func_80105AD8_koopa(omObjData *obj) {
                         obj->work[1] = 4;
                     }
                 }
-                func_80105A8C_koopa();
+                koopa_CursorFXPlay();
             }
             for (i = 0; i < 5; i++) {
-                window = D_80109518_koopa[i];
+                window = koopa_rouletteWinTbl[i];
                 if (i == obj->work[1]) {
                     HuWinBGColSet(window[0], 0, 200, 0);
                     HuWinBGTPLvlSet(window[0], 256);
@@ -332,13 +332,13 @@ void func_80105AD8_koopa(omObjData *obj) {
                 if (obj->work[1] == obj->work[2] && obj->work[3] == 0 && obj->scale.z + obj->scale.x >= 1.0f) {
                     if ((obj->rot.y > 0 ? obj->rot.y : 0.0f - obj->rot.y) <= 0.5f) {
                         HuAudFXPlay(0x105);
-                        switch (D_8010954A_koopa[obj->work[2]]) {
+                        switch (koopa_rouletteEventTbl[obj->work[2]]) {
                             case 0:
                             case 2:
                             case 3:
                             case 8:
                             case 9:
-                                MBPlayerVibrate(D_801094F4_koopa, 2);
+                                MBPlayerVibrate(koopa_playerNo, 2);
                                 break;
                             case 1:
                                 MBPlayerVibrate(0, 2);
@@ -368,16 +368,16 @@ void func_80105AD8_koopa(omObjData *obj) {
                         }
                         obj->work[0] = 2;
                         obj->work[3] = 60;
-                        HuWinHomeClear(D_80109518_koopa[obj->work[1]][0]);
-                        if (D_8010954A_koopa[obj->work[1]] == 0) {
-                            HuWinInsertMesSet(D_80109518_koopa[obj->work[1]][0], (u32)D_80109508_koopa, 0);
-                            HuWinInsertMesSizeGet((u32)D_80109508_koopa, 0);
+                        HuWinHomeClear(koopa_rouletteWinTbl[obj->work[1]][0]);
+                        if (koopa_rouletteEventTbl[obj->work[1]] == 0) {
+                            HuWinInsertMesSet(koopa_rouletteWinTbl[obj->work[1]][0], (u32)koopa_coinStr, 0);
+                            HuWinInsertMesSizeGet((u32)koopa_coinStr, 0);
                         }
-                        HuWinMesSet(D_80109518_koopa[obj->work[1]][0], D_80109354_koopa[D_8010954A_koopa[obj->work[1]]], HUWIN_POS_CENTER, 4);
-                        HuWinMesColSet(D_80109518_koopa[obj->work[1]][0], 1);
-                        HuWinMesDefColSet(D_80109518_koopa[obj->work[1]][0], 160, 160, 160);
-                        HuWinBGColSet(D_80109518_koopa[obj->work[1]][0], 254, 255, 208);
-                        HuWinMesSpeedSet(D_80109518_koopa[obj->work[1]][0], 0);
+                        HuWinMesSet(koopa_rouletteWinTbl[obj->work[1]][0], koopa_rouletteMesTbl[koopa_rouletteEventTbl[obj->work[1]]], HUWIN_POS_CENTER, 4);
+                        HuWinMesColSet(koopa_rouletteWinTbl[obj->work[1]][0], 1);
+                        HuWinMesDefColSet(koopa_rouletteWinTbl[obj->work[1]][0], 160, 160, 160);
+                        HuWinBGColSet(koopa_rouletteWinTbl[obj->work[1]][0], 254, 255, 208);
+                        HuWinMesSpeedSet(koopa_rouletteWinTbl[obj->work[1]][0], 0);
                     } else {
                         obj->mtncnt = 1;
                         if (obj->rot.y >= 0.5f) {
@@ -398,7 +398,7 @@ void func_80105AD8_koopa(omObjData *obj) {
         case 2:
             if (obj->work[3] == 0) {
                 obj->work[0] = 4;
-                func_80106A54_koopa();
+                koopa_CursorKill();
             } else {
                 obj->work[3]--;
                 obj->rot.z += 1.0f;
@@ -412,213 +412,213 @@ void func_80105AD8_koopa(omObjData *obj) {
         case 4:
             obj->trans.y -= 32.0f;
             for (i = 0; i < 5; i++) {
-                window = D_80109518_koopa[i];
+                window = koopa_rouletteWinTbl[i];
                 HuWinPosSet(window[0], window[1] + window[3] / 2, (window[2] + window[4] / 2) + (s16)obj->trans.y);
             }
-            if (D_8010955E_koopa != -1) {
-                HuSprPosSet(D_8010955E_koopa, 0, D_80109518_koopa[0][1] + 100, (s32)obj->trans.y + D_80109518_koopa[0][2] + 50);
+            if (koopa_backSprGrp != -1) {
+                HuSprPosSet(koopa_backSprGrp, 0, koopa_rouletteWinTbl[0][1] + 100, (s32)obj->trans.y + koopa_rouletteWinTbl[0][2] + 50);
             }
-            if (D_8010955A_koopa != -1) {
-                HuSprPosSet(D_8010955A_koopa, 0, D_80109518_koopa[0][1] + 100, (s32)obj->trans.y + D_80109518_koopa[0][2] - 30);
+            if (koopa_titleSprGrp != -1) {
+                HuSprPosSet(koopa_titleSprGrp, 0, koopa_rouletteWinTbl[0][1] + 100, (s32)obj->trans.y + koopa_rouletteWinTbl[0][2] - 30);
             }
             for (i = 0; i < 2; i++) {
-                if (D_80109554_koopa[i] != -1) {
-                    HuSprPosSet(D_80109554_koopa[i], 0, D_80109518_koopa[0][1] + i * 200, (s32)obj->trans.y + D_80109518_koopa[0][2] - 40);
+                if (koopa_lampSprGrpTbl[i] != -1) {
+                    HuSprPosSet(koopa_lampSprGrpTbl[i], 0, koopa_rouletteWinTbl[0][1] + i * 200, (s32)obj->trans.y + koopa_rouletteWinTbl[0][2] - 40);
                 }
             }
             if (obj->trans.y <= 0) {
-                D_80109568_koopa = D_8010954A_koopa[obj->work[2]];
-                func_80106AB8_koopa();
+                koopa_rouletteResult = koopa_rouletteEventTbl[obj->work[2]];
+                koopa_RouletteKill();
             }
             break;
     }
-    if (D_80109562_koopa != -1) {
+    if (koopa_cursorSprGrp != -1) {
         for (i = 0;; i++) {
-            if (obj->rot.z < D_801093A8_koopa[i * 2]) {
+            if (obj->rot.z < koopa_cursorOfsTbl[i * 2]) {
                 break;
             }
         }
-        HuSprPosSet(D_80109562_koopa, 0, D_801093A8_koopa[i * 2 + 1] + 50, D_801093A4_koopa + obj->work[1] * 20);
+        HuSprPosSet(koopa_cursorSprGrp, 0, koopa_cursorOfsTbl[i * 2 + 1] + 50, koopa_cursorPosY + obj->work[1] * 20);
     }
 }
 
-s32 func_80106968_koopa(void) {
-    return D_80109568_koopa;
+s32 koopa_RouletteResultGet(void) {
+    return koopa_rouletteResult;
 }
 
-s32 func_80106974_koopa(void) {
-    return D_8010956C_koopa;
+s32 koopa_Result2Get(void) {
+    return koopa_result2;
 }
 
-s32 func_80106980_koopa(void) {
-    if (D_80109550_koopa == NULL) {
+s32 koopa_RouletteStatGet(void) {
+    if (koopa_rouletteObj == NULL) {
         return -1;
     }
-    return D_80109550_koopa->work[0];
+    return koopa_rouletteObj->work[0];
 }
 
-void func_8010699C_koopa(void) {
+void koopa_RouletteInit(void) {
     s32 i;
 
-    for (i = 0; i < ARRAY_COUNT(D_80109518_koopa); i++) {
-        D_80109518_koopa[i][0] = -1;
+    for (i = 0; i < ARRAY_COUNT(koopa_rouletteWinTbl); i++) {
+        koopa_rouletteWinTbl[i][0] = -1;
     }
 
-    D_80109550_koopa = NULL;
+    koopa_rouletteObj = NULL;
 
-    for (i = 0; i < ARRAY_COUNT(D_80109554_koopa); i++) {
-        D_80109554_koopa[i] = -1;
+    for (i = 0; i < ARRAY_COUNT(koopa_lampSprGrpTbl); i++) {
+        koopa_lampSprGrpTbl[i] = -1;
     }
 
-    D_80109558_koopa = -1;
-    D_8010955C_koopa = -1;
-    D_8010955A_koopa = -1;
-    D_80109560_koopa = -1;
-    D_8010955E_koopa = -1;
-    D_80109564_koopa = -1;
-    D_80109562_koopa = -1;
-    D_80109568_koopa = -1;
-    D_80109350_koopa = 0;
+    koopa_lampSpr = -1;
+    koopa_titleSpr = -1;
+    koopa_titleSprGrp = -1;
+    koopa_backSpr = -1;
+    koopa_backSprGrp = -1;
+    koopa_cursorSpr = -1;
+    koopa_cursorSprGrp = -1;
+    koopa_rouletteResult = -1;
+    koopa_helpWin = 0;
 }
 
-void func_80106A54_koopa(void) {
-    if (D_80109562_koopa != -1) {
-        HuSprGrpKill(D_80109562_koopa);
-        D_80109562_koopa = -1;
+void koopa_CursorKill(void) {
+    if (koopa_cursorSprGrp != -1) {
+        HuSprGrpKill(koopa_cursorSprGrp);
+        koopa_cursorSprGrp = -1;
     }
-    if (D_80109564_koopa != -1) {
-        HuSprAnimKill(D_80109564_koopa);
-        D_80109564_koopa = -1;
+    if (koopa_cursorSpr != -1) {
+        HuSprAnimKill(koopa_cursorSpr);
+        koopa_cursorSpr = -1;
     }
 }
 
-void func_80106AB8_koopa(void) {
+void koopa_RouletteKill(void) {
     s32 i;
 
-    for (i = 0; i < ARRAY_COUNT(D_80109518_koopa); i++) {
-        s16 *temp = D_80109518_koopa[i];
+    for (i = 0; i < ARRAY_COUNT(koopa_rouletteWinTbl); i++) {
+        s16 *temp = koopa_rouletteWinTbl[i];
         if (temp[0] != -1) {
             HuWinKill(temp[0]);
             temp[0] = -1;
         }
     }
 
-    if (D_80109350_koopa != 0) {
-        MBHelpWinKill(D_80109350_koopa);
-        D_80109350_koopa = 0;
+    if (koopa_helpWin != 0) {
+        MBHelpWinKill(koopa_helpWin);
+        koopa_helpWin = 0;
     }
 
-    if (D_80109550_koopa != NULL) {
-        omDelObj(D_80109550_koopa);
-        D_80109550_koopa = NULL;
+    if (koopa_rouletteObj != NULL) {
+        omDelObj(koopa_rouletteObj);
+        koopa_rouletteObj = NULL;
     }
 
-    if (D_8010955E_koopa != -1) {
-        HuSprGrpKill(D_8010955E_koopa);
-        D_8010955E_koopa = -1;
+    if (koopa_backSprGrp != -1) {
+        HuSprGrpKill(koopa_backSprGrp);
+        koopa_backSprGrp = -1;
     }
 
-    if (D_80109560_koopa != -1) {
-        HuSprAnimKill(D_80109560_koopa);
-        D_80109560_koopa = -1;
+    if (koopa_backSpr != -1) {
+        HuSprAnimKill(koopa_backSpr);
+        koopa_backSpr = -1;
     }
 
-    if (D_8010955A_koopa != -1) {
-        HuSprGrpKill(D_8010955A_koopa);
-        D_8010955A_koopa = -1;
+    if (koopa_titleSprGrp != -1) {
+        HuSprGrpKill(koopa_titleSprGrp);
+        koopa_titleSprGrp = -1;
     }
 
-    if (D_8010955C_koopa != -1) {
-        HuSprAnimKill(D_8010955C_koopa);
-        D_8010955C_koopa = -1;
+    if (koopa_titleSpr != -1) {
+        HuSprAnimKill(koopa_titleSpr);
+        koopa_titleSpr = -1;
     }
 
-    for (i = 0; i < ARRAY_COUNT(D_80109554_koopa); i++) {
-        if (D_80109554_koopa[i] != -1) {
-            HuSprGrpKill(D_80109554_koopa[i]);
-            D_80109554_koopa[i] = -1;
+    for (i = 0; i < ARRAY_COUNT(koopa_lampSprGrpTbl); i++) {
+        if (koopa_lampSprGrpTbl[i] != -1) {
+            HuSprGrpKill(koopa_lampSprGrpTbl[i]);
+            koopa_lampSprGrpTbl[i] = -1;
         }
     }
 
-    if (D_80109558_koopa != -1) {
-        HuSprAnimKill(D_80109558_koopa);
-        D_80109558_koopa = -1;
+    if (koopa_lampSpr != -1) {
+        HuSprAnimKill(koopa_lampSpr);
+        koopa_lampSpr = -1;
     }
 
-    func_80106A54_koopa();
+    koopa_CursorKill();
 }
 
-void func_80106C78_koopa(void) {
+void koopa_RouletteSprCreate(void) {
     s32 randVal;
     s32 var_v0_2;
     void *temp_v0;
     s32 i;
 
-    if (D_8010955E_koopa == -1) {
-        D_8010955E_koopa = HuSprGrpCreate(1, 5);
+    if (koopa_backSprGrp == -1) {
+        koopa_backSprGrp = HuSprGrpCreate(1, 5);
         temp_v0 = DataRead(0x1301EB);
-        D_80109560_koopa = HuSprAnimRead(temp_v0);
+        koopa_backSpr = HuSprAnimRead(temp_v0);
         DataClose(temp_v0);
-        HuSprGrpMemberSet(D_8010955E_koopa, 0, D_80109560_koopa, 0);
-        HuSprPriSet(D_8010955E_koopa, 0, 0x4770);
-        HuSprAttrSet(D_8010955E_koopa, 0, 0x1000);
-        HuSprPosSet(D_8010955E_koopa, 0, D_80109518_koopa[0][1] + 0x64, D_80109518_koopa[0][2] + 0x32);
-        HuSprColorSet(D_8010955E_koopa, 0, 0, 0, 0);
-        D_8010955A_koopa = HuSprGrpCreate(1, 5);
+        HuSprGrpMemberSet(koopa_backSprGrp, 0, koopa_backSpr, 0);
+        HuSprPriSet(koopa_backSprGrp, 0, 0x4770);
+        HuSprAttrSet(koopa_backSprGrp, 0, 0x1000);
+        HuSprPosSet(koopa_backSprGrp, 0, koopa_rouletteWinTbl[0][1] + 0x64, koopa_rouletteWinTbl[0][2] + 0x32);
+        HuSprColorSet(koopa_backSprGrp, 0, 0, 0, 0);
+        koopa_titleSprGrp = HuSprGrpCreate(1, 5);
         temp_v0 = DataRead(0x1301E9);
-        D_8010955C_koopa = HuSprAnimRead(temp_v0);
+        koopa_titleSpr = HuSprAnimRead(temp_v0);
         DataClose(temp_v0);
-        HuSprGrpMemberSet(D_8010955A_koopa, 0, D_8010955C_koopa, 0);
-        HuSprPriSet(D_8010955A_koopa, 0, 0x4770);
-        HuSprAttrSet(D_8010955A_koopa, 0, 0x1000);
-        HuSprPosSet(D_8010955A_koopa, 0, D_80109518_koopa[0][1] + 0x64, D_80109518_koopa[0][2] - 0x1E);
+        HuSprGrpMemberSet(koopa_titleSprGrp, 0, koopa_titleSpr, 0);
+        HuSprPriSet(koopa_titleSprGrp, 0, 0x4770);
+        HuSprAttrSet(koopa_titleSprGrp, 0, 0x1000);
+        HuSprPosSet(koopa_titleSprGrp, 0, koopa_rouletteWinTbl[0][1] + 0x64, koopa_rouletteWinTbl[0][2] - 0x1E);
         temp_v0 = DataRead(0x130260);
-        D_80109558_koopa = HuSprAnimRead(temp_v0);
+        koopa_lampSpr = HuSprAnimRead(temp_v0);
         DataClose(temp_v0);
         randVal = MBRand(5.0f);
-        for (i = 0; i < ARRAY_COUNT(D_80109554_koopa); i++) {
-            D_80109554_koopa[i] = HuSprGrpCreate(1, 5);
-            HuSprGrpMemberSet(D_80109554_koopa[i], 0, D_80109558_koopa, 1);
-            HuSprPriSet(D_80109554_koopa[i], 0, 0x4770);
-            HuSprAttrSet(D_80109554_koopa[i], 0, 0x1000);
-            HuSprPosSet(D_80109554_koopa[i], 0, D_80109518_koopa[0][1] + (i * 0xC8), (D_80109518_koopa[0][2] - 0x28));
-            if ((randVal == 0) && (D_80109504_koopa == 0)) {
-                var_v0_2 = D_80109500_koopa;
+        for (i = 0; i < ARRAY_COUNT(koopa_lampSprGrpTbl); i++) {
+            koopa_lampSprGrpTbl[i] = HuSprGrpCreate(1, 5);
+            HuSprGrpMemberSet(koopa_lampSprGrpTbl[i], 0, koopa_lampSpr, 1);
+            HuSprPriSet(koopa_lampSprGrpTbl[i], 0, 0x4770);
+            HuSprAttrSet(koopa_lampSprGrpTbl[i], 0, 0x1000);
+            HuSprPosSet(koopa_lampSprGrpTbl[i], 0, koopa_rouletteWinTbl[0][1] + (i * 0xC8), (koopa_rouletteWinTbl[0][2] - 0x28));
+            if ((randVal == 0) && (koopa_rouletteLeaveF == 0)) {
+                var_v0_2 = koopa_rouletteStopOfs;
                 if (var_v0_2 == 0) {
-                    HuSprColorSet(D_80109554_koopa[i], 0, 0, 0, 0xFF);
+                    HuSprColorSet(koopa_lampSprGrpTbl[i], 0, 0, 0, 0xFF);
                 } else {
                     if (var_v0_2 < 0) {
                         var_v0_2 = -var_v0_2;
                     }
                     if (var_v0_2 < 2) {
-                        HuSprColorSet(D_80109554_koopa[i], 0, 0xFF, 0xFF, 0);
+                        HuSprColorSet(koopa_lampSprGrpTbl[i], 0, 0xFF, 0xFF, 0);
                     } else {
-                        HuSprColorSet(D_80109554_koopa[i], 0, 0xFF, 0, 0);
+                        HuSprColorSet(koopa_lampSprGrpTbl[i], 0, 0xFF, 0, 0);
                     }
                 }
             } else {
-                HuSprColorSet(D_80109554_koopa[i], 0, 0xFF, 0, 0);
+                HuSprColorSet(koopa_lampSprGrpTbl[i], 0, 0xFF, 0, 0);
             }
         }
     }
 }
 
-void func_80106FC8_koopa(void) {
+void koopa_CursorCreate(void) {
     void *temp_v0;
 
-    if (D_80109562_koopa == -1) {
-        D_80109562_koopa = HuSprGrpCreate(1, 5);
+    if (koopa_cursorSprGrp == -1) {
+        koopa_cursorSprGrp = HuSprGrpCreate(1, 5);
         temp_v0 = DataRead(0x1301EA);
-        D_80109564_koopa = HuSprAnimRead(temp_v0);
+        koopa_cursorSpr = HuSprAnimRead(temp_v0);
         DataClose(temp_v0);
-        HuSprGrpMemberSet(D_80109562_koopa, 0, D_80109564_koopa, 0);
-        HuSprPriSet(D_80109562_koopa, 0, 0x100);
-        HuSprAttrSet(D_80109562_koopa, 0, 0x1000);
-        HuSprPosSet(D_80109562_koopa, 0, 0x32, D_801093A4_koopa);
+        HuSprGrpMemberSet(koopa_cursorSprGrp, 0, koopa_cursorSpr, 0);
+        HuSprPriSet(koopa_cursorSprGrp, 0, 0x100);
+        HuSprAttrSet(koopa_cursorSprGrp, 0, 0x1000);
+        HuSprPosSet(koopa_cursorSprGrp, 0, 0x32, koopa_cursorPosY);
     }
 }
 
-s32 func_80107090_koopa(void) {
+s32 koopa_ShuffleBlockCheck(void) {
     s32 var_s3;
     GW_PLAYER *temp_s1;
     s32 i, j;
@@ -626,8 +626,8 @@ s32 func_80107090_koopa(void) {
     if (GwSystem.current_board_index == CHILLY_WATERS) {
         for (var_s3 = 0, i = 0; i < MB_MAX_PLAYERS; i++) {
             temp_s1 = MBPlayerGet(i);
-            for (j = 0; D_80109418_koopa[j] != -1; j++) {
-                if (MBMasuLinkMasuIdGet(temp_s1->clink, temp_s1->cidx) == D_80109418_koopa[j]) {
+            for (j = 0; koopa_shuffleBlockMasuTbl[j] != -1; j++) {
+                if (MBMasuLinkMasuIdGet(temp_s1->clink, temp_s1->cidx) == koopa_shuffleBlockMasuTbl[j]) {
                     var_s3++;
                     break;
                 }
@@ -642,42 +642,42 @@ s32 func_80107090_koopa(void) {
     return 0;
 }
 
-const char D_801094C0_koopa[] = "%d";
-const char D_801094C4_koopa[] = "";
+const char koopa_coinFmtStr[] = "%d";
+const char koopa_emptyStr[] = "";
 
-void func_80107190_koopa(void) {
+void koopa_RouletteCreate(void) {
     u8 order[5];
     u8 events[5];
     s32 i;
     s32 randVal;
     s16 *window;
-    UnkBowser *positions = D_8010937C_koopa;
+    KoopaWinPos *positions = koopa_rouletteWinPosTbl;
 
     i = MBRand(256.0f);
     if (i < 70) {
-        D_80109500_koopa = 0;
+        koopa_rouletteStopOfs = 0;
     } else if (i < 115) {
-        D_80109500_koopa = 1;
+        koopa_rouletteStopOfs = 1;
     } else if (i < 160) {
-        D_80109500_koopa = 2;
+        koopa_rouletteStopOfs = 2;
     } else if (i < 185) {
-        D_80109500_koopa = 3;
+        koopa_rouletteStopOfs = 3;
     } else if (i < 200) {
-        D_80109500_koopa = 4;
+        koopa_rouletteStopOfs = 4;
     } else if (i < 225) {
-        D_80109500_koopa = -1;
+        koopa_rouletteStopOfs = -1;
     } else if (i < 240) {
-        D_80109500_koopa = -2;
+        koopa_rouletteStopOfs = -2;
     } else {
-        D_80109500_koopa = -3;
+        koopa_rouletteStopOfs = -3;
     }
     if (MBRand(70.0f) == 0) {
-        D_80109504_koopa = 1;
+        koopa_rouletteLeaveF = 1;
     } else {
-        D_80109504_koopa = 0;
+        koopa_rouletteLeaveF = 0;
     }
     for (i = 0; i < 5; i++) {
-        window = D_80109518_koopa[i];
+        window = koopa_rouletteWinTbl[i];
         window[1] = positions[i].unk_00;
         window[2] = positions[i].unk_02;
         window[3] = positions[i].unk_04;
@@ -718,7 +718,7 @@ void func_80107190_koopa(void) {
                         goto retry;
                     }
                     events[i] = MBRand(2.0f) + 6;
-                    if (events[i] == 6 && func_80107090_koopa()) {
+                    if (events[i] == 6 && koopa_ShuffleBlockCheck()) {
                         goto retry;
                     }
                 }
@@ -727,88 +727,88 @@ void func_80107190_koopa(void) {
     }
     MBArrayShuffle(order, 4);
     for (i = 0; i < 5; i++) {
-        D_8010954A_koopa[i] = events[order[i]];
+        koopa_rouletteEventTbl[i] = events[order[i]];
     }
     for (i = 0; i < 5; i++) {
-        window = D_80109518_koopa[i];
-        if (D_8010954A_koopa[i] == 0) {
-            sprintf(D_80109508_koopa, D_801094C0_koopa, func_80107658_koopa(0, D_801094F4_koopa));
-            HuWinInsertMesSet(window[0], (u32)D_80109508_koopa, 0);
-            HuWinInsertMesSizeGet((u32)D_80109508_koopa, 0);
+        window = koopa_rouletteWinTbl[i];
+        if (koopa_rouletteEventTbl[i] == 0) {
+            sprintf(koopa_coinStr, koopa_coinFmtStr, koopa_CoinAmountGet(0, koopa_playerNo));
+            HuWinInsertMesSet(window[0], (u32)koopa_coinStr, 0);
+            HuWinInsertMesSizeGet((u32)koopa_coinStr, 0);
         }
-        HuWinMesSet(window[0], D_80109354_koopa[D_8010954A_koopa[i]], HUWIN_POS_CENTER, 4);
+        HuWinMesSet(window[0], koopa_rouletteMesTbl[koopa_rouletteEventTbl[i]], HUWIN_POS_CENTER, 4);
         HuWinMesSpeedSet(window[0], 0);
     }
-    D_80109550_koopa = omAddObj(0x8000, 0, 0, -1, func_80105AD8_koopa);
-    D_80109550_koopa->work[0] = 3;
-    D_80109550_koopa->trans.y = 0;
-    D_80109550_koopa->rot.z = 0;
-    func_80106C78_koopa();
+    koopa_rouletteObj = omAddObj(0x8000, 0, 0, -1, koopa_RouletteObjMain);
+    koopa_rouletteObj->work[0] = 3;
+    koopa_rouletteObj->trans.y = 0;
+    koopa_rouletteObj->rot.z = 0;
+    koopa_RouletteSprCreate();
 }
 
-void func_80107648_koopa(void) {
-    D_80109550_koopa->work[0] = 0;
+void koopa_RouletteStart(void) {
+    koopa_rouletteObj->work[0] = 0;
 }
 
-s32 func_80107658_koopa(s32 arg0, s32 arg1) {
+s32 koopa_CoinAmountGet(s32 arg0, s32 arg1) {
     s32 temp_s0;
     s32 playerRank;
 
     temp_s0 = MBTurnTierGet(CUR_TURN);
     playerRank = MBPlayerRankCalc(arg1);
-    return D_80109434_koopa[arg0][temp_s0][playerRank];
+    return koopa_coinAmountTbl[arg0][temp_s0][playerRank];
 }
 
-s32 func_801076CC_koopa(s32 playerIndex) {
+s32 koopa_CoinGiftGet(s32 playerIndex) {
     s32 temp_s0;
     s32 playerRank;
 
     temp_s0 = MBTurnTierGet(CUR_TURN);
     playerRank = MBPlayerRankCalc(playerIndex);
-    return D_80109434_koopa[2][temp_s0][playerRank];
+    return koopa_coinAmountTbl[2][temp_s0][playerRank];
 }
 
-void func_80107724_koopa(void) {
-    MBStatusVsPlayerBSet(D_801094F4_koopa);
+void koopa_StatusShowExec(void) {
+    MBStatusVsPlayerBSet(koopa_playerNo);
     MBStatusDispMoveSet(0x18);
     MBStatusVsPlayerBSet(-1);
     HuPrcSleep(20);
 }
 
-void func_8010775C_koopa(void) {
-    MBStatusVsPlayerBSet(D_801094F4_koopa);
+void koopa_StatusShow(void) {
+    MBStatusVsPlayerBSet(koopa_playerNo);
     MBStatusDispMoveSet(0x18);
     MBStatusVsPlayerBSet(-1);
 }
 
-s32 func_8010778C_koopa(void) {
+s32 koopa_CoinTakeExec(void) {
     s32 temp_v0;
 
-    temp_v0 = func_80107658_koopa(0, D_801094F4_koopa);
-    sprintf(D_80109508_koopa, D_801094C0_koopa, temp_v0);
-    if (GwPlayer[D_801094F4_koopa].coin >= temp_v0) {
-        MBWinInsertOpen(0x420D, D_80109508_koopa, 0, 0, 0, 0);
+    temp_v0 = koopa_CoinAmountGet(0, koopa_playerNo);
+    sprintf(koopa_coinStr, koopa_coinFmtStr, temp_v0);
+    if (GwPlayer[koopa_playerNo].coin >= temp_v0) {
+        MBWinInsertOpen(0x420D, koopa_coinStr, 0, 0, 0, 0);
     } else {
-        MBWinInsertOpen(0x420E, D_80109508_koopa, 0, 0, 0, 0);
+        MBWinInsertOpen(0x420E, koopa_coinStr, 0, 0, 0, 0);
     }
 
-    MBWinKeyWait(D_801094F4_koopa);
+    MBWinKeyWait(koopa_playerNo);
     MBWinClose();
-    func_80107724_koopa();
-    MBMotionShiftSet(D_801094F8_koopa, 2, 0, 5, 0);
-    MBMotionEndShiftSet(D_801094F8_koopa, -1, 2);
+    koopa_StatusShowExec();
+    MBMotionShiftSet(koopa_koopaMdl, 2, 0, 5, 0);
+    MBMotionEndShiftSet(koopa_koopaMdl, -1, 2);
     HuPrcSleep(14);
     HuAudFXPlay(0x29F);
-    MBCoinTakeCreate(D_801094F4_koopa, -temp_v0);
-    MBPlayerVibrate(D_801094F4_koopa, 3);
+    MBCoinTakeCreate(koopa_playerNo, -temp_v0);
+    MBPlayerVibrate(koopa_playerNo, 3);
     HuPrcSleep(30);
     MBWinOpen(0x420F);
-    MBWinKeyWait(D_801094F4_koopa);
+    MBWinKeyWait(koopa_playerNo);
     MBWinClose();
     return 0;
 }
 
-s32 func_801078CC_koopa(void) {
+s32 koopa_CoinTakeAllExec(void) {
     s32 temp_v0;
     s32 temp_v1;
     s32 var_a0_2;
@@ -817,8 +817,8 @@ s32 func_801078CC_koopa(void) {
     s32 var_v0_2;
     s32 i;
 
-    temp_v0 = func_80107658_koopa(1, D_801094F4_koopa);
-    sprintf(D_80109508_koopa, D_801094C0_koopa, temp_v0);
+    temp_v0 = koopa_CoinAmountGet(1, koopa_playerNo);
+    sprintf(koopa_coinStr, koopa_coinFmtStr, temp_v0);
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         if (GwPlayer[i].coin < temp_v0) {
             break;
@@ -826,17 +826,17 @@ s32 func_801078CC_koopa(void) {
     }
 
     if (i == 4) {
-        MBWinInsertOpen(0x4210, D_80109508_koopa, 0, 0, 0, 0);
+        MBWinInsertOpen(0x4210, koopa_coinStr, 0, 0, 0, 0);
     } else {
-        MBWinInsertOpen(0x4211, D_80109508_koopa, 0, 0, 0, 0);
+        MBWinInsertOpen(0x4211, koopa_coinStr, 0, 0, 0, 0);
     }
 
-    MBWinKeyWait(D_801094F4_koopa);
+    MBWinKeyWait(koopa_playerNo);
     MBWinClose();
     MBStatusDispMoveSet(0);
     HuPrcSleep(20);
-    MBMotionShiftSet(D_801094F8_koopa, 2, 0, 5, 0);
-    MBMotionEndShiftSet(D_801094F8_koopa, -1, 2);
+    MBMotionShiftSet(koopa_koopaMdl, 2, 0, 5, 0);
+    MBMotionEndShiftSet(koopa_koopaMdl, -1, 2);
     HuPrcSleep(14);
     HuAudFXPlay(0x29F);
     var_a0_2 = -10000;
@@ -855,28 +855,28 @@ s32 func_801078CC_koopa(void) {
 
     HuPrcSleep(30);
     MBWinOpen(0x420F);
-    MBWinKeyWait(D_801094F4_koopa);
+    MBWinKeyWait(koopa_playerNo);
     MBWinClose();
     return 0;
 }
 
-s32 func_80107A9C_koopa(void) {
+s32 koopa_SuitGiveExec(void) {
     UnkBoard8 *sprite;
     void *data;
     s32 i;
 
     MBWinOpen(0x4212);
-    MBWinKeyWait(D_801094F4_koopa);
+    MBWinKeyWait(koopa_playerNo);
     MBWinClose();
-    if (MBItemFindEmpty(D_801094F4_koopa) == -1) {
-        func_80107724_koopa();
+    if (MBItemFindEmpty(koopa_playerNo) == -1) {
+        koopa_StatusShowExec();
         MBWinOpen(0x4213);
-        MBWinKeyWait(D_801094F4_koopa);
+        MBWinKeyWait(koopa_playerNo);
         MBWinClose();
         HuAudFXPlay(0x29E);
-        MBMotionShiftSet(D_801094F8_koopa, 4, 0, 20, 0);
-        MBModelMotionWait(D_801094F8_koopa);
-        MBMotionShiftSet(D_801094F8_koopa, 7, 0, 5, 2);
+        MBMotionShiftSet(koopa_koopaMdl, 4, 0, 20, 0);
+        MBModelMotionWait(koopa_koopaMdl);
+        MBMotionShiftSet(koopa_koopaMdl, 7, 0, 5, 2);
         HuPrcSleep(10);
         return 1;
     }
@@ -889,7 +889,7 @@ s32 func_80107A9C_koopa(void) {
     HuSprAttrSet(sprite->spriteGroup, 0, 0x1000);
     HuSprPriSet(sprite->spriteGroup, 0, 0x1000);
     HuSprPosSet(sprite->spriteGroup, 0, 160, -32);
-    func_8010775C_koopa();
+    koopa_StatusShow();
     for (i = 0; i <= 120; i += 4) {
         HuSprPosSet(sprite->spriteGroup, 0, 160, i - 32);
         HuPrcVSleep();
@@ -903,31 +903,31 @@ s32 func_80107A9C_koopa(void) {
     }
     MBSprGrpKill(sprite);
     HuAudFXPlay(0x10);
-    GwPlayer[D_801094F4_koopa].itemNo[MBItemFindEmpty(D_801094F4_koopa)] = ITEM_BOWSER_SUIT;
-    MBStatusItemIconSprReinit(D_801094F4_koopa);
+    GwPlayer[koopa_playerNo].itemNo[MBItemFindEmpty(koopa_playerNo)] = ITEM_BOWSER_SUIT;
+    MBStatusItemIconSprReinit(koopa_playerNo);
     MBWinOpen(0x420F);
-    MBWinKeyWait(D_801094F4_koopa);
+    MBWinKeyWait(koopa_playerNo);
     MBWinClose();
     return 0;
 }
 
-s32 func_80107DDC_koopa(void) {
+s32 koopa_PhoneGiveExec(void) {
     UnkBoard8 *sprite;
     void *data;
     s32 i;
 
     MBWinOpen(0x4214);
-    MBWinKeyWait(D_801094F4_koopa);
+    MBWinKeyWait(koopa_playerNo);
     MBWinClose();
-    if (MBItemFindEmpty(D_801094F4_koopa) == -1) {
-        func_80107724_koopa();
+    if (MBItemFindEmpty(koopa_playerNo) == -1) {
+        koopa_StatusShowExec();
         MBWinOpen(0x4215);
-        MBWinKeyWait(D_801094F4_koopa);
+        MBWinKeyWait(koopa_playerNo);
         MBWinClose();
         HuAudFXPlay(0x29E);
-        MBMotionShiftSet(D_801094F8_koopa, 4, 0, 20, 0);
-        MBModelMotionWait(D_801094F8_koopa);
-        MBMotionShiftSet(D_801094F8_koopa, 7, 0, 5, 2);
+        MBMotionShiftSet(koopa_koopaMdl, 4, 0, 20, 0);
+        MBModelMotionWait(koopa_koopaMdl);
+        MBMotionShiftSet(koopa_koopaMdl, 7, 0, 5, 2);
         HuPrcSleep(10);
         return 1;
     }
@@ -940,7 +940,7 @@ s32 func_80107DDC_koopa(void) {
     HuSprAttrSet(sprite->spriteGroup, 0, 0x1000);
     HuSprPriSet(sprite->spriteGroup, 0, 0x1000);
     HuSprPosSet(sprite->spriteGroup, 0, 160, -32);
-    func_8010775C_koopa();
+    koopa_StatusShow();
     for (i = 0; i <= 120; i += 4) {
         HuSprPosSet(sprite->spriteGroup, 0, 160, i - 32);
         HuPrcVSleep();
@@ -954,11 +954,11 @@ s32 func_80107DDC_koopa(void) {
     }
     HuSprDispOff(sprite->spriteGroup, 0);
     HuAudFXPlay(0x10);
-    GwPlayer[D_801094F4_koopa].itemNo[MBItemFindEmpty(D_801094F4_koopa)] = ITEM_BOWSER_PHONE;
-    MBStatusItemIconSprReinit(D_801094F4_koopa);
-    if (MBItemFindEmpty(D_801094F4_koopa) != -1 && MBRand(10.0f) == 0) {
+    GwPlayer[koopa_playerNo].itemNo[MBItemFindEmpty(koopa_playerNo)] = ITEM_BOWSER_PHONE;
+    MBStatusItemIconSprReinit(koopa_playerNo);
+    if (MBItemFindEmpty(koopa_playerNo) != -1 && MBRand(10.0f) == 0) {
         MBWinOpen(0x4216);
-        MBWinKeyWait(D_801094F4_koopa);
+        MBWinKeyWait(koopa_playerNo);
         MBWinClose();
         HuSprDispOn(sprite->spriteGroup, 0);
         HuSprTPLvlSet(sprite->spriteGroup, 0, 256);
@@ -976,27 +976,27 @@ s32 func_80107DDC_koopa(void) {
         }
         HuSprDispOff(sprite->spriteGroup, 0);
         HuAudFXPlay(0x10);
-        GwPlayer[D_801094F4_koopa].itemNo[MBItemFindEmpty(D_801094F4_koopa)] = ITEM_BOWSER_PHONE;
-        MBStatusItemIconSprReinit(D_801094F4_koopa);
+        GwPlayer[koopa_playerNo].itemNo[MBItemFindEmpty(koopa_playerNo)] = ITEM_BOWSER_PHONE;
+        MBStatusItemIconSprReinit(koopa_playerNo);
     }
     MBSprGrpKill(sprite);
     MBWinOpen(0x420F);
-    MBWinKeyWait(D_801094F4_koopa);
+    MBWinKeyWait(koopa_playerNo);
     MBWinClose();
     return 0;
 }
 
-void func_80108360_koopa(s32 modelFile) {
+void koopa_SpellEffExec(s32 modelFile) {
     Object *object;
     f32 angle;
     f32 scale;
     s32 i;
 
-    MBMotionShiftSet(D_801094F8_koopa, 5, 0, 5, 0);
+    MBMotionShiftSet(koopa_koopaMdl, 5, 0, 5, 0);
     object = MBModelFileCreate(modelFile, -1, 1.0f, NULL, NULL);
     Hu3DModelAttrSet(object->omObj1->model[0], 0x180, 0);
     Hu3DModelLayerSet(object->omObj1->model[0], 0);
-    HuVecCopy3F(&object->coords, &D_801094F8_koopa->coords);
+    HuVecCopy3F(&object->coords, &koopa_koopaMdl->coords);
     object->coords.y += 200.0f;
     angle = 0.0f;
     scale = 1.0f;
@@ -1021,41 +1021,41 @@ void func_80108360_koopa(s32 modelFile) {
         HuPrcVSleep();
     }
     MBModelKill(object);
-    MBModelMotionWait(D_801094F8_koopa);
-    MBMotionShiftSet(D_801094F8_koopa, -1, 0, 5, 2);
+    MBModelMotionWait(koopa_koopaMdl);
+    MBMotionShiftSet(koopa_koopaMdl, -1, 0, 5, 2);
 }
 
-s32 func_801085E4_koopa(void) {
+s32 koopa_RevSetExec(void) {
     MBWinOpen(0x4217);
-    MBWinKeyWait(D_801094F4_koopa);
+    MBWinKeyWait(koopa_playerNo);
     MBWinClose();
-    func_80108360_koopa(0xB0036);
+    koopa_SpellEffExec(0xB0036);
     MBWinOpen(0x4218);
-    MBWinKeyWait(D_801094F4_koopa);
+    MBWinKeyWait(koopa_playerNo);
     MBWinClose();
     MBWinOpen(0x420F);
-    MBWinKeyWait(D_801094F4_koopa);
+    MBWinKeyWait(koopa_playerNo);
     MBWinClose();
     MBPlayerRevAllSet();
     return 0;
 }
 
-s32 func_80108664_koopa(void) {
+s32 koopa_RevResetExec(void) {
     MBWinOpen(0x421A);
-    MBWinKeyWait(D_801094F4_koopa);
+    MBWinKeyWait(koopa_playerNo);
     MBWinClose();
-    func_80108360_koopa(0xB0037);
+    koopa_SpellEffExec(0xB0037);
     MBWinOpen(0x421B);
-    MBWinKeyWait(D_801094F4_koopa);
+    MBWinKeyWait(koopa_playerNo);
     MBWinClose();
     MBWinOpen(0x420F);
-    MBWinKeyWait(D_801094F4_koopa);
+    MBWinKeyWait(koopa_playerNo);
     MBWinClose();
     MBPlayerRevAllReset();
     return 0;
 }
 
-s32 func_801086E4_koopa(void) {
+s32 koopa_ShuffleExec(void) {
     s32 player1;
     s32 player2;
     s32 other1;
@@ -1063,10 +1063,10 @@ s32 func_801086E4_koopa(void) {
     s32 i;
 
     MBWinOpen(0x421D);
-    MBWinKeyWait(D_801094F4_koopa);
+    MBWinKeyWait(koopa_playerNo);
     player1 = 0;
     MBWinClose();
-    func_80108360_koopa(0xB0038);
+    koopa_SpellEffExec(0xB0038);
     player2 = MBRand(3.0f) + 1;
     MBPlayerMasuSwap(player1, player2);
     other2 = -1;
@@ -1082,15 +1082,15 @@ s32 func_801086E4_koopa(void) {
     }
     MBPlayerMasuSwap(other1, other2);
     MBWinOpen(0x421E);
-    MBWinKeyWait(D_801094F4_koopa);
+    MBWinKeyWait(koopa_playerNo);
     MBWinClose();
     MBWinOpen(0x420F);
-    MBWinKeyWait(D_801094F4_koopa);
+    MBWinKeyWait(koopa_playerNo);
     MBWinClose();
     return 0;
 }
 
-void func_801087F0_koopa(void) {
+void koopa_RevoCoinProc(void) {
     s32 playSound;
     s32 i;
     s32 average = 0;
@@ -1138,7 +1138,7 @@ void func_801087F0_koopa(void) {
     omDelPrcObj(NULL);
 }
 
-s32 func_80108A2C_koopa(void) {
+s32 koopa_RevoExec(void) {
     s32 total = 0;
     s32 i;
     s32 result;
@@ -1148,129 +1148,129 @@ s32 func_80108A2C_koopa(void) {
     }
     if (total >= MB_MAX_PLAYERS) {
         MBWinOpen(0x421F);
-        MBWinKeyWait(D_801094F4_koopa);
+        MBWinKeyWait(koopa_playerNo);
         MBWinClose();
         MBStatusDispMoveSet(0);
         HuPrcSleep(20);
-        HuPrcChildLink(HuPrcCurrentGet(), omAddPrcObj(func_801087F0_koopa, 0x300, 0x2000, 0));
-        func_80108360_koopa(0xB0039);
+        HuPrcChildLink(HuPrcCurrentGet(), omAddPrcObj(koopa_RevoCoinProc, 0x300, 0x2000, 0));
+        koopa_SpellEffExec(0xB0039);
         HuPrcChildWatch();
         MBWinOpen(0x4221);
-        MBWinKeyWait(D_801094F4_koopa);
+        MBWinKeyWait(koopa_playerNo);
         MBWinClose();
         MBWinOpen(0x420F);
-        MBWinKeyWait(D_801094F4_koopa);
+        MBWinKeyWait(koopa_playerNo);
         MBWinClose();
         result = 0;
     } else {
         MBWinOpen(0x4220);
-        MBWinKeyWait(D_801094F4_koopa);
+        MBWinKeyWait(koopa_playerNo);
         MBWinClose();
         HuAudFXPlay(0x29E);
-        MBMotionShiftSet(D_801094F8_koopa, 4, 0, 20, 0);
-        MBModelMotionWait(D_801094F8_koopa);
-        MBMotionShiftSet(D_801094F8_koopa, 7, 0, 5, 2);
+        MBMotionShiftSet(koopa_koopaMdl, 4, 0, 20, 0);
+        MBModelMotionWait(koopa_koopaMdl);
+        MBMotionShiftSet(koopa_koopaMdl, 7, 0, 5, 2);
         HuPrcSleep(10);
         result = 1;
     }
     return result;
 }
 
-s32 func_80108BB0_koopa(void) {
+s32 koopa_LeaveExec(void) {
     Vec direction;
     s32 i;
     f32 scale;
     Object *object;
 
     HuPrcSleep(15);
-    MBMotionSet(D_801094F8_koopa, 6, 2);
-    Hu3DMotionSpeedSet(D_801094F8_koopa->omObj1->model[0], 2.0f);
-    MBVecDirGet(&D_801094F8_koopa->coords, &D_801093BC_koopa, &direction);
-    HuPrcChildLink(HuPrcCurrentGet(), MBVecRotLerpCreate(&D_801094F8_koopa->rot, &direction, &D_801094F8_koopa->rot, 10));
+    MBMotionSet(koopa_koopaMdl, 6, 2);
+    Hu3DMotionSpeedSet(koopa_koopaMdl->omObj1->model[0], 2.0f);
+    MBVecDirGet(&koopa_koopaMdl->coords, &koopa_leavePos, &direction);
+    HuPrcChildLink(HuPrcCurrentGet(), MBVecRotLerpCreate(&koopa_koopaMdl->rot, &direction, &koopa_koopaMdl->rot, 10));
     HuPrcChildWatch();
-    HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&D_801094F8_koopa->coords, &D_801093BC_koopa, &D_801094F8_koopa->coords, 30));
+    HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&koopa_koopaMdl->coords, &koopa_leavePos, &koopa_koopaMdl->coords, 30));
     for (i = 0; i < 30; i++) {
-        object = D_801094F8_koopa;
+        object = koopa_koopaMdl;
         scale = 2.0f - i / 15.0f;
         HuVecCopyXYZ(&object->scale, scale, scale, scale);
         HuPrcVSleep();
     }
-    MBModelDispOff(D_801094F8_koopa);
+    MBModelDispOff(koopa_koopaMdl);
     MBWinOpen(0x4222);
-    MBWinKeyWait(D_801094F4_koopa);
+    MBWinKeyWait(koopa_playerNo);
     MBWinClose();
     return 1;
 }
 
-void func_80108D2C_koopa(void) {
+void koopa_MainProc(void) {
     s32 result = 0;
 
     Hu3DFogSet(0x3CA, 1000, 0, 0, 0);
-    D_801094F8_koopa = MBModelFileCreate(0xA002F, 9, 0.7f, 1.4f, (u32 *)&D_801093C8_koopa);
-    HuVecCopy3F(&D_801094F8_koopa->coords, &D_801093B0_koopa);
-    HuVecCopyXYZ(&D_801094F8_koopa->scale, 2.0f, 2.0f, 2.0f);
+    koopa_koopaMdl = MBModelFileCreate(0xA002F, 9, 0.7f, 1.4f, (u32 *)&koopa_koopaMot);
+    HuVecCopy3F(&koopa_koopaMdl->coords, &koopa_koopaPos);
+    HuVecCopyXYZ(&koopa_koopaMdl->scale, 2.0f, 2.0f, 2.0f);
     if (MBRand(5.0f) == 0) {
-        MBMotionSet(D_801094F8_koopa, 7, 2);
-        D_801094FC_koopa = 1;
+        MBMotionSet(koopa_koopaMdl, 7, 2);
+        koopa_introAltF = 1;
     } else {
-        MBMotionSet(D_801094F8_koopa, 1, 2);
-        D_801094FC_koopa = 0;
+        MBMotionSet(koopa_koopaMdl, 1, 2);
+        koopa_introAltF = 0;
     }
-    func_8010699C_koopa();
-    func_80107190_koopa();
+    koopa_RouletteInit();
+    koopa_RouletteCreate();
     HuAudSeqPlay(0x24);
     WipeCreateIn(3, 16);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
-    if (D_801094FC_koopa == 0) {
+    if (koopa_introAltF == 0) {
         HuPrcSleep(20);
-        MBMotionShiftSet(D_801094F8_koopa, -1, 0, 10, 2);
+        MBMotionShiftSet(koopa_koopaMdl, -1, 0, 10, 2);
     } else {
         HuPrcSleep(20);
-        MBMotionSet(D_801094F8_koopa, 4, 4);
-        Hu3DMotionTimeSet(D_801094F8_koopa->omObj1->model[0], 1024.0f);
-        while (MBMotionStartCheck(D_801094F8_koopa) == 0) {
+        MBMotionSet(koopa_koopaMdl, 4, 4);
+        Hu3DMotionTimeSet(koopa_koopaMdl->omObj1->model[0], 1024.0f);
+        while (MBMotionStartCheck(koopa_koopaMdl) == 0) {
             HuPrcVSleep();
         }
-        MBMotionShiftSet(D_801094F8_koopa, -1, 0, 10, 2);
+        MBMotionShiftSet(koopa_koopaMdl, -1, 0, 10, 2);
         HuPrcSleep(10);
-        MBMotionShiftSet(D_801094F8_koopa, 1, 0, 5, 2);
+        MBMotionShiftSet(koopa_koopaMdl, 1, 0, 5, 2);
         HuPrcSleep(36);
-        MBMotionShiftSet(D_801094F8_koopa, -1, 0, 10, 2);
+        MBMotionShiftSet(koopa_koopaMdl, -1, 0, 10, 2);
     }
     HuPrcSleep(10);
     HuAudFXPlay(0x29D);
-    if (GwPlayer[D_801094F4_koopa].coin == 0) {
-        sprintf(D_80109508_koopa, D_801094C0_koopa, func_801076CC_koopa(D_801094F4_koopa));
-        MBWinInsertOpen(0x420B, (char *)mbCharNameMesTbl[GwPlayer[D_801094F4_koopa].chr], (u32)D_80109508_koopa, 0, 0, 0);
-        MBWinKeyWait(D_801094F4_koopa);
+    if (GwPlayer[koopa_playerNo].coin == 0) {
+        sprintf(koopa_coinStr, koopa_coinFmtStr, koopa_CoinGiftGet(koopa_playerNo));
+        MBWinInsertOpen(0x420B, (char *)mbCharNameMesTbl[GwPlayer[koopa_playerNo].chr], (u32)koopa_coinStr, 0, 0, 0);
+        MBWinKeyWait(koopa_playerNo);
         MBWinClose();
-        func_80107724_koopa();
-        MBMotionShiftSet(D_801094F8_koopa, 2, 0, 5, 0);
-        MBMotionEndShiftSet(D_801094F8_koopa, -1, 2);
+        koopa_StatusShowExec();
+        MBMotionShiftSet(koopa_koopaMdl, 2, 0, 5, 0);
+        MBMotionEndShiftSet(koopa_koopaMdl, -1, 2);
         HuPrcSleep(14);
-        MBCoinTakeCreate(D_801094F4_koopa, func_801076CC_koopa(D_801094F4_koopa));
+        MBCoinTakeCreate(koopa_playerNo, koopa_CoinGiftGet(koopa_playerNo));
         HuPrcSleep(30);
         MBWinOpen(0x420C);
-        MBWinKeyWait(D_801094F4_koopa);
+        MBWinKeyWait(koopa_playerNo);
         MBWinClose();
     } else {
-        MBWinInsertOpen(0x420A, (char *)mbCharNameMesTbl[GwPlayer[D_801094F4_koopa].chr], 0, 0, 0, 0);
-        MBWinKeyWait(D_801094F4_koopa);
+        MBWinInsertOpen(0x420A, (char *)mbCharNameMesTbl[GwPlayer[koopa_playerNo].chr], 0, 0, 0, 0);
+        MBWinKeyWait(koopa_playerNo);
         MBWinClose();
-        MBMotionShiftSet(D_801094F8_koopa, 2, 0, 5, 0);
-        MBMotionEndShiftSet(D_801094F8_koopa, -1, 2);
+        MBMotionShiftSet(koopa_koopaMdl, 2, 0, 5, 0);
+        MBMotionEndShiftSet(koopa_koopaMdl, -1, 2);
         HuPrcSleep(14);
-        func_80107648_koopa();
-        while (D_80109550_koopa != NULL) {
+        koopa_RouletteStart();
+        while (koopa_rouletteObj != NULL) {
             HuPrcVSleep();
         }
-        result = D_801093EC_koopa[D_80109568_koopa]();
+        result = koopa_eventFuncTbl[koopa_rouletteResult]();
     }
     if (result == 0) {
         HuAudFXPlay(0x29C);
-        MBMotionShiftSet(D_801094F8_koopa, 3, 0, 5, 2);
+        MBMotionShiftSet(koopa_koopaMdl, 3, 0, 5, 2);
     }
     HuPrcSleep(20);
     omSysExitReq = 1;
@@ -1279,10 +1279,10 @@ void func_80108D2C_koopa(void) {
     }
 }
 
-void func_801091C4_koopa(omObjData *obj) {
+void koopa_ExitObjMain(omObjData *obj) {
     if (WipeStatGet() == 0) {
-        func_80109320_koopa();
-        func_801092A0_koopa();
+        koopa_BackClose();
+        koopa_SysClose();
         MBStatusKill();
         HuWinAllKill();
         MBMasuKill();
@@ -1291,36 +1291,36 @@ void func_801091C4_koopa(omObjData *obj) {
     }
 }
 
-void func_80109220_koopa(omObjData *obj) {
+void koopa_ExitCheckObjMain(omObjData *obj) {
     if (omSysExitReq != 0) {
         WipeCreateOut(3, 20);
         HuAudSeqFadeOut(60);
-        obj->func = func_801091C4_koopa;
+        obj->func = koopa_ExitObjMain;
     }
 }
 
-void func_8010926C_koopa(void) {
+void koopa_SysInit(void) {
     MBModelInit();
     MBPlayerMotInit();
     MBMotShiftInit();
     MBSprGrpInit();
 }
 
-void func_801092A0_koopa(void) {
+void koopa_SysClose(void) {
     MBSprGrpClose();
     MBMotShiftClose();
     MBPlayerClose();
     MBModelClose();
 }
 
-void func_801092D4_koopa(void) {
+void koopa_BackInit(void) {
     Hu3DCamInit(1);
     MBBackArcInit((u32)hvq_data_ROM_START);
     MBBackLoad(2);
     MBCameraNearFarSet(100.0f, 10000.0f);
 }
 
-void func_80109320_koopa(void) {
+void koopa_BackClose(void) {
     MBBackKill();
     MBBackClose();
 }

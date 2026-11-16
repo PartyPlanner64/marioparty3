@@ -7,101 +7,101 @@
 void MBDlgResultWinExec(s32);
 void MBDlgWinExecY(s16, s32, s32);
 void *memcpy(void *, const void *, unsigned int);
-void func_80106E74_majinlamp(void);
-void func_8010771C_majinlamp(void);
-void func_80107DD8_majinlamp(omObjData *arg0);
-void func_80107D98_majinlamp(void);
-void func_80107E1C_majinlamp(omObjData *arg0);
-void func_80107E40_majinlamp(void);
-void func_80107E64_majinlamp(void);
-void func_80107F54_majinlamp(void);
-void func_801080C4_majinlamp(void);
-void func_80105B14_majinlamp(omObjData *arg0);
-void func_80105E2C_majinlamp(omObjData *arg0);
-void func_801067EC_majinlamp(omObjData *arg0);
+void majinlamp_LampBoardExec(void);
+void majinlamp_TunnelFlyExec(void);
+void majinlamp_ExitObjMain(omObjData *arg0);
+void majinlamp_MainProc(void);
+void majinlamp_ExitCheckObjMain(omObjData *arg0);
+void majinlamp_SysInit(void);
+void majinlamp_SysClose(void);
+void majinlamp_CameraInit(void);
+void majinlamp_CameraClose(void);
+void majinlamp_PosMoveObjMain(omObjData *arg0);
+void majinlamp_ArcMoveObjMain(omObjData *arg0);
+void majinlamp_RotMoveObjMain(omObjData *arg0);
 
-f32 D_801080D0_majinlamp = 20.0f;
-f32 D_801080D4_majinlamp = 200.0f;
-f32 D_801080D8_majinlamp = 10000.0f;
-f32 D_801080DC_majinlamp = 20.0f;
-f32 D_801080E0_majinlamp = 200.0f;
-f32 D_801080E4_majinlamp = 10000.0f;
-s16 D_801080E8_majinlamp = 0;
-s16 D_801080EA_majinlamp = 0;
-s16 D_801080EC_majinlamp = 1;
-f32 D_801080F0_majinlamp = 0.0f;
+f32 majinlamp_cam0Fov = 20.0f;
+f32 majinlamp_cam0Near = 200.0f;
+f32 majinlamp_cam0Far = 10000.0f;
+f32 majinlamp_cam1Fov = 20.0f;
+f32 majinlamp_cam1Near = 200.0f;
+f32 majinlamp_cam1Far = 10000.0f;
+s16 majinlamp_playerRideF = 0;
+s16 majinlamp_playerTiltF = 0;
+s16 majinlamp_lampBobF = 1;
+f32 majinlamp_rideOfsY = 0.0f;
 
-Vec D_801080F4_majinlamp[] = {
+Vec majinlamp_flyPosTbl[] = {
     { 0.0f, 0.0f, -2000.0f },
     { -100.0f, -100.0f, 2000.0f },
     { 0.0f, -50.0f, 4500.0f },
 };
 
-Vec D_80108118_majinlamp = { -500.0f, 500.0f, 5500.0f };
-s32 D_80108124_majinlamp = 1;
+Vec majinlamp_flyExitPos = { -500.0f, 500.0f, 5500.0f };
+s32 majinlamp_bgOutScrollF = 1;
 
-Process *D_801082E0_majinlamp BSS;
-Vec D_801082E4_majinlamp BSS;
-Vec D_801082F0_majinlamp BSS;
-Vec D_801082FC_majinlamp BSS;
-Vec D_80108308_majinlamp BSS;
-Vec D_80108314_majinlamp BSS;
-Vec D_80108320_majinlamp BSS;
-Object *D_8010832C_majinlamp BSS;
-Object *D_80108330_majinlamp BSS;
-GW_PLAYER *D_80108334_majinlamp BSS;
-s16 D_80108338_majinlamp BSS;
-s16 D_8010833A_majinlamp BSS;
-s32 D_8010833C_majinlamp BSS;
-s16 D_80108340_majinlamp[2] BSS;
-u8 D_80108344_majinlamp[0xC] BSS; /* Unreferenced. */
-omObjData *D_80108350_majinlamp[32] BSS;
+Process *majinlamp_cameraProc BSS;
+Vec majinlamp_cam0Pos BSS;
+Vec majinlamp_cam0Target BSS;
+Vec majinlamp_cam0Up BSS;
+Vec majinlamp_cam1Pos BSS;
+Vec majinlamp_cam1Target BSS;
+Vec majinlamp_cam1Up BSS;
+Object *majinlamp_lampMdl BSS;
+Object *majinlamp_tunnelMdl BSS;
+GW_PLAYER *majinlamp_gwPlayer BSS;
+s16 majinlamp_screenSprGrp BSS;
+s16 majinlamp_screenSpr BSS;
+s32 majinlamp_playerNo BSS;
+s16 majinlamp_playerAnimTbl[2] BSS;
+u8 majinlamp_playerAnimPad[0xC] BSS; /* Unreferenced. */
+omObjData *majinlamp_moveObjTbl[32] BSS;
 
-extern const char D_80108260_majinlamp[];
-extern const char D_80108268_majinlamp[];
-extern const s32 D_80108270_majinlamp[];
-extern const s32 D_80108290_majinlamp[];
-extern const Vec D_801082B0_majinlamp;
-extern const Vec D_801082BC_majinlamp;
-extern const Vec D_801082C8_majinlamp;
-extern const Vec D_801082D4_majinlamp;
+extern const char majinlamp_bgInStr[];
+extern const char majinlamp_bgOutStr[];
+extern const s32 majinlamp_playerRideAnimTbl[];
+extern const s32 majinlamp_playerCheerAnimTbl[];
+extern const Vec majinlamp_jumpPos;
+extern const Vec majinlamp_lookPos;
+extern const Vec majinlamp_flyAwayPos;
+extern const Vec majinlamp_flyAwayArc;
 
-void func_801059A0_majinlamp(void) {
-    D_8010833C_majinlamp = GwSystem.current_player_index;
+void majinlamp_ObjectSetup(void) {
+    majinlamp_playerNo = GwSystem.current_player_index;
     omInitObjMan(0x50, 0x50);
-    func_80107F54_majinlamp();
-    func_80107E40_majinlamp();
+    majinlamp_CameraInit();
+    majinlamp_SysInit();
     HuWinInit();
-    omAddPrcObj(func_80107D98_majinlamp, 0x300, 0x4000, 0);
-    omAddObj(0x1000, 0, 0, -1, func_80107E1C_majinlamp);
+    omAddPrcObj(majinlamp_MainProc, 0x300, 0x4000, 0);
+    omAddObj(0x1000, 0, 0, -1, majinlamp_ExitCheckObjMain);
 }
 
-void func_80105A20_majinlamp(void) {
+void majinlamp_MoveObjInit(void) {
     s32 i;
 
     for (i = 0; i < 32; i++) {
-        D_80108350_majinlamp[i] = NULL;
+        majinlamp_moveObjTbl[i] = NULL;
     }
 }
 
-void func_80105A50_majinlamp(void) {
+void majinlamp_MoveObjKillAll(void) {
     s32 i;
 
     for (i = 0; i < 32; i++) {
-        if (D_80108350_majinlamp[i] != NULL) {
-            if (D_80108350_majinlamp[i]->func == func_80105B14_majinlamp ||
-                D_80108350_majinlamp[i]->func == func_80105E2C_majinlamp ||
-                D_80108350_majinlamp[i]->func == func_801067EC_majinlamp) {
-                if (D_80108350_majinlamp[i]->stat & 4) {
-                    D_80108350_majinlamp[i]->data = NULL;
-                    omDelObj(D_80108350_majinlamp[i]);
+        if (majinlamp_moveObjTbl[i] != NULL) {
+            if (majinlamp_moveObjTbl[i]->func == majinlamp_PosMoveObjMain ||
+                majinlamp_moveObjTbl[i]->func == majinlamp_ArcMoveObjMain ||
+                majinlamp_moveObjTbl[i]->func == majinlamp_RotMoveObjMain) {
+                if (majinlamp_moveObjTbl[i]->stat & 4) {
+                    majinlamp_moveObjTbl[i]->data = NULL;
+                    omDelObj(majinlamp_moveObjTbl[i]);
                 }
             }
         }
     }
 }
 
-void func_80105B14_majinlamp(omObjData *arg0) {
+void majinlamp_PosMoveObjMain(omObjData *arg0) {
     Object *temp_v1;
 
     temp_v1 = arg0->data;
@@ -130,11 +130,11 @@ void func_80105B14_majinlamp(omObjData *arg0) {
     }
 }
 
-omObjData *func_80105CA8_majinlamp(s32 arg0, Vec *arg1, s32 arg2, Object *arg3) {
+omObjData *majinlamp_PosMoveCreate(s32 arg0, Vec *arg1, s32 arg2, Object *arg3) {
     omObjData *obj;
     s32 i;
 
-    obj = omAddObj(0x1000, 0, 0, -1, func_80105B14_majinlamp);
+    obj = omAddObj(0x1000, 0, 0, -1, majinlamp_PosMoveObjMain);
     obj->work[0] = arg0;
     obj->work[1] = arg2;
     obj->trans.x = arg1->x;
@@ -153,15 +153,15 @@ omObjData *func_80105CA8_majinlamp(s32 arg0, Vec *arg1, s32 arg2, Object *arg3) 
 
     obj->data = arg3;
     for (i = 0; i < 32; i++) {
-        if (D_80108350_majinlamp[i] == NULL) {
-            D_80108350_majinlamp[i] = obj;
+        if (majinlamp_moveObjTbl[i] == NULL) {
+            majinlamp_moveObjTbl[i] = obj;
             break;
         }
     }
     return obj;
 }
 
-void func_80105E2C_majinlamp(omObjData *arg0) {
+void majinlamp_ArcMoveObjMain(omObjData *arg0) {
     Object *temp_v1;
     Object *temp_v0;
     f32 temp_f20;
@@ -212,12 +212,12 @@ void func_80105E2C_majinlamp(omObjData *arg0) {
     }
 }
 
-omObjData *func_80106634_majinlamp(s32 arg0, Vec *arg1, s32 arg2, Vec *arg3) {
+omObjData *majinlamp_ArcMoveCreate(s32 arg0, Vec *arg1, s32 arg2, Vec *arg3) {
     omObjData *obj;
     s32 player = -1;
     s32 i;
 
-    obj = omAddObj(0x1000, 0, 0, -1, func_80105E2C_majinlamp);
+    obj = omAddObj(0x1000, 0, 0, -1, majinlamp_ArcMoveObjMain);
     if (arg0 >= 0) {
         player = arg0;
         arg0 = 0;
@@ -245,15 +245,15 @@ omObjData *func_80106634_majinlamp(s32 arg0, Vec *arg1, s32 arg2, Vec *arg3) {
     obj->data = (void *)arg0;
 
     for (i = 0; i < 32; i++) {
-        if (D_80108350_majinlamp[i] == NULL) {
-            D_80108350_majinlamp[i] = obj;
+        if (majinlamp_moveObjTbl[i] == NULL) {
+            majinlamp_moveObjTbl[i] = obj;
             break;
         }
     }
     return obj;
 }
 
-void func_801067EC_majinlamp(omObjData *arg0) {
+void majinlamp_RotMoveObjMain(omObjData *arg0) {
     Object *temp_v1;
 
     temp_v1 = arg0->data;
@@ -286,7 +286,7 @@ void func_801067EC_majinlamp(omObjData *arg0) {
     }
 }
 
-omObjData *func_801069B8_majinlamp(s32 arg0, Vec *arg1, s32 arg2, Object *arg3) {
+omObjData *majinlamp_RotMoveCreate(s32 arg0, Vec *arg1, s32 arg2, Object *arg3) {
     Vec sp18;
     omObjData *obj;
     f32 var_f20;
@@ -299,7 +299,7 @@ omObjData *func_801069B8_majinlamp(s32 arg0, Vec *arg1, s32 arg2, Object *arg3) 
         MBVecDirGet(&arg3->coords, arg1, &sp18);
     }
 
-    obj = omAddObj(0x1000, 0, 0, -1, func_801067EC_majinlamp);
+    obj = omAddObj(0x1000, 0, 0, -1, majinlamp_RotMoveObjMain);
     obj->work[0] = arg0;
     obj->work[1] = arg2;
     obj->rot.x = sp18.x;
@@ -333,20 +333,20 @@ omObjData *func_801069B8_majinlamp(s32 arg0, Vec *arg1, s32 arg2, Object *arg3) 
     obj->data = arg3;
 
     for (i = 0; i < 32; i++) {
-        if (D_80108350_majinlamp[i] == NULL) {
-            D_80108350_majinlamp[i] = obj;
+        if (majinlamp_moveObjTbl[i] == NULL) {
+            majinlamp_moveObjTbl[i] = obj;
             break;
         }
     }
     return obj;
 }
 
-void func_80106BB0_majinlamp(omObjData *arg0) {
-    Hu3DModelObjTexScroll(D_80108330_majinlamp->omObj1->model[0], 0, arg0->trans.x, 0x40, 0x40, D_80108260_majinlamp, 0);
+void majinlamp_TunnelScrollObjMain(omObjData *arg0) {
+    Hu3DModelObjTexScroll(majinlamp_tunnelMdl->omObj1->model[0], 0, arg0->trans.x, 0x40, 0x40, majinlamp_bgInStr, 0);
     arg0->trans.x += 1.0f;
 
-    if (D_80108124_majinlamp != 0) {
-        Hu3DModelObjTexScroll(D_80108330_majinlamp->omObj1->model[0], 0, arg0->trans.y, 0x40, 0x40, D_80108268_majinlamp, 0);
+    if (majinlamp_bgOutScrollF != 0) {
+        Hu3DModelObjTexScroll(majinlamp_tunnelMdl->omObj1->model[0], 0, arg0->trans.y, 0x40, 0x40, majinlamp_bgOutStr, 0);
         arg0->trans.y += 1.0f;
     }
 
@@ -364,29 +364,29 @@ void func_80106BB0_majinlamp(omObjData *arg0) {
     }
 }
 
-void func_80106D3C_majinlamp(omObjData *arg0) {
-    if (D_801080EC_majinlamp != 0) {
-        D_8010832C_majinlamp->velocity.x = sindf(arg0->rot.y) * 30.0f;
+void majinlamp_LampObjMain(omObjData *arg0) {
+    if (majinlamp_lampBobF != 0) {
+        majinlamp_lampMdl->velocity.x = sindf(arg0->rot.y) * 30.0f;
         arg0->rot.y += 2.0f;
         if (arg0->rot.y >= 360.0f) {
             arg0->rot.y -= 360.0f;
         }
     }
 
-    if (D_801080E8_majinlamp != 0) {
-        D_80108334_majinlamp->player_obj->velocity.x =
-            D_801080F0_majinlamp * D_8010832C_majinlamp->scale.x + D_8010832C_majinlamp->velocity.x;
-        HuVecCopy3F(&D_80108334_majinlamp->player_obj->coords, &D_8010832C_majinlamp->coords);
-        HuVecCopy3F(&D_80108334_majinlamp->player_obj->scale, &D_8010832C_majinlamp->scale);
+    if (majinlamp_playerRideF != 0) {
+        majinlamp_gwPlayer->player_obj->velocity.x =
+            majinlamp_rideOfsY * majinlamp_lampMdl->scale.x + majinlamp_lampMdl->velocity.x;
+        HuVecCopy3F(&majinlamp_gwPlayer->player_obj->coords, &majinlamp_lampMdl->coords);
+        HuVecCopy3F(&majinlamp_gwPlayer->player_obj->scale, &majinlamp_lampMdl->scale);
     }
 
-    if (D_801080EA_majinlamp != 0) {
-        D_80108334_majinlamp->player_obj->rot.x = D_8010832C_majinlamp->rot.x;
-        D_80108334_majinlamp->player_obj->rot.z = D_8010832C_majinlamp->rot.z;
+    if (majinlamp_playerTiltF != 0) {
+        majinlamp_gwPlayer->player_obj->rot.x = majinlamp_lampMdl->rot.x;
+        majinlamp_gwPlayer->player_obj->rot.z = majinlamp_lampMdl->rot.z;
     }
 }
 
-void func_80106E74_majinlamp(void) {
+void majinlamp_LampBoardExec(void) {
     Vec sp18;
     Vec sp28;
     Vec sp38;
@@ -401,36 +401,36 @@ void func_80106E74_majinlamp(void) {
     void *temp_v0;
     omObjData *temp_v1;
 
-    D_80108338_majinlamp = HuSprGrpCreate(1, 5);
+    majinlamp_screenSprGrp = HuSprGrpCreate(1, 5);
     temp_v0 = DataRead(0x1301BF);
-    D_8010833A_majinlamp = HuSprAnimRead(temp_v0);
+    majinlamp_screenSpr = HuSprAnimRead(temp_v0);
     DataClose(temp_v0);
-    HuSprGrpMemberSet(D_80108338_majinlamp, 0, D_8010833A_majinlamp, 0);
-    HuSprPriSet(D_80108338_majinlamp, 0, 0xA);
-    HuSprAnimModeSet(D_80108338_majinlamp, 0, HUSPR_ANIM_MODE_BANK);
-    HuSprAttrSet(D_80108338_majinlamp, 0, 0x5000);
-    HuSprPosSet(D_80108338_majinlamp, 0, 0xA0, 0x78);
-    HuSprScaleSet(D_80108338_majinlamp, 0, 50.0f, 50.0f);
-    D_80108334_majinlamp = MBPlayerGet(D_8010833C_majinlamp);
-    MBPlayerModelCreate(D_8010833C_majinlamp, mbPlayerMotTbl[GwPlayer[D_8010833C_majinlamp].chr], 2);
-    memcpy(&sp18, D_80108270_majinlamp, 0x20);
-    memcpy(&sp38, D_80108290_majinlamp, 0x20);
-    D_80108340_majinlamp[0] = CharAnimCreate(
-        D_80108334_majinlamp->player_obj->omObj1->model[0], 2,
-        GwPlayer[D_8010833C_majinlamp].chr,
-        ((s32 *)&sp18)[GwPlayer[D_8010833C_majinlamp].chr]);
-    D_80108340_majinlamp[1] = Hu3DAnimDataRead(
-        ((s32 *)&sp38)[GwPlayer[D_8010833C_majinlamp].chr]);
-    CharAnimSet(D_80108334_majinlamp->player_obj->omObj1->model[0], 2,
-                       GwPlayer[D_8010833C_majinlamp].chr, D_80108340_majinlamp[0]);
-    MBPlayerMotionSet(D_8010833C_majinlamp, 4, 2);
-    HuVecCopyXYZ(&D_80108334_majinlamp->player_obj->coords, 150.0f, -100.0f, 3000.0f);
-    temp_v1 = (omObjData *)D_80108334_majinlamp->player_obj;
+    HuSprGrpMemberSet(majinlamp_screenSprGrp, 0, majinlamp_screenSpr, 0);
+    HuSprPriSet(majinlamp_screenSprGrp, 0, 0xA);
+    HuSprAnimModeSet(majinlamp_screenSprGrp, 0, HUSPR_ANIM_MODE_BANK);
+    HuSprAttrSet(majinlamp_screenSprGrp, 0, 0x5000);
+    HuSprPosSet(majinlamp_screenSprGrp, 0, 0xA0, 0x78);
+    HuSprScaleSet(majinlamp_screenSprGrp, 0, 50.0f, 50.0f);
+    majinlamp_gwPlayer = MBPlayerGet(majinlamp_playerNo);
+    MBPlayerModelCreate(majinlamp_playerNo, mbPlayerMotTbl[GwPlayer[majinlamp_playerNo].chr], 2);
+    memcpy(&sp18, majinlamp_playerRideAnimTbl, 0x20);
+    memcpy(&sp38, majinlamp_playerCheerAnimTbl, 0x20);
+    majinlamp_playerAnimTbl[0] = CharAnimCreate(
+        majinlamp_gwPlayer->player_obj->omObj1->model[0], 2,
+        GwPlayer[majinlamp_playerNo].chr,
+        ((s32 *)&sp18)[GwPlayer[majinlamp_playerNo].chr]);
+    majinlamp_playerAnimTbl[1] = Hu3DAnimDataRead(
+        ((s32 *)&sp38)[GwPlayer[majinlamp_playerNo].chr]);
+    CharAnimSet(majinlamp_gwPlayer->player_obj->omObj1->model[0], 2,
+                       GwPlayer[majinlamp_playerNo].chr, majinlamp_playerAnimTbl[0]);
+    MBPlayerMotionSet(majinlamp_playerNo, 4, 2);
+    HuVecCopyXYZ(&majinlamp_gwPlayer->player_obj->coords, 150.0f, -100.0f, 3000.0f);
+    temp_v1 = (omObjData *)majinlamp_gwPlayer->player_obj;
     temp_v1->next_idx |= 1;
-    D_8010832C_majinlamp = MBModelCreate(0x25, 0);
-    HuVecCopyXYZ(&D_8010832C_majinlamp->coords, -150.0f, -50.0f, 3000.0f);
+    majinlamp_lampMdl = MBModelCreate(0x25, 0);
+    HuVecCopyXYZ(&majinlamp_lampMdl->coords, -150.0f, -50.0f, 3000.0f);
     {
-        omObjData *obj = omAddObj(0x1000, 0, 0, -1, func_80106D3C_majinlamp);
+        omObjData *obj = omAddObj(0x1000, 0, 0, -1, majinlamp_LampObjMain);
         obj->rot.y = 0.0f;
         obj->scale.x = 0.0f;
     }
@@ -442,59 +442,59 @@ void func_80106E74_majinlamp(void) {
         HuPrcVSleep();
     }
     HuPrcSleep(0x1E);
-    MBPlayerMotionShiftSet(D_8010833C_majinlamp, -1, 0, 0xA, 2);
+    MBPlayerMotionShiftSet(majinlamp_playerNo, -1, 0, 0xA, 2);
     HuPrcSleep(0xF);
     MBDlgResultWinExec(0x3A17);
-    D_801080EC_majinlamp = 0;
+    majinlamp_lampBobF = 0;
     var_f20 = 20.0f;
-    while (D_8010832C_majinlamp->velocity.x < 1000.0f) {
-        D_8010832C_majinlamp->velocity.x += var_f20;
+    while (majinlamp_lampMdl->velocity.x < 1000.0f) {
+        majinlamp_lampMdl->velocity.x += var_f20;
         var_f20 += 5.0f;
         HuPrcVSleep();
     }
-    HuVecCopyXYZ(&D_8010832C_majinlamp->coords, -1600.0f, -100.0f, 1600.0f);
-    D_801080EC_majinlamp = 1;
-    func_8008A120_main(Hu3DData[D_8010832C_majinlamp->omObj1->model[0]].mtx, 60.0f);
-    D_8010832C_majinlamp->rot.x = sindf(45.0f);
-    D_8010832C_majinlamp->rot.z = cosdf(45.0f);
+    HuVecCopyXYZ(&majinlamp_lampMdl->coords, -1600.0f, -100.0f, 1600.0f);
+    majinlamp_lampBobF = 1;
+    func_8008A120_main(Hu3DData[majinlamp_lampMdl->omObj1->model[0]].mtx, 60.0f);
+    majinlamp_lampMdl->rot.x = sindf(45.0f);
+    majinlamp_lampMdl->rot.z = cosdf(45.0f);
     var_f20 = 50.0f;
-    while (D_8010832C_majinlamp->coords.x < 0.0f) {
-        D_8010832C_majinlamp->coords.x += var_f20 * 2.0f;
-        D_8010832C_majinlamp->coords.z += var_f20 * 2.0f;
+    while (majinlamp_lampMdl->coords.x < 0.0f) {
+        majinlamp_lampMdl->coords.x += var_f20 * 2.0f;
+        majinlamp_lampMdl->coords.z += var_f20 * 2.0f;
         var_f20 -= 1.6f;
         if (var_f20 <= 5.0f) {
             var_f20 = 5.0f;
         }
         HuPrcVSleep();
     }
-    MBPlayerMotionSet(D_8010833C_majinlamp, 2, 0);
-    memcpy(&sp18, &D_801082B0_majinlamp, 0xC);
-    MBPlayerPosMoveCreate(&D_80108334_majinlamp->player_obj->coords, &sp18,
-                          &D_80108334_majinlamp->player_obj->coords, 0x14);
-    D_80108334_majinlamp->player_obj->velocity.y = 30.0f;
-    D_80108334_majinlamp->player_obj->velocity.z = -2.5f;
+    MBPlayerMotionSet(majinlamp_playerNo, 2, 0);
+    memcpy(&sp18, &majinlamp_jumpPos, 0xC);
+    MBPlayerPosMoveCreate(&majinlamp_gwPlayer->player_obj->coords, &sp18,
+                          &majinlamp_gwPlayer->player_obj->coords, 0x14);
+    majinlamp_gwPlayer->player_obj->velocity.y = 30.0f;
+    majinlamp_gwPlayer->player_obj->velocity.z = -2.5f;
     HuPrcSleep(0x14);
-    temp_obj = D_80108334_majinlamp->player_obj;
+    temp_obj = majinlamp_gwPlayer->player_obj;
     temp_obj->velocity.z = (temp_f28 = 0.0f);
     temp_obj->velocity.y = temp_f28;
-    D_801080F0_majinlamp = D_80108334_majinlamp->player_obj->coords.y -
-                           D_8010832C_majinlamp->coords.y - 15.0f;
-    D_801080E8_majinlamp = 1;
-    D_801080EA_majinlamp = 1;
-    MBPlayerMotionSet(D_8010833C_majinlamp, -1, 2);
-    memcpy(&sp28, &D_801082BC_majinlamp, 0xC);
-    func_801069B8_majinlamp(D_8010833C_majinlamp, &sp28, 5, NULL);
+    majinlamp_rideOfsY = majinlamp_gwPlayer->player_obj->coords.y -
+                           majinlamp_lampMdl->coords.y - 15.0f;
+    majinlamp_playerRideF = 1;
+    majinlamp_playerTiltF = 1;
+    MBPlayerMotionSet(majinlamp_playerNo, -1, 2);
+    memcpy(&sp28, &majinlamp_lookPos, 0xC);
+    majinlamp_RotMoveCreate(majinlamp_playerNo, &sp28, 5, NULL);
     HuPrcSleep(5);
     MBDlgWinExecY(-1, 0x3A18, 0x28);
     HuAudFXPlay(0x12B);
-    memcpy(&sp38, &D_801082C8_majinlamp, 0xC);
-    memcpy(&sp48, &D_801082D4_majinlamp, 0xC);
-    func_801069B8_majinlamp(0, &sp38, 0x1E, D_8010832C_majinlamp);
-    func_80106634_majinlamp((s32)D_8010832C_majinlamp, &sp38, 0x1E, &sp48);
+    memcpy(&sp38, &majinlamp_flyAwayPos, 0xC);
+    memcpy(&sp48, &majinlamp_flyAwayArc, 0xC);
+    majinlamp_RotMoveCreate(0, &sp38, 0x1E, majinlamp_lampMdl);
+    majinlamp_ArcMoveCreate((s32)majinlamp_lampMdl, &sp38, 0x1E, &sp48);
     var_f20 = 60.0f;
     for (i = 0; i < 0x1E; i++) {
-        func_8008A120_main(Hu3DData[D_8010832C_majinlamp->omObj1->model[0]].mtx, var_f20);
-        func_8008A120_main(Hu3DData[D_80108334_majinlamp->player_obj->omObj1->model[0]].mtx,
+        func_8008A120_main(Hu3DData[majinlamp_lampMdl->omObj1->model[0]].mtx, var_f20);
+        func_8008A120_main(Hu3DData[majinlamp_gwPlayer->player_obj->omObj1->model[0]].mtx,
                            var_f20 - 60.0f);
         var_f20 -= 2.0f;
         HuPrcVSleep();
@@ -505,176 +505,176 @@ void func_80106E74_majinlamp(void) {
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
-    MBModelDispOff(D_80108334_majinlamp->player_obj);
-    MBModelDispOff(D_8010832C_majinlamp);
-    HuSprTPLvlSet(D_80108338_majinlamp, 0, 0);
+    MBModelDispOff(majinlamp_gwPlayer->player_obj);
+    MBModelDispOff(majinlamp_lampMdl);
+    HuSprTPLvlSet(majinlamp_screenSprGrp, 0, 0);
 }
 
-void func_8010771C_majinlamp(void) {
+void majinlamp_TunnelFlyExec(void) {
     Vec sp[4];
     Vec *direction;
     Vec *offset;
     s16 sound;
     s32 i;
 
-    D_80108330_majinlamp = MBModelFileCreate(0x1301F6, -1, 1.0f, 0.0f, NULL);
-    HuVecCopyXYZ(&D_80108330_majinlamp->scale, 2.0f, 2.0f, 2.0f);
-    Hu3DModelVtxBufMake(D_80108330_majinlamp->omObj1->model[0]);
-    Hu3DMotionSpeedSet(D_80108330_majinlamp->omObj1->model[0], 0.25f);
-    HuVecCopyXYZ(&D_80108330_majinlamp->scale, 4.0f, 4.0f, 4.0f);
-    Hu3DModelCameraSet(D_80108330_majinlamp->omObj1->model[0], HU3D_CAM1);
-    omAddObj(0x1000, 0, 0, -1, func_80106BB0_majinlamp);
-    D_801080D0_majinlamp = 45.0f;
-    D_801080DC_majinlamp = 100.0f;
-    D_801080E0_majinlamp = 10.0f;
-    D_801080E4_majinlamp = 20000.0f;
-    func_8008A120_main(Hu3DData[D_8010832C_majinlamp->omObj1->model[0]].mtx, 60.0f);
-    func_8008A120_main(Hu3DData[D_80108334_majinlamp->player_obj->omObj1->model[0]].mtx, 0.0f);
-    HuVecCopy3F(&D_80108334_majinlamp->player_obj->coords, &D_801080F4_majinlamp[0]);
-    HuVecCopy3F(&D_8010832C_majinlamp->coords, &D_801080F4_majinlamp[0]);
-    MBMotionSet(D_80108334_majinlamp->player_obj, -1, 2);
-    MBVecForwardSet(&D_80108334_majinlamp->player_obj->rot);
-    MBVecForwardSet(&D_8010832C_majinlamp->rot);
-    D_801080F0_majinlamp = 0.0f;
-    D_801080E8_majinlamp = 1;
-    D_801080EA_majinlamp = 1;
+    majinlamp_tunnelMdl = MBModelFileCreate(0x1301F6, -1, 1.0f, 0.0f, NULL);
+    HuVecCopyXYZ(&majinlamp_tunnelMdl->scale, 2.0f, 2.0f, 2.0f);
+    Hu3DModelVtxBufMake(majinlamp_tunnelMdl->omObj1->model[0]);
+    Hu3DMotionSpeedSet(majinlamp_tunnelMdl->omObj1->model[0], 0.25f);
+    HuVecCopyXYZ(&majinlamp_tunnelMdl->scale, 4.0f, 4.0f, 4.0f);
+    Hu3DModelCameraSet(majinlamp_tunnelMdl->omObj1->model[0], HU3D_CAM1);
+    omAddObj(0x1000, 0, 0, -1, majinlamp_TunnelScrollObjMain);
+    majinlamp_cam0Fov = 45.0f;
+    majinlamp_cam1Fov = 100.0f;
+    majinlamp_cam1Near = 10.0f;
+    majinlamp_cam1Far = 20000.0f;
+    func_8008A120_main(Hu3DData[majinlamp_lampMdl->omObj1->model[0]].mtx, 60.0f);
+    func_8008A120_main(Hu3DData[majinlamp_gwPlayer->player_obj->omObj1->model[0]].mtx, 0.0f);
+    HuVecCopy3F(&majinlamp_gwPlayer->player_obj->coords, &majinlamp_flyPosTbl[0]);
+    HuVecCopy3F(&majinlamp_lampMdl->coords, &majinlamp_flyPosTbl[0]);
+    MBMotionSet(majinlamp_gwPlayer->player_obj, -1, 2);
+    MBVecForwardSet(&majinlamp_gwPlayer->player_obj->rot);
+    MBVecForwardSet(&majinlamp_lampMdl->rot);
+    majinlamp_rideOfsY = 0.0f;
+    majinlamp_playerRideF = 1;
+    majinlamp_playerTiltF = 1;
     WipeColorSet(0xFF, 0xFF, 0xFF);
     WipeCreateIn(0xB, 0x10);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
     sound = HuAudFXPlay(0x12A);
-    MBModelDispOn(D_80108334_majinlamp->player_obj);
-    MBModelDispOn(D_8010832C_majinlamp);
+    MBModelDispOn(majinlamp_gwPlayer->player_obj);
+    MBModelDispOn(majinlamp_lampMdl);
     for (i = 0; i < 0xB5; i += 2) {
-        HuVecCopy3F(&sp[0], &D_80108334_majinlamp->player_obj->coords);
-        HuVecCopy3F(&D_80108334_majinlamp->player_obj->coords, &D_801080F4_majinlamp[0]);
-        HuVecSubtract(&sp[2], &D_801080F4_majinlamp[2], &D_801080F4_majinlamp[0]);
+        HuVecCopy3F(&sp[0], &majinlamp_gwPlayer->player_obj->coords);
+        HuVecCopy3F(&majinlamp_gwPlayer->player_obj->coords, &majinlamp_flyPosTbl[0]);
+        HuVecSubtract(&sp[2], &majinlamp_flyPosTbl[2], &majinlamp_flyPosTbl[0]);
         HuVecMulScalar(&sp[2], sindf(i / 2), &sp[2]);
-        HuVecAdd(&D_80108334_majinlamp->player_obj->coords, &sp[2],
-                 &D_80108334_majinlamp->player_obj->coords);
+        HuVecAdd(&majinlamp_gwPlayer->player_obj->coords, &sp[2],
+                 &majinlamp_gwPlayer->player_obj->coords);
         sp[3].x = -sindf(i * 2) * (0x1F4 - i);
         sp[3].y = -sindf(i * 2) * (0x12C - i);
         sp[3].z = 0.0f;
-        HuVecAdd(&D_80108334_majinlamp->player_obj->coords, &sp[3],
-                 &D_80108334_majinlamp->player_obj->coords);
-        MBVecDirGet(&sp[0], &D_80108334_majinlamp->player_obj->coords,
-                    &D_80108334_majinlamp->player_obj->rot);
-        HuVecCopy3F(&D_8010832C_majinlamp->coords,
-                    &D_80108334_majinlamp->player_obj->coords);
-        HuVecCopy3F(&D_8010832C_majinlamp->rot, &D_80108334_majinlamp->player_obj->rot);
+        HuVecAdd(&majinlamp_gwPlayer->player_obj->coords, &sp[3],
+                 &majinlamp_gwPlayer->player_obj->coords);
+        MBVecDirGet(&sp[0], &majinlamp_gwPlayer->player_obj->coords,
+                    &majinlamp_gwPlayer->player_obj->rot);
+        HuVecCopy3F(&majinlamp_lampMdl->coords,
+                    &majinlamp_gwPlayer->player_obj->coords);
+        HuVecCopy3F(&majinlamp_lampMdl->rot, &majinlamp_gwPlayer->player_obj->rot);
         HuPrcVSleep();
     }
-    D_80108124_majinlamp = 1;
-    D_801080EA_majinlamp = 0;
+    majinlamp_bgOutScrollF = 1;
+    majinlamp_playerTiltF = 0;
     direction = &sp[2];
     offset = &sp[3];
     MBVecForwardSet(offset);
-    HuVecCopy3F(direction, &D_80108334_majinlamp->player_obj->rot);
-    HuPrcChildLink(HuPrcCurrentGet(), MBVecRotLerpCreate(&D_80108334_majinlamp->player_obj->rot, offset,
-                                                                 &D_80108334_majinlamp->player_obj->rot, 0xA));
+    HuVecCopy3F(direction, &majinlamp_gwPlayer->player_obj->rot);
+    HuPrcChildLink(HuPrcCurrentGet(), MBVecRotLerpCreate(&majinlamp_gwPlayer->player_obj->rot, offset,
+                                                                 &majinlamp_gwPlayer->player_obj->rot, 0xA));
     HuPrcChildWatch();
     msmSeStop(sound);
-    PlayerFXPlay(0x2BD, D_8010833C_majinlamp);
-    CharAnimSet(D_80108334_majinlamp->player_obj->omObj1->model[0], 2,
-                       GwPlayer[D_8010833C_majinlamp].chr, D_80108340_majinlamp[1]);
-    MBPlayerMotionSet(D_8010833C_majinlamp, 5, 2);
+    PlayerFXPlay(0x2BD, majinlamp_playerNo);
+    CharAnimSet(majinlamp_gwPlayer->player_obj->omObj1->model[0], 2,
+                       GwPlayer[majinlamp_playerNo].chr, majinlamp_playerAnimTbl[1]);
+    MBPlayerMotionSet(majinlamp_playerNo, 5, 2);
     HuPrcSleep(0x32);
-    MBVecDirGet(&D_80108334_majinlamp->player_obj->coords, &D_80108118_majinlamp, direction);
-    HuPrcChildLink(HuPrcCurrentGet(), MBVecRotLerpCreate(&D_80108334_majinlamp->player_obj->rot, direction,
-                                                                 &D_80108334_majinlamp->player_obj->rot, 0xA));
-    HuPrcChildLink(HuPrcCurrentGet(), MBVecRotLerpCreate(&D_8010832C_majinlamp->rot, direction,
-                                                                 &D_8010832C_majinlamp->rot, 0xA));
+    MBVecDirGet(&majinlamp_gwPlayer->player_obj->coords, &majinlamp_flyExitPos, direction);
+    HuPrcChildLink(HuPrcCurrentGet(), MBVecRotLerpCreate(&majinlamp_gwPlayer->player_obj->rot, direction,
+                                                                 &majinlamp_gwPlayer->player_obj->rot, 0xA));
+    HuPrcChildLink(HuPrcCurrentGet(), MBVecRotLerpCreate(&majinlamp_lampMdl->rot, direction,
+                                                                 &majinlamp_lampMdl->rot, 0xA));
     HuPrcChildWatch();
-    D_801080EA_majinlamp = 1;
+    majinlamp_playerTiltF = 1;
     HuPrcSleep(0xA);
     HuAudFXPlay(0x12B);
-    HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&D_80108334_majinlamp->player_obj->coords,
-                                                            &D_80108118_majinlamp,
-                                                            &D_80108334_majinlamp->player_obj->coords, 0x14));
-    HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&D_8010832C_majinlamp->coords, &D_80108118_majinlamp,
-                                                            &D_8010832C_majinlamp->coords, 0x14));
+    HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&majinlamp_gwPlayer->player_obj->coords,
+                                                            &majinlamp_flyExitPos,
+                                                            &majinlamp_gwPlayer->player_obj->coords, 0x14));
+    HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&majinlamp_lampMdl->coords, &majinlamp_flyExitPos,
+                                                            &majinlamp_lampMdl->coords, 0x14));
     HuPrcSleep(0xA);
     WipeColorSet(0xFF, 0xFF, 0xFF);
     WipeCreateOut(0xB, 0x14);
     HuPrcChildWatch();
 }
 
-void func_80107D98_majinlamp(void) {
-    func_80106E74_majinlamp();
-    func_8010771C_majinlamp();
+void majinlamp_MainProc(void) {
+    majinlamp_LampBoardExec();
+    majinlamp_TunnelFlyExec();
     omSysExitReq = 1;
     while (1) {
         HuPrcVSleep();
     }
 }
 
-void func_80107DD8_majinlamp(omObjData *arg0) {
+void majinlamp_ExitObjMain(omObjData *arg0) {
     if (WipeStatGet() == 0) {
-        func_801080C4_majinlamp();
-        func_80107E64_majinlamp();
+        majinlamp_CameraClose();
+        majinlamp_SysClose();
         HuWinAllKill();
         omOvlReturnEx(1);
     }
 }
 
-void func_80107E1C_majinlamp(omObjData *arg0) {
+void majinlamp_ExitCheckObjMain(omObjData *arg0) {
     if (omSysExitReq != 0) {
-        arg0->func = func_80107DD8_majinlamp;
+        arg0->func = majinlamp_ExitObjMain;
     }
 }
 
-void func_80107E40_majinlamp(void) {
+void majinlamp_SysInit(void) {
     MBModelInit();
     MBPlayerMotInit();
 }
 
-void func_80107E64_majinlamp(void) {
-    HuSprAnimKill(D_8010833A_majinlamp);
-    HuSprGrpKill(D_80108338_majinlamp);
+void majinlamp_SysClose(void) {
+    HuSprAnimKill(majinlamp_screenSpr);
+    HuSprGrpKill(majinlamp_screenSprGrp);
     MBPlayerClose();
     MBModelClose();
 }
 
-void func_80107EA0_majinlamp(void) {
+void majinlamp_CameraProc(void) {
     for (;;) {
-        Hu3DCameraPerspectiveSet(0, D_801080D0_majinlamp, D_801080D4_majinlamp, D_801080D8_majinlamp);
-        Hu3DCameraPosSetV(0, &D_801082E4_majinlamp, &D_801082F0_majinlamp, &D_801082FC_majinlamp);
+        Hu3DCameraPerspectiveSet(0, majinlamp_cam0Fov, majinlamp_cam0Near, majinlamp_cam0Far);
+        Hu3DCameraPosSetV(0, &majinlamp_cam0Pos, &majinlamp_cam0Target, &majinlamp_cam0Up);
         Hu3DCamUpdateMtx(0);
-        Hu3DCameraPerspectiveSet(1, D_801080DC_majinlamp, D_801080E0_majinlamp, D_801080E4_majinlamp);
-        Hu3DCameraPosSetV(1, &D_80108308_majinlamp, &D_80108314_majinlamp, &D_80108320_majinlamp);
+        Hu3DCameraPerspectiveSet(1, majinlamp_cam1Fov, majinlamp_cam1Near, majinlamp_cam1Far);
+        Hu3DCameraPosSetV(1, &majinlamp_cam1Pos, &majinlamp_cam1Target, &majinlamp_cam1Up);
         Hu3DCamUpdateMtx(1);
         HuPrcVSleep();
     }
 }
 
-void func_80107F54_majinlamp(void) {
+void majinlamp_CameraInit(void) {
     Hu3DCamInit(2);
-    D_801082E0_majinlamp = omAddPrcObj(func_80107EA0_majinlamp, 0x1001, 0, 0);
-    omPrcSetStatBit(D_801082E0_majinlamp, OM_STAT_NOALLPAUSE);
+    majinlamp_cameraProc = omAddPrcObj(majinlamp_CameraProc, 0x1001, 0, 0);
+    omPrcSetStatBit(majinlamp_cameraProc, OM_STAT_NOALLPAUSE);
 
-    HuVecCopyXYZ(&D_801082E4_majinlamp, 0.0f, 0.0f, 5000.0f);
-    HuVecCopyXYZ(&D_801082F0_majinlamp, 0.0f, 0.0f, 0.0f);
-    HuVecCopyXYZ(&D_801082FC_majinlamp, 0.0f, 1.0f, 0.0f);
-    Hu3DCameraPerspectiveSet(0, D_801080D0_majinlamp, D_801080D4_majinlamp, D_801080D8_majinlamp);
-    Hu3DCameraPosSetV(0, &D_801082E4_majinlamp, &D_801082F0_majinlamp, &D_801082FC_majinlamp);
+    HuVecCopyXYZ(&majinlamp_cam0Pos, 0.0f, 0.0f, 5000.0f);
+    HuVecCopyXYZ(&majinlamp_cam0Target, 0.0f, 0.0f, 0.0f);
+    HuVecCopyXYZ(&majinlamp_cam0Up, 0.0f, 1.0f, 0.0f);
+    Hu3DCameraPerspectiveSet(0, majinlamp_cam0Fov, majinlamp_cam0Near, majinlamp_cam0Far);
+    Hu3DCameraPosSetV(0, &majinlamp_cam0Pos, &majinlamp_cam0Target, &majinlamp_cam0Up);
     Hu3DCamUpdateMtx(0);
 
-    HuVecCopyXYZ(&D_80108308_majinlamp, 0.0f, 0.0f, 5000.0f);
-    HuVecCopyXYZ(&D_80108314_majinlamp, 0.0f, 0.0f, 0.0f);
-    HuVecCopyXYZ(&D_80108320_majinlamp, 0.0f, 1.0f, 0.0f);
-    Hu3DCameraPerspectiveSet(1, D_801080DC_majinlamp, D_801080E0_majinlamp, D_801080E4_majinlamp);
-    Hu3DCameraPosSetV(1, &D_80108308_majinlamp, &D_80108314_majinlamp, &D_80108320_majinlamp);
+    HuVecCopyXYZ(&majinlamp_cam1Pos, 0.0f, 0.0f, 5000.0f);
+    HuVecCopyXYZ(&majinlamp_cam1Target, 0.0f, 0.0f, 0.0f);
+    HuVecCopyXYZ(&majinlamp_cam1Up, 0.0f, 1.0f, 0.0f);
+    Hu3DCameraPerspectiveSet(1, majinlamp_cam1Fov, majinlamp_cam1Near, majinlamp_cam1Far);
+    Hu3DCameraPosSetV(1, &majinlamp_cam1Pos, &majinlamp_cam1Target, &majinlamp_cam1Up);
     Hu3DCamUpdateMtx(1);
 }
 
-void func_801080C4_majinlamp(void) {
+void majinlamp_CameraClose(void) {
 }
 
-const char D_80108260_majinlamp[8] = "bg_in";
-const char D_80108268_majinlamp[8] = "bg_out";
+const char majinlamp_bgInStr[8] = "bg_in";
+const char majinlamp_bgOutStr[8] = "bg_out";
 
-const s32 D_80108270_majinlamp[] = {
+const s32 majinlamp_playerRideAnimTbl[] = {
     0x000200A4,
     0x000300A4,
     0x000700A4,
@@ -685,7 +685,7 @@ const s32 D_80108270_majinlamp[] = {
     0x0009001B,
 };
 
-const s32 D_80108290_majinlamp[] = {
+const s32 majinlamp_playerCheerAnimTbl[] = {
     0x000200AB,
     0x000300AB,
     0x000700AB,
@@ -696,7 +696,7 @@ const s32 D_80108290_majinlamp[] = {
     0x00090027,
 };
 
-const Vec D_801082B0_majinlamp = { 0.0f, -90.0f, 3200.0f };
-const Vec D_801082BC_majinlamp = { 500.0f, 0.0f, 4000.0f };
-const Vec D_801082C8_majinlamp = { 200.0f, 200.0f, 5000.0f };
-const Vec D_801082D4_majinlamp = { 0.0f, 0.0f, -200.0f };
+const Vec majinlamp_jumpPos = { 0.0f, -90.0f, 3200.0f };
+const Vec majinlamp_lookPos = { 500.0f, 0.0f, 4000.0f };
+const Vec majinlamp_flyAwayPos = { 200.0f, 200.0f, 5000.0f };
+const Vec majinlamp_flyAwayArc = { 0.0f, 0.0f, -200.0f };

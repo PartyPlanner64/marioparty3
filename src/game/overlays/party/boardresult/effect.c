@@ -29,22 +29,22 @@ typedef struct BoardResultWork {
     /* 0x48 */ f32 unk_48;
 } BoardResultWork; // sizeof 0x4C
 
-u8 D_8010E950_boardresult[4][4] = {
+u8 boardresult_spiralColorTbl[4][4] = {
     { 0, 255, 255, 0 },
     { 255, 160, 40, 0 },
     { 255, 255, 0, 0 },
     { 0, 255, 0, 0 }
 };
 
-void func_8010BE14_boardresult(void); /* extern */
-void func_8010CEF4_boardresult(s16 model, s32 dataNum);
-HmfModelData_UnkBC_Unk58_Struct *func_8010D28C_boardresult(s16 model, f32 x, f32 y, f32 z, f32 arg4, f32 arg5, f32 arg6, u8 r, u8 g, u8 b);
-void func_8010D36C_boardresult(s16 model);
-void func_8010D87C_boardresult(s16 model);
-void func_8010DA30_boardresult(void); /* extern */
+void boardresult_FireworkProc(void); /* extern */
+void boardresult_FireworkShapeSet(s16 model, s32 dataNum);
+HmfModelData_UnkBC_Unk58_Struct *boardresult_ParticleAdd(s16 model, f32 x, f32 y, f32 z, f32 arg4, f32 arg5, f32 arg6, u8 r, u8 g, u8 b);
+void boardresult_FireworkBurstHook(s16 model);
+void boardresult_FireworkTrailHook(s16 model);
+void boardresult_SpiralProc(void); /* extern */
 
-BoardResultWork *func_8010BD30_boardresult(s32 arg0) {
-    Process *proc = omAddPrcObj(func_8010BE14_boardresult, 0x3F00, 0x2000, 0);
+BoardResultWork *boardresult_FireworkCreate(s32 arg0) {
+    Process *proc = omAddPrcObj(boardresult_FireworkProc, 0x3F00, 0x2000, 0);
     BoardResultWork *work = proc->user_data = HuMemAllocTag(sizeof(BoardResultWork), TAG_OVERLAY);
 
     work->unk_06 = 60;
@@ -60,39 +60,39 @@ BoardResultWork *func_8010BD30_boardresult(s32 arg0) {
     return work;
 }
 
-void func_8010BDBC_boardresult(BoardResultWork *arg0, s32 arg1) {
+void boardresult_FireworkSprSet(BoardResultWork *arg0, s32 arg1) {
     arg0->unk_00 = arg1;
 }
 
-void func_8010BDC4_boardresult(BoardResultWork *arg0, f32 x, f32 y, f32 z) {
+void boardresult_FireworkEndPosSet(BoardResultWork *arg0, f32 x, f32 y, f32 z) {
     arg0->unk_0C.x = x;
     arg0->unk_0C.y = y;
     arg0->unk_0C.z = z;
 }
 
-void func_8010BDD4_boardresult(BoardResultWork *arg0, f32 x, f32 y, f32 z) {
+void boardresult_FireworkStartPosSet(BoardResultWork *arg0, f32 x, f32 y, f32 z) {
     arg0->pos.x = x;
     arg0->pos.y = y;
     arg0->pos.z = z;
 }
 
-void func_8010BDE4_boardresult(BoardResultWork *arg0, s16 arg1) {
+void boardresult_FireworkTimeSet(BoardResultWork *arg0, s16 arg1) {
     arg0->unk_0A = arg1;
 }
 
-void func_8010BDEC_boardresult(BoardResultWork *arg0, s32 mask, s32 flags) {
+void boardresult_FireworkFlagSet(BoardResultWork *arg0, s32 mask, s32 flags) {
     arg0->unk_04 = flags | (arg0->unk_04 & ~mask);
 }
 
-s16 func_8010BE04_boardresult(BoardResultWork *arg0) {
+s16 boardresult_FireworkFlagGet(BoardResultWork *arg0) {
     return arg0->unk_04;
 }
 
-void func_8010BE0C_boardresult(BoardResultWork *arg0, s16 arg1) {
+void boardresult_FireworkBurstTimeSet(BoardResultWork *arg0, s16 arg1) {
     arg0->unk_06 = arg1;
 }
 
-void func_8010BE14_boardresult(void) {
+void boardresult_FireworkProc(void) {
     s16 model2;
     s16 i;
     s16 angle;
@@ -135,7 +135,7 @@ void func_8010BE14_boardresult(void) {
     Hu3DModelRemakeStatic(model);
     Hu3DModelVtxBufMake(model);
     Hu3DModelDynamicFree(model);
-    Hu3DParticleCreate(model, -1, NULL, func_8010D36C_boardresult);
+    Hu3DParticleCreate(model, -1, NULL, boardresult_FireworkBurstHook);
     Hu3DParticleAttrSet(model, 8, 8);
     effect = Hu3DData[model].unkBC;
     Hu3DModelAttrSet(model, 4, 4);
@@ -162,7 +162,7 @@ void func_8010BE14_boardresult(void) {
         HuAudFXPlay(0x16F);
         Hu3DModelAttrSet(model, 4, 0);
         Hu3DParticleCntSet(model, 0);
-        effect->unk18 = func_8010D87C_boardresult;
+        effect->unk18 = boardresult_FireworkTrailHook;
         Hu3DParticleAttrSet(model, 2, 0);
 
         for (i = 0; i <= work->unk_08; i++) {
@@ -204,7 +204,7 @@ void func_8010BE14_boardresult(void) {
                 vx *= scale;
                 vy *= scale;
                 vz *= scale;
-                func_8010D28C_boardresult(model, vx + cur.x, vy + cur.y, vz + cur.z, vx, vy, vz, 0xFF, 0xFF, 0xC0);
+                boardresult_ParticleAdd(model, vx + cur.x, vy + cur.y, vz + cur.z, vx, vy, vz, 0xFF, 0xFF, 0xC0);
             }
 
             vx = ROT_XX(dx, dy, dz, rot) * 0.0f + ROT_XY(dx, dy, dz, rot) + ROT_XZ(dx, dy, dz, rot) * 0.0f;
@@ -213,7 +213,7 @@ void func_8010BE14_boardresult(void) {
             vx = (dx * 0.5f + vx * 0.5f) * dist / 2.0f;
             vy = (dy * 0.5f + vy * 0.5f) * dist / 2.0f;
             vz = (dz * 0.5f + vz * 0.5f) * dist / 2.0f;
-            func_8010D28C_boardresult(model, cur.x, cur.y, cur.z, vx, vy, vz, 0xFF, 0x20, 0x20);
+            boardresult_ParticleAdd(model, cur.x, cur.y, cur.z, vx, vy, vz, 0xFF, 0x20, 0x20);
 
             vx = ROT_XX(dx, dy, dz, rot) * 0.0f + ROT_XY(dx, dy, dz, rot) * -1.0f + ROT_XZ(dx, dy, dz, rot) * 0.0f;
             vy = ROT_YX(dx, dy, dz, rot) * 0.0f + ROT_YY(dx, dy, dz, rot) * -1.0f + ROT_YZ(dx, dy, dz, rot) * 0.0f;
@@ -221,7 +221,7 @@ void func_8010BE14_boardresult(void) {
             vx = (dx * 0.5f + vx * 0.5f) * dist / 2.0f;
             vy = (dy * 0.5f + vy * 0.5f) * dist / 2.0f;
             vz = (dz * 0.5f + vz * 0.5f) * dist / 2.0f;
-            func_8010D28C_boardresult(model, cur.x, cur.y, cur.z, vx, vy, vz, 0xFF, 0x40, 0x00);
+            boardresult_ParticleAdd(model, cur.x, cur.y, cur.z, vx, vy, vz, 0xFF, 0x40, 0x00);
         }
 
         HuPrcSleep(15);
@@ -231,8 +231,8 @@ void func_8010BE14_boardresult(void) {
         Hu3DModelPosSet(model2, cur.x, cur.y, cur.z);
         HuPrcVSleep();
         HuAudFXPlay(0x170);
-        func_8010CEF4_boardresult(model, work->unk_00);
-        effect->unk18 = func_8010D36C_boardresult;
+        boardresult_FireworkShapeSet(model, work->unk_00);
+        effect->unk18 = boardresult_FireworkBurstHook;
         Hu3DParticleCntSet(model, 0);
         Hu3DModelAttrSet(model, 4, 0);
         Hu3DModelPosSet(model, cur.x, cur.y, cur.z);
@@ -254,7 +254,7 @@ void func_8010BE14_boardresult(void) {
     }
 }
 
-void func_8010CEF4_boardresult(s16 model, s32 dataNum) {
+void boardresult_FireworkShapeSet(s16 model, s32 dataNum) {
     s16 anim = HuSprAnimDataRead(dataNum);
     s16 group = HuSprGrpCreate(1, 0);
     HuSprite *sprite;
@@ -312,7 +312,7 @@ void func_8010CEF4_boardresult(s16 model, s32 dataNum) {
     HuSprAnimKill(anim);
 }
 
-HmfModelData_UnkBC_Unk58_Struct *func_8010D28C_boardresult(s16 model, f32 x, f32 y, f32 z, f32 arg4, f32 arg5,
+HmfModelData_UnkBC_Unk58_Struct *boardresult_ParticleAdd(s16 model, f32 x, f32 y, f32 z, f32 arg4, f32 arg5,
                                                            f32 arg6, u8 r, u8 g, u8 b) {
     HmfData *hmf = Hu3DData[model].hmf;
     HmfModelData_UnkBC_Unk58_Struct *particle = Hu3DData[model].unkBC->unk58;
@@ -337,7 +337,7 @@ HmfModelData_UnkBC_Unk58_Struct *func_8010D28C_boardresult(s16 model, f32 x, f32
     return particle;
 }
 
-void func_8010D36C_boardresult(s16 model) {
+void boardresult_FireworkBurstHook(s16 model) {
     HmfData *hmf = Hu3DData[model].hmf;
     HmfModelData_UnkBC_Struct *effect = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle;
@@ -438,7 +438,7 @@ void func_8010D36C_boardresult(s16 model) {
     effect->unk02++;
 }
 
-void func_8010D87C_boardresult(s16 model) {
+void boardresult_FireworkTrailHook(s16 model) {
     HmfData *hmf = Hu3DData[model].hmf;
     HmfModelData_UnkBC_Struct *effect = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle;
@@ -468,8 +468,8 @@ void func_8010D87C_boardresult(s16 model) {
     }
 }
 
-void func_8010D9D0_boardresult(void) {
-    Process *proc = omAddPrcObj(func_8010DA30_boardresult, 0x3F00, 0x2000, 0);
+void boardresult_SpiralCreate(void) {
+    Process *proc = omAddPrcObj(boardresult_SpiralProc, 0x3F00, 0x2000, 0);
     BoardResultWork *work = proc->user_data = HuMemAllocTag(sizeof(BoardResultWork), TAG_OVERLAY);
 
     work->pos.x = 0.0f;
@@ -477,7 +477,7 @@ void func_8010D9D0_boardresult(void) {
     work->pos.z = 0.0f;
 }
 
-void func_8010DA30_boardresult(void) {
+void boardresult_SpiralProc(void) {
     BoardResultWork *work = HuPrcCurrentGet()->user_data;
     s16 model = Hu3DModelRead(0xB0034, 0x6A8);
     HmfData *hmf;
@@ -514,13 +514,13 @@ void func_8010DA30_boardresult(void) {
     Hu3DModelRemakeStatic(model);
     Hu3DModelVtxBufMake(model);
     Hu3DModelDynamicFree(model);
-    Hu3DParticleCreate(model, -1, NULL, func_8010D36C_boardresult);
+    Hu3DParticleCreate(model, -1, NULL, boardresult_FireworkBurstHook);
     Hu3DParticleAttrSet(model, 8, 8);
     effect = Hu3DData[model].unkBC;
     Hu3DModelAttrSet(model, 4, 4);
     Hu3DModelAttrSet(model, 4, 0);
     Hu3DParticleCntSet(model, 0);
-    effect->unk18 = func_8010D87C_boardresult;
+    effect->unk18 = boardresult_FireworkTrailHook;
     Hu3DParticleAttrSet(model, 2, 0);
 
     work->center = work->pos;
@@ -579,9 +579,9 @@ void func_8010DA30_boardresult(void) {
             vy = (dy * 0.7f + vy * 0.3f) * dist * 0.7f;
             vz = (dz * 0.7f + vz * 0.3f) * dist * 0.7f;
             color = rand8() & 3;
-            particle = func_8010D28C_boardresult(model, pos[i].x, pos[i].y, pos[i].z, vx, vy, vz,
-                                                 D_8010E950_boardresult[color][0], D_8010E950_boardresult[color][1],
-                                                 D_8010E950_boardresult[color][2]);
+            particle = boardresult_ParticleAdd(model, pos[i].x, pos[i].y, pos[i].z, vx, vy, vz,
+                                                 boardresult_spiralColorTbl[color][0], boardresult_spiralColorTbl[color][1],
+                                                 boardresult_spiralColorTbl[color][2]);
             particle->unk08 = 1.0f;
 
             vx = -(dx * dy * (1.0f - cosdf(angle)) - dz * sindf(angle));
@@ -591,9 +591,9 @@ void func_8010DA30_boardresult(void) {
             vy = (dy * 0.7f + vy * 0.3f) * dist * 0.7f;
             vz = (dz * 0.7f + vz * 0.3f) * dist * 0.7f;
             color = rand8() & 3;
-            particle = func_8010D28C_boardresult(model, pos[i].x, pos[i].y, pos[i].z, vx, vy, vz,
-                                                 D_8010E950_boardresult[color][0], D_8010E950_boardresult[color][1],
-                                                 D_8010E950_boardresult[color][2]);
+            particle = boardresult_ParticleAdd(model, pos[i].x, pos[i].y, pos[i].z, vx, vy, vz,
+                                                 boardresult_spiralColorTbl[color][0], boardresult_spiralColorTbl[color][1],
+                                                 boardresult_spiralColorTbl[color][2]);
             particle->unk08 = 1.0f;
         }
     }

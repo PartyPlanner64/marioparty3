@@ -8,7 +8,7 @@ typedef struct ChanceTimeObjState {
     /* 0x04 */ void (*func)(omObjData *);
 } ChanceTimeObjState;
 
-typedef struct ChanceTimeUnkFED0 {
+typedef struct ChanceTimeReel {
     /* 0x00 */ s8 unk00;
     /* 0x01 */ char unk01[3];
     /* 0x04 */ f32 unk04;
@@ -20,7 +20,7 @@ typedef struct ChanceTimeUnkFED0 {
     /* 0x1A */ s8 unk1A;
     /* 0x1B */ s8 unk1B[4];
     /* 0x1F */ char unk1F[9];
-} ChanceTimeUnkFED0; // size = 0x28
+} ChanceTimeReel; // size = 0x28
 
 typedef struct ChanceTimeTransfer {
     /* 0x00 */ s32 state;
@@ -28,30 +28,30 @@ typedef struct ChanceTimeTransfer {
 } ChanceTimeTransfer; // size = 0x8
 
 #ifndef NO_EXTERN_VARIABLES
-extern s32 D_8010FAE4_chancetime;
-extern s8 D_801100D0_chancetime[4];
-extern s8 D_801100DC_chancetime;
+extern s32 chancetime_statusVsF;
+extern s8 chancetime_playerOrderTbl[4];
+extern s8 chancetime_turnTier;
 #endif
 
-void func_80106320_chancetime(void);
-void func_80106B18_chancetime(void);
-void func_80106F10_chancetime(void);
-void func_8010705C_chancetime(void);
-void func_801071A8_chancetime(void);
-void func_80107300_chancetime(void);
-void func_80108704_chancetime(void);
-void func_80108A88_chancetime(void);
-void func_80108B50_chancetime(void);
-void func_80108CDC_chancetime(void);
-void func_801094CC_chancetime(void);
-void func_80109A00_chancetime(void);
-void func_80109F34_chancetime(void);
-void func_8010A468_chancetime(void);
-void func_8010A99C_chancetime(void);
-void func_8010B030_chancetime(void);
-void func_8010BF48_chancetime(void);
-void func_8010BF80_chancetime(void);
-void func_8010D92C_chancetime(s8 arg0);
-void func_8010DBB0_chancetime(void);
+void chancetime_PlayerProc(void);
+void chancetime_PlayerEnterStart(void);
+void chancetime_PlayerJoyExec(void);
+void chancetime_PlayerNeutralExec(void);
+void chancetime_PlayerSadExec(void);
+void chancetime_HostProc(void);
+void chancetime_HostHopStart(void);
+void chancetime_HostTalkEnd(void);
+void chancetime_HostTalkStart(void);
+void chancetime_DancerProc(void);
+void chancetime_Dancer1Proc(void);
+void chancetime_Dancer2Proc(void);
+void chancetime_Dancer3Proc(void);
+void chancetime_Dancer4Proc(void);
+void chancetime_HostLJumpProc(void);
+void chancetime_HostRJumpProc(void);
+void chancetime_HostTurn(void);
+void chancetime_BlockProc(void);
+void chancetime_ReelStop(s8 arg0);
+void chancetime_EventProc(void);
 
 #endif

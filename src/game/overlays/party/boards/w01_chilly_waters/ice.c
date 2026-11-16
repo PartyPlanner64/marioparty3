@@ -49,7 +49,7 @@ typedef struct ESprite {
 } ESprite;               // unknown size
 
 void MB1Ev_IceCrackProc(void);
-void func_8010BCA4_boardresult(void);
+void boardresult_BackInit(void);
 
 void MB1Ev_IceCrackCreate(s16 arg0, s16 arg1) {
     Process *process;

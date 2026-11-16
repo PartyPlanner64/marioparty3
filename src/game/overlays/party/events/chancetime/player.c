@@ -1,32 +1,32 @@
 #include "common.h"
 #include "chancetime.h"
 
-extern s32 D_8010FE70_chancetime;
-extern s32 D_8010FE74_chancetime;
-extern s8 D_8010FE78_chancetime;
-extern s16 D_8010FE7A_chancetime[3];
-extern ChanceTimeObjState D_801100C0_chancetime;
+extern s32 chancetime_playerEnterF;
+extern s32 chancetime_playerEnterDoneF;
+extern s8 chancetime_hitBlockNo;
+extern s16 chancetime_playerAnimTbl[3];
+extern ChanceTimeObjState chancetime_playerWork;
 extern s32 omCharModelNoTbl[][6];
 
-void func_80106760_chancetime(omObjData *object);
-void func_80106768_chancetime(void);
-void func_80106770_chancetime(omObjData *object);
-void func_8010684C_chancetime(omObjData *object);
-void func_80106A2C_chancetime(omObjData *object);
-void func_80106BEC_chancetime(omObjData *object);
+void chancetime_PlayerIdle(omObjData *object);
+void chancetime_PlayerDestroy(void);
+void chancetime_PlayerWalkIn(omObjData *object);
+void chancetime_PlayerTurn(omObjData *object);
+void chancetime_PlayerBlockGrow(omObjData *object);
+void chancetime_PlayerHit(omObjData *object);
 
-s32 D_8010FAF0_chancetime = 0;
-f32 D_8010FAF4_chancetime = 360.0f;
-f32 D_8010FAF8_chancetime = 0.0f;
-f32 D_8010FAFC_chancetime = 0.2f;
+s32 chancetime_playerHitDoneF = 0;
+f32 chancetime_playerWalkX = 360.0f;
+f32 chancetime_playerTurnRot = 0.0f;
+f32 chancetime_blockScale = 0.2f;
 
-void func_80106320_chancetime(void) {
+void chancetime_PlayerProc(void) {
     omObjData *obj;
     s16 chr;
 
     obj = omAddObj(20, 6, 10, -1, NULL);
-    D_801100C0_chancetime.obj = obj;
-    chr = GwPlayer[D_801100D0_chancetime[0]].chr;
+    chancetime_playerWork.obj = obj;
+    chr = GwPlayer[chancetime_playerOrderTbl[0]].chr;
 
     obj->model[1] = Hu3DModelRead(omCharModelNoTbl[chr][0] | omCharModelNoTbl[chr][2], 0x2A9);
     Hu3DMotionAttrSet(obj->model[1], 2, 2);
@@ -52,11 +52,11 @@ void func_80106320_chancetime(void) {
     Hu3DModelPosSet(obj->model[4], 180.0f, 220.0f, 0.0f);
     Hu3DModelAttrSet(obj->model[4], 4, 4);
 
-    D_8010FE7A_chancetime[0] = CharAnimCreate(obj->model[1], 2, chr, CharMotionDataNumGet(chr, 0xA4));
-    D_8010FE7A_chancetime[1] = Hu3DAnimDataRead(CharMotionDataNumGet(chr, 0xA5));
-    D_8010FE7A_chancetime[2] = Hu3DAnimDataRead(CharMotionDataNumGet(chr, 0xA6));
+    chancetime_playerAnimTbl[0] = CharAnimCreate(obj->model[1], 2, chr, CharMotionDataNumGet(chr, 0xA4));
+    chancetime_playerAnimTbl[1] = Hu3DAnimDataRead(CharMotionDataNumGet(chr, 0xA5));
+    chancetime_playerAnimTbl[2] = Hu3DAnimDataRead(CharMotionDataNumGet(chr, 0xA6));
     Hu3DModelDynamicFree(obj->model[1]);
-    CharAnimSet(obj->model[1], 2, GwPlayer[D_801100D0_chancetime[0]].chr, D_8010FE7A_chancetime[0]);
+    CharAnimSet(obj->model[1], 2, GwPlayer[chancetime_playerOrderTbl[0]].chr, chancetime_playerAnimTbl[0]);
 
     omObjMotionRead(obj, 0, CharMotionDataNumGet(chr, 0));
     omObjMotionRead(obj, 1, CharMotionDataNumGet(chr, 1));
@@ -72,50 +72,50 @@ void func_80106320_chancetime(void) {
     obj->trans.y = 0.0f;
     obj->trans.z = 0.0f;
     Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
-    omPrcSetDestructor(0, func_80106768_chancetime);
-    D_801100C0_chancetime.func = func_80106760_chancetime;
+    omPrcSetDestructor(0, chancetime_PlayerDestroy);
+    chancetime_playerWork.func = chancetime_PlayerIdle;
 
     while (TRUE) {
-        D_801100C0_chancetime.func(obj);
+        chancetime_playerWork.func(obj);
         HuPrcVSleep();
     }
 }
 
-void func_80106760_chancetime(omObjData *object) {
+void chancetime_PlayerIdle(omObjData *object) {
 }
 
-void func_80106768_chancetime(void) {
+void chancetime_PlayerDestroy(void) {
 }
 
-void func_80106770_chancetime(omObjData *object) {
+void chancetime_PlayerWalkIn(omObjData *object) {
     s16 done = FALSE;
 
-    D_8010FAF4_chancetime -= 25.0f;
-    if (D_8010FAF4_chancetime <= 180.0f) {
-        D_8010FAF4_chancetime = 180.0f;
+    chancetime_playerWalkX -= 25.0f;
+    if (chancetime_playerWalkX <= 180.0f) {
+        chancetime_playerWalkX = 180.0f;
         done = TRUE;
     }
-    Hu3DModelPosSet(object->model[1], D_8010FAF4_chancetime, 0.0f, -50.0f);
-    Hu3DModelPosSet(object->model[2], D_8010FAF4_chancetime, -10.0f, -50.0f);
+    Hu3DModelPosSet(object->model[1], chancetime_playerWalkX, 0.0f, -50.0f);
+    Hu3DModelPosSet(object->model[2], chancetime_playerWalkX, -10.0f, -50.0f);
     if (done == TRUE) {
-        D_8010FAF4_chancetime = 360.0f;
-        D_801100C0_chancetime.func = func_8010684C_chancetime;
+        chancetime_playerWalkX = 360.0f;
+        chancetime_playerWork.func = chancetime_PlayerTurn;
     }
 }
 
-void func_8010684C_chancetime(omObjData *object) {
+void chancetime_PlayerTurn(omObjData *object) {
     s16 done = FALSE;
 
-    D_8010FAF8_chancetime += 8.0f;
-    if (D_8010FAF8_chancetime >= 90.0f) {
-        D_8010FAF8_chancetime = 90.0f;
+    chancetime_playerTurnRot += 8.0f;
+    if (chancetime_playerTurnRot >= 90.0f) {
+        chancetime_playerTurnRot = 90.0f;
         done = TRUE;
     }
-    Hu3DModelRotSet(object->model[1], 0.0f, D_8010FAF8_chancetime + -90.0f, 0.0f);
+    Hu3DModelRotSet(object->model[1], 0.0f, chancetime_playerTurnRot + -90.0f, 0.0f);
     if (done == TRUE) {
-        D_8010FAF8_chancetime = 0.0f;
-        D_8010FE70_chancetime = 0;
-        D_8010FE74_chancetime = done;
+        chancetime_playerTurnRot = 0.0f;
+        chancetime_playerEnterF = 0;
+        chancetime_playerEnterDoneF = done;
         Hu3DMotionShiftSet(object->model[1], Hu3DData[object->motion[0]].motId, 0, 30, 2);
         Hu3DModelScaleSet(object->model[3], 0.2f, 0.2f, 0.2f);
         Hu3DMotionAttrSet(object->model[3], 2, 0);
@@ -126,61 +126,61 @@ void func_8010684C_chancetime(omObjData *object) {
         Hu3DModelAttrSet(object->model[4], 4, 0);
         Hu3DMotionAttrSet(object->model[4], 2, 0);
         Hu3DMotionAttrSet(object->model[4], 1, 0);
-        D_801100C0_chancetime.func = func_80106A2C_chancetime;
+        chancetime_playerWork.func = chancetime_PlayerBlockGrow;
     }
 }
 
-void func_80106A2C_chancetime(omObjData *object) {
+void chancetime_PlayerBlockGrow(omObjData *object) {
     s32 done = FALSE;
 
     HuPrcSleep(2);
     HuAudFXPlay(0x501);
     do {
-        D_8010FAFC_chancetime += 0.14f;
-        if (D_8010FAFC_chancetime >= 0.7f) {
-            D_8010FAFC_chancetime = 0.7f;
+        chancetime_blockScale += 0.14f;
+        if (chancetime_blockScale >= 0.7f) {
+            chancetime_blockScale = 0.7f;
             done = TRUE;
         }
-        Hu3DModelScaleSet(object->model[3], D_8010FAFC_chancetime, D_8010FAFC_chancetime, D_8010FAFC_chancetime);
+        Hu3DModelScaleSet(object->model[3], chancetime_blockScale, chancetime_blockScale, chancetime_blockScale);
         HuPrcVSleep();
     } while (done != TRUE);
-    D_8010FAFC_chancetime = 0.0f;
-    D_801100C0_chancetime.func = func_80106760_chancetime;
+    chancetime_blockScale = 0.0f;
+    chancetime_playerWork.func = chancetime_PlayerIdle;
 }
 
-void func_80106B18_chancetime(void) {
-    omObjData *obj = D_801100C0_chancetime.obj;
+void chancetime_PlayerEnterStart(void) {
+    omObjData *obj = chancetime_playerWork.obj;
 
-    D_8010FE70_chancetime = 1;
-    D_8010FE74_chancetime = 0;
+    chancetime_playerEnterF = 1;
+    chancetime_playerEnterDoneF = 0;
     Hu3DMotionModelSet(obj->model[1], obj->motion[1]);
     Hu3DMotionAttrSet(obj->model[1], 2, 2);
     Hu3DModelAttrSet(obj->model[1], 4, 0);
     Hu3DModelAttrSet(obj->model[2], 4, 0);
-    D_801100C0_chancetime.func = func_80106770_chancetime;
+    chancetime_playerWork.func = chancetime_PlayerWalkIn;
 }
 
-s32 func_80106BB8_chancetime(void) {
-    return D_8010FE74_chancetime;
+s32 chancetime_PlayerEnterCheck(void) {
+    return chancetime_playerEnterDoneF;
 }
 
-void func_80106BC4_chancetime(s8 arg0) {
-    D_8010FE78_chancetime = arg0;
-    D_801100C0_chancetime.func = func_80106BEC_chancetime;
+void chancetime_PlayerHitStart(s8 arg0) {
+    chancetime_hitBlockNo = arg0;
+    chancetime_playerWork.func = chancetime_PlayerHit;
 }
 
-s32 func_80106BE0_chancetime(void) {
-    return D_8010FAF0_chancetime;
+s32 chancetime_PlayerHitCheck(void) {
+    return chancetime_playerHitDoneF;
 }
 
-void func_80106BEC_chancetime(omObjData *object) {
-    s16 player = D_801100D0_chancetime[0];
+void chancetime_PlayerHit(omObjData *object) {
+    s16 player = chancetime_playerOrderTbl[0];
     f32 time;
     s16 done;
     s16 delay;
     u16 btn;
 
-    D_8010FAF0_chancetime = 0;
+    chancetime_playerHitDoneF = 0;
     // The repeated done checks and the delay/btn temporaries are needed for the original block layout.
     while (TRUE) {
         done = FALSE;
@@ -208,7 +208,7 @@ void func_80106BEC_chancetime(omObjData *object) {
         if (done == FALSE) {
             if (time >= 5.0f) {
                 done = TRUE;
-                func_8010D92C_chancetime(D_8010FE78_chancetime);
+                chancetime_ReelStop(chancetime_hitBlockNo);
                 Hu3DMotionAttrSet(object->model[3], 2, 0);
                 Hu3DMotionAttrSet(object->model[3], 1, 0);
                 Hu3DMotionTimeSet(object->model[3], 0.0f);
@@ -229,18 +229,18 @@ void func_80106BEC_chancetime(omObjData *object) {
     Hu3DModelPosSet(object->model[3], 180.0f, 220.0f, time);
     Hu3DMotionShiftSet(object->model[1], Hu3DData[object->motion[0]].motId, 0, 20, 2);
     Hu3DMotionSpeedSet(object->model[1], 1.0f);
-    D_8010FAF0_chancetime = 1;
-    D_801100C0_chancetime.func = func_80106760_chancetime;
+    chancetime_playerHitDoneF = 1;
+    chancetime_playerWork.func = chancetime_PlayerIdle;
 }
 
-void func_80106F10_chancetime(void) {
-    omObjData *object = D_801100C0_chancetime.obj;
+void chancetime_PlayerJoyExec(void) {
+    omObjData *object = chancetime_playerWork.obj;
     f32 time;
     f32 length;
 
     HuAudFXPlay(0x502);
-    CharFXPlay(0x274, GwPlayer[D_801100D0_chancetime[0]].chr);
-    CharAnimSet(object->model[1], 2, GwPlayer[D_801100D0_chancetime[0]].chr, D_8010FE7A_chancetime[1]);
+    CharFXPlay(0x274, GwPlayer[chancetime_playerOrderTbl[0]].chr);
+    CharAnimSet(object->model[1], 2, GwPlayer[chancetime_playerOrderTbl[0]].chr, chancetime_playerAnimTbl[1]);
     Hu3DMotionShiftSet(object->model[1], Hu3DData[object->motion[2]].motId, 0, 30, 0);
     HuPrcSleep(30);
     do {
@@ -250,14 +250,14 @@ void func_80106F10_chancetime(void) {
     } while (time < length);
 }
 
-void func_8010705C_chancetime(void) {
-    omObjData *object = D_801100C0_chancetime.obj;
+void chancetime_PlayerNeutralExec(void) {
+    omObjData *object = chancetime_playerWork.obj;
     f32 time;
     f32 length;
 
     HuAudFXPlay(0x503);
-    CharFXPlay(0x26B, GwPlayer[D_801100D0_chancetime[0]].chr);
-    CharAnimSet(object->model[1], 2, GwPlayer[D_801100D0_chancetime[0]].chr, D_8010FE7A_chancetime[2]);
+    CharFXPlay(0x26B, GwPlayer[chancetime_playerOrderTbl[0]].chr);
+    CharAnimSet(object->model[1], 2, GwPlayer[chancetime_playerOrderTbl[0]].chr, chancetime_playerAnimTbl[2]);
     Hu3DMotionShiftSet(object->model[1], Hu3DData[object->motion[3]].motId, 0, 30, 0);
     HuPrcSleep(30);
     do {
@@ -267,14 +267,14 @@ void func_8010705C_chancetime(void) {
     } while (time < length);
 }
 
-void func_801071A8_chancetime(void) {
-    omObjData *object = D_801100C0_chancetime.obj;
+void chancetime_PlayerSadExec(void) {
+    omObjData *object = chancetime_playerWork.obj;
     f32 time;
     f32 length;
 
     HuAudFXPlay(0x503);
-    CharFXPlay(0x26B, GwPlayer[D_801100D0_chancetime[0]].chr);
-    CharAnimSet(object->model[1], 2, GwPlayer[D_801100D0_chancetime[0]].chr, D_8010FE7A_chancetime[2]);
+    CharFXPlay(0x26B, GwPlayer[chancetime_playerOrderTbl[0]].chr);
+    CharAnimSet(object->model[1], 2, GwPlayer[chancetime_playerOrderTbl[0]].chr, chancetime_playerAnimTbl[2]);
     Hu3DMotionShiftSet(object->model[1], Hu3DData[object->motion[4]].motId, 0, 30, 0);
     HuPrcSleep(30);
     do {

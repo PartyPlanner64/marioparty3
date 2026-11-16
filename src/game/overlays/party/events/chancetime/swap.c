@@ -1,64 +1,64 @@
 #include "common.h"
 #include "chancetime.h"
 
-extern s16 D_8010FE80_chancetime[];
-extern s32 D_8010FE84_chancetime[2];
-extern s32 D_8010FE8C_chancetime;
-extern ChanceTimeObjState D_80110088_chancetime[];
-extern ChanceTimeObjState D_801100B0_chancetime;
-extern ChanceTimeObjState D_801100B8_chancetime;
-extern ChanceTimeObjState D_801100D4_chancetime;
+extern s16 chancetime_hostEffSprMdlTbl[];
+extern s32 chancetime_hostAnimTbl[2];
+extern s32 chancetime_hostFaceAnim;
+extern ChanceTimeObjState chancetime_dancerWorkTbl[];
+extern ChanceTimeObjState chancetime_hostLWork;
+extern ChanceTimeObjState chancetime_hostRWork;
+extern ChanceTimeObjState chancetime_hostWork;
 
-void func_80107B18_chancetime(omObjData *object);
-void func_80107C84_chancetime(omObjData *object);
-void func_80107D60_chancetime(omObjData *object);
-void func_80108738_chancetime(omObjData *object);
-void func_80107E40_chancetime(omObjData *object);
-void func_80107F58_chancetime(omObjData *object);
-void func_801080EC_chancetime(omObjData *object);
-void func_8010827C_chancetime(omObjData *object);
-void func_80108414_chancetime(omObjData *object);
-void func_80108C08_chancetime(s16 model, s16 slot, s16 animIdx);
-s32 func_8010B6F4_chancetime(s16 arg0);
-void func_8010B7A0_chancetime(s16 arg0);
-void func_8010B818_chancetime(omObjData *object, Vec *pos, s32 arg2);
-void func_8010B834_chancetime(omObjData *object, Vec *pos, s32 time, s32 faceDir);
-void func_8010BA68_chancetime(omObjData *object, Vec *rot, s32 time);
-void func_8010BC10_chancetime(omObjData *object, f32 x, f32 y, f32 z, s32 arg4);
-void func_8010BC88_chancetime(omObjData *object, f32 x, f32 y, f32 z, s32 arg4);
-void func_8010AA90_chancetime(omObjData *object);
-void func_80108EDC_chancetime(omObjData *object);
-void func_8010963C_chancetime(omObjData *object);
-void func_80109B70_chancetime(omObjData *object);
-void func_8010A0A4_chancetime(omObjData *object);
-void func_8010A5D8_chancetime(omObjData *object);
-void func_8010B124_chancetime(omObjData *object);
-void func_8010BD40_chancetime(void);
-void func_80107A88_chancetime(omObjData *object);
-void func_80107A90_chancetime(void);
+void chancetime_HostShowTurn(omObjData *object);
+void chancetime_HostShowRaise(omObjData *object);
+void chancetime_HostShowHook(omObjData *object);
+void chancetime_HostEffShow(omObjData *object);
+void chancetime_HostHideBegin(omObjData *object);
+void chancetime_HostHideWait(omObjData *object);
+void chancetime_HostHideTurn(omObjData *object);
+void chancetime_HostRExit(omObjData *object);
+void chancetime_HostHop(omObjData *object);
+void chancetime_HmfAnimSet(s16 model, s16 slot, s16 animIdx);
+s32 chancetime_MotionEndCheck(s16 arg0);
+void chancetime_MotionEndWait(s16 arg0);
+void chancetime_ObjPosMoveV(omObjData *object, Vec *pos, s32 arg2);
+void chancetime_ObjPosMoveEx(omObjData *object, Vec *pos, s32 time, s32 faceDir);
+void chancetime_ObjRotMoveV(omObjData *object, Vec *rot, s32 time);
+void chancetime_ObjRotMove(omObjData *object, f32 x, f32 y, f32 z, s32 arg4);
+void chancetime_ObjWalk(omObjData *object, f32 x, f32 y, f32 z, s32 arg4);
+void chancetime_HostLJump(omObjData *object);
+void chancetime_DancerJump(omObjData *object);
+void chancetime_Dancer1Dance(omObjData *object);
+void chancetime_Dancer2Dance(omObjData *object);
+void chancetime_Dancer3Dance(omObjData *object);
+void chancetime_Dancer4Dance(omObjData *object);
+void chancetime_HostRJump(omObjData *object);
+void chancetime_TitleProc(void);
+void chancetime_HostIdle(omObjData *object);
+void chancetime_HostDestroy(void);
 
-s32 D_8010FB00_chancetime = 0;
-s32 D_8010FB04_chancetime = 0;
-s32 D_8010FB08_chancetime = 0;
-Vec D_8010FB0C_chancetime = { 0.0f, 80.0f, -300.0f };
-Vec D_8010FB18_chancetime[4] = {
+s32 chancetime_hostHopF = 0;
+s32 chancetime_hostHopDoneF = 0;
+s32 chancetime_hostTalkF = 0;
+Vec chancetime_dancerPos = { 0.0f, 80.0f, -300.0f };
+Vec chancetime_dancerPosTbl[4] = {
     { -210.0f, 0.0f, -50.0f },
     { -70.0f, 0.0f, -50.0f },
     { 70.0f, 0.0f, -50.0f },
     { 210.0f, 0.0f, -50.0f },
 };
-Vec D_8010FB48_chancetime = { -200.0f, 80.0f, -300.0f };
-Vec D_8010FB54_chancetime = { 200.0f, 80.0f, -300.0f };
-s32 D_8010FB60_chancetime = 0;
-f32 D_8010FB64_chancetime = 0.0f;
-s32 D_8010FB68_chancetime = 0;
-f32 D_8010FB6C_chancetime = 0.0f;
-f32 D_8010FB70_chancetime = 0.0f;
-f32 D_8010FB74_chancetime = 0.0f;
-f32 D_8010FB78_chancetime = 0.0f;
-f32 D_8010FB7C_chancetime = 0.0f;
+Vec chancetime_hostLJumpPos = { -200.0f, 80.0f, -300.0f };
+Vec chancetime_hostRJumpPos = { 200.0f, 80.0f, -300.0f };
+s32 chancetime_introEndF = 0;
+f32 chancetime_hostShowRot = 0.0f;
+s32 chancetime_hostItemHideF = 0;
+f32 chancetime_hostLTurnRot = 0.0f;
+f32 chancetime_hostRTurnRot = 0.0f;
+f32 chancetime_hostRExitX = 0.0f;
+f32 chancetime_hostHopTime = 0.0f;
+f32 chancetime_hostHopSmallTime = 0.0f;
 
-void func_80107300_chancetime(void) {
+void chancetime_HostProc(void) {
     omObjData *object;
     void *data;
     u16 sprModel;
@@ -66,7 +66,7 @@ void func_80107300_chancetime(void) {
     s8 i;
 
     object = omAddObj(20, 10, 16, -1, NULL);
-    D_801100D4_chancetime.obj = object;
+    chancetime_hostWork.obj = object;
 
     object->model[1] = Hu3DModelRead(0xA0000, 0x2A9);
     Hu3DModelPosSet(object->model[1], -200.0f, 0.0f, -50.0f);
@@ -75,15 +75,15 @@ void func_80107300_chancetime(void) {
     Hu3DModelPosSet(object->model[2], -200.0f, -5.0f, -50.0f);
     Hu3DModelCameraSet(object->model[2], 2);
     data = DataRead(0xA002A);
-    D_8010FE84_chancetime[0] = (s16)Hu3DAnimCreate(Hu3DData[object->model[1]].hmf, data, 0, "c160n_0_DEF");
+    chancetime_hostAnimTbl[0] = (s16)Hu3DAnimCreate(Hu3DData[object->model[1]].hmf, data, 0, "c160n_0_DEF");
     HuMemMemoryFreePerm(data);
     Hu3DModelRemakeStatic(object->model[1]);
     Hu3DModelDynamicFree(object->model[1]);
-    Hu3DAnimAttrSet(D_8010FE84_chancetime[0], 1, 0);
-    Hu3DAnimBankSet(D_8010FE84_chancetime[0], 0);
-    D_8010FE8C_chancetime = Hu3DAnimLink(Hu3DData[object->model[1]].hmf, D_8010FE84_chancetime[0], 0, "c160n_0_DEF");
+    Hu3DAnimAttrSet(chancetime_hostAnimTbl[0], 1, 0);
+    Hu3DAnimBankSet(chancetime_hostAnimTbl[0], 0);
+    chancetime_hostFaceAnim = Hu3DAnimLink(Hu3DData[object->model[1]].hmf, chancetime_hostAnimTbl[0], 0, "c160n_0_DEF");
     data = DataRead(0xA002B);
-    D_8010FE84_chancetime[1] = (s16)Hu3DAnimDataCreate(data);
+    chancetime_hostAnimTbl[1] = (s16)Hu3DAnimDataCreate(data);
     HuMemMemoryFreePerm(data);
 
     object->model[3] = Hu3DModelRead(0xA0000, 0x2A9);
@@ -124,7 +124,7 @@ void func_80107300_chancetime(void) {
         Hu3DModelObjAttrSet(Hu3DSprModelData[sprModel].modelId, 0x70000000, 0x70000000);
         Hu3DModelCameraSet(Hu3DSprModelData[sprModel].modelId, 2);
         object->model[7 + i] = Hu3DSprModelData[sprModel].modelId;
-        D_8010FE80_chancetime[i] = sprModel;
+        chancetime_hostEffSprMdlTbl[i] = sprModel;
     }
 
     omObjMotionRead(object, 0, 0xA0001);
@@ -146,57 +146,57 @@ void func_80107300_chancetime(void) {
     Hu3DMotionAttrSet(object->model[3], 2, 0);
     Hu3DModelRotSet(object->model[1], 0.0f, 0.0f, 0.0f);
     Hu3DModelRotSet(object->model[3], 0.0f, 0.0f, 0.0f);
-    omPrcSetDestructor(0, func_80107A90_chancetime);
+    omPrcSetDestructor(0, chancetime_HostDestroy);
     Hu3DMotionShiftSet(object->model[1], Hu3DData[object->motion[5]].motId, 0, 30, 2);
     Hu3DMotionShiftSet(object->model[3], Hu3DData[object->motion[5]].motId, 0, 30, 2);
-    D_801100D4_chancetime.func = func_80107A88_chancetime;
+    chancetime_hostWork.func = chancetime_HostIdle;
     while (TRUE) {
-        D_801100D4_chancetime.func(object);
+        chancetime_hostWork.func(object);
         HuPrcVSleep();
     }
 }
 
-void func_80107A80_chancetime(omObjData *object) {
+void chancetime_ObjIdle(omObjData *object) {
 }
 
-void func_80107A88_chancetime(omObjData *object) {
+void chancetime_HostIdle(omObjData *object) {
 }
 
-void func_80107A90_chancetime(void) {
+void chancetime_HostDestroy(void) {
 }
 
-void func_80107A98_chancetime(omObjData *object) {
+void chancetime_HostShowBegin(omObjData *object) {
     Hu3DMotionModelSet(object->model[1], object->motion[2]);
     Hu3DMotionAttrSet(object->model[1], 2, 0);
     Hu3DMotionModelSet(object->model[3], object->motion[2]);
     Hu3DMotionAttrSet(object->model[3], 2, 0);
-    D_801100D4_chancetime.func = func_80107B18_chancetime;
+    chancetime_hostWork.func = chancetime_HostShowTurn;
 }
 
-void func_80107B18_chancetime(omObjData *object) {
-    D_8010FB64_chancetime += 8.0f;
-    Hu3DModelRotSet(object->model[1], 0.0f, D_8010FB64_chancetime, 0.0f);
-    Hu3DModelRotSet(object->model[3], 0.0f, -D_8010FB64_chancetime, 0.0f);
-    if (D_8010FB64_chancetime >= 45.0f) {
-        D_8010FB64_chancetime = 45.0f;
-        Hu3DModelRotSet(object->model[1], 0.0f, D_8010FB64_chancetime, 0.0f);
-        Hu3DModelRotSet(object->model[3], 0.0f, -D_8010FB64_chancetime, 0.0f);
+void chancetime_HostShowTurn(omObjData *object) {
+    chancetime_hostShowRot += 8.0f;
+    Hu3DModelRotSet(object->model[1], 0.0f, chancetime_hostShowRot, 0.0f);
+    Hu3DModelRotSet(object->model[3], 0.0f, -chancetime_hostShowRot, 0.0f);
+    if (chancetime_hostShowRot >= 45.0f) {
+        chancetime_hostShowRot = 45.0f;
+        Hu3DModelRotSet(object->model[1], 0.0f, chancetime_hostShowRot, 0.0f);
+        Hu3DModelRotSet(object->model[3], 0.0f, -chancetime_hostShowRot, 0.0f);
         if (Hu3DMotion[Hu3DData[object->model[1]].motId].unk02 <= Hu3DData[object->model[1]].motTime) {
-            D_801100D4_chancetime.func = func_80107C84_chancetime;
-            D_8010FB64_chancetime = 0.0f;
+            chancetime_hostWork.func = chancetime_HostShowRaise;
+            chancetime_hostShowRot = 0.0f;
         }
     }
 }
 
-void func_80107C84_chancetime(omObjData *object) {
+void chancetime_HostShowRaise(omObjData *object) {
     Hu3DMotionShiftSet(object->model[1], Hu3DData[object->motion[3]].motId, 0, 30, 2);
     Hu3DMotionAttrSet(object->model[5], 1, 0);
     Hu3DMotionShiftSet(object->model[3], Hu3DData[object->motion[3]].motId, 0, 30, 2);
     Hu3DMotionAttrSet(object->model[6], 1, 0);
-    D_801100D4_chancetime.func = func_80107D60_chancetime;
+    chancetime_hostWork.func = chancetime_HostShowHook;
 }
 
-void func_80107D60_chancetime(omObjData *object) {
+void chancetime_HostShowHook(omObjData *object) {
     if (Hu3DMotionShiftTimeGet(object->model[1]) >= 5.0f) {
         Hu3DModelHookSet(object->model[5], object->model[1], "item_hook");
         Hu3DModelAttrSet(object->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
@@ -204,12 +204,12 @@ void func_80107D60_chancetime(omObjData *object) {
         Hu3DModelHookSet(object->model[6], object->model[3], "item_hook");
         Hu3DModelAttrSet(object->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DMotionAttrSet(object->model[6], 1, 0);
-        func_80108738_chancetime(object);
-        D_801100D4_chancetime.func = func_80107A80_chancetime;
+        chancetime_HostEffShow(object);
+        chancetime_hostWork.func = chancetime_ObjIdle;
     }
 }
 
-void func_80107E40_chancetime(omObjData *object) {
+void chancetime_HostHideBegin(omObjData *object) {
     Hu3DMotionAttrSet(object->model[5], 1, 1);
     Hu3DMotionAttrSet(object->model[6], 1, 1);
     Hu3DMotionTimeSet(object->model[5], 0.0f);
@@ -218,125 +218,125 @@ void func_80107E40_chancetime(omObjData *object) {
     Hu3DMotionAttrSet(object->model[6], 2, 0);
     Hu3DMotionShiftSet(object->model[1], Hu3DData[object->motion[2]].motId, 0, 30, 0);
     Hu3DMotionShiftSet(object->model[3], Hu3DData[object->motion[2]].motId, 0, 30, 0);
-    D_801100D4_chancetime.func = func_80107F58_chancetime;
+    chancetime_hostWork.func = chancetime_HostHideWait;
 }
 
-void func_80107F58_chancetime(omObjData *object) {
+void chancetime_HostHideWait(omObjData *object) {
     f32 time = Hu3DMotionShiftTimeGet(object->model[1]);
 
-    if (D_8010FB68_chancetime == 0) {
+    if (chancetime_hostItemHideF == 0) {
         if (time >= 20.0f) {
             Hu3DModelAttrSet(object->model[5], 0x4000, 0);
             Hu3DModelAttrSet(object->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             Hu3DModelAttrSet(object->model[6], 0x4000, 0);
             Hu3DModelAttrSet(object->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-            func_80108738_chancetime(object);
-            D_8010FB68_chancetime = 1;
+            chancetime_HostEffShow(object);
+            chancetime_hostItemHideF = 1;
         }
     }
     if (time < 0.0f) {
         Hu3DMotionShiftSet(object->model[1], Hu3DData[object->motion[0]].motId, 0, 30, 2);
         Hu3DMotionShiftSet(object->model[3], Hu3DData[object->motion[1]].motId, 0, 30, 2);
-        D_8010FB68_chancetime = 0;
-        func_80108C08_chancetime(object->model[1], D_8010FE8C_chancetime, D_8010FE84_chancetime[1]);
-        D_801100D4_chancetime.func = func_801080EC_chancetime;
+        chancetime_hostItemHideF = 0;
+        chancetime_HmfAnimSet(object->model[1], chancetime_hostFaceAnim, chancetime_hostAnimTbl[1]);
+        chancetime_hostWork.func = chancetime_HostHideTurn;
     }
 }
 
-void func_801080EC_chancetime(omObjData *object) {
+void chancetime_HostHideTurn(omObjData *object) {
     s8 count = 0;
 
-    D_8010FB6C_chancetime += 8.0f;
-    if (D_8010FB6C_chancetime >= 45.0f) {
-        D_8010FB6C_chancetime = 45.0f;
+    chancetime_hostLTurnRot += 8.0f;
+    if (chancetime_hostLTurnRot >= 45.0f) {
+        chancetime_hostLTurnRot = 45.0f;
         count++;
     }
-    Hu3DModelRotSet(object->model[1], 0.0f, 45.0f - D_8010FB6C_chancetime, 0.0f);
-    D_8010FB70_chancetime += 8.0f;
-    if (D_8010FB70_chancetime >= 135.0f) {
-        D_8010FB70_chancetime = 135.0f;
+    Hu3DModelRotSet(object->model[1], 0.0f, 45.0f - chancetime_hostLTurnRot, 0.0f);
+    chancetime_hostRTurnRot += 8.0f;
+    if (chancetime_hostRTurnRot >= 135.0f) {
+        chancetime_hostRTurnRot = 135.0f;
         count++;
     }
-    Hu3DModelRotSet(object->model[3], 0.0f, D_8010FB70_chancetime + -45.0f, 0.0f);
+    Hu3DModelRotSet(object->model[3], 0.0f, chancetime_hostRTurnRot + -45.0f, 0.0f);
     if (count >= 2) {
         Hu3DMotionShiftSet(object->model[3], Hu3DData[object->motion[1]].motId, 0, 30, 2);
-        D_8010FB6C_chancetime = D_8010FB70_chancetime = 0.0f;
-        D_801100D4_chancetime.func = func_8010827C_chancetime;
+        chancetime_hostLTurnRot = chancetime_hostRTurnRot = 0.0f;
+        chancetime_hostWork.func = chancetime_HostRExit;
     }
 }
 
-void func_8010827C_chancetime(omObjData *object) {
+void chancetime_HostRExit(omObjData *object) {
     s8 count = 0;
 
-    D_8010FB74_chancetime += 30.0f;
-    if (D_8010FB74_chancetime >= 250.0f) {
-        D_8010FB74_chancetime = 250.0f;
+    chancetime_hostRExitX += 30.0f;
+    if (chancetime_hostRExitX >= 250.0f) {
+        chancetime_hostRExitX = 250.0f;
         count++;
     }
-    Hu3DModelPosSet(object->model[3], D_8010FB74_chancetime + 200.0f, 0.0f, -50.0f);
-    Hu3DModelPosSet(object->model[4], D_8010FB74_chancetime + 200.0f, -5.0f, -50.0f);
+    Hu3DModelPosSet(object->model[3], chancetime_hostRExitX + 200.0f, 0.0f, -50.0f);
+    Hu3DModelPosSet(object->model[4], chancetime_hostRExitX + 200.0f, -5.0f, -50.0f);
     if (count == 1) {
-        D_8010FB74_chancetime = 0.0f;
+        chancetime_hostRExitX = 0.0f;
         Hu3DModelAttrSet(object->model[3], 4, 4);
         Hu3DModelAttrSet(object->model[4], 4, 4);
-        func_80106B18_chancetime();
+        chancetime_PlayerEnterStart();
         Hu3DMotionShiftSet(object->model[1], Hu3DData[object->motion[5]].motId, 0, 30, 2);
         Hu3DMotionShiftSet(object->model[3], Hu3DData[object->motion[5]].motId, 0, 30, 2);
-        D_801100D4_chancetime.func = func_80107A88_chancetime;
+        chancetime_hostWork.func = chancetime_HostIdle;
     }
 }
 
-void func_80108414_chancetime(omObjData *object) {
-    Hu3DModelPosSet(object->model[1], -200.0f, sindf(D_8010FB78_chancetime * 18.0f) * 50.0f, -50.0f);
-    Hu3DModelPosSet(object->model[3], 200.0f, sindf(D_8010FB78_chancetime * 18.0f) * 50.0f, -50.0f);
-    D_8010FB78_chancetime += 1.0f;
-    if (D_8010FB78_chancetime >= 10.0f) {
-        D_8010FB78_chancetime = 0.0f;
+void chancetime_HostHop(omObjData *object) {
+    Hu3DModelPosSet(object->model[1], -200.0f, sindf(chancetime_hostHopTime * 18.0f) * 50.0f, -50.0f);
+    Hu3DModelPosSet(object->model[3], 200.0f, sindf(chancetime_hostHopTime * 18.0f) * 50.0f, -50.0f);
+    chancetime_hostHopTime += 1.0f;
+    if (chancetime_hostHopTime >= 10.0f) {
+        chancetime_hostHopTime = 0.0f;
         Hu3DModelPosSet(object->model[1], -200.0f, 0.0f, -50.0f);
         Hu3DModelPosSet(object->model[3], 200.0f, 0.0f, -50.0f);
         Hu3DModelPosSet(object->model[2], -200.0f, 0.0f, -50.0f);
         Hu3DModelPosSet(object->model[4], 200.0f, 0.0f, -50.0f);
-        D_8010FB00_chancetime = 0;
-        D_8010FB04_chancetime = 1;
-        D_801100D4_chancetime.func = func_80107A80_chancetime;
+        chancetime_hostHopF = 0;
+        chancetime_hostHopDoneF = 1;
+        chancetime_hostWork.func = chancetime_ObjIdle;
     }
 }
 
-void func_80108578_chancetime(omObjData *object) {
-    Hu3DModelPosSet(object->model[1], -200.0f, sindf(D_8010FB7C_chancetime * 36.0f) * 20.0f, -50.0f);
-    Hu3DModelPosSet(object->model[3], 200.0f, sindf(D_8010FB7C_chancetime * 36.0f) * 20.0f, -50.0f);
-    D_8010FB7C_chancetime += 1.0f;
-    if (D_8010FB7C_chancetime >= 5.0f) {
-        D_8010FB7C_chancetime = 0.0f;
+void chancetime_HostHopSmall(omObjData *object) {
+    Hu3DModelPosSet(object->model[1], -200.0f, sindf(chancetime_hostHopSmallTime * 36.0f) * 20.0f, -50.0f);
+    Hu3DModelPosSet(object->model[3], 200.0f, sindf(chancetime_hostHopSmallTime * 36.0f) * 20.0f, -50.0f);
+    chancetime_hostHopSmallTime += 1.0f;
+    if (chancetime_hostHopSmallTime >= 5.0f) {
+        chancetime_hostHopSmallTime = 0.0f;
         Hu3DModelPosSet(object->model[1], -200.0f, 0.0f, -50.0f);
         Hu3DModelPosSet(object->model[3], 200.0f, 0.0f, -50.0f);
         Hu3DModelPosSet(object->model[2], -200.0f, 0.0f, -50.0f);
         Hu3DModelPosSet(object->model[4], 200.0f, 0.0f, -50.0f);
-        D_8010FB00_chancetime = 0;
-        D_8010FB04_chancetime = 1;
-        D_801100D4_chancetime.func = func_80107A80_chancetime;
+        chancetime_hostHopF = 0;
+        chancetime_hostHopDoneF = 1;
+        chancetime_hostWork.func = chancetime_ObjIdle;
     }
 }
 
-void func_801086DC_chancetime(void) {
-    D_801100D4_chancetime.func = func_80107A98_chancetime;
+void chancetime_HostShowStart(void) {
+    chancetime_hostWork.func = chancetime_HostShowBegin;
 }
 
-void func_801086F0_chancetime(void) {
-    D_801100D4_chancetime.func = func_80107E40_chancetime;
+void chancetime_HostHideStart(void) {
+    chancetime_hostWork.func = chancetime_HostHideBegin;
 }
 
-void func_80108704_chancetime(void) {
-    D_8010FB00_chancetime = 1;
-    D_8010FB04_chancetime = 0;
-    D_801100D4_chancetime.func = func_80108414_chancetime;
+void chancetime_HostHopStart(void) {
+    chancetime_hostHopF = 1;
+    chancetime_hostHopDoneF = 0;
+    chancetime_hostWork.func = chancetime_HostHop;
 }
 
-s32 func_8010872C_chancetime(void) {
-    return D_8010FB04_chancetime;
+s32 chancetime_HostHopCheck(void) {
+    return chancetime_hostHopDoneF;
 }
 
-void func_80108738_chancetime(omObjData *object) {
+void chancetime_HostEffShow(omObjData *object) {
     HuMtx4F mtx;
     Vec pos;
     f32 time;
@@ -354,7 +354,7 @@ void func_80108738_chancetime(omObjData *object) {
     Hu3DModelAttrSet(object->model[7], 4, 0);
     Hu3DMotionAttrSet(object->model[7], 2, 0);
     Hu3DMotionAttrSet(object->model[7], 1, 0);
-    Hu3DSprModelFrameSet(D_8010FE80_chancetime[0], 0);
+    Hu3DSprModelFrameSet(chancetime_hostEffSprMdlTbl[0], 0);
 
     time = Hu3DData[object->model[3]].motTime;
     Hu3DModelObjMtxFrameGet(object->model[3], time, "item_hook", &mtx);
@@ -368,27 +368,27 @@ void func_80108738_chancetime(omObjData *object) {
     Hu3DModelAttrSet(object->model[8], 4, 0);
     Hu3DMotionAttrSet(object->model[8], 2, 0);
     Hu3DMotionAttrSet(object->model[8], 1, 0);
-    Hu3DSprModelFrameSet(D_8010FE80_chancetime[1], 0);
+    Hu3DSprModelFrameSet(chancetime_hostEffSprMdlTbl[1], 0);
 }
 
-void func_80108A88_chancetime(void) {
-    omObjData *object = D_801100D4_chancetime.obj;
+void chancetime_HostTalkEnd(void) {
+    omObjData *object = chancetime_hostWork.obj;
 
     Hu3DMotionShiftSet(object->model[1], Hu3DData[object->motion[5]].motId, 0, 30, 2);
     Hu3DMotionShiftSet(object->model[3], Hu3DData[object->motion[5]].motId, 0, 30, 2);
-    D_8010FB08_chancetime = 0;
-    D_801100D4_chancetime.func = func_80107A88_chancetime;
+    chancetime_hostTalkF = 0;
+    chancetime_hostWork.func = chancetime_HostIdle;
 }
 
-void func_80108B50_chancetime(void) {
-    omObjData *object = D_801100D4_chancetime.obj;
+void chancetime_HostTalkStart(void) {
+    omObjData *object = chancetime_hostWork.obj;
 
-    D_801100D4_chancetime.func = func_80107A80_chancetime;
+    chancetime_hostWork.func = chancetime_ObjIdle;
     Hu3DMotionShiftSet(object->model[1], Hu3DData[object->motion[4]].motId, 0, 30, 2);
     Hu3DMotionShiftSet(object->model[3], Hu3DData[object->motion[4]].motId, 0, 30, 2);
 }
 
-void func_80108C08_chancetime(s16 model, s16 slot, s16 animIdx) {
+void chancetime_HmfAnimSet(s16 model, s16 slot, s16 animIdx) {
     if (slot >= 0) {
         if (animIdx == -1) {
             Hu3DModelAnimStop(Hu3DData[model].hmf);
@@ -406,17 +406,17 @@ void func_80108C08_chancetime(s16 model, s16 slot, s16 animIdx) {
     }
 }
 
-void func_80108CDC_chancetime(void) {
+void chancetime_DancerProc(void) {
     omObjData *object;
     omObjData *motObj;
     void *data;
     s32 anim;
 
     object = omAddObj(20, 4, 0, -1, NULL);
-    D_80110088_chancetime[0].obj = object;
-    motObj = D_801100D4_chancetime.obj;
+    chancetime_dancerWorkTbl[0].obj = object;
+    motObj = chancetime_hostWork.obj;
     object->model[1] = Hu3DModelRead(0xA0000, 0x2A9);
-    Hu3DModelPosSet(object->model[1], D_8010FB0C_chancetime.x, D_8010FB0C_chancetime.y, D_8010FB0C_chancetime.z);
+    Hu3DModelPosSet(object->model[1], chancetime_dancerPos.x, chancetime_dancerPos.y, chancetime_dancerPos.z);
     Hu3DModelCameraSet(object->model[1], 2);
     data = DataRead(0xA002A);
     anim = (s16)Hu3DAnimCreate(Hu3DData[object->model[1]].hmf, data, 0, "c160n_0_DEF");
@@ -426,20 +426,20 @@ void func_80108CDC_chancetime(void) {
     Hu3DAnimAttrSet(anim, 1, 0);
     Hu3DAnimBankSet(anim, 0);
     object->model[2] = Hu3DModelRead(9, 0x2B9);
-    Hu3DModelPosSet(object->model[2], D_8010FB0C_chancetime.x, D_8010FB0C_chancetime.y, D_8010FB0C_chancetime.z);
+    Hu3DModelPosSet(object->model[2], chancetime_dancerPos.x, chancetime_dancerPos.y, chancetime_dancerPos.z);
     Hu3DModelCameraSet(object->model[2], 2);
     Hu3DMotionShiftSet(object->model[1], Hu3DData[motObj->motion[0]].motId, 0, 30, 2);
     Hu3DModelAttrSet(object->model[2], 4, 4);
-    D_80110088_chancetime[0].func = func_80108EDC_chancetime;
+    chancetime_dancerWorkTbl[0].func = chancetime_DancerJump;
     while (TRUE) {
-        D_80110088_chancetime[0].func(object);
+        chancetime_dancerWorkTbl[0].func(object);
         HuPrcVSleep();
     }
 }
 
-void func_80108EDC_chancetime(omObjData *object) {
+void chancetime_DancerJump(omObjData *object) {
     s16 model = object->model[1];
-    omObjData *motObj = D_801100D4_chancetime.obj;
+    omObjData *motObj = chancetime_hostWork.obj;
     Vec unusedPos;
     f32 y;
     f32 speed;
@@ -463,19 +463,19 @@ void func_80108EDC_chancetime(omObjData *object) {
         for (j = 0; j < 2; j++) {
             Hu3DMotionShiftSet(model, Hu3DData[motObj->motion[5]].motId, 0, 10, 0);
             Hu3DMotionSpeedSet(model, 1.5f);
-            func_8010B7A0_chancetime(model);
+            chancetime_MotionEndWait(model);
         }
         Hu3DMotionShiftSet(model, Hu3DData[motObj->motion[6]].motId, 0, 10, 0);
         Hu3DMotionSpeedSet(model, 1.5f);
-        func_8010B7A0_chancetime(model);
+        chancetime_MotionEndWait(model);
         Hu3DMotionShiftSet(model, Hu3DData[motObj->motion[7]].motId, 0, 10, 0);
         Hu3DMotionSpeedSet(model, 1.5f);
-        func_8010B7A0_chancetime(model);
+        chancetime_MotionEndWait(model);
     }
     HuPrcSleep(1);
     Hu3DMotionShiftSet(model, Hu3DData[motObj->motion[8]].motId, 0, 10, 0);
     HuPrcSleep(20);
-    omAddPrcObj(func_8010BD40_chancetime, 0x1001, 0x2000, 0);
+    omAddPrcObj(chancetime_TitleProc, 0x1001, 0x2000, 0);
     HuPrcSleep(10);
     Hu3DMotionShiftSet(object->model[1], Hu3DData[motObj->motion[12]].motId, 0, 10, 0);
     // Copied but never read in the original.
@@ -504,39 +504,39 @@ void func_80108EDC_chancetime(omObjData *object) {
     Hu3DData[object->model[2]].pos.y = 0.0f;
     Hu3DData[object->model[2]].pos.z = Hu3DData[model].pos.z;
     Hu3DMotionShiftSet(object->model[1], Hu3DData[motObj->motion[1]].motId, 0, 10, 2);
-    func_8010BC88_chancetime(object, 0.0f, 0.0f, 500.0f, 5);
+    chancetime_ObjWalk(object, 0.0f, 0.0f, 500.0f, 5);
     Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    D_80110088_chancetime[0].func = func_80107A80_chancetime;
+    chancetime_dancerWorkTbl[0].func = chancetime_ObjIdle;
 }
 
-void func_801094CC_chancetime(void) {
+void chancetime_Dancer1Proc(void) {
     omObjData *obj;
     omObjData *motObj;
     omObjData *srcObj;
 
     obj = omAddObj(20, 4, 0, -1, NULL);
-    D_80110088_chancetime[1].obj = obj;
-    motObj = D_801100D4_chancetime.obj;
-    srcObj = D_80110088_chancetime[0].obj;
+    chancetime_dancerWorkTbl[1].obj = obj;
+    motObj = chancetime_hostWork.obj;
+    srcObj = chancetime_dancerWorkTbl[0].obj;
     obj->model[1] = Hu3DModelLink(srcObj->model[1]);
-    Hu3DModelPosSet(obj->model[1], D_8010FB18_chancetime[0].x, D_8010FB18_chancetime[0].y, D_8010FB18_chancetime[0].z);
+    Hu3DModelPosSet(obj->model[1], chancetime_dancerPosTbl[0].x, chancetime_dancerPosTbl[0].y, chancetime_dancerPosTbl[0].z);
     Hu3DModelCameraSet(obj->model[1], 2);
     obj->model[2] = Hu3DModelLink(srcObj->model[2]);
-    Hu3DModelPosSet(obj->model[2], D_8010FB18_chancetime[0].x, D_8010FB18_chancetime[0].y, D_8010FB18_chancetime[0].z);
+    Hu3DModelPosSet(obj->model[2], chancetime_dancerPosTbl[0].x, chancetime_dancerPosTbl[0].y, chancetime_dancerPosTbl[0].z);
     Hu3DModelCameraSet(obj->model[2], 2);
     Hu3DMotionShiftSet(obj->model[1], Hu3DData[motObj->motion[0]].motId, 0, 10, 2);
     Hu3DModelAttrSet(obj->model[2], 4, 0);
-    D_80110088_chancetime[1].func = func_8010963C_chancetime;
+    chancetime_dancerWorkTbl[1].func = chancetime_Dancer1Dance;
     while (TRUE) {
-        D_80110088_chancetime[1].func(obj);
+        chancetime_dancerWorkTbl[1].func(obj);
         HuPrcVSleep();
     }
 }
 
-void func_8010963C_chancetime(omObjData *object) {
+void chancetime_Dancer1Dance(omObjData *object) {
     s16 model = object->model[1];
-    omObjData *motObj = D_801100D4_chancetime.obj;
+    omObjData *motObj = chancetime_hostWork.obj;
     f32 y;
     s32 i;
     s32 j;
@@ -558,52 +558,52 @@ void func_8010963C_chancetime(omObjData *object) {
         for (j = 0; j < 2; j++) {
             Hu3DMotionShiftSet(model, Hu3DData[motObj->motion[5]].motId, 0, 10, 0);
             Hu3DMotionSpeedSet(model, 1.5f);
-            func_8010B7A0_chancetime(model);
+            chancetime_MotionEndWait(model);
         }
         Hu3DMotionShiftSet(model, Hu3DData[motObj->motion[6]].motId, 0, 10, 0);
         Hu3DMotionSpeedSet(model, 1.5f);
-        func_8010B7A0_chancetime(model);
+        chancetime_MotionEndWait(model);
         Hu3DMotionShiftSet(model, Hu3DData[motObj->motion[7]].motId, 0, 10, 0);
         Hu3DMotionSpeedSet(model, 1.5f);
-        func_8010B7A0_chancetime(model);
+        chancetime_MotionEndWait(model);
     }
     HuPrcSleep(1);
     Hu3DMotionShiftSet(model, Hu3DData[motObj->motion[9]].motId, 0, 10, 0);
     HuPrcSleep(50);
     Hu3DMotionShiftSet(model, Hu3DData[motObj->motion[1]].motId, 0, 10, 2);
-    func_8010BC88_chancetime(object, -400.0f, 0.0f, 300.0f, 10);
+    chancetime_ObjWalk(object, -400.0f, 0.0f, 300.0f, 10);
     Hu3DModelAttrSet(object->model[1], 4, 4);
     Hu3DModelAttrSet(object->model[2], 4, 4);
-    D_80110088_chancetime[1].func = func_80107A80_chancetime;
+    chancetime_dancerWorkTbl[1].func = chancetime_ObjIdle;
 }
 
-void func_80109A00_chancetime(void) {
+void chancetime_Dancer2Proc(void) {
     omObjData *obj;
     omObjData *motObj;
     omObjData *srcObj;
 
     obj = omAddObj(20, 4, 0, -1, NULL);
-    D_80110088_chancetime[2].obj = obj;
-    motObj = D_801100D4_chancetime.obj;
-    srcObj = D_80110088_chancetime[0].obj;
+    chancetime_dancerWorkTbl[2].obj = obj;
+    motObj = chancetime_hostWork.obj;
+    srcObj = chancetime_dancerWorkTbl[0].obj;
     obj->model[1] = Hu3DModelLink(srcObj->model[1]);
-    Hu3DModelPosSet(obj->model[1], D_8010FB18_chancetime[1].x, D_8010FB18_chancetime[1].y, D_8010FB18_chancetime[1].z);
+    Hu3DModelPosSet(obj->model[1], chancetime_dancerPosTbl[1].x, chancetime_dancerPosTbl[1].y, chancetime_dancerPosTbl[1].z);
     Hu3DModelCameraSet(obj->model[1], 2);
     obj->model[2] = Hu3DModelLink(srcObj->model[2]);
-    Hu3DModelPosSet(obj->model[2], D_8010FB18_chancetime[1].x, D_8010FB18_chancetime[1].y, D_8010FB18_chancetime[1].z);
+    Hu3DModelPosSet(obj->model[2], chancetime_dancerPosTbl[1].x, chancetime_dancerPosTbl[1].y, chancetime_dancerPosTbl[1].z);
     Hu3DModelCameraSet(obj->model[2], 2);
     Hu3DMotionShiftSet(obj->model[1], Hu3DData[motObj->motion[0]].motId, 0, 10, 2);
     Hu3DModelAttrSet(obj->model[2], 4, 0);
-    D_80110088_chancetime[2].func = func_80109B70_chancetime;
+    chancetime_dancerWorkTbl[2].func = chancetime_Dancer2Dance;
     while (TRUE) {
-        D_80110088_chancetime[2].func(obj);
+        chancetime_dancerWorkTbl[2].func(obj);
         HuPrcVSleep();
     }
 }
 
-void func_80109B70_chancetime(omObjData *object) {
+void chancetime_Dancer2Dance(omObjData *object) {
     s16 model = object->model[1];
-    omObjData *motObj = D_801100D4_chancetime.obj;
+    omObjData *motObj = chancetime_hostWork.obj;
     f32 y;
     s32 i;
     s32 j;
@@ -625,52 +625,52 @@ void func_80109B70_chancetime(omObjData *object) {
         for (j = 0; j < 2; j++) {
             Hu3DMotionShiftSet(model, Hu3DData[motObj->motion[5]].motId, 0, 10, 0);
             Hu3DMotionSpeedSet(model, 1.5f);
-            func_8010B7A0_chancetime(model);
+            chancetime_MotionEndWait(model);
         }
         Hu3DMotionShiftSet(model, Hu3DData[motObj->motion[6]].motId, 0, 10, 0);
         Hu3DMotionSpeedSet(model, 1.5f);
-        func_8010B7A0_chancetime(model);
+        chancetime_MotionEndWait(model);
         Hu3DMotionShiftSet(model, Hu3DData[motObj->motion[7]].motId, 0, 10, 0);
         Hu3DMotionSpeedSet(model, 1.5f);
-        func_8010B7A0_chancetime(model);
+        chancetime_MotionEndWait(model);
     }
     HuPrcSleep(1);
     Hu3DMotionShiftSet(model, Hu3DData[motObj->motion[9]].motId, 0, 10, 0);
     HuPrcSleep(50);
     Hu3DMotionShiftSet(model, Hu3DData[motObj->motion[1]].motId, 0, 10, 2);
-    func_8010BC88_chancetime(object, -200.0f, 0.0f, 300.0f, 10);
+    chancetime_ObjWalk(object, -200.0f, 0.0f, 300.0f, 10);
     Hu3DModelAttrSet(object->model[1], 4, 4);
     Hu3DModelAttrSet(object->model[2], 4, 4);
-    D_80110088_chancetime[2].func = func_80107A80_chancetime;
+    chancetime_dancerWorkTbl[2].func = chancetime_ObjIdle;
 }
 
-void func_80109F34_chancetime(void) {
+void chancetime_Dancer3Proc(void) {
     omObjData *obj;
     omObjData *motObj;
     omObjData *srcObj;
 
     obj = omAddObj(20, 4, 0, -1, NULL);
-    D_80110088_chancetime[3].obj = obj;
-    motObj = D_801100D4_chancetime.obj;
-    srcObj = D_80110088_chancetime[0].obj;
+    chancetime_dancerWorkTbl[3].obj = obj;
+    motObj = chancetime_hostWork.obj;
+    srcObj = chancetime_dancerWorkTbl[0].obj;
     obj->model[1] = Hu3DModelLink(srcObj->model[1]);
-    Hu3DModelPosSet(obj->model[1], D_8010FB18_chancetime[2].x, D_8010FB18_chancetime[2].y, D_8010FB18_chancetime[2].z);
+    Hu3DModelPosSet(obj->model[1], chancetime_dancerPosTbl[2].x, chancetime_dancerPosTbl[2].y, chancetime_dancerPosTbl[2].z);
     Hu3DModelCameraSet(obj->model[1], 2);
     obj->model[2] = Hu3DModelLink(srcObj->model[2]);
-    Hu3DModelPosSet(obj->model[2], D_8010FB18_chancetime[2].x, D_8010FB18_chancetime[2].y, D_8010FB18_chancetime[2].z);
+    Hu3DModelPosSet(obj->model[2], chancetime_dancerPosTbl[2].x, chancetime_dancerPosTbl[2].y, chancetime_dancerPosTbl[2].z);
     Hu3DModelCameraSet(obj->model[2], 2);
     Hu3DMotionShiftSet(obj->model[1], Hu3DData[motObj->motion[0]].motId, 0, 10, 2);
     Hu3DModelAttrSet(obj->model[2], 4, 0);
-    D_80110088_chancetime[3].func = func_8010A0A4_chancetime;
+    chancetime_dancerWorkTbl[3].func = chancetime_Dancer3Dance;
     while (TRUE) {
-        D_80110088_chancetime[3].func(obj);
+        chancetime_dancerWorkTbl[3].func(obj);
         HuPrcVSleep();
     }
 }
 
-void func_8010A0A4_chancetime(omObjData *object) {
+void chancetime_Dancer3Dance(omObjData *object) {
     s16 model = object->model[1];
-    omObjData *motObj = D_801100D4_chancetime.obj;
+    omObjData *motObj = chancetime_hostWork.obj;
     f32 y;
     s32 i;
     s32 j;
@@ -692,52 +692,52 @@ void func_8010A0A4_chancetime(omObjData *object) {
         for (j = 0; j < 2; j++) {
             Hu3DMotionShiftSet(model, Hu3DData[motObj->motion[5]].motId, 0, 10, 0);
             Hu3DMotionSpeedSet(model, 1.5f);
-            func_8010B7A0_chancetime(model);
+            chancetime_MotionEndWait(model);
         }
         Hu3DMotionShiftSet(model, Hu3DData[motObj->motion[6]].motId, 0, 10, 0);
         Hu3DMotionSpeedSet(model, 1.5f);
-        func_8010B7A0_chancetime(model);
+        chancetime_MotionEndWait(model);
         Hu3DMotionShiftSet(model, Hu3DData[motObj->motion[7]].motId, 0, 10, 0);
         Hu3DMotionSpeedSet(model, 1.5f);
-        func_8010B7A0_chancetime(model);
+        chancetime_MotionEndWait(model);
     }
     HuPrcSleep(1);
     Hu3DMotionShiftSet(model, Hu3DData[motObj->motion[10]].motId, 0, 10, 0);
     HuPrcSleep(50);
     Hu3DMotionShiftSet(model, Hu3DData[motObj->motion[1]].motId, 0, 10, 2);
-    func_8010BC88_chancetime(object, 200.0f, 0.0f, 300.0f, 10);
+    chancetime_ObjWalk(object, 200.0f, 0.0f, 300.0f, 10);
     Hu3DModelAttrSet(object->model[1], 4, 4);
     Hu3DModelAttrSet(object->model[2], 4, 4);
-    D_80110088_chancetime[3].func = func_80107A80_chancetime;
+    chancetime_dancerWorkTbl[3].func = chancetime_ObjIdle;
 }
 
-void func_8010A468_chancetime(void) {
+void chancetime_Dancer4Proc(void) {
     omObjData *obj;
     omObjData *motObj;
     omObjData *srcObj;
 
     obj = omAddObj(20, 4, 0, -1, NULL);
-    D_80110088_chancetime[4].obj = obj;
-    motObj = D_801100D4_chancetime.obj;
-    srcObj = D_80110088_chancetime[0].obj;
+    chancetime_dancerWorkTbl[4].obj = obj;
+    motObj = chancetime_hostWork.obj;
+    srcObj = chancetime_dancerWorkTbl[0].obj;
     obj->model[1] = Hu3DModelLink(srcObj->model[1]);
-    Hu3DModelPosSet(obj->model[1], D_8010FB18_chancetime[3].x, D_8010FB18_chancetime[3].y, D_8010FB18_chancetime[3].z);
+    Hu3DModelPosSet(obj->model[1], chancetime_dancerPosTbl[3].x, chancetime_dancerPosTbl[3].y, chancetime_dancerPosTbl[3].z);
     Hu3DModelCameraSet(obj->model[1], 2);
     obj->model[2] = Hu3DModelLink(srcObj->model[2]);
-    Hu3DModelPosSet(obj->model[2], D_8010FB18_chancetime[3].x, D_8010FB18_chancetime[3].y, D_8010FB18_chancetime[3].z);
+    Hu3DModelPosSet(obj->model[2], chancetime_dancerPosTbl[3].x, chancetime_dancerPosTbl[3].y, chancetime_dancerPosTbl[3].z);
     Hu3DModelCameraSet(obj->model[2], 2);
     Hu3DMotionShiftSet(obj->model[1], Hu3DData[motObj->motion[0]].motId, 0, 10, 2);
     Hu3DModelAttrSet(obj->model[2], 4, 0);
-    D_80110088_chancetime[4].func = func_8010A5D8_chancetime;
+    chancetime_dancerWorkTbl[4].func = chancetime_Dancer4Dance;
     while (TRUE) {
-        D_80110088_chancetime[4].func(obj);
+        chancetime_dancerWorkTbl[4].func(obj);
         HuPrcVSleep();
     }
 }
 
-void func_8010A5D8_chancetime(omObjData *object) {
+void chancetime_Dancer4Dance(omObjData *object) {
     s16 model = object->model[1];
-    omObjData *motObj = D_801100D4_chancetime.obj;
+    omObjData *motObj = chancetime_hostWork.obj;
     f32 y;
     s32 i;
     s32 j;
@@ -759,45 +759,45 @@ void func_8010A5D8_chancetime(omObjData *object) {
         for (j = 0; j < 2; j++) {
             Hu3DMotionShiftSet(model, Hu3DData[motObj->motion[5]].motId, 0, 10, 0);
             Hu3DMotionSpeedSet(model, 1.5f);
-            func_8010B7A0_chancetime(model);
+            chancetime_MotionEndWait(model);
         }
         Hu3DMotionShiftSet(model, Hu3DData[motObj->motion[6]].motId, 0, 10, 0);
         Hu3DMotionSpeedSet(model, 1.5f);
-        func_8010B7A0_chancetime(model);
+        chancetime_MotionEndWait(model);
         Hu3DMotionShiftSet(model, Hu3DData[motObj->motion[7]].motId, 0, 10, 0);
         Hu3DMotionSpeedSet(model, 1.5f);
-        func_8010B7A0_chancetime(model);
+        chancetime_MotionEndWait(model);
     }
     HuPrcSleep(1);
     Hu3DMotionShiftSet(model, Hu3DData[motObj->motion[10]].motId, 0, 10, 0);
     HuPrcSleep(50);
     Hu3DMotionShiftSet(model, Hu3DData[motObj->motion[1]].motId, 0, 10, 2);
-    func_8010BC88_chancetime(object, 400.0f, 0.0f, 300.0f, 10);
+    chancetime_ObjWalk(object, 400.0f, 0.0f, 300.0f, 10);
     Hu3DModelAttrSet(object->model[1], 4, 4);
     Hu3DModelAttrSet(object->model[2], 4, 4);
-    D_80110088_chancetime[4].func = func_80107A80_chancetime;
+    chancetime_dancerWorkTbl[4].func = chancetime_ObjIdle;
 }
 
-void func_8010A99C_chancetime(void) {
-    omObjData *parent = D_801100D4_chancetime.obj;
+void chancetime_HostLJumpProc(void) {
+    omObjData *parent = chancetime_hostWork.obj;
     omObjData *object = omAddObj(20, 4, 0, -1, NULL);
 
-    D_801100B0_chancetime.obj = object;
+    chancetime_hostLWork.obj = object;
     object->model[1] = parent->model[1];
     object->model[2] = parent->model[2];
-    Hu3DModelPosSet(object->model[1], D_8010FB48_chancetime.x, D_8010FB48_chancetime.y, D_8010FB48_chancetime.z);
-    Hu3DModelPosSet(object->model[2], D_8010FB48_chancetime.x, D_8010FB48_chancetime.y, D_8010FB48_chancetime.z);
+    Hu3DModelPosSet(object->model[1], chancetime_hostLJumpPos.x, chancetime_hostLJumpPos.y, chancetime_hostLJumpPos.z);
+    Hu3DModelPosSet(object->model[2], chancetime_hostLJumpPos.x, chancetime_hostLJumpPos.y, chancetime_hostLJumpPos.z);
     Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    D_801100B0_chancetime.func = func_8010AA90_chancetime;
+    chancetime_hostLWork.func = chancetime_HostLJump;
     while (TRUE) {
-        D_801100B0_chancetime.func(object);
+        chancetime_hostLWork.func(object);
         HuPrcVSleep();
     }
 }
 
-void func_8010AA90_chancetime(omObjData *object) {
-    s16 model = D_801100D4_chancetime.obj->model[1];
-    omObjData *motObj = D_801100D4_chancetime.obj;
+void chancetime_HostLJump(omObjData *object) {
+    s16 model = chancetime_hostWork.obj->model[1];
+    omObjData *motObj = chancetime_hostWork.obj;
     Vec unusedPos;
     f32 y;
     f32 speed;
@@ -821,14 +821,14 @@ void func_8010AA90_chancetime(omObjData *object) {
         for (j = 0; j < 2; j++) {
             Hu3DMotionShiftSet(model, Hu3DData[motObj->motion[5]].motId, 0, 10, 0);
             Hu3DMotionSpeedSet(model, 1.5f);
-            func_8010B7A0_chancetime(model);
+            chancetime_MotionEndWait(model);
         }
         Hu3DMotionShiftSet(model, Hu3DData[motObj->motion[6]].motId, 0, 10, 0);
         Hu3DMotionSpeedSet(model, 1.5f);
-        func_8010B7A0_chancetime(model);
+        chancetime_MotionEndWait(model);
         Hu3DMotionShiftSet(model, Hu3DData[motObj->motion[7]].motId, 0, 10, 0);
         Hu3DMotionSpeedSet(model, 1.5f);
-        func_8010B7A0_chancetime(model);
+        chancetime_MotionEndWait(model);
     }
     HuPrcSleep(1);
     Hu3DMotionShiftSet(model, Hu3DData[motObj->motion[9]].motId, 0, 10, 0);
@@ -860,30 +860,30 @@ void func_8010AA90_chancetime(omObjData *object) {
     Hu3DData[object->model[2]].pos.y = 0.0f;
     Hu3DData[object->model[2]].pos.z = Hu3DData[model].pos.z;
     Hu3DMotionShiftSet(object->model[1], Hu3DData[motObj->motion[5]].motId, 0, 10, 2);
-    D_8010FB60_chancetime = 1;
-    D_801100B0_chancetime.func = func_80107A80_chancetime;
+    chancetime_introEndF = 1;
+    chancetime_hostLWork.func = chancetime_ObjIdle;
 }
 
-void func_8010B030_chancetime(void) {
-    omObjData *parent = D_801100D4_chancetime.obj;
+void chancetime_HostRJumpProc(void) {
+    omObjData *parent = chancetime_hostWork.obj;
     omObjData *object = omAddObj(20, 4, 0, -1, NULL);
 
-    D_801100B8_chancetime.obj = object;
+    chancetime_hostRWork.obj = object;
     object->model[1] = parent->model[3];
     object->model[2] = parent->model[4];
-    Hu3DModelPosSet(object->model[1], D_8010FB54_chancetime.x, D_8010FB54_chancetime.y, D_8010FB54_chancetime.z);
-    Hu3DModelPosSet(object->model[2], D_8010FB54_chancetime.x, D_8010FB54_chancetime.y, D_8010FB54_chancetime.z);
+    Hu3DModelPosSet(object->model[1], chancetime_hostRJumpPos.x, chancetime_hostRJumpPos.y, chancetime_hostRJumpPos.z);
+    Hu3DModelPosSet(object->model[2], chancetime_hostRJumpPos.x, chancetime_hostRJumpPos.y, chancetime_hostRJumpPos.z);
     Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    D_801100B8_chancetime.func = func_8010B124_chancetime;
+    chancetime_hostRWork.func = chancetime_HostRJump;
     while (TRUE) {
-        D_801100B8_chancetime.func(object);
+        chancetime_hostRWork.func(object);
         HuPrcVSleep();
     }
 }
 
-void func_8010B124_chancetime(omObjData *object) {
-    s16 model = D_801100D4_chancetime.obj->model[3];
-    omObjData *motObj = D_801100D4_chancetime.obj;
+void chancetime_HostRJump(omObjData *object) {
+    s16 model = chancetime_hostWork.obj->model[3];
+    omObjData *motObj = chancetime_hostWork.obj;
     Vec unusedPos;
     f32 y;
     f32 speed;
@@ -907,14 +907,14 @@ void func_8010B124_chancetime(omObjData *object) {
         for (j = 0; j < 2; j++) {
             Hu3DMotionShiftSet(model, Hu3DData[motObj->motion[5]].motId, 0, 10, 0);
             Hu3DMotionSpeedSet(model, 1.5f);
-            func_8010B7A0_chancetime(model);
+            chancetime_MotionEndWait(model);
         }
         Hu3DMotionShiftSet(model, Hu3DData[motObj->motion[6]].motId, 0, 10, 0);
         Hu3DMotionSpeedSet(model, 1.5f);
-        func_8010B7A0_chancetime(model);
+        chancetime_MotionEndWait(model);
         Hu3DMotionShiftSet(model, Hu3DData[motObj->motion[7]].motId, 0, 10, 0);
         Hu3DMotionSpeedSet(model, 1.5f);
-        func_8010B7A0_chancetime(model);
+        chancetime_MotionEndWait(model);
     }
     HuPrcSleep(1);
     Hu3DMotionShiftSet(model, Hu3DData[motObj->motion[10]].motId, 0, 10, 0);
@@ -946,13 +946,13 @@ void func_8010B124_chancetime(omObjData *object) {
     Hu3DData[object->model[2]].pos.y = 0.0f;
     Hu3DData[object->model[2]].pos.z = Hu3DData[model].pos.z;
     Hu3DMotionShiftSet(model, Hu3DData[motObj->motion[1]].motId, 0, 10, 2);
-    func_8010BC88_chancetime(object, 400.0f, 0.0f, 300.0f, 10);
+    chancetime_ObjWalk(object, 400.0f, 0.0f, 300.0f, 10);
     Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    D_801100B8_chancetime.func = func_80107A80_chancetime;
+    chancetime_hostRWork.func = chancetime_ObjIdle;
 }
 
-s32 func_8010B6F4_chancetime(s16 model) {
+s32 chancetime_MotionEndCheck(s16 model) {
     f32 time = Hu3DMotionShiftTimeGet(model);
     s32 ret = 0;
 
@@ -962,27 +962,27 @@ s32 func_8010B6F4_chancetime(s16 model) {
     return ret;
 }
 
-void func_8010B7A0_chancetime(s16 arg0) {
+void chancetime_MotionEndWait(s16 arg0) {
     HuPrcSleep(15);
-    while (!func_8010B6F4_chancetime(arg0)) {
+    while (!chancetime_MotionEndCheck(arg0)) {
         HuPrcVSleep();
     }
 }
 
-void func_8010B7EC_chancetime(omObjData *object, f32 x, f32 y, f32 z, s32 arg4) {
+void chancetime_ObjPosMove(omObjData *object, f32 x, f32 y, f32 z, s32 arg4) {
     Vec pos;
 
     pos.x = x;
     pos.y = y;
     pos.z = z;
-    func_8010B818_chancetime(object, &pos, arg4);
+    chancetime_ObjPosMoveV(object, &pos, arg4);
 }
 
-void func_8010B818_chancetime(omObjData *object, Vec *pos, s32 arg2) {
-    func_8010B834_chancetime(object, pos, arg2, 1);
+void chancetime_ObjPosMoveV(omObjData *object, Vec *pos, s32 arg2) {
+    chancetime_ObjPosMoveEx(object, pos, arg2, 1);
 }
 
-void func_8010B834_chancetime(omObjData *object, Vec *pos, s32 time, s32 faceDir) {
+void chancetime_ObjPosMoveEx(omObjData *object, Vec *pos, s32 time, s32 faceDir) {
     Vec start;
     Vec diff;
     Vec step;
@@ -1020,7 +1020,7 @@ void func_8010B834_chancetime(omObjData *object, Vec *pos, s32 time, s32 faceDir
     HuPrcVSleep();
 }
 
-void func_8010BA68_chancetime(omObjData *object, Vec *rot, s32 time) {
+void chancetime_ObjRotMoveV(omObjData *object, Vec *rot, s32 time) {
     Vec start;
     Vec diff;
     Vec cur;
@@ -1046,16 +1046,16 @@ void func_8010BA68_chancetime(omObjData *object, Vec *rot, s32 time) {
     HuPrcVSleep();
 }
 
-void func_8010BC10_chancetime(omObjData *object, f32 x, f32 y, f32 z, s32 arg4) {
+void chancetime_ObjRotMove(omObjData *object, f32 x, f32 y, f32 z, s32 arg4) {
     Vec pos;
 
     pos.x = x;
     pos.y = y;
     pos.z = z;
-    func_8010BA68_chancetime(object, &pos, arg4);
+    chancetime_ObjRotMoveV(object, &pos, arg4);
 }
 
-f32 func_8010BC3C_chancetime(Vec *from, Vec *to) {
+f32 chancetime_DirAngleGet(Vec *from, Vec *to) {
     Vec diff;
 
     diff.x = to->x - from->x;
@@ -1063,7 +1063,7 @@ f32 func_8010BC3C_chancetime(Vec *from, Vec *to) {
     return -(atan2df(diff.z, diff.x) - 90.0f);
 }
 
-void func_8010BC88_chancetime(omObjData *object, f32 x, f32 y, f32 z, s32 arg4) {
+void chancetime_ObjWalk(omObjData *object, f32 x, f32 y, f32 z, s32 arg4) {
     Vec from;
     Vec to;
     s16 modelId = object->model[1];
@@ -1074,11 +1074,11 @@ void func_8010BC88_chancetime(omObjData *object, f32 x, f32 y, f32 z, s32 arg4) 
     to.x = x;
     to.y = y;
     to.z = z;
-    func_8010BC10_chancetime(object, 0.0f, func_8010BC3C_chancetime(&from, &to), 0.0f, 10);
-    func_8010B818_chancetime(object, &to, arg4);
+    chancetime_ObjRotMove(object, 0.0f, chancetime_DirAngleGet(&from, &to), 0.0f, 10);
+    chancetime_ObjPosMoveV(object, &to, arg4);
 }
 
-void func_8010BD40_chancetime(void) {
+void chancetime_TitleProc(void) {
     s16 anim;
     s16 sprite;
     f32 scale;
@@ -1115,12 +1115,12 @@ void func_8010BD40_chancetime(void) {
     }
 }
 
-s32 func_8010BF3C_chancetime(void) {
-    return D_8010FB60_chancetime;
+s32 chancetime_IntroEndCheck(void) {
+    return chancetime_introEndF;
 }
 
-void func_8010BF48_chancetime(void) {
-    omObjData *object = D_801100D4_chancetime.obj;
+void chancetime_HostTurn(void) {
+    omObjData *object = chancetime_hostWork.obj;
 
-    func_8010BC10_chancetime(object, 0.0f, 45.0f, 0.0f, 10);
+    chancetime_ObjRotMove(object, 0.0f, 45.0f, 0.0f, 10);
 }
